@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<osYeloSettings engine="Halo1_CE">
+	<client>
+		<dx9>
+			<GBuffer enabled="true" />
+
+			<postprocessing>
+				<External enabled="false" />
+				<Internal enabled="false" />
+
+				<MotionBlur enabled="false" amount="0.0" />
+			</postprocessing>
+		</dx9>
+
+		<!--value=vertifical radians-->
+		<Fov value="" />
+
+		<Hud show="true" scale="false" showChat="true">
+			<reports showDeaths="true" showMyKillDeaths="true" />
+		</Hud>
+
+		<objects>
+			<weaponViews>
+				<entry name="">
+					<position x="" y="" z="" />
+				</entry>
+			</weaponViews>
+
+			<vehicleViews>
+				<entry name="">
+					<position seatName="" x="" y="" z="" />
+				</entry>
+			</vehicleViews>
+		</objects>
+	</client>
+	
+	<server>
+	</server>
+
+	<osShaderSettings>
+		<shaders>
+			<Shader filename="" />
+		</shaders>
+		<effects>
+			<Effect name="" render_point="" >
+				<Shader index="" />
+			</Effect>
+		</effects>
+	</osShaderSettings>
+
+	<osModSetSettings>
+		<modSets>
+			<ModSet name="" />
+		</modSets>
+	</osModSetSettings>
+</osYeloSettings>
