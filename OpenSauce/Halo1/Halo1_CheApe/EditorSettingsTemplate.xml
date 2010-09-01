@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<osEditorSettings engine="Halo1_CE" defaultProfile="">
+	<profiles>
+		<Profile name="stock" affinityMask="" ignoredByGuerilla="false" ignoredByTool="false" ignoredBySapien="false">
+			<root>C:\Program Files (x86)\Microsoft Games\Halo Custom Edition\</root>
+			<tagsName>tags</tagsName>
+
+			<data>C:\Program Files (x86)\Microsoft Games\Halo Custom Edition\data\</data>
+			<maps>C:\Program Files (x86)\Microsoft Games\Halo Custom Edition\maps\</maps>
+		</Profile>
+	</profiles>
+</osEditorSettings>
