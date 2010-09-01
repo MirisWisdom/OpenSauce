@@ -1,0 +1,48 @@
+/*
+    Yelo: Open Sauce SDK
+		Halo 1 (CE) Edition
+    Copyright (C) 2005-2010  Kornner Studios (http://kornner.com)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+#pragma once
+
+#if !PLATFORM_IS_DEDI
+
+namespace Yelo
+{
+	namespace Keystone
+	{
+		void Initialize();
+		void Dispose();
+
+		wcstring ChatLogName();
+		void* MainWindow();
+
+		// Keystone - Get Window
+		// [keystone] - Parent Window ptr (can be NULL?)
+		// [child] - name of the child window
+		void* GetWindow(void* keystone, wcstring child);
+
+		void WindowRelease(void* handle);
+
+		// Keystone Window - Get Control By ID
+		// [window] - parent of the control
+		// [id] - name of the control
+		void* WindowGetControlByID(void* window, wcstring id);
+
+		LRESULT ControlSendMessage(void* control, uint32 msg, WPARAM wParam, LPARAM lParam);
+	};
+};
+#endif

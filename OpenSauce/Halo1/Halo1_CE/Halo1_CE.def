@@ -1,0 +1,4 @@
+LIBRARY	"Halo1_CE"
+
+EXPORTS
+	Direct3DCreate9 = Yelo_Direct3DCreate9
