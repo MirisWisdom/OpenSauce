@@ -100,6 +100,8 @@ namespace Yelo
 				// the scenario and all of it's dependencies after we return the code flow 
 				// back to it
 				if(!for_build_cache) tag_unload(scenario_index);
+
+				return yelo;
 			}
 
 			return datum_index::null;

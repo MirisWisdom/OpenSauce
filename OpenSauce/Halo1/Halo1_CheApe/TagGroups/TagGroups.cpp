@@ -268,7 +268,7 @@ fail:
 
 			pop		edx
 			pop		ecx
-		NAKED_FUNC_END(3);
+		NAKED_FUNC_END(1);
 	}
 
 
