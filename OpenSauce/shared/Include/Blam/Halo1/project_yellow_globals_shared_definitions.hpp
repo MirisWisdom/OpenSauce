@@ -68,7 +68,7 @@ namespace Yelo
 			TAG_PAD(int32, 8);
 
 			TAG_FIELD(tag_string, damage_effect_marker_name);
-			TAG_FIELD(tag_reference, transition_damage__effect, 'jpt!');
+			TAG_FIELD(tag_reference, transition_damage_effect, 'jpt!');
 			TAG_PAD(int32, 8);
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_damage_region_permutation_extension) == 0xC4 );
 		struct s_object_damage_region_extension

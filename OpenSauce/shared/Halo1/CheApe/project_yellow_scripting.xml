@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+	<scriptFunctions>
+		<function name="volume_test_player_team" returnType="boolean" help="returns true if any players of the specified team are within the specified volume." internal="true" >
+			<arg type="trigger_volume" name="trigger_volume" />
+			<arg type="short" name="team_index" />
+		</function>
+		<function name="volume_test_player_team_all" returnType="boolean" help="returns true if all players of the specified team are within the specified volume." internal="true" >
+			<arg type="trigger_volume" name="trigger_volume" />
+			<arg type="short" name="team_index" />
+		</function>
+		<function name="player_team_teleport" returnType="void" help="moves the specified team to the specified flag." internal="true" >
+			<arg type="short" name="team_index" />
+			<arg type="cutscene_flag" name="cutscene_flag" />
+		</function>
+		<function name="player_team_players" returnType="object_list" help="returns a list of players on the specified team" internal="true" >
+			<arg type="short" name="team_index" />
+		</function>
+
+		<function name="player_data_get_integer" returnType="long" help="returns an integer value property of the player. -1 if this fails" internal="true" >
+			<arg type="short" name="player_list_index" />
+			<arg type="string" name="data_name" />
+		</function>
+		<function name="player_team_data_get_integer" returnType="long" help="returns an integer value of all the players on the team. -1 if this fails" internal="true" >
+			<arg type="short" name="team_index" />
+			<arg type="string" name="data_name" />
+		</function>
+		<function name="player_data_get_object" returnType="object" help="returns an object value property of the player. none if this fails" internal="true" >
+			<arg type="short" name="player_list_index" />
+			<arg type="string" name="data_name" />
+		</function>
+		<function name="player_data_get_real" returnType="real" help="returns a real value property of the player. -1.0 if this fails" internal="true" >
+			<arg type="short" name="player_list_index" />
+			<arg type="string" name="data_name" />
+		</function>
+		<function name="player_local_get" returnType="short" help="returns the local player's player-list-index" internal="true" />
+
+		<function name="object_data_get_real" returnType="real" help="returns a real value property of the object. -1.0 if this fails" internal="true" >
+			<arg type="object" name="object" />
+			<arg type="string" name="data_name" />
+			<arg type="string" name="subdata_name" />
+		</function>
+		<function name="weapon_data_get_real" returnType="real" help="returns a real value property of the weapon. -1.0 if this fails" internal="true" >
+			<arg type="object" name="weapon" />
+			<arg type="string" name="data_name" />
+		</function>
+
+		<function name="physics_get_gravity" returnType="real" help="get the current global gravity acceleration relative to halo standard gravity" internal="true" />
+		<function name="physics_set_gravity" returnType="void" help="set global gravity acceleration relative to halo standard gravity" internal="true" >
+			<arg type="real" name="gravity_fraction" />
+		</function>
+		<function name="physics_constants_reset" returnType="void" help="resets all physics constants to earthly values" internal="true" />
+
+		<function name="runtime_integers_reset" returnType="void" help="reset ALL runtime integers back to zero" internal="true" />
+		<function name="runtime_integer_get" returnType="long" help="get the runtime integer's current value" internal="true" >
+			<arg type="short" name="value_index" />
+		</function>
+		<function name="runtime_integer_set" returnType="long" help="set the runtime integer's current value, returning its previous value" internal="true" >
+			<arg type="short" name="value_index" />
+			<arg type="long" name="value" />
+		</function>
+		<function name="runtime_integer_inc" returnType="long" help="return the runtime integer's current value, then increments the value (aka post-increment)" internal="true" >
+			<arg type="short" name="value_index" />
+		</function>
+		<function name="runtime_integer_dec" returnType="long" help="return the runtime integer's current value, then decrements the value (aka post-decrement)" internal="true" >
+			<arg type="short" name="value_index" />
+		</function>
+
+		<function name="structure_bsp_lightmap_reset" returnType="void" help="reset the current bsp's lightmap to the default lightmap-set" internal="true" />
+
+		<function name="structure_bsp_lightmap_set_change" returnType="boolean" help="returns whether the change was successful or not" internal="true" >
+			<arg type="string" name="lightmap-set-name" />
+		</function>
+
+		<function name="game_change_version_id" returnType="boolean" help="returns whether the change was successful or not" internal="true" >
+			<arg type="boolean" name="also-change-game-build-string" />
+			<arg type="string" name="version-string" />
+		</function>
+		<function name="game_engine_data_get_integer" returnType="void" help="returns an integer value property of the current game engine. -1 if this fails" internal="true" >
+			<arg type="string" name="data_name" />
+		</function>
+
+		<function name="pp_load" returnType="void" help="loads post-processing" internal="true" />
+		<function name="pp_unload" returnType="void" help="unloads post-processing" internal="true" />
+		<function name="pp_set_effect_active" returnType="void" help="instantly set an effect to on or off" internal="true" >
+			<arg type="short" name="effect_index" />
+			<arg type="boolean" name="effect_enabled" />
+		</function>
+		<function name="pp_set_effect_fade" returnType="void" help="fade an effect in or out" internal="true" >
+			<arg type="short" name="effect_index" />
+			<arg type="real" name="fade_start" />
+			<arg type="real" name="fade_end" />
+			<arg type="real" name="fade_time" />
+		</function>
+		<function name="pp_get_effect_index_by_name" returnType="short" help="get the index of the effect named effect_name" internal="true" >
+			<arg type="string" name="effect_name" />
+		</function>
+		<function name="pp_get_effect_current_fade" returnType="real" help="get the current fade amount of an effect" internal="true" >
+			<arg type="short" name="effect_index" />
+		</function>
+		<function name="pp_get_effect_is_valid" returnType="boolean" help="get whether an effect is valid and ready to use" internal="true" >
+			<arg type="short" name="effect_index" />
+		</function>
+
+		<function name="pp_get_effect_shader_variable_index_by_name" returnType="short" help="returns the index of a shader variable for a specific effect" >
+			<arg type="short" name="effect_index" />
+			<arg type="string" name="variable_name" />
+		</function>
+		<function name="pp_set_effect_shader_variable_boolean" returnType="void" help="sets the boolean value of an effect shader variable" >
+			<arg type="short" name="effect_index" />
+			<arg type="short" name="variable_index" />
+			<arg type="boolean" name="bool" />
+		</function>
+		<function name="pp_set_effect_shader_variable_integer" returnType="void" help="sets the integer value of an effect shader variable" >
+			<arg type="short" name="effect_index" />
+			<arg type="short" name="variable_index" />
+			<arg type="long" name="value" />
+		</function>
+		<function name="pp_set_effect_shader_variable_real" returnType="void" help="sets the real values of an effect shader variable" >
+			<arg type="short" name="effect_index" />
+			<arg type="short" name="variable_index" />
+			<arg type="real" name="value0" />
+			<arg type="real" name="value1" />
+			<arg type="real" name="value2" />
+			<arg type="real" name="value3" />
+		</function>
+	</scriptFunctions>
+
+	<scriptGlobals>
+		<global name="rasterizer_rt_display" type="short" help="" internal="true" />
+		<global name="rasterizer_gbuffer_enabled" type="boolean" help="" internal="true" />
+
+		<global name="pp_external_post_processes_enabled" type="boolean" help="toggles external effects on or off" internal="true" />
+		<global name="pp_internal_post_processes_enabled" type="boolean" help="toggles internal effects on or off" internal="true" />
+		<global name="pp_motion_blur_enabled" type="boolean" help="" internal="true" />
+		<global name="pp_motion_blur_amount" type="real" help="" internal="true" />
+	</scriptGlobals>
+
+</definitions>

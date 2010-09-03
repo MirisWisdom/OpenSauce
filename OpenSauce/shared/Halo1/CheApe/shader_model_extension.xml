@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+	<blocks>
+		<TagBlock name="shader_model_extension_block_definition" maxElements="1">
+			<field type="Explanation" name="specular map" definition="The specular color map overrides the perpendicular color setting.~NRGB holds the specular color data~NAlpha masks the parallel specular color" />
+			<field type="TagReference" name="specular color map" definition="bitmap_reference" />
+			<field type="Real" name="specular color multiplier" />
+			<field type="Pad" definition="4" />
+			<field type="Real" name="specular color power" />
+			<field type="Pad" definition="4" />
+			<field type="Explanation" name="normal maps" definition="RGB holds the normal color data~NAlpha interpolates between the detail normals 1 and 2" />
+			<field type="TagReference" name="base normal map" definition="bitmap_reference" />
+			<field type="Real" name="base normal multiplier" />
+			<field type="Pad" definition="4" />
+			<field type="Pad" definition="4" />
+			<field type="Pad" definition="4" />
+			<field type="TagReference" name="detail normal 1 map" definition="bitmap_reference" />
+			<field type="Real" name="detail normal 1 multiplier" />
+			<field type="Real" name="detail normal 1 scale" />
+			<field type="Pad" definition="4" />
+			<field type="Pad" definition="4" />
+			<field type="TagReference" name="detail normal 2 map" definition="bitmap_reference" />
+			<field type="Real" name="detail normal 2 multiplier" />
+			<field type="Real" name="detail normal 2 scale" />
+			<field type="Pad" definition="4" />
+			<field type="Pad" definition="4" />
+			<field type="Pad" definition="32" />
+		</TagBlock>
+	</blocks>
+
+	<fixups>
+		<fixup name="_fixup_shader_model_shader_extension_block" type="Field"
+			guerilla="0x9CA32C" tool="0x6D85F4" sapien="0xA3C3F4" >
+			<definition>
+				<field type="Block" name="shader model extension" definition="shader_model_extension_block_definition" />
+			</definition>
+		</fixup>
+	</fixups>
+</definitions>

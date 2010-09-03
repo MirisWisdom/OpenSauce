@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+	<references>
+		<Reference name="shader_postprocess_definition_reference">
+			<field>shpd</field>
+		</Reference>
+
+		<Reference name="project_yellow_globals_reference">
+			<field>gelo</field>
+		</Reference>
+
+		<Reference name="globals_reference_non_resolving" isNonResolving="true">
+			<field>matg</field>
+		</Reference>
+
+		<Reference name="scenario_reference_non_resolving" isNonResolving="true">
+			<field>scnr</field>
+		</Reference>
+
+		<Reference name="sky_reference">
+			<field>sky </field>
+		</Reference>
+		<Reference name="sky_reference_non_resolving" isNonResolving="true">
+			<field>sky </field>
+		</Reference>
+
+		<Reference name="fog_reference">
+			<field>fog </field>
+		</Reference>
+		<Reference name="weather_particle_system_reference">
+			<field>rain</field>
+		</Reference>
+
+		<Reference name="structure_bsp_reference">
+			<field>sbsp</field>
+		</Reference>
+		<Reference name="structure_bsp_reference_non_resolving" isNonResolving="true">
+			<field>sbsp</field>
+		</Reference>
+
+		<Reference name="bitmap_reference">
+			<field>bitm</field>
+		</Reference>
+
+		<Reference name="tag_collection_reference">
+			<field>tagc</field>
+		</Reference>
+
+		<Reference name="string_list_reference">
+			<field>str#</field>
+		</Reference>
+
+		<Reference name="effect_reference">
+			<field>effe</field>
+		</Reference>
+		<Reference name="damage_effect_reference">
+			<field>jpt!</field>
+		</Reference>
+
+		<Reference name="sound_reference">
+			<field>snd!</field>
+		</Reference>
+
+		<Reference name="object_reference">
+			<field>obje</field>
+		</Reference>
+		<Reference name="unit_reference">
+			<field>unit</field>
+		</Reference>
+		<Reference name="weapon_reference">
+			<field>weap</field>
+		</Reference>
+	</references>
+
+	<enums>
+		<Enum name="boolean_enum">
+			<field>false</field>
+			<field>true</field>
+		</Enum>
+
+		<Enum name="text_style_enum"> <!-- padding in scenario_cutscene_title_block needs to be changed to this-->
+			<field>plain</field>
+			<field>bold</field>
+			<field>italic</field>
+			<field>condense</field>
+			<field>underline</field>
+		</Enum>
+
+		<Enum name="periodic_function_type_enum">
+			<field>one</field>
+			<field>zero</field>
+			<field>cosine</field>
+			<field>cosine (variable period)</field>
+			<field>diagonal wave</field>
+			<field>diagonal wave (variable period)</field>
+			<field>slide</field>
+			<field>slide (variable period)</field>
+			<field>noise</field>
+			<field>jitter</field>
+			<field>wander</field>
+			<field>spark</field>
+		</Enum>
+
+		<Enum name="predicted_resource_type_enum">
+			<field>bitmap</field>
+			<field>sound</field>
+		</Enum>
+
+		<Enum name="hs_types_enum">
+			<field>unparsed</field>
+			<field>special form</field>
+			<field>function name</field>
+			<field>passthrough</field>
+			<field>void</field>
+			<field>boolean</field>
+			<field>real</field>
+			<field>short</field>
+			<field>long</field>
+			<field>string</field>
+			<field>script</field>
+			<field>trigger_volume</field>
+			<field>cutscene_flag</field>
+			<field>cutscene_camera_point</field>
+			<field>cutscene_title</field>
+			<field>cutscene_recording</field>
+			<field>device_group</field>
+			<field>ai</field>
+			<field>ai_command_list</field>
+			<field>starting_profile</field>
+			<field>conversation</field>
+			<field>navpoint</field>
+			<field>hud_message</field>
+			<field>object_list</field>
+			<field>sound</field>
+			<field>effect</field>
+			<field>damage</field>
+			<field>looping_sound</field>
+			<field>animation_graph</field>
+			<field>actor_variant</field>
+			<field>damage_effect</field>
+			<field>object_definition</field>
+			<field>game_difficulty</field>
+			<field>team</field>
+			<field>ai_default_state</field>
+			<field>actor_type</field>
+			<field>hud_corner</field>
+			<field>object</field>
+			<field>unit</field>
+			<field>vehicle</field>
+			<field>weapon</field>
+			<field>device</field>
+			<field>scenery</field>
+			<field>object_name</field>
+			<field>unit_name</field>
+			<field>vehicle_name</field>
+			<field>weapon_name</field>
+			<field>device_name</field>
+			<field>scenery_name</field>
+		</Enum>
+	</enums>
+
+	<blocks>
+		<TagBlock name="predicted_resource_block" maxElements="1024">
+			<field type="Enum" name="type" definition="predicted_resource_type_enum" />
+			<field type="ShortInteger" name="resource index" />
+			<field type="LongInteger" name="tag index" />
+		</TagBlock>
+
+		<TagBlock name="script_function_parameter_block" maxElements="32">
+			<field type="Enum" name="type" definition="hs_types_enum" blockname="true" locked="true" />
+		</TagBlock>
+
+		<TagBlock name="script_function_block" maxElements="464"> <!-- (k_hs_script_functions_count_upgrade - k_hs_functions_count) - 17 -->
+			<field type="ArrayStart" definition="2" />
+			<field type="String" name="name" locked="true" />
+			<field type="ArrayEnd" />
+			<field type="ShortInteger" name="override index" locked="true" />
+
+			<field type="Enum" name="return type" definition="hs_types_enum" locked="true" />
+			<field type="Block" name="parameters" definition="script_function_parameter_block" locked="true" />
+		</TagBlock>
+
+		<TagBlock name="script_global_block" maxElements="880"> <!-- k_hs_external_globals_count_upgrade - 16 -->
+			<field type="ArrayStart" definition="2" />
+			<field type="String" name="name" locked="true" />
+			<field type="ArrayEnd" />
+			<field type="ShortInteger" name="override index" locked="true" />
+
+			<field type="Enum" name="type" definition="hs_types_enum" locked="true" />
+		</TagBlock>
+
+		<TagBlock name="scripting_block" maxElements="1">
+			<field type="Block" name="new functions" definition="script_function_block" locked="true" />
+			<field type="Block" name="new globals" definition="script_global_block" locked="true" />
+		</TagBlock>
+	</blocks>
+
+
+	<fixups>
+		<fixup name="_fixup_scenario_structure_bsps_block.max_count" type="Pointer" 
+			guerilla="0x9CD2E4" tool="0x6DB5AC" sapien="0xA346BC" definition="0x20" />
+
+
+		<fixup name="_fixup_animation_graph_sound_reference_block.max_count" type="Pointer" 
+			guerilla="0x9D6BB8" tool="0x6BA8A0" sapien="0xA4E390" definition="0x202" />
+		<fixup name="_fixup_animation_block.max_count" type="Pointer" 
+			guerilla="0x9D6DE0" tool="0x6BAAC8" sapien="0xA4E5B8" definition="0x1F4" />
+
+		<fixup name="_fixup_model_shader_reference_block.max_count" type="Pointer" 
+			guerilla="0x9D7E8C" tool="0x6C6A14" sapien="0xA4F664" definition="0x40" />
+
+		<fixup name="_fixup_damage_regions_block.max_count" type="Pointer" 
+			guerilla="0x9CF218" tool="0x6DC340" sapien="0xA47198" definition="0x10" />
+
+		<fixup name="_fixup_scenario_cutscene_title_block.text_style" type="Field" 
+			guerilla="0x9CD1FC" tool="0x6DB4C4" sapien="0xA345D4" >
+			<definition>
+				<field type="Enum" name="text style" definition="text_style_enum" />
+			</definition>
+		</fixup>
+	</fixups>
+
+</definitions>
