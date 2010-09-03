@@ -254,6 +254,23 @@ fail:
 		NAKED_FUNC_END_CDECL(3);
 	}
 
+	API_FUNC_NAKED void tag_unload(datum_index tag_index)
+	{
+		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_UNLOAD);
+
+		NAKED_FUNC_START()
+			push	ecx
+			push	edx
+
+			push	tag_index
+			call	FUNCTION
+			add		esp, 4 * 1
+
+			pop		edx
+			pop		ecx
+		NAKED_FUNC_END(3);
+	}
+
 
 	API_FUNC_NAKED void tag_iterator_new(TagGroups::tag_iterator& iter, const tag group_tag)
 	{
