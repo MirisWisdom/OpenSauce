@@ -1042,10 +1042,6 @@
 				Name="Impl"
 				>
 				<File
-					RelativePath=".\Tool\BuildViewMap.inl"
-					>
-				</File>
-				<File
 					RelativePath=".\Tool\CompileScripts.inl"
 					>
 				</File>
