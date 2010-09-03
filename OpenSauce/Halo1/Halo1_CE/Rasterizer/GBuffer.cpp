@@ -165,7 +165,7 @@ namespace Yelo
 			char file_string[MAX_PATH];
 			file_string[0] = '\0';
 
-			strcat_s(file_string, MAX_PATH, Settings::UserProfilePath());
+			strcat_s(file_string, MAX_PATH, Settings::OpenSauceProfilePath());
 			strcat_s(file_string, MAX_PATH, "shaders\\gbuffer_shaders.shd");
 
 			g_default_system.Ctor(file_string);
