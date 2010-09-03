@@ -129,8 +129,8 @@ namespace Yelo
 
 		struct s_render_target
 		{
-			D3DFORMAT format;
 			uint32 width, height;
+			D3DFORMAT format;
 
 			IDirect3DSurface9* surface;
 			IDirect3DTexture9* texture;

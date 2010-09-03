@@ -50,7 +50,7 @@ namespace Yelo
 
 			strcpy_s(Internal.OpenSauceProfilePath, profile_path);
 			PathAppendA(Internal.OpenSauceProfilePath, "OpenSauce\\");
-			_mkdir(Internal.ReportsPath); // make the OpenSauce subdirectory
+			_mkdir(Internal.OpenSauceProfilePath); // make the OpenSauce subdirectory
 
 			strcpy_s(Internal.ReportsPath, Internal.OpenSauceProfilePath);
 			PathAppendA(Internal.ReportsPath, "Reports\\");
