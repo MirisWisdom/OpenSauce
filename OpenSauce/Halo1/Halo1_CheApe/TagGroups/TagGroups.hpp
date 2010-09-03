@@ -382,6 +382,10 @@ namespace Yelo
 		return tag_load(T::k_group_tag, name, file_flags);
 	}
 
+	// Unload a tag definition from memory.
+	// [tag_index] will resolve to an invalid index after this returns.
+	void tag_unload(datum_index tag_index);
+
 
 	// Use [NULL_HANDLE] for [group_tag] to iterate all tag groups
 	void tag_iterator_new(TagGroups::tag_iterator& iter, const tag group_tag);

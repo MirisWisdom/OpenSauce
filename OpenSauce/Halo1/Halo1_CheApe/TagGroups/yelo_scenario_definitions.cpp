@@ -93,8 +93,13 @@ namespace Yelo
 			{
 				TagGroups::scenario* scenario = tag_get<TagGroups::scenario>(scenario_index);
 
-				return YeloPrepareDefinitionsYeloScenario(
+				datum_index yelo = YeloPrepareDefinitionsYeloScenario(
 					scenario->GetYeloReferenceHack(), for_build_cache);
+
+				// if we're not building a cache, then this is sapien and we want it to load 
+				// the scenario and all of it's dependencies after we return the code flow 
+				// back to it
+				if(!for_build_cache) tag_unload(scenario_index);
 			}
 
 			return datum_index::null;
