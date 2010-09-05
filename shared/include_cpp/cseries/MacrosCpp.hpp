@@ -241,6 +241,13 @@
 #define BIT_VECTOR_TEST_FLAG32(vector, bit)			TEST_BIT32(CAST_PTR(unsigned long*,vector) [bit>>5], bit&31)
 #define BIT_VECTOR_SET_FLAG32(vector, bit, value)	SET_BIT32 (CAST_PTR(unsigned long*,vector) [bit>>5], bit&31, value)
 
+// Extracts the bits at [bit_low] to [bit_hi] in [value] 
+// and returns the result value
+#define BIT_FIELD_EXTRACT_RANGE(value, bit_low, bit_hi)			((value >> bit_low) & ((2 << (bit_hi-bit_low))-1))
+// Extracts the bits at [bit_offset] to [bit_offset+bit_count] 
+// in [value] and returns the result
+#define BIT_FIELD_EXTRACT_VALUE(value, bit_offset, bit_count)	BIT_FIELD_EXTRACT_RANGE(value, bit_offset, bit_offset + (bit_count-1))
+
 
 
 #ifndef NULL
