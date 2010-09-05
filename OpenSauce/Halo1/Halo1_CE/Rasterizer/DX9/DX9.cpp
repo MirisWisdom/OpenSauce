@@ -33,7 +33,6 @@ namespace Yelo
 		static IDirect3D9* d3d;
 		static IDirect3DDevice9* global_d3d_device;
 
-
 		void Initialize()
 		{
 #if !defined(DX_WRAPPER)
@@ -61,6 +60,7 @@ namespace Yelo
 		void OnLostDevice()									{}
 		void OnResetDevice(D3DPRESENT_PARAMETERS* params)	{}
 		void Render()										{}
+		void Release()										{}
 #endif
 
 		D3DPRESENT_PARAMETERS*	D3DPresetParams()		PTR_IMP_GET2(Params);

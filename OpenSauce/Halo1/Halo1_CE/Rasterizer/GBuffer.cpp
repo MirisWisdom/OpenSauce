@@ -238,6 +238,11 @@ namespace Yelo
 
 		void		c_gbuffer_system::Render()	{}
 
+		void		c_gbuffer_system::Release() 
+		{
+			g_default_system.ReleaseResources();
+		}
+
 
 		void		c_gbuffer_system::VertexShaderChanged(IDirect3DVertexShader9* pShader)
 		{

@@ -336,6 +336,7 @@ namespace Yelo
 			void OnLostDevice();
 			void OnResetDevice(D3DPRESENT_PARAMETERS *pPP);
 			void Render();
+			void Release();
 #elif PLATFORM_IS_USER
 			DOC_TODO("Need fallback initialization for when we're not using the DX_WRAPPER")
 #endif
@@ -357,6 +358,7 @@ namespace Yelo
 			void OnLostDevice();
 			void OnResetDevice(D3DPRESENT_PARAMETERS *pPP);
 			void Render();
+			void Release();
 #elif PLATFORM_IS_USER
 			DOC_TODO("Need fallback initialization for when we're not using the DX_WRAPPER")
 #endif

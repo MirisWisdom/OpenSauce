@@ -60,6 +60,8 @@ namespace Yelo
 			void (*OnResetDevice)(D3DPRESENT_PARAMETERS* params);
 			// Called from [Yelo_]IDirect3DDevice9::EndScene
 			void (*Render)();
+			// Called from Rasterizer::Hook_RasterizerDispose
+			void (*Release)();
 		};
 
 		//	[out_components] - Returns a list of components, or NULL if no components exist
