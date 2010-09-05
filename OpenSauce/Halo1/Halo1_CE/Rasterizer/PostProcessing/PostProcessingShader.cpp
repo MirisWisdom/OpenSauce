@@ -34,11 +34,11 @@ namespace Yelo
 			UnloadStandardResources();				
 			m_shader_base->runtime.flags.valid_shader_bit = false;
 		}
-		void			c_postprocess_shader::SetSource(void* pSource)
+		void		c_postprocess_shader::SetSource(void* pSource)
 		{
 			m_shader_base = CAST_PTR(TagGroups::s_shader_postprocess_definition*, pSource);
 		}
-		HRESULT			c_postprocess_shader::SetupShader()
+		HRESULT		c_postprocess_shader::SetupShader()
 		{
 			// Set the shaders variables to default values
 			m_shader_base->runtime.flags.valid_shader_bit = false;
@@ -64,6 +64,7 @@ namespace Yelo
 
 			return S_OK;
 		}
+
 		HRESULT		c_postprocess_shader::LoadStandardResources(IDirect3DDevice9* pDevice)
 		{
 			// Loads the handles for base variables that are either necessary or globally available

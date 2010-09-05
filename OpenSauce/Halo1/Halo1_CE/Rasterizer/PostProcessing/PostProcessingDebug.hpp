@@ -29,7 +29,6 @@
 namespace Yelo
 {
 	namespace Postprocessing { namespace Debug {
-		void WriteDataTime();
 		void Write(cstring string);
 		void WriteLine(cstring format, ...);
 		void WriteD3DXErrors(LPD3DXBUFFER pBuffer, int32 error_count);
