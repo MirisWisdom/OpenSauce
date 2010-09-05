@@ -837,7 +837,7 @@ namespace Yelo
 				}
 			}
 
-			real_point2d* GetLocation(datum_index obj, real_point2d* out_pos)
+			s_scenario_location* GetLocation(datum_index obj, s_scenario_location* out_location)
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_GET_LOCATION);
 
@@ -845,7 +845,7 @@ namespace Yelo
 					push	edi
 
 					mov		edi, obj
-					mov		eax, out_pos
+					mov		eax, out_location
 					call	TEMP_CALL_ADDR
 
 					pop		edi
