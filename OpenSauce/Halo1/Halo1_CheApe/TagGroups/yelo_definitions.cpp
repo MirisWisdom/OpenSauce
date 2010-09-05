@@ -26,6 +26,7 @@
 #include "Engine/EngineFunctions.hpp"
 #include "Engine/Scripting.hpp"
 #include "TagGroups/tag_database_definitions.hpp"
+#include "TagGroups/yelo_shader_postprocess_definitions.hpp"
 #include "TagGroups/TagGroups.hpp"
 
 namespace Yelo
@@ -124,7 +125,6 @@ namespace Yelo
 			return true;
 		}
 		//////////////////////////////////////////////////////////////////////////
-
 
 		s_yelo_definition_globals _yelo_definition_globals = {
 			false,
@@ -255,6 +255,7 @@ namespace Yelo
 			}
 
 			s_tag_database::Initialize();
+			PostProcessing::Initialize();
 		}
 
 		void YeloDefinitionsDispose()

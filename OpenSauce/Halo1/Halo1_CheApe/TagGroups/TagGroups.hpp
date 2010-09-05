@@ -397,4 +397,13 @@ namespace Yelo
 
 	// Returns [datum_index::null] when finished iterating
 	datum_index tag_iterator_next(TagGroups::tag_iterator& iter);
+	
+	// Convenience function to handle deleting all of the data in tag_data field. 
+	// Use [terminator_size] for tag_data which HAS to have a specific amount of  
+	// bytes no matter what. IE, text data requires 1 or 2 bytes (ascii or unicode)  
+	// for the null terminator. 
+	API_INLINE void tag_data_delete(tag_data& data, size_t terminator_size = 0) 
+	{ 
+		data.address = YELO_REALLOC(data.address, data.size = terminator_size); 
+	}
 };

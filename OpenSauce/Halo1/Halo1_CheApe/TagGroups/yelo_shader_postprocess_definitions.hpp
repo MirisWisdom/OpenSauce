@@ -23,5 +23,9 @@ namespace Yelo
 	namespace PostProcessing
 	{
 		bool PLATFORM_API shader_postprocess_collection_group_postprocess(datum_index tag_index, bool verify_data);
+		bool PLATFORM_API shader_postprocess_generic_group_postprocess(datum_index tag_index, bool verify_data);
+
+		void Initialize();
+		void Dispose();
 	};
 };

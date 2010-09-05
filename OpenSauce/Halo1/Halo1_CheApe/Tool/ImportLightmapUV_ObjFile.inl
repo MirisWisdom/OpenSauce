@@ -29,13 +29,16 @@ c_obj_file::~c_obj_file()
 
 HRESULT c_obj_file::LoadFromFile(cstring obj_path)
 {
+	fputs("loading lightmaps obj file...", stdout);
 	FILE* file = NULL;
 	fopen_s(&file, obj_path, "r+");
-	if(ferror(file))
+	if(!file || ferror(file))
 	{
-		fclose(file);
+		if(file)
+			fclose(file);
 
-		YELO_ERROR(_error_message_priority_warning, "OS_tool:import: failed to obj file");
+		fputs("failed\n", stdout);
+		YELO_ERROR(_error_message_priority_warning, "OS_tool:import: failed to open obj file");
 		return E_FAIL;
 	}
 
@@ -53,6 +56,8 @@ HRESULT c_obj_file::LoadFromFile(cstring obj_path)
 		}
 
 		char id[s_group::k_name_length+1];
+		id[0] = '\0';
+
 		s_face face;
 		if(sscanf_s(line, "g %s[^\n]", id, NUMBEROF(id)-1))
 		{
@@ -86,6 +91,7 @@ HRESULT c_obj_file::LoadFromFile(cstring obj_path)
 		m_groups.push_back(current_group);
 		current_group = NULL;
 	}
+	fputs("done\n", stdout);
 
 	fclose(file);
 	if(m_groups.size() == 0)
@@ -99,20 +105,26 @@ HRESULT c_obj_file::LoadFromFile(cstring obj_path)
 		return E_FAIL;
 	}
 
+	fputs("\n", stdout);
+	fputs("obj file stats\n", stdout);
+	printf_s("\tgroups: %s\n", m_groups.size());
+	printf_s("\ttexture coordinates: %s\n", m_texcoords.size());
+	fputs("\n", stdout);
+
 	return S_OK;
 }
 
 HRESULT c_obj_file::CheckBspCompatibility(TagGroups::structure_bsp* bsp)
 {
-	printf_s("checking obj file compatibility with structure bsp...");
+	fputs("checking obj file compatibility with structure bsp...", stdout);
 
 	int32 lightmaps_count = bsp->lightmaps.Count - 1;
 
 	if(lightmaps_count != m_groups.size() )
 	{
-		printf_s("\nfailed\n");
-		YELO_ERROR(_error_message_priority_warning, "obj group count (%i) does not match bsp lightmap count (%i)", 
-			lightmaps_count, m_groups.size() );
+		fputs("failed\n", stdout);
+		YELO_ERROR(_error_message_priority_warning, "obj group count (%i) does not match bsp lightmap count (%i)\n", 
+			m_groups.size(), lightmaps_count);
 		return E_FAIL;
 	}
 	for(int32 i = 0; i < lightmaps_count; i++)
@@ -136,13 +148,13 @@ HRESULT c_obj_file::CheckBspCompatibility(TagGroups::structure_bsp* bsp)
 		}
 	}
 
-	printf_s("done\n");
+	fputs("done\n", stdout);
 	return S_OK;
 }
 
 HRESULT c_obj_file::ReplaceVertexUVs(TagGroups::structure_bsp* bsp)
 {
-	printf_s("replacing lightmap texture coordinates...");
+	fputs("replacing lightmap texture coordinates...", stdout);
 
 	for(int32 i = 0; i < bsp->lightmaps.Count; i++)
 	{

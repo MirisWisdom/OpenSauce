@@ -72,7 +72,7 @@ namespace Yelo
 							&shader->runtime.dx_effect,
 							&error_buffer );	
 				}
-				else if(shader->shader_code_text.size > 0)
+				else if(shader->shader_code_text.size > 1)
 				{
 					hr = D3DXCreateEffect( pDevice,
 							shader->shader_code_text.address,
