@@ -285,14 +285,14 @@ namespace Yelo
 
 			void DisconnectFromMap(datum_index obj);
 
-			// Get the origin of [obj]
+			// Get the origin of [obj]. Takes the parent object (if there is one) into account.
 			void GetOrigin(datum_index obj, real_point3d* out_origin);
 
-			// Get the orientation of [obj]
+			// Get the orientation of [obj]. Takes the parent object (if there is one) into account.
 			void GetOrientation(datum_index obj, real_vector3d* out_forward, real_vector3d* out_up);
 
-			// Get the location of [obj]
-			real_point2d* GetLocation(datum_index obj, real_point2d* out_pos);
+			// Get the scenario location of [obj]
+			s_scenario_location* GetLocation(datum_index obj, s_scenario_location* out_location);
 
 			// precondition: obj is a valid object index, everything else can be null
 			void SetPosition(datum_index obj, real_point3d* new_pos = NULL, real_vector3d* new_forward = NULL, real_vector3d* new_up = NULL);
@@ -307,6 +307,8 @@ namespace Yelo
 
 			void DoubleChargeShield(datum_index obj);
 
+			// Calculates the viewing position based on the unit's 'head' marker if it has one. 
+			// If not, it will estimate the position based on the object's origin.
 			void GetCameraPosition(datum_index unit, real_point3d* out_position);
 
 			// Loads the predicted resources defined in [obj]'s tag definition (if they're not already loaded)

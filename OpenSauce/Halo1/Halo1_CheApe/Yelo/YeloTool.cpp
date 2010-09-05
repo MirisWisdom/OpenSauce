@@ -45,7 +45,6 @@ namespace Yelo
 		};
 
 		#include "Tool/BuildCacheFile.inl"
-		#include "Tool/BuildViewMap.inl" // OS_tool build-view-map "0screenshot00.tga" "view_state.bin" "world_points.txt"
 		#include "Tool/CompileScripts.inl"
 		#include "Tool/ImportShaderPostprocess.inl"
 		#include "Tool/Help.inl"
