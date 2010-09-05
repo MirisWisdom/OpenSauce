@@ -359,6 +359,10 @@ namespace Yelo
 		}
 
 		void Render() { /* nothing */ }
+		void Release() 
+		{
+			_hud_globals.menu->Release();
+		}
 #endif
 	};
 };

@@ -22,6 +22,7 @@
 
 #include "Memory/MemoryInterface.hpp"
 #include "Game/ScriptLibrary.hpp"
+#include "Common/GameSystems.hpp"
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
@@ -126,6 +127,21 @@ namespace Yelo
 
 		s_rasterizer_frame_inputs* FrameInputs()	PTR_IMP_GET2(rasterizer_frame_inputs);
 
+		// release direct3D resources before the device is destroyed
+		void Hook_RasterizerDispose()
+		{			
+			Yelo::Main::s_dx_component* components;
+			const Yelo::int32 component_count = Yelo::Main::GetDXComponents(components);
+
+			for(Yelo::int32 x = 0; x <= component_count; x++)
+				components[x].Release();
+
+			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_DISPOSE);
+			_asm{
+				call RETN_ADDRESS
+			};
+		}
+
 #pragma warning( push )
 #pragma warning( disable : 4311 ) // pointer truncation
 #pragma warning( disable : 4312 ) // conversion from 'unsigned long' to 'void *' of greater size
@@ -135,7 +151,10 @@ namespace Yelo
 			// instead of hooking the game render loop
 #if !defined(DX_WRAPPER)
 			Memory::WriteRelativeCall(&Rasterizer::Update, GET_FUNC_VPTR(RENDER_WINDOW_END_HOOK));
-#endif
+#endif			
+			// hook rasterizer_dispose
+			Memory::WriteRelativeCall(&Hook_RasterizerDispose, 
+				GET_FUNC_VPTR(RASTERIZER_DISPOSE_CALL), true);
 
 			rasterizer_debug_table* rdt = NULL;
 			Scripting::hs_global_definition* global_def = NULL;

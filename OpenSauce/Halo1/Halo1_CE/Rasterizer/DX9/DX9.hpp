@@ -32,6 +32,7 @@ namespace Yelo
 		void OnLostDevice();
 		void OnResetDevice(D3DPRESENT_PARAMETERS* params);
 		void Render();
+		void Release();
 #endif
 
 		// D3D Present Properties

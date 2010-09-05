@@ -175,6 +175,8 @@ namespace Yelo
 			static void	OnResetDevice(D3DPRESENT_PARAMETERS* params);
 			// Nothing
 			static void	Render();
+			// Release direct3D resources when quitting
+			static void Release();
 		
 		public:
 			// The vertex shader is used to determine if a mesh should be rendered to the GBuffer

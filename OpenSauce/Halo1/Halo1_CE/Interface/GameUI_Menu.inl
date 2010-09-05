@@ -164,6 +164,10 @@ namespace Yelo
 		{
 			_menu_globals.Render();
 		}
+		void Release() 
+		{
+			_menu_globals.menu->Release();
+		}
 #endif
 	};
 };

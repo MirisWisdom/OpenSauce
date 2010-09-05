@@ -307,6 +307,10 @@ namespace Yelo
 			for(int32 i = 0; i <= subsystem_count; i++)
 				subsystems[i].Render();
 		}
+		void		Release()
+		{
+			ReleaseResources();
+		}
 
 
 		void		LoadSettings(TiXmlElement* dx9_element)
