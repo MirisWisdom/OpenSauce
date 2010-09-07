@@ -18,6 +18,7 @@
 */
 #include "Common/Precompile.hpp"
 #include "Tool/ShaderPostprocess.hpp"
+#if PLATFORM_ID == PLATFORM_TOOL
 
 #include <Blam/Halo1/shader_postprocess_definitions.hpp>
 #include <Common/Halo1/YeloSharedSettings.hpp>
@@ -82,3 +83,4 @@ namespace Yelo
 		}
 	};
 };
+#endif

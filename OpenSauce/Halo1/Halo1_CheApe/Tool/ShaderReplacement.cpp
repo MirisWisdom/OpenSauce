@@ -18,6 +18,7 @@
 */
 #include "Common/Precompile.hpp"
 #include "Tool/ShaderReplacement.hpp"
+#if PLATFORM_ID == PLATFORM_TOOL
 
 namespace Yelo
 {
@@ -25,3 +26,4 @@ namespace Yelo
 	{
 	};
 };
+#endif

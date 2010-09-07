@@ -17,6 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #pragma once
+#if PLATFORM_ID == PLATFORM_TOOL
 
 namespace Yelo
 {
@@ -25,3 +26,4 @@ namespace Yelo
 		void PLATFORM_API compile_shader_postprocess(void** arguments);
 	};
 };
+#endif

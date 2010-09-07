@@ -17,6 +17,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #pragma once
+#if PLATFORM_ID == PLATFORM_TOOL
 
 #include "Tool/ToolDefinitions.hpp"
 
@@ -27,3 +28,4 @@ namespace Yelo
 		void PLATFORM_API import_structure_lightmap_uvs(void** arguments);
 	};
 };
+#endif

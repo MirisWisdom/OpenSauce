@@ -18,6 +18,7 @@
 */
 #include "Common/Precompile.hpp"
 #include "Tool/ImportLightmapUV.hpp"
+#if PLATFORM_ID == PLATFORM_TOOL
 
 #include <TagGroups/Halo1/structure_bsp_definitions.hpp>
 #include "Engine/EngineFunctions.hpp"
@@ -109,3 +110,4 @@ namespace Yelo
 		}
 	};
 };
+#endif
