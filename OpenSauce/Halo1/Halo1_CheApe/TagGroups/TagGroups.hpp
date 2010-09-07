@@ -260,11 +260,25 @@ namespace Yelo
 
 		API_INLINE bool tag_is_read_only(datum_index tag_index)
 		{
+			if( tag_index.IsNull() ) return false;
+
 			return (*TagInstances())[tag_index]->is_read_only;
 		}
 
+		// Searches [def] for a field of type [field_type] with a name which starts 
+		// with [name] characters. Optionally starts at a specific field index.
+		// Returns NONE if this fails.
 		int32 tag_block_find_field(const tag_block_definition* def, 
 			_enum field_type, cstring name, int32 start_index = NONE);
+
+		// Convenience function to handle deleting all of the data in tag_data field.
+		// Use [terminator_size] for tag_data which HAS to have a specific amount of 
+		// bytes no matter what. IE, text data requires 1 or 2 bytes (ascii or unicode) 
+		// for the null terminator.
+		API_INLINE void tag_data_delete(tag_data& data, size_t terminator_size = 0)
+		{
+			data.address = YELO_REALLOC(data.address, data.size = terminator_size);
+		}
 	};
 
 
