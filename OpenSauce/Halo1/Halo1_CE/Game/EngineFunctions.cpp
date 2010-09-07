@@ -391,6 +391,8 @@ namespace Yelo
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_LIST_ADD);
 
+				if(object_list.IsNull()) return;
+
 				__asm {
 					push	ecx
 					push	edx
@@ -663,7 +665,7 @@ namespace Yelo
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(MDP_ENCODE_OBJECT_DELETION_MESSAGE);
 
-				if(obj.index == NONE) return;
+				if(obj.IsNull()) return;
 
 				__asm {
 					push	edi
@@ -704,7 +706,7 @@ namespace Yelo
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(MDP_TRANSLATED_INDEX_TRANSLATE);
 
-				if(network_object.index == NONE) return datum_index::null;
+				if(network_object.IsNull()) return datum_index::null;
 
 				__asm {
 					push	ecx
@@ -723,7 +725,7 @@ namespace Yelo
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(MDP_TRANSLATED_INDEX_TRANSLATE);
 
-				if(network_player.index == NONE) return datum_index::null;
+				if(network_player.IsNull()) return datum_index::null;
 
 				__asm {
 					push	ecx
@@ -745,7 +747,7 @@ namespace Yelo
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_START_INTERPOLATION);
 
-				if(obj_datum.index == NONE) return;
+				if(obj_datum.IsNull()) return;
 
 				__asm {
 					push	edx
@@ -762,6 +764,8 @@ namespace Yelo
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_RESET);
 
+				if(obj.IsNull()) return;
+
 				__asm {
 					push	ebx
 
@@ -775,6 +779,8 @@ namespace Yelo
 			void ReconnectToMap(datum_index obj, s_scenario_location* location_reference)
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_RECONNECT_TO_MAP);
+
+				if(obj.IsNull()) return;
 
 				__asm {
 					push	edx
@@ -792,6 +798,8 @@ namespace Yelo
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_DISCONNECT_FROM_MAP);
 
+				if(obj.IsNull()) return;
+
 				__asm {
 
 					push	obj
@@ -805,7 +813,7 @@ namespace Yelo
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_GET_ORIGIN);
 
-				if(obj.index == NONE) return;
+				if(obj.IsNull()) return;
 
 				__asm {
 					push	ecx
@@ -822,7 +830,7 @@ namespace Yelo
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_GET_ORIENTATION);
 
-				if(obj.index == NONE) return;
+				if(obj.IsNull()) return;
 
 				__asm {
 					push	ecx
@@ -841,6 +849,8 @@ namespace Yelo
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_GET_LOCATION);
 
+				if(obj.IsNull()) return out_location;
+
 				__asm {
 					push	edi
 
@@ -855,6 +865,8 @@ namespace Yelo
 			void SetPosition(datum_index obj, real_point3d* new_pos, real_vector3d* new_forward, real_vector3d* new_up)
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_SET_POSITION);
+
+				if(obj.IsNull()) return;
 
 				__asm {
 					push	edi
@@ -874,6 +886,8 @@ namespace Yelo
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_SET_POSITION_NETWORK);
 
+				if(obj.IsNull()) return;
+
 				__asm {
 					push	edi
 					push	esi
@@ -891,7 +905,7 @@ namespace Yelo
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_RESTORE_BODY);
 
-				if(obj.index == NONE) return false;
+				if(obj.IsNull()) return false;
 
 				__asm {
 					mov		eax, obj
@@ -903,7 +917,7 @@ namespace Yelo
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_DEPLETE_BODY);
 
-				if(obj.index == NONE) return;
+				if(obj.IsNull()) return;
 
 				__asm {
 					mov		eax, obj
@@ -915,7 +929,7 @@ namespace Yelo
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_DEPLETE_SHIELD);
 
-				if(obj.index == NONE) return;
+				if(obj.IsNull()) return;
 
 				__asm {
 					push	edi
@@ -931,7 +945,7 @@ namespace Yelo
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_DOUBLE_CHARGE_SHIELD);
 
-				if(obj.index == NONE) return;
+				if(obj.IsNull()) return;
 
 				__asm {
 					mov		eax, obj
@@ -944,7 +958,7 @@ namespace Yelo
 #if !PLATFORM_IS_DEDI
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(UNIT_GET_CAMERA_POSITION);
 
-				if(unit.index == NONE) return;
+				if(unit.IsNull()) return;
 
 				__asm {
 					push	edi
@@ -966,6 +980,8 @@ namespace Yelo
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(UNIT_GET_CAMERA_POSITION);
 
+				if(obj.IsNull()) return;
+
 				__asm {
 					mov		eax, obj
 					call	TEMP_CALL_ADDR
@@ -975,6 +991,8 @@ namespace Yelo
 			void OrientToCutsceneFlag(datum_index unit, int32 cutscene_flag_index, bool set_facing, bool i_dont_know)
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(UNIT_ORIENT_TO_FLAG);
+
+				if(unit.IsNull()) return;
 
 				__asm {
 					push	ecx
@@ -1001,7 +1019,7 @@ namespace Yelo
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(PLAYER_INDEX_FROM_UNIT_INDEX);
 
-				if(unit_datum.index == NONE) return datum_index::null;
+				if(unit_datum.IsNull()) return datum_index::null;
 
 				__asm {
 					push	unit_datum
@@ -1013,6 +1031,8 @@ namespace Yelo
 			bool Teleport(datum_index player, const real_point3d& position, datum_index source_unit_index)
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(PLAYER_TELEPORT);
+
+				if(player.IsNull()) return false;
 
 				__asm {
 					push	ecx
@@ -1033,6 +1053,8 @@ namespace Yelo
 			static void player_screen_effect(datum_index player, uint32 func)
 			{
 #if !PLATFORM_IS_DEDI
+				if(player.IsNull()) return;
+
 				__asm {
 					push	edx
 
@@ -1048,7 +1070,7 @@ namespace Yelo
 			void ScreenEffectOvershield(datum_index player)
 			{
 #if !PLATFORM_IS_DEDI
-				if(player.index == NONE) return;
+				if(player.IsNull()) return;
 				player_screen_effect(player, GET_FUNC_PTR(PLAYER_OVER_SHIELD_SCREEN_EFFECT));
 #endif
 			}
@@ -1056,7 +1078,7 @@ namespace Yelo
 			void ScreenEffectCamo(datum_index player)
 			{
 #if !PLATFORM_IS_DEDI
-				if(player.index == NONE) return;
+				if(player.IsNull()) return;
 				player_screen_effect(player, GET_FUNC_PTR(PLAYER_CAMO_SCREEN_EFFECT));
 #endif
 			}
@@ -1064,7 +1086,7 @@ namespace Yelo
 			void ScreenEffectHealth(datum_index player)
 			{
 #if !PLATFORM_IS_DEDI
-				if(player.index == NONE) return;
+				if(player.IsNull()) return;
 				player_screen_effect(player, GET_FUNC_PTR(PLAYER_HEALTH_PACK_SCREEN_EFFECT));
 #endif
 			}
@@ -1074,7 +1096,7 @@ namespace Yelo
 #if !PLATFORM_IS_DEDI
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(FIND_CLOSEST_PLAYER_INDEX);
 
-				if(player.index == NONE) return datum_index::null;
+				if(player.IsNull()) return datum_index::null;
 
 				__asm {
 					push	player
@@ -1108,7 +1130,7 @@ namespace Yelo
 
 			bool TriggerVolumeTestObject(int32 trigger_volume_index, datum_index object)
 			{
-				if(object == datum_index::null)
+				if(object.IsNull())
 					return false;
 
 				Yelo::Objects::s_object_data* obj = (*Yelo::Objects::ObjectHeader())[object]->_object;
