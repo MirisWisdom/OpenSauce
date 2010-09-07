@@ -220,6 +220,7 @@ namespace Yelo
 		void OnLostDevice();
 		void OnResetDevice(D3DPRESENT_PARAMETERS *pPP);
 		void Render();
+		void Release();
 #endif
 	};
 };

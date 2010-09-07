@@ -133,6 +133,10 @@ namespace Yelo
 			}
 
 			void Render() {}
+			void Release() 
+			{
+				_vehicle_globals.menu->Release();
+			}
 
 #elif PLATFORM_IS_USER
 			// TODO: Need fallback initialization for when we're not using the DX_WRAPPER

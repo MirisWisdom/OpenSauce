@@ -89,8 +89,9 @@ namespace Yelo
 
 		bool PLATFORM_API shader_postprocess_collection_group_postprocess(datum_index tag_index, bool verify_data)
 		{
-			if(verify_data)
-			{
+			// stops processing of the tag
+			//if(verify_data)
+			//{
 				TagGroups::s_shader_postprocess_collection* collection_tag = Yelo::tag_get<TagGroups::s_shader_postprocess_collection>(tag_index);
 
 				for(int32 i = 0; i < collection_tag->effects.Count; i++)
@@ -122,9 +123,47 @@ namespace Yelo
 						}
 					}
 				}
-			}
+			//}
 
 			return true;
+		}
+
+		
+		bool PLATFORM_API shader_postprocess_generic_group_postprocess(datum_index tag_index, bool verify_data)
+		{
+			TagGroups::s_shader_postprocess_generic* shader_tag = Yelo::tag_get<TagGroups::s_shader_postprocess_generic>(tag_index);
+			
+			tag_block_resize(shader_tag->predicted_resources, shader_tag->implementation.additional_bitmaps.Count);
+
+			for(int32 i = 0; i < shader_tag->implementation.additional_bitmaps.Count; i++)
+			{
+				TagGroups::predicted_resource* predicted_resource_element = tag_block_get_element(
+					shader_tag->predicted_resources, 
+					i);
+				TagGroups::s_shader_postprocess_bitmap* additional_bitmap_element = tag_block_get_element(
+					shader_tag->implementation.additional_bitmaps, 
+					i);
+
+				predicted_resource_element->type = Enums::_predicted_resource_bitmap;
+				predicted_resource_element->resource_index = additional_bitmap_element->value.bitmap.bitmap_index;
+				predicted_resource_element->tag_index = additional_bitmap_element->bitmap.tag_index;
+			}
+			return true;
+		}
+		
+		
+		void Initialize()
+		{
+			Yelo::tag_group_definition* shpc_definition = Yelo::tag_group_get<TagGroups::s_shader_postprocess_collection>();
+			if(shpc_definition)
+				shpc_definition->postprocess_proc = &shader_postprocess_collection_group_postprocess;
+			
+			Yelo::tag_group_definition* shpg_definition = Yelo::tag_group_get<TagGroups::s_shader_postprocess_generic>();
+			if(shpg_definition)
+				shpg_definition->postprocess_proc = &shader_postprocess_generic_group_postprocess;
+		}
+		void Dispose()
+		{
 		}
 	};
 };

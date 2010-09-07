@@ -18,13 +18,13 @@
 */
 #ifdef API_DEBUG
 	#define DX_COMPONENT(name) \
-		{ name::Initialize3D, name::OnLostDevice, name::OnResetDevice, name::Render }
+		{ name::Initialize3D, name::OnLostDevice, name::OnResetDevice, name::Render, name::Release }
 
 	#define DX_COMPONENT_DEBUG(name) \
-		{ name::Initialize3D, name::OnLostDevice, name::OnResetDevice, name::Render }
+		{ name::Initialize3D, name::OnLostDevice, name::OnResetDevice, name::Render, name::Release }
 #else
 	#define DX_COMPONENT(name) \
-		{ name::Initialize3D, name::OnLostDevice, name::OnResetDevice, name::Render }
+		{ name::Initialize3D, name::OnLostDevice, name::OnResetDevice, name::Render, name::Release }
 
 	#define DX_COMPONENT_DEBUG(name)
 #endif

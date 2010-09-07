@@ -183,6 +183,7 @@ namespace Yelo
 		void		OnLostDevice();
 		void		OnResetDevice(D3DPRESENT_PARAMETERS* pParameters);
 		void		Render();
+		void		Release();
 
 		void		LoadSettings(TiXmlElement* dx9_element);
 		void		SaveSettings(TiXmlElement* dx9_element);

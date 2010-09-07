@@ -145,8 +145,6 @@ namespace Yelo
 				delete _fov_globals.menu;
 				_fov_globals.menu = NULL;
 			}
-
-			safe_release(_fov_globals.window);
 		}
 
 		void Update()
@@ -250,6 +248,12 @@ namespace Yelo
 		
 		void Render()
 		{
+		}
+		
+		void Release()
+		{
+			_fov_globals.menu->Release();
+			safe_release(_fov_globals.window);
 		}
 #endif
 

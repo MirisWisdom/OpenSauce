@@ -26,7 +26,10 @@
 	ENGINE_PTR(s_rasterizer_debug_options, rasterizer_debug_data,	0x6249C0, PTR_NULL);
 	ENGINE_PTR(s_rasterizer_frame_inputs, rasterizer_frame_inputs,	0x75C210, PTR_NULL);
 
-	FUNC_PTR(RENDER_WINDOW_END_HOOK,			0x51BD98, FUNC_PTR_NULL);
+	FUNC_PTR(RENDER_WINDOW_END_HOOK,								0x51BD98, FUNC_PTR_NULL);
+
+	FUNC_PTR(RASTERIZER_DISPOSE,									0x51D3A0, FUNC_PTR_NULL);
+	FUNC_PTR(RASTERIZER_DISPOSE_CALL,								0x51C141, FUNC_PTR_NULL);
 
 #else
 	#error Undefined engine layout include for: __EL_INCLUDE_RASTERIZER

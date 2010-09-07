@@ -46,7 +46,6 @@ namespace Yelo
 
 		#include "Tool/BuildCacheFile.inl"
 		#include "Tool/CompileScripts.inl"
-		#include "Tool/ImportShaderPostprocess.inl"
 		#include "Tool/Help.inl"
 
 

@@ -25,9 +25,9 @@
 			1, "<scenario-name>", 
 		&scenario_compile_scripts),
 
-	IMPORT_CLASS_DEFINITION("import-shader-postprocess", 
-			1, "<data-file-name>", 
-		&tool_import_shader_postprocess),
+	IMPORT_CLASS_DEFINITION("compile-shader-postprocess", 
+			3, "<shader-postprocess> <remove-text> <compile-debug>", 
+		&compile_shader_postprocess),
 
 	IMPORT_CLASS_DEFINITION("help", 
 		1, "<yelo-tool-command>", 
