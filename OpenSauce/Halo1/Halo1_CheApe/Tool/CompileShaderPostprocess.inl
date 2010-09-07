@@ -72,7 +72,7 @@ HRESULT		ReplaceShaderCode(
 {
 	// remove any existing binary data
 	if(shader_tag->shader_code_binary.address)
-		tag_data_delete(shader_tag->shader_code_binary);
+		TagGroups::tag_data_delete(shader_tag->shader_code_binary);
 
 	// allocate memory for the new binary data
 	shader_tag->shader_code_binary.address = 
@@ -131,7 +131,7 @@ HRESULT		ReplaceShaderCode(
 
 		if(remove_text)
 		{
-			tag_data_delete(shader_tag->shader_code_text, 1);
+			TagGroups::tag_data_delete(shader_tag->shader_code_text, 1);
 			printf_s("text shader data removed\n");
 		}
 	}

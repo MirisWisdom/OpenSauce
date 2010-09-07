@@ -1046,6 +1046,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Tool\CompileShaderPostprocess.inl"
+					>
+				</File>
+				<File
 					RelativePath=".\Tool\Help.inl"
 					>
 				</File>

@@ -128,7 +128,7 @@ namespace Yelo
 		s_rasterizer_frame_inputs* FrameInputs()	PTR_IMP_GET2(rasterizer_frame_inputs);
 
 		// release direct3D resources before the device is destroyed
-		void Hook_RasterizerDispose()
+		void RasterizerDisposeHook()
 		{			
 			Yelo::Main::s_dx_component* components;
 			const Yelo::int32 component_count = Yelo::Main::GetDXComponents(components);
@@ -136,10 +136,9 @@ namespace Yelo
 			for(Yelo::int32 x = 0; x <= component_count; x++)
 				components[x].Release();
 
+			// Return the code flow back to the game
 			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_DISPOSE);
-			_asm{
-				call RETN_ADDRESS
-			};
+			__asm	call RETN_ADDRESS
 		}
 
 #pragma warning( push )
@@ -152,9 +151,9 @@ namespace Yelo
 #if !defined(DX_WRAPPER)
 			Memory::WriteRelativeCall(&Rasterizer::Update, GET_FUNC_VPTR(RENDER_WINDOW_END_HOOK));
 #endif			
-			// hook rasterizer_dispose
-			Memory::WriteRelativeCall(&Hook_RasterizerDispose, 
-				GET_FUNC_VPTR(RASTERIZER_DISPOSE_CALL), true);
+			// hook the calls to rasterizer_dispose
+			Memory::WriteRelativeCall(&RasterizerDisposeHook, GET_FUNC_VPTR(RASTERIZER_DISPOSE_CALL_FROM_RASTERIZER));
+			Memory::WriteRelativeCall(&RasterizerDisposeHook, GET_FUNC_VPTR(RASTERIZER_DISPOSE_CALL_FROM_SHELL));
 
 			rasterizer_debug_table* rdt = NULL;
 			Scripting::hs_global_definition* global_def = NULL;
