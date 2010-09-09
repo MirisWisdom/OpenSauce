@@ -143,9 +143,8 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 		CAST_PTR(cstring*, 0x444F36), CAST_PTR(cstring*, 0x445C2E), CAST_PTR(cstring*, 0x445FF8), 
 
 #elif PLATFORM_ID == PLATFORM_SAPIEN
-		CAST_PTR(cstring*, 0x484653), CAST_PTR(cstring*, 0x484658), CAST_PTR(cstring*, 0x4FCBD1),
-		CAST_PTR(cstring*, 0x4FD006), CAST_PTR(cstring*, 0x4FEA5E), CAST_PTR(cstring*, 0x4FEE28),
-		CAST_PTR(cstring*, 0x4FF068), 
+		CAST_PTR(cstring*, 0x4FCBD1), CAST_PTR(cstring*, 0x4FD006), CAST_PTR(cstring*, 0x4FEA5E), 
+		CAST_PTR(cstring*, 0x4FEE28), CAST_PTR(cstring*, 0x4FF068), 
 
 #endif
 	};
