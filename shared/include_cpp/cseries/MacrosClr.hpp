@@ -42,7 +42,7 @@
 // Managed type info retrieving
 #define mcpp_typeof(_type)		(_type::typeid)
 // Managed type size calculation
-#define mcpp_sizeof(_type)		System::Marshal::SizeOf(_type)
+#define mcpp_sizeof(_type)		System::Runtime::InteropServices::Marshal::SizeOf(_type)
 
 // Declare a tracking reference to a [_type_decl] object
 // Also acts as the C++ equivlent of "ref" parameter modifier
