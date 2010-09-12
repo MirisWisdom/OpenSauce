@@ -45,35 +45,36 @@ namespace Yelo
 	typedef void (* proc_update)();
 
 
-	/// Template class for defining an interface for blocks of data whose memory format is not entirely mapped out
-	template<size_t _SIZE> struct TStruct {
+	/// Template class for defining an interface for blocks of data whose memory layout is not entirely mapped out
+	template<const size_t k_size> struct TStruct {
 
 	protected:
-		unsigned char _data[_SIZE];
+		unsigned char m_data[k_size];
 		
-		template<typename T, size_t offset> API_INLINE T GetData()					{ return *( CAST_PTR(T*, &_data[offset]) ); }
-		template<typename T, size_t offset> API_INLINE T GetData() const			{ return *( CAST_PTR(const T*, &_data[offset]) ); }
-		template<typename T, size_t offset> API_INLINE T* GetDataPtr()				{ return CAST_PTR(T*, &_data[offset]); }
-//		template<typename T, size_t offset> API_INLINE const T* GetDataPtr() const	{ return CAST_PTR(const T*, &_data[offset]); }
+		template<typename T, const size_t k_offset> API_INLINE T GetData()		{ return *( CAST_PTR(T*,		&m_data[k_offset]) ); }
+		template<typename T, const size_t k_offset> API_INLINE T GetData() const{ return *( CAST_PTR(const T*,	&m_data[k_offset]) ); }
+		template<typename T, const size_t k_offset> API_INLINE T* GetDataPtr()	{ return	CAST_PTR(T*,		&m_data[k_offset]); }
 
 		//inline * Get() { return GetDataPtr<, 0x>(); }
 
 		// Usage - "struct some_object : TStructImpl(0x40) {};"
-#define TStructImpl(size) public TStruct< size >
+		#define TStructImpl(size) public TStruct< size >
 
-#define TStructGetImpl(type, name, offset)															\
-	API_INLINE type Get##name()				{ return GetData<type, offset>(); }						\
-	API_INLINE type Get##name() const		{ return GetData<type, offset>(); }
-#define TStructGetPtrImpl(type, name, offset)														\
-	API_INLINE type* Get##name()			{ return GetDataPtr<type, offset>(); }					\
-//	API_INLINE const type* Get##name() const{ return GetDataPtr<type, offset>(); }
+		// Implement a by-value getter
+		#define TStructGetImpl(type, name, offset)															\
+			API_INLINE type Get##name()				{ return GetData<type, offset>(); }						\
+			API_INLINE type Get##name() const		{ return GetData<type, offset>(); }
+		// Implement a by-address getter
+		#define TStructGetPtrImpl(type, name, offset)														\
+			API_INLINE type* Get##name()			{ return GetDataPtr<type, offset>(); }
 
-#define TStructSubGetImpl(type, name, offset)														\
-	API_INLINE type Get##name()				{ return GetData<type, offset - DATA_OFFSET>(); }		\
-	API_INLINE type Get##name() const		{ return GetData<type, offset - DATA_OFFSET>(); }
-#define TStructSubGetPtrImpl(type, name, offset)													\
-	API_INLINE type* Get##name()			{ return GetDataPtr<type, offset - DATA_OFFSET>(); }	\
-//	API_INLINE const type* Get##name() const{ return GetDataPtr<type, offset - DATA_OFFSET>(); }
+		// Implement a by-value getter for fake TStruct sub-classes
+		#define TStructSubGetImpl(type, name, offset)														\
+			API_INLINE type Get##name()				{ return GetData<type, offset - DATA_OFFSET>(); }		\
+			API_INLINE type Get##name() const		{ return GetData<type, offset - DATA_OFFSET>(); }
+		// Implement a by-address getter for fake TStruct sub-classes
+		#define TStructSubGetPtrImpl(type, name, offset)													\
+			API_INLINE type* Get##name()			{ return GetDataPtr<type, offset - DATA_OFFSET>(); }
 	};
 
 
@@ -243,7 +244,7 @@ namespace Yelo
 		// Left
 		int16 left;
 
-		// Botom
+		// Bottom
 		int16 bottom;
 
 		// Right
@@ -308,7 +309,7 @@ namespace Yelo
 	#define pad_real_plane3d PAD32 PAD32 PAD32 PAD32
 	#define pad_real_matrix3x3	PAD_TYPE(real_vector3d) \
 								PAD_TYPE(real_vector3d) \
-								PAD_TYPE(real_vector3d) \
+								PAD_TYPE(real_vector3d)
 	#define pad_real_matrix4x3	PAD32 \
 								PAD_TYPE(real_vector3d) \
 								PAD_TYPE(real_vector3d) \
@@ -392,7 +393,7 @@ namespace Yelo
 #pragma endregion
 
 
-	// strong reference index
+	// Handle to data allocated by the engine's data-array construct
 	struct datum_index
 	{
 		static const datum_index null;
@@ -401,8 +402,12 @@ namespace Yelo
 			uint32 handle;
 			struct {
 				// absolute index
+				// Note: This is actually suppose to be a unsigned short but it's not 
+				// until Halo 3 where data starts breaking past the 0x7FFF cap, so for 
+				// Halo 1 and Halo 2 projects this should still hold safe.
+				// Maybe I'll update the code to uint16 one day...
 				int16 index;
-				// salted index
+				// salted index, gives the handle a certain uniqueness
 				int16 salt;
 			};
 		};
@@ -418,10 +423,11 @@ namespace Yelo
 		OVERRIDE_OPERATOR_MATH_BOOL_TYPE(uint32, handle, !=);
 	}; BOOST_STATIC_ASSERT( sizeof(datum_index) == 0x4 );
 #define pad_datum_index PAD16 PAD16
-#define DATUM_INDEX_TO_IDENTIFIER(datum) datum & 0x0FFFF0000
+#define DATUM_INDEX_TO_IDENTIFIER(datum) datum & 0xFFFF0000
 #define DATUM_INDEX_ABSOLUTE(datum) ( (datum & 0xFFFF) << 5 )
 
 
+	// The engine uses this for things (objects, ai, etc) which get dis/connected to the scenario's bsp
 	struct s_scenario_location
 	{
 		int32 leaf_index;
@@ -430,6 +436,9 @@ namespace Yelo
 	}; BOOST_STATIC_ASSERT( sizeof(s_scenario_location) == 0x8 );
 
 
+	// Hacked up structure.
+	// Allows us to treat a machine word (in this case, 32-bits) as various sorts 
+	// of types. Either as a pointer, a value-array or just vanilla values.
 	template<typename T> struct TTypeHolder
 	{
 		union { // t_type_interface_union
@@ -452,7 +461,7 @@ namespace Yelo
 				Yelo::wstring unicode;
 			}ptr;
 
-			union {// t_type_interface_arrayss
+			union {// t_type_interface_arrays
 				bool boolean[1];
 				char character[1];
 				Yelo::byte byte[1];
@@ -485,6 +494,7 @@ namespace Yelo
 	typedef TTypeHolder<void> TypeHolder;
 	BOOST_STATIC_ASSERT( sizeof(TypeHolder) == 0x4 );
 
+	// If the COM interface reference isn't null, releases it and nulls it
 	template<typename t_interface> void safe_release(t_interface*& obj)
 	{
 		if(obj != NULL)
