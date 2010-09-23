@@ -140,8 +140,7 @@ namespace Yelo
 			lruv_locked_block_proc	locked_block_proc;
 			int32					page_count;
 			int32					page_size_bits;
-			bool					is_valid;
-			PAD24;
+			int32					frame_index
 			datum_index				first_block_index;
 			datum_index				last_block_index;
 			s_data_array*			data;
@@ -155,8 +154,7 @@ namespace Yelo
 			datum_index			first_page_index;
 			datum_index			next_block_index;
 			datum_index			previous_block_index;
-			bool				is_valid;
-			PAD24;
+			int32				last_used_frame_index;
 			UNKNOWN_TYPE(int32); // 0x18
 		};
 	};
