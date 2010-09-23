@@ -126,8 +126,11 @@ namespace Yelo
 
 		struct s_object_header_datum : Memory::s_datum_base
 		{
-			// if 0, 32, and 64, it doesn't update the object
-			// _object_header_deactivated_bit = 1
+			// _object_header_active_bit = 0
+			// _object_header_requires_motion_bit = 1
+			// _object_header_being_deleted_bit = 3
+			// _object_header_connected_to_map_bit = 5
+			// _object_header_child_bit = 6
 			byte flags;
 			byte object_type;
 			int16 cluster_index;
