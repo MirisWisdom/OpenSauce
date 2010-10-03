@@ -46,16 +46,18 @@ namespace Yelo
 
 			m_effect_count = 0;
 		}
-		void		c_postprocess_render_block::RenderEffects(IDirect3DDevice9* pDevice, double frame_time)
+		bool		c_postprocess_render_block::RenderEffects(IDirect3DDevice9* pDevice, double frame_time)
 		{
+			bool effects_applied = false;
 			// Apply the effects in this render block in order
 			s_effect_node* curr_node = m_effect_list_head;
 			while (curr_node)
 			{
 				if(curr_node->m_effect)
-					curr_node->m_effect->DoPostProcessEffect(pDevice, frame_time);
+					effects_applied |= SUCCEEDED(curr_node->m_effect->DoPostProcessEffect(pDevice, frame_time));
 				curr_node = curr_node->m_next;
 			}
+			return effects_applied;
 		}
 	};
 };

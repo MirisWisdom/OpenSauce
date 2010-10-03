@@ -125,7 +125,7 @@ namespace Yelo
 		{
 			union {
 				struct {
-					TagGroups::bitmap_data* bitmap;
+					TagGroups::s_bitmap_data* bitmap;
 					PAD32;
 				}_internal;	// We use a '_' prefix so intelli-sense doesn't get retarded
 
@@ -142,7 +142,7 @@ namespace Yelo
 			TAG_FIELD(tag_reference, bitmap, 'bitm');
 
 #if !PLATFORM_IS_EDITOR && !PLATFORM_IS_DEDI
-			void				SetSource(TagGroups::bitmap_data* source_bitmap);
+			void				SetSource(TagGroups::s_bitmap_data* source_bitmap);
 			void				SetSource(cstring source_bitmap);
 
 			HRESULT				LoadCacheBitmap(IDirect3DDevice9* pDevice);

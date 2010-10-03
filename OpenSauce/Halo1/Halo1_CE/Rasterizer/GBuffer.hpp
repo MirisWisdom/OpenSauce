@@ -30,6 +30,7 @@
 
 #if !PLATFORM_IS_DEDI
 #include <Common/PackedFile.hpp>
+#include "Rasterizer/Rasterizer.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
 #include "Rasterizer/DX9/rasterizer_dx9_shaders_vshader9.hpp"
 
@@ -48,34 +49,14 @@ namespace Yelo
 	namespace DX9
 	{
 		//////////////////////////////////////////////////////////////////////
-		// Container for a texture and surface pair							//
-		//////////////////////////////////////////////////////////////////////
-		struct s_render_target
-		{
-			bool							m_enabled; PAD24;
-			LPDIRECT3DTEXTURE9				m_texture;
-			LPDIRECT3DSURFACE9				m_surface;
-			D3DFORMAT						m_format;
-
-			s_render_target() : m_enabled(true), m_format(D3DFMT_UNKNOWN) {}
-
-			// Create the render target texture and surface. If either of those fails [enabled] will be false
-			HRESULT		CreateTarget(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters, D3DFORMAT Format);
-			// Release the texture and surface
-			void		ReleaseTarget();
-			// Set the device target to [surface] then clear it
-			void		ClearTarget(IDirect3DDevice9* pDevice);
-		};
-
-		//////////////////////////////////////////////////////////////////////
 		// Container for holding all members of the GBuffer					//
 		//////////////////////////////////////////////////////////////////////
 		struct s_gbuffer
 		{
-			s_render_target					m_rt_depth;
-			s_render_target					m_rt_velocity;
-			s_render_target					m_rt_normals;
-			s_render_target					m_rt_index;
+			Rasterizer::s_render_target					m_rt_depth;
+			Rasterizer::s_render_target					m_rt_velocity;
+			Rasterizer::s_render_target					m_rt_normals;
+			Rasterizer::s_render_target					m_rt_index;
 
 			void ReleaseTargets();
 			void ClearTargets(IDirect3DDevice9* pDevice);

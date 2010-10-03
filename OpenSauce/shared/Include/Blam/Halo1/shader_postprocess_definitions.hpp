@@ -106,7 +106,12 @@ namespace Yelo
 				TAG_FLAG16(shader_is_binary);
 			}flags;
 
+			// new workflow removes the need for text data in the tools
+#if !PLATFORM_IS_EDITOR
 			TAG_FIELD(tag_data, shader_code_text);
+#else
+			TAG_PAD(uint32, 5);
+#endif
 			TAG_FIELD(tag_data, shader_code_binary);
 
 			t_shader_variable_matrix	ortho_wvp_matrix;	// Orthographic projection matrix handle
@@ -147,20 +152,6 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////////
 		// shader_postprocess_effect base
-		struct s_shader_postprocess_effect_render_quad
-		{
-			struct _runtime {
-				TAG_FIELD(IDirect3DVertexBuffer9*, vertex_buffer); 
-				TAG_FIELD(IDirect3DIndexBuffer9*, index_buffer); 
-			}runtime;
-
-			TAG_FIELD(int32, quad_count, "How many quads this object has");  
-			TAG_FIELD(int32, vertex_count, "How many verticies this object has"); 
-			TAG_FIELD(int32, primitive_count, "Number of primitives (triangles) this quad has"); 
-			TAG_FIELD(int32, x_segs, "How many quads on the X axis"); 
-			TAG_FIELD(int32, y_segs, "How many quads on the Y axis");
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_postprocess_effect_render_quad) == 0x1C );
-
 		struct s_shader_postprocess_effect_definition
 		{
 			enum { k_group_tag = 'shpe' };
@@ -180,7 +171,7 @@ namespace Yelo
 					TAG_FLAG16(is_active);
 				}flags; PAD16;
 
-				s_shader_postprocess_effect_render_quad quad;
+				TAG_PAD(byte, 0x1C);
 			}runtime;
 
 		}; BOOST_STATIC_ASSERT( sizeof(s_shader_postprocess_effect_definition) == 0x4C );

@@ -134,6 +134,15 @@ namespace Yelo
 
 			IDirect3DSurface9* surface;
 			IDirect3DTexture9* texture;
+			
+			// returns whether the texture and surface are valid
+			bool		IsEnabled() const;
+			// Create the render target texture and surface. If either of those fails [enabled] will be false
+			HRESULT		CreateTarget(IDirect3DDevice9* device, uint32 rt_width, uint32 rt_height, D3DFORMAT rt_format);
+			// Release the texture and surface
+			void		ReleaseTarget();
+			// Set the device target to [surface] then clear it
+			void		ClearTarget(IDirect3DDevice9* device);
 		};
 		s_render_target* GlobalRenderTargets();
 

@@ -328,31 +328,9 @@ namespace Yelo
 		HRESULT		c_generic_effect_base::DoPostEffect(IDirect3DDevice9* pDevice, double frame_time)
 		{	
 			// if the fade shader is not loaded, do nothing
-			if(!PP::Globals().m_fade.fade_loaded || !m_fade.apply_fade) return S_OK;
+			if(!m_fade.apply_fade || !PP::Globals().FadeEffect().IsAvailable()) return S_OK;
 
-			HRESULT hr;	
-			// set the fade shader variables to this effects values
-			hr = PP::Globals().m_fade.fade_shader->SetFloat("c_fade_amount", m_fade.current);
-			hr = PP::Globals().m_fade.fade_shader->SetTexture( "t_scene", PP::Globals().m_render_targets.scene_render_target.m_texture);
-			hr = PP::Globals().m_fade.fade_shader->SetTexture( "t_result", PP::Globals().m_render_targets.scene_buffer_chain.GetNextSource());
-			pDevice->SetRenderTarget( 0, PP::Globals().m_render_targets.scene_buffer_chain.GetNextTarget() ); 
-			PP::Globals().m_render_targets.scene_buffer_chain.Flip();
-			
-			// render the fade effect
-			UINT num_passes;
-			hr = PP::Globals().m_fade.fade_shader->Begin( &num_passes, 0 );
-			for(UINT pass = 0; pass < num_passes; ++pass )
-			{	
-				pDevice->Clear( 0L, NULL, D3DCLEAR_TARGET, 0x00000000, 1.0f, 0L );
-				hr = PP::Globals().m_fade.fade_shader->BeginPass( pass );
-
-				pDevice->SetIndices(m_render_quad.m_quad->runtime.index_buffer);
-				pDevice->SetStreamSource(0, m_render_quad.m_quad->runtime.vertex_buffer, 0, sizeof( s_postprocess_vertex ));
-				pDevice->DrawIndexedPrimitive( D3DPT_TRIANGLELIST, 0, 0, m_render_quad.m_quad->vertex_count, 0, m_render_quad.m_quad->primitive_count);
-				hr = PP::Globals().m_fade.fade_shader->EndPass();
-			}
-			hr = PP::Globals().m_fade.fade_shader->End();
-			return S_OK;
+			return PP::Globals().FadeEffect().FadeResult(pDevice, m_fade.current);
 		}
 		void		c_generic_effect_base::AllocateResources(IDirect3DDevice9* pDevice)
 		{
@@ -370,7 +348,7 @@ namespace Yelo
 		{
 			c_postprocess_effect::Update(delta_time);
 
-			if(!PP::Globals().m_fade.fade_loaded || !m_fade.apply_fade) return;
+			if(!PP::Globals().FadeEffect().IsAvailable() || !m_fade.apply_fade) return;
 
 			// update the fade amount according to the game delta time
 			if(m_fade.fade_time == 0)

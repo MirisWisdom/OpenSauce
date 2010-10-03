@@ -21,6 +21,7 @@
 #include "Memory/MemoryInterface.hpp"
 #include "Memory/Data.hpp"
 #include <TagGroups/Halo1/TagGroupDefinitions.hpp>
+#include <TagGroups/Halo1/bitmap_definitions.hpp>
 
 namespace Yelo
 {
@@ -141,7 +142,7 @@ namespace Yelo
 		void GatherException(void* data = NULL, int32 arg_0 = 0x89, int32 arg_4 = 0x7E, int32 arg_8 = 1);
 
 		// Setting [block_thread] to true causes the engine to immediately create the rasterizer (D3D) data for it
-		IDirect3DBaseTexture9** TextureCacheRequestTexture(TagGroups::bitmap_data* bitmap, 
+		IDirect3DBaseTexture9** TextureCacheRequestTexture(TagGroups::s_bitmap_data* bitmap, 
 			bool add_to_cache = true, bool block_thread = false);
 
 		bool SoundCacheRequestSound(TagGroups::s_sound_permutation* sound_perm, 

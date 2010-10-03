@@ -26,43 +26,42 @@ namespace Yelo
 	{
 		bool		s_render_target_chain::IsAvailable() const
 		{
-			return	m_targets[0].texture && 
-					m_targets[0].surface && 
-					m_targets[1].texture && 
-					m_targets[1].surface;
+			return m_targets[0].IsEnabled() &&
+				m_targets[1].IsEnabled();
 		}
 
-		void		s_render_target_chain::AllocateResources(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters, D3DFORMAT TargetFormat)
+		void		s_render_target_chain::AllocateResources(IDirect3DDevice9* device, uint32 width, uint32 height)
 		{
-			ZeroMemory( m_targets, sizeof( m_targets ) );
-
-			for( int32 t = 0; t < 2; ++t )
-			{
-				pDevice->CreateTexture(pParameters->BackBufferWidth,
-					pParameters->BackBufferHeight,
-					1,
-					D3DUSAGE_RENDERTARGET,
-					TargetFormat,
-					D3DPOOL_DEFAULT,
-					&m_targets[t].texture,
-					NULL );
-				m_targets[t].texture->GetSurfaceLevel(0, &m_targets[t].surface);
-			}
+			for(int i = 0; i < 2; i++)
+				m_targets[i].CreateTarget(device, 
+					width, 
+					height, 
+					Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].format);
+			ResetTargets();
 		}
 
 		void		s_render_target_chain::ReleaseResources()
 		{
-			for( int32 t = 0; t < 2; ++t )
-			{
-				Yelo::safe_release(m_targets[t].surface);
-				Yelo::safe_release(m_targets[t].texture);
-			}
+			for(int i = 0; i < 2; i++)
+				m_targets[i].ReleaseTarget();
+		}
+
+		void		s_render_target_chain::ResetTargets()
+		{
+			m_target_setup.scene = &Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary];
+			m_target_setup.current = &m_targets[0];
+			m_target_setup.next = &m_targets[1];
 		}
 
 		void		s_render_target_chain::Flip()
 		{
-			m_next = 1 - m_next;
-		};
+			std::swap<Rasterizer::s_render_target*>(m_target_setup.current, m_target_setup.next);
+		}
+
+		void		s_render_target_chain::SetSceneToLast()
+		{
+			std::swap<Rasterizer::s_render_target*>(m_target_setup.next, m_target_setup.scene);
+		}
 	};
 };
 #endif

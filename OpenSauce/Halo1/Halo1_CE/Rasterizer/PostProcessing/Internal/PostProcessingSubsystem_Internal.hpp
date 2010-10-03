@@ -81,7 +81,7 @@ namespace Yelo
 			static void			InitializeForNewMap();
 			static void			DisposeFromOldMap();
 			static void			Update(real delta_time);
-			static void			DoPostProcesses(IDirect3DDevice9* pDevice, real frame_time, Enums::postprocess_render_stage render_point);
+			static bool			DoPostProcesses(IDirect3DDevice9* pDevice, real frame_time, Enums::postprocess_render_stage render_point);
 
 		private:
 			void		InitializeImpl(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters);
@@ -96,7 +96,7 @@ namespace Yelo
 			void		ReleaseResourcesImpl();
 
 			void		UpdateImpl(real DeltaTime);
-			void		DoPostProcessesImpl(IDirect3DDevice9* pDevice, real frame_time, Enums::postprocess_render_stage render_point);
+			bool		DoPostProcessesImpl(IDirect3DDevice9* pDevice, real frame_time, Enums::postprocess_render_stage render_point);
 			
 			void		UnloadShaders();
 			void		LoadShaders();

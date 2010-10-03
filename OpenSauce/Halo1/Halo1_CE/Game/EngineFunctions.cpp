@@ -60,7 +60,7 @@ namespace Yelo
 			}
 		}
 
-		IDirect3DBaseTexture9** TextureCacheRequestTexture(Yelo::TagGroups::bitmap_data* bitmap, 
+		IDirect3DBaseTexture9** TextureCacheRequestTexture(Yelo::TagGroups::s_bitmap_data* bitmap, 
 			bool add_to_cache, bool block_thread)
 		{
 #if !PLATFORM_IS_DEDI

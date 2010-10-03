@@ -44,7 +44,7 @@ namespace Yelo
 				{
 					// get the bitmap tag pointer
 					datum_index bitmap_index = bitmap_var->bitmap.tag_index;
-					TagGroups::bitmap_group* bitm = TagGroups::Instances()[bitmap_index.index].Definition<TagGroups::bitmap_group>();
+					TagGroups::s_bitmap_definition* bitm = TagGroups::Instances()[bitmap_index.index].Definition<TagGroups::s_bitmap_definition>();
 					if(bitm == NULL)
 						return E_FAIL;
 

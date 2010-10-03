@@ -103,113 +103,121 @@ namespace Yelo
 
 
 		/////////////////////////////////////////////////////////////////////
-		// s_postprocess_quad
-		void		s_postprocess_quad::AllocateResources(IDirect3DDevice9* pDevice)
-		{
-			SetupQuad(pDevice,  m_quad->x_segs, m_quad->y_segs);
-		}
-		void		s_postprocess_quad::ReleaseResources()
-		{
-			Yelo::safe_release(m_quad->runtime.vertex_buffer);
-			Yelo::safe_release(m_quad->runtime.index_buffer);
-		}
-		void		s_postprocess_quad::SetSource(TagGroups::s_shader_postprocess_effect_render_quad* quad)
-		{
-			m_quad = quad;
-		}
-		bool		s_postprocess_quad::SetupQuad(IDirect3DDevice9* pDevice, int32 XSegments, int32 YSegments)
-		{
-			this->ReleaseResources();
+		// c_fade_effect
+		HRESULT		c_fade_effect::FadeResult(IDirect3DDevice9* device, float fade_value)
+		{			
+			// if the fade shader is not loaded, do nothing
+			if(!IsAvailable()) return E_FAIL;
 
-			m_quad->x_segs = (XSegments < 1 ? 1 : XSegments);
-			m_quad->y_segs = (YSegments < 1 ? 1 : YSegments);
-			m_quad->x_segs = (m_quad->x_segs > k_maximum_quads_per_axis ? k_maximum_quads_per_axis : m_quad->x_segs);
-			m_quad->y_segs = (m_quad->y_segs > k_maximum_quads_per_axis ? k_maximum_quads_per_axis : m_quad->y_segs);
-
-			m_quad->quad_count = (m_quad->x_segs * m_quad->y_segs);
-			m_quad->vertex_count = m_quad->quad_count * 4;
-			m_quad->primitive_count = m_quad->quad_count * 2;
-
-			pDevice->CreateVertexBuffer(
-				m_quad->vertex_count * sizeof(s_postprocess_vertex), 
-				D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY, 
-				D3DFVF_XYZ | D3DFVF_TEX2, 
-				D3DPOOL_DEFAULT, 
-				&m_quad->runtime.vertex_buffer,
-				NULL);
-			pDevice->CreateIndexBuffer(
-				(m_quad->primitive_count * 3) * sizeof(WORD),
-				D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY, 
-				D3DFMT_INDEX16, 
-				D3DPOOL_DEFAULT, 
-				&m_quad->runtime.index_buffer, 
-				NULL);
-
-			s_postprocess_vertex* verticies;
-			m_quad->runtime.vertex_buffer->Lock( 0, 0, (void**)&verticies, D3DLOCK_DISCARD );
-
-			WORD* indicies;
-			m_quad->runtime.index_buffer->Lock( 0, 0, (void**)&indicies, D3DLOCK_DISCARD );
-
-			const s_postprocess_globals::s_rendering& k_rendering = Globals().m_rendering;
-
-			real quad_width = k_rendering.screen_dimensions.x / m_quad->x_segs;
-			real quad_height = k_rendering.screen_dimensions.y / m_quad->y_segs;
-
-			// The quads are treated as numerous small quads with 4 verts per quad. This isn't
-			// the most efficient way as there are alot of duplicate verticies. But this is simpler.
-			int32 quad_row = 0;
-			int32 quad_column = 0;
-			int32 quad_vertex = 0;
-			for(int32 k = 0; k < m_quad->vertex_count; )
+			// if the fade value is at either extent, then simply swap surfaces if needed
+			if(fade_value == 0.0f)
 			{
-				int32 x = 0;
-				int32 y = 0;
-				int32 z = 0;
-				while (x < 4)
-				{	
-					real PointX = (quad_column * quad_width) + (quad_width * y);
-					real PointY = (quad_row * quad_height) + (quad_height * z);
-					verticies[k + x].x = PointX - 0.5f;
-					verticies[k + x].y = -(PointY - 0.5f);
-					verticies[k + x].z = 10.0f;
-
-					verticies[k + x].tu0 = PointX / k_rendering.screen_dimensions.x;
- 					verticies[k + x].tv0 = PointY / k_rendering.screen_dimensions.y;
- 					verticies[k + x].tu1 = PointX / k_rendering.screen_dimensions.x;
- 					verticies[k + x].tv1 = PointY / k_rendering.screen_dimensions.y;
-
-					y++;
-					if(y > 1)
-					{	
-						z++;
-						y = 0;
-					}
-					x++;
-				}
-
-				int32 a = 0;
-				while (a < 2)
-				{
-					indicies[(quad_row * (m_quad->x_segs * 6)) + (quad_column * 6) + (a * 3)]		= CAST(WORD, k + (a * 3));
-					indicies[(quad_row * (m_quad->x_segs * 6)) + (quad_column * 6) + (a * 3) + 1]	= CAST(WORD, k + 1 + (a * 1));
-					indicies[(quad_row * (m_quad->x_segs * 6)) + (quad_column * 6) + (a * 3) + 2]	= CAST(WORD, k + 2 - (a * 1));
-					a++;
-				}
-
-				quad_column++;
-				if(quad_column > m_quad->x_segs - 1)
-				{
-					quad_column = 0;
-					quad_row++;
-				}
-				k += x;
+				Globals().m_render_targets.scene_buffer_chain.SetSceneToLast();
+				return S_OK;
 			}
+			else if(fade_value == 1.0f)
+				return S_OK;
 
-			m_quad->runtime.vertex_buffer->Unlock();
-			m_quad->runtime.index_buffer->Unlock();
+			HRESULT hr;
+			
+			// set the effect result as the scene texture
+			Globals().m_render_targets.scene_buffer_chain.SetSceneToLast();
+			// set the scene prior to the effect as the render target
+			Globals().m_render_targets.scene_buffer_chain.Flip();
 
-			return true;
+			m_effect->SetTexture(m_result_texture, Globals().m_render_targets.scene_buffer_chain.GetSceneTexture());
+			m_effect->SetFloat(m_fade_amount, fade_value);
+			device->SetRenderTarget(0, Globals().m_render_targets.scene_buffer_chain.GetCurrentSurface());
+
+			// use alpha blending so the effect just has to specify an alpha value
+			device->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
+			device->SetRenderState(D3DRS_COLORWRITEENABLE, D3DCOLORWRITEENABLE_RED | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_BLUE | D3DCOLORWRITEENABLE_ALPHA);			
+			device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+			device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+			
+			// render the fade effect
+			UINT num_passes;
+			hr = m_effect->Begin( &num_passes, 0 );
+			for(UINT pass = 0; pass < num_passes; ++pass )
+			{	
+				hr = m_effect->BeginPass( pass );
+
+				device->DrawIndexedPrimitive( D3DPT_TRIANGLELIST, 
+						m_quad_instance->m_quad.start_vertex,
+						0, 
+						m_quad_instance->m_quad.vertex_count, 
+						m_quad_instance->m_quad.start_index, 
+						m_quad_instance->m_quad.primitive_count);
+				hr = m_effect->EndPass();
+				Globals().m_render_targets.scene_buffer_chain.Flip();
+			}
+			hr = m_effect->End();
+
+			device->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
+			device->SetRenderState(D3DRS_COLORWRITEENABLE, D3DCOLORWRITEENABLE_RED | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_BLUE);
+			device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
+			device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ZERO);
+			return hr;
+		}
+		HRESULT		c_fade_effect::AllocateResources(IDirect3DDevice9* device)
+		{				
+			m_available = true;
+
+			uint32 data_size;
+			void* data_pointer = Globals().m_shader_file.GetDataPointer("PP_EffectFade", &data_size);
+			if(data_size == 0 || data_pointer == NULL)
+				m_available = false;
+			else
+			{
+				m_quad_instance = Globals().QuadManager().CreateQuad(4, 4);
+				if(!m_quad_instance)
+				{
+					m_available = false;
+					return E_FAIL;
+				}
+
+				LPD3DXBUFFER error_buffer = NULL;
+				HRESULT hr = D3DXCreateEffect(
+					device,
+					data_pointer, 
+					data_size, 
+					NULL, NULL, NULL, NULL, 
+					&m_effect, 
+					&error_buffer);	
+				if (FAILED(hr))
+				{
+					if(GameState::DevmodeEnabled())
+					{
+						Postprocessing::Debug::WriteLine(
+							"Error: failed to load shader \"%s\"",
+							"pp_shaders.shd:PP_EffectFade");
+						Postprocessing::Debug::WriteD3DXErrors(error_buffer, 1);
+					}
+					m_available = false;
+				}
+				else
+				{
+					m_effect->SetMatrix("c_ortho_wvp", &Globals().m_matricies.ortho_proj_matrix);
+					m_result_texture = m_effect->GetParameterByName(NULL, "t_result");
+					m_fade_amount = m_effect->GetParameterByName(NULL, "c_fade_amount");
+					if(!m_result_texture || !m_fade_amount)
+						m_available = false;
+				}
+				Yelo::safe_release(error_buffer);	
+			}
+			return m_available ? S_OK : E_FAIL;
+		}
+		void		c_fade_effect::ReleaseResources()
+		{
+			Yelo::safe_release(m_effect);
+			Yelo::safe_release(m_quad_instance);
+			m_result_texture = NULL;
+			m_fade_amount = NULL;
+			m_available = false;
+		}
+		bool		c_fade_effect::IsAvailable()
+		{
+			return m_available;
 		}
 		/////////////////////////////////////////////////////////////////////
 
@@ -274,6 +282,12 @@ namespace Yelo
 
 			for(int32 i = 0; i <= subsystem_count; i++)
 				subsystems[i].AllocateResources(Globals().m_rendering.render_device);
+
+			// build buffers			
+			Globals().QuadManager().BuildBuffers(
+				Globals().m_rendering.render_device,
+				Globals().m_rendering.screen_dimensions.x,
+				Globals().m_rendering.screen_dimensions.y);
 		}	
 		void		OnLostDevice()
 		{
@@ -298,6 +312,11 @@ namespace Yelo
 				// this might not be necessary considering all DX resources are released when the device is lost
 				subsystems[i].OnResetDevice(Globals().m_rendering.render_device, pParameters);
 			}
+			
+			Globals().QuadManager().BuildBuffers(
+				Globals().m_rendering.render_device,
+				Globals().m_rendering.screen_dimensions.x,
+				Globals().m_rendering.screen_dimensions.y);
 		}
 		void		Render()
 		{
@@ -366,6 +385,13 @@ namespace Yelo
 
 			for(int32 i = 0; i <= subsystem_count; i++)
 				subsystems[i].InitializeForNewMap();
+			
+			// quad buffers will have been released by DisposeFromOldMap
+			// quads may have been added so create new buffers
+			Globals().QuadManager().BuildBuffers(
+				Globals().m_rendering.render_device,
+				Globals().m_rendering.screen_dimensions.x,
+				Globals().m_rendering.screen_dimensions.y);
 		}
 		void		DisposeFromOldMap()
 		{
@@ -376,6 +402,9 @@ namespace Yelo
 
 			for(size_t i = 0; i <= subsystem_count; i++)
 				subsystems[i].DisposeFromOldMap();
+			
+			// quads will probably have been removed so release the buffers
+			Globals().QuadManager().Release();
 		}
 		void		Update(real delta_time)
 		{			
@@ -387,6 +416,7 @@ namespace Yelo
 			for(int32 i = 0; i <= subsystem_count; i++)
 				subsystems[i].Update(delta_time);
 		}
+
 		HRESULT		AllocateResources(D3DPRESENT_PARAMETERS* pParameters)
 		{
 			// If already loaded do nothing
@@ -395,8 +425,8 @@ namespace Yelo
 
 			HRESULT hr = Globals().m_rendering.render_device->TestCooperativeLevel();
 			if (SUCCEEDED(hr))	{	
-				Globals().m_rendering.screen_dimensions.x = (real)pParameters->BackBufferWidth;
-				Globals().m_rendering.screen_dimensions.y = (real)pParameters->BackBufferHeight;
+				Globals().m_rendering.screen_dimensions.x = pParameters->BackBufferWidth;
+				Globals().m_rendering.screen_dimensions.y = pParameters->BackBufferHeight;
 				Globals().m_rendering.creation_parameters = *pParameters;
 
 				//Get the new ratio between screen size and HUD size
@@ -418,11 +448,10 @@ namespace Yelo
 
 				// Allocate the resources for the renderchain
 				Globals().m_render_targets.scene_buffer_chain.AllocateResources(Globals().m_rendering.render_device, 
-					pParameters, pParameters->BackBufferFormat);
+					pParameters->BackBufferWidth, 
+					pParameters->BackBufferHeight);
 
-				// Create the original scene buffer and get the gbuffer render targets
-				Globals().m_render_targets.scene_render_target.CreateTarget(Globals().m_rendering.render_device, 
-					pParameters, pParameters->BackBufferFormat);
+				// get the gbuffer render targets
 				Globals().m_render_targets.gbuffer = DX9::c_gbuffer_system::GBuffer();
 				
 				// Create the orthographic projection matrix for rendering the quads
@@ -435,36 +464,7 @@ namespace Yelo
 				D3DXMatrixMultiply(&Globals().m_matricies.ortho_proj_matrix, &Globals().m_matricies.ortho_proj_matrix, &OrthoTranslation);
 				
 				// Load and create the fade effect shader
-				Globals().m_fade.fade_loaded = true;
-				uint32 data_size;
-				void* data_pointer = Globals().m_shader_file.GetDataPointer("PP_EffectFade", &data_size);
-				if(data_size == 0 || data_pointer == NULL)
-					Globals().m_fade.fade_loaded = false;
-				else
-				{
-					LPD3DXBUFFER error_buffer = NULL;
-					hr = D3DXCreateEffect(
-						Globals().m_rendering.render_device, 
-						data_pointer, 
-						data_size, 
-						NULL, NULL, NULL, NULL, 
-						&Globals().m_fade.fade_shader, 
-						&error_buffer);	
-					if (FAILED(hr))
-					{
-						if(GameState::DevmodeEnabled())
-						{
-							Postprocessing::Debug::WriteLine(
-								"Error: failed to load shader \"%s\"",
-								"pp_shaders.shd:PP_EffectFade");
-							Postprocessing::Debug::WriteD3DXErrors(error_buffer, 1);
-						}
-						Globals().m_fade.fade_loaded = false;
-					}
-					else
-						Globals().m_fade.fade_shader->SetMatrix("c_ortho_wvp", &Globals().m_matricies.ortho_proj_matrix);
-					Yelo::safe_release(error_buffer);	
-				}
+				Globals().FadeEffect().AllocateResources(Globals().m_rendering.render_device);
 
 				Globals().m_flags.loaded = true;
 			}
@@ -479,8 +479,8 @@ namespace Yelo
 				subsystems[i].ReleaseResources();
 
 			// Release global resources the subsystems might use
-			Yelo::safe_release(Globals().m_fade.fade_shader);
-			Globals().m_render_targets.scene_render_target.ReleaseTarget();
+			Globals().QuadManager().Release();
+			Globals().FadeEffect().ReleaseResources();
 			Globals().m_render_targets.scene_buffer_chain.ReleaseResources();
 			Globals().m_flags.loaded = false;
 		}		
@@ -494,6 +494,12 @@ namespace Yelo
 
 			for(int32 i = 0; i <= subsystem_count; i++)
 				subsystems[i].Load();
+			
+			// quads will have been added by the Load process so create the quad buffers
+			Globals().QuadManager().BuildBuffers(
+				Globals().m_rendering.render_device,
+				Globals().m_rendering.screen_dimensions.x,
+				Globals().m_rendering.screen_dimensions.y);
 
 			return NULL;
 		}
@@ -676,31 +682,50 @@ namespace Yelo
 
 			IDirect3DDevice9* render_device = Globals().m_rendering.render_device;
 
-			LPDIRECT3DSURFACE9 orig_target;
-			render_device->GetRenderTarget(0, &orig_target);
+			// reset the targets so that halo's primary buffer is the scene buffer
+			Globals().m_render_targets.scene_buffer_chain.ResetTargets();
 
-			Rasterizer::s_render_target& rt = Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary];
-			if(rt.surface == NULL)
-				return;	
-			Globals().m_rendering.render_surface = rt.surface;
-
-			s_dx9_render_state_capture dx9_state_capture;
+			// the same buffers are used for all post processes, set them here
+			HRESULT hr = Globals().QuadManager().SetBuffers(render_device);
+			if(SUCCEEDED(hr))
 			{
-				RenderingCaptureAndSetState(render_device, dx9_state_capture, Enums::_postprocess_render_stage_pre_blur);
+				s_dx9_render_state_capture dx9_state_capture;
+				{
+					RenderingCaptureAndSetState(render_device, dx9_state_capture, Enums::_postprocess_render_stage_pre_blur);
 
-				Yelo::Main::s_postprocessing_subsystem_component* subsystems;
-				const int32 subsystem_count = Yelo::Main::GetPostprocessingSubsystemComponents(subsystems);
+					Yelo::Main::s_postprocessing_subsystem_component* subsystems;
+					const int32 subsystem_count = Yelo::Main::GetPostprocessingSubsystemComponents(subsystems);
 
-				for(int32 i = 0; i <= subsystem_count; i++)
-					subsystems[i].DoPostProcesses(Globals().m_rendering.render_device, PerFrameValues().m_delta_time, Enums::_postprocess_render_stage_pre_blur);
-				Subsystem::MotionBlur::c_motionblur_subsystem::DoMotionBlurProcess(render_device, PerFrameValues().m_delta_time);
-				for(int32 i = 0; i <= subsystem_count; i++)
-					subsystems[i].DoPostProcesses(Globals().m_rendering.render_device, PerFrameValues().m_delta_time, Enums::_postprocess_render_stage_pre_alpha_blended);
-			};
-			dx9_state_capture.Restore();
-			
-			render_device->SetRenderTarget(0, orig_target);
-			Yelo::safe_release(orig_target);
+					bool effects_applied = false;
+					for(int32 i = 0; i <= subsystem_count; i++)
+						effects_applied |= subsystems[i].DoPostProcesses(Globals().m_rendering.render_device, 
+							PerFrameValues().m_delta_time, 
+							Enums::_postprocess_render_stage_pre_blur);
+
+					effects_applied |= Subsystem::MotionBlur::c_motionblur_subsystem::DoMotionBlurProcess(render_device, 
+						PerFrameValues().m_delta_time);
+					
+					for(int32 i = 0; i <= subsystem_count; i++)
+						effects_applied |= subsystems[i].DoPostProcesses(Globals().m_rendering.render_device, 
+							PerFrameValues().m_delta_time, 
+							Enums::_postprocess_render_stage_pre_alpha_blended);
+				
+					// it's probable that the last surface rendered to isn't halos primary buffer
+					// in that case, stretchrect the result to the primary buffer
+					if(effects_applied && 
+						(Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface !=
+							Globals().m_render_targets.scene_buffer_chain.GetSceneSurface()))
+						render_device->StretchRect(
+							Globals().m_render_targets.scene_buffer_chain.GetSceneSurface(), 
+							NULL, 
+							Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface,
+							NULL, 
+							D3DTEXF_NONE);
+				};
+				dx9_state_capture.Restore();
+
+				render_device->SetRenderTarget(0, Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface);
+			}
 		}
 		void		RenderPreHUD()
 		{
@@ -708,28 +733,42 @@ namespace Yelo
 
 			IDirect3DDevice9* render_device = Globals().m_rendering.render_device;
 
-			LPDIRECT3DSURFACE9 orig_target;
-			render_device->GetRenderTarget(0, &orig_target);
+			// reset the targets so that halo's primary buffer is the scene buffer
+			Globals().m_render_targets.scene_buffer_chain.ResetTargets();
 
-			Rasterizer::s_render_target& rt = Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary];
-			if(rt.surface == NULL)
-				return;		
-			Globals().m_rendering.render_surface = rt.surface;	
-
-			s_dx9_render_state_capture dx9_state_capture;
+			// the same buffers are used for all post processes, set them here
+			HRESULT hr = Globals().QuadManager().SetBuffers(render_device);
+			if(SUCCEEDED(hr))
 			{
-				RenderingCaptureAndSetState(render_device, dx9_state_capture, Enums::_postprocess_render_stage_pre_hud);
+				s_dx9_render_state_capture dx9_state_capture;
+				{
+					RenderingCaptureAndSetState(render_device, dx9_state_capture, Enums::_postprocess_render_stage_pre_hud);
 
-				Yelo::Main::s_postprocessing_subsystem_component* subsystems;
-				const int32 subsystem_count = Yelo::Main::GetPostprocessingSubsystemComponents(subsystems);
+					Yelo::Main::s_postprocessing_subsystem_component* subsystems;
+					const int32 subsystem_count = Yelo::Main::GetPostprocessingSubsystemComponents(subsystems);
 
-				for(int32 i = 0; i <= subsystem_count; i++)
-					subsystems[i].DoPostProcesses(render_device, PerFrameValues().m_delta_time, Enums::_postprocess_render_stage_pre_hud);
-			};
-			dx9_state_capture.Restore();
+					bool effects_applied = false;
+					for(int32 i = 0; i <= subsystem_count; i++)
+						effects_applied |= subsystems[i].DoPostProcesses(render_device, 
+							PerFrameValues().m_delta_time, 
+							Enums::_postprocess_render_stage_pre_hud);				
+				
+					// it's probable that the last surface rendered to isn't halos primary buffer
+					// in that case, stretchrect the result to the primary buffer
+					if(effects_applied &&
+						(Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface !=
+							Globals().m_render_targets.scene_buffer_chain.GetSceneSurface()))
+						render_device->StretchRect(
+							Globals().m_render_targets.scene_buffer_chain.GetSceneSurface(), 
+							NULL, 
+							Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface,
+							NULL, 
+							D3DTEXF_NONE);
+				};
+				dx9_state_capture.Restore();
 
-			Globals().m_rendering.render_device->SetRenderTarget(0, orig_target);
-			Yelo::safe_release(orig_target);
+				Globals().m_rendering.render_device->SetRenderTarget(0, Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface);
+			}
 		}
 		void		RenderPreMenu() 
 		{
@@ -737,28 +776,42 @@ namespace Yelo
 
 			IDirect3DDevice9* render_device = Globals().m_rendering.render_device;
 
-			LPDIRECT3DSURFACE9 orig_target;
-			render_device->GetRenderTarget(0, &orig_target);		
+			// reset the targets so that halo's primary buffer is the scene buffer
+			Globals().m_render_targets.scene_buffer_chain.ResetTargets();
 
-			Rasterizer::s_render_target& rt = Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary];
-			if(rt.surface == NULL)
-				return;			
-			Globals().m_rendering.render_surface = rt.surface;
-
-			s_dx9_render_state_capture dx9_state_capture;
+			// the same buffers are used for all post processes, set them here
+			HRESULT hr = Globals().QuadManager().SetBuffers(render_device);
+			if(SUCCEEDED(hr))
 			{
-				RenderingCaptureAndSetState(render_device, dx9_state_capture, Enums::_postprocess_render_stage_pre_ui);
+				s_dx9_render_state_capture dx9_state_capture;
+				{
+					RenderingCaptureAndSetState(render_device, dx9_state_capture, Enums::_postprocess_render_stage_pre_ui);
 
-				Yelo::Main::s_postprocessing_subsystem_component* subsystems;
-				const int32 subsystem_count = Yelo::Main::GetPostprocessingSubsystemComponents(subsystems);
+					Yelo::Main::s_postprocessing_subsystem_component* subsystems;
+					const int32 subsystem_count = Yelo::Main::GetPostprocessingSubsystemComponents(subsystems);
 
-				for(int32 i = 0; i <= subsystem_count; i++)
-					subsystems[i].DoPostProcesses(render_device, PerFrameValues().m_delta_time, Enums::_postprocess_render_stage_pre_ui);
-			};
-			dx9_state_capture.Restore();
+					bool effects_applied = false;
+					for(int32 i = 0; i <= subsystem_count; i++)
+						effects_applied |= subsystems[i].DoPostProcesses(render_device, 
+							PerFrameValues().m_delta_time, 
+							Enums::_postprocess_render_stage_pre_ui);						
+				
+					// it's probable that the last surface rendered to isn't halos primary buffer
+					// in that case, stretchrect the result to the primary buffer
+					if(effects_applied &&
+						(Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface !=
+							Globals().m_render_targets.scene_buffer_chain.GetSceneSurface()))
+						render_device->StretchRect(
+							Globals().m_render_targets.scene_buffer_chain.GetSceneSurface(), 
+							NULL, 
+							Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface,
+							NULL, 
+							D3DTEXF_NONE);
+				};
+				dx9_state_capture.Restore();	
 
-			render_device->SetRenderTarget(0, orig_target);
-			Yelo::safe_release(orig_target);
+				render_device->SetRenderTarget(0, Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface);
+			}
 		}
 		void		RenderPostMenu() 
 		{
@@ -766,28 +819,42 @@ namespace Yelo
 
 			IDirect3DDevice9* render_device = Globals().m_rendering.render_device;
 
-			LPDIRECT3DSURFACE9 orig_target;
-			render_device->GetRenderTarget(0, &orig_target);
+			// reset the targets so that halo's primary buffer is the scene buffer
+			Globals().m_render_targets.scene_buffer_chain.ResetTargets();
 
-			Rasterizer::s_render_target& rt = Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary];
-			if(rt.surface == NULL)
-				return;		
-			Globals().m_rendering.render_surface = rt.surface;			
-
-			s_dx9_render_state_capture dx9_state_capture;
+			// the same buffers are used for all post processes, set them here
+			HRESULT hr = Globals().QuadManager().SetBuffers(render_device);
+			if(SUCCEEDED(hr))
 			{
-				RenderingCaptureAndSetState(render_device, dx9_state_capture, Enums::_postprocess_render_stage_post_ui);
+				s_dx9_render_state_capture dx9_state_capture;
+				{
+					RenderingCaptureAndSetState(render_device, dx9_state_capture, Enums::_postprocess_render_stage_post_ui);
 
-				Yelo::Main::s_postprocessing_subsystem_component* subsystems;
-				const int32 subsystem_count = Yelo::Main::GetPostprocessingSubsystemComponents(subsystems);
+					Yelo::Main::s_postprocessing_subsystem_component* subsystems;
+					const int32 subsystem_count = Yelo::Main::GetPostprocessingSubsystemComponents(subsystems);
 
-				for(int32 i = 0; i <= subsystem_count; i++)
-					subsystems[i].DoPostProcesses(render_device, PerFrameValues().m_delta_time, Enums::_postprocess_render_stage_post_ui);
-			};
-			dx9_state_capture.Restore();
-			
-			render_device->SetRenderTarget(0, orig_target);
-			Yelo::safe_release(orig_target);
+					bool effects_applied = false;
+					for(int32 i = 0; i <= subsystem_count; i++)
+						effects_applied |= subsystems[i].DoPostProcesses(render_device, 
+							PerFrameValues().m_delta_time, 
+							Enums::_postprocess_render_stage_post_ui);		
+				
+					// it's probable that the last surface rendered to isn't halos primary buffer
+					// in that case, stretchrect the result to the primary buffer
+					if(effects_applied &&
+						(Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface !=
+							Globals().m_render_targets.scene_buffer_chain.GetSceneSurface()))
+						render_device->StretchRect(
+							Globals().m_render_targets.scene_buffer_chain.GetSceneSurface(), 
+							NULL, 
+							Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface,
+							NULL, 
+							D3DTEXF_NONE);
+				};
+				dx9_state_capture.Restore();	
+				
+				render_device->SetRenderTarget(0, Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface);
+			}
 		}
 	};
 };

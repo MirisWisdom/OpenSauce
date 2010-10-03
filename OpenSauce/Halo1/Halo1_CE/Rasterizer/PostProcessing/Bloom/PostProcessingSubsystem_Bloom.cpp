@@ -94,23 +94,26 @@ namespace Yelo
 		{
 			c_bloom_subsystem::g_instance.DisposeFromOldMapImpl();
 		}
-		void			c_bloom_subsystem::DoPostProcesses(IDirect3DDevice9* pDevice, real frame_time, Enums::postprocess_render_stage render_point)
+		bool			c_bloom_subsystem::DoPostProcesses(IDirect3DDevice9* pDevice, real frame_time, Enums::postprocess_render_stage render_point)
 		{
-			c_bloom_subsystem::g_instance.DoPostProcessesImpl(pDevice, frame_time, render_point);
+			return c_bloom_subsystem::g_instance.DoPostProcessesImpl(pDevice, frame_time, render_point);
 		}
 
 
 		void			c_bloom_subsystem::InitializeImpl(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters)
 		{			
-			// initialize effect
-			g_effect.Ctor();
-			g_effect.SetSource(&g_bloom_effect);
-			g_effect.SetupEffect();
-
 			// initialize shader
 			g_shader.Ctor();
 			g_shader.SetSource(&g_bloom_shader);
 			g_shader.SetupShader();
+
+			// initialize effect
+			g_bloom_effect.quad_tesselation.x = 5;
+			g_bloom_effect.quad_tesselation.y = 5;
+
+			g_effect.Ctor();
+			g_effect.SetSource(&g_bloom_effect);
+			g_effect.SetupEffect();
 
 			g_shader.Initialize(pDevice);
 
@@ -152,7 +155,7 @@ namespace Yelo
 
 				g_effect.AddProcess(g_bloom_shader_instance);
 			}
-			g_subsystem_loaded = g_effect.ValidateEffect();
+			g_subsystem_loaded = g_effect.ValidateEffect() && PP::Globals().m_flags.loaded;
 
 			InitializeForNewMapImpl();
 
@@ -188,16 +191,17 @@ namespace Yelo
 			g_subsystem_enabled = g_bloom_defaults.flags.is_enabled_bit;
 			g_shader.SetBloomValues(&g_bloom_defaults);
 		}
-		void			c_bloom_subsystem::DoPostProcessesImpl(IDirect3DDevice9* pDevice, double frame_time, 
+		bool			c_bloom_subsystem::DoPostProcessesImpl(IDirect3DDevice9* pDevice, double frame_time, 
 			Enums::postprocess_render_stage render_point)
 		{
 			// Apply the bloom effect at the intended render stage
 			if (!g_subsystem_enabled) 
-				return;
+				return false;
 
 			if((!g_shader.m_bloom_globals->flags.apply_after_hud_bit && (render_point == Enums::_postprocess_render_stage_pre_hud)) ||
 				(g_shader.m_bloom_globals->flags.apply_after_hud_bit && (render_point == Enums::_postprocess_render_stage_pre_ui)))
-				g_effect.DoPostProcessEffect(pDevice, frame_time);
+				return SUCCEEDED(g_effect.DoPostProcessEffect(pDevice, frame_time));
+			return false;
 		}
 		/////////////////////////////////////////////////////////////////////
 	}; }; };

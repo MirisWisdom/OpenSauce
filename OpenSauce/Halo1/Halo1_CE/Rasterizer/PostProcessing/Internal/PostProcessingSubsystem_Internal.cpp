@@ -87,9 +87,9 @@ namespace Yelo
 		{
 			c_internal_subsystem::g_instance.UpdateImpl(delta_time);
 		}
-		void		c_internal_subsystem::DoPostProcesses(IDirect3DDevice9* pDevice, real frame_time, Enums::postprocess_render_stage render_point)
+		bool		c_internal_subsystem::DoPostProcesses(IDirect3DDevice9* pDevice, real frame_time, Enums::postprocess_render_stage render_point)
 		{
-			c_internal_subsystem::g_instance.DoPostProcessesImpl(pDevice, frame_time, render_point);
+			return c_internal_subsystem::g_instance.DoPostProcessesImpl(pDevice, frame_time, render_point);
 		}
 		void		c_internal_subsystem::InitializeImpl(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters)
 		{
@@ -117,7 +117,7 @@ namespace Yelo
 				Globals().m_effect_array[i]->AllocateResources(pDevice);
 
 			// everything has been loaded
-			g_subsystem_loaded = SUCCEEDED(hr);
+			g_subsystem_loaded = SUCCEEDED(hr) && PP::Globals().m_flags.loaded;
 			return hr;
 		}
 		void		c_internal_subsystem::ReleaseResourcesImpl()
@@ -173,12 +173,12 @@ namespace Yelo
 			if(g_subsystem_loaded)
 				c_internal_subsystem::g_instance.ReleaseResourcesImpl();
 		}
-		void		c_internal_subsystem::DoPostProcessesImpl(IDirect3DDevice9* pDevice, real frame_time, Enums::postprocess_render_stage render_point)
+		bool		c_internal_subsystem::DoPostProcessesImpl(IDirect3DDevice9* pDevice, real frame_time, Enums::postprocess_render_stage render_point)
 		{	
 			// if this subsystem is disabled, do nothing
-			if(!g_subsystem_enabled) return;
+			if(!g_subsystem_enabled) return false;
 			// ...otherwise, apply the effects in the relevant render block
-			Globals().m_render_blocks[render_point].RenderEffects(pDevice, frame_time);
+			return Globals().m_render_blocks[render_point].RenderEffects(pDevice, frame_time);
 		}
 		void		c_internal_subsystem::UnloadShaders()
 		{

@@ -27,6 +27,7 @@
 
 #if !PLATFORM_IS_DEDI
 #include "Rasterizer/DX9/DX9.hpp"
+#include "Rasterizer/Rasterizer.hpp"
 
 namespace Yelo
 {
@@ -34,36 +35,46 @@ namespace Yelo
 	{
 		/////////////////////////////////////////////////////////////////////
 		// Used to prevent reading and writing to a single render target by
-		// flipping between two on each pass. Currently only used for the
-		// main scene textures, but could be used on depth/normals/etc.
+		// flipping between two on each pass.
 		/////////////////////////////////////////////////////////////////////
 		struct s_render_target_chain
 		{
-			int32				m_next;			// The next render target to use.
-			bool				m_first_render;	// If true shaders should use the original scene as their previous source
-			PAD24;								// as no render target has been written to yet.
-			struct {
-				IDirect3DTexture9* texture;		// Render target textures. Used in shaders.
-				IDirect3DSurface9* surface;		// Render target surfaces. Used as device render targets.
-			}m_targets[2];
+			bool m_first_render;
+			PAD24;
+			// 2 render targets + halos primary buffer gives us the 3 that we need
+			Rasterizer::s_render_target m_targets[2];
+			// pointers to the current setup of targets
+			struct{
+				// scene holds the scene as it was before an effect is started
+				Rasterizer::s_render_target* scene;
+				// current holds the target currently being rendered to
+				Rasterizer::s_render_target* current;
+				// next hold the next (also last) target rendered to
+				Rasterizer::s_render_target* next;
+			}m_target_setup;
 
-		public:
-
+			// returns true if both of the extra render targets are ok to use
 			bool				IsAvailable() const;
-			// Create the textures and get the surfaces.
-			void				AllocateResources(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters, D3DFORMAT TargetFormat);
-			// Release textures and surfaces.
+			// create the render targets
+			void				AllocateResources(IDirect3DDevice9* device, 
+				uint32 width, 
+				uint32 height);
+			// release the render targets
 			void				ReleaseResources();
-			// Toggle between surface/texture 1 and 2
-			void                Flip();
-			// Get the previously written to surface.
-			IDirect3DSurface9*  GetPrevTarget()	const	{ return m_targets[1 - m_next].surface; }			
-			// Get the previously written to texture.
-			IDirect3DTexture9*  GetPrevSource()	const	{ return m_targets[m_next].texture; }
-			// Get the next surface to write to.
-			IDirect3DSurface9*  GetNextTarget()	const	{ return m_targets[m_next].surface; }
-			// Get the next texture being written to.
-			IDirect3DTexture9*  GetNextSource() const	{ return m_targets[1 - m_next].texture; }
+			// resets the target setup to the default of halos primary buffer as the scene texture
+			void				ResetTargets();
+			// swaps the pointers for current and next
+			void				Flip();
+			// swaps the pointers for scene and next
+			void				SetSceneToLast();
+
+
+			IDirect3DSurface9*  GetSceneSurface()	const	{ return m_target_setup.scene->surface; }			
+			IDirect3DTexture9*  GetSceneTexture()	const	{ return m_target_setup.scene->texture; }
+			IDirect3DSurface9*  GetCurrentSurface()	const	{ return m_target_setup.current->surface; }			
+			IDirect3DTexture9*  GetCurrentTexture()	const	{ return m_target_setup.current->texture; }
+			IDirect3DSurface9*  GetNextSurface()	const	{ return m_target_setup.next->surface; }
+			IDirect3DTexture9*  GetNextTexture()	const	{ return m_target_setup.next->texture; }
 		};
 	};
 };

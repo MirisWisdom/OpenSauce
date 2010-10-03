@@ -57,12 +57,12 @@ namespace Yelo
 			uint32					m_effect_count;
 
 		public:
-			// Add an effect pointer to the list and increment [m_effect_count]
-			void AddEffect(c_postprocess_effect* effect);
-			// Deletes all [m_effect_list_head nodes
-			void ClearList();
-			// Iterate through [m_effect_list_head rendering each effect in order
-			void RenderEffects(IDirect3DDevice9* pDevice, double frame_time);
+			// add an effect pointer to the list and increment [m_effect_count]
+			void		AddEffect(c_postprocess_effect* effect);
+			// deletes all [m_effect_list_head] nodes
+			void		ClearList();
+			// iterate through [m_effect_list_head] rendering each effect in order
+			bool		RenderEffects(IDirect3DDevice9* pDevice, double frame_time);
 		};
 	};
 };
