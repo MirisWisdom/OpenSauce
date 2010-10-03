@@ -26,12 +26,6 @@ namespace Yelo
 			k_protected_group_tag = 'prot', // HEK+: this overrides the scenario's group tag in the tag index.
 		};
 
-		enum tag_data_location {
-			_tag_data_location_none,
-			_tag_data_location_external,
-			_tag_data_location_internal,
-		};
-
 		enum predicted_resource : _enum {
 			_predicted_resource_bitmap,
 			_predicted_resource_sound,
@@ -194,7 +188,7 @@ namespace Yelo
 			_enum type;
 			int16 resource_index;
 			datum_index tag_index;
-		};
+		}; BOOST_STATIC_ASSERT( sizeof(predicted_resource) == 0x8 ); // max count: 1024
 
 		struct tag_iterator {
 			PAD32;
@@ -233,5 +227,7 @@ namespace Yelo
 // [arg2] = units
 // [arg3] = documentation
 #define TAG_FIELD(type, name, ...)			type name
+
+#define TAG_ARRAY(type, name, count)		type name[count]
 
 #define TAG_PAD(type, count)				Yelo::byte BOOST_JOIN(pad, __COUNTER__)[sizeof(type)*(count)]

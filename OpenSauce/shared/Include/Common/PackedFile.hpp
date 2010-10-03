@@ -77,14 +77,25 @@ namespace Yelo
 		bool			m_file_mapped;
 		PAD24;
 #else
+	public:
 		struct s_element_editor : s_element
 		{
 			char* source_id;
 			void* source_data;
-		};
 
-		s_header			m_header;
-		s_element_editor*	m_elements;
+			s_element_editor() : source_id(NULL), source_data(NULL) {}
+			void Delete()
+			{
+				delete [] source_id;
+				delete [] source_data;
+				source_id = NULL;
+				source_data = NULL;
+			}
+		};
+	private:
+
+		s_header						m_header;
+		std::vector<s_element_editor>	m_elements;
 #endif
 
 	public:
@@ -106,11 +117,12 @@ namespace Yelo
 		API_INLINE bool IsFileMapped() const { return m_file_mapped; }
 
 #else
-		c_packed_file(uint32 element_count);
+		c_packed_file();
 		~c_packed_file();
 
 		void CalculateOffsets();
 		HRESULT Save(cstring save_location);
+		void AddElement(s_element_editor& element);
 #endif
 	};
 };

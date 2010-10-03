@@ -37,51 +37,6 @@ namespace Yelo
 #include "Memory/_EngineLayout.inl"
 
 		//////////////////////////////////////////////////////////////////////////
-		// s_render_target
-		HRESULT		s_render_target::CreateTarget(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters, D3DFORMAT Format)
-		{
-			m_enabled = true;
-
-			HRESULT hr = pDevice->CreateTexture(						
-					pParameters->BackBufferWidth,
-					pParameters->BackBufferHeight,
-					1,
-					D3DUSAGE_RENDERTARGET,
-					Format,
-					D3DPOOL_DEFAULT,
-					&m_texture,
-					NULL);
-
-			if(SUCCEEDED(hr))
-				hr = m_texture->GetSurfaceLevel(0, &m_surface);
-
-			if(FAILED(hr))
-			{
-				this->ReleaseTarget();
-				m_enabled = false;
-			}
-			m_format = Format;
-			return hr;
-		}
-
-		void		s_render_target::ReleaseTarget()
-		{
-			Yelo::safe_release(m_surface);
-			Yelo::safe_release(m_texture);
-		}
-
-		void		s_render_target::ClearTarget(IDirect3DDevice9* pDevice)
-		{
-			if(!m_enabled)	return;
-			
-			pDevice->SetRenderTarget(0, m_surface);
-			pDevice->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL,
-										0x00000000, 1.0f, 0L );
-		}
-		//////////////////////////////////////////////////////////////////////////
-
-
-		//////////////////////////////////////////////////////////////////////////
 		// s_gbuffer
 		void s_gbuffer::ReleaseTargets()
 		{
@@ -352,14 +307,14 @@ namespace Yelo
 			if(FAILED(LoadEffect(pDevice, &gbuffer_debug,	"GBuffer_Debug")))	return;			
 
 			// Create the position texture
-			gbuffer.m_rt_depth.CreateTarget(pDevice, params, D3DFMT_R32F);
+			gbuffer.m_rt_depth.CreateTarget(pDevice, params->BackBufferWidth, params->BackBufferHeight, D3DFMT_R32F);
 
 			// Create the velocity texture
-			gbuffer.m_rt_velocity.CreateTarget(pDevice, params, D3DFMT_G16R16F);
+			gbuffer.m_rt_velocity.CreateTarget(pDevice, params->BackBufferWidth, params->BackBufferHeight, D3DFMT_G16R16F);
 			// Create the normals texture
-			gbuffer.m_rt_normals.CreateTarget(pDevice, params, D3DFMT_G16R16F);
+			gbuffer.m_rt_normals.CreateTarget(pDevice, params->BackBufferWidth, params->BackBufferHeight, D3DFMT_G16R16F);
 			// Create the index texture
-			gbuffer.m_rt_index.CreateTarget(pDevice, params, D3DFMT_A8R8G8B8);
+			gbuffer.m_rt_index.CreateTarget(pDevice, params->BackBufferWidth, params->BackBufferHeight, D3DFMT_A8R8G8B8);
 
 			m_structures.vs_technique_bsp = gbuffer_vs->GetTechniqueByName("BSP_VS");
 			m_structures.vs_technique_object = gbuffer_vs->GetTechniqueByName("Object_VS");
@@ -378,36 +333,36 @@ namespace Yelo
 			switch (m_multi_rt.count)
 			{
 			case 1:
-				m_multi_rt.output[0][0] = (gbuffer.m_rt_depth.m_enabled ?	gbuffer.m_rt_depth.m_surface : NULL);
-				m_multi_rt.output[1][0] = (gbuffer.m_rt_velocity.m_enabled ?gbuffer.m_rt_velocity.m_surface : NULL);
-				m_multi_rt.output[2][0] = (gbuffer.m_rt_normals.m_enabled ?	gbuffer.m_rt_normals.m_surface : NULL);
-				m_multi_rt.output[3][0] = (gbuffer.m_rt_index.m_enabled ?	gbuffer.m_rt_index.m_surface : NULL);
+				m_multi_rt.output[0][0] = (gbuffer.m_rt_depth.IsEnabled() ?		gbuffer.m_rt_depth.surface : NULL);
+				m_multi_rt.output[1][0] = (gbuffer.m_rt_velocity.IsEnabled() ?	gbuffer.m_rt_velocity.surface : NULL);
+				m_multi_rt.output[2][0] = (gbuffer.m_rt_normals.IsEnabled() ?	gbuffer.m_rt_normals.surface : NULL);
+				m_multi_rt.output[3][0] = (gbuffer.m_rt_index.IsEnabled() ?		gbuffer.m_rt_index.surface : NULL);
 				break;
 			case 2:
 			case 3:
-				m_multi_rt.output[0][0] = (gbuffer.m_rt_depth.m_enabled	?	gbuffer.m_rt_depth.m_surface : NULL);
-				m_multi_rt.output[0][1] = (gbuffer.m_rt_velocity.m_enabled ?gbuffer.m_rt_velocity.m_surface : NULL);
-				m_multi_rt.output[1][0] = (gbuffer.m_rt_normals.m_enabled ?	gbuffer.m_rt_normals.m_surface : NULL);
-				m_multi_rt.output[1][1] = (gbuffer.m_rt_index.m_enabled ?	gbuffer.m_rt_index.m_surface : NULL);
+				m_multi_rt.output[0][0] = (gbuffer.m_rt_depth.IsEnabled()	?	gbuffer.m_rt_depth.surface : NULL);
+				m_multi_rt.output[0][1] = (gbuffer.m_rt_velocity.IsEnabled() ?	gbuffer.m_rt_velocity.surface : NULL);
+				m_multi_rt.output[1][0] = (gbuffer.m_rt_normals.IsEnabled() ?	gbuffer.m_rt_normals.surface : NULL);
+				m_multi_rt.output[1][1] = (gbuffer.m_rt_index.IsEnabled() ?		gbuffer.m_rt_index.surface : NULL);
 				break;
 			default:
-				m_multi_rt.output[0][0] = (gbuffer.m_rt_depth.m_enabled ?	gbuffer.m_rt_depth.m_surface : NULL);
-				m_multi_rt.output[0][1] = (gbuffer.m_rt_velocity.m_enabled ?gbuffer.m_rt_velocity.m_surface : NULL);
-				m_multi_rt.output[0][2] = (gbuffer.m_rt_normals.m_enabled ?	gbuffer.m_rt_normals.m_surface : NULL);
-				m_multi_rt.output[0][3] = (gbuffer.m_rt_index.m_enabled ?	gbuffer.m_rt_index.m_surface : NULL);
+				m_multi_rt.output[0][0] = (gbuffer.m_rt_depth.IsEnabled() ?		gbuffer.m_rt_depth.surface : NULL);
+				m_multi_rt.output[0][1] = (gbuffer.m_rt_velocity.IsEnabled() ?	gbuffer.m_rt_velocity.surface : NULL);
+				m_multi_rt.output[0][2] = (gbuffer.m_rt_normals.IsEnabled() ?	gbuffer.m_rt_normals.surface : NULL);
+				m_multi_rt.output[0][3] = (gbuffer.m_rt_index.IsEnabled() ?		gbuffer.m_rt_index.surface : NULL);
 				break;
 			}
 			m_debug.rt_technique_single =	gbuffer_debug->GetTechniqueByName("DebugRTSingle");
 			m_debug.rt_technique_all =		gbuffer_debug->GetTechniqueByName("DebugRTAll");
 
-			D3DXHANDLE	DepthTex =							gbuffer_debug->GetParameterByName(NULL, "DepthTex");
-			D3DXHANDLE	VelocityTex =						gbuffer_debug->GetParameterByName(NULL, "VelocityTex");
-			D3DXHANDLE	NormalsTex =						gbuffer_debug->GetParameterByName(NULL, "NormalsTex");
-			D3DXHANDLE	IndexTex =							gbuffer_debug->GetParameterByName(NULL, "IndexTex");
-			if(gbuffer.m_rt_depth.m_enabled&&DepthTex)		gbuffer_debug->SetTexture(DepthTex,	gbuffer.m_rt_depth.m_texture);
-			if(gbuffer.m_rt_velocity.m_enabled&&VelocityTex)gbuffer_debug->SetTexture(VelocityTex, gbuffer.m_rt_velocity.m_texture);
-			if(gbuffer.m_rt_normals.m_enabled&&NormalsTex)	gbuffer_debug->SetTexture(NormalsTex, gbuffer.m_rt_normals.m_texture);
-			if(gbuffer.m_rt_index.m_enabled&&IndexTex)		gbuffer_debug->SetTexture(IndexTex,	gbuffer.m_rt_index.m_texture);
+			D3DXHANDLE	DepthTex =								gbuffer_debug->GetParameterByName(NULL, "DepthTex");
+			D3DXHANDLE	VelocityTex =							gbuffer_debug->GetParameterByName(NULL, "VelocityTex");
+			D3DXHANDLE	NormalsTex =							gbuffer_debug->GetParameterByName(NULL, "NormalsTex");
+			D3DXHANDLE	IndexTex =								gbuffer_debug->GetParameterByName(NULL, "IndexTex");
+			if(gbuffer.m_rt_depth.IsEnabled()&&DepthTex)		gbuffer_debug->SetTexture(DepthTex,	gbuffer.m_rt_depth.texture);
+			if(gbuffer.m_rt_velocity.IsEnabled()&&VelocityTex)	gbuffer_debug->SetTexture(VelocityTex, gbuffer.m_rt_velocity.texture);
+			if(gbuffer.m_rt_normals.IsEnabled()&&NormalsTex)	gbuffer_debug->SetTexture(NormalsTex, gbuffer.m_rt_normals.texture);
+			if(gbuffer.m_rt_index.IsEnabled()&&IndexTex)		gbuffer_debug->SetTexture(IndexTex,	gbuffer.m_rt_index.texture);
 
 			m_parameters.far_clip =					gbuffer_ps->GetParameterByName(NULL, "FarClipDistance");
 			m_parameters.is_sky =					gbuffer_ps->GetParameterByName(NULL, "IsSky");

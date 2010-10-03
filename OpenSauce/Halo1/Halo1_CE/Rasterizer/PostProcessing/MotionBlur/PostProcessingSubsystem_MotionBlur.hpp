@@ -56,9 +56,9 @@ namespace Yelo
 			static void			InitializeForNewMap() {}
 			static void			DisposeFromOldMap() {}
 			static void			Update(real DeltaTime) {}
-			static void			DoPostProcesses(IDirect3DDevice9* pDevice, float frame_time, Enums::postprocess_render_stage render_point) {}
+			static bool			DoPostProcesses(IDirect3DDevice9* pDevice, float frame_time, Enums::postprocess_render_stage render_point) { return false; }
 
-			static void			DoMotionBlurProcess(IDirect3DDevice9* pDevice, double frame_time);
+			static bool			DoMotionBlurProcess(IDirect3DDevice9* pDevice, double frame_time);
 
 		private:
 			void				InitializeImpl(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters);	
@@ -72,7 +72,7 @@ namespace Yelo
 			void				SaveSettingsImpl(TiXmlElement* pp_element);
 			void				SetDefaultSettingsImpl();
 
-			void				DoMotionBlurProcessImpl(IDirect3DDevice9* pDevice, double frame_time);
+			bool				DoMotionBlurProcessImpl(IDirect3DDevice9* pDevice, double frame_time);
 		};
 	}; }; };
 };

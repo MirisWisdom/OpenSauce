@@ -89,41 +89,37 @@ namespace Yelo
 
 		bool PLATFORM_API shader_postprocess_collection_group_postprocess(datum_index tag_index, bool verify_data)
 		{
-			// stops processing of the tag
-			//if(verify_data)
-			//{
-				TagGroups::s_shader_postprocess_collection* collection_tag = Yelo::tag_get<TagGroups::s_shader_postprocess_collection>(tag_index);
+			TagGroups::s_shader_postprocess_collection* collection_tag = Yelo::tag_get<TagGroups::s_shader_postprocess_collection>(tag_index);
 
-				for(int32 i = 0; i < collection_tag->effects.Count; i++)
+			for(int32 i = 0; i < collection_tag->effects.Count; i++)
+			{
+				TagGroups::s_shader_postprocess_collection_effect& collection_effect = collection_tag->effects[i];
+
+				for(int32 j = 0; j < collection_effect.script_variables.Count; j++)
 				{
-					TagGroups::s_shader_postprocess_collection_effect& collection_effect = collection_tag->effects[i];
+					TagGroups::s_shader_postprocess_collection_shader* shader = 
+						&collection_tag->shaders[
+							collection_effect.shader_indices[
+								collection_effect.script_variables[j].shader_index
+							].shader_index
+						];
 
-					for(int32 j = 0; j < collection_effect.script_variables.Count; j++)
+					bool result = shader_postprocess_generic_group_find_variable(
+						collection_effect.script_variables[j].value_type,
+						collection_effect.script_variables[j].shader_variable_name,
+						shader->shader.tag_index);
+
+					if(!result)
 					{
-						TagGroups::s_shader_postprocess_collection_shader* shader = 
-							&collection_tag->shaders[
-								collection_effect.shader_indices[
-									collection_effect.script_variables[j].shader_index
-								].shader_index
-							];
+						s_tag_instance* tag_instance = (*TagGroups::TagInstances())[shader->shader.tag_index];
 
-						bool result = shader_postprocess_generic_group_find_variable(
-							collection_effect.script_variables[j].value_type,
+						YELO_ERROR(_error_message_priority_warning,
+							"CheApe: shader_postprocess_collection postprocessing failed on '%s' in '%s.%s' (or one of its bases)", 
 							collection_effect.script_variables[j].shader_variable_name,
-							shader->shader.tag_index);
-
-						if(!result)
-						{
-							s_tag_instance* tag_instance = (*TagGroups::TagInstances())[shader->shader.tag_index];
-
-							YELO_ERROR(_error_message_priority_warning,
-								"CheApe: shader_postprocess_collection postprocessing failed on '%s' in '%s.%s' (or one of its bases)", 
-								collection_effect.script_variables[j].shader_variable_name,
-								tag_instance->filename, Yelo::tag_group_get(tag_instance->group_tag)->name);
-						}
+							tag_instance->filename, Yelo::tag_group_get(tag_instance->group_tag)->name);
 					}
 				}
-			//}
+			}
 
 			return true;
 		}

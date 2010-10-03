@@ -26,15 +26,19 @@
 		&scenario_compile_scripts),
 
 	IMPORT_CLASS_DEFINITION("compile-shader-postprocess", 
-			3, "<shader-postprocess> <remove-text> <compile-debug>", 
+			1, "<shader-directory>", 
 		&compile_shader_postprocess),
 
 	IMPORT_CLASS_DEFINITION("help", 
-		1, "<yelo-tool-command>", 
+			1, "<yelo-tool-command>", 
 		&tool_if_you_dont_get_help_at_charter),
 
 	IMPORT_CLASS_DEFINITION("import-structure-lightmap-uvs", 
-		2, "<structure-bsp> <obj-file>", 
+			2, "<structure-bsp> <obj-file>", 
 		&import_structure_lightmap_uvs),
+
+	IMPORT_CLASS_DEFINITION("build-cpp-definition", 
+			2, "<tag-group> <add-boost-asserts>", 
+		&build_cpp_definition),
 
 	// TODO: add new import classes here

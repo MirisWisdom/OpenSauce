@@ -89,9 +89,9 @@ namespace Yelo
 				c_motionblur_subsystem::g_instance.ReleaseResourcesImpl();
 		}
 
-		void		c_motionblur_subsystem::DoMotionBlurProcess(IDirect3DDevice9* pDevice, double frame_time)
+		bool		c_motionblur_subsystem::DoMotionBlurProcess(IDirect3DDevice9* pDevice, double frame_time)
 		{
-			c_motionblur_subsystem::g_instance.DoMotionBlurProcessImpl(pDevice, frame_time);
+			return c_motionblur_subsystem::g_instance.DoMotionBlurProcessImpl(pDevice, frame_time);
 		}
 
 
@@ -101,6 +101,8 @@ namespace Yelo
 			g_shader.SetSource(&m_motionblur_shader);
 			g_shader.SetupShader();
 
+			m_motionblur_effect.quad_tesselation.x = 5;
+			m_motionblur_effect.quad_tesselation.y = 5;
 			g_effect.Ctor();
 			g_effect.SetSource(&m_motionblur_effect);
 			g_effect.SetupEffect();
@@ -137,7 +139,7 @@ namespace Yelo
 				g_effect.AddProcess(shader_instance);
 			}
 			g_effect.ValidateEffect();
-			g_subsystem_loaded = SUCCEEDED(hr);
+			g_subsystem_loaded = SUCCEEDED(hr) && PP::Globals().m_flags.loaded;
 			return hr;
 		}
 
@@ -177,12 +179,14 @@ namespace Yelo
 			g_shader.m_blur_amount = 1.0f;
 		}
 
-		void		c_motionblur_subsystem::DoMotionBlurProcessImpl(IDirect3DDevice9* pDevice, double frame_time)
+		bool		c_motionblur_subsystem::DoMotionBlurProcessImpl(IDirect3DDevice9* pDevice, double frame_time)
 		{	
 			HRESULT hr = S_OK;		
-			if (!g_subsystem_enabled) return;
+			if (!g_subsystem_enabled) return false;
 
 			hr = g_effect.DoPostProcessEffect(pDevice, frame_time);
+
+			return SUCCEEDED(hr);
 		}
 
 	}; }; };

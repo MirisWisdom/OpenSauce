@@ -140,7 +140,7 @@ namespace Yelo
 			lruv_locked_block_proc	locked_block_proc;
 			int32					page_count;
 			int32					page_size_bits;
-			int32					frame_index
+			int32					frame_index;
 			datum_index				first_block_index;
 			datum_index				last_block_index;
 			s_data_array*			data;

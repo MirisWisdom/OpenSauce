@@ -19,9 +19,11 @@
 #include "Common/Precompile.hpp"
 #include "Rasterizer/PostProcessing/PostProcessingShader.hpp"
 #if !PLATFORM_IS_DEDI
+#include "Rasterizer/PostProcessing/PostProcessingDebug.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameState.hpp"
 #include "Rasterizer/GBuffer.hpp"
+#include "Rasterizer/Rasterizer.hpp"
 
 namespace PP = Yelo::Postprocessing;
 
@@ -37,6 +39,10 @@ namespace Yelo
 		void		c_postprocess_shader::SetSource(void* pSource)
 		{
 			m_shader_base = CAST_PTR(TagGroups::s_shader_postprocess_definition*, pSource);
+		}		
+		HRESULT		c_postprocess_shader::LoadShader(IDirect3DDevice9* pDevice)
+		{
+			return LoadShader_Impl(pDevice, m_shader_base);
 		}
 		HRESULT		c_postprocess_shader::SetupShader()
 		{
@@ -101,27 +107,25 @@ namespace Yelo
 			m_shader_base->near_clip_dist.Initialize(m_effect,			"NEARCLIPDISTANCE", &pf_values.m_clipping.near_clip, true);
 			m_shader_base->far_clip_dist.Initialize(m_effect,			"FARCLIPDISTANCE", &pf_values.m_clipping.far_clip, true);
 
-			// Made tex_scene optional, realized it's rarely used!
-			m_shader_base->tex_scene.Initialize(m_effect,				"TEXSCENE", pp_globals.m_render_targets.scene_render_target.m_texture, true);
-			if(!m_shader_base->tex_scene.IsUsed() && !pp_globals.m_render_targets.scene_render_target.m_enabled) return E_FAIL;
+			m_shader_base->tex_scene.Initialize(m_effect,				"TEXSCENE", Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].texture, true);
 
-			m_shader_base->tex_source.Initialize(m_effect,				"TEXSOURCE", pp_globals.m_render_targets.scene_render_target.m_texture, true);
+			m_shader_base->tex_source.Initialize(m_effect,				"TEXSOURCE", Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].texture, true);
 			if(m_shader_base->tex_source.IsUsed() && !pp_globals.m_render_targets.scene_buffer_chain.IsAvailable()) return E_FAIL;
 
-			m_shader_base->tex_depth.Initialize(m_effect,				"TEXDEPTH", pp_globals.m_render_targets.gbuffer->m_rt_depth.m_texture, true);
-			if(m_shader_base->tex_depth.IsUsed() && !pp_globals.m_render_targets.gbuffer->m_rt_depth.m_enabled) return E_FAIL;
+			m_shader_base->tex_depth.Initialize(m_effect,				"TEXDEPTH", pp_globals.m_render_targets.gbuffer->m_rt_depth.texture, true);
+			if(m_shader_base->tex_depth.IsUsed() && !pp_globals.m_render_targets.gbuffer->m_rt_depth.IsEnabled()) return E_FAIL;
 			else m_shader_base->runtime.flags.uses_gbuffer_bit |= m_shader_base->tex_depth.IsUsed();
 
-			m_shader_base->tex_velocity.Initialize(m_effect,			"TEXVELOCITY", pp_globals.m_render_targets.gbuffer->m_rt_velocity.m_texture, true);
-			if(m_shader_base->tex_velocity.IsUsed() && !pp_globals.m_render_targets.gbuffer->m_rt_velocity.m_enabled) return E_FAIL;
+			m_shader_base->tex_velocity.Initialize(m_effect,			"TEXVELOCITY", pp_globals.m_render_targets.gbuffer->m_rt_velocity.texture, true);
+			if(m_shader_base->tex_velocity.IsUsed() && !pp_globals.m_render_targets.gbuffer->m_rt_velocity.IsEnabled()) return E_FAIL;
 			else m_shader_base->runtime.flags.uses_gbuffer_bit |= m_shader_base->tex_velocity.IsUsed();
 
-			m_shader_base->tex_normals.Initialize(m_effect,				"TEXNORMALS", pp_globals.m_render_targets.gbuffer->m_rt_normals.m_texture, true);
-			if(m_shader_base->tex_normals.IsUsed() && !pp_globals.m_render_targets.gbuffer->m_rt_normals.m_enabled) return E_FAIL;
+			m_shader_base->tex_normals.Initialize(m_effect,				"TEXNORMALS", pp_globals.m_render_targets.gbuffer->m_rt_normals.texture, true);
+			if(m_shader_base->tex_normals.IsUsed() && !pp_globals.m_render_targets.gbuffer->m_rt_normals.IsEnabled()) return E_FAIL;
 			else m_shader_base->runtime.flags.uses_gbuffer_bit |= m_shader_base->tex_normals.IsUsed();
 
-			m_shader_base->tex_index.Initialize(m_effect,				"TEXINDEX", pp_globals.m_render_targets.gbuffer->m_rt_index.m_texture, true);
-			if(m_shader_base->tex_index.IsUsed() && !pp_globals.m_render_targets.gbuffer->m_rt_index.m_enabled) return E_FAIL;
+			m_shader_base->tex_index.Initialize(m_effect,				"TEXINDEX", pp_globals.m_render_targets.gbuffer->m_rt_index.texture, true);
+			if(m_shader_base->tex_index.IsUsed() && !pp_globals.m_render_targets.gbuffer->m_rt_index.IsEnabled()) return E_FAIL;
 			else m_shader_base->runtime.flags.uses_gbuffer_bit |= m_shader_base->tex_index.IsUsed();
 
 			return S_OK;
@@ -168,6 +172,7 @@ namespace Yelo
 					} pass_vs_version, pass_ps_version;
 					pass_vs_version.version = D3DXGetShaderVersion(pass_description.pVertexShaderFunction);
 					pass_ps_version.version = D3DXGetShaderVersion(pass_description.pPixelShaderFunction);
+
 					// check that the graphics device supports the intended shader model
 					bool ps_version_ok = !(pass_vs_version.version > device_caps.VertexShaderVersion);
 					bool vs_version_ok = !(pass_ps_version.version > device_caps.PixelShaderVersion);
@@ -259,7 +264,7 @@ namespace Yelo
 		}
 		HRESULT		c_postprocess_shader::DoPostProcess(IDirect3DDevice9* pDevice,
 								double frame_time,
-								TagGroups::s_shader_postprocess_effect_render_quad* quad)
+								c_quad_instance* quad)
 		{
 			if(!m_shader_base->runtime.flags.valid_shader_bit)		return E_FAIL;
 
@@ -288,27 +293,39 @@ namespace Yelo
 			pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ZERO);
 
 			PP::s_postprocess_globals::s_render_targets& pp_globals_rts = PP::Globals().m_render_targets;
+			HRESULT hr = E_FAIL;
 			for(UINT pass = 0; pass < num_passes; ++pass )
 			{
-				// do per pass code. if the shader is changed call CommitChanges.
+				// do per pass code
+				// if the shader is changed CommitChanges has to be called
+				// on the D3DX effect for them to be applied
 				DoPerPass(pDevice, frame_time, pass);
 
-				// Set tex_source to either the previous render target, or the saved scene if this is the first pass
+				// set tex_scene to the scene texture as it was before this effect started
+				if(m_shader_base->tex_scene.IsUsed())
+					m_shader_base->tex_scene.SetVariable(&effect,
+						pp_globals_rts.scene_buffer_chain.GetSceneTexture());
+
+				// set tex_source to either the previous render target
+				// or the saved scene if this is the first pass
 				if(m_shader_base->tex_source.IsUsed())
 					m_shader_base->tex_source.SetVariable(&effect,
 						pp_globals_rts.scene_buffer_chain.m_first_render ? 
-							pp_globals_rts.scene_render_target.m_texture : 
-							pp_globals_rts.scene_buffer_chain.GetNextSource());
+							pp_globals_rts.scene_buffer_chain.GetSceneTexture() : 
+							pp_globals_rts.scene_buffer_chain.GetNextTexture());
 				
-				pDevice->SetRenderTarget( 0, pp_globals_rts.scene_buffer_chain.GetNextTarget() );				
+				pDevice->SetRenderTarget( 0, pp_globals_rts.scene_buffer_chain.GetCurrentSurface() );
+
+				pDevice->Clear( 0L, NULL, D3DCLEAR_TARGET, 0x00000000, 1.0f, 0L );			
 				
-				pDevice->Clear( 0L, NULL, D3DCLEAR_TARGET, 0x00000000, 1.0f, 0L );
 				effect->BeginPass( pass );
 				{
-					pDevice->SetIndices(quad->runtime.index_buffer);
-					pDevice->SetStreamSource(0, quad->runtime.vertex_buffer, 0, sizeof( *quad ));
-
-					pDevice->DrawIndexedPrimitive( D3DPT_TRIANGLELIST, 0, 0, quad->vertex_count, 0, quad->primitive_count);
+					hr = pDevice->DrawIndexedPrimitive( D3DPT_TRIANGLELIST, 
+						quad->m_quad.start_vertex,
+						0, 
+						quad->m_quad.vertex_count, 
+						quad->m_quad.start_index, 
+						quad->m_quad.primitive_count);
 				};
 				effect->EndPass();
 
@@ -320,7 +337,70 @@ namespace Yelo
 			// do any custom post render process added by derived classes
 			HRESULT_ERETURN(DoPostRender(pDevice, frame_time));
 
-			return S_OK;
+			return hr;
+		}
+		HRESULT		c_postprocess_shader::LoadShader_Impl(IDirect3DDevice9* pDevice,
+			TagGroups::s_shader_postprocess_definition*& shader)
+		{
+			// Compile the shader using the data in the m_shader_generic tag struct
+			HRESULT hr = S_OK;
+			LPD3DXBUFFER error_buffer;					
+
+			if (!shader)
+				return E_FAIL;
+
+			// if the shader has already been compiled, theres no need to do it again
+			if(shader->runtime.dx_effect == NULL)
+			{	
+				//load the shader from the tag, whether it be in binary or ASCII format
+				if(shader->flags.shader_is_binary_bit)
+				{
+					hr = D3DXCreateEffect( pDevice,
+							shader->shader_code_binary.address,
+							shader->shader_code_binary.size,
+							NULL,
+							NULL,
+							D3DXSHADER_OPTIMIZATION_LEVEL3,
+							NULL,
+							&shader->runtime.dx_effect,
+							&error_buffer );	
+				}
+				else if(shader->shader_code_text.size > 1)
+				{
+					hr = D3DXCreateEffect( pDevice,
+							shader->shader_code_text.address,
+							shader->shader_code_text.size,
+							NULL,
+							NULL,
+							D3DXSHADER_OPTIMIZATION_LEVEL3,
+							NULL,
+							&shader->runtime.dx_effect,
+							&error_buffer );
+				}
+				else
+				{
+					shader->runtime.dx_effect = NULL;
+					hr = E_FAIL;
+				}
+
+				if (FAILED(hr))
+				{
+					// if loading the shader failed, and we are in devmode
+					// print an error to the console and write the errors
+					// to the log
+					if(GameState::DevmodeEnabled())
+					{
+						Postprocessing::Debug::WriteLine(
+							"Error: failed to load shader \"%s\"",
+							this->m_shader_id);
+						Postprocessing::Debug::WriteD3DXErrors(error_buffer, 1);
+					}
+				}
+				Yelo::safe_release(error_buffer);		
+			}
+			m_effect = &shader->runtime.dx_effect;
+
+			return hr;
 		}
 	};
 };

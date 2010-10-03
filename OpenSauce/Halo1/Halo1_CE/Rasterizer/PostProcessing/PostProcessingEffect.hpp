@@ -71,25 +71,21 @@ namespace Yelo
 		protected:
 			TagGroups::s_shader_postprocess_effect_definition* m_base_effect;
 
-			c_shader_instance_node*			m_shader_list_head;	// Linked list of all shaders this effect uses
-			s_postprocess_quad				m_render_quad;
+			c_shader_instance_node*			m_shader_list_head;
+			c_quad_instance*				m_render_quad;
 
 		public:
 			HRESULT				AddProcess(c_shader_instance_node* shader_instance);
 			void				ResetEffect();
 			virtual bool		ValidateEffect();
 			virtual void		SetSource(void* pSource);
-			virtual HRESULT		SetupEffect();
+			virtual HRESULT		SetupEffect() { return S_OK; }
 			virtual HRESULT		DoPreShader(IDirect3DDevice9* pDevice, double frame_time, int32 shader_index)	{ return S_OK; }
 			virtual HRESULT		DoPostShader(IDirect3DDevice9* pDevice, double frame_time, int32 shader_index)	{ return S_OK; }
-			//OPTIONAL		Things than need to be done before the effect is started go here.
 			virtual HRESULT		DoPreEffect(IDirect3DDevice9* pDevice,  double frame_time)	{ return S_OK; }
-			//OPTIONAL		Things than need to be done after the effect is complete go here.
 			virtual HRESULT		DoPostEffect(IDirect3DDevice9* pDevice,  double frame_time)	{ return S_OK; }
 			HRESULT				DoPostProcessEffect(IDirect3DDevice9* pDevice,  double frame_time);
-			//IGNORE		Releases the buffers used by the render quad
 			virtual void		ReleaseResources();	
-			//IGNORE		Allocates the quad buffers using previous values
 			virtual void		AllocateResources(IDirect3DDevice9* pDevice);
 			virtual void		Update(real delta_time);
 
@@ -97,7 +93,7 @@ namespace Yelo
 			{
 				m_base_effect = NULL;
 				m_shader_list_head = NULL;
-				m_render_quad.Ctor();
+				m_render_quad = NULL;
 			}
 
 			virtual	void		Dtor()

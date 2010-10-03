@@ -45,9 +45,6 @@ namespace Yelo
 		HRESULT		c_generic_shader_base::LoadShader(IDirect3DDevice9* pDevice)
 		{
 			// Compile the shader using the data in the m_shader_generic tag struct
-			HRESULT hr = S_OK;
-			LPD3DXBUFFER error_buffer;					
-
 			if (!m_shader_generic)
 				return E_FAIL;
 
@@ -55,59 +52,9 @@ namespace Yelo
 			TagGroups::s_shader_postprocess_generic* shader = m_shader_generic;
 			while(!shader->base_shader.tag_index.IsNull())
 				shader = TagGroups::Instances()[shader->base_shader.tag_index.index].Definition<TagGroups::s_shader_postprocess_generic>();
-
-			// if the shader has already been compiled, theres no need to do it again
-			if(shader->runtime.dx_effect == NULL)
-			{	
-				//load the shader from the tag, whether it be in binary or ASCII format
-				if(shader->flags.shader_is_binary_bit)
-				{
-					hr = D3DXCreateEffect( pDevice,
-							shader->shader_code_binary.address,
-							shader->shader_code_binary.size,
-							NULL,
-							NULL,
-							D3DXSHADER_OPTIMIZATION_LEVEL3,
-							NULL,
-							&shader->runtime.dx_effect,
-							&error_buffer );	
-				}
-				else if(shader->shader_code_text.size > 1)
-				{
-					hr = D3DXCreateEffect( pDevice,
-							shader->shader_code_text.address,
-							shader->shader_code_text.size,
-							NULL,
-							NULL,
-							D3DXSHADER_OPTIMIZATION_LEVEL3,
-							NULL,
-							&shader->runtime.dx_effect,
-							&error_buffer );
-				}
-				else
-				{
-					shader->runtime.dx_effect = NULL;
-					hr = E_FAIL;
-				}
-
-				if (FAILED(hr))
-				{
-					// if loading the shader failed, and we are in devmode
-					// print an error to the console and write the errors
-					// to the log
-					if(GameState::DevmodeEnabled())
-					{
-						Postprocessing::Debug::WriteLine(
-							"Error: failed to load shader \"%s\"",
-							this->m_shader_id);
-						Postprocessing::Debug::WriteD3DXErrors(error_buffer, 1);
-					}
-				}
-				Yelo::safe_release(error_buffer);		
-			}
-			m_effect = &shader->runtime.dx_effect;
-
-			return hr;
+			
+			TagGroups::s_shader_postprocess_definition* shader_definition = shader;
+			return LoadShader_Impl(pDevice, shader_definition);
 		}
 		HRESULT		c_generic_shader_base::LoadBitmaps(IDirect3DDevice9* pDevice)
 		{

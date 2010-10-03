@@ -69,7 +69,7 @@ namespace Yelo
 
 		HRESULT		c_motionblur_shader::LoadCustomResources(IDirect3DDevice9* pDevice)
 		{
-			if(!PP::Globals().m_render_targets.gbuffer->m_rt_velocity.m_enabled)
+			if(!PP::Globals().m_render_targets.gbuffer->m_rt_velocity.IsEnabled())
 				return E_FAIL;
 
 			m_blur_shader->blur_amount_var.Initialize(m_effect, "c_blur_amount", &m_blur_amount, false);

@@ -37,21 +37,12 @@
 #include "Rasterizer/DX9/DX9.hpp"
 #include "Rasterizer/RenderTargetChain.hpp"
 #include "Rasterizer/GBuffer.hpp"
+#include "Rasterizer/PostProcessing/PostProcessingQuadManager.hpp"
 
 namespace Yelo
 {
 	namespace Postprocessing
 	{
-		/////////////////////////////////////////////////////////////////////
-		// Vertex structure for full screen quad
-		/////////////////////////////////////////////////////////////////////
-		struct s_postprocess_vertex
-		{
-			real x, y, z;
-			real tu0, tv0;		// Texcoord0 for post-process source
-			real tu1, tv1;		// Texcoord1 for the original scene
-		};
-
 		struct s_dx9_render_state_capture
 		{
 		private:
@@ -114,31 +105,29 @@ namespace Yelo
 		};
 		s_activation_variables& ActivationVariables();
 
-
 		/////////////////////////////////////////////////////////////////////
-		// Quad struct that builds a vertex and index buffer with any number
-		// of quads.
+		// Fades the current scene texture and target by a specified amount
 		/////////////////////////////////////////////////////////////////////
-		struct s_postprocess_quad
+		class c_fade_effect
 		{
-			enum {
-				k_maximum_quads_per_axis = 50, // maximum number of quads allowed on each axis
-			};
+			bool				m_available;
+			PAD24;
+			LPD3DXEFFECT		m_effect;
+			D3DXHANDLE			m_result_texture;
+			D3DXHANDLE			m_fade_amount;
+			c_quad_instance*	m_quad_instance;
+		public:
+			HRESULT		FadeResult(IDirect3DDevice9* device, float fade_value);
+			HRESULT		AllocateResources(IDirect3DDevice9* device);
+			void		ReleaseResources();
+			bool		IsAvailable();
 
-			TagGroups::s_shader_postprocess_effect_render_quad* m_quad;
-
-			void Ctor()	{ m_quad = NULL; }
-
-			// Builds the vertex and index buffers that get rendered
-			bool SetupQuad(IDirect3DDevice9* pDevice, int32 XSegments, int32 YSegments);
-			// Releases the vertex and index buffers
-			void ReleaseResources();
-			// Sets the location to store the quad data at, typically in an effect tag structure
-			void SetSource(TagGroups::s_shader_postprocess_effect_render_quad* quad);
-			// Recreates the vertex and index buffer using the previously set [m_quad->x_segs] and [m_quad->y_segs] values
-			void AllocateResources(IDirect3DDevice9* pDevice);
+			c_fade_effect() : m_available(false), 
+				m_effect(NULL), 
+				m_result_texture(NULL), 
+				m_fade_amount(NULL), 
+				m_quad_instance(NULL) {}
 		};
-
 
 		/////////////////////////////////////////////////////////////////////
 		// Global runtime values accessible to all subsystems
@@ -146,6 +135,9 @@ namespace Yelo
 		struct s_postprocess_globals
 		{
 			static s_postprocess_globals g_instance;
+
+			c_quad_manager					m_quad_manager;
+			c_fade_effect					m_fade_effect;
 
 			TagGroups::s_shader_postprocess_globals* m_map_postprocess_globals;
 
@@ -155,24 +147,20 @@ namespace Yelo
 				PAD24;
 			}m_flags;
 			struct s_rendering {
-				real_point2d				screen_dimensions;	// Dimensions of the current render area
+				point2d						screen_dimensions;	// Dimensions of the current render area
 				IDirect3DDevice9*			render_device;		// Pointer to the current direct3D device
-				IDirect3DSurface9*			render_surface;		// Pointer to the surface we are writing to
 				D3DPRESENT_PARAMETERS		creation_parameters;// Parameters the device was created with
 			}m_rendering;
 			struct s_render_targets {
 				DX9::s_render_target_chain	scene_buffer_chain;
-				DX9::s_render_target		scene_render_target;// Render target for the scene pre-effect
 				DX9::s_gbuffer*				gbuffer;
-			}m_render_targets;
-			struct s_fade {
-				bool						fade_loaded;
-				PAD24;
-				LPD3DXEFFECT				fade_shader;		// Shader for fading effects in and out. Globally accessible.
-			}m_fade;
+			}m_render_targets;			
 			struct s_matricies {
 				D3DXMATRIX					ortho_proj_matrix;	// Orthographic projection matrix for rendering quads
 			}m_matricies;
+
+			c_quad_manager&					QuadManager() { return m_quad_manager; }
+			c_fade_effect&					FadeEffect() { return m_fade_effect; }
 		};
 		s_postprocess_globals& Globals();
 

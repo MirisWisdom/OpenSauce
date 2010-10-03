@@ -89,7 +89,8 @@ namespace Yelo
 			void		(*InitializeForNewMap)();
 			void		(*DisposeFromOldMap)();
 			void		(*Update)(real delta_time);
-			void		(*DoPostProcesses)(IDirect3DDevice9* pDevice, real frame_time, Enums::postprocess_render_stage render_point);
+			// return true if any effects were applied
+			bool		(*DoPostProcesses)(IDirect3DDevice9* pDevice, real frame_time, Enums::postprocess_render_stage render_point);
 		};
 
 		//	[out_components] - Returns a list of components, or NULL if no components exist

@@ -35,6 +35,7 @@
 
 #include "Tool/ImportLightmapUV.hpp"
 #include "Tool/ShaderPostprocess.hpp"
+#include "Tool/BuildCppDefinition.hpp"
 
 namespace Yelo
 {

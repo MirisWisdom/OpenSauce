@@ -19,6 +19,8 @@
 #include "Common/Precompile.hpp"
 #include "Rasterizer/PostProcessing/PostProcessingEffect.hpp"
 #if !PLATFORM_IS_DEDI
+#include "Rasterizer/Rasterizer.hpp"
+#include "Rasterizer/PostProcessing/PostProcessingQuadManager.hpp"
 
 namespace PP = Yelo::Postprocessing;
 
@@ -54,6 +56,9 @@ namespace Yelo
 		{
 			m_base_effect = NULL;
 
+			// release the quad instance to reduce its reference count
+			safe_release<c_quad_instance>(m_render_quad);
+
 			// deleting the head node will recursively delete all child nodes
 			delete m_shader_list_head;
 			m_shader_list_head = NULL;
@@ -62,9 +67,7 @@ namespace Yelo
 		{
 			m_base_effect->runtime.flags.valid_effect_bit = false;
 
-			if(m_base_effect->runtime.quad.quad_count < 1 || 
-				!m_base_effect->runtime.quad.runtime.vertex_buffer || !m_base_effect->runtime.quad.runtime.index_buffer ||
-				m_shader_list_head == NULL)
+			if(!m_render_quad || m_shader_list_head == NULL)
 				return m_base_effect->runtime.flags.valid_effect_bit;
 
 			c_shader_instance_node* curr_node = m_shader_list_head;
@@ -83,12 +86,6 @@ namespace Yelo
 		{
 			m_base_effect = CAST_PTR(TagGroups::s_shader_postprocess_effect_definition*, pSource);
 		}
-		HRESULT		c_postprocess_effect::SetupEffect()
-		{
-			m_render_quad.SetSource(&m_base_effect->runtime.quad);
-			return m_render_quad.SetupQuad(PP::Globals().m_rendering.render_device, 
-				m_base_effect->quad_tesselation.x, m_base_effect->quad_tesselation.y);
-		}
 
 		HRESULT		c_postprocess_effect::DoPostProcessEffect(IDirect3DDevice9* pDevice,  double frame_time)
 		{
@@ -98,13 +95,6 @@ namespace Yelo
 
 			// An effect can be canceled by returning E_FAIL in DoPreEffect
 			HRESULT_ERETURN(DoPreEffect(pDevice, frame_time));
-			// Copy the _m_rendering.m_render_surface to m_render_targets.scene_render_target.m_surface so the effect has something to work with
-			hr = pDevice->StretchRect(
-				PP::Globals().m_rendering.render_surface, 
-				NULL, 
-				PP::Globals().m_render_targets.scene_render_target.m_surface,
-				NULL, 
-				D3DTEXF_NONE);
 
 			PP::Globals().m_render_targets.scene_buffer_chain.m_first_render = true;
 
@@ -120,7 +110,7 @@ namespace Yelo
 				}
 				DoPreShader(pDevice, frame_time, index);
 				curr_node->SetInstance();
-				hr |= curr_node->m_shader->DoPostProcess(pDevice, frame_time, &m_base_effect->runtime.quad);
+				hr = curr_node->m_shader->DoPostProcess(pDevice, frame_time, m_render_quad);
 				DoPostShader(pDevice, frame_time, index);
 
 				curr_node = curr_node->m_next;
@@ -129,25 +119,24 @@ namespace Yelo
 
 			HRESULT_ERETURN(DoPostEffect(pDevice, frame_time));
 
-			// If errors occurred leave the render-target as-is
-			// otherwise copy the render chain surface to the .m_rendering.render_surface, ready for presenting.
-			if (SUCCEEDED(hr))
-				hr = pDevice->StretchRect(
-					PP::Globals().m_render_targets.scene_buffer_chain.GetPrevTarget(), 
-					NULL, 
-					PP::Globals().m_rendering.render_surface, 
-					NULL, 
-					D3DTEXF_NONE);
+			// if errors occurred leave the render-target as-is
+			// otherwise swap the targets so that the result of 
+			// this effect becomes the scene texture for the next
+			if (SUCCEEDED(hr))				
+				PP::Globals().m_render_targets.scene_buffer_chain.SetSceneToLast();
 			return hr;
 		}
 
 		void		c_postprocess_effect::ReleaseResources()
 		{
-			m_render_quad.ReleaseResources();
-		}		
+			// release the quad instance to reduce its reference count
+			safe_release<c_quad_instance>(m_render_quad);
+		}	
 		void		c_postprocess_effect::AllocateResources(IDirect3DDevice9* pDevice)
 		{
-			m_render_quad.AllocateResources(pDevice);
+			m_render_quad = Globals().QuadManager().CreateQuad(
+				m_base_effect->quad_tesselation.x,
+				m_base_effect->quad_tesselation.y);
 		}
 		void		c_postprocess_effect::Update(real delta_time)
 		{
@@ -158,6 +147,7 @@ namespace Yelo
 				curr_node = curr_node->m_next;
 			}
 		}
+		/////////////////////////////////////////////////////////////////////
 	};
 };
 #endif

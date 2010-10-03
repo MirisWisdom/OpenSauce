@@ -35,6 +35,48 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_RASTERIZER
 #include "Memory/_EngineLayout.inl"
 
+		//////////////////////////////////////////////////////////////////////////
+		// s_render_target
+		bool		s_render_target::IsEnabled() const { return (surface && texture); }
+		HRESULT		s_render_target::CreateTarget(IDirect3DDevice9* device, uint32 rt_width, uint32 rt_height, D3DFORMAT rt_format)
+		{
+			width = rt_width;
+			height = rt_height;
+			format = rt_format;
+			HRESULT hr = device->CreateTexture(						
+					width,
+					height,
+					1,
+					D3DUSAGE_RENDERTARGET,
+					format,
+					D3DPOOL_DEFAULT,
+					&texture,
+					NULL);
+
+			if(SUCCEEDED(hr))
+				hr = texture->GetSurfaceLevel(0, &surface);
+
+			if(FAILED(hr))
+				this->ReleaseTarget();
+			return hr;
+		}
+
+		void		s_render_target::ReleaseTarget()
+		{
+			Yelo::safe_release(surface);
+			Yelo::safe_release(texture);
+		}
+
+		void		s_render_target::ClearTarget(IDirect3DDevice9* device)
+		{
+			if(!IsEnabled())	return;
+			
+			device->SetRenderTarget(0, surface);
+			device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL,
+										0x00000000, 1.0f, 0L );
+		}
+		//////////////////////////////////////////////////////////////////////////
+
 		s_render_globals* RenderGlobals()			PTR_IMP_GET2(render_globals);
 		s_render_target* GlobalRenderTargets()		PTR_IMP_GET2(global_render_targets);
 #pragma region DebugOptions

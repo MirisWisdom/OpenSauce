@@ -20,55 +20,32 @@ void		WriteD3DXErrors(LPD3DXBUFFER error_buffer, int32 error_count)
 {
 	if(!error_buffer)
 		return;
-	char* string_pointer = CAST_PTR(char*, error_buffer->GetBufferPointer());
+	std::string error_string(CAST_PTR(char*, error_buffer->GetBufferPointer()));
+	std::string error_line;
 
-	bool remove_path = false;
-	size_t work_dir_path_len = strlen(Settings::WorkingDirectoryPath());
-
-	size_t string_length = strlen(string_pointer);
-	int32 count = 0;
-	while(strlen(string_pointer) > 0 && count < error_count)
+	// iterate through the error string, printing each line
+	int count = 0;
+	while(StringEditing::GetStringSegment(error_string, error_line, NULL, "\n")
+		&& count < error_count )
 	{
-		if(strlen(string_pointer) < work_dir_path_len)
-			remove_path = false;
-		else
-		{			
-			// determine whether the line starts with the working directory
-			// if it does, chop it out
-			char* line_start = new char[work_dir_path_len + 1];
-			memset(line_start, 0, work_dir_path_len);
-			memcpy_s(line_start, work_dir_path_len, string_pointer, work_dir_path_len);
-			line_start[work_dir_path_len] = '\0'; 
-			if(strcmp(line_start, Settings::WorkingDirectoryPath()) == 0)
-				remove_path = true;
-			delete [] line_start;
-		}
+		// if the line contains the data path, remove it
+		std::string::size_type data_string_start = std::string::npos;
+		if((data_string_start = error_line.find(Settings::Get().active_profile.GetDataOverridePath())) != std::string::npos)
+			error_line.replace(0, strlen(Settings::Get().active_profile.GetDataOverridePath()), "");	
 
-		//Get the line
-		string_pointer += (remove_path ? work_dir_path_len + 7 : 0);
-		size_t line_length = strcspn(string_pointer, "\n") + 1;
-		char* buffer = new char[line_length];
-		memcpy_s(buffer, line_length, string_pointer, line_length);
-		buffer[line_length - 1] = '\0';
-	
-		
 		YELO_ERROR(_error_message_priority_warning, 
 			"\t%s",
-			buffer);
+			error_line.c_str());
 
-		delete[] buffer;
-		buffer = NULL;
-		//probably not safe, but should be ok
-		string_pointer += line_length;
-
+		// remove the line to move
+		StringEditing::RemoveStringSegment(error_string, NULL, "\n");
 		count++;
 	}
 }
 
 HRESULT		ReplaceShaderCode(
 	const LPD3DXBUFFER& effect_buffer, 
-	TagGroups::s_shader_postprocess_definition* shader_tag,
-	const bool remove_text_data)
+	TagGroups::s_shader_postprocess_definition* shader_tag)
 {
 	// remove any existing binary data
 	if(shader_tag->shader_code_binary.address)
@@ -101,148 +78,101 @@ HRESULT		ReplaceShaderCode(
 			YELO_ERROR(_error_message_priority_warning, 
 				"OS_tool: failed to copy shader data to tag binary data field");
 			hr = E_FAIL;
-		}
-		else				
-			shader_tag->flags.shader_is_binary_bit = true;
+		}		
 	}
-	
-	// remove the text data if necessary
-	// inform user of destructive action and confirm intention
-	if(SUCCEEDED(hr) && remove_text_data)
-	{
-		bool remove_text = false;
-		fputs(
-			"\n!WARNING!\n" 
-			"the text shader data is about to be removed\n"
-			"that data will be lost\n"					
-			"are you sure you want it removed? (YES/NO)? ",
-			stdout);
-		fflush(stdout);
-		
-		char input[4];
-		if(fgets(input, sizeof(input), stdin) != NULL)
-		{
-			// we only need to compare the first three letters
-			input[3] = 0;
-			if(strcmp("YES", input) == 0)
-				remove_text = true;
-		}
-		fputs("\n", stdout);
-
-		if(remove_text)
-		{
-			TagGroups::tag_data_delete(shader_tag->shader_code_text, 1);
-			printf_s("text shader data removed\n");
-		}
-	}
+	shader_tag->flags.shader_is_binary_bit = true;
 
 	return hr;
 }
 
 HRESULT		CompileEffect(
 	const LPD3DXEFFECTCOMPILER& effect_compiler, 
-	LPD3DXBUFFER& effect_buffer,
-	const DWORD flags)
+	LPD3DXBUFFER& effect_buffer)
 {
 	printf_s("compiling postprocess effect...");
 
 	// compile postprocess shader into local variable
 	LPD3DXBUFFER error_buffer = NULL;	
-	LPD3DXBUFFER _effect_buffer = NULL;	
 
 	HRESULT hr = effect_compiler->CompileEffect(
-		flags,
-		&_effect_buffer,
+		D3DXSHADER_OPTIMIZATION_LEVEL3,
+		&effect_buffer,
 		&error_buffer);	
 
 	// copy value to effect_buffer argument if succeeded
 	if(SUCCEEDED(hr))
-	{
-		printf_s("done\n");
-		effect_buffer = _effect_buffer;
-	}
+		puts("done");
 	else
 	{
-		printf_s("failed\n");
+		puts("failed");
 		// inform the user that an error occurred and print the first two D3DX errors
 		YELO_ERROR(_error_message_priority_warning, 
 			"OS_tool: failed to compile effect");
-		WriteD3DXErrors(error_buffer, 2);
-		safe_release(_effect_buffer);
+		WriteD3DXErrors(error_buffer, 3);
+		safe_release(effect_buffer);
 	}
 	safe_release(error_buffer);
-	return S_OK;
+	return hr;
 }
 
 HRESULT		CreateEffectCompiler(
 	LPD3DXEFFECTCOMPILER& effect_compiler, 
 	const TagGroups::s_shader_postprocess_definition* shader_tag,
-	const DWORD flags)
+	const char* fx_file)
 {
 	printf_s("creating effect compiler...");
 
-	// check shader code is present
-	if(shader_tag->shader_code_text.size <= 1)
-	{
-		printf_s("failed\n");
-		YELO_ERROR(_error_message_priority_warning, 
-			"OS_tool: tag contains no effect text data");
-		return E_FAIL;
-	}
-
 	// create effect compiler in local variable
-	LPD3DXBUFFER error_buffer = NULL;	
-	LPD3DXEFFECTCOMPILER _effect_compiler = NULL;
-
-	HRESULT hr = D3DXCreateEffectCompiler(
-		CAST_PTR(char*, shader_tag->shader_code_text.address),
-		shader_tag->shader_code_text.size,
+	LPD3DXBUFFER error_buffer = NULL;
+	
+	HRESULT hr = D3DXCreateEffectCompilerFromFile(
+		fx_file,
 		NULL,
 		NULL,
-		flags,
-		&_effect_compiler,
+		D3DXSHADER_OPTIMIZATION_LEVEL3,
+		&effect_compiler,
 		&error_buffer);	
 
 	// copy value to effect_compiler argument if succeeded
 	if(SUCCEEDED(hr))
-	{
-		printf_s("done\n");
-		effect_compiler = _effect_compiler;
-	}
+		puts("done");
 	else
 	{
-		printf_s("failed\n");
+		puts("failed");
 		// inform the user that an error occurred and print the first two D3DX errors
 		YELO_ERROR(_error_message_priority_warning, 
 			"OS_tool: failed to create effect compiler");
-		WriteD3DXErrors(error_buffer, 2);
-		safe_release(_effect_compiler);
+		WriteD3DXErrors(error_buffer, 3);
+		safe_release(effect_compiler);
 	}
 	safe_release(error_buffer);
 	return hr;
 }
 
 HRESULT		LoadShader(
-	const char* tag_location,
+	const char* tag_path,
 	datum_index& tag_index, 
 	TagGroups::s_shader_postprocess_definition*& shader_tag)
 {
-	printf_s("loading postprocess shader...");
-
 	// attempt to load the post process shader using each type until
 	// we find a shoe that fits
 	do
 	{
-		tag_index = tag_load<TagGroups::s_shader_postprocess_definition>(
-			tag_location, Flags::_tag_load_verify_exist_first);
-		if(!tag_index.IsNull()) break;
-
 		tag_index = tag_load<TagGroups::s_shader_postprocess_generic>(
-			tag_location, Flags::_tag_load_verify_exist_first);
+			tag_path, Flags::_tag_load_verify_exist_first);
 		if(!tag_index.IsNull()) break;
 	}
 	while(false);
 	
+	// if no tag is found, create a new one
+	if(tag_index.IsNull())
+	{
+		printf_s("created tag \"%s.shader_postprocess_generic\"\n", tag_path);		
+		tag_index = tag_new(TagGroups::s_shader_postprocess_generic::k_group_tag, tag_path);
+	}
+	else
+		printf_s("updating tag \"%s\"\n", tag_path);
+
 	HRESULT hr = (tag_index.IsNull() ? E_FAIL : S_OK);
 
 	if(SUCCEEDED(hr))
@@ -250,15 +180,10 @@ HRESULT		LoadShader(
 		shader_tag = tag_get<TagGroups::s_shader_postprocess_definition>(tag_index);
 		hr = (!shader_tag ? E_FAIL : S_OK);
 	}
-
-	if(SUCCEEDED(hr))
-		printf_s("done\n");
 	else
-	{
-		printf_s("failed\n");
+	{		
 		YELO_ERROR(_error_message_priority_warning, 
-			"OS_tool: failed to load postprocess tag: %s",
-			tag_location);
+			"OS_tool: failed to open/create postprocess tag");
 	}
 	return hr;
 }
@@ -270,10 +195,10 @@ HRESULT		SaveShader(
 
 	bool save_succeeded = tag_save(tag_index);
 	if(save_succeeded)
-		printf_s("done\n");
+		puts("done");
 	else
 	{
-		printf_s("failed\n");
+		puts("failed");
 		YELO_ERROR(_error_message_priority_warning, 
 			"OS_tool: failed to save postprocess tag");
 	}

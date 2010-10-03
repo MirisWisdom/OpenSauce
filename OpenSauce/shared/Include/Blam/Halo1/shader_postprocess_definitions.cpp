@@ -28,7 +28,7 @@ namespace Yelo
 	namespace TagGroups
 	{
 #if !PLATFORM_IS_EDITOR && !PLATFORM_IS_DEDI
-		void s_shader_postprocess_bitmap::SetSource(TagGroups::bitmap_data* source_bitmap)
+		void s_shader_postprocess_bitmap::SetSource(TagGroups::s_bitmap_data* source_bitmap)
 		{			
 			flags.is_external_bit = false;
 			runtime._internal.bitmap = source_bitmap;

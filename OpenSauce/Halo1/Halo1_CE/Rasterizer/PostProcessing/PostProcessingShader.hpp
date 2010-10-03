@@ -28,6 +28,7 @@
 #if !PLATFORM_IS_DEDI
 #include "Rasterizer/DX9/DX9.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
+#include "Rasterizer/PostProcessing/PostProcessingQuadManager.hpp"
 
 namespace Yelo
 {
@@ -61,40 +62,27 @@ namespace Yelo
 			}
 
 			bool				IsValidShader() const { return m_shader_base->runtime.flags.valid_shader_bit; }
-			//IGNORE		NULLs all handles and sets shd_ValidShader to false.
 			void				Initialize(IDirect3DDevice9* Device);
 			virtual void		SetSource(void* pSource);
 			virtual HRESULT		SetupShader();
-			//ESSENTIAL		Loads the LPD3DXEFFECT shader. MUST be overriden by derived structs.
-			virtual HRESULT		LoadShader(IDirect3DDevice9* pDevice){ return E_FAIL; }
-			//OPTIONAL		Used for loading non standard resources such as bitmaps.
+			virtual HRESULT		LoadShader(IDirect3DDevice9* pDevice);
 			virtual HRESULT		LoadCustomResources(IDirect3DDevice9* pDevice){ return S_OK; }
-			//IGNORE		Loads the standard D3DXHANDLEs from the shader.
 			HRESULT				LoadStandardResources(IDirect3DDevice9* pDevice);
-			//IGNORE		Calls the above three Load* functions and sets shd_ValidShader to true if all is well.
 			HRESULT				AllocateResources(IDirect3DDevice9* pDevice);
-			//ESSENTIAL		Unloads the shader. MUST be overriden by derived structs.
 			virtual void		UnloadShader()			{}
-			//OPTIONAL		Optional unless resources have been loaded in LoadCustomResources. They should be released here.
 			virtual void		UnloadCustomResources()	{}
-			//IGNORE		NULLs all standard handles.
 			void				UnloadStandardResources();
-			//IGNORE		Calls the above three Unload* functions and sets shd_ValidShader to false.
 			void				ReleaseResources();
-			//IGNORE		If the shader is not null, tell it that the device has been lost.
 			void				OnLostDevice();
-			//IGNORE		If the shader is not null, tell it that the device has been reset.
 			void				OnResetDevice(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters);
-			//OPTIONAL		Things than need to be done before the shader is started go here.
 			virtual HRESULT		DoPreRender(IDirect3DDevice9* pDevice, double frame_time)			{ return S_OK; }
-			//OPTIONAL		Things than need to be done per pass go here.
 			virtual HRESULT		DoPerPass(IDirect3DDevice9* pDevice, double frame_time, UINT pass)	{ return S_OK; }
-			//OPTIONAL		Things than need to be done after the shader is complete go here.
 			virtual HRESULT		DoPostRender(IDirect3DDevice9* pDevice, double frame_time)			{ return S_OK; }
-			//IGNORE		Call this if your shader will be changing the size of the fullscreen quad.
 			HRESULT				DoPostProcess(IDirect3DDevice9* pDevice,
 											double frame_time,
-											TagGroups::s_shader_postprocess_effect_render_quad* quad);
+											c_quad_instance* quad);
+			HRESULT				LoadShader_Impl(IDirect3DDevice9* pDevice, 
+				TagGroups::s_shader_postprocess_definition*& shader);
 		};
 	};
 };
