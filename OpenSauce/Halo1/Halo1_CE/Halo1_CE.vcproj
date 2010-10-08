@@ -1283,6 +1283,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Rasterizer\PostProcessing\PostProcessingQuadManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Rasterizer\PostProcessing\PostProcessingQuadManager.hpp"
+					>
+				</File>
+				<File
 					RelativePath=".\Rasterizer\Postprocessing\PostProcessingRenderBlock.cpp"
 					>
 				</File>

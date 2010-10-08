@@ -903,6 +903,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Common\StringEditing.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Common\StringEditing.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Common\YeloSettings.cpp"
 				>
 			</File>
@@ -1003,6 +1011,14 @@
 			Name="Tool"
 			>
 			<File
+				RelativePath=".\Tool\BuildCppDefinition.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Tool\BuildCppDefinition.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Tool\ImportLightmapUV.cpp"
 				>
 			</File>
@@ -1042,6 +1058,10 @@
 				Name="Impl"
 				>
 				<File
+					RelativePath=".\Tool\BuildCppDefinition.inl"
+					>
+				</File>
+				<File
 					RelativePath=".\Tool\CompileScripts.inl"
 					>
 				</File>
@@ -1059,10 +1079,6 @@
 				</File>
 				<File
 					RelativePath=".\Tool\ImportLightmapUV_ObjFile.inl"
-					>
-				</File>
-				<File
-					RelativePath=".\Tool\ImportShaderPostprocess.inl"
 					>
 				</File>
 			</Filter>
