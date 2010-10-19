@@ -337,3 +337,11 @@ template<typename TManaged> cpp_struct mcpp_ptr : gcroot< TManaged* >
 
 	~mcpp_ptr() { (*this)->Dispose(); }
 };
+
+
+
+#ifndef _WIN64
+	#define MCPP_X64_PLATFORM_EXCEPTION() __noop
+#else
+	#define MCPP_X64_PLATFORM_EXCEPTION() throw mcpp_new System::PlatformNotSupportedException("Feature not supported on x64 platforms currently")
+#endif

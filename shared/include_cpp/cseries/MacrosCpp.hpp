@@ -106,8 +106,6 @@
 
 // Library's function convention
 #define API_FUNC __stdcall
-// Declare a function naked of all things
-#define API_FUNC_NAKED __declspec(naked)
 
 // Declare a function to be thread friendly
 #define API_THREAD_SAFE __declspec( thread )
@@ -285,3 +283,42 @@
 #define __DOC_TODO_STRING2(x) #x
 #define __DOC_TODO_STRING(x) __DOC_TODO_STRING2(x)
 #define DOC_TODO(msg) __pragma( message(__FILE__ "(" __DOC_TODO_STRING(__LINE__) "): TODO: " msg) )
+
+
+
+
+#ifndef _WIN64
+	// Declare a function naked of all things
+	#define API_FUNC_NAKED __declspec(naked)
+
+	// Start the code to a naked function which takes arguments
+	#define API_FUNC_NAKED_START() __asm	\
+		{									\
+			__asm push	ebp					\
+			__asm mov	ebp, esp
+
+	// End the code to a naked function which takes arguments 
+	// and is also __stdcall
+	#define API_FUNC_NAKED_END(arg_count)	\
+			__asm mov	esp, ebp			\
+			__asm pop	ebp					\
+			__asm retn	(arg_count * 4)		\
+		}
+
+	// Start the code to a naked function with no args
+	#define API_FUNC_NAKED_START_() __asm	\
+		{
+
+	// End the code to a naked function with no args
+	#define API_FUNC_NAKED_END_()		\
+			__asm retn					\
+		}
+#else
+	#define API_FUNC_NAKED
+
+	#define API_FUNC_NAKED_START()
+	#define API_FUNC_NAKED_END(arg_count)
+
+	#define API_FUNC_NAKED_START_()
+	#define API_FUNC_NAKED_END_()
+#endif
