@@ -1,0 +1,226 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0AE03410-5E9B-4B8B-81B2-E1C6E30C8E70}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>OpenSauceIDE</RootNamespace>
+    <AssemblyName>OpenSauceIDE</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <ApplicationIcon>Properties\OS IDE.ico</ApplicationIcon>
+    <BaseIntermediateOutputPath>$(SolutionDir)..\obj\$(AssemblyName)\</BaseIntermediateOutputPath>
+    <OutputPath>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\$(AssemblyName)\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DebugPublic|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>TRACE;DEBUG;DEBUG_PUBLIC;XDK_NO_XBOX;XDK_NO_360;XDK_NO_LIB;NO_MEDUSA;NO_HALO2;NO_HALO3;NO_SCRIPTING</DefineConstants>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DebugPublic|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>TRACE;DEBUG;DEBUG_PUBLIC;XDK_NO_XBOX;XDK_NO_360;XDK_NO_LIB;NO_MEDUSA;NO_HALO2;NO_HALO3;NO_SCRIPTING</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DebugPublic|x64' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>TRACE;DEBUG;DEBUG_PUBLIC;XDK_NO_XBOX;XDK_NO_360;XDK_NO_LIB;NO_MEDUSA;NO_HALO2;NO_HALO3;NO_SCRIPTING</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
+    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CheApe\CheApe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CheApe\CheApe.Designer.cs">
+      <DependentUpon>CheApe.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CheApe\CheApeApplier.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CheApe\CheApeApplier.Designer.cs">
+      <DependentUpon>CheApeApplier.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CheApe\UnlockH2.AddressOf.cs" />
+    <Compile Include="CheApe\UnlockH2.Constants.cs" />
+    <Compile Include="CheApe\UnlockH2.cs" />
+    <Compile Include="CheApe\UnlockH1.Constants.cs" />
+    <Compile Include="CheApe\UnlockH1.cs" />
+    <Compile Include="CheApe\UnlockH1.AddressOf.cs" />
+    <Compile Include="CheApe\UnlockToolsBase.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="CheApe\CheApe.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CheApe.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CheApe\CheApeApplier.resx">
+      <DependentUpon>CheApeApplier.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Tool.cs" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
+    <EmbeddedResource Include="TagIndex\TagIndexViewForm.resx">
+      <DependentUpon>TagIndexViewForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TagIndex\TagIndexCreateForm.resx">
+      <DependentUpon>TagIndexCreateForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TagIndex\TagManager.resx">
+      <DependentUpon>TagManager.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="TagIndex\TagIndexViewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TagIndex\TagIndexViewForm.Designer.cs">
+      <DependentUpon>TagIndexViewForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TagIndex\TagIndexCreateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TagIndex\TagIndexCreateForm.Designer.cs">
+      <DependentUpon>TagIndexCreateForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TagIndex\TagManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TagIndex\TagManager.Designer.cs">
+      <DependentUpon>TagManager.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BlamLib.Forms\BlamLib.Forms.csproj">
+      <Project>{61EE1295-F2B6-4351-B331-244319600FCE}</Project>
+      <Name>BlamLib.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BlamLib\BlamLib.csproj">
+      <Project>{D9931E1A-1A8A-4707-A27C-9AFEFD60D25B}</Project>
+      <Name>BlamLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Properties\OS IDE.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

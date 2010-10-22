@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<vertexBuffers game="Halo1_PC">
+	<types>
+		<type opcode="0xFF" name="None"					declUsage="Sample" />
+
+		<type opcode="0x00" name="Position"				declUsage="Position" />
+		<type opcode="0x01" name="NodeIndices"			declUsage="BlendIndices" />
+		<type opcode="0x02" name="NodeWeights"			declUsage="BlendWeight" />
+		<type opcode="0x03" name="TexCoord"				declUsage="TextureCoordinate" />
+		<type opcode="0x04" name="Normal"				declUsage="Normal" />
+		<type opcode="0x05" name="Binormal"				declUsage="Binormal" />
+		<type opcode="0x06" name="Tangent"				declUsage="Tangent" />
+		<type opcode="0x07" name="Color"				declUsage="Color" />
+		<type opcode="0x08" name="PositionT"			declUsage="PositionTransformed" />
+		
+		<!--This is a binormal generally...-->
+		<type opcode="0x09" name="AnisoNormal"			declUsage="Normal"				usageIndex="1" />
+		<type opcode="0x0A" name="IncidentRadiosity"	declUsage="Color"				usageIndex="1" />
+		<type opcode="0x0B" name="SecondaryTexCoord"	declUsage="TextureCoordinate"	usageIndex="1" />
+	</types>
+
+	<definitions>
+		<definition opcode="0x00" size="0x38" name="environment_uncompressed" >
+			<element type="Position"	declType="Float3" />
+			<element type="Normal"		declType="Float3" />
+			<element type="Binormal"	declType="Float3" />
+			<element type="Tangent"		declType="Float3" />
+			<element type="TexCoord"	declType="Float2" />
+		</definition>
+		<definition opcode="0x01" size="0x20" name="environment_compressed" >
+			<element type="Position"	declType="Float3" />
+			<element type="Normal"		declType="HenD3N" />
+			<element type="Binormal"	declType="HenD3N" />
+			<element type="Tangent"		declType="HenD3N" />
+			<element type="TexCoord"	declType="Float2" />
+		</definition>
+		<definition opcode="0x02" size="0x14" name="environment_lightmap_uncompressed" >
+			<element type="Normal"		declType="Float3"	name="AnisoNormal"			usageIndex="1" />
+			<element type="TexCoord"	declType="Float2"	name="SecondaryTexCoord"	usageIndex="1" />
+		</definition>
+		<definition opcode="0x03" size="0x08" name="environment_lightmap_compressed" >
+			<element type="Normal"		declType="HenD3N"	name="AnisoNormal"			usageIndex="1" />
+			<element type="TexCoord"	declType="ShortN2"	name="SecondaryTexCoord"	usageIndex="1" />
+		</definition>
+		<definition opcode="0x04" size="0x44" name="model_uncompressed" >
+			<element type="Position"	declType="Float3" />
+			<element type="Normal"		declType="Float3" />
+			<element type="Binormal"	declType="Float3" />
+			<element type="Tangent"		declType="Float3" />
+			<element type="TexCoord"	declType="Float2" />
+			<element type="NodeIndices"	declType="ShortN2" />
+			<element type="NodeWeights"	declType="Float2" />
+		</definition>
+		<definition opcode="0x05" size="0x20" name="model_compressed" >
+			<element type="Position"	declType="Float3" />
+			<element type="Normal"		declType="HenD3N" />
+			<element type="Binormal"	declType="HenD3N" />
+			<element type="Tangent"		declType="HenD3N" />
+			<element type="TexCoord"	declType="ShortN2" />
+			<element type="NodeIndices"	declType="UbyteN2" />
+			<element type="NodeWeights"	declType="ShortN" />
+		</definition>
+		<definition opcode="0x06" size="0x18" name="unlit" >
+			<element type="Position"	declType="Float3" />
+			<element type="Color"		declType="Color" />
+			<element type="TexCoord"	declType="Float2" />
+		</definition>
+		<definition opcode="0x07" size="0x24" name="dynamic_unlit" >
+			<element type="Position"	declType="Float3" />
+			<element type="Color"		declType="Color" />
+			<element type="TexCoord"	declType="Float2" />
+			<element type="None"		declType="Skip"		name="Undocumented"			usageIndex="12" />
+		</definition>
+		<definition opcode="0x08" size="0x18" name="dynamic_screen" >
+			<element type="Position"	declType="Float3" />
+			<element type="Color"		declType="Color" />
+			<element type="TexCoord"	declType="Float2" />
+		</definition>
+		<definition opcode="0x09" size="0x10" name="debug" >
+			<element type="Position"	declType="Float3" />
+			<element type="Color"		declType="Color" />
+		</definition>
+		<definition opcode="0x0A" size="0x10" name="decal" >
+			<element type="Position"	declType="Float3" />
+			<element type="Color"		declType="Color" />
+		</definition>
+		<definition opcode="0x0B" size="0x14" name="detail_object" >
+			<element type="Position"	declType="Float3" />
+			<element type="Color"		declType="Color" />
+			<element type="Color"		declType="Color"	name="Specular"				usageIndex="1" />
+		</definition>
+		
+		<definition opcode="0x0C" size="0x20" name="environment_uncompressed_ff" >
+			<element type="Position"	declType="Float3" />
+			<element type="Normal"		declType="Float3" />
+			<element type="TexCoord"	declType="Float2" />
+		</definition>
+		<definition opcode="0x0D" size="0x08" name="environment_lightmap_uncompressed_ff" >
+			<element type="TexCoord"	declType="Float2"	name=""						usageIndex="1" />
+		</definition>
+		<definition opcode="0x0E" size="0x20" name="model_uncompressed_ff" >
+			<element type="Position"	declType="Float3" />
+			<element type="Normal"		declType="Float3" />
+			<element type="TexCoord"	declType="Float2" />
+		</definition>
+		<definition opcode="0x0F" size="0x20" name="model_processed" >
+			<element type="Position"	declType="Float3" />
+			<element type="Normal"		declType="Float3" />
+			<element type="TexCoord"	declType="Float2" />
+		</definition>
+		<!--I really don't know about this one...-->
+		<definition opcode="0x10" size="0x24" name="unlit_zsprite" >
+			<element type="TexCoord"	declType="Float2"	name=""						usageIndex="1" />
+		</definition>
+		<definition opcode="0x11" size="0x1C" name="screen_transformed_lit" >
+			<element type="PositionT"	declType="Float4" />
+			<element type="Color"		declType="Color" />
+			<element type="TexCoord"	declType="Float2" />
+		</definition>
+		<definition opcode="0x12" size="0x20" name="screen_transformed_lit_specular" >
+			<element type="PositionT"	declType="Float4" />
+			<element type="Color"		declType="Color" />
+			<element type="Color"		declType="Color"	name="Specular"				usageIndex="1" />
+			<element type="TexCoord"	declType="Float2" />
+		</definition>
+		<definition opcode="0x13" size="0x28" name="environment_single_stream_ff" >
+			<element type="Position"	declType="Float3" />
+			<element type="Normal"		declType="Float3" />
+			<element type="TexCoord"	declType="Float2" />
+			<element type="TexCoord"	declType="Float2"	name=""						usageIndex="1" />
+		</definition>
+	</definitions>
+
+	<declarations>
+		<declaration name="environment_lightmap_uncompressed" >
+			<stream opcode="0x00" name="environment_uncompressed" />
+			<stream opcode="0x01" name="environment_lightmap_uncompressed" />
+		</declaration>
+
+		<declaration name="environment_lightmap_compressed" >
+			<stream opcode="0x00" name="environment_compressed" />
+			<stream opcode="0x01" name="environment_lightmap_compressed" />
+		</declaration>
+
+		<declaration name="environment_lightmap_uncompressed_ff" >
+			<stream opcode="0x00" name="environment_uncompressed_ff" />
+			<stream opcode="0x01" name="environment_lightmap_uncompressed_ff" />
+		</declaration>
+
+		<!--I really don't know about this one...-->
+		<declaration name="unlit_zsprite" >
+			<stream opcode="0x00" name="unlit" />
+			<stream opcode="0x01" name="unlit_zsprite" />
+		</declaration>
+	</declarations>
+
+</vertexBuffers>

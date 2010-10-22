@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<definitions>
+	<enums>
+		<Enum name="">
+			<field></field>
+		</Enum>
+	</enums>
+
+	<flags>
+		<Flag name="">
+			<field></field>
+		</Flag>
+	</flags>
+
+	<references>
+		<!--name=string, [optional]isNonResolving=boolean-->
+		<Reference name="" isNonResolving="" >
+			<field></field>
+		</Reference>
+	</references>
+
+	<data>
+		<!--name=string, maxSize=hexidecimal, [optional]isNeverStreamed=boolean, [optional]isTextData=boolean, [optional]isDebugData=boolean-->
+		<TagData name="" maxSize="" isNeverStreamed="" isTextData="" isDebugData="" />
+	</data>
+	
+	
+	<scriptFunctions>
+		<!--name=string, returnType=string, [optional]help=string, [optional]helpArg=string-->
+		<function name="" returnType="" help="" helpArg="">
+			<arg type="" name="" help="" /> <!--type=string, name=string, [optional]help=string-->
+		</function>
+	</scriptFunctions>
+
+	<scriptGlobals>
+		<!--name=string, type=string, [optional]help=string-->
+		<global name="" type="" help="" />
+	</scriptGlobals>
+	
+
+	<fixups>
+		<!--name=string,  guerilla=address, tool=address, sapien=address,  type=enum, fieldType=enum, [optional]definition=string-->
+		<fixup name=""   guerilla="" tool="" sapien=""    type="" definition="" >
+			<definition>
+				<!--field definition-->
+			</definition>
+		</fixup>
+	</fixups>
+</definitions>
