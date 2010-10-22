@@ -15,8 +15,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		BlamLib.vsmdi = BlamLib.vsmdi
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+		Readme.Disclaimer.txt = Readme.Disclaimer.txt
 		Readme.HardCodedPaths.txt = Readme.HardCodedPaths.txt
 		Readme.Namespaces.txt = Readme.Namespaces.txt
+		Readme.Terminology.txt = Readme.Terminology.txt
 	EndProjectSection
 EndProject
 Global
