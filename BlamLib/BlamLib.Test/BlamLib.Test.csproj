@@ -80,17 +80,20 @@
   <ItemGroup>
     <Compile Include="Blam.cs" />
     <Compile Include="Halo1\Halo1.cs" />
+    <Compile Include="Halo2\Extraction.cs" />
     <Compile Include="Halo2\Halo2.cs" />
+    <Compile Include="Halo2\TagIndex.cs" />
+    <Compile Include="Halo3\CacheLoadResource.cs" />
+    <Compile Include="Halo3\DumpZoneData.cs" />
     <Compile Include="Halo3\Halo3.cs" />
+    <Compile Include="Halo3\Scripting.cs" />
+    <Compile Include="Halo3\SoundComparer.cs" />
     <Compile Include="HaloOdst\HaloOdst.cs" />
     <Compile Include="HaloReach\HaloReach.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts.cs" />
     <Compile Include="Stubbs\Stubbs.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="AuthoringTests.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BlamLib\BlamLib.csproj">
