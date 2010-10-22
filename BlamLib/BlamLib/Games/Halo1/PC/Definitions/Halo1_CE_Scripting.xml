@@ -1,0 +1,2504 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<BlamScript game="Halo1_CE" >
+	<scriptTypes>
+		<type opcode="0x0" name="startup" />
+		<type opcode="0x1" name="dormant" />
+		<type opcode="0x2" name="continuous" />
+		<type opcode="0x3" name="static" />
+		<type opcode="0x4" name="stub" />
+	</scriptTypes>
+
+	<valueTypes>
+		<type opcode="0x00" name="unparsed" size="0" />
+		<type opcode="0x01" name="special form" size="0" />
+		<type opcode="0x02" name="function name" size="0" />
+		<type opcode="0x03" name="passthrough" size="0" />
+		<type opcode="0x04" name="void" size="0" />
+		<type opcode="0x05" name="boolean" size="1" />
+		<type opcode="0x06" name="real" size="4" />
+		<type opcode="0x07" name="short" size="2" />
+		<type opcode="0x08" name="long" size="4" />
+		<type opcode="0x09" name="string" size="4" quoted="true" />
+		<type opcode="0x0A" name="script" size="2" />
+		<type opcode="0x0B" name="trigger_volume" size="2" quoted="true" />
+		<type opcode="0x0C" name="cutscene_flag" size="2" quoted="true" />
+		<type opcode="0x0D" name="cutscene_camera_point" size="2" quoted="true" />
+		<type opcode="0x0E" name="cutscene_title" size="2" quoted="true" />
+		<type opcode="0x0F" name="cutscene_recording" size="2" quoted="true" />
+		<type opcode="0x10" name="device_group" size="4" quoted="true" />
+		<type opcode="0x11" name="ai" size="4" quoted="true" />
+		<type opcode="0x12" name="ai_command_list" size="2" quoted="true" />
+		<type opcode="0x13" name="starting_profile" size="2" quoted="true" />
+		<type opcode="0x14" name="conversation" size="2" quoted="true" />
+		<type opcode="0x15" name="navpoint" size="2" quoted="true" />
+		<type opcode="0x16" name="hud_message" size="2" quoted="true" />
+		<type opcode="0x17" name="object_list" size="4" />
+		<type opcode="0x18" name="sound" size="4" tag="snd!" quoted="true" />
+		<type opcode="0x19" name="effect" size="4" tag="effe" quoted="true" />
+		<type opcode="0x1A" name="damage" size="4" tag="jpt!" quoted="true" />
+		<type opcode="0x1B" name="looping_sound" size="4" tag="lsnd" quoted="true" />
+		<type opcode="0x1C" name="animation_graph" size="4" tag="antr" quoted="true" />
+		<type opcode="0x1D" name="actor_variant" size="4" tag="actv" quoted="true" />
+		<type opcode="0x1E" name="damage_effect" size="4" tag="jpt!" quoted="true" />
+		<type opcode="0x1F" name="object_definition" size="4" tag="obje" quoted="true" />
+		<type opcode="0x20" name="game_difficulty" size="2" >
+			<enum>easy</enum>
+			<enum>normal</enum>
+			<enum>heroic</enum>
+			<enum>legendary</enum>
+		</type>
+		<type opcode="0x21" name="team" size="2" >
+			<enum>default</enum>
+			<enum>player</enum>
+			<enum>human</enum>
+			<enum>covenant</enum>
+			<enum>flood</enum>
+			<enum>sentinel</enum>
+			<enum>unused6</enum>
+			<enum>unused7</enum>
+			<enum>unused8</enum>
+			<enum>unused9</enum>
+		</type>
+		<type opcode="0x22" name="ai_default_state" size="2" >
+			<enum>none</enum>
+			<enum>sleep</enum>
+			<enum>alert</enum>
+			<enum>move_repeat</enum>
+			<enum>move_loop</enum>
+			<enum>move_loop_back_and_forth</enum>
+			<enum>move_loop_random</enum>
+			<enum>move_random</enum>
+			<enum>guard</enum>
+			<enum>guard_at_position</enum>
+			<enum>search</enum>
+			<enum>flee</enum>
+		</type>
+		<type opcode="0x23" name="actor_type" size="2" >
+			<enum>elite</enum>
+			<enum>jackal</enum>
+			<enum>grunt</enum>
+			<enum>hunter</enum>
+			<enum>engineer</enum>
+			<enum>assassin</enum>
+			<enum>player</enum>
+			<enum>marine</enum>
+			<enum>crew</enum>
+			<enum>combat_form</enum>
+			<enum>infection_form"</enum>
+			<enum>carrier_form</enum>
+			<enum>monitor</enum>
+			<enum>sentinel</enum>
+			<enum>none</enum>
+			<enum>mounted_weapon</enum>
+		</type>
+		<type opcode="0x24" name="hud_corner" size="2" >
+			<enum>top_left</enum>
+			<enum>top_right</enum>
+			<enum>bottom_left</enum>
+			<enum>bottom_right</enum>
+			<enum>center</enum>
+		</type>
+		<type opcode="0x25" name="object" size="4" object="true" />
+		<type opcode="0x26" name="unit" size="4" object="true" />
+		<type opcode="0x27" name="vehicle" size="4" object="true" />
+		<type opcode="0x28" name="weapon" size="4" object="true" />
+		<type opcode="0x29" name="device" size="4" object="true" />
+		<type opcode="0x2A" name="scenery" size="4" object="true" />
+		<type opcode="0x2B" name="object_name" size="2" object="true" quoted="true" />
+		<type opcode="0x2C" name="unit_name" size="2" object="true" quoted="true" />
+		<type opcode="0x2D" name="vehicle_name" size="2" object="true" quoted="true" />
+		<type opcode="0x2E" name="weapon_name" size="2" object="true" quoted="true" />
+		<type opcode="0x2F" name="device_name" size="2" object="true" quoted="true" />
+		<type opcode="0x30" name="scenery_name" size="2" object="true" quoted="true" />
+	</valueTypes>
+
+	<definition ext="hsc" maxNodes="19001" maxDynamicSourceDataBytes="0x400" salt="0x0">
+		<objectTypeMasks>
+			<object type="object" mask="0xFFFF" />
+			<object type="unit" mask="0x0003" />
+			<object type="vehicle" mask="0x0002" />
+			<object type="weapon" mask="0x0004" />
+			<object type="device" mask="0x0380" />
+			<object type="scenery" mask="0x0040" />
+		</objectTypeMasks>
+
+		<valueTypeCasting>
+			<!-- <cast from="" to="" /> -->
+		</valueTypeCasting>
+	</definition>
+
+	<functions>
+		<function opcode="0" name="begin" returnType="passthrough" group="Begin" help="returns the last expression in a sequence after evaluating the sequence in order." />
+		<function opcode="1" name="begin_random" returnType="passthrough" group="Begin" help="evaluates the sequence of expressions in random order and returns the last value evaluated." />
+		<function opcode="2" name="if" returnType="passthrough" group="If" help="returns one of two values based on the value of a condition." />
+		<function opcode="3" name="cond" returnType="passthrough" group="Cond" help="returns the value associated with the first true condition." />
+		<function opcode="4" name="set" returnType="passthrough" group="Set" help="set the value of a global variable." />
+		<function opcode="5" name="and" returnType="boolean" group="Logical" help="returns true if all specified expressions are true." />
+		<function opcode="6" name="or" returnType="boolean" group="Logical" help="returns true if any specified expressions are true." />
+		<function opcode="7" name="+" returnType="real" group="Arithmetic" help="returns the sum of all specified expressions." />
+		<function opcode="8" name="-" returnType="real" group="Arithmetic" help="returns the difference of two expressions." />
+		<function opcode="9" name="*" returnType="real" group="Arithmetic" help="returns the product of all specified expressions." />
+		<function opcode="A" name="/" returnType="real" group="Arithmetic" help="returns the quotient of two expressions." />
+		<function opcode="B" name="min" returnType="real" group="Arithmetic" help="returns the minimum of all specified expressions." />
+		<function opcode="C" name="max" returnType="real" group="Arithmetic" help="returns the maximum of all specified expressions." />
+		<function opcode="D" name="=" returnType="boolean" group="Equality" help="returns true if two expressions are equal" />
+		<function opcode="E" name="!=" returnType="boolean" group="Equality" help="returns true if two expressions are not equal" />
+		<function opcode="F" name="&gt;" returnType="boolean" group="Inequality" help="returns true if the first number is larger than the second." />
+		<function opcode="10" name="&lt;" returnType="boolean" group="Inequality" help="returns true if the first number is smaller than the second." />
+		<function opcode="11" name="&gt;=" returnType="boolean" group="Inequality" help="returns true if the first number is larger than or equal to the second." />
+		<function opcode="12" name="&lt;=" returnType="boolean" group="Inequality" help="returns true if the first number is smaller than or equal to the second." />
+		<function opcode="13" name="sleep" returnType="void" group="Sleep" help="pauses execution of this script (or, optionally, another script) for the specified number of ticks." />
+		<function opcode="14" name="sleep_until" returnType="void" group="SleepUntil" help="pauses execution of this script until the specified condition is true, checking once per second unless a different number of ticks is specified." />
+		<function opcode="15" name="wake" returnType="void" group="Wake" help="wakes a sleeping script in the next update." />
+		<function opcode="16" name="inspect" returnType="void" group="Inspect" help="prints the value of an expression to the screen for debugging purposes." />
+		<function opcode="17" name="unit" returnType="unit" group="ObjectCast" help="converts an object to a unit." />
+		<function opcode="18" name="ai_debug_communication_suppress" group="DebugString" returnType="void" help="suppresses (or stops suppressing) a set of AI communication types." />
+		<function opcode="19" name="ai_debug_communication_ignore" group="DebugString" returnType="void" help="ignores (or stops ignoring) a set of AI communication types when printing out communications." />
+		<function opcode="1A" name="ai_debug_communication_focus" group="DebugString" returnType="void" help="focuses (or stops focusing) a set of unit vocalization types." />
+		<function opcode="1B" name="not" returnType="boolean" argc="1" help="returns the opposite of the expression.">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="1C" name="print" returnType="void" argc="1" help="prints a string to the console.">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="1D" name="players" returnType="object_list" argc="1" help="returns a list of the players">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="1E" name="volume_teleport_players_not_inside" returnType="void" argc="2" help="moves all players outside a specified trigger volume to a specified flag.">
+			<arg type="trigger_volume" name="" help="" />
+			<arg type="cutscene_flag" name="" help="" />
+		</function>
+		<function opcode="1F" name="volume_test_object" returnType="boolean" argc="2" help="returns true if the specified object is within the specified volume.">
+			<arg type="trigger_volume" name="" help="" />
+			<arg type="object" name="" help="" />
+		</function>
+		<function opcode="20" name="volume_test_objects" returnType="boolean" argc="2" help="returns true if any of the specified objects are within the specified volume.">
+			<arg type="trigger_volume" name="" help="" />
+			<arg type="object_list" name="" help="" />
+		</function>
+		<function opcode="21" name="volume_test_objects_all" returnType="boolean" argc="2" help="returns true if any of the specified objects are within the specified volume.">
+			<arg type="trigger_volume" name="" help="" />
+			<arg type="object_list" name="" help="" />
+		</function>
+		<function opcode="22" name="object_teleport" returnType="void" argc="2" help="moves the specified object to the specified flag.">
+			<arg type="object" name="" help="" />
+			<arg type="cutscene_flag" name="" help="" />
+		</function>
+		<function opcode="23" name="object_set_facing" returnType="void" argc="2" help="turns the specified object in the direction of the specified flag.">
+			<arg type="object" name="" help="" />
+			<arg type="cutscene_flag" name="" help="" />
+		</function>
+		<function opcode="24" name="object_set_shield" returnType="void" argc="2" help="sets the shield vitality of the specified object (between 0 and 1).">
+			<arg type="object" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="25" name="object_set_permutation" returnType="void" argc="3" help="sets the desired region (use &quot;&quot; for all regions) to the permutation with the given name, e.g. (object_set_permutation flood &quot;right arm&quot; ~damaged)">
+			<arg type="object" name="" help="" />
+			<arg type="string" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="26" name="object_create" returnType="void" argc="1" help="creates an object from the scenario.">
+			<arg type="object_name" name="" help="" />
+		</function>
+		<function opcode="27" name="object_destroy" returnType="void" argc="1" help="destroys an object.">
+			<arg type="object" name="" help="" />
+		</function>
+		<function opcode="28" name="object_create_anew" returnType="void" argc="1" help="creates an object, destroying it first if it already exists.">
+			<arg type="object_name" name="" help="" />
+		</function>
+		<function opcode="29" name="object_create_containing" returnType="void" argc="1" help="creates all objects from the scenario whose names contain the given substring.">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="2A" name="object_create_anew_containing" returnType="void" argc="1" help="creates anew all objects from the scenario whose names contain the given substring.">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="2B" name="object_destroy_containing" returnType="void" argc="1" help="destroys all objects from the scenario whose names contain the given substring.">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="2C" name="object_destroy_all" returnType="void" argc="1" help="destroys all non player objects.">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="2D" name="list_get" returnType="object" argc="2" help="returns an item in an object list.">
+			<arg type="object_list" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="2E" name="list_count" returnType="short" argc="1" help="returns the number of objects in a list">
+			<arg type="object_list" name="" help="" />
+		</function>
+		<function opcode="2F" name="effect_new" returnType="void" argc="2" help="starts the specified effect at the specified flag.">
+			<arg type="effect" name="" help="" />
+			<arg type="cutscene_flag" name="" help="" />
+		</function>
+		<function opcode="30" name="effect_new_on_object_marker" returnType="void" argc="3" help="starts the specified effect on the specified object at the specified marker.">
+			<arg type="effect" name="" help="" />
+			<arg type="object" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="31" name="damage_new" returnType="void" argc="2" help="causes the specified damage at the specified flag.">
+			<arg type="damage" name="" help="" />
+			<arg type="cutscene_flag" name="" help="" />
+		</function>
+		<function opcode="32" name="damage_object" returnType="void" argc="2" help="causes the specified damage at the specified object.">
+			<arg type="damage" name="" help="" />
+			<arg type="object" name="" help="" />
+		</function>
+		<function opcode="33" name="objects_can_see_object" returnType="boolean" argc="3" help="returns true if any of the specified units are looking within the specified number of degrees of the object.">
+			<arg type="object_list" name="" help="" />
+			<arg type="object" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="34" name="objects_can_see_flag" returnType="boolean" argc="3" help="returns true if any of the specified units are looking within the specified number of degrees of the flag.">
+			<arg type="object_list" name="" help="" />
+			<arg type="cutscene_flag" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="35" name="objects_delete_by_definition" returnType="void" argc="1" help="deletes all objects of type &lt;definition&gt;">
+			<arg type="object_definition" name="" help="" />
+		</function>
+		<function opcode="36" name="sound_set_gain" returnType="void" argc="2" help="absolutely do not use this">
+			<arg type="string" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="37" name="sound_get_gain" returnType="real" argc="1" help="absolutely do not use this either">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="38" name="script_recompile" returnType="void" argc="1" help="recompiles scripts.">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="39" name="script_doc" returnType="void" argc="1" help="saves a file called hs_doc.txt with parameters for all script commands.">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="3A" name="help" returnType="void" argc="1" help="prints a description of the named function." access="1">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="3B" name="random_range" returnType="short" argc="2" help="returns a random value in the range [lower bound, upper bound)">
+			<arg type="short" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="3C" name="real_random_range" returnType="real" argc="2" help="returns a random value in the range [lower bound, upper bound)">
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="3D" name="numeric_countdown_timer_set" returnType="void" argc="2" help="&lt;milliseconds&gt;, &lt;auto_start&gt;">
+			<arg type="long" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="3E" name="numeric_countdown_timer_get" returnType="short" argc="1" help="&lt;digit_index&gt;">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="3F" name="numeric_countdown_timer_stop" returnType="void" argc="1">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="40" name="numeric_countdown_timer_restart" returnType="void" argc="1">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="41" name="breakable_surfaces_enable" returnType="void" argc="1" help="enables or disables breakability of all breakable surfaces on level">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="42" name="recording_play" returnType="boolean" argc="2" help="make the specified unit run the specified cutscene recording.">
+			<arg type="unit" name="" help="" />
+			<arg type="cutscene_recording" name="" help="" />
+		</function>
+		<function opcode="43" name="recording_play_and_delete" returnType="boolean" argc="2" help="make the specified unit run the specified cutscene recording, deletes the unit when the animation finishes.">
+			<arg type="unit" name="" help="" />
+			<arg type="cutscene_recording" name="" help="" />
+		</function>
+		<function opcode="44" name="recording_play_and_hover" returnType="boolean" argc="2" help="make the specified vehicle run the specified cutscene recording, hovers the vehicle when the animation finishes.">
+			<arg type="vehicle" name="" help="" />
+			<arg type="cutscene_recording" name="" help="" />
+		</function>
+		<function opcode="45" name="recording_kill" returnType="void" argc="1" help="kill the specified unit's cutscene recording.">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="46" name="recording_time" returnType="short" argc="1" help="return the time remaining in the specified unit's cutscene recording.">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="47" name="object_set_ranged_attack_inhibited" returnType="void" argc="2" help="FALSE prevents object from using ranged attack">
+			<arg type="object" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="48" name="object_set_melee_attack_inhibited" returnType="void" argc="2" help="FALSE prevents object from using melee attack">
+			<arg type="object" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="49" name="objects_dump_memory" returnType="void" argc="2" help="debugs object memory usage">
+			<arg type="object" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="4A" name="object_set_collideable" returnType="void" argc="2" help="FALSE prevents any object from colliding with the given object">
+			<arg type="object" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="4B" name="object_set_scale" returnType="void" argc="3" help="sets the scale for a given object and interpolates over the given number of frames to achieve that scale">
+			<arg type="object" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="4C" name="objects_attach" returnType="void" argc="4" help="attaches the second object to the first; both strings can be empty">
+			<arg type="object" name="" help="" />
+			<arg type="string" name="" help="" />
+			<arg type="object" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="4D" name="objects_detach" returnType="void" argc="2" help="detaches from the given parent object the given child object">
+			<arg type="object" name="" help="" />
+			<arg type="object" name="" help="" />
+		</function>
+		<function opcode="4E" name="garbage_collect_now" returnType="void" argc="2" help="causes all garbage objects except those visible to a player to be collected immediately">
+			<arg type="object" name="" help="" />
+			<arg type="object" name="" help="" />
+		</function>
+		<function opcode="4F" name="object_cannot_take_damage" returnType="void" argc="1" help="prevents an object from taking damage">
+			<arg type="object_list" name="" help="" />
+		</function>
+		<function opcode="50" name="object_can_take_damage" returnType="void" argc="1" help="allows an object to take damage again">
+			<arg type="object_list" name="" help="" />
+		</function>
+		<function opcode="51" name="object_beautify" returnType="void" argc="2" help="makes an object pretty for the remainder of the levels' cutscenes.">
+			<arg type="object" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="52" name="objects_predict" returnType="void" argc="1" help="loads textures necessary to draw a objects that are about to come on-screen.">
+			<arg type="object_list" name="" help="" />
+		</function>
+		<function opcode="53" name="object_type_predict" returnType="void" argc="1" help="loads textures necessary to draw an object that's about to come on-screen.">
+			<arg type="object_definition" name="" help="" />
+		</function>
+		<function opcode="54" name="object_pvs_activate" returnType="void" argc="1" help="just another (old) name for object_pvs_set_object.">
+			<arg type="object" name="" help="" />
+		</function>
+		<function opcode="55" name="object_pvs_set_object" returnType="void" argc="1" help="sets the specified object as the special place that activates everything it sees.">
+			<arg type="object" name="" help="" />
+		</function>
+		<function opcode="56" name="object_pvs_set_camera" returnType="void" argc="1" help="sets the specified cutscene camera point as the special place that activates everything it sees.">
+			<arg type="cutscene_camera_point" name="" help="" />
+		</function>
+		<function opcode="57" name="object_pvs_clear" returnType="void" argc="1" help="removes the special place that activates everything it sees.">
+			<arg type="cutscene_camera_point" name="" help="" />
+		</function>
+		<function opcode="58" name="render_lights" returnType="boolean" argc="1" help="enables/disables dynamic lights">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="59" name="scenery_get_animation_time" returnType="short" argc="1" help="returns the number of ticks remaining in a custom animation (or zero, if the animation is over).">
+			<arg type="scenery" name="" help="" />
+		</function>
+		<function opcode="5A" name="scenery_animation_start" returnType="void" argc="3" help="starts a custom animation playing on a piece of scenery">
+			<arg type="scenery" name="" help="" />
+			<arg type="animation_graph" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="5B" name="scenery_animation_start_at_frame" returnType="void" argc="4" help="starts a custom animation playing on a piece of scenery at a specific frame">
+			<arg type="scenery" name="" help="" />
+			<arg type="animation_graph" name="" help="" />
+			<arg type="string" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="5C" name="render_effects" returnType="void" argc="1" null="true">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="5D" name="unit_can_blink" returnType="void" argc="2" help="allows a unit to blink or not (units never blink when they are dead)">
+			<arg type="unit" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="5E" name="unit_open" returnType="void" argc="1" help="opens the hatches on the given unit">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="5F" name="unit_close" returnType="void" argc="1" help="closes the hatches on a given unit">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="60" name="unit_kill" returnType="void" argc="1" help="kills a given unit, no saving throw">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="61" name="unit_kill_silent" returnType="void" argc="1" help="kills a given unit silently (doesn't make them play their normal death animation or sound)">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="62" name="unit_get_custom_animation_time" returnType="short" argc="1" help="returns the number of ticks remaining in a unit's custom animation (or zero, if the animation is over).">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="63" name="unit_stop_custom_animation" returnType="void" argc="1" help="stops the custom animation running on the given unit.">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="64" name="unit_custom_animation_at_frame" returnType="boolean" argc="5" help="starts a custom animation playing on a unit at a specific frame index(interpolates into animation if next to last parameter is TRUE)">
+			<arg type="unit" name="" help="" />
+			<arg type="animation_graph" name="" help="" />
+			<arg type="string" name="" help="" />
+			<arg type="boolean" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="65" name="custom_animation" returnType="boolean" argc="4" help="starts a custom animation playing on a unit (interpolates into animation if last parameter is TRUE)">
+			<arg type="unit" name="" help="" />
+			<arg type="animation_graph" name="" help="" />
+			<arg type="string" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="66" name="custom_animation_list" returnType="boolean" argc="4" help="starts a custom animation playing on a unit list (interpolates into animation if last parameter is TRUE)">
+			<arg type="object_list" name="" help="" />
+			<arg type="animation_graph" name="" help="" />
+			<arg type="string" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="67" name="unit_is_playing_custom_animation" returnType="boolean" argc="1" help="returns TRUE if the given unit is still playing a custom animation">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="68" name="unit_aim_without_turning" returnType="void" argc="2" help="allows a unit to aim in place without turning">
+			<arg type="unit" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="69" name="unit_set_emotion" returnType="void" argc="2" help="sets a unit's facial expression (-1 is none, other values depend on unit)">
+			<arg type="unit" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="6A" name="unit_set_enterable_by_player" returnType="void" argc="2" help="can be used to prevent the player from entering a vehicle">
+			<arg type="unit" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="6B" name="unit_enter_vehicle" returnType="void" argc="3" help="puts the specified unit in the specified vehicle (in the named seat)">
+			<arg type="unit" name="" help="" />
+			<arg type="vehicle" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="6C" name="vehicle_test_seat_list" returnType="boolean" argc="3" help="tests whether the named seat has an object in the object list">
+			<arg type="vehicle" name="" help="" />
+			<arg type="string" name="" help="" />
+			<arg type="object_list" name="" help="" />
+		</function>
+		<function opcode="6D" name="vehicle_test_seat" returnType="boolean" argc="3" help="tests whether the named seat has a specified unit in it">
+			<arg type="vehicle" name="" help="" />
+			<arg type="string" name="" help="" />
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="6E" name="unit_set_emotion_animation" returnType="void" argc="2" help="sets the emotion animation to be used for the given unit">
+			<arg type="unit" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="6F" name="unit_exit_vehicle" returnType="void" argc="1" help="makes a unit exit its vehicle">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="70" name="unit_set_maximum_vitality" returnType="void" argc="3" help="sets a unit's maximum body and shield vitality">
+			<arg type="unit" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="71" name="units_set_maximum_vitality" returnType="void" argc="3" help="sets a group of units' maximum body and shield vitality">
+			<arg type="object_list" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="72" name="unit_set_current_vitality" returnType="void" argc="3" help="sets a unit's current body and shield vitality">
+			<arg type="unit" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="73" name="units_set_current_vitality" returnType="void" argc="3" help="sets a group of units' current body and shield vitality">
+			<arg type="object_list" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="74" name="vehicle_load_magic" returnType="short" argc="3" help="makes a list of units (named or by encounter) magically get into a vehicle, in the substring-specified seats (e.g. CD-passenger... empty string matches all seats)">
+			<arg type="unit" name="" help="" />
+			<arg type="string" name="" help="" />
+			<arg type="object_list" name="" help="" />
+		</function>
+		<function opcode="75" name="vehicle_unload" returnType="short" argc="2" help="makes units get out of a vehicle from the substring-specified seats (e.g. CD-passenger... empty string matches all seats)">
+			<arg type="unit" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="76" name="magic_seat_name" returnType="void" argc="1" help="all units controlled by the player will assume the given seat name (valid values are 'asleep', 'alert', 'stand', 'crouch' and 'flee')">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="77" name="unit_set_seat" returnType="void" argc="2" help="this unit will assume the named seat">
+			<arg type="unit" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="78" name="magic_melee_attack" returnType="void" argc="2" help="causes player's unit to start a melee attack">
+			<arg type="unit" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="79" name="vehicle_riders" returnType="object_list" argc="1" help="returns a list of all riders in a vehicle">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="7A" name="vehicle_driver" returnType="unit" argc="1" help="returns the driver of a vehicle">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="7B" name="vehicle_gunner" returnType="unit" argc="1" help="returns the gunner of a vehicle">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="7C" name="unit_get_health" returnType="real" argc="1" help="returns the health [0,1] of the unit, returns -1 if the unit does not exists">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="7D" name="unit_get_shield" returnType="real" argc="1" help="returns the shield [0,1] of the unit, returns -1 if the unit does not exists">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="7E" name="unit_get_total_grenade_count" returnType="short" argc="1" help="returns the total number of grenades for the given unit, 0 if it does not exist">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="7F" name="unit_has_weapon" returnType="boolean" argc="2" help="returns TRUE if the &lt;unit&gt; has &lt;object&gt; as a weapon, FALSE otherwise">
+			<arg type="unit" name="" help="" />
+			<arg type="object_definition" name="" help="" />
+		</function>
+		<function opcode="80" name="unit_has_weapon_readied" returnType="boolean" argc="2" help="returns TRUE if the &lt;unit&gt; has &lt;object&gt; as the primary weapon, FALSE otherwise">
+			<arg type="unit" name="" help="" />
+			<arg type="object_definition" name="" help="" />
+		</function>
+		<function opcode="81" name="unit_doesnt_drop_items" returnType="void" argc="1" help="prevents any of the given units from dropping weapons or grenades when they die">
+			<arg type="object_list" name="" help="" />
+		</function>
+		<function opcode="82" name="unit_impervious" returnType="void" argc="2" help="prevents any of the given units from being knocked around or playing ping animations">
+			<arg type="object_list" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="83" name="unit_suspended" returnType="void" argc="2" help="stops gravity from working on the given unit">
+			<arg type="unit" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="84" name="unit_solo_player_integrated_night_vision_is_active" returnType="boolean" argc="2" help="returns whether the night-vision mode could be activated via the flashlight button">
+			<arg type="unit" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="85" name="units_set_desired_flashlight_state" returnType="void" argc="2" help="sets the units' desired flashlight state">
+			<arg type="object_list" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="86" name="unit_set_desired_flashlight_state" returnType="void" argc="2" help="sets the unit's desired flashlight state">
+			<arg type="unit" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="87" name="unit_get_current_flashlight_state" returnType="boolean" argc="1" help="gets the unit's current flashlight state">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="88" name="device_set_never_appears_locked" returnType="void" argc="2" help="changes a machine's never_appears_locked flag, but only if paul is a bastard">
+			<arg type="device" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="89" name="device_get_power" returnType="real" argc="1" help="gets the current power of a named device">
+			<arg type="device" name="" help="" />
+		</function>
+		<function opcode="8A" name="device_set_power" returnType="void" argc="2" help="immediately sets the power of a named device to the given value">
+			<arg type="device" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="8B" name="device_set_position" returnType="boolean" argc="2" help="set the desired position of the given device (used for devices without explicit device groups)">
+			<arg type="device" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="8C" name="device_get_position" returnType="real" argc="1" help="gets the current position of the given device (used for devices without explicit device groups)">
+			<arg type="device" name="" help="" />
+		</function>
+		<function opcode="8D" name="device_set_position_immediate" returnType="void" argc="2" help="instantaneously changes the position of the given device (used for devices without explicit device groups">
+			<arg type="device" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="8E" name="device_group_get" returnType="real" argc="1" help="returns the desired value of the specified device group.">
+			<arg type="device_group" name="" help="" />
+		</function>
+		<function opcode="8F" name="device_group_set" returnType="boolean" argc="2" help="changes the desired value of the specified device group.">
+			<arg type="device_group" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="90" name="device_group_set_immediate" returnType="void" argc="2" help="instantaneously changes the value of the specified device group.">
+			<arg type="device_group" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="91" name="device_one_sided_set" returnType="void" argc="2" help="TRUE makes the given device one-sided (only able to be opened from one direction), FALSE makes it two-sided">
+			<arg type="device" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="92" name="device_operates_automatically_set" returnType="void" argc="2" help="TRUE makes the given device open automatically when any biped is nearby, FALSE makes it not">
+			<arg type="device" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="93" name="device_group_change_only_once_more_set" returnType="void" argc="2" help="TRUE allows a device to change states only once">
+			<arg type="device_group" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="94" name="breakable_surfaces_reset" returnType="void" argc="2" help="restores all breakable surfaces">
+			<arg type="device_group" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="95" name="cheat_all_powerups" returnType="void" argc="2" help="drops all powerups near player">
+			<arg type="device_group" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="96" name="cheat_all_weapons" returnType="void" argc="2" help="drops all weapons near player">
+			<arg type="device_group" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="97" name="cheat_spawn_warthog" returnType="void" argc="2" help="drops a warthog near player">
+			<arg type="device_group" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="98" name="cheat_all_vehicles" returnType="void" argc="2" help="drops all vehicles on player">
+			<arg type="device_group" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="99" name="cheat_teleport_to_camera" returnType="void" argc="2" help="teleports player to camera location">
+			<arg type="device_group" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="9A" name="cheat_active_camouflage" returnType="void" argc="2" help="gives the player active camouflage">
+			<arg type="device_group" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="9B" name="cheat_active_camouflage_local_player" returnType="void" argc="1" help="gives the player active camouflage">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="9C" name="cheats_load" returnType="void" argc="1" help="reloads the cheats.txt file" null="true">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="9D" name="ai_free" returnType="void" argc="1" help="removes a group of actors from their encounter and sets them free">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="9E" name="ai_free_units" returnType="void" argc="1" help="removes a set of units from their encounter (if any) and sets them free">
+			<arg type="object_list" name="" help="" />
+		</function>
+		<function opcode="9F" name="ai_attach" returnType="void" argc="2" help="attaches the specified unit to the specified encounter.">
+			<arg type="unit" name="" help="" />
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="A0" name="ai_attach_free" returnType="void" argc="2" help="attaches a unit to a newly created free actor of the specified type">
+			<arg type="unit" name="" help="" />
+			<arg type="actor_variant" name="" help="" />
+		</function>
+		<function opcode="A1" name="ai_detach" returnType="void" argc="1" help="detaches the specified unit from all AI.">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="A2" name="ai_place" returnType="void" argc="1" help="places the specified encounter on the map.">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="A3" name="ai_kill" returnType="void" argc="1" help="instantly kills the specified encounter and/or squad.">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="A4" name="ai_kill_silent" returnType="void" argc="1" help="instantly and silently (no animation or sound played) kills the specified encounter and/or squad.">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="A5" name="ai_erase" returnType="void" argc="1" help="erases the specified encounter and/or squad.">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="A6" name="ai_erase_all" returnType="void" argc="1" help="erases all AI.">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="A7" name="ai_select" returnType="void" argc="1" help="selects the specified encounter.">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="A8" name="ai_deselect" returnType="void" argc="1" help="clears the selected encounter." null="true">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="A9" name="ai_spawn_actor" returnType="void" argc="1" help="spawns a single actor in the specified encounter and/or squad.">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="AA" name="ai_set_respawn" returnType="void" argc="2" help="enables or disables respawning in the specified encounter.">
+			<arg type="ai" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="AB" name="ai_set_deaf" returnType="void" argc="2" help="enables or disables hearing for actors in the specified encounter.">
+			<arg type="ai" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="AC" name="ai_set_blind" returnType="void" argc="2" help="enables or disables sight for actors in the specified encounter.">
+			<arg type="ai" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="AD" name="ai_magically_see_encounter" returnType="void" argc="2" help="makes one encounter magically aware of another.">
+			<arg type="ai" name="" help="" />
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="AE" name="ai_magically_see_players" returnType="void" argc="1" help="makes an encounter magically aware of nearby players.">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="AF" name="ai_magically_see_unit" returnType="void" argc="2" help="makes an encounter magically aware of the specified unit.">
+			<arg type="ai" name="" help="" />
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="B0" name="ai_timer_start" returnType="void" argc="1" help="makes a squad's delay timer start counting.">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="B1" name="ai_timer_expire" returnType="void" argc="1" help="makes a squad's delay timer expire and releases them to enter combat.">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="B2" name="ai_attack" returnType="void" argc="1" help="makes the specified platoon(s) go into the attacking state.">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="B3" name="ai_defend" returnType="void" argc="1" help="makes the specified platoon(s) go into the defending state.">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="B4" name="ai_retreat" returnType="void" argc="1" help="makes all squads in the specified platoon(s) maneuver to their designated maneuver squads.">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="B5" name="ai_maneuver" returnType="void" argc="1" help="makes all squads in the specified platoon(s) maneuver to their designated maneuver squads.">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="B6" name="ai_maneuver_enable" returnType="void" argc="2" help="enables or disables the maneuver/retreat rule for an encounter or platoon. the rule will still trigger, but none of the actors will be given the order to change squads.">
+			<arg type="ai" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="B7" name="ai_migrate" returnType="void" argc="2" help="makes all or part of an encounter move to another encounter.">
+			<arg type="ai" name="" help="" />
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="B8" name="ai_migrate_and_speak" returnType="void" argc="3" help="makes all or part of an encounter move to another encounter, and say their 'advance' or 'retreat' speech lines.">
+			<arg type="ai" name="" help="" />
+			<arg type="ai" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="B9" name="ai_migrate_by_unit" returnType="void" argc="2" help="makes a named vehicle or group of units move to another encounter.">
+			<arg type="object_list" name="" help="" />
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="BA" name="ai_allegiance" returnType="void" argc="2" help="creates an allegiance between two teams.">
+			<arg type="team" name="" help="" />
+			<arg type="team" name="" help="" />
+		</function>
+		<function opcode="BB" name="ai_allegiance_remove" returnType="void" argc="2" help="destroys an allegiance between two teams.">
+			<arg type="team" name="" help="" />
+			<arg type="team" name="" help="" />
+		</function>
+		<function opcode="BC" name="ai_living_count" returnType="short" argc="1" help="return the number of living actors in the specified encounter and/or squad.">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="BD" name="ai_living_fraction" returnType="real" argc="1" help="return the fraction [0-1] of living actors in the specified encounter and/or squad.">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="BE" name="ai_strength" returnType="real" argc="1" help="return the current strength (average body vitality from 0-1) of the specified encounter and/or squad.">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="BF" name="ai_swarm_count" returnType="short" argc="1" help="return the number of swarm actors in the specified encounter and/or squad.">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="C0" name="ai_nonswarm_count" returnType="short" argc="1" help="return the number of non-swarm actors in the specified encounter and/or squad.">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="C1" name="ai_actors" returnType="object_list" argc="1" help="converts an ai reference to an object list.">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="C2" name="ai_go_to_vehicle" returnType="void" argc="3" help="tells a group of actors to get into a vehicle, in the substring-specified seats (e.g. passenger for pelican)... does not interrupt any actors who are already going to vehicles">
+			<arg type="ai" name="" help="" />
+			<arg type="unit" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="C3" name="ai_go_to_vehicle_override" returnType="void" argc="3" help="tells a group of actors to get into a vehicle, in the substring-specified seats (e.g. passenger for pelican)... NB: any actors who are already going to vehicles will stop and go to this one instead!">
+			<arg type="ai" name="" help="" />
+			<arg type="unit" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="C4" name="ai_going_to_vehicle" returnType="short" argc="1" help="return the number of actors that are still trying to get into the specified vehicle">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="C5" name="ai_exit_vehicle" returnType="void" argc="1" help="tells a group of actors to get out of any vehicles that they are in">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="C6" name="ai_braindead" returnType="void" argc="2" help="makes a group of actors braindead, or restores them to life (in their initial state)">
+			<arg type="ai" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="C7" name="ai_braindead_by_unit" returnType="void" argc="2" help="makes a list of objects braindead, or restores them to life. if you pass in a vehicle index, it makes all actors in that vehicle braindead (including any built-in guns)">
+			<arg type="object_list" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="C8" name="ai_disregard" returnType="void" argc="2" help="if TRUE, forces all actors to completely disregard the specified units, otherwise lets them acknowledge the units again">
+			<arg type="object_list" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="C9" name="ai_prefer_target" returnType="void" argc="2" help="if TRUE, *ALL* enemies will prefer to attack the specified units. if FALSE, removes the preference.">
+			<arg type="object_list" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="CA" name="ai_teleport_to_starting_location" returnType="void" argc="1" help="teleports a group of actors to the starting locations of their current squad(s)">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="CB" name="ai_teleport_to_starting_location_if_unsupported" returnType="void" argc="1" help="teleports a group of actors to the starting locations of their current squad(s), only if they are not supported by solid ground (i.e. if they are falling after switching BSPs)">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="CC" name="ai_renew" returnType="void" argc="1" help="refreshes the health and grenade count of a group of actors, so they are as good as new">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="CD" name="ai_try_to_fight_nothing" returnType="void" argc="1" help="removes the preferential target setting from a group of actors">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="CE" name="ai_try_to_fight" returnType="void" argc="2" help="causes a group of actors to preferentially target another group of actors">
+			<arg type="ai" name="" help="" />
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="CF" name="ai_try_to_fight_player" returnType="void" argc="1" help="causes a group of actors to preferentially target the player">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="D0" name="ai_command_list" returnType="void" argc="2" help="tells a group of actors to begin executing the specified command list">
+			<arg type="ai" name="" help="" />
+			<arg type="ai_command_list" name="" help="" />
+		</function>
+		<function opcode="D1" name="ai_command_list_by_unit" returnType="void" argc="2" help="tells a named unit to begin executing the specified command list">
+			<arg type="unit" name="" help="" />
+			<arg type="ai_command_list" name="" help="" />
+		</function>
+		<function opcode="D2" name="ai_command_list_advance" returnType="void" argc="1" help="tells a group of actors that are running a command list that they may advance further along the list (if they are waiting for a stimulus)">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="D3" name="ai_command_list_advance_by_unit" returnType="void" argc="1" help="just like ai_command_list_advance but operates upon a unit instead">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="D4" name="ai_command_list_status" returnType="short" argc="1" help="gets the status of a number of units running command lists: 0 = none, 1 = finished command list, 2 = waiting for stimulus, 3 = running command list">
+			<arg type="object_list" name="" help="" />
+		</function>
+		<function opcode="D5" name="ai_is_attacking" returnType="boolean" argc="1" help="returns whether a platoon is in the attacking mode (or if an encounter is specified, returns whether any platoon in that encounter is attacking)">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="D6" name="ai_force_active" returnType="void" argc="2" help="forces an encounter to remain active (i.e. not freeze in place) even if there are no players nearby">
+			<arg type="ai" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="D7" name="ai_force_active_by_unit" returnType="void" argc="2" help="forces a named actor that is NOT in an encounter to remain active (i.e. not freeze in place) even if there are no players nearby">
+			<arg type="unit" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="D8" name="ai_set_return_state" returnType="void" argc="2" help="sets the state that a group of actors will return to when they have nothing to do">
+			<arg type="ai" name="" help="" />
+			<arg type="ai_default_state" name="" help="" />
+		</function>
+		<function opcode="D9" name="ai_set_current_state" returnType="void" argc="2" help="sets the current state of a group of actors. WARNING: may have unpredictable results on actors that are in combat">
+			<arg type="ai" name="" help="" />
+			<arg type="ai_default_state" name="" help="" />
+		</function>
+		<function opcode="DA" name="ai_playfight" returnType="void" argc="2" help="sets an encounter to be playfighting or not">
+			<arg type="ai" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="DB" name="ai_status" returnType="short" argc="1" help="returns the most severe combat status of a group of actors (0=inactive, 1=noncombat, 2=guarding, 3=search/suspicious, 4=definite enemy(heard or magic awareness), 5=visible enemy, 6=engaging in combat.">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="DC" name="ai_reconnect" returnType="void" argc="1" help="reconnects all AI information to the current structure bsp (use this after you create encounters or command lists in sapien, or place new firing points or command list points)" null="true">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="DD" name="ai_vehicle_encounter" returnType="void" argc="2" help="sets a vehicle to 'belong' to a particular encounter/squad. any actors who get into the vehicle will be placed in this squad. NB: vehicles potentially drivable by multiple teams need their own encounter!">
+			<arg type="unit" name="" help="" />
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="DE" name="ai_vehicle_enterable_distance" returnType="void" argc="2" help="sets a vehicle as being impulsively enterable for actors within a certain distance">
+			<arg type="unit" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="DF" name="ai_vehicle_enterable_team" returnType="void" argc="2" help="sets a vehicle as being impulsively enterable for actors on a certain team">
+			<arg type="unit" name="" help="" />
+			<arg type="team" name="" help="" />
+		</function>
+		<function opcode="E0" name="ai_vehicle_enterable_ai_default_state" returnType="void" argc="2" help="sets a vehicle as being impulsively enterable for actors of a certain type (grunt, elite, marine etc)">
+			<arg type="unit" name="" help="" />
+			<arg type="actor_type" name="" help="" />
+		</function>
+		<function opcode="E1" name="ai_vehicle_enterable_actors" returnType="void" argc="2" help="sets a vehicle as being impulsively enterable for a certain encounter/squad of actors">
+			<arg type="unit" name="" help="" />
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="E2" name="ai_vehicle_enterable_disable" returnType="void" argc="1" help="disables actors from impulsively getting into a vehicle (this is the default state for newly placed vehicles)">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="E3" name="ai_look_at_object" returnType="void" argc="2" help="tells an actor to look at an object until further notice">
+			<arg type="unit" name="" help="" />
+			<arg type="object" name="" help="" />
+		</function>
+		<function opcode="E4" name="ai_stop_looking" returnType="void" argc="1" help="tells an actor to stop looking at whatever it's looking at">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="E5" name="ai_automatic_migration_target" returnType="void" argc="2" help="enables or disables a squad as being an automatic migration target">
+			<arg type="ai" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="E6" name="ai_follow_target_disable" returnType="void" argc="1" help="turns off following for an encounter">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="E7" name="ai_follow_target_players" returnType="void" argc="1" help="sets the follow target for an encounter to be the closest player">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="E8" name="ai_follow_target_unit" returnType="void" argc="2" help="sets the follow target for an encounter to be a specific unit">
+			<arg type="ai" name="" help="" />
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="E9" name="ai_follow_target_ai" returnType="void" argc="2" help="sets the follow target for an encounter to be a group of AI (encounter, squad or platoon)">
+			<arg type="ai" name="" help="" />
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="EA" name="ai_follow_distance" returnType="void" argc="2" help="sets the distance threshold which will cause squads to migrate when following someone">
+			<arg type="ai" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="EB" name="ai_conversation" returnType="boolean" argc="1" help="tries to add an entry to the list of conversations waiting to play. returns FALSE if the required units could not be found to play the conversation, or if the player is too far away and the 'delay' flag is not set.">
+			<arg type="conversation" name="" help="" />
+		</function>
+		<function opcode="EC" name="ai_conversation_stop" returnType="void" argc="1" help="stops a conversation from playing or trying to play">
+			<arg type="conversation" name="" help="" />
+		</function>
+		<function opcode="ED" name="ai_conversation_advance" returnType="void" argc="1" help="tells a conversation that it may advance">
+			<arg type="conversation" name="" help="" />
+		</function>
+		<function opcode="EE" name="ai_conversation_line" returnType="short" argc="1" help="returns which line the conversation is currently playing, or 999 if the conversation is not currently playing">
+			<arg type="conversation" name="" help="" />
+		</function>
+		<function opcode="EF" name="ai_conversation_status" returnType="short" argc="1" help="returns the status of a conversation (0=none, 1=trying to begin, 2=waiting for guys to get in position, 3=playing, 4=waiting to advance, 5=could not begin, 6=finished successfully, 7=aborted midway">
+			<arg type="conversation" name="" help="" />
+		</function>
+		<function opcode="F0" name="ai_link_activation" returnType="void" argc="2" help="links the first encounter so that it will be made active whenever it detects that the second encounter is active">
+			<arg type="ai" name="" help="" />
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="F1" name="ai_berserk" returnType="void" argc="2" help="forces a group of actors to start or stop berserking">
+			<arg type="ai" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="F2" name="ai_set_team" returnType="void" argc="2" help="makes an encounter change to a new team">
+			<arg type="ai" name="" help="" />
+			<arg type="team" name="" help="" />
+		</function>
+		<function opcode="F3" name="ai_allow_charge" returnType="void" argc="2" help="either enables or disables charging behavior for a group of actors">
+			<arg type="ai" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="F4" name="ai_allow_dormant" returnType="void" argc="2" help="either enables or disables automatic dormancy for a group of actors">
+			<arg type="ai" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="F5" name="ai_allegiance_broken" returnType="boolean" argc="2" help="returns whether two teams have an allegiance that is currently broken by traitorous behavior">
+			<arg type="team" name="" help="" />
+			<arg type="team" name="" help="" />
+		</function>
+		<function opcode="F6" name="camera_control" returnType="void" argc="1" help="toggles script control of the camera.">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="F7" name="camera_set" returnType="void" argc="2" help="moves the camera to the specified camera point over the specified number of ticks.">
+			<arg type="cutscene_camera_point" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="F8" name="camera_set_relative" returnType="void" argc="3" help="moves the camera to the specified camera point over the specified number of ticks (position is relative to the specified object).">
+			<arg type="cutscene_camera_point" name="" help="" />
+			<arg type="short" name="" help="" />
+			<arg type="object" name="" help="" />
+		</function>
+		<function opcode="F9" name="camera_set_animation" returnType="void" argc="2" help="begins a prerecorded camera animation.">
+			<arg type="animation_graph" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="FA" name="camera_set_first_person" returnType="void" argc="1" help="makes the scripted camera follow a unit.">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="FB" name="camera_set_dead" returnType="void" argc="1" help="makes the scripted camera zoom out around a unit as if it were dead.">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="FC" name="camera_time" returnType="short" argc="1" help="returns the number of ticks remaining in the current camera interpolation.">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="FD" name="debug_camera_load" returnType="void" argc="1" help="loads the saved camera position and facing.">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="FE" name="debug_camera_save" returnType="void" argc="1" help="saves the camera position and facing.">
+			<arg type="unit" name="" help="" />
+		</function>
+		<function opcode="FF" name="game_speed" returnType="void" argc="1" help="changes the game speed.">
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="100" name="game_time" returnType="long" argc="1" help="gets ticks elapsed since the start of the game.">
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="101" name="game_variant" returnType="void" argc="1" help="set the game engine">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="102" name="game_difficulty_get" returnType="game_difficulty" argc="1" help="returns the current difficulty setting, but lies to you and will never return easy, instead returning normal">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="103" name="game_difficulty_get_real" returnType="game_difficulty" argc="1" help="returns the actual current difficulty setting without lying">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="104" name="profile_service_clear_timers" returnType="void" argc="1" help="clears the timers that are present in the profiling service" null="true">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="105" name="profile_service_dump_timers" returnType="void" argc="1" help="dumps the profiling service timers" null="true">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="106" name="map_reset" returnType="void" argc="1" help="starts the map from the beginning.">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="107" name="map_name" returnType="void" argc="1" help="changes the name of the solo player map." access="1">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="108" name="multiplayer_map_name" returnType="void" argc="1" help="changes the name of the multiplayer map">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="109" name="game_difficulty_set" returnType="void" argc="1" help="changes the difficulty setting for the next map to be loaded.">
+			<arg type="game_difficulty" name="" help="" />
+		</function>
+		<function opcode="10A" name="crash" returnType="void" argc="1" help="crashes (for debugging).">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="10B" name="switch_bsp" returnType="void" argc="1" help="takes off your condom and changes to a different structure bsp">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="10C" name="structure_bsp_index" returnType="short" argc="1" help="returns the current structure bsp index">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="10D" name="version" returnType="void" argc="1" help="prints the build version.">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="10E" name="playback" returnType="void" argc="1" help="starts game in film playback mode">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="10F" name="quit" returnType="void" argc="1" help="quits the game" access="1">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="110" name="texture_cache_flush" returnType="void" argc="1" help="don't make me kick your ass" null="true">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="111" name="sound_cache_flush" returnType="void" argc="1" help="i'm a rebel!" null="true">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="112" name="sound_cache_dump_to_file" returnType="void" argc="1" help="dump dat shit!">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="113" name="debug_memory" returnType="void" argc="1" help="dumps memory leaks." null="true">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="114" name="debug_memory_by_file" returnType="void" argc="1" help="dumps memory leaks by source file." null="true">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="115" name="debug_memory_for_file" returnType="void" argc="1" help="dumps memory leaks from the specified source file." null="true">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="116" name="debug_tags" returnType="void" argc="1" help="writes all memory being used by tag files into tag_dump.txt" null="true">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="117" name="profile_reset" returnType="void" argc="1" help="resets profiling data." null="true">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="118" name="profile_dump" returnType="void" argc="1" help="dumps profile based on a substring." null="true">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="119" name="profile_activate" returnType="void" argc="1" help="activates profile sections based on a substring." null="true">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="11A" name="profile_deactivate" returnType="void" argc="1" help="deactivates profile sections based on a substring." null="true">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="11B" name="profile_graph_toggle" returnType="void" argc="1" help="enables or disables profile graph display of a particular value." null="true">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="11C" name="debug_pvs" returnType="void" argc="1" help="displays the current pvs." null="true">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="11D" name="radiosity_start" returnType="void" argc="1" help="starts radiosity computation." null="true">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="11E" name="radiosity_save" returnType="void" argc="1" help="saves radiosity solution." null="true">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="11F" name="radiosity_debug_point" returnType="void" argc="1" help="tests sun occlusion at a point." null="true">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="120" name="ai" returnType="void" argc="1" help="turns all AI on or off." null="true">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="121" name="ai_dialogue_triggers" returnType="void" argc="1" help="turns impromptu dialogue on or off." null="true">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="122" name="ai_grenades" returnType="void" argc="1" help="turns grenade inventory on or off." null="true">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="123" name="ai_lines" returnType="void" argc="1" help="cycles through AI line-spray modes" null="true">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="124" name="ai_debug_sound_point_set" returnType="void" argc="1" help="drops the AI debugging sound point at the camera location" null="true">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="125" name="ai_debug_vocalize" returnType="void" argc="2" help="makes the selected AI vocalize">
+			<arg type="string" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="126" name="ai_debug_teleport_to" returnType="void" argc="1" help="teleports all players to the specified encounter">
+			<arg type="ai" name="" help="" />
+		</function>
+		<function opcode="127" name="ai_debug_speak" returnType="void" argc="1" help="makes the currently selected AI speak a vocalization (e.g. ai_speak &quot;pain minor&quot;)">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="128" name="ai_debug_speak_list" returnType="void" argc="1" help="makes the currently selected AI speak a list of vocalizations (e.g. ai_speak_list &quot;involuntary&quot;)">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="129" name="fade_in" returnType="void" argc="4" help="does a screen fade in from a particular color">
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="12A" name="fade_out" returnType="void" argc="4" help="does a screen fade out to a particular color">
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="12B" name="cinematic_start" returnType="void" argc="4" help="initializes game to start a cinematic (interruptive) cutscene">
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="12C" name="cinematic_stop" returnType="void" argc="4" help="initializes the game to end a cinematic (interruptive) cutscene">
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="12D" name="cinematic_abort" returnType="void" argc="4" help="aborts a cinematic">
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="12E" name="cinematic_skip_start_internal" returnType="void" argc="4">
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="12F" name="cinematic_skip_stop_internal" returnType="void" argc="4">
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="130" name="cinematic_show_letterbox" returnType="void" argc="1" help="sets or removes the letterbox bars">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="131" name="cinematic_set_title" returnType="void" argc="1" help="activates the chapter title">
+			<arg type="cutscene_title" name="" help="" />
+		</function>
+		<function opcode="132" name="cinematic_set_title_delayed" returnType="void" argc="2" help="activates the chapter title, delayed by &lt;real&gt; seconds">
+			<arg type="cutscene_title" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="133" name="cinematic_suppress_bsp_object_creation" returnType="void" argc="1" help="suppresses or enables the automatic creation of objects during cutscenes due to a bsp switch">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="134" name="attract_mode_start" returnType="void" argc="1" null="true">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="135" name="game_won" returnType="void" argc="1" help="causes the player to successfully finish the current level and move to the next">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="136" name="game_lost" returnType="void" argc="1" help="causes the player to revert to his previous saved game">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="137" name="game_safe_to_save" returnType="boolean" argc="1" help="returns FALSE if it would be a bad idea to save the player's game right now">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="138" name="game_all_quiet" returnType="boolean" argc="1" help="returns FALSE if there are bad guys around, projectiles in the air, etc.">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="139" name="game_safe_to_speak" returnType="boolean" argc="1" help="returns FALSE if it would be a bad idea to save the player's game right now">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="13A" name="game_is_cooperative" returnType="boolean" argc="1" help="returns TRUE if the game is cooperative">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="13B" name="game_save" returnType="void" argc="1" help="checks to see if it is safe to save game, then saves (gives up after 8 seconds)">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="13C" name="game_save_cancel" returnType="void" argc="1" help="cancels any pending game_save, timeout or not">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="13D" name="game_save_no_timeout" returnType="void" argc="1" help="checks to see if it is safe to save game, then saves (this version never gives up)">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="13E" name="game_save_totally_unsafe" returnType="void" argc="1" help="disregards player's current situation">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="13F" name="game_saving" returnType="boolean" argc="1" help="checks to see if the game is trying to save the map.">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="140" name="game_revert" returnType="void" argc="1" help="reverts to last saved game, if any (for testing, the first bastard that does this to me gets it in the head)">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="141" name="game_reverted" returnType="boolean" argc="1" help="don't use this for anything, you black-hearted bastards.">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="142" name="core_save" returnType="void" argc="1" help="saves debug game state to core\core.bin">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="143" name="core_save_name" returnType="void" argc="1" help="saves debug game state to core\&lt;path&gt;">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="144" name="core_load" returnType="void" argc="1" help="loads debug game state from core\core.bin">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="145" name="core_load_at_startup" returnType="void" argc="1" help="loads debug game state from core\core.bin as soon as the map is initialized">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="146" name="core_load_name" returnType="void" argc="1" help="loads debug game state from core\&lt;path&gt;">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="147" name="core_load_name_at_startup" returnType="void" argc="1" help="loads debug game state from core\&lt;path&gt; as soon as the map is initialized">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="148" name="game_skip_ticks" returnType="void" argc="1" help="skips &lt;short&gt; amount of game ticks. ONLY USE IN CUTSCENES!!!">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="149" name="sound_impulse_predict" returnType="void" argc="2" help="loads an impulse sound into the sound cache ready for playback.">
+			<arg type="sound" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="14A" name="sound_impulse_start" returnType="void" argc="3" help="plays an impulse sound from the specified source object (or &quot;none&quot;), with the specified scale.">
+			<arg type="sound" name="" help="" />
+			<arg type="object" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="14B" name="sound_impulse_time" returnType="long" argc="1" help="returns the time remaining for the specified impulse sound.">
+			<arg type="sound" name="" help="" />
+		</function>
+		<function opcode="14C" name="sound_impulse_stop" returnType="void" argc="1" help="stops the specified impulse sound.">
+			<arg type="sound" name="" help="" />
+		</function>
+		<function opcode="14D" name="sound_looping_predict" returnType="void" argc="1" help="your mom.">
+			<arg type="looping_sound" name="" help="" />
+		</function>
+		<function opcode="14E" name="sound_looping_start" returnType="void" argc="3" help="plays a looping sound from the specified source object (or &quot;none&quot;), with the specified scale.">
+			<arg type="looping_sound" name="" help="" />
+			<arg type="object" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="14F" name="sound_looping_stop" returnType="void" argc="1" help="stops the specified looping sound.">
+			<arg type="looping_sound" name="" help="" />
+		</function>
+		<function opcode="150" name="sound_looping_set_scale" returnType="void" argc="2" help="changes the scale of the sound (which should affect the volume) within the range 0 to 1.">
+			<arg type="looping_sound" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="151" name="sound_looping_set_alternate" returnType="void" argc="2" help="enables or disables the alternate loop/alternate end for a looping sound.">
+			<arg type="looping_sound" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="152" name="debug_sounds_enable" returnType="void" argc="2" help="enables or disabled all sound classes matching the substring.">
+			<arg type="string" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="153" name="debug_sounds_distances" returnType="void" argc="3" help="changes the minimum and maximum distances for all sound classes matching the substring." null="true">
+			<arg type="string" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="154" name="debug_sounds_wet" returnType="void" argc="2" help="changes the reverb level for all sound classes matching the substring." null="true">
+			<arg type="string" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="155" name="sound_enable" returnType="void" argc="1" help="enables or disables all sound.">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="156" name="sound_set_master_gain" returnType="void" argc="1" help="Set the game's master gain">
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="157" name="sound_get_master_gain" returnType="real" argc="1" help="Returns the game's master gain">
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="158" name="sound_set_music_gain" returnType="void" argc="1" help="Set the game's music gain">
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="159" name="sound_get_music_gain" returnType="real" argc="1" help="Returns the game's music gain">
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="15A" name="sound_set_effects_gain" returnType="void" argc="1" help="Set the game's effects gain">
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="15B" name="sound_get_effects_gain" returnType="real" argc="1" help="Returns the game's effects gain">
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="15C" name="sound_class_set_gain" returnType="void" argc="3" help="changes the gain on the specified sound class(es) to the specified game over the specified number of ticks.">
+			<arg type="string" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="15D" name="vehicle_hover" returnType="void" argc="2" help="stops the vehicle from running real physics and runs fake hovering physics instead.">
+			<arg type="vehicle" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="15E" name="players_unzoom_all" returnType="void" argc="2" help="resets zoom levels on all players">
+			<arg type="vehicle" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="15F" name="player_enable_input" returnType="void" argc="1" help="toggle player input. the player can still free-look, but nothing else.">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="160" name="player_camera_control" returnType="boolean" argc="1" help="enables/disables camera control globally">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="161" name="player_action_test_reset" returnType="void" argc="1" help="resets the player action test state so that all tests will return false.">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="162" name="player_action_test_jump" returnType="boolean" argc="1" help="returns true if any player has jumped since the last call to (player_action_test_reset).">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="163" name="player_action_test_primary_trigger" returnType="boolean" argc="1" help="returns true if any player has used primary trigger since the last call to (player_action_test_reset).">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="164" name="player_action_test_grenade_trigger" returnType="boolean" argc="1" help="returns true if any player has used grenade trigger since the last call to (player_action_test_reset).">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="165" name="player_action_test_zoom" returnType="boolean" argc="1" help="returns true if any player has hit the zoom button since the last call to (player_action_test_reset).">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="166" name="player_action_test_action" returnType="boolean" argc="1" help="returns true if any player has hit the action key since the last call to (player_action_test_reset).">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="167" name="player_action_test_accept" returnType="boolean" argc="1" help="returns true if any player has hit accept since the last call to (player_action_test_reset).">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="168" name="player_action_test_back" returnType="boolean" argc="1" help="returns true if any player has hit the back key since the last call to (player_action_test_reset).">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="169" name="player_action_test_look_relative_up" returnType="boolean" argc="1" help="returns true if any player has looked up since the last call to (player_action_test_reset).">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="16A" name="player_action_test_look_relative_down" returnType="boolean" argc="1" help="returns true if any player has looked down since the last call to (player_action_test_reset).">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="16B" name="player_action_test_look_relative_left" returnType="boolean" argc="1" help="returns true if any player has looked left since the last call to (player_action_test_reset).">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="16C" name="player_action_test_look_relative_right" returnType="boolean" argc="1" help="returns true if any player has looked right since the last call to (player_action_test_reset).">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="16D" name="player_action_test_look_relative_all_directions" returnType="boolean" argc="1" help="returns true if any player has looked up, down, left, and right since the last call to (player_action_test_reset).">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="16E" name="player_action_test_move_relative_all_directions" returnType="boolean" argc="1" help="returns true if any player has moved forward, backward, left, and right since the last call to (player_action_test_reset).">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="16F" name="player_add_equipment" returnType="void" argc="3" help="adds/resets the player's health, shield, and inventory (weapons and grenades) to the named profile. resets if third parameter is true, adds if false.">
+			<arg type="unit" name="" help="" />
+			<arg type="starting_profile" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="170" name="debug_teleport_player" returnType="void" argc="2">
+			<arg type="short" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="171" name="show_hud" returnType="boolean" argc="1" help="shows or hides the hud">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="172" name="show_hud_help_text" returnType="boolean" argc="1" help="shows or hides the hud help text">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="173" name="enable_hud_help_flash" returnType="void" argc="1" help="starts/stops the help text flashing">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="174" name="hud_help_flash_restart" returnType="void" argc="1" help="resets the timer for the help text flashing">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="175" name="activate_nav_point_flag" returnType="void" argc="4" help="activates a nav point type &lt;string&gt; attached to (local) player &lt;unit&gt; anchored to a flag with a vertical offset &lt;real&gt;. If the player is not local to the machine, this will fail">
+			<arg type="navpoint" name="" help="" />
+			<arg type="unit" name="" help="" />
+			<arg type="cutscene_flag" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="176" name="activate_nav_point_object" returnType="void" argc="4" help="activates a nav point type &lt;string&gt; attached to (local) player &lt;unit&gt; anchored to an object with a vertical offset &lt;real&gt;. If the player is not local to the machine, this will fail">
+			<arg type="navpoint" name="" help="" />
+			<arg type="unit" name="" help="" />
+			<arg type="object" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="177" name="activate_team_nav_point_flag" returnType="void" argc="4" help="activates a nav point type &lt;string&gt; attached to a team anchored to a flag with a vertical offset &lt;real&gt;. If the player is not local to the machine, this will fail">
+			<arg type="navpoint" name="" help="" />
+			<arg type="team" name="" help="" />
+			<arg type="cutscene_flag" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="178" name="activate_team_nav_point_object" returnType="void" argc="4" help="activates a nav point type &lt;string&gt; attached to a team anchored to an object with a vertical offset &lt;real&gt;. If the player is not local to the machine, this will fail">
+			<arg type="navpoint" name="" help="" />
+			<arg type="team" name="" help="" />
+			<arg type="object" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="179" name="deactivate_nav_point_flag" returnType="void" argc="2" help="deactivates a nav point type attached to a player &lt;unit&gt; anchored to a flag">
+			<arg type="unit" name="" help="" />
+			<arg type="cutscene_flag" name="" help="" />
+		</function>
+		<function opcode="17A" name="deactivate_nav_point_object" returnType="void" argc="2" help="deactivates a nav point type attached to a player &lt;unit&gt; anchored to an object">
+			<arg type="unit" name="" help="" />
+			<arg type="object" name="" help="" />
+		</function>
+		<function opcode="17B" name="deactivate_team_nav_point_flag" returnType="void" argc="2" help="deactivates a nav point type attached to a team anchored to a flag">
+			<arg type="team" name="" help="" />
+			<arg type="cutscene_flag" name="" help="" />
+		</function>
+		<function opcode="17C" name="deactivate_team_nav_point_object" returnType="void" argc="2" help="deactivates a nav point type attached to a team anchored to an object">
+			<arg type="team" name="" help="" />
+			<arg type="object" name="" help="" />
+		</function>
+		<function opcode="17D" name="hud_team_icon_set_pos" returnType="void" argc="2" help="shit">
+			<arg type="long" name="" help="" />
+			<arg type="long" name="" help="" />
+		</function>
+		<function opcode="17E" name="hud_team_icon_set_scale" returnType="void" argc="2" help="shit">
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="17F" name="hud_team_background_set_pos" returnType="void" argc="2" help="shit">
+			<arg type="long" name="" help="" />
+			<arg type="long" name="" help="" />
+		</function>
+		<function opcode="180" name="hud_team_background_set_scale" returnType="void" argc="2" help="shit">
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="181" name="cls" returnType="void" argc="2" help="clears console text from the screen" access="1">
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="182" name="connect" returnType="void" argc="2" help="Attempt to connect to server - use ip:port password as parameters" access="1">
+			<arg type="string" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="183" name="disconnect" returnType="void" argc="2" help="Disconnect from a server" access="1">
+			<arg type="string" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="184" name="hammer_begin" returnType="void" argc="5" help="hammers the server by connecting and disconnecting repeatedly." null="true">
+			<arg type="string" name="" help="" />
+			<arg type="string" name="" help="" />
+			<arg type="long" name="" help="" />
+			<arg type="short" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="185" name="hammer_stop" returnType="void" argc="5" help="stops hammering the server." null="true">
+			<arg type="string" name="" help="" />
+			<arg type="string" name="" help="" />
+			<arg type="long" name="" help="" />
+			<arg type="short" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="186" name="network_server_dump" returnType="void" argc="5" help="Dumps info on network server." null="true">
+			<arg type="string" name="" help="" />
+			<arg type="string" name="" help="" />
+			<arg type="long" name="" help="" />
+			<arg type="short" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="187" name="network_client_dump" returnType="void" argc="5" help="Dumps info on network client." null="true">
+			<arg type="string" name="" help="" />
+			<arg type="string" name="" help="" />
+			<arg type="long" name="" help="" />
+			<arg type="short" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="188" name="net_graph_clear" returnType="void" argc="5" help="Clears the net_graph.">
+			<arg type="string" name="" help="" />
+			<arg type="string" name="" help="" />
+			<arg type="long" name="" help="" />
+			<arg type="short" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="189" name="net_graph_show" returnType="boolean" argc="2" help="Changes the net_graph display (bytes/packets, sent/received)">
+			<arg type="string" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="18A" name="play_update_history" returnType="void" argc="2" help="Playback client input history starting from the specified last completed update id.">
+			<arg type="long" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="18B" name="show_player_update_stats" returnType="void" argc="2" help="Shows update history playback stats." null="true">
+			<arg type="long" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="18C" name="message_metrics_clear" returnType="void" argc="2" help="clears network messaging metrics" null="true">
+			<arg type="long" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="18D" name="message_metrics_dump" returnType="void" argc="1" help="dumps network messaging metrics to given file (&quot;&quot; for default)">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="18E" name="error_overflow_suppression" returnType="void" argc="1" help="enables or disables the suppression of error spamming">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="18F" name="structure_lens_flares_place" returnType="void" argc="1" help="places lens flares in the structure bsp" null="true">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="190" name="player_effect_set_max_translation" returnType="void" argc="3" help="&lt;x&gt; &lt;y&gt; &lt;z&gt;">
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="191" name="player_effect_set_max_rotation" returnType="void" argc="3" help="&lt;yaw&gt; &lt;pitch&gt; &lt;roll&gt;">
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="192" name="player_effect_set_max_vibrate" returnType="void" argc="2" help="&lt;left&gt; &lt;right&gt;">
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="193" name="player_effect_start" returnType="void" argc="2" help="&lt;max_intensity&gt; &lt;attack time&gt;">
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="194" name="player_effect_stop" returnType="void" argc="1" help="&lt;decay&gt;">
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="195" name="hud_show_health" returnType="void" argc="1" help="hides/shows the health panel">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="196" name="hud_blink_health" returnType="void" argc="1" help="starts/stops manual blinking of the health panel">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="197" name="hud_show_shield" returnType="void" argc="1" help="hides/shows the shield panel">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="198" name="hud_blink_shield" returnType="void" argc="1" help="starts/stops manual blinking of the shield panel">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="199" name="hud_show_motion_sensor" returnType="void" argc="1" help="hides/shows the motion sensor panel">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="19A" name="hud_blink_motion_sensor" returnType="void" argc="1" help="starts/stops manual blinking of the motion sensor panel">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="19B" name="hud_show_crosshair" returnType="void" argc="1" help="hides/shows the weapon crosshair">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="19C" name="hud_clear_messages" returnType="void" argc="1" help="clears all non-state messages on the hud">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="19D" name="hud_set_help_text" returnType="void" argc="1" help="displays &lt;message&gt; as the help text">
+			<arg type="hud_message" name="" help="" />
+		</function>
+		<function opcode="19E" name="hud_set_objective_text" returnType="void" argc="1" help="sets &lt;message&gt; as the current objective">
+			<arg type="hud_message" name="" help="" />
+		</function>
+		<function opcode="19F" name="hud_set_timer_time" returnType="void" argc="2" help="sets the time for the timer to &lt;short&gt; minutes and &lt;short&gt; seconds, and starts and displays timer">
+			<arg type="short" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1A0" name="hud_set_timer_warning_time" returnType="void" argc="2" help="sets the warning time for the timer to &lt;short&gt; minutes and &lt;short&gt; seconds">
+			<arg type="short" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1A1" name="hud_set_timer_position" returnType="void" argc="3" help="sets the timer upper left position to (x, y)=&gt;(&lt;short&gt;, &lt;short&gt;)">
+			<arg type="short" name="" help="" />
+			<arg type="short" name="" help="" />
+			<arg type="hud_corner" name="" help="" />
+		</function>
+		<function opcode="1A2" name="show_hud_timer" returnType="void" argc="1" help="displays the hud timer">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="1A3" name="pause_hud_timer" returnType="void" argc="1" help="pauses or unpauses the hud timer">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="1A4" name="hud_get_timer_ticks" returnType="short" argc="1" help="returns the ticks left on the hud timer">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="1A5" name="time_code_show" returnType="void" argc="1" help="shows the time code timer" null="true">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="1A6" name="time_code_start" returnType="void" argc="1" help="starts/stops the time code timer" null="true">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="1A7" name="time_code_reset" returnType="void" argc="1" help="resets the time code timer" null="true">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="1A8" name="reload_shader_transparent_chicago" returnType="void" argc="1">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="1A9" name="rasterizer_reload_effects" returnType="void" argc="1" help="check for shader changes">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="1AA" name="set_gamma" returnType="void" argc="1" help="set the gamma">
+			<arg type="long" name="" help="" />
+		</function>
+		<function opcode="1AB" name="rasterizer_fixed_function_ambient" returnType="void" argc="1" help="set the ambient light value for fixed function">
+			<arg type="long" name="" help="" />
+		</function>
+		<function opcode="1AC" name="rasterizer_decals_flush" returnType="void" argc="1" help="flush all decals" null="true">
+			<arg type="long" name="" help="" />
+		</function>
+		<function opcode="1AD" name="rasterizer_fps_accumulate" returnType="void" argc="1" help="average fps" null="true">
+			<arg type="long" name="" help="" />
+		</function>
+		<function opcode="1AE" name="rasterizer_model_ambient_reflection_tint" returnType="void" argc="4">
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1AF" name="rasterizer_lights_reset_for_new_map" returnType="void" argc="4">
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1B0" name="script_screen_effect_set_value" returnType="void" argc="2" help="sets a screen effect script value">
+			<arg type="short" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1B1" name="cinematic_screen_effect_start" returnType="void" argc="1" help="starts screen effect; pass TRUE to clear">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="1B2" name="cinematic_screen_effect_set_convolution" returnType="void" argc="5" help="sets the convolution effect">
+			<arg type="short" name="" help="" />
+			<arg type="short" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1B3" name="cinematic_screen_effect_set_filter" returnType="void" argc="6" help="sets the filter effect">
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="boolean" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1B4" name="cinematic_screen_effect_set_filter_desaturation_tint" returnType="void" argc="3" help="sets the desaturation filter tint color">
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1B5" name="cinematic_screen_effect_set_video" returnType="void" argc="2" help="sets the video effect: &lt;noise intensity[0,1]&gt;, &lt;overbright: 0=none, 1=2x, 2=4x&gt;">
+			<arg type="short" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1B6" name="cinematic_screen_effect_stop" returnType="void" argc="2" help="returns control of the screen effects to the rest of the game">
+			<arg type="short" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1B7" name="cinematic_set_near_clip_distance" returnType="void" argc="1">
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1B8" name="delete_save_game_files" returnType="void" argc="1" help="delete all custom profile files" null="true">
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1B9" name="fast_setup_network_server" returnType="void" argc="3" help="sets up a network server with the given map name, game variant, and true for remote connections, false for not">
+			<arg type="string" name="" help="" />
+			<arg type="string" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="1BA" name="profile_unlock_solo_levels" returnType="void" argc="3" help="unlocks all the solo player levels for player 1's profile">
+			<arg type="string" name="" help="" />
+			<arg type="string" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="1BB" name="player0_look_invert_pitch" returnType="void" argc="1" help="invert player0's look">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="1BC" name="player0_look_pitch_is_inverted" returnType="boolean" argc="1" help="returns TRUE if player0's look pitch is inverted">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="1BD" name="player0_joystick_set_is_normal" returnType="boolean" argc="1" help="returns TRUE if player0 is using the normal joystick set">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="1BE" name="ui_widget_show_path" returnType="void" argc="1" help="blah blah">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="1BF" name="display_scenario_help" returnType="void" argc="1" help="display in-game help dialog">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1C0" name="sound_enable_eax" returnType="void" argc="1" help="Enable or disable EAX extensions">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="1C1" name="sound_eax_enabled" returnType="boolean" argc="1" help="Returns true if EAX extensions are enabled">
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="1C2" name="sound_set_env" returnType="void" argc="1" help="Change environment preset">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1C3" name="sound_enable_hardware" returnType="void" argc="2" help="Enable or disable hardware sound buffers">
+			<arg type="boolean" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="1C4" name="sound_set_supplementary_buffers" returnType="void" argc="2" help="Set the amount of supplementary buffers">
+			<arg type="short" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="1C5" name="sound_get_supplementary_buffers" returnType="short" argc="2" help="Get the amount of supplementary buffers">
+			<arg type="short" name="" help="" />
+			<arg type="boolean" name="" help="" />
+		</function>
+		<function opcode="1C6" name="sound_set_rolloff" returnType="void" argc="1" help="Set the DSound rolloff value">
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1C7" name="sound_set_factor" returnType="void" argc="1" help="Set the DSound factor value">
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1C8" name="input_get_joy_count" returnType="short" argc="1" help="test function to return the number of joysticks enumerated">
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1C9" name="input_is_joy_active" returnType="boolean" argc="1" help="test function to determine if an enumerated joystick is activated or not">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1CA" name="input_activate_joy" returnType="boolean" argc="2" help="activates an enumerated joystick into a logical joystick slot">
+			<arg type="short" name="" help="" />
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1CB" name="input_deactivate_joy" returnType="void" argc="1" help="deactivates an enumerated joystick, freeing up the logical joystick slot">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1CC" name="input_find_joystick" returnType="short" argc="1" help="test function to find a joystick by GUID (string representation)">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="1CD" name="input_show_joystick_info" returnType="void" argc="1" help="test function to show the enumerated joystick information for all joystick">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="1CE" name="input_find_default" returnType="void" argc="1" help="test function that looks up a default profile for a deviceid">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="1CF" name="config_one_control" returnType="void" argc="1" help="test function to configure a single control">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="1D0" name="get_yaw_rate" returnType="real" argc="1" help="gets the yaw rate for the given player number">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1D1" name="get_pitch_rate" returnType="real" argc="1" help="gets the yaw rate for the given player number">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1D2" name="set_yaw_rate" returnType="void" argc="2" help="sets the yaw rate for the given player number">
+			<arg type="short" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1D3" name="set_pitch_rate" returnType="void" argc="2" help="sets the yaw rate for the given player number">
+			<arg type="short" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1D4" name="get_digital_forward_throttle" returnType="real" argc="1" help="gets the amount of forward throttle applied by digital device stimuli">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1D5" name="set_digital_forward_throttle" returnType="void" argc="2" help="sets the amount of forward throttle applied by digital device stimuli">
+			<arg type="short" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1D6" name="get_digital_strafe_throttle" returnType="real" argc="1" help="gets the amount of strafe throttle applied by digital device stimuli">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1D7" name="set_digital_strafe_throttle" returnType="void" argc="2" help="sets the amount of strafe throttle applied by digital device stimuli">
+			<arg type="short" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1D8" name="get_digital_yaw_increment" returnType="real" argc="1" help="gets the increment in yaw applied by digital device stimuli">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1D9" name="set_digital_yaw_increment" returnType="void" argc="2" help="sets the increment in yaw applied by digital device stimuli">
+			<arg type="short" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1DA" name="get_digital_pitch_increment" returnType="real" argc="1" help="gets the increment in pitch applied by digital device stimuli">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1DB" name="set_digital_pitch_increment" returnType="void" argc="2" help="sets the increment in pitch applied by digital device stimuli">
+			<arg type="short" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1DC" name="get_mouse_forward_threshold" returnType="real" argc="1" help="gets the threshold beyond which mouse movement is full forward throttle">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1DD" name="set_mouse_forward_threshold" returnType="void" argc="2" help="sets the threshold beyond which mouse movement is full forward throttle">
+			<arg type="short" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1DE" name="get_mouse_strafe_threshold" returnType="real" argc="1" help="gets the threshold beyond which mouse movement is full strafe throttle">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1DF" name="set_mouse_strafe_threshold" returnType="void" argc="2" help="sets the threshold beyond which mouse movement is full strafe throttle">
+			<arg type="short" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1E0" name="get_mouse_yaw_scale" returnType="real" argc="1" help="gets the scale for mouse control of yaw">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1E1" name="set_mouse_yaw_scale" returnType="void" argc="2" help="sets the scale for mouse control of yaw">
+			<arg type="short" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1E2" name="get_mouse_pitch_scale" returnType="real" argc="1" help="gets the scale for mouse control of pitch">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1E3" name="set_mouse_pitch_scale" returnType="void" argc="2" help="sets the scale for mouse control of pitch">
+			<arg type="short" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1E4" name="get_gamepad_forward_threshold" returnType="real" argc="1" help="gets the threshold beyond which gamepad movement is full forward throttle">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1E5" name="set_gamepad_forward_threshold" returnType="void" argc="2" help="sets the threshold beyond which gamepad movement is full forward throttle">
+			<arg type="short" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1E6" name="get_gamepad_strafe_threshold" returnType="real" argc="1" help="gets the threshold beyond which gamepad movement is full strafe throttle">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1E7" name="set_gamepad_strafe_threshold" returnType="void" argc="2" help="sets the threshold beyond which gamepad movement is full strafe throttle">
+			<arg type="short" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1E8" name="get_gamepad_yaw_scale" returnType="real" argc="1" help="gets the scale for gamepad control of yaw">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1E9" name="set_gamepad_yaw_scale" returnType="void" argc="2" help="sets the scale for gamepad control of yaw">
+			<arg type="short" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1EA" name="get_gamepad_pitch_scale" returnType="real" argc="1" help="gets the scale for gamepad control of pitch">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1EB" name="set_gamepad_pitch_scale" returnType="void" argc="2" help="sets the scale for gamepad control of pitch">
+			<arg type="short" name="" help="" />
+			<arg type="real" name="" help="" />
+		</function>
+		<function opcode="1EC" name="bind" returnType="void" argc="3" help="binds an input device/button combination to a game control">
+			<arg type="string" name="" help="" />
+			<arg type="string" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="1ED" name="unbind" returnType="void" argc="2" help="unbinds an input device/button combination">
+			<arg type="string" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="1EE" name="print_binds" returnType="void" argc="2" help="prints a list of all input bindings">
+			<arg type="string" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="1EF" name="sv_end_game" returnType="void" argc="2" help="End the current game." access="15">
+			<arg type="string" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="1F0" name="change_team" returnType="void" argc="1" help="change your team (0=red,1=blue,else=auto">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1F1" name="sv_mapcycle" returnType="void" argc="1" help="Print the contents of the currently loaded mapcycle file" access="6">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1F2" name="sv_mapcycle_begin" returnType="void" argc="1" help="Restart or begin playing the currently loaded mapcycle file" access="6">
+			<arg type="short" name="" help="" />
+		</function>
+		<function opcode="1F3" name="sv_mapcycle_add" returnType="void" argc="2" help="Usage: sv_mapcycle_add &lt;mapname&gt; &lt;variantname&gt;&#xA;Add a new game to the end of the mapcycle file." access="6">
+			<arg type="string" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="1F4" name="sv_mapcycle_del" returnType="void" argc="1" help="Usage: sv_mapcycle_del &lt;index&gt; &#xA;Removes the game at &lt;index&gt;.  Will not affect running games." access="6">
+			<arg type="long" name="" help="" />
+		</function>
+		<function opcode="1F5" name="sv_map_next" returnType="void" argc="1" help="&lt;Server Only&gt; Abort the current game and begin the next game in the playlist" access="15">
+			<arg type="long" name="" help="" />
+		</function>
+		<function opcode="1F6" name="sv_map_reset" returnType="void" argc="1" help="&lt;Server Only&gt; Reset the current game" access="15">
+			<arg type="long" name="" help="" />
+		</function>
+		<function opcode="1F7" name="sv_map" returnType="void" argc="2" help="&lt;Server Only&gt; Usage: &quot;sv_map &lt;mapname&gt; &lt;variantname&gt;&quot; &#xA;Abort current game and playlist and start specified game" access="1">
+			<arg type="string" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="1F8" name="rcon" returnType="void" argc="2" help="Sends a command for server to execute at console. Use \&quot; to send quotes." helpArg="[rcon password] [command]" access="13">
+			<arg type="string" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="1F9" name="sv_rcon_password" returnType="void" argc="2" help="Sets the server remote console password. If no password is given, displays the&#xA; current password. Enter &quot;&quot; to disable rcon." helpArg="[remote console password]" access="1">
+			<arg type="string" name="" help="" />
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="1FA" name="sv_say" returnType="void" argc="1" help="&lt;Server Only&gt; Usage: &quot;sv_say &lt;message&gt;&quot; &#xA;Send a message to users" access="16">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="1FB" name="sv_players" returnType="void" argc="1" help="&lt;Server Only&gt; Print a list of players in the current game" access="15">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="1FC" name="sv_kick" returnType="void" argc="1" help="&lt;Server Only&gt; Usage: sv_kick &lt;player # or name&gt;  &#xA;Kicks the specified player from the server" access="15">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="1FD" name="sv_ban" returnType="void" argc="1" help="&lt;Server Only&gt; Player is kicked and added to banned.txt.  Use sv_players to find the index.&#xA;Specify optional duration for timed ban.  Use 0 to follow sv_ban_penalty rules." helpArg="[player # or name] opt:[duration (#)(m,h,d)]" access="15">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="1FE" name="sv_banlist" returnType="void" argc="1" help="Print a list of banned players" access="1">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="1FF" name="sv_unban" returnType="void" argc="1" help="&lt;Server Only&gt; Usage: sv_unban &lt;index&gt; &#xA;Removes player at index in the banlist.  Use sv_banlist to find the index" access="1">
+			<arg type="long" name="" help="" />
+		</function>
+		<function opcode="200" name="sv_parameters_reload" returnType="void" argc="1" help="&lt;Server Only&gt; Usage: sv_parameters_reload &#xA;Reloads the parameters.cfg file.">
+			<arg type="long" name="" help="" />
+		</function>
+		<function opcode="201" name="sv_parameters_dump" returnType="void" argc="1" help="Dumps out the local parameter configuration to parameters.cfg file.">
+			<arg type="long" name="" help="" />
+		</function>
+		<function opcode="202" name="sv_status" returnType="void" argc="1" help="Shows status of the server" access="15">
+			<arg type="long" name="" help="" />
+		</function>
+		<function opcode="203" name="sv_name" returnType="void" argc="1" help="Sets the name of the server. If no name is given, displays the current name." helpArg="[name]" access="6">
+			<arg type="long" name="" help="" />
+		</function>
+		<function opcode="204" name="sv_password" returnType="void" argc="1" help="Sets the server password. If no password is given, displays the&#xA;current password." helpArg="[password]" access="6">
+			<arg type="long" name="" help="" />
+		</function>
+		<function opcode="205" name="sv_log_note" returnType="void" argc="1" help="Leave a note in the server log" access="6">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="206" name="sv_log_file" returnType="void" argc="1" help="Sets the server log file name. If no name is given, displays the&#xA;current log file name." helpArg="[log file name]" access="6">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="207" name="sv_log_enabled" returnType="void" argc="1" help="Enables or disables server logging. If 0/1 is not given, displays the&#xA;current logging status." helpArg="[&quot;1&quot; to enable, &quot;0&quot; to disable]" access="6">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="208" name="sv_log_rotation_threshold" returnType="void" argc="1" help="Sets the log rotation threshold. When a log file's size (in kilobytes) exceeds&#xA;this number, it will be rotated. Set to 0 to disable log rotation.&#xA;If the threshold is not specified, displays the current threshold." helpArg="[threshold in kilobytes]" access="6">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="209" name="sv_log_echo_chat" returnType="void" argc="1" help="Enables or disbles chat echo to the console. Set the preference to 0&#xA;to disable chat echo, or 1 to enable chat echo.&#xA;If the preference is not specified, displays the current preference." helpArg="[preference]" access="6">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="20A" name="profile_load" returnType="void" argc="1" help="Load any included builtin profiles and create profiles on disk." access="1">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="20B" name="track_remote_player_position_updates" returnType="void" argc="1" help="Sets the name of the remote player whose position update are to be tracked.">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="20C" name="remote_player_stats" returnType="void" argc="1" help="Displays the prediction stats of the specified remote player.">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="20D" name="sv_get_player_action_queue_length" returnType="void" argc="1" help="Displays the action queue length for the specified player.">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="20E" name="thread_sleep" returnType="void" argc="1" help="Sleeps the calling thread for the specified number of ms.">
+			<arg type="long" name="" help="" />
+		</function>
+		<function opcode="20F" name="checkpoint_save" returnType="void" argc="1" help="save last solo checkpoint">
+			<arg type="long" name="" help="" />
+		</function>
+		<function opcode="210" name="checkpoint_load" returnType="void" argc="1" help="load a saved checkpoint">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="211" name="sv_maplist" returnType="void" argc="1" help="Display a list of maps, matching an optional substring." helpArg="[substring]" access="1">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="212" name="sv_gamelist" returnType="void" argc="1" help="Display a list of game types, matching an optional substring." helpArg="[substring]" access="1">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="213" name="sv_friendly_fire" returnType="void" argc="1" help="Use to provide a global override for the gametype friendly fire setting." helpArg="[&quot;0&quot; = defaults, &quot;1&quot; = off, &quot;2&quot; = shields, &quot;3&quot; = on]" access="1">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="214" name="sv_timelimit" returnType="void" argc="1" help="Use to provide a global override for the gametype timelimit setting." helpArg="[&quot;-1&quot; = default, &quot;0&quot; = infinite, &lt;time in minutes&gt;]" access="1">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="215" name="sv_ban_penalty" returnType="void" argc="1" help="Specify up to 4 ban times for repeat ban/TK offenders." helpArg="[(#)(m,h,d), 0=infinite]" access="1">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="216" name="sv_tk_grace" returnType="void" argc="1" help="Specify the grace period for TK during which you don't get a TK point." helpArg="[time (#)(s,m)]" access="1">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="217" name="sv_tk_cooldown" returnType="void" argc="1" help="Specify a TK point cooldown period, after which players lose a TK point." helpArg="[time (#)(s,m)]" access="1">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="218" name="sv_banlist_file" returnType="void" argc="1" help="Sets and opens the file to be used for the player ban list." helpArg="[alphanumeric banlist file suffix]" access="1">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="219" name="sv_maxplayers" returnType="void" argc="1" help="Sets the maximum number of players (between 1 and 16). If no value is given, displays the current value." helpArg="[1 - 16]" access="1">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="21A" name="sv_single_flag_force_reset" returnType="void" argc="1" help="Force the flag to reset in single flag CTF games when the timer expires, even if held by a player.&#xA;If not specified, displays the current value." helpArg="[boolean]" access="1">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="21B" name="sv_motd" returnType="void" argc="1" help="Sets the server message of the day file name. If no name is given, displays the&#xA;current motd file name. Set to &quot;&quot; to turn motd off." helpArg="[motd file name]" access="4">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="21C" name="oid_watch" returnType="void" argc="1" help="Sets/displays translated object table watch parameters." access="1">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="21D" name="oid_dump" returnType="void" argc="1" help="dumps the whole translated object table to network.log" access="1">
+			<arg type="string" name="" help="" />
+		</function>
+		<function opcode="21E" name="oid_status" returnType="void" argc="1" help="displays the status of the translated object table." access="1">
+			<arg type="string" name="" help="" />
+		</function>
+	</functions>
+
+	<globals>
+		<global opcode="0" name="rasterizer_near_clip_distance" type="real" help="" />
+		<global opcode="1" name="rasterizer_far_clip_distance" type="real" help="" />
+		<global opcode="2" name="rasterizer_first_person_weapon_near_clip_distance" type="real" help="" />
+		<global opcode="3" name="rasterizer_first_person_weapon_far_clip_distance" type="real" help="" />
+		<global opcode="4" name="rasterizer_floating_point_zbuffer" type="boolean" help="" />
+		<global opcode="5" name="rasterizer_framerate_throttle" type="boolean" help="" />
+		<global opcode="6" name="rasterizer_framerate_stabilization" type="boolean" help="" />
+		<global opcode="7" name="rasterizer_refresh_rate" type="short" help="" />
+		<global opcode="8" name="rasterizer_frame_bounds_left" type="short" help="" />
+		<global opcode="9" name="rasterizer_frame_bounds_right" type="short" help="" />
+		<global opcode="A" name="rasterizer_frame_bounds_top" type="short" help="" />
+		<global opcode="B" name="rasterizer_frame_bounds_bottom" type="short" help="" />
+		<global opcode="C" name="rasterizer_stats" type="short" help="" />
+		<global opcode="D" name="rasterizer_mode" type="short" help="" />
+		<global opcode="E" name="rasterizer_wireframe" type="boolean" help="" />
+		<global opcode="F" name="rasterizer_smart" type="boolean" help="" />
+		<global opcode="10" name="rasterizer_debug_model_vertices" type="boolean" help="" />
+		<global opcode="11" name="rasterizer_debug_model_lod" type="short" help="" />
+		<global opcode="12" name="rasterizer_debug_transparents" type="boolean" help="" />
+		<global opcode="13" name="rasterizer_debug_meter_shader" type="boolean" help="" />
+		<global opcode="14" name="rasterizer_models" type="boolean" help="" />
+		<global opcode="15" name="rasterizer_model_transparents" type="boolean" help="" />
+		<global opcode="16" name="rasterizer_draw_first_person_weapon_first" type="boolean" help="" />
+		<global opcode="17" name="rasterizer_stencil_mask" type="boolean" help="" />
+		<global opcode="18" name="rasterizer_environment" type="boolean" help="" />
+		<global opcode="19" name="rasterizer_environment_lightmaps" type="boolean" help="" />
+		<global opcode="1A" name="rasterizer_environment_shadows" type="boolean" help="" />
+		<global opcode="1B" name="rasterizer_environment_diffuse_lights" type="boolean" help="" />
+		<global opcode="1C" name="rasterizer_environment_diffuse_textures" type="boolean" help="" />
+		<global opcode="1D" name="rasterizer_environment_decals" type="boolean" help="" />
+		<global opcode="1E" name="rasterizer_environment_specular_lights" type="boolean" help="" />
+		<global opcode="1F" name="rasterizer_environment_specular_lightmaps" type="boolean" help="" />
+		<global opcode="20" name="rasterizer_environment_reflection_lightmap_mask" type="boolean" help="" />
+		<global opcode="21" name="rasterizer_environment_reflection_mirrors" type="boolean" help="" />
+		<global opcode="22" name="rasterizer_environment_reflections" type="boolean" help="" />
+		<global opcode="23" name="rasterizer_environment_transparents" type="boolean" help="" />
+		<global opcode="24" name="rasterizer_environment_fog" type="boolean" help="" />
+		<global opcode="25" name="rasterizer_environment_fog_screen" type="boolean" help="" />
+		<global opcode="26" name="rasterizer_water" type="boolean" help="" />
+		<global opcode="27" name="rasterizer_lens_flares" type="boolean" help="" />
+		<global opcode="28" name="rasterizer_dynamic_unlit_geometry" type="boolean" help="" />
+		<global opcode="29" name="rasterizer_dynamic_lit_geometry" type="boolean" help="" />
+		<global opcode="2A" name="rasterizer_dynamic_screen_geometry" type="boolean" help="" />
+		<global opcode="2B" name="rasterizer_hud_motion_sensor" type="boolean" help="" />
+		<global opcode="2C" name="rasterizer_detail_objects" type="boolean" help="" />
+		<global opcode="2D" name="rasterizer_debug_geometry" type="boolean" help="" />
+		<global opcode="2E" name="rasterizer_debug_geometry_multipass" type="boolean" help="" />
+		<global opcode="2F" name="rasterizer_fog_atmosphere" type="boolean" help="" />
+		<global opcode="30" name="rasterizer_fog_plane" type="boolean" help="" />
+		<global opcode="31" name="rasterizer_bump_mapping" type="boolean" help="" />
+		<global opcode="32" name="rasterizer_lightmap_ambient" type="real" help="" />
+		<global opcode="33" name="rasterizer_lightmap_mode" type="short" help="" />
+		<global opcode="34" name="rasterizer_lightmaps_incident_radiosity" type="boolean" help="" />
+		<global opcode="35" name="rasterizer_lightmaps_filtering" type="boolean" help="" />
+		<global opcode="36" name="rasterizer_model_lighting_ambient" type="real" help="" />
+		<global opcode="37" name="rasterizer_environment_alpha_testing" type="boolean" help="" />
+		<global opcode="38" name="rasterizer_environment_specular_mask" type="boolean" help="" />
+		<global opcode="39" name="rasterizer_shadows_convolution" type="boolean" help="" />
+		<global opcode="3A" name="rasterizer_shadows_debug" type="boolean" help="" />
+		<global opcode="3B" name="rasterizer_water_mipmapping" type="boolean" help="" />
+		<global opcode="3C" name="rasterizer_active_camouflage" type="boolean" help="" />
+		<global opcode="3D" name="rasterizer_active_camouflage_multipass" type="boolean" help="" />
+		<global opcode="3E" name="rasterizer_plasma_energy" type="boolean" help="" />
+		<global opcode="3F" name="rasterizer_lens_flares_occlusion" type="boolean" help="" />
+		<global opcode="40" name="rasterizer_lens_flares_occlusion_debug" type="boolean" help="" />
+		<global opcode="41" name="rasterizer_ray_of_buddha" type="boolean" help="" />
+		<global opcode="42" name="rasterizer_screen_flashes" type="boolean" help="" />
+		<global opcode="43" name="rasterizer_screen_effects" type="boolean" help="" />
+		<global opcode="44" name="rasterizer_DXTC_noise" type="boolean" help="" />
+		<global opcode="45" name="rasterizer_soft_filter" type="boolean" help="" />
+		<global opcode="46" name="rasterizer_secondary_render_target_debug" type="boolean" help="" />
+		<global opcode="47" name="rasterizer_profile_log" type="boolean" help="" />
+		<global opcode="48" name="rasterizer_detail_objects_offset_multiplier" type="real" help="" />
+		<global opcode="49" name="rasterizer_zbias" type="real" help="" />
+		<global opcode="4A" name="rasterizer_zoffset" type="real" help="" />
+		<global opcode="4B" name="force_all_player_views_to_default_player" type="boolean" help="" />
+		<global opcode="4C" name="rasterizer_safe_frame_bounds" type="boolean" help="" />
+		<global opcode="4D" name="freeze_flying_camera" type="short" help="" />
+		<global opcode="4E" name="rasterizer_zsprites" type="boolean" help="" />
+		<global opcode="4F" name="rasterizer_filthy_decal_fog_hack" type="boolean" help="" />
+		<global opcode="50" name="rasterizer_splitscreen_VB_optimization" type="boolean" help="" />
+		<global opcode="51" name="rasterizer_profile_print_locks" type="boolean" help="" />
+		<global opcode="52" name="rasterizer_profile_objectlock_time" type="real" help="" />
+		<global opcode="53" name="pad3" type="short" help="" />
+		<global opcode="54" name="pad3_scale" type="real" help="" />
+		<global opcode="55" name="f0" type="real" help="" />
+		<global opcode="56" name="f1" type="real" help="" />
+		<global opcode="57" name="f2" type="real" help="" />
+		<global opcode="58" name="f3" type="real" help="" />
+		<global opcode="59" name="f4" type="real" help="" />
+		<global opcode="5A" name="f5" type="real" help="" />
+		<global opcode="5B" name="rasterizer_transparent_pixel_counter" type="boolean" help="" />
+		<global opcode="5C" name="rasterizer_effects_level" type="short" help="" />
+		<global opcode="5D" name="rasterizer_fps" type="boolean" help="" access="1" />
+		<global opcode="5E" name="multiplayer_draw_teammates_names" type="boolean" help="" access="1" />
+		<global opcode="5F" name="rasterizer_d3dlight_theta" type="real" help="" />
+		<global opcode="60" name="rasterizer_d3dlight_phi" type="real" help="" />
+		<global opcode="61" name="rasterizer_d3dlight_falloff" type="real" help="" />
+		<global opcode="62" name="rasterizer_d3dlight_attenuation0" type="real" help="" />
+		<global opcode="63" name="rasterizer_d3dlight_attenuation1" type="real" help="" />
+		<global opcode="64" name="rasterizer_d3dlight_attenuation2" type="real" help="" />
+		<global opcode="65" name="debug_no_frustum_clip" type="boolean" help="" />
+		<global opcode="66" name="debug_frustum" type="boolean" help="" />
+		<global opcode="67" name="debug_bink" type="boolean" help="" null="true" />
+		<global opcode="68" name="screenshot_size" type="short" help="" null="true" />
+		<global opcode="69" name="screenshot_count" type="short" help="" null="true" />
+		<global opcode="6A" name="terminal_render" type="boolean" help="" null="true" />
+		<global opcode="6B" name="console_dump_to_file" type="boolean" help="" null="true" />
+		<global opcode="6C" name="player_spawn_count" type="short" help="" />
+		<global opcode="6D" name="debug_object_garbage_collection" type="boolean" help="" null="true" />
+		<global opcode="6E" name="debug_render_freeze" type="boolean" help="" null="true" />
+		<global opcode="6F" name="debug_no_drawing" type="boolean" help="" null="true" />
+		<global opcode="70" name="debug_input_target" type="short" help="" null="true" />
+		<global opcode="71" name="temporary_hud" type="boolean" help="" null="true" />
+		<global opcode="72" name="debug_leaf_index" type="long" help="" null="true" />
+		<global opcode="73" name="debug_leaf_portal_index" type="long" help="" null="true" />
+		<global opcode="74" name="debug_leaf_portals" type="boolean" help="" null="true" />
+		<global opcode="75" name="debug_unit_all_animations" type="boolean" help="" null="true" />
+		<global opcode="76" name="debug_unit_animations" type="boolean" help="" null="true" />
+		<global opcode="77" name="debug_unit_illumination" type="boolean" help="" null="true" />
+		<global opcode="78" name="debug_damage_taken" type="boolean" help="" null="true" />
+		<global opcode="79" name="cheat_deathless_player" type="boolean" help="" />
+		<global opcode="7A" name="cheat_jetpack" type="boolean" help="" />
+		<global opcode="7B" name="cheat_infinite_ammo" type="boolean" help="" />
+		<global opcode="7C" name="cheat_bottomless_clip" type="boolean" help="" />
+		<global opcode="7D" name="cheat_bump_possession" type="boolean" help="" />
+		<global opcode="7E" name="cheat_super_jump" type="boolean" help="" />
+		<global opcode="7F" name="cheat_reflexive_damage_effects" type="boolean" help="" />
+		<global opcode="80" name="cheat_medusa" type="boolean" help="" />
+		<global opcode="81" name="cheat_omnipotent" type="boolean" help="" />
+		<global opcode="82" name="cheat_controller" type="boolean" help="" />
+		<global opcode="83" name="effects_corpse_nonviolent" type="boolean" help="" />
+		<global opcode="84" name="debug_effects_nonviolent" type="boolean" help="" null="true" />
+		<global opcode="85" name="debug_sound_cache" type="boolean" help="" />
+		<global opcode="86" name="debug_sound_cache_graph" type="boolean" help="" />
+		<global opcode="87" name="sound_obstruction_ratio" type="real" help="" />
+		<global opcode="88" name="debug_sound" type="boolean" help="" />
+		<global opcode="89" name="debug_looping_sound" type="boolean" help="" />
+		<global opcode="8A" name="debug_sound_channels" type="boolean" help="" />
+		<global opcode="8B" name="debug_sound_channels_detail" type="boolean" help="" />
+		<global opcode="8C" name="debug_sound_hardware" type="boolean" help="" />
+		<global opcode="8D" name="loud_dialog_hack" type="boolean" help="" />
+		<global opcode="8E" name="sound_gain_under_dialog" type="real" help="" />
+		<global opcode="8F" name="debug_sound_environment" type="boolean" help="" null="true" />
+		<global opcode="90" name="object_light_ambient_base" type="real" help="" />
+		<global opcode="91" name="object_light_ambient_scale" type="real" help="" />
+		<global opcode="92" name="object_light_secondary_scale" type="real" help="" />
+		<global opcode="93" name="object_light_interpolate" type="boolean" help="" />
+		<global opcode="94" name="model_animation_compression" type="boolean" help="" null="true" />
+		<global opcode="95" name="model_animation_data_compressed_size" type="long" help="" null="true" />
+		<global opcode="96" name="model_animation_data_uncompressed_size" type="long" help="" null="true" />
+		<global opcode="97" name="model_animation_data_compression_savings_in_bytes" type="long" help="" null="true" />
+		<global opcode="98" name="model_animation_data_compression_savings_in_bytes_at_import" type="long" help="" null="true" />
+		<global opcode="99" name="model_animation_data_compression_savings_in_percent" type="real" help="" null="true" />
+		<global opcode="9A" name="model_animation_bullshit0" type="long" help="" null="true" />
+		<global opcode="9B" name="model_animation_bullshit1" type="long" help="" null="true" />
+		<global opcode="9C" name="model_animation_bullshit2" type="long" help="" null="true" />
+		<global opcode="9D" name="model_animation_bullshit3" type="long" help="" null="true" />
+		<global opcode="9E" name="rider_ejection" type="boolean" help="" />
+		<global opcode="9F" name="stun_enable" type="boolean" help="" />
+		<global opcode="A0" name="debug_sprites" type="boolean" help="" null="true" />
+		<global opcode="A1" name="debug_portals" type="boolean" help="" null="true" />
+		<global opcode="A2" name="debug_inactive_objects" type="boolean" help="" null="true" />
+		<global opcode="A3" name="render_contrails" type="boolean" help="" null="true" />
+		<global opcode="A4" name="render_particles" type="boolean" help="" null="true" />
+		<global opcode="A5" name="render_psystems" type="boolean" help="" null="true" />
+		<global opcode="A6" name="render_wsystems" type="boolean" help="" null="true" />
+		<global opcode="A7" name="debug_objects" type="boolean" help="" null="true" />
+		<global opcode="A8" name="debug_objects_position_velocity" type="boolean" help="" null="true" />
+		<global opcode="A9" name="debug_objects_root_node" type="boolean" help="" null="true" />
+		<global opcode="AA" name="debug_objects_bounding_spheres" type="boolean" help="" null="true" />
+		<global opcode="AB" name="debug_objects_collision_models" type="boolean" help="" null="true" />
+		<global opcode="AC" name="debug_objects_physics" type="boolean" help="" null="true" />
+		<global opcode="AD" name="debug_objects_names" type="boolean" help="" null="true" />
+		<global opcode="AE" name="debug_objects_pathfinding_spheres" type="boolean" help="" null="true" />
+		<global opcode="AF" name="debug_objects_unit_vectors" type="boolean" help="" null="true" />
+		<global opcode="B0" name="debug_objects_unit_seats" type="boolean" help="" null="true" />
+		<global opcode="B1" name="debug_objects_unit_mouth_apeture" type="boolean" help="" null="true" />
+		<global opcode="B2" name="debug_objects_biped_physics_pills" type="boolean" help="" null="true" />
+		<global opcode="B3" name="debug_objects_biped_autoaim_pills" type="boolean" help="" null="true" />
+		<global opcode="B4" name="debug_objects_vehicle_powered_mass_points" type="boolean" help="" null="true" />
+		<global opcode="B5" name="debug_objects_devices" type="boolean" help="" null="true" />
+		<global opcode="B6" name="debug_objects_biped_messages" type="boolean" help="" null="true" />
+		<global opcode="B7" name="debug_objects_vehicle_messages" type="boolean" help="" null="true" />
+		<global opcode="B8" name="debug_objects_weapon_messages" type="boolean" help="" null="true" />
+		<global opcode="B9" name="debug_objects_projectile_messages" type="boolean" help="" null="true" />
+		<global opcode="BA" name="debug_objects_equipment_messages" type="boolean" help="" null="true" />
+		<global opcode="BB" name="render_model_nodes" type="boolean" help="" null="true" />
+		<global opcode="BC" name="render_model_vertex_counts" type="boolean" help="" null="true" />
+		<global opcode="BD" name="render_model_index_counts" type="boolean" help="" />
+		<global opcode="BE" name="render_model_markers" type="boolean" help="" null="true" />
+		<global opcode="BF" name="render_model_no_geometry" type="boolean" help="" null="true" />
+		<global opcode="C0" name="render_shadows" type="boolean" help="" null="true" />
+		<global opcode="C1" name="debug_damage" type="boolean" help="" null="true" />
+		<global opcode="C2" name="debug_scripting" type="boolean" help="" null="true" />
+		<global opcode="C3" name="debug_trigger_volumes" type="boolean" help="" null="true" />
+		<global opcode="C4" name="debug_point_physics" type="boolean" help="" null="true" />
+		<global opcode="C5" name="debug_physics_disable_penetration_freeze" type="boolean" help="" null="true" />
+		<global opcode="C6" name="debug_motion_sensor_draw_all_units" type="boolean" help="" null="true" />
+		<global opcode="C7" name="collision_debug" type="boolean" help="" null="true" />
+		<global opcode="C8" name="collision_debug_spray" type="boolean" help="" />
+		<global opcode="C9" name="collision_debug_features" type="boolean" help="" null="true" />
+		<global opcode="CA" name="collision_debug_repeat" type="boolean" help="" null="true" />
+		<global opcode="CB" name="collision_debug_flag_front_facing_surfaces" type="boolean" help="" null="true" />
+		<global opcode="CC" name="collision_debug_flag_back_facing_surfaces" type="boolean" help="" null="true" />
+		<global opcode="CD" name="collision_debug_flag_ignore_two_sided_surfaces" type="boolean" help="" null="true" />
+		<global opcode="CE" name="collision_debug_flag_ignore_invisible_surfaces" type="boolean" help="" null="true" />
+		<global opcode="CF" name="collision_debug_flag_ignore_breakable_surfaces" type="boolean" help="" null="true" />
+		<global opcode="D0" name="collision_debug_flag_structure" type="boolean" help="" null="true" />
+		<global opcode="D1" name="collision_debug_flag_media" type="boolean" help="" null="true" />
+		<global opcode="D2" name="collision_debug_flag_objects" type="boolean" help="" null="true" />
+		<global opcode="D3" name="collision_debug_flag_objects_bipeds" type="boolean" help="" null="true" />
+		<global opcode="D4" name="collision_debug_flag_objects_vehicles" type="boolean" help="" null="true" />
+		<global opcode="D5" name="collision_debug_flag_objects_weapons" type="boolean" help="" null="true" />
+		<global opcode="D6" name="collision_debug_flag_objects_equipment" type="boolean" help="" null="true" />
+		<global opcode="D7" name="collision_debug_flag_objects_projectiles" type="boolean" help="" null="true" />
+		<global opcode="D8" name="collision_debug_flag_objects_scenery" type="boolean" help="" null="true" />
+		<global opcode="D9" name="collision_debug_flag_objects_machines" type="boolean" help="" null="true" />
+		<global opcode="DA" name="collision_debug_flag_objects_controls" type="boolean" help="" null="true" />
+		<global opcode="DB" name="collision_debug_flag_objects_light_fixtures" type="boolean" help="" null="true" />
+		<global opcode="DC" name="collision_debug_flag_objects_placeholders" type="boolean" help="" null="true" />
+		<global opcode="DD" name="collision_debug_flag_try_to_keep_location_valid" type="boolean" help="" null="true" />
+		<global opcode="DE" name="collision_debug_flag_skip_passthrough_bipeds" type="boolean" help="" null="true" />
+		<global opcode="DF" name="collision_debug_flag_use_vehicle_physics" type="boolean" help="" null="true" />
+		<global opcode="E0" name="collision_debug_point_x" type="real" help="" null="true" />
+		<global opcode="E1" name="collision_debug_point_y" type="real" help="" null="true" />
+		<global opcode="E2" name="collision_debug_point_z" type="real" help="" null="true" />
+		<global opcode="E3" name="collision_debug_vector_i" type="real" help="" null="true" />
+		<global opcode="E4" name="collision_debug_vector_j" type="real" help="" null="true" />
+		<global opcode="E5" name="collision_debug_vector_k" type="real" help="" null="true" />
+		<global opcode="E6" name="collision_debug_length" type="real" help="" null="true" />
+		<global opcode="E7" name="collision_debug_width" type="real" help="" null="true" />
+		<global opcode="E8" name="collision_debug_height" type="real" help="" null="true" />
+		<global opcode="E9" name="collision_debug_phantom_bsp" type="boolean" help="" null="true" />
+		<global opcode="EA" name="collision_log_render" type="boolean" help="" null="true" />
+		<global opcode="EB" name="collision_log_detailed" type="boolean" help="" null="true" />
+		<global opcode="EC" name="collision_log_extended" type="boolean" help="" null="true" />
+		<global opcode="ED" name="collision_log_totals_only" type="boolean" help="" null="true" />
+		<global opcode="EE" name="collision_log_time" type="boolean" help="" null="true" />
+		<global opcode="EF" name="debug_obstacle_path" type="boolean" help="" null="true" />
+		<global opcode="F0" name="debug_obstacle_path_on_failure" type="boolean" help="" null="true" />
+		<global opcode="F1" name="debug_obstacle_path_start_point_x" type="real" help="" null="true" />
+		<global opcode="F2" name="debug_obstacle_path_start_point_y" type="real" help="" null="true" />
+		<global opcode="F3" name="debug_obstacle_path_start_surface_index" type="long" help="" null="true" />
+		<global opcode="F4" name="debug_obstacle_path_goal_point_x" type="real" help="" null="true" />
+		<global opcode="F5" name="debug_obstacle_path_goal_point_y" type="real" help="" null="true" />
+		<global opcode="F6" name="debug_obstacle_path_goal_surface_index" type="long" help="" null="true" />
+		<global opcode="F7" name="debug_camera" type="boolean" help="" null="true" />
+		<global opcode="F8" name="debug_player" type="boolean" help="" null="true" />
+		<global opcode="F9" name="debug_structure" type="boolean" help="" null="true" />
+		<global opcode="FA" name="debug_bsp" type="boolean" help="" null="true" />
+		<global opcode="FB" name="debug_input" type="boolean" help="" null="true" />
+		<global opcode="FC" name="debug_permanent_decals" type="boolean" help="" null="true" />
+		<global opcode="FD" name="debug_fog_planes" type="boolean" help="" null="true" />
+		<global opcode="FE" name="decals" type="boolean" help="" null="true" />
+		<global opcode="FF" name="debug_decals" type="boolean" help="" null="true" />
+		<global opcode="100" name="debug_object_lights" type="boolean" help="" null="true" />
+		<global opcode="101" name="debug_lights" type="boolean" help="" null="true" />
+		<global opcode="102" name="debug_biped_physics" type="boolean" help="" null="true" />
+		<global opcode="103" name="debug_biped_skip_update" type="boolean" help="" null="true" />
+		<global opcode="104" name="debug_biped_skip_collision" type="boolean" help="" null="true" />
+		<global opcode="105" name="debug_biped_limp_body_disable" type="boolean" help="" null="true" />
+		<global opcode="106" name="debug_collision_skip_objects" type="boolean" help="" null="true" />
+		<global opcode="107" name="debug_collision_skip_vectors" type="boolean" help="" null="true" />
+		<global opcode="108" name="debug_material_effects" type="boolean" help="" null="true" />
+		<global opcode="109" name="weather" type="boolean" help="" />
+		<global opcode="10A" name="breakable_surfaces" type="boolean" help="" />
+		<global opcode="10B" name="decals2" type="boolean" help="" /> <!--TODO: duplicate? appended '2' to avoid conflicts-->
+		<global opcode="10C" name="profile_graph" type="boolean" help="" null="true" />
+		<global opcode="10D" name="profile_display" type="boolean" help="" null="true" />
+		<global opcode="10E" name="profile_timebase_ticks" type="boolean" help="" null="true" />
+		<global opcode="10F" name="profile_dump_frames" type="boolean" help="" null="true" />
+		<global opcode="110" name="profile_dump_lost_frames" type="boolean" help="" null="true" />
+		<global opcode="111" name="recover_saved_games_hack" type="boolean" help="" />
+		<global opcode="112" name="radiosity_quality" type="short" help="" />
+		<global opcode="113" name="radiosity_step_count" type="short" help="" null="true" />
+		<global opcode="114" name="radiosity_lines" type="boolean" help="" null="true" />
+		<global opcode="115" name="radiosity_normals" type="boolean" help="" />
+		<global opcode="116" name="structures_use_pvs_for_vs" type="boolean" help=""/>
+		<global opcode="117" name="debug_texture_cache" type="boolean" help="" null="true" />
+		<global opcode="118" name="debug_detail_objects" type="boolean" help="" null="true" />
+		<global opcode="119" name="ai_render" type="boolean" help="" null="true" />
+		<global opcode="11A" name="ai_render_all_actors" type="boolean" help="" null="true" />
+		<global opcode="11B" name="ai_render_inactive_actors" type="boolean" help="" null="true" />
+		<global opcode="11C" name="ai_render_lineoffire_crouching" type="boolean" help="" null="true" />
+		<global opcode="11D" name="ai_render_lineoffire" type="boolean" help="" null="true" />
+		<global opcode="11E" name="ai_render_lineofsight" type="boolean" help="" null="true" />
+		<global opcode="11F" name="ai_render_ballistic_lineoffire" type="boolean" help="" null="true" />
+		<global opcode="120" name="ai_render_encounter_activeregion" type="boolean" help="" null="true" />
+		<global opcode="121" name="ai_render_vision_cones" type="boolean" help="" null="true" />
+		<global opcode="122" name="ai_render_current_state" type="boolean" help="" null="true" />
+		<global opcode="123" name="ai_render_detailed_state" type="boolean" help="" null="true" />
+		<global opcode="124" name="ai_render_props" type="boolean" help="" null="true" />
+		<global opcode="125" name="ai_render_props_web" type="boolean" help="" null="true" />
+		<global opcode="126" name="ai_render_props_no_friends" type="boolean" help="" null="true" />
+		<global opcode="127" name="ai_render_props_target_weight" type="boolean" help="" null="true" />
+		<global opcode="128" name="ai_render_props_unreachable" type="boolean" help="" null="true" />
+		<global opcode="129" name="ai_render_props_unopposable" type="boolean" help="" null="true" />
+		<global opcode="12A" name="ai_render_idle_look" type="boolean" help="" null="true" />
+		<global opcode="12B" name="ai_render_support_surfaces" type="boolean" help="" null="true" />
+		<global opcode="12C" name="ai_render_recent_damage" type="boolean" help="" null="true" />
+		<global opcode="12D" name="ai_render_threats" type="boolean" help="" null="true" />
+		<global opcode="12E" name="ai_render_emotions" type="boolean" help="" null="true" />
+		<global opcode="12F" name="ai_render_audibility" type="boolean" help="" null="true" />
+		<global opcode="130" name="ai_render_aiming_vectors" type="boolean" help="" null="true" />
+		<global opcode="131" name="ai_render_secondary_looking" type="boolean" help="" null="true" />
+		<global opcode="132" name="ai_render_targets" type="boolean" help="" null="true" />
+		<global opcode="133" name="ai_render_targets_last_visible" type="boolean" help="" null="true" />
+		<global opcode="134" name="ai_render_states" type="boolean" help="" null="true" />
+		<global opcode="135" name="ai_render_vitality" type="boolean" help="" null="true" />
+		<global opcode="136" name="ai_render_active_cover_seeking" type="boolean" help="" null="true" />
+		<global opcode="137" name="ai_render_evaluations" type="boolean" help="" null="true" />
+		<global opcode="138" name="ai_render_pursuit" type="boolean" help="" null="true" />
+		<global opcode="139" name="ai_render_shooting" type="boolean" help="" null="true" />
+		<global opcode="13A" name="ai_render_trigger" type="boolean" help="" null="true" />
+		<global opcode="13B" name="ai_render_projectile_aiming" type="boolean" help="" null="true" />
+		<global opcode="13C" name="ai_render_aiming_validity" type="boolean" help="" null="true" />
+		<global opcode="13D" name="ai_render_speech" type="boolean" help="" null="true" />
+		<global opcode="13E" name="ai_render_teams" type="boolean" help="" null="true" />
+		<global opcode="13F" name="ai_render_player_ratings" type="boolean" help="" null="true" />
+		<global opcode="140" name="ai_render_spatial_effects" type="boolean" help="" null="true" />
+		<global opcode="141" name="ai_render_firing_positions" type="boolean" help="" null="true" />
+		<global opcode="142" name="ai_render_gun_positions" type="boolean" help="" null="true" />
+		<global opcode="143" name="ai_render_burst_geometry" type="boolean" help="" null="true" />
+		<global opcode="144" name="ai_render_vehicle_avoidance" type="boolean" help="" null="true" />
+		<global opcode="145" name="ai_render_vehicles_enterable" type="boolean" help="" null="true" />
+		<global opcode="146" name="ai_render_melee_check" type="boolean" help="" null="true" />
+		<global opcode="147" name="ai_render_dialogue_variants" type="boolean" help="" null="true" />
+		<global opcode="148" name="ai_render_grenade_decisions" type="boolean" help="" null="true" />
+		<global opcode="149" name="ai_render_danger_zones" type="boolean" help="" null="true" />
+		<global opcode="14A" name="ai_render_charge_decisions" type="boolean" help="" null="true" />
+		<global opcode="14B" name="ai_render_control" type="boolean" help="" null="true" />
+		<global opcode="14C" name="ai_render_activation" type="boolean" help="" null="true" />
+		<global opcode="14D" name="ai_render_paths" type="boolean" help="" null="true" />
+		<global opcode="14E" name="ai_render_paths_selected_only" type="boolean" help="" null="true" />
+		<global opcode="14F" name="ai_render_paths_destination" type="boolean" help="" null="true" />
+		<global opcode="150" name="ai_render_paths_current" type="boolean" help="" null="true" />
+		<global opcode="151" name="ai_render_paths_failed" type="boolean" help="" null="true" />
+		<global opcode="152" name="ai_render_paths_raw" type="boolean" help="" null="true" />
+		<global opcode="153" name="ai_render_paths_smoothed" type="boolean" help="" null="true" />
+		<global opcode="154" name="ai_render_paths_avoided" type="boolean" help="" null="true" />
+		<global opcode="155" name="ai_render_paths_avoidance_segment" type="short" help="" null="true" />
+		<global opcode="156" name="ai_render_paths_avoidance_obstacles" type="boolean" help="" null="true" />
+		<global opcode="157" name="ai_render_paths_avoidance_search" type="boolean" help="" null="true" />
+		<global opcode="158" name="ai_render_paths_nodes" type="boolean" help="" null="true" />
+		<global opcode="159" name="ai_render_paths_nodes_all" type="boolean" help="" null="true" />
+		<global opcode="15A" name="ai_render_paths_nodes_polygons" type="boolean" help="" null="true" />
+		<global opcode="15B" name="ai_render_paths_nodes_costs" type="boolean" help="" null="true" />
+		<global opcode="15C" name="ai_render_paths_nodes_closest" type="boolean" help="" null="true" />
+		<global opcode="15D" name="ai_render_player_aiming_blocked" type="boolean" help="" null="true" />
+		<global opcode="15E" name="ai_render_vector_avoidance" type="boolean" help="" null="true" />
+		<global opcode="15F" name="ai_render_vector_avoidance_rays" type="boolean" help="" null="true" />
+		<global opcode="160" name="ai_render_vector_avoidance_sense_t" type="boolean" help="" null="true" />
+		<global opcode="161" name="ai_render_vector_avoidance_avoid_t" type="boolean" help="" null="true" />
+		<global opcode="162" name="ai_render_vector_avoidance_clear_time" type="boolean" help="" null="true" />
+		<global opcode="163" name="ai_render_vector_avoidance_weights" type="boolean" help="" null="true" />
+		<global opcode="164" name="ai_render_vector_avoidance_objects" type="boolean" help="" null="true" />
+		<global opcode="165" name="ai_render_vector_avoidance_intermediate" type="boolean" help="" null="true" />
+		<global opcode="166" name="ai_render_postcombat" type="boolean" help="" null="true" />
+		<global opcode="167" name="ai_print_pursuit_checks" type="boolean" help="" null="true" />
+		<global opcode="168" name="ai_print_rules" type="boolean" help="" null="true" />
+		<global opcode="169" name="ai_print_rule_values" type="boolean" help="" null="true" />
+		<global opcode="16A" name="ai_print_major_upgrade" type="boolean" help="" null="true" />
+		<global opcode="16B" name="ai_print_respawn" type="boolean" help="" null="true" />
+		<global opcode="16C" name="ai_print_evaluation_statistics" type="boolean" help="" null="true" />
+		<global opcode="16D" name="ai_print_communication" type="boolean" help="" null="true" />
+		<global opcode="16E" name="ai_print_communication_player" type="boolean" help="" null="true" />
+		<global opcode="16F" name="ai_print_vocalizations" type="boolean" help="" null="true" />
+		<global opcode="170" name="ai_print_placement" type="boolean" help="" null="true" />
+		<global opcode="171" name="ai_print_speech" type="boolean" help="" null="true" />
+		<global opcode="172" name="ai_print_speech_timers" type="boolean" help="" null="true" />
+		<global opcode="173" name="ai_print_allegiance" type="boolean" help="" null="true" />
+		<global opcode="174" name="ai_print_lost_speech" type="boolean" help="" null="true" />
+		<global opcode="175" name="ai_print_migration" type="boolean" help="" null="true" />
+		<global opcode="176" name="ai_print_automatic_migration" type="boolean" help="" null="true" />
+		<global opcode="177" name="ai_print_scripting" type="boolean" help="" null="true" />
+		<global opcode="178" name="ai_print_surprise" type="boolean" help="" null="true" />
+		<global opcode="179" name="ai_print_command_lists" type="boolean" help="" null="true" />
+		<global opcode="17A" name="ai_print_damage_modifiers" type="boolean" help="" null="true" />
+		<global opcode="17B" name="ai_print_secondary_looking" type="boolean" help="" null="true" />
+		<global opcode="17C" name="ai_print_oversteer" type="boolean" help="" null="true" />
+		<global opcode="17D" name="ai_print_conversations" type="boolean" help="" null="true" />
+		<global opcode="17E" name="ai_print_killing_sprees" type="boolean" help="" null="true" />
+		<global opcode="17F" name="ai_print_acknowledgement" type="boolean" help="" null="true" />
+		<global opcode="180" name="ai_print_unfinished_paths" type="boolean" help="" null="true" />
+		<global opcode="181" name="ai_print_bsp_transition" type="boolean" help="" null="true" />
+		<global opcode="182" name="ai_print_uncovering" type="boolean" help="" null="true" />
+		<global opcode="183" name="ai_profile_disable" type="boolean" help="" null="true" />
+		<global opcode="184" name="ai_profile_random" type="boolean" help="" null="true" />
+		<global opcode="185" name="ai_show" type="boolean" help="" null="true" />
+		<global opcode="186" name="ai_show_stats" type="boolean" help="" null="true" />
+		<global opcode="187" name="ai_show_actors" type="boolean" help="" null="true" />
+		<global opcode="188" name="ai_show_swarms" type="boolean" help="" null="true" />
+		<global opcode="189" name="ai_show_paths" type="boolean" help="" null="true" />
+		<global opcode="18A" name="ai_show_line_of_sight" type="boolean" help="" null="true" />
+		<global opcode="18B" name="ai_show_prop_types" type="boolean" help="" null="true" />
+		<global opcode="18C" name="ai_show_sound_distance" type="boolean" help="" null="true" />
+		<global opcode="18D" name="ai_debug_fast_los" type="boolean" help="" null="true" />
+		<global opcode="18E" name="ai_debug_oversteer_disable" type="boolean" help="" null="true" />
+		<global opcode="18F" name="ai_debug_evaluate_all_positions" type="boolean" help="" null="true" />
+		<global opcode="190" name="ai_debug_path" type="boolean" help="" null="true" />
+		<global opcode="191" name="ai_debug_path_start_freeze" type="boolean" help="" null="true" />
+		<global opcode="192" name="ai_debug_path_end_freeze" type="boolean" help="" null="true" />
+		<global opcode="193" name="ai_debug_path_flood" type="boolean" help="" null="true" />
+		<global opcode="194" name="ai_debug_path_maximum_radius" type="real" help="" null="true" />
+		<global opcode="195" name="ai_debug_path_attractor" type="boolean" help="" null="true" />
+		<global opcode="196" name="ai_debug_path_attractor_radius" type="real" help="" null="true" />
+		<global opcode="197" name="ai_debug_path_attractor_weight" type="real" help="" null="true" />
+		<global opcode="198" name="ai_debug_path_accept_radius" type="real" help="" null="true" />
+		<global opcode="199" name="ai_debug_ballistic_lineoffire_freeze" type="boolean" help="" null="true" />
+		<global opcode="19A" name="ai_debug_communication_random_disabled" type="boolean" help="" null="true" />
+		<global opcode="19B" name="ai_debug_communication_timeout_disabled" type="boolean" help="" null="true" />
+		<global opcode="19C" name="ai_debug_communication_unit_repeat_disabled" type="boolean" help="" null="true" />
+		<global opcode="19D" name="ai_debug_communication_focus_enable" type="boolean" help="" null="true" />
+		<global opcode="19E" name="ai_debug_blind" type="boolean" help="" null="true" />
+		<global opcode="19F" name="ai_debug_deaf" type="boolean" help="" null="true" />
+		<global opcode="1A0" name="ai_debug_invisible_player" type="boolean" help="" null="true" />
+		<global opcode="1A1" name="ai_debug_ignore_player" type="boolean" help="" null="true" />
+		<global opcode="1A2" name="ai_debug_flee_always" type="boolean" help="" null="true" />
+		<global opcode="1A3" name="ai_debug_force_all_active" type="boolean" help="" null="true" />
+		<global opcode="1A4" name="ai_debug_disable_wounded_sounds" type="boolean" help="" null="true" />
+		<global opcode="1A5" name="ai_debug_force_vocalizations" type="boolean" help="" null="true" />
+		<global opcode="1A6" name="ai_debug_force_crouch" type="boolean" help="" null="true" />
+		<global opcode="1A7" name="ai_debug_path_disable_smoothing" type="boolean" help="" null="true" />
+		<global opcode="1A8" name="ai_debug_path_disable_obstacle_avoidance" type="boolean" help="" null="true" />
+		<global opcode="1A9" name="ai_fix_defending_guard_firing_positions" type="boolean" help="" null="true" />
+		<global opcode="1AA" name="ai_fix_actor_variants" type="boolean" help="" null="true" />
+		<global opcode="1AB" name="controls_enable_crouch" type="boolean" help="" />
+		<global opcode="1AC" name="controls_swapped" type="boolean" help="" />
+		<global opcode="1AD" name="controls_enable_doubled_spin" type="boolean" help="" />
+		<global opcode="1AE" name="controls_swap_doubled_spin_state" type="boolean" help="" />
+		<global opcode="1AF" name="player_autoaim" type="boolean" help="" />
+		<global opcode="1B0" name="player_magnetism" type="boolean" help="" />
+		<global opcode="1B1" name="debug_player_teleport" type="boolean" help="" null="true" />
+		<global opcode="1B2" name="texture_cache_graph" type="boolean" help="" null="true" />
+		<global opcode="1B3" name="texture_cache_list" type="boolean" help="" null="true" />
+		<global opcode="1B4" name="director_camera_switch_fast" type="boolean" help="" />
+		<global opcode="1B5" name="director_camera_switching" type="boolean" help="" />
+		<global opcode="1B6" name="debug_recording" type="boolean" help="" null="true" />
+		<global opcode="1B7" name="debug_recording_newlines" type="short" help="" null="true" />
+		<global opcode="1B8" name="debug_player_color" type="short" help="" null="true" />
+		<global opcode="1B9" name="debug_framerate" type="boolean" help="" />
+		<global opcode="1BA" name="display_framerate" type="boolean" help="" />
+		<global opcode="1BB" name="framerate_throttle" type="boolean" help="" />
+		<global opcode="1BC" name="framerate_lock" type="boolean" help="" />
+		<global opcode="1BD" name="display_precache_progress" type="boolean" help="" />
+		<global opcode="1BE" name="debug_game_save" type="boolean" help="" null="true" />
+		<global opcode="1BF" name="allow_out_of_sync" type="boolean" help="" null="true" />
+		<global opcode="1C0" name="global_connection_dont_timeout" type="boolean" help=""  null="true"/>
+		<global opcode="1C1" name="slow_server_startup_safety_zone_in_seconds" type="long" help="" null="true" />
+		<global opcode="1C2" name="find_all_fucked_up_shit" type="boolean" help="" null="true" />
+		<global opcode="1C3" name="error_suppress_all" type="boolean" help="" />
+		<global opcode="1C4" name="run_game_scripts" type="boolean" help="" />
+		<global opcode="1C5" name="leaf_to_leaf_latency" type="boolean" help="" null="true" />
+		<global opcode="1C6" name="net_bandwidth" type="long" help="" />
+		<global opcode="1C7" name="network_connect_timeout" type="long" help="" null="true" />
+		<global opcode="1C8" name="net_graph_enabled" type="boolean" help="" null="true" />
+		<global opcode="1C9" name="net_graph_period" type="long" help="" null="true" />
+		<global opcode="1CA" name="allow_client_side_weapon_projectiles" type="boolean" help="" />
+		<global opcode="1CB" name="weapon_incremental_rate" type="long" help="" />
+		<global opcode="1CC" name="equipment_incremental_rate" type="long" help="" />
+		<global opcode="1CD" name="biped_incremental_rate" type="long" help="" />
+		<global opcode="1CE" name="vehicle_incremental_rate" type="long" help="" />
+		<global opcode="1CF" name="projectile_incremental_rate" type="long" help="" />
+		<global opcode="1D0" name="oddball_baseline_rate" type="long" help="" />
+		<global opcode="1D1" name="local_player_update_rate" type="long" help="" />
+		<global opcode="1D2" name="local_player_vehicle_update_rate" type="long" help="" />
+		<global opcode="1D3" name="remote_player_action_update_rate" type="long" help="" />
+		<global opcode="1D4" name="remote_player_action_baseline_update_rate" type="long" help="" />
+		<global opcode="1D5" name="remote_player_position_update_rate" type="long" help="" />
+		<global opcode="1D6" name="remote_player_position_baseline_update_rate" type="long" help="" />
+		<global opcode="1D7" name="remote_player_vehicle_update_rate" type="long" help="" />
+		<global opcode="1D8" name="remote_player_vehicle_baseline_update_rate" type="long" help="" />
+		<global opcode="1D9" name="use_super_remote_players_action_update" type="boolean" help="" />
+		<global opcode="1DA" name="use_new_vehicle_update_scheme" type="boolean" help="" />
+		<global opcode="1DB" name="log_server_player_update_history" type="boolean" help="" />
+		<global opcode="1DC" name="client_log_destination" type="long" help="" />
+		<global opcode="1DD" name="local_player_log_level" type="long" help="" />
+		<global opcode="1DE" name="remote_player_log_level" type="long" help="" />
+		<global opcode="1DF" name="debug_score" type="long" help="" />
+		<global opcode="1E0" name="speed_hack_detection" type="boolean" help="" />
+		<global opcode="1E1" name="speed_hack_log_level" type="long" help="" />
+		<global opcode="1E2" name="multiplayer_hit_sound_volume" type="real" help="" access="1" />
+		<global opcode="1E3" name="sv_client_action_queue_limit" type="long" help="" />
+		<global opcode="1E4" name="sv_client_action_queue_tick_limit" type="long" help="" />
+		<global opcode="1E5" name="cl_remote_player_action_queue_limit" type="long" help="" />
+		<global opcode="1E6" name="cl_remote_player_action_queue_tick_limit" type="long" help="" />
+		<global opcode="1E7" name="object_prediction" type="boolean" help="" />
+		<global opcode="1E8" name="transport_dumping" type="boolean" help="" />
+		<global opcode="1E9" name="hud_filter" type="boolean" help="" />
+		<global opcode="1EA" name="sv_mapcycle_timeout" type="long" help="" access="1" />
+		<global opcode="1EB" name="sv_public" type="boolean" help="" access="E" />
+		<global opcode="1EC" name="developer_mode" type="short" help="" />
+		<global opcode="1ED" name="mouse_acceleration" type="real" help="" access="1" />
+		<global opcode="1EE" name="sv_tk_ban" type="short" help="" access="1" />
+	</globals>
+</BlamScript>

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<vertexBuffers game="">
+	<types>
+		<type opcode="" name="" declMethod="" declUsage="" usageIndex="" /> <!--opcode=hexidecimal, name=string, declMethod=Microsoft.DirectX.Direct3D.DeclarationMethod, declUsage=Microsoft.DirectX.Direct3D.DeclarationUsage, usageIndex=integer-->
+	</types>
+
+	<definitions>
+		<definition opcode="" name="" size=""> <!--opcode=hexidecimal, name=string, size=hexidecimal-->
+			<element name="" type="" declType="" /> <!--name=string, type=string, declType=Microsoft.DirectX.Direct3D.DeclarationType-->
+		</definition>
+	</definitions>
+</vertexBuffers>

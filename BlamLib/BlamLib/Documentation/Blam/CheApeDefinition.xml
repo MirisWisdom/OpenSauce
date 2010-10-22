@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CheApeDefinition game=""> <!--game=Blamlib.BlamVersion-->
+	
+	<fieldTypes>
+		<!--opcode=hexidecimal, size=hexidecimal, name=string, [optional]needsDefinition=bool-->
+		<type opcode="0x00" size="0x00" name="" needsDefinition="">
+			<byteSwap>
+				<!--value=integer-->
+				<code value="" />
+			</byteSwap>
+		</type>
+	</fieldTypes>
+
+	<editorMarkup>
+		<!--char=character, type=BlamLib.CheApe.EditorMarkupType-->
+		<entry char="" type="" />
+	</editorMarkup>
+	
+</CheApeDefinition>

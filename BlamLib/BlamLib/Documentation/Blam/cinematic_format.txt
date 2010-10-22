@@ -1,0 +1,87 @@
+// Notes:
+// the string "none" will be used to mark 'empty' or strings to be ignored
+
+
+int version number
+int flags // 32bits representing which catagories where exported and used. IE, cinematics
+
+
+; tag reference elements
+int number of animations
+	reference
+	{
+		string name
+		string tag reference // can be a animation, sound, effect, etc
+	}
+
+
+; object placement elements
+int number of objects
+	object
+	{
+		string reference name
+		string name
+		point3d position
+		angles3d rotation
+	}
+
+
+; cinematic elements
+int number of cutscene flags // max 512
+	cutscene flag
+	{
+		string name
+		point3d position
+		angle facing
+	}
+int number of cutscene points // max 512
+	cutscene point
+	{
+		string name
+		point3d position
+		angles3d orientation
+		float fov
+	}
+int number of cutscene titles // max h1:64, h2:128
+	cutscene title
+	{
+		string name
+	}
+int number of cutscene events
+	cutscene event
+	{
+		string name
+		// effect: create, create_on_object, create_on_object_marker
+		// damage: create, object, players
+		// object: create, create_clone create_anew, delete, destroy, hide, teleport, kill, animate
+		// device: set_power, set_position
+		// camera: set, set_relative, set_animation, set_animation_relative, set_pan, pan, fade_in, fade_out
+		// cinematic: show_letterbox, set_title, set_title_delayed, subtitle
+		// sound: impulse_start, impulse_start_cinematic, impulse_stop
+		// sound: looping_start, looping_stop, looping_stop_immediately
+		// player: effect_start, effect_stop
+		// misc: call_script
+		string type
+
+		// various event parameters
+		string cutscene flag name // position where the event takes place at
+		string object name // object on which the event takes place on
+		string object marker // a marker on "object name" on which the event takes place
+		string reference // ie, name of a "animation"
+		string subreference name // ie, name of an animation in a animation tag
+		float[] value // a list of floating point values (1-n) seperated by tabs
+	}
+int number of cutscenes
+	cutscene
+	{
+		string name
+		string start camera point // the name of the first camera point for this cutscene
+
+		int number of events
+		{
+			string event name
+
+			int start tick // tick at which this event starts
+			int length tick // how many ticks it takes to perform the event (ie, move to "camera point name", or fade in\out, etc)
+		}
+	}

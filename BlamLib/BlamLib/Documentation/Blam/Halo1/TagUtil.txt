@@ -1,0 +1,5 @@
+* Bsp Shader Organizer
+	* Load all the shader tags from a structure bsp and move them into a folder located under the structure bsp's hierarchy
+
+sanity check:
+unit.dialogue_variant_block.variant_number: must match the suffix in the permutations on the unit's model
