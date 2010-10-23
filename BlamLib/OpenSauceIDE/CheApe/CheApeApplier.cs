@@ -121,14 +121,14 @@ namespace OpenSauceIDE
 						return;
 				}
 
-				string msg = !no_errors ? 
+				string msg = no_errors ? 
 					"CheApe successfully applied!" :
 					"There was an error while trying to apply CheApe. Validate that you selected copies of the original tools and try again.";
 
 				MessageBox.Show(this, msg,
-					!no_errors ? "Success!" : "Error", 
+					no_errors ? "Success!" : "Error", 
 					MessageBoxButtons.OK,
-					!no_errors ? MessageBoxIcon.Information : MessageBoxIcon.Error);
+					no_errors ? MessageBoxIcon.Information : MessageBoxIcon.Error);
 			}
 		}
 	};
