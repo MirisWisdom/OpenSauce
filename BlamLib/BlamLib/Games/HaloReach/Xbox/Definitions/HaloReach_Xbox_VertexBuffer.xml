@@ -213,7 +213,7 @@
 			<element type="TexCoord"	declType="Float16Four"	declUsage="TextureCoordinate" />
 			<element type="Normal"		declType="Float16Four"	declUsage="Normal" />
 			<element type="Tangent"		declType="Float16Four"	declUsage="Tangent" />
-			<element type="Binormal"	declType="Float16Four"	declUsage="BiNormal" />
+			<element type="Binormal"	declType="Float16Four"	declUsage="Binormal" />
 			<element type="TexCoord"	declType="Float16Four"	declUsage="TextureCoordinate"	usageIndex="1" />
 		</definition>
 

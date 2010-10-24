@@ -30,7 +30,7 @@
 			<element type="TexCoord"	declType="Float2"		declUsage="TextureCoordinate" />
 			<element type="Normal"		declType="DHen3N"		declUsage="Normal" />
 			<element type="Tangent"		declType="DHen3N"		declUsage="Tangent" />
-			<element type="Binormal"	declType="DHen3N"		declUsage="BiNormal" />
+			<element type="Binormal"	declType="DHen3N"		declUsage="Binormal" />
 		</definition>
 
 		<definition opcode="0x02" name="" >
@@ -38,7 +38,7 @@
 			<element type="TexCoord"	declType="UShortN2_2"	declUsage="TextureCoordinate" />
 			<element type="Normal"		declType="DHen3N"		declUsage="Normal" />
 			<element type="Tangent"		declType="DHen3N"		declUsage="Tangent" />
-			<element type="Binormal"	declType="DHen3N"		declUsage="BiNormal" />
+			<element type="Binormal"	declType="DHen3N"		declUsage="Binormal" />
 		</definition>
 
 		<definition opcode="0x03" name="" >
@@ -46,7 +46,7 @@
 			<element type="TexCoord"	declType="UShortN2_2"	declUsage="TextureCoordinate" />
 			<element type="Normal"		declType="DHen3N"		declUsage="Normal" />
 			<element type="Tangent"		declType="DHen3N"		declUsage="Tangent" />
-			<element type="Binormal"	declType="DHen3N"		declUsage="BiNormal" />
+			<element type="Binormal"	declType="DHen3N"		declUsage="Binormal" />
 			<element type="NodeIndices"	declType="Ubyte4"		declUsage="BlendIndices" />
 			<element type="NodeWeights"	declType="UbyteN4"		declUsage="BlendWeight" />
 		</definition>
