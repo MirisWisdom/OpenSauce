@@ -209,8 +209,8 @@
 			<!--s_shader_postprocess_definition-->
 			<field type="Explanation" name="shader post-process" definition=""/>
 			<field type="Pad" definition="2" />
-			<field type="Pad" definition="2" />
-			<field type="Data" name="shader code text" definition="shader_postprocess_shader_source_code_data" />
+      <field type="Pad" definition="2" />
+      <field type="Pad" definition="20" />
 			<field type="Data" name="shader code binary" definition="shader_postprocess_shader_compiled_data" />
 			<field type="Pad" definition="60" />
 			<field type="Pad" definition="16" />
