@@ -45,11 +45,14 @@
 #define mcpp_sizeof(_type)		System::Runtime::InteropServices::Marshal::SizeOf(_type)
 
 // Declare a tracking reference to a [_type_decl] object
-// Also acts as the C++ equivlent of "ref" parameter modifier
+// Also acts as the C++ equivalent of "ref" parameter modifier
 #define mcpp_ref(_type_decl)	_type_decl##%
 // Declare a tracking reference to a [_type_decl] object
-// C++ equivlent of "out" parameter modifier
+// C++ equivalent of "out" parameter modifier
 #define mcpp_out(_type_decl)	[System::Runtime::InteropServices::Out] _type_decl##%
+// Declare a param array of [_type_decl]
+// C++ equivalent of "params" array parameter modifier
+#define mcpp_params(_type_decl)	... array<_type_decl>^
 
 #define mcpp_public				public:
 #define mcpp_private			private:
