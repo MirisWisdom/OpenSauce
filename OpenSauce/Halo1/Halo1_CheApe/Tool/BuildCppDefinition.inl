@@ -91,6 +91,17 @@ public:
 		m_name.clear();
 		m_used_names.clear();
 	}
+
+	void Clear()
+	{
+		m_name.clear();
+		m_used_names.clear();
+	}
+
+	virtual ~c_definition_instance()
+	{
+		Clear();
+	}
 };
 // specifically for enums and flags, stores tag
 // field references for later printing
@@ -121,6 +132,11 @@ public:
 		c_definition_instance::Ctor();
 
 		m_string_list = NULL;
+		m_references.clear();
+	}
+
+	virtual ~c_string_list_instance()
+	{
 		m_references.clear();
 	}
 };
@@ -167,6 +183,12 @@ public:
 		m_flags.clear();
 		m_arrays.clear();
 	}
+
+	virtual ~c_struct_instance()
+	{
+		m_flags.clear();
+		m_arrays.clear();
+	}
 };
 // provides necessary information about a block definition
 class c_block_instance : public c_struct_instance
@@ -185,7 +207,8 @@ public:
 	{ 
 		return m_definition_tag; 
 	}
-	void							SetDefinition(const tag_block_definition* definition, 
+	void							SetDefinition(
+		const tag_block_definition* definition, 
 		bool is_base_definition,
 		const tag definition_tag) 
 	{ 
@@ -467,11 +490,11 @@ void GetStructName(std::string& name,
 
 //////////////////////////////////////////////////////////////////////
 // globals
-std::vector<c_string_list_instance>		g_enum_list;
-std::vector<c_array_instance>			g_array_list;
-std::vector<c_block_instance>			g_block_list;
-c_definition_instance					g_enums_namespace;
-c_definition_instance					g_taggroups_namespace;
+static std::vector<c_string_list_instance>		g_enum_list;
+static std::vector<c_array_instance>			g_array_list;
+static std::vector<c_block_instance>			g_block_list;
+static c_definition_instance					g_enums_namespace;
+static c_definition_instance					g_taggroups_namespace;
 //////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////
@@ -1190,9 +1213,13 @@ void WriteBlockList(FILE* file,
 		file);
 }
 void WriteCppDefinition(
-	FILE* file, 
+	FILE* file,
+	tag_block_definition* base_block,
+	tag definition_tag,
 	const bool add_boost_asserts)
 {
+	AddBlock(base_block, true, definition_tag);
+
 	fputs(
 		"namespace Yelo\n"
 		"{\n",
@@ -1204,5 +1231,11 @@ void WriteCppDefinition(
 	fputs(
 		"};\n",
 		file);
+
+	g_enum_list.clear();
+	g_array_list.clear();
+	g_block_list.clear();
+	g_enums_namespace.Clear();
+	g_taggroups_namespace.Clear();
 }
 //////////////////////////////////////////////////////////////////////

@@ -38,7 +38,8 @@ static void PLATFORM_API tool_if_you_dont_get_help_at_charter(void** arguments)
 	else if( !strcmp(args->tool_command, "build-cache-file") )
 	{
 		printf_s(
-			"Builds a cache file with no Open Sauce male enhancements whatsoever. This is the stock tool code running here\n"
+			"Builds a cache file with no Open Sauce male enhancements whatsoever. This\n"
+			"is the stock tool code running here\n"
 			);
 	}
 	else if( !strcmp(args->tool_command, "build-cache-file-ex") )
@@ -47,24 +48,30 @@ static void PLATFORM_API tool_if_you_dont_get_help_at_charter(void** arguments)
 			"Builds a cache file with extra Open Sauce arguments.\n"
 			"Arguments:\n"
 				"\t<mod-name>\n"
-					"\t\tString: The name of the mod this scenario belongs to. This will also be used when naming the new data files.\n"
+					"\t\tString: The name of the mod this scenario belongs to. This will\n"
+					"\t\t\talso be used when naming the new data files.\n"
 				"\t<create-anew>\n"
-					"\t\tSwitch: Should new data files be created before building the cache?\n"
+					"\t\tSwitch: Should new data files be created before building the\n"
+					"\t\t\tcache?\n"
 				"\t<store-resources>\n"
-					"\t\tSwitch: Should the scenario's bitmaps/sounds/locale data be stored in the data files?\n"
+					"\t\tSwitch: Should the scenario's bitmaps/sounds/locale data be\n"
+					"\t\t\tstored in the data files?\n"
 				"\t<use-memory-upgrades>\n"
-					"\t\tSwitch: Does the scenario require Open Sauce's memory upgrades to run?\n"
+					"\t\tSwitch: Does the scenario require Open Sauce's memory upgrades\n"
+					"\t\t\tto run?\n"
 				"\t<scenario-name>\n"
-					"\t\tTagName: Name of the .scenario to use. Just like the stock build-cache-file.\n"
+					"\t\tTagName: Name of the .scenario to use. Just like the stock\n"
+					"\t\t\tbuild-cache-file.\n"
 			);
 	}
-	else if( !strcmp(args->tool_command, "import-shader-postprocess") )
+	else if( !strcmp(args->tool_command, "compile-shader-postprocess") )
 	{
 		printf_s(
-			"Imports an intermediate file describing shader-postprocessing definitions."
+			"Creates shader_postprocess_generic tags from HLSL .fx shaders in the data\n"
+			"directory\n"
 			"Arguments:\n"
-				"\t<data-file-name>\n"
-					"\t\tDataName: .\n"
+				"\t<shader-directory>\n"
+					"\t\tDirectory: Path that contains the shaders to compile\n"
 			);
 	}
 	else if( !strcmp(args->tool_command, "import-structure-lightmap-uvs") )
@@ -81,6 +88,22 @@ static void PLATFORM_API tool_if_you_dont_get_help_at_charter(void** arguments)
 					"\t\tlocation of the source obj, relative to the data directory\n"
 				"\t<structure-bsp>\n"
 					"\t\t location of the target bsp, relative to the tags directory\n"
+			);
+	}
+	else if( !strcmp(args->tool_command, "build-cpp-definition") )
+	{
+		printf_s(
+			"Creates a c++ definition header file mapping out the tag structure of a\n"
+			"specified tag\n"
+			"The resultant header file is saved to the working directory of os_tool\n"
+			"Arguments:\n"
+				"\t<tag-group>\n"
+					"\t\tTag ID: 4 character identifier for the tag type type you want a\n"
+					"\t\t\tdefinition of eg. \"bitm\"\n"
+				"\t<add-boost-asserts>\n"
+					"\t\tSwitch: Controls whether to add \"BOOST_STATIC_ASSERT\" code to\n"
+					"\t\t\tthe end of struct to ensure the struct sizes are\n"
+					"\t\t\tcorrect\n"
 			);
 	}
 	else

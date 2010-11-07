@@ -17,7 +17,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include <Common/Precompile.hpp>
+#include "TagGroups/yelo_shader_postprocess_definitions.hpp"
 
+#if PLATFORM_ID == PLATFORM_TOOL
 #include <Blam/Halo1/shader_postprocess_definitions.hpp>
 
 #include "Engine/EngineFunctions.hpp"
@@ -163,3 +165,13 @@ namespace Yelo
 		}
 	};
 };
+#else
+namespace Yelo
+{
+	namespace PostProcessing
+	{
+		void Initialize() {}
+		void Dispose() {}
+	};
+};
+#endif

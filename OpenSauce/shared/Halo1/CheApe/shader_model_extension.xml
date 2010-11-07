@@ -2,13 +2,13 @@
 <definitions game="Halo1">
 	<blocks>
 		<TagBlock name="shader_model_extension_block_definition" maxElements="1">
-			<field type="Explanation" name="specular map" definition="The specular color map overrides the perpendicular color setting.~NRGB holds the specular color data~NAlpha masks the parallel specular color" />
+			<field type="Explanation" name="specular map" definition="The specular color map is multiplied by the stock specular result~Nto provide finer control over the specular color.~NRGB holds the specular color" />
 			<field type="TagReference" name="specular color map" definition="bitmap_reference" />
 			<field type="Real" name="specular color multiplier" />
 			<field type="Pad" definition="4" />
 			<field type="Real" name="specular color power" />
 			<field type="Pad" definition="4" />
-			<field type="Explanation" name="normal maps" definition="RGB holds the normal color data~NAlpha interpolates between the detail normals 1 and 2" />
+			<field type="Explanation" name="normal maps" definition="RGB holds the normal color data~NAlpha interpolates between no detail normals and detail normals 1 and 2~N~NThe alpha channel uses:~N255/1.0 for detail normal 1~N127/0.5 for detail normal 2~N0/0.0 for no detail normals" />
 			<field type="TagReference" name="base normal map" definition="bitmap_reference" />
 			<field type="Real" name="base normal multiplier" />
 			<field type="Pad" definition="4" />

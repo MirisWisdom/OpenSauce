@@ -28,6 +28,7 @@
 		#include "Rasterizer/DX9/DX9.hpp"
 		#include "Rasterizer/GBuffer.hpp"
 		#include "Rasterizer/Rasterizer.hpp"
+		#include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
 		#include "Rasterizer/PostProcessing/PostProcessing.hpp"
 		#include "Game/Camera.hpp"
 

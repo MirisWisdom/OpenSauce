@@ -35,7 +35,7 @@ namespace Yelo
 				return false;
 
 			std::string::size_type index_start = (start_control == NULL ? 0 : string_in.find_first_of(start_control));
-			std::string::size_type index_end = string_in.find_first_of(end_control);
+			std::string::size_type index_end = string_in.find_first_of(end_control, index_start);
 
 			// if the start control was not found, return
 			// if we want to remove the start control character increment index_start

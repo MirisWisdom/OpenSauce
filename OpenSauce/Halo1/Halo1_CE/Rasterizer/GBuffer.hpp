@@ -51,15 +51,38 @@ namespace Yelo
 		//////////////////////////////////////////////////////////////////////
 		// Container for holding all members of the GBuffer					//
 		//////////////////////////////////////////////////////////////////////
-		struct s_gbuffer
+		struct c_gbuffer
 		{
+			enum {
+				k_gbuffer_depth_x = 0,		//R32_F		X
+
+				k_gbuffer_velocity_x = 0,	//R16_F		X
+				k_gbuffer_velocity_y = 1,	//R16_F			Y
+
+				k_gbuffer_normals_x = 0,	//R8G8B8A8	X
+				k_gbuffer_normals_y = 1,	//R8G8B8A8		Y
+
+				k_gbuffer_index_x = 2,		//R8G8B8A8			Z
+				k_gbuffer_index_y = 3,		//R8G8B8A8				W
+			};
 			Rasterizer::s_render_target					m_rt_depth;
 			Rasterizer::s_render_target					m_rt_velocity;
-			Rasterizer::s_render_target					m_rt_normals;
-			Rasterizer::s_render_target					m_rt_index;
+			Rasterizer::s_render_target					m_rt_normals_index;
 
 			void ReleaseTargets();
 			void ClearTargets(IDirect3DDevice9* pDevice);
+
+			bool SetEffectVar(LPD3DXEFFECT& effect,
+				cstring texture_semantic,
+				Rasterizer::s_render_target& target,
+				cstring x_handle_semantic = NULL, const int x_index = 0,
+				cstring y_handle_semantic = NULL, const int y_index = 0,
+				cstring z_handle_semantic = NULL, const int z_index = 0,
+				cstring w_handle_semantic = NULL, const int w_index = 0);
+			bool SetDepth(LPD3DXEFFECT& effect);
+			bool SetVelocity(LPD3DXEFFECT& effect);
+			bool SetNormals(LPD3DXEFFECT& effect);
+			bool SetIndex(LPD3DXEFFECT& effect);
 		};
 
 		struct s_render_target_output
@@ -74,6 +97,33 @@ namespace Yelo
 			}
 		};
 
+		class c_gbuffer_debug_effect
+		{
+			LPD3DXEFFECT	m_effect;
+			TEXTURE_VERTEX	m_vertices[4];
+
+			D3DXHANDLE		m_technique_single;
+			D3DXHANDLE		m_technique_all;
+
+			D3DXHANDLE		m_target_handle;
+
+			bool			m_depth_set;
+			bool			m_velocity_set;
+			bool			m_normals_set;
+			bool			m_index_set;
+		public:
+			HRESULT			AllocateResources(IDirect3DDevice9* device, uint32 width, uint32 height);
+			void			ReleaseResources();
+
+			void			OnLostDevice();
+			HRESULT			OnResetDevice();
+			void			Render(IDirect3DDevice9* device, int16 debug_target);
+
+			bool			IsAvailable();
+			LPD3DXEFFECT&	GetEffect() { return m_effect; }	
+		};
+		static c_gbuffer_debug_effect& GBufferDebug();
+		
 		class c_gbuffer_system
 		{
 		public:
@@ -82,12 +132,15 @@ namespace Yelo
 
 		private:
 			enum {
-				k_maximum_multi_render_target = 4,
+				k_mrt_technique_count = 2,
+				k_maximum_multi_render_target = 3,
 			};
 
 			static Enums::rasterizer_vertex_shader const kValidShaders[];
 
 			static Enums::render_progress	g_current_render_state;						// What is halo currently rendering
+			
+			static BOOL						g_wvp_stored;
 			static D3DXMATRIX				g_previous_worldviewproj;					// WVP for the previous frame (for BSP velocity)
 
 			static BOOL						g_is_rendering_reflection;					// Is halo rendering the reflection geometry?
@@ -98,24 +151,19 @@ namespace Yelo
 			static void Hook_RenderObjectList_ClearObjectIndex();
 			static void Hook_FirstPersonWeaponDraw_GetObjectIndex();
 		private:
-			c_packed_file		m_shader_package;
-			bool				m_is_loaded;
-			bool				m_render_gbuffer;								// The GBuffer is only rendered to when certain vertex shaders are used
+			c_packed_file			m_shader_package;
+			bool					m_is_loaded;
+			bool					m_render_gbuffer;								// The GBuffer is only rendered to when certain vertex shaders are used
 			PAD16;
-			LPD3DXEFFECT		gbuffer_ps, gbuffer_vs, gbuffer_debug;
-			s_gbuffer			gbuffer;
+			LPD3DXEFFECT			m_gbuffer_ps, m_gbuffer_vs;
+			c_gbuffer				m_gbuffer;
 
 			struct {
-				D3DXHANDLE techniques[k_maximum_multi_render_target];
+				D3DXHANDLE bsp_techniques[k_mrt_technique_count];
+				D3DXHANDLE object_techniques[k_mrt_technique_count];
 				s_render_target_output output[k_maximum_multi_render_target];
 				uint32 count;
 			}m_multi_rt;
-
-			struct {
-				D3DXHANDLE rt_technique_single;
-				D3DXHANDLE rt_technique_all;
-				TEXTURE_VERTEX quad_vertices[4];
-			}m_debug;
 
 			struct {
 				D3DXHANDLE vs_technique_bsp;
@@ -158,7 +206,8 @@ namespace Yelo
 			static void	Render();
 			// Release direct3D resources when quitting
 			static void Release();
-		
+
+
 		public:
 			// The vertex shader is used to determine if a mesh should be rendered to the GBuffer
 			static void			VertexShaderChanged(IDirect3DVertexShader9* pShader);
@@ -166,11 +215,13 @@ namespace Yelo
 			static HRESULT	 	DrawIndexedPrimitive(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type,INT BaseVertexIndex,UINT MinVertexIndex,UINT NumVertices,UINT startIndex,UINT primCount);
 			static HRESULT	 	DrawIndexedPrimitive_Structure(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type,INT BaseVertexIndex,UINT MinVertexIndex,UINT NumVertices,UINT startIndex,UINT primCount);
 			static HRESULT	 	DrawIndexedPrimitive_Object(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type,INT BaseVertexIndex,UINT MinVertexIndex,UINT NumVertices,UINT startIndex,UINT primCount);			
+			static HRESULT		SetVertexShaderConstantF_WVP(IDirect3DDevice9* device, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount);
 			// Clears all GBuffer surfaces, ready for the next frame
 			static void			ClearGBuffer(IDirect3DDevice9* pDevice);
+			static HRESULT		SetVertexShaderConstantF_All(IDirect3DDevice9* device, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount);
 
 		private:
-			static c_gbuffer_system g_default_system;
+			static c_gbuffer_system			g_default_system;
 
 			void		OnLostDeviceImpl();
 			void		OnResetDeviceImpl(D3DPRESENT_PARAMETERS* params);
@@ -192,7 +243,7 @@ namespace Yelo
 			HRESULT		LoadEffect(IDirect3DDevice9* pDevice, LPD3DXEFFECT* pEffect, const char* EffectID);
 
 		public:
-			static s_gbuffer*	GBuffer();
+			static c_gbuffer&				GBuffer();
 
 			struct render_progress
 			{
@@ -206,7 +257,6 @@ namespace Yelo
 				static void StructurePostProcess();
 
 				static void UIPreProcess();
-				static void UIPostProcess();
 			};
 		};
 	};

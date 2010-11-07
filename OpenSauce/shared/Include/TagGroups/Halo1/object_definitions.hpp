@@ -82,7 +82,7 @@ namespace Yelo
 
 			TAG_PAD(tag_block, 1); // object_function_definition
 			TAG_PAD(tag_block, 1); // object_change_color_definition
-			TAG_PAD(tag_block, 1); // predicted resources
+			TAG_TBLOCK_(predicted_resources, predicted_resource); // predicted resources
 		}; BOOST_STATIC_ASSERT( sizeof(_object_definition) == 0x17C );
 
 

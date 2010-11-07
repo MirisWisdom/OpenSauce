@@ -995,6 +995,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\TagGroups\Halo1\model_definitions.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\TagGroups\Halo1\object_definitions.hpp"
 					>
 				</File>
@@ -1143,6 +1147,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Memory\1.08\_EngineLayout.Rasterizer.ShaderExtension.inl"
+					>
+				</File>
+				<File
 					RelativePath=".\Memory\1.08\_EngineLayout.TagGroups.inl"
 					>
 				</File>
@@ -1184,6 +1192,10 @@
 				</File>
 				<File
 					RelativePath=".\Memory\1.09\_EngineLayout.Rasterizer.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\Memory\1.09\_EngineLayout.Rasterizer.ShaderExtension.inl"
 					>
 				</File>
 				<File
@@ -1426,6 +1438,18 @@
 						>
 					</File>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="ShaderExtension"
+				>
+				<File
+					RelativePath=".\Rasterizer\ShaderExtension\ShaderExtension.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Rasterizer\ShaderExtension\ShaderExtension.hpp"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<File

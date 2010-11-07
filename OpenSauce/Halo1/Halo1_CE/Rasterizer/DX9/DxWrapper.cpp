@@ -360,7 +360,12 @@ HRESULT Yelo_IDirect3DDevice9::GetVertexShaderConstantB(THIS_ UINT StartRegister
 { return Yelo_pD3DDevice->GetVertexShaderConstantB(StartRegister,pConstantData,BoolCount); }
 
 HRESULT Yelo_IDirect3DDevice9::SetVertexShaderConstantF(THIS_ UINT StartRegister,CONST float* pConstantData,UINT Vector4fCount) 
-{ return Yelo_pD3DDevice->SetVertexShaderConstantF(StartRegister,pConstantData,Vector4fCount); }
+{ 
+	if(Yelo::Memory::IsYeloEnabled())
+		return Yelo::DX9::c_gbuffer_system::SetVertexShaderConstantF_All(Yelo_pD3DDevice, StartRegister, pConstantData, Vector4fCount);
+	return Yelo_pD3DDevice->SetVertexShaderConstantF(StartRegister,pConstantData,Vector4fCount); 
+}
+
 
 HRESULT Yelo_IDirect3DDevice9::GetVertexShaderConstantF(THIS_ UINT StartRegister,float* pConstantData,UINT Vector4fCount) 
 { return Yelo_pD3DDevice->GetVertexShaderConstantF(StartRegister,pConstantData,Vector4fCount); }

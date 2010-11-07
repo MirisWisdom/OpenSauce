@@ -452,7 +452,7 @@ namespace Yelo
 					pParameters->BackBufferHeight);
 
 				// get the gbuffer render targets
-				Globals().m_render_targets.gbuffer = DX9::c_gbuffer_system::GBuffer();
+				Globals().m_render_targets.gbuffer = &DX9::c_gbuffer_system::GBuffer();
 				
 				// Create the orthographic projection matrix for rendering the quads
 				D3DXMATRIX OrthoTranslation;
@@ -767,7 +767,7 @@ namespace Yelo
 				};
 				dx9_state_capture.Restore();
 
-				Globals().m_rendering.render_device->SetRenderTarget(0, Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface);
+				render_device->SetRenderTarget(0, Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface);
 			}
 		}
 		void		RenderPreMenu() 
@@ -808,7 +808,7 @@ namespace Yelo
 							NULL, 
 							D3DTEXF_NONE);
 				};
-				dx9_state_capture.Restore();	
+				dx9_state_capture.Restore();
 
 				render_device->SetRenderTarget(0, Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface);
 			}
@@ -851,8 +851,8 @@ namespace Yelo
 							NULL, 
 							D3DTEXF_NONE);
 				};
-				dx9_state_capture.Restore();	
-				
+				dx9_state_capture.Restore();
+
 				render_device->SetRenderTarget(0, Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface);
 			}
 		}

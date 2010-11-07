@@ -153,7 +153,7 @@ namespace Yelo
 			}m_rendering;
 			struct s_render_targets {
 				DX9::s_render_target_chain	scene_buffer_chain;
-				DX9::s_gbuffer*				gbuffer;
+				DX9::c_gbuffer*				gbuffer;
 			}m_render_targets;			
 			struct s_matricies {
 				D3DXMATRIX					ortho_proj_matrix;	// Orthographic projection matrix for rendering quads
