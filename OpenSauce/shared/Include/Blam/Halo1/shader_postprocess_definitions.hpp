@@ -125,11 +125,8 @@ namespace Yelo
 			t_shader_variable_real		frame_time;			// Handle to the frame time float value
 			t_shader_variable_texture	tex_source;			// Handle to the post-process source texture
 			t_shader_variable_texture	tex_scene;			// Handle to the saved scene texture
-			t_shader_variable_texture	tex_depth;			// Handle to the depth texture
-			t_shader_variable_texture	tex_velocity;		// Handle to the velocity texture
-			t_shader_variable_texture	tex_normals;		// Handle to the normals texture
-			t_shader_variable_texture	tex_index;			// Handle to the normals texture
 
+			TAG_PAD(int32, 4);
 			TAG_PAD(int32, 4);
 
 			TAG_TBLOCK_(predicted_resources, predicted_resource);

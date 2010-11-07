@@ -34,6 +34,7 @@
 	{DX9::Initialize,								DX9::Dispose},
 	{DX9::c_gbuffer_system::Initialize,				DX9::c_gbuffer_system::Dispose},
 	{Rasterizer::Initialize,						Rasterizer::Dispose},
+	{Rasterizer::ShaderExtension::Initialize,		Rasterizer::ShaderExtension::Dispose},
 	{Postprocessing::Initialize,					Postprocessing::Dispose,NULL,	Postprocessing::InitializeForNewMap,	Postprocessing::DisposeFromOldMap,	Postprocessing::Update},
 	{Camera::Initialize,							Camera::Dispose},
 #endif

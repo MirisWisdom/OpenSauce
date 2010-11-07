@@ -58,7 +58,6 @@ DEFINE_HOOK_BLOCK_PREPROCESS(weather_particle_systems_render) = {
 
 
 DEFINE_HOOK_PROCESS(func_gbuffer_render_hud_preprocess, DX9::c_gbuffer_system::render_progress::UIPreProcess);
-DEFINE_HOOK_PROCESS(func_gbuffer_render_hud_postprocess, DX9::c_gbuffer_system::render_progress::UIPostProcess);
 DEFINE_HOOK_PROCESS(func_postprocessing_render_hud_preprocess, Postprocessing::RenderPreHUD);
 DEFINE_HOOK_PROCESS(func_postprocessing_render_hud_postprocess, Postprocessing::RenderPreMenu);	
 
@@ -67,7 +66,6 @@ DEFINE_HOOK_BLOCK_PREPROCESS(render_hud) = {
 	GET_HOOK_PROCESS(func_gbuffer_render_hud_preprocess).FunctionHook,
 };
 DEFINE_HOOK_BLOCK_POSTPROCESS(render_hud) = {
-	GET_HOOK_PROCESS(func_gbuffer_render_hud_postprocess).FunctionHook,
 	GET_HOOK_PROCESS(func_postprocessing_render_hud_postprocess).FunctionHook,
 };
 

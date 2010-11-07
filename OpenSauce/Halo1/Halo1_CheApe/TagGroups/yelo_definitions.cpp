@@ -27,6 +27,7 @@
 #include "Engine/Scripting.hpp"
 #include "TagGroups/tag_database_definitions.hpp"
 #include "TagGroups/yelo_shader_postprocess_definitions.hpp"
+#include "TagGroups/yelo_shader_extension.hpp"
 #include "TagGroups/TagGroups.hpp"
 
 namespace Yelo
@@ -254,8 +255,11 @@ namespace Yelo
 					"CheApe: Yelo definitions mismatch!");
 			}
 
+			//////////////////////////////////////////////////////////////////////////
+			// Now initialize the complex subsystems
 			s_tag_database::Initialize();
 			PostProcessing::Initialize();
+			ShaderExtension::Initialize();
 		}
 
 		void YeloDefinitionsDispose()

@@ -20,11 +20,10 @@
 
 namespace Yelo
 {
-	namespace PostProcessing
+	namespace ShaderExtension
 	{
 #if PLATFORM_ID == PLATFORM_TOOL
-		bool PLATFORM_API shader_postprocess_collection_group_postprocess(datum_index tag_index, bool verify_data);
-		bool PLATFORM_API shader_postprocess_generic_group_postprocess(datum_index tag_index, bool verify_data);
+		bool PLATFORM_API object_group_postprocess(datum_index tag_index, bool verify_data);
 #endif
 		void Initialize();
 		void Dispose();

@@ -1203,6 +1203,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TagGroups\yelo_shader_extension.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TagGroups\yelo_shader_extension.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TagGroups\yelo_shader_postprocess_definitions.cpp"
 				>
 			</File>
@@ -1223,6 +1231,10 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\TagGroups\Halo1\item_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\TagGroups\Halo1\model_definitions.hpp"
 					>
 				</File>
 				<File

@@ -67,13 +67,12 @@ namespace Yelo
 			Yelo::safe_release(texture);
 		}
 
-		void		s_render_target::ClearTarget(IDirect3DDevice9* device)
+		void		s_render_target::ClearTarget(IDirect3DDevice9* device, D3DCOLOR color, DWORD flags)
 		{
 			if(!IsEnabled())	return;
 			
 			device->SetRenderTarget(0, surface);
-			device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL,
-										0x00000000, 1.0f, 0L );
+			device->Clear( 0L, NULL, flags, color, 1.0f, 0L );
 		}
 		//////////////////////////////////////////////////////////////////////////
 

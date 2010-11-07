@@ -63,10 +63,6 @@ namespace Yelo
 			m_shader_base->frame_time.ClearHandles();
 			m_shader_base->tex_source.ClearHandles();
 			m_shader_base->tex_scene.ClearHandles();
-			m_shader_base->tex_depth.ClearHandles();
-			m_shader_base->tex_velocity.ClearHandles();
-			m_shader_base->tex_normals.ClearHandles();
-			m_shader_base->tex_index.ClearHandles();
 
 			return S_OK;
 		}
@@ -112,21 +108,17 @@ namespace Yelo
 			m_shader_base->tex_source.Initialize(m_effect,				"TEXSOURCE", Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].texture, true);
 			if(m_shader_base->tex_source.IsUsed() && !pp_globals.m_render_targets.scene_buffer_chain.IsAvailable()) return E_FAIL;
 
-			m_shader_base->tex_depth.Initialize(m_effect,				"TEXDEPTH", pp_globals.m_render_targets.gbuffer->m_rt_depth.texture, true);
-			if(m_shader_base->tex_depth.IsUsed() && !pp_globals.m_render_targets.gbuffer->m_rt_depth.IsEnabled()) return E_FAIL;
-			else m_shader_base->runtime.flags.uses_gbuffer_bit |= m_shader_base->tex_depth.IsUsed();
+			if(!pp_globals.m_render_targets.gbuffer->SetDepth(*m_effect)) return E_FAIL;
+			else m_shader_base->runtime.flags.uses_gbuffer_bit |= true;
 
-			m_shader_base->tex_velocity.Initialize(m_effect,			"TEXVELOCITY", pp_globals.m_render_targets.gbuffer->m_rt_velocity.texture, true);
-			if(m_shader_base->tex_velocity.IsUsed() && !pp_globals.m_render_targets.gbuffer->m_rt_velocity.IsEnabled()) return E_FAIL;
-			else m_shader_base->runtime.flags.uses_gbuffer_bit |= m_shader_base->tex_velocity.IsUsed();
+			if(!pp_globals.m_render_targets.gbuffer->SetVelocity(*m_effect)) return E_FAIL;
+			else m_shader_base->runtime.flags.uses_gbuffer_bit |= true;
 
-			m_shader_base->tex_normals.Initialize(m_effect,				"TEXNORMALS", pp_globals.m_render_targets.gbuffer->m_rt_normals.texture, true);
-			if(m_shader_base->tex_normals.IsUsed() && !pp_globals.m_render_targets.gbuffer->m_rt_normals.IsEnabled()) return E_FAIL;
-			else m_shader_base->runtime.flags.uses_gbuffer_bit |= m_shader_base->tex_normals.IsUsed();
+			if(!pp_globals.m_render_targets.gbuffer->SetNormals(*m_effect)) return E_FAIL;
+			else m_shader_base->runtime.flags.uses_gbuffer_bit |= true;
 
-			m_shader_base->tex_index.Initialize(m_effect,				"TEXINDEX", pp_globals.m_render_targets.gbuffer->m_rt_index.texture, true);
-			if(m_shader_base->tex_index.IsUsed() && !pp_globals.m_render_targets.gbuffer->m_rt_index.IsEnabled()) return E_FAIL;
-			else m_shader_base->runtime.flags.uses_gbuffer_bit |= m_shader_base->tex_index.IsUsed();
+			if(!pp_globals.m_render_targets.gbuffer->SetIndex(*m_effect)) return E_FAIL;
+			else m_shader_base->runtime.flags.uses_gbuffer_bit |= true;
 
 			return S_OK;
 		}
@@ -238,10 +230,6 @@ namespace Yelo
 			m_shader_base->far_clip_dist.ClearHandles();
 			m_shader_base->tex_source.ClearHandles();
 			m_shader_base->tex_scene.ClearHandles();
-			m_shader_base->tex_depth.ClearHandles();
-			m_shader_base->tex_velocity.ClearHandles();
-			m_shader_base->tex_normals.ClearHandles();
-			m_shader_base->tex_index.ClearHandles();
 		}
 		void		c_postprocess_shader::ReleaseResources()		
 		{

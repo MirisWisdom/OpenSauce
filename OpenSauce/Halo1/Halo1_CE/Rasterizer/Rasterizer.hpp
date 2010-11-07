@@ -142,7 +142,7 @@ namespace Yelo
 			// Release the texture and surface
 			void		ReleaseTarget();
 			// Set the device target to [surface] then clear it
-			void		ClearTarget(IDirect3DDevice9* device);
+			void		ClearTarget(IDirect3DDevice9* device, D3DCOLOR color = 0x00000000, DWORD flags = D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL);
 		};
 		s_render_target* GlobalRenderTargets();
 

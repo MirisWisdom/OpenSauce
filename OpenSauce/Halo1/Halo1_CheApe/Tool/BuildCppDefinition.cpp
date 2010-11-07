@@ -59,8 +59,7 @@ namespace Yelo
 					return;
 				}
 
-				AddBlock(tag_group_def->definition, true, *args->tag_group);
-				WriteCppDefinition(file, add_boost_asserts);
+				WriteCppDefinition(file, tag_group_def->definition, *args->tag_group, add_boost_asserts);
 
 				fclose(file);
 				printf_s("definition saved as %s\n", file_name);

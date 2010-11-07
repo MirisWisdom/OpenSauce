@@ -146,7 +146,7 @@ namespace Yelo
 			TAG_FIELD(tag, signature);
 			TAG_FIELD(int16, width, "pixels");
 			TAG_FIELD(int16, height, "pixels");
-			TAG_FIELD(int16, depth, "pixels#depth is 1 for 2D textures and cube maps", "depth is 1 for 2D textures and cube maps");
+			TAG_FIELD(int16, depth, "pixels", "depth is 1 for 2D textures and cube maps", "depth is 1 for 2D textures and cube maps");
 			TAG_ENUM(type, Enums::bitmap_type, "determines bitmap 'geometry'");
 			TAG_ENUM(format, Enums::bitmap_pixel_format, "determines how pixels are represented internally");
 			TAG_FIELD(__flags, flags);

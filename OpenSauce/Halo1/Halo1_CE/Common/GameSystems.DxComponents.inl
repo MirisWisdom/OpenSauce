@@ -38,6 +38,7 @@ DX_COMPONENT(Menu),
 DX_COMPONENT(Objects::Weapon),
 DX_COMPONENT(Hud),
 DX_COMPONENT(Objects::Vehicle),
+DX_COMPONENT(Rasterizer::ShaderExtension),
 
 
 #undef DX_COMPONENT
