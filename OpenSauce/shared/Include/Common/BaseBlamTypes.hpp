@@ -432,7 +432,7 @@ namespace Yelo
 	{
 		int32 leaf_index;
 		int16 cluster_index;
-		UNKNOWN_TYPE(int16); // i think this is actually padding?
+		int16 structure_bsp;
 	}; BOOST_STATIC_ASSERT( sizeof(s_scenario_location) == 0x8 );
 
 
