@@ -91,11 +91,7 @@ namespace Yelo
 			// calculated / camera
 			struct {
 				real_point3d position;	// 0x74
-				struct { // TODO: s_scenario_location
-					int32 leaf_index;	// 0x80, changes when thirdperson rotating (1318,1270)
-					int16 cluster_index;// 0x84
-					UNKNOWN_TYPE(int16);// 0x86, award
-				}location;
+				s_scenario_location location; // 0x80
 				real_vector3d velocity;	// 0x88
 				real_vector3d forward;	// 0x94
 				real_euler_angles3d up;	// 0xA0
