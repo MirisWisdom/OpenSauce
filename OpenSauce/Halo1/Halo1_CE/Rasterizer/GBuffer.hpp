@@ -73,16 +73,17 @@ namespace Yelo
 			void ClearTargets(IDirect3DDevice9* pDevice);
 
 			bool SetEffectVar(LPD3DXEFFECT& effect,
+				bool& variable_used,
 				cstring texture_semantic,
 				Rasterizer::s_render_target& target,
 				cstring x_handle_semantic = NULL, const int x_index = 0,
 				cstring y_handle_semantic = NULL, const int y_index = 0,
 				cstring z_handle_semantic = NULL, const int z_index = 0,
 				cstring w_handle_semantic = NULL, const int w_index = 0);
-			bool SetDepth(LPD3DXEFFECT& effect);
-			bool SetVelocity(LPD3DXEFFECT& effect);
-			bool SetNormals(LPD3DXEFFECT& effect);
-			bool SetIndex(LPD3DXEFFECT& effect);
+			bool SetDepth(LPD3DXEFFECT& effect, bool& variable_used);
+			bool SetVelocity(LPD3DXEFFECT& effect, bool& variable_used);
+			bool SetNormals(LPD3DXEFFECT& effect, bool& variable_used);
+			bool SetIndex(LPD3DXEFFECT& effect, bool& variable_used);
 		};
 
 		struct s_render_target_output

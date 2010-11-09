@@ -53,16 +53,21 @@ namespace Yelo
 			m_rt_normals_index.ClearTarget(pDevice, NULL, 1);
 		}
 		bool		c_gbuffer::SetEffectVar(LPD3DXEFFECT& effect,
+			bool& variable_used,
 			cstring texture_semantic,
 			Rasterizer::s_render_target& target,
 			cstring x_handle_semantic, const int x_index,
 			cstring y_handle_semantic, const int y_index,
 			cstring z_handle_semantic, const int z_index,
 			cstring w_handle_semantic, const int w_index)
-		{				
+		{		
+			variable_used = false;
 			if(!effect) return false;
 
 			D3DXHANDLE tex_handle = effect->GetParameterBySemantic(NULL, texture_semantic);
+
+			variable_used = (tex_handle != NULL) ? true : false;
+
 			if(!tex_handle)								return true;
 			else if(tex_handle && !target.IsEnabled())	return false;
 
@@ -102,27 +107,27 @@ namespace Yelo
 			return true;
 
 		}
-		bool		c_gbuffer::SetDepth(LPD3DXEFFECT& effect)
+		bool		c_gbuffer::SetDepth(LPD3DXEFFECT& effect, bool& variable_used)
 		{
-			return SetEffectVar(effect, "TEXDEPTH", m_rt_depth, 
+			return SetEffectVar(effect, variable_used, "TEXDEPTH", m_rt_depth, 
 				"GBUFFER_DEPTH_X", k_gbuffer_depth_x);
 		}
 
-		bool		c_gbuffer::SetVelocity(LPD3DXEFFECT& effect)
+		bool		c_gbuffer::SetVelocity(LPD3DXEFFECT& effect, bool& variable_used)
 		{
-			return SetEffectVar(effect, "TEXVELOCITY", m_rt_velocity, 
+			return SetEffectVar(effect, variable_used, "TEXVELOCITY", m_rt_velocity, 
 				"GBUFFER_VELOCITY_X", k_gbuffer_velocity_x, 
 				"GBUFFER_VELOCITY_Y", k_gbuffer_velocity_y);
 		}
-		bool		c_gbuffer::SetNormals(LPD3DXEFFECT& effect)
+		bool		c_gbuffer::SetNormals(LPD3DXEFFECT& effect, bool& variable_used)
 		{
-			return SetEffectVar(effect, "TEXNORMALS", m_rt_normals_index, 
+			return SetEffectVar(effect, variable_used, "TEXNORMALS", m_rt_normals_index, 
 				"GBUFFER_NORMALS_X", k_gbuffer_normals_x, 
 				"GBUFFER_NORMALS_Y", k_gbuffer_normals_y);
 		}
-		bool		c_gbuffer::SetIndex(LPD3DXEFFECT& effect)
+		bool		c_gbuffer::SetIndex(LPD3DXEFFECT& effect, bool& variable_used)
 		{
-			return SetEffectVar(effect, "TEXINDEX", m_rt_normals_index, 
+			return SetEffectVar(effect, variable_used, "TEXINDEX", m_rt_normals_index, 
 				"GBUFFER_INDEX_X", k_gbuffer_index_x, 
 				"GBUFFER_INDEX_Y", k_gbuffer_index_y);
 		}
@@ -143,10 +148,11 @@ namespace Yelo
 
 			m_target_handle =		m_effect->GetParameterByName(NULL, "RenderTarget");
 
-			m_depth_set =			c_gbuffer_system::GBuffer().SetDepth(m_effect);
-			m_velocity_set =		c_gbuffer_system::GBuffer().SetVelocity(m_effect);
-			m_normals_set =			c_gbuffer_system::GBuffer().SetNormals(m_effect);
-			m_index_set =			c_gbuffer_system::GBuffer().SetIndex(m_effect);
+			bool variable_used;
+			m_depth_set =			c_gbuffer_system::GBuffer().SetDepth(m_effect, variable_used);
+			m_velocity_set =		c_gbuffer_system::GBuffer().SetVelocity(m_effect, variable_used);
+			m_normals_set =			c_gbuffer_system::GBuffer().SetNormals(m_effect, variable_used);
+			m_index_set =			c_gbuffer_system::GBuffer().SetIndex(m_effect, variable_used);
 
 			TEXTURE_VERTEX quad[4] = 
 			{
@@ -548,14 +554,13 @@ namespace Yelo
 			m_multi_rt.object_techniques[0] = m_gbuffer_ps->GetTechniqueByName("MRT2_Object");
 			m_multi_rt.object_techniques[1] = m_gbuffer_ps->GetTechniqueByName("MRT3_Object");
 
-			m_multi_rt.count = 2;//(device_caps.NumSimultaneousRTs > NUMBEROF(m_multi_rt.techniques) ? 
-				//NUMBEROF(m_multi_rt.techniques) : device_caps.NumSimultaneousRTs);
+			m_multi_rt.count = (device_caps.NumSimultaneousRTs > k_maximum_multi_render_target ? 
+				k_maximum_multi_render_target : device_caps.NumSimultaneousRTs);
 
 			// cant alpha test and put data in the alpha channel with 1 render target
 			if(m_multi_rt.count == 1)
 				return;
 
-			// TODO: Figure out a way to never set target 0 to NULL as it will end up rendering to the backbuffer
 			switch (m_multi_rt.count)
 			{
 			case 2:

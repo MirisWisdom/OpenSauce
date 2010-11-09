@@ -108,17 +108,18 @@ namespace Yelo
 			m_shader_base->tex_source.Initialize(m_effect,				"TEXSOURCE", Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].texture, true);
 			if(m_shader_base->tex_source.IsUsed() && !pp_globals.m_render_targets.scene_buffer_chain.IsAvailable()) return E_FAIL;
 
-			if(!pp_globals.m_render_targets.gbuffer->SetDepth(*m_effect)) return E_FAIL;
-			else m_shader_base->runtime.flags.uses_gbuffer_bit |= true;
+			bool variable_used = false;
+			if(!pp_globals.m_render_targets.gbuffer->SetDepth(*m_effect, variable_used)) return E_FAIL;
+			else m_shader_base->runtime.flags.uses_gbuffer_bit |= variable_used;
 
-			if(!pp_globals.m_render_targets.gbuffer->SetVelocity(*m_effect)) return E_FAIL;
-			else m_shader_base->runtime.flags.uses_gbuffer_bit |= true;
+			if(!pp_globals.m_render_targets.gbuffer->SetVelocity(*m_effect, variable_used)) return E_FAIL;
+			else m_shader_base->runtime.flags.uses_gbuffer_bit |= variable_used;
 
-			if(!pp_globals.m_render_targets.gbuffer->SetNormals(*m_effect)) return E_FAIL;
-			else m_shader_base->runtime.flags.uses_gbuffer_bit |= true;
+			if(!pp_globals.m_render_targets.gbuffer->SetNormals(*m_effect, variable_used)) return E_FAIL;
+			else m_shader_base->runtime.flags.uses_gbuffer_bit |= variable_used;
 
-			if(!pp_globals.m_render_targets.gbuffer->SetIndex(*m_effect)) return E_FAIL;
-			else m_shader_base->runtime.flags.uses_gbuffer_bit |= true;
+			if(!pp_globals.m_render_targets.gbuffer->SetIndex(*m_effect, variable_used)) return E_FAIL;
+			else m_shader_base->runtime.flags.uses_gbuffer_bit |= variable_used;
 
 			return S_OK;
 		}
