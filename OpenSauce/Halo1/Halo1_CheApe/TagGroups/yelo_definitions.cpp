@@ -20,14 +20,11 @@
 #include "TagGroups/yelo_definitions.hpp"
 
 #include <Blam/Halo1/project_yellow_shared_definitions.hpp>
-#include <Blam/Halo1/shader_postprocess_definitions.hpp>
 #include <TagGroups/Halo1/scenario_definitions.hpp>
 
 #include "Engine/EngineFunctions.hpp"
 #include "Engine/Scripting.hpp"
 #include "TagGroups/tag_database_definitions.hpp"
-#include "TagGroups/yelo_shader_postprocess_definitions.hpp"
-#include "TagGroups/yelo_shader_extension.hpp"
 #include "TagGroups/TagGroups.hpp"
 
 namespace Yelo
@@ -258,8 +255,6 @@ namespace Yelo
 			//////////////////////////////////////////////////////////////////////////
 			// Now initialize the complex subsystems
 			s_tag_database::Initialize();
-			PostProcessing::Initialize();
-			ShaderExtension::Initialize();
 		}
 
 		void YeloDefinitionsDispose()
