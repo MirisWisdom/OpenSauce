@@ -23,6 +23,10 @@
 #include <Blam/Halo1/project_yellow_shared_definitions.hpp>
 #include <Blam/Halo1/BlamDataFileUpgrades.hpp>
 #include <TagGroups/Halo1/scenario_definitions.hpp>
+#include <TagGroups/Halo1/object_definitions.hpp>
+#include <TagGroups/Halo1/model_definitions.hpp>
+#include <TagGroups/Halo1/shader_definitions.hpp>
+#include <Blam/Halo1/shader_postprocess_definitions.hpp>
 
 #include "CheApeInterface.hpp" // for Memory functions
 #include "Common/YeloSettings.hpp"

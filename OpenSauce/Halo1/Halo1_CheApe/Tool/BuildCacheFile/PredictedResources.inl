@@ -17,7 +17,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 namespace BuildCacheFileEx
 {
 	namespace PredictedResources
@@ -25,23 +24,16 @@ namespace BuildCacheFileEx
 		static void predicted_resources_add_resource(TagBlock<TagGroups::predicted_resource>& predicted_resources, 
 			long_enum resource_type, datum_index tag_index, int32 resource_index = NONE)
 		{
-			static uint32 CALL_ADDRESS = 0x4B94E0;
+			static void* PREDICTED_RESOURCES_ADD_RESOURCE = CAST_PTR(void*, 0x4B94E0);
 
-			NAKED_FUNC_START()
-				push	edx
-				push	ecx
+			typedef void (PLATFORM_API* call_proc)(TagBlock<TagGroups::predicted_resource>&, long_enum, datum_index, int32);
+			static call_proc add_predicted_resource = CAST_PTR(call_proc, PREDICTED_RESOURCES_ADD_RESOURCE);
 
-				push	resource_index
-				push	tag_index
-				push	resource_type
-				push	predicted_resources
-				call	CALL_ADDRESS
-				add		esp, 4 * 4
-
-				pop		ecx
-				pop		edx
-			NAKED_FUNC_END(4)
+			add_predicted_resource(predicted_resources, resource_type, tag_index, resource_index);
 		}
+
+#include "Tool/BuildCacheFile/PredictedResources_ShaderExtension.inl"
+#include "Tool/BuildCacheFile/PredictedResources_PostProcessing.inl"
 
 		static void* PREDICTED_RESOURCES_ADD_RESOURCES_FROM_SHADER_TAG_HOOK = CAST_PTR(void*, 0x4B97AB);
 		// Hook placed in tool's code so we can add extra resource info
@@ -63,19 +55,44 @@ namespace BuildCacheFileEx
 			TagGroups::tag_iterator tag_iter;
 			tag_iterator_new(tag_iter, NULL_HANDLE);
 
+			printf("processing custom tag instances...");
 			// call custom tag's predicted resource stuff in this loop
-// 			datum_index tag_index;
-// 			while( !(tag_index = tag_iterator_next(tag_iter)).IsNull() )
-// 			{
-// 			}
+ 			datum_index tag_index;
+ 			while( !(tag_index = tag_iterator_next(tag_iter)).IsNull() )
+ 			{
+				switch((*TagGroups::TagInstances())[tag_index.index].parent_group_tags[0])
+				{
+				case TagGroups::s_object_definition::k_group_tag:
+					ShaderExtension::object_add_to_predicted_resources(tag_index);
+					break;
+				}
+				
+				//switch((*TagGroups::TagInstances())[tag_index.index].parent_group_tags[1])
+				//{
+				//}
+
+				switch((*TagGroups::TagInstances())[tag_index.index].group_tag)
+				{
+				case TagGroups::s_shader_postprocess_generic::k_group_tag:
+					PostProcessing::shader_postprocess_generic_add_predicted_resources(tag_index);
+					break;
+				case TagGroups::s_shader_postprocess_collection::k_group_tag:
+					PostProcessing::shader_postprocess_collection_process_collection(tag_index);
+					break;
+				}
+			}
+			puts("done");
 
 			return result;
 		}
 
 		void Initialize()
 		{
-			Memory::WriteRelativeCall(&predicted_resources_add_resources_from_shader_tag_ex, 
-				PREDICTED_RESOURCES_ADD_RESOURCES_FROM_SHADER_TAG_HOOK);
+			// doesn't do anything yet
+			//Memory::WriteRelativeCall(&predicted_resources_add_resources_from_shader_tag_ex, 
+			//	PREDICTED_RESOURCES_ADD_RESOURCES_FROM_SHADER_TAG_HOOK);
+			Memory::WriteRelativeCall(&build_custom_predicted_resources, 
+				BUILD_STRUCTURE_BSP_PREDICTED_RESOURCES_CALL);
 		}
 
 		void Dispose()
