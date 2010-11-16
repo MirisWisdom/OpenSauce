@@ -230,7 +230,7 @@ namespace Yelo
 				//////////////////////////////////////////////////////////////////////////
 
 				//////////////////////////////////////////////////////////////////////////
-				{// make the first tag_reference field (which is used) in the scenario to reference the yelo tag
+				{// make the first tag_reference field (which is unused) in the scenario to reference the yelo tag
 					static tag_reference_definition reference_definition = {
 						0,
 						project_yellow::k_group_tag,

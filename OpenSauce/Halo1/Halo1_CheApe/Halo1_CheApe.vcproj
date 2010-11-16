@@ -1109,6 +1109,14 @@
 					RelativePath=".\Tool\BuildCacheFile\PredictedResources.inl"
 					>
 				</File>
+				<File
+					RelativePath=".\Tool\BuildCacheFile\PredictedResources_PostProcessing.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\Tool\BuildCacheFile\PredictedResources_ShaderExtension.inl"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -1200,22 +1208,6 @@
 			</File>
 			<File
 				RelativePath=".\TagGroups\yelo_scenario_definitions.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\TagGroups\yelo_shader_extension.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\TagGroups\yelo_shader_extension.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\TagGroups\yelo_shader_postprocess_definitions.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\TagGroups\yelo_shader_postprocess_definitions.hpp"
 				>
 			</File>
 			<Filter
