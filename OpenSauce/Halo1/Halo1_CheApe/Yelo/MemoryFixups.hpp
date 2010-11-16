@@ -63,6 +63,11 @@ namespace Yelo
 			__in DWORD nBufferLength,
 			__out_ecount_part_opt(nBufferLength, return + 1) LPSTR lpBuffer);
 
+#if PLATFORM_ID == PLATFORM_TOOL
+		static char* PLATFORM_API tag_file_index_build_strchr_hack(char* str, char val);
+		static void tag_file_index_build_strchr_hack_initialize();
+#endif
+
 		static void FixupsInitializeDataPaths(cstring data_override);
 		static void FixupsInitializeMapsPaths(cstring maps_override);
 

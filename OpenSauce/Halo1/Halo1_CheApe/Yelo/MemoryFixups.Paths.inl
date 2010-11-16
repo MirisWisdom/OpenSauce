@@ -29,6 +29,26 @@ DWORD WINAPI c_memory_fixups::GetCurrentDirectoryHack(
 	return S_OK;
 }
 
+#if PLATFORM_ID == PLATFORM_TOOL
+// The following is a hack which fixes a problem with tag_file_index_build.
+//
+// Basically, the code for that function assumes that all tag names begin 
+// with "tags\" (ie, it assumes the tags path is in the same startup directory as the exe), 
+// which is why it calls strchr('\'). This hack is only ran when there is an explicit tags path override.
+
+char* PLATFORM_API c_memory_fixups::tag_file_index_build_strchr_hack(char* str, char val)
+{
+	return str + strlen(c_memory_fixups::_override_paths.tags.path);
+}
+void c_memory_fixups::tag_file_index_build_strchr_hack_initialize()
+{
+	FUNC_PTR(TAG_FILE_INDEX_BUILD_STRCHR_CALL, FUNC_PTR_NULL, 0x445C9B, FUNC_PTR_NULL);
+
+	Memory::WriteRelativeCall(tag_file_index_build_strchr_hack, 
+		GET_FUNC_VPTR(TAG_FILE_INDEX_BUILD_STRCHR_CALL));
+}
+#endif
+
 void c_memory_fixups::FixupsInitializeDataPaths(cstring data_override)
 {
 #if PLATFORM_ID == PLATFORM_TOOL
@@ -191,6 +211,8 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 	};
 	for(int32 x = 0; x < NUMBEROF(K_TAGS_NAME_REFERENCE_FIXUPS); x++)
 		*K_TAGS_NAME_REFERENCE_FIXUPS[x] = _override_paths.tags.folder_name_with_slash;
+#else
+	tag_file_index_build_strchr_hack_initialize();
 #endif
 
 
