@@ -29,7 +29,7 @@
 namespace Yelo
 {
 	namespace Tool
-	{		
+	{
 #include "Tool/CompileShaderPostprocess.inl"
 
 		void PLATFORM_API compile_shader_postprocess(void** arguments)
@@ -38,7 +38,7 @@ namespace Yelo
 				cstring data_file_name;
 			}* args = CAST_PTR(s_arguments*, arguments);
 
-			std::string search_path(Settings::Get().active_profile.GetDataOverridePath());
+			std::string search_path(Settings::Get().GetDataPath());
 
 			search_path.append(args->data_file_name);
 			std::string::reverse_iterator r_iter = search_path.rbegin();
@@ -61,13 +61,13 @@ namespace Yelo
 				if(file_name.compare(file_name.size() - 3, 3, ".fx") != 0)
 					continue;
 
-				std::string fx_path(Settings::Get().active_profile.GetDataOverridePath());				
-				fx_path.append(args->data_file_name);				
-				fx_path.append("\\");			
+				std::string fx_path(Settings::Get().GetDataPath());
+				fx_path.append(args->data_file_name);
+				fx_path.append("\\");
 				fx_path.append(file_name);
 
-				std::string tag_path(args->data_file_name);				
-				tag_path.append("\\");						
+				std::string tag_path(args->data_file_name);	
+				tag_path.append("\\");
 				tag_path.append(file_name.c_str(), file_name.size() - 3);
 
 				// open the shader tag
