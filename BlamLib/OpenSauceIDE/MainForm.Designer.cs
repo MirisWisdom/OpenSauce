@@ -63,12 +63,12 @@ namespace OpenSauceIDE
 			// 
 			// FileMenu
 			// 
-			FileMenu.BackColor = System.Drawing.SystemColors.Control;
+			FileMenu.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			FileMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.FileExit});
-			FileMenu.ForeColor = System.Drawing.SystemColors.ControlText;
+				this.FileExit});
+			FileMenu.ForeColor = System.Drawing.Color.LightGreen;
 			FileMenu.Name = "FileMenu";
-			FileMenu.Size = new System.Drawing.Size(35, 20);
+			FileMenu.Size = new System.Drawing.Size(37, 20);
 			FileMenu.Text = "&File";
 			// 
 			// FileExit
@@ -76,22 +76,29 @@ namespace OpenSauceIDE
 			this.FileExit.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			this.FileExit.ForeColor = System.Drawing.Color.LightGreen;
 			this.FileExit.Name = "FileExit";
-			this.FileExit.Size = new System.Drawing.Size(92, 22);
+			this.FileExit.Size = new System.Drawing.Size(152, 22);
 			this.FileExit.Text = "Exit";
 			this.FileExit.Click += new System.EventHandler(this.OnFileExit);
 			// 
+			// ToolsMenuBreak1
+			// 
+			ToolsMenuBreak1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			ToolsMenuBreak1.ForeColor = System.Drawing.Color.LightGreen;
+			ToolsMenuBreak1.Name = "ToolsMenuBreak1";
+			ToolsMenuBreak1.Size = new System.Drawing.Size(149, 6);
+			// 
 			// ToolsMenu
 			// 
-			this.ToolsMenu.BackColor = System.Drawing.SystemColors.Control;
+			this.ToolsMenu.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			this.ToolsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ToolsHalo1,
-            this.ToolsHalo2,
-            this.ToolsHalo3,
-            this.ToolsStubbs,
-            ToolsMenuBreak1});
-			this.ToolsMenu.ForeColor = System.Drawing.SystemColors.ControlText;
+				this.ToolsHalo1,
+				this.ToolsHalo2,
+				this.ToolsHalo3,
+				this.ToolsStubbs,
+				ToolsMenuBreak1});
+			this.ToolsMenu.ForeColor = System.Drawing.Color.LightGreen;
 			this.ToolsMenu.Name = "ToolsMenu";
-			this.ToolsMenu.Size = new System.Drawing.Size(44, 20);
+			this.ToolsMenu.Size = new System.Drawing.Size(48, 20);
 			this.ToolsMenu.Text = "Tools";
 			// 
 			// ToolsHalo1
@@ -129,18 +136,12 @@ namespace OpenSauceIDE
 			this.ToolsStubbs.Size = new System.Drawing.Size(152, 22);
 			this.ToolsStubbs.Text = "Stubbs";
 			// 
-			// ToolsMenuBreak1
-			// 
-			ToolsMenuBreak1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-			ToolsMenuBreak1.ForeColor = System.Drawing.Color.LightGreen;
-			ToolsMenuBreak1.Name = "ToolsMenuBreak1";
-			ToolsMenuBreak1.Size = new System.Drawing.Size(149, 6);
-			// 
 			// MainMenu
 			// 
+			this.MainMenu.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            FileMenu,
-            this.ToolsMenu});
+				FileMenu,
+				this.ToolsMenu});
 			this.MainMenu.Location = new System.Drawing.Point(0, 0);
 			this.MainMenu.Name = "MainMenu";
 			this.MainMenu.Size = new System.Drawing.Size(792, 24);
@@ -152,7 +153,6 @@ namespace OpenSauceIDE
 			this.AllowDrop = true;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			this.ClientSize = new System.Drawing.Size(792, 573);
 			this.Controls.Add(this.MainMenu);
 			this.ForeColor = System.Drawing.Color.LightGreen;
