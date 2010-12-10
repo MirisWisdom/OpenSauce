@@ -44,17 +44,9 @@ namespace Yelo
 			}flags;	BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
 
 			TAG_FIELD(tag_reference, definition, "bitm");
-			TAG_FIELD(int16, sky_index);				// block_index to project_yellow_bsp_information->skies
-			TAG_FIELD(int16, fog_index);				// block_index to project_yellow_bsp_information->bsp_fog
-			TAG_FIELD(int16, weather_index);			// block_index to project_yellow_bsp_information->bsp_weather
-			PAD16;
-
-			TAG_PAD(tag_block, 2); // 24
-
-			API_INLINE bool ContainsClusterModifications() const
-			{
-				return	sky_index != NONE || fog_index != NONE || weather_index != NONE;
-			}
+			
+			PAD32; PAD32;			// 8
+			TAG_PAD(tag_block, 2);	// 24
 		};
 		struct s_bsp_information_lightmap_set_reference
 		{
@@ -76,11 +68,7 @@ namespace Yelo
 		};
 		struct s_project_yellow_bsp_information
 		{
-			TAG_TBLOCK(skies, tag_reference);					// 64, all of these need to be in the exact same order as the blocks in the scenario \ bsp
- 			TAG_TBLOCK(bsp_fog, tag_reference);
-			TAG_TBLOCK(bsp_weather, tag_reference);
-
-			TAG_PAD(tag_block, 2); // 24
+			TAG_PAD(tag_block, 5); // 60
 			TAG_TBLOCK(bsp_sets, s_bsp_information_bsp_set); // 64
 		};
 
@@ -99,7 +87,7 @@ namespace Yelo
 #endif
 				int16 version;	enum { k_version = 2, k_group_tag = 'yelo' };
 			struct _flags {
-				TAG_FLAG16(unused); // current unused, so add a bit field so it pads to 2 bytes
+				TAG_FLAG16(unused); // currently unused, so add a bit field so it pads to 2 bytes
 				TAG_FLAG16(unused1);
 				TAG_FLAG16(unused2);
 				TAG_FLAG16(unused3);
@@ -162,8 +150,7 @@ namespace Yelo
 			/* !-- Networking --! */
 			struct {
 				struct _networking_flags {
-					TAG_FLAG(use_server_upgrades, "prone to cause unstable gameplay after a while");
-					TAG_FLAG(use_client_upgrades);
+					TAG_FLAG(unused);
 				}flags;	BOOST_STATIC_ASSERT( sizeof(_networking_flags) == sizeof(long_flags) );
 
 				TAG_PAD(int32, 5); // 20

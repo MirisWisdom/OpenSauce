@@ -72,8 +72,13 @@ static void MemoryUpgradesInitialize()
 	{
 		if(_upgrade_globals.globals.table[index] == NULL)
 		{
-			_upgrade_globals.globals.table[index] = hs_external_globals[x++];
+			hs_global_definition& glob = 
+				*(_upgrade_globals.globals.table[index] = hs_external_globals[x++]);
 			_upgrade_globals.globals.count++;
+
+			// Is this the global who we want to override for exposing opensauce status?
+			if(strcmp(glob.name, k_external_global_opensauce_override_name) == 0)
+				InitializeExternalGlobalOpenSauceOverride(glob);
 		}
 	}
 	//////////////////////////////////////////////////////////////////////////

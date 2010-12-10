@@ -94,3 +94,106 @@ static void* scripting_weapon_data_get_real_evaluate(void** arguments)
 
 	return result.pointer;
 }
+
+
+static datum_index scripting_unit_data_get_object_by_name(s_unit_datum* unit, cstring data_name)
+{
+	cstring s = data_name; // alias for keeping the code width down
+
+	if( !strncmp(s,"weapon",6) )
+	{
+			 if( !strcmp(s,"weapon0") ) return unit->unit.GetWeaponObjectIndices()[0];
+		else if( !strcmp(s,"weapon1") ) return unit->unit.GetWeaponObjectIndices()[1];
+		else if( !strcmp(s,"weapon2") ) return unit->unit.GetWeaponObjectIndices()[2];
+		else if( !strcmp(s,"weapon3") ) return unit->unit.GetWeaponObjectIndices()[3];
+	}
+	else if( !strncmp(s,"recent_damage.unit",6) )
+	{
+			 if( !strcmp(s,"recent_damage.unit0") ) return unit->unit.GetRecentDamage()[0].responsible_unit;
+		else if( !strcmp(s,"recent_damage.unit1") ) return unit->unit.GetRecentDamage()[0].responsible_unit;
+		else if( !strcmp(s,"recent_damage.unit2") ) return unit->unit.GetRecentDamage()[0].responsible_unit;
+		else if( !strcmp(s,"recent_damage.unit3") ) return unit->unit.GetRecentDamage()[0].responsible_unit;
+	}
+
+	return datum_index::null;
+}
+static void* scripting_unit_data_get_object_evaluate(void** arguments)
+{
+	struct s_arguments {
+		datum_index unit_index;
+		cstring data_name;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+	result.datum = datum_index::null;
+
+	if(!args->unit_index.IsNull())
+	{
+		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->Type._unit;
+
+		result.datum = scripting_unit_data_get_object_by_name(unit, args->data_name);
+	}
+
+	return result.pointer;
+}
+
+static real scripting_unit_data_get_real_by_name(s_unit_datum* unit, cstring data_name)
+{
+	cstring s = data_name; // alias for keeping the code width down
+
+		 if( !strcmp(s,"camo_power") )		return *unit->unit.GetCamoPower();
+	//else if( !strcmp(s,"") )	return *unit->Get();
+
+	return -1.0f;
+}
+static void* scripting_unit_data_get_real_evaluate(void** arguments)
+{
+	struct s_arguments {
+		datum_index unit_index;
+		cstring data_name;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+	result.real = 0.0f;
+
+	if(!args->unit_index.IsNull())
+	{
+		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->Type._unit;
+
+		result.real = scripting_unit_data_get_real_by_name(unit, args->data_name);
+	}
+
+	return result.pointer;
+}
+
+static int32 scripting_unit_data_get_integer_by_name(s_unit_datum* unit, cstring data_name)
+{
+	cstring s = data_name; // alias for keeping the code width down
+
+		 if( !strcmp(s,"vehicle_seat_index") )		return *unit->unit.GetVehicleSeatIndex();
+	else if( !strcmp(s,"current_weapon_index") )	return *unit->unit.GetCurrentWeaponIndex();
+	else if( !strcmp(s,"current_grenade_index") )	return *unit->unit.GetCurrentGrenadeIndex();
+	// designers should use 'unit_get_total_grenade_count' for overall grenade count
+	else if( !strcmp(s,"total_grenade_count[plasma]") )	return *unit->unit.GetGrenadePlasmaCount();
+	else if( !strcmp(s,"total_grenade_count[frag]") )	return *unit->unit.GetGrenadeFragCount();
+
+	else if( !strcmp(s,"feign_death_timer") )		return *unit->unit.GetFeignDeathTimer();
+
+	return NONE;
+}
+static void* scripting_unit_data_get_integer_evaluate(void** arguments)
+{
+	struct s_arguments {
+		datum_index unit_index;
+		cstring data_name;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+	result.real = 0.0f;
+
+	if(!args->unit_index.IsNull())
+	{
+		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->Type._unit;
+
+		result.int32 = scripting_unit_data_get_integer_by_name(unit, args->data_name);
+	}
+
+	return result.pointer;
+}

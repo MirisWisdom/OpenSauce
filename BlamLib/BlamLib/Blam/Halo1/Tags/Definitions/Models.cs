@@ -315,8 +315,8 @@ namespace BlamLib.Blam.Halo1.Tags
 		public TI.Real BodyDamagedThreshold;
 		public TI.TagReference BodyDamagedEffect;
 		public TI.TagReference BodyDepletedEffect;
-		public TI.Real BodyDestoryedThreshold;
-		public TI.TagReference BodyDestoryedEffect;
+		public TI.Real BodyDestroyedThreshold;
+		public TI.TagReference BodyDestroyedEffect;
 
 		public TI.Real MaximumShieldVitality;
 		public TI.Enum ShieldMaterialType;

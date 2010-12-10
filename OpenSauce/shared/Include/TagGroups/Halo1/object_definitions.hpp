@@ -22,6 +22,13 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum {
+			k_maximum_number_of_attachments_per_object = 8,
+		};
+	};
+
 	namespace TagGroups
 	{
 		struct object_attachment_definition

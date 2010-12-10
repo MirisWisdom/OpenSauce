@@ -57,6 +57,9 @@
 
 		_hs_function_object_data_get_real,
 		_hs_function_weapon_data_get_real,
+		_hs_function_unit_data_get_object,
+		_hs_function_unit_data_get_integer,
+		_hs_function_unit_data_get_real,
 
 		_hs_function_physics_get_gravity,
 		_hs_function_physics_set_gravity,
@@ -122,19 +125,7 @@
 	//HS_FUNCTION(null, void, "", "");
 
 	#include "Game/ScriptLibrary.Definitions.Players.inl"
-
-
-	HS_FUNCTION_WITH_PARAMS(object_data_get_real, real, "", 
-			"<object> <data-name> <subdata-name>", 3,
-		HS_TYPE(object),
-		HS_TYPE(string),
-		HS_TYPE(string)
-	);
-	HS_FUNCTION_WITH_PARAMS(weapon_data_get_real, real, "", 
-			"<object> <data-name>", 2,
-		HS_TYPE(object),
-		HS_TYPE(string)
-	);
+	#include "Game/ScriptLibrary.Definitions.Objects.inl"
 
 
 	HS_FUNCTION(physics_get_gravity, real, "");
@@ -214,6 +205,9 @@
 
 		&GET_HS_FUNCTION(object_data_get_real),
 		&GET_HS_FUNCTION(weapon_data_get_real),
+		&GET_HS_FUNCTION(unit_data_get_object),
+		&GET_HS_FUNCTION(unit_data_get_real),
+		&GET_HS_FUNCTION(unit_data_get_integer),
 
 		&GET_HS_FUNCTION(physics_get_gravity),
 		&GET_HS_FUNCTION(physics_set_gravity),

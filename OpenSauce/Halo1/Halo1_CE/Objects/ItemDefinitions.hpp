@@ -24,16 +24,36 @@ namespace Yelo
 {
 	namespace Enums
 	{
-		enum equipment_powerup
+		enum weapon_state : byte_enum
 		{
-			_equipment_powerup_none,
-			_equipment_powerup_double_shield,
-			_equipment_powerup_over_shield,
-			_equipment_powerup_active_camo,
-			_equipment_powerup_full_spectrum_vision,
-			_equipment_powerup_health,
-			_equipment_powerup_grenade,
-			_equipment_powerup,
+			_weapon_state_idle,
+			_weapon_state_fire1,
+			_weapon_state_fire2,
+			_weapon_state_chamber1,
+			_weapon_state_chamber2,
+			_weapon_state_reload1,
+			_weapon_state_reload2,
+			_weapon_state_charged1,
+			_weapon_state_charged2,
+			_weapon_state_ready,
+			_weapon_state_put_away,
+
+			_weapon_state
+		};
+
+		enum weapon_trigger_state : byte_enum
+		{
+			_weapon_trigger_state_idle,
+			_weapon_trigger_state_fire1,
+			_weapon_trigger_state_fire2,
+			_weapon_trigger_state_unknown3,
+			_weapon_trigger_state_unknown4,
+			_weapon_trigger_state_unknown5,
+			_weapon_trigger_state_unknown6,
+			_weapon_trigger_state_unknown7,
+			_weapon_trigger_state_unknown8,
+
+			_weapon_trigger_state,
 		};
 	};
 
@@ -48,11 +68,27 @@ namespace Yelo
 		{
 			enum { DATA_OFFSET = Enums::k_object_size_item, };
 
+			TStructSubGetPtrImpl(Enums::weapon_state,	WeaponState, 0x238);
 			TStructSubGetPtrImpl(real,					Heat, 0x23C);
 			TStructSubGetPtrImpl(real,					Age, 0x240);
 			TStructSubGetPtrImpl(real,					IntegratedLightPower, 0x248);
 
-			// 0x260 - triggers[2], sizeof(0x20?)
+			struct s_trigger_state
+			{
+				PAD8; // ?
+				Enums::weapon_trigger_state state;
+				int16 time;
+				UNKNOWN_TYPE(long_flags);
+				UNKNOWN_TYPE(int16);
+				UNKNOWN_TYPE(int16);
+				UNKNOWN_TYPE(int16);
+				UNKNOWN_TYPE(int16);
+				UNKNOWN_TYPE(real);
+				UNKNOWN_TYPE(real);
+
+				PAD(0, 0x10); // I haven't researched the rest of the structure
+			}; BOOST_STATIC_ASSERT( sizeof(s_trigger_state) == 0x28 );
+			TStructSubGetPtrImpl(s_trigger_state,		Triggers, 0x260); // [2]
 
 			struct s_magazine_state // '?' means IDK if its actually padding or there are values there. If there are, IDK their types (could be a boolean!)
 			{
@@ -69,6 +105,8 @@ namespace Yelo
 				PAD16; // ?
 			}; BOOST_STATIC_ASSERT( sizeof(s_magazine_state) == 0x10 );
 			TStructSubGetPtrImpl(s_magazine_state,		Magazines, 0x2B0); // [2]
+
+			TStructSubGetPtrImpl(datum_index,			ReadyEffect, 0x2CC); // effects datum
 
 			TStructSubGetPtrImpl(bool,					BaselineValid, 0x2E0);
 			TStructSubGetPtrImpl(byte,					BaselineIndex, 0x2E1);

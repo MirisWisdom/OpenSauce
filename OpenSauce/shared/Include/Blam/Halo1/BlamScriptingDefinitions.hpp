@@ -140,5 +140,11 @@ namespace Yelo
 			int16 access;
 			PAD16;
 		};
+
+		// This is the name of a blam global which isn't used in release builds of the game.
+		// We use this global to expose the build version to scripts without causing harm when not using OS.
+		// It was chosen due to the hs_type being a 'real', which allows us to specify the version number as "MAJ.MIN"
+		// See: K_OPENSAUCE_VERSION
+		const cstring k_external_global_opensauce_override_name = "ai_debug_path_maximum_radius";
 	};
 };

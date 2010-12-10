@@ -1,0 +1,182 @@
+/*
+    Yelo: Open Sauce SDK
+
+    Copyright (C) 2005-2010  Kornner Studios (http://kornner.com)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+#pragma once
+
+#include <TagGroups/Halo1/TagGroupDefinitions.hpp>
+
+namespace Yelo
+{
+	namespace Enums
+	{
+		enum damage_side_effect
+		{
+			_damage_side_effect_none,
+			_damage_side_effect_harmless,
+			_damage_side_effect_legthal_to_unsuspecting,
+			_damage_side_effect_emp,
+
+			_damage_side_effect,
+		};
+
+		enum damage_category
+		{
+			_damage_category_none,
+			_damage_category_falling,
+			_damage_category_bullet,
+			_damage_category_grenade,
+			_damage_category_high_explosive,
+			_damage_category_sniper,
+			_damage_category_melee,
+			_damage_category_flame,
+			_damage_category_mounted_weapon,
+			_damage_category_vehicle,
+			_damage_category_plasma,
+			_damage_category_needle,
+			_damage_category_shotgun,
+
+			_damage_category
+		};
+	};
+
+	namespace TagGroups
+	{
+		struct s_damage_effect
+		{
+			TAG_FIELD(real_bounds, radius);
+			TAG_FIELD(real_fraction, cutoff_scale);
+			TAG_FIELD(long_flags, flags); // not exposed for continuous_damage_effect
+			TAG_PAD(int32, 5);
+		}; BOOST_STATIC_ASSERT( sizeof(s_damage_effect) == 0x24 );
+
+		struct s_damage_camera_effect
+		{
+			PAD32;
+			TAG_PAD(int32, 3);
+			TAG_FIELD(real, shake_duration); // not exposed for continuous_damage_effect
+			TAG_ENUM(shake_falloff_function, Enums::transition_function); // not exposed for continuous_damage_effect
+			PAD16;
+
+			TAG_FIELD(real, random_translation);
+			TAG_FIELD(real, random_rotation);
+			TAG_PAD(int32, 3);
+
+			TAG_ENUM(wobble_function, Enums::periodic_function);
+			PAD16;
+			TAG_FIELD(real, wobble_period);
+			TAG_FIELD(real_fraction, wobble_weight);
+			PAD32;
+
+			TAG_PAD(int32, 5);
+			TAG_PAD(int32, 2);
+		}; BOOST_STATIC_ASSERT( sizeof(s_damage_camera_effect) == 0x58 );
+
+		struct s_damage_breaking_effect
+		{
+			TAG_PAD(int32, 28);
+
+			struct {
+				TAG_FIELD(real, velocity);
+				TAG_FIELD(real, radius);
+				TAG_FIELD(real, exponent);
+				TAG_PAD(int32, 3);
+			}forward, outward;
+		}; BOOST_STATIC_ASSERT( sizeof(s_damage_breaking_effect) == 0xA0 );
+
+		struct s_damage_data
+		{
+			TAG_ENUM(side_effect, Enums::damage_side_effect);
+			TAG_ENUM(category, Enums::damage_category);
+			TAG_FIELD(long_flags, flags);
+			TAG_FIELD(real, area_of_effect_core_radius); // not exposed for continuous_damage_effect
+			TAG_FIELD(real, damage_lower_bound);
+			TAG_FIELD(real_bounds, damage_upper_bound);
+			TAG_FIELD(real, vehicle_pass_through_penalty);
+			TAG_FIELD(real, active_camo_damage); // not exposed for continuous_damage_effect
+			TAG_FIELD(real, stun);
+			TAG_FIELD(real, max_stun);
+			TAG_FIELD(real, stun_time);
+			PAD32;
+			TAG_FIELD(real, instantaneous_acceleration);
+			PAD32; PAD32;
+		}; BOOST_STATIC_ASSERT( sizeof(s_damage_data) == 0x3C );
+
+		struct s_damage_modifiers
+		{
+			real modifier[Enums::_material_type];
+			TAG_PAD(int32, 7);
+		}; BOOST_STATIC_ASSERT( sizeof(s_damage_modifiers) == 0xA0 );
+
+		struct s_continuous_damage_effect_definition
+		{
+			s_damage_effect damage_effect;
+
+			TAG_FIELD(real_fraction_bounds, vibrate_frequency);
+			s_damage_camera_effect damage_camera_effect;
+			s_damage_breaking_effect breaking_effect; // not exposed
+			s_damage_data damage_data;
+			s_damage_modifiers damage_modifiers;
+		}; BOOST_STATIC_ASSERT( sizeof(s_continuous_damage_effect_definition) == 0x200 );
+
+		struct s_damage_effect_definition
+		{
+			struct s_duration_function {
+				TAG_FIELD(real, duration);
+				TAG_ENUM(fade_function, Enums::transition_function);
+				PAD16;
+
+				TAG_FIELD(angle, rotation); // these are only exposed for camera impulse freq
+				TAG_FIELD(real, pushback);
+			};
+
+			s_damage_effect damage_effect;
+
+			struct s_screen_flash {
+				TAG_ENUM(type, );
+				TAG_ENUM(priority, );
+				TAG_PAD(int32, 3);
+
+				s_duration_function function;
+				TAG_FIELD(real_fraction, max_intensity);
+				PAD32;
+				TAG_FIELD(real_argb_color, color);
+			}screen_flash;
+
+			struct s_rumble_frequency {
+				TAG_FIELD(real_fraction, frequency);
+				s_duration_function function;
+			} rumble_low, rumble_high;
+			TAG_PAD(s_rumble_frequency, 1);
+
+			struct s_camera_impulse_frequency {
+				s_duration_function function;
+				TAG_FIELD(real_bounds, jitter);
+				PAD32; PAD32;
+			}temp_camera_impulse;
+			TAG_FIELD(angle, perm_camera_impulse_angle);
+
+			s_damage_camera_effect damage_camera_effect;
+
+			TAG_FIELD(tag_reference, sound, 'snd!');
+
+			s_damage_breaking_effect breaking_effect;
+			s_damage_data damage_data;
+			s_damage_modifiers damage_modifiers;
+		}; BOOST_STATIC_ASSERT( sizeof(s_damage_effect_definition) == 0x2A0 );
+	};
+};
