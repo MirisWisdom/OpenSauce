@@ -22,6 +22,32 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum global_grenade_type
+		{
+			_global_grenade_type_frag,
+			_global_grenade_type_plasma,
+
+			_global_grenade_type
+		};
+
+		enum equipment_powerup
+		{
+			_equipment_powerup_none,
+
+			_equipment_powerup_double_shield,
+			_equipment_powerup_over_shield,
+			_equipment_powerup_active_camo,
+			_equipment_powerup_full_spectrum_vision,
+
+			_equipment_powerup_health,
+			_equipment_powerup_grenade,
+
+			_equipment_powerup
+		};
+	};
+
 	namespace TagGroups
 	{
 		struct _item_definition

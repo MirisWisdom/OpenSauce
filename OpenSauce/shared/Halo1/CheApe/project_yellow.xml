@@ -25,26 +25,13 @@
 	</flags>
 
 	<blocks>
-		<TagBlock name="bsp_information_sky_reference_block" maxElements="128">
-			<field type="TagReference" name="sky" definition="sky_reference" blockname="true" />
-		</TagBlock>
-		<TagBlock name="bsp_information_fog_reference_block" maxElements="128">
-			<field type="TagReference" name="fog" definition="fog_reference" blockname="true" />
-		</TagBlock>
-		<TagBlock name="bsp_information_weather_reference_block" maxElements="128">
-			<field type="TagReference" name="weather particle system" definition="weather_particle_system_reference" blockname="true" />
-		</TagBlock>
-
 		<TagBlock name="bsp_information_lightmap_set_block" maxElements="64">
 			<field type="String" name="name" blockname="true" tooltip="code name for this lightmap set" />
 			<field type="WordFlags" name="flags" definition="bsp_information_lightmap_set_flags" />
 
 			<field type="TagReference" name="lightmap" definition="bitmap_reference" />
-			<field type="ShortBlockIndex" name="sky" definition="bsp_information_sky_reference_block" />
-			<field type="ShortBlockIndex" name="fog" definition="bsp_information_fog_reference_block" />
-			<field type="ShortBlockIndex" name="weather" definition="bsp_information_weather_reference_block" />
-			<field type="Pad" definition="2" />
 
+			<field type="Pad" definition="8" />
 			<field type="Pad" definition="24" />
 		</TagBlock>
 
@@ -55,11 +42,7 @@
 		</TagBlock>
 
 		<TagBlock name="bsp_information_block" maxElements="1">
-			<field type="Block" name="scenario skies" definition="bsp_information_sky_reference_block" />
-			<field type="Block" name="bsp fog" definition="bsp_information_fog_reference_block" />
-			<field type="Block" name="bsp weather" definition="bsp_information_weather_reference_block" />
-
-			<field type="Pad" definition="24" />
+			<field type="Pad" definition="60" />
 			<field type="Block" name="bsp sets" definition="bsp_information_bsp_set_block" />
 		</TagBlock>
 	</blocks>
@@ -75,7 +58,7 @@
 			<field type="TagReference" name="scenario explicit references" definition="tag_collection_reference" />
 			<field type="Pad" definition="40" />
 
-			<field type="Explanation" name="UI/GUI" definition="" />
+			<!--<field type="Explanation" name="UI/GUI" definition="" />-->
 			<field type="Pad" name="flags" definition="2" />
 			<field type="Pad" definition="2" /><!--<field type="Enum" name="biped camera type" definition="biped_camera_type_enum" tooltip="default biped camera view" />-->
 			<field type="Pad" definition="24" />
@@ -87,7 +70,7 @@
 			<field type="Real" name="player speed scale" units="[0,6]" tooltip="amount to scale each player's speed" />
 			<field type="Pad" definition="12" />
 
-			<field type="Explanation" name="Networking" definition="" />
+			<!--<field type="Explanation" name="Networking" definition="" />-->
 			<field type="Pad" definition="4" /><!--<field type="LongFlags" name="flags" definition="networking_flags" />-->
 			<field type="Pad" definition="20" />
 
@@ -98,7 +81,7 @@
 			<field type="Explanation" name="Scripting" definition="External scripting definitions (User)" />
 			<field type="Block" name="yelo scripting" definition="scripting_block" />
 
-			<field type="Explanation" name="Bsp Enhancements" definition="* Skies: THIS *MUST* MATCH THE SCENARIO'S 'skies' TAG BLOCK!~N* Fog THIS *MUST* MATCH THE BSP'S 'fog palette' TAG BLOCK!~N* Weather THIS *MUST* MATCH THE BSP'S 'weather palette' TAG BLOCK!~N" />
+			<field type="Explanation" name="Bsp Enhancements" definition="" />
 			<field type="Block" name="bsp information" definition="bsp_information_block" />
 
 			<field type="Pad" definition="80" />

@@ -214,9 +214,9 @@ namespace Yelo
 			// game state datum_index
 			// ie, if Attachments[x]'s definition (object_attachment_block[x]) says it is a 'cont'
 			// then the datum_index is a contrail_data handle
-			TStructGetPtrImpl(datum_index,				Attachments, 0x14C); // [8]
+			TStructGetPtrImpl(datum_index,				Attachments, 0x14C); // [k_maximum_number_of_attachments_per_object]
 			TStructGetPtrImpl(int16,					CubemapIndex, 0x176); // bitmap block index, found by: "Choking Victim"
-			TStructGetPtrImpl(byte,						RegionVitality, 0x178); // [8]
+			TStructGetPtrImpl(byte,						RegionVitality, 0x178); // [k_maximum_regions_per_model]
 			TStructGetPtrImpl(s_object_header_block_reference, NodeMatrixBlock, 0x1F0);
 
 			API_INLINE bool VerifyType(uint32 type_mask)

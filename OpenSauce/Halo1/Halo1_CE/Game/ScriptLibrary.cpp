@@ -19,6 +19,7 @@
 #include "Common/Precompile.hpp"
 #include "Game/ScriptLibrary.hpp"
 
+#include "Common/YeloSettings.hpp"
 #include "TagGroups/project_yellow_definitions.hpp"
 #include "Game/Camera.hpp"
 #include "Networking/MessageDefinitions.hpp"
@@ -77,6 +78,16 @@ namespace Yelo
 
 #pragma endregion
 
+		// Initialize the [k_external_global_opensauce_override_name] global
+		// Called from MemoryUpgrades (since we process the globals list there anyway)
+		static void InitializeExternalGlobalOpenSauceOverride(hs_global_definition& global)
+		{
+			// Not really constant but should be treated as such
+			static real k_opensauce_version = K_OPENSAUCE_VERSION;
+
+			if(global.address == NULL && global.type == HS_TYPE(real))
+				global.Value._real = &k_opensauce_version;
+		}
 #include "Game/ScriptLibrary.MemoryUpgrades.inl"
 #include "Game/ScriptLibrary.MiscScriptingFunctions.inl"
 

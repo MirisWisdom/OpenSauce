@@ -44,21 +44,6 @@ namespace Yelo
 					if(!lm_set.definition.tag_index.IsNull())
 						sbsp->lightmap_bitmaps.tag_index = lm_set.definition;		// change the current lightmap
 
-#if !PLATFORM_IS_DEDI
-					if(lm_set.ContainsClusterModifications() && Rasterizer::RenderGlobals()->cluster_index != NONE)
-					{
-						// The game polls the current render frame's cluster index and using the cluster definition for 
-						// figuring the sky index so we must force that sky index to be different at runtime. Hope you 
-						// have a 'default' for this structure bsp! Or else the original sky index is forever lost.
-
-						structure_cluster& cluster = sbsp->clusters[ Rasterizer::RenderGlobals()->cluster_index ];
-
-						if(lm_set.sky_index != NONE)		cluster.sky = lm_set.sky_index;
-
-						if(lm_set.fog_index != NONE)		cluster.fog = lm_set.fog_index;
-						if(lm_set.weather_index != NONE)	cluster.weather = lm_set.weather_index;
-					}
-#endif
 					return true;
 				}
 			}

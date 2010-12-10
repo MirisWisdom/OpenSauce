@@ -18,6 +18,9 @@
 */
 #pragma once
 
+// Official branch build identifier this codebase is based on
+#define K_OPENSAUCE_VERSION 2.5
+
 namespace Yelo
 {
 //////////////////////////////////////////////////////////////////////////

@@ -86,7 +86,7 @@ namespace BlamLib.Blam.Halo1.Tags
 			Add(DamageLowerBound = new TI.Real());
 			Add(DamageUpperBound = new TI.RealBounds());
 			Add(VehiclePassThroughPenalty = new TI.Real());
-			Add(ActiveCamoDamage = new TI.Real());
+			Add(ActiveCamoDamage = new TI.Real()); // not exposed for continuous_damage_effect
 			Add(Stun = new TI.Real());
 			Add(MaxStun = new TI.Real());
 			Add(StunTime = new TI.Real());

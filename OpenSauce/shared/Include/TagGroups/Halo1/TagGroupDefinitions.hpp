@@ -18,19 +18,14 @@
 */
 #pragma once
 
+#include <TagGroups/Halo1/global_definitions.hpp>
+
 namespace Yelo
 {
 	namespace Enums
 	{
 		enum {
 			k_protected_group_tag = 'prot', // HEK+: this overrides the scenario's group tag in the tag index.
-		};
-
-		enum predicted_resource : _enum {
-			_predicted_resource_bitmap,
-			_predicted_resource_sound,
-
-			_predicted_resource
 		};
 	};
 
@@ -183,13 +178,6 @@ namespace Yelo
 
 	namespace TagGroups
 	{
-		struct predicted_resource
-		{
-			_enum type;
-			int16 resource_index;
-			datum_index tag_index;
-		}; BOOST_STATIC_ASSERT( sizeof(predicted_resource) == 0x8 ); // max count: 1024
-
 		struct tag_iterator {
 			PAD32;
 			int16 current_index;

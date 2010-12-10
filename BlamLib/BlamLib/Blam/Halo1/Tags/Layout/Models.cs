@@ -411,8 +411,8 @@ namespace BlamLib.Blam.Halo1.Tags
 			Add(BodyDamagedThreshold = new TI.Real());
 			Add(BodyDamagedEffect = new TI.TagReference(this, TagGroups.effe));
 			Add(BodyDepletedEffect = new TI.TagReference(this, TagGroups.effe));
-			Add(BodyDestoryedThreshold = new TI.Real());
-			Add(BodyDestoryedEffect = new TI.TagReference(this, TagGroups.effe));
+			Add(BodyDestroyedThreshold = new TI.Real());
+			Add(BodyDestroyedEffect = new TI.TagReference(this, TagGroups.effe));
 			Add(MaximumShieldVitality = new TI.Real());
 			Add(new TI.Pad(2));
 			Add(ShieldMaterialType = new TI.Enum());

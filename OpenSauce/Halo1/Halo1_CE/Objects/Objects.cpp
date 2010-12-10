@@ -24,6 +24,10 @@
 #include <TagGroups/Halo1/item_definitions.hpp>
 #include <TagGroups/Halo1/unit_definitions.hpp>
 
+#include <TagGroups/Halo1/model_definitions.hpp>
+#include <TagGroups/Halo1/damage_effect_definitions.hpp>
+#include "TagGroups/project_yellow_definitions.hpp"
+
 #include "Game/ScriptLibrary.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "TagGroups/TagGroups.hpp"
@@ -63,10 +67,11 @@ namespace Yelo
 		t_noncollideable_object_cluster_reference_data* NoncollideableObjectClusterReference()	DPTR_IMP_GET(noncollideable_object_cluster_reference);
 
 
+#include "Objects/Objects.Damage.inl"
 #include "Objects/Objects.Scripting.inl"
 		void Initialize()
 		{
-			//GameState::WriteRelativeCall(&Objects::Update, GET_FUNC_VPTR(OBJECTS_UPDATE_HOOK), false);
+			//Memory::WriteRelativeCall(&Objects::Update, GET_FUNC_VPTR(OBJECTS_UPDATE_HOOK), false);
 
 			ToggleMultiTeamVehicles();
 
@@ -77,6 +82,12 @@ namespace Yelo
 				scripting_object_data_get_real_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_weapon_data_get_real, 
 				scripting_weapon_data_get_real_evaluate);
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_data_get_object, 
+				scripting_unit_data_get_object_evaluate);
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_data_get_integer, 
+				scripting_unit_data_get_real_evaluate);
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_data_get_real, 
+				scripting_unit_data_get_integer_evaluate);
 		}
 
 		void Dispose()
