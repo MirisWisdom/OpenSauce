@@ -18,6 +18,7 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace OpenSauceIDE
@@ -70,6 +71,8 @@ namespace OpenSauceIDE
 		public MainForm(string[] args)
 		{
 			InitializeComponent();
+
+			MainMenu.Renderer = new OpenSauceIDEToolStripRenderer();
 
 			//BlamLib.Program.Initialize();
 
@@ -147,5 +150,39 @@ namespace OpenSauceIDE
 		{
 			this.Close();
 		}
+
+		#region Custom Drawing
+		private class OpenSauceIDEToolStripRenderer : ToolStripProfessionalRenderer
+		{
+			protected override void OnRenderSeparator(ToolStripSeparatorRenderEventArgs e)
+			{
+				if ((e.Item as ToolStripSeparator) == null)
+					base.OnRenderSeparator(e);
+				else
+				{
+					Rectangle seperator_bounds = new Rectangle(Point.Empty, e.Item.Size);
+
+					Brush seperator_brush = new SolidBrush(e.Item.BackColor);
+					e.Graphics.FillRectangle(seperator_brush, 0, 0, seperator_bounds.Width, seperator_bounds.Height);
+					seperator_brush.Dispose();
+
+					seperator_brush = new SolidBrush(e.Item.ForeColor);
+					if (e.Vertical)
+						e.Graphics.FillRectangle(seperator_brush,
+						seperator_bounds.Width / 2,
+						2,
+						1,
+						seperator_bounds.Height - 4);
+					else
+						e.Graphics.FillRectangle(seperator_brush,
+						23,
+						seperator_bounds.Height / 2, 
+						seperator_bounds.Width - 23,
+						1);
+					seperator_brush.Dispose();
+				}
+			}
+		};
+		#endregion
 	};
 }
