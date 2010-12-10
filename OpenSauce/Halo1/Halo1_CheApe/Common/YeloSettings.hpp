@@ -64,6 +64,22 @@ namespace Yelo
 
 			void Parse(TiXmlElement* element, cstring arg_profile, cstring default_profile);
 
+			API_INLINE cstring GetDataPath() const
+			{
+				cstring result = active_profile.GetDataOverridePath();
+
+				return !active_profile.IsIgnored() && result != NULL ? result 
+					: "data\\";
+			}
+
+			API_INLINE cstring GetTagsPath() const
+			{
+				cstring result = active_profile.GetTagsOverridePath();
+
+				return !active_profile.IsIgnored() && result != NULL ? result 
+					: "tags\\";
+			}
+
 			API_INLINE cstring GetMapsPath() const
 			{
 				cstring result = active_profile.GetMapsOverridePath();

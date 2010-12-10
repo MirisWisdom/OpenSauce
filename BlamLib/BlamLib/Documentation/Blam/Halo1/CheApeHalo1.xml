@@ -2,7 +2,7 @@
 <definitions game="Halo1">
 	<blocks>
 		<!--name=string, maxElements=integer, [optional]dontReadChildren=boolean-->
-		<TagBlock name="" maxElements="" dontReadChildren=""=>
+		<TagBlock name="" maxElements="" dontReadChildren="">
 		</TagBlock>
 	</blocks>
 	
