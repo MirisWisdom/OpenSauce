@@ -45,6 +45,18 @@
 			<arg type="object" name="weapon" />
 			<arg type="string" name="data_name" />
 		</function>
+		<function name="unit_data_get_object" returnType="object" help="returns an object value property of the unit. none if this fails" internal="true" >
+			<arg type="unit" name="unit" />
+			<arg type="string" name="data_name" />
+		</function>
+		<function name="unit_data_get_integer" returnType="long" help="returns an integer value property of the unit. -1 if this fails" internal="true" >
+			<arg type="unit" name="unit" />
+			<arg type="string" name="data_name" />
+		</function>
+		<function name="unit_data_get_real" returnType="real" help="returns a real value property of the unit. -1.0 if this fails" internal="true" >
+			<arg type="unit" name="unit" />
+			<arg type="string" name="data_name" />
+		</function>
 
 		<function name="physics_get_gravity" returnType="real" help="get the current global gravity acceleration relative to halo standard gravity" internal="true" />
 		<function name="physics_set_gravity" returnType="void" help="set global gravity acceleration relative to halo standard gravity" internal="true" >
