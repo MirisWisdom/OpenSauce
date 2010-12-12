@@ -31,8 +31,9 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_NETWORKING_MESSAGE_DELTAS
 #include "Memory/_EngineLayout.inl"
 
-		byte* MessageDeltas::PacketBufferReceived() PTR_IMP_GET2(mdp_packet_buffer_received_data);
-		byte* MessageDeltas::PacketBufferSent() PTR_IMP_GET2(mdp_packet_buffer_sent_data);
+		Enums::message_delta_encoding_class* EncodingClass() PTR_IMP_GET2(g_message_delta_encoding_class);
+		byte* PacketBufferReceived()PTR_IMP_GET2(mdp_packet_buffer_received_data);
+		byte* PacketBufferSent()	PTR_IMP_GET2(mdp_packet_buffer_sent_data);
 
 
 #ifndef YELO_NO_NETWORK

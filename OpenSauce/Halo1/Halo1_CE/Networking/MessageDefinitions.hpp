@@ -30,7 +30,6 @@ namespace Yelo
 #ifndef YELO_NO_NETWORK
 			_message_delta_test = k_message_deltas_count,
 			_message_delta_update_script_global,
-			_message_delta_update_memory,
 			_message_delta_player_biped_update,
 
 			k_message_deltas_new_count,

@@ -29,17 +29,7 @@ namespace Yelo
 	{
 #ifndef YELO_NO_NETWORK
 		/* --- CUSTOM FIELDS --- */
-#pragma warning( push )
-#pragma warning( disable : 4311 ) // bitching about pointer truncation
 
-#define MDP_ARRAY_MEM_DATA_MAX_COUNT (sizeof(byte)*32)
-		MDP_FIELD_DEFINITION_START(array, memory_data, "data", GET_FUNC_VPTR(MDP_FIELD_ENCODE_ARRAY), GET_FUNC_VPTR(MDP_FIELD_DECODE_ARRAY))
-			MDP_ARRAY_MEM_DATA_MAX_COUNT,
-			sizeof(byte),
-			(int32)MDP_GET_FIELD_TYPE_DEFINITION( integer_small ),
-		MDP_FIELD_DEFINITION_END();
-
-#pragma warning( pop )
 
 		/* --- CUSTOM PACKETS --- */
 		void null_from_network(Networking::s_network_game_client* client, message_dependant_header* header)
@@ -53,7 +43,7 @@ namespace Yelo
 			real value;
 		};
 
-		MDP_DEFINITION_START(test, test, true, MDP_GET_HEADER_DEFINITION(none), 1)
+		MDP_DEFINITION_START(test, test, 1, MDP_GET_FIELD_SET_DEFINITION(empty), 1)
 			MDP_DEFINITION_FIELD(test, value, real),
 		MDP_DEFINITION_END();
 
@@ -78,7 +68,7 @@ namespace Yelo
 		void* TestToNetwork()
 		{
 			if( !Networking::IsServer() ) return NULL;
-			YELO_DEBUG_FORMAT("is init'd? %d\ttotal size: %d", GET_MDP_DEFINITION(test)->initialized, GET_MDP_DEFINITION(test)->maximum_total_size);
+			YELO_DEBUG_FORMAT("is init'd? %d\ttotal size: %d", GET_MDP_DEFINITION(test)->initialized, GET_MDP_DEFINITION(test)->total_size);
 			YELO_DEBUG("TestToNetwork", true);
 
 			mdp_test test;
@@ -123,29 +113,11 @@ namespace Yelo
 			}value;
 		};
 
-		MDP_DEFINITION_START(update_script_global, update_script_global, true, MDP_GET_HEADER_DEFINITION(none), 3)
+		MDP_DEFINITION_START(update_script_global, update_script_global, 1, MDP_GET_FIELD_SET_DEFINITION(empty), 3)
 			MDP_DEFINITION_FIELD(update_script_global, is_external, boolean),
 			MDP_DEFINITION_FIELD(update_script_global, type, integer_medium),
 			MDP_DEFINITION_FIELD(update_script_global, index, integer_medium),
 			MDP_DEFINITION_FIELD(update_script_global, value, integer_large),
-		MDP_DEFINITION_END();
-
-
-		/*!
-		* \brief
-		* 
-		*
-		* 
-		*/
-		struct mdp_update_memory
-		{
-			void* address;
-			byte values[MDP_ARRAY_MEM_DATA_MAX_COUNT];
-		};
-
-		MDP_DEFINITION_START(update_memory, update_memory, true, MDP_GET_HEADER_DEFINITION(none), 2)
-			MDP_DEFINITION_FIELD(update_memory, address, integer_large),
-			MDP_DEFINITION_FIELD_CUSTOM(update_memory, values, memory_data),
 		MDP_DEFINITION_END();
 
 
@@ -161,7 +133,7 @@ namespace Yelo
 			definition_index biped;
 		};
 
-		MDP_DEFINITION_START(player_biped_update, player_biped_update, true, MDP_GET_HEADER_DEFINITION(none), 2)
+		MDP_DEFINITION_START(player_biped_update, player_biped_update, 1, MDP_GET_FIELD_SET_DEFINITION(empty), 2)
 			MDP_DEFINITION_FIELD(player_biped_update, player, player_index),
 			MDP_DEFINITION_FIELD(player_biped_update, biped, definition_index),
 		MDP_DEFINITION_END();
@@ -171,7 +143,6 @@ namespace Yelo
 		message_delta_definition* new_mdp_packets[] = {
 			&GET_NEW_MDP_DEFINITION(test),
 			&GET_NEW_MDP_DEFINITION(update_script_global),
-			&GET_NEW_MDP_DEFINITION(update_memory),
 			&GET_NEW_MDP_DEFINITION(player_biped_update),
 		};
 
@@ -179,8 +150,6 @@ namespace Yelo
 
 			{BIT32(Enums::_message_deltas_new_client_bit), 
 				test_from_network},
-			{BIT32(Enums::_message_deltas_new_client_bit), 
-				null_from_network},
 			{BIT32(Enums::_message_deltas_new_client_bit), 
 				null_from_network},
 			{BIT32(Enums::_message_deltas_new_client_bit), 

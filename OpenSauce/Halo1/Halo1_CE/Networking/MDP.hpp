@@ -22,19 +22,20 @@
 
 #define GET_NEW_MDP_DEFINITION(name) mdp_definition_##name
 
-#define MDP_DEFINITION_START(name, type, head_required, header, fieldc)				\
+#define MDP_DEFINITION_START(name, type, max_iterations, header, fieldc)			\
 	static Yelo::MessageDeltas::message_delta_definition mdp_definition_##name = {	\
 		Yelo::Enums::_message_delta_##type ,										\
 		NONE,																		\
 		NONE,																		\
 		NONE,																		\
 		NONE,																		\
-		head_required ,																\
+		max_iterations ,															\
 		false,																		\
 		header ,																	\
-		fieldc ,																	\
-		NONE,																		\
-		{
+		{																			\
+			fieldc ,																\
+			NONE,																	\
+			{
 
 #define MDP_DEFINITION_FIELD(cls, name, type)	\
 	{											\
@@ -53,34 +54,35 @@
 	}
 
 #define MDP_DEFINITION_END()	\
-		{NULL, 0, 0, false}		\
+			{NULL, 0, 0, false}	\
+			}					\
 		}						\
 	}
 
-#define MDP_FIELD_DEFINITION_START(type, name1, name2, enc, dec)											\
-	extern Yelo::MessageDeltas::field_type_definition_parameters pmessage_delta_field_##name1##_parameters;	\
-	static Yelo::MessageDeltas::field_type_definition pmessage_delta_field_##name1 = {						\
+#define MDP_FIELD_PROPERTIES_DEFINITION_START(type, name1, name2, enc, dec)												\
+	extern Yelo::MessageDeltas::field_type_definition_parameters pmessage_delta_field_##name1##_properties_parameters;	\
+	static Yelo::MessageDeltas::field_properties_definition pmessage_delta_field_##name1##_properties = {				\
 		Yelo::Enums::_field_type_##type ,																	\
 		name2 ,																								\
 		(mdp_field_encode) enc ,																			\
 		(mdp_field_decode) dec ,																			\
-		&pmessage_delta_field_##name1##_parameters,															\
+		&pmessage_delta_field_##name1##_properties_parameters,												\
 		NONE,																								\
 		0,																									\
 		false,																								\
 	};																										\
-	static Yelo::MessageDeltas::field_type_definition_parameters pmessage_delta_field_##name1##_parameters = {
+	static Yelo::MessageDeltas::field_type_definition_parameters pmessage_delta_field_##name1##_properties_parameters = {
 
-#define MDP_FIELD_DEFINITION_END() \
+#define MDP_FIELD_PROPERTIES_DEFINITION_END() \
 	}
 
 namespace Yelo
 {
 	namespace MessageDeltas
 	{
-#define MDP_GET_FIELD_TYPE_DEFINITION( type ) pmessage_delta_field_##type
+#define MDP_GET_FIELD_TYPE_DEFINITION( type ) GET_PTR2(message_delta_field_##type)
 
-#define MDP_GET_HEADER_DEFINITION( type ) pmessage_delta_##type##_header
+#define MDP_GET_FIELD_SET_DEFINITION( type ) GET_PTR2(message_delta_##type##_field_set)
 
 #define __EL_INCLUDE_ID			__EL_INCLUDE_NETWORKING
 #define __EL_INCLUDE_FILE_ID	__EL_NETWORKING_MDP
