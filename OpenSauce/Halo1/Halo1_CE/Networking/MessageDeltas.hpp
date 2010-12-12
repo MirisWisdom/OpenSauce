@@ -25,20 +25,7 @@ namespace Yelo
 	namespace Enums
 	{
 #pragma region field_type
-		/*!
-		* \brief
-		* Message Delta packet field type enumeration
-		* 
-		* All the abstract field type names that are
-		* what make up each message delta packet
-		* 
-		* \remarks
-		* Write remarks for _field_type here.
-		* 
-		* \see
-		* _field_type_bit_size | t_field_type_property_definition
-		*/
-		enum field_type
+		enum field_type : long_enum
 		{
 			_field_type_integer,
 			_field_type_real,
@@ -60,7 +47,7 @@ namespace Yelo
 			* \brief
 			* real point 2d\3d
 			*
-			* parameter specifys if its 2d or 3d.
+			* parameter specifies if its 2d or 3d.
 			* bit count = (parameter << 5) + parameter
 			*/
 			_field_type_point,
@@ -69,7 +56,7 @@ namespace Yelo
 			* \brief
 			* real vector 2d\3d
 			*
-			* parameter specifys if its 2d or 3d.
+			* parameter specifies if its 2d or 3d.
 			* bit count = (parameter << 5) + parameter
 			*/
 			_field_type_vector,
@@ -98,12 +85,6 @@ namespace Yelo
 		* Each enumeration has the value of a message
 		* delta's constant field bit count (unlike
 		* the integer which has various bit sizes)
-		* 
-		* \remarks
-		* Write remarks for _field_type_bit_size here.
-		* 
-		* \see
-		* _field_type | _integer_type | t_field_type_property_definition
 		*/
 		enum field_type_bit_size
 		{
@@ -121,43 +102,36 @@ namespace Yelo
 		};
 #pragma endregion
 
-#pragma region integer_type
-		/*!
-		* \brief
-		* _field_type_integer & _field_type_enumeration parameter info values
-		* 
-		* Values that can be used in a _field_type_integer
-		* field to describe the bitcount of the integer
-		* 
-		* \remarks
-		* Write remarks for _integer_type here.
-		* 
-		* \see
-		* _field_type_integer | _field_type_enumeration
-		*/
-		enum integer_type
+#pragma region integer_width_type
+		enum integer_width_type : long_enum
 		{
-			_integer_type_8bits,
-			_integer_type_16bits,
-			_integer_type_32bits,
-			_integer_type_1bit,
-			_integer_type_3bits,
-			_integer_type_5bits,
-			_integer_type_6bits,
+			_integer_width_type_8bits,
+			_integer_width_type_16bits,
+			_integer_width_type_32bits,
+			_integer_width_type_1bit,
+			_integer_width_type_3bits,
+			_integer_width_type_5bits,
+			_integer_width_type_6bits,
 		};
 #pragma endregion
 
-		enum enumeration_type
+		enum enumeration_width_type : long_enum
 		{
-			_enumeration_type_1byte,
-			_enumeration_type_2byte,
-			_enumeration_type_4byte,
+			_enumeration_width_type_1byte,
+			_enumeration_width_type_2byte,
+			_enumeration_width_type_4byte,
 		};
 
-		enum message_delta_mode
+		enum message_delta_mode : long_enum
 		{
 			_message_delta_mode_stateless, // no baselines
 			_message_delta_mode_incremental, // requires baselines
+		};
+
+		enum message_delta_encoding_class : long_enum
+		{
+			_message_delta_encoding_class_lan,
+			_message_delta_encoding_class_internet,
 		};
 
 		enum message_delta
@@ -222,6 +196,11 @@ namespace Yelo
 
 			k_message_deltas_count
 		};
+
+		enum {
+			k_mdp_maximum_string_length = 0x7FF,
+			k_mdp_maximum_flags = 32,
+		};
 	};
 
 	namespace MessageDeltas
@@ -229,6 +208,7 @@ namespace Yelo
 		void Initialize();
 		void Dispose();
 
+		Enums::message_delta_encoding_class* EncodingClass();
 		// Buffer that holds all received data from the clients or the server depending on the game connection
 		byte* PacketBufferReceived();
 		// Buffer that holds all data to be sent to a client or to the server depending on the game connection
@@ -275,152 +255,65 @@ namespace Yelo
 		void DiscardIterationBody(void* header);
 #endif
 
+		// TODO: I've had some issues with disassembling s_entry and s_slot's structure definitions..
+		// Just assume they are wrong until this comment is gone.
 		struct s_index_resolution_table
 		{
 			struct s_entry
 			{
-				uint32 index1;
-				uint32 index2;
-				s_entry* prev;
+				uint32 index;
+				uint32 value;
+				struct s_slot* parent;
 			};
 
 			struct s_slot
 			{
-				PAD32;
-				PAD32;
-			};
-
-			struct s_list
-			{
 				enum { k_entry_count = 50 };
 
 				s_entry* entries;
-				s_list* prev;
+				s_slot* prev;
 			};
 
 			bool is_initialized; PAD24;
-			uint32 number_of_slots;
+			int32 number_of_slots;
 			s_slot* slots;
-			PAD32;
-			s_list* entry_free_list;
-			s_list* entry_pool_list;
+			int32 slots_in_use;
+			s_slot* entry_free_list;
+			s_slot* entry_pool_list;
 		};
-
-		struct index_resolution_entry
-		{
-			int32 index1;
-			int32 index2;
-			index_resolution_entry* next;
-		};
-
-		struct index_resolution_table
-		{
-			enum { k_max_entries = 600 };
-
-			bool intiailized; // 0x0
-			PAD24;
-			uint32 number_of_slots; // 0x4
-			index_resolution_entry* table; // 0x8
-			int32 unknwon2; // 0xC
-			index_resolution_entry* entry_free_list; // 0x10
-			index_resolution_entry* entry_pool_list; // 0x14
-		};
-
-#pragma region field_type_property_definition
-		typedef long (*mdp_field_get_maximum_bits)(struct field_type_property_definition* field_properties_definition);
-		typedef bool (*mdp_field_verify_parameters)(struct field_type_property_definition* field_properties_definition);
-		typedef void (*mdp_field_unk_proc)(struct field_type_property_definition* field_properties_definition);
-		/*!
-		* \brief
-		* Structure of type field_type_definition
-		* 
-		* Defines properties for message delta
-		* field definition
-		* 
-		* \remarks
-		* Write remarks for t_field_type_property_definition here.
-		* 
-		* \see
-		* field_type_property_definition | t_field_type_definition
-		*/
-		struct field_type_property_definition
-		{
-			cstring name;
-			_enum field_type;
-			PAD16;
-			bool requires_parameters;
-			PAD24;
-			mdp_field_get_maximum_bits proc_get_bits;
-			mdp_field_verify_parameters proc_verify_parameters;
-			mdp_field_unk_proc proc_unk;
-		};
-#pragma endregion
-
-#pragma region field_type_definition_parameters
-		struct field_type_definition_parameters
-		{
-			/* 0x0
-			maximum_active_at_once
-			field_type_pointer - referent_properties
-			field_type_arbitrary_data - max_size
-			field_type_ascii_string, field_type_wide_string - maximum_length (2047)
-			field_type_enumeration - width
-			field_type_bounded_index - minimum_value
-			field_type_translated_index - 
-			field_type_flags - count
-			field_type_fixed_width - number_of_bits
-			field_type_fixed_width_normal_vector - number_of_bits_theta_internet
-			field_type_smart_vector - min
-			*/
-			/* 0x4
-			field_type_structure - members_references
-			field_type_bounded_index - maximum_value
-			field_type_fixed_width - range_of_values
-			field_type_fixed_width_normal_vector - number_of_bits_phi_internet
-			field_type_smart_vector - max
-			*/
-			/* 0x8
-			field_type_array - member_properties
-			field_type_fixed_width_normal_vector - number_of_bits_theta_lan
-			*/
-			/* 0xC
-			field_type_fixed_width_normal_vector - number_of_bits_phi_lan
-			*/
-			int32 pad1[6];
-			int32 translated_index_active; // 0x18
-			int32 pad2; // 0x20
-			int32 translated_index_cursor; // 0x24
-			index_resolution_table* translated_index_allocations; // 0x28
-			int32 translated_index_peak; // 0x2C
-		};
-#pragma endregion
 
 #pragma region field_type_definition
-		// returns the amount of bytes written
-		typedef int32 (*mdp_field_encode)(struct field_type_definition* field_type, void* _unk1, void* _unk2, Networking::bitstream* output_stream);
-		// returns the amount of bytes read
-		typedef int32 (*mdp_field_decode)(struct field_type_definition* field_type, void* destination_data, Networking::bitstream* input_stream);
-		/*!
-		* \brief
-		* Structure of type field_type_definition
-		* 
-		* Defines a special message delta field type, that
-		* derives from the abstract field types
-		* 
-		* \remarks
-		* Write remarks for t_field_type_definition here.
-		* 
-		* \see
-		* _field_type | t_field_type_property_definition
-		*/
+		typedef int32 (*mdp_field_type_maximum_size_calculator)(struct field_type_property_definition* field_properties_definition);
+		typedef bool (*mdp_field_type_verify_parameters)(struct field_type_property_definition* field_properties_definition);
+		typedef void (*mdp_field_type_unk_proc)(struct field_type_property_definition* field_properties_definition);
+
 		struct field_type_definition
 		{
-			_enum field_type;
-			PAD16;
+			Enums::field_type type;
+			bool requires_parameters;
+			PAD24;
+			mdp_field_type_maximum_size_calculator proc_maximum_size_calculator;
+			mdp_field_type_verify_parameters proc_verify_parameters;
+			mdp_field_type_unk_proc proc_unk;
+			bool initialized;
+			PAD24;
+		};
+#pragma endregion
+
+#pragma region field_properties_definition
+		// returns the amount of bytes written
+		// If [source_data] == [baseline_data], [source_data] isn't encoded
+		typedef int32 (*mdp_field_encode)(struct field_properties_definition* field_properties, const void* baseline_data, const void* source_data, Networking::bitstream* output_stream);
+		// returns the amount of bytes read
+		typedef int32 (*mdp_field_decode)(struct field_properties_definition* field_properties, void* destination_data, Networking::bitstream* input_stream);
+		
+		struct field_properties_definition
+		{
+			Enums::field_type type;
 			char name[76];
 			mdp_field_encode proc_encode;
 			mdp_field_decode proc_decode;
-			field_type_definition_parameters* parameters;
+			union field_type_definition_parameters* parameters;
 			int32 maximum_size; ///< in bits
 			int32 header_bit_size;
 			bool initialized;
@@ -428,42 +321,113 @@ namespace Yelo
 		};
 #pragma endregion
 
-		struct message_delta_field
+		struct field_reference
 		{
-			field_type_definition* definition;
+			field_properties_definition* properties;
 			uint32 offset; ///< in bytes
 			uint32 baseline_offset; ///< in bytes
 			bool initialized;
 			PAD24;
 		};
 
-		struct message_delta_header_definition
+		struct field_reference_set
 		{
 			int32 field_count;
-			int32 maximum_size; ///< in bits
+			int32 max_data_size; ///< in bits
 #pragma warning( push )
 #pragma warning( disable : 4200 ) // nonstandard extension used : zero-sized array in struct/union, Cannot generate copy-ctor or copy-assignment operator when UDT contains a zero-sized array
-			message_delta_field fields[];
+			field_reference fields[];
 #pragma warning( pop )
 		};
+
+#pragma region field_type_definition_parameters
+		union field_type_definition_parameters // Note: engine code doesn't actually use unions, so be sure you're accessing the right structure!
+		{
+			struct {
+				Enums::integer_width_type width;
+			}integer;
+			struct {
+				int32 maximum_length;
+			}ascii_string, wide_string;
+			struct {
+				int32 max_size;
+			}arbitrary_data;
+			struct {
+				Enums::field_type width;
+				PAD32; // unknown
+				field_properties_definition* member_properties;
+			}array;
+			struct {
+				int32 field_count;
+#pragma warning( push )
+#pragma warning( disable : 4200 ) // nonstandard extension used : zero-sized array in struct/union, Cannot generate copy-ctor or copy-assignment operator when UDT contains a zero-sized array
+				field_reference members_references[];
+#pragma warning( pop )
+			}structure;
+			struct {
+				field_properties_definition* referent_properties;
+			}pointer;
+			struct {
+				Enums::enumeration_width_type width;
+			}enumeration;
+			struct {
+				int32 minimum_value;
+				int32 maximum_value;
+			}bounded_index;
+			union {
+				int32 maximum_active_at_once;
+				PAD32;				// unknown
+				int32 bits_needed;
+				s_index_resolution_table table;
+				int32 cursor;
+				datum_index* allocations;
+				int32 peak;
+				int32 codings;
+				int32 none;
+			}translated_index;
+			struct {
+				int32 component_count;
+			}point, vector;
+			struct {
+				int32 count;
+				bool valid_bits[Enums::k_mdp_maximum_flags]; // I guess
+			}flags;
+			struct {
+				int32 number_of_bits;
+				int32 range_of_values;
+			}fixed_width;
+			struct {
+				int32 number_of_bits_theta_internet;
+				int32 number_of_bits_phi_internet;
+				int32 number_of_bits_theta_lan;
+				int32 number_of_bits_phi_lan;
+			}fixed_width_normal_vector;
+			struct {
+				real minimum_value;
+				real maximum_value;
+				int32 number_of_bits_theta_internet;
+				int32 number_of_bits_phi_internet; // unused
+				int32 number_of_bits_theta_lan;
+				int32 number_of_bits_phi_lan; // unused
+				int32 vectors_count;
+				real_vector3d decode_vectors[32];
+				real_vector3d encode_vectors[32];
+			}smart_vector;
+		};
+#pragma endregion
 
 #pragma region message_delta_definition
 		struct message_delta_definition
 		{
-			_enum packet_type;		PAD16;			// 0x0
-			int32 header_bit_size;					// 0x4
-			int32 bit_size_with_header;				// 0x8
-			int32 max_iterations;					// 0xC
-			int32 maximum_total_size;				// 0x10
-			bool header_required;	PAD24;			// 0x14
+			long_enum definition_type;				// 0x0 [Enums::message_delta]
+			int32 blah_size;						// 0x4 body_size + body field count
+			int32 iteration_size;					// 0x8
+			int32 iteration_independent_header_size;// 0xC
+			int32 total_size;						// 0x10
+			int32 max_iterations;					// 0x14
 			bool initialized;		PAD24;			// 0x18
-			message_delta_header_definition* header;// 0x1C
-			int32 field_count;						// 0x20
-			int32 field_bit_size;					// 0x24
-#pragma warning( push )
-#pragma warning( disable : 4200 ) // nonstandard extension used : zero-sized array in struct/union, Cannot generate copy-ctor or copy-assignment operator when UDT contains a zero-sized array
-			message_delta_field fields[];			// 0x28
-#pragma warning( pop )
+			field_reference_set* header_field_set;	// 0x1C
+			field_reference_set body_field_set;		// 0x20
 		};
 #pragma endregion
 
@@ -476,7 +440,7 @@ namespace Yelo
 
 		struct decoding_information_data
 		{
-			int32 mode;							// 0x0 [message_delta_mode]
+			Enums::message_delta_mode mode;		// 0x0
 			int32 definition_type;				// 0x4
 			int32 iteration_count;				// 0x8
 			int32 state;						// 0xC
