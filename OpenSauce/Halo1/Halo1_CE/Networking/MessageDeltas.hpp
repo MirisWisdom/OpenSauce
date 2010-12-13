@@ -420,7 +420,7 @@ namespace Yelo
 		struct message_delta_definition
 		{
 			long_enum definition_type;				// 0x0 [Enums::message_delta]
-			int32 blah_size;						// 0x4 body_size + body field count
+			int32 message_dependent_header_size;	// 0x4 body_size + body field count
 			int32 iteration_size;					// 0x8
 			int32 iteration_independent_header_size;// 0xC
 			int32 total_size;						// 0x10
@@ -441,7 +441,7 @@ namespace Yelo
 		struct decoding_information_data
 		{
 			Enums::message_delta_mode mode;		// 0x0
-			int32 definition_type;				// 0x4
+			long_enum definition_type;			// 0x4 [Enums::message_delta]
 			int32 iteration_count;				// 0x8
 			int32 state;						// 0xC
 			Networking::bitstream* input_stream;// 0x10
@@ -449,12 +449,21 @@ namespace Yelo
 			int32 current_iteration;			// 0x18
 			bool iteration_header_decoded;		// 0x1C
 			bool iteration_body_decoded;		// 0x1D
+			PAD16;
+			UNKNOWN_TYPE(int32);	// 0x20, iteration_independent_overhead_type = 3
+			UNKNOWN_TYPE(int32);	// 0x24, iteration_independent_overhead_type = 2
+			UNKNOWN_TYPE(int32);	// 0x28, iteration_independent_overhead_type = 1
+			UNKNOWN_TYPE(int32);	// 0x2C, iteration_independent_overhead_type = 0
+
+			// This structure may have 8 more bytes of data, but I haven't seen them used in code yet...
 		};
 
 		struct message_dependant_header
 		{
 			decoding_information_data* decoding_information;
-		};
+			BOOL body_field_exists[16];
+			void* custom_header_destination;
+		}; BOOST_STATIC_ASSERT( sizeof(message_dependant_header) == 0x48 );
 
 
 #pragma region packet field types
