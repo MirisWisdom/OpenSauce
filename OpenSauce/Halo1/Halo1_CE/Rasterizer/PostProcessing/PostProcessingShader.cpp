@@ -53,8 +53,6 @@ namespace Yelo
 			m_shader_base->runtime.postprocess_handle = NULL;
 
 			m_shader_base->ortho_wvp_matrix.ClearHandles();
-			m_shader_base->wv_matrix.ClearHandles();
-			m_shader_base->wvt_matrix.ClearHandles();
 			m_shader_base->scene_size.ClearHandles();
 			m_shader_base->hud_scale.ClearHandles();
 			m_shader_base->pixel_size.ClearHandles();
@@ -88,9 +86,6 @@ namespace Yelo
 			// Shaders must have this for their vertex shader
 			m_shader_base->ortho_wvp_matrix.Initialize(m_effect,		"ORTHOWORLDVIEWPROJECTION", &pp_globals.m_matricies.ortho_proj_matrix, true);
 			if (!m_shader_base->ortho_wvp_matrix.IsUsed()) return E_FAIL;
-			
-			m_shader_base->wv_matrix.Initialize(m_effect,				"WORLDVIEW", &pf_values.m_matricies.world_view, true);
-			m_shader_base->wvt_matrix.Initialize(m_effect,				"WORLDVIEWTRANSPOSE", &pf_values.m_matricies.world_view_transpose, true);
 			
 			m_shader_base->scene_size.Initialize(m_effect,				"SCENESIZE", &pp_globals.m_rendering.screen_dimensions, true);	
 			m_shader_base->hud_scale.Initialize(m_effect,				"HUDSCALE", &pf_values.m_hud_scale.value, true);
@@ -222,8 +217,6 @@ namespace Yelo
 			// Reset the standard variable handles
 			m_shader_base->runtime.postprocess_handle = NULL;
 			m_shader_base->ortho_wvp_matrix.ClearHandles();
-			m_shader_base->wv_matrix.ClearHandles();
-			m_shader_base->wvt_matrix.ClearHandles();
 			m_shader_base->scene_size.ClearHandles();
 			m_shader_base->hud_scale.ClearHandles();
 			m_shader_base->pixel_size.ClearHandles();	
@@ -266,8 +259,6 @@ namespace Yelo
 			pDevice->SetFVF(D3DFVF_XYZ | D3DFVF_TEX2);
 			
 			// set any standard variables that change per frame
-			m_shader_base->wv_matrix.SetVariable(m_effect,		&PerFrameValues().m_matricies.world_view);
-			m_shader_base->wvt_matrix.SetVariable(m_effect,		&PerFrameValues().m_matricies.world_view_transpose);
 			m_shader_base->hud_scale.SetVariable(m_effect,		&PerFrameValues().m_hud_scale.value);
 			m_shader_base->near_clip_dist.SetVariable(m_effect, &PerFrameValues().m_clipping.near_clip);
 			m_shader_base->far_clip_dist.SetVariable(m_effect,	&PerFrameValues().m_clipping.far_clip);

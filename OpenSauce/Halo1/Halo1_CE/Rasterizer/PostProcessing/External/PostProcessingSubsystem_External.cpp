@@ -273,7 +273,7 @@ namespace Yelo
 				cstring name = effect_element->Attribute("name");
 
 				int render_stage;
-				if(!effect_element->Attribute("render_point", &render_stage) != TIXML_SUCCESS)
+				if(!effect_element->Attribute("render_stage", &render_stage) != TIXML_SUCCESS)
 					render_stage = Enums::_postprocess_render_stage_pre_hud;
 
 				int tessellation_x, tessellation_y;

@@ -115,8 +115,6 @@ namespace Yelo
 			TAG_FIELD(tag_data, shader_code_binary);
 
 			t_shader_variable_matrix	ortho_wvp_matrix;	// Orthographic projection matrix handle
-			t_shader_variable_matrix	wv_matrix;			// Current world view matrix handle
-			t_shader_variable_matrix	wvt_matrix;			// Current world view transpose matrix handle
 			t_shader_variable_real2d	scene_size;			// Handle to the scene size float2 value
 			t_shader_variable_real2d	hud_scale;			// Handle to the hud scale float2 value
 			t_shader_variable_real2d	pixel_size;			// Handle to the pixel size float2 value
@@ -126,8 +124,7 @@ namespace Yelo
 			t_shader_variable_texture	tex_source;			// Handle to the post-process source texture
 			t_shader_variable_texture	tex_scene;			// Handle to the saved scene texture
 
-			TAG_PAD(int32, 4);
-			TAG_PAD(int32, 4);
+			TAG_PAD(int32, 10);
 
 			TAG_TBLOCK_(predicted_resources, predicted_resource);
 
