@@ -34,6 +34,11 @@
 			<arg type="short" name="player_list_index" />
 			<arg type="string" name="data_name" />
 		</function>
+		<function name="player_data_set_real" returnType="void" help="sets a real value property of the player" internal="true" >
+			<arg type="short" name="player_list_index" />
+			<arg type="string" name="data_name" />
+			<arg type="real" name="data_value" />
+		</function>
 		<function name="player_local_get" returnType="short" help="returns the local player's player-list-index" internal="true" />
 
 		<function name="object_data_get_real" returnType="real" help="returns a real value property of the object. -1.0 if this fails" internal="true" >
@@ -41,9 +46,20 @@
 			<arg type="string" name="data_name" />
 			<arg type="string" name="subdata_name" />
 		</function>
+		<function name="object_data_set_real" returnType="void" help="sets a real value property of the object" internal="true" >
+			<arg type="object" name="object" />
+			<arg type="string" name="data_name" />
+			<arg type="string" name="subdata_name" />
+			<arg type="real" name="data_value" />
+		</function>
 		<function name="weapon_data_get_real" returnType="real" help="returns a real value property of the weapon. -1.0 if this fails" internal="true" >
 			<arg type="object" name="weapon" />
 			<arg type="string" name="data_name" />
+		</function>
+		<function name="weapon_data_set_real" returnType="void" help="sets a real value property of the weapon" internal="true" >
+			<arg type="object" name="weapon" />
+			<arg type="string" name="data_name" />
+			<arg type="real" name="data_value" />
 		</function>
 		<function name="unit_data_get_object" returnType="object" help="returns an object value property of the unit. none if this fails" internal="true" >
 			<arg type="unit" name="unit" />
@@ -53,9 +69,19 @@
 			<arg type="unit" name="unit" />
 			<arg type="string" name="data_name" />
 		</function>
+		<function name="unit_data_set_integer" returnType="void" help="sets an integer value property of the unit" internal="true" >
+			<arg type="unit" name="unit" />
+			<arg type="string" name="data_name" />
+			<arg type="long" name="data_value" />
+		</function>
 		<function name="unit_data_get_real" returnType="real" help="returns a real value property of the unit. -1.0 if this fails" internal="true" >
 			<arg type="unit" name="unit" />
 			<arg type="string" name="data_name" />
+		</function>
+		<function name="unit_data_set_real" returnType="void" help="sets a real value property of the unit" internal="true" >
+			<arg type="unit" name="unit" />
+			<arg type="string" name="data_name" />
+			<arg type="real" name="data_value" />
 		</function>
 
 		<function name="physics_get_gravity" returnType="real" help="get the current global gravity acceleration relative to halo standard gravity" internal="true" />

@@ -54,10 +54,10 @@
 			CAST_PTR(uint32*, PLATFORM_VALUE(0x4442EA,0x444A9A)), CAST_PTR(uint32*, PLATFORM_VALUE(0x444319,0x444AC9)), CAST_PTR(uint32*, PLATFORM_VALUE(0x44433A,0x444AEA)),
 		};
 
-		ENGINE_PTR(t_multiplayer_map_data, multiplayer_maps,0x6ADD4C, 0x61654C);
-
 		ENGINE_PTR(s_cache_file_globals, cache_file_globals,0x642F78, 0x5B4DB8);
 
+		ENGINE_PTR(t_multiplayer_map_data, multiplayer_maps,0x6ADD4C, 0x61654C);
+		ENGINE_PTR(cstring, map_list_ignored_map_names,	0x629B3C, 0x59F4DC);
 		FUNC_PTR(MULTIPLAYER_MAP_LIST_INITIALIZE,	0x498280, 0x48DC70);
 		FUNC_PTR(MULTIPLAYER_MAP_LIST_DISPOSE,		0x498300, 0x48DCF0);
 	};

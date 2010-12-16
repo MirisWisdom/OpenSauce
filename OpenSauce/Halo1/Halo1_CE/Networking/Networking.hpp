@@ -31,7 +31,7 @@ namespace Yelo
 			k_ipv6_address_length = 16,
 		};
 
-		enum bitstream_mode
+		enum bitstream_mode : long_enum
 		{
 			_bitstream_mode_write,
 			_bitstream_mode_read,
@@ -199,7 +199,7 @@ namespace Yelo
 
 	namespace Networking
 	{
-		struct transport_address
+		struct s_transport_address
 		{
 			union
 			{
@@ -230,20 +230,25 @@ namespace Yelo
 			int32 unknown;
 		};
 
-		struct transport_endpoint
+		struct s_transport_endpoint
 		{
-			// 0x0, gs_connection
-			// 0xC, flags
-			// 0xD byte type
-				//0x11 _transport_type_udp
-			// 0xE, short
-			// 0x10, circular_queue* received_data_queue
-		};
-
-		struct bitstream
-		{
-			_enum mode;			// 0x0
+			void* gs_connection;
+			UNKNOWN_TYPE(byte);
+			UNKNOWN_TYPE(byte);
 			PAD16;
+			UNKNOWN_TYPE(int32); // initialized with NONE
+			byte_flags flags;
+			byte_enum type; //0x11 _transport_type_udp
+			UNKNOWN_TYPE(int16);
+			Memory::s_circular_queue* received_data_queue;
+			UNKNOWN_TYPE(int32); // initialized with NONE
+			UNKNOWN_TYPE(uint32);
+
+		}; BOOST_STATIC_ASSERT( sizeof(s_transport_endpoint) == 0x1C );
+
+		struct s_bitstream
+		{
+			Enums::bitstream_mode mode;
 			void* buffer;		// 0x4
 			void* first_bit;	// 0x8 first bit where we can write to
 			void* byte_number;	// 0xC byte index in the buffer
@@ -256,16 +261,16 @@ namespace Yelo
 
 		struct s_network_connection : TStructImpl(0xAE4)
 		{
-			// 0x0, transport_endpoint* reliable_endpoint
+			TStructGetPtrImpl(s_transport_endpoint*, ReliableEndpoint, 0x0);
 			// 0x4, bool?
-			// 0xC, incoming_queue
+			TStructGetPtrImpl(Memory::s_circular_queue*, ReliableIncomingQueue, 0xC);
 			// 0x10, message stream?
 
 			// 0xA78, prioritization_buffer.numMessages
 			// 0xA7C, prioritization_buffer.messages, array of sizeof(32) structure
 				// 0x8, headerMaxSizeInBytes
 				// 0xC, dataMaxSizeInBytes
-				// 0x14, bitstream*
+				// 0x14, s_bitstream*
 
 			// 0xA80, int32
 			// 0xA88, connection [class]
@@ -287,15 +292,16 @@ namespace Yelo
 			TStructGetPtrImpl(word_flags, Flags, 0xE);
 			TStructGetPtrImpl(bool, HasPlayers, 0x50);
 
-			TStructGetPtrImpl(char, GsChallengeStr, 0x52); // char[], I'm not POSITIVE if it takes up all 10 bytes or not...
+			TStructGetPtrImpl(char, GsChallengeStr, 0x52); // char[7+1]
 			TStructGetPtrImpl(int32, GsMachineKey, 0x5C); // same value as gs_machine_data->unknown1
 
-			//DEDI ONLY:
-			// 0x60, wchar_t[] player name
-			// 0x78, int32 player number
-			// 0x7C, int32 team index
-			// 0x80, char[] ip address
-			// 0xA0, char[] cd key
+#if PLATFORM_IS_DEDI
+			TStructGetPtrImpl(wchar_t, PlayerName, 0x60); // [12]
+			TStructGetPtrImpl(int32, PlayerNumber, 0x78);
+			TStructGetPtrImpl(int32, TeamIndex, 0x7C);
+			TStructGetPtrImpl(char, IpAddress, 0x80);
+			TStructGetPtrImpl(char, CdKey, 0xA0);
+#endif
 		};
 
 		struct s_network_map
@@ -360,7 +366,7 @@ namespace Yelo
 		{
 			TStructGetPtrImpl(int16, MachineIndex, 0x0);
 
-			TStructGetPtrImpl(transport_address, SvIpAddress, 0xAB4);
+			TStructGetPtrImpl(s_transport_address, SvIpAddress, 0xAB4);
 			// 0x10 of unknown bytes between here...
 			TStructGetPtrImpl(s_network_connection*, Connection, 0xADC);
 			// 0x34 of unknown bytes between here...
@@ -434,7 +440,8 @@ namespace Yelo
 		struct update_server_queues_datum : TStructImpl(100)
 		{
 			//s_action_update current_action
-			//0x28 Memory::s_simple_circular_queue action_queue
+
+			TStructGetPtrImpl(Memory::s_simple_circular_queue, ActionQueue, 0x28);
 		};
 		typedef Memory::DataArray<update_server_queues_datum, 16> t_update_server_queues_data;
 

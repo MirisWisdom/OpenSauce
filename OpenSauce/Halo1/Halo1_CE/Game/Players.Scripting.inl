@@ -26,7 +26,8 @@ static void* scripting_volume_test_player_team_evaluate(void** arguments)
 		int16 team_index;
 		PAD16;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL; result.boolean = false;
+	TypeHolder result; result.pointer = NULL;
+	result.boolean = false;
 
 	if(args->team_index >= 0 && GameEngine::GlobalVariant()->universal_variant.teams)
 	{
@@ -54,7 +55,8 @@ static void* scripting_volume_test_player_team_all_evaluate(void** arguments)
 		int16 team_index;
 		PAD16;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL; result.boolean = true;
+	TypeHolder result; result.pointer = NULL;
+	result.boolean = true;
 
 	if(args->team_index >= 0 && GameEngine::GlobalVariant()->universal_variant.teams)
 	{
@@ -70,6 +72,7 @@ static void* scripting_volume_test_player_team_all_evaluate(void** arguments)
 			}
 		}
 	}
+	else result.boolean = false;
 
 	return result.pointer;
 }
@@ -167,6 +170,7 @@ static void* scripting_player_data_get_integer_evaluate(void** arguments)
 		cstring data_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
 	TypeHolder result; result.pointer = NULL;
+	result.int32 = NONE;
 
 	if(args->player_list_index >= 0)
 	{
@@ -192,6 +196,7 @@ static void* scripting_player_team_data_get_integer_evaluate(void** arguments)
 		cstring data_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
 	TypeHolder result; result.pointer = NULL;
+	result.int32 = NONE;
 
 	if(args->team_index >= 0 && GameEngine::GlobalVariant()->universal_variant.teams)
 	{
@@ -264,14 +269,15 @@ static void* scripting_player_data_get_object_evaluate(void** arguments)
 	return result.pointer;
 }
 
-static real scripting_player_data_get_real_by_name(s_player_datum* player, cstring data_name)
+static real* scripting_player_data_get_real_by_name(s_player_datum* player, cstring data_name, Enums::hs_type& out_type)
 {
 	cstring s = data_name; // alias for keeping the code width down
 
-		 if( !strcmp(s,"speed") )	return *player->GetSpeed();
-	//else if( !strcmp(s,"") )		return *player->GetSpeed();
+	out_type = HS_TYPE(real);
+		 if( !strcmp(s,"speed") )	return player->GetSpeed();
+	//else if( !strcmp(s,"") )		return player->GetSpeed();
 
-	return -1.0f;
+	return NULL;
 }
 static void* scripting_player_data_get_real_evaluate(void** arguments)
 {
@@ -281,7 +287,7 @@ static void* scripting_player_data_get_real_evaluate(void** arguments)
 		cstring data_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
 	TypeHolder result; result.pointer = NULL;
-	result.real = 0.0f;
+	result.real = -1.0f;
 
 	if(args->player_list_index >= 0)
 	{
@@ -291,13 +297,43 @@ static void* scripting_player_data_get_real_evaluate(void** arguments)
 		{
 			if(player->GetNetworkPlayer()->player_list_index == args->player_list_index)
 			{
-				result.real = scripting_player_data_get_real_by_name(player, args->data_name);
+				Enums::hs_type result_type;
+				result.ptr.real = scripting_player_data_get_real_by_name(player, args->data_name, result_type);
+				Scripting::UpdateTypeHolderFromPtrToData(result, result_type);
 				break;
 			}
 		}
 	}
 
 	return result.pointer;
+}
+static void* scripting_player_data_set_real_evaluate(void** arguments)
+{
+	struct s_arguments {
+		int16 player_list_index;
+		PAD16;
+		cstring data_name;
+		real data_value;
+	}* args = CAST_PTR(s_arguments*, arguments);
+
+	if(args->player_list_index >= 0)
+	{
+		t_players_data::Iterator iter(Players::Players());
+		s_player_datum* player;
+		while( (player = iter.Next()) != NULL )
+		{
+			if(player->GetNetworkPlayer()->player_list_index == args->player_list_index)
+			{
+				TypeHolder result;
+				Enums::hs_type result_type;
+				result.ptr.real = scripting_player_data_get_real_by_name(player, args->data_name, result_type);
+				Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &args->data_value);
+				break;
+			}
+		}
+	}
+
+	return NULL;
 }
 
 

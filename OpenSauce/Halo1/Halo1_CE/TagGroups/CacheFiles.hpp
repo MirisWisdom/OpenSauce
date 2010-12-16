@@ -32,34 +32,6 @@ namespace Yelo
 
 	namespace Cache
 	{
-		struct s_original_multipler_map
-		{
-			int32 index; // index used for things like the UI map list
-			cstring name;
-			bool is_original; // ie, bungie made it
-			PAD24;
-		};
-
-		// 0x497EC0, 0x48D8B0 - gets a map's description string
-		// 0x629B3C, 0x59F4DC - ignored cache file names
-		struct s_multiplayer_map_entry
-		{
-			cstring name;
-			int32 index;
-			bool exists;
-			// HACK: YELO ONLY FIELD
-			// This field is for yelo's use only, the game doesn't use it. 
-			// Enables us to later go thru and set which maps are built for 
-			// yelo and which aren't. Just for useful house keeping.
-			bool is_yelo_basd_map;
-			PAD16;
-			uint32 crc;
-		};
-		typedef Memory::GbxArray<s_multiplayer_map_entry> t_multiplayer_map_data;
-
-		t_multiplayer_map_data* MultiplayerMaps();
-
-		// 0x642F78, 0x5B4DB8
 		struct s_cache_file_globals
 		{
 			bool initialized;
@@ -106,9 +78,37 @@ namespace Yelo
 		}; BOOST_STATIC_ASSERT( sizeof(s_cache_file_globals) == 0x4418 );
 		s_cache_file_globals* CacheFileGlobals();
 
+		struct s_original_multipler_map
+		{
+			int32 index; // index used for things like the UI map list
+			cstring name;
+			bool is_original; // ie, bungie made it
+			PAD24;
+		};
+
+		// 0x497EC0, 0x48D8B0 - gets a map's description string
+		struct s_multiplayer_map_entry
+		{
+			cstring name;
+			int32 index;
+			bool exists;
+			// HACK: YELO ONLY FIELD
+			// This field is for yelo's use only, the game doesn't use it. 
+			// Enables us to later go thru and set which maps are built for 
+			// yelo and which aren't. Just for useful house keeping.
+			bool is_yelo_based_map;
+			PAD16;
+			uint32 crc;
+		};
+		typedef Memory::GbxArray<s_multiplayer_map_entry> t_multiplayer_map_data;
+
+		t_multiplayer_map_data* MultiplayerMaps();
+
+		cstring* MapListIgnoredMapNames();
+
 		void Initialize();
 		void Dispose();
 
-		void MultiplayerMapsReIntialize();
+		void MapListReIntialize();
 	};
 };

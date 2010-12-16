@@ -53,4 +53,10 @@
 		HS_TYPE(short),
 		HS_TYPE(string)
 	);
+	HS_FUNCTION_WITH_PARAMS(player_data_set_real, void, "", 
+			"<player-list-index> <data-name> <data-value>", 3,
+		HS_TYPE(short),
+		HS_TYPE(string),
+		HS_TYPE(real)
+	);
 	HS_FUNCTION(player_local_get, short, "");
