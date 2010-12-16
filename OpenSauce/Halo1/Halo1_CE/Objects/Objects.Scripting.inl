@@ -17,12 +17,13 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-static real object_data_get_real_by_name(s_object_data* object, cstring data_name, cstring subdata_name)
+static real* object_data_get_real_by_name(s_object_data* object, cstring data_name, cstring subdata_name, Enums::hs_type& out_type)
 {
 	cstring s = data_name; // alias for keeping the code width down
 
 	real* value_ptr = NULL;
 
+	out_type = HS_TYPE(real);
 		 if( !strcmp(s,"position") )				value_ptr = &object->GetNetworkDatumData()->position.x;
 	else if( !strcmp(s,"transitional_velocity") )	value_ptr = &object->GetNetworkDatumData()->transitional_velocity.i;
 	else if( !strcmp(s,"forward") )					value_ptr = &object->GetNetworkDatumData()->forward.i;
@@ -40,10 +41,10 @@ static real object_data_get_real_by_name(s_object_data* object, cstring data_nam
 		else if( !strcmp(s,"z") || !strcmp(s,"k") ) field_index = 2;
 //		else if( !strcmp(s,"w") || !strcmp(s,"d") )	field_index = 3;
 
-		return value_ptr[field_index];
+		return &value_ptr[field_index];
 	}
 
-	return 0.0f;
+	return NULL;
 }
 static void* scripting_object_data_get_real_evaluate(void** arguments)
 {
@@ -53,28 +54,52 @@ static void* scripting_object_data_get_real_evaluate(void** arguments)
 		cstring subdata_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
 	TypeHolder result; result.pointer = NULL;
-	result.real = 0.0f;
+	result.real = -1.0f;
 
 	if(!args->object_index.IsNull())
 	{
 		s_object_data* object = (*Objects::ObjectHeader())[args->object_index]->_object;
 
-		result.real = object_data_get_real_by_name(object, args->data_name, args->subdata_name);
+		Enums::hs_type result_type;
+		result.ptr.real = object_data_get_real_by_name(object, args->data_name, args->subdata_name, result_type);
+		Scripting::UpdateTypeHolderFromPtrToData(result, result_type);
 	}
 
 	return result.pointer;
 }
+static void* scripting_object_data_set_real_evaluate(void** arguments)
+{
+	struct s_arguments {
+		datum_index object_index;
+		cstring data_name;
+		cstring subdata_name;
+		real data_value;
+	}* args = CAST_PTR(s_arguments*, arguments);
+
+	if(!args->object_index.IsNull())
+	{
+		s_object_data* object = (*Objects::ObjectHeader())[args->object_index]->_object;
+
+		TypeHolder result;
+		Enums::hs_type result_type;
+		result.ptr.real = object_data_get_real_by_name(object, args->data_name, args->subdata_name, result_type);
+		Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &args->data_value);
+	}
+
+	return NULL;
+}
 
 
-static real weapon_data_get_real_by_name(s_weapon_datum* weapon, cstring data_name)
+static real* weapon_data_get_real_by_name(s_weapon_datum* weapon, cstring data_name, Enums::hs_type& out_type)
 {
 	cstring s = data_name; // alias for keeping the code width down
 
-		 if( !strcmp(s,"heat") )		return *weapon->weapon.GetHeat();
-	else if( !strcmp(s,"age") )			return *weapon->weapon.GetAge();
-	else if( !strcmp(s,"light_power") )	return *weapon->weapon.GetIntegratedLightPower();
+	out_type = HS_TYPE(real);
+		 if( !strcmp(s,"heat") )		return weapon->weapon.GetHeat();
+	else if( !strcmp(s,"age") )			return weapon->weapon.GetAge();
+	else if( !strcmp(s,"light_power") )	return weapon->weapon.GetIntegratedLightPower();
 
-	return 0.0f;
+	return NULL;
 }
 static void* scripting_weapon_data_get_real_evaluate(void** arguments)
 {
@@ -83,16 +108,38 @@ static void* scripting_weapon_data_get_real_evaluate(void** arguments)
 		cstring data_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
 	TypeHolder result; result.pointer = NULL;
-	result.real = 0.0f;
+	result.real = -1.0f;
 
 	if(!args->weapon_index.IsNull())
 	{
 		s_weapon_datum* weapon = (*Objects::ObjectHeader())[args->weapon_index]->Type._weapon;
 
-		result.real = weapon_data_get_real_by_name(weapon, args->data_name);
+		Enums::hs_type result_type;
+		result.ptr.real = weapon_data_get_real_by_name(weapon, args->data_name, result_type);
+		Scripting::UpdateTypeHolderFromPtrToData(result, result_type);
 	}
 
 	return result.pointer;
+}
+static void* scripting_weapon_data_set_real_evaluate(void** arguments)
+{
+	struct s_arguments {
+		datum_index weapon_index;
+		cstring data_name;
+		real data_value;
+	}* args = CAST_PTR(s_arguments*, arguments);
+
+	if(!args->weapon_index.IsNull())
+	{
+		s_weapon_datum* weapon = (*Objects::ObjectHeader())[args->weapon_index]->Type._weapon;
+
+		TypeHolder result;
+		Enums::hs_type result_type;
+		result.ptr.real = weapon_data_get_real_by_name(weapon, args->data_name, result_type);
+		Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &args->data_value);
+	}
+
+	return NULL;
 }
 
 
@@ -136,48 +183,23 @@ static void* scripting_unit_data_get_object_evaluate(void** arguments)
 	return result.pointer;
 }
 
-static real scripting_unit_data_get_real_by_name(s_unit_datum* unit, cstring data_name)
+static void* scripting_unit_data_get_integer_by_name(s_unit_datum* unit, cstring data_name, Enums::hs_type& out_type)
 {
 	cstring s = data_name; // alias for keeping the code width down
 
-		 if( !strcmp(s,"camo_power") )		return *unit->unit.GetCamoPower();
-	//else if( !strcmp(s,"") )	return *unit->Get();
-
-	return -1.0f;
-}
-static void* scripting_unit_data_get_real_evaluate(void** arguments)
-{
-	struct s_arguments {
-		datum_index unit_index;
-		cstring data_name;
-	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
-	result.real = 0.0f;
-
-	if(!args->unit_index.IsNull())
-	{
-		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->Type._unit;
-
-		result.real = scripting_unit_data_get_real_by_name(unit, args->data_name);
-	}
-
-	return result.pointer;
-}
-
-static int32 scripting_unit_data_get_integer_by_name(s_unit_datum* unit, cstring data_name)
-{
-	cstring s = data_name; // alias for keeping the code width down
-
-		 if( !strcmp(s,"vehicle_seat_index") )		return *unit->unit.GetVehicleSeatIndex();
-	else if( !strcmp(s,"current_weapon_index") )	return *unit->unit.GetCurrentWeaponIndex();
-	else if( !strcmp(s,"current_grenade_index") )	return *unit->unit.GetCurrentGrenadeIndex();
+	out_type = HS_TYPE(bool);
 	// designers should use 'unit_get_total_grenade_count' for overall grenade count
-	else if( !strcmp(s,"total_grenade_count[plasma]") )	return *unit->unit.GetGrenadePlasmaCount();
-	else if( !strcmp(s,"total_grenade_count[frag]") )	return *unit->unit.GetGrenadeFragCount();
+		 if( !strcmp(s,"total_grenade_count[plasma]") )	return unit->unit.GetGrenadePlasmaCount();
+	else if( !strcmp(s,"total_grenade_count[frag]") )	return unit->unit.GetGrenadeFragCount();
 
-	else if( !strcmp(s,"feign_death_timer") )		return *unit->unit.GetFeignDeathTimer();
+	out_type = HS_TYPE(short);
+		 if( !strcmp(s,"vehicle_seat_index") )		return unit->unit.GetVehicleSeatIndex();
+	else if( !strcmp(s,"current_weapon_index") )	return unit->unit.GetCurrentWeaponIndex();
+	else if( !strcmp(s,"current_grenade_index") )	return unit->unit.GetCurrentGrenadeIndex();
+	else if( !strcmp(s,"feign_death_timer") )		return unit->unit.GetFeignDeathTimer();
 
-	return NONE;
+	out_type = HS_TYPE(void);
+	return NULL;
 }
 static void* scripting_unit_data_get_integer_evaluate(void** arguments)
 {
@@ -186,14 +208,87 @@ static void* scripting_unit_data_get_integer_evaluate(void** arguments)
 		cstring data_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
 	TypeHolder result; result.pointer = NULL;
-	result.real = 0.0f;
+	result.int32 = 0;
 
 	if(!args->unit_index.IsNull())
 	{
 		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->Type._unit;
 
-		result.int32 = scripting_unit_data_get_integer_by_name(unit, args->data_name);
+		Enums::hs_type result_type;
+		result.pointer = scripting_unit_data_get_integer_by_name(unit, args->data_name, result_type);
+		Scripting::UpdateTypeHolderFromPtrToData(result, result_type);
 	}
 
 	return result.pointer;
+}
+static void* scripting_unit_data_set_integer_evaluate(void** arguments)
+{
+	struct s_arguments {
+		datum_index unit_index;
+		cstring data_name;
+		int32 data_value;
+	}* args = CAST_PTR(s_arguments*, arguments);
+
+	if(!args->unit_index.IsNull())
+	{
+		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->Type._unit;
+
+		TypeHolder result;
+		Enums::hs_type result_type;
+		result.pointer = scripting_unit_data_get_integer_by_name(unit, args->data_name, result_type);
+		Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &args->data_value);
+	}
+
+	return NULL;
+}
+
+static real* scripting_unit_data_get_real_by_name(s_unit_datum* unit, cstring data_name, Enums::hs_type& out_type)
+{
+	cstring s = data_name; // alias for keeping the code width down
+
+	out_type = HS_TYPE(real);
+		 if( !strcmp(s,"camo_power") )		return unit->unit.GetCamoPower();
+	//else if( !strcmp(s,"") )	return unit->Get();
+
+	return NULL;
+}
+static void* scripting_unit_data_get_real_evaluate(void** arguments)
+{
+	struct s_arguments {
+		datum_index unit_index;
+		cstring data_name;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+	result.real = -1.0f;
+
+	if(!args->unit_index.IsNull())
+	{
+		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->Type._unit;
+
+		Enums::hs_type result_type;
+		result.ptr.real = scripting_unit_data_get_real_by_name(unit, args->data_name, result_type);
+		Scripting::UpdateTypeHolderFromPtrToData(result, result_type);
+	}
+
+	return result.pointer;
+}
+static void* scripting_unit_data_set_real_evaluate(void** arguments)
+{
+	struct s_arguments {
+		datum_index unit_index;
+		cstring data_name;
+		real data_value;
+	}* args = CAST_PTR(s_arguments*, arguments);
+
+	if(!args->unit_index.IsNull())
+	{
+		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->Type._unit;
+
+		TypeHolder result;
+		Enums::hs_type result_type;
+		result.ptr.real = scripting_unit_data_get_real_by_name(unit, args->data_name, result_type);
+		Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &args->data_value);
+	}
+
+	return NULL;
 }

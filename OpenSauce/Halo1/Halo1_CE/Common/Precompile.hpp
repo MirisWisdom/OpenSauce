@@ -51,6 +51,10 @@
 
 #include <TinyXml/tinyxml.hpp>
 
+#if defined(NDEBUG)
+	#define YELO_NO_NETWORK
+#endif
+
 #include "Common/Platform.hpp"
 #include <cseries/MacrosCpp.hpp>
 #include <Common/BaseBlamTypes.hpp>

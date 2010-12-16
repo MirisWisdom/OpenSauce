@@ -53,13 +53,19 @@
 		_hs_function_player_team_data_get_integer,
 		_hs_function_player_data_get_object,
 		_hs_function_player_data_get_real,
+		_hs_function_player_data_set_real,
 		_hs_function_player_local_get,
 
 		_hs_function_object_data_get_real,
+		_hs_function_object_data_set_real,
 		_hs_function_weapon_data_get_real,
+		_hs_function_weapon_data_set_real,
 		_hs_function_unit_data_get_object,
 		_hs_function_unit_data_get_integer,
+		_hs_function_unit_data_set_integer,
 		_hs_function_unit_data_get_real,
+		_hs_function_unit_data_set_real,
+		//_hs_function_unit_has_equipment,
 
 		_hs_function_physics_get_gravity,
 		_hs_function_physics_set_gravity,
@@ -201,13 +207,18 @@
 		&GET_HS_FUNCTION(player_team_data_get_integer),
 		&GET_HS_FUNCTION(player_data_get_object),
 		&GET_HS_FUNCTION(player_data_get_real),
+		&GET_HS_FUNCTION(player_data_set_real),
 		&GET_HS_FUNCTION(player_local_get),
 
 		&GET_HS_FUNCTION(object_data_get_real),
+		&GET_HS_FUNCTION(object_data_set_real),
 		&GET_HS_FUNCTION(weapon_data_get_real),
+		&GET_HS_FUNCTION(weapon_data_set_real),
 		&GET_HS_FUNCTION(unit_data_get_object),
-		&GET_HS_FUNCTION(unit_data_get_real),
 		&GET_HS_FUNCTION(unit_data_get_integer),
+		&GET_HS_FUNCTION(unit_data_set_integer),
+		&GET_HS_FUNCTION(unit_data_get_real),
+		&GET_HS_FUNCTION(unit_data_set_real),
 
 		&GET_HS_FUNCTION(physics_get_gravity),
 		&GET_HS_FUNCTION(physics_set_gravity),
@@ -243,7 +254,11 @@
 		&GET_HS_FUNCTION(test_networking),
 	#endif
 	};
+	// Validate our definition list has the same amount as our exposed enumeration count
 	BOOST_STATIC_ASSERT( NUMBEROF(hs_yelo_functions) == Enums::k_hs_function_enumeration_count );
+	// Validate we haven't gone over our limit of allowed new script functions
+	BOOST_STATIC_ASSERT( 
+		Enums::k_hs_function_enumeration_count <= (Enums::k_hs_script_functions_count_upgrade - Enums::k_hs_functions_count) );
 
 
 	//////////////////////////////////////////////////////////////////////////
@@ -262,6 +277,7 @@
 	#ifdef API_DEBUG
 	#endif
 	};
+	// Validate our definition list has the same amount as our exposed enumeration count
 	BOOST_STATIC_ASSERT( NUMBEROF(hs_yelo_globals) == Enums::k_hs_global_enumeration_count );
 
 #endif

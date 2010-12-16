@@ -384,5 +384,48 @@ namespace Yelo
 
 			return true;
 		}
+
+		void UpdateTypeHolderFromPtrToData(TypeHolder& data, const Enums::hs_type type)
+		{
+			if(data.pointer != NULL)
+			{
+				switch(type)
+				{
+				// also for byte
+				case HS_TYPE(bool):	data.byte = *data.ptr.byte;		break;
+				case HS_TYPE(short):data.uint16 = *data.ptr.uint16;	break;
+				case HS_TYPE(real):
+				case HS_TYPE(long):	data.uint32 = *data.ptr.uint32;	break;
+					break;
+				}
+			}
+			else // the pointer is null, so default to NONE
+			{
+				switch(type)
+				{
+				// also for byte
+				case HS_TYPE(bool):	data.byte = NONE;	break;
+				case HS_TYPE(short):data.int16 = NONE;	break;
+				case HS_TYPE(real): data.real = -1.0f;	break;
+				case HS_TYPE(long):	data.int32 = NONE;	break;
+					break;
+				}
+			}
+		}
+		void UpdateTypeHolderDataFromPtr(const TypeHolder& data, const Enums::hs_type type, void* ptr)
+		{
+			if(ptr != NULL)
+			{
+				switch(type)
+				{
+				// also for byte
+				case HS_TYPE(bool):	*data.ptr.byte = *CAST_PTR(byte*, ptr);		break;
+				case HS_TYPE(short):*data.ptr.uint16 = *CAST_PTR(uint16*, ptr);	break;
+				case HS_TYPE(real):
+				case HS_TYPE(long):	*data.ptr.uint32 = *CAST_PTR(uint32*, ptr);	break;
+					break;
+				}
+			}
+		}
 	};
 };

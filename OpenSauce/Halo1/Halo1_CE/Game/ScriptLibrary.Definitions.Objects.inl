@@ -23,17 +23,27 @@
 		HS_TYPE(string),
 		HS_TYPE(string)
 	);
+	HS_FUNCTION_WITH_PARAMS(object_data_set_real, void, "", 
+			"<object> <data-name> <subdata-name> <data-value>", 4,
+		HS_TYPE(object),
+		HS_TYPE(string),
+		HS_TYPE(string),
+		HS_TYPE(real)
+	);
+
 	HS_FUNCTION_WITH_PARAMS(weapon_data_get_real, real, "", 
 			"<weapon> <data-name>", 2,
 		HS_TYPE(object),
 		HS_TYPE(string)
 	);
-	HS_FUNCTION_WITH_PARAMS(unit_data_get_object, object, "", 
-			"<unit> <data-name>", 2,
-		HS_TYPE(unit),
-		HS_TYPE(string)
+	HS_FUNCTION_WITH_PARAMS(weapon_data_set_real, void, "", 
+			"<weapon> <data-name> <data-value>", 3,
+		HS_TYPE(object),
+		HS_TYPE(string),
+		HS_TYPE(real)
 	);
-	HS_FUNCTION_WITH_PARAMS(unit_data_get_real, real, "", 
+
+	HS_FUNCTION_WITH_PARAMS(unit_data_get_object, object, "", 
 			"<unit> <data-name>", 2,
 		HS_TYPE(unit),
 		HS_TYPE(string)
@@ -42,4 +52,21 @@
 			"<unit> <data-name>", 2,
 		HS_TYPE(unit),
 		HS_TYPE(string)
+	);
+	HS_FUNCTION_WITH_PARAMS(unit_data_set_integer, void, "", 
+			"<unit> <data-name> <data-value>", 3,
+		HS_TYPE(unit),
+		HS_TYPE(string),
+		HS_TYPE(long)
+	);
+	HS_FUNCTION_WITH_PARAMS(unit_data_get_real, real, "", 
+			"<unit> <data-name>", 2,
+		HS_TYPE(unit),
+		HS_TYPE(string)
+	);
+	HS_FUNCTION_WITH_PARAMS(unit_data_set_real, void, "", 
+			"<unit> <data-name> <data-value>", 3,
+		HS_TYPE(unit),
+		HS_TYPE(string),
+		HS_TYPE(real)
 	);

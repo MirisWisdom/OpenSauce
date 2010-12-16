@@ -303,9 +303,9 @@ namespace Yelo
 #pragma region field_properties_definition
 		// returns the amount of bytes written
 		// If [source_data] == [baseline_data], [source_data] isn't encoded
-		typedef int32 (*mdp_field_encode)(struct field_properties_definition* field_properties, const void* baseline_data, const void* source_data, Networking::bitstream* output_stream);
+		typedef int32 (*mdp_field_encode)(struct field_properties_definition* field_properties, const void* baseline_data, const void* source_data, Networking::s_bitstream* output_stream);
 		// returns the amount of bytes read
-		typedef int32 (*mdp_field_decode)(struct field_properties_definition* field_properties, void* destination_data, Networking::bitstream* input_stream);
+		typedef int32 (*mdp_field_decode)(struct field_properties_definition* field_properties, void* destination_data, Networking::s_bitstream* input_stream);
 		
 		struct field_properties_definition
 		{
@@ -444,7 +444,7 @@ namespace Yelo
 			long_enum definition_type;			// 0x4 [Enums::message_delta]
 			int32 iteration_count;				// 0x8
 			int32 state;						// 0xC
-			Networking::bitstream* input_stream;// 0x10
+			Networking::s_bitstream* input_stream;// 0x10
 			int32 unknown1;						// 0x14
 			int32 current_iteration;			// 0x18
 			bool iteration_header_decoded;		// 0x1C

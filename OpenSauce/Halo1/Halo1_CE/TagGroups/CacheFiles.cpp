@@ -180,8 +180,9 @@ namespace Yelo
 			{18, "gephyrophobia"},
 		};
 
-		t_multiplayer_map_data* MultiplayerMaps()		PTR_IMP_GET2(multiplayer_maps);
 		s_cache_file_globals* CacheFileGlobals()		PTR_IMP_GET2(cache_file_globals);
+
+#include "TagGroups/CacheFiles.MapList.inl"
 
 		void Initialize()
 		{
@@ -191,18 +192,6 @@ namespace Yelo
 		void Dispose()
 		{
 			MemoryUpgradesDispose();
-		}
-
-		API_FUNC_NAKED void MultiplayerMapsReIntialize()
-		{
-			static uint32 Initialize = GET_FUNC_PTR(MULTIPLAYER_MAP_LIST_INITIALIZE);
-			static uint32 Dispose = GET_FUNC_PTR(MULTIPLAYER_MAP_LIST_DISPOSE);
-
-			__asm {
-				call	Dispose
-				call	Initialize
-				retn
-			}
 		}
 	};
 };

@@ -107,5 +107,11 @@ namespace Yelo
 		// defined by Yelo's code.
 		bool DefinitionsMatch(const TagGroups::scripting_block& data);
 
+		// Interpret [data] as [type] data. Takes the [data].pointer and sets [data] to the dereferenced value.
+		// If [data].pointer is NULL, then this sets [data] to [type]'s NONE equivalent.
+		void UpdateTypeHolderFromPtrToData(TypeHolder& data, const Enums::hs_type type);
+		// Interpret [ptr] as a [type] pointer. Takes [ptr], deferences it and sets [data] to the value.
+		// [data] is 'const' as this doesn't modify the pointer, but the data which it points to.
+		void UpdateTypeHolderDataFromPtr(const TypeHolder& data, const Enums::hs_type type, void* ptr);
 	};
 };

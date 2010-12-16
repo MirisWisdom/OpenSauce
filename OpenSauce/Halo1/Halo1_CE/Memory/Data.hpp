@@ -65,7 +65,7 @@ namespace Yelo
 		// Guess they didn't want to change dynamic_array to support a 'capacity'
 		template<typename DatumT> struct GbxArray
 		{
-		private:
+		public:
 			DatumT* elements;
 			int32 count;
 			int32 capacity;

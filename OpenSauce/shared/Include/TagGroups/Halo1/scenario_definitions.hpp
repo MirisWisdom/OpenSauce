@@ -24,6 +24,21 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
+		struct scenario_starting_profile
+		{
+			TAG_FIELD(tag_string, name);
+			TAG_FIELD(real_fraction, starting_health_damage);
+			TAG_FIELD(real_fraction, starting_shield_damage);
+			struct {
+				TAG_FIELD(tag_reference, weapon, 'weap');
+				TAG_FIELD(int16, rounds_loaded);
+				TAG_FIELD(int16, rounds_total);
+			}weapons[2];
+			TAG_FIELD(byte, grenade_counts[4]);
+			TAG_PAD(int32, 5);
+		}; BOOST_STATIC_ASSERT( sizeof(scenario_starting_profile) == 0x68 );
+
+
 		struct scenario_cutscene_flag
 		{
 			PAD32;
@@ -103,8 +118,8 @@ namespace Yelo
 
 			TAG_PAD(int32, 21); // 84
 
+			TAG_TBLOCK(player_starting_profiles, scenario_starting_profile);
 			TAG_PAD(tag_block,
-				1 + // scenario_starting_profile
 				1 + // scenario_player
 				1 + // scenario_trigger_volume
 				1 + // recorded_animation_definition

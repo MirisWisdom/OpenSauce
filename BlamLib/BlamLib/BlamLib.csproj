@@ -137,6 +137,8 @@
     <Compile Include="Blam\Halo2\Tags\Code\Scenario.cs" />
     <Compile Include="Blam\Halo2\Tags\Code\Shaders.cs" />
     <Compile Include="Blam\Halo2\Tags\Code\Sound.cs" />
+    <Compile Include="Blam\Halo2\Tags\Definitions\Shaders.cs" />
+    <Compile Include="Blam\Halo2\Tags\Layout\Shaders.cs" />
     <Compile Include="Blam\HaloReach\Tags\Scenario.cs" />
     <Compile Include="IO\EndianStreams.cs" />
     <Compile Include="IO\EndianStreams.Reader.cs" />
@@ -287,7 +289,6 @@
     <Compile Include="Blam\Halo2\Tags\ObjectWidgets.cs" />
     <Compile Include="Blam\Halo2\Tags\Resources.cs" />
     <Compile Include="Blam\Halo2\Tags\Scenario.cs" />
-    <Compile Include="Blam\Halo2\Tags\Shaders.cs" />
     <Compile Include="Blam\Halo2\Tags\Sound.cs" />
     <Compile Include="Blam\Halo2\Tags\Code\Models.cs" />
     <Compile Include="Blam\Halo2\Tags\Definitions\AI.cs" />
