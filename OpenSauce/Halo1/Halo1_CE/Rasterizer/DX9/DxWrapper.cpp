@@ -245,10 +245,12 @@ HRESULT Yelo_IDirect3DDevice9::DrawPrimitiveUP(D3DPRIMITIVETYPE PrimitiveType, U
 
 HRESULT Yelo_IDirect3DDevice9::BeginScene() 
 {
+	HRESULT hr = Yelo_pD3DDevice->BeginScene();
+
 	if(Yelo::Memory::IsYeloEnabled())
 		Yelo::DX9::c_gbuffer_system::ClearGBuffer(Yelo_pD3DDevice);
 
-	return Yelo_pD3DDevice->BeginScene();
+	return hr;
 }
 
 HRESULT Yelo_IDirect3DDevice9::EndScene() 
