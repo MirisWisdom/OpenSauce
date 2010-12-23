@@ -40,6 +40,7 @@
 #include "TagGroups/TagGroups.hpp"
 #include <TagGroups/Halo1/shader_definitions.hpp>
 #include <TagGroups/Halo1/bitmap_definitions.hpp>
+#include "Rasterizer/GBuffer.hpp"
 
 namespace Yelo
 {
@@ -115,6 +116,8 @@ namespace Yelo
 				TagGroups::s_shader_definition* shader_base = 
 					CAST_PTR(TagGroups::s_shader_definition*, shader_pointer);
 
+				DX9::c_gbuffer_system::OutputObjectTBN() = false;
+
 				if(shader_base->shader.shader_type == Enums::_shader_type_model)
 				{
 					TagGroups::s_shader_model* shader_model = CAST_PTR(TagGroups::s_shader_model*, shader_base);
@@ -125,6 +128,8 @@ namespace Yelo
 						// setup base normal map
 						if(!extension.base_normal.map.tag_index.IsNull())
 						{
+							DX9::c_gbuffer_system::OutputObjectTBN() = true;
+
 							SetTexture(Yelo::DX9::Direct3DDevice(), 4, extension.base_normal.map.tag_index); 
 							g_shader_variables.base_normal_interp = 1.0f;
 							g_shader_variables.base_normal_multiplier = extension.base_normal.modifiers.multiplier;
@@ -174,6 +179,8 @@ namespace Yelo
 					// setup base normal map
 					if(!shader_environment->environment.bump_map.tag_index.IsNull())
 					{
+						DX9::c_gbuffer_system::OutputObjectTBN() = true;
+
 						SetTexture(Yelo::DX9::Direct3DDevice(), 4, shader_environment->environment.bump_map.tag_index); 
 						g_shader_variables.base_normal_interp = 1.0f;
 						g_shader_variables.base_normal_multiplier = shader_environment->environment.bump_map_scale;
