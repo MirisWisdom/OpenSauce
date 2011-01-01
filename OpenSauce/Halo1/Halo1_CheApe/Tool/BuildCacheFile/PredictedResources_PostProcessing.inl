@@ -71,7 +71,7 @@ namespace PostProcessing
 					return true;
 
 			if(!datum->base_shader.tag_index.IsNull())
-				datum = Yelo::tag_get<TagGroups::s_shader_postprocess_generic>(tag_index);
+				datum = Yelo::tag_get<TagGroups::s_shader_postprocess_generic>(datum->base_shader.tag_index);
 			else
 				datum = NULL;
 		}
@@ -79,7 +79,7 @@ namespace PostProcessing
 		return false;
 	}
 
-	static void shader_postprocess_collection_process_collection(datum_index tag_index)
+	static bool shader_postprocess_collection_process_collection(datum_index tag_index)
 	{
 		TagGroups::s_shader_postprocess_collection* collection_tag = Yelo::tag_get<TagGroups::s_shader_postprocess_collection>(tag_index);
 
@@ -106,18 +106,48 @@ namespace PostProcessing
 					s_tag_instance* tag_instance = (*TagGroups::TagInstances())[shader->shader.tag_index];
 
 					YELO_ERROR(_error_message_priority_warning,
-						"CheApe: shader_postprocess_collection postprocessing failed on '%s' in '%s.%s' (or one of its bases)", 
-						collection_effect.script_variables[j].shader_variable_name,
-						tag_instance->filename, Yelo::tag_group_get(tag_instance->group_tag)->name);
+						"\nCheApe: shader_postprocess_collection validity failed on '%s'\n"
+						"error: unable to find matching variable for scripted variable \"%s\"", 
+						tag_instance->filename,
+						collection_effect.script_variables[j].name);
+					return false;
+				}
+
+				for(int k = 0; k < collection_effect.shader_indices.Count; k++)
+				{
+					if((collection_effect.shader_indices[k].shader_index == -1) || 
+						(collection_effect.shader_indices[k].shader_index >= collection_tag->shaders.Count))
+					{
+						s_tag_instance* tag_instance = (*TagGroups::TagInstances())[shader->shader.tag_index];
+
+						YELO_ERROR(_error_message_priority_warning,
+							"\nCheApe: shader_postprocess_collection validity failed on '%s'\n"
+							"error: invalid shader index %i", 
+							tag_instance->filename,
+							collection_effect.shader_indices[k].shader_index);
+						return false;											
+					}
 				}
 			}
 		}
+		return true;
 	}
 
-	static void shader_postprocess_generic_add_predicted_resources(datum_index tag_index)
+	static bool shader_postprocess_generic_add_predicted_resources(datum_index tag_index)
 	{
 		TagGroups::s_shader_postprocess_generic* shader_tag = Yelo::tag_get<TagGroups::s_shader_postprocess_generic>(tag_index);
 		
+		if(shader_tag->shader_code_binary.size == 0 && shader_tag->base_shader.tag_index.IsNull())
+		{
+			s_tag_instance* tag_instance = (*TagGroups::TagInstances())[tag_index];
+
+			YELO_ERROR(_error_message_priority_warning,
+				"\nCheApe: shader_postprocess_generic validity failed on '%s'\n"
+				"error: postprocess shader with no binary data also has no base shader defined",
+				tag_instance->filename);
+			return false;
+		}
+
 		for(int32 i = 0; i < shader_tag->implementation.additional_bitmaps.Count; i++)
 		{
 			TagGroups::s_shader_postprocess_bitmap& bitmap_element = shader_tag->implementation.additional_bitmaps[i];
@@ -126,5 +156,6 @@ namespace PostProcessing
 				bitmap_element.bitmap.tag_index,
 				bitmap_element.value.bitmap.bitmap_index);
 		}
+		return true;
 	}
 };

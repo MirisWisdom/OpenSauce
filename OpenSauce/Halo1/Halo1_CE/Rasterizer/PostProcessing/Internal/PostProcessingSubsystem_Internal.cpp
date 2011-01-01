@@ -331,6 +331,14 @@ namespace Yelo
 
 			return Globals().m_effect_array[index]->m_fade.current;
 		}
+		int16		c_internal_subsystem::GetEffectFadeDirection(uint16 index)
+		{
+			if(!Globals().m_shader_collection) return 0;
+
+			if(index >= Globals().m_shader_collection->effects.Count) return 0;
+
+			return Globals().m_effect_array[index]->CurrentFadeDirection();
+		}
 		bool		c_internal_subsystem::GetEffectIsValid(uint16 index)
 		{
 			if(!Globals().m_shader_collection) return false;

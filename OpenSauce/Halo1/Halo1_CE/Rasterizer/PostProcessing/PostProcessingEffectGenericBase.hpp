@@ -217,6 +217,8 @@ namespace Yelo
 			virtual void		Update(real delta_time);		
 			virtual void		FadeEffect(real start, real end, real time);
 
+			int16				CurrentFadeDirection();
+
 			virtual void		Ctor()
 			{
 				m_effect_loaded = false;

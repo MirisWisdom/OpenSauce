@@ -378,6 +378,15 @@ namespace Yelo
 			m_fade.current = m_fade.start;
 			m_fade.fade_time = time;
 		}
+
+		int16		c_generic_effect_base::CurrentFadeDirection()
+		{
+			// not applying fade
+			if(!m_fade.apply_fade || (m_fade.current == m_fade.end))
+				return -1;
+			// fading in = 1, fading out = 0
+			return (m_fade.direction ? 1 : 0);
+		}
 		/////////////////////////////////////////////////////////////////////
 	}; };
 };

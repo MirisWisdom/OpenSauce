@@ -20,9 +20,13 @@
 namespace ShaderExtension
 {
 	static void shader_model_extension_add_to_predicted_resources(
-		const TagGroups::s_shader_model_extension& extension, 
+		TagGroups::s_shader_model_extension& extension, 
 		TagBlock<TagGroups::predicted_resource>& predicted_resources)
 	{
+		if(extension.specular_color.modifiers.multiplier == 0.0f)
+			extension.specular_color.modifiers.multiplier = 1.0f;
+		if(extension.specular_color.modifiers.power == 0.0f)
+			extension.specular_color.modifiers.power = 1.0f;
 		if(!extension.specular_color.map.tag_index.IsNull())
 		{
 			predicted_resources_add_resource(predicted_resources, 
@@ -30,6 +34,9 @@ namespace ShaderExtension
 				extension.specular_color.map.tag_index,
 				0);
 		}
+
+		if(extension.base_normal.modifiers.multiplier == 0.0f)
+			extension.base_normal.modifiers.multiplier = 1.0f;
 		if(!extension.base_normal.map.tag_index.IsNull())
 		{
 			predicted_resources_add_resource(predicted_resources, 
@@ -37,6 +44,13 @@ namespace ShaderExtension
 				extension.base_normal.map.tag_index,
 				0);
 		}
+
+		if(extension.detail_normals[0].modifiers.multiplier == 0.0f)
+			extension.detail_normals[0].modifiers.multiplier = 1.0f;
+		if(extension.detail_normals[0].modifiers.scale == 0.0f)
+			extension.detail_normals[0].modifiers.scale = 1.0f;
+		if(extension.detail_normals[0].modifiers.v_scale == 0.0f)
+			extension.detail_normals[0].modifiers.v_scale = 1.0f;
 		if(!extension.detail_normals[0].map.tag_index.IsNull())
 		{
 			predicted_resources_add_resource(predicted_resources, 
@@ -44,6 +58,13 @@ namespace ShaderExtension
 				extension.detail_normals[0].map.tag_index,
 				0);
 		}
+
+		if(extension.detail_normals[1].modifiers.multiplier == 0.0f)
+			extension.detail_normals[1].modifiers.multiplier = 1.0f;
+		if(extension.detail_normals[1].modifiers.scale == 0.0f)
+			extension.detail_normals[1].modifiers.scale = 1.0f;
+		if(extension.detail_normals[1].modifiers.v_scale == 0.0f)
+			extension.detail_normals[1].modifiers.v_scale = 1.0f;
 		if(!extension.detail_normals[1].map.tag_index.IsNull())	
 		{
 			predicted_resources_add_resource(predicted_resources, 
@@ -75,7 +96,7 @@ namespace ShaderExtension
 			if(shader_model_tag->model.maps.shader_extension.Count != 1)
 				continue;
 
-			const TagGroups::s_shader_model_extension& extension = shader_model_tag->model.maps.shader_extension[0];
+			TagGroups::s_shader_model_extension& extension = shader_model_tag->model.maps.shader_extension[0];
 
 			shader_model_extension_add_to_predicted_resources(extension, object_tag->object.predicted_resources);
 		}

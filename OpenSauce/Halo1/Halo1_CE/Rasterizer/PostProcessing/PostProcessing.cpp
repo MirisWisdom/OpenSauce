@@ -236,6 +236,9 @@ namespace Yelo
 
 		void		s_activation_variables::PollUpdate()
 		{
+			// does the player have camera control (camera_control 0)
+			m_player_has_control = !Camera::DirectorScripting()->initialized;
+
 			// are we currently in a cinematic?
 			Camera::s_cinematic_globals_data* cinematic_globals = Camera::CinematicGlobals();
 			m_in_cinematic = (cinematic_globals ? cinematic_globals->in_progress : false);
@@ -566,7 +569,19 @@ namespace Yelo
 			result.real = Subsystem::Internal::c_internal_subsystem::g_instance.GetEffectCurrentFade(args->effect_index);
 			
 			return result.pointer;
-		}		
+		}	
+		void*		HS_GetEffectFadeDirection(void** arguments)
+		{
+			struct s_arguments {
+				uint16 effect_index;
+				PAD16;
+			}* args = CAST_PTR(s_arguments*, arguments);
+			TypeHolder result;
+
+			result.int16 = Subsystem::Internal::c_internal_subsystem::g_instance.GetEffectFadeDirection(args->effect_index);
+			
+			return result.pointer;
+		}	
 		void*		HS_GetEffectIsValid(void** arguments)
 		{
 			struct s_arguments {
@@ -663,7 +678,7 @@ namespace Yelo
 			render_device->SetRenderState(D3DRS_ZENABLE, false);
 			render_device->SetRenderState(D3DRS_ZWRITEENABLE, false);
 			render_device->SetRenderState(D3DRS_STENCILENABLE, false);
-			render_device->SetRenderState(D3DRS_COLORWRITEENABLE, D3DCOLORWRITEENABLE_RED | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_BLUE);
+			render_device->SetRenderState(D3DRS_COLORWRITEENABLE, D3DCOLORWRITEENABLE_RED | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_BLUE | D3DCOLORWRITEENABLE_ALPHA);
 			render_device->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
 			render_device->SetRenderState(D3DRS_ALPHATESTENABLE, false);
 			render_device->SetRenderState(D3DRS_FOGENABLE, false);

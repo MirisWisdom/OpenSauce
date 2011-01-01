@@ -646,9 +646,6 @@ skip_disable_velocity:
 			{
 				hr &= g_default_system.DrawIndexedPrimitive_ObjectImpl(pDevice, Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
 				hr &= DrawIndexedPrimitive(pDevice, Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
-
-				// this is set to true by the shader extension prior to drawing
-				c_gbuffer_system::g_output_object_tbn = false;
 			}
 
 			return hr;
