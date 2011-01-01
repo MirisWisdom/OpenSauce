@@ -95,10 +95,10 @@ namespace Yelo
 		{
 			static	s_activation_variables g_instance;
 
+			bool		m_player_has_control;
 			bool		m_in_cinematic;
 			bool		m_local_player_in_vehicle;
 			bool		m_local_player_zoomed;
-			PAD8;
 
 			// Poll the engine state for value updates
 			void PollUpdate();
@@ -189,6 +189,7 @@ namespace Yelo
 		void*		HS_SetEffectFade(void** arguments);
 		void*		HS_GetEffectIndexByName(void** arguments);
 		void*		HS_GetEffectCurrentFade(void** arguments);
+		void*		HS_GetEffectFadeDirection(void** arguments);
 		void*		HS_GetEffectIsValid(void** arguments);
 		void*		HS_GetEffectShaderVariableIndexByName(void** arguments);
 		void*		HS_SetEffectShaderVariableBoolean(void** arguments);

@@ -179,9 +179,15 @@ namespace Yelo
 			g_shader.m_blur_amount = 1.0f;
 		}
 
+		void		c_motionblur_subsystem::Update(real DeltaTime)
+		{
+			g_shader.m_vignette.enabled = ActivationVariables().m_player_has_control && !ActivationVariables().m_local_player_in_vehicle;
+			g_shader.Update(DeltaTime);
+		}
+
 		bool		c_motionblur_subsystem::DoMotionBlurProcessImpl(IDirect3DDevice9* pDevice, double frame_time)
-		{	
-			HRESULT hr = S_OK;		
+		{
+			HRESULT hr = S_OK;
 			if (!g_subsystem_enabled) return false;
 
 			hr = g_effect.DoPostProcessEffect(pDevice, frame_time);

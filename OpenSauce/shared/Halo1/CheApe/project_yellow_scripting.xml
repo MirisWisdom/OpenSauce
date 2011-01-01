@@ -137,6 +137,9 @@
 		<function name="pp_get_effect_current_fade" returnType="real" help="get the current fade amount of an effect" internal="true" >
 			<arg type="short" name="effect_index" />
 		</function>
+		<function name="pp_get_effect_fade_direction" returnType="short" help="returns fade direction of an effect, -1 = no fade, 0 = fade out, 1 = fade in" internal="true" >
+			<arg type="short" name="effect_index" />
+		</function>
 		<function name="pp_get_effect_is_valid" returnType="boolean" help="get whether an effect is valid and ready to use" internal="true" >
 			<arg type="short" name="effect_index" />
 		</function>

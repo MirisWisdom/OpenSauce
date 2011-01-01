@@ -324,7 +324,7 @@ namespace Yelo
 		{
 			// Compile the shader using the data in the m_shader_generic tag struct
 			HRESULT hr = S_OK;
-			LPD3DXBUFFER error_buffer;					
+			LPD3DXBUFFER error_buffer = NULL;
 
 			if (!shader)
 				return E_FAIL;
