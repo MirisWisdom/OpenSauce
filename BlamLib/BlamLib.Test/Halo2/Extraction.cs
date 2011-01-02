@@ -78,6 +78,7 @@ namespace BlamLib.Test
 					//Assert.IsTrue(cache.TryAndFind(@"scenarios\multi\example\example_example_lightmap", Blam.Halo2.TagGroups.ltmp, out tag_item));
 					//Assert.IsTrue(cache.TryAndFind(@"scenarios\objects\covenant\military\scarab\scarab", Blam.Halo2.TagGroups.mode, out tag_item));
 					Assert.IsTrue(cache.TryAndFind(@"scenarios\solo\03b_newmombasa\earthcity_4", Blam.Halo2.TagGroups.sbsp, out tag_item));
+					//Assert.IsTrue(cache.TryAndFind(@"ui\hud\hud_messages", Blam.Halo2.TagGroups.unic, out tag_item));
 					{
 						var cei = ti.ExtractionBegin(tag_item.Datum, ex_args);
 						Assert.IsTrue(ti.Extract(cei));
