@@ -135,25 +135,35 @@ namespace Yelo
 
 
 		//////////////////////////////////////////////////////////////////////
-		// c_gbuffer_debug_effect
+		// gbuffer fullscreen effects
+		static c_gbuffer_rtclear_effect g_gbuffer_clear;
 		static c_gbuffer_debug_effect g_gbuffer_debug;
 
+		c_gbuffer_rtclear_effect& GBufferClear() { return g_gbuffer_clear; }
 		c_gbuffer_debug_effect& GBufferDebug() { return g_gbuffer_debug; }
 
+		D3DXHANDLE	GetTechnique(LPD3DXEFFECT& effect, 
+			const char* mesh_type, 
+			const char* rt_support)
+		{
+			const char* technique_format = "VS_%s_%s";
+			char technique[32] = "";
+			sprintf_s(technique, sizeof(technique), technique_format, mesh_type, rt_support);
+			return effect->GetTechniqueByName(technique);
+		}
+		D3DXHANDLE	GetTechnique(LPD3DXEFFECT& effect, 
+			const int rt_count, 
+			const char* mesh_type, 
+			const char* rt_support)
+		{
+			const char* technique_format = "PS_MRT%i_%s_%s";
+			char technique[32] = "";
+			sprintf_s(technique, sizeof(technique), technique_format, rt_count, mesh_type, rt_support);
+			return effect->GetTechniqueByName(technique);
+		}
 
-		HRESULT		c_gbuffer_debug_effect::AllocateResources(IDirect3DDevice9* device, uint32 width, uint32 height)
-		{			
-			m_technique_single =	m_effect->GetTechniqueByName("DebugRTSingle");
-			m_technique_all =		m_effect->GetTechniqueByName("DebugRTAll");
-
-			m_target_handle =		m_effect->GetParameterByName(NULL, "RenderTarget");
-
-			bool variable_used;
-			m_depth_set =			c_gbuffer_system::GBuffer().SetDepth(m_effect, variable_used);
-			m_velocity_set =		c_gbuffer_system::GBuffer().SetVelocity(m_effect, variable_used);
-			m_normals_set =			c_gbuffer_system::GBuffer().SetNormals(m_effect, variable_used);
-			m_index_set =			c_gbuffer_system::GBuffer().SetIndex(m_effect, variable_used);
-
+		HRESULT		c_gbuffer_fullscreen_effect::AllocateResources(IDirect3DDevice9* device, uint32 width, uint32 height)
+		{
 			TEXTURE_VERTEX quad[4] = 
 			{
 				{ -0.5f,			-0.5f,			1.0f, 1.0f, 0.0f, 0.0f },
@@ -163,33 +173,61 @@ namespace Yelo
 			};
 			memcpy_s(m_vertices, sizeof(m_vertices), quad, sizeof(quad));
 
+			return S_OK;
+		}
+		void		c_gbuffer_fullscreen_effect::ReleaseResources()
+		{
+			safe_release(m_effect);
+		}
+		void		c_gbuffer_fullscreen_effect::OnLostDevice()
+		{
+			if(m_effect)
+				m_effect->OnLostDevice();
+		}
+		HRESULT		c_gbuffer_fullscreen_effect::OnResetDevice()
+		{
+			HRESULT hr = S_OK;
+			if(m_effect)
+				hr = m_effect->OnResetDevice();
+			return hr;
+		}
+		bool		c_gbuffer_fullscreen_effect::IsAvailable()
+		{
+			return m_effect != NULL;
+		}
+
+		HRESULT		c_gbuffer_debug_effect::AllocateResources(IDirect3DDevice9* device, uint32 width, uint32 height)
+		{		
+			c_gbuffer_fullscreen_effect::AllocateResources(device, width, height);
+
+			m_technique_single =	m_effect->GetTechniqueByName("DebugRTSingle");
+			m_technique_all =		m_effect->GetTechniqueByName("DebugRTAll");
+			
+			m_far_clip_handle =		m_effect->GetParameterByName(NULL, "FarClipDistance");
+			m_target_handle =		m_effect->GetParameterByName(NULL, "RenderTarget");
+
+			bool variable_used;
+			m_depth_set =			c_gbuffer_system::GBuffer().SetDepth(m_effect, variable_used);
+			m_velocity_set =		c_gbuffer_system::GBuffer().SetVelocity(m_effect, variable_used);
+			m_normals_set =			c_gbuffer_system::GBuffer().SetNormals(m_effect, variable_used);
+			m_index_set =			c_gbuffer_system::GBuffer().SetIndex(m_effect, variable_used);
+
 			return (IsAvailable() ? S_OK : E_FAIL);
 		}
 		void		c_gbuffer_debug_effect::ReleaseResources()
 		{
-			safe_release(m_effect);
+			c_gbuffer_fullscreen_effect::ReleaseResources();
 			
 			m_technique_single = NULL;
 			m_technique_all = NULL;
 
+			m_far_clip_handle = NULL;
 			m_target_handle = NULL;
 
 			m_depth_set = false;
 			m_velocity_set = false;
 			m_normals_set = false;
 			m_index_set = false;
-		}
-		void		c_gbuffer_debug_effect::OnLostDevice()
-		{
-			if(m_effect)
-				m_effect->OnLostDevice();
-		}
-		HRESULT		c_gbuffer_debug_effect::OnResetDevice()
-		{
-			HRESULT hr = S_OK;
-			if(m_effect)
-				hr = m_effect->OnResetDevice();
-			return hr;
 		}
 		void		c_gbuffer_debug_effect::Render(IDirect3DDevice9* device, int16 debug_target)
 		{
@@ -222,6 +260,7 @@ namespace Yelo
 			m_effect->SetTechnique( debug_target == NONE ? 
 				m_technique_all : m_technique_single);
 
+			m_effect->SetFloat(m_far_clip_handle, Rasterizer::RenderGlobals()->frustum.z_far);
 			m_effect->SetInt(m_target_handle, debug_target);
 
 			m_effect->Begin( &cPasses, 0 );
@@ -244,14 +283,72 @@ namespace Yelo
 		bool		c_gbuffer_debug_effect::IsAvailable()
 		{
 			return (
-				(m_effect != NULL) &&
+				c_gbuffer_fullscreen_effect::IsAvailable() &&
 				(m_technique_single != NULL) &&
 				(m_technique_all != NULL) &&
+				(m_far_clip_handle != NULL) &&
 				(m_target_handle != NULL) &&
 				m_depth_set &&
 				m_velocity_set &&
 				m_normals_set &&
 				m_index_set
+				);
+		}
+
+		HRESULT		c_gbuffer_rtclear_effect::AllocateResources(IDirect3DDevice9* device, uint32 width, uint32 height)
+		{		
+			c_gbuffer_fullscreen_effect::AllocateResources(device, width, height);
+
+			m_multi_rt.clear_technique = GetTechnique(m_effect, m_multi_rt.count, "Clear", "ALL");
+
+			return (IsAvailable() ? S_OK : E_FAIL);
+		}
+		void		c_gbuffer_rtclear_effect::ReleaseResources()
+		{
+			c_gbuffer_fullscreen_effect::ReleaseResources();
+			
+			m_multi_rt.clear_technique = NULL;
+		}
+		void		c_gbuffer_rtclear_effect::Render(IDirect3DDevice9* device)
+		{
+			if(!IsAvailable()) return;
+
+			DWORD old_fillmode, old_zwriteenable;
+
+			device->GetRenderState(D3DRS_FILLMODE, &old_fillmode);
+			device->GetRenderState(D3DRS_ZWRITEENABLE, &old_zwriteenable);	
+
+			device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
+			device->SetRenderState(D3DRS_ZWRITEENABLE, false);
+			
+			UINT cPasses, p;
+			device->SetFVF( D3DFVF_XYZRHW | D3DFVF_TEX1 );
+
+			m_effect->SetTechnique(m_multi_rt.clear_technique);
+
+			m_effect->Begin( &cPasses, 0 );
+			for( p = 0; p < cPasses; ++p )
+			{	
+				for(uint32 i = 0; i < m_multi_rt.count; i++)
+					device->SetRenderTarget(i, m_multi_rt.output[p][i]);
+
+				m_effect->BeginPass( p );
+				device->DrawPrimitiveUP( D3DPT_TRIANGLESTRIP, 2, m_vertices, sizeof( TEXTURE_VERTEX ) );
+				m_effect->EndPass();
+				
+				for(uint32 i = 1; i < m_multi_rt.count; i++)
+					device->SetRenderTarget(i, NULL);
+			}
+			m_effect->End();
+
+			device->SetRenderState(D3DRS_FILLMODE, old_fillmode);
+			device->SetRenderState(D3DRS_ZWRITEENABLE, old_zwriteenable);
+		}
+		bool		c_gbuffer_rtclear_effect::IsAvailable()
+		{
+			return (
+				c_gbuffer_fullscreen_effect::IsAvailable() &&
+				(m_multi_rt.clear_technique != NULL)
 				);
 		}
 		//////////////////////////////////////////////////////////////////////
@@ -309,6 +406,70 @@ namespace Yelo
 				jmp		RETN_ADDRESS
 			}
 		}
+		API_FUNC_NAKED void c_gbuffer_system::Hook_RenderObject_GetCurrentLOD()
+		{
+			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RENDER_OBJECT_OBJECT_LOD_HOOK_RETN);
+
+			_asm{
+				mov     ecx, [ebp+28h]
+				mov     eax, [ebp+1Ch]
+
+				push	eax
+				mov		eax, [ebp-8]
+				mov		c_gbuffer_system::g_current_object_lod, eax
+				pop		eax
+
+				jmp		RETN_ADDRESS
+			};
+		}
+
+		// hooks for contolling when to disable velocity
+		API_FUNC_NAKED void c_gbuffer_system::Hook_CommandCameraSet()
+		{
+			static uint32 RETN_ADDRESS = GET_FUNC_PTR(COMMAND_CAMERA_SET_HOOK_RETN);
+
+			_asm{
+				lea     edx, [esi+28h]
+				mov     eax, [edx]
+
+				push	eax
+				mov		eax, [ebp+8]
+				cmp		eax, 0x00000000
+				jg		skip_disable_velocity
+				mov		c_gbuffer_system::g_output_velocity, 0
+skip_disable_velocity:
+				pop		eax
+				jmp		RETN_ADDRESS
+			};
+		}
+
+		API_FUNC_NAKED void c_gbuffer_system::Hook_CommandSwitchBSP()
+		{
+			static uint32 RETN_ADDRESS = GET_FUNC_PTR(COMMAND_SWITCH_BSP_HOOK_RETN);
+
+			_asm{
+				cmp     si, dx
+				mov     [esp+7], bl
+				
+				mov		c_gbuffer_system::g_output_velocity, 0
+
+				jmp		RETN_ADDRESS
+			};
+		}
+
+		API_FUNC_NAKED void c_gbuffer_system::Hook_CommandGameSave()
+		{
+			static uint32 RETN_ADDRESS = GET_FUNC_PTR(COMMAND_GAME_SAVE_HOOK_RETN);
+
+			_asm{
+				mov		c_gbuffer_system::g_output_velocity, 0
+
+				mov     ecx, [esp+8]
+				xor     eax, eax
+				jmp		RETN_ADDRESS
+			};
+		}
+
 
 		void		c_gbuffer_system::Ctor(cstring package_file)
 		{
@@ -323,6 +484,11 @@ namespace Yelo
 			strcat_s(file_string, MAX_PATH, "shaders\\gbuffer_shaders.shd");
 
 			g_default_system.Ctor(file_string);
+
+			c_gbuffer_system::g_output_object_tbn = false;
+			c_gbuffer_system::g_output_object_velocity = false;
+
+			c_gbuffer_system::g_output_velocity = true;
 			
 
 			Memory::WriteRelativeJmp(&Hook_RenderWindow, 
@@ -334,6 +500,15 @@ namespace Yelo
 				GET_FUNC_VPTR(RENDER_OBJECT_LIST_END_HOOK), true);
 			Memory::WriteRelativeJmp(&Hook_FirstPersonWeaponDraw_GetObjectIndex, 
 				GET_FUNC_VPTR(FIRST_PERSON_WEAPON_DRAW_HOOK), true);
+			Memory::WriteRelativeJmp(&Hook_RenderObject_GetCurrentLOD, 
+				GET_FUNC_VPTR(RENDER_OBJECT_OBJECT_LOD_HOOK), true);
+			
+			Memory::WriteRelativeJmp(&Hook_CommandCameraSet, 
+				GET_FUNC_VPTR(COMMAND_CAMERA_SET_HOOK), true);
+			Memory::WriteRelativeJmp(&Hook_CommandSwitchBSP, 
+				GET_FUNC_VPTR(COMMAND_SWITCH_BSP_HOOK), true);
+			Memory::WriteRelativeJmp(&Hook_CommandGameSave, 
+				GET_FUNC_VPTR(COMMAND_GAME_SAVE_HOOK), true);
 
 			char NOP = 0x90;
 			byte* call_address;
@@ -424,13 +599,17 @@ namespace Yelo
 
 			D3DXMATRIX WorldViewT;
 			Matricies.world_view_transpose->ConvertTo4x4(WorldViewT);
-			pDevice->SetVertexShaderConstantF(96+4, WorldViewT, 4); 
+			pDevice->SetVertexShaderConstantF(100, WorldViewT, 3);
+
+			D3DXVECTOR4 linear_depth_mul;
+			linear_depth_mul.x = pow(Rasterizer::RenderGlobals()->frustum.z_far, -1.0f);
+			pDevice->SetVertexShaderConstantF(103, linear_depth_mul, 1);
 
 			// We don't want to write to the Z-Buffer as it's already been done
 			DWORD ZWriteEnable;
 			pDevice->GetRenderState(D3DRS_ZWRITEENABLE, &ZWriteEnable);
 			pDevice->SetRenderState(D3DRS_ZWRITEENABLE, false);
-
+			
 			hr = g_default_system.DrawIndexedPrimitive_Impl(pDevice, Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
 
 			pDevice->SetRenderState(D3DRS_ZWRITEENABLE, ZWriteEnable);
@@ -466,7 +645,7 @@ namespace Yelo
 				(g_current_render_state == Enums::_render_progress_sky || g_current_render_state == Enums::_render_progress_objects))
 			{
 				hr &= g_default_system.DrawIndexedPrimitive_ObjectImpl(pDevice, Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
-				hr &= DrawIndexedPrimitive(pDevice, Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);				
+				hr &= DrawIndexedPrimitive(pDevice, Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
 			}
 
 			return hr;
@@ -508,6 +687,7 @@ namespace Yelo
 			if(m_gbuffer_ps) m_gbuffer_ps->OnLostDevice();
 			if(m_gbuffer_vs) m_gbuffer_vs->OnLostDevice();
 
+			GBufferClear().OnLostDevice();
 			GBufferDebug().OnLostDevice();
 
 			ReleaseResources();
@@ -519,9 +699,9 @@ namespace Yelo
 			if(m_gbuffer_ps) m_gbuffer_ps->OnResetDevice();
 			if(m_gbuffer_vs) m_gbuffer_vs->OnResetDevice();
 
+			GBufferClear().OnResetDevice();
 			GBufferDebug().OnResetDevice();
 		}
-
 		void		c_gbuffer_system::AllocateResources(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* params)
 		{
 			if(FAILED(pDevice->TestCooperativeLevel()))
@@ -534,6 +714,7 @@ namespace Yelo
 			if(FAILED(LoadEffect(pDevice, &m_gbuffer_ps,		"GBuffer_PS")))		return;
 			if(FAILED(LoadEffect(pDevice, &m_gbuffer_vs,		"GBuffer_VS")))		return;
 
+			if(FAILED(LoadEffect(pDevice, &GBufferClear().GetEffect(),	"GBuffer_Clear")))	return;
 			if(FAILED(LoadEffect(pDevice, &GBufferDebug().GetEffect(),	"GBuffer_Debug")))	return;
 
 			// Create the position texture
@@ -543,45 +724,57 @@ namespace Yelo
 			// Create the normals texture
 			m_gbuffer.m_rt_normals_index.CreateTarget(pDevice, params->BackBufferWidth, params->BackBufferHeight, D3DFMT_A8R8G8B8);
 
-			if(FAILED(GBufferDebug().AllocateResources(pDevice, params->BackBufferWidth, params->BackBufferHeight)))
-				return;
-
-			m_structures.vs_technique_bsp = m_gbuffer_vs->GetTechniqueByName("BSP_VS");
-			m_structures.vs_technique_object = m_gbuffer_vs->GetTechniqueByName("Object_VS");
-
-			m_multi_rt.bsp_techniques[0] = m_gbuffer_ps->GetTechniqueByName("MRT2_BSP");
-			m_multi_rt.bsp_techniques[1] = m_gbuffer_ps->GetTechniqueByName("MRT3_BSP");
-			m_multi_rt.object_techniques[0] = m_gbuffer_ps->GetTechniqueByName("MRT2_Object");
-			m_multi_rt.object_techniques[1] = m_gbuffer_ps->GetTechniqueByName("MRT3_Object");
-
 			m_multi_rt.count = (device_caps.NumSimultaneousRTs > k_maximum_multi_render_target ? 
 				k_maximum_multi_render_target : device_caps.NumSimultaneousRTs);
+
+			GBufferClear().m_multi_rt.count = m_multi_rt.count;
 
 			// cant alpha test and put data in the alpha channel with 1 render target
 			if(m_multi_rt.count == 1)
 				return;
 
+			if(FAILED(GBufferClear().AllocateResources(pDevice, params->BackBufferWidth, params->BackBufferHeight)))
+				return;			
+			if(FAILED(GBufferDebug().AllocateResources(pDevice, params->BackBufferWidth, params->BackBufferHeight)))
+				return;
+
+			m_structures.vs_bsp_techniques.n = GetTechnique(m_gbuffer_vs, "BSP", "N");
+			m_structures.vs_bsp_techniques.n_v = GetTechnique(m_gbuffer_vs, "BSP", "N_V");
+			m_structures.vs_object_techniques.n = GetTechnique(m_gbuffer_vs, "Object", "N");
+			m_structures.vs_object_techniques.tbn = GetTechnique(m_gbuffer_vs, "Object", "TBN");
+			m_structures.vs_object_techniques.n_v = GetTechnique(m_gbuffer_vs, "Object", "N_V");
+			m_structures.vs_object_techniques.tbn_v = GetTechnique(m_gbuffer_vs, "Object", "TBN_V");
+			m_structures.vs_object_techniques.none = GetTechnique(m_gbuffer_vs, "Object", "NONE");
+
+			m_structures.ps_bsp_techniques.n = GetTechnique(m_gbuffer_ps, m_multi_rt.count, "BSP", "N");
+			m_structures.ps_bsp_techniques.n_v = GetTechnique(m_gbuffer_ps, m_multi_rt.count, "BSP", "N_V");
+			m_structures.ps_object_techniques.n = GetTechnique(m_gbuffer_ps, m_multi_rt.count, "Object", "N");
+			m_structures.ps_object_techniques.tbn = GetTechnique(m_gbuffer_ps, m_multi_rt.count, "Object", "TBN");
+			m_structures.ps_object_techniques.n_v = GetTechnique(m_gbuffer_ps, m_multi_rt.count, "Object", "N_V");
+			m_structures.ps_object_techniques.tbn_v = GetTechnique(m_gbuffer_ps, m_multi_rt.count, "Object", "TBN_V");
+			m_structures.ps_object_techniques.none = GetTechnique(m_gbuffer_ps, m_multi_rt.count, "Object", "NONE");
+			
 			switch (m_multi_rt.count)
 			{
 			case 2:
 				m_multi_rt.output[0][0] = (m_gbuffer.m_rt_depth.IsEnabled()	?			m_gbuffer.m_rt_depth.surface : NULL);
 				m_multi_rt.output[1][0] = (m_gbuffer.m_rt_velocity.IsEnabled() ?		m_gbuffer.m_rt_velocity.surface : NULL);
 				m_multi_rt.output[1][1] = (m_gbuffer.m_rt_normals_index.IsEnabled() ?	m_gbuffer.m_rt_normals_index.surface : NULL);
+
+				GBufferClear().m_multi_rt.output[0][0] = m_multi_rt.output[0][0];
+				GBufferClear().m_multi_rt.output[1][0] = m_multi_rt.output[1][0];
+				GBufferClear().m_multi_rt.output[1][1] = m_multi_rt.output[1][1];
+				break;
 			default:
 				m_multi_rt.output[0][0] = (m_gbuffer.m_rt_depth.IsEnabled() ?			m_gbuffer.m_rt_depth.surface : NULL);
 				m_multi_rt.output[0][1] = (m_gbuffer.m_rt_velocity.IsEnabled() ?		m_gbuffer.m_rt_velocity.surface : NULL);
 				m_multi_rt.output[0][2] = (m_gbuffer.m_rt_normals_index.IsEnabled() ?	m_gbuffer.m_rt_normals_index.surface : NULL);
+
+				GBufferClear().m_multi_rt.output[0][0] = m_multi_rt.output[0][0];
+				GBufferClear().m_multi_rt.output[0][1] = m_multi_rt.output[0][1];
+				GBufferClear().m_multi_rt.output[0][2] = m_multi_rt.output[0][2];
 				break;
 			}
-			
-			m_parameters.far_clip =					m_gbuffer_ps->GetParameterByName(NULL, "FarClipDistance");
-			m_parameters.is_sky =					m_gbuffer_ps->GetParameterByName(NULL, "IsSky");
-			m_parameters.sample_normal_texture =	m_gbuffer_ps->GetParameterByName(NULL, "SampleNormalTexture");
-			m_parameters.do_velocity =				m_gbuffer_ps->GetParameterByName(NULL, "DoVelocity");
-			m_parameters.velocity_multiplier =		m_gbuffer_ps->GetParameterByName(NULL, "VelocityMultiplier");
-
-			m_parameters.mesh_type_index =			m_gbuffer_ps->GetParameterByName(NULL, "MeshTypeIndex");
-			m_parameters.owner_team_index =			m_gbuffer_ps->GetParameterByName(NULL, "OwnerTeamIndex");
 
 			g_current_render_state = Enums::_render_progress_none;
 			m_is_loaded = true;			
@@ -594,6 +787,7 @@ namespace Yelo
 			Yelo::safe_release(m_gbuffer_ps);
 			Yelo::safe_release(m_gbuffer_vs);
 
+			GBufferClear().ReleaseResources();
 			GBufferDebug().ReleaseResources();
 
 			m_is_loaded = false;
@@ -619,12 +813,16 @@ namespace Yelo
 			m_gbuffer_vs->BeginPass(0);
 
 			m_gbuffer_ps->Begin(&cPasses, 0);
+
 			for( p = 0; p < cPasses; ++p )
 			{ 
 				for(uint32 i = 0; i < m_multi_rt.count; i++)
 					pDevice->SetRenderTarget(i, m_multi_rt.output[p][i]);
 
 				m_gbuffer_ps->BeginPass(p);
+
+				pDevice->SetPixelShaderConstantF(0, g_pixel_shader_input, 1);
+
 				hr = pDevice->DrawIndexedPrimitive(Type,BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
 				m_gbuffer_ps->EndPass();
 
@@ -644,18 +842,25 @@ namespace Yelo
 			if(!m_is_loaded || !m_render_gbuffer || !g_system_enabled)
 				return S_OK;
 
-			m_gbuffer_vs->SetTechnique(m_structures.vs_technique_bsp);
-			m_gbuffer_ps->SetTechnique(m_multi_rt.bsp_techniques[m_multi_rt.count - 2]);
-			real DT = GameState::MainGlobals()->delta_time;
-			real BT = 1.0f / 30.0f;
-			real Multiplier = BT / DT;
-			m_gbuffer_ps->SetFloat(m_parameters.velocity_multiplier, Multiplier);
-			m_gbuffer_ps->SetFloat(m_parameters.far_clip, Rasterizer::RenderGlobals()->frustum.z_far);
-			m_gbuffer_ps->SetBool(m_parameters.is_sky, false);
-			m_gbuffer_ps->SetBool(m_parameters.do_velocity, true);
-			m_gbuffer_ps->SetBool(m_parameters.sample_normal_texture, true);
-			m_gbuffer_ps->SetInt(m_parameters.mesh_type_index, 2);
-			m_gbuffer_ps->SetInt(m_parameters.owner_team_index, 0);
+			if(c_gbuffer_system::g_output_velocity)
+			{
+				m_gbuffer_vs->SetTechnique(m_structures.vs_bsp_techniques.n_v);
+				m_gbuffer_ps->SetTechnique(m_structures.ps_bsp_techniques.n_v);
+
+				real DT = GameState::MainGlobals()->delta_time;
+				real BT = 1.0f / 30.0f;
+				real Multiplier = BT / DT;
+				g_pixel_shader_input.z = Multiplier;
+			}
+			else
+			{
+				m_gbuffer_vs->SetTechnique(m_structures.vs_bsp_techniques.n);
+				m_gbuffer_ps->SetTechnique(m_structures.ps_bsp_techniques.n);
+				g_pixel_shader_input.z = 0.0f;
+			}
+
+			g_pixel_shader_input.x = 2.0f * (1.0f / 32.0f);
+			g_pixel_shader_input.y = 0.0f;
 
 			return S_OK;
 		}
@@ -664,12 +869,54 @@ namespace Yelo
 			int16 MeshIndex = 0;
 			int16 TeamIndex = 0;
 
-			m_gbuffer_vs->SetTechnique(m_structures.vs_technique_object);
-			m_gbuffer_ps->SetTechnique(m_multi_rt.object_techniques[m_multi_rt.count - 2]);
-			m_gbuffer_ps->SetFloat(m_parameters.far_clip, Rasterizer::RenderGlobals()->frustum.z_far);
-			m_gbuffer_ps->SetBool(m_parameters.is_sky, g_current_render_state == Enums::_render_progress_sky);
-			m_gbuffer_ps->SetBool(m_parameters.do_velocity, false);
-			m_gbuffer_ps->SetBool(m_parameters.sample_normal_texture, false);
+			if(c_gbuffer_system::g_current_object_lod < 2)
+			{
+				m_gbuffer_vs->SetTechnique(m_structures.vs_object_techniques.n);
+				m_gbuffer_ps->SetTechnique(m_structures.ps_object_techniques.n);
+			}
+			else if(g_current_render_state == Enums::_render_progress_sky)
+			{
+				m_gbuffer_vs->SetTechnique(m_structures.vs_object_techniques.none);
+				m_gbuffer_ps->SetTechnique(m_structures.ps_object_techniques.none);
+			}
+			else
+			{	
+				bool do_velocity = c_gbuffer_system::g_output_object_velocity && c_gbuffer_system::g_output_velocity;
+				if(c_gbuffer_system::g_output_object_tbn)
+				{
+					m_gbuffer_vs->SetTechnique(
+						(do_velocity ?
+							m_structures.vs_object_techniques.tbn_v : 
+							m_structures.vs_object_techniques.tbn));
+					
+					m_gbuffer_ps->SetTechnique(
+						(do_velocity ?
+							m_structures.ps_object_techniques.tbn_v :
+							m_structures.ps_object_techniques.tbn));
+				}
+				else
+				{
+					m_gbuffer_vs->SetTechnique(
+						(do_velocity ?
+							m_structures.vs_object_techniques.n_v :
+							m_structures.vs_object_techniques.n));
+					
+					m_gbuffer_ps->SetTechnique(
+						(do_velocity ?
+							m_structures.ps_object_techniques.n_v :
+							m_structures.ps_object_techniques.n));
+				}
+
+				if(do_velocity)
+				{
+					real DT = GameState::MainGlobals()->delta_time;
+					real BT = 1.0f / 30.0f;
+					real Multiplier = BT / DT;
+					g_pixel_shader_input.z = Multiplier;
+				}
+				else					
+					g_pixel_shader_input.z = 0.0f;
+			}
 
 			if(g_current_render_state == Enums::_render_progress_sky)
 				MeshIndex = 1;
@@ -689,8 +936,8 @@ namespace Yelo
 					TeamIndex += 9;					// Offset TeamIndex by 9 for MP teams
 			}
 
-			m_gbuffer_ps->SetInt(m_parameters.mesh_type_index, MeshIndex);
-			m_gbuffer_ps->SetInt(m_parameters.owner_team_index, TeamIndex);
+			g_pixel_shader_input.x = (float)MeshIndex * (1.0f / 32.0f);
+			g_pixel_shader_input.y = (float)TeamIndex * (1.0f / 32.0f);
 
 			return S_OK;
 		}
@@ -705,7 +952,7 @@ namespace Yelo
 			pDevice->GetRenderTarget(0, &origTarget);
 
 			// Clear our outputs
-			m_gbuffer.ClearTargets(pDevice);
+			GBufferClear().Render(pDevice);
 
 			// Set render target back to original
 			pDevice->SetRenderTarget(0, origTarget);
@@ -765,9 +1012,16 @@ namespace Yelo
 		c_gbuffer_system		c_gbuffer_system::g_default_system;
 		int16					c_gbuffer_system::g_debug_index;
 		bool					c_gbuffer_system::g_system_enabled;
-		Enums::render_progress	c_gbuffer_system::g_current_render_state;	// What is halo currently rendering
+		Enums::render_progress	c_gbuffer_system::g_current_render_state;
 		BOOL					c_gbuffer_system::g_wvp_stored;
 		D3DXMATRIX				c_gbuffer_system::g_previous_worldviewproj;
+		uint32					c_gbuffer_system::g_current_object_lod;
+		BOOL					c_gbuffer_system::g_output_object_tbn;
+		BOOL					c_gbuffer_system::g_output_object_velocity;
+		BOOL					c_gbuffer_system::g_output_velocity;
+		D3DXVECTOR4				c_gbuffer_system::g_pixel_shader_input;
+
+		BOOL&		c_gbuffer_system::OutputObjectTBN() { return c_gbuffer_system::g_output_object_tbn; }
 
 		//////////////////////////////////////////////////////////////////////
 		// c_gbuffer_system::render_progress
@@ -800,6 +1054,8 @@ namespace Yelo
 
 		void		c_gbuffer_system::render_progress::UIPreProcess()
 		{
+			if(!g_is_rendering_reflection)
+				c_gbuffer_system::g_output_velocity = true;
 			if(g_debug_index != 0)
 				g_default_system.RenderDebugQuad(DX9::Direct3DDevice());
 		}

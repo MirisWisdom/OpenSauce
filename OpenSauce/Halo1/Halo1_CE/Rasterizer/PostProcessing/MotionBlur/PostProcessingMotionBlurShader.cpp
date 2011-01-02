@@ -73,7 +73,10 @@ namespace Yelo
 				return E_FAIL;
 
 			m_blur_shader->blur_amount_var.Initialize(m_effect, "c_blur_amount", &m_blur_amount, false);
+			m_blur_shader->vignette_amount_var.Initialize(m_effect, "c_vignette_amount", &m_vignette.current_transition, false);
+
 			if(!m_blur_shader->blur_amount_var.IsUsed()) return E_FAIL;
+			if(!m_blur_shader->vignette_amount_var.IsUsed()) return E_FAIL;
 
 			return S_OK;
 		}
@@ -87,11 +90,13 @@ namespace Yelo
 		void        c_motionblur_shader::UnloadCustomResources()
 		{
 			m_blur_shader->blur_amount_var.ClearHandles();
+			m_blur_shader->vignette_amount_var.ClearHandles();
 		}
 
 		HRESULT		c_motionblur_shader::DoPreRender(IDirect3DDevice9* pDevice, double frame_time)
 		{			
 			m_blur_shader->blur_amount_var.SetVariable(m_effect, &m_blur_amount);
+			m_blur_shader->vignette_amount_var.SetVariable(m_effect, &m_vignette.current_transition);
 
 			return S_OK;
 		}
@@ -108,8 +113,26 @@ namespace Yelo
 			HRESULT hr = c_postprocess_shader::SetupShader();
 
 			m_blur_shader->blur_amount_var.ClearHandles();
+			m_blur_shader->vignette_amount_var.ClearHandles();
 
 			return hr;
+		}
+		
+		void		c_motionblur_shader::Update(real delta_time)
+		{
+			float change_amount = (1.0f / 0.25f) * delta_time;
+			if(m_vignette.enabled)
+			{
+				m_vignette.current_transition += change_amount;
+				if(m_vignette.current_transition > 1.0f)
+					m_vignette.current_transition = 1.0f;
+			}
+			else
+			{
+				m_vignette.current_transition -= change_amount;
+				if(m_vignette.current_transition < 0.0f)
+					m_vignette.current_transition = 0.0f;
+			}
 		}
 
 	}; }; };

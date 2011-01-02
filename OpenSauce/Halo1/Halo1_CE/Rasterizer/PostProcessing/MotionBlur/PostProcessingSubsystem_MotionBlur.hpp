@@ -55,7 +55,7 @@ namespace Yelo
 
 			static void			InitializeForNewMap() {}
 			static void			DisposeFromOldMap() {}
-			static void			Update(real DeltaTime) {}
+			static void			Update(real DeltaTime);
 			static bool			DoPostProcesses(IDirect3DDevice9* pDevice, float frame_time, Enums::postprocess_render_stage render_point) { return false; }
 
 			static bool			DoMotionBlurProcess(IDirect3DDevice9* pDevice, double frame_time);

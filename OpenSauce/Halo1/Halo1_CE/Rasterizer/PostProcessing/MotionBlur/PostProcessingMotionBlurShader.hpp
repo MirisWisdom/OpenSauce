@@ -31,14 +31,20 @@ namespace Yelo
 		struct s_shader_postprocess_motionblur : TagGroups::s_shader_postprocess_definition
 		{
 			TAG_FIELD(TagGroups::t_shader_variable_real,	blur_amount_var);
+			TAG_FIELD(TagGroups::t_shader_variable_real,	vignette_amount_var);
 
 			s_shader_postprocess_motionblur()	{}
 		};
 
 		struct c_motionblur_shader : public c_postprocess_shader
-		{			
+		{
 			s_shader_postprocess_motionblur*				m_blur_shader;
 			real											m_blur_amount;
+			struct {
+				bool enabled;
+				PAD24;
+				real current_transition;
+			}m_vignette;
 			
 		public:
 			HRESULT		LoadShader(IDirect3DDevice9* pDevice);
@@ -50,8 +56,10 @@ namespace Yelo
 			void		SetSource(void* pSource);
 			HRESULT		SetupShader();
 
+			void		Update(real delta_time);
+
 			void		Ctor()
-			{				
+			{
 				c_postprocess_shader::Ctor();
 
 				m_blur_shader = NULL;

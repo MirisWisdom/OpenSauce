@@ -104,6 +104,8 @@ static void InitializeMiscFunctions()
 		Postprocessing::HS_GetEffectIndexByName);
 	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_get_effect_current_fade, 
 		Postprocessing::HS_GetEffectCurrentFade);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_get_effect_fade_direction, 
+		Postprocessing::HS_GetEffectFadeDirection);
 	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_get_effect_is_valid, 
 		Postprocessing::HS_GetEffectIsValid);
 	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_get_effect_shader_variable_index_by_name, 
@@ -121,6 +123,7 @@ static void InitializeMiscFunctions()
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_fade) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_get_effect_index_by_name) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_get_effect_current_fade) );
+	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(_hs_function_pp_get_effect_fade_direction) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_get_effect_is_valid) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_get_effect_shader_variable_index_by_name) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_shader_variable_boolean) );
