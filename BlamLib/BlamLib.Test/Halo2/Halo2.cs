@@ -136,9 +136,9 @@ namespace BlamLib.Test
 				string test_results_path = EngineGetTestResultsPath(args.Game);
 
 				Blam.CacheFile.OutputStringIds(cache,
-					BuildResultPath(kTestResultsPath, args.Game, cache.Header.Name, "string_ids", "txt"), true);
+					BuildResultPath(test_results_path, args.Game, cache.Header.Name, "string_ids", "txt"), true);
 				Blam.CacheFile.OutputTags(cache,
-					BuildResultPath(kTestResultsPath, args.Game, cache.Header.Name, null, "txt"));
+					BuildResultPath(test_results_path, args.Game, cache.Header.Name, null, "txt"));
 			}
 		}
 		[TestMethod]
