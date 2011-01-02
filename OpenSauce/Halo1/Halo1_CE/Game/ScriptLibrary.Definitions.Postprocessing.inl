@@ -39,6 +39,10 @@
 		HS_TYPE(short)
 	);
 
+	HS_FUNCTION_WITH_PARAMS(pp_get_effect_fade_direction, short, "returns fade direction of an effect, -1 = no fade, 0 = fade out, 1 = fade in", "<effect-index>",1,
+		HS_TYPE(short)
+	);
+
 	HS_FUNCTION_WITH_PARAMS(pp_get_effect_is_valid, bool, "returns whether an effect is valid and ready to use", "<effect-index>",1,
 		HS_TYPE(short)
 	);

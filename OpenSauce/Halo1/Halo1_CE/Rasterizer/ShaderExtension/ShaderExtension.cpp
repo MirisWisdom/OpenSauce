@@ -40,6 +40,7 @@
 #include "TagGroups/TagGroups.hpp"
 #include <TagGroups/Halo1/shader_definitions.hpp>
 #include <TagGroups/Halo1/bitmap_definitions.hpp>
+#include "Rasterizer/GBuffer.hpp"
 
 namespace Yelo
 {
@@ -60,7 +61,12 @@ namespace Yelo
 				_ps_2_x_support
 			};
 
-			struct s_shader_variables {
+			struct s_vertex_shader_variables {
+				real_vector2d	detail_normal_1_scale;
+				real_vector2d	detail_normal_2_scale;
+			};
+
+			struct s_pixel_shader_variables {
 				real	specular_color_interp;
 				real	base_normal_interp;
 				real	detail_normal_1_interp;
@@ -72,8 +78,8 @@ namespace Yelo
 				real	detail_normal_2_multiplier;
 
 				real	specular_color_power;
-				real	detail_normal_1_scale;
-				real	detail_normal_2_scale;
+				real	base_normal_z_multiplier;
+				PAD32;
 				PAD32;
 			};
 
@@ -83,9 +89,21 @@ namespace Yelo
 			static const char* g_ps_collection_format_b =	"shaders\\EffectCollection_ps_%d_b.enc";
 			static const char* g_vs_collection_path =		"shaders\\vsh_OS.enc";
 
-			static bool					g_shader_files_present = false;
-			static ps_2_x_support		g_ps_support = _ps_2_x_support_none;
-			static s_shader_variables	g_shader_variables;
+			static bool							g_shader_files_present = false;
+			static ps_2_x_support				g_ps_support = _ps_2_x_support_none;
+			static s_vertex_shader_variables	g_vertex_shader_variables;
+			static s_pixel_shader_variables		g_pixel_shader_variables;
+
+			API_FUNC_NAKED static void Hook_RenderObject_ForceInvertBackfaceNormals()
+			{
+				static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_DRAW_INVERT_BACKFACE_NORMALS_CHECK_RETN);
+				_asm{
+					mov     al, 1
+					test    al, al
+
+					jmp		RETN_ADDRESS
+				};
+			}
 
 			void		SetTexture(IDirect3DDevice9* pDevice, uint16 sampler, datum_index bitmap_tag_index)
 			{
@@ -106,14 +124,18 @@ namespace Yelo
 			void PLATFORM_API SetModelNormSpec(void* shader_pointer)
 			{				
 				// reset to defaults
-				memset(&g_shader_variables, 0, sizeof(g_shader_variables));
-				g_shader_variables.specular_color_multiplier = 1.0f;
-				g_shader_variables.base_normal_multiplier = 1.0f;
-				g_shader_variables.detail_normal_1_multiplier = 1.0f;
-				g_shader_variables.detail_normal_2_multiplier = 1.0f;
+				memset(&g_vertex_shader_variables, 0, sizeof(g_vertex_shader_variables));
+				memset(&g_pixel_shader_variables, 0, sizeof(g_pixel_shader_variables));
+				g_pixel_shader_variables.specular_color_multiplier = 1.0f;
+				g_pixel_shader_variables.base_normal_multiplier = 1.0f;
+				g_pixel_shader_variables.detail_normal_1_multiplier = 1.0f;
+				g_pixel_shader_variables.detail_normal_2_multiplier = 1.0f;
+				g_pixel_shader_variables.base_normal_z_multiplier = 1.0f;
 
 				TagGroups::s_shader_definition* shader_base = 
 					CAST_PTR(TagGroups::s_shader_definition*, shader_pointer);
+
+				DX9::c_gbuffer_system::OutputObjectTBN() = false;
 
 				if(shader_base->shader.shader_type == Enums::_shader_type_model)
 				{
@@ -125,9 +147,14 @@ namespace Yelo
 						// setup base normal map
 						if(!extension.base_normal.map.tag_index.IsNull())
 						{
+							DX9::c_gbuffer_system::OutputObjectTBN() = true;
+
 							SetTexture(Yelo::DX9::Direct3DDevice(), 4, extension.base_normal.map.tag_index); 
-							g_shader_variables.base_normal_interp = 1.0f;
-							g_shader_variables.base_normal_multiplier = extension.base_normal.modifiers.multiplier;
+							g_pixel_shader_variables.base_normal_interp = 1.0f;
+							g_pixel_shader_variables.base_normal_multiplier = extension.base_normal.modifiers.multiplier;
+
+							real z_multiplier = max(1.0f / extension.base_normal.modifiers.multiplier, 0.0f);
+							g_pixel_shader_variables.base_normal_z_multiplier = min(z_multiplier, 1.0f);
 						}
 						else
 							Yelo::DX9::Direct3DDevice()->SetTexture(4, NULL);
@@ -136,9 +163,11 @@ namespace Yelo
 						if(!extension.detail_normals[0].map.tag_index.IsNull())
 						{
 							SetTexture(Yelo::DX9::Direct3DDevice(), 5, extension.detail_normals[0].map.tag_index); 
-							g_shader_variables.detail_normal_1_interp = 1.0f;
-							g_shader_variables.detail_normal_1_multiplier = extension.detail_normals[0].modifiers.multiplier;
-							g_shader_variables.detail_normal_1_scale = extension.detail_normals[0].modifiers.scale;
+							g_pixel_shader_variables.detail_normal_1_interp = 1.0f;
+							g_pixel_shader_variables.detail_normal_1_multiplier = extension.detail_normals[0].modifiers.multiplier;
+
+							g_vertex_shader_variables.detail_normal_1_scale.Set(extension.detail_normals[0].modifiers.scale, 
+								extension.detail_normals[0].modifiers.scale * extension.detail_normals[0].modifiers.v_scale);
 						}
 						else
 							Yelo::DX9::Direct3DDevice()->SetTexture(5, NULL);
@@ -147,9 +176,11 @@ namespace Yelo
 						if(!extension.detail_normals[1].map.tag_index.IsNull())
 						{
 							SetTexture(Yelo::DX9::Direct3DDevice(), 6, extension.detail_normals[1].map.tag_index); 
-							g_shader_variables.detail_normal_2_interp = 1.0f;
-							g_shader_variables.detail_normal_2_multiplier = extension.detail_normals[1].modifiers.multiplier;
-							g_shader_variables.detail_normal_2_scale = extension.detail_normals[1].modifiers.scale;
+							g_pixel_shader_variables.detail_normal_2_interp = 1.0f;
+							g_pixel_shader_variables.detail_normal_2_multiplier = extension.detail_normals[1].modifiers.multiplier;
+							
+							g_vertex_shader_variables.detail_normal_2_scale.Set(extension.detail_normals[1].modifiers.scale, 
+								extension.detail_normals[1].modifiers.scale * extension.detail_normals[1].modifiers.v_scale);
 						}
 						else
 							Yelo::DX9::Direct3DDevice()->SetTexture(6, NULL);
@@ -158,9 +189,9 @@ namespace Yelo
 						if(!extension.specular_color.map.tag_index.IsNull())
 						{
 							SetTexture(Yelo::DX9::Direct3DDevice(), 7, extension.specular_color.map.tag_index); 
-							g_shader_variables.specular_color_interp = 1.0f;
-							g_shader_variables.specular_color_multiplier = extension.specular_color.modifiers.multiplier;
-							g_shader_variables.specular_color_power = extension.specular_color.modifiers.power;
+							g_pixel_shader_variables.specular_color_interp = 1.0f;
+							g_pixel_shader_variables.specular_color_multiplier = extension.specular_color.modifiers.multiplier;
+							g_pixel_shader_variables.specular_color_power = extension.specular_color.modifiers.power;
 						}
 						else
 							Yelo::DX9::Direct3DDevice()->SetTexture(7, NULL);
@@ -174,9 +205,14 @@ namespace Yelo
 					// setup base normal map
 					if(!shader_environment->environment.bump_map.tag_index.IsNull())
 					{
+						DX9::c_gbuffer_system::OutputObjectTBN() = true;
+
 						SetTexture(Yelo::DX9::Direct3DDevice(), 4, shader_environment->environment.bump_map.tag_index); 
-						g_shader_variables.base_normal_interp = 1.0f;
-						g_shader_variables.base_normal_multiplier = shader_environment->environment.bump_map_scale;
+						g_pixel_shader_variables.base_normal_interp = 1.0f;
+						g_pixel_shader_variables.base_normal_multiplier = shader_environment->environment.bump_map_scale;
+
+						real z_multiplier = max(1.0f / shader_environment->environment.bump_map_scale, 0.0f);
+						g_pixel_shader_variables.base_normal_z_multiplier = min(z_multiplier, 1.0f);
 					}
 					else
 						Yelo::DX9::Direct3DDevice()->SetTexture(4, NULL);
@@ -191,7 +227,8 @@ namespace Yelo
 					Yelo::DX9::Direct3DDevice()->SetTexture(6, NULL);
 					Yelo::DX9::Direct3DDevice()->SetTexture(7, NULL);
 				}
-				Yelo::DX9::Direct3DDevice()->SetPixelShaderConstantF(0 + k_shader_constant_offset, (float*)&g_shader_variables, k_vector_4_count);
+				Yelo::DX9::Direct3DDevice()->SetPixelShaderConstantF(0 + k_shader_constant_offset, (float*)&g_pixel_shader_variables, k_vector_4_count);
+				Yelo::DX9::Direct3DDevice()->SetVertexShaderConstantF(13, (float*)&g_vertex_shader_variables, 1);
 			}
 
 			void PLATFORM_API ShaderSetupOverride_Model_ShaderEnvironment(void* shader_pointer, void* arg2, void* arg3, void* arg4, void* arg5, void* arg6, void* arg7)
@@ -243,6 +280,8 @@ namespace Yelo
 
 				// replace the sprintf call to intercept the collection path creation and edit it as necessary
 				Memory::WriteRelativeCall(&BuildEffectCollectionPath, GET_FUNC_VPTR(RASTERIZER_DX9_SHADERS_EFFECT_SHADERS_INITIALIZE__SPRINTF_CALL), true);
+				// Forces the backface normals of a two sided face to be inverted to fix lighting issues on trees
+				Memory::WriteRelativeJmp(&Hook_RenderObject_ForceInvertBackfaceNormals, GET_FUNC_VPTR(RASTERIZER_MODEL_DRAW_INVERT_BACKFACE_NORMALS_CHECK_HOOK), true);
 			}
 
 			HRESULT		SetVertexShaderConstantF(IDirect3DDevice9* pDevice, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount)

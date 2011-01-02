@@ -48,6 +48,9 @@ namespace Yelo
 
 	namespace DX9
 	{
+		enum {
+			k_maximum_multi_render_target = 3,
+		};
 		//////////////////////////////////////////////////////////////////////
 		// Container for holding all members of the GBuffer					//
 		//////////////////////////////////////////////////////////////////////
@@ -98,14 +101,30 @@ namespace Yelo
 			}
 		};
 
-		class c_gbuffer_debug_effect
+		class c_gbuffer_fullscreen_effect
 		{
+		protected:
 			LPD3DXEFFECT	m_effect;
 			TEXTURE_VERTEX	m_vertices[4];
 
+		public:
+			virtual HRESULT	AllocateResources(IDirect3DDevice9* device, uint32 width, uint32 height);
+			void			ReleaseResources();
+
+			void			OnLostDevice();
+			HRESULT			OnResetDevice();
+			virtual void	Render(IDirect3DDevice9* device) {}
+
+			virtual bool	IsAvailable();
+			LPD3DXEFFECT&	GetEffect() { return m_effect; }	
+		};
+
+		class c_gbuffer_debug_effect : public c_gbuffer_fullscreen_effect
+		{
 			D3DXHANDLE		m_technique_single;
 			D3DXHANDLE		m_technique_all;
 
+			D3DXHANDLE		m_far_clip_handle;
 			D3DXHANDLE		m_target_handle;
 
 			bool			m_depth_set;
@@ -116,14 +135,29 @@ namespace Yelo
 			HRESULT			AllocateResources(IDirect3DDevice9* device, uint32 width, uint32 height);
 			void			ReleaseResources();
 
-			void			OnLostDevice();
-			HRESULT			OnResetDevice();
 			void			Render(IDirect3DDevice9* device, int16 debug_target);
 
-			bool			IsAvailable();
-			LPD3DXEFFECT&	GetEffect() { return m_effect; }	
+			bool			IsAvailable();	
 		};
 		static c_gbuffer_debug_effect& GBufferDebug();
+
+		class c_gbuffer_rtclear_effect : public c_gbuffer_fullscreen_effect
+		{
+		public:
+			struct {
+				D3DXHANDLE clear_technique;
+				s_render_target_output output[k_maximum_multi_render_target];
+				uint32 count;
+			}m_multi_rt;
+
+			HRESULT			AllocateResources(IDirect3DDevice9* device, uint32 width, uint32 height);
+			void			ReleaseResources();
+
+			void			Render(IDirect3DDevice9* device);
+
+			bool			IsAvailable();	
+		};
+		static c_gbuffer_rtclear_effect& GBufferClear();
 		
 		class c_gbuffer_system
 		{
@@ -132,14 +166,14 @@ namespace Yelo
 			static bool g_system_enabled; // Configured from the user settings
 
 		private:
-			enum {
-				k_mrt_technique_count = 2,
-				k_maximum_multi_render_target = 3,
-			};
-
 			static Enums::rasterizer_vertex_shader const kValidShaders[];
 
 			static Enums::render_progress	g_current_render_state;						// What is halo currently rendering
+			
+			static BOOL						g_output_object_tbn;
+			static BOOL						g_output_object_velocity;
+			static BOOL						g_output_velocity;
+			static D3DXVECTOR4				g_pixel_shader_input;
 			
 			static BOOL						g_wvp_stored;
 			static D3DXMATRIX				g_previous_worldviewproj;					// WVP for the previous frame (for BSP velocity)
@@ -151,6 +185,13 @@ namespace Yelo
 			static void Hook_RenderObjectList_GetObjectIndex();
 			static void Hook_RenderObjectList_ClearObjectIndex();
 			static void Hook_FirstPersonWeaponDraw_GetObjectIndex();
+			
+			static uint32					g_current_object_lod;						// the LOD of the current object being rendered
+			static void Hook_RenderObject_GetCurrentLOD();
+
+			static void Hook_CommandCameraSet();
+			static void Hook_CommandSwitchBSP();
+			static void Hook_CommandGameSave();
 		private:
 			c_packed_file			m_shader_package;
 			bool					m_is_loaded;
@@ -160,27 +201,35 @@ namespace Yelo
 			c_gbuffer				m_gbuffer;
 
 			struct {
-				D3DXHANDLE bsp_techniques[k_mrt_technique_count];
-				D3DXHANDLE object_techniques[k_mrt_technique_count];
 				s_render_target_output output[k_maximum_multi_render_target];
 				uint32 count;
 			}m_multi_rt;
 
 			struct {
-				D3DXHANDLE vs_technique_bsp;
-				D3DXHANDLE vs_technique_object;
-			}m_structures;
+				struct {
+					D3DXHANDLE n;
+					D3DXHANDLE n_v;
+				}ps_bsp_techniques;
+				struct {
+					D3DXHANDLE n;
+					D3DXHANDLE n_v;
+				}vs_bsp_techniques;
 
-			struct {
-				D3DXHANDLE far_clip,
-					is_sky,
-					sample_normal_texture,
-					do_velocity,
-					velocity_multiplier,
-					
-					mesh_type_index,
-					owner_team_index;
-			}m_parameters;
+				struct {
+					D3DXHANDLE n;
+					D3DXHANDLE tbn;
+					D3DXHANDLE n_v;
+					D3DXHANDLE tbn_v;
+					D3DXHANDLE none;
+				}ps_object_techniques;
+				struct {
+					D3DXHANDLE n;
+					D3DXHANDLE tbn;
+					D3DXHANDLE n_v;
+					D3DXHANDLE tbn_v;
+					D3DXHANDLE none;
+				}vs_object_techniques;
+			}m_structures;
 
 			bool IsRenderable() const
 			{
@@ -207,6 +256,8 @@ namespace Yelo
 			static void	Render();
 			// Release direct3D resources when quitting
 			static void Release();
+			// Exposes g_output_object_tbn
+			static BOOL& OutputObjectTBN();
 
 
 		public:

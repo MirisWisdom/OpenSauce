@@ -5,7 +5,7 @@
 		UpgradeCode='6E7F244E-C79F-4925-A073-66362D92A99F'
 		Language='1033' 
 		Codepage='1252' 
-		Version='2.0.0' 
+		Version='2.5.0' 
 		Manufacturer='Kornner Studios'>
 
 		<Package Id='*' 
@@ -116,7 +116,7 @@
 			<!-- Files and folders that belong in the HEK root directory -->
 			<Directory Id='HALO1_CE_HEK_INSTALLDIR_PROP' Name='Halo Custom Edition' FileSource='Resources\Halo1_CheApe\HEK_InstallDir'>
 				<Directory Id='Halo1_CE_data_DIR' Name='data'>
-					<Directory Id='Halo1_CE_data_postprocess_DIR' Name='post process'>
+					<Directory Id='Halo1_CE_data_postprocess_DIR' Name='postprocess'>
 						<Directory Id='Halo1_CE_includes_DIR' Name='includes'>
 							<Component Id='Halo1_CE_gbuffer_functions_FX_COMP' Guid='887C91EE-2EC8-4251-8518-02892F230B50'>
 								<File Id='Halo1_CE_gbuffer_functions_FX_FILE' Name='gbuffer_functions.fx' DiskId='1' KeyPath='yes' />
@@ -136,7 +136,7 @@
 				</Directory>
 				
 				<Directory Id='Halo1_CE_tags_DIR' Name='tags'>
-					<Directory Id='Halo1_CE_tags_postprocess_DIR' Name='post process'>
+					<Directory Id='Halo1_CE_tags_postprocess_DIR' Name='postprocess'>
 						<Component Id='Halo1_CE_sepia_SHPG_COMP' Guid='7498F601-2905-49E2-A8C4-EE63BD6DE633'>
 							<File Id='Halo1_CE_sepia_SHPG_FILE' Name='sepia.shader_postprocess_generic' DiskId='1' KeyPath='yes' />
 						</Component>
@@ -270,7 +270,7 @@
 		</InstallExecuteSequence>
 		
 		<Feature Id='Halo1_CE_Complete_FEAT' 
-			Title='OS Halo CE V2.0.0' 
+			Title='OS Halo CE V2.5' 
 			Description='All the Sauce you will ever need.' 
 			Display='expand' 
 			Level='1' 

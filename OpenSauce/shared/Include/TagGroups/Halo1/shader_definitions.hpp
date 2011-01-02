@@ -319,8 +319,16 @@ namespace Yelo
 					TAG_PAD(byte, 16);
 					struct{
 						real multiplier; //used by all
-						real scale;  //only used by detail normals
-						real power;  //only used by specular color
+						union{
+							struct{
+								PAD32;
+								real power;  //only used by specular color
+							};
+							struct{
+								real scale;  //only used by detail normals
+								real v_scale;  //only used by detail normals
+							};
+						};
 					};
 				}modifiers;
 			};
