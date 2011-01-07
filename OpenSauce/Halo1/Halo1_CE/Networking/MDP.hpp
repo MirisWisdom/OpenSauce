@@ -87,5 +87,26 @@ namespace Yelo
 #define __EL_INCLUDE_ID			__EL_INCLUDE_NETWORKING
 #define __EL_INCLUDE_FILE_ID	__EL_NETWORKING_MDP
 #include "Memory/_EngineLayout.inl"
+
+		/*
+			fixed_width_normal_4bit
+				 4 - internet
+				20 - lan
+			fixed_width_normal_8bit
+				 8 - internet
+				20 - lan
+			fixed_width_normal_16bit
+				16 - internet
+				20 - lan
+
+			angular_velocity
+				-8.0, 8.0
+				16 - internet
+				32 - lan
+			translational_velocity
+				-100.0, 100.0
+				16 - internet
+				32 - lan
+		*/
 	};
 };

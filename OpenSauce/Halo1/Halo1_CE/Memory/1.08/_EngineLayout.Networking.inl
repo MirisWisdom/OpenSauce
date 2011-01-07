@@ -115,6 +115,7 @@
 //////////////////////////////////////////////////////////////////////////
 // MessageDeltas.cpp
 #elif __EL_INCLUDE_FILE_ID == __EL_NETWORKING_MESSAGE_DELTAS
+	ENGINE_PTR(s_misc_encoding_globals, misc_encoding_globals,						0x635994, 0x5AB36C);
 	ENGINE_PTR(Enums::message_delta_encoding_class, g_message_delta_encoding_class,	0x636A18, 0x5AC3F0);
 
 	ENGINE_PTR(byte, mdp_packet_buffer_received_data,			0x7FCD40, 0x6C8C80);
