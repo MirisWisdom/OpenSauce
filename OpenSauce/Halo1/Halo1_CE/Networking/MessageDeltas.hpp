@@ -205,8 +205,31 @@ namespace Yelo
 
 	namespace MessageDeltas
 	{
+		struct s_misc_encoding_globals
+		{
+			struct s_locality_reference_position {
+				uint32 bits_per_component_full;		// 25
+				uint32 bits_per_component_delta;	// 9
+				real delta_cutoff_distance;			// 8.0
+				real minimum_move_distance;			// 0.0099999998
+				uint32 bits_per_component_full_lan;	// 31
+			}locality;
+
+			struct s_item_placement {
+				uint32 bits_x; // 20
+				uint32 bits_y; // 20
+				uint32 bits_z; // 30
+			}item_placement;
+		};
+		s_misc_encoding_globals* MiscEncodingGlobals();
+
+
 		void Initialize();
 		void Dispose();
+
+		// If not yet enabled, changes networking settings for a configuration which can possibly improve game performance.
+		// Returns true if steroids were applied or have already been applied.
+		bool EnableNetworkingSteroids();
 
 		Enums::message_delta_encoding_class* EncodingClass();
 		// Buffer that holds all received data from the clients or the server depending on the game connection

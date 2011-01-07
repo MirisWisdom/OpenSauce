@@ -22,6 +22,7 @@
 #include "Game/EngineFunctions.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Networking/MessageDefinitions.hpp"
+#include "Networking/Networking.hpp"
 
 namespace Yelo
 {
@@ -31,7 +32,8 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_NETWORKING_MESSAGE_DELTAS
 #include "Memory/_EngineLayout.inl"
 
-		Enums::message_delta_encoding_class* EncodingClass() PTR_IMP_GET2(g_message_delta_encoding_class);
+		s_misc_encoding_globals* MiscEncodingGlobals()			PTR_IMP_GET2(misc_encoding_globals);
+		Enums::message_delta_encoding_class* EncodingClass()	PTR_IMP_GET2(g_message_delta_encoding_class);
 		byte* PacketBufferReceived()PTR_IMP_GET2(mdp_packet_buffer_received_data);
 		byte* PacketBufferSent()	PTR_IMP_GET2(mdp_packet_buffer_sent_data);
 
@@ -145,15 +147,39 @@ namespace Yelo
 			// need a method to hook network_game_server_handle_message_delta_message so we can intercept client based packets
 			Memory::WriteRelativeCall(&NetworkGameClientHandleMessageDeltaMessageBodyEx, GET_FUNC_VPTR(NETWORK_GAME_CLIENT_HANDLE_MESSAGE_DELTA_MESSAGE_BODY_CALL));
 #endif
-
-			//network_update_globals* settings = Networking::UpdateSettings();
-			//settings->remote_player.position_update_rate = 10;
-			//settings->remote_player.position_baseline_update_rate = 30;
-			//settings->remote_player.vehicle_update_rate = 1;
 		}
 
 		void Dispose()
 		{
+		}
+
+
+		static void EnableMessageDeltaSteroids()
+		{
+			// By forcing the encoding class to lan, we shouldn't have to worry about doing anything here.
+			// However, once a new game starts, the code may re-initialize the encoding class. 
+			// If we want permanent changes to the message delta encoding properties, we should do them here.
+		}
+		bool EnableNetworkingSteroids()
+		{
+			static bool g_enabled = false;
+
+			// Always force the game to think it's running on a LAN
+			*EncodingClass() = Enums::message_delta_encoding_class::_message_delta_encoding_class_lan;
+
+			if(!g_enabled)
+			{
+				Networking::network_update_globals* settings = Networking::UpdateSettings();
+				settings->remote_player.action_baseline_update_rate = 30;
+				settings->remote_player.position_update_rate = 15;
+				settings->remote_player.position_baseline_update_rate = 15;
+
+				EnableMessageDeltaSteroids();
+
+				g_enabled = true;
+			}
+
+			return g_enabled;
 		}
 
 
