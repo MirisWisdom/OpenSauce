@@ -26,7 +26,7 @@ namespace BlamLib.Blam.Halo2.Tags
 	partial class ai_dialogue_globals_group
 	{
 		#region vocalization_definitions_block_0
-		partial class vocalization_definitions_block_0
+		partial class vocalization_definitions_block
 		{
 			#region response_block
 			partial class response_block
@@ -44,198 +44,8 @@ namespace BlamLib.Blam.Halo2.Tags
 			};
 			#endregion
 
-			#region vocalization_definitions_block_1
-			partial class vocalization_definitions_block_1
-			{
-				#region vocalization_definitions_block_2
-				partial class vocalization_definitions_block_2
-				{
-					#region vocalization_definitions_block_3
-					partial class vocalization_definitions_block_3
-					{
-						#region vocalization_definitions_block_4
-						partial class vocalization_definitions_block_4
-						{
-							#region vocalization_definitions_block_5
-							partial class vocalization_definitions_block_5
-							{
-								#region Ctor
-								public vocalization_definitions_block_5() : base(27)
-								{
-									Add(/*vocalization = */ new TI.StringId());
-									Add(/*parent vocalization = */ new TI.StringId());
-									Add(/*parent index = */ new TI.ShortInteger());
-									Add(/*priority = */ new TI.Enum());
-									Add(/*flags = */ new TI.Flags());
-									Add(/*glance behavior = */ new TI.Enum());
-									Add(/*glance recipient behavior = */ new TI.Enum());
-									Add(/*perception type = */ new TI.Enum());
-									Add(/*max combat status = */ new TI.Enum());
-									Add(/*animation impulse = */ new TI.Enum());
-									Add(/*overlap priority = */ new TI.Enum());
-									Add(/*sound repetition delay = */ new TI.Real());
-									Add(/*allowable queue delay = */ new TI.Real());
-									Add(/*pre voc. delay = */ new TI.Real());
-									Add(/*notification delay = */ new TI.Real());
-									Add(/*post voc. delay = */ new TI.Real());
-									Add(/*repeat delay = */ new TI.Real());
-									Add(/*weight = */ new TI.Real());
-									Add(/*speaker freeze time = */ new TI.Real());
-									Add(/*listener freeze time = */ new TI.Real());
-									Add(/*speaker emotion = */ new TI.Enum());
-									Add(/*listener emotion = */ new TI.Enum());
-									Add(/*player skip fraction = */ new TI.Real());
-									Add(/*skip fraction = */ new TI.Real());
-									Add(/*Sample line = */ new TI.StringId());
-									Add(/*reponses = */ new TI.Block<response_block>(this, 20));
-									Add(/* = */ new TI.Block<TI.g_null_block>(this, 0));
-								}
-								#endregion
-							};
-							#endregion
-
-							#region Ctor
-							public vocalization_definitions_block_4() : base(27)
-							{
-								Add(/*vocalization = */ new TI.StringId());
-								Add(/*parent vocalization = */ new TI.StringId());
-								Add(/*parent index = */ new TI.ShortInteger());
-								Add(/*priority = */ new TI.Enum());
-								Add(/*flags = */ new TI.Flags());
-								Add(/*glance behavior = */ new TI.Enum());
-								Add(/*glance recipient behavior = */ new TI.Enum());
-								Add(/*perception type = */ new TI.Enum());
-								Add(/*max combat status = */ new TI.Enum());
-								Add(/*animation impulse = */ new TI.Enum());
-								Add(/*overlap priority = */ new TI.Enum());
-								Add(/*sound repetition delay = */ new TI.Real());
-								Add(/*allowable queue delay = */ new TI.Real());
-								Add(/*pre voc. delay = */ new TI.Real());
-								Add(/*notification delay = */ new TI.Real());
-								Add(/*post voc. delay = */ new TI.Real());
-								Add(/*repeat delay = */ new TI.Real());
-								Add(/*weight = */ new TI.Real());
-								Add(/*speaker freeze time = */ new TI.Real());
-								Add(/*listener freeze time = */ new TI.Real());
-								Add(/*speaker emotion = */ new TI.Enum());
-								Add(/*listener emotion = */ new TI.Enum());
-								Add(/*player skip fraction = */ new TI.Real());
-								Add(/*skip fraction = */ new TI.Real());
-								Add(/*Sample line = */ new TI.StringId());
-								Add(/*reponses = */ new TI.Block<response_block>(this, 20));
-								Add(/*children = */ new TI.Block<vocalization_definitions_block_5>(this, 500));
-							}
-							#endregion
-						};
-						#endregion
-
-						#region Ctor
-						public vocalization_definitions_block_3() : base(27)
-						{
-							Add(/*vocalization = */ new TI.StringId());
-							Add(/*parent vocalization = */ new TI.StringId());
-							Add(/*parent index = */ new TI.ShortInteger());
-							Add(/*priority = */ new TI.Enum());
-							Add(/*flags = */ new TI.Flags());
-							Add(/*glance behavior = */ new TI.Enum());
-							Add(/*glance recipient behavior = */ new TI.Enum());
-							Add(/*perception type = */ new TI.Enum());
-							Add(/*max combat status = */ new TI.Enum());
-							Add(/*animation impulse = */ new TI.Enum());
-							Add(/*overlap priority = */ new TI.Enum());
-							Add(/*sound repetition delay = */ new TI.Real());
-							Add(/*allowable queue delay = */ new TI.Real());
-							Add(/*pre voc. delay = */ new TI.Real());
-							Add(/*notification delay = */ new TI.Real());
-							Add(/*post voc. delay = */ new TI.Real());
-							Add(/*repeat delay = */ new TI.Real());
-							Add(/*weight = */ new TI.Real());
-							Add(/*speaker freeze time = */ new TI.Real());
-							Add(/*listener freeze time = */ new TI.Real());
-							Add(/*speaker emotion = */ new TI.Enum());
-							Add(/*listener emotion = */ new TI.Enum());
-							Add(/*player skip fraction = */ new TI.Real());
-							Add(/*skip fraction = */ new TI.Real());
-							Add(/*Sample line = */ new TI.StringId());
-							Add(/*reponses = */ new TI.Block<response_block>(this, 20));
-							Add(/*children = */ new TI.Block<vocalization_definitions_block_4>(this, 500));
-						}
-						#endregion
-					};
-					#endregion
-
-					#region Ctor
-					public vocalization_definitions_block_2() : base(27)
-					{
-						Add(/*vocalization = */ new TI.StringId());
-						Add(/*parent vocalization = */ new TI.StringId());
-						Add(/*parent index = */ new TI.ShortInteger());
-						Add(/*priority = */ new TI.Enum());
-						Add(/*flags = */ new TI.Flags());
-						Add(/*glance behavior = */ new TI.Enum());
-						Add(/*glance recipient behavior = */ new TI.Enum());
-						Add(/*perception type = */ new TI.Enum());
-						Add(/*max combat status = */ new TI.Enum());
-						Add(/*animation impulse = */ new TI.Enum());
-						Add(/*overlap priority = */ new TI.Enum());
-						Add(/*sound repetition delay = */ new TI.Real());
-						Add(/*allowable queue delay = */ new TI.Real());
-						Add(/*pre voc. delay = */ new TI.Real());
-						Add(/*notification delay = */ new TI.Real());
-						Add(/*post voc. delay = */ new TI.Real());
-						Add(/*repeat delay = */ new TI.Real());
-						Add(/*weight = */ new TI.Real());
-						Add(/*speaker freeze time = */ new TI.Real());
-						Add(/*listener freeze time = */ new TI.Real());
-						Add(/*speaker emotion = */ new TI.Enum());
-						Add(/*listener emotion = */ new TI.Enum());
-						Add(/*player skip fraction = */ new TI.Real());
-						Add(/*skip fraction = */ new TI.Real());
-						Add(/*Sample line = */ new TI.StringId());
-						Add(/*reponses = */ new TI.Block<response_block>(this, 20));
-						Add(/*children = */ new TI.Block<vocalization_definitions_block_3>(this, 500));
-					}
-					#endregion
-				};
-				#endregion
-
-				#region Ctor
-				public vocalization_definitions_block_1() : base(27)
-				{
-					Add(/*vocalization = */ new TI.StringId());
-					Add(/*parent vocalization = */ new TI.StringId());
-					Add(/*parent index = */ new TI.ShortInteger());
-					Add(/*priority = */ new TI.Enum());
-					Add(/*flags = */ new TI.Flags());
-					Add(/*glance behavior = */ new TI.Enum());
-					Add(/*glance recipient behavior = */ new TI.Enum());
-					Add(/*perception type = */ new TI.Enum());
-					Add(/*max combat status = */ new TI.Enum());
-					Add(/*animation impulse = */ new TI.Enum());
-					Add(/*overlap priority = */ new TI.Enum());
-					Add(/*sound repetition delay = */ new TI.Real());
-					Add(/*allowable queue delay = */ new TI.Real());
-					Add(/*pre voc. delay = */ new TI.Real());
-					Add(/*notification delay = */ new TI.Real());
-					Add(/*post voc. delay = */ new TI.Real());
-					Add(/*repeat delay = */ new TI.Real());
-					Add(/*weight = */ new TI.Real());
-					Add(/*speaker freeze time = */ new TI.Real());
-					Add(/*listener freeze time = */ new TI.Real());
-					Add(/*speaker emotion = */ new TI.Enum());
-					Add(/*listener emotion = */ new TI.Enum());
-					Add(/*player skip fraction = */ new TI.Real());
-					Add(/*skip fraction = */ new TI.Real());
-					Add(/*Sample line = */ new TI.StringId());
-					Add(/*reponses = */ new TI.Block<response_block>(this, 20));
-					Add(/*children = */ new TI.Block<vocalization_definitions_block_2>(this, 500));
-				}
-				#endregion
-			};
-			#endregion
-
 			#region Ctor
-			public vocalization_definitions_block_0() : base(27)
+			protected vocalization_definitions_block(int field_count) : base(26 + field_count)
 			{
 				Add(/*vocalization = */ new TI.StringId());
 				Add(/*parent vocalization = */ new TI.StringId());
@@ -263,9 +73,66 @@ namespace BlamLib.Blam.Halo2.Tags
 				Add(/*skip fraction = */ new TI.Real());
 				Add(/*Sample line = */ new TI.StringId());
 				Add(/*reponses = */ new TI.Block<response_block>(this, 20));
-				Add(/*children = */ new TI.Block<vocalization_definitions_block_1>(this, 500));
 			}
 			#endregion
+		};
+
+		partial class vocalization_definitions_block_0
+		{
+			#region vocalization_definitions_block_1
+			partial class vocalization_definitions_block_1
+			{
+				#region vocalization_definitions_block_2
+				partial class vocalization_definitions_block_2
+				{
+					#region vocalization_definitions_block_3
+					partial class vocalization_definitions_block_3
+					{
+						#region vocalization_definitions_block_4
+						partial class vocalization_definitions_block_4
+						{
+							#region vocalization_definitions_block_5
+							partial class vocalization_definitions_block_5
+							{
+								public vocalization_definitions_block_5() : base(1)
+								{
+									Add(/* = */ new TI.Block<TI.g_null_block>(this, 0));
+								}
+							};
+							#endregion
+
+							public vocalization_definitions_block_4() : base(1)
+							{
+								Add(/*children = */ new TI.Block<vocalization_definitions_block_5>(this, 500));
+							}
+						};
+						#endregion
+
+						public vocalization_definitions_block_3() : base(1)
+						{
+							Add(/*children = */ new TI.Block<vocalization_definitions_block_4>(this, 500));
+						}
+					};
+					#endregion
+
+					public vocalization_definitions_block_2() : base(1)
+					{
+						Add(/*children = */ new TI.Block<vocalization_definitions_block_3>(this, 500));
+					}
+				};
+				#endregion
+
+				public vocalization_definitions_block_1() : base(1)
+				{
+					Add(/*children = */ new TI.Block<vocalization_definitions_block_2>(this, 500));
+				}
+			};
+			#endregion
+
+			public vocalization_definitions_block_0() : base(1)
+			{
+				Add(/*children = */ new TI.Block<vocalization_definitions_block_1>(this, 500));
+			}
 		};
 		#endregion
 
@@ -305,26 +172,22 @@ namespace BlamLib.Blam.Halo2.Tags
 		#region dialogue_data_block
 		partial class dialogue_data_block
 		{
-			#region Ctor
 			public dialogue_data_block() : base(2)
 			{
 				Add(StartIndex = new TI.ShortInteger());
 				Add(Length = new TI.ShortInteger());
 			}
-			#endregion
 		};
 		#endregion
 
 		#region involuntary_data_block
 		partial class involuntary_data_block
 		{
-			#region Ctor
 			public involuntary_data_block() : base(2)
 			{
 				Add(InvoluntaryVocalizationIndex = new TI.ShortInteger());
 				Add(new TI.Pad(2));
 			}
-			#endregion
 		};
 		#endregion
 

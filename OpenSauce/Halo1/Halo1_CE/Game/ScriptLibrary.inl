@@ -99,7 +99,6 @@
 	// debug functions
 	#ifdef API_DEBUG
 		_hs_function_dump_view_state,
-		_hs_function_enable_networking_steroids,
 		_hs_function_test_networking,
 	#endif
 
@@ -171,7 +170,6 @@
 		HS_FUNCTION_WITH_PARAMS(dump_view_state, void, "dump current render view state", "<name>", 1,
 			HS_TYPE(string)
 		);
-		HS_FUNCTION(enable_networking_steroids, bool, "");
 		HS_FUNCTION(test_networking, void, "");
 	#endif
 
@@ -255,7 +253,6 @@
 	// debug functions
 	#ifdef API_DEBUG
 		&GET_HS_FUNCTION(dump_view_state),
-		&GET_HS_FUNCTION(enable_networking_steroids),
 		&GET_HS_FUNCTION(test_networking),
 	#endif
 	};

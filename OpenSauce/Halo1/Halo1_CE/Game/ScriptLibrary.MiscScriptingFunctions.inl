@@ -78,18 +78,6 @@ static void* scripting_game_engine_data_get_integer_evaluate(void** arguments)
 }
 
 
-#ifdef API_DEBUG
-static void* scripting_enable_networking_steroids_evaluate()
-{
-	TypeHolder result; result.pointer = NULL;
-
-	result.boolean = MessageDeltas::EnableNetworkingSteroids();
-
-	return result.pointer;
-}
-#endif
-
-
 static void InitializeMiscFunctions()
 {
 	InitializeScriptFunction(Enums::_hs_function_structure_bsp_lightmap_reset, 
@@ -141,11 +129,5 @@ static void InitializeMiscFunctions()
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_shader_variable_boolean) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_shader_variable_integer) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_shader_variable_real) );
-#endif
-
-#ifdef API_DEBUG
-	InitializeScriptFunction(Enums::_hs_function_enable_networking_steroids, scripting_enable_networking_steroids_evaluate);
-#else
-	NullifyScriptFunction( GET_HS_FUNCTION(enable_networking_steroids) );
 #endif
 }

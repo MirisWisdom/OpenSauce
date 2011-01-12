@@ -27,64 +27,48 @@ namespace BlamLib.Blam.Halo2.Tags
 	public sealed partial class ai_dialogue_globals_group : TI.Definition
 	{
 		#region vocalization_definitions_block_0
-		[TI.Definition(2, 104)]
-		public sealed partial class vocalization_definitions_block_0 : TI.Definition
+		public abstract partial class vocalization_definitions_block : TI.Definition
 		{
 			#region response_block
 			[TI.Definition(1, 12)]
 			public sealed partial class response_block : TI.Definition
 			{
-				#region Fields
-				#endregion
 			};
 			#endregion
+		};
 
+		[TI.Definition(2, 104)]
+		public sealed partial class vocalization_definitions_block_0 : vocalization_definitions_block
+		{
 			#region vocalization_definitions_block_1
 			[TI.Definition(2, 104)]
-			public sealed partial class vocalization_definitions_block_1 : TI.Definition
+			public sealed partial class vocalization_definitions_block_1 : vocalization_definitions_block
 			{
 				#region vocalization_definitions_block_2
 				[TI.Definition(2, 104)]
-				public sealed partial class vocalization_definitions_block_2 : TI.Definition
+				public sealed partial class vocalization_definitions_block_2 : vocalization_definitions_block
 				{
 					#region vocalization_definitions_block_3
 					[TI.Definition(2, 104)]
-					public sealed partial class vocalization_definitions_block_3 : TI.Definition
+					public sealed partial class vocalization_definitions_block_3 : vocalization_definitions_block
 					{
 						#region vocalization_definitions_block_4
 						[TI.Definition(2, 104)]
-						public sealed partial class vocalization_definitions_block_4 : TI.Definition
+						public sealed partial class vocalization_definitions_block_4 : vocalization_definitions_block
 						{
 							#region vocalization_definitions_block_5
 							[TI.Definition(2, 104)]
-							public sealed partial class vocalization_definitions_block_5 : TI.Definition
+							public sealed partial class vocalization_definitions_block_5 : vocalization_definitions_block
 							{
-								#region Fields
-								#endregion
 							};
-							#endregion
-
-							#region Fields
 							#endregion
 						};
 						#endregion
-
-						#region Fields
-						#endregion
 					};
-					#endregion
-
-					#region Fields
 					#endregion
 				};
 				#endregion
-
-				#region Fields
-				#endregion
 			};
-			#endregion
-
-			#region Fields
 			#endregion
 		};
 		#endregion
@@ -102,10 +86,8 @@ namespace BlamLib.Blam.Halo2.Tags
 		[TI.Definition(1, 4)]
 		public sealed partial class dialogue_data_block : TI.Definition
 		{
-			#region Fields
 			public TI.ShortInteger StartIndex;
 			public TI.ShortInteger Length;
-			#endregion
 		}
 		#endregion
 
