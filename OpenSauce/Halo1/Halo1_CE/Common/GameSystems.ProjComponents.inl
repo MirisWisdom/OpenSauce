@@ -32,7 +32,7 @@
 {Scripting::Initialize,								Scripting::Dispose},	// No active code in Update game hook currently
 #if PLATFORM_IS_USER
 	{DX9::Initialize,								DX9::Dispose},
-	{DX9::c_gbuffer_system::Initialize,				DX9::c_gbuffer_system::Dispose},
+	{DX9::c_gbuffer_system::Initialize,				DX9::c_gbuffer_system::Dispose, NULL, NULL, NULL, DX9::c_gbuffer_system::Update},
 	{Rasterizer::Initialize,						Rasterizer::Dispose},
 	{Rasterizer::ShaderExtension::Initialize,		Rasterizer::ShaderExtension::Dispose},
 	{Postprocessing::Initialize,					Postprocessing::Dispose,NULL,	Postprocessing::InitializeForNewMap,	Postprocessing::DisposeFromOldMap,	Postprocessing::Update},

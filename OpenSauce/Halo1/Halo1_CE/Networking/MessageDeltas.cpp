@@ -165,7 +165,7 @@ namespace Yelo
 			static bool g_enabled = false;
 
 			// Always force the game to think it's running on a LAN
-			*EncodingClass() = Enums::message_delta_encoding_class::_message_delta_encoding_class_lan;
+			*EncodingClass() = Enums::_message_delta_encoding_class_lan;
 
 			if(!g_enabled)
 			{

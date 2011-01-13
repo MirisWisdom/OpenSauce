@@ -87,11 +87,11 @@ namespace ShaderExtension
 		{
 			const tag_reference& shader = gbxmodel_tag->shaders[i].shader;
 
-			if((shader.group_tag != TagGroups::s_shader_model::k_group_tag) ||
+			if((shader.group_tag != TagGroups::s_shader_model_definition::k_group_tag) ||
 				shader.tag_index.IsNull())
 				continue;
 
-			TagGroups::s_shader_model* shader_model_tag = Yelo::tag_get<TagGroups::s_shader_model>(shader.tag_index);
+			TagGroups::s_shader_model_definition* shader_model_tag = Yelo::tag_get<TagGroups::s_shader_model_definition>(shader.tag_index);
 
 			if(shader_model_tag->model.maps.shader_extension.Count != 1)
 				continue;
