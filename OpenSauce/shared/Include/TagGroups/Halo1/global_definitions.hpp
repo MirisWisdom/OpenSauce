@@ -99,6 +99,16 @@ namespace Yelo
 
 			_material_type
 		};
+		enum input_output_channel : _enum
+		{
+			_input_output_channel_none,
+			_input_output_channel_a,
+			_input_output_channel_b,
+			_input_output_channel_c,
+			_input_output_channel_d,
+
+			_input_output_channel,
+		};
 	};
 
 	namespace TagGroups
