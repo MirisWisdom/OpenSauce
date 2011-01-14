@@ -554,6 +554,34 @@
 				</Filter>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="XMA"
+			>
+			<File
+				RelativePath=".\XMA\Xma.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XMA\Xma.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XMA\XmaParse.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XMA\XmaParse.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XMA\XmaUtil.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XMA\XmaUtil.hpp"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\LowLevel.cpp"
 			>
