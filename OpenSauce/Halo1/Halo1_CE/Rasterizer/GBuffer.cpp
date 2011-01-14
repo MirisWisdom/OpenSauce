@@ -470,6 +470,20 @@ skip_disable_velocity:
 			};
 		}
 
+		// the hooked function takes arguments, for which FunctionInterface in unsuited		
+		API_FUNC_NAKED void c_gbuffer_system::Hook_RenderObjectsTransparent()
+		{
+			static uint32 CALL_ADDRESS = GET_FUNC_PTR(RENDER_OBJECTS_TRANSPARENT);
+			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RENDER_WINDOW_CALL_RENDER_OBJECTS_TRANSPARENT_RETN);
+
+			//TODO: if more render states are added, update enum values
+			_asm{
+				mov		c_gbuffer_system::g_current_render_state, 2	//Enums::_render_progress_objects_transparent
+				call	CALL_ADDRESS
+				mov		c_gbuffer_system::g_current_render_state, 4	//Enums::_render_progress_none
+				jmp		RETN_ADDRESS
+			}
+		}
 
 		void		c_gbuffer_system::Ctor(cstring package_file)
 		{
@@ -490,7 +504,6 @@ skip_disable_velocity:
 
 			c_gbuffer_system::g_output_velocity = true;
 			
-
 			Memory::WriteRelativeJmp(&Hook_RenderWindow, 
 				GET_FUNC_VPTR(RENDER_WINDOW_CALL), true);
 
@@ -509,6 +522,9 @@ skip_disable_velocity:
 				GET_FUNC_VPTR(COMMAND_SWITCH_BSP_HOOK), true);
 			Memory::WriteRelativeJmp(&Hook_CommandGameSave, 
 				GET_FUNC_VPTR(COMMAND_GAME_SAVE_HOOK), true);
+
+			Memory::WriteRelativeJmp(&Hook_RenderObjectsTransparent, 
+				GET_FUNC_VPTR(RENDER_WINDOW_CALL_RENDER_OBJECTS_TRANSPARENT_HOOK), true);
 
 			char NOP = 0x90;
 			byte* call_address;
@@ -530,6 +546,12 @@ skip_disable_velocity:
 		}
 		void		c_gbuffer_system::Dispose()		{}
 
+		void		c_gbuffer_system::Update(real delta_time)
+		{
+			g_stored_wvp_index = 1 - g_stored_wvp_index;
+
+			g_wvp_stored = false;
+		}
 		void		c_gbuffer_system::LoadSettings(TiXmlElement* dx9_element)
 		{
 			// setup default values
@@ -655,8 +677,8 @@ skip_disable_velocity:
 		{			
 			if(g_is_rendering_reflection == false && g_system_enabled && !g_wvp_stored)	
 			{
-				device->SetVertexShaderConstantF(96, g_previous_worldviewproj, 4);
-				memcpy_s(&g_previous_worldviewproj, sizeof(D3DMATRIX), pConstantData, sizeof(D3DMATRIX));
+				device->SetVertexShaderConstantF(96, g_stored_worldviewproj[g_stored_wvp_index], 4);
+				memcpy_s(&g_stored_worldviewproj[1 - g_stored_wvp_index], sizeof(D3DMATRIX), pConstantData, sizeof(D3DMATRIX));
 				g_wvp_stored = true;
 			}
 
@@ -665,14 +687,14 @@ skip_disable_velocity:
 		void		c_gbuffer_system::ClearGBuffer(IDirect3DDevice9* pDevice)
 		{
 			g_default_system.ClearGBufferImpl(pDevice);
-
-			g_wvp_stored = false;
 		}
 		
 		HRESULT		c_gbuffer_system::SetVertexShaderConstantF_All(IDirect3DDevice9* pDevice, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount)
 		{
 			//eye position doesn't get updated in the object code so always pass it through so we have the most recent value
-			if((StartRegister == 0) || (g_current_render_state == Enums::_render_progress_objects))
+			if((StartRegister == 0) || 
+				(g_current_render_state == Enums::_render_progress_objects) || 
+				(g_current_render_state == Enums::_render_progress_objects_transparent))
 				return Rasterizer::ShaderExtension::SetVertexShaderConstantF(pDevice, StartRegister, pConstantData, Vector4fCount);
 			else
 				return pDevice->SetVertexShaderConstantF(StartRegister, pConstantData, Vector4fCount);
@@ -834,7 +856,6 @@ skip_disable_velocity:
 			m_gbuffer_vs->EndPass();	
 			m_gbuffer_vs->End();
 
-
 			return hr;
 		}
 		HRESULT	 	c_gbuffer_system::DrawIndexedPrimitive_StructureImpl(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type,INT BaseVertexIndex,UINT MinVertexIndex,UINT NumVertices,UINT startIndex,UINT primCount)
@@ -842,15 +863,11 @@ skip_disable_velocity:
 			if(!m_is_loaded || !m_render_gbuffer || !g_system_enabled)
 				return S_OK;
 
-			if(c_gbuffer_system::g_output_velocity)
+			if(c_gbuffer_system::g_output_velocity && !GameState::GameTimeGlobals()->paused)
 			{
 				m_gbuffer_vs->SetTechnique(m_structures.vs_bsp_techniques.n_v);
 				m_gbuffer_ps->SetTechnique(m_structures.ps_bsp_techniques.n_v);
-
-				real DT = GameState::MainGlobals()->delta_time;
-				real BT = 1.0f / 30.0f;
-				real Multiplier = BT / DT;
-				g_pixel_shader_input.z = Multiplier;
+				g_pixel_shader_input.z = 1.0f;
 			}
 			else
 			{
@@ -881,7 +898,9 @@ skip_disable_velocity:
 			}
 			else
 			{	
-				bool do_velocity = c_gbuffer_system::g_output_object_velocity && c_gbuffer_system::g_output_velocity;
+				bool do_velocity = c_gbuffer_system::g_output_object_velocity && 
+					c_gbuffer_system::g_output_velocity &&
+					!GameState::GameTimeGlobals()->paused;
 				if(c_gbuffer_system::g_output_object_tbn)
 				{
 					m_gbuffer_vs->SetTechnique(
@@ -910,9 +929,7 @@ skip_disable_velocity:
 				if(do_velocity)
 				{
 					real DT = GameState::MainGlobals()->delta_time;
-					real BT = 1.0f / 30.0f;
-					real Multiplier = BT / DT;
-					g_pixel_shader_input.z = Multiplier;
+					g_pixel_shader_input.z = 1.0f;
 				}
 				else					
 					g_pixel_shader_input.z = 0.0f;
@@ -1013,13 +1030,15 @@ skip_disable_velocity:
 		int16					c_gbuffer_system::g_debug_index;
 		bool					c_gbuffer_system::g_system_enabled;
 		Enums::render_progress	c_gbuffer_system::g_current_render_state;
-		BOOL					c_gbuffer_system::g_wvp_stored;
-		D3DXMATRIX				c_gbuffer_system::g_previous_worldviewproj;
 		uint32					c_gbuffer_system::g_current_object_lod;
 		BOOL					c_gbuffer_system::g_output_object_tbn;
 		BOOL					c_gbuffer_system::g_output_object_velocity;
 		BOOL					c_gbuffer_system::g_output_velocity;
 		D3DXVECTOR4				c_gbuffer_system::g_pixel_shader_input;
+
+		BOOL					c_gbuffer_system::g_wvp_stored;
+		D3DXMATRIX				c_gbuffer_system::g_stored_worldviewproj[2];
+		BOOL					c_gbuffer_system::g_stored_wvp_index;
 
 		BOOL&		c_gbuffer_system::OutputObjectTBN() { return c_gbuffer_system::g_output_object_tbn; }
 

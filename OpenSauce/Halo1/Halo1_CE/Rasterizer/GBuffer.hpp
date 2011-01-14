@@ -41,6 +41,7 @@ namespace Yelo
 		enum render_progress {
 			_render_progress_sky,
 			_render_progress_objects,
+			_render_progress_objects_transparent,
 			_render_progress_structure,
 			_render_progress_none,
 		};
@@ -176,8 +177,9 @@ namespace Yelo
 			static D3DXVECTOR4				g_pixel_shader_input;
 			
 			static BOOL						g_wvp_stored;
-			static D3DXMATRIX				g_previous_worldviewproj;					// WVP for the previous frame (for BSP velocity)
-
+			static D3DXMATRIX				g_stored_worldviewproj[2];					// WVP for the previous frame (for BSP velocity)
+			static BOOL						g_stored_wvp_index;
+			
 			static BOOL						g_is_rendering_reflection;					// Is halo rendering the reflection geometry?
 			static void Hook_RenderWindow();
 
@@ -192,6 +194,8 @@ namespace Yelo
 			static void Hook_CommandCameraSet();
 			static void Hook_CommandSwitchBSP();
 			static void Hook_CommandGameSave();
+
+			static void Hook_RenderObjectsTransparent();
 		private:
 			c_packed_file			m_shader_package;
 			bool					m_is_loaded;
@@ -241,6 +245,8 @@ namespace Yelo
 			static void	Initialize();
 			// Nothing
 			static void	Dispose();
+			// Swap the stored WVP's
+			static void Update(real delta_time);
 			// Load any user settings for the gbuffer
 			static void LoadSettings(TiXmlElement* dx9_element);
 			// Save any user settings for the gbuffer

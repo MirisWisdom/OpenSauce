@@ -95,6 +95,8 @@ namespace Yelo
 
 		struct s_device_definition : s_object_definition
 		{
+			enum { k_group_tag = 'devi' };
+
 			_device_definition device;
 		};
 

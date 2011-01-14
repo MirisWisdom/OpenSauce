@@ -139,7 +139,7 @@ namespace Yelo
 
 				if(shader_base->shader.shader_type == Enums::_shader_type_model)
 				{
-					TagGroups::s_shader_model* shader_model = CAST_PTR(TagGroups::s_shader_model*, shader_base);
+					TagGroups::s_shader_model_definition* shader_model = CAST_PTR(TagGroups::s_shader_model_definition*, shader_base);
 					if(shader_model->model.maps.shader_extension.Count == 1)
 					{
 						const TagGroups::s_shader_model_extension& extension = shader_model->model.maps.shader_extension[0];
@@ -203,15 +203,15 @@ namespace Yelo
 						CAST_PTR(TagGroups::s_shader_environment_definition*, shader_base);
 
 					// setup base normal map
-					if(!shader_environment->environment.bump_map.tag_index.IsNull())
+					if(!shader_environment->environment.bump_map.map.tag_index.IsNull())
 					{
 						DX9::c_gbuffer_system::OutputObjectTBN() = true;
 
-						SetTexture(Yelo::DX9::Direct3DDevice(), 4, shader_environment->environment.bump_map.tag_index); 
+						SetTexture(Yelo::DX9::Direct3DDevice(), 4, shader_environment->environment.bump_map.map.tag_index); 
 						g_pixel_shader_variables.base_normal_interp = 1.0f;
-						g_pixel_shader_variables.base_normal_multiplier = shader_environment->environment.bump_map_scale;
+						g_pixel_shader_variables.base_normal_multiplier = shader_environment->environment.bump_map.scale;
 
-						real z_multiplier = max(1.0f / shader_environment->environment.bump_map_scale, 0.0f);
+						real z_multiplier = max(1.0f / shader_environment->environment.bump_map.scale, 0.0f);
 						g_pixel_shader_variables.base_normal_z_multiplier = min(z_multiplier, 1.0f);
 					}
 					else
