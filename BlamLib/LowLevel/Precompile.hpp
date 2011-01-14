@@ -20,13 +20,13 @@
 
 #ifndef LOWLEVEL_NO_X360
 	#ifdef _DEBUG
-		#pragma comment (lib, "C:\\Program Files\\Microsoft Xbox 360 SDK\\lib\\win32\\vs2008\\d3d9d.lib")
-		#pragma comment (lib, "C:\\Program Files\\Microsoft Xbox 360 SDK\\lib\\win32\\vs2008\\d3dx9d.lib")
-		#pragma comment (lib, "C:\\Program Files\\Microsoft Xbox 360 SDK\\lib\\win32\\vs2008\\xgraphicsd.lib")
+		#pragma comment (lib, "C:\\Program Files (x86)\\Microsoft Xbox 360 SDK\\lib\\win32\\vs2008\\d3d9d.lib")
+		#pragma comment (lib, "C:\\Program Files (x86)\\Microsoft Xbox 360 SDK\\lib\\win32\\vs2008\\d3dx9d.lib")
+		#pragma comment (lib, "C:\\Program Files (x86)\\Microsoft Xbox 360 SDK\\lib\\win32\\vs2008\\xgraphicsd.lib")
 	#else
-		#pragma comment (lib, "C:\\Program Files\\Microsoft Xbox 360 SDK\\lib\\win32\\vs2008\\d3d9.lib")
-		#pragma comment (lib, "C:\\Program Files\\Microsoft Xbox 360 SDK\\lib\\win32\\vs2008\\d3dx9.lib")
-		#pragma comment (lib, "C:\\Program Files\\Microsoft Xbox 360 SDK\\lib\\win32\\vs2008\\xgraphics.lib")
+		#pragma comment (lib, "C:\\Program Files (x86)\\Microsoft Xbox 360 SDK\\lib\\win32\\vs2008\\d3d9.lib")
+		#pragma comment (lib, "C:\\Program Files (x86)\\Microsoft Xbox 360 SDK\\lib\\win32\\vs2008\\d3dx9.lib")
+		#pragma comment (lib, "C:\\Program Files (x86)\\Microsoft Xbox 360 SDK\\lib\\win32\\vs2008\\xgraphics.lib")
 	#endif
 #else
 	#pragma comment (lib, "d3d9.lib")
@@ -41,7 +41,12 @@
 
 #include <boost/preprocessor.hpp>
 #include <boost/static_assert.hpp>
+#include <boost/cstdint.hpp>
 
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 
 // Library's function convention
 #define API_FUNC __stdcall
