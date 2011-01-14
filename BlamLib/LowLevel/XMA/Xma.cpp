@@ -1,3 +1,7 @@
+/*
+	Based on "xma_parse" code written by HCS (http://hcs64.com/contact.html)
+	Permission pending response.
+*/
 #include "Precompile.hpp"
 #include "XMA/Xma.hpp"
 #include "XMA/XmaParse.hpp"
