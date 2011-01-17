@@ -89,7 +89,9 @@ namespace BlamLib.Test
 		{
 			bool output_play = false;
 			bool output_zone = false;
-			bool output_sound_info = true;
+			bool output_zone_data = false;
+			bool output_ugh = false;
+			bool output_sound_info = false;
 			bool output_index = false;
 
 
@@ -127,14 +129,32 @@ namespace BlamLib.Test
 						var zone = zoneman.TagDefinition as Blam.Halo3.Tags.cache_file_resource_gestalt_group;
 						Blam.Halo3.Tags.cache_file_resource_gestalt_group.Output(cache, sw, zone);
 
-// 						using (var fs = new FileStream(
-// 							Path.Combine(kTestResultsPath, cache.Header.Name) + "_output_zone_data.bin", 
-// 							FileMode.Create, FileAccess.Write, FileShare.Read))
-//  						{
-//  							Blam.Halo3.Tags.cache_file_resource_gestalt_group.OutputData(fs, zone);
-//  						}
+						if(output_zone_data)
+							using (var fs = new FileStream(
+								Path.Combine(kTestResultsPath, cache.Header.Name) + "_output_zone_data.bin", 
+								FileMode.Create, FileAccess.Write, FileShare.Read))
+ 							{
+ 								Blam.Halo3.Tags.cache_file_resource_gestalt_group.OutputData(fs, zone);
+ 							}
 					}
 					cache.TagIndexManager.Unload(zone_index);
+				}
+				#endregion
+
+				#region output_ugh
+				if (output_ugh)
+				{
+					using (var sw = new StreamWriter(Path.Combine(kTestResultsPath, cache.Header.Name) + "_output_sound_gestalt.txt"))
+					{
+						var ugh_index = cache.TagIndexManager.OpenFirstInstance(Blam.Halo3.TagGroups.ugh_);
+						var ughman = cache.TagIndexManager[ugh_index];
+						var ughdef = ughman.TagDefinition as Blam.Halo3.Tags.sound_cache_file_gestalt_group;
+
+						Blam.Halo3.Tags.sound_cache_file_gestalt_group.Output(cache, sw, ughdef);
+
+						ughdef = null;
+						cache.TagIndexManager.Unload(ugh_index);
+					}
 				}
 				#endregion
 

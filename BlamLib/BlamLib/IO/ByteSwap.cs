@@ -209,6 +209,23 @@ namespace BlamLib.IO
 			for (int x = offset, i = 0; x < offset + 4; x++, i++)
 				data[x] = b[i];
 		}
+
+		public static void SwapUDWordAndWrite(uint value, System.IO.MemoryStream ms)
+		{
+			value = SwapUDWord(value);
+			ms.WriteByte((byte)((value & 0x000000FF) >>  0));
+			ms.WriteByte((byte)((value & 0x0000FF00) >>  8));
+			ms.WriteByte((byte)((value & 0x00FF0000) >> 16));
+			ms.WriteByte((byte)((value & 0xFF000000) >> 24));
+		}
+		public static void SwapUDWordAndInsert(uint value, byte[] data, int offset)
+		{
+			value = SwapUDWord(value);
+			data[offset+0] = (byte)((value & 0x000000FF) >>  0);
+			data[offset+1] = (byte)((value & 0x0000FF00) >>  8);
+			data[offset+2] = (byte)((value & 0x00FF0000) >> 16);
+			data[offset+3] = (byte)((value & 0xFF000000) >> 24);
+		}
 		#endregion
 
 		#region long
