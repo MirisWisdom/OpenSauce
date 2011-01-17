@@ -88,6 +88,7 @@
     <Compile Include="Halo3\Halo3.cs" />
     <Compile Include="Halo3\Scripting.cs" />
     <Compile Include="Halo3\SoundComparer.cs" />
+    <Compile Include="Halo3\SoundExtract.cs" />
     <Compile Include="HaloOdst\HaloOdst.cs" />
     <Compile Include="HaloReach\HaloReach.cs" />
     <Compile Include="Program.cs" />
@@ -99,6 +100,10 @@
     <ProjectReference Include="..\BlamLib\BlamLib.csproj">
       <Project>{D9931E1A-1A8A-4707-A27C-9AFEFD60D25B}</Project>
       <Name>BlamLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LowLevel\LowLevel.vcproj">
+      <Project>{5E5B9F4E-1067-4470-8AA9-B25BBBEA063A}</Project>
+      <Name>LowLevel</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

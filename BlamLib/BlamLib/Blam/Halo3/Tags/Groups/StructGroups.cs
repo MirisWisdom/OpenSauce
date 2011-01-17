@@ -48,12 +48,16 @@ namespace BlamLib.Blam.Halo3
 				csbs,
 				aaim,
 
+				spl1,
+				//ssfx,
+
 				MAgr,
 
 				MAgc,
 
 				spdf,
 
+				plsn_simple,
 				snpr
 			);
 		}
@@ -104,6 +108,11 @@ namespace BlamLib.Blam.Halo3
 			/// <summary>animation_aiming_screen_struct</summary>
 			aaim,
 
+			/// <summary>sound_playback_parameter_definition</summary>
+			spl1,
+			/// <summary>sound_effect_struct_definition</summary>
+//			ssfx,
+
 			/// <summary>animation_graph_resources_struct</summary>
 			MAgr,
 
@@ -113,6 +122,8 @@ namespace BlamLib.Blam.Halo3
 			/// <summary>global_structure_physics_struct</summary>
 			spdf,
 
+			/// <summary>simple_platform_sound_playback_struct</summary>
+			plsn_simple,
 			/// <summary>sound_promotion_parameters_struct</summary>
 			snpr,
 		};

@@ -396,7 +396,6 @@ namespace BlamLib.Blam.Halo3.Tags
 				public TI.LongInteger Unknown08;
 				public TI.LongInteger Unknown0C;
 
-				#region Ctor
 				public block_4()
 				{
 					Add(Unknown00 = new TI.LongInteger());
@@ -404,20 +403,17 @@ namespace BlamLib.Blam.Halo3.Tags
 					Add(Unknown08 = new TI.LongInteger());
 					Add(Unknown0C = new TI.LongInteger());
 				}
-				#endregion
 			}
 			#endregion
 
-			public TI.LongInteger Unknown00;
+			public TI.LongInteger Size;
 			public TI.Block<block_4> Unknown04;
 
-			#region Ctor
 			public cache_file_resource_layout_table_24_block()
 			{
-				Add(Unknown00 = new TI.LongInteger()); // Total size?
+				Add(Size = new TI.LongInteger());
 				Add(Unknown04 = new TI.Block<block_4>(this));
 			}
-			#endregion
 		}
 		#endregion
 
@@ -573,7 +569,7 @@ namespace BlamLib.Blam.Halo3.Tags
 			public TI.LongInteger BlockOffset, BlockSize, UnknownOffset; // (in the tag data field)
 			public TI.ShortInteger Unknown020; // if this is <= 0, this block is ignored (and probably invalid)
 			public TI.ShortInteger SegmentIndex; // 5th tag block in cache_file_resource_layout_table, page_segment_block
-			// ie, if this is a structure bsp resource, this will point to the main
+			// eg, if this is a structure bsp resource, this will point to the main
 			// tag block in the definition buffer
 			public TI.LongInteger DefinitionOffset; // resource definition offset, uses fixup ptr scheme
 			public TI.Block<resource_fixup_block> ResourceFixups;
@@ -610,7 +606,7 @@ namespace BlamLib.Blam.Halo3.Tags
 				Unknown040;
 			public TI.StringId Unknown044;
 
-			public cache_file_resource_gestalt_64_block()
+			public cache_file_resource_gestalt_64_block() : base(14)
 			{
 				Add(TI.UnknownPad.BlockHalo3); // 0x00 [4]
 					// dword
@@ -619,11 +615,11 @@ namespace BlamLib.Blam.Halo3.Tags
 					// dword
 				Add(TI.UnknownPad.BlockHalo3); // 0x24 [4]
 					// dword
-				Add(Unknown030 = new TI.LongInteger()); // these something relating to memory address?
-				Add(Unknown034 = new TI.LongInteger());
-				Add(Unknown038 = new TI.LongInteger());
-				Add(Unknown03C = new TI.LongInteger());
-				Add(Unknown040 = new TI.LongInteger());
+				Add(Unknown030 = new TI.LongInteger()); // Resource location (page) offset
+				Add(Unknown034 = new TI.LongInteger()); // ''
+				Add(Unknown038 = new TI.LongInteger()); // ''
+				Add(Unknown03C = new TI.LongInteger()); // ''
+				Add(Unknown040 = new TI.LongInteger()); // ''
 				Add(Unknown044 = new TI.StringId()); // transition zone name related
 				Add(TI.UnknownPad.BlockHalo3); // 0x48 [0x14] bsp related? has same count has the bsp count for the cache
 					// dword * 5
@@ -650,7 +646,7 @@ namespace BlamLib.Blam.Halo3.Tags
 				Unknown1C;
 			public TI.BlockIndex PrevZoneSet;
 
-			public cache_file_resource_gestalt_100_block()
+			public cache_file_resource_gestalt_100_block() : base(9)
 			{
 				Add(Name = new TI.StringId());
 				Add(Unknown04 = new TI.LongInteger());
@@ -680,7 +676,7 @@ namespace BlamLib.Blam.Halo3.Tags
 				Unknown0C,
 				Unknown10;
 
-			public cache_file_resource_gestalt_164_block()
+			public cache_file_resource_gestalt_164_block() : base(5)
 			{
 				Add(Unknown00 = new TI.LongInteger());
 				Add(Unknown04 = new TI.LongInteger());
@@ -695,15 +691,15 @@ namespace BlamLib.Blam.Halo3.Tags
 		[TI.Definition(1, 8)]
 		public partial class cache_file_resource_gestalt_1DC_block : TI.Definition
 		{
-			public TI.ShortInteger Unknown; // index?
-			public TI.ShortInteger Size;
-			public TI.LongInteger Offset;
+			public TI.ShortInteger ThisIndex; // The index of this block element
+			public TI.ShortInteger Count;
+			public TI.BlockIndex BlockIndex;
 
-			public cache_file_resource_gestalt_1DC_block()
+			public cache_file_resource_gestalt_1DC_block() : base(3)
 			{
-				Add(Unknown = new TI.ShortInteger());
-				Add(Size = new TI.ShortInteger());
-				Add(Offset = new TI.LongInteger());
+				Add(ThisIndex = new TI.ShortInteger());
+				Add(Count = new TI.ShortInteger());
+				Add(BlockIndex = new TI.BlockIndex(TI.FieldType.LongBlockIndex)); // cache_file_resource_gestalt_1D0_block
 			}
 		}
 		#endregion
@@ -715,7 +711,7 @@ namespace BlamLib.Blam.Halo3.Tags
 			public TI.ShortInteger Unknown00; // index?
 			public TI.ShortInteger Unknown02; // index?
 
-			public cache_file_resource_gestalt_1E8_block()
+			public cache_file_resource_gestalt_1E8_block() : base(2)
 			{
 				Add(Unknown00 = new TI.ShortInteger());
 				Add(Unknown02 = new TI.ShortInteger());
@@ -729,10 +725,11 @@ namespace BlamLib.Blam.Halo3.Tags
 		{
 			public TI.ShortInteger Unknown00; // something like length
 			public TI.ShortInteger Unknown02; // something like start index, block index to cache_file_resource_gestalt_1E8_block
-			public TI.ShortInteger Unknown04; // flags?
-			public TI.ShortInteger Unknown06; // index of some sort
 
-			public cache_file_resource_gestalt_1F4_block()
+			public TI.ShortInteger Unknown04; // something like length
+			public TI.ShortInteger Unknown06; // something like start index, block index to cache_file_resource_gestalt_1E8_block
+
+			public cache_file_resource_gestalt_1F4_block() : base(4)
 			{
 				Add(Unknown00 = new TI.ShortInteger());
 				Add(Unknown02 = new TI.ShortInteger());
@@ -750,14 +747,12 @@ namespace BlamLib.Blam.Halo3.Tags
 			public TI.LongInteger Unknown08;
 			public TI.LongInteger Unknown0C; // 0x0000FF00: BSP index; 0x000000FF: index
 
-			#region Ctor
-			public cache_file_resource_gestalt_200_block()
+			public cache_file_resource_gestalt_200_block() : base(3)
 			{
 				Add(TagIndex = new TI.LongInteger());
 				Add(Unknown08 = new TI.LongInteger());
 				Add(Unknown0C = new TI.LongInteger());
 			}
-			#endregion
 		}
 		#endregion
 

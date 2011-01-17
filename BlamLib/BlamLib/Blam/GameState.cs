@@ -83,9 +83,13 @@ namespace BlamLib.Blam
 		}
 
 		/// <summary>
-		/// Null string id value
+		/// Null (empty) string id value
 		/// </summary>
 		public static readonly StringID Null = new StringID(0, 0, 0);
+		/// <summary>
+		/// Invalid string id (will never reference a valid string)
+		/// </summary>
+		public static readonly StringID kInvalid = new StringID(uint.MaxValue);
 		public static readonly IEqualityComparer<StringID> kEqualityComparer = new StringID(0, 0, 0);
 
 		/// <summary>

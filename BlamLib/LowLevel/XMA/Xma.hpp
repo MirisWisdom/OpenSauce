@@ -4,28 +4,6 @@
 */
 #pragma once
 
-__CPP_CODE_START__
-//#ifndef LOWLEVEL_NO_X360
-#pragma comment (lib, "C:\\Program Files (x86)\\Microsoft Xbox 360 SDK\\lib\\win32\\vs2008\\xmaencoder.lib")
-
-// Define some xmaencoder.lib extern objects that we need for decoding...
-class CXMATarget
-{
-	PAD32; PAD32;
-public:
-	virtual HRESULT __stdcall DecodeWave(LPCWSTR xma_file, LPCWSTR pcm_file);
-	virtual HRESULT __stdcall EncodeWave(); // I'm not going to sit here and defe the params, frig off Randy
-	virtual ~CXMATarget();
-}; BOOST_STATIC_ASSERT( sizeof(CXMATarget) == 0xC );
-
-extern "C"
-{
-	CXMATarget* CreateXMATarget(CXMATarget*& out_obj);
-	void FreeXMATarget(CXMATarget* obj);
-};
-//#endif
-__CPP_CODE_END__
-
 __MCPP_CODE_START__
 
 namespace LowLevel { namespace Xma {
@@ -44,6 +22,11 @@ namespace LowLevel { namespace Xma {
 	public mcpp_class Interface
 	{
 	mcpp_public
+		// If we're not linking directly to the XMA encoder lib, try to dynamically use the EXE tool instead
+#ifdef LOWLEVEL_NO_X360_XMA
+		static mcpp_string^ Xma2EncoderExePath;
+#endif
+
 		static mcpp_readonly array<mcpp_byte>^ kMonoFooter = mcpp_new array<mcpp_byte> {
 			0x58, 0x4D, 0x41, 0x32, 0x2C, 0x00, 0x00, 0x00, 0x04, 
 			0x01, 0x00, 0xFF, 0x00, 0x00, 0x01, 0x80, 0x00, 0x00, 

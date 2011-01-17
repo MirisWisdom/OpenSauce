@@ -5,6 +5,9 @@
 #include "Precompile.hpp"
 #include "XMA/Xma.hpp"
 #include "XMA/XmaParse.hpp"
+
+#include "XMA/Xma.Lib.inl"
+
 __MCPP_CODE_START__
 
 void RebuildParametersToNative(mcpp_uint buffer_size, 
@@ -29,6 +32,7 @@ namespace LowLevel { namespace Xma {
 
 	mcpp_bool Interface::Decode(mcpp_string^ xma_file, mcpp_string^ pcm_file)
 	{
+#ifndef LOWLEVEL_NO_X360_XMA
 		pin_ptr<const WCHAR> xma = PtrToStringChars(xma_file);
 		pin_ptr<const WCHAR> pcm = PtrToStringChars(pcm_file);
 
@@ -39,6 +43,9 @@ namespace LowLevel { namespace Xma {
 		FreeXMATarget(obj);
 
 		return SUCCEEDED(result);
+#else
+		return mcpp_false;
+#endif
 	}
 
 	array<mcpp_byte>^ Interface::Rebuild(array<mcpp_byte>^ buffer, RebuildParameters params)
@@ -79,16 +86,18 @@ namespace LowLevel { namespace Xma {
 		XMA::s_xma_parse_context ctx;
 		RebuildParametersToNative(NONE, params, ctx);
 
-		const char* in_f = (const char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(in_file);
-		const char* out_f = (const char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(out_file);
-		const char* rb_f = (const char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(rebuild_file);
+		const char* in_f, * out_f, * rb_f;
+
+		in_f = (const char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(in_file);
+		out_f = out_file ? (const char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(out_file) : cpp_null;
+		rb_f = rebuild_file ? (const char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(rebuild_file) : cpp_null;
 
 		XMA::c_xma_rebuilder rebuilder(in_f, ctx, out_f, rb_f);
 		result = rebuilder.try_rebuild();
 
 		System::Runtime::InteropServices::Marshal::FreeHGlobal((System::IntPtr)(void*)in_f);
-		System::Runtime::InteropServices::Marshal::FreeHGlobal((System::IntPtr)(void*)out_f);
-		System::Runtime::InteropServices::Marshal::FreeHGlobal((System::IntPtr)(void*)rb_f);
+		if(out_f != cpp_null) System::Runtime::InteropServices::Marshal::FreeHGlobal((System::IntPtr)(void*)out_f);
+		if(rb_f != cpp_null) System::Runtime::InteropServices::Marshal::FreeHGlobal((System::IntPtr)(void*)rb_f);
 
 		return result;
 	}
