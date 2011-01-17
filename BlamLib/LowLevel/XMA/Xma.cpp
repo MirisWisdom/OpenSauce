@@ -93,7 +93,7 @@ namespace LowLevel { namespace Xma {
 		rb_f = rebuild_file ? (const char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(rebuild_file) : cpp_null;
 
 		XMA::c_xma_rebuilder rebuilder(in_f, ctx, out_f, rb_f);
-		result = rebuilder.try_rebuild();
+		//result = rebuilder.try_rebuild();
 
 		System::Runtime::InteropServices::Marshal::FreeHGlobal((System::IntPtr)(void*)in_f);
 		if(out_f != cpp_null) System::Runtime::InteropServices::Marshal::FreeHGlobal((System::IntPtr)(void*)out_f);

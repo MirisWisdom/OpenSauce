@@ -692,13 +692,13 @@ namespace BlamLib.Blam.Halo3.Tags
 		public partial class cache_file_resource_gestalt_1DC_block : TI.Definition
 		{
 			public TI.ShortInteger ThisIndex; // The index of this block element
-			public TI.ShortInteger Count;
+			public TI.ShortInteger ElementCount;
 			public TI.BlockIndex BlockIndex;
 
 			public cache_file_resource_gestalt_1DC_block() : base(3)
 			{
 				Add(ThisIndex = new TI.ShortInteger());
-				Add(Count = new TI.ShortInteger());
+				Add(ElementCount = new TI.ShortInteger());
 				Add(BlockIndex = new TI.BlockIndex(TI.FieldType.LongBlockIndex)); // cache_file_resource_gestalt_1D0_block
 			}
 		}
