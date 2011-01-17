@@ -16,7 +16,7 @@ void RebuildParametersToNative(mcpp_uint buffer_size,
 	XMA::s_xma_parse_context value = {
 		params.Channels > 1,
 		params.Strict,
-		cpp_false,
+		cpp_true,
 		params.IgnorePacketSkip,
 		params.Version,
 
@@ -92,8 +92,9 @@ namespace LowLevel { namespace Xma {
 		out_f = out_file ? (const char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(out_file) : cpp_null;
 		rb_f = rebuild_file ? (const char*)(void*)System::Runtime::InteropServices::Marshal::StringToHGlobalAnsi(rebuild_file) : cpp_null;
 
-		XMA::c_xma_rebuilder rebuilder(in_f, ctx, out_f, rb_f);
-		//result = rebuilder.try_rebuild();
+		XMA::c_xma_rebuilder* rebuilder = cpp_new XMA::c_xma_rebuilder(in_f, ctx, out_f, rb_f);
+		result = rebuilder->try_rebuild();
+		delete rebuilder;
 
 		System::Runtime::InteropServices::Marshal::FreeHGlobal((System::IntPtr)(void*)in_f);
 		if(out_f != cpp_null) System::Runtime::InteropServices::Marshal::FreeHGlobal((System::IntPtr)(void*)out_f);

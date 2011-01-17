@@ -14,6 +14,7 @@ namespace XMA
 		m_stream(stream),
 		k_consecutive_bits(consecutive_bits),
 		k_skip_bits(skip_bits),
+		m_consecutive_bits_left(consecutive_bits),
 		m_bits_left(0), m_bit_buffer(0)
 	{
 		if(std::numeric_limits<boost::uint8_t>::digits != k_bits_per_byte)
@@ -40,7 +41,7 @@ namespace XMA
 		}
 
 		m_bits_left--;
-		if(m_consecutive_bits_left > 0) m_consecutive_bits_left--;
+		if(k_consecutive_bits > 0) m_consecutive_bits_left--;
 
 		return (m_bit_buffer & (1<<m_bits_left)) != 0;
 	}
