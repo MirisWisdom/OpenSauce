@@ -566,6 +566,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\XMA\Xma.Lib.inl"
+				>
+			</File>
+			<File
 				RelativePath=".\XMA\XmaParse.cpp"
 				>
 			</File>

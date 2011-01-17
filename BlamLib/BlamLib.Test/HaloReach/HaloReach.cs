@@ -123,6 +123,186 @@ namespace BlamLib.Test.HaloReach
 		}
 		#endregion
 
+		class CacheSymbolInterface : IDisposable
+		{
+			class StringSymbols
+			{
+				public int Count;
+				public byte[] ValueLengths;
+
+				public void Build(IO.EndianReader stream, int offset,
+					int count, int total_size)
+				{
+					stream.Seek(offset);
+					int[] indicies = new int[count];
+					for (int x = 0; x < indicies.Length; x++)
+						indicies[x] = stream.ReadInt32();
+
+					ValueLengths = new byte[count];
+					for (int x = count-1, prev_offset = total_size; x >= 0; x--)
+					{
+						ValueLengths[x] = (byte)((prev_offset - indicies[x])-1);
+						prev_offset = indicies[x];
+					}
+
+					Count = count;
+				}
+
+				void Output(StreamWriter sw, ref int index, int count)
+				{
+					sw.WriteLine(); sw.WriteLine();
+					for(int x = 0; x < count && index < ValueLengths.Length; x++, index++)
+						sw.Write("{0} ", ValueLengths[index].ToString());
+				}
+				public void Output(StreamWriter sw, int[] set_breakers)
+				{
+					bool use_set_breakers = set_breakers != null;
+
+					int index = 0;
+					if (use_set_breakers)
+						foreach (int count in set_breakers)
+							Output(sw, ref index, count);
+					for (int x = index; x < ValueLengths.Length; x++)
+						sw.Write("{0} ", ValueLengths[x].ToString());
+				}
+				public void OutputLines(StreamWriter sw)
+				{
+					for (int x = 0; x < ValueLengths.Length; x++)
+						sw.WriteLine("{0}\t{1}", x.ToString("X4"), ValueLengths[x].ToString());
+				}
+			};
+
+			CacheHandler<Blam.HaloReach.CacheFile> cacheHandler;
+			public Blam.HaloReach.CacheFile Cache { get { return cacheHandler.CacheInterface; } }
+
+			public CacheSymbolInterface(CacheFileOutputInfoArgs args)
+			{
+				cacheHandler = new CacheHandler<Blam.HaloReach.CacheFile>(args.Game, args.MapPath);
+				cacheHandler.Read();
+			}
+
+			#region IDisposable Members
+			public void Dispose()
+			{
+				if (cacheHandler != null)
+				{
+					cacheHandler.Dispose();
+					cacheHandler = null;
+				}
+			}
+			#endregion
+
+			public int StringIdCacheSetStartIndex; // Raw index where the cache's string ids start
+			public int[] StringIdSetBreakers;
+			StringSymbols stringIdSymbols;
+			public void BuildStringIdSymbols()
+			{
+				var c = cacheHandler.CacheInterface;
+				var head = c.HeaderHaloReach;
+				var stream = c.InputStream;
+
+				stringIdSymbols = new StringSymbols();
+				stringIdSymbols.Build(stream, head.StringIdIndicesOffset,
+					head.StringIdsCount, head.StringIdsBufferSize);
+			}
+
+			public void OutputStringIdSymbols(string path)
+			{
+				using (var sw = new StreamWriter(path))
+				{
+					sw.WriteLine("Engine Count: {0}", StringIdCacheSetStartIndex.ToString());
+					stringIdSymbols.Output(sw, StringIdSetBreakers);
+				}
+			}
+
+			StringSymbols tagNameSymbols;
+			public void BuildTagNameSymbols()
+			{
+				var c = cacheHandler.CacheInterface;
+				var head = c.HeaderHaloReach;
+				var stream = c.InputStream;
+
+				tagNameSymbols = new StringSymbols();
+				tagNameSymbols.Build(stream, head.TagNameIndicesOffset,
+					head.TagNamesCount, head.TagNamesBufferSize);
+			}
+
+			public void OutputTagNameSymbols(string path)
+			{
+				using (var sw = new StreamWriter(path))
+					tagNameSymbols.Output(sw, null);
+			}
+		};
+		[TestMethod]
+		public void HaloReachBuildCacheSymbols()
+		{
+			CacheSymbolInterface delta = new CacheSymbolInterface(new CacheFileOutputInfoArgs(TestContext,
+				BlamVersion.HaloReach_Beta, kDirectoryXbox, kMapNames_Beta[0]));
+			CacheSymbolInterface retail = new CacheSymbolInterface(new CacheFileOutputInfoArgs(TestContext,
+				BlamVersion.HaloReach_Xbox, kDirectoryXbox, kMapNames_Retail[0]));
+
+			string results_path;
+
+			delta.BuildStringIdSymbols();
+			{
+				var c = delta.Cache;
+				var sidm = Program.HaloReach.Manager[BlamVersion.HaloReach_Beta].GetResource<Managers.StringIdManager>(Managers.BlamDefinition.ResourceStringIds);
+				var sid_cache = c.MapStringIds();
+
+				delta.StringIdSetBreakers = new int[15] {
+					1124, // 0
+					1476, // 1
+					170,  // 2
+					101,  // 3
+					213,  // 4 
+					37,   // 5
+					5,    // 6
+					1416, // 7
+					324,  // 8
+					15,   // 9
+					92,   // A
+					      // B - unused
+					24,   // C
+					13,   // D
+					39,   // E
+					64,   // F
+				};
+				delta.StringIdCacheSetStartIndex = sidm.PredefinedCount;
+				results_path = BuildResultPath(kTestResultsPath, delta.Cache.EngineVersion, c.Header.Name, "symbols.string_ids", "txt");
+				delta.OutputStringIdSymbols(results_path);
+
+				results_path = BuildResultPath(kTestResultsPath, delta.Cache.EngineVersion, c.Header.Name, "symbols.tag_names", "txt");
+			}
+			retail.BuildStringIdSymbols();
+			{
+				var c = delta.Cache;
+
+				retail.StringIdSetBreakers = new int[15] {
+					1198, // 0 - 0x4AE
+					1637, // 1 - 0x665
+					216,  // 2 - 0xD8
+					106,  // 3 - 0x6A
+					217,  // 4 - 0xD9
+					38,   // 5 - 0x26
+					5,    // 6 - 0x5
+					1725, // 7 - 0x6BD
+					367,  // 8 - 0x16F
+					20,   // 9 - 0x14
+					98,   // A - 0x62
+					      // B - unused
+					24,   // C - 0x18
+					13,   // D - 0xD
+					41,   // E - 0x29
+					97,   // F - 0x61
+				};
+				retail.StringIdCacheSetStartIndex = 5802;
+				results_path = BuildResultPath(kTestResultsPath, retail.Cache.EngineVersion, c.Header.Name, "symbols.string_ids", "txt");
+				retail.OutputStringIdSymbols(results_path);
+
+				results_path = BuildResultPath(kTestResultsPath, retail.Cache.EngineVersion, c.Header.Name, "symbols.tag_names", "txt");
+			}
+		}
+
 
 		class ScenarioScriptInterop : ScenarioScriptInteropGen3
 		{

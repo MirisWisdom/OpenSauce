@@ -817,7 +817,7 @@ namespace BlamLib.TagInterface
 				if(!was_changed)
 					c.References.AddReferencer(ReferenceId, this);
 
-				if (GroupTag != TagGroup.Null)
+				if (GroupTag == TagGroup.Null)
 					GroupTag = Blam.MiscGroups.TagGroupFrom(c.EngineVersion, GroupTagInt);
 			}
 		}
