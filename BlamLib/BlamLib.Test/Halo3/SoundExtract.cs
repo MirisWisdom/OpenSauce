@@ -210,11 +210,11 @@ namespace BlamLib.Test
 			parameters.Offset = 0; parameters.Strict = false; parameters.Version = 2;
 			
 			bool result = LowLevel.Xma.Interface.Rebuild(k_temp_file, null, k_rebuild_file1, parameters);
-			//Assert.IsTrue(result);
+			Assert.IsTrue(result);
 
 			parameters.Offset = 0x800;
 			LowLevel.Xma.Interface.Rebuild(k_temp_file, null, k_rebuild_file2, parameters);
-			//Assert.IsTrue(result);
+			Assert.IsTrue(result);
 		}
 	};
 }

@@ -97,104 +97,105 @@ namespace XMA
 
 		for (boost::uint32_t frame_number = 0;
 			!ctx.known_frame_count || frame_number < ctx.frame_count;
-			frame_number++) {
-				c_bit_stream_integer<k_frame_header_size_in_bits> frame_bits;
-				frame_stream >> frame_bits;
-				//cout << "   Frame #" << frame_number << ", " << ctx.total_bits << " bits read" << endl;
-				total_bits += frame_bits;
+			frame_number++)
+		{
+			c_bit_stream_integer<k_frame_header_size_in_bits> frame_bits;
+			frame_stream >> frame_bits;
+			//cout << "   Frame #" << frame_number << ", " << total_bits << " bits read" << endl;
+			total_bits += frame_bits;
 
-				boost::uint32_t bits_left = frame_bits - k_frame_header_size_in_bits;
+			boost::uint32_t bits_left = frame_bits - k_frame_header_size_in_bits;
 
-				if (m_parse_ctx.verbose)
-				{
-					cout << "   Frame #" << frame_number << endl;
-					cout << "   Size " << frame_bits << endl;
-				}
+			if (m_parse_ctx.verbose)
+			{
+				cout << "   Frame #" << frame_number << endl;
+				cout << "   Size " << frame_bits << endl;
+			}
 
-				// sync?
-				{
-					c_bit_stream_integer<k_frame_sync_size_in_bits> sync;
-					frame_stream >> sync;
-					if (sync!= 0x7F00) throw bad_frame_sync_error(sync);
-					bits_left -= k_frame_sync_size_in_bits;
-				}
+			// sync?
+			{
+				c_bit_stream_integer<k_frame_sync_size_in_bits> sync;
+				frame_stream >> sync;
+				if (sync!= 0x7F00) throw bad_frame_sync_error(sync);
+				bits_left -= k_frame_sync_size_in_bits;
+			}
 
-				if (m_parse_ctx.stereo) {
-					frame_stream.get_bit();
-					bits_left--;
-				}
+			if (m_parse_ctx.stereo) {
+				frame_stream.get_bit();
+				bits_left--;
+			}
 
-				// skip
+			// skip
+			if (frame_stream.get_bit())
+			{
+				c_bit_stream_integer<k_frame_skip_size_in_bits> skip_start, skip_end;
+				// skip at start
 				if (frame_stream.get_bit())
 				{
-					c_bit_stream_integer<k_frame_skip_size_in_bits> skip_start, skip_end;
-					// skip at start
-					if (frame_stream.get_bit())
-					{
-						frame_stream >> skip_start;
-						if (m_parse_ctx.verbose)
-							cout << "Skip " << skip_start << " samples at start" << endl;
-						bits_left -= k_frame_skip_size_in_bits;
-						sample_count -= skip_start;
-					}
-					bits_left --;
-					// skip at end
-					if (frame_stream.get_bit()) {
-						frame_stream >> skip_end;
-						if (m_parse_ctx.verbose)
-							cout << "Skip " << skip_end << " samples at end" << endl;
-						bits_left -= k_frame_skip_size_in_bits;
-						sample_count -= skip_end;
-					}
-					bits_left--;
+					frame_stream >> skip_start;
+					if (m_parse_ctx.verbose)
+						cout << "Skip " << skip_start << " samples at start" << endl;
+					bits_left -= k_frame_skip_size_in_bits;
+					sample_count -= skip_start;
 				}
 				bits_left--;
-
-				if (m_parse_ctx.verbose)
-					cout << hex;
-
-				for (; bits_left >= 4 + k_frame_trailer_size_in_bits; bits_left -= 4) {
-					c_bit_stream_integer<4> nybble;
-					frame_stream >> nybble;
-
+				// skip at end
+				if (frame_stream.get_bit()) {
+					frame_stream >> skip_end;
 					if (m_parse_ctx.verbose)
-						cout << nybble;
+						cout << "Skip " << skip_end << " samples at end" << endl;
+					bits_left -= k_frame_skip_size_in_bits;
+					sample_count -= skip_end;
 				}
+				bits_left--;
+			}
+			bits_left--;
+
+			if (m_parse_ctx.verbose)
+				cout << hex;
+
+			for (; bits_left >= 4 + k_frame_trailer_size_in_bits; bits_left -= 4) {
+				c_bit_stream_integer<4> nybble;
+				frame_stream >> nybble;
 
 				if (m_parse_ctx.verbose)
-					cout << " ";
-				for (; bits_left > k_frame_trailer_size_in_bits; bits_left--) {
-					bool bit = frame_stream.get_bit();
-					
-					if (m_parse_ctx.verbose)
-						cout << (bit ? '1' : '0');
-				}
-				if (m_parse_ctx.verbose)
-					cout << dec << endl;
+					cout << nybble;
+			}
 
-				// trailer
+			if (m_parse_ctx.verbose)
+				cout << " ";
+			for (; bits_left > k_frame_trailer_size_in_bits; bits_left--) {
+				bool bit = frame_stream.get_bit();
+
+				if (m_parse_ctx.verbose)
+					cout << (bit ? '1' : '0');
+			}
+			if (m_parse_ctx.verbose)
+				cout << dec << endl;
+
+			// trailer
+			{
+				if (!frame_stream.get_bit())
 				{
-					if (!frame_stream.get_bit())
-					{
-						if (m_parse_ctx.strict && ctx.known_frame_count &&
-							frame_number != ctx.frame_count-1) throw early_packet_end_error();
-						packet_end_seen = true;
-					}
-
-					sample_count += k_samples_per_frame;
-
-					bits_left -= k_frame_trailer_size_in_bits;
-
-					if (!ctx.known_frame_count && packet_end_seen) break;
-
-					// FIX: detect end with bit count
-					if (!m_parse_ctx.strict && !ctx.known_frame_count && total_bits >= ctx.max_bits) {
-						if (m_parse_ctx.verbose)
-							cout << "abandon frame due to bit count (total=" << total_bits << " max=" << ctx.max_bits << ")" << endl;
-
-						break;
-					}
+					if (m_parse_ctx.strict && ctx.known_frame_count &&
+						frame_number != ctx.frame_count-1) throw early_packet_end_error();
+					packet_end_seen = true;
 				}
+
+				sample_count += k_samples_per_frame;
+
+				bits_left -= k_frame_trailer_size_in_bits;
+
+				if (!ctx.known_frame_count && packet_end_seen) break;
+
+				// FIX: detect end with bit count
+				if (!m_parse_ctx.strict && !ctx.known_frame_count && total_bits >= ctx.max_bits) {
+					if (m_parse_ctx.verbose)
+						cout << "abandon frame due to bit count (total=" << total_bits << " max=" << ctx.max_bits << ")" << endl;
+
+					break;
+				}
+			}
 		}
 
 		// FIX: don't fail if packet end missing
@@ -213,7 +214,7 @@ namespace XMA
 	//////////////////////////////////////////////////////////////////////////
 	// c_xma_parser
 	c_xma_parser::c_xma_parser(std::istream& in_stream, std::ostream& out_stream, s_xma_parse_context& ctx) : 
-		c_xma_interface(ctx),
+	c_xma_interface(ctx),
 		m_in_stream(in_stream),
 		m_out_stream(out_stream)
 	{
@@ -221,22 +222,23 @@ namespace XMA
 
 	boost::uint32_t c_xma_parser::parse_xma_packets()
 	{
-		boost::int32_t last_offset = m_parse_ctx.offset+m_parse_ctx.data_size;
+		boost::int32_t offset = m_parse_ctx.offset;
+		boost::int32_t last_offset = offset+m_parse_ctx.data_size;
 		boost::uint32_t sample_count = 0;
 		boost::uint32_t last_packet_overflow_bits = 0;
 		boost::uint32_t sequence_number;
 
-		while(m_parse_ctx.offset < last_offset) {
+		while(offset < last_offset) {
 			s_xma_packet_header ph;
 
 			{
 				c_bit_istream packet_header_stream(m_in_stream);
-				m_in_stream.seekg(m_parse_ctx.offset);
+				m_in_stream.seekg(offset);
 				packet_header_stream >> ph;
 			}
 
 			if(m_parse_ctx.verbose) {
-				cout << "Sequence #" << ph.sequence_number << " (offset " << hex << m_parse_ctx.offset << dec << ")" << endl;
+				cout << "Sequence #" << ph.sequence_number << " (offset " << hex << offset << dec << ")" << endl;
 				cout << "Unknown         " << ph.unknown << endl;
 				cout << "Skip Bits       " << ph.skip_bits << endl;
 				cout << "Packet Skip     " << ph.packet_skip << (m_parse_ctx.ignore_packet_skip?" (ignore)":"") << endl;
@@ -251,7 +253,7 @@ namespace XMA
 			c_bit_istream frame_stream(m_in_stream,
 				(k_packet_size_in_bytes - k_packet_header_size_in_bytes) * k_bits_per_byte, // consecutive
 				(k_packet_header_size_in_bytes + ph.packet_skip * k_packet_size_in_bytes) * k_bits_per_byte // skip
-			);
+				);
 
 			if (16384 == ph.skip_bits)
 			{
@@ -291,7 +293,7 @@ namespace XMA
 			// We've successfully examined this packet, dump it out if we have an output stream
 			if (m_out_stream) {
 				char buf[k_packet_size_in_bytes];
-				m_in_stream.seekg(m_parse_ctx.offset);
+				m_in_stream.seekg(offset);
 
 				m_in_stream.read(buf, k_packet_size_in_bytes);
 				// FIX: fix sequence number
@@ -307,30 +309,30 @@ namespace XMA
 
 			sequence_number = (sequence_number + 1) % 16;
 
-			m_parse_ctx.offset += (ph.packet_skip + 1) * k_packet_size_in_bytes;
+			offset += (ph.packet_skip + 1) * k_packet_size_in_bytes;
 		}
 
 		return sample_count;
 	}
 
-	boost::uint32_t c_xma_parser::parse_xma2_block()
+	boost::uint32_t c_xma_parser::parse_xma2_block(boost::int32_t offset, boost::int32_t block_size)
 	{
-		boost::int32_t last_offset = m_parse_ctx.offset+m_parse_ctx.block_size;
+		boost::int32_t last_offset = offset+block_size;
 		boost::uint32_t sample_count = 0;
 		boost::uint32_t last_packet_overflow_bits = 0;
 
-		for(int packet_number = 0; m_parse_ctx.offset < last_offset; packet_number++)
+		for(int packet_number = 0; offset < last_offset; packet_number++)
 		{
 			s_xma2_packet_header ph;
 
 			{
 				c_bit_istream packet_header_stream(m_in_stream);
-				m_in_stream.seekg(m_parse_ctx.offset);
+				m_in_stream.seekg(offset);
 				packet_header_stream >> ph;
 			}
 
 			if (m_parse_ctx.verbose) {
-				cout << "Packet #" << packet_number << " (offset " << hex << m_parse_ctx.offset << dec << ")" << endl;
+				cout << "Packet #" << packet_number << " (offset " << hex << offset << dec << ")" << endl;
 				cout << "Frame Count     " << ph.frame_count << endl;
 				cout << "Skip Bits       " << ph.skip_bits << endl;
 				cout << "Metadata        " << ph.metadata << endl;
@@ -343,7 +345,7 @@ namespace XMA
 			c_bit_istream frame_stream(m_in_stream,
 				(k_packet_size_in_bytes - k_packet_header_size_in_bytes) * k_bits_per_byte, // consecutive
 				(k_packet_header_size_in_bytes + ph.packet_skip * k_packet_size_in_bytes) * k_bits_per_byte // skip
-			);
+				);
 
 			// At the end of a block no frame may start in a packet, signaled
 			// with invalidly large skip_bits so we skip everything
@@ -379,7 +381,7 @@ namespace XMA
 			// We've successfully examined this packet, dump it out if we have an output stream
 			if (m_out_stream) {
 				char buf[k_packet_size_in_bytes];
-				m_in_stream.seekg(m_parse_ctx.offset);
+				m_in_stream.seekg(offset);
 
 				m_in_stream.read(buf, k_packet_size_in_bytes);
 				buf[3] = 0; // zero packet skip, since we're packing consecutively
@@ -387,7 +389,7 @@ namespace XMA
 			}
 
 			// advance to next packet
-			m_parse_ctx.offset += (ph.packet_skip + 1) * k_packet_size_in_bytes;
+			offset += (ph.packet_skip + 1) * k_packet_size_in_bytes;
 
 		}
 
@@ -449,11 +451,11 @@ namespace XMA
 
 				m_stream << ph;
 
-				m_bits_written = k_packet_header_size_in_bytes * 8;
+				m_bits_written = k_packet_header_size_in_bytes * k_bits_per_byte;
 
 				if (overflow_bits != 0) {
 					// bits of frame header in new packet
-					for (; frame_header_size_bits_left > 0; frame_header_size_bits_left --, m_bits_written ++, overflow_bits --) {
+					for (; frame_header_size_bits_left > 0; frame_header_size_bits_left--, m_bits_written++, overflow_bits--) {
 						m_stream.put_bit( 0 != (frame_bits & (1 << (frame_header_size_bits_left - 1))) );
 					}
 
@@ -465,7 +467,7 @@ namespace XMA
 
 					// trailer bit, no more frames in packet
 					m_stream.put_bit(false);
-					m_bits_written ++;
+					m_bits_written++;
 				}
 			} else {
 				m_stream << frame_bits;
@@ -474,13 +476,10 @@ namespace XMA
 				}
 
 				// trailer bit
-				if (last && frame_number == frame_count-1) {
-					// no more frames
-					m_stream.put_bit(false);
-				} else {
-					// more frames in packet
-					m_stream.put_bit(true);
-				}
+				if (last && frame_number == frame_count-1)
+					m_stream.put_bit(false); // no more frames
+				else
+					m_stream.put_bit(true); // more frames in packet
 
 				m_bits_written += frame_bits;
 			}
@@ -507,7 +506,7 @@ namespace XMA
 	}
 
 	c_xma_builder::c_xma_builder(c_bit_ostream& bs, s_xma_parse_context& ctx) : 
-		c_xma_interface(ctx),
+	c_xma_interface(ctx),
 		m_stream(bs),
 		m_bits_written(k_packet_header_size_in_bytes*k_bits_per_byte),
 		m_sequence_number(1)
@@ -526,14 +525,14 @@ namespace XMA
 		finish();
 	}
 
-	boost::uint32_t c_xma_builder::build_from_xma(istream& is)
+	boost::uint32_t c_xma_builder::build_from_xma(istream& is, boost::int32_t offset)
 	{
-		boost::int32_t last_offset = m_parse_ctx.offset + m_parse_ctx.data_size;
+		boost::int32_t last_offset = offset + m_parse_ctx.data_size;
 		boost::uint32_t sample_count = 0;
 		boost::uint32_t last_packet_overflow_bits = 0;
 		boost::uint32_t sequence_number = 0;
 
-		while (m_parse_ctx.offset < last_offset) {
+		while (offset < last_offset) {
 			s_xma_packet_header ph;
 
 			boost::uint32_t frames_this_packet = 0;
@@ -541,13 +540,13 @@ namespace XMA
 			{
 				c_bit_istream packet_header_stream(is);
 
-				is.seekg(m_parse_ctx.offset);
+				is.seekg(offset);
 
 				packet_header_stream >> ph;
 			}
 
 			if (m_parse_ctx.verbose) {
-				cout << "Sequence #" << ph.sequence_number << " (offset " << hex << m_parse_ctx.offset << dec << ")" << endl;
+				cout << "Sequence #" << ph.sequence_number << " (offset " << hex << offset << dec << ")" << endl;
 				cout << "Unknown         " << ph.unknown << endl;
 				cout << "Skip Bits       " << ph.skip_bits << endl;
 				cout << "Packet Skip     " << ph.packet_skip << (m_parse_ctx.ignore_packet_skip?" (ignored)":"") << endl;
@@ -563,7 +562,7 @@ namespace XMA
 			c_bit_istream frame_stream(is,
 				(k_packet_size_in_bytes - k_packet_header_size_in_bytes) * k_bits_per_byte, // consecutive
 				(k_packet_header_size_in_bytes + ph.packet_skip * k_packet_size_in_bytes) * k_bits_per_byte // skip
-			);
+				);
 
 			if (16384 == ph.skip_bits)
 			{
@@ -605,12 +604,12 @@ namespace XMA
 
 			// We've successfully examined this packet, dump it out
 			{
-				is.seekg(m_parse_ctx.offset + k_packet_header_size_in_bytes);
+				is.seekg(offset + k_packet_header_size_in_bytes);
 
 				c_bit_istream dump_frame_stream(is,
 					(k_packet_size_in_bytes - k_packet_header_size_in_bytes) * k_bits_per_byte, // consecutive
 					(k_packet_header_size_in_bytes + ph.packet_skip * k_packet_size_in_bytes) * k_bits_per_byte // skip
-				);
+					);
 
 				// Do packet if not skipping
 				if (ph.skip_bits != 16384) {
@@ -618,36 +617,36 @@ namespace XMA
 					for (boost::uint32_t i = 0; i < ph.skip_bits; i++) dump_frame_stream.get_bit();
 
 					packetize(dump_frame_stream, frames_this_packet, 
-						(static_cast<boost::uint32_t>(m_parse_ctx.offset) + (ph.packet_skip + 1) * k_packet_size_in_bytes >= static_cast<boost::uint32_t>(last_offset)) );
+						(static_cast<boost::uint32_t>(offset) + (ph.packet_skip + 1) * k_packet_size_in_bytes >= static_cast<boost::uint32_t>(last_offset)) );
 				}
 			}
 
 			sequence_number = (sequence_number + 1) % 16;
 
-			m_parse_ctx.offset += (ph.packet_skip + 1) * k_packet_size_in_bytes;
+			offset += (ph.packet_skip + 1) * k_packet_size_in_bytes;
 		}
 
 		return sample_count;
 	}
-	boost::uint32_t c_xma_builder::build_from_xma2_block(istream& is, bool last)
+	boost::uint32_t c_xma_builder::build_from_xma2_block(istream& is, boost::int32_t offset, boost::int32_t block_size, bool last)
 	{
-		boost::int32_t last_offset = m_parse_ctx.offset + m_parse_ctx.block_size;
+		boost::int32_t last_offset = offset + block_size;
 		boost::uint32_t sample_count = 0;
 		boost::uint32_t last_packet_overflow_bits = 0;
 
-		for (int packet_number = 0; m_parse_ctx.offset < last_offset; packet_number++) {
+		for (int packet_number = 0; offset < last_offset; packet_number++) {
 			s_xma2_packet_header ph;
 
 			{
 				c_bit_istream packet_header_stream(is);
 
-				is.seekg(m_parse_ctx.offset);
+				is.seekg(offset);
 
 				packet_header_stream >> ph;
 			}
 
 			if (m_parse_ctx.verbose) {
-				cout << "Packet #" << packet_number << " (offset " << hex << m_parse_ctx.offset << dec << ")" << endl;
+				cout << "Packet #" << packet_number << " (offset " << hex << offset << dec << ")" << endl;
 				cout << "Frame Count     " << ph.frame_count << endl;
 				cout << "Skip Bits       " << ph.skip_bits << endl;
 				cout << "Metadata        " << ph.metadata << endl;
@@ -660,7 +659,7 @@ namespace XMA
 			c_bit_istream frame_stream(is,
 				(k_packet_size_in_bytes - k_packet_header_size_in_bytes) * k_bits_per_byte, // consecutive
 				(k_packet_header_size_in_bytes + ph.packet_skip * k_packet_size_in_bytes) * k_bits_per_byte // skip
-			);
+				);
 
 			// At the end of a block no frame may start in a packet, signaled
 			// with invalidly large skip_bits so we skip everything
@@ -695,12 +694,12 @@ namespace XMA
 
 			// We've successfully examined this packet, dump it out
 			{
-				is.seekg(m_parse_ctx.offset + k_packet_header_size_in_bytes);
+				is.seekg(offset + k_packet_header_size_in_bytes);
 
 				c_bit_istream dump_frame_stream(is,
 					(k_packet_size_in_bytes - k_packet_header_size_in_bytes) * k_bits_per_byte, // consecutive
 					(k_packet_header_size_in_bytes + ph.packet_skip * k_packet_size_in_bytes) * k_bits_per_byte // skip
-				);
+					);
 
 				// Do packet if not skipping
 				if (ph.skip_bits != 0x7FFF) {
@@ -708,12 +707,12 @@ namespace XMA
 					for (boost::uint32_t i = 0; i < ph.skip_bits; i++) dump_frame_stream.get_bit();
 
 					packetize(dump_frame_stream, ph.frame_count,
-						last && (static_cast<boost::uint32_t>(m_parse_ctx.offset) + (ph.packet_skip + 1) * k_packet_size_in_bytes >= static_cast<boost::uint32_t>(last_offset)) );
+						last && (static_cast<boost::uint32_t>(offset) + (ph.packet_skip + 1) * k_packet_size_in_bytes >= static_cast<boost::uint32_t>(last_offset)) );
 				}
 			}
 
 			// advance to next packet
-			m_parse_ctx.offset += (ph.packet_skip + 1) * k_packet_size_in_bytes;
+			offset += (ph.packet_skip + 1) * k_packet_size_in_bytes;
 		}
 
 		return sample_count;
@@ -729,7 +728,8 @@ namespace XMA
 		m_rebuilder(cpp_null),
 		m_in_stream(cpp_null),
 		m_out_stream(cpp_null),
-		m_rebuild_stream(cpp_null)
+		m_rebuild_stream(cpp_null),
+		m_error("")
 	{
 		m_in_stream = cpp_new istringstream( std::string(buffer, m_parse_ctx.data_size), ios::in | ios::binary);
 		m_out_stream = cpp_new ostringstream(ios::binary | ios::out);
@@ -743,7 +743,8 @@ namespace XMA
 		m_rebuilder(cpp_null),
 		m_in_stream(cpp_null),
 		m_out_stream(cpp_null),
-		m_rebuild_stream(cpp_null)
+		m_rebuild_stream(cpp_null),
+		m_error("")
 	{
 		m_in_stream = cpp_new ifstream(in_file, ios::in | ios::binary);
 
@@ -812,11 +813,11 @@ namespace XMA
 				total_sample_count = m_parser->parse_xma_packets();
 
 			if(use_builder())
-				total_sample_count = m_rebuilder->build_from_xma(*m_in_stream);
+				total_sample_count = m_rebuilder->build_from_xma(*m_in_stream, m_parse_ctx.offset);
 		}
-		else for(boost::int32_t block_offset; 
-					block_offset < (m_parse_ctx.offset+m_parse_ctx.data_size);
-					block_offset += m_parse_ctx.block_size)
+		else for(boost::int32_t block_offset = m_parse_ctx.offset; 
+		block_offset < (m_parse_ctx.offset+m_parse_ctx.data_size);
+		block_offset += m_parse_ctx.block_size)
 		{
 			boost::int32_t usable_block_size = m_parse_ctx.block_size;
 
@@ -826,18 +827,16 @@ namespace XMA
 			boost::uint32_t sample_count = 0;
 
 			if(!use_builder() && out_stream_valid())
-				sample_count = m_parser->parse_xma2_block();
+				sample_count = m_parser->parse_xma2_block(block_offset, usable_block_size);
 
 			if(use_builder())
-				sample_count = m_rebuilder->build_from_xma2_block(*m_in_stream, 
-					(block_offset+m_parse_ctx.block_size >= m_parse_ctx.offset+m_parse_ctx.data_size) );
+				sample_count = m_rebuilder->build_from_xma2_block(*m_in_stream, block_offset, usable_block_size,
+				(block_offset+m_parse_ctx.block_size >= m_parse_ctx.offset+m_parse_ctx.data_size) );
 
 			total_sample_count += sample_count;
 			if(m_parse_ctx.verbose)
 				cout << endl << sample_count << " samples (block) (" << total_sample_count << " total)" << endl << endl;
 		}
-
-		dispose_xma_interfaces();
 
 		return total_sample_count;
 	}
@@ -850,16 +849,18 @@ namespace XMA
 		catch(const out_of_bits_exception& oob)
 		{
 			result = false;
-			cerr << "Error reading bitstream" << endl;
+			cerr << (m_error = "Error reading bitstream") << endl;
 		}
 		catch(const parse_error& pe)
 		{
 			result = false;
+			m_error = typeid(pe).name();
 			cerr << pe << endl;
 		}
 		catch(const char* str)
 		{
 			result = false;
+			m_error = str;
 			cerr << str << endl;
 		}
 

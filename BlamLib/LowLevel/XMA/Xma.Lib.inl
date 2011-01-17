@@ -16,8 +16,8 @@ public:
 
 extern "C"
 {
-	CXMATarget* CreateXMATarget(CXMATarget*& out_obj);
-	void FreeXMATarget(CXMATarget* obj);
+	extern CXMATarget* __stdcall CreateXMATarget(CXMATarget*& out_obj);
+	extern void __stdcall FreeXMATarget(CXMATarget* obj);
 };
 
 #endif

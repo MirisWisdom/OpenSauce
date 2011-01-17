@@ -135,7 +135,7 @@ namespace XMA
 		c_xma_parser(std::istream& in_stream, std::ostream& out_stream, s_xma_parse_context& ctx);
 
 		boost::uint32_t parse_xma_packets();
-		boost::uint32_t parse_xma2_block();
+		boost::uint32_t parse_xma2_block(boost::int32_t offset, boost::int32_t block_size);
 	};
 
 	class c_xma_builder : public c_xma_interface
@@ -150,8 +150,8 @@ namespace XMA
 		c_xma_builder(c_bit_ostream& bs, s_xma_parse_context& ctx);
 		~c_xma_builder();
 
-		boost::uint32_t build_from_xma(istream& is);
-		boost::uint32_t build_from_xma2_block(istream& is, bool last);
+		boost::uint32_t build_from_xma(istream& is, boost::int32_t offset);
+		boost::uint32_t build_from_xma2_block(istream& is, boost::int32_t offset, boost::int32_t block_size, bool last);
 	};
 
 	class c_xma_rebuilder
@@ -166,6 +166,8 @@ namespace XMA
 		std::istream* m_in_stream;
 		std::ostream* m_out_stream;
 		std::ostream* m_rebuild_stream;
+
+		std::string m_error;
 
 		bool use_parser() { return m_parser != cpp_null; }
 		bool use_builder() { return m_rebuilder != cpp_null; }
@@ -229,6 +231,7 @@ namespace XMA
 
 			return false;
 		}
+		const char* get_error_msg() const { return m_error.c_str(); }
 
 		boost::uint32_t rebuild();
 		bool try_rebuild();
