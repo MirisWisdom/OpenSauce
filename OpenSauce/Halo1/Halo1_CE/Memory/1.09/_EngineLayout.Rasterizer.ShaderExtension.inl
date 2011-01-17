@@ -40,8 +40,7 @@
 	static void** K_SHADER_USAGE_ID_ARRAY_REFERENCES[] = {
 		CAST_PTR(void**, 0x52A17D), CAST_PTR(void**, 0x52A1F5), 
 		CAST_PTR(void**, 0x52A274), CAST_PTR(void**, 0x52A2F4), 
-		CAST_PTR(void**, 0x52A395), CAST_PTR(void**, 0x52A395), 
-		CAST_PTR(void**, 0x52A127)
+		CAST_PTR(void**, 0x52A395), CAST_PTR(void**, 0x52A127)
 	};
 
 	ENGINE_PTR(int, RASTERIZER_MODEL_SHADER_LOAD_COUNT,				0x52A04E, PTR_NULL);
