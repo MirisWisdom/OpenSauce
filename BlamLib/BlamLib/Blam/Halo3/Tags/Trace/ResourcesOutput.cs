@@ -477,7 +477,7 @@ namespace BlamLib.Blam.Halo3.Tags
 				foreach (cache_file_resource_gestalt_1DC_block def in block)
 				{
 					s.WriteLine(format, (x++).ToString(),
-						def.ThisIndex.Value.ToString("X4"), def.Count.Value.ToString("X4"), def.BlockIndex.Value.ToString("X8")
+						def.ThisIndex.Value.ToString("X4"), def.ElementCount.Value.ToString("X4"), def.BlockIndex.Value.ToString("X8")
 						);
 				}
 			}
@@ -611,13 +611,13 @@ namespace BlamLib.Blam.Halo3.Tags
 				"\t\t{3}\t{4}\t{5}" + Program.NewLine + // Encoding,CodecIndex,PlaybackIndex
 				"\t\t{6}\t{7}" + Program.NewLine + // 08,0A
 				"\t\t{8}\t{9}\t{10}" + Program.NewLine + // FirstPitchRangeIndex,PitchRangeIndex,ScaleIndex
-				"\t\t{11}\t{12}\t{13}" + Program.NewLine + // PromotionIndex,CustomPlaybackIndex,12
+				"\t\t{11}\t{12}\t{13}" + Program.NewLine + // PromotionIndex,CustomPlaybackIndex,ExtraInfoIndex
 				"\t\t{14}\t{15}\t{16}", // 14,ResourceIndex,MaximumPlayTime
 				def.Flags.Value.ToString("X4"),def.SoundClass.Value.ToString("X2"), def.SampleRate.Value.ToString("X2"),
 				def.Encoding.Value.ToString("X2"), def.CodecIndex.Value.ToString("X2"), def.PlaybackIndex.Value.ToString("X4"),
 				def.Unknown08.Value.ToString("X4"), def.Unknown0A.Value.ToString("X4"),
 				def.FirstPitchRangeIndex.Value.ToString("X4"), def.PitchRangeIndex.Value.ToString("X2"), def.ScaleIndex.Value.ToString("X2"),
-				def.PromotionIndex.Value.ToString("X2"), def.CustomPlaybackIndex.Value.ToString("X2"), def.Unknown12.Value.ToString("X4"),
+				def.PromotionIndex.Value.ToString("X2"), def.CustomPlaybackIndex.Value.ToString("X2"), def.ExtraInfoIndex.Value.ToString("X4"),
 				def.Unknown14.Value.ToString("X8"), def.ResourceIndex.Value.ToString("X8"), def.MaximumPlayTime.Value.ToString("X8")
 				);
 		}
@@ -634,13 +634,13 @@ namespace BlamLib.Blam.Halo3.Tags
 				"\t\t\t{3}\t{4}\t{5}" + Program.NewLine + // Encoding,CodecIndex,PlaybackIndex
 				"\t\t\t{6}\t{7}" + Program.NewLine + // 08,0A
 				"\t\t\t{8}\t{9}\t{10}" + Program.NewLine + // FirstPitchRangeIndex,PitchRangeIndex,ScaleIndex
-				"\t\t\t{11}\t{12}\t{13}" + Program.NewLine + // PromotionIndex,CustomPlaybackIndex,12
+				"\t\t\t{11}\t{12}\t{13}" + Program.NewLine + // PromotionIndex,CustomPlaybackIndex,ExtraInfoIndex
 				"\t\t\t{14}\t{15}\t{16}", // 14,ResourceIndex,MaximumPlayTime
 				def.Flags.Value.ToString("X4"),def.SoundClass.Value.ToString("X2"), def.SampleRate.Value.ToString("X2"),
 				def.Encoding.Value.ToString("X2"), def.CodecIndex.Value.ToString("X2"), def.PlaybackIndex.Value.ToString("X4"),
 				def.Unknown08.Value.ToString("X4"), def.Unknown0A.Value.ToString("X4"),
 				def.FirstPitchRangeIndex.Value.ToString("X4"), def.PitchRangeIndex.Value.ToString("X2"), def.ScaleIndex.Value.ToString("X2"),
-				def.PromotionIndex.Value.ToString("X2"), def.CustomPlaybackIndex.Value.ToString("X2"), def.Unknown12.Value.ToString("X4"),
+				def.PromotionIndex.Value.ToString("X2"), def.CustomPlaybackIndex.Value.ToString("X2"), def.ExtraInfoIndex.Value.ToString("X4"),
 				def.Unknown14.Value.ToString("X8"), def.ResourceIndex.Value.ToString("X8"), def.MaximumPlayTime.Value.ToString("X8")
 				);
 			dic[def.CodecIndex.Value].Add(sb.ToString());
