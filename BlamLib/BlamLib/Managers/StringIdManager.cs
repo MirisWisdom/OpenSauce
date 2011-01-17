@@ -228,6 +228,33 @@ namespace BlamLib.Managers
 		public void Dispose()	{ Close(); }
 		#endregion
 
+		public Blam.StringID GetNext(Blam.StringID sid, out string value)
+		{
+			value = string.Empty;
+
+			if (sid.Set < Groups.Length && sid.Index < Groups[sid.Set].Count-1)
+			{
+				var dic = Groups[sid.Set];
+				bool is_next = false;
+				foreach (var kv in dic)
+				{
+					if (is_next)
+					{
+						value = kv.Value;
+						return (Blam.StringID)kv.Key;
+					}
+					is_next = Blam.StringID.ToIndex(kv.Key) == sid.Index;
+				}
+			}
+
+			return Blam.StringID.Null;
+		}
+		public Blam.StringID GetNext(Blam.StringID sid)
+		{
+			string value;
+			return GetNext(sid, out value);
+		}
+
 		#region IStringIdContainer Members
 		/// <summary>
 		/// Provides an interface to enumerate through all the string ids in this container
@@ -245,7 +272,7 @@ namespace BlamLib.Managers
 		/// </summary>
 		/// <param name="sid">string id handle</param>
 		/// <returns>string id's value, or null if it doesn't exist</returns>
-		public string Get(BlamLib.Blam.StringID sid)
+		public string Get(Blam.StringID sid)
 		{
 			if (sid.Handle == 0) return string.Empty; // little optimization
 

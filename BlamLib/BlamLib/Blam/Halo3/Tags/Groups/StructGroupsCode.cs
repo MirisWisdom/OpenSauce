@@ -125,6 +125,17 @@ namespace BlamLib.Blam.Halo3
 
 
 		/// <summary>
+		/// sound_playback_parameter_definition
+		/// </summary>
+		static TagGroup spl1 = new TagGroup("spl1", "sound_playback_parameter_definition");
+
+		/// <summary>
+		/// sound_effect_struct_definition
+		/// </summary>
+		static TagGroup ssfx = new TagGroup("ssfx", "sound_effect_struct_definition");
+
+
+		/// <summary>
 		/// animation_graph_resources_struct
 		/// </summary>
 		static TagGroup MAgr = new TagGroup("MAgr", "animation_graph_resources_struct");
@@ -141,6 +152,11 @@ namespace BlamLib.Blam.Halo3
 		/// </summary>
 		static TagGroup spdf = new TagGroup("spdf", "global_structure_physics_struct");
 
+
+		/// <summary>
+		/// simple_platform_sound_playback_struct
+		/// </summary>
+		static TagGroup plsn_simple = new TagGroup("plsn", "simple_platform_sound_playback_struct");
 
 		/// <summary>
 		/// sound_promotion_parameters_struct

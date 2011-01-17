@@ -88,7 +88,7 @@ namespace BlamLib.Blam.Halo3.Tags
 			}
 
 			byte[] PageData;
-			internal byte[] GetSegmentData(CacheFile cf, cache_file_resource_layout_table owner, int segment_offset)
+			internal byte[] GetSegmentData(CacheFileBase cf, cache_file_resource_layout_table owner, int segment_offset)
 			{
 				if (PageData == null)
 				{
@@ -300,16 +300,16 @@ namespace BlamLib.Blam.Halo3.Tags
 			#region Page and Segment loading
 			class resource_tag_stream : IO.ITagStream
 			{
-				CacheFile cache;
+				CacheFileBase cache;
 				DatumIndex tag_datum;
-				public resource_tag_stream(CacheFile c, DatumIndex tag, IO.EndianReader s)
+				public resource_tag_stream(CacheFileBase c, DatumIndex tag, IO.EndianReader s)
 				{ cache = c; tag_datum = tag; InputStream = s; }
 
 				public DatumIndex OwnerId		{ get { return cache.TagIndexManager.IndexId; } }
 				Util.Flags flags = new Util.Flags(0);
 				public Util.Flags Flags			{ get { return flags; } }
 				public DatumIndex TagIndex		{ get { return DatumIndex.Null; } }
-				public DatumIndex ReferenceName { get { return cache.IndexHalo3[tag_datum.Index].ReferenceName; } }
+				public DatumIndex ReferenceName { get { return cache.Index.Tags[tag_datum.Index].ReferenceName; } }
 				public BlamVersion Engine		{ get { return cache.EngineVersion; } }
 
 				IO.EndianReader InputStream;
@@ -318,12 +318,12 @@ namespace BlamLib.Blam.Halo3.Tags
 
 				public string GetExceptionDescription()
 				{
-					return string.Format("cache resource stream: {0}.{1}", cache.References[ReferenceName], cache.IndexHalo3[tag_datum.Index].GroupTag.Name);
+					return string.Format("cache resource stream: {0}.{1}", cache.References[ReferenceName], cache.Index.Tags[tag_datum.Index].GroupTag.Name);
 				}
 			};
 
 			TI.Definition loadedResources = null;
-			internal TI.Definition LoadResources(CacheFile c, cache_file_resource_gestalt_group owner, cache_file_resource_layout_table cache_layout, bool mega_hack)
+			internal TI.Definition LoadResources(CacheFileBase c, cache_file_resource_gestalt_group owner, cache_file_resource_layout_table cache_layout, bool mega_hack)
 			{
 				if (Reference.Datum == DatumIndex.Null) return null; // this is a null entry
 				if (loadedResources != null) return loadedResources; // data already loaded, return
@@ -333,6 +333,16 @@ namespace BlamLib.Blam.Halo3.Tags
 				owner.BuildInteropData();
 
 				int resource_stream_definition_size = BlockSize.Value;
+				
+				// sound resource case hack
+				bool use_sound_resource_hack = false;
+				if (resource_stream_definition_size == 0)
+				{
+					Debug.Assert.If(ResourceType.Value == owner.resource_index_sound_resource_definition);
+					resource_stream_definition_size = sound_resource_definition.kSizeOf;
+					use_sound_resource_hack = true;
+				}
+
 				int resource_stream_size_required = resource_stream_definition_size;
 				// base address to use on cache fixups, cache data will be appended 
 				// later on
@@ -357,7 +367,15 @@ namespace BlamLib.Blam.Halo3.Tags
 
 					// get our definition data buffer
 					resource_stream_data = new byte[resource_stream_size_required];
-					Array.Copy(owner.ResourceDefinitionData.Value, BlockOffset.Value, resource_stream_data, 0, resource_stream_definition_size);
+					if (use_sound_resource_hack) // sound_resources don't occupy space in the resource-definition-data, so we have to create faux def data
+					{
+						int data_size = 0;
+						if (required_size > 0) data_size += required_size;
+						if (optional_size > 0) data_size += optional_size;
+						if (data_size > 0) sound_resource_definition.InsertDataSizeIntoFauxDefinitionData(resource_stream_data, 0, (uint)data_size);
+					}
+					else
+						Array.Copy(owner.ResourceDefinitionData.Value, BlockOffset.Value, resource_stream_data, 0, resource_stream_definition_size);
 
 					{ // get cache data and append it
 						byte[] page_data = 
@@ -395,11 +413,11 @@ namespace BlamLib.Blam.Halo3.Tags
 							default: throw new Debug.Exceptions.UnreachableException();
 						}
 
-						ms.Write(BitConverter.GetBytes(IO.ByteSwap.SwapUDWord(address_offset)), 0, 4);
+						IO.ByteSwap.SwapUDWordAndWrite(address_offset, ms);
 						
 						// hack identifier for StructReference fields when the definition is at offset '0' 
 						// as that fucks with the init code
-						//if (address_offset == 0) ms.Write(BitConverter.GetBytes(IO.ByteSwap.SwapUDWord(1)), 0, 4);
+						//if (address_offset == 0) IO.ByteSwap.SwapUDWordAndWrite(1, ms);
 					}
 
 //					foreach (resource_definition_fixup_block def in ResourceDefinitionFixups)
@@ -412,15 +430,15 @@ namespace BlamLib.Blam.Halo3.Tags
 				using (var s = new IO.EndianReader(resource_stream_data, IO.EndianState.Big, null))
 				{
 					int res_type = ResourceType.Value;
-					if (res_type == owner.resource_index_render_geometry_api_resource_definition) loadedResources = new render_geometry_api_resource_definition();
-					else if (res_type == owner.resource_index_bitmap_texture_interop_resource) loadedResources = new bitmap_texture_interop_resource_reference();
-					else if (res_type == owner.resource_index_model_animation_tag_resource) loadedResources = new model_animation_tag_resource();
-					// TODO: haven't quite figured this one out yet
-					else if (res_type == owner.resource_index_sound_resource_definition) throw new Debug.Exceptions.UnreachableException();
-					else if (res_type == owner.resource_index_bitmap_texture_interleaved_interop_resource) loadedResources = new bitmap_texture_interleaved_interop_resource_reference();
-					else if (res_type == owner.resource_index_structure_bsp_tag_resources) loadedResources = new scenario_structure_bsp_group.structure_bsp_tag_resources();
+					if (res_type == owner.resource_index_render_geometry_api_resource_definition)			loadedResources = new render_geometry_api_resource_definition();
+					else if (res_type == owner.resource_index_bitmap_texture_interop_resource)				loadedResources = new bitmap_texture_interop_resource_reference();
+					else if (res_type == owner.resource_index_model_animation_tag_resource)					loadedResources = new model_animation_tag_resource();
+					// TODO: haven't quite figured this one out yet. Currently using hacked up code (see [use_sound_resource_hack])
+					else if (res_type == owner.resource_index_sound_resource_definition)					loadedResources = new sound_resource_definition();
+					else if (res_type == owner.resource_index_bitmap_texture_interleaved_interop_resource)	loadedResources = new bitmap_texture_interleaved_interop_resource_reference();
+					else if (res_type == owner.resource_index_structure_bsp_tag_resources)					loadedResources = new scenario_structure_bsp_group.structure_bsp_tag_resources();
 					// TODO: haven't figured this one out yet
-					else if (res_type == owner.resource_index_structure_bsp_cache_file_tag_resources) throw new Debug.Exceptions.UnreachableException();
+					else if (res_type == owner.resource_index_structure_bsp_cache_file_tag_resources)		throw new Debug.Exceptions.UnreachableException();
 					else throw new Debug.Exceptions.UnreachableException();
 
 					s.Seek(optv.GetValue((uint)DefinitionOffset.Value));
@@ -442,11 +460,11 @@ namespace BlamLib.Blam.Halo3.Tags
 		};
 
 		#region Page and Segment loading
-		public TI.Definition LoadResources(DatumIndex resource, CacheFile c, cache_file_resource_layout_table cache_layout)
+		public TI.Definition LoadResources(DatumIndex resource, CacheFileBase c, cache_file_resource_layout_table cache_layout)
 		{
 			return LoadResources(resource, c, cache_layout, false);
 		}
-		public TI.Definition LoadResources(DatumIndex resource, CacheFile c, cache_file_resource_layout_table cache_layout, bool mega_hack)
+		public TI.Definition LoadResources(DatumIndex resource, CacheFileBase c, cache_file_resource_layout_table cache_layout, bool mega_hack)
 		{
 			if (resource == DatumIndex.Null || c == null || cache_layout == null ||
 				resource.Index < 0 || resource.Index > TagResources.Count)

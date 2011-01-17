@@ -561,7 +561,7 @@ namespace BlamLib.Blam.Halo3.Tags
 
 		public TI.Block<resource> Resources;
 
-		public model_animation_tag_resource()
+		public model_animation_tag_resource() : base(1)
 		{
 			Add(Resources = new TI.Block<resource>(this));
 		}

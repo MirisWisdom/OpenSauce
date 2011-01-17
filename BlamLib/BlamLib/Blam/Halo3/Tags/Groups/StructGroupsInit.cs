@@ -46,12 +46,16 @@ namespace BlamLib.Blam.Halo3
 			csbs.Definition = new Tags.constraint_bodies_struct().State;
 			aaim.Definition = new Tags.animation_aiming_screen_struct().State;
 
+			spl1.Definition = new Tags.sound_playback_parameter_definition().State;
+//			ssfx.Definition = new Tags.sound_effect_struct_definition().State;
+
 			MAgr.Definition = new Tags.animation_graph_resources_struct().State;
 
 			MAgc.Definition = new Tags.animation_graph_contents_struct().State;
 
 			spdf.Definition = new Tags.global_structure_physics_struct().State;
 
+			plsn_simple.Definition = new Tags.simple_platform_sound_playback_struct().State;
 			snpr.Definition = new Tags.sound_promotion_parameters_struct().State;
 
 			for (int x = 0; x < Groups.Count; x++)
