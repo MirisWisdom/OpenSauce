@@ -27,10 +27,10 @@ namespace BlamLib.Render
 	partial class VertexBufferInterface
 	{
 		/// <summary>
-		/// Halo 1 Vertex definitions
+		/// Vertex definitions for 1st generation Blam engines
 		/// </summary>
 		/// <remarks>All elements are <c>DeclarationMethod.Default</c></remarks>
-		public class VertexBuffersHalo1 : VertexBuffers
+		public class VertexBuffersGen1 : VertexBuffers
 		{
 			#region Type
 			public sealed class Type : TypeBase
@@ -181,7 +181,7 @@ namespace BlamLib.Render
 			}
 			#endregion
 
-			internal VertexBuffersHalo1() { }
+			internal VertexBuffersGen1() { }
 
 			#region IGameResource Members
 			public override bool Load(string path, string name)

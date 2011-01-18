@@ -1088,12 +1088,12 @@ namespace BlamLib.Blam.Halo2.Tags
 		{
 			LowLevel.Math.real_quaternion quat = new LowLevel.Math.real_quaternion();
 
-			if(stream_reader.FindStreamedElement(Render.VertexBufferInterface.VertexBuffersHalo2.kTypePcaClusterId, 
+			if(stream_reader.FindStreamedElement(Render.VertexBufferInterface.VertexBuffersGen2.kTypePcaClusterId, 
 				ref quat))
 			{
 				RawPcaData[(pca_data_offset*5)+0].RawPcaData.Value = quat.Vector.I;
 			}
-			if (stream_reader.FindStreamedElement(Render.VertexBufferInterface.VertexBuffersHalo2.kTypePcaVertexWeights,
+			if (stream_reader.FindStreamedElement(Render.VertexBufferInterface.VertexBuffersGen2.kTypePcaVertexWeights,
 				ref quat))
 			{
 				RawPcaData[(pca_data_offset*5)+1].RawPcaData.Value = quat.Vector.I;

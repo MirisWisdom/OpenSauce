@@ -19,99 +19,11 @@
 #pragma warning disable 1591 // "Missing XML comment for publicly visible type or member"
 using System;
 using TI = BlamLib.TagInterface;
+using CT = BlamLib.Blam.Cache.Tags;
 
 namespace BlamLib.Blam.Halo3.Tags
 {
 	#region bitmap_group
-	#region bitmap_texture_interop_resource_reference
-	[TI.Definition(1, 12)]
-	public class bitmap_texture_interop_resource_reference : TI.Definition
-	{
-		#region bitmap_texture_interop_resource
-		[TI.Definition(1, 52)]
-		public class bitmap_texture_interop_resource : TI.Definition
-		{
-			public TI.Data BitmapData;
-			public TI.Data UnknownData;
-			public TI.ShortInteger Width, Height;
-			public TI.ByteInteger Unknown2C, Unknown2D, Unknown2E, Unknown2F;
-			public TI.LongInteger Unknown30;
-
-			public bitmap_texture_interop_resource() : base(4)
-			{
-				Add(BitmapData = new TI.Data(this));
-				Add(UnknownData = new TI.Data(this));
-				Add(Width = new BlamLib.TagInterface.ShortInteger());
-				Add(Height = new BlamLib.TagInterface.ShortInteger());
-				Add(Unknown2C = new BlamLib.TagInterface.ByteInteger());
-				Add(Unknown2D = new BlamLib.TagInterface.ByteInteger());
-				Add(Unknown2E = new BlamLib.TagInterface.ByteInteger());
-				Add(Unknown2F = new BlamLib.TagInterface.ByteInteger());
-				Add(Unknown30 = new BlamLib.TagInterface.LongInteger());
-			}
-		};
-		#endregion
-
-		public TI.StructReference<bitmap_texture_interop_resource> Reference;
-
-		public bitmap_texture_interop_resource_reference() : base(1)
-		{
-			Add(Reference = new TI.StructReference<bitmap_texture_interop_resource>(this));
-		}
-	};
-	#endregion
-
-	#region bitmap_texture_interleaved_interop_resource_reference
-	[TI.Definition(1, 12)]
-	public class bitmap_texture_interleaved_interop_resource_reference : TI.Definition
-	{
-		#region bitmap_texture_interleaved_interop_resource
-		[TI.Definition(1, 52)]
-		public class bitmap_texture_interleaved_interop_resource : TI.Definition
-		{
-			public TI.Data BitmapData;
-			public TI.Data UnknownData;
-
-			public TI.ShortInteger Width, Height;
-			public TI.ByteInteger Unknown2C, Unknown2D, Unknown2E, Unknown2F;
-			public TI.LongInteger Unknown30;
-
-			public TI.ShortInteger Width2, Height2;
-			public TI.ByteInteger Unknown38, Unknown39, Unknown3A, Unknown3B;
-			public TI.LongInteger Unknown3C;
-
-			public bitmap_texture_interleaved_interop_resource() : base(4)
-			{
-				Add(BitmapData = new TI.Data(this));
-				Add(UnknownData = new TI.Data(this));
-				Add(Width = new BlamLib.TagInterface.ShortInteger());
-				Add(Height = new BlamLib.TagInterface.ShortInteger());
-				Add(Unknown2C = new BlamLib.TagInterface.ByteInteger());
-				Add(Unknown2D = new BlamLib.TagInterface.ByteInteger());
-				Add(Unknown2E = new BlamLib.TagInterface.ByteInteger());
-				Add(Unknown2F = new BlamLib.TagInterface.ByteInteger());
-				Add(Unknown30 = new BlamLib.TagInterface.LongInteger());
-
-				Add(Width2 = new BlamLib.TagInterface.ShortInteger());
-				Add(Height2 = new BlamLib.TagInterface.ShortInteger());
-				Add(Unknown38 = new BlamLib.TagInterface.ByteInteger());
-				Add(Unknown39 = new BlamLib.TagInterface.ByteInteger());
-				Add(Unknown3A = new BlamLib.TagInterface.ByteInteger());
-				Add(Unknown3B = new BlamLib.TagInterface.ByteInteger());
-				Add(Unknown3C = new BlamLib.TagInterface.LongInteger());
-			}
-		};
-		#endregion
-
-		public TI.StructReference<bitmap_texture_interleaved_interop_resource> Reference;
-
-		public bitmap_texture_interleaved_interop_resource_reference() : base(1)
-		{
-			Add(Reference = new TI.StructReference<bitmap_texture_interleaved_interop_resource>(this));
-		}
-	};
-	#endregion
-
 	[TI.TagGroup((int)TagGroups.Enumerated.bitm, 8, 164)]
 	public class bitmap_group : TI.Definition
 	{
@@ -298,153 +210,9 @@ namespace BlamLib.Blam.Halo3.Tags
 
 	#region cache_file_resource_layout_table
 	[TI.Struct((int)StructGroups.Enumerated.play, 1, 60)]
-	public partial class cache_file_resource_layout_table : TI.Definition
+	public partial class cache_file_resource_layout_table : CT.cache_file_resource_layout_table
 	{
-		#region compression_codec_block
-		[TI.Definition(1, 16)]
-		public partial class compression_codec_block : TI.Definition
-		{
-			public TI.Skip Guid;
-
-			#region Ctor
-			public compression_codec_block()
-			{
-				Add(Guid = new TI.Skip(16));
-			}
-			#endregion
-		}
-		#endregion
-
-		#region shared_cache_block
-		[TI.Definition(1, 264)]
-		public partial class shared_cache_block : TI.Definition
-		{
-			public TI.String CachePath;
-			public TI.ShortInteger Unknown100;
-			public TI.Flags Flags;
-			public TI.LongInteger Unknown104;
-
-			#region Ctor
-			public shared_cache_block()
-			{
-				Add(CachePath = new TI.String(BlamLib.TagInterface.StringType.Ascii, 256));
-				Add(Unknown100 = new TI.ShortInteger());
-				Add(Flags = new TI.Flags(BlamLib.TagInterface.FieldType.WordFlags));
-				Add(Unknown104 = new TI.LongInteger());
-			}
-			#endregion
-		}
-		#endregion
-
-		// runtime resource locations
-		#region pages_block
-		[TI.Definition(1, 88)]
-		public partial class pages_block : TI.Definition
-		{
-			public TI.ShortInteger Header; // datum's salt value
-			public TI.Flags Flags;
-			public TI.BlockIndex CompressionCodec;
-
-			public TI.BlockIndex SharedCache;
-			public TI.ShortInteger Unknown006; // Index of something
-			public TI.LongInteger BlockOffset; // (aligned to 4096 blocks)
-			public TI.LongInteger BlockSizeCompressed;
-			public TI.LongInteger BlockSizeUncompressed;
-
-			// s_resource_checksum
-			public TI.LongInteger Crc;
-			public TI.Skip EntireBufferHash; // 7BFD8BA3F41CDBCD23065111ABA46E7D436FAC61
-			public TI.Skip FirstChunkHash;
-			public TI.Skip LastChunkHash;
-
-			public TI.ShortInteger Unknown054; // ?
-			public TI.ShortInteger Unknown056; // Index?
-
-			public pages_block()
-			{
-				Add(Header = new TI.ShortInteger());
-				Add(Flags = new TI.Flags(TI.FieldType.ByteFlags));
-				Add(CompressionCodec = new TI.BlockIndex(TI.FieldType.ByteBlockIndex));
-
-				Add(SharedCache = new TI.BlockIndex());
-				Add(Unknown006 = new TI.ShortInteger());
-				Add(BlockOffset = new TI.LongInteger());
-				Add(BlockSizeCompressed = new TI.LongInteger());
-				Add(BlockSizeUncompressed = new TI.LongInteger());
-
-				Add(Crc = new TI.LongInteger());
-				Add(EntireBufferHash = new TI.Skip(20));
-				Add(FirstChunkHash = new TI.Skip(20));
-				Add(LastChunkHash = new TI.Skip(20));
-
-				Add(Unknown054 = new TI.ShortInteger());
-				Add(Unknown056 = new TI.ShortInteger());
-			}
-		};
-		#endregion
-
-		#region cache_file_resource_layout_table_24_block
-		[TI.Definition(1, 16)]
-		public partial class cache_file_resource_layout_table_24_block : TI.Definition
-		{
-			#region block_4
-			[TI.Definition(1, 16)]
-			public partial class block_4 : TI.Definition
-			{
-				public TI.LongInteger Unknown00;
-				public TI.LongInteger Unknown04;
-				public TI.LongInteger Unknown08;
-				public TI.LongInteger Unknown0C;
-
-				public block_4()
-				{
-					Add(Unknown00 = new TI.LongInteger());
-					Add(Unknown04 = new TI.LongInteger());
-					Add(Unknown08 = new TI.LongInteger());
-					Add(Unknown0C = new TI.LongInteger());
-				}
-			}
-			#endregion
-
-			public TI.LongInteger Size;
-			public TI.Block<block_4> Unknown04;
-
-			public cache_file_resource_layout_table_24_block()
-			{
-				Add(Size = new TI.LongInteger());
-				Add(Unknown04 = new TI.Block<block_4>(this));
-			}
-		}
-		#endregion
-
-		#region page_segment_block
-		[TI.Definition(1, 16)]
-		public partial class page_segment_block : TI.Definition // http://en.wikipedia.org/wiki/Segmentation_(memory)
-		{
-			public TI.BlockIndex RequiredPageIndex;
-			public TI.BlockIndex OptionalPageIndex;
-			public TI.LongInteger RequiredSegmentOffset;
-			public TI.LongInteger OptionalSegmentOffset;
-			public TI.LongInteger DatumIndexBlock24; // seems like only sounds use this...
-
-			public page_segment_block()
-			{
-				Add(RequiredPageIndex = new TI.BlockIndex());
-				Add(OptionalPageIndex = new TI.BlockIndex());
-				Add(RequiredSegmentOffset = new TI.LongInteger());
-				Add(OptionalSegmentOffset = new TI.LongInteger());
-				Add(DatumIndexBlock24 = new TI.LongInteger());
-			}
-		};
-		#endregion
-
-		public TI.Block<compression_codec_block> CompressionCodecs;
-		public TI.Block<shared_cache_block> SharedCaches;
-		public TI.Block<pages_block> Pages; // 18
-		public TI.Block<cache_file_resource_layout_table_24_block> Block24; // 24
-		public TI.Block<page_segment_block> PageSegments; // 30
-
-		public cache_file_resource_layout_table()
+		public cache_file_resource_layout_table() : base(5)
 		{
 			Add(CompressionCodecs = new TI.Block<compression_codec_block>(this, 0)); // 1?
 			Add(SharedCaches = new TI.Block<shared_cache_block>(this, 0)); // 3?
@@ -466,135 +234,10 @@ namespace BlamLib.Blam.Halo3.Tags
 	};
 	#endregion
 
-	enum resource_fixup_type
-	{
-		Invalid,
-
-		Data,	// fixup is to data located in the 'resource definition' tag data
-		CacheRequired,	// fixup is to data located in the cache file resource page
-		CacheOptional,
-
-		Count,
-	};
-
 	#region cache_file_resource_gestalt
 	[TI.TagGroup((int)TagGroups.Enumerated.zone, 1, 532)]
-	public partial class cache_file_resource_gestalt_group : TI.Definition
+	public partial class cache_file_resource_gestalt_group : CT.cache_file_resource_gestalt_group
 	{
-		#region resource_type_block
-		[TI.Definition(1, 28)]
-		public partial class resource_type_block : TI.Definition
-		{
-			public TI.Skip Guid;
-			public TI.ShortInteger Unknown010;
-			public TI.ShortInteger Unknown012;
-			public TI.ShortInteger Unknown014;
-			public TI.ShortInteger Unknown016;
-			public TI.StringId Name;
-
-			#region Ctor
-			public resource_type_block()
-			{
-				Add(Guid = new TI.Skip(16));
-				Add(Unknown010 = new TI.ShortInteger());
-				Add(Unknown012 = new TI.ShortInteger());
-				Add(Unknown014 = new TI.ShortInteger());
-				Add(Unknown016 = new TI.ShortInteger());
-				Add(Name = new TI.StringId());
-			}
-			#endregion
-		};
-		#endregion
-
-		#region resource_structure_type_block
-		[TI.Definition(1, 20)]
-		public partial class resource_structure_type_block : TI.Definition
-		{
-			public TI.Skip Guid;
-			public TI.StringId Name;
-
-			#region Ctor
-			public resource_structure_type_block()
-			{
-				Add(Guid = new TI.Skip(16));
-				Add(Name = new TI.StringId());
-			}
-			#endregion
-		};
-		#endregion
-
-		#region cache_file_resource_gestalt_tag_resource_block
-		[TI.Definition(1, 64)]
-		public partial class cache_file_resource_gestalt_tag_resource_block : TI.Definition
-		{
-			#region resource_fixup_block
-			[TI.Definition(1, 8)]
-			public partial class resource_fixup_block : TI.Definition
-			{
-				public TI.LongInteger BlockOffset; // [offset in tag data sub-buffer]
-				public TI.LongInteger Address; // fix-up address (either in the data sub-buffer, or a cache-resource offset)
-
-				#region Ctor
-				public resource_fixup_block()
-					: base(2)
-				{
-					Add(BlockOffset = new TI.LongInteger());
-					Add(Address = new TI.LongInteger());
-				}
-				#endregion
-			}
-			#endregion
-
-			#region resource_definition_fixup_block
-			[TI.Definition(1, 8)]
-			public partial class resource_definition_fixup_block : TI.Definition
-			{
-				public TI.LongInteger Offset; // offset in the data sub-buffer
-				public TI.BlockIndex StructureTypeIndex;
-
-				#region Ctor
-				public resource_definition_fixup_block()
-				{
-					Add(Offset = new TI.LongInteger());
-					Add(StructureTypeIndex = new TI.BlockIndex(BlamLib.TagInterface.FieldType.LongBlockIndex));
-				}
-				#endregion
-			}
-			#endregion
-
-			public TI.TagReference Reference;
-			public TI.ShortInteger Header;
-			public TI.BlockIndex ResourceType;
-			public TI.Flags Flags; // ?
-			public TI.LongInteger BlockOffset, BlockSize, UnknownOffset; // (in the tag data field)
-			public TI.ShortInteger Unknown020; // if this is <= 0, this block is ignored (and probably invalid)
-			public TI.ShortInteger SegmentIndex; // 5th tag block in cache_file_resource_layout_table, page_segment_block
-			// eg, if this is a structure bsp resource, this will point to the main
-			// tag block in the definition buffer
-			public TI.LongInteger DefinitionOffset; // resource definition offset, uses fixup ptr scheme
-			public TI.Block<resource_fixup_block> ResourceFixups;
-			public TI.Block<resource_definition_fixup_block> ResourceDefinitionFixups;
-
-			#region Ctor
-			public cache_file_resource_gestalt_tag_resource_block()
-			{
-				Add(Reference = new TI.TagReference(this));
-				Add(Header = new TI.ShortInteger());
-				Add(ResourceType = new TI.BlockIndex(BlamLib.TagInterface.FieldType.ByteBlockIndex));
-				Add(Flags = new TI.Flags(BlamLib.TagInterface.FieldType.ByteFlags));
-				Add(BlockOffset = new TI.LongInteger());
-				Add(BlockSize = new TI.LongInteger());
-				Add(UnknownOffset = new TI.LongInteger());
-				Add(Unknown020 = new TI.ShortInteger());
-				Add(SegmentIndex = new TI.ShortInteger());
-				Add(DefinitionOffset = new TI.LongInteger());
-				Add(ResourceFixups = new TI.Block<resource_fixup_block>(this, 0));
-				Add(ResourceDefinitionFixups = new TI.Block<resource_definition_fixup_block>(this, 0));
-			}
-			#endregion
-		};
-		#endregion
-
 		#region cache_file_resource_gestalt_64_block
 		[TI.Definition(1, 120)]
 		public partial class cache_file_resource_gestalt_64_block : TI.Definition
@@ -757,20 +400,14 @@ namespace BlamLib.Blam.Halo3.Tags
 		#endregion
 
 		#region Fields
-		public TI.Enum CacheType;
-		public TI.Flags Flags;
-		public TI.Block<resource_type_block> ResourceTypes;
-		public TI.Block<resource_structure_type_block> ResourceStructureTypes;
 		public TI.Struct<cache_file_resource_layout_table> ResourceLayoutTable;
-		public TI.Block<cache_file_resource_gestalt_tag_resource_block> TagResources;
+
 		public TI.Block<cache_file_resource_gestalt_64_block> Block64,
 			Block70, Block7C, Block88, Block94, BlockA0, BlockAC,
 			BlockB8, BlockC4, BlockD0, BlockDC;
 
 		public TI.Block<cache_file_resource_gestalt_100_block> Block100;
 		public TI.Block<field_block<TI.TagReference>> BspReferences;
-
-		public TI.Data ResourceDefinitionData;
 
 		public TI.Block<cache_file_resource_gestalt_164_block> Block164;
 
@@ -779,15 +416,10 @@ namespace BlamLib.Blam.Halo3.Tags
 		public TI.Block<cache_file_resource_gestalt_1E8_block> Block1E8;
 		public TI.Block<cache_file_resource_gestalt_1F4_block> Block1F4;
 		public TI.Block<cache_file_resource_gestalt_200_block> Block200;
-
-		public TI.Skip MapId;
 		#endregion
 
-		public cache_file_resource_gestalt_group()
+		public cache_file_resource_gestalt_group() : base(41)
 		{
-			// sound_resource_definition [0x?]
-				// tag_data data
-
 			Add(CacheType = new TI.Enum());
 			Add(Flags = new TI.Flags(TI.FieldType.WordFlags));
 			/*0x04*/Add(ResourceTypes = new TI.Block<resource_type_block>(this, 0));

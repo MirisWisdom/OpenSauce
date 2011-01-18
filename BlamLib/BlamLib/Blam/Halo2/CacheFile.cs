@@ -889,7 +889,7 @@ namespace BlamLib.Blam.Halo2
 		// Index to tag datums of the "invalid" variants of specific tags
 		DatumIndex invalid_handle_shader = DatumIndex.Null;
 
-		public Render.VertexBufferInterface.VertexBuffersHalo2 kVertexBuffers;
+		public Render.VertexBufferInterface.VertexBuffersGen2 kVertexBuffers;
 
 		internal DatumIndex SoundGestaltTagIndex { get { return sound_gestalt_handle; } }
 
@@ -901,7 +901,7 @@ namespace BlamLib.Blam.Halo2
 
 			Program.Halo2.Manager.VertexBufferCacheOpen(Engine);
 			kVertexBuffers = Program.Halo2.Manager.FindGame(Engine).GetResource
-				<Render.VertexBufferInterface.VertexBuffersHalo2>
+				<Render.VertexBufferInterface.VertexBuffersGen2>
 				(Managers.BlamDefinition.ResourceVertexBuffers);
 
 			// We only need the globals tag for language pack headers. If this is a PC multiplayer map, then 
