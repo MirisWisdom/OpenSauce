@@ -27,9 +27,9 @@ namespace BlamLib.Render
 	partial class VertexBufferInterface
 	{
 		/// <summary>
-		/// Halo 2 Vertex definitions
+		/// Vertex definitions for 2nd generation Blam engines
 		/// </summary>
-		public class VertexBuffersHalo2 : VertexBuffers
+		public class VertexBuffersGen2 : VertexBuffers
 		{
 			public const string
 				kTypeAnisoBinormal =		"AnisoBinormal",
@@ -203,7 +203,7 @@ namespace BlamLib.Render
 			}
 			#endregion
 
-			internal VertexBuffersHalo2() { }
+			internal VertexBuffersGen2() { }
 
 			#region IGameResource Members
 			public override bool Load(string path, string name)

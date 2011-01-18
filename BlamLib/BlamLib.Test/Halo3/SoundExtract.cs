@@ -108,14 +108,14 @@ namespace BlamLib.Test
 
 			}
 		}
-		static void ExtractSoundResource(Blam.Halo3.Tags.sound_cache_file_gestalt_group ughdef, Blam.Halo3.Tags.cache_file_sound_group snddef, 
-			Blam.Halo3.Tags.sound_resource_definition snd_rsrc)
+		static void ExtractSoundResource(Blam.Halo3.Tags.sound_cache_file_gestalt_group ughdef, Blam.Cache.Tags.cache_file_sound_group_gen3 snddef, 
+			Blam.Cache.Tags.sound_resource_definition snd_rsrc)
 		{
-			int codec_type = ughdef.PlatformCodecs[snddef.CodecIndex.Value].Type;
+			int codec_type = ughdef.PlatformCodecs[snddef.GetCodecValue()].Type;
 
 			int first_perm_index, perm_count;
 			{
-				var pitch_range = ughdef.PitchRanges[snddef.FirstPitchRangeIndex.Value];
+				var pitch_range = ughdef.GetPitchRange(snddef.FirstPitchRangeIndex.Value);
 				first_perm_index = pitch_range.FirstPermutation.Value;
 				perm_count = pitch_range.GetPermutationCount();
 			}
@@ -125,13 +125,13 @@ namespace BlamLib.Test
 			{
 				for (int x = 0; x < perm_count; x++)
 				{
-					var perm = ughdef.Permutations[first_perm_index + x];
+					var perm = ughdef.GetPermutation(first_perm_index + x);
 
 					var chunk_buffers = new List<byte[]>(perm.ChunkCount.Value);
 					perm_buffers.Add(chunk_buffers);
 					for (int y = 0; y < perm.ChunkCount.Value; y++)
 					{
-						var chunk = ughdef.Chunks[perm.FirstChunk.Value + y];
+						var chunk = ughdef.GetPermutationChunk(perm.FirstChunk.Value + y);
 
 						int offset = chunk.FileOffset.Value;
 						if (offset < 0) continue;
@@ -171,12 +171,12 @@ namespace BlamLib.Test
 
 				var snd_index = cache.TagIndexManager.Open(kSoundExtractionTagName, Blam.Halo3.TagGroups.snd_);
 				var sndman = cache.TagIndexManager[snd_index];
-				var snddef = sndman.TagDefinition as Blam.Halo3.Tags.cache_file_sound_group;
+				var snddef = sndman.TagDefinition as Blam.Cache.Tags.cache_file_sound_group_gen3;
 
 				Blam.DatumIndex rsrc_index = snddef.ResourceDatumIndex;
 				TagInterface.Definition rsrcdef = zonedef.LoadResources(rsrc_index, cache, playdef.ResourceLayoutTable);
 
-				ExtractSoundResource(ughdef, snddef, rsrcdef as Blam.Halo3.Tags.sound_resource_definition);
+				ExtractSoundResource(ughdef, snddef, rsrcdef as Blam.Cache.Tags.sound_resource_definition);
 
 				snddef = null;
 				cache.TagIndexManager.Unload(snd_index);
@@ -200,7 +200,7 @@ namespace BlamLib.Test
 		public void TestXmaConversion()
 		{
 			const string k_folder = @"C:\Users\Sean\Downloads\sound\";
-			const string k_temp_file = k_folder + "test_temp.bin";
+			const string k_temp_file = k_folder + "temp_120la_music_1_1.bin";//"test_temp.bin";
 			const string k_rebuild_file1 = k_folder + "test_stream1.xma";
 			const string k_rebuild_file2 = k_folder + "test_stream2.xma";
 			const int k_codec = 2;

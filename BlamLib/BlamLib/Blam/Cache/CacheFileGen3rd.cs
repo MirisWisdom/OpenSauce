@@ -408,6 +408,25 @@ namespace BlamLib.Blam.Cache
 
 	public abstract class CacheFileGen3 : CacheFileGen2
 	{
+		Tags.CacheFileResourceDefinitionFactory cacheFileResourceDefinitionFactory;
+		/// <summary>
+		/// Get the factory for generating cache file resource definitions
+		/// </summary>
+		/// <returns></returns>
+		/// <remarks>
+		/// If the implementing platform (ie, engine) requires different definitions, override 
+		/// this function and return the correct factory class.
+		/// </remarks>
+		public virtual Tags.CacheFileResourceDefinitionFactory GetCacheFileResourceDefinitionFactory()
+		{
+			if (cacheFileResourceDefinitionFactory == null)
+				// Currently, I haven't seen anything in ODST or Reach which is different from the code I made 
+				// for Halo 3, so the default factory implementation should be good for them all
+				cacheFileResourceDefinitionFactory = new Tags.CacheFileResourceDefinitionFactory();
+
+			return cacheFileResourceDefinitionFactory;
+		}
+
 		protected override void OutputExtraTagIndexInfo(System.IO.StreamWriter s)
 		{
 			var index_gen3 = Index as CacheIndexGen3;

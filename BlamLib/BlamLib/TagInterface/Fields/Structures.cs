@@ -1201,7 +1201,7 @@ namespace BlamLib.TagInterface
 		}
 		#endregion
 
-		internal void InitializeStreamReader(Render.VertexBufferInterface.VertexBuffersHalo2 vb_defs,
+		internal void InitializeStreamReader(Render.VertexBufferInterface.VertexBuffersGen2 vb_defs,
 			out Render.VertexBufferInterface.StreamReader reader)
 		{
 			var def = vb_defs.DefinitionFind(TypeIndex);

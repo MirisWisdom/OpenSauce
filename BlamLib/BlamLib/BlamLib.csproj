@@ -129,6 +129,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Blam\Cache\Tags\CacheTagsGen2nd.cs" />
+    <Compile Include="Blam\Cache\Tags\CacheTagsGen3rd.cs" />
+    <Compile Include="Blam\Cache\Tags\Code\CacheTagsGen3rd.cs" />
+    <Compile Include="Blam\Cache\Tags\Trace\CacheTagsGen3rd.cs" />
     <Compile Include="Blam\Halo2\Tags\Code\Bsp.cs" />
     <Compile Include="Blam\Halo2\Tags\Code\Effects.cs" />
     <Compile Include="Blam\Halo2\Tags\Code\Globals.cs" />
@@ -163,8 +167,8 @@
     <Compile Include="Blam\Cache\CacheFileGen2nd.cs" />
     <Compile Include="Blam\Cache\CacheFileGen3rd.cs" />
     <Compile Include="Blam\Cache\CacheFileExtraction.cs" />
-    <Compile Include="Blam\Cache\CacheableResource.cs" />
-    <Compile Include="Blam\Cache\PredictedResources.cs" />
+    <Compile Include="Blam\Cache\Tags\CacheableResource.cs" />
+    <Compile Include="Blam\Cache\Tags\PredictedResources.cs" />
     <Compile Include="Blam\Halo1\Builder.cs" />
     <Compile Include="Blam\Halo1\CacheFile.cs" />
     <Compile Include="Blam\Halo1\VertexBufferInterface.cs" />

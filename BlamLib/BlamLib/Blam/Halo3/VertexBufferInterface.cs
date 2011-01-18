@@ -27,10 +27,14 @@ namespace BlamLib.Render
 	partial class VertexBufferInterface
 	{
 		/// <summary>
-		/// Halo 3 Vertex definitions
+		/// Vertex definitions for 3rd generation Blam engines
 		/// </summary>
-		/// <remarks>All elements are <c>DeclarationMethod.Default</c></remarks>
-		public class VertexBuffersHalo3 : VertexBuffers
+		/// <remarks>
+		/// All elements are <c>DeclarationMethod.Default</c>
+		/// 
+		/// Halo3, HaloOdst and HaloReach use this implementation
+		/// </remarks>
+		public class VertexBuffersGen3 : VertexBuffers
 		{
 			#region Type
 			public sealed class Type : TypeBase
@@ -183,7 +187,7 @@ namespace BlamLib.Render
 			}
 			#endregion
 
-			internal VertexBuffersHalo3() { }
+			internal VertexBuffersGen3() { }
 
 			#region IGameResource Members
 			public override bool Load(string path, string name)

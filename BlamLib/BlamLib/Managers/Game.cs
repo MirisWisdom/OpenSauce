@@ -1020,6 +1020,27 @@ namespace BlamLib.Managers
 		{
 			foreach (var di in cacheFiles.Keys) CloseCacheFile(di);
 		}
+
+		/// <summary>
+		/// Returns a CacheFile object based on a cache name
+		/// </summary>
+		/// <param name="ver">Engine version of the expected cache</param>
+		/// <param name="cache_name">Blam based cache name</param>
+		/// <returns>The CacheFile associated with <paramref name="cache_name"/></returns>
+		public virtual Blam.CacheFile GetCacheFileFromLocation(BlamVersion ver, string cache_name) { throw new NotImplementedException(); }
+		/// <summary>
+		/// Returns a CacheFile object based on a cache name
+		/// </summary>
+		/// <remarks>
+		/// If the <paramref name="cache_name"/> is null or empty then <paramref name="is_internal"/> 
+		/// gets set to true and null is returned. If null and <paramref name="is_internal"/> is not set, 
+		/// the CacheFile is either not loaded or the location was invalid.
+		/// </remarks>
+		/// <param name="ver">Engine version of the expected cache</param>
+		/// <param name="cache_name">Blam based cache name</param>
+		/// <param name="is_internal">bool reference to set if the reference is internal</param>
+		/// <returns>The CacheFile associated with <paramref name="cache_name"/></returns>
+		public virtual Blam.CacheFile GetCacheFileFromLocation(BlamVersion ver, string cache_name, out bool is_internal) { throw new NotImplementedException(); }
 		#endregion
 
 		#region TagIndexes

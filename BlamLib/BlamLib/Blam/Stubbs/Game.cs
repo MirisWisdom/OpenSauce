@@ -24,7 +24,7 @@ namespace BlamLib.Blam.Stubbs
 	/// <summary>
 	/// Stubbs game definition implementation
 	/// </summary>
-	public sealed class GameDefinition : Managers.BlamDefinition, Managers.IScriptingController
+	public sealed class GameDefinition : Managers.BlamDefinition, Managers.IScriptingController, Managers.IVertexBufferController
 	{
 		#region Implementation
 		public override TagInterface.TagGroupCollection TagGroups	{ get { return Stubbs.TagGroups.Groups; } }
@@ -39,19 +39,22 @@ namespace BlamLib.Blam.Stubbs
 				case BlamVersion.Stubbs_Xbox:
 					switch (resource_name)
 					{
-						case Managers.BlamDefinition.ResourceScripts: add_rsrc = true; break;
+						case Managers.BlamDefinition.ResourceScripts:
+						case Managers.BlamDefinition.ResourceVertexBuffers: add_rsrc = true; break;
 					}
 					break;
 				case BlamVersion.Stubbs_PC:
 					switch (resource_name)
 					{
-						case Managers.BlamDefinition.ResourceScripts: add_rsrc = true; break;
+						case Managers.BlamDefinition.ResourceScripts:
+						case Managers.BlamDefinition.ResourceVertexBuffers: add_rsrc = true; break;
 					}
 					break;
 				case BlamVersion.Stubbs_Mac:
 					switch (resource_name)
 					{
-						case Managers.BlamDefinition.ResourceScripts: add_rsrc = true; break;
+						case Managers.BlamDefinition.ResourceScripts:
+						case Managers.BlamDefinition.ResourceVertexBuffers: add_rsrc = true; break;
 					}
 					break;
 
@@ -71,6 +74,11 @@ namespace BlamLib.Blam.Stubbs
 			{
 				case Managers.BlamDefinition.ResourceScripts:
 					gr = new Scripting.XmlInterface();
+					result = gr.Load(r_path, r_name);
+					break;
+
+				case Managers.BlamDefinition.ResourceVertexBuffers:
+					gr = new Render.VertexBufferInterface.VertexBuffersGen1();
 					result = gr.Load(r_path, r_name);
 					break;
 			}
@@ -173,6 +181,72 @@ namespace BlamLib.Blam.Stubbs
 			if(count == 0) // since it's pre-decrement assigned, it will equal to zero when nothing is using it anymore
 			{
 				base.CloseResource(game, Managers.BlamDefinition.ResourceScripts);
+				return true;
+			}
+			else if (count == -1) throw new Debug.Exceptions.UnreachableException();
+
+			return false;
+		}
+		#endregion
+
+		// TODO: We need to generate vertex buffer definitions for Stubbs still (and see if we even need separate definitions for each platform)
+		#region IVertexBufferController Members
+		// Sure, we could use a hashtable for keeping references and such, but this uses way less memory, 
+		// and allows us to use the method logic below and make sure we're not trying to implement any unsupported
+		// engine variants. Savvy?
+		int VertexBufferCacheReferencesXbox = 0, 
+//			VertexBufferCacheReferencesMac = 0,
+			VertexBufferCacheReferencesPC = 0;
+
+		/// <summary>
+		/// <see cref="BlamLib.Managers.IVertexBufferController"/>
+		/// </summary>
+		/// <param name="game"></param>
+		/// <returns></returns>
+		public bool VertexBufferCacheOpen(BlamVersion game)
+		{
+			int count = 0;
+
+			switch (game)
+			{
+				case BlamVersion.Stubbs_Xbox:	count = Interlocked.Increment(ref VertexBufferCacheReferencesXbox);	break;
+				case BlamVersion.Stubbs_Mac:	//count = Interlocked.Increment(ref VertexBufferCacheReferencesMac);break;
+				case BlamVersion.Stubbs_PC:		count = Interlocked.Increment(ref VertexBufferCacheReferencesPC);	break;
+
+				default: throw new Debug.Exceptions.UnreachableException();
+			}
+
+			if(count == 1)
+			{
+				base.PrecacheResource(game, Managers.BlamDefinition.ResourceVertexBuffers);
+				return true;
+			}
+			else if (count == 0) throw new Debug.Exceptions.UnreachableException();
+
+			return false;
+		}
+
+		/// <summary>
+		/// <see cref="BlamLib.Managers.IVertexBufferController"/>
+		/// </summary>
+		/// <param name="game"></param>
+		/// <returns></returns>
+		public bool VertexBufferCacheClose(BlamVersion game)
+		{
+			int count = -1;
+
+			switch (game)
+			{
+				case BlamVersion.Stubbs_Xbox:	count = Interlocked.Decrement(ref VertexBufferCacheReferencesXbox);	break;
+				case BlamVersion.Stubbs_Mac:	//count = Interlocked.Decrement(ref VertexBufferCacheReferencesMac);break;
+				case BlamVersion.Stubbs_PC:		count = Interlocked.Decrement(ref VertexBufferCacheReferencesPC);	break;
+
+				default: throw new Debug.Exceptions.UnreachableException();
+			}
+
+			if(count == 0) // since it's pre-decrement assigned, it will equal to zero when nothing is using it anymore
+			{
+				base.CloseResource(game, Managers.BlamDefinition.ResourceVertexBuffers);
 				return true;
 			}
 			else if (count == -1) throw new Debug.Exceptions.UnreachableException();

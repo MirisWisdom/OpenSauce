@@ -151,7 +151,7 @@ namespace BlamLib.Blam.Halo3
 					break;
 
 				case Managers.BlamDefinition.ResourceVertexBuffers:
-					gr = new Render.VertexBufferInterface.VertexBuffersHalo3();
+					gr = new Render.VertexBufferInterface.VertexBuffersGen3();
 					result = gr.Load(r_path, r_name);
 					break;
 			}
@@ -190,6 +190,9 @@ namespace BlamLib.Blam.Halo3
 
 			return cf;
 		}
+
+		public override Blam.CacheFile GetCacheFileFromLocation(BlamVersion ver, string cache_name) { return Program.Halo3.FromLocation(ver, cache_name); }
+		public override Blam.CacheFile GetCacheFileFromLocation(BlamVersion ver, string cache_name, out bool is_internal) { return Program.Halo3.FromLocation(ver, cache_name, out is_internal); }
 
 		public override BlamLib.Managers.TagDatabase CreateTagDatabase() { throw new NotSupportedException();/*return new Halo3.Tags.TagDatabase()*/; }
 

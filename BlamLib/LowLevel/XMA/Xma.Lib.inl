@@ -10,7 +10,7 @@ class CXMATarget
 	PAD32; PAD32;
 public:
 	virtual HRESULT __stdcall DecodeWave(LPCWSTR xma_file, LPCWSTR pcm_file);
-	virtual HRESULT __stdcall EncodeWave(); // I'm not going to sit here and defe the params, frig off Randy
+	virtual HRESULT __stdcall EncodeWave(); // I'm not going to sit here and define the params, frig off Randy
 	virtual ~CXMATarget();
 }; BOOST_STATIC_ASSERT( sizeof(CXMATarget) == 0xC );
 
