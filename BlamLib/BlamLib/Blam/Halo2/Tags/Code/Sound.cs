@@ -61,7 +61,6 @@ namespace BlamLib.Blam.Halo2.Tags
 	partial class sound_permutation_chunk_block
 	{
 		public ResourcePtr GetOffset() { return FileOffset.Value; }
-		public int GetSize() { return SizeFlags.Value & 0xFFFF; }
 
 		internal byte[] Data;
 		internal override bool Reconstruct(Blam.CacheFile c)

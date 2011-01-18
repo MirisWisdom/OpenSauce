@@ -316,7 +316,7 @@ namespace BlamLib.Blam.Halo2
 					break;
 
 				case Managers.BlamDefinition.ResourceVertexBuffers:
-					gr = new Render.VertexBufferInterface.VertexBuffersHalo2();
+					gr = new Render.VertexBufferInterface.VertexBuffersGen2();
 					result = gr.Load(r_path, r_name);
 					break;
 			}

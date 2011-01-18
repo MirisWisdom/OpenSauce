@@ -16,7 +16,7 @@ void RebuildParametersToNative(mcpp_uint buffer_size,
 	XMA::s_xma_parse_context value = {
 		params.Channels > 1,
 		params.Strict,
-		cpp_true,
+		cpp_false,				// Verbose
 		params.IgnorePacketSkip,
 		params.Version,
 

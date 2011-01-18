@@ -77,7 +77,7 @@ namespace BlamLib.Blam.HaloOdst
 					break;
 
 				case Managers.BlamDefinition.ResourceVertexBuffers:
-					gr = new Render.VertexBufferInterface.VertexBuffersHalo3();
+					gr = new Render.VertexBufferInterface.VertexBuffersGen3();
 					result = gr.Load(r_path, r_name);
 					break;
 			}
@@ -116,6 +116,9 @@ namespace BlamLib.Blam.HaloOdst
 
 			return cf;
 		}
+
+		public override Blam.CacheFile GetCacheFileFromLocation(BlamVersion ver, string cache_name) { return Program.HaloOdst.FromLocation(ver, cache_name); }
+		public override Blam.CacheFile GetCacheFileFromLocation(BlamVersion ver, string cache_name, out bool is_internal) { return Program.HaloOdst.FromLocation(ver, cache_name, out is_internal); }
 
 		public override BlamLib.Managers.TagDatabase CreateTagDatabase() { throw new NotSupportedException();/*return new HaloOdst.Tags.TagDatabase()*/; }
 

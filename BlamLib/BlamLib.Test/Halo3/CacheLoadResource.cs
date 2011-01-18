@@ -64,7 +64,7 @@ namespace BlamLib.Test
 					Blam.DatumIndex rsrc_index = modedef.ResourceId.Value;
 					TagInterface.Definition rsrcdef = zonedef.LoadResources(rsrc_index, cache, playdef.ResourceLayoutTable, true);
 
-					(rsrcdef as Blam.Halo3.Tags.render_geometry_api_resource_definition).Debug(modeman,
+					(rsrcdef as Blam.Cache.Tags.render_geometry_api_resource_definition).Debug(modeman,
 						Path.Combine(kTestResultsPath, "debug_render_geometry.txt"), true);
 
 					cache.TagIndexManager.Unload(mode_index);

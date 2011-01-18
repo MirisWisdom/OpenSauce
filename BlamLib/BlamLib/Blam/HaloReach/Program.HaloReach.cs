@@ -170,11 +170,11 @@ namespace BlamLib
 			#endregion
 
 			/// <summary>
-			/// 
+			/// Returns a CacheFile object based on a cache name
 			/// </summary>
 			/// <param name="ver">HaloReach engine version</param>
-			/// <param name="cache_name"></param>
-			/// <returns>The CacheFile <paramref name="ptr"/> references</returns>
+			/// <param name="cache_name">Blam based cache name</param>
+			/// <returns>The CacheFile associated with <paramref name="cache_name"/></returns>
 			public static Blam.HaloReach.CacheFile FromLocation(BlamVersion ver, string cache_name)
 			{
 				if (string.IsNullOrEmpty(cache_name)) return null;
@@ -208,17 +208,17 @@ namespace BlamLib
 			}
 
 			/// <summary>
-			/// 
+			/// Returns a CacheFile object based on a cache name
 			/// </summary>
 			/// <remarks>
-			/// If the resource is internal then <paramref name="is_internal"/> gets set to true
-			/// and null is returned. If null and <paramref name="is_internal"/> is not set,
+			/// If the <paramref name="cache_name"/> is null or empty then <paramref name="is_internal"/> 
+			/// gets set to true and null is returned. If null and <paramref name="is_internal"/> is not set, 
 			/// the CacheFile is either not loaded or the location was invalid.
 			/// </remarks>
 			/// <param name="ver">HaloReach engine version</param>
-			/// <param name="cache_name"></param>
-			/// <param name="is_internal">bool reference to set if the ptr is internal</param>
-			/// <returns>The CacheFile <paramref name="ptr"/> references</returns>
+			/// <param name="cache_name">Blam based cache name</param>
+			/// <param name="is_internal">bool reference to set if the reference is internal</param>
+			/// <returns>The CacheFile associated with <paramref name="cache_name"/></returns>
 			public static Blam.HaloReach.CacheFile FromLocation(BlamVersion ver, string cache_name, out bool is_internal)
 			{
 				is_internal = false;

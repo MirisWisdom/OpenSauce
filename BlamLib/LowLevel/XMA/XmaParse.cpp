@@ -6,6 +6,8 @@
 #include "XMA/XmaParse.hpp"
 __CPP_CODE_START__
 
+#define LOWLEVEL_NO_X360_XMA_VERBOSE
+
 const boost::uint32_t k_packet_size_in_bytes = 0x800;
 const boost::uint32_t k_packet_header_size_in_bytes = 4;
 const boost::uint32_t k_frame_header_size_in_bits = 15;
@@ -101,16 +103,20 @@ namespace XMA
 		{
 			c_bit_stream_integer<k_frame_header_size_in_bits> frame_bits;
 			frame_stream >> frame_bits;
+#ifndef LOWLEVEL_NO_X360_XMA_VERBOSE
 			//cout << "   Frame #" << frame_number << ", " << total_bits << " bits read" << endl;
+#endif
 			total_bits += frame_bits;
 
 			boost::uint32_t bits_left = frame_bits - k_frame_header_size_in_bits;
 
+#ifndef LOWLEVEL_NO_X360_XMA_VERBOSE
 			if (m_parse_ctx.verbose)
 			{
 				cout << "   Frame #" << frame_number << endl;
 				cout << "   Size " << frame_bits << endl;
 			}
+#endif
 
 			// sync?
 			{
@@ -133,8 +139,10 @@ namespace XMA
 				if (frame_stream.get_bit())
 				{
 					frame_stream >> skip_start;
+#ifndef LOWLEVEL_NO_X360_XMA_VERBOSE
 					if (m_parse_ctx.verbose)
 						cout << "Skip " << skip_start << " samples at start" << endl;
+#endif
 					bits_left -= k_frame_skip_size_in_bits;
 					sample_count -= skip_start;
 				}
@@ -142,8 +150,10 @@ namespace XMA
 				// skip at end
 				if (frame_stream.get_bit()) {
 					frame_stream >> skip_end;
+#ifndef LOWLEVEL_NO_X360_XMA_VERBOSE
 					if (m_parse_ctx.verbose)
 						cout << "Skip " << skip_end << " samples at end" << endl;
+#endif
 					bits_left -= k_frame_skip_size_in_bits;
 					sample_count -= skip_end;
 				}
@@ -151,27 +161,36 @@ namespace XMA
 			}
 			bits_left--;
 
+#ifndef LOWLEVEL_NO_X360_XMA_VERBOSE
 			if (m_parse_ctx.verbose)
 				cout << hex;
-
+#endif
 			for (; bits_left >= 4 + k_frame_trailer_size_in_bits; bits_left -= 4) {
 				c_bit_stream_integer<4> nybble;
 				frame_stream >> nybble;
 
+#ifndef LOWLEVEL_NO_X360_XMA_VERBOSE
 				if (m_parse_ctx.verbose)
 					cout << nybble;
+#endif
 			}
 
+#ifndef LOWLEVEL_NO_X360_XMA_VERBOSE
 			if (m_parse_ctx.verbose)
 				cout << " ";
+#endif
 			for (; bits_left > k_frame_trailer_size_in_bits; bits_left--) {
 				bool bit = frame_stream.get_bit();
 
+#ifndef LOWLEVEL_NO_X360_XMA_VERBOSE
 				if (m_parse_ctx.verbose)
 					cout << (bit ? '1' : '0');
+#endif
 			}
+#ifndef LOWLEVEL_NO_X360_XMA_VERBOSE
 			if (m_parse_ctx.verbose)
 				cout << dec << endl;
+#endif
 
 			// trailer
 			{
@@ -190,8 +209,10 @@ namespace XMA
 
 				// FIX: detect end with bit count
 				if (!m_parse_ctx.strict && !ctx.known_frame_count && total_bits >= ctx.max_bits) {
+#ifndef LOWLEVEL_NO_X360_XMA_VERBOSE
 					if (m_parse_ctx.verbose)
 						cout << "abandon frame due to bit count (total=" << total_bits << " max=" << ctx.max_bits << ")" << endl;
+#endif
 
 					break;
 				}
@@ -201,8 +222,10 @@ namespace XMA
 		// FIX: don't fail if packet end missing
 		if (m_parse_ctx.strict && !packet_end_seen) throw missing_packet_end_error();
 
+#ifndef LOWLEVEL_NO_X360_XMA_VERBOSE
 		if (m_parse_ctx.verbose)
 			cout << endl;
+#endif
 
 		if (ctx.total_bits)
 			*ctx.total_bits = total_bits;
@@ -226,7 +249,7 @@ namespace XMA
 		boost::int32_t last_offset = offset+m_parse_ctx.data_size;
 		boost::uint32_t sample_count = 0;
 		boost::uint32_t last_packet_overflow_bits = 0;
-		boost::uint32_t sequence_number;
+		boost::uint32_t sequence_number = 0;
 
 		while(offset < last_offset) {
 			s_xma_packet_header ph;
@@ -237,12 +260,14 @@ namespace XMA
 				packet_header_stream >> ph;
 			}
 
+#ifndef LOWLEVEL_NO_X360_XMA_VERBOSE
 			if(m_parse_ctx.verbose) {
 				cout << "Sequence #" << ph.sequence_number << " (offset " << hex << offset << dec << ")" << endl;
 				cout << "Unknown         " << ph.unknown << endl;
 				cout << "Skip Bits       " << ph.skip_bits << endl;
 				cout << "Packet Skip     " << ph.packet_skip << (m_parse_ctx.ignore_packet_skip?" (ignore)":"") << endl;
 			}
+#endif
 
 			if(m_parse_ctx.ignore_packet_skip)
 				ph.packet_skip = 0;
@@ -253,7 +278,7 @@ namespace XMA
 			c_bit_istream frame_stream(m_in_stream,
 				(k_packet_size_in_bytes - k_packet_header_size_in_bytes) * k_bits_per_byte, // consecutive
 				(k_packet_header_size_in_bytes + ph.packet_skip * k_packet_size_in_bytes) * k_bits_per_byte // skip
-				);
+			);
 
 			if (16384 == ph.skip_bits)
 			{
@@ -300,8 +325,10 @@ namespace XMA
 				if (sequence_number != ph.sequence_number && !m_parse_ctx.strict) {
 					buf[0] = static_cast<char>( (buf[0] & 0xf) | (sequence_number << 4) );
 
+#ifndef LOWLEVEL_NO_X360_XMA_VERBOSE
 					if (m_parse_ctx.verbose)
 						cout << "fixing sequence number (was " << ph.sequence_number << ", output " << sequence_number << ")" << endl;
+#endif
 				}
 				buf[3] = 0; // zero packet skip, since we're packing consecutively
 				m_out_stream.write(buf, k_packet_size_in_bytes);
@@ -331,6 +358,7 @@ namespace XMA
 				packet_header_stream >> ph;
 			}
 
+#ifndef LOWLEVEL_NO_X360_XMA_VERBOSE
 			if (m_parse_ctx.verbose) {
 				cout << "Packet #" << packet_number << " (offset " << hex << offset << dec << ")" << endl;
 				cout << "Frame Count     " << ph.frame_count << endl;
@@ -338,6 +366,7 @@ namespace XMA
 				cout << "Metadata        " << ph.metadata << endl;
 				cout << "Packet Skip     " << ph.packet_skip << (m_parse_ctx.ignore_packet_skip?" (ignored)":"") << endl;
 			}
+#endif
 
 			if (m_parse_ctx.ignore_packet_skip)
 				ph.packet_skip = 0;
@@ -345,7 +374,7 @@ namespace XMA
 			c_bit_istream frame_stream(m_in_stream,
 				(k_packet_size_in_bytes - k_packet_header_size_in_bytes) * k_bits_per_byte, // consecutive
 				(k_packet_header_size_in_bytes + ph.packet_skip * k_packet_size_in_bytes) * k_bits_per_byte // skip
-				);
+			);
 
 			// At the end of a block no frame may start in a packet, signaled
 			// with invalidly large skip_bits so we skip everything
@@ -545,12 +574,14 @@ namespace XMA
 				packet_header_stream >> ph;
 			}
 
+#ifndef LOWLEVEL_NO_X360_XMA_VERBOSE
 			if (m_parse_ctx.verbose) {
 				cout << "Sequence #" << ph.sequence_number << " (offset " << hex << offset << dec << ")" << endl;
 				cout << "Unknown         " << ph.unknown << endl;
 				cout << "Skip Bits       " << ph.skip_bits << endl;
 				cout << "Packet Skip     " << ph.packet_skip << (m_parse_ctx.ignore_packet_skip?" (ignored)":"") << endl;
 			}
+#endif
 
 			if (m_parse_ctx.ignore_packet_skip)
 				ph.packet_skip = 0;
@@ -562,7 +593,7 @@ namespace XMA
 			c_bit_istream frame_stream(is,
 				(k_packet_size_in_bytes - k_packet_header_size_in_bytes) * k_bits_per_byte, // consecutive
 				(k_packet_header_size_in_bytes + ph.packet_skip * k_packet_size_in_bytes) * k_bits_per_byte // skip
-				);
+			);
 
 			if (16384 == ph.skip_bits)
 			{
@@ -645,6 +676,7 @@ namespace XMA
 				packet_header_stream >> ph;
 			}
 
+#ifndef LOWLEVEL_NO_X360_XMA_VERBOSE
 			if (m_parse_ctx.verbose) {
 				cout << "Packet #" << packet_number << " (offset " << hex << offset << dec << ")" << endl;
 				cout << "Frame Count     " << ph.frame_count << endl;
@@ -652,6 +684,7 @@ namespace XMA
 				cout << "Metadata        " << ph.metadata << endl;
 				cout << "Packet Skip     " << ph.packet_skip << (m_parse_ctx.ignore_packet_skip?" (ignored)":"") << endl;
 			}
+#endif
 
 			if (m_parse_ctx.ignore_packet_skip)
 				ph.packet_skip = 0;
@@ -659,7 +692,7 @@ namespace XMA
 			c_bit_istream frame_stream(is,
 				(k_packet_size_in_bytes - k_packet_header_size_in_bytes) * k_bits_per_byte, // consecutive
 				(k_packet_header_size_in_bytes + ph.packet_skip * k_packet_size_in_bytes) * k_bits_per_byte // skip
-				);
+			);
 
 			// At the end of a block no frame may start in a packet, signaled
 			// with invalidly large skip_bits so we skip everything
@@ -834,8 +867,10 @@ namespace XMA
 				(block_offset+m_parse_ctx.block_size >= m_parse_ctx.offset+m_parse_ctx.data_size) );
 
 			total_sample_count += sample_count;
+#ifndef LOWLEVEL_NO_X360_XMA_VERBOSE
 			if(m_parse_ctx.verbose)
 				cout << endl << sample_count << " samples (block) (" << total_sample_count << " total)" << endl << endl;
+#endif
 		}
 
 		return total_sample_count;
@@ -846,7 +881,7 @@ namespace XMA
 		bool result = true;
 
 		try { rebuild(); }
-		catch(const out_of_bits_exception& oob)
+		catch(const out_of_bits_exception& /*oob*/)
 		{
 			result = false;
 			cerr << (m_error = "Error reading bitstream") << endl;
