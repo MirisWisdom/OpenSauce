@@ -105,7 +105,20 @@ namespace BlamLib.Test
 			}
 			else // 4 or 6 channel sound
 			{
+				LowLevel.Xma.RebuildParameters parameters;
+				parameters.BlockSize = 0x4000; parameters.Channels = 2; parameters.IgnorePacketSkip = false;
+				parameters.Offset = 0; parameters.Strict = false; parameters.Version = 2;
 
+				LowLevel.Xma.Interface.Rebuild(buffer, parameters);
+
+				parameters.Offset = 0x800;
+				LowLevel.Xma.Interface.Rebuild(buffer, parameters);
+
+				if (codec_type == 3)
+				{
+					parameters.Offset = 0x1000;
+					LowLevel.Xma.Interface.Rebuild(buffer, parameters);
+				}
 			}
 		}
 		static void ExtractSoundResource(Blam.Halo3.Tags.sound_cache_file_gestalt_group ughdef, Blam.Cache.Tags.cache_file_sound_group_gen3 snddef, 
@@ -200,21 +213,53 @@ namespace BlamLib.Test
 		public void TestXmaConversion()
 		{
 			const string k_folder = @"C:\Users\Sean\Downloads\sound\";
-			const string k_temp_file = k_folder + "temp_120la_music_1_1.bin";//"test_temp.bin";
+			const string k_temp_file = k_folder +
+				"temp_120la_music_1_1.bin"
+				//"test_temp.bin"
+				;
 			const string k_rebuild_file1 = k_folder + "test_stream1.xma";
 			const string k_rebuild_file2 = k_folder + "test_stream2.xma";
 			const int k_codec = 2;
 
+			byte[] temp_data;
+			using (var fs = new FileStream(k_temp_file, FileMode.Open))
+			{
+				temp_data = new byte[fs.Length];
+				fs.Read(temp_data, 0, temp_data.Length);
+			}
+
+			bool result;
+			byte[] result_data;
 			LowLevel.Xma.RebuildParameters parameters;
 			parameters.BlockSize = 0x4000; parameters.Channels = 2; parameters.IgnorePacketSkip = false;
 			parameters.Offset = 0; parameters.Strict = false; parameters.Version = 2;
-			
-			bool result = LowLevel.Xma.Interface.Rebuild(k_temp_file, null, k_rebuild_file1, parameters);
-			Assert.IsTrue(result);
+
+			{
+				result = LowLevel.Xma.Interface.Rebuild(k_temp_file, null, k_rebuild_file1, parameters);
+				Assert.IsTrue(result);
+
+				result_data = LowLevel.Xma.Interface.Rebuild(temp_data, parameters);
+				Assert.IsNotNull(result_data);
+			};
 
 			parameters.Offset = 0x800;
-			LowLevel.Xma.Interface.Rebuild(k_temp_file, null, k_rebuild_file2, parameters);
-			Assert.IsTrue(result);
+			{
+				LowLevel.Xma.Interface.Rebuild(k_temp_file, null, k_rebuild_file2, parameters);
+				Assert.IsTrue(result);
+
+				result_data = LowLevel.Xma.Interface.Rebuild(temp_data, parameters);
+				Assert.IsNotNull(result_data);
+
+				{ const string k_decode_file = k_folder + "test_stream.xma";
+					using (var fs = new FileStream(k_decode_file, FileMode.Create))
+					{
+						byte[] file = GenerateSoundFile(result_data, GetXmaFooterFromCodecType(k_codec));
+						fs.Write(file, 0, file.Length);
+					}
+					result = LowLevel.Xma.Interface.Decode(k_decode_file, k_folder + "test.wav");
+					Assert.IsTrue(result);
+				};
+			};
 		}
 	};
 }

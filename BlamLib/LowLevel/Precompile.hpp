@@ -33,7 +33,6 @@
 	#pragma comment (lib, "d3dx9.lib")
 #endif
 
-//#define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #include <shell/Platform.hpp>
 #include <cseries/MacrosCpp.hpp>

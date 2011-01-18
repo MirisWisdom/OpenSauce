@@ -18,8 +18,8 @@
 */
 #include "Precompile.hpp"
 #include "XMA/Xma.hpp"
-#include "XMA/XmaParse.hpp"
 
+#include "XMA/XmaParse.hpp"
 #include "XMA/Xma.Lib.inl"
 
 __MCPP_CODE_START__
@@ -72,13 +72,13 @@ namespace LowLevel { namespace Xma {
 		XMA::s_xma_parse_context ctx;
 		RebuildParametersToNative(buffer->Length, params, ctx);
 
-		XMA::c_xma_rebuilder rebuilder(CAST_PTR(char*,buffer_ptr), ctx);
+		XMA::c_xma_rebuilder* rebuilder = cpp_new XMA::c_xma_rebuilder(CAST_PTR(char*,buffer_ptr), ctx);
 
-		if(rebuilder.try_rebuild())
+		if(rebuilder->try_rebuild())
 		{
 			char* output_buf;
 			size_t output_buf_size;
-			rebuilder.get_output_data(output_buf, output_buf_size);
+			rebuilder->get_output_data(output_buf, output_buf_size);
 
 			result = mcpp_new array<mcpp_byte>(output_buf_size);
 			pin_ptr<mcpp_byte> output_pin_ptr = &result[0];
@@ -88,6 +88,8 @@ namespace LowLevel { namespace Xma {
 
 			delete output_buf;
 		}
+
+		delete rebuilder;
 
 		return result;
 	}
