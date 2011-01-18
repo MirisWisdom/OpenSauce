@@ -437,7 +437,6 @@ namespace XMA
 
 			// advance to next packet
 			offset += (ph.packet_skip + 1) * k_packet_size_in_bytes;
-
 		}
 
 		return sample_count;
@@ -783,7 +782,7 @@ namespace XMA
 		m_error("")
 	{
 		m_in_stream = cpp_new istringstream( std::string(buffer, m_parse_ctx.data_size), ios::in | ios::binary);
-		m_out_stream = cpp_new ostringstream(ios::binary | ios::out);
+		m_out_stream = cpp_new stringstream(ios::binary | ios::in | ios::out);
 	}
 
 	c_xma_rebuilder::c_xma_rebuilder(const char* in_file, s_xma_parse_context& ctx,
@@ -845,6 +844,27 @@ namespace XMA
 			m_rebuild_stream = cpp_null;
 		}
 	}
+
+	bool c_xma_rebuilder::get_output_data(char*& out_buffer, size_t& out_buffer_size)
+	{
+		out_buffer = cpp_null;
+		out_buffer_size = 0;
+
+		if(out_stream_valid())
+		{
+			stringstream& s = *dynamic_cast<stringstream*>(m_out_stream);
+
+			out_buffer_size = s.tellp();
+			out_buffer = cpp_new char[out_buffer_size];
+			s.seekg(0, ios::beg);
+			s.read(out_buffer, out_buffer_size);
+
+			return true;
+		}
+
+		return false;
+	}
+	const char* c_xma_rebuilder::get_error_msg() const { return m_error.c_str(); }
 
 	boost::uint32_t c_xma_rebuilder::rebuild()
 	{

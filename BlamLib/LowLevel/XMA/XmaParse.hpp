@@ -230,26 +230,8 @@ namespace XMA
 
 		// If successful, allocates a byte buffer that is a copy of the output stream
 		// Don't forget to delete [out_buffer]
-		bool get_output_data(char*& out_buffer, size_t& out_buffer_size)
-		{
-			out_buffer = cpp_null;
-			out_buffer_size = 0;
-
-			if(out_stream_valid())
-			{
-				ostringstream& s = *dynamic_cast<ostringstream*>(m_out_stream);
-				ostringstream::_Mysb* sbuf = s.rdbuf();
-
-				out_buffer_size = sbuf->in_avail();
-				out_buffer = cpp_new char[out_buffer_size];
-				sbuf->_Sgetn_s(out_buffer, out_buffer_size, out_buffer_size);
-
-				return true;
-			}
-
-			return false;
-		}
-		const char* get_error_msg() const { return m_error.c_str(); }
+		bool get_output_data(char*& out_buffer, size_t& out_buffer_size);
+		const char* get_error_msg() const;
 
 		boost::uint32_t rebuild();
 		bool try_rebuild();

@@ -46,7 +46,7 @@
 				Name="VCCLCompilerTool"
 				UseUnicodeResponseFiles="false"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;C:\Program Files\Microsoft Xbox 360 SDK\include\win32\vs2005&quot;;$(ProjectDir);$(SolutionDir)..\shared\include_cpp"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;&quot;$(SolutionDir)..\shared\include_cpp&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;LOWLEVEL_NO_X360"
 				RuntimeLibrary="3"
 				StructMemberAlignment="1"
@@ -204,7 +204,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				UseUnicodeResponseFiles="false"
-				AdditionalIncludeDirectories="&quot;C:\Program Files\Microsoft Xbox 360 SDK\include\win32\vs2005&quot;;$(ProjectDir);$(SolutionDir)..\shared\include_cpp"
+				Optimization="4"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;&quot;$(SolutionDir)..\shared\include_cpp&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;LOWLEVEL_NO_X360"
 				StringPooling="true"
 				RuntimeLibrary="2"
@@ -216,6 +217,7 @@
 				WarningLevel="3"
 				DebugInformationFormat="3"
 				CallingConvention="2"
+				OmitDefaultLibName="false"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -229,7 +231,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				UseUnicodeResponseFiles="false"
-				LinkIncremental="1"
+				LinkIncremental="0"
 				GenerateDebugInformation="true"
 				EnableCOMDATFolding="2"
 				TargetMachine="1"
@@ -340,16 +342,6 @@
 		<AssemblyReference
 			RelativePath="System.dll"
 			AssemblyName="System, Version=2.0.0.0, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
-			MinFrameworkVersion="131072"
-		/>
-		<AssemblyReference
-			RelativePath="System.XML.dll"
-			AssemblyName="System.Xml, Version=2.0.0.0, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL"
-			MinFrameworkVersion="131072"
-		/>
-		<AssemblyReference
-			RelativePath="System.Drawing.dll"
-			AssemblyName="System.Drawing, Version=2.0.0.0, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
 			MinFrameworkVersion="131072"
 		/>
 	</References>
