@@ -19,6 +19,7 @@
 #pragma warning disable 1591 // "Missing XML comment for publicly visible type or member"
 using System;
 using TI = BlamLib.TagInterface;
+using CT = BlamLib.Blam.Cache.Tags;
 
 namespace BlamLib.Blam.Halo3.Tags
 {
@@ -324,26 +325,6 @@ namespace BlamLib.Blam.Halo3.Tags
 	#endregion
 
 	#region sound_gestalt
-	#region sound_gestalt_platform_codec_block
-	partial class sound_gestalt_platform_codec_block
-	{
-		[System.Diagnostics.Conditional("DEBUG")]
-		public static void Output(System.IO.StreamWriter s, TI.Block<sound_gestalt_platform_codec_block> block)
-		{
-			const string format = "\t{0}\t\t{1}\t{2}\t{3}";
-
-			s.WriteLine("{0}\tsound_gestalt_platform_codec_block", block.Count);
-			int x = 0;
-			foreach (sound_gestalt_platform_codec_block def in block)
-			{
-				s.WriteLine(format, (x++).ToString(), 
-					def.Unknown00.Value.ToString(), def.Type.ToString(), def.Flags.ToString());
-			}
-		}
-	};
-	#endregion
-
-
 	#region sound_gestalt_pitch_ranges_block
 	partial class sound_gestalt_pitch_ranges_block
 	{
@@ -450,7 +431,7 @@ namespace BlamLib.Blam.Halo3.Tags
 		[System.Diagnostics.Conditional("DEBUG")]
 		public static void Output(CacheFileBase c, System.IO.StreamWriter s, sound_cache_file_gestalt_group def)
 		{
-			sound_gestalt_platform_codec_block.Output(s, def.PlatformCodecs);
+			CT.sound_gestalt_platform_codec_block.Output(s, def.PlatformCodecs);
 			s.WriteLine("{0}\tsound_gestalt_playback_block", def.Playbacks.Count);
 			s.WriteLine("{0}\tsound_gestalt_scale_block", def.Scales.Count);
 			s.WriteLine("{0}\tsound_gestalt_import_names_block", def.ImportNames.Count);

@@ -44,6 +44,35 @@ void RebuildParametersToNative(mcpp_uint buffer_size,
 
 namespace LowLevel { namespace Xma {
 
+#ifdef LOWLEVEL_NO_X360_XMA
+	void Interface::SetXma2EncoderExePath(mcpp_string^ exe_path)
+	{
+		if(mcpp_string::IsNullOrEmpty(exe_path))
+			throw mcpp_new System::ArgumentNullException("Invalid file name", "exe_path");
+		else if(!System::IO::File::Exists(exe_path))
+			throw mcpp_new System::IO::FileNotFoundException("exe_path does not exist", exe_path);
+
+		Xma2EncoderExeFile = System::IO::Path::GetFullPath(exe_path);
+		Xma2EncoderExePath = System::IO::Path::GetDirectoryName(Xma2EncoderExeFile);
+
+		Xma2EncoderExeStartInfo =  mcpp_new System::Diagnostics::ProcessStartInfo(
+			Xma2EncoderExeFile);
+		Xma2EncoderExeStartInfo->WorkingDirectory = Xma2EncoderExePath;
+		Xma2EncoderExeStartInfo->UseShellExecute = mcpp_false;
+		Xma2EncoderExeStartInfo->CreateNoWindow = mcpp_true;
+	}
+
+	void Interface::RunXma2Encode(mcpp_string^ xma_file, mcpp_string^ pcm_file)
+	{
+		mcpp_string^ cmdline = mcpp_string::Format("\"{0}\" /DecodeToPCM \"{1}\"",
+			xma_file, pcm_file);
+
+		Xma2EncoderExeStartInfo->Arguments = cmdline;
+		System::Diagnostics::Process^ p = mcpp_new System::Diagnostics::Process();
+		p->Start(Xma2EncoderExeStartInfo);
+	}
+#endif
+
 	mcpp_bool Interface::Decode(mcpp_string^ xma_file, mcpp_string^ pcm_file)
 	{
 #ifndef LOWLEVEL_NO_X360_XMA
@@ -58,12 +87,25 @@ namespace LowLevel { namespace Xma {
 
 		return SUCCEEDED(result);
 #else
-		return mcpp_false;
+		if(!System::IO::File::Exists(Xma2EncoderExePath))
+			throw mcpp_new System::Exception("You need to call SetXma2EncoderExePath before calling Decode()");
+		if(!System::IO::File::Exists(xma_file))
+			throw mcpp_new System::IO::FileNotFoundException("xma_file does not exist", xma_file);
+
+		// TODO: check to see if input file names are relative paths to the xma2encode exe 
+		// as we should allow this to be valid behavior
+
+		RunXma2Encode(xma_file, pcm_file);
+
+		return mcpp_true; // assume successful
 #endif
 	}
 
 	array<mcpp_byte>^ Interface::Rebuild(array<mcpp_byte>^ buffer, RebuildParameters params)
 	{
+		if(buffer == mcpp_null)
+			throw mcpp_new System::ArgumentNullException("buffer");
+
 		pin_ptr<mcpp_byte> buffer_pin_ptr = &buffer[0];
 		cpp_byte* buffer_ptr = buffer_pin_ptr;
 
@@ -97,6 +139,15 @@ namespace LowLevel { namespace Xma {
 	bool Interface::Rebuild(mcpp_string^ in_file, mcpp_string^ out_file, mcpp_string^ rebuild_file, 
 		RebuildParameters params)
 	{
+		if(mcpp_string::IsNullOrEmpty(in_file))
+			throw mcpp_new System::ArgumentNullException("Invalid file name", "in_file");
+		else if(!System::IO::File::Exists(in_file))
+			throw mcpp_new System::IO::FileNotFoundException("in_file does not exist", in_file);
+
+		if(mcpp_string::IsNullOrEmpty(out_file) && mcpp_string::IsNullOrEmpty(rebuild_file))
+			throw mcpp_new System::ArgumentNullException("out_file || rebuild_file");
+
+
 		mcpp_bool result = mcpp_false;
 
 		XMA::s_xma_parse_context ctx;

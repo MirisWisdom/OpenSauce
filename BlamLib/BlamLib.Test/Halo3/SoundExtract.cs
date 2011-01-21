@@ -91,11 +91,12 @@ namespace BlamLib.Test
 
 			return buffer;
 		}
-		static void ProcessXmaBuffers(int codec_type, List<List<byte[]>> perm_buffers)
+		static void ProcessXmaBuffers(string name, int codec_type, List<List<byte[]>> perm_buffers)
 		{
 			byte[] footer = GetXmaFooterFromCodecType(codec_type);
-			byte[] buffer = ConsolidateBuffers(perm_buffers, /*footer.Length*/0);
-			//Array.Copy(footer, 0, buffer, buffer.Length-footer.Length, footer.Length);
+			byte[] buffer = ConsolidateBuffers(perm_buffers, 0);
+
+			string temp_path = Path.GetTempPath();
 
 			if (!(codec_type == 2 || codec_type == 3))
 			{
@@ -121,7 +122,8 @@ namespace BlamLib.Test
 				}
 			}
 		}
-		static void ExtractSoundResource(Blam.Halo3.Tags.sound_cache_file_gestalt_group ughdef, Blam.Cache.Tags.cache_file_sound_group_gen3 snddef, 
+		static void ExtractSoundResource(string name,
+			Blam.Cache.Tags.sound_cache_file_gestalt_group_gen3 ughdef, Blam.Cache.Tags.cache_file_sound_group_gen3 snddef, 
 			Blam.Cache.Tags.sound_resource_definition snd_rsrc)
 		{
 			int codec_type = ughdef.PlatformCodecs[snddef.GetCodecValue()].Type;
@@ -158,38 +160,39 @@ namespace BlamLib.Test
 					}
 				}
 			}
-			//ProcessXmaBuffers(codec_type, perm_buffers);
+			//ProcessXmaBuffers(name, codec_type, perm_buffers);
 			perm_buffers = null;
 		}
 		internal static void CacheExtractSoundMethod(object param)
 		{
 			var args = param as CacheFileOutputInfoArgs;
 
-			using (var handler = new CacheHandler<Blam.Halo3.CacheFileBase>(args.Game, args.MapPath))
+			using (var handler = new CacheHandler<Blam.Cache.CacheFileGen3>(args.Game, args.MapPath))
 			{
 				handler.Read();
 				var cache = handler.CacheInterface;
 
 				var play_index = cache.TagIndexManager.OpenFirstInstance(Blam.Halo3.TagGroups.play);
 				var playman = cache.TagIndexManager[play_index];
-				var playdef = playman.TagDefinition as Blam.Halo3.Tags.cache_file_resource_layout_table_group;
+				var playdef = playman.TagDefinition as Blam.Cache.Tags.cache_file_resource_layout_table_group;
 
 				var zone_index = cache.TagIndexManager.OpenFirstInstance(Blam.Halo3.TagGroups.zone);
 				var zoneman = cache.TagIndexManager[zone_index];
-				var zonedef = zoneman.TagDefinition as Blam.Halo3.Tags.cache_file_resource_gestalt_group;
+				var zonedef = zoneman.TagDefinition as Blam.Cache.Tags.cache_file_resource_gestalt_group;
 
 				var ugh_index = cache.TagIndexManager.OpenFirstInstance(Blam.Halo3.TagGroups.ugh_);
 				var ughman = cache.TagIndexManager[ugh_index];
-				var ughdef = ughman.TagDefinition as Blam.Halo3.Tags.sound_cache_file_gestalt_group;
+				var ughdef = ughman.TagDefinition as Blam.Cache.Tags.sound_cache_file_gestalt_group_gen3;
 
 				var snd_index = cache.TagIndexManager.Open(kSoundExtractionTagName, Blam.Halo3.TagGroups.snd_);
 				var sndman = cache.TagIndexManager[snd_index];
 				var snddef = sndman.TagDefinition as Blam.Cache.Tags.cache_file_sound_group_gen3;
 
 				Blam.DatumIndex rsrc_index = snddef.ResourceDatumIndex;
-				TagInterface.Definition rsrcdef = zonedef.LoadResources(rsrc_index, cache, playdef.ResourceLayoutTable);
+				TagInterface.Definition rsrcdef = zonedef.LoadResources(rsrc_index, cache, playdef.GetResourceLayoutTable());
 
-				ExtractSoundResource(ughdef, snddef, rsrcdef as Blam.Cache.Tags.sound_resource_definition);
+				ExtractSoundResource(Path.GetFileNameWithoutExtension(sndman.Name),
+					ughdef, snddef, rsrcdef as Blam.Cache.Tags.sound_resource_definition);
 
 				snddef = null;
 				cache.TagIndexManager.Unload(snd_index);
@@ -235,8 +238,8 @@ namespace BlamLib.Test
 			parameters.Offset = 0; parameters.Strict = false; parameters.Version = 2;
 
 			{
-				result = LowLevel.Xma.Interface.Rebuild(k_temp_file, null, k_rebuild_file1, parameters);
-				Assert.IsTrue(result);
+				//result = LowLevel.Xma.Interface.Rebuild(k_temp_file, null, k_rebuild_file1, parameters);
+				//Assert.IsTrue(result);
 
 				result_data = LowLevel.Xma.Interface.Rebuild(temp_data, parameters);
 				Assert.IsNotNull(result_data);
@@ -244,8 +247,8 @@ namespace BlamLib.Test
 
 			parameters.Offset = 0x800;
 			{
-				LowLevel.Xma.Interface.Rebuild(k_temp_file, null, k_rebuild_file2, parameters);
-				Assert.IsTrue(result);
+				//LowLevel.Xma.Interface.Rebuild(k_temp_file, null, k_rebuild_file2, parameters);
+				//Assert.IsTrue(result);
 
 				result_data = LowLevel.Xma.Interface.Rebuild(temp_data, parameters);
 				Assert.IsNotNull(result_data);

@@ -35,10 +35,17 @@ namespace LowLevel { namespace Xma {
 
 	public mcpp_class Interface
 	{
+#ifdef LOWLEVEL_NO_X360_XMA
+		static mcpp_string^ Xma2EncoderExePath;
+		static mcpp_string^ Xma2EncoderExeFile;
+		static System::Diagnostics::ProcessStartInfo^ Xma2EncoderExeStartInfo;
+
+		static void RunXma2Encode(mcpp_string^ xma_file, mcpp_string^ pcm_file);
+#endif
 	mcpp_public
 		// If we're not linking directly to the XMA encoder lib, try to dynamically use the EXE tool instead
 #ifdef LOWLEVEL_NO_X360_XMA
-		static mcpp_string^ Xma2EncoderExePath;
+		static void SetXma2EncoderExePath(mcpp_string^ exe_path);
 #endif
 
 		static mcpp_readonly array<mcpp_byte>^ kMonoFooter = mcpp_new array<mcpp_byte> {
