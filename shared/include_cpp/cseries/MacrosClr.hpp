@@ -348,3 +348,19 @@ template<typename TManaged> cpp_struct mcpp_ptr : gcroot< TManaged* >
 #else
 	#define MCPP_X64_PLATFORM_EXCEPTION() throw mcpp_new System::PlatformNotSupportedException("Feature not supported on x64 platforms currently")
 #endif
+
+
+// TODO: CAN I REMOVE THIS BULLSHIT CAST IN 2010??
+// http://connect.microsoft.com/VisualStudio/feedback/details/101910/c-cli-incorrectly-requires-safe-cast-to-assign-cli-array-to-ienumerable-t
+// UPDATE: Nope.
+#define MCPP_IMPLEMENT_GET_ENUMERATOR(TType, field_name)																				\
+	virtual System::Collections::Generic::IEnumerator<TType>^ GetEnumerator()															\
+	{ return mcpp_cast_as(System::Collections::Generic::IEnumerable<TType>, field_name)->GetEnumerator(); }								\
+	virtual System::Collections::IEnumerator^ GetEnumeratorObj() mcpp_override_explicit System::Collections::IEnumerable::GetEnumerator	\
+	{ return field_name->GetEnumerator(); }
+// For when [TType] is a generic parameter
+#define MCPP_IMPLEMENT_GET_ENUMERATOR_GENERIC(TType, field_name)																		\
+	virtual System::Collections::Generic::IEnumerator<TType>^ GetEnumerator()															\
+	{ return mcpp_cast_to(System::Collections::Generic::IEnumerable<TType>^, field_name)->GetEnumerator(); }							\
+	virtual System::Collections::IEnumerator^ GetEnumeratorObj() mcpp_override_explicit System::Collections::IEnumerable::GetEnumerator	\
+	{ return field_name->GetEnumerator(); }

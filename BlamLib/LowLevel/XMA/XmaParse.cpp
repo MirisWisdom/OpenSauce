@@ -301,7 +301,11 @@ namespace XMA
 			if (16384 == ph.skip_bits)
 			{
 				if (ph.unknown != 0)
+#ifndef LOWLEVEL_NO_X360_XMA_VERBOSE
 					cout << "Unknown = " << ph.unknown << ", expected 0" << endl;
+#else
+					__noop;
+#endif
 
 				last_packet_overflow_bits = 0;
 			}
@@ -310,7 +314,11 @@ namespace XMA
 				boost::uint32_t total_bits;
 
 				if (ph.unknown != 2)
+#ifndef LOWLEVEL_NO_X360_XMA_VERBOSE
 					cout << "Unknown = " << ph.unknown << ", expected 2" << endl;
+#else
+					__noop;
+#endif
 
 				// skip initial bits (overflow from a previous packet)
 				for (boost::uint32_t i = 0; i < ph.skip_bits; i++) frame_stream.get_bit();
@@ -327,6 +335,7 @@ namespace XMA
 				int overflow_temp = last_packet_overflow_bits = (ph.skip_bits + total_bits) - 
 					((k_packet_size_in_bytes - k_packet_header_size_in_bytes) * k_bits_per_byte);
 
+				// KM00: isn't the the 'if' case redundant?
 				if (overflow_temp > 0)
 					last_packet_overflow_bits = overflow_temp;
 				else
@@ -419,6 +428,7 @@ namespace XMA
 				int overflow_temp = last_packet_overflow_bits = (ph.skip_bits + total_bits) - 
 					((k_packet_size_in_bytes - k_packet_header_size_in_bytes) * k_bits_per_byte);
 
+				// KM00: isn't the the 'if' case redundant?
 				if (overflow_temp > 0)
 					last_packet_overflow_bits = overflow_temp;
 				else
@@ -459,7 +469,9 @@ namespace XMA
 			c_bit_stream_integer<k_frame_header_size_in_bits> frame_bits;
 			frame_stream >> frame_bits;
 
+#ifndef LOWLEVEL_NO_X360_XMA_VERBOSE
 			//cout << "Frame #" << frame_number << ", " << bits_written << " bits written" << endl;
+#endif
 
 			if (m_bits_written + frame_bits >= k_packet_size_in_bytes * k_bits_per_byte) {
 				boost::uint32_t bits_this_packet = (k_packet_size_in_bytes * k_bits_per_byte) - m_bits_written;
@@ -472,7 +484,9 @@ namespace XMA
 				ph.skip_bits = overflow_bits;
 				ph.packet_skip = 0;
 
+#ifndef LOWLEVEL_NO_X360_XMA_VERBOSE
 				//cout << "overflow = " << overflow_bits << endl;
+#endif
 
 				// bits of frame header before packet end
 				boost::uint32_t frame_header_size_bits_left = k_frame_header_size_in_bits;
@@ -531,14 +545,12 @@ namespace XMA
 			}
 
 			// trailer
+			if (!frame_stream.get_bit())
 			{
-				if (!frame_stream.get_bit())
-				{
-					if (m_parse_ctx.strict && frame_number != frame_count-1)
-						throw early_packet_end_error();
+				if (m_parse_ctx.strict && frame_number != frame_count-1)
+					throw early_packet_end_error();
 
-					packet_end_seen = true;
-				}
+				packet_end_seen = true;
 			}
 		}
 
@@ -616,9 +628,8 @@ namespace XMA
 			{
 				last_packet_overflow_bits = 0;
 
-				if (ph.unknown != 0) {
+				if (ph.unknown != 0)
 					cout << "Unknown = " << ph.unknown << ", expected 0" << endl;
-				}
 			}
 			else
 			{
@@ -644,6 +655,7 @@ namespace XMA
 				int overflow_temp = last_packet_overflow_bits = (ph.skip_bits + total_bits) - 
 					((k_packet_size_in_bytes - k_packet_header_size_in_bytes) * 8);
 
+				// KM00: isn't the the 'if' case redundant?
 				if (overflow_temp > 0)
 					last_packet_overflow_bits = overflow_temp;
 				else
@@ -657,7 +669,7 @@ namespace XMA
 				c_bit_istream dump_frame_stream(is,
 					(k_packet_size_in_bytes - k_packet_header_size_in_bytes) * k_bits_per_byte, // consecutive
 					(k_packet_header_size_in_bytes + ph.packet_skip * k_packet_size_in_bytes) * k_bits_per_byte // skip
-					);
+				);
 
 				// Do packet if not skipping
 				if (ph.skip_bits != 16384) {
@@ -665,7 +677,8 @@ namespace XMA
 					for (boost::uint32_t i = 0; i < ph.skip_bits; i++) dump_frame_stream.get_bit();
 
 					packetize(dump_frame_stream, frames_this_packet, 
-						(static_cast<boost::uint32_t>(offset) + (ph.packet_skip + 1) * k_packet_size_in_bytes >= static_cast<boost::uint32_t>(last_offset)) );
+						(CAST(boost::uint32_t,offset) + (ph.packet_skip + 1) * k_packet_size_in_bytes >= CAST(boost::uint32_t,last_offset))
+					);
 				}
 			}
 
@@ -736,6 +749,7 @@ namespace XMA
 				int overflow_temp = last_packet_overflow_bits = (ph.skip_bits + total_bits) - 
 					((k_packet_size_in_bytes - k_packet_header_size_in_bytes) * 8);
 
+				// KM00: isn't the the 'if' case redundant?
 				if (overflow_temp > 0)
 					last_packet_overflow_bits = overflow_temp;
 				else
@@ -749,7 +763,7 @@ namespace XMA
 				c_bit_istream dump_frame_stream(is,
 					(k_packet_size_in_bytes - k_packet_header_size_in_bytes) * k_bits_per_byte, // consecutive
 					(k_packet_header_size_in_bytes + ph.packet_skip * k_packet_size_in_bytes) * k_bits_per_byte // skip
-					);
+				);
 
 				// Do packet if not skipping
 				if (ph.skip_bits != 0x7FFF) {
@@ -853,11 +867,14 @@ namespace XMA
 		if(out_stream_valid())
 		{
 			stringstream& s = *dynamic_cast<stringstream*>(m_out_stream);
+			stringstream::pos_type pos = s.tellp();
 
-			out_buffer_size = s.tellp();
+			out_buffer_size = pos;
 			out_buffer = cpp_new char[out_buffer_size];
 			s.seekg(0, ios::beg);
 			s.read(out_buffer, out_buffer_size);
+
+			s.seekg(pos);
 
 			return true;
 		}
@@ -887,8 +904,8 @@ namespace XMA
 				total_sample_count = m_rebuilder->build_from_xma(*m_in_stream, m_parse_ctx.offset);
 		}
 		else for(boost::int32_t block_offset = m_parse_ctx.offset; 
-		block_offset < (m_parse_ctx.offset+m_parse_ctx.data_size);
-		block_offset += m_parse_ctx.block_size)
+				 block_offset < (m_parse_ctx.offset+m_parse_ctx.data_size);
+				 block_offset += m_parse_ctx.block_size)
 		{
 			boost::int32_t usable_block_size = m_parse_ctx.block_size;
 
@@ -933,8 +950,7 @@ namespace XMA
 		catch(const char* str)
 		{
 			result = false;
-			m_error = str;
-			cerr << str << endl;
+			cerr << (m_error = str) << endl;
 		}
 
 		return result;

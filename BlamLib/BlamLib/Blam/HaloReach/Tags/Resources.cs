@@ -19,7 +19,7 @@
 ﻿#pragma warning disable 1591 // "Missing XML comment for publicly visible type or member"
 using System;
 using TI = BlamLib.TagInterface;
-using ZONE = BlamLib.Blam.Halo3.Tags.cache_file_resource_gestalt_group;
+using CT = BlamLib.Blam.Cache.Tags;
 
 namespace BlamLib.Blam.HaloReach.Tags
 {
@@ -30,20 +30,22 @@ namespace BlamLib.Blam.HaloReach.Tags
 	};
 
 	[TI.TagGroup((int)TagGroups.Enumerated.play, 1, 60)]
-	public class cache_file_resource_layout_table_group : TI.Definition
+	public class cache_file_resource_layout_table_group : CT.cache_file_resource_layout_table_group
 	{
 		public TI.Struct<cache_file_resource_layout_table> ResourceLayoutTable;
 
-		public cache_file_resource_layout_table_group()
+		public cache_file_resource_layout_table_group() : base(1)
 		{
 			Add(ResourceLayoutTable = new TI.Struct<cache_file_resource_layout_table>(this));
 		}
+
+		public override CT.cache_file_resource_layout_table GetResourceLayoutTable() { return ResourceLayoutTable.Value; }
 	};
 	#endregion
 
 	#region cache_file_resource_gestalt
 	[TI.TagGroup((int)TagGroups.Enumerated.zone, 1, 532)]
-	public partial class cache_file_resource_gestalt_group : TI.Definition
+	public partial class cache_file_resource_gestalt_group : Halo3.Tags.cache_file_resource_gestalt_group
 	{
 	};
 	#endregion
