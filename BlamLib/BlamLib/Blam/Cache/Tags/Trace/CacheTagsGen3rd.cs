@@ -158,6 +158,27 @@ namespace BlamLib.Blam.Cache.Tags
 	#endregion
 
 
+	#region sound_cache_file_gestalt
+	#region sound_gestalt_platform_codec_block
+	partial class sound_gestalt_platform_codec_block
+	{
+		[System.Diagnostics.Conditional("DEBUG")]
+		public static void Output(System.IO.StreamWriter s, TI.Block<sound_gestalt_platform_codec_block> block)
+		{
+			const string format = "\t{0}\t\t{1}\t{2}\t{3}";
+
+			s.WriteLine("{0}\tsound_gestalt_platform_codec_block", block.Count);
+			int x = 0;
+			foreach (sound_gestalt_platform_codec_block def in block)
+			{
+				s.WriteLine(format, (x++).ToString(), 
+					def.Unknown00.Value.ToString(), def.Type.ToString(), def.Flags.ToString());
+			}
+		}
+	};
+	#endregion
+	#endregion
+
 	#region cache_file_resource_layout_table
 	partial class cache_file_resource_layout_table
 	{

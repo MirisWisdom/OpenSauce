@@ -294,8 +294,27 @@ namespace BlamLib.Blam.Cache.Tags
 	#endregion
 
 	#region sound_cache_file_gestalt
+	#region sound_gestalt_platform_codec_block
+	[TI.Definition(1, 3)]
+	public partial class sound_gestalt_platform_codec_block : TI.Definition
+	{
+		public TI.Enum Unknown00;
+		public TI.Enum Type;
+		public TI.Flags Flags; // Channel mask?
+
+		public sound_gestalt_platform_codec_block() : base(3)
+		{
+			Add(Unknown00 = new TI.Enum(TI.FieldType.ByteEnum));
+			Add(Type = new TI.Enum(TI.FieldType.ByteEnum));
+			Add(Flags = new TI.Flags(TI.FieldType.ByteFlags));
+		}
+	}
+	#endregion
+
 	public abstract class sound_cache_file_gestalt_group_gen3 : sound_cache_file_gestalt_group_gen2
 	{
+		public TI.Block<sound_gestalt_platform_codec_block> PlatformCodecs;
+
 		protected sound_cache_file_gestalt_group_gen3(int field_count) : base(field_count) { }
 	};
 	#endregion
@@ -444,6 +463,13 @@ namespace BlamLib.Blam.Cache.Tags
 		public TI.Block<page_segment_block> PageSegments; // 30
 
 		protected cache_file_resource_layout_table(int field_count) : base(field_count) { }
+	};
+
+	public abstract class cache_file_resource_layout_table_group : TI.Definition
+	{
+		protected cache_file_resource_layout_table_group(int field_count) : base(field_count) { }
+
+		public abstract cache_file_resource_layout_table GetResourceLayoutTable();
 	};
 	#endregion
 

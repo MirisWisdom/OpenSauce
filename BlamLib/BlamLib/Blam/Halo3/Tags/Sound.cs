@@ -349,23 +349,6 @@ namespace BlamLib.Blam.Halo3.Tags
 	#endregion
 
 	#region sound_gestalt
-	#region sound_gestalt_platform_codec_block
-	[TI.Definition(1, 3)]
-	public partial class sound_gestalt_platform_codec_block : TI.Definition
-	{
-		public TI.Enum Unknown00;
-		public TI.Enum Type;
-		public TI.Flags Flags; // Channel mask?
-
-		public sound_gestalt_platform_codec_block() : base(3)
-		{
-			Add(Unknown00 = new TI.Enum(TI.FieldType.ByteEnum));
-			Add(Type = new TI.Enum(TI.FieldType.ByteEnum));
-			Add(Flags = new TI.Flags(TI.FieldType.ByteFlags));
-		}
-	}
-	#endregion
-
 	#region sound_gestalt_playback_block
 	[TI.Definition(1, 68)]
 	public class sound_gestalt_playback_block : TI.Definition
@@ -555,7 +538,6 @@ namespace BlamLib.Blam.Halo3.Tags
 		#endregion
 
 		#region Fields
-		public TI.Block<sound_gestalt_platform_codec_block> PlatformCodecs;
  		public TI.Block<sound_gestalt_playback_block> Playbacks;
  		public TI.Block<sound_gestalt_scale_block> Scales;
 
@@ -573,7 +555,7 @@ namespace BlamLib.Blam.Halo3.Tags
 		#region Ctor
 		public sound_cache_file_gestalt_group() : base(14)
 		{
-			Add(PlatformCodecs = new TI.Block<sound_gestalt_platform_codec_block>(this, 0));
+			Add(PlatformCodecs = new TI.Block<CT.sound_gestalt_platform_codec_block>(this, 0));
  			Add(Playbacks = new TI.Block<sound_gestalt_playback_block>(this, 0));
  			Add(Scales = new TI.Block<sound_gestalt_scale_block>(this, 0));
 			Add(ImportNames = new TI.Block<CT.sound_gestalt_import_names_block>(this, 0));
