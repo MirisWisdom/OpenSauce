@@ -24,6 +24,8 @@
 #include <windows.h>
 #include <sal.h>
 
+#include <WinSock2.h>
+
 #include <shlobj.h>
 #include <shlwapi.h>
 #pragma comment (lib, "shlwapi.lib")

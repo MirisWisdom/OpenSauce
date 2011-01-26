@@ -90,7 +90,7 @@ namespace BlamLib.Test
 			bool output_play = false;
 			bool output_zone = false;
 			bool output_zone_data = false;
-			bool output_ugh = false;
+			bool output_ugh = true;
 			bool output_sound_info = false;
 			bool output_index = false;
 
@@ -190,13 +190,12 @@ namespace BlamLib.Test
 
 						foreach (KeyValuePair<int, List<string>> kv in dic)
 						{
+							if (kv.Value.Count == 0) continue;
+
 							sw.WriteLine("\tCompression: {0}\t{1}", kv.Key.ToString(), kv.Value.Count.ToString());
 							foreach (string s in kv.Value)
 								sw.WriteLine(s);
 						}
-						sw.WriteLine();
-
-						sw.WriteLine("sound gestalt");
 					}
 				}
 				#endregion
@@ -215,7 +214,7 @@ namespace BlamLib.Test
 		{
 			CacheFileOutputInfoArgs.TestThreadedMethod(TestContext,
 				CacheLoadResourceMethod,
-				BlamVersion.Halo3_Xbox, kDirectoryXbox, kMapNames_Retail);
+				BlamVersion.Halo3_Xbox, kDirectoryXbox, kMapNames_Retail[0]);
 		}
 		#endregion
 	};

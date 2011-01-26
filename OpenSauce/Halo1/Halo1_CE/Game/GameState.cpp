@@ -222,8 +222,10 @@ namespace Yelo
 	{
 		enum game_version_id : long_enum {
 			//_game_version_id_ = ,
+			_game_version_id_100 = 0x94ECF,	//  609999
+			_game_version_id_107 = 0x5BC42F,// 6013999
 			_game_version_id_108 = 0x5BCFE7,// 6016999
-			_game_version_id_109 = 0x96A27,	// 616999
+			_game_version_id_109 = 0x96A27,	//  616999
 		};
 	};
 
@@ -241,7 +243,11 @@ namespace Yelo
 				{
 					cstring build_string = NULL;
 
-					if(version_id == Enums::_game_version_id_108)
+					if(version_id == Enums::_game_version_id_100)
+						build_string = NULL; // TODO
+					else if(version_id == Enums::_game_version_id_107)
+						build_string = NULL; // TODO
+					else if(version_id == Enums::_game_version_id_108)
 						build_string = NULL; // TODO
 					else if(version_id == Enums::_game_version_id_109)
 						build_string = NULL; // TODO
@@ -260,7 +266,11 @@ namespace Yelo
 			bool result = true;
 			long_enum version_id = 0;
 
-			if( strstr(version_str, "1.08") )
+			if( strstr(version_str, "1.00") )
+				version_id = Enums::_game_version_id_100;
+			else if( strstr(version_str, "1.07") )
+				version_id = Enums::_game_version_id_107;
+			else if( strstr(version_str, "1.08") )
 				version_id = Enums::_game_version_id_108;
 			else if( strstr(version_str, "1.09") )
 				version_id = Enums::_game_version_id_109;

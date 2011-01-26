@@ -24,16 +24,17 @@ namespace BlamLib.Blam.Cache.Tags
 {
 	#region sound
 	#region sound_permutation_chunk_block
-	public abstract class sound_permutation_chunk_block : TI.Definition
+	public abstract class sound_permutation_chunk_block_gen2 : TI.Definition
 	{
 		public TI.LongInteger FileOffset;
 		public TI.LongInteger SizeFlags;
 		public TI.LongInteger RuntimeIndex;
 
-		protected sound_permutation_chunk_block(int field_count) : base(field_count) { }
+		protected sound_permutation_chunk_block_gen2(int field_count) : base(field_count) { }
 
-		// pretty sure size still takes up only the lower 16-bits on the 360
-		public int GetSize() { return SizeFlags.Value & 0xFFFF; }
+		public virtual int GetSize() { return SizeFlags.Value & 0x3FFFFFFF; }
+		// BIT(0) - is cached (set at runtime)
+		public virtual int GetFlags() { return SizeFlags.Value >> 30; }
 	};
 	#endregion
 
@@ -165,7 +166,7 @@ namespace BlamLib.Blam.Cache.Tags
 
 		public abstract sound_gestalt_pitch_ranges_block GetPitchRange(int element);
 		public abstract sound_gestalt_permutations_block GetPermutation(int element);
-		public abstract sound_permutation_chunk_block GetPermutationChunk(int element);
+		public abstract sound_permutation_chunk_block_gen2 GetPermutationChunk(int element);
 		public abstract sound_gestalt_extra_info_block GetExtraInfo(int element);
 	};
 	#endregion

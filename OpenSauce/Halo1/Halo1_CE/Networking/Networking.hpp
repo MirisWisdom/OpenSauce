@@ -46,7 +46,15 @@ namespace Yelo
 			_game_connection = 4,
 		};
 
-		enum transport_rejection_code
+		enum transport_type : byte_enum
+		{
+			_transport_type_udp = 17,
+			_transport_type_tcp,
+
+			_transport_type_gamespy = 20, // I just pulled this name out of my ass
+		};
+
+		enum transport_rejection_code : long_enum
 		{
 			_transport_rejection_code_none,
 			_transport_rejection_code_unknown,
@@ -195,10 +203,55 @@ namespace Yelo
 			_gamespy_field_game_classic,
 			_gamespy_field,
 		};
+
+		enum gamespy_connection_state : long_enum
+		{
+			GTI2AwaitingServerChallenge,
+			GTI2AwaitingAcceptance,
+			GTI2AwaitingClientChallenge,
+			GTI2AwaitingClientResponse,
+			GTI2AwaitingAcceptReject,
+			GTI2Connected,
+			GTI2Closing,
+			GTI2Closed,
+		};
 	};
 
 	namespace Networking
 	{
+		struct s_gamespy_connection
+		{
+			in_addr address;
+			int16 port; PAD16;
+
+			UNKNOWN_TYPE(int32); // pointer
+			Enums::gamespy_connection_state state;
+
+			byte pad[0x150 - 0x10]; // TODO
+		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_connection) == 0x150 );
+		struct s_gamespy_socket // NOTE: this is actually part of the gamespy API, just using OS naming standards
+		{
+			SOCKET socket;
+			in_addr address;
+			int16 port; PAD16;
+
+			void* connections;
+			void* closedConnections;
+			UNKNOWN_TYPE(int32); // 0x14
+			UNKNOWN_TYPE(int32);
+			void* connectAttemptCallback;
+			void* socketErrorCallback;
+			UNKNOWN_TYPE(int32); // 0x24 pointer to a proc
+			UNKNOWN_TYPE(int32); // 0x28 pointer to a proc
+			void* unrecongizedMessageCallback;
+			UNKNOWN_TYPE(int32); // 0x30, s_transport_endpoint*
+			int32 incomingBufferSize;
+			int32 outgoingBufferSize;
+			UNKNOWN_TYPE(int32); // 0x3C
+			UNKNOWN_TYPE(int32); // 0x40, s_transport_endpoint*
+			UNKNOWN_TYPE(int32); // 0x44
+		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_socket) == 0x48 );
+
 		struct s_transport_address
 		{
 			union
@@ -228,23 +281,34 @@ namespace Yelo
 			int16 port;
 
 			int32 unknown;
-		};
+		}; BOOST_STATIC_ASSERT( sizeof(s_transport_address) == 0x18 );
 
 		struct s_transport_endpoint
 		{
-			void* gs_connection;
-			UNKNOWN_TYPE(byte);
-			UNKNOWN_TYPE(byte);
+			s_gamespy_connection* gs_connection;
+			bool is_listening_endpoint;	// 0x4
+			UNKNOWN_TYPE(byte);			// 0x5, bool
 			PAD16;
-			UNKNOWN_TYPE(int32); // initialized with NONE
-			byte_flags flags;
-			byte_enum type; //0x11 _transport_type_udp
-			UNKNOWN_TYPE(int16);
+
+			SOCKET socket;				// 0x8, unused in PC, use gs_connection
+			byte_flags flags;			// 0xC
+			Enums::transport_type type;	// 0xD
+			int16 error_code;			// 0xE
 			Memory::s_circular_queue* received_data_queue;
-			UNKNOWN_TYPE(int32); // initialized with NONE
-			UNKNOWN_TYPE(uint32);
+			int32 gamespy_log_column;
+			Enums::transport_rejection_code rejection_code;
 
 		}; BOOST_STATIC_ASSERT( sizeof(s_transport_endpoint) == 0x1C );
+
+		struct s_transport_endpoint_set
+		{
+			fd_set select_set;
+
+			s_transport_endpoint** ep_array;
+			int32 max_endpoints;
+			int32 count;
+			int32 array_cursor;
+		}; BOOST_STATIC_ASSERT( sizeof(s_transport_endpoint_set) == 0x114 );
 
 		struct s_bitstream
 		{
@@ -273,10 +337,14 @@ namespace Yelo
 				// 0x14, s_bitstream*
 
 			// 0xA80, int32
-			// 0xA88, connection [class]
+			// 0xA88, connection_class
 			// 0xA8C, byte_flags flags
 				//_connection_create_server_bit = BIT(0)
 			// 0xA98, bool
+			TStructGetPtrImpl(s_transport_endpoint_set, EndpointSet, 0xA9C );
+			TStructGetPtrImpl(s_network_connection*, ClientList, 0xAA0 ); // [16]
+			// 0xAE0, pad here or value?
+			TStructGetPtrImpl(bool, HasLocalConnection, 0xAE1 );
 		};
 
 		struct s_network_machine : TStructImpl( PLATFORM_VALUE(0x60, 0xEC) )

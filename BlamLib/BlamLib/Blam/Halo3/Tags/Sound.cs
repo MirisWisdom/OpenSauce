@@ -309,7 +309,7 @@ namespace BlamLib.Blam.Halo3.Tags
 
 	#region sound_permutation_chunk_block
 	[TI.Definition(3, 20)]
-	public partial class sound_permutation_chunk_block : CT.sound_permutation_chunk_block
+	public partial class sound_permutation_chunk_block : CT.sound_permutation_chunk_block_gen3
 	{
 		public TI.LongInteger Unknown0C, Unknown10;
 
@@ -318,7 +318,7 @@ namespace BlamLib.Blam.Halo3.Tags
 			Add(FileOffset = new TI.LongInteger());
 			Add(SizeFlags = new TI.LongInteger());
 			Add(RuntimeIndex = new TI.LongInteger());
-			Add(Unknown0C = new TI.LongInteger()); // header size?
+			Add(Unknown0C = new TI.LongInteger()); // Only ever seen this eq '0' and '0x180'...may be an structure with bit encoded data
 			Add(Unknown10 = new TI.LongInteger());
 		}
 	}
@@ -583,7 +583,7 @@ namespace BlamLib.Blam.Halo3.Tags
 
 		public override CT.sound_gestalt_pitch_ranges_block GetPitchRange(int element) { return PitchRanges[element]; }
 		public override CT.sound_gestalt_permutations_block GetPermutation(int element) { return Permutations[element]; }
-		public override CT.sound_permutation_chunk_block GetPermutationChunk(int element) { return Chunks[element]; }
+		public override CT.sound_permutation_chunk_block_gen2 GetPermutationChunk(int element) { return Chunks[element]; }
 		public override CT.sound_gestalt_extra_info_block GetExtraInfo(int element) { return ExtraInfos[element]; }
 	};
 	#endregion
