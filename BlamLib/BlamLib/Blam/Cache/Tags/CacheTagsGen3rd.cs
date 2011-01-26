@@ -282,6 +282,18 @@ namespace BlamLib.Blam.Cache.Tags
 	#endregion
 
 
+	#region sound
+	#region sound_permutation_chunk_block
+	public abstract class sound_permutation_chunk_block_gen3 : sound_permutation_chunk_block_gen2
+	{
+		protected sound_permutation_chunk_block_gen3(int field_count) : base(field_count) { }
+
+		public override int GetSize() { return SizeFlags.Value & 0x7FFFFFF; }
+		public override int GetFlags() { return SizeFlags.Value >> 27; }
+	};
+	#endregion
+	#endregion
+
 	#region cache_file_sound
 	public abstract class cache_file_sound_group_gen3 : cache_file_sound_group_gen2
 	{

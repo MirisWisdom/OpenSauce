@@ -5923,10 +5923,10 @@
 		<function opcode="0x691" null="true" name="" returnType="void" argc="1">
 			<arg type="designer_zone" />
 		</function>
-		<function opcode="0x692" name="" returnType="void" argc="1">
+		<function opcode="0x692" name="designer_zone_activate" returnType="void" argc="1">
 			<arg type="designer_zone" />
 		</function>
-		<function opcode="0x693" name="" returnType="void" argc="1">
+		<function opcode="0x693" name="designer_zone_deactivate" returnType="void" argc="1">
 			<arg type="designer_zone" />
 		</function>
 		<function opcode="0x694" name="object_set_always_active" returnType="void" argc="2">

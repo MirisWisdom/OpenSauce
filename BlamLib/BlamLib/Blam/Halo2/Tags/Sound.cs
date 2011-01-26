@@ -460,7 +460,7 @@ namespace BlamLib.Blam.Halo2.Tags
 
 	#region sound_permutation_chunk_block
 	[TI.Definition(2, 12)]
-	public partial class sound_permutation_chunk_block : CT.sound_permutation_chunk_block
+	public partial class sound_permutation_chunk_block : CT.sound_permutation_chunk_block_gen2
 	{
 		public sound_permutation_chunk_block() : base(3)
 		{
@@ -649,16 +649,16 @@ namespace BlamLib.Blam.Halo2.Tags
 			Add(SampleRate = new TI.Enum(TI.FieldType.ByteEnum));
 			Add(OutputEffect = new TI.Enum(TI.FieldType.ByteEnum));
 			Add(ImportType = new TI.Enum(TI.FieldType.ByteEnum));
-			Add(Playback = new TI.Struct<sound_playback_parameters_struct>(this));
-			Add(Scale = new TI.Struct<sound_scale_modifiers_struct>(this));
+			/*0x08*/Add(Playback = new TI.Struct<sound_playback_parameters_struct>(this));
+			/*0x40*/Add(Scale = new TI.Struct<sound_scale_modifiers_struct>(this));
 			Add(new TI.Pad(2));
 			Add(Encoding = new TI.Enum(TI.FieldType.ByteEnum));
 			Add(Compression = new TI.Enum(TI.FieldType.ByteEnum));
-			Add(Promotion = new TI.Struct<sound_promotion_parameters_struct>(this));
+			/*0x58*/Add(Promotion = new TI.Struct<sound_promotion_parameters_struct>(this));
 			Add(new TI.Pad(12));
-			Add(PitchRanges = new TI.Block<sound_pitch_range_block>(this, 9));
-			Add(PlatformParameters = new TI.Block<sound_platform_sound_playback_block>(this, 1));
-			Add(ExtraInfo = new TI.Block<sound_extra_info_block>(this, 1));
+			/*0x88*/Add(PitchRanges = new TI.Block<sound_pitch_range_block>(this, 9));
+			/*0x94*/Add(PlatformParameters = new TI.Block<sound_platform_sound_playback_block>(this, 1));
+			/*0xA0*/Add(ExtraInfo = new TI.Block<sound_extra_info_block>(this, 1));
 		}
 		#endregion
 	};
@@ -699,16 +699,12 @@ namespace BlamLib.Blam.Halo2.Tags
 	[TI.Definition(1, 56)]
 	public class sound_gestalt_playback_block : TI.Definition
 	{
-		#region Fields
 		public TI.Struct<sound_playback_parameters_struct> Playback;
-		#endregion
 
-		#region Ctor
 		public sound_gestalt_playback_block() : base(1)
 		{
 			Add(Playback = new TI.Struct<sound_playback_parameters_struct>(this));
 		}
-		#endregion
 	}
 	#endregion
 
@@ -716,16 +712,12 @@ namespace BlamLib.Blam.Halo2.Tags
 	[TI.Definition(1, 20)]
 	public class sound_gestalt_scale_block : TI.Definition
 	{
-		#region Fields
 		public TI.Struct<sound_scale_modifiers_struct> Scale;
-		#endregion
 
-		#region Ctor
 		public sound_gestalt_scale_block() : base(1)
 		{
 			Add(Scale = new TI.Struct<sound_scale_modifiers_struct>(this));
 		}
-		#endregion
 	}
 	#endregion
 
@@ -809,16 +801,12 @@ namespace BlamLib.Blam.Halo2.Tags
 	[TI.Definition(1, 36)]
 	public class sound_gestalt_promotions_block : TI.Definition
 	{
-		#region Fields
 		public TI.Struct<sound_promotion_parameters_struct> Promotion;
-		#endregion
 
-		#region Ctor
 		public sound_gestalt_promotions_block() : base(1)
 		{
 			Add(Promotion = new TI.Struct<sound_promotion_parameters_struct>(this));
 		}
-		#endregion
 	}
 	#endregion
 
@@ -859,22 +847,22 @@ namespace BlamLib.Blam.Halo2.Tags
 
 		public sound_cache_file_gestalt_group() : base(11)
 		{
-			Add(Playbacks = new TI.Block<sound_gestalt_playback_block>(this, 32767));
-			Add(Scales = new TI.Block<sound_gestalt_scale_block>(this, 32767));
-			Add(ImportNames = new TI.Block<CT.sound_gestalt_import_names_block>(this, 32767));
-			Add(PitchRangeParameters = new TI.Block<sound_gestalt_pitch_range_parameters_block>(this, 32767));
-			Add(PitchRanges = new TI.Block<sound_gestalt_pitch_ranges_block>(this, 32767));
-			Add(Permutations = new TI.Block<sound_gestalt_permutations_block>(this, 32767));
-			Add(CustomPlaybacks = new TI.Block<sound_gestalt_custom_playback_block>(this, 32767));
-			Add(RuntimePermutationFlags = new TI.Block<CT.sound_gestalt_runtime_permutation_bit_vector_block>(this, 32767));
-			Add(Chunks = new TI.Block<sound_permutation_chunk_block>(this, 32767));
-			Add(Promotions = new TI.Block<sound_gestalt_promotions_block>(this, 32767));
-			Add(ExtraInfos = new TI.Block<sound_gestalt_extra_info_block>(this, 32767));
+			/*0x00*/Add(Playbacks = new TI.Block<sound_gestalt_playback_block>(this, 32767));
+			/*0x0C*/Add(Scales = new TI.Block<sound_gestalt_scale_block>(this, 32767));
+			/*0x18*/Add(ImportNames = new TI.Block<CT.sound_gestalt_import_names_block>(this, 32767));
+			/*0x24*/Add(PitchRangeParameters = new TI.Block<sound_gestalt_pitch_range_parameters_block>(this, 32767));
+			/*0x30*/Add(PitchRanges = new TI.Block<sound_gestalt_pitch_ranges_block>(this, 32767));
+			/*0x3C*/Add(Permutations = new TI.Block<sound_gestalt_permutations_block>(this, 32767));
+			/*0x48*/Add(CustomPlaybacks = new TI.Block<sound_gestalt_custom_playback_block>(this, 32767));
+			/*0x54*/Add(RuntimePermutationFlags = new TI.Block<CT.sound_gestalt_runtime_permutation_bit_vector_block>(this, 32767));
+			/*0x60*/Add(Chunks = new TI.Block<sound_permutation_chunk_block>(this, 32767));
+			/*0x6C*/Add(Promotions = new TI.Block<sound_gestalt_promotions_block>(this, 32767));
+			/*0x78*/Add(ExtraInfos = new TI.Block<sound_gestalt_extra_info_block>(this, 32767));
 		}
 
 		public override CT.sound_gestalt_pitch_ranges_block GetPitchRange(int element) { return PitchRanges[element]; }
 		public override CT.sound_gestalt_permutations_block GetPermutation(int element) { return Permutations[element]; }
-		public override CT.sound_permutation_chunk_block GetPermutationChunk(int element) { return Chunks[element]; }
+		public override CT.sound_permutation_chunk_block_gen2 GetPermutationChunk(int element) { return Chunks[element]; }
 		public override CT.sound_gestalt_extra_info_block GetExtraInfo(int element) { return ExtraInfos[element]; }
 	};
 	#endregion
@@ -915,7 +903,7 @@ namespace BlamLib.Blam.Halo2.Tags
 				Add(/*scripted dialog ducking fade out time = */ new TI.Real());
 				Add(/*doppler factor = */ new TI.Real());
 				Add(/*stereo playback type = */ new TI.Enum(TI.FieldType.ByteEnum));
-				Add(new TI.Pad(3));
+				Add(TI.Pad._24);
 				Add(/*transmission multiplier = */ new TI.Real());
 				Add(/*obstruction max bend = */ new TI.Real());
 				Add(/*occlusion max bend = */ new TI.Real());
@@ -924,15 +912,12 @@ namespace BlamLib.Blam.Halo2.Tags
 		}
 		#endregion
 
-		#region Fields
-		#endregion
+		public TI.Block<sound_class_block> SoundClasses;
 
-		#region Ctor
 		public sound_classes_group() : base(1)
 		{
-			Add(/*sound classes = */ new TI.Block<sound_class_block>(this, 54));
+			Add(SoundClasses = new TI.Block<sound_class_block>(this, 54));
 		}
-		#endregion
 	};
 	#endregion
 

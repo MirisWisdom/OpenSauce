@@ -310,15 +310,15 @@ namespace BlamLib.Blam.Halo3.Tags
 		[System.Diagnostics.Conditional("DEBUG")]
 		public static void Output(System.IO.StreamWriter s, TI.Block<sound_permutation_chunk_block> block)
 		{
-			const string format = "\t{0}\t\t{1}\t{2}\t{3}\t{4}";
+			const string format = "\t{0}\t\t{1}\t{2}" + "\t{3}\t{4}\t{5}";
 
 			s.WriteLine("{0}\tsound_permutation_chunk_block", block.Count);
 			int x = 0;
 			foreach (sound_permutation_chunk_block def in block)
 			{
 				s.WriteLine(format, (x++).ToString(),
-					def.FileOffset.Value.ToString("X8"), def.SizeFlags.Value.ToString("X8"), 
-					def.Unknown0C.Value.ToString("X4"), def.Unknown10.Value.ToString("X8"));
+					def.FileOffset.Value.ToString("X8"), def.GetSize().ToString("X7"), 
+					def.GetFlags().ToString("X2"), def.Unknown0C.Value.ToString("X4"), def.Unknown10.Value.ToString("X8"));
 			}
 		}
 	};

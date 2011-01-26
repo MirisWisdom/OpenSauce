@@ -1343,7 +1343,7 @@ namespace BlamLib.Blam.Halo2.Tags
 		{
 			/*0x00*/Add(/*Documentation = */ new TI.Data(this));
 			/*0x14*/Add(/*Default Material Name = */ new TI.StringId());
-			/*0x18*/Add(new TI.Pad(2));
+			/*0x18*/Add(new TI.Pad(2)); // internal flags
 			/*0x1A*/Add(/*Flags = */ new TI.Flags(TI.FieldType.WordFlags));
 			/*0x1C*/Add(/*Properties = */ new TI.Block<shader_template_property_block>(this, 14));
 			/*0x28*/Add(Categories = new TI.Block<shader_template_category_block>(this, 16));
