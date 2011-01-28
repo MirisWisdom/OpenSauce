@@ -36,6 +36,7 @@ namespace BlamLib.Blam.Halo2
 				SINF,
 				SECT,
 				PDAT,
+				ISQI, // old shit
 				BLOK,
 				cbsp,
 				csbs,
@@ -151,6 +152,8 @@ namespace BlamLib.Blam.Halo2
 			SECT,
 			/// <summary>global_geometry_point_data_struct</summary>
 			PDAT,
+			/// <summary>global_geometry_isq_info_struct</summary>
+			ISQI, // old shit
 			/// <summary>global_geometry_block_info_struct</summary>
 			BLOK,
 			/// <summary>global_collision_bsp_struct</summary>

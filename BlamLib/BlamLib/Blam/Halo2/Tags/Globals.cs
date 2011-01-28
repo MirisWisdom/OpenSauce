@@ -37,15 +37,10 @@ namespace BlamLib.Blam.Halo2.Tags
 	[TI.Struct((int)StructGroups.Enumerated.shtb, 1, 2)]
 	public class tag_block_index_struct : TI.Definition
 	{
-		#region Fields
-		#endregion
-
-		#region Ctor
 		public tag_block_index_struct() : base(1)
 		{
 			Add(/*block index data = */ new TI.ShortInteger());
 		}
-		#endregion
 	}
 	#endregion
 
@@ -53,15 +48,10 @@ namespace BlamLib.Blam.Halo2.Tags
 	[TI.Definition(1, 2)]
 	public class tag_block_index_block : TI.Definition
 	{
-		#region Fields
-		#endregion
-
-		#region Ctor
 		public tag_block_index_block() : base(1)
 		{
 			Add(/*indices = */ new TI.Struct<tag_block_index_struct>(this));
 		}
-		#endregion
 	}
 	#endregion
 
@@ -69,15 +59,10 @@ namespace BlamLib.Blam.Halo2.Tags
 	[TI.Definition(1, 4)]
 	public class pixel32_block : TI.Definition
 	{
-		#region Fields
-		#endregion
-
-		#region Ctor
 		public pixel32_block() : base(1)
 		{
 			Add(/*color = */ new TI.Color());
 		}
-		#endregion
 	}
 	#endregion
 
@@ -85,16 +70,11 @@ namespace BlamLib.Blam.Halo2.Tags
 	[TI.Definition(1, 16)]
 	public class real_vector4d_block : TI.Definition
 	{
-		#region Fields
-		#endregion
-
-		#region Ctor
 		public real_vector4d_block() : base(2)
 		{
 			Add(/*vector3 = */ new TI.RealVector3D());
 			Add(/* = */ new TI.Real());
 		}
-		#endregion
 	}
 	#endregion
 
@@ -102,15 +82,10 @@ namespace BlamLib.Blam.Halo2.Tags
 	[TI.Definition(1, 1)]
 	public class byte_block : TI.Definition
 	{
-		#region Fields
-		#endregion
-
-		#region Ctor
 		public byte_block() : base(1)
 		{
 			Add(/*Value = */ new TI.ByteInteger());
 		}
-		#endregion
 	}
 	#endregion
 
@@ -122,18 +97,15 @@ namespace BlamLib.Blam.Halo2.Tags
 		[TI.Definition(1, 540)]
 		public class tag_import_file_block : TI.Definition
 		{
-			#region Fields
 			public TI.String Path;
 			public TI.String ModificationDate;
 			public TI.LongInteger Checksum;
 			public TI.LongInteger Size; // size of uncompressed input data
 			public TI.Data ZippedData;
-			#endregion
 
-			#region Ctor
 			public tag_import_file_block() : base(8)
 			{
-				Add(Path = new TI.String(TI.StringType.Ascii, 256));
+				Add(Path = TI.String.LongString);
 				Add(ModificationDate = new TI.String());
 				Add(new TI.Skip(8)); // FILETIME modification date
 				Add(new TI.Pad(88));
@@ -142,42 +114,25 @@ namespace BlamLib.Blam.Halo2.Tags
 				Add(ZippedData = new TI.Data(this));
 				Add(new TI.Pad(128));
 			}
-			#endregion
 
 			public byte[] Decompress()
 			{
-				byte[] data;
-
-				using (var ms = new System.IO.MemoryStream(ZippedData.Value))
-				using (var dec = new System.IO.Compression.DeflateStream(ms, System.IO.Compression.CompressionMode.Decompress, true))
-				{
-					// adjust for zlib header
-					ms.Seek(sizeof(ushort), System.IO.SeekOrigin.Begin);
-
-					// decompress the data and fill in the result array
-					data = new byte[Size.Value];
-					dec.Read(data, 0, data.Length);
-				}
-
-				return data;
+				return Util.ZLibBufferFromBytes(ZippedData.Value, 0, Size.Value);
 			}
 		}
 		#endregion
 
-		#region Fields
 		public TI.LongInteger ExporterBuild;
 		public TI.String Version;
 		public TI.String ImportDate;
 		public TI.String Culprit;
 		public TI.String ImportTime;
 		public TI.Block<tag_import_file_block> Files;
-		#endregion
 
-		#region Ctor
 		public global_tag_import_info_block() : base(9)
 		{
 			Add(ExporterBuild = new TI.LongInteger());
-			Add(Version = new TI.String(TI.StringType.Ascii, 256));
+			Add(Version = TI.String.LongString);
 			Add(ImportDate = new TI.String());
 			Add(Culprit = new TI.String());
 			Add(new TI.Pad(96));
@@ -186,7 +141,6 @@ namespace BlamLib.Blam.Halo2.Tags
 			Add(Files = new TI.Block<tag_import_file_block>(this, 1024));
 			Add(new TI.Pad(128));
 		}
-		#endregion
 	}
 	#endregion
 
@@ -195,232 +149,108 @@ namespace BlamLib.Blam.Halo2.Tags
 	public class global_error_report_categories_block : TI.Definition
 	{
 		#region error_reports_block
+		public abstract class error_report_type_base : TI.Definition
+		{
+			public TI.RealColor Color;
+
+			protected error_report_type_base(int field_count) : base(field_count) { }
+		};
+
 		[TI.Definition(1, 644)]
 		public class error_reports_block : TI.Definition
 		{
 			#region error_report_vertices_block
 			[TI.Definition(1, 52)]
-			public class error_report_vertices_block : TI.Definition
+			public class error_report_vertices_block : error_report_type_base
 			{
-				#region Fields
-				#endregion
+				public global_model_skinned_uncompressed_vertex Position;
 
-				#region Ctor
 				public error_report_vertices_block() : base(11)
 				{
-					Add(/*Position = */ new TI.RealPoint3D());
+					Position = new global_model_skinned_uncompressed_vertex(this);
 
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-
-					Add(/*Color = */ new TI.RealColor(TI.FieldType.RealArgbColor));
+					Add(Color = TI.RealColor.Argb);
 					Add(/*Screen Size = */ new TI.Real());
 				}
-				#endregion
 			}
 			#endregion
 
 			#region error_report_vectors_block
 			[TI.Definition(1, 64)]
-			public class error_report_vectors_block : TI.Definition
+			public class error_report_vectors_block : error_report_type_base
 			{
-				#region Fields
-				#endregion
+				public global_model_skinned_uncompressed_vertex Position;
 
-				#region Ctor
 				public error_report_vectors_block() : base(12)
 				{
-					Add(/*Position = */ new TI.RealPoint3D());
-
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-
-					Add(/*Color = */ new TI.RealColor(TI.FieldType.RealArgbColor));
+					Position = new global_model_skinned_uncompressed_vertex(this);
+					Add(Color = TI.RealColor.Argb);
 					Add(/*Normal = */ new TI.RealVector3D());
 					Add(/*Screen Length = */ new TI.Real());
 				}
-				#endregion
 			}
 			#endregion
 
 			#region error_report_lines_block
 			[TI.Definition(1, 80)]
-			public class error_report_lines_block : TI.Definition
+			public class error_report_lines_block : error_report_type_base
 			{
-				#region Fields
-				#endregion
+				public global_model_skinned_uncompressed_vertex Start, End;
 
-				#region Ctor
 				public error_report_lines_block() : base(19)
 				{
-					Add(/*Position = */ new TI.RealPoint3D());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-
-					Add(/*Position = */ new TI.RealPoint3D());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-
-					Add(/*Color = */ new TI.RealColor(TI.FieldType.RealArgbColor));
+					Start = new global_model_skinned_uncompressed_vertex(this);
+					End = new global_model_skinned_uncompressed_vertex(this);
+					Add(Color = TI.RealColor.Argb);
 				}
-				#endregion
 			}
 			#endregion
 
 			#region error_report_triangles_block
 			[TI.Definition(1, 112)]
-			public class error_report_triangles_block : TI.Definition
+			public class error_report_triangles_block : error_report_type_base
 			{
-				#region Fields
-				#endregion
+				public global_model_skinned_uncompressed_vertex PointA, PointB, PointC;
 
-				#region Ctor
 				public error_report_triangles_block() : base(28)
 				{
-					Add(/*Position = */ new TI.RealPoint3D());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-
-					Add(/*Position = */ new TI.RealPoint3D());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-
-					Add(/*Position = */ new TI.RealPoint3D());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-
-					Add(/*Color = */ new TI.RealColor(TI.FieldType.RealArgbColor));
+					PointA = new global_model_skinned_uncompressed_vertex(this);
+					PointB = new global_model_skinned_uncompressed_vertex(this);
+					PointC = new global_model_skinned_uncompressed_vertex(this);
+					Add(Color = TI.RealColor.Argb);
 				}
-				#endregion
 			}
 			#endregion
 
 			#region error_report_quads_block
 			[TI.Definition(1, 144)]
-			public class error_report_quads_block : TI.Definition
+			public class error_report_quads_block : error_report_type_base
 			{
-				#region Fields
-				#endregion
+				public global_model_skinned_uncompressed_vertex PointA, PointB, PointC, PointD;
 
-				#region Ctor
 				public error_report_quads_block() : base(37)
 				{
-					Add(/*Position = */ new TI.RealPoint3D());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-
-					Add(/*Position = */ new TI.RealPoint3D());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-
-					Add(/*Position = */ new TI.RealPoint3D());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-
-					Add(/*Position = */ new TI.RealPoint3D());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-
-					Add(/*Color = */ new TI.RealColor(TI.FieldType.RealArgbColor));
+					PointA = new global_model_skinned_uncompressed_vertex(this);
+					PointB = new global_model_skinned_uncompressed_vertex(this);
+					PointC = new global_model_skinned_uncompressed_vertex(this);
+					PointD = new global_model_skinned_uncompressed_vertex(this);
+					Add(Color = TI.RealColor.Argb);
 				}
-				#endregion
 			}
 			#endregion
 
 			#region error_report_comments_block
 			[TI.Definition(1, 68)]
-			public class error_report_comments_block : TI.Definition
+			public class error_report_comments_block : error_report_type_base
 			{
-				#region Fields
-				#endregion
+				public global_model_skinned_uncompressed_vertex Position;
 
-				#region Ctor
 				public error_report_comments_block() : base(11)
 				{
 					Add(/*Text = */ new TI.Data(this));
-					Add(/*Position = */ new TI.RealPoint3D());
-
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-					Add(/*Node Index = */ new TI.ByteInteger());
-
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-					Add(/*Node Weight = */ new TI.Real());
-
-					Add(/*Color = */ new TI.RealColor(TI.FieldType.RealArgbColor));
+					Position = new global_model_skinned_uncompressed_vertex(this);
+					Add(Color = TI.RealColor.Argb);
 				}
-				#endregion
 			}
 			#endregion
 
@@ -431,7 +261,7 @@ namespace BlamLib.Blam.Halo2.Tags
 			public error_reports_block() : base(19)
 			{
 				Add(/*Type = */ new TI.Enum());
-				Add(/*Flags = */ new TI.Flags(TI.FieldType.WordFlags));
+				Add(/*Flags = */ TI.Flags.Word);
 				Add(/*Text = */ new TI.Data(this));
 				Add(/*Source Filename = */ new TI.String());
 				Add(/*Source Line Number = */ new TI.LongInteger());
@@ -454,23 +284,19 @@ namespace BlamLib.Blam.Halo2.Tags
 		}
 		#endregion
 
-		#region Fields
 		public TI.String Name;
 		public TI.Enum ReportType;
 		public TI.Flags Flags;
 		public TI.Block<error_reports_block> Reports;
-		#endregion
 
-		#region Ctor
 		public global_error_report_categories_block() : base(5)
 		{
-			Add(Name = new TI.String(TI.StringType.Ascii, 256));
+			Add(Name = TI.String.LongString);
 			Add(ReportType = new TI.Enum());
-			Add(Flags = new TI.Flags(TI.FieldType.WordFlags));
+			Add(Flags = TI.Flags.Word);
 			Add(new TI.Pad(2 + 2 + 404));
 			Add(Reports = new TI.Block<error_reports_block>(this, 1024));
 		}
-		#endregion
 	}
 	#endregion
 
@@ -482,31 +308,24 @@ namespace BlamLib.Blam.Halo2.Tags
 		[TI.Definition(1, 8)]
 		public class global_geometry_material_property_block : TI.Definition
 		{
-			#region Fields
 			public TI.Enum Type;
 			public TI.ShortInteger IntValue;
 			public TI.Real RealValue;
-			#endregion
 
-			#region Ctor
 			public global_geometry_material_property_block() : base(3)
 			{
 				Add(Type = new TI.Enum());
 				Add(IntValue = new TI.ShortInteger());
 				Add(RealValue = new TI.Real());
 			}
-			#endregion
 		}
 		#endregion
 
-		#region Fields
 		public TI.TagReference OldShader;
 		public TI.TagReference Shader;
 		public TI.Block<global_geometry_material_property_block> Properties;
 		public TI.ByteInteger BreakableSurfaceIndex;
-		#endregion
 
-		#region Ctor
 		public global_geometry_material_block() : base(6)
 		{
 			Add(OldShader = new TI.TagReference(this, TagGroups.shad));
@@ -516,7 +335,6 @@ namespace BlamLib.Blam.Halo2.Tags
 			Add(BreakableSurfaceIndex = new TI.ByteInteger());
 			Add(new TI.Pad(3));
 		}
-		#endregion
 	}
 	#endregion
 
@@ -524,16 +342,12 @@ namespace BlamLib.Blam.Halo2.Tags
 	[TI.Definition(1, 32)]
 	public class cached_data_block : TI.Definition
 	{
-		#region Fields
 		public TI.VertexBuffer VertexBuffer;
-		#endregion
 
-		#region Ctor
 		public cached_data_block() : base(1)
 		{
 			Add(VertexBuffer = new TI.VertexBuffer());
 		}
-		#endregion
 	}
 	#endregion
 

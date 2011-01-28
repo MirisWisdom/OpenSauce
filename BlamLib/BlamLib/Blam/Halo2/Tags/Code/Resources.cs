@@ -67,20 +67,8 @@ namespace BlamLib.Blam.Halo2.Tags
 				byte[] bytes;
 				if (!CacheRead(c, out bytes)) return null;
 
-				//if((c.EngineVersion & BlamVersion.Halo2_XboxAll) != 0) {}
-				if (c.EngineVersion == BlamVersion.Halo2_PC) // ...and setup the decompression
-				{
-					using(var ms = new System.IO.MemoryStream(bytes))
-					using (var dec = new System.IO.Compression.DeflateStream(ms, System.IO.Compression.CompressionMode.Decompress, true))
-					{
-						// adjust for zlib header
-						ms.Seek(sizeof(ushort), System.IO.SeekOrigin.Begin);
-
-						// decompress the data and fill in the result array
-						bytes = new byte[GetPixelDataSize(c.EngineVersion)];
-						dec.Read(bytes, 0, bytes.Length);
-					}
-				}
+				if (c.EngineVersion == BlamVersion.Halo2_PC) // ...and perform zlib decompression
+					bytes = Util.ZLibBufferFromBytes(bytes, 0, GetPixelDataSize(c.EngineVersion));
 
 				return bytes;
 			}

@@ -1401,7 +1401,16 @@ namespace BlamLib.TagInterface
 		/// Convert to a .NET color object
 		/// </summary>
 		/// <returns>a new system color object using this field's values</returns>
-		public System.Drawing.Color ToColor()					{ return System.Drawing.Color.FromArgb((int)(A != 0 ? A / 255 : 0), (int)(R != 0 ? R / 255 : 0), (int)(G != 0 ? G / 255 : 0), (int)(B != 0 ? B / 255 : 0)); }
+		public System.Drawing.Color ToColor() { return System.Drawing.Color.FromArgb((int)(A != 0 ? A / 255 : 0), (int)(R != 0 ? R / 255 : 0), (int)(G != 0 ? G / 255 : 0), (int)(B != 0 ? B / 255 : 0)); }
+
+		/// <summary>
+		/// Returns a new RealColor field with rgb_color attributes
+		/// </summary>
+		public static RealColor Rgb { get { return new RealColor(); } }
+		/// <summary>
+		/// Returns a new RealColor field with argb_color attributes
+		/// </summary>
+		public static RealColor Argb { get { return new RealColor(FieldType.RealArgbColor); } }
 		#endregion
 
 		#region Data Exchange

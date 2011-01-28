@@ -54,6 +54,12 @@ namespace BlamLib.Blam.Halo2
 		static TagGroup PDAT = new TagGroup("PDAT", "global_geometry_point_data_struct");
 
 		/// <summary>
+		/// global_geometry_isq_info_struct
+		/// </summary>
+		/// <remarks>old shit</remarks>
+		static TagGroup ISQI = new TagGroup("ISQI", "global_geometry_isq_info_struct");
+
+		/// <summary>
 		/// global_geometry_block_info_struct
 		/// </summary>
 		static TagGroup BLOK = new TagGroup("BLOK", "global_geometry_block_info_struct");

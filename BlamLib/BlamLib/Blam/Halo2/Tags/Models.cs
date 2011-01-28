@@ -379,7 +379,7 @@ namespace BlamLib.Blam.Halo2.Tags
 		{
 			Add(ImportInfo = new TI.Block<global_tag_import_info_block>(this, 1));
 			Add(Errors = new TI.Block<global_error_report_categories_block>(this, 64));
-			Add(/*flags = */ new TI.Flags());
+			Add(/*flags = */ TI.Flags.Long);
 			Add(new TI.UselessPad(124));
 			Add(/*materials = */ new TI.Block<collision_model_material_block>(this, 32));
 			Add(/*regions = */ new TI.Block<collision_model_region_block>(this, 16));
@@ -2267,6 +2267,44 @@ namespace BlamLib.Blam.Halo2.Tags
 
 
 	#region render model
+	public class global_model_skinned_uncompressed_vertex
+	{
+		public const int kFieldCount = 9; // with 4 weights
+
+		public TI.RealPoint3D Position;
+		public TI.ByteInteger[] NodeIndices = new TI.ByteInteger[4];
+		public TI.Real[] NodeWeights;
+
+		public global_model_skinned_uncompressed_vertex(TI.Definition parent, int node_weight_count)
+		{
+			NodeWeights = new TI.Real[node_weight_count];
+
+			parent.Add(Position = new TI.RealPoint3D());
+			parent.Add(NodeIndices[0] = new TI.ByteInteger());
+			parent.Add(NodeIndices[1] = new TI.ByteInteger());
+			parent.Add(NodeIndices[2] = new TI.ByteInteger());
+			parent.Add(NodeIndices[3] = new TI.ByteInteger());
+			for (int x = 0; x < NodeWeights.Length; x++ )
+				parent.Add(NodeWeights[x] = new TI.Real());
+		}
+		public global_model_skinned_uncompressed_vertex(TI.Definition parent) : this(parent, 4)
+		{
+		}
+
+		internal void SetFrom(global_model_skinned_uncompressed_vertex obj)
+		{
+			Position.X = obj.Position.X;
+			Position.Y = obj.Position.Y;
+			Position.Z = obj.Position.Z;
+			NodeIndices[0].Value = obj.NodeIndices[0].Value;
+			NodeIndices[1].Value = obj.NodeIndices[1].Value;
+			NodeIndices[2].Value = obj.NodeIndices[2].Value;
+			NodeIndices[3].Value = obj.NodeIndices[3].Value;
+			for (int x = 0; x < NodeWeights.Length; x++ )
+				NodeWeights[x].Value = obj.NodeWeights[x].Value;
+		}
+	};
+
 	#region global_geometry_compression_info_block
 	[TI.Definition(1, 56)]
 	public class global_geometry_compression_info_block : TI.Definition
@@ -2367,28 +2405,69 @@ namespace BlamLib.Blam.Halo2.Tags
 	}
 	#endregion
 
-	#region global_geometry_part_block_new
-	[TI.Definition(1, 72)]
-	public partial class global_geometry_part_block_new : TI.Definition
+	#region global_geometry_part
+	public abstract class global_geometry_part_base : TI.Definition
 	{
-		#region Fields
 		public TI.Enum Type;
 		public TI.Flags Flags;
 		public TI.BlockIndex Material;
 		public TI.ShortInteger StripStartIndex;
 		public TI.ShortInteger StripLength;
-		public TI.ShortInteger FirstSubpartIndex;
-		public TI.ShortInteger SubpartCount;
+
 		public TI.ByteInteger MaxNodesVertex;
 		public TI.ByteInteger ContributingCompoundNodeCount;
-		public TI.RealPoint3D Position;
-		#endregion
 
-		#region Ctor
+		public global_model_skinned_uncompressed_vertex Centroid;
+		public TI.Real LodMipmapMagicNumber;
+		public TI.Skip _Skip;
+
+		protected global_geometry_part_base(int field_count) : base(field_count) { }
+	};
+
+	#region global_geometry_part_block
+	[TI.Definition(1, 100)]
+	public partial class global_geometry_part_block : global_geometry_part_base
+	{
+		public TI.ShortInteger FirstVertexIndex, VertexCount,
+			FirstTriangleIndex, TriangleCount;
+		public TI.Flags VertexUsageFlags;
+
+		public global_geometry_part_block() : base(19)
+		{
+			Add(Type = new TI.Enum());
+			Add(Flags = TI.Flags.Word);
+			Add(Material = new TI.BlockIndex()); // 1 global_geometry_material_block
+			Add(/*Geometry Subclassification = */ new TI.Enum());
+			Add(StripStartIndex = new TI.ShortInteger());
+			Add(StripLength = new TI.ShortInteger());
+			Add(/*First Strip Segment Index =*/ new TI.ShortInteger());
+			Add(/*Strip Segment Count =*/ new TI.ShortInteger());
+			Add(FirstVertexIndex = new TI.ShortInteger());
+			Add(VertexCount = new TI.ShortInteger());
+			Add(FirstTriangleIndex = new TI.ShortInteger());
+			Add(TriangleCount = new TI.ShortInteger());
+			Add(MaxNodesVertex = new TI.ByteInteger());
+			Add(ContributingCompoundNodeCount = new TI.ByteInteger());
+			Add(VertexUsageFlags = TI.Flags.Word);
+			Add(new TI.Pad(12 + 1 + 3));
+			Centroid = new global_model_skinned_uncompressed_vertex(this, 3);
+			Add(LodMipmapMagicNumber = new TI.Real());
+			Add(_Skip = new TI.Skip(24));
+		}
+	};
+	#endregion
+
+	#region global_geometry_part_block_new
+	[TI.Definition(1, 72)]
+	public partial class global_geometry_part_block_new : global_geometry_part_base
+	{
+		public TI.ShortInteger FirstSubpartIndex;
+		public TI.ShortInteger SubpartCount;
+
 		public global_geometry_part_block_new() : base(19)
 		{
 			Add(Type = new TI.Enum());
-			Add(Flags = new TI.Flags(TI.FieldType.WordFlags));
+			Add(Flags = TI.Flags.Word);
 			Add(Material = new TI.BlockIndex()); // 1 global_geometry_material_block
 			Add(StripStartIndex = new TI.ShortInteger());
 			Add(StripLength = new TI.ShortInteger());
@@ -2396,40 +2475,54 @@ namespace BlamLib.Blam.Halo2.Tags
 			Add(SubpartCount = new TI.ShortInteger());
 			Add(MaxNodesVertex = new TI.ByteInteger());
 			Add(ContributingCompoundNodeCount = new TI.ByteInteger());
-			Add(Position = new TI.RealPoint3D());
-
-			Add(/*Node Index = */ new TI.ByteInteger());
-			Add(/*Node Index = */ new TI.ByteInteger());
-			Add(/*Node Index = */ new TI.ByteInteger());
-			Add(/*Node Index = */ new TI.ByteInteger());
-
-			Add(/*Node Weight = */ new TI.Real());
-			Add(/*Node Weight = */ new TI.Real());
-			Add(/*Node Weight = */ new TI.Real());
-
-			Add(/*lod mipmap magic number = */ new TI.Real());
-			Add(new TI.Skip(24));
+			Centroid = new global_model_skinned_uncompressed_vertex(this, 3);
+			Add(LodMipmapMagicNumber = new TI.Real());
+			Add(_Skip = new TI.Skip(24));
 		}
-		#endregion
+
+		internal void SetFromOld(global_geometry_part_block old)
+		{
+			Type.Value = old.Type.Value;
+			Flags.Value = old.Flags.Value;
+			Material.Value = old.Material.Value;
+			StripStartIndex.Value = old.StripStartIndex.Value;
+			StripLength.Value = old.StripLength.Value;
+			FirstSubpartIndex.Value = 0;
+			SubpartCount.Value = 1;
+			MaxNodesVertex.Value = old.MaxNodesVertex.Value;
+			ContributingCompoundNodeCount.Value = old.ContributingCompoundNodeCount.Value;
+			Centroid.SetFrom(old.Centroid);
+			LodMipmapMagicNumber.Value = old.LodMipmapMagicNumber.Value;
+			_Skip.Data = old._Skip.Data; // NOTE: we can do this because noting ever modifies this skip buffer
+		}
 	}
+	#endregion
 	#endregion
 
 	#region global_subparts_block
 	[TI.Definition(1, 8)]
 	public class global_subparts_block : TI.Definition
 	{
-		#region Fields
-		#endregion
+		public TI.ShortInteger IndicesStartIndex, IndicesLength;
+		public TI.ShortInteger VisibilityBoundsIndex,
+			PartIndex;
 
-		#region Ctor
 		public global_subparts_block() : base(4)
 		{
-			Add(/*indices_start_index = */ new TI.ShortInteger());
-			Add(/*indices_length = */ new TI.ShortInteger());
-			Add(/*visibility_bounds_index = */ new TI.ShortInteger());
-			Add(/*Part Index = */ new TI.ShortInteger());
+			Add(IndicesStartIndex = new TI.ShortInteger());
+			Add(IndicesLength = new TI.ShortInteger());
+			Add(VisibilityBoundsIndex = new TI.ShortInteger());
+			Add(PartIndex = new TI.ShortInteger());
 		}
-		#endregion
+
+		internal void SetFrom(global_geometry_part_block_new part)
+		{
+			IndicesStartIndex.Value = part.StripStartIndex.Value;
+			IndicesLength.Value = part.StripLength.Value;
+			VisibilityBoundsIndex.Value = part.StripStartIndex.Value;
+
+			part.FirstSubpartIndex.Value = part.StripStartIndex.Value;
+		}
 	}
 	#endregion
 
@@ -2518,7 +2611,8 @@ namespace BlamLib.Blam.Halo2.Tags
 	[TI.Struct((int)StructGroups.Enumerated.SECT, 2, 108)]
 	public partial class global_geometry_section_struct : TI.Definition, IDisposable
 	{
-		#region Fields
+		const int kOldPartsIndex = 7; // field index of Parts in the old definition
+
 		public TI.Block<global_geometry_part_block_new> Parts;
 		public TI.Block<global_subparts_block> Subparts;
 		public TI.Block<global_visibility_bounds_block> VisibilityBounds;
@@ -2527,20 +2621,81 @@ namespace BlamLib.Blam.Halo2.Tags
 		public TI.Data VisibilityMoppCode;
 		public TI.Block<global_geometry_section_strip_index_block> MoppReorderTable;
 		public TI.Block<global_geometry_section_vertex_buffer_block> VertexBuffers;
+
+		#region Upgrade
+		void upgrade_build_version2_layout()
+		{
+			Add(Parts);
+			Add(Subparts);
+			Add(VisibilityBounds = new TI.Block<global_visibility_bounds_block>(this, 32768));
+			Add(RawVertices);
+			Add(StripIndices);
+			Add(VisibilityMoppCode = new TI.Data(this));
+			Add(MoppReorderTable = new TI.Block<global_geometry_section_strip_index_block>(this, 65535));
+			Add(VertexBuffers);
+			Add(TI.Pad.DWord);
+		}
+		internal override bool Upgrade()
+		{
+			TI.VersionCtorAttribute attr = base.VersionCtorAttributeUsed;
+			if (attr.Major == 1)
+			{
+				// Clear the layout of the old definition
+				var old_parts = this[kOldPartsIndex] as TI.Block<global_geometry_part_block>;
+				this.Clear();
+
+				// Initialize the new parts
+				Parts = new TI.Block<global_geometry_part_block_new>(this, 255);
+				Parts.Resize(old_parts.Count);
+				for (int x = 0; x < Parts.Count; x++)
+					Parts[x].SetFromOld(old_parts[x]);
+				old_parts = null;
+
+				// Initialize the subparts
+				Subparts = new TI.Block<global_subparts_block>(this, 32768);
+				Subparts.Resize(Parts.Count);
+				for (int x = 0; x < Parts.Count; x++)
+					Subparts[x].SetFrom(Parts[x]);
+
+				// Initialize the layout to the newest definition
+				upgrade_build_version2_layout();
+			}
+
+			return true;
+		}
 		#endregion
 
-		#region Ctor
-		public global_geometry_section_struct() : base(9)
+		#region Construct
+		public global_geometry_section_struct() : base(9) { version2_construct(); }
+
+		void version1_construct()
+		{
+			Add(RawVertices = new TI.Block<global_geometry_section_raw_vertex_block>(this, 32767));
+			Add(new TI.VertexBuffer()); Add(new TI.VertexBuffer()); Add(new TI.VertexBuffer());
+			Add(new TI.VertexBuffer()); // transparent position
+			Add(VertexBuffers = new TI.Block<global_geometry_section_vertex_buffer_block>(this, 512));
+			Add(StripIndices = new TI.Block<global_geometry_section_strip_index_block>(this, 65535));
+			Add(/*Parts =*/ new TI.Block<global_geometry_part_block>(this, 255));
+			Add(new TI.Pad(96));
+		}
+		void version2_construct()
 		{
 			Add(Parts = new TI.Block<global_geometry_part_block_new>(this, 255));
 			Add(Subparts = new TI.Block<global_subparts_block>(this, 32768));
 			Add(VisibilityBounds = new TI.Block<global_visibility_bounds_block>(this, 32768));
-			Add(RawVertices =  new TI.Block<global_geometry_section_raw_vertex_block>(this, 32767));
+			Add(RawVertices = new TI.Block<global_geometry_section_raw_vertex_block>(this, 32767));
 			Add(StripIndices = new TI.Block<global_geometry_section_strip_index_block>(this, 65535));
 			Add(VisibilityMoppCode = new TI.Data(this));
 			Add(MoppReorderTable = new TI.Block<global_geometry_section_strip_index_block>(this, 65535));
 			Add(VertexBuffers = new TI.Block<global_geometry_section_vertex_buffer_block>(this, 512));
-			Add(new TI.Pad(4)); // pointer to stuff when used in tools
+			Add(TI.Pad.DWord); // pointer to stuff when used in tools
+		}
+		[TI.VersionCtorHalo2(1, 272)]
+		[TI.VersionCtorHalo2(2, 108)]
+		public global_geometry_section_struct(int major, int minor) : base(9)
+		{
+			if (major == 1) version1_construct();
+			else if (major == 2) version2_construct();
 		}
 		#endregion
 	}
@@ -2637,6 +2792,61 @@ namespace BlamLib.Blam.Halo2.Tags
 	}
 	#endregion
 
+	#region global_geometry_isq_info_struct
+	[TI.Struct((int)StructGroups.Enumerated.ISQI, 1, 92)]
+	public class global_geometry_isq_info_struct : TI.Definition
+	{
+		#region global_geometry_plane_block
+		[TI.Definition(1, 16)]
+		public class global_geometry_plane_block : TI.Definition
+		{
+			public global_geometry_plane_block() : base(1)
+			{
+				Add(/*Plane = */ new TI.RealPlane3D());
+			}
+		}
+		#endregion
+
+		#region global_geometry_rigid_plane_group_block
+		[TI.Definition(1, 4)]
+		public class global_geometry_rigid_plane_group_block : TI.Definition
+		{
+			public global_geometry_rigid_plane_group_block() : base(3)
+			{
+				Add(/*Rigid Node Index = */ new TI.ByteInteger());
+				Add(/*Part Index = */ new TI.ByteInteger());
+				Add(/*Triangle Count = */ new TI.ShortInteger());
+			}
+		}
+		#endregion
+
+		#region global_geometry_explicit_edge_block
+		[TI.Definition(1, 8)]
+		public class global_geometry_explicit_edge_block : TI.Definition
+		{
+			public global_geometry_explicit_edge_block() : base(1)
+			{
+				Add(/*Vertex Index = */ new TI.ShortInteger());
+				Add(/*Vertex Index = */ new TI.ShortInteger());
+				Add(/*Triangle Index = */ new TI.ShortInteger());
+				Add(/*Triangle Index = */ new TI.ShortInteger());
+			}
+		}
+		#endregion
+
+		public global_geometry_isq_info_struct() : base(7)
+		{
+			Add(TI.Flags.Word);
+			Add(TI.Pad.Word);
+			Add(/*Raw Planes = */ new TI.Block<global_geometry_plane_block>(this, 65535));
+			Add(/*Runtime Plane Data = */ new TI.Data(this));
+			Add(/*Rigid Plane Groups = */ new TI.Block<global_geometry_rigid_plane_group_block>(this, 65280));
+			Add(new TI.Pad(32)); // this was probably padding for a vertex buffer
+			Add(/*Explicit Edges = */ new TI.Block<global_geometry_explicit_edge_block>(this, 65535));
+		}
+	};
+	#endregion
+
 
 	#region render_model_region_block
 	[TI.Definition(1, 20)]
@@ -2693,61 +2903,149 @@ namespace BlamLib.Blam.Halo2.Tags
 		[TI.Definition(2, 180)]
 		public partial class render_model_section_data_block : TI.Definition
 		{
+			#region render_model_forward_shared_edge_block & render_model_backward_shared_edge_block
+			[TI.Definition(1, 2)]
+			public class render_model_shared_edge_block : TI.Definition
+			{
+				public render_model_shared_edge_block() : base(1)
+				{
+					Add(/*triangle index = */ new TI.ShortInteger());
+				}
+			}
+			#endregion
+
+			#region render_model_shared_edge_group_block
+			[TI.Definition(1, 8)]
+			public class render_model_shared_edge_group_block : TI.Definition
+			{
+				public render_model_shared_edge_group_block() : base(6)
+				{
+					Add(/*first shared edge index = */ new TI.ShortInteger());
+					Add(/*shared edge count = */ new TI.ShortInteger());
+					Add(TI.Pad.Byte);
+					Add(/*adjacent region index = */ new TI.ByteInteger());
+					Add(TI.Pad.Byte);
+					Add(/*section set index = */ new TI.ByteInteger());
+				}
+			}
+			#endregion
+
+			#region render_model_dsq_raw_vertex_block
+			[TI.Definition(1, 32)]
+			public class render_model_dsq_raw_vertex_block : TI.Definition
+			{
+				public render_model_dsq_raw_vertex_block() : base(3)
+				{
+					Add(/*position = */ new TI.RealPoint3D());
+					Add(/*plane = */ new TI.RealPlane3D());
+					Add(/*node index = */ new TI.LongInteger());
+				}
+			}
+			#endregion
+
+			#region render_model_dsq_silhouette_quad_block
+			[TI.Definition(1, 8)]
+			public class render_model_dsq_silhouette_quad_block : TI.Definition
+			{
+				public render_model_dsq_silhouette_quad_block() : base(1)
+				{
+					Add(/*vertex index = */ new TI.ShortInteger());
+					Add(/*vertex index = */ new TI.ShortInteger());
+					Add(/*vertex index = */ new TI.ShortInteger());
+					Add(/*vertex index = */ new TI.ShortInteger());
+				}
+			}
+			#endregion
+
+
 			#region render_model_node_map_block
 			[TI.Definition(1, 1)]
 			public class render_model_node_map_block : TI.Definition
 			{
-				#region Fields
-				#endregion
-
-				#region Ctor
 				public render_model_node_map_block() : base(1)
 				{
 					Add(/*node index = */ new TI.ByteInteger());
 				}
-				#endregion
 			}
 			#endregion
 
-			#region Fields
 			public TI.Struct<global_geometry_section_struct> Section;
 			public TI.Struct<global_geometry_point_data_struct> PointData;
 			public TI.Block<render_model_node_map_block> NodeMap;
+
+			#region Upgrade
+			internal override bool Upgrade()
+			{
+				TI.VersionCtorAttribute attr = base.VersionCtorAttributeUsed;
+				if (attr.Major == 1)
+				{
+					this.Clear();
+					Add(Section);
+					Add(PointData);
+					Add(NodeMap);
+					Add(TI.Pad.DWord);
+				}
+
+				return true;
+			}
 			#endregion
 
-			#region Ctor
-			public render_model_section_data_block() : base(4)
+			#region Construct
+			public render_model_section_data_block() : base(4) { version2_construct(); }
+
+			void version1_construct()
 			{
 				Add(Section = new TI.Struct<global_geometry_section_struct>(this));
 				Add(PointData = new TI.Struct<global_geometry_point_data_struct>(this));
 				Add(NodeMap = new TI.Block<render_model_node_map_block>(this, 40));
-				Add(new TI.Pad(4)); // pointer (to a 12 byte allocation) set\used by tools for post-processing, ignore
+
+				Add(/*isq info =*/ new TI.Struct<global_geometry_isq_info_struct>(this));
+				Add(/*forward shared edges =*/ new TI.Block<render_model_shared_edge_block>(this, 16384));
+				Add(/*forward shared edge groups =*/ new TI.Block<render_model_shared_edge_group_block>(this, 512));
+				Add(/*backward shared edges =*/ new TI.Block<render_model_shared_edge_block>(this, 16384));
+				Add(/*backward shared edge groups =*/ new TI.Block<render_model_shared_edge_group_block>(this, 512));
+
+				Add(/*raw vertices =*/ new TI.Block<render_model_dsq_raw_vertex_block>(this, 65536));
+				Add(/*strip indices =*/ new TI.Block<global_geometry_section_strip_index_block/*render_model_dsq_strip_index_block*/>(this, 262144));
+				Add(/*silhouette quads =*/ new TI.Block<render_model_dsq_silhouette_quad_block>(this, 65536));
+				Add(/*Carmack-silhouette quad count = */ new TI.ShortInteger());
+				Add(new TI.Pad(2 + 4));
+			}
+			void version2_construct()
+			{
+				Add(Section = new TI.Struct<global_geometry_section_struct>(this));
+				Add(PointData = new TI.Struct<global_geometry_point_data_struct>(this));
+				Add(NodeMap = new TI.Block<render_model_node_map_block>(this, 40));
+				Add(TI.Pad.DWord); // pointer (to a 12 byte allocation) set\used by tools for post-processing, ignore
+			}
+			[TI.VersionCtorHalo2(1, 360)]
+			[TI.VersionCtorHalo2(2, 180)]
+			public render_model_section_data_block(int major, int minor) : base(13)
+			{
+				if (major == 1) version1_construct();
+				else if (major == 2) version2_construct();
 			}
 			#endregion
 		}
 		#endregion
 
-		#region Fields
 		public TI.Enum GeometryClassification;
 		public TI.Struct<global_geometry_section_info_struct> SectionInfo;
 		public TI.BlockIndex RigidNode;
 		public TI.Flags Flags;
 		public TI.Block<render_model_section_data_block> SectionData;
 		public TI.Struct<geometry_block_info_struct> GeometryBlockInfo;
-		#endregion
 
-		#region Ctor
 		public render_model_section_block() : base(7)
 		{
 			Add(GeometryClassification = new TI.Enum());
 			Add(new TI.Pad(2));
 			Add(SectionInfo = new TI.Struct<global_geometry_section_info_struct>(this));
 			Add(RigidNode = new TI.BlockIndex()); // 1 render_model_node_block
-			Add(Flags = new TI.Flags(TI.FieldType.WordFlags));
+			Add(Flags = TI.Flags.Word);
 			Add(SectionData = new TI.Block<render_model_section_data_block>(this, 1));
 			Add(GeometryBlockInfo = new TI.Struct<geometry_block_info_struct>(this));
 		}
-		#endregion
 	}
 	#endregion
 

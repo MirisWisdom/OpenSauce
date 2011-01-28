@@ -208,6 +208,7 @@ namespace BlamLib.TagInterface
 		/// <summary>
 		/// 8 bit reference to a block element
 		/// </summary>
+		/// <remarks>Reminder, like the other block index fields, this is a signed value</remarks>
 		ByteBlockIndex,
 		/// <summary>
 		/// 16 bit reference to a block element
