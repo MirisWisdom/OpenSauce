@@ -24,6 +24,73 @@ namespace BlamLib.Test
 {
 	partial class Halo2
 	{
+		#region ImportInfoExtraction
+		static void ExtractImportInfo(Blam.Halo2.Tags.global_tag_import_info_block tii, string out_path)
+		{
+			if (tii != null) foreach (var b in tii.Files)
+			{
+				var path = Path.Combine(out_path, b.Path.Value);
+
+				var dir = Path.GetDirectoryName(path);
+				if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+
+				using (var fs = File.Create(path))
+				{
+					byte[] data = b.Decompress();
+					fs.Write(data, 0, data.Length);
+				}
+			}
+		}
+		static void ExtractImportInfo(string test_results_path, Managers.TagIndex ti, TagInterface.TagGroup group, params string[] files)
+		{
+			int ti_dir_length = ti.Directory.Length;
+			int group_length = group.Name.Length;
+
+			foreach (string f in files)
+			{
+				var t = f.Substring(ti_dir_length); // remove tags dir
+				t = t.Remove(t.Length - group_length - 1); // remove extension
+
+				var tag_index = ti.Open(t, group);
+				if (Managers.TagIndex.IsSentinel(tag_index))
+					continue;
+
+				Assert.IsTrue(tag_index != Blam.DatumIndex.Null);
+
+				var tagman = ti[tag_index];
+				var import_def = tagman.TagDefinition as Blam.Halo2.Tags.ITagImportInfo;
+				ExtractImportInfo(import_def.GetImportInfo(), test_results_path);
+
+				ti.Unload(tag_index);
+			}
+		}
+		[TestMethod]
+		public void Halo2TestImportInfoExtraction()
+		{
+			// local for now, I need to reinstall H2V...
+			const string kTestTagIndexTagsPath = @"D:\Program Files (x86)\Microsoft Games\Halo 2 Map Editor\";
+			string test_results_path = EngineGetTestResultsPath(BlamVersion.Halo2_PC);
+
+			string[] coll = Directory.GetFiles(kTestTagIndexTagsPath + @"tags\", 
+				Blam.Halo2.TagGroups.coll.ToFileSearchPattern(), SearchOption.AllDirectories);
+			string[] phmo = Directory.GetFiles(kTestTagIndexTagsPath + @"tags\",
+				Blam.Halo2.TagGroups.phmo.ToFileSearchPattern(), SearchOption.AllDirectories);
+			string[] mode = Directory.GetFiles(kTestTagIndexTagsPath + @"tags\",
+				Blam.Halo2.TagGroups.mode.ToFileSearchPattern(), SearchOption.AllDirectories);
+
+			var bd = Program.Halo2.Manager;
+			var datum_tagindex = bd.OpenTagIndex(BlamVersion.Halo2_PC, kTestTagIndexTagsPath);
+			var tagindex = bd.GetTagIndex(datum_tagindex) as Managers.TagIndex;
+
+			ExtractImportInfo(test_results_path, tagindex, Blam.Halo2.TagGroups.coll, coll);
+			ExtractImportInfo(test_results_path, tagindex, Blam.Halo2.TagGroups.phmo, phmo);
+			ExtractImportInfo(test_results_path, tagindex, Blam.Halo2.TagGroups.mode, mode);
+
+			tagindex = null;
+			bd.CloseTagIndex(datum_tagindex);
+		}
+		#endregion
+
 		static readonly TagInterface.TagGroupCollection kExtractionDontUseTags = new TagInterface.TagGroupCollection(true,
 			Blam.Halo2.TagGroups.ugh_,
 		#region These will never appear in a cache file anyway

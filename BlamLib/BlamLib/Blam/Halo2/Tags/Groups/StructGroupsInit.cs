@@ -32,6 +32,7 @@ namespace BlamLib.Blam.Halo2
 			SINF.Definition = new Tags.global_geometry_section_info_struct().State;
 			SECT.Definition = new Tags.global_geometry_section_struct().State;
 			PDAT.Definition = new Tags.global_geometry_point_data_struct().State;
+			ISQI.Definition = new Tags.global_geometry_isq_info_struct().State;
 			BLOK.Definition = new Tags.geometry_block_info_struct().State;
 			cbsp.Definition = new Tags.global_collision_bsp_struct().State;
 			csbs.Definition = new Tags.constraint_bodies_struct().State;
@@ -127,6 +128,13 @@ namespace BlamLib.Blam.Halo2
 			snsc.Definition = new Tags.sound_scale_modifiers_struct().State;
 			plsn_simple.Definition = new Tags.simple_platform_sound_playback_struct().State;
 			snpr.Definition = new Tags.sound_promotion_parameters_struct().State;
+
+			// ISQI is currently the only one that needs this kind of forcing, but just to be 
+			// safe I'm going to double check ALL struct groups here in case I add yet another 
+			// deprecated tag definition months from now and forgot (how do you forget goatse?) this hack
+			for (int x = 0; x < Groups.Count; x++)
+				if(!Groups[x].Definition.IsPostProcessed)
+					Groups[x].Definition.PostProcess();
 
 			for (int x = 0; x < Groups.Count; x++)
 				Groups[x].InitializeHandle(BlamVersion.Halo2, x, true);

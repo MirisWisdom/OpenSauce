@@ -246,5 +246,81 @@ namespace BlamLib.Test
 				{ tagindex.DumpNonTagFiles(sw); }
 			}
 		}
+
+		static char[] hex_digits = "0123456789abcdef".ToCharArray();
+		static byte[] MD5ToByteString(byte[] digest)
+		{
+			byte[] result = new byte[32];
+			for (int x = 0; x < digest.Length; x++)
+			{
+				result[x*2]   = (byte)hex_digits[digest[x] / 16];
+				result[x*2+1] = (byte)hex_digits[digest[x] % 16];
+			}
+
+			return result;
+		}
+		static byte ToAlpha(byte datum)
+		{
+			const byte k_mod = (((byte)'Z') - ((byte)'A')) + 1;
+
+			datum %= k_mod;
+
+			return (byte)(datum + (byte)'A');
+		}
+		static void RogerWilco(byte[] data)
+		{
+			for (int x = 0; x < data.Length; x += 4)
+			{
+				data[x+0] ^= (byte)'R'; data[x+0] = ToAlpha(data[x+0]);
+				data[x+1] ^= (byte)'G'; data[x+1] = ToAlpha(data[x+1]);
+				data[x+2] ^= (byte)'O'; data[x+2] = ToAlpha(data[x+2]);
+				data[x+3] ^= (byte)'R'; data[x+3] = ToAlpha(data[x+3]);
+			}
+		}
+		[TestMethod]
+		public void Halo1TestCESignature()
+		{
+			//const string k_data_100 =		"AWTWZJWZCKSTZKQDZKWCWJUT"+"VTDJ"+"YLSXTIRS";
+			//const string k_data_107_614 = "ZIPXXKQVXLQSCOOADISSSITC"+"ENSR"+"UIXUZNRT";
+			//const string k_data_108 =		"VMSWCJPXALRZSHWVVXRTUNXS"+"CLZV"+"SXQCDPRX";
+
+			//const string k_data_109 =		"VLOAWXSDZPSVVJUVZXSZVJPT"+"ACJE"+"WJOXCMPA";
+			// 0x144AC0
+			// mov eax, 1; retn;
+			// B8 01 00 00 00 C3
+
+			const string k_ce_path = @"C:\Program Files (x86)\Microsoft Games\Halo Custom Edition\";
+
+			string checksum;
+			{
+				IntPtr handle = Windows.LoadLibraryW(k_ce_path + "Strings.dll");
+				checksum = Windows.LoadString(handle, 133);
+				Windows.FreeLibrary(handle);
+			}
+
+			byte[] result;
+			using (var fs = File.Open(k_ce_path + "haloce.exe", FileMode.Open, FileAccess.Read, FileShare.Read))
+			{
+				//byte[] file_data = new byte[fs.Length];
+				//fs.Read(file_data, 0, file_data.Length);
+
+				using (var md5 = new System.Security.Cryptography.MD5CryptoServiceProvider())
+				{
+					byte[] digest = md5.ComputeHash(fs);
+					result = MD5ToByteString(digest);
+				}
+				RogerWilco(result);
+			}
+
+			Console.WriteLine(checksum.Substring(0, 24));
+			for (int x = 0; x < 24; x++)
+				Console.Write((char)result[x]);
+			Console.WriteLine();
+
+			Console.WriteLine(checksum.Substring(28));
+			for (int x = 24; x < result.Length; x++)
+				Console.Write((char)result[x]);
+			Console.WriteLine();
+		}
 	};
 }

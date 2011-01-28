@@ -947,6 +947,17 @@ namespace BlamLib.TagInterface
 		public static short operator /(Enum lhs, Enum rhs) { return (short)(lhs.Value / rhs.Value); }
 		#endregion
 		#endregion
+
+		#region Util
+		/// <summary>
+		/// Returns a new Enum field with byte_enum attributes
+		/// </summary>
+		public static Enum Byte { get { return new Enum(FieldType.ByteEnum); } }
+		/// <summary>
+		/// Returns a new Enum field with long_enum attributes
+		/// </summary>
+		public static Enum Long { get { return new Enum(FieldType.LongEnum); } }
+		#endregion
 	};
 	#endregion
 
@@ -1150,6 +1161,21 @@ namespace BlamLib.TagInterface
 		/// <returns><paramref name="lhs"/> &lt; <paramref name="rhs"/></returns>
 		public static bool operator <(Flags lhs, Flags rhs) { return lhs.Value < rhs.Value; }
 		#endregion
+		#endregion
+
+		#region Util
+		/// <summary>
+		/// Returns a new Flags field with byte_flags attributes
+		/// </summary>
+		public static Flags Byte { get { return new Flags(FieldType.ByteFlags); } }
+		/// <summary>
+		/// Returns a new Flags field with word_flags attributes
+		/// </summary>
+		public static Flags Word { get { return new Flags(FieldType.WordFlags); } }
+		/// <summary>
+		/// Returns a new Flags field with long_flags attributes
+		/// </summary>
+		public static Flags Long { get { return new Flags(); } }
 		#endregion
 	};
 	#endregion
@@ -1595,6 +1621,15 @@ namespace BlamLib.TagInterface
 		/// </summary>
 		/// <returns>a new system color object using this field's values</returns>
 		public System.Drawing.Color ToColor()	{ return System.Drawing.Color.FromArgb(A, R, G, B); }
+
+		/// <summary>
+		/// Returns a new Color field with rgb_color attributes
+		/// </summary>
+		public static Color Rgb { get { return new Color(FieldType.RgbColor); } }
+		/// <summary>
+		/// Returns a new Color field with argb_color attributes
+		/// </summary>
+		public static Color Argb { get { return new Color(); } }
 		#endregion
 
 		#region Data Exchange
@@ -1877,6 +1912,21 @@ namespace BlamLib.TagInterface
 		/// <returns>field's value</returns>
 		public static implicit operator int(BlockIndex value) { return value.Value; }
 		#endregion
+		#endregion
+
+		#region Util
+		/// <summary>
+		/// Returns a new BlockIndex field with byte_flags attributes
+		/// </summary>
+		public static BlockIndex Byte { get { return new BlockIndex(FieldType.ByteBlockIndex); } }
+		/// <summary>
+		/// Returns a new BlockIndex field with short_block_index attributes
+		/// </summary>
+		public static BlockIndex Word { get { return new BlockIndex(); } }
+		/// <summary>
+		/// Returns a new BlockIndex field with long_block_index attributes
+		/// </summary>
+		public static BlockIndex Long { get { return new BlockIndex(FieldType.LongBlockIndex); } }
 		#endregion
 	};
 	#endregion

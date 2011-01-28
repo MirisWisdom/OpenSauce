@@ -314,11 +314,17 @@ namespace BlamLib.TagInterface
 			FindNewInstanceVersionCtor();
 
 			// TODO: for definitions with no explicit Guid in their DefinitionAttribute, switch 
-			// on it's associated game and assign it a Guid from the constants in Blam.BlamExtensions
+			// on its associated game and assign it a Guid from the constants in Blam.BlamExtensions
 		}
 		bool isPostProcessed = false;
 		/// <summary>
-		/// Build the finishing touches of the state data (ie, <see cref="DefinitionState.TypeCodes"/>)
+		/// Exposed as a hack for checking to see if a definition needs to be forced to postprocess. This 
+		/// was done due to issues in Halo2 where a an older tag definition used a now deprecated structure.
+		/// Since none of the latest definitions referenced it in the default ctor, it never got postprocessed.
+		/// </summary>
+		internal bool IsPostProcessed { get { return isPostProcessed; } }
+		/// <summary>
+		/// Build the finishing touches of the state data (eg, <see cref="DefinitionState.TypeCodes"/>)
 		/// </summary>
 		internal void PostProcess()
 		{

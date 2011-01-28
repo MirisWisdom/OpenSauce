@@ -267,6 +267,37 @@ namespace BlamLib
 		};
 		#endregion
 
+		#region Zlib util
+		static byte[] ZLibBufferFromStream(System.IO.Compression.DeflateStream dec, int offset, int size)
+		{
+			byte[] result;
+
+			// adjust for zlib header
+			dec.BaseStream.Seek(offset + sizeof(ushort), System.IO.SeekOrigin.Begin);
+
+			// decompress the data and fill in the result array
+			result = new byte[size];
+			dec.Read(result, 0, result.Length);
+
+			return result;
+		}
+		public static byte[] ZLibBufferFromStream(System.IO.MemoryStream ms, int offset, int size)
+		{
+			using (var dec = new System.IO.Compression.DeflateStream(ms, System.IO.Compression.CompressionMode.Decompress, true))
+			{
+				return ZLibBufferFromStream(dec, offset, size);
+			}
+		}
+		public static byte[] ZLibBufferFromBytes(byte[] bytes, int offset, int size)
+		{
+			using(var ms = new System.IO.MemoryStream(bytes))
+			using (var dec = new System.IO.Compression.DeflateStream(ms, System.IO.Compression.CompressionMode.Decompress, false))
+			{
+				return ZLibBufferFromStream(dec, offset, size);
+			}
+		}
+		#endregion
+
 
 		#region AsyncOperation
 		/// <summary>

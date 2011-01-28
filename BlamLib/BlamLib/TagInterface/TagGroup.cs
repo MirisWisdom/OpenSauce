@@ -439,6 +439,15 @@ namespace BlamLib.TagInterface
 			return tag;
 		}
 		#endregion
+
+		/// <summary>
+		/// Get a file search pattern string for tags of this group
+		/// </summary>
+		/// <returns></returns>
+		public string ToFileSearchPattern()
+		{
+			return string.Format("*.{0}", name);
+		}
 		#endregion
 
 		#region ICompare Members

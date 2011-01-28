@@ -278,6 +278,13 @@ namespace BlamLib.TagInterface
 				default: throw new Debug.Exceptions.UnreachableException(f.StringType);
 			}
 		}
+
+		#region Util
+		/// <summary>
+		/// Returns a new String field with long_string attributes
+		/// </summary>
+		public static String LongString { get { return new String(StringType.Ascii, 256); } }
+		#endregion
 	};
 	#endregion
 
