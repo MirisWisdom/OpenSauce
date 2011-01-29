@@ -43,6 +43,10 @@
 	__VA_ARGS__>																							\
 	GET_HOOK_BLOCK_PROCESS(##name##)
 
+#define DEFINE_HOOK_BLOCK_PROCESS_NONE(name, address, ...)																\
+	DEFINE_HOOK_BLOCK_PROCESS_IMPL(name, address,																		\
+		NULL, 0,																										\
+		NULL, 0, __VA_ARGS__)
 #define DEFINE_HOOK_BLOCK_PROCESS_PRE(name, address, preprocess_name, ...)												\
 	DEFINE_HOOK_BLOCK_PROCESS_IMPL(name, address,																		\
 		GET_HOOK_BLOCK_PREPROCESS(##preprocess_name##),	NUMBEROF( GET_HOOK_BLOCK_PREPROCESS(##preprocess_name##) ),		\
