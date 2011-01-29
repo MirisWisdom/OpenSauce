@@ -900,7 +900,14 @@ namespace BlamLib.Managers
 
 		void CloseAllCacheBuilders()
 		{
-			foreach (var di in cacheBuilders.Keys) CloseCacheBuilder(di);
+			// we have to modify cacheBuilders to remove the items, so we can't use a foreach directly on it
+			Blam.DatumIndex[] cache_buidlers;
+			{
+				var keys = cacheBuilders.Keys;
+				cache_buidlers = new BlamLib.Blam.DatumIndex[keys.Count];
+				keys.CopyTo(cache_buidlers, 0);
+			}
+			foreach (var di in cache_buidlers) CloseCacheBuilder(di);
 		}
 		#endregion
 
@@ -1018,7 +1025,14 @@ namespace BlamLib.Managers
 
 		void CloseAllCacheFiles()
 		{
-			foreach (var di in cacheFiles.Keys) CloseCacheFile(di);
+			// we have to modify cacheFiles to remove the items, so we can't use a foreach directly on it
+			Blam.DatumIndex[] cache_files;
+			{
+				var keys = cacheFiles.Keys;
+				cache_files = new BlamLib.Blam.DatumIndex[keys.Count];
+				keys.CopyTo(cache_files, 0);
+			}
+			foreach (var di in cache_files) CloseCacheFile(di);
 		}
 
 		/// <summary>
@@ -1167,7 +1181,14 @@ namespace BlamLib.Managers
 
 		void CloseAllTagIndexes()
 		{
-			foreach (var di in tagIndexes.Keys) CloseTagIndex(di);
+			// we have to modify tagIndexes to remove the items, so we can't use a foreach directly on it
+			Blam.DatumIndex[] tag_indexes;
+			{
+				var keys = tagIndexes.Keys;
+				tag_indexes = new BlamLib.Blam.DatumIndex[keys.Count];
+				keys.CopyTo(tag_indexes, 0);
+			}
+			foreach (var di in tag_indexes) CloseTagIndex(di);
 		}
 		#endregion
 
