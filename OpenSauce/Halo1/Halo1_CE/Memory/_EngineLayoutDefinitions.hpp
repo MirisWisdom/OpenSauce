@@ -70,6 +70,7 @@
 	#define __EL_NETWORKING_MESSAGE_DELTAS		(__EL_INCLUDE_NETWORKING + 2)
 	#define __EL_NETWORKING_NETWORKING			(__EL_INCLUDE_NETWORKING + 3)
 	#define __EL_NETWORKING_SERVER				(__EL_INCLUDE_NETWORKING + 4)
+	#define __EL_NETWORKING_GAMESPY_API			(__EL_INCLUDE_NETWORKING + 5)
 
 
 //////////////////////////////////////////////////////////////////////////

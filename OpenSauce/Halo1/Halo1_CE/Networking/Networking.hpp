@@ -21,6 +21,7 @@
 #include "Memory/Data.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Game/GameEngine.hpp"
+#include "Networking/GameSpyApi.hpp"
 
 namespace Yelo
 {
@@ -142,116 +143,10 @@ namespace Yelo
 			_message_client_graceful_game_exit_postgame,
 			_message_type,
 		};
-
-		enum gamespy_field
-		{
-			_gamespy_field_hostname,
-			_gamespy_field_gamename,
-			_gamespy_field_gamever,
-			_gamespy_field_hostport,
-			_gamespy_field_mapname,
-			_gamespy_field_gametype,
-			_gamespy_field_gamevariant,
-			_gamespy_field_numplayers,
-			_gamespy_field_numteams,
-			_gamespy_field_maxplayers,
-			_gamespy_field_gamemode,
-			_gamespy_field_teamplay,
-			_gamespy_field_fraglimit,
-			_gamespy_field_team_fraglimit,
-			_gamespy_field_timeelapsed,
-			_gamespy_field_timelimit,
-			_gamespy_field_roundtime,
-			_gamespy_field_roundelapsed,
-			_gamespy_field_password,
-			_gamespy_field_groupid,
-			_gamespy_field_player,
-			_gamespy_field_score,
-			_gamespy_field_skill,
-			_gamespy_field_ping,
-			_gamespy_field_team,
-			_gamespy_field_deaths,
-			_gamespy_field_pid,
-			_gamespy_field_team_t,
-			_gamespy_field_score_t,
-#pragma region Unused fields
-			_gamespy_field_unused1,
-			_gamespy_field_unused2,
-			_gamespy_field_unused3,
-			_gamespy_field_unused4,
-			_gamespy_field_unused5,
-			_gamespy_field_unused6,
-			_gamespy_field_unused7,
-			_gamespy_field_unused8,
-			_gamespy_field_unused9,
-			_gamespy_field_unused10,
-			_gamespy_field_unused11,
-			_gamespy_field_unused12,
-			_gamespy_field_unused13,
-			_gamespy_field_unused14,
-			_gamespy_field_unused15,
-			_gamespy_field_unused16,
-			_gamespy_field_unused17,
-			_gamespy_field_unused18,
-			_gamespy_field_unused19,
-			_gamespy_field_unused20,
-			_gamespy_field_unused21,
-#pragma endregion
-			_gamespy_field_dedicated,
-			_gamespy_field_player_flags,
-			_gamespy_field_game_flags,
-			_gamespy_field_game_classic,
-			_gamespy_field,
-		};
-
-		enum gamespy_connection_state : long_enum
-		{
-			GTI2AwaitingServerChallenge,
-			GTI2AwaitingAcceptance,
-			GTI2AwaitingClientChallenge,
-			GTI2AwaitingClientResponse,
-			GTI2AwaitingAcceptReject,
-			GTI2Connected,
-			GTI2Closing,
-			GTI2Closed,
-		};
 	};
 
 	namespace Networking
 	{
-		struct s_gamespy_connection
-		{
-			in_addr address;
-			int16 port; PAD16;
-
-			UNKNOWN_TYPE(int32); // pointer
-			Enums::gamespy_connection_state state;
-
-			byte pad[0x150 - 0x10]; // TODO
-		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_connection) == 0x150 );
-		struct s_gamespy_socket // NOTE: this is actually part of the gamespy API, just using OS naming standards
-		{
-			SOCKET socket;
-			in_addr address;
-			int16 port; PAD16;
-
-			void* connections;
-			void* closedConnections;
-			UNKNOWN_TYPE(int32); // 0x14
-			UNKNOWN_TYPE(int32);
-			void* connectAttemptCallback;
-			void* socketErrorCallback;
-			UNKNOWN_TYPE(int32); // 0x24 pointer to a proc
-			UNKNOWN_TYPE(int32); // 0x28 pointer to a proc
-			void* unrecongizedMessageCallback;
-			UNKNOWN_TYPE(int32); // 0x30, s_transport_endpoint*
-			int32 incomingBufferSize;
-			int32 outgoingBufferSize;
-			UNKNOWN_TYPE(int32); // 0x3C
-			UNKNOWN_TYPE(int32); // 0x40, s_transport_endpoint*
-			UNKNOWN_TYPE(int32); // 0x44
-		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_socket) == 0x48 );
-
 		struct s_transport_address
 		{
 			union

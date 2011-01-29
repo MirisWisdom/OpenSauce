@@ -872,6 +872,14 @@
 			Name="Networking"
 			>
 			<File
+				RelativePath=".\Networking\GameSpyApi.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Networking\GameSpyApi.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Networking\MDP.hpp"
 				>
 			</File>

@@ -186,16 +186,11 @@
 #elif __EL_INCLUDE_FILE_ID == __EL_NETWORKING_SERVER
 	namespace Networking
 	{
-		ENGINE_PTR(gs_machine_data_list, gs_machines_list,				0x6BE400, 0x6268C0); // [4]
-
 		ENGINE_PTR(wchar_t, sv_password,								0x6B72BC, 0x61FAD4);
 		ENGINE_PTR(char, sv_rcon_password,								0x6B73D8, 0x61FBF4);
 		ENGINE_PTR(int32, sv_timelimit,									0x634C18, 0x5AA5B0);
 		ENGINE_PTR(int32, halo_argv_port,								0x633808, 0x5A91A0);
 		ENGINE_PTR(int32, halo_argv_client_port,						0x63380C, 0x5A91A4);
-
-		DATA_PTR(compiler_null_string, 0x5F365C, 0x54F33C); // TODO: not the best place for this...
-		FUNC_PTR(GS_GET_MACHINE_DATA_CD_HASH, 0x579CF0, 0x5283F0);
 	};
 
 	//////////////////////////////////////////////////////////////////////////
@@ -213,6 +208,19 @@
 		ENGINE_PTR(bool, event_type_echoing,		PTR_NULL, 0x5C5344);
 	#endif
 	};
+
+
+//////////////////////////////////////////////////////////////////////////
+// GameSpyApi.cpp
+#elif __EL_INCLUDE_FILE_ID == __EL_NETWORKING_GAMESPY_API
+	namespace Networking
+	{
+		ENGINE_PTR(s_gamespy_product, gamespy_products_list,				0x6BE400, 0x6268C0); // [4]
+
+		DATA_PTR(compiler_null_string, 0x5F365C, 0x54F33C); // TODO: not the best place for this...
+		FUNC_PTR(GAMESPY_GET_CLIENT_KEY_HASH, 0x579CF0, 0x5283F0);
+	};
+
 
 #else
 	#error Undefined engine layout include for: __EL_INCLUDE_NETWORKING

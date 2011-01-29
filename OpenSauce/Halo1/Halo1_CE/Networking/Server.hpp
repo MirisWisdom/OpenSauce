@@ -21,6 +21,7 @@
 #include "Memory/Data.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Game/GameEngine.hpp"
+#include "Networking/GameSpyApi.hpp"
 
 namespace Yelo
 {
@@ -102,49 +103,6 @@ namespace Yelo
 
 	namespace Networking
 	{
-		// game-spy machine data
-		struct gs_machine_data
-		{
-			int32 unknown1; // 0x0
-			char cd_hash[32]; // 0x4
-			void* unknown2; // 0x24
-			uint32 skey; // 0x28, (GetTickCount ^ rand) & 0x3FFF
-			struct { // 0x2C
-				byte class_d;
-				byte class_c;
-				byte class_b;
-				byte class_a;
-			}ip;
-			PAD32; // 0x30, GetTickCount
-			PAD32; // 0x34
-			PAD32; //int32 join_result; // 0x38, 1 = ?, 2 = error, 3 = ?; 1 & 3 seem to mean stuff is ok
-			PAD32; // 0x3C
-			PAD32; // 0x40, void* proc_unk
-			PAD32; //char* join_errmsg; // 0x44
-
-			// \auth\\pid\%d\ch\%s\resp\%s\ip\%d\skey\%dd
-			PAD32; // 0x48, malloc'd char*
-			PAD32; // 0x4C, char*'s length
-		};
-
-		struct gs_machine_data_list_entry
-		{
-			gs_machine_data* machine;
-			gs_machine_data_list_entry* next;
-			gs_machine_data_list_entry* prev;
-		};
-
-		struct gs_machine_data_list
-		{
-			int32 game_pid;
-			gs_machine_data_list_entry entries;
-		};
-
-
-		// If this is a server, returns all the machines connected to this machine
-		gs_machine_data_list* GsMachines(); // [4]
-
-
 		// Password for this machine
 		wcstring ServerPassword();
 		// Remote console password for this machine
@@ -156,8 +114,6 @@ namespace Yelo
 		int32 ConnectionPort();
 		// Port used to connect to the server
 		int32 ConnectionClientPort();
-
-		gs_machine_data* GamespyGetMachine(int32 machine_id);
 	};
 
 	namespace Server
