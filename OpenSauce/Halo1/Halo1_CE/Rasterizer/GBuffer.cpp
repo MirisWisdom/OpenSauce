@@ -313,13 +313,19 @@ namespace Yelo
 		{
 			if(!IsAvailable()) return;
 
-			DWORD old_fillmode, old_zwriteenable;
+			DWORD old_fillmode, old_zwriteenable, old_alphablenenable, old_srcblend, old_destblend;
 
 			device->GetRenderState(D3DRS_FILLMODE, &old_fillmode);
-			device->GetRenderState(D3DRS_ZWRITEENABLE, &old_zwriteenable);	
+			device->GetRenderState(D3DRS_ZWRITEENABLE, &old_zwriteenable);
+			device->GetRenderState(D3DRS_ALPHABLENDENABLE, &old_alphablenenable);
+			device->GetRenderState(D3DRS_SRCBLEND, &old_srcblend);
+			device->GetRenderState(D3DRS_DESTBLEND, &old_destblend);
 
 			device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 			device->SetRenderState(D3DRS_ZWRITEENABLE, false);
+			device->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
+			device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
+			device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ZERO);
 			
 			UINT cPasses, p;
 			device->SetFVF( D3DFVF_XYZRHW | D3DFVF_TEX1 );
@@ -343,6 +349,9 @@ namespace Yelo
 
 			device->SetRenderState(D3DRS_FILLMODE, old_fillmode);
 			device->SetRenderState(D3DRS_ZWRITEENABLE, old_zwriteenable);
+			device->SetRenderState(D3DRS_ALPHABLENDENABLE, old_alphablenenable);
+			device->SetRenderState(D3DRS_SRCBLEND, old_srcblend);
+			device->SetRenderState(D3DRS_DESTBLEND, old_destblend);
 		}
 		bool		c_gbuffer_rtclear_effect::IsAvailable()
 		{
