@@ -27,37 +27,11 @@ namespace Yelo
 
 	namespace Networking
 	{
-		gs_machine_data_list* GsMachines()									PTR_IMP_GET2(gs_machines_list);
-
 		wcstring ServerPassword()											PTR_IMP_GET2(sv_password);
 		cstring ServerRconPassword()										PTR_IMP_GET2(sv_rcon_password);
 		int32 ServerTimelimit()												PTR_IMP_GET(sv_timelimit);
 		int32 ConnectionPort()												PTR_IMP_GET(halo_argv_port);
 		int32 ConnectionClientPort()										PTR_IMP_GET(halo_argv_client_port);
-
-		API_FUNC_NAKED gs_machine_data* GamespyGetMachine(int32 machine_id)
-		{
-			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(GS_GET_MACHINE_DATA_CD_HASH);
-
-			__asm {
-				push	ebp
-				mov		ebp, esp
-				push	ecx
-
-				mov		eax, machine_id
-				call	TEMP_CALL_ADDR
-				cmp		eax, GET_DATA_PTR(compiler_null_string)
-				jnz		_return
-				mov		eax, 4 // will cause us to return NULL. Yes, I r a hacka
-				
-_return:
-				sub		eax, 4
-
-				pop		ecx
-				pop		ebp
-				retn	4 * 1
-			}
-		}
 	};
 
 	namespace Server
