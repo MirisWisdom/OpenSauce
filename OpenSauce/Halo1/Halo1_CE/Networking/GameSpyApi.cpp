@@ -29,6 +29,14 @@ namespace Yelo
 
 	namespace Networking
 	{
+		s_gamespy_socket* GsSocket()										DPTR_IMP_GET(gs_Socket);
+		s_gamespy_socket* GsLoopbackSocket()								DPTR_IMP_GET(gs_LoopbackSocket);
+		s_gamespy_config* GsConfig()										PTR_IMP_GET2(gamespy_config);
+		s_gamespy_globals* GsGlobals()										PTR_IMP_GET2(gamespy_globals);
+#if PLATFORM_IS_USER											// While the getter for this is only in User builds, I keep the definition around just for documentation's sake
+		s_gamespy_server_browser_globals* GsServerBrowserGlobals()			PTR_IMP_GET2(gamespy_server_browser_globals);
+#endif
+
 		s_gamespy_product* GsProducts()										PTR_IMP_GET2(gamespy_products_list);
 
 		API_FUNC_NAKED s_gamespy_client* GsGetClient(int32 client_id)

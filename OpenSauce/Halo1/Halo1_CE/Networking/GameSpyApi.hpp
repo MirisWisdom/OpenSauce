@@ -197,6 +197,102 @@ namespace Yelo
 			s_gamespy_client_node clients;
 		};
 
+		struct s_gamespy_server;
+		struct s_gamespy_server_browser;
+
+		struct s_gamespy_config
+		{
+			int32 game_pid;
+			bool is_public_server;
+			PAD24;
+			int32 check_for_updates_status;
+		};
+		struct s_gamespy_globals
+		{
+			char game_name[8];
+			char game_priv_key[8];
+			PAD128; // just another (unused) copy of the priv key
+			int32 server_port;
+
+			struct {
+				bool initialized;
+				PAD24;
+				void* mutex_reference;
+				void* thread_reference;
+				bool update_check_complete;
+				PAD24;
+				PAD32; // unused space...
+				char proxy_server[256];
+				bool proxy_server_initialized;
+				PAD24;
+
+				int32 file_id;
+				char download_url[256];
+				char version_name[64];
+			}game_patch;
+
+			struct {
+				long_enum state;
+				bool server_is_exiting;
+				PAD24;
+				s_gamespy_qr_data* obj;
+				uint32 last_state_change_heartbeat_time;
+				char temp_key_buffer[256];
+			}qr2;
+		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_globals) == 0x390 );
+		struct s_gamespy_server_browser_globals
+		{
+			struct {
+				s_gamespy_server* server;
+				bool has_password;
+				PAD24;
+				wchar_t password[10]; // password provided by the user
+			}selected_server;
+
+			s_gamespy_server_browser* server_browser;
+			bool initialized;
+			PAD24;
+			int32 total_number_of_players; // total number of players on all servers in the current game version
+			UNKNOWN_TYPE(int32);
+			UNKNOWN_TYPE(int32);
+			UNKNOWN_TYPE(int32);
+			UNKNOWN_TYPE(byte); // bool
+			UNKNOWN_TYPE(byte); // bool
+			PAD16;
+			UNKNOWN_TYPE(int32);
+			byte unknown_shit[10]; // this isn't a buffer but I didn't want to declare each unknown byte or bool...
+			PAD16; PAD32;
+			wchar_t unknown[256];
+			UNKNOWN_TYPE(int32); // probably some kind of state value
+			UNKNOWN_TYPE(uint32); // flags
+			UNKNOWN_TYPE(int32);
+			int32 server_browser_update_error;
+			struct {
+				void* thread_mutex;
+				void* thread;
+				PAD32;
+			}query_server_list;
+			UNKNOWN_TYPE(byte); // bool
+			PAD24;
+			UNKNOWN_TYPE(uint32); // time
+			struct {
+				s_gamespy_server** list;
+				int32 count;
+			}server_list;
+			PAD32; // set to zero, but never used
+
+			// NOTE: this structure seems to have one less DWORD in it in dedi builds. 
+			// However, this structure shouldn't even be accessed in dedi builds so I'm not researching further!
+		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_server_browser_globals) == 0x27C );
+
+
+		s_gamespy_socket* GsSocket();
+		s_gamespy_socket* GsLoopbackSocket();
+		s_gamespy_config* GsConfig();
+		s_gamespy_globals* GsGlobals();
+#if PLATFORM_IS_USER
+		s_gamespy_server_browser_globals* GsServerBrowserGlobals();
+#endif
 
 		// If this is a server, returns all the machines connected to this machine on a specific pid
 		s_gamespy_product* GsProducts(); // [4]

@@ -215,10 +215,16 @@
 #elif __EL_INCLUDE_FILE_ID == __EL_NETWORKING_GAMESPY_API
 	namespace Networking
 	{
-		ENGINE_PTR(s_gamespy_product, gamespy_products_list,				0x6BE4E8, 0x626968); // [4]
+		ENGINE_DPTR(s_gamespy_socket, gs_Socket,									0x68C4A0, 0x5F4CD0);
+		ENGINE_DPTR(s_gamespy_socket, gs_LoopbackSocket,							0x68C4A4, 0x5F4CD4);
+		ENGINE_PTR(s_gamespy_config, gamespy_config,								0x63AD04, 0x5AED34);
+		ENGINE_PTR(s_gamespy_globals, gamespy_globals,								0x6BDA88, 0x626100);
+		ENGINE_PTR(s_gamespy_server_browser_globals, gamespy_server_browser_globals,0x6B4500, 0x61CD2C);
 
-		DATA_PTR(compiler_null_string, 0x5F363C, 0x54F2FC); // TODO: not the best place for this...
-		FUNC_PTR(GAMESPY_GET_CLIENT_KEY_HASH, 0x579CD0, 0x5283D0);
+		ENGINE_PTR(s_gamespy_product, gamespy_products_list,						0x6BE4E8, 0x626968); // [4]
+
+		DATA_PTR(compiler_null_string,			0x5F363C, 0x54F2FC); // TODO: not the best place for this...
+		FUNC_PTR(GAMESPY_GET_CLIENT_KEY_HASH,	0x579CD0, 0x5283D0);
 	};
 
 
