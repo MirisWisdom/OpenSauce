@@ -94,7 +94,6 @@ namespace BlamLib.Test
 			bool output_sound_info = false;
 			bool output_index = false;
 
-
 			var args = param as CacheFileOutputInfoArgs;
 
 			using (var handler = new CacheHandler<Blam.Halo3.CacheFileBase>(args.Game, args.MapPath))
