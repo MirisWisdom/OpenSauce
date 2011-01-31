@@ -259,15 +259,9 @@ fail:
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_UNLOAD);
 
 		NAKED_FUNC_START()
-			push	ecx
-			push	edx
-
 			push	tag_index
 			call	FUNCTION
 			add		esp, 4 * 1
-
-			pop		edx
-			pop		ecx
 		NAKED_FUNC_END(1);
 	}
 
@@ -277,14 +271,10 @@ fail:
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_ITERATOR_NEW);
 
 		NAKED_FUNC_START()
-			push	ecx
-
 			push	group_tag
 			push	iter
 			call	FUNCTION
 			add		esp, 4 * 2
-
-			pop		ecx
 		NAKED_FUNC_END(2);
 	}
 
@@ -293,13 +283,9 @@ fail:
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_ITERATOR_NEXT);
 
 		NAKED_FUNC_START()
-			push	ecx
-
 			push	iter
 			call	FUNCTION
 			add		esp, 4 * 1
-
-			pop		ecx
 		NAKED_FUNC_END(1);
 	}
 };

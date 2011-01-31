@@ -140,9 +140,7 @@ namespace Yelo
 				pop		edi
 				pop		esi
 
-				push	ecx		// game remove player uses ecx without saving it first
 				call	TEMP_CALL_ADDR
-				pop		ecx
 
 				retn
 			}

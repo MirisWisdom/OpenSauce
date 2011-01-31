@@ -54,18 +54,15 @@ namespace Yelo
 
 #define CRC_TABLE_SIZE 256
 #define CRC32_POLYNOMIAL 0xEDB88320L
-		static unsigned long crc_table[CRC_TABLE_SIZE];
+		static uint32 crc_table[CRC_TABLE_SIZE];
 		static bool crc_table_initialized = false;
 
 		static void BuildCrcTable()
 		{
-			int16 index, j;
-			uint32 crc;
-
-			for(index = 0; index < CRC_TABLE_SIZE; ++index)
+			for(int16 index = 0; index < CRC_TABLE_SIZE; ++index)
 			{
-				crc = index;
-				for(j=0; j<8; j++)
+				uint32 crc = index;
+				for(int16 j = 0; j < 8; j++)
 				{
 					if(crc & 1) crc = (crc>>1) ^ CRC32_POLYNOMIAL;
 					else crc >>= 1;

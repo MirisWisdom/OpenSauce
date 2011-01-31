@@ -279,9 +279,6 @@ the_end:
 			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(MDP_ENCODE_STATELESS);
 
 			__asm {
-				push	edx
-				push	ecx
-
 				mov		edx, 0x7FF8
 				mov		eax, GET_PTR2(mdp_packet_buffer_sent_data)
 				push	unk
@@ -293,9 +290,6 @@ the_end:
 				push	mode
 				call	TEMP_CALL_ADDR
 				add		esp, 4 * 7
-
-				pop		ecx
-				pop		edx
 			}
 		}
 #pragma endregion
@@ -306,15 +300,9 @@ the_end:
 			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(MDP_DECODE_STATELESS_ITERATED);
 
 			__asm {
-				push	ecx
-				push	edx
-
 				mov		eax, header
 				mov		ecx, out_buffer
 				call	TEMP_CALL_ADDR
-
-				pop		edx
-				pop		ecx
 			}
 		}
 #pragma endregion
@@ -333,8 +321,6 @@ the_end:
 			__asm {
 				//push	edi
 				push	ebx // if this is uncommented, the compiler catches it, but if it is commented, it fucking doesn't....
-				push	edx // stupid compiler didn't catch this one....
-				//push	ecx
 
 				mov		eax, GET_PTR2(global_network_game_client_data)
 				mov		edi, [eax+0xADC]
@@ -376,8 +362,6 @@ bit_writes:
 				mov		byte ptr [esi+0x1C], 0
 
 _the_exit:
-				//pop		ecx
-				pop		edx
 				pop		ebx
 				//pop		edi
 			}
@@ -393,9 +377,6 @@ _the_exit:
 				shit = dont_bit_encode ? 3 : 2;
 
 			__asm {
-				push	ecx
-				push	edx
-
 				push	shit
 				push	send_even_after_fail // false = if fail, don't send
 				push	dont_flush
@@ -406,9 +387,6 @@ _the_exit:
 				mov		eax, data_size_in_bits
 				call	TEMP_CALL_ADDR
 				add		esp, 4 * 6
-
-				pop		edx
-				pop		ecx
 			}
 		}
 #pragma endregion
@@ -422,7 +400,6 @@ _the_exit:
 				shit = dont_bit_encode ? 3 : 2;
 
 			__asm {
-				push	edx
 				push	esi
 
 				push	shit
@@ -438,7 +415,6 @@ _the_exit:
 				add		esp, 4 * 7
 
 				pop		esi
-				pop		edx
 			}
 		}
 #pragma endregion
@@ -449,14 +425,8 @@ _the_exit:
 			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(MDP_DISCARD_ITERATION_BODY);
 
 			__asm {
-				push	ecx
-				push	edx
-
 				mov		eax, header
 				call	TEMP_CALL_ADDR
-
-				pop		edx
-				pop		ecx
 			}
 		}
 #pragma endregion
