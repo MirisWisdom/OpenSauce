@@ -108,9 +108,7 @@ namespace Yelo
 		{
 			static uint32 OBJECTS_GARBAGE_COLLECTION = GET_FUNC_PTR(OBJECTS_GARBAGE_COLLECTION);
 			_asm {
-				push	edx
 				call	OBJECTS_GARBAGE_COLLECTION
-				pop		edx
 			}
 
 			// Do custom code here:

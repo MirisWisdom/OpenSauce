@@ -357,15 +357,9 @@ namespace Yelo
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(GAME_TEAM_IS_ENEMY);
 
 				__asm {
-					push	ecx
-					push	edx
-
 					mov		ecx, team_to_test
 					mov		edx, team
 					call	TEMP_CALL_ADDR
-
-					pop		edx
-					pop		ecx
 				}
 			}
 
@@ -394,16 +388,10 @@ namespace Yelo
 				if(object_list.IsNull()) return;
 
 				__asm {
-					push	ecx
-					push	edx
-
 					push	object
 					mov		eax, object_list
 					call	TEMP_CALL_ADDR
 					add		esp, 4 * 1
-
-					pop		edx
-					pop		ecx
 				}
 			}
 		};
@@ -416,12 +404,10 @@ namespace Yelo
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(INPUT_KEY_IS_DOWN);
 
 				__asm {
-					push	ecx
 
 					mov		cx, key
 					call	TEMP_CALL_ADDR
 
-					pop		ecx
 				}
 #else
 				return false;
@@ -466,15 +452,11 @@ namespace Yelo
 	#endif
 
 				__asm {
-					push	ecx
-
 					lea		eax, local
 					push	eax
 					mov		eax, 0 // player index
 					call	TEMP_CALL_ADDR
 					add		esp, 4 * 1
-
-					pop		ecx
 				}
 			}
 
@@ -483,14 +465,8 @@ namespace Yelo
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(HUD_GET_ITEM_MESSAGE);
 
 				__asm {
-					push	ecx
-					push	edx
-
 					mov		edx, message_index
 					call	TEMP_CALL_ADDR
-
-					pop		edx
-					pop		ecx
 				}
 			}
 		};
@@ -502,16 +478,12 @@ namespace Yelo
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(PERIODIC_FUNCTION_EVALUATE);
 
 				__asm {
-					push	ecx
-
 					fld		input
 					sub		esp, 4 * 2			// allocate space for the 'input' parameter
 					fstp	qword ptr [esp]		// store the input on the stack
 					movzx	eax, function_type
 					call	TEMP_CALL_ADDR
 					add		esp, 4 * 2			// deallocate. double type consumes two DWORDs of stack
-
-					pop		ecx
 				}
 			}
 
@@ -520,14 +492,10 @@ namespace Yelo
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(TRANSITION_FUNCTION_EVALUATE);
 
 				__asm {
-					push	ecx
-
 					push	input
 					movzx	ecx, function_type
 					call	TEMP_CALL_ADDR
 					add		esp, 4 * 1
-
-					pop		ecx
 				}
 			}
 		};
@@ -541,13 +509,9 @@ namespace Yelo
 				if(data == NULL || index.index == NONE) return datum_index::null;
 
 				__asm {
-					push	edx
-
 					mov		edx, data
 					mov		eax, index
 					call	TEMP_CALL_ADDR
-
-					pop		edx
 				}
 			}
 
@@ -558,12 +522,8 @@ namespace Yelo
 				if(data == NULL) return datum_index::null;
 
 				__asm {
-					push	edx
-
 					mov		edx, data
 					call	TEMP_CALL_ADDR
-
-					pop		edx
 				}
 			}
 
@@ -574,13 +534,9 @@ namespace Yelo
 				if(data == NULL || datum.index == NONE) return;
 
 				__asm {
-					push	edx
-
 					mov		edx, datum
 					mov		eax, data
 					call	TEMP_CALL_ADDR
-
-					pop		edx
 				}
 			}
 
@@ -627,14 +583,11 @@ namespace Yelo
 
 				__asm {
 					push	esi
-					push	edx
-					// TODO: continue here
 
 					mov		esi, data
 					mov		edx, datum
 					call	TEMP_CALL_ADDR
 
-					pop		edx
 					pop		esi
 				}
 			}
@@ -646,7 +599,6 @@ namespace Yelo
 				if (data == NULL || buffer == NULL) return;
 
 				__asm {
-					push	edx
 					push	esi
 
 					mov		edx, data
@@ -654,7 +606,6 @@ namespace Yelo
 					call	TEMP_CALL_ADDR
 
 					pop		esi
-					pop		edx
 				}
 			}
 		};
@@ -690,15 +641,11 @@ namespace Yelo
 #endif
 
 				__asm {
-					push	edx
-
 					movsx	eax, chat_type
 					lea		edx, local
 					push	player_number // really a byte, but you can't push a byte!
 					call	TEMP_CALL_ADDR
 					add		esp, 4 * 1
-
-					pop		edx
 				}
 			}
 
@@ -709,7 +656,6 @@ namespace Yelo
 				if(network_object.IsNull()) return datum_index::null;
 
 				__asm {
-					push	ecx
 					push	esi
 
 					mov		ecx, network_object
@@ -717,7 +663,6 @@ namespace Yelo
 					call	TEMP_CALL_ADDR
 
 					pop		esi
-					pop		ecx
 				}
 			}
 
@@ -728,7 +673,6 @@ namespace Yelo
 				if(network_player.IsNull()) return datum_index::null;
 
 				__asm {
-					push	ecx
 					push	esi
 
 					mov		ecx, network_player
@@ -736,7 +680,6 @@ namespace Yelo
 					call	TEMP_CALL_ADDR
 
 					pop		esi
-					pop		ecx
 				}
 			}
 		};
@@ -750,13 +693,9 @@ namespace Yelo
 				if(obj_datum.IsNull()) return;
 
 				__asm {
-					push	edx
-
 					mov		eax, obj_datum
 					mov		edx, 30 * 2 // interpolate over 60 frames, or 2 secs
 					call	TEMP_CALL_ADDR
-
-					pop		edx
 				}
 			}
 
@@ -783,14 +722,10 @@ namespace Yelo
 				if(obj.IsNull()) return;
 
 				__asm {
-					push	edx
-
 					push	location_reference
 					push	obj
 					call	TEMP_CALL_ADDR
 					add		esp, 4 * 2
-
-					pop		edx
 				}
 			}
 
@@ -801,11 +736,9 @@ namespace Yelo
 				if(obj.IsNull()) return;
 
 				__asm {
-
 					push	obj
 					call	TEMP_CALL_ADDR
 					add		esp, 4 * 1
-
 				}
 			}
 
@@ -816,13 +749,9 @@ namespace Yelo
 				if(obj.IsNull()) return;
 
 				__asm {
-					push	ecx
-
 					mov		eax, out_origin
 					mov		ecx, obj
 					call	TEMP_CALL_ADDR
-
-					pop		ecx
 				}
 			}
 
@@ -833,15 +762,11 @@ namespace Yelo
 				if(obj.IsNull()) return;
 
 				__asm {
-					push	ecx
-
 					mov		ecx, obj
 					mov		eax, out_forward
 					push	out_up
 					call	TEMP_CALL_ADDR
 					add		esp, 4 * 1
-
-					pop		ecx
 				}
 			}
 
@@ -962,13 +887,11 @@ namespace Yelo
 
 				__asm {
 					push	edi
-					push	ecx
 
 					mov		edi, out_position
 					mov		ecx, unit
 					call	TEMP_CALL_ADDR
 
-					pop		ecx
 					pop		edi
 				}
 #else
@@ -995,9 +918,6 @@ namespace Yelo
 				if(unit.IsNull()) return;
 
 				__asm {
-					push	ecx
-					push	edx
-
 					movzx	eax, set_facing
 					push	eax
 					movzx	eax, i_dont_know
@@ -1006,9 +926,6 @@ namespace Yelo
 					push	unit
 					call	TEMP_CALL_ADDR
 					add		esp, 4 * 3
-
-					pop		edx
-					pop		ecx
 				}
 			}
 		};
@@ -1035,17 +952,11 @@ namespace Yelo
 				if(player.IsNull()) return false;
 
 				__asm {
-					push	ecx
-					push	edx
-
 					push	position
 					push	source_unit_index
 					push	player
 					call	TEMP_CALL_ADDR
 					add		esp, 4 * 3
-
-					pop		edx
-					pop		ecx
 				}
 			}
 
@@ -1056,13 +967,9 @@ namespace Yelo
 				if(player.IsNull()) return;
 
 				__asm {
-					push	edx
-
 					mov		edx, player
 					mov		eax, func
 					call	eax
-
-					pop		edx
 				}
 #endif
 			}
@@ -1116,15 +1023,9 @@ namespace Yelo
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(SCENARIO_TRIGGER_VOLUME_TEST_POINT);
 
 				__asm {
-					push	ecx
-					push	edx
-
 					mov		ecx, point
 					mov		eax, trigger_volume_index
 					call	TEMP_CALL_ADDR
-
-					pop		edx
-					pop		ecx
 				}
 			}
 
@@ -1148,14 +1049,10 @@ namespace Yelo
 
 				__asm {
 					push	esi
-					push	edx
-					push	ecx
 
 					mov		esi, resources_block
 					call	TEMP_CALL_ADDR
 
-					pop		ecx
-					pop		edx
 					pop		esi
 				}
 #endif
@@ -1191,15 +1088,9 @@ namespace Yelo
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(UNICODE_STRING_LIST_GET_STRING);
 
 				__asm {
-					push	edx
-					push	ecx
-
 					mov		edx, index
 					mov		ecx, ustr
 					call	TEMP_CALL_ADDR
-
-					pop		ecx
-					pop		edx
 				}
 			}
 		};

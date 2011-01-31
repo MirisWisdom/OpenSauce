@@ -32,8 +32,6 @@ namespace Yelo
 			static uint32 FUNCTION = GET_FUNC_PTR(DISPLAY_ASSERT);
 
 			NAKED_FUNC_START()
-				push	ecx
-
 				xor		ecx, ecx
 				mov		cl, halt
 				push	ecx
@@ -42,8 +40,6 @@ namespace Yelo
 				push	reason
 				call	FUNCTION
 				add		esp, 4 * 4
-
-				pop		ecx
 			NAKED_FUNC_END(4);
 		}
 
@@ -52,8 +48,6 @@ namespace Yelo
 			static uint32 FUNCTION = GET_FUNC_PTR(DEBUG_MALLOC);
 
 			NAKED_FUNC_START()
-				push	ecx
-
 				push	line
 				push	file
 				xor		ecx, ecx
@@ -62,8 +56,6 @@ namespace Yelo
 				push	ptr_size
 				call	FUNCTION
 				add		esp, 4 * 4
-
-				pop		ecx
 			NAKED_FUNC_END(4);
 		}
 
@@ -72,15 +64,11 @@ namespace Yelo
 			static uint32 FUNCTION = GET_FUNC_PTR(DEBUG_FREE);
 
 			NAKED_FUNC_START()
-				push	ecx
-
 				push	line
 				push	file
 				push	pointer
 				call	FUNCTION
 				add		esp, 4 * 3
-
-				pop		ecx
 			NAKED_FUNC_END(3);
 		}
 
@@ -89,16 +77,12 @@ namespace Yelo
 			static uint32 FUNCTION = GET_FUNC_PTR(DEBUG_REALLOC);
 
 			NAKED_FUNC_START()
-				push	ecx
-
 				push	line
 				push	file
 				push	new_size
 				push	pointer
 				call	FUNCTION
 				add		esp, 4 * 4
-
-				pop		ecx
 			NAKED_FUNC_END(4);
 		}
 
