@@ -18,6 +18,9 @@
 */
 #pragma once
 
+#define __EL_INCLUDE_FILE_MACRO(file)	\
+	BOOST_PP_STRINGIZE( BOOST_PP_CAT(Memory/, BOOST_PP_CAT(PLATFORM_VERSION_VALUE, /##file) )
+
 // __EL_INCLUDE_ID format:		__EL_<dir>
 // __EL_INCLUDE_FILE_ID format: __EL_<dir>_<file>
 //#define __EL__

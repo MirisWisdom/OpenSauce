@@ -46,7 +46,7 @@ void* scripting_game_change_version_id_evaluate(void** arguments)
 	}* args = CAST_PTR(s_arguments*, arguments);
 	TypeHolder result; result.pointer = NULL;
 
-	result.boolean = GameState::ChangeAdvertisedGameVersion(args->version_str, args->and_game_build);
+	result.boolean = Networking::ChangeAdvertisedGameVersion(args->version_str, args->and_game_build);
 
 	return result.pointer;
 }
@@ -123,7 +123,7 @@ static void InitializeMiscFunctions()
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_fade) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_get_effect_index_by_name) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_get_effect_current_fade) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(_hs_function_pp_get_effect_fade_direction) );
+	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_get_effect_fade_direction) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_get_effect_is_valid) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_get_effect_shader_variable_index_by_name) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_shader_variable_boolean) );

@@ -75,17 +75,6 @@ namespace Yelo
 			_rasterize_score_telefragged,
 			_rasterize_score,
 		};
-
-		enum hud_chat_type : long_enum
-		{
-			_hud_chat_type_none = CAST(long_enum,NONE),
-
-			_hud_chat_type_all = 0,
-			_hud_chat_type_team,
-			_hud_chat_type_vehicle,
-			_hud_chat_type_server,
-			_hud_chat_type_game_msg, // used for messages pulled from Strings.dll. Convert 'hud_chat_network_data.message' to a long using 'wtol' to get the resource ID
-		};
 	};
 
 	namespace Flags
@@ -295,25 +284,6 @@ namespace Yelo
 			int16 paragraph_indent[72];
 		};
 		s_font_drawing_globals_data*	FontDrawingGlobals();
-
-
-		struct s_hud_chat_globals_data
-		{
-			bool active; PAD24;
-			Enums::hud_chat_type chat_type;
-
-			PAD(0, sizeof(byte)*132);	// unused...ever
-			real_argb_color color;		// unused, except upon initialization
-			UNKNOWN_TYPE(tag_string);	// unused, except upon initialization
- 
-			// PRETTY damn sure this is a file_reference that was never 
-			// implemented for saving the hud chat
-			PAD(1, sizeof(byte)*0x10C);	// unused, except upon initialization.
-
-			uint32 line_timers[8];
-		};
-		s_hud_chat_globals_data*		HudChatGlobals();
-		int32 HudChatLineCount();
 
 
 		void Initialize();

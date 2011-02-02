@@ -143,8 +143,10 @@ namespace Fov
 //////////////////////////////////////////////////////////////////////////
 // Console.cpp
 #elif __EL_INCLUDE_FILE_ID == __EL_GAME_CONSOLE
-	ENGINE_DPTR(s_terminal_globals, terminal_globals,	0x64DE4C, 0x5BFC2C);
-	ENGINE_PTR(s_console_globals, console_globals,		0x651F70, 0x5C3D30);
+	ENGINE_DPTR(s_terminal_globals, terminal_globals,		0x64DE4C, 0x5BFC2C);
+	ENGINE_PTR(s_console_globals, console_globals,			0x651F70, 0x5C3D30);
+	ENGINE_PTR(s_hud_chat_globals_data, hud_chat_globals,	0x64E7A8, 0x5C0588);
+	ENGINE_PTR(int32, hud_chat_line_count,					0x6B44D4, PTR_NULL);
 
 	FUNC_PTR(CONSOLE_UPDATE_HOOK,		0x4C9BE3, 0x4B3637);
 	FUNC_PTR(CONSOLE_PROCESS_COMMAND,	0x4C9F40, 0x4B3990); // also in EngineFunctions.cpp
@@ -250,10 +252,6 @@ namespace Fov
 	FUNC_PTR(GAME_INITIALIZE_HOOK,										0x45B84B, 0x4582B0);
 	FUNC_PTR(GAME_INITIALIZE_FOR_NEW_MAP_HOOK,							0x45BEEB, 0x4588B5);
 	FUNC_PTR(GAME_DISPOSE_FROM_OLD_MAP_HOOK,							0x45C060, 0x458A18);
-
-	ENGINE_PTR(long_enum, game_version_id1,								0x4DC2D6, 0x4C3866);
-	ENGINE_PTR(long_enum, game_version_id2,								0x4DC4B3, 0x4C3A43);
-	ENGINE_PTR(long_enum, game_version_id3,								0x4E3FF3, 0x4CB583);
 
 	DATA_PTR(PE_DATA_SIZE, 0x215000, 0x171000);
 

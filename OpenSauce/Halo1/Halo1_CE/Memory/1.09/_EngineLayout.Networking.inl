@@ -225,6 +225,11 @@
 
 		DATA_PTR(compiler_null_string,			0x5F363C, 0x54F2FC); // TODO: not the best place for this...
 		FUNC_PTR(GAMESPY_GET_CLIENT_KEY_HASH,	0x579CD0, 0x5283D0);
+
+
+		ENGINE_PTR(long_enum, game_version_id1,								0x4DC2D6, 0x4C3866);
+		ENGINE_PTR(long_enum, game_version_id2,								0x4DC4B3, 0x4C3A43);
+		ENGINE_PTR(long_enum, game_version_id3,								0x4E3FF3, 0x4CB583);
 	};
 
 

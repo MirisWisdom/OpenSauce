@@ -20,6 +20,7 @@
 #include "Networking/GameSpyApi.hpp"
 
 #include "Memory/MemoryInterface.hpp"
+#include "Game/GameState.hpp"
 
 namespace Yelo
 {
@@ -61,6 +62,73 @@ _return:
 				pop		ebp
 				retn	4 * 1
 			}
+		}
+	};
+
+
+	namespace Enums
+	{
+		enum game_version_id : long_enum {
+			//_game_version_id_ = ,
+			_game_version_id_100 = 0x94ECF,	//  609999
+			_game_version_id_107 = 0x5BC42F,// 6013999
+			_game_version_id_108 = 0x5BCFE7,// 6016999
+			_game_version_id_109 = 0x96A27,	//  616999
+		};
+	};
+
+	namespace Networking
+	{
+		static void ChangeAdvertisedGameVersionId(long_enum version_id, bool and_game_build)
+		{
+			if(version_id)
+			{
+				GET_PTR(game_version_id1) = version_id;
+				GET_PTR(game_version_id2) = version_id;
+				GET_PTR(game_version_id3) = version_id;
+
+				if(and_game_build)
+				{
+					cstring build_string = NULL;
+
+					if(version_id == Enums::_game_version_id_100)
+						build_string = NULL; // TODO
+					else if(version_id == Enums::_game_version_id_107)
+						build_string = NULL; // TODO
+					else if(version_id == Enums::_game_version_id_108)
+						build_string = NULL; // TODO
+					else if(version_id == Enums::_game_version_id_109)
+						build_string = NULL; // TODO
+
+					if(build_string != NULL)
+					{
+						strcpy(GameState::GameBuildString(), build_string);
+						strcpy(GameState::GamespyGameBuildString(), build_string);
+					}
+				}
+			}
+		}
+
+		bool ChangeAdvertisedGameVersion(cstring version_str, bool and_game_build)
+		{
+			bool result = true;
+			long_enum version_id = 0;
+
+			if( strstr(version_str, "1.00") )
+				version_id = Enums::_game_version_id_100;
+			else if( strstr(version_str, "1.07") )
+				version_id = Enums::_game_version_id_107;
+			else if( strstr(version_str, "1.08") )
+				version_id = Enums::_game_version_id_108;
+			else if( strstr(version_str, "1.09") )
+				version_id = Enums::_game_version_id_109;
+			else
+				result = false;
+
+			if(result)
+				ChangeAdvertisedGameVersionId(version_id, and_game_build);
+
+			return result;
 		}
 	};
 };

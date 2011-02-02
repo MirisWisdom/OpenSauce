@@ -298,5 +298,9 @@ namespace Yelo
 		s_gamespy_product* GsProducts(); // [4]
 
 		s_gamespy_client* GsGetClient(int32 client_id);
+
+
+		// If [and_game_build] is true, it will also change the GameState::GameBuildStrings
+		bool ChangeAdvertisedGameVersion(cstring version_str, bool and_game_build);
 	};
 };
