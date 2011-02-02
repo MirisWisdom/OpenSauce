@@ -314,8 +314,5 @@ namespace Yelo
 
 		// Called from ScriptingLibrary's Initialize (since the GameState is initialized before Scripting is)
 		void InitializeScripting();
-
-		// If [and_game_build] is true, it will also change the GameBuildStrings
-		bool ChangeAdvertisedGameVersion(cstring version_str, bool and_game_build);
 	};
 };

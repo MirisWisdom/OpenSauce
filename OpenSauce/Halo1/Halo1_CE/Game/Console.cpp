@@ -31,6 +31,10 @@ namespace Yelo
 
 		s_terminal_globals* TerminalGlobals()				DPTR_IMP_GET(terminal_globals);
 		s_console_globals* Globals()						PTR_IMP_GET2(console_globals);
+		s_hud_chat_globals_data* HudChatGlobals()			PTR_IMP_GET2(hud_chat_globals);
+#if !PLATFORM_IS_DEDI
+		int32 HudChatLineCount()							PTR_IMP_GET(hud_chat_line_count);
+#endif
 
 		void Initialize()
 		{

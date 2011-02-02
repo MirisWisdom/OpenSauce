@@ -30,6 +30,7 @@
 #include "Game/GameEngine.hpp"
 #include "Game/GameState.hpp"
 #include "Networking/MessageDeltas.hpp"
+#include "Networking/GameSpyApi.hpp"
 #include "TagGroups/project_yellow_definitions.hpp"
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/PostProcessing/External/PostProcessingSubsystem_External.hpp"

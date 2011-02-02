@@ -28,18 +28,27 @@ namespace Yelo
 		enum {
 			k_terminal_line_max_characters = 254,
 		};
+
+		enum hud_chat_type : long_enum
+		{
+			_hud_chat_type_none = CAST(long_enum,NONE),
+
+			_hud_chat_type_all = 0,
+			_hud_chat_type_team,
+			_hud_chat_type_vehicle,
+			_hud_chat_type_server,
+			_hud_chat_type_game_msg, // used for messages pulled from Strings.dll. Convert 'hud_chat_network_data.message' to a long using 'wtol' to get the resource ID
+		};
 	};
 
 	namespace Console
 	{
 		struct s_terminal_state
 		{
-			int16 keys_count;
-			PAD16;
 			Input::s_buffered_key keys[32+1];
 
 			real_argb_color color;
-			tag_string prefix; // prefix string, ie "halo( "
+			tag_string prefix; // prefix string, eg "halo( "
 			char token_buffer[256];
 
 			struct {
@@ -49,7 +58,7 @@ namespace Yelo
 				UNKNOWN_TYPE(int16); // index in [text]
 				PAD16;
 			}edit_text;
-		};
+		}; BOOST_STATIC_ASSERT( sizeof(s_terminal_state) == 0x1C0 );
 
 		struct s_terminal_output_datum : Memory::s_datum_base_aligned
 		{
@@ -113,8 +122,22 @@ namespace Yelo
 				PAD16;
 			}history;
 
-		}; BOOST_STATIC_ASSERT( sizeof(s_console_globals) == 0x9C8 );
+		}; BOOST_STATIC_ASSERT( sizeof(s_console_globals) == 0x9C4 );
 		s_console_globals* Globals();
+
+		struct s_hud_chat_globals_data
+		{
+			bool active; PAD24;
+			Enums::hud_chat_type chat_type;
+
+			s_terminal_state terminal_state;
+
+			uint32 line_timers[8];
+		}; BOOST_STATIC_ASSERT( sizeof(s_hud_chat_globals_data) == 0x1E8 );
+		s_hud_chat_globals_data*		HudChatGlobals();
+#if !PLATFORM_IS_DEDI
+		int32 HudChatLineCount();
+#endif
 
 
 		void Initialize();

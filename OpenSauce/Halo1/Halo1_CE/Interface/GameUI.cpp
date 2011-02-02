@@ -68,8 +68,6 @@ namespace Yelo
 
 		s_text_bounds_globals_data* TextBoundsGlobals()		PTR_IMP_GET2(text_bounds_globals);
 		s_font_drawing_globals_data* FontDrawingGlobals()	PTR_IMP_GET2(font_drawing_globals);
-		s_hud_chat_globals_data* HudChatGlobals()			PTR_IMP_GET2(hud_chat_globals);
-		int32 HudChatLineCount()							PTR_IMP_GET(hud_chat_line_count);
 
 
 		void Initialize()

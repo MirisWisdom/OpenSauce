@@ -23,15 +23,10 @@
 #if !BOOST_PP_IS_ITERATING
 
 	#if defined(__EL_INCLUDE_ID)
-		#define __EL_INCLUDE_FILE_MACRO(file)	\
-			BOOST_PP_STRINGIZE( BOOST_PP_CAT(Memory/, BOOST_PP_CAT(PLATFORM_VERSION_VALUE, /##file) )
-
 		#define BOOST_PP_ITERATION_PARAMS_1 (3, (__EL_INCLUDE_ID, __EL_INCLUDE_ID, "Memory/_EngineLayout.inl"))
 		??=include BOOST_PP_ITERATE()
 		#undef __EL_INCLUDE_ID
 		#undef __EL_INCLUDE_FILE_ID
-
-		#undef __EL_INCLUDE_FILE_MACRO
 	#endif
 
 //////////////////////////////////////////////////////////////////////////

@@ -54,6 +54,7 @@
 // Component includes
 	#include "Game/GameState.hpp"
 	#include "TagGroups/CacheFiles.hpp"
+	#include "TagGroups/TagGroups.hpp"
 
 	#include "Game/Console.hpp"
 
