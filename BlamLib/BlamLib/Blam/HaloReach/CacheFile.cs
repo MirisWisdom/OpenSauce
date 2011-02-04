@@ -104,12 +104,12 @@ namespace BlamLib.Blam.HaloReach
 			memoryPartitions[0].Size = s.ReadInt32();
 
 			// readonly
-			memoryPartitions[1].BaseAddress = s.ReadUInt32(); // sound cache resource buffer
+			memoryPartitions[1].BaseAddress = s.ReadUInt32(); // cache gestalt resource buffer
 			memoryPartitions[1].Size = s.ReadInt32();
 
-			memoryPartitions[2].BaseAddress = s.ReadUInt32(); // global tags buffer
+			memoryPartitions[2].BaseAddress = s.ReadUInt32(); // global tags buffer (cache sound tags likes this memory space too)
 			memoryPartitions[2].Size = s.ReadInt32();
-			memoryPartitions[3].BaseAddress = s.ReadUInt32(); // shared tag blocks?
+			memoryPartitions[3].BaseAddress = s.ReadUInt32(); // shared tag blocks? (havok data likes this memory space too)
 			memoryPartitions[3].Size = s.ReadInt32();
 			memoryPartitions[4].BaseAddress = s.ReadUInt32(); // address
 			memoryPartitions[4].Size = s.ReadInt32();

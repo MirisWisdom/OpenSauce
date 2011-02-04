@@ -829,15 +829,10 @@ namespace BlamLib.Blam.Halo3.Tags
 		[TI.Definition(1, 16)]
 		public class scenario_resource_reference_block : TI.Definition
 		{
-			#region Fields
-			#endregion
-
-			#region Ctor
 			public scenario_resource_reference_block()
 			{
 				Add(/*Reference = */ new TI.TagReference(this));
 			}
-			#endregion
 		}
 		#endregion
 
@@ -845,15 +840,10 @@ namespace BlamLib.Blam.Halo3.Tags
 		[TI.Definition(1, 16)]
 		public class scenario_hs_source_reference_block : TI.Definition
 		{
-			#region Fields
-			#endregion
-
-			#region Ctor
 			public scenario_hs_source_reference_block()
 			{
 				Add(/*Reference = */ new TI.TagReference(this, TagGroups.srhscf));
 			}
-			#endregion
 		}
 		#endregion
 
@@ -861,30 +851,20 @@ namespace BlamLib.Blam.Halo3.Tags
 		[TI.Definition(1, 16)]
 		public class scenario_ai_resource_reference_block : TI.Definition
 		{
-			#region Fields
-			#endregion
-
-			#region Ctor
 			public scenario_ai_resource_reference_block()
 			{
 				Add(/*Reference = */ new TI.TagReference(this, TagGroups.srai));
 			}
-			#endregion
 		}
 		#endregion
 
-		#region Fields
-		#endregion
-
-		#region Ctor
 		public scenario_resources_block()
 		{
-			Add(new TI.Pad(4));
+			Add(TI.Pad.DWord);
 			Add(/*Script Source = */ new TI.Block<scenario_hs_source_reference_block>(this, 8));
 			Add(/*References = */ new TI.Block<scenario_resource_reference_block>(this, 16));
 			Add(/*AI Resources = */ new TI.Block<scenario_ai_resource_reference_block>(this, 2));
 		}
-		#endregion
 	}
 	#endregion
 
@@ -892,16 +872,11 @@ namespace BlamLib.Blam.Halo3.Tags
 	[TI.Definition(1, 8)]
 	public class hs_unit_seat_block : TI.Definition
 	{
-		#region Fields
-		#endregion
-
-		#region Ctor
 		public hs_unit_seat_block()
 		{
 			Add(/* = */ new TI.LongInteger());
 			Add(/* = */ new TI.LongInteger());
 		}
-		#endregion
 	}
 	#endregion
 
@@ -909,15 +884,10 @@ namespace BlamLib.Blam.Halo3.Tags
 	[TI.Definition(1, 2)]
 	public class scenario_kill_trigger_volumes_block : TI.Definition
 	{
-		#region Fields
-		#endregion
-
-		#region Ctor
 		public scenario_kill_trigger_volumes_block()
 		{
 			Add(/*Trigger Volume = */ new TI.BlockIndex()); // 1 scenario_trigger_volume_block
 		}
-		#endregion
 	}
 	#endregion
 
@@ -1134,16 +1104,14 @@ namespace BlamLib.Blam.Halo3.Tags
 	[TI.Definition(1, 260)]
 	public class g_scenario_editor_folder_block : TI.Definition
 	{
-		#region Fields
-		#endregion
+		public TI.BlockIndex ParentFolder;
+		public TI.String Name;
 
-		#region Ctor
 		public g_scenario_editor_folder_block()
 		{
-			Add(/*parent folder = */ new TI.BlockIndex(TI.FieldType.LongBlockIndex)); // 1 g_scenario_editor_folder_block
-			Add(/*name = */ new TI.String(TI.StringType.Ascii, 256));
+			Add(ParentFolder = TI.BlockIndex.Long); // 1 g_scenario_editor_folder_block
+			Add(Name = TI.String.LongString);
 		}
-		#endregion
 	}
 	#endregion
 

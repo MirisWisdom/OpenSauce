@@ -120,6 +120,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -143,6 +144,7 @@
     <Compile Include="Blam\Halo2\Tags\Code\Sound.cs" />
     <Compile Include="Blam\Halo2\Tags\Definitions\Shaders.cs" />
     <Compile Include="Blam\Halo2\Tags\Layout\Shaders.cs" />
+    <Compile Include="Blam\HaloReach\Tags\Globals.cs" />
     <Compile Include="Blam\HaloReach\Tags\Scenario.cs" />
     <Compile Include="IO\EndianStreams.cs" />
     <Compile Include="IO\EndianStreams.Reader.cs" />

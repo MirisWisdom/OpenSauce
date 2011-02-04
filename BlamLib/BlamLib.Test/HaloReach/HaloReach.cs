@@ -79,6 +79,16 @@ namespace BlamLib.Test.HaloReach
 			@"Retail\maps\m70_bonus.map",
 
 			@"Retail\maps\mainmenu.map",
+
+			// dlc_noble
+			@"Retail\dlc_noble\dlc_invasion.map",
+			@"Retail\dlc_noble\dlc_medium.map",
+			@"Retail\dlc_noble\dlc_slayer.map",
+
+			// dlc_defiant
+			@"Retail\dlc_defiant\condemned.map",
+			@"Retail\dlc_defiant\ff_unearthed.map",
+			@"Retail\dlc_defiant\trainingpreserve.map",
 		};
 		static readonly string[] kMapNames_Beta = {
 			// 09730.10.04.09.1309

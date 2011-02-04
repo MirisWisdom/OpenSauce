@@ -162,7 +162,7 @@ namespace BlamLib.Blam.Halo3
  			sbsp.Definition = new Tags.scenario_structure_bsp_group().State;
 // 			scen.Definition = new Tags.scenery_group().State;
 // 			scn3.Definition = new Tags.gui_screen_widget_definition_group().State;
-// 			scnr.Definition = new Tags.scenario_group().State;
+ 			scnr.Definition = new Tags.scenario_group().State;
 // 			sddt.Definition = new Tags.structure_design_group().State;
 // 			sefc.Definition = new Tags.area_screen_effect_group().State;
 // 			sfx_.Definition = new Tags.sound_effect_collection_group().State;
