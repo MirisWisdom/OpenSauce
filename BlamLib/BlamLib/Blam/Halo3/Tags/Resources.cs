@@ -277,130 +277,6 @@ namespace BlamLib.Blam.Halo3.Tags
 		}
 		#endregion
 
-		#region cache_file_resource_gestalt_100_block
-		[TI.Definition(1, 36)]
-		public partial class cache_file_resource_gestalt_100_block : TI.Definition
-		{
-			public TI.StringId Name;
-			public TI.LongInteger Unknown04,
-				Unknown08,
-				Unknown0C,
-				Unknown10,
-				Unknown14,
-				Unknown18,
-				Unknown1C;
-			public TI.BlockIndex PrevZoneSet;
-
-			public cache_file_resource_gestalt_100_block() : base(9)
-			{
-				Add(Name = new TI.StringId());
-				Add(Unknown04 = new TI.LongInteger());
-
-				Add(Unknown08 = new TI.LongInteger());
-				Add(Unknown0C = new TI.LongInteger());
-
-				Add(Unknown10 = new TI.LongInteger());
-				Add(Unknown14 = new TI.LongInteger());
-
-				Add(Unknown18 = new TI.LongInteger());
-
-				Add(Unknown1C = new TI.LongInteger()); // seems to be the same value as the the long after the name field
-
-				Add(PrevZoneSet = new TI.BlockIndex(BlamLib.TagInterface.FieldType.LongBlockIndex));
-			}
-		}
-		#endregion
-
-		#region cache_file_resource_gestalt_164_block
-		[TI.Definition(1, 20)]
-		public partial class cache_file_resource_gestalt_164_block : TI.Definition
-		{
-			public TI.LongInteger Unknown00,
-				Unknown04,
-				Unknown08,
-				Unknown0C,
-				Unknown10;
-
-			public cache_file_resource_gestalt_164_block() : base(5)
-			{
-				Add(Unknown00 = new TI.LongInteger());
-				Add(Unknown04 = new TI.LongInteger());
-				Add(Unknown08 = new TI.LongInteger());
-				Add(Unknown0C = new TI.LongInteger());
-				Add(Unknown10 = new TI.LongInteger());
-			}
-		}
-		#endregion
-
-		#region cache_file_resource_gestalt_1DC_block
-		[TI.Definition(1, 8)]
-		public partial class cache_file_resource_gestalt_1DC_block : TI.Definition
-		{
-			public TI.ShortInteger ThisIndex; // The index of this block element
-			public TI.ShortInteger ElementCount;
-			public TI.BlockIndex BlockIndex;
-
-			public cache_file_resource_gestalt_1DC_block() : base(3)
-			{
-				Add(ThisIndex = new TI.ShortInteger());
-				Add(ElementCount = new TI.ShortInteger());
-				Add(BlockIndex = new TI.BlockIndex(TI.FieldType.LongBlockIndex)); // cache_file_resource_gestalt_1D0_block
-			}
-		}
-		#endregion
-
-		#region cache_file_resource_gestalt_1E8_block
-		[TI.Definition(1, 4)]
-		public partial class cache_file_resource_gestalt_1E8_block : TI.Definition
-		{
-			public TI.ShortInteger Unknown00; // index?
-			public TI.ShortInteger Unknown02; // index?
-
-			public cache_file_resource_gestalt_1E8_block() : base(2)
-			{
-				Add(Unknown00 = new TI.ShortInteger());
-				Add(Unknown02 = new TI.ShortInteger());
-			}
-		}
-		#endregion
-
-		#region cache_file_resource_gestalt_1F4_block
-		[TI.Definition(1, 8)]
-		public partial class cache_file_resource_gestalt_1F4_block : TI.Definition
-		{
-			public TI.ShortInteger Unknown00; // something like length
-			public TI.ShortInteger Unknown02; // something like start index, block index to cache_file_resource_gestalt_1E8_block
-
-			public TI.ShortInteger Unknown04; // something like length
-			public TI.ShortInteger Unknown06; // something like start index, block index to cache_file_resource_gestalt_1E8_block
-
-			public cache_file_resource_gestalt_1F4_block() : base(4)
-			{
-				Add(Unknown00 = new TI.ShortInteger());
-				Add(Unknown02 = new TI.ShortInteger());
-				Add(Unknown04 = new TI.ShortInteger());
-				Add(Unknown06 = new TI.ShortInteger());
-			}
-		}
-		#endregion
-
-		#region cache_file_resource_gestalt_200_block
-		[TI.Definition(1, 12)]
-		public partial class cache_file_resource_gestalt_200_block : TI.Definition
-		{
-			public TI.LongInteger TagIndex; // DatumIndex
-			public TI.LongInteger Unknown08;
-			public TI.LongInteger Unknown0C; // 0x0000FF00: BSP index; 0x000000FF: index
-
-			public cache_file_resource_gestalt_200_block() : base(3)
-			{
-				Add(TagIndex = new TI.LongInteger());
-				Add(Unknown08 = new TI.LongInteger());
-				Add(Unknown0C = new TI.LongInteger());
-			}
-		}
-		#endregion
-
 		#region Fields
 		public TI.Struct<cache_file_resource_layout_table> ResourceLayoutTable;
 
@@ -408,22 +284,15 @@ namespace BlamLib.Blam.Halo3.Tags
 			Block70, Block7C, Block88, Block94, BlockA0, BlockAC,
 			BlockB8, BlockC4, BlockD0, BlockDC;
 
-		public TI.Block<cache_file_resource_gestalt_100_block> Block100;
 		public TI.Block<field_block<TI.TagReference>> BspReferences;
 
-		public TI.Block<cache_file_resource_gestalt_164_block> Block164;
-
 		public TI.Block<field_block<TI.LongInteger>> Block1D0;
-		public TI.Block<cache_file_resource_gestalt_1DC_block> Block1DC;
-		public TI.Block<cache_file_resource_gestalt_1E8_block> Block1E8;
-		public TI.Block<cache_file_resource_gestalt_1F4_block> Block1F4;
-		public TI.Block<cache_file_resource_gestalt_200_block> Block200;
 		#endregion
 
 		public cache_file_resource_gestalt_group() : base(41)
 		{
 			Add(CacheType = new TI.Enum());
-			Add(Flags = new TI.Flags(TI.FieldType.WordFlags));
+			Add(Flags = TI.Flags.Word);
 			/*0x04*/Add(ResourceTypes = new TI.Block<resource_type_block>(this, 0));
 			/*0x10*/Add(ResourceStructureTypes = new TI.Block<resource_structure_type_block>(this, 0));
 			/*0x1C*/Add(ResourceLayoutTable = new TI.Struct<cache_file_resource_layout_table>(this));
