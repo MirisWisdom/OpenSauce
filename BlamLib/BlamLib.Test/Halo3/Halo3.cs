@@ -26,7 +26,7 @@ namespace BlamLib.Test
 	[TestClass]
 	public partial class Halo3 : BaseTestClass
 	{
-		const string kTestResultsPath = TestLibrary.kTestResultsPath + @"Halo3\";
+		internal const string kTestResultsPath = TestLibrary.kTestResultsPath + @"Halo3\";
 
 		[ClassInitialize]
 		public static void Initialize(TestContext context)
@@ -134,9 +134,9 @@ namespace BlamLib.Test
 				var cache = handler.CacheInterface;
 
 				Blam.CacheFile.OutputStringIds(cache,
-					BuildResultPath(kTestResultsPath, args.Game, cache.Header.Name, "string_ids", "txt"), true);
+					BuildResultPath(args.TestResultsPath, args.Game, cache.Header.Name, "string_ids", "txt"), true);
 				Blam.CacheFile.OutputTags(cache,
-					BuildResultPath(kTestResultsPath, args.Game, cache.Header.Name, null, "txt"));
+					BuildResultPath(args.TestResultsPath, args.Game, cache.Header.Name, null, "txt"));
 			}
 		}
 		[TestMethod]

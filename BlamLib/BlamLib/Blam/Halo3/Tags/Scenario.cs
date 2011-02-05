@@ -19,6 +19,7 @@
 #pragma warning disable 1591 // "Missing XML comment for publicly visible type or member"
 using System;
 using TI = BlamLib.TagInterface;
+using H2 = BlamLib.Blam.Halo2.Tags;
 
 namespace BlamLib.Blam.Halo3.Tags
 {
@@ -633,7 +634,6 @@ namespace BlamLib.Blam.Halo3.Tags
 
 		public TI.Block<hs_scripts_parameters_block> Parameters;
 
-		#region Ctor
 		public hs_scripts_block() : base(5)
 		{
 			Add(Name = new TI.String());
@@ -642,7 +642,6 @@ namespace BlamLib.Blam.Halo3.Tags
 			Add(RootExpressionIndex = new TI.LongInteger());
 			Add(Parameters = new TI.Block<hs_scripts_parameters_block>(this, 0));
 		}
-		#endregion
 
 		public override BlamLib.TagInterface.IBlock GetParametersBlock() { return Parameters; }
 	}
@@ -652,15 +651,13 @@ namespace BlamLib.Blam.Halo3.Tags
 	[TI.Definition(1, 40)]
 	public class hs_globals_block : Scripting.hs_globals_block
 	{
-		#region Ctor
 		public hs_globals_block() : base(4)
 		{
 			Add(Name = new TI.String());
 			Add(Type = new TI.Enum());
-			Add(new TI.Pad(2));
+			Add(TI.Pad.Word);
 			Add(InitExpressionIndex = new TI.LongInteger());
 		}
-		#endregion
 	}
 	#endregion
 
@@ -668,91 +665,10 @@ namespace BlamLib.Blam.Halo3.Tags
 	[TI.Definition(1, 16)]
 	public class hs_references_block : TI.Definition
 	{
-		#region Fields
-		#endregion
-
-		#region Ctor
-		public hs_references_block()
+		public hs_references_block() : base(1)
 		{
 			Add(/*reference = */ new TI.TagReference(this));
 		}
-		#endregion
-	}
-	#endregion
-
-	#region hs_source_files_block
-	[TI.Definition(1, 52)]
-	public class hs_source_files_block : TI.Definition
-	{
-		#region Fields
-		#endregion
-
-		#region Ctor
-		public hs_source_files_block()
-		{
-			Add(/*name = */ new TI.String());
-			Add(/*source = */ new TI.Data(this));
-		}
-		#endregion
-	}
-	#endregion
-
-	#region cs_script_data_block
-	[TI.Definition(1, 132)]
-	public class cs_script_data_block : TI.Definition
-	{
-		// TODO: STRUCTURE VERIFCATION
-		#region cs_point_set_block
-		[TI.Definition(2, 52)]
-		public class cs_point_set_block : TI.Definition
-		{
-			#region cs_point_block
-			[TI.Definition(2, 60)]
-			public class cs_point_block : TI.Definition
-			{
-				#region Fields
-				#endregion
-
-				#region Ctor
-				public cs_point_block()
-				{
-					Add(/*name = */ new TI.String());
-					Add(/*position = */ new TI.RealPoint3D());
-					Add(/*reference frame = */ new TI.ShortInteger());
-					Add(new TI.Pad(2));
-					Add(/*surface index = */ new TI.LongInteger());
-					Add(/*facing direction = */ new TI.RealEulerAngles2D());
-				}
-				#endregion
-			}
-			#endregion
-
-			#region Fields
-			#endregion
-
-			#region Ctor
-			public cs_point_set_block()
-			{
-				Add(/*name = */ new TI.String());
-				Add(/*points = */ new TI.Block<cs_point_block>(this, 20));
-				Add(/*bsp index = */ new TI.BlockIndex()); // 1 scenario_structure_bsp_reference_block
-				Add(/*manual reference frame = */ new TI.ShortInteger());
-				Add(/*flags = */ new TI.Flags());
-			}
-			#endregion
-		}
-		#endregion
-
-		#region Fields
-		#endregion
-
-		#region Ctor
-		public cs_script_data_block()
-		{
-			Add(/*point sets = */ new TI.Block<cs_point_set_block>(this, 200));
-			Add(new TI.Pad(120));
-		}
-		#endregion
 	}
 	#endregion
 
@@ -760,63 +676,50 @@ namespace BlamLib.Blam.Halo3.Tags
 	[TI.Definition(2, 28)]
 	public class scenario_cutscene_flag_block : TI.Definition
 	{
-		#region Fields
-		#endregion
-
-		#region Ctor
-		public scenario_cutscene_flag_block()
+		public scenario_cutscene_flag_block() : base(4)
 		{
 			Add(new TI.Pad(4));
 			Add(/*Name = */ new TI.StringId());
 			Add(/*Position = */ new TI.RealPoint3D());
 			Add(/*Facing = */ new TI.RealEulerAngles2D());
 		}
-		#endregion
 	}
 	#endregion
 
 	#region scenario_cutscene_camera_point_block
-	[TI.Definition(1, 64)]
+	[TI.Definition(2, 64)]
 	public class scenario_cutscene_camera_point_block : TI.Definition
 	{
-		#region Fields
-		#endregion
-
-		#region Ctor
-		public scenario_cutscene_camera_point_block()
+		public scenario_cutscene_camera_point_block() : base(8)
 		{
-			Add(/*Flags = */ new TI.Flags(TI.FieldType.WordFlags));
+			Add(/*Flags = */ TI.Flags.Word);
 			Add(/*Type = */ new TI.Enum());
 			Add(/*Name = */ new TI.String());
+			Add(TI.Pad.DWord); // I've only ever seen this as zero
 			Add(/*Position = */ new TI.RealPoint3D());
 			Add(/*Orientation = */ new TI.RealEulerAngles3D());
-			Add(/*)Unused = */ new TI.Real(TI.FieldType.Angle));
 		}
-		#endregion
 	}
 	#endregion
 
 	#region scenario_cutscene_title_block
-	[TI.Definition(1, 36)]
+	[TI.Definition(2, 40)]
 	public class scenario_cutscene_title_block : TI.Definition
 	{
-		#region Fields
-		#endregion
-
-		#region Ctor
 		public scenario_cutscene_title_block()
 		{
 			Add(/*name = */ new TI.StringId());
 			Add(/*text bounds (on screen) = */ new TI.Rectangle2D());
 			Add(/*justification = */ new TI.Enum());
 			Add(/*font = */ new TI.Enum());
+			Add(new TI.Enum());
+			Add(TI.Pad.Word); // only ever seen this as zeros
 			Add(/*text color = */ new TI.Color(TI.FieldType.RgbColor));
 			Add(/*shadow color = */ new TI.Color(TI.FieldType.RgbColor));
 			Add(/*fade in time [seconds] = */ new TI.Real());
 			Add(/*up time [seconds] = */ new TI.Real());
 			Add(/*fade out time [seconds] = */ new TI.Real());
 		}
-		#endregion
 	}
 	#endregion
 
@@ -1310,11 +1213,11 @@ namespace BlamLib.Blam.Halo3.Tags
 		public TI.Block<hs_scripts_block> HsScripts;
 		public TI.Block<hs_globals_block> HsGlobals;
 		public TI.Block<hs_references_block> References;
-		public TI.Block<hs_source_files_block> SourceFiles;
-		public TI.Block<cs_script_data_block> ScriptingData;
+		public TI.Block<H2.hs_source_files_block> SourceFiles;
+		public TI.Block<H2.cs_script_data_block> ScriptingData;
 		public TI.Block<scenario_cutscene_flag_block> CutsceneFlags;
 		public TI.Block<scenario_cutscene_camera_point_block> CutsceneCameraPoints;
-		//public TI.Block<scenario_cutscene_title_block> CutsceneTitles;
+		public TI.Block<scenario_cutscene_title_block> CutsceneTitles;
 		public TI.TagReference CustomObjectNames;
 		public TI.TagReference ChapterTitleText;
 		#endregion
@@ -1354,7 +1257,7 @@ namespace BlamLib.Blam.Halo3.Tags
 		public scenario_group()
 		{
 			Add(Type = new TI.Enum());
-			Add(Flags = new TI.Flags(TI.FieldType.WordFlags));
+			Add(Flags = TI.Flags.Word);
 			Add(/*map id = */ MapId.SkipField); // id used for mapinfo files
 			Add(new TI.Skip(4));
 			Add(SandboxBuget = new TI.Real());
@@ -1502,15 +1405,15 @@ namespace BlamLib.Blam.Halo3.Tags
 				// tag block [0x?]
 				// tag block [0xC]
 			#region scripting and cinematics
-			Add(HsStringData = new TI.Data(this)); // 0x3E0, NOTE: stored in different memory region
+			Add(HsStringData = new TI.Data(this)); // 0x3E0, NOTE: memory region 3
 			Add(HsScripts = new TI.Block<hs_scripts_block>(this, 1024));
 			Add(HsGlobals = new TI.Block<hs_globals_block>(this, 256));
 			Add(References = new TI.Block<hs_references_block>(this, 512));
-			Add(SourceFiles = new TI.Block<hs_source_files_block>(this, 8));
-			Add(ScriptingData = new TI.Block<cs_script_data_block>(this, 1));
+			Add(SourceFiles = new TI.Block<H2.hs_source_files_block>(this, 8));
+			Add(ScriptingData = new TI.Block<H2.cs_script_data_block>(this, 1));
 			Add(CutsceneFlags = new TI.Block<scenario_cutscene_flag_block>(this, 512));
 			Add(CutsceneCameraPoints = new TI.Block<scenario_cutscene_camera_point_block>(this, 512));
-			Add(TI.UnknownPad.BlockHalo3); // tag block [0x?] Add(CutsceneTitles = new TI.Block<scenario_cutscene_title_block>(this, 128));
+			Add(CutsceneTitles = new TI.Block<scenario_cutscene_title_block>(this, 128));
 			Add(CustomObjectNames = new TI.TagReference(this, TagGroups.unic));
 			Add(ChapterTitleText = new TI.TagReference(this, TagGroups.unic));
 			Add(ScenarioResources = new TI.Block<scenario_resources_block>(this, 1));

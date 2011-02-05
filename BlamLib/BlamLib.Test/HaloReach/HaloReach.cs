@@ -21,12 +21,12 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BlamLib.Test.HaloReach
+namespace BlamLib.Test
 {
 	[TestClass]
 	public partial class HaloReach : BaseTestClass
 	{
-		const string kTestResultsPath = TestLibrary.kTestResultsPath + @"HaloReach\";
+		internal const string kTestResultsPath = TestLibrary.kTestResultsPath + @"HaloReach\";
 
 		[ClassInitialize]
 		public static void Initialize(TestContext context)

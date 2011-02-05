@@ -1243,7 +1243,6 @@ namespace BlamLib.Blam.Halo2.Tags
 	[TI.Definition(1, 40)]
 	public class hs_globals_block : Scripting.hs_globals_block
 	{
-		#region Ctor
 		public hs_globals_block() : base(6)
 		{
 			Add(Name = new TI.String());
@@ -1253,7 +1252,6 @@ namespace BlamLib.Blam.Halo2.Tags
 			Add(InitExpressionIndex = new TI.LongInteger());
 			Add(new TI.UselessPad(48));
 		}
-		#endregion
 	}
 	#endregion
 
@@ -1261,16 +1259,11 @@ namespace BlamLib.Blam.Halo2.Tags
 	[TI.Definition(1, 16)]
 	public class hs_references_block : TI.Definition
 	{
-		#region Fields
-		#endregion
-
-		#region Ctor
 		public hs_references_block() : base(2)
 		{
 			Add(new TI.UselessPad(24));
 			Add(/*reference = */ new TI.TagReference(this));
 		}
-		#endregion
 	}
 	#endregion
 
@@ -1278,16 +1271,11 @@ namespace BlamLib.Blam.Halo2.Tags
 	[TI.Definition(1, 52)]
 	public class hs_source_files_block : TI.Definition
 	{
-		#region Fields
-		#endregion
-
-		#region Ctor
 		public hs_source_files_block() : base(2)
 		{
 			Add(/*name = */ new TI.String());
 			Add(/*source = */ new TI.Data(this));
 		}
-		#endregion
 	}
 	#endregion
 
@@ -1303,27 +1291,18 @@ namespace BlamLib.Blam.Halo2.Tags
 			[TI.Definition(2, 60)]
 			public class cs_point_block : TI.Definition
 			{
-				#region Fields
-				#endregion
-
-				#region Ctor
 				public cs_point_block() : base(6)
 				{
 					Add(/*name = */ new TI.String());
 					Add(/*position = */ new TI.RealPoint3D());
 					Add(/*reference frame = */ new TI.ShortInteger());
-					Add(new TI.Pad(2));
+					Add(TI.Pad.Word);
 					Add(/*surface index = */ new TI.LongInteger());
 					Add(/*facing direction = */ new TI.RealEulerAngles2D());
 				}
-				#endregion
 			}
 			#endregion
 
-			#region Fields
-			#endregion
-
-			#region Ctor
 			public cs_point_set_block() : base(5)
 			{
 				Add(/*name = */ new TI.String());
@@ -1332,20 +1311,14 @@ namespace BlamLib.Blam.Halo2.Tags
 				Add(/*manual reference frame = */ new TI.ShortInteger());
 				Add(/*flags = */ new TI.Flags());
 			}
-			#endregion
 		}
 		#endregion
 
-		#region Fields
-		#endregion
-
-		#region Ctor
 		public cs_script_data_block() : base(2)
 		{
 			Add(/*point sets = */ new TI.Block<cs_point_set_block>(this, 200));
 			Add(new TI.Pad(120));
 		}
-		#endregion
 	}
 	#endregion
 
@@ -1353,10 +1326,6 @@ namespace BlamLib.Blam.Halo2.Tags
 	[TI.Definition(1, 56)]
 	public class scenario_cutscene_flag_block : TI.Definition
 	{
-		#region Fields
-		#endregion
-
-		#region Ctor
 		public scenario_cutscene_flag_block() : base(5)
 		{
 			Add(new TI.Pad(4));
@@ -1365,7 +1334,6 @@ namespace BlamLib.Blam.Halo2.Tags
 			Add(/*Facing = */ new TI.RealEulerAngles2D());
 			Add(new TI.UselessPad(36));
 		}
-		#endregion
 	}
 	#endregion
 
@@ -1373,13 +1341,9 @@ namespace BlamLib.Blam.Halo2.Tags
 	[TI.Definition(1, 64)]
 	public class scenario_cutscene_camera_point_block : TI.Definition
 	{
-		#region Fields
-		#endregion
-
-		#region Ctor
 		public scenario_cutscene_camera_point_block() : base(8)
 		{
-			Add(/*Flags = */ new TI.Flags(TI.FieldType.WordFlags));
+			Add(/*Flags = */ TI.Flags.Word);
 			Add(/*Type = */ new TI.Enum());
 			Add(/*Name = */ new TI.String());
 			Add(new TI.UselessPad(4));
@@ -1388,7 +1352,6 @@ namespace BlamLib.Blam.Halo2.Tags
 			Add(/*)Unused = */ new TI.Real(TI.FieldType.Angle));
 			Add(new TI.UselessPad(36));
 		}
-		#endregion
 	}
 	#endregion
 
@@ -1396,10 +1359,6 @@ namespace BlamLib.Blam.Halo2.Tags
 	[TI.Definition(1, 36)]
 	public class scenario_cutscene_title_block : TI.Definition
 	{
-		#region Fields
-		#endregion
-
-		#region Ctor
 		public scenario_cutscene_title_block() : base(9)
 		{
 			Add(/*name = */ new TI.StringId());
@@ -1412,7 +1371,6 @@ namespace BlamLib.Blam.Halo2.Tags
 			Add(/*up time [seconds] = */ new TI.Real());
 			Add(/*fade out time [seconds] = */ new TI.Real());
 		}
-		#endregion
 	}
 	#endregion
 

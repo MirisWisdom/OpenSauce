@@ -91,6 +91,21 @@ namespace BlamLib.Test
 
 		public string MapPath { get { return mapPath; } }
 
+		public string TestResultsPath
+		{ get {
+			switch (Game.ToBuild())
+			{
+				case BlamBuild.Halo1: return Halo1.kTestResultsPath;
+				case BlamBuild.Halo2: return Halo2.kTestResultsPath;
+				case BlamBuild.Halo3: return Halo3.kTestResultsPath;
+				case BlamBuild.HaloOdst: return HaloOdst.kTestResultsPath;
+				case BlamBuild.HaloReach: return HaloReach.kTestResultsPath;
+				case BlamBuild.Stubbs: return Stubbs.kTestResultsPath;
+
+				default: throw new Debug.Exceptions.UnreachableException(Game.ToString());
+			}
+		} }
+
 		bool ValidateReadyStatus()
 		{
 			if (!System.IO.File.Exists(mapPath))

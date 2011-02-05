@@ -330,6 +330,16 @@ namespace BlamLib.Blam.HaloReach
 	/// </summary>
 	public sealed class CacheFile : Blam.Cache.CacheFileGen3
 	{
+		#region GetCacheFileResourceDefinitionFactory
+		class CacheFileResourceDefinitionFactory : Cache.Tags.CacheFileResourceDefinitionFactory
+		{
+		};
+		public override Cache.Tags.CacheFileResourceDefinitionFactory GetCacheFileResourceDefinitionFactory()
+		{
+			return new CacheFileResourceDefinitionFactory();
+		}
+		#endregion
+
 		internal IO.EndianReader DecryptCacheSegment(CacheSectionType section_type, int segment_offset, int segment_size)
 		{
 			InputStream.Seek(segment_offset);

@@ -19,6 +19,7 @@
 ﻿#pragma warning disable 1591 // "Missing XML comment for publicly visible type or member"
 using System;
 using TI = BlamLib.TagInterface;
+using H2 = BlamLib.Blam.Halo2.Tags;
 using H3 = BlamLib.Blam.Halo3.Tags;
 
 namespace BlamLib.Blam.HaloReach.Tags
@@ -29,16 +30,82 @@ namespace BlamLib.Blam.HaloReach.Tags
 	{
 		public TI.Block<Blam.Halo3.Tags.hs_scripts_block.hs_scripts_parameters_block> Parameters;
 
-		#region Ctor
 		public hs_scripts_block() : base(5)
 		{
 			Add(Name = new TI.StringId());
 			Add(ScriptType = new TI.Enum());
 			Add(ReturnType = new TI.Enum());
 			Add(RootExpressionIndex = new TI.LongInteger());
-			Add(Parameters = new TI.Block<Blam.Halo3.Tags.hs_scripts_block.hs_scripts_parameters_block>(this, 0));
+			Add(Parameters = new TI.Block<H3.hs_scripts_block.hs_scripts_parameters_block>(this, 0));
+		}
+	}
+	#endregion
+
+	#region cs_script_data_block
+	[TI.Definition(1, 132)]
+	public class cs_script_data_block : TI.Definition
+	{
+		#region cs_point_set_block
+		[TI.Definition(3, 56)]
+		public class cs_point_set_block : TI.Definition
+		{
+			#region cs_point_block
+			[TI.Definition(3, 64)]
+			public class cs_point_block : TI.Definition
+			{
+				public cs_point_block()
+				{
+					Add(/*name = */ new TI.String());
+					Add(/*? = */ new TI.StringId());
+					Add(/*position = */ new TI.RealPoint3D());
+					Add(/*reference frame = */ new TI.ShortInteger());
+					Add(TI.Pad.Word);
+					Add(/*surface index = */ new TI.LongInteger());
+					Add(/*facing direction = */ new TI.RealEulerAngles2D());
+				}
+			}
+			#endregion
+
+			public cs_point_set_block() : base(7)
+			{
+				Add(/*name = */ new TI.String());
+				Add(/*points = */ new TI.Block<cs_point_block>(this, 20));
+				Add(/*bsp index = */ new TI.BlockIndex()); // 1 scenario_structure_bsp_reference_block
+				Add(/*manual reference frame = */ new TI.ShortInteger());
+				Add(/*flags = */ new TI.Flags());
+				Add(TI.BlockIndex.Word);
+				Add(TI.Pad.Word); // TODO: I'm PRETTY sure this is just padding, only ever seen zeros
+			}
 		}
 		#endregion
+
+		public cs_script_data_block() : base(2)
+		{
+			Add(/*point sets = */ new TI.Block<cs_point_set_block>(this, 200));
+			Add(new TI.Pad(120));
+		}
+	}
+	#endregion
+
+	#region scenario_cutscene_title_block
+	[TI.Definition(3, 48)]
+	public class scenario_cutscene_title_block : TI.Definition
+	{
+		public scenario_cutscene_title_block()
+		{
+			Add(/*name = */ new TI.StringId());
+			Add(/*text bounds (on screen) = */ new TI.Rectangle2D());
+			Add(new TI.UnknownPad(8)); // another Rect2D? If that's the case, this may actually be the on-screen field
+			Add(/*justification = */ new TI.Enum());
+			Add(/*font = */ new TI.Enum());
+			Add(new TI.Enum());
+			Add(TI.Pad.Word); // only ever seen this as zeros
+			Add(/*text color = */ new TI.Color(TI.FieldType.RgbColor));
+			Add(/*shadow color = */ new TI.Color(TI.FieldType.RgbColor));
+			Add(/*fade in time [seconds] = */ new TI.Real());
+			Add(/*up time [seconds] = */ new TI.Real());
+			Add(/*fade out time [seconds] = */ new TI.Real());
+		}
 	}
 	#endregion
 
@@ -60,6 +127,17 @@ namespace BlamLib.Blam.HaloReach.Tags
 	[TI.TagGroup((int)TagGroups.Enumerated.scnr, 5, 2156)]
 	public class scenario_group : TI.Definition
 	{
+		#region Fields
+		public TI.Enum Type;
+		public TI.Flags Flags;
+
+		#region scripting and cinematics
+		public TI.Data HsStringData;
+		public TI.Block<hs_scripts_block> HsScripts;
+		public TI.Block<H3.hs_globals_block> HsGlobals;
+		#endregion
+		#endregion
+
 		void version_construct_add_unnamed_array()
 		{
 			#region unknown
@@ -79,9 +157,44 @@ namespace BlamLib.Blam.HaloReach.Tags
 		}
 		public scenario_group()
 		{
-			// TOOD: finish up from here
+			Add(Type = new TI.Enum());
+			Add(Flags = TI.Flags.Word);
+			Add(TI.UnknownPad.DWord);
+			Add(/*map id = */ MapId.SkipField); // id used for mapinfo files
+			Add(new TI.Skip(4));
+			Add(new TI.UnknownPad(4 + 4));
+			Add(/*LocalNorth =*/ new TI.Real(TI.FieldType.Angle));
+			Add(new TI.UnknownPad(20));
+			Add(/*SandboxBuget =*/ new TI.Real());
+			Add(TI.UnknownPad.DWord);
+			Add(/*performance throttle = */new TI.TagReference(this, TagGroups.gptd));
+			Add(TI.UnknownPad.BlockHalo3); // tag block [0xAC] StructureBsps
+			Add(TI.UnknownPad.BlockHalo3); // tag block [0x20] structure designs
+				// tag reference [sddt]
+				// tag reference [????]
+			Add(TI.UnknownPad.ReferenceHalo3);
+			Add(TI.UnknownPad.ReferenceHalo3);
+			Add(TI.UnknownPad.BlockHalo3); // tag block [0x30] Skies
+				// tag reference [scen] (sky)
+				// unknown 0xC bytes (tag block?)
+				// tag reference [????]
+				// short
+				// short
 
-			// 0x4A0
+			// TOOD: finish up from here
+			Add(new TI.UnknownPad(0x3A0));
+
+			#region scripting and cinematics
+			Add(HsStringData = new TI.Data(this)); // 0x430, NOTE: stored in memory region 3
+			Add(HsScripts = new TI.Block<hs_scripts_block>(this, 1024));
+			Add(HsGlobals = new TI.Block<H3.hs_globals_block>(this, 256));
+			Add(/*References =*/ new TI.Block<H3.hs_references_block>(this, 512));
+			Add(/*SourceFiles =*/ new TI.Block<H2.hs_source_files_block>(this, 8));
+			Add(/*ScriptingData =*/ new TI.Block<cs_script_data_block>(this, 1));
+			Add(/*CutsceneFlags =*/ new TI.Block<H3.scenario_cutscene_flag_block>(this, 512));
+			Add(/*CutsceneCameraPoints =*/ new TI.Block<H3.scenario_cutscene_camera_point_block>(this, 512));
+			Add(/*CutsceneTitles =*/ new TI.Block<scenario_cutscene_title_block>(this, 128));
+			// 0x4A4
 			Add(/*CustomObjectNames =*/ new TI.TagReference(this, TagGroups.unic));
 			Add(/*ChapterTitleText =*/ new TI.TagReference(this, TagGroups.unic));
 			Add(/*ScenarioResources =*/ new TI.Block<H3.scenario_resources_block>(this, 1));
@@ -90,17 +203,10 @@ namespace BlamLib.Blam.HaloReach.Tags
 				// short
 				// short
 			Add(TI.UnknownPad.BlockHalo3); // tag block [0x?]?
+			// 0x4F4
 			Add(TI.UnknownPad.BlockHalo3); // tag block [0x30] this is physics related ata
 				// dword
-				// tag block [0x3C or 0x40] (I think this may get 16-byte aligned)
-					// unknown 0x16 bytes
-					// real[4] (the first three are definitely xyz)
-					// dword?
-					// dword
-					// dword
-					// dword?
-					// tag block [0x1] (mopp?)
-					// dword? (if this is just aligned to 16-byte pages, ignore this field)
+				// tag block H3.mopp_code_block
 				// dword
 				// tag_reference?
 				// real?
@@ -109,6 +215,7 @@ namespace BlamLib.Blam.HaloReach.Tags
 			Add(TI.UnknownPad.BlockHalo3); // tag block [0x?]?
 			Add(TI.UnknownPad.BlockHalo3); // tag block [0x?]?
 			Add(/*HsScriptDatums =*/ new TI.Block<H3.syntax_datum_block>(this, 0));
+			#endregion
 			Add(TI.UnknownPad.BlockHalo3); // tag block [0x?] Orders
 			Add(TI.UnknownPad.BlockHalo3); // tag block [0x?] Triggers
 			Add(TI.UnknownPad.BlockHalo3); // tag block [0x?] BackgroundSoundPalette

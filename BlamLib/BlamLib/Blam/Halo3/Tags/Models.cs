@@ -212,12 +212,13 @@ namespace BlamLib.Blam.Halo3.Tags
 			Add(new TI.LongInteger()); // m_capacityAndFlags
 
 			// hkEnum<BuildType, hkInt8> m_buildType;
-			Add(new TI.Enum(TI.FieldType.ByteEnum));
+			Add(TI.Enum.Byte);
 			Add(TI.Pad._24); // alignment
 			#endregion
 
 			// code
 			Add(new TI.Block<byte_block>(this, 0));
+			Add(TI.Pad.DWord); // alignment
 		}
 	};
 	#endregion

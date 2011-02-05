@@ -33,7 +33,7 @@ namespace BlamLib.Blam.Cache.Tags
 		public virtual TI.Definition GenerateSoundResourceResource()					{ return new sound_resource_definition(); }
 		public virtual TI.Definition GenerateBitmapTextureInterleavedInteropResource()	{ return new bitmap_texture_interleaved_interop_resource_reference(); }
 		public virtual TI.Definition GenerateStructureBspTagResource()					{ return new Halo3.Tags.scenario_structure_bsp_group.structure_bsp_tag_resources(); }
-		public virtual TI.Definition GenerateStructureBspCacheFileTagResource()			{ throw new NotImplementedException(); }
+		public virtual TI.Definition GenerateStructureBspCacheFileTagResource()			{ return new structure_bsp_cache_file_tag_resources(); }
 
 		internal virtual void InsertDataSizeIntoFauxDefinitionData(byte[] definition_data, uint data_size)
 		{
@@ -277,6 +277,66 @@ namespace BlamLib.Blam.Cache.Tags
 		internal static void InsertDataSizeIntoFauxDefinitionData(byte[] definition_data, int offset, uint data_size)
 		{
 			IO.ByteSwap.SwapUDWordAndInsert(data_size, definition_data, offset);
+		}
+	};
+	#endregion
+
+	#region structure_bsp_cache_file_tag_resources
+	[TI.Definition(1, 48)]
+	public partial class structure_bsp_cache_file_tag_resources : TI.Definition
+	{
+		#region block_0
+		[TI.Definition(1, 8)]
+		public class block_0 : TI.Definition
+		{
+			public TI.BlockIndex Index; // block_4
+			public TI.LongInteger Count;
+
+			public block_0() : base(2)
+			{
+				Add(Index = TI.BlockIndex.Long);
+				Add(Count = new TI.LongInteger());
+			}
+		};
+		#endregion
+
+		#region block_C
+		[TI.Definition(1, 4)]
+		public class block_C : TI.Definition
+		{
+			public TI.ShortInteger Unknown0, Unknown2;
+
+			public block_C() : base(2)
+			{
+				Add(Unknown0 = new TI.ShortInteger());
+				Add(Unknown2 = new TI.ShortInteger());
+			}
+		};
+		#endregion
+
+		#region block_18
+		[TI.Definition(1, 4)]
+		public class block_18 : TI.Definition
+		{
+			public TI.LongInteger Unknown0;
+
+			public block_18() : base(1)
+			{
+				Add(Unknown0 = new TI.LongInteger()); // this may actually be two shorts...only ever seen this data as 0xFFFFFFFF
+			}
+		};
+		#endregion
+
+		public TI.Block<block_0> Block0;
+		public TI.Block<block_C> BlockC;
+		public TI.Block<block_18> Block18;
+
+		public structure_bsp_cache_file_tag_resources() : base(4)
+		{
+			Add(Block0 = new TI.Block<block_0>(this));
+			Add(BlockC = new TI.Block<block_C>(this));
+			Add(Block18 = new TI.Block<block_18>(this));
+			Add(TI.UnknownPad.BlockHalo3); // haven't seen this used yet so not sure what the size is (may not be used in cache builds)
 		}
 	};
 	#endregion
