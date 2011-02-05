@@ -40,7 +40,7 @@ namespace BlamLib.Test
 	[TestClass]
 	public partial class HaloOdst : BaseTestClass
 	{
-		const string kTestResultsPath = TestLibrary.kTestResultsPath + @"HaloOdst\";
+		internal const string kTestResultsPath = TestLibrary.kTestResultsPath + @"HaloOdst\";
 
 		[ClassInitialize]
 		public static void Initialize(TestContext context)
@@ -78,6 +78,14 @@ namespace BlamLib.Test
 		{
 			CacheFileOutputInfoArgs.TestThreadedMethod(TestContext,
 				Halo3.CacheOutputInformationMethod,
+				BlamVersion.HaloOdst_Xbox, kMapsDirectoryXbox, kMapNames);
+		}
+
+		[TestMethod]
+		public void HaloOdstTestCacheLoadResourceXbox()
+		{
+			CacheFileOutputInfoArgs.TestThreadedMethod(TestContext,
+				Halo3.CacheLoadResourceMethod,
 				BlamVersion.HaloOdst_Xbox, kMapsDirectoryXbox, kMapNames);
 		}
 

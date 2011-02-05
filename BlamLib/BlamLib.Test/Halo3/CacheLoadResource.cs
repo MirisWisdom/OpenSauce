@@ -88,11 +88,16 @@ namespace BlamLib.Test
 		internal static void CacheLoadResourceMethod(object param)
 		{
 			bool output_play = false;
+				bool output_play_txt = false;
+				bool output_play_rsrc = false;
 			bool output_zone = false;
-			bool output_zone_data = false;
-			bool output_ugh = true;
+				bool output_zone_txt = false;
+				bool output_zone_data = false;
+			bool output_ugh = false;
 			bool output_sound_info = false;
+
 			bool output_index = false;
+			bool output_debug_string_ids = false;
 
 			var args = param as CacheFileOutputInfoArgs;
 
@@ -107,13 +112,16 @@ namespace BlamLib.Test
 					var play_index = cache.TagIndexManager.OpenFirstInstance(Blam.Halo3.TagGroups.play);
 					var playman = cache.TagIndexManager[play_index];
 					var playdef = playman.TagDefinition as Blam.Halo3.Tags.cache_file_resource_layout_table_group;
-					using (var sw = new StreamWriter(Path.Combine(kTestResultsPath, cache.Header.Name) + "_output_play.txt"))
-					{
-						Blam.Halo3.Tags.cache_file_resource_layout_table.Output(sw, playdef.ResourceLayoutTable);
-					}
 
-// 					Blam.Halo3.Tags.cache_file_resource_layout_table.OutputResources(kTestResultsPath, cache,
-// 						playdef.ResourceLayoutTable);
+					if(output_play_txt)
+						using (var sw = new StreamWriter(Path.Combine(args.TestResultsPath, cache.Header.Name) + "_output_play.txt"))
+						{
+							Blam.Cache.Tags.cache_file_resource_layout_table.Output(sw, playdef.ResourceLayoutTable);
+						}
+					if(output_play_rsrc)
+						Blam.Cache.Tags.cache_file_resource_layout_table.OutputResources(args.TestResultsPath, cache,
+ 							playdef.ResourceLayoutTable);
+
 					cache.TagIndexManager.Unload(play_index);
 				}
 				#endregion
@@ -123,19 +131,21 @@ namespace BlamLib.Test
 				{
 					var zone_index = cache.TagIndexManager.OpenFirstInstance(Blam.Halo3.TagGroups.zone);
 					var zoneman = cache.TagIndexManager[zone_index];
-					using (var sw = new StreamWriter(Path.Combine(kTestResultsPath, cache.Header.Name) + "_output_zone.txt"))
-					{
-						var zone = zoneman.TagDefinition as Blam.Halo3.Tags.cache_file_resource_gestalt_group;
-						Blam.Halo3.Tags.cache_file_resource_gestalt_group.Output(cache, sw, zone);
+					var zone = zoneman.TagDefinition as Blam.Halo3.Tags.cache_file_resource_gestalt_group;
 
-						if(output_zone_data)
-							using (var fs = new FileStream(
-								Path.Combine(kTestResultsPath, cache.Header.Name) + "_output_zone_data.bin", 
-								FileMode.Create, FileAccess.Write, FileShare.Read))
- 							{
- 								Blam.Halo3.Tags.cache_file_resource_gestalt_group.OutputData(fs, zone);
- 							}
-					}
+					if (output_zone_txt)
+						using (var sw = new StreamWriter(Path.Combine(args.TestResultsPath, cache.Header.Name) + "_output_zone.txt"))
+						{
+							Blam.Halo3.Tags.cache_file_resource_gestalt_group.Output(cache, sw, zone);
+						}
+					if (output_zone_data)
+						using (var fs = new FileStream(
+							Path.Combine(args.TestResultsPath, cache.Header.Name) + "_output_zone_data.bin",
+							FileMode.Create, FileAccess.Write, FileShare.Read))
+						{
+							Blam.Halo3.Tags.cache_file_resource_gestalt_group.OutputData(fs, zone);
+						}
+
 					cache.TagIndexManager.Unload(zone_index);
 				}
 				#endregion
@@ -143,7 +153,7 @@ namespace BlamLib.Test
 				#region output_ugh
 				if (output_ugh)
 				{
-					using (var sw = new StreamWriter(Path.Combine(kTestResultsPath, cache.Header.Name) + "_output_sound_gestalt.txt"))
+					using (var sw = new StreamWriter(Path.Combine(args.TestResultsPath, cache.Header.Name) + "_output_sound_gestalt.txt"))
 					{
 						var ugh_index = cache.TagIndexManager.OpenFirstInstance(Blam.Halo3.TagGroups.ugh_);
 						var ughman = cache.TagIndexManager[ugh_index];
@@ -160,7 +170,7 @@ namespace BlamLib.Test
 				#region output sound info
 				if (output_sound_info)
 				{
-					using (var sw = new StreamWriter(Path.Combine(kTestResultsPath, cache.Header.Name) + "_output_sounds.txt"))
+					using (var sw = new StreamWriter(Path.Combine(args.TestResultsPath, cache.Header.Name) + "_output_sounds.txt"))
 					{
 						var dic = new Dictionary<int, List<string>>();
 						dic.Add(0, new List<string>());
@@ -200,12 +210,11 @@ namespace BlamLib.Test
 				#endregion
 
 				if (output_index)
-				{
-//					Blam.CacheFile.OutputStringIds(cache, 
-//						BuildResultPath(kTestResultsPath, args.Game, cache.Header.Name, "output_string_id", "txt"), true);
 					Blam.CacheFile.OutputTags(cache,
-						BuildResultPath(kTestResultsPath, args.Game, cache.Header.Name, "output_index", "txt"));
-				}
+						BuildResultPath(args.TestResultsPath, args.Game, cache.Header.Name, "output_index", "txt"));
+				if (output_debug_string_ids)
+					Blam.CacheFile.OutputStringIds(cache, 
+						BuildResultPath(args.TestResultsPath, args.Game, cache.Header.Name, "output_string_id", "txt"), true);
 			}
 		}
 		[TestMethod]

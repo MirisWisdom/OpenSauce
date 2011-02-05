@@ -58,6 +58,18 @@ namespace BlamLib.Blam.HaloOdst
 	/// </summary>
 	public sealed class CacheFile : Halo3.CacheFileBase
 	{
+		#region GetCacheFileResourceDefinitionFactory
+		class CacheFileResourceDefinitionFactory : Cache.Tags.CacheFileResourceDefinitionFactory
+		{
+			public override BlamLib.TagInterface.Definition GenerateStructureBspTagResource()
+			{ return new Halo3.Tags.scenario_structure_bsp_group.structure_bsp_tag_resources_odst(); }
+		};
+		public override Cache.Tags.CacheFileResourceDefinitionFactory GetCacheFileResourceDefinitionFactory()
+		{
+			return new CacheFileResourceDefinitionFactory();
+		}
+		#endregion
+
 		protected override bool SharableReferenceXbox(string path)
 		{
 			if (SharableReference(path, Program.HaloOdst.XboxMainmenu)) ShareCacheStreams(this, Program.HaloOdst.XboxMainmenu);

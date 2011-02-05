@@ -24,7 +24,7 @@ namespace BlamLib.Test
 	[TestClass]
 	public partial class Stubbs : BaseTestClass
 	{
-		const string kTestResultsPath = TestLibrary.kTestResultsPath + @"Stubbs\";
+		internal const string kTestResultsPath = TestLibrary.kTestResultsPath + @"Stubbs\";
 
 		[ClassInitialize]
 		public static void Initialize(TestContext context)

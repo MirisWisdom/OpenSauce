@@ -584,8 +584,8 @@ namespace BlamLib.Blam.Halo3.Tags
 				Add(new TI.Block<mopp_code_block>(this, 0));
 				Add(TI.UnknownPad.BlockHalo3); // [0x?] (physics related)
 
-				Add(Unknown98 = new BlamLib.TagInterface.Block<block_98>(this, 0));
-				Add(UnknownA4 = new BlamLib.TagInterface.Block<block_A4>(this, 0));
+				Add(Unknown98 = new TI.Block<block_98>(this, 0));
+				Add(UnknownA4 = new TI.Block<block_A4>(this, 0));
 				Add(UnknownB0 = new TI.ShortInteger());
 				Add(UnknownB2 = new TI.ShortInteger());
 				Add(UnknownB4 = new TI.Real());
@@ -604,6 +604,23 @@ namespace BlamLib.Blam.Halo3.Tags
 			{
 				Add(BspCollision = new TI.Block<global_collision_bsp_block>(this, 1));
 				Add(InstancedGeometryDefinitions = new TI.Block<structure_bsp_instanced_geometry_definition_block>(this, 0));
+			}
+		};
+		#endregion
+
+		#region structure_bsp_tag_resources_odst
+		[TI.Definition(2, 48)]
+		public class structure_bsp_tag_resources_odst : TI.Definition
+		{
+			public TI.Block<global_collision_bsp_block> BspCollision;
+			public TI.Block<structure_bsp_instanced_geometry_definition_block> InstancedGeometryDefinitions;
+
+			public structure_bsp_tag_resources_odst() : base(4)
+			{
+				Add(BspCollision = new TI.Block<global_collision_bsp_block>(this, 1));
+				Add(TI.UnknownPad.BlockHalo3); // [0x?]
+				Add(InstancedGeometryDefinitions = new TI.Block<structure_bsp_instanced_geometry_definition_block>(this, 0));
+				Add(TI.UnknownPad.BlockHalo3); // [0x?]
 			}
 		};
 		#endregion

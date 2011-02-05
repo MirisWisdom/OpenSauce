@@ -19,6 +19,7 @@
 ﻿#pragma warning disable 1591 // "Missing XML comment for publicly visible type or member"
 using System;
 using TI = BlamLib.TagInterface;
+using H2 = BlamLib.Blam.Halo2.Tags;
 using H3 = BlamLib.Blam.Halo3.Tags;
 
 namespace BlamLib.Blam.HaloOdst.Tags
@@ -82,8 +83,8 @@ namespace BlamLib.Blam.HaloOdst.Tags
 		public TI.Block<H3.hs_scripts_block> HsScripts;
 		public TI.Block<H3.hs_globals_block> HsGlobals;
 		public TI.Block<H3.hs_references_block> References;
-		public TI.Block<H3.hs_source_files_block> SourceFiles;
-		public TI.Block<H3.cs_script_data_block> ScriptingData;
+		public TI.Block<H2.hs_source_files_block> SourceFiles;
+		public TI.Block<H2.cs_script_data_block> ScriptingData;
 		public TI.Block<H3.scenario_cutscene_flag_block> CutsceneFlags;
 		public TI.Block<H3.scenario_cutscene_camera_point_block> CutsceneCameraPoints;
 		//public TI.Block<H3.scenario_cutscene_title_block> CutsceneTitles;

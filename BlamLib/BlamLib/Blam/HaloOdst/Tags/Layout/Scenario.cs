@@ -19,6 +19,7 @@
 ﻿#pragma warning disable 1591 // "Missing XML comment for publicly visible type or member"
 using System;
 using TI = BlamLib.TagInterface;
+using H2 = BlamLib.Blam.Halo2.Tags;
 using H3 = BlamLib.Blam.Halo3.Tags;
 
 namespace BlamLib.Blam.HaloOdst.Tags
@@ -26,13 +27,11 @@ namespace BlamLib.Blam.HaloOdst.Tags
 	#region scenario_arg_device_palette_block
 	partial class scenario_arg_device_palette_block
 	{
-		#region Ctor
 		public scenario_arg_device_palette_block()
 		{
 			Add(/*Name = */ new TI.TagReference(this, TagGroups.argd));
 			Add(new TI.Pad(32));
 		}
-		#endregion
 	};
 	#endregion
 
@@ -41,10 +40,6 @@ namespace BlamLib.Blam.HaloOdst.Tags
 	[TI.Definition(4, 60)]
 	public class zone_block : TI.Definition
 	{
-		#region Fields
-		#endregion
-
-		#region Ctor
 		public zone_block() : base(4)
 		{
 			Add(/*name = */ new TI.String());
@@ -52,7 +47,6 @@ namespace BlamLib.Blam.HaloOdst.Tags
 			Add(TI.UnknownPad.BlockHalo3);//Add(/*firing positions = */ new TI.Block<firing_positions_block>(this, 512));
 			Add(TI.UnknownPad.BlockHalo3);//Add(/*areas = */ new TI.Block<areas_block>(this, 64));
 		}
-		#endregion
 	}
 	#endregion
 
@@ -89,7 +83,7 @@ namespace BlamLib.Blam.HaloOdst.Tags
 		public scenario_group()
 		{
 			Add(Type = new TI.Enum());
-			Add(Flags = new TI.Flags(TI.FieldType.WordFlags));
+			Add(Flags = TI.Flags.Word);
 			Add(/*map id = */ MapId.SkipField); // id used for mapinfo files
 			Add(new TI.Skip(4));
 			Add(SandboxBuget = new TI.Real());
@@ -195,8 +189,8 @@ namespace BlamLib.Blam.HaloOdst.Tags
 			Add(HsScripts = new TI.Block<H3.hs_scripts_block>(this, 1024));
 			Add(HsGlobals = new TI.Block<H3.hs_globals_block>(this, 256));
 			Add(References = new TI.Block<H3.hs_references_block>(this, 512));
-			Add(SourceFiles = new TI.Block<H3.hs_source_files_block>(this, 8));
-			Add(ScriptingData = new TI.Block<H3.cs_script_data_block>(this, 1));
+			Add(SourceFiles = new TI.Block<H2.hs_source_files_block>(this, 8));
+			Add(ScriptingData = new TI.Block<H2.cs_script_data_block>(this, 1));
 			Add(CutsceneFlags = new TI.Block<H3.scenario_cutscene_flag_block>(this, 512));
 			Add(CutsceneCameraPoints = new TI.Block<H3.scenario_cutscene_camera_point_block>(this, 512));
 			Add(TI.UnknownPad.BlockHalo3); // tag block [0x?] Add(CutsceneTitles = new TI.Block<scenario_cutscene_title_block>(this, 128));

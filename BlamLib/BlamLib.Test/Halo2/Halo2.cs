@@ -25,7 +25,7 @@ namespace BlamLib.Test
 	[TestClass]
 	public partial class Halo2 : BaseTestClass
 	{
-		const string kTestResultsPath = TestLibrary.kTestResultsPath + @"Halo2\";
+		internal const string kTestResultsPath = TestLibrary.kTestResultsPath + @"Halo2\";
 		const string kTestResultsPathXbox = kTestResultsPath + @"Xbox\";
 		const string kTestResultsPathXboxAlpha = kTestResultsPath + @"Xbox\Alpha\";
 		const string kTestResultsPathPc = kTestResultsPath + @"PC\";
