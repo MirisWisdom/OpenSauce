@@ -199,7 +199,7 @@ namespace BlamLib.Managers
 				foreach (TagInterface.TagGroup tg in list)
 				{
 					others.Add(tg);
-					if (tg.Children.Count != 0) others.AddRange(tg.Children);
+					if (tg.HasChildren) others.AddRange(tg.Children);
 				}
 
 				ignoreList = new TagInterface.TagGroupCollection(false, others.ToArray());
@@ -765,6 +765,13 @@ namespace BlamLib.Managers
 
 			#region Initialize tag manager
 			TagManager tm = new TagManager(this);
+
+			// HACK: Halo1 PC uses gbx's variant of the model tag
+			if (Engine == BlamVersion.Halo1_CE && tag_group == Blam.Halo1.TagGroups.mode)
+			{
+				tag_group = Blam.Halo1.TagGroups.mod2;
+			}
+
 			tm.ReferenceName = refManager.Add(tm, tag_group, name);
 			tm.Flags.Add(flags);
 			tm.Manage(tag_group);

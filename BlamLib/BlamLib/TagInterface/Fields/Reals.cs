@@ -146,7 +146,7 @@ namespace BlamLib.TagInterface
 		{
 			if (angle == (float)0) return 0;
 
-			float radians = /*(System.Math.PI / 180.0f)*/ 57.29578f * angle;
+			float radians = /*(System.Math.PI / 180.0f)*/ 0.017453292f * angle;
 			return (float)radians;
 		}
 
@@ -159,9 +159,18 @@ namespace BlamLib.TagInterface
 		{
 			if (radian == (float)0) return 0;
 
-			float degrees = /*(180.0f / System.Math.PI)*/ 0.017453292f * radian;
+			float degrees = /*(180.0f / System.Math.PI)*/ 57.29578f * radian;
 			return degrees;
 		}
+
+		/// <summary>
+		/// Returns a new Real field with angle attributes
+		/// </summary>
+		public static Real Angle { get { return new Real(FieldType.Angle); } }
+		/// <summary>
+		/// Returns a new Real field with real_fraction attributes
+		/// </summary>
+		public static Real Fraction { get { return new Real(FieldType.RealFraction); } }
 		#endregion
 
 		#region Operators
@@ -1584,6 +1593,17 @@ namespace BlamLib.TagInterface
 				ew.Write(Upper);
 			}
 		}
+		#endregion
+
+		#region Util
+		/// <summary>
+		/// Returns a new RealBounds field with angle attributes
+		/// </summary>
+		public static RealBounds Angle { get { return new RealBounds(FieldType.AngleBounds); } }
+		/// <summary>
+		/// Returns a new RealBounds field with real_fraction attributes
+		/// </summary>
+		public static RealBounds Fraction { get { return new RealBounds(FieldType.RealFractionBounds); } }
 		#endregion
 	};
 	#endregion

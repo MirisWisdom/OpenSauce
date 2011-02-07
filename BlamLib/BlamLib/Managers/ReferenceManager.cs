@@ -58,9 +58,10 @@ namespace BlamLib.Managers
 
 	/// <summary>
 	/// Class for managing operations associated with a pair consisting of a <see cref="BlamLib.TagInterface.TagGroup"/> 
-	/// and a string. The pair make up a 'reference name' handle. The handle is the group_tag value and the path value 
+	/// and a string. The pair make up a 'reference name' handle. The handle is the group_tag value and the tag name value 
 	/// of a tag reference.
 	/// </summary>
+	/// <remarks>A tag name is really just the tag's path (without an extension)</remarks>
 	[IO.Class((int)IO.TagGroups.Enumerated.ReferenceManagerFile, 1)]
 	public sealed class ReferenceManager : IO.FileManageable, IEnumerable<Blam.DatumIndex>, ICloneable
 	{
@@ -96,19 +97,19 @@ namespace BlamLib.Managers
 
 		#region implementation fields
 		// The way this works is that we are provided a list of group tags to work with.
-		// Then we keep track of file paths in a list.
-		// There can be multiple instances of the same file path strings, BUT
-		// there can be only one group tag matched to each one of those paths.
+		// Then we keep track of tag names in a list.
+		// There can be multiple instances of the same tag name, BUT there 
+		// can be only one group tag matched to each one of those names.
 		//
-		// In the case of adding, we'll check to see if a group tag \ file path
+		// In the case of adding, we'll check to see if a group tag \ tag name
 		// pair exists, and return that. Else we create a new pair and return that.
 		//
 		// In the case of removing a tag from our tracking, it only removes
 		// the path matched with the specified tag group when calling Remove.
 		//
 		// In the case of renaming a reference, we'll just create a new handle that uses
-		// the new path's index, while removing the old path from the list, then loop 
-		// through our reference tracker and propagate our update to and tracked child objects
+		// the new name's index, while removing the old name from the list, then loop 
+		// through our reference tracker and propagate our update to the tracked child objects
 
 		bool customGroupTags = false;
 		/// <summary>
@@ -116,7 +117,7 @@ namespace BlamLib.Managers
 		/// </summary>
 		TagInterface.TagGroupCollection groupTags;
 		/// <summary>
-		/// List of paths
+		/// List of tag names
 		/// </summary>
 		/// <remarks>These do not include file extensions</remarks>
 		List<string> referencePaths = new List<string>();
@@ -998,12 +999,12 @@ namespace BlamLib.Managers
 		/// Build the debug streams used in cache files which store the tag name values
 		/// </summary>
 		/// <remarks>
-		/// <paramref name="buffer"/> will most likely contain more bytes than needed for it's data 
+		/// <paramref name="buffer"/> will most likely contain more bytes than needed for its data 
 		/// so you may want to use <paramref name="buffer"/>.<see cref="System.IO.MemoryStream.ToArray()"/> 
 		/// when writing the data to another stream. Note that ToArray returns a COPY of the underlying 
 		/// byte[] so you, in some cases, may just want to use GetBuffer instead but use the 
 		/// <see cref="System.IO.MemoryStream.Length"/> field (compared to <see cref="System.IO.MemoryStream.Capacity"/>) 
-		/// to only write non-null (read: unused) bytes
+		/// to only write non-zero (ie, unused) bytes
 		/// </remarks>
 		/// <param name="offsets">Buffer containing the offsets of the string values in <paramref name="buffer"/></param>
 		/// <param name="buffer">Buffer containing the string values</param>
@@ -1013,14 +1014,11 @@ namespace BlamLib.Managers
 			offsets = new System.IO.MemoryStream(count * sizeof(int));
 			buffer = new System.IO.MemoryStream(count * 256);
 
-			Dictionary<Blam.DatumIndex, int> offset_table = new Dictionary<BlamLib.Blam.DatumIndex, int>(count);
-
-			using (var offsets_s = new BlamLib.IO.EndianWriter(offsets))
-			using (var buffer_s = new BlamLib.IO.EndianWriter(buffer))
+			using (var offsets_s = new IO.EndianWriter(offsets))
+			using (var buffer_s = new IO.EndianWriter(buffer))
 			{
 				foreach(Blam.DatumIndex di in references)
 				{
-					offset_table.Add(di, buffer_s.Position);
 					offsets_s.Write(buffer_s.Position);
 					buffer_s.Write(DatumToPath(di), true);
 				}
@@ -1081,7 +1079,7 @@ namespace BlamLib.Managers
 						s.WriteLine(kOutputReferenceFormat, DatumToGroupTag(di).Name, DatumToPath(di));
 						s.WriteLine("\tchild references:");
 
-						List<Blam.DatumIndex> refs_set = new List<BlamLib.Blam.DatumIndex>(objs.Count);
+						var refs_set = new List<Blam.DatumIndex>(objs.Count);
 						#region build refs_set
 						foreach (IReferenceMangerObject obj in objs) // go thru all the referencing objects...
 						{

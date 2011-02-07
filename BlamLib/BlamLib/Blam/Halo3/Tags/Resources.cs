@@ -115,8 +115,8 @@ namespace BlamLib.Blam.Halo3.Tags
 			}
 			#endregion
 
-			protected override int GetDepth() { return Depth.Value; }
-			protected override short GetMipmapCount() { return MipmapCount.Value; }
+			public override int GetDepth() { return Depth.Value; }
+			public override short GetMipmapCount() { return MipmapCount.Value; }
 		};
 		#endregion
 

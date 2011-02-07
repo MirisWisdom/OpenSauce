@@ -140,8 +140,14 @@ namespace BlamLib.Managers
 			tm.ReferenceName = i.ReferenceName; // sync the tag manager's name with the cache item's
 
 			bool group_tag_hack = false;
-			// HACK: Halo 2/3 use a the 'sound' group tag for their 'cache_file_sound' definitions
 			BlamBuild build = Engine.ToBuild();
+			// HACK: Halo1 PC uses gbx's variant of the model tag
+			if (Engine == BlamVersion.Halo1_CE && i.GroupTag == Blam.Halo1.TagGroups.mode)
+			{
+				tm.Manage(Blam.Halo1.TagGroups.mod2);
+				group_tag_hack = true;
+			} else
+			// HACK: Halo 2/3 use a the 'sound' group tag for their 'cache_file_sound' definitions
 #if !NO_HALO2
 			if (build == BlamBuild.Halo2 && i.GroupTag == Blam.Halo2.TagGroups.snd_)
 			{
