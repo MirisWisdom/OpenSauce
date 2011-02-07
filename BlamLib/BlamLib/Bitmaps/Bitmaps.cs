@@ -61,6 +61,9 @@ namespace BlamLib.Bitmaps
 
 		sprites,
 		interface_bitmaps,
+
+		/// <remarks>Halo 1 only</remarks>
+		white = cube_map+1,
 	};
 	#endregion
 
@@ -290,8 +293,8 @@ namespace BlamLib.Bitmaps
 
 		protected bitmap_data_block (int field_count) : base(field_count) {}
 
-		protected abstract int GetDepth();
-		protected abstract short GetMipmapCount();
+		public abstract int GetDepth();
+		public abstract short GetMipmapCount();
 
 		#region util
 		int MipmapGetHeight(short mipmap)

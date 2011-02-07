@@ -151,9 +151,11 @@ namespace BlamLib.TagInterface
 		/// <summary>
 		/// Tag groups which inherit from this tag group
 		/// </summary>
-		public List<TagGroup> Children	{ get { return children; } }
+		public List<TagGroup> Children { get { return children; } }
 
-		private void AddChild(TagGroup child)
+		public bool HasChildren { get { return children != null && children.Count > 0; } }
+
+		void AddChild(TagGroup child)
 		{
 			if (children == null) children = new List<TagGroup>(16);
 			if (children.IndexOf(child) == -1) children.Add(child);

@@ -28,8 +28,8 @@ namespace BlamLib.Blam.Halo1.Tags
 		#region bitmap_data_block
 		public partial class bitmap_data_block
 		{
-			protected override int GetDepth() { return Depth.Value; }
-			protected override short GetMipmapCount() { return MipmapCount.Value; }
+			public override int GetDepth() { return Depth.Value; }
+			public override short GetMipmapCount() { return MipmapCount.Value; }
 		};
 		#endregion
 	};
