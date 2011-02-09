@@ -1,6 +1,6 @@
 /*
     Yelo: Open Sauce SDK
-
+		Halo 2 (Xbox) Edition
     Copyright (C) 2005-2010  Kornner Studios (http://kornner.com)
 
     This program is free software: you can redistribute it and/or modify
@@ -18,27 +18,8 @@
 */
 #pragma once
 
-#include <TagGroups/TagGroupDefinitions.hpp>
-#include <TagGroups/Halo1/global_definitions.hpp>
+#include <TagGroups/Halo2/TagGroupDefinitions.hpp>
 
 namespace Yelo
 {
-	namespace Enums
-	{
-		enum {
-			k_protected_group_tag = 'prot', // HEK+: this overrides the scenario's group tag in the tag index.
-		};
-	};
-
-	namespace TagGroups
-	{
-		struct tag_iterator {
-			PAD32;
-			int16 current_index;
-			PAD16;
-			datum_index current_datum;
-			PAD32;
-			tag group_tag;
-		}; BOOST_STATIC_ASSERT( sizeof(tag_iterator) == 0x14 );
-	};
 };

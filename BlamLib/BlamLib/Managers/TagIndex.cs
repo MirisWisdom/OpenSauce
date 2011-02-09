@@ -743,6 +743,12 @@ namespace BlamLib.Managers
 		/// </remarks>
 		public Blam.DatumIndex Open(string name, TagInterface.TagGroup tag_group, uint flags)
 		{
+			// HACK: Halo1 PC uses gbx's variant of the model tag
+			if (Engine == BlamVersion.Halo1_CE && tag_group == Blam.Halo1.TagGroups.mode)
+			{
+				tag_group = Blam.Halo1.TagGroups.mod2;
+			}
+
 			if (Ignore(tag_group)) return kSkipped;
 
 			// Does this tag even exist on disk?
@@ -765,13 +771,6 @@ namespace BlamLib.Managers
 
 			#region Initialize tag manager
 			TagManager tm = new TagManager(this);
-
-			// HACK: Halo1 PC uses gbx's variant of the model tag
-			if (Engine == BlamVersion.Halo1_CE && tag_group == Blam.Halo1.TagGroups.mode)
-			{
-				tag_group = Blam.Halo1.TagGroups.mod2;
-			}
-
 			tm.ReferenceName = refManager.Add(tm, tag_group, name);
 			tm.Flags.Add(flags);
 			tm.Manage(tag_group);
