@@ -18,6 +18,7 @@
 */
 #pragma once
 
+#include <Common/BaseYeloSharedSettings.hpp>
 #include <Common/Halo1/YeloSettingsDefinitions.hpp>
 
 namespace Yelo
@@ -62,19 +63,5 @@ namespace Yelo
 		// Writes the XML header to [doc]. Also adds the engine id attribute data. 
 		// Adds a new element named [branch_name] and returns its object data or NULL if any of this fails
 		TiXmlElement* GenericSettingsWrite(TiXmlDocument& doc, cstring root_name, cstring branch_name);
-
-		// True: "true", "on", "1"
-		// False: "false", "off", "0", str == NULL
-		bool ParseBoolean(cstring str);
-
-		API_INLINE cstring BooleanToString(bool value)
-		{
-			return value ? "true" : "false";
-		}
-
-		// Parses an element for xyz or ijk attributes
-		void XmlReadReal3D(const TiXmlElement* element, real* r3d, const bool is_vector = false);
-		// Writes xyz or ijk attributes to an element
-		void XmlWriteReal3D(TiXmlElement* element, real* r3d, const bool is_vector = false);
 	};
 };

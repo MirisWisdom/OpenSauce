@@ -475,6 +475,14 @@
 				Name="Shared"
 				>
 				<File
+					RelativePath="..\..\shared\Include\Common\BaseYeloSharedSettings.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\Common\BaseYeloSharedSettings.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\shared\include_cpp\cseries\MacrosCpp.hpp"
 					>
 				</File>
