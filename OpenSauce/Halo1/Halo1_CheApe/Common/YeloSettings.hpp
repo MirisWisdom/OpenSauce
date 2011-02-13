@@ -90,8 +90,6 @@ namespace Yelo
 		};
 		const s_settings& Get();
 
-		void Test();
-
 		void Initialize();
 		void Dispose();
 
