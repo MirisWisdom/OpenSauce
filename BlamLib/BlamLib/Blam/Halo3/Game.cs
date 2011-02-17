@@ -146,7 +146,7 @@ namespace BlamLib.Blam.Halo3
 					break;
 
 				case Managers.BlamDefinition.ResourceStringIds:
-					gr = new Managers.StringIdManager();
+					gr = new Managers.StringIdStaticCollection();
 					result = gr.Load(r_path, r_name);
 					break;
 

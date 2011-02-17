@@ -307,44 +307,31 @@ namespace BlamLib.Blam.Cache
 		public Managers.ReferenceManager References { get { return refManager; } }
 		#endregion
 
-		#region StringTable
+		#region StringIdManager
+		Managers.StringIdManager stringIdManager = null;
 		/// <summary>
-		/// If the tag index supports string ids, this tries to retrieve the requested string id value.
+		/// String ids manager for this index
 		/// </summary>
-		/// <param name="handle">Requested string id handle</param>
-		/// <returns>Requested string id's value, or null if the tag index doesn't support string ids</returns>
-		public string StringIdGet(Blam.StringID handle)
+		public Managers.StringIdManager StringIds { get { return stringIdManager; } }
+
+		void StringTableInitialize()
 		{
-			if (stringTable != null) return stringTable.Get(handle);
-
-			return null;
-		}
-
-		public bool StringIdTryAndGet(string value, out Blam.StringID handle)
-		{
-			return stringTable.TryAndGet(value, out handle);
-		}
-
-		protected Managers.StringIdManager stringTable = null;
-		/// <summary>
-		/// Manager object for this index's tag definition's string id fields
-		/// </summary>
-		public Managers.StringIdManager StringTable { get { return stringTable; } }
-
-		protected void StringTableInitialize()
-		{
-			Managers.BlamDefinition gd = Program.GetManager(engine);
-
+			var gd = Program.GetManager(engine);
 			(gd as Managers.IStringIdController).StringIdCacheOpen(engine);
+			var static_collection = gd[engine].GetResource<Managers.StringIdStaticCollection>(Managers.BlamDefinition.ResourceStringIds);
 
-			stringTable = gd[engine].GetResource<Managers.StringIdManager>(Managers.BlamDefinition.ResourceStringIds);
+			stringIdManager = new Managers.StringIdManager(static_collection);
 		}
 
-		protected void StringTableDispose()
+		void StringTableDispose()
 		{
-			stringTable = null;
+			if (stringIdManager != null)
+			{
+				stringIdManager = null;
 
-			(Program.GetManager(engine) as Managers.IStringIdController).StringIdCacheClose(engine);
+				var gd = Program.GetManager(engine);
+				(gd as Managers.IStringIdController).StringIdCacheClose(engine);
+			}
 		}
 		#endregion
 

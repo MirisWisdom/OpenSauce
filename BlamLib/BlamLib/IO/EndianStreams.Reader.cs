@@ -406,7 +406,7 @@ namespace BlamLib.IO
 		}
 
 		/// <summary>
-		/// Get a Blam String (32 chars)
+		/// Get a Blam String (31 chars + null terminator)
 		/// </summary>
 		/// <returns>halo string from stream</returns>
 		/// <seealso cref="BinaryReader.ReadChars(int)"/>
@@ -414,7 +414,7 @@ namespace BlamLib.IO
 		{
 			char[] buf = file.ReadChars(32);
 			int x;
-			for (x = 0; x < 32; x++)
+			for (x = 0; x < 31; x++)
 				if (buf[x] == '\0') break;
 
 			return new string(buf, 0, x);
@@ -428,7 +428,7 @@ namespace BlamLib.IO
 		public string ReadString() { return file.ReadString(); }
 
 		/// <summary>
-		/// Reads a unicode (utf-16) string.
+		/// Reads a null terminated unicode (utf-16) string.
 		/// </summary>
 		/// <returns></returns>
 		public string ReadUnicodeString()
@@ -449,17 +449,19 @@ namespace BlamLib.IO
 		/// <summary>
 		/// Get a Blam Unicode String (variable char length)
 		/// </summary>
-		/// <param name="length">Length of string</param>
+		/// <param name="length">Length of the string, including the null terminator</param>
 		/// <returns></returns>
 		public string ReadUnicodeString(int length)
 		{
 			System.Text.StringBuilder builder = new System.Text.StringBuilder();
+			length--; // adjust for the null terminator
 			ushort ch = ReadUInt16();
 			while (ch != 0 && --length > 0) // read until the first null character
 			{
 				builder.Append((char)ch);
 				ch = ReadUInt16();
 			}
+			length++; // re-adjust for the null terminator
 
 			if (length > 0) file.BaseStream.Seek(length * sizeof(ushort), SeekOrigin.Current);
 
@@ -471,18 +473,19 @@ namespace BlamLib.IO
 		/// <summary>
 		/// Get a Blam ASCII String (variable char length)
 		/// </summary>
-		/// <param name="length">Length of string</param>
+		/// <param name="length">Length of the string, including the null terminator</param>
 		/// <remarks>Optimized for reading fixed sized strings that may have not been memset'd 
 		/// correctly (causing garbage data) but still have terminating zero</remarks>
 		/// <returns></returns>
 		public string ReadAsciiString(int length)
 		{
 			if (length == 0) return string.Empty;
-			Debug.Assert.If(length > 0, "invalid length: {0}", length);
 
 			// due to encoding shit and cases where strings aren't memset'd before IO'd causing
 			// garbage data to be IO'd with it, we have to read it as a byte array
 			byte[] chars = file.ReadBytes(length);
+			chars[length-1] = 0; // force a null terminator
+
 			int end = 0;
 			for (; end < chars.Length; end++) if (chars[end] == 0) break;
 			if (end == 0) return string.Empty;

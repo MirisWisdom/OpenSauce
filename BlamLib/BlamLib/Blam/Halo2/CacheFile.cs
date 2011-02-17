@@ -765,36 +765,6 @@ namespace BlamLib.Blam.Halo2
 		public Halo2.CacheIndex IndexHalo2 { get { return cacheIndex; } }
 		#endregion
 
-		#region StringTable
-		public override Managers.StringIdManager.GenerateIdMethod StringIdGenerateMethod { get { return BlamLib.Managers.StringIdManager.GenerateIdMethod.ByLength; } }
-
-		void StringIdsInitialize()
-		{
-			var gd = Program.Halo2.Manager;
-			gd.StringIdCacheOpen(base.engineVersion);
-			BaseStringIdTable = gd[engineVersion].GetResource<Managers.StringIdManager>(Managers.BlamDefinition.ResourceStringIds);
-			
-			// calculate how many string ids exist which aren't defined by the engine
-			int cache_sid_count = cacheHeader.StringIdsCount - BaseStringIdTable.PredefinedCount;
-			int[] offsets = new int[cache_sid_count];
-
-			// Calculate all the absolute offsets of all the exclusive string ids (the ones we actually need to store temporarily)
-			InputStream.Seek(cacheHeader.StringIdIndicesOffset + ((cacheHeader.StringIdsCount - cache_sid_count) * sizeof(int)));
-			for (int x = 0; x < offsets.Length; x++) offsets[x] = InputStream.ReadInt32() + cacheHeader.StringIdsBufferOffset;
-
-			// Read all the exclusive string id values, and add them to our hashtable
-			MapStringTable = new Dictionary<uint, string>(cache_sid_count);
-			// Halo 2 used the handle method of ByLength, so the next target id's index bits would be the count (since it's zero based)
-			short sid_index = (short)BaseStringIdTable.PredefinedCount;
-			foreach (int offset in offsets)
-			{
-				InputStream.Seek(offset);
-				var str = InputStream.ReadCString();
-				MapStringTable.Add(Blam.StringID.ToHandle(sid_index++, (byte)str.Length, 0), str);
-			}
-		}
-		#endregion
-
 		#region HasExternalReferences
 		/// <summary>
 		/// Returns whether this cache has tags which are
@@ -844,6 +814,7 @@ namespace BlamLib.Blam.Halo2
 
 		void TagIndexInitializeAndRead(BlamLib.IO.EndianReader s)
 		{
+			base.StringIdManagerInitializeAndRead();
 			base.InitializeReferenceManager(s.FileName);
 			base.InitializeTagIndexManager();
 
@@ -862,8 +833,6 @@ namespace BlamLib.Blam.Halo2
 			cacheHeader.Read(s);
 
 			TagIndexInitializeAndRead(s);
-
-			StringIdsInitialize();
 
 			isLoaded = true;
 		}

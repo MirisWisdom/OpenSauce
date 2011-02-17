@@ -196,7 +196,7 @@ namespace BlamLib.Blam.Halo3.Tags
 					def.Parameters.Value.ToString(), def.Unknown04.Value.ToString(),
 					def.EncodedPermutationData.Value.ToString("X4"), def.FirstPermutation.Value.ToString(),
 					def.GetPermutationCount().ToString(),
-					c.StringIdResolve(name));
+					c.StringIds.GetStringIdValue(name));
 			}
 		}
 	};
@@ -219,7 +219,7 @@ namespace BlamLib.Blam.Halo3.Tags
 
 				s.WriteLine(format, (x++).ToString(),
 					def.PermutationInfoIndex.ToString(), def.FirstChunk.Value.ToString(), def.ChunkCount.Value.ToString(), def.GetPermutationIndex().ToString(), 
-					c.StringIdResolve(name));
+					c.StringIds.GetStringIdValue(name));
 			}
 		}
 	};

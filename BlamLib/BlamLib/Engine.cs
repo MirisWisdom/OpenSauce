@@ -164,6 +164,20 @@ namespace BlamLib
 			// TODO: ODST? Reach?
 		}
 
+		/// <summary>
+		/// Get the EndianState used for cache files in a specific engine
+		/// </summary>
+		/// <param name="version"></param>
+		/// <returns></returns>
+		public static IO.EndianState GetCacheEndianState(this BlamVersion version)
+		{
+			if (version.IsXbox360())
+				// TODO: Do we need to use Big for Halo Mac too? Stubbs Mac appears to be Little...
+				return BlamLib.IO.EndianState.Big;
+
+			return BlamLib.IO.EndianState.Little;
+		}
+
 		#region Tag Group Collections
 		/// <summary>
 		/// Determines the collection of tag groups to use for the provided engine version

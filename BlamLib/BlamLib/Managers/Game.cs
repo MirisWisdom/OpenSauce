@@ -450,9 +450,7 @@ namespace BlamLib.Managers
 			/// </summary>
 			Dictionary<string, string> resources = new Dictionary<string, string>(ResourceDefaultCapacity);
 
-			/// <summary>
-			/// 
-			/// </summary>
+			/// <summary></summary>
 			/// <param name="resource_name"></param>
 			/// <param name="resource_location"></param>
 			/// <remarks>Used by sub-classes of <see cref="BlamDefinition"/> and their implementation only</remarks>
@@ -460,9 +458,7 @@ namespace BlamLib.Managers
 			{
 				resources.Add(resource_name, resource_location);
 			}
-			/// <summary>
-			/// 
-			/// </summary>
+			/// <summary></summary>
 			/// <param name="resource_name"></param>
 			/// <param name="resource_location"></param>
 			/// <returns></returns>
@@ -491,9 +487,7 @@ namespace BlamLib.Managers
 					return loadedResources[resource_name] as T;
 			}
 
-			/// <summary>
-			/// 
-			/// </summary>
+			/// <summary></summary>
 			/// <param name="resource_name"></param>
 			/// <param name="resource_obj"></param>
 			/// <remarks>Used for <see cref="BlamDefinition"/>'s implementation only</remarks>
@@ -502,9 +496,7 @@ namespace BlamLib.Managers
 				lock (ResourceLockObject)
 					loadedResources.Add(resource_name, resource_obj);
 			}
-			/// <summary>
-			/// 
-			/// </summary>
+			/// <summary></summary>
 			/// <param name="resource_name"></param>
 			/// <remarks>Used for <see cref="BlamDefinition"/>'s implementation only</remarks>
 			internal void CloseResource(string resource_name)
@@ -516,9 +508,7 @@ namespace BlamLib.Managers
 					loadedResources.Remove(resource_name);
 				}
 			}
-			/// <summary>
-			/// 
-			/// </summary>
+			/// <summary></summary>
 			/// <remarks>Used for <see cref="BlamDefinition"/>'s implementation only</remarks>
 			internal void Close()
 			{
@@ -784,7 +774,8 @@ namespace BlamLib.Managers
 			lock (g.ResourceLockObject)
 			{
 				bool result = PrecacheResource(g, resource_name);
-				Debug.Assert.If(result, "{0}'s resource failed to pre-cache: {0}.", g.Engine, resource_name);
+				if (!result)
+					throw new Debug.ExceptionLog("{0}'s resource failed to pre-cache: {0}.", g.Engine, resource_name);
 			}
 		}
 		/// <summary>

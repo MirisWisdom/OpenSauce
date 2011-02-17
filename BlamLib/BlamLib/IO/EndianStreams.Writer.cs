@@ -462,7 +462,7 @@ namespace BlamLib.IO
 		}
 
 		/// <summary>
-		/// Writes a string (1 byte length header, then the string)
+		/// Writes a string (prefixed with a length header, then the string)
 		/// </summary>
 		/// <param name="value"></param>
 		/// <seealso cref="BinaryWriter.Write(string)"/>
@@ -477,17 +477,16 @@ namespace BlamLib.IO
 		{
 			if (!cstring)
 			{
-				for (int x = 0; x < 32; x++)
+				for (int x = 0; x < 31; x++)
 					file.Write(x < value.Length ? value[x] : '\0');
 			}
 			else
 			{
 				if (value.Length != 0)
-				{
 					file.Write(value.ToCharArray());
-					file.Write((byte)0);
-				}
 			}
+
+			file.Write(byte.MinValue); // write the null terminator
 
 			if (autoFlush) file.Flush();
 		}
@@ -496,12 +495,17 @@ namespace BlamLib.IO
 		/// Write an ASCII string with a certain length
 		/// </summary>
 		/// <param name="value"></param>
-		/// <param name="length"></param>
+		/// <param name="length">Length of the string, including the null terminator</param>
 		public void Write(string value, int length)
 		{
-			if (length == 0 || value.Length == 0) return;
+			if (length == 0) return;
+
+			length--; // adjust for the null terminator
 			for (int x = 0; x < length; x++)
 				file.Write(x < value.Length ? value[x] : '\0');
+
+			file.Write(byte.MinValue); // write the null terminator
+
 			if (autoFlush) file.Flush();
 		}
 
@@ -509,12 +513,17 @@ namespace BlamLib.IO
 		/// Writes a Unicode string with a certain length
 		/// </summary>
 		/// <param name="value"></param>
-		/// <param name="length"></param>
+		/// <param name="length">Length of the string, including the null terminator</param>
 		public void WriteUnicodeString(string value, int length)
 		{
-			if (length == 0 || value.Length == 0) return;
+			if (length == 0) return;
+
+			length--; // adjust for the null terminator
 			for (int x = 0; x < length; x++)
 				Write(x < value.Length ? (ushort)value[x] : (ushort)'\0');
+
+			file.Write(ushort.MinValue); // write the null terminator
+
 			if (autoFlush) file.Flush();
 		}
 

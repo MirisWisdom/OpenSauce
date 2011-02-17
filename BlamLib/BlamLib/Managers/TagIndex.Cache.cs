@@ -21,7 +21,6 @@ using System.Collections.Generic;
 
 namespace BlamLib.Managers
 {
-	#region CacheTagIndex
 	/// <summary>
 	/// Tag Index that is based on cache files
 	/// </summary>
@@ -58,35 +57,11 @@ namespace BlamLib.Managers
 		public override ReferenceManager References { get { return cacheFile.References; } }
 		#endregion
 
-		#region StringTable
+		#region StringIdManager
 		/// <summary>
-		/// If the associated cache file supports string ids, this tries to retrieve the requested string id value.
+		/// String ids manager for this index
 		/// </summary>
-		/// <param name="handle">Requested string id handle</param>
-		/// <returns>Requested string id's value, or null if the cache file doesn't support string ids</returns>
-		public override string StringIdGet(Blam.StringID handle)
-		{
-			Blam.ICacheStringId c = cacheFile as Blam.ICacheStringId;
-			if (c != null) return c.StringIdResolve(handle);
-
-			return null;
-		}
-
-		public override bool StringIdTryAndGet(string value, out Blam.StringID handle)
-		{
-			Blam.ICacheStringId c = cacheFile as Blam.ICacheStringId;
-			handle = Blam.StringID.Null;
-
-			if (c != null)
-			{
-				foreach(KeyValuePair<uint, string> kv in c.EngineStringIds())
-					if (kv.Value == value) { handle.Handle = kv.Key; return true; }
-				foreach (KeyValuePair<uint, string> kv in c.MapStringIds())
-					if (kv.Value == value) { handle.Handle = kv.Key; return true; }
-			}
-
-			return false;
-		}
+		public override StringIdManager StringIds { get { return cacheFile.StringIds; } }
 		#endregion
 
 		#region Ctor
@@ -326,5 +301,4 @@ namespace BlamLib.Managers
 		}
 		#endregion
 	};
-	#endregion
 }

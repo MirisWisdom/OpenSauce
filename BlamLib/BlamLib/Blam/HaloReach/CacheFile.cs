@@ -366,47 +366,10 @@ namespace BlamLib.Blam.HaloReach
 		public HaloReach.CacheIndex IndexHaloReach { get { return cacheIndex; } }
 		#endregion
 
-		#region StringTable
-		public override Managers.StringIdManager.GenerateIdMethod StringIdGenerateMethod { get { return BlamLib.Managers.StringIdManager.GenerateIdMethod.ByGroup; } }
-
-		IO.EndianReader StringIdsDecrypt()
+		#region StringIdManager
+		protected override IO.EndianReader GetStringIdsBuffer(ICacheHeaderStringId sid_header)
 		{
-			return DecryptCacheSegment(CacheSectionType.Debug, cacheHeader.StringIdsBufferOffset, cacheHeader.StringIdsBufferSize);
-		}
-
-		void StringIdsInitialize()
-		{
-			// TODO: We can't decrypt these yet!
-			if (engineVersion == BlamVersion.HaloReach_Xbox)
-				return;
-
-			var gd = Program.GetManager(engineVersion);
-			(gd as Managers.IStringIdController).StringIdCacheOpen(base.engineVersion);
-			BaseStringIdTable = gd[engineVersion].GetResource<Managers.StringIdManager>(Managers.BlamDefinition.ResourceStringIds);
-
-			// calculate how many string ids exist which aren't defined by the engine
-			int cache_sid_count = cacheHeader.StringIdsCount - BaseStringIdTable.PredefinedCount;
-			int[] offsets = new int[cache_sid_count];
-
-			// Calculate all the absolute offsets of all the exclusive string ids (the ones we actually need to store temporarily)
-			InputStream.Seek(cacheHeader.StringIdIndicesOffset + ((cacheHeader.StringIdsCount - cache_sid_count) * sizeof(int)));
-			for (int x = 0; x < offsets.Length; x++) offsets[x] = InputStream.ReadInt32() /*+ cacheHeader.StringIdsBufferOffset*/;
-
-			// Read all the exclusive string id values, and add them to our hashtable
-			MapStringTable = new Dictionary<uint, string>(cache_sid_count);
-
-			using (var buffer = StringIdsDecrypt())
-			{
-				string str;
-				// Halo Reach used the handle method of ByGroup, so the next target id's index bits would be the count of the main group (since it's zero based)
-				short sid_index = (short)BaseStringIdTable.MainGroupCount;
-				foreach (int offset in offsets)
-				{
-					buffer.Seek(offset);
-					str = buffer.ReadCString();
-					MapStringTable.Add(Blam.StringID.ToHandle(sid_index++, 0, 0), str);
-				}
-			}
+			return DecryptCacheSegment(CacheSectionType.Debug, sid_header.StringIdsBufferOffset, sid_header.StringIdsBufferSize);
 		}
 		#endregion
 
@@ -465,6 +428,7 @@ namespace BlamLib.Blam.HaloReach
 
 		void TagIndexInitializeAndRead(BlamLib.IO.EndianReader s)
 		{
+			base.StringIdManagerInitializeAndRead();
 			base.InitializeReferenceManager(s.FileName);
 			base.InitializeTagIndexManager();
 
@@ -486,8 +450,6 @@ namespace BlamLib.Blam.HaloReach
 				throw new SharedCacheAccessException();
 
 			TagIndexInitializeAndRead(s);
-
-			StringIdsInitialize();
 
 			isLoaded = true;
 		}

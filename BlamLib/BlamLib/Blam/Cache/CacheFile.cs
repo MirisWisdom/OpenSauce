@@ -663,6 +663,72 @@ namespace BlamLib.Blam
 		}
 		#endregion
 
+		#region StringIdManager
+		public Managers.StringIdManager StringIds { get; private set; }
+
+		IO.EndianReader GetStringIdsIndicesBuffer(ICacheHeaderStringId sid_header)
+		{
+			int indicies_memory_size = sid_header.StringIdsCount * sizeof(int);
+
+			InputStream.Seek(sid_header.StringIdIndicesOffset);
+			byte[] input = InputStream.ReadBytes(indicies_memory_size);
+
+			return new IO.EndianReader(input, engineVersion.GetCacheEndianState());
+		}
+		/// <summary></summary>
+		/// <param name="sid_header"></param>
+		/// <returns></returns>
+		/// <remarks>This needs to be virtual as with the start of HaloReach, debug data is encrypted, so we have to override this behavior in its implmentation</remarks>
+		protected virtual IO.EndianReader GetStringIdsBuffer(ICacheHeaderStringId sid_header)
+		{
+			InputStream.Seek(sid_header.StringIdsBufferOffset);
+			byte[] input = InputStream.ReadBytes(sid_header.StringIdsBufferSize);
+
+			return new IO.EndianReader(input, engineVersion.GetCacheEndianState());
+		}
+
+		/// <summary>
+		/// Initialize the StringIdManager for this cache and load the dynamic id values
+		/// </summary>
+		/// <remarks>If this cache doesn't support string ids, this does nothing</remarks>
+		protected void StringIdManagerInitializeAndRead()
+		{
+			// HACK:
+			// TODO: We can't decrypt these yet!
+			if (engineVersion == BlamVersion.HaloReach_Xbox)
+				return;
+
+			var sid_header = Header as ICacheHeaderStringId;
+			if (sid_header == null) return; // This cache doesn't use string_ids, do nothing
+
+			var gd = Program.GetManager(engineVersion);
+			(gd as Managers.IStringIdController).StringIdCacheOpen(engineVersion);
+			var static_collection = gd[engineVersion].GetResource<Managers.StringIdStaticCollection>(Managers.BlamDefinition.ResourceStringIds);
+
+			StringIds = new Managers.StringIdManager(static_collection);
+
+			using (var indices = GetStringIdsIndicesBuffer(sid_header))
+			using (var buffer = GetStringIdsBuffer(sid_header))
+			{
+				StringIds.FromDebugStream(indices, buffer, true, sid_header.StringIdsCount, true);
+			}
+
+			StringIds.IsReadOnly = true;
+		}
+
+		void StringIdManagerDispose()
+		{
+			if (StringIds != null)
+			{
+				StringIds = null;
+
+				var gd = Program.GetManager(engineVersion);
+				(gd as Managers.IStringIdController).StringIdCacheClose(engineVersion);
+
+			}
+		}
+		#endregion
+
 		#region Flags
 		protected Util.Flags flags = new Util.Flags(0);
 		/// <summary>
@@ -901,11 +967,14 @@ namespace BlamLib.Blam
 		/// <summary>
 		/// Closes the map resources
 		/// </summary>
+		/// <remarks>Eg, tag manager, string id manager, IO streams, etc</remarks>
 		public virtual void Close()
 		{
 			CloseTagIndexManager();
 
 			refManager = null;
+
+			StringIdManagerDispose();
 
 			if (!IsSharedReference && InputStream != null) InputStream.Close();
 			InputStream = null;
@@ -953,31 +1022,33 @@ namespace BlamLib.Blam
 
 
 		[System.Diagnostics.Conditional("DEBUG")]
-		public static void OutputStringIds(ICacheStringId cache, string path, bool map_string_ids_only)
+		public static void OutputStringIds(CacheFile cache, string path, bool map_string_ids_only)
 		{
+			var sidm = cache.StringIds;
+
 			using(System.IO.StreamWriter s = new System.IO.StreamWriter(path))
 			{
 				if (!map_string_ids_only)
 				{
-					switch (cache.StringIdGenerateMethod)
+					switch (sidm.Definition.HandleMethod)
 					{
-						case BlamLib.Managers.StringIdManager.GenerateIdMethod.ByLength:
-							foreach (KeyValuePair<uint, string> kv in cache.EngineStringIds())
-								s.WriteLine("{0}\t{1}", kv.Key.ToString("X8"), kv.Value);
+						case Blam.StringID.GenerateIdMethod.ByLength:
+							foreach (var kv in sidm.StaticIdsContainer.StringIdsEnumerator())
+								s.WriteLine("{0}\t{1}", kv.Key.Handle.ToString("X8"), kv.Value);
 							break;
 
-						case BlamLib.Managers.StringIdManager.GenerateIdMethod.ByGroup:
-							foreach (KeyValuePair<uint, string> kv in cache.EngineStringIds())
+						case Blam.StringID.GenerateIdMethod.BySet:
+							foreach (var kv in sidm.StaticIdsContainer.StringIdsEnumerator())
 								if (Blam.StringID.ToSet(kv.Key) == 0)
-									s.WriteLine("{0}\t{1}", kv.Key.ToString("X8"), kv.Value);
+									s.WriteLine("{0}\t{1}", kv.Key.Handle.ToString("X8"), kv.Value);
 							break;
 					}
 				}
 
 				s.WriteLine("Cache String Ids:");
 
-				foreach (KeyValuePair<uint, string> kv in cache.MapStringIds())
-					s.WriteLine("\t{0}\t{1}", kv.Key.ToString("X8"), kv.Value);
+				foreach (var kv in sidm.DynamicIdsContainer.StringIdsEnumerator())
+					s.WriteLine("\t{0}\t{1}", kv.Key.Handle.ToString("X8"), kv.Value);
 			}
 		}
 
@@ -1086,39 +1157,6 @@ namespace BlamLib.Blam
 		/// Offset to the character buffer which containing all the string id values
 		/// </summary>
 		int StringIdsBufferOffset { get; }
-	};
-
-	/// <summary>
-	/// Interface to a cache file that uses string ids
-	/// </summary>
-	public interface ICacheStringId
-	{
-		/// <summary>
-		/// Method type used when generating this cache's string ids
-		/// </summary>
-		Managers.StringIdManager.GenerateIdMethod StringIdGenerateMethod { get; }
-		/// <summary>
-		/// Find a string id inside the cache
-		/// </summary>
-		/// <param name="id">id value</param>
-		/// <returns>string id's string, or null if not found</returns>
-		string StringIdResolve(StringID id);
-		/// <summary>
-		/// Find a string id inside the cache
-		/// </summary>
-		/// <param name="id">id value (as a integer)</param>
-		/// <returns>string id's string, or null if not found</returns>
-		string StringIdResolve(uint id);
-		/// <summary>
-		/// Enumeration of the engine string ids this map uses
-		/// </summary>
-		/// <returns></returns>
-		IEnumerable<KeyValuePair<uint, string>> EngineStringIds();
-		/// <summary>
-		/// Enumeration for the string ids that are only for this map
-		/// </summary>
-		/// <returns></returns>
-		IEnumerable<KeyValuePair<uint, string>> MapStringIds();
 	};
 
 
