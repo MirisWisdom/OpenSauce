@@ -472,37 +472,6 @@ namespace BlamLib.Blam.Halo3
 		public Halo3.CacheIndexBase IndexHalo3 { get { return cacheIndex; } }
 		#endregion
 
-		#region StringTable
-		public override Managers.StringIdManager.GenerateIdMethod StringIdGenerateMethod { get { return BlamLib.Managers.StringIdManager.GenerateIdMethod.ByGroup; } }
-
-		protected void StringIdsInitialize()
-		{
-			var gd = Program.GetManager(engineVersion);
-			(gd as Managers.IStringIdController).StringIdCacheOpen(base.engineVersion);
-			BaseStringIdTable = gd[engineVersion].GetResource<Managers.StringIdManager>(Managers.BlamDefinition.ResourceStringIds);
-
-			// calculate how many string ids exist which aren't defined by the engine
-			int cache_sid_count = cacheHeader.StringIdsCount - BaseStringIdTable.PredefinedCount;
-			int[] offsets = new int[cache_sid_count];
-
-			// Calculate all the absolute offsets of all the exclusive string ids (the ones we actually need to store temporarily)
-			InputStream.Seek(cacheHeader.StringIdIndicesOffset + ((cacheHeader.StringIdsCount - cache_sid_count) * sizeof(int)));
-			for (int x = 0; x < offsets.Length; x++) offsets[x] = InputStream.ReadInt32() + cacheHeader.StringIdsBufferOffset;
-
-			// Read all the exclusive string id values, and add them to our hashtable
-			MapStringTable = new Dictionary<uint, string>(cache_sid_count);
-			string str;
-			// Halo 3 used the handle method of ByGroup, so the next target id's index bits would be the count of the main group (since it's zero based)
-			short sid_index = (short)BaseStringIdTable.MainGroupCount;
-			foreach (int offset in offsets)
-			{
-				InputStream.Seek(offset);
-				str = InputStream.ReadCString();
-				MapStringTable.Add(Blam.StringID.ToHandle(sid_index++, 0, 0), str);
-			}
-		}
-		#endregion
-
 		protected abstract bool SharableReferenceXbox(string path);
 		protected virtual bool SharableReferencePc(string path) { return false; }
 
@@ -532,6 +501,7 @@ namespace BlamLib.Blam.Halo3
 
 		protected void TagIndexInitializeAndRead(BlamLib.IO.EndianReader s)
 		{
+			base.StringIdManagerInitializeAndRead();
 			base.InitializeReferenceManager(s.FileName);
 			base.InitializeTagIndexManager();
 
@@ -557,8 +527,6 @@ namespace BlamLib.Blam.Halo3
 				throw new SharedCacheAccessException();
 
 			TagIndexInitializeAndRead(s);
-
-			StringIdsInitialize();
 
 			isLoaded = true;
 		}

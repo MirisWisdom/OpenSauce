@@ -290,12 +290,12 @@ namespace BlamLib.Blam.Cache.Tags
 		public class block_0 : TI.Definition
 		{
 			public TI.BlockIndex Index; // block_4
-			public TI.LongInteger Count;
+			public TI.LongInteger _Count; // If we name it "Count" we get a warning due to Definition already having a Count property
 
 			public block_0() : base(2)
 			{
 				Add(Index = TI.BlockIndex.Long);
-				Add(Count = new TI.LongInteger());
+				Add(_Count = new TI.LongInteger());
 			}
 		};
 		#endregion

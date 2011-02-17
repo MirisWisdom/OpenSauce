@@ -45,6 +45,7 @@ namespace BlamLib.Test
 
 		const string kDirectoryXbox = @"C:\Mount\A\Bungie\Games\HaloReach\Xbox\";
 		static readonly string[] kMapNames_Retail = {
+			// 11860.10.07.24.0147
 			@"Retail\maps\20_sword_slayer.map",
 			@"Retail\maps\30_settlement.map",
 			@"Retail\maps\35_island.map",
@@ -91,6 +92,14 @@ namespace BlamLib.Test
 			@"Retail\dlc_defiant\trainingpreserve.map",
 		};
 		static readonly string[] kMapNames_Beta = {
+			// 09449.10.03.25.1545
+			@"Beta\maps\20_sword_slayer.map",
+			@"Beta\maps\30_settlement.map",
+			@"Beta\maps\70_boneyard.map",
+			@"Beta\maps\ff10_prototype.map",
+			@"Beta\maps\mainmenu.map",
+		};
+		static readonly string[] kMapNames_Delta = {
 			// 09730.10.04.09.1309
 			@"Delta\maps\20_sword_slayer.map",
 			@"Delta\maps\30_settlement.map",
@@ -129,7 +138,7 @@ namespace BlamLib.Test
 		{
 			CacheFileOutputInfoArgs.TestThreadedMethod(TestContext,
 				CacheOutputInformationMethod,
-				BlamVersion.HaloReach_Beta, kDirectoryXbox, kMapNames_Beta);
+				BlamVersion.HaloReach_Beta, kDirectoryXbox, kMapNames_Delta);
 		}
 		#endregion
 
@@ -256,8 +265,7 @@ namespace BlamLib.Test
 			delta.BuildStringIdSymbols();
 			{
 				var c = delta.Cache;
-				var sidm = Program.HaloReach.Manager[BlamVersion.HaloReach_Beta].GetResource<Managers.StringIdManager>(Managers.BlamDefinition.ResourceStringIds);
-				var sid_cache = c.MapStringIds();
+				var sid_cache = c.StringIds;
 
 				delta.StringIdSetBreakers = new int[15] {
 					1124, // 0
@@ -277,7 +285,7 @@ namespace BlamLib.Test
 					39,   // E
 					64,   // F
 				};
-				delta.StringIdCacheSetStartIndex = sidm.PredefinedCount;
+				delta.StringIdCacheSetStartIndex = sid_cache.StaticCount;
 				results_path = BuildResultPath(kTestResultsPath, delta.Cache.EngineVersion, c.Header.Name, "symbols.string_ids", "txt");
 				delta.OutputStringIdSymbols(results_path);
 

@@ -24,6 +24,13 @@ namespace BlamLib
 {
 	public static class TypeExtensions
 	{
+		// HACK: The new string id code was ported from some .NET 4 from a different project, which uses some .NET 4 constructs
+		// This is just a workaround to continue to use those constructs (kinda)
+		public static bool HasFlag(this Blam.StringID.GenerateIdMethod method, Blam.StringID.GenerateIdMethod flag)
+		{
+			return (method & flag) != 0;
+		}
+
 		public static DX.Vector2 To2D(this LowLevel.Math.real_quaternion values)
 		{
 			return new DX.Vector2(values.Vector.I, values.Vector.J);

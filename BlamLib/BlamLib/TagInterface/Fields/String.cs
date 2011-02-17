@@ -332,24 +332,20 @@ namespace BlamLib.TagInterface
 				object[] val = value as object[];
 				Handle = (Blam.StringID)val[0];
 				OwnerId = (Blam.DatumIndex)val[1];
-
 			}
 		}
 
 		public string GetStringValue()
 		{
 			if (OwnerId != Blam.DatumIndex.Null && Handle != Blam.StringID.Null)
-				if (Managers.BlamDefinition.IsCacheHandle(OwnerId))
-				{
-					var cf = Program.GetCacheFile(OwnerId);
-					// TODO: can't decrypt these yet!
-					if (cf.EngineVersion != BlamVersion.HaloReach_Xbox)
-						return ((Blam.ICacheStringId)cf).StringIdResolve(Handle);
-					else
-						return kEncryptedResult;
-				}
+			{
+				var ti = Program.GetTagIndex(OwnerId);
+				// TODO: can't decrypt these yet!
+				if (ti.Engine != BlamVersion.HaloReach_Xbox)
+					return ti.StringIds.GetStringIdValue(Handle);
 				else
-					return Program.GetTagIndex(OwnerId).StringIdGet(Handle);
+					return kEncryptedResult;
+			}
 
 			return "";
 		}
@@ -399,7 +395,7 @@ namespace BlamLib.TagInterface
 			if (OwnerId != Blam.DatumIndex.Null && str != null)
 			{
 				str = str.Replace(' ', '_').ToLower();
-				((Managers.TagIndex)Program.GetTagIndex(OwnerId)).StringTable.TryAndGet(str, out Handle);
+				Program.GetTagIndex(OwnerId).StringIds.TryAndGetStringId(str, out Handle);
 			}
 		}
 
@@ -478,7 +474,7 @@ namespace BlamLib.TagInterface
 
 				if (value != null /*&& Handle != Blam.StringID.Null*/)
 				{
-					Program.GetTagIndex(OwnerId).StringIdTryAndGet(value, out Handle);
+					Program.GetTagIndex(OwnerId).StringIds.TryAndGetStringId(value, out Handle);
 					Handle.Set = byte.MaxValue; // HACK used to tell Read that we already read the string data (as this is an old halo 2 tag)
 				}
 			}
@@ -512,7 +508,7 @@ namespace BlamLib.TagInterface
 				{
 					value = s.ReadAsciiString(Handle.Length);
 					if (Handle != Blam.StringID.Null)
-						Program.GetTagIndex(OwnerId).StringIdTryAndGet(value, out Handle);
+						Program.GetTagIndex(OwnerId).StringIds.TryAndGetStringId(value, out Handle);
 				}
 				catch (Exception ex)
 				{
@@ -543,7 +539,7 @@ namespace BlamLib.TagInterface
 		{
 			if (Handle != Blam.StringID.Null && !ts.Flags.Test(IO.ITagStreamFlags.DontStreamStringData))
 			{
-				string value = Program.GetTagIndex(OwnerId).StringIdGet(Handle);
+				string value = Program.GetTagIndex(OwnerId).StringIds.GetStringIdValue(Handle);
 				ts.GetOutputStream().Write(value, value.Length);
 			}
 		}

@@ -146,10 +146,16 @@
     <Compile Include="Blam\Halo2\Tags\Layout\Shaders.cs" />
     <Compile Include="Blam\HaloReach\Tags\Globals.cs" />
     <Compile Include="Blam\HaloReach\Tags\Scenario.cs" />
+    <Compile Include="Blam\DataHandles\DatumIndex.cs" />
+    <Compile Include="Blam\DataHandles\MapId.cs" />
+    <Compile Include="Blam\DataHandles\ResourcePtr.cs" />
+    <Compile Include="Blam\DataHandles\StringId.cs" />
     <Compile Include="IO\EndianStreams.cs" />
     <Compile Include="IO\EndianStreams.Reader.cs" />
     <Compile Include="IO\EndianStreams.Writer.cs" />
     <Compile Include="IO\Streams.TagStream.cs" />
+    <Compile Include="Managers\StringIdCollections.cs" />
+    <Compile Include="Managers\TagIndex.Base.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

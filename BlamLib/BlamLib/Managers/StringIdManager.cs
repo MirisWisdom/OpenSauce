@@ -18,369 +18,150 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Text;
+using StringID = BlamLib.Blam.StringID;
+using GenerateIdMethod = BlamLib.Blam.StringID.GenerateIdMethod;
 
 namespace BlamLib.Managers
 {
-	/// <summary>
-	/// Implemented by a tag collection for single access to string ids
-	/// </summary>
-	public interface IStringIdContainer
+	/// <summary>Manages an interface to both a static and dynamic set(s) of string IDs and their values.</summary>
+	public sealed class StringIdManager : IStringIdContainer
 	{
-		/// <summary>
-		/// Provides an interface to enumerate through all the string ids in this container
-		/// </summary>
-		/// <returns>Interface for enumerating through each string id's handle and value in this container</returns>
-		IEnumerable<KeyValuePair<uint, string>> StringIds();
+		StringIdStaticCollection m_staticCollection;
+		/// <summary>Container object for all static (predefined) string IDs</summary>
+		public IStringIdContainer StaticIdsContainer { get { return m_staticCollection; } }
 
-		/// <summary>
-		/// Retrieve a string id value via it's handle
-		/// </summary>
-		/// <param name="sid">string id handle</param>
-		/// <returns>string id's value, or null if it doesn't exist</returns>
-		string Get(Blam.StringID sid);
+		StringIdDynamicCollection m_dynamicCollection;
+		/// <summary>Container object for all dynamic string IDs</summary>
+		public IStringIdContainer DynamicIdsContainer { get { return m_dynamicCollection; } }
 
-		/// <summary>
-		/// Retrieve a global string id value via it's index
-		/// </summary>
-		/// <param name="index">index of the string id</param>
-		/// <returns>string id's value, or null if it doesn't exist</returns>
-		string GetAbsolute(short index);
-
-		/// <summary>
-		/// Find a string's handle. If it is not found, the implementing class has the option of 
-		/// adding the string (to the global list) and returning a *new* handle. It all depends 
-		/// on the context and if <see cref="IsReadOnly"/> is false
-		/// </summary>
-		/// <param name="value">string value to find</param>
-		/// <param name="handle">Reference to receive the handle, or a null value if this fails</param>
-		/// <returns>True if the string exists</returns>
-		bool TryAndGet(string value, out Blam.StringID handle);
-
-		/// <summary>
-		/// Does this container allow new handles to be made from new strings?
-		/// </summary>
-		bool IsReadOnly { get; }
-	};
-
-	/// <summary>
-	/// Manages all string ids for a cache\tag-system instance
-	/// </summary>
-	/// <remarks>
-	/// Due to the internal design of this class, only a tag interface OR a cache interface can 
-	/// exist at a single moment for a single engine version (<see cref="BlamLib.BlamVersion"/>).
-	/// 
-	/// IE, if there is a tag interface for Halo2_Xbox currently in memory, the system shouldn't be 
-	/// loading a Halo2_Xbox cache interface. If it does, BAD THINGS WILL HAPPEN when string id code is executed!
-	/// 
-	/// This has no effect on Halo 1 or Stubbs systems of course, but the same limitation should be imposed 
-	/// just to be consistent.
-	/// </remarks>
-	public sealed class StringIdManager : IDisposable, IStringIdContainer, BlamDefinition.IGameResource
-	{
-		/// <summary>
-		/// What extra method to use when generating a id linked to a string
-		/// </summary>
-		/// <remarks>Index is always included in id generation</remarks>
-		public enum GenerateIdMethod
-		{
-			/// <summary>
-			/// Use string length as part of the id
-			/// </summary>
-			ByLength,
-			/// <summary>
-			/// Use group identifiers as part of the id
-			/// </summary>
-			ByGroup,
-		};
-
-		#region HandleMethod
-		GenerateIdMethod handleMethod = GenerateIdMethod.ByLength;
-		/// <summary>
-		/// Method used which to create new handles
-		/// </summary>
-		public GenerateIdMethod HandleMethod	{ get { return handleMethod; } }
-		#endregion
-
-		Dictionary<uint, string>[] Groups = null;
+		/// <summary>The base definition of this manager</summary>
+		internal StringIdCollectionDefintion Definition { get { return m_staticCollection.Definition; } }
 
 		#region Count
-		int predefinedCount;
-		/// <summary>
-		/// Number of string ids which are predefined by a engine's code
-		/// </summary>
-		public int PredefinedCount	{ get { return predefinedCount; } }
+		/// <summary>Number of strings which are predefined to a specific value</summary>
+		public int StaticCount { get { return m_staticCollection.Count; } }
 
-		/// <summary>
-		/// Number of string ids in the 'main' string id group
-		/// </summary>
-		public int MainGroupCount { get { return Groups[0].Count; } }
-		
-		/// <summary>
-		/// Total number of string ids in use
-		/// </summary>
-		public int Count {
-			get {
-				int count = 0;
-				foreach (Dictionary<uint, string> dic in Groups) count += dic.Count;
-				return count;
-			}
-		}
+		/// <summary>Total number of string ids in use</summary>
+		public int Count { get { return StaticCount + m_dynamicCollection.Count; } }
 		#endregion
 
-		#region Loading
-		void LoadGroups(IO.XmlStream s)
+		#region Ctor
+		internal StringIdManager(StringIdStaticCollection static_collection)
 		{
-			int key = -1;
-			string val = string.Empty;
-			Groups = new Dictionary<uint, string>[s.Cursor.ChildNodes.Count];
-			foreach (System.Xml.XmlNode n in s.Cursor.ChildNodes)
-			{
-				if (n.Name != "entry") continue;
+			if (static_collection == null) throw new ArgumentNullException("static_collection", "");
 
-				s.SaveCursor(n);
-				s.ReadAttribute("key", 10, ref key);
-				s.ReadAttribute("value", ref val);
-				Groups[key] = new Dictionary<uint, string>();
-				s.RestoreCursor();
-			}
+			m_staticCollection = static_collection;
 
-#if DEBUG
-			for (int x = 0; x < Groups.Length; x++)
-				Debug.Assert.If(Groups[x] != null, "Resource failed to define a group [{0}].", x);
-#endif
-		}
-
-		void LoadConstants(IO.XmlStream s)
-		{
-			Blam.StringID sid = new BlamLib.Blam.StringID();
-			string val = string.Empty;
-			Dictionary<uint, string> dic = null;
-			byte dicSet = byte.MaxValue;
-			foreach (System.Xml.XmlNode n in s.Cursor.ChildNodes)
-			{
-				if (n.Name != "entry") continue;
-
-				s.SaveCursor(n);
-				s.ReadAttribute("key", 16, ref sid.Handle);
-				s.ReadAttribute("value", ref val);
-
-				if(sid.Set != dicSet) // this is so we're not always performing a hash lookup on every add
-					dic = Groups[dicSet = sid.Set];
-				dic.Add(sid, val);
-
-				s.RestoreCursor();
-			}
-		}
-
-		/// <summary>
-		/// Load the string id data from an xml manifest file
-		/// </summary>
-		/// <param name="path"></param>
-		/// <param name="name"></param>
-		public bool Load(string path, string name)
-		{
-			using(IO.XmlStream s = new BlamLib.IO.XmlStream(path, name, this))
-			{
-				s.ReadAttribute("method", ref handleMethod);
-
-				foreach (System.Xml.XmlNode n in s.Cursor.ChildNodes)
-					if (n.Name == "groups")
-					{
-						Debug.Warn.If(handleMethod == GenerateIdMethod.ByGroup, "File defines id groups, but doesn't use a group method (or failed to say it does). {0}{1}", path, name);
-						s.SaveCursor(n);
-						LoadGroups(s);
-						s.RestoreCursor();
-					}
-					else if (n.Name == "predefined")
-					{
-						if(Groups == null) // this system uses a by-length method, so we define a single global group
-						{
-							Groups = new Dictionary<uint, string>[1];
-							Groups[0] = new Dictionary<uint, string>();
-						}
-
-						s.SaveCursor(n);
-						LoadConstants(s);
-						s.RestoreCursor();
-					}
-
-				predefinedCount = Count;
-			}
-			return true;
-		}
-
-		public void Close()
-		{
-			if (Groups != null)
-			{
-				for (int x = 0; x < Groups.Length; x++)
-				{
-					Groups[x].Clear();
-					Groups[x] = null;
-				}
-				Groups = null;
-			}
+			m_dynamicCollection = new StringIdDynamicCollection(Definition.HandleMethod, Definition.GenerateInitialIdForAdding());
 		}
 		#endregion
-
-		#region IDisposable Members
-		public void Dispose()	{ Close(); }
-		#endregion
-
-		public Blam.StringID GetNext(Blam.StringID sid, out string value)
-		{
-			value = string.Empty;
-
-			if (sid.Set < Groups.Length && sid.Index < Groups[sid.Set].Count-1)
-			{
-				var dic = Groups[sid.Set];
-				bool is_next = false;
-				foreach (var kv in dic)
-				{
-					if (is_next)
-					{
-						value = kv.Value;
-						return (Blam.StringID)kv.Key;
-					}
-					is_next = Blam.StringID.ToIndex(kv.Key) == sid.Index;
-				}
-			}
-
-			return Blam.StringID.Null;
-		}
-		public Blam.StringID GetNext(Blam.StringID sid)
-		{
-			string value;
-			return GetNext(sid, out value);
-		}
 
 		#region IStringIdContainer Members
-		/// <summary>
-		/// Provides an interface to enumerate through all the string ids in this container
-		/// </summary>
-		/// <returns>Interface for enumerating through each string id's handle and value in this container</returns>
-		public IEnumerable<KeyValuePair<uint, string>> StringIds()
+		public IEnumerable<KeyValuePair<StringID, string>> StringIdsEnumerator()
 		{
-			foreach (Dictionary<uint, string> dic in Groups)
-				foreach (KeyValuePair<uint, string> kv in dic)
-					yield return kv;
+			foreach (var kv in (m_staticCollection as IStringIdContainer).StringIdsEnumerator())
+				yield return kv;
+			foreach (var kv in (m_dynamicCollection as IStringIdContainer).StringIdsEnumerator())
+				yield return kv;
 		}
 
-		/// <summary>
-		/// Retrieve a string id value via it's handle
-		/// </summary>
-		/// <param name="sid">string id handle</param>
-		/// <returns>string id's value, or null if it doesn't exist</returns>
-		public string Get(Blam.StringID sid)
+		/// <summary>Determines if the ID exists in this container</summary>
+		/// <param name="sid"></param>
+		/// <returns></returns>
+		public bool ContainsStringId(StringID sid)
 		{
-			if (sid.Handle == 0) return string.Empty; // little optimization
-
-			string ret = null;
-			if (sid.Set < Groups.Length && Groups[sid.Set].TryGetValue(sid.Handle, out ret))
-				return ret;
-			return null;
+			return m_staticCollection.ContainsStringId(sid) || m_dynamicCollection.ContainsStringId(sid);
 		}
-		/// <summary>
-		/// Retrieve a global string id value via it's index
-		/// </summary>
-		/// <param name="index">index of the string id</param>
-		/// <returns>string id's value, or null if it doesn't exist</returns>
-		public string GetAbsolute(short index)
+
+		public string GetStringIdValue(StringID sid)
 		{
-			if(index < Groups[0].Count)
+			string value = m_staticCollection.GetValue(sid);
+
+			if (value == null)
+				value = m_dynamicCollection.GetValue(sid);
+
+			if (value == null)
+				throw new KeyNotFoundException(sid.ToString());
+
+			return value;
+		}
+
+		public string GetStringIdValueUnsafe(short absolute_index)
+		{
+			string value = m_staticCollection.GetValueUnsafe(absolute_index);
+
+			if (value == null)
 			{
-				Dictionary<uint, string> dic = Groups[0];
-				foreach (uint k in dic.Keys)
-					if (Blam.StringID.ToIndex(k) == index)
-						return dic[k];
+				absolute_index -= (short)StaticCount;
+				value = m_dynamicCollection.GetValueUnsafe(absolute_index);
 			}
 
-			return null;
-		}
-		/// <summary>
-		/// Find a string's handle. If it is not found, the string will be added 
-		/// (to the global list) and a *new* handle will be returned, depending on
-		/// if <see cref="IsReadOnly"/> is false and <paramref name="add"/> is true.
-		/// </summary>
-		/// <param name="value">string value to find</param>
-		/// <param name="handle">Reference to receive the handle, or a null value if this fails</param>
-		/// <param name="add"></param>
-		/// <returns>True if the string exists</returns>
-		public bool TryAndGet(string value, out BlamLib.Blam.StringID handle, bool add)
-		{
-			handle = Blam.StringID.Null;
-			#region try to find
-			foreach (Dictionary<uint, string> dic in Groups)
-			{
-				foreach (KeyValuePair<uint, string> pair in dic)
-				{
-					if (pair.Value == value)
-					{
-						handle.Handle = pair.Key;
-						return true;
-					}
-				}
-			}
-			#endregion
-			#region add value
-			if (!IsReadOnly && add) // only add value if this collection can be modified
-			{
-				Dictionary<uint, string> dic = Groups[0];
-				switch (handleMethod)
-				{
-					case GenerateIdMethod.ByLength: handle = new BlamLib.Blam.StringID((short)(dic.Count - 1), (byte)value.Length, 0); break;
-					case GenerateIdMethod.ByGroup: handle = new BlamLib.Blam.StringID((short)(dic.Count - 1), 0, 0); break;
-					default: throw new Debug.Exceptions.UnreachableException(handleMethod);
-				}
-				dic.Add(handle.Handle, value);
-				return true;
-			}
-			#endregion
-			return false;
-		}
-		/// <summary>
-		/// Find a string's handle. If it is not found, the string will be added 
-		/// (to the global list) and a *new* handle will be returned.
-		/// </summary>
-		/// <param name="value">string value to find</param>
-		/// <param name="handle">Reference to receive the handle, or a null value if this fails</param>
-		/// <returns>True if the string exists</returns>
-		public bool TryAndGet(string value, out BlamLib.Blam.StringID handle)	{ return TryAndGet(value, out handle, true); }
+			if(value == null)
+				throw new ArgumentOutOfRangeException(absolute_index.ToString("X4"));
 
-		/// <summary>
-		/// Does this container allow new handles to be made from new strings?
-		/// </summary>
-		/// <remarks>ALWAYS returns false</remarks>
-		public bool IsReadOnly { get { return false; } }
+			return value;
+		}
+
+		public bool TryAndGetStringId(string value, out StringID sid)
+		{
+			bool result = m_staticCollection.TryAndGetStringId(value, out sid);
+
+			return result || m_dynamicCollection.TryAndGetStringId(value, out sid);
+		}
+
+		/// <summary>Does this container allow new ids to be added from dynamic strings?</summary>
+		public bool IsReadOnly
+		{
+			get { return m_dynamicCollection.IsReadOnly; }
+			internal set { m_dynamicCollection.IsReadOnly = value; }
+		}
 		#endregion
 
-		/// <summary>
-		/// Build the debug streams used in cache files which store the string id values
-		/// </summary>
-		/// <remarks>
-		/// When setting <paramref name="pack"/> to true, see <see cref="ReferenceManager.GenerateDebugStream"/> 
-		/// in regards to special conditions you may want to take about <paramref name="buffer"/>
-		/// </remarks>
-		/// <param name="pack">If true, the strings are stored as null terminated strings, else in 128 character blocks</param>
+		#region DebugStream Utils
+		/// <summary>Build debug streams which foreign native code can easily interop with</summary>
 		/// <param name="offsets">Buffer containing the offsets of the string values in <paramref name="buffer"/></param>
 		/// <param name="buffer">Buffer containing the string values</param>
-		public void GenerateDebugStream(bool pack, out System.IO.MemoryStream offsets, out System.IO.MemoryStream buffer)
+		/// <param name="pack">If true, the strings are stored as null terminated strings, else in 128 character strings</param>
+		/// <remarks>
+		/// <paramref name="buffer"/> will most likely contain more bytes than needed for its data 
+		/// so you may want to use <paramref name="buffer"/>.<see cref="System.IO.MemoryStream.ToArray()"/> 
+		/// when writing the data to another stream. Note that ToArray returns a COPY of the underlying 
+		/// byte[] so you, in some cases, may just want to use GetBuffer instead but use the 
+		/// <see cref="System.IO.MemoryStream.Length"/> field (compared to <see cref="System.IO.MemoryStream.Capacity"/>) 
+		/// to only write non-zero (ie, unused) bytes
+		/// </remarks>
+		public void GenerateDebugStream(out System.IO.MemoryStream offsets, out System.IO.MemoryStream buffer, bool pack)
 		{
-			int count = this.Count;
-			offsets = new System.IO.MemoryStream(count * sizeof(int));
-			buffer = new System.IO.MemoryStream(pack ? 0 : count * 128); // TODO: figure out a good starting buffer size for packed
+			int fixed_length = pack ? 0 : StringID.kMaxLength; // TODO: figure out a good starting buffer size for packed
 
-			using(var offsets_s = new BlamLib.IO.EndianWriter(offsets))
-			using(var buffer_s = new BlamLib.IO.EndianWriter(buffer))
+			int count = Count;
+			offsets = new System.IO.MemoryStream(count * sizeof(int));
+			buffer = new System.IO.MemoryStream(count * fixed_length);
+
+			using (var offsets_s = new IO.EndianWriter(offsets))
+			using (var buffer_s = new IO.EndianWriter(buffer))
 			{
-				foreach(KeyValuePair<uint, string> kv in StringIds())
-				{
-					offsets_s.Write(buffer_s.Position);
-					if (pack) buffer_s.Write(kv.Value, true);
-					else buffer_s.Write(kv.Value, 128);
-				}
+				m_staticCollection.ToDebugStream(offsets_s, buffer_s, pack);
+				m_dynamicCollection.ToDebugStream(offsets_s, buffer_s, pack);
 			}
 		}
+		/// <summary></summary>
+		/// <param name="offsets">Buffer containing the offsets of the string values in <paramref name="buffer"/></param>
+		/// <param name="buffer">Buffer containing the string values</param>
+		/// <param name="is_packed">If true, reads the strings as null terminated strings, else as 128 character strings</param>
+		/// <param name="count">Total number of string values (both static and dynamic)</param>
+		/// <param name="has_static_data">True if the buffers have the the static collection data</param>
+		public void FromDebugStream(IO.EndianReader offsets, IO.EndianReader buffer, bool is_packed, int count, bool has_static_data)
+		{
+			//Contract.Requires<ArgumentNullException>(offsets != null);
+			//Contract.Requires<ArgumentNullException>(buffer != null);
+			//Contract.Requires<ArgumentOutOfRangeException>(count > StaticCount);
+
+			if(has_static_data)
+				m_staticCollection.FromDebugStream(offsets, buffer, is_packed);
+			count -= StaticCount;
+			m_dynamicCollection.FromDebugStream(offsets, buffer, is_packed, count);
+		}
+		#endregion
 	};
 }

@@ -294,6 +294,7 @@ namespace BlamLib.IO
 		// We use the constraint "where TEnum : struct" because you can't use "enum" or "System.Enum", for reasons I would like to know...
 
 		// TODO: document that 'ref value' will equal the streamed value or 'null' after returning, depending on success
+		// TODO: Element/Attribute exists assertions are no longer debug only. Need to update documentation
 
 		#region ReadElement
 		/// <summary>
@@ -305,7 +306,8 @@ namespace BlamLib.IO
 		private string ReadElement(string name)
 		{
 			XmlElement n = node[name];
-			Debug.Assert.If(n != null, "Tried to read element '{0}' from node '{1}' in {2}", name, node.Name, owner);
+			if (n == null)
+				throw new Debug.ExceptionLog("Tried to read element '{0}' from node '{1}' in {2}", name, node.Name, owner);
 			return n.InnerText;
 		}
 
@@ -433,7 +435,8 @@ namespace BlamLib.IO
 		private string ReadAttribute(string name)
 		{
 			XmlNode n = node.Attributes[name];
-			Debug.Assert.If(n != null, "Tried to read attribute '{0}' from node '{1}' in {2}", name, node.Name, owner);
+			if(n == null)
+				throw new Debug.ExceptionLog("Tried to read attribute '{0}' from node '{1}' in {2}", name, node.Name, owner);
 			return n.Value;
 		}
 

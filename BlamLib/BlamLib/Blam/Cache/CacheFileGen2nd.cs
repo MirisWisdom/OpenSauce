@@ -203,44 +203,7 @@ namespace BlamLib.Blam.Cache
 	};
 
 
-	public abstract class CacheFileGen2 : Blam.CacheFile, ICacheStringId
+	public abstract class CacheFileGen2 : Blam.CacheFile
 	{
-		#region String Id values
-		protected Managers.StringIdManager BaseStringIdTable = null;
-		protected Dictionary<uint, string> MapStringTable = null;
-
-		public abstract Managers.StringIdManager.GenerateIdMethod StringIdGenerateMethod { get; }
-
-		public string StringIdResolve(StringID id) { return StringIdResolve(id.Handle); }
-
-		public string StringIdResolve(uint id)
-		{
-			string val;
-			if (!MapStringTable.TryGetValue(id, out val))
-				val = BaseStringIdTable.Get((StringID)id);
-
-			return val;
-		}
-
-		public IEnumerable<KeyValuePair<uint, string>> EngineStringIds() { return BaseStringIdTable.StringIds(); }
-
-		public IEnumerable<KeyValuePair<uint, string>> MapStringIds() { return MapStringTable; }
-
-		protected void StringIdsDispose()
-		{
-			if (BaseStringIdTable != null)
-			{
-				BaseStringIdTable = null;
-				(Program.GetManager(engineVersion) as Managers.IStringIdController).StringIdCacheClose(base.engineVersion);
-			}
-		}
-		#endregion
-
-		public override void Close()
-		{
-			StringIdsDispose();
-
-			base.Close();
-		}
 	};
 };
