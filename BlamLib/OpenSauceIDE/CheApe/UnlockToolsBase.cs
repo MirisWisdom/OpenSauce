@@ -21,7 +21,7 @@ using System.Collections.Generic;
 
 namespace OpenSauceIDE.CheApeInterface
 {
-	class UnlockToolsBase
+	abstract class UnlockToolsBase
 	{
 		protected enum Platform
 		{
@@ -85,5 +85,9 @@ namespace OpenSauceIDE.CheApeInterface
 
 			public abstract void Unlock(bool debug);
 		};
+
+		public abstract void Close();
+
+		public abstract void Unlock(bool debug);
 	};
 }
