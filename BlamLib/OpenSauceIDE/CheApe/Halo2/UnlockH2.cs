@@ -282,14 +282,14 @@ namespace OpenSauceIDE.CheApeInterface
 			if (!string.IsNullOrEmpty(s_path)) SapienInterface = new Sapien(output_dir, s_path);
 		}
 
-		public void Close()
+		public override void Close()
 		{
 			if (GuerillaInterface != null) GuerillaInterface.Close();
 			if (ToolInterface != null) ToolInterface.Close();
 			if (SapienInterface != null) SapienInterface.Close();
 		}
 
-		public void Unlock(bool debug)
+		public override void Unlock(bool debug)
 		{
 			if (GuerillaInterface != null) GuerillaInterface.Unlock(debug);
 			if (ToolInterface != null) ToolInterface.Unlock(debug);

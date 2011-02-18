@@ -48,17 +48,14 @@ namespace OpenSauceIDE
 			if(dlgOpenFile.ShowDialog(this) == DialogResult.OK)
 				path = dlgOpenFile.FileName;
 		}
-
 		void OnPathGuerilla(object sender, EventArgs e)
 		{
 			string path;	OnPathFind(out path);	txtPathGuerilla.Text = path;
 		}
-
 		void OnPathSapien(object sender, EventArgs e)
 		{
 			string path;	OnPathFind(out path);	txtPathSapien.Text = path;
 		}
-
 		void OnPathTool(object sender, EventArgs e)
 		{
 			string path;	OnPathFind(out path);	txtPathTool.Text = path;
@@ -70,6 +67,54 @@ namespace OpenSauceIDE
 				txtPathOutput.Text = dlgFolderBrowser.SelectedPath;
 		}
 
+		void OnAppleException(BlamLib.BlamVersion v, Exception ex)
+		{
+			BlamLib.Debug.LogFile.WriteLine("CheApe Apply failed in {0}. Reason:{1}{2}", v.ToString(), BlamLib.Program.NewLine, ex);
+		}
+		void OnApply(BlamLib.BlamVersion v)
+		{
+			Exception exception = null;
+			CheApeInterface.UnlockToolsBase unlocker = null;
+
+			switch(v)
+			{
+				case BlamLib.BlamVersion.Halo1_CE:
+					try						{ unlocker = new CheApeInterface.UnlockH1(txtPathOutput.Text, txtPathGuerilla.Text, txtPathTool.Text, txtPathSapien.Text); }
+					catch (Exception ex)	{ exception = ex; }
+					break;
+
+				case BlamLib.BlamVersion.Halo2_PC:
+					try						{ unlocker = new CheApeInterface.UnlockH2(txtPathOutput.Text, txtPathGuerilla.Text, txtPathTool.Text, txtPathSapien.Text); }
+					catch (Exception ex)	{ exception = ex; }
+					break;
+
+				default: MessageBox.Show(this, string.Format("the quarter ({0}) isn't under any of the cups you fuckin cheater i kill you", cbEngineVersion.SelectedText),
+							"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					return;
+			}
+
+			if (unlocker != null) // If the unlocker api was initialized OK, run the unlocking operations
+			{
+				try
+				{
+					unlocker.Unlock(false);
+					unlocker.Close();
+				}
+				catch (Exception ex)	{ exception = ex; }
+			}
+
+			if (exception != null)
+				OnAppleException(v, exception);
+
+			string msg = exception == null ? 
+				"CheApe successfully applied!" :
+				"There was an error while trying to apply CheApe. Validate that you selected copies of the original tools and try again.";
+
+			MessageBox.Show(this, msg,
+				exception==null ? "Success!" : "Error", 
+				MessageBoxButtons.OK,
+				exception==null ? MessageBoxIcon.Information : MessageBoxIcon.Error);
+		}
 		void OnApply(object sender, EventArgs e)
 		{
 			if(cbEngineVersion.SelectedItem == null)
@@ -83,53 +128,69 @@ namespace OpenSauceIDE
 					"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			else
 			{
-				bool no_errors = true;
-
-				var v = (BlamLib.BlamVersion)cbEngineVersion.SelectedItem;//Enum.Parse(typeof(BlamLib.BlamVersion), cbEngineVersion.SelectedText);
-				switch(v)
-				{
-					case BlamLib.BlamVersion.Halo1_CE:
-						try
-						{
-							var h1 = new CheApeInterface.UnlockH1(txtPathOutput.Text, txtPathGuerilla.Text, txtPathTool.Text, txtPathSapien.Text);
-							h1.Unlock(false);
-							h1.Close();
-						}
-						catch (Exception ex)
-						{
-							BlamLib.Debug.LogFile.WriteLine("CheApe Apply failed in {0}. Reason:{1}{2}", v.ToString(), BlamLib.Program.NewLine, ex);
-							no_errors = false;
-						}
-						break;
-
-					case BlamLib.BlamVersion.Halo2_PC:
-						try
-						{
-							var h2 = new CheApeInterface.UnlockH2(txtPathOutput.Text, txtPathGuerilla.Text, txtPathTool.Text, txtPathSapien.Text);
-							h2.Unlock(false);
-							h2.Close();
-						}
-						catch (Exception ex)
-						{
-							BlamLib.Debug.LogFile.WriteLine("CheApe Apply failed in {0}. Reason:{1}{2}", v.ToString(), BlamLib.Program.NewLine, ex);
-							no_errors = false;
-						}
-						break;
-
-					default: MessageBox.Show(this, string.Format("the quarter ({0}) isn't under any of the cups you fuckin cheater i kill you", cbEngineVersion.SelectedText),
-								"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-						return;
-				}
-
-				string msg = no_errors ? 
-					"CheApe successfully applied!" :
-					"There was an error while trying to apply CheApe. Validate that you selected copies of the original tools and try again.";
-
-				MessageBox.Show(this, msg,
-					no_errors ? "Success!" : "Error", 
-					MessageBoxButtons.OK,
-					no_errors ? MessageBoxIcon.Information : MessageBoxIcon.Error);
+				var v = (BlamLib.BlamVersion)cbEngineVersion.SelectedItem;
+				OnApply(v);
 			}
+		}
+	};
+}
+
+namespace BlamLib
+{
+	partial class Tool
+	{
+		static void UnlockBlamTools(System.Collections.Generic.List<string> args)
+		{
+			if (args.Count < 5)
+			{
+				Console.WriteLine("error: invalid command argument count");
+				return;
+			}
+
+			BlamVersion version = BlamVersion.Unknown;
+			switch (args[0])
+			{
+				case "Halo1_CE":	version = BlamVersion.Halo1_CE;	break;
+                case "Halo2_PC":	version = BlamVersion.Halo2_PC;	break;
+				default:
+					Console.WriteLine("error: unsupported engine version - {0}", version.ToString());
+					break;
+			};
+			
+			Console.WriteLine("Applying CheApe modifications...");
+			Exception exception = null;
+			OpenSauceIDE.CheApeInterface.UnlockToolsBase unlocker = null;
+			switch (version)
+			{
+				case BlamVersion.Halo1_CE:
+					try					{ unlocker = new OpenSauceIDE.CheApeInterface.UnlockH1(args[4], args[1], args[2], args[3]); }
+					catch (Exception ex){ exception = ex; }
+					break;
+			}
+
+			if (unlocker != null) // If the unlocker api was initialized OK, run the unlocking operations
+			{
+				try
+				{
+					unlocker.Unlock(false);
+					unlocker.Close();
+				}
+				catch (Exception ex)	{ exception = ex; }
+			}
+
+			if (exception != null)
+			{
+				Console.WriteLine("error: an exception occurred when attempting to apply the CheApe modifications");
+				Console.WriteLine();
+				Console.WriteLine("exception details:");
+				Console.WriteLine(exception.Message);
+				Console.WriteLine();
+			}
+
+			string msg = exception==null ?
+				"CheApe successfully applied!" :
+				"There was an error while trying to apply CheApe. Validate that you selected copies of the original tools and try again.";
+			Console.WriteLine(msg);
 		}
 	};
 }

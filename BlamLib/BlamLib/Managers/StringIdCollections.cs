@@ -77,6 +77,7 @@ namespace BlamLib.Managers
 		/// <remarks>Default is 0</remarks>
 		public int InitialIndexForAdding { get; private set; }
 
+		/// <summary>Only for <see cref="StringIdStaticCollection"/></summary>
 		internal StringIdCollectionDefintion() { }
 
 		public StringIdCollectionDefintion(GenerateIdMethod method, 
@@ -134,6 +135,7 @@ namespace BlamLib.Managers
 		#endregion
 	};
 
+	/// <summary>Internal representation for a set of <see cref="Blam.StringID"/>s</summary>
 	sealed class StringIdSet
 	{
 		/// <summary>When a string id value is undefined, this will be the value's prefix</summary>
@@ -141,15 +143,20 @@ namespace BlamLib.Managers
 		/// <summary>When a set's name is undefined, this will be the set's default name</summary>
 		const string kDefaultName = "UNKNOWN";
 
+		/// <summary>Index of this set in a list of <see cref="StringIdSet"/></summary>
 		internal int Index { get; private set; }
 
+		/// <summary>Id used for <see cref="Data.StringId"/>s in this set</summary>
 		public int Id { get; private set; }
+		/// <summary>Special name for this id set (eg, a category)</summary>
 		public string Name { get; private set; }
+		/// <summary>Actual set data, linking ids to their values</summary>
 		public Dictionary<StringID, string> Set { get; internal set; }
 		/// <summary>Look-up table for this set</summary>
 		/// <remarks>TKey=string hash code, TValue=Id for the string</remarks>
 		public Dictionary<int, StringID> SetLookup { get; internal set; }
 
+		/// <summary>Number of string ids in this set</summary>
 		public int Count { get { return Set.Count; } }
 
 		#region Ctor
@@ -167,7 +174,8 @@ namespace BlamLib.Managers
 			}
 		}
 
-		public StringIdSet(int index, IO.XmlStream s)
+		/// <summary>Only for <see cref="StringIdStaticCollection"/></summary>
+		internal StringIdSet(int index, IO.XmlStream s)
 		{
 			Index = index;
 
@@ -221,6 +229,7 @@ namespace BlamLib.Managers
 		#endregion
 	};
 
+	/// <summary>Internal representation for static (predefined) <see cref="Data.StringId"/>s</summary>
 	sealed class StringIdStaticCollection : IStringIdContainer, IDisposable, BlamDefinition.IGameResource
 	{
 		/// <summary>The base definition of this manager</summary>
@@ -241,10 +250,6 @@ namespace BlamLib.Managers
 				m_count += set.Count;
 		}
 		#endregion
-
-		public StringIdStaticCollection()
-		{
-		}
 
 		#region Set Util
 		bool SetIsValid(byte set_index)	{ return set_index >= 0 && set_index < m_sets.Count; }
@@ -466,6 +471,7 @@ namespace BlamLib.Managers
 		#endregion
 	};
 
+	/// <summary>Internal representation for dynamic <see cref="Data.StringId"/>s</summary>
 	sealed class StringIdDynamicCollection : IStringIdContainer, IEnumerable<KeyValuePair<StringID, string>>
 	{
 		#region HandleMethod

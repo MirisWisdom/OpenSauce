@@ -18,9 +18,6 @@
 */
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenSauceIDE.CheApeInterface;
 
 namespace BlamLib
 {
@@ -44,56 +41,6 @@ namespace BlamLib
 
 			string arg_source_tag = args[0];
 			string arg_dest_db = args[1];
-		}
-
-		static void UnlockBlamTools(List<string> args)
-		{
-			if (args.Count < 5)
-			{
-				Console.WriteLine("error: invalid command argument count");
-				return;
-			}
-
-			BlamVersion version = BlamVersion.Unknown;
-			switch (args[0])
-			{
-				case "Halo1_CE":
-					version = BlamVersion.Halo1_CE;
-					break;
-                //case "Halo2_PC":
-                //    version = BlamVersion.Halo2_PC;
-                //    break;
-				default:
-					Console.WriteLine("error: unsupported engine version - {0}", version.ToString());
-					break;
-			};
-			Console.WriteLine("Applying CheApe modifications...");
-			bool no_errors = true;
-			switch (version)
-			{
-				case BlamVersion.Halo1_CE:
-					try
-					{
-						var h1 = new UnlockH1(args[4], args[1], args[2], args[3]);
-						h1.Unlock(false);
-						h1.Close();
-					}
-					catch (Exception ex)
-					{
-						Console.WriteLine("error: an exception occurred when attempting to apply the CheApe modifications");
-						Console.WriteLine();
-						Console.WriteLine("exception details:");
-						Console.WriteLine(ex.Message);
-						Console.WriteLine();
-						no_errors = false;
-					}
-					break;
-			}
-
-			string msg = no_errors ?
-				"CheApe successfully applied!" :
-				"There was an error while trying to apply CheApe. Validate that you selected copies of the original tools and try again.";
-			Console.WriteLine(msg);
 		}
 	};
 }
