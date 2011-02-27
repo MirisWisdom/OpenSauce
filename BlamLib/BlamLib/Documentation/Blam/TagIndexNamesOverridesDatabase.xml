@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<tagIndexNamesDatabase game="">
+	<!--Definitions of maps which can be used in the database's file's entries-->
+	<mapDefinitions>
+		<!--name=string, mapId=hexidecimal (ulong), [optiona]mapDateId=hexidecimal (ulong), [optional]mapName=string-->
+		<map mapId="" mapDateId="" mapName="" name="" />
+	</mapDefinitions>
+	<!--Tag file layout with nested key-value mapping of its datum (value) in specific maps (keys) -->
+	<database>
+		<!--name=string-->
+		<folder name="">
+			<!--name=string, group=fourcc-->
+			<file name="" group="">
+				<!--key=string (map->name) value=hexideciaml (datum)-->
+				<entry key="" value="" />
+			</file>
+		</folder>
+	</database>
+</tagIndexNamesDatabase>

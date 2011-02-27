@@ -285,7 +285,11 @@
 			this.MinimizeBox = false;
 			this.MinimumSize = new System.Drawing.Size(380, 190);
 			this.Name = "CheApeApplier";
+			this.ShowIcon = false;
+			this.ShowInTaskbar = false;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "CheApeApplier";
+			this.TopMost = true;
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

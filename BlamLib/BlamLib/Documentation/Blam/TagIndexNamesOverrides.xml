@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<tagIndexNames game="">
+	<!--[optiona]name=string--> <!--name value isn't used, just handy when quickly browsing-->
+	<datumMap name="">
+		<!--name=string, mapId=hexidecimal (ulong), [optiona]mapDateId=hexidecimal (ulong), [optional]mapName=string-->
+		<map mapId="" mapDateId="" mapName="" name="" />
+	
+		<!--one to one mapping of a tag's datum and its name for a specific map-->
+		<entries>
+			<!--key=hexideciaml (datum), value=string (tagName)-->
+			<entry key="" value="" />
+		</entries>
+	</datumMap>
+</tagIndexNames>

@@ -34,7 +34,7 @@ namespace BlamLib
 
 		public static bool HasFlag(this BlamVersion ver, BlamVersion flag)
 		{
-			return (ver & flag) != 0;
+			return (ver & flag) == flag;
 		}
 
 		#region Conversion Utils

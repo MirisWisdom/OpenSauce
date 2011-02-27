@@ -1,11 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<stringIds game="" method="">
-	<groups>
-		<!--key=integer, value=string-->
-		<entry key="" value="" />
-	</groups>
-	<predefined>
-		<!--key=hexidecimal, value=string-->
-		<entry key="" value="" />
-	</predefined>
+<stringIds game="">
+	<!--method=enum-->
+	<definition method="">
+		<!--optional-->
+		<!--set=integer, [optional]initialIndex=integer-->
+		<adding />
+	</definition>
+	<sets>
+		<!--key=integer, [optiona]value=string-->
+		<Set key="" value="">
+			<!--key=hexidecimal, value=string-->
+			<entry key="" value="" />
+		</Set>
+	</sets>
 </stringIds>
