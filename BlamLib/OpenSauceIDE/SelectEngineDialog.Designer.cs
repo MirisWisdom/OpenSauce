@@ -53,6 +53,16 @@ namespace OpenSauceIDE
 			label1 = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
+			// label1
+			// 
+			label1.AutoSize = true;
+			label1.ForeColor = System.Drawing.Color.LightGreen;
+			label1.Location = new System.Drawing.Point(12, 9);
+			label1.Name = "label1";
+			label1.Size = new System.Drawing.Size(78, 13);
+			label1.TabIndex = 2;
+			label1.Text = "Engine Version";
+			// 
 			// cbEngineVersion
 			// 
 			this.cbEngineVersion.BackColor = System.Drawing.SystemColors.ControlDarkDark;
@@ -64,16 +74,6 @@ namespace OpenSauceIDE
 			this.cbEngineVersion.Name = "cbEngineVersion";
 			this.cbEngineVersion.Size = new System.Drawing.Size(121, 21);
 			this.cbEngineVersion.TabIndex = 3;
-			// 
-			// label1
-			// 
-			label1.AutoSize = true;
-			label1.ForeColor = System.Drawing.Color.LightGreen;
-			label1.Location = new System.Drawing.Point(12, 9);
-			label1.Name = "label1";
-			label1.Size = new System.Drawing.Size(78, 13);
-			label1.TabIndex = 2;
-			label1.Text = "Engine Version";
 			// 
 			// btOk
 			// 
@@ -117,7 +117,11 @@ namespace OpenSauceIDE
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "SelectEngineDialog";
+			this.ShowIcon = false;
+			this.ShowInTaskbar = false;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Select Engine";
+			this.TopMost = true;
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

@@ -426,6 +426,8 @@
     <EmbeddedResource Include="Games\Stubbs\Stubbs.xml" />
     <EmbeddedResource Include="Games\HaloReach\Xbox\Definitions\HaloReach_Beta_VertexBuffer.xml" />
     <EmbeddedResource Include="Games\HaloReach\Xbox\Definitions\HaloReach_Xbox_VertexBuffer.xml" />
+    <Content Include="Documentation\Blam\TagIndexNamesOverrides.xml" />
+    <Content Include="Documentation\Blam\TagIndexNamesOverridesDatabase.xml" />
     <Content Include="Games\HaloReach\Xbox\Definitions\HaloReach_Xbox_Scripting.xml" />
     <Content Include="Games\HaloReach\Xbox\Definitions\HaloReach_Xbox_StringId.xml" />
     <Content Include="Settings.xml">

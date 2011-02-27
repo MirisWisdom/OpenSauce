@@ -28,6 +28,9 @@ namespace OpenSauceIDE
 {
 	public partial class CheApe : Form
 	{
+		/// <summary>The valid engines which CheApe can be used with</summary>
+		public const BlamLib.BlamVersion kTargetPlatforms = BlamLib.BlamVersion.Halo1_CE | BlamLib.BlamVersion.Halo2_PC;
+
 		const string kFileExt = "xml";
 		const string kFileFilter = "XML Files (*.xml)|*.xml";
 

@@ -25,49 +25,51 @@ namespace OpenSauceIDE
 {
 	public partial class MainForm : Form
 	{
-		void BuildCheApeMenusHalo1(Dictionary<string, EventHandler> command_dic)
-		{
-			EventHandler Halo1CheApe_handler;
-			ToolStripMenuItem Halo1CheApe = BlamLib.Forms.Util.CreateMenuItem("CheApe", Halo1CheApe_handler = delegate(object sender, EventArgs e)
-			{
-				AddMdiChild(new CheApe(BlamLib.BlamVersion.Halo1_CE));
-			});
-			Halo1CheApe.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-			Halo1CheApe.ForeColor = System.Drawing.Color.LightGreen;
-
-			ToolsHalo1.DropDownItems.Add(Halo1CheApe);
-			command_dic.Add("Halo1:CheApe", Halo1CheApe_handler);
-		}
-		void BuildCheApeMenusHalo2(Dictionary<string, EventHandler> command_dic)
-		{
-			EventHandler Halo2CheApe_handler;
-			ToolStripMenuItem Halo2CheApe = BlamLib.Forms.Util.CreateMenuItem("CheApe", Halo2CheApe_handler = delegate(object sender, EventArgs e)
-			{
-				AddMdiChild(new CheApe(BlamLib.BlamVersion.Halo2_PC));
-			});
-			Halo2CheApe.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-			Halo2CheApe.ForeColor = System.Drawing.Color.LightGreen;
-
-
-			//ToolsHalo2.DropDownItems.Add(Halo2CheApe);
-			//command_dic.Add("Halo2:CheApe", Halo2CheApe_handler);
-		}
-		void BuildCheApeMenus(Dictionary<string, EventHandler> command_dic)
+		#region CheApe menus
+		void BuildCheApeMenusCheApeApply(Dictionary<string, EventHandler> command_dic)
 		{
 			EventHandler CheApeApply_handler;
-			ToolStripMenuItem CheApeApply = BlamLib.Forms.Util.CreateMenuItem("CheApe Applier", CheApeApply_handler = delegate(object sender, EventArgs e)
+			var CheApeApply = BlamLib.Forms.Util.CreateMenuItem("CheApe Applier", CheApeApply_handler = delegate(object sender, EventArgs e)
 			{
-				AddMdiChild(new CheApeApplier());
+				var sed = new SelectEngineDialog(OpenSauceIDE.CheApe.kTargetPlatforms, BlamLib.BlamVersion.Halo1_PC);
+				BlamLib.BlamVersion version;
+				sed.ShowDialogWithResult(this, out version);
+
+				if (version != BlamLib.BlamVersion.Unknown)
+					new CheApeApplier(version).ShowDialog(this);
 			});
 			CheApeApply.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			CheApeApply.ForeColor = System.Drawing.Color.LightGreen;
 
-			ToolsMenu.DropDownItems.Insert(0, CheApeApply);
+			ToolsMenu.DropDownItems.Add(CheApeApply);
 			command_dic.Add("CheApeApplier", CheApeApply_handler);
-
-			BuildCheApeMenusHalo1(command_dic);
-			BuildCheApeMenusHalo2(command_dic);
 		}
+		void BuildCheApeMenusCheApe(Dictionary<string, EventHandler> command_dic)
+		{
+			EventHandler CheApe_handler;
+			var CheApe = BlamLib.Forms.Util.CreateMenuItem("CheApe", CheApe_handler = delegate(object sender, EventArgs e)
+			{
+				var sed = new SelectEngineDialog(OpenSauceIDE.CheApe.kTargetPlatforms, BlamLib.BlamVersion.Halo1_PC,
+					BlamLib.BlamVersion.Halo2_PC); // NOTE: H2PC still needs some work, so don't display it
+				BlamLib.BlamVersion version;
+				sed.ShowDialogWithResult(this, out version);
+
+				if(version != BlamLib.BlamVersion.Unknown)
+					AddMdiChild(new CheApe(version));
+			});
+			CheApe.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			CheApe.ForeColor = System.Drawing.Color.LightGreen;
+
+			ToolsMenu.DropDownItems.Add(CheApe);
+			command_dic.Add("CheApe", CheApe_handler);
+		}
+		void BuildCheApeMenus(Dictionary<string, EventHandler> command_dic)
+		{
+			BuildCheApeMenusCheApeApply(command_dic);
+			BuildCheApeMenusCheApe(command_dic);
+		}
+		#endregion
+
 		public MainForm(string[] args)
 		{
 			InitializeComponent();
@@ -146,40 +148,37 @@ namespace OpenSauceIDE
 		}
 		#endregion
 
-		void OnFileExit(object sender, EventArgs e)
-		{
-			this.Close();
-		}
+		void OnFileExit(object sender, EventArgs e)	{ this.Close(); }
 
 		#region Custom Drawing
-		private class OpenSauceIDEToolStripRenderer : ToolStripProfessionalRenderer
+		class OpenSauceIDEToolStripRenderer : ToolStripProfessionalRenderer
 		{
 			protected override void OnRenderSeparator(ToolStripSeparatorRenderEventArgs e)
 			{
-				if ((e.Item as ToolStripSeparator) == null)
+				if (!(e.Item is ToolStripSeparator))
 					base.OnRenderSeparator(e);
 				else
 				{
 					Rectangle seperator_bounds = new Rectangle(Point.Empty, e.Item.Size);
 
-					Brush seperator_brush = new SolidBrush(e.Item.BackColor);
-					e.Graphics.FillRectangle(seperator_brush, 0, 0, seperator_bounds.Width, seperator_bounds.Height);
-					seperator_brush.Dispose();
+					using (var seperator_brush = new SolidBrush(e.Item.BackColor))
+					{ e.Graphics.FillRectangle(seperator_brush, 0, 0, seperator_bounds.Width, seperator_bounds.Height); }
 
-					seperator_brush = new SolidBrush(e.Item.ForeColor);
-					if (e.Vertical)
-						e.Graphics.FillRectangle(seperator_brush,
-						seperator_bounds.Width / 2,
-						2,
-						1,
-						seperator_bounds.Height - 4);
-					else
-						e.Graphics.FillRectangle(seperator_brush,
-						23,
-						seperator_bounds.Height / 2, 
-						seperator_bounds.Width - 23,
-						1);
-					seperator_brush.Dispose();
+					using (var seperator_brush = new SolidBrush(e.Item.ForeColor))
+					{
+						if (e.Vertical)
+							e.Graphics.FillRectangle(seperator_brush,
+							seperator_bounds.Width / 2,
+							2,
+							1,
+							seperator_bounds.Height - 4);
+						else
+							e.Graphics.FillRectangle(seperator_brush,
+							23,
+							seperator_bounds.Height / 2,
+							seperator_bounds.Width - 23,
+							1);
+					}
 				}
 			}
 		};

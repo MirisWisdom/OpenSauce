@@ -23,12 +23,16 @@ namespace OpenSauceIDE
 {
 	public partial class CheApeApplier : Form
 	{
-		public CheApeApplier()
+		public CheApeApplier(BlamLib.BlamVersion version)
 		{
 			InitializeComponent();
 
 			cbEngineVersion.Items.Add(BlamLib.BlamVersion.Halo1_CE);
 			cbEngineVersion.Items.Add(BlamLib.BlamVersion.Halo2_PC);
+
+			// NOTE: this isn't the best control logic for this. Will probably want to change this later
+				 if (version == BlamLib.BlamVersion.Halo1_CE) cbEngineVersion.SelectedIndex = 0;
+			else if (version == BlamLib.BlamVersion.Halo2_PC) cbEngineVersion.SelectedIndex = 1;
 
 // 			txtPathOutput.Text = @"C:\Mount\B\Kornner\Projects\bin\_Halo1\";
 // 			txtPathGuerilla.Text = @"C:\Program Files (x86)\Microsoft Games\Halo Custom Edition\guerilla.exe";
