@@ -201,7 +201,7 @@ namespace Yelo
 		struct s_object_data : TStructImpl( Enums::k_object_size_object )
 		{
 			TStructGetPtrImpl(datum_index,				TagDefinition, 0x0);
-			TStructGetPtrImpl(Enums::networked_datum,	NetworkedDatumType, 0x4);
+			TStructGetPtrImpl(Enums::networked_datum,	DatumnRole, 0x4);
 			// 0x8 - boolean
 			// 0x9 - boolean
 			TStructGetPtrImpl(uint32,					NetworkTime, 0xC);

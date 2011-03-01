@@ -701,9 +701,9 @@ namespace Yelo
 				}
 			}
 
-			datum_index NewNetwork(Yelo::Objects::s_object_placement_data& data)
+			datum_index New(Yelo::Objects::s_object_placement_data& data)
 			{
-				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_NEW_NETWORK);
+				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_NEW);
 
 				__asm {
 					mov		ecx, data
@@ -711,12 +711,12 @@ namespace Yelo
 				}
 			}
 
-			datum_index New(Yelo::Objects::s_object_placement_data& data, long_enum networked_datum_type)
+			datum_index NewWithRole(Yelo::Objects::s_object_placement_data& data, long_enum /*Enums::networked_datum*/ role)
 			{
-				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_NEW);
+				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_NEW_WITH_ROLE);
 
 				__asm {
-					push	networked_datum_type
+					push	role
 					push	data
 					call	TEMP_CALL_ADDR
 					add		esp, 4 * 2
