@@ -25,6 +25,11 @@
 
 namespace Yelo
 {
+	namespace Objects
+	{
+		struct s_object_placement_data;
+	};
+
 	namespace TagGroups
 	{
 		struct bitmap_data;
@@ -247,6 +252,12 @@ namespace Yelo
 
 		namespace Objects
 		{
+			void PlacementDataNew(Yelo::Objects::s_object_placement_data& data, datum_index object_definition_index, datum_index object_index = datum_index::null);
+
+			datum_index NewNetwork(Yelo::Objects::s_object_placement_data& data);
+
+			datum_index New(Yelo::Objects::s_object_placement_data& data, long_enum networked_datum_type);
+
 			void StartInterpolation(datum_index obj_datum);
 
 			void Reset(datum_index obj);

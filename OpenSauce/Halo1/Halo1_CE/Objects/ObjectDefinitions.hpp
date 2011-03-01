@@ -71,11 +71,12 @@ namespace Yelo
 				(1 << _object_type_vehicle),
 		};
 
-		enum networked_datum
+		enum networked_datum : long_enum
 		{
 			_networked_datum_master,
 			_networked_datum_puppet,
 			_networked_datum_puppet_controlled_by_local_player,
+			_networked_datum_3,
 		};
 
 		enum object_sizes
@@ -166,6 +167,24 @@ namespace Yelo
 			uint16 size;
 		};
 
+		struct s_object_placement_data
+		{
+			datum_index definition_index;
+			long_flags flags;
+			datum_index player_index;
+			datum_index owner_object_index;
+			UNKNOWN_TYPE(int32);
+			int16 owner_team_index;
+			int16 region_permutation; // variant id
+			real_point3d position;
+			UNKNOWN_TYPE(real); // angle?
+			real_vector3d transitional_velocity;
+			real_vector3d forward;
+			real_vector3d up;
+			real_vector3d angular_velocity;
+			real_rgb_color change_colors[4];
+		}; BOOST_STATIC_ASSERT( sizeof(s_object_placement_data) == 0x88 );
+
 		struct s_object_network_datum_data
 		{
 			datum_index owner_player_index;
@@ -182,6 +201,7 @@ namespace Yelo
 		struct s_object_data : TStructImpl( Enums::k_object_size_object )
 		{
 			TStructGetPtrImpl(datum_index,				TagDefinition, 0x0);
+			TStructGetPtrImpl(Enums::networked_datum,	NetworkedDatumType, 0x4);
 			// 0x8 - boolean
 			// 0x9 - boolean
 			TStructGetPtrImpl(uint32,					NetworkTime, 0xC);
