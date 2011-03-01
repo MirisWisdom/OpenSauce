@@ -254,9 +254,9 @@ namespace Yelo
 		{
 			void PlacementDataNew(Yelo::Objects::s_object_placement_data& data, datum_index object_definition_index, datum_index object_index = datum_index::null);
 
-			datum_index NewNetwork(Yelo::Objects::s_object_placement_data& data);
+			datum_index New(Yelo::Objects::s_object_placement_data& data);
 
-			datum_index New(Yelo::Objects::s_object_placement_data& data, long_enum networked_datum_type);
+			datum_index NewWithRole(Yelo::Objects::s_object_placement_data& data, long_enum /*Enums::networked_datum*/ role);
 
 			void StartInterpolation(datum_index obj_datum);
 
