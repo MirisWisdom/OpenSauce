@@ -686,6 +686,43 @@ namespace Yelo
 
 		namespace Objects
 		{
+			void PlacementDataNew(Yelo::Objects::s_object_placement_data& data, datum_index object_definition_index, datum_index object_index)
+			{
+				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_PLACEMENT_DATA_NEW);
+
+				if(object_definition_index.IsNull()) return;
+
+				__asm {
+					push	object_index
+					push	object_definition_index
+					mov		eax, data
+					call	TEMP_CALL_ADDR
+					add		esp, 4 * 2
+				}
+			}
+
+			datum_index NewNetwork(Yelo::Objects::s_object_placement_data& data)
+			{
+				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_NEW_NETWORK);
+
+				__asm {
+					mov		ecx, data
+					call	TEMP_CALL_ADDR
+				}
+			}
+
+			datum_index New(Yelo::Objects::s_object_placement_data& data, long_enum networked_datum_type)
+			{
+				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_NEW);
+
+				__asm {
+					push	networked_datum_type
+					push	data
+					call	TEMP_CALL_ADDR
+					add		esp, 4 * 2
+				}
+			}
+
 			void StartInterpolation(datum_index obj_datum)
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_START_INTERPOLATION);

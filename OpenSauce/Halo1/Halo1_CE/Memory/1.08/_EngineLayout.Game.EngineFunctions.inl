@@ -88,6 +88,9 @@ DATA_PTR(MESSAGE_DELTA_FIELD_PLAYER_INDEX_PARAMETERS,	0x622B18, 0x5984D0);
 
 //////////////////////////////////////////////////////////////////////////
 // Objects
+FUNC_PTR(OBJECT_PLACEMENT_DATA_NEW,		0x4F9000, 0x4DFFF0);
+FUNC_PTR(OBJECT_NEW_NETWORK,			0x4F90C0, 0x4E00B0);
+FUNC_PTR(OBJECT_NEW,					0x4F9110, 0x4E0100);
 FUNC_PTR(OBJECT_START_INTERPOLATION,	0x4FA7D0, 0x4E1720); // Until PY's netcode is finalized, this function don't mean shit (read: doesn't sync)
 FUNC_PTR(OBJECT_RESET,					0x4F8DC0, 0x4DFDB0);
 FUNC_PTR(OBJECT_RECONNECT_TO_MAP,		0x4F9890, 0x4E0880);

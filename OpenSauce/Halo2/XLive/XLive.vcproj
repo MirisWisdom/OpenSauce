@@ -265,6 +265,10 @@
 			RelativePath=".\dllmain.cpp"
 			>
 		</File>
+		<File
+			RelativePath=".\Readme.txt"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
