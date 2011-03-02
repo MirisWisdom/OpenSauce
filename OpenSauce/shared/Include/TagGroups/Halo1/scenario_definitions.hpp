@@ -22,6 +22,30 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum scenario_netgame_type
+		{
+			_scenario_netgame_type_none,
+			_scenario_netgame_type_ctf,
+			_scenario_netgame_type_slayer,
+			_scenario_netgame_type_oddball,
+			_scenario_netgame_type_koth,
+			_scenario_netgame_type_race,
+			_scenario_netgame_type_terminator,
+			_scenario_netgame_type_stub,
+			_scenario_netgame_type_ignored1,
+			_scenario_netgame_type_ignored2,
+			_scenario_netgame_type_ignored3,
+			_scenario_netgame_type_ignored4,
+			_scenario_netgame_type_all_games,
+			_scenario_netgame_type_all_except_ctf,
+			_scenario_netgame_type_all_except_ctf_y_race,
+
+			_scenario_netgame_type
+		};
+	};
+
 	namespace TagGroups
 	{
 		struct scenario_starting_profile
@@ -37,6 +61,17 @@ namespace Yelo
 			TAG_FIELD(byte, grenade_counts[4]);
 			TAG_PAD(int32, 5);
 		}; BOOST_STATIC_ASSERT( sizeof(scenario_starting_profile) == 0x68 );
+
+		struct scenario_player
+		{
+			TAG_FIELD(real_point3d, position);
+			TAG_FIELD(angle, facing);
+			TAG_FIELD(int16, team_designator);
+			TAG_FIELD(int16, bsp_index);
+			TAG_ENUM(game_types, Enums::scenario_netgame_type)[4];
+
+			TAG_PAD(int32, 6);
+		}; BOOST_STATIC_ASSERT( sizeof(scenario_player) == 0x34 );
 
 
 		struct scenario_cutscene_flag
@@ -119,8 +154,8 @@ namespace Yelo
 			TAG_PAD(int32, 21); // 84
 
 			TAG_TBLOCK(player_starting_profiles, scenario_starting_profile);
+			TAG_TBLOCK(player_starting_locations, scenario_player);
 			TAG_PAD(tag_block,
-				1 + // scenario_player
 				1 + // scenario_trigger_volume
 				1 + // recorded_animation_definition
 				1 + // scenario_netpoint

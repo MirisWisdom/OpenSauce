@@ -96,50 +96,93 @@ namespace Yelo
 			GTI2Closing,
 			GTI2Closed,
 		};
+
+		enum gamespy_connection_result : long_enum
+		{
+			GT2Success,
+			GT2OutOfMemory,
+			GT2Rejected,
+			GT2NetworkError,
+			GT2AddressError,
+			GT2DuplicateAddress,
+			GT2TimedOut,
+			GT2NegotiationError,
+			GT2InvalidConnection,
+			GT2InvalidMessage,
+			GT2SendFailed
+		};
 	};
 
 	namespace Networking
 	{
-		struct s_gamespy_buffer
+		struct s_gamespy_buffer // GTI2Buffer, gt\gt2Main.h
 		{
 			byte* buffer;
 			uint32 buffer_size;
 			uint32 length;
 		};
 
-		struct s_gamespy_socket
+		struct s_gamespy_socket // GTI2Socket, gt\gt2Main.h
 		{
 			SOCKET socket;
 			in_addr address;
 			int16 port; PAD16;
 			void* connections;
 			void* closedConnections;
-			UNKNOWN_TYPE(int32); // 0x14
-			UNKNOWN_TYPE(int32);
+			BOOL close;
+			BOOL error;
 			void* connectAttemptCallback;
 			void* socketErrorCallback;
-			PAD32; // 0x24 pointer to a proc
-			PAD32; // 0x28 pointer to a proc
+			void* sendDumpCallback;
+			void* receiveDumpCallback;
 			void* unrecongizedMessageCallback;
 			void* user_data; // 0x30, engine treats this as s_transport_endpoint*
 			int32 incomingBufferSize;
 			int32 outgoingBufferSize;
-			UNKNOWN_TYPE(int32); // 0x3C
+			int32 protocolOffset;
 			UNKNOWN_TYPE(int32); // 0x40, I believe I saw some code treat this as a s_transport_endpoint* ...
-			UNKNOWN_TYPE(int32); // 0x44
+			BOOL broadcastEnabled;
 		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_socket) == 0x48 );
-		struct s_gamespy_connection
+		struct s_gamespy_connection // GTI2Connection, gt\gt2Main.h
 		{
 			in_addr address;
 			int16 port; PAD16;
 
 			s_gamespy_socket* socket;
 			Enums::gamespy_connection_state state;
+			BOOL initiated;
+			BOOL freeAtAcceptReject;
+			Enums::gamespy_connection_result connectionResult;
 
-			byte pad[0x150 - 0x10]; // TODO
+			uint32 startTime, timeout;
+
+			PAD(0, sizeof(int32)*8);
+
+			s_gamespy_buffer incomingBuffer, outgoingBuffer;
+			void* incomingBufferMessages;
+			void* outgoingBufferMessages;
+
+			uint16 serialNumber, expectedSerialNumber;
+
+			char response[32];
+
+			uint32 lastSend;
+			uint32 challengeTime;
+
+			PAD(1, sizeof(int32)*4);
+			void* sendFilters;
+			void* receiveFilters;
+			PAD(2, sizeof(byte)*4);
+			PAD(3, sizeof(byte)*28);
+			PAD(4, sizeof(char)*32);
+			PAD(5, sizeof(char)*32);
+			PAD(6, sizeof(char)*32);
+			PAD(7, sizeof(char)*20);
+			PAD(8, sizeof(char)*16);
+			UNKNOWN_TYPE(int32);
 		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_connection) == 0x150 );
 
-		struct s_gamespy_qr_data // query/response
+		struct s_gamespy_qr_data // (query/response) qr2_implementation_s, qr2\qr2.h
 		{
 			SOCKET heartbeat_socket;
 			char game_name[64];
@@ -151,15 +194,15 @@ namespace Yelo
 			void* proc_key_list;
 			void* proc_player_team_count;
 			void* proc_adderror;
-			PAD32; // void* proc
-			PAD32; // void* proc
+			void* nn_callback;
+			void* cm_callback;
 			uint32 last_heartbeat_time;
 			uint32 last_keepalive_time;
 			long_enum listed_state;
 			BOOL is_public;
 			int32 query_port;
 			int32 read_socket;
-			UNKNOWN_TYPE(int32);
+			int32 nat_negotiate;
 			sockaddr_in heartbeat_addr;
 			void* proc_process_cdkey; // void (PLATFORM_API*)(char* buffer, size_t buffer_size, sockaddr* src_addr)
 			int32 client_msg_keys[10];
@@ -168,12 +211,12 @@ namespace Yelo
 		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_qr_data) == 0x108 );
 
 
-		struct s_gamespy_client_node
+		struct s_gamespy_client_node // gsnode_s, gcdkey\gcdkeys.c
 		{
 			struct s_gamespy_client* client;
 			s_gamespy_client_node* next, * prev;
 		};
-		struct s_gamespy_client
+		struct s_gamespy_client // gsclient_s, gcdkey\gcdkeys.c
 		{
 			int32 id;					// 0x0
 			char cd_hash[33];			// 0x4
@@ -191,12 +234,13 @@ namespace Yelo
 			uint32 req_str_length;		// 0x4C
 		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_client) == 0x50 );
 
-		struct s_gamespy_product
+		struct s_gamespy_product // gsproduct_s, gcdkey\gcdkeys.c
 		{
 			int32 game_pid;
 			s_gamespy_client_node clients;
 		};
 
+		// see "serverbrowsing\sb_internal.h" for these
 		struct s_gamespy_server;
 		struct s_gamespy_server_browser;
 
