@@ -16,3 +16,11 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+//////////////////////////////////////////////////////////////////////////
+// StructureBsp.cpp
+#if __EL_INCLUDE_FILE_ID == __EL_STRUCTURES_STRUCTURE_BSP
+
+#else
+	#error Undefined engine layout include for: __EL_INCLUDE_STRUCTURES
+#endif

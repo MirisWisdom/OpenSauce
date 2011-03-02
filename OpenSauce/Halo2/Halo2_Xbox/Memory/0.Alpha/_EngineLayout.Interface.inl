@@ -40,14 +40,15 @@ namespace GameState
 #elif __EL_INCLUDE_FILE_ID == __EL_INTERFACE_INPUT
 namespace Input
 {
-	FUNC_PTR(INPUT_UPDATE_HOOK,			0xB54D7);
+	FUNC_PTR(INPUT_UPDATE_HOOK,					0xB54D7);
 
 	//////////////////////////////////////////////////////////////////////////
 	// HandleYeloInput
-	FUNC_PTR(RENDER_FUNC_SET_DRAW_MODE,	NULL);
+	FUNC_PTR(RENDER_FUNC_SET_DRAW_MODE,			NULL);
 	//////////////////////////////////////////////////////////////////////////
 
-	FUNC_PTR(INPUT_GET_GAMEPAD_STATE,	0xB4B90);
+	ENGINE_PTR(HANDLE, input_gamepad_handles,	0x655D34); // [4]
+	FUNC_PTR(INPUT_GET_GAMEPAD_STATE,			0xB4B90);
 };
 
 
