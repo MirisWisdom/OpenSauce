@@ -98,3 +98,10 @@ enum {
 
 	XNET_ETHERNET_LINK_ACTIVE		= 1<<0,
 };
+
+
+typedef struct {
+	XNKID sessionID;
+	XNADDR hostAddress;
+	XNKEY keyExchangeKey;
+}XSESSION_INFO, *PXSESSION_INFO;

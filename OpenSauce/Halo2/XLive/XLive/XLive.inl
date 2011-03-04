@@ -241,10 +241,236 @@ XLIVE_API INT WINAPI XLive_5212(DWORD, DWORD, LPWSTR, LPWSTR, DWORD, DWORD, DWOR
 //XLive_5213
 //XLive_5214
 
-XLIVE_API INT WINAPI XShowGuideUI(DWORD) {
+XLIVE_API INT WINAPI XLiveShowGuideUI(DWORD) {
 #ifndef XLIVE_NO_XLIVE
 	return 1;
 #else
 	return 1;
 #endif
 }
+
+//XLive_5230
+//XLive_5231
+
+//XLive_5233
+//XLive_5234
+//XLive_5235
+//XLive_5236
+//XLive_5237
+//XLive_5238
+
+//XLive_5250
+//XLive_5251
+//XLive_5252
+//XLive_5253
+
+XLIVE_API DWORD WINAPI XLiveCancelOverlapped(PXOVERLAPPED pOverlapped) {
+#ifndef XLIVE_NO_XLIVE
+	return ERROR_SUCCESS;
+#else
+	return ERROR_SUCCESS;
+#endif
+}
+
+//XLive_5255
+
+XLIVE_API DWORD WINAPI XLiveEnumerate(HANDLE hEnum, PVOID pvBuffer, DWORD cbBuffer, PDWORD pcItemsReturned, PXOVERLAPPED pOverlapped) {
+	if(pcItemsReturned != NULL)
+		*pcItemsReturned = 0;
+
+#ifndef XLIVE_NO_XLIVE
+	return ERROR_SUCCESS;
+#else
+	return ERROR_SUCCESS;
+#endif
+}
+
+//XLive_5257
+//XLive_5258
+//XLive_5259
+
+XLIVE_API DWORD WINAPI XLiveShowSigninUI(DWORD cPanes, DWORD dwFlags) {
+#ifndef XLIVE_NO_XLIVE
+	return ERROR_SUCCESS;
+#else
+	return ERROR_SUCCESS;
+#endif
+}
+
+XLIVE_API DWORD WINAPI XLiveUserGetXUID(DWORD dwUserIndex, PXUID *pxuid) {
+	static XUID k_stub_xuid = 0x1000100010001000UL; // note really constant...
+	*pxuid = &k_stub_xuid;
+
+#ifndef XLIVE_NO_XLIVE
+	return ERROR_SUCCESS;
+#else
+	return ERROR_SUCCESS;
+#endif
+}
+
+XLIVE_API DWORD WINAPI XLiveUserGetSigninState(DWORD dwUserIndex) {
+#ifndef XLIVE_NO_XLIVE
+	return eXUserSigninState_SignedInLocally;
+#else
+	return eXUserSigninState_SignedInLocally;
+#endif
+}
+
+XLIVE_API DWORD WINAPI XLiveUserGetName(DWORD dwUserIndex, LPSTR szUserName, DWORD cchUserName) {
+	static const char k_stub_player_name[] = "Player1";
+	static const size_t k_stub_player_name_length = NUMBEROF(k_stub_player_name)+1; // include null terminator
+	if (cchUserName < k_stub_player_name_length)
+		return ERROR_INVALID_PARAMETER;
+
+	strcpy_s(szUserName, cchUserName*sizeof(szUserName[0]), k_stub_player_name);
+#ifndef XLIVE_NO_XLIVE
+	return ERROR_SUCCESS;
+#else
+	return ERROR_SUCCESS;
+#endif
+}
+
+XLIVE_API DWORD WINAPI XUserAreUsersFriends(DWORD dwUserIndex, PXUID pXuids, DWORD dwXuidCount, PBOOL pfResult, PXOVERLAPPED pOverlapped) {
+	if(pfResult != NULL)
+		*pfResult = FALSE;
+
+#ifndef XLIVE_NO_XLIVE
+	return ERROR_SUCCESS;
+#else
+	return ERROR_SUCCESS;
+#endif
+}
+
+XLIVE_API DWORD WINAPI XLiveUserCheckPrivilege(DWORD dwUserIndex, DWORD/*XPRIVILEGE_TYPE*/ PrivilegeType, PBOOL pfResult) {
+	*pfResult = FALSE;
+
+#ifndef XLIVE_NO_XLIVE
+	return ERROR_SUCCESS;
+#else
+	return ERROR_SUCCESS;
+#endif
+}
+
+
+XLIVE_API HANDLE WINAPI XLiveNotifyCreateListener(ULONGLONG qwAreas) {
+	static const HANDLE k_feign_handle = CAST_PTR(HANDLE, 1); // This function returns zero when there's a failure (though I wonder if INVALID_HANDLE_VALUE would work too?)
+
+#ifndef XLIVE_NO_XLIVE
+	return k_feign_handle;
+#else
+	return k_feign_handle;
+#endif
+}
+
+XLIVE_API DWORD WINAPI XLiveShowPlayersUI(DWORD dwUserIndex) {
+#ifndef XLIVE_NO_XLIVE
+	return ERROR_SUCCESS;
+#else
+	return ERROR_SUCCESS;
+#endif
+}
+
+//XLive_5272
+
+XLIVE_API DWORD WINAPI XLiveUserReadGamerPictureByKey(CONST PVOID/*PXUSER_DATA*/ pGamercardPictureKey,
+													  BOOL fSmall, PBYTE pbTextureBuffer, DWORD dwPitch, DWORD dwHeight,
+													  PXOVERLAPPED pOverlapped
+) {
+#ifndef XLIVE_NO_XLIVE
+	return ERROR_SUCCESS;
+#else
+	return ERROR_SUCCESS;
+#endif
+}
+
+//XLive_5274
+
+XLIVE_API DWORD WINAPI XLiveShowFriendsUI(DWORD dwUserIndex) {
+#ifndef XLIVE_NO_XLIVE
+	return ERROR_SUCCESS;
+#else
+	return ERROR_SUCCESS;
+#endif
+}
+
+// The API function is VOID...
+XLIVE_API DWORD WINAPI XLiveUserSetProperty(DWORD dwUserIndex, DWORD dwPropertyId, DWORD cbValue, CONST VOID *pvValue) {
+#ifndef XLIVE_NO_XLIVE
+	return ERROR_SUCCESS;
+#else
+	return ERROR_SUCCESS;
+#endif
+}
+
+// The API function is VOID...
+XLIVE_API DWORD WINAPI XLiveUserSetContext(DWORD dwUserIndex, DWORD dwContextId, DWORD dwContextValue) {
+#ifndef XLIVE_NO_XLIVE
+	return ERROR_SUCCESS;
+#else
+	return ERROR_SUCCESS;
+#endif
+}
+
+XLIVE_API DWORD WINAPI XLiveUserWriteAchievements(DWORD dwTitleId, DWORD dwUserIndex, XUID xuid,
+												  DWORD dwDetailFlags, DWORD dwStartingIndex, DWORD cItem,
+												  PDWORD pcbBuffer, PHANDLE ph) {
+	*pcbBuffer = 0;
+	*ph = INVALID_HANDLE_VALUE;
+
+#ifndef XLIVE_NO_XLIVE
+	return ERROR_INVALID_FUNCTION;
+#else
+	return ERROR_INVALID_FUNCTION;
+#endif
+}
+
+//XLive_5279
+
+XLIVE_API DWORD WINAPI XLiveUserCreateAchievementEnumerator(DWORD dwNumAchievements, CONST VOID/*XUSER_ACHIEVEMENT*/ *pAchievements, PXOVERLAPPED *pOverlapped) {
+#ifndef XLIVE_NO_XLIVE
+	return ERROR_SUCCESS;
+#else
+	return ERROR_SUCCESS;
+#endif
+}
+
+XLIVE_API DWORD WINAPI XLiveUserReadStats(DWORD dwTitleId, DWORD dwNumXuids, CONST XUID *pXuids,
+										  DWORD dwNumStatsSpecs, CONST VOID /*XUSER_STATS_SPEC*/ *pSpecs,
+										  PDWORD *pcbResults, DWORD* /*PXUSER_STATS_READ_RESULTS*/ pResults,
+										  PXOVERLAPPED *pOverlapped) {
+	*(*pcbResults) = 4; // The XLive kernel implementation may defined this just as a DWORD*, not a PDWORD* (so verify, as always)
+	if(pResults != NULL) *pResults = 0;
+
+#ifndef XLIVE_NO_XLIVE
+	return ERROR_SUCCESS;
+#else
+	return ERROR_SUCCESS;
+#endif
+}
+
+//XLive_5282
+//XLive_5283
+//XLive_5284
+//XLive_5285
+//XLive_5286
+//XLive_5287
+//XLive_5288
+//XLive_5289
+//XLive_5290
+//XLive_5291
+//XLive_5292
+//XLive_5293
+
+XLIVE_API DWORD WINAPI XLiveSessionCreate(DWORD dwFlags, DWORD dwUserIndex, DWORD dwMaxPublicSlots, DWORD dwMaxPrivateSlots,
+										  ULONGLONG *pqwSessionNonce, PXSESSION_INFO pSessionInfo, PXOVERLAPPED pXOverlapped,
+										  HANDLE *ph) {
+  *ph = INVALID_HANDLE_VALUE;
+
+#ifndef XLIVE_NO_XLIVE
+	return ERROR_INVALID_FUNCTION;
+#else
+	return ERROR_INVALID_FUNCTION;
+#endif
+}
+
+//XLive_5303

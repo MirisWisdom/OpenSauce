@@ -39,20 +39,19 @@ namespace BlamLib.Blam.Halo1.Tags
 		public TI.Real ZSpriteRadiusScale;
 		#endregion
 
-		#region Ctor
 		public shader_map_struct() : base(13)
 		{
 			Add(new TI.Pad(40));
-			Add(ShaderFlags = new TI.Flags(TI.FieldType.WordFlags));
+			Add(ShaderFlags = TI.Flags.Word);
 			Add(FramebufferBlendFunction = new TI.Enum());
 			Add(FramebufferFadeMode = new TI.Enum());
-			Add(ShaderMapFlags = new TI.Flags(TI.FieldType.WordFlags));
+			Add(ShaderMapFlags = TI.Flags.Word);
 			Add(new TI.Pad(28));
 
 			Add(MapBitmap = new TI.TagReference(this, TagGroups.bitm));
 			
 			Add(MapAnchor = new TI.Enum());
-			Add(MapFlags = new TI.Flags(TI.FieldType.WordFlags));
+			Add(MapFlags = TI.Flags.Word);
 			
 			Add(MapAnimation = new TI.Struct<shader_animation_struct>(this));
 			
@@ -61,7 +60,6 @@ namespace BlamLib.Blam.Halo1.Tags
 			Add(ZSpriteRadiusScale = new TI.Real());
 			Add(new TI.Pad(20));
 		}
-		#endregion
 	};
 	#endregion
 
@@ -69,25 +67,20 @@ namespace BlamLib.Blam.Halo1.Tags
 	[TI.Struct(-1, -1, 60)]
 	public class shader_color_function_struct : TI.Definition
 	{
-		#region Fields
 		public TI.RealColor OnColor, OffColor;
 		public TI.Enum AnimationFunction;
-		public TI.Real AnimationPeriod;
-		public TI.Real AnimationPhase;
-		#endregion
+		public TI.Real AnimationPeriod, AnimationPhase;
 
-		#region Ctor
 		public shader_color_function_struct() : base(7)
 		{
 			Add(OnColor = new TI.RealColor());
 			Add(OffColor = new TI.RealColor());
 			Add(AnimationFunction = new TI.Enum());
-			Add(new TI.Pad(2));
+			Add(TI.Pad.Word);
 			Add(AnimationPeriod = new TI.Real());
 			Add(AnimationPhase = new TI.Real());
 			Add(new TI.Pad(24));
 		}
-		#endregion
 	};
 	#endregion
 
@@ -95,15 +88,9 @@ namespace BlamLib.Blam.Halo1.Tags
 	[TI.Struct(-1, -1, 16)]
 	public class shader_animation_function_struct : TI.Definition
 	{
-		#region Fields
-		public TI.Enum Source;
-		public TI.Enum Function;
-		public TI.Real Period;
-		public TI.Real Phase;
-		public TI.Real Scale;
-		#endregion
+		public TI.Enum Source, Function;
+		public TI.Real Period, Phase, Scale;
 
-		#region Ctor
 		public shader_animation_function_struct() : base(5)
 		{
 			Add(Source = new TI.Enum());
@@ -112,7 +99,6 @@ namespace BlamLib.Blam.Halo1.Tags
 			Add(Phase = new TI.Real());
 			Add(Scale = new TI.Real());
 		}
-		#endregion
 	};
 	#endregion
 
@@ -120,14 +106,9 @@ namespace BlamLib.Blam.Halo1.Tags
 	[TI.Struct(-1, -1, 56)]
 	public class shader_animation_struct : TI.Definition
 	{
-		#region Fields
-		public TI.Struct<shader_animation_function_struct> AnimU;
-		public TI.Struct<shader_animation_function_struct> AnimV;
-		public TI.Struct<shader_animation_function_struct> AnimRot;
+		public TI.Struct<shader_animation_function_struct> AnimU, AnimV, AnimRot;
 		public TI.RealPoint2D AnimRotCenter;
-		#endregion
 
-		#region Ctor
 		public shader_animation_struct() : base(4)
 		{
 			Add(AnimU = new TI.Struct<shader_animation_function_struct>(this));
@@ -135,7 +116,6 @@ namespace BlamLib.Blam.Halo1.Tags
 			Add(AnimRot = new TI.Struct<shader_animation_function_struct>(this));
 			Add(AnimRotCenter = new TI.RealPoint2D());
 		}
-		#endregion
 	};
 	#endregion
 
@@ -143,21 +123,16 @@ namespace BlamLib.Blam.Halo1.Tags
 	[TI.Struct(-1, -1, 12)]
 	public class shader_texture_animation_function_struct : TI.Definition
 	{
-		#region Fields
 		public TI.Enum Function;
-		public TI.Real Period;
-		public TI.Real Scale;
-		#endregion
+		public TI.Real Period, Scale;
 
-		#region Ctor
 		public shader_texture_animation_function_struct() : base(4)
 		{
 			Add(Function = new TI.Enum());
-			Add(new TI.Pad(2));
+			Add(TI.Pad.Word);
 			Add(Period = new TI.Real());
 			Add(Scale = new TI.Real());
 		}
-		#endregion
 	};
 	#endregion
 
@@ -174,7 +149,7 @@ namespace BlamLib.Blam.Halo1.Tags
 			Add(FramebufferBlendFunction = new TI.Enum());
 			Add(FramebufferBlendFadeMode = new TI.Enum());
 			Add(FramebufferFadeSource = new TI.Enum());
-			Add(new TI.Pad(2));
+			Add(TI.Pad.Word);
 		}
 	};
 	#endregion
@@ -183,22 +158,18 @@ namespace BlamLib.Blam.Halo1.Tags
 	[TI.Struct(-1, -1, 12)]
 	public class shader_radiosity_properties_struct : TI.Definition
 	{
-		#region Fields
 		public TI.ByteInteger NumericCounterLimit;
 		public TI.Flags Flags;
 		public TI.Enum FirstMapType;
 		public TI.Struct<shader_frame_buffer_function_struct> FrameBufferFunction;
-		#endregion
 
-		#region Ctor
 		public shader_radiosity_properties_struct() : base(4)
 		{
 			Add(NumericCounterLimit = new TI.ByteInteger());
-			Add(Flags = new TI.Flags(TI.FieldType.ByteFlags));
+			Add(Flags = TI.Flags.Byte);
 			Add(FirstMapType = new TI.Enum());
 			Add(FrameBufferFunction = new TI.Struct<shader_frame_buffer_function_struct>(this));
 		}
-		#endregion
 	};
 	#endregion
 
@@ -223,12 +194,12 @@ namespace BlamLib.Blam.Halo1.Tags
 		public shader_group() : this(0) {}
 		protected shader_group(int field_count) : base(field_count + 9)
 		{
-			Add(RadiosityFlags = new TI.Flags(BlamLib.TagInterface.FieldType.WordFlags));
+			Add(RadiosityFlags = TI.Flags.Word);
 			Add(RadiosityDetailLevel = new TI.Enum());
 			Add(RadiosityPower = new TI.Real());
 			Add(RadiosityEmittedLightColor = new TI.RealColor());
 			Add(RadiosityTintColor = new TI.RealColor());
-			Add(PhysicsFlags = new TI.Flags(BlamLib.TagInterface.FieldType.WordFlags));
+			Add(PhysicsFlags = TI.Flags.Word);
 			Add(MaterialType = new TI.Enum());
 			Add(ShaderType = new TI.Skip(2));
 			Add(new TI.Pad(2));
@@ -250,7 +221,7 @@ namespace BlamLib.Blam.Halo1.Tags
 		public shader_effect_group() : base(8)
 		{
 			// 1 << 0 - nonlinear or linear
-			Add(Flags = new TI.Flags(TI.FieldType.ByteFlags));
+			Add(Flags = TI.Flags.Byte);
 			Add(TI.Pad.Byte);
 			Add(FrameBufferFunction = new TI.Struct<shader_frame_buffer_function_struct>(this));
 			Add(new TI.UnknownPad(32));
@@ -309,13 +280,13 @@ namespace BlamLib.Blam.Halo1.Tags
 
 		public shader_environment_group() : base(52)
 		{
-			Add(Flags = new TI.Flags(BlamLib.TagInterface.FieldType.WordFlags));
+			Add(Flags = TI.Flags.Word);
 			Add(Type = new TI.Enum());
 			Add(LensFlareSpacing = new TI.Real());
 			Add(LensFlare = new TI.TagReference(this, TagGroups.lens));
 			Add(new TI.Pad(44));
-			
-			Add(DiffuseFlags = new TI.Flags(BlamLib.TagInterface.FieldType.WordFlags));
+
+			Add(DiffuseFlags = TI.Flags.Word);
 			Add(new TI.Pad(2 + 24));
 			Add(BaseMap = new TI.TagReference(this, TagGroups.bitm));
 			Add(new TI.Pad(24));
@@ -341,7 +312,7 @@ namespace BlamLib.Blam.Halo1.Tags
 			Add(VAnimation = new TI.Struct<shader_texture_animation_function_struct>(this));
 			Add(new TI.Pad(24));
 
-			Add(Flags = new TI.Flags(BlamLib.TagInterface.FieldType.WordFlags));
+			Add(SelfIlluminationFlags = TI.Flags.Word);
 			Add(new TI.Pad(2 + 24));
 			Add(PrimaryAnimation = new TI.Struct<shader_color_function_struct>(this));
 			Add(SecondaryAnimation = new TI.Struct<shader_color_function_struct>(this));
@@ -350,20 +321,20 @@ namespace BlamLib.Blam.Halo1.Tags
 			Add(Map = new TI.TagReference(this, TagGroups.bitm));
 			Add(new TI.Pad(24));
 
-			Add(SpecularFlags = new TI.Flags(BlamLib.TagInterface.FieldType.WordFlags));
+			Add(SpecularFlags = TI.Flags.Word);
 			Add(new TI.Pad(2 + 16));
-			Add(Brightness = new TI.Real(BlamLib.TagInterface.FieldType.RealFraction));
+			Add(Brightness = TI.Real.Fraction);
 			Add(new TI.Pad(20));
 			Add(PerpendicularColor = new TI.RealColor());
 			Add(ParallelColor = new TI.RealColor());
 			Add(new TI.Pad(16));
 
-			Add(ReflectionFlags = new TI.Flags(BlamLib.TagInterface.FieldType.WordFlags));
+			Add(ReflectionFlags = TI.Flags.Word);
 			Add(ReflectionType = new TI.Enum());
-			Add(LightmapBrightnessScale = new TI.Real(BlamLib.TagInterface.FieldType.RealFraction));
+			Add(LightmapBrightnessScale = TI.Real.Fraction);
 			Add(new TI.Pad(28));
-			Add(PerpendicularBrightness = new TI.Real(BlamLib.TagInterface.FieldType.RealFraction));
-			Add(ParallelBrightness = new TI.Real(BlamLib.TagInterface.FieldType.RealFraction));
+			Add(PerpendicularBrightness = TI.Real.Fraction);
+			Add(ParallelBrightness = TI.Real.Fraction);
 			Add(new TI.Pad(16 + 8 + 16));
 			Add(ReflectionCubeMap = new TI.TagReference(this, TagGroups.bitm));
 			Add(new TI.Pad(16));
@@ -408,14 +379,14 @@ namespace BlamLib.Blam.Halo1.Tags
 
 		public shader_model_group() : base(36)
 		{
-			Add(Flags = new TI.Flags(BlamLib.TagInterface.FieldType.WordFlags));
+			Add(Flags = TI.Flags.Word);
 			Add(new TI.Pad(2 + 12));
-			Add(Translucency = new TI.Real(BlamLib.TagInterface.FieldType.RealFraction));
+			Add(Translucency = TI.Real.Fraction);
 			Add(new TI.Pad(16));
 			Add(ChangeColorSource = new TI.Enum());
 			Add(new TI.Pad(2 + 28));
-			
-			Add(SelfIlluminationFlags = new TI.Flags(BlamLib.TagInterface.FieldType.WordFlags));
+
+			Add(SelfIlluminationFlags = TI.Flags.Word);
 			Add(new TI.Pad(2));
 			Add(ColorSource = new TI.Enum());
 			Add(AnimationFunction = new TI.Enum());
@@ -441,9 +412,9 @@ namespace BlamLib.Blam.Halo1.Tags
 			
 			Add(ReflectionFalloffDist = new TI.Real());
 			Add(ReflectionCutoffDist = new TI.Real());
-			Add(PerpendicularBrightness = new TI.Real(BlamLib.TagInterface.FieldType.RealFraction));
+			Add(PerpendicularBrightness = TI.Real.Fraction);
 			Add(PerpendicularTintColor = new TI.RealColor());
-			Add(ParallelBrightness = new TI.Real(BlamLib.TagInterface.FieldType.RealFraction));
+			Add(ParallelBrightness = TI.Real.Fraction);
 			Add(ParallelTintColor = new TI.RealColor());
 			Add(ReflectionCubemap = new TI.TagReference(this, TagGroups.bitm));
 			Add(new TI.Pad(16 + 4 + 16 + 32));
@@ -476,7 +447,7 @@ namespace BlamLib.Blam.Halo1.Tags
 
 			public shader_transparent_chicago_map_block() : base(17)
 			{
-				Add(Flags = new TI.Flags(BlamLib.TagInterface.FieldType.WordFlags));
+				Add(Flags = TI.Flags.Word);
 				Add(new TI.Pad(2 + 40));
 				Add(ColorFunction = new TI.Enum());
 				Add(AlphaFunction = new TI.Enum());
@@ -486,7 +457,7 @@ namespace BlamLib.Blam.Halo1.Tags
 				Add(MapUOffset = new TI.Real());
 				Add(MapVOffset = new TI.Real());
 				Add(MapRotation = new TI.Real());
-				Add(MipmapBias = new TI.Real(BlamLib.TagInterface.FieldType.RealFraction));
+				Add(MipmapBias = TI.Real.Fraction);
 				Add(Map = new TI.TagReference(this, TagGroups.bitm));
 				Add(new TI.Pad(40));
 
@@ -574,14 +545,14 @@ namespace BlamLib.Blam.Halo1.Tags
 
 			public shader_transparent_generic_map_block() : base(10)
 			{
-				Add(Flags = new TI.Flags(BlamLib.TagInterface.FieldType.WordFlags));
+				Add(Flags = TI.Flags.Word);
 				Add(new TI.Pad(2));
 				Add(MapUScale = new TI.Real());
 				Add(MapVScale = new TI.Real());
 				Add(MapUOffset = new TI.Real());
 				Add(MapVOffset = new TI.Real());
 				Add(MapRotation = new TI.Real());
-				Add(MipmapBias = new TI.Real(BlamLib.TagInterface.FieldType.RealFraction));
+				Add(MipmapBias = TI.Real.Fraction);
 				Add(Map = new TI.TagReference(this, TagGroups.bitm));
 				Add(Animation = new TI.Struct<shader_animation_struct>(this));
 
@@ -599,15 +570,15 @@ namespace BlamLib.Blam.Halo1.Tags
 			#region Ctor
 			public shader_transparent_generic_stage_block() : base(34)
 			{
-				Add(/*flags = */ new TI.Flags(TI.FieldType.WordFlags));
+				Add(/*flags = */ TI.Flags.Word);
 				Add(new TI.Pad(2));
 				// Explanation here
 				Add(/*color0 source = */ new TI.Enum());
 				Add(/*color0 animation function = */ new TI.Enum());
 				Add(/*color0 animation period = */ new TI.Real());
-				Add(/*color0 animation lower bound = */ new TI.RealColor(TI.FieldType.RealArgbColor));
-				Add(/*color0 animation upper bound = */ new TI.RealColor(TI.FieldType.RealArgbColor));
-				Add(/*color1 = */ new TI.RealColor(TI.FieldType.RealArgbColor));
+				Add(/*color0 animation lower bound = */ TI.RealColor.Argb);
+				Add(/*color0 animation upper bound = */ TI.RealColor.Argb);
+				Add(/*color1 = */ TI.RealColor.Argb);
 				// Explanation here
 				Add(/*input A = */ new TI.Enum());
 				Add(/*input A mapping = */ new TI.Enum());
@@ -700,7 +671,7 @@ namespace BlamLib.Blam.Halo1.Tags
 
 		public shader_transparent_glass_group() : base(25)
 		{
-			Add(Flags = new TI.Flags(BlamLib.TagInterface.FieldType.WordFlags));
+			Add(Flags = TI.Flags.Word);
 			Add(new TI.Pad(2 + 40));
 			Add(BackgroundTintColor = new TI.RealColor());
 			Add(BackgroundTintMapScale = new TI.Real());
@@ -708,9 +679,9 @@ namespace BlamLib.Blam.Halo1.Tags
 			Add(new TI.Pad(20 + 2));
 			
 			Add(ReflectionType = new TI.Enum());
-			Add(PerpendicularBrightness = new TI.Real(BlamLib.TagInterface.FieldType.RealFraction));
+			Add(PerpendicularBrightness = TI.Real.Fraction);
 			Add(PerpendicularTintColor = new TI.RealColor());
-			Add(ParallelBrightness = new TI.Real(BlamLib.TagInterface.FieldType.RealFraction));
+			Add(ParallelBrightness = TI.Real.Fraction);
 			Add(ParallelTintColor = new TI.RealColor());
 			Add(ReflectionMap = new TI.TagReference(this, TagGroups.bitm));
 			Add(BumpMapScale = new TI.Real());
@@ -738,24 +709,17 @@ namespace BlamLib.Blam.Halo1.Tags
 		public TI.Flags Flags;
 		public TI.TagReference Map;
 
-		public TI.RealColor GradientMinColor;
-		public TI.RealColor GradientMaxColor;
-		public TI.RealColor BackgroundColor;
-		public TI.RealColor FlashColor;
-		public TI.RealColor TintColor;
-		public TI.Real MeterTransparency;
-		public TI.Real BackgroundTransparency;
+		public TI.RealColor GradientMinColor, GradientMaxColor, 
+			BackgroundColor, FlashColor, TintColor;
+		public TI.Real MeterTransparency, BackgroundTransparency;
 
-		public TI.Enum MeterBrightnessSource;
-		public TI.Enum FlashBrightnessSource;
-		public TI.Enum ValueSource;
-		public TI.Enum GradientSource;
-		public TI.Enum FlashExtensionSource;
+		public TI.Enum MeterBrightnessSource, FlashBrightnessSource, ValueSource, 
+			GradientSource, FlashExtensionSource;
 		#endregion
 
 		public shader_transparent_meter_group() : base(18)
 		{
-			Add(Flags = new TI.Flags(BlamLib.TagInterface.FieldType.WordFlags));
+			Add(Flags = TI.Flags.Word);
 			Add(new TI.Pad(2 + 32));
 			Add(Map = new TI.TagReference(this, TagGroups.bitm));
 			Add(new TI.Pad(32));
@@ -765,8 +729,8 @@ namespace BlamLib.Blam.Halo1.Tags
 			Add(BackgroundColor = new TI.RealColor());
 			Add(FlashColor = new TI.RealColor());
 			Add(TintColor = new TI.RealColor());
-			Add(MeterTransparency = new TI.Real(BlamLib.TagInterface.FieldType.RealFraction));
-			Add(BackgroundTransparency = new TI.Real(BlamLib.TagInterface.FieldType.RealFraction));
+			Add(MeterTransparency = TI.Real.Fraction);
+			Add(BackgroundTransparency = TI.Real.Fraction);
 			Add(new TI.Pad(24));
 
 			Add(MeterBrightnessSource = new TI.Enum());
@@ -788,8 +752,7 @@ namespace BlamLib.Blam.Halo1.Tags
 		public TI.Real IntensityExponent;
 
 		public TI.Enum OffsetSource;
-		public TI.Real OffsetAmount;
-		public TI.Real OffsetExponent;
+		public TI.Real OffsetAmount, OffsetExponent;
 
 		public TI.Real PerpendicularBrightness;
 		public TI.RealColor PerpendicularTintColor;
@@ -820,9 +783,9 @@ namespace BlamLib.Blam.Halo1.Tags
 			Add(OffsetExponent = new TI.Real());
 			Add(new TI.Pad(32));
 
-			Add(PerpendicularBrightness = new TI.Real(BlamLib.TagInterface.FieldType.RealFraction));
+			Add(PerpendicularBrightness = TI.Real.Fraction);
 			Add(PerpendicularTintColor = new TI.RealColor());
-			Add(ParallelBrightness = new TI.Real(BlamLib.TagInterface.FieldType.RealFraction));
+			Add(ParallelBrightness = TI.Real.Fraction);
 			Add(ParallelTintColor = new TI.RealColor());
 			Add(ParallelTintColorSource = new TI.Enum());
 			Add(new TI.Pad(2 + 32 + 2 + 2 + 16 + 4 + 4));
@@ -848,21 +811,16 @@ namespace BlamLib.Blam.Halo1.Tags
 		[TI.Definition(-1, 76)]
 		public class shader_transparent_water_ripple_block : TI.Definition
 		{
-			#region Fields
-			public TI.Real ContributionFactor;
-			public TI.Real AnimationAngle;
-			public TI.Real AnimationVelocity;
+			public TI.Real ContributionFactor, AnimationAngle, AnimationVelocity;
 			public TI.RealVector2D MapOffset;
-			public TI.ShortInteger MapRepeats;
-			public TI.ShortInteger MapIndex;
-			#endregion
+			public TI.ShortInteger MapRepeats, MapIndex;
 
 			public shader_transparent_water_ripple_block() : base(9)
 			{
 				Add(new TI.Pad(2 + 2));
-				Add(ContributionFactor = new TI.Real(BlamLib.TagInterface.FieldType.RealFraction));
+				Add(ContributionFactor = TI.Real.Fraction);
 				Add(new TI.Pad(32));
-				Add(AnimationAngle = new TI.Real(BlamLib.TagInterface.FieldType.Angle));
+				Add(AnimationAngle = TI.Real.Angle);
 				Add(AnimationVelocity = new TI.Real());
 				Add(MapOffset = new TI.RealVector2D());
 				Add(MapRepeats = new TI.ShortInteger());
@@ -880,36 +838,33 @@ namespace BlamLib.Blam.Halo1.Tags
 		public TI.Real ViewParallelBrightness;
 		public TI.RealColor ViewParallelTintColor;
 		public TI.TagReference ReflectionMap;
-		public TI.Real RippleAnimationAngle;
-		public TI.Real RippleAnimationVelocity;
-		public TI.Real RippleScale;
+		public TI.Real RippleAnimationAngle, RippleAnimationVelocity, RippleScale;
 		public TI.TagReference RippleMaps;
 		public TI.ShortInteger RippleMipmapLevels;
-		public TI.Real RippleMipmapFadeFactor;
-		public TI.Real RippleMipmapDetailBias;
+		public TI.Real RippleMipmapFadeFactor, RippleMipmapDetailBias;
 		public TI.Block<shader_transparent_water_ripple_block> Ripples;
 		#endregion
 
 		public shader_transparent_water_group() : base(22)
 		{
-			Add(Flags = new TI.Flags(BlamLib.TagInterface.FieldType.WordFlags));
+			Add(Flags = TI.Flags.Word);
 			Add(new TI.Pad(2 + 32));
 			Add(BaseMap = new TI.TagReference(this, TagGroups.bitm));
 			Add(new TI.Pad(16));
-			Add(ViewPerpendicularBrightness = new TI.Real(BlamLib.TagInterface.FieldType.RealFraction));
+			Add(ViewPerpendicularBrightness = TI.Real.Fraction);
 			Add(ViewPerpendicularTintColor = new TI.RealColor());
-			Add(ViewParallelBrightness = new TI.Real(BlamLib.TagInterface.FieldType.RealFraction));
+			Add(ViewParallelBrightness = TI.Real.Fraction);
 			Add(ViewParallelTintColor = new TI.RealColor());
 			Add(new TI.Pad(16));
 			Add(ReflectionMap = new TI.TagReference(this, TagGroups.bitm));
 			Add(new TI.Pad(16));
-			Add(RippleAnimationAngle = new TI.Real(BlamLib.TagInterface.FieldType.Angle));
+			Add(RippleAnimationAngle = TI.Real.Angle);
 			Add(RippleAnimationVelocity = new TI.Real());
 			Add(RippleScale = new TI.Real());
 			Add(RippleMaps = new TI.TagReference(this, TagGroups.bitm));
 			Add(RippleMipmapLevels = new TI.ShortInteger());
 			Add(new TI.Pad(2));
-			Add(RippleMipmapFadeFactor = new TI.Real(BlamLib.TagInterface.FieldType.RealFraction));
+			Add(RippleMipmapFadeFactor = TI.Real.Fraction);
 			Add(RippleMipmapDetailBias = new TI.Real());
 			Add(new TI.Pad(64));
 			Add(Ripples = new TI.Block<shader_transparent_water_ripple_block>(this, 4));
