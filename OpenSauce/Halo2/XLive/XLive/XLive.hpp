@@ -40,6 +40,9 @@ extern "C"
 
 
 	enum {
+		eXUserSigninState_SignedInLocally = 1,
+
+
 		XLIVE_FEIGN_PROTECTED_BUFFER_SIG = 0xDEADC0DE,
 	};
 
