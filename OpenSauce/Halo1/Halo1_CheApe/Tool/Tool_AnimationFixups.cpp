@@ -36,6 +36,7 @@ namespace Yelo
 		// valid animations array
 
 		// release builds were having issues with our inline assembly calling memset...
+		// This is may be due (I never checked the output .asm) to the compiler putting args into registers (which our inline asm clearly doesn't do)
 		static void API_FUNC memset_hack(void* addr, size_t size)
 		{
 			memset(addr, true, size);

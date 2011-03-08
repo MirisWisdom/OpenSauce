@@ -16,6 +16,28 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+// just an endian swap
+inline void TagSwap(tag& x)
+{
+	x = (x>>24) | 
+		((x<<8) & 0x00FF0000) |
+		((x>>8) & 0x0000FF00) |
+		(x<<24);
+}
+
+// Union hack to use a group tag as a string
+union u_group_tag_str
+{
+	struct {
+		tag group;
+		PAD8; // null terminator
+	};
+	char str[sizeof(tag)+1];
+
+	inline void Terminate() { str[4] = '\0'; }
+	inline void TagSwap()	{ Tool::TagSwap(group); }
+};
+
 typedef std::vector<std::string> t_string_vector;
 
 static const char* m_field_type_strings[] =
@@ -80,11 +102,8 @@ public:
 		m_name.clear(); 
 		m_name.assign(name); 
 	}
-	std::string&				GetName()
-	{
-		return m_name;
-	}
-	t_string_vector&			GetUsedNamesVector() { return m_used_names; }
+	std::string&				GetName()				{ return m_name; }
+	t_string_vector&			GetUsedNamesVector()	{ return m_used_names; }
 
 	virtual void				Ctor()
 	{
@@ -107,25 +126,13 @@ public:
 // field references for later printing
 class c_string_list_instance : public c_definition_instance
 { 
-	string_list*				m_string_list;
-	std::vector<tag_field*>		m_references;
+	const string_list*				m_string_list;
+	std::vector<const tag_field*>	m_references;
 public:
-	void						SetList(string_list* list) 
-	{ 
-		m_string_list = list; 
-	}
-	string_list*				GetList() 
-	{ 
-		return m_string_list; 
-	}
-	void						AddReference(tag_field* field)
-	{ 
-		m_references.push_back(field); 
-	}
-	std::vector<tag_field*>&	GetReferencesVector() 
-	{ 
-		return m_references; 
-	}
+	void						SetList(const string_list* list)		{ m_string_list = list; }
+	const string_list*			GetList() const							{ return m_string_list; }
+	void						AddReference(const tag_field* field)	{ m_references.push_back(field); }
+	std::vector<const tag_field*>&	GetReferencesVector()				{ return m_references; }
 
 	virtual void				Ctor()
 	{
@@ -145,14 +152,8 @@ class c_flags_instance : public c_string_list_instance
 {
 	Enums::field_type			m_flags_type;
 public:
-	void						SetFlagsType(Enums::field_type type) 
-	{ 
-		m_flags_type = type; 
-	}
-	const Enums::field_type		GetFlagsType() 
-	{ 
-		return m_flags_type; 
-	}
+	void						SetFlagsType(Enums::field_type type)	{ m_flags_type = type; }
+	const Enums::field_type		GetFlagsType()							{ return m_flags_type; }
 
 	virtual void				Ctor()
 	{
@@ -167,14 +168,8 @@ class c_struct_instance : public c_definition_instance
 	std::vector<c_flags_instance>	m_flags;
 	std::vector<c_array_instance>	m_arrays;
 public:
-	std::vector<c_flags_instance>&	GetFlagsVector() 
-	{ 
-		return m_flags; 
-	}
-	std::vector<c_array_instance>&	GetArraysVector() 
-	{ 
-		return m_arrays; 
-	}
+	std::vector<c_flags_instance>&	GetFlagsVector()	{ return m_flags; }
+	std::vector<c_array_instance>&	GetArraysVector()	{ return m_arrays; }
 
 	virtual void					Ctor()
 	{
@@ -196,29 +191,20 @@ class c_block_instance : public c_struct_instance
 	tag								m_definition_tag;
 	bool							m_is_base_definition;
 	PAD24;
-	tag_block_definition*			m_definition;
+	const tag_block_definition*		m_definition;
 
 public:
-	const bool						IsBase() 
-	{ 
-		return m_is_base_definition; 
-	}
-	const tag						GetTag() 
-	{ 
-		return m_definition_tag; 
-	}
+	const bool						IsBase() const			{ return m_is_base_definition; }
+	const tag						GetTag() const			{ return m_definition_tag; }
+	const tag_block_definition*		GetDefinition() const	{ return m_definition; }
 	void							SetDefinition(
 		const tag_block_definition* definition, 
 		bool is_base_definition,
 		const tag definition_tag) 
 	{ 
 		m_is_base_definition = is_base_definition;
-		m_definition = (tag_block_definition*)definition;
+		m_definition = definition;
 		m_definition_tag = definition_tag;
-	}
-	const tag_block_definition*		GetDefinition() 
-	{ 
-		return m_definition; 
 	}
 
 	virtual void					Ctor()
@@ -232,16 +218,10 @@ public:
 // provides the information necessary to build an array struct
 class c_array_instance : public c_struct_instance
 {
-	tag_field*					m_array_start;
+	const tag_field*				m_array_start;
 public:
-	void						SetArrayStart(tag_field* start_field) 
-	{ 
-		m_array_start = start_field; 
-	}
-	tag_field*					GetArrayStart() 
-	{ 
-		return m_array_start; 
-	}
+	void						SetArrayStart(const tag_field* start_field)	{ m_array_start = start_field; }
+	const tag_field*			GetArrayStart() const						{ return m_array_start; }
 
 	virtual void				Ctor()
 	{
@@ -252,15 +232,6 @@ public:
 
 //////////////////////////////////////////////////////////////////////
 // string editing
-
-// just an endian swap
-inline void TagSwap(tag& x)
-{
-	x = (x>>24) | 
-		((x<<8) & 0x00FF0000) |
-		((x>>8) & 0x0000FF00) |
-		(x<<24);
-}
 
 // format the name to make it usable as a variable name
 void FormatName(std::string& name,
@@ -334,8 +305,8 @@ void FormatName(std::string& name,
 void FormatString(std::string& string)
 {
 	struct {
-		const char* m_find;
-		const char* m_replace;
+		cstring m_find;
+		cstring m_replace;
 	}s_replacements[] = {
 		{ "\\", "\\\\" },
 		{ "\"", "\\\"" },
@@ -345,7 +316,7 @@ void FormatString(std::string& string)
 	std::string::size_type index;
 	bool string_edited = false;
 
-	for(int i = 0; i < NUMBEROF(s_replacements); i++)
+	for(int32 i = 0; i < NUMBEROF(s_replacements); i++)
 	{
 		index = 0;
 		while((index = string.find(s_replacements[i].m_find, index)) != std::string::npos)
@@ -362,7 +333,7 @@ void GetUniqueName(std::string& name,
 {
 	std::string test_name(name);
 	t_string_vector::iterator iter;
-	int count = 0;
+	int32 count = 0;
 	bool is_unique;
 
 	do
@@ -399,14 +370,14 @@ void GetUniqueName(std::string& name,
 
 // gets a unique field name, returns true if the field had its own name, false if no_name was used
 bool GetName(std::string& name,
-	const char* raw_name,
+	cstring raw_name,
 	t_string_vector& names_vector,
 	const bool remove_bracket_description = true,
 	const bool remove_pre_underscores = true,
 	const bool use_default = true,
 	const bool add_to_vector = true,
 	const bool dont_format = false,
-	const char* default_string = "no_name")
+	cstring default_string = "no_name")
 {			
 	if(raw_name)
 		name.assign(raw_name);
@@ -430,7 +401,7 @@ bool GetName(std::string& name,
 	return has_name;
 }
 bool GetUnits(std::string& units,
-	const char* raw_name)
+	cstring raw_name)
 {
 	if(raw_name)
 		units.assign(raw_name);
@@ -445,7 +416,7 @@ bool GetUnits(std::string& units,
 	return units.size() != 0;
 }		
 bool GetDescription(std::string& description,
-	const char* raw_name)
+	cstring raw_name)
 {
 	if(raw_name)
 		description.assign(raw_name);
@@ -462,9 +433,9 @@ bool GetDescription(std::string& description,
 // creates a struct name from a name variable, optionally removing "_block" from block names
 void GetStructName(std::string& name,
 	t_string_vector& names_vector,
-	const char* prepend = "s_", 
-	const char* append = NULL,
-	const char* remove = "_block")
+	cstring prepend = "s_", 
+	cstring append = NULL,
+	cstring remove = "_block")
 {
 	std::string::size_type index = std::string::npos;
 
@@ -478,10 +449,8 @@ void GetStructName(std::string& name,
 	FormatName(name);
 
 	// append/prepend custom strings
-	if(prepend)
-		name.insert(0, prepend);
-	if(append)
-		name.insert(name.size(), append);		
+	if(prepend)	name.insert(0, prepend);
+	if(append)	name.insert(name.size(), append);		
 
 	// Format the name and ensure its unique
 	GetUniqueName(name, names_vector);
@@ -501,7 +470,7 @@ static c_definition_instance					g_taggroups_namespace;
 // field preprocessing/data collection
 
 // adds an enum to the global enums list
-void AddEnum(tag_field* field)
+void AddEnum(const tag_field* field)
 {
 	// look for a duplicate entry in the enums vector, if found add a reference
 	std::vector<c_string_list_instance>::iterator iter;
@@ -525,7 +494,7 @@ void AddEnum(tag_field* field)
 	g_enum_list.push_back(enum_instance); 
 }
 // adds a flags instance to a blocks flags vector
-void AddFlags(tag_field* field, 
+void AddFlags(const tag_field* field, 
 	c_struct_instance& parent_struct)
 {
 	// look for a duplicate entry in the blocks flags vector, if found add a reference
@@ -551,7 +520,7 @@ void AddFlags(tag_field* field,
 	flags_vector.push_back(flags_instance);
 }
 // adds an array instance to a blocks arrays vector
-void AddArray(tag_field* field, 
+void AddArray(const tag_field* field, 
 	c_struct_instance& parent_struct)
 {
 	// look for a duplicate entry in the blocks arrays vector, if found do nothing else...
@@ -575,7 +544,7 @@ void AddBlock(const tag_block_definition* block_definition,
 	const tag definition_tag = NONE)
 {
 	// iterate through the blocks fields
-	tag_field* field_pointer;
+	const tag_field* field_pointer;
 	// add blocks
 	field_pointer = block_definition->fields;
 	while(field_pointer && field_pointer->field_type != Enums::_field_terminator)
@@ -632,7 +601,7 @@ void AddBlock(const tag_block_definition* block_definition,
 //////////////////////////////////////////////////////////////////////
 // field text output
 void WriteExplanation(FILE* file, 
-	Yelo::tag_field* field)
+	const tag_field* field)
 {
 	// iterate through the definition string, writing each line
 	fputs("\t\t\t////////////////////////////////////////////////////////////////\n", file);
@@ -649,18 +618,17 @@ void WriteExplanation(FILE* file,
 	}
 }
 void WritePad(FILE* file, 
-	Yelo::tag_field* field)
+	const tag_field* field)
 {
 	int pad_count = CAST_PTR(int, field->Definition<int>());
 
 	// print the pad in its simplest form
-	if(pad_count == 2)
-		fputs("\t\t\tPAD16;\n", file);
-	else if(pad_count == 4)
-		fputs("\t\t\tPAD32;\n", file);
+	if(pad_count == 2)		fputs("\t\t\tPAD16;\n", file);
+	else if(pad_count == 3)	fputs("\t\t\tPAD24;\n", file);
+	else if(pad_count == 4)	fputs("\t\t\tPAD32;\n", file);
 	else
 	{
-		char* type = "byte";
+		cstring type = "byte";
 		if(pad_count % 4 == 0)
 		{
 			type = "int32";
@@ -675,26 +643,18 @@ void WritePad(FILE* file,
 	}
 }
 void WriteTagReference(FILE* file, 
-	Yelo::tag_field* field, 
-	const char* name)
+	const tag_field* field, 
+	cstring name)
 {
 	Yelo::tag_reference_definition* def = field->Definition<Yelo::tag_reference_definition>();
 
 	// write the start of the tag reference entry
-	fprintf_s(file, 
-		"\t\t\tTAG_FIELD(%s, %s", 
+	fprintf_s(file, "\t\t\tTAG_FIELD(%s, %s", 
 		m_field_type_strings[field->field_type], 
 		name);
 
 	// union/struct hack to use a tag as a string
-	union{
-		struct{
-			tag tag_group;
-			PAD(byte, 1);
-		};
-		char tag_group_cstr[5];
-	};
-	tag_group_cstr[4] = '\0';
+	u_group_tag_str gt; gt.Terminate();
 
 	// tag_reference's can have multiple tag types
 	if(def->group_tags && (*def->group_tags != NONE))
@@ -703,11 +663,11 @@ void WriteTagReference(FILE* file,
 		// loop through the tag group list appending them to the file
 		tag* current_tag = def->group_tags;
 		fputs(", \"", file);
-		while(current_tag && ((tag_group = *current_tag) != NONE))
+		while(current_tag && ((gt.group = *current_tag) != NONE))
 		{
 			// swap the endian of the tag group and write it
-			TagSwap(tag_group);
-			fprintf_s(file, "%s", tag_group_cstr);
+			gt.TagSwap();
+			fprintf_s(file, "%s", gt.str);
 			current_tag++;
 
 			//if the next group isn't the terminator put the divider
@@ -720,17 +680,17 @@ void WriteTagReference(FILE* file,
 	{
 		// the field only has one tag group
 		fputs(", \"", file);
-		tag_group = def->group_tag;
-		TagSwap(tag_group);
-		fputs(tag_group_cstr, file);
+		gt.group = def->group_tag;
+		gt.TagSwap();
+		fputs(gt.str, file);
 		fputs("\"", file);	
 	}
 	fputs(");\n", file);
 }
 void WriteFlags(FILE* file, 
-	Yelo::tag_field* field,
-	const char* name,
-	const char* description,
+	const tag_field* field,
+	cstring name,
+	cstring description,
 	c_struct_instance& parent_struct)
 {
 	// look for the flags string_list in the blocks flags vector
@@ -753,9 +713,9 @@ void WriteFlags(FILE* file,
 
 }
 void WriteEnum(FILE* file, 
-	Yelo::tag_field* field, 
-	const char* name, 
-	const char* description)
+	const tag_field* field, 
+	cstring name, 
+	cstring description)
 {
 	// look for the enums string_list in the global enums vector
 	c_string_list_instance* enum_instance = NULL;
@@ -778,8 +738,8 @@ void WriteEnum(FILE* file,
 	fprintf_s(file, ");\n", name);
 }		
 void WriteArray(FILE* file, 
-	Yelo::tag_field* field,
-	const char* name,
+	const tag_field* field,
+	cstring name,
 	c_struct_instance& parent_struct)
 {
 	// look for the arrays tag_field start in the blocks arrays vector
@@ -799,8 +759,8 @@ void WriteArray(FILE* file,
 		array_instance->GetName().c_str(), name, CAST_PTR(int, field->Definition<int>()));
 }
 void WriteBlock(FILE* file, 
-	Yelo::tag_field* field, 
-	const char* name)
+	const tag_field* field, 
+	cstring name)
 {
 	// look for the block definition in the global blocks vector
 	c_block_instance* block_instance = NULL;
@@ -818,10 +778,10 @@ void WriteBlock(FILE* file,
 		name, block_instance->GetName().c_str());
 }		
 void WriteField(FILE* file, 
-	Yelo::tag_field* field, 
-	const char* name, 
-	const char* units, 
-	const char* description)
+	const tag_field* field, 
+	cstring name, 
+	cstring units, 
+	cstring description)
 {
 	// default field output with optional units and description
 	fprintf_s(file, "\t\t\tTAG_FIELD(%s, %s", m_field_type_strings[field->field_type], name);
@@ -832,16 +792,16 @@ void WriteField(FILE* file,
 	fputs(");\n", file);
 }
 void WriteTagField(FILE* file,
-	Yelo::tag_field* field,
+	const tag_field* field,
 	c_struct_instance& parent_block)
 {
 	std::string field_name;
 	std::string field_units;
 	std::string field_description;
 
-	const char* name = NULL;
-	const char* units = NULL;
-	const char* description = NULL;
+	cstring name = NULL;
+	cstring units = NULL;
+	cstring description = NULL;
 
 	bool use_default = (
 		(field->field_type != Enums::_field_skip) && 
@@ -899,7 +859,7 @@ void WriteTagField(FILE* file,
 void WriteEnumDefinition(FILE* file,
 	c_string_list_instance& instance)
 {
-	std::vector<tag_field*>& references(instance.GetReferencesVector());
+	std::vector<const tag_field*>& references(instance.GetReferencesVector());
 
 	std::string field_name_raw;
 	std::string field_name;			
@@ -916,7 +876,7 @@ void WriteEnumDefinition(FILE* file,
 		puts("an enum with multiple references requires an identifier");
 		puts("references:");
 
-		std::vector<tag_field*>::iterator ref_iter;
+		std::vector<const tag_field*>::iterator ref_iter;
 		for(ref_iter = references.begin(); ref_iter != references.end(); ref_iter++)
 		{
 			GetName(field_name, (*ref_iter)->name, instance.GetUsedNamesVector(), false, false, false, false, true);
@@ -924,7 +884,7 @@ void WriteEnumDefinition(FILE* file,
 		}
 	}
 
-	string_list* list = instance.GetList();
+	const string_list* list = instance.GetList();
 	puts("entries:");
 
 	cstring* element = list->elements;
@@ -940,7 +900,7 @@ void WriteEnumDefinition(FILE* file,
 	{
 		if(strlen(input) != 0)
 		{
-			input[511] = '\0';
+			input[NUMBEROF(input)-1] = '\0';
 			field_name.assign(input);
 		}
 		else
@@ -954,7 +914,7 @@ void WriteEnumDefinition(FILE* file,
 	fputs("\t\t{\n", file);
 
 	element = list->elements;
-	for(int i = 0; i < list->length; i++, element++)
+	for(int32 i = 0; i < list->length; i++, element++)
 	{
 		std::string element_formatted;
 
@@ -977,7 +937,7 @@ void WriteFlagsDefinition(FILE* file,
 {
 	std::string field_name;
 	// if there is only one reference, use its name
-	std::vector<tag_field*>& references(instance.GetReferencesVector());
+	std::vector<const tag_field*>& references(instance.GetReferencesVector());
 	if(references.size() == 1)			
 		field_name.assign(references[0]->name);
 	else
@@ -990,7 +950,7 @@ void WriteFlagsDefinition(FILE* file,
 		puts("references:");
 
 		// print the reference fields names to help the user decide on a name
-		std::vector<tag_field*>::iterator ref_iter;
+		std::vector<const tag_field*>::iterator ref_iter;
 		for(ref_iter = references.begin(); ref_iter != references.end(); ref_iter++)
 		{
 			GetName(field_name, (*ref_iter)->name, instance.GetUsedNamesVector(),
@@ -999,7 +959,7 @@ void WriteFlagsDefinition(FILE* file,
 		}			
 
 		// print the flag entries names to help the user decide on a name
-		string_list* list = instance.GetList();
+		const string_list* list = instance.GetList();
 		puts("entries:");
 
 		cstring* element = list->elements;
@@ -1016,7 +976,7 @@ void WriteFlagsDefinition(FILE* file,
 			//if they do not specify a name, use the first references field name
 			if(strlen(input) != 0)
 			{
-				input[511] = '\0';
+				input[NUMBEROF(input)-1] = '\0';
 				field_name.assign(input);
 			}
 			else
@@ -1055,7 +1015,7 @@ void WriteFlagsDefinition(FILE* file,
 	std::string element_description;
 
 	cstring* element = instance.GetList()->elements;
-	for(int i = 0; i < instance.GetList()->length; i++, element++)
+	for(int32 i = 0; i < instance.GetList()->length; i++, element++)
 	{
 		// names need to be unique withing the scope of the flags struct
 		GetName(element_name, *element, instance.GetUsedNamesVector(), false);
@@ -1099,7 +1059,7 @@ void WriteArrayDefinition(FILE* file,
 	// write the array struct
 	fprintf_s(file, "\t\tstruct %s\n\t\t{\n", field_name.c_str());
 
-	tag_field* field = instance.GetArrayStart();
+	const tag_field* field = instance.GetArrayStart();
 	while(field++ && (field->field_type != Enums::_field_array_end))
 		WriteTagField(file, field, instance);
 
@@ -1109,7 +1069,7 @@ void WriteBlockDefinition(FILE* file,
 	c_block_instance& instance,
 	const bool add_boost_asserts)
 {			
-	Yelo::tag_field* current_field = NULL;
+	const tag_field* current_field = NULL;
 	const Yelo::tag_block_definition* block_definition = instance.GetDefinition();
 
 	// get the blocks name
@@ -1131,17 +1091,11 @@ void WriteBlockDefinition(FILE* file,
 
 	if(instance.IsBase())		
 	{
-		union{
-			struct{
-				tag group;
-				PAD8;
-			};
-			char group_cstr[5];
-		};
-		group_cstr[4] = '\0';
-		group = instance.GetTag();
-		TagSwap(group);
-		fprintf_s(file, "\t\t\tenum { k_group_tag = '%s' };\n\n", group_cstr);
+		u_group_tag_str gt; gt.Terminate();
+		gt.group = instance.GetTag();
+		gt.TagSwap();
+
+		fprintf_s(file, "\t\t\tenum { k_group_tag = '%s' };\n\n", gt.str);
 	}
 	// write the flag structs		
 	std::vector<c_flags_instance>& flags_vector(instance.GetFlagsVector());
