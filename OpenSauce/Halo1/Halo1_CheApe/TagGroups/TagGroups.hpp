@@ -181,7 +181,7 @@ namespace Yelo
 		cstring name;
 		void* definition;
 
-		template<typename T> API_INLINE T* Definition() { return CAST_PTR(T*, definition); }
+		template<typename T> API_INLINE T* Definition() const { return CAST_PTR(T*, definition); }
 	}; BOOST_STATIC_ASSERT( sizeof(tag_field) == 0xC );
 
 	typedef bool (PLATFORM_API* proc_tag_block_postprocess)(void* block, byte_flags flags);

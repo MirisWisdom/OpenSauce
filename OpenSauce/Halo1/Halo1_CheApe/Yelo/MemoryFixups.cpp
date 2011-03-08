@@ -42,8 +42,10 @@ namespace Yelo
 		void* address = fixup->address[PLATFORM_ID-1];
 		void* definition = fixup->definition[PLATFORM_ID-1];
 
-// 		YELO_ERROR(_error_message_priority_warning, 
-// 			"CheApe: fixup @%p @%p type=%d", address, definition, fixup->type);
+#if 0
+ 		YELO_ERROR(_error_message_priority_warning, 
+ 			"CheApe: fixup @%p @%p type=%d", address, definition, fixup->type);
+#endif
 
 		if(address == NULL) return; // if address is NULL, definition should be as well...
 
@@ -82,7 +84,9 @@ namespace Yelo
 	{
 		c_memory_fixups::ProcessFixups();
 
-		//c_memory_fixups::DebugPaths();
+#if 0
+		c_memory_fixups::DebugPaths();
+#endif
 	}
 
 	void c_memory_fixups::Dispose()
@@ -91,10 +95,12 @@ namespace Yelo
 
 	void c_memory_fixups::DebugPaths()
 	{
-		char* buffer = new char[MAX_PATH*11];
+		static const size_t k_buffer_size = MAX_PATH*11;
+
+		char* buffer = new char[k_buffer_size];
 
 		const Settings::s_profile& p = Settings::Get().active_profile;
-		sprintf_s(buffer, MAX_PATH*11, "\r\n"
+		sprintf_s(buffer, k_buffer_size, "\r\n"
 			"root: %s\r\n"
 				"\tdata: %s\r\n"
 				"\tmaps: %s\r\n"
@@ -108,7 +114,7 @@ namespace Yelo
 		EngineFunctions::error(Enums::_error_message_priority_warning, buffer);
 
 		const s_override_paths& o = _override_paths;
-		sprintf_s(buffer, MAX_PATH*11, "\r\n"
+		sprintf_s(buffer, k_buffer_size, "\r\n"
 			"root: %s\r\n"
 
 			"data: %s\r\n"

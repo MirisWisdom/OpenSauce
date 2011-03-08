@@ -29,6 +29,13 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
+		// [terminology]	- [tag group]
+		// yelo scenario	- project_yellow
+		// yelo globals		- project_yellow_globals
+		// blam scenario	- scenario
+
+		// Process a yelo scenario's globals data for the current operating mode (editing or cache building).
+		// Returns the loaded yelo global's handle or datum_index::null
 		static datum_index YeloPrepareDefinitionsYeloGlobals(project_yellow& yelo, const bool for_build_cache)
 		{
 			// internal name of the cache's Yelo Globals when the user doesn't supply a definition
@@ -50,6 +57,8 @@ namespace Yelo
 			return yelo_globals_index;
 		}
 
+		// Process a tag reference to a yelo scenario for the current operating mode (editing or cache building).
+		// Returns the loaded yelo scenario's handle or datum_index::null
 		static datum_index YeloPrepareDefinitionsYeloScenario(tag_reference& yelo_reference, const bool for_build_cache)
 		{
 			// internal name of the cache's Yelo tag when the user doesn't supply a definition
@@ -82,6 +91,8 @@ namespace Yelo
 			return yelo_index;
 		}
 
+		// Process a blam scenario for the current operating mode (editing or cache building).
+		// Returns the blam scenario's handle or datum_index::null
 		Yelo::datum_index YeloPrepareDefinitions(cstring scenario_name, const bool for_build_cache)
 		{
 			// If we're not building a cache file, just load the scenario into memory without any of its references

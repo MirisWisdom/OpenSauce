@@ -66,17 +66,11 @@ namespace Yelo
 			}
 			else
 			{
-				union{
-					struct{
-						tag group;
-						PAD8;
-					};
-					char group_cstr[5];
-				};
-				group_cstr[4] = '\0';
-				group = *args->tag_group;
-				TagSwap(group);
-				YELO_ERROR(_error_message_priority_warning, "OS_tool: failed to get tag definition for %s\n", group_cstr);
+				u_group_tag_str gt; gt.Terminate();
+				gt.group = *args->tag_group;
+				gt.TagSwap();
+
+				YELO_ERROR(_error_message_priority_warning, "OS_tool: failed to get tag definition for %s\n", gt.str);
 			}
 		}
 	};
