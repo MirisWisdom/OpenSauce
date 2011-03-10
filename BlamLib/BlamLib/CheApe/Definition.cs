@@ -53,10 +53,25 @@ namespace BlamLib.CheApe
 		const char MarkupDepricated = '@';
 		#endregion
 
+		public sealed class MemoryInformation
+		{
+			/// <summary>Base address where the CheApe cache file will be loaded into</summary>
+			public uint BaseAddress { get; private set; }
+			/// <summary>The max size the CheApe cache file data can be. IE the VirtualAlloc size parameter.</summary>
+			public uint AllocationSize { get; private set; }
+
+			public MemoryInformation(IO.XmlStream s)
+			{
+				uint value = uint.MaxValue;
+				s.ReadAttribute("baseAddress", 16, ref value);		BaseAddress = value;
+				s.ReadAttribute("allocationSize", 16, ref value);	AllocationSize = value;
+			}
+		};
+
 		public sealed class FieldType
 		{
 			#region Opcode
-			private int opcode;
+			int opcode;
 			/// <summary>
 			/// Enumeration index of this field type
 			/// </summary>
@@ -64,7 +79,7 @@ namespace BlamLib.CheApe
 			#endregion
 
 			#region SizeOf
-			private int sizeOf;
+			int sizeOf;
 			/// <summary>
 			/// Byte size of this field type
 			/// </summary>
@@ -72,7 +87,7 @@ namespace BlamLib.CheApe
 			#endregion
 
 			#region Name
-			private string name;
+			string name;
 			/// <summary>
 			/// String representation of this field type
 			/// </summary>
@@ -80,7 +95,7 @@ namespace BlamLib.CheApe
 			#endregion
 
 			#region RequiresDefinition
-			private bool requiresDefinition;
+			bool requiresDefinition;
 			/// <summary>
 			/// Does this kind of field type require an explicit definition in the field definition data?
 			/// </summary>
@@ -88,7 +103,7 @@ namespace BlamLib.CheApe
 			#endregion
 
 			#region ByteSwapCodes
-			private List<int> byteSwapCodes = new List<int>();
+			List<int> byteSwapCodes = new List<int>();
 			/// <summary>
 			/// The codes used for byte swapping this field type
 			/// </summary>
@@ -132,8 +147,10 @@ namespace BlamLib.CheApe
 		public BlamVersion Engine { get { return engine; } }
 		#endregion
 
+		public MemoryInformation MemoryInfo { get; private set; }
+
 		#region FieldTypes
-		private List<FieldType> fieldTypes = new List<FieldType>();
+		List<FieldType> fieldTypes = new List<FieldType>();
 		/// <summary>
 		/// Field types defined in the xml definition
 		/// </summary>
@@ -191,7 +208,13 @@ namespace BlamLib.CheApe
 				s.ReadAttribute("game", ref engine);
 
 				foreach (XmlNode n in s.Cursor.ChildNodes)
-					if (n.Name == "fieldTypes")
+					if (n.Name == "memory")
+					{
+						s.SaveCursor(n);
+							MemoryInfo = new MemoryInformation(s);
+						s.RestoreCursor();
+					}
+					else if (n.Name == "fieldTypes")
 					{
 						s.SaveCursor(n);
 						foreach (XmlNode n2 in s.Cursor.ChildNodes)
@@ -199,7 +222,7 @@ namespace BlamLib.CheApe
 							if (n2.Name != "type") continue;
 
 							s.SaveCursor(n2);
-							fieldTypes.Add(new FieldType(s));
+								fieldTypes.Add(new FieldType(s));
 							s.RestoreCursor();
 						}
 						s.RestoreCursor();

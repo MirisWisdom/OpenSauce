@@ -20,6 +20,13 @@
 
 namespace Yelo
 {
+	struct string_list
+	{
+		int32 length;
+		cstring* elements;
+	}; BOOST_STATIC_ASSERT( sizeof(string_list) == 0x8 );
+
+
 	struct tag_reference
 	{
 		// group tag identifier for this reference

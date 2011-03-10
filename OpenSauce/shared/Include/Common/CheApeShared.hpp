@@ -23,7 +23,12 @@ namespace Yelo
 	namespace Enums
 	{
 		enum {
-			k_cache_version = 2,
+			k_cheape_cache_header_signature = 'head',
+			k_cheape_cache_footer_signature = 'foot',
+			k_cheape_cache_version = 2,
+
+			k_cheape_cache_signature_halo1 = 'blm1',
+			k_cheape_cache_signature_halo2 = 'blm2',
 
 			k_max_number_of_new_tag_groups = 64,
 		};
@@ -35,7 +40,7 @@ namespace Yelo
 		{
 			tag Head;
 			uint32 Version;
-			PAD32;
+			tag EngineSignature;	// Signature for the engine this is for (eg, Halo1, Halo2, etc)
 			PAD32;
 
 			void* BaseAddress;
@@ -63,6 +68,29 @@ namespace Yelo
 
 			uint32 Pad[495];
 			tag Tail;
+
+			bool SignaturesValid() const	{ return Head == Enums::k_cheape_cache_header_signature && Tail == Enums::k_cheape_cache_footer_signature;}
+			bool VersionIsValid() const		{ return Version == Enums::k_cheape_cache_version; }
+			// Is the cache for 1st gen engine tools? IE, Halo Custom Edition
+			bool IsFirstGenCache() const	{ return EngineSignature == Enums::k_cheape_cache_signature_halo1 || EngineSignature == 0; }
+			// Is the cache for 2nd gen engine tools? IE, Halo 2 Vista
+			bool IsSecondGenCache() const	{ return EngineSignature == Enums::k_cheape_cache_signature_halo2; }
+
+			// Returns the reason why this header is invalid or NULL if everything appears gravy
+			cstring GetInvalidReasonString(tag engine_sig, void* base_address) const
+			{
+				if(!SignaturesValid())
+					return "Invalid header signatures";
+				else if(!VersionIsValid())
+					return "Invalid cache version";
+				else if((engine_sig == Enums::k_cheape_cache_signature_halo1 && !IsFirstGenCache()) ||
+						(engine_sig == Enums::k_cheape_cache_signature_halo2 && !IsSecondGenCache()) )
+					return "Invalid engine signature";
+				else if(BaseAddress != base_address)
+					return "Invalid base address";
+
+				return NULL;
+			}
 		}; BOOST_STATIC_ASSERT( sizeof(s_cache_header) == 0x800 );
 		s_cache_header& GlobalCacheHeader();
 	};

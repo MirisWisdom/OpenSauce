@@ -58,7 +58,7 @@ namespace Yelo
 					if(!file_handle)
 					{
 						YELO_ERROR(_error_message_priority_none, 
-							"CheApe: Failed to load file_handle file!");
+							"CheApe: Failed to load tag_groups.map file!");
 						_InitError = k_error_LoadCacheFile;
 
 						return false;
@@ -69,12 +69,11 @@ namespace Yelo
 					fseek(file_handle, 0, SEEK_SET);
 
 					fread(&header, sizeof(header), 1, file_handle);
-					if(header.Head != 'head' || header.Tail != 'tail' || 
-						header.Version != Enums::k_cache_version || 
-						header.BaseAddress != base_address)
+					cstring invalid_reason_str = header.GetInvalidReasonString(Enums::k_cheape_cache_signature_halo1, this->base_address);
+					if(invalid_reason_str != NULL)
 					{
 						YELO_ERROR(_error_message_priority_none, 
-							"CheApe: Bad file_handle file");
+							"CheApe: Bad tag_groups.map file (%s)", invalid_reason_str);
 						_InitError = k_error_LoadCacheFile;
 
 						fclose(file_handle);
