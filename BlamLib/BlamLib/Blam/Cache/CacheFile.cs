@@ -591,8 +591,11 @@ namespace BlamLib.Blam
 
 		void CloseTagIndexManager()
 		{
-			Program.GetManager(engineVersion).CloseTagIndex(tagIndexManager.IndexId, true);
-			tagIndexManager = null;
+			if (tagIndexManager != null)
+			{
+				Program.GetManager(engineVersion).CloseTagIndex(tagIndexManager.IndexId, true);
+				tagIndexManager = null;
+			}
 		}
 		#endregion
 
@@ -724,7 +727,6 @@ namespace BlamLib.Blam
 
 				var gd = Program.GetManager(engineVersion);
 				(gd as Managers.IStringIdController).StringIdCacheClose(engineVersion);
-
 			}
 		}
 		#endregion
@@ -970,17 +972,22 @@ namespace BlamLib.Blam
 		/// <remarks>Eg, tag manager, string id manager, IO streams, etc</remarks>
 		public virtual void Close()
 		{
-			CloseTagIndexManager();
+			if (!CacheId.IsNull)
+			{
+				CloseTagIndexManager();
 
-			refManager = null;
+				refManager = null;
 
-			StringIdManagerDispose();
+				StringIdManagerDispose();
 
-			if (!IsSharedReference && InputStream != null) InputStream.Close();
-			InputStream = null;
+				if (!IsSharedReference && InputStream != null) InputStream.Close();
+				InputStream = null;
 
-			if (!IsSharedReference && OutputStream != null) OutputStream.Close();
-			OutputStream = null;
+				if (!IsSharedReference && OutputStream != null) OutputStream.Close();
+				OutputStream = null;
+
+				CacheId = DatumIndex.Null;
+			}
 		}
 
 		#region IStreamable Members

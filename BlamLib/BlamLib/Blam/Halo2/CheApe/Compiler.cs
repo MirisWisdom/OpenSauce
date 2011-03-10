@@ -100,8 +100,6 @@ namespace BlamLib.Blam.Halo2.CheApe
 			#endregion
 		};
 
-		public const uint BaseAddressStringPool = BaseAddress + DataArray.TotalSize + 4; // we pad by 4 bytes in the cache after the data array, so + 4
-
 		#region Tag Interface
 		#region Type Indicies
 		internal int
@@ -539,12 +537,17 @@ namespace BlamLib.Blam.Halo2.CheApe
 
 		DataArray DynamicTagGroups;
 
-		internal Compiler(Project.ProjectState state)
+		uint CalculateStringPoolBaseAddress()
+		{
+			return OwnerState.Definition.MemoryInfo.BaseAddress + DataArray.TotalSize + 4; // we pad by 4 bytes in the cache after the data array, so + 4
+		}
+
+		internal Compiler(Project.ProjectState state) : base(state.Engine)
 		{
 			OwnerState = state;
 
 			DynamicTagGroups = new DataArray();
-			Strings = new Util.StringPool(true, BaseAddressStringPool);
+			Strings = new Util.StringPool(true, CalculateStringPoolBaseAddress());
 
 			InitializeTypeIndicies();
 		}
@@ -554,7 +557,7 @@ namespace BlamLib.Blam.Halo2.CheApe
 			base.Reset();
 
 			DynamicTagGroups = new DataArray();
-			Strings = new Util.StringPool(true, BaseAddressStringPool);
+			Strings = new Util.StringPool(true, CalculateStringPoolBaseAddress());
 		}
 
 		public override void Write(IO.EndianWriter stream)
@@ -613,7 +616,7 @@ namespace BlamLib.Blam.Halo2.CheApe
 				PostprocessWritebacks();
 
 				// Create header
-				PostprocessHeaderThenStream(stream, BaseAddressStringPool);
+				PostprocessHeaderThenStream(stream, CalculateStringPoolBaseAddress());
 
 				mem.WriteTo(stream.BaseStream); // write all the data that will be read into memory from a tool to the file
 			}

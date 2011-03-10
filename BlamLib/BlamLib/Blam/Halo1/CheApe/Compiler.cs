@@ -96,8 +96,6 @@ namespace BlamLib.Blam.Halo1.CheApe
 			#endregion
 		};
 
-		public const uint BaseAddressStringPool = BaseAddress + DataArray.TotalSize + 8; // we pad by 8 bytes in the cache after the data array, so + 8
-
 		#region Tag Interface
 		#region Type Indicies
 		internal int
@@ -460,10 +458,11 @@ namespace BlamLib.Blam.Halo1.CheApe
 		void ScriptingHeadersToStream(Import import)
 		{
 			string name;
+			uint base_address = OwnerState.Definition.MemoryInfo.BaseAddress;
 
 			if ((Head.ScriptFunctionsCount = import.ScriptFunctions.Count) > 0)
 			{
-				Head.ScriptFunctionsAddress = Compiler.BaseAddress + MemoryStream.PositionUnsigned;
+				Head.ScriptFunctionsAddress = base_address + MemoryStream.PositionUnsigned;
 				// allocate script functions pointers
 				foreach (Import.ScriptFunction sc in import.ScriptFunctions.Values)
 				{
@@ -477,7 +476,7 @@ namespace BlamLib.Blam.Halo1.CheApe
 
 			if ((Head.ScriptGlobalsCount = import.ScriptGlobals.Count) > 0)
 			{
-				Head.ScriptGlobalsAddress = Compiler.BaseAddress + MemoryStream.PositionUnsigned;
+				Head.ScriptGlobalsAddress = base_address + MemoryStream.PositionUnsigned;
 				// allocate script global pointers
 				foreach (Import.ScriptGlobal sc in import.ScriptGlobals.Values)
 				{
@@ -523,12 +522,17 @@ namespace BlamLib.Blam.Halo1.CheApe
 
 		DataArray DynamicTagGroups;
 
-		internal Compiler(Project.ProjectState state)
+		uint CalculateStringPoolBaseAddress()
+		{
+			return OwnerState.Definition.MemoryInfo.BaseAddress + DataArray.TotalSize + 8; // we pad by 8 bytes in the cache after the data array, so + 8
+		}
+
+		internal Compiler(Project.ProjectState state) : base(state.Engine)
 		{
 			OwnerState = state;
 
 			DynamicTagGroups = new DataArray();
-			Strings = new Util.StringPool(true, BaseAddressStringPool);
+			Strings = new Util.StringPool(true, CalculateStringPoolBaseAddress());
 
 			InitializeTypeIndicies();
 		}
@@ -538,7 +542,7 @@ namespace BlamLib.Blam.Halo1.CheApe
 			base.Reset();
 
 			DynamicTagGroups = new DataArray();
-			Strings = new Util.StringPool(true, BaseAddressStringPool);
+			Strings = new Util.StringPool(true, CalculateStringPoolBaseAddress());
 		}
 
 		public override void Write(IO.EndianWriter stream)
@@ -585,7 +589,7 @@ namespace BlamLib.Blam.Halo1.CheApe
 				PostprocessWritebacks();
 
 				// Create header
-				PostprocessHeaderThenStream(stream, BaseAddressStringPool);
+				PostprocessHeaderThenStream(stream, CalculateStringPoolBaseAddress());
 
 				mem.WriteTo(stream.BaseStream); // write all the data that will be read into memory from a tool to the file
 			}

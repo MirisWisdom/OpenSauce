@@ -72,29 +72,18 @@ namespace BlamLib.CheApe
 		};
 
 		#region Constants
-		/// <summary>
-		/// Base address where the cache file will be loaded into
-		/// </summary>
-		public const uint BaseAddress = 0x50000000;
-		/// <summary>
-		/// The max size the cache file data can be.
-		/// This is because we VirtualAlloc this much at
-		/// [BaseAddress] in memory.
-		/// </summary>
-		public const uint MaxValue = 0x600000;
-
-		public const int kDefaultAlignment = 16;
+		protected const int kDefaultAlignment = 16;
 		#endregion
 
 		#region Header
 		public sealed class CacheFileHeader : IO.IStreamable
 		{
 			#region Constants
-			public const int Version = 2;
-			public const int Size =
+			const int kVersion = 2;
+			const int kSizeOf =
 				4 + // head
 				4 + // Version
-				4 + // pad32;
+				4 + // EngineSignature;
 				4 + // pad32;
 				4 + // BaseAddress
 				4 + // DataOffset
@@ -112,10 +101,15 @@ namespace BlamLib.CheApe
 				4 + // pad32;
 
 				4; // tail
-			public const int MaxSize = 2048;
-			public const int PadSize = CacheFileHeader.MaxSize - CacheFileHeader.Size;
-			public static readonly byte[] Padding = new byte[CacheFileHeader.PadSize];
+			public const int kMaxSize = 2048;
+			const int kPadSize = CacheFileHeader.kMaxSize - CacheFileHeader.kSizeOf;
+			public static readonly byte[] Padding = new byte[CacheFileHeader.kPadSize];
+
+			static readonly TagInterface.TagGroup kHalo1Signature = new TagInterface.TagGroup("blm1", BlamVersion.Halo1_CE.ToString());
+			static readonly TagInterface.TagGroup kHalo2Signature = new TagInterface.TagGroup("blm2", BlamVersion.Halo2_PC.ToString());
 			#endregion
+
+			TagInterface.TagGroup engineSignature;
 
 			#region BaseAddress
 			uint baseAddress;
@@ -216,7 +210,7 @@ namespace BlamLib.CheApe
 
 
 			#region FixupCount
-			private int fixupCount = 0;
+			int fixupCount = 0;
 			/// <summary>
 			/// 
 			/// </summary>
@@ -228,7 +222,7 @@ namespace BlamLib.CheApe
 			#endregion
 
 			#region FixupAddress
-			private uint fixupAddress = 0;
+			uint fixupAddress = 0;
 			/// <summary>
 			/// 
 			/// </summary>
@@ -239,14 +233,29 @@ namespace BlamLib.CheApe
 			}
 			#endregion
 
+			internal CacheFileHeader(CacheFileHeader old_state)
+			{
+				if (old_state == null) throw new ArgumentNullException("old_state");
+
+				this.engineSignature = old_state.engineSignature;
+			}
+			internal CacheFileHeader(BlamVersion engine)
+			{
+				switch (engine.ToBuild())
+				{
+					case BlamBuild.Halo1: engineSignature = kHalo1Signature; break;
+					case BlamBuild.Halo2: engineSignature = kHalo2Signature; break;
+				}
+			}
+
 			#region IStreamable Members
-			public void Read(IO.EndianReader stream) { throw new Exception("The method or operation is not implemented."); }
+			public void Read(IO.EndianReader stream) { throw new NotSupportedException(); }
 
 			public void Write(IO.EndianWriter stream)
 			{
 				Blam.MiscGroups.head.Write(stream);
-				stream.Write(Version);
-				stream.Write(uint.MinValue);
+				stream.Write(kVersion);
+				engineSignature.Write(stream);
 				stream.Write(uint.MinValue);
 				stream.Write(baseAddress);
 				stream.Write(dataOffset);
@@ -602,9 +611,9 @@ namespace BlamLib.CheApe
 		}
 		#endregion
 
-		protected Compiler()
+		protected Compiler(BlamVersion engine)
 		{
-			Head = new CacheFileHeader();
+			Head = new CacheFileHeader(engine);
 			MemoryStream = null;
 			OwnerState = null;
 
@@ -616,7 +625,7 @@ namespace BlamLib.CheApe
 		{
 			Dispose();
 
-			Head = new CacheFileHeader();
+			Head = new CacheFileHeader(Head);
 
 			DebugStrings = new Util.StringPool(true);
 			RamMemory = new BlamLib.IO.EndianWriter(new System.IO.MemoryStream(1024), this);
@@ -731,7 +740,7 @@ namespace BlamLib.CheApe
 		{
 			System.IO.MemoryStream mem = new System.IO.MemoryStream(); // the memory stream for writing all the data to a fixed base address
 			MemoryStream = new IO.EndianWriter(mem, this); // Endian stream wrapper for memory stream
-			MemoryStream.BaseAddress = Compiler.BaseAddress;
+			MemoryStream.BaseAddress = OwnerState.Definition.MemoryInfo.BaseAddress;
 
 			return mem;
 		}
@@ -746,11 +755,13 @@ namespace BlamLib.CheApe
 
 		protected void FixupsToMemoryStream()
 		{
+			uint base_address = OwnerState.Definition.MemoryInfo.BaseAddress;
+
 			Head.FixupCount = OwnerState.Importer.Fixups.Count;
 			if (Head.FixupCount > 0)
 			{
 				Fixup f = new Fixup();
-				Head.FixupAddress = Compiler.BaseAddress + MemoryStream.PositionUnsigned;
+				Head.FixupAddress = base_address + MemoryStream.PositionUnsigned;
 				foreach (Import.Fixup fu in OwnerState.Importer.Fixups.Values)
 				{
 					AddLocationFixup(fu.Name, MemoryStream, true);
@@ -813,8 +824,8 @@ namespace BlamLib.CheApe
 
 		protected void PostprocessHeaderThenStream(IO.EndianWriter stream, uint string_pool_base_address)
 		{
-			Head.BaseAddress = Compiler.BaseAddress;
-			Head.DataOffset = Compiler.CacheFileHeader.MaxSize; // currently we have the data coming after the header
+			Head.BaseAddress = OwnerState.Definition.MemoryInfo.BaseAddress;
+			Head.DataOffset = Compiler.CacheFileHeader.kMaxSize; // currently we have the data coming after the header
 			Head.StringPoolSize = Strings.Size;
 			Head.StringPoolAddress = string_pool_base_address;
 

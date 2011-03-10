@@ -169,12 +169,6 @@ namespace Yelo
 	};
 
 
-	struct string_list
-	{
-		int32 length;
-		cstring* elements;
-	}; BOOST_STATIC_ASSERT( sizeof(string_list) == 0x8 );
-
 	struct tag_field
 	{
 		_enum field_type; PAD16;
