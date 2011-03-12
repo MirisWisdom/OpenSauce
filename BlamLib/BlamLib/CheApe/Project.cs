@@ -281,8 +281,9 @@ namespace BlamLib.CheApe
 		/// <summary>
 		/// Build the whole project
 		/// </summary>
+		/// <param name="owner_form"></param>
 		/// <param name="reimport">Should we re-import the project files first?</param>
-		public void Build(bool reimport)
+		public void Build(System.Windows.Forms.Form owner_form, bool reimport)
 		{
 			if (imported && reimport)
 				OwnerState.Compiler.Reset();
@@ -290,21 +291,25 @@ namespace BlamLib.CheApe
 			if(!imported || reimport)				
 				Import();
 
+			// owner_form should be allowed to be null as the last time I checked MSBOX's implementation in Reflector, 
+			// its code just calls GetActiveWindow() when [owner] is null
+
 			try { OwnerState.Compiler.Write(folder, fileName); }
 			catch (Debug.ExceptionLog)
 			{
-				System.Windows.Forms.MessageBox.Show("A compiler error has been encountered, please check the debug.log file", fileName);
+				System.Windows.Forms.MessageBox.Show(owner_form, "A compiler error has been encountered, please check the debug.log file", fileName);
 				return;
 			}
 
-			System.Windows.Forms.MessageBox.Show("Build Finished!");
+			System.Windows.Forms.MessageBox.Show(owner_form, "Build Finished!");
 		}
 
 		/// <summary>
 		/// Build the whole project
 		/// </summary>
+		/// <param name="param">If calling from a GUI, this should be an <see cref="System.Windows.Forms.Form"/> instance, or null</param>
 		/// <remarks>Re-imports all project files</remarks>
-		public void Build() { Build(true); }
+		public void Build(object param) { Build(param as System.Windows.Forms.Form, true); }
 
 
 		#region IStreamable Members

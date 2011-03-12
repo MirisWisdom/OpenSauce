@@ -70,6 +70,25 @@ namespace OpenSauceIDE
 		}
 		#endregion
 
+		void BuildCacheMenus(Dictionary<string, EventHandler> command_dic)
+		{
+			EventHandler OpenCache_handler;
+			var OpenCache = BlamLib.Forms.Util.CreateMenuItem("Open Cache", OpenCache_handler = delegate(object sender, EventArgs e)
+			{
+				var sed = new SelectEngineDialog(OpenSauceIDE.Cache.CacheView.kAllowedPlatforms);
+				BlamLib.BlamVersion version;
+				sed.ShowDialogWithResult(this, out version);
+
+				if (version != BlamLib.BlamVersion.Unknown)
+					AddMdiChild(new Cache.CacheView(version), false);
+			});
+			OpenCache.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			OpenCache.ForeColor = System.Drawing.Color.LightGreen;
+
+			ToolsMenu.DropDownItems.Add(OpenCache);
+			command_dic.Add("OpenCache", OpenCache_handler);
+		}
+
 		public MainForm(string[] args)
 		{
 			InitializeComponent();
@@ -80,6 +99,7 @@ namespace OpenSauceIDE
 
 			var dic = new Dictionary<string, EventHandler>();
 			BuildCheApeMenus(dic);
+			BuildCacheMenus(dic);
 
 			const string k_startup_prefix = "-startup:";
 			foreach(string s in args)
@@ -104,8 +124,14 @@ namespace OpenSauceIDE
 
 		void AddMdiChild(Form form)
 		{
-			foreach (ToolStripMenuItem i in MainMenuStrip.Items)
-				i.Visible = false;
+			AddMdiChild(form, true);
+		}
+		void AddMdiChild(Form form, bool merge_menus)
+		{
+			if(merge_menus)
+				foreach (ToolStripMenuItem i in MainMenuStrip.Items)
+					i.Visible = false;
+
 			form.MdiParent = this;
 			form.Show();
 			form.FormClosed += new FormClosedEventHandler(OnMdiFormClosed);

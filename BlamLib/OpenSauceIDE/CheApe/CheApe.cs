@@ -184,9 +184,9 @@ namespace OpenSauceIDE
 
 		void OnBuild(object sender, EventArgs e)
 		{
-			System.Threading.Thread th = new System.Threading.Thread(new System.Threading.ThreadStart(Project.Build));
+			System.Threading.Thread th = new System.Threading.Thread(new System.Threading.ParameterizedThreadStart(Project.Build));
 			th.Name = "BuildCache";
-			th.Start();
+			th.Start(this);
 		}
 
 		#region File View Menu
