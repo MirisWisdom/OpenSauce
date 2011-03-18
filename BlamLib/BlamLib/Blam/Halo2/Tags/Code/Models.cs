@@ -423,6 +423,23 @@ namespace BlamLib.Blam.Halo2.Tags
 		HasLmColor = 1 << 2,
 	};
 
+	partial class global_geometry_raw_point
+	{
+		internal void Default()
+		{
+			NodeWeight[0].Value = 1.0f;
+			NodeWeight[0].Value = 0.0f;
+			NodeWeight[0].Value = 0.0f;
+			NodeWeight[0].Value = 0.0f;
+			NodeIndex[0].Value = -1;
+			NodeIndex[1].Value = -1;
+			NodeIndex[2].Value = -1;
+			NodeIndex[3].Value = -1;
+			UseNewNodeIndices.Value = 1;
+			AdjustedCompoundNodeIndex.Value = -1;
+		}
+	}
+
 	#region global_geometry_section_info_struct
 	partial class global_geometry_section_info_struct
 	{
@@ -448,16 +465,7 @@ namespace BlamLib.Blam.Halo2.Tags
 	{
 		internal void Default()
 		{
-			NodeWeight[0].Value = 1.0f;
-			NodeWeight[0].Value = 0.0f;
-			NodeWeight[0].Value = 0.0f;
-			NodeWeight[0].Value = 0.0f;
-			NodeIndex[0].Value = -1;
-			NodeIndex[1].Value = -1;
-			NodeIndex[2].Value = -1;
-			NodeIndex[3].Value = -1;
-			UseNewNodeIndices.Value = 1;
-			AdjustedCompoundNodeIndex.Value = -1;
+			Point.Default();
 			SecondaryTexcoord.Y = 1.0f;
 		}
 
@@ -475,25 +483,25 @@ namespace BlamLib.Blam.Halo2.Tags
 				if (stream_reader.FindStreamedElement(BlamLib.Render.VertexBufferInterface.kTypePosition,
 					ref quat))
 				{
-					Position.X = quat.Vector.I;
-					Position.Y = quat.Vector.J;
-					Position.Z = quat.Vector.K;
+					Point.Position.X = quat.Vector.I;
+					Point.Position.Y = quat.Vector.J;
+					Point.Position.Z = quat.Vector.K;
 				}
 				if (stream_reader.FindStreamedElement(BlamLib.Render.VertexBufferInterface.kTypeNodeIndices,
 					ref quat))
 				{
-					NodeIndex[0].Value = ((int)quat.Vector.I) - 1;
-					NodeIndex[1].Value = ((int)quat.Vector.J) - 1;
-					NodeIndex[2].Value = ((int)quat.Vector.K) - 1;
-					NodeIndex[3].Value = ((int)quat.W) - 1;
+					Point.NodeIndex[0].Value = ((int)quat.Vector.I) - 1;
+					Point.NodeIndex[1].Value = ((int)quat.Vector.J) - 1;
+					Point.NodeIndex[2].Value = ((int)quat.Vector.K) - 1;
+					Point.NodeIndex[3].Value = ((int)quat.W) - 1;
 				}
 				if (stream_reader.FindStreamedElement(BlamLib.Render.VertexBufferInterface.kTypeNodeWeights,
 					ref quat))
 				{
-					NodeWeight[0].Value = quat.Vector.I;
-					NodeWeight[1].Value = quat.Vector.J;
-					NodeWeight[2].Value = quat.Vector.K;
-					NodeWeight[3].Value = quat.W;
+					Point.NodeWeight[0].Value = quat.Vector.I;
+					Point.NodeWeight[1].Value = quat.Vector.J;
+					Point.NodeWeight[2].Value = quat.Vector.K;
+					Point.NodeWeight[3].Value = quat.W;
 				}
 			}
 			else if (stream_source == 1)

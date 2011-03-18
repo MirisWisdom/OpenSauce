@@ -57,6 +57,8 @@
     <Compile Include="IO\EndianStreams.Reader.cs" />
     <Compile Include="IO\EndianStreams.Writer.cs" />
     <Compile Include="IO\Streams.TagStream.cs" />
+    <Compile Include="IO\WaveMaterialLibWriter.cs" />
+    <Compile Include="IO\WaveObjWriter.cs" />
     <Compile Include="Managers\StringIdCollections.cs" />
     <Compile Include="Managers\TagIndex.Base.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
