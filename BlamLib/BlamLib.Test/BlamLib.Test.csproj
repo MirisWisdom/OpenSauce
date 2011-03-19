@@ -42,6 +42,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts.cs" />
     <Compile Include="Stubbs\Stubbs.cs" />
+    <Compile Include="_Paths.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BlamLib\BlamLib.csproj">

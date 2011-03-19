@@ -6,4 +6,7 @@
 	to the FUCKING SOLUTION FOLDER! FUCK. YOU!
 	-->
 	<Deployment useDefaultDeploymentRoot="false" userDeploymentRoot="C:\Mount\B\Kornner\Projects\test_results\BlamLib\" />
+
+	<!-- http://blogs.msdn.com/b/ploeh/archive/2007/10/21/runningmstestinanmta.aspx -->
+	<ExecutionThread apartmentState="1" />
 </TestRunConfiguration>

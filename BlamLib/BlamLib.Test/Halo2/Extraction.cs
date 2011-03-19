@@ -154,6 +154,8 @@ namespace BlamLib.Test
 				}
 				ti.ExtractionDispose();
 			}
+
+			args.SignalFinished();
 		}
 
 		void Halo2TestCacheExtraction(BlamVersion game, string dir, params string[] map_names)

@@ -221,13 +221,15 @@ namespace BlamLib.Test
 			int map_count = map_names.Length;
 			List<MapSndComparer> maps = new List<MapSndComparer>(map_count);
 
-			var thread_code = new System.Threading.ParameterizedThreadStart(delegate(object param)
+			var thread_code = new System.Threading.WaitCallback(delegate(object param)
 			{
 				var args = param as CacheFileOutputInfoArgs;
 
 				MapSndComparer cmp = SndComparerMethod(args);
 				lock (maps)
 					maps.Add(cmp);
+
+				args.SignalFinished();
 			});
 
 			CacheFileOutputInfoArgs.TestThreadedMethod(tc, thread_code,

@@ -203,6 +203,8 @@ namespace BlamLib.Test
 				playdef = null;
 				cache.TagIndexManager.Unload(play_index);
 			}
+
+			args.SignalFinished();
 		}
 		[TestMethod]
 		public void Halo3TestCacheExtractSoundXbox()

@@ -16,16 +16,14 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-﻿using System.Threading;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace BlamLib.Test
 {
-	static class TestLibrary
+	static partial class TestLibrary
 	{
 		static System.DateTime startup_time;
-
-		public const string kTestResultsPath = @"C:\Mount\B\Kornner\Projects\test_results\BlamLib\";
 
 		[AssemblyInitialize]
 		public static void AssemblyInitialize(TestContext context)
@@ -51,28 +49,39 @@ namespace BlamLib.Test
 				(System.DateTime.Now - startup_time));
 		}
 
-		public static void TestMethod(ParameterizedThreadStart method, params object[] inputs)
+		public static void TestMethod(WaitCallback method, params ThreadedTaskArgsBase[] args)
 		{
-			var threads = new Thread[4];
+			// Can't use WaitAll in STA
+			// See the following for a work around: http://blogs.msdn.com/b/ploeh/archive/2007/10/21/runningmstestinanmta.aspx
+			Assert.IsFalse(Thread.CurrentThread.GetApartmentState() == ApartmentState.STA);
 
-			for (int x = 0; x < inputs.Length; x += threads.Length)
-			{
-				for (int t_idx = 0;
-					(x + t_idx) < inputs.Length && t_idx < threads.Length;
-					t_idx++)
-				{
-					threads[t_idx] = new System.Threading.Thread(method);
-					threads[t_idx].Name = string.Format("TestMethod::Thread[{0}]", t_idx);
-					threads[t_idx].Start(inputs[x + t_idx]);
-				}
+			var waiters = ThreadedTaskArgsBase.InitializeArgWaiters(args);
 
-				foreach (var t in threads)
-					if (t != null && t.ThreadState != ThreadState.Unstarted) t.Join();
-			}
+			foreach (var arg in args)
+				ThreadPool.QueueUserWorkItem(method, arg);
+
+			WaitHandle.WaitAll(waiters);
 		}
 	};
 
-	class CacheFileOutputInfoArgs
+	class ThreadedTaskArgsBase
+	{
+		AutoResetEvent m_waiter;
+
+		public void SignalFinished()	{ if(m_waiter != null) m_waiter.Set(); }
+
+		public static WaitHandle[] InitializeArgWaiters(params ThreadedTaskArgsBase[] args)
+		{
+			AutoResetEvent[] waiters = new AutoResetEvent[args.Length];
+
+			for (int x = 0; x < waiters.Length; x++)
+				args[x].m_waiter = waiters[x] = new AutoResetEvent(false);
+
+			return waiters;
+		}
+	}
+
+	class CacheFileOutputInfoArgs : ThreadedTaskArgsBase
 	{
 		public readonly TestContext TestContext;
 		public readonly BlamVersion Game;
@@ -117,7 +126,7 @@ namespace BlamLib.Test
 			return true;
 		}
 
-		public static void TestThreadedMethod(TestContext tc, ParameterizedThreadStart method,
+		public static void TestThreadedMethod(TestContext tc, WaitCallback method,
 			BlamVersion game, string dir, params string[] map_names)
 		{
 			var args = new System.Collections.Generic.List<CacheFileOutputInfoArgs>(map_names.Length);
