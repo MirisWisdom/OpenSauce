@@ -26,8 +26,6 @@ namespace BlamLib.Test
 	[TestClass]
 	public partial class HaloReach : BaseTestClass
 	{
-		internal const string kTestResultsPath = TestLibrary.kTestResultsPath + @"HaloReach\";
-
 		[ClassInitialize]
 		public static void Initialize(TestContext context)
 		{
@@ -43,7 +41,6 @@ namespace BlamLib.Test
 				.StringIdCacheClose(BlamVersion.HaloReach_Beta);
 		}
 
-		const string kDirectoryXbox = @"C:\Mount\A\Bungie\Games\HaloReach\Xbox\";
 		static readonly string[] kMapNames_Retail = {
 			// 11860.10.07.24.0147
 			@"Retail\maps\20_sword_slayer.map",
@@ -125,6 +122,8 @@ namespace BlamLib.Test
 				Blam.CacheFile.OutputTags(cache,
 					BuildResultPath(kTestResultsPath, args.Game, cache.Header.Name, null, "txt"));
 			}
+
+			args.SignalFinished();
 		}
 		[TestMethod]
 		public void HaloReachTestCacheOutputXbox()
@@ -368,6 +367,8 @@ namespace BlamLib.Test
 					interop.DumpScriptGraphs(cache, sw);
 				}
 			}
+
+			args.SignalFinished();
 		}
 
 		[TestMethod]

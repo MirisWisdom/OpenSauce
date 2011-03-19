@@ -25,10 +25,6 @@ namespace BlamLib.Test
 	[TestClass]
 	public partial class Halo2 : BaseTestClass
 	{
-		internal const string kTestResultsPath = TestLibrary.kTestResultsPath + @"Halo2\";
-		const string kTestResultsPathXbox = kTestResultsPath + @"Xbox\";
-		const string kTestResultsPathXboxAlpha = kTestResultsPath + @"Xbox\Alpha\";
-		const string kTestResultsPathPc = kTestResultsPath + @"PC\";
 		static string EngineGetTestResultsPath(BlamVersion engine)
 		{
 			switch (engine)
@@ -54,9 +50,6 @@ namespace BlamLib.Test
 		{
 		}
 
-		const string kMapsDirectoryXbox = @"C:\Mount\A\Bungie\Games\Halo2\Xbox\Retail\Maps\";
-		const string kMapsDirectoryPc = @"C:\Mount\A\Bungie\Games\Halo2\PC\Maps\";
-		const string kMapsDirectoryXboxAlpha = @"C:\Mount\A\Bungie\Games\Halo2\Xbox\Alpha\Maps\";
 		static readonly string[] kMapNames = {
 			"mainmenu.map",
 			"shared.map",
@@ -140,6 +133,8 @@ namespace BlamLib.Test
 				Blam.CacheFile.OutputTags(cache,
 					BuildResultPath(test_results_path, args.Game, cache.Header.Name, null, "txt"));
 			}
+
+			args.SignalFinished();
 		}
 		[TestMethod]
 		public void Halo2TestCacheOutputXbox()

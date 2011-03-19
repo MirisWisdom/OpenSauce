@@ -24,8 +24,6 @@ namespace BlamLib.Test
 	[TestClass]
 	public partial class Stubbs : BaseTestClass
 	{
-		internal const string kTestResultsPath = TestLibrary.kTestResultsPath + @"Stubbs\";
-
 		[ClassInitialize]
 		public static void Initialize(TestContext context)
 		{
@@ -35,8 +33,6 @@ namespace BlamLib.Test
 		{
 		}
 
-		const string kMapsDirectoryPc = @"C:\Mount\A\Bungie\GamesRelated\Stubbs\PC\Maps\";
-		const string kMapsDirectoryXbox = @"";
 		static readonly string[] kMapNames = {
 			"ui.map",
 			"a10_plaza.map",
@@ -66,6 +62,8 @@ namespace BlamLib.Test
 				BlamLib.Blam.CacheFile.OutputTags(cache,
 					BuildResultPath(kTestResultsPath, args.Game, cache.Header.Name, null, "txt"));
 			}
+
+			args.SignalFinished();
 		}
 		void CacheOutputInformation(BlamVersion game)
 		{

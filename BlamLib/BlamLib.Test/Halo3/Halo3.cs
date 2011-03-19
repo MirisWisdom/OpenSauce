@@ -26,8 +26,6 @@ namespace BlamLib.Test
 	[TestClass]
 	public partial class Halo3 : BaseTestClass
 	{
-		internal const string kTestResultsPath = TestLibrary.kTestResultsPath + @"Halo3\";
-
 		[ClassInitialize]
 		public static void Initialize(TestContext context)
 		{
@@ -47,7 +45,6 @@ namespace BlamLib.Test
 				.StringIdCacheClose(BlamVersion.Halo3_Xbox);
 		}
 
-		const string kDirectoryXbox = @"C:\Mount\A\Bungie\Games\Halo3\Xbox\";
 		static readonly string[] kMapNames_Retail = {
 			@"Retail\maps\005_intro.map",
 			@"Retail\maps\010_jungle.map",
@@ -138,6 +135,8 @@ namespace BlamLib.Test
 				Blam.CacheFile.OutputTags(cache,
 					BuildResultPath(args.TestResultsPath, args.Game, cache.Header.Name, null, "txt"));
 			}
+
+			args.SignalFinished();
 		}
 		[TestMethod]
 		public void Halo3TestCacheOutputXbox()

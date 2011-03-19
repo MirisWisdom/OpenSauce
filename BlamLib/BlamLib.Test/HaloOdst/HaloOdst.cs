@@ -40,8 +40,6 @@ namespace BlamLib.Test
 	[TestClass]
 	public partial class HaloOdst : BaseTestClass
 	{
-		internal const string kTestResultsPath = TestLibrary.kTestResultsPath + @"HaloOdst\";
-
 		[ClassInitialize]
 		public static void Initialize(TestContext context)
 		{
@@ -57,7 +55,6 @@ namespace BlamLib.Test
 				.StringIdCacheClose(BlamVersion.HaloOdst_Xbox);
 		}
 
-		const string kMapsDirectoryXbox = @"C:\Mount\A\Bungie\Games\HaloOdst\Xbox\Maps\";
 		static readonly string[] kMapNames = {
 			"mainmenu.map",
 			"c100.map",

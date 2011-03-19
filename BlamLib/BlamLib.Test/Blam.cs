@@ -52,9 +52,17 @@ namespace BlamLib.Test
 		[TestMethod]
 		public void BlamTestSystemTagIndex()
 		{
-			var ti = new Managers.TagIndex(BlamVersion.Halo1_CE, @"C:\Program Files\Microsoft Games\Halo Custom Edition\tags\", false);
+			bool x64 = IntPtr.Size == 64;
+
+			string k_hce = @"C:\Program Files" + (x64 ? " (x86)" : "") + @"\Microsoft Games\Halo Custom Edition\tags\";
+			string k_h2v = @"C:\Program Files" + (x64 ? " (x86)" : "") + @"\Microsoft Games\Halo 2 Map Editor\tags\";
+
+			Assert.IsTrue(System.IO.Directory.Exists(k_hce));
+			Assert.IsTrue(System.IO.Directory.Exists(k_h2v));
+
+			var ti = new Managers.TagIndex(BlamVersion.Halo1_CE, k_hce, false);
 			ti.Dispose();
-			ti = new Managers.TagIndex(BlamVersion.Halo2_PC, @"C:\Program Files\Microsoft Games\Halo 2 Map Editor\tags\", false);
+			ti = new Managers.TagIndex(BlamVersion.Halo2_PC, k_h2v, false);
 			ti.Dispose();
 		}
 

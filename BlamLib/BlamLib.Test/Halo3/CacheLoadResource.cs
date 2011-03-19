@@ -216,6 +216,8 @@ namespace BlamLib.Test
 					Blam.CacheFile.OutputStringIds(cache, 
 						BuildResultPath(args.TestResultsPath, args.Game, cache.Header.Name, "output_string_id", "txt"), true);
 			}
+
+			args.SignalFinished();
 		}
 		[TestMethod]
 		public void Halo3TestCacheLoadResourceXbox()

@@ -25,8 +25,6 @@ namespace BlamLib.Test
 	[TestClass]
 	public partial class Halo1 : BaseTestClass
 	{
-		internal const string kTestResultsPath = TestLibrary.kTestResultsPath + @"Halo1\";
-
 		[ClassInitialize]
 		public static void Initialize(TestContext context)
 		{
@@ -37,10 +35,6 @@ namespace BlamLib.Test
 		public static void Dispose()
 		{
 		}
-
-		const string kTestResultsTagsPath = kTestResultsPath + @"tags\";
-
-		const string kTestTagIndexTagsPath = @"C:\Program Files (x86)\Microsoft Games\Halo Custom Edition\";
 
 		[TestMethod]
 		public void Halo1TestTagIndex()

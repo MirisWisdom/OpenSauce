@@ -130,6 +130,8 @@ namespace BlamLib.Test
 					handles = null;
 				}
 			}
+
+			args.SignalFinished();
 		}
 
 		[TestMethod]
