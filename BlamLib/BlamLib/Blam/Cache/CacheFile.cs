@@ -96,6 +96,7 @@ namespace BlamLib.Blam
 		/// <summary>
 		/// This cache's version
 		/// </summary>
+		[System.ComponentModel.Category("Cache Header")]
 		public int Version	{ get { return version; } }
 		#endregion
 
@@ -104,6 +105,7 @@ namespace BlamLib.Blam
 		/// <summary>
 		/// How long (in bytes) the cache file is (decompressed)
 		/// </summary>
+		[System.ComponentModel.Browsable(false)]
 		public int FileLength	{ get { return fileLength; } }
 		#endregion
 
@@ -112,6 +114,7 @@ namespace BlamLib.Blam
 		/// <summary>
 		/// Offset in the map to the map's tag index
 		/// </summary>
+		[System.ComponentModel.Category("Cache Header")]
 		public int OffsetToIndex	{ get { return offsetToIndex; } }
 		#endregion
 
@@ -120,6 +123,7 @@ namespace BlamLib.Blam
 		/// <summary>
 		/// The total size of the tag data
 		/// </summary>
+		[System.ComponentModel.Category("Cache Header")]
 		public int TagBufferSize	{ get { return tagBufferSize; } }
 		#endregion
 
@@ -128,6 +132,7 @@ namespace BlamLib.Blam
 		/// <summary>
 		/// Name of this map
 		/// </summary>
+		[System.ComponentModel.Category("Cache Header")]
 		public string Name	{ get { return name; } }
 		#endregion
 
@@ -142,6 +147,7 @@ namespace BlamLib.Blam
 		/// Halo2: ##.##.##.#####
 		/// Halo3: #####.YY.MM.DD.HHMM.[type]
 		/// </remarks>
+		[System.ComponentModel.Category("Cache Header")]
 		public string Build	{ get { return build; } }
 		#endregion
 
@@ -150,6 +156,7 @@ namespace BlamLib.Blam
 		/// <summary>
 		/// The map type of this map
 		/// </summary>
+		[System.ComponentModel.Category("Cache Header")]
 		public CacheType CacheType	{ get { return cacheType; } }
 		#endregion
 
@@ -206,6 +213,8 @@ namespace BlamLib.Blam
 			/// <summary>
 			/// The tag's datum
 			/// </summary>
+			[System.ComponentModel.Category("Tag Instance")]
+			[System.ComponentModel.ReadOnly(true)]
 			public DatumIndex Datum
 			{
 				get { return datum; }
@@ -215,12 +224,14 @@ namespace BlamLib.Blam
 			/// <summary>
 			/// Returns the index of this item in the map's tag index
 			/// </summary>
+			[System.ComponentModel.Browsable(false)]
 			public int Index { get { return datum.Index; } }
 			#endregion
 
 			/// <summary>
 			/// Returns true if this item is a empty tag datum
 			/// </summary>
+			[System.ComponentModel.Browsable(false)]
 			public bool IsEmpty { get { return datum.Handle == uint.MaxValue; } }
 
 			#region GroupTag
@@ -231,6 +242,8 @@ namespace BlamLib.Blam
 			/// The four character code that designates
 			/// the tag group this item holds in its data
 			/// </summary>
+			[System.ComponentModel.Category("Tag Instance")]
+			[System.ComponentModel.ReadOnly(true)]
 			public TagInterface.TagGroup GroupTag
 			{
 				get { return groupTag; }
@@ -243,6 +256,8 @@ namespace BlamLib.Blam
 			/// <summary>
 			/// The offset to the tag name in the cache file's stream
 			/// </summary>
+			[System.ComponentModel.Category("Tag Instance")]
+			[System.ComponentModel.ReadOnly(true)]
 			public uint TagNameOffset
 			{
 				get { return tagNameOffset; }
@@ -256,6 +271,7 @@ namespace BlamLib.Blam
 			/// Handle for the <see cref="Managers.ReferenceManager"/> in the owner <see cref="CacheFile"/> object 
 			/// which stores all the reference names
 			/// </summary>
+			[System.ComponentModel.Browsable(false)]
 			public Blam.DatumIndex ReferenceName
 			{
 				get { return referenceName; }
@@ -268,6 +284,8 @@ namespace BlamLib.Blam
 			/// <summary>
 			/// Address in memory where this tag is located
 			/// </summary>
+			[System.ComponentModel.Category("Tag Instance")]
+			[System.ComponentModel.ReadOnly(true)]
 			public uint Address
 			{
 				get { return address; }
@@ -280,6 +298,8 @@ namespace BlamLib.Blam
 			/// <summary>
 			/// Size of this item
 			/// </summary>
+			[System.ComponentModel.Browsable(false)]
+			[System.ComponentModel.ReadOnly(true)]
 			public int Size
 			{
 				get { return size; }
@@ -292,6 +312,8 @@ namespace BlamLib.Blam
 			/// <summary>
 			/// In the map or not
 			/// </summary>
+			[System.ComponentModel.Category("Tag Instance")]
+			[System.ComponentModel.ReadOnly(true)]
 			public ItemLocation Location
 			{
 				get { return location; }
@@ -301,6 +323,7 @@ namespace BlamLib.Blam
 			/// <summary>
 			/// Returns true if the tag has external data
 			/// </summary>
+			[System.ComponentModel.Browsable(false)]
 			public bool HasExternalData { get { return (location == ItemLocation.External); } }
 			#endregion
 
@@ -309,6 +332,7 @@ namespace BlamLib.Blam
 			/// <summary>
 			/// The item offset relative to the cache file
 			/// </summary>
+			[System.ComponentModel.Category("Tag Instance")]
 			public int Offset
 			{
 				get { return offset; }
@@ -319,10 +343,9 @@ namespace BlamLib.Blam
 			#region BspIndex
 			protected int bspIndex;
 			/// <summary>
-			/// If this item is a structure bsp definition,
-			/// then this is the index in the CacheIndex's
-			/// BspTags array
+			/// If this item is a structure bsp definition, then this is the index in the CacheIndex's BspTags array
 			/// </summary>
+			[System.ComponentModel.Browsable(false)]
 			public int BspIndex
 			{
 				get { return bspIndex; }
@@ -358,6 +381,7 @@ namespace BlamLib.Blam
 			/// <summary>
 			/// Is this item actually fake?
 			/// </summary>
+			[System.ComponentModel.Browsable(false)]
 			internal bool IsFeignItem { get {
 				return datum != DatumIndex.Null &&
 					tagNameOffset == uint.MaxValue && address == uint.MaxValue &&
@@ -415,6 +439,7 @@ namespace BlamLib.Blam
 		/// <summary>
 		/// The base address the tag data starts at, aka 'magic'
 		/// </summary>
+		[System.ComponentModel.Category("Tag Header")]
 		public uint Address	{ get { return address; } }
 		#endregion
 
@@ -423,6 +448,7 @@ namespace BlamLib.Blam
 		/// <summary>
 		/// The handle to this cache file's scenario
 		/// </summary>
+		[System.ComponentModel.Category("Tag Header")]
 		public DatumIndex Scenario	{ get { return scenario; } }
 		#endregion
 
@@ -431,6 +457,7 @@ namespace BlamLib.Blam
 		/// <summary>
 		/// The tag count for this index
 		/// </summary>
+		[System.ComponentModel.Category("Tag Header")]
 		public int TagCount	{ get { return tagCount; } }
 		#endregion
 
@@ -439,6 +466,7 @@ namespace BlamLib.Blam
 		/// <summary>
 		/// The offset to the tags
 		/// </summary>
+		[System.ComponentModel.Category("Tag Header")]
 		public uint TagsOffset	{ get { return tagsOffset; } }
 		#endregion
 
@@ -446,6 +474,7 @@ namespace BlamLib.Blam
 		/// <summary>
 		/// Returns the Index Items object used for this map
 		/// </summary>
+		[System.ComponentModel.Browsable(false)]
 		public abstract Item[] Tags { get; }
 
 		/// <summary>
@@ -464,6 +493,7 @@ namespace BlamLib.Blam
 		/// <summary>
 		/// The # of structure bsps used to construct this map
 		/// </summary>
+		[System.ComponentModel.Category("Tag Header")]
 		public int BspCount { get { return bspCount; } }
 		#endregion
 
@@ -472,6 +502,7 @@ namespace BlamLib.Blam
 		/// <summary>
 		/// The structure bsps used to construct this map
 		/// </summary>
+		[System.ComponentModel.Browsable(false)]
 		public Item[] BspTags { get { return bspTags; } }
 		#endregion
 
@@ -541,11 +572,22 @@ namespace BlamLib.Blam
 		/// <summary>
 		/// Returns the header object used for this map
 		/// </summary>
+//		[System.ComponentModel.Browsable(false)]
 		public abstract CacheHeader Header { get; }
+		/// <summary>
+		/// Get a unique name of this peticular cache file
+		/// </summary>
+		/// <returns></returns>
+		/// <remarks>If an unique name is impossible to generate, justs concates the name from the header, an underscore, and the version string from the header</remarks>
+		public virtual string GetUniqueName()
+		{
+			return string.Format("{0}_{1}", Header.Name, Header.Version);
+		}
 
 		/// <summary>
 		/// Returns the index object used for this map
 		/// </summary>
+//		[System.ComponentModel.Browsable(false)]
 		public abstract CacheIndex Index { get; }
 
 		/// <summary>
@@ -567,6 +609,7 @@ namespace BlamLib.Blam
 		/// <summary>
 		/// Tag Index Manager for this cache file
 		/// </summary>
+		[System.ComponentModel.Browsable(false)]
 		public Managers.CacheTagIndex TagIndexManager	{ get { return tagIndexManager; } }
 
 		/// <summary>
@@ -604,6 +647,7 @@ namespace BlamLib.Blam
 		/// <summary>
 		/// Reference manager for this cache's tags
 		/// </summary>
+		[System.ComponentModel.Browsable(false)]
 		public Managers.ReferenceManager References	{ get { return refManager; } }
 
 		/// <summary>
@@ -667,6 +711,7 @@ namespace BlamLib.Blam
 		#endregion
 
 		#region StringIdManager
+		[System.ComponentModel.Browsable(false)]
 		public Managers.StringIdManager StringIds { get; private set; }
 
 		IO.EndianReader GetStringIdsIndicesBuffer(ICacheHeaderStringId sid_header)
@@ -736,6 +781,7 @@ namespace BlamLib.Blam
 		/// <summary>
 		/// Special flags
 		/// </summary>
+		[System.ComponentModel.Browsable(false)]
 		public Util.Flags Flags	{ get { return flags; } }
 
 		/// <summary>
@@ -751,6 +797,8 @@ namespace BlamLib.Blam
 		/// <summary>
 		/// Returns the engine that this cache is for
 		/// </summary>
+		[System.ComponentModel.Category("Cache")]
+		[System.ComponentModel.ReadOnly(true)]
 		public BlamVersion EngineVersion
 		{
 			get { return engineVersion; }
@@ -763,6 +811,7 @@ namespace BlamLib.Blam
 		/// <summary>
 		/// Identifier used in a <see cref="Managers.BlamDefinition"/>'s cache collection
 		/// </summary>
+		[System.ComponentModel.Browsable(false)]
 		public Blam.DatumIndex CacheId
 		{
 			get { return cacheId; }
@@ -778,10 +827,9 @@ namespace BlamLib.Blam
 		#region IsLoaded
 		protected bool isLoaded = false;
 		/// <summary>
-		/// Returns true if all the basic
-		/// data for this cache file has been
-		/// loaded
+		/// Returns true if all the basic data for this cache file has been loaded
 		/// </summary>
+		[System.ComponentModel.Browsable(false)]
 		public bool IsLoaded { get { return isLoaded; } }
 		#endregion
 
@@ -791,15 +839,15 @@ namespace BlamLib.Blam
 		/// </summary>
 		protected bool isMemoryMap = false;
 
-		/// <summary>
-		/// Aka, 'magic'
-		/// </summary>
+		/// <summary>Aka, 'magic'</summary>
 		protected uint addressMask;
 		/// <summary>
 		/// The value to subtract from addresses, to get the offset
 		/// in the cache stream the address is referring to,
 		/// but everyone knows it as 'magic'
 		/// </summary>
+		[System.ComponentModel.Category("Cache")]
+		[System.ComponentModel.ReadOnly(true)]
 		public uint AddressMask
 		{
 			get
@@ -825,6 +873,8 @@ namespace BlamLib.Blam
 		/// the address mask for each bsp
 		/// </summary>
 		/// <remarks>currently, the max bsp count hasn't gone above 16 in h1,2, and stubbs. It may in Halo3</remarks>
+		[System.ComponentModel.Category("Cache")]
+		[System.ComponentModel.ReadOnly(true)]
 		public List<uint> BspAddressMasks { get { return bspAddressMasks; } }
 
 		protected int useBspsIndex = -1;

@@ -21,30 +21,22 @@ namespace BlamLib
 {
 	partial class Program
 	{
-		/// <summary>
-		/// Halo 1 global wide values
-		/// </summary>
+		/// <summary>Halo 1 global values</summary>
 		public static class Halo1
 		{
 			#region Manager
 			static Blam.Halo1.GameDefinition manager = new Blam.Halo1.GameDefinition();
-			/// <summary>
-			/// Halo 1's specific manager instance
-			/// </summary>
+			/// <summary>Halo 1's specific manager instance</summary>
 			public static Blam.Halo1.GameDefinition Manager { get { return manager; } }
 			#endregion
 
-			/// <summary>
-			/// Initialize the resources used by the Halo 1 systems
-			/// </summary>
+			/// <summary>Initialize the resources used by the Halo 1 systems</summary>
 			public static void Initialize()
 			{
 				manager.Read(Managers.GameManager.GetRelativePath(BlamLib.Managers.GameManager.Namespace.Halo1), "Halo1.xml");
 			}
 
-			/// <summary>
-			/// Close the resources used by the Halo 1 systems
-			/// </summary>
+			/// <summary>Close the resources used by the Halo 1 systems</summary>
 			public static void Close()
 			{
 				ClosePc();
@@ -53,27 +45,17 @@ namespace BlamLib
 			}
 
 			#region PC
-			/// <summary>
-			/// Path to the HaloPC file 'bitmaps.map'
-			/// </summary>
-			static string PcBitmapsPath;
-			/// <summary>
-			/// Object for the HaloPC file 'bitmaps.map'
-			/// </summary>
+			/// <summary>Path to the HaloPC file 'bitmaps.map'</summary>
+			internal static string PcBitmapsPath { get; set; }
+			/// <summary>Object for the HaloPC file 'bitmaps.map'</summary>
 			public static Blam.Halo1.BitmapCacheFile PcBitmaps;
 
-			/// <summary>
-			/// Path to the HaloPC file 'sounds.map'
-			/// </summary>
-			static string PcSoundsPath;
-			/// <summary>
-			/// Object for the HaloPC file 'sounds.map'
-			/// </summary>
+			/// <summary>Path to the HaloPC file 'sounds.map'</summary>
+			internal static string PcSoundsPath { get; set; }
+			/// <summary>Object for the HaloPC file 'sounds.map'</summary>
 			public static Blam.Halo1.SoundCacheFile PcSounds;
 
-			/// <summary>
-			/// Load the HaloPC files we need to fully run this library
-			/// </summary>
+			/// <summary>Load the HaloPC files we need to fully run this library</summary>
 			/// <remarks>
 			/// Paths[0] = Bitmaps
 			/// Paths[1] = Sounds
@@ -97,10 +79,10 @@ namespace BlamLib
 					PcSounds.ReadResourceCache();
 				}
 			}
+			/// <summary>Load the HaloPC files we need to fully run this library</summary>
+			public static void LoadPc() { LoadPc(PcBitmapsPath, PcSoundsPath); }
 
-			/// <summary>
-			/// Closes the shared pc caches
-			/// </summary>
+			/// <summary>Closes the shared pc caches</summary>
 			public static void ClosePc()
 			{
 				if (PcBitmaps != null)	manager.CloseCacheFile(PcBitmaps.CacheId);
@@ -109,36 +91,22 @@ namespace BlamLib
 			#endregion
 
 			#region CE
-			/// <summary>
-			/// Path to the HaloCE file 'bitmaps.map'
-			/// </summary>
-			static string CeBitmapsPath;
-			/// <summary>
-			/// Object for the HaloCE file 'bitmaps.map'
-			/// </summary>
+			/// <summary>Path to the HaloCE file 'bitmaps.map'</summary>
+			internal static string CeBitmapsPath { get; set; }
+			/// <summary>Object for the HaloCE file 'bitmaps.map'</summary>
 			public static Blam.Halo1.BitmapCacheFile CeBitmaps;
 
-			/// <summary>
-			/// Path to the HaloCE file 'sounds.map'
-			/// </summary>
-			static string CeSoundsPath;
-			/// <summary>
-			/// Object for the HaloCE file 'sounds.map'
-			/// </summary>
+			/// <summary>Path to the HaloCE file 'sounds.map'</summary>
+			internal static string CeSoundsPath { get; set; }
+			/// <summary>Object for the HaloCE file 'sounds.map'</summary>
 			public static Blam.Halo1.SoundCacheFile CeSounds;
 
-			/// <summary>
-			/// Path to the HaloCE file 'loc.map'
-			/// </summary>
-			static string CeLocPath;
-			/// <summary>
-			/// Object for the HaloCE file 'loc.map'
-			/// </summary>
+			/// <summary>Path to the HaloCE file 'loc.map'</summary>
+			internal static string CeLocPath { get; set; }
+			/// <summary>Object for the HaloCE file 'loc.map'</summary>
 			public static Blam.Halo1.LocCacheFile CeLoc;
 
-			/// <summary>
-			/// Load the HaloCE files we need to fully run this library
-			/// </summary>
+			/// <summary>Load the HaloCE files we need to fully run this library</summary>
 			/// <remarks>
 			/// Paths[0] = Bitmaps
 			/// Paths[1] = Sounds
@@ -170,10 +138,10 @@ namespace BlamLib
 					CeLoc.ReadResourceCache();
 				}
 			}
+			/// <summary>Load the HaloCE files we need to fully run this library</summary>
+			public static void LoadCe() { LoadCe(CeBitmapsPath, CeSoundsPath, CeLocPath); }
 
-			/// <summary>
-			/// Closes the shared ce caches
-			/// </summary>
+			/// <summary>Closes the shared ce caches</summary>
 			public static void CloseCe()
 			{
 				if (CeBitmaps != null)	manager.CloseCacheFile(CeBitmaps.CacheId);

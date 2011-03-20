@@ -32,9 +32,7 @@ namespace BlamLib.TagInterface
 		internal const int kLongestGroupNameLength = 50;
 
 		string name;
-		/// <summary>
-		/// Full name of this group
-		/// </summary>
+		/// <summary>Full name of this group</summary>
 		public string Name { get { return name; } }
 
 		/// <summary>
@@ -53,28 +51,23 @@ namespace BlamLib.TagInterface
 
 		#region ID
 		uint iD;
-		/// <summary>
-		/// The four character code translated into a unsigned int
-		/// </summary>
-		/// <remarks>four character code stored as if on a big endian machine</remarks>
+		/// <summary>The four character code translated into a unsigned int</summary>
 		public uint ID { get { return iD; } }
 		#endregion
 
 		#region Tag
 		string tagAsString;
 		char[] tag;
-		/// <summary>
-		/// The four character code of this group
-		/// </summary>
+		/// <summary>The four character code of this group</summary>
+		[System.ComponentModel.Browsable(false)]
 		public char[] Tag { get { return tag; } }
 		public string TagToString() { return /*new string(tag)*/tagAsString; }
 		#endregion
 
 		#region Handle
 		Blam.DatumIndex handle = Blam.DatumIndex.Null;
-		/// <summary>
-		/// Handle that can be used to serialize references to this group tag
-		/// </summary>
+		/// <summary>Handle that can be used to serialize references to this group tag</summary>
+		[System.ComponentModel.Browsable(false)]
 		public Blam.DatumIndex Handle	{ get { return handle; } }
 
 		/// <summary>
@@ -105,9 +98,8 @@ namespace BlamLib.TagInterface
 
 		#region Parent
 		TagGroup parent = null;
-		/// <summary>
-		/// Parent group tag
-		/// </summary>
+		/// <summary>Parent group tag</summary>
+		[System.ComponentModel.Browsable(false)]
 		public TagGroup Parent { get { return parent; } }
 
 		/// <summary>
@@ -148,10 +140,9 @@ namespace BlamLib.TagInterface
 
 		#region Children
 		List<TagGroup> children = null;
-		/// <summary>
-		/// Tag groups which inherit from this tag group
-		/// </summary>
-		public List<TagGroup> Children { get { return children; } }
+		/// <summary>Tag groups which inherit from this tag group</summary>
+		[System.ComponentModel.Browsable(false)]
+		public IEnumerable<TagGroup> Children { get { return children; } }
 
 		public bool HasChildren { get { return children != null && children.Count > 0; } }
 
@@ -197,6 +188,7 @@ namespace BlamLib.TagInterface
 		/// <summary>
 		/// The definition of this tag group
 		/// </summary>
+		[System.ComponentModel.Browsable(false)]
 		public DefinitionState Definition
 		{
 			get { return definition; }
@@ -206,18 +198,15 @@ namespace BlamLib.TagInterface
 
 		#region Filter
 		string filter;
-		/// <summary>
-		/// The file dialog file filter string for this tag group
-		/// </summary>
+		/// <summary>The file dialog file filter string for this tag group</summary>
 		public string Filter { get { return filter; } }
 		#endregion
 
 		#region EngineData
 		object engineData = null;
-		/// <summary>
-		/// Data thats only used by the owning engine's code
-		/// </summary>
-		/// <see cref="Blam.Halo3.BlamFile"></see>
+		/// <summary>Data thats only used by the owning engine's code</summary>
+		/// <see cref="Blam.Halo3.BlamFile"/>
+		[System.ComponentModel.Browsable(false)]
 		internal object EngineData
 		{
 			get { return engineData; }
@@ -489,12 +478,60 @@ namespace BlamLib.TagInterface
 	/// <summary>
 	/// Holds a collection of group tags (either in a ordered fashion or in the order they were added)
 	/// </summary>
-	public sealed class TagGroupCollection : System.Collections.ICollection, System.Collections.IEnumerable
+	public sealed class TagGroupCollection : ICollection<TagGroup>
 	{
+		/// <summary>Represents a tag group collection with no entries</summary>
+		public static TagGroupCollection Empty { get; private set; }
+
 		class ByNameComparer : System.Collections.IComparer, System.Collections.Generic.IComparer<TagGroup>
 		{
 			public int Compare(object x, object y)		{ return Compare((TagGroup)x, (TagGroup)y); }
 			public int Compare(TagGroup x, TagGroup y)	{ return string.Compare(x.Name, y.Name); }
+		};
+
+		struct Enumerator : IEnumerator<TagGroup>
+		{
+			TagGroupCollection m_coll;
+			int m_index;
+
+			public Enumerator(TagGroupCollection collection)
+			{
+				m_coll = collection;
+				m_index = -1;
+			}
+
+			#region IEnumerator<TagGroup> Members
+			void IDisposable.Dispose()
+			{
+			}
+
+			TagGroup GetCurrent()
+			{
+				if (m_index >= 0 && m_index < m_coll.Count)
+					return m_coll.groupTags[m_index];
+
+				return TagGroup.Null;
+			}
+
+			public TagGroup Current							{ get { return GetCurrent(); } }
+			object System.Collections.IEnumerator.Current	{ get { return GetCurrent(); } }
+
+			public bool MoveNext()
+			{
+				if (m_index < m_coll.Count)
+				{
+					m_index++;
+					return true;
+				}
+
+				return false;
+			}
+
+			public void Reset()
+			{
+				m_index = -1;
+			}
+			#endregion
 		};
 
 		#region GroupTags
@@ -716,6 +753,20 @@ namespace BlamLib.TagInterface
 		}
 
 		#region Ctor
+		static TagGroupCollection()
+		{
+			Empty = new TagGroupCollection();
+		}
+
+		/// <summary>
+		/// Only for <see cref="TagGroupCollection.Empty"/>
+		/// </summary>
+		private TagGroupCollection()
+		{
+			groupTags = new TagGroup[0];
+			filter = string.Empty;
+		}
+
 		/// <summary>
 		/// Create a collection based on an existing list of group tags
 		/// </summary>
@@ -754,19 +805,16 @@ namespace BlamLib.TagInterface
 		#endregion
 
 		#region IEnumerable Members
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() { return groupTags.GetEnumerator(); }
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()	{ return new Enumerator(this); }
+		public IEnumerator<TagGroup> GetEnumerator()									{ return new Enumerator(this); }
 		#endregion
 
 		#region ICollection Members
-		/// <summary>
-		/// Not Implemented.
-		/// </summary>
+		/// <summary>Not Implemented.</summary>
 		/// <param name="item"></param>
-		public void Add(TagGroup item) { throw new Exception("The method or operation is not implemented."); }
-		/// <summary>
-		/// Not Implemented.
-		/// </summary>
-		public void Clear() { throw new Exception("The method or operation is not implemented."); }
+		public void Add(TagGroup item) { throw new NotSupportedException(); }
+		/// <summary>Not Implemented.</summary>
+		public void Clear() { throw new NotSupportedException(); }
 		/// <summary>
 		/// Determines if there is TagGroup which has the same matching <see cref="TagGroup.ID"/> as <paramref name="item"/>
 		/// </summary>
@@ -778,39 +826,29 @@ namespace BlamLib.TagInterface
 		/// </summary>
 		/// <param name="array"></param>
 		/// <param name="arrayIndex"></param>
-		public void CopyTo(Array array, int arrayIndex) { groupTags.CopyTo(array, arrayIndex); }
+		public void CopyTo(TagGroup[] array, int arrayIndex) { groupTags.CopyTo(array, arrayIndex); }
 
 		/// <summary>
 		/// How many group tags are in this collection
 		/// </summary>
 		public int Count { get { return groupTags.Length; } }
 
-		/// <summary>
-		/// Always true
-		/// </summary>
+		/// <summary>Always true</summary>
 		public bool IsReadOnly { get { return true; } }
-		/// <summary>
-		/// 
-		/// </summary>
+		/// <summary></summary>
 		public bool IsSynchronized { get { return groupTags.IsSynchronized; } }
-		/// <summary>
-		/// 
-		/// </summary>
+		/// <summary></summary>
 		public object SyncRoot { get { return groupTags.SyncRoot; } }
 
-		/// <summary>
-		/// Not Implemented.
-		/// </summary>
+		/// <summary>Not Implemented.</summary>
 		/// <param name="item"></param>
 		/// <returns></returns>
-		public bool Remove(TagGroup item) { throw new Exception("The method or operation is not implemented."); }
+		public bool Remove(TagGroup item) { throw new NotSupportedException(); }
 		#endregion
 
 		#region IStreamable
 		/// <summary>
-		/// Moves the stream ahead by the sizeof
-		/// a four character code (4 bytes) times the count
-		/// of the group tags
+		/// Moves the stream ahead by the sizeof a four character code (4 bytes) times the count of the group tags
 		/// </summary>
 		/// <param name="s"></param>
 		/// <remarks>Doesn't actually read any data from the stream, only seeks forward</remarks>

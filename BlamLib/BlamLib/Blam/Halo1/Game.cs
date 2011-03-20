@@ -273,5 +273,40 @@ namespace BlamLib.Blam.Halo1
 			return false;
 		}
 		#endregion
+
+
+		#region Cache paths exposure
+		[System.ComponentModel.Category("PC")]
+		public string PcBitmapsPath
+		{
+			get { return Program.Halo1.PcBitmapsPath; }
+			set { Program.Halo1.PcBitmapsPath = value; }
+		}
+		[System.ComponentModel.Category("PC")]
+		public string PcSoundsPath
+		{
+			get { return Program.Halo1.PcSoundsPath; }
+			set { Program.Halo1.PcSoundsPath = value; }
+		}
+
+		[System.ComponentModel.Category("CE")]
+		public string CeBitmapsPath
+		{
+			get { return Program.Halo1.PcBitmapsPath; }
+			set { Program.Halo1.PcBitmapsPath = value; }
+		}
+		[System.ComponentModel.Category("CE")]
+		public string CeSoundsPath
+		{
+			get { return Program.Halo1.PcSoundsPath; }
+			set { Program.Halo1.PcSoundsPath = value; }
+		}
+		[System.ComponentModel.Category("CE")]
+		public string CeLocPath
+		{
+			get { return Program.Halo1.CeLocPath; }
+			set { Program.Halo1.CeLocPath = value; }
+		}
+		#endregion
 	};
 }

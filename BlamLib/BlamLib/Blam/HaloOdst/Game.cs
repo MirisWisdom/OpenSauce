@@ -18,6 +18,7 @@
 */
 using System;
 using System.Threading;
+using TI = BlamLib.TagInterface;
 
 namespace BlamLib.Blam.HaloOdst
 {
@@ -27,7 +28,9 @@ namespace BlamLib.Blam.HaloOdst
 	public sealed class GameDefinition : Managers.BlamDefinition, Managers.IStringIdController, Managers.IScriptingController, Managers.IVertexBufferController
 	{
 		#region Implementation
-		public override TagInterface.TagGroupCollection TagGroups	{ get { return HaloOdst.TagGroups.Groups; } }
+		public override TI.TagGroupCollection TagGroups						{ get { return HaloOdst.TagGroups.Groups; } }
+		//public override TI.TagGroupCollection TagGroupsInvalidForCacheViewer{ get { return HaloOdst.TagGroups.GroupsInvalidForCacheViewer; } }
+		public override TI.TagGroupCollection TagGroupsInvalidForExtraction	{ get { return HaloOdst.TagGroups.Groups; } }
 
 		/// <remarks>Explicit resource identifying. Yes, there are reasons for this. Ask km00 if you care that much</remarks>
 		internal override void IdentifyResourceProc(Managers.BlamDefinition.Game owner, string resource_name, string resource_path)
@@ -120,13 +123,13 @@ namespace BlamLib.Blam.HaloOdst
 		public override Blam.CacheFile GetCacheFileFromLocation(BlamVersion ver, string cache_name) { return Program.HaloOdst.FromLocation(ver, cache_name); }
 		public override Blam.CacheFile GetCacheFileFromLocation(BlamVersion ver, string cache_name, out bool is_internal) { return Program.HaloOdst.FromLocation(ver, cache_name, out is_internal); }
 
-		public override BlamLib.Managers.TagDatabase CreateTagDatabase() { throw new NotSupportedException();/*return new HaloOdst.Tags.TagDatabase()*/; }
+		public override Managers.TagDatabase CreateTagDatabase() { throw new NotSupportedException();/*return new HaloOdst.Tags.TagDatabase()*/; }
 
-		protected override BlamLib.Managers.CacheTagDatabase CreateCacheTagDatabaseInternal(DatumIndex cache_id) { throw new NotSupportedException();/*return new HaloOdst.Tags.CacheTagDatabase((HaloOdst.CacheFile)Program.GetCacheFile(cache_id))*/; }
+		protected override Managers.CacheTagDatabase CreateCacheTagDatabaseInternal(DatumIndex cache_id) { throw new NotSupportedException();/*return new HaloOdst.Tags.CacheTagDatabase((HaloOdst.CacheFile)Program.GetCacheFile(cache_id))*/; }
 
-		public override BlamLib.Managers.ErrorTagDatabase CreateErrorTagDatabase() { throw new NotSupportedException();/*return new HaloOdst.Tags.ErrorTagDatabase()*/; }
+		public override Managers.ErrorTagDatabase CreateErrorTagDatabase() { throw new NotSupportedException();/*return new HaloOdst.Tags.ErrorTagDatabase()*/; }
 
-		public override BlamLib.TagInterface.TagGroup TagDatabaseGroup { get { throw new NotSupportedException();/*return Halo3.TagGroups.tag_*/; } }
+		public override TI.TagGroup TagDatabaseGroup { get { throw new NotSupportedException();/*return Halo3.TagGroups.tag_*/; } }
 		#endregion
 
 		internal GameDefinition() {}

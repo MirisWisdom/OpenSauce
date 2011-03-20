@@ -79,10 +79,11 @@ namespace OpenSauceIDE
 			FileMenuBreak1.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			FileMenuBreak1.ForeColor = System.Drawing.Color.LightGreen;
 			FileMenuBreak1.Name = "FileMenuBreak1";
-			FileMenuBreak1.Size = new System.Drawing.Size(110, 6);
+			FileMenuBreak1.Size = new System.Drawing.Size(149, 6);
 			// 
 			// MainMenu
 			// 
+			this.MainMenu.AllowMerge = false;
 			this.MainMenu.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.FileMenu,
@@ -113,7 +114,7 @@ namespace OpenSauceIDE
 			this.FileNew.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			this.FileNew.ForeColor = System.Drawing.Color.LightGreen;
 			this.FileNew.Name = "FileNew";
-			this.FileNew.Size = new System.Drawing.Size(113, 22);
+			this.FileNew.Size = new System.Drawing.Size(152, 22);
 			this.FileNew.Text = "New";
 			this.FileNew.Click += new System.EventHandler(this.OnFileNew);
 			// 
@@ -122,7 +123,7 @@ namespace OpenSauceIDE
 			this.FileOpen.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			this.FileOpen.ForeColor = System.Drawing.Color.LightGreen;
 			this.FileOpen.Name = "FileOpen";
-			this.FileOpen.Size = new System.Drawing.Size(113, 22);
+			this.FileOpen.Size = new System.Drawing.Size(152, 22);
 			this.FileOpen.Text = "Open";
 			this.FileOpen.Click += new System.EventHandler(this.OnFileOpen);
 			// 
@@ -131,7 +132,7 @@ namespace OpenSauceIDE
 			this.FileClose.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			this.FileClose.ForeColor = System.Drawing.Color.LightGreen;
 			this.FileClose.Name = "FileClose";
-			this.FileClose.Size = new System.Drawing.Size(113, 22);
+			this.FileClose.Size = new System.Drawing.Size(152, 22);
 			this.FileClose.Text = "Close";
 			this.FileClose.Click += new System.EventHandler(this.OnFileClose);
 			// 
@@ -140,7 +141,7 @@ namespace OpenSauceIDE
 			this.FileSave.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			this.FileSave.ForeColor = System.Drawing.Color.LightGreen;
 			this.FileSave.Name = "FileSave";
-			this.FileSave.Size = new System.Drawing.Size(113, 22);
+			this.FileSave.Size = new System.Drawing.Size(152, 22);
 			this.FileSave.Text = "Save";
 			this.FileSave.Click += new System.EventHandler(this.OnFileSave);
 			// 
@@ -149,7 +150,7 @@ namespace OpenSauceIDE
 			this.FileSaveAs.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			this.FileSaveAs.ForeColor = System.Drawing.Color.LightGreen;
 			this.FileSaveAs.Name = "FileSaveAs";
-			this.FileSaveAs.Size = new System.Drawing.Size(113, 22);
+			this.FileSaveAs.Size = new System.Drawing.Size(152, 22);
 			this.FileSaveAs.Text = "Save As";
 			this.FileSaveAs.Click += new System.EventHandler(this.OnFileSaveAs);
 			// 

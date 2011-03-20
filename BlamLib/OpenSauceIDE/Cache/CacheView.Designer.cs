@@ -49,7 +49,8 @@ namespace OpenSauceIDE.Cache
 			System.Windows.Forms.SplitContainer splitContainer1;
 			System.Windows.Forms.ToolStripMenuItem FileOpen;
 			this.TagTreeView = new System.Windows.Forms.TreeView();
-			this.PropGrid = new System.Windows.Forms.PropertyGrid();
+			this.PropGrigTag = new System.Windows.Forms.PropertyGrid();
+			this.PropGridCache = new System.Windows.Forms.PropertyGrid();
 			this.MainMenu = new System.Windows.Forms.MenuStrip();
 			this.FileMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.FileClose = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,7 +80,8 @@ namespace OpenSauceIDE.Cache
 			// 
 			// splitContainer1.Panel2
 			// 
-			splitContainer1.Panel2.Controls.Add(this.PropGrid);
+			splitContainer1.Panel2.Controls.Add(this.PropGrigTag);
+			splitContainer1.Panel2.Controls.Add(this.PropGridCache);
 			splitContainer1.Size = new System.Drawing.Size(792, 534);
 			splitContainer1.SplitterDistance = 473;
 			splitContainer1.TabIndex = 3;
@@ -94,21 +96,44 @@ namespace OpenSauceIDE.Cache
 			this.TagTreeView.Name = "TagTreeView";
 			this.TagTreeView.Size = new System.Drawing.Size(473, 534);
 			this.TagTreeView.TabIndex = 1;
+			this.TagTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.OnTagTreeAfterSelect);
+			this.TagTreeView.BeforeCheck += new System.Windows.Forms.TreeViewCancelEventHandler(this.OnTagTreeBeforeCheck);
 			// 
-			// PropGrid
+			// PropGrigTag
 			// 
-			this.PropGrid.BackColor = System.Drawing.SystemColors.Control;
-			this.PropGrid.CommandsBackColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.PropGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.PropGrid.HelpBackColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.PropGrid.HelpForeColor = System.Drawing.Color.LightGreen;
-			this.PropGrid.Location = new System.Drawing.Point(0, 0);
-			this.PropGrid.Name = "PropGrid";
-			this.PropGrid.PropertySort = System.Windows.Forms.PropertySort.Categorized;
-			this.PropGrid.Size = new System.Drawing.Size(315, 534);
-			this.PropGrid.TabIndex = 2;
-			this.PropGrid.ViewBackColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.PropGrid.ViewForeColor = System.Drawing.Color.LightGreen;
+			this.PropGrigTag.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.PropGrigTag.BackColor = System.Drawing.SystemColors.Control;
+			this.PropGrigTag.CommandsBackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.PropGrigTag.HelpBackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.PropGrigTag.HelpForeColor = System.Drawing.Color.LightGreen;
+			this.PropGrigTag.LineColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.PropGrigTag.Location = new System.Drawing.Point(0, 310);
+			this.PropGrigTag.Name = "PropGrigTag";
+			this.PropGrigTag.PropertySort = System.Windows.Forms.PropertySort.Categorized;
+			this.PropGrigTag.Size = new System.Drawing.Size(315, 221);
+			this.PropGrigTag.TabIndex = 3;
+			this.PropGrigTag.ToolbarVisible = false;
+			this.PropGrigTag.ViewBackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.PropGrigTag.ViewForeColor = System.Drawing.Color.LightGreen;
+			// 
+			// PropGridCache
+			// 
+			this.PropGridCache.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.PropGridCache.BackColor = System.Drawing.SystemColors.Control;
+			this.PropGridCache.CommandsBackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.PropGridCache.HelpBackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.PropGridCache.HelpForeColor = System.Drawing.Color.LightGreen;
+			this.PropGridCache.LineColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.PropGridCache.Location = new System.Drawing.Point(0, 0);
+			this.PropGridCache.Name = "PropGridCache";
+			this.PropGridCache.PropertySort = System.Windows.Forms.PropertySort.Categorized;
+			this.PropGridCache.Size = new System.Drawing.Size(315, 304);
+			this.PropGridCache.TabIndex = 2;
+			this.PropGridCache.ToolbarVisible = false;
+			this.PropGridCache.ViewBackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.PropGridCache.ViewForeColor = System.Drawing.Color.LightGreen;
 			// 
 			// FileOpen
 			// 
@@ -121,6 +146,7 @@ namespace OpenSauceIDE.Cache
 			// 
 			// MainMenu
 			// 
+			this.MainMenu.AllowMerge = false;
 			this.MainMenu.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.FileMenu,
@@ -180,6 +206,7 @@ namespace OpenSauceIDE.Cache
 			this.ForeColor = System.Drawing.Color.LightGreen;
 			this.MainMenuStrip = this.MainMenu;
 			this.Name = "CacheView";
+			this.ShowIcon = false;
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Cache Viewer";
@@ -199,12 +226,13 @@ namespace OpenSauceIDE.Cache
 
 		private System.Windows.Forms.MenuStrip MainMenu;
 		private System.Windows.Forms.TreeView TagTreeView;
-		private System.Windows.Forms.PropertyGrid PropGrid;
+		private System.Windows.Forms.PropertyGrid PropGridCache;
 		private System.Windows.Forms.OpenFileDialog OpenFileDlg;
 		private System.Windows.Forms.SaveFileDialog SaveFileDlg;
 		private System.Windows.Forms.ToolStripMenuItem FileMenu;
 		private System.Windows.Forms.ToolStripMenuItem FileClose;
 		private System.Windows.Forms.FolderBrowserDialog FolderDlg;
 		private System.Windows.Forms.ToolStripMenuItem ToolsMenu;
+		private System.Windows.Forms.PropertyGrid PropGrigTag;
 	}
 }

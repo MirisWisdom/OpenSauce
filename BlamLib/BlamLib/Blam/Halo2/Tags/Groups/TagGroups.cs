@@ -486,5 +486,53 @@ namespace BlamLib.Blam.Halo2
 			tag_,
 		};
 		#endregion
+
+		#region TagGroupsInvalidForCacheViewer
+		internal static TagGroupCollection GroupsInvalidForCacheViewer;
+		static void GroupsInvalidForCacheViewerInitialize()
+		{
+			GroupsInvalidForCacheViewer = new TagGroupCollection(false,
+				obje,
+				devi,
+				item,
+				unit,
+
+				srscen,
+				srbipd,
+				srvehi,
+				sreqip,
+				srweap,
+				srssce,
+				srligh,
+				srdgrp,
+				srdeca,
+				srcine,
+				srtrgr,
+				srclut,
+				srcrea,
+				srdcrs,
+				srsslt,
+				srhscf,
+				srai,
+				srcmmt,
+
+				shit,
+
+				tag_
+			);
+		}
+		#endregion
+
+		#region TagGroupsInvalidForExtraction
+		internal static TagGroupCollection GroupsInvalidForExtraction;
+		static void GroupsInvalidForExtractionInitialize()
+		{
+			GroupsInvalidForExtraction = new TagGroupCollection(false,
+				ugh_,
+
+				snd_	// TODO: reconstruction
+			);
+		}
+		#endregion
 	};
 }

@@ -83,7 +83,7 @@
 			// FileExit
 			// 
 			FileExit.Name = "FileExit";
-			FileExit.Size = new System.Drawing.Size(152, 22);
+			FileExit.Size = new System.Drawing.Size(92, 22);
 			FileExit.Text = "Exit";
 			FileExit.Click += new System.EventHandler(this.OnFileExit);
 			// 
@@ -120,6 +120,7 @@
 			// 
 			// MainMenu
 			// 
+			this.MainMenu.AllowMerge = false;
 			this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             FileMenu,
             ToolsMenu});
@@ -166,27 +167,27 @@
             this.TagIndexMenuRemove,
             this.TagIndexMenuView});
 			this.TagIndexListViewMenu.Name = "TagIndexListViewMenu";
-			this.TagIndexListViewMenu.Size = new System.Drawing.Size(153, 92);
+			this.TagIndexListViewMenu.Size = new System.Drawing.Size(114, 70);
 			this.TagIndexListViewMenu.Text = "Tag Index Menu";
 			// 
 			// TagIndexMenuLoad
 			// 
 			this.TagIndexMenuLoad.Name = "TagIndexMenuLoad";
-			this.TagIndexMenuLoad.Size = new System.Drawing.Size(152, 22);
+			this.TagIndexMenuLoad.Size = new System.Drawing.Size(113, 22);
 			this.TagIndexMenuLoad.Text = "Load";
 			this.TagIndexMenuLoad.Click += new System.EventHandler(this.OnTagIndexLoad);
 			// 
 			// TagIndexMenuRemove
 			// 
 			this.TagIndexMenuRemove.Name = "TagIndexMenuRemove";
-			this.TagIndexMenuRemove.Size = new System.Drawing.Size(152, 22);
+			this.TagIndexMenuRemove.Size = new System.Drawing.Size(113, 22);
 			this.TagIndexMenuRemove.Text = "Remove";
 			this.TagIndexMenuRemove.Click += new System.EventHandler(this.OnTagIndexRemove);
 			// 
 			// TagIndexMenuView
 			// 
 			this.TagIndexMenuView.Name = "TagIndexMenuView";
-			this.TagIndexMenuView.Size = new System.Drawing.Size(152, 22);
+			this.TagIndexMenuView.Size = new System.Drawing.Size(113, 22);
 			this.TagIndexMenuView.Text = "View";
 			this.TagIndexMenuView.Click += new System.EventHandler(this.OnTagIndexView);
 			// 
@@ -201,6 +202,9 @@
 			this.Controls.Add(this.MainMenu);
 			this.MainMenuStrip = this.MainMenu;
 			this.Name = "TagManager";
+			this.ShowIcon = false;
+			this.ShowInTaskbar = false;
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Tag Manager";
 			this.MainMenu.ResumeLayout(false);
 			this.MainMenu.PerformLayout();
