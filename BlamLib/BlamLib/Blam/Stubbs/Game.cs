@@ -18,6 +18,7 @@
 */
 using System;
 using System.Threading;
+using TI = BlamLib.TagInterface;
 
 namespace BlamLib.Blam.Stubbs
 {
@@ -27,7 +28,9 @@ namespace BlamLib.Blam.Stubbs
 	public sealed class GameDefinition : Managers.BlamDefinition, Managers.IScriptingController, Managers.IVertexBufferController
 	{
 		#region Implementation
-		public override TagInterface.TagGroupCollection TagGroups	{ get { return Stubbs.TagGroups.Groups; } }
+		public override TagInterface.TagGroupCollection TagGroups			{ get { return Stubbs.TagGroups.Groups; } }
+		//public override TI.TagGroupCollection TagGroupsInvalidForCacheViewer{ get { return Stubbs.TagGroups.GroupsInvalidForCacheViewer; } }
+		//public override TI.TagGroupCollection TagGroupsInvalidForExtraction	{ get { return Stubbs.TagGroups.GroupsInvalidForExtraction; } }
 
 		/// <remarks>Explicit resource identifying. Yes, there are reasons for this. Ask km00 if you care that much</remarks>
 		internal override void IdentifyResourceProc(Managers.BlamDefinition.Game owner, string resource_name, string resource_path)
@@ -116,13 +119,13 @@ namespace BlamLib.Blam.Stubbs
 			return cf;
 		}
 
-		public override BlamLib.Managers.TagDatabase CreateTagDatabase() { return new Halo1.Tags.TagDatabase(BlamVersion.Stubbs); }
+		public override Managers.TagDatabase CreateTagDatabase() { return new Halo1.Tags.TagDatabase(BlamVersion.Stubbs); }
 
-		protected override BlamLib.Managers.CacheTagDatabase CreateCacheTagDatabaseInternal(DatumIndex cache_id) { return new Stubbs.Tags.CacheTagDatabase((Stubbs.CacheFile)Program.GetCacheFile(cache_id)); }
+		protected override Managers.CacheTagDatabase CreateCacheTagDatabaseInternal(DatumIndex cache_id) { return new Stubbs.Tags.CacheTagDatabase((Stubbs.CacheFile)Program.GetCacheFile(cache_id)); }
 
-		public override BlamLib.Managers.ErrorTagDatabase CreateErrorTagDatabase() { return new Halo1.Tags.ErrorTagDatabase(BlamVersion.Stubbs); }
+		public override Managers.ErrorTagDatabase CreateErrorTagDatabase() { return new Halo1.Tags.ErrorTagDatabase(BlamVersion.Stubbs); }
 
-		public override BlamLib.TagInterface.TagGroup TagDatabaseGroup { get { return Halo1.TagGroups.tag_; } }
+		public override TI.TagGroup TagDatabaseGroup { get { return Halo1.TagGroups.tag_; } }
 		#endregion
 
 		internal GameDefinition() {}

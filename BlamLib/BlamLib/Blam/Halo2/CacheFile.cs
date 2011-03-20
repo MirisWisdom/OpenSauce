@@ -133,7 +133,7 @@ namespace BlamLib.Blam.Halo2
 		#endregion
 	
 
-		System.Runtime.InteropServices.ComTypes.FILETIME Filetime;
+		internal System.Runtime.InteropServices.ComTypes.FILETIME Filetime;
 
 		System.Runtime.InteropServices.ComTypes.FILETIME[] SharedFiletimes = new System.Runtime.InteropServices.ComTypes.FILETIME[3];
 
@@ -757,6 +757,12 @@ namespace BlamLib.Blam.Halo2
 
 		public Halo2.CacheHeader HeaderHalo2 { get { return cacheHeader; } }
 		#endregion
+
+		public override string GetUniqueName()
+		{
+			var ft = HeaderHalo2.Filetime;
+			return string.Format("{0}_{1}{2}", HeaderHalo2.Name, ft.dwHighDateTime.ToString("X8"), ft.dwLowDateTime.ToString("X8"));
+		}
 
 		#region Index
 		Halo2.CacheIndex cacheIndex = null;

@@ -22,30 +22,22 @@ namespace BlamLib
 	partial class Program
 	{
 #if !NO_HALO2
-		/// <summary>
-		/// Halo 2 global wide settings
-		/// </summary>
+		/// <summary>Halo 2 global wide settings</summary>
 		public static class Halo2
 		{
 			#region Manager
 			static Blam.Halo2.GameDefinition manager = new Blam.Halo2.GameDefinition();
-			/// <summary>
-			/// Halo 2's specific manager instance
-			/// </summary>
+			/// <summary>Halo 2's specific manager instance</summary>
 			public static Blam.Halo2.GameDefinition Manager { get { return manager; } }
 			#endregion
 
-			/// <summary>
-			/// Initialize the resources used by the Halo 2 systems
-			/// </summary>
+			/// <summary>Initialize the resources used by the Halo 2 systems</summary>
 			public static void Initialize()
 			{
 				manager.Read(Managers.GameManager.GetRelativePath(BlamLib.Managers.GameManager.Namespace.Halo2), "Halo2.xml");
 			}
 
-			/// <summary>
-			/// Close the resources used by the Halo 2 systems
-			/// </summary>
+			/// <summary>Close the resources used by the Halo 2 systems</summary>
 			public static void Close()
 			{
 				CloseXbox();
@@ -55,36 +47,22 @@ namespace BlamLib
 			}
 
 			#region Xbox
-			/// <summary>
-			/// Path to the file 'mainmenu.map'
-			/// </summary>
-			static string XboxMainmenuPath = string.Empty;
-			/// <summary>
-			/// Object for the file  'mainmenu.map'
-			/// </summary>
+			/// <summary>Path to the file 'mainmenu.map'</summary>
+			internal static string XboxMainmenuPath { get; set; }
+			/// <summary>Object for the file  'mainmenu.map'</summary>
 			public static Blam.Halo2.CacheFile XboxMainmenu = null;
 
-			/// <summary>
-			/// Path to the file 'shared.map'
-			/// </summary>
-			static string XboxSharedPath = string.Empty;
-			/// <summary>
-			/// Object for the file 'shared.map'
-			/// </summary>
+			/// <summary>Path to the file 'shared.map'</summary>
+			internal static string XboxSharedPath { get; set; }
+			/// <summary>Object for the file 'shared.map'</summary>
 			public static Blam.Halo2.CacheFile XboxShared = null;
 
-			/// <summary>
-			/// Path to the file 'single_player_shared.map'
-			/// </summary>
-			static string XboxCampaignPath = string.Empty;
-			/// <summary>
-			/// Object for the file 'single_player_shared.map'
-			/// </summary>
+			/// <summary>Path to the file 'single_player_shared.map'</summary>
+			internal static string XboxCampaignPath { get; set; }
+			/// <summary>Object for the file 'single_player_shared.map'</summary>
 			public static Blam.Halo2.CacheFile XboxCampaign = null;
 
-			/// <summary>
-			/// Loads the Halo 2 files needed to fully run this library
-			/// </summary>
+			/// <summary>Loads the Halo2_Xbox files needed to fully run this library</summary>
 			/// <remarks>
 			/// Path[0] = Mainmenu
 			/// Path[1] = Shared
@@ -116,10 +94,10 @@ namespace BlamLib
 					XboxCampaign.Read();
 				}
 			}
+			/// <summary>Loads the Halo2_Xbox files needed to fully run this library</summary>
+			public static void LoadXbox() { LoadXbox(XboxMainmenuPath, XboxSharedPath, XboxCampaignPath); }
 
-			/// <summary>
-			/// Closes the shared xbox caches
-			/// </summary>
+			/// <summary>Closes the shared xbox caches</summary>
 			public static void CloseXbox()
 			{
 				if (XboxMainmenu != null)	manager.CloseCacheFile(XboxMainmenu.CacheId);
@@ -129,27 +107,17 @@ namespace BlamLib
 			#endregion
 
 			#region Alpha
-			/// <summary>
-			/// Path to the file 'mainmenu.map'
-			/// </summary>
-			static string AlphaMainmenuPath = string.Empty;
-			/// <summary>
-			/// Object for the file  'mainmenu.map'
-			/// </summary>
+			/// <summary>Path to the file 'mainmenu.map'</summary>
+			internal static string AlphaMainmenuPath { get; set; }
+			/// <summary>Object for the file  'mainmenu.map'</summary>
 			public static Blam.Halo2.CacheFile AlphaMainmenu = null;
 
-			/// <summary>
-			/// Path to the file 'shared.map'
-			/// </summary>
-			static string AlphaSharedPath = string.Empty;
-			/// <summary>
-			/// Object for the file 'shared.map'
-			/// </summary>
+			/// <summary>Path to the file 'shared.map'</summary>
+			internal static string AlphaSharedPath { get; set; }
+			/// <summary>Object for the file 'shared.map'</summary>
 			public static Blam.Halo2.CacheFile AlphaShared = null;
 
-			/// <summary>
-			/// Loads the Halo 2 files needed to fully run this library
-			/// </summary>
+			/// <summary>Loads the Halo2_Alpha files needed to fully run this library</summary>
 			/// <remarks>
 			/// Path[0] = Mainmenu
 			/// Path[1] = Shared
@@ -173,10 +141,10 @@ namespace BlamLib
 					AlphaShared.Read();
 				}
 			}
+			/// <summary>Loads the Halo2_Alpha files needed to fully run this library</summary>
+			public static void LoadAlpha() { LoadAlpha(AlphaMainmenuPath, AlphaSharedPath); }
 
-			/// <summary>
-			/// Closes the shared Alpha xbox caches
-			/// </summary>
+			/// <summary>Closes the shared Alpha xbox caches</summary>
 			public static void CloseAlpha()
 			{
 				if (AlphaMainmenu != null)	manager.CloseCacheFile(AlphaMainmenu.CacheId);
@@ -185,36 +153,22 @@ namespace BlamLib
 			#endregion
 
 			#region PC
-			/// <summary>
-			/// Path to the file 'mainmenu.map'
-			/// </summary>
-			static string PcMainmenuPath = string.Empty;
-			/// <summary>
-			/// Object for the file  'mainmenu.map'
-			/// </summary>
+			/// <summary>Path to the file 'mainmenu.map'</summary>
+			internal static string PcMainmenuPath { get; set; }
+			/// <summary>Object for the file 'mainmenu.map'</summary>
 			public static Blam.Halo2.CacheFile PcMainmenu = null;
 
-			/// <summary>
-			/// Path to the file 'shared.map'
-			/// </summary>
-			static string PcSharedPath = string.Empty;
-			/// <summary>
-			/// Object for the file 'shared.map'
-			/// </summary>
+			/// <summary>Path to the file 'shared.map'</summary>
+			internal static string PcSharedPath { get; set; }
+			/// <summary>Object for the file 'shared.map'</summary>
 			public static Blam.Halo2.CacheFile PcShared = null;
 
-			/// <summary>
-			/// Path to the file 'single_player_shared.map'
-			/// </summary>
-			static string PcCampaignPath = string.Empty;
-			/// <summary>
-			/// Object for the file 'single_player_shared.map'
-			/// </summary>
+			/// <summary>Path to the file 'single_player_shared.map'</summary>
+			internal static string PcCampaignPath { get; set; }
+			/// <summary>Object for the file 'single_player_shared.map'</summary>
 			public static Blam.Halo2.CacheFile PcCampaign = null;
 
-			/// <summary>
-			/// Loads the Halo 2 files needed to fully run this library
-			/// </summary>
+			/// <summary>Loads the Halo2_PC files needed to fully run this library</summary>
 			/// <remarks>
 			/// Path[0] = Mainmenu
 			/// Path[1] = Shared
@@ -246,10 +200,10 @@ namespace BlamLib
 					PcCampaign.Read();
 				}
 			}
+			/// <summary>Loads the Halo 2 files needed to fully run this library</summary>
+			public static void LoadPc() { LoadPc(PcMainmenuPath, PcSharedPath, PcCampaignPath); }
 
-			/// <summary>
-			/// Closes the shared pc caches
-			/// </summary>
+			/// <summary>Closes the shared pc caches</summary>
 			public static void ClosePc()
 			{
 				if (PcMainmenu != null)	manager.CloseCacheFile(PcMainmenu.CacheId);
@@ -258,9 +212,7 @@ namespace BlamLib
 			}
 			#endregion
 
-			/// <summary>
-			/// Returns a CacheFile object based on a ResourcePtr
-			/// </summary>
+			/// <summary>Returns a CacheFile object based on a ResourcePtr</summary>
 			/// <param name="cf">Halo2 cache housing the <paramref name="ptr"/> value</param>
 			/// <param name="ptr">ResourcePtr to use</param>
 			/// <returns>The CacheFile <paramref name="ptr"/> references</returns>
@@ -305,9 +257,7 @@ namespace BlamLib
 				return null;
 			}
 
-			/// <summary>
-			/// Returns a CacheFile object based on a ResourcePtr
-			/// </summary>
+			/// <summary>Returns a CacheFile object based on a ResourcePtr</summary>
 			/// <remarks>
 			/// If the resource is internal then <paramref name="is_internal"/> gets set to true
 			/// and <paramref name="cf"/> is returned. If null and <paramref name="is_internal"/> is not set,

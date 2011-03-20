@@ -26,6 +26,8 @@ namespace BlamLib.Blam.Halo2
 		static TagGroups()
 		{
 			GroupsInitialize();
+			GroupsInvalidForCacheViewerInitialize();
+			GroupsInvalidForExtractionInitialize();
 
 			obje.Definition = new Tags.object_group().State;
 			devi.Definition = new Tags.device_group().State;

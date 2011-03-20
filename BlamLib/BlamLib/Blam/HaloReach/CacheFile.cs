@@ -31,6 +31,8 @@ namespace BlamLib.Blam.HaloReach
 		const int kSizeOfBeta = 0x4000;
 		const int kSizeOf = 0xA000;
 
+		internal System.Runtime.InteropServices.ComTypes.FILETIME Filetime;
+
 		public override void Read(IO.EndianReader s)
 		{
 			int k_local_sizeof = Blam.CacheFile.ValidateHeader(s, kSizeOfBeta, kSizeOf);
@@ -71,7 +73,8 @@ namespace BlamLib.Blam.HaloReach
 			// are used. Damn sure this are FILETIME structures, but
 			// hex workshop doesn't like them so I can't be for sure...
 			needsShared = s.ReadInt32() != 0; // just a little 'hack' if you will. if zero, the map is self reliant, so no worries
-			s.ReadInt32(); s.ReadInt32(); // this
+			Filetime.dwHighDateTime = s.ReadInt32();
+			Filetime.dwLowDateTime = s.ReadInt32();
 			if (s.ReadInt32() != 0) flags.Add(Halo3.CacheHeaderFlags.DependsOnMainMenu); s.ReadInt32();
 			if (s.ReadInt32() != 0) flags.Add(Halo3.CacheHeaderFlags.DependsOnShared); s.ReadInt32();
 			if (s.ReadInt32() != 0) flags.Add(Halo3.CacheHeaderFlags.DependsOnCampaign); s.ReadInt32();
@@ -358,6 +361,12 @@ namespace BlamLib.Blam.HaloReach
 
 		public HaloReach.CacheHeader HeaderHaloReach { get { return cacheHeader; } }
 		#endregion
+
+		public override string GetUniqueName()
+		{
+			var ft = HeaderHaloReach.Filetime;
+			return string.Format("{0}_{1}{2}", HeaderHaloReach.Name, ft.dwHighDateTime.ToString("X8"), ft.dwLowDateTime.ToString("X8"));
+		}
 
 		#region Index
 		HaloReach.CacheIndex cacheIndex = null;

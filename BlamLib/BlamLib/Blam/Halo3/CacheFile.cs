@@ -52,6 +52,8 @@ namespace BlamLib.Blam.Halo3
 	{
 		const int kSizeOf = 0x3000;
 
+		internal System.Runtime.InteropServices.ComTypes.FILETIME Filetime;
+
 
 		void ReadBeta(BlamLib.IO.EndianReader s)
 		{
@@ -86,7 +88,8 @@ namespace BlamLib.Blam.Halo3
 			// are used. Damn sure this are FILETIME structures, but
 			// hex workshop doesn't like them so I can't be for sure...
 			s.ReadInt32();
-			s.ReadInt32(); s.ReadInt32(); // this
+			Filetime.dwHighDateTime = s.ReadInt32();
+			Filetime.dwLowDateTime = s.ReadInt32();
 			if (s.ReadInt32() != 0) flags.Add(CacheHeaderFlags.DependsOnMainMenu); s.ReadInt32();
 			if (s.ReadInt32() != 0) flags.Add(CacheHeaderFlags.DependsOnShared); s.ReadInt32();
 			if (s.ReadInt32() != 0) flags.Add(CacheHeaderFlags.DependsOnCampaign); s.ReadInt32();
@@ -187,7 +190,8 @@ namespace BlamLib.Blam.Halo3
 			// are used. Damn sure this are FILETIME structures, but
 			// hex workshop doesn't like them so I can't be for sure...
 			needsShared = s.ReadInt32() != 0; // just a little 'hack' if you will. if zero, the map is self reliant, so no worries
-			s.ReadInt32(); s.ReadInt32(); // this
+			Filetime.dwHighDateTime = s.ReadInt32();
+			Filetime.dwLowDateTime = s.ReadInt32();
 			if (s.ReadInt32() != 0) flags.Add(CacheHeaderFlags.DependsOnMainMenu); s.ReadInt32();
 			if (s.ReadInt32() != 0) flags.Add(CacheHeaderFlags.DependsOnShared); s.ReadInt32();
 			if (s.ReadInt32() != 0) flags.Add(CacheHeaderFlags.DependsOnCampaign); s.ReadInt32();
@@ -464,6 +468,12 @@ namespace BlamLib.Blam.Halo3
 
 		public Halo3.CacheHeader HeaderHalo3 { get { return cacheHeader; } }
 		#endregion
+
+		public override string GetUniqueName()
+		{
+			var ft = HeaderHalo3.Filetime;
+			return string.Format("{0}_{1}{2}", HeaderHalo3.Name, ft.dwHighDateTime.ToString("X8"), ft.dwLowDateTime.ToString("X8"));
+		}
 
 		#region Index
 		protected Halo3.CacheIndexBase cacheIndex = null;

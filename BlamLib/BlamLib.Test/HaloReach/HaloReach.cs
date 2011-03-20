@@ -41,6 +41,23 @@ namespace BlamLib.Test
 				.StringIdCacheClose(BlamVersion.HaloReach_Beta);
 		}
 
+		static bool MapNeedsUniqueName(string header_name)
+		{
+			switch (header_name)
+			{
+				case "20_sword_slayer":
+				case "30_settlement":
+				case "70_boneyard":
+				case "ff10_prototype":
+				case "mainmenu":
+				// dlc_defiant
+				case "condemned":
+				case "ff_unearthed":
+				case "trainingpreserve":
+					return true;
+				default: return false;
+			}
+		}
 		static readonly string[] kMapNames_Retail = {
 			// 11860.10.07.24.0147
 			@"Retail\maps\20_sword_slayer.map",
@@ -84,6 +101,9 @@ namespace BlamLib.Test
 			@"Retail\dlc_noble\dlc_slayer.map",
 
 			// dlc_defiant
+			@"Retail\dlc_defiant\p1\condemned.map",
+			@"Retail\dlc_defiant\p1\ff_unearthed.map",
+			@"Retail\dlc_defiant\p1\trainingpreserve.map",
 			@"Retail\dlc_defiant\condemned.map",
 			@"Retail\dlc_defiant\ff_unearthed.map",
 			@"Retail\dlc_defiant\trainingpreserve.map",
@@ -115,12 +135,16 @@ namespace BlamLib.Test
 				handler.Read();
 				var cache = handler.CacheInterface;
 
+				string header_name = cache.Header.Name;
+				if (MapNeedsUniqueName(header_name))
+					header_name = cache.GetUniqueName();
+
 				// TODO: Can't decrypt these yet!
 				if (args.Game != BlamVersion.HaloReach_Xbox)
 					Blam.CacheFile.OutputStringIds(cache,
-						BuildResultPath(kTestResultsPath, args.Game, cache.Header.Name, "string_ids", "txt"), true);
+						BuildResultPath(kTestResultsPath, args.Game, header_name, "string_ids", "txt"), true);
 				Blam.CacheFile.OutputTags(cache,
-					BuildResultPath(kTestResultsPath, args.Game, cache.Header.Name, null, "txt"));
+					BuildResultPath(kTestResultsPath, args.Game, header_name, null, "txt"));
 			}
 
 			args.SignalFinished();

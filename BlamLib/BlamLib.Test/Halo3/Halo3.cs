@@ -45,6 +45,25 @@ namespace BlamLib.Test
 				.StringIdCacheClose(BlamVersion.Halo3_Xbox);
 		}
 
+		static bool MapNeedsUniqueName(string header_name)
+		{
+			switch (header_name)
+			{
+				case "030_outskirts":
+				case "chill":
+				case "deadlock":
+				case "mainmenu":
+				case "riverworld":
+				case "salvation":
+				case "shrine":
+				case "snowbound":
+				case "zanzibar":
+				// dlc_heroic
+				case "armory":
+					return true;
+				default: return false;
+			}
+		}
 		static readonly string[] kMapNames_Retail = {
 			@"Retail\maps\005_intro.map",
 			@"Retail\maps\010_jungle.map",
@@ -130,10 +149,14 @@ namespace BlamLib.Test
 				handler.Read();
 				var cache = handler.CacheInterface;
 
+				string header_name = cache.Header.Name;
+				if ((args.Game & BlamVersion.HaloOdst) == 0 && MapNeedsUniqueName(header_name))
+					header_name = cache.GetUniqueName();
+
 				Blam.CacheFile.OutputStringIds(cache,
-					BuildResultPath(args.TestResultsPath, args.Game, cache.Header.Name, "string_ids", "txt"), true);
+					BuildResultPath(args.TestResultsPath, args.Game, header_name, "string_ids", "txt"), true);
 				Blam.CacheFile.OutputTags(cache,
-					BuildResultPath(args.TestResultsPath, args.Game, cache.Header.Name, null, "txt"));
+					BuildResultPath(args.TestResultsPath, args.Game, header_name, null, "txt"));
 			}
 
 			args.SignalFinished();

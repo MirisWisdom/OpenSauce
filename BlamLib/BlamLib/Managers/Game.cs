@@ -25,7 +25,7 @@ using System.Xml;
 namespace BlamLib.Managers
 {
 	/// <summary>
-	/// Defines constants and types for a general blam variant (ie Halo 1, or Halo 2)
+	/// Defines constants and types for a general blam variant (eg Halo 1, Halo 2)
 	/// </summary>
 	public abstract class BlamDefinition
 	{
@@ -604,17 +604,15 @@ namespace BlamLib.Managers
 
 		#region Name
 		protected GameManager.Namespace name = GameManager.Namespace.Unknown;
-		/// <summary>
-		/// Blam engine's namespace
-		/// </summary>
+		/// <summary>Blam engine's namespace</summary>
+		[System.ComponentModel.Browsable(false)]
 		public GameManager.Namespace Name { get { return name; } }
 		#endregion
 
 		#region Games
 		protected List<Game> games = new List<Game>();
-		/// <summary>
-		/// List of definitions for each individual implementation (on a platform) of the game 
-		/// </summary>
+		/// <summary>List of definitions for each individual implementation (on a platform) of the game </summary>
+		[System.ComponentModel.Browsable(false)]
 		public ICollection<Game> Games { get { return games; } }
 
 		/// <summary>
@@ -655,10 +653,16 @@ namespace BlamLib.Managers
 		#endregion
 
 		#region TagGroups
-		/// <summary>
-		/// This game's tag group definitions collection
-		/// </summary>
+		/// <summary>This game's tag group definitions collection</summary>
+		[System.ComponentModel.Browsable(false)]
 		public abstract TagInterface.TagGroupCollection TagGroups { get; }
+		/// <summary>Tag groups which should never occupy space in a cache UI's tag tree</summary>
+		/// <remarks>Default implementation returns <see cref="TagInterface.TagGroupCollection.Empty"/></remarks>
+		[System.ComponentModel.Browsable(false)]
+		public virtual TagInterface.TagGroupCollection TagGroupsInvalidForCacheViewer { get { return TagInterface.TagGroupCollection.Empty; } }
+		/// <summary>Tag groups which should never be allowed to be extracted (due to problems, incomplete code, etc)</summary>
+		/// <remarks>Default implementation returns <see cref="TagInterface.TagGroupCollection.Empty"/></remarks>
+		public virtual TagInterface.TagGroupCollection TagGroupsInvalidForExtraction { get { return TagInterface.TagGroupCollection.Empty; } }
 
 		/// <summary>
 		/// Finds a tag group based on its 4 byte ID and returns its full name
@@ -712,9 +716,8 @@ namespace BlamLib.Managers
 
 		#region Localization
 		protected LocalizationList localization = null;
-		/// <summary>
-		/// This game engine's localization system
-		/// </summary>
+		/// <summary>This game engine's localization system</summary>
+		[System.ComponentModel.Browsable(false)]
 		public LocalizationList Localization	{ get { return localization; } }
 		#endregion
 
@@ -804,14 +807,12 @@ namespace BlamLib.Managers
 
 		Dictionary<Blam.DatumIndex, Blam.Cache.BuilderBase> cacheBuilders = new Dictionary<BlamLib.Blam.DatumIndex, BlamLib.Blam.Cache.BuilderBase>();
 
-		/// <summary>
-		/// Only used internally to enumerate all the cache builder objects so our code isn't wasting time calling <see cref="GetCacheBuilder"/>
-		/// </summary>
+		/// <summary>Only used internally to enumerate all the cache builder objects so our code isn't wasting time calling <see cref="GetCacheBuilder"/></summary>
+		[System.ComponentModel.Browsable(false)]
 		/*internal*/ IEnumerable<Blam.Cache.BuilderBase> CacheBuilderObjects { get { foreach (Blam.Cache.BuilderBase cf in cacheBuilders.Values) yield return cf; } }
 
-		/// <summary>
-		/// Enumeration for all the cache builder handles for this game
-		/// </summary>
+		/// <summary>Enumeration for all the cache builder handles for this game</summary>
+		[System.ComponentModel.Browsable(false)]
 		/*public*/ IEnumerable<Blam.DatumIndex> CacheBuilders { get { foreach (Blam.DatumIndex di in cacheBuilders.Keys) yield return di; } }
 
 
@@ -910,14 +911,12 @@ namespace BlamLib.Managers
 
 		Dictionary<Blam.DatumIndex, Blam.CacheFile> cacheFiles = new Dictionary<BlamLib.Blam.DatumIndex,BlamLib.Blam.CacheFile>();
 
-		/// <summary>
-		/// Only used internally to enumerate all the cache file objects so our code isn't wasting time calling <see cref="GetCacheFile"/>
-		/// </summary>
+		/// <summary>Only used internally to enumerate all the cache file objects so our code isn't wasting time calling <see cref="GetCacheFile"/></summary>
+		[System.ComponentModel.Browsable(false)]
 		/*internal*/ IEnumerable<Blam.CacheFile> CacheFilesObjects { get { foreach (Blam.CacheFile cf in cacheFiles.Values) yield return cf; } }
 
-		/// <summary>
-		/// Enumeration for all the cache file handles for this game
-		/// </summary>
+		/// <summary>Enumeration for all the cache file handles for this game</summary>
+		[System.ComponentModel.Browsable(false)]
 		/*public*/ IEnumerable<Blam.DatumIndex> CacheFiles { get { foreach (Blam.DatumIndex di in cacheFiles.Keys) yield return di; } }
 
 
@@ -1056,14 +1055,12 @@ namespace BlamLib.Managers
 
 		Dictionary<Blam.DatumIndex, Managers.ITagIndex> tagIndexes = new Dictionary<BlamLib.Blam.DatumIndex, Managers.ITagIndex>();
 
-		/// <summary>
-		/// Only used internally to enumerate all the tag index objects so our code isn't wasting time calling <see cref="GetTagIndex"/>
-		/// </summary>
+		/// <summary>Only used internally to enumerate all the tag index objects so our code isn't wasting time calling <see cref="GetTagIndex"/></summary>
+		[System.ComponentModel.Browsable(false)]
 		/*internal*/ IEnumerable<Managers.ITagIndex> TagIndexObjects { get { foreach (Managers.ITagIndex ti in tagIndexes.Values) yield return ti; } }
 
-		/// <summary>
-		/// Enumeration for all the tag index handles for this game
-		/// </summary>
+		/// <summary>Enumeration for all the tag index handles for this game</summary>
+		[System.ComponentModel.Browsable(false)]
 		/*public*/ IEnumerable<Blam.DatumIndex> TagIndexes { get { foreach (Blam.DatumIndex di in tagIndexes.Keys) yield return di; } }
 
 
@@ -1220,9 +1217,8 @@ namespace BlamLib.Managers
 		/// <returns>Generic interface for Error Tag Databases over the game specific implementation</returns>
 		public abstract ErrorTagDatabase CreateErrorTagDatabase();
 
-		/// <summary>
-		/// Group tag for the tag_database definition
-		/// </summary>
+		/// <summary>Group tag for the tag_database definition</summary>
+		[System.ComponentModel.Browsable(false)]
 		public abstract TagInterface.TagGroup TagDatabaseGroup { get; }
 		#endregion
 

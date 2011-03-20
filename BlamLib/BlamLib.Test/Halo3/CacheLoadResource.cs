@@ -209,12 +209,16 @@ namespace BlamLib.Test
 				}
 				#endregion
 
+				string header_name = cache.Header.Name;
+				if ((args.Game & BlamVersion.HaloOdst) == 0 && MapNeedsUniqueName(header_name))
+					header_name = cache.GetUniqueName();
+
 				if (output_index)
 					Blam.CacheFile.OutputTags(cache,
-						BuildResultPath(args.TestResultsPath, args.Game, cache.Header.Name, "output_index", "txt"));
+						BuildResultPath(args.TestResultsPath, args.Game, header_name, "output_index", "txt"));
 				if (output_debug_string_ids)
 					Blam.CacheFile.OutputStringIds(cache, 
-						BuildResultPath(args.TestResultsPath, args.Game, cache.Header.Name, "output_string_id", "txt"), true);
+						BuildResultPath(args.TestResultsPath, args.Game, header_name, "output_string_id", "txt"), true);
 			}
 
 			args.SignalFinished();

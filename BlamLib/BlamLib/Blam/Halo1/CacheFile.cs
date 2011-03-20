@@ -98,36 +98,40 @@ namespace BlamLib.Blam.Halo1
 	public abstract class CacheIndexBase : Blam.CacheIndex
 	{
 		#region VertexBufferCount
-		private int vertexBufferCount;
+		int vertexBufferCount;
 		/// <summary>
 		/// 
 		/// </summary>
+		[System.ComponentModel.Category("Tag Header")]
 		public int VertexBufferCount	{ get { return vertexBufferCount; } }
 		#endregion
 
 		#region VertexBufferOffset
-		private uint vertexBufferAddress;
-		private int vertexBufferOffset;
+		uint vertexBufferAddress;
+		int vertexBufferOffset;
 		/// <summary>
 		/// 
 		/// </summary>
+		[System.ComponentModel.Category("Tag Header")]
 		public int VertexBufferOffset { get { return vertexBufferOffset; } }
 		#endregion
 
 		#region IndexBufferCount
-		private int indexBufferCount;
+		int indexBufferCount;
 		/// <summary>
 		/// 
 		/// </summary>
+		[System.ComponentModel.Category("Tag Header")]
 		public int IndexBufferCount { get { return indexBufferCount; } }
 		#endregion
 
 		#region IndexBufferOffset
-		private uint indexBufferAddress;
-		private int indexBufferOffset;
+		uint indexBufferAddress;
+		int indexBufferOffset;
 		/// <summary>
 		/// 
 		/// </summary>
+		[System.ComponentModel.Category("Tag Header")]
 		public int IndexBufferOffset { get { return indexBufferOffset; } }
 		#endregion
 
@@ -227,12 +231,14 @@ namespace BlamLib.Blam.Halo1
 		/// <summary>
 		/// The first parent tag group of this tag
 		/// </summary>
+		[System.ComponentModel.Browsable(false)]
 		public TagInterface.TagGroup GroupParent1	{ get { return groupParent1; } }
 
 		protected TagInterface.TagGroup groupParent2;
 		/// <summary>
 		/// The second parent tag group of this tag
 		/// </summary>
+		[System.ComponentModel.Browsable(false)]
 		public TagInterface.TagGroup GroupParent2	{ get { return groupParent2; } }
 		#endregion
 	};
@@ -299,6 +305,7 @@ namespace BlamLib.Blam.Halo1
 		protected Halo1.CacheIndexBase cacheIndex = null;
 		public override BlamLib.Blam.CacheIndex Index { get { return cacheIndex; } }
 
+		[System.ComponentModel.Browsable(false)]
 		public Halo1.CacheIndexBase IndexHalo1 { get { return cacheIndex; } }
 		#endregion
 
@@ -337,6 +344,7 @@ namespace BlamLib.Blam.Halo1
 		Halo1.CacheHeader cacheHeader = null;
 		public override BlamLib.Blam.CacheHeader Header { get { return cacheHeader; } }
 
+		[System.ComponentModel.Browsable(false)]
 		public Halo1.CacheHeader HeaderHalo1 { get { return cacheHeader; } }
 		#endregion
 

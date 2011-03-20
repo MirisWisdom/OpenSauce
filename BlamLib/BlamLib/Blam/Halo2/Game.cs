@@ -249,7 +249,9 @@ namespace BlamLib.Blam.Halo2
 	public sealed class GameDefinition : Managers.BlamDefinition, Managers.IStringIdController, Managers.IScriptingController, Managers.IVertexBufferController
 	{
 		#region Implementation
-		public override TagInterface.TagGroupCollection TagGroups	{ get { return Halo2.TagGroups.Groups; } }
+		public override TI.TagGroupCollection TagGroups						{ get { return Halo2.TagGroups.Groups; } }
+		public override TI.TagGroupCollection TagGroupsInvalidForCacheViewer{ get { return Halo2.TagGroups.GroupsInvalidForCacheViewer; } }
+		public override TI.TagGroupCollection TagGroupsInvalidForExtraction	{ get { return Halo2.TagGroups.GroupsInvalidForExtraction; } }
 
 		/// <remarks>Explicit resource identifying. Yes, there are reasons for this. Ask km00 if you care that much</remarks>
 		internal override void IdentifyResourceProc(Managers.BlamDefinition.Game owner, string resource_name, string resource_path)
@@ -354,13 +356,13 @@ namespace BlamLib.Blam.Halo2
 			return cf;
 		}
 
-		public override BlamLib.Managers.TagDatabase CreateTagDatabase() { return new Halo2.Tags.TagDatabase(); }
+		public override Managers.TagDatabase CreateTagDatabase() { return new Halo2.Tags.TagDatabase(); }
 
-		protected override BlamLib.Managers.CacheTagDatabase CreateCacheTagDatabaseInternal(DatumIndex cache_id) { return new Halo2.Tags.CacheTagDatabase((Halo2.CacheFile)Program.GetCacheFile(cache_id)); }
+		protected override Managers.CacheTagDatabase CreateCacheTagDatabaseInternal(DatumIndex cache_id) { return new Halo2.Tags.CacheTagDatabase((Halo2.CacheFile)Program.GetCacheFile(cache_id)); }
 
-		public override BlamLib.Managers.ErrorTagDatabase CreateErrorTagDatabase() { return new Halo2.Tags.ErrorTagDatabase(); }
+		public override Managers.ErrorTagDatabase CreateErrorTagDatabase() { return new Halo2.Tags.ErrorTagDatabase(); }
 
-		public override BlamLib.TagInterface.TagGroup TagDatabaseGroup { get { return Halo2.TagGroups.tag_; } }
+		public override TI.TagGroup TagDatabaseGroup { get { return Halo2.TagGroups.tag_; } }
 		#endregion
 
 		internal GameDefinition() {}
@@ -563,6 +565,60 @@ namespace BlamLib.Blam.Halo2
 			else if (count == -1) throw new Debug.Exceptions.UnreachableException();
 
 			return false;
+		}
+		#endregion
+
+
+		#region Cache paths exposure
+		[System.ComponentModel.Category("Xbox - Alpha")]
+		public string AlphaMainmenuPath
+		{
+			get { return Program.Halo2.AlphaMainmenuPath; }
+			set { Program.Halo2.AlphaMainmenuPath = value; }
+		}
+		[System.ComponentModel.Category("Xbox - Alpha")]
+		public string AlphaSharedPath
+		{
+			get { return Program.Halo2.AlphaSharedPath; }
+			set { Program.Halo2.AlphaSharedPath = value; }
+		}
+
+		[System.ComponentModel.Category("Xbox")]
+		public string XboxMainmenuPath
+		{
+			get { return Program.Halo2.XboxMainmenuPath; }
+			set { Program.Halo2.XboxMainmenuPath = value; }
+		}
+		[System.ComponentModel.Category("Xbox")]
+		public string XboxSharedPath
+		{
+			get { return Program.Halo2.XboxSharedPath; }
+			set { Program.Halo2.XboxSharedPath = value; }
+		}
+		[System.ComponentModel.Category("Xbox")]
+		public string XboxCampaignPath
+		{
+			get { return Program.Halo2.XboxCampaignPath; }
+			set { Program.Halo2.XboxCampaignPath = value; }
+		}
+
+		[System.ComponentModel.Category("PC")]
+		public string PcMainmenuPath
+		{
+			get { return Program.Halo2.PcMainmenuPath; }
+			set { Program.Halo2.PcMainmenuPath = value; }
+		}
+		[System.ComponentModel.Category("PC")]
+		public string PcSharedPath
+		{
+			get { return Program.Halo2.PcSharedPath; }
+			set { Program.Halo2.PcSharedPath = value; }
+		}
+		[System.ComponentModel.Category("PC")]
+		public string PcCampaignPath
+		{
+			get { return Program.Halo2.PcCampaignPath; }
+			set { Program.Halo2.PcCampaignPath = value; }
 		}
 		#endregion
 	};

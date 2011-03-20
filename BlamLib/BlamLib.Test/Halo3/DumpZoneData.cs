@@ -97,17 +97,19 @@ namespace BlamLib.Test
 				handler.Read();
 				var cache = handler.CacheInterface;
 
-				string mapname = cache.Header.Name/*Path.GetFileNameWithoutExtension(args.MapName)*/;
+				string header_name = cache.Header.Name;
+				if ((args.Game & BlamVersion.HaloOdst) == 0 && MapNeedsUniqueName(header_name))
+					header_name = cache.GetUniqueName();
 
 				var ci = cache.IndexHalo3[3]; // zone
 				cache.InputStream.Seek(ci.Offset);
 
-				using (var fs = File.Create(Path.Combine(out_dir, mapname) + ".zone"))
+				using (var fs = File.Create(Path.Combine(out_dir, header_name) + ".zone"))
 				{
 					fs.Write(cache.InputStream.ReadBytes(532), 0, 532);
 				}
 
-				using (var sw = File.CreateText(Path.Combine(out_dir, mapname) + ".zone.txt"))
+				using (var sw = File.CreateText(Path.Combine(out_dir, header_name) + ".zone.txt"))
 				{
 					sw.WriteLine("Mask: {0:X}", cache.AddressMask);
 					sw.WriteLine();
