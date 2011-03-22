@@ -44,6 +44,10 @@ namespace Yelo
 				char tags_folder_name[64];
 			}paths;
 
+			struct {
+				uint32 base_adddress_override; // Tag memory base address override
+			}tool;
+
 			void Parse(TiXmlElement* element);
 
 			// The profile will be valid if all elements of the XML settings 

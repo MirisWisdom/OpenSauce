@@ -606,24 +606,18 @@ namespace BlamLib.Blam
 
 		#region TagIndexManager
 		protected Managers.CacheTagIndex tagIndexManager = null;
-		/// <summary>
-		/// Tag Index Manager for this cache file
-		/// </summary>
+		/// <summary>Tag Index Manager for this cache file</summary>
 		[System.ComponentModel.Browsable(false)]
 		public Managers.CacheTagIndex TagIndexManager	{ get { return tagIndexManager; } }
 
-		/// <summary>
-		/// Override to provide custom implementations of the <see cref="Managers.CacheTagIndex"/>
-		/// </summary>
+		/// <summary>Override to provide custom implementations of the <see cref="Managers.CacheTagIndex"/></summary>
 		/// <returns></returns>
 		protected virtual Managers.CacheTagIndex NewTagIndexImplementation()
 		{
 			return new Managers.CacheTagIndex(this);
 		}
 
-		/// <summary>
-		/// Initialize the <see cref="TagIndexManager"/> object for use
-		/// </summary>
+		/// <summary>Initialize the <see cref="TagIndexManager"/> object for use</summary>
 		/// <remarks>Recommended this is called AFTER <see cref="InitializeReferenceManager"/></remarks>
 		protected internal void InitializeTagIndexManager()
 		{
@@ -636,6 +630,8 @@ namespace BlamLib.Blam
 		{
 			if (tagIndexManager != null)
 			{
+				tagIndexManager.ExtractionDispose();
+
 				Program.GetManager(engineVersion).CloseTagIndex(tagIndexManager.IndexId, true);
 				tagIndexManager = null;
 			}

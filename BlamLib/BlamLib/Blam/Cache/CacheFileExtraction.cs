@@ -21,9 +21,7 @@ using System.Collections.Generic;
 
 namespace BlamLib.Blam
 {
-	/// <summary>
-	/// State information for tag extraction from a cache
-	/// </summary>
+	/// <summary>State information for tag extraction from a cache</summary>
 	internal sealed class CacheExtraction
 	{
 		/// <summary>
@@ -31,15 +29,12 @@ namespace BlamLib.Blam
 		/// </summary>
 		public DatumIndex CurrentTag = DatumIndex.Null;
 		/// <summary>
-		/// These are the tag datums which we are to process, along with a flag indicating
-		/// if they have been processed yet or not.
+		/// These are the tag datums which we are to process, along with a flag indicating if they have been processed yet or not.
 		/// </summary>
 		/// <remarks>Items are not removed once 'dequeued'</remarks>
 		Dictionary<DatumIndex, bool> Datums;
 
-		/// <summary>
-		/// Initialize the extraction state
-		/// </summary>
+		/// <summary>Initialize the extraction state</summary>
 		/// <param name="tag_count">Provide the tag count to provide better operation performance</param>
 		public CacheExtraction(int tag_count)
 		{
@@ -47,9 +42,7 @@ namespace BlamLib.Blam
 		}
 
 		#region Queue
-		/// <summary>
-		/// Add a tag to the extraction queue
-		/// </summary>
+		/// <summary>Add a tag to the extraction queue</summary>
 		/// <param name="index"></param>
 		public void Queue(DatumIndex index)
 		{
@@ -60,36 +53,27 @@ namespace BlamLib.Blam
 			Datums.Add(index, false);
 		}
 
-		/// <summary>
-		/// Remove a tag to the extraction queue
-		/// </summary>
+		/// <summary>Remove a tag to the extraction queue</summary>
 		/// <param name="index"></param>
 		public void Dequeue(DatumIndex index)		{ Datums[index] = true; }
 
-		/// <summary>
-		/// Remove a list of tags from the extraction queue
-		/// </summary>
+		/// <summary>Remove a list of tags from the extraction queue</summary>
 		/// <param name="tags"></param>
 		public void Dequeue(List<DatumIndex> tags)	{ foreach (DatumIndex di in tags) Datums[di] = true; }
 		#endregion
 
 		#region Util
-		/// <summary>
-		/// Get a list of tags that are dependents of the last tag
-		/// read from the cache
-		/// </summary>
+		/// <summary>Get a list of tags that are dependents of the last tag read from the cache</summary>
 		/// <returns></returns>
-		public List<DatumIndex> CurrentDependents()
+		public IEnumerable<DatumIndex> CurrentDependents()
 		{
-			List<DatumIndex> ret = new List<DatumIndex>();
+			var ret = new List<DatumIndex>();
 			foreach (DatumIndex di in Datums.Keys)
 				if (!Datums[di]) ret.Add(di);
 			return ret;
 		}
 
-		/// <summary>
-		/// Has this tag been processed by the extractor yet?
-		/// </summary>
+		/// <summary>Has this tag been processed by the extractor yet?</summary>
 		/// <param name="tag"></param>
 		/// <returns></returns>
 		public bool Processed(DatumIndex tag)
@@ -108,30 +92,21 @@ namespace BlamLib.Blam
 		}
 	};
 
+	/// <summary>Arguments for the public interface for running extraction on a set of tags</summary>
 	public class CacheExtractionArguments
 	{
-		/// <summary>
-		/// Base directory the extraction is going to
-		/// </summary>
+		/// <summary>Base directory the extraction is going to</summary>
 		public readonly string OutputDirectory;
 
-		/// <summary>
-		/// Are with extracting with the tag's dependent's too?
-		/// </summary>
+		/// <summary>Are with extracting with the tag's dependent's too?</summary>
 		public readonly bool WithDependents;
-		/// <summary>
-		/// Should the extractor output a tag_database after it finishes?
-		/// </summary>
+		/// <summary>Should the extractor output a tag_database after it finishes?</summary>
 		/// <remarks>Only valid if <see cref="WithDependents"/> is used</remarks>
 		public readonly bool OutputDatabase;
-		/// <summary>
-		/// Should we overwrite existing files on disc?
-		/// </summary>
+		/// <summary>Should we overwrite existing files on disc?</summary>
 		public readonly bool OverwriteExisting;
 
-		/// <summary>
-		/// Groups which won't be extracted no matter what
-		/// </summary>
+		/// <summary>Groups which won't be extracted no matter what</summary>
 		internal readonly TagInterface.TagGroupCollection DontExtractGroups;
 
 		public CacheExtractionArguments(string out_dir, bool output_db, bool with_depns, 
@@ -150,29 +125,19 @@ namespace BlamLib.Blam
 				System.IO.Directory.CreateDirectory(OutputDirectory);
 		}
 	};
-	/// <summary>
-	/// Provides extended information and data collection for extraction 
-	/// from a cache
-	/// </summary>
+	/// <summary>Provides extended information and data collection for extraction from a cache</summary>
 	public sealed class CacheExtractionInfo
 	{
-		/// <summary>
-		/// Database used to record all extracted tags
-		/// </summary>
+		/// <summary>Database used to record all extracted tags</summary>
 		internal Managers.CacheTagDatabase Database;
-		/// <summary>
-		/// Database used to record tags which have problems during the extraction 
-		/// process
-		/// </summary>
+		/// <summary>Database used to record tags which have problems during the extraction process</summary>
 		internal Managers.ErrorTagDatabase DatabaseErrors;
 
 		#region Definition
 		readonly CacheIndex.Item root_definition;
 
 		CacheIndex.Item definition;
-		/// <summary>
-		/// 
-		/// </summary>
+		/// <summary>Tag instance being processed</summary>
 		public CacheIndex.Item Definition	{ get { return definition; } }
 
 		public void Reset(CacheIndex.Item new_definition)
@@ -183,7 +148,7 @@ namespace BlamLib.Blam
 		#endregion
 
 		/// <summary>
-		/// How many levels deep we've gone in the extraction process
+		/// How many levels deep (in terms of a a tag hierarchy) we've gone in the extraction process
 		/// </summary>
 		internal int ExtractionDepth = 0;
 
@@ -191,7 +156,7 @@ namespace BlamLib.Blam
 
 		public CacheExtractionInfo(CacheFile cf, DatumIndex tag_datum, CacheExtractionArguments args)
 		{
-			Managers.BlamDefinition bd = Program.GetManager(cf.EngineVersion);
+			var bd = Program.GetManager(cf.EngineVersion);
 			Database = bd.CreateCacheTagDatabase(cf.CacheId);
 			DatabaseErrors = bd.CreateErrorTagDatabase();
 

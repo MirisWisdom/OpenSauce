@@ -68,7 +68,7 @@ namespace OpenSauceIDE
 
 			#region Halo3
 			if (!has_platform)
-			{	if (valid_vers.HasFlag(BlamVersion.Halo3))		items.Add(BlamVersion.Halo2); }
+			{	if (valid_vers.HasFlag(BlamVersion.Halo3))		items.Add(BlamVersion.Halo3); }
 			else
 			{
 				if (valid_vers.HasFlag(BlamVersion.Halo3_Beta)) items.Add(BlamVersion.Halo3_Beta);

@@ -1,7 +1,7 @@
 ﻿/*
     BlamLib: .NET SDK for the Blam Engine
 
-    Copyright (C) 2005-2010  Kornner Studios (http://kornner.com)
+    Copyright (C)  Kornner Studios (http://kornner.com)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -46,24 +46,54 @@ namespace OpenSauceIDE.Cache
 			this.Text = string.Format("{0} - [{1}]", kDlgName, cache_path);
 		}
 
+		const string kStatusBarText = "trololo";
+		void SetStatusBarText(string text)
+		{
+			if (text == null) text = kStatusBarText;
+
+			StatusProgressText.Text = text;
+		}
+
 		TagTreeEditorMode m_tagTreeEditorMode;
 		BlamLib.BlamVersion m_engine;
 		BlamLib.Blam.CacheFile m_cache;
 		BlamLib.TagInterface.TagGroupCollection m_groupsInvalidForExtraction;
+		// Event signal for making sure we don't do anything crazy, like exit, while the cache is performing 
+		// a thread pool task. Eg, opening, extracting, etc.
+		System.Threading.AutoResetEvent m_waitEvent;
 
 		public CacheView(BlamLib.BlamVersion engine)
 		{
 			InitializeComponent();
 
+			MainMenu.Renderer = MainForm.kOpenSauceIDEToolStripRenderer;
+			MenuTagInstance.Renderer = MainForm.kOpenSauceIDEToolStripRenderer;
+
 			m_tagTreeEditorMode = TagTreeEditorMode.TagExtraction;
 			m_engine = engine;
 			m_cache = null;
+			m_waitEvent = new System.Threading.AutoResetEvent(true);
 
 			// We currently only allow check boxes for marking tags for extraction. If we ever change 
 			// this behavior (eg, to mark for resource extract too), we'll need to update this logic
 			var b = engine.ToBuild();
-			if (b != BlamBuild.Halo1 && b != BlamBuild.Halo2 && b != BlamBuild.Stubbs)
-				TagTreeView.CheckBoxes = false;
+			bool tag_extraction_supported = b == BlamBuild.Halo1 || b == BlamBuild.Halo2 || b == BlamBuild.Stubbs;
+
+			ViewUpdateExtractionSupportedState(tag_extraction_supported, false);
+		}
+
+		/// <summary>Update the UI state with the available extraction abilities that we support for the current engine</summary>
+		/// <param name="tags_supported">Is tag extraction supported?</param>
+		/// <param name="rsrc_supported">Is resource extraction supported?</param>
+		void ViewUpdateExtractionSupportedState(bool tags_supported, bool rsrc_supported)
+		{
+			TagTreeView.CheckBoxes = tags_supported || rsrc_supported;
+			CacheToolsDontOverwrite.Enabled = tags_supported || rsrc_supported;
+
+			CacheToolsExtractAll.Enabled = tags_supported;
+			CacheToolsExtractAllChecked.Enabled = tags_supported;
+			CacheToolsExtractAllUnchecked.Enabled = tags_supported;
+			CacheToolsOutputTagDatabase.Enabled = tags_supported;
 		}
 
 		#region Information population
@@ -117,7 +147,7 @@ namespace OpenSauceIDE.Cache
 				var node = new TreeNode(m_cache.GetReferenceName(inst.ReferenceName));
 				node.Tag = inst;
 				node.Checked = false;
-				//node.ContextMenuStrip = null; // TODO
+				node.ContextMenuStrip = MenuTagInstance;
 				node.ForeColor = Color.LightGreen;
 				node.BackColor = SystemColors.ControlDarkDark;
 				tg_node.Nodes.Add(node);
@@ -132,7 +162,9 @@ namespace OpenSauceIDE.Cache
 			#endregion
 
 			object args = tg_nodes.ToArray();
-			(state as CacheView).BeginInvoke(new Action<TreeNode[]>(PopulateTagTreeView_FillNodes), args);
+			var cv = state as CacheView;
+			cv.m_waitEvent.Set();
+			cv.BeginInvoke(new Action<TreeNode[]>(PopulateTagTreeView_FillNodes), args);
 		}
 		void PopulateTagTreeView_FillNodes(TreeNode[] nodes)
 		{
@@ -145,7 +177,10 @@ namespace OpenSauceIDE.Cache
 		void PopulateTagTreeView()
 		{
 			if (m_cache != null)
+			{
+				m_waitEvent.Reset();
 				System.Threading.ThreadPool.QueueUserWorkItem(PopulateTagTreeView_GenerateNodes, this);
+			}
 			else
 			{
 				m_groupsInvalidForExtraction = null;
@@ -157,20 +192,27 @@ namespace OpenSauceIDE.Cache
 		#endregion
 
 
+		/// <summary>Ran when a cache has finished loading and now the UI needs to be updated</summary>
+		/// <param name="cache_path">Full file path of the cache file we're viewing</param>
 		void OnCacheLoaded(string cache_path)
 		{
 			FileClose.Enabled = true;
+			CacheToolsExtractAll.Enabled = true;
 
 			SetCacheViewerPath(cache_path);
 			PopulateCacheProperties();
 			PopulateTagTreeView();
 		}
+		/// <summary>Ran whenever the UI says it's time to close the cache</summary>
 		void OnCacheClosed()
 		{
+			m_waitEvent.WaitOne();
+
 			PopulateTagInstanceProperties(null);
 			m_cache = null;
 
 			FileClose.Enabled = false;
+			CacheToolsExtractAll.Enabled = false;
 			SetCacheViewerPath("No File Loaded");
 			PopulateCacheProperties();
 			PopulateTagTreeView();
@@ -183,7 +225,8 @@ namespace OpenSauceIDE.Cache
 
 			MessageBox.Show(this, string.Format(fmt, args), caption, MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
-
+		/// <summary>Handles the results of <see cref="OnFileOpen_DoWork"/></summary>
+		/// <param name="ex"></param>
 		void OnFileFinishedOpening(Exception ex)
 		{
 			if (ex != null)
@@ -199,6 +242,9 @@ namespace OpenSauceIDE.Cache
 			if (m_cache != null)
 				OnCacheLoaded(OpenFileDlg.FileName);
 		}
+		/// <summary>Performs the actual cache loading logic</summary>
+		/// <param name="obj"></param>
+		/// <remarks>Designed for being ran in a worker task (ie, threaded)</remarks>
 		void OnFileOpen_DoWork(object obj) // threaded
 		{
 			Exception except = null;
@@ -218,12 +264,16 @@ namespace OpenSauceIDE.Cache
 					gd.CloseCacheFile(m_cache.CacheId);
 				m_cache = null;
 			}
-			(obj as CacheView).BeginInvoke(new Action<Exception>(OnFileFinishedOpening), except);
+
+			var cv = obj as CacheView;
+			cv.m_waitEvent.Set();
+			cv.BeginInvoke(new Action<Exception>(OnFileFinishedOpening), except);
 		}
 		void OnFileOpen(object sender, EventArgs e)
 		{
 			if (m_cache == null && OpenFileDlg.ShowDialog(this) == DialogResult.OK)
 			{
+				m_waitEvent.Reset();
 				SetCacheViewerPath("Loading...");
 				System.Threading.ThreadPool.QueueUserWorkItem(OnFileOpen_DoWork, this);
 			}
@@ -241,15 +291,15 @@ namespace OpenSauceIDE.Cache
 		}
 		#endregion
 
-		void OnFormShown(object sender, EventArgs e)
-		{
-			OnFileOpen(this, null);
-		}
-		void OnFormClosing(object sender, FormClosingEventArgs e)
-		{
-			OnFileClose(this, null);
-		}
+		/// <summary>Enables us to force the file-open dialog for browsing to a cache file we want to view</summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void OnFormShown(object sender, EventArgs e)				{ OnFileOpen(this, null); }
+		void OnFormClosing(object sender, FormClosingEventArgs e)	{ OnFileClose(this, null); }
 
+		/// <summary>For handling cases where we want to block a user from checking a tag instance</summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		void OnTagTreeBeforeCheck(object sender, TreeViewCancelEventArgs e)
 		{
 			var tag_instance = e.Node.Tag as BlamLib.Blam.CacheIndex.Item;
@@ -260,7 +310,9 @@ namespace OpenSauceIDE.Cache
 					e.Cancel = true;
 			}
 		}
-
+		/// <summary>For handling the tag instance PropertyGrid view updating</summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		void OnTagTreeAfterSelect(object sender, TreeViewEventArgs e)
 		{
 			var tag = e.Node.Tag;
@@ -268,5 +320,31 @@ namespace OpenSauceIDE.Cache
 			if (tag is BlamLib.Blam.CacheIndex.Item || tag is BlamLib.TagInterface.TagGroup)
 				PopulateTagInstanceProperties(tag);
 		}
+
+		#region MenuTagInstance event handlers
+		void EnableTagExtractionContextMenus(bool enable)
+		{
+			MenuTagInstanceExtractAs.Enabled = enable;
+			MenuTagInstanceExtractFolder.Enabled = enable;
+			MenuTagInstanceExtractFolderAll.Enabled = enable;
+		}
+		void EnableTagRsrcExtractionContextMenus(bool enable)
+		{
+			MenuTagInstanceExtractRsrc.Enabled = enable;
+		}
+		void OnMenuTagInstanceOpening(object sender, CancelEventArgs e)
+		{
+			if (m_tagTreeEditorMode == TagTreeEditorMode.TagExtraction)
+			{
+				EnableTagExtractionContextMenus(true);
+				EnableTagRsrcExtractionContextMenus(false);
+			}
+			else if (m_tagTreeEditorMode == TagTreeEditorMode.ResourceExtraction)
+			{
+				EnableTagExtractionContextMenus(false);
+				EnableTagRsrcExtractionContextMenus(true);
+			}
+		}
+		#endregion
 	};
 }

@@ -7,6 +7,8 @@
 
 			<data>C:\Program Files (x86)\Microsoft Games\Halo Custom Edition\data\</data>
 			<maps>C:\Program Files (x86)\Microsoft Games\Halo Custom Edition\maps\</maps>
+
+			<tool baseAddressOverride="" />
 		</Profile>
 	</profiles>
 </osEditorSettings>

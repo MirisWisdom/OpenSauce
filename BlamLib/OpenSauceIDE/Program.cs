@@ -55,11 +55,25 @@ namespace OpenSauceIDE
 		[System.Runtime.InteropServices.DllImport("kernel32.dll")]
 		static extern bool FreeConsole();
 
-		
+		static void MainTool(string[] args)
+		{
+			var command = args[1];
+			var commands = BlamLib.Tool.kCommands;
 
-		/// <summary>
-		/// The main entry point for the application.
-		/// </summary>
+			var cmd_args = new List<string>();
+			for (int x = 2; x < args.Length; x++)
+				cmd_args.Add(args[x]);
+
+			AllocConsole();
+
+			if(!BlamLib.Tool.RunCommand(command, cmd_args.ToArray()))
+				BlamLib.Tool.PrintUsage(command);
+
+			System.Threading.Thread.Sleep(5000);
+			FreeConsole();
+		}
+
+		/// <summary>The main entry point for the application.</summary>
 		[STAThread]
 		static void Main(string[] args)
 		{
@@ -68,36 +82,12 @@ namespace OpenSauceIDE
 			{
 				switch(args[0])
 				{
-					case "-cmdline":
-						cmdline = true;
-						break;
+					case "-cmdline":	cmdline = true;	break;
 				}
 			}
 
 			if (cmdline && args.Length > 1)
-			{
-				var commands = BlamLib.Tool.kCommands;
-
-				List<string> cmd_args = new List<string>();
-				for (int x = 2; x < args.Length; x++)
-					cmd_args.Add(args[x]);
-
-				AllocConsole();
-
-				BlamLib.Tool.CommandFunction func;
-				if (commands.TryGetValue(args[1], out func))
-					func(cmd_args);
-				else
-				{
-					Console.WriteLine("This is not a command: {0}", args[1]);
-					Console.WriteLine("Use one of these commands:");
-					foreach (string name in commands.Keys)
-						Console.WriteLine(name);
-				}
-
-				System.Threading.Thread.Sleep(5000);
-				FreeConsole();
-			}
+				MainTool(args);
 			else if(!cmdline)
 			{
 				Application.EnableVisualStyles();

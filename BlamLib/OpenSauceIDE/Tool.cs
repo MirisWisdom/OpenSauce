@@ -23,7 +23,7 @@ namespace BlamLib
 {
 	internal static partial class Tool
 	{
-		public delegate void CommandFunction(List<string> args);
+		public delegate void CommandFunction(params string[] args);
 
 		public static Dictionary<string, CommandFunction> kCommands = new Dictionary<string, CommandFunction>()
 		{
@@ -31,9 +31,32 @@ namespace BlamLib
 			{"apply-cheape", UnlockBlamTools}, //apply-cheape version g_path t_path s_path output
 		};
 
-		static void BuildTagDatabase(List<string> args)
+		public static bool RunCommand(string command, params string[] args)
 		{
-			if (args.Count < 2)
+			BlamLib.Tool.CommandFunction func;
+			if (kCommands.TryGetValue(command, out func))
+			{
+				func(args);
+				return true;
+			}
+
+			return false;
+		}
+
+		public static void PrintUsage(string invalid_command)
+		{
+			if (invalid_command != null)
+			{
+				Console.WriteLine("This is not a command: {0}", invalid_command);
+				Console.WriteLine("Use one of these commands:");
+				foreach (var name in kCommands.Keys)
+					Console.WriteLine(name);
+			}
+		}
+
+		static void BuildTagDatabase(params string[] args)
+		{
+			if (args.Length < 2)
 			{
 				Console.WriteLine("");
 				return;

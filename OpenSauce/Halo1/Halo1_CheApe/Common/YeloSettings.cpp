@@ -77,6 +77,19 @@ namespace Yelo
 				}
 			}
 
+			// Parse Tool specific settings
+			{ TiXmlElement* tool_element = element->FirstChildElement("tool");
+				if(tool_element != NULL)
+				{
+					value = element->Attribute("baseAddressOverride");
+
+					// We expect a base 16 number
+					unsigned long addr = strtoul(value, NULL, 16);
+
+					tool.base_adddress_override = errno == ERANGE ? 0 : addr;
+				}
+			}
+
 			if(is_valid)
 			{
 				path_element = element->FirstChildElement("data");

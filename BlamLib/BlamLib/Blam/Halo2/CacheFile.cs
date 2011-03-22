@@ -740,7 +740,7 @@ namespace BlamLib.Blam.Halo2
 		/// </summary>
 		public const uint ReconstructForEditor = 1 << (CacheFile.NextBitIndex + 1);
 		/// <summary>
-		/// Perform the code thats done when tearing down a cache or parts of 
+		/// Perform the code that's done when tearing down a cache or parts of 
 		/// its tags for later reconstruction into another map
 		/// </summary>
 		public const uint ReconstructForRebuilding = 1 << (CacheFile.NextBitIndex + 2);
@@ -870,6 +870,9 @@ namespace BlamLib.Blam.Halo2
 
 		public override void ExtractionInitialize()
 		{
+			// If we have kVertexBuffers initialized, then that means we've already ran extract init.
+			if (kVertexBuffers != null) return;
+
 			base.ExtractionInitialize();
 
 			var h2cf = base.cacheFile as CacheFile;
@@ -935,7 +938,11 @@ namespace BlamLib.Blam.Halo2
 			if (sound_gestalt_handle != DatumIndex.Null)
 				Unload(sound_gestalt_handle);
 
-			Program.Halo2.Manager.VertexBufferCacheClose(cacheFile.EngineVersion);
+			if (kVertexBuffers != null)
+			{
+				kVertexBuffers = null;
+				Program.Halo2.Manager.VertexBufferCacheClose(cacheFile.EngineVersion);
+			}
 
 			base.ExtractionDispose();
 		}

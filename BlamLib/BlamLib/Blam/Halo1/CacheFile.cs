@@ -365,19 +365,11 @@ namespace BlamLib.Blam.Halo1
 	#region Data Cache
 	public enum DataCacheType : int
 	{
-		/// <summary>
-		/// bitmap.map
-		/// </summary>
+		/// <summary>bitmap.map</summary>
 		Bitmap = 0x1,
-
-		/// <summary>
-		/// sound.map
-		/// </summary>
+		/// <summary>sound.map</summary>
 		Sound,
-
-		/// <summary>
-		/// loc.map
-		/// </summary>
+		/// <summary>loc.map</summary>
 		/// <remarks>
 		/// ustr
 		/// font
@@ -386,16 +378,12 @@ namespace BlamLib.Blam.Halo1
 		Loc,
 	};
 
-	/// <summary>
-	/// Halo 1 data cache implementation of the <see cref="Blam.CacheIndex"/>
-	/// </summary>
+	/// <summary>Halo 1 data cache implementation of the <see cref="Blam.CacheIndex"/></summary>
 	public sealed class DataIndex : Blam.CacheIndex
 	{
 		#region Type
 		DataCacheType type;
-		/// <summary>
-		/// 
-		/// </summary>
+		/// <summary>The type of data cache this tag header is for</summary>
 		public DataCacheType Type
 		{
 			get { return type; }
@@ -403,32 +391,28 @@ namespace BlamLib.Blam.Halo1
 		}
 		#endregion
 
-		#region File Table Offset
-		int fileTableOffset;
-		/// <summary>
-		/// 
-		/// </summary>
-		public int FileTableOffset
+		#region Tag names Table Offset
+		int tagNamesTableOffset;
+		/// <summary>Offset to this data cache's buffer of tag names</summary>
+		public int TagNamesTableOffset
 		{
-			get { return fileTableOffset; }
-			set { fileTableOffset = value; }
+			get { return tagNamesTableOffset; }
+			set { tagNamesTableOffset = value; }
 		}
 		#endregion
 
-		#region Tag Offset Table Offset
-		int tagOffsetTableOffset;
-		/// <summary>
-		/// 
-		/// </summary>
-		public int TagOffsetTableOffset
+		#region Tag Instances Table Offset
+		int tagInstancesTableOffset;
+		/// <summary>Offset to thie data cache's table of tag instance headers</summary>
+		public int TagInstancesTableOffset
 		{
-			get { return tagOffsetTableOffset; }
-			set { tagOffsetTableOffset = value; }
+			get { return tagInstancesTableOffset; }
+			set { tagInstancesTableOffset = value; }
 		}
 		#endregion
 
 		#region Tags
-		private DataItem[] items;
+		DataItem[] items;
 		public override Blam.CacheIndex.Item[] Tags { get { return items; } }
 
 		public DataItem this[int index]
@@ -443,8 +427,8 @@ namespace BlamLib.Blam.Halo1
 			DataCacheFile cache = s.Owner as DataCacheFile;
 
 			type = (DataCacheType)s.ReadInt32();
-			fileTableOffset = s.ReadInt32();
-			tagOffsetTableOffset = s.ReadInt32();
+			tagNamesTableOffset = s.ReadInt32();
+			tagInstancesTableOffset = s.ReadInt32();
 			tagCount = s.ReadInt32();
 			items = new DataItem[tagCount];
 
@@ -457,7 +441,7 @@ namespace BlamLib.Blam.Halo1
 					break;
 			}
 
-			s.Seek(FileTableOffset, System.IO.SeekOrigin.Begin);
+			s.Seek(TagNamesTableOffset, System.IO.SeekOrigin.Begin);
 			DataItem item = null;
 			for (int x = 0; x < TagCount; x++)
 			{
@@ -467,15 +451,13 @@ namespace BlamLib.Blam.Halo1
 				item.ReferenceName = cache.References.AddOptimized(item.GroupTag, s.ReadCString());
 			}
 
-			s.Seek(tagOffsetTableOffset, System.IO.SeekOrigin.Begin);
+			s.Seek(tagInstancesTableOffset, System.IO.SeekOrigin.Begin);
 			for (int x = 0; x < TagCount; x++)
 				items[x].Read(s);
 		}
 	};
 
-	/// <summary>
-	/// Halo 1 data cache implementation of the <see cref="Blam.CacheIndex.Item"/>
-	/// </summary>
+	/// <summary>Halo 1 data cache implementation of the <see cref="Blam.CacheIndex.Item"/></summary>
 	public sealed class DataItem : Blam.CacheIndex.Item
 	{
 		public override void Read(BlamLib.IO.EndianReader s)
@@ -486,16 +468,12 @@ namespace BlamLib.Blam.Halo1
 		}
 	};
 
-	/// <summary>
-	/// Halo 1 data cache implementation of the <see cref="Blam.CacheFile"/>
-	/// </summary>
+	/// <summary>Halo 1 data cache implementation of the <see cref="Blam.CacheFile"/></summary>
 	/// <remarks>Data cache does not support <see cref="Blam.CacheHeader"/></remarks>
 	public abstract class DataCacheFile : Blam.CacheFile
 	{
 		#region Header
-		/// <summary>
-		/// Returns null
-		/// </summary>
+		/// <summary>Returns null</summary>
 		public override BlamLib.Blam.CacheHeader Header { get { return null; } }
 		#endregion
 
@@ -506,7 +484,7 @@ namespace BlamLib.Blam.Halo1
 		public Halo1.DataIndex IndexHalo1 { get { return cacheIndex; } }
 		#endregion
 
-		private bool SharableReferencePc(string path)
+		bool SharableReferencePc(string path)
 		{
 			if (SharableReference(path, Program.Halo1.PcBitmaps))		ShareCacheStreams(this, Program.Halo1.PcBitmaps);
 			else if (SharableReference(path, Program.Halo1.PcSounds))	ShareCacheStreams(this, Program.Halo1.PcBitmaps);
@@ -514,8 +492,7 @@ namespace BlamLib.Blam.Halo1
 
 			return true;
 		}
-
-		private bool SharableReferenceCe(string path)
+		bool SharableReferenceCe(string path)
 		{
 			if (SharableReference(path, Program.Halo1.CeBitmaps))		ShareCacheStreams(this, Program.Halo1.CeBitmaps);
 			else if (SharableReference(path, Program.Halo1.CeSounds))	ShareCacheStreams(this, Program.Halo1.CeSounds);
@@ -557,23 +534,17 @@ namespace BlamLib.Blam.Halo1
 		#endregion
 	};
 
-	/// <summary>
-	/// Halo 1 bitmap data cache implementation
-	/// </summary>
+	/// <summary>Halo 1 bitmap data cache implementation</summary>
 	public sealed class BitmapCacheFile : DataCacheFile
 	{
 		public BitmapCacheFile(BlamVersion engine, string path) : base(engine, path) { }
 	};
-	/// <summary>
-	/// Halo 1 sound data cache implementation
-	/// </summary>
+	/// <summary>Halo 1 sound data cache implementation</summary>
 	public sealed class SoundCacheFile : DataCacheFile
 	{
 		public SoundCacheFile(BlamVersion engine, string path) : base(engine, path) { }
 	};
-	/// <summary>
-	/// Halo 1 localization data cache implementation
-	/// </summary>
+	/// <summary>Halo 1 localization data cache implementation</summary>
 	public sealed class LocCacheFile : DataCacheFile
 	{
 		public LocCacheFile(BlamVersion engine, string path) : base(engine, path) { }

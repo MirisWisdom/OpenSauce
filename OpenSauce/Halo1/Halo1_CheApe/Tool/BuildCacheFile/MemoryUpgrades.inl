@@ -57,6 +57,16 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 		// * This address is actually for campaign types, but OS forces 
 		// the campaign case
 		static uint32* CacheSizeMax = CAST_PTR(uint32*, 0x4531B7); // build_cache_file_write_header_and_compress
+
+		// Addresses of the value used for the tag memory's base address
+		static uint32* TagMemoryBaseAddress[] = {
+			CAST_PTR(uint32*, 0x454EBE),
+			CAST_PTR(uint32*, 0x4551DB),
+		};
+		// Addresses of the value used for the structure_bsp tag memory's base address
+		static uint32* TagMemoryBaseAddressStructureBsp[] = {
+			CAST_PTR(uint32*, 0x454BCC),	// Same address as [TagMaxAddress]
+		};
 	};
 
 	#pragma region Interceptor system

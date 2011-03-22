@@ -274,39 +274,63 @@ namespace BlamLib.Blam.Halo1
 		}
 		#endregion
 
+		#region SettingsInterface
+		/// <summary>Dirty Hacks, Done Dirt Cheap</summary>
+		class _SettingsInterface : Managers.BlamDefinition.SettingsInterface
+		{
+			[System.ComponentModel.Category("PC")]
+			[System.ComponentModel.Description("Path to bitmaps.map")]
+			public string PcBitmapsPath
+			{
+				get { return Program.Halo1.PcBitmapsPath; }
+				set { Program.Halo1.PcBitmapsPath = value; }
+			}
+			[System.ComponentModel.Category("PC")]
+			[System.ComponentModel.Description("Path to sounds.map")]
+			public string PcSoundsPath
+			{
+				get { return Program.Halo1.PcSoundsPath; }
+				set { Program.Halo1.PcSoundsPath = value; }
+			}
 
-		#region Cache paths exposure
-		[System.ComponentModel.Category("PC")]
-		public string PcBitmapsPath
-		{
-			get { return Program.Halo1.PcBitmapsPath; }
-			set { Program.Halo1.PcBitmapsPath = value; }
-		}
-		[System.ComponentModel.Category("PC")]
-		public string PcSoundsPath
-		{
-			get { return Program.Halo1.PcSoundsPath; }
-			set { Program.Halo1.PcSoundsPath = value; }
-		}
+			[System.ComponentModel.Category("CE")]
+			[System.ComponentModel.Description("Path to bitmaps.map")]
+			public string CeBitmapsPath
+			{
+				get { return Program.Halo1.PcBitmapsPath; }
+				set { Program.Halo1.PcBitmapsPath = value; }
+			}
+			[System.ComponentModel.Category("CE")]
+			[System.ComponentModel.Description("Path to sounds.map")]
+			public string CeSoundsPath
+			{
+				get { return Program.Halo1.PcSoundsPath; }
+				set { Program.Halo1.PcSoundsPath = value; }
+			}
+			[System.ComponentModel.Category("CE")]
+			[System.ComponentModel.Description("Path to loc.map")]
+			public string CeLocPath
+			{
+				get { return Program.Halo1.CeLocPath; }
+				set { Program.Halo1.CeLocPath = value; }
+			}
 
-		[System.ComponentModel.Category("CE")]
-		public string CeBitmapsPath
-		{
-			get { return Program.Halo1.PcBitmapsPath; }
-			set { Program.Halo1.PcBitmapsPath = value; }
-		}
-		[System.ComponentModel.Category("CE")]
-		public string CeSoundsPath
-		{
-			get { return Program.Halo1.PcSoundsPath; }
-			set { Program.Halo1.PcSoundsPath = value; }
-		}
-		[System.ComponentModel.Category("CE")]
-		public string CeLocPath
-		{
-			get { return Program.Halo1.CeLocPath; }
-			set { Program.Halo1.CeLocPath = value; }
-		}
+			public override bool ValidateSettings()
+			{
+				return PathIsValid(PcBitmapsPath) && PathIsValid(PcSoundsPath) &&
+					PathIsValid(CeBitmapsPath) && PathIsValid(CeSoundsPath) && PathIsValid(CeLocPath);
+			}
+
+			public override void Read(IO.XmlStream s)
+			{
+			}
+
+			public override void Write(System.Xml.XmlWriter writer)
+			{
+			}
+		};
+		_SettingsInterface settingsInterface = new _SettingsInterface();
+		public override BlamLib.Managers.BlamDefinition.SettingsInterface Settings { get { return settingsInterface; } }
 		#endregion
 	};
 }

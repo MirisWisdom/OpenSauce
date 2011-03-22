@@ -143,9 +143,9 @@ namespace BlamLib
 {
 	partial class Tool
 	{
-		static void UnlockBlamTools(System.Collections.Generic.List<string> args)
+		static void UnlockBlamTools(params string[] args)
 		{
-			if (args.Count < 5)
+			if (args.Length < 5)
 			{
 				Console.WriteLine("error: invalid command argument count");
 				return;
