@@ -46,6 +46,7 @@ namespace OpenSauceIDE.Cache
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.Windows.Forms.SplitContainer splitContainer1;
 			System.Windows.Forms.ToolStripMenuItem FileOpen;
 			this.TagTreeView = new System.Windows.Forms.TreeView();
@@ -55,15 +56,31 @@ namespace OpenSauceIDE.Cache
 			this.FileMenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.FileClose = new System.Windows.Forms.ToolStripMenuItem();
 			this.ToolsMenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.CacheToolsExtractAll = new System.Windows.Forms.ToolStripMenuItem();
+			this.CacheToolsExtractAllChecked = new System.Windows.Forms.ToolStripMenuItem();
+			this.CacheToolsExtractAllUnchecked = new System.Windows.Forms.ToolStripMenuItem();
+			this.CacheToolsDontOverwrite = new System.Windows.Forms.ToolStripMenuItem();
+			this.CacheToolsOutputTagDatabase = new System.Windows.Forms.ToolStripMenuItem();
 			this.OpenFileDlg = new System.Windows.Forms.OpenFileDialog();
 			this.SaveFileDlg = new System.Windows.Forms.SaveFileDialog();
 			this.FolderDlg = new System.Windows.Forms.FolderBrowserDialog();
+			this.MenuTagInstance = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.MenuTagInstanceExtractAs = new System.Windows.Forms.ToolStripMenuItem();
+			this.MenuTagInstanceExtractFolder = new System.Windows.Forms.ToolStripMenuItem();
+			this.MenuTagInstanceExtractFolderAll = new System.Windows.Forms.ToolStripMenuItem();
+			this.MenuTagInstanceExtractRsrc = new System.Windows.Forms.ToolStripMenuItem();
+			this.StatusStrip = new System.Windows.Forms.StatusStrip();
+			this.StatusProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+			this.StatusProgressText = new System.Windows.Forms.ToolStripStatusLabel();
+			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			splitContainer1 = new System.Windows.Forms.SplitContainer();
 			FileOpen = new System.Windows.Forms.ToolStripMenuItem();
 			splitContainer1.Panel1.SuspendLayout();
 			splitContainer1.Panel2.SuspendLayout();
 			splitContainer1.SuspendLayout();
 			this.MainMenu.SuspendLayout();
+			this.MenuTagInstance.SuspendLayout();
+			this.StatusStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// splitContainer1
@@ -82,7 +99,7 @@ namespace OpenSauceIDE.Cache
 			// 
 			splitContainer1.Panel2.Controls.Add(this.PropGrigTag);
 			splitContainer1.Panel2.Controls.Add(this.PropGridCache);
-			splitContainer1.Size = new System.Drawing.Size(792, 534);
+			splitContainer1.Size = new System.Drawing.Size(792, 531);
 			splitContainer1.SplitterDistance = 473;
 			splitContainer1.TabIndex = 3;
 			// 
@@ -94,7 +111,7 @@ namespace OpenSauceIDE.Cache
 			this.TagTreeView.ForeColor = System.Drawing.Color.LightGreen;
 			this.TagTreeView.Location = new System.Drawing.Point(0, 0);
 			this.TagTreeView.Name = "TagTreeView";
-			this.TagTreeView.Size = new System.Drawing.Size(473, 534);
+			this.TagTreeView.Size = new System.Drawing.Size(473, 531);
 			this.TagTreeView.TabIndex = 1;
 			this.TagTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.OnTagTreeAfterSelect);
 			this.TagTreeView.BeforeCheck += new System.Windows.Forms.TreeViewCancelEventHandler(this.OnTagTreeBeforeCheck);
@@ -114,6 +131,7 @@ namespace OpenSauceIDE.Cache
 			this.PropGrigTag.Size = new System.Drawing.Size(315, 221);
 			this.PropGrigTag.TabIndex = 3;
 			this.PropGrigTag.ToolbarVisible = false;
+			this.toolTip1.SetToolTip(this.PropGrigTag, "Tag Instance Properties");
 			this.PropGrigTag.ViewBackColor = System.Drawing.SystemColors.ControlDarkDark;
 			this.PropGrigTag.ViewForeColor = System.Drawing.Color.LightGreen;
 			// 
@@ -132,6 +150,7 @@ namespace OpenSauceIDE.Cache
 			this.PropGridCache.Size = new System.Drawing.Size(315, 304);
 			this.PropGridCache.TabIndex = 2;
 			this.PropGridCache.ToolbarVisible = false;
+			this.toolTip1.SetToolTip(this.PropGridCache, "Cache Properties");
 			this.PropGridCache.ViewBackColor = System.Drawing.SystemColors.ControlDarkDark;
 			this.PropGridCache.ViewForeColor = System.Drawing.Color.LightGreen;
 			// 
@@ -140,7 +159,7 @@ namespace OpenSauceIDE.Cache
 			FileOpen.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			FileOpen.ForeColor = System.Drawing.Color.LightGreen;
 			FileOpen.Name = "FileOpen";
-			FileOpen.Size = new System.Drawing.Size(100, 22);
+			FileOpen.Size = new System.Drawing.Size(152, 22);
 			FileOpen.Text = "Open";
 			FileOpen.Click += new System.EventHandler(this.OnFileOpen);
 			// 
@@ -174,17 +193,76 @@ namespace OpenSauceIDE.Cache
 			this.FileClose.Enabled = false;
 			this.FileClose.ForeColor = System.Drawing.Color.LightGreen;
 			this.FileClose.Name = "FileClose";
-			this.FileClose.Size = new System.Drawing.Size(100, 22);
+			this.FileClose.Size = new System.Drawing.Size(152, 22);
 			this.FileClose.Text = "Close";
 			this.FileClose.Click += new System.EventHandler(this.OnFileClose);
 			// 
 			// ToolsMenu
 			// 
 			this.ToolsMenu.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.ToolsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.CacheToolsExtractAll,
+            this.CacheToolsDontOverwrite,
+            this.CacheToolsOutputTagDatabase});
 			this.ToolsMenu.ForeColor = System.Drawing.Color.LightGreen;
 			this.ToolsMenu.Name = "ToolsMenu";
 			this.ToolsMenu.Size = new System.Drawing.Size(77, 20);
 			this.ToolsMenu.Text = "Cache Tools";
+			// 
+			// CacheToolsExtractAll
+			// 
+			this.CacheToolsExtractAll.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.CacheToolsExtractAll.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.CacheToolsExtractAllChecked,
+            this.CacheToolsExtractAllUnchecked});
+			this.CacheToolsExtractAll.Enabled = false;
+			this.CacheToolsExtractAll.ForeColor = System.Drawing.Color.LimeGreen;
+			this.CacheToolsExtractAll.Name = "CacheToolsExtractAll";
+			this.CacheToolsExtractAll.Size = new System.Drawing.Size(178, 22);
+			this.CacheToolsExtractAll.Text = "Extract All";
+			this.CacheToolsExtractAll.Click += new System.EventHandler(this.OnTagInstanceExtractAll);
+			// 
+			// CacheToolsExtractAllChecked
+			// 
+			this.CacheToolsExtractAllChecked.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.CacheToolsExtractAllChecked.ForeColor = System.Drawing.Color.LimeGreen;
+			this.CacheToolsExtractAllChecked.Name = "CacheToolsExtractAllChecked";
+			this.CacheToolsExtractAllChecked.Size = new System.Drawing.Size(152, 22);
+			this.CacheToolsExtractAllChecked.Text = "Checked";
+			this.CacheToolsExtractAllChecked.Click += new System.EventHandler(this.OnTagInstanceExtractAll);
+			// 
+			// CacheToolsExtractAllUnchecked
+			// 
+			this.CacheToolsExtractAllUnchecked.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.CacheToolsExtractAllUnchecked.ForeColor = System.Drawing.Color.LimeGreen;
+			this.CacheToolsExtractAllUnchecked.Name = "CacheToolsExtractAllUnchecked";
+			this.CacheToolsExtractAllUnchecked.Size = new System.Drawing.Size(152, 22);
+			this.CacheToolsExtractAllUnchecked.Text = "Unchecked";
+			this.CacheToolsExtractAllUnchecked.Click += new System.EventHandler(this.OnTagInstanceExtractAll);
+			// 
+			// CacheToolsDontOverwrite
+			// 
+			this.CacheToolsDontOverwrite.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.CacheToolsDontOverwrite.Checked = true;
+			this.CacheToolsDontOverwrite.CheckOnClick = true;
+			this.CacheToolsDontOverwrite.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.CacheToolsDontOverwrite.ForeColor = System.Drawing.Color.LimeGreen;
+			this.CacheToolsDontOverwrite.Name = "CacheToolsDontOverwrite";
+			this.CacheToolsDontOverwrite.Size = new System.Drawing.Size(178, 22);
+			this.CacheToolsDontOverwrite.Text = "Don\'t overwrite files";
+			this.CacheToolsDontOverwrite.ToolTipText = "Toggles existing file overwriting behavior";
+			// 
+			// CacheToolsOutputTagDatabase
+			// 
+			this.CacheToolsOutputTagDatabase.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.CacheToolsOutputTagDatabase.Checked = true;
+			this.CacheToolsOutputTagDatabase.CheckOnClick = true;
+			this.CacheToolsOutputTagDatabase.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.CacheToolsOutputTagDatabase.ForeColor = System.Drawing.Color.LimeGreen;
+			this.CacheToolsOutputTagDatabase.Name = "CacheToolsOutputTagDatabase";
+			this.CacheToolsOutputTagDatabase.Size = new System.Drawing.Size(178, 22);
+			this.CacheToolsOutputTagDatabase.Text = "Output tag_database";
+			this.CacheToolsOutputTagDatabase.ToolTipText = "Toggles the creation of a tag_database when extracting groups of tags";
 			// 
 			// OpenFileDlg
 			// 
@@ -195,14 +273,90 @@ namespace OpenSauceIDE.Cache
 			// 
 			this.SaveFileDlg.Title = "Save File";
 			// 
+			// MenuTagInstance
+			// 
+			this.MenuTagInstance.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.MenuTagInstance.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuTagInstanceExtractAs,
+            this.MenuTagInstanceExtractFolder,
+            this.MenuTagInstanceExtractRsrc});
+			this.MenuTagInstance.Name = "MenuTagInstance";
+			this.MenuTagInstance.Size = new System.Drawing.Size(163, 70);
+			this.MenuTagInstance.Opening += new System.ComponentModel.CancelEventHandler(this.OnMenuTagInstanceOpening);
+			// 
+			// MenuTagInstanceExtractAs
+			// 
+			this.MenuTagInstanceExtractAs.ForeColor = System.Drawing.Color.LimeGreen;
+			this.MenuTagInstanceExtractAs.Name = "MenuTagInstanceExtractAs";
+			this.MenuTagInstanceExtractAs.Size = new System.Drawing.Size(162, 22);
+			this.MenuTagInstanceExtractAs.Text = "Extract As...";
+			this.MenuTagInstanceExtractAs.ToolTipText = "Extract the tag to a user defined filename";
+			this.MenuTagInstanceExtractAs.Click += new System.EventHandler(this.OnTagInstanceExtract);
+			// 
+			// MenuTagInstanceExtractFolder
+			// 
+			this.MenuTagInstanceExtractFolder.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuTagInstanceExtractFolderAll});
+			this.MenuTagInstanceExtractFolder.ForeColor = System.Drawing.Color.LimeGreen;
+			this.MenuTagInstanceExtractFolder.Name = "MenuTagInstanceExtractFolder";
+			this.MenuTagInstanceExtractFolder.Size = new System.Drawing.Size(162, 22);
+			this.MenuTagInstanceExtractFolder.Text = "Extract to folder";
+			this.MenuTagInstanceExtractFolder.ToolTipText = "Extract tag to a folder";
+			this.MenuTagInstanceExtractFolder.Click += new System.EventHandler(this.OnTagInstanceExtract);
+			// 
+			// MenuTagInstanceExtractFolderAll
+			// 
+			this.MenuTagInstanceExtractFolderAll.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.MenuTagInstanceExtractFolderAll.ForeColor = System.Drawing.Color.LimeGreen;
+			this.MenuTagInstanceExtractFolderAll.Name = "MenuTagInstanceExtractFolderAll";
+			this.MenuTagInstanceExtractFolderAll.Size = new System.Drawing.Size(156, 22);
+			this.MenuTagInstanceExtractFolderAll.Text = "With dependents";
+			this.MenuTagInstanceExtractFolderAll.ToolTipText = "Extract the tag to a folder with all its dependents";
+			this.MenuTagInstanceExtractFolderAll.Click += new System.EventHandler(this.OnTagInstanceExtract);
+			// 
+			// MenuTagInstanceExtractRsrc
+			// 
+			this.MenuTagInstanceExtractRsrc.ForeColor = System.Drawing.Color.LimeGreen;
+			this.MenuTagInstanceExtractRsrc.Name = "MenuTagInstanceExtractRsrc";
+			this.MenuTagInstanceExtractRsrc.Size = new System.Drawing.Size(162, 22);
+			this.MenuTagInstanceExtractRsrc.Text = "Extract Resources";
+			this.MenuTagInstanceExtractRsrc.Click += new System.EventHandler(this.OnTagInstanceExtract);
+			// 
+			// StatusStrip
+			// 
+			this.StatusStrip.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.StatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.StatusProgressBar,
+            this.StatusProgressText});
+			this.StatusStrip.Location = new System.Drawing.Point(0, 561);
+			this.StatusStrip.Name = "StatusStrip";
+			this.StatusStrip.ShowItemToolTips = true;
+			this.StatusStrip.Size = new System.Drawing.Size(792, 22);
+			this.StatusStrip.TabIndex = 6;
+			this.StatusStrip.Text = "StatusStrip";
+			// 
+			// StatusProgressBar
+			// 
+			this.StatusProgressBar.Name = "StatusProgressBar";
+			this.StatusProgressBar.Size = new System.Drawing.Size(200, 16);
+			this.StatusProgressBar.ToolTipText = "Progress of the current task";
+			// 
+			// StatusProgressText
+			// 
+			this.StatusProgressText.Name = "StatusProgressText";
+			this.StatusProgressText.Size = new System.Drawing.Size(37, 17);
+			this.StatusProgressText.Text = "trololo";
+			this.StatusProgressText.ToolTipText = "Description of the current task";
+			// 
 			// CacheView
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.ClientSize = new System.Drawing.Size(792, 573);
+			this.ClientSize = new System.Drawing.Size(792, 583);
 			this.Controls.Add(splitContainer1);
 			this.Controls.Add(this.MainMenu);
+			this.Controls.Add(this.StatusStrip);
 			this.ForeColor = System.Drawing.Color.LightGreen;
 			this.MainMenuStrip = this.MainMenu;
 			this.Name = "CacheView";
@@ -217,6 +371,9 @@ namespace OpenSauceIDE.Cache
 			splitContainer1.ResumeLayout(false);
 			this.MainMenu.ResumeLayout(false);
 			this.MainMenu.PerformLayout();
+			this.MenuTagInstance.ResumeLayout(false);
+			this.StatusStrip.ResumeLayout(false);
+			this.StatusStrip.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -234,5 +391,19 @@ namespace OpenSauceIDE.Cache
 		private System.Windows.Forms.FolderBrowserDialog FolderDlg;
 		private System.Windows.Forms.ToolStripMenuItem ToolsMenu;
 		private System.Windows.Forms.PropertyGrid PropGrigTag;
+		private System.Windows.Forms.ContextMenuStrip MenuTagInstance;
+		private System.Windows.Forms.StatusStrip StatusStrip;
+		private System.Windows.Forms.ToolStripMenuItem MenuTagInstanceExtractAs;
+		private System.Windows.Forms.ToolTip toolTip1;
+		private System.Windows.Forms.ToolStripMenuItem MenuTagInstanceExtractFolder;
+		private System.Windows.Forms.ToolStripMenuItem MenuTagInstanceExtractFolderAll;
+		private System.Windows.Forms.ToolStripStatusLabel StatusProgressText;
+		private System.Windows.Forms.ToolStripProgressBar StatusProgressBar;
+		private System.Windows.Forms.ToolStripMenuItem MenuTagInstanceExtractRsrc;
+		private System.Windows.Forms.ToolStripMenuItem CacheToolsExtractAll;
+		private System.Windows.Forms.ToolStripMenuItem CacheToolsExtractAllChecked;
+		private System.Windows.Forms.ToolStripMenuItem CacheToolsExtractAllUnchecked;
+		private System.Windows.Forms.ToolStripMenuItem CacheToolsDontOverwrite;
+		private System.Windows.Forms.ToolStripMenuItem CacheToolsOutputTagDatabase;
 	}
 }

@@ -26,8 +26,7 @@ namespace BlamLib.Managers
 	{
 		#region Util
 		/// <summary>
-		/// For deciding if <paramref name="tag_datum"/> exists on disk already and thus shouldn't
-		/// be extracted
+		/// For deciding if <paramref name="tag_datum"/> exists on disk already and thus shouldn't be extracted
 		/// </summary>
 		/// <param name="cei"></param>
 		/// <param name="tag_datum">Engine's index of the tag instance</param>
@@ -44,14 +43,11 @@ namespace BlamLib.Managers
 
 			return false;
 		}
-		/// <summary>
-		/// For deciding if <paramref name="tag_datum"/> shouldn't be extracted to disc or not
-		/// </summary>
+		/// <summary>For deciding if <paramref name="tag_datum"/> shouldn't be extracted to disc or not</summary>
 		/// <param name="cei"></param>
 		/// <param name="tag_datum">Engine's index of the tag instance</param>
 		/// <returns>True if the tag is not suppose to be extract, false if it is</returns>
-		protected virtual bool ExtractionDontExtract(
-			Blam.CacheExtractionInfo cei, Blam.DatumIndex tag_datum)
+		protected virtual bool ExtractionDontExtract(Blam.CacheExtractionInfo cei, Blam.DatumIndex tag_datum)
 		{
 			bool dont_extract = false;
 
@@ -71,9 +67,7 @@ namespace BlamLib.Managers
 			return dont_extract;
 		}
 
-		/// <summary>
-		/// For changing tag references to different references
-		/// </summary>
+		/// <summary>For changing tag references to different references</summary>
 		/// <param name="tr"></param>
 		/// <returns>true if <paramref name="tr"/> was changed</returns>
 		/// <remarks>
@@ -91,18 +85,13 @@ namespace BlamLib.Managers
 		#endregion
 
 		#region System Interface
-		/// <summary>
-		/// Initializes any resources needed for extraction
-		/// </summary>
+		/// <summary>Initializes any resources needed for extraction</summary>
 		public virtual void ExtractionInitialize() { }
-		/// <summary>
-		/// Disposes any resources loaded in <see cref="ExtractionInitialize"/>
-		/// </summary>
+		/// <summary>Disposes any resources loaded in <see cref="ExtractionInitialize"/></summary>
+		/// <remarks>Always called when a <see cref="Blam.CacheFile"/> is disposed</remarks>
 		public virtual void ExtractionDispose() { }
 
-		/// <summary>
-		/// Initialize the extraction process
-		/// </summary>
+		/// <summary>Initialize the extraction process</summary>
 		/// <param name="tag_datum"></param>
 		/// <param name="args"></param>
 		/// <returns></returns>
@@ -116,9 +105,7 @@ namespace BlamLib.Managers
 
 			return cei;
 		}
-		/// <summary>
-		/// Dispose of the last call to <see cref="ExtractionBegin"/>
-		/// </summary>
+		/// <summary>Dispose of the last call to <see cref="ExtractionBegin"/></summary>
 		public void ExtractionEnd() { }
 		#endregion
 
@@ -183,10 +170,10 @@ namespace BlamLib.Managers
 
 		bool ExtractWithDependents(Blam.CacheExtractionInfo cei, TagManager tag)
 		{
-			List<Blam.DatumIndex> depns = cacheFile.ExtractionState.CurrentDependents();
-			List<Blam.DatumIndex> depns_to_extract = new List<Blam.DatumIndex>();
-			List<Blam.DatumIndex> skipped_depns = new List<Blam.DatumIndex>();
-			List<Blam.DatumIndex> failed_depns = new List<Blam.DatumIndex>();
+			var depns = cacheFile.ExtractionState.CurrentDependents();
+			var depns_to_extract = new List<Blam.DatumIndex>();
+			var skipped_depns = new List<Blam.DatumIndex>();
+			var failed_depns = new List<Blam.DatumIndex>();
 
 			foreach (Blam.DatumIndex datum in depns)
 			{
@@ -242,7 +229,7 @@ namespace BlamLib.Managers
 		{
 			if (remove_from_state)
 			{
-				// don't process it if its already been done
+				// don't process it if it's already been done
 				if (cacheFile.ExtractionState.Processed(tag_datum)) return true;
 				cacheFile.ExtractionState.Dequeue(tag_datum);
 			}
@@ -307,17 +294,13 @@ namespace BlamLib.Managers
 			return false;
 		}
 
-		/// <summary>
-		/// Extract an existing tag to a file
-		/// </summary>
+		/// <summary>Extract an existing tag to a file</summary>
 		/// <param name="tag_datum">index of tag to extract</param>
 		/// <param name="base_directory">Root directory to extract the tag to</param>
 		/// <returns>false if it can't save the tag</returns>
 		public bool Extract(Blam.DatumIndex tag_datum, string base_directory) { return Extract(tag_datum, base_directory, null); }
 
-		/// <summary>
-		/// Extract an existing tag to a file
-		/// </summary>
+		/// <summary>Extract an existing tag to a file</summary>
 		/// <param name="tag_datum">index of tag to extract</param>
 		/// <param name="base_directory">Root directory to extract the tag to</param>
 		/// <param name="name_override">Optional, if not null, this is the name of the file we store the tag in</param>

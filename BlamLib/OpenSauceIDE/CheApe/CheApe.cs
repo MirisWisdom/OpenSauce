@@ -43,6 +43,9 @@ namespace OpenSauceIDE
 		{
 			InitializeComponent();
 
+			MainMenu.Renderer = MainForm.kOpenSauceIDEToolStripRenderer;
+			FileViewMenu.Renderer = MainForm.kOpenSauceIDEToolStripRenderer;
+
 			SetState(false);
 
 			#region FileViewRoot
@@ -184,9 +187,10 @@ namespace OpenSauceIDE
 
 		void OnBuild(object sender, EventArgs e)
 		{
-			System.Threading.Thread th = new System.Threading.Thread(new System.Threading.ParameterizedThreadStart(Project.Build));
-			th.Name = "BuildCache";
-			th.Start(this);
+			// This should happen faster than a user can decide 'oh I want to close CheApe' 
+			// so for now I'll just ignore the fact that we need to add a wait event for while 
+			// the project is building
+			System.Threading.ThreadPool.QueueUserWorkItem(Project.Build, this);
 		}
 
 		#region File View Menu

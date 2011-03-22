@@ -365,7 +365,7 @@ namespace BlamLib.Blam.Halo2
 		public override TI.TagGroup TagDatabaseGroup { get { return Halo2.TagGroups.tag_; } }
 		#endregion
 
-		internal GameDefinition() {}
+		internal GameDefinition() { }
 
 		#region IStringIdController Members
 		// Sure, we could use a hashtable for keeping references and such, but this uses way less memory, 
@@ -568,58 +568,86 @@ namespace BlamLib.Blam.Halo2
 		}
 		#endregion
 
+		#region SettingsInterface
+		/// <summary>Dirty Hacks, Done Dirt Cheap</summary>
+		class _SettingsInterface : Managers.BlamDefinition.SettingsInterface
+		{
+			[System.ComponentModel.Category("Xbox - Alpha")]
+			[System.ComponentModel.Description("Path to mainmenu.map")]
+			public string AlphaMainmenuPath
+			{
+				get { return Program.Halo2.AlphaMainmenuPath; }
+				set { Program.Halo2.AlphaMainmenuPath = value; }
+			}
+			[System.ComponentModel.Category("Xbox - Alpha")]
+			[System.ComponentModel.Description("Path to shared.map")]
+			public string AlphaSharedPath
+			{
+				get { return Program.Halo2.AlphaSharedPath; }
+				set { Program.Halo2.AlphaSharedPath = value; }
+			}
 
-		#region Cache paths exposure
-		[System.ComponentModel.Category("Xbox - Alpha")]
-		public string AlphaMainmenuPath
-		{
-			get { return Program.Halo2.AlphaMainmenuPath; }
-			set { Program.Halo2.AlphaMainmenuPath = value; }
-		}
-		[System.ComponentModel.Category("Xbox - Alpha")]
-		public string AlphaSharedPath
-		{
-			get { return Program.Halo2.AlphaSharedPath; }
-			set { Program.Halo2.AlphaSharedPath = value; }
-		}
+			[System.ComponentModel.Category("Xbox")]
+			[System.ComponentModel.Description("Path to mainmenu.map")]
+			public string XboxMainmenuPath
+			{
+				get { return Program.Halo2.XboxMainmenuPath; }
+				set { Program.Halo2.XboxMainmenuPath = value; }
+			}
+			[System.ComponentModel.Category("Xbox")]
+			[System.ComponentModel.Description("Path to shared.map")]
+			public string XboxSharedPath
+			{
+				get { return Program.Halo2.XboxSharedPath; }
+				set { Program.Halo2.XboxSharedPath = value; }
+			}
+			[System.ComponentModel.Category("Xbox")]
+			[System.ComponentModel.Description("Path to single_player_shared.map")]
+			public string XboxCampaignPath
+			{
+				get { return Program.Halo2.XboxCampaignPath; }
+				set { Program.Halo2.XboxCampaignPath = value; }
+			}
 
-		[System.ComponentModel.Category("Xbox")]
-		public string XboxMainmenuPath
-		{
-			get { return Program.Halo2.XboxMainmenuPath; }
-			set { Program.Halo2.XboxMainmenuPath = value; }
-		}
-		[System.ComponentModel.Category("Xbox")]
-		public string XboxSharedPath
-		{
-			get { return Program.Halo2.XboxSharedPath; }
-			set { Program.Halo2.XboxSharedPath = value; }
-		}
-		[System.ComponentModel.Category("Xbox")]
-		public string XboxCampaignPath
-		{
-			get { return Program.Halo2.XboxCampaignPath; }
-			set { Program.Halo2.XboxCampaignPath = value; }
-		}
+			[System.ComponentModel.Category("PC")]
+			[System.ComponentModel.Description("Path to mainmenu.map")]
+			public string PcMainmenuPath
+			{
+				get { return Program.Halo2.PcMainmenuPath; }
+				set { Program.Halo2.PcMainmenuPath = value; }
+			}
+			[System.ComponentModel.Category("PC")]
+			[System.ComponentModel.Description("Path to shared.map")]
+			public string PcSharedPath
+			{
+				get { return Program.Halo2.PcSharedPath; }
+				set { Program.Halo2.PcSharedPath = value; }
+			}
+			[System.ComponentModel.Category("PC")]
+			[System.ComponentModel.Description("Path to single_player_shared.map")]
+			public string PcCampaignPath
+			{
+				get { return Program.Halo2.PcCampaignPath; }
+				set { Program.Halo2.PcCampaignPath = value; }
+			}
 
-		[System.ComponentModel.Category("PC")]
-		public string PcMainmenuPath
-		{
-			get { return Program.Halo2.PcMainmenuPath; }
-			set { Program.Halo2.PcMainmenuPath = value; }
-		}
-		[System.ComponentModel.Category("PC")]
-		public string PcSharedPath
-		{
-			get { return Program.Halo2.PcSharedPath; }
-			set { Program.Halo2.PcSharedPath = value; }
-		}
-		[System.ComponentModel.Category("PC")]
-		public string PcCampaignPath
-		{
-			get { return Program.Halo2.PcCampaignPath; }
-			set { Program.Halo2.PcCampaignPath = value; }
-		}
+			public override bool ValidateSettings()
+			{
+				return PathIsValid(AlphaMainmenuPath) && PathIsValid(AlphaSharedPath) &&
+					PathIsValid(XboxMainmenuPath) && PathIsValid(XboxSharedPath) && PathIsValid(XboxCampaignPath) &&
+					PathIsValid(PcMainmenuPath) && PathIsValid(PcSharedPath) && PathIsValid(PcCampaignPath);
+			}
+
+			public override void Read(IO.XmlStream s)
+			{
+			}
+
+			public override void Write(System.Xml.XmlWriter writer)
+			{
+			}
+		};
+		_SettingsInterface settingsInterface = new _SettingsInterface();
+		public override BlamLib.Managers.BlamDefinition.SettingsInterface Settings { get { return settingsInterface; } }
 		#endregion
 	};
 }

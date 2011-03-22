@@ -25,13 +25,30 @@ namespace OpenSauceIDE
 {
 	public partial class MainForm : Form
 	{
+		void BuildSettingsMenus()
+		{
+			var Settings = BlamLib.Forms.Util.CreateMenuItem("Settings", (sender, e) =>
+			{
+				var sed = new SelectEngineDialog(EngineSettingsForm.kAllowedPlatforms);
+				BlamLib.BlamVersion version;
+				sed.ShowDialogWithResult(this, out version);
+
+				if (version != BlamLib.BlamVersion.Unknown)
+					new EngineSettingsForm(version).ShowDialog(this);
+			});
+			Settings.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			Settings.ForeColor = System.Drawing.Color.LightGreen;
+
+			ToolsMenu.DropDownItems.Add(Settings);
+		}
+
 		#region CheApe menus
 		void BuildCheApeMenusCheApeApply(Dictionary<string, EventHandler> command_dic)
 		{
 			EventHandler CheApeApply_handler;
-			var CheApeApply = BlamLib.Forms.Util.CreateMenuItem("CheApe Applier", CheApeApply_handler = delegate(object sender, EventArgs e)
+			var CheApeApply = BlamLib.Forms.Util.CreateMenuItem("CheApe Applier", CheApeApply_handler = (sender, e) =>
 			{
-				var sed = new SelectEngineDialog(OpenSauceIDE.CheApe.kTargetPlatforms, BlamLib.BlamVersion.Halo1_PC);
+				var sed = new SelectEngineDialog(CheApe.kTargetPlatforms, BlamLib.BlamVersion.Halo1_PC);
 				BlamLib.BlamVersion version;
 				sed.ShowDialogWithResult(this, out version);
 
@@ -47,7 +64,7 @@ namespace OpenSauceIDE
 		void BuildCheApeMenusCheApe(Dictionary<string, EventHandler> command_dic)
 		{
 			EventHandler CheApe_handler;
-			var CheApe = BlamLib.Forms.Util.CreateMenuItem("CheApe", CheApe_handler = delegate(object sender, EventArgs e)
+			var CheApe = BlamLib.Forms.Util.CreateMenuItem("CheApe", CheApe_handler = (sender, e) =>
 			{
 				var sed = new SelectEngineDialog(OpenSauceIDE.CheApe.kTargetPlatforms, BlamLib.BlamVersion.Halo1_PC,
 					BlamLib.BlamVersion.Halo2_PC); // NOTE: H2PC still needs some work, so don't display it
@@ -73,9 +90,9 @@ namespace OpenSauceIDE
 		void BuildCacheMenus(Dictionary<string, EventHandler> command_dic)
 		{
 			EventHandler OpenCache_handler;
-			var OpenCache = BlamLib.Forms.Util.CreateMenuItem("Open Cache", OpenCache_handler = delegate(object sender, EventArgs e)
+			var OpenCache = BlamLib.Forms.Util.CreateMenuItem("Open Cache", OpenCache_handler = (sender, e) =>
 			{
-				var sed = new SelectEngineDialog(OpenSauceIDE.Cache.CacheView.kAllowedPlatforms);
+				var sed = new SelectEngineDialog(Cache.CacheView.kAllowedPlatforms);
 				BlamLib.BlamVersion version;
 				sed.ShowDialogWithResult(this, out version);
 
@@ -93,11 +110,12 @@ namespace OpenSauceIDE
 		{
 			InitializeComponent();
 
-			MainMenu.Renderer = new OpenSauceIDEToolStripRenderer();
+			MainMenu.Renderer = kOpenSauceIDEToolStripRenderer;
 
 			//BlamLib.Program.Initialize();
 
 			var dic = new Dictionary<string, EventHandler>();
+			BuildSettingsMenus();
 			BuildCheApeMenus(dic);
 			BuildCacheMenus(dic);
 
@@ -208,6 +226,7 @@ namespace OpenSauceIDE
 				}
 			}
 		};
+		internal static readonly ToolStripProfessionalRenderer kOpenSauceIDEToolStripRenderer = new OpenSauceIDEToolStripRenderer();
 		#endregion
 	};
 }

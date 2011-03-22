@@ -583,6 +583,30 @@ namespace BlamLib.Managers
 		};
 		#endregion
 
+		/// <summary>
+		/// This system is one of the quickest and nastiest hacks I've done in a long time. I've since given up 
+		/// on adding newer functionality to BlamLib unless it's in support of a specific engine feature. I don't 
+		/// have the time to keep this codebase up to date when I have to work on .NET 4 tech in another heavy project.
+		/// </summary>
+		public abstract class SettingsInterface
+		{
+			protected static bool PathIsUndefined(string path)
+			{
+				return string.IsNullOrEmpty(path);
+			}
+			protected static bool PathIsValid(string path)
+			{
+				// The path must be null\empty, or contain a valid path
+				return PathIsUndefined(path) || System.IO.File.Exists(path);
+			}
+
+			public abstract bool ValidateSettings();
+
+			public abstract void Read(IO.XmlStream s);
+
+			public abstract void Write(System.Xml.XmlWriter writer);
+		};
+
 		#region Generic game resource identifier names
 		/// <summary>
 		/// Name used for elements identifying a scripting definition resource
@@ -793,6 +817,9 @@ namespace BlamLib.Managers
 				g.CloseResource(resource_name);
 		}
 		#endregion
+
+		/// <summary>Gets the settings interface object for this definition, if one exists</summary>
+		public virtual SettingsInterface Settings { get { return null; } }
 
 		// TODO: note that if used over time, some of these handles, if not closed, could raise conflicts.
 		// However, there is a maximum of 255 handles for each system which I don't think will ever be overflowed 
