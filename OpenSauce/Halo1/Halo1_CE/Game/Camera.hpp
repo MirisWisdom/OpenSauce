@@ -38,12 +38,12 @@ namespace Yelo
 	{
 		enum observer_globals_data_flags : byte_flags
 		{
-			_observer_update_bit =			BIT32(0),
-			_observer_unk1_bit =			BIT32(1),
-			_observer_unk2_bit =			BIT32(2),
-			_observer_unk3_bit =			BIT32(3),
-			_observer_unk4_bit =			BIT32(4),
-			_observer_dont_pass_time_bit =	BIT32(5),
+			_observer_update_flag =			FLAG(0),
+			_observer_unk1_flag =			FLAG(1),
+			_observer_unk2_flag =			FLAG(2),
+			_observer_unk3_flag =			FLAG(3),
+			_observer_unk4_flag =			FLAG(4),
+			_observer_dont_pass_time_flag =	FLAG(5),
 		};
 	};
 

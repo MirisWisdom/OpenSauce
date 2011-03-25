@@ -27,9 +27,9 @@ namespace Yelo
 	namespace Flags
 	{
 		enum input_state {
-			_input_state_enabled = BIT16(0),
-			_input_state_menu = BIT16(1),
-			_input_state_chat = BIT16(2),
+			_input_state_enabled_bit,
+			_input_state_menu_bit,
+			_input_state_chat_bit,
 		};
 	};
 
@@ -72,10 +72,10 @@ namespace Yelo
 		}
 
 
-		bool IsInGame()					{ return TEST_BIT(GET_PTR(InputStateFlags), Flags::_input_state_enabled) != 0; }
-		bool IsInMenu()					{ return TEST_BIT(GET_PTR(InputStateFlags), Flags::_input_state_menu) != 0; }
-		bool IsInChat()					{ return TEST_BIT(GET_PTR(InputStateFlags), Flags::_input_state_chat) != 0; }
-		void AllowMovement(bool allow)	{ SET_BIT(GET_PTR(InputStateFlags), Flags::_input_state_enabled, allow); }
+		bool IsInGame()					{ return TEST_FLAG(GET_PTR(InputStateFlags), Flags::_input_state_enabled_bit); }
+		bool IsInMenu()					{ return TEST_FLAG(GET_PTR(InputStateFlags), Flags::_input_state_menu_bit); }
+		bool IsInChat()					{ return TEST_FLAG(GET_PTR(InputStateFlags), Flags::_input_state_chat_bit); }
+		void AllowMovement(bool allow)	{ SET_FLAG(GET_PTR(InputStateFlags), Flags::_input_state_enabled_bit, allow); }
 
 
 		int32 GetControlState(int16 device, int16 type, int16 index, int16 direction)

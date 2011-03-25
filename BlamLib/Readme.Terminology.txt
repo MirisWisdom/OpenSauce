@@ -7,7 +7,7 @@ Tag Block (Element)
 	* chunk
 Tag Data (I'm actually not sure if the community has ever really given this tag-field a name, but here is what I have heard them referred to as over the years)
 	* voids
-Tag Index\Handle (actually, this itself is just a DatumIndex. See Blam\GameState.cs)
+Tag Index\Handle (actually, this itself is just a DatumIndex. See Blam\DataHandles\DatumIndex.cs)
 	* tag id
 Group Tag (yeah, that four-character-code stuff)
 	* tag id

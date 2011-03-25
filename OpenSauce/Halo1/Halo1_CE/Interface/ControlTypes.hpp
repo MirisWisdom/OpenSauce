@@ -201,7 +201,7 @@ namespace Yelo
 			_KeyModifier,
 		};
 
-		enum Key
+		enum Key : _enum
 		{
 			_KeyEsc,
 			_KeyF1,
@@ -323,11 +323,11 @@ namespace Yelo
 
 	namespace Flags
 	{
-		enum buffered_key_flags
+		enum buffered_key_flags : byte_flags
 		{
-			_buffered_key_shift_flag = BIT32(0),	// SHIFT key pressed
-			_buffered_key_control_flag = BIT32(1),	// CTRL key pressed
-			_buffered_key_alt_flag = BIT32(2),		// ALT key pressed
+			_buffered_key_shift_flag =	FLAG(0),// SHIFT key pressed
+			_buffered_key_control_flag =FLAG(1),// CTRL key pressed
+			_buffered_key_alt_flag =	FLAG(2),// ALT key pressed
 		};
 	};
 
@@ -335,9 +335,9 @@ namespace Yelo
 	{
 		struct s_buffered_key
 		{
-			byte_flags flags;	// [Flags::buffered_key_flags]
+			Flags::buffered_key_flags flags;
 			byte state;			// how long its been pressed until 0xFF, 0 if not pressed
-			_enum key_code;		// [Enums::Key]
-		};
+			Enums::Key key_code;
+		}; BOOST_STATIC_ASSERT( sizeof(s_buffered_key) == 0x4 );
 	};
 };

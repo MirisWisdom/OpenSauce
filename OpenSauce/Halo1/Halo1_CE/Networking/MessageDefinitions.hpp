@@ -50,8 +50,8 @@ namespace Yelo
 
 			// Packet can be decoded by both client and server connections
 			_message_deltas_new_omni_connection_flag = 
-				BIT32(_message_deltas_new_client_bit) |
-				BIT32(_message_deltas_new_server_bit),
+				FLAG(_message_deltas_new_client_bit) |
+				FLAG(_message_deltas_new_server_bit),
 		};
 	};
 

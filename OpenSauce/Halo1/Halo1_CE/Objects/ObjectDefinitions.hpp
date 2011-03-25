@@ -109,53 +109,53 @@ namespace Yelo
 		{
 			// --- 0x2
 
-			_object_activated_bit = BIT32(0),
+			_object_activated_flag = FLAG(0),
 
 			// --- 0x10
 
-			_object_unk1_bit = BIT32(0),
-			_object_unk2_bit = BIT32(1),
-			_object_unk3_bit = BIT32(2),
-			_object_connected_to_map_bit = BIT32(3),
-			_object_unk5_bit = BIT32(4),
-			_object_update_physics_bit = BIT32(5),
-			_object_unk7_bit = BIT32(6),
-			_object_unk8_bit = BIT32(7),
-			_object_unk9_bit = BIT32(8),
-			_object_unk10_bit = BIT32(9),
-			_object_unk12_bit = BIT32(10),
-			_object_unk13_bit = BIT32(11),
-			_object_unk14_bit = BIT32(12),
-			_object_unk15_bit = BIT32(13),
-			_object_unk16_bit = BIT32(14),
-			_object_unk17_bit = BIT32(15),
-			_object_garbage_bit = BIT32(16),
-			_object_unk18_bit = BIT32(17),
-			_object_unk19_bit = BIT32(18),
-			_object_unk20_bit = BIT32(19),
-			_object_unk21_bit = BIT32(20),
-			_object_unk22_bit = BIT32(21),
-			_object_beautify_bit = BIT32(22),
-			_object_unk24_bit = BIT32(23),
-			_object_collideable_bit = BIT32(24),
-			_object_unk26_bit = BIT32(25),
-			_object_unk27_bit = BIT32(26),
-			_object_unk28_bit = BIT32(27),
-			_object_unk29_bit = BIT32(28),
-			_object_unk30_bit = BIT32(29),
-			_object_unk31_bit = BIT32(30),
-			_object_unk32_bit = BIT32(31),
+			_object_unk1_flag = FLAG(0),
+			_object_unk2_flag = FLAG(1),
+			_object_unk3_flag = FLAG(2),
+			_object_connected_to_map_flag = FLAG(3),
+			_object_unk5_flag = FLAG(4),
+			_object_update_physics_flag = FLAG(5),
+			_object_unk7_flag = FLAG(6),
+			_object_unk8_flag = FLAG(7),
+			_object_unk9_flag = FLAG(8),
+			_object_unk10_flag = FLAG(9),
+			_object_unk12_flag = FLAG(10),
+			_object_unk13_flag = FLAG(11),
+			_object_unk14_flag = FLAG(12),
+			_object_unk15_flag = FLAG(13),
+			_object_unk16_flag = FLAG(14),
+			_object_unk17_flag = FLAG(15),
+			_object_garbage_flag = FLAG(16),
+			_object_unk18_flag = FLAG(17),
+			_object_unk19_flag = FLAG(18),
+			_object_unk20_flag = FLAG(19),
+			_object_unk21_flag = FLAG(20),
+			_object_unk22_flag = FLAG(21),
+			_object_beautify_flag = FLAG(22),
+			_object_unk24_flag = FLAG(23),
+			_object_collideable_flag = FLAG(24),
+			_object_unk26_flag = FLAG(25),
+			_object_unk27_flag = FLAG(26),
+			_object_unk28_flag = FLAG(27),
+			_object_unk29_flag = FLAG(28),
+			_object_unk30_flag = FLAG(29),
+			_object_unk31_flag = FLAG(30),
+			_object_unk32_flag = FLAG(31),
 
 			// --- 0x106 & 0x107
 
-			_object_should_be_tracked_bit = BIT32(2),
-			_object_killed_bit = BIT32(5),
-			_object_killed_silent_bit = BIT32(6),
+			_object_should_be_tracked_flag = FLAG(2),
+			_object_killed_flag = FLAG(5),
+			_object_killed_silent_flag = FLAG(6),
 			// 1
 			// 2
 			// 4
-			_object_cannot_take_damage_bit = BIT32(11), // 8
-			_object_killed_no_statistics = BIT32(13), // 32
+			_object_cannot_take_damage_flag = FLAG(11), // 8
+			_object_killed_no_statistics = FLAG(13), // 32
 		};
 	};
 
@@ -241,7 +241,7 @@ namespace Yelo
 
 			API_INLINE bool VerifyType(uint32 type_mask)
 			{
-				return TEST_BIT32( type_mask, *this->GetType() );
+				return TEST_FLAG( type_mask, *this->GetType() );
 			}
 
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_data) == Enums::k_object_size_object );
@@ -269,7 +269,7 @@ namespace Yelo
 		{
 			enum { DATA_OFFSET = Enums::k_object_size_object, };
 
-			// 0x22C - long_flags, BIT32(1) - tracer
+			// 0x22C - long_flags, FLAG(1) - tracer
 			// 0x230 - _enum
 			// 0x232 - int16, looks like maybe some kind of index
 
