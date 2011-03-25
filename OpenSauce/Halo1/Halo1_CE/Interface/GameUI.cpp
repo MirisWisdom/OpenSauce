@@ -40,20 +40,20 @@ namespace Yelo
 			if (*Players::PlayerControlGlobals()->local_players[0].GetZoomLevel() >= 0)
 			{
 				if (TagGroups::_global_yelo_globals->flags.hide_health_when_zoomed_bit)
-					SET_BIT32(HudUnitInterface()->flags, 0, true);
+					SET_FLAG(HudUnitInterface()->flags, 0, true);
 				if (TagGroups::_global_yelo_globals->flags.hide_shield_when_zoomed_bit)
-					SET_BIT32(HudUnitInterface()->flags, 2, true);
+					SET_FLAG(HudUnitInterface()->flags, 2, true);
 				if (TagGroups::_global_yelo_globals->flags.hide_motion_sensor_when_zoomed_bit)
-					SET_BIT32(HudUnitInterface()->flags, 4, true);
+					SET_FLAG(HudUnitInterface()->flags, 4, true);
 			}
 			else
 			{
 				if (TagGroups::_global_yelo_globals->flags.hide_health_when_zoomed_bit)
-					SET_BIT32(HudUnitInterface()->flags, 0, false);
+					SET_FLAG(HudUnitInterface()->flags, 0, false);
 				if (TagGroups::_global_yelo_globals->flags.hide_shield_when_zoomed_bit)
-					SET_BIT32(HudUnitInterface()->flags, 2, false);
+					SET_FLAG(HudUnitInterface()->flags, 2, false);
 				if (TagGroups::_global_yelo_globals->flags.hide_motion_sensor_when_zoomed_bit)
-					SET_BIT32(HudUnitInterface()->flags, 4, false);
+					SET_FLAG(HudUnitInterface()->flags, 4, false);
 			}
 		}
 

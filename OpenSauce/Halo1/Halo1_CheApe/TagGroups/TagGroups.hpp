@@ -142,29 +142,29 @@ namespace Yelo
 		enum /*tag_field_flags*/
 		{
 			// Never streamed unless the tag is loaded for verification purposes
-			_tag_data_flag_never_streamed = BIT32(0),
+			_tag_data_flag_never_streamed =			FLAG(0),
 			// the sound board is available for data blobs of this type
-			//_tag_data_flag_playable = BIT32(0),
-			_tag_data_flag_is_text_data = BIT32(1),
-			// aka 'debug data'
-			_tag_data_flag_not_streamed_to_cache = BIT32(2),
+			//_tag_data_flag_playable = FLAG(0),
+			_tag_data_flag_is_text_data =			FLAG(1),
+			// ie, 'debug data'
+			_tag_data_flag_not_streamed_to_cache =	FLAG(2),
 
 			// checked in the tag reference solving code.
 			// last condition checked after an assortment of conditionals
 			// and if this is TRUE, it won't resolve
-			_tag_reference_flag_1 = BIT32(0),
-			_tag_reference_flag_non_resolving = BIT32(1),
+			_tag_reference_flag_1 =				FLAG(0),
+			_tag_reference_flag_non_resolving =	FLAG(1),
 
-			_tag_block_flag_1 = BIT32(0),
+			_tag_block_flag_1 =	FLAG(0),
 
-			_tag_group_flag_initialized = BIT32(0),
-			_tag_group_flag_2 = BIT32(1),
-			_tag_group_flag_3 = BIT32(2),
-			_tag_group_flag_4 = BIT32(3),
+			_tag_group_flag_initialized =	FLAG(0),
+			_tag_group_flag_2 =				FLAG(1),
+			_tag_group_flag_3 =				FLAG(2),
+			_tag_group_flag_4 =				FLAG(3),
 
-			_tag_load_verify = BIT32(0),
-			_tag_load_verify_exist_first = BIT32(1),
-			_tag_load_non_resolving_references = BIT32(2),
+			_tag_load_verify =					FLAG(0),
+			_tag_load_verify_exist_first =		FLAG(1),
+			_tag_load_non_resolving_references =FLAG(2),
 		};
 	};
 

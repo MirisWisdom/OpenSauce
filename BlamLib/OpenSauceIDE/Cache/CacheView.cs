@@ -60,7 +60,7 @@ namespace OpenSauceIDE.Cache
 		BlamLib.TagInterface.TagGroupCollection m_groupsInvalidForExtraction;
 		// Event signal for making sure we don't do anything crazy, like exit, while the cache is performing 
 		// a thread pool task. Eg, opening, extracting, etc.
-		System.Threading.AutoResetEvent m_waitEvent;
+		System.Threading.AutoResetEvent m_waitEvent, m_extractAllWaitEvent;
 
 		public CacheView(BlamLib.BlamVersion engine)
 		{
@@ -73,6 +73,7 @@ namespace OpenSauceIDE.Cache
 			m_engine = engine;
 			m_cache = null;
 			m_waitEvent = new System.Threading.AutoResetEvent(true);
+			m_extractAllWaitEvent = new System.Threading.AutoResetEvent(true);
 
 			// We currently only allow check boxes for marking tags for extraction. If we ever change 
 			// this behavior (eg, to mark for resource extract too), we'll need to update this logic
@@ -206,6 +207,7 @@ namespace OpenSauceIDE.Cache
 		/// <summary>Ran whenever the UI says it's time to close the cache</summary>
 		void OnCacheClosed()
 		{
+			m_extractAllWaitEvent.WaitOne();
 			m_waitEvent.WaitOne();
 
 			PopulateTagInstanceProperties(null);
@@ -274,6 +276,7 @@ namespace OpenSauceIDE.Cache
 			if (m_cache == null && OpenFileDlg.ShowDialog(this) == DialogResult.OK)
 			{
 				m_waitEvent.Reset();
+				m_extractAllWaitEvent.Set();
 				SetCacheViewerPath("Loading...");
 				System.Threading.ThreadPool.QueueUserWorkItem(OnFileOpen_DoWork, this);
 			}

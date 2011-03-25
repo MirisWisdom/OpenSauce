@@ -172,11 +172,6 @@
 	( ((value) + ((mul)-1)) & (~((mul)-1)) )
 
 
-// USE BOOST_STATIC_ASSERT INSTEAD!
-// If [expression] equals false, a compile error will occur and be prompted
-//#define COMPILE_ASSERT( expression ) \
-//	typedef char ___C_ASSERT__[ (expression) ? 1 : -1 ]
-
 /// Calculates the location in memory of a given field of class\struct [cls] from the
 /// start of the class\struct.
 // USE 'offsetof' MACRO INSTEAD! (stddef.h)
@@ -203,25 +198,22 @@
 // returns the amount of bits that make up [type]
 #define BIT_COUNT(type) ( sizeof(type) * 8 )
 
-#define BIT32(bit) (1L<<(bit))
-#define TEST_BIT32(flags, bit) ( ((flags) & BIT32(bit)) !=0 )
-#define SET_BIT32(flags, bit, value) ( (value) ? ( (flags) |= BIT32(bit) ) : ( flags&= ~BIT32(bit) ) )
-
-#define BIT16(bit) (1<<(bit))
-#define TEST_BIT16(flags, bit) ( ((flags) & BIT16(bit)) !=0 )
-#define SET_BIT16(flags, bit, value) ((void)( (value) ? ( (flags) |= BIT16(bit) ) : ( flags &= ~BIT16(bit) )) )
-
-#define TEST_BIT(obj, flag) ( (obj) & (flag) )
-#define SET_BIT(obj, flag, value) ( (void)( (value) ? ( (obj)|=(flag) ) : ( obj &= ~(flag) )) )
+#define FLAG(bit)						( 1<<(bit) )
+// Test the flags for a specific bit value
+#define TEST_FLAG(flags, bit)			( ((flags) & FLAG(bit)) != 0 )
+// Toggle the bit in a set of flags
+#define SET_FLAG(flags, bit, value)		( (value) ? ((flags) |= FLAG(bit)) : ((flags) &= ~FLAG(bit)) )
+#define SWAP_FLAG(flags, bit)			( (flags) ^=FLAG(bit) )
+#define FLAG_RANGE(first_bit, last_bit)	( (FLAG( (last_bit)+1 - (first_bit) )-1) << (first_bit) )
 
 #define MASK(count) ( (unsigned)(1 << (count)) - (unsigned)1 )
 
-// checks to see if [value] has only the bits its allowed to have set
-#define VALID_BITS(value, count) \
-	( \
-		( \
-			(value) & ( ~(1<<(count)) ) \
-		) == 0 \
+// Checks to see if [flags] has only the flags it's allowed to have, enabled
+#define VALID_FLAGS(flags, flags_count)			\
+	(											\
+		(										\
+			(flags) & ( ~(1<<(flags_count)) )	\
+		) == 0									\
 	)
 
 // How many 8 bit integers it takes to hold a bit vector with [size] bits

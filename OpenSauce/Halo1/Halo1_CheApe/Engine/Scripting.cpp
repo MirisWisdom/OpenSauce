@@ -116,23 +116,23 @@ namespace Yelo
 			{
 				def = _upgrade_globals.functions.table[x];
 
-				if( TEST_BIT(def->flags, CAST(uint16, only_internals)) )
+				if( only_internals && !TEST_FLAG(def->flags, Flags::_hs_yelo_definition_internal_bit) )
+					continue;
+
+				script_function_block* element = tag_block_get_element(functions, tag_block_add_element(functions));
+
+				ScriptingNameCopyToTagNameData(def->name, element->name);
+				element->index = CAST(int16, x);
+				element->return_type = def->return_type;
+
+				if( !tag_block_resize(element->parameters.to_tag_block(), def->paramc) )
 				{
-					script_function_block* element = tag_block_get_element(functions, tag_block_add_element(functions));
-
-					ScriptingNameCopyToTagNameData(def->name, element->name);
-					element->index = CAST(int16, x);
-					element->return_type = def->return_type;
-
-					if( !tag_block_resize(element->parameters.to_tag_block(), def->paramc) )
-					{
-						YELO_ERROR(_error_message_priority_critical, 
-							"CheApe: failed to add function parameters for %s", def->name);
-					}
-
-					memcpy(element->parameters.Definitions,
-						def->params, sizeof(_enum) * def->paramc);
+					YELO_ERROR(_error_message_priority_critical, 
+						"CheApe: failed to add function parameters for %s", def->name);
 				}
+
+				memcpy(element->parameters.Definitions,
+					def->params, sizeof(_enum) * def->paramc);
 			}
 
 			_CrtSetDebugFillThreshold( old_threshold );
@@ -150,14 +150,14 @@ namespace Yelo
 			{
 				def = _upgrade_globals.globals.table[x];
 
-				if( TEST_BIT(def->flags, CAST(uint16, only_internals)) )
-				{
-					script_global_block* element = tag_block_get_element(globals, tag_block_add_element(globals));
+				if( only_internals && !TEST_FLAG(def->flags, Flags::_hs_yelo_definition_internal_bit) )
+					continue;
 
-					ScriptingNameCopyToTagNameData(def->name, element->name);
-					element->index = CAST(int16, x)+1; // NOTE: for globals, we do +1 since in game builds there is a global which isn't present in editor builds
-					element->type = def->type;
-				}
+				script_global_block* element = tag_block_get_element(globals, tag_block_add_element(globals));
+
+				ScriptingNameCopyToTagNameData(def->name, element->name);
+				element->index = CAST(int16, x)+1; // NOTE: for globals, we do +1 since in game builds there is a global which isn't present in editor builds
+				element->type = def->type;
 			}
 
 			_CrtSetDebugFillThreshold( old_threshold );

@@ -81,25 +81,25 @@ namespace Yelo
 	{
 		enum unit_interface_flags
 		{
-			_unit_interface_show_health_bit = BIT32(0),
-			_unit_interface_blink_health_bit = BIT32(1),
-			_unit_interface_show_shield_bit = BIT32(2),
-			_unit_interface_blink_shield_bit = BIT32(3),
-			_unit_interface_show_motion_sensor_bit = BIT32(4),
-			_unit_interface_blink_motion_sensor_bit = BIT32(5),
+			_unit_interface_show_health_flag = FLAG(0),
+			_unit_interface_blink_health_flag = FLAG(1),
+			_unit_interface_show_shield_flag = FLAG(2),
+			_unit_interface_blink_shield_flag = FLAG(3),
+			_unit_interface_show_motion_sensor_flag = FLAG(4),
+			_unit_interface_blink_motion_sensor_flag = FLAG(5),
 		};
 
 		enum weapon_interface_show : byte_flags // TODO: verify this flags field size
 		{
-			_weapon_interface_show_crosshair_bit = BIT32(0),
+			_weapon_interface_show_crosshair_flag = FLAG(0),
 		};
 
 		enum text_flag : long_flags
 		{
-			_text_flag1 = BIT32(0),
-			_text_flag2 = BIT32(1),
-			_text_flag4 = BIT32(2),
-			_text_flag8 = BIT32(3),
+			_text_flag1 = FLAG(0),
+			_text_flag2 = FLAG(1),
+			_text_flag4 = FLAG(2),
+			_text_flag8 = FLAG(3),
 		};
 	};
 

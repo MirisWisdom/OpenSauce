@@ -102,7 +102,7 @@ namespace OpenSauceIDE.Cache
 		/// <param name="node">GroupTag node</param>
 		/// <param name="all"></param>
 		/// <param name="r_checked"></param>
-		void OnTagInstanceExtractAll(TagInstanceExtractionInfo tiei, TreeNode node, bool all, bool r_checked)
+		void OnTagInstanceExtractAll(TagInstanceExtractionInfo tiei, TreeNode node, bool all, bool r_checked) // threaded
 		{
 			foreach (TreeNode n in node.Nodes)
 			{
@@ -112,14 +112,24 @@ namespace OpenSauceIDE.Cache
 
 				tiei.Instance = n.Tag as BlamLib.Blam.CacheIndex.Item;
 				OnTagInstanceExtract(tiei);
+				m_waitEvent.WaitOne(); // wait until this tag finishes extracting before moving onto the next
 			}
 		}
 		void OnTagInstanceExtractAll(string path, bool all, bool r_checked)
 		{
 			var tiei = new TagInstanceExtractionInfo(null, path, null);
+			// Disable the tag tree, and set a worker task to process all checked 
+			// tags. Once the task finishes, it releases the tag tree back to the user
+			m_extractAllWaitEvent.Reset();
+			TagTreeView.Enabled = false;
 
-			foreach (TreeNode n in TagTreeView.Nodes)
-				OnTagInstanceExtractAll(tiei, n, all, r_checked);
+			System.Threading.ThreadPool.QueueUserWorkItem((obj) => {
+				foreach (TreeNode n in TagTreeView.Nodes)
+					OnTagInstanceExtractAll(tiei, n, all, r_checked);
+
+				m_extractAllWaitEvent.Set();
+				TagTreeView.Enabled = true;
+			});
 		}
 
 		void OnTagInstanceExtractAll(object sender, EventArgs e)

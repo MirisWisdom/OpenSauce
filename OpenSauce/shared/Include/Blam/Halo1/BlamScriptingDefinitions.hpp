@@ -81,14 +81,21 @@ namespace Yelo
 
 	namespace Flags
 	{
+		enum hs_yelo_definition_flags : word_flags
+		{
+			_hs_yelo_definition_internal_bit,
+
+			_hs_yelo_definition_internal_flag =	FLAG(_hs_yelo_definition_internal_bit),
+		};
+
 		enum hs_access_flag : word_flags
 		{
 			_hs_access_flag_none,
-			_hs_access_flag_enabled = BIT16(1),
-			_hs_access_flag_sent_to_server = BIT16(2), ///< automatically sent to server
-			_hs_access_flag_rconable = BIT16(3), ///< can be executed from an rcon command
-			_hs_access_flag_client = BIT16(4), ///< only a client connection can execute it
-			_hs_access_flag_server = BIT16(5), ///< only a server connection can execute it
+			_hs_access_flag_enabled =		FLAG(0),
+			_hs_access_flag_sent_to_server =FLAG(1), ///< automatically sent to server
+			_hs_access_flag_rconable =		FLAG(2), ///< can be executed from an rcon command
+			_hs_access_flag_client =		FLAG(3), ///< only a client connection can execute it
+			_hs_access_flag_server =		FLAG(4), ///< only a server connection can execute it
 		};
 	};
 
@@ -104,27 +111,27 @@ namespace Yelo
 		// halo script function definition
 		struct hs_function_definition
 		{
-			_enum return_type;
-			uint16 flags; // padding in halo, special flags in project yellow
+			Enums::hs_type return_type;
+			word_flags flags; // padding in halo, special flags in project yellow
 			cstring name;
 			hs_parse_proc parse;
 			hs_evaluate_proc evaluate;
 			cstring info;
 			cstring param_info;
-			int16 access;
+			Flags::hs_access_flag access;
 			int16 paramc;
 #pragma warning( push )
 #pragma warning( disable : 4200 ) // nonstandard extension used : zero-sized array in struct/union, Cannot generate copy-ctor or copy-assignment operator when UDT contains a zero-sized array
-			int16 params[];
+			Enums::hs_type params[];
 #pragma warning( pop )
-		};
+		}; BOOST_STATIC_ASSERT( sizeof(hs_function_definition) == 0x1C ); // size doesn't include [params]
 
 		// halo script accessible value
 		struct hs_global_definition
 		{
 			cstring name;
-			_enum type;
-			uint16 flags; // padding in halo, special flags in project yellow
+			Enums::hs_type type;
+			word_flags flags; // padding in halo, special flags in project yellow
 			union {
 				void* address;
 
@@ -137,9 +144,9 @@ namespace Yelo
 					datum_index _datum;
 				}Value;
 			};
-			int16 access;
+			Flags::hs_access_flag access;
 			PAD16;
-		};
+		}; BOOST_STATIC_ASSERT( sizeof(hs_global_definition) == 0x10 );
 
 		// This is the name of a blam global which isn't used in release builds of the game.
 		// We use this global to expose the build version to scripts without causing harm when not using OS.

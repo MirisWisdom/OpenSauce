@@ -13,11 +13,12 @@ BlamLib
 		* GamesPath: The path where external game engine definitions are located. Currently game definitions are loaded from the internal folder only.
 
 BlamLib.Test
-	Program.cs
-		* kTestResultsPath: The path where test results will be saved to.
-			NOTE: The various engine tests will create subfolders in this results path where they'll store their engine & platform specific results (ie, Halo2\Xbox)
-	Halo1\Halo1.cs
-		* kTestResultsTagsPath: Path where we'll save tags to
-		* kTestTagIndexTagsPath: Path which contains the "tags" folder which we'll perform TagIndex tests with
-	Halo2\Halo2.cs
-		* kTestTagIndexTagsPath: Path which contains the "tags" folder which we'll perform TagIndex tests with
+	_Paths.cs
+		Program
+			* kTestResultsPath: The path where test results will be saved to.
+				NOTE: The various engine tests will create subfolders in this results path where they'll store their engine & platform specific results (eg, Halo2\Xbox)
+		Halo1
+			* kTestResultsTagsPath: Path where we'll save tags to
+			* kTestTagIndexTagsPath: Path which contains the "tags" folder which we'll perform TagIndex tests with
+		Halo2
+			* kTestTagIndexTagsPath: Path which contains the "tags" folder which we'll perform TagIndex tests with
