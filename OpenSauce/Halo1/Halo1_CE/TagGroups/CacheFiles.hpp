@@ -24,6 +24,13 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum {
+			k_number_of_cached_map_files = 6,
+		};
+	};
+
 	namespace DataFiles
 	{
 		void Initialize();
@@ -48,14 +55,13 @@ namespace Yelo
 			struct {
 				struct {
 					HANDLE file_handle;
-					PAD32; // ?
-					PAD32; // ?
+					FILETIME time;
 				}runtime;
 				s_cache_header header;
-			}cache_files[6]; //0x444220, 0x4449D0 - get cache_files index by scenario name
+			}map_files[Enums::k_number_of_cached_map_files]; //0x444220, 0x4449D0 - get map_file index by scenario name
 
 			struct {
-				UNKNOWN_TYPE(bool);
+				bool copy_in_progress;
 				PAD8;
 				UNKNOWN_TYPE(int16);
 
@@ -89,9 +95,9 @@ namespace Yelo
 		// 0x497EC0, 0x48D8B0 - gets a map's description string
 		struct s_multiplayer_map_entry
 		{
-			cstring name;
+			char* name;
 			int32 index;
-			bool exists;
+			bool initialized;
 			// HACK: YELO ONLY FIELD
 			// This field is for yelo's use only, the game doesn't use it. 
 			// Enables us to later go thru and set which maps are built for 
@@ -106,9 +112,14 @@ namespace Yelo
 
 		cstring* MapListIgnoredMapNames();
 
+		// Root directory of the "maps\" folder, or a null string if relative to the EXE
+		char* RootDirectory(); // [256]
+
 		void Initialize();
 		void Dispose();
 
 		void MapListReIntialize();
+
+		bool ReadHeader(cstring relative_map_name, s_cache_header& out_header);
 	};
 };

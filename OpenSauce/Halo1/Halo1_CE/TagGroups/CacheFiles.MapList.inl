@@ -20,14 +20,21 @@
 t_multiplayer_map_data* MultiplayerMaps()		PTR_IMP_GET2(multiplayer_maps);
 cstring* MapListIgnoredMapNames()				PTR_IMP_GET2(map_list_ignored_map_names);
 
-API_FUNC_NAKED void MapListReIntialize()
+static void MapListInitialize()
 {
 	static uint32 Initialize = GET_FUNC_PTR(MULTIPLAYER_MAP_LIST_INITIALIZE);
+
+	__asm	call	Initialize
+	MapListInitializeYelo();
+}
+
+API_FUNC_NAKED void MapListReIntialize()
+{
 	static uint32 Dispose = GET_FUNC_PTR(MULTIPLAYER_MAP_LIST_DISPOSE);
 
 	__asm {
 		call	Dispose
-		call	Initialize
+		call	MapListInitialize
 		retn
 	}
 }

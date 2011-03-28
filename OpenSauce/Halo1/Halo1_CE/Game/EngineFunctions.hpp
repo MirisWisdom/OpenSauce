@@ -122,6 +122,8 @@ namespace Yelo
 		bool SoundCacheRequestSound(TagGroups::s_sound_permutation* sound_perm, 
 			bool add_to_cache = true, bool block_thread = false, bool unknown2 = false);
 
+		void MapListAddMap(cstring map_name, int32 map_index = 0x13);
+
 		namespace Console
 		{
 			// Process a fully qualified string of script functions

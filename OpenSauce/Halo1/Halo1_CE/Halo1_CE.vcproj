@@ -1118,6 +1118,10 @@
 					RelativePath=".\TagGroups\CacheFiles.MapList.inl"
 					>
 				</File>
+				<File
+					RelativePath=".\TagGroups\CacheFiles.YeloFiles.inl"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
