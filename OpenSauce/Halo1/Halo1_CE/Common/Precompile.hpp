@@ -45,6 +45,8 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <time.h>
+#include <io.h>
+#include <errno.h>
 
 #include <utility>
 

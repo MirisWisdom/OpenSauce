@@ -54,12 +54,30 @@
 			CAST_PTR(uint32*, PLATFORM_VALUE(0x4442EA,0x444A9A)), CAST_PTR(uint32*, PLATFORM_VALUE(0x444319,0x444AC9)), CAST_PTR(uint32*, PLATFORM_VALUE(0x44433A,0x444AEA)),
 		};
 
+		static void* K_CACHE_PATH_SPRINTF_CALLS[] = {
+			CAST_PTR(void*, PLATFORM_VALUE(0x44362F,0x444DB6)), 
+	#if PLATFORM_IS_USER
+			CAST_PTR(void*, 0x443EBB), 
+			CAST_PTR(void*, 0x4CCC7E),
+	#endif
+		};
+		static void* K_CACHE_PATH_SNPRINTF_CALLS[] = {
+	#if PLATFORM_IS_DEDI
+			CAST_PTR(void*, 0x444EA2), 
+	#endif
+			NULL,
+		};
+
 		ENGINE_PTR(s_cache_file_globals, cache_file_globals,0x642F78, 0x5B4DB8);
+		ENGINE_PTR(char, maps_folder_parent_dir,			0x68C5D0, 0x5F4E50);
 
 		ENGINE_PTR(t_multiplayer_map_data, multiplayer_maps,0x6ADD4C, 0x61654C);
+		ENGINE_PTR(cstring, map_list_map_extension,		0x6094B4, 0x563C70); // ".map"
+		ENGINE_PTR(cstring, map_list_map_extension_ref,	0x49810D, 0x48DAFD);
 		ENGINE_PTR(cstring, map_list_ignored_map_names,	0x629B3C, 0x59F4DC);
-		FUNC_PTR(MULTIPLAYER_MAP_LIST_INITIALIZE,	0x498280, 0x48DC70);
-		FUNC_PTR(MULTIPLAYER_MAP_LIST_DISPOSE,		0x498300, 0x48DCF0);
+		FUNC_PTR(MULTIPLAYER_MAP_LIST_INITIALIZE_CALL,	0x4CABB2, 0x4B3F1A);
+		FUNC_PTR(MULTIPLAYER_MAP_LIST_INITIALIZE,		0x498280, 0x48DC70);
+		FUNC_PTR(MULTIPLAYER_MAP_LIST_DISPOSE,			0x498300, 0x48DCF0);
 	};
 
 //////////////////////////////////////////////////////////////////////////

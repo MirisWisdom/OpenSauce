@@ -20,9 +20,10 @@
 #include "TagGroups/CacheFiles.hpp"
 
 #include <Blam/Halo1/BlamMemoryUpgrades.hpp>
+#include <Blam/Halo1/BlamDataFileUpgrades.hpp>
 #include "Memory/MemoryInterface.hpp"
 #include "Common/YeloSettings.hpp"
-#include <Blam/Halo1/BlamDataFileUpgrades.hpp>
+#include "Game/EngineFunctions.hpp"
 
 namespace Yelo
 {
@@ -39,10 +40,8 @@ namespace Yelo
 			static uint32 CLOSE = GET_FUNC_PTR(DATA_FILES_CLOSE);
 
 			__asm {
-				push	ecx
 				call	CLOSE
 				call	OPEN
-				pop		ecx
 				retn
 			}
 		}
@@ -62,11 +61,9 @@ namespace Yelo
 
 		static void ScenarioTagsLoadPreprocess(s_cache_header* cache_header)
 		{
-			// when a yelo made cache is loaded, this will be set
-			// to true, causing non-yelo made caches to load the 
-			// original data files. This isn't required as yelo 
-			// bases it's data files off the original ones, but 
-			// I thought it would be good practice %-)
+			// when a yelo made cache is loaded, this will be set to true, causing non-yelo-made 
+			// caches to load the original data files. This isn't required as yelo bases 
+			// its data files off the original ones, but I thought it would be good practice %-)
 			static bool revert_file_names = false;
 
 			if(cache_header->yelo.flags.uses_mod_data_files && cache_header->yelo.mod_name[0] != '\0')
@@ -181,17 +178,48 @@ namespace Yelo
 		};
 
 		s_cache_file_globals* CacheFileGlobals()		PTR_IMP_GET2(cache_file_globals);
+		char* RootDirectory()							PTR_IMP_GET2(maps_folder_parent_dir);
 
+#include "TagGroups/CacheFiles.YeloFiles.inl"
 #include "TagGroups/CacheFiles.MapList.inl"
 
 		void Initialize()
 		{
 			MemoryUpgradesInitialize();
+			CacheFormatPathHackInitialize();
+
+			Memory::WriteRelativeCall(MapListInitialize, GET_FUNC_VPTR(MULTIPLAYER_MAP_LIST_INITIALIZE_CALL));
 		}
 
 		void Dispose()
 		{
 			MemoryUpgradesDispose();
+		}
+
+		bool ReadHeader(cstring relative_map_name, s_cache_header& out_header)
+		{
+			bool result = false;
+
+			char map_path[MAX_PATH];
+			CacheFormatPathHack(map_path, "%s%s%s.map", RootDirectory(), "maps\\", relative_map_name);
+
+			HANDLE f = CreateFileA(map_path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+			if(f != INVALID_HANDLE_VALUE)
+			{
+				DWORD lpNumberOfBytesRead;
+				if(ReadFile(f, &out_header, sizeof(out_header), &lpNumberOfBytesRead, NULL) != FALSE && lpNumberOfBytesRead == sizeof(out_header))
+				{
+					if( out_header.ValidSignatures() && 
+						out_header.ValidFileSize(Enums::k_max_cache_size_upgrade) && 
+						out_header.ValidName() && 
+						out_header.version == s_cache_header::k_version)
+						result = true;
+				}
+
+				CloseHandle(f);
+			}
+
+			return result;
 		}
 	};
 };

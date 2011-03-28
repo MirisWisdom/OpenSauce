@@ -110,6 +110,18 @@ namespace Yelo
 #endif
 		}
 
+		void MapListAddMap(cstring map_name, int32 map_index)
+		{
+			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(MAP_LIST_ADD_MAP);
+
+			__asm {
+				push	map_index
+				mov		eax, map_name
+				call	TEMP_CALL_ADDR
+				add		esp, 4 * 1
+			}
+		}
+
 		namespace Console
 		{
 			void ProcessCommand(cstring command)

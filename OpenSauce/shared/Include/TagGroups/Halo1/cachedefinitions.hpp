@@ -35,13 +35,18 @@ namespace Yelo
 	struct s_cache_header
 	{
 		enum {
+			k_header_signature = 'head',
+			k_footer_signature = 'foot',
+
+			k_version = 609,
+
 			k_pad_size = 484 * sizeof(int32),
 		};
 
 		tag header_signature;
 
 		int32 version;
-		uint32 file_length;
+		int32 file_length;
 		uint32 compressed_file_length;
 
 		uint32 offset_to_index;
@@ -58,6 +63,10 @@ namespace Yelo
 		byte padding[k_pad_size - sizeof(s_cache_header_yelo)];
 
 		tag footer_signature;
+
+		bool ValidSignatures() const		{ return header_signature == k_header_signature && footer_signature == k_footer_signature; }
+		bool ValidFileSize(int32 max) const	{ return file_length >= 0 && file_length <= max; }
+		bool ValidName() const				{ return strnlen_s(name, Enums::k_tag_string_length) <= Enums::k_tag_string_length; }
 	}; BOOST_STATIC_ASSERT( sizeof(s_cache_header) == 0x800 );
 
 	struct s_cache_tag_instance
