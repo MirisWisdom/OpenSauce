@@ -24,7 +24,7 @@ namespace Yelo
 	{
 		enum {
 			k_cheape_cache_header_signature = 'head',
-			k_cheape_cache_footer_signature = 'foot',
+			k_cheape_cache_footer_signature = 'tail',
 			k_cheape_cache_version = 2,
 
 			k_cheape_cache_signature_halo1 = 'blm1',
@@ -69,7 +69,7 @@ namespace Yelo
 			uint32 Pad[495];
 			tag Tail;
 
-			bool SignaturesValid() const	{ return Head == Enums::k_cheape_cache_header_signature && Tail == Enums::k_cheape_cache_footer_signature;}
+			bool SignaturesValid() const	{ return Head == Enums::k_cheape_cache_header_signature && Tail == Enums::k_cheape_cache_footer_signature; }
 			bool VersionIsValid() const		{ return Version == Enums::k_cheape_cache_version; }
 			// Is the cache for 1st gen engine tools? IE, Halo Custom Edition
 			bool IsFirstGenCache() const	{ return EngineSignature == Enums::k_cheape_cache_signature_halo1 || EngineSignature == 0; }

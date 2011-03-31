@@ -122,6 +122,8 @@ namespace OpenSauceIDE.Cache
 			// tags. Once the task finishes, it releases the tag tree back to the user
 			m_extractAllWaitEvent.Reset();
 			TagTreeView.Enabled = false;
+			TagTreeView.UseWaitCursor = true;
+			StatusProgressCancel.Enabled = true;
 
 			System.Threading.ThreadPool.QueueUserWorkItem((obj) => {
 				foreach (TreeNode n in TagTreeView.Nodes)
@@ -129,6 +131,8 @@ namespace OpenSauceIDE.Cache
 
 				m_extractAllWaitEvent.Set();
 				TagTreeView.Enabled = true;
+				TagTreeView.UseWaitCursor = false;
+				StatusProgressCancel.Enabled = false;
 			});
 		}
 

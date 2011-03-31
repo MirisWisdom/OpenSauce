@@ -58,6 +58,7 @@ namespace OpenSauceIDE.Cache
 		BlamLib.BlamVersion m_engine;
 		BlamLib.Blam.CacheFile m_cache;
 		BlamLib.TagInterface.TagGroupCollection m_groupsInvalidForExtraction;
+		BackgroundWorker m_currentTask;
 		// Event signal for making sure we don't do anything crazy, like exit, while the cache is performing 
 		// a thread pool task. Eg, opening, extracting, etc.
 		System.Threading.AutoResetEvent m_waitEvent, m_extractAllWaitEvent;
@@ -349,5 +350,65 @@ namespace OpenSauceIDE.Cache
 			}
 		}
 		#endregion
+
+
+		void bgw_DoWorkBase(object sender, DoWorkEventArgs e)
+		{
+			m_currentTask = sender as BackgroundWorker;
+			this.BeginInvoke( new MethodInvoker( () => StatusProgressCancel.Enabled = true ));
+
+			var info = e.Argument as TagInstanceExtractionInfo;
+			info.InitializeBackgroundWorker(sender, e);
+		}
+		void bgw_ProgressChangedBase(object sender, ProgressChangedEventArgs e)
+		{
+			StatusProgressBar.Value = e.ProgressPercentage;
+		}
+		void bgw_RunWorkerCompletedBase(object sender, RunWorkerCompletedEventArgs e)
+		{
+			m_currentTask = null;
+			StatusProgressCancel.Enabled = false;
+
+			StatusProgressBar.Value = 0;
+
+			var info = e.Result as TagInstanceExtractionInfo;
+			if (!info.ExtractingSingleTag)
+			{
+				TagTreeView.Enabled = true;
+				TagTreeView.UseWaitCursor = false;
+			}
+		}
+
+		void bgwProcessTagTreeView_DoWork(object sender, DoWorkEventArgs e)
+		{
+			bgw_DoWorkBase(sender, e);
+		}
+		void bgwProcessTagTreeView_ProgressChanged(object sender, ProgressChangedEventArgs e)
+		{
+			bgw_ProgressChangedBase(sender, e);
+		}
+		void bgwProcessTagTreeView_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			bgw_RunWorkerCompletedBase(sender, e);
+		}
+
+		void bgwTagExtract_DoWork(object sender, DoWorkEventArgs e)
+		{
+			bgw_DoWorkBase(sender, e);
+		}
+		void bgwTagExtract_ProgressChanged(object sender, ProgressChangedEventArgs e)
+		{
+			bgw_ProgressChangedBase(sender, e);
+		}
+		void bgwTagExtract_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			bgw_RunWorkerCompletedBase(sender, e);
+		}
+
+		void OnCancelTask(object sender, EventArgs e)
+		{
+			if (m_currentTask != null)
+				m_currentTask.CancelAsync();
+		}
 	};
 }
