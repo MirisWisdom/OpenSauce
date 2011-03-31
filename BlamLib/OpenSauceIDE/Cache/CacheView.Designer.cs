@@ -49,6 +49,7 @@ namespace OpenSauceIDE.Cache
 			this.components = new System.ComponentModel.Container();
 			System.Windows.Forms.SplitContainer splitContainer1;
 			System.Windows.Forms.ToolStripMenuItem FileOpen;
+			System.Windows.Forms.StatusStrip StatusStrip;
 			this.TagTreeView = new System.Windows.Forms.TreeView();
 			this.PropGrigTag = new System.Windows.Forms.PropertyGrid();
 			this.PropGridCache = new System.Windows.Forms.PropertyGrid();
@@ -69,18 +70,21 @@ namespace OpenSauceIDE.Cache
 			this.MenuTagInstanceExtractFolder = new System.Windows.Forms.ToolStripMenuItem();
 			this.MenuTagInstanceExtractFolderAll = new System.Windows.Forms.ToolStripMenuItem();
 			this.MenuTagInstanceExtractRsrc = new System.Windows.Forms.ToolStripMenuItem();
-			this.StatusStrip = new System.Windows.Forms.StatusStrip();
 			this.StatusProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+			this.StatusProgressCancel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.StatusProgressText = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+			this.bgwProcessTagTreeView = new System.ComponentModel.BackgroundWorker();
+			this.bgwTagExtract = new System.ComponentModel.BackgroundWorker();
 			splitContainer1 = new System.Windows.Forms.SplitContainer();
 			FileOpen = new System.Windows.Forms.ToolStripMenuItem();
+			StatusStrip = new System.Windows.Forms.StatusStrip();
 			splitContainer1.Panel1.SuspendLayout();
 			splitContainer1.Panel2.SuspendLayout();
 			splitContainer1.SuspendLayout();
 			this.MainMenu.SuspendLayout();
 			this.MenuTagInstance.SuspendLayout();
-			this.StatusStrip.SuspendLayout();
+			StatusStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// splitContainer1
@@ -159,7 +163,7 @@ namespace OpenSauceIDE.Cache
 			FileOpen.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			FileOpen.ForeColor = System.Drawing.Color.LightGreen;
 			FileOpen.Name = "FileOpen";
-			FileOpen.Size = new System.Drawing.Size(152, 22);
+			FileOpen.Size = new System.Drawing.Size(100, 22);
 			FileOpen.Text = "Open";
 			FileOpen.Click += new System.EventHandler(this.OnFileOpen);
 			// 
@@ -193,7 +197,7 @@ namespace OpenSauceIDE.Cache
 			this.FileClose.Enabled = false;
 			this.FileClose.ForeColor = System.Drawing.Color.LightGreen;
 			this.FileClose.Name = "FileClose";
-			this.FileClose.Size = new System.Drawing.Size(152, 22);
+			this.FileClose.Size = new System.Drawing.Size(100, 22);
 			this.FileClose.Text = "Close";
 			this.FileClose.Click += new System.EventHandler(this.OnFileClose);
 			// 
@@ -227,7 +231,7 @@ namespace OpenSauceIDE.Cache
 			this.CacheToolsExtractAllChecked.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			this.CacheToolsExtractAllChecked.ForeColor = System.Drawing.Color.LimeGreen;
 			this.CacheToolsExtractAllChecked.Name = "CacheToolsExtractAllChecked";
-			this.CacheToolsExtractAllChecked.Size = new System.Drawing.Size(152, 22);
+			this.CacheToolsExtractAllChecked.Size = new System.Drawing.Size(126, 22);
 			this.CacheToolsExtractAllChecked.Text = "Checked";
 			this.CacheToolsExtractAllChecked.Click += new System.EventHandler(this.OnTagInstanceExtractAll);
 			// 
@@ -236,7 +240,7 @@ namespace OpenSauceIDE.Cache
 			this.CacheToolsExtractAllUnchecked.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			this.CacheToolsExtractAllUnchecked.ForeColor = System.Drawing.Color.LimeGreen;
 			this.CacheToolsExtractAllUnchecked.Name = "CacheToolsExtractAllUnchecked";
-			this.CacheToolsExtractAllUnchecked.Size = new System.Drawing.Size(152, 22);
+			this.CacheToolsExtractAllUnchecked.Size = new System.Drawing.Size(126, 22);
 			this.CacheToolsExtractAllUnchecked.Text = "Unchecked";
 			this.CacheToolsExtractAllUnchecked.Click += new System.EventHandler(this.OnTagInstanceExtractAll);
 			// 
@@ -324,16 +328,17 @@ namespace OpenSauceIDE.Cache
 			// 
 			// StatusStrip
 			// 
-			this.StatusStrip.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.StatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			StatusStrip.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			StatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StatusProgressBar,
+            this.StatusProgressCancel,
             this.StatusProgressText});
-			this.StatusStrip.Location = new System.Drawing.Point(0, 561);
-			this.StatusStrip.Name = "StatusStrip";
-			this.StatusStrip.ShowItemToolTips = true;
-			this.StatusStrip.Size = new System.Drawing.Size(792, 22);
-			this.StatusStrip.TabIndex = 6;
-			this.StatusStrip.Text = "StatusStrip";
+			StatusStrip.Location = new System.Drawing.Point(0, 561);
+			StatusStrip.Name = "StatusStrip";
+			StatusStrip.ShowItemToolTips = true;
+			StatusStrip.Size = new System.Drawing.Size(792, 22);
+			StatusStrip.TabIndex = 6;
+			StatusStrip.Text = "StatusStrip";
 			// 
 			// StatusProgressBar
 			// 
@@ -341,12 +346,39 @@ namespace OpenSauceIDE.Cache
 			this.StatusProgressBar.Size = new System.Drawing.Size(200, 16);
 			this.StatusProgressBar.ToolTipText = "Progress of the current task";
 			// 
+			// StatusProgressCancel
+			// 
+			this.StatusProgressCancel.Enabled = false;
+			this.StatusProgressCancel.Name = "StatusProgressCancel";
+			this.StatusProgressCancel.Size = new System.Drawing.Size(64, 17);
+			this.StatusProgressCancel.Text = "Cancel Task";
+			this.StatusProgressCancel.ToolTipText = "Cancel the current task";
+			// 
 			// StatusProgressText
 			// 
 			this.StatusProgressText.Name = "StatusProgressText";
-			this.StatusProgressText.Size = new System.Drawing.Size(37, 17);
+			this.StatusProgressText.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+			this.StatusProgressText.Size = new System.Drawing.Size(480, 17);
+			this.StatusProgressText.Spring = true;
 			this.StatusProgressText.Text = "trololo";
 			this.StatusProgressText.ToolTipText = "Description of the current task";
+			this.StatusProgressText.Click += new System.EventHandler(this.OnCancelTask);
+			// 
+			// bgwProcessTagTreeView
+			// 
+			this.bgwProcessTagTreeView.WorkerReportsProgress = true;
+			this.bgwProcessTagTreeView.WorkerSupportsCancellation = true;
+			this.bgwProcessTagTreeView.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwProcessTagTreeView_DoWork);
+			this.bgwProcessTagTreeView.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwProcessTagTreeView_RunWorkerCompleted);
+			this.bgwProcessTagTreeView.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bgwProcessTagTreeView_ProgressChanged);
+			// 
+			// bgwTagExtract
+			// 
+			this.bgwTagExtract.WorkerReportsProgress = true;
+			this.bgwTagExtract.WorkerSupportsCancellation = true;
+			this.bgwTagExtract.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgwTagExtract_DoWork);
+			this.bgwTagExtract.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgwTagExtract_RunWorkerCompleted);
+			this.bgwTagExtract.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bgwTagExtract_ProgressChanged);
 			// 
 			// CacheView
 			// 
@@ -356,7 +388,7 @@ namespace OpenSauceIDE.Cache
 			this.ClientSize = new System.Drawing.Size(792, 583);
 			this.Controls.Add(splitContainer1);
 			this.Controls.Add(this.MainMenu);
-			this.Controls.Add(this.StatusStrip);
+			this.Controls.Add(StatusStrip);
 			this.ForeColor = System.Drawing.Color.LightGreen;
 			this.MainMenuStrip = this.MainMenu;
 			this.Name = "CacheView";
@@ -372,8 +404,8 @@ namespace OpenSauceIDE.Cache
 			this.MainMenu.ResumeLayout(false);
 			this.MainMenu.PerformLayout();
 			this.MenuTagInstance.ResumeLayout(false);
-			this.StatusStrip.ResumeLayout(false);
-			this.StatusStrip.PerformLayout();
+			StatusStrip.ResumeLayout(false);
+			StatusStrip.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -392,7 +424,6 @@ namespace OpenSauceIDE.Cache
 		private System.Windows.Forms.ToolStripMenuItem ToolsMenu;
 		private System.Windows.Forms.PropertyGrid PropGrigTag;
 		private System.Windows.Forms.ContextMenuStrip MenuTagInstance;
-		private System.Windows.Forms.StatusStrip StatusStrip;
 		private System.Windows.Forms.ToolStripMenuItem MenuTagInstanceExtractAs;
 		private System.Windows.Forms.ToolTip toolTip1;
 		private System.Windows.Forms.ToolStripMenuItem MenuTagInstanceExtractFolder;
@@ -405,5 +436,8 @@ namespace OpenSauceIDE.Cache
 		private System.Windows.Forms.ToolStripMenuItem CacheToolsExtractAllUnchecked;
 		private System.Windows.Forms.ToolStripMenuItem CacheToolsDontOverwrite;
 		private System.Windows.Forms.ToolStripMenuItem CacheToolsOutputTagDatabase;
+		private System.ComponentModel.BackgroundWorker bgwProcessTagTreeView;
+		private System.ComponentModel.BackgroundWorker bgwTagExtract;
+		private System.Windows.Forms.ToolStripStatusLabel StatusProgressCancel;
 	}
 }

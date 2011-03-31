@@ -22,6 +22,14 @@ namespace OpenSauceIDE.Cache
 {
 	partial class CacheView
 	{
+		enum TagExtractionSender
+		{
+			/// <summary>Tag extraction was initiated by a tag tree operation</summary>
+			TagTree,
+			/// <summary>Tag extraction was initiated by a tag instance operation</summary>
+			TagInstance,
+		};
+
 		BlamLib.Blam.CacheExtractionArguments GetTagInstanceExtractionArguments(string output_dir, bool with_dependents)
 		{
 			return new BlamLib.Blam.CacheExtractionArguments(output_dir,
@@ -32,11 +40,7 @@ namespace OpenSauceIDE.Cache
 		}
 		class TagInstanceExtractionInfo
 		{
-			public BlamLib.Blam.CacheExtractionArguments Arguments;
-			public BlamLib.Blam.CacheIndex.Item Instance;
-
-			public string BaseDirectory, NameOverride;
-
+			TagExtractionSender m_sender;
 			public bool Result;
 
 			/// <summary>Constructor for processing a tag hierarchy</summary>
@@ -44,8 +48,7 @@ namespace OpenSauceIDE.Cache
 			/// <param name="instance"></param>
 			public TagInstanceExtractionInfo(BlamLib.Blam.CacheExtractionArguments args, BlamLib.Blam.CacheIndex.Item instance)
 			{
-				Arguments = args;
-				Instance = instance;
+				InitializeStateForTagHierarchy(args, instance);
 			}
 			/// <summary>Constructor for processing a single tag</summary>
 			/// <param name="instance"></param>
@@ -53,12 +56,74 @@ namespace OpenSauceIDE.Cache
 			/// <param name="name_override"></param>
 			public TagInstanceExtractionInfo(BlamLib.Blam.CacheIndex.Item instance, string base_dir, string name_override)
 			{
+				InitializeStateForTagInstance(instance, base_dir, name_override);
+			}
+
+			#region Initialize State
+			public BlamLib.Blam.CacheExtractionArguments Arguments;
+			public BlamLib.Blam.CacheIndex.Item Instance;
+
+			public string BaseDirectory, NameOverride;
+
+			/// <summary>Initialize state for processing a tag hierarchy</summary>
+			/// <param name="args"></param>
+			/// <param name="instance"></param>
+			public void InitializeStateForTagHierarchy(BlamLib.Blam.CacheExtractionArguments args, BlamLib.Blam.CacheIndex.Item instance)
+			{
+				m_sender = TagExtractionSender.TagTree;
+
+				Arguments = args;
+				Instance = instance;
+			}
+			/// <summary>Initialize state for processing a single tag</summary>
+			/// <param name="instance"></param>
+			/// <param name="base_dir"></param>
+			/// <param name="name_override"></param>
+			public void InitializeStateForTagInstance(BlamLib.Blam.CacheIndex.Item instance, string base_dir, string name_override)
+			{
+				m_sender = TagExtractionSender.TagInstance;
+
 				Instance = instance;
 				BaseDirectory = base_dir;
 				NameOverride = name_override;
 			}
+			#endregion
 
-			public bool ExtractingSingleTag { get { return Arguments == null; } }
+			/// <summary>Are we extracting for a single tag only?</summary>
+			public bool ExtractingSingleTag { get { return m_sender == TagExtractionSender.TagInstance; } }
+
+			#region Background worker interface
+			public System.ComponentModel.BackgroundWorker BgWorker;
+			public System.ComponentModel.DoWorkEventArgs BgWorkerArgs;
+
+			public void InitializeBackgroundWorker(object sender, System.ComponentModel.DoWorkEventArgs args)
+			{
+				BgWorker = sender as System.ComponentModel.BackgroundWorker;
+				BgWorkerArgs = args;
+			}
+			/// <summary>Is this task waiting to be canceled?</summary>
+			/// <returns></returns>
+			public bool CancelRequested()
+			{
+				if (BgWorker != null && BgWorker.CancellationPending)
+					return BgWorkerArgs.Cancel = true;
+
+				return false;
+			}
+
+			int m_progressPercent = 0;
+			public void InitializeProgress()
+			{
+				m_progressPercent = 0;
+			}
+			public void AdvanceProgress(int advancement_percent)
+			{
+				m_progressPercent += advancement_percent;
+
+				if (BgWorker != null)
+					BgWorker.ReportProgress(m_progressPercent, this);
+			}
+			#endregion
 		};
 
 		void TagInstanceExtraction(object state) // threaded

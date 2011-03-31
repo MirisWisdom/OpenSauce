@@ -236,12 +236,34 @@ namespace BlamLib.CheApe
 		}
 
 
+		static void ShowMessageInForm(System.Windows.Forms.Form owner_form, string msg)
+		{
+			if (owner_form != null)
+			{
+				owner_form.BeginInvoke(new Action( () => 
+						System.Windows.Forms.MessageBox.Show(owner_form, msg)
+					));
+			}
+			else System.Windows.Forms.MessageBox.Show(msg);
+		}
+		static void ShowMessageInForm(System.Windows.Forms.Form owner_form, string caption, string fmt, params object[] args)
+		{
+			string msg = string.Format(fmt, args);
+			if (owner_form != null)
+			{
+				owner_form.BeginInvoke(new Action( () => 
+						System.Windows.Forms.MessageBox.Show(owner_form, msg, caption)
+					));
+			}
+			else System.Windows.Forms.MessageBox.Show(msg, caption);
+		}
 		bool imported = false; // have we even ran one import yet?
 
 		/// <summary>
 		/// Import the project files
 		/// </summary>
-		public void Import()
+		/// <param name="owner_form"></param>
+		public void Import(System.Windows.Forms.Form owner_form)
 		{
 			const string k_error = "A parsing error (in {0}) has been encountered, please check the debug.log file.{1}";
 
@@ -265,13 +287,11 @@ namespace BlamLib.CheApe
 
 			}catch(Debug.ExceptionLog)
 			{
-				System.Windows.Forms.MessageBox.Show(string.Format(k_error,
-					"CheApe", is_embedded ? " (Embedded)" : ""), dbg_name);
+				ShowMessageInForm(owner_form, dbg_name, k_error, "CheApe", is_embedded ? " (Embedded)" : "");
 				return;
 			}catch(System.Exception)
 			{
-				System.Windows.Forms.MessageBox.Show(string.Format(k_error,
-					".NET", is_embedded ? " (Embedded)" : ""), dbg_name);
+				ShowMessageInForm(owner_form, dbg_name, k_error, ".NET", is_embedded ? " (Embedded)" : "");
 				return;
 			}
 
@@ -288,8 +308,8 @@ namespace BlamLib.CheApe
 			if (imported && reimport)
 				OwnerState.Compiler.Reset();
 
-			if(!imported || reimport)				
-				Import();
+			if(!imported || reimport)
+				Import(owner_form);
 
 			// owner_form should be allowed to be null as the last time I checked MSBOX's implementation in Reflector, 
 			// its code just calls GetActiveWindow() when [owner] is null
@@ -297,11 +317,11 @@ namespace BlamLib.CheApe
 			try { OwnerState.Compiler.Write(folder, fileName); }
 			catch (Debug.ExceptionLog)
 			{
-				System.Windows.Forms.MessageBox.Show(owner_form, "A compiler error has been encountered, please check the debug.log file", fileName);
+				ShowMessageInForm(owner_form, fileName, "A compiler error has been encountered, please check the debug.log file");
 				return;
 			}
 
-			System.Windows.Forms.MessageBox.Show(owner_form, "Build Finished!");
+			ShowMessageInForm(owner_form, "Build Finished!");
 		}
 
 		/// <summary>
