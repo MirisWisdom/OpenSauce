@@ -66,6 +66,7 @@ namespace Yelo
 				if(is_valid = (value != NULL))
 				{
 					strcpy_s(root_path, value);
+					PathAppendA(root_path, "\\");
 
 					strcpy_s(paths.data, root_path);
 					strcpy_s(paths.maps, root_path);
@@ -99,12 +100,7 @@ namespace Yelo
 					PathAppendA(paths.data, "\\");
 				}
 
-				path_element = element->FirstChildElement("maps");
-				if(path_element != NULL && (value = path_element->GetText()) != NULL)
-				{
-					strcpy_s(paths.maps, value);
-					PathAppendA(paths.maps, "\\");
-				}
+				// We don't process a "maps" path element anymore, that's now just based on "root"
 
 				path_element = element->FirstChildElement("tagsName");
 				// If no explicit name is given, assume the default of "tags" is the name
@@ -114,11 +110,11 @@ namespace Yelo
 				// Finish tags path here
 				if(is_valid = (value != NULL && value[0] != '\0'))
 				{
-					PathAppendA(paths.tags, value);
-					PathAppendA(paths.tags, "\\");
-
 					strcpy_s(paths.tags_folder_name, value);
 					PathAppendA(paths.tags_folder_name, "\\");
+
+					// [tags_folder_name] already has the directory separator appended
+					PathAppendA(paths.tags, paths.tags_folder_name);
 				}
 			}
 
@@ -175,6 +171,7 @@ namespace Yelo
 		// Sets [profile_name] to an empty string if an option isn't found.
 		static void GetCommandLineDefaultProfile(char profile_name[64])
 		{
+#define CMDLINE_ARG_EDITOR_PROFILE L"-editorProfile:"
 			profile_name[0] = '\0';
 
 			int cmds_count = 0;
@@ -182,21 +179,22 @@ namespace Yelo
 
 			for(int x = 0; x < cmds_count; x++)
 			{
-				wcstring cmd = wcsstr(cmds[x], L"-editorProfile:");
+				wcstring cmd = wcsstr(cmds[x], CMDLINE_ARG_EDITOR_PROFILE);
 
 				if(cmd != NULL)
 				{
-					const size_t k_parameter_length = NUMBEROF(L"-editorProfile:")-1;
+					const size_t k_parameter_length = NUMBEROF(CMDLINE_ARG_EDITOR_PROFILE)-1;
 					cmd = cmd + k_parameter_length;
 
 					const size_t length = wcslen(cmd);
 
 					if(length > 0)
-						wstring_to_string(profile_name, 64, cmd);
+						wstring_to_string(profile_name, NUMBEROF(profile_name)-1, cmd);
 				}
 			}
 
 			LocalFree(cmds);
+#undef CMDLINE_ARG_EDITOR_PROFILE
 		}
 
 		void LoadSettings()

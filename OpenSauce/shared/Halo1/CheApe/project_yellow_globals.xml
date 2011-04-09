@@ -80,9 +80,11 @@
 		<TagGroup name="project_yellow_globals" groupTag="gelo" version="1">
 			<field type="ShortInteger" name="version" locked="true" />
 			<field type="WordFlags" name="flags" definition="project_yellow_global_flags" />
+			<field type="LongInteger" name="base_address" locked="true" />
 			<field type="String" name="mod name" tooltip="name of the engine 'mod' these globals and, inheriting scenario, are for" />
 
 			<field type="TagReference" name="global explicit references" definition="tag_collection_reference" />
+			<field type="Pad" definition="32" />
 
 			<field type="Block" name="preprocess" definition="preprocess_block" />
 
@@ -96,7 +98,8 @@
 			<field type="Pad" definition="20" />
 
 			<field type="Explanation" name="Gameplay" definition="" />
-			<field type="Block" name="game type players" definition="gameplay_game_type_player" />
+			<!--<field type="Block" name="game type players" definition="gameplay_game_type_player" />-->
+			<field type="Pad" definition="12" />
 			<field type="Pad" definition="24" />
 
 			<field type="Explanation" name="Scripting" definition="External scripting definitions (Yelo)" />

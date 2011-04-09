@@ -95,10 +95,12 @@ namespace Yelo
 				TAG_FLAG16(hide_shield_when_zoomed);
 				TAG_FLAG16(hide_motion_sensor_when_zoomed);
 			}flags; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
+			TAG_FIELD(uint32, base_address);
 
 			TAG_FIELD(tag_string, mod_name, "", "name of the engine 'mod' these globals and, inheriting scenario, are for");
 
 			TAG_FIELD(tag_reference, explicit_references, "tagc");
+			TAG_PAD(int32, 8);
 
 			/* !-- Preprocessing --! */
 			// PREPROCESSING DOESN'T EXIST AT RUNTIME. Only for the tools
@@ -168,7 +170,8 @@ namespace Yelo
 			};
 
 			struct {
-				TAG_TBLOCK(game_type_players, gameplay_game_type_player); // 64
+				//TAG_TBLOCK(game_type_players, gameplay_game_type_player); // 64
+				TAG_PAD(tag_block, 1);
 
 				TAG_PAD(tag_block, 2); // 24
 			}gameplay;

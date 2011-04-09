@@ -24,6 +24,17 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 
 	static s_cache_header_yelo yelo_cache_header_globals;
 
+	static void InitializeHeaderGlobals(bool using_mod_sets, cstring mod_name, bool use_memory_upgrades)
+	{
+		s_cache_header_yelo& header = yelo_cache_header_globals;
+
+		header.flags.uses_mod_data_files = true;
+		strcpy_s(header.mod_name, mod_name);
+
+		if(header.flags.uses_memory_upgrades = use_memory_upgrades)
+			header.k_memory_upgrade_increase_amount = K_MEMORY_UPGRADE_INCREASE_AMOUNT;
+	}
+
 	namespace AddressOf
 	{
 		// Addresses which check a counter against the max tag limit

@@ -124,20 +124,18 @@ static void PLATFORM_API build_cache_file_for_scenario_extended(void** arguments
 		// check if the user wants to copy the base data files
 		if(copy_data_files_first)
 			data_files.CopyStock();
-
-		// update yelo header globals too
-		BuildCacheFileEx::MemoryUpgrades::yelo_cache_header_globals.flags.uses_mod_data_files = true;
-		strcpy_s(BuildCacheFileEx::MemoryUpgrades::yelo_cache_header_globals.mod_name, args->mod_name);
 	}
 	//////////////////////////////////////////////////////////////////////////
 
 
-	if(BuildCacheFileEx::MemoryUpgrades::yelo_cache_header_globals.flags.uses_memory_upgrades = use_memory_upgrades)
-		BuildCacheFileEx::MemoryUpgrades::yelo_cache_header_globals.k_memory_upgrade_increase_amount = K_MEMORY_UPGRADE_INCREASE_AMOUNT;
+	BuildCacheFileEx::MemoryUpgrades::InitializeHeaderGlobals(using_mod_sets, args->mod_name, use_memory_upgrades);
 
 	// open the data files for referencing and write
 	s_build_cache_file_for_scenario& bcffs = build_cache_file_for_scenario_internals;
 	bcffs.DataFilesOpen(data_files, store_resources);
+
+	// If we're using OS's memory upgrades, force tool to use our file naming convention
+	if(use_memory_upgrades) bcffs.InitializeBuildCacheFileEndSprintfOverride();
 
 	BuildCacheFileEx::Initialize(!use_memory_upgrades);
 

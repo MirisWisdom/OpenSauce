@@ -53,8 +53,9 @@ struct s_build_cache_file_for_scenario {
 	typedef bool (PLATFORM_API* _data_file_open)(_enum type, cstring name, bool writable);
 	typedef bool (PLATFORM_API* _data_file_close)(_enum type);
 
-	_data_file_open data_file_open;
-	_data_file_close data_file_close;
+	cstring*			data_file_open_path_format;	// address which references "maps\\%s.map"
+	_data_file_open		data_file_open;
+	_data_file_close	data_file_close;
 
 	s_build_cache_file_globals* globals;
 
@@ -63,13 +64,18 @@ struct s_build_cache_file_for_scenario {
 	typedef bool (PLATFORM_API* _build_cache_file_end)(s_cache_header* header);
 	typedef void (PLATFORM_API* _build_cace_file_failed)();
 
-	__build_cache_file_for_scenario _build_cache_file_for_scenario;
-	_import_class_proc build_cache_file_for_scenario_command;
-	_build_cache_file_begin build_cache_file_begin;
-	_build_cache_file_end build_cache_file_end;
-	_build_cace_file_failed build_cace_file_failed;
+	__build_cache_file_for_scenario	_build_cache_file_for_scenario;
+	_import_class_proc				build_cache_file_for_scenario_command;
+	_build_cache_file_begin			build_cache_file_begin;
+	_build_cache_file_end			build_cache_file_end;
+	_build_cace_file_failed			build_cache_file_failed;
+
+	void*		build_cache_file_end_sprintf_call;		// address of the call to sprintf for building the output map file path
+	cstring*	build_cache_file_output_path_format;	// address which references "%s%s%s.map"
+	char*		build_cache_file_output_directory;		static const size_t k_build_cache_file_output_directory_size = 256;
 
 
+	// Initialize the cache and data_file file systems
 	static void InitializeFileSystem(c_data_files& data_files, 
 		cstring mod_name, bool using_mod_sets);
 
@@ -77,20 +83,36 @@ struct s_build_cache_file_for_scenario {
 	void DataFilesClose(bool store_resources);
 	void BuildPostprocess(cstring mod_name, bool using_mod_sets);
 
+	// Forces tool to use our own sprintf-like function which uses the OS cache file naming convention
+	void InitializeBuildCacheFileEndSprintfOverride();
+	static void __cdecl BuildCacheFileEndSprintfOverride(char* buffer, cstring format, 
+		cstring output_directory, cstring map_dir, cstring scenario_name);
+
+	// Force Tool to use the Yelo data_file path scheme
+	// If the user has defined their maps directory in the settings, this will use it.
+	void UseYeloDataFilePathScheme();	// "maps\data_files\"
+	// Force Tool to use the Yelo map file naming scheme
+	void UseYeloMapNamingScheme();		// "<map-name>.yelo"
+
 }build_cache_file_for_scenario_internals = {
 	false,
 	NULL,
 
-	CAST_PTR(s_build_cache_file_for_scenario::_data_file_open, 0x4B9F10),
-	CAST_PTR(s_build_cache_file_for_scenario::_data_file_close, 0x4BA100),
+	CAST_PTR(cstring*,															0x4B9FB6),
+	CAST_PTR(s_build_cache_file_for_scenario::_data_file_open,					0x4B9F10),
+	CAST_PTR(s_build_cache_file_for_scenario::_data_file_close,					0x4BA100),
 
-	CAST_PTR(s_build_cache_file_globals*, 0x10A1030),
+	CAST_PTR(s_build_cache_file_globals*,										0x10A1030),
 
-	CAST_PTR(s_build_cache_file_for_scenario::__build_cache_file_for_scenario, 0x4553A0),
-	CAST_PTR(_import_class_proc, 0x455640),
-	CAST_PTR(s_build_cache_file_for_scenario::_build_cache_file_begin, 0x4B9250),
-	CAST_PTR(s_build_cache_file_for_scenario::_build_cache_file_end, 0x4B93B0),
-	CAST_PTR(s_build_cache_file_for_scenario::_build_cace_file_failed, 0x4B9030),
+	CAST_PTR(s_build_cache_file_for_scenario::__build_cache_file_for_scenario,	0x4553A0),
+	CAST_PTR(_import_class_proc,												0x455640),
+	CAST_PTR(s_build_cache_file_for_scenario::_build_cache_file_begin,			0x4B9250),
+	CAST_PTR(s_build_cache_file_for_scenario::_build_cache_file_end,			0x4B93B0),
+	CAST_PTR(s_build_cache_file_for_scenario::_build_cace_file_failed,			0x4B9030),
+
+	CAST_PTR(void*,																0x4B944D),
+	CAST_PTR(cstring*,															0x4B9448),
+	CAST_PTR(char*,																0x10FD510),
 };
 
 
@@ -104,11 +126,10 @@ void s_build_cache_file_for_scenario::InitializeFileSystem(c_data_files& data_fi
 	strcpy_s(maps_path, settings_path);
 	_mkdir(maps_path);
 
-	char yelo_path[MAX_PATH];
-	sprintf_s(yelo_path, "%s%s", maps_path, "yelo\\");
-	_mkdir(yelo_path);
-
 	data_files.InitializeForCache(using_mod_sets, mod_name, maps_path);
+
+	if(using_mod_sets)
+		build_cache_file_for_scenario_internals.UseYeloDataFilePathScheme();
 }
 
 void s_build_cache_file_for_scenario::DataFilesOpen(const c_data_files& data_files, bool store_resources)
@@ -157,4 +178,31 @@ void s_build_cache_file_for_scenario::BuildPostprocess(cstring mod_name, bool us
 	}
 	else
 		printf_s("Engine Mod: build failed, '%s' wasn't added to Yelo mod database.\n", mod_name);
+}
+
+void s_build_cache_file_for_scenario::InitializeBuildCacheFileEndSprintfOverride()
+{
+	Memory::WriteRelativeCall(BuildCacheFileEndSprintfOverride, build_cache_file_end_sprintf_call);
+}
+
+void __cdecl s_build_cache_file_for_scenario::BuildCacheFileEndSprintfOverride(
+	char* buffer, 
+	cstring format,				// same pointer as [build_cache_file_output_path_format]
+	cstring output_directory,	// same pointer as [build_cache_file_output_directory]
+	cstring map_dir, cstring scenario_name)
+{
+	sprintf(buffer, "%s%s.yelo", Settings::Get().GetMapsPath(), scenario_name);
+}
+void s_build_cache_file_for_scenario::UseYeloDataFilePathScheme()
+{
+	static char data_file_path_format[MAX_PATH];
+
+	strcpy_s(data_file_path_format, Settings::Get().GetMapsPath());
+	strcat_s(data_file_path_format, "%s.map");
+
+	*data_file_open_path_format = data_file_path_format;
+}
+void s_build_cache_file_for_scenario::UseYeloMapNamingScheme()
+{
+	*build_cache_file_output_path_format = "%s%s%s.yelo";
 }

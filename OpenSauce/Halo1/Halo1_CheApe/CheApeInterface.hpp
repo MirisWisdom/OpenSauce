@@ -18,6 +18,9 @@
 */
 #pragma once
 
+// Name of the memory map file with definitions for CheApe to load
+#define CHEAPE_CACHE_FILE_NAME "CheApe.map"
+
 namespace Yelo
 {
 	namespace CheApe

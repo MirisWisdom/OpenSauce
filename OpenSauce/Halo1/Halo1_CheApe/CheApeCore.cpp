@@ -58,7 +58,7 @@ namespace Yelo
 					if(!file_handle)
 					{
 						YELO_ERROR(_error_message_priority_none, 
-							"CheApe: Failed to load tag_groups.map file!");
+							"CheApe: Failed to load " CHEAPE_CACHE_FILE_NAME " file!");
 						_InitError = k_error_LoadCacheFile;
 
 						return false;
@@ -73,7 +73,7 @@ namespace Yelo
 					if(invalid_reason_str != NULL)
 					{
 						YELO_ERROR(_error_message_priority_none, 
-							"CheApe: Bad tag_groups.map file (%s)", invalid_reason_str);
+							"CheApe: Bad " CHEAPE_CACHE_FILE_NAME " file (%s)", invalid_reason_str);
 						_InitError = k_error_LoadCacheFile;
 
 						fclose(file_handle);
@@ -149,7 +149,7 @@ namespace Yelo
 		{
 			if(_InitError > k_error_none) return;
 
-			if(!_globals.cache.Read("tag_groups.map"))
+			if(!_globals.cache.Read(CHEAPE_CACHE_FILE_NAME))
 				return;
 
 			// use the memory following the cache file data for the tag groups address list

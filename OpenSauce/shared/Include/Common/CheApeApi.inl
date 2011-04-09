@@ -21,27 +21,36 @@ extern "C" {
 	bool __declspec( dllexport ) CheApeApi_GetPchBuildDate(__in DWORD nBufferLength,
 		__out_ecount_part_opt(nBufferLength, return + 1) LPWSTR lpBuffer)
 	{
-		return wcscpy_s(lpBuffer, nBufferLength, BOOST_PP_CAT(L, __TIMESTAMP__)) == k_errnone;
+		if(lpBuffer != NULL)
+			return wcscpy_s(lpBuffer, nBufferLength, BOOST_PP_CAT(L, __TIMESTAMP__)) == k_errnone;
+		
+		return false;
 	}
 
 	bool __declspec( dllexport ) CheApeApi_GetPchPath(__in DWORD nBufferLength,
 		__out_ecount_part_opt(nBufferLength, return + 1) LPWSTR lpBuffer)
 	{
-		return wcscpy_s(lpBuffer, nBufferLength, k_cheape_api_pch_path) == k_errnone;
+		if(lpBuffer != NULL)
+			return wcscpy_s(lpBuffer, nBufferLength, k_cheape_api_pch_path) == k_errnone;
+
+		return false;
 	}
 
 	bool __declspec( dllexport ) CheApeApi_GetTargetToolName(__in DWORD nBufferLength,
 		__out_ecount_part_opt(nBufferLength, return + 1) LPWSTR lpBuffer)
 	{
-		return wcscpy_s(lpBuffer, nBufferLength, 
-			#if defined(PLATFORM_TYPE_GUERILLA)
-				L"Guerilla"
-			#elif defined(PLATFORM_TYPE_TOOL)
-				L"Tool"
-			#elif defined(PLATFORM_TYPE_SAPIEN)
-				L"Sapien"
-			#endif
-		) == k_errnone;
+		if(lpBuffer != NULL)
+			return wcscpy_s(lpBuffer, nBufferLength, 
+				#if defined(PLATFORM_TYPE_GUERILLA)
+					L"Guerilla"
+				#elif defined(PLATFORM_TYPE_TOOL)
+					L"Tool"
+				#elif defined(PLATFORM_TYPE_SAPIEN)
+					L"Sapien"
+				#endif
+			) == k_errnone;
+
+		return false;
 	}
 
 	bool __declspec( dllexport ) CheApeApi_IsDebug()
