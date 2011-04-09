@@ -128,6 +128,130 @@ namespace Yelo
 			false,
 		};
 
+		static void YeloDefinitionsInitialize(tag_group_definition* py_globals_definition, tag_group_definition* py_definition)
+		{
+			int32 field_index = NONE;
+
+			//////////////////////////////////////////////////////////////////////////
+			{// project_yellow_globals
+				py_globals_definition->postprocess_proc = &TagGroups::py_globals_group_postprocess;
+
+				//////////////////////////////////////////////////////////////////////////
+				{// preprocess_block
+					field_index = TagGroups::tag_block_find_field(py_globals_definition->definition, Enums::_field_block, "preprocess");
+					if(field_index == NONE)
+					{
+						YELO_ERROR(_error_message_priority_assert, 
+							"CheApe: preprocess_block not found!");
+					}
+
+					tag_block_definition* preprocess_block_def = py_globals_definition->definition->fields[field_index].Definition<tag_block_definition>();
+					field_index = TagGroups::tag_block_find_field(preprocess_block_def, Enums::_field_block, "campaign");
+					if(field_index == NONE)
+					{
+						YELO_ERROR(_error_message_priority_assert, 
+							"CheApe: preprocess_maplist_block not found!");
+					}
+
+					tag_block_definition* preprocess_map_block_def = preprocess_block_def->fields[field_index].Definition<tag_block_definition>();
+					preprocess_map_block_def->format_proc = &TagGroups::py_globals_preprocess_maplist_format;
+				}
+
+				//////////////////////////////////////////////////////////////////////////
+				if(false) // this is no longer in the definition
+				{// gameplay_game_type_player
+					field_index = TagGroups::tag_block_find_field(py_globals_definition->definition, Enums::_field_block, "game type players");
+					if(field_index == NONE)
+					{
+						YELO_ERROR(_error_message_priority_assert, 
+							"CheApe: gameplay_game_type_player not found!");
+					}
+
+					tag_block_definition* gtp_block_def = py_globals_definition->definition->fields[field_index].Definition<tag_block_definition>();
+					gtp_block_def->postprocess_proc = &TagGroups::py_globals_gtp_block_postprocess;
+
+					field_index = TagGroups::tag_block_find_field(gtp_block_def, Enums::_field_block, "settings");
+					if(field_index == NONE)
+					{
+						YELO_ERROR(_error_message_priority_assert, 
+							"CheApe: gameplay_game_type_player_settings not found!");
+					}
+					tag_block_definition* gtps_block_def = gtp_block_def->fields[field_index].Definition<tag_block_definition>();
+					gtps_block_def->format_proc = &TagGroups::py_globals_gtps_block_format;
+				}
+
+				//////////////////////////////////////////////////////////////////////////
+				{// scripting_block
+					// NOTE: this will also affect project_yellow's script block as it's the same definition
+					field_index = TagGroups::tag_block_find_field(py_globals_definition->definition, Enums::_field_block, "yelo scripting");
+					if(field_index == NONE)
+					{
+						YELO_ERROR(_error_message_priority_assert, 
+							"CheApe: scripting_block not found!");
+					}
+
+					tag_block_definition* scripting_block_def = py_globals_definition->definition->fields[field_index].Definition<tag_block_definition>();
+
+					field_index = TagGroups::tag_block_find_field(scripting_block_def, Enums::_field_block, "new functions");
+					if(field_index == NONE)
+					{
+						YELO_ERROR(_error_message_priority_assert, 
+							"CheApe: script_function_block not found!");
+					}
+					tag_block_definition* script_function_block_def = scripting_block_def->fields[field_index].Definition<tag_block_definition>();
+					script_function_block_def->format_proc = &TagGroups::scripting_block_construct_format;
+
+					field_index = TagGroups::tag_block_find_field(scripting_block_def, Enums::_field_block, "new globals");
+					if(field_index == NONE)
+					{
+						YELO_ERROR(_error_message_priority_assert, 
+							"CheApe: script_global_block not found!");
+					}
+					tag_block_definition* script_global_block_def = scripting_block_def->fields[field_index].Definition<tag_block_definition>();
+					script_global_block_def->format_proc = &TagGroups::scripting_block_construct_format;
+				}
+			}
+			//////////////////////////////////////////////////////////////////////////
+
+			//////////////////////////////////////////////////////////////////////////
+			{// project_yellow
+				py_definition->postprocess_proc = &TagGroups::py_group_postprocess;
+			}
+			//////////////////////////////////////////////////////////////////////////
+
+			//////////////////////////////////////////////////////////////////////////
+			{// make the first tag_reference field (which is unused) in the scenario to reference the yelo tag
+				static tag_reference_definition reference_definition = {
+					0,
+					project_yellow::k_group_tag,
+					NULL
+				};
+
+				tag_group_definition* scnr = Yelo::tag_group_get(TagGroups::scenario::k_group_tag);
+				tag_field* field = &scnr->definition->fields[0];
+				field->name = "project yellow definitions";
+				field->definition = &reference_definition;
+			}
+			//////////////////////////////////////////////////////////////////////////
+
+			_yelo_definition_globals.initialized = true;
+		}
+
+		static bool YeloDefinitionsValidateGlobals(tag_group_definition* py_globals_definition)
+		{
+			return py_globals_definition->version == project_yellow_globals::k_version && 
+				py_globals_definition->definition->element_size == sizeof(project_yellow_globals);
+		}
+		static bool YeloDefinitionsValidateScenario(tag_group_definition* py_definition)
+		{
+			return py_definition->version == project_yellow::k_version && 
+				py_definition->definition->element_size == sizeof(project_yellow);
+		}
+		static bool YeloDefinitionsValidate(tag_group_definition* py_globals_definition, tag_group_definition* py_definition)
+		{
+			return YeloDefinitionsValidateGlobals(py_globals_definition) && YeloDefinitionsValidateScenario(py_definition);
+		}
+
 		void YeloDefinitionsInitialize()
 		{
 			Yelo::tag_group_definition* py_globals_definition = Yelo::tag_group_get<project_yellow_globals>();
@@ -138,114 +262,8 @@ namespace Yelo
 				YELO_ERROR(_error_message_priority_none, 
 					"CheApe: Yelo not found!");
 			}
-			else if(py_globals_definition->version == project_yellow_globals::k_version &&
-				py_definition->version == TagGroups::project_yellow::k_version)
-			{
-				int32 field_index;
-
-				//////////////////////////////////////////////////////////////////////////
-				{// project_yellow_globals
-					py_globals_definition->postprocess_proc = &TagGroups::py_globals_group_postprocess;
-
-					//////////////////////////////////////////////////////////////////////////
-					{// preprocess_block
-						field_index = TagGroups::tag_block_find_field(py_globals_definition->definition, Enums::_field_block, "preprocess");
-						if(field_index == NONE)
-						{
-							YELO_ERROR(_error_message_priority_assert, 
-								"CheApe: preprocess_block not found!");
-						}
-
-						tag_block_definition* preprocess_block_def = py_globals_definition->definition->fields[field_index].Definition<tag_block_definition>();
-						field_index = TagGroups::tag_block_find_field(preprocess_block_def, Enums::_field_block, "campaign");
-						if(field_index == NONE)
-						{
-							YELO_ERROR(_error_message_priority_assert, 
-								"CheApe: preprocess_maplist_block not found!");
-						}
-
-						tag_block_definition* preprocess_map_block_def = preprocess_block_def->fields[field_index].Definition<tag_block_definition>();
-						preprocess_map_block_def->format_proc = &TagGroups::py_globals_preprocess_maplist_format;
-					}
-
-					//////////////////////////////////////////////////////////////////////////
-					{// gameplay_game_type_player
-						field_index = TagGroups::tag_block_find_field(py_globals_definition->definition, Enums::_field_block, "game type players");
-						if(field_index == NONE)
-						{
-							YELO_ERROR(_error_message_priority_assert, 
-								"CheApe: gameplay_game_type_player not found!");
-						}
-
-						tag_block_definition* gtp_block_def = py_globals_definition->definition->fields[field_index].Definition<tag_block_definition>();
-						gtp_block_def->postprocess_proc = &TagGroups::py_globals_gtp_block_postprocess;
-
-						field_index = TagGroups::tag_block_find_field(gtp_block_def, Enums::_field_block, "settings");
-						if(field_index == NONE)
-						{
-							YELO_ERROR(_error_message_priority_assert, 
-								"CheApe: gameplay_game_type_player_settings not found!");
-						}
-						tag_block_definition* gtps_block_def = gtp_block_def->fields[field_index].Definition<tag_block_definition>();
-						gtps_block_def->format_proc = &TagGroups::py_globals_gtps_block_format;
-					}
-
-					//////////////////////////////////////////////////////////////////////////
-					{// scripting_block
-					 // NOTE: this will also affect project_yellow's script block as it's the same definition
-						field_index = TagGroups::tag_block_find_field(py_globals_definition->definition, Enums::_field_block, "yelo scripting");
-						if(field_index == NONE)
-						{
-							YELO_ERROR(_error_message_priority_assert, 
-								"CheApe: scripting_block not found!");
-						}
-
-						tag_block_definition* scripting_block_def = py_globals_definition->definition->fields[field_index].Definition<tag_block_definition>();
-
-						field_index = TagGroups::tag_block_find_field(scripting_block_def, Enums::_field_block, "new functions");
-						if(field_index == NONE)
-						{
-							YELO_ERROR(_error_message_priority_assert, 
-								"CheApe: script_function_block not found!");
-						}
-						tag_block_definition* script_function_block_def = scripting_block_def->fields[field_index].Definition<tag_block_definition>();
-						script_function_block_def->format_proc = &TagGroups::scripting_block_construct_format;
-
-						field_index = TagGroups::tag_block_find_field(scripting_block_def, Enums::_field_block, "new globals");
-						if(field_index == NONE)
-						{
-							YELO_ERROR(_error_message_priority_assert, 
-								"CheApe: script_global_block not found!");
-						}
-						tag_block_definition* script_global_block_def = scripting_block_def->fields[field_index].Definition<tag_block_definition>();
-						script_global_block_def->format_proc = &TagGroups::scripting_block_construct_format;
-					}
-				}
-				//////////////////////////////////////////////////////////////////////////
-
-				//////////////////////////////////////////////////////////////////////////
-				{// project_yellow
-					py_definition->postprocess_proc = &TagGroups::py_group_postprocess;
-				}
-				//////////////////////////////////////////////////////////////////////////
-
-				//////////////////////////////////////////////////////////////////////////
-				{// make the first tag_reference field (which is unused) in the scenario to reference the yelo tag
-					static tag_reference_definition reference_definition = {
-						0,
-						project_yellow::k_group_tag,
-						NULL
-					};
-
-					tag_group_definition* scnr = Yelo::tag_group_get(TagGroups::scenario::k_group_tag);
-					tag_field* field = &scnr->definition->fields[0];
-					field->name = "project yellow definitions";
-					field->definition = &reference_definition;
-				}
-				//////////////////////////////////////////////////////////////////////////
-
-				_yelo_definition_globals.initialized = true;
-			}
+			else if(YeloDefinitionsValidate(py_globals_definition, py_definition))
+				YeloDefinitionsInitialize(py_globals_definition, py_definition);
 			else
 			{
 				YELO_ERROR(_error_message_priority_none, 

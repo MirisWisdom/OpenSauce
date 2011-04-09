@@ -106,8 +106,20 @@ struct s_data_file
 
 class c_data_files
 {
+	static const size_t k_name_length = 63;
+
+	static cstring DataFileTypeToString(_enum df_type)
+	{
+		switch(df_type)
+		{
+		case _data_file_type_bitmaps:	return "bitmaps";
+		case _data_file_type_sounds:	return "sounds";
+		case _data_file_type_locale:	return "loc";
+		default:						return "InvalidDataFileType";
+		}
+	}
 public:
-	char m_names[_data_file_type][64];
+	char m_names[_data_file_type][k_name_length+1];	// Names are all relative to the "maps\" directory (wherever it may be)
 
 public:
 	// Initialize the data file system to either use a mod-set or the stock 
@@ -122,6 +134,7 @@ public:
 			strcat_s(maps_path, MAX_PATH, "data_files\\");
 			_mkdir(maps_path);
 
+			// Prefix the data_file names with our data files directory and mod name
 			for(int32 x = 0; x < NUMBEROF(m_names); x++)
 			{
 				strcpy_s(m_names[x], "data_files\\");
@@ -131,7 +144,7 @@ public:
 			strcat_s(m_names[_data_file_type_sounds],	"-sounds");
 			strcat_s(m_names[_data_file_type_locale],	"-loc");
 		}
-		else
+		else	// we're using stock data files
 		{
 			strcat_s(m_names[_data_file_type_bitmaps],	"bitmaps");
 			strcat_s(m_names[_data_file_type_sounds],	"sounds");
@@ -139,9 +152,8 @@ public:
 		}
 	}
 
-	// Copy the stock data files that come with the game. These copies will then be used as 
-	// the input data files for the cache being built
-	void CopyStock()
+private:
+	void CopyStockDataFile(cstring maps_path, _enum df_type)
 	{
 		#pragma region s_progress_report
 		struct s_progress_report {
@@ -185,57 +197,31 @@ public:
 		#pragma endregion
 
 		s_progress_report report;
-		char target_name[64];
-		BOOL failure = false;
+		memset(&report, 0, sizeof(report));
 
+		cstring data_file_name = DataFileTypeToString(df_type);
 
-		printf_s("copying bitmaps...\n");
-		sprintf_s(target_name, "maps\\%s.map", m_names[_data_file_type_bitmaps]);
-		s_data_file::DeleteForCopy(target_name);
+		char source_file[MAX_PATH];	sprintf_s(source_file, "%s%s.map", maps_path, data_file_name);
+		char target_file[MAX_PATH];	sprintf_s(target_file, "%s%s.map", maps_path, m_names[df_type]);
+
+		printf_s("copying %s...\n", data_file_name);
 		{
-			memset(&report, 0, sizeof(report));
-			if( !CopyFileExA("maps\\bitmaps.map",	target_name, 
+			if( !CopyFileExA(source_file,	target_file, 
 				&s_progress_report::CopyProgressRoutine, &report, &report.cancel, 0) )
-			{	printf_s("failed to copy\n"); failure = true; }
-
-			if(failure)
-			{
-				printf_s("reason: %X\n", GetLastError());
-				return;
-			}
+				printf_s("failed to copy! reason: %X\n", GetLastError());
 		}
+	}
+public:
+	// Copy the stock data files that come with the game. These copies will then be used as 
+	// the base input data files for the cache being built
+	void CopyStock()
+	{
+		char maps_path[MAX_PATH];
+		strcpy_s(maps_path, Settings::Get().GetMapsPath());
 
-		printf_s("copying sounds...\n");
-		sprintf_s(target_name, "maps\\%s.map", m_names[_data_file_type_sounds]);
-		s_data_file::DeleteForCopy(target_name);
-		{
-			memset(&report, 0, sizeof(report));
-			if( !CopyFileExA("maps\\sounds.map",	target_name, 
-				&s_progress_report::CopyProgressRoutine, &report, &report.cancel, 0) )
-			{	printf_s("failed to copy\n"); failure = true; }
-
-			if(failure)
-			{
-				printf_s("reason: %X\n", GetLastError());
-				return;
-			}
-		}
-
-		printf_s("copying loc...\n");
-		sprintf_s(target_name, "maps\\%s.map", m_names[_data_file_type_locale]);
-		s_data_file::DeleteForCopy(target_name);
-		{
-			memset(&report, 0, sizeof(report));
-			if( !CopyFileExA("maps\\loc.map",	target_name, 
-				&s_progress_report::CopyProgressRoutine, &report, &report.cancel, 0) )
-			{	printf_s("failed to copy\n"); failure = true; }
-
-			if(failure)
-			{
-				printf_s("reason: %X\n", GetLastError());
-				return;
-			}
-		}
+		CopyStockDataFile(maps_path, _data_file_type_bitmaps);
+		CopyStockDataFile(maps_path, _data_file_type_sounds);
+		CopyStockDataFile(maps_path, _data_file_type_locale);
 
 		printf_s("done\n");
 	}

@@ -58,6 +58,7 @@ namespace Yelo
 			// or the profile wasn't properly parsed
 			API_INLINE bool IsIgnored() const	{ return is_ignored && ignored_by[PLATFORM_ID-1]; }
 
+			API_INLINE cstring GetRootPath() const			{ return root_path[0]  == '\0' ? NULL : root_path; }
 			API_INLINE cstring GetDataOverridePath() const	{ return paths.data[0] == '\0' ? NULL : paths.data; }
 			API_INLINE cstring GetMapsOverridePath() const	{ return paths.maps[0] == '\0' ? NULL : paths.maps; }
 			API_INLINE cstring GetTagsOverridePath() const	{ return paths.tags[0] == '\0' ? NULL : paths.tags; }
@@ -67,6 +68,14 @@ namespace Yelo
 			s_profile active_profile;
 
 			void Parse(TiXmlElement* element, cstring arg_profile, cstring default_profile);
+
+			API_INLINE cstring GetRootPath() const
+			{
+				cstring result = active_profile.GetRootPath();
+
+				return !active_profile.IsIgnored() && result != NULL ? result 
+					: "";
+			}
 
 			API_INLINE cstring GetDataPath() const
 			{

@@ -30,7 +30,7 @@ static void PLATFORM_API tool_if_you_dont_get_help_at_charter(void** arguments)
 		printf_s(
 			"String: a string value.\n"
 			"TagName: Path to a specific tag definition (without the group extension).\n"
-				"\tExample: globals\\globals\n"
+			"	Example: globals\\globals\n"
 			"DataName: Path to a specific file in the data sub-folder.\n"
 			"Switch: can be a boolean value (true/false) or switch (0/1).\n"
 			);
@@ -47,21 +47,21 @@ static void PLATFORM_API tool_if_you_dont_get_help_at_charter(void** arguments)
 		printf_s(
 			"Builds a cache file with extra Open Sauce arguments.\n"
 			"Arguments:\n"
-				"\t<mod-name>\n"
-					"\t\tString: The name of the mod this scenario belongs to. This will\n"
-					"\t\t\talso be used when naming the new data files.\n"
-				"\t<create-anew>\n"
-					"\t\tSwitch: Should new data files be created before building the\n"
-					"\t\t\tcache?\n"
-				"\t<store-resources>\n"
-					"\t\tSwitch: Should the scenario's bitmaps/sounds/locale data be\n"
-					"\t\t\tstored in the data files?\n"
-				"\t<use-memory-upgrades>\n"
-					"\t\tSwitch: Does the scenario require Open Sauce's memory upgrades\n"
-					"\t\t\tto run?\n"
-				"\t<scenario-name>\n"
-					"\t\tTagName: Name of the .scenario to use. Just like the stock\n"
-					"\t\t\tbuild-cache-file.\n"
+			"	<mod-name>\n"
+			"		String: The name of the mod this scenario belongs to. This will\n"
+			"			also be used when naming the new data-files.\n"
+			"	<create-anew>\n"
+			"		Switch: Should new data-files be created before building the\n"
+			"			cache?\n"
+			"	<store-resources>\n"
+			"		Switch: Should the scenario's bitmaps/sounds/locale data be\n"
+			"			stored in the data-files?\n"
+			"	<use-memory-upgrades>\n"
+			"		Switch: Does the scenario require Open Sauce's memory upgrades\n"
+			"			to run?\n"
+			"	<scenario-name>\n"
+			"		TagName: Name of the .scenario to use. Just like the stock\n"
+			"			build-cache-file.\n"
 			);
 	}
 	else if( !strcmp(args->tool_command, "compile-shader-postprocess") )
@@ -70,8 +70,8 @@ static void PLATFORM_API tool_if_you_dont_get_help_at_charter(void** arguments)
 			"Creates shader_postprocess_generic tags from HLSL .fx shaders in the data\n"
 			"directory\n"
 			"Arguments:\n"
-				"\t<shader-directory>\n"
-					"\t\tDirectory: Path that contains the shaders to compile\n"
+			"	<shader-directory>\n"
+			"		Directory: Path that contains the shaders to compile\n"
 			);
 	}
 	else if( !strcmp(args->tool_command, "import-structure-lightmap-uvs") )
@@ -84,10 +84,10 @@ static void PLATFORM_API tool_if_you_dont_get_help_at_charter(void** arguments)
 			"your modelling program then ONLY edit the UV's to ensure the model\n"
 			"matches the bsp.\n"
 			"Arguments:\n"
-				"\t<obj-file>\n"
-					"\t\tlocation of the source obj, relative to the data directory\n"
-				"\t<structure-bsp>\n"
-					"\t\t location of the target bsp, relative to the tags directory\n"
+			"	<obj-file>\n"
+			"		location of the source obj, relative to the data directory\n"
+			"	<structure-bsp>\n"
+			"		location of the target bsp, relative to the tags directory\n"
 			);
 	}
 	else if( !strcmp(args->tool_command, "build-cpp-definition") )
@@ -97,13 +97,13 @@ static void PLATFORM_API tool_if_you_dont_get_help_at_charter(void** arguments)
 			"specified tag\n"
 			"The resultant header file is saved to the working directory of os_tool\n"
 			"Arguments:\n"
-				"\t<tag-group>\n"
-					"\t\tTag ID: 4 character identifier for the tag type type you want a\n"
-					"\t\t\tdefinition of eg. \"bitm\"\n"
-				"\t<add-boost-asserts>\n"
-					"\t\tSwitch: Controls whether to add \"BOOST_STATIC_ASSERT\" code to\n"
-					"\t\t\tthe end of struct to ensure the struct sizes are\n"
-					"\t\t\tcorrect\n"
+			"	<tag-group>\n"
+			"		Tag ID: 4 character identifier for the tag type type you want a\n"
+			"			definition of eg. \"bitm\"\n"
+			"	<add-boost-asserts>\n"
+			"		Switch: Controls whether to add \"BOOST_STATIC_ASSERT\" code to\n"
+			"			the end of struct to ensure the struct sizes are\n"
+			"			correct\n"
 			);
 	}
 	else

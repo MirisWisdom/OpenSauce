@@ -716,7 +716,7 @@ namespace BlamLib.CheApe
 		public void Write(string folder, string filename)
 		{
 			using (IO.EndianWriter ew = new IO.EndianWriter(
-					folder + System.IO.Path.GetFileNameWithoutExtension(filename) + ".tag_groups.map",
+					folder + System.IO.Path.GetFileNameWithoutExtension(filename) + ".CheApe.map",
 					BlamLib.IO.EndianState.Little, this, true)
 					)
 			{
