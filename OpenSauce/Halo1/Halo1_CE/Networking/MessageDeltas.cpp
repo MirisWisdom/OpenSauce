@@ -131,7 +131,7 @@ namespace Yelo
 			for(; x < Enums::k_message_deltas_count; x++)
 				new_mdptrs[x] = org_mdptrs[x];
 
-			for(size_t i = 0; i < Enums::k_message_deltas_new_count; i++, x++)
+			for(size_t i = 0; i < Enums::k_message_deltas_yelo_count; i++, x++)
 				new_mdptrs[x] = new_mdp_packets[i];
 #pragma endregion
 

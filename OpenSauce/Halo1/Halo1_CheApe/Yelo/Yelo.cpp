@@ -38,28 +38,44 @@ namespace Yelo
 	};
 
 
-	static Yelo::tag_group_definition* tag_db_definition = NULL;
-	void Initialize()
+	static void InitializeForTagFilesOpen()
 	{
-		c_memory_fixups::Initialize();
-		Scripting::Initialize();
 		// Call the *engine's* initializer
 		TagGroups::Initialize();
 
 		TagGroups::YeloDefinitionsInitialize();
 		if(TagGroups::_yelo_definition_globals.initialized)
 			PLATFORM_VALUE(Guerilla, Tool, Sapien)::Initialize();
+	}
+	static void OverrideTagFilesOpen()
+	{
+		static uint32 TAG_FILES_OPEN_CALLS[] = {
+#if PLATFORM_ID == PLATFORM_TOOL
+			0x42DC10
+#elif PLATFORM_ID == PLATFORM_GUERILLA
+			0x421C30,
+			0x41D4F5
+#elif PLATFORM_ID == PLATFORM_SAPIEN
+			0x418A50,
+			0x4141E5	// for no render cases
+#endif
+		};
 
-		tag_db_definition = Yelo::tag_group_get(TagGroups::s_tag_database::k_group_tag);
-		if(tag_db_definition)
-		{
-			Yelo::tag_block_definition* tag_database_entry_block_def = tag_db_definition->definition->fields[0].Definition<Yelo::tag_block_definition>();
-			tag_database_entry_block_def->format_proc = &TagGroups::tag_database_entry_block_format;
-		}
+		for(int32 x = 0; x < NUMBEROF(TAG_FILES_OPEN_CALLS); x++)
+			Yelo::Memory::WriteRelativeCall(InitializeForTagFilesOpen, CAST_PTR(void*,TAG_FILES_OPEN_CALLS[x]));
+	}
+
+	void Initialize()
+	{
+		c_memory_fixups::Initialize();
+		Scripting::Initialize();
+
+		OverrideTagFilesOpen();
 	}
 
 	void Dispose()
 	{
+		// Initializer called in InitializeForTagFilesOpen
 		if(TagGroups::_yelo_definition_globals.initialized)
 			PLATFORM_VALUE(Guerilla, Tool, Sapien)::Dispose();
 

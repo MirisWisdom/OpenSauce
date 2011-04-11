@@ -380,7 +380,7 @@ namespace OpenSauceIDE.CheApeInterface
 
 			/// <summary>Address where we'll place our hook code which calls <see cref="CheApeFunction1"/></summary>
 			public static PlatformAddress CheApeFunction2 = new PlatformAddress
-				(0x41D4F5, 0x42DC10, 0x4A8248);
+				(0x752568, 0x5F1D76, 0x75199B);
 			#endregion
 
 			public static PlatformAddress LogHeaderVersion = new PlatformAddress

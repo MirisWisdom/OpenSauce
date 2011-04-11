@@ -340,34 +340,43 @@ namespace OpenSauceIDE.CheApeInterface
 				);
 
 			/// <summary>Initializer code for each game tool</summary>
+			/// <remarks>
+			/// offset	<see cref="AddressOf.CheApeFunction1"/>
+			/// push	<see cref="AddressOf.CheApeDllString"/>
+			/// call	ds:[<see cref="AddressOf.CheApeLoadLibrary"/>]
+			/// jmp		__SEH_prolog
+			/// </remarks>
 			public static PlatformData CheApeFunction1 = new PlatformData(
 				// push	0x93A098		// Push our dll string
 				// call	ds:[0xF5582C]	// call LoadLibrary
-				// retn
-				BlamLib.Util.ByteStringToArray("6898A09300" + "FF152C58F500" + "C3"),
+				// jmp	0x758534		// goto __SEH_prolog
+				BlamLib.Util.ByteStringToArray("6898A09300" + "FF152C58F500" + "E9146A3300"),
 
 				// push	0x6235B0		// Push our dll string
 				// call	ds:[0x6040E8]	// call LoadLibrary
-				// retn
-				BlamLib.Util.ByteStringToArray("68B0356200" + "FF15E8406000" + "C3"),
+				// jmp	0x5F4BDC		// goto __SEH_prolog
+				BlamLib.Util.ByteStringToArray("68B0356200" + "FF15E8406000" + "E91C691C00"),
 
 				// push	0x910DBA		// Push our dll string
 				// call	ds:[0x1082FCC]	// call LoadLibrary
-				// call	0x406825
-				// retn
-				BlamLib.Util.ByteStringToArray("68BA0D9100" + "FF15CC2F0801" + "E895C8F0FF" + "C3")
+				// jmp	0x406825		// goto __SEH_prolog
+				BlamLib.Util.ByteStringToArray("68BA0D9100" + "FF15CC2F0801" + "E995C8F0FF")
 				);
 
 			/// <summary>Initializer's hook code for each game tool</summary>
+			/// <remarks>
+			/// offset	<see cref="AddressOf.CheApeFunction2"/>
+			/// call	<see cref="AddressOf.CheApeFunction1"/>
+			/// </remarks>
 			public static PlatformData CheApeFunction2 = new PlatformData(
 				// call	0x421B10		// Call our setup code listed above
-				BlamLib.Util.ByteStringToArray("E816460000"),
+				BlamLib.Util.ByteStringToArray("E8A3F5CCFF"),
 
 				// call	0x42E2B0		// Call our setup code listed above
-				BlamLib.Util.ByteStringToArray("E89B060000"),
+				BlamLib.Util.ByteStringToArray("E835C5E3FF"),
 
 				// call	0x4F9F80		// Call our setup code listed above
-				BlamLib.Util.ByteStringToArray("E8331D0500")
+				BlamLib.Util.ByteStringToArray("E8E085DAFF")
 				);
 			#endregion
 		};

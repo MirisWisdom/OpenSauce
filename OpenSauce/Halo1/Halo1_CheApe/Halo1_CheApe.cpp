@@ -33,7 +33,9 @@ BOOL APIENTRY DllMain( HMODULE hModule,
                        LPVOID lpReserved
 					 )
 {
-	if(ul_reason_for_call == DLL_PROCESS_ATTACH) {
+	static bool g_initialized = false;
+
+	if(ul_reason_for_call == DLL_PROCESS_ATTACH && !g_initialized) {
 		Yelo::CheApe::UnProtectMemoryRegion();
 
 		Yelo::Settings::Initialize();
@@ -52,20 +54,13 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 		Yelo::CheApe::UpdateTagGroupReferences();
 
 		if(Yelo::CheApe::_InitError == Yelo::CheApe::k_error_none)
-		{
-			// Sapien requires earlier hooking in order to properly override tag paths, so 
-			// we place a hook where we use to load CheApe.DLL from
-#if PLATFORM_ID == PLATFORM_SAPIEN
-			Yelo::Memory::WriteRelativeCall(Yelo::Initialize, CAST_PTR(void*,0x418A50));
-			Yelo::Memory::WriteRelativeCall(Yelo::Initialize, CAST_PTR(void*,0x4141E5)); // for no render cases
-#else
 			Yelo::Initialize();
-#endif
-		}
 		else
-		{	Yelo::EngineFunctions::error(Yelo::Enums::_error_message_priority_none, "CheApe: Yelo initialization failed!"); }
+			Yelo::EngineFunctions::error(Yelo::Enums::_error_message_priority_none, "CheApe: Yelo initialization failed!");
+
+		g_initialized = true;
 	}
-	else if(ul_reason_for_call == DLL_PROCESS_DETACH) {
+	else if(ul_reason_for_call == DLL_PROCESS_DETACH && g_initialized) {
 dispose:
 		if(Yelo::CheApe::_InitError == Yelo::CheApe::k_error_none)
 			Yelo::Dispose();
@@ -74,6 +69,8 @@ dispose:
 
 		Yelo::c_memory_fixups::DisposePaths();
 		Yelo::Settings::Dispose();
+
+		g_initialized = false;
 	}
 
     return TRUE;

@@ -78,8 +78,12 @@ namespace OpenSauceIDE.CheApeInterface
 			#region UpdateLogHeader
 			protected void UpdateLogHeader()
 			{
+				const string k_build_string = "01." + "00." + "09." + "0620";
+
 				output.Seek(AddressOf.LogHeaderVersion[PlatformVersion] - Program.PeAddressMask);
-				output.Write("01." + "00." + "09." + "0620", 13);
+				output.Write(k_build_string, 14);
+				output.Seek(-1, SeekOrigin.Current);
+				output.Write((byte)' ');
 			}
 			#endregion
 
