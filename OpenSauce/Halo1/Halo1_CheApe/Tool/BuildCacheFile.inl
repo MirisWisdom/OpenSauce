@@ -22,6 +22,23 @@
 #include "Tool/BuildCacheFile/CullTags.inl"
 #include "Tool/BuildCacheFile/PredictedResources.inl"
 
+static void build_cache_file_end_preprocess(s_cache_header* header, s_cache_header_yelo& ych)
+{
+	s_build_cache_file_for_scenario& bcffs = build_cache_file_for_scenario_internals;
+
+	void* buffer;
+	bool result = CheApe::GetCompressedCacheFile(buffer, 
+		ych.cheape_definitions.decompressed_size, ych.cheape_definitions.size);
+
+	if(result)
+	{
+		bcffs.build_cache_file_add_resource(buffer, ych.cheape_definitions.size, 
+			&ych.cheape_definitions.offset, false);
+
+		delete buffer;
+	}
+}
+
 static void build_cache_file_begin_preprocess(cstring scenario_name)
 {
 	datum_index scenario_index = tag_load<TagGroups::scenario>(build_cache_file_for_scenario_internals.scenario_path, 0);

@@ -96,5 +96,7 @@ namespace Yelo
 			}
 		}; BOOST_STATIC_ASSERT( sizeof(s_cache_header) == 0x800 );
 		s_cache_header& GlobalCacheHeader();
+
+		bool GetCompressedCacheFile(void*& buffer, uint32& size, uint32& compressed_size);
 	};
 };
