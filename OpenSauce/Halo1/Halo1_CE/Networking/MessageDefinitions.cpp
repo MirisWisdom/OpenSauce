@@ -148,11 +148,11 @@ namespace Yelo
 
 		const mdp_packet_decoder new_mdp_packet_decoders[] = {
 
-			{BIT32(Enums::_message_deltas_new_client_bit), 
+			{FLAG(Enums::_message_deltas_new_client_bit), 
 				test_from_network},
-			{BIT32(Enums::_message_deltas_new_client_bit), 
+			{FLAG(Enums::_message_deltas_new_client_bit), 
 				null_from_network},
-			{BIT32(Enums::_message_deltas_new_client_bit), 
+			{FLAG(Enums::_message_deltas_new_client_bit), 
 				null_from_network},
 
 		};

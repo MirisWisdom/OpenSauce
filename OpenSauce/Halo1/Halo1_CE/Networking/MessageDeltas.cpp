@@ -200,8 +200,8 @@ namespace Yelo
 				const MessageDeltas::mdp_packet_decoder& decoder = new_mdp_packet_decoders[msg_type - Enums::k_message_deltas_count];
 
 				// Validate that the packet can be decoded in our current network state
-				if( TEST_BIT32(decoder.Flags, Enums::_message_deltas_new_client_bit) == Networking::IsClient() || 
-					TEST_BIT32(decoder.Flags, Enums::_message_deltas_new_server_bit) == Networking::IsServer() )
+				if( TEST_FLAG(decoder.Flags, Enums::_message_deltas_new_client_bit) == Networking::IsClient() || 
+					TEST_FLAG(decoder.Flags, Enums::_message_deltas_new_server_bit) == Networking::IsServer() )
 					decoder.Proc(client, header);
 
 				return true;
