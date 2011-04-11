@@ -62,13 +62,15 @@ struct s_build_cache_file_for_scenario {
 	typedef void (PLATFORM_API* __build_cache_file_for_scenario)(cstring scenario_name);
 	typedef bool (PLATFORM_API* _build_cache_file_begin)(cstring scenario_name);
 	typedef bool (PLATFORM_API* _build_cache_file_end)(s_cache_header* header);
-	typedef void (PLATFORM_API* _build_cace_file_failed)();
+	typedef void (PLATFORM_API* _build_cache_file_failed)();
+	typedef bool (PLATFORM_API* _build_cache_file_add_resource)(const void* buffer, size_t buffer_size, uint32* out_file_offset, bool update_crc);
 
 	__build_cache_file_for_scenario	_build_cache_file_for_scenario;
 	_import_class_proc				build_cache_file_for_scenario_command;
 	_build_cache_file_begin			build_cache_file_begin;
 	_build_cache_file_end			build_cache_file_end;
-	_build_cace_file_failed			build_cache_file_failed;
+	_build_cache_file_failed		build_cache_file_failed;
+	_build_cache_file_add_resource	build_cache_file_add_resource;
 
 	void*		build_cache_file_end_sprintf_call;		// address of the call to sprintf for building the output map file path
 	cstring*	build_cache_file_output_path_format;	// address which references "%s%s%s.map"
@@ -108,7 +110,8 @@ struct s_build_cache_file_for_scenario {
 	CAST_PTR(_import_class_proc,												0x455640),
 	CAST_PTR(s_build_cache_file_for_scenario::_build_cache_file_begin,			0x4B9250),
 	CAST_PTR(s_build_cache_file_for_scenario::_build_cache_file_end,			0x4B93B0),
-	CAST_PTR(s_build_cache_file_for_scenario::_build_cace_file_failed,			0x4B9030),
+	CAST_PTR(s_build_cache_file_for_scenario::_build_cache_file_failed,			0x4B9030),
+	CAST_PTR(s_build_cache_file_for_scenario::_build_cache_file_add_resource,	0x4B9350),
 
 	CAST_PTR(void*,																0x4B944D),
 	CAST_PTR(cstring*,															0x4B9448),

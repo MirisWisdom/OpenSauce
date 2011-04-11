@@ -36,10 +36,15 @@ namespace BuildCacheFileEx
 			tag_iterator_new(tag_iter, NULL_HANDLE);
 
 			// call custom tag's data culling stuff in this loop
-// 			datum_index tag_index;
-// 			while( !(tag_index = tag_iterator_next(tag_iter)).IsNull() )
-// 			{
-// 			}
+			datum_index tag_index;
+			while( !(tag_index = tag_iterator_next(tag_iter)).IsNull() )
+			{
+				switch(tag_iter.group_tag)
+				{
+				case TagGroups::project_yellow_globals::k_group_tag:
+					TagGroups::YeloGlobalsDefinitionCull(tag_get<TagGroups::project_yellow_globals>(tag_iter.current_datum));
+				}
+			}
 
 			return result;
 		}

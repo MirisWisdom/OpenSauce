@@ -154,6 +154,8 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 	static const uint32 INTERCEPTOR_END_HOOK_ADDR = 0x453221; // build_cache_file_write_header_and_compress
 	static bool PLATFORM_API InterceptorEnd(s_cache_header* header)
 	{
+		build_cache_file_end_preprocess(header, yelo_cache_header_globals);
+
 		memcpy_s(&header->yelo, sizeof(header->yelo), &yelo_cache_header_globals, sizeof(yelo_cache_header_globals));
 
 		return build_cache_file_for_scenario_internals.build_cache_file_end(header);

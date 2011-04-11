@@ -18,16 +18,20 @@
 */
 #pragma once
 
+#include <Blam/Halo1/project_yellow_shared_definitions.hpp>
+
 namespace Yelo
 {
 	namespace TagGroups
 	{
 		extern struct s_yelo_definition_globals {
 			bool initialized;
-			PAD32;
+			PAD24;
 		}_yelo_definition_globals;
 
 		void YeloDefinitionsInitialize();
 		void YeloDefinitionsDispose();
+
+		void YeloGlobalsDefinitionCull(TagGroups::project_yellow_globals* globals);
 	};
 };

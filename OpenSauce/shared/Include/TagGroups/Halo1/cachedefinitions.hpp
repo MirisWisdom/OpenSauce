@@ -24,12 +24,20 @@ namespace Yelo
 		struct s_flags {
 			unsigned uses_memory_upgrades : 1;	// cache requires upgraded memory
 			unsigned uses_mod_data_files : 1;	// cache relies on a set of 'mod' data files for it's resources
+			unsigned is_protected : 1;			// cache has protection applied
 		}flags; BOOST_STATIC_ASSERT( sizeof(s_flags) == 0x4 );
 		real k_memory_upgrade_increase_amount;
 		PAD32;
 		PAD32;
 
 		tag_string mod_name; // if the map uses a specific mod's data_files, this equals the mod prefix
+
+		struct {
+			uint32 size;
+			uint32 decompressed_size;
+			uint32 offset;
+			PAD32;
+		}cheape_definitions;
 	};
 
 	struct s_cache_header
@@ -55,7 +63,8 @@ namespace Yelo
 		PAD32; // ?
 		tag_string name;
 		tag_string build_string;
-		long_enum cache_type;
+		_enum cache_type;
+		PAD16;
 		uint32 crc;
 		PAD32; // ?
 

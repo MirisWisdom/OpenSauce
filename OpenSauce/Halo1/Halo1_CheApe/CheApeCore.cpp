@@ -19,6 +19,8 @@
 #include "Common/Precompile.hpp"
 #include "CheApeCore.hpp"
 
+#include <zlib/zlib.h>
+
 #include "Engine/EngineFunctions.hpp"
 #include "CheApeInterface.hpp"
 #include "TagGroups/TagGroups.hpp"
@@ -131,6 +133,34 @@ namespace Yelo
 
 		// declared in CheApeShared.hpp
 		s_cache_header& GlobalCacheHeader() { return _globals.cache.header; }
+
+		bool GetCompressedCacheFile(void*& buffer, uint32& size, uint32& compressed_size)
+		{
+			buffer = NULL;
+			size = compressed_size = 0;
+
+			FILE* file_handle;
+			fopen_s(&file_handle, CHEAPE_CACHE_FILE_NAME, "rb");
+
+			if(!file_handle)
+				return false;
+
+			fseek(file_handle, 0, SEEK_END);
+			size = ftell(file_handle);
+			fseek(file_handle, 0, SEEK_SET);
+
+			buffer = new byte[size];
+			fread(buffer, size, 1, file_handle);
+			fclose(file_handle);
+
+			compressed_size = compressBound(size);
+			Bytef* dest = new Bytef[compressed_size];
+			int result = compress2(dest, &compressed_size, CAST_PTR(Bytef*,buffer), size, Z_BEST_COMPRESSION);
+
+			buffer = dest;
+
+			return result == Z_OK;
+		}
 
 		void UnProtectMemoryRegion()
 		{

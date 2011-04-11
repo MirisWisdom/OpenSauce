@@ -286,5 +286,12 @@ namespace Yelo
 			_yelo_definition_globals.initialized = false;
 		}
 		//////////////////////////////////////////////////////////////////////////
+
+		void YeloGlobalsDefinitionCull(TagGroups::project_yellow_globals* globals)
+		{
+			YELO_ASSERT(globals);
+
+			tag_block_resize(globals->preprocess, 0);
+		}
 	};
 };
