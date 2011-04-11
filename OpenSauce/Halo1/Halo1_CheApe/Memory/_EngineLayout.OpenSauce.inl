@@ -65,10 +65,10 @@
 			kTagGroupDefinitionsAddress =	PLATFORM_VALUE(0x9B8D88, 0x6B8A08, 0xA295D0),
 			kTagGroupDefinitionsCount =		0x53,
 
-			kPhysicalMemoryMapAddress =		PLATFORM_VALUE(0x50000000, 0x50000000, 0x50000000),
-			kPhysicalMemoryMapSize =		PLATFORM_VALUE(0x00600000, 0x00600000, 0x00600000),
+			kPhysicalMemoryMapAddress =		0x50000000,
+			kPhysicalMemoryMapSize =		0x00600000,
 
-			kExeBaseAddress =				PLATFORM_VALUE(0x400000, 0x400000, 0x400000),
+			kExeBaseAddress =				0x400000,
 			kExeSize =						PLATFORM_VALUE(0x9B4000, 0x6AC000, 0xC81200),
 		};
 	};

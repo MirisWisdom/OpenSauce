@@ -35,6 +35,10 @@ namespace Yelo
 			static uint16* MaxTagsCheck[] = {
 				CAST_PTR(uint16*, 0x4FC9AB),
 			};
+
+			static uint32 GAMESPY_METRICS_DUMP_FUNCTIONS[] = {
+				0x5D6CE0, 0x5D7390
+			};
 		};
 
 		void Initialize()
@@ -47,7 +51,11 @@ namespace Yelo
 			}
 
 			for(int32 x = 0; x < NUMBEROF(AddressOf::MaxTagsCheck); x++)
-				*AddressOf::MaxTagsCheck[x] = Konstants::MaximumTagCountUpgrade();
+				*AddressOf::MaxTagsCheck[x] = CAST(uint16, Konstants::MaximumTagCountUpgrade());
+
+			// Cause the gamespy metrics dump code to NEVER execute
+			for(int32 x = 0; x < NUMBEROF(AddressOf::GAMESPY_METRICS_DUMP_FUNCTIONS); x++)
+				*CAST_PTR(byte*, AddressOf::GAMESPY_METRICS_DUMP_FUNCTIONS[x]) = 0xC3;
 
 			TagGroups::ScenarioYeloLoadHookInitialize();
 		}

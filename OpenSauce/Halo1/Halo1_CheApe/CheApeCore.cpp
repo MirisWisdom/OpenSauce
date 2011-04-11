@@ -40,14 +40,26 @@ namespace Yelo
 				uint32 data_size;
 				s_cache_header header;
 
-				bool MemoryMapInitialize()
+				DWORD MemoryMapInitialize()
 				{
 					base_address = VirtualAlloc(CAST_PTR(void*, kPhysicalMemoryMapAddress), kPhysicalMemoryMapSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 
-					if(!base_address || base_address != CAST_PTR(void*, kPhysicalMemoryMapAddress))
-						return false;
+					if(base_address == NULL || base_address != CAST_PTR(void*, kPhysicalMemoryMapAddress))
+						return GetLastError();
 
-					return true;
+					return ERROR_SUCCESS;
+				}
+				BOOL MemoryMapDispose()
+				{
+					BOOL result = TRUE;
+
+// 					if(base_address != NULL)
+// 					{
+// 						result = VirtualFree(base_address, kPhysicalMemoryMapSize, MEM_RELEASE);
+// 						base_address = NULL;
+// 					}
+
+					return result;
 				}
 
 				bool Read(cstring path)
@@ -137,10 +149,11 @@ namespace Yelo
 		{
 			if(_InitError > k_error_none) return;
 
-			if(!_globals.cache.MemoryMapInitialize())
+			DWORD result = _globals.cache.MemoryMapInitialize();
+			if(result != ERROR_SUCCESS)
 			{
 				YELO_ERROR(_error_message_priority_none, 
-					"CheApe: Couldn't allocate the memory map!");
+					"CheApe: Couldn't allocate the memory map! (%X)", result);
 				_InitError = k_error_PhysicalMemoryMapInitialize;
 			}
 		}
@@ -216,7 +229,10 @@ namespace Yelo
 		{
 			if(_InitError == k_error_PhysicalMemoryMapInitialize) return;
 
-			VirtualFree(CAST_PTR(void*, kPhysicalMemoryMapAddress), kPhysicalMemoryMapSize, MEM_DECOMMIT);
+			BOOL result = _globals.cache.MemoryMapDispose();
+			if(result == FALSE)
+				YELO_ERROR(_error_message_priority_none, 
+					"CheApe: Couldn't free the memory map (%X)!\n", result);
 		}
 	};
 };

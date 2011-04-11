@@ -155,8 +155,9 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 
 	static cstring* K_TAGS_PATH_REFERENCE_FIXUPS[] = { // "tags"
 #if PLATFORM_ID == PLATFORM_GUERILLA
-		// The first reference needs to be handled up with a 'strcpy' as it used in a start-up thunk.
-		/*CAST_PTR(cstring*, 0x41453B),*/ CAST_PTR(cstring*, 0x439C61), CAST_PTR(cstring*, 0x43A096),
+		// The first reference is in a start-up think. If we didn't initialize before those thunks were ran, 
+		// we'd need to handled it with a 'strcpy'.
+		CAST_PTR(cstring*, 0x41453B), CAST_PTR(cstring*, 0x439C61), CAST_PTR(cstring*, 0x43A096),
 		CAST_PTR(cstring*, 0x43BAEE), CAST_PTR(cstring*, 0x43BEB8), CAST_PTR(cstring*, 0x43C0F8),
 
 #elif PLATFORM_ID == PLATFORM_TOOL
@@ -224,11 +225,13 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 		*K_TAGS_PATH_REFERENCE_FIXUPS2[x] = _override_paths.tags.folder_name_with_slash_single;
 
 
+#if 0 // this code no longer applies since we hook all the tools before their entry points even execute
 	static char* K_TAGS_PATH_DIRECT_FIXUPS[] = {
 		CAST_PTR(char*, 0xAA0278),	
 	};
 	for(int32 x = 0; x < NUMBEROF(K_TAGS_PATH_DIRECT_FIXUPS); x++)
 		strcpy_s(K_TAGS_PATH_DIRECT_FIXUPS[x], MAX_PATH, _override_paths.tags.path);
+#endif
 
 
 	byte name_length = 0; // In guerilla, there are a few places we have to fix-up some hardcoded lengths too
@@ -258,8 +261,7 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 		CAST_PTR(char*, 0xB17F20),	
 	};
 	for(int32 x = 0; x < NUMBEROF(K_WORKING_DIR_DIRECT_FIXUPS); x++)
-		strcpy_s(K_WORKING_DIR_DIRECT_FIXUPS[x], MAX_PATH, _override_paths.root
-			/*Settings::Get().active_profile.root_path*/);
+		strcpy_s(K_WORKING_DIR_DIRECT_FIXUPS[x], MAX_PATH, _override_paths.root);
 
 
 	static cstring* K_TAGS_PATH_REFERENCE_FIXUPS_SLASH_RELATIVE[] = { // ".\tags\"
@@ -357,18 +359,9 @@ void c_memory_fixups::FixupsInitializeFilePaths()
 		FixupsInitializeMapsPaths(Settings::Get().active_profile.GetMapsOverridePath());
 		FixupsInitializeTagPaths (Settings::Get().active_profile.GetTagsOverridePath(), 
 			Settings::Get().active_profile.paths.tags_folder_name);
-
-		k_reports_path = Settings::ReportsPath();
 	}
-	else
-	{
-		// If there is no active profile then we won't use the user's profile path 
-		// and will then have to make sure the directories we need are created
-		_mkdir("OpenSauce");
-		_mkdir("OpenSauce\\Reports");
 
-		k_reports_path = "OpenSauce\\Reports\\";
-	}
+	k_reports_path = Settings::ReportsPath();
 
 	for(int32 x = 0; x < NUMBEROF(k_file_path_fixup_names); x++)
 	{

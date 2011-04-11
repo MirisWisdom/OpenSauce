@@ -1243,6 +1243,50 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="OpenSauceIDE"
+				>
+				<File
+					RelativePath="..\..\shared\Halo1\CheApe\Halo1_CE.cheape_project"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Halo1\CheApe\project_yellow.xml"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Halo1\CheApe\project_yellow_globals.xml"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Halo1\CheApe\project_yellow_includes.xml"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Halo1\CheApe\project_yellow_misc.xml"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Halo1\CheApe\project_yellow_scripting.xml"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Halo1\CheApe\shader_model_extension.xml"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Halo1\CheApe\shader_postprocess.xml"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Halo1\CheApe\shader_postprocess_collection.xml"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Halo1\CheApe\shader_postprocess_globals.xml"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Rasterizer"
