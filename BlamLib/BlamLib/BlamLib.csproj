@@ -16,9 +16,6 @@
     </UpgradeBackupLocation>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <DefineConstants>DEBUG;TRACE;_WIN32;XDK_NO_360</DefineConstants>
-  </PropertyGroup>
   <Import Project="$(SolutionDir)BlamLib.Cs.props" />
   <ItemGroup>
     <Reference Include="SlimDX, Version=2.0.10.43" />
