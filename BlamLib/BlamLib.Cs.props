@@ -41,15 +41,17 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DefineConstants>TRACE;DEBUG;XDK_NO_360</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DefineConstants>TRACE;DEBUG;XDK_NO_360</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DefineConstants>TRACE;_WIN32;DEBUG;_WIN32;XDK_NO_360</DefineConstants>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <DefineConstants>TRACE;_WIN32;XDK_NO_360</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;_WIN32;XDK_NO_360</DefineConstants>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
@@ -57,7 +59,7 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <DefineConstants>TRACE;_WIN64;XDK_NO_360</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;_WIN64;XDK_NO_360</DefineConstants>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
