@@ -29,6 +29,9 @@ namespace OpenSauceIDE.CheApeInterface
 		{
 			public PlatformInterface(string output_dir, string path, Platform pv) : base(pv)
 			{
+				if (!ValidateExe(path))
+					throw new BlamLib.Debug.ExceptionLog("{0} is not a supported {1} exe", path, pv.ToString());
+
 				string dir = string.IsNullOrEmpty(output_dir) ? Path.GetDirectoryName(path) : output_dir;
 				string name = Path.GetFileName(path);
 				name = Path.Combine(dir, "OS_" + name);
@@ -98,6 +101,11 @@ namespace OpenSauceIDE.CheApeInterface
 		#region Guerilla
 		class Guerilla : PlatformInterface
 		{
+			protected override bool ValidateExe(string path)
+			{
+				return UnlockToolsBase.ValidateExe(path, 0x138, 0x40969651);
+			}
+
 			public Guerilla(string output_dir, string path) : base(output_dir, path, Platform.Guerilla) { }
 
 			#region EnableBaseObjectCreation
@@ -168,6 +176,11 @@ namespace OpenSauceIDE.CheApeInterface
 		#region Tool
 		class Tool : PlatformInterface
 		{
+			protected override bool ValidateExe(string path)
+			{
+				return UnlockToolsBase.ValidateExe(path, 0x130, 0x408EE21B);
+			}
+
 			public Tool(string output_dir, string path) : base(output_dir, path, Platform.Tool) { }
 
 			public override void Unlock(bool debug)
@@ -181,6 +194,11 @@ namespace OpenSauceIDE.CheApeInterface
 		#region Sapien
 		class Sapien : PlatformInterface
 		{
+			protected override bool ValidateExe(string path)
+			{
+				return UnlockToolsBase.ValidateExe(path, 0x138, 0x4096942C);
+			}
+
 			public Sapien(string output_dir, string path) : base(output_dir, path, Platform.Sapien) { }
 
 			public override void Unlock(bool debug)
@@ -193,9 +211,17 @@ namespace OpenSauceIDE.CheApeInterface
 
 		public UnlockH1(string output_dir, string g_path, string t_path, string s_path)
 		{
-			if (!string.IsNullOrEmpty(g_path)) GuerillaInterface = new Guerilla(output_dir, g_path);
-			if (!string.IsNullOrEmpty(t_path)) ToolInterface = new Tool(output_dir, t_path);
-			if (!string.IsNullOrEmpty(s_path)) SapienInterface = new Sapien(output_dir, s_path);
+			if (!string.IsNullOrEmpty(g_path))
+				try { GuerillaInterface = new Guerilla(output_dir, g_path); }
+				catch (BlamLib.Debug.ExceptionLog) { EncounteredInvalidExe = true; }
+
+			if (!string.IsNullOrEmpty(t_path))
+				try { ToolInterface = new Tool(output_dir, t_path); }
+				catch (BlamLib.Debug.ExceptionLog) { EncounteredInvalidExe = true; }
+
+			if (!string.IsNullOrEmpty(s_path))
+				try { SapienInterface = new Sapien(output_dir, s_path); }
+				catch (BlamLib.Debug.ExceptionLog) { EncounteredInvalidExe = true; }
 		}
 
 		public override void Close()

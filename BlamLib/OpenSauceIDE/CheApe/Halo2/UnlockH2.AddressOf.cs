@@ -42,15 +42,20 @@ namespace OpenSauceIDE.CheApeInterface
 				(0x655162, 0x7311D2, 0x6EE142);
 
 			#region Che Ape
+			// we offset from one byte since we null-terminate the string memory we're hijacking
 			public static PlatformAddress CheApeDllString = new PlatformAddress
 				(0x8A9268 - 1, 0x9379C0 - 1, 0x933320 - 1);
 
+			/// <summary>LoadLibraryA call in the game tool</summary>
 			public static PlatformAddress CheApeLoadLibrary = new PlatformAddress
 				(0x76C3E4, 0x7F0204, 0x7FC29C);
+			/// <summary>Address where we'll place our initializer code</summary>
+			public static PlatformAddress CheApeFunction1 = new PlatformAddress
+				(0x7517C0, 0x7D79D0, 0x7E2C10);
 
-			// end address of real_math_initialize
-			public static PlatformAddress CheApeFunction = new PlatformAddress
-				(0x4A58D0, 0x54D1B0, 0x4C4D50);
+			/// <summary>Address where we'll place our hook code which calls <see cref="CheApeFunction1"/></summary>
+			public static PlatformAddress CheApeFunction2 = new PlatformAddress
+				(0x6ACF6A, 0x75203F, 0x73A3AB);
 			#endregion
 
 			public static PlatformAddress LogHeaderVersion = new PlatformAddress

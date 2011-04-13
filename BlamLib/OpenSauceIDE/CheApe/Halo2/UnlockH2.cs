@@ -29,6 +29,9 @@ namespace OpenSauceIDE.CheApeInterface
 		{
 			public PlatformInterface(string output_dir, string path, Platform pv) : base(pv)
 			{
+				if (!ValidateExe(path))
+					throw new BlamLib.Debug.ExceptionLog("{0} is not a supported {1} exe", path, pv.ToString());
+
 				string dir = string.IsNullOrEmpty(output_dir) ? Path.GetDirectoryName(path) : output_dir;
 				string name = Path.GetFileName(path);
 				name = Path.Combine(dir, "OS_" + name);
@@ -43,16 +46,23 @@ namespace OpenSauceIDE.CheApeInterface
 				output.Seek(AddressOf.CheApeDllString[PlatformVersion] - Program.PeAddressMask);
 				output.Write(Constants.CheApeDllString[PlatformVersion]);
 
-				output.Seek(AddressOf.CheApeFunction[PlatformVersion] - Program.PeAddressMask);
-				output.Write(Constants.CheApeFunction[PlatformVersion]);
+				output.Seek(AddressOf.CheApeFunction1[PlatformVersion] - Program.PeAddressMask);
+				output.Write(Constants.CheApeFunction1[PlatformVersion]);
+
+				output.Seek(AddressOf.CheApeFunction2[PlatformVersion] - Program.PeAddressMask);
+				output.Write(Constants.CheApeFunction2[PlatformVersion]);
 			}
 			#endregion
 
 			#region UpdateLogHeader
 			protected void UpdateLogHeader()
 			{
+				const string k_build_string = "1" + "20" + "81";
+
 				output.Seek(AddressOf.LogHeaderVersion[PlatformVersion] - Program.PeAddressMask);
-				output.Write("1" + "20" + "81", 5);
+				output.Write(k_build_string, 6);
+				output.Seek(-1, SeekOrigin.Current);
+				output.Write((byte)' ');
 			}
 			#endregion
 
@@ -66,6 +76,11 @@ namespace OpenSauceIDE.CheApeInterface
 		#region Guerilla
 		partial class Guerilla : PlatformInterface
 		{
+			protected override bool ValidateExe(string path)
+			{
+				return UnlockToolsBase.ValidateExe(path, 0x118, 0x46361B50);
+			}
+
 			// Add a menu id of 0xA85D to perform Tag Exports
 
 			public Guerilla(string output_dir, string path) : base(output_dir, path, Platform.Guerilla) { }
@@ -235,7 +250,7 @@ namespace OpenSauceIDE.CheApeInterface
 
 			public override void Unlock(bool debug)
 			{
-			//	base.Unlock(debug);
+				base.Unlock(debug);
 
 				//FixCode();
 				if (debug) EnableBaseObjectCreation();
@@ -253,6 +268,11 @@ namespace OpenSauceIDE.CheApeInterface
 		#region Tool
 		class Tool : PlatformInterface
 		{
+			protected override bool ValidateExe(string path)
+			{
+				return UnlockToolsBase.ValidateExe(path, 0x108, 0x46361B4D);
+			}
+
 			public Tool(string output_dir, string path) : base(output_dir, path, Platform.Tool) { }
 
 			public override void Unlock(bool debug)
@@ -265,6 +285,11 @@ namespace OpenSauceIDE.CheApeInterface
 		#region Sapien
 		class Sapien : PlatformInterface
 		{
+			protected override bool ValidateExe(string path)
+			{
+				return UnlockToolsBase.ValidateExe(path, 0x110, 0x46361B42);
+			}
+
 			public Sapien(string output_dir, string path) : base(output_dir, path, Platform.Sapien) { }
 
 			public override void Unlock(bool debug)
@@ -277,9 +302,17 @@ namespace OpenSauceIDE.CheApeInterface
 
 		public UnlockH2(string output_dir, string g_path, string t_path, string s_path)
 		{
-			if (!string.IsNullOrEmpty(g_path)) GuerillaInterface = new Guerilla(output_dir, g_path);
-			if (!string.IsNullOrEmpty(t_path)) ToolInterface = new Tool(output_dir, t_path);
-			if (!string.IsNullOrEmpty(s_path)) SapienInterface = new Sapien(output_dir, s_path);
+			if (!string.IsNullOrEmpty(g_path))
+				try { GuerillaInterface = new Guerilla(output_dir, g_path); }
+				catch (BlamLib.Debug.ExceptionLog) { EncounteredInvalidExe = true; }
+
+			if (!string.IsNullOrEmpty(t_path))
+				try { ToolInterface = new Tool(output_dir, t_path); }
+				catch (BlamLib.Debug.ExceptionLog) { EncounteredInvalidExe = true; }
+
+			if (!string.IsNullOrEmpty(s_path))
+				try { SapienInterface = new Sapien(output_dir, s_path); }
+				catch (BlamLib.Debug.ExceptionLog) { EncounteredInvalidExe = true; }
 		}
 
 		public override void Close()
