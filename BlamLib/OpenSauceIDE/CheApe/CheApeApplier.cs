@@ -71,9 +71,17 @@ namespace OpenSauceIDE
 				txtPathOutput.Text = dlgFolderBrowser.SelectedPath;
 		}
 
-		void OnAppleException(BlamLib.BlamVersion v, Exception ex)
+		void OnApplyException(BlamLib.BlamVersion v, Exception ex)
 		{
 			BlamLib.Debug.LogFile.WriteLine("CheApe Apply failed in {0}. Reason:{1}{2}", v.ToString(), BlamLib.Program.NewLine, ex);
+		}
+		void OnApplyMsg(bool is_error, string format, params string[] args)
+		{
+			string msg = string.Format(format, args);
+			string title = is_error ? "Error" : "Success!";
+
+			MessageBox.Show(this, msg, title, MessageBoxButtons.OK,
+				is_error ? MessageBoxIcon.Error : MessageBoxIcon.Information);
 		}
 		void OnApply(BlamLib.BlamVersion v)
 		{
@@ -108,28 +116,25 @@ namespace OpenSauceIDE
 			}
 
 			if (exception != null)
-				OnAppleException(v, exception);
+				OnApplyException(v, exception);
 
 			string msg = exception == null ? 
 				"CheApe successfully applied!" :
 				"There was an error while trying to apply CheApe. Validate that you selected copies of the original tools and try again.";
 
-			MessageBox.Show(this, msg,
-				exception==null ? "Success!" : "Error", 
-				MessageBoxButtons.OK,
-				exception==null ? MessageBoxIcon.Information : MessageBoxIcon.Error);
+			if (unlocker.EncounteredInvalidExe)
+				OnApplyMsg(true, "CheApe couldn't be applied to some or all of the exes. Check the debug log for more details");
+			else
+				OnApplyMsg(exception != null, msg);
 		}
 		void OnApply(object sender, EventArgs e)
 		{
 			if(cbEngineVersion.SelectedItem == null)
-				MessageBox.Show(this, "Select an engine version first!",
-					"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				OnApplyMsg(true, "Select an engine version first!");
 			else if (string.IsNullOrEmpty(txtPathOutput.Text))
-				MessageBox.Show(this, "Select output directory first!", 
-					"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				OnApplyMsg(true, "Select output directory first!");
 			else if (string.IsNullOrEmpty(txtPathGuerilla.Text) && string.IsNullOrEmpty(txtPathSapien.Text) && string.IsNullOrEmpty(txtPathTool.Text))
-				MessageBox.Show(this, "At least one executable must be selected!",
-					"Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				OnApplyMsg(true, "At least one executable must be selected!");
 			else
 			{
 				var v = (BlamLib.BlamVersion)cbEngineVersion.SelectedItem;
@@ -170,6 +175,10 @@ namespace BlamLib
 					try					{ unlocker = new OpenSauceIDE.CheApeInterface.UnlockH1(args[4], args[1], args[2], args[3]); }
 					catch (Exception ex){ exception = ex; }
 					break;
+				case BlamVersion.Halo2_PC:
+					try					{ unlocker = new OpenSauceIDE.CheApeInterface.UnlockH2(args[4], args[1], args[2], args[3]); }
+					catch (Exception ex){ exception = ex; }
+					break;
 			}
 
 			if (unlocker != null) // If the unlocker api was initialized OK, run the unlocking operations
@@ -191,9 +200,14 @@ namespace BlamLib
 				Console.WriteLine();
 			}
 
-			string msg = exception==null ?
-				"CheApe successfully applied!" :
-				"There was an error while trying to apply CheApe. Validate that you selected copies of the original tools and try again.";
+			string msg;
+			if (exception == null)
+				msg = "CheApe successfully applied!";
+			else if (unlocker.EncounteredInvalidExe)
+				msg = "CheApe couldn't be applied to some or all of the exes. Check the debug log for more details";
+			else
+				msg = "There was an error while trying to apply CheApe. Validate that you selected copies of the original tools and try again.";
+
 			Console.WriteLine(msg);
 		}
 	};

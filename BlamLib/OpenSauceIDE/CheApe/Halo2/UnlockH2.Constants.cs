@@ -35,6 +35,7 @@ namespace OpenSauceIDE.CheApeInterface
 			};
 
 			#region Che Ape
+			/// <summary>DLL name strings for each game tool</summary>
 			public static PlatformData CheApeDllString = new PlatformData(
 				// "\0H2CheApeDLLG.dll\0"
 				BlamLib.Util.ByteStringToArray("004832436865417065444C4C472E646C6C00"),
@@ -42,6 +43,49 @@ namespace OpenSauceIDE.CheApeInterface
 				BlamLib.Util.ByteStringToArray("004832436865417065444C4C542E646C6C00"),
 				// "\0H2CheApeDLLS.dll\0"
 				BlamLib.Util.ByteStringToArray("004832436865417065444C4C532E646C6C00")
+				);
+
+			// As long as no one executes havok_debug_start (only possible in sapien anyway) this crap will work
+			// TODO: Null havok_debug_start's evaluate function pointer in CheApe
+
+			/// <summary>Initializer code for each game tool</summary>
+			/// <remarks>
+			/// offset	<see cref="AddressOf.CheApeFunction1"/>
+			/// push	<see cref="AddressOf.CheApeDllString"/>
+			/// call	ds:[<see cref="AddressOf.CheApeLoadLibrary"/>]
+			/// jmp		___security_init_cookie
+			/// </remarks>
+			public static PlatformData CheApeFunction1 = new PlatformData(
+				// push	0x8A9268		// Push our dll string
+				// call	ds:[0x76C3E4]	// call LoadLibrary
+				// jmp	0x6BA090		// goto ___security_init_cookie
+				BlamLib.Util.ByteStringToArray("686A928A00" + "FF15E4C37600" + "E9C088F6FF"),
+
+				// push	0x9379C0		// Push our dll string
+				// call	ds:[0x7F0204]	// call LoadLibrary
+				// jmp	0x765007		// goto ___security_init_cookie
+				BlamLib.Util.ByteStringToArray("68C0799300" + "FF1504027F00" + "E927D6F8FF"),
+
+				// push	0x933320		// Push our dll string
+				// call	ds:[0x7FC29C]	// call LoadLibrary
+				// jmp	0x74C05D		// goto ___security_init_cookie
+				BlamLib.Util.ByteStringToArray("6820339300" + "FF159CC27F00" + "E93D94F6FF")
+				);
+
+			/// <summary>Initializer's hook code for each game tool</summary>
+			/// <remarks>
+			/// offset	<see cref="AddressOf.CheApeFunction2"/>
+			/// call	<see cref="AddressOf.CheApeFunction1"/>
+			/// </remarks>
+			public static PlatformData CheApeFunction2 = new PlatformData(
+				// call	0x7517C0		// Call our setup code listed above
+				BlamLib.Util.ByteStringToArray("E851480A00"),
+
+				// call	0x7D79D0		// Call our setup code listed above
+				BlamLib.Util.ByteStringToArray("E88C590800"),
+
+				// call	0x7E2C10		// Call our setup code listed above
+				BlamLib.Util.ByteStringToArray("E860880A00")
 				);
 
 			/// <summary></summary>

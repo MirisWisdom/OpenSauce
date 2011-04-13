@@ -259,10 +259,9 @@ namespace Yelo
 		{
 			if(_InitError == k_error_PhysicalMemoryMapInitialize) return;
 
-			BOOL result = _globals.cache.MemoryMapDispose();
-			if(result == FALSE)
+			if(_globals.cache.MemoryMapDispose() == FALSE)
 				YELO_ERROR(_error_message_priority_none, 
-					"CheApe: Couldn't free the memory map (%X)!\n", result);
+					"CheApe: Couldn't free the memory map!\n");
 		}
 	};
 };
