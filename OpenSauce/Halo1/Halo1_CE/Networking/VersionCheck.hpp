@@ -18,9 +18,7 @@
 */
 #pragma once
 
-#ifdef VERSION_CHECK_ENABLE
-#include "ghttp/ghttp.h"
-#include "Interface/TextBlock.hpp"
+#ifdef YELO_VERSION_CHECK_ENABLE
 
 namespace Yelo
 {
@@ -38,108 +36,24 @@ namespace Yelo
 		void		InitializeForNewMap();
 		void		Update(real delta_time);
 
-		/*!
-		 * \brief
-		 * Manages how a new version is visually shown to the user.
-		 * 
-		 * The display manager handles how an available version update
-		 * is displayed to the user. The version manager currently 
-		 * draws a small piece of text in the lower left corner of
-		 * the main menu displaying the current version, which is
-		 * then replaced by a brighter piece of text showing the
-		 * available version, which fades in and out.
-		 */
-		class c_version_display_manager
-		{			
-			enum{
+		class c_version_display_manager_base
+		{
+		protected:
+			enum {
 				/*!
 				 * \brief
 				 * The maximum length of the version strings.
 				 */
-				k_max_update_string_length = 32,
+				k_max_update_string_length = 31,
 			};
 
-			struct{
-				TextBlock* current_version;
-				TextBlock* available_version;
-			}m_textblocks;
-
-			struct{
-				wchar_t* current_version;
-				wchar_t* available_version;
+			struct {
+				wchar_t current_version[k_max_update_string_length+1];
+				wchar_t available_version[k_max_update_string_length+1];
 			}m_strings;
 
-			struct{
-				/// Should the animation be played
-				bool do_animation;
-				/// Has the animation cycle reached 0
-				bool is_cycle_complete;
-				/// Toggles whether to increase or decrease current_position
-				bool do_decrease;
-				PAD8;
-				/// The time it takes to get from 0 to 1
-				float cycle_time;
-				/// The current position in the animation cycle
-				float current_position;
-
-				/// The amount of time the animation should play for in total
-				float display_time;
-				/// The amount of time the animation has played for
-				float current_time;
-			}m_animation;
-
-		public:
-			/*!
-			 * \brief
-			 * Initialises the classes variables
-			 * 
-			 * The constructor sets all of the values to zero
-			 * and then initialises then to their default values.
-			 */
-			c_version_display_manager()
-			{
-				memset(&m_textblocks, 0, sizeof(m_textblocks));
-				memset(&m_strings, 0, sizeof(m_strings));
-				memset(&m_animation, 0, sizeof(m_animation));
-
-				m_animation.cycle_time = 1.0f;
-				m_animation.is_cycle_complete = true;
-			}
-
-			/*!
-			 * \brief
-			 * Allocates memory for the update version strings.
-			 */
-			void		Initialize() 
-			{
-				m_strings.current_version = new wchar_t[k_max_update_string_length];
-				m_strings.available_version = new wchar_t[k_max_update_string_length];
-			}
-			/*!
-			 * \brief
-			 * Deletes the memory used by the version strings
-			 */
-			void		Dispose() 
-			{
-				delete m_strings.current_version;
-				m_strings.current_version = NULL;
-				delete m_strings.available_version;
-				m_strings.available_version = NULL;
-			}
-
-			void		Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters);
-			void		OnLostDevice();
-			void		OnResetDevice(D3DPRESENT_PARAMETERS* pParameters);
-			void		Render();
-			void		Release();
-
-			void		Update(real delta_time);
-
-			void		SetCurrentVersionString(const wcstring version_string);
-			void		SetAvailableVersionString(const wcstring version_string);
-
-			void		StartUpdateDisplay(const float time);
-			void		ResetDisplay();			
+			void		SetCurrentVersionStringImpl(wcstring version_string);
+			void		SetAvailableVersionStringImpl(wcstring version_string);
 		};
 
 		/*!
@@ -171,9 +85,7 @@ namespace Yelo
 			static c_version_check_manager& VersionChecker() { return g_instance; }
 
 		private:
-			c_version_display_manager m_display_manager;
-
-			struct{
+			struct {
 				/// Has the version xml been downloaded this session
 				bool checked_this_session;
 				/// Has the version xml been downloaded today
@@ -206,9 +118,9 @@ namespace Yelo
 			}m_xml_sources[3];
 
 			struct s_version{
-				int	m_major;
-				int	m_minor;
-				int	m_build;
+				int32	m_major;
+				int32	m_minor;
+				int32	m_build;
 
 				void SetBuild(const int major, const int minor, const int build)
 				{
@@ -244,7 +156,7 @@ namespace Yelo
 			void			ProcessVersionXml();
 			void			UpdateState();
 		};
-	};};
+	}; };
 };
 
 #else
@@ -253,20 +165,20 @@ namespace Yelo
 {
 	namespace Networking { namespace VersionCheck
 	{
-		void		Initialize();
-		void		Dispose();
+		void		Initialize() {}
+		void		Dispose() {}
 
-		void		Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters);
-		void		OnLostDevice();
-		void		OnResetDevice(D3DPRESENT_PARAMETERS* pParameters);
-		void		Render();
-		void		Release();
+		void		Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters) {}
+		void		OnLostDevice() {}
+		void		OnResetDevice(D3DPRESENT_PARAMETERS* pParameters) {}
+		void		Render() {}
+		void		Release() {}
 
-		void		LoadSettings(TiXmlElement* dx9_element);
-		void		SaveSettings(TiXmlElement* dx9_element);
+		void		LoadSettings(TiXmlElement* dx9_element) {}
+		void		SaveSettings(TiXmlElement* dx9_element) {}
 
-		void		InitializeForNewMap();
-		void		Update(real delta_time);
+		void		InitializeForNewMap() {}
+		void		Update(real delta_time) {}
 	};};
 };
 #endif

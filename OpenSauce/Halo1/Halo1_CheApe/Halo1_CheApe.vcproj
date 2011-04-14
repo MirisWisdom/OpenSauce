@@ -2406,6 +2406,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\TagGroups\Halo1\CacheDefinitions.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\TagGroups\Halo1\damage_effect_definitions.hpp"
 					>
 				</File>
@@ -2443,6 +2447,10 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\TagGroups\Halo1\structure_bsp_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\TagGroups\Halo1\TagGroupDefinitions.hpp"
 					>
 				</File>
 				<File
