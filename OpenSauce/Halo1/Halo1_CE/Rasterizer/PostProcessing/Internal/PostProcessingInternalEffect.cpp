@@ -31,16 +31,71 @@ namespace Yelo
 		void		c_internal_shader_variable_scripted_node::SetVariable(LPD3DXEFFECT* dx_effect)
 		{	
 			// Set the scripted variable to it's current value
-			m_shader_variable->m_variable_datum->SetVariable(dx_effect, &m_value);
+			m_shader_variable->m_variable_datum->SetVariable(dx_effect, &m_current_value);
 		}
 		void		c_internal_shader_variable_scripted_node::SetVariableSource(c_generic_shader_variable_node* shader_variable)
 		{
-			// Store the pointer to the the shader variable node	then set the scripted variables initial value
+			// Store the pointer to the the shader variable node then set the scripted variables initial value
 			// to the shader variables upper value.
 
 			c_generic_shader_variable_instance_node::SetVariableSource(shader_variable);
 
-			m_shader_variable->m_variable_datum->CopyDefaultVariable(&m_value);
+			m_shader_variable->m_variable_datum->CopyDefaultVariable(&m_values[0]);
+			m_current_value = m_values[0];
+		}
+		void		c_internal_shader_variable_scripted_node::UpdateVariable(Yelo::real delta_time)
+		{
+			// increase the interpolation value at the required rate
+			if(m_interpolation.change_time == 0)
+				m_interpolation.current_interpolation = 1.0f;
+			else
+				m_interpolation.current_interpolation += CAST(real, (1.0f / m_interpolation.change_time) * delta_time);
+
+			if(m_interpolation.current_interpolation > 1.0f)
+				m_interpolation.current_interpolation = 1.0f;
+			
+			// if the interpolation value is 1.0f simply set the current value to the target value
+			if(m_interpolation.current_interpolation == 1.0f)
+				m_current_value = m_values[1];
+			else
+				m_current_value = InterpolateValues(m_interpolation.current_interpolation);
+		}
+		void		c_internal_shader_variable_scripted_node::SetInterpolationTime(float interp_time)
+		{
+			// set the change time and reset the interpolation to zero
+			m_interpolation.change_time = interp_time;
+			m_interpolation.current_interpolation = 0.0f;
+
+			// the start value is set to the current value
+			m_values[0] = m_current_value;
+		}
+
+		c_internal_shader_variable_scripted_node::t_value_union		
+					c_internal_shader_variable_scripted_node::InterpolateValues(float interpolation)
+		{
+			t_value_union result;
+			memset(&result, 0, sizeof(result));
+
+			switch(m_shader_variable->m_variable_datum->value_type.type)
+			{
+			case Enums::_shader_variable_base_type_boolean:
+				result.boolean = (interpolation > 0.5 ? m_values[1].boolean : m_values[0].boolean);
+				break;
+			case Enums::_shader_variable_base_type_integer:
+				{
+					int range = m_values[1].integer32 - m_values[0].integer32;
+					result.integer32 = m_values[0].integer32 + (int)(range * interpolation);
+				}
+				break;
+			case Enums::_shader_variable_base_type_float:
+				for(int i = 0; i < m_shader_variable->m_variable_datum->value_type.count; i++)
+				{
+					real range = m_values[1].reals[i] - m_values[0].reals[i];
+					result.reals[i] = m_values[0].reals[i] + (range * interpolation);
+				}
+				break;
+			}
+			return result;
 		}
 		/////////////////////////////////////////////////////////////////////
 

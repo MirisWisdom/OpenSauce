@@ -37,6 +37,7 @@
 	{Rasterizer::ShaderExtension::Initialize,		Rasterizer::ShaderExtension::Dispose},
 	{Postprocessing::Initialize,					Postprocessing::Dispose,NULL,	Postprocessing::InitializeForNewMap,	Postprocessing::DisposeFromOldMap,	Postprocessing::Update},
 	{Camera::Initialize,							Camera::Dispose},
+	{Networking::VersionCheck::Initialize,			Networking::VersionCheck::Dispose, NULL, Networking::VersionCheck::InitializeForNewMap, NULL, Networking::VersionCheck::Update},
 #endif
 //{Console::Initialize,								Console::Dispose},		// No active code currently
 

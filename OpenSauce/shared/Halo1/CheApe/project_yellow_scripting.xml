@@ -152,11 +152,13 @@
 			<arg type="short" name="effect_index" />
 			<arg type="short" name="variable_index" />
 			<arg type="boolean" name="bool" />
+			<arg type="real" name="change_time" />
 		</function>
 		<function name="pp_set_effect_shader_variable_integer" returnType="void" help="sets the integer value of an effect shader variable" >
 			<arg type="short" name="effect_index" />
 			<arg type="short" name="variable_index" />
 			<arg type="long" name="value" />
+			<arg type="real" name="change_time" />
 		</function>
 		<function name="pp_set_effect_shader_variable_real" returnType="void" help="sets the real values of an effect shader variable" >
 			<arg type="short" name="effect_index" />
@@ -165,6 +167,7 @@
 			<arg type="real" name="value1" />
 			<arg type="real" name="value2" />
 			<arg type="real" name="value3" />
+			<arg type="real" name="change_time" />
 		</function>
 	</scriptFunctions>
 

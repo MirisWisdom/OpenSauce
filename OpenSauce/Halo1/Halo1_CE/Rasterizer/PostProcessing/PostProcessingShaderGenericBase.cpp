@@ -176,8 +176,8 @@ namespace Yelo
 		}
 		void		c_generic_shader_base::UnloadCustomResources()
 		{
-			for (int32 i = 0; i < m_shader_generic->implementation.additional_bitmaps.Count; ++i)
-				m_shader_generic->implementation.additional_bitmaps[i].ReleaseBitmap();			
+			for (int32 i = 0; i < m_shader_generic->implementation.bitmaps.Count; ++i)
+				m_shader_generic->implementation.bitmaps[i].ReleaseBitmap();			
 		}
 		void		c_generic_shader_base::SetID(cstring pID)
 		{
@@ -199,7 +199,7 @@ namespace Yelo
 			TagGroups::s_shader_postprocess_implementation& impl = m_shader_generic->implementation;
 
 			int32 i;
-			for (i = 0; i < impl.additional_bitmaps.Count; ++i)	impl.additional_bitmaps[i].value.bitmap.handle.ClearHandles();
+			for (i = 0; i < impl.bitmaps.Count; ++i)			impl.bitmaps[i].value.bitmap.handle.ClearHandles();
 			for (i = 0; i < impl.bools.Count; ++i)				impl.bools[i].value.boolean.handle.ClearHandles();
 			for (i = 0; i < impl.integers.Count; ++i)			impl.integers[i].value.integer32.handle.ClearHandles();
 			for (i = 0; i < impl.floats.Count; ++i)				impl.floats[i].value.real32.handle.ClearHandles();
@@ -220,13 +220,13 @@ namespace Yelo
 				TagGroups::s_shader_postprocess_implementation& impl = shader_tag->implementation;
 				int32 i;
 
-				for(i = 0; i < impl.additional_bitmaps.Count; i++)
+				for(i = 0; i < impl.bitmaps.Count; i++)
 				{					
-					if(FindVariable(&m_shader_texture_variable_list_head, impl.additional_bitmaps[i].value_name))
+					if(FindVariable(&m_shader_texture_variable_list_head, impl.bitmaps[i].value_name))
 						continue;
-					AddVariable(&m_shader_texture_variable_list_head, &impl.additional_bitmaps[i]);
-					impl.additional_bitmaps[i].value_type.type = Enums::_shader_variable_base_type_texture;
-					impl.additional_bitmaps[i].value_type.count = 1;
+					AddVariable(&m_shader_texture_variable_list_head, &impl.bitmaps[i]);
+					impl.bitmaps[i].value_type.type = Enums::_shader_variable_base_type_texture;
+					impl.bitmaps[i].value_type.count = 1;
 				}
 
 				for(i = 0; i < impl.bools.Count; i++)

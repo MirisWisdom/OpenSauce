@@ -47,11 +47,11 @@ namespace Yelo
 			{
 				c_generic_shader_base::Dtor();
 				// delete the texture path string.
-				for(int32 i = 0; i < m_shader_generic->implementation.additional_bitmaps.Count; i++)
-					delete [] m_shader_generic->implementation.additional_bitmaps[i].runtime.external.source;
+				for(int32 i = 0; i < m_shader_generic->implementation.bitmaps.Count; i++)
+					delete [] m_shader_generic->implementation.bitmaps[i].runtime.external.source;
 				
 				// delete any manually allocated block memory
-				delete[] m_shader_generic->implementation.additional_bitmaps.Address;				
+				delete[] m_shader_generic->implementation.bitmaps.Address;				
 				delete[] m_shader_generic->implementation.bools.Address;
 				delete[] m_shader_generic->implementation.integers.Address;
 				delete[] m_shader_generic->implementation.floats.Address;

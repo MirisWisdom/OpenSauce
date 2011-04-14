@@ -25,6 +25,7 @@
 #include "Interface/GameUI.hpp"
 #include "Objects/Objects.hpp"
 #include "Rasterizer/Rasterizer.hpp"
+#include "Networking/VersionCheck.hpp"
 
 namespace Yelo
 {
@@ -38,7 +39,8 @@ namespace Yelo
 			TiXmlElement* dx9_element = NULL,
 						* fov_element = NULL,
 						* hud_element = NULL,
-						* objects_element = NULL
+						* objects_element = NULL,
+						* version_check_element = NULL
 				;
 
 			if(client != NULL)
@@ -47,12 +49,14 @@ namespace Yelo
 				fov_element = client->FirstChildElement("Fov");
 				hud_element = client->FirstChildElement("Hud");
 				objects_element = client->FirstChildElement("objects");
+				version_check_element = client->FirstChildElement("version_check");
 			}
 
 			Rasterizer::LoadSettings(dx9_element);
 			Fov::LoadSettings(fov_element);
 			Hud::LoadSettings(hud_element);
 			Objects::LoadSettings(objects_element);
+			Networking::VersionCheck::LoadSettings(version_check_element);
 		}
 
 		static void SaveSettingsForClient(TiXmlElement* client)
@@ -60,7 +64,8 @@ namespace Yelo
 			TiXmlElement* dx9_element = NULL,
 						* fov_element = NULL,
 						* hud_element = NULL,
-						* objects_element = NULL
+						* objects_element = NULL,
+						* version_check_element = NULL
 				;
 
 			dx9_element = new TiXmlElement("dx9");
@@ -71,11 +76,14 @@ namespace Yelo
 				client->LinkEndChild(hud_element);
 			objects_element = new TiXmlElement("objects");
 				client->LinkEndChild(objects_element);
+			version_check_element = new TiXmlElement("version_check");
+				client->LinkEndChild(version_check_element);
 
 			Rasterizer::SaveSettings(dx9_element);
 			Fov::SaveSettings(fov_element);
 			Hud::SaveSettings(hud_element);
 			Objects::SaveSettings(objects_element);
+			Networking::VersionCheck::SaveSettings(version_check_element);
 		}
 	};
 #endif
@@ -135,7 +143,7 @@ namespace Yelo
 
 		void Dispose()
 		{
-			//SaveSettings();
+			SaveSettings();
 
 			Settings::SharedDispose();
 		}

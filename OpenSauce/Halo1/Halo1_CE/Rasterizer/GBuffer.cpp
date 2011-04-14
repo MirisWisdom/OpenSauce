@@ -37,6 +37,27 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_DX9_GBUFFER
 #include "Memory/_EngineLayout.inl"
 
+		static D3DXHANDLE	GetTechnique(LPD3DXEFFECT& effect, 
+			const char* mesh_type, 
+			const char* rt_support)
+		{
+			const char* technique_format = "VS_%s_%s";
+			char technique[32] = "";
+			sprintf_s(technique, sizeof(technique), technique_format, mesh_type, rt_support);
+			return effect->GetTechniqueByName(technique);
+		}
+		static D3DXHANDLE	GetTechnique(LPD3DXEFFECT& effect, 
+			const int rt_count, 
+			const char* mesh_type, 
+			const char* rt_support)
+		{
+			const char* technique_format = "PS_MRT%i_%s_%s";
+			char technique[32] = "";
+			sprintf_s(technique, sizeof(technique), technique_format, rt_count, mesh_type, rt_support);
+			return effect->GetTechniqueByName(technique);
+		}
+
+
 		//////////////////////////////////////////////////////////////////////
 		// s_gbuffer
 		void		c_gbuffer::ReleaseTargets()
@@ -60,10 +81,11 @@ namespace Yelo
 			cstring y_handle_semantic, const int y_index,
 			cstring z_handle_semantic, const int z_index,
 			cstring w_handle_semantic, const int w_index)
-		{		
+		{
 			variable_used = false;
 			if(!effect) return false;
 
+			//find the intended texture handle
 			D3DXHANDLE tex_handle = effect->GetParameterBySemantic(NULL, texture_semantic);
 
 			variable_used = (tex_handle != NULL) ? true : false;
@@ -71,10 +93,12 @@ namespace Yelo
 			if(!tex_handle)								return true;
 			else if(tex_handle && !target.IsEnabled())	return false;
 
+			// set the texture variable
 			effect->SetTexture(tex_handle, target.texture);
 
+			// search for the index variables handles
+			// then set them to the indices for the intended data
 			D3DXHANDLE index_handle = NULL;
-
 			if(x_handle_semantic)
 			{
 				index_handle = effect->GetParameterBySemantic(NULL, x_handle_semantic);
@@ -141,27 +165,6 @@ namespace Yelo
 
 		c_gbuffer_rtclear_effect& GBufferClear() { return g_gbuffer_clear; }
 		c_gbuffer_debug_effect& GBufferDebug() { return g_gbuffer_debug; }
-
-		D3DXHANDLE	GetTechnique(LPD3DXEFFECT& effect, 
-			const char* mesh_type, 
-			const char* rt_support)
-		{
-			const char* technique_format = "VS_%s_%s";
-			char technique[32] = "";
-			sprintf_s(technique, sizeof(technique), technique_format, mesh_type, rt_support);
-			return effect->GetTechniqueByName(technique);
-		}
-		D3DXHANDLE	GetTechnique(LPD3DXEFFECT& effect, 
-			const int rt_count, 
-			const char* mesh_type, 
-			const char* rt_support)
-		{
-			const char* technique_format = "PS_MRT%i_%s_%s";
-			char technique[32] = "";
-			sprintf_s(technique, sizeof(technique), technique_format, rt_count, mesh_type, rt_support);
-			return effect->GetTechniqueByName(technique);
-		}
-
 		HRESULT		c_gbuffer_fullscreen_effect::AllocateResources(IDirect3DDevice9* device, uint32 width, uint32 height)
 		{
 			TEXTURE_VERTEX quad[4] = 
@@ -197,7 +200,7 @@ namespace Yelo
 		}
 
 		HRESULT		c_gbuffer_debug_effect::AllocateResources(IDirect3DDevice9* device, uint32 width, uint32 height)
-		{		
+		{
 			c_gbuffer_fullscreen_effect::AllocateResources(device, width, height);
 
 			m_technique_single =	m_effect->GetTechniqueByName("DebugRTSingle");
@@ -233,6 +236,7 @@ namespace Yelo
 		{
 			if(!IsAvailable()) return;
 
+			// save the current important render states so they can be restored later
 			DWORD old_depthbias, old_fillmode, old_srcblend, old_dest_blend, old_zenable, old_zwriteenable, old_stencilenable;
 
 			device->GetRenderState(D3DRS_DEPTHBIAS, &old_depthbias);
@@ -243,6 +247,7 @@ namespace Yelo
 			device->GetRenderState(D3DRS_ZWRITEENABLE, &old_zwriteenable);	
 			device->GetRenderState(D3DRS_STENCILENABLE, &old_stencilenable);
 
+			// set the render states that we need to draw the effect correctly
 			device->SetRenderState(D3DRS_DEPTHBIAS, 0);
 			device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 			device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
@@ -251,6 +256,7 @@ namespace Yelo
 			device->SetRenderState(D3DRS_ZWRITEENABLE, false);
 			device->SetRenderState(D3DRS_STENCILENABLE, false);
 
+			// draw the render target debug effect
 			UINT cPasses, p;
 			device->SetFVF( D3DFVF_XYZRHW | D3DFVF_TEX1 );
 
@@ -272,6 +278,7 @@ namespace Yelo
 			}
 			m_effect->End();
 
+			// restore the render states to their previous values
 			device->SetRenderState(D3DRS_DEPTHBIAS, old_depthbias);
 			device->SetRenderState(D3DRS_FILLMODE, old_fillmode);
 			device->SetRenderState(D3DRS_SRCBLEND, old_srcblend);
@@ -296,7 +303,7 @@ namespace Yelo
 		}
 
 		HRESULT		c_gbuffer_rtclear_effect::AllocateResources(IDirect3DDevice9* device, uint32 width, uint32 height)
-		{		
+		{
 			c_gbuffer_fullscreen_effect::AllocateResources(device, width, height);
 
 			m_multi_rt.clear_technique = GetTechnique(m_effect, m_multi_rt.count, "Clear", "ALL");

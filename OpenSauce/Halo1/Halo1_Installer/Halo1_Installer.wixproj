@@ -1,0 +1,53 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>3.5</ProductVersion>
+    <ProjectGuid>{494f320a-b5eb-4623-be2d-77d5c7be7ca5}</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputName>OpenSauce_Halo1_CE</OutputName>
+    <OutputType>Package</OutputType>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <OutputPath>..\..\..\bin\Debug\Halo1_Installer\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+    <DefineConstants>Debug</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>..\..\..\bin\Release\Halo1_Installer\</OutputPath>
+    <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
+  </PropertyGroup>
+  <Import Project="$(WixTargetsPath)" />
+  <Target Name="BeforeBuild">
+    <MSBuild Projects="$(SolutionDir)..\..\OpenSauce_Pc.sln" Properties="Configuration=Release;Platform=Win32;SolutionDir=$(SolutionDir)..\..\" />
+    <MSBuild Projects="$(SolutionDir)..\..\OpenSauce_HEK.sln" Properties="Configuration=DebugGuerilla;Platform=Win32;SolutionDir=$(SolutionDir)..\..\" ContinueOnError="true"/>
+    <MSBuild Projects="$(SolutionDir)..\..\OpenSauce_HEK.sln" Properties="Configuration=DebugSapien;Platform=Win32;SolutionDir=$(SolutionDir)..\..\" ContinueOnError="true"/>
+    <MSBuild Projects="$(SolutionDir)..\..\OpenSauce_HEK.sln" Properties="Configuration=DebugTool;Platform=Win32;SolutionDir=$(SolutionDir)..\..\" ContinueOnError="true"/>
+    <!--MSBuild Projects="$(SolutionDir)..\..\..\BlamLib\BlamLib.sln" Properties="Configuration=Release;Platform=x86;SolutionDir=$(SolutionDir)..\..\..\BlamLib\" ContinueOnError="true"/-->
+  </Target>
+  <!--
+	<Target Name="AfterBuild">
+	</Target>
+	-->
+  <ItemGroup>
+    <Compile Include="OpenSauce_Halo1_CE.wxs" />
+    <Compile Include="OpenSauce_Halo1_CE_HEKPathsDlg.wxs" />
+    <Compile Include="OpenSauce_Halo1_CE_HEKPathsMissingDlg.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixUtilExtension">
+      <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
+      <Name>WixUtilExtension</Name>
+    </WixExtension>
+  </ItemGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+</Project>
