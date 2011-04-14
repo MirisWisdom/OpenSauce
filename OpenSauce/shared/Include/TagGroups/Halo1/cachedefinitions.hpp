@@ -18,19 +18,23 @@
 */
 #pragma once
 
+#include <TagGroups/CacheDefinitions.hpp>
+
 namespace Yelo
 {
-	struct s_cache_header_yelo {
-		struct s_flags {
-			unsigned uses_memory_upgrades : 1;	// cache requires upgraded memory
-			unsigned uses_mod_data_files : 1;	// cache relies on a set of 'mod' data files for it's resources
-			unsigned is_protected : 1;			// cache has protection applied
-		}flags; BOOST_STATIC_ASSERT( sizeof(s_flags) == 0x4 );
-		real k_memory_upgrade_increase_amount;
-		PAD32;
-		PAD32;
+	struct s_cache_header_yelo : public s_cache_header_yelo_base {
+		enum {
+			k_version = 1,
+		};
 
-		tag_string mod_name; // if the map uses a specific mod's data_files, this equals the mod prefix
+		struct s_flags {
+			word_flags uses_memory_upgrades : 1;// cache requires upgraded memory
+			word_flags uses_mod_data_files : 1;	// cache relies on a set of 'mod' data files for it's resources
+			word_flags is_protected : 1;		// cache has protection applied
+		}flags; BOOST_STATIC_ASSERT( sizeof(s_flags) == 0x2 );
+
+		PAD32;
+		real k_memory_upgrade_increase_amount;
 
 		struct {
 			uint32 size;
@@ -38,6 +42,21 @@ namespace Yelo
 			uint32 offset;
 			PAD32;
 		}cheape_definitions;
+
+		tag_string mod_name; // if the map uses a specific mod's data_files, this equals the mod prefix
+
+		void InitializeForNewMap()
+		{
+			memset(this, 0, sizeof(*this));
+
+			this->signature = k_signature;
+			this->version = k_version;
+		}
+
+		bool IsValid() const
+		{
+			return signature == k_signature && version == k_version;
+		}
 	};
 
 	struct s_cache_header
@@ -68,8 +87,9 @@ namespace Yelo
 		uint32 crc;
 		PAD32; // ?
 
+		PAD32; // Align so the yelo header starts on a 16B boundary
 		s_cache_header_yelo yelo;
-		byte padding[k_pad_size - sizeof(s_cache_header_yelo)];
+		byte padding[k_pad_size - (sizeof(uint32) + sizeof(s_cache_header_yelo))];
 
 		tag footer_signature;
 

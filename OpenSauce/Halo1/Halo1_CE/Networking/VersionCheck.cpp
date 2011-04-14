@@ -19,17 +19,35 @@
 #include "Common/Precompile.hpp"
 #include "Networking/VersionCheck.hpp"
 
-#ifdef VERSION_CHECK_ENABLE
+#ifdef YELO_VERSION_CHECK_ENABLE
 
 #include <time.h>
 #include <ctime>
 
 #include "TagGroups/CacheFiles.hpp"
 
+#if PLATFORM_IS_USER
+	#include "Networking/VersionCheckClient.hpp"
+#elif PLATFORM_IS_DEDI
+	#include "Networking/VersionCheckDedi.hpp"
+#endif
+
 namespace Yelo
 {
 	namespace Networking { namespace VersionCheck
 	{
+		void		c_version_display_manager_base::SetCurrentVersionStringImpl(wcstring version_string)
+		{
+			m_strings.current_version[0] = L'\0';
+			wcscat_s(m_strings.current_version, version_string);
+		}
+
+		void		c_version_display_manager_base::SetAvailableVersionStringImpl(wcstring version_string)
+		{
+			m_strings.available_version[0] = L'\0';
+			wcscat_s(m_strings.available_version, version_string);
+		}
+
 		/////////////////////////////////////////
 		//namespace functions
 		void		Initialize()
@@ -135,7 +153,7 @@ namespace Yelo
 			m_current_version.SetBuild(2, 5, 0);
 			m_available_version.SetBuild(2, 5, 0);
 
-			m_display_manager.Initialize();
+			c_version_display_manager::g_instance.Initialize();
 		}
 		/*!
 		 * \brief
@@ -145,7 +163,7 @@ namespace Yelo
 		 */
 		void		c_version_check_manager::Dispose()
 		{
-			m_display_manager.Dispose();
+			c_version_display_manager::g_instance.Dispose();
 
 			ghttpCleanup();
 		}
@@ -165,31 +183,31 @@ namespace Yelo
 		 */
 		void		c_version_check_manager::Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters)
 		{
-			m_display_manager.Initialize3D(pDevice, pParameters);
+			c_version_display_manager::g_instance.Initialize3D(pDevice, pParameters);
 
 			wchar_t current_string[32];
 			swprintf_s(current_string, 32, L"v%i.%i.%i", m_current_version.m_major, m_current_version.m_minor, m_current_version.m_build);
-			m_display_manager.SetCurrentVersionString(current_string);
+			c_version_display_manager::g_instance.SetCurrentVersionString(current_string);
 
-			m_display_manager.SetAvailableVersionString(L"");
+			c_version_display_manager::g_instance.SetAvailableVersionString(L"");
 		}
 		void		c_version_check_manager::OnLostDevice()
 		{
-			m_display_manager.OnLostDevice();
+			c_version_display_manager::g_instance.OnLostDevice();
 		}
 		void		c_version_check_manager::OnResetDevice(D3DPRESENT_PARAMETERS* pParameters)
 		{
-			m_display_manager.OnResetDevice(pParameters);
+			c_version_display_manager::g_instance.OnResetDevice(pParameters);
 		}
 		void		c_version_check_manager::Render()
 		{
 			// if we are in the main menu, show the version number
 			if(m_states.is_in_menu)
-				m_display_manager.Render();
+				c_version_display_manager::g_instance.Render();
 		}
 		void		c_version_check_manager::Release()
 		{
-			m_display_manager.Release();
+			c_version_display_manager::g_instance.Release();
 		}
 		/*!
 		 * \brief
@@ -273,7 +291,7 @@ namespace Yelo
 		 * If the game is loading the main menu, then check for the available online version.
 		 * The update check will only occur once per day, and only once per game session.
 		 * If the update does not complete before a new map is loaded, the http requests
-		 * are cancelled, and the update is re-run the next time the game is in the main menu.
+		 * are canceled, and the update is re-run the next time the game is in the main menu.
 		 * If the update check has been completed, and a new version is available,
 		 * the display manager will be set to display it's animation for 20 seconds, each time
 		 * the main menu is loaded.
@@ -288,9 +306,9 @@ namespace Yelo
 
 			// if we are on the main menu, and a new version is available play the animation
 			if(m_states.is_in_menu && m_states.is_new_version)
-				m_display_manager.StartUpdateDisplay(20);
+				c_version_display_manager::g_instance.StartUpdateDisplay(20);
 			else
-				m_display_manager.ResetDisplay();
+				c_version_display_manager::g_instance.ResetDisplay();
 
 			// if we are on the main menu and the update check hasn't been done yet, set it going
 			// otherwise if we are loading a new map and the version check is not complete, cancel 
@@ -328,7 +346,7 @@ namespace Yelo
 				ghttpThink();
 			// if we are in the main menu, update the display manager
 			if(m_states.is_in_menu)
-				m_display_manager.Update(delta_time);
+				c_version_display_manager::g_instance.Update(delta_time);
 		}
 		/*!
 		 * \brief
@@ -528,291 +546,11 @@ namespace Yelo
 
 				wchar_t available_string[32];
 				swprintf_s(available_string, 32, L"v%i.%i.%i available!", m_available_version.m_major, m_available_version.m_minor, m_available_version.m_build);
-				m_display_manager.SetAvailableVersionString(available_string);
+				c_version_display_manager::g_instance.SetAvailableVersionString(available_string);
 
-				m_display_manager.StartUpdateDisplay(20);
+				c_version_display_manager::g_instance.StartUpdateDisplay(20);
 			}
 		}
-		/////////////////////////////////////////
-		//c_version_display_manager
-		/////////////////////////////////////////
-
-		/////////////////////////////////////////
-		//non-static functions
-		/*!
-		 * \brief
-		 * Allocates Direct3D resources and memory for the TextBlocks.
-		 * 
-		 * \param pDevice
-		 * The current render device.
-		 * 
-		 * \param pParameters
-		 * A pointer to the parameters the device was created with.
-		 * 
-		 * The TextBlocks are set up here by first allocating their memory
-		 * and then setting their initial values.
-		 */
-		void		c_version_display_manager::Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters)
-		{
-			// sllocate memory for the textblocks
-			m_textblocks.current_version = new TextBlock(pDevice, pParameters);
-			m_textblocks.available_version = new TextBlock(pDevice, pParameters);
-
-			// set the text blocks initial values
-			m_textblocks.current_version->SetFade(false);
-			m_textblocks.current_version->SetFont("Lucida Sans Unicode", 14, FW_NORMAL, false, 6);
-			m_textblocks.current_version->SetDimensions(96, 32);
-			m_textblocks.current_version->SetTextAlign(DT_LEFT);
-			m_textblocks.current_version->SetBackColor(0);
-			m_textblocks.current_version->SetTextColor(D3DXCOLOR(0.5f, 0.5f, 0.5f, 0.75f));
-			m_textblocks.current_version->SetPadding(4);
-			m_textblocks.current_version->Attach(Enums::_attach_method_bottom_left, 0, 0, 0, 0);
-
-			m_textblocks.available_version->SetFade(false);
-			m_textblocks.available_version->SetFont("Lucida Sans Unicode", 14, FW_NORMAL, false, 6);
-			m_textblocks.available_version->SetDimensions(96, 32);
-			m_textblocks.available_version->SetTextAlign(DT_LEFT);
-			m_textblocks.available_version->SetBackColor(0);
-			m_textblocks.available_version->SetTextColor(D3DXCOLOR(0.7f, 0.7f, 0.7f, 0.75f));
-			m_textblocks.available_version->SetPadding(4);
-			m_textblocks.available_version->Attach(Enums::_attach_method_bottom_left, 0, 0, 0, 0);
-		}
-		/*!
-		 * \brief
-		 * Inform the TextBlocks that the device has been lost
-		 */
-		void		c_version_display_manager::OnLostDevice()
-		{
-			m_textblocks.available_version->OnLostDevice();
-			m_textblocks.current_version->OnLostDevice();
-		}
-		/*!
-		 * \brief
-		 * Inform the TextBlocks that the device has been reset
-		 */
-		void		c_version_display_manager::OnResetDevice(D3DPRESENT_PARAMETERS* pParameters)
-		{
-			m_textblocks.available_version->OnResetDevice(pParameters);
-			m_textblocks.current_version->OnResetDevice(pParameters);
-		}
-		/*!
-		 * \brief
-		 * Draws the version display TextBlocks.
-		 * 
-		 * Draws the TextBlocks, which show the user the current
-		 * and available versions. 
-		 * 
-		 * \remarks
-		 * The available version TextBlock is only displayed when
-		 * the animation cycle is not complete.
-		 */
-		void		c_version_display_manager::Render()
-		{
-			// refresh the text blocks and render them
-			m_textblocks.current_version->Refresh();
-			m_textblocks.current_version->Render();
-
-			if(!m_animation.is_cycle_complete)
-			{
-				m_textblocks.available_version->Refresh();
-				m_textblocks.available_version->Render();
-			}
-		}
-		/*!
-		 * \brief
-		 * Releases all Direct3D resources.
-		 * 
-		 * Releases all Direct3D resources and deletes the memory
-		 * allocated to the TextBlocks.
-		 */
-		void		c_version_display_manager::Release()
-		{
-			// release direct3D resources
-			m_textblocks.current_version->Release();
-			m_textblocks.available_version->Release();
-
-			// delete text block memory
-			delete m_textblocks.current_version;
-			m_textblocks.current_version = NULL;
-
-			delete m_textblocks.available_version;
-			m_textblocks.available_version = NULL;
-		}
-		/*!
-		 * \brief
-		 * Updates the display managers animation.
-		 * 
-		 * \param delta_time
-		 * The time in seconds that has passed since the last update.
-		 * 
-		 * Updates the display managers animation.
-		 * 
-		 * \remarks
-		 * The fade animation will always be displayed until its 
-		 * cycle is complete. This is to prevent it from suddenly
-		 * changing mid-fade.
-		 */
-		void		c_version_display_manager::Update(real delta_time)
-		{
-			// the fade animation will always play until the current fade cycle is complete
-			// to prevent it from sharply disappearing
-			if(!m_animation.do_animation && m_animation.is_cycle_complete)
-			{
-				m_textblocks.current_version->SetTextColor(
-					D3DXCOLOR(
-					0.5f, 
-					0.5f, 
-					0.5f, 
-					0.75f));
-				m_textblocks.current_version->SetText(m_strings.current_version);
-
-				m_textblocks.available_version->SetTextColor(
-					D3DXCOLOR(
-					0.7f, 
-					0.7f, 
-					0.7f, 
-					0.75f));
-				m_textblocks.available_version->SetText(m_strings.available_version);
-				return;
-			}
-
-			// if the animation should be playing continue to count the time that has passed
-			if(m_animation.do_animation)
-			{
-				m_animation.current_time += delta_time;
-				if(m_animation.current_time >= m_animation.display_time)
-				{
-					m_animation.do_animation = false;
-					m_animation.current_time = 0.0f;
-				}
-			}
-
-			// when true decrease the current_position variable to fade the text out
-			// when false increase the current_position variable to fade the text in
-			if(m_animation.do_decrease)
-			{
-				m_animation.current_position -= CAST(float, (1.0f / m_animation.cycle_time) * delta_time);
-				if(m_animation.current_position <= 0.0f)
-				{
-					// position has reached zero so the cycle is complete and we can now increase
-					m_animation.is_cycle_complete = true;
-					m_animation.do_decrease = false;
-					m_animation.current_position = 0.0f;
-				}
-			}
-			else
-			{
-				m_animation.current_position += CAST(float, (1.0f / m_animation.cycle_time) * delta_time);
-				if(m_animation.current_position >= 1.0f)
-				{
-					// position has reached zero so we can now decrease
-					m_animation.do_decrease = true;
-					m_animation.current_position = 1.0f;
-				}
-				// the cycle is only complete when the position is zero
-				m_animation.is_cycle_complete = false;
-			}
-
-			// update the text block text colours
-			m_textblocks.current_version->SetTextColor(
-				D3DXCOLOR(
-				0.5f, 
-				0.5f, 
-				0.5f, 
-				0.75f * (1.0f - m_animation.current_position)));
-
-			m_textblocks.available_version->SetTextColor(
-				D3DXCOLOR(
-				0.7f, 
-				0.7f, 
-				0.7f, 
-				0.95f * m_animation.current_position));
-		}
-		/*!
-		 * \brief
-		 * Sets the current version string to a new value.
-		 * 
-		 * \param version_string
-		 * A wide character pointer containing the new current version string.
-		 * 
-		 * Sets the current version string to a new value.
-		 */
-		void		c_version_display_manager::SetCurrentVersionString(const wcstring version_string)
-		{
-			m_strings.current_version[0] = 0;
-			wcscat_s(m_strings.current_version, k_max_update_string_length, version_string);
-			m_textblocks.current_version->SetText(m_strings.current_version);
-		}		
-		/*!
-		 * \brief
-		 * Sets the available version string to a new value.
-		 * 
-		 * \param version_string
-		 * A wide character pointer containing the new available version string.
-		 * 
-		 * Sets the available version string to a new value.
-		 */
-		void		c_version_display_manager::SetAvailableVersionString(const wcstring version_string)
-		{
-			m_strings.available_version[0] = 0;
-			wcscat_s(m_strings.available_version, k_max_update_string_length, version_string);
-			m_textblocks.available_version->SetText(m_strings.available_version);
-		}
-		/*!
-		 * \brief
-		 * Tells the display manager to start its animation.
-		 * 
-		 * \param time
-		 * The time in seconds that the animation should be played for.
-		 * 
-		 * Tells the display manager to start its animation.
-		 */
-		void		c_version_display_manager::StartUpdateDisplay(const float time)
-		{
-			m_animation.do_animation = true;
-			m_animation.is_cycle_complete = true;
-			m_animation.do_decrease = false;
-			m_animation.display_time = time;
-			m_animation.current_time = 0.0f;
-			m_animation.current_position = 0.0f;
-		}		
-		/*!
-		 * \brief
-		 * Resets the display managers animation, stopping it immediately.
-		 * 
-		 * Resets the display managers animation, stopping it immediately.
-		 */
-		void		c_version_display_manager::ResetDisplay()
-		{
-			m_animation.do_animation = false;
-			m_animation.is_cycle_complete = true;
-			m_animation.do_decrease = false;
-			m_animation.display_time = 0.0f;
-			m_animation.current_time = 0.0f;
-			m_animation.current_position = 0.0f;
-		}
-	};};
-};
-#else
-
-namespace Yelo
-{
-	namespace Networking { namespace VersionCheck
-	{
-		void		Initialize() {}
-		void		Dispose() {}
-
-		void		Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters) {}
-		void		OnLostDevice() {}
-		void		OnResetDevice(D3DPRESENT_PARAMETERS* pParameters) {}
-		void		Render() {}
-		void		Release() {}
-
-		void		LoadSettings(TiXmlElement* dx9_element) {}
-		void		SaveSettings(TiXmlElement* dx9_element) {}
-
-		void		InitializeForNewMap() {}
-		void		Update(real delta_time) {}
 	};};
 };
 #endif

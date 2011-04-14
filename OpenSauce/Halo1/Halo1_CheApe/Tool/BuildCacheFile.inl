@@ -113,7 +113,7 @@ static void PLATFORM_API build_cache_file_for_scenario_extended(void** arguments
 	build_cache_file_for_scenario_internals.build_failed = false;
 	build_cache_file_for_scenario_internals.scenario_path = args->scenario_name;
 
-	memset(&BuildCacheFileEx::MemoryUpgrades::yelo_cache_header_globals, 0, sizeof(BuildCacheFileEx::MemoryUpgrades::yelo_cache_header_globals));
+	BuildCacheFileEx::MemoryUpgrades::yelo_cache_header_globals.InitializeForNewMap();
 	//////////////////////////////////////////////////////////////////////////
 
 

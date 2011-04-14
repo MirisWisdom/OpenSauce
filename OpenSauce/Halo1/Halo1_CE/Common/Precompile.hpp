@@ -16,7 +16,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-// Precompiled header include
 
 #pragma once
 
@@ -41,19 +40,50 @@
 	#include <Dinput.h>
 #endif
 
+//////////////////////////////////////////////////////////////////////////
+// STD C includes
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
 #include <time.h>
 #include <io.h>
 #include <errno.h>
+//////////////////////////////////////////////////////////////////////////
 
+
+//////////////////////////////////////////////////////////////////////////
+// STL includes
 #include <utility>
+//////////////////////////////////////////////////////////////////////////
 
+
+//////////////////////////////////////////////////////////////////////////
+// Boost includes
 #include <boost/preprocessor.hpp>
 #include <boost/static_assert.hpp>
+//////////////////////////////////////////////////////////////////////////
+
 
 #include <TinyXml/tinyxml.hpp>
+
+
+//////////////////////////////////////////////////////////////////////////
+// GameSpy includes & definitions
+
+// Uncomment this if you don't have access to the Open SDK
+#define YELO_USE_GAMESPY_OPEN
+
+#if defined(YELO_USE_GAMESPY_OPEN)
+
+	// Just to make sure we're always using ASCII
+	#undef GSI_UNICODE
+
+	#include <GameSpyOpen/ghttp/ghttp.h>
+	
+	#define YELO_VERSION_CHECK_ENABLE
+
+#endif
+//////////////////////////////////////////////////////////////////////////
 
 #if defined(NDEBUG)
 	#define YELO_NO_NETWORK
