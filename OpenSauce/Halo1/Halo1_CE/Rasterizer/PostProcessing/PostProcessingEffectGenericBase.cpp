@@ -210,7 +210,7 @@ namespace Yelo
 		}
 		void		c_generic_shader_instance_node::ReplaceVariableInstance(const TagGroups::shader_variable_type& value_type, cstring variable_name, c_generic_shader_variable_instance_node* shader_variable)
 		{
-			// Replace a variable instance will a different type in a matching variable is found
+			// Replace a variable instance will a different type if a matching variable is found
 			c_generic_shader_variable_instance_node* current_variable;
 			c_generic_shader_variable_instance_node** variable_list;
 

@@ -156,7 +156,7 @@ namespace Yelo
 			static s_vertex_shader_variables	g_vertex_shader_variables;
 			static s_pixel_shader_variables		g_pixel_shader_variables;
 
-			// hooks to corrently skip past inverse shaders in the usage id list
+			// hooks to correctly skip past inverse shaders in the usage id list
 			API_FUNC_NAKED static void Hook_EnvironmentNoPixelShaderIDOffset()
 			{
 				static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_ENVIRONMENT_NO_USAGE_ID_OFFSET_RETN);

@@ -150,13 +150,13 @@
 				</Directory>
 				
 				<Component Id='Halo1_CE_CheApeDLLG_COMP' Guid='B8C6DFF9-6CF7-4571-8A7E-3082D16548BE'>
-					<File Id='Halo1_CE_CheApeDLLG_FILE' Name='CheApeDLLG.dll' DiskId='1' Source='..\..\..\bin\ReleaseGuerilla\Halo1_CheApe\CheApeDLLG.dll' KeyPath='yes' />
+					<File Id='Halo1_CE_CheApeDLLG_FILE' Name='CheApeDLLG.dll' DiskId='1' Source='..\..\..\bin\DebugGuerilla\Halo1_CheApe\CheApeDLLG.dll' KeyPath='yes' />
 				</Component>
 				<Component Id='Halo1_CE_CheApeDLLS_COMP' Guid='79045663-35F5-41EC-BBFE-F4CA58C1410C'>
-					<File Id='Halo1_CE_CheApeDLLS_FILE' Name='CheApeDLLS.dll' DiskId='1' Source='..\..\..\bin\ReleaseSapien\Halo1_CheApe\CheApeDLLS.dll' KeyPath='yes' />
+					<File Id='Halo1_CE_CheApeDLLS_FILE' Name='CheApeDLLS.dll' DiskId='1' Source='..\..\..\bin\DebugSapien\Halo1_CheApe\CheApeDLLS.dll' KeyPath='yes' />
 				</Component>
 				<Component Id='Halo1_CE_CheApeDLLT_COMP' Guid='457412A1-749A-4B82-AAFF-91C848D81E70'>
-					<File Id='Halo1_CE_CheApeDLLT_FILE' Name='CheApeDLLT.dll' DiskId='1' Source='..\..\..\bin\ReleaseTool\Halo1_CheApe\CheApeDLLT.dll' KeyPath='yes' />
+					<File Id='Halo1_CE_CheApeDLLT_FILE' Name='CheApeDLLT.dll' DiskId='1' Source='..\..\..\bin\DebugTool\Halo1_CheApe\CheApeDLLT.dll' KeyPath='yes' />
 				</Component>
 				
 				<Component Id='Halo1_CE_OpenSauceIDE_COMP' Guid='B9699EB8-F18C-4FAF-B97B-227B865AF0BB'>
@@ -172,8 +172,8 @@
 					<File Id='Halo1_CE_LowLevel_FILE' Name='LowLevel.dll' DiskId='1' Source='..\..\..\bin\Release\x86\OpenSauceIDE\LowLevel.dll' KeyPath='yes' />
 				</Component>
 				
-				<Component Id='Halo1_CE_tag_groups_COMP' Guid='6C90CA4D-9B0C-4614-8B9F-3CB474A8009A'>
-					<File Id='Halo1_CE_tag_groups_FILE' Name='tag_groups.map' DiskId='1' KeyPath='yes' />
+				<Component Id='Halo1_CE_CheApe_COMP' Guid='744A1187-E0BC-47d9-B4DE-7EDD9A39F0DA'>
+					<File Id='Halo1_CE_CheApe_FILE' Name='CheApe.map' DiskId='1' KeyPath='yes' />
 				</Component>
 				
 				<Component Id='Halo1_CE_OS_Settings_Editor_COMP' Guid='E48FA000-32FA-446D-9A06-8CFD8C7F428B'>
@@ -314,7 +314,7 @@
 				
 				<ComponentRef Id='Halo1_CE_gbuffer_functions_FX_COMP' />
 				<ComponentRef Id='Halo1_CE_vertex_shaders_FX_COMP' />
-				<ComponentRef Id='Halo1_CE_tag_groups_COMP' />
+				<ComponentRef Id='Halo1_CE_CheApe_COMP' />
 
 				<ComponentRef Id='Halo1_CE_HEKExeRemove_COMP' />
 				

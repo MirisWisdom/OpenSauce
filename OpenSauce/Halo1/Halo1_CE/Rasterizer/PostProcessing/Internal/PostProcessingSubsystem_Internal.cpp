@@ -363,7 +363,10 @@ namespace Yelo
 			}
 			return return_id;
 		}
-		void		c_internal_subsystem::SetEffectShaderVariableBoolean(uint16 effect_index, uint16 variable_index, bool value1)
+		void		c_internal_subsystem::SetEffectShaderVariableBoolean(uint16 effect_index, 
+			uint16 variable_index, 
+			bool value1, 
+			float interp_time)
 		{
 			if(effect_index >= Globals().m_effect_count) return;
 			if(variable_index >= Globals().m_effect_array[effect_index]->m_effect_internal->script_variables.Count) return;
@@ -377,9 +380,13 @@ namespace Yelo
 				curr = curr->m_next_scripted;
 				index++;
 			}
-			curr->m_value.boolean = value1;
+			curr->NextValue().boolean = value1;
+			curr->SetInterpolationTime(interp_time);
 		}
-		void		c_internal_subsystem::SetEffectShaderVariableInteger(uint16 effect_index, uint16 variable_index, uint32 value1)
+		void		c_internal_subsystem::SetEffectShaderVariableInteger(uint16 effect_index, 
+			uint16 variable_index, 
+			uint32 value1, 
+			float interp_time)
 		{
 			if(effect_index >= Globals().m_effect_count) return;
 			if(variable_index >= Globals().m_effect_array[effect_index]->m_effect_internal->script_variables.Count) return;
@@ -393,9 +400,16 @@ namespace Yelo
 				curr = curr->m_next_scripted;
 				index++;
 			}
-			curr->m_value.integer32 = value1;
+			curr->NextValue().integer32 = value1;
+			curr->SetInterpolationTime(interp_time);
 		}
-		void		c_internal_subsystem::SetEffectShaderVariableReal(uint16 effect_index, uint16 variable_index, real value1, real value2, real value3, real value4)
+		void		c_internal_subsystem::SetEffectShaderVariableReal(uint16 effect_index, 
+			uint16 variable_index, 
+			real value1, 
+			real value2, 
+			real value3, 
+			real value4, 
+			float interp_time)
 		{
 			if(effect_index >= Globals().m_effect_count) return;
 			if(variable_index >= Globals().m_effect_array[effect_index]->m_effect_internal->script_variables.Count) return;
@@ -419,20 +433,21 @@ namespace Yelo
 			case Enums::_shader_variable_base_type_float:
 				switch(curr->m_shader_variable->m_variable_datum->value_type.count)
 				{
-				case 4: curr->m_value.vector4d.w = value4;
-				case 3: curr->m_value.vector4d.k = value3;
-				case 2: curr->m_value.vector4d.j = value2;
-				case 1: curr->m_value.vector4d.i = value1;
+				case 4: curr->NextValue().vector4d.w = value4;
+				case 3: curr->NextValue().vector4d.k = value3;
+				case 2: curr->NextValue().vector4d.j = value2;
+				case 1: curr->NextValue().vector4d.i = value1;
 				}
 				break;
 
 			case Enums::_shader_variable_base_type_argb_color:
-				curr->m_value.vector4d.k = value1;
-				curr->m_value.vector4d.i = value2;
-				curr->m_value.vector4d.j = value3;
-				curr->m_value.vector4d.w = value4;
+				curr->NextValue().vector4d.k = value1;
+				curr->NextValue().vector4d.i = value2;
+				curr->NextValue().vector4d.j = value3;
+				curr->NextValue().vector4d.w = value4;
 				break;
 			}
+			curr->SetInterpolationTime(interp_time);
 		}
 		/////////////////////////////////////////////////////////////////////
 

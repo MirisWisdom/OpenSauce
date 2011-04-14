@@ -33,14 +33,19 @@
 namespace Yelo
 {
 	namespace Postprocessing { namespace Subsystem { namespace Internal {
-		/////////////////////////////////////////////////////////////////////
-		// A replacement variable instance for exposing shader variables 
-		// to halo script
-		/////////////////////////////////////////////////////////////////////
+		/** A replacement variable node type for exposing shader variables 
+			to halo script.*/
 		class c_internal_shader_variable_scripted_node : public c_generic_shader_variable_instance_node
 		{
-		public:
-			union {
+			struct{
+				/// The time the current value will take to change
+				real			change_time;
+				/// The current point in the values change from start to finish
+				real			current_interpolation;
+			} m_interpolation;
+
+			typedef union 
+			{
 				bool				boolean;
 				int32				integer32;
 				real				real32;
@@ -48,24 +53,47 @@ namespace Yelo
 				real_vector3d		vector3d;
 				real_quaternion		vector4d;
 				real_argb_color		color4d;
-			}											m_value;
+				real				reals[4];
+			} t_value_union;
+
+			/** m_values[0] is the start value, m_values[1] is the end value and 
+				m_current_value is the current value.*/
+			t_value_union m_values[2], m_current_value;
+
+			/// Returns a value between the start and end values
+			t_value_union		InterpolateValues(float interpolation);
+
+		public:
+			/// The next node in the scripted variables list
 			c_internal_shader_variable_scripted_node*	m_next_scripted;
 
 			c_internal_shader_variable_scripted_node() : c_generic_shader_variable_instance_node(),
 				m_next_scripted(NULL)
 			{
-				memset(&m_value, 0, sizeof(m_value));
+				memset(&m_interpolation, 0, sizeof(m_interpolation));
+				memset(&m_values, 0, sizeof(m_values));
+				memset(&m_current_value, 0, sizeof(m_current_value));
 			}
 
+			/** Stores a pointer to the source variables and sets the initial 
+				value of the scripted variable.*/
 			void				SetVariableSource(c_generic_shader_variable_node* shader_variable);
+			/// Sets the variable in the effect to the value of the scripted variable.
 			void				SetVariable(LPD3DXEFFECT* dx_effect);
+			/** Causes the scripted variable to interpolate between the start
+				and end values over a set time period.*/
+			void				SetInterpolationTime(float interp_time);
+			/// Updates the current value by interpolating between the start and end values
+			void				UpdateVariable(real delta_time);
 
 			virtual void		ClearReferences()
 			{
 				m_next_scripted = NULL;
 			}
-		};
 
+			/// Returns a reference to the target variable
+			t_value_union&		NextValue() { return m_values[1]; }
+		};
 
 		/////////////////////////////////////////////////////////////////////
 		// Effect interface for applying tag based effects

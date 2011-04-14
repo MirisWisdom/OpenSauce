@@ -229,7 +229,7 @@
 			<field type="TagReference" name="base shader" definition="shader_postprocess_generic_reference" />
 
 			<!--s_shader_postprocess_implementation-->
-			<field type="Block" name="additional bitmaps" definition="shader_postprocess_bitmap_block"/>
+			<field type="Block" name="bitmaps" definition="shader_postprocess_bitmap_block"/>
 			<field type="Block" name="bools" definition="shader_postprocess_bool_block"/>
 			<field type="Block" name="integers" definition="shader_postprocess_int_block"/>
 			<field type="Block" name="floats" definition="shader_postprocess_float_block"/>

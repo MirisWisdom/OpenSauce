@@ -112,9 +112,21 @@ namespace Yelo
 			int16		GetEffectFadeDirection(uint16 index);
 			bool		GetEffectIsValid(uint16 index);
 			int16		GetEffectShaderVariableIndexByName(uint16 effect_index, cstring name);
-			void		SetEffectShaderVariableBoolean(uint16 effect_index, uint16 variable_index, bool value1);
-			void		SetEffectShaderVariableInteger(uint16 effect_index, uint16 variable_index, uint32 value1);
-			void		SetEffectShaderVariableReal(uint16 effect_index, uint16 variable_index, real value1, real value2, real value3, real value4);
+			void		SetEffectShaderVariableBoolean(uint16 effect_index, 
+				uint16 variable_index, 
+				bool value1, 
+				float interp_time);
+			void		SetEffectShaderVariableInteger(uint16 effect_index, 
+				uint16 variable_index, 
+				uint32 value1, 
+				float interp_time);
+			void		SetEffectShaderVariableReal(uint16 effect_index, 
+				uint16 variable_index, 
+				real value1, 
+				real value2, 
+				real value3, 
+				real value4, 
+				float interp_time);
 		};
 	}; }; };
 };

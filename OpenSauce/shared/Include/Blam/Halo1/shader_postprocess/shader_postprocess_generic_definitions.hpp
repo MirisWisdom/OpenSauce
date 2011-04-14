@@ -155,7 +155,7 @@ namespace Yelo
 
 		struct s_shader_postprocess_implementation
 		{
-			TAG_TBLOCK_(additional_bitmaps, s_shader_postprocess_bitmap);
+			TAG_TBLOCK_(bitmaps, s_shader_postprocess_bitmap);
 			TAG_TBLOCK_(bools, s_shader_postprocess_value_base);
 			TAG_TBLOCK_(integers, s_shader_postprocess_value_base);
 			TAG_TBLOCK_(floats, s_shader_postprocess_value_base);

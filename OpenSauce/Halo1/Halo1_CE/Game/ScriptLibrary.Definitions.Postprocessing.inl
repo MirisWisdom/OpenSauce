@@ -54,23 +54,26 @@
 	);
 
 	HS_FUNCTION_WITH_PARAMS(pp_set_effect_shader_variable_boolean, void, "sets the value of an exposed boolean variable in a post processing effect", 
-			"<effect-index> <variable-index> <boolean>",3,
+			"<effect-index> <variable-index> <boolean> <real>",4,
 		HS_TYPE(short),
 		HS_TYPE(short),
-		HS_TYPE(bool)
+		HS_TYPE(bool),
+		HS_TYPE(real)
 	);
 
 	HS_FUNCTION_WITH_PARAMS(pp_set_effect_shader_variable_integer, void, "sets the value of an exposed integer variable in a post processing effect", 
-			"<effect-index> <variable-index> <long>",3,
+			"<effect-index> <variable-index> <long> <real>",4,
 		HS_TYPE(short),
 		HS_TYPE(short),
-		HS_TYPE(long)
+		HS_TYPE(long),
+		HS_TYPE(real)
 	);
 
 	HS_FUNCTION_WITH_PARAMS(pp_set_effect_shader_variable_real, void, "sets the value of an exposed float/vector/color variable in a post processing effect", 
-			"<effect-index> <variable-index> <real> <real> <real> <real>",6,
+			"<effect-index> <variable-index> <real> <real> <real> <real> <real>",7,
 		HS_TYPE(short),
 		HS_TYPE(short),
+		HS_TYPE(real),
 		HS_TYPE(real),
 		HS_TYPE(real),
 		HS_TYPE(real),

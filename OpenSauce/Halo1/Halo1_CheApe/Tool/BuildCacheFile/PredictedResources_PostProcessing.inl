@@ -31,8 +31,8 @@ namespace PostProcessing
 			TagGroups::s_shader_postprocess_implementation& impl = datum->implementation;
 
 			type_out.type = Enums::_shader_variable_base_type_texture;
-			for(i = 0; i < impl.additional_bitmaps.Count; i++)
-				if(strncmp(impl.additional_bitmaps[i].value_name, test_string, Enums::k_tag_string_length) == 0)
+			for(i = 0; i < impl.bitmaps.Count; i++)
+				if(strncmp(impl.bitmaps[i].value_name, test_string, Enums::k_tag_string_length) == 0)
 					return true;
 
 			type_out.type = Enums::_shader_variable_base_type_boolean;
@@ -148,9 +148,9 @@ namespace PostProcessing
 			return false;
 		}
 
-		for(int32 i = 0; i < shader_tag->implementation.additional_bitmaps.Count; i++)
+		for(int32 i = 0; i < shader_tag->implementation.bitmaps.Count; i++)
 		{
-			TagGroups::s_shader_postprocess_bitmap& bitmap_element = shader_tag->implementation.additional_bitmaps[i];
+			TagGroups::s_shader_postprocess_bitmap& bitmap_element = shader_tag->implementation.bitmaps[i];
 			predicted_resources_add_resource(shader_tag->predicted_resources, 
 				Enums::_predicted_resource_bitmap,
 				bitmap_element.bitmap.tag_index,

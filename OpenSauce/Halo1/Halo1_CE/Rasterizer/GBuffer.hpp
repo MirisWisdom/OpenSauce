@@ -24,7 +24,8 @@
 		Integration: kornman00
 
 	This component adds a GBuffer to Halo's rendering pipeline, providing
-	access to the screen space Depth, Normals and Velocity.
+	access to the screen space Depth, Normals, Velocity and an Index buffer
+	that provides the objects type and team.
 */
 #pragma once
 
@@ -75,7 +76,11 @@ namespace Yelo
 
 			void ReleaseTargets();
 			void ClearTargets(IDirect3DDevice9* pDevice);
-
+			bool SetDepth(LPD3DXEFFECT& effect, bool& variable_used);
+			bool SetVelocity(LPD3DXEFFECT& effect, bool& variable_used);
+			bool SetNormals(LPD3DXEFFECT& effect, bool& variable_used);
+			bool SetIndex(LPD3DXEFFECT& effect, bool& variable_used);
+			
 			bool SetEffectVar(LPD3DXEFFECT& effect,
 				bool& variable_used,
 				cstring texture_semantic,
@@ -84,10 +89,6 @@ namespace Yelo
 				cstring y_handle_semantic = NULL, const int y_index = 0,
 				cstring z_handle_semantic = NULL, const int z_index = 0,
 				cstring w_handle_semantic = NULL, const int w_index = 0);
-			bool SetDepth(LPD3DXEFFECT& effect, bool& variable_used);
-			bool SetVelocity(LPD3DXEFFECT& effect, bool& variable_used);
-			bool SetNormals(LPD3DXEFFECT& effect, bool& variable_used);
-			bool SetIndex(LPD3DXEFFECT& effect, bool& variable_used);
 		};
 
 		struct s_render_target_output
@@ -163,13 +164,13 @@ namespace Yelo
 		class c_gbuffer_system
 		{
 		public:
-			static int16 g_debug_index; // which render target to display
-			static bool g_system_enabled; // Configured from the user settings
+			static int16					g_debug_index;
+			static bool						g_system_enabled;
 
 		private:
 			static Enums::rasterizer_vertex_shader const kValidShaders[];
 
-			static Enums::render_progress	g_current_render_state;						// What is halo currently rendering
+			static Enums::render_progress	g_current_render_state;
 			
 			static BOOL						g_output_object_tbn;
 			static BOOL						g_output_object_velocity;
@@ -177,10 +178,10 @@ namespace Yelo
 			static D3DXVECTOR4				g_pixel_shader_input;
 			
 			static BOOL						g_wvp_stored;
-			static D3DXMATRIX				g_stored_worldviewproj[2];					// WVP for the previous frame (for BSP velocity)
+			static D3DXMATRIX				g_stored_worldviewproj[2];
 			static BOOL						g_stored_wvp_index;
 			
-			static BOOL						g_is_rendering_reflection;					// Is halo rendering the reflection geometry?
+			static BOOL						g_is_rendering_reflection;
 			static void Hook_RenderWindow();
 
 			static uint16					g_object_index;
@@ -188,7 +189,7 @@ namespace Yelo
 			static void Hook_RenderObjectList_ClearObjectIndex();
 			static void Hook_FirstPersonWeaponDraw_GetObjectIndex();
 			
-			static uint32					g_current_object_lod;						// the LOD of the current object being rendered
+			static uint32					g_current_object_lod;
 			static void Hook_RenderObject_GetCurrentLOD();
 
 			static void Hook_CommandCameraSet();
@@ -199,7 +200,7 @@ namespace Yelo
 		private:
 			c_packed_file			m_shader_package;
 			bool					m_is_loaded;
-			bool					m_render_gbuffer;								// The GBuffer is only rendered to when certain vertex shaders are used
+			bool					m_render_gbuffer;
 			PAD16;
 			LPD3DXEFFECT			m_gbuffer_ps, m_gbuffer_vs;
 			c_gbuffer				m_gbuffer;

@@ -29,8 +29,11 @@
 namespace Yelo
 {
 	namespace Postprocessing { namespace Debug {
+		/// Writes a line to the console
 		void Write(cstring string);
+		/// Writes a formatted line to the console
 		void WriteLine(cstring format, ...);
+		/// Writes a number of lines in a D3DX error to the console
 		void WriteD3DXErrors(LPD3DXBUFFER pBuffer, int32 error_count);
 	}; };
 };

@@ -170,7 +170,7 @@ namespace Yelo
 
 			value_type.type = Enums::_shader_variable_base_type_texture;
 			SetupVariables_Base<TagGroups::s_shader_postprocess_bitmap>("VARTEXTURE_%i",
-				m_shader_generic->implementation.additional_bitmaps,
+				m_shader_generic->implementation.bitmaps,
 				k_bitmap_count, value_type);
 
 

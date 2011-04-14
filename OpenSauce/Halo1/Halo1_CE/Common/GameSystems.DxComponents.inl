@@ -39,6 +39,7 @@ DX_COMPONENT(Objects::Weapon),
 DX_COMPONENT(Hud),
 DX_COMPONENT(Objects::Vehicle),
 DX_COMPONENT(Rasterizer::ShaderExtension),
+DX_COMPONENT(Networking::VersionCheck),
 
 
 #undef DX_COMPONENT

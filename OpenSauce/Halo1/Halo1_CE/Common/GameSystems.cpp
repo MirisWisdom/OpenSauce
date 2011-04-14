@@ -40,6 +40,8 @@
 		#include "Rasterizer/PostProcessing/Internal/PostProcessingSubsystem_Internal.hpp"
 		#include "Rasterizer/PostProcessing/External/PostProcessingSubsystem_External.hpp"
 		#include "Rasterizer/PostProcessing/Bloom/PostProcessingSubsystem_Bloom.hpp"
+
+		#include "Networking/VersionCheck.hpp"
 	#endif
 //////////////////////////////////////////////////////////////////////////
 

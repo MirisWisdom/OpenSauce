@@ -40,6 +40,12 @@ namespace Yelo
 	{
 		/////////////////////////////////////////////////////////////////////
 		// s_dx9_render_state_capture
+		/*!
+		 * \brief
+		 * Captures the render states from the global render device.
+		 * 
+		 * Captures the render states from the global render device.
+		 */
 		void s_dx9_render_state_capture::Capture()
 		{
 			Globals().m_rendering.render_device->GetRenderState(D3DRS_CULLMODE, &old_cullmode);
@@ -58,6 +64,12 @@ namespace Yelo
 			Globals().m_rendering.render_device->GetRenderState(D3DRS_SLOPESCALEDEPTHBIAS, &old_slopescaledepthbias);
 		}
 
+		/*!
+		 * \brief
+		 * Restores the render states to the global render device.
+		 * 
+		 * Restores the render states to the global render device.
+		 */
 		void s_dx9_render_state_capture::Restore()
 		{
 			Globals().m_rendering.render_device->SetRenderState(D3DRS_CULLMODE, old_cullmode);
@@ -82,14 +94,14 @@ namespace Yelo
 		// s_per_frame_values
 		s_per_frame_values s_per_frame_values::g_instance;
 
+		/*!
+		 * \brief
+		 * Poll the engine state for value updates.
+		 * 
+		 * Poll the engine state for value updates.
+		 */
 		void		s_per_frame_values::PollUpdate()
 		{
-			Rasterizer::s_render_frustum_matricies render_matricies;
-			Rasterizer::RenderGlobals()->frustum.GetMatricies(render_matricies);
-
-			render_matricies.world_view->ConvertTo4x4(m_matricies.world_view);
-			render_matricies.world_view_transpose->ConvertTo4x4(m_matricies.world_view_transpose);
-
 			m_hud_scale.value = Hud::HudIsScaled() ? m_hud_scale.scaled_ratio : m_hud_scale.default_ratio;
 
 			m_clipping.near_clip = Rasterizer::RenderGlobals()->frustum.z_near;
@@ -98,12 +110,41 @@ namespace Yelo
 			m_delta_time = GameState::MainGlobals()->delta_time;
 		}
 
+		/*!
+		 * \brief
+		 * Returns a static instance of s_per_frame_values.
+		 * 
+		 * \returns
+		 * A reference to a static s_per_frame_values.
+
+		 * Returns a static instance of s_per_frame_values.
+		 */
 		s_per_frame_values& PerFrameValues() { return s_per_frame_values::g_instance; }
 		/////////////////////////////////////////////////////////////////////
 
 
 		/////////////////////////////////////////////////////////////////////
 		// c_fade_effect
+		/*!
+		 * \brief
+		 * Fades the result of a post process effect.
+		 * 
+		 * \param device
+		 * A pointer to the current render device.
+		 * 
+		 * \param fade_value
+		 * The amount to interpolate between fully on (1.0) and fully off (0.0).
+		 * 
+		 * \returns
+		 * Returns S_OK if drawing the fade was successful.
+		 * 
+		 * Takes the current effects result and draws it to the next effects
+		 * scene texture, using alpha blending to fade it in/out.
+		 * 
+		 * \remarks
+		 * When fade_value is 0.0 or 1.0 nothing is drawn, the surfaces are
+		 * just swapped since this results in the same outcome.
+		 */
 		HRESULT		c_fade_effect::FadeResult(IDirect3DDevice9* device, float fade_value)
 		{			
 			// if the fade shader is not loaded, do nothing
@@ -159,16 +200,31 @@ namespace Yelo
 			device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ZERO);
 			return hr;
 		}
+		/*!
+		 * \brief
+		 * Allocates the Direct3D resources for the fade effect.
+		 * 
+		 * \param device
+		 * A pointer to the current render device.
+		 * 
+		 * \returns
+		 * Returns S_OK if allocating the necessary resources was successful.
+		 * 
+		 * Gets the fade effect from the packed file and creates the D3DX
+		 * effect. Also registers a 4x4 quad with the quad manager.
+		 */
 		HRESULT		c_fade_effect::AllocateResources(IDirect3DDevice9* device)
 		{				
 			m_available = true;
 
+			// get a pointer to the fade effects binary shader
 			uint32 data_size;
 			void* data_pointer = Globals().m_shader_file.GetDataPointer("PP_EffectFade", &data_size);
 			if(data_size == 0 || data_pointer == NULL)
 				m_available = false;
 			else
 			{
+				// register a 4x4 quad used by the fade effect
 				m_quad_instance = Globals().QuadManager().CreateQuad(4, 4);
 				if(!m_quad_instance)
 				{
@@ -176,6 +232,7 @@ namespace Yelo
 					return E_FAIL;
 				}
 
+				// create the fade direct3d effect
 				LPD3DXBUFFER error_buffer = NULL;
 				HRESULT hr = D3DXCreateEffect(
 					device,
@@ -197,6 +254,7 @@ namespace Yelo
 				}
 				else
 				{
+					// set up the fade effects variables
 					m_effect->SetMatrix("c_ortho_wvp", &Globals().m_matricies.ortho_proj_matrix);
 					m_result_texture = m_effect->GetParameterByName(NULL, "t_result");
 					m_fade_amount = m_effect->GetParameterByName(NULL, "c_fade_amount");
@@ -207,14 +265,32 @@ namespace Yelo
 			}
 			return m_available ? S_OK : E_FAIL;
 		}
+		/*!
+		 * \brief
+		 * Releases the Direct3D resources used by the fade effect.
+		 * 
+		 * Releases the Direct3D resources and also releases the quad instance.
+		 */
 		void		c_fade_effect::ReleaseResources()
 		{
+			// release all resources
 			Yelo::safe_release(m_effect);
 			Yelo::safe_release(m_quad_instance);
 			m_result_texture = NULL;
 			m_fade_amount = NULL;
 			m_available = false;
 		}
+		/*!
+		 * \brief
+		 * Returns true if the fade effect is ready to use.
+		 * 
+		 * \returns
+		 * Returns true if the fade effect is ready to use. 
+		 * Otherwise, returns false.
+
+		 * Returns true when the fade effect is loaded and 
+		 * ready to use.
+		 */
 		bool		c_fade_effect::IsAvailable()
 		{
 			return m_available;
@@ -260,6 +336,7 @@ namespace Yelo
 			char file_string[MAX_PATH];
 			file_string[0] = '\0';
 
+			// open the post processing shaders file for reading
 			strcat_s(file_string, MAX_PATH, Settings::OpenSauceProfilePath());
 			strcat_s(file_string, MAX_PATH, "shaders\\pp_shaders.shd");
 
@@ -272,21 +349,24 @@ namespace Yelo
 
 		void		Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters)
 		{
+			// store a pointer to the device and a copy of its creation parameters
 			Globals().m_rendering.render_device = pDevice;
 			Globals().m_rendering.creation_parameters = *pParameters;
 
+			// loop through all of the post processing systems and initialise them
 			Yelo::Main::s_postprocessing_subsystem_component* subsystems;
 			const int32 subsystem_count = Yelo::Main::GetPostprocessingSubsystemComponents(subsystems);
 
 			for(int32 i = 0; i <= subsystem_count; i++)
 				subsystems[i].Initialize(pDevice, pParameters);
 
+			// allocate global resources, then allocate the resources of the subsystems
 			AllocateResources(pParameters);
 
 			for(int32 i = 0; i <= subsystem_count; i++)
 				subsystems[i].AllocateResources(Globals().m_rendering.render_device);
 
-			// build buffers			
+			// build the current vertex and index buffers			
 			Globals().QuadManager().BuildBuffers(
 				Globals().m_rendering.render_device,
 				Globals().m_rendering.screen_dimensions.x,
@@ -294,6 +374,7 @@ namespace Yelo
 		}	
 		void		OnLostDevice()
 		{
+			// perform all device lost logic for the subsystems, then relase all resources
 			Yelo::Main::s_postprocessing_subsystem_component* subsystems;
 			const int32 subsystem_count = Yelo::Main::GetPostprocessingSubsystemComponents(subsystems);
 
@@ -304,6 +385,7 @@ namespace Yelo
 		}
 		void		OnResetDevice(D3DPRESENT_PARAMETERS* pParameters)
 		{
+			// allocate global resources, then allocate the resources for all subsystems
 			AllocateResources(pParameters);
 
 			Yelo::Main::s_postprocessing_subsystem_component* subsystems;
@@ -316,6 +398,7 @@ namespace Yelo
 				subsystems[i].OnResetDevice(Globals().m_rendering.render_device, pParameters);
 			}
 			
+			// create the current vertex and index buffers
 			Globals().QuadManager().BuildBuffers(
 				Globals().m_rendering.render_device,
 				Globals().m_rendering.screen_dimensions.x,
@@ -323,6 +406,7 @@ namespace Yelo
 		}
 		void		Render()
 		{
+			// render all of the subsystems
 			Yelo::Main::s_postprocessing_subsystem_component* subsystems;
 			const int32 subsystem_count = Yelo::Main::GetPostprocessingSubsystemComponents(subsystems);
 
@@ -331,6 +415,7 @@ namespace Yelo
 		}
 		void		Release()
 		{
+			// release all resources
 			ReleaseResources();
 		}
 
@@ -342,9 +427,11 @@ namespace Yelo
 			Yelo::Main::s_postprocessing_subsystem_component* subsystems;
 			const int32 subsystem_count = Yelo::Main::GetPostprocessingSubsystemComponents(subsystems);
 
+			// reset the settings for all subsystems to default values
 			for(int32 i = 0; i <= subsystem_count; i++)
 				subsystems[i].SetDefaultSettings();
 
+			// load the settings for all subsystems
 			if(dx9_element != NULL)
 			{
 				TiXmlElement* pp_element = dx9_element->FirstChildElement("postprocessing");
@@ -361,6 +448,7 @@ namespace Yelo
 			pp_element = new TiXmlElement("postprocessing");
 				dx9_element->LinkEndChild(pp_element);
 
+			// save the subsystems current settings
 			Yelo::Main::s_postprocessing_subsystem_component* subsystems;
 			const int32 subsystem_count = Yelo::Main::GetPostprocessingSubsystemComponents(subsystems);
 
@@ -383,6 +471,7 @@ namespace Yelo
 			else
 				Globals().m_map_postprocess_globals = NULL;
 
+			// initialise the subsystems that are map dependent
 			Yelo::Main::s_postprocessing_subsystem_component* subsystems;
 			const int32 subsystem_count = Yelo::Main::GetPostprocessingSubsystemComponents(subsystems);
 
@@ -400,6 +489,7 @@ namespace Yelo
 		{
 			Globals().m_map_postprocess_globals = NULL;
 
+			// dispose the subsystems that are map dependent
 			Yelo::Main::s_postprocessing_subsystem_component* subsystems;
 			const size_t subsystem_count = Yelo::Main::GetPostprocessingSubsystemComponents(subsystems);
 
@@ -413,6 +503,7 @@ namespace Yelo
 		{			
 			ActivationVariables().PollUpdate();
 
+			// update all subsystems
 			Yelo::Main::s_postprocessing_subsystem_component* subsystems;
 			const int32 subsystem_count = Yelo::Main::GetPostprocessingSubsystemComponents(subsystems);
 
@@ -475,13 +566,14 @@ namespace Yelo
 		}
 		void		ReleaseResources()
 		{
+			// release the subsystem's resources
 			Yelo::Main::s_postprocessing_subsystem_component* subsystems;
 			const int32 subsystem_count = Yelo::Main::GetPostprocessingSubsystemComponents(subsystems);
 
 			for(int32 i = 0; i <= subsystem_count; i++)
 				subsystems[i].ReleaseResources();
 
-			// Release global resources the subsystems might use
+			// release global resources the subsystems might use
 			Globals().QuadManager().Release();
 			Globals().FadeEffect().ReleaseResources();
 			Globals().m_render_targets.scene_buffer_chain.ReleaseResources();
@@ -514,6 +606,7 @@ namespace Yelo
 			for(int32 i = 0; i <= subsystem_count; i++)
 				subsystems[i].Unload();
 
+			// quads will have been removed by the Unload process so release the quad buffers
 			if(Globals().m_flags.loaded) ReleaseResources();	
 			return NULL;
 		}
@@ -616,11 +709,13 @@ namespace Yelo
 				PAD16;
 				bool value;
 				PAD24;
+				real interp_time;
 			}* args = CAST_PTR(s_arguments*, arguments);
 			
 			Subsystem::Internal::c_internal_subsystem::g_instance.SetEffectShaderVariableBoolean(
 				args->effect_index,		args->script_variable_index, 
-				args->value);
+				args->value,
+				args->interp_time);
 			
 			return NULL;
 		}
@@ -632,11 +727,13 @@ namespace Yelo
 				uint16 script_variable_index;
 				PAD16;
 				uint32 value;
+				real interp_time;
 			}* args = CAST_PTR(s_arguments*, arguments);
 			
 			Subsystem::Internal::c_internal_subsystem::g_instance.SetEffectShaderVariableInteger(
 				args->effect_index,		args->script_variable_index, 
-				args->value);
+				args->value,
+				args->interp_time);
 			
 			return NULL;
 		}
@@ -648,6 +745,7 @@ namespace Yelo
 				uint16 script_variable_index;
 				PAD16;
 				real values[4];
+				real interp_time;
 			}* args = CAST_PTR(s_arguments*, arguments);
 			
 			Subsystem::Internal::c_internal_subsystem::g_instance.SetEffectShaderVariableReal(
@@ -655,7 +753,8 @@ namespace Yelo
 				args->values[0], 
 				args->values[1], 
 				args->values[2], 
-				args->values[3]);
+				args->values[3],
+				args->interp_time);
 			
 			return NULL;
 		}
