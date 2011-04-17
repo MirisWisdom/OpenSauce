@@ -218,13 +218,6 @@
 						</Component>
 					</Directory>
 					
-					<!-- Remove the external shaders folder if empty -->
-					<Directory Id='Halo1_CE_PPExtShaders_DIR' Name='postprocess shaders'>
-						<Component Id='Halo1_CE_PPExtShaders_COMP' Guid='1AAC4CDB-32C7-4428-B3CD-DF7990876C21'>
-							<RemoveFolder Id='Halo1_CE_PPExtShaders_REMDIR' On='uninstall' />
-						</Component>
-					</Directory>
-					
 					<!-- User settings -->
 					<Component Id='Halo1_CE_OSUserSettings_COMP' Guid='88FD2602-AFD9-40F1-89DD-EDDFB3768ADB'>
 						<File Id='Halo1_CE_OSUserSettings_FILE' Name='OS_Settings.User.xml' KeyPath='yes' />
@@ -292,7 +285,6 @@
 			
 			<ComponentRef Id='Halo1_CE_OpenSauce_COMP' />
 			<ComponentRef Id='Halo1_CE_Reports_COMP' />
-			<ComponentRef Id='Halo1_CE_PPExtShaders_COMP' />
 			<ComponentRef Id='Halo1_CE_OSShaders_COMP' />
 			<ComponentRef Id='Halo1_CE_Yelo_COMP' />
 			

@@ -40,20 +40,47 @@ namespace Yelo
 		class c_postprocess_shader
 			abstract
 		{
+			/*!
+			 * \brief
+			 * Handles loading shader includes.
+			 * 
+			 * Used to control where shader includes are loaded from. This is
+			 * necessary when loading an ASCII shader that is stored in memory
+			 * since it has no path to use as a start point.
+			 */
+			class c_include_manager : public ID3DXInclude
+			{
+				char*		m_include_path;
+			public:
+				c_include_manager(char* path) : m_include_path(path) {}
+			private:
+				HRESULT API_FUNC Open(D3DXINCLUDE_TYPE IncludeType, 
+					LPCSTR pFileName, 
+					LPCVOID pParentData, 
+					LPCVOID* ppData, 
+					UINT* pBytes);
+				HRESULT API_FUNC Close(LPCVOID pData);
+			};
+
 		public:
 			TagGroups::s_shader_postprocess_definition* m_shader_base;
 			char						m_shader_id[MAX_PATH];
+			char						m_include_path[MAX_PATH];
+			D3DXMACRO*					m_define_macros;
 
 		protected:
 			LPD3DXEFFECT*				m_effect;		// D3DX Effect object for this shader
 						
 		public:
 			LPD3DXEFFECT*		GetEffect() const	{ return m_effect; }
+			char*				IncludePath()       { return &m_include_path[0]; }
 
 			virtual void		Ctor()
 			{
 				m_effect = NULL;
 				m_shader_base = NULL;
+				m_include_path[0] = 0;
+				m_define_macros = NULL;
 			}
 
 			virtual void		Dtor()

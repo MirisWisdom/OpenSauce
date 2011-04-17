@@ -1,20 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <osYeloSettings engine="Halo1_CE">
-	<postprocessing>
-		<!--
+	<!--postprocessing shader_directory="" 
+			texture_directory="">
 		<shaders>
-			<shader>PP_Tint</shader>
+			<shader id="shader_id">relative_shader_location</shader>
 		</shaders>
 		<effects>
-			<effect name="Tint" render_stage="1">
+			<effect name="effect_name" render_stage="0">				
 				<flags>
 					<flag name="not_active_during_cutscenes" value="true" />
 				</flags>
 				<shaders>
-					<shader>PP_Tint</shader>
+					<shader>shader_id</shader>
 				</shaders>
 			</effect>
 		</effects>
-		-->
-	</postprocessing>
+	</postprocessing-->
 </osYeloSettings>

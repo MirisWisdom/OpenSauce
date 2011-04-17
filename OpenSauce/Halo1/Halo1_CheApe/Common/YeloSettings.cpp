@@ -189,7 +189,7 @@ namespace Yelo
 					const size_t length = wcslen(cmd);
 
 					if(length > 0)
-						wstring_to_string(profile_name, NUMBEROF(profile_name)-1, cmd);
+						wstring_to_string(profile_name, NUMBEROF_C(profile_name)-1, cmd);
 				}
 			}
 

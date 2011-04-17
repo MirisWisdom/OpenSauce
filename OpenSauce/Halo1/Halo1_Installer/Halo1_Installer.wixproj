@@ -2,6 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <AssemblyName>OpenSauce_Installer</AssemblyName>
     <ProductVersion>3.5</ProductVersion>
     <ProjectGuid>{494f320a-b5eb-4623-be2d-77d5c7be7ca5}</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
@@ -11,19 +12,19 @@
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
   </PropertyGroup>
   <PropertyGroup>
-    <OutputPath>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\$(AssemblyName)\</OutputPath>
-    <IntermediateOutputPath>$(SolutionDir)..\obj\$(AssemblyName)\$(Configuration)\</IntermediateOutputPath>
+    <OutputPath>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\$(AssemblyName)</OutputPath>
+    <IntermediateOutputPath>$(SolutionDir)..\obj\$(AssemblyName)\$(Configuration)</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DefineConstants>Debug</DefineConstants>
   </PropertyGroup>
   <Import Project="$(WixTargetsPath)" />
   <Target Name="BeforeBuild">
-    <MSBuild Projects="$(SolutionDir)..\..\OpenSauce_Pc.sln" Properties="Configuration=Release;Platform=Win32;SolutionDir=$(SolutionDir)..\..\" />
-    <MSBuild Projects="$(SolutionDir)..\..\OpenSauce_HEK.sln" Properties="Configuration=DebugGuerilla;Platform=Win32;SolutionDir=$(SolutionDir)..\..\" ContinueOnError="true"/>
-    <MSBuild Projects="$(SolutionDir)..\..\OpenSauce_HEK.sln" Properties="Configuration=DebugSapien;Platform=Win32;SolutionDir=$(SolutionDir)..\..\" ContinueOnError="true"/>
-    <MSBuild Projects="$(SolutionDir)..\..\OpenSauce_HEK.sln" Properties="Configuration=DebugTool;Platform=Win32;SolutionDir=$(SolutionDir)..\..\" ContinueOnError="true"/>
-    <!--MSBuild Projects="$(SolutionDir)..\..\..\BlamLib\BlamLib.sln" Properties="Configuration=Release;Platform=x86;SolutionDir=$(SolutionDir)..\..\..\BlamLib\" ContinueOnError="true"/-->
+    <MSBuild Projects="$(SolutionDir)OpenSauce_Pc.sln" Targets="Rebuild" Properties="Configuration=Release;Platform=Win32;" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugGuerilla;Platform=Win32;" ContinueOnError="true"/>
+    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugSapien;Platform=Win32;" ContinueOnError="true"/>
+    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugTool;Platform=Win32;" ContinueOnError="true"/>
+    <!--MSBuild Projects="$(SolutionDir)..\BlamLib\BlamLib.sln" Properties="Configuration=Release;Platform=x86;SolutionDir=$(SolutionDir)..\BlamLib\" ContinueOnError="true"/-->
   </Target>
   <!--
 	<Target Name="AfterBuild">
