@@ -28,4 +28,12 @@ namespace Yelo
 		tag signature;
 		int16 version;
 	};
+
+	struct s_cache_header_base
+	{
+		enum {
+			k_header_signature = 'head',
+			k_footer_signature = 'foot',
+		};
+	};
 };

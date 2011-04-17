@@ -326,19 +326,13 @@
     <None Include="Documentation\Tag System\TagInterface.txt" />
     <None Include="Documentation\Tag System\TagExport.xml" />
     <None Include="Documentation\Tag System\TagManagerUI.txt" />
-    <EmbeddedResource Include="Games\Halo1\Halo1.xml" />
+    <None Include="Documentation\Blam\TagIndexNamesOverrides.xml" />
+    <None Include="Documentation\Blam\TagIndexNamesOverridesDatabase.xml" />
+    <None Include="Settings.xml" />
+	<EmbeddedResource Include="Games\Halo1\Halo1.xml" />
     <EmbeddedResource Include="Games\Halo1\CheApe.xml" />
     <EmbeddedResource Include="Games\Halo1\PC\Definitions\Halo1_CE_Scripting.xml" />
     <EmbeddedResource Include="Games\Stubbs\Stubbs.xml" />
-    <EmbeddedResource Include="Games\HaloReach\Xbox\Definitions\HaloReach_Beta_VertexBuffer.xml" />
-    <EmbeddedResource Include="Games\HaloReach\Xbox\Definitions\HaloReach_Xbox_VertexBuffer.xml" />
-    <Content Include="Documentation\Blam\TagIndexNamesOverrides.xml" />
-    <Content Include="Documentation\Blam\TagIndexNamesOverridesDatabase.xml" />
-    <Content Include="Games\HaloReach\Xbox\Definitions\HaloReach_Xbox_Scripting.xml" />
-    <Content Include="Games\HaloReach\Xbox\Definitions\HaloReach_Xbox_StringId.xml" />
-    <Content Include="Settings.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
     <EmbeddedResource Include="Games\Halo1\PC\Definitions\Halo1_PC_VertexBuffer.xml" />
@@ -373,12 +367,10 @@
   <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
     <EmbeddedResource Include="Games\HaloReach\HaloReach.xml" />
     <EmbeddedResource Include="Games\HaloReach\Xbox\Definitions\HaloReach_Beta_StringId.xml" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
-    <ProjectReference Include="..\LowLevel\LowLevel.vcproj">
-      <Project>{5E5B9F4E-1067-4470-8AA9-B25BBBEA063A}</Project>
-      <Name>LowLevel</Name>
-    </ProjectReference>
+	<EmbeddedResource Include="Games\HaloReach\Xbox\Definitions\HaloReach_Beta_VertexBuffer.xml" />
+    <EmbeddedResource Include="Games\HaloReach\Xbox\Definitions\HaloReach_Xbox_VertexBuffer.xml" />
+	<EmbeddedResource Include="Games\HaloReach\Xbox\Definitions\HaloReach_Xbox_Scripting.xml" />
+    <EmbeddedResource Include="Games\HaloReach\Xbox\Definitions\HaloReach_Xbox_StringId.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LowLevel\LowLevel.vcproj">

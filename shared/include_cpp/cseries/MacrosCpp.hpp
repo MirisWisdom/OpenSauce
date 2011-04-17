@@ -192,7 +192,9 @@
 #define IN_RANGE_ENUM(value, max) ((value) >= 0 && (value) < (max))
 
 /// Compile-time constant calculate of a inplace array (can't be a pointer)
-#define NUMBEROF(array) ( sizeof(array) / sizeof( (array)[0] ) )
+#define NUMBEROF_C(array) ( sizeof(array) / sizeof( (array)[0] ) )
+/// Compile-time constant calculate of a inplace array (can't be a pointer)
+#define NUMBEROF(array) _countof(array)
 
 
 // returns the amount of bits that make up [type]

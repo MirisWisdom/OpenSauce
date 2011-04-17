@@ -114,7 +114,7 @@
 			</Directory>
 
 			<!-- Files and folders that belong in the HEK root directory -->
-			<Directory Id='HALO1_CE_HEK_INSTALLDIR_PROP' Name='Halo Custom Edition' FileSource='Resources\Halo1_CheApe\HEK_InstallDir'>
+			<Directory Id='HALO1_CE_HEK_INSTALLDIR_PROP' Name='Halo Custom Edition' FileSource='..\..\..\shared\Resources\Halo1_CheApe\HEK_InstallDir'>
 				<Directory Id='Halo1_CE_data_DIR' Name='data'>
 					<Directory Id='Halo1_CE_data_postprocess_DIR' Name='postprocess'>
 						<Directory Id='Halo1_CE_includes_DIR' Name='includes'>
@@ -194,7 +194,7 @@
 			</Directory>
 			
 			<!-- Files and folders that belong in the users Documents\My Games\Halo CE directory -->
-			<Directory Id='HALO1_CE_HCE_USERPATH_PROP' Name='Halo CE' FileSource='Resources\Halo1_CE\HCE_UserPath'>
+			<Directory Id='HALO1_CE_HCE_USERPATH_PROP' Name='Halo CE' FileSource='..\..\..\shared\Resources\Halo1_CE\HCE_UserPath'>
 				<Directory Id='Halo1_CE_OpenSauce_DIR' Name='OpenSauce'>
 					<!-- Remove *.txt reports and remove the Reports folder -->
 					<Directory Id='Halo1_CE_Reports_DIR' Name='Reports'>
@@ -368,9 +368,9 @@
 		
 		<UIRef Id='WixUI_ErrorProgressText' />
 
-		<WixVariable Id='WixUIBannerBmp' Value='Resources\Installer\banner.bmp' />
-		<WixVariable Id='WixUIDialogBmp' Value='Resources\Installer\dialog.bmp' />
-		<WixVariable Id='WixUILicenseRtf' Value='Resources\Installer\gpl.rtf' />
+		<WixVariable Id='WixUIBannerBmp' Value='..\..\..\shared\Resources\Installer\banner.bmp' />
+		<WixVariable Id='WixUIDialogBmp' Value='..\..\..\shared\Resources\Installer\dialog.bmp' />
+		<WixVariable Id='WixUILicenseRtf' Value='..\..\..\shared\Resources\Installer\gpl.rtf' />
 		
 	</Product>
 </Wix>
