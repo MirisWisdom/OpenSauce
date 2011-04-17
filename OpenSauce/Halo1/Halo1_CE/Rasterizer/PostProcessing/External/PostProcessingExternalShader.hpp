@@ -31,6 +31,8 @@ namespace Yelo
 		/////////////////////////////////////////////////////////////////////		
 		class c_external_shader : public c_generic_shader_base
 		{
+			D3DXMACRO			m_shader_defines[2];
+
 			template<typename T>
 			void				SetupVariables_Base(
 				cstring semantic, 
@@ -43,6 +45,18 @@ namespace Yelo
 			HRESULT				LoadBitmaps(IDirect3DDevice9* pDevice);
 			HRESULT				SetupVariables(IDirect3DDevice9* pDevice);
 
+			virtual void		Ctor()
+			{
+				c_generic_shader_base::Ctor();
+
+				m_shader_defines[0].Name = "SHADER_EXTERNAL";
+				m_shader_defines[0].Definition = NULL;
+
+				m_shader_defines[1].Name = NULL;
+				m_shader_defines[1].Definition = NULL;
+
+				m_define_macros = &m_shader_defines[0];
+			}
 			virtual void		Dtor()
 			{
 				c_generic_shader_base::Dtor();

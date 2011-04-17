@@ -31,6 +31,77 @@ namespace Yelo
 {
 	namespace Postprocessing
 	{
+		/*!
+		 * \brief
+		 * Loads a file included in a shader into memory.
+		 * 
+		 * \param IncludeType
+		 * The type of file being included.
+		 * 
+		 * \param pFileName
+		 * The relative path of the file being uncluded
+		 * 
+		 * \param pParentData
+		 * The shader file that includes the requested file.
+		 * 
+		 * \param ppData
+		 * A pointer to a char* that the data needs to be read to.
+		 * 
+		 * \param pBytes
+		 * The size of the included file.
+		 * 
+		 * \returns
+		 * Returns S_OK if the file exists and has been loaded, otherwise E_FAIL.
+		 * 
+		 * The Open function creates an absolute path to the included file, then 
+		 * loads it into memory for the compiler to use.
+		 */
+		HRESULT API_FUNC c_postprocess_shader::c_include_manager::Open(D3DXINCLUDE_TYPE IncludeType, LPCSTR pFileName, LPCVOID pParentData, LPCVOID* ppData, UINT*pBytes)
+		{
+			// create the file location path
+			char location[MAX_PATH];
+			location[0] = 0;
+			strcat_s(location, MAX_PATH, m_include_path);
+			strcat_s(location, MAX_PATH, pFileName);
+
+			// open the file for reading
+			HANDLE file_handle = CreateFile(location, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+			if(file_handle == (HANDLE)NULL_HANDLE)
+				return E_FAIL;
+			DWORD size = GetFileSize(file_handle, NULL);
+
+			// read the file
+			*ppData = new char[size];
+			DWORD bytes_read;
+			BOOL success = ReadFile(file_handle, (LPVOID)*ppData, size, &bytes_read, NULL);
+			success &= CloseHandle(file_handle);
+			if(!success || (bytes_read != size))
+			{
+				delete [] *ppData;
+				return E_FAIL;
+			}
+
+			*pBytes = size;
+
+			return S_OK;
+		}
+		/*!
+		 * \brief
+		 * Deletes the memory allocated for the include file in Open.
+		 * 
+		 * \param pData
+		 * The pointer that contains the file data.
+		 * 
+		 * \returns
+		 * Always returns S_OK.
+		 * 
+		 * Deletes the memory allocated for the include file in Open.
+		 */
+		HRESULT API_FUNC c_postprocess_shader::c_include_manager::Close(LPCVOID pData)
+		{
+			delete [] pData;
+			return S_OK;
+		}
 		void		c_postprocess_shader::Initialize(IDirect3DDevice9* pDevice)
 		{
 			UnloadStandardResources();				
@@ -338,7 +409,7 @@ namespace Yelo
 					hr = D3DXCreateEffect( pDevice,
 							shader->shader_code_binary.address,
 							shader->shader_code_binary.size,
-							NULL,
+							m_define_macros,
 							NULL,
 							D3DXSHADER_OPTIMIZATION_LEVEL3,
 							NULL,
@@ -347,11 +418,12 @@ namespace Yelo
 				}
 				else if(shader->shader_code_text.size > 1)
 				{
+					c_include_manager include_manager(m_include_path);
 					hr = D3DXCreateEffect( pDevice,
 							shader->shader_code_text.address,
 							shader->shader_code_text.size,
-							NULL,
-							NULL,
+							m_define_macros,
+							&include_manager,
 							D3DXSHADER_OPTIMIZATION_LEVEL3,
 							NULL,
 							&shader->runtime.dx_effect,

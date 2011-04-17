@@ -42,8 +42,9 @@ namespace Yelo
 
 		void		c_external_subsystem::Initialize(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters)
 		{
-			sprintf_s(g_subsystem_shaders_path,			"%spostprocess shaders\\",	Yelo::Settings::OpenSauceProfilePath());
-			sprintf_s(g_subsystem_shader_textures_path,	"%stextures\\",				g_subsystem_shaders_path);
+			// empty the shader and texture paths
+			g_subsystem_shaders_path[0] = 0;
+			g_subsystem_shader_textures_path[0] = 0;
 
 			c_external_subsystem::g_instance.InitializeImpl(pDevice, pParameters);
 		}
@@ -210,9 +211,37 @@ namespace Yelo
 					return;
 			}
 
+			// get the shader and texture directories from the settings file
+			const char* shader_directory = root_element->Attribute("shader_directory");
+			const char* texture_directory = root_element->Attribute("texture_directory");
+			if(!shader_directory || !texture_directory) return;
+
+			// copy the paths into memory
+			g_subsystem_shaders_path[0] = 0;
+			g_subsystem_shader_textures_path[0] = 0;
+
+			strcat_s(g_subsystem_shaders_path, sizeof(g_subsystem_shaders_path), shader_directory);
+			strcat_s(g_subsystem_shader_textures_path, sizeof(g_subsystem_shader_textures_path), texture_directory);
+
+			// make sure they end with a backslash
+			int shader_path_len = strlen(g_subsystem_shaders_path);
+			int texture_path_len = strlen(g_subsystem_shader_textures_path);
+
+			if(g_subsystem_shaders_path[shader_path_len - 1] != '\\')
+			{
+				g_subsystem_shaders_path[shader_path_len] = '\\';
+				g_subsystem_shaders_path[shader_path_len + 1] = 0;
+			}
+			if(g_subsystem_shader_textures_path[texture_path_len - 1] != '\\')
+			{
+				g_subsystem_shader_textures_path[texture_path_len] = '\\';
+				g_subsystem_shader_textures_path[texture_path_len + 1] = 0;
+			}			
+
 			Globals().m_shader_count = 0;
 			Globals().m_effect_count = 0;
 
+			// load each shader entry
 			TiXmlElement* shader_list_element = NULL,
 						* shader_element = NULL;
 
@@ -220,46 +249,87 @@ namespace Yelo
 			if(shader_list_element)
 				shader_element = shader_list_element->FirstChildElement("shader");
 
-			while(shader_element && Globals().m_shader_count < k_max_shader_count)
+			do
 			{
+				if(!shader_element)
+					break;
+
+				// build the fx file path
 				cstring filename = shader_element->GetText();
-				if(filename != NULL)
+				if(!filename)
+					continue;
+				char file_path[MAX_PATH];
+				sprintf_s(file_path, "%s%s.fx", g_subsystem_shaders_path, filename);
+
+				// get the files local directory for the include path
+				char file_include_path[MAX_PATH];
+				file_include_path[0] = 0;
+				strcat_s(file_include_path, MAX_PATH, g_subsystem_shaders_path);
+
+				//search for the last backslash in the filename
+				int index = strlen(filename);
+				while((index != 0) && (filename[index] != '\\'))
+					index--;
+				// if found, append the directory path to the include path
+				if(index != 0)
 				{
-					char file_path[MAX_PATH];
-					sprintf_s(file_path, "%s%s.fx", g_subsystem_shaders_path, filename);
-
-					// open the shader file and get it's length
-					FILE* file;
-					if(fopen_s(&file, file_path, "r+") == k_errnone)
-					{
-						fseek(file, 0, SEEK_END);
-						fpos_t pos;
-						fgetpos(file, &pos);
-						rewind(file);						
-
-						// create a fake shader_postprocess_generic tag and NULL its variables
-						TagGroups::s_shader_postprocess_generic* shader = new TagGroups::s_shader_postprocess_generic();
-						memset(shader, 0, sizeof(TagGroups::s_shader_postprocess_generic));
-						// allocate memory for the ASCII shader code
-						shader->shader_code_text.address = new char[(int32)pos];
-						memset(shader->shader_code_text.address, 0, (int32)pos);
-						shader->shader_code_text.size = (int32)pos;
-						// read the entire shader file into the allocated memory
-						fread(shader->shader_code_text.address, 1, (int32)pos, file);
-						fclose(file);
-
-						// create a new shader interface class, then sets its source to the fake tag that was just created
-						Globals().m_shader_array[Globals().m_shader_count] = new c_external_shader();
-						Globals().m_shader_array[Globals().m_shader_count]->Ctor();
-						Globals().m_shader_array[Globals().m_shader_count]->SetID(filename);
-						Globals().m_shader_array[Globals().m_shader_count]->SetSource(shader);
-						Globals().m_shader_array[Globals().m_shader_count]->SetupShader();
-
-						Globals().m_shader_count++;
-					}
+					char* relative_directory = new char[index + 2];
+					memcpy_s(relative_directory, index + 2, filename, index + 1);
+					relative_directory[index + 1] = 0;
+					strcat_s(file_include_path, MAX_PATH, relative_directory);
+					delete [] relative_directory;
 				}
-				shader_element = shader_element->NextSiblingElement("shader");
+
+				// open the shader file and get it's length
+				HANDLE file_handle = CreateFile(file_path, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+				if(file_handle == (HANDLE)NULL_HANDLE)
+					continue;
+
+				DWORD file_length = GetFileSize(file_handle, NULL);
+				// if the file has no length there is no point loading it
+				if(file_length == 0)
+				{
+					CloseHandle(file_handle);
+					continue;
+				}						
+
+				// create a fake shader_postprocess_generic tag and NULL its variables
+				TagGroups::s_shader_postprocess_generic* shader = new TagGroups::s_shader_postprocess_generic();
+				memset(shader, 0, sizeof(TagGroups::s_shader_postprocess_generic));
+
+				// allocate memory for the ASCII shader code
+				shader->shader_code_text.address = new char[file_length];
+				shader->shader_code_text.size = file_length;
+
+				// read the entire shader file into the allocated memory
+				DWORD bytes_read;
+				BOOL success = ReadFile(file_handle, 
+					shader->shader_code_text.address, 
+					file_length,
+					&bytes_read,
+					NULL);
+				CloseHandle(file_handle);
+
+				// if the read failed or an incorrect number of bytes were read, move on to the next shader
+				if(!success || (bytes_read != file_length))
+				{
+					delete [] shader->shader_code_text.address;
+					delete [] shader;
+					continue;
+				}
+
+				// create a new shader interface class, then sets its source to the fake tag that was just created
+				Globals().m_shader_array[Globals().m_shader_count] = new c_external_shader();
+				Globals().m_shader_array[Globals().m_shader_count]->Ctor();
+				Globals().m_shader_array[Globals().m_shader_count]->SetID(filename);
+				Globals().m_shader_array[Globals().m_shader_count]->SetSource(shader);
+				Globals().m_shader_array[Globals().m_shader_count]->SetupShader();
+				strcpy_s(Globals().m_shader_array[Globals().m_shader_count]->IncludePath(), MAX_PATH, file_include_path);
+
+				Globals().m_shader_count++;
 			}
+			while((shader_element = shader_element->NextSiblingElement("shader")) &&
+				(Globals().m_shader_count < k_max_shader_count));
 
 			TiXmlElement* effects_element = NULL,
 						* effect_element = NULL;
@@ -268,8 +338,11 @@ namespace Yelo
 			if(effects_element)
 				effect_element = effects_element->FirstChildElement("effect");
 
-			while(effect_element)
+			do
 			{
+				if(!effect_element)
+					break;
+
 				cstring name = effect_element->Attribute("name");
 
 				int render_stage;
@@ -311,21 +384,30 @@ namespace Yelo
 				int indices[k_max_shader_count];
 				memset(&indices, 0, sizeof(indices));
 
-				// get the shaders node
-				TiXmlElement* shaders_element = effect_element->FirstChildElement("shaders");
-				if(shaders_element && shader_list_element)
+				// get the effects "shaders" node
+				TiXmlElement* effect_shaders_element = effect_element->FirstChildElement("shaders");
+				if(effect_shaders_element && shader_list_element)
 				{
-					// iterate through the shader elements
-					TiXmlElement* shader_element = shaders_element->FirstChildElement("shader");
-					while(shader_element)
+					// iterate through the effects shader elements
+					TiXmlElement* effect_shader_instance_element = effect_shaders_element->FirstChildElement("shader");
+					do
 					{
+						if(!effect_shader_instance_element)
+							break;
+
 						int index = 0;
-						// compare the elements text with the filenames in the main shader list
+						// compare the elements text with the ids in the main shader list
 						TiXmlElement* shader_list_entry_element = shader_list_element->FirstChildElement("shader");
-						while(shader_list_entry_element)
+						const char* effect_shader_instance_id = effect_shader_instance_element->GetText();
+
+						do
 						{
+							if(!shader_list_entry_element || !effect_shader_instance_id)
+								break;
+
+							const char* id = shader_list_entry_element->Attribute("id");
 							// if the text matches, set the index and break out
-							if(strcmp(shader_list_entry_element->GetText(), shader_element->GetText()) == 0)
+							if(id && (strcmp(effect_shader_instance_id, id) == 0))
 							{
 								indices[shader_count] = index;
 								shader_count++;
@@ -333,8 +415,9 @@ namespace Yelo
 							}
 							// ... otherwise move on to the next shader in the main shader list
 							index++;
-							shader_list_entry_element = shader_list_entry_element->NextSiblingElement("shader");
 						}
+						while(shader_list_entry_element = shader_list_entry_element->NextSiblingElement("shader"));
+
 						// if a shader with a matching filename wasnt found, then disable this effect
 						// by setting shader_count to 0
 						if(!shader_list_entry_element)
@@ -342,8 +425,8 @@ namespace Yelo
 							shader_count = 0;
 							break;
 						}
-						shader_element = shader_element->NextSiblingElement("shader");
 					}
+					while(effect_shader_instance_element = effect_shader_instance_element->NextSiblingElement("shader"));
 				}
 
 				s_shader_postprocess_external_effect* effect = new s_shader_postprocess_external_effect();
@@ -382,10 +465,10 @@ namespace Yelo
 				Globals().m_effect_array[Globals().m_effect_count]->SetSource(effect);
 				Globals().m_effect_array[Globals().m_effect_count]->SetupEffect();
 
-				Globals().m_effect_count++;
-
-				effect_element = effect_element->NextSiblingElement("effect");
+				Globals().m_effect_count++;				
 			}
+			while((effect_element = effect_element->NextSiblingElement("effect")) &&
+				(Globals().m_effect_count < k_max_effect_count));
 		}		
 		void		c_external_subsystem::ResetRenderBlock()
 		{

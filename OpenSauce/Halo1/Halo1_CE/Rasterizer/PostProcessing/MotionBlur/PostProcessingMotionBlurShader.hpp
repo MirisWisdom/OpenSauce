@@ -63,7 +63,6 @@ namespace Yelo
 				c_postprocess_shader::Ctor();
 
 				m_blur_shader = NULL;
-				m_blur_amount = 1.0f;
 			}
 		};
 

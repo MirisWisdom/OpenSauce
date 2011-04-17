@@ -176,7 +176,7 @@ namespace Yelo
 		bool		c_internal_subsystem::DoPostProcessesImpl(IDirect3DDevice9* pDevice, real frame_time, Enums::postprocess_render_stage render_point)
 		{	
 			// if this subsystem is disabled, do nothing
-			if(!g_subsystem_enabled) return false;
+			if(!g_subsystem_enabled || !PP::Globals().FadeEffect().IsAvailable()) return false;
 			// ...otherwise, apply the effects in the relevant render block
 			return Globals().m_render_blocks[render_point].RenderEffects(pDevice, frame_time);
 		}

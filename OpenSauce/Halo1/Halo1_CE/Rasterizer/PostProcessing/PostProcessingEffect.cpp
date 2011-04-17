@@ -41,10 +41,12 @@ namespace Yelo
 		// c_postprocess_effect
 		HRESULT		c_postprocess_effect::AddProcess(c_shader_instance_node* shader_instance)
 		{
+			// if there is no list the new entry will be the list head
 			if(m_shader_list_head == NULL)
 				m_shader_list_head = shader_instance;
 			else
 			{
+				// add the new shader instance to the end of the list
 				c_shader_instance_node* curr_node = m_shader_list_head;
 				while (curr_node->m_next)
 					curr_node = curr_node->m_next;
@@ -67,9 +69,11 @@ namespace Yelo
 		{
 			m_base_effect->runtime.flags.valid_effect_bit = false;
 
+			// if there is no quad instance or no shaders then this effect is invalid
 			if(!m_render_quad || m_shader_list_head == NULL)
 				return m_base_effect->runtime.flags.valid_effect_bit;
 
+			// if any of the shaders in the effect are invalid, then the effect is also invalid
 			c_shader_instance_node* curr_node = m_shader_list_head;
 			while(curr_node)
 			{
