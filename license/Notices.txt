@@ -2,3 +2,6 @@ Contains zlib - 1.2.5 Copyright 1995-2010 Jean-loup Gailly and Mark Adler
 
 Contains code based on "xma_parse" code written by HCS (http://hcs64.com/contact.html).
 Used with permission.
+
+Contains code which uses GameSpy OpenSDK (http://www.poweredbygamespy.com)
+	http://developer.poweredbygamespy.com/forum/sdk-usage-open-source-environment

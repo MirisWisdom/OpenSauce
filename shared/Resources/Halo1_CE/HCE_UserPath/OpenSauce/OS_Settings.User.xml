@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<osYeloSettings engine="Halo1_CE">
+    <client>
+        <dx9>
+            <GBuffer enabled="true" />
+            <postprocessing>
+                <MotionBlur enabled="true" amount="1" />
+                <Internal enabled="true" />
+                <External enabled="true" />
+            </postprocessing>
+        </dx9>
+        <Fov value="1.02414" />
+        <Hud show="true" scale="true" showChat="true">
+            <Reports showDeaths="false" showMyKillDeaths="false" />
+        </Hud>
+        <objects>
+            <weaponViews />
+            <vehicleViews />
+        </objects>
+    </client>
+</osYeloSettings>

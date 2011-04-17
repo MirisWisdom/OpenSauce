@@ -3,6 +3,7 @@
   <PropertyGroup>
     <IntDir>$(SolutionDir)..\obj\$(AssemblyName)\</IntDir>
     <BaseIntermediateOutputPath>$(SolutionDir)..\obj\$(AssemblyName)\</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(SolutionDir)..\obj\$(AssemblyName)\</IntermediateOutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(OutputType)' == 'Library' ">

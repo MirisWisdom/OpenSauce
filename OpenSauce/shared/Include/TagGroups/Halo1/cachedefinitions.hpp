@@ -59,12 +59,9 @@ namespace Yelo
 		}
 	};
 
-	struct s_cache_header
+	struct s_cache_header : public s_cache_header_base
 	{
 		enum {
-			k_header_signature = 'head',
-			k_footer_signature = 'foot',
-
 			k_version = 609,
 
 			k_pad_size = 484 * sizeof(int32),

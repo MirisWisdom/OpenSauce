@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<osEditorSettings engine="Halo1_CE" defaultProfile="stock">
+	<profiles>
+		<Profile name="stock" ignoredByGuerilla="false" ignoredByTool="false" ignoredBySapien="false">
+			<root></root>
+			<tagsName>tags</tagsName>
+		</Profile>
+	</profiles>
+</osEditorSettings>
