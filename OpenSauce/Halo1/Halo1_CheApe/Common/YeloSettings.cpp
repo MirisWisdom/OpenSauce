@@ -169,7 +169,7 @@ namespace Yelo
 		// Parse the command line for the editor profile option and copy the result to 
 		// [profile_name].
 		// Sets [profile_name] to an empty string if an option isn't found.
-		static void GetCommandLineDefaultProfile(char profile_name[64])
+		static void GetCommandLineDefaultProfile(string128 profile_name)
 		{
 #define CMDLINE_ARG_EDITOR_PROFILE L"-editorProfile:"
 			profile_name[0] = '\0';
@@ -189,7 +189,7 @@ namespace Yelo
 					const size_t length = wcslen(cmd);
 
 					if(length > 0)
-						wstring_to_string(profile_name, NUMBEROF_C(profile_name)-1, cmd);
+						wstring_to_string(profile_name, Enums::k_string_128_length, cmd);
 				}
 			}
 
@@ -207,7 +207,7 @@ namespace Yelo
 
 			if(root_element != NULL)
 			{
-				char profile_name[64];
+				string128 profile_name;
 				GetCommandLineDefaultProfile(profile_name);
 
 				// If no option is found, we'll try to fall back on the default profile attribute value. 
