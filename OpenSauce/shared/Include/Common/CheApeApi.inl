@@ -18,7 +18,16 @@
 */
 extern "C" {
 
-	bool __declspec( dllexport ) CheApeApi_GetPchBuildDate(__in DWORD nBufferLength,
+	bool __declspec( dllexport ) CheApeApi_GetPchBuildDateA(__in DWORD nBufferLength,
+		__out_ecount_part_opt(nBufferLength, return + 1) LPSTR lpBuffer)
+	{
+		if(lpBuffer != NULL)
+			return strcpy_s(lpBuffer, nBufferLength, __TIMESTAMP__) == k_errnone;
+
+		return false;
+	}
+
+	bool __declspec( dllexport ) CheApeApi_GetPchBuildDateW(__in DWORD nBufferLength,
 		__out_ecount_part_opt(nBufferLength, return + 1) LPWSTR lpBuffer)
 	{
 		if(lpBuffer != NULL)
@@ -27,16 +36,25 @@ extern "C" {
 		return false;
 	}
 
-	bool __declspec( dllexport ) CheApeApi_GetPchPath(__in DWORD nBufferLength,
-		__out_ecount_part_opt(nBufferLength, return + 1) LPWSTR lpBuffer)
+	bool __declspec( dllexport ) CheApeApi_GetPchPathA(__in DWORD nBufferLength,
+		__out_ecount_part_opt(nBufferLength, return + 1) LPSTR lpBuffer)
 	{
 		if(lpBuffer != NULL)
-			return wcscpy_s(lpBuffer, nBufferLength, k_cheape_api_pch_path) == k_errnone;
+			return strcpy_s(lpBuffer, nBufferLength, k_cheape_api_pch_path_ascii) == k_errnone;
 
 		return false;
 	}
 
-	bool __declspec( dllexport ) CheApeApi_GetTargetToolName(__in DWORD nBufferLength,
+	bool __declspec( dllexport ) CheApeApi_GetPchPathW(__in DWORD nBufferLength,
+		__out_ecount_part_opt(nBufferLength, return + 1) LPWSTR lpBuffer)
+	{
+		if(lpBuffer != NULL)
+			return wcscpy_s(lpBuffer, nBufferLength, k_cheape_api_pch_path_wide) == k_errnone;
+
+		return false;
+	}
+
+	bool __declspec( dllexport ) CheApeApi_GetTargetToolNameW(__in DWORD nBufferLength,
 		__out_ecount_part_opt(nBufferLength, return + 1) LPWSTR lpBuffer)
 	{
 		if(lpBuffer != NULL)

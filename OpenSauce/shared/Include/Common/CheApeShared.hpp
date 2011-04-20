@@ -21,6 +21,24 @@
 // Name of the memory map file with definitions for CheApe to load
 #define CHEAPE_CACHE_FILE_NAME "CheApe.map"
 
+// CheApeApi declarations
+extern "C" {
+	bool __declspec( dllexport ) CheApeApi_GetPchBuildDateA(__in DWORD nBufferLength,
+		__out_ecount_part_opt(nBufferLength, return + 1) LPSTR lpBuffer);
+
+	bool __declspec( dllexport ) CheApeApi_GetPchBuildDateW(__in DWORD nBufferLength,
+		__out_ecount_part_opt(nBufferLength, return + 1) LPWSTR lpBuffer);
+
+	bool __declspec( dllexport ) CheApeApi_GetPchPathA(__in DWORD nBufferLength,
+		__out_ecount_part_opt(nBufferLength, return + 1) LPSTR lpBuffer);
+
+	bool __declspec( dllexport ) CheApeApi_GetPchPathW(__in DWORD nBufferLength,
+		__out_ecount_part_opt(nBufferLength, return + 1) LPWSTR lpBuffer);
+
+	bool __declspec( dllexport ) CheApeApi_GetTargetToolNameW(__in DWORD nBufferLength,
+		__out_ecount_part_opt(nBufferLength, return + 1) LPWSTR lpBuffer);
+};
+
 namespace Yelo
 {
 	namespace Enums
@@ -97,6 +115,26 @@ namespace Yelo
 		}; BOOST_STATIC_ASSERT( sizeof(s_cache_header) == 0x800 );
 		s_cache_header& GlobalCacheHeader();
 
-		bool GetCompressedCacheFile(void*& buffer, uint32& size, uint32& compressed_size);
+		/*!
+		 * \brief
+		 * Get a debug resource buffer to add to a cache file which uses CheApe data
+		 * 
+		 * \param buffer
+		 * On return, this will point to allocated memory which represents the CheApe resource 
+		 * which is to be added to a cache file being built. If this function fails, this will be null.
+		 * 
+		 * \param size
+		 * The raw-size of [buffer]. If [buffer] is internally compressed, this will be the decompressed size
+		 * 
+		 * \param compressed_size
+		 * The size of [buffer]. If no compression is used, this will be 0.
+		 * 
+		 * \returns
+		 * True if this function succeeded.
+		 * 
+		 * \remarks
+		 * User code MUST use 'delete' the memory pointed to by [buffer].
+		 */
+		bool GetCacheFileResourceBuffer(__out void*& buffer, __out uint32& size, __out uint32& compressed_size);
 	};
 };

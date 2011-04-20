@@ -55,11 +55,13 @@ namespace Yelo
 				{
 					BOOL result = TRUE;
 
-// 					if(base_address != NULL)
-// 					{
-// 						result = VirtualFree(base_address, kPhysicalMemoryMapSize, MEM_RELEASE);
-// 						base_address = NULL;
-// 					}
+#if 0
+					if(base_address != NULL)
+					{
+						result = VirtualFree(base_address, kPhysicalMemoryMapSize, MEM_RELEASE);
+						base_address = NULL;
+					}
+#endif
 
 					return result;
 				}
@@ -134,24 +136,47 @@ namespace Yelo
 		// declared in CheApeShared.hpp
 		s_cache_header& GlobalCacheHeader() { return _globals.cache.header; }
 
-		bool GetCompressedCacheFile(void*& buffer, uint32& size, uint32& compressed_size)
+		// declared in CheApeShared.hpp
+		bool GetCacheFileResourceBuffer(void*& buffer, uint32& size, uint32& compressed_size)
 		{
+			struct s_tool_info_header
+			{
+				tag_string pch_build_date;
+				string256 pch_file;
+			}* tool_info_header = NULL;
+
 			buffer = NULL;
 			size = compressed_size = 0;
 
-			FILE* file_handle;
-			fopen_s(&file_handle, CHEAPE_CACHE_FILE_NAME, "rb");
+			// Read the CheApe cache into the resource buffer
+			{
+				FILE* file_handle;
+				fopen_s(&file_handle, CHEAPE_CACHE_FILE_NAME, "rb");
 
-			if(!file_handle)
-				return false;
+				if(!file_handle)
+					return false;
 
-			fseek(file_handle, 0, SEEK_END);
-			size = ftell(file_handle);
-			fseek(file_handle, 0, SEEK_SET);
+				size = sizeof(s_tool_info_header);
 
-			buffer = new byte[size];
-			fread(buffer, size, 1, file_handle);
-			fclose(file_handle);
+				fseek(file_handle, 0, SEEK_END);
+				size += ftell(file_handle);
+				fseek(file_handle, 0, SEEK_SET);
+
+				buffer = new byte[size];
+				tool_info_header = CAST_PTR(s_tool_info_header*, buffer);
+
+				// Read the cache data directly into the memory after the header
+				fread(tool_info_header+1, size, 1, file_handle);
+				fclose(file_handle);
+			}
+
+			// Build the header information of the resource buffer
+			{
+				size_t old_threshold = _CrtSetDebugFillThreshold( 0 ); // so the debug CRT doesn't fill our buffers with magic numbers
+				CheApeApi_GetPchBuildDateA(NUMBEROF(tool_info_header->pch_build_date), tool_info_header->pch_build_date);
+				CheApeApi_GetPchPathA(NUMBEROF(tool_info_header->pch_file), tool_info_header->pch_file);
+				_CrtSetDebugFillThreshold( old_threshold );
+			}
 
 			compressed_size = compressBound(size);
 			Bytef* dest = new Bytef[compressed_size];

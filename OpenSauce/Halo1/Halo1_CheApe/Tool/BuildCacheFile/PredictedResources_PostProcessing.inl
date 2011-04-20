@@ -115,7 +115,7 @@ namespace PostProcessing
 
 				for(int k = 0; k < collection_effect.shader_indices.Count; k++)
 				{
-					if((collection_effect.shader_indices[k].shader_index == -1) || 
+					if((collection_effect.shader_indices[k].shader_index == NONE) || 
 						(collection_effect.shader_indices[k].shader_index >= collection_tag->shaders.Count))
 					{
 						s_tag_instance* tag_instance = (*TagGroups::TagInstances())[shader->shader.tag_index];

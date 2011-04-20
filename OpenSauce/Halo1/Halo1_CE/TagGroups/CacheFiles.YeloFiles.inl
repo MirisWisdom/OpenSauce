@@ -25,12 +25,12 @@ static int __cdecl CacheFormatPathHack(char* buffer, cstring format,
 	result = sprintf(buffer, format, root_directory, maps_folder, map_name);
 	access = _access(buffer, 0);
 
-	if(access == -1 && errno == ENOENT)
+	if(access == NONE && errno == ENOENT)
 	{
 		result = sprintf(buffer, "%s%s%s.yelo", root_directory, maps_folder, map_name);
 		access = _access(buffer, 0);
 
-		if(access == -1 && errno == ENOENT)
+		if(access == NONE && errno == ENOENT)
 			YELO_DEBUG_FORMAT("CacheFormatPathHack is about to fail on [%s]", buffer);
 	}
 
@@ -44,14 +44,14 @@ static int __cdecl CacheFormatPathHackN(char* buffer, size_t buffer_size, cstrin
 	result = _snprintf(buffer, buffer_size, format, root_directory, maps_folder, map_name);
 	access = _access(buffer, 0);
 
-	if(access == -1 && errno == ENOENT)
+	if(access == NONE && errno == ENOENT)
 	{
 		format = format[2] == '\\' ? "%s\\%s%s.yelo" : "%s%s%s.yelo";
 
 		result = _snprintf(buffer, buffer_size, format, root_directory, maps_folder, map_name);
 		access = _access(buffer, 0);
 
-		if(access == -1 && errno == ENOENT)
+		if(access == NONE && errno == ENOENT)
 			YELO_DEBUG_FORMAT("CacheFormatPathHackN is about to fail on [%s]", buffer);
 	}
 

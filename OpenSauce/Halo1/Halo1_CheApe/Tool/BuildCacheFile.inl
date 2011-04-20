@@ -22,12 +22,26 @@
 #include "Tool/BuildCacheFile/CullTags.inl"
 #include "Tool/BuildCacheFile/PredictedResources.inl"
 
+/*!
+ * \brief
+ * Code to execute before we commit the yelo header and the tool's code finishes building the cache.
+ * 
+ * \param header
+ * Description of parameter header.
+ * 
+ * \param ych
+ * Description of parameter ych.
+ * 
+ * This function is called before we commit the yelo header to the resulting cache file's header. The implementing code which 
+ * calls this (MemoryUpgrades.inl, InterceptorEnd) calls the tool's build_cache_file_end function after this function completes.
+ * 
+ */
 static void build_cache_file_end_preprocess(s_cache_header* header, s_cache_header_yelo& ych)
 {
 	s_build_cache_file_for_scenario& bcffs = build_cache_file_for_scenario_internals;
 
 	void* buffer;
-	bool result = CheApe::GetCompressedCacheFile(buffer, 
+	bool result = CheApe::GetCacheFileResourceBuffer(buffer, 
 		ych.cheape_definitions.decompressed_size, ych.cheape_definitions.size);
 
 	if(result)
@@ -39,6 +53,17 @@ static void build_cache_file_end_preprocess(s_cache_header* header, s_cache_head
 	}
 }
 
+/*!
+ * \brief
+ * Code to execute before the tool's code for building the cache begins.
+ * 
+ * \param scenario_name
+ * Tag name of the scenario which is being built into a cache.
+ * 
+ * Since this code is executed before any real cache building code begins, we can do things like create stub tags, in the event the user 
+ * doesn't define them. Or anything else we need to do/change in tags (e.g., rename) before they're committed to cache memory.
+ *
+ */
 static void build_cache_file_begin_preprocess(cstring scenario_name)
 {
 	datum_index scenario_index = tag_load<TagGroups::scenario>(build_cache_file_for_scenario_internals.scenario_path, 0);
@@ -154,12 +179,12 @@ static void PLATFORM_API build_cache_file_for_scenario_extended(void** arguments
 	// If we're using OS's memory upgrades, force tool to use our file naming convention
 	if(use_memory_upgrades) bcffs.InitializeBuildCacheFileEndSprintfOverride();
 
-	BuildCacheFileEx::Initialize(!use_memory_upgrades);
+	BuildCacheFileEx::Initialize(use_memory_upgrades == false);
 
 	// build cache file
 		bcffs._build_cache_file_for_scenario(args->scenario_name);
 
-	BuildCacheFileEx::Dispose(!use_memory_upgrades);
+	BuildCacheFileEx::Dispose(use_memory_upgrades == false);
 
 	bcffs.BuildPostprocess(args->mod_name, using_mod_sets);
 
