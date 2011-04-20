@@ -28,7 +28,6 @@
 #include <TagGroups/Halo1/shader_definitions.hpp>
 #include <Blam/Halo1/shader_postprocess_definitions.hpp>
 
-#include "CheApeInterface.hpp" // for Memory functions
 #include "Common/YeloSettings.hpp"
 #include "Engine/EngineFunctions.hpp"
 #include "TagGroups/TagGroups.hpp"
