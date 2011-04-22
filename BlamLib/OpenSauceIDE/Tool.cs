@@ -29,6 +29,7 @@ namespace BlamLib
 		{
 			{"build-tag-database", BuildTagDatabase},
 			{"apply-cheape", UnlockBlamTools}, //apply-cheape version g_path t_path s_path output
+			{"apply-opensauce", UnlockBlamGames}, //apply-opensauce version c_path d_path output
 		};
 
 		public static bool RunCommand(string command, params string[] args)
