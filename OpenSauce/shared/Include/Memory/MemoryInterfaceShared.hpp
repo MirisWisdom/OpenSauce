@@ -88,6 +88,16 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum x86_opcode : byte {
+			_x86_opcode_nop = 0x90,
+			_x86_opcode_retn = 0xC3,
+			_x86_opcode_call_near = 0xE8,
+			_x86_opcode_jmp_near = 0xE9,
+		};
+	};
+
 	namespace Memory
 	{
 		// Copies [size] bytes of [src] to [address]

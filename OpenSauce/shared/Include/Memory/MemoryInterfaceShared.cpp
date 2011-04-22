@@ -58,7 +58,7 @@ namespace Yelo
 		{
 			static byte CreateHookRelativeJmp_asm_code[] =
 			{
-				0xE8, 0x00, 0x00, 0x00, 0x00, // call near
+				Enums::_x86_opcode_call_near, 0x00, 0x00, 0x00, 0x00, // call near
 				0x00 // retn\nop
 			};
 
@@ -76,7 +76,7 @@ namespace Yelo
 
 		__declspec(noinline) uint32 WriteRelativeJmp(void* to_address, void* jmp_address, bool write_opcode)
 		{
-			static byte real_opcode = 0xE9; // jmp [function]
+			static byte real_opcode = Enums::_x86_opcode_jmp_near; // jmp [function]
 
 			if(write_opcode) WriteMemory(jmp_address, &real_opcode, sizeof(real_opcode));
 
@@ -90,7 +90,7 @@ namespace Yelo
 
 		__declspec(noinline) uint32 WriteRelativeCall(void* to_address, void* call_address, bool write_opcode)
 		{
-			static byte real_opcode = 0xE8; // call [function]
+			static byte real_opcode = Enums::_x86_opcode_call_near; // call [function]
 
 			if(write_opcode) WriteMemory(call_address, &real_opcode, sizeof(real_opcode));
 

@@ -60,7 +60,7 @@ namespace Yelo
 
 		void Initialize()
 		{
-			Memory::CreateHookRelativeCall(&Input::Update, GET_FUNC_VPTR(INPUT_UPDATE), 0xC3);
+			Memory::CreateHookRelativeCall(&Input::Update, GET_FUNC_VPTR(INPUT_UPDATE), Enums::_x86_opcode_retn);
 		}
 
 		void Dispose()
