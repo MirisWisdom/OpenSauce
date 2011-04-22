@@ -47,7 +47,7 @@ namespace Yelo
 
 		void Initialize()
 		{
-			Memory::CreateHookRelativeCall(&AI::Update, GET_FUNC_VPTR(AI_UPDATE_HOOK), 0xC3);
+			Memory::CreateHookRelativeCall(&AI::Update, GET_FUNC_VPTR(AI_UPDATE_HOOK), Enums::_x86_opcode_retn);
 		}
 
 		void Dispose()

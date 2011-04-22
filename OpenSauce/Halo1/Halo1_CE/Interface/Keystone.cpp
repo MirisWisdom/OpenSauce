@@ -75,7 +75,7 @@ namespace Yelo
 		void SendMessageInitialize()
 		{
 #define CALL_SENDMSG_HOOK(reg, ce_addr)						\
-	call = 0xE8;											\
+	call = Enums::_x86_opcode_call_near;					\
 	rel_call = _SendMessageUpdatePtr##reg - (ce_addr + 5);	\
 	Memory::WriteMemory( CAST_PTR(void*,ce_addr),&call,1);	\
 	Memory::WriteMemory( CAST_PTR(void*,ce_addr+1),&rel_call,4);

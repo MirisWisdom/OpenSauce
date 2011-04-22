@@ -75,8 +75,8 @@ namespace Yelo
 			Menu::Initialize();
 			Hud::Initialize();
 
-			Memory::CreateHookRelativeCall(&GameUI::Update, GET_FUNC_VPTR(HUD_UPDATE_HOOK), 0xC3);
-			Memory::CreateHookRelativeCall(&GameUI::FirstPersonWeaponsUpdate, GET_FUNC_VPTR(FIRST_PERSON_WEAPONS_UPDATE_HOOK), 0xC3 /*retn*/);
+			Memory::CreateHookRelativeCall(&GameUI::Update, GET_FUNC_VPTR(HUD_UPDATE_HOOK), Enums::_x86_opcode_retn);
+			Memory::CreateHookRelativeCall(&GameUI::FirstPersonWeaponsUpdate, GET_FUNC_VPTR(FIRST_PERSON_WEAPONS_UPDATE_HOOK), Enums::_x86_opcode_retn);
 		}
 
 		void Dispose()

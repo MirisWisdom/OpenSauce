@@ -50,7 +50,7 @@ namespace Yelo
 			static byte asm_change_short0[] = {0x00, 0x00};
 			static byte asm_change_long0[] = {0x00, 0x00, 0x00, 0x00};
 
-			Memory::CreateHookRelativeCall(&Camera::UpdateFor3rd, GET_FUNC_VPTR(OBSERVER_UPDATE_COMMAND_HOOK), 0xC3 /*retn*/);
+			Memory::CreateHookRelativeCall(&Camera::UpdateFor3rd, GET_FUNC_VPTR(OBSERVER_UPDATE_COMMAND_HOOK), Enums::_x86_opcode_retn);
 			Memory::WriteMemory(GET_FUNC_VPTR(DIRECTOR_GET_PERSPECTIVE_DEFAULT_SET), asm_change_short1, 2);
 			Memory::WriteMemory(GET_FUNC_VPTR(HUD_INITIALIZE_FOR_NEW_MAP_DEFAULT_SET_SHOW_HUD), asm_change_short0, 2);
 			Memory::WriteMemory(GET_FUNC_VPTR(HUD_ADD_ITEM_MESSAGE_DEFAULT_SET_SHOW_MSG), asm_change_long0, 4);

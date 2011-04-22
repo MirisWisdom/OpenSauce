@@ -76,7 +76,7 @@ namespace Yelo
 			InitializeLibrary();
 
 			// Currently, no code is ran in Update, so don't bother hooking
-			//Memory::CreateHookRelativeCall(&Scripting::Update, GET_FUNC_VPTR(HS_UPDATE_HOOK), 0xC3 /*retn*/);
+			//Memory::CreateHookRelativeCall(&Scripting::Update, GET_FUNC_VPTR(HS_UPDATE_HOOK), Enums::_x86_opcode_retn);
 		}
 
 		void Dispose()
