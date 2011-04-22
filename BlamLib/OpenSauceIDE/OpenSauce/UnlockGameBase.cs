@@ -1,4 +1,4 @@
-/*
+﻿/*
     BlamLib: .NET SDK for the Blam Engine
 
     Copyright (C) 2005-2010  Kornner Studios (http://kornner.com)
@@ -17,32 +17,29 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 ﻿using System;
-using System.Collections.Generic;
 
-namespace OpenSauceIDE.CheApeInterface
+namespace OpenSauceIDE.GameInterface
 {
-	abstract class UnlockToolsBase : UnlockExeBase
+	abstract class UnlockGameBase : UnlockExeBase
 	{
 		protected enum Platform
 		{
-			Guerilla,
-			Tool,
-			Sapien,
+			Client,
+			Dedi,
 		};
 
 		protected struct PlatformAddress
 		{
-			public uint Guerilla, Tool, Sapien;
+			public uint Client, Dedi;
 
-			public PlatformAddress(uint g, uint t, uint s) { Guerilla = g; Tool = t; Sapien = s; }
+			public PlatformAddress(uint c, uint d) { Client = c; Dedi = d; }
 
 			public uint this[Platform p] {
 				get {
 					switch(p)
 					{
-						case Platform.Guerilla: return Guerilla;
-						case Platform.Tool:		return Tool;
-						case Platform.Sapien:	return Sapien;
+						case Platform.Client:	return Client;
+						case Platform.Dedi:		return Dedi;
 						default: throw new Exception();
 					}
 				}
@@ -51,9 +48,9 @@ namespace OpenSauceIDE.CheApeInterface
 
 		protected class PlatformData
 		{
-			public byte[] Guerilla, Tool, Sapien;
+			public byte[] Client, Dedi;
 
-			public PlatformData(byte[] g, byte[] t, byte[] s) { Guerilla = g; Tool = t; Sapien = s; }
+			public PlatformData(byte[] c, byte[] d) { Client = c; Dedi = d; }
 
 			public byte[] this[Platform p]
 			{
@@ -61,9 +58,8 @@ namespace OpenSauceIDE.CheApeInterface
 				{
 					switch (p)
 					{
-						case Platform.Guerilla:	return Guerilla;
-						case Platform.Tool:		return Tool;
-						case Platform.Sapien:	return Sapien;
+						case Platform.Client:	return Client;
+						case Platform.Dedi:		return Dedi;
 						default: throw new Exception();
 					}
 				}

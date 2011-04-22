@@ -73,6 +73,11 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="OpenSauce\Halo1\UnlockH1.AddressOf.cs" />
+    <Compile Include="OpenSauce\Halo1\UnlockH1.Constants.cs" />
+    <Compile Include="OpenSauce\Halo1\UnlockH1.cs" />
+    <Compile Include="OpenSauce\UnlockExeBase.cs" />
+    <Compile Include="OpenSauce\UnlockGameBase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Cache\CacheView.resx">

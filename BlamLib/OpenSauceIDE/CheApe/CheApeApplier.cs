@@ -165,8 +165,8 @@ namespace BlamLib
 					Console.WriteLine("error: unsupported engine version - {0}", version.ToString());
 					break;
 			};
-			
-			Console.WriteLine("Applying CheApe modifications...");
+
+			Console.WriteLine("Applying {0} modifications...", "CheApe");
 			Exception exception = null;
 			OpenSauceIDE.CheApeInterface.UnlockToolsBase unlocker = null;
 			switch (version)
@@ -193,7 +193,7 @@ namespace BlamLib
 
 			if (exception != null)
 			{
-				Console.WriteLine("error: an exception occurred when attempting to apply the CheApe modifications");
+				Console.WriteLine("error: an exception occurred when attempting to apply the {0} modifications", "CheApe");
 				Console.WriteLine();
 				Console.WriteLine("exception details:");
 				Console.WriteLine(exception.Message);
