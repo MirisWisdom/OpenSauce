@@ -93,12 +93,21 @@ float2 GetIndex(float2 Tex)
 void GetTypeTeam(in float2 Tex, out int Type, out int Team)
 {
 	float4 Pixel = tex2D(GBuffer_IndexSampler, Tex);
-	Type = Pixel[Channel_Index_X] / (1.0f / 32.0f);
-	Team = Pixel[Channel_Index_Y] / (1.0f / 32.0f);
+	Type = (int)(Pixel[Channel_Index_X] / (1.0f / 255.0f));
+	Type = Type % 240;
+	Team = (int)(Pixel[Channel_Index_Y] / (1.0f / 255.0f));
+	Team = Team % 224;
 }
 void GetType(in float2 Tex, out int Type)
 {
 	float4 Pixel = tex2D(GBuffer_IndexSampler, Tex);
-	Type = Pixel[Channel_Index_X] / (1.0f / 32.0f);
+	Type = (int)(Pixel[Channel_Index_X] / (1.0f / 255.0f));
+	Type = Type % 240;
+}
+void GetTeam(in float2 Tex, out int Team)
+{
+	float4 Pixel = tex2D(GBuffer_IndexSampler, Tex);
+	Team = (int)(Pixel[Channel_Index_Y] / (1.0f / 255.0f));
+	Team = Team % 224;
 }
 #endif

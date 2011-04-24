@@ -24,8 +24,6 @@
 #include <time.h>
 #include <ctime>
 
-#include "TagGroups/CacheFiles.hpp"
-
 #if PLATFORM_IS_USER
 	#include "Networking/VersionCheckClient.hpp"
 #elif PLATFORM_IS_DEDI
@@ -36,81 +34,73 @@ namespace Yelo
 {
 	namespace Networking { namespace VersionCheck
 	{
-		void		c_version_display_manager_base::SetCurrentVersionStringImpl(wcstring version_string)
-		{
-			m_strings.current_version[0] = L'\0';
-			wcscat_s(m_strings.current_version, version_string);
-		}
-
-		void		c_version_display_manager_base::SetAvailableVersionStringImpl(wcstring version_string)
-		{
-			m_strings.available_version[0] = L'\0';
-			wcscat_s(m_strings.available_version, version_string);
-		}
-
 		/////////////////////////////////////////
 		//namespace functions
 		void		Initialize()
 		{
-			c_version_check_manager::VersionChecker().Initialize();
+			c_version_check_manager_base::VersionChecker().Initialize();
 		}
 		void		Dispose()
 		{
-			c_version_check_manager::VersionChecker().Dispose();
-		}
-
-		void		Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters)
-		{
-			c_version_check_manager::VersionChecker().Initialize3D(pDevice, pParameters);			
-		}
-		void		OnLostDevice()
-		{
-			c_version_check_manager::VersionChecker().OnLostDevice();
-		}
-		void		OnResetDevice(D3DPRESENT_PARAMETERS* pParameters)
-		{
-			c_version_check_manager::VersionChecker().OnResetDevice(pParameters);
-		}
-		void		Render()
-		{
-			c_version_check_manager::VersionChecker().Render();
-		}
-		void		Release()
-		{
-			c_version_check_manager::VersionChecker().Release();
+			c_version_check_manager_base::VersionChecker().Dispose();
 		}
 
 		void		LoadSettings(TiXmlElement* dx9_element)
 		{
-			c_version_check_manager::VersionChecker().LoadSettings(dx9_element);
+			c_version_check_manager_base::VersionChecker().LoadSettings(dx9_element);
 		}
 		void		SaveSettings(TiXmlElement* dx9_element)
 		{
-			c_version_check_manager::VersionChecker().SaveSettings(dx9_element);
+			c_version_check_manager_base::VersionChecker().SaveSettings(dx9_element);
 		}
 
 		void		InitializeForNewMap()
 		{
-			c_version_check_manager::VersionChecker().InitializeForNewMap();
+			c_version_check_manager_base::VersionChecker().InitializeForNewMap();
 		}
 		void		Update(real delta_time)
 		{
-			c_version_check_manager::VersionChecker().Update(delta_time);
+			c_version_check_manager_base::VersionChecker().Update(delta_time);
 		}
 
-		/////////////////////////////////////////
-		//c_version_check_manager
-		/////////////////////////////////////////
+#if PLATFORM_IS_USER
+		static c_version_check_manager_user		g_instance;
+		
+		void		Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters)
+		{
+			g_instance.Initialize3D(pDevice, pParameters);
+		}
+		void		OnLostDevice()
+		{
+			g_instance.OnLostDevice();
+		}
+		void		OnResetDevice(D3DPRESENT_PARAMETERS* pParameters)
+		{
+			g_instance.OnResetDevice(pParameters);
+		}
+		void		Render()
+		{
+			g_instance.Render();
+		}
+		void		Release()
+		{
+			g_instance.Release();
+		}
+#elif PLATFORM_IS_DEDI
+		static c_version_check_manager_dedi		g_instance;
+#endif
 
 		/////////////////////////////////////////
-		//static variables
-		c_version_check_manager		c_version_check_manager::g_instance;
-		cstring						c_version_check_manager::g_fallback_xml_location = 
+		//c_version_check_manager_base
+		/////////////////////////////////////////
+		cstring						c_version_check_manager_base::g_fallback_xml_location = 
 			"http://open-sauce.googlecode.com/hg/OpenSauce/Halo1/Halo1_CE/Halo1_CE_Version.xml";
 
 		/////////////////////////////////////////
 		//static functions
-		GHTTPBool	c_version_check_manager::GetRequestComplete(GHTTPRequest request,
+		c_version_check_manager_base& c_version_check_manager_base::VersionChecker() { return g_instance; }
+
+		GHTTPBool	c_version_check_manager_base::GetRequestComplete(GHTTPRequest request,
 			GHTTPResult result,
 			char* buffer,
 			GHTTPByteCount bufferLen,
@@ -142,72 +132,26 @@ namespace Yelo
 		//non-static functions
 		/*!
 		 * \brief
-		 * Initialises the ghttp library and the display manager.
+		 * Initialises the ghttp library.
 		 *
-		 * Starts up the ghttp library, initialises the display manager and sets the initial values for it.
+		 * Starts up the ghttp library and sets the initial build version.
 		 */
-		void		c_version_check_manager::Initialize()
+		void		c_version_check_manager_base::Initialize()
 		{
 			ghttpStartup();
 
 			m_current_version.SetBuild(2, 5, 0);
 			m_available_version.SetBuild(2, 5, 0);
-
-			c_version_display_manager::g_instance.Initialize();
 		}
 		/*!
 		 * \brief
-		 * Disposes of the ghttp library and display manager.
+		 * Disposes of the ghttp library.
 		 * 
-		 * Disposes of the ghttp library and display manager.
+		 * Disposes of the ghttp library.
 		 */
-		void		c_version_check_manager::Dispose()
+		void		c_version_check_manager_base::Dispose()
 		{
-			c_version_display_manager::g_instance.Dispose();
-
 			ghttpCleanup();
-		}
-
-		/*!
-		 * \brief
-		 * Sets up the display managers initial values.
-		 * 
-		 * \param pDevice
-		 * The current render device.
-		 * 
-		 * \param pParameters
-		 * Pointer to the parameters the device was created with.
-		 * 
-		 * Initialises the display managers Direwct3D resources, 
-		 * then sets its version strings to their initial values.
-		 */
-		void		c_version_check_manager::Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters)
-		{
-			c_version_display_manager::g_instance.Initialize3D(pDevice, pParameters);
-
-			wchar_t current_string[32];
-			swprintf_s(current_string, 32, L"v%i.%i.%i", m_current_version.m_major, m_current_version.m_minor, m_current_version.m_build);
-			c_version_display_manager::g_instance.SetCurrentVersionString(current_string);
-
-			c_version_display_manager::g_instance.SetAvailableVersionString(L"");
-		}
-		void		c_version_check_manager::OnLostDevice()
-		{
-			c_version_display_manager::g_instance.OnLostDevice();
-		}
-		void		c_version_check_manager::OnResetDevice(D3DPRESENT_PARAMETERS* pParameters)
-		{
-			c_version_display_manager::g_instance.OnResetDevice(pParameters);
-		}
-		void		c_version_check_manager::Render()
-		{
-			// if we are in the main menu, show the version number
-			if(m_states.is_in_menu)
-				c_version_display_manager::g_instance.Render();
-		}
-		void		c_version_check_manager::Release()
-		{
-			c_version_display_manager::g_instance.Release();
 		}
 		/*!
 		 * \brief
@@ -218,13 +162,19 @@ namespace Yelo
 		 * 
 		 * Loads the server list and the date the available was last checked on, from the users settings.
 		 */
-		void		c_version_check_manager::LoadSettings(TiXmlElement* xml_element)
+		void		c_version_check_manager_base::LoadSettings(TiXmlElement* xml_element)
 		{
-			if(xml_element == NULL) return;
-
 			m_states.last_checked_day = 0;
 			m_states.last_checked_month = 0;
 			m_states.last_checked_year = 0;
+			// if there is no settings element, we still want to set the default
+			// xml location
+			if(xml_element == NULL)
+			{
+				LoadXmlServers(NULL);
+				return;
+			}
+
 			do
 			{
 				const char* attribute = NULL;
@@ -237,15 +187,7 @@ namespace Yelo
 				if(attribute == NULL) { m_states.last_checked_year = 0; break; }
 			}while(false);
 
-			// determine whether the version has already been checked today
-			time_t time_today;
-			time(&time_today);
-			tm* local_time = localtime(&time_today);
-
-			if((m_states.last_checked_day == local_time->tm_mday) &&
-				(m_states.last_checked_month == local_time->tm_mon) &&
-				(m_states.last_checked_year == 1900 + local_time->tm_year))
-				m_states.checked_today = true;
+			UpdateDateState();
 
 			//get the xml locations from the user settings
 			TiXmlElement* server_list = xml_element->FirstChildElement("server_list");
@@ -261,7 +203,7 @@ namespace Yelo
 		 * 
 		 * Saves the current server list and current date to the users settings.
 		 */
-		void		c_version_check_manager::SaveSettings(TiXmlElement* xml_element)
+		void		c_version_check_manager_base::SaveSettings(TiXmlElement* xml_element)
 		{
 			//set the attributes for the last date the version was checked
 			xml_element->SetAttribute("day", m_states.last_checked_day);
@@ -286,67 +228,18 @@ namespace Yelo
 		}
 		/*!
 		 * \brief
-		 * Checks for a new version when the Main Menu is loaded.
-		 * 
-		 * If the game is loading the main menu, then check for the available online version.
-		 * The update check will only occur once per day, and only once per game session.
-		 * If the update does not complete before a new map is loaded, the http requests
-		 * are canceled, and the update is re-run the next time the game is in the main menu.
-		 * If the update check has been completed, and a new version is available,
-		 * the display manager will be set to display it's animation for 20 seconds, each time
-		 * the main menu is loaded.
-		 */
-		void		c_version_check_manager::InitializeForNewMap()
-		{
-			// find out if we are on the main menu
-			if(Cache::CacheFileGlobals()->current_cache.header.cache_type == 2)
-				m_states.is_in_menu = true;
-			else
-				m_states.is_in_menu = false;
-
-			// if we are on the main menu, and a new version is available play the animation
-			if(m_states.is_in_menu && m_states.is_new_version)
-				c_version_display_manager::g_instance.StartUpdateDisplay(20);
-			else
-				c_version_display_manager::g_instance.ResetDisplay();
-
-			// if we are on the main menu and the update check hasn't been done yet, set it going
-			// otherwise if we are loading a new map and the version check is not complete, cancel 
-			// the requests
-			if(m_states.is_in_menu && !m_states.checked_this_session && !m_states.checked_today)
-				CheckForUpdates();
-			else if(!m_states.checked_this_session && !m_states.checked_today)
-			{
-				for(int i = 0; i < NUMBEROF(m_xml_sources); i++)
-				{
-					ghttpCancelRequest(m_xml_sources[i].request_id);
-
-					m_xml_sources[i].request_id = 0;
-					m_xml_sources[i].request_get_attempted = false;
-					m_xml_sources[i].request_get_completed = false;
-					m_xml_sources[i].request_get_succeeded = false;
-					delete m_xml_sources[i].data;
-					m_xml_sources[i].data = NULL;
-				}
-			}
-		}
-		/*!
-		 * \brief
-		 * Updates the ghttp library and display manager.
+		 * Updates the ghttp library.
 		 * 
 		 * \param delta_time
 		 * Time in seconds that has passed since the last update.
 		 * 
-		 * Updates the ghttp library to update any requests, and updates the display manager.
+		 * Updates the ghttp library to progress any requests.
 		 */
-		void		c_version_check_manager::Update(real delta_time)
+		void		c_version_check_manager_base::Update(real delta_time)
 		{	
 			// update the ghttp library so that it can update the requests
-			if(!m_states.checked_this_session && !m_states.checked_today)
+			if(m_states.is_request_in_progress)
 				ghttpThink();
-			// if we are in the main menu, update the display manager
-			if(m_states.is_in_menu)
-				c_version_display_manager::g_instance.Update(delta_time);
 		}
 		/*!
 		 * \brief
@@ -355,45 +248,68 @@ namespace Yelo
 		 * Reads new xml locations from an xml element. Currently the
 		 * maximum number of locations is 3.
 		 */
-		void		c_version_check_manager::LoadXmlServers(TiXmlElement* server_list)
-		{						
-			TiXmlElement* server = server_list->FirstChildElement("server");
-			for(int i = 0; i < NUMBEROF(m_xml_sources); i++)
+		void		c_version_check_manager_base::LoadXmlServers(TiXmlElement* server_list)
+		{					
+			bool has_valid_source = false;
+
+			if(server_list)
 			{
-				// delete the previous locations regardless of whether there is a replacement
-				delete m_xml_sources[i].xml_address;
-				m_xml_sources[i].xml_address = NULL;
-
-				if(server == NULL) continue;
-
-				// get the text value of each server
-				const char* text_value = server->GetText();
-				if(text_value && (strlen(text_value) != 0))
+				TiXmlElement* server = server_list->FirstChildElement("server");
+				for(int i = 0; i < NUMBEROF(m_xml_sources); i++)
 				{
-					int text_length = strlen(text_value) + 1;
-					m_xml_sources[i].xml_address = new char[text_length];
-					memcpy_s(m_xml_sources[i].xml_address, text_length, text_value, text_length);
+					// delete the previous locations regardless of whether there is a replacement
+					delete m_xml_sources[i].xml_address;
+					m_xml_sources[i].xml_address = NULL;
 
-					server = server->NextSiblingElement("server");
+					if(server == NULL) continue;
+
+					// get the text value of each server
+					const char* text_value = server->GetText();
+					if(text_value && (strlen(text_value) != 0))
+					{
+						int text_length = strlen(text_value) + 1;
+						m_xml_sources[i].xml_address = new char[text_length];
+						memcpy_s(m_xml_sources[i].xml_address, text_length, text_value, text_length);
+
+						server = server->NextSiblingElement("server");
+						has_valid_source = true;
+					}
 				}
 			}
+			// if there are no server list entries, set index 0 to use the fallback
+			if(!has_valid_source)
+			{
+				int text_length = strlen(g_fallback_xml_location) + 1;
+				m_xml_sources[0].xml_address = new char[text_length];
+				memcpy_s(m_xml_sources[0].xml_address, text_length, g_fallback_xml_location, text_length);				
+			}
 		}
-
 		/*!
 		 * \brief
 		 * Starts the update checking process.
 		 * 
 		 * Sends the get requests for the xml files from the xml locations.
 		 */
-		void		c_version_check_manager::CheckForUpdates()
+		void		c_version_check_manager_base::CheckForUpdates(bool do_blocking)
 		{
-			// get the xml files from each server
-			bool has_valid_source = false;
+			m_states.is_request_in_progress = true;
+
+			// if we are blocking, request_get_attempted must be set to true on 
+			// all valid source objects before any requests are made, so that
+			// the update process does not continue until all requests are complete			
+			if(do_blocking)
+			{
+				for(int i = 0; i < NUMBEROF(m_xml_sources); i++)
+					if(m_xml_sources[i].xml_address)
+						m_xml_sources[i].request_get_attempted = true;
+			}
 
 			// send a get request to the server using the ghttp library
-			// this will return immediately but will call the request complete
-			// callback once the get request is complete which will then continue
-			// the update checking process
+			// if do_blocking is false this will return immediately but will call 
+			// the request complete callback once the get request is complete, which
+			// will then continue the update checking process.
+			// if do_blocking is true the function will not return until the request
+			// is complete
 			for(int i = 0; i < NUMBEROF(m_xml_sources); i++)
 			{
 				if(m_xml_sources[i].xml_address)
@@ -404,29 +320,12 @@ namespace Yelo
 						0,
 						NULL,
 						GHTTPFalse,
-						GHTTPFalse,
+						do_blocking ? GHTTPTrue : GHTTPFalse,
 						NULL,
 						GetRequestComplete,
 						&m_xml_sources[i]);
 					m_xml_sources[i].request_get_attempted = true;
-					has_valid_source = true;
 				}
-			}
-
-			// if the server sources list has no valid locations, fallback to the cefault
-			if(!has_valid_source)
-			{
-				m_xml_sources[0].request_id = ghttpGetEx(g_fallback_xml_location,
-					NULL,
-					NULL,
-					0,
-					NULL,
-					GHTTPFalse,
-					GHTTPFalse,
-					NULL,
-					GetRequestComplete,
-					&m_xml_sources[0]);
-				m_xml_sources[0].request_get_attempted = true;
 			}
 		}		
 		/*!
@@ -436,7 +335,7 @@ namespace Yelo
 		 * Once all of the file requests are complete, this function parses the xml files
 		 * to get the latest version that is available, and updates the xml file locations.
 		 */
-		void		c_version_check_manager::ProcessVersionXml()
+		void		c_version_check_manager_base::ProcessVersionXml()
 		{
 			// do not continue until all of the attempted http requests are complete
 			for(int i = 0; i < NUMBEROF(m_xml_sources); i++)
@@ -515,17 +414,34 @@ namespace Yelo
 
 			UpdateState();
 		}
+		/*!
+		 * \brief
+		 * Updates the m_states.checked_today flag.
+		 * 
+		 * Updates the m_states.checked_today flag.
+		 */
+		void		c_version_check_manager_base::UpdateDateState()
+		{
+			// determine whether the version has already been checked today
+			time_t time_today;
+			time(&time_today);
+			tm* local_time = localtime(&time_today);
 
+			if((m_states.last_checked_day == local_time->tm_mday) &&
+				(m_states.last_checked_month == local_time->tm_mon) &&
+				(m_states.last_checked_year == 1900 + local_time->tm_year))
+				m_states.checked_today = true;
+		}
 		/*!
 		 * \brief
 		 * Updates the state the version checker is in.
 		 * 
 		 * Updates the state of the component after the version check is complete.
 		 */
-		void		c_version_check_manager::UpdateState()
+		void		c_version_check_manager_base::UpdateState()
 		{
 			// this point is only reached once the update attempts are complete
-			m_states.checked_this_session = true;
+			m_states.is_request_in_progress = false;
 			
 			// set the last date checked to todays date
 			time_t time_today;
@@ -536,20 +452,9 @@ namespace Yelo
 			m_states.last_checked_month = local_time->tm_mon;
 			m_states.last_checked_year = 1900 + local_time->tm_year;
 
-			// if there is a new version available, update the display manager with the new version string
-			// and display the version to the user
-			if((m_current_version.m_major < m_available_version.m_major) ||
-				(m_current_version.m_minor < m_available_version.m_minor) ||
-				(m_current_version.m_build < m_available_version.m_build))
-			{
-				m_states.is_new_version = true;
-
-				wchar_t available_string[32];
-				swprintf_s(available_string, 32, L"v%i.%i.%i available!", m_available_version.m_major, m_available_version.m_minor, m_available_version.m_build);
-				c_version_display_manager::g_instance.SetAvailableVersionString(available_string);
-
-				c_version_display_manager::g_instance.StartUpdateDisplay(20);
-			}
+			m_states.is_new_version =	(m_current_version.m_major < m_available_version.m_major) ||
+										(m_current_version.m_minor < m_available_version.m_minor) ||
+										(m_current_version.m_build < m_available_version.m_build);
 		}
 	};};
 };

@@ -81,7 +81,7 @@ namespace Yelo
 		struct s_element_editor : s_element
 		{
 			char* source_id;
-			void* source_data;
+			char* source_data;
 
 			s_element_editor() : source_id(NULL), source_data(NULL) {}
 			void Delete()

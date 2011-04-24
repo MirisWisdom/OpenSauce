@@ -26,35 +26,20 @@ namespace Yelo
 	{
 		void		Initialize();
 		void		Dispose();
+
+#ifdef PLATFORM_IS_USER
 		void		Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters);
 		void		OnLostDevice();
 		void		OnResetDevice(D3DPRESENT_PARAMETERS* pParameters);
 		void		Render();
 		void		Release();
+#endif
+
 		void		LoadSettings(TiXmlElement* dx9_element);
 		void		SaveSettings(TiXmlElement* dx9_element);
+
 		void		InitializeForNewMap();
 		void		Update(real delta_time);
-
-		class c_version_display_manager_base
-		{
-		protected:
-			enum {
-				/*!
-				 * \brief
-				 * The maximum length of the version strings.
-				 */
-				k_max_update_string_length = 31,
-			};
-
-			struct {
-				wchar_t current_version[k_max_update_string_length+1];
-				wchar_t available_version[k_max_update_string_length+1];
-			}m_strings;
-
-			void		SetCurrentVersionStringImpl(wcstring version_string);
-			void		SetAvailableVersionStringImpl(wcstring version_string);
-		};
 
 		/*!
 		 * \brief
@@ -65,10 +50,10 @@ namespace Yelo
 		 * available version of OpenSauce. It will then display this
 		 * to the user if a newer version is available.
 		 */
-		class c_version_check_manager
+		class c_version_check_manager_base
+			abstract
 		{
 		private:
-			static c_version_check_manager g_instance;
 			/// A hardcoded fallback xml location used when no other location is provided.
 			static cstring g_fallback_xml_location;
 
@@ -81,19 +66,18 @@ namespace Yelo
 				char* headers,
 				void* param);
 		public:
-			/** Returns a reference to a static instance of c_version_check_manager. */
-			static c_version_check_manager& VersionChecker() { return g_instance; }
+			/** Returns a reference to a static instance of c_version_check_manager_base. */
+			static c_version_check_manager_base& VersionChecker();
 
-		private:
+		protected:
 			struct {
-				/// Has the version xml been downloaded this session
-				bool checked_this_session;
 				/// Has the version xml been downloaded today
 				bool checked_today;
-				/// Is the game currently on the main menu
-				bool is_in_menu;
 				/// Is there a new version available
 				bool is_new_version;
+				/// Is there a request in progress
+				bool is_request_in_progress;
+				PAD8;
 
 				/// The day that the available version was last checked
 				int last_checked_day;
@@ -134,27 +118,21 @@ namespace Yelo
 			/// The version of OS that is available online
 			s_version m_available_version;
 		public:
-			void			Initialize();
-			void			Dispose();
-
-			void			Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters);
-			void			OnLostDevice();
-			void			OnResetDevice(D3DPRESENT_PARAMETERS* pParameters);
-			void			Render();
-			void			Release();
+			virtual void	Initialize();
+			virtual void	Dispose();
 
 			void			LoadSettings(TiXmlElement* xml_element);
 			void			SaveSettings(TiXmlElement* xml_element);
 
-			void			InitializeForNewMap();
-			void			Update(real delta_time);
+			virtual void	InitializeForNewMap() {}
+			virtual void	Update(real delta_time);
 
-		private:
+		protected:
 			void			LoadXmlServers(TiXmlElement* server_list);
-
-			void			CheckForUpdates();
+			void			UpdateDateState();
+			void			CheckForUpdates(bool do_blocking);
 			void			ProcessVersionXml();
-			void			UpdateState();
+			virtual void	UpdateState();
 		};
 	}; };
 };
@@ -168,11 +146,13 @@ namespace Yelo
 		void		Initialize() {}
 		void		Dispose() {}
 
+#ifdef PLATFORM_IS_USER
 		void		Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters) {}
 		void		OnLostDevice() {}
 		void		OnResetDevice(D3DPRESENT_PARAMETERS* pParameters) {}
 		void		Render() {}
 		void		Release() {}
+#endif
 
 		void		LoadSettings(TiXmlElement* dx9_element) {}
 		void		SaveSettings(TiXmlElement* dx9_element) {}

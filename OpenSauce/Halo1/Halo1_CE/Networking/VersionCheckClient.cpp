@@ -22,12 +22,178 @@
 #if PLATFORM_IS_USER && defined(YELO_VERSION_CHECK_ENABLE)
 #include "Interface/TextBlock.hpp"
 
+#include "Game/GameState.hpp"
+
 namespace Yelo
 {
 	namespace Networking { namespace VersionCheck
 	{
-		c_version_display_manager c_version_display_manager::g_instance;
+		/////////////////////////////////////////
+		//c_version_check_manager_user
+		/////////////////////////////////////////
+		
+		/////////////////////////////////////////
+		//non-static functions
+		/*!
+		 * \brief
+		 * Initialises the display manager.
 
+		 * Initialises the display manager.
+		 */
+		void		c_version_check_manager_user::Initialize()
+		{
+			c_version_check_manager_base::Initialize();
+			c_version_display_manager::g_instance.Initialize();
+		}
+		/*!
+		 * \brief
+		 * Disposes of the display manager.
+		 * 
+		 * Disposes of the display manager.
+		 */
+		void		c_version_check_manager_user::Dispose()
+		{
+			c_version_display_manager::g_instance.Dispose();
+			c_version_check_manager_base::Dispose();
+		}
+		/*!
+		 * \brief
+		 * Sets up the display managers Direct3D resources.
+		 * 
+		 * \param pDevice
+		 * The current render device.
+		 * 
+		 * \param pParameters
+		 * Pointer to the parameters the device was created with.
+		 * 
+		 * Initialises the display managers Direct3D resources, 
+		 * then sets its version strings to their initial values.
+		 */
+		void		c_version_check_manager_user::Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters)
+		{
+			c_version_display_manager::g_instance.Initialize3D(pDevice, pParameters);
+
+			wchar_t current_string[32];
+			swprintf_s(current_string, 32, L"v%i.%i.%i", m_current_version.m_major, m_current_version.m_minor, m_current_version.m_build);
+			c_version_display_manager::g_instance.SetCurrentVersionString(current_string);
+
+			c_version_display_manager::g_instance.SetAvailableVersionString(L"");
+		}
+		void		c_version_check_manager_user::OnLostDevice()
+		{
+			c_version_display_manager::g_instance.OnLostDevice();
+		}
+		void		c_version_check_manager_user::OnResetDevice(D3DPRESENT_PARAMETERS* pParameters)
+		{
+			c_version_display_manager::g_instance.OnResetDevice(pParameters);
+		}
+		/*!
+		 * \brief
+		 * Renders the display manager if the map is a main menu.
+
+		 * Renders the display manager if the map is a main menu.
+		 */
+		void		c_version_check_manager_user::Render()
+		{
+			// if we are in the main menu, show the version number
+			if(m_states_user.is_in_menu)
+				c_version_display_manager::g_instance.Render();
+		}
+		void		c_version_check_manager_user::Release()
+		{
+			c_version_display_manager::g_instance.Release();
+		}
+		/*!
+		 * \brief
+		 * Checks for a new version when the Main Menu is loaded.
+		 * 
+		 * If the game is loading the main menu, then check for the available online version.
+		 * The update check will only occur once per day.
+		 * If the update does not complete before a new map is loaded, the http requests
+		 * are canceled, and the update is re-run the next time the game is in the main menu.
+		 * If the update check has been completed, and a new version is available,
+		 * the display manager will be set to display it's animation for 20 seconds, each time
+		 * the main menu is loaded.
+		 */
+		void		c_version_check_manager_user::InitializeForNewMap()
+		{
+			// find out if we are on the main menu
+			m_states_user.is_in_menu = GameState::MainGlobals()->map.main_menu_scenario_loaded;
+
+			// if we are on the main menu, and a new version is available play the animation
+			if(m_states_user.is_in_menu && m_states.is_new_version)
+				c_version_display_manager::g_instance.StartUpdateDisplay(20);
+			else
+				c_version_display_manager::g_instance.ResetDisplay();
+
+			// if we are on the main menu and the update check hasn't been done yet, set it going
+			// otherwise if we are loading a new map and the version check is not complete, cancel 
+			// the requests
+			if(m_states_user.is_in_menu && !m_states.checked_today)
+				CheckForUpdates(false);
+			else if(m_states.is_request_in_progress)
+			{
+				for(int i = 0; i < NUMBEROF(m_xml_sources); i++)
+				{
+					ghttpCancelRequest(m_xml_sources[i].request_id);
+
+					m_xml_sources[i].request_id = 0;
+					m_xml_sources[i].request_get_attempted = false;
+					m_xml_sources[i].request_get_completed = false;
+					m_xml_sources[i].request_get_succeeded = false;
+					delete m_xml_sources[i].data;
+					m_xml_sources[i].data = NULL;
+				}
+				m_states.is_request_in_progress = false;
+			}
+		}
+		/*!
+		 * \brief
+		 * Updates the display manager.
+		 * 
+		 * \param delta_time
+		 * The time in seconds that has passed since the last update.
+
+		 * Updates the display manager.
+		 */
+		void		c_version_check_manager_user::Update(real delta_time)
+		{	
+			c_version_check_manager_base::Update(delta_time);
+			// if we are in the main menu, update the display manager
+			if(m_states_user.is_in_menu)
+				c_version_display_manager::g_instance.Update(delta_time);
+		}
+		/*!
+		 * \brief
+		 * Updates the state of the display manager.
+		 *
+		 * If a new version is available, the display manager strings are updated
+		 * and it is instructed to display its animation for 20 seconds.
+		 */
+		void		c_version_check_manager_user::UpdateState()
+		{
+			c_version_check_manager_base::UpdateState();
+
+			if(!m_states.is_new_version) return;
+
+			wchar_t available_string[32];
+			swprintf_s(available_string, 32, L"v%i.%i.%i available!", m_available_version.m_major, m_available_version.m_minor, m_available_version.m_build);
+			c_version_display_manager::g_instance.SetAvailableVersionString(available_string);
+
+			c_version_display_manager::g_instance.StartUpdateDisplay(20);
+		}
+
+		
+		/////////////////////////////////////////
+		//c_version_check_manager_user
+		/////////////////////////////////////////
+		
+		/////////////////////////////////////////
+		//static variables
+		c_version_display_manager c_version_display_manager::g_instance;
+		
+		/////////////////////////////////////////
+		//non-static functions
 		/*!
 		 * \brief
 		 * Allocates Direct3D resources and memory for the TextBlocks.
@@ -228,7 +394,8 @@ namespace Yelo
 		 */
 		void		c_version_display_manager::SetCurrentVersionString(wcstring version_string)
 		{
-			SetCurrentVersionStringImpl(version_string);
+			m_strings.current_version[0] = L'\0';
+			wcscat_s(m_strings.current_version, version_string);
 			m_textblocks.current_version->SetText(m_strings.current_version);
 		}		
 		/*!
@@ -242,7 +409,8 @@ namespace Yelo
 		 */
 		void		c_version_display_manager::SetAvailableVersionString(wcstring version_string)
 		{
-			SetAvailableVersionStringImpl(version_string);
+			m_strings.available_version[0] = L'\0';
+			wcscat_s(m_strings.available_version, version_string);
 			m_textblocks.available_version->SetText(m_strings.available_version);
 		}
 		/*!

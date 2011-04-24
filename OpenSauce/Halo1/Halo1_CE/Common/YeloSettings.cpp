@@ -96,13 +96,28 @@ namespace Yelo
 	{
 		static void LoadSettingsForServer(TiXmlElement* server)
 		{
+#if PLATFORM_IS_DEDI
+			TiXmlElement* version_check_element = NULL;
+
 			if(server != NULL)
 			{
+				version_check_element = server->FirstChildElement("version_check");
 			}
+
+			Networking::VersionCheck::LoadSettings(version_check_element);
+#endif
 		}
 
 		static void SaveSettingsForServer(TiXmlElement* server)
 		{
+#if PLATFORM_IS_DEDI
+			TiXmlElement* version_check_element = NULL;
+
+			version_check_element = new TiXmlElement("version_check");
+			server->LinkEndChild(version_check_element);
+
+			Networking::VersionCheck::SaveSettings(version_check_element);
+#endif
 		}
 	};
 
