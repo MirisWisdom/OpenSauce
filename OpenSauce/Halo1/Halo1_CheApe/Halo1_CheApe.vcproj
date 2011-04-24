@@ -2179,14 +2179,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Tool\ShaderReplacement.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Tool\ShaderReplacement.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Tool\Tool_AnimationFixups.cpp"
 				>
 			</File>

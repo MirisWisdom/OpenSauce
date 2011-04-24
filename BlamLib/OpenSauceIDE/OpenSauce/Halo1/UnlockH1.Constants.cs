@@ -43,14 +43,14 @@ namespace OpenSauceIDE.GameInterface
 				// retn
 				// push	0x5FE7C0		// Push our dll string
 				// call	ds:[0x5DF0A4]	// call LoadLibrary
-				// jmp	0x5CF5E0		// goto __SEH_prolog
-				BlamLib.Util.ByteStringToArray("C3" + "68C0E75F00" + "FF15A4F05D00" + "E9EF551800"),
-
+                // jmp	0x5CF5E0		// goto __SEH_prolog
+                BlamLib.Util.ByteStringToArray("C3" + "68C0E75F00" + "FF15A4F05D00" + "E9EF551800"),
 				// retn
-				// push	0x55A100		// Push our dll string
-				// call	ds:[0x54D0A0]	// call LoadLibrary
-				// jmp	0x53F5F0		// goto __SEH_prolog
-				BlamLib.Util.ByteStringToArray("C3" + "6800A15500" + "FF15A0D05400" + "E9CF590F00")
+                // push	0x55A0C0		// Push our dll string
+                // call	ds:[0x54D078]	// call LoadLibrary
+                // jmp	0x53F5F0		// goto __SEH_prolog
+				BlamLib.Util.ByteStringToArray("C3" + "68C0A05500" + "FF1578D05400" + "E9BF590F00")
+                
 				);
 
 			/// <summary>Initializer's hook code for each game tool</summary>
@@ -62,8 +62,8 @@ namespace OpenSauceIDE.GameInterface
 				// call	0x449FE1		// +1 Call our setup code listed above
 				BlamLib.Util.ByteStringToArray("E8BECDE7FF"),
 
-				// call	0x449C11		// +1 Call our setup code listed above
-				BlamLib.Util.ByteStringToArray("E8A4BBF0FF")
+				// call	0x449C21		// +1 Call our setup code listed above
+                BlamLib.Util.ByteStringToArray("E8B4BBF0FF")
 				);
 			#endregion
 		};

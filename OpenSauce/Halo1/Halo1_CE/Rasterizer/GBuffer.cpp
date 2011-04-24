@@ -891,8 +891,7 @@ skip_disable_velocity:
 				m_gbuffer_ps->SetTechnique(m_structures.ps_bsp_techniques.n);
 				g_pixel_shader_input.z = 0.0f;
 			}
-
-			g_pixel_shader_input.x = 2.0f * (1.0f / 32.0f);
+			g_pixel_shader_input.x = 2.0f * (1.0f / 255.0f);
 			g_pixel_shader_input.y = 0.0f;
 
 			return S_OK;
@@ -969,8 +968,8 @@ skip_disable_velocity:
 					TeamIndex += 9;					// Offset TeamIndex by 9 for MP teams
 			}
 
-			g_pixel_shader_input.x = (float)MeshIndex * (1.0f / 32.0f);
-			g_pixel_shader_input.y = (float)TeamIndex * (1.0f / 32.0f);
+			g_pixel_shader_input.x = (float)MeshIndex * (1.0f / 255.0f);
+			g_pixel_shader_input.y = (float)TeamIndex * (1.0f / 255.0f);
 
 			return S_OK;
 		}

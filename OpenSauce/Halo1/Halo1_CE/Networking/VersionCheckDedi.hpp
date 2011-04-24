@@ -25,40 +25,14 @@ namespace Yelo
 {
 	namespace Networking { namespace VersionCheck
 	{
-		class c_version_display_manager : public c_version_display_manager_base
+		class c_version_check_manager_dedi : public c_version_check_manager_base
 		{
-		public:
-			/*!
-			 * \brief
-			 * Initialises the classes variables and allocates any extra memory (if needed).
-			 */
-			void		Initialize()
-			{
-				memset(this, 0, sizeof(*this));
-			}
-			/*!
-			 * \brief
-			 * Deletes the memory allocated by Initialize (if any)
-			 */
-			void		Dispose()
-			{
-			}
+			void		Initialize();
+			void		InitializeForNewMap();
+			void		UpdateState();
 
-			void		Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters) {}
-			void		OnLostDevice() {}
-			void		OnResetDevice(D3DPRESENT_PARAMETERS* pParameters) {}
-			void		Render() {}
-			void		Release() {}
-
-			void		Update(real delta_time) {}
-
-			void		SetCurrentVersionString(wcstring version_string)	{ SetCurrentVersionStringImpl(version_string); }
-			void		SetAvailableVersionString(wcstring version_string)	{ SetAvailableVersionStringImpl(version_string); }
-
-			void		StartUpdateDisplay(const real time) {}
-			void		ResetDisplay() {}
-
-			static c_version_display_manager g_instance;
+		private:
+			void		DisplayVersions(bool is_new_version);
 		};
 	}; };
 };

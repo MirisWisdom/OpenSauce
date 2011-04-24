@@ -29,6 +29,35 @@ namespace Yelo
 	{
 		/*!
 		 * \brief
+		 * Handles checking for a new version of OS on the client setup.
+		 * 
+		 * This class will check for updates when the main menu is loaded
+		 * and displays the result to the user.
+		 */
+		class c_version_check_manager_user : public c_version_check_manager_base
+		{
+			struct {
+				/// Is the game currently on the main menu
+				bool is_in_menu;
+				PAD24;
+			}m_states_user;
+		public:
+			void			Initialize();
+			void			Dispose();
+
+			void			Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters);
+			void			OnLostDevice();
+			void			OnResetDevice(D3DPRESENT_PARAMETERS* pParameters);
+			void			Render();
+			void			Release();
+
+			void			InitializeForNewMap();
+			void			Update(real delta_time);
+		protected:
+			void			UpdateState();
+		};
+		/*!
+		 * \brief
 		 * Manages how a new version is visually shown to the user.
 		 * 
 		 * The display manager handles how an available version update
@@ -38,8 +67,21 @@ namespace Yelo
 		 * then replaced by a brighter piece of text showing the
 		 * available version, which fades in and out.
 		 */
-		class c_version_display_manager : public c_version_display_manager_base
+		class c_version_display_manager
 		{
+			enum {
+				/*!
+				 * \brief
+				 * The maximum length of the version strings.
+				 */
+				k_max_update_string_length = 31,
+			};
+
+			struct {
+				wchar_t current_version[k_max_update_string_length+1];
+				wchar_t available_version[k_max_update_string_length+1];
+			}m_strings;
+
 			struct {
 				TextBlock* current_version;
 				TextBlock* available_version;
