@@ -337,7 +337,7 @@ namespace Yelo
 			file_string[0] = '\0';
 
 			// open the post processing shaders file for reading
-			strcat_s(file_string, MAX_PATH, Settings::OpenSauceProfilePath());
+			strcat_s(file_string, MAX_PATH, Settings::CommonAppDataPath());
 			strcat_s(file_string, MAX_PATH, "shaders\\pp_shaders.shd");
 
 			Globals().m_shader_file.OpenFile(file_string);

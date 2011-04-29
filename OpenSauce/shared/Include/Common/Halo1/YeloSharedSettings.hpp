@@ -25,6 +25,8 @@ namespace Yelo
 {
 	namespace Settings
 	{
+		// Path to the systems common application data folder
+		cstring CommonAppDataPath();
 		cstring UserProfilePath();
 		// The OpenSauce path to use that is under the User's game profile
 		cstring OpenSauceProfilePath();

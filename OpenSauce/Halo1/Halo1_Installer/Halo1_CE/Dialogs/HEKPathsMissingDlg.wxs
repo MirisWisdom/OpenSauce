@@ -7,7 +7,7 @@
 					<Publish Event='NewDialog' Value='VerifyReadyDlg'>1</Publish>
 				</Control>
 				<Control Id='Back' Type='PushButton' X='180' Y='243' Width='56' Height='17' Text='!(loc.WixUIBack)'>
-					<Publish Event='NewDialog' Value='CustomizeDlg'>1</Publish>
+					<Publish Event='NewDialog' Value='OpenSauce_CustomizeDlg'>1</Publish>
 				</Control>
 				<Control Id='Cancel' Type='PushButton' X='304' Y='243' Width='56' Height='17' Cancel='yes' Text='!(loc.WixUICancel)'>
 					<Publish Event='SpawnDialog' Value='CancelDlg'>1</Publish>
@@ -20,10 +20,10 @@
 				<Control Id='BottomLine' Type='Line' X='0' Y='234' Width='370' Height='0' />
 				
 				<Control Id='DescriptionLabel' Type='Text' X='15' Y='60' Width='340' Height='40' NoPrefix='yes'>
-					<Text>The HEK executables (Guerilla, Sapien and Tool) could not be found in the HEK default directory. The OpenSauce HEK executables will therefore not be created by this installer. You can manually create the exe's using the OpenSauce_IDE program after the installation is completed.</Text>
+					<Text>The HEK executables (Guerilla, Sapien and Tool) could not be found in the HEK default directory. The OpenSauce HEK executables will therefore not be created by this installer. You can manually create the exe's using the OpenSauceIDE program after the installation is completed.</Text>
 				</Control>
 				
-				<Control Id='LaunchOSIDECheck' Type='CheckBox' X='50' Y='110' Width='280' Height='18' CheckBoxValue='1' Property='HALO1_CE_HEK_LAUNCHOSIDE_PROP' Text='Launch OpenSauce_IDE after installation' />
+				<Control Id='LaunchOSIDECheck' Type='CheckBox' X='50' Y='110' Width='280' Height='18' CheckBoxValue='1' Property='HALO1_CE_HEK_LAUNCHOSIDE_PROP' Text='Launch OpenSauceIDE after installation' />
 
 			</Dialog>
 		</UI>
