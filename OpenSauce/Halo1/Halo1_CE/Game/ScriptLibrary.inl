@@ -83,6 +83,9 @@
 		_hs_function_game_change_version_id,
 		_hs_function_game_engine_data_get_integer,
 
+		_hs_function_machine_is_host,
+		_hs_function_machine_is_dedi,
+
 		_hs_function_pp_load,
 		_hs_function_pp_unload,
 		_hs_function_pp_set_effect_active,
@@ -162,6 +165,10 @@
 	);
 
 
+	HS_FUNCTION(machine_is_host, bool, "returns whether or not the local machine is the host");
+	HS_FUNCTION(machine_is_dedi, bool, "returns whether or not the local machine is a dedicated server");
+
+
 	#include "Game/ScriptLibrary.Definitions.Postprocessing.inl"
 	
 
@@ -236,6 +243,9 @@
 
 		&GET_HS_FUNCTION(game_change_version_id),
 		&GET_HS_FUNCTION(game_engine_data_get_integer),
+
+		&GET_HS_FUNCTION(machine_is_host),
+		&GET_HS_FUNCTION(machine_is_dedi),
 
 		&GET_HS_FUNCTION(pp_load),
 		&GET_HS_FUNCTION(pp_unload),

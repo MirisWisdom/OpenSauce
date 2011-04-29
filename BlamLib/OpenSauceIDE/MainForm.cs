@@ -25,8 +25,38 @@ namespace OpenSauceIDE
 {
 	public partial class MainForm : Form
 	{
+		#region Build Menus
+		/// <summary>We currently don't have any real engine-specific tools, so remove them from the tools menu</summary>
+		void RemoveUnusedMenus()
+		{
+			var ddi = ToolsMenu.DropDownItems;
+
+			ddi.Remove(ToolsHalo1);
+			ddi.Remove(ToolsHalo2);
+			ddi.Remove(ToolsHalo3);
+			ddi.Remove(ToolsStubbs);
+		}
+
+		#region BuildSettingsMenus
+		/// <summary>Build the menu which when clicked, opens the folder where BlamLib shits out its local files (eg, debug.log)</summary>
+		void BuildShowAppFolderMenu()
+		{
+			var Settings = BlamLib.Forms.Util.CreateMenuItem("Open App Folder", (sender, e) =>
+			{
+				var process_si = new System.Diagnostics.ProcessStartInfo("explorer", BlamLib.Program.BuildDocumentPath(""));
+				var process = new System.Diagnostics.Process();
+				process.StartInfo = process_si;
+				process.Start();
+			});
+			Settings.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			Settings.ForeColor = System.Drawing.Color.LightGreen;
+
+			ToolsMenu.DropDownItems.Insert(0, Settings);
+		}
 		void BuildSettingsMenus()
 		{
+			BuildShowAppFolderMenu();
+
 			var Settings = BlamLib.Forms.Util.CreateMenuItem("Settings", (sender, e) =>
 			{
 				var sed = new SelectEngineDialog(EngineSettingsForm.kAllowedPlatforms);
@@ -41,6 +71,7 @@ namespace OpenSauceIDE
 
 			ToolsMenu.DropDownItems.Add(Settings);
 		}
+		#endregion
 
 		#region CheApe menus
 		void BuildCheApeMenusCheApeApply(Dictionary<string, EventHandler> command_dic)
@@ -105,6 +136,7 @@ namespace OpenSauceIDE
 			ToolsMenu.DropDownItems.Add(OpenCache);
 			command_dic.Add("OpenCache", OpenCache_handler);
 		}
+		#endregion
 
 		public MainForm(string[] args)
 		{
@@ -114,6 +146,7 @@ namespace OpenSauceIDE
 
 			//BlamLib.Program.Initialize();
 
+			RemoveUnusedMenus();
 			var dic = new Dictionary<string, EventHandler>();
 			BuildSettingsMenus();
 			BuildCheApeMenus(dic);

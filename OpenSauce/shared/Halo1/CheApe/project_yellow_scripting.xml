@@ -2,6 +2,7 @@
 <definitions game="Halo1">
 
 	<scriptFunctions>
+		<!-- PLAYER SCRIPTING INTERFACES -->
 		<function name="volume_test_player_team" returnType="boolean" help="returns true if any players of the specified team are within the specified volume." internal="true" >
 			<arg type="trigger_volume" name="trigger_volume" />
 			<arg type="short" name="team_index" />
@@ -41,6 +42,7 @@
 		</function>
 		<function name="player_local_get" returnType="short" help="returns the local player's player-list-index" internal="true" />
 
+		<!-- OBJECT SCRIPTING INTERFACES -->
 		<function name="object_data_get_real" returnType="real" help="returns a real value property of the object. -1.0 if this fails" internal="true" >
 			<arg type="object" name="object" />
 			<arg type="string" name="data_name" />
@@ -84,12 +86,14 @@
 			<arg type="real" name="data_value" />
 		</function>
 
+		<!-- PHYSICS -->
 		<function name="physics_get_gravity" returnType="real" help="get the current global gravity acceleration relative to halo standard gravity" internal="true" />
 		<function name="physics_set_gravity" returnType="void" help="set global gravity acceleration relative to halo standard gravity" internal="true" >
 			<arg type="real" name="gravity_fraction" />
 		</function>
 		<function name="physics_constants_reset" returnType="void" help="resets all physics constants to earthly values" internal="true" />
 
+		<!-- RUNTIME DATA SCRIPTING INTERFACE -->
 		<function name="runtime_integers_reset" returnType="void" help="reset ALL runtime integers back to zero" internal="true" />
 		<function name="runtime_integer_get" returnType="long" help="get the runtime integer's current value" internal="true" >
 			<arg type="short" name="value_index" />
@@ -105,12 +109,14 @@
 			<arg type="short" name="value_index" />
 		</function>
 
+		<!-- STRUCTURE_BSP LIGHTMAP EXTENSIONS -->
 		<function name="structure_bsp_lightmap_reset" returnType="void" help="reset the current bsp's lightmap to the default lightmap-set" internal="true" />
 
 		<function name="structure_bsp_lightmap_set_change" returnType="boolean" help="returns whether the change was successful or not" internal="true" >
 			<arg type="string" name="lightmap-set-name" />
 		</function>
 
+		<!-- GAME ENGINE -->
 		<function name="game_change_version_id" returnType="boolean" help="returns whether the change was successful or not" internal="true" >
 			<arg type="boolean" name="also-change-game-build-string" />
 			<arg type="string" name="version-string" />
@@ -119,6 +125,11 @@
 			<arg type="string" name="data_name" />
 		</function>
 
+		<!-- MACHINE/SERVER UTILS-->
+		<function name="machine_is_host" returnType="boolean" help="returns whether or not the local machine is the host" internal="true" />
+		<function name="machine_is_dedi" returnType="boolean" help="returns whether or not the local machine is a dedicated server" internal="true" />
+
+		<!-- POSTPROCESSING -->
 		<function name="pp_load" returnType="void" help="loads post-processing" internal="true" />
 		<function name="pp_unload" returnType="void" help="unloads post-processing" internal="true" />
 		<function name="pp_set_effect_active" returnType="void" help="instantly set an effect to on or off" internal="true" >

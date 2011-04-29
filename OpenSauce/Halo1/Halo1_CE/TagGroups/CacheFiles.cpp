@@ -153,7 +153,6 @@ namespace Yelo
 
 //////////////////////////////////////////////////////////////////////////
 
-		// v1.08: 0x629B78, 0x59F518 - original mp map table
 		static s_original_multipler_map original_multiplayer_maps[] = {
 			{0,  "beavercreek", true},
 			{1,  "sidewinder", true},

@@ -45,7 +45,7 @@ namespace Yelo
 			PAD24;
 			struct {
 				s_cache_header header;
-				s_cache_tag_header* tag_index;
+				s_cache_tag_header* tag_header;
 				TagGroups::structure_bsp* structure_bsp;
 			}current_cache;
 			PAD32;
@@ -58,7 +58,7 @@ namespace Yelo
 					FILETIME time;
 				}runtime;
 				s_cache_header header;
-			}map_files[Enums::k_number_of_cached_map_files]; //0x444220, 0x4449D0 - get map_file index by scenario name
+			}map_files[Enums::k_number_of_cached_map_files];
 
 			struct {
 				bool copy_in_progress;
@@ -92,16 +92,14 @@ namespace Yelo
 			PAD24;
 		};
 
-		// 0x497EC0, 0x48D8B0 - gets a map's description string
 		struct s_multiplayer_map_entry
 		{
 			char* name;
 			int32 index;
 			bool initialized;
 			// HACK: YELO ONLY FIELD
-			// This field is for yelo's use only, the game doesn't use it. 
-			// Enables us to later go thru and set which maps are built for 
-			// yelo and which aren't. Just for useful house keeping.
+			// This field is for yelo's use only, the game doesn't use it. Enables us to later go thru and set which maps are built for 
+			// yelo and which aren't. Just for useful house keeping. However, we currently don't set this...
 			bool is_yelo_based_map;
 			PAD16;
 			uint32 crc;

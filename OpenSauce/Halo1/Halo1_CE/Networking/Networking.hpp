@@ -305,10 +305,15 @@ namespace Yelo
 
 		struct s_network_game_server : TStructImpl( PLATFORM_VALUE(0xA50, 0xA50+0x8C0) )
 		{
+			enum {
+				_game_is_open = 0,
+				_server_is_dedicated = 2,
+			};
+
 			TStructGetPtrImpl(s_network_connection*, Connection, 0x0);
 			TStructGetImpl(Enums::network_game_server_state, State, 0x4);
-			// game_is_open = BIT(0)
-			// server_is_dedicated = BIT(2) // doesn't show sv_status info when not set
+			// game_is_open = FLAG(0)
+			// server_is_dedicated = FLAG(2) // doesn't show sv_status info when not set
 			TStructGetPtrImpl(uint16, Flags, 0x6);
 			TStructGetPtrImpl(s_network_game, Game, 0x8);
 			TStructGetPtrImpl(s_network_machine, ClientMachines, 0x3F8); // [16]
@@ -323,6 +328,8 @@ namespace Yelo
 			TStructGetPtrImpl(wchar_t, Password, PLATFORM_VALUE(0xA3C, 0xA3C+0x8C0) ); // [8]
 
 			// bool pause_countdown; // 0xA15
+
+			bool IsDedi() { return TEST_FLAG(*GetFlags(), _server_is_dedicated); }
 		};
 
 		struct s_network_game_client : TStructImpl(0xF90)

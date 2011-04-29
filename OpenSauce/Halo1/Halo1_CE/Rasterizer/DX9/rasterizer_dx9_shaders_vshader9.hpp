@@ -95,16 +95,16 @@ namespace Yelo
 		};
 	};
 
-	namespace DX9 {
-
+	namespace DX9
+	{
 		struct s_rasterizer_dx9_pixel_shader
 		{
-			char name[127+1]; // PS_%s_ps_%d_%d, ie, "PS_EnvironmentLightmapNormal_ps_2_0"
+			char name[127+1]; // PS_%s_ps_%d_%d, e.g., "PS_EnvironmentLightmapNormal_ps_2_0"
 			IDirect3DPixelShader9* pixel_shader;
 		}; BOOST_STATIC_ASSERT( sizeof(s_rasterizer_dx9_pixel_shader) == 0x84 );
 		struct s_rasterizer_dx9_effect_shaders
 		{
-			char name[127+1]; // ie, "environment_lightmap_normal"
+			char name[127+1]; // e.g., "environment_lightmap_normal"
 			int32 pixel_shader_count;
 			s_rasterizer_dx9_pixel_shader* pixel_shaders;
 		}; BOOST_STATIC_ASSERT( sizeof(s_rasterizer_dx9_effect_shaders) == 0x88 );
@@ -113,7 +113,8 @@ namespace Yelo
 		{
 			int32 count;
 			s_rasterizer_dx9_effect_shaders* effect_shaders;
-		}; // 1.08:0x75B660, 1.09: 0x75B740
+		};
+		s_rasterizer_dx9_effect_collection* EffectCollections();
 
 		struct s_effect_shader_entry
 		{
@@ -121,13 +122,14 @@ namespace Yelo
 			UNUSED_TYPE(int32);
 			Enums::rasterizer_vertex_shader vertex_shader;
 			cstring name;
-		}; // 0x638AD8
+		};
+		s_effect_shader_entry* EffectShaders(); // i.e., Pixel shaders
 
 		struct s_vsf_entry
 		{
 			IDirect3DVertexShader9* shader;
 			cstring name;
-		}; // 0x639258
-
+		};
+		s_vsf_entry* VertexShaders();
 	};
 };

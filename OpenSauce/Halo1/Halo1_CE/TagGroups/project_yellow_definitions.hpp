@@ -25,8 +25,9 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
+		// Note: actually defined in TagGroups.cpp
 		extern const project_yellow_globals* _global_yelo_globals;
-
+		// Note: actually defined in TagGroups.cpp
 		extern const project_yellow* _global_yelo;
 
 		// Changes the current structure_bsp's lightmaps to the lightmap-set named 

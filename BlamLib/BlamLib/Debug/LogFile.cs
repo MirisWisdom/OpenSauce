@@ -47,12 +47,6 @@ namespace BlamLib.Debug
 		[System.Diagnostics.Conditional("TRACE")]
 		public static void CloseLog()
 		{
-// 			if (logFile == null)
-// 				System.Windows.Forms.MessageBox.Show(
-// 					"CloseLog: Debug.log not open!",
-// 					"Whoops");
-// 			else
-
 			if(logFile != null)
 			{
 				logFile.Close();
@@ -72,7 +66,7 @@ namespace BlamLib.Debug
 		[System.Diagnostics.Conditional("TRACE")]
 		private static void WriteHeader()
 		{
-			string app = string.Format(Program.Name + " {0} ----------------------------------------------", Program.Version);
+			string app = string.Format("{0} {1} ----------------------------------------------", Program.Name, Program.Version);
 
 			OpenLog();
 

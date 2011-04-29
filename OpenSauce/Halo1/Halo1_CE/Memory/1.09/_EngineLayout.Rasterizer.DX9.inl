@@ -32,7 +32,7 @@
 //////////////////////////////////////////////////////////////////////////
 // GBuffer.cpp
 #elif __EL_INCLUDE_FILE_ID == __EL_RASTERIZER_DX9_GBUFFER
-ENGINE_PTR(DX9::s_vsf_entry*, VSF_TABLE_START_REFERENCE,	0x533C12, FUNC_PTR_NULL);
+	ENGINE_PTR(DX9::s_vsf_entry*, VSF_TABLE_START_REFERENCE,	0x533C12, PTR_NULL);
 
 	FUNC_PTR(RENDER_WINDOW_CALL,				0x50FA4B, FUNC_PTR_NULL);
 	FUNC_PTR(RENDER_WINDOW,						0x50FC50, FUNC_PTR_NULL);
@@ -68,6 +68,13 @@ ENGINE_PTR(DX9::s_vsf_entry*, VSF_TABLE_START_REFERENCE,	0x533C12, FUNC_PTR_NULL
 												0x51FF58, FUNC_PTR_NULL);
 	FUNC_PTR(RASTERIZER_SET_WORLD_VIEW_PROJECTION_MATRIX_VERTEX_CONSTANT_HOOK,
 												0x51CCD3, FUNC_PTR_NULL);
+
+//////////////////////////////////////////////////////////////////////////
+// DX9/rasterizer_dx9_shaders_vshader9.cpp
+#elif __EL_INCLUDE_FILE_ID == __EL_RASTERIZER_DX9_VSHADERS
+	ENGINE_PTR(s_rasterizer_dx9_effect_collection, rasterizer_dx9_effect_collection,	0x75B740, PTR_NULL);
+	ENGINE_PTR(s_effect_shader_entry, rasterizer_effect_shaders,						0x638AD8, PTR_NULL);
+	ENGINE_PTR(s_vsf_entry, vsf_table,													0x639258, PTR_NULL);
 
 #else
 	#error Undefined engine layout include for: __EL_INCLUDE_RASTERIZER_DX9
