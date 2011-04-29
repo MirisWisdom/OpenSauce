@@ -27,12 +27,14 @@ namespace Yelo
 	namespace Settings
 	{
 		static struct {
+			char CommonAppDataPath[MAX_PATH];
 			char UserProfilePath[MAX_PATH];
 			char OpenSauceProfilePath[MAX_PATH];
 			char ReportsPath[MAX_PATH];
 			char WorkingDirectoryPath[MAX_PATH];
 		}Internal;
 
+		cstring CommonAppDataPath()		{ return Internal.CommonAppDataPath; }
 		cstring UserProfilePath()		{ return Internal.UserProfilePath; }
 		cstring OpenSauceProfilePath()	{ return Internal.OpenSauceProfilePath; }
 		cstring ReportsPath()			{ return Internal.ReportsPath; }
@@ -40,6 +42,9 @@ namespace Yelo
 
 		void SharedInitialize(cstring profile_path)
 		{
+			SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, 0, Internal.CommonAppDataPath);
+			PathAppendA(Internal.CommonAppDataPath, "Kornner Studios\\Halo CE\\");
+
 			if(profile_path[0] == '\0')
 			{
 				SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, 0, Internal.UserProfilePath);

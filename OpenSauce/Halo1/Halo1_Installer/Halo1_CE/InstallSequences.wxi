@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+
+	<Custom Action='Halo1_CE_CreateOSHCEEXEs_CACT' After='InstallFinalize'>
+		<![CDATA[((&Halo1_CE_ClientServer_FEAT = 3) AND NOT (!Halo1_CE_ClientServer_FEAT = 3))]]>
+	</Custom>
+	
+	<Custom Action='Halo1_CE_CreateOSHEKEXEs_CACT' After='InstallFinalize'>
+		<![CDATA[(NOT HALO1_CE_HEK_SKIPCREATEOSEXES_PROP) AND 
+		((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND 
+		(HALO1_CE_HEK_GUERILLAPATH_PROP AND HALO1_CE_HEK_SAPIENPATH_PROP AND HALO1_CE_HEK_TOOLPATH_PROP)]]>
+	</Custom>
+	
+	<Custom Action='Halo1_CE_LaunchOSIDE_CACT' After='InstallFinalize'>
+		<![CDATA[(NOT HALO1_CE_HEK_SKIPCREATEOSEXES_PROP) AND 
+		((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND 
+		HALO1_CE_HEK_LAUNCHOSIDE_PROP AND 
+		NOT (HALO1_CE_HEK_GUERILLAPATH_PROP AND HALO1_CE_HEK_SAPIENPATH_PROP AND HALO1_CE_HEK_TOOLPATH_PROP)]]>
+	</Custom>
+	
+</Include>

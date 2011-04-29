@@ -16,14 +16,25 @@
     <IntermediateOutputPath>$(SolutionDir)..\obj\$(AssemblyName)\$(Configuration)</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <DefineConstants>Debug</DefineConstants>
+    <DefineConstants>Debug;Halo1_CE; DEBUG;</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <WixVariables>
+    </WixVariables>
+    <DefineConstants>Halo1_CE</DefineConstants>
   </PropertyGroup>
   <Import Project="$(WixTargetsPath)" />
   <Target Name="BeforeBuild">
     <MSBuild Projects="$(SolutionDir)OpenSauce_Pc.sln" Targets="Rebuild" Properties="Configuration=Release;Platform=Win32;" />
-    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugGuerilla;Platform=Win32;" ContinueOnError="true"/>
-    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugSapien;Platform=Win32;" ContinueOnError="true"/>
-    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugTool;Platform=Win32;" ContinueOnError="true"/>
+    <MSBuild Projects="$(SolutionDir)OpenSauce_Pc.sln" Targets="Rebuild" Properties="Configuration=ReleaseDedi;Platform=Win32;" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=ReleaseGuerilla;Platform=Win32;" ContinueOnError="true" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=ReleaseSapien;Platform=Win32;" ContinueOnError="true" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=ReleaseTool;Platform=Win32;" ContinueOnError="true" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_Pc.sln" Targets="Rebuild" Properties="Configuration=Debug;Platform=Win32;" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_Pc.sln" Targets="Rebuild" Properties="Configuration=DebugDedi;Platform=Win32;" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugGuerilla;Platform=Win32;" ContinueOnError="true" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugSapien;Platform=Win32;" ContinueOnError="true" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugTool;Platform=Win32;" ContinueOnError="true" />
     <!--MSBuild Projects="$(SolutionDir)..\BlamLib\BlamLib.sln" Properties="Configuration=Release;Platform=x86;SolutionDir=$(SolutionDir)..\BlamLib\" ContinueOnError="true"/-->
   </Target>
   <!--
@@ -31,9 +42,20 @@
 	</Target>
 	-->
   <ItemGroup>
-    <Compile Include="OpenSauce_Halo1_CE.wxs" />
-    <Compile Include="OpenSauce_Halo1_CE_HEKPathsDlg.wxs" />
-    <Compile Include="OpenSauce_Halo1_CE_HEKPathsMissingDlg.wxs" />
+    <Content Include="Halo1_CE\CommonDataDirectories.wxi" />
+    <Content Include="Halo1_CE\CustomActions.wxi" />
+    <Content Include="Halo1_CE\DesktopDirectories.wxi" />
+    <Content Include="Halo1_CE\Directories.wxi" />
+    <Content Include="Halo1_CE\Features.wxi" />
+    <Content Include="Halo1_CE\StartMenuDirectories.wxi" />
+    <Content Include="Halo1_CE\InstallSequences.wxi" />
+    <Content Include="Halo1_CE\Properties.wxi" />
+    <Content Include="Halo1_CE\UI.wxi" />
+    <Compile Include="Dialogs\OpenSauce_CustomizeDlg.wxs" />
+    <Compile Include="Dialogs\OpenSauce_FeatureTree.wxs" />
+    <Compile Include="Halo1_CE\Dialogs\HEKPathsDlg.wxs" />
+    <Compile Include="Halo1_CE\Dialogs\HEKPathsMissingDlg.wxs" />
+    <Compile Include="OpenSauce_Installer.wxs" />
   </ItemGroup>
   <ItemGroup>
     <WixExtension Include="WixUIExtension">
@@ -49,4 +71,9 @@
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Halo1_CE" />
+    <Folder Include="Halo1_CE\Dialogs" />
+    <Folder Include="Dialogs" />
+  </ItemGroup>
 </Project>
