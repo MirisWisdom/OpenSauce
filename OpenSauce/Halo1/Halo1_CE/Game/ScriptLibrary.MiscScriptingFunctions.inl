@@ -78,6 +78,26 @@ static void* scripting_game_engine_data_get_integer_evaluate(void** arguments)
 }
 
 
+static void* scripting_machine_is_host()
+{
+	TypeHolder result; result.pointer = NULL;
+
+	result.boolean = Networking::IsServer();
+
+	return result.pointer;
+}
+
+static void* scripting_machine_is_dedi()
+{
+	TypeHolder result; result.pointer = NULL;
+
+	Networking::s_network_game_server* game_server = Networking::NetworkGameServer();
+	result.boolean = game_server != NULL && game_server->IsDedi();
+
+	return result.pointer;
+}
+
+
 static void InitializeMiscFunctions()
 {
 	InitializeScriptFunction(Enums::_hs_function_structure_bsp_lightmap_reset, 
@@ -90,6 +110,11 @@ static void InitializeMiscFunctions()
 
 	InitializeScriptFunctionWithParams(Enums::_hs_function_game_engine_data_get_integer, 
 		scripting_game_engine_data_get_integer_evaluate);
+
+	InitializeScriptFunction(Enums::_hs_function_machine_is_host, 
+		scripting_machine_is_host);
+	InitializeScriptFunction(Enums::_hs_function_machine_is_dedi, 
+		scripting_machine_is_dedi);
 
 #if !PLATFORM_IS_DEDI
 	InitializeScriptFunction(Enums::_hs_function_pp_load, 

@@ -22,9 +22,7 @@ namespace BlamLib
 {
     public static partial class Program
     {
-		/// <summary>
-		/// Special object constants
-		/// </summary>
+		/// <summary>Special object constants</summary>
 		public static class Constants
 		{
 			public const int SentinalInt32 = unchecked((int)0xDEADC0DE); // or we could use 0x1337BEEF :D
@@ -65,56 +63,48 @@ namespace BlamLib
 		const string kProjectsPath = @"C:\Mount\B\Kornner\Projects\";
 		public const string SourcePath = kProjectsPath + @"BlamLib\";
 
-		/// <summary>
-		/// Name of this assembly
-		/// </summary>
+		/// <summary>Name of executing assembly</summary>
 		public static readonly string Name = System.Windows.Forms.Application.ProductName;
-		/// <summary>
-		/// Version string of this assembly
-		/// </summary>
+		/// <summary>Version string of the executing assembly</summary>
 		public static readonly string Version = System.Windows.Forms.Application.ProductVersion;
-		/// <summary>
-		/// Root namespace for the codebase
-		/// </summary>
-		public const string Namespace = "BlamLib";
-		/// <summary>
-		/// Startup path of this assembly
-		/// </summary>
-		public static readonly string StartupPath = //System.Windows.Forms.Application.StartupPath + "\\";
-			kProjectsPath + @"test_results\BlamLib\";
+
+		static readonly string DocumentsFolderPath;
+		static void InitializeDocumentsFolderPath(out string documents_folder_path)
+		{
+			if(Name.Contains("Visual Studio"))
+				documents_folder_path = kProjectsPath + @"test_results\BlamLib\";
+			else
+			{
+				string base_path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+				documents_folder_path = string.Format(@"{0}{1}\",
+					System.IO.Path.Combine(base_path, @"Kornner Studios\"), Name);
+			}
+
+			if (!System.IO.Directory.Exists(documents_folder_path))
+				System.IO.Directory.CreateDirectory(documents_folder_path);
+		}
+
+		/// <summary>Build a path to the defined BlamLib documents folder</summary>
+		/// <param name="path">Path or file name</param>
+		/// <returns></returns>
+		public static string BuildDocumentPath(string path)
+		{
+			return System.IO.Path.Combine(DocumentsFolderPath, path);
+		}
 		#endregion
 
 		#region Settings
 		public const string NewLine = "\r\n";
-		/// <summary>
-		/// File path of the debug file
-		/// </summary>
-		public static readonly string DebugFile = Program.StartupPath + "debug.log";
-		/// <summary>
-		/// Path of folder where tracing files will be stored
-		/// </summary>
-		public static readonly string TracePath = Program.StartupPath + "Logs\\";
-		/// <summary>
-		/// Path of the folder where our game data will be stored
-		/// </summary>
-		public static readonly string GamesPath = Program.StartupPath + "Games\\";
-		/// <summary>
-		/// Should beta protection code be ran?
-		/// </summary>
-		public const bool BetaProtection = false;
-		/// <summary>
-		/// Should the bug report be made\sent?
-		/// </summary>
-		public static readonly bool BugReportingEnabled = false;
-		/// <summary>
-		/// Should we download updates automatically?
-		/// </summary>
-		public static readonly bool AutoUpdateEnabled = false;
+		/// <summary>File path of the debug file</summary>
+		public static readonly string DebugFile;
+		/// <summary>Path of folder where tracing files will be stored</summary>
+		public static readonly string TracePath;
+		/// <summary>Path of the folder where our game data will be stored</summary>
+		public static readonly string GamesPath;
 		#endregion
 
-		/// <summary>
-		/// Get the manager object for an engine
-		/// </summary>
+		/// <summary>Get the manager object for an engine</summary>
 		/// <param name="engine"></param>
 		/// <returns></returns>
 		public static Managers.BlamDefinition GetManager(BlamVersion engine)
@@ -215,9 +205,10 @@ namespace BlamLib
 		#region Initialize\Dispose
 		static Program()
 		{
-//			StartupPath =	Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), 
-//								"Kornner Studios"), 
-//									"BlamLib") + @"\";
+			InitializeDocumentsFolderPath(out DocumentsFolderPath);
+			DebugFile = BuildDocumentPath("debug.log");
+			TracePath = BuildDocumentPath(@"Logs\");
+			GamesPath = BuildDocumentPath(@"Games\");
 
 			Initialize();
 		}
@@ -263,9 +254,7 @@ namespace BlamLib
 			}
 		}
 
-		/// <summary>
-		/// Close the resources used by this library
-		/// </summary>
+		/// <summary>Close the resources used by this library</summary>
 		public static void Close()
 		{
 			if (isInitialized)

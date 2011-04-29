@@ -42,12 +42,6 @@ namespace BlamLib.Debug
 		/// </summary>
 		public void CloseLog()
 		{
-// 			if (LogFile == null)
-// 				System.Windows.Forms.MessageBox.Show(
-// 					"CloseLog: The tracing file was not open!",
-// 					"Whoops");
-// 			else
-
 			if(LogFile != null)
 				LogFile.Close();
 		}

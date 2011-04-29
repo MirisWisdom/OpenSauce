@@ -545,7 +545,7 @@ namespace BlamLib.Managers
 		/// </summary>
 		/// <param name="ns">Game namespace</param>
 		/// <returns>True if the folder exists</returns>
-		public static bool CheckNamespace(Namespace ns)						{ return Directory.Exists(Program.StartupPath + ns + "\\"); }
+		public static bool CheckNamespace(Namespace ns)						{ return Directory.Exists(Program.BuildDocumentPath(ns + "\\")); }
 
 		/// <summary>
 		/// Checks to see if a platform has been defined in the game's folder
@@ -553,7 +553,7 @@ namespace BlamLib.Managers
 		/// <param name="ns">Game namespace</param>
 		/// <param name="platform">Platform folder</param>
 		/// <returns>True if the folder exists</returns>
-		public static bool CheckPlatform(Namespace ns, Platform platform)	{ return Directory.Exists(Program.StartupPath + ns + "\\" + platform + "\\"); }
+		public static bool CheckPlatform(Namespace ns, Platform platform)	{ return Directory.Exists(Program.BuildDocumentPath(ns + "\\" + platform + "\\")); }
 
 		/// <summary>
 		/// Checks for what platform folders exist in the game namespace and game platform

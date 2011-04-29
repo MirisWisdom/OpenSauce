@@ -18,7 +18,6 @@
 */
 #include "Common/Precompile.hpp"
 
-#include <windows.h>
 #include <psapi.h>
 #pragma comment (lib, "psapi.lib")
 
@@ -59,18 +58,14 @@ namespace Yelo
 
 		static bool IsVersionInfoValid()
 		{
-			ENGINE_PTR(VS_FIXEDFILEINFO, version_info, /*0x882598*/0x81D598, 0x6E9598);
+			ENGINE_PTR(VS_FIXEDFILEINFO, version_info, 0x81D598, 0x6E9598);
 
-			//const __int64 old_xp_version = 0x0007026500010000; // 01.00.07.0613
-			//const __int64 old_vista_version = 0x0007026600010000; // 01.00.07.0614
 #if PLATFORM_VERSION == 0x1080
 			const __int64 version = 0x0008026800010000; // 01.00.08.0616
 #elif PLATFORM_VERSION == 0x1090
 			const __int64 version = 0x0009026C00010000; // 01.00.09.0620
 #endif
 
-			//if (!memcmp(&info->dwFileVersionMS, &xp_version, sizeof(xp_version))) return true;
-			//if (!memcmp(&info->dwFileVersionMS, &vista_version, sizeof(vista_version))) return true;
 			if (!memcmp(&GET_PTR2(version_info)->dwFileVersionMS, &version, sizeof(version))) return true;
 
 			return false;
@@ -85,13 +80,14 @@ namespace Yelo
 
 			char name[64];
 			GetModuleBaseName(GetCurrentProcess(), GetModuleHandle(NULL), name, NUMBEROF(name));
+			_strlwr_s(name);
 
-			char warning[MAX_PATH*3]; // we print a buffer with MAX_PATH twice, so just in case...
-
-			// Ok, the warning message will get annoying after a while for sapien (and tool, wtf) users
+			// Ok, the warning message will get annoying after a while for sapien (and tool) users
 			if ( strstr(name,"sapien") != NULL || strstr(name,"hobo") != NULL || 
 				 strstr(name,"tool") != NULL )
 				return Enums::_version_result_code_dx9_app;
+
+			char warning[MAX_PATH*3]; // we print a buffer with MAX_PATH twice, so just in case...
 
 			// if the application name doesn't include the game name in it, assume the worst
 			if ( strstr(name,PLATFORM_VALUE("haloce","haloceded")) == NULL )
@@ -122,7 +118,7 @@ namespace Yelo
 			{
 #if PLATFORM_IS_USER && defined(DX_WRAPPER)
 				sprintf_s(warning,
-					"Yelo (Open Sauce) is a plugin that is only compatible with Halo (CE) v" BOOST_PP_STRINGIZE(PLATFORM_VERSION_VALUE) ".  Your version is incompatible."
+					"Yelo (Open Sauce) is a plugin that is only compatible with Halo (CE) v" BOOST_PP_STRINGIZE(PLATFORM_VERSION_VALUE) ". Your version is incompatible."
 					"\n\n"
 					"If you wish to use Yelo, you must update by running this file: \n"
 					"%s\\haloupdate.exe"
@@ -132,10 +128,9 @@ namespace Yelo
 					dir, dir);
 #elif PLATFORM_IS_DEDI
 				sprintf_s(warning,
-					"Yelo (Open Sauce) is a plugin that is only compatible with Halo Dedi (CE) v" BOOST_PP_STRINGIZE(PLATFORM_VERSION_VALUE) ".  Your version is incompatible."
+					"Yelo (Open Sauce) is a plugin that is only compatible with Halo Dedi (CE) v" BOOST_PP_STRINGIZE(PLATFORM_VERSION_VALUE) ". Your version is incompatible."
 					"\n\n"
-					"If you wish to use Yelo, you must update or downgrade your haloded.exe file"
-					);
+					"If you wish to use Yelo, you must update or downgrade your haloded.exe file");
 #endif
 			}
 
@@ -146,7 +141,6 @@ namespace Yelo
 		}
 	};
 };
-
 
 
 
