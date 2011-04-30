@@ -68,6 +68,9 @@ namespace Yelo
 
 			// the start value is set to the current value
 			m_values[0] = m_current_value;
+
+			if(m_interpolation.change_time == 0.0f)
+				m_current_value = m_values[1];
 		}
 
 		c_internal_shader_variable_scripted_node::t_value_union		
