@@ -22,6 +22,7 @@
 
 #include "Memory/MemoryInterface.hpp"
 #include "Game/ScriptLibrary.hpp"
+#include "Game/EngineFunctions.hpp"
 #include "Common/GameSystems.hpp"
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
@@ -167,6 +168,44 @@ namespace Yelo
 #pragma endregion
 
 		s_rasterizer_frame_inputs* FrameInputs()	PTR_IMP_GET2(rasterizer_frame_inputs);
+		
+		static s_rasterizer_resolution g_resolution_list[64];
+
+		void SetupResolutions()
+		{
+			if(!DX9::Direct3D9())
+				return;
+
+			// get the current screen resolution
+			RECT desktop_dimensions;
+			HWND desktop_handle = GetDesktopWindow();
+			GetWindowRect(desktop_handle, &desktop_dimensions);
+
+			// get the number of adapter modes
+			UINT adapter_mode_index = DX9::Direct3D9()->GetAdapterModeCount(GET_PTR(RASTERIZER_DEVICE_ADAPTER_INDEX), D3DFMT_X8R8G8B8);
+			if(!adapter_mode_index)
+				return;
+
+			// loop through all of the adapter modes
+			while(adapter_mode_index)
+			{
+				adapter_mode_index--;
+				D3DDISPLAYMODE display_mode;
+				HRESULT success = DX9::Direct3D9()->EnumAdapterModes(GET_PTR(RASTERIZER_DEVICE_ADAPTER_INDEX), D3DFMT_X8R8G8B8, adapter_mode_index, &display_mode);
+				
+				if(!SUCCEEDED(success))
+					continue;
+
+				// if we are windowed, dont add resolutions that are greater than the desktop size
+				bool add_mode = true;
+				if(DX9::D3DPresetParams()->Windowed)
+					add_mode = (display_mode.Width < (UINT)desktop_dimensions.right) && (display_mode.Height < (UINT)desktop_dimensions.bottom);
+
+				// add the resolution
+				if(add_mode)
+					Engine::RasterizerAddResolution(display_mode.Width, display_mode.Height, display_mode.RefreshRate);
+			}
+		}
 
 		// release direct3D resources before the device is destroyed
 		void RasterizerDisposeHook()
@@ -210,6 +249,30 @@ namespace Yelo
 
 				global_def->address = CAST_PTR(void*, address + rdt->field);// fix the global definition's address to point to the correct memory
 			}
+
+			
+			// update the resolution definition array length
+			// definition count has been increased to 64 so that rediculous amounts of resolutions in the future are accomodated
+			GET_PTR(RESOLUTION_LIST_COUNT) = NUMBEROF(g_resolution_list);
+
+			// redirect all resolution definition pointers to the new array
+			int i = 0;
+			for(i = 0; i < NUMBEROF(K_RESOLUTION_LIST_X_REFERENCES); i++)
+				*K_RESOLUTION_LIST_X_REFERENCES[i] = &g_resolution_list[0].width;
+			for(i = 0; i < NUMBEROF(K_RESOLUTION_LIST_Y_REFERENCES); i++)
+				*K_RESOLUTION_LIST_Y_REFERENCES[i] = &g_resolution_list[0].height;
+			for(i = 0; i < NUMBEROF(K_RESOLUTION_LIST_STRING_REFERENCES); i++)
+				*K_RESOLUTION_LIST_STRING_REFERENCES[i] = &g_resolution_list[0].resolution_string;
+
+			*GET_PTR(RESOLUTION_LIST_STRING_NULL_REFERENCE) = &(g_resolution_list[0].resolution_string[15]);
+
+			for(i = 0; i < NUMBEROF(K_RESOLUTION_LIST_REFRESH_COUNT_REFERENCES); i++)
+				*K_RESOLUTION_LIST_REFRESH_COUNT_REFERENCES[i] = &g_resolution_list[0].refresh_rate_count;
+			for(i = 0; i < NUMBEROF(K_RESOLUTION_LIST_REFRESH_RATE_REFERENCES); i++)
+				*K_RESOLUTION_LIST_REFRESH_RATE_REFERENCES[i] = &g_resolution_list[0].refresh_rates;
+
+			// replace the original resolution populator with the new one
+			Memory::WriteRelativeCall(&SetupResolutions, GET_FUNC_VPTR(RESOLUTION_LIST_SETUP_RESOLUTIONS_CALL), true);
 		}
 #pragma warning( pop )
 

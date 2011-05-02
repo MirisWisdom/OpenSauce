@@ -123,6 +123,8 @@ namespace Yelo
 			bool add_to_cache = true, bool block_thread = false, bool unknown2 = false);
 
 		void MapListAddMap(cstring map_name, int32 map_index = 0x13);
+		// adds a resolution definition to the resolution list
+		void RasterizerAddResolution(uint32 width, uint32 height, uint32 refresh_rate);
 
 		namespace Console
 		{

@@ -92,7 +92,6 @@ namespace Yelo
 			}
 		}; BOOST_STATIC_ASSERT( sizeof(s_render_frustum) == 0x18C );
 
-
 		struct s_render_globals
 		{
 			UNKNOWN_TYPE(int32);
@@ -249,6 +248,14 @@ namespace Yelo
 		};
 		s_rasterizer_frame_inputs* FrameInputs();
 
+		struct s_rasterizer_resolution
+		{
+			DWORD			width;
+			DWORD			height;
+			wchar_t			resolution_string[16];
+			DWORD			refresh_rate_count;
+			DWORD			refresh_rates[8];
+		}; BOOST_STATIC_ASSERT(sizeof(s_rasterizer_resolution) == 0x4C);
 
 		void Initialize();
 		void Dispose();
