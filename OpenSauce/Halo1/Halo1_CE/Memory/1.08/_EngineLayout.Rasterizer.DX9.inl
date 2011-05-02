@@ -28,7 +28,6 @@
 	ENGINE_DPTR(IDirectInputDevice8, DInput8DeviceMouse,	0x64C66C, PTR_NULL);
 	ENGINE_DPTR(IDirectInputDevice8, DInput8DeviceJoysticks,0x64C6B0, PTR_NULL);
 
-
 //////////////////////////////////////////////////////////////////////////
 // GBuffer.cpp
 #elif __EL_INCLUDE_FILE_ID == __EL_RASTERIZER_DX9_GBUFFER
@@ -74,7 +73,7 @@
 #elif __EL_INCLUDE_FILE_ID == __EL_RASTERIZER_DX9_VSHADERS
 	ENGINE_PTR(s_rasterizer_dx9_effect_collection, rasterizer_dx9_effect_collection,	0x75B660, PTR_NULL);
 	ENGINE_PTR(s_effect_shader_entry, rasterizer_effect_shaders,						0x638AD8, PTR_NULL);
-	ENGINE_PTR(s_effect_shader_entry, vsf_table,										0x639258, PTR_NULL);
+	ENGINE_PTR(s_vsf_entry, vsf_table,													0x639258, PTR_NULL);
 
 #else
 	#error Undefined engine layout include for: __EL_INCLUDE_RASTERIZER_DX9

@@ -121,6 +121,22 @@ namespace Yelo
 				add		esp, 4 * 1
 			}
 		}
+		void RasterizerAddResolution(uint32 width, uint32 height, uint32 refresh_rate)
+		{
+#if !PLATFORM_IS_DEDI
+			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(RESOLUTION_LIST_ADD_RESOLUTION);
+
+			_asm{
+				mov		ecx, width
+				mov		eax, height
+				mov		edx, refresh_rate
+				push	edx
+				push	ecx
+				call	TEMP_CALL_ADDR
+				add		esp, 8
+			}
+#endif
+		}
 
 		namespace Console
 		{

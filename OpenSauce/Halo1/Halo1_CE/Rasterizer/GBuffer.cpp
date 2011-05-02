@@ -564,6 +564,8 @@ skip_disable_velocity:
 
 		void		c_gbuffer_system::Update(real delta_time)
 		{
+			c_gbuffer_system::g_output_velocity = true;
+
 			g_stored_wvp_index = 1 - g_stored_wvp_index;
 
 			g_wvp_stored = false;
@@ -1088,8 +1090,6 @@ skip_disable_velocity:
 
 		void		c_gbuffer_system::render_progress::UIPreProcess()
 		{
-			if(!g_is_rendering_reflection)
-				c_gbuffer_system::g_output_velocity = true;
 			if(g_debug_index != 0)
 				g_default_system.RenderDebugQuad(DX9::Direct3DDevice());
 		}

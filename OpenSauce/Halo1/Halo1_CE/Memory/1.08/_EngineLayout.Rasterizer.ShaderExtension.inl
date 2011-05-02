@@ -39,7 +39,7 @@
 
 	static void** K_SHADER_USAGE_ID_ARRAY_REFERENCES[] = {
 		CAST_PTR(void**, 0x52A14D), CAST_PTR(void**, 0x52A1C5), 
-		CAST_PTR(void**, 0x52A274), CAST_PTR(void**, 0x52A2C4), 
+		CAST_PTR(void**, 0x52A244), CAST_PTR(void**, 0x52A2C4), 
 		CAST_PTR(void**, 0x52A365), CAST_PTR(void**, 0x52A0F7)
 	};
 
