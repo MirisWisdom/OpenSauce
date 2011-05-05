@@ -1,0 +1,30 @@
+Fan Speed
+Get Drive Free Space
+Get Drive Size
+
+Get Video ... Info
+Hardware Info
+
+Hijack Controller: InitializeControllerHook / Override Controllers
+
+Set LED State
+
+Sync Time
+Title Ip
+Xbe Info
+
+###########################
+
+
+Cycle Power
+Reboot - various
+Reset
+Shutdown
+
+Get Tray State
+Eject Tray
+Load Tray
+
+Debug Ip
+
+Rename File
