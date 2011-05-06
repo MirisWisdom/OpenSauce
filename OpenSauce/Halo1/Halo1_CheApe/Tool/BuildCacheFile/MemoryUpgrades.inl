@@ -35,6 +35,21 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 			header.k_memory_upgrade_increase_amount = K_MEMORY_UPGRADE_INCREASE_AMOUNT;
 	}
 
+	// Initializes the yelo header with the default build info settings
+	static void InitializeHeaderGlobalsBuildInfo()
+	{
+		s_cache_header_yelo& header = yelo_cache_header_globals;
+
+		header.InitializeBuildInfo();
+	}
+	// Initializes the yelo header with a scenario's yelo build info
+	static void InitializeHeaderGlobalsBuildInfo(const TagGroups::s_project_yellow_scenario_build_info& build_info)
+	{
+		s_cache_header_yelo& header = yelo_cache_header_globals;
+
+		header.InitializeBuildInfo(build_info.build_stage, build_info.revision);
+	}
+
 	namespace AddressOf
 	{
 		// Addresses which check a counter against the max tag limit

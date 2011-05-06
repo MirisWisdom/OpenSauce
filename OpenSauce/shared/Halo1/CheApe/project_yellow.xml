@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="us-ascii" standalone="yes"?>
 <definitions game="Halo1">
 	<enums>
-		<Enum name="biped_camera_type_enum">
-			<field>first person</field>
-			<field>third person fixed</field>
-			<field>third person loose</field>
-			<field>inverted</field>
+		<Enum name="production_build_stage_enum">
+			<field>ship</field>
+			<field>alpha</field>
+			<field>beta</field>
+			<field>delta</field>
+			<field>epsilon</field>
+			<field>release</field>
 		</Enum>
 	</enums>
 
@@ -14,17 +16,21 @@
 			<field>is default</field>
 		</Flag>
 
-		<Flag name="networking_flags">
-			<field>use server upgrades#prone to cause unstable gameplay after a while</field>
-			<field>use client upgrades</field>
-		</Flag>
-
 		<Flag name="gameplay_flags">
-			<field>allow multi-team vehicles</field>
+			<field>prohibit multi-team vehicles</field>
 		</Flag>
 	</flags>
 
 	<blocks>
+		<TagBlock name="project_yellow_scenario_build_info_block" maxElements="1">
+			<field type="Pad" definition="2" />
+			<field type="Enum" name="build stage" definition="production_build_stage_enum" />
+			<field type="LongInteger" name="revision" />
+			<field type="Pad" definition="8" />
+
+			<field type="Pad" definition="32" />
+		</TagBlock>
+
 		<TagBlock name="bsp_information_lightmap_set_block" maxElements="64">
 			<field type="String" name="name" blockname="true" tooltip="code name for this lightmap set" />
 			<field type="WordFlags" name="flags" definition="bsp_information_lightmap_set_flags" />
@@ -56,22 +62,21 @@
 			<field type="TagReference" name="yelo globals" definition="project_yellow_globals_reference" />
 			<field type="TagReference" name="globals override" definition="globals_reference_non_resolving" tooltip="use this to override the globals tag used for the scenario" />
 			<field type="TagReference" name="scenario explicit references" definition="tag_collection_reference" />
+			<field type="Block" name="build info" definition="project_yellow_scenario_build_info_block" />
 			<field type="Pad" definition="40" />
 
 			<!--<field type="Explanation" name="UI/GUI" definition="" />-->
 			<field type="Pad" name="flags" definition="2" />
-			<field type="Pad" definition="2" /><!--<field type="Enum" name="biped camera type" definition="biped_camera_type_enum" tooltip="default biped camera view" />-->
+			<field type="Pad" definition="2" />
 			<field type="Pad" definition="24" />
 
 			<field type="Explanation" name="Physics" definition="" />
-			<field type="Pad" name="OLD gravity scale" definition="2" />
-			<field type="Pad" name="OLD player speed scale" definition="2" />
 			<field type="Real" name="gravity scale" units="[0,2]" tooltip="amount to scale gravity ingame" />
 			<field type="Real" name="player speed scale" units="[0,6]" tooltip="amount to scale each player's speed" />
-			<field type="Pad" definition="12" />
+			<field type="Pad" definition="20" />
 
 			<!--<field type="Explanation" name="Networking" definition="" />-->
-			<field type="Pad" definition="4" /><!--<field type="LongFlags" name="flags" definition="networking_flags" />-->
+			<field type="Pad" definition="4" />
 			<field type="Pad" definition="20" />
 
 			<field type="Explanation" name="Gameplay" definition="" />

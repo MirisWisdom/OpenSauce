@@ -25,17 +25,29 @@ namespace Yelo
 {
 	namespace TagEnums
 	{
-		enum biped_camera_type {
-			_biped_camera_type_first_person,
-			_biped_camera_type_third_person_fixed,
-			_biped_camera_type_third_person_loose,
-			_biped_camera_type_inverted,
-			_biped_camera_type,
+		enum production_build_stage
+		{
+			_production_build_stage_ship,
+			_production_build_stage_alpha,
+			_production_build_stage_beta,
+			_production_build_stage_delta,
+			_production_build_stage_epsilon,
+			_production_build_stage_release,
 		};
 	};
 
 	namespace TagGroups
 	{
+		struct s_project_yellow_scenario_build_info
+		{
+			PAD16;
+			TAG_ENUM(build_stage, TagEnums::production_build_stage);
+			TAG_FIELD(uint32, revision);
+			time_t timestamp;			BOOST_STATIC_ASSERT(sizeof(time_t) == 0x8);
+
+			TAG_PAD(int32, 8); // 32
+		};
+
 		struct s_bsp_information_lightmap_set
 		{
 			TAG_FIELD(tag_string, name, "", "code name for this lightmap set");
@@ -112,6 +124,7 @@ namespace Yelo
 			TAG_FIELD(tag_reference, yelo_globals, "gelo");
 			TAG_FIELD(tag_reference, game_globals, "matg");
 			TAG_FIELD(tag_reference, explicit_references, "tagc");
+			TAG_TBLOCK(build_info, s_project_yellow_scenario_build_info); // 1
 
 			TAG_PAD(int32, 10); // 40
 			/* --- Misc --- */
@@ -122,7 +135,7 @@ namespace Yelo
 				struct _ui_flags {
 					TAG_FLAG16(unused);
 				}flags;	BOOST_STATIC_ASSERT( sizeof(_ui_flags) == sizeof(word_flags) );
-				TAG_ENUM(biped_camera_type, biped_camera_type, "camera mode to use for players");
+				PAD16;
 
 				TAG_PAD(tag_block, 2); // 24
 			}ui;
@@ -131,12 +144,10 @@ namespace Yelo
 
 			/* !-- Physics --! */
 			struct {
-				TAG_PAD(int16, 2); // old scales, represented as 16 bit integers
-
 				TAG_FIELD(real, gravity_scale, "[0,2]", "amount to scale gravity ingame");
 				TAG_FIELD(real, player_speed_scale, "[0,6]", "amount to scale the player speeds");
 
-				TAG_PAD(int32, 3); // 12
+				TAG_PAD(int32, 5); // 20
 
 				API_INLINE bool IsGravityScaleValid() const	{ return gravity_scale >= 0.0f || gravity_scale <= 2.0f; }
 				API_INLINE void ResetGravityScale()			{ gravity_scale = 1.0f; }
@@ -161,7 +172,7 @@ namespace Yelo
 			/* !-- Gameplay --! */
 			struct {
 				struct _gameplay_flags {
-					TAG_FLAG(allow_multiteam_vehicles, "if not set, disallow is assumed");
+					TAG_FLAG(prohibit_multiteam_vehicles, "don't allow MTV settings for this map, even if the user enables it");
 				}flags;	BOOST_STATIC_ASSERT( sizeof(_gameplay_flags) == sizeof(long_flags) );
 
 				TAG_PAD(int32, 5); // 20

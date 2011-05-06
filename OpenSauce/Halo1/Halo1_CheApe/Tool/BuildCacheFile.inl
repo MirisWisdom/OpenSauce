@@ -22,6 +22,10 @@
 #include "Tool/BuildCacheFile/CullTags.inl"
 #include "Tool/BuildCacheFile/PredictedResources.inl"
 
+void build_cache_file_end_preprocess(s_cache_header* header, s_cache_header_yelo& ych);
+void build_cache_file_begin_preprocess(cstring scenario_name);
+#include "Tool/BuildCacheFile/MemoryUpgrades.inl"
+
 /*!
  * \brief
  * Code to execute before we commit the yelo header and the tool's code finishes building the cache.
@@ -76,6 +80,16 @@ static void build_cache_file_begin_preprocess(cstring scenario_name)
 		{
 			TagGroups::project_yellow* yelo = tag_get<TagGroups::project_yellow>(yelo_reference.tag_index);
 
+			// If the scenario's yelo specifies build info, update the yelo header with that info, else use the defaults
+			if(yelo->build_info.Count > 0)
+			{
+				const TagGroups::s_project_yellow_scenario_build_info& build_info = yelo->build_info[0];
+
+				BuildCacheFileEx::MemoryUpgrades::InitializeHeaderGlobalsBuildInfo(build_info);
+			}
+			else
+				BuildCacheFileEx::MemoryUpgrades::InitializeHeaderGlobalsBuildInfo();
+
 			// if there is a globals tag override, rename it to "globals/globals" so 
 			// we avoid further hacks in the runtime engine code as it also explicitly 
 			// looks for "globals/globals"
@@ -94,8 +108,6 @@ static void build_cache_file_begin_preprocess(cstring scenario_name)
 		}
 	}
 }
-
-#include "Tool/BuildCacheFile/MemoryUpgrades.inl"
 
 namespace BuildCacheFileEx
 {

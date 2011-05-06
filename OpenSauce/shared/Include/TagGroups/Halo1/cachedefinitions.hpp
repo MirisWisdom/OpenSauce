@@ -19,6 +19,7 @@
 #pragma once
 
 #include <TagGroups/CacheDefinitions.hpp>
+#include <Blam/Halo1/project_yellow_shared_definitions.hpp>
 
 namespace Yelo
 {
@@ -45,12 +46,48 @@ namespace Yelo
 
 		tag_string mod_name; // if the map uses a specific mod's data_files, this equals the mod prefix
 
+		struct {
+			PAD16;
+			_enum stage; // see TagEnums::production_build_stage
+			uint32 revision;
+			time_t timestamp;
+
+			tag_string build_string;
+		}build_info;
+
 		void InitializeForNewMap()
 		{
 			memset(this, 0, sizeof(*this));
 
 			this->signature = k_signature;
 			this->version = k_version;
+		}
+
+		void InitializeBuildInfo(_enum stage = TagEnums::_production_build_stage_ship, uint32 revision = 0)
+		{
+			build_info.stage = stage;
+			build_info.revision = revision;
+			time(&build_info.timestamp);
+
+			cstring stage_string = NULL;
+			switch(stage)
+			{
+			case TagEnums::_production_build_stage_ship:	stage_string = "ship";	break;
+			case TagEnums::_production_build_stage_alpha:	stage_string = "alpha";	break;
+			case TagEnums::_production_build_stage_beta:	stage_string = "beta";	break;
+			case TagEnums::_production_build_stage_delta:	stage_string = "delta";	break;
+			case TagEnums::_production_build_stage_epsilon:	stage_string = "epsilon";	break;
+			case TagEnums::_production_build_stage_release:	stage_string = "release";	break;
+			}
+
+			tm* date_tm = localtime( &build_info.timestamp );
+			// ######.YY.MM.DD.HHMM.stage
+			sprintf_s(build_info.build_string, "%u." "%i.%i." "%i.%i." "%s", 
+				revision, 
+				100 - date_tm->tm_year, // days since 1900, and we want a number relative to 2000
+				date_tm->tm_mon, date_tm->tm_mday, 
+				date_tm->tm_hour, date_tm->tm_sec,
+				stage_string);
 		}
 
 		bool IsValid() const
