@@ -69,7 +69,7 @@ namespace Yelo
 			build_info.revision = revision;
 			time(&build_info.timestamp);
 
-			cstring stage_string = NULL;
+			cstring stage_string = "";
 			switch(stage)
 			{
 			case TagEnums::_production_build_stage_ship:	stage_string = "ship";	break;
@@ -82,9 +82,9 @@ namespace Yelo
 
 			tm* date_tm = localtime( &build_info.timestamp );
 			// ######.YY.MM.DD.HHMM.stage
-			sprintf_s(build_info.build_string, "%u." "%i.%i." "%i.%i." "%s", 
+			sprintf_s(build_info.build_string, "%06u." "%02i" "%02i.%02i." "%02i%02i." "%s", 
 				revision, 
-				100 - date_tm->tm_year, // days since 1900, and we want a number relative to 2000
+				date_tm->tm_year - 100, // days since 1900, and we want a number relative to 2000
 				date_tm->tm_mon, date_tm->tm_mday, 
 				date_tm->tm_hour, date_tm->tm_sec,
 				stage_string);
