@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using YeloDebug;
 using System.Reflection.Emit;
 using Microsoft.CSharp;
@@ -54,7 +52,7 @@ namespace Yelo_Neighborhood
 
                 if (results.Errors.HasErrors)
                 {
-                    StringBuilder errors = new StringBuilder();
+                    var errors = new System.Text.StringBuilder();
                     foreach (CompilerError error in results.Errors)
                     {
                         errors.AppendFormat("Line {0},{1}\t: {2}\n",
@@ -68,5 +66,5 @@ namespace Yelo_Neighborhood
                 scripting.InvokeMember("Script", BindingFlags.Default | BindingFlags.InvokeMethod, null, null, new object[] { Program.XBox, filename });
             }
         }
-    }
+    };
 }

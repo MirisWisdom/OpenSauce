@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using YeloDebug;
 using System.IO;
@@ -56,8 +52,7 @@ namespace Yelo_Neighborhood
             ListViewGroup partitionsGroup = new ListViewGroup("Partitions");
             listFiles.Groups.Add(partitionsGroup);
 
-            List<string> Partitions = Program.XBox.GetPartitions();
-            foreach (string s in Partitions)
+			foreach (string s in Program.XBox.GetPartitions())
                 listFiles.Items.Add(new ListViewItem(s, (int)Images.HDD, partitionsGroup));
 
             listFiles.LabelEdit = false;
@@ -127,10 +122,10 @@ namespace Yelo_Neighborhood
         }
 
         #region Drag-Drop Files
-        private void listFiles_DragEnter(object sender, DragEventArgs e)
+        void listFiles_DragEnter(object sender, DragEventArgs e)
         { if (CurrentDirectory != "" && e.Data.GetDataPresent(DataFormats.FileDrop, false)) e.Effect = DragDropEffects.Copy; }
 
-        private void listFiles_DragDrop(object sender, DragEventArgs e)
+        void listFiles_DragDrop(object sender, DragEventArgs e)
         {
             this.Enabled = false;
             List<FileInformation> files = new List<FileInformation>();
@@ -146,7 +141,7 @@ namespace Yelo_Neighborhood
             sendFileWorker.RunWorkerAsync(files);
         }
 
-        private void sendFileWorker_DoWork(object sender, DoWorkEventArgs e)
+        void sendFileWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             string workingDir = CurrentDirectory;
             List<FileInformation> files = (List<FileInformation>)e.Argument;
@@ -157,7 +152,7 @@ namespace Yelo_Neighborhood
             }
         }
 
-        private void SendDirectory(FileInformation dir, string workingDir)
+        void SendDirectory(FileInformation dir, string workingDir)
         {
             string dirname = Path.GetFileName(dir.Name);
             if (!Program.XBox.FileExists(Path.Combine(workingDir, dirname))) Program.XBox.CreateDirectory(Path.Combine(workingDir, dirname));
@@ -175,7 +170,7 @@ namespace Yelo_Neighborhood
             }
         }
 
-        private void SendFile(FileInformation file, string workingDir)
+        void SendFile(FileInformation file, string workingDir)
         {
             string filename = Path.GetFileName(file.Name);
             string xboxFilename = Path.Combine(workingDir, filename);
@@ -187,7 +182,7 @@ namespace Yelo_Neighborhood
         #endregion
 
         #region Navigation
-        private void cmdUpDir_Click(object sender, EventArgs e)
+        void cmdUpDir_Click(object sender, EventArgs e)
         {
             if (CurrentDirectory == "") return;
             
@@ -202,7 +197,7 @@ namespace Yelo_Neighborhood
             else LoadPartitions();
         }
 
-        private void cmdBack_Click(object sender, EventArgs e)
+        void cmdBack_Click(object sender, EventArgs e)
         {
             DirectoryForwardHistory.Push(CurrentDirectory);
             string dir = DirectoryBackHistory.Pop();
@@ -214,7 +209,7 @@ namespace Yelo_Neighborhood
             cmdForward.Enabled = true;
         }
 
-        private void cmdForward_Click(object sender, EventArgs e)
+        void cmdForward_Click(object sender, EventArgs e)
         {
             DirectoryBackHistory.Push(CurrentDirectory);
             string dir = DirectoryForwardHistory.Pop();
@@ -226,16 +221,15 @@ namespace Yelo_Neighborhood
             cmdBack.Enabled = true;
         }
 
-        private void cmdRefresh_Click(object sender, EventArgs e)
+        void cmdRefresh_Click(object sender, EventArgs e)
         { RefreshFiles(); }
         #endregion
 
         #region Reboot
-        private void cmdCyclePower_Click(object sender, EventArgs e)
+        void cmdCyclePower_Click(object sender, EventArgs e)
         {
             this.Enabled = false;
-            try
-            { Program.XBox.CyclePower(); }
+            try { Program.XBox.CyclePower(); }
             catch { }
             finally
             {
@@ -245,7 +239,7 @@ namespace Yelo_Neighborhood
             }
         }
 
-        private void cmdReset_Click(object sender, EventArgs e)
+        void cmdReset_Click(object sender, EventArgs e)
         {
             this.Enabled = false;
             Program.XBox.Reset();
@@ -254,7 +248,7 @@ namespace Yelo_Neighborhood
             else Program.FindXBox(Properties.Settings.Default.XBoxIP);
         }
 
-        private void cmdShutdown_Click(object sender, EventArgs e)
+        void cmdShutdown_Click(object sender, EventArgs e)
         {
             this.Enabled = false;
             try
@@ -264,20 +258,20 @@ namespace Yelo_Neighborhood
             { Application.Exit(); }
         }
 
-        private void cmdCustomReboot_Click(object sender, EventArgs e)
+        void cmdCustomReboot_Click(object sender, EventArgs e)
         { }
         #endregion
 
         #region Tray
-        private void cmdEjectTray_Click(object sender, EventArgs e)
+        void cmdEjectTray_Click(object sender, EventArgs e)
         { Program.XBox.EjectTray(); }
 
-        private void cmdLoadTray_Click(object sender, EventArgs e)
+        void cmdLoadTray_Click(object sender, EventArgs e)
         { Program.XBox.LoadTray(); }
         #endregion
 
         #region Update
-        private void cmdCheckForUpdates_Click(object sender, EventArgs e)
+        void cmdCheckForUpdates_Click(object sender, EventArgs e)
         {
             Updater.Jobs.DownloadDirectory = new Uri("ftp://ftp.acemods.org/Halo%202%20Xbox%20Apps/Yelo%20Neighborhood/");
             Updater.Jobs.UserName = "h2apps@acemods.org";
@@ -287,7 +281,7 @@ namespace Yelo_Neighborhood
         }
         #endregion
 
-        private void listFiles_ItemActivate(object sender, EventArgs e)
+        void listFiles_ItemActivate(object sender, EventArgs e)
         {
             FileInformation selectedFile = (FileInformation)listFiles.SelectedItems[0].Tag;
             if (selectedFile == null || selectedFile.Attributes == FileAttributes.Directory)
@@ -314,16 +308,16 @@ namespace Yelo_Neighborhood
             }
         }
 
-        private void screenshotToolToolStripMenuItem_Click(object sender, EventArgs e)
+        void screenshotToolToolStripMenuItem_Click(object sender, EventArgs e)
         { Program.ScreenshotTool.ShowDialog(); }
 
-        private void launchTitleWorker_DoWork(object sender, DoWorkEventArgs e)
+        void launchTitleWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             FileInfo fi = (FileInfo)e.Argument;
             Program.XBox.LaunchTitle(fi.FullName);
         }
 
-        private void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             this.Enabled = true;
             probar.Style = ProgressBarStyle.Blocks;
@@ -331,7 +325,7 @@ namespace Yelo_Neighborhood
             RefreshFiles();
         }
 
-        private void listFiles_KeyUp(object sender, KeyEventArgs e)
+        void listFiles_KeyUp(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
@@ -341,7 +335,7 @@ namespace Yelo_Neighborhood
             }
         }
 
-        private void deleteFileWorker_DoWork(object sender, DoWorkEventArgs e)
+        void deleteFileWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             this.Enabled = false;
             string workingDir = CurrentDirectory;
@@ -354,7 +348,7 @@ namespace Yelo_Neighborhood
             }
         }
 
-        private void DeleteDirectory(FileInformation dir, string workingDir)
+        void DeleteDirectory(FileInformation dir, string workingDir)
         {
             List<FileInformation> files = Program.XBox.GetDirectoryList(Path.Combine(workingDir, dir.Name));
             foreach (FileInformation fi in files)
@@ -366,13 +360,13 @@ namespace Yelo_Neighborhood
             Program.XBox.DeleteDirectory(Path.Combine(workingDir, dir.Name));
         }
 
-        private void xBoxToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+        void xBoxToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
         {
             if (Program.XBox.Connected && Program.XBox.GetTrayState() != TrayState.Open) cmdEjectTray.Visible = true;
             else cmdEjectTray.Visible = false;
         }
 
-        private void listFiles_AfterLabelEdit(object sender, LabelEditEventArgs e)
+        void listFiles_AfterLabelEdit(object sender, LabelEditEventArgs e)
         {
             if (e.Label == "" || e.Label == null)
             {
@@ -390,10 +384,10 @@ namespace Yelo_Neighborhood
             }
         }
 
-        private void cmdRename_Click(object sender, EventArgs e)
+        void cmdRename_Click(object sender, EventArgs e)
         { listFiles.SelectedItems[0].BeginEdit(); }
 
-        private void cmdDelete_Click(object sender, EventArgs e)
+        void cmdDelete_Click(object sender, EventArgs e)
         {
             if (CurrentDirectory == "") return;
             if (MessageBox.Show("Would You Like To Permanently Delete " + listFiles.SelectedItems.Count + " File(s)?", "Comfirm.", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No) return;
@@ -403,15 +397,15 @@ namespace Yelo_Neighborhood
             deleteFileWorker.RunWorkerAsync(files);
         }
 
-        private void cmdNewFolder_Click(object sender, EventArgs e)
+        void cmdNewFolder_Click(object sender, EventArgs e)
         {
             ListViewItem newFolder = new ListViewItem("", (int)Images.Folder, listFiles.Groups[1]);
             listFiles.Items.Add(newFolder);
             newFolder.BeginEdit();
         }
-        #region Executables
 
-        private void cmdAddToScriptsMenu_Click(object sender, EventArgs e)
+        #region Executables
+        void cmdAddToScriptsMenu_Click(object sender, EventArgs e)
         {
             ExecutableTool ET = new ExecutableTool();
             Executable exe = new Executable();
@@ -426,7 +420,7 @@ namespace Yelo_Neighborhood
             }
         }
 
-        private void ExecutableEdit_Click(object sender, EventArgs e)
+        void ExecutableEdit_Click(object sender, EventArgs e)
         {
             ExecutableTool ET = new ExecutableTool();
             ET.Executable = (Executable)((ToolStripMenuItem)sender).Tag;
@@ -437,7 +431,7 @@ namespace Yelo_Neighborhood
             }
         }
 
-        private void ExecutableLaunch_Click(object sender, EventArgs e)
+        void ExecutableLaunch_Click(object sender, EventArgs e)
         {
             Executable exe = (Executable)((ToolStripMenuItem)sender).Tag;
             FileInfo fi = new FileInfo(exe.Filename);
@@ -446,19 +440,19 @@ namespace Yelo_Neighborhood
             launchTitleWorker.RunWorkerAsync(fi);
         }
 
-        private void ExecutableScript_Click(object sender, EventArgs e)
+        void ExecutableScript_Click(object sender, EventArgs e)
         {
             Executable.Script cmd = (Executable.Script)((ToolStripMenuItem)sender).Tag;
             cmd.Run("");
         }
 
-        private void ExecutableFileScript_Click(object sender, EventArgs e)
+        void ExecutableFileScript_Click(object sender, EventArgs e)
         {
             Executable.Script cmd = (Executable.Script)((ToolStripMenuItem)sender).Tag;
             cmd.Run(Path.GetFileNameWithoutExtension(listFiles.SelectedItems[0].Text));
         }
 
-        private void LoadFileScripts(string fileType)
+        void LoadFileScripts(string fileType)
         {
             mnuFiles.Items.Clear();
             mnuFiles.Items.Add(cmdRename);
@@ -490,7 +484,7 @@ namespace Yelo_Neighborhood
             }
         }
 
-        private void LoadScripts()
+        void LoadScripts()
         {
             mnuScripts.DropDown.Items.Clear();
 
@@ -553,15 +547,14 @@ namespace Yelo_Neighborhood
 
             xd.Save("Executables.xml");
         }
-
         #endregion
 
-        private void mnuFiles_Opening(object sender, CancelEventArgs e)
+        void mnuFiles_Opening(object sender, CancelEventArgs e)
         {
             if (listFiles.SelectedItems.Count != 1)
                 e.Cancel = true;
             else
                 LoadFileScripts(Path.GetExtension(listFiles.SelectedItems[0].Text));
         }
-    }
+    };
 }

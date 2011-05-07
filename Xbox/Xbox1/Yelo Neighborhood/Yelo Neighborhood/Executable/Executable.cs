@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Yelo_Neighborhood
 {
@@ -17,13 +15,11 @@ namespace Yelo_Neighborhood
         { return Name; }
 
         #region IEqualityComparer<Executable> Members
-
         public bool Equals(Executable x, Executable y)
         { return x.Filename == y.Filename; }
 
         public int GetHashCode(Executable obj)
-        { throw new NotImplementedException(); }
-
+		{ return obj.Filename.GetHashCode(); }
         #endregion
-    }
+    };
 }
