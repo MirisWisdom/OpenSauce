@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using System.Net;
 using System.IO;
@@ -44,15 +42,20 @@ namespace Updater
 
         static void wc_OpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
         {
-            StreamReader sr = new StreamReader(e.Result);
-            int latest = Convert.ToInt32(sr.ReadLine());
-            sr.Close();
+			int latest;
+			using (var sr = new StreamReader(e.Result))
+			{
+				latest = Convert.ToInt32(sr.ReadLine());
+			}
+
             if (latest > (int)e.UserState)
             {
                 if (MessageBox.Show("Update Is Available, Download Now?", "Update Available", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                 {
                     ProcessStartInfo startInfo = new ProcessStartInfo(Application.StartupPath + "\\Updater.exe");
-                    startInfo.Arguments = DownloadDirectory.OriginalString + " " + UserName + " " + Password + " " + ProgramName + " " + latest.ToString();
+					startInfo.Arguments = string.Format("{0} {1} {2} {3} {4}",
+						DownloadDirectory.OriginalString, UserName, Password, ProgramName, latest.ToString());
+
                     Process.Start(startInfo);
                     Application.Exit();
                 }

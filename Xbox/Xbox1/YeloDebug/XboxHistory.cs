@@ -1,12 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿/*
+    OpenSauceBox: SDK for Xbox User Modding
+
+    Copyright (C)  Kornner Studios (http://kornner.com)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+using System;
 using System.Diagnostics;
 using YeloDebug.Exceptions;
 
 namespace YeloDebug
 {
-
     // xbox buffers
 
     // store temp variables in memory that need to be tied to a specific xbox session
@@ -29,14 +44,12 @@ namespace YeloDebug
     //    scratchBufferSize = size;
     //}
 
-
-
     /// <summary>
     /// Keeps track of history addresses
     /// </summary>
     public class XboxHistory
     {
-        private Xbox Xbox;
+        Xbox Xbox;
 
 
         // current script buffer information
@@ -50,14 +63,14 @@ namespace YeloDebug
         /// </summary>
         public uint ScratchBuffer { get { return scratchBuffer; } }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private uint scratchBuffer = TempBuffer.BaseAddress;
+        uint scratchBuffer = TempBuffer.BaseAddress;
 
         /// <summary>
         /// Gets the size of the temporary buffer allocated on the xbox.
         /// </summary>
         public uint ScratchBufferSize { get { return scratchBufferSize; } }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private uint scratchBufferSize = 0x1000;
+        uint scratchBufferSize = 0x1000;
 
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -66,8 +79,8 @@ namespace YeloDebug
         public byte[] OriginalGamepadCode; // store our original code so we can unhook if necessary
 
 
-        public const int Size = 0x4000;
-        public const uint BaseAddress = 0x40000000;
+        const int kSize = 0x4000;
+        const uint kBaseAddress = 0x40000000;
 
         public struct Header
         {
@@ -129,14 +142,14 @@ namespace YeloDebug
             else
             {
                 // allocate memory for our history pages
-                AllocateHistoryPages(Size);
-                Xbox.SetMemory(BaseAddress, 0x6F6C6559);   // "Yelo"
+                AllocateHistoryPages(kSize);
+                Xbox.SetMemory(kBaseAddress, 0x6F6C6559);   // "Yelo"
             }
         }
 
-        private bool IsPresent()
+        bool IsPresent()
         {
-            Xbox.SendCommand("getmem addr=0x{0} length=4", Convert.ToString(BaseAddress, 16));
+            Xbox.SendCommand("getmem addr=0x{0} length=4", Convert.ToString(kBaseAddress, 16));
             string yelo = Xbox.ReceiveSocketLine().Replace("\r\n", "");
             Xbox.ReceiveSocketLine();
             return (yelo == "59656C6F");
@@ -147,7 +160,7 @@ namespace YeloDebug
         /// </summary>
         /// <param name="size"></param>
         /// <returns>Allocated address.</returns>
-        private uint AllocateHistoryPages(uint size)
+        uint AllocateHistoryPages(uint size)
         {
             // calculate actual size of allocation
             size = Util.GetAlignedPageBoundary(size);
@@ -234,5 +247,5 @@ namespace YeloDebug
             ScriptBufferSize = size;
             Xbox.SetMemory(0xB00292D0, ScriptBufferAddress);   // reroutes the ScriptBufferAddress ptr...(assumes were already running v7887 xbdm)
         }
-    }
+    };
 }

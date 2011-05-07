@@ -11,26 +11,9 @@
     <RootNamespace>Yelo_Neighborhood</RootNamespace>
     <AssemblyName>Yelo Neighborhood</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
     <ApplicationIcon>xbox_icon.ico</ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+  <Import Project="$(SolutionDir)OpenSauce_Xbox1.Cs.props" />
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -155,9 +138,9 @@
       <Project>{F5DB1C08-E8A7-4618-9E0E-0CC225597C75}</Project>
       <Name>YeloDebug</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Updater\Updater.csproj">
+    <ProjectReference Include="..\Updater\Yelo Neighborhood Updater.csproj">
       <Project>{94A21AF4-C543-47FD-99C5-B59541F77157}</Project>
-      <Name>Updater</Name>
+      <Name>Yelo Neighborhood Updater</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

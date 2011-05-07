@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Net;
 using System.IO;
@@ -23,14 +18,15 @@ namespace Updater
             Control.CheckForIllegalCrossThreadCalls = false;
         }
 
-        private void Downloader_Load(object sender, EventArgs e)
+        void Downloader_Load(object sender, EventArgs e)
         {
             WebClient wc = new WebClient();
             wc.Credentials = new NetworkCredential(Jobs.UserName, Jobs.Password);
 
-            StreamReader sr = new StreamReader(wc.OpenRead(new Uri(Jobs.DownloadDirectory, "ChangeLog.txt")));
-            txtChangeLog.Text = sr.ReadToEnd();
-            sr.Close();
+            using(var sr = new StreamReader(wc.OpenRead(new Uri(Jobs.DownloadDirectory, "ChangeLog.txt"))))
+			{
+				txtChangeLog.Text = sr.ReadToEnd();
+			}
             txtChangeLog.Enabled = true;
 
             wc.Credentials = new NetworkCredential(Jobs.UserName, Jobs.Password);
@@ -49,7 +45,7 @@ namespace Updater
             probar.Style = ProgressBarStyle.Blocks;
             SevenZipExtractor extractor = new SevenZip.SevenZipExtractor(Application.StartupPath + "\\Update.zip");
             extractor.Extracting += new EventHandler<ProgressEventArgs>(extractor_Extracting);
-            extractor.ExtractionFinished += new EventHandler(extractor_ExtractionFinished);
+            extractor.ExtractionFinished += new EventHandler<EventArgs>(extractor_ExtractionFinished);
             extractor.ExtractArchive(Application.StartupPath);
         }
 

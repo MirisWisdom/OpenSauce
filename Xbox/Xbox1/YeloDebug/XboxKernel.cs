@@ -1,7 +1,23 @@
+/*
+    OpenSauceBox: SDK for Xbox User Modding
+
+    Copyright (C)  Kornner Studios (http://kornner.com)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;   // debugger display
 using YeloDebug.Exceptions;
 
@@ -13,7 +29,7 @@ namespace YeloDebug
     public class XboxKernel
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Xbox Xbox;
+        Xbox Xbox;
 
         #region Exports
         public uint AvGetSavedDataAddress;
@@ -395,7 +411,7 @@ namespace YeloDebug
         public static uint Base { get { return 0x80010000; } }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private uint size = 0;
+        uint size = 0;
         public uint Size
         {
             get
@@ -455,7 +471,7 @@ namespace YeloDebug
         /// Retrieves kernel export table.
         /// </summary>
         /// <returns>Kernel export table.</returns>
-        private uint[] GetExportTable()
+        uint[] GetExportTable()
         {
             Xbox.ConnectionCheck();
 
@@ -482,7 +498,7 @@ namespace YeloDebug
         /// <summary>
         /// Initializes kernel exports with actual addresses.
         /// </summary>
-        private void InitializeKernelExports()
+        void InitializeKernelExports()
         {
             uint[] ExportTable = GetExportTable();
 
@@ -859,7 +875,7 @@ namespace YeloDebug
         }
 
         // todo: save export table from function above and parse thorugh it
-        private uint GetExportAddress(uint ordinal)
+        uint GetExportAddress(uint ordinal)
         {
             // traverse through export table info
             uint addr = Xbox.GetUInt32(Base + 0x3C);
@@ -870,8 +886,6 @@ namespace YeloDebug
             // grab export address
             return Base + Xbox.GetUInt32(addr + (ordinal - 1) * 4);
         }
-
         #endregion
     };
-
 }

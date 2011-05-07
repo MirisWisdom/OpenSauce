@@ -1,7 +1,23 @@
-﻿using System;
+﻿/*
+    OpenSauceBox: SDK for Xbox User Modding
+
+    Copyright (C)  Kornner Studios (http://kornner.com)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;
 using YeloDebug.Exceptions;
 
@@ -10,7 +26,7 @@ namespace YeloDebug
     public class XboxGamepad
     {
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Xbox Xbox;
+        Xbox Xbox;
 
 		// keep this stuff locally to avoid repeatedly grabbing it off of the xbox...
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
@@ -22,7 +38,7 @@ namespace YeloDebug
 		/// Searches xbox memory for XInputGetState(). Average execution time of 15ms.
 		/// </summary>
 		/// <returns></returns>
-		private uint GetXInputGetStateAddress()
+		uint GetXInputGetStateAddress()
 		{
 			// assumes everything we need is in header...why would they put it elsewhere???
 
@@ -42,7 +58,7 @@ namespace YeloDebug
 				uint SegSize = header.ReadUInt32();
 				header.BaseStream.Position += 8;
 				header.BaseStream.Position = header.ReadUInt32() - 0x10000;
-				string SegName = ASCIIEncoding.ASCII.GetString(header.ReadBytes(3));
+				string SegName = System.Text.ASCIIEncoding.ASCII.GetString(header.ReadBytes(3));
 
 				if (SegName.Equals("XPP"))
 				{
@@ -64,7 +80,7 @@ namespace YeloDebug
         /// <param name="oldState"></param>
         /// <param name="newState"></param>
         /// <returns></returns>
-        private bool StateChanged(InputState oldState, InputState newState)
+        bool StateChanged(InputState oldState, InputState newState)
         {
             for (int i = 0; i < 8; i++)
                 if (oldState.AnalogButtons[i] != newState.AnalogButtons[i])
@@ -303,6 +319,5 @@ namespace YeloDebug
         {
             this.Xbox = xbox;
         }
-
-    }
+    };
 }
