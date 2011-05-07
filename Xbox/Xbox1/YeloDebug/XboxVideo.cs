@@ -1,15 +1,23 @@
-﻿using System;
+﻿/*
+    OpenSauceBox: SDK for Xbox User Modding
+
+    Copyright (C)  Kornner Studios (http://kornner.com)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+using System;
 using System.IO;
-using System.Text;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Net;
-using System.Net.Sockets;
-using System.Net.NetworkInformation;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Diagnostics;   // debugger display
 
 namespace YeloDebug
@@ -38,7 +46,6 @@ namespace YeloDebug
     public class XboxVideoStream
     {
         // cache flag = 0x80
-
 
         public enum VideoSize
         {
@@ -97,46 +104,46 @@ namespace YeloDebug
 
         #region Fields
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private Xbox Xbox;
+        Xbox Xbox;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private byte[] FrameBuffer = new byte[64 + 640 * 480 * 4];
+        byte[] FrameBuffer = new byte[64 + 640 * 480 * 4];
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private byte[] BitmapBuffer = new byte[56 + 640 * 480 * 4];
+        byte[] BitmapBuffer = new byte[56 + 640 * 480 * 4];
         #endregion
 
         #region Properties
         public VideoSize Size { get { return size; } }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private VideoSize size;
+        VideoSize size;
 
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private VideoQuality Quality;
+        VideoQuality Quality;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private VideoPresentationInterval Interval;
+        VideoPresentationInterval Interval;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private uint Width;
+        uint Width;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private uint Height;
+        uint Height;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private uint BitsPerPixel;
+        uint BitsPerPixel;
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private uint FrameSize;
+        uint FrameSize;
 
         // minimum time between frames - can be used to skip some
-        private uint timeBetweenFrames = 0;
+        uint timeBetweenFrames = 0;
 
         /// <summary>
         /// Current frame in the video stream
         /// </summary>
         public uint FrameNumber { get { return frameNumber; } }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private uint frameNumber;
+        uint frameNumber;
 
 
         public bool IsActive { get { return isActive; } }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private bool isActive = false;
+        bool isActive = false;
         #endregion
 
         #region Constructors
@@ -263,7 +270,7 @@ namespace YeloDebug
         /// Advances to the next frame in the video stream.  This also controls the rate at which the game plays.
         /// </summary>
         /// <returns></returns>
-        public Image NextFrame()
+		public System.Drawing.Image NextFrame()
         {
             try
             {
@@ -330,7 +337,7 @@ namespace YeloDebug
                         bitmapWriter.Write(bmpRow);
                     }
                     bitmapWriter.Write((ushort)0);
-                    return Image.FromStream(bitmapStream);
+					return System.Drawing.Image.FromStream(bitmapStream);
                 }
             }
             catch
@@ -341,141 +348,5 @@ namespace YeloDebug
             return null;
         }
         #endregion
-    }
-
-    public partial class Xbox : IDisposable
-    {
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private byte[] FrameBuffer = new byte[64 + 640 * 480 * 4];
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private byte[] BitmapBuffer = new byte[56 + 640 * 480 * 4];
-
-
-        public SurfaceInformation GetSurfaceInformation(Surface surface)
-        {
-            SurfaceInformation si = new SurfaceInformation();
-            StatusResponse response = SendCommand("getsurf id={0}", (int)surface);
-            List<object> info = Util.ExtractResponseInformation(response.Message);
-            si.Size = (uint)info[0];
-            si.Format = (uint)info[1];
-            si.Address = (uint)info[2];
-            si.PushBufferPut = (uint)info[3];
-            return si;
-        }
-
-        /// <summary>
-        /// Pauses the game and returns an address to the current framebuffer once it's locked.
-        /// </summary>
-        /// <returns></returns>
-        public uint LockGPU()
-        {
-            Pause();
-            DateTime before = DateTime.Now;
-
-            ulong ptrs = GetUInt64(0xB0033DA0);
-            uint ptr1 = (uint)(ptrs >> 32);
-            uint ptr2 = (uint)(ptrs & 0xFFFFFFFF);
-
-            // waits until present queue is empty (flipcounter == framecounter)
-            while (GetUInt32(ptr1) != GetUInt32(ptr2))
-            {
-                TimeSpan elapse = DateTime.Now - before;
-                if (elapse.TotalMilliseconds > Timeout)
-                    throw new TimeoutException();
-                Thread.Sleep(SleepTime);
-            }
-            return GetUInt32(0xFD600800) | 0x80000000;
-        }
-
-        /// <summary>
-        /// Takes a screenshot of the xbox display.
-        /// </summary>
-        public Image Screenshot()
-        {
-            int read = 0;
-            MemoryStream.Read(LockGPU(), FrameBuffer.Length, ref FrameBuffer, 0, ref read);
-            Continue();
-            int[] block = {
-							  0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15,
-							  18, 19, 16, 17, 22, 23, 20, 21, 26, 27, 24, 25, 30, 31, 28, 29,
-							  33, 34, 35, 32, 37, 38, 39, 36, 41, 42, 43, 40, 45, 46, 47, 44,
-							  51, 48, 49, 50, 55, 52, 53, 54, 59, 56, 57, 58, 63, 60, 61, 62
-						  };
-            int swiz = 0, index = 0, offset = 0;
-            int deswiz = 1226240;
-            int i, j, k, l;
-            for (i = 0; i < 30; i++)
-            {
-                for (j = 0; j < 10; j++)
-                {
-                    if ((i & 1) == 1)
-                        if ((j & 1) == 1) deswiz -= 256;
-                        else deswiz += 256;
-
-                    for (l = 0; l < 4; l++)
-                    {
-                        for (k = 0; k < 16; k++)
-                        {
-                            offset = (((int)(block[index] & 0xFFFFFFFE) >> 2) * 256) + ((block[index] & 3) * 16);
-                            index = (index + 1) & 63;
-                            for (int v = 0; v < 15; v++)
-                                if ((v & 3) != 3)
-                                {
-                                    BitmapBuffer[deswiz + v] = FrameBuffer[swiz + offset + v];
-                                    BitmapBuffer[deswiz - 2560 + v] = FrameBuffer[swiz + offset + 64 + v];
-                                    BitmapBuffer[deswiz - 5120 + v] = FrameBuffer[swiz + offset + 128 + v];
-                                    BitmapBuffer[deswiz - 7680 + v] = FrameBuffer[swiz + offset + 192 + v];
-                                }
-                            deswiz += 16;
-                        }
-                        deswiz -= 10496;
-                    }
-                    deswiz += 41216;
-                    swiz += 4096;
-
-                    if ((i & 1) == 1)
-                        if ((j & 1) == 1) deswiz += 256;
-                        else deswiz -= 256;
-                }
-                deswiz -= 43520;
-            }
-
-            using (System.IO.MemoryStream ms = new System.IO.MemoryStream())
-            using (BinaryWriter bw = new BinaryWriter(ms))
-            {
-                // BITMAPFILEHEADER
-                bw.Write(new char[] { 'B', 'M' }); // ushort bfType - BM (19778)
-                bw.Write((uint)824); // uint bfSize - Size of the file (bytes) - Header + ImageData + (ushort)0
-                bw.Write((ushort)0); // ushort bfReserved1 - Zero
-                bw.Write((ushort)0); // ushort bfReserved2 - Zero
-                bw.Write((uint)54); // uint bfOffBits - Offset to image data
-                // BITMAPINFOHEADER
-                bw.Write((uint)40); // uint biSize - Size of BITMAPINFOHEADER (bytes)
-                bw.Write((uint)640); // uint biWidth - Width of image (pixels)
-                bw.Write((uint)480); // uint biHeight - Height of image (pixels)
-                bw.Write((ushort)1); // ushort biPlanes - Number of planes of the target device (usually one)
-                bw.Write((ushort)24); // ushort biBitCount - Bits per pixel (1=black/white, 4=16 colors, 8=256 colors, 24=16.7 million colors)
-                bw.Write((uint)0); // uint biCompression - Type of compression (0=None)
-                bw.Write((uint)770); // uint biSizeImage - Size of image data (bytes) - Zero if no compression
-                bw.Write((uint)2834); // uint biXPelsPerMeter - Hoizontal pixels per meter (usually zero) (2834=72 Pixels Per Inch)
-                bw.Write((uint)2834); // uint biYPelsPerMeter - Vertical pixels per meter (usually zero) (2834=72 Pixels Per Inch)
-                bw.Write((uint)0); // uint biClrUsed - Number of colors used - If zero, calculated by biBitCount
-                bw.Write((uint)0); // uint biClrImportant - Number of "important" colors (0=All)
-
-                for (int off = 0; off < 1228800; off += 2560)
-                {
-                    for (int i2 = 0; i2 < 2560; i2 += 4)
-                    {
-                        bw.Write(BitmapBuffer[off + i2]);
-                        bw.Write(BitmapBuffer[off + i2 + 1]);
-                        bw.Write(BitmapBuffer[off + i2 + 2]);
-                    }
-                }
-                bw.Write((ushort)0);
-                bw.Flush();
-
-                return Bitmap.FromStream(ms);
-            }
-        }
     }
 }

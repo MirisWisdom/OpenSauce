@@ -1,31 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿/*
+    OpenSauceBox: SDK for Xbox User Modding
 
-  //TXboxAdpcmDecoder  0.1.3
-  //by Luigi Auriemma
-  //e-mail: aluigi@autistici.org
-  //web:    aluigi.org
+    Copyright (C)  Kornner Studios (http://kornner.com)
 
-  //original code from the TXboxAdpcmDecoder class of Benjamin Haisch (Revision 2 with stereo support)
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+using System;
+
+//TXboxAdpcmDecoder  0.1.3
+//by Luigi Auriemma
+//e-mail: aluigi@autistici.org
+//web:    aluigi.org
+
+// based on code from the TXboxAdpcmDecoder class of Benjamin Haisch (Revision 2 with stereo support)
 
 
 namespace YeloDebug
 {
-
     class XboxAudioStream
     {
-        private uint XBOX_ADPCM_SRCSIZE = 36;
-        private uint XBOX_ADPCM_DSTSIZE = 130;
+        const uint kXboxAdpcmSrcSize = 36;
+        const uint kXboxAdpcmDstSize = 130;
 
-        private struct AdpcmState
-        {
-            public sbyte Index;
-            public short StepSize;
-            public short Predictor;
-        }
-
-        private short[] StepTable = 
+        static readonly short[] kStepTable = 
         {
             7, 8, 9, 10, 11, 12, 13, 14, 16, 17,
             19, 21, 23, 25, 28, 31, 34, 37, 41, 45,
@@ -38,20 +46,27 @@ namespace YeloDebug
             15289, 16818, 18500, 20350, 22385, 24623, 27086, 29794, 32767
         };
 
-        private sbyte[] IndexTable = 
+        static readonly sbyte[] kIndexTable = 
         {
             -1, -1, -1, -1, 2, 4, 6, 8,
             -1, -1, -1, -1, 2, 4, 6, 8
         };
 
-        private int Delimit(int value, int high, int low)
+		struct AdpcmState
+		{
+			public sbyte Index;
+			public short StepSize;
+			public short Predictor;
+		};
+
+        static int Delimit(int value, int high, int low)
         {
             if (value > high) return high;
             else if (value < 1) return low;
             else return value;
         }
 
-        private int DecodeSample(int code, ref AdpcmState state)
+        static int DecodeSample(int code, ref AdpcmState state)
         {
             int Delta, Result;
             Delta = state.StepSize >> 3;
@@ -61,14 +76,14 @@ namespace YeloDebug
             if ((code & 8) > 0) Delta = -Delta;
             Result = state.Predictor + Delta;
             Result = Delimit(Result, short.MaxValue, short.MinValue);
-            state.Index += IndexTable[code];
+            state.Index += kIndexTable[code];
             state.Index = (sbyte)Delimit(state.Index, 88, 0);
-            state.StepSize = StepTable[state.Index];
+            state.StepSize = kStepTable[state.Index];
             state.Predictor = (short)Result;
             return Result;
         }
 
-        private uint DecodeMemory(ref ushort[] input, uint length, ref ushort[] output, int channels)
+        static uint DecodeMemory(ref ushort[] input, uint length, ref ushort[] output, int channels)
         {
             AdpcmState[] adpcmState = new AdpcmState[channels];
             short[][] buffers = new short[][] { new short[channels], new short[8] };
@@ -78,7 +93,7 @@ namespace YeloDebug
             int inIndex = 0;
             int outIndex = 0;
 
-            length = (uint)((length / XBOX_ADPCM_SRCSIZE) / channels);
+            length = (uint)((length / kXboxAdpcmSrcSize) / channels);
 
             for (outLength = 0; length-- > 0; outLength++)
             {
@@ -124,21 +139,12 @@ namespace YeloDebug
                 }
             }
 
-            return (uint)(outLength * XBOX_ADPCM_DSTSIZE * channels);
+            return (uint)(outLength * kXboxAdpcmDstSize * channels);
         }
 
-        private byte[] Decode(byte[] xboxAdpcmData)
+        static uint GuessOutputSize(uint sourceSize)
         {
-
-
-
-
-            return null;
-        }
-
-        private uint GuessOutputSize(uint sourceSize)
-        {
-            return (uint)((sourceSize / XBOX_ADPCM_SRCSIZE) * XBOX_ADPCM_DSTSIZE);
+            return (uint)((sourceSize / kXboxAdpcmSrcSize) * kXboxAdpcmDstSize);
         }
 
         //public uint GetDirectSoundPlayAddress()
@@ -184,6 +190,5 @@ namespace YeloDebug
         //    }
         //    throw new Exception("Unable to find XInputGetState() in memory, you must manually specify this address instead if you wish to initialize a controller hook.");
         //}
-
     }
 }
