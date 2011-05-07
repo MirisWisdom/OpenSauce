@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using YeloDebug;
 using System.Threading;
@@ -46,41 +45,44 @@ namespace Yelo_Neighborhood
         {
             if (!File.Exists("Executables.xml"))
             {
-                StreamWriter sw = File.CreateText("Executables.xml");
-                sw.WriteLine("<Executables></Executables>");
-                sw.Close();
+				using (var sw = File.CreateText("Executables.xml"))
+				{
+					sw.WriteLine("<Executables></Executables>");
+				}
             }
-            XmlReader xr = XmlReader.Create(File.OpenRead("Executables.xml"));
-            Executable workingExe = null;
-            while (!xr.EOF)
-            {
-                xr.Read();
-                switch (xr.Name)
-                {
-                    case "Executable":
-                        if (xr.NodeType == XmlNodeType.EndElement) continue;
-                        workingExe = new Executable() { Name = xr.GetAttribute("Name"), Filename = xr.GetAttribute("Filename") };
-                        _executables.Add(workingExe);
-                        break;
-                    case "Script":
-                        if (xr.NodeType == XmlNodeType.EndElement) continue;
-                        Executable.Script script = new Executable.Script();
-                        script.Name = xr.GetAttribute("Name");
-                        script.FileType = xr.GetAttribute("FileType");
-                        script.Code = xr.ReadInnerXml();
-                        workingExe.Scripts.Add(script);
-                        break;
-                }
-            }
+			using (var xr = XmlReader.Create(File.OpenRead("Executables.xml")))
+			{
+				Executable workingExe = null;
+				while (!xr.EOF)
+				{
+					xr.Read();
+					switch (xr.Name)
+					{
+						case "Executable":
+							if (xr.NodeType == XmlNodeType.EndElement) continue;
+							workingExe = new Executable() { Name = xr.GetAttribute("Name"), Filename = xr.GetAttribute("Filename") };
+							_executables.Add(workingExe);
+							break;
+						case "Script":
+							if (xr.NodeType == XmlNodeType.EndElement) continue;
+							Executable.Script script = new Executable.Script();
+							script.Name = xr.GetAttribute("Name");
+							script.FileType = xr.GetAttribute("FileType");
+							script.Code = xr.ReadInnerXml();
+							workingExe.Scripts.Add(script);
+							break;
+					}
+				}
+			}
         }
 
-        private static void AsyncConnect(string xbox)
+        static void AsyncConnect(string xbox)
         { new Thread(new ParameterizedThreadStart(Connect)).Start(xbox); }
 
-        private static void AsyncConnect()
+        static void AsyncConnect()
         { new Thread(new ThreadStart(Connect)).Start(); }
 
-        private static void Connect(object xbox)
+        static void Connect(object xbox)
         {
             try
             {
@@ -91,7 +93,7 @@ namespace Yelo_Neighborhood
             { _xboxLocator.Hide(); }
         }
 
-        private static void Connect()
+        static void Connect()
         {
             try
             {
@@ -130,5 +132,5 @@ namespace Yelo_Neighborhood
             }
             else new Settings().ShowDialog();
         }
-    }
+    };
 }

@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -34,21 +30,21 @@ namespace Yelo_Neighborhood
             InitializeComponent();
         }
 
-        private void SetScriptEnabled(bool enabled)
+        void SetScriptEnabled(bool enabled)
         {
             cmdEditScript.Enabled = enabled;
             cmdDeleteScript.Enabled = enabled;
             cboScripts.Enabled = enabled;
         }
 
-        private void cmdSaveClose_Click(object sender, EventArgs e)
+        void cmdSaveClose_Click(object sender, EventArgs e)
         {
             Executable.Filename = txtFilename.Text;
             Executable.Name = txtExeName.Text;
             DialogResult = DialogResult.OK; 
         }
 
-        private void cmdEditScript_Click(object sender, EventArgs e)
+        void cmdEditScript_Click(object sender, EventArgs e)
         {
             Executable.Script cmd = (Executable.Script)cboScripts.SelectedItem;
             ScriptTool ST = new ScriptTool();
@@ -56,14 +52,14 @@ namespace Yelo_Neighborhood
             ST.ShowDialog();
         }
 
-        private void cmdDeleteScript_Click(object sender, EventArgs e)
+        void cmdDeleteScript_Click(object sender, EventArgs e)
         {
             Executable.Script cmd = (Executable.Script)cboScripts.SelectedItem;
             _executable.Scripts.Remove(cmd);
             cboScripts.Items.Remove(cmd);
         }
 
-        private void cmdNewScript_Click(object sender, EventArgs e)
+        void cmdNewScript_Click(object sender, EventArgs e)
         {
             Executable.Script cmd = new Executable.Script();
             ScriptTool ST = new ScriptTool();
@@ -76,5 +72,5 @@ namespace Yelo_Neighborhood
                 SetScriptEnabled(true);
             }
         }
-    }
+    };
 }

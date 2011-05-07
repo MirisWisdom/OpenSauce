@@ -1,21 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 using YeloDebug;
-using System.Drawing.Imaging;
 using System.IO;
 
 namespace Yelo_Neighborhood
 {
     public partial class ScreenshotTool : Form
     {
-        List<Image> Images = new List<Image>();
+		List<System.Drawing.Image> Images = new List<System.Drawing.Image>();
         ImageFormatSelector IFS = new ImageFormatSelector();
 
         public ScreenshotTool()
@@ -31,7 +26,7 @@ namespace Yelo_Neighborhood
             listImages.Items.Add(new ListViewItem(DateTime.Now.ToString(), imageList.Images.Count, listImages.Groups[0]));
             Pauser.Reset();
             if(LiveStreamRunning) Waiter.WaitOne();
-            Image screenshot = Program.XBox.Screenshot();
+			System.Drawing.Image screenshot = Program.XBox.Screenshot();
             Pauser.Set();
             Images.Add(screenshot);
             imageList.Images.Add(screenshot);
@@ -45,7 +40,7 @@ namespace Yelo_Neighborhood
             cmdSaveSelected.Enabled = true;
         }
 
-        private void ScreenshotTool_KeyDown(object sender, KeyEventArgs e)
+        void ScreenshotTool_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             { 
@@ -55,13 +50,13 @@ namespace Yelo_Neighborhood
             }
         }
 
-        private void captureF5ToolStripMenuItem_Click(object sender, EventArgs e)
+        void captureF5ToolStripMenuItem_Click(object sender, EventArgs e)
         { TakeScreenshot(); }
 
-        private void listImages_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        void listImages_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         { imageBox.BackgroundImage = Images[e.Item.ImageIndex]; }
 
-        private void checkLiveStream_CheckedChanged(object sender, EventArgs e)
+        void checkLiveStream_CheckedChanged(object sender, EventArgs e)
         {
             if (checkLiveStream.Checked)
             {
@@ -78,7 +73,7 @@ namespace Yelo_Neighborhood
         static bool LiveStreamRunning = false;
         static ManualResetEvent Pauser = new ManualResetEvent(true);
         static ManualResetEvent Waiter = new ManualResetEvent(false);
-        private static void LiveStream(object pictureBox)
+        static void LiveStream(object pictureBox)
         {
             PictureBox imageBox = (PictureBox)pictureBox;
             Program.XBox.SetFileCacheSize(1);
@@ -96,7 +91,7 @@ namespace Yelo_Neighborhood
             Program.ScreenshotTool.checkLiveStream.Checked = false;
         }
 
-        private void ScreenshotTool_FormClosing(object sender, FormClosingEventArgs e)
+        void ScreenshotTool_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)
             {
@@ -106,7 +101,7 @@ namespace Yelo_Neighborhood
             LiveStreamRunning = false;
         }
 
-        private void cmdSaveChecked_Click(object sender, EventArgs e)
+        void cmdSaveChecked_Click(object sender, EventArgs e)
         {
             if (FBD.ShowDialog() != DialogResult.OK) return;
             if (IFS.ShowDialog() != DialogResult.OK) return;
@@ -127,7 +122,7 @@ namespace Yelo_Neighborhood
             }
         }
 
-        private void cmdSaveSelected_Click(object sender, EventArgs e)
+        void cmdSaveSelected_Click(object sender, EventArgs e)
         {
             if (FBD.ShowDialog() != DialogResult.OK) return;
             if (IFS.ShowDialog() != DialogResult.OK) return;
@@ -136,21 +131,25 @@ namespace Yelo_Neighborhood
             {
                 string name = lvt.Text;
                 foreach (char c in Path.GetInvalidFileNameChars()) name = name.Replace(c, '_');
-                MemoryStream ms = new MemoryStream();
-                Images[lvt.ImageIndex].Save(ms, IFS.ImageFormat);
-                byte[] data = new byte[(int)ms.Length];
-                ms.Read(data, 0, data.Length);
-                ms.Close();
-                FileStream fs = new FileStream(Path.Combine(FBD.SelectedPath, name) + "." + IFS.ImageFormat.ToString().ToLower(), FileMode.Create);
-                fs.Write(data, 0, data.Length);
-                fs.Flush();
-                fs.Close();
+
+				byte[] data;
+				using (var ms = new MemoryStream())
+				{
+					Images[lvt.ImageIndex].Save(ms, IFS.ImageFormat);
+					data = new byte[(int)ms.Length];
+					ms.Read(data, 0, data.Length);
+				}
+
+                using (var fs = new FileStream(Path.Combine(FBD.SelectedPath, name) + "." + IFS.ImageFormat.ToString().ToLower(), FileMode.Create))
+				{
+					fs.Write(data, 0, data.Length);
+                }
             }
         }
 
-        private void cboViewStyle_SelectedIndexChanged(object sender, EventArgs e)
+        void cboViewStyle_SelectedIndexChanged(object sender, EventArgs e)
         {
             imageBox.BackgroundImageLayout = (ImageLayout)cboViewStyle.SelectedItem;
         }
-    }
+    };
 }

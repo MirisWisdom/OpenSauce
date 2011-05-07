@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Yelo_Neighborhood
@@ -31,12 +27,12 @@ namespace Yelo_Neighborhood
             InitializeComponent();
         }
 
-        private void cmdSaveClose_Click(object sender, EventArgs e)
+        void cmdSaveClose_Click(object sender, EventArgs e)
         {
             _script.Code = txtScript.Text;
             _script.Name = txtName.Text;
             _script.FileType = txtFileType.Text;
             DialogResult = DialogResult.OK;
         }
-    }
+    };
 }

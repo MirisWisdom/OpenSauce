@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Yelo_Neighborhood
@@ -19,10 +14,10 @@ namespace Yelo_Neighborhood
             txtIP.Text = Properties.Settings.Default.XBoxIP;
         }
 
-        private void checkAutoDiscover_CheckedChanged(object sender, EventArgs e)
+        void checkAutoDiscover_CheckedChanged(object sender, EventArgs e)
         { txtIP.Enabled = !checkAutoDiscover.Checked; }
 
-        private void cmdConnect_Click(object sender, EventArgs e)
+        void cmdConnect_Click(object sender, EventArgs e)
         {
             Properties.Settings.Default.AutoDiscover = checkAutoDiscover.Checked;
             Properties.Settings.Default.XBoxIP = txtIP.Text;
