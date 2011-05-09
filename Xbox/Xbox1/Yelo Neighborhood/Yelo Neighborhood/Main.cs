@@ -11,7 +11,7 @@ namespace Yelo_Neighborhood
 {
     public partial class Main : Form
     {
-        public int Version { get { return 6; } }
+        public int Version { get { return 7; } }
 
         public enum Images
         {
@@ -273,9 +273,8 @@ namespace Yelo_Neighborhood
         #region Update
         void cmdCheckForUpdates_Click(object sender, EventArgs e)
         {
-            Updater.Jobs.DownloadDirectory = new Uri("http://open-sauce.googlecode.com/hg/Xbox/Xbox1/Yelo%20Neighborhood/Latest%20Release/");
-            Updater.Jobs.UserName = "_";
-            Updater.Jobs.Password = "_";
+            Updater.Jobs.VersionDownloadDirectory = new Uri("http://open-sauce.googlecode.com/hg/Xbox/Xbox1/Yelo%20Neighborhood/Latest%20Release/");
+            Updater.Jobs.UpdateDownloadDirectory = new Uri("http://open-sauce.googlecode.com/files/");
             Updater.Jobs.ProgramName = "Yelo%20Neighborhood";
             Updater.Jobs.CheckForUpdates(Version);
         }
