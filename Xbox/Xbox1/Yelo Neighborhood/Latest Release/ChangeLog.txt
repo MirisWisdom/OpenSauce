@@ -1,4 +1,4 @@
-v5
+v6
 Yelo Neighborhood is now part of Open-Sauce
-Therefore The Update Server Is Now:
+Therefore the Update Server is now:
 http://code.google.com/p/open-sauce/
