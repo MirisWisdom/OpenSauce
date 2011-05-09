@@ -8,10 +8,9 @@ namespace Updater
 {
     public static class Jobs
     {
-        public static Uri DownloadDirectory { get; set; }
+        public static Uri VersionDownloadDirectory { get; set; }
+        public static Uri UpdateDownloadDirectory { get; set; }
         public static string ProgramName { get; set; }
-        public static string UserName { get; set; }
-        public static string Password { get; set; }
 
         /// <summary>
         /// The main entry point for the application.
@@ -22,22 +21,20 @@ namespace Updater
             if (args.Length == 0) return;
             else
             {
-                DownloadDirectory = new Uri(args[0]);
-                UserName = args[1];
-                Password = args[2];
-                ProgramName = args[3];
+                VersionDownloadDirectory = new Uri(args[0]);
+                UpdateDownloadDirectory = new Uri(args[1]);
+                ProgramName = args[2];
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new Downloader(args[4]));
+                Application.Run(new Downloader(args[3]));
             }
         }
 
         public static void CheckForUpdates(int versionNumber)
         { 
             WebClient wc = new WebClient();
-            wc.Credentials = new NetworkCredential(Jobs.UserName, Jobs.Password);
             wc.OpenReadCompleted += new OpenReadCompletedEventHandler(wc_OpenReadCompleted);
-            wc.OpenReadAsync(new Uri(DownloadDirectory, "Version.txt"), versionNumber);
+            wc.OpenReadAsync(new Uri(VersionDownloadDirectory, "Version.txt"), versionNumber);
         }
 
         static void wc_OpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
@@ -53,8 +50,8 @@ namespace Updater
                 if (MessageBox.Show("Update Is Available, Download Now?", "Update Available", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                 {
                     ProcessStartInfo startInfo = new ProcessStartInfo(Application.StartupPath + "\\Updater.exe");
-					startInfo.Arguments = string.Format("{0} {1} {2} {3} {4}",
-						DownloadDirectory.OriginalString, UserName, Password, ProgramName, latest.ToString());
+                    startInfo.Arguments = string.Format("{0} {1} {2} {3}",
+                        VersionDownloadDirectory.OriginalString, UpdateDownloadDirectory.OriginalString, ProgramName, latest.ToString());
 
                     Process.Start(startInfo);
                     Application.Exit();

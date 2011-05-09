@@ -1,4 +1,10 @@
-v6
+THIS UPDATE MUST BE APPLIED MANUALLY
+
+http://open-sauce.googlecode.com/files/Yelo%20Neighborhood%20v7.zip
+
+v7
+Changes To Update System
+
 Yelo Neighborhood is now part of Open-Sauce
 Therefore the Update Server is now:
 http://code.google.com/p/open-sauce/

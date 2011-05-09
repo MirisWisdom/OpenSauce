@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Net;
 using System.IO;
 using SevenZip;
+using System.Collections.Generic;
 
 namespace Updater
 {
@@ -21,17 +22,14 @@ namespace Updater
         void Downloader_Load(object sender, EventArgs e)
         {
             WebClient wc = new WebClient();
-            wc.Credentials = new NetworkCredential(Jobs.UserName, Jobs.Password);
 
-            using(var sr = new StreamReader(wc.OpenRead(new Uri(Jobs.DownloadDirectory, "ChangeLog.txt"))))
+            using (var sr = new StreamReader(wc.OpenRead(new Uri(Jobs.VersionDownloadDirectory, "ChangeLog.txt"))))
 			{
-				txtChangeLog.Text = sr.ReadToEnd();
+				lblChangeLog.Text = sr.ReadToEnd();
 			}
-            txtChangeLog.Enabled = true;
 
-            wc.Credentials = new NetworkCredential(Jobs.UserName, Jobs.Password);
             wc.DownloadFileCompleted += new AsyncCompletedEventHandler(wc_DownloadFileCompleted);
-            wc.DownloadFileAsync(new Uri(Jobs.DownloadDirectory, Version + ".zip"), Application.StartupPath + "\\Update.zip");
+            wc.DownloadFileAsync(new Uri(Jobs.UpdateDownloadDirectory, Jobs.ProgramName + "%20v" + Version + "%20Update.zip"), Application.StartupPath + "\\Update.zip");
         }
 
         void wc_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
@@ -46,7 +44,8 @@ namespace Updater
             SevenZipExtractor extractor = new SevenZip.SevenZipExtractor(Application.StartupPath + "\\Update.zip");
             extractor.Extracting += new EventHandler<ProgressEventArgs>(extractor_Extracting);
             extractor.ExtractionFinished += new EventHandler<EventArgs>(extractor_ExtractionFinished);
-            extractor.ExtractArchive(Application.StartupPath);
+
+            extractor.BeginExtractArchive(Application.StartupPath);
         }
 
         void extractor_Extracting(object sender, ProgressEventArgs e)
