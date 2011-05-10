@@ -61,6 +61,7 @@
             this.Controls.Add(this.cboFormats);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "ImageFormatSelector";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Select Image Format";
             this.ResumeLayout(false);
 
