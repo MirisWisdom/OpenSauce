@@ -5,12 +5,13 @@ using System.Windows.Forms;
 using System.Threading;
 using YeloDebug;
 using System.IO;
+using System.Drawing;
 
 namespace Yelo_Neighborhood
 {
     public partial class ScreenshotTool : Form
     {
-		List<System.Drawing.Image> Images = new List<System.Drawing.Image>();
+		List<Image> Images = new List<Image>();
         ImageFormatSelector IFS = new ImageFormatSelector();
 
         public ScreenshotTool()
@@ -23,10 +24,11 @@ namespace Yelo_Neighborhood
 
         public void TakeScreenshot()
         {
-            listImages.Items.Add(new ListViewItem(DateTime.Now.ToString(), imageList.Images.Count, listImages.Groups[0]));
+            DateTime now = DateTime.Now;
+            listImages.Items.Add(new ListViewItem(now.ToString() + " " + now.Second.ToString() + "." + now.Millisecond.ToString(), imageList.Images.Count, listImages.Groups[0]));
             Pauser.Reset();
             if(LiveStreamRunning) Waiter.WaitOne();
-			System.Drawing.Image screenshot = Program.XBox.Screenshot();
+			Image screenshot = Program.XBox.Screenshot();
             Pauser.Set();
             Images.Add(screenshot);
             imageList.Images.Add(screenshot);
@@ -103,6 +105,7 @@ namespace Yelo_Neighborhood
 
         void cmdSaveChecked_Click(object sender, EventArgs e)
         {
+            if (listImages.CheckedItems.Count == 0) return;
             if (FBD.ShowDialog() != DialogResult.OK) return;
             if (IFS.ShowDialog() != DialogResult.OK) return;
 
@@ -110,20 +113,18 @@ namespace Yelo_Neighborhood
             {
                 string name = lvt.Text;
                 foreach (char c in Path.GetInvalidFileNameChars()) name = name.Replace(c, '_');
-                MemoryStream ms = new MemoryStream();
-                Images[lvt.ImageIndex].Save(ms, IFS.ImageFormat);
-                byte[] data = new byte[(int)ms.Length];
-                ms.Read(data, 0, data.Length);
-                ms.Close();
-                FileStream fs = new FileStream(Path.Combine(FBD.SelectedPath, name) + "." + IFS.ImageFormat.ToString().ToLower(), FileMode.Create);
-                fs.Write(data, 0, data.Length);
-                fs.Flush();
-                fs.Close();
+
+                Image outImage = new Bitmap(Images[lvt.ImageIndex], Images[0].Width, Images[0].Height);
+                using (var fs = new FileStream(Path.Combine(FBD.SelectedPath, name) + "." + IFS.ImageFormat.ToString().ToLower(), FileMode.Create))
+                {
+                    outImage.Save(fs, IFS.ImageFormat);
+                }
             }
         }
 
         void cmdSaveSelected_Click(object sender, EventArgs e)
         {
+            if (listImages.SelectedItems.Count == 0) return;
             if (FBD.ShowDialog() != DialogResult.OK) return;
             if (IFS.ShowDialog() != DialogResult.OK) return;
 
@@ -132,17 +133,10 @@ namespace Yelo_Neighborhood
                 string name = lvt.Text;
                 foreach (char c in Path.GetInvalidFileNameChars()) name = name.Replace(c, '_');
 
-				byte[] data;
-				using (var ms = new MemoryStream())
-				{
-					Images[lvt.ImageIndex].Save(ms, IFS.ImageFormat);
-					data = new byte[(int)ms.Length];
-					ms.Read(data, 0, data.Length);
-				}
-
+                Image outImage = new Bitmap(Images[lvt.ImageIndex], Images[0].Width, Images[0].Height);
                 using (var fs = new FileStream(Path.Combine(FBD.SelectedPath, name) + "." + IFS.ImageFormat.ToString().ToLower(), FileMode.Create))
 				{
-					fs.Write(data, 0, data.Length);
+                    outImage.Save(fs, IFS.ImageFormat);
                 }
             }
         }
