@@ -11,7 +11,7 @@ namespace Yelo_Neighborhood
 {
     public partial class Main : Form
     {
-        public int Version { get { return 7; } }
+        public int Version { get { return 8; } }
 
         public enum Images
         {
