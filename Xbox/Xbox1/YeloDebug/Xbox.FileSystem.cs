@@ -108,8 +108,7 @@ namespace YeloDebug
             StatusResponse response = SendCommand("dirlist name=\"{0}\"", name);
             if (response.Type == ResponseType.MultiResponse)
             {
-                string msg = ReceiveSocketLine();
-                while (msg[0] != '.')
+                for(string msg = ReceiveSocketLine(); msg[0] != '.'; msg = ReceiveSocketLine())
                 {
                     FileInformation info = new FileInformation();
 
@@ -141,7 +140,6 @@ namespace YeloDebug
                     if (msg.Contains("hidden")) info.Attributes |= FileAttributes.Hidden;
 
                     files.Add(info);
-                    msg = ReceiveSocketLine();
                 }
             }
             return files;
@@ -188,14 +186,13 @@ namespace YeloDebug
         /// <param name="remoteName">Xbox file name.</param>
         public void SendFile(string localName, string remoteName)
         {
-            FileStream fs = new FileStream(localName, FileMode.Open);
-            byte[] data = new byte[(int)fs.Length];
-            fs.Read(data, 0, data.Length);
-            fs.Close();
-
-            XboxFileStream xfs = new XboxFileStream(this, remoteName, FileMode.Create);
-            xfs.Write(data, 0, data.Length);
-            xfs.Close();
+			using (var fs = new FileStream(localName, FileMode.Open))
+			using (var xfs = new XboxFileStream(this, remoteName, FileMode.Create))
+			{
+				byte[] data = new byte[(int)fs.Length];
+				fs.Read(data, 0, data.Length);
+				xfs.Write(data, 0, data.Length);
+			}
 
             //System.IO.FileStream lfs = new System.IO.FileStream(localName, FileMode.Open);
             //byte[] fileData = new byte[connection.Client.SendBufferSize];
@@ -224,21 +221,21 @@ namespace YeloDebug
         {
             SendCommand("getfile name=\"{0}\"", remoteName);
             int fileSize = BitConverter.ToInt32(ReceiveBinaryData(4), 0);
-            System.IO.FileStream lfs = new System.IO.FileStream(localName, FileMode.CreateNew);
-            byte[] fileData = new byte[connection.Client.ReceiveBufferSize];
+			using (var lfs = new System.IO.FileStream(localName, FileMode.CreateNew))
+			{
+				byte[] fileData = new byte[connection.Client.ReceiveBufferSize];
 
-            int mainIterations = fileSize / connection.Client.ReceiveBufferSize;
-            int remainder = fileSize % connection.Client.ReceiveBufferSize;
+				int mainIterations = fileSize / connection.Client.ReceiveBufferSize;
+				int remainder = fileSize % connection.Client.ReceiveBufferSize;
 
-            for (int i = 0; i < mainIterations; i++)
-            {
-                fileData = ReceiveBinaryData(fileData.Length);
-                lfs.Write(fileData, 0, fileData.Length);
-            }
-            fileData = ReceiveBinaryData(remainder);
-            lfs.Write(fileData, 0, remainder);
-
-            lfs.Close();
+				for (int i = 0; i < mainIterations; i++)
+				{
+					fileData = ReceiveBinaryData(fileData.Length);
+					lfs.Write(fileData, 0, fileData.Length);
+				}
+				fileData = ReceiveBinaryData(remainder);
+				lfs.Write(fileData, 0, remainder);
+			}
         }
 
         /// <summary>

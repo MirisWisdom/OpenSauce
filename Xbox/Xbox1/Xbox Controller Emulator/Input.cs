@@ -1,14 +1,30 @@
+/*
+    OpenSauceBox: SDK for Xbox User Modding
+
+    Copyright (C)  Kornner Studios (http://kornner.com)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 using System;
 using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.DirectX.DirectInput;
 
 namespace Xbox_Controller_Emulator
 {
     public class Input
     {
-        private Device Keyboard, Mouse, Joystick, Gamepad;
+        Device Keyboard, Mouse, Joystick/*, Gamepad*/;
 
         public Input(Control parentWindow)
         {
@@ -43,7 +59,6 @@ namespace Xbox_Controller_Emulator
                 //    Gamepad.SetDataFormat(customFormat);
                 //    Gamepad.SetCooperativeLevel(parentWindow, CooperativeLevelFlags.Foreground | CooperativeLevelFlags.NonExclusive);
                 //}
-
             }
         }
 
@@ -57,11 +72,10 @@ namespace Xbox_Controller_Emulator
                     return Keyboard.GetCurrentKeyboardState();
                 }
                 catch (Exception)
-                {
-                    return null;
-                }
+                {}
             }
-            else return null;
+
+            return null;
         }
 
         public MouseState GetMouseState()
@@ -74,11 +88,10 @@ namespace Xbox_Controller_Emulator
                     return Mouse.CurrentMouseState;
                 }
                 catch (Exception)
-                {
-                    return new MouseState();
-                }
+                {}
             }
-            else return new MouseState();
+
+            return new MouseState();
         }
 
         public JoystickState GetJoystickState()
@@ -91,11 +104,10 @@ namespace Xbox_Controller_Emulator
                     return Joystick.CurrentJoystickState;
                 }
                 catch (Exception)
-                {
-                    return new JoystickState();
-                }
+                {}
             }
-            else return new JoystickState();
+
+            return new JoystickState();
         }
     };
 }

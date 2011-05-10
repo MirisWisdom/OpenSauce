@@ -26,6 +26,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="XbdmPatcher.cs" />
     <Compile Include="Xbox.Enums.cs" />
     <Compile Include="Xbox.FileSystem.cs" />
     <Compile Include="Xbox.Memory.cs" />

@@ -1,6 +1,22 @@
+/*
+    OpenSauceBox: SDK for Xbox User Modding
+
+    Copyright (C)  Kornner Studios (http://kornner.com)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Forms;
 using Microsoft.DirectX.DirectInput;
 
@@ -42,7 +58,7 @@ namespace Xbox_Controller_Emulator
 
 				if (Keyboard[Key.Escape])
 				{
-					Xbox.OverrideControllers(false);
+					Xbox.Gamepad.OverrideControllers(false);
 					running = false;
 				}
 			}
@@ -63,8 +79,8 @@ namespace Xbox_Controller_Emulator
 				}
 				Input = new Input(this);
                 Xbox.Connect(Prompt.DebugName);
-				Xbox.InitializeControllerHook();
-				Xbox.OverrideControllers(true);
+				Xbox.Gamepad.InitializeControllerHook();
+				Xbox.Gamepad.OverrideControllers(true);
 
 				while (running)
 				{
@@ -95,10 +111,10 @@ namespace Xbox_Controller_Emulator
 					#endregion
 
 
-					int PollsPerSecond = 30;
+					//int PollsPerSecond = 30;
 					//System.Threading.Thread.Sleep(1000 / PollsPerSecond);
 					System.Threading.Thread.Sleep(1);
-					Xbox.SetGamepadState(0, NewInput);
+					Xbox.Gamepad.SetState(0, NewInput);
 					Application.DoEvents();
 				}
 
