@@ -125,58 +125,57 @@ namespace YeloDebug
 			#region Build Script
 			// store our script in memory that reads from our buffers instead...
 			byte[] scriptData = new byte[71];
-            BinaryWriter script = new BinaryWriter(new System.IO.MemoryStream(scriptData));
-			script.BaseStream.Position = 0;
+			using (var script = new BinaryWriter(new System.IO.MemoryStream(scriptData)))
+			{
+				//cmp	dword ptr ds:[EnabledAddress], 1	;IsEnabled
+				//je	Intercept
+				//db	10	dup (0)	;replace with orig code
+				//push	XInputGetState + 10
+				//ret
+				//Intercept:
+				script.Write((ushort)0x3D83);
+				script.Write(XboxHistory.Gamepad.EnabledAddress);
+				script.Write((ushort)0x7401);
+				script.Write((byte)0x10);
+				script.Write(origCode);
+				script.Write((byte)0x68);
+				script.Write(Xbox.History.XInputGetStateAddress + 10);
+				script.Write((byte)0xC3);
 
-			//cmp	dword ptr ds:[EnabledAddress], 1	;IsEnabled
-			//je	Intercept
-			//db	10	dup (0)	;replace with orig code
-			//push	XInputGetState + 10
-			//ret
-			//Intercept:
-			script.Write((ushort)0x3D83);
-            script.Write(XboxHistory.Gamepad.EnabledAddress);
-			script.Write((ushort)0x7401);
-			script.Write((byte)0x10);
-			script.Write(origCode);
-			script.Write((byte)0x68);
-            script.Write(Xbox.History.XInputGetStateAddress + 10);
-			script.Write((byte)0xC3);
-
-			//pushad					; esp -= 32
-			//mov	eax, [esp + 36]			; get port from handle
-			//mov	eax, [eax]
-			//mov	eax, [eax]
-			//mov	eax, [eax + 14h]
-			//add	dword ptr ds:[012345678h + eax * 4], 1	; controller in that port is plugged in
-			//shl	eax, 5				; get buffer index
-			//lea	esi, [012345678h + eax]		; buffer address
-			//mov	edi, [esp + 40]	;pInputState	; their buffer address
-			//mov	ecx, 22	;XINPUT_STATE size	; replace their data with ours
-			//rep	movsb 
-			//popad	
-			//xor	eax, eax	;ERROR_SUCCESS
-			//retn    8
-			byte[] pt1 = { 0x60, 0x8B, 0x44, 0x24, 0x24, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x40, 0x14, 0x83, 0x04, 0x85 };
-			script.Write(pt1);
-            script.Write(XboxHistory.Gamepad.PortStatusAddress);
-			byte[] pt2 = { 0x01, 0xC1, 0xE0, 0x05, 0x8D, 0xB0 };
-			script.Write(pt2);
-            script.Write(XboxHistory.Gamepad.StateBufferAddress);
-			byte[] pt3 = { 0x8B, 0x7C, 0x24, 0x28, 0xB9, 0x16, 0x00, 0x00, 0x00, 0xF3, 0xA4, 0x61, 0x33, 0xC0, 0xC2, 0x08, 0x00 };
-			script.Write(pt3);
-			script.Close();
+				//pushad					; esp -= 32
+				//mov	eax, [esp + 36]			; get port from handle
+				//mov	eax, [eax]
+				//mov	eax, [eax]
+				//mov	eax, [eax + 14h]
+				//add	dword ptr ds:[012345678h + eax * 4], 1	; controller in that port is plugged in
+				//shl	eax, 5				; get buffer index
+				//lea	esi, [012345678h + eax]		; buffer address
+				//mov	edi, [esp + 40]	;pInputState	; their buffer address
+				//mov	ecx, 22	;XINPUT_STATE size	; replace their data with ours
+				//rep	movsb 
+				//popad	
+				//xor	eax, eax	;ERROR_SUCCESS
+				//retn    8
+				byte[] pt1 = { 0x60, 0x8B, 0x44, 0x24, 0x24, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x40, 0x14, 0x83, 0x04, 0x85 };
+				script.Write(pt1);
+				script.Write(XboxHistory.Gamepad.PortStatusAddress);
+				byte[] pt2 = { 0x01, 0xC1, 0xE0, 0x05, 0x8D, 0xB0 };
+				script.Write(pt2);
+				script.Write(XboxHistory.Gamepad.StateBufferAddress);
+				byte[] pt3 = { 0x8B, 0x7C, 0x24, 0x28, 0xB9, 0x16, 0x00, 0x00, 0x00, 0xF3, 0xA4, 0x61, 0x33, 0xC0, 0xC2, 0x08, 0x00 };
+				script.Write(pt3);
+			}
             Xbox.SetMemory(XboxHistory.Gamepad.ScriptAddress, scriptData);
 			#endregion
 
 			// now inject our hook which jumps to our script we have just created...
 			byte[] hookData = new byte[10];
-            BinaryWriter hook = new BinaryWriter(new System.IO.MemoryStream(hookData));
-			hook.BaseStream.Position = 0;
-			hook.Write((byte)0x68);
-            hook.Write(XboxHistory.Gamepad.ScriptAddress);
-			hook.Write((byte)0xC3);
-			hook.Close();
+			using (var hook = new BinaryWriter(new System.IO.MemoryStream(hookData)))
+			{
+				hook.Write((byte)0x68);
+				hook.Write(XboxHistory.Gamepad.ScriptAddress);
+				hook.Write((byte)0xC3);
+			}
             Xbox.SetMemory(Xbox.History.XInputGetStateAddress, hookData);
 		}
 
@@ -202,58 +201,57 @@ namespace YeloDebug
             #region Build Script
             // store our script in memory that reads from our buffers instead...
             byte[] scriptData = new byte[71];
-            BinaryWriter script = new BinaryWriter(new System.IO.MemoryStream(scriptData));
-            script.BaseStream.Position = 0;
+			using (var script = new BinaryWriter(new System.IO.MemoryStream(scriptData)))
+			{
+				//cmp	dword ptr ds:[EnabledAddress], 1	;IsEnabled
+				//je	Intercept
+				//db	10	dup (0)	;replace with orig code
+				//push	XInputGetState + 10
+				//ret
+				//Intercept:
+				script.Write((ushort)0x3D83);
+				script.Write(XboxHistory.Gamepad.EnabledAddress);
+				script.Write((ushort)0x7401);
+				script.Write((byte)0x10);
+				script.Write(origCode);
+				script.Write((byte)0x68);
+				script.Write(Xbox.History.XInputGetStateAddress + 10);
+				script.Write((byte)0xC3);
 
-            //cmp	dword ptr ds:[EnabledAddress], 1	;IsEnabled
-            //je	Intercept
-            //db	10	dup (0)	;replace with orig code
-            //push	XInputGetState + 10
-            //ret
-            //Intercept:
-            script.Write((ushort)0x3D83);
-            script.Write(XboxHistory.Gamepad.EnabledAddress);
-            script.Write((ushort)0x7401);
-            script.Write((byte)0x10);
-            script.Write(origCode);
-            script.Write((byte)0x68);
-            script.Write(Xbox.History.XInputGetStateAddress + 10);
-            script.Write((byte)0xC3);
-
-            //pushad					; esp -= 32
-            //mov	eax, [esp + 36]			; get port from handle
-            //mov	eax, [eax]
-            //mov	eax, [eax]
-            //mov	eax, [eax + 14h]
-            //add	dword ptr ds:[012345678h + eax * 4], 1	; controller in that port is plugged in
-            //shl	eax, 5				; get buffer index
-            //lea	esi, [012345678h + eax]		; buffer address
-            //mov	edi, [esp + 40]	;pInputState	; their buffer address
-            //mov	ecx, 22	;XINPUT_STATE size	; replace their data with ours
-            //rep	movsb 
-            //popad	
-            //xor	eax, eax	;ERROR_SUCCESS
-            //retn    8
-            byte[] pt1 = { 0x60, 0x8B, 0x44, 0x24, 0x24, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x40, 0x14, 0x83, 0x04, 0x85 };
-            script.Write(pt1);
-            script.Write(XboxHistory.Gamepad.PortStatusAddress);
-            byte[] pt2 = { 0x01, 0xC1, 0xE0, 0x05, 0x8D, 0xB0 };
-            script.Write(pt2);
-            script.Write(XboxHistory.Gamepad.StateBufferAddress);
-            byte[] pt3 = { 0x8B, 0x7C, 0x24, 0x28, 0xB9, 0x16, 0x00, 0x00, 0x00, 0xF3, 0xA4, 0x61, 0x33, 0xC0, 0xC2, 0x08, 0x00 };
-            script.Write(pt3);
-            script.Close();
+				//pushad					; esp -= 32
+				//mov	eax, [esp + 36]			; get port from handle
+				//mov	eax, [eax]
+				//mov	eax, [eax]
+				//mov	eax, [eax + 14h]
+				//add	dword ptr ds:[012345678h + eax * 4], 1	; controller in that port is plugged in
+				//shl	eax, 5				; get buffer index
+				//lea	esi, [012345678h + eax]		; buffer address
+				//mov	edi, [esp + 40]	;pInputState	; their buffer address
+				//mov	ecx, 22	;XINPUT_STATE size	; replace their data with ours
+				//rep	movsb 
+				//popad	
+				//xor	eax, eax	;ERROR_SUCCESS
+				//retn    8
+				byte[] pt1 = { 0x60, 0x8B, 0x44, 0x24, 0x24, 0x8B, 0x00, 0x8B, 0x00, 0x8B, 0x40, 0x14, 0x83, 0x04, 0x85 };
+				script.Write(pt1);
+				script.Write(XboxHistory.Gamepad.PortStatusAddress);
+				byte[] pt2 = { 0x01, 0xC1, 0xE0, 0x05, 0x8D, 0xB0 };
+				script.Write(pt2);
+				script.Write(XboxHistory.Gamepad.StateBufferAddress);
+				byte[] pt3 = { 0x8B, 0x7C, 0x24, 0x28, 0xB9, 0x16, 0x00, 0x00, 0x00, 0xF3, 0xA4, 0x61, 0x33, 0xC0, 0xC2, 0x08, 0x00 };
+				script.Write(pt3);
+			}
             Xbox.SetMemory(XboxHistory.Gamepad.ScriptAddress, scriptData);
             #endregion
 
             // now inject our hook which jumps to our script we have just created...
             byte[] hookData = new byte[10];
-            BinaryWriter hook = new BinaryWriter(new System.IO.MemoryStream(hookData));
-            hook.BaseStream.Position = 0;
-            hook.Write((byte)0x68);
-            hook.Write(XboxHistory.Gamepad.ScriptAddress);
-            hook.Write((byte)0xC3);
-            hook.Close();
+			using (var hook = new BinaryWriter(new System.IO.MemoryStream(hookData)))
+			{
+				hook.Write((byte)0x68);
+				hook.Write(XboxHistory.Gamepad.ScriptAddress);
+				hook.Write((byte)0xC3);
+			}
             Xbox.SetMemory(Xbox.History.XInputGetStateAddress, hookData);
         }
 
@@ -296,16 +294,16 @@ namespace YeloDebug
 
 				//convert pad to byte array
 				byte[] gamepadData = new byte[22];
-                BinaryWriter pad = new BinaryWriter(new System.IO.MemoryStream(gamepadData));
-				pad.BaseStream.Position = 0;
-				pad.Write(PacketNumber);
-				pad.Write((ushort)input.Buttons);
-				pad.Write(BitConverter.ToUInt64(input.AnalogButtons, 0));
-				pad.Write((short)input.ThumbLX);
-				pad.Write((short)input.ThumbLY);
-				pad.Write((short)input.ThumbRX);
-				pad.Write((short)input.ThumbRY);
-				pad.Close();
+				using (var pad = new BinaryWriter(new System.IO.MemoryStream(gamepadData)))
+				{
+					pad.Write(PacketNumber);
+					pad.Write((ushort)input.Buttons);
+					pad.Write(BitConverter.ToUInt64(input.AnalogButtons, 0));
+					pad.Write((short)input.ThumbLX);
+					pad.Write((short)input.ThumbLY);
+					pad.Write((short)input.ThumbRX);
+					pad.Write((short)input.ThumbRY);
+				}
 
 				// store new state
 				Xbox.SetMemory(inputState, gamepadData);

@@ -89,8 +89,7 @@ namespace YeloDebug
 				SendCommand("walkmem");
 				List<MemoryRegion> mem = new List<MemoryRegion>();
 
-				string page = ReceiveSocketLine();
-				while (page[0] != '.')
+				for (string page = ReceiveSocketLine(); page[0] != '.'; page = ReceiveSocketLine())
 				{
 					MemoryRegion region = new MemoryRegion();
 
@@ -98,9 +97,25 @@ namespace YeloDebug
 					region.Size = (uint)Util.GetResponseInfo(page, 1);
 					region.Protect = (MEMORY_FLAGS)(uint)Util.GetResponseInfo(page, 2);
 					mem.Add(region);
-					page = ReceiveSocketLine();
 				}
 				return mem;
+			}
+		}
+		public List<MemoryRegion> CombinedCommittedMemory
+		{
+			get
+			{
+				// combine any contiguous memory regions
+				List<MemoryRegion> regions = CommittedMemory;
+				for (int i = 0; i < regions.Count; i++)
+					if (i > 0 && (uint)regions[i].BaseAddress == (uint)regions[i - 1].BaseAddress + (uint)regions[i - 1].Size)
+					{
+						regions[i - 1].Size += regions[i].Size;
+						regions.RemoveAt(i);
+						i--;
+					}
+
+				return regions;
 			}
 		}
 
@@ -112,8 +127,8 @@ namespace YeloDebug
 		/// <returns></returns>
 		public uint GetMemoryChecksum(int address, int length)
 		{
-			if ((address % 8) != 0) throw new ApiException("Address must be aligned on an 8-byte boundary.");
-			if ((length % 8) != 0) throw new ApiException("Length must be a multiple of 8.");
+			if ((address % 8) != 0) throw new ArgumentException("Address must be aligned on an 8-byte boundary.", "address");
+			if ((length % 8) != 0) throw new ArgumentException("Length must be a multiple of 8.", "length");
 			SendCommand("getsum addr={0} length={1} blocksize={1}", address, length);
 			return BitConverter.ToUInt32(ReceiveBinaryData(4), 0);
 		}
@@ -128,14 +143,7 @@ namespace YeloDebug
 		public byte[] DumpMemory()
 		{
 			// combine any contiguous memory regions
-			List<MemoryRegion> regions = CommittedMemory;
-			for (int i = 0; i < regions.Count; i++)
-				if (i > 0 && (uint)regions[i].BaseAddress == (uint)regions[i - 1].BaseAddress + (uint)regions[i - 1].Size)
-				{
-					regions[i - 1].Size += regions[i].Size;
-					regions.RemoveAt(i);
-					i--;
-				}
+			List<MemoryRegion> regions = CombinedCommittedMemory;
 
 			// get total size of dump
 			uint dumpSize = 0;
@@ -170,73 +178,68 @@ namespace YeloDebug
 
 		public void DumpMemoryToFile()
 		{
-			System.IO.FileStream memdump = new System.IO.FileStream("memory_dump.bin", FileMode.Create, FileAccess.Write);
-			System.IO.FileStream meminfo = new System.IO.FileStream("memory_info.txt", FileMode.Create, FileAccess.Write);
-			BinaryWriter infowriter = new BinaryWriter(meminfo);
-
-			// combine any contiguous memory regions
-			List<MemoryRegion> regions = CommittedMemory;
-			for (int i = 0; i < regions.Count; i++)
-				if (i > 0 && (uint)regions[i].BaseAddress == (uint)regions[i - 1].BaseAddress + (uint)regions[i - 1].Size)
-				{
-					regions[i - 1].Size += regions[i].Size;
-					regions.RemoveAt(i);
-					i--;
-				}
-
-			// get total size of dump
-			uint dumpSize = 0;
-			foreach (MemoryRegion r in regions)
-				dumpSize += (uint)r.Size;
-
-			Pause();
-			byte[] XboxMemory = new byte[dumpSize];
-
-			int oldTimeout = timeout;
-			int index = 0;
-			int read = 0;
-			timeout = 7000; // make sure we don't timeout waiting for large memory reads
-			//uint skipped = 0;
-			foreach (MemoryRegion r in regions)
+			using(var memdump = new System.IO.FileStream("memory_dump.bin", FileMode.Create, FileAccess.Write))
+			using(var meminfo = new System.IO.FileStream("memory_info.txt", FileMode.Create, FileAccess.Write))
+			using (var infowriter = new BinaryWriter(meminfo))
 			{
-				// skip code and system memory
-				//if ((int)r.BaseAddress == 0x10000 || (uint)r.BaseAddress > 0xb0000000)
-				//{
-				//    skipped += (uint)r.Size;
-				//    continue;
-				//}
+				// combine any contiguous memory regions
+				List<MemoryRegion> regions = CombinedCommittedMemory;
 
-				infowriter.Write(ASCIIEncoding.ASCII.GetBytes(string.Format("File Address: 0x{0}\tXbox Address: 0x{1}\t Size: 0x{2}\r\n",
-					Convert.ToString(index, 16).PadLeft(8, '0'),
-					Convert.ToString((uint)r.BaseAddress, 16).PadLeft(8, '0'),
-					Convert.ToString(r.Size, 16).PadLeft(8, '0'))));
+				// get total size of dump
+				uint dumpSize = 0;
+				foreach (MemoryRegion r in regions)
+					dumpSize += (uint)r.Size;
 
-				MemoryStream.Read(r.BaseAddress.ToUInt32(), (int)r.Size, ref XboxMemory, index, ref read);
-				index += read;
+				Pause();
+				byte[] XboxMemory = new byte[dumpSize];
+
+				int oldTimeout = timeout;
+				int index = 0;
+				int read = 0;
+				timeout = 7000; // make sure we don't timeout waiting for large memory reads
+				//uint skipped = 0;
+				foreach (MemoryRegion r in regions)
+				{
+					// skip code and system memory
+					//if ((int)r.BaseAddress == 0x10000 || (uint)r.BaseAddress > 0xb0000000)
+					//{
+					//    skipped += (uint)r.Size;
+					//    continue;
+					//}
+
+					infowriter.Write(ASCIIEncoding.ASCII.GetBytes(string.Format("File Address: 0x{0}\tXbox Address: 0x{1}\t Size: 0x{2}\r\n",
+						Convert.ToString(index, 16).PadLeft(8, '0'),
+						Convert.ToString((uint)r.BaseAddress, 16).PadLeft(8, '0'),
+						Convert.ToString(r.Size, 16).PadLeft(8, '0'))));
+
+					MemoryStream.Read(r.BaseAddress.ToUInt32(), (int)r.Size, ref XboxMemory, index, ref read);
+					index += read;
+				}
+				timeout = oldTimeout;
+				Continue();
+
+				memdump.Write(XboxMemory, 0, XboxMemory.Length);
 			}
-			timeout = oldTimeout;
-			Continue();
-
-			memdump.Write(XboxMemory, 0, XboxMemory.Length);
-
-			memdump.Close();
-			meminfo.Close();
 		}
 
 		public void SaveMemoryToFile()
 		{
 			Pause();
 
-			System.IO.FileStream memdump = new System.IO.FileStream("memory_dump.bin", FileMode.Create, FileAccess.Write);
-			byte[] mem = DumpMemory();
-			memdump.Write(mem, 0, mem.Length);
-			memdump.Close();
+			using (var memdump = new System.IO.FileStream("memory_dump.bin", FileMode.Create, FileAccess.Write))
+			{
+				byte[] mem = DumpMemory();
+				memdump.Write(mem, 0, mem.Length);
+			}
 
-			System.IO.FileStream meminfo = new System.IO.FileStream("memory_info.txt", FileMode.Create, FileAccess.Write);
-			SendCommand("walkmem");
-			new BinaryWriter(meminfo).Write(ASCIIEncoding.ASCII.GetBytes(ReceiveMultilineResponse()));
-			meminfo.Close();
-
+			using (var meminfo = new System.IO.FileStream("memory_info.txt", FileMode.Create, FileAccess.Write))
+			{
+				SendCommand("walkmem");
+				using (var bw = new BinaryWriter(meminfo))
+				{
+					bw.Write(ASCIIEncoding.ASCII.GetBytes(ReceiveMultilineResponse()));
+				}
+			}
 
 			Continue();
 		}
@@ -431,31 +434,9 @@ namespace YeloDebug
 			StatusResponse response = SendCommand("getmem addr=0x{0} length=1", Convert.ToString(address, 16));
 			string mem = ReceiveSocketLine();
 			ReceiveSocketLine();
-			return (mem != "??");
+			return mem != "??";
 		}
 
-
-		/*
-		/// <summary>
-		/// Checks for a valid address range.
-		/// </summary>
-		public bool IsValidAddressRange(uint address, int size)
-		{
-			string script = "BB78563412B97856341281E300F0FFFF81C1FF0F000081E100F0FFFFC1E90C68AE000000E81F00000053FFD085C0741081C300100000E2E7B80000DB02C21000B800400080C21000558BEC5351BB000001808B4D08498B433C8B4418788B44181C03C38B048803C3595BC9C20400";
-			int argIndex = script.IndexOf("78563412");
-			int arg2Index = script.LastIndexOf("78563412");
-			script = script.Replace("78563412", "");
-			script = script.Insert(argIndex, Convert.ToString(address, 16).PadLeft(8, '0'));
-			script = script.Insert(arg2Index, Convert.ToString(size, 16).PadLeft(8, '0'));
-
-			//byte[] callScript = Util.StringToHexBytes("BB78563412B97856341281E300F0FFFF81C1FF0F000081E100F0FFFFC1E90C68AE000000E81F00000053FFD085C0741081C300100000E2E7B80000DB02C21000B800400080C21000558BEC5351BB000001808B4D08498B433C8B4418788B44181C03C38B048803C3595BC9C20400");
-			byte[] callScript = Util.StringToHexBytes(script);
-
-			SetMemory(ScriptBufferAddress, callScript);
-           
-			return SendCommand("crashdump").Success;
-		}
-		*/
 
 		/// <summary>
 		/// Checks for a valid address range.
@@ -463,14 +444,7 @@ namespace YeloDebug
 		public bool IsValidAddressRange(uint address, int size)
 		{
 			// combine any contiguous memory regions
-			List<MemoryRegion> regions = CommittedMemory;
-			for (int i = 0; i < regions.Count; i++)
-				if (i > 0 && (uint)regions[i].BaseAddress == (uint)regions[i - 1].BaseAddress + (uint)regions[i - 1].Size)
-				{
-					regions[i - 1].Size += regions[i].Size;
-					regions.RemoveAt(i);
-					i--;
-				}
+			List<MemoryRegion> regions = CombinedCommittedMemory;
 
 			// check if memory range is within a region
 			foreach (MemoryRegion r in regions)
@@ -491,36 +465,37 @@ namespace YeloDebug
 		/// and then send all at once.</param>
 		public void SetMemory(uint address, params object[] data)
 		{
-			System.IO.MemoryStream ms = new System.IO.MemoryStream();
-			BinaryWriter bw = new BinaryWriter(ms);
-
-			foreach (object obj in data)
+			using (var ms = new MemoryStream())
+			using (var bw = new BinaryWriter(ms))
 			{
-				switch (Convert.GetTypeCode(obj))
+				foreach (object obj in data)
 				{
-					case TypeCode.Boolean:
-					case TypeCode.Byte:
-					case TypeCode.Char: bw.Write(Convert.ToByte(obj)); break;
-					case TypeCode.Int16:
-					case TypeCode.UInt16: bw.Write(Convert.ToUInt16(obj)); break;
-					case TypeCode.Int32:
-					case TypeCode.UInt32: bw.Write(Convert.ToUInt32(obj)); break;
-					case TypeCode.Int64:
-					case TypeCode.UInt64: bw.Write(Convert.ToUInt64(obj)); break;
-					case TypeCode.Single: bw.Write(Convert.ToSingle(obj)); break;
-					case TypeCode.Double: bw.Write(Convert.ToDouble(obj)); break;
-					case TypeCode.String: bw.Write(ASCIIEncoding.ASCII.GetBytes((string)obj + "\0")); break;    // assumes youre writing an ascii string
-					case TypeCode.Object:
-						byte[] bytes = obj as byte[]; // tries converting unknown object to byte array
-						if (bytes != null) bw.Write(bytes);
-						else throw new UnsupportedException("Invalid datatype.");
-						break;
-					default: throw new UnsupportedException("Invalid datatype.");
+					switch (Convert.GetTypeCode(obj))
+					{
+						case TypeCode.Boolean:
+						case TypeCode.Byte:
+						case TypeCode.Char: bw.Write(Convert.ToByte(obj)); break;
+						case TypeCode.Int16:
+						case TypeCode.UInt16: bw.Write(Convert.ToUInt16(obj)); break;
+						case TypeCode.Int32:
+						case TypeCode.UInt32: bw.Write(Convert.ToUInt32(obj)); break;
+						case TypeCode.Int64:
+						case TypeCode.UInt64: bw.Write(Convert.ToUInt64(obj)); break;
+						case TypeCode.Single: bw.Write(Convert.ToSingle(obj)); break;
+						case TypeCode.Double: bw.Write(Convert.ToDouble(obj)); break;
+						case TypeCode.String: bw.Write(ASCIIEncoding.ASCII.GetBytes((string)obj + "\0")); break;    // assumes youre writing an ascii string
+						case TypeCode.Object:
+							byte[] bytes = obj as byte[]; // tries converting unknown object to byte array
+							if (bytes != null) bw.Write(bytes);
+							else goto default;
+							break;
+
+						default: throw new UnsupportedException("Invalid datatype.");
+					}
 				}
+				MemoryStream.Position = address;
+				MemoryWriter.Write(ms.ToArray());
 			}
-			MemoryStream.Position = address;
-			MemoryWriter.Write(ms.ToArray());
-			bw.Close();
 		}
 
 		#region Memory Management
@@ -615,20 +590,21 @@ namespace YeloDebug
 
 			// buffer to hold our allocation table
 			byte[] allocBuffer = new byte[AllocationTable.Count * 9 + 4];
-			BinaryWriter alloc = new BinaryWriter(new System.IO.MemoryStream(allocBuffer));
-			alloc.BaseStream.Position = 0;
-			alloc.Write(AllocationTable.Count); // prefixed with total count
-
-			// build our alloc table
-			foreach (AllocationEntry entry in AllocationTable)
+			using (var alloc = new BinaryWriter(new System.IO.MemoryStream(allocBuffer)))
 			{
-				alloc.Write(entry.Address);
-				alloc.Write(entry.Size);
-				alloc.Write((byte)entry.Type);
-			}
+				alloc.Write(AllocationTable.Count); // prefixed with total count
 
-			// store our table in xbox memory
-			SetMemory(XboxHistory.AllocationTable.CountAddress, allocBuffer);
+				// build our alloc table
+				foreach (AllocationEntry entry in AllocationTable)
+				{
+					alloc.Write(entry.Address);
+					alloc.Write(entry.Size);
+					alloc.Write((byte)entry.Type);
+				}
+
+				// store our table in xbox memory
+				SetMemory(XboxHistory.AllocationTable.CountAddress, allocBuffer);
+			}
 		}
 
 		/// <summary>
@@ -754,7 +730,7 @@ namespace YeloDebug
 					i--;
 				}
 			}
-            finally // dont catch the exception, let it propogate
+            finally // dont catch the exception, let it propagate
 			{
 				BlockAllocationTableSync = false; // but be sure to unblock no matter what ;)
 

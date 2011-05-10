@@ -1,11 +1,24 @@
+/*
+    OpenSauceBox: SDK for Xbox User Modding
+
+    Copyright (C)  Kornner Studios (http://kornner.com)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 using System;
 using System.IO;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Text;
 using System.Windows.Forms;
 using YeloDebug;
 using Microsoft.Win32;
@@ -17,13 +30,13 @@ namespace LaymansXboxEmulator
 {
     public partial class Form1 : Form
     {
-        private Xbox Xbox = new Xbox();
-        private XboxVideoStream Video;
-        private Form blocker = new Form();
+        Xbox Xbox = new Xbox();
+        XboxVideoStream Video;
+        Form blocker = new Form();
 
-        public Image GetDefaultImage()
+		public System.Drawing.Image GetDefaultImage()
         {
-            return Image.FromFile("xboxlogo.bmp");
+			return System.Drawing.Image.FromFile("xboxlogo.bmp");
         }
 
 
@@ -52,13 +65,10 @@ namespace LaymansXboxEmulator
 
                         // attempt to recreate videostream before breaking out of the loop
                         // the main reason for it becoming inactive is if its paused for more than 5 seconds or so...
-                        if (!Video.IsActive)
-                        {
-                            if (!Video.Restart())
-                                break;
-                        }
+                        if (!Video.IsActive && !Video.Restart())
+							break;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         Xbox.Connect();
                         Video.Restart();
@@ -74,9 +84,8 @@ namespace LaymansXboxEmulator
                 mnuStep.Enabled = false;
                 status.Text = "Disconnected";
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
             }
 
             renderWindow.Image = GetDefaultImage();
@@ -183,7 +192,7 @@ namespace LaymansXboxEmulator
         // disable screensaver when this is running!!!
 
         // +DSobpool
-        private void mnuStart_Click(object sender, EventArgs e)
+        void mnuStart_Click(object sender, EventArgs e)
         {
             try
             {
@@ -194,7 +203,6 @@ namespace LaymansXboxEmulator
                     //System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
                     Xbox.Connect();
                     SurfaceInformation si = Xbox.DisplayBufferInformation;
-                    int i = 0;
                     //Xbox.Reboot(BootFlag.Current);
                     //Xbox.EnableNotificationSession = true;
                     //Xbox.RegisterNotificationSession();
@@ -219,8 +227,7 @@ namespace LaymansXboxEmulator
                     //string test = Xbox.StreamTest();
 
                     //System.Diagnostics.Stopwatch sw2 = System.Diagnostics.Stopwatch.StartNew();
-                    //int i;
-                    //for (i = 0; i < 100000; i++)
+                    //for (int i = 0; i < 100000; i++)
                     //{
                     //    if (sw2.ElapsedMilliseconds > 1000)
                     //        break;
@@ -333,7 +340,6 @@ namespace LaymansXboxEmulator
 
 
 
-                    uint test123 = 0;
                     //Xbox.ContinueAllThreads();
                     //Xbox.Continue();
                     //Xbox.SetMemory(0x382D22, 0xcccccccc);
@@ -404,7 +410,7 @@ namespace LaymansXboxEmulator
                     Main();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Xbox.Disconnect();
                 mnuPause.Checked = false;
@@ -413,7 +419,7 @@ namespace LaymansXboxEmulator
             }
         }
 
-        private void mnuStop_Click(object sender, EventArgs e)
+        void mnuStop_Click(object sender, EventArgs e)
         {
             mnuPause.Checked = false;
             mnuStep.Enabled = false;
@@ -423,20 +429,20 @@ namespace LaymansXboxEmulator
                 Video.End();
                 Xbox.Disconnect();
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
         }
 
-        private void mnuScreenshot_Click(object sender, EventArgs e)
+        void mnuScreenshot_Click(object sender, EventArgs e)
         {
             try
             {
                 if (Xbox.Connected && Video.IsActive)
-                Xbox.Screenshot().Save(DateTime.Now.Ticks + ".png", ImageFormat.Png);
+					Xbox.Screenshot().Save(DateTime.Now.Ticks + ".png", System.Drawing.Imaging.ImageFormat.Png);
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
         }
 
-        private void mnuPause_Click(object sender, EventArgs e)
+        void mnuPause_Click(object sender, EventArgs e)
         {
             if (Video != null && Video.IsActive)
             {
@@ -446,7 +452,7 @@ namespace LaymansXboxEmulator
         }
 
         // needs work
-        private void mnuReset_Click(object sender, EventArgs e)
+        void mnuReset_Click(object sender, EventArgs e)
         {
             //if (Video != null && Video.IsActive)
             //{
@@ -464,12 +470,12 @@ namespace LaymansXboxEmulator
             //}
         }
 
-        private void mnuExit_Click(object sender, EventArgs e)
+        void mnuExit_Click(object sender, EventArgs e)
         {
             Dispose();
         }
 
-        private void mnuStep_Click(object sender, EventArgs e)
+        void mnuStep_Click(object sender, EventArgs e)
         {
             try
             {
@@ -482,7 +488,7 @@ namespace LaymansXboxEmulator
             }
         }
 
-        private void mnuFullResolution_Click(object sender, EventArgs e)
+        void mnuFullResolution_Click(object sender, EventArgs e)
         {
             mnuFullResolution.Checked = true;
             mnuMediumResolution.Checked = false;
@@ -493,7 +499,7 @@ namespace LaymansXboxEmulator
             Video.Begin();
         }
 
-        private void mnuMediumResolution_Click(object sender, EventArgs e)
+        void mnuMediumResolution_Click(object sender, EventArgs e)
         {
             mnuMediumResolution.Checked = true;
             mnuFullResolution.Checked = false;
@@ -505,7 +511,7 @@ namespace LaymansXboxEmulator
 
         }
 
-        private void mnuCustomWindow_Click(object sender, EventArgs e)
+        void mnuCustomWindow_Click(object sender, EventArgs e)
         {
             MaximizeBox ^= true;
             MinimizeBox ^= true;
@@ -517,7 +523,7 @@ namespace LaymansXboxEmulator
 
         }
 
-        private int oldX, oldY;
+        //int oldX, oldY;
         //public void ParseUserInput()
         //{
         //    InputState input = new InputState();
@@ -602,7 +608,7 @@ namespace LaymansXboxEmulator
         //    Xbox.Gamepad.SetState(0, input);
         //}
 
-        private void mnuKeyboardInput_Click(object sender, EventArgs e)
+        void mnuKeyboardInput_Click(object sender, EventArgs e)
         {
             //mnuKeyboardInput.Checked = true;
             //mnuX360Input.Checked = false;
@@ -611,7 +617,7 @@ namespace LaymansXboxEmulator
             //blocker.Visible = true;
         }
 
-        private void mnuX360Input_Click(object sender, EventArgs e)
+        void mnuX360Input_Click(object sender, EventArgs e)
         {
             //mnuX360Input.Checked = true;
             //mnuKeyboardInput.Checked = false;
@@ -620,7 +626,7 @@ namespace LaymansXboxEmulator
             //blocker.Visible = false;
         }
 
-        private void mnuNone_Click(object sender, EventArgs e)
+        void mnuNone_Click(object sender, EventArgs e)
         {
             //mnuNone.Checked = true;
             //mnuKeyboardInput.Checked = false;
@@ -629,7 +635,7 @@ namespace LaymansXboxEmulator
             //blocker.Visible = false;
         }
 
-        private void mnuReboot_Click(object sender, EventArgs e)
+        void mnuReboot_Click(object sender, EventArgs e)
         {
             Xbox.Reboot(BootFlag.Warm);
             if (mnuMediumResolution.Checked)
@@ -651,17 +657,17 @@ namespace LaymansXboxEmulator
         }
 
 
-        //private RegistryKey regkeyScreenSaver;
-        //private object origScreensaverSetting;
-        //private void DisableScreenSaver()
+        //RegistryKey regkeyScreenSaver;
+        //object origScreensaverSetting;
+        //void DisableScreenSaver()
         //{
         //    regkeyScreenSaver = Registry.CurrentUser.OpenSubKey("ControlPanel").OpenSubKey("Desktop", true);
         //    origScreensaverSetting = regkeyScreenSaver.GetValue("ScreenSaveActive");
         //    regkeyScreenSaver.SetValue("ScreenSaveActive", "0");
         //}
-        //private void RestoreScreenSaver()
+        //void RestoreScreenSaver()
         //{
         //    regkeyScreenSaver.SetValue("ScreenSaveActive", origScreensaverSetting);
         //}
-    }
+    };
 }
