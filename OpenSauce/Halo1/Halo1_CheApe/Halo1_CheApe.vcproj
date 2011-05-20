@@ -246,7 +246,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				UseUnicodeResponseFiles="false"
-				AdditionalDependencies="d3dxof.lib dxguid.lib d3dx9.lib d3d9.lib dinput8.lib winmm.lib"
+				AdditionalDependencies="d3dxof.lib dxguid.lib d3dx9.lib d3d9.lib dinput8.lib winmm.lib psapi.lib"
 				OutputFile="$(OutDir)\CheApeDLLT.dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
@@ -335,7 +335,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				UseUnicodeResponseFiles="false"
-				AdditionalDependencies="d3dxof.lib dxguid.lib d3dx9.lib d3d9.lib dinput8.lib winmm.lib"
+				AdditionalDependencies="d3dxof.lib dxguid.lib d3dx9.lib d3d9.lib dinput8.lib winmm.lib psapi.lib"
 				OutputFile="$(OutDir)\CheApeDLLT.dll"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
@@ -2163,11 +2163,27 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Tool\Console.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Tool\Console.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Tool\ImportLightmapUV.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\Tool\ImportLightmapUV.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Tool\RuntimeCacheView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Tool\RuntimeCacheView.hpp"
 				>
 			</File>
 			<File
@@ -2215,6 +2231,10 @@
 				</File>
 				<File
 					RelativePath=".\Tool\ImportLightmapUV_ObjFile.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\Tool\RuntimeCacheView.inl"
 					>
 				</File>
 			</Filter>

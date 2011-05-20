@@ -244,6 +244,28 @@ namespace Yelo
 
 	namespace TagGroups
 	{
+		// just an endian swap
+		inline void TagSwap(tag& x)
+		{
+			x = (x>>24) | 
+				((x<<8) & 0x00FF0000) |
+				((x>>8) & 0x0000FF00) |
+				(x<<24);
+		}
+
+		// Union hack to use a group tag as a string
+		union group_tag_to_string
+		{
+			struct {
+				tag group;
+				PAD8; // null terminator
+			};
+			char str[sizeof(tag)+1];
+
+			inline void Terminate() { str[4] = '\0'; }
+			inline void TagSwap()	{ TagGroups::TagSwap(group); }
+		};
+
 		t_tag_instance_data*	TagInstances();
 
 

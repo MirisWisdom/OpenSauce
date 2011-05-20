@@ -17,28 +17,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #pragma once
+#if PLATFORM_ID == PLATFORM_TOOL
+#include "TagGroups/TagGroups.hpp"
 
 namespace Yelo
 {
-	namespace StringEditing
+	namespace Tool
 	{
-		// search a string for a substring starting with start_control and ending with end_control
-		bool GetStringSegment(
-			std::string& string_in, 
-			std::string& string_out,
-			const char* start_control = NULL,
-			const char* end_control = "\0",
-			const bool remove_start_char = true);
-		// cuts a section of a string out
-		void RemoveStringSegment(
-			std::string& string_in,
-			const char* start_control = NULL,
-			const char* end_control = "\0",
-			const bool remove_end_char = true);
-		void StringTruncate(
-			std::string& string_in,
-			const DWORD max_length,
-			const DWORD start_segment_length,
-			const char* seperator = "...");
+		void PLATFORM_API runtime_cache_view(void** arguments);
 	};
 };
+#endif
