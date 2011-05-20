@@ -36,7 +36,7 @@ namespace Yelo
 				cstring add_boost_asserts_cstr;
 			}* args = CAST_PTR(s_arguments*, arguments);
 			
-			TagSwap(*args->tag_group);
+			TagGroups::TagSwap(*args->tag_group);
 			bool add_boost_asserts = Settings::ParseBoolean(args->add_boost_asserts_cstr);
 
 			// get the tag groups definition
@@ -66,7 +66,7 @@ namespace Yelo
 			}
 			else
 			{
-				u_group_tag_str gt; gt.Terminate();
+				TagGroups::group_tag_to_string gt; gt.Terminate();
 				gt.group = *args->tag_group;
 				gt.TagSwap();
 

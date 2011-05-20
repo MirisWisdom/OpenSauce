@@ -70,5 +70,44 @@ namespace Yelo
 
 			string_in.replace(index_start, index_end + (remove_end_char ? 1 : 0), "");
 		}
+		/*!
+		 * \brief
+		 * Removes a section of a string to bring it down to a maximum size.
+		 * 
+		 * \param string_in
+		 * The string to truncate.
+		 * 
+		 * \param max_length
+		 * The maximum length of the string.
+		 * 
+		 * \param start_segment_length
+		 * The length of the start segment.
+		 * 
+		 * \param seperator
+		 * The seperator string that will replace the removed section.
+		 * 
+		 * Removes a section of a string to bring it down to a maximum size.
+		 */
+		void StringTruncate(
+			std::string& string_in,
+			const DWORD max_length,
+			const DWORD start_segment_length,
+			const char* seperator)
+		{
+			// the string is less than or equal to the max size, no truncation needed
+			if(string_in.length() <= max_length)
+				return;
+
+			// calculate the area to replace
+			int seperator_length = strlen(seperator);
+			int end_segment_length = max_length - (start_segment_length + seperator_length);
+
+			int replace_length = string_in.length() - end_segment_length - start_segment_length;
+
+			// replace the string segment with the seperator
+			string_in.replace(start_segment_length, 
+				replace_length,
+				seperator);
+		}
 	};
 };

@@ -41,4 +41,8 @@
 			2, "<tag-group> <add-boost-asserts>", 
 		&build_cpp_definition),
 
+	IMPORT_CLASS_DEFINITION("runtime-cache-view", 
+			0, "", 
+		&runtime_cache_view),
+
 	// TODO: add new import classes here

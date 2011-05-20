@@ -16,28 +16,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-// just an endian swap
-inline void TagSwap(tag& x)
-{
-	x = (x>>24) | 
-		((x<<8) & 0x00FF0000) |
-		((x>>8) & 0x0000FF00) |
-		(x<<24);
-}
-
-// Union hack to use a group tag as a string
-union u_group_tag_str
-{
-	struct {
-		tag group;
-		PAD8; // null terminator
-	};
-	char str[sizeof(tag)+1];
-
-	inline void Terminate() { str[4] = '\0'; }
-	inline void TagSwap()	{ Tool::TagSwap(group); }
-};
-
 typedef std::vector<std::string> t_string_vector;
 
 static const char* m_field_type_strings[] =
@@ -654,7 +632,7 @@ void WriteTagReference(FILE* file,
 		name);
 
 	// union/struct hack to use a tag as a string
-	u_group_tag_str gt; gt.Terminate();
+	TagGroups::group_tag_to_string gt; gt.Terminate();
 
 	// tag_reference's can have multiple tag types
 	if(def->group_tags && (*def->group_tags != NONE))
@@ -1091,7 +1069,7 @@ void WriteBlockDefinition(FILE* file,
 
 	if(instance.IsBase())		
 	{
-		u_group_tag_str gt; gt.Terminate();
+		TagGroups::group_tag_to_string gt; gt.Terminate();
 		gt.group = instance.GetTag();
 		gt.TagSwap();
 
