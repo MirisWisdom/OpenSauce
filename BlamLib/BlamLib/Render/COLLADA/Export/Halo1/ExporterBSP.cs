@@ -20,27 +20,22 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using BlamLib.Blam;
-using BlamLib.Render;
 
 using H1 = BlamLib.Blam.Halo1;
 
 namespace BlamLib.Render.COLLADA.Halo1
 {
-	public class ColladaBSPExporter : ColladaExporterHalo1
+	public class ColladaBSPExporter : ColladaModelExporterHalo1
 	{
 		#region Class Fields
-		private IHalo1BSPInterface bspInfo;
+		IHalo1BSPInterface bspInfo;
 
-		private List<Core.ColladaGeometry> listGeometry = new List<Core.ColladaGeometry>();
-		private List<Core.ColladaNode> listMarkers = new List<Core.ColladaNode>();
-		private List<Core.ColladaNode> listNode = new List<Core.ColladaNode>();
+		List<Core.ColladaGeometry> listGeometry = new List<Core.ColladaGeometry>();
+		List<Core.ColladaNode> listMarkers = new List<Core.ColladaNode>();
+		List<Core.ColladaNode> listNode = new List<Core.ColladaNode>();
 		#endregion
 
 		#region Constructor
-		/// <summary>
-		/// Private default constructor since this class MUST be initialised with arguments
-		/// </summary>
-		private ColladaBSPExporter() { }
 		/// <summary>
 		/// Halo1 BSP exporter class
 		/// </summary>
@@ -60,7 +55,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// Creates a semitransparent, green effect for portals
 		/// </summary>
 		/// <returns></returns>
-		private Fx.ColladaEffect CreatePortalsEffect()
+		static Fx.ColladaEffect CreatePortalsEffect()
 		{
 			Fx.ColladaEffect effect = CreateDefaultEffect("portals");
 			effect.ProfileCOMMON[0].Technique.Phong.Emission.Color.SetColor(0, 1, 0, 1);
@@ -72,7 +67,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// Creates a semitransparent, yellow effect for fogplanes
 		/// </summary>
 		/// <returns></returns>
-		private Fx.ColladaEffect CreateFogPlanesEffect()
+		static Fx.ColladaEffect CreateFogPlanesEffect()
 		{
 			Fx.ColladaEffect effect = CreateDefaultEffect("fogplanes");
 			effect.ProfileCOMMON[0].Technique.Phong.Emission.Color.SetColor(1, 1, 0, 1);
@@ -83,14 +78,14 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// <summary>
 		/// Adds the portals effect to the effect list
 		/// </summary>
-		private void CreateEffectListPortals()
+		void CreateEffectListPortals()
 		{
 			listEffect.Add(CreatePortalsEffect());
 		}
 		/// <summary>
 		/// Adds the fog planes effect to the effect list
 		/// </summary>
-		private void CreateEffectListFogPlanes()
+		void CreateEffectListFogPlanes()
 		{
 			listEffect.Add(CreateFogPlanesEffect());
 		}
@@ -127,13 +122,13 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// </summary>
 		/// <param name="index">The lightmap index to create a geometry from</param>
 		/// <returns></returns>
-		private Core.ColladaGeometry CreateRenderGeometry(int index)
+		Core.ColladaGeometry CreateRenderGeometry(int index)
 		{
 			H1.Tags.structure_bsp_group definition = tagManager.TagDefinition as H1.Tags.structure_bsp_group;
 
 			Core.ColladaGeometry geometry = new Core.ColladaGeometry();
 
-			// initialise the geometry attributes
+			// initialize the geometry attributes
 			geometry.Name = ColladaUtilities.FormatName(tagName, " ", "_") + "-" + definition.Lightmaps[index].Bitmap.ToString();
 			geometry.ID = String.Format(Core.ColladaGeometry.ElementIDFormat, geometry.Name);
 
@@ -157,7 +152,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			{
 				geometry.Mesh.Triangles.Add(new Core.ColladaTriangles());
 
-				// initialise attributes
+				// initialize attributes
 				string shader_name = ColladaUtilities.FormatName(
 					System.IO.Path.GetFileNameWithoutExtension(
 						definition.Lightmaps[index].Materials[material_index].Shader.ToString()), 
@@ -274,17 +269,17 @@ namespace BlamLib.Render.COLLADA.Halo1
 			return geometry;
 		}
 		/// <summary>
-		/// Creates ageometry element for a single cluster portal
+		/// Creates a geometry element for a single cluster portal
 		/// </summary>
 		/// <param name="portal_index">Index of the portal to create a geometry element for</param>
 		/// <returns></returns>
-		private Core.ColladaGeometry CreatePortalsGeometry(int portal_index)
+		Core.ColladaGeometry CreatePortalsGeometry(int portal_index)
 		{
 			H1.Tags.structure_bsp_group definition = tagManager.TagDefinition as H1.Tags.structure_bsp_group;
 
 			Core.ColladaGeometry geometry = new Core.ColladaGeometry();
 
-			// inisialise the geometry's attributes
+			// initialize the geometry's attributes
 			geometry.Name = "portal-" + portal_index.ToString();
 			geometry.ID = String.Format(Core.ColladaGeometry.ElementIDFormat, geometry.Name);
 
@@ -322,13 +317,13 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// </summary>
 		/// <param name="index">Index of the fog plane to create a geometry element for</param>
 		/// <returns></returns>
-		private Core.ColladaGeometry CreateFogPlaneGeometry(int index)
+		Core.ColladaGeometry CreateFogPlaneGeometry(int index)
 		{
 			H1.Tags.structure_bsp_group definition = tagManager.TagDefinition as H1.Tags.structure_bsp_group;
 
 			Core.ColladaGeometry geometry = new Core.ColladaGeometry();
 
-			// inisialise the geometry's attributes
+			// initialize the geometry's attributes
 			geometry.Name = "fogplane-" + index.ToString();
 			geometry.ID = String.Format(Core.ColladaGeometry.ElementIDFormat, geometry.Name);
 
@@ -362,9 +357,9 @@ namespace BlamLib.Render.COLLADA.Halo1
 			return geometry;
 		}
 		/// <summary>
-		/// Creates geometries for the relevent BSP meshes that are to be included in the collada file
+		/// Creates geometries for the relevant BSP meshes that are to be included in the collada file
 		/// </summary>
-		private void CreateGeometryList()
+		void CreateGeometryList()
 		{
 			H1.Tags.structure_bsp_group definition = tagManager.TagDefinition as H1.Tags.structure_bsp_group;
 
@@ -382,7 +377,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		}
 		#endregion
 		#region Create Markers
-		private Core.ColladaNode CreateMarker(int index)
+		Core.ColladaNode CreateMarker(int index)
 		{
 			H1.Tags.structure_bsp_group definition = tagManager.TagDefinition as H1.Tags.structure_bsp_group;
 
@@ -395,7 +390,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 			return marker;
 		}
-		private void CreateMarkerList()
+		void CreateMarkerList()
 		{
 			H1.Tags.structure_bsp_group definition = tagManager.TagDefinition as H1.Tags.structure_bsp_group;
 
@@ -409,7 +404,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// </summary>
 		/// <param name="index">The render geometry index to create a node for</param>
 		/// <returns></returns>
-		private Core.ColladaNode CreateNodeRender(int index)
+		Core.ColladaNode CreateNodeRender(int index)
 		{
 			Core.ColladaNode model_node = new Core.ColladaNode();
 			model_node.Name = listGeometry[index].Name;
@@ -458,7 +453,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// </summary>
 		/// <param name="index">The portal geometry index to create a node for</param>
 		/// <returns></returns>
-		private Core.ColladaNode CreateNodePortal(int index)
+		Core.ColladaNode CreateNodePortal(int index)
 		{
 			Core.ColladaNode model_node = new Core.ColladaNode();
 			model_node.Name = listGeometry[index].Name;
@@ -491,7 +486,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// </summary>
 		/// <param name="index">The fogplane geometry index to create a node for</param>
 		/// <returns></returns>
-		private Core.ColladaNode CreateNodeFogPlane(int index)
+		Core.ColladaNode CreateNodeFogPlane(int index)
 		{
 			Core.ColladaNode model_node = new Core.ColladaNode();
 			model_node.Name = listGeometry[index].Name;
@@ -522,7 +517,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// <summary>
 		/// Creates nodes for all the geometry elements in the collada file
 		/// </summary>
-		private void CreateNodeList()
+		void CreateNodeList()
 		{
 			H1.Tags.structure_bsp_group definition = tagManager.TagDefinition as H1.Tags.structure_bsp_group;
 
@@ -549,7 +544,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// <summary>
 		/// Creates the library_geometries element in the collada file
 		/// </summary>
-		private void AddLibraryGeometries()
+		void AddLibraryGeometries()
 		{
 			COLLADAFile.LibraryGeometries = new Core.ColladaLibraryGeometries();
 			COLLADAFile.LibraryGeometries.Geometry = new List<Core.ColladaGeometry>();
@@ -559,7 +554,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// Creates the library_visual_scenes element in the collada file. The node list is added under a node named "frame" since that is
 		/// required when creating new BSPs.
 		/// </summary>
-		private void AddLibraryVisualScenes()
+		void AddLibraryVisualScenes()
 		{
 			// add the main scene node
 			COLLADAFile.LibraryVisualScenes = new Core.ColladaLibraryVisualScenes();
@@ -621,5 +616,5 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 			return true;
 		}
-	}
+	};
 }

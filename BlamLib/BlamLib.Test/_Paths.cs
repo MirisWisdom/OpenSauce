@@ -22,6 +22,11 @@ namespace BlamLib.Test
 	partial class TestLibrary
 	{
 		public const string kTestResultsPath = @"C:\Mount\B\Kornner\Projects\test_results\BlamLib\";
+
+		public const string kProgramFilesPath =
+			@"C:\Program Files (x86)\"
+			//@"C:\Program Files\
+			;
 	};
 
 	partial class Halo1
@@ -30,7 +35,7 @@ namespace BlamLib.Test
 
 		const string kTestResultsTagsPath = kTestResultsPath + @"tags\";
 
-		const string kTestTagIndexTagsPath = @"C:\Program Files (x86)\Microsoft Games\Halo Custom Edition\";
+		const string kTestTagIndexTagsPath = TestLibrary.kProgramFilesPath + @"Microsoft Games\Halo Custom Edition\";
 	};
 
 	partial class Stubbs
@@ -53,7 +58,7 @@ namespace BlamLib.Test
 		const string kMapsDirectoryPc = @"C:\Mount\A\Bungie\Games\Halo2\PC\Maps\";
 		const string kMapsDirectoryXboxAlpha = @"C:\Mount\A\Bungie\Games\Halo2\Xbox\Alpha\Maps\";
 
-		const string kTestTagIndexTagsPath = @"D:\Program Files (x86)\Microsoft Games\Halo 2 Map Editor";
+		const string kTestTagIndexTagsPath = TestLibrary.kProgramFilesPath + @"Microsoft Games\Halo 2 Map Editor\";
 	};
 	#endregion
 

@@ -18,10 +18,8 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 using BlamLib.Blam;
-using BlamLib.Render;
 
 using H1 = BlamLib.Blam.Halo1;
 
@@ -31,190 +29,23 @@ namespace BlamLib.Render.COLLADA.Halo1
 	/// Base class for Halo1 exporters to derive from. Since shaders and bitmaps are used by both models and BSP
 	/// they are handled in the base class.
 	/// </summary>
-	public class ColladaExporterHalo1 : ColladaExporter
+	public class ColladaModelExporterHalo1 : ColladaModelExporterBase
 	{
-		#region Class Fields
-		private IHalo1ShaderDatumList shaderInfo;
-
-		protected Managers.TagIndexBase tagIndex;
-		protected Managers.TagManager tagManager;
-		protected string tagName;
-
-		protected List<DatumIndex> bitmapDatums = new List<DatumIndex>();
-
-		protected List<Fx.ColladaImage> listImage = new List<Fx.ColladaImage>();
-		protected List<Fx.ColladaEffect> listEffect = new List<Fx.ColladaEffect>();
-		protected List<Fx.ColladaMaterial> listMaterial = new List<Fx.ColladaMaterial>();
-		#endregion
-
 		#region Constructor
-		/// <summary>
-		/// Private constructor since this class MUST be initialised with arguments
-		/// </summary>
-		protected ColladaExporterHalo1() { }
 		/// <summary>
 		/// Base class constructor
 		/// </summary>
 		/// <param name="info">An object implementing IHalo1ShaderDatumList to provide a list of shader datums that the model/BSP uses</param>
 		/// <param name="tag_index">The tag index that contains the tag being exported</param>
 		/// <param name="tag_manager">The tag manager of the tag being exported</param>
-		public ColladaExporterHalo1(IHalo1ShaderDatumList info, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager)
-			: base()
+		public ColladaModelExporterHalo1(IHaloShaderDatumList info, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager)
+			: base(info, tag_index, tag_manager)
 		{
-			shaderInfo = info;
-			tagIndex = tag_index;
-			tagManager = tag_manager;
-			tagName = Path.GetFileNameWithoutExtension(tagManager.Name);
-		}
-		#endregion
-
-		#region Helpers
-		/// <summary>
-		/// Determines whether a DatumIndex is valid
-		/// </summary>
-		/// <param name="index">The index to validate</param>
-		/// <returns>Returns true if the DatumIndex is neither null, nor sentinel</returns>
-		protected bool IsDatumValid(DatumIndex index)
-		{
-			return (!index.Equals(DatumIndex.Null) && !Managers.TagIndex.IsSentinel(index));
-		}
-
-		/// <summary>
-		/// Gets a tag definition instance from the tag index
-		/// </summary>
-		/// <typeparam name="T">Tag definition type to return</typeparam>
-		/// <param name="tag_datum">Datum index of the tag</param>
-		/// <param name="cast_from_group">The tag group of the tag</param>
-		/// <param name="cast_to_group">The tag group of the definition we are casting to</param>
-		/// <returns></returns>
-		protected T GetTagDefinition<T>(DatumIndex tag_datum,
-			TagInterface.TagGroup cast_from_group,
-			TagInterface.TagGroup cast_to_group)
-			where T : TagInterface.Definition
-		{
-			// report if the datum index is invalid
-			if (!IsDatumValid(tag_datum))
-			{
-				OnErrorOccured(String.Format(ColladaExceptionStrings.InvalidDatumIndex,
-					tag_datum.ToString()));
-				return null;
-			}
-
-			// attempt to cast the definition to the specified type
-			T tag = tagIndex[tag_datum].TagDefinition as T;
-			// if the cast failed, throw an exception
-			if (tag == null)
-				throw new ColladaException(String.Format(
-					ColladaExceptionStrings.InvalidDefinitionCast,
-					tagIndex[tag_datum].Name,
-					cast_from_group.ToString(), cast_to_group.ToString()));
-
-			return tag;
 		}
 		#endregion
 
 		#region Element Creation
-		#region Create Images
-		/// <summary>
-		/// Populates the image array with bitmap references from the bitmap datum array
-		/// </summary>
-		protected void CreateImageList()
-		{
-			// create references to the images
-			for (int i = 0; i < bitmapDatums.Count; i++)
-			{
-				// if the datum index in invalid, report an error
-				if (!IsDatumValid(bitmapDatums[i]))
-				{
-					OnErrorOccured(String.Format(ColladaExceptionStrings.InvalidDatumIndex, bitmapDatums[i].ToString(), "unknown"));
-					continue;
-				}
-
-				BlamLib.Managers.TagManager bitmap_tag = tagIndex[bitmapDatums[i]];
-
-				Fx.ColladaImage image = new Fx.ColladaImage();
-				// set the ID using the bitmaps file name, this must stay consistent so that effects can generate the same ID
-				image.ID = ColladaUtilities.FormatName(System.IO.Path.GetFileNameWithoutExtension(bitmap_tag.Name), " ", "_");
-
-				image.InitFrom = new Fx.ColladaInitFrom();
-				image.InitFrom.Text = ColladaUtilities.BuildUri("file://",
-					String.Concat(relativeDataPath, bitmap_tag.Name, ".", bitmapFormatString)); ;
-
-				listImage.Add(image);
-			}
-		}
-		#endregion
 		#region Create Effects
-		protected Fx.ColladaTexture CreateTexture(DatumIndex bitmap_datum, int uv_channel)
-		{
-			Managers.TagManager bitmap = tagIndex[bitmap_datum];
-			string bitmap_name = ColladaUtilities.FormatName(System.IO.Path.GetFileNameWithoutExtension(bitmap.Name), " ", "_");
-
-			Fx.ColladaTexture texture = new Fx.ColladaTexture();
-			texture.Texture = bitmap_name + "-surface-sampler";
-			texture.TexCoord = "CHANNEL" + uv_channel.ToString();
-			return texture;
-		}
-		protected Fx.ColladaPhong CreateDefaultPhong()
-		{
-			Fx.ColladaPhong phong = new Fx.ColladaPhong();
-
-			// set the default ambient color
-			phong.Ambient = new Fx.ColladaCommonColorOrTextureType();
-			phong.Ambient.Color = new Core.ColladaColor(0, 0, 0, 1);
-
-			// set the default emission color
-			phong.Emission = new Fx.ColladaCommonColorOrTextureType();
-			phong.Emission.Color = new Core.ColladaColor(0, 0, 0, 1);
-
-			// set the default reflective color
-			phong.Reflective = new Fx.ColladaCommonColorOrTextureType();
-			phong.Reflective.Color = new Core.ColladaColor(0, 0, 0, 1);
-
-			// set the default reflectivity
-			phong.Reflectivity = new Fx.ColladaCommonFloatOrParamType();
-			phong.Reflectivity.Float = new ColladaSIDValue<float>(0);
-
-			// set the default transparent color
-			phong.Transparent = new Fx.ColladaCommonColorOrTextureType();
-			phong.Transparent.Color = new Core.ColladaColor(1, 1, 1, 1);
-
-			// set the default transparency
-			phong.Transparency = new Fx.ColladaCommonFloatOrParamType();
-			phong.Transparency.Float = new ColladaSIDValue<float>(1.0f);
-
-			// set the default diffuse color
-			phong.Diffuse = new Fx.ColladaCommonColorOrTextureType();
-			phong.Diffuse.Color = new Core.ColladaColor(0, 0, 0, 1);
-
-			// set the default specular color
-			phong.Specular = new Fx.ColladaCommonColorOrTextureType();
-			phong.Specular.Color = new Core.ColladaColor(1, 1, 1, 1);
-
-			// set the default shininess
-			phong.Shininess = new Fx.ColladaCommonFloatOrParamType();
-			phong.Shininess.Float = new ColladaSIDValue<float>(0.0f);
-
-			return phong;
-		}
-		/// <summary>
-		/// Creates an effect element with a phong definition set up with default values
-		/// </summary>
-		/// <param name="effect_id">ID of the effect</param>
-		protected Fx.ColladaEffect CreateDefaultEffect(string effect_id)
-		{
-			Fx.ColladaEffect effect = new Fx.ColladaEffect();
-
-			// create a common profile element
-			effect.ID = effect_id;
-			effect.ProfileCOMMON = new List<Fx.ColladaProfileCOMMON>();
-			effect.ProfileCOMMON.Add(new Fx.ColladaProfileCOMMON());
-			effect.ProfileCOMMON[0].Technique = new Fx.ColladaTechnique();
-			effect.ProfileCOMMON[0].Technique.sID = "common";
-			effect.ProfileCOMMON[0].Technique.Phong = CreateDefaultPhong();
-
-			return effect;
-		}
 		/// <summary>
 		/// Creates a phong definition using values from a shader tag
 		/// </summary>
@@ -236,7 +67,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 			shader_base = null;
 
-			if (shader_man.GroupTag.ID == Blam.Halo1.TagGroups.senv.ID)
+			if (shader_man.GroupTag == Blam.Halo1.TagGroups.senv)
 			{
 				H1.Tags.shader_environment_group shader_senv = GetTagDefinition<H1.Tags.shader_environment_group>(
 					shader_datum, shader_man.GroupTag, Blam.Halo1.TagGroups.senv);
@@ -258,7 +89,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 				phong.Specular.Color.SetColor(shader_senv.PerpendicularColor, 1);
 			}
-			else if (shader_man.GroupTag.ID == Blam.Halo1.TagGroups.soso.ID)
+			else if (shader_man.GroupTag == Blam.Halo1.TagGroups.soso)
 			{
 				H1.Tags.shader_model_group shader_soso = GetTagDefinition<H1.Tags.shader_model_group>(
 					shader_datum, shader_man.GroupTag, Blam.Halo1.TagGroups.soso);
@@ -271,7 +102,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 				phong.Specular.Color.SetColor(shader_soso.PerpendicularTintColor, 1);
 			}
-			else if (shader_man.GroupTag.ID == Blam.Halo1.TagGroups.schi.ID)
+			else if (shader_man.GroupTag == Blam.Halo1.TagGroups.schi)
 			{
 				H1.Tags.shader_transparent_chicago_group shader_schi = GetTagDefinition<H1.Tags.shader_transparent_chicago_group>(
 					shader_datum, shader_man.GroupTag, Blam.Halo1.TagGroups.schi);
@@ -282,7 +113,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 					phong.Diffuse.Texture = CreateTexture(shader_schi.Maps[0].Map.Datum, 0);
 				}
 			}
-			else if (shader_man.GroupTag.ID == Blam.Halo1.TagGroups.scex.ID)
+			else if (shader_man.GroupTag == Blam.Halo1.TagGroups.scex)
 			{
 				H1.Tags.shader_transparent_chicago_extended_group shader_scex = GetTagDefinition<H1.Tags.shader_transparent_chicago_extended_group>(
 					shader_datum, shader_man.GroupTag, Blam.Halo1.TagGroups.scex);
@@ -299,7 +130,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 					phong.Diffuse.Texture = CreateTexture(bitmap_datum, 0);
 				}
 			}
-			else if (shader_man.GroupTag.ID == Blam.Halo1.TagGroups.sotr.ID)
+			else if (shader_man.GroupTag == Blam.Halo1.TagGroups.sotr)
 			{
 				H1.Tags.shader_transparent_generic_group shader_sotr = GetTagDefinition<H1.Tags.shader_transparent_generic_group>(
 					shader_datum, shader_man.GroupTag, Blam.Halo1.TagGroups.sotr);
@@ -310,7 +141,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 					phong.Diffuse.Texture = CreateTexture(shader_sotr.Maps[0].Map.Datum, 0);
 				}
 			}
-			else if (shader_man.GroupTag.ID == Blam.Halo1.TagGroups.sgla.ID)
+			else if (shader_man.GroupTag == Blam.Halo1.TagGroups.sgla)
 			{
 				H1.Tags.shader_transparent_glass_group shader_sgla = GetTagDefinition<H1.Tags.shader_transparent_glass_group>(
 					shader_datum, shader_man.GroupTag, Blam.Halo1.TagGroups.sgla);
@@ -391,53 +222,6 @@ namespace BlamLib.Render.COLLADA.Halo1
 				}
 
 				listEffect.Add(CreateEffect(shader_datum));
-			}
-		}
-		#endregion
-		#region Create Materials
-		/// <summary>
-		/// Creates a material element
-		/// </summary>
-		/// <param name="id">ID for the material</param>
-		/// <param name="name">Name for the material</param>
-		/// <param name="effect_sid">The sID for the effect</param>
-		/// <param name="effect">The effect the material references</param>
-		/// <returns></returns>
-		protected Fx.ColladaMaterial CreateMaterial(string id, string name, string effect_sid, string effect)
-		{
-			Fx.ColladaMaterial material = new Fx.ColladaMaterial();
-
-			material.ID = id;
-			material.Name = name;
-			material.InstanceEffect = new Fx.ColladaInstanceEffect();
-			material.InstanceEffect.sID = effect_sid;
-			material.InstanceEffect.URL = COLLADA.ColladaUtilities.BuildUri(effect);
-
-			return material;
-		}
-		/// <summary>
-		/// Populate the material list
-		/// </summary>
-		protected void CreateMaterialList()
-		{
-			// for each shader, create a new material
-			for (int i = 0; i < shaderInfo.GetShaderCount(); i++)
-			{
-				DatumIndex shader_datum = shaderInfo.GetShaderDatum(i);
-				if (!IsDatumValid(shader_datum))
-				{
-					OnErrorOccured(String.Format(ColladaExceptionStrings.InvalidDatumIndex, bitmapDatums[i].ToString(), "unknown"));
-					continue;
-				}
-
-				BlamLib.Managers.TagManager shader_tag = tagIndex[shader_datum];
-
-				string shader_name = ColladaUtilities.FormatName(System.IO.Path.GetFileNameWithoutExtension(shader_tag.Name), " ", "_");
-				listMaterial.Add(
-					CreateMaterial(String.Format(Fx.ColladaMaterial.ElementIDFormat, shader_name),
-						shader_name,
-						shader_name,
-						shader_name));
 			}
 		}
 		#endregion
@@ -622,47 +406,5 @@ namespace BlamLib.Render.COLLADA.Halo1
 			return bitmap_datums;
 		}
 		#endregion
-
-		#region Library Creation
-		/// <summary>
-		/// Creates the library_images element in the collada file if applicable
-		/// </summary>
-		protected void AddLibraryImages()
-		{
-			// if the image list is null or empty, do not create the library element
-			if ((listImage == null) || (listImage.Count == 0))
-				return;
-
-			COLLADAFile.LibraryImages = new Fx.ColladaLibraryImages();
-			COLLADAFile.LibraryImages.Image = new List<Fx.ColladaImage>();
-			COLLADAFile.LibraryImages.Image.AddRange(listImage);
-		}
-		/// <summary>
-		/// Creates the library_effects element in the collada file if applicable
-		/// </summary>
-		protected void AddLibraryEffects()
-		{
-			// if the effect list is null or empty, do not create the library element
-			if ((listEffect == null) || (listEffect.Count == 0))
-				return;
-
-			COLLADAFile.LibraryEffects = new Fx.ColladaLibraryEffects();
-			COLLADAFile.LibraryEffects.Effect = new List<Fx.ColladaEffect>();
-			COLLADAFile.LibraryEffects.Effect.AddRange(listEffect);
-		}
-		/// <summary>
-		/// Creates the library_materials element in the collada file if applicable
-		/// </summary>
-		protected void AddLibraryMaterials()
-		{
-			// if the material list is null or empty, do not create the library element
-			if ((listMaterial == null) || (listMaterial.Count == 0))
-				return;
-
-			COLLADAFile.LibraryMaterials = new Fx.ColladaLibraryMaterials();
-			COLLADAFile.LibraryMaterials.Material = new List<Fx.ColladaMaterial>();
-			COLLADAFile.LibraryMaterials.Material.AddRange(listMaterial);
-		}
-		#endregion
-	}
+	};
 }

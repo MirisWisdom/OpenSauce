@@ -24,7 +24,6 @@ namespace BlamLib.Test
 {
 	partial class Halo2
 	{
-		const string kTestTagIndexTagsPath = @"C:\Program Files\Microsoft Games\Halo 2 Map Editor\";
 		static TagInterface.TagGroupCollection kImportInfoTags = new TagInterface.TagGroupCollection(true,
 			Blam.Halo2.TagGroups.coll,
 			Blam.Halo2.TagGroups.phmo,

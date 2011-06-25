@@ -1,21 +1,38 @@
-﻿using System;
+﻿/*
+    BlamLib: .NET SDK for the Blam Engine
+
+    Copyright (C) 2005-2010  Kornner Studios (http://kornner.com)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+using System;
 using System.Collections.Generic;
 
 using H2 = BlamLib.Blam.Halo2;
 
 namespace BlamLib.Render.COLLADA.Halo2
 {
-	public class ColladaLightmapExporter : ColladaExporterH2
+	public class ColladaLightmapExporter : ColladaModelExporterHalo2
 	{
 		#region Class Fields
-		private IHalo2LightmapInterface lightmapInfo;
+		IHalo2LightmapInterface lightmapInfo;
 
-		private List<Core.ColladaGeometry> listGeometry = new List<Core.ColladaGeometry>();
-		private List<Core.ColladaNode> listNode = new List<Core.ColladaNode>();
+		List<Core.ColladaGeometry> listGeometry = new List<Core.ColladaGeometry>();
+		List<Core.ColladaNode> listNode = new List<Core.ColladaNode>();
 		#endregion
 
 		#region Constructor
-		private ColladaLightmapExporter() { }
 		public ColladaLightmapExporter(IHalo2LightmapInterface lightmap_info, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager)
 			: base(lightmap_info, tag_index, tag_manager)
 		{
@@ -174,9 +191,9 @@ namespace BlamLib.Render.COLLADA.Halo2
 			return geometry;
 		}
 		/// <summary>
-		/// Creates geometries for the relevent BSP meshes that are to be included in the collada file
+		/// Creates geometries for the relevant BSP meshes that are to be included in the collada file
 		/// </summary>
-		private void CreateGeometryList()
+		void CreateGeometryList()
 		{
 			H2.Tags.scenario_structure_lightmap_group definition = tagManager.TagDefinition as H2.Tags.scenario_structure_lightmap_group;
 
@@ -193,7 +210,7 @@ namespace BlamLib.Render.COLLADA.Halo2
 		/// </summary>
 		/// <param name="index">The render geometry index to create a node for</param>
 		/// <returns></returns>
-		private Core.ColladaNode CreateNodeRender(int index)
+		Core.ColladaNode CreateNodeRender(int index)
 		{
 			Core.ColladaNode model_node = new Core.ColladaNode();
 			model_node.Name = listGeometry[index].Name;
@@ -211,7 +228,7 @@ namespace BlamLib.Render.COLLADA.Halo2
 		/// <summary>
 		/// Creates nodes for all the geometry elements in the collada file
 		/// </summary>
-		private void CreateNodeList()
+		void CreateNodeList()
 		{
 			for(int i = 0; i < listGeometry.Count; i++)
 				listNode.Add(CreateNodeRender(i));
@@ -222,7 +239,7 @@ namespace BlamLib.Render.COLLADA.Halo2
 		/// <summary>
 		/// Creates the library_geometries element in the collada file
 		/// </summary>
-		private void AddLibraryGeometries()
+		void AddLibraryGeometries()
 		{
 			COLLADAFile.LibraryGeometries = new Core.ColladaLibraryGeometries();
 			COLLADAFile.LibraryGeometries.Geometry = new List<Core.ColladaGeometry>();
@@ -232,7 +249,7 @@ namespace BlamLib.Render.COLLADA.Halo2
 		/// Creates the library_visual_scenes element in the collada file. The node list is added under a node named "frame" since that is
 		/// required when creating new BSPs.
 		/// </summary>
-		private void AddLibraryVisualScenes()
+		void AddLibraryVisualScenes()
 		{
 			// add the main scene node
 			COLLADAFile.LibraryVisualScenes = new Core.ColladaLibraryVisualScenes();
@@ -268,5 +285,5 @@ namespace BlamLib.Render.COLLADA.Halo2
 
 			return true;
 		}
-	}
+	};
 }

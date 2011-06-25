@@ -16,6 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+using System.Diagnostics;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -23,12 +24,12 @@ namespace BlamLib.Test
 {
 	static partial class TestLibrary
 	{
-		static System.DateTime startup_time;
+		static Stopwatch gTestsStopwatch;
 
 		[AssemblyInitialize]
 		public static void AssemblyInitialize(TestContext context)
 		{
-			startup_time = System.DateTime.Now;
+			gTestsStopwatch = Stopwatch.StartNew();
 
 			BlamLib.Program.Initialize();
 
@@ -45,8 +46,9 @@ namespace BlamLib.Test
 		{
 			BlamLib.Program.Close();
 
+			gTestsStopwatch.Stop();
 			System.Diagnostics.Debug.Print("\nTIME TAKEN: {0}\n",
-				(System.DateTime.Now - startup_time));
+				gTestsStopwatch.Elapsed);
 		}
 
 		public static void TestMethod(WaitCallback method, params ThreadedTaskArgsBase[] args)
@@ -146,6 +148,32 @@ namespace BlamLib.Test
 	[TestClass]
 	public abstract class BaseTestClass
 	{
+		#region Stop watches
+		protected Stopwatch m_testStopwatch = new Stopwatch();
+		protected void StartStopwatch()
+		{
+			m_testStopwatch.Reset();
+			m_testStopwatch.Start();
+		}
+		protected System.TimeSpan StopStopwatch()
+		{
+			m_testStopwatch.Stop();
+			return m_testStopwatch.Elapsed;
+		}
+
+		protected Stopwatch m_subTestStopwatch = new Stopwatch();
+		protected void StartSubStopwatch()
+		{
+			m_subTestStopwatch.Reset();
+			m_subTestStopwatch.Start();
+		}
+		protected System.TimeSpan StopSubStopwatch()
+		{
+			m_subTestStopwatch.Stop();
+			return m_subTestStopwatch.Elapsed;
+		}
+		#endregion
+
 		/// <summary>
 		///Gets or sets the test context which provides
 		///information about and functionality for the current test run.
@@ -250,6 +278,33 @@ namespace BlamLib.Test
 		public static implicit operator T(TagIndexHandler<T> handler)
 		{
 			return handler.IndexInterface;
+		}
+	};
+
+	/// <summary>Utility class for COLLADA nonsense</summary>
+	class ModelTestDefinition
+	{
+		public string TypeString;
+		public string Name;
+		public TagInterface.TagGroup Group;
+
+		public ModelTestDefinition(string type, string name, TagInterface.TagGroup group)
+		{
+			TypeString = type;
+			Name = name;
+			Group = group;
+		}
+
+		public Blam.DatumIndex TagIndex = Blam.DatumIndex.Null;
+		public void Open(Managers.TagIndex tag_index)
+		{
+			TagIndex = tag_index.Open(Name, Group, IO.ITagStreamFlags.LoadDependents);
+			Assert.IsFalse(TagIndex.IsNull);
+		}
+		public void Close(Managers.TagIndex tag_index)
+		{
+			Assert.IsTrue(tag_index.Unload(TagIndex));
+			TagIndex = Blam.DatumIndex.Null;
 		}
 	};
 }

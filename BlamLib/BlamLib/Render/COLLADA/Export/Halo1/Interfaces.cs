@@ -16,31 +16,22 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-using System;
-using System.Collections.Generic;
-using BlamLib.Blam;
 
 namespace BlamLib.Render.COLLADA.Halo1
 {
-	public interface IHalo1ShaderDatumList
-	{
-		int GetShaderCount();
-		DatumIndex GetShaderDatum(int index);
-	}
-
-	public interface IHalo1ModelInterface : IHalo1ShaderDatumList
+	public interface IHalo1ModelInterface : IHaloShaderDatumList
 	{
 		int GetGeometryCount();
 		string GetGeometryName(int index);
 		int GetGeometryIndex(int index);
 		bool IsMultiplePermutations();
 		int GetPermutation();
-	}
+	};
 
-	public interface IHalo1BSPInterface : IHalo1ShaderDatumList
+	public interface IHalo1BSPInterface : IHaloShaderDatumList
 	{
 		bool IncludeRenderMesh();
 		bool IncludePortalsMesh();
 		bool IncludeFogPlanesMesh();
-	}
+	};
 }

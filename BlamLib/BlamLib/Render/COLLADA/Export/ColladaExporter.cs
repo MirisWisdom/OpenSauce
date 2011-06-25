@@ -60,19 +60,13 @@ namespace BlamLib.Render.COLLADA
 		#region Events
 		public class ColladaErrorEventArgs : EventArgs
 		{
-			private string errorMessage;
+			public string ErrorMessage { get; private set; }
 
-			public string ErrorMessage
-			{
-				get { return errorMessage; }
-			}
-
-			private ColladaErrorEventArgs() { }
 			public ColladaErrorEventArgs(string message)
 			{
-				errorMessage = message;
+				ErrorMessage = message;
 			}
-		}
+		};
 
 		/// <summary>
 		/// This event is fired when an error has occured, with an error string describing the error in detail.
@@ -88,7 +82,18 @@ namespace BlamLib.Render.COLLADA
 
 		#region Class Members
 		protected ColladaFile COLLADAFile = new ColladaFile();
+
+		protected Managers.TagIndexBase tagIndex;
+		protected Managers.TagManager tagManager;
+		protected string tagName;
 		#endregion
+
+		protected ColladaExporter(Managers.TagIndexBase tag_index, Managers.TagManager tag_manager)
+		{
+			tagIndex = tag_index;
+			tagManager = tag_manager;
+			tagName = System.IO.Path.GetFileNameWithoutExtension(tagManager.Name);
+		}
 
 		#region Element Creation
 		/// <summary>
@@ -281,24 +286,22 @@ namespace BlamLib.Render.COLLADA
 				OnErrorOccured(ColladaExceptionStrings.ValidationFailed);
 
 				// report an error for all inner exceptions
-				Exception exception_temp = exception;
-				while (exception_temp != null)
+				for (var except = exception; except != null; except = except.InnerException)
 				{
-					OnErrorOccured(exception_temp.Message);
+					OnErrorOccured(except.Message);
 
-					// if the exception was a vaildation exception, report the element details
-					ColladaValidationException validation_exception = (exception_temp as ColladaValidationException);
+					// if the exception was a validation exception, report the element details
+					var validation_exception = except as ColladaValidationException;
 					if ((validation_exception != null) && (validation_exception.ElementDetails != null))
 					{
 						foreach (string detail in validation_exception.ElementDetails)
 							OnErrorOccured(String.Format("COLLADA_DETAIL: {0}", detail));
 					}
-					exception_temp = exception_temp.InnerException;
 				}
 				return;
 			}
 
-			// if the file exists but overwritting is disabled, report this and return
+			// if the file exists but overwriting is disabled, report this and return
 			if (System.IO.File.Exists(location) && !bOverwrite)
 			{
 				OnErrorOccured(String.Format(ColladaExceptionStrings.FileExists, location));
@@ -309,21 +312,21 @@ namespace BlamLib.Render.COLLADA
 			System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(location));
 
 			XmlSerializer serializer = new XmlSerializer(typeof(ColladaFile));
-
-			XmlTextWriter writer = new XmlTextWriter(location, null);
-			writer.Formatting = Formatting.Indented;
-			serializer.Serialize(writer, COLLADAFile);
-			writer.Close();
+			using (var writer = new XmlTextWriter(location, null))
+			{
+				writer.Formatting = Formatting.Indented;
+				serializer.Serialize(writer, COLLADAFile);
+			}
 		}
 		/// <summary>
 		/// Performs the actual collada file population. Override this in derived classes to define how this is done.
 		/// </summary>
-		/// <returns>True if no errors occured</returns>
+		/// <returns>True if no errors occurred</returns>
 		protected virtual bool BuildColladaInstanceImpl() { return true; }
 		/// <summary>
 		/// Populates the collada file object with the current data set
 		/// </summary>
-		/// <returns>True if no errors occured</returns>
+		/// <returns>True if no errors occurred</returns>
 		public bool BuildColladaInstance()
 		{
 			// make sure the data path ends with a '\'
@@ -336,18 +339,272 @@ namespace BlamLib.Render.COLLADA
 			}
 			catch (Exception e)
 			{
-				// if an exception occured, report it and return gracefully
+				// if an exception occurred, report it and return gracefully
 				OnErrorOccured(e.Message);
 				OnErrorOccured(e.StackTrace);
 
-				Exception exception = e.InnerException;
-				while (exception != null)
-				{
-					OnErrorOccured(exception.Message);
-					exception = exception.InnerException;
-				}
+				for (var except = e.InnerException; except != null; except = except.InnerException)
+					OnErrorOccured(except.Message);
 			}
 			return false;
 		}
-	}
+
+		#region Helpers
+		/// <summary>
+		/// Determines whether a DatumIndex is valid
+		/// </summary>
+		/// <param name="index">The index to validate</param>
+		/// <returns>Returns true if the DatumIndex is neither null, nor sentinel</returns>
+		protected static bool IsDatumValid(DatumIndex index)
+		{
+			return (!index.Equals(DatumIndex.Null) && !Managers.TagIndex.IsSentinel(index));
+		}
+
+		/// <summary>
+		/// Gets a tag definition instance from the tag index
+		/// </summary>
+		/// <typeparam name="T">Tag definition type to return</typeparam>
+		/// <param name="tag_datum">Datum index of the tag</param>
+		/// <param name="cast_from_group">The tag group of the tag</param>
+		/// <param name="cast_to_group">The tag group of the definition we are casting to</param>
+		/// <returns></returns>
+		protected T GetTagDefinition<T>(DatumIndex tag_datum,
+			TagInterface.TagGroup cast_from_group,
+			TagInterface.TagGroup cast_to_group)
+			where T : TagInterface.Definition
+		{
+			// report if the datum index is invalid
+			if (!IsDatumValid(tag_datum))
+			{
+				OnErrorOccured(String.Format(ColladaExceptionStrings.InvalidDatumIndex,
+					tag_datum.ToString()));
+				return null;
+			}
+
+			// attempt to cast the definition to the specified type
+			T tag = tagIndex[tag_datum].TagDefinition as T;
+			// if the cast failed, throw an exception
+			if (tag == null)
+				throw new ColladaException(String.Format(
+					ColladaExceptionStrings.InvalidDefinitionCast,
+					tagIndex[tag_datum].Name,
+					cast_from_group.ToString(), cast_to_group.ToString()));
+
+			return tag;
+		}
+		#endregion
+	};
+
+	public abstract class ColladaModelExporterBase : ColladaExporter
+	{
+		#region Class Members
+		protected IHaloShaderDatumList shaderInfo;
+
+		protected List<DatumIndex> bitmapDatums = new List<DatumIndex>();
+
+		protected List<Fx.ColladaImage> listImage = new List<Fx.ColladaImage>();
+		protected List<Fx.ColladaEffect> listEffect = new List<Fx.ColladaEffect>();
+		protected List<Fx.ColladaMaterial> listMaterial = new List<Fx.ColladaMaterial>();
+		#endregion
+
+		protected ColladaModelExporterBase(IHaloShaderDatumList info, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager) :
+			base(tag_index, tag_manager)
+		{
+			shaderInfo = info;
+		}
+
+		#region Element Creation
+		#region Create Images
+		/// <summary>
+		/// Populates the image array with bitmap references from the bitmap datum array
+		/// </summary>
+		protected void CreateImageList()
+		{
+			// create references to the images
+			for (int i = 0; i < bitmapDatums.Count; i++)
+			{
+				// if the datum index in invalid, report an error
+				if (!IsDatumValid(bitmapDatums[i]))
+				{
+					OnErrorOccured(String.Format(ColladaExceptionStrings.InvalidDatumIndex, bitmapDatums[i].ToString(), "unknown"));
+					continue;
+				}
+
+				BlamLib.Managers.TagManager bitmap_tag = tagIndex[bitmapDatums[i]];
+
+				Fx.ColladaImage image = new Fx.ColladaImage();
+				// set the ID using the bitmaps file name, this must stay consistent so that effects can generate the same ID
+				image.ID = ColladaUtilities.FormatName(System.IO.Path.GetFileNameWithoutExtension(bitmap_tag.Name), " ", "_");
+
+				image.InitFrom = new Fx.ColladaInitFrom();
+				image.InitFrom.Text = ColladaUtilities.BuildUri("file://",
+					String.Concat(relativeDataPath, bitmap_tag.Name, ".", bitmapFormatString)); ;
+
+				listImage.Add(image);
+			}
+		}
+		#endregion
+		#region Create Effects
+		protected Fx.ColladaTexture CreateTexture(DatumIndex bitmap_datum, int uv_channel)
+		{
+			Managers.TagManager bitmap = tagIndex[bitmap_datum];
+			string bitmap_name = ColladaUtilities.FormatName(System.IO.Path.GetFileNameWithoutExtension(bitmap.Name), " ", "_");
+
+			Fx.ColladaTexture texture = new Fx.ColladaTexture();
+			texture.Texture = bitmap_name + "-surface-sampler";
+			texture.TexCoord = "CHANNEL" + uv_channel.ToString();
+			return texture;
+		}
+		protected static Fx.ColladaPhong CreateDefaultPhong()
+		{
+			Fx.ColladaPhong phong = new Fx.ColladaPhong();
+
+			// set the default ambient color
+			phong.Ambient = new Fx.ColladaCommonColorOrTextureType();
+			phong.Ambient.Color = new Core.ColladaColor(0, 0, 0, 1);
+
+			// set the default emission color
+			phong.Emission = new Fx.ColladaCommonColorOrTextureType();
+			phong.Emission.Color = new Core.ColladaColor(0, 0, 0, 1);
+
+			// set the default reflective color
+			phong.Reflective = new Fx.ColladaCommonColorOrTextureType();
+			phong.Reflective.Color = new Core.ColladaColor(0, 0, 0, 1);
+
+			// set the default reflectivity
+			phong.Reflectivity = new Fx.ColladaCommonFloatOrParamType();
+			phong.Reflectivity.Float = new ColladaSIDValue<float>(0);
+
+			// set the default transparent color
+			phong.Transparent = new Fx.ColladaCommonColorOrTextureType();
+			phong.Transparent.Color = new Core.ColladaColor(1, 1, 1, 1);
+
+			// set the default transparency
+			phong.Transparency = new Fx.ColladaCommonFloatOrParamType();
+			phong.Transparency.Float = new ColladaSIDValue<float>(1.0f);
+
+			// set the default diffuse color
+			phong.Diffuse = new Fx.ColladaCommonColorOrTextureType();
+			phong.Diffuse.Color = new Core.ColladaColor(0, 0, 0, 1);
+
+			// set the default specular color
+			phong.Specular = new Fx.ColladaCommonColorOrTextureType();
+			phong.Specular.Color = new Core.ColladaColor(1, 1, 1, 1);
+
+			// set the default shininess
+			phong.Shininess = new Fx.ColladaCommonFloatOrParamType();
+			phong.Shininess.Float = new ColladaSIDValue<float>(0.0f);
+
+			return phong;
+		}
+		/// <summary>
+		/// Creates an effect element with a phong definition set up with default values
+		/// </summary>
+		/// <param name="effect_id">ID of the effect</param>
+		protected static Fx.ColladaEffect CreateDefaultEffect(string effect_id)
+		{
+			Fx.ColladaEffect effect = new Fx.ColladaEffect();
+
+			// create a common profile element
+			effect.ID = effect_id;
+			effect.ProfileCOMMON = new List<Fx.ColladaProfileCOMMON>();
+			effect.ProfileCOMMON.Add(new Fx.ColladaProfileCOMMON());
+			effect.ProfileCOMMON[0].Technique = new Fx.ColladaTechnique();
+			effect.ProfileCOMMON[0].Technique.sID = "common";
+			effect.ProfileCOMMON[0].Technique.Phong = CreateDefaultPhong();
+
+			return effect;
+		}
+		#endregion
+		#region Create Materials
+		/// <summary>
+		/// Creates a material element
+		/// </summary>
+		/// <param name="id">ID for the material</param>
+		/// <param name="name">Name for the material</param>
+		/// <param name="effect_sid">The sID for the effect</param>
+		/// <param name="effect">The effect the material references</param>
+		/// <returns></returns>
+		protected static Fx.ColladaMaterial CreateMaterial(string id, string name, string effect_sid, string effect)
+		{
+			Fx.ColladaMaterial material = new Fx.ColladaMaterial();
+
+			material.ID = id;
+			material.Name = name;
+			material.InstanceEffect = new Fx.ColladaInstanceEffect();
+			material.InstanceEffect.sID = effect_sid;
+			material.InstanceEffect.URL = COLLADA.ColladaUtilities.BuildUri(effect);
+
+			return material;
+		}
+		/// <summary>
+		/// Populate the material list
+		/// </summary>
+		protected void CreateMaterialList()
+		{
+			// for each shader, create a new material
+			for (int i = 0; i < shaderInfo.GetShaderCount(); i++)
+			{
+				DatumIndex shader_datum = shaderInfo.GetShaderDatum(i);
+				if (!IsDatumValid(shader_datum))
+				{
+					OnErrorOccured(String.Format(ColladaExceptionStrings.InvalidDatumIndex, bitmapDatums[i].ToString(), "unknown"));
+					continue;
+				}
+
+				BlamLib.Managers.TagManager shader_tag = tagIndex[shader_datum];
+
+				string shader_name = ColladaUtilities.FormatName(System.IO.Path.GetFileNameWithoutExtension(shader_tag.Name), " ", "_");
+				listMaterial.Add(
+					CreateMaterial(String.Format(Fx.ColladaMaterial.ElementIDFormat, shader_name),
+						shader_name,
+						shader_name,
+						shader_name));
+			}
+		}
+		#endregion
+		#endregion
+
+		#region Library Creation
+		/// <summary>
+		/// Creates the library_images element in the collada file if applicable
+		/// </summary>
+		protected void AddLibraryImages()
+		{
+			// if the image list is null or empty, do not create the library element
+			if ((listImage == null) || (listImage.Count == 0))
+				return;
+
+			COLLADAFile.LibraryImages = new Fx.ColladaLibraryImages();
+			COLLADAFile.LibraryImages.Image = new List<Fx.ColladaImage>();
+			COLLADAFile.LibraryImages.Image.AddRange(listImage);
+		}
+		/// <summary>
+		/// Creates the library_effects element in the collada file if applicable
+		/// </summary>
+		protected void AddLibraryEffects()
+		{
+			// if the effect list is null or empty, do not create the library element
+			if ((listEffect == null) || (listEffect.Count == 0))
+				return;
+
+			COLLADAFile.LibraryEffects = new Fx.ColladaLibraryEffects();
+			COLLADAFile.LibraryEffects.Effect = new List<Fx.ColladaEffect>();
+			COLLADAFile.LibraryEffects.Effect.AddRange(listEffect);
+		}
+		/// <summary>
+		/// Creates the library_materials element in the collada file if applicable
+		/// </summary>
+		protected void AddLibraryMaterials()
+		{
+			// if the material list is null or empty, do not create the library element
+			if ((listMaterial == null) || (listMaterial.Count == 0))
+				return;
+
+			COLLADAFile.LibraryMaterials = new Fx.ColladaLibraryMaterials();
+			COLLADAFile.LibraryMaterials.Material = new List<Fx.ColladaMaterial>();
+			COLLADAFile.LibraryMaterials.Material.AddRange(listMaterial);
+		}
+		#endregion
+	};
 }
