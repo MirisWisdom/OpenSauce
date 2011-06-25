@@ -24,7 +24,25 @@ using BlamLib.Managers;
 
 namespace BlamLib.Render.COLLADA.Halo1
 {
-	[FlagsAttribute]
+	/// <summary>
+	/// Provides readonly information about an object in a model tag for external use
+	/// </summary>
+	public class ColladaHalo1ModelInfo : ColladaHaloModelInfoBase
+	{
+		public int Permutation { get; private set; }
+		public int LevelOfDetail { get; private set; }
+
+		public ColladaHalo1ModelInfo(int internal_index, string name, 
+			int vertex_count, int face_count, 
+			int perm, int lod)
+			: base(internal_index, name, vertex_count, face_count)
+		{
+			Permutation = perm;
+			LevelOfDetail = lod;
+		}
+	};
+
+	[Flags]
 	public enum BSPObjectType
 	{
 		None,
@@ -32,84 +50,23 @@ namespace BlamLib.Render.COLLADA.Halo1
 		RenderMesh,
 		Portals,
 		FogPlanes,
-	}
-
-	/// <summary>
-	/// Provides readonly information about an object in a model tag for external use
-	/// </summary>
-	public class ColladaHalo1ModelInfo : ColladaInfo
-	{
-		private int vertexCount;
-		private int faceCount;
-		private int permutation;
-		private int levelOfDetail;
-
-		public int VertexCount
-		{
-			get { return vertexCount; }
-		}
-		public int FaceCount
-		{
-			get { return faceCount; }
-		}
-		public int Permutation
-		{
-			get { return permutation; }
-		}
-		public int LevelOfDetail
-		{
-			get { return levelOfDetail; }
-		}
-
-		public ColladaHalo1ModelInfo(int internal_index, 
-			string name, 
-			int vertex_count, 
-			int face_count, 
-			int perm, int 
-			lod)
-			: base(internal_index, name)
-		{
-			vertexCount = vertex_count;
-			faceCount = face_count;
-			permutation = perm;
-			levelOfDetail = lod;
-		}
-	}
+	};
 	/// <summary>
 	/// Provides readonly information about an object in a BSP tag for external use
 	/// </summary>
-	public class ColladaHalo1BSPInfo : ColladaInfo
+	public class ColladaHalo1BSPInfo : ColladaHaloModelInfoBase
 	{
-		private int vertexCount;
-		private int faceCount;
-		private BSPObjectType type;
+		public BSPObjectType Type { get; private set; }
 
-		public int VertexCount
-		{
-			get { return vertexCount; }
-		}
-		public int FaceCount
-		{
-			get { return faceCount; }
-		}
-		public BSPObjectType Type
-		{
-			get { return type; }
-		}
-
-		private ColladaHalo1BSPInfo() { }
-		public ColladaHalo1BSPInfo(int internal_index,
-			string name,
-			int vertex_count,
-			int face_count,
+		//private ColladaHalo1BSPInfo() { }
+		public ColladaHalo1BSPInfo(int internal_index, string name,
+			int vertex_count, int face_count,
 			BSPObjectType bsp_type)
-			: base(internal_index, name)
+			: base(internal_index, name, vertex_count, face_count)
 		{
-			vertexCount = vertex_count;
-			faceCount = face_count;
-			type = bsp_type;
+			Type = bsp_type;
 		}
-	}
+	};
 
 	class ColladaHalo1 : ColladaInterface
 	{
@@ -117,9 +74,9 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// <summary>
 		/// Interface class to pass shader datum indices to the Halo1 exporter base class
 		/// </summary>
-		protected class ShaderInfoInternal : ColladaInfoInternal, IHalo1ShaderDatumList
+		protected class ShaderInfoInternal : ColladaInfoInternal, IHaloShaderDatumList
 		{
-			private List<DatumIndex> shaderDatums = new List<DatumIndex>();
+			List<DatumIndex> shaderDatums = new List<DatumIndex>();
 
 			/// <summary>
 			/// Adds the DatumIndex of a shader to the list if it is not already present
@@ -147,7 +104,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// </summary>
 		protected class ModelInfoInternal : ShaderInfoInternal, IHalo1ModelInterface
 		{
-			private struct GeometryInfo
+			struct GeometryInfo
 			{
 				public string Name;
 				public int Index;
@@ -156,14 +113,14 @@ namespace BlamLib.Render.COLLADA.Halo1
 			public bool IsMultiplePermutations = false;
 			public int Permutation = 0;
 
-			private List<GeometryInfo> geometries = new List<GeometryInfo>();
+			List<GeometryInfo> geometries = new List<GeometryInfo>();
 
 			/// <summary>
 			/// Determines if a geometry with a matching index already exists in the list
 			/// </summary>
 			/// <param name="index">The geometry index to search for</param>
 			/// <returns>True if a matching element is found</returns>
-			private bool GeometryExists(int index)
+			bool GeometryExists(int index)
 			{
 				foreach (var geometry in geometries)
 					if (geometry.Index == index)
@@ -215,7 +172,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// </summary>
 		protected class BSPInfoInternal : ShaderInfoInternal, IHalo1BSPInterface
 		{
-			private BSPObjectType type;
+			BSPObjectType type;
 
 			/// <summary>
 			/// Sets the bsp object type
@@ -244,11 +201,11 @@ namespace BlamLib.Render.COLLADA.Halo1
 		#endregion
 
 		#region Static Helper Classes
-		static protected class Model
+		protected static class Model
 		{
-			static public void AddGeometryInfos(ModelInfoInternal model_info, TagManager manager, int permutation, int lod)
+			public static void AddGeometryInfos(ModelInfoInternal model_info, TagManager manager, int permutation, int lod)
 			{
-				Blam.Halo1.Tags.gbxmodel_group definition = manager.TagDefinition as Blam.Halo1.Tags.gbxmodel_group;
+				var definition = manager.TagDefinition as Blam.Halo1.Tags.gbxmodel_group;
 
 				foreach (var region in definition.Regions)
 				{
@@ -257,7 +214,8 @@ namespace BlamLib.Render.COLLADA.Halo1
 					if (permutation >= region.Permutations.Count)
 						permutation_index = region.Permutations.Count - 1;
 
-					string name = region.Name.Value + "-" + region.Permutations[permutation_index].Name + "-lod" + lod.ToString();
+					string name = string.Format("{0}-{1}-lod{2}", 
+						region.Name.Value, region.Permutations[permutation_index].Name, lod.ToString());
 
 					int index = 0;
 					switch (lod)
@@ -272,29 +230,29 @@ namespace BlamLib.Render.COLLADA.Halo1
 					model_info.AddGeometry(name, index);
 				}
 			}
-			static public void AddShaderDatums(ModelInfoInternal model_info, TagManager manager)
+			public static void AddShaderDatums(ModelInfoInternal model_info, TagManager manager)
 			{
-				Blam.Halo1.Tags.gbxmodel_group definition = manager.TagDefinition as Blam.Halo1.Tags.gbxmodel_group;
+				var definition = manager.TagDefinition as Blam.Halo1.Tags.gbxmodel_group;
 
-				for(int i = 0; i < model_info.GetGeometryCount(); i++)
+				for (int i = 0; i < model_info.GetGeometryCount(); i++)
 				{
 					foreach (var part in definition.Geometries[model_info.GetGeometryIndex(i)].Parts)
 						model_info.AddShaderDatum(definition.Shaders[part.ShaderIndex.Value].Shader.Datum);
 				}
 			}
 
-			static public int GetPermutationCount(TagManager manager)
+			public static int GetPermutationCount(TagManager manager)
 			{
-				Blam.Halo1.Tags.gbxmodel_group definition = manager.TagDefinition as Blam.Halo1.Tags.gbxmodel_group;
+				var definition = manager.TagDefinition as Blam.Halo1.Tags.gbxmodel_group;
 
 				int permutation_count = 0;
 				foreach (var region in definition.Regions)
 					permutation_count = (region.Permutations.Count > permutation_count ? region.Permutations.Count : permutation_count);
 				return permutation_count;
 			}
-			static public int GetVertexCount(ModelInfoInternal model_info, TagManager manager)
+			public static int GetVertexCount(ModelInfoInternal model_info, TagManager manager)
 			{
-				Blam.Halo1.Tags.gbxmodel_group definition = manager.TagDefinition as Blam.Halo1.Tags.gbxmodel_group;
+				var definition = manager.TagDefinition as Blam.Halo1.Tags.gbxmodel_group;
 
 				int vertex_count = 0;
 				for (int i = 0; i < model_info.GetGeometryCount(); i++)
@@ -304,9 +262,9 @@ namespace BlamLib.Render.COLLADA.Halo1
 				}
 				return vertex_count;
 			}
-			static public int GetTriangleCount(ModelInfoInternal model_info, TagManager manager)
+			public static int GetTriangleCount(ModelInfoInternal model_info, TagManager manager)
 			{
-				Blam.Halo1.Tags.gbxmodel_group definition = manager.TagDefinition as Blam.Halo1.Tags.gbxmodel_group;
+				var definition = manager.TagDefinition as Blam.Halo1.Tags.gbxmodel_group;
 
 				int triangle_count = 0;
 				for (int i = 0; i < model_info.GetGeometryCount(); i++)
@@ -316,12 +274,12 @@ namespace BlamLib.Render.COLLADA.Halo1
 				}
 				return triangle_count;
 			}
-		}
-		static protected class BSP
+		};
+		protected static class BSP
 		{
-			static public void AddShaderDatums(BSPInfoInternal bsp_info, TagManager manager)
+			public static void AddShaderDatums(BSPInfoInternal bsp_info, TagManager manager)
 			{
-				Blam.Halo1.Tags.structure_bsp_group definition = manager.TagDefinition as Blam.Halo1.Tags.structure_bsp_group;
+				var definition = manager.TagDefinition as Blam.Halo1.Tags.structure_bsp_group;
 
 				foreach (var lightmap in definition.Lightmaps)
 				{
@@ -330,9 +288,9 @@ namespace BlamLib.Render.COLLADA.Halo1
 				}
 			}
 
-			static public int GetVertexCount(TagManager manager, BSPObjectType type)
+			public static int GetVertexCount(TagManager manager, BSPObjectType type)
 			{
-				Blam.Halo1.Tags.structure_bsp_group definition = manager.TagDefinition as Blam.Halo1.Tags.structure_bsp_group;
+				var definition = manager.TagDefinition as Blam.Halo1.Tags.structure_bsp_group;
 				int count = 0;
 				switch (type)
 				{
@@ -354,9 +312,9 @@ namespace BlamLib.Render.COLLADA.Halo1
 				};
 				return count;
 			}
-			static public int GetTriangleCount(TagManager manager, BSPObjectType type)
+			public static int GetTriangleCount(TagManager manager, BSPObjectType type)
 			{
-				Blam.Halo1.Tags.structure_bsp_group definition = manager.TagDefinition as Blam.Halo1.Tags.structure_bsp_group;
+				var definition = manager.TagDefinition as Blam.Halo1.Tags.structure_bsp_group;
 				int count = 0;
 				switch (type)
 				{
@@ -364,33 +322,29 @@ namespace BlamLib.Render.COLLADA.Halo1
 						foreach (var lightmap in definition.Lightmaps)
 						{
 							foreach (var material in lightmap.Materials)
-								count += material.VertexBuffersCount1;
+								count += material.SurfaceCount;
 						}
 						break;
 					case BSPObjectType.Portals:
 						foreach (var portal in definition.ClusterPortals)
-							count += portal.Vertices.Count;
+							count += portal.Vertices.Count - 2;
 						break;
 					case BSPObjectType.FogPlanes:
 						foreach (var fogplane in definition.FogPlanes)
-							count += fogplane.Vertices.Count;
+							count += fogplane.Vertices.Count - 2;
 						break;
 				};
 				return count;
 			}
-		}
+		};
 		#endregion
 
 		#region Class Members
-		private TagIndex tagIndex;
-		private TagManager tagManager;
+		TagIndex tagIndex;
+		TagManager tagManager;
 		#endregion
 
 		#region Constructors
-		/// <summary>
-		/// Private default constructor since this class MUST be initialised with arguments
-		/// </summary>
-		private ColladaHalo1() {}
 		/// <summary>
 		/// Halo1 export interface class constructor
 		/// </summary>
@@ -411,7 +365,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// </summary>
 		protected override void GenerateInfoList()
 		{
-			// seperate methods for model, bsp
+			// separate methods for model, bsp
 			if (tagManager.GroupTag.Equals(Blam.Halo1.TagGroups.mod2))
 				GenerateInfoListModel();
 			else if (tagManager.GroupTag.Equals(Blam.Halo1.TagGroups.sbsp))
@@ -420,7 +374,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// <summary>
 		/// Creates info classes for a gbxmodel
 		/// </summary>
-		private void GenerateInfoListModel()
+		void GenerateInfoListModel()
 		{
 			int permutation_count = Model.GetPermutationCount(tagManager);
 
@@ -452,7 +406,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// <summary>
 		/// Creates info classes for a structure BSP
 		/// </summary>
-		private void GenerateInfoListBsp()
+		void GenerateInfoListBsp()
 		{
 			string bsp_name = Path.GetFileNameWithoutExtension(tagManager.Name);
 
@@ -541,8 +495,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 				else
 					model_info.IsMultiplePermutations = true;
 
-				COLLADA.Halo1.ColladaModelExporter exporter =
-					new Halo1.ColladaModelExporter(model_info, tagIndex, tagManager);
+				var exporter = new Halo1.ColladaModelExporter(model_info, tagIndex, tagManager);
 
 				exporter.ErrorOccured += new EventHandler<ColladaExporter.ColladaErrorEventArgs>(ExporterErrorOccured);
 
@@ -575,7 +528,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 				bsp_info.SetType(bsp_type);
 
-				COLLADA.Halo1.ColladaBSPExporter exporter = new Halo1.ColladaBSPExporter(bsp_info, tagIndex, tagManager);
+				var exporter = new Halo1.ColladaBSPExporter(bsp_info, tagIndex, tagManager);
 
 				exporter.ErrorOccured += new EventHandler<ColladaExporter.ColladaErrorEventArgs>(ExporterErrorOccured);
 
@@ -590,9 +543,9 @@ namespace BlamLib.Render.COLLADA.Halo1
 			}
 		}
 
-		private void ExporterErrorOccured(object sender, ColladaExporter.ColladaErrorEventArgs e)
+		void ExporterErrorOccured(object sender, ColladaExporter.ColladaErrorEventArgs e)
 		{
 			AddReport(e.ErrorMessage);
 		}
-	}
+	};
 }

@@ -77,7 +77,11 @@ namespace Yelo
 			TStructSubGetPtrImpl(datum_index,			SwarmActorIndex, 0x1F8);
 			TStructSubGetPtrImpl(datum_index,			SwamPrevUnitIndex, 0x200);
 			TStructSubGetPtrImpl(long_flags,			Flags, 0x204);
-			// datum_index, 0x218, Controlling Player Index
+			
+			//TStructSubGetPtrImpl(uint32,				ControlTime?, 0x210);
+			//TStructSubGetPtrImpl(long_flags,			ControlFlags, 0x214);
+			//TStructSubGetPtrImpl(datum_index,			ControllingPlayerIndex, 0x218);
+
 			TStructSubGetPtrImpl(int16,					EmotionAnimationIndex, 0x21E);
 			TStructSubGetPtrImpl(real_vector3d,			DesiredFacingVector, 0x224);
 			TStructSubGetPtrImpl(real_vector3d,			DesiredAimingVector, 0x230);

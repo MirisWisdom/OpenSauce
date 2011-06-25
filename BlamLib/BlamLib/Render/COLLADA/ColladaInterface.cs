@@ -21,32 +21,45 @@ using System.Collections.Generic;
 
 namespace BlamLib.Render.COLLADA
 {
+	public interface IHaloShaderDatumList
+	{
+		int GetShaderCount();
+		Blam.DatumIndex GetShaderDatum(int index);
+	};
+
 	/// <summary>
 	/// Base external info class containing a name property and a index reference to the internal info list
 	/// </summary>
-	public class ColladaInfo
+	public abstract class ColladaInfo
 	{
-		protected string name;
-		protected int internalIndex;
+		public string Name { get; private set; }
+		public int InternalIndex { get; private set; }
 
-		public string Name
+		protected ColladaInfo(int index, string info_name)
 		{
-			get { return name; }
+			InternalIndex = index;
+			Name = info_name;
 		}
-		public int InternalIndex
-		{
-			get { return internalIndex; }
-		}
+	};
 
-		protected ColladaInfo() { }
-		public ColladaInfo(int index, string info_name)
+	public abstract class ColladaHaloModelInfoBase : ColladaInfo
+	{
+		public int VertexCount { get; private set; }
+		public int FaceCount { get; private set; }
+
+		protected ColladaHaloModelInfoBase(int internal_index, string name, 
+			int vertex_count, int face_count)
+			: base(internal_index, name)
 		{
-			internalIndex = index;
-			name = info_name;
+			VertexCount = vertex_count;
+			FaceCount = face_count;
 		}
-	}
+	};
+
 	abstract class ColladaInterface : List<ColladaInfo>
 	{
+		public const string kDefaultBitmapFormat = "tif";
+
 		#region Internal Classes
 		/// <summary>
 		/// Empty abstract class so that the internal info list can be in the ColladaInterface class
@@ -58,7 +71,7 @@ namespace BlamLib.Render.COLLADA
 
 		#region Class Members
 		public bool Overwrite = false;
-		public string BitmapFormat = "tif";
+		public string BitmapFormat = kDefaultBitmapFormat;
 		public string RelativeFilePath = "";
 
 		protected List<int> registeredInfos = new List<int>();
@@ -66,7 +79,7 @@ namespace BlamLib.Render.COLLADA
 		#endregion
 
 		#region Error Reporting
-		private List<string> colladaReports;
+		List<string> colladaReports;
 		/// <summary>
 		/// Add a string that contains information about an event, to the report list
 		/// </summary>
@@ -81,24 +94,20 @@ namespace BlamLib.Render.COLLADA
 			colladaReports.Add(report);
 		}
 		/// <summary>
-		/// Gets the last report in the list then removes it
+		/// Enumerates the COLLADA reports, then clears the report list when finished
 		/// </summary>
-		/// <returns>The last report in the list</returns>
-		public string GetReport()
+		/// <returns></returns>
+		public IEnumerable<string> Reports()
 		{
-			// if the array is null or it has no elements, return null
-			if ((colladaReports == null) || (colladaReports.Count == 0))
+			if (colladaReports != null)
 			{
-				colladaReports = null;
-				return null;
+				foreach (string r in colladaReports)
+					yield return r;
+
+				colladaReports.Clear();
 			}
 
-			// copy the string to a local variable, then remove it from the array
-			string return_string = colladaReports[0];
-			colladaReports.RemoveAt(0);
-
-			// return the rport string
-			return return_string;
+			yield break;
 		}
 		#endregion
 

@@ -25,7 +25,7 @@ using BlamLib.Render.COLLADA.Validation;
 
 namespace BlamLib.Render.COLLADA
 {
-	[SerializableAttribute()]
+	[Serializable]
 	[XmlType(AnonymousType = true)]
 	[XmlRoot(ElementName = "COLLADA", Namespace = "http://www.collada.org/2005/11/COLLADASchema", IsNullable = false)]
 	public partial class ColladaFile : ColladaElement
@@ -139,5 +139,5 @@ namespace BlamLib.Render.COLLADA
 		{
 			ValidateElement(BlamLib.Render.COLLADA.Enums.ColladaElementType.All);
 		}
-	}
+	};
 }

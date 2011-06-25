@@ -20,30 +20,25 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using BlamLib.Blam;
-using BlamLib.Render;
 
 using H1 = BlamLib.Blam.Halo1;
 
 namespace BlamLib.Render.COLLADA.Halo1
 {
-	public class ColladaModelExporter : ColladaExporterHalo1
+	public class ColladaModelExporter : ColladaModelExporterHalo1
 	{
 		#region Class Fields
-		private IHalo1ModelInterface modelInfo;
+		IHalo1ModelInterface modelInfo;
 
-		private List<Core.ColladaGeometry> listGeometry = new List<Core.ColladaGeometry>();
-		private List<Core.ColladaController> listController = new List<Core.ColladaController>();
-		private List<Core.ColladaNode> listBone = new List<Core.ColladaNode>();
-		private List<ColladaBoneMatrix> listBoneMatrix = new List<ColladaBoneMatrix>();
-		private List<Core.ColladaNode> listNode = new List<Core.ColladaNode>();
-		private List<Core.ColladaNode> listMarker = new List<Core.ColladaNode>();
+		List<Core.ColladaGeometry> listGeometry = new List<Core.ColladaGeometry>();
+		List<Core.ColladaController> listController = new List<Core.ColladaController>();
+		List<Core.ColladaNode> listBone = new List<Core.ColladaNode>();
+		List<ColladaBoneMatrix> listBoneMatrix = new List<ColladaBoneMatrix>();
+		List<Core.ColladaNode> listNode = new List<Core.ColladaNode>();
+		List<Core.ColladaNode> listMarker = new List<Core.ColladaNode>();
 		#endregion
 
 		#region Constructor
-		/// <summary>
-		/// Private default constructor since this class MUST be initialised with arguments
-		/// </summary>
-		private ColladaModelExporter() { }
 		/// <summary>
 		/// Halo1 Model exporter class
 		/// </summary>
@@ -65,7 +60,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// <param name="index">The geometry block index</param>
 		/// <param name="name">The name for the resulting geometry element</param>
 		/// <returns></returns>
-		private Core.ColladaGeometry CreateGeometry(int index, string name)
+		Core.ColladaGeometry CreateGeometry(int index, string name)
 		{
 			H1.Tags.gbxmodel_group model_tag = tagManager.TagDefinition as H1.Tags.gbxmodel_group;
 
@@ -257,7 +252,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// <summary>
 		/// Creates geometry elements for all of the included geometry blocks
 		/// </summary>
-		private void CreateGeometryList()
+		void CreateGeometryList()
 		{
 			for(int i = 0; i < modelInfo.GetGeometryCount(); i++)
 				listGeometry.Add(CreateGeometry(modelInfo.GetGeometryIndex(i), modelInfo.GetGeometryName(i)));
@@ -273,11 +268,8 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// <param name="param_type">The type of the the parameter</param>
 		/// <param name="stride">the number of elements the parameter takes up (usually 1)</param>
 		/// <returns></returns>
-		private Core.ColladaTechniqueCommon CreateControllerTechniqueCommon(string source_id,
-			uint source_count,
-			string param_name,
-			string param_type,
-			uint stride)
+		Core.ColladaTechniqueCommon CreateControllerTechniqueCommon(string source_id,
+			uint source_count, string param_name, string param_type, uint stride)
 		{
 			Core.ColladaTechniqueCommon technique = new Core.ColladaTechniqueCommon();
 			technique.Accessor = new Core.ColladaAccessor();
@@ -300,7 +292,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// <param name="geometry_index">The geometry part the controller will control</param>
 		/// <param name="geometry_id">String ID of the geometry being skinned</param>
 		/// <returns></return>
-		private Core.ColladaController CreateSkinController(int geometry_index, string geometry_id)
+		Core.ColladaController CreateSkinController(int geometry_index, string geometry_id)
 		{
 			H1.Tags.gbxmodel_group model_tag = tagManager.TagDefinition as H1.Tags.gbxmodel_group;
 
@@ -452,7 +444,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// <summary>
 		/// Adds controllers to skin each geometry in the collada file
 		/// </summary>
-		private void CreateControllerList()
+		void CreateControllerList()
 		{
 			H1.Tags.gbxmodel_group model_tag = tagManager.TagDefinition as H1.Tags.gbxmodel_group;
 
@@ -467,7 +459,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// <summary>
 		/// Creates a bone tree list that contains the matrices necessary for skinning
 		/// </summary>
-		private void CreateBoneMatrixList()
+		void CreateBoneMatrixList()
 		{
 			H1.Tags.gbxmodel_group model_tag = tagManager.TagDefinition as H1.Tags.gbxmodel_group;
 			// add nodes for all of the bones in order
@@ -494,7 +486,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// </summary>
 		/// <param name="parent_node_index">The parent node to get the children for</param>
 		/// <returns></returns>
-		private List<Core.ColladaNode> GetChildBones(int parent_node_index)
+		List<Core.ColladaNode> GetChildBones(int parent_node_index)
 		{
 			H1.Tags.gbxmodel_group model_tag = tagManager.TagDefinition as H1.Tags.gbxmodel_group;
 
@@ -519,7 +511,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// </summary>
 		/// <param name="bone_index">The index of the bone in the tag</param>
 		/// <returns></returns>
-		private Core.ColladaNode CreateBone(int bone_index)
+		Core.ColladaNode CreateBone(int bone_index)
 		{
 			H1.Tags.gbxmodel_group model_tag = tagManager.TagDefinition as H1.Tags.gbxmodel_group;
 
@@ -539,7 +531,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// <summary>
 		/// Populates the bone list with 1 collada node for each bone
 		/// </summary>
-		private void CreateBoneList()
+		void CreateBoneList()
 		{
 			H1.Tags.gbxmodel_group model_tag = tagManager.TagDefinition as H1.Tags.gbxmodel_group;
 
@@ -563,7 +555,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// </summary>
 		/// <param name="geometry_index">Index of the geometry to create a node for</param>
 		/// <returns></returns>
-		private Core.ColladaNode CreateNode(int geometry_index)
+		Core.ColladaNode CreateNode(int geometry_index)
 		{
 			H1.Tags.gbxmodel_group model_tag = tagManager.TagDefinition as H1.Tags.gbxmodel_group;
 
@@ -621,7 +613,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// <summary>
 		/// Populates the node list
 		/// </summary>
-		private void CreateNodeList()
+		void CreateNodeList()
 		{
 			for (int i = 0; i < modelInfo.GetGeometryCount(); i++)
 				listNode.Add(CreateNode(i));
@@ -631,7 +623,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// <summary>
 		/// Create the markers
 		/// </summary>
-		private void CreateMarkerList()
+		void CreateMarkerList()
 		{
 			H1.Tags.gbxmodel_group model_tag = tagManager.TagDefinition as H1.Tags.gbxmodel_group;
 
@@ -673,7 +665,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// <summary>
 		/// Creates the library_geometries element in the collada file
 		/// </summary>
-		private void AddLibraryGeometries()
+		void AddLibraryGeometries()
 		{
 			COLLADAFile.LibraryGeometries = new Core.ColladaLibraryGeometries();
 			COLLADAFile.LibraryGeometries.Geometry = new List<Core.ColladaGeometry>();
@@ -682,7 +674,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// <summary>
 		/// Creates the library_controllers element in the collada file
 		/// </summary>
-		private void AddLibraryControllers()
+		void AddLibraryControllers()
 		{
 			COLLADAFile.LibraryControllers = new Core.ColladaLibraryControllers();
 			COLLADAFile.LibraryControllers.Controller = new List<Core.ColladaController>();
@@ -691,7 +683,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// <summary>
 		/// Creates the library_visual_scenes element in the collada file
 		/// </summary>
-		private void AddLibraryVisualScenes()
+		void AddLibraryVisualScenes()
 		{
 			COLLADAFile.LibraryVisualScenes = new Core.ColladaLibraryVisualScenes();
 			COLLADAFile.LibraryVisualScenes.VisualScene = new List<Core.ColladaVisualScene>();
@@ -738,5 +730,5 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 			return true;
 		}
-	}
+	};
 }

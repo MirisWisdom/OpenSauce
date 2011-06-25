@@ -313,6 +313,21 @@ namespace BlamLib.TagInterface
 		/// <param name="value"></param>
 		/// <returns></returns>
 		public static explicit operator uint(TagGroup value)			{ return value.iD; }
+
+		/// <summary>
+		/// Compare two group tags (equality)
+		/// </summary>
+		/// <param name="lhs">left-hand value for comparison expression</param>
+		/// <param name="rhs">right-hand value for comparison expression</param>
+		/// <returns><paramref name="lhs"/> == <paramref name="rhs"/></returns>
+		public static bool operator ==(TagGroup lhs, TagGroup rhs)		{ return lhs.iD == rhs.iD; }
+		/// <summary>
+		/// Compare two group tags (inequality)
+		/// </summary>
+		/// <param name="lhs">left-hand value for comparison expression</param>
+		/// <param name="rhs">right-hand value for comparison expression</param>
+		/// <returns><paramref name="lhs"/> != <paramref name="rhs"/></returns>
+		public static bool operator !=(TagGroup lhs, TagGroup rhs)		{ return lhs.iD != rhs.iD; }
 		#endregion
 
 		#region Util

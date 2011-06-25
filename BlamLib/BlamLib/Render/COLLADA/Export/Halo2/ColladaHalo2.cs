@@ -1,4 +1,22 @@
-﻿using System;
+﻿/*
+    BlamLib: .NET SDK for the Blam Engine
+
+    Copyright (C) 2005-2010  Kornner Studios (http://kornner.com)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+using System;
 using System.Collections.Generic;
 using System.IO;
 using BlamLib.Blam;
@@ -6,31 +24,14 @@ using BlamLib.Managers;
 
 namespace BlamLib.Render.COLLADA.Halo2
 {
-	public class ColladaHalo2LightmapInfo : ColladaInfo
+	public class ColladaHalo2LightmapInfo : ColladaHaloModelInfoBase
 	{
-		private int vertexCount;
-		private int faceCount;
-
-		public int VertexCount
+		public ColladaHalo2LightmapInfo(int internal_index, string name,
+			int vertex_count, int face_count)
+			: base(internal_index, name, vertex_count, face_count)
 		{
-			get { return vertexCount; }
 		}
-		public int FaceCount
-		{
-			get { return faceCount; }
-		}
-
-		private ColladaHalo2LightmapInfo() { }
-		public ColladaHalo2LightmapInfo(int internal_index,
-			string name,
-			int vertex_count,
-			int face_count)
-			: base(internal_index, name)
-		{
-			vertexCount = vertex_count;
-			faceCount = face_count;
-		}
-	}
+	};
 
 	class ColladaHalo2 : ColladaInterface
 	{
@@ -38,10 +39,9 @@ namespace BlamLib.Render.COLLADA.Halo2
 		/// <summary>
 		/// Interface class to pass mesh include information to the Halo1 BSP exporter
 		/// </summary>
-		protected class LightmapInfoInternal : ColladaInfoInternal, IHalo2LightmapInterface, IHalo2ShaderDatumList
+		protected class LightmapInfoInternal : ColladaInfoInternal, IHalo2LightmapInterface, IHaloShaderDatumList
 		{
 			#region IHalo2ShaderDatumList Members
-
 			public int GetShaderCount()
 			{
 				throw new NotImplementedException();
@@ -51,17 +51,16 @@ namespace BlamLib.Render.COLLADA.Halo2
 			{
 				throw new NotImplementedException();
 			}
-
 			#endregion
 		}
 		#endregion
 
 		#region Static Helper Classes
-		static protected class BSP
+		protected static class BSP
 		{
-			static public int GetVertexCount(TagManager manager)
+			public static int GetVertexCount(TagManager manager)
 			{
-				Blam.Halo2.Tags.scenario_structure_lightmap_group definition = manager.TagDefinition as Blam.Halo2.Tags.scenario_structure_lightmap_group;
+				var definition = manager.TagDefinition as Blam.Halo2.Tags.scenario_structure_lightmap_group;
 
 				int count = 0;
 				foreach (var group in definition.LightmapGroups)
@@ -71,9 +70,9 @@ namespace BlamLib.Render.COLLADA.Halo2
 				}
 				return count;
 			}
-			static public int GetTriangleCount(TagManager manager)
+			public static int GetTriangleCount(TagManager manager)
 			{
-				Blam.Halo2.Tags.scenario_structure_lightmap_group definition = manager.TagDefinition as Blam.Halo2.Tags.scenario_structure_lightmap_group;
+				var definition = manager.TagDefinition as Blam.Halo2.Tags.scenario_structure_lightmap_group;
 
 				int count = 0;
 				foreach (var group in definition.LightmapGroups)
@@ -83,16 +82,15 @@ namespace BlamLib.Render.COLLADA.Halo2
 				}
 				return count;
 			}
-		}
+		};
 		#endregion
 
 		#region Class Members
-		private TagIndexBase tagIndex;
-		private TagManager tagManager;
+		TagIndexBase tagIndex;
+		TagManager tagManager;
 		#endregion
 
 		#region Constructor
-		private ColladaHalo2() { }
 		public ColladaHalo2(TagIndexBase tag_index, DatumIndex tag_datum)
 		{
 			tagIndex = tag_index;
@@ -108,7 +106,7 @@ namespace BlamLib.Render.COLLADA.Halo2
 			if (tagManager.GroupTag.Equals(Blam.Halo2.TagGroups.ltmp))
 				GenerateInfoListLightmap();
 		}
-		private void GenerateInfoListLightmap()
+		void GenerateInfoListLightmap()
 		{
 			string name = Path.GetFileNameWithoutExtension(tagManager.Name);
 
@@ -142,7 +140,7 @@ namespace BlamLib.Render.COLLADA.Halo2
 			{
 				LightmapInfoInternal info = new LightmapInfoInternal();
 
-				COLLADA.Halo2.ColladaLightmapExporter exporter = new Halo2.ColladaLightmapExporter(info, tagIndex, tagManager);
+				var exporter = new Halo2.ColladaLightmapExporter(info, tagIndex, tagManager);
 
 				exporter.ErrorOccured += new EventHandler<ColladaExporter.ColladaErrorEventArgs>(ExporterErrorOccured);
 
@@ -157,9 +155,9 @@ namespace BlamLib.Render.COLLADA.Halo2
 			}
 		}
 
-		private void ExporterErrorOccured(object sender, ColladaExporter.ColladaErrorEventArgs e)
+		void ExporterErrorOccured(object sender, ColladaExporter.ColladaErrorEventArgs e)
 		{
 			AddReport(e.ErrorMessage);
 		}
-	}
+	};
 }

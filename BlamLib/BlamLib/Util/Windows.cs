@@ -35,7 +35,10 @@ namespace BlamLib
 		public static bool HasWinRar { get { return WinRarExePath != null; } }
 		static Windows()
 		{
-			var subkey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WinRAR", 
+			// BUG: If we're running an x86 build on a x64 platform, and the system doesn't have 
+			// WinRar x86 installed, this will always fail. This is because the .NET registry classes 
+			// won't allow access to the x64 registry, we'd have to use P\Invoke :|
+			var subkey = Registry.LocalMachine.OpenSubKey(@"Software\WinRAR", 
 				RegistryKeyPermissionCheck.Default,System.Security.AccessControl.RegistryRights.QueryValues);
 			if (subkey == null) return;
 
@@ -52,6 +55,7 @@ namespace BlamLib
 				if (System.IO.File.Exists(key))
 					WinRarExePath = key;
 			}
+			subkey.Close();
 		}
 
 

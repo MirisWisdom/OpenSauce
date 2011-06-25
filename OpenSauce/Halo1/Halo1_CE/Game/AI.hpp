@@ -131,6 +131,33 @@ namespace Yelo
 
 		struct s_actor_datum : TStructImpl(1828)
 		{
+			TStructGetPtrImpl(bool,				MetaSwarm, 0x6);
+
+			TStructGetPtrImpl(bool,				MetaEncounterless, 0x9);
+			//TStructGetPtrImpl(bool,				Meta, 0xA);
+
+			TStructGetPtrImpl(datum_index,		MetaUnitIndex, 0x18);
+			// ?
+			TStructGetPtrImpl(int16,			MetaUnitCount, 0x1E);
+
+			TStructGetPtrImpl(datum_index,		MetaSwarmUnitIndex, 0x24);
+			TStructGetPtrImpl(datum_index,		MetaSwarmCacheIndex, 0x28);
+			//TStructGetPtrImpl(datum_index,		Meta, 0x2C); // an actor index
+
+			TStructGetPtrImpl(datum_index,		MetaEncounterIndex, 0x34);
+
+			TStructGetPtrImpl(int16,			MetaSquadIndex, 0x3A);
+			TStructGetPtrImpl(int16,			MetaPlatoonIndex, 0x3C);
+
+			TStructGetPtrImpl(bool,				MetaTimeslice, 0x4C);
+
+			TStructGetPtrImpl(datum_index,		MetaActorDefinition, 0x58);
+
+
+			//////////////////////////////////////////////////////////////////////////
+			// input @ 0x120, sizeof(0xA8)
+			
+			TStructGetPtrImpl(bool,				InputVehiclePassenger, 0x160);
 		};
 		typedef Memory::DataArray<s_actor_datum, 256> t_actor_data;
 		t_actor_data*					Actors();
@@ -138,6 +165,9 @@ namespace Yelo
 
 		struct s_swarm_datum : TStructImpl(152)
 		{
+			TStructGetPtrImpl(int16,				UnitCount, 0x2);
+			TStructGetPtrImpl(datum_index,			ActorIndex, 0x4);
+			TStructGetPtrImpl(datum_index,			UnitIndices, 0x18); // [16]
 		};
 		typedef Memory::DataArray<s_swarm_datum, 32> t_swarm_data;
 		t_swarm_data*					Swarms();

@@ -1,85 +1,36 @@
-﻿using System;
+﻿/*
+    BlamLib: .NET SDK for the Blam Engine
+
+    Copyright (C) 2005-2010  Kornner Studios (http://kornner.com)
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+using System;
 using System.Collections.Generic;
-using System.Text;
-using System.IO;
 using BlamLib.Blam;
-using BlamLib.Render;
 
 using H2 = BlamLib.Blam.Halo2;
 
 namespace BlamLib.Render.COLLADA.Halo2
 {
-	public class ColladaExporterH2 : ColladaExporter
+	public class ColladaModelExporterHalo2 : ColladaModelExporterBase
 	{
-		#region Class Fields
-		private IHalo2ShaderDatumList shaderInfo;
-
-		protected Managers.TagIndexBase tagIndex;
-		protected Managers.TagManager tagManager;
-		protected string tagName;
-
-		protected List<DatumIndex> bitmapDatums = new List<DatumIndex>();
-
-		protected List<Fx.ColladaImage> listImage = new List<Fx.ColladaImage>();
-		protected List<Fx.ColladaEffect> listEffect = new List<Fx.ColladaEffect>();
-		protected List<Fx.ColladaMaterial> listMaterial = new List<Fx.ColladaMaterial>();
-		#endregion
-
 		#region Constructor
-		protected ColladaExporterH2() { }
-		public ColladaExporterH2(IHalo2ShaderDatumList info, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager)
-			: base()
+		public ColladaModelExporterHalo2(IHaloShaderDatumList info, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager)
+			: base(info, tag_index, tag_manager)
 		{
-			shaderInfo = info;
-			tagIndex = tag_index;
-			tagManager = tag_manager;
-			tagName = Path.GetFileNameWithoutExtension(tagManager.Name);
 		}
 		#endregion
-
-		#region Helpers
-		/// <summary>
-		/// Returns true if the DatumIndex is neither null, nor sentinel
-		/// </summary>
-		/// <param name="index"></param>
-		/// <returns></returns>
-		protected bool IsDatumValid(DatumIndex index)
-		{
-			return (!index.Equals(DatumIndex.Null) && !Managers.TagIndex.IsSentinel(index));
-		}
-
-		/// <summary>
-		/// Gets a tag definition instance from the tag index
-		/// </summary>
-		/// <typeparam name="T">Tag definition type to return</typeparam>
-		/// <param name="tag_datum">Datum index of the tag</param>
-		/// <param name="cast_from_group">The tag group of the tag</param>
-		/// <param name="cast_to_group">The tag group of the definition we are casting to</param>
-		/// <returns></returns>
-		protected T GetTagDefinition<T>(DatumIndex tag_datum,
-			TagInterface.TagGroup cast_from_group,
-			TagInterface.TagGroup cast_to_group)
-			where T : TagInterface.Definition
-		{
-			// report if the datum index is invalid
-			if (!IsDatumValid(tag_datum))
-			{
-				OnErrorOccured(String.Format(ColladaExceptionStrings.InvalidDatumIndex,
-					tag_datum.ToString()));
-				return null;
-			}
-
-			// attempt to cast the definition to the specified type
-			T tag = tagIndex[tag_datum].TagDefinition as T;
-			// if the cast failed, throw an exception
-			if (tag == null)
-				throw new ColladaException(String.Format(
-					ColladaExceptionStrings.InvalidDefinitionCast,
-					tagIndex[tag_datum].Name,
-					cast_from_group.ToString(), cast_to_group.ToString()));
-
-			return tag;
-		}
-		#endregion
-	}
+	};
 }

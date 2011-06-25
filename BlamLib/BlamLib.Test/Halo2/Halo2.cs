@@ -26,20 +26,6 @@ namespace BlamLib.Test
 	[TestClass]
 	public partial class Halo2 : BaseTestClass
 	{
-		private struct ModelTestDefinition
-		{
-			public string TypeString;
-			public string Tag;
-			public TagInterface.TagGroup Group;
-
-			public ModelTestDefinition(string type, string tag, TagInterface.TagGroup group)
-			{
-				TypeString = type;
-				Tag = tag;
-				Group = group;
-			}
-		}
-
 		static string EngineGetTestResultsPath(BlamVersion engine)
 		{
 			switch (engine)
@@ -131,12 +117,6 @@ namespace BlamLib.Test
 			//C:\Mount\B\Bungie\Halo2\Xbox\Alpha\test\4d53008200000778\box_multiplayer.map
 		};
 
-		static readonly ModelTestDefinition[] LightmapTestDefinitions = new ModelTestDefinition[]
-		{
-			new ModelTestDefinition("LTMP", @"tags\scenarios\multi\example\example_example_lightmap",
-			    Blam.Halo2.TagGroups.ltmp),
-		};
-
 		#region CacheOutputInformation
 		static void CacheOutputInformationMethod(object param)
 		{
@@ -203,51 +183,50 @@ namespace BlamLib.Test
 				.StringIdCacheClose(BlamVersion.Halo2_Alpha);
 		}
 		#endregion
-		
+
+		#region COLLADA tests
+		static readonly ModelTestDefinition[] LightmapTestDefinitions = new ModelTestDefinition[]
+		{
+			new ModelTestDefinition("LTMP", @"tags\scenarios\multi\example\example_example_lightmap",
+			    Blam.Halo2.TagGroups.ltmp),
+		};
+
 		[TestMethod]
 		public void Halo2TestCOLLADALightmapExport()
 		{
 			using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo2_PC, kTestTagIndexTagsPath))
 			{
-				string data_path = kTestTagIndexTagsPath;
-				if (!data_path.EndsWith("\\"))
-					data_path += "\\";
-
 				var tagindex = handler.IndexInterface;
 				foreach (var model_def in LightmapTestDefinitions)
 				{
-					Blam.DatumIndex datum_index;
-
-					DateTime dt = DateTime.Now;
+					StartStopwatch();
 					{
-						DateTime dt_s = DateTime.Now;
-						datum_index = tagindex.Open(data_path + model_def.Tag, model_def.Group, IO.ITagStreamFlags.LoadDependents);
-						Console.WriteLine(model_def.TypeString + " LOAD: Time taken: {0}", (DateTime.Now - dt_s));
+						model_def.Open(tagindex);
+						Console.WriteLine("{0} LOAD: Time taken: {1}", model_def.TypeString, m_testStopwatch.Elapsed);
 					}
-					Console.WriteLine("TAG INDEX: Time taken: {0}", (DateTime.Now - dt));
+					Console.WriteLine("TAG INDEX: Time taken: {0}", StopStopwatch());
 
-					Render.COLLADA.Halo2.ColladaHalo2 halo2 = new BlamLib.Render.COLLADA.Halo2.ColladaHalo2(tagindex, datum_index);
+					var halo2 = new BlamLib.Render.COLLADA.Halo2.ColladaHalo2(tagindex, model_def.TagIndex);
 
 					halo2.Overwrite = true;
-					halo2.RelativeFilePath = data_path + @"data\";
-					halo2.BitmapFormat = "tif";
+					halo2.RelativeFilePath = Path.Combine(kTestTagIndexTagsPath, @"data\");
 
 					halo2.ClearRegister();
 
 					foreach (var info in halo2)
 						halo2.RegisterForExport(info);
 
-					Render.COLLADA.Halo2.ColladaHalo2LightmapInfo lightmap_info = halo2[0] as Render.COLLADA.Halo2.ColladaHalo2LightmapInfo;
+					var lightmap_info = halo2[0] as Render.COLLADA.Halo2.ColladaHalo2LightmapInfo;
 
 					halo2.Export(lightmap_info.Name);
 
-					string report = null;
-					while ((report = halo2.GetReport()) != null)
+					foreach (string report in halo2.Reports())
 						Console.WriteLine(report);
 
-					Assert.IsTrue(tagindex.Unload(datum_index));
+					model_def.Close(tagindex);
 				}
 			}
 		}
+		#endregion
 	};
 }

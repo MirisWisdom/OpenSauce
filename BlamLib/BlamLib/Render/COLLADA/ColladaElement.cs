@@ -159,14 +159,14 @@ namespace BlamLib.Render.COLLADA
 			Fx_SamplerDEPTH,
 			Fx_SamplerRECT,
 			Fx_Surface,
-		}
-	}
+		};
+	};
 	/// <summary>
 	/// Base element class that all collada elements are derived from.
 	/// 
 	/// This class contains a list of ColladaObject's and validations tests, so that unique validation functions for each element are not necessary.
 	/// </summary>
-	[SerializableAttribute()]
+	[Serializable]
 	public class ColladaElement
 	{
 		#region Class Members
@@ -261,5 +261,5 @@ namespace BlamLib.Render.COLLADA
 			}
 			return string_list;
 		}
-	}
+	};
 }
