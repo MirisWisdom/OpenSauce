@@ -208,6 +208,8 @@ namespace BlamLib.Blam.Halo1.Tags
 				public TI.Block<model_group.model_geometry_block.model_geometry_part_block.model_vertex_uncompressed_block> UncompressedVertices;
 				public TI.Block<model_group.model_geometry_block.model_geometry_part_block.model_vertex_compressed_block> CompressedVertices;
 				public TI.Block<model_group.model_geometry_block.model_geometry_part_block.model_triangle_block> Triangles;
+				public TI.ByteInteger BoneIndexCount;
+				public TI.Skip BoneIndexArray;
 			};
 			#endregion
 

@@ -2312,6 +2312,7 @@ namespace BlamLib.Blam.Halo2.Tags
 		#endregion
 
 		#region Fields
+		public TI.Block<lightmap_geometry_section_block> Clusters;
 		#endregion
 
 		#region Ctor
@@ -2323,7 +2324,7 @@ namespace BlamLib.Blam.Halo2.Tags
 			Add(/*section palette = */ new TI.Block<structure_lightmap_palette_color_block>(this, 128));
 			Add(/*writable palettes = */ new TI.Block<structure_lightmap_palette_color_block>(this, 128));
 			Add(/*bitmap group = */ new TI.TagReference(this, TagGroups.bitm));
-			Add(/*clusters = */ new TI.Block<lightmap_geometry_section_block>(this, 512));
+			Add(Clusters = new TI.Block<lightmap_geometry_section_block>(this, 512));
 			Add(/*cluster render info = */ new TI.Block<lightmap_geometry_render_info_block>(this, 1024));
 			Add(/*poop definitions = */ new TI.Block<lightmap_geometry_section_block>(this, 512));
 			Add(/*lighting environments = */ new TI.Block<structure_lightmap_lighting_environment_block>(this, 1024));
@@ -2344,28 +2345,43 @@ namespace BlamLib.Blam.Halo2.Tags
 	public partial class scenario_structure_lightmap_group : TI.Definition, ITagImportInfo
 	{
 		#region Fields
+		public TI.Real SearchDistanceLowerBound;
+		public TI.Real SearchDistanceUpperBound;
+		public TI.Real LuminelsPerWorldUnit;
+		public TI.Real OutputWhiteReference;
+		public TI.Real OutputBlackReference;
+		public TI.Real OutputSchlickParameter;
+		public TI.Real DiffuseMapScale;
+		public TI.Real SunScale;
+		public TI.Real SkyScale;
+		public TI.Real IndirectScale;
+		public TI.Real PrtScale;
+		public TI.Real SurfaceLightScale;
+		public TI.Real ScenarioLightScale;
+		public TI.Real LightprobeInterpolationOverride;
+		public TI.Block<structure_lightmap_group_block> LightmapGroups;
 		public TI.Block<global_error_report_categories_block> Errors;
 		#endregion
 
 		#region Ctor
 		public scenario_structure_lightmap_group() : base(19)
 		{
-			Add(/*search distance lower bound = */ new TI.Real());
-			Add(/*search distance upper bound = */ new TI.Real());
-			Add(/*luminels per world unit = */ new TI.Real());
-			Add(/*output white reference = */ new TI.Real());
-			Add(/*output black reference = */ new TI.Real());
-			Add(/*output schlick parameter = */ new TI.Real());
-			Add(/*diffuse map scale = */ new TI.Real());
-			Add(/*sun scale = */ new TI.Real());
-			Add(/*sky scale = */ new TI.Real());
-			Add(/*indirect scale = */ new TI.Real());
-			Add(/*prt scale = */ new TI.Real());
-			Add(/*surface light scale = */ new TI.Real());
-			Add(/*scenario light scale = */ new TI.Real());
-			Add(/*lightprobe interpolation overide = */ new TI.Real());
+			Add(SearchDistanceLowerBound = new TI.Real());
+			Add(SearchDistanceUpperBound = new TI.Real());
+			Add(LuminelsPerWorldUnit = new TI.Real());
+			Add(OutputWhiteReference = new TI.Real());
+			Add(OutputBlackReference = new TI.Real());
+			Add(OutputSchlickParameter = new TI.Real());
+			Add(DiffuseMapScale = new TI.Real());
+			Add(SunScale = new TI.Real());
+			Add(SkyScale = new TI.Real());
+			Add(IndirectScale = new TI.Real());
+			Add(PrtScale = new TI.Real());
+			Add(SurfaceLightScale = new TI.Real());
+			Add(ScenarioLightScale = new TI.Real());
+			Add(LightprobeInterpolationOverride = new TI.Real());
 			Add(new TI.Pad(72));
-			Add(/*lightmap groups = */ new TI.Block<structure_lightmap_group_block>(this, 256));
+			Add(LightmapGroups = new TI.Block<structure_lightmap_group_block>(this, 256));
 			Add(new TI.Pad(12));
 			Add(Errors = new TI.Block<global_error_report_categories_block>(this, 64));
 			Add(new TI.Pad(104));

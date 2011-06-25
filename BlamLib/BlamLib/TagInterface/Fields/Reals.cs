@@ -526,6 +526,19 @@ namespace BlamLib.TagInterface
 			get { return Value; }
 			set { Value = value as float[]; }
 		}
+
+		/// <summary>
+		/// Normalizes the vector
+		/// </summary>
+		public void Normalize()
+		{
+			float mag = (float)Math.Sqrt(
+				I * I +
+				J * J);
+
+			I /= mag;
+			J /= mag;
+		}
 		#endregion
 
 		#region Construction
@@ -636,6 +649,21 @@ namespace BlamLib.TagInterface
 		{
 			get { return Value; }
 			set { Value = value as float[]; }
+		}
+
+		/// <summary>
+		/// Normalizes the vector
+		/// </summary>
+		public void Normalize()
+		{
+			float mag = (float)Math.Sqrt(
+				I * I +
+				J * J +
+				K * K);
+
+			I /= mag;
+			J /= mag;
+			K /= mag;
 		}
 		#endregion
 
@@ -756,6 +784,64 @@ namespace BlamLib.TagInterface
 			get { return Value; }
 			set { Value = value as float[]; }
 		}
+
+		/// <summary>
+		/// Converts the quaternion into an euler rotation
+		/// </summary>
+		/// <returns>Returns an euler rotation</returns>
+		public RealEulerAngles3D ToEuler3D()
+		{
+			TagInterface.RealEulerAngles3D euler_3d = new BlamLib.TagInterface.RealEulerAngles3D();
+
+			float x = -I;
+			float y = -J;
+			float z = -K;
+			float w = W;
+
+			if ((x * y) + (z * w) == 0.5f)
+			{
+				euler_3d.Y = (float)(2 * Math.Atan2(x, w));
+				euler_3d.R = 0;
+			}
+			else if ((x * y) + (z * w) == -0.5f)
+			{
+				euler_3d.Y = (float)(-2 * Math.Atan2(x, w));
+				euler_3d.R = 0;
+			}
+			else
+			{
+				euler_3d.Y = (float)Math.Atan2(
+					2 * y * w - 2 * x * z,
+					1 - 2 * (y * y) - 2 * (z * z));
+				euler_3d.R = (float)Math.Atan2(
+					2 * x * w - 2 * y * z,
+					1 - 2 * (x * x) - 2 * (z * z));
+			}
+			euler_3d.P = (float)Math.Asin(2 * x * y + 2 * z * w);
+
+			euler_3d.Y = TagInterface.Real.RadiansToDegrees(euler_3d.Y);
+			euler_3d.P = TagInterface.Real.RadiansToDegrees(euler_3d.P);
+			euler_3d.R = TagInterface.Real.RadiansToDegrees(euler_3d.R);
+
+			return euler_3d;
+		}
+
+		/// <summary>
+		/// Normalizes the quaternion
+		/// </summary>
+		public void Normalize()
+		{
+			float mag = (float)Math.Sqrt(
+				I * I + 
+				J * J +
+				K * K +
+				W * W);
+
+			I /= mag;
+			J /= mag;
+			K /= mag;
+			W /= mag;
+		}
 		#endregion
 
 		#region Construction
@@ -814,6 +900,8 @@ namespace BlamLib.TagInterface
 			J = er.ReadSingle();
 			K = er.ReadSingle();
 			W = er.ReadSingle();
+
+			Normalize();
 		}
 		/// <summary>
 		/// Stream the field to a buffer
@@ -821,6 +909,8 @@ namespace BlamLib.TagInterface
 		/// <param name="ew"></param>
 		public override void Write(IO.EndianWriter ew)
 		{
+			Normalize();
+
 			ew.Write(I);
 			ew.Write(J);
 			ew.Write(K);

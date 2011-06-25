@@ -273,8 +273,10 @@ namespace BlamLib.Blam.Halo1.Tags
 					// rasterizer_vertex
 					// rasterizer_triangle
 					// ?
-					Add(new TI.Pad(20 + 16 
-						+ 1 + 1 + 1 + 1 + 24));
+					Add(new TI.Skip(20 + 16
+						+ 1 + 1 + 1));
+					Add(BoneIndexCount = new BlamLib.TagInterface.ByteInteger());
+					Add(BoneIndexArray = new BlamLib.TagInterface.Skip(24));
 				}
 			};
 			#endregion

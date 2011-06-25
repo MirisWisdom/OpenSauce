@@ -231,7 +231,8 @@ namespace BlamLib.Managers
 		public TagIndex(BlamVersion version, string dir, string tag_dir, bool create) : base()
 		{
 			engine = version;
-			directory = System.IO.Path.Combine(System.IO.Path.Combine(dir, tag_dir), "\\");
+			directory = System.IO.Path.Combine(dir, tag_dir);
+			if (!directory.EndsWith("\\"))	directory = directory + "\\";
 
 			if (!System.IO.Directory.Exists(directory))
 			{
