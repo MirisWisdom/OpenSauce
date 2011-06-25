@@ -52,6 +52,8 @@ namespace BlamLib.Test
 		const string kMapsDirectoryXbox = @"C:\Mount\A\Bungie\Games\Halo2\Xbox\Retail\Maps\";
 		const string kMapsDirectoryPc = @"C:\Mount\A\Bungie\Games\Halo2\PC\Maps\";
 		const string kMapsDirectoryXboxAlpha = @"C:\Mount\A\Bungie\Games\Halo2\Xbox\Alpha\Maps\";
+
+		const string kTestTagIndexTagsPath = @"D:\Program Files (x86)\Microsoft Games\Halo 2 Map Editor";
 	};
 	#endregion
 
