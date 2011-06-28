@@ -506,7 +506,7 @@ namespace BlamLib.TagInterface
 				string value = null;
 				try
 				{
-					value = s.ReadAsciiString(Handle.Length);
+					value = new string(s.ReadChars(Handle.Length));
 					if (Handle != Blam.StringID.Null)
 						Program.GetTagIndex(OwnerId).StringIds.TryAndGetStringId(value, out Handle);
 				}

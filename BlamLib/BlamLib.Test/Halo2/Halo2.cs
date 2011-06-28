@@ -187,7 +187,7 @@ namespace BlamLib.Test
 		#region COLLADA tests
 		static readonly ModelTestDefinition[] LightmapTestDefinitions = new ModelTestDefinition[]
 		{
-			new ModelTestDefinition("LTMP", @"tags\scenarios\multi\example\example_example_lightmap",
+			new ModelTestDefinition("LTMP", @"scenarios\multi\example\example_example_lightmap",
 			    Blam.Halo2.TagGroups.ltmp),
 		};
 

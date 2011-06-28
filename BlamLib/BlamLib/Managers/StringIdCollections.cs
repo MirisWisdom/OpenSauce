@@ -227,6 +227,12 @@ namespace BlamLib.Managers
 			}
 		}
 		#endregion
+
+		public void Add(StringID sid, string value)
+		{
+			Set.Add(sid, value);
+			SetLookup.Add(value.GetHashCode(), sid);
+		}
 	};
 
 	/// <summary>Internal representation for static (predefined) <see cref="Data.StringId"/>s</summary>
@@ -480,6 +486,8 @@ namespace BlamLib.Managers
 		public GenerateIdMethod HandleMethod { get { return m_handleMethod; } }
 		#endregion
 
+		readonly Func<short, byte, byte, StringID> kGenerateMethod;
+
 		StringIdSet m_set;
 
 		/// <summary>ID of the first string in this dynamic collection</summary>
@@ -497,6 +505,8 @@ namespace BlamLib.Managers
 		{
 			m_handleMethod = method;
 
+			kGenerateMethod = StringID.GetGenerateFunc(m_handleMethod);
+
 			InitialId = initial_id;
 			IsReadOnly = false;
 
@@ -509,11 +519,9 @@ namespace BlamLib.Managers
 
 		StringID Add(string value)
 		{
-			var gen_func = StringID.GetGenerateFunc(m_handleMethod);
-
-			var sid = gen_func((short)(Count-1), (byte)value.Length, InitialId.Set);
-			m_set.Set.Add(sid, value);
-			m_set.SetLookup.Add(value.GetHashCode(), sid);
+			short index = (short)(InitialId.Index + Count);
+			var sid = kGenerateMethod((short)index, (byte)value.Length, InitialId.Set);
+			m_set.Add(sid, value);
 
 			return sid;
 		}

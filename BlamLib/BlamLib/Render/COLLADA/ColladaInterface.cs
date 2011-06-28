@@ -106,8 +106,6 @@ namespace BlamLib.Render.COLLADA
 
 				colladaReports.Clear();
 			}
-
-			yield break;
 		}
 		#endregion
 
