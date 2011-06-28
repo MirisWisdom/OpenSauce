@@ -46,6 +46,74 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 		#region Element Creation
 		#region Create Effects
+		void CreatePhong(Fx.ColladaPhong phong, H1.Tags.shader_environment_group shader)
+		{
+			if (shader.BaseMap.Datum == DatumIndex.Null)
+				phong.Diffuse.Color.SetColor(shader.MaterialColor, 1);
+			else
+			{
+				phong.Diffuse.Color = null;
+				phong.Diffuse.Texture = CreateTexture(shader.BaseMap.Datum, 0);
+			}
+
+			if (shader.Flags.Test(1) && (shader.BumpMap.Datum != DatumIndex.Null))
+			{
+				phong.Transparent.Color = null;
+				phong.Transparent.Texture = CreateTexture(shader.BumpMap.Datum, 0);
+				phong.Transparent.Opaque = Enums.ColladaFXOpaqueEnum.A_ONE;
+			}
+
+			phong.Specular.Color.SetColor(shader.PerpendicularColor, 1);
+		}
+		void CreatePhong(Fx.ColladaPhong phong, H1.Tags.shader_model_group shader)
+		{
+			if (shader.BaseMap.Datum != DatumIndex.Null)
+			{
+				phong.Diffuse.Color = null;
+				phong.Diffuse.Texture = CreateTexture(shader.BaseMap.Datum, 0);
+			}
+
+			phong.Specular.Color.SetColor(shader.PerpendicularTintColor, 1);
+		}
+		void CreatePhong(Fx.ColladaPhong phong, H1.Tags.shader_transparent_chicago_group shader)
+		{
+			if (shader.Maps.Count > 0 && !shader.Maps[0].Map.Datum.IsNull)
+			{
+				phong.Diffuse.Color = null;
+				phong.Diffuse.Texture = CreateTexture(shader.Maps[0].Map.Datum, 0);
+			}
+		}
+		void CreatePhong(Fx.ColladaPhong phong, H1.Tags.shader_transparent_chicago_extended_group shader)
+		{
+			DatumIndex bitmap_datum = DatumIndex.Null;
+			if (shader._4StageMaps.Count > 0)
+				bitmap_datum = shader._4StageMaps[0].Map.Datum;
+			else if (shader._2StageMaps.Count > 0)
+				bitmap_datum = shader._2StageMaps[0].Map.Datum;
+
+			if (bitmap_datum != DatumIndex.Null)
+			{
+				phong.Diffuse.Color = null;
+				phong.Diffuse.Texture = CreateTexture(bitmap_datum, 0);
+			}
+		}
+		void CreatePhong(Fx.ColladaPhong phong, H1.Tags.shader_transparent_generic_group shader)
+		{
+			if (shader.Maps.Count > 0 && !shader.Maps[0].Map.Datum.IsNull)
+			{
+				phong.Diffuse.Color = null;
+				phong.Diffuse.Texture = CreateTexture(shader.Maps[0].Map.Datum, 0);
+			}
+		}
+		void CreatePhong(Fx.ColladaPhong phong, H1.Tags.shader_transparent_glass_group shader)
+		{
+			if (shader.DiffuseMap.Datum != DatumIndex.Null)
+			{
+				phong.Diffuse.Color = null;
+				phong.Diffuse.Texture = CreateTexture(shader.DiffuseMap.Datum, 0);
+			}
+		}
+
 		/// <summary>
 		/// Creates a phong definition using values from a shader tag
 		/// </summary>
@@ -69,88 +137,45 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 			if (shader_man.GroupTag == Blam.Halo1.TagGroups.senv)
 			{
-				H1.Tags.shader_environment_group shader_senv = GetTagDefinition<H1.Tags.shader_environment_group>(
+				var shader_senv = GetTagDefinition<H1.Tags.shader_environment_group>(
 					shader_datum, shader_man.GroupTag, Blam.Halo1.TagGroups.senv);
 
-				if (shader_senv.BaseMap.Datum == DatumIndex.Null)
-					phong.Diffuse.Color.SetColor(shader_senv.MaterialColor, 1);
-				else
-				{
-					phong.Diffuse.Color = null;
-					phong.Diffuse.Texture = CreateTexture(shader_senv.BaseMap.Datum, 0);
-				}
-
-				if (shader_senv.Flags.Test(1) && (shader_senv.BumpMap.Datum != DatumIndex.Null))
-				{
-					phong.Transparent.Color = null;
-					phong.Transparent.Texture = CreateTexture(shader_senv.BumpMap.Datum, 0);
-					phong.Transparent.Opaque = Enums.ColladaFXOpaqueEnum.A_ONE;
-				}
-
-				phong.Specular.Color.SetColor(shader_senv.PerpendicularColor, 1);
+				CreatePhong(phong, shader_senv);
 			}
 			else if (shader_man.GroupTag == Blam.Halo1.TagGroups.soso)
 			{
-				H1.Tags.shader_model_group shader_soso = GetTagDefinition<H1.Tags.shader_model_group>(
+				var shader_soso = GetTagDefinition<H1.Tags.shader_model_group>(
 					shader_datum, shader_man.GroupTag, Blam.Halo1.TagGroups.soso);
 
-				if (shader_soso.BaseMap.Datum != DatumIndex.Null)
-				{
-					phong.Diffuse.Color = null;
-					phong.Diffuse.Texture = CreateTexture(shader_soso.BaseMap.Datum, 0);
-				}
-
-				phong.Specular.Color.SetColor(shader_soso.PerpendicularTintColor, 1);
+				CreatePhong(phong, shader_soso);
 			}
 			else if (shader_man.GroupTag == Blam.Halo1.TagGroups.schi)
 			{
-				H1.Tags.shader_transparent_chicago_group shader_schi = GetTagDefinition<H1.Tags.shader_transparent_chicago_group>(
+				var shader_schi = GetTagDefinition<H1.Tags.shader_transparent_chicago_group>(
 					shader_datum, shader_man.GroupTag, Blam.Halo1.TagGroups.schi);
 
-				if ((shader_schi.Maps.Count > 0) && (shader_schi.Maps[0].Map.Datum != DatumIndex.Null))
-				{
-					phong.Diffuse.Color = null;
-					phong.Diffuse.Texture = CreateTexture(shader_schi.Maps[0].Map.Datum, 0);
-				}
+				CreatePhong(phong, shader_schi);
 			}
 			else if (shader_man.GroupTag == Blam.Halo1.TagGroups.scex)
 			{
-				H1.Tags.shader_transparent_chicago_extended_group shader_scex = GetTagDefinition<H1.Tags.shader_transparent_chicago_extended_group>(
+				var shader_scex = GetTagDefinition<H1.Tags.shader_transparent_chicago_extended_group>(
 					shader_datum, shader_man.GroupTag, Blam.Halo1.TagGroups.scex);
 
-				DatumIndex bitmap_datum = DatumIndex.Null;
-				if (shader_scex._4StageMaps.Count > 0)
-					bitmap_datum = shader_scex._4StageMaps[0].Map.Datum;
-				else if (shader_scex._2StageMaps.Count > 0)
-					bitmap_datum = shader_scex._2StageMaps[0].Map.Datum;
-
-				if (bitmap_datum != DatumIndex.Null)
-				{
-					phong.Diffuse.Color = null;
-					phong.Diffuse.Texture = CreateTexture(bitmap_datum, 0);
-				}
+				CreatePhong(phong, shader_scex);
 			}
 			else if (shader_man.GroupTag == Blam.Halo1.TagGroups.sotr)
 			{
-				H1.Tags.shader_transparent_generic_group shader_sotr = GetTagDefinition<H1.Tags.shader_transparent_generic_group>(
+				var shader_sotr = GetTagDefinition<H1.Tags.shader_transparent_generic_group>(
 					shader_datum, shader_man.GroupTag, Blam.Halo1.TagGroups.sotr);
 
-				if ((shader_sotr.Maps.Count > 0) && (shader_sotr.Maps[0].Map.Datum != DatumIndex.Null))
-				{
-					phong.Diffuse.Color = null;
-					phong.Diffuse.Texture = CreateTexture(shader_sotr.Maps[0].Map.Datum, 0);
-				}
+				CreatePhong(phong, shader_sotr);
 			}
 			else if (shader_man.GroupTag == Blam.Halo1.TagGroups.sgla)
 			{
-				H1.Tags.shader_transparent_glass_group shader_sgla = GetTagDefinition<H1.Tags.shader_transparent_glass_group>(
+				var shader_sgla = GetTagDefinition<H1.Tags.shader_transparent_glass_group>(
 					shader_datum, shader_man.GroupTag, Blam.Halo1.TagGroups.sgla);
 
-				if (shader_sgla.DiffuseMap.Datum != DatumIndex.Null)
-				{
-					phong.Diffuse.Color = null;
-					phong.Diffuse.Texture = CreateTexture(shader_sgla.DiffuseMap.Datum, 0);
-				}
+				CreatePhong(phong, shader_sgla);
 			}
 
 			return phong;

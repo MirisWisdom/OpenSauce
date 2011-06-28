@@ -243,36 +243,36 @@ namespace BlamLib.Test
 		#region COLLADA tests
 		static readonly ModelTestDefinition[] ModelTestDefinitions = new ModelTestDefinition[]
 		{
-			new ModelTestDefinition("BIPED", @"tags\characters\elite\elite",
+			new ModelTestDefinition("BIPED", @"characters\elite\elite",
 			    Blam.Halo1.TagGroups.bipd),
-			new ModelTestDefinition("BIPED", @"tags\characters\cyborg\cyborg",
+			new ModelTestDefinition("BIPED", @"characters\cyborg\cyborg",
 			    Blam.Halo1.TagGroups.bipd),
-			new ModelTestDefinition("VEHICLE", @"tags\vehicles\pelican\pelican",
+			new ModelTestDefinition("VEHICLE", @"vehicles\pelican\pelican",
 			    Blam.Halo1.TagGroups.vehi),
-			new ModelTestDefinition("VEHICLE", @"tags\vehicles\warthog\warthog",
+			new ModelTestDefinition("VEHICLE", @"vehicles\warthog\warthog",
 			    Blam.Halo1.TagGroups.vehi),
-			new ModelTestDefinition("DEVICE MACHINE", @"tags\levels\b30\devices\doors\door small\door small",
+			new ModelTestDefinition("DEVICE MACHINE", @"levels\b30\devices\doors\door small\door small",
 			    Blam.Halo1.TagGroups.mach),
-			new ModelTestDefinition("SCENERY", @"tags\scenery\tubewire\tubewire",
+			new ModelTestDefinition("SCENERY", @"scenery\tubewire\tubewire",
 			    Blam.Halo1.TagGroups.scen),
-			new ModelTestDefinition("DEVICE CONTROL", @"tags\levels\a50\devices\interior tech objects\holo command control\holo command control",
+			new ModelTestDefinition("DEVICE CONTROL", @"levels\a50\devices\interior tech objects\holo command control\holo command control",
 			    Blam.Halo1.TagGroups.ctrl),
-			new ModelTestDefinition("DEVICE LIGHT FIXTURE", @"tags\levels\c10\devices\ground_bright\ground_bright",
+			new ModelTestDefinition("DEVICE LIGHT FIXTURE", @"levels\c10\devices\ground_bright\ground_bright",
 			    Blam.Halo1.TagGroups.lifi),
-			new ModelTestDefinition("GARBAGE", @"tags\characters\sentinel\sentinel arm bit\sentinel arm bit",
+			new ModelTestDefinition("GARBAGE", @"characters\sentinel\sentinel arm bit\sentinel arm bit",
 			    Blam.Halo1.TagGroups.garb),
-			new ModelTestDefinition("WEAPON", @"tags\weapons\sniper rifle\sniper rifle",
+			new ModelTestDefinition("WEAPON", @"weapons\sniper rifle\sniper rifle",
 			    Blam.Halo1.TagGroups.weap),
 		};
 		static readonly ModelTestDefinition[] BSPTestDefinitions = new ModelTestDefinition[]
 		{
-			new ModelTestDefinition("BSP", @"tags\levels\test\ratrace\ratrace",
+			new ModelTestDefinition("BSP", @"levels\test\ratrace\ratrace",
 			    Blam.Halo1.TagGroups.sbsp),
-			new ModelTestDefinition("BSP", @"tags\levels\test\deathisland\deathisland",
+			new ModelTestDefinition("BSP", @"levels\test\deathisland\deathisland",
 			    Blam.Halo1.TagGroups.sbsp),
-			new ModelTestDefinition("BSP", @"tags\levels\a50\a50_exterior",
+			new ModelTestDefinition("BSP", @"levels\a50\a50_exterior",
 				Blam.Halo1.TagGroups.sbsp),
-			new ModelTestDefinition("BSP", @"tags\levels\b40\b40_b4",
+			new ModelTestDefinition("BSP", @"levels\b40\b40_b4",
 				Blam.Halo1.TagGroups.sbsp),
 		};
 
@@ -281,10 +281,6 @@ namespace BlamLib.Test
 		{
 			using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestTagIndexTagsPath))
 			{
-				string data_path = kTestTagIndexTagsPath;
-				if (!data_path.EndsWith("\\"))
-					data_path += "\\";
-
 				var tagindex = handler.IndexInterface;
 				foreach (var model_def in ModelTestDefinitions)
 				{
