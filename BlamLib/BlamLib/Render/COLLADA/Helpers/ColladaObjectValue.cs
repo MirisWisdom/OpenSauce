@@ -23,18 +23,12 @@ namespace BlamLib.Render.COLLADA
 {
 	public class ColladaObjectValue<T> : ColladaObject
 	{
-		private T _value;
+		public T Value { get; set; }
 
-		public T Value
-		{
-			get { return _value; }
-			set { _value = value; }
-		}
-
-		public override object GetValue() { return _value; }
+		public override object GetValue() { return Value; }
 		public override string GetTypeName() { return typeof(T).Name; }
 
 		public ColladaObjectValue() {}
-		public ColladaObjectValue(T initial_value) { _value = initial_value; }
-	}
+		public ColladaObjectValue(T initial_value) { Value = initial_value; }
+	};
 }
