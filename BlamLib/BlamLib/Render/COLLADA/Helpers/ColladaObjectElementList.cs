@@ -24,25 +24,16 @@ namespace BlamLib.Render.COLLADA
 	public class ColladaObjectElementList<T> : ColladaObject
 		where T : new()
 	{
-		public List<T> _value = null;
+		public List<T> Value { get; set; }
 
-		public List<T> Value
-		{
-			get { return _value; }
-			set { _value = value; }
-		}
-
-		public override object GetValue() { return _value; }
+		public override object GetValue() { return Value; }
 		public override string GetTypeName() { return typeof(T).Name; }
 
 		public override void ValidateField(Enums.ColladaElementType parent_type)
 		{
-			if (_value == null)
-				return;
-
-			if (typeof(T).IsSubclassOf(typeof(ColladaElement)))
-				foreach (var element in _value)
+			if (Value != null && typeof(T).IsSubclassOf(typeof(ColladaElement)))
+				foreach (var element in Value)
 					(element as ColladaElement).ValidateElement(parent_type);
 		}
-	}
+	};
 }

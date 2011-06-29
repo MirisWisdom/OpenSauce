@@ -77,14 +77,14 @@ namespace BlamLib.Render
 				string[] string_array = value.Split(' ');
 				List<T> return_array = new List<T>();
 
-				Type type = typeof(T);
+				TypeCode type_code = Type.GetTypeCode(typeof(T));
 				for (int i = 0; i < string_array.Length; i++)
 				{
 					object element_object = null;
 
 					// parse the string element into a generic element by typecode
 					bool parse_success = false;
-					switch (Type.GetTypeCode(type))
+					switch (type_code)
 					{
 						case TypeCode.Boolean:
 							bool bool_element;
@@ -227,9 +227,9 @@ namespace BlamLib.Render
 			/// </summary>
 			/// <param name="rotation">A RealEulerAngles3D field</param>
 			/// <returns></returns>
-			public static List<ColladaElement> CreateRotationSet(TagInterface.RealEulerAngles3D rotation)
+			public static List<ColladaElement> CreateRotationSet(LowLevel.Math.real_euler_angles3d rotation)
 			{
-				return CreateRotationSet(rotation.Y, rotation.P, rotation.R);
+				return CreateRotationSet(rotation.Yaw, rotation.Pitch, rotation.Roll);
 			}
 		}
 	}

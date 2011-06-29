@@ -22,29 +22,35 @@ using System.Xml.Serialization;
 
 namespace BlamLib.Render.COLLADA.Core
 {
-	[SerializableAttribute()]
+	[Serializable]
 	public partial class ColladaTranslate : ColladaSIDValueArray<float>
 	{
 		public ColladaTranslate() : base(Enums.ColladaElementType.Core_Translate) { }
-		public ColladaTranslate(float x, float y, float z)
-			: this()
+		public ColladaTranslate(float x, float y, float z) : this()
 		{
 			SetTranslate(x, y, z);
 		}
-		public ColladaTranslate(float x, float y, float z, float scale)
-			: this()
+		public ColladaTranslate(float x, float y, float z, float scale) : this()
 		{
 			SetTranslate(x, y, z, scale);
 		}
-		public ColladaTranslate(BlamLib.TagInterface.RealPoint3D translation)
-			: this()
+
+		public ColladaTranslate(LowLevel.Math.real_point3d translation) :
+			this(translation.X, translation.Y, translation.Z)
 		{
-			SetTranslate(translation);
+		}
+		public ColladaTranslate(LowLevel.Math.real_point3d translation, float scale)
+			: this(translation.X, translation.Y, translation.Z, scale)
+		{
+		}
+
+		public ColladaTranslate(BlamLib.TagInterface.RealPoint3D translation) : 
+			this(translation.X, translation.Y, translation.Z)
+		{
 		}
 		public ColladaTranslate(BlamLib.TagInterface.RealPoint3D translation, float scale)
-			: this()
+			: this(translation.X, translation.Y, translation.Z, scale)
 		{
-			SetTranslate(translation, scale);
 		}
 
 		public void SetTranslate(float x, float y, float z)
@@ -57,15 +63,23 @@ namespace BlamLib.Render.COLLADA.Core
 			Clear();
 			Add(x * scale, y * scale, z * scale);
 		}
+
+		public void SetTranslate(LowLevel.Math.real_point3d translation)
+		{
+			SetTranslate(translation.X, translation.Y, translation.Z);
+		}
+		public void SetTranslate(LowLevel.Math.real_point3d translation, float scale)
+		{
+			SetTranslate(translation.X, translation.Y, translation.Z, scale);
+		}
+
 		public void SetTranslate(BlamLib.TagInterface.RealPoint3D translation)
 		{
-			Clear();
-			Add(translation.X, translation.Y, translation.Z);
+			SetTranslate(translation.X, translation.Y, translation.Z);
 		}
 		public void SetTranslate(BlamLib.TagInterface.RealPoint3D translation, float scale)
 		{
-			Clear();
-			Add(translation.X * scale, translation.Y * scale, translation.Z * scale);
+			SetTranslate(translation.X, translation.Y, translation.Z, scale);
 		}
-	}
+	};
 }

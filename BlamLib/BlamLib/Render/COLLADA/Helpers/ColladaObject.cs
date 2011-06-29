@@ -17,9 +17,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
 
 namespace BlamLib.Render.COLLADA
 {
@@ -28,5 +25,5 @@ namespace BlamLib.Render.COLLADA
 		public abstract object GetValue();
 		public abstract string GetTypeName();
 		public virtual void ValidateField(Enums.ColladaElementType parent_type) { }
-	}
+	};
 }

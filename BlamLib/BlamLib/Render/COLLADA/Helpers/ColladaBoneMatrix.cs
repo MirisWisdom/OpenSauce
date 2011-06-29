@@ -22,32 +22,18 @@ using System.Collections.Generic;
 namespace BlamLib.Render.COLLADA
 {
 	/// <summary>
-	/// Class for generating local and word transfrom matricies for a list of connected bones
+	/// Class for generating local and word transform matricies for a list of connected bones
 	/// </summary>
 	public class ColladaBoneMatrix
 	{
-		private SlimDX.Vector3 translation;
-		private SlimDX.Quaternion rotationQuaternion;
-		private float scale;
+		SlimDX.Vector3 translation;
+		SlimDX.Quaternion rotationQuaternion;
+		float scale;
 
-		private SlimDX.Matrix transformMatrixWorld;
-		private SlimDX.Matrix transformMatrixLocal;
+		public SlimDX.Matrix TransformMatrixWorld { get; private set; }
+		public SlimDX.Matrix TransformMatrixLocal { get; private set; }
 
-		public SlimDX.Matrix TransformMatrixWorld
-		{
-			get { return transformMatrixWorld; }
-		}
-		public SlimDX.Matrix TransformMatrixLocal
-		{
-			get { return transformMatrixLocal; }
-		}
-
-		private ColladaBoneMatrix parentNode;
-		public ColladaBoneMatrix ParentNode
-		{
-			get { return parentNode; }
-			set { parentNode = value; }
-		}
+		public ColladaBoneMatrix ParentNode { get; set; }
 
 		public ColladaBoneMatrix(TagInterface.RealPoint3D bone_translation,
 			float bone_translation_scale,
@@ -69,17 +55,17 @@ namespace BlamLib.Render.COLLADA
 			SlimDX.Matrix rotate_matrix = SlimDX.Matrix.RotationQuaternion(rotationQuaternion);
 			SlimDX.Matrix translate_matrix = SlimDX.Matrix.Translation(translation);
 
-			transformMatrixLocal = SlimDX.Matrix.Identity;
+			TransformMatrixLocal = SlimDX.Matrix.Identity;
 
 			// multiply the matrices together
-			transformMatrixLocal *= scale_matrix;
-			transformMatrixLocal *= rotate_matrix;
-			transformMatrixLocal *= translate_matrix;
+			TransformMatrixLocal *= scale_matrix;
+			TransformMatrixLocal *= rotate_matrix;
+			TransformMatrixLocal *= translate_matrix;
 
 			// multiply by the parents world matrix (if present) to get this bones world matrix
-			transformMatrixWorld = transformMatrixLocal;
-			if (parentNode != null)
-				transformMatrixWorld = transformMatrixLocal * parentNode.TransformMatrixWorld;
+			TransformMatrixWorld = TransformMatrixLocal;
+			if (ParentNode != null)
+				TransformMatrixWorld = TransformMatrixLocal * ParentNode.TransformMatrixWorld;
 		}
 	};
 }
