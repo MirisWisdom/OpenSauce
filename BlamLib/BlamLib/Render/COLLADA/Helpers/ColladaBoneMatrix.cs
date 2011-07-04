@@ -35,13 +35,25 @@ namespace BlamLib.Render.COLLADA
 
 		public ColladaBoneMatrix ParentNode { get; set; }
 
-		public ColladaBoneMatrix(TagInterface.RealPoint3D bone_translation,
+		public ColladaBoneMatrix(BlamVersion game_version,
+			TagInterface.RealPoint3D bone_translation,
 			float bone_translation_scale,
 			TagInterface.RealQuaternion bone_rotation,
 			float bone_scale)
 		{
+			bool invert_ijk = false;
+			switch(game_version)
+			{
+				case BlamVersion.Halo1: invert_ijk = true; break;
+				default: invert_ijk = false; break;
+			}
+
 			translation = new SlimDX.Vector3(bone_translation.X * bone_translation_scale, bone_translation.Y * bone_translation_scale, bone_translation.Z * bone_translation_scale);
-			rotationQuaternion = new SlimDX.Quaternion(-bone_rotation.I, -bone_rotation.J, -bone_rotation.K, bone_rotation.W);
+			rotationQuaternion = new SlimDX.Quaternion(
+				(invert_ijk ? -bone_rotation.I : bone_rotation.I),
+				(invert_ijk ? -bone_rotation.J : bone_rotation.J),
+				(invert_ijk ? -bone_rotation.K : bone_rotation.K),
+				bone_rotation.W);
 			scale = bone_scale;
 		}
 

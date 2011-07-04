@@ -21,6 +21,7 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
+using BlamLib.Render.COLLADA.Validation;
 
 namespace BlamLib.Render.COLLADA.Core
 {
@@ -59,15 +60,9 @@ namespace BlamLib.Render.COLLADA.Core
 			Fields.Add(_semantic = new ColladaObjectAttribute<Enums.ColladaInputSharedSemantic>(Enums.ColladaInputSharedSemantic.BINORMAL));
 			Fields.Add(_source = new ColladaObjectAttribute<string>(""));
 			Fields.Add(_set = new ColladaObjectAttribute<uint>(0));
-		}
 
-		//public override void ValidateElement(Enums.ColladaElementType parent_type)
-		//{
-		//    #region Validate Self
-		//    if ((Source == null) || (Source.Length == 0))
-		//        throw new ColladaValidationException(
-		//            String.Format(ColladaValidationException.MissingAttribute, "source"));
-		//    #endregion
-		//}
+			ValidationTests.Add(new ColladaIsNull(Enums.ColladaElementType.All, _source));
+			ValidationTests.Add(new ColladaEmptyString(Enums.ColladaElementType.All, _source));
+		}
 	}
 }

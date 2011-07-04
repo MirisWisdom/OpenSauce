@@ -39,7 +39,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// <summary>
 		/// Halo1 BSP exporter class
 		/// </summary>
-		/// <param name="bsp_info">An object implementing IHalo1BSPInterface to define what meshes ate to be included in the collada file</param>
+		/// <param name="bsp_info">An object implementing IHalo1BSPInterface to define what meshes are to be included in the collada file</param>
 		/// <param name="tag_index">The tag index that contains the tag being exported</param>
 		/// <param name="tag_manager">The tag manager of the tag being exported</param>
 		public ColladaBSPExporter(IHalo1BSPInterface bsp_info, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager)
@@ -215,7 +215,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 					//RealPoint3D   position
 					for (k = 0; k < 3; k++) geometry.Mesh.Source[0].FloatArray.Add(uncompressed_reader.ReadSingle() * 100);
 					//RealVector3D  normal
-					for (k = 0; k < 3; k++) geometry.Mesh.Source[1].FloatArray.Add(uncompressed_reader.ReadSingle() * 100);
+					for (k = 0; k < 3; k++) geometry.Mesh.Source[1].FloatArray.Add(uncompressed_reader.ReadSingle());
 					//RealVector3D  binormal
 					for (k = 0; k < 3; k++) geometry.Mesh.Source[2].FloatArray.Add(uncompressed_reader.ReadSingle());
 					//RealVector3D  tangent
@@ -247,7 +247,6 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 				for (int surface_index = 0; surface_index < definition.Lightmaps[index].Materials[material_index].SurfaceCount; surface_index++)
 				{
-					ColladaValueArray<uint> poly = new ColladaValueArray<uint>();
 					int k = 0;
 					for (k = 0; k < 4; k++)
 						geometry.Mesh.Triangles[material_index].P.Add((int)(definition.Surfaces[definition.Lightmaps[index].Materials[material_index].Surfaces.Value + surface_index].A3 + index_offset));
@@ -386,7 +385,8 @@ namespace BlamLib.Render.COLLADA.Halo1
 			marker.Name = ColladaUtilities.FormatName(definition.Markers[index].Name.Value);
 			marker.Type = Enums.ColladaNodeType.NODE;
 			marker.Add(new Core.ColladaTranslate(definition.Markers[index].Position, 100.0f));
-			marker.AddRange(ColladaUtilities.CreateRotationSet(definition.Markers[index].Rotation.ToEuler3D()));
+			marker.AddRange(ColladaUtilities.CreateRotationSet(definition.Markers[index].Rotation.ToEuler3D(BlamVersion.Halo1),
+				RotationVectorY, RotationVectorP, RotationVectorR));
 
 			return marker;
 		}

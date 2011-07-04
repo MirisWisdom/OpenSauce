@@ -190,6 +190,29 @@ namespace BlamLib.Test
 			new ModelTestDefinition("LTMP", @"scenarios\multi\example\example_example_lightmap",
 			    Blam.Halo2.TagGroups.ltmp),
 		};
+		static readonly ModelTestDefinition[] RenderModelTestDefinitions = new ModelTestDefinition[]
+		{
+			new ModelTestDefinition("MODE", @"objects\characters\elite\elite",
+			    Blam.Halo2.TagGroups.mode),
+			new ModelTestDefinition("MODE", @"objects\characters\masterchief\masterchief",
+			    Blam.Halo2.TagGroups.mode),
+			new ModelTestDefinition("MODE", @"objects\vehicles\wraith\wraith",
+			    Blam.Halo2.TagGroups.mode),
+			new ModelTestDefinition("MODE", @"objects\characters\elite\fp_body\fp_body",
+			    Blam.Halo2.TagGroups.mode),
+			new ModelTestDefinition("MODE", @"scenarios\skies\multi\halo\coagulation\coagulation",
+			    Blam.Halo2.TagGroups.mode),
+			new ModelTestDefinition("MODE", @"objects\vehicles\wraith\turrets\minigun\minigun",
+			    Blam.Halo2.TagGroups.mode),
+			new ModelTestDefinition("MODE", @"objects\vehicles\warthog\warthog",
+			    Blam.Halo2.TagGroups.mode),
+			new ModelTestDefinition("MODE", @"objects\vehicles\warthog\turrets\gauss\gauss",
+			    Blam.Halo2.TagGroups.mode),
+			new ModelTestDefinition("MODE", @"objects\characters\masterchief\fp\fp",
+			    Blam.Halo2.TagGroups.mode),
+			new ModelTestDefinition("MODE", @"objects\characters\elite\fp_arms\fp_arms",
+			    Blam.Halo2.TagGroups.mode),
+		};
 
 		[TestMethod]
 		public void Halo2TestCOLLADALightmapExport()
@@ -219,6 +242,52 @@ namespace BlamLib.Test
 					var lightmap_info = halo2[0] as Render.COLLADA.Halo2.ColladaHalo2LightmapInfo;
 
 					halo2.Export(lightmap_info.Name);
+
+					foreach (string report in halo2.Reports())
+						Console.WriteLine(report);
+
+					model_def.Close(tagindex);
+				}
+			}
+		}
+		[TestMethod]
+		public void Halo2TestCOLLADARenderModelExport()
+		{
+			using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo2_PC, kTestTagIndexTagsPath))
+			{
+				var tagindex = handler.IndexInterface;
+				foreach (var model_def in RenderModelTestDefinitions)
+				{
+					StartStopwatch();
+					{
+						model_def.Open(tagindex);
+						Console.WriteLine("{0} LOAD: Time taken: {1}", model_def.TypeString, m_testStopwatch.Elapsed);
+					}
+					Console.WriteLine("TAG INDEX: Time taken: {0}", StopStopwatch());
+
+					var halo2 = new BlamLib.Render.COLLADA.Halo2.ColladaHalo2(tagindex, model_def.TagIndex);
+
+					halo2.Overwrite = true;
+					halo2.RelativeFilePath = Path.Combine(kTestTagIndexTagsPath, @"data\");
+
+					foreach (Render.COLLADA.Halo2.ColladaHalo2RenderModelInfo info in halo2)
+					{
+						halo2.ClearRegister();
+						halo2.RegisterForExport(info);
+
+						halo2.Export(string.Format("{0}-perm{1}-lod{2}", info.Name, info.Permutation, info.LevelOfDetail));
+
+						foreach (string report in halo2.Reports())
+							Console.WriteLine(report);
+					}
+
+					halo2.ClearRegister();
+					
+					foreach (var info in halo2)
+						halo2.RegisterForExport(info);
+
+					var model_info = halo2[0] as Render.COLLADA.Halo2.ColladaHalo2RenderModelInfo;
+					halo2.Export(model_info.Name + "_all");
 
 					foreach (string report in halo2.Reports())
 						Console.WriteLine(report);

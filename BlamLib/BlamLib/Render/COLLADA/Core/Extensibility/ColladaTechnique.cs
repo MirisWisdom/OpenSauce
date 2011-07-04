@@ -57,14 +57,5 @@ namespace BlamLib.Render.COLLADA.Core
 			ValidationTests.Add(new ColladaIsNull(Enums.ColladaElementType.All, _profile));
 			ValidationTests.Add(new ColladaEmptyString(Enums.ColladaElementType.All, _profile));
 		}
-
-		//public override void ValidateElement(Enums.ColladaElementType parent_type)
-		//{
-		//    #region Validate Self
-		//    if ((Profile == null) || (Profile.Length == 0))
-		//        throw new ColladaValidationException(
-		//            String.Format(ColladaValidationException.MissingAttribute, "profile"));
-		//    #endregion
-		//}
 	}
 }

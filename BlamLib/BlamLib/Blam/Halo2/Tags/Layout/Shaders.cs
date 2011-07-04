@@ -528,17 +528,17 @@ namespace BlamLib.Blam.Halo2.Tags
 
 			public shader_properties_block() : base(12)
 			{
-				Add(/*Diffuse Map = */ new TI.TagReference(this, TagGroups.bitm));
-				Add(/*Lightmap Emissive Map = */ new TI.TagReference(this, TagGroups.bitm));
-				Add(/*Lightmap Emissive Color = */ new TI.RealColor());
-				Add(/*Lightmap Emissive Power = */ new TI.Real());
-				Add(/*Lightmap Resolution Scale = */ new TI.Real());
-				Add(/*Lightmap Half Life = */ new TI.Real());
-				Add(/*Lightmap Diffuse Scale = */ new TI.Real());
-				Add(/*Alpha Test Map = */ new TI.TagReference(this, TagGroups.bitm));
-				Add(/*Translucent Map = */ new TI.TagReference(this, TagGroups.bitm));
-				Add(/*Lightmap Transparent Color = */ new TI.RealColor());
-				Add(/*Lightmap Transparent Alpha = */ new TI.Real());
+				Add(DiffuseMap = new TI.TagReference(this, TagGroups.bitm));
+				Add(LightmapEmissiveMap = new TI.TagReference(this, TagGroups.bitm));
+				Add(LightmapEmissiveColor = new TI.RealColor());
+				Add(LightmapEmissivePower = new TI.Real());
+				Add(LightmapResolutionScale = new TI.Real());
+				Add(LightmapHalfLife = new TI.Real());
+				Add(LightmapDiffuseScale = new TI.Real());
+				Add(AlphaTestMap = new TI.TagReference(this, TagGroups.bitm));
+				Add(TranslucentMap = new TI.TagReference(this, TagGroups.bitm));
+				Add(LightmapTransparentColor = new TI.RealColor());
+				Add(LightmapTransparentAlpha = new TI.Real());
 
 				// Not in Alpha
 				Add(LightmapFoliageScale = new TI.Real());

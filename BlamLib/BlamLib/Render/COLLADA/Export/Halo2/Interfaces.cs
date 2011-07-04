@@ -19,6 +19,15 @@
 
 namespace BlamLib.Render.COLLADA.Halo2
 {
+	public interface IHalo2RenderModelInterface : IHaloShaderDatumList
+	{
+		int GetGeometryCount();
+		string GetGeometryName(int index);
+		int GetGeometryIndex(int index);
+		bool GetIsMultiplePerms();
+		int GetPermutation();
+	};
+
 	public interface IHalo2LightmapInterface : IHaloShaderDatumList
 	{
 	};

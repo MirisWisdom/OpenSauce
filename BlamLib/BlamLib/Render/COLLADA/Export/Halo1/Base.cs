@@ -31,11 +31,17 @@ namespace BlamLib.Render.COLLADA.Halo1
 	/// </summary>
 	public class ColladaModelExporterHalo1 : ColladaModelExporterBase
 	{
+		#region Class Members
+		protected static TagInterface.RealVector3D RotationVectorY = new BlamLib.TagInterface.RealVector3D(0, 1, 0);
+		protected static TagInterface.RealVector3D RotationVectorP = new BlamLib.TagInterface.RealVector3D(0, 0, 1);
+		protected static TagInterface.RealVector3D RotationVectorR = new BlamLib.TagInterface.RealVector3D(1, 0, 0);
+		#endregion
+
 		#region Constructor
 		/// <summary>
 		/// Base class constructor
 		/// </summary>
-		/// <param name="info">An object implementing IHalo1ShaderDatumList to provide a list of shader datums that the model/BSP uses</param>
+		/// <param name="info">An object implementing IHaloShaderDatumList to provide a list of shader datums</param>
 		/// <param name="tag_index">The tag index that contains the tag being exported</param>
 		/// <param name="tag_manager">The tag manager of the tag being exported</param>
 		public ColladaModelExporterHalo1(IHaloShaderDatumList info, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager)
@@ -370,7 +376,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			Managers.TagManager shader_man = tagIndex[shader_datum];
 			List<DatumIndex> bitmap_datums = new List<DatumIndex>();
 
-			if (shader_man.GroupTag.ID == Blam.Halo1.TagGroups.senv.ID)
+			if (shader_man.GroupTag == Blam.Halo1.TagGroups.senv)
 			{
 				H1.Tags.shader_environment_group shader_senv = GetTagDefinition<H1.Tags.shader_environment_group>(
 					shader_datum, shader_man.GroupTag, Blam.Halo1.TagGroups.senv);
@@ -381,7 +387,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 				if (shader_senv.Flags.Test(1) && (shader_senv.BumpMap.Datum != DatumIndex.Null))
 					bitmap_datums.Add(shader_senv.BumpMap.Datum);
 			}
-			else if (shader_man.GroupTag.ID == Blam.Halo1.TagGroups.soso.ID)
+			else if (shader_man.GroupTag == Blam.Halo1.TagGroups.soso)
 			{
 				H1.Tags.shader_model_group shader_soso = GetTagDefinition<H1.Tags.shader_model_group>(
 					shader_datum, shader_man.GroupTag, Blam.Halo1.TagGroups.soso);
@@ -389,7 +395,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 				if (shader_soso.BaseMap.Datum != DatumIndex.Null)
 					bitmap_datums.Add(shader_soso.BaseMap.Datum);
 			}
-			else if (shader_man.GroupTag.ID == Blam.Halo1.TagGroups.schi.ID)
+			else if (shader_man.GroupTag == Blam.Halo1.TagGroups.schi)
 			{
 				H1.Tags.shader_transparent_chicago_group shader_schi = GetTagDefinition<H1.Tags.shader_transparent_chicago_group>(
 					shader_datum, shader_man.GroupTag, Blam.Halo1.TagGroups.schi);
@@ -397,7 +403,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 				if ((shader_schi.Maps.Count > 0) && (shader_schi.Maps[0].Map.Datum != DatumIndex.Null))
 					bitmap_datums.Add(shader_schi.Maps[0].Map.Datum);
 			}
-			else if (shader_man.GroupTag.ID == Blam.Halo1.TagGroups.scex.ID)
+			else if (shader_man.GroupTag == Blam.Halo1.TagGroups.scex)
 			{
 				H1.Tags.shader_transparent_chicago_extended_group shader_scex = GetTagDefinition<H1.Tags.shader_transparent_chicago_extended_group>(
 					shader_datum, shader_man.GroupTag, Blam.Halo1.TagGroups.scex);
@@ -411,7 +417,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 				if (bitmap_datum != DatumIndex.Null)
 					bitmap_datums.Add(bitmap_datum);
 			}
-			else if (shader_man.GroupTag.ID == Blam.Halo1.TagGroups.sotr.ID)
+			else if (shader_man.GroupTag == Blam.Halo1.TagGroups.sotr)
 			{
 				H1.Tags.shader_transparent_generic_group shader_sotr = GetTagDefinition<H1.Tags.shader_transparent_generic_group>(
 					shader_datum, shader_man.GroupTag, Blam.Halo1.TagGroups.sotr);
@@ -419,7 +425,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 				if ((shader_sotr.Maps.Count > 0) && (shader_sotr.Maps[0].Map.Datum != DatumIndex.Null))
 					bitmap_datums.Add(shader_sotr.Maps[0].Map.Datum);
 			}
-			else if (shader_man.GroupTag.ID == Blam.Halo1.TagGroups.sgla.ID)
+			else if (shader_man.GroupTag == Blam.Halo1.TagGroups.sgla)
 			{
 				H1.Tags.shader_transparent_glass_group shader_sgla = GetTagDefinition<H1.Tags.shader_transparent_glass_group>(
 					shader_datum, shader_man.GroupTag, Blam.Halo1.TagGroups.sgla);

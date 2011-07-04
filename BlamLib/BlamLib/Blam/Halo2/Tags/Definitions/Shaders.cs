@@ -460,7 +460,18 @@ namespace BlamLib.Blam.Halo2.Tags
 		[TI.Definition(1, 112)]
 		public partial class shader_properties_block : TI.Definition
 		{
-			TI.Real LightmapFoliageScale;
+			public TI.TagReference DiffuseMap;
+			public TI.TagReference LightmapEmissiveMap;
+			public TI.RealColor LightmapEmissiveColor;
+			public TI.Real LightmapEmissivePower;
+			public TI.Real LightmapResolutionScale;
+			public TI.Real LightmapHalfLife;
+			public TI.Real LightmapDiffuseScale;
+			public TI.TagReference AlphaTestMap;
+			public TI.TagReference TranslucentMap;
+			public TI.RealColor LightmapTransparentColor;
+			public TI.Real LightmapTransparentAlpha;
+			public TI.Real LightmapFoliageScale;
 		}
 		#endregion
 
