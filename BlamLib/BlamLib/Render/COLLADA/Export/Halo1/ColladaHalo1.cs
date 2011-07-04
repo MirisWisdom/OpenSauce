@@ -100,7 +100,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			#endregion
 		}
 		/// <summary>
-		/// Interface class to pass geometry anme and index information to the Halo 1 model exporter
+		/// Interface class to pass geometry name and index information to the Halo 1 model exporter
 		/// </summary>
 		protected class ModelInfoInternal : ShaderInfoInternal, IHalo1ModelInterface
 		{
@@ -157,7 +157,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			{
 				return geometries[index].Index;
 			}
-			bool IHalo1ModelInterface.IsMultiplePermutations()
+			bool IHalo1ModelInterface.GetIsMultiplePerms()
 			{
 				return IsMultiplePermutations;
 			}

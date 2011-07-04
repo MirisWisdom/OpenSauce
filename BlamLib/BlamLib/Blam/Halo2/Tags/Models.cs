@@ -2364,6 +2364,7 @@ namespace BlamLib.Blam.Halo2.Tags
 		public TI.ShortInteger TotalPartCount;
 		public TI.Enum GeometryClassification;
 		public TI.Flags GeometryCompressionFlags;
+		public TI.Block<global_geometry_compression_info_block> GeometryCompressionInfo;
 		public TI.ByteInteger HardwareNodeCount;
 		public TI.ByteInteger NodeMapSize;
 		public TI.ShortInteger SoftwarePlaneCount;
@@ -2387,7 +2388,7 @@ namespace BlamLib.Blam.Halo2.Tags
 			Add(/*Shadow-Casting Rigid Triangle Count = */ new TI.ShortInteger());
 			Add(GeometryClassification = new TI.Enum());
 			Add(GeometryCompressionFlags = new TI.Flags(TI.FieldType.WordFlags));
-			Add(/* = */ new TI.Block<global_geometry_compression_info_block>(this, 1));
+			Add(GeometryCompressionInfo = new TI.Block<global_geometry_compression_info_block>(this, 1));
 			Add(HardwareNodeCount = new TI.ByteInteger());
 			Add(NodeMapSize = new TI.ByteInteger());
 			Add(SoftwarePlaneCount = new TI.ShortInteger());
@@ -2933,9 +2934,13 @@ namespace BlamLib.Blam.Halo2.Tags
 			[TI.Definition(1, 1)]
 			public class render_model_node_map_block : TI.Definition
 			{
+				#region Fields
+				public TI.ByteInteger NodeIndex;
+				#endregion
+
 				public render_model_node_map_block() : base(1)
 				{
-					Add(/*node index = */ new TI.ByteInteger());
+					Add(NodeIndex = new TI.ByteInteger());
 				}
 			}
 			#endregion

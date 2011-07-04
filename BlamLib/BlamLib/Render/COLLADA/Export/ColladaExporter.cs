@@ -414,6 +414,35 @@ namespace BlamLib.Render.COLLADA
 		}
 
 		#region Element Creation
+		#region Create Controllers
+		/// <summary>
+		/// Creates a common technique element with one parameter
+		/// </summary>
+		/// <param name="source_id">The ID of the source element</param>
+		/// <param name="source_count">The number of elements in the source array</param>
+		/// <param name="param_name">The name of the parameter</param>
+		/// <param name="param_type">The type of the the parameter</param>
+		/// <param name="stride">the number of elements the parameter takes up (usually 1)</param>
+		/// <returns></returns>
+		protected Core.ColladaTechniqueCommon CreateControllerTechniqueCommon(string source_id,
+			uint source_count, string param_name, string param_type, uint stride)
+		{
+			Core.ColladaTechniqueCommon technique = new Core.ColladaTechniqueCommon();
+			technique.Accessor = new Core.ColladaAccessor();
+			technique.Accessor.Source = ColladaUtilities.BuildUri(source_id);
+			technique.Accessor.Count = source_count;
+			technique.Accessor.Param = new List<Core.ColladaParam>();
+			technique.Accessor.Param.Add(new Core.ColladaParam());
+
+			if (stride != 1)
+				technique.Accessor.StrideOverride = stride;
+
+			technique.Accessor.Param[0].Name = param_name;
+			technique.Accessor.Param[0].Type = param_type;
+
+			return technique;
+		}
+		#endregion
 		#region Create Images
 		/// <summary>
 		/// Populates the image array with bitmap references from the bitmap datum array

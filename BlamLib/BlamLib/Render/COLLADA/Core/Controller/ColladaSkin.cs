@@ -82,39 +82,5 @@ namespace BlamLib.Render.COLLADA.Core
 			ValidationTests.Add(new ColladaIsNull(Enums.ColladaElementType.All, _joints));
 			ValidationTests.Add(new ColladaIsNull(Enums.ColladaElementType.All, _vertexWeights));
 		}
-
-		//public override void ValidateElement(Enums.ColladaElementType parent_type)
-		//{
-		//    #region Validate Self
-		//    if ((SourceAttrib == null) || (SourceAttrib.Length == 0))
-		//        throw new ColladaValidationException(
-		//            String.Format(ColladaValidationException.MissingAttribute, "source"));
-		//    if ((Source == null) || (Source.Count < 3))
-		//        throw new ColladaValidationException(
-		//            String.Format(ColladaValidationException.MinimumElementCount, 3, "source"));
-		//    if (Joints == null)
-		//        throw new ColladaValidationException(
-		//            String.Format(ColladaValidationException.MissingElement, "joints"));
-		//    if (VertexWeights == null)
-		//        throw new ColladaValidationException(
-		//            String.Format(ColladaValidationException.MissingElement, "vertex_weights"));
-		//    #endregion
-
-		//    #region Validate Children
-		//    try
-		//    {
-		//        if (Source != null)
-		//            foreach (ColladaElement element in Source) element.ValidateElement(m_element_type);
-		//        if (Joints != null) Joints.ValidateElement(m_element_type);
-		//        if (VertexWeights != null) VertexWeights.ValidateElement(m_element_type);
-		//        if (Extra != null)
-		//            foreach (ColladaElement element in Extra) element.ValidateElement(m_element_type);
-		//    }
-		//    catch (Exception e)
-		//    {
-		//        throw new ColladaValidationException(e);
-		//    }
-		//    #endregion
-		//}
 	}
 }

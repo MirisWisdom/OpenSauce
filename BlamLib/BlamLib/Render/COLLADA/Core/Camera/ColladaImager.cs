@@ -52,28 +52,5 @@ namespace BlamLib.Render.COLLADA.Core
 			ValidationTests.Add(new ColladaIsNull(Enums.ColladaElementType.All, _technique));
 			ValidationTests.Add(new ColladaListMinCount<ColladaTechnique>(Enums.ColladaElementType.All, _technique, 1));
 		}
-
-		//public override void ValidateElement(Enums.ColladaElementType parent_type)
-		//{
-		//    #region Validate Self
-		//    if ((Technique == null) || (Technique.Count == 0))
-		//        throw new ColladaValidationException(
-		//            String.Format(ColladaValidationException.MinimumElementCount, 1, "technique"));
-		//    #endregion
-
-		//    #region Validate Children
-		//    try
-		//    {
-		//        if (Technique != null)
-		//            foreach (ColladaElement element in Technique) element.ValidateElement(m_element_type);
-		//        if (Extra != null)
-		//            foreach (ColladaElement element in Extra) element.ValidateElement(m_element_type);
-		//    }
-		//    catch (Exception e)
-		//    {
-		//        throw new ColladaValidationException(e);
-		//    }
-		//    #endregion
-		//}
 	}
 }

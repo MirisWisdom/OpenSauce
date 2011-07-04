@@ -784,18 +784,23 @@ namespace BlamLib.TagInterface
 			get { return Value; }
 			set { Value = value as float[]; }
 		}
-
 		/// <summary>
 		/// Converts the quaternion into an euler rotation
 		/// </summary>
 		/// <returns>Returns an euler rotation</returns>
-		public LowLevel.Math.real_euler_angles3d ToEuler3D()
+		public LowLevel.Math.real_euler_angles3d ToEuler3D(BlamVersion game_version)
 		{
 			var euler_3d = new LowLevel.Math.real_euler_angles3d();
 
-			float x = -I;
-			float y = -J;
-			float z = -K;
+			bool invert_ijk = false;
+			switch (game_version)
+			{
+				case BlamVersion.Halo1: invert_ijk = true; break;
+				default: invert_ijk = false; break;
+			}
+			float x = (invert_ijk ? -I : I);
+			float y = (invert_ijk ? -J : J);
+			float z = (invert_ijk ? -K : K);
 			float w = W;
 
 			if ((x * y) + (z * w) == 0.5f)

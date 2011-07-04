@@ -60,35 +60,5 @@ namespace BlamLib.Render.COLLADA.Core
 			ValidationTests.Add(new ColladaListHasValue<ColladaInputUnshared, Enums.ColladaInputSharedSemantic>(Enums.ColladaElementType.All,
 				_input, "Semantic", Enums.ColladaInputSharedSemantic.INTERPOLATION));
 		}
-
-		//public override void ValidateElement(Enums.ColladaElementType parent_type)
-		//{
-		//    #region Validate Self
-		//    if ((Input == null) || (Input.Count == 0))
-		//        throw new ColladaValidationException(
-		//            String.Format(ColladaValidationException.MinimumElementCount, 1, "input"));
-		//    else
-		//    {
-		//        bool has_interpolation = false;
-		//        foreach (ColladaInputUnshared input in Input)
-		//            has_interpolation |= (input.Semantic == Enums.ColladaInputSharedSemantic.INTERPOLATION);
-		//        if (!has_interpolation)
-		//            throw new ColladaValidationException(
-		//                String.Format(ColladaValidationException.MissingSemantic, "input", "INTERPOLATION"));
-		//    }
-		//    #endregion
-
-		//    #region Validate Children
-		//    try
-		//    {
-		//        if (Input != null)
-		//            foreach (ColladaElement element in Input) element.ValidateElement(m_element_type);
-		//    }
-		//    catch (Exception e)
-		//    {
-		//        throw new ColladaValidationException(e);
-		//    }
-		//    #endregion
-		//}
 	}
 }

@@ -48,6 +48,13 @@ namespace BlamLib.Render.COLLADA
 			foreach (T value in values)
 				Values.Add(value);
 		}
+		public void Add(List<T> values)
+		{
+			if (Values == null)
+				Values = new List<T>();
+
+			Values.AddRange(values);
+		}
 		public void Clear()
 		{
 			if (Values != null)

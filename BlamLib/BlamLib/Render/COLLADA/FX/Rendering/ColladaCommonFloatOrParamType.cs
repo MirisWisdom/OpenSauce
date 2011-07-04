@@ -55,31 +55,5 @@ namespace BlamLib.Render.COLLADA.Fx
 			ValidationTests.Add(new ColladaOneRequired(Enums.ColladaElementType.All, field_list));
 			ValidationTests.Add(new ColladaMutuallyExclusive(Enums.ColladaElementType.All, field_list));
 		}
-
-		//public override void ValidateElement(Enums.ColladaElementType parent_type)
-		//{
-		//    #region Validate Self
-		//    bool has_float = (Float != null);
-		//    bool has_param = (Param != null);
-
-		//    if (!(has_float || has_param))
-		//        throw new ColladaValidationException(
-		//            String.Format(ColladaValidationException.Required, "float, param"));
-		//    else if (has_float && has_param)
-		//        throw new ColladaValidationException(
-		//            String.Format(ColladaValidationException.MutuallyExclusive, "float, param"));
-		//    #endregion
-
-		//    #region Validate Children
-		//    try
-		//    {
-		//        if (Param != null) Param.ValidateElement(m_element_type);
-		//    }
-		//    catch (Exception e)
-		//    {
-		//        throw new ColladaValidationException(e);
-		//    }
-		//    #endregion
-		//}
 	}
 }

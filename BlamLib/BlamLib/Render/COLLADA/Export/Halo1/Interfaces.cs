@@ -24,7 +24,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		int GetGeometryCount();
 		string GetGeometryName(int index);
 		int GetGeometryIndex(int index);
-		bool IsMultiplePermutations();
+		bool GetIsMultiplePerms();
 		int GetPermutation();
 	};
 

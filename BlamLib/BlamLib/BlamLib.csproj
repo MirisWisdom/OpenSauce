@@ -253,6 +253,7 @@
     <Compile Include="Render\COLLADA\Export\Halo2\Base.cs" />
     <Compile Include="Render\COLLADA\Export\Halo2\ColladaHalo2.cs" />
     <Compile Include="Render\COLLADA\Export\Halo2\ExporterLightmap.cs" />
+    <Compile Include="Render\COLLADA\Export\Halo2\ExporterRenderModel.cs" />
     <Compile Include="Render\COLLADA\Export\Halo2\Interfaces.cs" />
     <Compile Include="Render\COLLADA\FX\Effects\ColladaBindVertexInput.cs" />
     <Compile Include="Render\COLLADA\FX\Effects\ColladaEffect.cs" />

@@ -146,11 +146,11 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 					// add the normals data
 					geometry.Mesh.Source[1].FloatArray.Add(
-						model_tag.Geometries[index].Parts[part_index].UncompressedVertices[vertex_index].Normal.I * 100);
+						model_tag.Geometries[index].Parts[part_index].UncompressedVertices[vertex_index].Normal.I);
 					geometry.Mesh.Source[1].FloatArray.Add(
-						model_tag.Geometries[index].Parts[part_index].UncompressedVertices[vertex_index].Normal.J * 100);
+						model_tag.Geometries[index].Parts[part_index].UncompressedVertices[vertex_index].Normal.J);
 					geometry.Mesh.Source[1].FloatArray.Add(
-						model_tag.Geometries[index].Parts[part_index].UncompressedVertices[vertex_index].Normal.K * 100);
+						model_tag.Geometries[index].Parts[part_index].UncompressedVertices[vertex_index].Normal.K);
 
 					// add the binormals data
 					geometry.Mesh.Source[2].FloatArray.Add(
@@ -196,45 +196,40 @@ namespace BlamLib.Render.COLLADA.Halo1
 				}
 
 				// create the triangles
-				for (int i = 0; i < index_list.Count; i++)
+				for (int i = 0; i < index_list.Count - 2; i++)
 				{
 					int index0;
 					int index1;
 					int index2;
 
-					int k = 0;
-					if (i < 3)
-					{
-						// in a triangle strip the first 3 indices are the first triangle
-						index0 = index_list[i] + index_offset;
-						index1 = index_list[i + 2] + index_offset;
-						index2 = index_list[i + 1] + index_offset;
-						i += 2;
-					}
-					else
-					{
-						// after the first three, each triangle is made from the previous two indices and the current index
-
-						// each new triangle flips it's ordering, so it has to be swapped on each index so that it faces
-						// the right way
-						index0 = index_list[i - 2] + index_offset;
-
-						bool swap = (i % 2 == 0);
-						index1 = index_list[swap ? i : i - 1] + index_offset;
-						index2 = index_list[swap ? i - 1 : i] + index_offset;
-					}
+					index0 = index_list[i];
+					index1 = index_list[i + 1];
+					index2 = index_list[i + 2];
 
 					// triangle strips contain degenerate triangles, we don't want these
 					if (index2 == index1 || index1 == index0 || index0 == index2)
 						continue;
 
+					// each new triangle flips it's ordering, so it has to be swapped on each index so that it faces
+					// the right way
+					bool swap = (i % 2 != 0);
+
+					// add the final indices
+					if (swap)
+					{
+						int temp = index2;
+						index2 = index0;
+						index0 = temp;
+					}
+
+					int k = 0;
 					// add the final indices
 					for (k = 0; k < 3; k++)
-						geometry.Mesh.Triangles[part_index].P.Add(index0);
+						geometry.Mesh.Triangles[part_index].P.Add(index0 + index_offset);
 					for (k = 0; k < 3; k++)
-						geometry.Mesh.Triangles[part_index].P.Add(index1);
+						geometry.Mesh.Triangles[part_index].P.Add(index1 + index_offset);
 					for (k = 0; k < 3; k++)
-						geometry.Mesh.Triangles[part_index].P.Add(index2);
+						geometry.Mesh.Triangles[part_index].P.Add(index2 + index_offset);
 				}
 				// to all all parts to a single geometry the indices have to be offset
 				index_offset += model_tag.Geometries[index].Parts[part_index].UncompressedVertices.Count;
@@ -259,33 +254,6 @@ namespace BlamLib.Render.COLLADA.Halo1
 		}
 		#endregion
 		#region Create Controllers
-		/// <summary>
-		/// Creates a common technique element with one parameter
-		/// </summary>
-		/// <param name="source_id">The ID of the source element</param>
-		/// <param name="source_count">The number of elements in the source array</param>
-		/// <param name="param_name">The name of the parameter</param>
-		/// <param name="param_type">The type of the the parameter</param>
-		/// <param name="stride">the number of elements the parameter takes up (usually 1)</param>
-		/// <returns></returns>
-		Core.ColladaTechniqueCommon CreateControllerTechniqueCommon(string source_id,
-			uint source_count, string param_name, string param_type, uint stride)
-		{
-			Core.ColladaTechniqueCommon technique = new Core.ColladaTechniqueCommon();
-			technique.Accessor = new Core.ColladaAccessor();
-			technique.Accessor.Source = ColladaUtilities.BuildUri(source_id);
-			technique.Accessor.Count = source_count;
-			technique.Accessor.Param = new List<Core.ColladaParam>();
-			technique.Accessor.Param.Add(new Core.ColladaParam());
-
-			if (stride != 1)
-				technique.Accessor.StrideOverride = stride;
-
-			technique.Accessor.Param[0].Name = param_name;
-			technique.Accessor.Param[0].Type = param_type;
-
-			return technique;
-		}
 		/// <summary>
 		/// Creates a controller for skinning one geometry object
 		/// </summary>
@@ -466,7 +434,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			int i;
 			for (i = 0; i < model_tag.Nodes.Count; i++)
 			{
-				listBoneMatrix.Add(new ColladaBoneMatrix(
+				listBoneMatrix.Add(new ColladaBoneMatrix(BlamVersion.Halo1,
 					model_tag.Nodes[i].DefaultTranslation,
 					100.0f,
 					model_tag.Nodes[i].DefaultRotation,
@@ -522,9 +490,13 @@ namespace BlamLib.Render.COLLADA.Halo1
 			bone.Type = Enums.ColladaNodeType.JOINT;
 
 			// set the nodes position
-			bone.Add(new Core.ColladaTranslate(model_tag.Nodes[bone_index].DefaultTranslation, 100));
+			Core.ColladaTranslate translation = new Core.ColladaTranslate(model_tag.Nodes[bone_index].DefaultTranslation, 100);
+			translation.sID = "translation";
+			bone.Add(translation);
+
 			// set the nodes rotation
-			bone.AddRange(ColladaUtilities.CreateRotationSet(model_tag.Nodes[bone_index].DefaultRotation.ToEuler3D()));
+			bone.AddRange(ColladaUtilities.CreateRotationSet(model_tag.Nodes[bone_index].DefaultRotation.ToEuler3D(BlamVersion.Halo1), 
+				RotationVectorY, RotationVectorP, RotationVectorR));
 
 			return bone;
 		}
@@ -632,14 +604,14 @@ namespace BlamLib.Render.COLLADA.Halo1
 			{
 				for (int j = 0; j < model_tag.Markers[i].Instances.Count; j++)
 				{
-					if (!modelInfo.IsMultiplePermutations())
+					if (!modelInfo.GetIsMultiplePerms())
 						if (modelInfo.GetPermutation() != model_tag.Markers[i].Instances[j].PermutationIndex.Value)
 							continue;
 
 					Core.ColladaNode marker = new BlamLib.Render.COLLADA.Core.ColladaNode();
 					marker.Name = ColladaUtilities.FormatName(model_tag.Markers[i].Name, " ", "_");
 
-					if(modelInfo.IsMultiplePermutations())
+					if(modelInfo.GetIsMultiplePerms())
 						marker.Name += "-perm" + model_tag.Markers[i].Instances[j].PermutationIndex.Value.ToString();
 
 					marker.Type = Enums.ColladaNodeType.NODE;
@@ -651,8 +623,8 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 					// set the nodes rotation
 					marker.AddRange(
-						ColladaUtilities.CreateRotationSet(
-						model_tag.Markers[i].Instances[j].Rotation.ToEuler3D()));
+						ColladaUtilities.CreateRotationSet(model_tag.Markers[i].Instances[j].Rotation.ToEuler3D(BlamVersion.Halo1),
+							RotationVectorY, RotationVectorP, RotationVectorR));
 
 					listBone[model_tag.Markers[i].Instances[j].NodeIndex].Add(marker);
 				}
@@ -691,9 +663,8 @@ namespace BlamLib.Render.COLLADA.Halo1
 			COLLADAFile.LibraryVisualScenes.VisualScene[0].ID = "main";
 			COLLADAFile.LibraryVisualScenes.VisualScene[0].Node = new List<Core.ColladaNode>();
 
-			// add the controller instances to the root bone which will be the frame/bip01_pelvis
-			listBone[0].AddRange(listNode);
 			COLLADAFile.LibraryVisualScenes.VisualScene[0].Node.Add(listBone[0]);
+			COLLADAFile.LibraryVisualScenes.VisualScene[0].Node.AddRange(listNode);
 		}
 		#endregion
 
