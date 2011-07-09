@@ -32,9 +32,9 @@ namespace BlamLib.Render.COLLADA.Halo1
 	public class ColladaModelExporterHalo1 : ColladaModelExporterBase
 	{
 		#region Class Members
-		protected static TagInterface.RealVector3D RotationVectorY = new BlamLib.TagInterface.RealVector3D(0, 1, 0);
-		protected static TagInterface.RealVector3D RotationVectorP = new BlamLib.TagInterface.RealVector3D(0, 0, 1);
-		protected static TagInterface.RealVector3D RotationVectorR = new BlamLib.TagInterface.RealVector3D(1, 0, 0);
+		protected static readonly LowLevel.Math.real_vector3d RotationVectorY = new LowLevel.Math.real_vector3d(0, 1, 0);
+		protected static readonly LowLevel.Math.real_vector3d RotationVectorP = new LowLevel.Math.real_vector3d(0, 0, 1);
+		protected static readonly LowLevel.Math.real_vector3d RotationVectorR = new LowLevel.Math.real_vector3d(1, 0, 0);
 		#endregion
 
 		#region Constructor

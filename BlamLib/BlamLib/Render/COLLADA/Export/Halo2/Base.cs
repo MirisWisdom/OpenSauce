@@ -31,9 +31,9 @@ namespace BlamLib.Render.COLLADA.Halo2
 	public class ColladaModelExporterHalo2 : ColladaModelExporterBase
 	{
 		#region Class Members
-		protected static TagInterface.RealVector3D RotationVectorY = new BlamLib.TagInterface.RealVector3D(0, 1, 0);
-		protected static TagInterface.RealVector3D RotationVectorP = new BlamLib.TagInterface.RealVector3D(0, 0, 1);
-		protected static TagInterface.RealVector3D RotationVectorR = new BlamLib.TagInterface.RealVector3D(1, 0, 0);
+		protected static readonly LowLevel.Math.real_vector3d RotationVectorY = new LowLevel.Math.real_vector3d(0, 1, 0);
+		protected static readonly LowLevel.Math.real_vector3d RotationVectorP = new LowLevel.Math.real_vector3d(0, 0, 1);
+		protected static readonly LowLevel.Math.real_vector3d RotationVectorR = new LowLevel.Math.real_vector3d(1, 0, 0);
 		#endregion
 
 		#region Constructor
@@ -174,35 +174,25 @@ namespace BlamLib.Render.COLLADA.Halo2
 			// add vertex information to the source arrays
 			for (int vertex_index = 0; vertex_index < section.RawVertices.Count; vertex_index++)
 			{
+				var vertex = section.RawVertices[vertex_index];
+
 				//RealPoint3D   position
-				geometry.Mesh.Source[0].FloatArray.Add(
-					section.RawVertices[vertex_index].Point.Position.X * 100,
-					section.RawVertices[vertex_index].Point.Position.Y * 100,
-					section.RawVertices[vertex_index].Point.Position.Z * 100);
+				geometry.Mesh.Source[0].FloatArray.Add(vertex.Point.Position.ToPoint3D(100));
 				//RealVector3D  normal
-				geometry.Mesh.Source[1].FloatArray.Add(
-					section.RawVertices[vertex_index].Normal.I,
-					section.RawVertices[vertex_index].Normal.J,
-					section.RawVertices[vertex_index].Normal.K);
+				geometry.Mesh.Source[1].FloatArray.Add(vertex.Normal.ToVector3D());
 				//RealVector3D  binormal
-				geometry.Mesh.Source[2].FloatArray.Add(
-					section.RawVertices[vertex_index].Binormal.I,
-					section.RawVertices[vertex_index].Binormal.J,
-					section.RawVertices[vertex_index].Binormal.K);
+				geometry.Mesh.Source[2].FloatArray.Add(vertex.Binormal.ToVector3D());
 				//RealVector3D  tangent
-				geometry.Mesh.Source[3].FloatArray.Add(
-					section.RawVertices[vertex_index].Tangent.I,
-					section.RawVertices[vertex_index].Tangent.J,
-					section.RawVertices[vertex_index].Tangent.K);
+				geometry.Mesh.Source[3].FloatArray.Add(vertex.Tangent.ToVector3D());
 				//RealPoint2D   texcoord0
-				geometry.Mesh.Source[4].FloatArray.Add(section.RawVertices[vertex_index].Texcoord.X);
-				geometry.Mesh.Source[4].FloatArray.Add((section.RawVertices[vertex_index].Texcoord.Y * -1) + 1);
+				geometry.Mesh.Source[4].FloatArray.Add(vertex.Texcoord.X);
+				geometry.Mesh.Source[4].FloatArray.Add((vertex.Texcoord.Y * -1) + 1);
 				//RealPoint2D   texcoord1
-				geometry.Mesh.Source[5].FloatArray.Add(section.RawVertices[vertex_index].SecondaryTexcoord.X);
-				geometry.Mesh.Source[5].FloatArray.Add((section.RawVertices[vertex_index].SecondaryTexcoord.Y * -1) + 1);
+				geometry.Mesh.Source[5].FloatArray.Add(vertex.SecondaryTexcoord.X);
+				geometry.Mesh.Source[5].FloatArray.Add((vertex.SecondaryTexcoord.Y * -1) + 1);
 				//RealPoint2D   texcoord2
-				geometry.Mesh.Source[6].FloatArray.Add(section.RawVertices[vertex_index].PrimaryLightmapTexcoord.X);
-				geometry.Mesh.Source[6].FloatArray.Add((section.RawVertices[vertex_index].PrimaryLightmapTexcoord.Y * -1) + 1);
+				geometry.Mesh.Source[6].FloatArray.Add(vertex.PrimaryLightmapTexcoord.X);
+				geometry.Mesh.Source[6].FloatArray.Add((vertex.PrimaryLightmapTexcoord.Y * -1) + 1);
 			};
 
 			geometry.Mesh.Triangles = new List<Core.ColladaTriangles>();
@@ -210,6 +200,7 @@ namespace BlamLib.Render.COLLADA.Halo2
 			for (int part_index = 0; part_index < section.Parts.Count; part_index++)
 			{
 				geometry.Mesh.Triangles.Add(new Core.ColladaTriangles());
+				var part = geometry.Mesh.Triangles[part_index];
 
 				string shader_name;
 
@@ -218,8 +209,8 @@ namespace BlamLib.Render.COLLADA.Halo2
 				else
 					shader_name = ColladaUtilities.FormatName(shader_names[section.Parts[part_index].Material], " ", "_");
 
-				geometry.Mesh.Triangles[part_index].Material = shader_name;
-				geometry.Mesh.Triangles[part_index].Input = new List<Core.ColladaInputShared>();
+				part.Material = shader_name;
+				part.Input = new List<Core.ColladaInputShared>();
 
 				// link to data sources
 				Core.ColladaInputShared input;
@@ -228,60 +219,60 @@ namespace BlamLib.Render.COLLADA.Halo2
 				input.Semantic = Enums.ColladaInputSharedSemantic.VERTEX;
 				input.Source = ColladaUtilities.BuildUri(geometry.Mesh.Vertices.ID);
 				input.Offset = 0;
-				geometry.Mesh.Triangles[part_index].Input.Add(input);
+				part.Input.Add(input);
 
 				input = new Core.ColladaInputShared();
 				input.Semantic = Enums.ColladaInputSharedSemantic.NORMAL;
 				input.Source = ColladaUtilities.BuildUri(geometry.Mesh.Source[1].ID);
 				input.Offset = 1;
-				geometry.Mesh.Triangles[part_index].Input.Add(input);
+				part.Input.Add(input);
 
 				input = new Core.ColladaInputShared();
 				input.Semantic = Enums.ColladaInputSharedSemantic.BINORMAL;
 				input.Source = ColladaUtilities.BuildUri(geometry.Mesh.Source[2].ID);
 				input.Offset = 1;
-				geometry.Mesh.Triangles[part_index].Input.Add(input);
+				part.Input.Add(input);
 
 				input = new Core.ColladaInputShared();
 				input.Semantic = Enums.ColladaInputSharedSemantic.TANGENT;
 				input.Source = ColladaUtilities.BuildUri(geometry.Mesh.Source[3].ID);
 				input.Offset = 1;
-				geometry.Mesh.Triangles[part_index].Input.Add(input);
+				part.Input.Add(input);
 
 				input = new Core.ColladaInputShared();
 				input.Semantic = Enums.ColladaInputSharedSemantic.TEXCOORD;
 				input.Source = ColladaUtilities.BuildUri(geometry.Mesh.Source[4].ID);
 				input.Offset = 2;
 				input.Set = 0;
-				geometry.Mesh.Triangles[part_index].Input.Add(input);
+				part.Input.Add(input);
 
 				input = new Core.ColladaInputShared();
 				input.Semantic = Enums.ColladaInputSharedSemantic.TEXCOORD;
 				input.Source = ColladaUtilities.BuildUri(geometry.Mesh.Source[5].ID);
 				input.Offset = 3;
 				input.Set = 1;
-				geometry.Mesh.Triangles[part_index].Input.Add(input);
+				part.Input.Add(input);
 
 				input = new Core.ColladaInputShared();
 				input.Semantic = Enums.ColladaInputSharedSemantic.TEXCOORD;
 				input.Source = ColladaUtilities.BuildUri(geometry.Mesh.Source[6].ID);
 				input.Offset = 4;
 				input.Set = 2;
-				geometry.Mesh.Triangles[part_index].Input.Add(input);
+				part.Input.Add(input);
 
-				geometry.Mesh.Triangles[part_index].P = new ColladaValueArray<int>();
+				part.P = new ColladaValueArray<int>();
 				// add surface index information
 				switch (section_info.GeometryClassification)
 				{
 					case 0:
 						{
-							geometry.Mesh.Triangles[part_index].Count = (uint)section.Parts[part_index].StripLength / 3;
-							geometry.Mesh.Triangles[part_index].P.Add(CreateIndicesWorldSpace(section, part_index, 5)); break;
+							part.Count = (uint)section.Parts[part_index].StripLength / 3;
+							part.P.Add(CreateIndicesWorldSpace(section, part_index, 5)); break;
 						}
 					default:
 						{
-							geometry.Mesh.Triangles[part_index].Count = (uint)section.Parts[part_index].StripLength - 2;
-							geometry.Mesh.Triangles[part_index].P.Add(CreateIndicesSkinned(section, part_index, 5)); break;
+							part.Count = (uint)section.Parts[part_index].StripLength - 2;
+							part.P.Add(CreateIndicesSkinned(section, part_index, 5)); break;
 						}
 				}
 			}

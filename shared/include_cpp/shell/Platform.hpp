@@ -44,8 +44,10 @@
 #elif /*defined(i386) ? ||*/ defined(_M_X64) // INTEL
 //
 //
-#elif defined(__ppc__) || defined(_M_PPC) || defined(__POWERPC__) // MACHINTOSH
-	#error "Unsupported CPU"
+#elif defined(__ppc__) || defined(_M_PPC) || defined(__POWERPC__)
+	#if !defined(_XBOX) // MACHINTOSH
+		#error "Unsupported CPU"
+	#endif
 #elif defined(__MIPS__) || defined(__mips__) // PS2
 	#error "Unsupported CPU"
 #else

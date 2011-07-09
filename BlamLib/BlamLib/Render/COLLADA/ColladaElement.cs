@@ -177,6 +177,11 @@ namespace BlamLib.Render.COLLADA
 		/// </summary>
 		[XmlIgnore]
 		public static readonly string ElementIDFormat = null;
+		// TODO: change all derived classes to override this, not declare a new static by the same name, then change this to be 'abstract'
+		public string GetElementIdFormat()
+		{
+			return null;
+		}
 
 		protected List<ColladaObject> Fields = new List<ColladaObject>();
 		protected List<Validation.ColladaValidationTest> ValidationTests = new List<Validation.ColladaValidationTest>();
