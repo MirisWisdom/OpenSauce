@@ -26,35 +26,26 @@ namespace BlamLib.Render.COLLADA
 	/// </summary>
 	public class ColladaBoneMatrix
 	{
-		SlimDX.Vector3 translation;
+		public string Name { get; private set; }
+
+		SlimDX.Vector3 translationVector;
 		SlimDX.Quaternion rotationQuaternion;
-		float scale;
+		float scaleAmount;
 
 		public SlimDX.Matrix TransformMatrixWorld { get; private set; }
 		public SlimDX.Matrix TransformMatrixLocal { get; private set; }
 
 		public ColladaBoneMatrix ParentNode { get; set; }
 
-		public ColladaBoneMatrix(BlamVersion game_version,
-			TagInterface.RealPoint3D bone_translation,
-			float bone_translation_scale,
-			TagInterface.RealQuaternion bone_rotation,
-			float bone_scale)
+		public ColladaBoneMatrix(string name,
+			LowLevel.Math.real_point3d translation,
+			LowLevel.Math.real_quaternion rotation,
+			float scale)
 		{
-			bool invert_ijk = false;
-			switch(game_version)
-			{
-				case BlamVersion.Halo1: invert_ijk = true; break;
-				default: invert_ijk = false; break;
-			}
-
-			translation = new SlimDX.Vector3(bone_translation.X * bone_translation_scale, bone_translation.Y * bone_translation_scale, bone_translation.Z * bone_translation_scale);
-			rotationQuaternion = new SlimDX.Quaternion(
-				(invert_ijk ? -bone_rotation.I : bone_rotation.I),
-				(invert_ijk ? -bone_rotation.J : bone_rotation.J),
-				(invert_ijk ? -bone_rotation.K : bone_rotation.K),
-				bone_rotation.W);
-			scale = bone_scale;
+			Name = name;
+			translationVector = new SlimDX.Vector3(translation.X, translation.Y, translation.Z);
+			rotationQuaternion = new SlimDX.Quaternion(rotation.Vector.I, rotation.Vector.J, rotation.Vector.K, rotation.W);
+			scaleAmount = scale;
 		}
 
 		/// <summary>
@@ -63,9 +54,9 @@ namespace BlamLib.Render.COLLADA
 		public void CreateMatrices()
 		{
 			// creates the individual matrix components
-			SlimDX.Matrix scale_matrix = SlimDX.Matrix.Scaling(scale, scale, scale);
+			SlimDX.Matrix scale_matrix = SlimDX.Matrix.Scaling(scaleAmount, scaleAmount, scaleAmount);
 			SlimDX.Matrix rotate_matrix = SlimDX.Matrix.RotationQuaternion(rotationQuaternion);
-			SlimDX.Matrix translate_matrix = SlimDX.Matrix.Translation(translation);
+			SlimDX.Matrix translate_matrix = SlimDX.Matrix.Translation(translationVector);
 
 			TransformMatrixLocal = SlimDX.Matrix.Identity;
 

@@ -37,11 +37,8 @@ namespace BlamLib.Render.COLLADA.Core
 		ColladaObjectElementList<ColladaExtra> _extra;
 		#endregion
 
-		[XmlIgnore]
-		public new static readonly string ElementIDFormat = "vertices-{0}";
-
 		#region Attributes
-		[XmlAttribute("id")]
+		[XmlAttribute("id"), ColladaID("vertices-{0}")]
 		public string ID
 		{ get { return _id.Value; } set { _id.Value = value; } }
 

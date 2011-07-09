@@ -252,6 +252,7 @@
     <Compile Include="Render\COLLADA\Enums\ColladaUpAxisEnum.cs" />
     <Compile Include="Render\COLLADA\Export\Halo2\Base.cs" />
     <Compile Include="Render\COLLADA\Export\Halo2\ColladaHalo2.cs" />
+    <Compile Include="Render\COLLADA\Export\Halo2\ExporterBSP.cs" />
     <Compile Include="Render\COLLADA\Export\Halo2\ExporterLightmap.cs" />
     <Compile Include="Render\COLLADA\Export\Halo2\ExporterRenderModel.cs" />
     <Compile Include="Render\COLLADA\Export\Halo2\Interfaces.cs" />
@@ -289,6 +290,7 @@
     <Compile Include="Render\COLLADA\FX\Texturing\ColladaSamplerCUBE.cs" />
     <Compile Include="Render\COLLADA\FX\Texturing\ColladaSurface.cs" />
     <Compile Include="Render\COLLADA\Helpers\ColladaBoneMatrix.cs" />
+    <Compile Include="Render\COLLADA\Helpers\ColladaIDAttribute.cs" />
     <Compile Include="Render\COLLADA\Helpers\ColladaObject.cs" />
     <Compile Include="Render\COLLADA\Helpers\ColladaObjectAttribute.cs" />
     <Compile Include="Render\COLLADA\Helpers\ColladaObjectElement.cs" />

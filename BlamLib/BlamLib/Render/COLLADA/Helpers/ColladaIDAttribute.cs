@@ -16,25 +16,23 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+using System;
 
-namespace BlamLib.Render.COLLADA.Halo2
+namespace BlamLib.Render.COLLADA
 {
-	public interface IHalo2RenderModelInterface : IHaloShaderDatumList
+	[AttributeUsage(AttributeTargets.Property)]
+	public class ColladaIDAttribute : System.Attribute
 	{
-		int GetGeometryCount();
-		string GetGeometryName(int index);
-		int GetGeometryIndex(int index);
-		bool GetIsMultiplePerms();
-		int GetPermutation();
-	};
+		readonly string formatString;
 
-	public interface IHalo2LightmapInterface : IHaloShaderDatumList
-	{
-	};
-	public interface IHalo2BSPInterface : IHaloShaderDatumList
-	{
-		bool IncludeRenderMesh();
-		bool IncludePortalsMesh();
-		bool IncludeFogPlanesMesh();
-	};
+		public ColladaIDAttribute(string format)
+		{
+			formatString = format;
+		}
+
+		public string FormatID(string id)
+		{
+			return String.Format(formatString, id);
+		}
+	}
 }

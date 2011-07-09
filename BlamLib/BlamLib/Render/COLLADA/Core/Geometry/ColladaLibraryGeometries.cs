@@ -38,11 +38,8 @@ namespace BlamLib.Render.COLLADA.Core
 		ColladaObjectElementList<ColladaExtra> _extra;
 		#endregion
 
-		[XmlIgnore]
-		public new static readonly string ElementIDFormat = "libgeometries-{0}";
-
 		#region Attributes
-		[XmlAttribute("id"), DefaultValue("")]
+		[XmlAttribute("id"), DefaultValue(""), ColladaID("libgeometries-{0}")]
 		public string ID
 		{ get { return _id.Value; } set { _id.Value = value; } }
 

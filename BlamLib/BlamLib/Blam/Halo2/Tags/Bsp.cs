@@ -1203,15 +1203,18 @@ namespace BlamLib.Blam.Halo2.Tags
 		public class structure_collision_materials_block : TI.Definition
 		{
 			#region Fields
+			public TI.TagReference OldShader;
+			public TI.BlockIndex ConveyorSurfaceIndex;
+			public TI.TagReference NewShader;
 			#endregion
 
 			#region Ctor
 			public structure_collision_materials_block() : base(4)
 			{
-				Add(/*Old Shader = */ new TI.TagReference(this, TagGroups.shad));
+				Add(OldShader = new TI.TagReference(this, TagGroups.shad));
 				Add(new TI.Pad(2));
-				Add(/*Conveyor Surface Index = */ new TI.BlockIndex()); // 1 structure_bsp_conveyor_surface_block
-				Add(/*New Shader = */ new TI.TagReference(this, TagGroups.shad));
+				Add(ConveyorSurfaceIndex = new TI.BlockIndex()); // 1 structure_bsp_conveyor_surface_block
+				Add(NewShader = new TI.TagReference(this, TagGroups.shad));
 			}
 			#endregion
 		}
@@ -1278,18 +1281,20 @@ namespace BlamLib.Blam.Halo2.Tags
 			public class structure_bsp_cluster_portal_vertex_block : TI.Definition
 			{
 				#region Fields
+				public TI.RealPoint3D Point;
 				#endregion
 
 				#region Ctor
 				public structure_bsp_cluster_portal_vertex_block() : base(1)
 				{
-					Add(/*Point = */ new TI.RealPoint3D());
+					Add(Point = new TI.RealPoint3D());
 				}
 				#endregion
 			}
 			#endregion
 
 			#region Fields
+			public TI.Block<structure_bsp_cluster_portal_vertex_block> Vertices;
 			#endregion
 
 			#region Ctor
@@ -1301,7 +1306,7 @@ namespace BlamLib.Blam.Halo2.Tags
 				Add(/*Centroid = */ new TI.RealPoint3D());
 				Add(/*Bounding Radius = */ new TI.Real());
 				Add(/*Flags = */ new TI.Flags());
-				Add(/*Vertices = */ new TI.Block<structure_bsp_cluster_portal_vertex_block>(this, 128));
+				Add(Vertices = new TI.Block<structure_bsp_cluster_portal_vertex_block>(this, 128));
 			}
 			#endregion
 		}
@@ -1435,14 +1440,17 @@ namespace BlamLib.Blam.Halo2.Tags
 		public class structure_bsp_marker_block : TI.Definition
 		{
 			#region Fields
+			public TI.String Name;
+			public TI.RealQuaternion Rotation;
+			public TI.RealPoint3D Position;
 			#endregion
 
 			#region Ctor
 			public structure_bsp_marker_block() : base(3)
 			{
-				Add(/*Name = */ new TI.String());
-				Add(/*Rotation = */ new TI.RealQuaternion());
-				Add(/*Position = */ new TI.RealPoint3D());
+				Add(Name = new TI.String());
+				Add(Rotation = new TI.RealQuaternion());
+				Add(Position = new TI.RealPoint3D());
 			}
 			#endregion
 		}
@@ -2003,6 +2011,7 @@ namespace BlamLib.Blam.Halo2.Tags
 		public TI.Block<structure_bsp_fog_plane_block> FogPlanes;
 		public TI.Block<structure_bsp_cluster_block> Clusters;
 		public TI.Block<global_geometry_material_block> Materials;
+		public TI.Block<structure_bsp_marker_block> Markers;
 		public TI.Block<global_error_report_categories_block> Errors;
 		public TI.Block<structure_bsp_instanced_geometry_definition_block> InstancedGeometriesDefinitions;
 		public TI.Block<structure_bsp_instanced_geometry_instances_block> InstancedGeometryInstances;
@@ -2042,7 +2051,7 @@ namespace BlamLib.Blam.Halo2.Tags
 			Add(/*Background Sound Palette = */ new TI.Block<structure_bsp_background_sound_palette_block>(this, 64));
 			Add(/*Sound Environment Palette = */ new TI.Block<structure_bsp_sound_environment_palette_block>(this, 64));
 			Add(/*Sound PAS Data = */ new TI.Data(this));
-			Add(/*Markers = */ new TI.Block<structure_bsp_marker_block>(this, 1024));
+			Add(Markers = new TI.Block<structure_bsp_marker_block>(this, 1024));
 			Add(/*Runtime Decals = */ new TI.Block<structure_bsp_runtime_decal_block>(this, 6144));
 			Add(/*Environment Object Palette = */ new TI.Block<structure_bsp_environment_object_palette_block>(this, 100));
 			Add(/*Environment Objects = */ new TI.Block<structure_bsp_environment_object_block>(this, 16384));

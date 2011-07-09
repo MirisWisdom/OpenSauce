@@ -19,6 +19,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 using BlamLib.Blam;
 
 using H1 = BlamLib.Blam.Halo1;
@@ -29,10 +30,6 @@ namespace BlamLib.Render.COLLADA.Halo1
 	{
 		#region Class Fields
 		IHalo1BSPInterface bspInfo;
-
-		List<Core.ColladaGeometry> listGeometry = new List<Core.ColladaGeometry>();
-		List<Core.ColladaNode> listMarkers = new List<Core.ColladaNode>();
-		List<Core.ColladaNode> listNode = new List<Core.ColladaNode>();
 		#endregion
 
 		#region Constructor
@@ -98,7 +95,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		{
 			string shader_name = "portals";
 			listMaterial.Add(
-				CreateMaterial(String.Format(Fx.ColladaMaterial.ElementIDFormat, shader_name),
+				CreateMaterial(shader_name,
 					shader_name,
 					shader_name,
 					shader_name));
@@ -110,7 +107,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		{
 			string shader_name = "fogplanes";
 			listMaterial.Add(
-				CreateMaterial(String.Format(Fx.ColladaMaterial.ElementIDFormat, shader_name),
+				CreateMaterial(shader_name,
 					shader_name,
 					shader_name,
 					shader_name));
@@ -118,242 +115,162 @@ namespace BlamLib.Render.COLLADA.Halo1
 		#endregion
 		#region Create Geometry
 		/// <summary>
+		/// Creates a vertex index list from a set of bsp surfaces
+		/// </summary>
+		/// <param name="definition">The bsp tag definition</param>
+		/// <param name="surface_offset">The surface index to start collecting indices from</param>
+		/// <param name="surface_count">The number of surfaces to collect indices from</param>
+		/// <param name="index_offset">The amount to offset the collected indices by</param>
+		/// <returns></returns>
+		List<int> CreateIndicesBSP(H1.Tags.structure_bsp_group definition, int surface_offset, int surface_count, int index_offset)
+		{
+			List<int> indices = new List<int>();
+
+			for (int i = 0; i < surface_count; i++)
+			{
+				indices.Add(definition.Surfaces[surface_offset + i].A3 + index_offset);
+				indices.Add(definition.Surfaces[surface_offset + i].A2 + index_offset);
+				indices.Add(definition.Surfaces[surface_offset + i].A1 + index_offset);
+			}
+
+			return indices;
+		}
+		/// <summary>
 		/// Creates a geometry element for a BSP lightmap
 		/// </summary>
 		/// <param name="index">The lightmap index to create a geometry from</param>
 		/// <returns></returns>
-		Core.ColladaGeometry CreateRenderGeometry(int index)
+		void CreateRenderGeometry(int index)
 		{
 			H1.Tags.structure_bsp_group definition = tagManager.TagDefinition as H1.Tags.structure_bsp_group;
 
-			Core.ColladaGeometry geometry = new Core.ColladaGeometry();
+			List<Vertex> common_vertices = new List<Vertex>();
 
-			// initialize the geometry attributes
-			geometry.Name = ColladaUtilities.FormatName(tagName, " ", "_") + "-" + definition.Lightmaps[index].Bitmap.ToString();
-			geometry.ID = String.Format(Core.ColladaGeometry.ElementIDFormat, geometry.Name);
-
-			// create a new mesh element and add the necessary source elements
-			geometry.Mesh = new Core.ColladaMesh();
-			geometry.Mesh.Source = new List<Core.ColladaSource>();
-			geometry.Mesh.Source.Add(CreateSource(Enums.ColladaInputSharedSemantic.POSITION, geometry.ID, 0));
-			geometry.Mesh.Source.Add(CreateSource(Enums.ColladaInputSharedSemantic.NORMAL, geometry.ID, 0));
-			geometry.Mesh.Source.Add(CreateSource(Enums.ColladaInputSharedSemantic.BINORMAL, geometry.ID, 0));
-			geometry.Mesh.Source.Add(CreateSource(Enums.ColladaInputSharedSemantic.TANGENT, geometry.ID, 0));
-			geometry.Mesh.Source.Add(CreateSource(Enums.ColladaInputSharedSemantic.TEXCOORD, geometry.ID, 0));
-			geometry.Mesh.Source.Add(CreateSource(Enums.ColladaInputSharedSemantic.TEXCOORD, geometry.ID, 1));
-
-			// link the POSITION source to the vertex position element
-			geometry.Mesh.Vertices = CreateVertices(geometry.ID, geometry.Mesh.Source[0].ID);
-
-			geometry.Mesh.Triangles = new List<Core.ColladaTriangles>();
-			// loop through each lightmap material, adding data to the source elements
-			int index_offset = 0;
-			for (int material_index = 0; material_index < definition.Lightmaps[index].Materials.Count; material_index++)
+			// add all of the vertices used in the render geometry
+			foreach (var material in definition.Lightmaps[index].Materials)
 			{
-				geometry.Mesh.Triangles.Add(new Core.ColladaTriangles());
-
-				// initialize attributes
-				string shader_name = ColladaUtilities.FormatName(
-					System.IO.Path.GetFileNameWithoutExtension(
-						definition.Lightmaps[index].Materials[material_index].Shader.ToString()), 
-						" ", "_");
-
-				geometry.Mesh.Triangles[material_index].Material = shader_name;
-				geometry.Mesh.Triangles[material_index].Count = (uint)definition.Lightmaps[index].Materials[material_index].Count;
-				geometry.Mesh.Triangles[material_index].Input = new List<Core.ColladaInputShared>();
-
-				// link to data sources
-				Core.ColladaInputShared input;
-
-				input = new Core.ColladaInputShared();
-				input.Semantic = Enums.ColladaInputSharedSemantic.VERTEX;
-				input.Source = ColladaUtilities.BuildUri(geometry.Mesh.Vertices.ID);
-				input.Offset = 0;
-				geometry.Mesh.Triangles[material_index].Input.Add(input);
-
-				input = new Core.ColladaInputShared();
-				input.Semantic = Enums.ColladaInputSharedSemantic.NORMAL;
-				input.Source = ColladaUtilities.BuildUri(geometry.Mesh.Source[1].ID);
-				input.Offset = 1;
-				geometry.Mesh.Triangles[material_index].Input.Add(input);
-
-				input = new Core.ColladaInputShared();
-				input.Semantic = Enums.ColladaInputSharedSemantic.BINORMAL;
-				input.Source = ColladaUtilities.BuildUri(geometry.Mesh.Source[2].ID);
-				input.Offset = 1;
-				geometry.Mesh.Triangles[material_index].Input.Add(input);
-
-				input = new Core.ColladaInputShared();
-				input.Semantic = Enums.ColladaInputSharedSemantic.TANGENT;
-				input.Source = ColladaUtilities.BuildUri(geometry.Mesh.Source[3].ID);
-				input.Offset = 1;
-				geometry.Mesh.Triangles[material_index].Input.Add(input);
-
-				input = new Core.ColladaInputShared();
-				input.Semantic = Enums.ColladaInputSharedSemantic.TEXCOORD;
-				input.Source = ColladaUtilities.BuildUri(geometry.Mesh.Source[4].ID);
-				input.Offset = 2;
-				input.Set = 0;
-				geometry.Mesh.Triangles[material_index].Input.Add(input);
-
-				input = new Core.ColladaInputShared();
-				input.Semantic = Enums.ColladaInputSharedSemantic.TEXCOORD;
-				input.Source = ColladaUtilities.BuildUri(geometry.Mesh.Source[5].ID);
-				input.Offset = 3;
-				input.Set = 1;
-				geometry.Mesh.Triangles[material_index].Input.Add(input);
-
 				// read vertex information from the uncompressed vertex data
 				System.IO.BinaryReader uncompressed_reader = new System.IO.BinaryReader(
-					new System.IO.MemoryStream(definition.Lightmaps[index].Materials[material_index].UncompressedVertices.Value));
+					new System.IO.MemoryStream(material.UncompressedVertices.Value));
 
-				int vertex_count = definition.Lightmaps[index].Materials[material_index].VertexBuffersCount1;
+				int vertex_count = material.VertexBuffersCount1;
 
 				for (int vertex_index = 0; vertex_index < vertex_count; vertex_index++)
 				{
-					int k = 0;
-					//RealPoint3D   position
-					for (k = 0; k < 3; k++) geometry.Mesh.Source[0].FloatArray.Add(uncompressed_reader.ReadSingle() * 100);
-					//RealVector3D  normal
-					for (k = 0; k < 3; k++) geometry.Mesh.Source[1].FloatArray.Add(uncompressed_reader.ReadSingle());
-					//RealVector3D  binormal
-					for (k = 0; k < 3; k++) geometry.Mesh.Source[2].FloatArray.Add(uncompressed_reader.ReadSingle());
-					//RealVector3D  tangent
-					for (k = 0; k < 3; k++) geometry.Mesh.Source[3].FloatArray.Add(uncompressed_reader.ReadSingle());
+					Vertex common_vertex = new Vertex(
+						//RealPoint3D position
+						new LowLevel.Math.real_point3d(
+							uncompressed_reader.ReadSingle() * 100,
+							uncompressed_reader.ReadSingle() * 100,
+							uncompressed_reader.ReadSingle() * 100),
+						//RealVector3D  normal
+						new LowLevel.Math.real_vector3d(
+							uncompressed_reader.ReadSingle(),
+							uncompressed_reader.ReadSingle(),
+							uncompressed_reader.ReadSingle()),
+						//RealVector3D  binormal
+						new LowLevel.Math.real_vector3d(
+							uncompressed_reader.ReadSingle(),
+							uncompressed_reader.ReadSingle(),
+							uncompressed_reader.ReadSingle()),
+						//RealVector3D  tangent
+						new LowLevel.Math.real_vector3d(
+							uncompressed_reader.ReadSingle(),
+							uncompressed_reader.ReadSingle(),
+							uncompressed_reader.ReadSingle()));
+
 					//RealPoint2D   texcoord0
-					geometry.Mesh.Source[4].FloatArray.Add(uncompressed_reader.ReadSingle());
-					geometry.Mesh.Source[4].FloatArray.Add((uncompressed_reader.ReadSingle() * -1) + 1);
-					
+					common_vertex.AddTexcoord(new LowLevel.Math.real_point2d(
+						uncompressed_reader.ReadSingle(),
+						(uncompressed_reader.ReadSingle() * -1) + 1));
+
 					//RealPoint2D   texcoord1
-					if (definition.Lightmaps[index].Materials[material_index].VertexBuffersCount2 != 0)
+					if (material.VertexBuffersCount2 != 0)
 					{
 						int position = (int)uncompressed_reader.BaseStream.Position;
-						uncompressed_reader.BaseStream.Position =
-							(definition.Lightmaps[index].Materials[material_index].VertexBuffersCount1 * 56) +
-							(vertex_index * 20) + 12;
-						geometry.Mesh.Source[5].FloatArray.Add(uncompressed_reader.ReadSingle());
-						geometry.Mesh.Source[5].FloatArray.Add((uncompressed_reader.ReadSingle() * -1) + 1);
+						uncompressed_reader.BaseStream.Position = (material.VertexBuffersCount1 * 56) + (vertex_index * 20) + 12;
+
+						common_vertex.AddTexcoord(new LowLevel.Math.real_point2d(
+							uncompressed_reader.ReadSingle(),
+							(uncompressed_reader.ReadSingle() * -1) + 1));
+
 						uncompressed_reader.BaseStream.Position = position;
 					}
 					else
-					{
-						geometry.Mesh.Source[5].FloatArray.Add(0.0f);
-						geometry.Mesh.Source[5].FloatArray.Add(0.0f);
-					}
+						common_vertex.AddTexcoord(new LowLevel.Math.real_point2d(0, 1));
+
+					common_vertices.Add(common_vertex);
 				};
-
-				// add surface index information
-				geometry.Mesh.Triangles[material_index].P = new ColladaValueArray<int>();
-
-				for (int surface_index = 0; surface_index < definition.Lightmaps[index].Materials[material_index].SurfaceCount; surface_index++)
-				{
-					int k = 0;
-					for (k = 0; k < 4; k++)
-						geometry.Mesh.Triangles[material_index].P.Add((int)(definition.Surfaces[definition.Lightmaps[index].Materials[material_index].Surfaces.Value + surface_index].A3 + index_offset));
-					for (k = 0; k < 4; k++)
-						geometry.Mesh.Triangles[material_index].P.Add((int)(definition.Surfaces[definition.Lightmaps[index].Materials[material_index].Surfaces.Value + surface_index].A2 + index_offset));
-					for (k = 0; k < 4; k++)
-						geometry.Mesh.Triangles[material_index].P.Add((int)(definition.Surfaces[definition.Lightmaps[index].Materials[material_index].Surfaces.Value + surface_index].A1 + index_offset));
-				}
-				index_offset += vertex_count;
 			}
 
-			geometry.Mesh.Source[0].TechniqueCommon.Accessor.SetCount(geometry.Mesh.Source[0].FloatArray.Count);
-			geometry.Mesh.Source[1].TechniqueCommon.Accessor.SetCount(geometry.Mesh.Source[1].FloatArray.Count);
-			geometry.Mesh.Source[2].TechniqueCommon.Accessor.SetCount(geometry.Mesh.Source[2].FloatArray.Count);
-			geometry.Mesh.Source[3].TechniqueCommon.Accessor.SetCount(geometry.Mesh.Source[3].FloatArray.Count);
-			geometry.Mesh.Source[4].TechniqueCommon.Accessor.SetCount(geometry.Mesh.Source[4].FloatArray.Count);
-			geometry.Mesh.Source[5].TechniqueCommon.Accessor.SetCount(geometry.Mesh.Source[5].FloatArray.Count);
+			List<Part> common_parts = new List<Part>();
 
-			return geometry;
+			// add part definitions for the lightmap materials
+			// an index offset is necessary since the vertex list is global for this geometry, rather than local to each material
+			int index_offset = 0;
+			foreach (var material in definition.Lightmaps[index].Materials)
+			{
+				Part common_part = new Part(Path.GetFileNameWithoutExtension(material.Shader.ToString()));
+				common_part.AddIndices(CreateIndicesBSP(definition, material.Surfaces, material.SurfaceCount, index_offset));
+
+				index_offset += material.VertexBuffersCount1;
+
+				common_parts.Add(common_part);
+			}
+
+			// create the geometry element
+			CreateGeometry(ColladaUtilities.FormatName(tagName, " ", "_") + "-" + definition.Lightmaps[index].Bitmap.ToString(), 2,
+				VertexComponent.POSITION | VertexComponent.NORMAL | VertexComponent.BINORMAL | VertexComponent.TANGENT | VertexComponent.TEXCOORD,
+				common_vertices, common_parts);
 		}
 		/// <summary>
 		/// Creates a geometry element for a single cluster portal
 		/// </summary>
 		/// <param name="portal_index">Index of the portal to create a geometry element for</param>
 		/// <returns></returns>
-		Core.ColladaGeometry CreatePortalsGeometry(int portal_index)
+		void CreatePortalsGeometry(int index)
 		{
 			H1.Tags.structure_bsp_group definition = tagManager.TagDefinition as H1.Tags.structure_bsp_group;
+			
+			List<Vertex> common_vertices = new List<Vertex>();
+			foreach (var vertex in definition.ClusterPortals[index].Vertices)
+				common_vertices.Add(new Vertex(vertex.Value.ToPoint3D(100)));
 
-			Core.ColladaGeometry geometry = new Core.ColladaGeometry();
+			List<Part> common_parts = new List<Part>();
 
-			// initialize the geometry's attributes
-			geometry.Name = "portal-" + portal_index.ToString();
-			geometry.ID = String.Format(Core.ColladaGeometry.ElementIDFormat, geometry.Name);
+			// we only have one part since it only has one material
+			Part common_part = new Part("portals");
+			common_part.AddIndices(BuildFaceIndices(definition.ClusterPortals[index].Vertices.Count));
+			common_parts.Add(common_part);
 
-			// create a new mesh element and add the necessary source elements
-			geometry.Mesh = new Core.ColladaMesh();
-			geometry.Mesh.Source = new List<Core.ColladaSource>();
-			geometry.Mesh.Source.Add(CreateSource(Enums.ColladaInputSharedSemantic.POSITION, geometry.ID, 0));
-
-			// link the POSITION source to the vertex position element
-			geometry.Mesh.Vertices = CreateVertices(geometry.ID, geometry.Mesh.Source[0].ID);
-
-			// add the vertex position information to the position source
-			for (int i = 0; i < definition.ClusterPortals[portal_index].Vertices.Count; i++)
-			{
-				geometry.Mesh.Source[0].FloatArray.Add(definition.ClusterPortals[portal_index].Vertices[i].Value.X * 100);
-				geometry.Mesh.Source[0].FloatArray.Add(definition.ClusterPortals[portal_index].Vertices[i].Value.Y * 100);
-				geometry.Mesh.Source[0].FloatArray.Add(definition.ClusterPortals[portal_index].Vertices[i].Value.Z * 100);
-			};
-
-			geometry.Mesh.Triangles = new List<Core.ColladaTriangles>();
-			geometry.Mesh.Triangles.Add(BuildFaceIndices(definition.ClusterPortals[portal_index].Vertices.Count));
-			geometry.Mesh.Triangles[0].Count = (uint)definition.ClusterPortals[portal_index].Vertices.Count - 2;
-			geometry.Mesh.Triangles[0].Material = "portals";
-			geometry.Mesh.Triangles[0].Input = new List<Core.ColladaInputShared>();
-			geometry.Mesh.Triangles[0].Input.Add(new Core.ColladaInputShared());
-			geometry.Mesh.Triangles[0].Input[0].Semantic = Enums.ColladaInputSharedSemantic.VERTEX;
-			geometry.Mesh.Triangles[0].Input[0].Source = ColladaUtilities.BuildUri(geometry.Mesh.Vertices.ID);
-
-			geometry.Mesh.Source[0].TechniqueCommon.Accessor.SetCount((uint)geometry.Mesh.Source[0].FloatArray.Count);
-
-			return geometry;
+			// create the geometry element
+			CreateGeometry("portal-" + index.ToString(), 0, VertexComponent.POSITION,
+				common_vertices, common_parts);
 		}
 		/// <summary>
 		/// Creates a geometry element for a single fog plane
 		/// </summary>
 		/// <param name="index">Index of the fog plane to create a geometry element for</param>
 		/// <returns></returns>
-		Core.ColladaGeometry CreateFogPlaneGeometry(int index)
+		void CreateFogPlaneGeometry(int index)
 		{
 			H1.Tags.structure_bsp_group definition = tagManager.TagDefinition as H1.Tags.structure_bsp_group;
 
-			Core.ColladaGeometry geometry = new Core.ColladaGeometry();
+			List<Vertex> common_vertices = new List<Vertex>();
 
-			// initialize the geometry's attributes
-			geometry.Name = "fogplane-" + index.ToString();
-			geometry.ID = String.Format(Core.ColladaGeometry.ElementIDFormat, geometry.Name);
+			foreach (var vertex in definition.FogPlanes[index].Vertices)
+				common_vertices.Add(new Vertex(vertex.Value.ToPoint3D(100)));
 
-			// create a new mesh element and add the necessary source elements
-			geometry.Mesh = new Core.ColladaMesh();
-			geometry.Mesh.Source = new List<Core.ColladaSource>();
-			geometry.Mesh.Source.Add(CreateSource(Enums.ColladaInputSharedSemantic.POSITION, geometry.ID, 0));
+			List<Part> common_parts = new List<Part>();
 
-			// link the POSITION source to the vertex position element
-			geometry.Mesh.Vertices = CreateVertices(geometry.ID, geometry.Mesh.Source[0].ID);
+			// we only have one part since it only has one material
+			Part common_part = new Part("fogplanes");
+			common_part.AddIndices(BuildFaceIndices(definition.FogPlanes[index].Vertices.Count));
+			common_parts.Add(common_part);
 
-			// add the vertex position information to the position source
-			for (int i = 0; i < definition.FogPlanes[index].Vertices.Count; i++)
-			{
-				geometry.Mesh.Source[0].FloatArray.Add(definition.FogPlanes[index].Vertices[i].Value.X * 100);
-				geometry.Mesh.Source[0].FloatArray.Add(definition.FogPlanes[index].Vertices[i].Value.Y * 100);
-				geometry.Mesh.Source[0].FloatArray.Add(definition.FogPlanes[index].Vertices[i].Value.Z * 100);
-			};
-
-			geometry.Mesh.Triangles = new List<Core.ColladaTriangles>();
-			geometry.Mesh.Triangles.Add(BuildFaceIndices(definition.FogPlanes[index].Vertices.Count));
-			geometry.Mesh.Triangles[0].Count = (uint)definition.FogPlanes[index].Vertices.Count - 2;
-			geometry.Mesh.Triangles[0].Material = "fogplanes";
-			geometry.Mesh.Triangles[0].Input = new List<Core.ColladaInputShared>();
-			geometry.Mesh.Triangles[0].Input.Add(new Core.ColladaInputShared());
-			geometry.Mesh.Triangles[0].Input[0].Semantic = Enums.ColladaInputSharedSemantic.VERTEX;
-			geometry.Mesh.Triangles[0].Input[0].Source = ColladaUtilities.BuildUri(geometry.Mesh.Vertices.ID);
-
-			geometry.Mesh.Source[0].TechniqueCommon.Accessor.SetCount((uint)geometry.Mesh.Source[0].FloatArray.Count);
-
-			return geometry;
+			// create the geometry element
+			CreateGeometry("fogplane-" + index.ToString(), 0, VertexComponent.POSITION,
+				common_vertices, common_parts);
 		}
 		/// <summary>
 		/// Creates geometries for the relevant BSP meshes that are to be included in the collada file
@@ -364,156 +281,42 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 			if(bspInfo.IncludeRenderMesh())
 				for (int i = 0; i < definition.Lightmaps.Count; i++)
-					listGeometry.Add(CreateRenderGeometry(i));
+					CreateRenderGeometry(i);
 
 			if(bspInfo.IncludePortalsMesh())
 				for (int i = 0; i < definition.ClusterPortals.Count; i++)
-					listGeometry.Add(CreatePortalsGeometry(i));
+					CreatePortalsGeometry(i);
 
 			if(bspInfo.IncludeFogPlanesMesh())
 				for (int i = 0; i < definition.FogPlanes.Count; i++)
-					listGeometry.Add(CreateFogPlaneGeometry(i));
+					CreateFogPlaneGeometry(i);
 		}
 		#endregion
 		#region Create Markers
-		Core.ColladaNode CreateMarker(int index)
-		{
-			H1.Tags.structure_bsp_group definition = tagManager.TagDefinition as H1.Tags.structure_bsp_group;
-
-			Core.ColladaNode marker = new Core.ColladaNode();
-
-			marker.Name = ColladaUtilities.FormatName(definition.Markers[index].Name.Value);
-			marker.Type = Enums.ColladaNodeType.NODE;
-			marker.Add(new Core.ColladaTranslate(definition.Markers[index].Position, 100.0f));
-			marker.AddRange(ColladaUtilities.CreateRotationSet(definition.Markers[index].Rotation.ToEuler3D(BlamVersion.Halo1),
-				RotationVectorY, RotationVectorP, RotationVectorR));
-
-			return marker;
-		}
+		/// <summary>
+		/// Creates nodes for the BSP markers
+		/// </summary>
 		void CreateMarkerList()
 		{
 			H1.Tags.structure_bsp_group definition = tagManager.TagDefinition as H1.Tags.structure_bsp_group;
 
-			for (int i = 0; i < definition.Markers.Count; i++)
-				listMarkers.Add(CreateMarker(i));
+			List<Marker> marker_list = new List<Marker>();
+			// create common marker definitions for the bsp markers
+			foreach(var marker in definition.Markers)
+			{
+				Marker common_marker = new Marker(marker.Name,
+					marker.Position.ToPoint3D(100), 
+					TagInterface.RealQuaternion.Invert(marker.Rotation),
+					-1);
+
+				marker_list.Add(common_marker);
+			}
+
+			// create the marker node elements
+			CreateMarkers(marker_list, RotationVectorY, RotationVectorP, RotationVectorR);
 		}
 		#endregion
 		#region Create Nodes
-		/// <summary>
-		/// Creates a collada node for a single render geometry
-		/// </summary>
-		/// <param name="index">The render geometry index to create a node for</param>
-		/// <returns></returns>
-		Core.ColladaNode CreateNodeRender(int index)
-		{
-			Core.ColladaNode model_node = new Core.ColladaNode();
-			model_node.Name = listGeometry[index].Name;
-			model_node.Name = ColladaUtilities.FormatName(model_node.Name, " ", "_");
-			model_node.ID = String.Format(Core.ColladaNode.ElementIDFormat, model_node.Name);
-			model_node.Type = Enums.ColladaNodeType.NODE;
-
-			// create a new controller instance and set its attributes
-			Core.ColladaInstanceGeometry instance_geometry = new Core.ColladaInstanceGeometry();
-			instance_geometry.URL = ColladaUtilities.BuildUri(listGeometry[index].ID);
-
-			// bind materials to the geometry
-			instance_geometry.BindMaterial = new Fx.ColladaBindMaterial();
-			instance_geometry.BindMaterial.TechniqueCommon = new Core.ColladaTechniqueCommon();
-
-			// get a list of the shaders used by the geometry
-			List<string> shader_list = new List<string>();
-			for(int i = 0; i < bspInfo.GetShaderCount(); i++)
-			{
-				// get the tag manager of the shader
-				BlamLib.Managers.TagManager shader_tag = tagIndex[bspInfo.GetShaderDatum(i)];
-
-				// format the shaders name and add it to the shader list
-				string shader_name = ColladaUtilities.FormatName(System.IO.Path.GetFileNameWithoutExtension(shader_tag.Name), " ", "_");
-				if (!shader_list.Contains(shader_name))
-					shader_list.Add(shader_name);
-			}
-
-			instance_geometry.BindMaterial.TechniqueCommon.InstanceMaterial = new List<Fx.ColladaInstanceMaterial>();
-			for (int shader_index = 0; shader_index < shader_list.Count; shader_index++)
-			{
-				// create a new material instance referencing the required material
-				Fx.ColladaInstanceMaterial instance_material = new Fx.ColladaInstanceMaterial();
-				instance_material.Symbol = shader_list[shader_index];
-				instance_material.Target = ColladaUtilities.BuildUri(String.Format(Fx.ColladaMaterial.ElementIDFormat, shader_list[shader_index]));
-
-				// add the material instance to the list
-				instance_geometry.BindMaterial.TechniqueCommon.InstanceMaterial.Add(instance_material);
-			}
-			model_node.Add(instance_geometry);
-
-			return model_node;
-		}
-		/// <summary>
-		/// Creates a collada node for a single portal geometry
-		/// </summary>
-		/// <param name="index">The portal geometry index to create a node for</param>
-		/// <returns></returns>
-		Core.ColladaNode CreateNodePortal(int index)
-		{
-			Core.ColladaNode model_node = new Core.ColladaNode();
-			model_node.Name = listGeometry[index].Name;
-			model_node.Name = ColladaUtilities.FormatName(model_node.Name, " ", "_");
-			model_node.ID = String.Format(Core.ColladaNode.ElementIDFormat, model_node.Name);
-			model_node.Type = Enums.ColladaNodeType.NODE;
-
-			// create a new controller instance and set its attributes
-			Core.ColladaInstanceGeometry instance_geometry = new Core.ColladaInstanceGeometry();
-			instance_geometry.URL = ColladaUtilities.BuildUri(listGeometry[index].ID);
-
-			// bind materials to the geometry
-			instance_geometry.BindMaterial = new Fx.ColladaBindMaterial();
-			instance_geometry.BindMaterial.TechniqueCommon = new Core.ColladaTechniqueCommon();
-			instance_geometry.BindMaterial.TechniqueCommon.InstanceMaterial = new List<Fx.ColladaInstanceMaterial>();
-
-			Fx.ColladaInstanceMaterial instance_material = new Fx.ColladaInstanceMaterial();
-			instance_material.Symbol = "portals";
-			instance_material.Target = ColladaUtilities.BuildUri(String.Format(Fx.ColladaMaterial.ElementIDFormat, "portals"));
-
-			// add the material instance to the list
-			instance_geometry.BindMaterial.TechniqueCommon.InstanceMaterial.Add(instance_material);
-
-			model_node.Add(instance_geometry);
-
-			return model_node;
-		}
-		/// <summary>
-		/// Creates a collada node for a single fogplane geometry
-		/// </summary>
-		/// <param name="index">The fogplane geometry index to create a node for</param>
-		/// <returns></returns>
-		Core.ColladaNode CreateNodeFogPlane(int index)
-		{
-			Core.ColladaNode model_node = new Core.ColladaNode();
-			model_node.Name = listGeometry[index].Name;
-			model_node.Name = ColladaUtilities.FormatName(model_node.Name, " ", "_");
-			model_node.ID = String.Format(Core.ColladaNode.ElementIDFormat, model_node.Name);
-			model_node.Type = Enums.ColladaNodeType.NODE;
-
-			// create a new controller instance and set its attributes
-			Core.ColladaInstanceGeometry instance_geometry = new Core.ColladaInstanceGeometry();
-			instance_geometry.URL = ColladaUtilities.BuildUri(listGeometry[index].ID);
-
-			// bind materials to the geometry
-			instance_geometry.BindMaterial = new Fx.ColladaBindMaterial();
-			instance_geometry.BindMaterial.TechniqueCommon = new Core.ColladaTechniqueCommon();
-			instance_geometry.BindMaterial.TechniqueCommon.InstanceMaterial = new List<Fx.ColladaInstanceMaterial>();
-
-			Fx.ColladaInstanceMaterial instance_material = new Fx.ColladaInstanceMaterial();
-			instance_material.Symbol = "fogplanes";
-			instance_material.Target = ColladaUtilities.BuildUri(String.Format(Fx.ColladaMaterial.ElementIDFormat, "fogplanes"));
-
-			// add the material instance to the list
-			instance_geometry.BindMaterial.TechniqueCommon.InstanceMaterial.Add(instance_material);
-
-			model_node.Add(instance_geometry);
-
-			return model_node;
-		}
 		/// <summary>
 		/// Creates nodes for all the geometry elements in the collada file
 		/// </summary>
@@ -521,35 +324,46 @@ namespace BlamLib.Render.COLLADA.Halo1
 		{
 			H1.Tags.structure_bsp_group definition = tagManager.TagDefinition as H1.Tags.structure_bsp_group;
 
+			// create a list of ever shader used
+			List<string> shader_list = new List<string>();
+			for (int shader_index = 0; shader_index < shaderInfo.GetShaderCount(); shader_index++)
+				shader_list.Add(ColladaUtilities.FormatName(Path.GetFileNameWithoutExtension(shaderInfo.GetShaderName(shader_index)), " ", "_"));
+			// if portals are included add the portals shader to the names
+			if (bspInfo.IncludePortalsMesh())
+				shader_list.Add("portals");
+			// if fogplanes are included add the fogplanes shader to the names
+			if (bspInfo.IncludeFogPlanesMesh())
+				shader_list.Add("fogplanes");
+
 			int geometry_offset = 0;
-			if(bspInfo.IncludeRenderMesh())
+			if (bspInfo.IncludeRenderMesh())
+			{
+				// create geometry instance for all of the lightmaps
 				for (int i = 0; i < definition.Lightmaps.Count; i++)
-					listNode.Add(CreateNodeRender(geometry_offset + i));
-			geometry_offset += definition.Lightmaps.Count;
+					CreateNodeInstanceGeometry(listGeometry[geometry_offset + i].Name, geometry_offset + i, shader_list);
+				geometry_offset += definition.Lightmaps.Count;
+			}
 
-			if(bspInfo.IncludePortalsMesh())
+			if (bspInfo.IncludePortalsMesh())
+			{
+				// create geometry instance for all of the portal meshes
 				for (int i = 0; i < definition.ClusterPortals.Count; i++)
-					listNode.Add(CreateNodePortal(geometry_offset + i));
-			geometry_offset += definition.ClusterPortals.Count;
+					CreateNodeInstanceGeometry(listGeometry[geometry_offset + i].Name, geometry_offset + i, shader_list);
+				geometry_offset += definition.ClusterPortals.Count;
+			}
 
-			if(bspInfo.IncludeFogPlanesMesh())
+			if (bspInfo.IncludeFogPlanesMesh())
+			{
+				// create geometry instance for all of the fogplane meshes
 				for (int i = 0; i < definition.FogPlanes.Count; i++)
-					listNode.Add(CreateNodeFogPlane(geometry_offset + i));
-			geometry_offset += definition.FogPlanes.Count;
+					CreateNodeInstanceGeometry(listGeometry[geometry_offset + i].Name, geometry_offset + i, shader_list);
+				geometry_offset += definition.FogPlanes.Count;
+			}
 		}
 		#endregion
 		#endregion
 
 		#region Library Creation
-		/// <summary>
-		/// Creates the library_geometries element in the collada file
-		/// </summary>
-		void AddLibraryGeometries()
-		{
-			COLLADAFile.LibraryGeometries = new Core.ColladaLibraryGeometries();
-			COLLADAFile.LibraryGeometries.Geometry = new List<Core.ColladaGeometry>();
-			COLLADAFile.LibraryGeometries.Geometry.AddRange(listGeometry);
-		}
 		/// <summary>
 		/// Creates the library_visual_scenes element in the collada file. The node list is added under a node named "frame" since that is
 		/// required when creating new BSPs.
@@ -566,9 +380,6 @@ namespace BlamLib.Render.COLLADA.Halo1
 			Core.ColladaNode frame = new BlamLib.Render.COLLADA.Core.ColladaNode();
 			frame.Name = "frame";
 			frame.AddRange(listNode);
-
-			if (listMarkers.Count > 0)
-				frame.AddRange(listMarkers);
 
 			COLLADAFile.LibraryVisualScenes.VisualScene[0].Node.Add(frame);
 		}

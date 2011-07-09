@@ -24,6 +24,18 @@ using BlamLib.Managers;
 
 namespace BlamLib.Render.COLLADA.Halo2
 {
+	public class ColladaHalo2BSPInfo : ColladaHaloModelInfoBase
+	{
+		public BSPObjectType Type { get; private set; }
+
+		public ColladaHalo2BSPInfo(int internal_index, string name,
+			int vertex_count, int face_count,
+			BSPObjectType type)
+			: base(internal_index, name, vertex_count, face_count)
+		{
+			Type = type;
+		}
+	}
 	public class ColladaHalo2LightmapInfo : ColladaHaloModelInfoBase
 	{
 		public ColladaHalo2LightmapInfo(int internal_index, string name,
@@ -31,7 +43,7 @@ namespace BlamLib.Render.COLLADA.Halo2
 			: base(internal_index, name, vertex_count, face_count)
 		{
 		}
-	};
+	}
 	/// <summary>
 	/// Provides readonly information about an object in a model tag for external use
 	/// </summary>
@@ -47,40 +59,101 @@ namespace BlamLib.Render.COLLADA.Halo2
 			Permutation = permutation;
 			LevelOfDetail = level_of_detail;
 		}
-	};
+	}
 
 	class ColladaHalo2 : ColladaInterface
 	{
 		#region Internal Classes
 		/// <summary>
-		/// Interface class to pass mesh include information to the Halo2 structure lightmap exporter
+		/// Interface class to pass shader datum indices to the Halo1 exporter base class
 		/// </summary>
-		protected class LightmapInfoInternal : ColladaInfoInternal, IHalo2LightmapInterface, IHaloShaderDatumList
+		protected class ShaderInfoInternal : ColladaInfoInternal, IHaloShaderDatumList
 		{
-			List<DatumIndex> shaderDatums = new List<DatumIndex>();
-
-			public void AddShader(DatumIndex shader_datum)
+			struct ShaderReference
 			{
-				if (!shaderDatums.Contains(shader_datum))
-					shaderDatums.Add(shader_datum);
+				public DatumIndex Datum;
+				public string Name;
+			}
+			List<ShaderReference> shaders = new List<ShaderReference>();
+
+			bool ShaderExists(DatumIndex shader_datum)
+			{
+				foreach (var shader in shaders)
+					if (shader.Datum == shader_datum)
+						return true;
+				return false;
 			}
 
-			#region IHalo2ShaderDatumList Members
+			public void AddShaderDatum(DatumIndex shader_datum, string name)
+			{
+				if (ShaderExists(shader_datum))
+					return;
+
+				ShaderReference shader = new ShaderReference();
+				shader.Name = name;
+				shader.Datum = shader_datum;
+
+				shaders.Add(shader);
+			}
+
+			#region IHaloShaderDatumList Members
 			public int GetShaderCount()
 			{
-				return shaderDatums.Count;
+				return shaders.Count;
 			}
 
 			public DatumIndex GetShaderDatum(int index)
 			{
-				return shaderDatums[index];
+				return shaders[index].Datum;
+			}
+
+			public string GetShaderName(int index)
+			{
+				return shaders[index].Name;
 			}
 			#endregion
 		}
 		/// <summary>
+		/// Interface class to pass mesh include information to the Halo2 structure bsp exporter
+		/// </summary>
+		protected class BSPInfoInternal : ShaderInfoInternal, IHalo2BSPInterface, IHaloShaderDatumList
+		{
+			BSPObjectType type;
+
+			/// <summary>
+			/// Sets the bsp object type
+			/// </summary>
+			/// <param name="bsp_type"></param>
+			public void SetType(BSPObjectType bsp_type)
+			{
+				type = bsp_type;
+			}
+
+			#region IHalo2BSPInterface Members
+			public bool IncludeRenderMesh()
+			{
+				return ((type & BSPObjectType.RenderMesh) == BSPObjectType.RenderMesh);
+			}
+			public bool IncludePortalsMesh()
+			{
+				return ((type & BSPObjectType.Portals) == BSPObjectType.Portals);
+			}
+			public bool IncludeFogPlanesMesh()
+			{
+				return ((type & BSPObjectType.FogPlanes) == BSPObjectType.FogPlanes);
+			}
+			#endregion
+		}
+		/// <summary>
+		/// Interface class to pass mesh include information to the Halo2 structure lightmap exporter
+		/// </summary>
+		protected class LightmapInfoInternal : ShaderInfoInternal, IHalo2LightmapInterface, IHaloShaderDatumList
+		{
+		}
+		/// <summary>
 		/// Interface class to pass mesh include information to the Halo2 render model exporter
 		/// </summary>
-		protected class RenderModelInfoInternal : ColladaInfoInternal, IHalo2RenderModelInterface, IHaloShaderDatumList
+		protected class RenderModelInfoInternal : ShaderInfoInternal, IHalo2RenderModelInterface, IHaloShaderDatumList
 		{
 			struct GeometryInfo
 			{
@@ -92,13 +165,7 @@ namespace BlamLib.Render.COLLADA.Halo2
 			public int Permutation = 0;
 
 			List<GeometryInfo> geometries = new List<GeometryInfo>();
-			List<DatumIndex> shaderDatums = new List<DatumIndex>();
 
-			public void AddShaderDatum(DatumIndex shader_datum)
-			{
-				if (!shaderDatums.Contains(shader_datum))
-					shaderDatums.Add(shader_datum);
-			}
 			/// <summary>
 			/// Determines if a geometry with a matching index already exists in the list
 			/// </summary>
@@ -129,14 +196,6 @@ namespace BlamLib.Render.COLLADA.Halo2
 			}
 
 			#region IHalo2RenderModelInterface Members
-			public int GetShaderCount()
-			{
-				return shaderDatums.Count;
-			}
-			public DatumIndex GetShaderDatum(int index)
-			{
-				return shaderDatums[index];
-			}
 			public int GetGeometryCount()
 			{
 				return geometries.Count;
@@ -162,6 +221,53 @@ namespace BlamLib.Render.COLLADA.Halo2
 		#endregion
 
 		#region Static Helper Classes
+		protected static class BSP
+		{
+			public static void AddShaderDatums(BSPInfoInternal info, TagManager manager)
+			{
+				var definition = manager.TagDefinition as Blam.Halo2.Tags.scenario_structure_bsp_group;
+
+				foreach (var material in definition.Materials)
+					info.AddShaderDatum(material.Shader.Datum, material.Shader.ToString());
+			}
+
+			public static int GetVertexCount(TagManager manager, BSPObjectType type)
+			{
+				var definition = manager.TagDefinition as Blam.Halo2.Tags.scenario_structure_bsp_group;
+
+				int count = 0;
+				switch (type)
+				{
+					case BSPObjectType.RenderMesh:
+						foreach (var cluster in definition.Clusters)
+							count += cluster.SectionInfo.Value.TotalVertexCount;
+						break;
+					case BSPObjectType.Portals:
+						foreach (var portal in definition.ClusterPortals)
+							count += portal.Vertices.Count;
+						break;
+				}
+				return count;
+			}
+			public static int GetTriangleCount(TagManager manager, BSPObjectType type)
+			{
+				var definition = manager.TagDefinition as Blam.Halo2.Tags.scenario_structure_bsp_group;
+
+				int count = 0;
+				switch (type)
+				{
+					case BSPObjectType.RenderMesh:
+						foreach (var cluster in definition.Clusters)
+							count += cluster.SectionInfo.Value.TotalTriangleCount;
+						break;
+					case BSPObjectType.Portals:
+						foreach (var portal in definition.ClusterPortals)
+							count += portal.Vertices.Count - 2;
+						break;
+				}
+				return count;
+			}
+		}
 		protected static class Lightmap
 		{
 			public static void AddShaderDatums(LightmapInfoInternal lightmap_info, TagManager manager)
@@ -239,7 +345,8 @@ namespace BlamLib.Render.COLLADA.Halo2
 				for(int i = 0; i <  model_info.GetGeometryCount(); i++)
 				{
 					foreach (var part in definition.Sections[model_info.GetGeometryIndex(i)].SectionData[0].Section.Value.Parts)
-						model_info.AddShaderDatum(definition.Materials[part.Material].Shader.Datum);
+						model_info.AddShaderDatum(definition.Materials[part.Material].Shader.Datum,
+							definition.Materials[part.Material].Shader.ToString());
 				}
 			}
 
@@ -303,6 +410,8 @@ namespace BlamLib.Render.COLLADA.Halo2
 				GenerateInfoListLightmap();
 			else if (tagManager.GroupTag.Equals(Blam.Halo2.TagGroups.mode))
 				GenerateInfoListRenderModel();
+			else if (tagManager.GroupTag.Equals(Blam.Halo2.TagGroups.sbsp))
+				GenerateInfoListBSP();
 		}
 		/// <summary>
 		/// Creates info classes for a structure lightmap
@@ -361,6 +470,53 @@ namespace BlamLib.Render.COLLADA.Halo2
 				}
 			}
 		}
+		/// <summary>
+		/// Creates info classes for a structure lightmap
+		/// </summary>
+		void GenerateInfoListBSP()
+		{
+			string name = Path.GetFileNameWithoutExtension(tagManager.Name);
+
+			int vertex_count, triangle_count;
+
+			BSPInfoInternal info_internal;
+
+			vertex_count = BSP.GetVertexCount(tagManager, BSPObjectType.RenderMesh);
+			triangle_count = BSP.GetTriangleCount(tagManager, BSPObjectType.RenderMesh);
+
+			if ((vertex_count > 0) && (triangle_count > 0))
+			{
+				info_internal = new BSPInfoInternal();
+				info_internal.SetType(BSPObjectType.RenderMesh);
+
+				BSP.AddShaderDatums(info_internal, tagManager);
+
+				internalInfoList.Add(info_internal);
+
+				Add(new ColladaHalo2BSPInfo(internalInfoList.Count - 1,
+					name,
+					vertex_count,
+					triangle_count,
+					BSPObjectType.RenderMesh));
+			}
+
+			vertex_count = BSP.GetVertexCount(tagManager, BSPObjectType.Portals);
+			triangle_count = BSP.GetTriangleCount(tagManager, BSPObjectType.Portals);
+
+			if ((vertex_count > 0) && (triangle_count > 0))
+			{
+				info_internal = new BSPInfoInternal();
+				info_internal.SetType(BSPObjectType.Portals);
+
+				internalInfoList.Add(info_internal);
+
+				Add(new ColladaHalo2BSPInfo(internalInfoList.Count - 1,
+					name,
+					vertex_count,
+					triangle_count,
+					BSPObjectType.Portals));
+			}
+		}
 		#endregion
 
 		public override void Export(string file_name)
@@ -402,7 +558,7 @@ namespace BlamLib.Render.COLLADA.Halo2
 						added_permutations.Add(info.Permutation);
 
 					for (int i = 0; i < info.GetShaderCount(); i++)
-					    model_info.AddShaderDatum(info.GetShaderDatum(i));
+					    model_info.AddShaderDatum(info.GetShaderDatum(i), info.GetShaderName(i));
 					for (int i = 0; i < info.GetGeometryCount(); i++)
 						model_info.AddGeometry(info.GetGeometryName(i), info.GetGeometryIndex(i));
 				}
@@ -414,6 +570,38 @@ namespace BlamLib.Render.COLLADA.Halo2
 
 				var exporter = new Halo2.ColladaRenderModelExporter(model_info, tagIndex, tagManager);
 				
+				exporter.ErrorOccured += new EventHandler<ColladaExporter.ColladaErrorEventArgs>(ExporterErrorOccured);
+
+				exporter.Overwrite = Overwrite;
+				exporter.RelativeDataPath = RelativeFilePath;
+				exporter.BitmapFormat = BitmapFormat;
+
+				exporter.BuildColladaInstance();
+				exporter.SaveDAE(RelativeFilePath + file_name + ".dae");
+
+				exporter.ErrorOccured -= new EventHandler<ColladaExporter.ColladaErrorEventArgs>(ExporterErrorOccured);
+			}
+			else if (tagManager.GroupTag.Equals(Blam.Halo2.TagGroups.sbsp))
+			{
+				BSPInfoInternal bsp_info = new BSPInfoInternal();
+
+				BSPObjectType bsp_type = BSPObjectType.None;
+				foreach (int index in registeredInfos)
+				{
+					BSPInfoInternal info = internalInfoList[index] as BSPInfoInternal;
+
+					if (info.IncludeRenderMesh()) { bsp_type |= BSPObjectType.RenderMesh; }
+					if (info.IncludePortalsMesh()) { bsp_type |= BSPObjectType.Portals; }
+					if (info.IncludeFogPlanesMesh()) { bsp_type |= BSPObjectType.FogPlanes; }
+
+					for (int i = 0; i < info.GetShaderCount(); i++)
+						bsp_info.AddShaderDatum(info.GetShaderDatum(i), info.GetShaderName(i));
+				}
+
+				bsp_info.SetType(bsp_type);
+
+				var exporter = new Halo2.ColladaBSPExporter(bsp_info, tagIndex, tagManager);
+
 				exporter.ErrorOccured += new EventHandler<ColladaExporter.ColladaErrorEventArgs>(ExporterErrorOccured);
 
 				exporter.Overwrite = Overwrite;

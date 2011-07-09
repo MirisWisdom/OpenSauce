@@ -21,10 +21,21 @@ using System.Collections.Generic;
 
 namespace BlamLib.Render.COLLADA
 {
+	[Flags]
+	public enum BSPObjectType
+	{
+		None,
+
+		RenderMesh,
+		Portals,
+		FogPlanes,
+	};
+
 	public interface IHaloShaderDatumList
 	{
 		int GetShaderCount();
 		Blam.DatumIndex GetShaderDatum(int index);
+		string GetShaderName(int index);
 	};
 
 	/// <summary>
