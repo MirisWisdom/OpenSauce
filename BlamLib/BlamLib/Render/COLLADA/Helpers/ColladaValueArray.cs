@@ -23,8 +23,8 @@ using System.Xml.Serialization;
 
 namespace BlamLib.Render.COLLADA
 {
-	[SerializableAttribute()]
-	[XmlTypeAttribute(AnonymousType = true)]
+	[Serializable]
+	[XmlType(AnonymousType = true)]
 	public partial class ColladaValueArray<T> : ColladaElement
 	{
 		public ColladaValueArray() : base(Enums.ColladaElementType.Undefined) { }
@@ -33,7 +33,7 @@ namespace BlamLib.Render.COLLADA
 		[XmlIgnore]
 		public List<T> Values;
 
-		[XmlTextAttribute()]
+		[XmlText]
 		public string Text
 		{
 			get { return ColladaUtilities.ListToString<T>(Values); }
@@ -60,5 +60,26 @@ namespace BlamLib.Render.COLLADA
 			if (Values != null)
 				Values.Clear();
 		}
-	}
+	};
+
+	public static class ColladaValueArrayExtensions
+	{
+		public static void Add(this ColladaValueArray<float> array, LowLevel.Math.real_point2d v)
+		{
+			array.Add(v.X, v.Y);
+		}
+		public static void Add(this ColladaValueArray<float> array, LowLevel.Math.real_point3d v)
+		{
+			array.Add(v.X, v.Y, v.Z);
+		}
+
+		public static void Add(this ColladaValueArray<float> array, LowLevel.Math.real_vector2d v)
+		{
+			array.Add(v.I, v.J);
+		}
+		public static void Add(this ColladaValueArray<float> array, LowLevel.Math.real_vector3d v)
+		{
+			array.Add(v.I, v.J, v.K);
+		}
+	};
 }

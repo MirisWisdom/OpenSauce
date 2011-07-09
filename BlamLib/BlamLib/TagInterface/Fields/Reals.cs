@@ -306,6 +306,25 @@ namespace BlamLib.TagInterface
 			get { return Value; }
 			set { Value = value as float[]; }
 		}
+
+		public LowLevel.Math.real_point2d ToPoint2D()
+		{
+			var v = new LowLevel.Math.real_point2d();
+
+			v.X = X;
+			v.Y = Y;
+
+			return v;
+		}
+		public LowLevel.Math.real_point2d ToPoint2D(float scale)
+		{
+			var v = new LowLevel.Math.real_point2d();
+
+			v.X = X * scale;
+			v.Y = Y * scale;
+
+			return v;
+		}
 		#endregion
 
 		#region Construction
@@ -416,6 +435,27 @@ namespace BlamLib.TagInterface
 		{
 			get { return Value; }
 			set { Value = value as float[]; }
+		}
+
+		public LowLevel.Math.real_point3d ToPoint3D()
+		{
+			var v = new LowLevel.Math.real_point3d();
+
+			v.X = X;
+			v.Y = Y;
+			v.Z = Z;
+
+			return v;
+		}
+		public LowLevel.Math.real_point3d ToPoint3D(float scale)
+		{
+			var v = new LowLevel.Math.real_point3d();
+
+			v.X = X * scale;
+			v.Y = Y * scale;
+			v.Z = Z * scale;
+
+			return v;
 		}
 		#endregion
 
@@ -538,6 +578,16 @@ namespace BlamLib.TagInterface
 
 			I /= mag;
 			J /= mag;
+		}
+
+		public LowLevel.Math.real_vector2d ToVector2D()
+		{
+			var v = new LowLevel.Math.real_vector2d();
+
+			v.I = I;
+			v.J = J;
+
+			return v;
 		}
 		#endregion
 
@@ -664,6 +714,17 @@ namespace BlamLib.TagInterface
 			I /= mag;
 			J /= mag;
 			K /= mag;
+		}
+
+		public LowLevel.Math.real_vector3d ToVector3D()
+		{
+			var v = new LowLevel.Math.real_vector3d();
+
+			v.I = I;
+			v.J = J;
+			v.K = K;
+
+			return v;
 		}
 		#endregion
 

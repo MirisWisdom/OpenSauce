@@ -214,8 +214,8 @@ namespace BlamLib.Render
 			/// <param name="p">Pitch</param>
 			/// <param name="r">Roll</param>
 			/// <returns></returns>
-			public static List<ColladaElement> CreateRotationSet(float y, float p, float r, TagInterface.RealVector3D vector_y
-				, TagInterface.RealVector3D vector_p, TagInterface.RealVector3D vector_r)
+			public static List<ColladaElement> CreateRotationSet(float y, float p, float r, LowLevel.Math.real_vector3d vector_y,
+				LowLevel.Math.real_vector3d vector_p, LowLevel.Math.real_vector3d vector_r)
 			{
 				List<ColladaElement> return_array = new List<ColladaElement>();
 				return_array.Add(new Core.ColladaRotate(vector_y.I, vector_y.J, vector_y.K, y));
@@ -233,8 +233,8 @@ namespace BlamLib.Render
 			/// </summary>
 			/// <param name="rotation">A RealEulerAngles3D field</param>
 			/// <returns></returns>
-			public static List<ColladaElement> CreateRotationSet(LowLevel.Math.real_euler_angles3d rotation, TagInterface.RealVector3D vector_y
-				, TagInterface.RealVector3D vector_p, TagInterface.RealVector3D vector_r)
+			public static List<ColladaElement> CreateRotationSet(LowLevel.Math.real_euler_angles3d rotation, LowLevel.Math.real_vector3d vector_y,
+				LowLevel.Math.real_vector3d vector_p, LowLevel.Math.real_vector3d vector_r)
 			{
 				return CreateRotationSet(rotation.Yaw, rotation.Pitch, rotation.Roll, vector_y, vector_p, vector_r);
 			}

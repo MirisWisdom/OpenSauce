@@ -151,20 +151,20 @@ namespace BlamLib.Render.COLLADA.Core
 			list.Value.AddRange(elements);
 		}
 
-		public void Add(ColladaElement transform) { AddToElementList<ColladaElement>(transform, _transformationElements); }
-		public void Add(ColladaInstanceCamera instance) { AddToElementList<ColladaInstanceCamera>(instance, _instanceCamera); }
-		public void Add(ColladaInstanceController instance) { AddToElementList<ColladaInstanceController>(instance, _instanceController); }
-		public void Add(ColladaInstanceGeometry instance) { AddToElementList<ColladaInstanceGeometry>(instance, _instanceGeometry); }
-		public void Add(ColladaInstanceLight instance) { AddToElementList<ColladaInstanceLight>(instance, _instanceLight); }
-		public void Add(ColladaInstanceNode instance) { AddToElementList<ColladaInstanceNode>(instance, _instanceNode); }
-		public void Add(ColladaNode node) { AddToElementList<ColladaNode>(node, _node); }
+		public void Add(ColladaElement transform)			{ AddToElementList<ColladaElement>(transform, _transformationElements); }
+		public void Add(ColladaInstanceCamera instance)		{ AddToElementList<ColladaInstanceCamera>(instance, _instanceCamera); }
+		public void Add(ColladaInstanceController instance)	{ AddToElementList<ColladaInstanceController>(instance, _instanceController); }
+		public void Add(ColladaInstanceGeometry instance)	{ AddToElementList<ColladaInstanceGeometry>(instance, _instanceGeometry); }
+		public void Add(ColladaInstanceLight instance)		{ AddToElementList<ColladaInstanceLight>(instance, _instanceLight); }
+		public void Add(ColladaInstanceNode instance)		{ AddToElementList<ColladaInstanceNode>(instance, _instanceNode); }
+		public void Add(ColladaNode node)					{ AddToElementList<ColladaNode>(node, _node); }
 
-		public void AddRange(List<ColladaElement> transforms) { AddRangeToElementList<ColladaElement>(transforms, _transformationElements); }
-		public void AddRange(List<ColladaInstanceCamera> instances) { AddRangeToElementList<ColladaInstanceCamera>(instances, _instanceCamera); }
-		public void AddRange(List<ColladaInstanceController> instances) { AddRangeToElementList<ColladaInstanceController>(instances, _instanceController); }
-		public void AddRange(List<ColladaInstanceGeometry> instances) { AddRangeToElementList<ColladaInstanceGeometry>(instances, _instanceGeometry); }
-		public void AddRange(List<ColladaInstanceLight> instances) { AddRangeToElementList<ColladaInstanceLight>(instances, _instanceLight); }
-		public void AddRange(List<ColladaInstanceNode> instances) { AddRangeToElementList<ColladaInstanceNode>(instances, _instanceNode); }
-		public void AddRange(List<ColladaNode> nodes) { AddRangeToElementList<ColladaNode>(nodes, _node); }
-	}
+		public void AddRange(List<ColladaElement> transforms)			{ AddRangeToElementList<ColladaElement>(transforms, _transformationElements); }
+		public void AddRange(List<ColladaInstanceCamera> instances)		{ AddRangeToElementList<ColladaInstanceCamera>(instances, _instanceCamera); }
+		public void AddRange(List<ColladaInstanceController> instances)	{ AddRangeToElementList<ColladaInstanceController>(instances, _instanceController); }
+		public void AddRange(List<ColladaInstanceGeometry> instances)	{ AddRangeToElementList<ColladaInstanceGeometry>(instances, _instanceGeometry); }
+		public void AddRange(List<ColladaInstanceLight> instances)		{ AddRangeToElementList<ColladaInstanceLight>(instances, _instanceLight); }
+		public void AddRange(List<ColladaInstanceNode> instances)		{ AddRangeToElementList<ColladaInstanceNode>(instances, _instanceNode); }
+		public void AddRange(List<ColladaNode> nodes)					{ AddRangeToElementList<ColladaNode>(nodes, _node); }
+	};
 }

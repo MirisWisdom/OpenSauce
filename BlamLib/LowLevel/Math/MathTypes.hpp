@@ -31,6 +31,8 @@ namespace LowLevel { namespace Math {
 	{
 	mcpp_public
 		mcpp_real X, Y;
+
+		real_point2d(mcpp_real x, mcpp_real y) : X(x), Y(y) {}
 	};
 
 	[System::Runtime::InteropServices::StructLayoutAttribute(System::Runtime::InteropServices::LayoutKind::Sequential)]
@@ -38,6 +40,8 @@ namespace LowLevel { namespace Math {
 	{
 	mcpp_public
 		mcpp_real X, Y, Z;
+
+		real_point3d(mcpp_real x, mcpp_real y, mcpp_real z) : X(x), Y(y), Z(z) {}
 	};
 
 	[System::Runtime::InteropServices::StructLayoutAttribute(System::Runtime::InteropServices::LayoutKind::Sequential)]
@@ -45,6 +49,8 @@ namespace LowLevel { namespace Math {
 	{
 	mcpp_public
 		mcpp_real I, J;
+
+		real_vector2d(mcpp_real i, mcpp_real j) : I(i), J(j) {}
 	};
 
 	[System::Runtime::InteropServices::StructLayoutAttribute(System::Runtime::InteropServices::LayoutKind::Sequential)]
@@ -52,6 +58,8 @@ namespace LowLevel { namespace Math {
 	{
 	mcpp_public
 		mcpp_real I, J, K;
+
+		real_vector3d(mcpp_real i, mcpp_real j, mcpp_real k) : I(i), J(j), K(k) {}
 	};
 
 	[System::Runtime::InteropServices::StructLayoutAttribute(System::Runtime::InteropServices::LayoutKind::Sequential)]
@@ -67,6 +75,8 @@ namespace LowLevel { namespace Math {
 	{
 	mcpp_public
 		mcpp_real Yaw, Pitch;
+
+		real_euler_angles2d(mcpp_real y, mcpp_real p) : Yaw(y), Pitch(p) {}
 	};
 
 	[System::Runtime::InteropServices::StructLayoutAttribute(System::Runtime::InteropServices::LayoutKind::Sequential)]
@@ -74,6 +84,8 @@ namespace LowLevel { namespace Math {
 	{
 	mcpp_public
 		mcpp_real Yaw, Pitch, Roll;
+
+		real_euler_angles3d(mcpp_real y, mcpp_real p, mcpp_real r) : Yaw(y), Pitch(p), Roll(r) {}
 	};
 
 	[System::Runtime::InteropServices::StructLayoutAttribute(System::Runtime::InteropServices::LayoutKind::Sequential)]

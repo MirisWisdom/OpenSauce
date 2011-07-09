@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <IntDir>$(SolutionDir)..\..\obj\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
+    <IntDir>$(SolutionDir)..\obj\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)'=='Release'">false</LinkIncremental>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <IncludePath>C:\Program Files (x86)\boost\boost_1_43_0\;C:\Program Files (x86)\Microsoft DirectX SDK\June 2010\Include;$(IncludePath)</IncludePath>
@@ -19,15 +19,15 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(ConfigurationType)' == 'DynamicLibrary' ">
-    <OutDir>$(SolutionDir)..\..\lib\$(Configuration)\$(Platform)\$(ProjectName)\</OutDir>
+    <OutDir>$(SolutionDir)..\lib\$(Configuration)\$(Platform)\$(ProjectName)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(ConfigurationType)' == 'Application' ">
-    <OutDir>$(SolutionDir)..\..\bin\$(Configuration)\$(Platform)\$(ProjectName)\</OutDir>
+    <OutDir>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\$(ProjectName)\</OutDir>
   </PropertyGroup>
 
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(SolutionDir)..\external_libraries\;$(SolutionDir)..\engine\source\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <StructMemberAlignment>Default</StructMemberAlignment>
       <AdditionalOptions> /J</AdditionalOptions> <!--unsigned char-->
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
