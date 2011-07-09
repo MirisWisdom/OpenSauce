@@ -29,9 +29,6 @@ namespace BlamLib.Render.COLLADA.Core
 	[XmlTypeAttribute(AnonymousType = true)]
 	public partial class ColladaAnimationClip : ColladaElement
 	{
-		[XmlIgnore]
-		public new static readonly string ElementIDFormat = "animclip-{0}";
-
 		#region Fields
 		ColladaObjectAttribute<string> _id;
 		ColladaObjectAttribute<double> _start;
@@ -44,7 +41,7 @@ namespace BlamLib.Render.COLLADA.Core
 		#endregion
 
 		#region Attributes
-		[XmlAttribute("id"), DefaultValue("")]
+		[XmlAttribute("id"), DefaultValue(""), ColladaID("animclip-{0}")]
 		public string ID
 		{ get { return _id.Value; } set { _id.Value = value; } }
 

@@ -845,51 +845,17 @@ namespace BlamLib.TagInterface
 			get { return Value; }
 			set { Value = value as float[]; }
 		}
-		/// <summary>
-		/// Converts the quaternion into an euler rotation
-		/// </summary>
-		/// <returns>Returns an euler rotation</returns>
-		public LowLevel.Math.real_euler_angles3d ToEuler3D(BlamVersion game_version)
+
+		public LowLevel.Math.real_quaternion ToQuaternion()
 		{
-			var euler_3d = new LowLevel.Math.real_euler_angles3d();
+			LowLevel.Math.real_quaternion v = new LowLevel.Math.real_quaternion();
 
-			bool invert_ijk = false;
-			switch (game_version)
-			{
-				case BlamVersion.Halo1: invert_ijk = true; break;
-				default: invert_ijk = false; break;
-			}
-			float x = (invert_ijk ? -I : I);
-			float y = (invert_ijk ? -J : J);
-			float z = (invert_ijk ? -K : K);
-			float w = W;
+			v.Vector.I = I;
+			v.Vector.J = J;
+			v.Vector.K = K;
+			v.W = W;
 
-			if ((x * y) + (z * w) == 0.5f)
-			{
-				euler_3d.Yaw = (float)(2 * Math.Atan2(x, w));
-				euler_3d.Roll = 0;
-			}
-			else if ((x * y) + (z * w) == -0.5f)
-			{
-				euler_3d.Yaw = (float)(-2 * Math.Atan2(x, w));
-				euler_3d.Roll = 0;
-			}
-			else
-			{
-				euler_3d.Yaw = (float)Math.Atan2(
-					2 * y * w - 2 * x * z,
-					1 - 2 * (y * y) - 2 * (z * z));
-				euler_3d.Roll = (float)Math.Atan2(
-					2 * x * w - 2 * y * z,
-					1 - 2 * (x * x) - 2 * (z * z));
-			}
-			euler_3d.Pitch = (float)Math.Asin(2 * x * y + 2 * z * w);
-
-			euler_3d.Yaw = Real.RadiansToDegrees(euler_3d.Yaw);
-			euler_3d.Pitch = Real.RadiansToDegrees(euler_3d.Pitch);
-			euler_3d.Roll = Real.RadiansToDegrees(euler_3d.Roll);
-
-			return euler_3d;
+			return v;
 		}
 
 		/// <summary>
@@ -898,7 +864,7 @@ namespace BlamLib.TagInterface
 		public void Normalize()
 		{
 			float mag = (float)Math.Sqrt(
-				I * I + 
+				I * I +
 				J * J +
 				K * K +
 				W * W);
@@ -981,6 +947,92 @@ namespace BlamLib.TagInterface
 			ew.Write(J);
 			ew.Write(K);
 			ew.Write(W);
+		}
+		#endregion
+
+		#region Util
+		/// <summary>
+		/// Converts a quaternion into an euler rotation
+		/// </summary>
+		/// <returns>Returns an euler rotation</returns>
+		public static LowLevel.Math.real_euler_angles3d ToEuler3D(float i, float j, float k, float w)
+		{
+			var euler_3d = new LowLevel.Math.real_euler_angles3d();
+
+			if ((i * j) + (k * w) == 0.5f)
+			{
+				euler_3d.Yaw = (float)(2 * Math.Atan2(i, w));
+				euler_3d.Roll = 0;
+			}
+			else if ((i * j) + (k * w) == -0.5f)
+			{
+				euler_3d.Yaw = (float)(-2 * Math.Atan2(i, w));
+				euler_3d.Roll = 0;
+			}
+			else
+			{
+				euler_3d.Yaw = (float)Math.Atan2(
+					2 * j * w - 2 * i * k,
+					1 - 2 * (j * j) - 2 * (k * k));
+				euler_3d.Roll = (float)Math.Atan2(
+					2 * i * w - 2 * j * k,
+					1 - 2 * (i * i) - 2 * (k * k));
+			}
+			euler_3d.Pitch = (float)Math.Asin(2 * i * j + 2 * k * w);
+
+			euler_3d.Yaw = Real.RadiansToDegrees(euler_3d.Yaw);
+			euler_3d.Pitch = Real.RadiansToDegrees(euler_3d.Pitch);
+			euler_3d.Roll = Real.RadiansToDegrees(euler_3d.Roll);
+
+			return euler_3d;
+		}
+		/// <summary>
+		/// Converts a quaternion into an euler rotation
+		/// </summary>
+		/// <returns>Returns an euler rotation</returns>
+		public static LowLevel.Math.real_euler_angles3d ToEuler3D(RealQuaternion quaternion)
+		{
+			return ToEuler3D(quaternion.I, quaternion.J, quaternion.K, quaternion.W);
+		}
+		/// <summary>
+		/// Converts a quaternion into an euler rotation
+		/// </summary>
+		/// <returns>Returns an euler rotation</returns>
+		public static LowLevel.Math.real_euler_angles3d ToEuler3D(LowLevel.Math.real_quaternion quaternion)
+		{
+			return ToEuler3D(quaternion.Vector.I, quaternion.Vector.J, quaternion.Vector.K, quaternion.W);
+		}
+		/// <summary>
+		/// Returns a quaternion with an inverted vector
+		/// </summary>
+		/// <param name="quaternion">The quaternion to invert</param>
+		/// <returns></returns>
+		public static LowLevel.Math.real_quaternion Invert(LowLevel.Math.real_quaternion quaternion)
+		{
+			LowLevel.Math.real_quaternion quat_out = new LowLevel.Math.real_quaternion();
+
+			quat_out.Vector.I = -quaternion.Vector.I;
+			quat_out.Vector.J = -quaternion.Vector.J;
+			quat_out.Vector.K = -quaternion.Vector.K;
+			quat_out.W = quaternion.W;
+
+			return quat_out;
+		}
+		/// <summary>
+		/// Returns a quaternion with an inverted vector
+		/// </summary>
+		/// <param name="quaternion">The quaternion to invert</param>
+		/// <returns></returns>
+		public static LowLevel.Math.real_quaternion Invert(RealQuaternion quaternion)
+		{
+			LowLevel.Math.real_quaternion quat_out = new LowLevel.Math.real_quaternion();
+
+			quat_out.Vector.I = -quaternion.I;
+			quat_out.Vector.J = -quaternion.J;
+			quat_out.Vector.K = -quaternion.K;
+			quat_out.W = quaternion.W;
+
+			return quat_out;
 		}
 		#endregion
 	};

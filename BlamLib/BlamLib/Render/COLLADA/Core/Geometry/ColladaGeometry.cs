@@ -30,9 +30,6 @@ namespace BlamLib.Render.COLLADA.Core
 	[XmlTypeAttribute(AnonymousType = true)]
 	public partial class ColladaGeometry : ColladaElement
 	{
-		[XmlIgnore]
-		public new static readonly string ElementIDFormat = "geometry-{0}";
-
 		#region Fields
 		ColladaObjectAttribute<string> _id;
 		ColladaObjectAttribute<string> _name;
@@ -44,7 +41,7 @@ namespace BlamLib.Render.COLLADA.Core
 		#endregion
 
 		#region Attributes
-		[XmlAttribute("id"), DefaultValue("")]
+		[XmlAttribute("id"), DefaultValue(""), ColladaID("geometry-{0}")]
 		public string ID
 		{ get { return _id.Value; } set { _id.Value = value; } }
 

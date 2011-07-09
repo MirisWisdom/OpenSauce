@@ -27,9 +27,6 @@ namespace BlamLib.Render.COLLADA.Halo2
 	{
 		#region Class Fields
 		IHalo2LightmapInterface lightmapInfo;
-
-		List<Core.ColladaGeometry> listGeometry = new List<Core.ColladaGeometry>();
-		List<Core.ColladaNode> listNode = new List<Core.ColladaNode>();
 		#endregion
 
 		#region Constructor
@@ -55,62 +52,35 @@ namespace BlamLib.Render.COLLADA.Halo2
 		{
 			H2.Tags.scenario_structure_lightmap_group definition = tagManager.TagDefinition as H2.Tags.scenario_structure_lightmap_group;
 
+			// create a geometry for each lightmap cluster
 			for (int i = 0; i < definition.LightmapGroups.Count; i++)
 			{
 				for (int j = 0; j < definition.LightmapGroups[i].Clusters.Count; j++)
 				{
-					//TODO: figure out lightmap materials
 					string name = String.Format("{0}-group{1}-cluster{2}", ColladaUtilities.FormatName(tagName, " ", "_"), i, j);
-					listGeometry.Add(CreateGeometry(name,
-						definition.LightmapGroups[i].Clusters[j].GeometryInfo,
+
+					// create the geometry element
+					CreateGeometryHalo2(name, false,
 						definition.LightmapGroups[i].Clusters[j].CacheData[0].Geometry.Value,
-						new List<string>()));
+						new List<string>());
 				}
 			}
 		}
 		#endregion
 		#region Create Nodes
 		/// <summary>
-		/// Creates a collada node for a single render geometry
-		/// </summary>
-		/// <param name="index">The render geometry index to create a node for</param>
-		/// <returns></returns>
-		Core.ColladaNode CreateNodeRender(int index)
-		{
-			Core.ColladaNode model_node = new Core.ColladaNode();
-			model_node.Name = listGeometry[index].Name;
-			model_node.Name = ColladaUtilities.FormatName(model_node.Name, " ", "_");
-			model_node.ID = String.Format(Core.ColladaNode.ElementIDFormat, model_node.Name);
-			model_node.Type = Enums.ColladaNodeType.NODE;
-
-			// create a new controller instance and set its attributes
-			Core.ColladaInstanceGeometry instance_geometry = new Core.ColladaInstanceGeometry();
-			instance_geometry.URL = ColladaUtilities.BuildUri(listGeometry[index].ID);
-			model_node.Add(instance_geometry);
-
-			return model_node;
-		}
-		/// <summary>
 		/// Creates nodes for all the geometry elements in the collada file
 		/// </summary>
 		void CreateNodeList()
 		{
-			for(int i = 0; i < listGeometry.Count; i++)
-				listNode.Add(CreateNodeRender(i));
+			// create a geometry instance for each geometry that has been created
+			for (int i = 0; i < listGeometry.Count; i++)
+				CreateNodeInstanceGeometry(listGeometry[i].Name, i, new List<string>());
 		}
 		#endregion
 		#endregion
 
 		#region Library Creation
-		/// <summary>
-		/// Creates the library_geometries element in the collada file
-		/// </summary>
-		void AddLibraryGeometries()
-		{
-			COLLADAFile.LibraryGeometries = new Core.ColladaLibraryGeometries();
-			COLLADAFile.LibraryGeometries.Geometry = new List<Core.ColladaGeometry>();
-			COLLADAFile.LibraryGeometries.Geometry.AddRange(listGeometry);
-		}
 		/// <summary>
 		/// Creates the library_visual_scenes element in the collada file. The node list is added under a node named "frame" since that is
 		/// required when creating new BSPs.

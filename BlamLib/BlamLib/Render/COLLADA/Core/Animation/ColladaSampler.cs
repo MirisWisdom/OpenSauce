@@ -29,9 +29,6 @@ namespace BlamLib.Render.COLLADA.Core
 	[XmlTypeAttribute(AnonymousType = true)]
 	public partial class ColladaSampler : ColladaElement
 	{
-		[XmlIgnore]
-		public new static readonly string ElementIDFormat = "sampler-{0}";
-
 		#region Fields
 		ColladaObjectAttribute<string> _id;
 
@@ -39,7 +36,7 @@ namespace BlamLib.Render.COLLADA.Core
 		#endregion
 
 		#region Attributes
-		[XmlAttribute("id"), DefaultValue("")]
+		[XmlAttribute("id"), DefaultValue(""), ColladaID("sampler-{0}")]
 		public string ID
 		{ get { return _id.Value; } set { _id.Value = value; } }
 		#endregion

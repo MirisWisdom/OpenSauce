@@ -188,7 +188,20 @@ namespace BlamLib.Test
 		static readonly ModelTestDefinition[] LightmapTestDefinitions = new ModelTestDefinition[]
 		{
 			new ModelTestDefinition("LTMP", @"scenarios\multi\example\example_example_lightmap",
-			    Blam.Halo2.TagGroups.ltmp),
+			    Blam.Halo2.TagGroups.ltmp)
+		};
+		static readonly ModelTestDefinition[] BSPTestDefinitions = new ModelTestDefinition[]
+		{
+			new ModelTestDefinition("SBSP", @"scenarios\multi\example\example",
+			    Blam.Halo2.TagGroups.sbsp),
+			new ModelTestDefinition("SBSP", @"scenarios\solo\03a_oldmombasa\earthcity_3b",
+			    Blam.Halo2.TagGroups.sbsp),
+			new ModelTestDefinition("SBSP", @"scenarios\solo\03b_newmombasa\earthcity_4",
+			    Blam.Halo2.TagGroups.sbsp),
+			new ModelTestDefinition("SBSP", @"scenarios\solo\07a_highcharity\high_0",
+			    Blam.Halo2.TagGroups.sbsp),
+			new ModelTestDefinition("SBSP", @"scenarios\multi\backwash\backwash",
+			    Blam.Halo2.TagGroups.sbsp)
 		};
 		static readonly ModelTestDefinition[] RenderModelTestDefinitions = new ModelTestDefinition[]
 		{
@@ -242,6 +255,42 @@ namespace BlamLib.Test
 					var lightmap_info = halo2[0] as Render.COLLADA.Halo2.ColladaHalo2LightmapInfo;
 
 					halo2.Export(lightmap_info.Name);
+
+					foreach (string report in halo2.Reports())
+						Console.WriteLine(report);
+
+					model_def.Close(tagindex);
+				}
+			}
+		}
+		[TestMethod]
+		public void Halo2TestCOLLADABSPExport()
+		{
+			using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo2_PC, kTestTagIndexTagsPath))
+			{
+				var tagindex = handler.IndexInterface;
+				foreach (var model_def in BSPTestDefinitions)
+				{
+					StartStopwatch();
+					{
+						model_def.Open(tagindex);
+						Console.WriteLine("{0} LOAD: Time taken: {1}", model_def.TypeString, m_testStopwatch.Elapsed);
+					}
+					Console.WriteLine("TAG INDEX: Time taken: {0}", StopStopwatch());
+
+					var halo2 = new BlamLib.Render.COLLADA.Halo2.ColladaHalo2(tagindex, model_def.TagIndex);
+
+					halo2.Overwrite = true;
+					halo2.RelativeFilePath = Path.Combine(kTestTagIndexTagsPath, @"data\");
+
+					halo2.ClearRegister();
+
+					foreach (var info in halo2)
+						halo2.RegisterForExport(info);
+
+					var bsp_info = halo2[0] as Render.COLLADA.Halo2.ColladaHalo2BSPInfo;
+
+					halo2.Export(bsp_info.Name);
 
 					foreach (string report in halo2.Reports())
 						Console.WriteLine(report);

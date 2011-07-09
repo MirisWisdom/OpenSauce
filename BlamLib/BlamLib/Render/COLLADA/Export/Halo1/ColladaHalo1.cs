@@ -41,16 +41,6 @@ namespace BlamLib.Render.COLLADA.Halo1
 			LevelOfDetail = lod;
 		}
 	};
-
-	[Flags]
-	public enum BSPObjectType
-	{
-		None,
-
-		RenderMesh,
-		Portals,
-		FogPlanes,
-	};
 	/// <summary>
 	/// Provides readonly information about an object in a BSP tag for external use
 	/// </summary>
@@ -76,26 +66,47 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// </summary>
 		protected class ShaderInfoInternal : ColladaInfoInternal, IHaloShaderDatumList
 		{
-			List<DatumIndex> shaderDatums = new List<DatumIndex>();
-
-			/// <summary>
-			/// Adds the DatumIndex of a shader to the list if it is not already present
-			/// </summary>
-			/// <param name="datum"></param>
-			public void AddShaderDatum(DatumIndex datum)
+			struct ShaderReference
 			{
-				if (!shaderDatums.Contains(datum))
-					shaderDatums.Add(datum);
+				public DatumIndex Datum;
+				public string Name;
+			}
+			List<ShaderReference> shaders = new List<ShaderReference>();
+
+			bool ShaderExists(DatumIndex shader_datum)
+			{
+				foreach (var shader in shaders)
+					if (shader.Datum == shader_datum)
+						return true;
+				return false;
 			}
 
-			#region IHalo1ShaderDatumList Members
+			public void AddShaderDatum(DatumIndex shader_datum, string name)
+			{
+				if (ShaderExists(shader_datum))
+					return;
+
+				ShaderReference shader = new ShaderReference();
+				shader.Name = name;
+				shader.Datum = shader_datum;
+
+				shaders.Add(shader);
+			}
+
+			#region IHaloShaderDatumList Members
 			public int GetShaderCount()
 			{
-				return shaderDatums.Count;
+				return shaders.Count;
 			}
+
 			public DatumIndex GetShaderDatum(int index)
 			{
-				return shaderDatums[index];
+				return shaders[index].Datum;
+			}
+
+			public string GetShaderName(int index)
+			{
+				return shaders[index].Name;
 			}
 			#endregion
 		}
@@ -237,7 +248,8 @@ namespace BlamLib.Render.COLLADA.Halo1
 				for (int i = 0; i < model_info.GetGeometryCount(); i++)
 				{
 					foreach (var part in definition.Geometries[model_info.GetGeometryIndex(i)].Parts)
-						model_info.AddShaderDatum(definition.Shaders[part.ShaderIndex.Value].Shader.Datum);
+						model_info.AddShaderDatum(definition.Shaders[part.ShaderIndex.Value].Shader.Datum,
+							definition.Shaders[part.ShaderIndex.Value].Shader.ToString());
 				}
 			}
 
@@ -284,7 +296,8 @@ namespace BlamLib.Render.COLLADA.Halo1
 				foreach (var lightmap in definition.Lightmaps)
 				{
 					foreach (var material in lightmap.Materials)
-						bsp_info.AddShaderDatum(material.Shader.Datum);
+						bsp_info.AddShaderDatum(material.Shader.Datum,
+							material.Shader.ToString());
 				}
 			}
 
@@ -414,6 +427,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 			BSPInfoInternal bsp_info_internal;
 
+			// create an info object representing the render mesh
 			vertex_count = BSP.GetVertexCount(tagManager, BSPObjectType.RenderMesh);
 			triangle_count = BSP.GetTriangleCount(tagManager, BSPObjectType.RenderMesh);
 
@@ -428,6 +442,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 				triangle_count,
 				BSPObjectType.RenderMesh));
 
+			// create an info object representing the portals mesh
 			vertex_count = BSP.GetVertexCount(tagManager, BSPObjectType.Portals);
 			triangle_count = BSP.GetTriangleCount(tagManager, BSPObjectType.Portals);
 
@@ -444,6 +459,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 					BSPObjectType.Portals));
 			}
 
+			// create an info object representing the fogplane mesh
 			vertex_count = BSP.GetVertexCount(tagManager, BSPObjectType.FogPlanes);
 			triangle_count = BSP.GetTriangleCount(tagManager, BSPObjectType.FogPlanes);
 
@@ -485,7 +501,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 						added_permutations.Add(info.Permutation);
 
 					for (int i = 0; i < info.GetShaderCount(); i++)
-						model_info.AddShaderDatum(info.GetShaderDatum(i));
+						model_info.AddShaderDatum(info.GetShaderDatum(i), info.GetShaderName(i));
 					for (int i = 0; i < info.GetGeometryCount(); i++)
 						model_info.AddGeometry(info.GetGeometryName(i), info.GetGeometryIndex(i));
 				}
@@ -523,7 +539,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 					if(info.IncludeFogPlanesMesh()) { bsp_type |= BSPObjectType.FogPlanes; }
 
 					for(int i = 0; i < info.GetShaderCount(); i++)
-						bsp_info.AddShaderDatum(info.GetShaderDatum(i));
+						bsp_info.AddShaderDatum(info.GetShaderDatum(i), info.GetShaderName(i));
 				}
 
 				bsp_info.SetType(bsp_type);

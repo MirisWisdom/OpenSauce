@@ -34,9 +34,6 @@ namespace BlamLib.Render.COLLADA.Core
 		ColladaObjectAttribute<short> _magnitude;
 		#endregion
 
-		[XmlIgnore]
-		public new static readonly string ElementIDFormat = "floatarray-{0}";
-
 		#region Attributes
 		[XmlAttribute("count")]
 		public uint Count
@@ -50,8 +47,8 @@ namespace BlamLib.Render.COLLADA.Core
 			}
 			set { }
 		}
-		
-		[XmlAttribute("id"), DefaultValue("")]
+
+		[XmlAttribute("id"), DefaultValue(""), ColladaID("floatarray-{0}")]
 		public string ID
 		{ get { return _id.Value; } set { _id.Value = value; } }
 

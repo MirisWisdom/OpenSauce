@@ -172,17 +172,6 @@ namespace BlamLib.Render.COLLADA
 		#region Class Members
 		[XmlIgnore]
 		protected readonly Enums.ColladaElementType elementType;
-		/// <summary>
-		/// Overriden in derived classes to provide access to a standard name format for each element that has a name
-		/// </summary>
-		[XmlIgnore]
-		public static readonly string ElementIDFormat = null;
-		// TODO: change all derived classes to override this, not declare a new static by the same name, then change this to be 'abstract'
-		public string GetElementIdFormat()
-		{
-			return null;
-		}
-
 		protected List<ColladaObject> Fields = new List<ColladaObject>();
 		protected List<Validation.ColladaValidationTest> ValidationTests = new List<Validation.ColladaValidationTest>();
 		#endregion
@@ -265,6 +254,27 @@ namespace BlamLib.Render.COLLADA
 					string_list.Add(String.Format(detail_format_string, property.Name, value));
 			}
 			return string_list;
+		}
+
+		/// <summary>
+		/// Returns a string formatted to the ID format expected for a specific element type
+		/// </summary>
+		/// <typeparam name="T">The element type to format an ID for</typeparam>
+		/// <param name="id">The ID to format</param>
+		/// <returns></returns>
+		public static string FormatID<T>(string id)
+		{
+			PropertyInfo property = typeof(T).GetProperty("ID");
+
+			if (property == null)
+				throw new ColladaException("COLLADA EXCEPTION: attempted to format an ID for an element that doesn not have an ID property");
+
+			ColladaIDAttribute[] id_attributes = (ColladaIDAttribute[])property.GetCustomAttributes(typeof(ColladaIDAttribute), false);
+
+			if ((id_attributes == null) || (id_attributes.Length == 0))
+				throw new ColladaException("COLLADA EXCEPTION: an ID property has no formatting string defined");
+
+			return id_attributes[0].FormatID(id);
 		}
 	};
 }

@@ -42,11 +42,8 @@ namespace BlamLib.Render.COLLADA.Fx
 		ColladaObjectElementList<Core.ColladaExtra> _extra;
 		#endregion
 
-		[XmlIgnore]
-		public new static readonly string ElementIDFormat = "technique-{0}";
-
 		#region Attributes
-		[XmlAttribute("id"), DefaultValue("")]
+		[XmlAttribute("id"), DefaultValue(""), ColladaID("technique-{0}")]
 		public string ID
 		{ get { return _id.Value; } set { _id.Value = value; } }
 

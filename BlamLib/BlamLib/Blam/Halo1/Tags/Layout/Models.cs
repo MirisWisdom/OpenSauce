@@ -275,8 +275,9 @@ namespace BlamLib.Blam.Halo1.Tags
 					// ?
 					Add(new TI.Skip(20 + 16
 						+ 1 + 1 + 1));
-					Add(BoneIndexCount = new BlamLib.TagInterface.ByteInteger());
-					Add(BoneIndexArray = new BlamLib.TagInterface.Skip(24));
+					Add(NodeMapCount = new BlamLib.TagInterface.ByteInteger());
+					for (int x = 0; x < NodeMap.Length; x++)
+						Add(NodeMap[x] = new TI.ByteInteger());
 				}
 			};
 			#endregion

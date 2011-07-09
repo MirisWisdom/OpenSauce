@@ -125,7 +125,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// </summary>
 		/// <param name="shader_datum">DatumIndex of the shader to create a phong definition from</param>
 		/// <returns></returns>
-		protected Fx.ColladaPhong CreatePhong(DatumIndex shader_datum)
+		protected override Fx.ColladaPhong CreatePhong(DatumIndex shader_datum)
 		{
 			Managers.TagManager shader_man = tagIndex[shader_datum];
 
@@ -186,192 +186,16 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 			return phong;
 		}
-		/// <summary>
-		/// Creates an effect element from a shader tag
-		/// </summary>
-		/// <param name="shader_datum">DatumIndex of the shader to create an effect from</param>
-		/// <returns></returns>
-		protected Fx.ColladaEffect CreateEffect(DatumIndex shader_datum)
-		{
-			Managers.TagManager shader_man = tagIndex[shader_datum];
-
-			Fx.ColladaEffect effect = new Fx.ColladaEffect();
-
-			string shader_name = ColladaUtilities.FormatName(System.IO.Path.GetFileNameWithoutExtension(shader_man.Name), " ", "_");
-			effect.ID = shader_name;
-			effect.ProfileCOMMON = new List<COLLADA.Fx.ColladaProfileCOMMON>();
-			effect.ProfileCOMMON.Add(new COLLADA.Fx.ColladaProfileCOMMON());
-			effect.ProfileCOMMON[0].Technique = new COLLADA.Fx.ColladaTechnique();
-			effect.ProfileCOMMON[0].Technique.sID = "common";
-			effect.ProfileCOMMON[0].Technique.Phong = CreatePhong(shader_datum);
-			effect.ProfileCOMMON[0].Newparam = new List<COLLADA.Fx.ColladaNewparam>();
-
-			List<DatumIndex> bitmap_datums = GetShaderBitmaps(shader_datum);
-			for (int i = 0; i < bitmap_datums.Count; i++)
-			{
-				BlamLib.Managers.TagManager bitmap = tagIndex[bitmap_datums[i]];
-				string bitmap_name = ColladaUtilities.FormatName(System.IO.Path.GetFileNameWithoutExtension(bitmap.Name), " ", "_");
-
-				COLLADA.Fx.ColladaNewparam newparam_surface = new COLLADA.Fx.ColladaNewparam();
-				COLLADA.Fx.ColladaNewparam newparam_sampler = new COLLADA.Fx.ColladaNewparam();
-
-				newparam_surface.sID = String.Concat(bitmap_name, "-surface");
-				newparam_sampler.sID = String.Concat(bitmap_name, "-surface-sampler");
-
-				COLLADA.Fx.ColladaSurface surface = new COLLADA.Fx.ColladaSurface();
-				COLLADA.Fx.ColladaSampler2D sampler2d = new COLLADA.Fx.ColladaSampler2D();
-
-				surface.Type = COLLADA.Enums.ColladaFXSurfaceTypeEnum._2D;
-				surface.InitFrom = new COLLADA.Fx.ColladaInitFrom();
-				surface.InitFrom.Text = bitmap_name;
-
-				sampler2d.Source = newparam_surface.sID;
-
-				newparam_surface.Surface = surface;
-				newparam_sampler.Sampler2D = sampler2d;
-
-				effect.ProfileCOMMON[0].Newparam.Add(newparam_surface);
-				effect.ProfileCOMMON[0].Newparam.Add(newparam_sampler);
-			}
-
-			return effect;
-		}
-		/// <summary>
-		/// Populate the effect list with the shaders used in the model
-		/// </summary>
-		protected void CreateEffectList()
-		{
-			int effect_count = shaderInfo.GetShaderCount();
-			// for each shader, create a new effect
-			for (int i = 0; i < effect_count; i++)
-			{
-				DatumIndex shader_datum = shaderInfo.GetShaderDatum(i);
-				if (!IsDatumValid(shader_datum))
-				{
-					OnErrorOccured(String.Format(ColladaExceptionStrings.InvalidDatumIndex, shader_datum.ToString(), "unknown"));
-					continue;
-				}
-
-				listEffect.Add(CreateEffect(shader_datum));
-			}
-		}
 		#endregion
 		#endregion
 
 		#region Data Collection
 		/// <summary>
-		/// Adds the datum indices for the bitmaps used in the objects shaders, to the global list
-		/// </summary>
-		protected void CollectBitmaps()
-		{
-			for(int i = 0; i < shaderInfo.GetShaderCount(); i++)
-			{
-				DatumIndex shader_datum = shaderInfo.GetShaderDatum(i);
-
-				// ignore invalid shader datums
-				if (!IsDatumValid(shader_datum))
-				{
-					OnErrorOccured(String.Format(ColladaExceptionStrings.InvalidDatumIndex,
-						shader_datum.ToString(),
-						"unknown"));
-					continue;
-				}
-
-				// get the shader type and get the bitmaps it uses
-				BlamLib.Managers.TagManager shader_man = tagIndex[shader_datum];
-				if (shader_man.GroupTag.ID == BlamLib.Blam.Halo1.TagGroups.senv.ID)
-				{
-					H1.Tags.shader_environment_group senv_definition = GetTagDefinition<H1.Tags.shader_environment_group>(
-						shader_datum, shader_man.GroupTag, H1.TagGroups.senv);
-
-					// add the diffuse map if present
-					if (senv_definition.BaseMap.Datum != DatumIndex.Null)
-					{
-						if (!bitmapDatums.Contains(senv_definition.BaseMap.Datum))
-							bitmapDatums.Add(senv_definition.BaseMap.Datum);
-					}
-
-					// if the shader uses alpha testing/blending with the bump maps alpha channel, add it
-					if (senv_definition.Flags.Test(1) && (senv_definition.BumpMap.Datum != DatumIndex.Null))
-					{
-						if (!bitmapDatums.Contains(senv_definition.BumpMap.Datum))
-							bitmapDatums.Add(senv_definition.BumpMap.Datum);
-					}
-				}
-				else if (shader_man.GroupTag.ID == BlamLib.Blam.Halo1.TagGroups.soso.ID)
-				{
-					H1.Tags.shader_model_group soso_definition = GetTagDefinition<H1.Tags.shader_model_group>(
-						shader_datum, shader_man.GroupTag, H1.TagGroups.soso);
-
-					// add the diffuse map if present
-					if (soso_definition.BaseMap.Datum != DatumIndex.Null)
-					{
-						if (!bitmapDatums.Contains(soso_definition.BaseMap.Datum))
-							bitmapDatums.Add(soso_definition.BaseMap.Datum);
-					}
-				}
-				else if (shader_man.GroupTag.ID == BlamLib.Blam.Halo1.TagGroups.schi.ID)
-				{
-					H1.Tags.shader_transparent_chicago_group schi_definition = GetTagDefinition<H1.Tags.shader_transparent_chicago_group>(
-						shader_datum, shader_man.GroupTag, H1.TagGroups.schi);
-
-					// add the bitmap from the first map block
-					if ((schi_definition.Maps.Count != 0) && (schi_definition.Maps[0].Map.Datum != DatumIndex.Null))
-					{
-						if (!bitmapDatums.Contains(schi_definition.Maps[0].Map.Datum))
-							bitmapDatums.Add(schi_definition.Maps[0].Map.Datum);
-					}
-				}
-				else if (shader_man.GroupTag.ID == BlamLib.Blam.Halo1.TagGroups.scex.ID)
-				{
-					H1.Tags.shader_transparent_chicago_extended_group scex_definition = GetTagDefinition<H1.Tags.shader_transparent_chicago_extended_group>(
-						shader_datum, shader_man.GroupTag, H1.TagGroups.scex);
-
-					// add the bitmap from the first map block
-					DatumIndex bitmap_datum = DatumIndex.Null;
-					if (scex_definition._4StageMaps.Count > 0)
-						bitmap_datum = scex_definition._4StageMaps[0].Map.Datum;
-					else if (scex_definition._2StageMaps.Count > 0)
-						bitmap_datum = scex_definition._2StageMaps[0].Map.Datum;
-
-					if (bitmap_datum != DatumIndex.Null)
-					{
-						if (!bitmapDatums.Contains(bitmap_datum))
-							bitmapDatums.Add(bitmap_datum);
-					}
-				}
-				else if (shader_man.GroupTag.ID == BlamLib.Blam.Halo1.TagGroups.sotr.ID)
-				{
-					H1.Tags.shader_transparent_generic_group sotr_definition = GetTagDefinition<H1.Tags.shader_transparent_generic_group>(
-						shader_datum, shader_man.GroupTag, H1.TagGroups.sotr);
-
-					// add the bitmap from the first map block
-					if ((sotr_definition.Maps.Count != 0) && (sotr_definition.Maps[0].Map.Datum != DatumIndex.Null))
-					{
-						if (!bitmapDatums.Contains(sotr_definition.Maps[0].Map.Datum))
-							bitmapDatums.Add(sotr_definition.Maps[0].Map.Datum);
-					}
-				}
-				else if (shader_man.GroupTag.ID == BlamLib.Blam.Halo1.TagGroups.sgla.ID)
-				{
-					H1.Tags.shader_transparent_glass_group sgla_definition = GetTagDefinition<H1.Tags.shader_transparent_glass_group>(
-						shader_datum, shader_man.GroupTag, H1.TagGroups.sgla);
-
-					// add the diffuse map
-					if (sgla_definition.DiffuseMap.Datum != DatumIndex.Null)
-					{
-						if (!bitmapDatums.Contains(sgla_definition.DiffuseMap.Datum))
-							bitmapDatums.Add(sgla_definition.DiffuseMap.Datum);
-					}
-				}
-			}
-		}
-		/// <summary>
 		/// Creates a list of datum indices for the bitmaps used in a shader
 		/// </summary>
 		/// <param name="shader_tag">DatumIndex of the shader to get bitmaps from</param>
 		/// <returns></returns>
-		protected List<DatumIndex> GetShaderBitmaps(DatumIndex shader_datum)
+		protected override List<DatumIndex> GetShaderBitmaps(DatumIndex shader_datum)
 		{
 			Managers.TagManager shader_man = tagIndex[shader_datum];
 			List<DatumIndex> bitmap_datums = new List<DatumIndex>();
