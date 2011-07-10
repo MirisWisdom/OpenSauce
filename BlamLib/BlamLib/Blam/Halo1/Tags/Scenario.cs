@@ -23,9 +23,10 @@ using TI = BlamLib.TagInterface;
 namespace BlamLib.Blam.Halo1.Tags
 {
 	#region scenario_structure_bsps_header
-	[TI.Definition(1, 24)]
+	[TI.Definition(1, scenario_structure_bsps_header.kSizeOf)]
 	public class scenario_structure_bsps_header : TI.Definition
 	{
+		public const int kSizeOf = 24;
 		#region Fields
 		public TI.LongInteger PtrBsp;
 		public TI.Tag Signature;
@@ -41,9 +42,10 @@ namespace BlamLib.Blam.Halo1.Tags
 	#endregion
 
 	#region scenario_structure_bsps_block
-	[TI.Definition(-1, 32)]
+	[TI.Definition(-1, scenario_structure_bsps_block.kSizeOf)]
 	public class scenario_structure_bsps_block : TI.Definition
 	{
+		public const int kSizeOf = 32;
 		#region Fields
 		public TI.LongInteger Offset;
 		public TI.LongInteger Size;
@@ -53,6 +55,7 @@ namespace BlamLib.Blam.Halo1.Tags
 
 		public scenario_structure_bsps_block() : base(4)
 		{
+			// Offset to this bsp's scenario_structure_bsps_header
 			Add(Offset = new TI.LongInteger());
 			Add(Size = new TI.LongInteger());
 			Add(Data = new TI.Skip(4 // address

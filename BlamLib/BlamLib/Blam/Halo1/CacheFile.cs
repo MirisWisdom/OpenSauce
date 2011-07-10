@@ -174,27 +174,35 @@ namespace BlamLib.Blam.Halo1
 
 		protected abstract void ReadTagInstances(IO.EndianReader s, Blam.CacheFile cache);
 
-		void InitializeBspTags(BlamLib.IO.EndianReader s, Blam.CacheFile cache)
+		void InitializeBspTags(IO.EndianReader s, Blam.CacheFile cache)
 		{
+			// Seek to the scenario's scenario_structure_bsps_block tag_block field
 			s.Seek(items[0].Offset + 1444, System.IO.SeekOrigin.Begin);
 			bspTags = new Item[s.ReadInt32()];
 			uint sbsp_offset = s.ReadPointer();
 
+			// Seek to the scenario_structure_bsps_block definitions
 			s.Seek(sbsp_offset, System.IO.SeekOrigin.Begin);
 			DatumIndex di = new DatumIndex();
 			CacheItemBase item = null;
+			// Process each definition's runtime data
 			for (int x = 0; x < bspTags.Length; x++)
 			{
 				s.Seek(28, System.IO.SeekOrigin.Current);
 				di.Read(s);
 				item = items[di.Index];
 				bspTags[x] = item as CacheItemBase;
-				s.Seek(-32, System.IO.SeekOrigin.Current);
+				// Seek back to the beginning of the definition so the following stream code works
+				s.Seek(-Halo1.Tags.scenario_structure_bsps_block.kSizeOf, System.IO.SeekOrigin.Current);
 
-				item.Offset = s.ReadInt32() + 24; // don't count the header
+				// We're actually selectively reading scenario_structure_bsps_block fields here
+
+				// The offset actually points to the bsp header, and the bsp comes after that header
+				item.Offset = s.ReadInt32() + Halo1.Tags.scenario_structure_bsps_header.kSizeOf;
 				item.Size = s.ReadInt32();
 				cache.BspAddressMasks.Add(s.ReadUInt32() - (uint)item.Offset); // won't count the header
 				item.BspIndex = bspCount++;
+				// Seek to the end of this definition, and thus, the start of the next definition
 				s.Seek(20, System.IO.SeekOrigin.Current);
 			}
 		}
