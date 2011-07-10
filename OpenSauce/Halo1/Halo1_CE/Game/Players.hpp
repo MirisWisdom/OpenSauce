@@ -78,6 +78,35 @@ namespace Yelo
 		}; BOOST_STATIC_ASSERT( sizeof(s_vehicle_update_queue) == 0x18 );
 
 
+		union u_player_datum_scores
+		{
+			byte data[sizeof(int32)*2];
+
+			struct s_ctf {
+				int16 flag_grabs;
+				int16 flag_returns;
+				int16 flag_scores;
+			}ctf;
+
+			struct s_slayer {
+			}slayer;
+
+			struct s_oddball {
+				UNKNOWN_TYPE(int16);
+				int16 target_kills;
+				int16 kills;
+			}oddball;
+
+			struct s_king {
+				int16 hill_score;
+			}king;
+
+			struct s_race {
+				int16 time;
+				int16 laps;
+				int16 best_time;
+			}race;
+		}; BOOST_STATIC_ASSERT( sizeof(u_player_datum_scores) == 8 );
 		struct s_player_datum : TStructImpl(0x200)
 		{
 			TStructGetPtrImpl(Memory::s_datum_base, DatumHeader, 0x0);
@@ -133,16 +162,7 @@ namespace Yelo
 			TStructGetPtrImpl(int16, TKs, 0xC0);
 			// 0xC2?
 
-				// union
-				TStructGetPtrImpl(int16, FlagGrabs, 0xC4);
-				TStructGetPtrImpl(int16, KingScore, 0xC4);
-
-				// union
-				TStructGetPtrImpl(int16, FlagReturns, 0xC6);
-				TStructGetPtrImpl(int16, RaceScore, 0xC6);
-
-			TStructGetPtrImpl(int16, FlagScores, 0xC8);
-			// 0xCA?
+			TStructGetPtrImpl(u_player_datum_scores, Scores, 0xC4);
 			TStructGetPtrImpl(uint32, TelefragCounter, 0xCC); // # of ticks spent blocking teleporter
 			TStructGetPtrImpl(int32, QuickGameTick, 0xD0); // game tick the player quick at
 			TStructGetPtrImpl(bool, TelefragEnabled, 0xD4); // if we're blocking a teleporter, this will be true
