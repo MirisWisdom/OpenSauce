@@ -925,9 +925,15 @@ namespace BlamLib.Blam.Halo2
 			cacheLanguagePackContainer = null;
 
 			if (globals_handle != DatumIndex.Null)
+			{
 				Unload(globals_handle);
+				globals_handle = DatumIndex.Null;
+			}
 			if (sound_gestalt_handle != DatumIndex.Null)
+			{
 				Unload(sound_gestalt_handle);
+				sound_gestalt_handle = DatumIndex.Null;
+			}
 
 			if (kVertexBuffers != null)
 			{
