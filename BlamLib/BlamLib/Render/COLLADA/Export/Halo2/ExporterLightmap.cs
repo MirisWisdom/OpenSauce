@@ -55,13 +55,15 @@ namespace BlamLib.Render.COLLADA.Halo2
 			// create a geometry for each lightmap cluster
 			for (int i = 0; i < definition.LightmapGroups.Count; i++)
 			{
-				for (int j = 0; j < definition.LightmapGroups[i].Clusters.Count; j++)
+				var lm_group = definition.LightmapGroups[i];
+
+				for (int j = 0; j < lm_group.Clusters.Count; j++)
 				{
 					string name = String.Format("{0}-group{1}-cluster{2}", ColladaUtilities.FormatName(tagName, " ", "_"), i, j);
 
 					// create the geometry element
 					CreateGeometryHalo2(name, false,
-						definition.LightmapGroups[i].Clusters[j].CacheData[0].Geometry.Value,
+						lm_group.Clusters[j].CacheData[0].Geometry.Value,
 						new List<string>());
 				}
 			}

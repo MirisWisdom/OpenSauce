@@ -1376,9 +1376,11 @@ namespace BlamLib.Blam.Halo2.Tags
 
 
 	#region scenario_structure_bsps_header
-	[TI.Definition(2, 16)]
+	[TI.Definition(2, scenario_structure_bsps_header.kSizeOf)]
 	public class scenario_structure_bsps_header : TI.Definition
 	{
+		public const int kSizeOf = 16;
+
 		#region Fields
 		public TI.LongInteger Size;
 		public TI.LongInteger PtrBsp;
@@ -1392,6 +1394,50 @@ namespace BlamLib.Blam.Halo2.Tags
 			Add(PtrBsp = new TI.LongInteger());
 			Add(PtrLightmap = new TI.LongInteger());
 			Add(Signature = new TI.Tag());
+		}
+
+		int CalculateBspSize()
+		{
+			uint bsp_address = (uint)PtrBsp.Value;
+			uint ltmp_address = (uint)PtrLightmap.Value;
+
+			return (int)(ltmp_address - bsp_address);
+		}
+		int CalculateLightmapSize()
+		{
+			uint total_size = (uint)Size.Value - kSizeOf;
+			// we don't include the header size since we use the bsp address as our base address
+			total_size -= kSizeOf;
+
+			uint bsp_address = (uint)PtrBsp.Value;
+			uint highest_address = bsp_address + total_size;
+
+			uint ltmp_address = (uint)PtrLightmap.Value;
+			return (int)(highest_address - ltmp_address);
+		}
+
+		/// <summary>
+		/// Fixup the instance header of a BSP tag
+		/// </summary>
+		/// <param name="instance"></param>
+		/// <param name="offset"></param>
+		/// <returns>The BSP tag's address mask</returns>
+		public uint FixupBspInstanceHeader(CacheItem instance, int offset)
+		{
+			instance.Address = PtrBsp;
+			instance.Size = CalculateBspSize();
+			instance.Offset = offset;
+			instance.Location = CacheIndex.ItemLocation.Internal;
+
+			uint bsp_address_mask = (uint)(instance.Address - instance.Offset);
+			return bsp_address_mask;
+		}
+		public void FixupLightmapInstanceHeader(CacheItem instance, CacheItem owner_bsp)
+		{
+			instance.Address = this.PtrLightmap;
+			instance.Size = CalculateLightmapSize();
+			instance.Offset = owner_bsp.Offset + owner_bsp.Size;
+			instance.Location = CacheIndex.ItemLocation.Internal;
 		}
 	};
 	#endregion

@@ -2354,8 +2354,7 @@ namespace BlamLib.Blam.Halo2.Tags
 	public partial class scenario_structure_lightmap_group : TI.Definition, ITagImportInfo
 	{
 		#region Fields
-		public TI.Real SearchDistanceLowerBound;
-		public TI.Real SearchDistanceUpperBound;
+		public TI.RealBounds SearchDistance;
 		public TI.Real LuminelsPerWorldUnit;
 		public TI.Real OutputWhiteReference;
 		public TI.Real OutputBlackReference;
@@ -2373,10 +2372,9 @@ namespace BlamLib.Blam.Halo2.Tags
 		#endregion
 
 		#region Ctor
-		public scenario_structure_lightmap_group() : base(19)
+		public scenario_structure_lightmap_group() : base(18)
 		{
-			Add(SearchDistanceLowerBound = new TI.Real());
-			Add(SearchDistanceUpperBound = new TI.Real());
+			Add(SearchDistance = new TI.RealBounds());
 			Add(LuminelsPerWorldUnit = new TI.Real());
 			Add(OutputWhiteReference = new TI.Real());
 			Add(OutputBlackReference = new TI.Real());

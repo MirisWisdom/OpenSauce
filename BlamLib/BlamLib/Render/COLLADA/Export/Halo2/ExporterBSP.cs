@@ -91,24 +91,16 @@ namespace BlamLib.Render.COLLADA.Halo2
 		/// </summary>
 		protected void CreateMaterialListPortals()
 		{
-			string shader_name = "portals";
-			listMaterial.Add(
-				CreateMaterial(shader_name,
-					shader_name,
-					shader_name,
-					shader_name));
+			const string k_shader_name = "portals";
+			listMaterial.Add(CreateMaterial(k_shader_name));
 		}
 		/// <summary>
 		/// Populate the material list for fogplane geometry
 		/// </summary>
 		protected void CreateMaterialListFogPlanes()
 		{
-			string shader_name = "fogplanes";
-			listMaterial.Add(
-				CreateMaterial(shader_name,
-					shader_name,
-					shader_name,
-					shader_name));
+			const string k_shader_name = "fogplanes";
+			listMaterial.Add(CreateMaterial(k_shader_name));
 		}
 		#endregion
 		#region Create Geometry
@@ -183,7 +175,7 @@ namespace BlamLib.Render.COLLADA.Halo2
 			for (int shader_index = 0; shader_index < shaderInfo.GetShaderCount(); shader_index++)
 				shader_list.Add(ColladaUtilities.FormatName(Path.GetFileNameWithoutExtension(shaderInfo.GetShaderName(shader_index)), " ", "_"));
 
-			// if portals are included andd the portals material to the list
+			// if portals are included and the portals material to the list
 			if (bspInfo.IncludePortalsMesh())
 				shader_list.Add("portals");
 
