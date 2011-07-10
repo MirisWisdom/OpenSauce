@@ -118,7 +118,7 @@ namespace BlamLib.Render.COLLADA.Halo2
 		/// </summary>
 		void CreateBoneList()
 		{
-			H2.Tags.render_model_group definition = tagManager.TagDefinition as H2.Tags.render_model_group;
+			var definition = tagManager.TagDefinition as H2.Tags.render_model_group;
 
 			// there are no nodes, return
 			if (definition.Nodes.Count == 0)
@@ -147,7 +147,7 @@ namespace BlamLib.Render.COLLADA.Halo2
 		/// </summary>
 		void CreateNodeList()
 		{
-			// create a list of all the sahders used in the file
+			// create a list of all the shaders used in the file
 			List<string> shader_list = new List<string>();
 			for (int shader_index = 0; shader_index < shaderInfo.GetShaderCount(); shader_index++)
 				shader_list.Add(ColladaUtilities.FormatName(Path.GetFileNameWithoutExtension(shaderInfo.GetShaderName(shader_index)), " ", "_"));
@@ -253,5 +253,5 @@ namespace BlamLib.Render.COLLADA.Halo2
 
 			return true;
 		}
-	}
+	};
 }

@@ -61,12 +61,15 @@ namespace BlamLib.Render.COLLADA.Halo2
 		protected List<int> CreateIndicesWorldSpace(H2.Tags.global_geometry_section_struct section, int part_index)
 		{
 			List<int> indices = new List<int>();
-			
+
 			// add the strip indices to an easier to handle index list, ignoring invalid indices
 			List<int> index_list = new List<int>();
-			for (int i = 0; i < section.Parts[part_index].StripLength; i++)
-				if(section.StripIndices[section.Parts[part_index].StripStartIndex + i].Index.Value != -1)
-					index_list.Add(section.StripIndices[section.Parts[part_index].StripStartIndex + i].Index.Value);
+			{
+				var part = section.Parts[part_index];
+				for (int i = 0; i < part.StripLength; i++)
+					if (section.StripIndices[part.StripStartIndex + i].Index.Value != -1)
+						index_list.Add(section.StripIndices[part.StripStartIndex + i].Index.Value);
+			}
 
 			// add indices to the list, assuming each 3 indices is one triangle
 			for (int surface_index = 0; surface_index < index_list.Count; surface_index += 3)
@@ -198,7 +201,7 @@ namespace BlamLib.Render.COLLADA.Halo2
 				phong.Emission.Color = new Core.ColladaColor(block.ConstColor, 1.0f);
 			}
 
-			if (((block = FindParameter(shader, "base_map")) != null) && IsDatumValid(block.Bitmap.Datum))
+			if ((block = FindParameter(shader, "base_map")) != null && IsDatumValid(block.Bitmap.Datum))
 			{
 				phong.Diffuse.Color = null;
 				phong.Diffuse.Texture = CreateTexture(block.Bitmap.Datum, 0);
@@ -209,7 +212,7 @@ namespace BlamLib.Render.COLLADA.Halo2
 			if ((block = FindParameter(shader, "specular_color")) != null)
 				phong.Specular.Color.SetColor(block.ConstColor, 1.0f);
 
-			if (((block = FindParameter(shader, "alpha_test_map")) != null) && IsDatumValid(block.Bitmap.Datum))
+			if ((block = FindParameter(shader, "alpha_test_map")) != null && IsDatumValid(block.Bitmap.Datum))
 			{
 				phong.Transparent.Color = null;
 				phong.Transparent.Texture = CreateTexture(block.Bitmap.Datum, 0);
@@ -240,9 +243,9 @@ namespace BlamLib.Render.COLLADA.Halo2
 
 			H2.Tags.global_shader_parameter_block block;
 
-			if (((block = FindParameter(shader, "base_map")) != null) && IsDatumValid(block.Bitmap.Datum))
+			if ((block = FindParameter(shader, "base_map")) != null && IsDatumValid(block.Bitmap.Datum))
 				bitmap_datums.Add(block.Bitmap.Datum);
-			if (((block = FindParameter(shader, "alpha_test_map")) != null) && IsDatumValid(block.Bitmap.Datum))
+			if ((block = FindParameter(shader, "alpha_test_map")) != null && IsDatumValid(block.Bitmap.Datum))
 				bitmap_datums.Add(block.Bitmap.Datum);
 
 			return bitmap_datums;

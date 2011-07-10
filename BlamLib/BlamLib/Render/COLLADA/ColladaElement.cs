@@ -226,7 +226,7 @@ namespace BlamLib.Render.COLLADA
 			// add the element type
 			string_list.Add(String.Format("DETAIL: Type : {0}\n", this.GetType().Name));
 
-			string detail_format_string = "DETAIL: Property : {0} : {1}";
+			const string detail_format_string = "DETAIL: Property : {0} : {1}";
 
 			// work through all of the public properties of this element
 			PropertyInfo[] properties = this.GetType().GetProperties();
@@ -234,24 +234,23 @@ namespace BlamLib.Render.COLLADA
 			{
 				// get the property value
 				object value = property.GetValue(this, null);
+				string value_str = "null";
 
 				// if the value is null, say as much and move on
 				if (value == null)
-				{
-					string_list.Add(String.Format(detail_format_string, property.Name, "null"));
-					continue;
-				}
-
+					value_str = "null";
 				// if the value has the IList interface it has the Count property
 				// so add a string showing how many elements are in the list
-				if (value.GetType().GetInterface("IList") != null)
+				else if (value.GetType().GetInterface("IList") != null)
 				{
 					PropertyInfo count_property = value.GetType().GetProperty("Count");
 					if (count_property != null)
-						string_list.Add(String.Format(detail_format_string, property.Name, count_property.GetValue(value, null)));
+						value_str = count_property.GetValue(value, null).ToString();
 				}
 				else
-					string_list.Add(String.Format(detail_format_string, property.Name, value));
+					value_str = value.ToString();
+
+				string_list.Add(String.Format(detail_format_string, property.Name, value_str));
 			}
 			return string_list;
 		}
@@ -269,9 +268,9 @@ namespace BlamLib.Render.COLLADA
 			if (property == null)
 				throw new ColladaException("COLLADA EXCEPTION: attempted to format an ID for an element that doesn not have an ID property");
 
-			ColladaIDAttribute[] id_attributes = (ColladaIDAttribute[])property.GetCustomAttributes(typeof(ColladaIDAttribute), false);
+			var id_attributes = property.GetCustomAttributes(typeof(ColladaIDAttribute), false) as ColladaIDAttribute[];
 
-			if ((id_attributes == null) || (id_attributes.Length == 0))
+			if (id_attributes == null || id_attributes.Length == 0)
 				throw new ColladaException("COLLADA EXCEPTION: an ID property has no formatting string defined");
 
 			return id_attributes[0].FormatID(id);

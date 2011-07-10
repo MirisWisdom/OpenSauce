@@ -316,23 +316,25 @@ namespace BlamLib.Render.COLLADA.Halo2
 
 				for (int i = 0; i < definition.Regions.Count; i++ )
 				{
+					var region = definition.Regions[i];
+
 					int permutation_index = permutation;
 
-					if (permutation >= definition.Regions[i].Permutations.Count)
+					if (permutation >= region.Permutations.Count)
 						permutation_index = 0;
 
 					string name = string.Format("{0}-{1}-lod{2}",
-						definition.Regions[i].Name.ToString(), definition.Regions[i].Permutations[permutation_index].Name.ToString(), lod);
+						definition.Regions[i].Name.ToString(), region.Permutations[permutation_index].Name.ToString(), lod);
 
 					int index = 0;
 					switch (lod)
 					{
-						case 0: index = definition.Regions[i].Permutations[permutation_index].L6; break;
-						case 1: index = definition.Regions[i].Permutations[permutation_index].L5; break;
-						case 2: index = definition.Regions[i].Permutations[permutation_index].L4; break;
-						case 3: index = definition.Regions[i].Permutations[permutation_index].L3; break;
-						case 4: index = definition.Regions[i].Permutations[permutation_index].L2; break;
-						case 5: index = definition.Regions[i].Permutations[permutation_index].L1; break;
+						case 0: index = region.Permutations[permutation_index].L6; break;
+						case 1: index = region.Permutations[permutation_index].L5; break;
+						case 2: index = region.Permutations[permutation_index].L4; break;
+						case 3: index = region.Permutations[permutation_index].L3; break;
+						case 4: index = region.Permutations[permutation_index].L2; break;
+						case 5: index = region.Permutations[permutation_index].L1; break;
 					};
 
 					model_info.AddGeometry(name, index);

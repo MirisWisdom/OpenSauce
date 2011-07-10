@@ -26,9 +26,9 @@ namespace BlamLib.Render.COLLADA
 	{
 		None,
 
-		RenderMesh,
-		Portals,
-		FogPlanes,
+		RenderMesh = 1<<0,
+		Portals = 1<<1,
+		FogPlanes = 1<<2,
 	};
 
 	public interface IHaloShaderDatumList

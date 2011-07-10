@@ -1111,6 +1111,15 @@ namespace BlamLib.Render.COLLADA
 			return material;
 		}
 		/// <summary>
+		/// Creates a material element
+		/// </summary>
+		/// <param name="id">Name to use for everything (id, name, sID, and effect)</param>
+		/// <returns>CreateMaterial(id, id, id, id)</returns>
+		protected static Fx.ColladaMaterial CreateMaterial(string id)
+		{
+			return CreateMaterial(id, id, id, id);
+		}
+		/// <summary>
 		/// Populate the material list
 		/// </summary>
 		protected void CreateMaterialList()

@@ -558,63 +558,54 @@ namespace BlamLib.Blam.Halo2
 			#region retail tag name & bsp offset fixup code
 			else
 			{
+				// Build the absolute tag name offsets
 				s.Seek(cache.HeaderHalo2.TagNameIndicesOffset);
 				int[] offsets = new int[tagCount];
-				int of = 0;
 				for (int x = 0; x < offsets.Length; x++)
 				{
-					of = s.ReadInt32();
-					if (of != -1)
-						offsets[x] = of + cache.HeaderHalo2.TagNamesBufferOffset;
-					else
-						offsets[x] = -1;
+					int offset = s.ReadInt32();
+					// Offset will be -1 if the tag in question is 'null'
+					if (offset != -1)
+						offset += cache.HeaderHalo2.TagNamesBufferOffset;
+
+					offsets[x] = offset;
 				}
-				
-				//s.Seek(cache.HeaderHalo2.TagNamesBufferOffset);
+				// Fixup all tag instances which are named
 				for (int x = 0; x < tagCount; x++)
 				{
 					if (offsets[x] != -1)
-					{
-						s.Seek(offsets[x]);
-						item = items[x];
-						item.TagNameOffset = s.PositionUnsigned;
-						item.ReferenceName = cache.References.AddOptimized(item.GroupTag, s.ReadCString());
-					}
-					else
-						of++;
+						FixupTagInstanceHeaderName(cache, items[x], offsets[x], s);
 				}
 
+				// PC maps store all zones in the tag memory, they don't need to swap out and thus don't 
+				// need any fix ups (durrr, PCs have loltons of RAM)
 				if (!is_pc && !is_echo)
 				{
-					CacheItem tmp_ltmp_item;
-					Halo2.Tags.scenario_structure_bsps_header head = new Halo2.Tags.scenario_structure_bsps_header();
+					var head = new Halo2.Tags.scenario_structure_bsps_header();
 					foreach (CacheItem tmp_item in bspTags)
 					{
 						s.Seek(tmp_item.Offset);
 						head.Read(cache);
 
 						// bsp
-						tmp_item.Address = head.PtrBsp;
-						tmp_item.Size = (int)(((uint)head.PtrLightmap.Value) - ((uint)head.PtrBsp.Value));
-						tmp_item.Offset = s.Position;
-
-						cache.BspAddressMasks.Add((uint)(tmp_item.Address - tmp_item.Offset));
+						uint bsp_address_mask = head.FixupBspInstanceHeader(tmp_item, s.Position);
+						cache.BspAddressMasks.Add(bsp_address_mask);
 
 						// ltmp
 						DatumIndex ltmp_datum = ltmps[tmp_item.BspIndex];
 						if (ltmp_datum != DatumIndex.Null)
-						{
-							tmp_ltmp_item = this.items[ltmp_datum.Index];
-							tmp_ltmp_item.Address = head.PtrLightmap;
-							tmp_ltmp_item.Size = (int)(
-								((uint)head.PtrBsp.Value + ((uint)head.Size - 16)) - 
-								(uint)head.PtrLightmap.Value);
-							tmp_ltmp_item.Offset = tmp_item.Offset + tmp_item.Size;
-						}
+							head.FixupLightmapInstanceHeader(this.items[ltmp_datum.Index], tmp_item);
 					}
 				}
 			}
 			#endregion
+		}
+
+		static void FixupTagInstanceHeaderName(CacheFile cache, CacheItem instance, int name_offset, IO.EndianReader s)
+		{
+			s.Seek(name_offset);
+			instance.TagNameOffset = s.PositionUnsigned;
+			instance.ReferenceName = cache.References.AddOptimized(instance.GroupTag, s.ReadCString());
 		}
 
 		public CacheItemGroupTag[] ReadGroupTags(BlamLib.IO.EndianReader s)
@@ -686,11 +677,11 @@ namespace BlamLib.Blam.Halo2
 			Null.datum = DatumIndex.Null;
 			Null.groupTag = TagInterface.TagGroup.Null;
 			Null.bspIndex = -1;
-			Null.location = BlamLib.Blam.CacheIndex.ItemLocation.Unknown;
+			Null.location = CacheIndex.ItemLocation.Unknown;
 		}
 		#endregion
 
-		public override void Read(BlamLib.IO.EndianReader s)
+		public override void Read(IO.EndianReader s)
 		{
 			GroupTagInt = s.ReadUInt32();
 			groupTag = Program.Halo2.Manager.TagGroupFind(TagInterface.TagGroup.FromUInt(GroupTagInt));
@@ -699,14 +690,14 @@ namespace BlamLib.Blam.Halo2
 			datum.Read(s);
 			address = s.ReadUInt32();
 
-			if (GroupTagInt == uint.MaxValue)	location = BlamLib.Blam.CacheIndex.ItemLocation.Unknown;
-			else if (address == 0)				location = BlamLib.Blam.CacheIndex.ItemLocation.External;
+			if (GroupTagInt == uint.MaxValue)	location = CacheIndex.ItemLocation.Unknown;
+			else if (address == 0)				location = CacheIndex.ItemLocation.External;
 			else								offset = (int)(address - s.BaseAddress);
 
 			size = s.ReadInt32();
 		}
 
-		public void ReadAlpha(BlamLib.IO.EndianReader s)
+		public void ReadAlpha(IO.EndianReader s)
 		{
 			GroupTagInt = s.ReadUInt32();
 			groupTag = Program.Halo2.Manager.TagGroupFind(TagInterface.TagGroup.FromUInt(GroupTagInt));
