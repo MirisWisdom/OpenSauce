@@ -925,12 +925,12 @@ namespace BlamLib.TagInterface
 //					Debug.LogFile.WriteLine(
 //						"'{0}'{1}\tFailed to load '{2}.{3}'",
 //						tm.Path, Program.NewLine, Value, tg.Name);
-					if(tm != null)
+					if (!ts.Flags.Test(IO.ITagStreamFlags.DontTrackTagManagerReferences) && tm != null)
 						tm.BadReferencesAdd(this);
 				}
 				else if (tm != null)
 				{
-					if (!tm.ReferencesContains(Datum))
+					if (!ts.Flags.Test(IO.ITagStreamFlags.DontTrackTagManagerReferences) && !tm.ReferencesContains(Datum))
 						tm.ReferencesAdd(Datum);
 
 					ReferenceId = tag_index[Datum].ReferenceName;

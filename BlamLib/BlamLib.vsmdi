@@ -3,6 +3,15 @@
   <TestList name="Lists of Tests" id="8c43106b-9dc1-4907-a29f-aa66a61bf5b6">
     <RunConfiguration id="86c78e00-f9d9-4214-a7c1-3a7943602ee8" name="Local Test Run" storage="localtestrun.testrunconfig" type="Microsoft.VisualStudio.TestTools.Common.TestRunConfiguration, Microsoft.VisualStudio.QualityTools.Common,   PublicKeyToken=b03f5f7f11d50a3a" />
   </TestList>
+  <TestList name="Halo Reach Tests" id="9f720de1-e475-4e97-821a-5288944a3d3b" parentListId="8c43106b-9dc1-4907-a29f-aa66a61bf5b6">
+    <TestLinks>
+      <TestLink id="ad3e3249-8103-c5f1-45e2-1cfe904bcaf3" name="HaloReachBuildCacheSymbols" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="452f1964-e328-c006-8a06-9e3aecae0916" name="HaloReachTestCacheOutputXboxBeta" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="53699db4-f5db-0518-3194-78119e685f41" name="HaloReachTestScanForScriptFunctions" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="ecf786be-6b85-3dca-f390-69a231287701" name="HaloReachTestCacheOutputXbox" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="64c18f9a-d275-b2f9-e4df-27203cabcc04" name="HaloReachTestDumpScriptGraphs" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+    </TestLinks>
+  </TestList>
   <TestList name="Halo 1 Tests" id="b4d3a583-e8c9-4597-b2c2-81b348424f64" parentListId="8c43106b-9dc1-4907-a29f-aa66a61bf5b6">
     <Description>Tests related to Halo 1 code</Description>
     <TestLinks>
@@ -50,15 +59,6 @@
       <TestLink id="91cb366c-1850-7a97-80ce-bf3aad9fa383" name="Halo3TestSndComparerXbox" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
       <TestLink id="c72deb08-699c-45ee-8337-51f1b63f5d55" name="Halo3TestScanForScriptFunctionsXbox" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
       <TestLink id="f6c30032-0641-f7b3-8780-90a279893138" name="HaloOdstTestCacheLoadResourceXbox" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
-    </TestLinks>
-  </TestList>
-  <TestList name="Halo Reach Tests" id="9f720de1-e475-4e97-821a-5288944a3d3b" parentListId="8c43106b-9dc1-4907-a29f-aa66a61bf5b6">
-    <TestLinks>
-      <TestLink id="ad3e3249-8103-c5f1-45e2-1cfe904bcaf3" name="HaloReachBuildCacheSymbols" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
-      <TestLink id="53699db4-f5db-0518-3194-78119e685f41" name="HaloReachTestScanForScriptFunctions" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
-      <TestLink id="452f1964-e328-c006-8a06-9e3aecae0916" name="HaloReachTestCacheOutputXboxBeta" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
-      <TestLink id="ecf786be-6b85-3dca-f390-69a231287701" name="HaloReachTestCacheOutputXbox" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
-      <TestLink id="64c18f9a-d275-b2f9-e4df-27203cabcc04" name="HaloReachTestDumpScriptGraphs" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
     </TestLinks>
   </TestList>
   <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d">

@@ -67,9 +67,11 @@ namespace BlamLib.Blam
 		/// <returns></returns>
 		public IEnumerable<DatumIndex> CurrentDependents()
 		{
-			var ret = new List<DatumIndex>();
+			var ret = new List<DatumIndex>(Datums.Keys.Count);
 			foreach (DatumIndex di in Datums.Keys)
 				if (!Datums[di]) ret.Add(di);
+
+			ret.TrimExcess();
 			return ret;
 		}
 

@@ -74,11 +74,11 @@ namespace Yelo
 			{
 				if( !_stricmp(str, "false") |
 					!_stricmp(str, "off") |
-					!strcmp (str, "0") )
+					!strcmp  (str, "0") )
 					result = false;
 				else if(!_stricmp(str, "true") |
-					!_stricmp(str, "on") | 
-					!strcmp (str, "1") )
+						!_stricmp(str, "on") | 
+						!strcmp  (str, "1") )
 					result = true;
 			}
 
@@ -91,16 +91,13 @@ namespace Yelo
 
 			if(element != NULL)
 			{
-				element->QueryFloatAttribute(is_vector ? "i" : "x", 
-					&r3d[0]);
-				element->QueryFloatAttribute(is_vector ? "j" : "y", 
-					&r3d[1]);
-				element->QueryFloatAttribute(is_vector ? "k" : "z", 
-					&r3d[2]);
+				element->QueryFloatAttribute(is_vector ? "i" : "x", &r3d[0]);
+				element->QueryFloatAttribute(is_vector ? "j" : "y", &r3d[1]);
+				element->QueryFloatAttribute(is_vector ? "k" : "z", &r3d[2]);
 			}
 		}
 
-		void XmlWriteReal3D(TiXmlElement* element, real* r3d, const bool is_vector)
+		void XmlWriteReal3D(TiXmlElement* element, const real* r3d, const bool is_vector)
 		{
 			element->SetDoubleAttribute(is_vector ? "i" : "x", r3d[0]);
 			element->SetDoubleAttribute(is_vector ? "j" : "y", r3d[1]);

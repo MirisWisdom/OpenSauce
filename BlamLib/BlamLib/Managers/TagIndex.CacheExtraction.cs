@@ -168,12 +168,40 @@ namespace BlamLib.Managers
 			
 		}
 
+		// Initializes the error DB if it hasn't already been setup
+		void ExtractWithDependentsPreprocessErrorDatabase(ErrorTagDatabase etdb, TagManager tag, ref bool root_is_initialized)
+		{
+			if (!root_is_initialized)
+			{
+				etdb.SetRoot(this.References[tag.ReferenceName], tag.GroupTag.ID);
+				root_is_initialized = true;
+			}
+		}
+		// Setup the error DB and add a skipped tag entry
+		void ExtractWithDependentsErrorSkipped(ErrorTagDatabase etdb, TagManager tag, ref bool root_is_initialized, Blam.DatumIndex error_tag)
+		{
+			ExtractWithDependentsPreprocessErrorDatabase(etdb, tag, ref root_is_initialized);
+
+			var error_item = cacheFile.Index.Tags[error_tag.Index];
+			etdb.AddDependent(References[error_item.ReferenceName], error_item.GroupTag.ID,
+				ErrorTagDatabase.ErrorFlags.Skipped);
+		}
+		// Setup the error DB and add a failed tag entry
+		void ExtractWithDependentsErrorFailed(ErrorTagDatabase etdb, TagManager tag, ref bool root_is_initialized, Blam.DatumIndex error_tag)
+		{
+			ExtractWithDependentsPreprocessErrorDatabase(etdb, tag, ref root_is_initialized);
+
+			var error_item = cacheFile.Index.Tags[error_tag.Index];
+			etdb.AddDependent(References[error_item.ReferenceName], error_item.GroupTag.ID,
+				ErrorTagDatabase.ErrorFlags.Failure);
+		}
 		bool ExtractWithDependents(Blam.CacheExtractionInfo cei, TagManager tag)
 		{
+			ErrorTagDatabase etdb = cei.DatabaseErrors;
+			bool error_root_is_initialized = false;
+
 			var depns = cacheFile.ExtractionState.CurrentDependents();
 			var depns_to_extract = new List<Blam.DatumIndex>();
-			var skipped_depns = new List<Blam.DatumIndex>();
-			var failed_depns = new List<Blam.DatumIndex>();
 
 			foreach (Blam.DatumIndex datum in depns)
 			{
@@ -184,7 +212,7 @@ namespace BlamLib.Managers
 				}
 				else
 				{
-					skipped_depns.Add(datum);
+					ExtractWithDependentsErrorSkipped(etdb, tag, ref error_root_is_initialized, datum);
 					cacheFile.ExtractionState.Dequeue(datum);
 				}
 			}
@@ -194,31 +222,8 @@ namespace BlamLib.Managers
 			{
 				cei.Reset(cacheFile.Index.Tags[datum.Index]);
 				if (!Extract(cei, datum, true))
-					failed_depns.Add(datum);
+					ExtractWithDependentsErrorFailed(etdb, tag, ref error_root_is_initialized, datum);
 			}
-
-			#region log the bad dependents
-			if (failed_depns.Count > 0 || skipped_depns.Count > 0)
-			{
-				ErrorTagDatabase etb = cei.DatabaseErrors;
-				etb.SetRoot(this.References[tag.ReferenceName], tag.GroupTag.ID);
-
-				Blam.CacheIndex.Item item;
-				foreach(Blam.DatumIndex di in skipped_depns)
-				{
-					item = cacheFile.Index.Tags[di.Index];
-					etb.AddDependent(References[item.ReferenceName], item.GroupTag.ID, 
-						ErrorTagDatabase.ErrorFlags.Skipped);
-				}
-
-				foreach(Blam.DatumIndex di in failed_depns)
-				{
-					item = cacheFile.Index.Tags[di.Index];
-					etb.AddDependent(References[item.ReferenceName], item.GroupTag.ID, 
-						ErrorTagDatabase.ErrorFlags.Failure);
-				}
-			}
-			#endregion
 
 			return true;
 		}
