@@ -153,7 +153,14 @@ namespace BlamLib.Managers
 #endif
 			tm.Manage(i.GroupTag);
 
-			if(!i.IsFeignItem)
+			if (!i.IsFeignItem)
+			{
+				// We don't care about this shit when extracting or opening from a cache file
+				const uint k_open_flags = IO.ITagStreamFlags.DontTrackTagManagerReferences | 
+					IO.ITagStreamFlags.DontTrackTagReferencers;
+
+				tm.Flags.Add(k_open_flags);
+
 				try { tm.Read(i, cacheFile, group_tag_hack); }
 				catch (Exception ex)
 				{
@@ -162,6 +169,10 @@ namespace BlamLib.Managers
 						cacheFile.GetReferenceName(i), i.GroupTag.Name, Program.NewLine, ex);
 					return Blam.DatumIndex.Null;
 				}
+
+				// Remove the flag we set before reading
+				tm.Flags.Remove(k_open_flags);
+			}
 
 			tm.TagIndex = Array.Add(tm);
 			base.OnEventOpen(new TagIndexEventArgs(this, tm));

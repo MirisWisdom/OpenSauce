@@ -178,7 +178,8 @@ namespace BlamLib.Test
 		[TestMethod]
 		public void Halo2TestCacheExtractionPc()
 		{
-			BlamLib.Program.Halo2.LoadPc(
+			StartStopwatch();
+			Program.Halo2.LoadPc(
 				kMapsDirectoryPc + @"mainmenu.map",
 				kMapsDirectoryPc + @"shared.map",
 				kMapsDirectoryPc + @"single_player_shared.map");
@@ -186,16 +187,21 @@ namespace BlamLib.Test
 			Assert.IsNotNull(Program.Halo2.PcShared);
 			Assert.IsNotNull(Program.Halo2.PcCampaign);
 
+			StartSubStopwatch();
 			Halo2TestCacheExtraction(BlamVersion.Halo2_PC, kMapsDirectoryPc, 
 				//"00a_introduction.map"
 				//"example.map"
 				"03b_newmombasa.map"
 				);
+			Console.WriteLine("Halo2TestCacheExtractionPc: Extract time: {0}", StopSubStopwatch());
+
+			Console.WriteLine("Halo2TestCacheExtractionPc: Overall time: {0}", StopStopwatch());
 		}
 
 		[TestMethod]
 		public void Halo2TestCacheExtractionXbox()
 		{
+			StartStopwatch();
 			Program.Halo2.LoadXbox(
 				kMapsDirectoryXbox + @"mainmenu.map",
 				kMapsDirectoryXbox + @"shared.map",
@@ -204,7 +210,11 @@ namespace BlamLib.Test
 			Assert.IsNotNull(Program.Halo2.XboxShared);
 			Assert.IsNotNull(Program.Halo2.XboxCampaign);
 
+			StartSubStopwatch();
 			Halo2TestCacheExtraction(BlamVersion.Halo2_Xbox, kMapsDirectoryXbox, "00a_introduction.map");
+			Console.WriteLine("Halo2TestCacheExtractionXbox: Extract time: {0}", StopSubStopwatch());
+
+			Console.WriteLine("Halo2TestCacheExtractionXbox: Overall time: {0}", StopStopwatch());
 		}
 	};
 }

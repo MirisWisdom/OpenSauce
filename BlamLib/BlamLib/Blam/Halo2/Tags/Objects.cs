@@ -2550,10 +2550,12 @@ namespace BlamLib.Blam.Halo2.Tags
 		}
 		#endregion
 
+		// triggers_block in Halo1
 		#region weapon_barrels
 		[TI.Definition(3, 256)]
 		public class weapon_barrels : TI.Definition
 		{
+			// trigger_firing_effect_block in Halo1
 			#region barrel_firing_effect_block
 			[TI.Definition(2, 100)]
 			public class barrel_firing_effect_block : TI.Definition
@@ -2562,10 +2564,9 @@ namespace BlamLib.Blam.Halo2.Tags
 				#endregion
 
 				#region Ctor
-				public barrel_firing_effect_block() : base(8)
+				public barrel_firing_effect_block() : base(7)
 				{
-					Add(/*shot count lower bound = */ new TI.ShortInteger());
-					Add(/*shot count upper bound = */ new TI.ShortInteger());
+					Add(/*shot count = */ new TI.ShortIntegerBounds());
 					Add(/*firing effect = */ new TI.TagReference(this)); // snd!,effe,
 					Add(/*misfire effect = */ new TI.TagReference(this)); // snd!,effe,
 					Add(/*empty effect = */ new TI.TagReference(this)); // snd!,effe,

@@ -42,15 +42,26 @@ namespace Yelo
 			}
 		}
 
+		static void GetTimeStampString(_Out_ tag_string time_str)
+		{
+			const size_t k_time_str_sizeof = sizeof(tag_string);
+
+			memset(time_str, 0, k_time_str_sizeof);
+
+			tm* newtime;
+			time_t aclock;	time( &aclock ); // Get time in seconds
+			localtime_s( newtime, &aclock ); // Convert time to struct tm form
+			asctime_s( time_str, k_time_str_sizeof, newtime );
+		}
+
 		static void WriteFirstLine()
 		{
 			static char format[] = "\n%s\n";
 
-			tm* newtime;
-			time_t aclock;	time( &aclock ); // Get time in seconds
-			newtime = localtime( &aclock ); // Convert time to struct tm form
+			tag_string time_str;
+			GetTimeStampString(time_str);
 
-			fprintf(debug_file, format, asctime(newtime));
+			fprintf_s(debug_file, format, time_str);
 			fflush(debug_file);
 		}
 
@@ -67,25 +78,20 @@ namespace Yelo
 				WriteFirstLine();
 			}
 
-			char* time_str;
+			tag_string time_str;
 			if(write_time_stamp)
-			{
-				tm* newtime;
-				time_t aclock;	time( &aclock ); // Get time in seconds
-				newtime = localtime( &aclock ); // Convert time to struct tm form
-				time_str = asctime(newtime);
-			}
+				GetTimeStampString(time_str);
 
 			char time_buffer[16];
 			memset(time_buffer, 0, sizeof(time_buffer));
 
 			if(write_time_stamp)
-				strncpy(time_buffer, time_str+11, 9); // copy the time only, leave out the date and year
+				strncpy_s(time_buffer, time_str+11, 9); // copy the time only, leave out the date and year
 
 			if(write_time_stamp)
-				fprintf(debug_file, format, time_buffer, str, '\n');
+				fprintf_s(debug_file, format, time_buffer, str, '\n');
 			else
-				fprintf(debug_file, format+2, str, '\n');
+				fprintf_s(debug_file, format+2, str, '\n');
 			fflush(debug_file);
 		}
 
@@ -94,7 +100,7 @@ namespace Yelo
 			char buffer[0x800];
 			va_list argptr;
 			va_start(argptr, format);
-			vsprintf(buffer, format, argptr);
+			vsprintf_s(buffer, format, argptr);
 			va_end(argptr);
 
 			Write(buffer, true);

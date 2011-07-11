@@ -41,6 +41,6 @@ namespace Yelo
 		// Parses an element for xyz or ijk attributes
 		void XmlReadReal3D(const TiXmlElement* element, real* r3d, const bool is_vector = false);
 		// Writes xyz or ijk attributes to an element
-		void XmlWriteReal3D(TiXmlElement* element, real* r3d, const bool is_vector = false);
+		void XmlWriteReal3D(TiXmlElement* element, const real* r3d, const bool is_vector = false);
 	};
 };

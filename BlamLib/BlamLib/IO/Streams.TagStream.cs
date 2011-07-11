@@ -86,21 +86,27 @@ namespace BlamLib.IO
 		public const uint DontPostprocess = 1 << 9;
 		/// <summary>
 		/// Bit for <see cref="ITagStream.Flags"/> that is set when we don't want tag 
+		/// reference fields adding themselves to owner tag manager's valid and/or bad references
+		/// </summary>
+		/// <remarks>Used when opening a tag from a cache file (eg, for extraction)</remarks>
+		public const uint DontTrackTagManagerReferences = 1 << 10;
+		/// <summary>
+		/// Bit for <see cref="ITagStream.Flags"/> that is set when we don't want tag 
 		/// reference fields adding themselves to owner tag index's name reference manager 
 		/// as a 'referencer'
 		/// </summary>
-		public const uint DontTrackTagReferencers = 1 << 10;
+		public const uint DontTrackTagReferencers = 1 << 11;
 
 		/// <summary>
 		/// Hack for Halo 3 tag resource fields which I initially thought were tag_data 
 		/// fields. TagData uses this to know when to read an extra 4 bytes
 		/// </summary>
-		public const uint Halo3VertexBufferMegaHack = 1 << 11;
+		public const uint Halo3VertexBufferMegaHack = 1 << 12;
 
 		/// <summary>
 		/// Next available bit that can be used
 		/// </summary>
-		public const uint NextBit = 12;
+		public const uint NextBit = 13;
 	};
 
 	public interface ITagStream

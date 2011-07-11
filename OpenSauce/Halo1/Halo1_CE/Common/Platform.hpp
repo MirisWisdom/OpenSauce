@@ -37,8 +37,8 @@
 
 
 #if !defined(PLATFORM_VERSION)
-	//#define PLATFORM_VERSION 0x1080 // latest supported release of haloce
-	#define PLATFORM_VERSION 0x1090 // latest release of haloce
+	//#define PLATFORM_VERSION 0x1080 // 1.08 is no longer actively supported, use at your own risk
+	#define PLATFORM_VERSION 0x1090 // latest supported release of haloce
 #endif
 
 
