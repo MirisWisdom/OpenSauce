@@ -24,22 +24,35 @@ namespace Phoenix
 
 	// For an idea on the compression used in HaloWars, visit:
 	// http://code.google.com/p/lzham/wiki/CompressionTechniquesUsed
+	// All fingers seem to point to them using something LZ based (compressed streams always end in a zero byte, 
+	// and I remember seeing code, related to compressed streams, which read two 16-bit values in a loop...idk, 
+	// this shit and PPC assembly has me burnt out)
 
 #include <PshPack1.h>
-	struct s_ecf_compressed_stream_dictionary
+	// This appears along with the archive filesystem's header
+	struct s_ecf_compressed_stream_header_data
 	{
+		struct s_sha_hash
+		{
+			boost::uint8_t data[0x14];
+		};
+
+		// signature used before and after the size_bit and hashes data
 		enum { k_signature = 0xAAC94350 };
 
-		boost::uint32_t signature;
-		boost::uint8_t dictionary_size_bit; // dictionary_size = 1<<dictionary_size_bit, only ever seen 0x13 (512KB)
+		boost::uint32_t head_signature;
+		// Window size?
+		boost::uint8_t size_bit; // size = 1<<size_bit, only ever seen 0x13 (512KB)
 
 #pragma warning( push )
 #pragma warning( disable : 4200 ) // nonstandard extension used : zero-sized array in struct/union, Cannot generate copy-ctor or copy-assignment operator when UDT contains a zero-sized array
-		boost::uint8_t dictionary_data[];
+		s_sha_hash sha_hashes[];
 #pragma warning( pop )
 
-		inline bool IsValid() const { return signature == k_signature; }
-	}; BOOST_STATIC_ASSERT( sizeof(s_ecf_compressed_stream_dictionary) == 0x5 );
+		//boost::uint32_t tail_signature;
+
+		inline bool IsValid() const { return head_signature == k_signature; }
+	}; BOOST_STATIC_ASSERT( sizeof(s_ecf_compressed_stream_header_data) == 0x5 );
 #include <PopPack.h>
 
 	struct s_ecf_compressed_stream_eos_marker // end of stream marker, can be found at the end of a compressed stream's data
@@ -128,7 +141,7 @@ namespace Phoenix
 	// Typical file layout:
 	// s_ecf_header
 		// s_ecf_filesystem_header
-		// s_ecf_compressed_stream_dictionary
+		// s_ecf_compressed_stream_header_data
 			// s_ecf_chunk_header+s_ecf_filesystem_chunk
 				// chunks data...
 
