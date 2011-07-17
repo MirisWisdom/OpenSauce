@@ -157,9 +157,9 @@ static datum_index scripting_unit_data_get_object_by_name(s_unit_datum* unit, cs
 	else if( !strncmp(s,"recent_damage.unit",6) )
 	{
 			 if( !strcmp(s,"recent_damage.unit0") ) return unit->unit.GetRecentDamage()[0].responsible_unit;
-		else if( !strcmp(s,"recent_damage.unit1") ) return unit->unit.GetRecentDamage()[0].responsible_unit;
-		else if( !strcmp(s,"recent_damage.unit2") ) return unit->unit.GetRecentDamage()[0].responsible_unit;
-		else if( !strcmp(s,"recent_damage.unit3") ) return unit->unit.GetRecentDamage()[0].responsible_unit;
+		else if( !strcmp(s,"recent_damage.unit1") ) return unit->unit.GetRecentDamage()[1].responsible_unit;
+		else if( !strcmp(s,"recent_damage.unit2") ) return unit->unit.GetRecentDamage()[2].responsible_unit;
+		else if( !strcmp(s,"recent_damage.unit3") ) return unit->unit.GetRecentDamage()[3].responsible_unit;
 	}
 
 	return datum_index::null;
