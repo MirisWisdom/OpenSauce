@@ -118,6 +118,15 @@ namespace BlamLib.Render.COLLADA
 				colladaReports.Clear();
 			}
 		}
+		/// <summary>
+		/// Collada error event function
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		protected void ExporterErrorOccured(object sender, ColladaErrorEventArgs e)
+		{
+			AddReport(e.ErrorMessage);
+		}
 		#endregion
 
 		#region Export Registration
@@ -140,6 +149,16 @@ namespace BlamLib.Render.COLLADA
 		#endregion
 
 		protected abstract void GenerateInfoList();
+
+		protected void ExportSave(ColladaExporter exporter, string file_name)
+		{
+			exporter.ErrorOccured += new EventHandler<ColladaErrorEventArgs>(ExporterErrorOccured);
+			bool success = exporter.BuildColladaInstance();
+			exporter.ErrorOccured -= new EventHandler<ColladaErrorEventArgs>(ExporterErrorOccured);
+
+			if (success)
+				exporter.SaveDAE(file_name);
+		}
 
 		public abstract void Export(string file_name);
 	};

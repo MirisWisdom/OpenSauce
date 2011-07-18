@@ -39,7 +39,7 @@ namespace BlamLib.Render.COLLADA.Core
 		#endregion
 
 		#region Attributes
-		[XmlAttribute("source")]
+		[XmlAttribute("source"), ColladaURI]
 		public string SourceAttrib
 		{ get { return _sourceAttrib.Value; } set { _sourceAttrib.Value = value; } }
 

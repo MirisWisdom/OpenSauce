@@ -39,7 +39,7 @@ namespace BlamLib.Render.COLLADA.Fx
 		public string Semantic
 		{ get { return _semantic.Value; } set { _semantic.Value = value; } }
 
-		[XmlAttribute("target")]
+		[XmlAttribute("target"), ColladaURI]
 		public string Target
 		{ get { return _target.Value; } set { _target.Value = value; } }
 		#endregion

@@ -36,11 +36,11 @@ namespace BlamLib.Render.COLLADA.Core
 		#endregion
 
 		#region Attributes
-		[XmlAttribute("source")]
+		[XmlAttribute("source"), ColladaURI]
 		public string Source
 		{ get { return _source.Value; } set { _source.Value = value; } }
 
-		[XmlAttribute("target")]
+		[XmlAttribute("target"), ColladaURI]
 		public string Target
 		{ get { return _target.Value; } set { _target.Value = value; } }
 		#endregion

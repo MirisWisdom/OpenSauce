@@ -298,10 +298,12 @@
     <Compile Include="Render\COLLADA\Helpers\ColladaObjectValue.cs" />
     <Compile Include="Render\COLLADA\Helpers\ColladaSIDValue.cs" />
     <Compile Include="Render\COLLADA\Helpers\ColladaSIDValueArray.cs" />
+    <Compile Include="Render\COLLADA\Helpers\ColladaURIAttribute.cs" />
     <Compile Include="Render\COLLADA\Helpers\ColladaUtilities.cs" />
     <Compile Include="Render\COLLADA\Helpers\ColladaValue.cs" />
     <Compile Include="Render\COLLADA\Helpers\ColladaValueArray.cs" />
     <Compile Include="Render\COLLADA\Validation\ColladaEmptyString.cs" />
+    <Compile Include="Render\COLLADA\Validation\ColladaFileValidator.cs" />
     <Compile Include="Render\COLLADA\Validation\ColladaHasValidValue.cs" />
     <Compile Include="Render\COLLADA\Validation\ColladaInvalidForParent.cs" />
     <Compile Include="Render\COLLADA\Validation\ColladaIsNull.cs" />

@@ -22,53 +22,39 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
 using BlamLib.Blam;
+using BlamLib.Render.COLLADA.Validation;
 
 namespace BlamLib.Render.COLLADA
 {
+	public class ColladaExportArgs
+	{
+		public bool Overwrite { get; private set; }
+		public string RelativeDataPath { get; private set; }
+		public string BitmapFormatString { get; private set; }
+
+		/// <summary>
+		/// Argument class constructor
+		/// </summary>
+		/// <param name="overwrite">When true, existing files are overwritten when saving</param>
+		/// <param name="data_path">The absolute path that relative paths should start at</param>
+		/// <param name="bitmap_format">The bitmap extension the materials should use (tga, jpg, tif, etc)</param>
+		public ColladaExportArgs(bool overwrite, string data_path, string bitmap_format)
+		{
+			// make sure the data path ends with a '\'
+			if (!data_path.EndsWith("\\"))
+				data_path += "\\";
+
+			Overwrite = overwrite;
+			RelativeDataPath = data_path;
+			BitmapFormatString = bitmap_format;
+		}
+	}
 	/// <summary>
 	/// Base class for exporting a COLLADA file
 	/// </summary>
 	public abstract class ColladaExporter
 	{
-		#region Settings
-		protected bool bOverwrite = false;
-		protected string relativeDataPath = "";
-		protected string bitmapFormatString = "";
-
-		/// <summary>
-		/// When true, existing files are overwritten when saving
-		/// </summary>
-		public bool Overwrite
-		{
-			set { bOverwrite = value; }
-		}
-		/// <summary>
-		/// Set this to the absoluts path that relative data references should start at
-		/// </summary>
-		public string RelativeDataPath
-		{
-			set { relativeDataPath = value; }
-		}
-		/// <summary>
-		/// Set this to the bitmap extension the materials should use (tga, jpg, tif, etc)
-		/// </summary>
-		public string BitmapFormat
-		{
-			set { bitmapFormatString = value; }
-		}
-		#endregion
-
 		#region Events
-		public class ColladaErrorEventArgs : EventArgs
-		{
-			public string ErrorMessage { get; private set; }
-
-			public ColladaErrorEventArgs(string message)
-			{
-				ErrorMessage = message;
-			}
-		};
-
 		/// <summary>
 		/// This event is fired when an error has occured, with an error string describing the error in detail.
 		/// </summary>
@@ -82,6 +68,7 @@ namespace BlamLib.Render.COLLADA
 		#endregion
 
 		#region Class Members
+		protected ColladaExportArgs exportArguments;
 		protected ColladaFile COLLADAFile = new ColladaFile();
 
 		protected Managers.TagIndexBase tagIndex;
@@ -89,8 +76,9 @@ namespace BlamLib.Render.COLLADA
 		protected string tagName;
 		#endregion
 
-		protected ColladaExporter(Managers.TagIndexBase tag_index, Managers.TagManager tag_manager)
+		protected ColladaExporter(ColladaExportArgs arguments, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager)
 		{
+			exportArguments = arguments;
 			tagIndex = tag_index;
 			tagManager = tag_manager;
 			tagName = System.IO.Path.GetFileNameWithoutExtension(tagManager.Name);
@@ -108,7 +96,8 @@ namespace BlamLib.Render.COLLADA
 			Fx.ColladaEffect effect = new Fx.ColladaEffect();
 
 			string shader_name = ColladaUtilities.FormatName(effect_id, " ", "_");
-			effect.ID = shader_name;
+			effect.ID = ColladaElement.FormatID<Fx.ColladaEffect>(shader_name);
+			effect.Name = shader_name;
 			effect.ProfileCOMMON = new List<COLLADA.Fx.ColladaProfileCOMMON>();
 			effect.ProfileCOMMON.Add(new COLLADA.Fx.ColladaProfileCOMMON());
 			effect.ProfileCOMMON[0].Technique = new COLLADA.Fx.ColladaTechnique();
@@ -131,7 +120,7 @@ namespace BlamLib.Render.COLLADA
 
 				surface.Type = COLLADA.Enums.ColladaFXSurfaceTypeEnum._2D;
 				surface.InitFrom = new COLLADA.Fx.ColladaInitFrom();
-				surface.InitFrom.Text = bitmap_name;
+				surface.InitFrom.Text = ColladaElement.FormatID<Fx.ColladaImage>(bitmap_name);
 
 				sampler2d.Source = newparam_surface.sID;
 
@@ -312,7 +301,7 @@ namespace BlamLib.Render.COLLADA
 		{
 			COLLADAFile.Scene = new Core.ColladaScene();
 			COLLADAFile.Scene.InstanceVisualScene = new Core.ColladaInstanceVisualScene();
-			COLLADAFile.Scene.InstanceVisualScene.URL = ColladaUtilities.BuildUri(scene_id);
+			COLLADAFile.Scene.InstanceVisualScene.URL = ColladaUtilities.BuildUri(ColladaElement.FormatID<Core.ColladaVisualScene>(scene_id));
 		}
 		#endregion
 
@@ -322,34 +311,8 @@ namespace BlamLib.Render.COLLADA
 		/// <param name="location">Location to save the Collada file to</param>
 		public void SaveDAE(string location)
 		{
-			// check whether the COLLADA file is valid
-			try
-			{
-				COLLADAFile.Validate();
-			}
-			catch (Exception exception)
-			{
-				// if the collada file is not valid, add a report detailing why it is not valid
-				OnErrorOccured(ColladaExceptionStrings.ValidationFailed);
-
-				// report an error for all inner exceptions
-				for (var except = exception; except != null; except = except.InnerException)
-				{
-					OnErrorOccured(except.Message);
-
-					// if the exception was a validation exception, report the element details
-					var validation_exception = except as ColladaValidationException;
-					if ((validation_exception != null) && (validation_exception.ElementDetails != null))
-					{
-						foreach (string detail in validation_exception.ElementDetails)
-							OnErrorOccured(String.Format("COLLADA_DETAIL: {0}", detail));
-					}
-				}
-				return;
-			}
-
 			// if the file exists but overwriting is disabled, report this and return
-			if (System.IO.File.Exists(location) && !bOverwrite)
+			if (System.IO.File.Exists(location) && !exportArguments.Overwrite)
 			{
 				OnErrorOccured(String.Format(ColladaExceptionStrings.FileExists, location));
 				return;
@@ -376,13 +339,17 @@ namespace BlamLib.Render.COLLADA
 		/// <returns>True if no errors occurred</returns>
 		public bool BuildColladaInstance()
 		{
-			// make sure the data path ends with a '\'
-			if (!relativeDataPath.EndsWith("\\"))
-				relativeDataPath += "\\";
-
+			bool success = false;
 			try
 			{
-				return BuildColladaInstanceImpl();
+				if (BuildColladaInstanceImpl())
+				{
+					var validator = new ColladaFileValidator();
+
+					validator.ErrorOccured += new EventHandler<ColladaErrorEventArgs>(ValidatorErrorOccured);
+					success = validator.ValidateFile(COLLADAFile);
+					validator.ErrorOccured -= new EventHandler<ColladaErrorEventArgs>(ValidatorErrorOccured);
+				}
 			}
 			catch (Exception e)
 			{
@@ -393,7 +360,12 @@ namespace BlamLib.Render.COLLADA
 				for (var except = e.InnerException; except != null; except = except.InnerException)
 					OnErrorOccured(except.Message);
 			}
-			return false;
+			return success;
+		}
+
+		void ValidatorErrorOccured(object sender, ColladaErrorEventArgs e)
+		{
+			OnErrorOccured(e.ErrorMessage);
 		}
 
 		#region Helpers
@@ -472,8 +444,8 @@ namespace BlamLib.Render.COLLADA
 		#endregion
 
 		#region Constructor
-		protected ColladaModelExporterBase(IHaloShaderDatumList info, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager) :
-			base(tag_index, tag_manager)
+		protected ColladaModelExporterBase(ColladaExportArgs arguments, IHaloShaderDatumList info, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager) :
+			base(arguments, tag_index, tag_manager)
 		{
 			shaderInfo = info;
 		}
@@ -953,11 +925,12 @@ namespace BlamLib.Render.COLLADA
 
 				Fx.ColladaImage image = new Fx.ColladaImage();
 				// set the ID using the bitmaps file name, this must stay consistent so that effects can generate the same ID
-				image.ID = ColladaUtilities.FormatName(System.IO.Path.GetFileNameWithoutExtension(bitmap_tag.Name), " ", "_");
+				string bitmap_name = ColladaUtilities.FormatName(System.IO.Path.GetFileNameWithoutExtension(bitmap_tag.Name), " ", "_");
+				image.ID = ColladaElement.FormatID<Fx.ColladaImage>(bitmap_name);
 
 				image.InitFrom = new Fx.ColladaInitFrom();
 				image.InitFrom.Text = ColladaUtilities.BuildUri("file://",
-					String.Concat(relativeDataPath, bitmap_tag.Name, ".", bitmapFormatString)); ;
+					String.Concat(exportArguments.RelativeDataPath, bitmap_tag.Name, ".", exportArguments.BitmapFormatString));
 
 				listImage.Add(image);
 			}
@@ -1030,12 +1003,12 @@ namespace BlamLib.Render.COLLADA
 		/// Creates an effect element with a phong definition set up with default values
 		/// </summary>
 		/// <param name="effect_id">ID of the effect</param>
-		protected static Fx.ColladaEffect CreateDefaultEffect(string effect_id)
+		protected static Fx.ColladaEffect CreateDefaultEffect(string effect_name)
 		{
 			Fx.ColladaEffect effect = new Fx.ColladaEffect();
 
 			// create a common profile element
-			effect.ID = effect_id;
+			effect.ID = ColladaElement.FormatID<Fx.ColladaEffect>(effect_name);
 			effect.ProfileCOMMON = new List<Fx.ColladaProfileCOMMON>();
 			effect.ProfileCOMMON.Add(new Fx.ColladaProfileCOMMON());
 			effect.ProfileCOMMON[0].Technique = new Fx.ColladaTechnique();
@@ -1098,15 +1071,15 @@ namespace BlamLib.Render.COLLADA
 		/// <param name="effect_sid">The sID for the effect</param>
 		/// <param name="effect">The effect the material references</param>
 		/// <returns></returns>
-		protected static Fx.ColladaMaterial CreateMaterial(string id, string name, string effect_sid, string effect)
+		protected static Fx.ColladaMaterial CreateMaterial(string id, string name, string effect)
 		{
 			Fx.ColladaMaterial material = new Fx.ColladaMaterial();
 
 			material.ID = ColladaElement.FormatID <Fx.ColladaMaterial>(id);
 			material.Name = name;
 			material.InstanceEffect = new Fx.ColladaInstanceEffect();
-			material.InstanceEffect.sID = effect_sid;
-			material.InstanceEffect.URL = COLLADA.ColladaUtilities.BuildUri(effect);
+			material.InstanceEffect.sID = effect;
+			material.InstanceEffect.URL = COLLADA.ColladaUtilities.BuildUri(ColladaElement.FormatID<Fx.ColladaEffect>(effect));
 
 			return material;
 		}
@@ -1117,7 +1090,7 @@ namespace BlamLib.Render.COLLADA
 		/// <returns>CreateMaterial(id, id, id, id)</returns>
 		protected static Fx.ColladaMaterial CreateMaterial(string id)
 		{
-			return CreateMaterial(id, id, id, id);
+			return CreateMaterial(id, id, id);
 		}
 		/// <summary>
 		/// Populate the material list
@@ -1130,7 +1103,6 @@ namespace BlamLib.Render.COLLADA
 				string shader_name = ColladaUtilities.FormatName(Path.GetFileNameWithoutExtension(shaderInfo.GetShaderName(i)), " ", "_");
 				listMaterial.Add(
 					CreateMaterial(shader_name,
-						shader_name,
 						shader_name,
 						shader_name));
 			}

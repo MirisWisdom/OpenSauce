@@ -254,7 +254,9 @@ namespace BlamLib.Test
 
 					var lightmap_info = halo2[0] as Render.COLLADA.Halo2.ColladaHalo2LightmapInfo;
 
+					StartStopwatch();
 					halo2.Export(lightmap_info.Name);
+					Console.WriteLine("EXPORT {0} TIME: Time taken: {1}", lightmap_info.Name, StopStopwatch());
 
 					foreach (string report in halo2.Reports())
 						Console.WriteLine(report);
@@ -290,7 +292,9 @@ namespace BlamLib.Test
 
 					var bsp_info = halo2[0] as Render.COLLADA.Halo2.ColladaHalo2BSPInfo;
 
+					StartStopwatch();
 					halo2.Export(bsp_info.Name);
+					Console.WriteLine("EXPORT {0} TIME: Time taken: {1}", bsp_info.Name, StopStopwatch());
 
 					foreach (string report in halo2.Reports())
 						Console.WriteLine(report);
@@ -324,7 +328,11 @@ namespace BlamLib.Test
 						halo2.ClearRegister();
 						halo2.RegisterForExport(info);
 
-						halo2.Export(string.Format("{0}-perm{1}-lod{2}", info.Name, info.Permutation, info.LevelOfDetail));
+						string name = string.Format("{0}-perm{1}-lod{2}", info.Name, info.Permutation, info.LevelOfDetail);
+
+						StartStopwatch();
+						halo2.Export(name);
+						Console.WriteLine("EXPORT {0} TIME: Time taken: {1}", name, StopStopwatch());
 
 						foreach (string report in halo2.Reports())
 							Console.WriteLine(report);
@@ -336,7 +344,12 @@ namespace BlamLib.Test
 						halo2.RegisterForExport(info);
 
 					var model_info = halo2[0] as Render.COLLADA.Halo2.ColladaHalo2RenderModelInfo;
-					halo2.Export(model_info.Name + "_all");
+
+					string name_all = model_info.Name + "_all";
+
+					StartStopwatch();
+					halo2.Export(name_all);
+					Console.WriteLine("EXPORT {0} TIME: Time taken: {1}", name_all, StopStopwatch());
 
 					foreach (string report in halo2.Reports())
 						Console.WriteLine(report);

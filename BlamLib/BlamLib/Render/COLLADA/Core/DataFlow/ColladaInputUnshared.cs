@@ -38,7 +38,7 @@ namespace BlamLib.Render.COLLADA.Core
 		public Enums.ColladaInputSharedSemantic Semantic
 		{ get { return _semantic.Value; } set { _semantic.Value = value; } }
 
-		[XmlAttribute("source")]
+		[XmlAttribute("source"), ColladaURI]
 		public string Source
 		{ get { return _source.Value; } set { _source.Value = value; } }
 		#endregion

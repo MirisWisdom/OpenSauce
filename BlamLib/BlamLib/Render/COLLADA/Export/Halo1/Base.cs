@@ -44,8 +44,8 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// <param name="info">An object implementing IHaloShaderDatumList to provide a list of shader datums</param>
 		/// <param name="tag_index">The tag index that contains the tag being exported</param>
 		/// <param name="tag_manager">The tag manager of the tag being exported</param>
-		public ColladaModelExporterHalo1(IHaloShaderDatumList info, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager)
-			: base(info, tag_index, tag_manager)
+		public ColladaModelExporterHalo1(ColladaExportArgs arguments, IHaloShaderDatumList info, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager)
+			: base(arguments, info, tag_index, tag_manager)
 		{
 		}
 		#endregion

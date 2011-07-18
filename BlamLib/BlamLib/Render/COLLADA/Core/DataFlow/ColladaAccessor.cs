@@ -52,7 +52,7 @@ namespace BlamLib.Render.COLLADA.Core
 		public uint Offset
 		{ get { return _offset.Value; } set { _offset.Value = value; } }
 
-		[XmlAttribute("source")]
+		[XmlAttribute("source"), ColladaURI]
 		public string Source
 		{ get { return _source.Value; } set { _source.Value = value; } }
 

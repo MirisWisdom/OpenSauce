@@ -20,6 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using System.Reflection;
+using System.Collections;
 
 namespace BlamLib.Render.COLLADA
 {
@@ -192,6 +193,28 @@ namespace BlamLib.Render.COLLADA
 		#endregion
 
 		/// <summary>
+		/// Returns a string formatted to the ID format expected for a specific element type
+		/// </summary>
+		/// <typeparam name="T">The element type to format an ID for</typeparam>
+		/// <param name="id">The ID to format</param>
+		/// <returns></returns>
+		public static string FormatID<T>(string id)
+		{
+			PropertyInfo property = typeof(T).GetProperty("ID");
+
+			if (property == null)
+				throw new ColladaException("COLLADA EXCEPTION: attempted to format an ID for an element that doesn not have an ID property");
+
+			var id_attributes = property.GetCustomAttributes(typeof(ColladaIDAttribute), false) as ColladaIDAttribute[];
+
+			if (id_attributes == null || id_attributes.Length == 0)
+				throw new ColladaException("COLLADA EXCEPTION: an ID property has no formatting string defined");
+
+			return id_attributes[0].FormatID(id);
+		}
+
+		#region Validation
+		/// <summary>
 		/// Checks whether this element conforms to the schema
 		/// Throws a validation exception when errors are found
 		/// </summary>
@@ -256,24 +279,122 @@ namespace BlamLib.Render.COLLADA
 		}
 
 		/// <summary>
-		/// Returns a string formatted to the ID format expected for a specific element type
+		/// Gets a list containing all of this elements children
 		/// </summary>
-		/// <typeparam name="T">The element type to format an ID for</typeparam>
-		/// <param name="id">The ID to format</param>
 		/// <returns></returns>
-		public static string FormatID<T>(string id)
+		List<ColladaElement> GetChildElements()
 		{
-			PropertyInfo property = typeof(T).GetProperty("ID");
+			List<ColladaElement> children = new List<ColladaElement>();
 
-			if (property == null)
-				throw new ColladaException("COLLADA EXCEPTION: attempted to format an ID for an element that doesn not have an ID property");
+			// enumerate all of the elements fields
+			foreach (var field in Fields)
+			{
+				// if the field type is not derived from ColladaElement of its value is null, continue
+				if (!field.GetObjectType().IsSubclassOf(typeof(ColladaElement)) || (field.GetValue() == null))
+					continue;
 
-			var id_attributes = property.GetCustomAttributes(typeof(ColladaIDAttribute), false) as ColladaIDAttribute[];
+				// if the actual values type is ColladaElement, add it to the list (it could be a list, which we can't add directly)
+				if (field.GetValue().GetType().IsSubclassOf(typeof(ColladaElement)))
+					children.Add(field.GetValue() as ColladaElement);
+				// if the value is a list add each elment individually
+				else if (field.GetValue().GetType().GetInterface("IList") != null)
+				{
+					// the list derives from IEnumerable so we can get a generic enumerator from it
+					IEnumerable element_list = field.GetValue() as IEnumerable;
 
-			if (id_attributes == null || id_attributes.Length == 0)
-				throw new ColladaException("COLLADA EXCEPTION: an ID property has no formatting string defined");
+					if (element_list == null)
+						continue;
 
-			return id_attributes[0].FormatID(id);
+					// get a generic enumerator, enumate through the list add add each entry assuming it is a ColladaElement
+					IEnumerator enumerator = element_list.GetEnumerator();
+					ColladaElement element = null;
+					while (enumerator.MoveNext() && (element = (enumerator.Current as ColladaElement)) != null)
+						children.Add(element);
+				}
+			}
+
+			return children;
 		}
+
+		/// <summary>
+		/// Returns a list of properties with a matching attribute type
+		/// </summary>
+		/// <param name="attribute_type">The type of attribute to look for</param>
+		/// <returns></returns>
+		List<PropertyInfo> GetPropertiesByAttribute(Type attribute_type)
+		{
+			List<PropertyInfo> property_list = new List<PropertyInfo>();
+
+			// get all of this elements properties
+			PropertyInfo[] properties = this.GetType().GetProperties() as PropertyInfo[];
+
+			foreach (PropertyInfo property in properties)
+			{
+				// find out of the property has the required attribute
+				var id_attributes = property.GetCustomAttributes(attribute_type, false);
+
+				if (id_attributes == null || id_attributes.Length == 0)
+					continue;
+
+				property_list.Add(property);
+			}
+			return property_list;
+		}
+
+		/// <summary>
+		/// Returns a string list containing all of the ID's of this element and its children
+		/// </summary>
+		/// <returns></returns>
+		public List<string> GetIDs()
+		{
+			List<string> ids = new List<string>();
+
+			List<PropertyInfo> property = GetPropertiesByAttribute(typeof(ColladaIDAttribute));
+			if (property.Count != 0)
+			{
+				string id = property[0].GetValue(this, null) as string;
+				if(id != null && id.Length > 0)
+					ids.Add(id);
+			}
+
+			foreach (var child in GetChildElements())
+				ids.AddRange(child.GetIDs());
+
+			return ids;
+		}
+
+		/// <summary>
+		/// Checks that the local id references in the element are valid.
+		/// 
+		/// Throws a validation exception if an ID reference is not found in the local ID list.
+		/// </summary>
+		/// <param name="local_ids">A list of all the ID's in the COLLADA file</param>
+		public void ValidateLocalURIs(List<string> local_ids)
+		{
+			List<PropertyInfo> properties = GetPropertiesByAttribute(typeof(ColladaURIAttribute));
+
+			foreach (var property in properties)
+			{
+				string value = property.GetValue(this, null) as string;
+
+				if(value == null || value.Length == 0)
+					continue;
+
+				// if the id contains :// it is not local so ignore it
+				if (value.Contains(@"://"))
+					continue;
+				
+				// fragments have a hash at the start which needs removing
+				if (value.StartsWith("#"))
+					value = value.Remove(0, 1);
+
+				if (!local_ids.Contains(value))
+					throw new ColladaValidationException("COLLADA VALIDATION: URI reference a local ID that does not exist", GetDetailList());
+			}
+
+			foreach (var child in GetChildElements())
+				child.ValidateLocalURIs(local_ids);
+		}
+		#endregion
 	};
 }

@@ -48,7 +48,7 @@ namespace BlamLib.Render.COLLADA.Fx
 		{ get { return _face.Value; } set { _face.Value = value; } }
 		#endregion
 
-		[XmlTextAttribute()]
+		[XmlTextAttribute(), ColladaURI]
 		public string Text
 		{ get { return _text.Value; } set { _text.Value = value; } }
 		

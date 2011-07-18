@@ -148,14 +148,158 @@ namespace PostProcessing
 			return false;
 		}
 
-		for(int32 i = 0; i < shader_tag->implementation.bitmaps.Count; i++)
+		for(int32 i = 0; i < shader_tag->parameters.Count; i++)
 		{
-			TagGroups::s_shader_postprocess_bitmap& bitmap_element = shader_tag->implementation.bitmaps[i];
+			if(shader_tag->parameters[i].value_type.type != Enums::_shader_variable_base_type_texture)
+				continue;
+
 			predicted_resources_add_resource(shader_tag->predicted_resources, 
 				Enums::_predicted_resource_bitmap,
-				bitmap_element.bitmap.tag_index,
-				bitmap_element.value.bitmap.bitmap_index);
+				shader_tag->parameters[i].bitmap_value.bitmap.tag_index,
+				shader_tag->parameters[i].value.bitmap.bitmap_index);
 		}
+		return true;
+	}
+	
+	static void shader_postprocess_generic_remove_variables(TagGroups::s_shader_postprocess_generic* shader_tag)
+	{
+		while(shader_tag->implementation.bitmaps.Count > 0)
+			Yelo::tag_block_delete_element(&shader_tag->implementation.bitmaps, 0);
+		while(shader_tag->implementation.bools.Count > 0)
+			Yelo::tag_block_delete_element(&shader_tag->implementation.bools, 0);
+		while(shader_tag->implementation.integers.Count > 0)
+			Yelo::tag_block_delete_element(&shader_tag->implementation.integers, 0);
+		while(shader_tag->implementation.floats.Count > 0)
+			Yelo::tag_block_delete_element(&shader_tag->implementation.floats, 0);
+		while(shader_tag->implementation.float2s.Count > 0)
+			Yelo::tag_block_delete_element(&shader_tag->implementation.float2s, 0);
+		while(shader_tag->implementation.float3s.Count > 0)
+			Yelo::tag_block_delete_element(&shader_tag->implementation.float3s, 0);
+		while(shader_tag->implementation.float4s.Count > 0)
+			Yelo::tag_block_delete_element(&shader_tag->implementation.float4s, 0);
+		while(shader_tag->implementation.colors.Count > 0)
+			Yelo::tag_block_delete_element(&shader_tag->implementation.colors, 0);
+	}
+	static bool shader_postprocess_generic_parameter_exists(TagGroups::s_shader_postprocess_generic* shader_tag, cstring parameter_name)
+	{
+		for(int j = 0; j < shader_tag->parameters.Count; j++)
+		{
+			if(strncmp(parameter_name, shader_tag->parameters[j].value_name, Enums::k_tag_string_length) == 0)
+				return true;
+		}
+		return false;
+	}
+	static bool shader_postprocess_generic_setup_parameters(datum_index tag_index)
+	{
+		TagGroups::s_shader_postprocess_generic* shader_tag = Yelo::tag_get<TagGroups::s_shader_postprocess_generic>(tag_index);
+
+		TagGroups::s_shader_postprocess_generic* current = shader_tag;
+		while(current != NULL)
+		{
+			// add parameters from this tag
+			for(int32 i = 0; i < current->implementation.bitmaps.Count; i++)
+			{
+				if(shader_postprocess_generic_parameter_exists(shader_tag, current->implementation.bitmaps[i].value_name))
+					continue;
+
+				int32 index = Yelo::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
+				memset(&shader_tag->parameters[index], 0, sizeof(TagGroups::s_shader_postprocess_parameter));
+				shader_tag->parameters[index].SetParameter(&current->implementation.bitmaps[i]);
+
+				shader_tag->parameters[index].value_type.type = Enums::_shader_variable_base_type_texture;
+				shader_tag->parameters[index].value_type.count = 1;
+			}
+			for(int32 i = 0; i < current->implementation.bools.Count; i++)
+			{
+				if(shader_postprocess_generic_parameter_exists(shader_tag, current->implementation.bools[i].value_name))
+					continue;
+
+				int32 index = Yelo::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
+				memset(&shader_tag->parameters[index], 0, sizeof(TagGroups::s_shader_postprocess_parameter));
+				shader_tag->parameters[index].SetParameter(&current->implementation.bools[i]);
+
+				shader_tag->parameters[index].value_type.type = Enums::_shader_variable_base_type_boolean;
+				shader_tag->parameters[index].value_type.count = 1;
+			}
+			for(int32 i = 0; i < current->implementation.integers.Count; i++)
+			{
+				if(shader_postprocess_generic_parameter_exists(shader_tag, current->implementation.integers[i].value_name))
+					continue;
+
+				int32 index = Yelo::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
+				memset(&shader_tag->parameters[index], 0, sizeof(TagGroups::s_shader_postprocess_parameter));
+				shader_tag->parameters[index].SetParameter(&current->implementation.integers[i]);
+
+				shader_tag->parameters[index].value_type.type = Enums::_shader_variable_base_type_integer;
+				shader_tag->parameters[index].value_type.count = 1;
+			}
+			for(int32 i = 0; i < current->implementation.floats.Count; i++)
+			{
+				if(shader_postprocess_generic_parameter_exists(shader_tag, current->implementation.floats[i].value_name))
+					continue;
+
+				int32 index = Yelo::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
+				memset(&shader_tag->parameters[index], 0, sizeof(TagGroups::s_shader_postprocess_parameter));
+				shader_tag->parameters[index].SetParameter(&current->implementation.floats[i]);
+
+				shader_tag->parameters[index].value_type.type = Enums::_shader_variable_base_type_float;
+				shader_tag->parameters[index].value_type.count = 1;
+			}
+			for(int32 i = 0; i < current->implementation.float2s.Count; i++)
+			{
+				if(shader_postprocess_generic_parameter_exists(shader_tag, current->implementation.float2s[i].value_name))
+					continue;
+
+				int32 index = Yelo::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
+				memset(&shader_tag->parameters[index], 0, sizeof(TagGroups::s_shader_postprocess_parameter));
+				shader_tag->parameters[index].SetParameter(&current->implementation.float2s[i]);
+
+				shader_tag->parameters[index].value_type.type = Enums::_shader_variable_base_type_float;
+				shader_tag->parameters[index].value_type.count = 2;
+			}
+			for(int32 i = 0; i < current->implementation.float3s.Count; i++)
+			{
+				if(shader_postprocess_generic_parameter_exists(shader_tag, current->implementation.float3s[i].value_name))
+					continue;
+
+				int32 index = Yelo::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
+				memset(&shader_tag->parameters[index], 0, sizeof(TagGroups::s_shader_postprocess_parameter));
+				shader_tag->parameters[index].SetParameter(&current->implementation.float3s[i]);
+
+				shader_tag->parameters[index].value_type.type = Enums::_shader_variable_base_type_float;
+				shader_tag->parameters[index].value_type.count = 3;
+			}
+			for(int32 i = 0; i < current->implementation.float4s.Count; i++)
+			{
+				if(shader_postprocess_generic_parameter_exists(shader_tag, current->implementation.float4s[i].value_name))
+					continue;
+
+				int32 index = Yelo::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
+				memset(&shader_tag->parameters[index], 0, sizeof(TagGroups::s_shader_postprocess_parameter));
+				shader_tag->parameters[index].SetParameter(&current->implementation.float4s[i]);
+
+				shader_tag->parameters[index].value_type.type = Enums::_shader_variable_base_type_float;
+				shader_tag->parameters[index].value_type.count = 4;
+			}
+			for(int32 i = 0; i < current->implementation.colors.Count; i++)
+			{
+				if(shader_postprocess_generic_parameter_exists(shader_tag, current->implementation.colors[i].value_name))
+					continue;
+
+				int32 index = Yelo::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
+				memset(&shader_tag->parameters[index], 0, sizeof(TagGroups::s_shader_postprocess_parameter));
+				shader_tag->parameters[index].SetParameter(&current->implementation.colors[i]);
+
+				shader_tag->parameters[index].value_type.type = Enums::_shader_variable_base_type_argb_color;
+				shader_tag->parameters[index].value_type.count = 1;
+			}
+
+			if(!current->base_shader.tag_index.IsNull())
+				current = Yelo::tag_get<TagGroups::s_shader_postprocess_generic>(current->base_shader.tag_index);
+			else
+				current = NULL;
+		};
+		shader_postprocess_generic_remove_variables(shader_tag);
 		return true;
 	}
 };

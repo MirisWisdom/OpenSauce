@@ -20,6 +20,16 @@ using System;
 
 namespace BlamLib.Render.COLLADA
 {
+	public class ColladaErrorEventArgs : EventArgs
+	{
+		public string ErrorMessage { get; private set; }
+
+		public ColladaErrorEventArgs(string message)
+		{
+			ErrorMessage = message;
+		}
+	};
+
 	public class ColladaException : Exception
 	{
 		public ColladaException() : base() { }

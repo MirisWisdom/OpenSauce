@@ -27,6 +27,7 @@ namespace BlamLib.Render.COLLADA
 		public List<T> Value { get; set; }
 
 		public override object GetValue() { return Value; }
+		public override Type GetObjectType() { return typeof(T); }
 		public override string GetTypeName() { return typeof(T).Name; }
 
 		public override void ValidateField(Enums.ColladaElementType parent_type)

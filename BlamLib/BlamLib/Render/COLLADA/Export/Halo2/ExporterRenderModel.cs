@@ -38,8 +38,8 @@ namespace BlamLib.Render.COLLADA.Halo2
 		/// <param name="model_info">An object implementing IHalo1ModelInterface to provide geometry name and index pairs</param>
 		/// <param name="tag_index">The tag index containing the tag being exported</param>
 		/// <param name="tag_manager">The tag manager of the tag being exported</param>
-		public ColladaRenderModelExporter(IHalo2RenderModelInterface model_info, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager)
-			: base(model_info, tag_index, tag_manager)
+		public ColladaRenderModelExporter(ColladaExportArgs arguments, IHalo2RenderModelInterface model_info, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager)
+			: base(arguments, model_info, tag_index, tag_manager)
 		{
 			modelInfo = model_info;
 		}
@@ -57,16 +57,19 @@ namespace BlamLib.Render.COLLADA.Halo2
 			// create a list of shader names
 			List<string> shader_names = new List<string>();
 			foreach (var material in definition.Materials)
-				shader_names.Add(Path.GetFileNameWithoutExtension(tagIndex[material.Shader.Datum].Name));
+				shader_names.Add(Path.GetFileNameWithoutExtension(material.Shader.ToString()));
 
 			// create a geometry element for each geometry in the modelInfo
 			for (int i = 0; i < modelInfo.GetGeometryCount(); i++)
 			{
 				string name = ColladaUtilities.FormatName(modelInfo.GetGeometryName(i), " ", "_");
 
+				var section = definition.Sections[modelInfo.GetGeometryIndex(i)];
+
 				// create the geometry element
 				CreateGeometryHalo2(name, true,
-					definition.Sections[modelInfo.GetGeometryIndex(i)].SectionData[0].Section,
+					section.SectionInfo,
+					section.SectionData[0].Section,
 					shader_names);
 			}
 		}
@@ -214,7 +217,7 @@ namespace BlamLib.Render.COLLADA.Halo2
 			COLLADAFile.LibraryVisualScenes = new Core.ColladaLibraryVisualScenes();
 			COLLADAFile.LibraryVisualScenes.VisualScene = new List<Core.ColladaVisualScene>();
 			COLLADAFile.LibraryVisualScenes.VisualScene.Add(new Core.ColladaVisualScene());
-			COLLADAFile.LibraryVisualScenes.VisualScene[0].ID = "main";
+			COLLADAFile.LibraryVisualScenes.VisualScene[0].ID = ColladaElement.FormatID<Core.ColladaVisualScene>("main");
 			COLLADAFile.LibraryVisualScenes.VisualScene[0].Node = new List<Core.ColladaNode>();
 
 			COLLADAFile.LibraryVisualScenes.VisualScene[0].Node.Add(listBone[0]);

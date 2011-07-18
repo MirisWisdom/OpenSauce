@@ -41,7 +41,7 @@ namespace Yelo
 			c_generic_shader_variable_instance_node::SetVariableSource(shader_variable);
 
 			m_shader_variable->m_variable_datum->CopyDefaultVariable(&m_values[0]);
-			m_current_value = m_values[0];
+			m_current_value = m_values[1] = m_values[0];
 		}
 		void		c_internal_shader_variable_scripted_node::UpdateVariable(Yelo::real delta_time)
 		{
@@ -73,7 +73,7 @@ namespace Yelo
 				m_current_value = m_values[1];
 		}
 
-		c_internal_shader_variable_scripted_node::t_value_union		
+		c_internal_shader_variable_scripted_node::t_value_union
 					c_internal_shader_variable_scripted_node::InterpolateValues(float interpolation)
 		{
 			t_value_union result;
@@ -92,6 +92,13 @@ namespace Yelo
 				break;
 			case Enums::_shader_variable_base_type_float:
 				for(int i = 0; i < m_shader_variable->m_variable_datum->value_type.count; i++)
+				{
+					real range = m_values[1].reals[i] - m_values[0].reals[i];
+					result.reals[i] = m_values[0].reals[i] + (range * interpolation);
+				}
+				break;
+			case Enums::_shader_variable_base_type_argb_color:
+				for(int i = 0; i < 4; i++)
 				{
 					real range = m_values[1].reals[i] - m_values[0].reals[i];
 					result.reals[i] = m_values[0].reals[i] + (range * interpolation);
@@ -168,8 +175,7 @@ namespace Yelo
 				c_internal_shader_variable_scripted_node* new_variable = new c_internal_shader_variable_scripted_node();
 
 				// replace the variable instance in the shader instance
-				shader->ReplaceVariableInstance(m_effect_internal->script_variables[i].value_type,
-					m_effect_internal->script_variables[i].shader_variable_name,
+				shader->ReplaceVariableInstance(m_effect_internal->script_variables[i].shader_variable_name,
 					new_variable);
 
 				// add the variable to the scripted variable list

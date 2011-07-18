@@ -308,22 +308,30 @@ namespace BlamLib.Test
 						halo1.ClearRegister();
 						// add the info object to export
 						halo1.RegisterForExport(info);
-
+						
 						var model_info = info as Render.COLLADA.Halo1.ColladaHalo1ModelInfo;
 
-						// export to file
-						halo1.Export(model_info.Name + "_perm" + model_info.Permutation.ToString() + "_lod" + model_info.LevelOfDetail.ToString());
+						string name = string.Format("{0}-perm{1}-lod{2}", model_info.Name, model_info.Permutation, model_info.LevelOfDetail);
+
+						StartStopwatch();
+						halo1.Export(name);
+						Console.WriteLine("EXPORT {0} TIME: Time taken: {1}", name, StopStopwatch());
 
 						// print any errors
 						foreach (string report in halo1.Reports())
 							Console.WriteLine(report);
 					}
+
 					// export all the models into a single collada file
 					halo1.ClearRegister();
 					foreach (var info in halo1)
 						halo1.RegisterForExport(info);
 
-					halo1.Export(Path.GetFileNameWithoutExtension(model_def.Name) + "_all");
+					string name_all = Path.GetFileNameWithoutExtension(model_def.Name) + "_all";
+
+					StartStopwatch();
+					halo1.Export(name_all);
+					Console.WriteLine("EXPORT {0} TIME: Time taken: {1}", name_all, StopStopwatch());
 
 					foreach (string report in halo1.Reports())
 						Console.WriteLine(report);
@@ -360,7 +368,9 @@ namespace BlamLib.Test
 
 					var bsp_info = halo1[0] as Render.COLLADA.Halo1.ColladaHalo1BSPInfo;
 
+					StartStopwatch();
 					halo1.Export(bsp_info.Name);
+					Console.WriteLine("EXPORT {0} TIME: Time taken: {1}", bsp_info.Name, StopStopwatch());
 
 					foreach (string report in halo1.Reports())
 						Console.WriteLine(report);
@@ -387,27 +397,21 @@ namespace BlamLib.Test
 				{
 					var collada_file = serializer.Deserialize(reader) as Render.COLLADA.ColladaFile;
 
-					try { collada_file.Validate(); }
-					catch (Exception exception)
-					{
-						Console.WriteLine("COLLADA: validation failed");
-						for (var except = exception; except != null; except = except.InnerException)
-						{
-							Console.WriteLine(except.Message);
+					var validator = new BlamLib.Render.COLLADA.Validation.ColladaFileValidator();
 
-							var validation_exception = except as Render.COLLADA.ColladaValidationException;
-							if ((validation_exception != null) && (validation_exception.ElementDetails != null))
-							{
-								foreach (string detail in validation_exception.ElementDetails)
-									Console.WriteLine(detail);
-							}
-						}
+					validator.ErrorOccured += new EventHandler<BlamLib.Render.COLLADA.ColladaErrorEventArgs>(ValidatorErrorOccured);
+					bool success = validator.ValidateFile(collada_file);
+					validator.ErrorOccured -= new EventHandler<BlamLib.Render.COLLADA.ColladaErrorEventArgs>(ValidatorErrorOccured);
+
+					if (!success)
 						Assert.Fail("COLLADA file failed validation");
-					}
-
-					collada_file = null;
 				}
 			}
+		}
+
+		void ValidatorErrorOccured(object sender, BlamLib.Render.COLLADA.ColladaErrorEventArgs e)
+		{
+			Console.WriteLine(e.ErrorMessage);
 		}
 		#endregion
 	};

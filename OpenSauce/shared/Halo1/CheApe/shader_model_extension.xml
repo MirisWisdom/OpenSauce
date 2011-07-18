@@ -24,6 +24,11 @@
 			<field type="Real" name="detail normal 2 scale#0 defaults to 1" />
 			<field type="Real" name="detail normal 2 v-scale#0 defaults to 1 (applied on top of detail normal scale above)" />
 			<field type="Pad" definition="4" />
+			<field type="Explanation" name="specular tint override" definition="These values override the specular tint colours in the stock tag"/>
+			<field type="Real" name="perpendicular brightness:[0,1]#reflection brightness when viewed perpendicularly"/>
+			<field type="RealRgbColor" name="perpendicular tint color#reflection tint color when viewed perpendicularly"/>
+			<field type="Real" name="parallel brightness:[0,1]#reflection brightness when viewed at a glancing angle"/>
+			<field type="RealRgbColor" name="parallel tint color#reflection tint color when viewed at a glancing angle"/>
 			<field type="Pad" definition="32" />
 		</TagBlock>
 	</blocks>

@@ -20,11 +20,7 @@ using System;
 
 namespace BlamLib.Render.COLLADA
 {
-	public abstract class ColladaObject
+	public class ColladaURIAttribute : System.Attribute
 	{
-		public abstract object GetValue();
-		public abstract Type GetObjectType();
-		public abstract string GetTypeName();
-		public virtual void ValidateField(Enums.ColladaElementType parent_type) { }
-	};
+	}
 }
