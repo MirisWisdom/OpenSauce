@@ -44,8 +44,8 @@ namespace BlamLib.Render.COLLADA.Halo2
 		/// <param name="info">An object implementing IHaloShaderDatumList to provide a list of shader datums</param>
 		/// <param name="tag_index">The tag index that contains the tag being exported</param>
 		/// <param name="tag_manager">The tag manager of the tag being exported</param>
-		public ColladaModelExporterHalo2(IHaloShaderDatumList info, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager)
-			: base(info, tag_index, tag_manager)
+		public ColladaModelExporterHalo2(ColladaExportArgs arguments, IHaloShaderDatumList info, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager)
+			: base(arguments, info, tag_index, tag_manager)
 		{
 		}
 		#endregion
@@ -109,7 +109,9 @@ namespace BlamLib.Render.COLLADA.Halo2
 		/// <param name="is_skinned">Controls whether the strip indices should be treated as a triangle strip or a triangle list</param>
 		/// <param name="section">The geometry section to create an element for</param>
 		/// <param name="shader_names">A string list containing all of the shader names</param>
-		protected void CreateGeometryHalo2(string name, bool is_skinned, H2.Tags.global_geometry_section_struct section, List<string> shader_names)
+		protected void CreateGeometryHalo2(string name, bool is_skinned, 
+			H2.Tags.global_geometry_section_info_struct section_info, H2.Tags.global_geometry_section_struct section, 
+			List<string> shader_names)
 		{
 			List<Vertex> common_vertices = new List<Vertex>();
 			// create a generic list of vertices

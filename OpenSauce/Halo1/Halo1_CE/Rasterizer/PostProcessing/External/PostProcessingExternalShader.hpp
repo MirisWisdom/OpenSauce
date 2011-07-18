@@ -33,10 +33,9 @@ namespace Yelo
 		{
 			D3DXMACRO			m_shader_defines[2];
 
-			template<typename T>
 			void				SetupVariables_Base(
 				cstring semantic, 
-				TagBlock<T>& block, 
+				TagBlock<TagGroups::s_shader_postprocess_parameter>& block, 
 				const uint16 variable_count, 
 				const TagGroups::shader_variable_type& value_type);
 
@@ -61,18 +60,11 @@ namespace Yelo
 			{
 				c_generic_shader_base::Dtor();
 				// delete the texture path string.
-				for(int32 i = 0; i < m_shader_generic->implementation.bitmaps.Count; i++)
-					delete [] m_shader_generic->implementation.bitmaps[i].runtime.external.source;
+				for(int32 i = 0; i < m_shader_generic->parameters.Count; i++)
+					delete [] m_shader_generic->parameters[i].bitmap_value.runtime.external.source;
 				
 				// delete any manually allocated block memory
-				delete[] m_shader_generic->implementation.bitmaps.Address;				
-				delete[] m_shader_generic->implementation.bools.Address;
-				delete[] m_shader_generic->implementation.integers.Address;
-				delete[] m_shader_generic->implementation.floats.Address;
-				delete[] m_shader_generic->implementation.float2s.Address;
-				delete[] m_shader_generic->implementation.float3s.Address;
-				delete[] m_shader_generic->implementation.float4s.Address;
-				delete[] m_shader_generic->implementation.colors.Address;
+				delete[] m_shader_generic->parameters.Address;
 
 				// delete any manually allocated shader data
 				delete[] m_shader_generic->shader_code_text.address;

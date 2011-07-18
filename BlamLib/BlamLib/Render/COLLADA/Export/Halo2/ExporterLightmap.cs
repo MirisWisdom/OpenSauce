@@ -36,8 +36,8 @@ namespace BlamLib.Render.COLLADA.Halo2
 		/// <param name="lightmap_info">An object implementing IHalo2LightmapInterface to define what meshes are to be included in the collada file</param>
 		/// <param name="tag_index">The tag index that contains the tag being exported</param>
 		/// <param name="tag_manager">The tag manager of the tag being exported</param>
-		public ColladaLightmapExporter(IHalo2LightmapInterface lightmap_info, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager)
-			: base(lightmap_info, tag_index, tag_manager)
+		public ColladaLightmapExporter(ColladaExportArgs arguments, IHalo2LightmapInterface lightmap_info, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager)
+			: base(arguments, lightmap_info, tag_index, tag_manager)
 		{
 			lightmapInfo = lightmap_info;
 		}
@@ -63,6 +63,7 @@ namespace BlamLib.Render.COLLADA.Halo2
 
 					// create the geometry element
 					CreateGeometryHalo2(name, false,
+						lm_group.Clusters[j].GeometryInfo,
 						lm_group.Clusters[j].CacheData[0].Geometry.Value,
 						new List<string>());
 				}
@@ -93,7 +94,7 @@ namespace BlamLib.Render.COLLADA.Halo2
 			COLLADAFile.LibraryVisualScenes = new Core.ColladaLibraryVisualScenes();
 			COLLADAFile.LibraryVisualScenes.VisualScene = new List<Core.ColladaVisualScene>();
 			COLLADAFile.LibraryVisualScenes.VisualScene.Add(new Core.ColladaVisualScene());
-			COLLADAFile.LibraryVisualScenes.VisualScene[0].ID = "main";
+			COLLADAFile.LibraryVisualScenes.VisualScene[0].ID = ColladaElement.FormatID<Core.ColladaVisualScene>("main");
 			COLLADAFile.LibraryVisualScenes.VisualScene[0].Node = new List<Core.ColladaNode>();
 
 			Core.ColladaNode frame = new BlamLib.Render.COLLADA.Core.ColladaNode();

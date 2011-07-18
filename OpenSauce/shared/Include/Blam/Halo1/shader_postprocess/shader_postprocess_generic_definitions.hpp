@@ -110,15 +110,6 @@ namespace Yelo
 
 			s_shader_postprocess_value_union value;
 			s_shader_postprocess_value_animation_function animation_function;
-
-			void GetBoundingValues(void*& lower_ref, void*& upper_ref);
-			void SetVariableInterp(LPD3DXEFFECT* effect, const void* lower_data, const void* upper_data, const real* interp_values);
-
-			// [fixup_argb_color_hack] - internal use only, use default when calling externally
-			void SetVariable(LPD3DXEFFECT* effect, void* data, const bool fixup_argb_color_hack = true);
-
-			// Sets the memory at [dst] to the default variable value (the 'upper' bound)
-			void CopyDefaultVariable(void* dst);
 		};
 
 		struct s_shader_postprocess_bitmap : s_shader_postprocess_value_base
@@ -140,8 +131,48 @@ namespace Yelo
 				TAG_FLAG16(is_external);
 			}flags; PAD16;
 			TAG_FIELD(tag_reference, bitmap, 'bitm');
+		}; BOOST_STATIC_ASSERT( sizeof(s_shader_postprocess_bitmap) == 0x1C + sizeof(s_shader_postprocess_value_base) );
 
-#if !PLATFORM_IS_EDITOR && !PLATFORM_IS_DEDI
+		struct s_shader_postprocess_parameter
+		{
+			TAG_FIELD(tag_string, value_name);
+			shader_variable_type value_type;
+
+			struct
+			{
+				TAG_FIELD(tag_reference, bitmap);
+				
+				union {
+					struct {
+						TagGroups::s_bitmap_data* bitmap;
+						PAD32;
+					}_internal;	// We use a '_' prefix so intelli-sense doesn't get retarded
+
+					struct {
+						cstring source;
+						IDirect3DTexture9* texture_2d;
+					}external;
+				}runtime;
+
+				struct {
+					TAG_FLAG16(is_loaded);
+					TAG_FLAG16(is_external);
+				}flags; PAD16;
+			}bitmap_value;
+
+			s_shader_postprocess_value_union value;
+			s_shader_postprocess_value_animation_function animation_function;
+
+			void				GetBoundingValues(void*& lower_ref, void*& upper_ref);
+			void				SetVariableInterp(LPD3DXEFFECT* effect, const void* lower_data, const void* upper_data, const real* interp_values);
+
+			// [fixup_argb_color_hack] - internal use only, use default when calling externally
+			void				SetVariable(LPD3DXEFFECT* effect, void* data, const bool fixup_argb_color_hack = true);
+
+			// Sets the memory at [dst] to the default variable value (the 'upper' bound)
+			void				CopyDefaultVariable(void* dst);
+
+			//bitmap only functions
 			void				SetSource(TagGroups::s_bitmap_data* source_bitmap);
 			void				SetSource(cstring source_bitmap);
 
@@ -149,9 +180,12 @@ namespace Yelo
 			void				ReleaseBitmap();
 
 			IDirect3DTexture9*	GetTexture();
-#endif
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_postprocess_bitmap) == 0x1C + sizeof(s_shader_postprocess_value_base) );
 
+#if PLATFORM_IS_EDITOR && !PLATFORM_IS_DEDI
+			void SetParameter(s_shader_postprocess_value_base* value);
+			void SetParameter(s_shader_postprocess_bitmap* value);
+#endif
+		};
 
 		struct s_shader_postprocess_implementation
 		{
@@ -172,11 +206,13 @@ namespace Yelo
 			PAD16;
 
 			TAG_FIELD(tag_reference, base_shader, s_shader_postprocess_generic::k_group_tag);
+			TAG_TBLOCK_(parameters, s_shader_postprocess_parameter);
 			TAG_FIELD(s_shader_postprocess_implementation, implementation);
+			TAG_PAD(byte, 36);
 
 #if !PLATFORM_IS_EDITOR // for externally defined shaders
 			s_shader_postprocess_generic()	{}
 #endif
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_postprocess_generic) == 0x14 + sizeof(s_shader_postprocess_definition) + sizeof(s_shader_postprocess_implementation) );
+		}; BOOST_STATIC_ASSERT( sizeof(s_shader_postprocess_generic) == 0x44 + sizeof(s_shader_postprocess_definition) + sizeof(s_shader_postprocess_implementation) );
 	};
 };

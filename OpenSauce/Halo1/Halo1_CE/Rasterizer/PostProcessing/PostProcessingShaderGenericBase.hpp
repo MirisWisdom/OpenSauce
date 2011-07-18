@@ -48,9 +48,9 @@ namespace Yelo
 		{
 		public:
 			c_generic_shader_variable_node* m_next;
-			TagGroups::s_shader_postprocess_value_base* m_variable_datum;
+			TagGroups::s_shader_postprocess_parameter* m_variable_datum;
 
-			void				SetVariableDatum(TagGroups::s_shader_postprocess_value_base* variable_datum);
+			void				SetVariableDatum(TagGroups::s_shader_postprocess_parameter* variable_datum);
 
 			c_generic_shader_variable_node() : 
 				m_next(NULL),
@@ -75,14 +75,7 @@ namespace Yelo
 			PAD24;
 			TagGroups::s_shader_postprocess_generic* m_shader_generic;
 
-			c_generic_shader_variable_node* m_shader_texture_variable_list_head;
-			c_generic_shader_variable_node* m_shader_boolean_variable_list_head;
-			c_generic_shader_variable_node* m_shader_integer_variable_list_head;
-			c_generic_shader_variable_node* m_shader_float_variable_list_head;
-			c_generic_shader_variable_node* m_shader_float2_variable_list_head;
-			c_generic_shader_variable_node* m_shader_float3_variable_list_head;
-			c_generic_shader_variable_node* m_shader_float4_variable_list_head;
-			c_generic_shader_variable_node* m_shader_color_variable_list_head;
+			c_generic_shader_variable_node* m_shader_parameter_list_head;
 			
 			virtual HRESULT		LoadShader(IDirect3DDevice9* pDevice);
 			virtual HRESULT		LoadBitmaps(IDirect3DDevice9* pDevice);
@@ -93,9 +86,8 @@ namespace Yelo
 			virtual void		SetID(cstring pID);
 			virtual void		SetSource(void* pSource);
 			virtual HRESULT		SetupShader();
-			void				AddVariable(c_generic_shader_variable_node** list_pointer, 
-									TagGroups::s_shader_postprocess_value_base* variable_datum);
-			bool				FindVariable(c_generic_shader_variable_node** list_pointer, tag_string var_name);
+			void				AddVariable(TagGroups::s_shader_postprocess_parameter* variable_datum);
+			bool				FindVariable(tag_string var_name);
 			
 			virtual void		Ctor()
 			{
@@ -104,14 +96,7 @@ namespace Yelo
 
 				c_postprocess_shader::Ctor();
 
-				m_shader_texture_variable_list_head = NULL;
-				m_shader_boolean_variable_list_head = NULL;
-				m_shader_integer_variable_list_head = NULL;
-				m_shader_float_variable_list_head = NULL;
-				m_shader_float2_variable_list_head = NULL;
-				m_shader_float3_variable_list_head = NULL;
-				m_shader_float4_variable_list_head = NULL;
-				m_shader_color_variable_list_head = NULL;
+				m_shader_parameter_list_head = NULL;
 			}
 
 			virtual void		Dtor()
@@ -120,22 +105,8 @@ namespace Yelo
 
 				m_effect = NULL;
 
-				delete m_shader_texture_variable_list_head;
-				delete m_shader_boolean_variable_list_head;
-				delete m_shader_integer_variable_list_head;
-				delete m_shader_float_variable_list_head;
-				delete m_shader_float2_variable_list_head;
-				delete m_shader_float3_variable_list_head;
-				delete m_shader_float4_variable_list_head;
-				delete m_shader_color_variable_list_head;
-				m_shader_texture_variable_list_head = NULL;
-				m_shader_boolean_variable_list_head = NULL;
-				m_shader_integer_variable_list_head = NULL;
-				m_shader_float_variable_list_head = NULL;
-				m_shader_float2_variable_list_head = NULL;
-				m_shader_float3_variable_list_head = NULL;
-				m_shader_float4_variable_list_head = NULL;
-				m_shader_color_variable_list_head = NULL;
+				delete m_shader_parameter_list_head;
+				m_shader_parameter_list_head = NULL;
 			}
 		};
 	}; };

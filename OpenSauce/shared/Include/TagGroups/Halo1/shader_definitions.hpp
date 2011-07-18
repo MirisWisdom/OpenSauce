@@ -585,6 +585,12 @@ namespace Yelo
 			s_map	specular_color;   //32
 			s_map	base_normal;   //32
 			s_map	detail_normals[2];  //64
+			
+			TAG_FIELD(real_fraction, perpendicular_brightness, "[0,1]", "reflection brightness when viewed perpendicularly");
+			TAG_FIELD(real_rgb_color, perpendicular_tint_color, "", "reflection tint color when viewed perpendicularly");
+			TAG_FIELD(real_fraction, parallel_brightness, "[0,1]", "reflection brightness when viewed at a glancing angle");
+			TAG_FIELD(real_rgb_color, parallel_tint_color, "", "reflection tint color when viewed at a glancing angle");
+
 			TAG_PAD(byte, 32);    //32
 		};
 		struct _shader_model_definition

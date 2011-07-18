@@ -47,7 +47,7 @@ namespace BlamLib.Render.COLLADA.Core
 		public string Name
 		{ get { return _name.Value; } set { _name.Value = value; } }
 
-		[XmlAttribute("url")]
+		[XmlAttribute("url"), ColladaURI]
 		public string URL
 		{ get { return _url.Value; } set { _url.Value = value; } }
 		#endregion

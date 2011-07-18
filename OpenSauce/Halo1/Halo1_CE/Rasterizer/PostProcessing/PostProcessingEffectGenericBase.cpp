@@ -104,21 +104,20 @@ namespace Yelo
 		void		c_generic_shader_variable_texture_node::SetVariable(LPD3DXEFFECT* dx_effect)
 		{
 			// Set the texture variable to the loaded texture
-			TagGroups::s_shader_postprocess_bitmap* bitmap_value = 
-				CAST_PTR(TagGroups::s_shader_postprocess_bitmap*, m_shader_variable->m_variable_datum);
+			TagGroups::s_shader_postprocess_parameter* bitmap_value = 
+				CAST_PTR(TagGroups::s_shader_postprocess_parameter*, m_shader_variable->m_variable_datum);
 
-			if(bitmap_value->flags.is_external_bit)
-				bitmap_value->value.bitmap.handle.SetVariable(dx_effect, bitmap_value->runtime.external.texture_2d);
+			if(bitmap_value->bitmap_value.flags.is_external_bit)
+				bitmap_value->value.bitmap.handle.SetVariable(dx_effect, bitmap_value->bitmap_value.runtime.external.texture_2d);
 			else
-				bitmap_value->value.bitmap.handle.SetVariable(dx_effect, bitmap_value->runtime._internal.bitmap->hardware_format);
+				bitmap_value->value.bitmap.handle.SetVariable(dx_effect, bitmap_value->bitmap_value.runtime._internal.bitmap->hardware_format);
 		}
 		/////////////////////////////////////////////////////////////////////
 
 		/////////////////////////////////////////////////////////////////////
 		// c_generic_shader_instance_node
-		void		c_generic_shader_instance_node::AddVariableInstance(c_generic_shader_variable_instance_node** variable_list, 
-			c_generic_shader_variable_node* shader_variable)
-		{			
+		void		c_generic_shader_instance_node::AddVariableInstance(c_generic_shader_variable_node* shader_variable)
+		{
 			// Add a variable instance to a variable instance list
 			c_generic_shader_variable_instance_node* instance = NULL;
 			if(shader_variable->m_variable_datum->value_type.type == Enums::_shader_variable_base_type_texture)
@@ -128,42 +127,42 @@ namespace Yelo
 			instance->SetVariableSource(shader_variable);
 
 			// add the variable to the list
-			if(*variable_list == NULL)
+			if(m_variable_instance_head == NULL)
 			{
-				*variable_list = instance;
+				m_variable_instance_head = instance;
 				return;
 			}
 			
-			c_generic_shader_variable_instance_node* curr = *variable_list;
+			c_generic_shader_variable_instance_node* curr = m_variable_instance_head;
 			while(curr->m_next)
 				curr = curr->m_next;
 			curr->m_next = instance;
 			instance->m_previous = curr;
 		}
-		void		c_generic_shader_instance_node::AddInstanceList(c_generic_shader_variable_instance_node** destination_list, c_generic_shader_variable_node** source_list)
+		void		c_generic_shader_instance_node::AddInstanceList(c_generic_shader_variable_node** source_list)
 		{
 			// take a shaders variable list and build the variable instance list
 			c_generic_shader_variable_node* curr = *source_list;
 			while(curr)
 			{
-				AddVariableInstance(destination_list, curr);
+				AddVariableInstance(curr);
 				curr = curr->m_next;
 			}
 		}
-		void		c_generic_shader_instance_node::SetInstanceList(c_generic_shader_variable_instance_node** list, LPD3DXEFFECT* dx_effect)
+		void		c_generic_shader_instance_node::SetInstanceList(LPD3DXEFFECT* dx_effect)
 		{
 			// set the shader variables for this shader instance variable list
-			c_generic_shader_variable_instance_node* curr = *list;
+			c_generic_shader_variable_instance_node* curr = m_variable_instance_head;
 			while(curr)
 			{
 				curr->SetVariable(dx_effect);
 				curr = curr->m_next;
 			}			
 		}
-		void		c_generic_shader_instance_node::UpdateInstanceList(c_generic_shader_variable_instance_node** list, real delta_time)
+		void		c_generic_shader_instance_node::UpdateInstanceList(real delta_time)
 		{
 			// update the shader variables for this shader instance variable list
-			c_generic_shader_variable_instance_node* curr = *list;
+			c_generic_shader_variable_instance_node* curr = m_variable_instance_head;
 			while(curr)
 			{
 				curr->UpdateVariable(delta_time);
@@ -176,73 +175,24 @@ namespace Yelo
 			c_shader_instance_node::SetShaderSource(shader);
 			c_generic_shader_base* generic_shader = CAST_PTR(c_generic_shader_base*, shader);
 
-			AddInstanceList(&m_variable_instance_texture_head,	&generic_shader->m_shader_texture_variable_list_head);
-			AddInstanceList(&m_variable_instance_boolean_head,	&generic_shader->m_shader_boolean_variable_list_head);
-			AddInstanceList(&m_variable_instance_integer_head,	&generic_shader->m_shader_integer_variable_list_head);
-			AddInstanceList(&m_variable_instance_float_head,	&generic_shader->m_shader_float_variable_list_head);
-			AddInstanceList(&m_variable_instance_float2_head,	&generic_shader->m_shader_float2_variable_list_head);
-			AddInstanceList(&m_variable_instance_float3_head,	&generic_shader->m_shader_float3_variable_list_head);
-			AddInstanceList(&m_variable_instance_float4_head,	&generic_shader->m_shader_float4_variable_list_head);
-			AddInstanceList(&m_variable_instance_color_head,	&generic_shader->m_shader_color_variable_list_head);
+			AddInstanceList(&generic_shader->m_shader_parameter_list_head);
 		}
 		void		c_generic_shader_instance_node::UpdateInstance(real delta_time)
 		{
 			// Update the variables instance lists for this shader instance
-			UpdateInstanceList(&m_variable_instance_boolean_head, delta_time);
-			UpdateInstanceList(&m_variable_instance_integer_head, delta_time);
-			UpdateInstanceList(&m_variable_instance_float_head, delta_time);
-			UpdateInstanceList(&m_variable_instance_float2_head, delta_time);
-			UpdateInstanceList(&m_variable_instance_float3_head, delta_time);
-			UpdateInstanceList(&m_variable_instance_float4_head, delta_time);
-			UpdateInstanceList(&m_variable_instance_color_head, delta_time);
+			UpdateInstanceList(delta_time);
 		}
 		void		c_generic_shader_instance_node::SetInstance()
 		{
 			// Set the variables instance lists for this shader instance
-			SetInstanceList(&m_variable_instance_texture_head, m_shader->GetEffect());
-			SetInstanceList(&m_variable_instance_boolean_head, m_shader->GetEffect());
-			SetInstanceList(&m_variable_instance_integer_head, m_shader->GetEffect());
-			SetInstanceList(&m_variable_instance_float_head, m_shader->GetEffect());
-			SetInstanceList(&m_variable_instance_float2_head, m_shader->GetEffect());
-			SetInstanceList(&m_variable_instance_float3_head, m_shader->GetEffect());
-			SetInstanceList(&m_variable_instance_float4_head, m_shader->GetEffect());
-			SetInstanceList(&m_variable_instance_color_head, m_shader->GetEffect());
+			SetInstanceList(m_shader->GetEffect());
 		}
-		void		c_generic_shader_instance_node::ReplaceVariableInstance(const TagGroups::shader_variable_type& value_type, cstring variable_name, c_generic_shader_variable_instance_node* shader_variable)
+		void		c_generic_shader_instance_node::ReplaceVariableInstance(cstring variable_name, c_generic_shader_variable_instance_node* shader_variable)
 		{
-			// Replace a variable instance will a different type if a matching variable is found
+			// Replace a variable instance wilh a different type if a matching variable is found
 			c_generic_shader_variable_instance_node* current_variable;
-			c_generic_shader_variable_instance_node** variable_list;
 
-			switch(value_type.type)
-			{
-			default:	return;
-
-			case Enums::_shader_variable_base_type_boolean:
-				variable_list = &m_variable_instance_boolean_head;
-				break;
-
-			case Enums::_shader_variable_base_type_integer:
-				variable_list = &m_variable_instance_integer_head;
-				break;
-
-			case Enums::_shader_variable_base_type_float:
-				switch(value_type.count)
-				{
-				default:
-					return;
-				case 1: variable_list = &m_variable_instance_float_head;  break;
-				case 2: variable_list = &m_variable_instance_float2_head; break;
-				case 3: variable_list = &m_variable_instance_float3_head; break;
-				case 4: variable_list = &m_variable_instance_float4_head; break;
-				}
-				break;
-
-			case Enums::_shader_variable_base_type_argb_color:
-				variable_list = &m_variable_instance_color_head;
-				break;
-			}
-			current_variable = FindVariableInstance(variable_list, variable_name);
+			current_variable = FindVariableInstance(variable_name);
 
 			if(!current_variable)
 				return;
@@ -266,8 +216,8 @@ namespace Yelo
 			shader_variable->SetVariableSource(current_variable->m_shader_variable);
 
 			// have to reset the list head if the first entry is being replaced
-			if(*variable_list == current_variable)
-				*variable_list = shader_variable;
+			if(m_variable_instance_head == current_variable)
+				m_variable_instance_head = shader_variable;
 
 			// clear the list node references, thus preventing it from deleting its old siblings
 			current_variable->ClearReferences();
@@ -276,10 +226,10 @@ namespace Yelo
 			delete current_variable;
 		}
 		c_generic_shader_variable_instance_node* 
-					c_generic_shader_instance_node::FindVariableInstance(c_generic_shader_variable_instance_node** variable_list, const char* variable_name)
+					c_generic_shader_instance_node::FindVariableInstance(const char* variable_name)
 		{
 			// search through the variables in the list, looking for a variable with a matching name
-			c_generic_shader_variable_instance_node* curr = *variable_list;
+			c_generic_shader_variable_instance_node* curr = m_variable_instance_head;
 			while(curr)
 			{
 				if(strcmp(curr->m_shader_variable->m_variable_datum->value_name, variable_name) == 0)

@@ -121,58 +121,30 @@ namespace Yelo
 		/////////////////////////////////////////////////////////////////////
 		class c_generic_shader_instance_node : public c_shader_instance_node
 		{
-			c_generic_shader_variable_instance_node*	m_variable_instance_texture_head;
-			c_generic_shader_variable_instance_node*	m_variable_instance_boolean_head;
-			c_generic_shader_variable_instance_node*	m_variable_instance_integer_head;
-			c_generic_shader_variable_instance_node*	m_variable_instance_float_head;
-			c_generic_shader_variable_instance_node*	m_variable_instance_float2_head;
-			c_generic_shader_variable_instance_node*	m_variable_instance_float3_head;
-			c_generic_shader_variable_instance_node*	m_variable_instance_float4_head;
-			c_generic_shader_variable_instance_node*	m_variable_instance_color_head;
+			c_generic_shader_variable_instance_node*	m_variable_instance_head;
 
 		public:
 			virtual void		UpdateInstance(real delta_time);
-			void				SetInstanceList(c_generic_shader_variable_instance_node** list, LPD3DXEFFECT* dx_effect);
-			void				UpdateInstanceList(c_generic_shader_variable_instance_node** list, real delta_time);
-			void				AddInstanceList(c_generic_shader_variable_instance_node** destination_list, c_generic_shader_variable_node** source_list);
+			void				SetInstanceList(LPD3DXEFFECT* dx_effect);
+			void				UpdateInstanceList(real delta_time);
+			void				AddInstanceList(c_generic_shader_variable_node** source_list);
 			virtual void		SetInstance();
 			virtual void		SetShaderSource(c_postprocess_shader* shader);
-			void				AddVariableInstance(c_generic_shader_variable_instance_node** variable_list, c_generic_shader_variable_node* shader_variable);
-			void				ReplaceVariableInstance(const TagGroups::shader_variable_type& type, cstring variable_name, c_generic_shader_variable_instance_node* shader_variable);
+			void				AddVariableInstance(c_generic_shader_variable_node* shader_variable);
+			void				ReplaceVariableInstance(cstring variable_name, c_generic_shader_variable_instance_node* shader_variable);
 			c_generic_shader_variable_instance_node* 
-								FindVariableInstance(c_generic_shader_variable_instance_node** variable_list, cstring variable_name);
+								FindVariableInstance(cstring variable_name);
 			
 			c_generic_shader_instance_node() : c_shader_instance_node(),
-				m_variable_instance_texture_head(NULL),
-				m_variable_instance_boolean_head(NULL),
-				m_variable_instance_integer_head(NULL),
-				m_variable_instance_float_head(NULL),
-				m_variable_instance_float2_head(NULL),
-				m_variable_instance_float3_head(NULL),
-				m_variable_instance_float4_head(NULL),
-				m_variable_instance_color_head(NULL)
+				m_variable_instance_head(NULL)
 			{
 			}
 
 			virtual ~c_generic_shader_instance_node()
 			{
-				delete m_variable_instance_texture_head;
-				delete m_variable_instance_boolean_head;
-				delete m_variable_instance_integer_head;
-				delete m_variable_instance_float_head;
-				delete m_variable_instance_float2_head;
-				delete m_variable_instance_float3_head;
-				delete m_variable_instance_float4_head;
-				delete m_variable_instance_color_head;
+				delete m_variable_instance_head;
 
-				m_variable_instance_texture_head = NULL;
-				m_variable_instance_boolean_head = NULL;
-				m_variable_instance_integer_head = NULL;
-				m_variable_instance_float_head = NULL;
-				m_variable_instance_float2_head = NULL;
-				m_variable_instance_float3_head = NULL;
-				m_variable_instance_float4_head = NULL;
-				m_variable_instance_color_head = NULL;
+				m_variable_instance_head = NULL;
 			}
 
 		};

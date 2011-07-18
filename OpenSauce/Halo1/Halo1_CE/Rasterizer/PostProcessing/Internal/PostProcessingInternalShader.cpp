@@ -29,28 +29,34 @@ namespace Yelo
 		/////////////////////////////////////////////////////////////////////
 		// c_internal_shader 
 		HRESULT		c_internal_shader::LoadBitmaps(IDirect3DDevice9* pDevice)
-		{			
-			// Allocates the bitmap D3D textures			
+		{
+			// Allocates the bitmap D3D textures
 			c_generic_shader_variable_node* curr;
 
 			// load bitmap textures
-			curr = m_shader_texture_variable_list_head;
+			curr = m_shader_parameter_list_head;
 			while(curr)
 			{
-				TagGroups::s_shader_postprocess_bitmap* bitmap_var = CAST_PTR(TagGroups::s_shader_postprocess_bitmap*, curr->m_variable_datum); 
-								
-				//if a valid tag index is referenced continue
-				if(!bitmap_var->bitmap.tag_index.IsNull())
+				do
 				{
-					// get the bitmap tag pointer
-					datum_index bitmap_index = bitmap_var->bitmap.tag_index;
-					TagGroups::s_bitmap_definition* bitm = TagGroups::Instances()[bitmap_index.index].Definition<TagGroups::s_bitmap_definition>();
-					if(bitm == NULL)
-						return E_FAIL;
+					if(curr->m_variable_datum->value_type.type != Enums::_shader_variable_base_type_texture)
+						break;
 
-					// set the bitmap source to a bitmap datum from the bitmap tag
-					bitmap_var->SetSource(&bitm->bitmaps[bitmap_var->value.bitmap.bitmap_index]);
-				}
+					TagGroups::s_shader_postprocess_parameter* bitmap_var = CAST_PTR(TagGroups::s_shader_postprocess_parameter*, curr->m_variable_datum); 
+									
+					//if a valid tag index is referenced continue
+					if(!bitmap_var->bitmap_value.bitmap.tag_index.IsNull())
+					{
+						// get the bitmap tag pointer
+						datum_index bitmap_index = bitmap_var->bitmap_value.bitmap.tag_index;
+						TagGroups::s_bitmap_definition* bitm = TagGroups::Instances()[bitmap_index.index].Definition<TagGroups::s_bitmap_definition>();
+						if(bitm == NULL)
+							return E_FAIL;
+
+						// set the bitmap source to a bitmap datum from the bitmap tag
+						bitmap_var->SetSource(&bitm->bitmaps[bitmap_var->value.bitmap.bitmap_index]);
+					}
+				}while(false);
 				curr = curr->m_next;
 			}
 

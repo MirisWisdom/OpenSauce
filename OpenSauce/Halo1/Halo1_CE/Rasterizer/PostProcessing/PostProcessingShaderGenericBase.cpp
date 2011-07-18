@@ -34,7 +34,7 @@ namespace Yelo
 	namespace Postprocessing { namespace Subsystem {
 		/////////////////////////////////////////////////////////////////////
 		// c_generic_shader_variable_node
-		void		c_generic_shader_variable_node::SetVariableDatum(TagGroups::s_shader_postprocess_value_base* variable_datum)
+		void		c_generic_shader_variable_node::SetVariableDatum(TagGroups::s_shader_postprocess_parameter* variable_datum)
 		{
 			m_variable_datum = variable_datum;
 		}
@@ -62,11 +62,14 @@ namespace Yelo
 
 			c_generic_shader_variable_node* curr;
 			// load bitmap textures
-			curr = m_shader_texture_variable_list_head;
+			curr = m_shader_parameter_list_head;
 			while(curr)
 			{
-				TagGroups::s_shader_postprocess_bitmap* bitmap = CAST_PTR(TagGroups::s_shader_postprocess_bitmap*, curr->m_variable_datum);
-				hr |= bitmap->LoadCacheBitmap(pDevice);
+				if(curr->m_variable_datum->value_type.type == Enums::_shader_variable_base_type_texture)
+				{
+					TagGroups::s_shader_postprocess_parameter* bitmap = CAST_PTR(TagGroups::s_shader_postprocess_parameter*, curr->m_variable_datum);
+					hr |= bitmap->LoadCacheBitmap(pDevice);
+				}
 				curr = curr->m_next;
 			}
 			return hr;
@@ -93,91 +96,84 @@ namespace Yelo
 
 			c_generic_shader_variable_node* curr;
 			// load bitmap handles
-			curr = m_shader_texture_variable_list_head;
-			while(curr)
-			{
-				TagGroups::s_shader_postprocess_bitmap* bitmap = CAST_PTR(TagGroups::s_shader_postprocess_bitmap*, curr->m_variable_datum);
-				bitmap->value.bitmap.handle.Initialize(m_effect,
-					bitmap->value_name,
-					bitmap->GetTexture());
-				curr = curr->m_next;
-			}
-			// load boolean handles
-			curr = m_shader_boolean_variable_list_head;
-			while(curr)
-			{
-				curr->m_variable_datum->value.boolean.handle.Initialize(m_effect,
-					curr->m_variable_datum->value_name,
-					&curr->m_variable_datum->value.boolean.enabled);
-				curr = curr->m_next;
-			}
-			// load integer handles
-			curr = m_shader_integer_variable_list_head;
-			while(curr)
-			{
-				curr->m_variable_datum->value.integer32.handle.Initialize(m_effect,
-					curr->m_variable_datum->value_name,
-					&curr->m_variable_datum->value.integer32.upper_bound);
-				curr = curr->m_next;
-			}
-			// load float handles
-			curr = m_shader_float_variable_list_head;
-			while(curr)
-			{
-				curr->m_variable_datum->value.real32.handle.Initialize(m_effect,
-					curr->m_variable_datum->value_name,
-					&curr->m_variable_datum->value.real32.upper_bound);
-				curr = curr->m_next;
-			}
-			// load float2 handles
-			curr = m_shader_float2_variable_list_head;
-			while(curr)
-			{
-				curr->m_variable_datum->value.vector2d.handle.Initialize(m_effect,
-					curr->m_variable_datum->value_name,
-					&curr->m_variable_datum->value.vector2d.upper_bound);
-				curr = curr->m_next;
-			}
-			// load float3 handles
-			curr = m_shader_float3_variable_list_head;
-			while(curr)
-			{
-				curr->m_variable_datum->value.vector3d.handle.Initialize(m_effect,
-					curr->m_variable_datum->value_name,
-					&curr->m_variable_datum->value.vector3d.upper_bound);
-				curr = curr->m_next;
-			}
-			// load float4 handles
-			curr = m_shader_float4_variable_list_head;
-			while(curr)
-			{
-				curr->m_variable_datum->value.vector4d.handle.Initialize(m_effect,
-					curr->m_variable_datum->value_name,
-					&curr->m_variable_datum->value.vector4d.upper_bound);
-				curr = curr->m_next;
-			}	
-			// load color handles
-			curr = m_shader_color_variable_list_head;
-			while(curr)
-			{
-				// the shader wants rgba, but we store argb, so a switcheroo is needed
-				D3DXCOLOR temp_color;
-				temp_color.a = curr->m_variable_datum->value.color4d.upper_bound.alpha;
-				temp_color.r = curr->m_variable_datum->value.color4d.upper_bound.red;
-				temp_color.g = curr->m_variable_datum->value.color4d.upper_bound.green;
-				temp_color.b = curr->m_variable_datum->value.color4d.upper_bound.blue;
+			curr = m_shader_parameter_list_head;
 
-				curr->m_variable_datum->value.color4d.handle.Initialize(m_effect,
-					curr->m_variable_datum->value_name,
-					&temp_color, false);
+			while(curr)
+			{
+				switch(curr->m_variable_datum->value_type.type)
+				{
+				case Enums::_shader_variable_base_type_boolean:
+					{
+						curr->m_variable_datum->value.boolean.handle.Initialize(m_effect,
+							curr->m_variable_datum->value_name,
+							&curr->m_variable_datum->value.boolean.enabled);
+					}
+					break;
+				case Enums::_shader_variable_base_type_integer:
+					{
+						curr->m_variable_datum->value.integer32.handle.Initialize(m_effect,
+							curr->m_variable_datum->value_name,
+							&curr->m_variable_datum->value.integer32.upper_bound);
+					}
+					break;
+				case Enums::_shader_variable_base_type_float:
+					{
+						switch(curr->m_variable_datum->value_type.count)
+						{
+						case 1:
+							curr->m_variable_datum->value.real32.handle.Initialize(m_effect,
+								curr->m_variable_datum->value_name,
+								&curr->m_variable_datum->value.real32.upper_bound);
+							break;
+						case 2:
+							curr->m_variable_datum->value.vector2d.handle.Initialize(m_effect,
+								curr->m_variable_datum->value_name,
+								&curr->m_variable_datum->value.vector2d.upper_bound);
+							break;
+						case 3:
+							curr->m_variable_datum->value.vector3d.handle.Initialize(m_effect,
+								curr->m_variable_datum->value_name,
+								&curr->m_variable_datum->value.vector3d.upper_bound);
+							break;
+						case 4:
+							curr->m_variable_datum->value.vector4d.handle.Initialize(m_effect,
+								curr->m_variable_datum->value_name,
+								&curr->m_variable_datum->value.vector4d.upper_bound);
+							break;
+						};
+					}
+					break;
+				case Enums::_shader_variable_base_type_argb_color:
+					{
+						// the shader wants rgba, but we store argb, so a switcheroo is needed
+						D3DXCOLOR temp_color;
+						temp_color.a = curr->m_variable_datum->value.color4d.upper_bound.alpha;
+						temp_color.r = curr->m_variable_datum->value.color4d.upper_bound.red;
+						temp_color.g = curr->m_variable_datum->value.color4d.upper_bound.green;
+						temp_color.b = curr->m_variable_datum->value.color4d.upper_bound.blue;
+
+						curr->m_variable_datum->value.color4d.handle.Initialize(m_effect,
+							curr->m_variable_datum->value_name,
+							&temp_color, false);
+					}
+					break;
+				case Enums::_shader_variable_base_type_texture:
+					{
+						TagGroups::s_shader_postprocess_parameter* bitmap = CAST_PTR(TagGroups::s_shader_postprocess_parameter*, curr->m_variable_datum);
+						bitmap->value.bitmap.handle.Initialize(m_effect,
+							bitmap->value_name,
+							bitmap->GetTexture());
+					}
+					break;
+				};
 				curr = curr->m_next;
 			}
 			return hr;
 		}
 		void		c_generic_shader_base::UnloadCustomResources()
 		{
-			for (int32 i = 0; i < m_shader_generic->implementation.bitmaps.Count; ++i)
-				m_shader_generic->implementation.bitmaps[i].ReleaseBitmap();			
+			for (int32 i = 0; i < m_shader_generic->parameters.Count; ++i)
+				m_shader_generic->parameters[i].ReleaseBitmap();
 		}
 		void		c_generic_shader_base::SetID(cstring pID)
 		{
@@ -196,17 +192,8 @@ namespace Yelo
 			// Initialize the shader to default values
 			HRESULT hr = c_postprocess_shader::SetupShader();
 
-			TagGroups::s_shader_postprocess_implementation& impl = m_shader_generic->implementation;
-
-			int32 i;
-			for (i = 0; i < impl.bitmaps.Count; ++i)			impl.bitmaps[i].value.bitmap.handle.ClearHandles();
-			for (i = 0; i < impl.bools.Count; ++i)				impl.bools[i].value.boolean.handle.ClearHandles();
-			for (i = 0; i < impl.integers.Count; ++i)			impl.integers[i].value.integer32.handle.ClearHandles();
-			for (i = 0; i < impl.floats.Count; ++i)				impl.floats[i].value.real32.handle.ClearHandles();
-			for (i = 0; i < impl.float2s.Count; ++i)			impl.float2s[i].value.vector2d.handle.ClearHandles();
-			for (i = 0; i < impl.float3s.Count; ++i)			impl.float3s[i].value.vector3d.handle.ClearHandles();
-			for (i = 0; i < impl.float4s.Count; ++i)			impl.float4s[i].value.vector4d.handle.ClearHandles();
-			for (i = 0; i < impl.colors.Count; ++i)				impl.colors[i].value.color4d.handle.ClearHandles();
+			for (int32 i = 0; i < m_shader_generic->parameters.Count; ++i)
+				m_shader_generic->parameters[i].value.bitmap.handle.ClearHandles();
 
 			return hr;
 		}
@@ -215,119 +202,27 @@ namespace Yelo
 			// Takes the variable blocks in m_shader_generic and creates the variable lists as necessary
 			// This is where variable overrides are set up
 			TagGroups::s_shader_postprocess_generic* shader_tag = m_shader_generic;
-			while(shader_tag)
-			{
-				TagGroups::s_shader_postprocess_implementation& impl = shader_tag->implementation;
-				int32 i;
-
-				for(i = 0; i < impl.bitmaps.Count; i++)
-				{					
-					if(FindVariable(&m_shader_texture_variable_list_head, impl.bitmaps[i].value_name))
-						continue;
-					AddVariable(&m_shader_texture_variable_list_head, &impl.bitmaps[i]);
-					impl.bitmaps[i].value_type.type = Enums::_shader_variable_base_type_texture;
-					impl.bitmaps[i].value_type.count = 1;
-				}
-
-				for(i = 0; i < impl.bools.Count; i++)
-				{
-					if(FindVariable(&m_shader_boolean_variable_list_head, impl.bools[i].value_name))
-						continue;
-					AddVariable(&m_shader_boolean_variable_list_head, &impl.bools[i]);
-					impl.bools[i].value_type.type = Enums::_shader_variable_base_type_boolean;
-					impl.bools[i].value_type.count = 1;
-				}
-
-				for(i = 0; i < impl.integers.Count; i++)
-				{
-					if(FindVariable(&m_shader_integer_variable_list_head, impl.integers[i].value_name))
-						continue;
-					AddVariable(&m_shader_integer_variable_list_head, &impl.integers[i]);
-					impl.integers[i].value_type.type = Enums::_shader_variable_base_type_integer;
-					impl.integers[i].value_type.count = 1;
-				}
-
-				for(i = 0; i < impl.floats.Count; i++)
-				{
-					if(FindVariable(&m_shader_float_variable_list_head, impl.floats[i].value_name))
-						continue;
-					AddVariable(&m_shader_float_variable_list_head, &impl.floats[i]);
-					impl.floats[i].value_type.type = Enums::_shader_variable_base_type_float;
-					impl.floats[i].value_type.count = 1;
-				}
-
-				for(i = 0; i < impl.float2s.Count; i++)
-				{
-					if(FindVariable(&m_shader_float2_variable_list_head, impl.float2s[i].value_name))
-						continue;
-					AddVariable(&m_shader_float2_variable_list_head, &impl.float2s[i]);
-					impl.float2s[i].value_type.type = Enums::_shader_variable_base_type_float;
-					impl.float2s[i].value_type.count = 2;
-				}
-
-				for(i = 0; i < impl.float3s.Count; i++)
-				{
-					if(FindVariable(&m_shader_float3_variable_list_head, impl.float3s[i].value_name))
-						continue;
-					AddVariable(&m_shader_float3_variable_list_head, &impl.float3s[i]);
-					impl.float3s[i].value_type.type = Enums::_shader_variable_base_type_float;
-					impl.float3s[i].value_type.count = 3;
-				}
-
-				for(i = 0; i < impl.float4s.Count; i++)
-				{
-					if(FindVariable(&m_shader_float4_variable_list_head, impl.float4s[i].value_name))
-						continue;
-					AddVariable(&m_shader_float4_variable_list_head, &impl.float4s[i]);
-					impl.float4s[i].value_type.type = Enums::_shader_variable_base_type_float;
-					impl.float4s[i].value_type.count = 4;
-				}
-
-				for(i = 0; i < impl.colors.Count; i++)
-				{
-					if(FindVariable(&m_shader_color_variable_list_head, impl.colors[i].value_name))
-						continue;
-					AddVariable(&m_shader_color_variable_list_head, &impl.colors[i]);
-					impl.colors[i].value_type.type = Enums::_shader_variable_base_type_argb_color;
-					impl.colors[i].value_type.count = 1;
-				}
-
-				if(shader_tag->base_shader.tag_index.IsNull())
-					shader_tag = NULL;
-				else
-					shader_tag = TagGroups::Instances()[shader_tag->base_shader.tag_index.index].Definition<TagGroups::s_shader_postprocess_generic>();
-			}
+			
+			for(int i = 0; i < shader_tag->parameters.Count; i++)
+				AddVariable(&shader_tag->parameters[i]);
 			return S_OK;
 		}
-		void		c_generic_shader_base::AddVariable(c_generic_shader_variable_node** list_pointer, 
-						TagGroups::s_shader_postprocess_value_base* variable_datum)
+		void		c_generic_shader_base::AddVariable(TagGroups::s_shader_postprocess_parameter* variable_datum)
 		{
 			// Adds a variable node to a variable node list
-			if(!*list_pointer)
+			if(!m_shader_parameter_list_head)
 			{
-				*list_pointer = new c_generic_shader_variable_node();
-				(*list_pointer)->SetVariableDatum(variable_datum);
+				m_shader_parameter_list_head = new c_generic_shader_variable_node();
+				(m_shader_parameter_list_head)->SetVariableDatum(variable_datum);
 			}
 			else
 			{
-				c_generic_shader_variable_node* curr = *list_pointer;
+				c_generic_shader_variable_node* curr = m_shader_parameter_list_head;
 				while(curr->m_next)
 					curr = curr->m_next;
 				curr->m_next = new c_generic_shader_variable_node();
 				curr->m_next->SetVariableDatum(variable_datum);
 			}
-		}	
-		bool		c_generic_shader_base::FindVariable(c_generic_shader_variable_node** list_pointer, tag_string var_name)
-		{
-			// Searches a variable node list to see if one with the specified name alrady exists
-			c_generic_shader_variable_node* curr = *list_pointer;
-			while(curr)
-			{
-				if(strncmp(curr->m_variable_datum->value_name, var_name, Enums::k_tag_string_length) == 0)
-					return true;
-				curr = curr->m_next;
-			}
-			return false;
 		}
 		/////////////////////////////////////////////////////////////////////
 	}; };

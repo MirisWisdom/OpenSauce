@@ -31,8 +31,7 @@ namespace Yelo
 	namespace Postprocessing { namespace Subsystem { namespace External {
 		/////////////////////////////////////////////////////////////////////
 		// c_external_shader
-		template<class T>
-		void		c_external_shader::SetupVariables_Base(cstring semantic, TagBlock<T>& block, 
+		void		c_external_shader::SetupVariables_Base(cstring semantic, TagBlock<TagGroups::s_shader_postprocess_parameter>& block, 
 			const uint16 variable_count, 
 			const TagGroups::shader_variable_type& value_type
 		)
@@ -54,15 +53,16 @@ namespace Yelo
 
 			ZeroMemory(buffer, sizeof(buffer));
 
+			int32 first_index = block.Count;
 			// allocate memory for bitmap block elements
-			block.Address = new T[count];
-			memset(block.Address, 0, sizeof(T) * count);
-			block.Count = count;
+			block.Address = realloc(block.Address, sizeof(TagGroups::s_shader_postprocess_parameter) * (block.Count + count));
+			memset(&block[first_index], 0, sizeof(TagGroups::s_shader_postprocess_parameter) * count);
+			block.Count += count;
 
-			for (int32 i = 0; i < block.Count; ++i)
+			for (int32 i = first_index; i < block.Count; ++i)
 			{
 				ZeroMemory(buffer, sizeof(buffer));
-				sprintf_s(buffer, sizeof(buffer), semantic, i+1);
+				sprintf_s(buffer, sizeof(buffer), semantic, i + 1 - first_index);
 
 				D3DXHANDLE variable_handle = (*m_effect)->GetParameterBySemantic(NULL, buffer);
 				if(!variable_handle)
@@ -70,7 +70,9 @@ namespace Yelo
 				D3DXPARAMETER_DESC variable_description;
 				(*m_effect)->GetParameterDesc(variable_handle, &variable_description);
 
-				strcpy_s(block[i].value_name, Yelo::Enums::k_tag_string_length+1, variable_description.Name);
+				strcpy_s(block[i].value_name, Yelo::Enums::k_tag_string_length + 1, variable_description.Name);
+
+				block[i].value_type = value_type;
 
 				if(value_type.type == Enums::_shader_variable_base_type_texture)
 					continue;
@@ -169,44 +171,44 @@ namespace Yelo
 			value_type.count = 1;
 
 			value_type.type = Enums::_shader_variable_base_type_texture;
-			SetupVariables_Base<TagGroups::s_shader_postprocess_bitmap>("VARTEXTURE_%i",
-				m_shader_generic->implementation.bitmaps,
+			SetupVariables_Base("VARTEXTURE_%i",
+				m_shader_generic->parameters,
 				k_bitmap_count, value_type);
 
 
 			value_type.type = Enums::_shader_variable_base_type_boolean;
-			SetupVariables_Base<TagGroups::s_shader_postprocess_value_base>("VARBOOL_%i",
-				m_shader_generic->implementation.bools,
+			SetupVariables_Base("VARBOOL_%i",
+				m_shader_generic->parameters,
 				k_variable_count, value_type);
 			value_type.type = Enums::_shader_variable_base_type_integer;
-			SetupVariables_Base<TagGroups::s_shader_postprocess_value_base>("VARINT_%i",
-				m_shader_generic->implementation.integers,
+			SetupVariables_Base("VARINT_%i",
+				m_shader_generic->parameters,
 				k_variable_count, value_type);
 			
 			value_type.type = Enums::_shader_variable_base_type_argb_color;
-			SetupVariables_Base<TagGroups::s_shader_postprocess_value_base>("VARCOLOR_%i",
-				m_shader_generic->implementation.colors,
+			SetupVariables_Base("VARCOLOR_%i",
+				m_shader_generic->parameters,
 				k_variable_count, value_type);
 
 
 			value_type.type = Enums::_shader_variable_base_type_float;
-			SetupVariables_Base<TagGroups::s_shader_postprocess_value_base>("VARFLOAT_%i",
-				m_shader_generic->implementation.floats,
+			SetupVariables_Base("VARFLOAT_%i",
+				m_shader_generic->parameters,
 				k_variable_count, value_type);
 			value_type.type = Enums::_shader_variable_base_type_float;
 			value_type.count++;
-			SetupVariables_Base<TagGroups::s_shader_postprocess_value_base>("VARFLOAT2_%i",
-				m_shader_generic->implementation.float2s,
+			SetupVariables_Base("VARFLOAT2_%i",
+				m_shader_generic->parameters,
 				k_variable_count, value_type);
 			value_type.type = Enums::_shader_variable_base_type_float;
 			value_type.count++;
-			SetupVariables_Base<TagGroups::s_shader_postprocess_value_base>("VARFLOAT3_%i",
-				m_shader_generic->implementation.float3s,
+			SetupVariables_Base("VARFLOAT3_%i",
+				m_shader_generic->parameters,
 				k_variable_count, value_type);
 			value_type.type = Enums::_shader_variable_base_type_float;
 			value_type.count++;
-			SetupVariables_Base<TagGroups::s_shader_postprocess_value_base>("VARFLOAT4_%i",
-				m_shader_generic->implementation.float4s,
+			SetupVariables_Base("VARFLOAT4_%i",
+				m_shader_generic->parameters,
 				k_variable_count, value_type);
 						
 			return c_generic_shader_base::SetupVariables(pDevice);
@@ -221,33 +223,39 @@ namespace Yelo
 
 		HRESULT		c_external_shader::LoadBitmaps(IDirect3DDevice9* pDevice)
 		{
-			// loads bitmaps that are stored externally, from a path defined in the variables annotations						
+			// loads bitmaps that are stored externally, from a path defined in the variables annotations
 			c_generic_shader_variable_node* curr;
 
 			// load bitmap textures
-			curr = m_shader_texture_variable_list_head;
+			curr = m_shader_parameter_list_head;
 			while(curr)
 			{
-				TagGroups::s_shader_postprocess_bitmap* bitmap_var = CAST_PTR(TagGroups::s_shader_postprocess_bitmap*, curr->m_variable_datum); 
-				
-				// get the resource annotation for the variable
-				D3DXHANDLE variable_handle = (*m_effect)->GetParameterByName(NULL, bitmap_var->value_name);
-				if(!variable_handle )
-					return E_FAIL;
-				D3DXHANDLE resource_string = (*m_effect)->GetAnnotationByName(variable_handle, "texture_location");
-				if(!resource_string )
-					return E_FAIL;
+				do
+				{
+					if(curr->m_variable_datum->value_type.type != Enums::_shader_variable_base_type_texture)
+						break;
 
-				// get the file path to the texture, relative to the Halo CE directory
-				LPCSTR tempstr;
-				(*m_effect)->GetString(resource_string, &tempstr);
+					TagGroups::s_shader_postprocess_parameter* bitmap_var = CAST_PTR(TagGroups::s_shader_postprocess_parameter*, curr->m_variable_datum); 
+					
+					// get the resource annotation for the variable
+					D3DXHANDLE variable_handle = (*m_effect)->GetParameterByName(NULL, bitmap_var->value_name);
+					if(!variable_handle )
+						return E_FAIL;
+					D3DXHANDLE resource_string = (*m_effect)->GetAnnotationByName(variable_handle, "texture_location");
+					if(!resource_string )
+						return E_FAIL;
 
-				char resource_buffer[MAX_PATH];
-				resource_buffer[0] = '\0';
-				sprintf_s(resource_buffer, "%s%s", c_external_subsystem::g_subsystem_shader_textures_path, tempstr);
+					// get the file path to the texture, relative to the Halo CE directory
+					LPCSTR tempstr;
+					(*m_effect)->GetString(resource_string, &tempstr);
 
-				// set the bitmap elements source to the texture path
-				bitmap_var->SetSource(resource_buffer);	
+					char resource_buffer[MAX_PATH];
+					resource_buffer[0] = '\0';
+					sprintf_s(resource_buffer, "%s%s", c_external_subsystem::g_subsystem_shader_textures_path, tempstr);
+
+					// set the bitmap elements source to the texture path
+					bitmap_var->SetSource(resource_buffer);
+				}while(false);
 				
 				curr = curr->m_next;
 			}

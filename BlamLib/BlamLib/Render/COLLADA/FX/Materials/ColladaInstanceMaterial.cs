@@ -48,7 +48,7 @@ namespace BlamLib.Render.COLLADA.Fx
 		public string Name
 		{ get { return _name.Value; } set { _name.Value = value; } }
 
-		[XmlAttribute("target")]
+		[XmlAttribute("target"), ColladaURI]
 		public string Target
 		{ get { return _target.Value; } set { _target.Value = value; } }
 
