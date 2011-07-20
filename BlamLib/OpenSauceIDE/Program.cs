@@ -66,8 +66,16 @@ namespace OpenSauceIDE
 
 			AllocConsole();
 
-			if(!BlamLib.Tool.RunCommand(command, cmd_args.ToArray()))
-				BlamLib.Tool.PrintUsage(command);
+			try
+			{
+				if (!BlamLib.Tool.RunCommand(command, cmd_args.ToArray()))
+					BlamLib.Tool.PrintUsage(command);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("Unhandled tool exception: {0}", ex.Message);
+				Console.WriteLine(ex.StackTrace);
+			}
 
 			System.Threading.Thread.Sleep(5000);
 			FreeConsole();

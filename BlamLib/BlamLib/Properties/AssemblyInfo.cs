@@ -33,9 +33,9 @@ using System.Runtime.InteropServices;
 	"RELEASE"
 #endif
  + ")")]
-[assembly: AssemblyCompany("Kornner Software ©  2005 - 2010")]
+[assembly: AssemblyCompany("Kornner Studios ©  2005 - 2011")]
 [assembly: AssemblyProduct("BlamLib")]
-[assembly: AssemblyCopyright("Copyright ©  2006 - 2010")]
+[assembly: AssemblyCopyright("Copyright ©  2006 - 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
