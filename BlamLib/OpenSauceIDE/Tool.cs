@@ -23,6 +23,18 @@ namespace BlamLib
 {
 	internal static partial class Tool
 	{
+		static void DumpArguments(int start_index, params string[] args)
+		{
+			Console.WriteLine("Argument dump follows:");
+			if (start_index >= args.Length)
+				Console.WriteLine("\tcan't dump an OOB index");
+			else
+			{
+				for (int x = start_index; x < args.Length; x++)
+					Console.WriteLine("\t\"{0}\"", args[x]);
+				Console.WriteLine();
+			}
+		}
 		public delegate void CommandFunction(params string[] args);
 
 		public static Dictionary<string, CommandFunction> kCommands = new Dictionary<string, CommandFunction>()

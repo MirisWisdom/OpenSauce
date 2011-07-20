@@ -33,9 +33,9 @@ using System.Runtime.InteropServices;
 	"RELEASE"
 #endif
  + ")")]
-[assembly: AssemblyCompany("Kornner Software ©  2005 - 2009")]
+[assembly: AssemblyCompany("Kornner Studios ©  2005 - 2011")]
 [assembly: AssemblyProduct("OpenSauceIDE")]
-[assembly: AssemblyCopyright("Copyright ©  2008 - 2009")]
+[assembly: AssemblyCopyright("Copyright ©  2008 - 2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

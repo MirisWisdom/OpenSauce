@@ -167,6 +167,8 @@ namespace BlamLib
 			};
 
 			Console.WriteLine("Applying {0} modifications...", "CheApe");
+			DumpArguments(1, args);
+
 			Exception exception = null;
 			OpenSauceIDE.CheApeInterface.UnlockToolsBase unlocker = null;
 			switch (version)
@@ -196,7 +198,8 @@ namespace BlamLib
 				Console.WriteLine("error: an exception occurred when attempting to apply the {0} modifications", "CheApe");
 				Console.WriteLine();
 				Console.WriteLine("exception details:");
-				Console.WriteLine(exception.Message);
+				if(exception.Message != null) Console.WriteLine(exception.Message);
+				Console.WriteLine(exception.StackTrace);
 				Console.WriteLine();
 			}
 
