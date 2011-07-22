@@ -2,10 +2,10 @@
 <Include>
 	
 	<!-- Launches the OS_IDE with the command to enable OpenSauce in the HaloCE dedi executable -->
-	<CustomAction Id='Halo1_CE_CreateOSHCEEXEs_CACT' FileKey='OpenSauce_OpenSauceIDE_FILE' ExeCommand='-cmdline apply-opensauce Halo1_CE "[HALO1_CE_HCE_VERSION_109_PROP]" "[HALO1_CE_HCEDEDI_VERSION_109_PROP]" "[HALO1_CE_HCE_INSTALLDIR_PROP]\"' />
+	<CustomAction Id='Halo1_CE_CreateOSHCEEXEs_CACT' FileKey='OpenSauce_OpenSauceIDE_FILE' ExeCommand='-cmdline apply-opensauce Halo1_CE "[HALO1_CE_HCE_VERSION_109_PROP]" "[HALO1_CE_HCEDEDI_VERSION_109_PROP]" "[HALO1_CE_HCE_INSTALLDIR_PROP]\"' Execute='deferred' Impersonate='no' />
 
 	<!-- Launches the OS_IDE with the command to create the OS HEK executables -->
-	<CustomAction Id='Halo1_CE_CreateOSHEKEXEs_CACT' FileKey='OpenSauce_OpenSauceIDE_FILE' ExeCommand='-cmdline apply-cheape Halo1_CE "[HALO1_CE_HEK_GUERILLAPATH_PROP]" "[HALO1_CE_HEK_TOOLPATH_PROP]" "[HALO1_CE_HEK_SAPIENPATH_PROP]" "[HALO1_CE_HEK_OUTPUTPATH_PROP]\"' />
+	<CustomAction Id='Halo1_CE_CreateOSHEKEXEs_CACT' FileKey='OpenSauce_OpenSauceIDE_FILE' ExeCommand='-cmdline apply-cheape Halo1_CE "[HALO1_CE_HEK_GUERILLAPATH_PROP]" "[HALO1_CE_HEK_TOOLPATH_PROP]" "[HALO1_CE_HEK_SAPIENPATH_PROP]" "[HALO1_CE_HEK_OUTPUTPATH_PROP]\"' Execute='deferred' Impersonate='no' />
 
 	<!-- Launches the OS_IDE with no command -->
 	<CustomAction Id='Halo1_CE_LaunchOSIDE_CACT' FileKey='OpenSauce_OpenSauceIDE_FILE'  Return='asyncNoWait' ExeCommand='' />

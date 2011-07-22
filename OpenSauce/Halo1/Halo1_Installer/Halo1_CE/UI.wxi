@@ -23,5 +23,7 @@
 		<![CDATA[((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND
 		NOT (HALO1_CE_HEK_GUERILLAPATH_PROP AND HALO1_CE_HEK_SAPIENPATH_PROP AND HALO1_CE_HEK_TOOLPATH_PROP)]]>
 	</Publish>
-	
+
+	<ProgressText Action='Halo1_CE_CreateOSHEKEXEs_CACT'>Applying CheApe HEK modifications</ProgressText>
+	<ProgressText Action='Halo1_CE_CreateOSHCEEXEs_CACT'>Applying CheApe runtime modifications</ProgressText>
 </Include>
