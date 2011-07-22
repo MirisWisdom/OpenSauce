@@ -28,8 +28,8 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 	{
 		s_cache_header_yelo& header = yelo_cache_header_globals;
 
-		header.flags.uses_mod_data_files = true;
-		strcpy_s(header.mod_name, mod_name);
+		if(header.flags.uses_mod_data_files = using_mod_sets)
+			strcpy_s(header.mod_name, mod_name);
 
 		if(header.flags.uses_memory_upgrades = use_memory_upgrades)
 			header.k_memory_upgrade_increase_amount = K_MEMORY_UPGRADE_INCREASE_AMOUNT;

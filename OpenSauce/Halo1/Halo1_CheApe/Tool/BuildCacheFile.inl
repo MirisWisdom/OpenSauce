@@ -167,7 +167,7 @@ static void PLATFORM_API build_cache_file_for_scenario_extended(void** arguments
 
 	//////////////////////////////////////////////////////////////////////////
 	// setup the data files
-	bool using_mod_sets = use_memory_upgrades && (mod_set_name_length > 0);
+	bool using_mod_sets = use_memory_upgrades && mod_set_name_length > 0;
 
 	c_data_files data_files;
 
@@ -175,6 +175,8 @@ static void PLATFORM_API build_cache_file_for_scenario_extended(void** arguments
 
 	if(using_mod_sets)
 	{
+		printf_s("Engine Mod: cache will use mod-set '%s'\n", args->mod_name);
+
 		// check if the user wants to copy the base data files
 		if(copy_data_files_first)
 			data_files.CopyStock();
