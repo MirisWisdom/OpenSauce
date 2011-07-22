@@ -210,6 +210,8 @@ namespace Yelo
 
 			// Get a item object's message string
 			wcstring HudGetItemMessage(int32 message_index);
+
+			void MainmenuLoad();
 		};
 
 		namespace Math

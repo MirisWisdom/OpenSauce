@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <osYeloSettings engine="Halo1_CE">
-	<client>
+	<client>		
 		<dx9>
 			<GBuffer enabled="true" />
 
@@ -32,6 +32,14 @@
 				</entry>
 			</vehicleViews>
 		</objects>
+
+		<version_check year="" month="" day="">
+			<server_list>
+				<Server></Server>
+			</server_list>
+		</version_check>
+
+		<cacheFiles mainmenuScenario="" />
 	</client>
 	
 	<server>

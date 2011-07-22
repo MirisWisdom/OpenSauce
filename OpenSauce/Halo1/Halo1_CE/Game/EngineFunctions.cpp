@@ -19,6 +19,7 @@
 #include "Common/Precompile.hpp"
 #include "Game/EngineFunctions.hpp"
 
+#include "Game/GameState.hpp"
 #include "Game/ScriptLibrary.hpp"
 #include "Objects/Objects.hpp"
 
@@ -494,6 +495,17 @@ namespace Yelo
 
 				__asm {
 					mov		edx, message_index
+					call	TEMP_CALL_ADDR
+				}
+			}
+
+			void MainmenuLoad()
+			{
+				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(MAINMENU_LOAD);
+
+				GameState::MainGlobals()->map.main_menu_scenario_load = true;
+
+				__asm {
 					call	TEMP_CALL_ADDR
 				}
 			}

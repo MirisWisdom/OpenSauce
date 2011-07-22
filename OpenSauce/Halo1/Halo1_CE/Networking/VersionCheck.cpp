@@ -45,13 +45,13 @@ namespace Yelo
 			c_version_check_manager_base::VersionChecker().Dispose();
 		}
 
-		void		LoadSettings(TiXmlElement* dx9_element)
+		void		LoadSettings(TiXmlElement* vc_element)
 		{
-			c_version_check_manager_base::VersionChecker().LoadSettings(dx9_element);
+			c_version_check_manager_base::VersionChecker().LoadSettings(vc_element);
 		}
-		void		SaveSettings(TiXmlElement* dx9_element)
+		void		SaveSettings(TiXmlElement* vc_element)
 		{
-			c_version_check_manager_base::VersionChecker().SaveSettings(dx9_element);
+			c_version_check_manager_base::VersionChecker().SaveSettings(vc_element);
 		}
 
 		void		InitializeForNewMap()
@@ -212,7 +212,7 @@ namespace Yelo
 
 			//save the current file locations to the user settings
 			TiXmlElement* server_list = new TiXmlElement("server_list");
-			for(int i = 0; i < NUMBEROF(m_xml_sources); i++)
+			for(int32 i = 0; i < NUMBEROF(m_xml_sources); i++)
 			{
 				if((m_xml_sources[i].xml_address == NULL) ||
 					(strlen(m_xml_sources[i].xml_address) == 0)) 
@@ -255,7 +255,7 @@ namespace Yelo
 			if(server_list)
 			{
 				TiXmlElement* server = server_list->FirstChildElement("server");
-				for(int i = 0; i < NUMBEROF(m_xml_sources); i++)
+				for(int32 i = 0; i < NUMBEROF(m_xml_sources); i++)
 				{
 					// delete the previous locations regardless of whether there is a replacement
 					delete m_xml_sources[i].xml_address;
@@ -264,7 +264,7 @@ namespace Yelo
 					if(server == NULL) continue;
 
 					// get the text value of each server
-					const char* text_value = server->GetText();
+					cstring text_value = server->GetText();
 					if(text_value && (strlen(text_value) != 0))
 					{
 						int text_length = strlen(text_value) + 1;
