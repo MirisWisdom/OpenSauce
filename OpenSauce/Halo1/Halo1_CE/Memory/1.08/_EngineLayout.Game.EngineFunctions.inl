@@ -64,6 +64,7 @@ FUNC_PTR(INPUT_KEY_IS_DOWN, 0x493AC0, FUNC_PTR_NULL);
 FUNC_PTR(KEYSTONE_CHAT_LOG_ADD_STRING,	0x4AEAA0, FUNC_PTR_NULL); // I forget if the dedicated has a chat log equivalent...
 FUNC_PTR(HUD_PRINT_MESSAGE,				0x4B1760, 0x4A0210);
 FUNC_PTR(HUD_GET_ITEM_MESSAGE,			0x4AD600, 0x49F310);
+FUNC_PTR(MAINMENU_LOAD,					0x4CBED0, FUNC_PTR_NULL);
 
 //////////////////////////////////////////////////////////////////////////
 // Math

@@ -68,6 +68,12 @@
 			NULL,
 		};
 
+#if !PLATFORM_IS_DEDI
+		static cstring* K_UI_SCENARIO_NAME_REFERENCES[] = {
+			CAST_PTR(cstring*, 0x4CBDDF), CAST_PTR(cstring*, 0x4CBE04),
+		};
+#endif
+
 		ENGINE_PTR(s_cache_file_globals, cache_file_globals,0x643060, 0x5B4E50);
 		ENGINE_PTR(char, maps_folder_parent_dir,			0x68C6B8, 0x5F4EE8);
 

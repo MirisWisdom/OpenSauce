@@ -138,6 +138,43 @@ namespace Yelo
 
 	namespace Cache
 	{
+#if !PLATFORM_IS_DEDI
+		struct s_yelo_settings {
+			// Scenario tag name of the mainmenu the user wants to use
+			char mainmenu_scenario_name[256];
+
+			bool InitializeMainmenuOverride(cstring override_name)
+			{
+				static cstring k_stock_ui = "levels\\ui\\ui";
+
+				if(override_name != NULL && override_name[0] != '\0')
+				{
+					size_t name_length = strlen(override_name)+1; // +1 for null terminator
+
+					// If the override name fits and if it's not the same as the stock ui
+					if(name_length <= NUMBEROF(mainmenu_scenario_name) && 
+						strcmp(override_name, k_stock_ui) != 0)
+						return strcpy_s(mainmenu_scenario_name, override_name) == k_errnone;
+				}
+
+				mainmenu_scenario_name[0] = '\0';
+
+				return false;
+			}
+
+			// Returns true if the override is valid and can be used
+			bool UseMainmenuOverride() { return mainmenu_scenario_name[0] != '\0'; }
+
+			void InitializeMemoryOverrides()
+			{
+				if(UseMainmenuOverride())
+				{
+					for(int32 x = 0; x < NUMBEROF(K_UI_SCENARIO_NAME_REFERENCES); x++)
+						*K_UI_SCENARIO_NAME_REFERENCES[x] = mainmenu_scenario_name;
+				}
+			}
+		}g_yelo_settings;
+#endif
 //////////////////////////////////////////////////////////////////////////
 // Cache Size upgrades
 
@@ -186,6 +223,9 @@ namespace Yelo
 		{
 			MemoryUpgradesInitialize();
 			CacheFormatPathHackInitialize();
+#if !PLATFORM_IS_DEDI
+			g_yelo_settings.InitializeMemoryOverrides();
+#endif
 
 			Memory::WriteRelativeCall(MapListInitialize, GET_FUNC_VPTR(MULTIPLAYER_MAP_LIST_INITIALIZE_CALL));
 		}
@@ -220,5 +260,23 @@ namespace Yelo
 
 			return result;
 		}
+
+#if !PLATFORM_IS_DEDI
+		void LoadSettings(TiXmlElement* cf_element)
+		{
+			if(cf_element != NULL)
+			{
+				cstring mainmenu_override_name = cf_element->Attribute("mainmenuScenario");
+
+				g_yelo_settings.InitializeMainmenuOverride(mainmenu_override_name);
+			}
+		}
+
+		void SaveSettings(TiXmlElement* cf_element)
+		{
+			if(g_yelo_settings.UseMainmenuOverride())
+				cf_element->SetAttribute("mainmenuScenario", g_yelo_settings.mainmenu_scenario_name);
+		}
+#endif
 	};
 };

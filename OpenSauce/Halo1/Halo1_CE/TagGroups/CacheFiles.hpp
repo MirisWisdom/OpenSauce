@@ -119,5 +119,10 @@ namespace Yelo
 		void MapListReIntialize();
 
 		bool ReadHeader(cstring relative_map_name, s_cache_header& out_header);
+
+#if !PLATFORM_IS_DEDI
+		void LoadSettings(TiXmlElement* cf_element);
+		void SaveSettings(TiXmlElement* cf_element);
+#endif
 	};
 };

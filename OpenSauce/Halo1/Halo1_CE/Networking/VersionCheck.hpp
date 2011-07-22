@@ -35,8 +35,8 @@ namespace Yelo
 		void		Release();
 #endif
 
-		void		LoadSettings(TiXmlElement* dx9_element);
-		void		SaveSettings(TiXmlElement* dx9_element);
+		void		LoadSettings(TiXmlElement* vc_element);
+		void		SaveSettings(TiXmlElement* vc_element);
 
 		void		InitializeForNewMap();
 		void		Update(real delta_time);
