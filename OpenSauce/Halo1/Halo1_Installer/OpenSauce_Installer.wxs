@@ -57,6 +57,19 @@
 			<Directory Id='CommonAppDataFolder'>
 				<Directory Id='OpenSauce_KornnerStudios_DIR' Name='Kornner Studios'>
 					<Directory Id='OpenSauce_OpenSauce_DIR' Name='OpenSauce'>
+						
+						<!--DirectX minimal redist-->
+						<Directory Id='DirectX_Redist' Name='dxredist'>
+							<Component Id='DirectX_Redist_COMP' Guid='63A81C20-956A-47e4-9463-63640E46A1FD'>
+								<File Id='DirectX_dxsetup_FILE' Source='$(var.ResourceFolder)Installer\dxredist\dxsetup.exe' KeyPath='yes' Checksum='yes'/>
+								<File Id='DirectX_dxupdate_FILE' Source='$(var.ResourceFolder)Installer\dxredist\dxupdate.cab'/>
+								<File Id='DirectX_dxdllreg_x86_FILE' Source='$(var.ResourceFolder)Installer\dxredist\dxdllreg_x86.cab'/>
+								<File Id='DirectX_dsetup32_FILE' Source='$(var.ResourceFolder)Installer\dxredist\dsetup32.dll'/>
+								<File Id='DirectX_dsetup_FILE' Source='$(var.ResourceFolder)Installer\dxredist\dsetup.dll'/>
+								<File Id='DirectX_Jun2010_d3dx9_43_x86_FILE' Source='$(var.ResourceFolder)Installer\dxredist\Jun2010_d3dx9_43_x86.cab'/>
+							</Component>
+						</Directory>
+						
 						<Directory Id='OpenSauce_OpenSauceIDE_DIR' Name='OpenSauceIDE'>
 							<!-- OpenSauceIDE is installed here-->
 							<Component Id='OpenSauce_OpenSauceIDE_COMP' Guid='B9699EB8-F18C-4FAF-B97B-227B865AF0BB'>
@@ -71,6 +84,21 @@
 							<Component Id='OpenSauce_LowLevel_COMP' Guid='F93E1D0E-103F-42C1-A5AF-42FD8021D302'>
 								<File Id='OpenSauce_LowLevel_FILE' Name='LowLevel.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\OpenSauceIDE\LowLevel.dll' KeyPath='yes' />
 							</Component>
+							
+							<?ifdef DEBUG?>
+							<Component Id='OpenSauce_OpenSauceIDE_PDB_COMP' Guid='E19A12E4-7AF4-4cb7-A7A1-4E237D924B37'>
+								<File Id='OpenSauce_OpenSauceIDE_PDB_FILE' Name='OpenSauceIDE.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\OpenSauceIDE\OpenSauceIDE.pdb' KeyPath='yes' />
+							</Component>
+							<Component Id='OpenSauce_BlamLib_PDB_COMP' Guid='A085BD9B-34BC-444d-BBF8-77DE33E53278'>
+								<File Id='OpenSauce_BlamLib_PDB_FILE' Name='BlamLib.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\OpenSauceIDE\BlamLib.pdb' KeyPath='yes' />
+							</Component>
+							<Component Id='OpenSauce_BlamLib_Forms_PDB_COMP' Guid='CCABEA9C-1802-4f18-BE4C-C83ED2BDC87A'>
+								<File Id='OpenSauce_BlamLib_Forms_PDB_FILE' Name='BlamLib.Forms.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\OpenSauceIDE\BlamLib.Forms.pdb' KeyPath='yes' />
+							</Component>
+							<Component Id='OpenSauce_LowLevel_PDB_COMP' Guid='4EBDB3ED-B4D9-4bb6-B85C-BE029A29FA28'>
+								<File Id='OpenSauce_LowLevel_PDB_FILE' Name='LowLevel.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\OpenSauceIDE\LowLevel.pdb' KeyPath='yes' />
+							</Component>
+							<?endif?>
 
 							<!-- Removes the OpenSauceIDE folder on uninstall-->
 							<Component Id='OpenSauce_OpenSauceIDERemove_COMP' Guid='ED6BD4C1-05B5-4925-9898-B80B552B781F'>
@@ -170,12 +198,18 @@
 			
 		</Directory>
 
+		<CustomAction Id='DirectX_Install_CACT' FileKey='DirectX_dxsetup_FILE' ExeCommand='/silent' Execute='deferred' Impersonate='no' Return='check'/>
+		
 		<!-- Game specific custom actions are included here-->
 		<?ifdef Halo1_CE?>
 		<?include Halo1_CE/CustomActions.wxi?>
 		<?endif?>
 		
 		<InstallExecuteSequence>
+			<Custom Action='DirectX_Install_CACT' Before='InstallFinalize'>
+				<![CDATA[NOT REMOVE]]>
+			</Custom>
+			
 			<!-- Game specific install sequences are included here-->
 			<?ifdef Halo1_CE?>
 			<?include Halo1_CE/InstallSequences.wxi?>
@@ -194,6 +228,13 @@
 			<ComponentRef Id='OpenSauce_BlamLib_COMP' />
 			<ComponentRef Id='OpenSauce_BlamLib_Forms_COMP' />
 			<ComponentRef Id='OpenSauce_LowLevel_COMP' />
+
+			<?ifdef DEBUG?>
+				<ComponentRef Id='OpenSauce_OpenSauceIDE_PDB_COMP' />
+				<ComponentRef Id='OpenSauce_BlamLib_PDB_COMP' />
+				<ComponentRef Id='OpenSauce_BlamLib_Forms_PDB_COMP' />
+				<ComponentRef Id='OpenSauce_LowLevel_PDB_COMP' />
+			<?endif?>
 			
 			<ComponentRef Id='OpenSauce_OpenSauceIDERemove_COMP' />
 			<ComponentRef Id='OpenSauce_OpenSauceRemove_COMP' />
@@ -203,6 +244,15 @@
 			<ComponentRef Id='OpenSauce_OpenSauceIDEMenuShortcut_COMP' />
 			<ComponentRef Id='OpenSauce_OpenSauceIDEDesktopShortcut_COMP' />
 
+			<Feature Id='DirectX_Redist_FEAT'
+							 Title='DirectX Runtime Redist'
+							 AllowAdvertise='no'
+							 Display='hidden'
+							 Level='1'>
+				
+				<ComponentRef Id='DirectX_Redist_COMP'/>
+				
+			</Feature>
 			<!-- Game specific features are included here-->
 			<?ifdef Halo1_CE?>
 			<?include Halo1_CE/Features.wxi?>
@@ -210,6 +260,8 @@
 		</Feature>
 		
 		<UI Id='OpenSauce_WixUI_FeatureTree_Ext'>
+			<ProgressText Action='DirectX_Install_CACT'>Installing DirectX</ProgressText>
+			
 			<UIRef Id='OpenSauce_FeatureTree' />
 			<!-- Game specific UI changes are included here-->
 			<!-- Need to find a way of hooking new dialogs onto the correct previous dialogs
@@ -225,7 +277,7 @@
 
 		<WixVariable Id='WixUIBannerBmp' Value='$(var.ResourceFolder)Installer\banner.bmp' />
 		<WixVariable Id='WixUIDialogBmp' Value='$(var.ResourceFolder)Installer\dialog.bmp' />
-		<WixVariable Id='WixUILicenseRtf' Value='$(var.ResourceFolder)Installer\gpl.rtf' />
+		<WixVariable Id='WixUILicenseRtf' Value='$(var.ResourceFolder)Installer\license.rtf' />
 		
 	</Product>
 </Wix>
