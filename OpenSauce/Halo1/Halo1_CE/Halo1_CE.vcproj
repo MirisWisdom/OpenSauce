@@ -414,6 +414,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Common\DebugMemory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Common\DebugMemory.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Common\GameSystems.cpp"
 				>
 			</File>

@@ -33,10 +33,12 @@ namespace Yelo
 		{
 			D3DXMACRO			m_shader_defines[2];
 
+			uint16				GetUsedVariableCount(cstring semantic, const uint16 variable_count);
 			void				SetupVariables_Base(
 				cstring semantic, 
-				TagBlock<TagGroups::s_shader_postprocess_parameter>& block, 
-				const uint16 variable_count, 
+				TagBlock<TagGroups::s_shader_postprocess_parameter>& block,
+				const uint16 index_start,
+				const uint16 variable_count,
 				const TagGroups::shader_variable_type& value_type);
 
 		public:
@@ -64,11 +66,14 @@ namespace Yelo
 					delete [] m_shader_generic->parameters[i].bitmap_value.runtime.external.source;
 				
 				// delete any manually allocated block memory
-				delete[] m_shader_generic->parameters.Address;
+				delete [] m_shader_generic->parameters.Address;
 
 				// delete any manually allocated shader data
 				delete[] m_shader_generic->shader_code_text.address;
 				delete[] m_shader_generic->shader_code_binary.address;
+
+				delete m_shader_generic;
+				m_shader_generic = NULL;
 			}
 		};	
 

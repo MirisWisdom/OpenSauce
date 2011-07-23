@@ -31,12 +31,8 @@ namespace Yelo
 	namespace Postprocessing { namespace Subsystem { namespace External {
 		/////////////////////////////////////////////////////////////////////
 		// c_external_shader
-		void		c_external_shader::SetupVariables_Base(cstring semantic, TagBlock<TagGroups::s_shader_postprocess_parameter>& block, 
-			const uint16 variable_count, 
-			const TagGroups::shader_variable_type& value_type
-		)
+		uint16		c_external_shader::GetUsedVariableCount(cstring semantic, const uint16 variable_count)
 		{
-			// Allocate the block memory for the variables in the shader, and set the values accordingly
 			char buffer[20];
 			ZeroMemory(buffer, sizeof(buffer));
 			int count = 0;
@@ -49,20 +45,23 @@ namespace Yelo
 					continue;
 				count++;
 			}
-			if(count == 0) return;
-
-			ZeroMemory(buffer, sizeof(buffer));
-
-			int32 first_index = block.Count;
-			// allocate memory for bitmap block elements
-			block.Address = realloc(block.Address, sizeof(TagGroups::s_shader_postprocess_parameter) * (block.Count + count));
-			memset(&block[first_index], 0, sizeof(TagGroups::s_shader_postprocess_parameter) * count);
-			block.Count += count;
-
-			for (int32 i = first_index; i < block.Count; ++i)
+			return count;
+		}
+		void		c_external_shader::SetupVariables_Base(cstring semantic, 
+			TagBlock<TagGroups::s_shader_postprocess_parameter>& block,
+			const uint16 index_start,
+			const uint16 variable_count,
+			const TagGroups::shader_variable_type& value_type
+		)
+		{
+			// Allocate the block memory for the variables in the shader, and set the values accordingly
+			char buffer[20];
+			for (uint32 i = 0; i < variable_count; ++i)
 			{
+				int index = index_start + i;
+
 				ZeroMemory(buffer, sizeof(buffer));
-				sprintf_s(buffer, sizeof(buffer), semantic, i + 1 - first_index);
+				sprintf_s(buffer, sizeof(buffer), semantic, i + 1);
 
 				D3DXHANDLE variable_handle = (*m_effect)->GetParameterBySemantic(NULL, buffer);
 				if(!variable_handle)
@@ -70,9 +69,9 @@ namespace Yelo
 				D3DXPARAMETER_DESC variable_description;
 				(*m_effect)->GetParameterDesc(variable_handle, &variable_description);
 
-				strcpy_s(block[i].value_name, Yelo::Enums::k_tag_string_length + 1, variable_description.Name);
+				strcpy_s(block[index].value_name, Yelo::Enums::k_tag_string_length + 1, variable_description.Name);
 
-				block[i].value_type = value_type;
+				block[index].value_type = value_type;
 
 				if(value_type.type == Enums::_shader_variable_base_type_texture)
 					continue;
@@ -87,21 +86,21 @@ namespace Yelo
 						break;
 
 					case Enums::_shader_variable_base_type_integer:
-						(*m_effect)->GetInt(annotation,			CAST_PTR(INT*,&block[i].value.integer32.lower_bound));
+						(*m_effect)->GetInt(annotation,			CAST_PTR(INT*,&block[index].value.integer32.lower_bound));
 						break;
 
 					case Enums::_shader_variable_base_type_float:
 						switch(value_type.count)
 						{
-						case 1: (*m_effect)->GetFloat(annotation,		CAST_PTR(FLOAT*,&block[i].value.real32.lower_bound)); break;
-						case 2: (*m_effect)->GetFloatArray(annotation,	CAST_PTR(FLOAT*,&block[i].value.vector2d.lower_bound), 2); break;
-						case 3: (*m_effect)->GetFloatArray(annotation,	CAST_PTR(FLOAT*,&block[i].value.vector3d.lower_bound), 3); break;
-						case 4: (*m_effect)->GetFloatArray(annotation,	CAST_PTR(FLOAT*,&block[i].value.vector4d.lower_bound), 4); break;
+						case 1: (*m_effect)->GetFloat(annotation,		CAST_PTR(FLOAT*,&block[index].value.real32.lower_bound)); break;
+						case 2: (*m_effect)->GetFloatArray(annotation,	CAST_PTR(FLOAT*,&block[index].value.vector2d.lower_bound), 2); break;
+						case 3: (*m_effect)->GetFloatArray(annotation,	CAST_PTR(FLOAT*,&block[index].value.vector3d.lower_bound), 3); break;
+						case 4: (*m_effect)->GetFloatArray(annotation,	CAST_PTR(FLOAT*,&block[index].value.vector4d.lower_bound), 4); break;
 						}
 						break;
 
 					case Enums::_shader_variable_base_type_argb_color:
-						(*m_effect)->GetFloatArray(annotation,	CAST_PTR(FLOAT*,&block[i].value.color4d.lower_bound), 4); 
+						(*m_effect)->GetFloatArray(annotation,	CAST_PTR(FLOAT*,&block[index].value.color4d.lower_bound), 4); 
 						break;
 					}
 				}
@@ -115,26 +114,26 @@ namespace Yelo
 						{
 							BOOL value;
 							(*m_effect)->GetBool(annotation, &value); 
-							block[i].value.boolean.enabled = value > 0;
+							block[index].value.boolean.enabled = value > 0;
 						}
 						break;
 
 					case Enums::_shader_variable_base_type_integer:
-						(*m_effect)->GetInt(annotation,			CAST_PTR(INT*,&block[i].value.integer32.upper_bound)); 
+						(*m_effect)->GetInt(annotation,			CAST_PTR(INT*,&block[index].value.integer32.upper_bound)); 
 						break;
 
 					case Enums::_shader_variable_base_type_float:
 						switch(value_type.count)
 						{
-						case 1: (*m_effect)->GetFloat(annotation,		CAST_PTR(FLOAT*,&block[i].value.real32.upper_bound)); break;
-						case 2: (*m_effect)->GetFloatArray(annotation,	CAST_PTR(FLOAT*,&block[i].value.vector2d.upper_bound), 2); break;
-						case 3: (*m_effect)->GetFloatArray(annotation,	CAST_PTR(FLOAT*,&block[i].value.vector3d.upper_bound), 3); break;
-						case 4: (*m_effect)->GetFloatArray(annotation,	CAST_PTR(FLOAT*,&block[i].value.vector4d.upper_bound), 4); break;
+						case 1: (*m_effect)->GetFloat(annotation,		CAST_PTR(FLOAT*,&block[index].value.real32.upper_bound)); break;
+						case 2: (*m_effect)->GetFloatArray(annotation,	CAST_PTR(FLOAT*,&block[index].value.vector2d.upper_bound), 2); break;
+						case 3: (*m_effect)->GetFloatArray(annotation,	CAST_PTR(FLOAT*,&block[index].value.vector3d.upper_bound), 3); break;
+						case 4: (*m_effect)->GetFloatArray(annotation,	CAST_PTR(FLOAT*,&block[index].value.vector4d.upper_bound), 4); break;
 						}
 						break;
 
 					case Enums::_shader_variable_base_type_argb_color:
-						(*m_effect)->GetFloatArray(annotation,	CAST_PTR(FLOAT*,&block[i].value.color4d.upper_bound), 4); 
+						(*m_effect)->GetFloatArray(annotation,	CAST_PTR(FLOAT*,&block[index].value.color4d.upper_bound), 4); 
 						break;
 					}
 				}
@@ -144,7 +143,7 @@ namespace Yelo
 				{
 					INT value;
 					(*m_effect)->GetInt(annotation,		&value);
-					block[i].animation_function.function = CAST(_enum, value);
+					block[index].animation_function.function = CAST(_enum, value);
 				}
 				
 				annotation = (*m_effect)->GetAnnotationByName(variable_handle, "animation_flags");
@@ -152,64 +151,94 @@ namespace Yelo
 				{
 					INT value;
 					(*m_effect)->GetInt(annotation,		&value);
-					*CAST_PTR(byte_flags*,&block[i].animation_function.flags) = CAST(byte_flags, value);
+					*CAST_PTR(byte_flags*,&block[index].animation_function.flags) = CAST(byte_flags, value);
 				}
 				
 				annotation = (*m_effect)->GetAnnotationByName(variable_handle, "animation_duration");
 				if(annotation)
-					(*m_effect)->GetFloat(annotation,	&block[i].animation_function.animation_duration);
+					(*m_effect)->GetFloat(annotation,	&block[index].animation_function.animation_duration);
 				
 				annotation = (*m_effect)->GetAnnotationByName(variable_handle, "animation_rate");
 				if(annotation)
-					(*m_effect)->GetFloat(annotation,	&block[i].animation_function.animation_rate);
+					(*m_effect)->GetFloat(annotation,	&block[index].animation_function.animation_rate);
 			}
 		}
 
 		HRESULT		c_external_shader::SetupVariables(IDirect3DDevice9* pDevice)
 		{
+			uint16 count_texture, count_bool, count_int, count_color,
+				count_float, count_float2, count_float3, count_float4,
+				count_total;
+
+			count_texture = GetUsedVariableCount("VARTEXTURE_%i", k_bitmap_count);
+			count_bool = GetUsedVariableCount("VARBOOL_%i", k_bitmap_count);
+			count_int = GetUsedVariableCount("VARINT_%i", k_bitmap_count);
+			count_color = GetUsedVariableCount("VARCOLOR_%i", k_bitmap_count);
+			count_float = GetUsedVariableCount("VARFLOAT_%i", k_bitmap_count);
+			count_float2 = GetUsedVariableCount("VARFLOAT2_%i", k_bitmap_count);
+			count_float3 = GetUsedVariableCount("VARFLOAT3_%i", k_bitmap_count);
+			count_float4 = GetUsedVariableCount("VARFLOAT4_%i", k_bitmap_count);
+
+			count_total = count_texture + count_bool + count_int + count_color +
+				count_float + count_float2 + count_float3 + count_float4;
+
+			if(count_total == 0)
+				return c_generic_shader_base::SetupVariables(pDevice);
+
+			m_shader_generic->parameters.Address = new TagGroups::s_shader_postprocess_parameter[count_total];
+			memset(&m_shader_generic->parameters[0], 0, sizeof(TagGroups::s_shader_postprocess_parameter) * count_total);
+			m_shader_generic->parameters.Count = count_total;
+
+			uint16 index_offset = 0;
 			TagGroups::shader_variable_type value_type;
 			value_type.count = 1;
 
 			value_type.type = Enums::_shader_variable_base_type_texture;
 			SetupVariables_Base("VARTEXTURE_%i",
 				m_shader_generic->parameters,
-				k_bitmap_count, value_type);
-
+				index_offset, count_texture, value_type);
+			index_offset += count_texture;
 
 			value_type.type = Enums::_shader_variable_base_type_boolean;
 			SetupVariables_Base("VARBOOL_%i",
 				m_shader_generic->parameters,
-				k_variable_count, value_type);
+				index_offset, count_bool, value_type);
+			index_offset += count_bool;
+
 			value_type.type = Enums::_shader_variable_base_type_integer;
 			SetupVariables_Base("VARINT_%i",
 				m_shader_generic->parameters,
-				k_variable_count, value_type);
+				index_offset, count_int, value_type);
+			index_offset += count_int;
 			
 			value_type.type = Enums::_shader_variable_base_type_argb_color;
 			SetupVariables_Base("VARCOLOR_%i",
 				m_shader_generic->parameters,
-				k_variable_count, value_type);
-
+				index_offset, count_color, value_type);
+			index_offset += count_color;
 
 			value_type.type = Enums::_shader_variable_base_type_float;
 			SetupVariables_Base("VARFLOAT_%i",
 				m_shader_generic->parameters,
-				k_variable_count, value_type);
-			value_type.type = Enums::_shader_variable_base_type_float;
+				index_offset, count_float, value_type);
+			index_offset += count_float;
+
 			value_type.count++;
 			SetupVariables_Base("VARFLOAT2_%i",
 				m_shader_generic->parameters,
-				k_variable_count, value_type);
-			value_type.type = Enums::_shader_variable_base_type_float;
+				index_offset, count_float2, value_type);
+			index_offset += count_float2;
+
 			value_type.count++;
 			SetupVariables_Base("VARFLOAT3_%i",
 				m_shader_generic->parameters,
-				k_variable_count, value_type);
-			value_type.type = Enums::_shader_variable_base_type_float;
+				index_offset, count_float3, value_type);
+			index_offset += count_float3;
+
 			value_type.count++;
 			SetupVariables_Base("VARFLOAT4_%i",
 				m_shader_generic->parameters,
-				k_variable_count, value_type);
+				index_offset, count_float4, value_type);
 						
 			return c_generic_shader_base::SetupVariables(pDevice);
 		}
