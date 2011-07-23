@@ -110,7 +110,7 @@ namespace Yelo
 #if !PLATFORM_IS_EDITOR
 			TAG_FIELD(tag_data, shader_code_text);
 #else
-			TAG_PAD(uint32, 5);
+			TAG_PAD(tag_data, 1);
 #endif
 			TAG_FIELD(tag_data, shader_code_binary);
 
