@@ -18,6 +18,10 @@
 */
 #include "Common/Precompile.hpp"
 
+#ifdef API_DEBUG
+#include "Common/DebugMemory.hpp"
+#endif
+
 #include <psapi.h>
 #pragma comment (lib, "psapi.lib")
 
@@ -187,6 +191,11 @@ bool WINAPI DllMain(HMODULE hModule, DWORD dwReason, PVOID pvReserved)
 			for(Yelo::int32 x = component_count; x >= 0; x--)
  				components[x].Dispose();
 		}
+
+#ifdef API_DEBUG_MEMORY
+		DumpAllocatedMemory();
+#endif
+
 		done = false;
 
 #if PLATFORM_IS_USER && defined(DX_WRAPPER)

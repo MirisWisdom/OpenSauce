@@ -119,13 +119,28 @@ namespace Yelo
 		}
 		void		c_external_subsystem::ReleaseResourcesImpl()
 		{
-			// for all of the currently loaded shaders, release all direct3D resources
-			for(int32 i = 0; i < Globals().m_shader_count; i++)
-				Globals().m_shader_array[i]->ReleaseResources();
-			// for all of the currently loaded effects, release all direct3D resources
-			for(int32 i = 0; i < Globals().m_effect_count; i++)
-				Globals().m_effect_array[i]->ReleaseResources();
-
+			// delete all shaders. for external shaders this will also delete any manually allocated memory
+			for(int32 i = 0; i < k_max_shader_count; i++)
+			{ 
+				if(Globals().m_shader_array[i])
+				{
+					Globals().m_shader_array[i]->ReleaseResources();
+					Globals().m_shader_array[i]->Dtor();
+					delete Globals().m_shader_array[i];
+					Globals().m_shader_array[i] = NULL;
+				}
+			}		
+			// delete all effects. for external effects this will also delete any manually allocated memory			
+			for(int32 i = 0; i < k_max_effect_count; i++)
+			{ 
+				if(Globals().m_effect_array[i])
+				{
+					Globals().m_effect_array[i]->ReleaseResources();
+					Globals().m_effect_array[i]->Dtor();
+					delete Globals().m_effect_array[i];
+					Globals().m_effect_array[i] = NULL;
+				}
+			}
 			// everything has been unloaded
 			g_subsystem_loaded = false;
 		}
@@ -177,28 +192,7 @@ namespace Yelo
 			return Globals().m_render_blocks[render_point].RenderEffects(pDevice, frame_time);
 		}
 		void		c_external_subsystem::LoadShaders()
-		{					
-			// delete all shaders. for external shaders this will also delete any manually allocated memory
-			for(int32 i = 0; i < k_max_shader_count; i++)
-			{ 
-				if(Globals().m_shader_array[i])
-				{
-					Globals().m_shader_array[i]->Dtor();
-					delete Globals().m_shader_array[i];
-					Globals().m_shader_array[i] = NULL;
-				}
-			}		
-			// delete all effects. for external effects this will also delete any manually allocated memory			
-			for(int32 i = 0; i < k_max_effect_count; i++)
-			{ 
-				if(Globals().m_effect_array[i])
-				{
-					Globals().m_effect_array[i]->Dtor();
-					delete Globals().m_effect_array[i];
-					Globals().m_effect_array[i] = NULL;
-				}
-			}	
-
+		{
 			// clear out all render block entries
 			ResetRenderBlock();
 
@@ -314,7 +308,7 @@ namespace Yelo
 				if(!success || (bytes_read != file_length))
 				{
 					delete [] shader->shader_code_text.address;
-					delete [] shader;
+					delete shader;
 					continue;
 				}
 
