@@ -275,6 +275,8 @@ namespace Yelo
 			// release buffers
 			Yelo::safe_release(m_buffers.vertex);
 			Yelo::safe_release(m_buffers.index);
+
+			CullQuads();
 		}
 		/////////////////////////////////////////////////////////////////////
 	};

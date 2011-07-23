@@ -141,6 +141,10 @@ namespace Yelo
 					Globals().m_effect_array[i] = NULL;
 				}
 			}
+
+			Globals().m_shader_count = 0;
+			Globals().m_effect_count = 0;
+
 			// everything has been unloaded
 			g_subsystem_loaded = false;
 		}
@@ -485,7 +489,8 @@ namespace Yelo
 
 			// update time reliant code in the effects
 			for(int32 i = 0; i < Globals().m_effect_count; i++)
-				Globals().m_effect_array[i]->Update(delta_time);
+				if(Globals().m_effect_array[i])
+					Globals().m_effect_array[i]->Update(delta_time);
 		}
 		/////////////////////////////////////////////////////////////////////
 

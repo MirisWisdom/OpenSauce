@@ -152,6 +152,12 @@ namespace Yelo
 		void		c_version_check_manager_base::Dispose()
 		{
 			ghttpCleanup();
+
+			for(int32 i = 0; i < NUMBEROF(m_xml_sources); i++)
+			{
+				delete m_xml_sources[i].xml_address;
+				m_xml_sources[i].xml_address = NULL;
+			}
 		}
 		/*!
 		 * \brief
