@@ -30,7 +30,7 @@
 
 
 #pragma region IDirect3DDevice9
-Yelo_IDirect3DDevice9::Yelo_IDirect3DDevice9(LPDIRECT3DDEVICE9 pDevice, LPDIRECT3DDEVICE9 **ppDevice) 
+void Yelo_IDirect3DDevice9::Initialize(LPDIRECT3DDEVICE9 pDevice, LPDIRECT3DDEVICE9 **ppDevice) 
 {
 	Yelo_pD3DDevice = pDevice;
 	*ppDevice = &Yelo_pD3DDevice;
@@ -463,9 +463,14 @@ ULONG Yelo_IDirect3D9::Release()
 
 HRESULT Yelo_IDirect3D9::CreateDevice(UINT Adapter, D3DDEVTYPE DeviceType, HWND hFocusWindow, DWORD BehaviorFlags, D3DPRESENT_PARAMETERS *pPresentationParameters, IDirect3DDevice9 **ppReturnedDeviceInterface) 
 {
+	static Yelo_IDirect3DDevice9 g_d3d_device;
+
 	IDirect3DDevice9** alias = ppReturnedDeviceInterface;
 
-	*alias = new Yelo_IDirect3DDevice9(*ppReturnedDeviceInterface, &ppReturnedDeviceInterface);
+	if(g_d3d_device.IsInitialized())
+		g_d3d_device.Initialize(*ppReturnedDeviceInterface, &ppReturnedDeviceInterface);
+
+	*alias = &g_d3d_device;
 
 	HRESULT hr =  Yelo_pD3D->CreateDevice(Adapter, DeviceType, hFocusWindow, BehaviorFlags, pPresentationParameters, ppReturnedDeviceInterface);
 
@@ -564,7 +569,12 @@ static D3DC9 orig_Direct3DCreate9;
 
 IDirect3D9 *WINAPI Yelo_Direct3DCreate9(UINT SDKVersion)
 {
-	return new Yelo_IDirect3D9(orig_Direct3DCreate9(SDKVersion));
+	static Yelo_IDirect3D9 g_d3d;
+
+	if(!g_d3d.IsInitialized())
+		g_d3d.Initialize(orig_Direct3DCreate9(SDKVersion));
+
+	return &g_d3d;
 }
 #else
 

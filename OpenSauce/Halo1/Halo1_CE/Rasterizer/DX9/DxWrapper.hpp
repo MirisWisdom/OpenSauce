@@ -28,8 +28,9 @@ private:
 	LPDIRECT3DDEVICE9 Yelo_pD3DDevice;
 
 public:
-	Yelo_IDirect3DDevice9(LPDIRECT3DDEVICE9 pDevice, LPDIRECT3DDEVICE9 **ppDevice);
-	Yelo_IDirect3DDevice9() { Yelo_pD3DDevice = NULL; }
+	void Initialize(LPDIRECT3DDEVICE9 pDevice, LPDIRECT3DDEVICE9 **ppDevice);
+	void Initialize() { Yelo_pD3DDevice = NULL; }
+	bool IsInitialized() { return Yelo_pD3DDevice != NULL; }
 
 	STDMETHOD_(ULONG, AddRef)(THIS);
 	STDMETHOD(BeginStateBlock)(THIS);
@@ -195,8 +196,9 @@ private:
 	LPDIRECT3D9 Yelo_pD3D;
 
 public:
-	Yelo_IDirect3D9(LPDIRECT3D9 pDirect3D) { Yelo_pD3D = pDirect3D; }
-	Yelo_IDirect3D9() { Yelo_pD3D = NULL; }
+	void Initialize(LPDIRECT3D9 pDirect3D) { Yelo_pD3D = pDirect3D; }
+	void Initialize() { Yelo_pD3D = NULL; }
+	bool IsInitialized() { return Yelo_pD3D != NULL; }
 
 	STDMETHOD_(ULONG, AddRef)(THIS);
 	STDMETHOD(CheckDepthStencilMatch)(THIS_ UINT Adapter, D3DDEVTYPE DeviceType, D3DFORMAT AdapterFormat, D3DFORMAT RenderTargetFormat, D3DFORMAT DepthStencilFormat);
