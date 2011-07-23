@@ -574,8 +574,8 @@ namespace Yelo
 				subsystems[i].ReleaseResources();
 
 			// release global resources the subsystems might use
-			Globals().QuadManager().Release();
 			Globals().FadeEffect().ReleaseResources();
+			Globals().QuadManager().Release();
 			Globals().m_render_targets.scene_buffer_chain.ReleaseResources();
 			Globals().m_flags.loaded = false;
 		}		

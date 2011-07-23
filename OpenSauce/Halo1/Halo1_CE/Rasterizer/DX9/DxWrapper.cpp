@@ -467,7 +467,7 @@ HRESULT Yelo_IDirect3D9::CreateDevice(UINT Adapter, D3DDEVTYPE DeviceType, HWND 
 
 	IDirect3DDevice9** alias = ppReturnedDeviceInterface;
 
-	if(g_d3d_device.IsInitialized())
+	if(!g_d3d_device.IsInitialized())
 		g_d3d_device.Initialize(*ppReturnedDeviceInterface, &ppReturnedDeviceInterface);
 
 	*alias = &g_d3d_device;

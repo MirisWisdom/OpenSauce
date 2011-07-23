@@ -164,7 +164,9 @@ namespace Yelo
 		void			c_bloom_subsystem::ReleaseResourcesImpl()
 		{
 			g_effect.ReleaseResources();
+			g_effect.Dtor();
 			g_shader.ReleaseResources();
+			g_shader.Dtor();
 			g_subsystem_loaded = false;
 		}
 
