@@ -479,6 +479,12 @@ no_normal_maps:
 						}
 						else
 							Yelo::DX9::Direct3DDevice()->SetTexture(7, NULL);
+
+						// copy the specular colour values to the main colour set to override them
+						shader_model->model.reflection_properties.parallel_brightness = extension.parallel_brightness;
+						shader_model->model.reflection_properties.parallel_tint_color = extension.parallel_tint_color;
+						shader_model->model.reflection_properties.perpendicular_brightness = extension.perpendicular_brightness;
+						shader_model->model.reflection_properties.perpendicular_tint_color = extension.perpendicular_tint_color;
 					}
 				}
 				else if(shader_base->shader.shader_type == Enums::_shader_type_environment)
