@@ -46,10 +46,10 @@ namespace Phoenix
 	}
 
 
-	static const s_ensemble_cryptor_context k_campaign_save_cryptor_context = { // TODO
-		0,
-		0,
-		0,
+	static const s_ensemble_cryptor_context k_campaign_save_cryptor_context = {
+		0x194F8D77DF360283,
+		0x1385AC1E2122F575,
+		0xA7392D249DC2C737,
 	};
 	void c_campaign_save_cryptor::DecryptMemory(void* buffer, size_t buffer_size)
 	{

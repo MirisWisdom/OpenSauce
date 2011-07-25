@@ -22,38 +22,7 @@ namespace Phoenix
 {
 	boost::uint32_t adler32(const void* pBuf, size_t buflen, boost::uint32_t adler32 = 1);
 
-	// For an idea on the compression used in HaloWars, visit:
-	// http://code.google.com/p/lzham/wiki/CompressionTechniquesUsed
-	// All fingers seem to point to them using something LZ based (compressed streams always end in a zero byte, 
-	// and I remember seeing code, related to compressed streams, which read two 16-bit values in a loop...idk, 
-	// this shit and PPC assembly has me burnt out)
-
-#include <PshPack1.h>
-	// This appears along with the archive filesystem's header
-	struct s_ecf_compressed_stream_header_data
-	{
-		struct s_sha_hash
-		{
-			boost::uint8_t data[0x14];
-		};
-
-		// signature used before and after the size_bit and hashes data
-		enum { k_signature = 0xAAC94350 };
-
-		boost::uint32_t head_signature;
-		// Window size?
-		boost::uint8_t size_bit; // size = 1<<size_bit, only ever seen 0x13 (512KB)
-
-#pragma warning( push )
-#pragma warning( disable : 4200 ) // nonstandard extension used : zero-sized array in struct/union, Cannot generate copy-ctor or copy-assignment operator when UDT contains a zero-sized array
-		s_sha_hash sha_hashes[];
-#pragma warning( pop )
-
-		//boost::uint32_t tail_signature;
-
-		inline bool IsValid() const { return head_signature == k_signature; }
-	}; BOOST_STATIC_ASSERT( sizeof(s_ecf_compressed_stream_header_data) == 0x5 );
-#include <PopPack.h>
+	typedef boost::uint64_t ecf_id_t;
 
 	struct s_ecf_compressed_stream_eos_marker // end of stream marker, can be found at the end of a compressed stream's data
 	{
@@ -107,43 +76,74 @@ namespace Phoenix
 
 	struct s_ecf_chunk_header
 	{
-		boost::uint64_t id;					// Id of this chunk...shouldn't be byteswapped (appears to be treated as a byte[8])
+		ecf_id_t id;						// Id of this chunk, doesn't have to be unique
 		boost::uint32_t offset;				// Offset within the parent block
 		boost::uint32_t size;
 		boost::uint32_t checksum;
-		// BIT(0) - compressed
-		// BIT(1) - internal data
+		// BIT(0) - compressed stream
+		// BIT(1) - raw compressed data (in the case of "filesystem" chunks, the filename table will have this set)
 		boost::uint8_t flags;
 		boost::uint8_t alignment_bit;		// data alignment = 1<<alignment_bit (offset must be aligned to this)
 		boost::uint16_t unknown16;
 	}; BOOST_STATIC_ASSERT( sizeof(s_ecf_chunk_header) == 0x18 );
 
-	struct s_ecf_filesystem_header
+	struct s_era_filesystem_header
 	{
 		enum { k_signature = 0x05ABDBD8 };
 
 		boost::uint32_t signature;
 		boost::uint32_t size;
 		PAD64;
-	}; BOOST_STATIC_ASSERT( sizeof(s_ecf_filesystem_header) == 0x10 );
+	}; BOOST_STATIC_ASSERT( sizeof(s_era_filesystem_header) == 0x10 );
 
+#include <PshPack1.h>
+	// Digital signature for the ERA
+	struct s_era_filesystem_signature
+	{
+		struct s_sha_hash
+		{
+			boost::uint8_t data[0x14];
+		};
+
+		// signature used before and after the size_bit and hashes data
+		enum { k_signature = 0xAAC94350 };
+
+		boost::uint32_t head_signature;
+		boost::uint8_t size_bit; // size = 1<<size_bit, only ever seen 0x13 (512KB)
+
+#pragma warning( push )
+#pragma warning( disable : 4200 ) // nonstandard extension used : zero-sized array in struct/union, Cannot generate copy-ctor or copy-assignment operator when UDT contains a zero-sized array
+		s_sha_hash sha_hashes[];
+#pragma warning( pop )
+
+		//boost::uint32_t tail_signature;
+
+		inline bool IsValid() const { return head_signature == k_signature; }
+	}; BOOST_STATIC_ASSERT( sizeof(s_era_filesystem_signature) == 0x5 );
+#include <PopPack.h>
+
+#include <PshPack1.h>
 	// file system chunk's extra data
 	struct s_ecf_filesystem_chunk
 	{
 		enum { k_id_signature = ecf_block_ids::k_filesystem };
 
-		boost::uint8_t unknown18[8];
+		ecf_id_t unknown18;					// The (internal) file names chunk zeros this out
 		boost::uint32_t uncompressed_size;	// If uncompressed_size == size, then this chunk isn't compressed
-		boost::uint8_t unknown24[16];		// Possibly a hash?
-		boost::uint32_t unknown34;			// Incremental, most like an offset. Maybe the virtual address offset?
+		ecf_id_t id;						// same id as s_ecf_chunk_header::id
+		ecf_id_t id2;
+		boost::uint32_t filename_offset;	// offset is actually shifted by 4 bits (or maybe this is a uint16 field in b/w two byte fields?)
+
+		boost::uint32_t GetFilenameOffset() { return filename_offset >> 4; }
 	}; BOOST_STATIC_ASSERT( sizeof(s_ecf_filesystem_chunk) == 0x20 );
+#include <PopPack.h>
 
 	// Typical file layout:
 	// s_ecf_header
-		// s_ecf_filesystem_header
-		// s_ecf_compressed_stream_header_data
+		// s_era_filesystem_signature
+		// s_era_filesystem_hashtable
 			// s_ecf_chunk_header+s_ecf_filesystem_chunk
-				// chunks data...
+				// chunk's data...
 
 	struct s_ecf_dxt_texture_resource
 	{
