@@ -112,16 +112,18 @@ namespace Yelo
 			m_bloom_shader->bloom_maximum_color_handle.ClearHandles();
 			return hr;
 		}
-		void		c_bloom_shader::SetBloomValues(TagGroups::s_shader_postprocess_globals_bloom* values)
+		void		c_bloom_shader::SetBloomValues(TagGroups::s_shader_postprocess_bloom_definition* values)
 		{
-			m_bloom_globals = values;
+			m_bloom_definition = values;
+		}
+		void		c_bloom_shader::Update()
+		{
+			m_bloom_shader->bloom_size_handle.SetVariable(m_effect, &m_bloom_definition->size);
+			m_bloom_shader->bloom_exposure_handle.SetVariable(m_effect, &m_bloom_definition->exposure);
+			m_bloom_shader->bloom_mix_amount_handle.SetVariable(m_effect, &m_bloom_definition->mix_amount);
 
-			m_bloom_shader->bloom_size_handle.SetVariable(m_effect, &m_bloom_globals->size);
-			m_bloom_shader->bloom_exposure_handle.SetVariable(m_effect, &m_bloom_globals->exposure);
-			m_bloom_shader->bloom_mix_amount_handle.SetVariable(m_effect, &m_bloom_globals->mix_amount);
-
-			m_bloom_shader->bloom_minimum_color_handle.SetVariable(m_effect, &m_bloom_globals->minimum_color);
-			m_bloom_shader->bloom_maximum_color_handle.SetVariable(m_effect, &m_bloom_globals->maximum_color);		
+			m_bloom_shader->bloom_minimum_color_handle.SetVariable(m_effect, &m_bloom_definition->minimum_color);
+			m_bloom_shader->bloom_maximum_color_handle.SetVariable(m_effect, &m_bloom_definition->maximum_color);
 		}
 		/////////////////////////////////////////////////////////////////////
 	}; }; };

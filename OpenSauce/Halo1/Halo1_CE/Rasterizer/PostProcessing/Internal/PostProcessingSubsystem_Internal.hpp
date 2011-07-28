@@ -127,6 +127,9 @@ namespace Yelo
 				real value3, 
 				real value4, 
 				float interp_time);
+			void		SetEffectShaderInstanceActive(uint16 effect_index,
+				uint16 shader_instance_index,
+				bool active);
 		};
 	}; }; };
 };

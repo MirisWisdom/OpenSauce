@@ -73,15 +73,15 @@ namespace Yelo
 		{
 			// the tags are internal, so we only want to be loading our shaders/effects on map load
 			// load the new shaders, then allocate the resources and validate our effects
-			c_internal_subsystem::g_instance.LoadShaders();		
+			c_internal_subsystem::g_instance.LoadShaders();
 			c_internal_subsystem::g_instance.AllocateResourcesImpl(PP::Globals().m_rendering.render_device);
 			c_internal_subsystem::g_instance.ValidateEffects();
 		}
 		void		c_internal_subsystem::DisposeFromOldMap()
 		{
 			// Release shader resources then delete the memory allocated for them
-			c_internal_subsystem::g_instance.ReleaseResourcesImpl();	
-			c_internal_subsystem::g_instance.UnloadShaders();			
+			c_internal_subsystem::g_instance.ReleaseResourcesImpl();
+			c_internal_subsystem::g_instance.UnloadShaders();
 		};
 		void		c_internal_subsystem::Update(real delta_time)
 		{
@@ -94,7 +94,7 @@ namespace Yelo
 		void		c_internal_subsystem::InitializeImpl(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters)
 		{
 			ZeroMemory(Globals().m_shader_array, sizeof(Globals().m_shader_array));
-		}					
+		}
 		void		c_internal_subsystem::OnLostDeviceImpl()
 		{
 			for(int32 i = 0; i < k_max_shader_count; i++)
@@ -188,24 +188,24 @@ namespace Yelo
 
 			// delete all shaders
 			for(int32 i = 0; i < k_max_shader_count; i++)
-			{ 
+			{
 				if(Globals().m_shader_array[i])
 				{
 					Globals().m_shader_array[i]->Dtor();
 					delete Globals().m_shader_array[i];
 					Globals().m_shader_array[i] = NULL;
 				}
-			}					
+			}
 			// delete all effects
 			for(int32 i = 0; i < k_max_effect_count; i++)
-			{ 
+			{
 				if(Globals().m_effect_array[i])
 				{
 					Globals().m_effect_array[i]->Dtor();
 					delete Globals().m_effect_array[i];
 					Globals().m_effect_array[i] = NULL;
 				}
-			}	
+			}
 			// clear out all effect pointers in the render blocks
 			ResetRenderBlock();
 
@@ -225,11 +225,11 @@ namespace Yelo
 				Globals().m_shader_collection = TagGroups::Instances()[tag_index.index].Definition<TagGroups::s_shader_postprocess_collection>();
 
 				// if the collection tag is the wrong version or the pointer is fubar'd, return
-				if(!Globals().m_shader_collection)					
+				if(!Globals().m_shader_collection)
 					return;
 			}
 			else
-			{				
+			{
 				Globals().m_shader_count = 0;
 				Globals().m_effect_count = 0;
 				return;
@@ -346,7 +346,7 @@ namespace Yelo
 			if(index >= Globals().m_shader_collection->effects.Count) return 0;
 
 			return Globals().m_shader_collection->effects[index].runtime.flags.valid_effect_bit;
-		}	
+		}
 		int16		c_internal_subsystem::GetEffectShaderVariableIndexByName(uint16 effect_index, cstring name)
 		{
 			int16 return_id = NONE;
@@ -363,47 +363,51 @@ namespace Yelo
 			}
 			return return_id;
 		}
-		void		c_internal_subsystem::SetEffectShaderVariableBoolean(uint16 effect_index, 
-			uint16 variable_index, 
-			bool value1, 
+		void		c_internal_subsystem::SetEffectShaderVariableBoolean(uint16 effect_index,
+			uint16 variable_index,
+			bool value1,
 			float interp_time)
 		{
 			if(effect_index >= Globals().m_effect_count) return;
 			if(variable_index >= Globals().m_effect_array[effect_index]->m_effect_internal->script_variables.Count) return;
-			if(Globals().m_effect_array[effect_index]->m_effect_internal->script_variables[variable_index].value_type.type != 
+			if(Globals().m_effect_array[effect_index]->m_effect_internal->script_variables[variable_index].value_type.type !=
 				Enums::_shader_variable_base_type_boolean) return;
 
 			c_internal_shader_variable_scripted_node* curr = Globals().m_effect_array[effect_index]->m_scripted_variables;
+			
+			curr->StartValue() = curr->CurrentValue();
 			int16 index = 0;
 			while(index != variable_index)
 			{
 				curr = curr->m_next_scripted;
 				index++;
 			}
-			curr->NextValue().boolean = value1;
+			curr->EndValue().boolean = value1;
 			curr->SetInterpolationTime(interp_time);
 		}
-		void		c_internal_subsystem::SetEffectShaderVariableInteger(uint16 effect_index, 
-			uint16 variable_index, 
-			uint32 value1, 
+		void		c_internal_subsystem::SetEffectShaderVariableInteger(uint16 effect_index,
+			uint16 variable_index,
+			uint32 value1,
 			float interp_time)
 		{
 			if(effect_index >= Globals().m_effect_count) return;
 			if(variable_index >= Globals().m_effect_array[effect_index]->m_effect_internal->script_variables.Count) return;
-			if(Globals().m_effect_array[effect_index]->m_effect_internal->script_variables[variable_index].value_type.type != 
+			if(Globals().m_effect_array[effect_index]->m_effect_internal->script_variables[variable_index].value_type.type !=
 				Enums::_shader_variable_base_type_integer) return;
 
 			c_internal_shader_variable_scripted_node* curr = Globals().m_effect_array[effect_index]->m_scripted_variables;
+
+			curr->StartValue() = curr->CurrentValue();
 			int16 index = 0;
 			while(index != variable_index)
 			{
 				curr = curr->m_next_scripted;
 				index++;
 			}
-			curr->NextValue().integer32 = value1;
+			curr->EndValue().integer32 = value1;
 			curr->SetInterpolationTime(interp_time);
 		}
-		void		c_internal_subsystem::SetEffectShaderVariableReal(uint16 effect_index, 
+		void		c_internal_subsystem::SetEffectShaderVariableReal(uint16 effect_index,
 			uint16 variable_index, 
 			real value1, 
 			real value2, 
@@ -427,27 +431,45 @@ namespace Yelo
 				index++;
 			}
 
+			curr->StartValue() = curr->CurrentValue();
 			// the available float variables can have up to 4 channels, may as well do it all in one function
 			switch(curr->m_shader_variable->m_variable_datum->value_type.type)
 			{
 			case Enums::_shader_variable_base_type_float:
 				switch(curr->m_shader_variable->m_variable_datum->value_type.count)
 				{
-				case 4: curr->NextValue().vector4d.w = value4;
-				case 3: curr->NextValue().vector4d.k = value3;
-				case 2: curr->NextValue().vector4d.j = value2;
-				case 1: curr->NextValue().vector4d.i = value1;
+				case 4: curr->EndValue().vector4d.w = value4;
+				case 3: curr->EndValue().vector4d.k = value3;
+				case 2: curr->EndValue().vector4d.j = value2;
+				case 1: curr->EndValue().vector4d.i = value1;
 				}
 				break;
 
 			case Enums::_shader_variable_base_type_argb_color:
-				curr->NextValue().vector4d.k = value1;
-				curr->NextValue().vector4d.i = value2;
-				curr->NextValue().vector4d.j = value3;
-				curr->NextValue().vector4d.w = value4;
+				curr->EndValue().vector4d.k = value1;
+				curr->EndValue().vector4d.i = value2;
+				curr->EndValue().vector4d.j = value3;
+				curr->EndValue().vector4d.w = value4;
 				break;
 			}
 			curr->SetInterpolationTime(interp_time);
+		}
+		void		c_internal_subsystem::SetEffectShaderInstanceActive(uint16 effect_index,
+			uint16 shader_instance_index,
+			bool active)
+		{
+			if(effect_index >= Globals().m_effect_count) return;
+			if(shader_instance_index >= Globals().m_effect_array[effect_index]->m_effect_internal->shader_indices.Count) return;
+
+			c_shader_instance_node* curr = Globals().m_effect_array[effect_index]->ShaderList();
+			int16 index = 0;
+			while(index != shader_instance_index)
+			{
+				curr = curr->m_next;
+				index++;
+			}
+
+			curr->m_is_active = active;
 		}
 		/////////////////////////////////////////////////////////////////////
 

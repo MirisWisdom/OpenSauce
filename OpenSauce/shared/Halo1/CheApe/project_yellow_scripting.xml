@@ -180,6 +180,35 @@
 			<arg type="real" name="value3" />
 			<arg type="real" name="change_time" />
 		</function>
+		<function name="pp_set_effect_shader_instance_active" returnType="void" help="disables/enables a shader instance in an effect" >
+			<arg type="short" name="effect_index" />
+			<arg type="short" name="shader_instance_index" />
+			<arg type="boolean" name="instance_enabled" />
+		</function>
+		<function name="pp_bloom_set_size" returnType="void" help="changes the bloom size over a period of time" >
+			<arg type="real" name="size" />
+			<arg type="real" name="change_time" />
+		</function>
+		<function name="pp_bloom_set_exposure" returnType="void" help="changes the bloom exposure over a period of time" >
+			<arg type="real" name="exposure" />
+			<arg type="real" name="change_time" />
+		</function>
+		<function name="pp_bloom_set_mix_amount" returnType="void" help="changes the bloom mix amount over a period of time" >
+			<arg type="real" name="mix_amount" />
+			<arg type="real" name="change_time" />
+		</function>
+		<function name="pp_bloom_set_minimum_color" returnType="void" help="changes the bloom minimum color over a period of time" >
+			<arg type="real" name="red" />
+			<arg type="real" name="green" />
+			<arg type="real" name="blue" />
+			<arg type="real" name="change_time" />
+		</function>
+		<function name="pp_bloom_set_maximum_color" returnType="void" help="changes the bloom maximum color over a period of time" >
+			<arg type="real" name="red" />
+			<arg type="real" name="green" />
+			<arg type="real" name="blue" />
+			<arg type="real" name="change_time" />
+		</function>
 	</scriptFunctions>
 
 	<scriptGlobals>

@@ -2601,6 +2601,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Rasterizer\PostProcessing\PostProcessingInterpLinear.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Rasterizer\PostProcessing\PostProcessingInterpLinear.hpp"
+					>
+				</File>
+				<File
 					RelativePath=".\Rasterizer\PostProcessing\PostProcessingQuadManager.cpp"
 					>
 				</File>

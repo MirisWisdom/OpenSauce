@@ -114,7 +114,8 @@ namespace Yelo
 				}
 				DoPreShader(pDevice, frame_time, index);
 				curr_node->SetInstance();
-				hr = curr_node->m_shader->DoPostProcess(pDevice, frame_time, m_render_quad);
+				if(curr_node->m_is_active)
+					hr = curr_node->m_shader->DoPostProcess(pDevice, frame_time, m_render_quad);
 				DoPostShader(pDevice, frame_time, index);
 
 				curr_node = curr_node->m_next;

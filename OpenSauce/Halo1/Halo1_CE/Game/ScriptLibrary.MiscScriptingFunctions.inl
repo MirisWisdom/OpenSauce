@@ -141,6 +141,18 @@ static void InitializeMiscFunctions()
 		Postprocessing::HS_SetEffectShaderVariableInteger);
 	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_set_effect_shader_variable_real, 
 		Postprocessing::HS_SetEffectShaderVariableReal);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_set_effect_shader_instance_active, 
+		Postprocessing::HS_SetEffectShaderInstanceActive);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_bloom_set_size, 
+		Postprocessing::HS_BloomSetSize);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_bloom_set_exposure, 
+		Postprocessing::HS_BloomSetExposure);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_bloom_set_mix_amount, 
+		Postprocessing::HS_BloomSetMixAmount);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_bloom_set_minimum_color, 
+		Postprocessing::HS_BloomSetMinimumColor);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_bloom_set_maximum_color, 
+		Postprocessing::HS_BloomSetMaximumColor);
 #else
 	NullifyScriptFunction( GET_HS_FUNCTION(pp_load) );
 	NullifyScriptFunction( GET_HS_FUNCTION(pp_unload) );
@@ -154,5 +166,11 @@ static void InitializeMiscFunctions()
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_shader_variable_boolean) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_shader_variable_integer) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_shader_variable_real) );
+	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(_hs_function_pp_set_effect_shader_instance_active) );
+	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_bloom_set_size) );
+	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_bloom_set_exposure) );
+	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_bloom_set_mix_amount) );
+	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_bloom_set_minimum_color) );
+	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_bloom_set_maximum_color) );
 #endif
 }

@@ -18,7 +18,10 @@
 */
 #include "Common/Precompile.hpp"
 #include "Rasterizer/PostProcessing/Bloom/PostProcessingSubsystem_Bloom.hpp"
+
 #if !PLATFORM_IS_DEDI
+#include <Blam/Halo1/shader_postprocess_definitions.hpp>
+#include "Rasterizer/PostProcessing/PostProcessingInterpLinear.hpp"
 
 namespace PP = Yelo::Postprocessing;
 
@@ -28,8 +31,17 @@ namespace Yelo
 
 		static s_shader_postprocess_bloom							g_bloom_shader;
 		static s_shader_postprocess_bloom_effect					g_bloom_effect;
-		static TagGroups::s_shader_postprocess_globals_bloom		g_bloom_defaults;
 		static c_shader_instance_node*								g_bloom_shader_instance;
+		
+		static TagGroups::s_shader_postprocess_globals_bloom		g_bloom_defaults;
+		static TagGroups::s_shader_postprocess_globals_bloom*		g_bloom_current_globals;
+
+		static TagGroups::s_shader_postprocess_bloom_definition		g_bloom_values_current;
+		static c_postprocess_interp_linear							g_bloom_size_interp;
+		static c_postprocess_interp_linear							g_bloom_exposure_interp;
+		static c_postprocess_interp_linear							g_bloom_mix_amount_interp;
+		static c_postprocess_interp_linear							g_bloom_minimum_color_interp;
+		static c_postprocess_interp_linear							g_bloom_maximum_color_interp;
 
 		/////////////////////////////////////////////////////////////////////
 		// c_bloom_subsystem
@@ -94,6 +106,10 @@ namespace Yelo
 		{
 			c_bloom_subsystem::g_instance.DisposeFromOldMapImpl();
 		}
+		void			c_bloom_subsystem::Update(real delta_time)
+		{
+			c_bloom_subsystem::g_instance.UpdateImpl(delta_time);
+		}
 		bool			c_bloom_subsystem::DoPostProcesses(IDirect3DDevice9* pDevice, real frame_time, Enums::postprocess_render_stage render_point)
 		{
 			return c_bloom_subsystem::g_instance.DoPostProcessesImpl(pDevice, frame_time, render_point);
@@ -121,12 +137,23 @@ namespace Yelo
 			g_bloom_defaults.flags.is_enabled_bit = true;
 			g_bloom_defaults.flags.apply_after_hud_bit = true;
 
-			g_bloom_defaults.size = 3.5f;
-			g_bloom_defaults.exposure = 1.0f;
-			g_bloom_defaults.mix_amount = 0.5f;
+			g_bloom_defaults.bloom.size = 3.5f;
+			g_bloom_defaults.bloom.exposure = 1.0f;
+			g_bloom_defaults.bloom.mix_amount = 0.5f;
 
-			g_bloom_defaults.minimum_color.red = g_bloom_defaults.minimum_color.green = g_bloom_defaults.minimum_color.blue = 0.55f;
-			g_bloom_defaults.maximum_color.red = g_bloom_defaults.maximum_color.green = g_bloom_defaults.maximum_color.blue = 1.0f;
+			g_bloom_defaults.bloom.minimum_color.red = g_bloom_defaults.bloom.minimum_color.green = g_bloom_defaults.bloom.minimum_color.blue = 0.55f;
+			g_bloom_defaults.bloom.maximum_color.red = g_bloom_defaults.bloom.maximum_color.green = g_bloom_defaults.bloom.maximum_color.blue = 1.0f;
+
+			g_bloom_size_interp.SetType(Enums::_shader_variable_base_type_float, 1);
+			g_bloom_exposure_interp.SetType(Enums::_shader_variable_base_type_float, 1);
+			g_bloom_mix_amount_interp.SetType(Enums::_shader_variable_base_type_float, 1);
+			g_bloom_minimum_color_interp.SetType(Enums::_shader_variable_base_type_float, 3);
+			g_bloom_maximum_color_interp.SetType(Enums::_shader_variable_base_type_float, 3);
+
+			g_bloom_current_globals = &g_bloom_defaults;
+			g_bloom_values_current = g_bloom_defaults.bloom;
+
+			g_shader.SetBloomValues(&g_bloom_values_current);
 		}	
 		void			c_bloom_subsystem::OnLostDeviceImpl()
 		{
@@ -147,7 +174,7 @@ namespace Yelo
 
 			if(SUCCEEDED(hr))
 			{
-				g_shader.SetBloomValues(&g_bloom_defaults);
+				g_shader.Update();
 
 				g_bloom_shader_instance = new c_shader_instance_node();
 				g_bloom_shader_instance->Ctor();
@@ -172,7 +199,7 @@ namespace Yelo
 
 		void			c_bloom_subsystem::SetDefaultSettingsImpl()
 		{
-			g_subsystem_enabled = true;
+			g_bloom_defaults.flags.is_enabled_bit = true;
 		}
 
 		void			c_bloom_subsystem::InitializeForNewMapImpl()
@@ -180,30 +207,102 @@ namespace Yelo
 			if(!g_subsystem_loaded)
 				return;
 
-			// get the maps bloom settings from the map an set them
+			// get the maps bloom settings from the map
 			if(PP::Globals().m_map_postprocess_globals && PP::Globals().m_map_postprocess_globals->bloom_globals.Count == 1)
 			{
-				g_subsystem_enabled = PP::Globals().m_map_postprocess_globals->bloom_globals[0].flags.is_enabled_bit;
-				g_shader.SetBloomValues(&PP::Globals().m_map_postprocess_globals->bloom_globals[0]);
+				g_bloom_current_globals = &PP::Globals().m_map_postprocess_globals->bloom_globals[0];
+				g_bloom_values_current = PP::Globals().m_map_postprocess_globals->bloom_globals[0].bloom;
 			}
+
+			SetupInterps();
 		}
 		void			c_bloom_subsystem::DisposeFromOldMapImpl()
 		{
 			// set the bloom values to their defaults
-			g_subsystem_enabled = g_bloom_defaults.flags.is_enabled_bit;
-			g_shader.SetBloomValues(&g_bloom_defaults);
+			g_bloom_current_globals = &g_bloom_defaults;
+			g_bloom_values_current = g_bloom_defaults.bloom;
+		}
+		void			c_bloom_subsystem::UpdateImpl(real delta_time)
+		{
+			// update animated values
+			g_bloom_size_interp.Update(delta_time);
+			g_bloom_exposure_interp.Update(delta_time);
+			g_bloom_mix_amount_interp.Update(delta_time);
+			g_bloom_minimum_color_interp.Update(delta_time);
+			g_bloom_maximum_color_interp.Update(delta_time);
+
+			g_bloom_values_current.size = g_bloom_size_interp.GetCurrent().real32;
+			g_bloom_values_current.exposure = g_bloom_exposure_interp.GetCurrent().real32;
+			g_bloom_values_current.mix_amount = g_bloom_mix_amount_interp.GetCurrent().real32;
+			g_bloom_values_current.minimum_color = g_bloom_minimum_color_interp.GetCurrent().color3d;
+			g_bloom_values_current.maximum_color = g_bloom_maximum_color_interp.GetCurrent().color3d;
 		}
 		bool			c_bloom_subsystem::DoPostProcessesImpl(IDirect3DDevice9* pDevice, double frame_time, 
 			Enums::postprocess_render_stage render_point)
 		{
 			// Apply the bloom effect at the intended render stage
-			if (!g_subsystem_enabled) 
+			if (!g_bloom_current_globals->flags.is_enabled_bit)
 				return false;
 
-			if((!g_shader.m_bloom_globals->flags.apply_after_hud_bit && (render_point == Enums::_postprocess_render_stage_pre_hud)) ||
-				(g_shader.m_bloom_globals->flags.apply_after_hud_bit && (render_point == Enums::_postprocess_render_stage_pre_ui)))
+			if((!g_bloom_current_globals->flags.apply_after_hud_bit && (render_point == Enums::_postprocess_render_stage_pre_hud)) ||
+				(g_bloom_current_globals->flags.apply_after_hud_bit && (render_point == Enums::_postprocess_render_stage_pre_ui)))
+			{
+				g_shader.Update();
 				return SUCCEEDED(g_effect.DoPostProcessEffect(pDevice, frame_time));
+			}
 			return false;
+		}
+		void			c_bloom_subsystem::SetupInterps()
+		{
+			g_bloom_size_interp.GetStart().real32 = g_bloom_values_current.size;
+			g_bloom_size_interp.Reset();
+
+			g_bloom_exposure_interp.GetStart().real32 = g_bloom_values_current.exposure;
+			g_bloom_exposure_interp.Reset();
+
+			g_bloom_mix_amount_interp.GetStart().real32 = g_bloom_values_current.mix_amount;
+			g_bloom_mix_amount_interp.Reset();
+
+			g_bloom_minimum_color_interp.GetStart().color3d = g_bloom_values_current.minimum_color;
+			g_bloom_minimum_color_interp.Reset();
+
+			g_bloom_maximum_color_interp.GetStart().color3d = g_bloom_values_current.maximum_color;
+			g_bloom_maximum_color_interp.Reset();
+		}
+
+		void			c_bloom_subsystem::SetBloomSize(real size, real interp_time)
+		{
+			g_bloom_size_interp.GetStart().real32 = g_bloom_size_interp.GetCurrent().real32;
+			g_bloom_size_interp.GetEnd().real32 = size;
+			g_bloom_size_interp.Begin(interp_time);
+		}
+
+		void			c_bloom_subsystem::SetBloomExposure(real exposure, real interp_time)
+		{
+			g_bloom_exposure_interp.GetStart().real32 = g_bloom_exposure_interp.GetCurrent().real32;
+			g_bloom_exposure_interp.GetEnd().real32 = exposure;
+			g_bloom_exposure_interp.Begin(interp_time);
+		}
+
+		void			c_bloom_subsystem::SetBloomMixAmount(real mix_amount, real interp_time)
+		{
+			g_bloom_mix_amount_interp.GetStart().real32 = g_bloom_mix_amount_interp.GetCurrent().real32;
+			g_bloom_mix_amount_interp.GetEnd().real32 = mix_amount;
+			g_bloom_mix_amount_interp.Begin(interp_time);
+		}
+
+		void			c_bloom_subsystem::SetBloomMinimumColor(real_rgb_color minimum_color, real interp_time)
+		{
+			g_bloom_minimum_color_interp.GetStart().color3d = g_bloom_minimum_color_interp.GetCurrent().color3d;
+			g_bloom_minimum_color_interp.GetEnd().color3d = minimum_color;
+			g_bloom_minimum_color_interp.Begin(interp_time);
+		}
+
+		void			c_bloom_subsystem::SetBloomMaximumColor(real_rgb_color maximum_color, real interp_time)
+		{
+			g_bloom_maximum_color_interp.GetStart().color3d = g_bloom_maximum_color_interp.GetCurrent().color3d;
+			g_bloom_maximum_color_interp.GetEnd().color3d = maximum_color;
+			g_bloom_maximum_color_interp.Begin(interp_time);
 		}
 		/////////////////////////////////////////////////////////////////////
 	}; }; };

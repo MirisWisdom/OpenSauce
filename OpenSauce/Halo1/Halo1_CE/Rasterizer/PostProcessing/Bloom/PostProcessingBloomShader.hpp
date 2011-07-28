@@ -46,7 +46,7 @@ namespace Yelo
 		{			
 			s_shader_postprocess_bloom*								m_bloom_shader;			
 		public:
-			TagGroups::s_shader_postprocess_globals_bloom*			m_bloom_globals;
+			TagGroups::s_shader_postprocess_bloom_definition*		m_bloom_definition;
 
 			HRESULT		LoadShader(IDirect3DDevice9* pDevice);
 			HRESULT		LoadCustomResources(IDirect3DDevice9* pDevice);
@@ -56,12 +56,14 @@ namespace Yelo
 			void		SetSource(void* pSource);
 			HRESULT		SetupShader();
 
-			void		SetBloomValues(TagGroups::s_shader_postprocess_globals_bloom* values);
+			void		Update();
+
+			void		SetBloomValues(TagGroups::s_shader_postprocess_bloom_definition* values);
 
 			void		Ctor()
 			{				
 				m_bloom_shader = NULL;
-				m_bloom_globals = NULL;
+				m_bloom_definition = NULL;
 
 				c_postprocess_shader::Ctor();
 			}
