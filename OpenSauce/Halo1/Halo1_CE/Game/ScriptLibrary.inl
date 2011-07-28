@@ -98,6 +98,12 @@
 		_hs_function_pp_set_effect_shader_variable_boolean,
 		_hs_function_pp_set_effect_shader_variable_integer,
 		_hs_function_pp_set_effect_shader_variable_real,
+		_hs_function_pp_set_effect_shader_instance_active,
+		_hs_function_pp_bloom_set_size,
+		_hs_function_pp_bloom_set_exposure,
+		_hs_function_pp_bloom_set_mix_amount,
+		_hs_function_pp_bloom_set_minimum_color,
+		_hs_function_pp_bloom_set_maximum_color,
 
 	// debug functions
 	#ifdef API_DEBUG
@@ -259,6 +265,12 @@
 		&GET_HS_FUNCTION(pp_set_effect_shader_variable_boolean),
 		&GET_HS_FUNCTION(pp_set_effect_shader_variable_integer),
 		&GET_HS_FUNCTION(pp_set_effect_shader_variable_real),
+		&GET_HS_FUNCTION(pp_set_effect_shader_instance_active),
+		&GET_HS_FUNCTION(pp_bloom_set_size),
+		&GET_HS_FUNCTION(pp_bloom_set_exposure),
+		&GET_HS_FUNCTION(pp_bloom_set_mix_amount),
+		&GET_HS_FUNCTION(pp_bloom_set_minimum_color),
+		&GET_HS_FUNCTION(pp_bloom_set_maximum_color),
 
 	// debug functions
 	#ifdef API_DEBUG

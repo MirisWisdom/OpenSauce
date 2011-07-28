@@ -32,6 +32,7 @@
 
 #include "Common/GameSystems.hpp"
 #include "Rasterizer/PostProcessing/MotionBlur/PostProcessingSubsystem_MotionBlur.hpp"
+#include "Rasterizer/PostProcessing/Bloom/PostProcessingSubsystem_Bloom.hpp"
 #include "Rasterizer/PostProcessing/Internal/PostProcessingSubsystem_Internal.hpp"
 
 namespace Yelo
@@ -754,6 +755,88 @@ namespace Yelo
 				args->values[1], 
 				args->values[2], 
 				args->values[3],
+				args->interp_time);
+			
+			return NULL;
+		}
+		void*		HS_SetEffectShaderInstanceActive(void** arguments)
+		{
+			struct s_arguments {
+				uint16 effect_index;
+				PAD16;
+				uint16 shader_instance_index;
+				PAD16;
+				bool active;
+			}* args = CAST_PTR(s_arguments*, arguments);
+			
+			Subsystem::Internal::c_internal_subsystem::g_instance.SetEffectShaderInstanceActive(
+				args->effect_index,
+				args->shader_instance_index, 
+				args->active);
+			
+			return NULL;
+		}
+		void*		HS_BloomSetSize(void** arguments)
+		{
+			struct s_arguments {
+				real size;
+				real interp_time;
+			}* args = CAST_PTR(s_arguments*, arguments);
+			
+			Subsystem::Bloom::c_bloom_subsystem::g_instance.SetBloomSize(
+				args->size,
+				args->interp_time);
+			
+			return NULL;
+		}
+		void*		HS_BloomSetExposure(void** arguments)
+		{
+			struct s_arguments {
+				real exposure;
+				real interp_time;
+			}* args = CAST_PTR(s_arguments*, arguments);
+			
+			Subsystem::Bloom::c_bloom_subsystem::g_instance.SetBloomExposure(
+				args->exposure,
+				args->interp_time);
+			
+			return NULL;
+		}
+		void*		HS_BloomSetMixAmount(void** arguments)
+		{
+			struct s_arguments {
+				real mix_amount;
+				real interp_time;
+			}* args = CAST_PTR(s_arguments*, arguments);
+			
+			Subsystem::Bloom::c_bloom_subsystem::g_instance.SetBloomMixAmount(
+				args->mix_amount,
+				args->interp_time);
+			
+			return NULL;
+		}
+		void*		HS_BloomSetMinimumColor(void** arguments)
+		{
+			struct s_arguments {
+				real_rgb_color minimum_color;
+				real interp_time;
+			}* args = CAST_PTR(s_arguments*, arguments);
+			
+			Subsystem::Bloom::c_bloom_subsystem::g_instance.SetBloomMinimumColor(
+				args->minimum_color,
+				args->interp_time);
+			
+			return NULL;
+		}
+		void*		HS_BloomSetMaximumColor(void** arguments)
+		{
+			struct s_arguments {
+				real_rgb_color maximum_color;
+				real interp_time;
+			}* args = CAST_PTR(s_arguments*, arguments);
+			
+			Subsystem::Bloom::c_bloom_subsystem::g_instance.SetBloomMaximumColor(
+				args->maximum_color,
 				args->interp_time);
 			
 			return NULL;

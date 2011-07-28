@@ -324,6 +324,18 @@ namespace Yelo
 		void*		HS_SetEffectShaderVariableInteger(void** arguments);
 		/** Halo script function to set the value of a scripted real variable. */
 		void*		HS_SetEffectShaderVariableReal(void** arguments);
+		/** Halo script function to enable/disable shader instances in an effect. */
+		void*		HS_SetEffectShaderInstanceActive(void** arguments);
+		/** Halo script function to change the bloom size. */
+		void*		HS_BloomSetSize(void** arguments);
+		/** Halo script function to change the bloom exposure. */
+		void*		HS_BloomSetExposure(void** arguments);
+		/** Halo script function to change the bloom mix amount. */
+		void*		HS_BloomSetMixAmount(void** arguments);
+		/** Halo script function to change the bloom minimum color. */
+		void*		HS_BloomSetMinimumColor(void** arguments);
+		/** Halo script function to change the bloom maximum color. */
+		void*		HS_BloomSetMaximumColor(void** arguments);
 		
 		/** Renders all post processes that occur before alpha blended meshes. */
 		void		RenderPreAlphaBlended();

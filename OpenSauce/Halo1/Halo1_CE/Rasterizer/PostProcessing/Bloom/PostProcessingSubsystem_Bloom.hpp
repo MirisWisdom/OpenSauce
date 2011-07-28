@@ -27,9 +27,9 @@ namespace Yelo
 	namespace Postprocessing { namespace Subsystem { namespace Bloom {		
 		class c_bloom_subsystem
 		{
+		public:
 			static c_bloom_subsystem		g_instance;
 
-		public:
 			static bool						g_subsystem_enabled;
 			static bool						g_subsystem_loaded;
 			static c_bloom_shader			g_shader;
@@ -52,7 +52,7 @@ namespace Yelo
 
 			static void			InitializeForNewMap();
 			static void			DisposeFromOldMap();
-			static void			Update(real delta_time)	{}
+			static void			Update(real delta_time);
 			static bool			DoPostProcesses(IDirect3DDevice9* pDevice, real frame_time, Enums::postprocess_render_stage render_point);
 
 
@@ -70,7 +70,17 @@ namespace Yelo
 
 			void				InitializeForNewMapImpl();
 			void				DisposeFromOldMapImpl();
+			void				UpdateImpl(real delta_time);
 			bool				DoPostProcessesImpl(IDirect3DDevice9* pDevice, double frame_time, Enums::postprocess_render_stage render_stage);
+
+			void				SetupInterps();
+
+		public:
+			void				SetBloomSize(real size, real interp_time);;
+			void				SetBloomExposure(real exposure, real interp_time);
+			void				SetBloomMixAmount(real mix_amount, real interp_time);
+			void				SetBloomMinimumColor(real_rgb_color minimum_color, real interp_time);
+			void				SetBloomMaximumColor(real_rgb_color maximum_color, real interp_time);
 		};
 	}; }; };
 };

@@ -24,6 +24,15 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
+		struct s_shader_postprocess_bloom_definition
+		{
+			TAG_FIELD(real,							size);
+			TAG_FIELD(real,							exposure);
+			TAG_FIELD(real_fraction,				mix_amount);
+
+			TAG_FIELD(real_rgb_color,				minimum_color);
+			TAG_FIELD(real_rgb_color,				maximum_color);
+		};
 		struct s_shader_postprocess_globals_bloom
 		{
 			struct _flags {
@@ -31,12 +40,8 @@ namespace Yelo
 				TAG_FLAG16(apply_after_hud);
 			}flags;
 			PAD16;
-			TAG_FIELD(real,							size);
-			TAG_FIELD(real,							exposure);
-			TAG_FIELD(real_fraction,				mix_amount);
 
-			TAG_FIELD(real_rgb_color,				minimum_color);
-			TAG_FIELD(real_rgb_color,				maximum_color);
+			s_shader_postprocess_bloom_definition bloom;
 		}; BOOST_STATIC_ASSERT( sizeof(s_shader_postprocess_globals_bloom) == 0x28 );
 		struct s_shader_postprocess_globals
 		{

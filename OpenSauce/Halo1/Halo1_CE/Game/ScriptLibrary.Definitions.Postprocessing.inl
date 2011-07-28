@@ -79,3 +79,44 @@
 		HS_TYPE(real),
 		HS_TYPE(real)
 	);
+
+	HS_FUNCTION_WITH_PARAMS(pp_set_effect_shader_instance_active, void, "disables/enables a shader instance in an effect", 
+			"<effect-index> <shader-instance-index> <boolean>",3,
+		HS_TYPE(short),
+		HS_TYPE(short),
+		HS_TYPE(bool)
+	);
+
+	HS_FUNCTION_WITH_PARAMS(pp_bloom_set_size, void, "changes the bloom size over a period of time", 
+			"<real> <real>",2,
+		HS_TYPE(real),
+		HS_TYPE(real)
+	);
+
+	HS_FUNCTION_WITH_PARAMS(pp_bloom_set_exposure, void, "changes the bloom exposure over a period of time", 
+			"<real> <real>",2,
+		HS_TYPE(real),
+		HS_TYPE(real)
+	);
+
+	HS_FUNCTION_WITH_PARAMS(pp_bloom_set_mix_amount, void, "changes the bloom mix amount over a period of time", 
+			"<real> <real>",2,
+		HS_TYPE(real),
+		HS_TYPE(real)
+	);
+
+	HS_FUNCTION_WITH_PARAMS(pp_bloom_set_minimum_color, void, "changes the bloom minimum color over a period of time", 
+			"<real> <real> <real> <real>",4,
+		HS_TYPE(real),
+		HS_TYPE(real),
+		HS_TYPE(real),
+		HS_TYPE(real)
+	);
+
+	HS_FUNCTION_WITH_PARAMS(pp_bloom_set_maximum_color, void, "changes the bloom maximum color over a period of time", 
+			"<real> <real> <real> <real>",4,
+		HS_TYPE(real),
+		HS_TYPE(real),
+		HS_TYPE(real),
+		HS_TYPE(real)
+	);

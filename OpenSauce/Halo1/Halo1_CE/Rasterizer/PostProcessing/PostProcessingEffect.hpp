@@ -40,17 +40,20 @@ namespace Yelo
 		class c_shader_instance_node
 		{
 		public:
+			BOOL						m_is_active;
 			c_postprocess_shader*		m_shader;
 			c_shader_instance_node*		m_next;
 
 			virtual void		Ctor()
 			{
+				m_is_active = true;
 				m_shader = NULL;
 				m_next = NULL;
 			}
 
 			virtual ~c_shader_instance_node()
 			{
+				m_is_active = true;
 				delete m_next;
 				m_next = NULL;
 			}
@@ -75,6 +78,8 @@ namespace Yelo
 			c_quad_instance*				m_render_quad;
 
 		public:
+			c_shader_instance_node* ShaderList() { return m_shader_list_head; }
+
 			HRESULT				AddProcess(c_shader_instance_node* shader_instance);
 			void				ResetEffect();
 			virtual bool		ValidateEffect();
