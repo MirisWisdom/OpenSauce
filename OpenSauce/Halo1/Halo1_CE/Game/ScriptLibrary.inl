@@ -56,6 +56,7 @@
 		_hs_function_player_data_set_real,
 		_hs_function_player_local_get,
 
+		_hs_function_objects_distance_to_object,
 		_hs_function_object_data_get_real,
 		_hs_function_object_data_set_real,
 		_hs_function_weapon_data_get_real,
@@ -224,6 +225,7 @@
 		&GET_HS_FUNCTION(player_data_set_real),
 		&GET_HS_FUNCTION(player_local_get),
 
+		&GET_HS_FUNCTION(objects_distance_to_object),
 		&GET_HS_FUNCTION(object_data_get_real),
 		&GET_HS_FUNCTION(object_data_set_real),
 		&GET_HS_FUNCTION(weapon_data_get_real),

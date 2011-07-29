@@ -17,6 +17,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+	HS_FUNCTION_WITH_PARAMS(objects_distance_to_object, real, "", 
+			"<objects> <destination-object>", 2,
+		HS_TYPE(object_list),
+		HS_TYPE(object)
+	);
+
 	HS_FUNCTION_WITH_PARAMS(object_data_get_real, real, "", 
 			"<object> <data-name> <subdata-name>", 3,
 		HS_TYPE(object),

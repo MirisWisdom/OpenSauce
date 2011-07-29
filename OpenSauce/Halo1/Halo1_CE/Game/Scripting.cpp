@@ -104,5 +104,31 @@ namespace Yelo
 
 			return object_list_index;
 		}
+
+		datum_index ObjectListGetFirst(datum_index list_index, __out datum_index& list_reference)
+		{
+			if(!list_index.IsNull())
+			{
+				s_object_list_header_datum* object_list = (*Scripting::ObjectListHeader())[list_index];
+				list_reference = object_list->first;
+
+				return ObjectListGetNext(list_index, list_reference);
+			}
+
+			return datum_index::null;
+		}
+
+		datum_index ObjectListGetNext(datum_index list_index, __inout datum_index& list_reference)
+		{
+			if(!list_reference.IsNull())
+			{
+				s_list_object_reference_datum* object_reference = (*Scripting::ListObjectReference())[list_reference];
+				list_reference = object_reference->next_reference;
+
+				return object_reference->object_index;
+			}
+
+			return datum_index::null;
+		}
 	};
 };

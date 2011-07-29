@@ -43,6 +43,11 @@
 		<function name="player_local_get" returnType="short" help="returns the local player's player-list-index" internal="true" />
 
 		<!-- OBJECT SCRIPTING INTERFACES -->
+		<function name="objects_distance_to_object" returnType="real" help="returns minimum distance from any of the specified objects to the specified destination object. (returns -1 if there are no objects to check)" internal="true" >
+			<arg type="object_list" name="objects" />
+			<arg type="object" name="destination_object" />
+		</function>
+		
 		<function name="object_data_get_real" returnType="real" help="returns a real value property of the object. -1.0 if this fails" internal="true" >
 			<arg type="object" name="object" />
 			<arg type="string" name="data_name" />
