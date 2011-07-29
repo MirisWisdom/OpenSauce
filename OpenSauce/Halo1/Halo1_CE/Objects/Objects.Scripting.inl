@@ -37,7 +37,7 @@ static void* scripting_objects_distance_to_object_evaluate(void** arguments)
 		// Enumerate the object list, testing each object's origin with dest
 		for(datum_index curr_list_reference, curr_object_index = Scripting::ObjectListGetFirst(args->object_list, curr_list_reference); 
 			!curr_object_index.IsNull(); 
-			Scripting::ObjectListGetNext(args->object_list, curr_list_reference))
+			curr_object_index = Scripting::ObjectListGetNext(args->object_list, curr_list_reference))
 		{
 			// Compare the current object from the list to the destination object
 			real dist = GetObjectDistanceFromPoint(curr_object_index, dest_object_origin);
