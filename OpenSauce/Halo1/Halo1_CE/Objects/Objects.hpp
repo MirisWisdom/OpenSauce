@@ -323,6 +323,8 @@ namespace Yelo
 
 		s_cache_tag_instance const* GetObjectDefinition(datum_index obj);
 
+		real GetObjectDistanceFromPoint(datum_index obj, const real_vector3d& dest_point);
+
 		namespace Weapon
 		{
 			void Initialize();

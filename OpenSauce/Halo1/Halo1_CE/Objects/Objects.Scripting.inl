@@ -17,6 +17,42 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+static void* scripting_objects_distance_to_object_evaluate(void** arguments)
+{
+	struct s_arguments {
+		datum_index object_list;
+		datum_index dest_object;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+	result.real = -1.0f;
+
+	if(!args->dest_object.IsNull())
+	{
+		real min_dist = FLT_MAX;
+
+		// Get the destination object's origin so that we can compare it, relative to each object in the list
+		real_vector3d dest_object_origin;
+		Engine::Objects::GetOrigin(args->dest_object, CAST_PTR(real_point3d*, &dest_object_origin));
+
+		// Enumerate the object list, testing each object's origin with dest
+		for(datum_index curr_list_reference, curr_object_index = Scripting::ObjectListGetFirst(args->object_list, curr_list_reference); 
+			!curr_object_index.IsNull(); 
+			Scripting::ObjectListGetNext(args->object_list, curr_list_reference))
+		{
+			// Compare the current object from the list to the destination object
+			real dist = GetObjectDistanceFromPoint(curr_object_index, dest_object_origin);
+
+			// We want the smallest distance of all the objects
+			if(min_dist > dist) min_dist = dist;
+		}
+
+		if(min_dist != FLT_MAX) result.real = min_dist;
+	}
+
+	return result.pointer;
+}
+
+
 static real* object_data_get_real_by_name(s_object_data* object, cstring data_name, cstring subdata_name, Enums::hs_type& out_type)
 {
 	cstring s = data_name; // alias for keeping the code width down

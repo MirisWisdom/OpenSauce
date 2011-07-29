@@ -28,6 +28,8 @@
 #include <TagGroups/Halo1/damage_effect_definitions.hpp>
 #include "TagGroups/project_yellow_definitions.hpp"
 
+#include "Game/EngineFunctions.hpp"
+#include "Game/Scripting.hpp"
 #include "Game/ScriptLibrary.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "TagGroups/TagGroups.hpp"
@@ -77,6 +79,9 @@ namespace Yelo
 
 			Weapon::Initialize();
 			Vehicle::Initialize();
+
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_objects_distance_to_object, 
+				scripting_objects_distance_to_object_evaluate);
 
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_object_data_get_real, 
 				scripting_object_data_get_real_evaluate);
@@ -206,6 +211,22 @@ namespace Yelo
 			}
 
 			return NULL;
+		}
+
+		real GetObjectDistanceFromPoint(datum_index obj, const real_vector3d& dest_point)
+		{
+			real dist = -1.0f;
+
+			if(!obj.IsNull())
+			{
+				real_vector3d object_origin;
+				Engine::Objects::GetOrigin(obj, CAST_PTR(real_point3d*, &object_origin));
+
+				real_vector3d relative_pos = object_origin - dest_point;
+				dist = relative_pos.Magnitude();
+			}
+
+			return dist;
 		}
 	};
 };
