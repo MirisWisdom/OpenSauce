@@ -27,6 +27,7 @@
 #include "Game/GameEngine.hpp"
 #include "Game/GameState.hpp"
 #include "Game/EngineFunctions.hpp"
+#include "Game/Players.hpp"
 #include "Objects/Objects.hpp"
 
 namespace Yelo
@@ -37,7 +38,7 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_DX9_GBUFFER
 #include "Memory/_EngineLayout.inl"
 
-		static D3DXHANDLE	GetTechnique(LPD3DXEFFECT& effect, 
+		static D3DXHANDLE	GetTechnique(LPD3DXEFFECT& effect,
 			const char* mesh_type, 
 			const char* rt_support)
 		{
@@ -46,9 +47,9 @@ namespace Yelo
 			sprintf_s(technique, sizeof(technique), technique_format, mesh_type, rt_support);
 			return effect->GetTechniqueByName(technique);
 		}
-		static D3DXHANDLE	GetTechnique(LPD3DXEFFECT& effect, 
-			const int rt_count, 
-			const char* mesh_type, 
+		static D3DXHANDLE	GetTechnique(LPD3DXEFFECT& effect,
+			const int rt_count,
+			const char* mesh_type,
 			const char* rt_support)
 		{
 			const char* technique_format = "PS_MRT%i_%s_%s";
@@ -133,26 +134,26 @@ namespace Yelo
 		}
 		bool		c_gbuffer::SetDepth(LPD3DXEFFECT& effect, bool& variable_used)
 		{
-			return SetEffectVar(effect, variable_used, "TEXDEPTH", m_rt_depth, 
+			return SetEffectVar(effect, variable_used, "TEXDEPTH", m_rt_depth,
 				"GBUFFER_DEPTH_X", k_gbuffer_depth_x);
 		}
 
 		bool		c_gbuffer::SetVelocity(LPD3DXEFFECT& effect, bool& variable_used)
 		{
-			return SetEffectVar(effect, variable_used, "TEXVELOCITY", m_rt_velocity, 
+			return SetEffectVar(effect, variable_used, "TEXVELOCITY", m_rt_velocity,
 				"GBUFFER_VELOCITY_X", k_gbuffer_velocity_x, 
 				"GBUFFER_VELOCITY_Y", k_gbuffer_velocity_y);
 		}
 		bool		c_gbuffer::SetNormals(LPD3DXEFFECT& effect, bool& variable_used)
 		{
-			return SetEffectVar(effect, variable_used, "TEXNORMALS", m_rt_normals_index, 
-				"GBUFFER_NORMALS_X", k_gbuffer_normals_x, 
+			return SetEffectVar(effect, variable_used, "TEXNORMALS", m_rt_normals_index,
+				"GBUFFER_NORMALS_X", k_gbuffer_normals_x,
 				"GBUFFER_NORMALS_Y", k_gbuffer_normals_y);
 		}
 		bool		c_gbuffer::SetIndex(LPD3DXEFFECT& effect, bool& variable_used)
 		{
-			return SetEffectVar(effect, variable_used, "TEXINDEX", m_rt_normals_index, 
-				"GBUFFER_INDEX_X", k_gbuffer_index_x, 
+			return SetEffectVar(effect, variable_used, "TEXINDEX", m_rt_normals_index,
+				"GBUFFER_INDEX_X", k_gbuffer_index_x,
 				"GBUFFER_INDEX_Y", k_gbuffer_index_y);
 		}
 		//////////////////////////////////////////////////////////////////////
@@ -220,7 +221,7 @@ namespace Yelo
 		void		c_gbuffer_debug_effect::ReleaseResources()
 		{
 			c_gbuffer_fullscreen_effect::ReleaseResources();
-			
+
 			m_technique_single = NULL;
 			m_technique_all = NULL;
 
@@ -242,9 +243,9 @@ namespace Yelo
 			device->GetRenderState(D3DRS_DEPTHBIAS, &old_depthbias);
 			device->GetRenderState(D3DRS_FILLMODE, &old_fillmode);
 			device->GetRenderState(D3DRS_SRCBLEND, &old_srcblend);
-			device->GetRenderState(D3DRS_DESTBLEND, &old_dest_blend);	
-			device->GetRenderState(D3DRS_ZENABLE, &old_zenable);	
-			device->GetRenderState(D3DRS_ZWRITEENABLE, &old_zwriteenable);	
+			device->GetRenderState(D3DRS_DESTBLEND, &old_dest_blend);
+			device->GetRenderState(D3DRS_ZENABLE, &old_zenable);
+			device->GetRenderState(D3DRS_ZWRITEENABLE, &old_zwriteenable);
 			device->GetRenderState(D3DRS_STENCILENABLE, &old_stencilenable);
 
 			// set the render states that we need to draw the effect correctly
@@ -258,22 +259,22 @@ namespace Yelo
 
 			// draw the render target debug effect
 			UINT cPasses, p;
-			device->SetFVF( D3DFVF_XYZRHW | D3DFVF_TEX1 );
+			device->SetFVF(D3DFVF_XYZRHW | D3DFVF_TEX1);
 
 			Rasterizer::s_render_target& rt = Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary];
 			device->SetRenderTarget(0, rt.surface);
 
-			m_effect->SetTechnique( debug_target == NONE ? 
+			m_effect->SetTechnique(debug_target == NONE ?
 				m_technique_all : m_technique_single);
 
 			m_effect->SetFloat(m_far_clip_handle, Rasterizer::RenderGlobals()->frustum.z_far);
 			m_effect->SetInt(m_target_handle, debug_target);
 
-			m_effect->Begin( &cPasses, 0 );
-			for( p = 0; p < cPasses; ++p )
-			{	
-				m_effect->BeginPass( p );
-				device->DrawPrimitiveUP( D3DPT_TRIANGLESTRIP, 2, m_vertices, sizeof( TEXTURE_VERTEX ) );
+			m_effect->Begin(&cPasses, 0);
+			for(p = 0; p < cPasses; ++p)
+			{
+				m_effect->BeginPass(p);
+				device->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, m_vertices, sizeof(TEXTURE_VERTEX));
 				m_effect->EndPass();
 			}
 			m_effect->End();
@@ -283,8 +284,8 @@ namespace Yelo
 			device->SetRenderState(D3DRS_FILLMODE, old_fillmode);
 			device->SetRenderState(D3DRS_SRCBLEND, old_srcblend);
 			device->SetRenderState(D3DRS_DESTBLEND, old_dest_blend);
-			device->SetRenderState(D3DRS_ZENABLE, old_zenable);	
-			device->SetRenderState(D3DRS_ZWRITEENABLE, old_zwriteenable);	
+			device->SetRenderState(D3DRS_ZENABLE, old_zenable);
+			device->SetRenderState(D3DRS_ZWRITEENABLE, old_zwriteenable);
 			device->SetRenderState(D3DRS_STENCILENABLE, old_stencilenable);
 		}
 		bool		c_gbuffer_debug_effect::IsAvailable()
@@ -313,7 +314,7 @@ namespace Yelo
 		void		c_gbuffer_rtclear_effect::ReleaseResources()
 		{
 			c_gbuffer_fullscreen_effect::ReleaseResources();
-			
+
 			m_multi_rt.clear_technique = NULL;
 		}
 		void		c_gbuffer_rtclear_effect::Render(IDirect3DDevice9* device)
@@ -333,20 +334,20 @@ namespace Yelo
 			device->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 			device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
 			device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ZERO);
-			
+
 			UINT cPasses, p;
-			device->SetFVF( D3DFVF_XYZRHW | D3DFVF_TEX1 );
+			device->SetFVF(D3DFVF_XYZRHW | D3DFVF_TEX1);
 
 			m_effect->SetTechnique(m_multi_rt.clear_technique);
 
-			m_effect->Begin( &cPasses, 0 );
-			for( p = 0; p < cPasses; ++p )
-			{	
+			m_effect->Begin(&cPasses, 0);
+			for(p = 0; p < cPasses; ++p)
+			{
 				for(uint32 i = 0; i < m_multi_rt.count; i++)
 					device->SetRenderTarget(i, m_multi_rt.output[p][i]);
 
-				m_effect->BeginPass( p );
-				device->DrawPrimitiveUP( D3DPT_TRIANGLESTRIP, 2, m_vertices, sizeof( TEXTURE_VERTEX ) );
+				m_effect->BeginPass(p);
+				device->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, m_vertices, sizeof(TEXTURE_VERTEX));
 				m_effect->EndPass();
 				
 				for(uint32 i = 1; i < m_multi_rt.count; i++)
@@ -381,54 +382,57 @@ namespace Yelo
 		};
 
 		API_FUNC_NAKED void c_gbuffer_system::Hook_RenderWindow()
-		{ 
+		{
 			static uint32 CALL_ADDRESS = GET_FUNC_PTR(RENDER_WINDOW);
 			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RENDER_WINDOW_CALL_RETN);
 
 			__asm {
-				mov			c_gbuffer_system::g_is_rendering_reflection, 0
-				call		CALL_ADDRESS
-				mov			c_gbuffer_system::g_is_rendering_reflection, 1
-				jmp			RETN_ADDRESS
+				mov		c_gbuffer_system::g_is_rendering_reflection, 0
+				call	CALL_ADDRESS
+				mov		c_gbuffer_system::g_is_rendering_reflection, 1
+				jmp		RETN_ADDRESS
 			}
 		}
 
 		API_FUNC_NAKED void c_gbuffer_system::Hook_RenderObjectList_GetObjectIndex()
-		{ 
+		{
 			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RENDER_OBJECT_LIST_HOOK_RETN);
 
 			__asm {
 				mov		c_gbuffer_system::g_object_index, ax
-				and     eax, 0FFFFh
-				lea     edi, [eax+eax*2]
+				and		eax, 0FFFFh
+				lea		edi, [eax+eax*2]
 				jmp		RETN_ADDRESS
 			}
 		}
+
 		API_FUNC_NAKED void c_gbuffer_system::Hook_RenderObjectList_ClearObjectIndex()
-		{ 
+		{
 			__asm {
 				mov		c_gbuffer_system::g_object_index, 0FFFFh
 				retn
 			}
 		}
+
 		API_FUNC_NAKED void c_gbuffer_system::Hook_FirstPersonWeaponDraw_GetObjectIndex()
-		{ 
+		{
 			static uint32 RETN_ADDRESS = GET_FUNC_PTR(FIRST_PERSON_WEAPON_DRAW_HOOK_RETN);
 
 			__asm {
-				mov     edx, [edx+34h]
-				mov     eax, esi
+				mov		edx, [edx+34h]
+				mov		eax, esi
 				mov		c_gbuffer_system::g_object_index, ax
 				jmp		RETN_ADDRESS
 			}
 		}
+
 		API_FUNC_NAKED void c_gbuffer_system::Hook_RenderObject_GetCurrentLOD()
 		{
 			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RENDER_OBJECT_OBJECT_LOD_HOOK_RETN);
 
 			_asm{
-				mov     ecx, [ebp+28h]
-				mov     eax, [ebp+1Ch]
+				mov		ecx, [ebp+28h]
+				mov		eax, [ebp+1Ch]
 
 				push	eax
 				mov		eax, [ebp-8]
@@ -445,8 +449,8 @@ namespace Yelo
 			static uint32 RETN_ADDRESS = GET_FUNC_PTR(COMMAND_CAMERA_SET_HOOK_RETN);
 
 			_asm{
-				lea     edx, [esi+28h]
-				mov     eax, [edx]
+				lea		edx, [esi+28h]
+				mov		eax, [edx]
 
 				push	eax
 				mov		eax, [ebp+8]
@@ -464,8 +468,8 @@ skip_disable_velocity:
 			static uint32 RETN_ADDRESS = GET_FUNC_PTR(COMMAND_SWITCH_BSP_HOOK_RETN);
 
 			_asm{
-				cmp     si, dx
-				mov     [esp+7], bl
+				cmp		si, dx
+				mov		[esp+7], bl
 				
 				mov		c_gbuffer_system::g_output_velocity, 0
 
@@ -480,13 +484,13 @@ skip_disable_velocity:
 			_asm{
 				mov		c_gbuffer_system::g_output_velocity, 0
 
-				mov     ecx, [esp+8]
-				xor     eax, eax
+				mov		ecx, [esp+8]
+				xor		eax, eax
 				jmp		RETN_ADDRESS
 			};
 		}
 
-		// the hooked function takes arguments, for which FunctionInterface in unsuited		
+		// the hooked function takes arguments, for which FunctionInterface in unsuited
 		API_FUNC_NAKED void c_gbuffer_system::Hook_RenderObjectsTransparent()
 		{
 			static uint32 CALL_ADDRESS = GET_FUNC_PTR(RENDER_OBJECTS_TRANSPARENT);
@@ -505,8 +509,8 @@ skip_disable_velocity:
 		{
 			m_shader_package.OpenFile(package_file);
 		}
-		void		c_gbuffer_system::Initialize()	
-		{	
+		void		c_gbuffer_system::Initialize()
+		{
 			char file_string[MAX_PATH];
 			file_string[0] = '\0';
 
@@ -520,43 +524,43 @@ skip_disable_velocity:
 
 			c_gbuffer_system::g_output_velocity = true;
 			
-			Memory::WriteRelativeJmp(&Hook_RenderWindow, 
+			Memory::WriteRelativeJmp(&Hook_RenderWindow,
 				GET_FUNC_VPTR(RENDER_WINDOW_CALL), true);
 
-			Memory::WriteRelativeJmp(&Hook_RenderObjectList_GetObjectIndex, 
+			Memory::WriteRelativeJmp(&Hook_RenderObjectList_GetObjectIndex,
 				GET_FUNC_VPTR(RENDER_OBJECT_LIST_HOOK), true);
-			Memory::WriteRelativeJmp(&Hook_RenderObjectList_ClearObjectIndex, 
+			Memory::WriteRelativeJmp(&Hook_RenderObjectList_ClearObjectIndex,
 				GET_FUNC_VPTR(RENDER_OBJECT_LIST_END_HOOK), true);
-			Memory::WriteRelativeJmp(&Hook_FirstPersonWeaponDraw_GetObjectIndex, 
+			Memory::WriteRelativeJmp(&Hook_FirstPersonWeaponDraw_GetObjectIndex,
 				GET_FUNC_VPTR(FIRST_PERSON_WEAPON_DRAW_HOOK), true);
-			Memory::WriteRelativeJmp(&Hook_RenderObject_GetCurrentLOD, 
+			Memory::WriteRelativeJmp(&Hook_RenderObject_GetCurrentLOD,
 				GET_FUNC_VPTR(RENDER_OBJECT_OBJECT_LOD_HOOK), true);
 			
-			Memory::WriteRelativeJmp(&Hook_CommandCameraSet, 
+			Memory::WriteRelativeJmp(&Hook_CommandCameraSet,
 				GET_FUNC_VPTR(COMMAND_CAMERA_SET_HOOK), true);
-			Memory::WriteRelativeJmp(&Hook_CommandSwitchBSP, 
+			Memory::WriteRelativeJmp(&Hook_CommandSwitchBSP,
 				GET_FUNC_VPTR(COMMAND_SWITCH_BSP_HOOK), true);
-			Memory::WriteRelativeJmp(&Hook_CommandGameSave, 
+			Memory::WriteRelativeJmp(&Hook_CommandGameSave,
 				GET_FUNC_VPTR(COMMAND_GAME_SAVE_HOOK), true);
 
-			Memory::WriteRelativeJmp(&Hook_RenderObjectsTransparent, 
+			Memory::WriteRelativeJmp(&Hook_RenderObjectsTransparent,
 				GET_FUNC_VPTR(RENDER_WINDOW_CALL_RENDER_OBJECTS_TRANSPARENT_HOOK), true);
 
 			char NOP = 0x90;
 			byte* call_address;
 
 			call_address = CAST_PTR(byte*, GET_FUNC_VPTR(RASTERIZER_DRAW_STATIC_TRIANGLES_STATIC_VERTICES__DRAW_INDEXED_PRIMITIVE_HOOK));
-			Memory::WriteRelativeCall(&DrawIndexedPrimitive_Object, 
+			Memory::WriteRelativeCall(&DrawIndexedPrimitive_Object,
 				call_address, true);
 			Memory::WriteMemory(call_address + 5, &NOP, sizeof(NOP));
 
 			call_address = CAST_PTR(byte*, GET_FUNC_VPTR(RASTERIZER_DRAW_DYNAMIC_TRIANGLES_STATIC_VERTICES2__DRAW_INDEXED_PRIMITIVE_HOOK));
-			Memory::WriteRelativeCall(&DrawIndexedPrimitive_Structure, 
+			Memory::WriteRelativeCall(&DrawIndexedPrimitive_Structure,
 				call_address, true);
 			Memory::WriteMemory(call_address + 5, &NOP, sizeof(NOP));
 
 			call_address = CAST_PTR(byte*, GET_FUNC_VPTR(RASTERIZER_SET_WORLD_VIEW_PROJECTION_MATRIX_VERTEX_CONSTANT_HOOK));
-			Memory::WriteRelativeCall(&SetVertexShaderConstantF_WVP, 
+			Memory::WriteRelativeCall(&SetVertexShaderConstantF_WVP,
 				call_address, true);
 			Memory::WriteMemory(call_address + 5, &NOP, sizeof(NOP));
 		}
@@ -570,6 +574,7 @@ skip_disable_velocity:
 
 			g_wvp_stored = false;
 		}
+
 		void		c_gbuffer_system::LoadSettings(TiXmlElement* dx9_element)
 		{
 			// setup default values
@@ -597,7 +602,7 @@ skip_disable_velocity:
 		void		c_gbuffer_system::Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters)
 		{
 			g_debug_index = 0;
-			g_default_system.AllocateResources(pDevice, pParameters);	
+			g_default_system.AllocateResources(pDevice, pParameters);
 		}
 
 		void		c_gbuffer_system::OnLostDevice()
@@ -612,7 +617,7 @@ skip_disable_velocity:
 
 		void		c_gbuffer_system::Render()	{}
 
-		void		c_gbuffer_system::Release() 
+		void		c_gbuffer_system::Release()
 		{
 			g_default_system.ReleaseResources();
 		}
@@ -623,7 +628,7 @@ skip_disable_velocity:
 			g_default_system.VertexShaderChangedImpl(pShader);
 		}
 
-		HRESULT	 	c_gbuffer_system::DrawIndexedPrimitive(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type,INT BaseVertexIndex,UINT MinVertexIndex,UINT NumVertices,UINT startIndex,UINT primCount)
+		HRESULT		c_gbuffer_system::DrawIndexedPrimitive(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type, INT BaseVertexIndex, UINT MinVertexIndex, UINT NumVertices, UINT startIndex, UINT primCount)
 		{
 			HRESULT hr;
 			// Get the current render target
@@ -649,7 +654,7 @@ skip_disable_velocity:
 			DWORD ZWriteEnable;
 			pDevice->GetRenderState(D3DRS_ZWRITEENABLE, &ZWriteEnable);
 			pDevice->SetRenderState(D3DRS_ZWRITEENABLE, false);
-			
+
 			hr = g_default_system.DrawIndexedPrimitive_Impl(pDevice, Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
 
 			pDevice->SetRenderState(D3DRS_ZWRITEENABLE, ZWriteEnable);
@@ -663,11 +668,11 @@ skip_disable_velocity:
 			return hr;
 		}
 
-		HRESULT	 	c_gbuffer_system::DrawIndexedPrimitive_Structure(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type,INT BaseVertexIndex,UINT MinVertexIndex,UINT NumVertices,UINT startIndex,UINT primCount)
+		HRESULT		c_gbuffer_system::DrawIndexedPrimitive_Structure(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type, INT BaseVertexIndex, UINT MinVertexIndex, UINT NumVertices, UINT startIndex, UINT primCount)
 		{
 			HRESULT hr = pDevice->DrawIndexedPrimitive(Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
-			
-			if(g_default_system.IsRenderable() && 
+
+			if(g_default_system.IsRenderable() &&
 				!g_is_rendering_reflection && g_current_render_state == Enums::_render_progress_structure)
 			{
 				hr &= g_default_system.DrawIndexedPrimitive_StructureImpl(pDevice, Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
@@ -676,12 +681,12 @@ skip_disable_velocity:
 
 			return hr;
 		}
-		HRESULT	 	c_gbuffer_system::DrawIndexedPrimitive_Object(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type,INT BaseVertexIndex,UINT MinVertexIndex,UINT NumVertices,UINT startIndex,UINT primCount)
+		HRESULT		c_gbuffer_system::DrawIndexedPrimitive_Object(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type,INT BaseVertexIndex,UINT MinVertexIndex,UINT NumVertices,UINT startIndex,UINT primCount)
 		{
 			HRESULT hr = pDevice->DrawIndexedPrimitive(Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
 
-			if(g_default_system.IsRenderable() && 
-				!g_is_rendering_reflection && 
+			if(g_default_system.IsRenderable() &&
+				!g_is_rendering_reflection &&
 				(g_current_render_state == Enums::_render_progress_sky || g_current_render_state == Enums::_render_progress_objects))
 			{
 				hr &= g_default_system.DrawIndexedPrimitive_ObjectImpl(pDevice, Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
@@ -689,11 +694,11 @@ skip_disable_velocity:
 			}
 
 			return hr;
-		}		
-		
+		}
+
 		HRESULT		c_gbuffer_system::SetVertexShaderConstantF_WVP(IDirect3DDevice9* device, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount)
-		{			
-			if(g_is_rendering_reflection == false && g_system_enabled && !g_wvp_stored)	
+		{
+			if(g_is_rendering_reflection == false && g_system_enabled && !g_wvp_stored)
 			{
 				device->SetVertexShaderConstantF(96, g_stored_worldviewproj[g_stored_wvp_index], 4);
 				memcpy_s(&g_stored_worldviewproj[1 - g_stored_wvp_index], sizeof(D3DMATRIX), pConstantData, sizeof(D3DMATRIX));
@@ -710,8 +715,8 @@ skip_disable_velocity:
 		HRESULT		c_gbuffer_system::SetVertexShaderConstantF_All(IDirect3DDevice9* pDevice, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount)
 		{
 			//eye position doesn't get updated in the object code so always pass it through so we have the most recent value
-			if((StartRegister == 0) || 
-				(g_current_render_state == Enums::_render_progress_objects) || 
+			if((StartRegister == 0) ||
+				(g_current_render_state == Enums::_render_progress_objects) ||
 				(g_current_render_state == Enums::_render_progress_objects_transparent))
 				return Rasterizer::ShaderExtension::SetVertexShaderConstantF(pDevice, StartRegister, pConstantData, Vector4fCount);
 			else
@@ -719,7 +724,7 @@ skip_disable_velocity:
 		}
 		//////////////////////////////////////////////////////////////////////
 
-		
+
 		//////////////////////////////////////////////////////////////////////
 		// c_gbuffer_system implementation
 		void		c_gbuffer_system::OnLostDeviceImpl()
@@ -764,7 +769,7 @@ skip_disable_velocity:
 			// Create the normals texture
 			m_gbuffer.m_rt_normals_index.CreateTarget(pDevice, params->BackBufferWidth, params->BackBufferHeight, D3DFMT_A8R8G8B8);
 
-			m_multi_rt.count = (device_caps.NumSimultaneousRTs > k_maximum_multi_render_target ? 
+			m_multi_rt.count = (device_caps.NumSimultaneousRTs > k_maximum_multi_render_target ?
 				k_maximum_multi_render_target : device_caps.NumSimultaneousRTs);
 
 			GBufferClear().m_multi_rt.count = m_multi_rt.count;
@@ -774,7 +779,7 @@ skip_disable_velocity:
 				return;
 
 			if(FAILED(GBufferClear().AllocateResources(pDevice, params->BackBufferWidth, params->BackBufferHeight)))
-				return;			
+				return;
 			if(FAILED(GBufferDebug().AllocateResources(pDevice, params->BackBufferWidth, params->BackBufferHeight)))
 				return;
 
@@ -793,7 +798,7 @@ skip_disable_velocity:
 			m_structures.ps_object_techniques.n_v = GetTechnique(m_gbuffer_ps, m_multi_rt.count, "Object", "N_V");
 			m_structures.ps_object_techniques.tbn_v = GetTechnique(m_gbuffer_ps, m_multi_rt.count, "Object", "TBN_V");
 			m_structures.ps_object_techniques.none = GetTechnique(m_gbuffer_ps, m_multi_rt.count, "Object", "NONE");
-			
+
 			switch (m_multi_rt.count)
 			{
 			case 2:
@@ -817,7 +822,7 @@ skip_disable_velocity:
 			}
 
 			g_current_render_state = Enums::_render_progress_none;
-			m_is_loaded = true;			
+			m_is_loaded = true;
 		}
 
 		void		c_gbuffer_system::ReleaseResources()
@@ -837,14 +842,14 @@ skip_disable_velocity:
 		{
 			// Sky can use many different vertex shaders so just say yes
 			m_render_gbuffer = (g_current_render_state == Enums::_render_progress_sky);
-			
+
 			// Halo has a fixed vertex shader array so comparing pointers works ok
 			int32 i = 0;
 			while (!m_render_gbuffer && i < NUMBEROF(kValidShaders))
 				m_render_gbuffer = GET_PTR(VSF_TABLE_START_REFERENCE)[kValidShaders[i++]].shader == pShader;
 		}
 
-		HRESULT	 	c_gbuffer_system::DrawIndexedPrimitive_Impl(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type,INT BaseVertexIndex,UINT MinVertexIndex,UINT NumVertices,UINT startIndex,UINT primCount)
+		HRESULT		c_gbuffer_system::DrawIndexedPrimitive_Impl(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type, INT BaseVertexIndex, UINT MinVertexIndex, UINT NumVertices, UINT startIndex, UINT primCount)
 		{
 			HRESULT hr;
 
@@ -855,7 +860,7 @@ skip_disable_velocity:
 			m_gbuffer_ps->Begin(&cPasses, 0);
 
 			for( p = 0; p < cPasses; ++p )
-			{ 
+			{
 				for(uint32 i = 0; i < m_multi_rt.count; i++)
 					pDevice->SetRenderTarget(i, m_multi_rt.output[p][i]);
 
@@ -871,12 +876,12 @@ skip_disable_velocity:
 			}
 			m_gbuffer_ps->End();
 
-			m_gbuffer_vs->EndPass();	
+			m_gbuffer_vs->EndPass();
 			m_gbuffer_vs->End();
 
 			return hr;
 		}
-		HRESULT	 	c_gbuffer_system::DrawIndexedPrimitive_StructureImpl(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type,INT BaseVertexIndex,UINT MinVertexIndex,UINT NumVertices,UINT startIndex,UINT primCount)
+		HRESULT		c_gbuffer_system::DrawIndexedPrimitive_StructureImpl(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type, INT BaseVertexIndex, UINT MinVertexIndex, UINT NumVertices, UINT startIndex, UINT primCount)
 		{
 			if(!m_is_loaded || !m_render_gbuffer || !g_system_enabled)
 				return S_OK;
@@ -898,10 +903,10 @@ skip_disable_velocity:
 
 			return S_OK;
 		}
-		HRESULT	 	c_gbuffer_system::DrawIndexedPrimitive_ObjectImpl(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type,INT BaseVertexIndex,UINT MinVertexIndex,UINT NumVertices,UINT startIndex,UINT primCount)
+		HRESULT		c_gbuffer_system::DrawIndexedPrimitive_ObjectImpl(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type, INT BaseVertexIndex, UINT MinVertexIndex, UINT NumVertices, UINT startIndex, UINT primCount)
 		{
-			int16 MeshIndex = 0;
-			int16 TeamIndex = 0;
+			byte MeshIndex = 0;
+			byte TeamIndex = 0;
 
 			if(c_gbuffer_system::g_current_object_lod < 2)
 			{
@@ -914,15 +919,15 @@ skip_disable_velocity:
 				m_gbuffer_ps->SetTechnique(m_structures.ps_object_techniques.none);
 			}
 			else
-			{	
-				bool do_velocity = c_gbuffer_system::g_output_object_velocity && 
+			{
+				bool do_velocity = c_gbuffer_system::g_output_object_velocity &&
 					c_gbuffer_system::g_output_velocity &&
 					!GameState::GameTimeGlobals()->paused;
 				if(c_gbuffer_system::g_output_object_tbn)
 				{
 					m_gbuffer_vs->SetTechnique(
 						(do_velocity ?
-							m_structures.vs_object_techniques.tbn_v : 
+							m_structures.vs_object_techniques.tbn_v :
 							m_structures.vs_object_techniques.tbn));
 					
 					m_gbuffer_ps->SetTechnique(
@@ -948,7 +953,7 @@ skip_disable_velocity:
 					real DT = GameState::MainGlobals()->delta_time;
 					g_pixel_shader_input.z = 1.0f;
 				}
-				else					
+				else
 					g_pixel_shader_input.z = 0.0f;
 			}
 
@@ -956,19 +961,31 @@ skip_disable_velocity:
 				MeshIndex = 1;
 			else if(g_object_index != 0xFFFF)
 			{
-				Objects::s_object_header_datum& object_header = (*Objects::ObjectHeader())[g_object_index];		
-				
+				Objects::s_object_header_datum& object_header = (*Objects::ObjectHeader())[g_object_index];
+
 				TeamIndex = *object_header._object->GetOwnerTeamIndex() + 1;
 				if(TeamIndex < 0)
 					TeamIndex = 0;
-				
+
 				MeshIndex = object_header.object_type + 3;
 				if(MeshIndex < 0)
 					MeshIndex = 0;
-				
+
 				if(GameEngine::Current() != NULL)	// becomes non-null during multiplayer
 					TeamIndex += 9;					// Offset TeamIndex by 9 for MP teams
-			}
+
+				if(object_header._object->VerifyType(Enums::_object_type_mask_unit))
+				{
+					Players::s_player_datum* player = Players::LocalPlayer();
+					Objects::s_object_header_datum& player_object = (*Objects::ObjectHeader())[player->GetSlaveUnitIndex()->index];
+
+					if(Engine::Game::TeamIsEnemy(*player_object._object->GetOwnerTeamIndex(), *object_header._object->GetOwnerTeamIndex()))
+						TeamIndex |= 1 << 5;
+
+					if(*object_header._object->GetHealth() <= 0.0f)
+						TeamIndex |= 1 << 6;
+				}
+		}
 
 			g_pixel_shader_input.x = (float)MeshIndex * (1.0f / 255.0f);
 			g_pixel_shader_input.y = (float)TeamIndex * (1.0f / 255.0f);
@@ -1014,14 +1031,14 @@ skip_disable_velocity:
 				return E_FAIL;
 
 			hr = D3DXCreateEffect(
-				pDevice, 
-				data_pointer, 
-				data_size, 
-				NULL, 
-				NULL, 
-				NULL, 
-				NULL, 
-				pEffect, 
+				pDevice,
+				data_pointer,
+				data_size,
+				NULL,
+				NULL,
+				NULL,
+				NULL,
+				pEffect,
 				&error_buffer
 			);
 			if (FAILED(hr))
@@ -1034,7 +1051,7 @@ skip_disable_velocity:
 					Postprocessing::Debug::WriteD3DXErrors(error_buffer, 1);
 				}
 			}
-			Yelo::safe_release(error_buffer);	
+			Yelo::safe_release(error_buffer);
 
 			return hr;
 		}

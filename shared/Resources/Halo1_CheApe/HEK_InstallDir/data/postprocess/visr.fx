@@ -8,16 +8,6 @@
 texture tex_Scene		: TEXSCENE;
 texture tex_Source		: TEXSOURCE;
 
-sampler2D sam_Scene = 
-sampler_state
-{
-	Texture = <tex_Scene>;
-	AddressU = Clamp;
-	AddressV = Clamp;
-	MinFilter = Point;
-	MagFilter = Linear;
-	MipFilter = Linear;
-};
 sampler2D sam_Source =
 sampler_state
 {
@@ -32,7 +22,7 @@ sampler_state
 uniform extern float2 PixelSize		: PIXELSIZE;
 uniform extern float FarClipDistance	: FARCLIPDISTANCE;
 
-#define DIST 1.5f
+#define DIST 1.25f
 float2 PixelKernel[4] =
 {
 	{0,  	DIST},
@@ -41,110 +31,112 @@ float2 PixelKernel[4] =
 	{-DIST,	0},
 };
 
-float3 TeamColours[12] = 
+float3 TeamColours[4] = 
 {
-	{0.1,0.3,0.1}, //NULL team (not an object)
-	{0.5,0.1,0.1}, //No Team
-	{0.1,0.2,0.1}, //Player
-	{0.1,0.5,0.1}, //Human
-	{0.5,0.0,0.1}, //Covenant
-	{0.5,0.2,0.0}, //Flood
-	{0.4,0.2,0.2}, //Sentinel
-	{0.0,0.0,0.0}, //Not Used
-	{0.0,0.0,0.0}, //Not Used
-	{0.2,0.4,0.7}, //Multiplayer No Team
-	{1.0,0.0,0.0}, //Multiplayer Red Team
-	{0.0,0.0,1.0}, //Multiplayer Blue Team
-	//List could go on up to 19 since in multiplayer
-	//the team index is offset by 9 so that multiplayer 
-	//team colours can be used
+	{0.4,0.6,0.35}, //Ally
+	{0.8,0.0,0.1}, //Enemy
+	{0.1,0.2,0.15}, //Ally
+	{0.2,0.0,0.0}, //Enemy
 };
 
 float3 TypeColours[15] =
 {
 	{0.4,0.4,0.2}, //FP models
 	{1.0,1.0,1.0}, //Sky
-	{0.3,0.3,0.05}, //BSP
+	{0.35,0.3,0.25}, //BSP
 	{0.0,0.0,0.0}, //Biped (use team colour)
 	{0.2,0.4,0.7}, //Vehicle
 	{0.2,0.2,0.35}, //Weapon
 	{0.1,0.1,0.4}, //Equipment
-	{0.2,0.2,0.05}, //Garbage
+	{0.35,0.3,0.25}, //Garbage
 	{0.8,0.2,0.1}, //Projectile
-	{0.2,0.2,0.05}, //Scenery
-	{0.2,0.2,0.05}, //Machine
-	{0.05,0.05,0.2}, //Control
-	{0.2,0.2,0.05}, //Light Fixture
-	{0.2,0.2,0.05}, //Placeholder
-	{0.2,0.2,0.05}, //Sound Scenery
+	{0.35,0.3,0.25}, //Scenery
+	{0.35,0.3,0.25}, //Machine
+	{0.35,0.3,0.25}, //Control
+	{0.35,0.3,0.25}, //Light Fixture
+	{0.35,0.3,0.25}, //Placeholder
+	{0.35,0.3,0.25}, //Sound Scenery
 };
 
-float3 GetColor(in int Type, in int Team)
+uniform extern float Distance = 38.0f;
+
+// Returns the pixels color depending on what mesh type and whether the object is an enemy
+float3 GetColor(in int type, in int team, in int is_enemy, in int is_dead)
 {
-	float3 OUTColor = 0;
+	float3 result = 0;
 	
-	if(Type == 4)
+	// if the type is a vehicle
+	if(type == 4)
 	{
-		if( Type == 4 && Team == 1 )
-			OUTColor = TypeColours[Type];
-		else if(Type == 4 && Team >= 1)
-			OUTColor = TeamColours[Team];
+		// and the vehicle has a team, use the ally or enemy color, otherwise use the vehicle color
+		if( team >= 1)
+			result = TeamColours[is_enemy];
+		else
+			result = TypeColours[type];
 	}
-	else if(Type == 3)
-		OUTColor = TeamColours[Team];
+	// if the type is a biped, use the enemy or ally color
+	else if(type == 3)
+	{
+		if(is_dead)
+			result = TeamColours[is_enemy + 2];
+		else
+			result = TeamColours[is_enemy];
+	}
+	// otherwise just use the type color
 	else
-		OUTColor = TypeColours[Type];		
+		result = TypeColours[type];		
 		
-	return OUTColor; 
+	return result; 
 }
 
-float3 LuminanceConv = { 0.2125f, 0.7154f, 0.0721f };
-float Hither = 0.0f;
-float Yon = 28.0f;
-float DetectEdge(float2 Tex0, int CentreType)
+float DetectEdge(float2 Tex0, int centre_type)
 {	
-	float3 Orig = GetNormals(Tex0);
+	float3 centre_normal = GetNormals(Tex0);
 	
-	float sampDepth = GetDepth(Tex0);	
-	sampDepth *= FarClipDistance;
-	float sampdl = ((sampDepth - Hither) / (Yon - Hither));
-	sampdl = min(sampdl,1);
-	sampdl = max(sampdl,0.0);
-	sampdl = pow(sampdl,1);
+	float pixel_depth = GetDepth(Tex0);	
+	pixel_depth *= FarClipDistance;
+	
+	float falloff = pixel_depth / Distance;
+	falloff = min(falloff, 1.0f);
+	falloff = max(falloff, 0.0f);
 			
-	float Sum = 0;
+	float result = 0;
 
 	for( int i = 0; i < 4; i++ )
 	{	
 		float2 sample_coords = Tex0 + (PixelKernel[i] * PixelSize);
 			
-		float3 samp = GetNormals(sample_coords);
+		float3 sample_normal = GetNormals(sample_coords);
 			
-		int Type;
-		GetType(sample_coords, Type);
+		int2 index = GetIndex(sample_coords);
+		int sample_type = GetType(index);
 		
-		if(Type == CentreType)
-			Sum += saturate(1 - dot( Orig.xyz, samp ));
+		if(sample_type == centre_type)
+			result += saturate(1 - dot(centre_normal.xyz, sample_normal));
 		else 
 		{
-			Sum = 1;
+			result = 1;
 			break;
 		}
 	}
 	
-	return Sum * (1 - sampdl);
+	return result * (1 - falloff);
 }
 
 float4 VISR(float2 Tex0 : TEXCOORD0):COLOR0
 {
-	float3 scene = tex2D(sam_Scene, Tex0).xyz;
-	float3 color = float3(0.6,0.5,0.1);
-	int Type, Team;
-	GetTypeTeam(Tex0, Type, Team);
-	if(Type == 1)
+	float3 scene = tex2D(sam_Source, Tex0).xyz;
+	
+	int2 index = GetIndex(Tex0);
+	int type = GetType(index);
+	int team = GetTeam(index);
+	int is_enemy = GetIsEnemy(index);
+	int is_dead = GetIsDead(index);
+	
+	if(type == 1)
 		return float4(scene, 1);
 	
-	return clamp(0, 1, float4(lerp(scene,GetColor(Type, Team),DetectEdge(Tex0, Type)), 1));
+	return clamp(0, 1, float4(lerp(scene, GetColor(type, team, is_enemy, is_dead), DetectEdge(Tex0, type)), 1));
 }
 
 technique PostProcess

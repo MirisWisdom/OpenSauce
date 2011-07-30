@@ -85,29 +85,29 @@ sampler_state
 
 uniform extern int Channel_Index_X : GBUFFER_INDEX_X;
 uniform extern int Channel_Index_Y : GBUFFER_INDEX_Y;
-float2 GetIndex(float2 Tex)
+int2 GetIndex(float2 Tex)
 {
 	float4 Pixel = tex2D(GBuffer_IndexSampler, Tex);
-	return float2(Pixel[Channel_Index_X], Pixel[Channel_Index_Y]);
+	return int2((int)(Pixel[Channel_Index_X] / (1.0f / 255.0f)), (int)(Pixel[Channel_Index_Y] / (1.0f / 255.0f)));
 }
-void GetTypeTeam(in float2 Tex, out int Type, out int Team)
+int GetType(in int2 Index)
 {
-	float4 Pixel = tex2D(GBuffer_IndexSampler, Tex);
-	Type = (int)(Pixel[Channel_Index_X] / (1.0f / 255.0f));
-	Type = Type % 240;
-	Team = (int)(Pixel[Channel_Index_Y] / (1.0f / 255.0f));
-	Team = Team % 224;
+	return Index.x % 240;
 }
-void GetType(in float2 Tex, out int Type)
+int GetTeam(in int2 Index)
 {
-	float4 Pixel = tex2D(GBuffer_IndexSampler, Tex);
-	Type = (int)(Pixel[Channel_Index_X] / (1.0f / 255.0f));
-	Type = Type % 240;
+	return Index.y % 224;
 }
-void GetTeam(in float2 Tex, out int Team)
+int GetIsEnemy(in int2 Index)
 {
-	float4 Pixel = tex2D(GBuffer_IndexSampler, Tex);
-	Team = (int)(Pixel[Channel_Index_Y] / (1.0f / 255.0f));
-	Team = Team % 224;
+	int Value = Index.y - (Index.y % 32);
+	Value /= 32;
+	return Value % 2;
+}
+int GetIsDead(in float2 Index)
+{
+	int Value = Index.y - (Index.y % 64);
+	Value /= 64;
+	return Value % 2;
 }
 #endif

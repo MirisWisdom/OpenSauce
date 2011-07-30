@@ -77,11 +77,7 @@ namespace BuildCacheFileEx
 				switch((*TagGroups::TagInstances())[tag_index.index].group_tag)
 				{
 				case TagGroups::s_shader_postprocess_generic::k_group_tag:
-					result &= PostProcessing::shader_postprocess_generic_setup_parameters(tag_index);
 					result &= PostProcessing::shader_postprocess_generic_add_predicted_resources(tag_index);
-					break;
-				case TagGroups::s_shader_postprocess_collection::k_group_tag:
-					result &= PostProcessing::shader_postprocess_collection_process_collection(tag_index);
 					break;
 				}
 

@@ -166,7 +166,7 @@ static void InitializeMiscFunctions()
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_shader_variable_boolean) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_shader_variable_integer) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_shader_variable_real) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(_hs_function_pp_set_effect_shader_instance_active) );
+	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_shader_instance_active) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_bloom_set_size) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_bloom_set_exposure) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_bloom_set_mix_amount) );
