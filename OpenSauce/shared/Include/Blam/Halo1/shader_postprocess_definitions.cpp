@@ -21,6 +21,8 @@
 
 #if !PLATFORM_IS_EDITOR
 	#include "Game/EngineFunctions.hpp"
+#elif PLATFORM_IS_EDITOR
+	#include "TagGroups/TagGroups.hpp"
 #endif
 
 namespace Yelo
@@ -245,7 +247,9 @@ namespace Yelo
 		void s_shader_postprocess_parameter::SetParameter(s_shader_postprocess_bitmap* value_source)
 		{
 			SetParameter(CAST_PTR(s_shader_postprocess_value_base*, value_source));
-			memcpy_s(&bitmap_value.bitmap, sizeof(tag_reference), &value_source->bitmap, sizeof(tag_reference));
+
+			bitmap_value.bitmap.tag_index = value_source->bitmap.tag_index;
+			tag_reference_set(&bitmap_value.bitmap, value_source->bitmap.group_tag, value_source->bitmap.name);
 		}
 #endif
 	};
