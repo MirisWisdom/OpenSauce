@@ -87,6 +87,9 @@
 		_hs_function_machine_is_host,
 		_hs_function_machine_is_dedi,
 
+		_hs_function_abs_integer,
+		_hs_function_abs_real,
+
 		_hs_function_pp_load,
 		_hs_function_pp_unload,
 		_hs_function_pp_set_effect_active,
@@ -176,6 +179,16 @@
 	HS_FUNCTION(machine_is_dedi, bool, "returns whether or not the local machine is a dedicated server");
 
 
+	HS_FUNCTION_WITH_PARAMS(abs_integer, long, "", 
+			"<value>", 1,
+		HS_TYPE(long)
+	);
+	HS_FUNCTION_WITH_PARAMS(abs_real, real, "", 
+			"<value>", 1,
+		HS_TYPE(real)
+	);
+
+
 	#include "Game/ScriptLibrary.Definitions.Postprocessing.inl"
 	
 
@@ -254,6 +267,9 @@
 
 		&GET_HS_FUNCTION(machine_is_host),
 		&GET_HS_FUNCTION(machine_is_dedi),
+
+		&GET_HS_FUNCTION(abs_integer),
+		&GET_HS_FUNCTION(abs_real),
 
 		&GET_HS_FUNCTION(pp_load),
 		&GET_HS_FUNCTION(pp_unload),
