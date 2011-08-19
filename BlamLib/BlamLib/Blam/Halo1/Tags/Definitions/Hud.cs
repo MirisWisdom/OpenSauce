@@ -316,6 +316,7 @@ namespace BlamLib.Blam.Halo1.Tags
 
 		public TI.Block<weapon_hud_crosshair_block> Crosshairs;
 		public TI.Block<weapon_hud_overlays_block> OverlayElements;
+		public TI.Flags PostprocessedUsedCrosshairStatesFlags;
 
 		public TI.Block<global_hud_screen_effect_definition> ScreenEffect;
 

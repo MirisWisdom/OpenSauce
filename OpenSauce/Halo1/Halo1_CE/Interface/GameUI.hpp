@@ -25,6 +25,10 @@ namespace Yelo
 {
 	namespace Enums
 	{
+		enum {
+			MAXIMUM_NUMBER_OF_HUD_SOUNDS = 12,
+		};
+
 		enum text_style : _enum
 		{
 			_text_style_plain = CAST(_enum,NONE),
@@ -75,6 +79,19 @@ namespace Yelo
 			_rasterize_score_telefragged,
 			_rasterize_score,
 		};
+
+		enum weapon_hud_state
+		{
+			_weapon_hud_state_total_ammo,
+			_weapon_hud_state_loaded_ammo,
+			_weapon_hud_state_heat,
+			_weapon_hud_state_age,
+			_weapon_hud_state_secondary_weapon_total_ammo,
+			_weapon_hud_state_secondary_weapon_loaded_ammo,
+			_weapon_hud_state_dist_to_target,
+			_weapon_hud_state_elevation_to_target,
+			_weapon_hud_state,
+		};
 	};
 
 	namespace Flags
@@ -119,14 +136,23 @@ namespace Yelo
 		s_hud_messaging*			HudMessaging();
 
 
-		struct s_hud_unit_interface_unit : TStructImpl(0x58)
+		struct s_hud_unit_interface_unit
 		{
-			TStructGetPtrImpl(real, Shields, 0x0);
-			TStructGetPtrImpl(real, Health, 0x4);
-			TStructGetPtrImpl(datum_index, Unit, 0x1C);
-			TStructGetPtrImpl(int16, IntegratedLightPower, 0x20); // 0x20 0 = off 1 = on
-			TStructGetPtrImpl(int16, IntegratedLightTime, 0x22);
-		};
+			real shields, health;
+			UNKNOWN_TYPE(real);
+			uint32 last_update_time;
+			struct {
+				uint32 hud_background_element;
+				uint32 health_panel_background_element;
+				uint32 motion_sensor_elements;
+			}last_render_time;
+			datum_index unit_index;
+			int16 integrated_light_power; // 0 = off 1 = on
+			int16 integrated_light_time;
+			word_flags active_sound_elements;
+			PAD16;
+			datum_index sound_elements[Enums::MAXIMUM_NUMBER_OF_HUD_SOUNDS]; // sound cache index
+		}; BOOST_STATIC_ASSERT( sizeof(s_hud_unit_interface_unit) == 0x58 );
 		struct s_hud_unit_interface
 		{
 			s_hud_unit_interface_unit units[1]; // 0x0
@@ -137,13 +163,15 @@ namespace Yelo
 
 		struct s_hud_weapon_interface_player : TStructImpl(0x50)
 		{
+			// 0x0, uint32 state_last_render_times[Enums::_weapon_hud_state]; // last render for each weapon hud state type
+			// 0x20, datum_index weapon_index
+			// 0x24, real
+
+			// 0x4C, long_flags render_crosshair_types_mask
 		};
 		struct s_hud_weapon_interface : TStructImpl(0x7C)
 		{
-			// int32 zoom_level 0x24
-
-			TStructGetPtrImpl(datum_index, WeaponIndex, 0x18);
-			TStructGetPtrImpl(s_hud_weapon_interface_player, LocalPlayers, 0x28);
+			TStructGetPtrImpl(s_hud_weapon_interface_player, LocalPlayers, 0x0);
 			TStructGetPtrImpl(Flags::weapon_interface_show, ShowHudFlags, 0x78);
 		};
 		s_hud_weapon_interface*		HudWeaponInterface();

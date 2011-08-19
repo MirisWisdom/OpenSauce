@@ -70,7 +70,7 @@ namespace Yelo
 					data_size = ftell(file_handle) - sizeof(s_cache_header);
 					fseek(file_handle, 0, SEEK_SET);
 
-					fread(&header, sizeof(header), 1, file_handle);
+					fread_s(&header, sizeof(header), sizeof(header), 1, file_handle);
 					cstring invalid_reason_str = header.GetInvalidReasonString(Enums::k_cheape_cache_signature_halo2, this->base_address);
 					if(invalid_reason_str != NULL)
 					{
@@ -83,7 +83,7 @@ namespace Yelo
 					}
 
 					fseek(file_handle, header.DataOffset, SEEK_SET);
-					fread(base_address, data_size, 1, file_handle);
+					fread_s(base_address, data_size, data_size, 1, file_handle);
 
 					fclose(file_handle);
 					return true;

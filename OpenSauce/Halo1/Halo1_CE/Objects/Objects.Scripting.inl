@@ -183,14 +183,14 @@ static datum_index scripting_unit_data_get_object_by_name(s_unit_datum* unit, cs
 {
 	cstring s = data_name; // alias for keeping the code width down
 
-	if( !strncmp(s,"weapon",6) )
+	if( _HS_UTIL_STRNCMP(s, "weapon") )
 	{
 			 if( !strcmp(s,"weapon0") ) return unit->unit.GetWeaponObjectIndices()[0];
 		else if( !strcmp(s,"weapon1") ) return unit->unit.GetWeaponObjectIndices()[1];
 		else if( !strcmp(s,"weapon2") ) return unit->unit.GetWeaponObjectIndices()[2];
 		else if( !strcmp(s,"weapon3") ) return unit->unit.GetWeaponObjectIndices()[3];
 	}
-	else if( !strncmp(s,"recent_damage.unit",6) )
+	else if( _HS_UTIL_STRNCMP(s, "recent_damage.unit") )
 	{
 			 if( !strcmp(s,"recent_damage.unit0") ) return unit->unit.GetRecentDamage()[0].responsible_unit;
 		else if( !strcmp(s,"recent_damage.unit1") ) return unit->unit.GetRecentDamage()[1].responsible_unit;
@@ -244,7 +244,7 @@ static void* scripting_unit_data_get_integer_evaluate(void** arguments)
 		cstring data_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
 	TypeHolder result; result.pointer = NULL;
-	result.int32 = 0;
+	result.int32 = NONE;
 
 	if(!args->unit_index.IsNull())
 	{

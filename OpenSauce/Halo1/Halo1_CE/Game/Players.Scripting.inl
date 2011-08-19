@@ -229,7 +229,7 @@ static datum_index scripting_player_data_get_object_by_name(s_player_datum* play
 			if(!target_player.IsNull())
 				return *(*Players::Players())[target_player]->GetSlaveUnitIndex();
 		}
-		else if( !strncmp(s,"weapon",6) )
+		else if( _HS_UTIL_STRNCMP(s,"weapon") )
 		{
 			Objects::s_unit_datum* unit = (*Objects::ObjectHeader())[object_index]->Type._unit;
 
