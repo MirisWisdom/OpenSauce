@@ -428,7 +428,7 @@ namespace BlamLib.Blam.Halo1.Tags
 		};
 		#endregion
 
-		public weapon_hud_interface_group() : base(26)
+		public weapon_hud_interface_group() : base(27)
 		{
 			Add(ChildHud = new TI.TagReference(this, TagGroups.wphi));
 			Add(FlashCutoffFlags = new TI.Flags(BlamLib.TagInterface.FieldType.WordFlags));
@@ -444,9 +444,10 @@ namespace BlamLib.Blam.Halo1.Tags
 			Add(StaticElements = new TI.Block<weapon_hud_static_block>(this, 16));
 			Add(MeterElements = new TI.Block<weapon_hud_meter_block>(this, 16));
 			Add(NumberElements = new TI.Block<weapon_hud_number_block>(this, 16));
-			Add(Crosshairs = new TI.Block<weapon_hud_crosshair_block>(this, 19)); // i think the max elements was a typo...silly Mat
+			Add(Crosshairs = new TI.Block<weapon_hud_crosshair_block>(this, 19));
 			Add(OverlayElements = new TI.Block<weapon_hud_overlays_block>(this, 16));
-			Add(new TI.Pad(4 + 12)); // g_null_block, so we just pad it
+			Add(PostprocessedUsedCrosshairStatesFlags = new TI.Flags());
+			Add(new TI.Pad(12)); // g_null_block, so we just pad it
 			Add(ScreenEffect = new TI.Block<global_hud_screen_effect_definition>(this, 1));
 			Add(new TI.Pad(132));
 

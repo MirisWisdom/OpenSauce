@@ -21,6 +21,11 @@
 #include "Memory/MemoryInterface.hpp"
 #include <Blam/Halo1/BlamScriptingDefinitions.hpp>
 
+// Utility function for checking input strings against a base string.
+// eg, the base string of "weapon0" is "weapon".
+// used in Players.Scripting.inl and Objects.Scripting.inl
+#define _HS_UTIL_STRNCMP(value, str)	(strncmp(value,str,NUMBEROF(str)-1)==0)
+
 namespace Yelo
 {
 	namespace TagGroups

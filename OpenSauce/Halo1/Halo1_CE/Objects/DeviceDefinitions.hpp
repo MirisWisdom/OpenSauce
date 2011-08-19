@@ -22,24 +22,33 @@
 
 namespace Yelo
 {
+	namespace Flags
+	{
+		enum device_flags
+		{
+
+			// user_interation_flags
+
+			_device_one_sided_flag = FLAG(0),
+			_device_operates_automatically_flag = FLAG(1),
+		};
+	};
+
 	namespace Objects
 	{
-		struct s_device_data : TStructImpl(Enums::k_object_size_device - Enums::k_object_size_object)
+		struct s_device_data
 		{
-			enum { DATA_OFFSET = Enums::k_object_size_object, };
+			long_flags flags;					// 0x1F4
 
-			TStructSubGetPtrImpl(long_flags,		Flags, 0x1F4);
+			struct {
+				int16 device_group_index;
+				PAD16;
+				real value, unknown;
+			}	power,							// 0x1F8
+				position;						// 0x204
 
-			TStructSubGetPtrImpl(int16,				PowerDeviceGroupIndex, 0x1F8);
-			TStructSubGetPtrImpl(real,				PowerValue, 0x1FC);
-			TStructSubGetPtrImpl(real,				PowerUnknown, 0x200);
-
-			TStructSubGetPtrImpl(int16,				PositionDeviceGroupIndex, 0x204);
-			TStructSubGetPtrImpl(real,				PositionValue, 0x208);
-			TStructSubGetPtrImpl(real,				PositionUnknown, 0x20C);
-
-			// 0x210 - int16
-		};
+			long_flags user_interation_flags;	// 0x210
+		}; BOOST_STATIC_ASSERT( sizeof(s_device_data) == Enums::k_object_size_device - Enums::k_object_size_object );
 
 		struct s_device_machine_data : TStructImpl(Enums::k_object_size_machine - Enums::k_object_size_device)
 		{
