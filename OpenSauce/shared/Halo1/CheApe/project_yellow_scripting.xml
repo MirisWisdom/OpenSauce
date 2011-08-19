@@ -134,6 +134,14 @@
 		<function name="machine_is_host" returnType="boolean" help="returns whether or not the local machine is the host" internal="true" />
 		<function name="machine_is_dedi" returnType="boolean" help="returns whether or not the local machine is a dedicated server" internal="true" />
 
+		<!-- MISC -->
+		<function name="abs_integer" returnType="long" help="return the absolute (non-negative) value of an integer" internal="true" >
+			<arg type="long" name="value" />
+		</function>
+		<function name="abs_real" returnType="real" help="return the absolute (non-negative) value of a real" internal="true" >
+			<arg type="real" name="value" />
+		</function>
+		
 		<!-- POSTPROCESSING -->
 		<function name="pp_load" returnType="void" help="loads post-processing" internal="true" />
 		<function name="pp_unload" returnType="void" help="unloads post-processing" internal="true" />

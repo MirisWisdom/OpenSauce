@@ -98,6 +98,30 @@ static void* scripting_machine_is_dedi()
 }
 
 
+static void* scripting_abs_integer_evaluate(void** arguments)
+{
+	struct s_arguments {
+		int32 value;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+
+	result.int32 = abs(args->value);
+
+	return result.pointer;
+}
+static void* scripting_abs_real_evaluate(void** arguments)
+{
+	struct s_arguments {
+		real value;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+
+	result.real = abs(args->value);
+
+	return result.pointer;
+}
+
+
 static void InitializeMiscFunctions()
 {
 	InitializeScriptFunction(Enums::_hs_function_structure_bsp_lightmap_reset, 
@@ -115,6 +139,11 @@ static void InitializeMiscFunctions()
 		scripting_machine_is_host);
 	InitializeScriptFunction(Enums::_hs_function_machine_is_dedi, 
 		scripting_machine_is_dedi);
+
+	InitializeScriptFunctionWithParams(Enums::_hs_function_abs_integer, 
+		scripting_abs_integer_evaluate);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_abs_real, 
+		scripting_abs_real_evaluate);
 
 #if !PLATFORM_IS_DEDI
 	InitializeScriptFunction(Enums::_hs_function_pp_load, 
