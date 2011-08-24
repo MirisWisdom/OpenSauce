@@ -404,6 +404,8 @@ void c_memory_fixups::FixupsInitializeFilePaths()
 	#if PLATFORM_ID == PLATFORM_SAPIEN
 		{_report_baggage,					CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		NULL,	0x4EF540))},
 		{_report_message_delta_message_log,	CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		NULL,	0x6EC3B8))},
+
+		{_report_sapien_model_index,		CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		NULL,	0x4D115A))},
 		{_report_sapien_model_index,		CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		NULL,	0x4D11D2))},
 	#endif
 #endif
