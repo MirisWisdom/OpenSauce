@@ -29,7 +29,7 @@ DWORD WINAPI c_memory_fixups::GetCurrentDirectoryHack(
 	return S_OK;
 }
 
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_ID != PLATFORM_GUERILLA
 // The following is a hack which fixes a problem with tag_file_index_build.
 //
 // Basically, the code for that function assumes that all tag names begin 
@@ -42,7 +42,7 @@ char* PLATFORM_API c_memory_fixups::tag_file_index_build_strchr_hack(char* str, 
 }
 void c_memory_fixups::tag_file_index_build_strchr_hack_initialize()
 {
-	FUNC_PTR(TAG_FILE_INDEX_BUILD_STRCHR_CALL, FUNC_PTR_NULL, 0x445C9B, FUNC_PTR_NULL);
+	FUNC_PTR(TAG_FILE_INDEX_BUILD_STRCHR_CALL, FUNC_PTR_NULL, 0x445C9B, 0x4FEACB);
 
 	Memory::WriteRelativeCall(tag_file_index_build_strchr_hack, 
 		GET_FUNC_VPTR(TAG_FILE_INDEX_BUILD_STRCHR_CALL));
@@ -212,7 +212,9 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 	};
 	for(int32 x = 0; x < NUMBEROF(K_TAGS_NAME_REFERENCE_FIXUPS); x++)
 		*K_TAGS_NAME_REFERENCE_FIXUPS[x] = _override_paths.tags.folder_name_with_slash;
-#else
+#endif
+
+#if PLATFORM_ID != PLATFORM_GUERILLA
 	tag_file_index_build_strchr_hack_initialize();
 #endif
 
@@ -315,6 +317,7 @@ void c_memory_fixups::FixupsInitializeFilePaths()
 	#if PLATFORM_ID == PLATFORM_SAPIEN
 		_report_baggage,
 		_report_message_delta_message_log,
+		_report_sapien_model_index,
 	#endif
 #endif
 		_report_type
@@ -336,6 +339,7 @@ void c_memory_fixups::FixupsInitializeFilePaths()
 	#if PLATFORM_ID == PLATFORM_SAPIEN
 		"baggage.txt",
 		"message_delta_message_log.txt",
+		"sapien_model_index.dat",
 	#endif
 #endif
 	}; BOOST_STATIC_ASSERT( NUMBEROF(k_file_path_fixup_names) == _report_type );
@@ -400,6 +404,7 @@ void c_memory_fixups::FixupsInitializeFilePaths()
 	#if PLATFORM_ID == PLATFORM_SAPIEN
 		{_report_baggage,					CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		NULL,	0x4EF540))},
 		{_report_message_delta_message_log,	CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		NULL,	0x6EC3B8))},
+		{_report_sapien_model_index,		CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		NULL,	0x4D11D2))},
 	#endif
 #endif
 		//{_report_,	CAST_PTR(cstring*,PLATFORM_VALUE(NULL,	,	))},

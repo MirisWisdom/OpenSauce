@@ -708,7 +708,7 @@ namespace BlamLib.Blam.Halo1.Tags
 			Add(LoadingBeginText = new TI.ShortInteger());
 			Add(LoadingEndText = new TI.ShortInteger());
 			Add(CheckpointBeginText = new TI.ShortInteger());
-			Add(CheckpointBeginText = new TI.ShortInteger());
+			Add(CheckpointEndText = new TI.ShortInteger());
 			Add(CheckpointSound = new TI.TagReference(this, TagGroups.snd_));
 			Add(new TI.Pad(96));
 		}
