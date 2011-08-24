@@ -75,6 +75,7 @@ namespace Yelo
 
 			TStructSubGetPtrImpl(datum_index,			ActorIndex, 0x1F4);
 			TStructSubGetPtrImpl(datum_index,			SwarmActorIndex, 0x1F8);
+			//TStructSubGetPtrImpl(datum_index,			, 0x1FC);
 			TStructSubGetPtrImpl(datum_index,			SwamPrevUnitIndex, 0x200);
 			TStructSubGetPtrImpl(long_flags,			Flags, 0x204);
 			
@@ -90,19 +91,61 @@ namespace Yelo
 			TStructSubGetPtrImpl(real_euler_angles3d,	LookingAngles, 0x254);
 			TStructSubGetPtrImpl(real_vector3d,			LookingVector, 0x260);
 			TStructSubGetPtrImpl(real_vector3d,			LookingVelocity, 0x26C);
+			
+			//TStructSubGetPtrImpl(byte?,				, 0x289);
+			//TStructSubGetPtrImpl(sbyte,				, 0x28C); // looks like the amount of frames left for the ping animation
+			//TStructSubGetPtrImpl(byte,				ThrowingGrenadeState, 0x28D);
+
+			//TStructSubGetPtrImpl(sbyte,				, 0x2A0);
+			//TStructSubGetPtrImpl(sbyte,				, 0x2A1);
+			//TStructSubGetPtrImpl(sbyte,				, 0x2A2);
+			//TStructSubGetPtrImpl(sbyte,				, 0x2A3);
+			//TStructSubGetPtrImpl(byte?,				, 0x2A4);
+			//TStructSubGetPtrImpl(byte?,				, 0x2A5);
+			// 0x2A6?
+			//TStructSubGetPtrImpl(byte,				, 0x2A7);
+			//TStructSubGetPtrImpl(sbyte,				, 0x2A8);
+			//TStructSubGetPtrImpl(uint16,				, 0x2AA);
+			//TStructSubGetPtrImpl(uint16,				, 0x2AE);
+
+			//TStructSubGetPtrImpl(int16,				, 0x2B2);
+
+			//TStructSubGetPtrImpl(byte?,				, 0x2B6);
+			//TStructSubGetPtrImpl(byte?,				, 0x2B7);
+
 			TStructSubGetPtrImpl(real_rectangle2d,		AimingBounds, 0x2B8);
+
+			TStructSubGetPtrImpl(real,					MouthAperture, 0x2E8);
+
 			TStructSubGetPtrImpl(int16,					VehicleSeatIndex, 0x2F0);
 			TStructSubGetPtrImpl(int16,					CurrentWeaponIndex, 0x2F2);
-			TStructSubGetPtrImpl(int16,					VehicleType, 0x2F4);
+			TStructSubGetPtrImpl(int16,					NextWeaponIndex, 0x2F4);
 			TStructSubGetPtrImpl(datum_index,			WeaponObjectIndices, 0x2F8); // [4]
-			TStructSubGetPtrImpl(int16,					CurrentGrenadeIndex, 0x31C);
+			TStructSubGetPtrImpl(datum_index,			CurrentEquipment, 0x318);
+			TStructSubGetPtrImpl(sbyte,					CurrentGrenadeIndex, 0x31C);
+			TStructSubGetPtrImpl(sbyte,					NextGrenadeIndex, 0x31D);
 			TStructSubGetPtrImpl(byte,					GrenadeCounts, 0x31E); // [2]
 				TStructSubGetPtrImpl(byte,				GrenadePlasmaCount, 0x31E);
 				TStructSubGetPtrImpl(byte,				GrenadeFragCount, 0x31F);
+			TStructSubGetPtrImpl(byte,					ZoomLevel, 0x320);
+			//TStructSubGetPtrImpl(byte,					, 0x321);
+			//TStructSubGetPtrImpl(sbyte,					, 0x322);
+			TStructSubGetPtrImpl(byte,					AimingChange, 0x323);
 			TStructSubGetPtrImpl(datum_index,			DriverObj, 0x324);
 			TStructSubGetPtrImpl(datum_index,			GunnerObj, 0x328);
-			TStructSubGetPtrImpl(int32,					IntegratedPower, 0x340);
+			// 32C?
+			// 330?
+			// 334?
+			TStructSubGetPtrImpl(real,					DriverPower, 0x338);
+			TStructSubGetPtrImpl(real,					GunnerPower, 0x33C);
+			TStructSubGetPtrImpl(int32,					IntegratedLightPower, 0x340);
+
+			// 0x348, dword
+
 			TStructSubGetPtrImpl(real,					CamoPower, 0x37C);
+
+			// 0x3B8, int16
+
 			TStructSubGetPtrImpl(int16,					FeignDeathTimer, 0x420);
 
 			// These values are also used in determining assists

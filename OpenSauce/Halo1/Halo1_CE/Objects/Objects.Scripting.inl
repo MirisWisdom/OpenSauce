@@ -53,19 +53,32 @@ static void* scripting_objects_distance_to_object_evaluate(void** arguments)
 }
 
 
-static real* object_data_get_real_by_name(s_object_data* object, cstring data_name, cstring subdata_name, Enums::hs_type& out_type)
+static real* object_data_get_real_by_name(s_object_header_datum* obj, cstring data_name, cstring subdata_name, Enums::hs_type& out_type)
 {
 	cstring s = data_name; // alias for keeping the code width down
 
 	real* value_ptr = NULL;
 
 	out_type = HS_TYPE(real);
-		 if( !strcmp(s,"position") )				value_ptr = &object->GetNetworkDatumData()->position.x;
-	else if( !strcmp(s,"transitional_velocity") )	value_ptr = &object->GetNetworkDatumData()->transitional_velocity.i;
-	else if( !strcmp(s,"forward") )					value_ptr = &object->GetNetworkDatumData()->forward.i;
-	else if( !strcmp(s,"up") )						value_ptr = &object->GetNetworkDatumData()->up.i;
-	else if( !strcmp(s,"angular_velocity") )		value_ptr = &object->GetNetworkDatumData()->angular_velocity.i;
-	//else if( !strcmp(s,"") )	value_ptr = *object-;
+		 if( !strcmp(s,"position") )				value_ptr = &obj->_object->GetNetworkDatumData()->position.x;
+	else if( !strcmp(s,"transitional_velocity") )	value_ptr = &obj->_object->GetNetworkDatumData()->transitional_velocity.i;
+	else if( !strcmp(s,"forward") )					value_ptr = &obj->_object->GetNetworkDatumData()->forward.i;
+	else if( !strcmp(s,"up") )						value_ptr = &obj->_object->GetNetworkDatumData()->up.i;
+	else if( !strcmp(s,"angular_velocity") )		value_ptr = &obj->_object->GetNetworkDatumData()->angular_velocity.i;
+	//else if( !strcmp(s,"") )	value_ptr = *obj->_object-;
+
+	if(obj->object_type == Enums::_object_type_biped || obj->object_type == Enums::_object_type_vehicle)
+	{
+		s_unit_data* unit = &obj->Type._unit->unit;
+
+			 if( !strcmp(s,"desired_facing") )	value_ptr = &unit->GetDesiredFacingVector()->i;
+		else if( !strcmp(s,"desired_aiming") )	value_ptr = &unit->GetDesiredAimingVector()->i;
+		else if( !strcmp(s,"aiming") )			value_ptr = &unit->GetAimingVector()->i;
+		else if( !strcmp(s,"aiming_velocity") )	value_ptr = &unit->GetAimingVelocity()->i;
+		else if( !strcmp(s,"looking") )			value_ptr = &unit->GetLookingVector()->i;
+		else if( !strcmp(s,"looking_angles") )	value_ptr = &unit->GetLookingAngles()->yaw;
+		else if( !strcmp(s,"looking_velocity") )value_ptr = &unit->GetLookingVelocity()->i;
+	}
 
 	if(value_ptr != NULL)
 	{
@@ -94,7 +107,7 @@ static void* scripting_object_data_get_real_evaluate(void** arguments)
 
 	if(!args->object_index.IsNull())
 	{
-		s_object_data* object = (*Objects::ObjectHeader())[args->object_index]->_object;
+		s_object_header_datum* object = (*Objects::ObjectHeader())[args->object_index];
 
 		Enums::hs_type result_type;
 		result.ptr.real = object_data_get_real_by_name(object, args->data_name, args->subdata_name, result_type);
@@ -114,7 +127,7 @@ static void* scripting_object_data_set_real_evaluate(void** arguments)
 
 	if(!args->object_index.IsNull())
 	{
-		s_object_data* object = (*Objects::ObjectHeader())[args->object_index]->_object;
+		s_object_header_datum* object = (*Objects::ObjectHeader())[args->object_index];
 
 		TypeHolder result;
 		Enums::hs_type result_type;
@@ -227,11 +240,11 @@ static void* scripting_unit_data_get_integer_by_name(s_unit_datum* unit, cstring
 	// designers should use 'unit_get_total_grenade_count' for overall grenade count
 		 if( !strcmp(s,"total_grenade_count[plasma]") )	return unit->unit.GetGrenadePlasmaCount();
 	else if( !strcmp(s,"total_grenade_count[frag]") )	return unit->unit.GetGrenadeFragCount();
+	else if( !strcmp(s,"current_grenade_index") )		return unit->unit.GetCurrentGrenadeIndex();
 
 	out_type = HS_TYPE(short);
 		 if( !strcmp(s,"vehicle_seat_index") )		return unit->unit.GetVehicleSeatIndex();
 	else if( !strcmp(s,"current_weapon_index") )	return unit->unit.GetCurrentWeaponIndex();
-	else if( !strcmp(s,"current_grenade_index") )	return unit->unit.GetCurrentGrenadeIndex();
 	else if( !strcmp(s,"feign_death_timer") )		return unit->unit.GetFeignDeathTimer();
 
 	out_type = HS_TYPE(void);
@@ -284,6 +297,8 @@ static real* scripting_unit_data_get_real_by_name(s_unit_datum* unit, cstring da
 
 	out_type = HS_TYPE(real);
 		 if( !strcmp(s,"camo_power") )		return unit->unit.GetCamoPower();
+	else if( !strcmp(s,"driver_power") )	return unit->unit.GetDriverPower();
+	else if( !strcmp(s,"gunner_power") )	return unit->unit.GetGunnerPower();
 	//else if( !strcmp(s,"") )	return unit->Get();
 
 	return NULL;

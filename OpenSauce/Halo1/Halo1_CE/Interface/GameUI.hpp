@@ -260,7 +260,7 @@ namespace Yelo
 		}; BOOST_STATIC_ASSERT( sizeof(s_motion_sensor) == 0x570 );
 		s_motion_sensor*			MotionSensor();
 
-		struct s_first_person_weapons : TStructImpl(0x1EA0)
+		struct s_first_person_weapon : TStructImpl(0x1EA0)
 		{
 			TStructGetPtrImpl(bool, IsVisible, 0x0);
 			TStructGetPtrImpl(datum_index, Unit, 0x4);
@@ -285,6 +285,10 @@ namespace Yelo
 			// _shotgun_reload_type_first_and_last_round = 2
 
 			// node matrices start at 0x108C, with each one being sizeof(0x34) of course
+		};
+		struct s_first_person_weapons : TStructImpl(0x1EA0)
+		{
+			s_first_person_weapon local_players[1];
 		};
 		s_first_person_weapons*		FirstPersonWeapons();
 
