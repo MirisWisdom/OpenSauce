@@ -43,6 +43,26 @@ namespace Yelo
 			_player_powerup_full_spectrum_vision,
 			_player_powerup,
 		};
+
+		enum player_action
+		{
+			_player_action_0,
+			_player_action_1,
+			_player_action_2,
+			_player_action_3,
+			_player_action_4,
+
+			_player_action_swap_equipment,
+			_player_action_swap_weapon,
+			_player_action_pickup_weapon,
+
+			_player_action_enter_seat,
+			_player_action_force_ai_to_exit_seat,
+			_player_action_touch_device,
+			_player_action_exit_seat,
+
+			_player_action,
+		};
 	};
 
 	namespace Players

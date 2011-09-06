@@ -247,9 +247,12 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////////
 		// Object widgets
-		struct s_widget_datum : TStructImpl(12)
+		struct s_widget_datum : Memory::s_datum_base
 		{
-		};
+			_enum type;
+			datum_index type_datum_index; // index to the type's data array (eg, antenna)
+			datum_index next_widget_index;
+		}; BOOST_STATIC_ASSERT( sizeof(s_widget_datum) == 0xC );
 		typedef Memory::DataArray<s_widget_datum, 64> t_widget_data;
 		t_widget_data*			Widgets();
 

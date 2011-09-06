@@ -58,6 +58,8 @@ namespace Yelo
 			TAG_PAD(int32, 8);
 		}; BOOST_STATIC_ASSERT( sizeof(s_dual_wield_weapon_definition) == 0x50 );
 
+		//////////////////////////////////////////////////////////////////////////
+		// Currently unused
 		struct s_object_damage_region_permutation_extension
 		{
 			TAG_FIELD(tag_string, name);
@@ -76,10 +78,11 @@ namespace Yelo
 			TAG_FIELD(tag_string, name);
 			TAG_TBLOCK(permutations, s_object_damage_region_permutation_extension); // 32
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_damage_region_extension) == 0x2C );
+		//////////////////////////////////////////////////////////////////////////
 		struct s_object_damage_extension
 		{
 			TAG_FIELD(tag_reference, object, 'obje');
-			TAG_TBLOCK(regions, s_object_damage_region_extension); // 32
+			TAG_PAD(tag_block, 1);//TAG_TBLOCK(regions, s_object_damage_region_extension); // 32
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_damage_extension) == 0x1C );
 
 

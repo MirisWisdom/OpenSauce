@@ -210,8 +210,8 @@
 		<fixup name="_fixup_model_shader_reference_block.max_count" type="Pointer" 
 			guerilla="0x9D7E8C" tool="0x6C6A14" sapien="0xA4F664" definition="0x40" />
 
-		<fixup name="_fixup_damage_regions_block.max_count" type="Pointer" 
-			guerilla="0x9CF218" tool="0x6DC340" sapien="0xA47198" definition="0x10" />
+		<!-- <fixup name="_fixup_damage_regions_block.max_count" type="Pointer" 
+			guerilla="0x9CF218" tool="0x6DC340" sapien="0xA47198" definition="0x10" /> -->
 
 		<fixup name="_fixup_scenario_cutscene_title_block.text_style" type="Field" 
 			guerilla="0x9CD1FC" tool="0x6DB4C4" sapien="0xA345D4" >
