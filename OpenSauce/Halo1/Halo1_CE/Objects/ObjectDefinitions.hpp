@@ -101,6 +101,17 @@ namespace Yelo
 			k_object_size_biped =			0x84 + k_object_size_unit,
 			k_object_size_vehicle =			0xF4 + k_object_size_unit,
 		};
+
+		enum attachment_type {
+			_attachment_type_invalid = NONE,
+
+			_attachment_type_light = 0,
+			_attachment_type_looping_sound,
+			_attachment_type_effect,
+			_attachment_type_contrail,
+			_attachment_type_particle,
+			_attachment_type,
+		};
 	};
 
 	namespace Flags
@@ -116,7 +127,7 @@ namespace Yelo
 			_object_unk1_flag = FLAG(0),
 			_object_unk2_flag = FLAG(1),
 			_object_unk3_flag = FLAG(2),
-			_object_connected_to_map_flag = FLAG(3),
+			_object_unk4_flag = FLAG(3),
 			_object_unk5_flag = FLAG(4),
 			_object_update_physics_flag = FLAG(5),
 			_object_unk7_flag = FLAG(6),
@@ -124,7 +135,7 @@ namespace Yelo
 			_object_unk9_flag = FLAG(8),
 			_object_unk10_flag = FLAG(9),
 			_object_unk12_flag = FLAG(10),
-			_object_unk13_flag = FLAG(11),
+			_object_connected_to_map_flag = FLAG(11),
 			_object_unk14_flag = FLAG(12),
 			_object_unk15_flag = FLAG(13),
 			_object_unk16_flag = FLAG(14),
@@ -226,18 +237,42 @@ namespace Yelo
 
 			TStructGetPtrImpl(real,						MaximumVitality, 0xD8);
 			TStructGetPtrImpl(real,						CurrentVitality, 0xDC);
-			TStructGetPtrImpl(real,						Health, 0xE0);
-			TStructGetPtrImpl(real,						Shields, 0xE4);
+			TStructGetPtrImpl(real,						Health, 0xE0); // health = body
+			TStructGetPtrImpl(real,						Shield, 0xE4);
+			TStructGetPtrImpl(real,						ShieldDamageCurrent, 0xE8);
+			TStructGetPtrImpl(real,						BodyDamageCurrent, 0xEC);
+			//TStructGetPtrImpl(datum_index,				, 0xF0); // object index
+			TStructGetPtrImpl(real,						ShieldDamageRecent, 0xF4);
+			TStructGetPtrImpl(real,						BodyDamageRecent, 0xF8);
+			TStructGetPtrImpl(int32,					ShieldDamageUpdateTick, 0xFC); // these update ticks are set to NONE when not active
+			TStructGetPtrImpl(int32,					BodyDamageUpdateTick, 0x100);
+			TStructGetPtrImpl(uint16,					StunTicks, 0x104); // based on ftol(s_shield_damage_resistance->stun_time * 30f)
+			TStructGetPtrImpl(word_flags,				DamageFlags, 0x106);
+			// 0x108?
+			TStructGetPtrImpl(datum_index,				ClusterPartitionIndex, 0x10C);
 			TStructGetPtrImpl(datum_index,				NextObjectIndex, 0x114);
+			TStructGetPtrImpl(datum_index,				FirstObjectIndex, 0x118);
 			TStructGetPtrImpl(datum_index,				ParentObjectIndex, 0x11C);
-			TStructGetPtrImpl(real,						ExportFunctionValues, 0x124); // [4]
+			TStructGetPtrImpl(sbyte,					ParentNodeIndex, 0x120);
+			// 0x122 is unused, probably 'ValidIncomingFunctions'...or 0x121 is an unused short
+			TStructGetPtrImpl(byte_flags,				ValidOutgoingFunctions, 0x123); // 1<<function_index
+			TStructGetPtrImpl(real,						IncomingFunctionValues, 0x124); // [4]
+			TStructGetPtrImpl(real,						OutgoingFunctionValues, 0x134); // [4]
+
+			TStructGetPtrImpl(byte_enum,				AttachmentsTypes, 0x144); // Enums::attachment_type [k_maximum_number_of_attachments_per_object]
 			// game state datum_index
 			// ie, if Attachments[x]'s definition (object_attachment_block[x]) says it is a 'cont'
 			// then the datum_index is a contrail_data handle
 			TStructGetPtrImpl(datum_index,				Attachments, 0x14C); // [k_maximum_number_of_attachments_per_object]
-			TStructGetPtrImpl(int16,					CubemapIndex, 0x176); // bitmap block index, found by: "Choking Victim"
+			TStructGetPtrImpl(datum_index,				FirstWidget, 0x16C);
+
+			TStructGetPtrImpl(int16,					ShaderPermutation, 0x176); // shader's bitmap block index
 			TStructGetPtrImpl(byte,						RegionVitality, 0x178); // [k_maximum_regions_per_model]
-			TStructGetPtrImpl(s_object_header_block_reference, NodeMatrixBlock, 0x1F0);
+			TStructGetPtrImpl(byte,						RegionPermutationIndices, 0x180); 
+			TStructGetPtrImpl(real_rgb_color,			ChangeColors, 0x1B8); // [4]
+			TStructGetPtrImpl(s_object_header_block_reference, NodeOrientations, 0x1E8); // real_orientation3d[node_count]
+			//TStructGetPtrImpl(s_object_header_block_reference, , 0x1EC); // real_orientation3d[node_count]
+			TStructGetPtrImpl(s_object_header_block_reference, NodeMatrixBlock, 0x1F0); // real_matrix4x3[node_count]
 
 			API_INLINE bool VerifyType(uint32 type_mask)
 			{

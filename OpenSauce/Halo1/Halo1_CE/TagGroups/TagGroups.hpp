@@ -39,5 +39,18 @@ namespace Yelo
 		}
 
 		datum_index tag_iterator_next(tag_iterator& iter);
+
+		template<typename T> const T* GetTagDefinition(datum_index tag_index)
+		{
+			if(!tag_index.IsNull() && tag_index.index < Index()->count)
+			{
+				s_cache_tag_instance const* instance = &Instances()[tag_index.index];
+
+				if(instance->MatchesGroup(T::k_group_tag))
+					return instance->Definition<T>();
+			}
+
+			return NULL;
+		}
 	};
 };

@@ -304,6 +304,8 @@ namespace Yelo
 
 		struct collision_model_definition
 		{
+			enum { k_group_tag = 'coll' };
+
 			s_damage_resistance damage_resistance;
 
 			TAG_TBLOCK(materials, collision_model_material);
@@ -321,5 +323,72 @@ namespace Yelo
 			}pathfinding;
 			TAG_TBLOCK(nodes, collision_model_node);
 		}; BOOST_STATIC_ASSERT( sizeof(collision_model_definition) == 0x298 );
+
+
+
+
+		struct model_animation
+		{
+			TAG_FIELD(tag_string, name);
+			TAG_ENUM(type);
+			TAG_FIELD(int16, frame_count);
+			TAG_FIELD(int16, frame_size);
+			TAG_ENUM(frame_info_type);
+			TAG_FIELD(int32, node_list_checksum);
+			TAG_FIELD(int16, node_count);
+			TAG_FIELD(int16, loop_frame_index);
+			TAG_FIELD(real_fraction, weight);
+			TAG_FIELD(int16, key_frame_index);
+			TAG_FIELD(int16, second_key_frame_index);
+			TAG_FIELD(int16, next_animation);
+			struct _flags {
+				TAG_FLAG16(compressed_data);
+				TAG_FLAG16(world_relative);
+				TAG_FLAG16(_25Hz_PAL);
+			}flags; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
+			TAG_FIELD(int16, sound);
+			TAG_FIELD(int16, sound_frame_index);
+			TAG_FIELD(sbyte, left_foot_frame_index);
+			TAG_FIELD(sbyte, right_foot_frame_index);
+			//////////////////////////////////////////////////////////////////////////
+			// postprocessed fields (thus, not exposed to the editor)
+			int16 first_animation; // if this is a permutated animation, this represents the first animation (first animation will also have this set)
+			real_fraction random_fraction;
+			//////////////////////////////////////////////////////////////////////////
+			TAG_FIELD(tag_data, frame_info);
+			TAG_FIELD(int32, node_trans_flag_data1);
+			TAG_FIELD(int32, node_trans_flag_data2);
+			TAG_PAD(byte, 8);
+			TAG_FIELD(int32, node_rotation_flag_data1);
+			TAG_FIELD(int32, node_rotation_flag_data2);
+			TAG_PAD(byte, 8);
+			TAG_FIELD(int32, node_scale_flag_data1);
+			TAG_FIELD(int32, node_scale_flag_data2);
+			TAG_PAD(byte, 4);
+			TAG_FIELD(int32, offset_to_compressed_data);
+			TAG_FIELD(tag_data, default_data);
+			TAG_FIELD(tag_data, frame_data);
+		}; BOOST_STATIC_ASSERT( sizeof(model_animation) == 0xB4 );
+		struct model_animation_graph
+		{
+			enum { k_group_tag = 'antr' };
+
+			TAG_BLOCK(objects, animation_graph_object_overlay);
+			TAG_BLOCK(units, animation_graph_unit_seat);
+			TAG_BLOCK(weapons, animation_graph_weapon_animation);
+			TAG_BLOCK(vehicles, animation_graph_vehicle_animation);
+			TAG_BLOCK(devices, device_animation);
+			TAG_BLOCK(unit_damage, unit_damage_animation);
+			TAG_BLOCK(first_person_weapons, animation_graph_first_person_weapon_animation);
+			TAG_BLOCK(sound_references, animation_graph_sound_reference);
+			TAG_FIELD(real, limp_body_node_radius);
+			struct _flags {
+				TAG_FLAG16(compress_all_animations);
+				TAG_FLAG16(force_idle_compression);
+			}flags; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
+			PAD16;
+			TAG_BLOCK(nodes, animation_graph_node);
+			TAG_TBLOCK(animations, model_animation);
+		}; BOOST_STATIC_ASSERT( sizeof(model_animation_graph) == 0x80 );
 	};
 };

@@ -126,6 +126,11 @@ namespace Yelo
 		// adds a resolution definition to the resolution list
 		void RasterizerAddResolution(uint32 width, uint32 height, uint32 refresh_rate);
 
+		// If the animation at [animation_index] in [animation_graph_index] is permutated, this will randomly pick one of them.
+		// Set [animation_update_kind_affects_game_state] to true if the animation will affect the game state (pretty much everything except 1st person stuff)
+		// Returns the random [animation_index]
+		int16 AnimationPickRandomPermutation(bool animation_update_kind_affects_game_state, datum_index animation_graph_index, int32 animation_index);
+
 		namespace Console
 		{
 			// Process a fully qualified string of script functions

@@ -24,7 +24,12 @@
 #include "Memory/MemoryInterface.hpp"
 #include "Common/YeloSettings.hpp"
 #include "Interface/YeloSettingsInterface.hpp"
+#include "Game/EngineFunctions.hpp"
 #include "Game/Players.hpp"
+#include "Objects/Objects.hpp"
+
+#include <TagGroups/Halo1/item_definitions.hpp>
+#include <TagGroups/Halo1/model_definitions.hpp>
 #include "TagGroups/project_yellow_definitions.hpp"
 
 namespace Yelo
@@ -69,6 +74,65 @@ namespace Yelo
 		s_text_bounds_globals_data* TextBoundsGlobals()		PTR_IMP_GET2(text_bounds_globals);
 		s_font_drawing_globals_data* FontDrawingGlobals()	PTR_IMP_GET2(font_drawing_globals);
 
+
+		static TagGroups::s_weapon_definition const* FirstPersonWeaponGetWeaponDefinition(s_first_person_weapon* fp_weapon)
+		{
+			datum_index definition_index = *fp_weapon->GetCurrentWeapon();
+
+			if(!definition_index.IsNull())
+			{
+				s_cache_tag_instance const* tag_instance = Objects::GetObjectDefinition(definition_index);
+
+				return tag_instance->Definition<TagGroups::s_weapon_definition>();
+			}
+
+			return NULL;
+		}
+		static datum_index FirstPersonWeaponGetAnimationGraphIndex(s_first_person_weapon* fp_weapon)
+		{
+			datum_index anim_graph_index = datum_index::null;
+
+			TagGroups::s_weapon_definition const* weapon = FirstPersonWeaponGetWeaponDefinition(fp_weapon);
+
+			if(weapon != NULL)
+				anim_graph_index = weapon->weapon.first_person_animations.tag_index;
+
+			return anim_graph_index;
+		}
+		static void FirstPersonWeaponSetStatePermutateAnimation(s_first_person_weapon* fp_weapon, _enum animation_state, int16 animation_current_index)
+		{
+			datum_index animation_graph_index = FirstPersonWeaponGetAnimationGraphIndex(fp_weapon);
+
+			if(!animation_graph_index.IsNull())
+			{
+				animation_current_index = Engine::AnimationPickRandomPermutation(false, // 1st person stuff won't affect the game state
+					animation_graph_index, animation_current_index);
+			}
+
+			*fp_weapon->GetAnimationState() = animation_state;
+			*fp_weapon->GetAnimationCurrentIndex() = animation_current_index;
+		}
+		static API_FUNC_NAKED void PLATFORM_API FirstPersonWeaponSetStateHook()
+		{
+			NAKED_FUNC_START()
+				push	edi
+				push	ebx
+				push	esi
+				call	FirstPersonWeaponSetStatePermutateAnimation
+			NAKED_FUNC_END(0)
+		}
+		static void FirstPersonWeaponSetStateHookCreateHook()
+		{
+			// Our hook only overwrites the AnimationState and AnimationCurrentIndex setting code. 
+			// Leaves the AnimationCurrentFrameIndex set alone (ie, frame index will always be zero)
+			static const byte k_null_bytes[8] = { Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
+				Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
+				Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
+				Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,};
+
+			Memory::WriteMemory(GET_FUNC_VPTR(FIRST_PERSON_WEAPON_SET_STATE_HOOK), k_null_bytes, sizeof(k_null_bytes));
+			Memory::WriteRelativeCall(&FirstPersonWeaponSetStateHook, GET_FUNC_VPTR(FIRST_PERSON_WEAPON_SET_STATE_HOOK), true);
+		}
 
 		void Initialize()
 		{

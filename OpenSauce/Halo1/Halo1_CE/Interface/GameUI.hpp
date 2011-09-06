@@ -276,15 +276,44 @@ namespace Yelo
 			TStructGetPtrImpl(int16, AnimationCurrentFrameIndex, 0x18);
 			TStructGetPtrImpl(int16, CurrentMovingOverlayAnimationIndex, 0x1A);
 			TStructGetPtrImpl(int16, CurrentMovingOverlayFrameIndex, 0x1C);
-
+			// PAD16?
+			//TStructGetPtrImpl(int16, , 0x20); // some animation index
+			//TStructGetPtrImpl(real, , 0x28); // frame index (real) for the above anim index
+			//TStructGetPtrImpl(real, , 0x2C);
+			// 0x30?
+			//TStructGetPtrImpl(real, , 0x34);
+			// 0x38?
+			// 0x3C?
+			//TStructGetPtrImpl(real, , 0x40);
+			//TStructGetPtrImpl(real, , 0x44);
+			// 0x48?
+			// 0x4C?
 			// 0x50 bool
+			// 0x54 real_vector3d forward?
 			// 0x60 real_euler_angles2d
-
-			// _enum shotgun_reload_type; // 0x1E94
-			// _shotgun_reload_type_last_round = 1
-			// _shotgun_reload_type_first_and_last_round = 2
-
-			// node matrices start at 0x108C, with each one being sizeof(0x34) of course
+			// 0x68 real_euler_angles2d
+			// 0x70 real_point3d
+			// 0x7C real_point3d?
+			//////////////////////////////////////////////////////////////////////////
+			// 0x88 int16 frame index
+			// 0x8A int16 frame count
+			// 0x8C real_orientation3d node orientations[128]
+			// 0x108C real_matrix4x3 node matrices[64]
+			//////////////////////////////////////////////////////////////////////////
+			// 0x1D8C bool remapped weapon?
+			// PAD8;
+			// 0x1D8E int16 node_remappings[64]
+			//////////////////////////////////////////////////////////////////////////
+			// 0x1E0E bool remapped hands
+			// PAD8;
+			// 0x1E10 int16 node_remappings[64]
+			//////////////////////////////////////////////////////////////////////////
+			// 0x1E90 ?
+			// 0x1E94 _enum shotgun_reload_type;
+			//		_shotgun_reload_type_last_round = 1
+			//		_shotgun_reload_type_first_and_last_round = 2
+			//TStructGetPtrImpl(int32, , 0x1E98);
+			//TStructGetPtrImpl(int16, , 0x1E9C);
 		};
 		struct s_first_person_weapons : TStructImpl(0x1EA0)
 		{

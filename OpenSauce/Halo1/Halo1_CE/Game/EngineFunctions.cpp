@@ -139,6 +139,23 @@ namespace Yelo
 #endif
 		}
 
+		int16 API_FUNC_NAKED AnimationPickRandomPermutation(bool animation_update_kind_affects_game_state, datum_index animation_graph_index, int32 animation_index)
+		{
+#if !PLATFORM_IS_DEDI
+			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(ANIMATION_PICK_RANDOM_PERMUTATION);
+
+			NAKED_FUNC_START()
+				mov		edx, animation_index
+				mov		eax, animation_graph_index
+				push	animation_update_kind_affects_game_state
+				call	TEMP_CALL_ADDR
+				add		esp, 4 * 1
+			NAKED_FUNC_END(3)
+#else
+			return animation_index;
+#endif
+		}
+
 		namespace Console
 		{
 			void ProcessCommand(cstring command)
