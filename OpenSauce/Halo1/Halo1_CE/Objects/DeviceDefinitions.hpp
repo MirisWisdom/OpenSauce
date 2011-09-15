@@ -43,27 +43,33 @@ namespace Yelo
 			struct {
 				int16 device_group_index;
 				PAD16;
-				real value, unknown;
+				real value, change;
 			}	power,							// 0x1F8
 				position;						// 0x204
 
 			long_flags user_interation_flags;	// 0x210
 		}; BOOST_STATIC_ASSERT( sizeof(s_device_data) == Enums::k_object_size_device - Enums::k_object_size_object );
 
-		struct s_device_machine_data : TStructImpl(Enums::k_object_size_machine - Enums::k_object_size_device)
+		struct s_device_machine_data
 		{
-			enum { DATA_OFFSET = Enums::k_object_size_device, };
-		};
+			long_flags flags;					// 0x214
+			UNKNOWN_TYPE(int32);				// 0x218, looks like a timer used for door-type machines
+			real_point3d elevator_position;		// 0x21C
+		}; BOOST_STATIC_ASSERT( sizeof(s_device_machine_data) == Enums::k_object_size_machine - Enums::k_object_size_device );
 
-		struct s_device_control_data : TStructImpl(Enums::k_object_size_control - Enums::k_object_size_device)
+		struct s_device_control_data
 		{
-			enum { DATA_OFFSET = Enums::k_object_size_device, };
-		};
+			long_flags flags;					// 0x214
+			int16 custom_name_index;			// 0x218
+			PAD16;
+		}; BOOST_STATIC_ASSERT( sizeof(s_device_control_data) == Enums::k_object_size_control - Enums::k_object_size_device );
 
-		struct s_device_lightfixture_data : TStructImpl(Enums::k_object_size_light_fixture - Enums::k_object_size_device)
+		struct s_device_lightfixture_data
 		{
-			enum { DATA_OFFSET = Enums::k_object_size_device, };
-		};
+			real_rgb_color color;				// 0x214
+			real intensity;
+			real falloff_angle, cutoff_angle;
+		}; BOOST_STATIC_ASSERT( sizeof(s_device_lightfixture_data) == Enums::k_object_size_light_fixture - Enums::k_object_size_device );
 
 
 

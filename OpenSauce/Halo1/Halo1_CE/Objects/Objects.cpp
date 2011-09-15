@@ -71,15 +71,8 @@ namespace Yelo
 
 #include "Objects/Objects.Damage.inl"
 #include "Objects/Objects.Scripting.inl"
-		void Initialize()
+		void InitializeScripting()
 		{
-			//Memory::WriteRelativeCall(&Objects::Update, GET_FUNC_VPTR(OBJECTS_UPDATE_HOOK), false);
-
-			ToggleMultiTeamVehicles();
-
-			Weapon::Initialize();
-			Vehicle::Initialize();
-
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_objects_distance_to_object, 
 				scripting_objects_distance_to_object_evaluate);
 
@@ -91,6 +84,8 @@ namespace Yelo
 				scripting_weapon_data_get_real_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_weapon_data_set_real, 
 				scripting_weapon_data_set_real_evaluate);
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_weapon_data_trigger_set_real, 
+				scripting_weapon_data_trigger_set_real_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_data_get_object, 
 				scripting_unit_data_get_object_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_data_get_integer, 
@@ -101,6 +96,17 @@ namespace Yelo
 				scripting_unit_data_get_integer_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_data_set_real, 
 				scripting_unit_data_set_integer_evaluate);
+		}
+		void Initialize()
+		{
+			//Memory::WriteRelativeCall(&Objects::Update, GET_FUNC_VPTR(OBJECTS_UPDATE_HOOK), false);
+
+			ToggleMultiTeamVehicles();
+
+			Weapon::Initialize();
+			Vehicle::Initialize();
+
+			InitializeScripting();
 		}
 
 		void Dispose()

@@ -128,7 +128,7 @@ namespace Yelo
 				TStructSubGetPtrImpl(byte,				GrenadePlasmaCount, 0x31E);
 				TStructSubGetPtrImpl(byte,				GrenadeFragCount, 0x31F);
 			TStructSubGetPtrImpl(byte,					ZoomLevel, 0x320);
-			//TStructSubGetPtrImpl(byte,					, 0x321);
+			TStructSubGetPtrImpl(byte,					DesiredZoomLevel, 0x321);
 			//TStructSubGetPtrImpl(sbyte,					, 0x322);
 			TStructSubGetPtrImpl(byte,					AimingChange, 0x323);
 			TStructSubGetPtrImpl(datum_index,			DriverObj, 0x324);
@@ -140,7 +140,7 @@ namespace Yelo
 			TStructSubGetPtrImpl(real,					GunnerPower, 0x33C);
 			TStructSubGetPtrImpl(int32,					IntegratedLightPower, 0x340);
 
-			// 0x348, dword
+			// 0x348, real, related to zoom, night vision, and the player's hud
 
 			TStructSubGetPtrImpl(real,					CamoPower, 0x37C);
 

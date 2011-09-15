@@ -27,18 +27,16 @@ namespace Yelo
 		enum weapon_state : byte_enum
 		{
 			_weapon_state_idle,
-			_weapon_state_fire1,
-			_weapon_state_fire2,
-			_weapon_state_chamber1,
-			_weapon_state_chamber2,
-			_weapon_state_reload1,
-			_weapon_state_reload2,
-			_weapon_state_charged1,
-			_weapon_state_charged2,
+
+			_weapon_state_fire1,	_weapon_state_fire2,
+			_weapon_state_chamber1,	_weapon_state_chamber2,
+			_weapon_state_reload1,	_weapon_state_reload2,
+			_weapon_state_charged1,	_weapon_state_charged2,
+
 			_weapon_state_ready,
 			_weapon_state_put_away,
 
-			_weapon_state
+			_weapon_state,
 		};
 
 		enum weapon_trigger_state : byte_enum
@@ -46,14 +44,23 @@ namespace Yelo
 			_weapon_trigger_state_idle,
 			_weapon_trigger_state_fire1,
 			_weapon_trigger_state_fire2,
-			_weapon_trigger_state_unknown3,
-			_weapon_trigger_state_unknown4,
-			_weapon_trigger_state_unknown5,
+			_weapon_trigger_state_unknown3, // overcharged related
+			_weapon_trigger_state_unknown4, // locked related (tracking)
+			_weapon_trigger_state_unknown5, // tracking related
 			_weapon_trigger_state_unknown6,
-			_weapon_trigger_state_unknown7,
-			_weapon_trigger_state_unknown8,
+			_weapon_trigger_state_unknown7, // 1
+			_weapon_trigger_state_unknown8, // 2
 
 			_weapon_trigger_state,
+		};
+
+		enum weapon_magazine_state : _enum
+		{
+			_weapon_magazine_state_idle,
+			_weapon_magazine_state_chambering_start,
+			_weapon_magazine_state_chambering_finish,
+			_weapon_magazine_state_chambering,
+			_weapon_magazine_state,
 		};
 	};
 
@@ -73,40 +80,42 @@ namespace Yelo
 			TStructSubGetPtrImpl(real,					Age, 0x240);
 			TStructSubGetPtrImpl(real,					IntegratedLightPower, 0x248);
 
+			TStructSubGetPtrImpl(datum_index,			TrackedObject, 0x250);
+
 			struct s_trigger_state
 			{
-				PAD8; // ?
+				PAD8; // sbyte
 				Enums::weapon_trigger_state state;
-				int16 time;
-				UNKNOWN_TYPE(long_flags);
+				uint16 time;
+				UNKNOWN_TYPE(long_flags);			// 0x4
+				UNKNOWN_TYPE(int16);				// 0x8
 				UNKNOWN_TYPE(int16);
-				UNKNOWN_TYPE(int16);
-				UNKNOWN_TYPE(int16);
-				UNKNOWN_TYPE(int16);
-				UNKNOWN_TYPE(real);
-				UNKNOWN_TYPE(real);
-
-				PAD(0, 0x10); // I haven't researched the rest of the structure
+				UNKNOWN_TYPE(int16);				// 0xC
+				UNKNOWN_TYPE(int16); // uint16
+				UNKNOWN_TYPE(real);					// 0x10
+				UNKNOWN_TYPE(real);					// 0x14
+				UNKNOWN_TYPE(real);					// 0x18
+				UNKNOWN_TYPE(real);					// 0x1C
+				datum_index charging_effect_index;	// 0x20
+				PAD32; // ?
 			}; BOOST_STATIC_ASSERT( sizeof(s_trigger_state) == 0x28 );
 			TStructSubGetPtrImpl(s_trigger_state,		Triggers, 0x260); // [2]
 
 			struct s_magazine_state // '?' means IDK if its actually padding or there are values there. If there are, IDK their types (could be a boolean!)
 			{
-				// 1 = reloading
-				// 2 = ?
-				// 3 = ?
-				_enum state;
-				PAD16; // ?
-				PAD16; // ?
-				int16 rounds_unloaded;
-				int16 rounds_loaded;
-				PAD16; // ?
-				UNKNOWN_TYPE(int16); // I just know a WORD is here, may be an _enum
+				Enums::weapon_magazine_state state;
+				uint16 chamber_time;				// 0x2 in ticks
+				UNKNOWN_TYPE(int16);				// 0x4 uint16, appears to be another game tick based value (animations?)
+				int16 rounds_unloaded;				// 0x6
+				int16 rounds_loaded;				// 0x8
+				UNKNOWN_TYPE(int16);				// 0xA uint16, appears to be another game tick based value
+				UNKNOWN_TYPE(int16);				// 0xC I just know a WORD is here, may be an _enum
 				PAD16; // ?
 			}; BOOST_STATIC_ASSERT( sizeof(s_magazine_state) == 0x10 );
 			TStructSubGetPtrImpl(s_magazine_state,		Magazines, 0x2B0); // [2]
 
-			TStructSubGetPtrImpl(datum_index,			ReadyEffect, 0x2CC); // effects datum
+			// need to reverify this...0x2CC is inside one of the Magazines
+			//TStructSubGetPtrImpl(datum_index,			ReadyEffect, 0x2CC); // effects datum
 
 			TStructSubGetPtrImpl(bool,					BaselineValid, 0x2E0);
 			TStructSubGetPtrImpl(byte,					BaselineIndex, 0x2E1);
