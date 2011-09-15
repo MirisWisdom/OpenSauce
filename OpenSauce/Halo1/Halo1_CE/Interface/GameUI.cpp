@@ -141,6 +141,7 @@ namespace Yelo
 
 			Memory::CreateHookRelativeCall(&GameUI::Update, GET_FUNC_VPTR(HUD_UPDATE_HOOK), Enums::_x86_opcode_retn);
 			Memory::CreateHookRelativeCall(&GameUI::FirstPersonWeaponsUpdate, GET_FUNC_VPTR(FIRST_PERSON_WEAPONS_UPDATE_HOOK), Enums::_x86_opcode_retn);
+			FirstPersonWeaponSetStateHookCreateHook();
 		}
 
 		void Dispose()

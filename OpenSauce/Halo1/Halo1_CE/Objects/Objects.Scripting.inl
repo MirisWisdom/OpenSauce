@@ -139,6 +139,9 @@ static void* scripting_object_data_set_real_evaluate(void** arguments)
 }
 
 
+//////////////////////////////////////////////////////////////////////////
+// WEAPONS
+
 static real* weapon_data_get_real_by_name(s_weapon_datum* weapon, cstring data_name, Enums::hs_type& out_type)
 {
 	cstring s = data_name; // alias for keeping the code width down
@@ -161,11 +164,16 @@ static void* scripting_weapon_data_get_real_evaluate(void** arguments)
 
 	if(!args->weapon_index.IsNull())
 	{
-		s_weapon_datum* weapon = (*Objects::ObjectHeader())[args->weapon_index]->Type._weapon;
+		s_object_header_datum* header = (*Objects::ObjectHeader())[args->weapon_index];
 
-		Enums::hs_type result_type;
-		result.ptr.real = weapon_data_get_real_by_name(weapon, args->data_name, result_type);
-		Scripting::UpdateTypeHolderFromPtrToData(result, result_type);
+		if(header->object_type == Enums::_object_type_weapon)
+		{
+			s_weapon_datum* weapon = header->Type._weapon;
+
+			Enums::hs_type result_type;
+			result.ptr.real = weapon_data_get_real_by_name(weapon, args->data_name, result_type);
+			Scripting::UpdateTypeHolderFromPtrToData(result, result_type);
+		}
 	}
 
 	return result.pointer;
@@ -180,17 +188,90 @@ static void* scripting_weapon_data_set_real_evaluate(void** arguments)
 
 	if(!args->weapon_index.IsNull())
 	{
-		s_weapon_datum* weapon = (*Objects::ObjectHeader())[args->weapon_index]->Type._weapon;
+		s_object_header_datum* header = (*Objects::ObjectHeader())[args->weapon_index];
 
-		TypeHolder result;
-		Enums::hs_type result_type;
-		result.ptr.real = weapon_data_get_real_by_name(weapon, args->data_name, result_type);
-		Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &args->data_value);
+		if(header->object_type == Enums::_object_type_weapon)
+		{
+			s_weapon_datum* weapon = header->Type._weapon;
+
+			TypeHolder result;
+			Enums::hs_type result_type;
+			result.ptr.real = weapon_data_get_real_by_name(weapon, args->data_name, result_type);
+			Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &args->data_value);
+		}
 	}
 
 	return NULL;
 }
 
+//////////////////////////////////////////////////////////////////////////
+// WEAPONS - TRIGGERS
+
+static real* weapon_data_trigger_set_real_by_name(s_weapon_datum* weapon, int32 trigger_index, cstring data_name, cstring subdata_name, Enums::hs_type& out_type)
+{
+	// IF ANY OF YOUR DESIGNERS USE THIS FUCKING SCRIPT FUNCTION, THEN YOU ALL DESERVE TO BE FUCKING SHOT.
+
+	// SRSLY.
+
+	cstring s = data_name; // alias for keeping the code width down
+
+	out_type = HS_TYPE(real);
+
+	datum_index definition_index = *weapon->object.GetTagDefinition();
+
+	const TagGroups::s_weapon_definition* definition = TagGroups::Instances()[ definition_index.index ]
+		.Definition<TagGroups::s_weapon_definition>();
+
+	if (trigger_index >= 0 && trigger_index < definition->weapon.triggers.Count)
+	{
+		// We're fucking with the tag definition...at runtime :|
+		TagGroups::weapon_trigger_definition* trigger = CAST_QUAL(TagGroups::weapon_trigger_definition*, 
+			&definition->weapon.triggers[trigger_index]);
+
+			 if( !strcmp(s,"spew_time") )		return &trigger->spew_time;
+		else if( !strcmp(s,"rounds_per_second") )
+		{
+			s = subdata_name; // alias for keeping the code width down
+
+				 if( !strcmp(s,"lower") )		return &trigger->rounds_per_second.lower;
+			else if( !strcmp(s,"upper") )		return &trigger->rounds_per_second.upper;
+		}
+	}
+
+	return NULL;
+}
+
+static void* scripting_weapon_data_trigger_set_real_evaluate(void** arguments)
+{
+	struct s_arguments {
+		datum_index weapon_index;
+		int32 trigger_index;
+		cstring data_name;
+		cstring subdata_name;
+		real data_value;
+	}* args = CAST_PTR(s_arguments*, arguments);
+
+	if(!args->weapon_index.IsNull())
+	{
+		s_object_header_datum* header = (*Objects::ObjectHeader())[args->weapon_index];
+
+		if(header->object_type == Enums::_object_type_weapon)
+		{
+			s_weapon_datum* weapon = header->Type._weapon;
+
+			TypeHolder result;
+			Enums::hs_type result_type;
+			result.ptr.real = weapon_data_trigger_set_real_by_name(weapon, args->trigger_index, args->data_name, args->subdata_name, result_type);
+			Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &args->data_value);
+		}
+	}
+
+	return NULL;
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+// UNITS
 
 static datum_index scripting_unit_data_get_object_by_name(s_unit_datum* unit, cstring data_name)
 {
@@ -241,6 +322,10 @@ static void* scripting_unit_data_get_integer_by_name(s_unit_datum* unit, cstring
 		 if( !strcmp(s,"total_grenade_count[plasma]") )	return unit->unit.GetGrenadePlasmaCount();
 	else if( !strcmp(s,"total_grenade_count[frag]") )	return unit->unit.GetGrenadeFragCount();
 	else if( !strcmp(s,"current_grenade_index") )		return unit->unit.GetCurrentGrenadeIndex();
+	// designers should NOT set the zoom this way...
+	else if( !strcmp(s,"zoom_level") )					return unit->unit.GetZoomLevel();
+	// ...they should set it via this
+	else if( !strcmp(s,"desired_zoom_level") )			return unit->unit.GetDesiredZoomLevel();
 
 	out_type = HS_TYPE(short);
 		 if( !strcmp(s,"vehicle_seat_index") )		return unit->unit.GetVehicleSeatIndex();

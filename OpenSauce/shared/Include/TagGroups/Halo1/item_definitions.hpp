@@ -313,8 +313,8 @@ namespace Yelo
 			PAD16;
 			TAG_ENUM(weapon_type);
 			TAG_TBLOCK(predicted_resources, predicted_resource);
-			TAG_BLOCK(magazines, weapon_magazine_definition);
-			TAG_BLOCK(triggers, weapon_trigger_definition);
+			TAG_TBLOCK(magazines, weapon_magazine_definition);
+			TAG_TBLOCK(triggers, weapon_trigger_definition);
 		}; BOOST_STATIC_ASSERT( sizeof(_weapon_definition) == 0x200);
 
 		struct s_weapon_definition : s_item_definition

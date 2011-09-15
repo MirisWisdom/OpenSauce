@@ -167,11 +167,15 @@ namespace Yelo
 				memset(local, 0, k_engine_function_string_buffer_size);
 				strcpy(local, command);
 #else
-				cstring local = commad;
+				cstring local = command;
 #endif
 
 				__asm {
+#if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 					lea		edi, local
+#else
+					mov		edi, local
+#endif
 					push	0
 					call	TEMP_CALL_ADDR
 					add		esp, 4
@@ -191,7 +195,11 @@ namespace Yelo
 #endif
 
 				__asm {
+#if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 					lea		ebx, local
+#else
+					mov		ebx, local
+#endif
 					push	ebx
 					xor		al, al
 					call	TEMP_CALL_ADDR
@@ -233,7 +241,11 @@ namespace Yelo
 #endif
 
 				__asm {
+#if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 					lea		ebx, local
+#else
+					mov		ebx, local
+#endif
 					push	ebx
 					push	0
 					call	TEMP_CALL_ADDR
@@ -254,7 +266,11 @@ namespace Yelo
 #endif
 
 				__asm {
+#if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 					lea		ebx, local
+#else
+					mov		ebx, local
+#endif
 					push	ebx
 					call	TEMP_CALL_ADDR
 					add		esp, 4
@@ -351,15 +367,15 @@ namespace Yelo
 
 		namespace Game
 		{
-			void SwitchBsp(int16 index)
+			API_FUNC_NAKED void SwitchBsp(int16 index)
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(SCENARIO_SWITCH_STRUCTURE_BSP);
 
-				__asm {
+				NAKED_FUNC_START()
 					xor		esi, esi
 					mov		si, index
 					call	TEMP_CALL_ADDR
-				}
+				NAKED_FUNC_END(1)
 			}
 
 			void PlayVideo(cstring bink)
@@ -376,7 +392,11 @@ namespace Yelo
 	#endif
 
 				__asm {
+	#if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 					lea		eax, local
+	#else
+					mov		eax, local
+	#endif
 					push	eax
 					call	TEMP_CALL_ADDR
 					add		esp, 4
@@ -384,17 +404,16 @@ namespace Yelo
 #endif
 			}
 
-			void RasterizerMessage(wcstring msg, uint32 flags)
+			API_FUNC_NAKED void RasterizerMessage(wcstring msg, uint32 flags)
 			{
 #if !PLATFORM_IS_DEDI
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(GAME_ENGINE_RASTERIZE_MESSAGE);
 
-				__asm {
+				NAKED_FUNC_START()
 					push	flags
 					push	msg
 					call	TEMP_CALL_ADDR
-					add		esp, 4 * 2
-				}
+				NAKED_FUNC_END_CDECL(2)
 #endif
 			}
 
@@ -477,7 +496,11 @@ namespace Yelo
 	#endif
 
 				__asm {
+	#if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 					lea		eax, local
+	#else
+					mov		eax, local
+	#endif
 					push	eax
 					call	TEMP_CALL_ADDR
 					add		esp, 4 * 1
@@ -498,7 +521,11 @@ namespace Yelo
 	#endif
 
 				__asm {
+	#if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 					lea		eax, local
+	#else
+					mov		eax, local
+	#endif
 					push	eax
 					mov		eax, 0 // player index
 					call	TEMP_CALL_ADDR
@@ -699,7 +726,11 @@ namespace Yelo
 
 				__asm {
 					movsx	eax, chat_type
+#if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 					lea		edx, local
+#else
+					mov		edx, local
+#endif
 					push	player_number // really a byte, but you can't push a byte!
 					call	TEMP_CALL_ADDR
 					add		esp, 4 * 1
@@ -1167,7 +1198,11 @@ namespace Yelo
 				__asm {
 					push	edi
 
+#if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 					lea		eax, local
+#else
+					mov		eax, local
+#endif
 					push	eax
 					mov		edi, group_tag
 					call	TEMP_CALL_ADDR
