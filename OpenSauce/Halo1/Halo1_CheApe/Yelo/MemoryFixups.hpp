@@ -59,6 +59,10 @@ namespace Yelo
 			}tags;
 		}_override_paths;
 
+#if PLATFORM_ID == PLATFORM_GUERILLA
+		static char tag_import_path_buffer[0xFF];
+#endif
+
 		static DWORD WINAPI GetCurrentDirectoryHack(
 			__in DWORD nBufferLength,
 			__out_ecount_part_opt(nBufferLength, return + 1) LPSTR lpBuffer);
@@ -66,6 +70,11 @@ namespace Yelo
 #if PLATFORM_ID != PLATFORM_GUERILLA
 		static char* PLATFORM_API tag_file_index_build_strchr_hack(char* str, char val);
 		static void tag_file_index_build_strchr_hack_initialize();
+#else
+		static void Hook_TagImportPathBuffer_Copy();
+		static void Hook_TagImportPathBuffer_Use();
+		static void PLATFORM_API c_memory_fixups::tag_import_fix_truncated_tag_paths();
+		static void PLATFORM_API tag_import_fix_real_plane_2d_jmp_indices();
 #endif
 
 		static void FixupsInitializeDataPaths(cstring data_override);
@@ -73,6 +82,8 @@ namespace Yelo
 
 		static void FixupsInitializeTagPaths(cstring tags_override, cstring tags_name_override);
 		static void FixupsInitializeFilePaths();
+
+		static void FixupsInitializeTagTextIOFixes();
 
 	public:
 		enum fixup_type : _enum

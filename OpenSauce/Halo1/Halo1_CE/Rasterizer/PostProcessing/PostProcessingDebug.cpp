@@ -87,14 +87,18 @@ namespace Yelo
 					memcpy_s(buffer, line_length, string_pointer, line_length);
 					buffer[line_length - 1] = '\0';
 				
-					Write(buffer);
-
-					delete[] buffer;
-					buffer = NULL;
 					//probably not safe, but should be ok
 					string_pointer += line_length;
 
-					count++;
+					if(strstr(buffer, "error"))
+					{
+						Write(buffer);
+
+						delete[] buffer;
+						buffer = NULL;
+
+						count++;
+					}
 				}
 			}
 		};

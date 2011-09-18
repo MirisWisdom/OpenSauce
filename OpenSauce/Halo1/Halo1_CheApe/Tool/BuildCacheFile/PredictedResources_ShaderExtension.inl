@@ -61,6 +61,11 @@ namespace ShaderExtension
 					0);
 			}
 		}
+
+		if(	extension.specular_power == 0.0f)
+			extension.specular_power =  1.0f;
+		if(	extension.specular_multiplier == 0.0f)
+			extension.specular_multiplier =  1.0f;
 	}
 
 	static bool object_add_to_predicted_resources(datum_index tag_index)

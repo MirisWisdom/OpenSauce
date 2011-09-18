@@ -26,6 +26,7 @@
 namespace Yelo
 {
 #include "Yelo/MemoryFixups.Paths.inl"
+#include "Yelo/MemoryFixups.TagTextIO.inl"
 	void c_memory_fixups::InitializePaths()
 	{
 		FixupsInitializeFilePaths();
@@ -83,6 +84,7 @@ namespace Yelo
 	void c_memory_fixups::Initialize()
 	{
 		c_memory_fixups::ProcessFixups();
+		c_memory_fixups::FixupsInitializeTagTextIOFixes();
 
 #if 0
 		c_memory_fixups::DebugPaths();

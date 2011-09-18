@@ -2,6 +2,7 @@
 <definitions game="Halo1">
 	<blocks>
 		<TagBlock name="shader_model_extension_block_definition" maxElements="1">
+			<!--field type="Pad" definition="16" /-->
 			<field type="Explanation" name="specular map" definition="The specular color map is multiplied by the stock specular result~Nto provide finer control over the specular color.~NRGB holds the specular color" />
 			<field type="TagReference" name="specular color map" definition="bitmap_reference" />
 			<field type="Real" name="specular color multiplier" tooltip="0 defaults to 1" />
@@ -29,7 +30,10 @@
 			<field type="RealRgbColor" name="perpendicular tint color" tooltip="reflection tint color when viewed perpendicularly"/>
 			<field type="Real" name="parallel brightness" units="[0,1]" tooltip="reflection brightness when viewed at a glancing angle"/>
 			<field type="RealRgbColor" name="parallel tint color" tooltip="reflection tint color when viewed at a glancing angle"/>
-			<field type="Pad" definition="32" />
+			<field type="Explanation" name="specular result" definition="These values modify the final specular colour"/>
+			<field type="Real" name="specular power" tooltip="modifies the final specular result, 0 defaults to 1"/>
+			<field type="Real" name="specular multiplier" tooltip="multiplies the final specular result, 0 defaults to 1"/>
+			<field type="Pad" definition="24" />
 		</TagBlock>
 	</blocks>
 
