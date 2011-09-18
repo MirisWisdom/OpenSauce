@@ -79,8 +79,8 @@ namespace Yelo
 
 				real	specular_color_power;
 				real	base_normal_z_multiplier;
-				PAD32;
-				PAD32;
+				real	specular_power;
+				real	specular_multipler;
 			};
 
 			typedef char t_shader_usage_id[128];
@@ -411,6 +411,8 @@ no_normal_maps:
 				g_pixel_shader_variables.detail_normal_1_multiplier = 1.0f;
 				g_pixel_shader_variables.detail_normal_2_multiplier = 1.0f;
 				g_pixel_shader_variables.base_normal_z_multiplier = 1.0f;
+				g_pixel_shader_variables.specular_power = 1.0f;
+				g_pixel_shader_variables.specular_multipler = 1.0f;
 
 				TagGroups::s_shader_definition* shader_base = 
 					CAST_PTR(TagGroups::s_shader_definition*, shader_pointer);
@@ -485,6 +487,9 @@ no_normal_maps:
 						shader_model->model.reflection_properties.parallel_tint_color = extension.parallel_tint_color;
 						shader_model->model.reflection_properties.perpendicular_brightness = extension.perpendicular_brightness;
 						shader_model->model.reflection_properties.perpendicular_tint_color = extension.perpendicular_tint_color;
+
+						g_pixel_shader_variables.specular_power = extension.specular_power;
+						g_pixel_shader_variables.specular_multipler = extension.specular_multiplier;
 					}
 				}
 				else if(shader_base->shader.shader_type == Enums::_shader_type_environment)
@@ -587,7 +592,6 @@ no_normal_maps:
 				// update with the extended shader count
 				GET_PTR(RASTERIZER_MODEL_SHADER_LOAD_COUNT) = 48;
 				GET_PTR(RASTERIZER_MODEL_SHADER_LOAD_NO_INVERSE_COUNT) = 24;
-
 
 				// redirect references to the original pixel shader arrays to the custom arrays
 				for(i = 0; i < NUMBEROF(K_PIXEL_SHADER_REFERENCES_ENVIRONMENT_NO); i++)

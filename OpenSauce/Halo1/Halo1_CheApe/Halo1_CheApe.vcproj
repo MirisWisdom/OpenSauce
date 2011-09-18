@@ -786,6 +786,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Yelo\MemoryFixups.TagTextIO.inl"
+				>
+			</File>
+			<File
 				RelativePath=".\Yelo\ScenarioResources.cpp"
 				>
 			</File>
