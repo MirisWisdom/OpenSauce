@@ -219,7 +219,8 @@ namespace Yelo
 			TStructGetPtrImpl(long_flags,				Flags, 0x10);
 			TStructGetPtrImpl(s_object_network_datum_data, NetworkDatumData, 0x50);
 			TStructGetPtrImpl(s_scenario_location,		ScenarioLocation, 0x98);
-			//TStructGetPtrImpl(real_point3d,				, 0xA0); // position, used for stock game code's trigger volume point testing
+			TStructGetPtrImpl(real_point3d,				Center, 0xA0); // position, used for stock game code's trigger volume point testing
+			TStructGetPtrImpl(real,						Radius, 0xAC);
 			TStructGetPtrImpl(real,						Scale, 0xB0);
 			TStructGetPtrImpl(byte,						Type, 0xB4);
 			TStructGetPtrImpl(int16,					OwnerTeamIndex, 0xB8);

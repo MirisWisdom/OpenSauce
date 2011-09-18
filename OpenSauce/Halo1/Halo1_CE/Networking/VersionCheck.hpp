@@ -143,22 +143,22 @@ namespace Yelo
 {
 	namespace Networking { namespace VersionCheck
 	{
-		void		Initialize() {}
-		void		Dispose() {}
+		void		Initialize();
+		void		Dispose();
 
 #ifdef PLATFORM_IS_USER
-		void		Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters) {}
-		void		OnLostDevice() {}
-		void		OnResetDevice(D3DPRESENT_PARAMETERS* pParameters) {}
-		void		Render() {}
-		void		Release() {}
+		void		Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters);
+		void		OnLostDevice();
+		void		OnResetDevice(D3DPRESENT_PARAMETERS* pParameters);
+		void		Render();
+		void		Release();
 #endif
 
-		void		LoadSettings(TiXmlElement* dx9_element) {}
-		void		SaveSettings(TiXmlElement* dx9_element) {}
+		void		LoadSettings(TiXmlElement* dx9_element);
+		void		SaveSettings(TiXmlElement* dx9_element);
 
-		void		InitializeForNewMap() {}
-		void		Update(real delta_time) {}
-	};};
+		void		InitializeForNewMap();
+		void		Update(real delta_time);
+	}; };
 };
 #endif

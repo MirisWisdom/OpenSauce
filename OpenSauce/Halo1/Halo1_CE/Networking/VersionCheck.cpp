@@ -462,6 +462,31 @@ namespace Yelo
 										(m_current_version.m_minor < m_available_version.m_minor) ||
 										(m_current_version.m_build < m_available_version.m_build);
 		}
-	};};
+	}; };
+};
+
+#else
+
+namespace Yelo
+{
+	namespace Networking { namespace VersionCheck
+	{
+		void		Initialize() {}
+		void		Dispose() {}
+
+#ifdef PLATFORM_IS_USER
+		void		Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters) {}
+		void		OnLostDevice() {}
+		void		OnResetDevice(D3DPRESENT_PARAMETERS* pParameters) {}
+		void		Render() {}
+		void		Release() {}
+#endif
+
+		void		LoadSettings(TiXmlElement* dx9_element) {}
+		void		SaveSettings(TiXmlElement* dx9_element) {}
+
+		void		InitializeForNewMap() {}
+		void		Update(real delta_time) {}
+	}; };
 };
 #endif
