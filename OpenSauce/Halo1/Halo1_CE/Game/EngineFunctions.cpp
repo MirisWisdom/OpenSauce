@@ -152,7 +152,9 @@ namespace Yelo
 				add		esp, 4 * 1
 			NAKED_FUNC_END(3)
 #else
-			return animation_index;
+			NAKED_FUNC_START()
+				mov		eax, animation_index;
+			NAKED_FUNC_END(3)
 #endif
 		}
 

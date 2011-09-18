@@ -70,7 +70,7 @@
 //////////////////////////////////////////////////////////////////////////
 // GameSpy includes & definitions
 
-// Uncomment this if you don't have access to the Open SDK
+// Comment out this if you don't have access to the Open SDK
 #define YELO_USE_GAMESPY_OPEN
 
 #if defined(YELO_USE_GAMESPY_OPEN)

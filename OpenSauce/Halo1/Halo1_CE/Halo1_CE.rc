@@ -70,12 +70,12 @@
 			BLOCK "040904b0"
 			BEGIN
 				VALUE "FileDescription", "OpenSauce - Yelo Module (Halo1_CE)"
-				VALUE "FileVersion", "2.00"
+				VALUE "FileVersion", "2.50"
 				VALUE "InternalName", "Halo1_CE"
-				VALUE "LegalCopyright", "Copyright (C) 2009"
+				VALUE "LegalCopyright", "Copyright (C) 2011"
 				VALUE "OriginalFilename", "Halo1_CE.dll"
 				VALUE "ProductName", "OpenSauce - Yelo Module (Halo1_CE)"
-				VALUE "ProductVersion", "2.00"
+				VALUE "ProductVersion", "2.50"
 			END
 		END
 		BLOCK "VarFileInfo"
