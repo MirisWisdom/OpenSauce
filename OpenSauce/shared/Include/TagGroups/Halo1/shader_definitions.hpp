@@ -58,6 +58,16 @@ namespace Yelo
 
 			_detail_map_function,
 		};
+		enum shader_extension_usage : _enum
+		{
+			_shader_extension_usage_none				= 0,
+			_shader_extension_usage_normal_map			= 1 << 0,
+			_shader_extension_usage_detail_normal		= 1 << 1,
+			_shader_extension_usage_specular_map		= 1 << 2,
+			_shader_extension_usage_specular_lighting	= 1 << 3,
+
+			_shader_extension_usage,
+		};
 		enum animation_function : _enum
 		{
 			_animation_function_one,
@@ -382,7 +392,7 @@ namespace Yelo
 			TAG_ENUM(material_type, Enums::material_type);
 
 			TAG_ENUM(shader_type, Enums::shader_type);
-			PAD16;
+			TAG_FIELD(_enum, extension_usage);
 		}; BOOST_STATIC_ASSERT( sizeof(_shader_definition) == 0x28 );
 		
 		struct s_shader_definition
@@ -567,11 +577,11 @@ namespace Yelo
 				union{
 					TAG_PAD(byte, 16);
 					struct{
-						real multiplier; //used by all
+						real coefficient; //used by all
 						union{
 							struct{
 								PAD32;
-								real power;  //only used by specular color
+								real exponent;  //only used by specular color
 							};
 							struct{
 								real scale;  //only used by detail normals
@@ -592,10 +602,14 @@ namespace Yelo
 			TAG_FIELD(real_fraction, parallel_brightness, "[0,1]", "reflection brightness when viewed at a glancing angle");
 			TAG_FIELD(real_rgb_color, parallel_tint_color, "", "reflection tint color when viewed at a glancing angle");
 
-			TAG_FIELD(real, specular_power, "", "modifies the final specular result");
-			TAG_FIELD(real, specular_multiplier, "", "multiplies the final specular result");
+			PAD32;
+			PAD32;
+			//TAG_FIELD(real, specular_reflection_exponent, "", "modifies the final specular result");
+			//TAG_FIELD(real, specular_reflection_coefficient, "", "multiplies the final specular result");
+			TAG_FIELD(real, specular_lighting_exponent);
+			TAG_FIELD(real, specular_lighting_coefficient);
 
-			TAG_PAD(byte, 24);
+			TAG_PAD(byte, 16);
 		};
 		struct _shader_model_definition
 		{

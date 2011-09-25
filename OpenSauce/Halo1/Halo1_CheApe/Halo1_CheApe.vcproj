@@ -2285,6 +2285,10 @@
 					RelativePath=".\Tool\BuildCacheFile\TagPreprocess_PostProcessing.inl"
 					>
 				</File>
+				<File
+					RelativePath=".\Tool\BuildCacheFile\TagPreprocess_ShaderExtension.inl"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

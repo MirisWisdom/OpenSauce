@@ -48,10 +48,10 @@ namespace Yelo
 
 			memset(time_str, 0, k_time_str_sizeof);
 
-			tm* newtime;
+			tm newtime;
 			time_t aclock;	time( &aclock ); // Get time in seconds
-			localtime_s( newtime, &aclock ); // Convert time to struct tm form
-			asctime_s( time_str, k_time_str_sizeof, newtime );
+			localtime_s( &newtime, &aclock ); // Convert time to struct tm form
+			asctime_s( time_str, k_time_str_sizeof, &newtime );
 		}
 
 		static void WriteFirstLine()
