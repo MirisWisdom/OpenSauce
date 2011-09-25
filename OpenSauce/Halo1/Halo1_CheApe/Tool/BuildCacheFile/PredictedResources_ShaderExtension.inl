@@ -23,49 +23,25 @@ namespace ShaderExtension
 		TagGroups::s_shader_model_extension& extension, 
 		TagBlock<TagGroups::predicted_resource>& predicted_resources)
 	{
-		if(	extension.specular_color.modifiers.multiplier == 0.0f)
-			extension.specular_color.modifiers.multiplier =  1.0f;
-		if(	extension.specular_color.modifiers.power == 0.0f)
-			extension.specular_color.modifiers.power =  1.0f;
 		if(!extension.specular_color.map.tag_index.IsNull())
-		{
-			predicted_resources_add_resource(predicted_resources, 
+			predicted_resources_add_resource(predicted_resources,
 				Enums::_predicted_resource_bitmap,
 				extension.specular_color.map.tag_index,
 				0);
-		}
 
-		if(	extension.base_normal.modifiers.multiplier == 0.0f)
-			extension.base_normal.modifiers.multiplier =  1.0f;
 		if(!extension.base_normal.map.tag_index.IsNull())
-		{
 			predicted_resources_add_resource(predicted_resources, 
 				Enums::_predicted_resource_bitmap,
 				extension.base_normal.map.tag_index,
 				0);
-		}
 
 		for(int32 x = 0; x < NUMBEROF(extension.detail_normals); x++)
-		{
-			if(	extension.detail_normals[x].modifiers.multiplier == 0.0f)
-				extension.detail_normals[x].modifiers.multiplier =  1.0f;
-			if(	extension.detail_normals[x].modifiers.scale == 0.0f)
-				extension.detail_normals[x].modifiers.scale =  1.0f;
-			if(	extension.detail_normals[x].modifiers.v_scale == 0.0f)
-				extension.detail_normals[x].modifiers.v_scale =  1.0f;
 			if(!extension.detail_normals[x].map.tag_index.IsNull())
-			{
 				predicted_resources_add_resource(predicted_resources, 
 					Enums::_predicted_resource_bitmap,
 					extension.detail_normals[x].map.tag_index,
 					0);
-			}
-		}
 
-		if(	extension.specular_power == 0.0f)
-			extension.specular_power =  1.0f;
-		if(	extension.specular_multiplier == 0.0f)
-			extension.specular_multiplier =  1.0f;
 	}
 
 	static bool object_add_to_predicted_resources(datum_index tag_index)

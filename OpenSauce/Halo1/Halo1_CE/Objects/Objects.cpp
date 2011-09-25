@@ -89,13 +89,13 @@ namespace Yelo
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_data_get_object, 
 				scripting_unit_data_get_object_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_data_get_integer, 
-				scripting_unit_data_get_real_evaluate);
-			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_data_set_integer, 
-				scripting_unit_data_set_real_evaluate);
-			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_data_get_real, 
 				scripting_unit_data_get_integer_evaluate);
-			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_data_set_real, 
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_data_set_integer, 
 				scripting_unit_data_set_integer_evaluate);
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_data_get_real, 
+				scripting_unit_data_get_real_evaluate);
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_data_set_real, 
+				scripting_unit_data_set_real_evaluate);
 		}
 		void Initialize()
 		{

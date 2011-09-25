@@ -22,6 +22,7 @@ namespace BuildCacheFileEx
 	namespace TagPreprocess
 	{
 #include "Tool/BuildCacheFile/TagPreprocess_PostProcessing.inl"
+#include "Tool/BuildCacheFile/TagPreprocess_ShaderExtension.inl"
 
 		static void PLATFORM_API preprocess_tags_for_build()
 		{
@@ -40,6 +41,12 @@ namespace BuildCacheFileEx
 					break;
 				case TagGroups::s_shader_postprocess_collection::k_group_tag:
 					PostProcessing::shader_postprocess_collection_process_collection(tag_index);
+					break;
+				case TagGroups::s_shader_model_definition::k_group_tag:
+					ShaderExtension::shader_model_extension_process(tag_index);
+					break;
+				case TagGroups::s_shader_environment_definition::k_group_tag:
+					ShaderExtension::shader_environment_extension_process(tag_index);
 					break;
 				}
 			}
