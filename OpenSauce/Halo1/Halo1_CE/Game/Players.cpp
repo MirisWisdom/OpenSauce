@@ -92,6 +92,29 @@ namespace Yelo
 		{
 		}
 
+		Objects::s_unit_datum* s_player_datum::GetPlayerUnit()
+		{
+			datum_index object_index = *this->GetSlaveUnitIndex();
+			if(object_index.IsNull()) return NULL;
+
+			return (*Objects::ObjectHeader())[object_index]->Type._unit;
+		}
+
+		datum_index s_player_datum::GetVehicleIndex()
+		{
+			datum_index vehicle_index = datum_index::null;
+
+			Objects::s_unit_datum* unit = this->GetPlayerUnit();
+			if(unit != NULL)
+			{
+				datum_index parent_object_index = *unit->object.GetParentObjectIndex();
+				if(	!parent_object_index.IsNull() && *unit->unit.GetVehicleSeatIndex() == NONE )
+					vehicle_index = parent_object_index;
+			}
+
+			return vehicle_index;
+		}
+
 		datum_index LocalPlayerIndex()
 		{
 			t_players_data::Iterator iter(Players::Players());
@@ -118,15 +141,31 @@ namespace Yelo
 			return NULL;
 		}
 
+		s_player_datum* GetPlayerFromNumber(byte player_number, datum_index* player_index_reference)
+		{
+			if(player_index_reference != NULL) *player_index_reference = datum_index::null;
+			if(player_number == NONE) return NULL;
+
+			t_players_data::Iterator iter(Players::Players());
+			s_player_datum* player;
+			while( (player = iter.Next()) != NULL )
+			{
+				if(player->GetNetworkPlayer()->player_list_index == player_number)
+				{
+					if(player_index_reference != NULL) *player_index_reference = iter.Current();
+					return player;
+				}
+			}
+
+			return NULL;
+		}
+
 
 		Objects::s_unit_datum* GetPlayerUnit(datum_index player_index)
 		{
 			if(player_index.IsNull()) return NULL;
 			
-			datum_index object_index = *(*Players::Players())[player_index]->GetSlaveUnitIndex();
-			if(object_index.IsNull()) return NULL;
-
-			return (*Objects::ObjectHeader())[object_index]->Type._unit;
+			return (*Players::Players())[player_index]->GetPlayerUnit();
 		}
 
 		datum_index* GetWeapons(datum_index player_index, int16* current_weapon_index)

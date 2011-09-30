@@ -55,6 +55,7 @@ namespace Yelo
 			tag_string build_string;
 		}build_info;
 
+#if PLATFORM_IS_EDITOR
 		void InitializeForNewMap()
 		{
 			memset(this, 0, sizeof(*this));
@@ -80,15 +81,17 @@ namespace Yelo
 			case TagEnums::_production_build_stage_release:	stage_string = "release";	break;
 			}
 
-			tm* date_tm = localtime( &build_info.timestamp );
+			tm date_tm;
+			localtime_s(&date_tm, &build_info.timestamp); // Convert time to struct tm form
 			// ######.YY.MM.DD.HHMM.stage
 			sprintf_s(build_info.build_string, "%06u." "%02i" "%02i.%02i." "%02i%02i." "%s", 
 				revision, 
-				date_tm->tm_year - 100, // days since 1900, and we want a number relative to 2000
-				date_tm->tm_mon, date_tm->tm_mday, 
-				date_tm->tm_hour, date_tm->tm_sec,
+				date_tm.tm_year - 100, // days since 1900, and we want a number relative to 2000
+				date_tm.tm_mon, date_tm.tm_mday, 
+				date_tm.tm_hour, date_tm.tm_sec,
 				stage_string);
 		}
+#endif
 
 		bool IsValid() const
 		{

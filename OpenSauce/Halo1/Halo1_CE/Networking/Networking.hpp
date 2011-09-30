@@ -233,8 +233,8 @@ namespace Yelo
 
 			// 0xA80, int32
 			// 0xA88, connection_class
-			// 0xA8C, byte_flags flags
-				//_connection_create_server_bit = BIT(0)
+			// BIT(0) - _connection_create_server_bit
+			TStructGetPtrImpl(long_flags, Flags, 0xA8C);
 			// 0xA98, bool
 			TStructGetPtrImpl(s_transport_endpoint_set, EndpointSet, 0xA9C );
 			TStructGetPtrImpl(s_network_connection*, ClientList, 0xAA0 ); // [16]
@@ -248,11 +248,16 @@ namespace Yelo
 			TStructGetPtrImpl(int32, LastReceivedUpdateSequenceNumber, 0x4);
 			TStructGetPtrImpl(int32, StallStartTime, 0x8);
 			TStructGetPtrImpl(int16, MachineIndex, 0xC);
-			// BIT(0) - 
-			// *BIT(1) - is_joined_to_game
-			// *BIT(2) - game_loading_complete
-			// *BIT(3) - is_precached
+			// BIT(0) - marked for removal
+			// BIT(1) - is_joined_to_game
+			// BIT(2) - game_loading_complete
+			// BIT(3) - is_precached
+			// BIT(4) - is holding up
 			TStructGetPtrImpl(word_flags, Flags, 0xE);
+
+			TStructGetPtrImpl(uint32, RemovalRejectTime, 0x14); // game time the removal was initiated
+			TStructGetPtrImpl(uint32, RemovalProcessTime, 0x18);// game time the removal will take effect
+
 			TStructGetPtrImpl(bool, HasPlayers, 0x50);
 
 			TStructGetPtrImpl(char, GsChallengeStr, 0x52); // char[7+1]
@@ -278,12 +283,12 @@ namespace Yelo
 			wchar_t name[12];			// 0x0
 			int16 primary_color_index;	// 0x18
 			int16 icon_index;			// 0x1A
-			byte machine_index;			// 0x1C
-			byte controller_index;		// 0x1D
+			sbyte machine_index;		// 0x1C
+			sbyte controller_index;		// 0x1D
 			// These values will be the same on the client as they are on the server, so 
 			// we can use them safely for player operations in multiplayer code
-			byte team_index;			// 0x1E
-			byte player_list_index;		// 0x1F
+			sbyte team_index;			// 0x1E
+			sbyte player_list_index;	// 0x1F
 		}; BOOST_STATIC_ASSERT( sizeof(s_network_player) == 0x20 );
 
 		struct s_network_game

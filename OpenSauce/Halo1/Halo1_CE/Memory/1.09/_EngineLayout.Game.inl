@@ -238,7 +238,8 @@ namespace Fov
 	ENGINE_PTR(void*, global_bsp3d,										0x6E2270, 0x629450);
 	ENGINE_PTR(void*, global_collision_bsp,								0x6E2278, 0x629458);
 	ENGINE_PTR(TagGroups::structure_bsp*, global_structure_bsp,			0x6E227C, 0x62945C);
-	ENGINE_PTR(real, global_gravity,									0x637BF4, 0x5AD5CC);
+	ENGINE_PTR(s_physics_globals, global_physics,						0x637BF4, 0x5AD5CC);
+	ENGINE_PTR(s_point_physics_globals, global_point_physics,			0x653CCC, 0x5C5BB4);
 
 	ENGINE_PTR(datum_index, global_scenario_index,						0x6397DC, 0x5AD85C);
 	ENGINE_PTR(int16, structure_bsp_index,								0x6397E0, 0x5AD860);

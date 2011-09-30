@@ -34,107 +34,34 @@ namespace Yelo
 
 		s_misc_encoding_globals* MiscEncodingGlobals()			PTR_IMP_GET2(misc_encoding_globals);
 		Enums::message_delta_encoding_class* EncodingClass()	PTR_IMP_GET2(g_message_delta_encoding_class);
-		byte* PacketBufferReceived()PTR_IMP_GET2(mdp_packet_buffer_received_data);
-		byte* PacketBufferSent()	PTR_IMP_GET2(mdp_packet_buffer_sent_data);
+		byte* PacketBufferReceived()							PTR_IMP_GET2(mdp_packet_buffer_received_data);
+		byte* PacketBufferSent()								PTR_IMP_GET2(mdp_packet_buffer_sent_data);
 
+		const message_delta_definition* const* OriginalPackets() { return GET_DPTR2(message_delta_packets); }
 
 #ifndef YELO_NO_NETWORK
-		#pragma region message_delta_to_string_table
-#ifdef API_DEBUG
-		/*static*/ cstring message_delta_to_string_table[] = {
-			"object_deletion",
-			"projectile_update",
-			"equipment_update",
-			"weapon_update",
-			"biped_update",
-			"vehicle_update",
-			"hud_add_item",
-			"player_create",
-			"player_spawn",
-			"player_exit_vehicle",
-			"player_set_action_result",
-			"player_effect_start",
-			"unit_kill",
-			"client_game_update",
-			"player_handle_powerup",
-			"hud_chat",
-			"slayer_update",
-			"ctf_update",
-			"oddball_update",
-			"king_update",
-			"race_update",
-			"player_score_update",
-			"game_engine_change_mode",
-			"game_engine_map_reset",
-			"multiplayer_hud_message",
-			"multiplayer_sound",
-			"team_change",
-			"unit_drop_current_weapon",
-			"vehicle_new",
-			"biped_new",
-			"projectile_new",
-			"equipment_new",
-			"weapon_new",
-			"game_settings_update",
-			"parameters_protocol",
-			"local_player_update",
-			"local_player_vehicle_update",
-			"remote_player_action_update",
-			"super_remote_players_action_update",
-			"remote_player_position_update",
-			"remote_player_vehicle_update",
-			"remote_player_total_update_biped",
-			"remote_player_total_update_vehicle",
-			"weapon_start_reload",
-			"weapon_ammo_pickup_mid_reload",
-			"weapon_finish_reload",
-			"weapon_cancel_reload",
-			"netgame_equipment_new",
-			"projectile_detonate",
-			"item_accelerate",
-			"damage_dealt",
-			"projectile_attach",
-			"client_to_server_pong",
-			"super_ping_update",
-			"sv_motd",
-			"rcon_request",
-			"rcon_response",
-
-			"LOOOOK AT ME MOTHER FUCKER!!!111!!!",
-			"update_script_global",
-			"update_memory",
-			"player_biped_update",
-			"poop",
-		};
-#endif
-		#pragma endregion
-
-
 		void PLATFORM_API NetworkGameClientHandleMessageDeltaMessageBodyEx(); // forward declare
 
 		static message_delta_definition* NewMessageDeltaList[Enums::k_message_deltas_new_count];
 		const message_delta_definition* const* NewPackets() { return NewMessageDeltaList; }
-#endif
 
-		const message_delta_definition* const* OriginalPackets() { return GET_DPTR2(message_delta_packets); }
-
-		void Initialize()
+		void InitializeNewMessageDeltaList()
 		{
-#ifndef YELO_NO_NETWORK
-
-#pragma region setup the message delta pointers (both old and new)
 			message_delta_definition** org_mdptrs = CAST_QUAL(message_delta_definition**, MessageDeltas::OriginalPackets());
-			message_delta_definition** new_mdptrs = CAST_QUAL(message_delta_definition**, MessageDeltas::NewPackets());
 
-			// copy the original halopc message delta packets
+			// copy the original halopc delta definitions
 			size_t x = 0;
 			for(; x < Enums::k_message_deltas_count; x++)
-				new_mdptrs[x] = org_mdptrs[x];
+				NewMessageDeltaList[x] = org_mdptrs[x];
 
+			// copy the new yelo delta definitions
 			for(size_t i = 0; i < Enums::k_message_deltas_yelo_count; i++, x++)
-				new_mdptrs[x] = new_mdp_packets[i];
-#pragma endregion
-
+				NewMessageDeltaList[x] = kYeloPackets[i];
+		}
+		// Initialize the engine's code to reference our NewMessageDeltaList
+		void InitializeEngineWithNewMessageDeltaList()
+		{
+			size_t x = 0;
 			for(x = 0; x < NUMBEROF(MessageDeltaPointerReferences); x++)
 				*MessageDeltaPointerReferences[x] = NewMessageDeltaList;
 
@@ -143,9 +70,23 @@ namespace Yelo
 
 			for(x = 0; x < NUMBEROF(MessageDeltaTypeCountChecks8bit); x++)
 				*MessageDeltaTypeCountChecks8bit[x] = Enums::k_message_deltas_new_count;
+		}
+		void InitializeYeloMessageDeltaDefinitions()
+		{
+			InitializeNewMessageDeltaList();
+			InitializeEngineWithNewMessageDeltaList();
 
 			// need a method to hook network_game_server_handle_message_delta_message so we can intercept client based packets
 			Memory::WriteRelativeCall(&NetworkGameClientHandleMessageDeltaMessageBodyEx, GET_FUNC_VPTR(NETWORK_GAME_CLIENT_HANDLE_MESSAGE_DELTA_MESSAGE_BODY_CALL));
+		}
+#endif
+
+		void Initialize()
+		{
+#ifndef YELO_NO_NETWORK
+
+			if(Enums::k_message_deltas_yelo_count > 0)
+				InitializeYeloMessageDeltaDefinitions();
 #endif
 		}
 
@@ -187,17 +128,21 @@ namespace Yelo
 #ifndef YELO_NO_NETWORK
 
 #pragma region Yelo packet handlers
+		static bool NetworkGameClientHandleMessageDeltaMessageBodyOverride(Networking::s_network_game_client* client, message_dependant_header* header)
+		{
+			//int32 msg_type = header->decoding_information->definition_type;
+
+			return false;
+		}
 		// Returns true if we handled a Yelo packet
 		static bool NetworkGameClientHandleMessageDeltaMessageBodyYelo(Networking::s_network_game_client* client, message_dependant_header* header)
 		{
 			int32 msg_type = header->decoding_information->definition_type;
-			//YELO_DEBUG_FORMAT("type: %X %s", msg_type, message_delta_to_string_table[msg_type]);
 
 			if(msg_type >= Enums::k_message_deltas_count && 
 				msg_type < Enums::k_message_deltas_new_count)
 			{
-				YELO_DEBUG("calling custom packet code...", true);
-				const MessageDeltas::mdp_packet_decoder& decoder = new_mdp_packet_decoders[msg_type - Enums::k_message_deltas_count];
+				const MessageDeltas::packet_decoder& decoder = kYeloPacketDecoders[msg_type - Enums::k_message_deltas_count];
 
 				// Validate that the packet can be decoded in our current network state
 				if( TEST_FLAG(decoder.Flags, Enums::_message_deltas_new_client_bit) == Networking::IsClient() || 
@@ -227,7 +172,7 @@ namespace Yelo
 				// eax = message_dependant_header*
 				// esi = client data
 
-				mov		byte ptr [TEMP_ASM_ADDR], 0
+				mov		byte ptr [TEMP_ASM_ADDR], TRUE
 				mov		local_store_header, eax
 				mov		local_store_client, ecx
 
@@ -236,6 +181,14 @@ namespace Yelo
 				call	NetworkGameClientHandleMessageDeltaMessageBodyYelo
 				test	al, al
 				jnz		the_end	// if not zero then we handled a Yelo message and not a stock game message
+
+				mov		eax, local_store_header
+				mov		ecx, local_store_client
+				push	eax
+				push	ecx
+				call	NetworkGameClientHandleMessageDeltaMessageBodyOverride
+				test	al, al
+				jnz		the_end	// if not zero then we handled a stock message ourselves
 
 				mov		ecx, local_store_client
 				mov		eax, local_store_header
@@ -313,20 +266,24 @@ the_end:
 			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(NETWORK_CONNECTION_FLUSH_QUEUE);
 			static uint32 TEMP_CALL_ADDR2 = GET_FUNC_PTR(BITSTREAM_WRITE_BUFFER);
 
-			if( !data_size_in_bits ) return;
+			if(data_size_in_bits == 0) return;
 
-			data_size_in_bits++;
 			byte shit = 1;
 
 			__asm {
 				//push	edi
 				push	ebx // if this is uncommented, the compiler catches it, but if it is commented, it fucking doesn't....
 
+				mov		ebx, data_size_in_bits
+				inc		ebx
+
 				mov		eax, GET_PTR2(global_network_game_client_data)
-				mov		edi, [eax+0xADC]
-				test	byte ptr [edi+0xA8C], 1
+				mov		edi, [eax+0xADC]			// s_network_game_client->connection
+				test	byte ptr [edi+0xA8C], 1		// test for _connection_create_server_bit
 				jnz		_the_exit
 
+				//////////////////////////////////////////////////////////////////////////
+				// bitstream_get_bits_remaining
 				mov		ecx, [edi+0x1C]
 				mov		edx, [edi+0x24]
 				mov		eax, [edi+0x20]
@@ -335,6 +292,7 @@ the_end:
 				sub		edx, ecx
 				sub		edx, eax
 				inc		edx
+				//////////////////////////////////////////////////////////////////////////
 				cmp		ebx, edx
 				jle		bit_writes
 				push	1
@@ -352,7 +310,6 @@ bit_writes:
 				call	TEMP_CALL_ADDR2 // BITSTREAM_WRITE_BUFFER
 				add		esp, 4 * 1
 
-				dec		data_size_in_bits // had to avoid using ebp in this as we need it for using the params
 				push	data_size_in_bits
 				mov		ecx, GET_PTR2(mdp_packet_buffer_sent_data)
 				mov		eax, esi

@@ -274,7 +274,7 @@ namespace Yelo
 
 		struct s_structure_fog_region
 		{
-			TAG_PAD(int32, 6);
+			TAG_PAD(int32, 9);
 			TAG_FIELD(int16, fog_palette); // block index
 			TAG_FIELD(int16, weather_palette); // block index
 		};

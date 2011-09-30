@@ -32,7 +32,7 @@ namespace Yelo
 
 
 		/* --- CUSTOM PACKETS --- */
-		void null_from_network(Networking::s_network_game_client* client, message_dependant_header* header)
+		static void NullFromNetwork(Networking::s_network_game_client* client, message_dependant_header* header)
 		{
 			YELO_DEBUG("Received a packet we haven't made a function to decode yet!", true);
 			MessageDeltas::DiscardIterationBody(header);
@@ -47,57 +47,41 @@ namespace Yelo
 			MDP_DEFINITION_FIELD(test, value, real),
 		MDP_DEFINITION_END();
 
-		void test_from_network(Networking::s_network_game_client* client, message_dependant_header* header)
+		static void TestFromNetwork(Networking::s_network_game_client* client, message_dependant_header* header)
 		{
 			mdp_test test;
 			decoding_information_data* decode_info = header->decoding_information;
 
-			YELO_DEBUG("test_from_network", true);
 			if( MessageDeltas::DecodeStatelessIterated(header, &test) )
-			{
-				YELO_DEBUG("success f", true);
-				*GameState::Gravity() = test.value;
-			}
+				GameState::Physics()->gravity = test.value;
 			else
-			{
 				MessageDeltas::DiscardIterationBody(header);
-				YELO_DEBUG("failure f", true);
-			}
 		}
 
 		void* TestToNetwork()
 		{
 			if( !Networking::IsServer() ) return NULL;
-			YELO_DEBUG_FORMAT("is init'd? %d\ttotal size: %d", GET_MDP_DEFINITION(test)->initialized, GET_MDP_DEFINITION(test)->total_size);
-			YELO_DEBUG("TestToNetwork", true);
 
 			mdp_test test;
-			test.value = *GameState::Gravity();
+			test.value = GameState::Physics()->gravity;
 
-			void* data[2];
-			data[0] = &test;
-			data[1] = NULL; // eol
+			void* data = &test;
 
 			int32 bits_encoded = MessageDeltas::EncodeStateless(
 				Enums::_message_delta_mode_stateless,
 				Enums::_message_delta_test,
-				NULL,
-				data);
-			YELO_DEBUG_FORMAT("bits encoded: %d", bits_encoded);
-			if( bits_encoded <= 0 && !MessageDeltas::SvSendMessageToAll(bits_encoded/*, false*/) )
-			{	YELO_DEBUG("failed t", true); }
-			else
-			{	YELO_DEBUG("success t", true); }
+				NULL, &data);
+			
+			if( bits_encoded <= 0 || !MessageDeltas::SvSendMessageToAll(bits_encoded) )
+			{
+				YELO_DEBUG("TestToNetwork failed", true);
+				YELO_DEBUG_FORMAT("bits encoded: %d", bits_encoded);
+			}
 
 			return NULL;
 		}
 
-		/*!
-		* \brief
-		* Update Script Global Packet
-		*
-		* used to update a internal or external global
-		*/
+
 		struct mdp_update_script_global
 		{
 			boolean is_external; // is an engine global
@@ -121,12 +105,7 @@ namespace Yelo
 		MDP_DEFINITION_END();
 
 
-		/*!
-		* \brief
-		* 
-		*
-		* 
-		*/
+
 		struct mdp_player_biped_update
 		{
 			player_index player;
@@ -140,27 +119,26 @@ namespace Yelo
 
 		/* --- CUSTOM PACKET DEF POINTERS --- */
 
-		message_delta_definition* new_mdp_packets[] = {
+		message_delta_definition* kYeloPackets[] = {
 			&GET_NEW_MDP_DEFINITION(test),
 			&GET_NEW_MDP_DEFINITION(update_script_global),
 			&GET_NEW_MDP_DEFINITION(player_biped_update),
 		};
 
-		const mdp_packet_decoder new_mdp_packet_decoders[] = {
+		const packet_decoder kYeloPacketDecoders[] = {
 
 			{FLAG(Enums::_message_deltas_new_client_bit), 
-				test_from_network},
+				TestFromNetwork},
 			{FLAG(Enums::_message_deltas_new_client_bit), 
-				null_from_network},
+				NullFromNetwork},
 			{FLAG(Enums::_message_deltas_new_client_bit), 
-				null_from_network},
+				NullFromNetwork},
 
 		};
-		
 		BOOST_STATIC_ASSERT( 
-				NUMBEROF(new_mdp_packets) == Enums::k_message_deltas_yelo_count &&
-				NUMBEROF(new_mdp_packet_decoders) == Enums::k_message_deltas_yelo_count 
-			);
+			NUMBEROF(kYeloPackets) == Enums::k_message_deltas_yelo_count &&
+			NUMBEROF(kYeloPacketDecoders) == Enums::k_message_deltas_yelo_count 
+		);
 #endif
 	};
 };

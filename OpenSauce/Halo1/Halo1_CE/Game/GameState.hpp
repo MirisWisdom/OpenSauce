@@ -279,6 +279,53 @@ namespace Yelo
 		s_scenario_globals*			ScenarioGlobals();
 
 
+		struct s_point_physics_globals
+		{
+		private:
+			real water_mass;
+			real air_mass;
+
+			static const real DensityToMass(real density) { return density * 118613.34f; }
+		public:
+
+			void SetWaterMass(real density)	{ water_mass = DensityToMass(density); }
+			void SetAirMass(real density)	{ air_mass = DensityToMass(density); }
+		};
+		s_point_physics_globals*	PointPhysics();
+
+		struct s_physics_globals
+		{
+			real gravity;
+		private:
+			real water_density;
+			real air_density;
+		public:
+
+			// Halo's normal gravity value constant
+			static const real	GravityConstant()		{ return 3.5651792e-3f; }
+			static const real	WaterDensityConstant()	{ return 1.0f; }
+			static const real	AirDensityConstant()	{ return 0.0011f; }
+
+			void SetWaterDensity(real density)
+			{
+				PointPhysics()->SetWaterMass(water_density = density);
+			}
+			void SetAirDensity(real density)
+			{
+				PointPhysics()->SetAirMass(air_density = density);
+			}
+
+			void Reset()
+			{
+				gravity = GravityConstant();
+				SetWaterDensity(WaterDensityConstant());
+				SetAirDensity(AirDensityConstant());
+			}
+		};
+		// Reference to the current platform's physics globals
+		s_physics_globals*			Physics();
+
+
 
 		// Scenario Tag data
 		TagGroups::scenario*		Scenario();
@@ -290,10 +337,7 @@ namespace Yelo
 		void*						CollisionBsp();
 		// Pointer to the current SBSP's definition
 		TagGroups::structure_bsp*	StructureBsp();
-		// Halo's normal gravity value constant
-		API_INLINE const real		GravityConstant()	{ return 3.5651792e-3f; }
-		// Reference to the current platform's gravity value
-		real*		Gravity();
+		
 		// Index of the Scenario definition in the tag table
 		datum_index	ScenarioIndex();
 		// Index of the current SBSP in the Scenario's structure bsps block

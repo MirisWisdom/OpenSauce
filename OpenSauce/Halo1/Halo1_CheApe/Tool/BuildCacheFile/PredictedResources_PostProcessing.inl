@@ -36,13 +36,15 @@ namespace PostProcessing
 
 		for(int32 i = 0; i < shader_tag->parameters.Count; i++)
 		{
-			if(shader_tag->parameters[i].value_type.type != Enums::_shader_variable_base_type_texture)
+			const TagGroups::s_shader_postprocess_parameter& parameter = shader_tag->parameters[i];
+
+			if(parameter.value_type.type != Enums::_shader_variable_base_type_texture)
 				continue;
 
 			predicted_resources_add_resource(shader_tag->predicted_resources, 
 				Enums::_predicted_resource_bitmap,
-				shader_tag->parameters[i].bitmap_value.bitmap.tag_index,
-				shader_tag->parameters[i].value.bitmap.bitmap_index);
+				parameter.bitmap_value.bitmap.tag_index,
+				parameter.value.bitmap.bitmap_index);
 		}
 		return true;
 	}

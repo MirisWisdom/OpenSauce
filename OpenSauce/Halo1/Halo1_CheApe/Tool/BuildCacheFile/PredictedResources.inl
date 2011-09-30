@@ -55,7 +55,7 @@ namespace BuildCacheFileEx
 			TagGroups::tag_iterator tag_iter;
 			tag_iterator_new(tag_iter, NULL_HANDLE);
 
-			printf("processing custom tag instances...");
+			printf_s("processing custom tag instances...");
 			// call custom tag's predicted resource stuff in this loop
  			datum_index tag_index;
  			while( !(tag_index = tag_iterator_next(tag_iter)).IsNull() )

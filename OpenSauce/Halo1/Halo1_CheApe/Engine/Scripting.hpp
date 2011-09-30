@@ -18,6 +18,7 @@
 */
 #pragma once
 
+#include <Blam/Halo1/BlamScriptingDefinitions.hpp>
 #include "TagGroups/TagGroups.hpp"
 
 namespace Yelo
@@ -27,10 +28,21 @@ namespace Yelo
 		struct scripting_block;
 	};
 
+	namespace Enums
+	{
+		enum {
+			_hs_function_profile_load = 0x20A,
+
+			_hs_function_profile_load_call_offset = 0x1F, // offset of the implementation call in the evaluation function (at least in sapien)
+		};
+	};
+
 	namespace Scripting
 	{
 		void Initialize();
 		void Dispose();
+
+		hs_function_definition* GetFunctionDefintion(int16 function_index);
 
 		// Copy the scripting definitions CheApe loaded into the tool code from the memory map
 		// [only_internals] - Copy definitions that are part of the stock OpenSauce source code 

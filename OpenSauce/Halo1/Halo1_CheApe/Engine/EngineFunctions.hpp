@@ -75,6 +75,9 @@ namespace Yelo
 	#define YELO_ERROR(priority, format, ...) __noop
 #endif
 
+#define YELO_WARN(format, ...) \
+	Yelo::EngineFunctions::error(Yelo::Enums::_error_message_priority_warning, format, __VA_ARGS__)
+
 		// warn = halt == false
 		void display_assert(cstring reason, cstring file, const uint32 line, bool halt);
 #define YELO_ASSERT(expression)															\

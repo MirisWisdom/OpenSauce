@@ -19,6 +19,7 @@
 #pragma once
 
 #include "Objects/ObjectDefinitions.hpp"
+#include <TagGroups/Halo1/item_definitions.hpp>
 
 namespace Yelo
 {
@@ -69,18 +70,28 @@ namespace Yelo
 		struct s_item_data : TStructImpl(Enums::k_object_size_item - Enums::k_object_size_object)
 		{
 			enum { DATA_OFFSET = Enums::k_object_size_object, };
+
+			TStructGetPtrImpl(long_flags,				Flags, 0x1F4);
+			//TStructSubGetPtrImpl(s_scenario_location,	, 0x1F8);
+			//TStructSubGetPtrImpl(datum_index,					, 0x200); // object index
+			TStructGetPtrImpl(uint32,				LastUpdateTime, 0x204);
+			//TStructSubGetPtrImpl(datum_index,					, 0x208); // object index
+			//TStructSubGetPtrImpl(real_point3d,				, 0x20C);
+			//TStructSubGetPtrImpl(real_vector3d,				, 0x218);
+			//TStructSubGetPtrImpl(real_euler_angles2d,			, 0x224);
 		};
 
+		struct s_weapon_datum_network_data
+		{
+			real_point3d position;
+			real_vector3d transitional_velocity;
+			PAD32; PAD32; PAD32; // not used in the update...probably a real_vector3d (angular_velocity?)
+			int16 magazine_rounds_totals[Enums::k_maximum_number_of_magazines_per_weapon];
+			real age;
+		}; BOOST_STATIC_ASSERT( sizeof(s_weapon_datum_network_data) == 0x2C );
 		struct s_weapon_data : TStructImpl(Enums::k_object_size_weapon - Enums::k_object_size_item)
 		{
 			enum { DATA_OFFSET = Enums::k_object_size_item, };
-
-			TStructSubGetPtrImpl(Enums::weapon_state,	WeaponState, 0x238);
-			TStructSubGetPtrImpl(real,					Heat, 0x23C);
-			TStructSubGetPtrImpl(real,					Age, 0x240);
-			TStructSubGetPtrImpl(real,					IntegratedLightPower, 0x248);
-
-			TStructSubGetPtrImpl(datum_index,			TrackedObject, 0x250);
 
 			struct s_trigger_state
 			{
@@ -99,8 +110,6 @@ namespace Yelo
 				datum_index charging_effect_index;	// 0x20
 				PAD32; // ?
 			}; BOOST_STATIC_ASSERT( sizeof(s_trigger_state) == 0x28 );
-			TStructSubGetPtrImpl(s_trigger_state,		Triggers, 0x260); // [2]
-
 			struct s_magazine_state // '?' means IDK if its actually padding or there are values there. If there are, IDK their types (could be a boolean!)
 			{
 				Enums::weapon_magazine_state state;
@@ -112,22 +121,54 @@ namespace Yelo
 				UNKNOWN_TYPE(int16);				// 0xC I just know a WORD is here, may be an _enum
 				PAD16; // ?
 			}; BOOST_STATIC_ASSERT( sizeof(s_magazine_state) == 0x10 );
-			TStructSubGetPtrImpl(s_magazine_state,		Magazines, 0x2B0); // [2]
+			struct s_start_reload_data
+			{
+				int16 starting_total_rounds[Enums::k_maximum_number_of_magazines_per_weapon];
+				int16 starting_loaded_rounds[Enums::k_maximum_number_of_magazines_per_weapon];
+			}; BOOST_STATIC_ASSERT( sizeof(s_start_reload_data) == 0x8 );
 
-			// need to reverify this...0x2CC is inside one of the Magazines
-			//TStructSubGetPtrImpl(datum_index,			ReadyEffect, 0x2CC); // effects datum
-
-			TStructSubGetPtrImpl(bool,					BaselineValid, 0x2E0);
-			TStructSubGetPtrImpl(byte,					BaselineIndex, 0x2E1);
-			TStructSubGetPtrImpl(byte,					MessageIndex, 0x2E2);
-
-			// 0x2E4 baseline data structure
+			TStructGetPtrImpl(long_flags,						Flags, 0x22C);
+			TStructGetPtrImpl(word_flags,						OwnerFlags, 0x230); // owner being the controlling unit
+			// 0x232 PAD16
+			TStructSubGetPtrImpl(real,							PrimaryTrigger, 0x234);
+			TStructSubGetPtrImpl(Enums::weapon_state,			WeaponState, 0x238);
+			// 0x23A, uint16, some kind of tick countdown
+			TStructSubGetPtrImpl(real,							Heat, 0x23C);
+			TStructSubGetPtrImpl(real,							Age, 0x240);
+			TStructSubGetPtrImpl(real_fraction,					IlluminationFraction, 0x244);
+			TStructSubGetPtrImpl(real,							IntegratedLightPower, 0x248);
+			// 0x24C unused
+			TStructSubGetPtrImpl(datum_index,					TrackedObject, 0x250);
+			// 0x254 unused
+			// 0x258 unused
+			TStructSubGetPtrImpl(int16,							AltShotsLoaded, 0x25C);
+			// 0x25E PAD16
+			TStructSubGetPtrImpl(s_trigger_state,				Triggers, 0x260); // [Enums::k_maximum_number_of_magazines_per_weapon]
+			TStructSubGetPtrImpl(s_magazine_state,				Magazines, 0x2B0); // [Enums::k_maximum_number_of_magazines_per_weapon]
+			TStructSubGetPtrImpl(uint32,						LastTriggerFireTime, 0x2D0);
+			TStructSubGetPtrImpl(s_start_reload_data,			StartReloadUpdate, 0x2D4);
+			// 0x2DC PAD32?
+			TStructSubGetPtrImpl(bool,							BaselineValid, 0x2E0);
+			TStructSubGetPtrImpl(byte,							BaselineIndex, 0x2E1);
+			TStructSubGetPtrImpl(byte,							MessageIndex, 0x2E2);
+			// 0x2E3 PAD8
+			TStructSubGetPtrImpl(s_weapon_datum_network_data,	UpdateBaseline, 0x2E4);
+			// 0x310, bool
+			// 0x311, PAD24
+			TStructSubGetPtrImpl(s_weapon_datum_network_data,	UpdateDelta, 0x314);
 		};
 
 		struct s_equipment_data : TStructImpl(Enums::k_object_size_equipment - Enums::k_object_size_item)
 		{
 			enum { DATA_OFFSET = Enums::k_object_size_item, };
 		};
+
+		struct s_garbage_data
+		{
+			uint16 ticks_until_gc;
+			PAD16;
+			int32 _unused[5];
+		}; BOOST_STATIC_ASSERT( sizeof(s_garbage_data) == (Enums::k_object_size_garbage - Enums::k_object_size_item) );
 
 
 
@@ -147,5 +188,10 @@ namespace Yelo
 		{
 			s_equipment_data equipment;
 		}; BOOST_STATIC_ASSERT( sizeof(s_equipment_datum) == Enums::k_object_size_equipment );
+
+		struct s_garbage_datum : s_item_datum
+		{
+			s_garbage_data garbage;
+		}; BOOST_STATIC_ASSERT( sizeof(s_garbage_datum) == Enums::k_object_size_garbage );
 	};
 };

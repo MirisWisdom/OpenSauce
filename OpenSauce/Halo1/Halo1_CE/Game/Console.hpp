@@ -23,6 +23,11 @@
 
 namespace Yelo
 {
+	namespace Players
+	{
+		struct s_player_datum;
+	};
+
 	namespace Enums
 	{
 		enum {
@@ -37,7 +42,7 @@ namespace Yelo
 			_hud_chat_type_team,
 			_hud_chat_type_vehicle,
 			_hud_chat_type_server,
-			_hud_chat_type_game_msg, // used for messages pulled from Strings.dll. Convert 'hud_chat_network_data.message' to a long using 'wtol' to get the resource ID
+			_hud_chat_type_info_msg, // used for messages pulled from Strings.dll. Convert 'hud_chat_network_data.message' to a long using 'wtol' to get the resource ID
 		};
 	};
 
@@ -99,9 +104,9 @@ namespace Yelo
 			PAD24;
 			uint32 receiving_input_start_tick; // local time, when input began to be inputed
 
-			UNKNOWN_TYPE(bool);
+			bool is_active;
 			PAD24;
-			int32 rcon_client_index; // client number who is executing the current rcon command, or NONE
+			int32 rcon_machine_index; // machine that is executing the current rcon command, or NONE
 		};
 		s_terminal_globals* TerminalGlobals();
 
@@ -143,5 +148,16 @@ namespace Yelo
 		void Initialize();
 		void Dispose();
 		void PLATFORM_API Update(uint32 access_flags);
+
+		// Predicate to use for determining when to send a message to players
+		typedef bool (* proc_send_hud_chat_predicate)(Players::s_player_datum* player, 
+			Players::s_player_datum* src_player, datum_index src_player_vehicle_index);
+		// Predicate for always sending a message to 
+		bool SendHudChatToEveryonePredicate(Players::s_player_datum* player, 
+			Players::s_player_datum* src_player, datum_index src_player_vehicle_index);
+
+		// Send [messsage] to all valid players (machine_index != NONE) and who pass the [send_predicate]
+		void SendHudChat(Enums::hud_chat_type msg_type, wcstring message, byte player_number,
+			proc_send_hud_chat_predicate send_predicate = SendHudChatToEveryonePredicate);
 	};
 };
