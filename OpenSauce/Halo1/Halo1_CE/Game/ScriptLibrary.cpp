@@ -228,10 +228,10 @@ namespace Yelo
 
 		// Only 39 functions in CE release are actually 'null'...but now in OS2, we no longer overwrite existing functions!
 		// So ignore this comment :p
-		static uint32 hs_eval_func_ptrs[Enums::k_hs_script_functions_count_upgrade - Enums::k_hs_functions_count];
+		API_CODEDATA static uint32 hs_eval_func_ptrs[Enums::k_hs_script_functions_count_upgrade - Enums::k_hs_functions_count];
 		// next free hs_eval_func_ptrs index
 		static int32 hs_eval_func = 0;
-		static byte hs_func_pool[NUMBEROF(hs_eval_func_ptrs)][sizeof(hs_eval_func_has_param)];
+		API_CODEDATA static byte hs_func_pool[NUMBEROF(hs_eval_func_ptrs)][sizeof(hs_eval_func_has_param)];
 
 #pragma warning( push )
 #pragma warning( disable : 4311 ) // bitching about this typecast
@@ -240,8 +240,7 @@ namespace Yelo
 		{
 			static uint32 hs_return_address = GET_FUNC_PTR(HS_RETURN);
 			static uint32 hs_arguments_evaluate_address = GET_FUNC_PTR(HS_ARGUMENTS_EVALUATE);
-			static uint32 hs_function_table_address = //CAST_PTR(uint32, hs_function_table);
-				CAST_PTR(uint32, &_upgrade_globals.functions.table[0]);
+			static uint32 hs_function_table_address = CAST_PTR(uint32, &_upgrade_globals.functions.table[0]);
 
 			uint32* temp = NULL;
 
@@ -277,7 +276,7 @@ namespace Yelo
 			hs_eval_func_ptrs[hs_eval_func] = CAST_PTR(uint32, func);
 			uint32* temp = NULL;
 
-			if(takes_params) // hasn't been properly tested yet
+			if(takes_params)
 			{
 				Memory::WriteMemory(
 					hs_func_pool[hs_eval_func], 

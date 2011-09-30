@@ -29,12 +29,12 @@ namespace BuildCacheFileEx
 			TagGroups::tag_iterator tag_iter;
 			tag_iterator_new(tag_iter, NULL_HANDLE);
 
-			printf("pre-processing custom tag instances...");
+			printf_s("pre-processing custom tag instances...");
 
  			datum_index tag_index;
  			while( !(tag_index = tag_iterator_next(tag_iter)).IsNull() )
  			{
-				switch((*TagGroups::TagInstances())[tag_index.index].group_tag)
+				switch(tag_iter.group_tag)
 				{
 				case TagGroups::s_shader_postprocess_generic::k_group_tag:
 					PostProcessing::shader_postprocess_generic_setup_parameters(tag_index);

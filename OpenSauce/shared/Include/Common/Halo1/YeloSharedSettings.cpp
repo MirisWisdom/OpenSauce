@@ -29,6 +29,7 @@ namespace Yelo
 		static struct {
 			char CommonAppDataPath[MAX_PATH];
 			char UserProfilePath[MAX_PATH];
+			char UserSavedProfilesPath[MAX_PATH];
 			char OpenSauceProfilePath[MAX_PATH];
 			char ReportsPath[MAX_PATH];
 			char WorkingDirectoryPath[MAX_PATH];
@@ -36,6 +37,7 @@ namespace Yelo
 
 		cstring CommonAppDataPath()		{ return Internal.CommonAppDataPath; }
 		cstring UserProfilePath()		{ return Internal.UserProfilePath; }
+		cstring UserSavedProfilesPath()	{ return Internal.UserSavedProfilesPath; }
 		cstring OpenSauceProfilePath()	{ return Internal.OpenSauceProfilePath; }
 		cstring ReportsPath()			{ return Internal.ReportsPath; }
 		cstring WorkingDirectoryPath()	{ return Internal.WorkingDirectoryPath; }
@@ -53,6 +55,9 @@ namespace Yelo
 			}
 			else strcpy_s(Internal.UserProfilePath, profile_path);
 
+			strcpy_s(Internal.UserSavedProfilesPath, Internal.UserProfilePath);
+			PathAppendA(Internal.UserSavedProfilesPath, "savegames\\");
+
 			strcpy_s(Internal.OpenSauceProfilePath, profile_path);
 			PathAppendA(Internal.OpenSauceProfilePath, "OpenSauce\\");
 			_mkdir(Internal.OpenSauceProfilePath); // make the OpenSauce subdirectory
@@ -69,6 +74,43 @@ namespace Yelo
 		}
 
 		//////////////////////////////////////////////////////////////////////////
+
+		static bool FileExists(cstring path)
+		{
+			if(GetFileAttributes(path) != CAST(DWORD, NONE))
+				return true;
+
+			DWORD error = GetLastError();
+
+			if(error == ERROR_FILE_NOT_FOUND || ERROR_PATH_NOT_FOUND)
+				return false;
+
+			// This should actually be unreachable...
+			return false;
+		}
+
+		bool PlayerProfileRead(cstring profile_name, __out byte profile[Enums::k_player_profile_buffer_size])
+		{
+			memset(profile, 0, Enums::k_player_profile_buffer_size);
+
+			char blam_path[MAX_PATH];
+			strcpy_s(blam_path, Internal.UserSavedProfilesPath);
+			strcat_s(blam_path, profile_name);
+			strcat_s(blam_path, "\\blam.sav");
+
+			bool result = false;
+			if(FileExists(blam_path))
+			{
+				FILE* file = NULL;
+				fopen_s(&file, blam_path, "rb");
+
+				result = fread_s(profile, Enums::k_player_profile_buffer_size, Enums::k_player_profile_buffer_size, 1, file) == 1;
+
+				fclose(file);
+			}
+
+			return result;
+		}
 
 		bool GetSettingsFilePath(cstring filename, __out char file_path[MAX_PATH])
 		{

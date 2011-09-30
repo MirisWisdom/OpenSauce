@@ -46,7 +46,7 @@ namespace Yelo
 		s_physical_memory_map_globals* PhysicalMemoryMapGlobals()	PTR_IMP_GET2(physical_memory_globals);
 
 // This memory upgrade design can only work with a DLL override system
-#if PLATFORM_IS_DEDI || defined(DX_WRAPPER)
+#if defined(DX_WRAPPER) || PLATFORM_IS_DEDI
 
 		static void PhysicalMemoryReInitialize()
 		{
@@ -94,7 +94,8 @@ namespace Yelo
 		void* Bsp3d()													PTR_IMP_GET(global_bsp3d);
 		void* CollisionBsp()											PTR_IMP_GET(global_collision_bsp);
 		TagGroups::structure_bsp* StructureBsp()						PTR_IMP_GET(global_structure_bsp);
-		real* Gravity()													PTR_IMP_GET2(global_gravity);
+		s_physics_globals* Physics()									PTR_IMP_GET2(global_physics);
+		s_point_physics_globals* PointPhysics()							PTR_IMP_GET2(global_point_physics);
 
 
 		datum_index ScenarioIndex()										PTR_IMP_GET(global_scenario_index);

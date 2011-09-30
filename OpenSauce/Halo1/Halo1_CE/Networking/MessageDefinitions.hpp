@@ -37,7 +37,7 @@ namespace Yelo
 			k_message_deltas_new_count = k_message_deltas_count,
 #endif
 
-			// How many packets Yelo as added
+			// How many packets Yelo has added
 			k_message_deltas_yelo_count = k_message_deltas_new_count - k_message_deltas_count,
 		};
 
@@ -57,17 +57,19 @@ namespace Yelo
 
 	namespace MessageDeltas
 	{
-		typedef void  (API_FUNC* mdp_from_network_proc)(Networking::s_network_game_client* client, message_dependant_header* header);
+		typedef void (API_FUNC* mdp_from_network_proc)(Networking::s_network_game_client* client, message_dependant_header* header);
 
-		struct mdp_packet_decoder
+		struct packet_decoder
 		{
 			long_flags Flags;			// [message_deltas_new_flags]
 			mdp_from_network_proc Proc;
 		};
 
 #ifndef YELO_NO_NETWORK
-		extern message_delta_definition* new_mdp_packets[];
-		extern const mdp_packet_decoder new_mdp_packet_decoders[];
+		// Yelo's new message delta definitions
+		extern message_delta_definition* kYeloPackets[];
+		// Yelo's new message delta decoders
+		extern const packet_decoder kYeloPacketDecoders[];
 #endif
 
 #ifndef YELO_NO_NETWORK

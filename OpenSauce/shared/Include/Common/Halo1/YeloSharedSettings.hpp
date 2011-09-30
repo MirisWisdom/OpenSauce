@@ -23,11 +23,20 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum {
+			k_player_profile_buffer_size = 0x1FFC,
+		};
+	};
+
 	namespace Settings
 	{
 		// Path to the systems common application data folder
 		cstring CommonAppDataPath();
 		cstring UserProfilePath();
+		// 'savegames' path
+		cstring UserSavedProfilesPath();
 		// The OpenSauce path to use that is under the User's game profile
 		cstring OpenSauceProfilePath();
 		// Path which we store our reports in
@@ -38,6 +47,8 @@ namespace Yelo
 		void SharedInitialize(cstring profile_path);
 		void SharedDispose();
 
+
+		bool PlayerProfileRead(cstring profile_name, __out byte profile[Enums::k_player_profile_buffer_size]);
 
 		// Format the settings path & [filename] into [file_path].
 		// Returns: true if [file_path] exists on disk

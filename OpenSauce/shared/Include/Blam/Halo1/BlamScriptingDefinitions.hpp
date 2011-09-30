@@ -84,8 +84,11 @@ namespace Yelo
 		enum hs_yelo_definition_flags : word_flags
 		{
 			_hs_yelo_definition_internal_bit,
+			_hs_yelo_definition_is_synchronized_bit,
 
 			_hs_yelo_definition_internal_flag =	FLAG(_hs_yelo_definition_internal_bit),
+			// changes to the global are sync'd
+			_hs_yelo_definition_is_synchronized = FLAG(_hs_yelo_definition_is_synchronized_bit),
 		};
 
 		enum hs_access_flag : word_flags

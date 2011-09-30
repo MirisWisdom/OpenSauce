@@ -67,6 +67,39 @@ namespace Yelo
 
 	namespace Players
 	{
+		struct s_action_update_data
+		{
+			long_flags control_flags;
+			PAD64;
+			struct {
+				real r0, r1;
+			}throttle;
+			real primary_trigger;
+			int16 desired_weapon_index;
+			int16 desired_grenade_index;
+		}; BOOST_STATIC_ASSERT( sizeof(s_action_update_data) == 0x1C );
+
+		struct s_vehicle_update_data
+		{
+			datum_index vehicle_index;
+			real_point3d position;
+			real_vector3d translational_velocity, angular_velocity;
+			real_vector3d forward, up;
+		}; BOOST_STATIC_ASSERT( sizeof(s_vehicle_update_data) == 0x40 );
+
+		struct s_remote_player_position_update_network_data
+		{
+			real_point3d position;
+		}; BOOST_STATIC_ASSERT( sizeof(s_remote_player_position_update_network_data) == 0xC );
+		struct s_remote_player_action_update_network_data
+		{
+			int32 ticks_to_apply_update_to;
+			s_action_update_data action;
+			PAD32;
+			real_vector3d facing_vector;
+		}; BOOST_STATIC_ASSERT( sizeof(s_remote_player_action_update_network_data) == 0x30 );
+
+
 		struct s_action_queue_entry : TStructImpl(44)
 		{
 			// 0x4 int32 remaining_ticks_to_apply_action_to
@@ -127,12 +160,30 @@ namespace Yelo
 				int16 best_time;
 			}race;
 		}; BOOST_STATIC_ASSERT( sizeof(u_player_datum_scores) == 8 );
+		// Special yelo data used for player datums when running as a server
+		struct s_player_yelo_server_data
+		{
+			static const size_t k_max_struct_size = 0x38;
+
+			struct _rcon_access {
+				uint32 last_bad_password_time;		// Game tick of when the last failure took place
+				int16 bad_password_cooldown;		// Ticks until it's kosher to decrement [number_of_bad_passwords]
+				int16 number_of_bad_passwords;		// Number of times the player has given a bad password in a given threshold of time
+			}rcon_access;
+
+			struct _voting {
+				bool voted;		// Has this player voted yet?
+				sbyte option;	// Option, in enumerated form. Or NONE.
+				PAD16;
+			}voting;
+
+		}; BOOST_STATIC_ASSERT( sizeof(s_player_yelo_server_data) <= s_player_yelo_server_data::k_max_struct_size );
 		struct s_player_datum : TStructImpl(0x200)
 		{
 			TStructGetPtrImpl(Memory::s_datum_base, DatumHeader, 0x0);
 			TStructGetPtrImpl(int16, LocalIndex, 0x2);
 			TStructGetPtrImpl(wchar_t, DisplayName, 0x4);  // [12]
-			// 0x1C datum_index or int32
+			// 0x1C UNUSED_TYPE(int32)
 			TStructGetPtrImpl(int32, TeamIndex, 0x20);
 			TStructGetPtrImpl(argb_color, Color, 0x20);
 			struct s_action_result
@@ -143,30 +194,34 @@ namespace Yelo
 			};
 			TStructGetPtrImpl(s_action_result, NearestObjectActionResult, 0x24);
 			TStructGetPtrImpl(uint32, RespawnTime, 0x2C);
-			// 0x30 int16
+			// 0x30 uint32 respawn time growth related
 			TStructGetPtrImpl(datum_index, SlaveUnitIndex, 0x34);
 			TStructGetPtrImpl(datum_index, LastSlaveUnitIndex, 0x38);
-			// 0x3C int16
-			// 0x3E boolean
-			// 0x40 datum_index or int32
-			// 0x44?
+			TStructGetPtrImpl(int16, ClusterIndex, 0x3C);
+			TStructGetPtrImpl(bool, WeaponSwapResult, 0x3E);
+			// PAD8
+			TStructGetPtrImpl(datum_index, AutoAimTarget, 0x40); // biped_index
+			TStructGetPtrImpl(uint32, AutoAimUpdateTime, 0x44);
 			TStructGetPtrImpl(Networking::s_network_player, NetworkPlayer, 0x48);
 			TStructGetPtrImpl(uint16, PowerupTimes, 0x68); // int16[Enums::_player_powerup]
 			TStructGetPtrImpl(real, Speed, 0x6C);
-			// 0x70?
-
+			TStructGetPtrImpl(int32, SourceTeleporterNetgameIndex, 0x70); // index to a netgame flag in the scenario, or NONE
 			struct s_game_engine_state_message
 			{
-				int16 message_index;
-				PAD16;
+				int32 message_index;
 				datum_index message_player_index; // player to use in the message?
+
+				// values used for rendering a target player's name
+				datum_index target_player;
+				uint32 target_time; // timer used to fade in the target player name
 			};
 			TStructGetPtrImpl(s_game_engine_state_message, EngineStateMessage, 0x74);
-
-			// 0x84 last_death_tick // game tick of the last time this player was killed
+			TStructGetPtrImpl(uint32, LastDeathTime, 0x84); // game tick of the last time this player was killed
 			TStructGetPtrImpl(datum_index, TargetPlayerIndex, 0x88); // player index of the slayer target for this player
-			// 0x8C boolean, PAD24
-			// 0x90? 0x94?
+			TStructGetPtrImpl(boolean, OddManOut, 0x8C);
+			// PAD24
+			// 0x90 UNUSED_TYPE(int32)
+			// 0x94 UNUSED_TYPE(int16)
 			TStructGetPtrImpl(int16, KillsThisLifetime, 0x96); // how many kills we've had in this lifetime (since the last spawn)
 			TStructGetPtrImpl(int16, CurrentSpreeCount, 0x98); // how many kills we've had in our 'spree time' (4 second intervals max)
 			TStructGetPtrImpl(int16, LastKillTime, 0x9A); // set from game_time_globals::local_time
@@ -181,12 +236,13 @@ namespace Yelo
 			// 0xB2? 0xB4? 0xB8? 0xBC?
 			TStructGetPtrImpl(int16, TKs, 0xC0);
 			// 0xC2?
-
 			TStructGetPtrImpl(u_player_datum_scores, Scores, 0xC4);
 			TStructGetPtrImpl(uint32, TelefragCounter, 0xCC); // # of ticks spent blocking teleporter
 			TStructGetPtrImpl(int32, QuickGameTick, 0xD0); // game tick the player quick at
 			TStructGetPtrImpl(bool, TelefragEnabled, 0xD4); // if we're blocking a teleporter, this will be true
 			TStructGetPtrImpl(bool, QuitOutOfGame, 0xD5);
+			// 0xD6?
+			// 0xD8?
 			TStructGetPtrImpl(int32, Ping, 0xDC);
 			TStructGetPtrImpl(int32, TKNum, 0xE0);
 			TStructGetPtrImpl(int32, TKTimer, 0xE4);
@@ -195,16 +251,16 @@ namespace Yelo
 			{
 				// 0xE8 int32
 				// 0xEC int32
-				// 0xF0, 0x30 byte structure
+				// 0xF0, s_remote_player_action_update_network_data
 				// 0x120 s_action_queue
 				// 0x13C, 0x20 byte structure
 				// 0x15C int32
 				// 0x160 int32
-				// 0x164, 0xC byte structure
+				// 0x164, s_remote_player_position_update_network_data
 				// 0x170 s_position_queue
 				// 0x188 uint32
 				// 0x18C int32
-				// 0x190, 0x40 byte structure
+				// 0x190, s_vehicle_update_data
 				// 0x1D0 s_vehicle_update_queue
 				// 0x1E8 uint32
 				// 0x1EC uint32
@@ -233,7 +289,7 @@ namespace Yelo
 				// 0x124 int32
 				// 0x128 int32
 				// 0x12C int32 server_update_data.action_baseline_id, NUMBER_OF_REMOTE_PLAYER_ACTION_UPDATE_BASELINE_IDS = 2
-				// 0x130, 0x30 byte structure
+				// 0x130, s_remote_player_action_update_network_data
 				// 0x160 uint32
 				// 0x164 datum_index or int32
 				// 0x168 datum_index or int32
@@ -245,9 +301,16 @@ namespace Yelo
 				// 0x188, 0x40 byte structure
 
 				// 0x1C8?
-			};
+			}; //BOOST_STATIC_ASSERT( sizeof(s_server_update_data) == 0xE0 );
 			TStructGetPtrImpl(s_client_update_data, ClientUpdateData, 0xE8);
 			TStructGetPtrImpl(s_server_update_data, ServerUpdateData, 0xE8);
+
+			// !!! Only use this when the local machine is the host (ie, Networking::IsServer() == true) !!!
+			TStructGetPtrImpl(s_player_yelo_server_data, ServerYeloData, 0xE8);
+
+
+			Objects::s_unit_datum* GetPlayerUnit();
+			datum_index GetVehicleIndex();
 		};
 		typedef Memory::DataArray<s_player_datum, 16> t_players_data;
 		t_players_data*					Players();
@@ -333,6 +396,9 @@ namespace Yelo
 		// Get the player data of the currently active local player
 		// Returns NULL if there is none.
 		s_player_datum* LocalPlayer();
+		// Get the player data from a player number, and optionally their player_index
+		// Returns NULL if player number is invalid or unused
+		s_player_datum* GetPlayerFromNumber(byte player_number, __out datum_index* player_index_reference = NULL);
 
 
 		// Use the handle to a player to get the active unit object which it controls

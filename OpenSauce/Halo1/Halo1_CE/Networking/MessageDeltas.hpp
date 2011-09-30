@@ -238,11 +238,6 @@ namespace Yelo
 		byte* PacketBufferSent();
 
 #ifndef YELO_NO_NETWORK
-
-#ifdef API_DEBUG
-		extern cstring message_delta_to_string_table[];
-#endif
-
 		// Writes [data_size_in_bits] of the packet buffer to the server connection
 		// returns the size in bits of the header
 		int32 SvWrite(int32 data_size_in_bits, 
@@ -502,7 +497,7 @@ namespace Yelo
 		typedef unsigned char	arbitary_data;
 		
 
-		typedef void*			pointer;
+		typedef const void*		pointer;
 		typedef short			enumeration;
 		
 		typedef long			translated_index;
@@ -688,7 +683,7 @@ namespace Yelo
 			game_variant_flags						flags;
 		};
 		typedef integer_large	parameters_protocol_array[64];
-		typedef wide_character	hud_chat_message[255];
+		typedef wide_character	hud_chat_message[255+1];
 		typedef pointer			hud_chat_message_ptr;
 		typedef real_rgb_color	object_change_colors[4];
 		typedef integer_large	ctf_score_array[2];
@@ -709,10 +704,10 @@ namespace Yelo
 			unsigned char flag8 : 1;
 			PAD24;
 		}; BOOST_STATIC_ASSERT( sizeof(damage_data_flags) == 0x4 );
-		typedef ascii_character motd_text[255];
-		typedef ascii_character rcon_response[80];
-		typedef ascii_character rcon_password[8];
-		typedef ascii_character rcon_command[64];
+		typedef ascii_character motd_text[255+1];
+		typedef ascii_character rcon_response[80+1];
+		typedef ascii_character rcon_password[8+1];
+		typedef ascii_character rcon_command[64+1];
 #pragma endregion
 
 		struct message_delta_guaranteed_object_header
@@ -786,7 +781,7 @@ namespace Yelo
 
 
 
-		struct mdp_hud_chat_network_data
+		struct hud_chat_network_data
 		{
 			integer_small msg_type; // [Enums::hud_chat_type], see GameUI.hpp
 			PAD24;

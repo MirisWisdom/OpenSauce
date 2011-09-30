@@ -57,7 +57,7 @@ namespace ShaderExtension
 		{
 			const tag_reference& shader = gbxmodel_tag->shaders[i].shader;
 
-			if((shader.group_tag != TagGroups::s_shader_model_definition::k_group_tag) ||
+			if(	shader.group_tag != TagGroups::s_shader_model_definition::k_group_tag ||
 				shader.tag_index.IsNull())
 				continue;
 

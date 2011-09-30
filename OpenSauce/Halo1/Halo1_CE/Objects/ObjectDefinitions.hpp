@@ -82,7 +82,6 @@ namespace Yelo
 		enum object_sizes
 		{
 			k_object_size_object =			0x1F4,
-			k_object_size_garbage =			0x50 + k_object_size_object,
 			k_object_size_projectile =		0xBC + k_object_size_object,
 			k_object_size_scenery =			0x4  + k_object_size_object,
 			k_object_size_placeholder =		0x8  + k_object_size_object,
@@ -96,6 +95,7 @@ namespace Yelo
 			k_object_size_item =			0x38 + k_object_size_object,
 			k_object_size_weapon =			0x114+ k_object_size_item,
 			k_object_size_equipment =		0x68 + k_object_size_item,
+			k_object_size_garbage =			0x18 + k_object_size_item,
 
 			k_object_size_unit =			0x2D8+ k_object_size_object,
 			k_object_size_biped =			0x84 + k_object_size_unit,
@@ -200,8 +200,7 @@ namespace Yelo
 		{
 			datum_index owner_player_index;
 			datum_index owner;
-			int16 owner_team_index;
-			PAD16;
+			uint32 timestamp;
 			real_point3d position;
 			real_vector3d transitional_velocity;
 			real_vector3d forward;
@@ -214,7 +213,8 @@ namespace Yelo
 			TStructGetPtrImpl(datum_index,				TagDefinition, 0x0);
 			TStructGetPtrImpl(Enums::networked_datum,	DatumnRole, 0x4);
 			// 0x8 - boolean
-			// 0x9 - boolean
+			TStructGetPtrImpl(uint32,					ShouldForceBaselineUpdate, 0x9);
+			// 0xA?
 			TStructGetPtrImpl(uint32,					NetworkTime, 0xC);
 			TStructGetPtrImpl(long_flags,				Flags, 0x10);
 			TStructGetPtrImpl(s_object_network_datum_data, NetworkDatumData, 0x50);
@@ -230,12 +230,11 @@ namespace Yelo
 			// If this were a projectile, I believe this would be the handle to
 			// the weapon which spawned it
 			TStructGetPtrImpl(datum_index,				OwnerObjectIndex, 0xC4);
-			
-
+			// 0xC8?
 			TStructGetPtrImpl(datum_index,				AnimationDefinition, 0xCC);
 			TStructGetPtrImpl(int16,					AnimationCurrentIndex, 0xD0);
 			TStructGetPtrImpl(int16,					AnimationCurrentFrameIndex, 0xD2);
-
+			// 0xD4?
 			TStructGetPtrImpl(real,						MaximumVitality, 0xD8);
 			TStructGetPtrImpl(real,						CurrentVitality, 0xDC);
 			TStructGetPtrImpl(real,						Health, 0xE0); // health = body
@@ -255,7 +254,8 @@ namespace Yelo
 			TStructGetPtrImpl(datum_index,				FirstObjectIndex, 0x118);
 			TStructGetPtrImpl(datum_index,				ParentObjectIndex, 0x11C);
 			TStructGetPtrImpl(sbyte,					ParentNodeIndex, 0x120);
-			// 0x122 is unused, probably 'ValidIncomingFunctions'...or 0x121 is an unused short
+			// 0x121?
+			TStructGetPtrImpl(bool,						ForceShieldUpdate, 0x122);
 			TStructGetPtrImpl(byte_flags,				ValidOutgoingFunctions, 0x123); // 1<<function_index
 			TStructGetPtrImpl(real,						IncomingFunctionValues, 0x124); // [4]
 			TStructGetPtrImpl(real,						OutgoingFunctionValues, 0x134); // [4]
@@ -283,54 +283,57 @@ namespace Yelo
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_data) == Enums::k_object_size_object );
 
 
-		struct s_scenery_data : TStructImpl(Enums::k_object_size_scenery - Enums::k_object_size_object)
+		struct s_scenery_data
 		{
-			enum { DATA_OFFSET = Enums::k_object_size_object, };
-		};
+			long_flags flags; // FLAG(0) - playing animation
+		}; BOOST_STATIC_ASSERT( sizeof(s_scenery_data) == (Enums::k_object_size_scenery - Enums::k_object_size_object) );
 
 
-		struct s_sound_scenery_data : TStructImpl(Enums::k_object_size_sound_scenery - Enums::k_object_size_object)
+		struct s_sound_scenery_data
 		{
-			enum { DATA_OFFSET = Enums::k_object_size_object, };
-		};
+			UNUSED_TYPE(int32); // probably a long_flags field
+		}; BOOST_STATIC_ASSERT( sizeof(s_sound_scenery_data) == (Enums::k_object_size_sound_scenery - Enums::k_object_size_object) );
 
 
-		struct s_garbage_data : TStructImpl(Enums::k_object_size_garbage - Enums::k_object_size_object)
+		struct s_projectile_datum_network_data
 		{
-			enum { DATA_OFFSET = Enums::k_object_size_object, };
-		};
-
-
+			real_point3d position;
+			real_vector3d transitional_velocity;
+		}; BOOST_STATIC_ASSERT( sizeof(s_projectile_datum_network_data) == 0x18 );
 		struct s_projectile_data : TStructImpl(Enums::k_object_size_projectile - Enums::k_object_size_object)
 		{
 			enum { DATA_OFFSET = Enums::k_object_size_object, };
 
-			// 0x22C - long_flags, FLAG(1) - tracer
-			// 0x230 - _enum
-			// 0x232 - int16, looks like maybe some kind of index
-
-			TStructSubGetPtrImpl(datum_index,		SourceUnit, 0x234); // maybe? set to this->object.OwnerObjectIndex's ultimate parent object index
-			TStructSubGetPtrImpl(datum_index,		TargetObjectIndex, 0x238);
-			TStructSubGetPtrImpl(int32,				ContrailAttachmentIndex, 0x23C); // index for the proj's definition's object_attachment_block
-			TStructSubGetPtrImpl(real,				TimeRemaining, 0x240); // to target, or 0.0
-			// 0x244 - real
-			// 0x248 - real
-			// 0x24C - real
-			TStructSubGetPtrImpl(real,				RangeTraveled, 0x250); // If the proj definition's "maximum range" is > 0, divide <-this value by "maximum range" to get "range remaining"
-			TStructSubGetPtrImpl(real_vector3d,		TransitionalVelocity, 0x254);
-			TStructSubGetPtrImpl(real_vector3d,		AngularVelocity, 0x260);
-			// 0x26C - real_vector3d
-			TStructSubGetPtrImpl(bool,				BaselineValid, 0x279);
-			TStructSubGetPtrImpl(byte,				BaselineIndex, 0x27A);
-			TStructSubGetPtrImpl(bool,				MessageIndex, 0x27B);
-			TStructSubGetPtrImpl(real_vector3d,		Position, 0x27C);
-			TStructSubGetPtrImpl(real_vector3d,		TranslationalVelocity, 0x288);
+			TStructSubGetPtrImpl(long_flags,						Flags, 0x22C); // FLAG(1) - tracer
+			// 0x230, _enum
+			// 0x232, int16, looks like maybe some kind of index
+			TStructSubGetPtrImpl(datum_index,						SourceUnit, 0x234); // maybe? set to this->object.OwnerObjectIndex's ultimate parent object index
+			TStructSubGetPtrImpl(datum_index,						TargetObjectIndex, 0x238);
+			TStructSubGetPtrImpl(int32,								ContrailAttachmentIndex, 0x23C); // index for the proj's definition's object_attachment_block
+			TStructSubGetPtrImpl(real,								TimeRemaining, 0x240); // to target, or 0.0
+			// 0x244, real, related to detonation coundown timer
+			// 0x248, real
+			// 0x24C, real, related to arming_time
+			TStructSubGetPtrImpl(real,								RangeTraveled, 0x250); // If the proj definition's "maximum range" is > 0, divide <-this value by "maximum range" to get "range remaining"
+			TStructSubGetPtrImpl(real_vector3d,						TransitionalVelocity, 0x254);
+			// 0x260, real, set to water_damage_range's upper bound
+			TStructSubGetPtrImpl(real_vector3d,						AngularVelocity, 0x264);
+			// 0x270, real_euler_angles2d
+			// 0x278 ?
+			TStructSubGetPtrImpl(bool,								BaselineValid, 0x279);
+			TStructSubGetPtrImpl(byte,								BaselineIndex, 0x27A);
+			TStructSubGetPtrImpl(bool,								MessageIndex, 0x27B);
+			TStructSubGetPtrImpl(s_projectile_datum_network_data,	UpdateBaseline, 0x27C);
+			// 0x294, bool
+			// 0x295, PAD24
+			TStructSubGetPtrImpl(s_projectile_datum_network_data,	UpdateDelta, 0x298);
 		};
 
-		struct s_placeholder_data : TStructImpl(Enums::k_object_size_placeholder - Enums::k_object_size_object)
+		struct s_placeholder_data
 		{
-			enum { DATA_OFFSET = Enums::k_object_size_object, };
-		};
+			UNUSED_TYPE(int32);
+			UNUSED_TYPE(int32);
+		}; BOOST_STATIC_ASSERT( sizeof(s_placeholder_data) == (Enums::k_object_size_placeholder - Enums::k_object_size_object) );
 
 
 
@@ -346,12 +349,6 @@ namespace Yelo
 			s_object_data object;
 			s_sound_scenery_data sound_scenery;
 		}; BOOST_STATIC_ASSERT( sizeof(s_sound_scenery_datum) == Enums::k_object_size_sound_scenery );
-
-		struct s_garbage_datum
-		{
-			s_object_data object;
-			s_garbage_data garbage;
-		}; BOOST_STATIC_ASSERT( sizeof(s_garbage_datum) == Enums::k_object_size_garbage );
 
 		struct s_projectile_datum
 		{

@@ -25,6 +25,10 @@ namespace Yelo
 {
 	namespace Enums
 	{
+		enum {
+			k_maximum_number_of_magazines_per_weapon = 2,
+		};
+
 		enum global_grenade_type
 		{
 			_global_grenade_type_frag,

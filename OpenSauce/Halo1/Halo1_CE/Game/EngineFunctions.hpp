@@ -135,6 +135,7 @@ namespace Yelo
 		{
 			// Process a fully qualified string of script functions
 			void ProcessCommand(cstring command);
+			void ProcessRemoteCommand(int32 machine_index, cstring command);
 
 			// Prints [msg] to the console
 			void TerminalPrint(cstring msg);
@@ -340,9 +341,9 @@ namespace Yelo
 		{
 			void PredictResources(TagBlock<Yelo::TagGroups::predicted_resource>& resources_block);
 
+			// [group_tag] - the group tag of the tag definition (eg, 'ustr')
 			// [name] - the tag definition name
-			// [group_tag] - the group tag of the tag definition (ie, 'ustr')
-			datum_index TagLoaded(cstring name, tag group_tag);
+			datum_index TagLoaded(tag group_tag, cstring name);
 
 			// [ustr] - the index of the unicode string definition
 			// [index] - the index of the string you wish to get

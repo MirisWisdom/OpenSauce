@@ -42,8 +42,7 @@ namespace Yelo
 			int16 placement_tag_block_offset;								// 0xA
 			int16 palette_tag_block_offset;									// 0xC
 			int16 placement_tag_block_size;									// 0xE
-			int16 update_message_type;										// 0x10
-			int16 _unk2;													// 0x12
+			int32 update_message_type;										// 0x10
 			proc_initialize				proc_initialize;					// 0x14
 			proc_dispose				proc_dispose;						// 0x18
 			proc_initialize_for_new_map proc_initialize_for_new_map;		// 0x1C
@@ -79,7 +78,7 @@ namespace Yelo
 			int32 _unused1[13]; // s_object_type_definition*.
 			s_object_type_definition* next;
 			int32 _unused2;
-		};
+		}; BOOST_STATIC_ASSERT( sizeof(s_object_type_definition) == 0xC8 );
 
 
 		typedef bool (*proc_widget_type)(datum_index object_datum);

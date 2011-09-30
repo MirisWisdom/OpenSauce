@@ -58,3 +58,11 @@
 #define PLATFORM_API __cdecl
 
 #define PLATFORM_IS_EDITOR 0
+
+
+// Name of the section where we'll place executable data
+#define API_CODEDATA_SECTION_NAME	".yelo"
+// Apply this to data which will later contain code which will also be executed
+#define API_CODEDATA				__declspec(allocate(API_CODEDATA_SECTION_NAME))
+// The fucking linker ignores 'write' with 'execute. Needs manual fix-up
+#pragma section( API_CODEDATA_SECTION_NAME, read,write,execute )

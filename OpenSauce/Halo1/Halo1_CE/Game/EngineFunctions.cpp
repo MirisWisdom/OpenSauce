@@ -19,6 +19,7 @@
 #include "Common/Precompile.hpp"
 #include "Game/EngineFunctions.hpp"
 
+#include "Game/Console.hpp"
 #include "Game/GameState.hpp"
 #include "Game/ScriptLibrary.hpp"
 #include "Objects/Objects.hpp"
@@ -54,9 +55,9 @@ namespace Yelo
 #endif
 				call	TEMP_CALL_ADDR
 #if PLATFORM_IS_DEDI
-				add		esp, 8
+				add		esp, 4 * 2
 #else
-				add		esp, 12
+				add		esp, 4 * 3
 #endif
 			}
 		}
@@ -144,11 +145,16 @@ namespace Yelo
 			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(ANIMATION_PICK_RANDOM_PERMUTATION);
 
 			NAKED_FUNC_START()
+				push	ecx
+				movzx	ecx, animation_update_kind_affects_game_state
+
 				mov		edx, animation_index
 				mov		eax, animation_graph_index
-				push	animation_update_kind_affects_game_state
+				push	ecx
 				call	TEMP_CALL_ADDR
 				add		esp, 4 * 1
+
+				pop		ecx
 			NAKED_FUNC_END(3)
 		}
 
@@ -161,7 +167,7 @@ namespace Yelo
 #if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 				char local[k_engine_function_string_buffer_size];
 				memset(local, 0, k_engine_function_string_buffer_size);
-				strcpy(local, command);
+				strcpy_s(local, command);
 #else
 				cstring local = command;
 #endif
@@ -178,6 +184,13 @@ namespace Yelo
 				}
 			}
 
+			void ProcessRemoteCommand(int32 machine_index, cstring command)
+			{
+				Yelo::Console::TerminalGlobals()->rcon_machine_index = machine_index;
+				ProcessCommand(command);
+				Yelo::Console::TerminalGlobals()->rcon_machine_index = NONE;
+			}
+
 			void TerminalPrint(cstring msg)
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(CONSOLE_TERMINAL_PRINTF);
@@ -185,7 +198,7 @@ namespace Yelo
 #if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 				char local[k_engine_function_string_buffer_size];
 				memset(local, 0, k_engine_function_string_buffer_size);
-				strcpy(local, msg);
+				strcpy_s(local, msg);
 #else
 				cstring local = msg;
 #endif
@@ -212,7 +225,7 @@ namespace Yelo
 
 				va_list args;
 				va_start(args, format);
-				vsprintf(local, format, args);
+				vsprintf_s(local, format, args);
 				va_end(args);
 
 				__asm {
@@ -224,14 +237,14 @@ namespace Yelo
 				}
 			}
 
-			void SPrintF(cstring msg)
+			void PrintF(cstring msg)
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(CONSOLE_PRINTF);
 
 #if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 				char local[k_engine_function_string_buffer_size];
 				memset(local, 0, k_engine_function_string_buffer_size);
-				strcpy(local, msg);
+				strcpy_s(local, msg);
 #else
 				cstring local = msg;
 #endif
@@ -256,7 +269,7 @@ namespace Yelo
 #if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 				char local[k_engine_function_string_buffer_size];
 				memset(local, 0, k_engine_function_string_buffer_size);
-				strcpy(local, msg);
+				strcpy_s(local, msg);
 #else
 				cstring local = msg;
 #endif
@@ -382,7 +395,7 @@ namespace Yelo
 	#if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 				char local[k_engine_function_string_buffer_size];
 				memset(local, 0, k_engine_function_string_buffer_size);
-				strcpy(local, bink);
+				strcpy_s(local, bink);
 	#else
 				cstring local = bink;
 	#endif
@@ -486,7 +499,7 @@ namespace Yelo
 	#if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 				wchar_t local[64];
 				memset(local, 0, sizeof(local));
-				wcscpy(local, str);
+				wcscpy_s(local, str);
 	#else
 				wcstring local = str;
 	#endif
@@ -511,7 +524,7 @@ namespace Yelo
 	#if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 				wchar_t local[64];
 				memset(local, 0, sizeof(local));
-				wcscpy(local, str);
+				wcscpy_s(local, str);
 	#else
 				wcstring local = str;
 	#endif
@@ -715,7 +728,7 @@ namespace Yelo
 #if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 				wchar_t local[255];
 				memset(local, 0, sizeof(local));
-				wcscpy(local, msg);
+				wcscpy_s(local, msg);
 #else
 				cstring local = msg;
 #endif
@@ -1085,8 +1098,6 @@ namespace Yelo
 			static void player_screen_effect(datum_index player, uint32 func)
 			{
 #if !PLATFORM_IS_DEDI
-				if(player.IsNull()) return;
-
 				__asm {
 					mov		edx, player
 					mov		eax, func
@@ -1179,14 +1190,14 @@ namespace Yelo
 #endif
 			}
 
-			datum_index TagLoaded(cstring name, tag group_tag)
+			datum_index TagLoaded(tag group_tag, cstring name)
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(TAG_LOADED);
 
 #if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 				char local[256];
 				memset(local, 0, sizeof(local));
-				strcpy(local, name);
+				strcpy_s(local, name);
 #else
 				cstring local = name;
 #endif

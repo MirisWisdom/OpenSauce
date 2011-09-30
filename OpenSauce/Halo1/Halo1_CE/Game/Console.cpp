@@ -20,6 +20,9 @@
 #include "Game/Console.hpp"
 
 #include "Memory/MemoryInterface.hpp"
+#include "Game/Players.hpp"
+#include "Networking/MessageDeltas.hpp"
+#include "Objects/Objects.hpp"
 
 namespace Yelo
 {
@@ -57,6 +60,96 @@ namespace Yelo
 				add		esp, 4
 				retn
 			}
+		}
+
+#ifndef YELO_NO_NETWORK
+		bool SendHudChatToEveryonePredicate(Players::s_player_datum* player, 
+			Players::s_player_datum* src_player, datum_index src_player_vehicle_index)
+		{
+			return true;
+		}
+		static bool SendHutChatToTeamPredicate(Players::s_player_datum* player, 
+			Players::s_player_datum* src_player, datum_index src_player_vehicle_index)
+		{
+			return player->GetNetworkPlayer()->team_index == src_player->GetNetworkPlayer()->team_index;
+		}
+		static bool SendHudChatToPlayersInVehiclePredicate(Players::s_player_datum* player, 
+			Players::s_player_datum* src_player, datum_index src_player_vehicle_index)
+		{
+			datum_index player_vehicle_index = player->GetVehicleIndex();
+			if(player_vehicle_index.IsNull() || player_vehicle_index != src_player_vehicle_index)
+				return false;
+
+			return false;
+		}
+
+		static bool SendHudChatToPlayers(byte src_player_number, proc_send_hud_chat_predicate send_predicate,
+			int32 message_size)
+		{
+			if(send_predicate == SendHudChatToEveryonePredicate)
+				return MessageDeltas::SvSendMessageToAll(message_size);
+			else
+			{
+				Players::s_player_datum* src_player = Players::GetPlayerFromNumber(src_player_number);
+				datum_index src_player_vehicle_index = datum_index::null;
+				if(src_player != NULL) src_player_vehicle_index = src_player->GetVehicleIndex();
+
+				Players::t_players_data::Iterator iter(Players::Players());
+				Players::s_player_datum* player;
+				while( (player = iter.Next()) != NULL )
+				{
+					int32 player_machine_index = player->GetNetworkPlayer()->machine_index;
+					if(	player_machine_index == NONE ||
+						!send_predicate(player, src_player, src_player_vehicle_index))
+						continue;
+
+					if(!MessageDeltas::SvSendMessageToMachine(player_machine_index, message_size))
+					{
+						YELO_DEBUG_FORMAT("SendHudChatToPlayers failed for %S", player->GetNetworkPlayer()->name);
+					}
+				}
+			}
+
+			return true;
+		}
+#endif
+		void SendHudChat(Enums::hud_chat_type msg_type, wcstring message, byte src_player_number,
+			proc_send_hud_chat_predicate send_predicate)
+		{
+#ifndef YELO_NO_NETWORK
+			if(msg_type > Enums::_hud_chat_type_none && msg_type <= Enums::_hud_chat_type_info_msg)
+			{
+				if(msg_type == Enums::_hud_chat_type_server || msg_type == Enums::_hud_chat_type_info_msg)
+					src_player_number = NONE;
+
+				MessageDeltas::hud_chat_network_data network_data;
+				network_data.msg_type = msg_type;
+				network_data.player_number = src_player_number;
+				network_data.message = message;
+
+				void* encode_data = &network_data;
+				int32 bits_encoded = MessageDeltas::EncodeStateless(
+					Enums::_message_delta_mode_stateless,
+					Enums::_message_delta_hud_chat,
+					NULL, &encode_data);
+
+				if(send_predicate == NULL)
+				{
+					switch(msg_type)
+					{
+					case Enums::_hud_chat_type_team: send_predicate = SendHutChatToTeamPredicate; break;
+					case Enums::_hud_chat_type_vehicle: send_predicate = SendHutChatToTeamPredicate; break;
+
+					default: send_predicate = SendHudChatToEveryonePredicate;
+					}
+				}
+
+				if(bits_encoded <= 0 || !SendHudChatToPlayers(src_player_number, send_predicate, bits_encoded))
+				{
+					YELO_DEBUG("SendHudChat failed", true);
+				}
+			}
+#endif
 		}
 	};
 };

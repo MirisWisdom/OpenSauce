@@ -24,7 +24,7 @@ static void* scripting_physics_get_gravity_evaluate()
 {
 	TypeHolder result; result.pointer = NULL;
 
-	result.real = *GameState::Gravity();
+	result.real = GameState::Physics()->gravity;
 
 	return result.pointer;
 }
@@ -35,14 +35,14 @@ static void* scripting_physics_set_gravity_evaluate(void** arguments)
 		real gravity_fraction;
 	}* args = CAST_PTR(s_arguments*, arguments);
 
-	*GameState::Gravity() = GameState::GravityConstant() * args->gravity_fraction;
+	GameState::Physics()->gravity = GameState::s_physics_globals::GravityConstant() * args->gravity_fraction;
 
 	return NULL;
 }
 
 static void* scripting_physics_constants_reset_evaluate()
 {
-	*GameState::Gravity() = GameState::GravityConstant();
+	GameState::Physics()->Reset();
 
 	return NULL;
 }

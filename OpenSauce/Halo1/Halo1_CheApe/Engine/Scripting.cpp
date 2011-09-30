@@ -19,7 +19,6 @@
 #include "Common/Precompile.hpp"
 #include "Engine/Scripting.hpp"
 
-#include <Blam/Halo1/BlamScriptingDefinitions.hpp>
 #include <Blam/Halo1/project_yellow_shared_definitions.hpp>
 #include <Memory/Halo1/DataShared.hpp>
 #include "Blam/Halo1/BlamMemoryUpgrades.hpp"
@@ -79,6 +78,14 @@ namespace Yelo
 
 		void Dispose()
 		{
+		}
+
+		hs_function_definition* GetFunctionDefintion(int16 function_index)
+		{
+			if(function_index > NONE && function_index < _upgrade_globals.functions.count)
+				return _upgrade_globals.functions.table[function_index];
+
+			return NULL;
 		}
 
 		static void ScriptingNameCopyToTagNameData(cstring scripting_name, tag_string tag_name_data[2])
