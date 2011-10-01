@@ -112,6 +112,28 @@ namespace Yelo
 
 			return true;
 		}
+
+		static bool SendHudChatServer(byte src_player_number, proc_send_hud_chat_predicate send_predicate,
+			int32 message_size, Enums::hud_chat_type msg_type)
+		{
+			if(send_predicate == NULL)
+			{
+				switch(msg_type)
+				{
+				case Enums::_hud_chat_type_team: send_predicate = SendHutChatToTeamPredicate; break;
+				case Enums::_hud_chat_type_vehicle: send_predicate = SendHutChatToTeamPredicate; break;
+
+				default: send_predicate = SendHudChatToEveryonePredicate;
+				}
+			}
+
+			return SendHudChatToPlayers(src_player_number, send_predicate, message_size);
+		}
+
+		static bool SendHudChatClient(int32 message_size)
+		{
+			return MessageDeltas::ClientSendMessageToServer(message_size);
+		}
 #endif
 		void SendHudChat(Enums::hud_chat_type msg_type, wcstring message, byte src_player_number,
 			proc_send_hud_chat_predicate send_predicate)
@@ -133,21 +155,15 @@ namespace Yelo
 					Enums::_message_delta_hud_chat,
 					NULL, &encode_data);
 
-				if(send_predicate == NULL)
+				bool result = false;
+				if(bits_encoded <= 0)
 				{
-					switch(msg_type)
-					{
-					case Enums::_hud_chat_type_team: send_predicate = SendHutChatToTeamPredicate; break;
-					case Enums::_hud_chat_type_vehicle: send_predicate = SendHutChatToTeamPredicate; break;
-
-					default: send_predicate = SendHudChatToEveryonePredicate;
-					}
+						 if(Networking::IsServer()) result = SendHudChatServer(src_player_number, send_predicate, bits_encoded, msg_type);
+					else if(Networking::IsClient()) result = SendHudChatClient(bits_encoded);
 				}
 
-				if(bits_encoded <= 0 || !SendHudChatToPlayers(src_player_number, send_predicate, bits_encoded))
-				{
+				if(!result)
 					YELO_DEBUG("SendHudChat failed", true);
-				}
 			}
 #endif
 		}

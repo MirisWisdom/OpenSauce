@@ -259,7 +259,7 @@ namespace Yelo
 		//bool ConnectionFlush(int32 /*bool*/ unk = 1);
 
 		// Sends [data_size_in_bits] of the packet buffer to the server
-		void ClientSendMessageToServer(int32 data_size_in_bits);
+		bool ClientSendMessageToServer(int32 data_size_in_bits);
 
 		// Sends [data_size_in_bits] of the packet buffer to all machines
 		bool SvSendMessageToAll(int32 data_size_in_bits, 

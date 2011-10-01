@@ -261,12 +261,14 @@ the_end:
 #pragma endregion
 
 #pragma region ClientSendMessageToServer
-		void ClientSendMessageToServer(int32 data_size_in_bits)
+		bool ClientSendMessageToServer(int32 data_size_in_bits)
 		{
 			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(NETWORK_CONNECTION_FLUSH_QUEUE);
 			static uint32 TEMP_CALL_ADDR2 = GET_FUNC_PTR(BITSTREAM_WRITE_BUFFER);
 
-			if(data_size_in_bits == 0) return;
+			bool result = false;
+
+			if(data_size_in_bits == 0) return result;
 
 			byte shit = 1;
 
@@ -318,10 +320,13 @@ bit_writes:
 				add		esp, 4 * 1
 				mov		byte ptr [esi+0x1C], 0
 
+				mov		result, TRUE
 _the_exit:
 				pop		ebx
 				//pop		edi
 			}
+
+			return result;
 		}
 #pragma endregion
 
