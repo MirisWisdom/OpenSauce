@@ -57,19 +57,19 @@ namespace Yelo
 
 	namespace MessageDeltas
 	{
-		typedef void (API_FUNC* mdp_from_network_proc)(Networking::s_network_game_client* client, message_dependant_header* header);
+		typedef void (API_FUNC* proc_message_delta_from_network)(Networking::s_network_game_client* client, message_dependant_header* header);
 
 		struct packet_decoder
 		{
 			long_flags Flags;			// [message_deltas_new_flags]
-			mdp_from_network_proc Proc;
+			proc_message_delta_from_network Proc;
 		};
 
 #ifndef YELO_NO_NETWORK
 		// Yelo's new message delta definitions
-		extern message_delta_definition* kYeloPackets[];
+		extern message_delta_definition* kYeloMessageDeltas[];
 		// Yelo's new message delta decoders
-		extern const packet_decoder kYeloPacketDecoders[];
+		extern const packet_decoder kYeloMessageDeltaDecoders[];
 #endif
 
 #ifndef YELO_NO_NETWORK

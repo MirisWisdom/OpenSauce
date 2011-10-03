@@ -38,7 +38,7 @@ namespace Yelo
 			PAD16;
 			datum_index current_datum;
 			PAD32;
-			tag group_tag;
+			tag group_tag_filter;
 		}; BOOST_STATIC_ASSERT( sizeof(tag_iterator) == 0x14 );
 	};
 };
