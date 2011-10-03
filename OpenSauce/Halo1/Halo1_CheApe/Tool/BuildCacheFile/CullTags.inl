@@ -33,13 +33,13 @@ namespace BuildCacheFileEx
 			bool result = build_cache_file_cull_tags();
 
 			TagGroups::tag_iterator tag_iter;
-			tag_iterator_new(tag_iter, NULL_HANDLE);
+			tag_iterator_new(tag_iter);
 
 			// call custom tag's data culling stuff in this loop
 			datum_index tag_index;
 			while( !(tag_index = tag_iterator_next(tag_iter)).IsNull() )
 			{
-				switch(tag_iter.group_tag)
+				switch( (*TagGroups::TagInstances())[tag_index]->group_tag )
 				{
 				case TagGroups::project_yellow_globals::k_group_tag:
 					TagGroups::YeloGlobalsDefinitionCull(tag_get<TagGroups::project_yellow_globals>(tag_iter.current_datum));

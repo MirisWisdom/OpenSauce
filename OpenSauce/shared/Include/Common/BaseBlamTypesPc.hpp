@@ -485,21 +485,22 @@ namespace Yelo
 
 };
 
-#define NAKED_FUNC_START() __asm \
-	{ \
-	__asm push	ebp \
-	__asm mov	ebp, esp
+// Begin a naked function's assembly block (pointless to use this unless your function takes arguments)
+#define NAKED_FUNC_START() __asm	\
+	{								\
+		__asm push	ebp				\
+		__asm mov	ebp, esp
 
-#define NAKED_FUNC_END(arg_count) \
-	__asm pop	ebp \
-	__asm retn	(arg_count * 4) \
+// End a naked function's assembly block (use with matching NAKED_FUNC_START).
+// Implemented for __stdcall functions
+#define NAKED_FUNC_END(arg_count)	\
+		__asm pop	ebp				\
+		__asm retn	(arg_count * 4) \
 	}
 
 // For usage after calling cdecl functions in assembly code.
 // In the case were our assembly code is just interfacing 
 // with an outside function.
-#define NAKED_FUNC_END_CDECL(arg_count) \
-	__asm add	esp, (arg_count * 4) \
-	__asm pop	ebp \
-	__asm retn	(arg_count * 4) \
-	}
+#define NAKED_FUNC_END_CDECL(arg_count)		\
+		__asm add	esp, (arg_count * 4)	\
+	NAKED_FUNC_END(arg_count)

@@ -22,41 +22,49 @@
 
 #define GET_NEW_MDP_DEFINITION(name) mdp_definition_##name
 
-#define MDP_DEFINITION_START(name, type, max_iterations, header, fieldc)			\
-	static Yelo::MessageDeltas::message_delta_definition mdp_definition_##name = {	\
-		Yelo::Enums::_message_delta_##type ,										\
-		NONE,																		\
-		NONE,																		\
-		NONE,																		\
-		NONE,																		\
-		max_iterations ,															\
+#define MDP_STRUCT_NAME(base_name)	s_##base_name##_network_data
+
+#define MDP_STRUCT_GET_TRAITS(base_name) MDP_STRUCT_NAME(base_name)::definition_traits
+
+#define MDP_STRUCT_DEFINE_TRAITS(max_iterations, field_count, msg_type)	\
+	class definition_traits { public: enum {							\
+		k_max_iterations = max_iterations,								\
+		k_field_count = field_count,									\
+		k_message_type = Yelo::Enums::msg_type,							\
+	}; };
+
+#define MDP_DEFINITION_START(type, header)											\
+	static Yelo::MessageDeltas::message_delta_definition mdp_definition_##type = {	\
+		MDP_STRUCT_GET_TRAITS(type)::k_message_type,								\
+		NONE, NONE,	NONE, NONE, 													\
+		MDP_STRUCT_GET_TRAITS(type)::k_max_iterations,								\
 		false,																		\
 		header ,																	\
 		{																			\
-			fieldc ,																\
+			MDP_STRUCT_GET_TRAITS(type)::k_field_count,								\
 			NONE,																	\
 			{
 
-#define MDP_DEFINITION_FIELD(cls, name, type)	\
-	{											\
-		MDP_GET_FIELD_TYPE_DEFINITION( type ),	\
-		FIELD_OFFSET( mdp_##cls , name ),		\
-		FIELD_OFFSET( mdp_##cls , name ),		\
-		false									\
+#define MDP_DEFINITION_FIELD(cls, name, type)			\
+	{													\
+		MDP_GET_FIELD_TYPE_DEFINITION( type ),			\
+		FIELD_OFFSET( MDP_STRUCT_NAME(cls) , name ),	\
+		FIELD_OFFSET( MDP_STRUCT_NAME(cls) , name ),	\
+		false											\
 	}
 
-#define MDP_DEFINITION_FIELD_CUSTOM(cls, name, type)\
-	{												\
-		&MDP_GET_FIELD_TYPE_DEFINITION( type ),		\
-		FIELD_OFFSET( mdp_##cls , name ),			\
-		FIELD_OFFSET( mdp_##cls , name ),			\
-		false										\
+#define MDP_DEFINITION_FIELD_CUSTOM(cls, name, type)	\
+	{													\
+		&MDP_FIELD_TYPE_NAME( type ),					\
+		FIELD_OFFSET( MDP_STRUCT_NAME(cls) , name ),	\
+		FIELD_OFFSET( MDP_STRUCT_NAME(cls) , name ),	\
+		false											\
 	}
 
-#define MDP_DEFINITION_END()	\
-			{NULL, 0, 0, false}	\
-			}					\
-		}						\
+#define MDP_DEFINITION_END()		\
+				{NULL, 0, 0, false}	\
+			}						\
+		}							\
 	}
 
 #define MDP_FIELD_PROPERTIES_DEFINITION_START(type, name1, name2, enc, dec)												\
@@ -80,7 +88,9 @@ namespace Yelo
 {
 	namespace MessageDeltas
 	{
-#define MDP_GET_FIELD_TYPE_DEFINITION( type ) GET_PTR2(message_delta_field_##type)
+#define MDP_FIELD_TYPE_NAME( type )				message_delta_field_##type
+
+#define MDP_GET_FIELD_TYPE_DEFINITION( type ) GET_PTR2( MDP_FIELD_TYPE_NAME(type) )
 
 #define MDP_GET_FIELD_SET_DEFINITION( type ) GET_PTR2(message_delta_##type##_field_set)
 

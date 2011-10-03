@@ -28,41 +28,58 @@ namespace Yelo
 	namespace MessageDeltas
 	{
 #ifndef YELO_NO_NETWORK
+		//////////////////////////////////////////////////////////////////////////
+		// Template'd handler for automatically handling DiscardIterationBody when a message fails to be decoded from the network
+		typedef bool (* proc_message_delta_from_network_impl)(Networking::s_network_game_client* client, message_dependant_header* header);
+		
+		template<const proc_message_delta_from_network_impl k_impl>
+		static void MessageDeltaFromNetworkResultHandler(Networking::s_network_game_client* client, message_dependant_header* header)
+		{
+			if(!k_impl(client, header))
+				MessageDeltas::DiscardIterationBody(header);
+		}
+		//////////////////////////////////////////////////////////////////////////
+
 		/* --- CUSTOM FIELDS --- */
 
 
 		/* --- CUSTOM PACKETS --- */
-		static void NullFromNetwork(Networking::s_network_game_client* client, message_dependant_header* header)
+		static bool NullFromNetwork(Networking::s_network_game_client* client, message_dependant_header* header)
 		{
 			YELO_DEBUG("Received a packet we haven't made a function to decode yet!", true);
-			MessageDeltas::DiscardIterationBody(header);
+			
+			return false;
 		}
 
-		struct mdp_test
+		struct MDP_STRUCT_NAME(test)
 		{
+			MDP_STRUCT_DEFINE_TRAITS(1, 1, _message_delta_test);
+
 			real value;
+
+			static bool FromNetwork(Networking::s_network_game_client* client, message_dependant_header* header)
+			{
+				bool result = false;
+
+				MDP_STRUCT_NAME(test) test;
+				decoding_information_data* decode_info = header->decoding_information;
+
+				if( result = MessageDeltas::DecodeStatelessIterated(header, &test) )
+					GameState::Physics()->gravity = test.value;
+
+				return result;
+			}
 		};
 
-		MDP_DEFINITION_START(test, test, 1, MDP_GET_FIELD_SET_DEFINITION(empty), 1)
+		MDP_DEFINITION_START(test, MDP_GET_FIELD_SET_DEFINITION(empty))
 			MDP_DEFINITION_FIELD(test, value, real),
 		MDP_DEFINITION_END();
-
-		static void TestFromNetwork(Networking::s_network_game_client* client, message_dependant_header* header)
-		{
-			mdp_test test;
-			decoding_information_data* decode_info = header->decoding_information;
-
-			if( MessageDeltas::DecodeStatelessIterated(header, &test) )
-				GameState::Physics()->gravity = test.value;
-			else
-				MessageDeltas::DiscardIterationBody(header);
-		}
 
 		void* TestToNetwork()
 		{
 			if( !Networking::IsServer() ) return NULL;
 
-			mdp_test test;
+			MDP_STRUCT_NAME(test) test;
 			test.value = GameState::Physics()->gravity;
 
 			void* data = &test;
@@ -82,8 +99,10 @@ namespace Yelo
 		}
 
 
-		struct mdp_update_script_global
+		struct MDP_STRUCT_NAME(update_script_global)
 		{
+			MDP_STRUCT_DEFINE_TRAITS(1, 4, _message_delta_update_script_global);
+
 			boolean is_external; // is an engine global
 			integer_small type;
 			integer_medium index;
@@ -97,7 +116,7 @@ namespace Yelo
 			}value;
 		};
 
-		MDP_DEFINITION_START(update_script_global, update_script_global, 1, MDP_GET_FIELD_SET_DEFINITION(empty), 3)
+		MDP_DEFINITION_START(update_script_global, MDP_GET_FIELD_SET_DEFINITION(empty))
 			MDP_DEFINITION_FIELD(update_script_global, is_external, boolean),
 			MDP_DEFINITION_FIELD(update_script_global, type, integer_medium),
 			MDP_DEFINITION_FIELD(update_script_global, index, integer_medium),
@@ -106,38 +125,40 @@ namespace Yelo
 
 
 
-		struct mdp_player_biped_update
+		struct MDP_STRUCT_NAME(player_biped_update)
 		{
+			MDP_STRUCT_DEFINE_TRAITS(1, 2, _message_delta_player_biped_update);
+
 			player_index player;
 			definition_index biped;
 		};
 
-		MDP_DEFINITION_START(player_biped_update, player_biped_update, 1, MDP_GET_FIELD_SET_DEFINITION(empty), 2)
+		MDP_DEFINITION_START(player_biped_update, MDP_GET_FIELD_SET_DEFINITION(empty))
 			MDP_DEFINITION_FIELD(player_biped_update, player, player_index),
 			MDP_DEFINITION_FIELD(player_biped_update, biped, definition_index),
 		MDP_DEFINITION_END();
 
 		/* --- CUSTOM PACKET DEF POINTERS --- */
 
-		message_delta_definition* kYeloPackets[] = {
+		message_delta_definition* kYeloMessageDeltas[] = {
 			&GET_NEW_MDP_DEFINITION(test),
 			&GET_NEW_MDP_DEFINITION(update_script_global),
 			&GET_NEW_MDP_DEFINITION(player_biped_update),
 		};
 
-		const packet_decoder kYeloPacketDecoders[] = {
+		const packet_decoder kYeloMessageDeltaDecoders[] = {
 
 			{FLAG(Enums::_message_deltas_new_client_bit), 
-				TestFromNetwork},
+				MessageDeltaFromNetworkResultHandler<MDP_STRUCT_NAME(test)::FromNetwork>},
 			{FLAG(Enums::_message_deltas_new_client_bit), 
-				NullFromNetwork},
+				MessageDeltaFromNetworkResultHandler<NullFromNetwork>},
 			{FLAG(Enums::_message_deltas_new_client_bit), 
-				NullFromNetwork},
+				MessageDeltaFromNetworkResultHandler<NullFromNetwork>},
 
 		};
 		BOOST_STATIC_ASSERT( 
-			NUMBEROF(kYeloPackets) == Enums::k_message_deltas_yelo_count &&
-			NUMBEROF(kYeloPacketDecoders) == Enums::k_message_deltas_yelo_count 
+			NUMBEROF(kYeloMessageDeltas) == Enums::k_message_deltas_yelo_count &&
+			NUMBEROF(kYeloMessageDeltaDecoders) == Enums::k_message_deltas_yelo_count 
 		);
 #endif
 	};

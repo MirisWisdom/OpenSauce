@@ -61,16 +61,16 @@
 #define DATA_PTR_UNKNOWN	NULL
 
 // Gets the enum value of [name]
-#define GET_FUNC_PTR(name) PTR_##name
-#define GET_DATA_PTR(name) PTR_##name
+#define GET_FUNC_PTR(name) BOOST_PP_CAT(PTR_,name)
+#define GET_DATA_PTR(name) BOOST_PP_CAT(PTR_,name)
 // Type casts [name] to a void*, since FUNC_PTRs are really enums
 #define GET_FUNC_VPTR(name) (CAST_PTR(void*, GET_FUNC_PTR(##name##) ))
 #define GET_DATA_VPTR(name) (CAST_PTR(void*, GET_FUNC_PTR(##name##) ))
 
 // Double pointer inline get
-#define GET_DPTR2(name)		pp##name
+#define GET_DPTR2(name)		BOOST_PP_CAT(pp,name)
 // Pointer inline get
-#define GET_PTR2(name)		p##name
+#define GET_PTR2(name)		BOOST_PP_CAT(p,name)
 // Double pointer inline dereference-get
 #define GET_DPTR(name)		( *GET_DPTR2(##name##) )
 // Pointer inline dereference-get

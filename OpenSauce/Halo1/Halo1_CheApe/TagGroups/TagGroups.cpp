@@ -261,21 +261,19 @@ fail:
 		NAKED_FUNC_START()
 			push	tag_index
 			call	FUNCTION
-			add		esp, 4 * 1
-		NAKED_FUNC_END(1);
+		NAKED_FUNC_END_CDECL(1);
 	}
 
 
-	API_FUNC_NAKED void tag_iterator_new(TagGroups::tag_iterator& iter, const tag group_tag)
+	API_FUNC_NAKED void tag_iterator_new(TagGroups::tag_iterator& iter, const tag group_tag_filter)
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_ITERATOR_NEW);
 
 		NAKED_FUNC_START()
-			push	group_tag
+			push	group_tag_filter
 			push	iter
 			call	FUNCTION
-			add		esp, 4 * 2
-		NAKED_FUNC_END(2);
+		NAKED_FUNC_END_CDECL(2);
 	}
 
 	API_FUNC_NAKED datum_index tag_iterator_next(TagGroups::tag_iterator& iter)
@@ -285,7 +283,6 @@ fail:
 		NAKED_FUNC_START()
 			push	iter
 			call	FUNCTION
-			add		esp, 4 * 1
-		NAKED_FUNC_END(1);
+		NAKED_FUNC_END_CDECL(1);
 	}
 };

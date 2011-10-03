@@ -56,7 +56,7 @@ namespace Yelo
 
 			// copy the new yelo delta definitions
 			for(size_t i = 0; i < Enums::k_message_deltas_yelo_count; i++, x++)
-				NewMessageDeltaList[x] = kYeloPackets[i];
+				NewMessageDeltaList[x] = kYeloMessageDeltas[i];
 		}
 		// Initialize the engine's code to reference our NewMessageDeltaList
 		void InitializeEngineWithNewMessageDeltaList()
@@ -142,7 +142,7 @@ namespace Yelo
 			if(msg_type >= Enums::k_message_deltas_count && 
 				msg_type < Enums::k_message_deltas_new_count)
 			{
-				const MessageDeltas::packet_decoder& decoder = kYeloPacketDecoders[msg_type - Enums::k_message_deltas_count];
+				const MessageDeltas::packet_decoder& decoder = kYeloMessageDeltaDecoders[msg_type - Enums::k_message_deltas_count];
 
 				// Validate that the packet can be decoded in our current network state
 				if( TEST_FLAG(decoder.Flags, Enums::_message_deltas_new_client_bit) == Networking::IsClient() || 

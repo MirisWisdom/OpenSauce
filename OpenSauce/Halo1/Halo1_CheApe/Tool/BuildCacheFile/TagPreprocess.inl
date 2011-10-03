@@ -27,14 +27,14 @@ namespace BuildCacheFileEx
 		static void PLATFORM_API preprocess_tags_for_build()
 		{
 			TagGroups::tag_iterator tag_iter;
-			tag_iterator_new(tag_iter, NULL_HANDLE);
+			tag_iterator_new(tag_iter);
 
-			printf_s("pre-processing custom tag instances...");
+			printf_s("pre-processing custom tag instances...\n");
 
  			datum_index tag_index;
  			while( !(tag_index = tag_iterator_next(tag_iter)).IsNull() )
  			{
-				switch(tag_iter.group_tag)
+				switch( (*TagGroups::TagInstances())[tag_index]->group_tag )
 				{
 				case TagGroups::s_shader_postprocess_generic::k_group_tag:
 					PostProcessing::shader_postprocess_generic_setup_parameters(tag_index);

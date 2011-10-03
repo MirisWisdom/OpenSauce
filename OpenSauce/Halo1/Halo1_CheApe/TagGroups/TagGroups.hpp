@@ -418,8 +418,8 @@ namespace Yelo
 	void tag_unload(datum_index tag_index);
 
 
-	// Use [NULL_HANDLE] for [group_tag] to iterate all tag groups
-	void tag_iterator_new(TagGroups::tag_iterator& iter, const tag group_tag);
+	// Use [NULL_HANDLE] for [group_tag_filter] to iterate all tag groups
+	void tag_iterator_new(TagGroups::tag_iterator& iter, const tag group_tag_filter = NULL_HANDLE);
 	template<typename T>
 	void tag_iterator_new(TagGroups::tag_iterator& iter)
 	{
