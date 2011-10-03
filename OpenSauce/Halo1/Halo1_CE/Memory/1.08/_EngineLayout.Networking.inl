@@ -204,6 +204,9 @@
 	#if PLATFORM_IS_DEDI
 		ENGINE_PTR(int32, server_instance,			PTR_NULL, 0x6257E8);
 
+		FUNC_PTR(SV_EVENT_LOG_WITH_TIME,			FUNC_PTR_NULL, 0x4D17B0);
+		FUNC_PTR(SV_EVENT_ECHO,						FUNC_PTR_NULL, 0x4D18C0);
+
 		ENGINE_PTR(bool, event_type_logging,		PTR_NULL, 0x5C5334);
 		ENGINE_PTR(bool, event_type_echoing,		PTR_NULL, 0x5C5344);
 	#endif
