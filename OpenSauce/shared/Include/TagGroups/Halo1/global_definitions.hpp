@@ -109,6 +109,22 @@ namespace Yelo
 
 			_input_output_channel,
 		};
+
+		enum global_game_team : _enum
+		{
+			_global_game_team_default,
+			_global_game_team_player,
+			_global_game_team_human,
+			_global_game_team_covenant,
+			_global_game_team_flood,
+			_global_game_team_sentinel,
+			_global_game_team_unused6,
+			_global_game_team_unused7,
+			_global_game_team_unused8,
+			_global_game_team_unused9,
+
+			_global_game_team
+		};
 	};
 
 	namespace TagGroups

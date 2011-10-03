@@ -2237,6 +2237,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\TagGroups\Halo1\game_globals_definitions.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\TagGroups\Halo1\global_definitions.hpp"
 					>
 				</File>
