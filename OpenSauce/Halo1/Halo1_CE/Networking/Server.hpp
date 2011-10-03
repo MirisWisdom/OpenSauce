@@ -28,7 +28,7 @@ namespace Yelo
 #if PLATFORM_IS_DEDI
 	namespace Enums
 	{
-		enum server_event_type : _enum
+		enum server_event_type : long_enum
 		{
 			// datetime string format: "%04d-%02d-%02d %02d:%02d:%02d"
 			// <datetime>\t<event name>\t<log sprintf>\r\n
@@ -225,6 +225,12 @@ namespace Yelo
 		int32 ServerInstance();
 
 
+		typedef void (PLATFORM_API* proc_sv_event_log)(Enums::server_event_type type, wcstring format, ...);
+		// Write an event to the log file (includes a time stamp)
+		extern proc_sv_event_log EventLog;
+		// Echo an event to the console
+		extern proc_sv_event_log EventEcho;
+
 		//////////////////////////////////////////////////////////////////////////
 		// Logging State: 'true' if the [event_type] is output to the log file
 		// Echoing State: 'true' if the [event_type] is echo'd to the console window of the server
@@ -233,6 +239,12 @@ namespace Yelo
 		void EventTypeLoggingStateSet(Enums::server_event_type event_type, bool state);
 		bool EventTypeEchoingStateGet(Enums::server_event_type event_type);
 		void EventTypeEchoingStateSet(Enums::server_event_type event_type, bool state);
+
+		//////////////////////////////////////////////////////////////////////////
+
+		// [mode] - Description of the mode. Eg. GLOBAL, TEAM, etc. Optional.
+		// [source] - Description of the source. Eg. a player's name. Optional.
+		void EventChatLog(wcstring mode, wcstring source, wcstring message);
 #endif
 	};
 };
