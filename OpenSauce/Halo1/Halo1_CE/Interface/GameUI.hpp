@@ -19,7 +19,7 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include "Objects/ObjectDefinitions.hpp" // for game teams
+#include <TagGroups/Halo1/global_definitions.hpp> // for game teams
 
 namespace Yelo
 {

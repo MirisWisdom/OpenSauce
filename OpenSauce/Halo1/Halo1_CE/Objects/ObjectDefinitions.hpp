@@ -22,22 +22,6 @@ namespace Yelo
 {
 	namespace Enums
 	{
-		enum global_game_team // I just put this definition here because it seemed best...should be somewhere under the Game folder tho
-		{
-			_global_game_team_default,
-			_global_game_team_player,
-			_global_game_team_human,
-			_global_game_team_covenant,
-			_global_game_team_flood,
-			_global_game_team_sentinel,
-			_global_game_team_unused6,
-			_global_game_team_unused7,
-			_global_game_team_unused8,
-			_global_game_team_unused9,
-
-			_global_game_team
-		};
-
 		enum object_type
 		{
 			_object_type_object = -4,

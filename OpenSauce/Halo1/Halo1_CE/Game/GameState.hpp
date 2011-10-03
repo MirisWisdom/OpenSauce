@@ -19,6 +19,8 @@
 #pragma once
 #include "Memory/Data.hpp"
 
+#include <TagGroups/Halo1/global_definitions.hpp> // for game teams
+
 namespace Yelo
 {
 	namespace TagGroups
@@ -29,6 +31,9 @@ namespace Yelo
 
 		struct scenario;
 
+		struct s_game_globals;
+
+		struct collision_bsp;
 		struct structure_bsp;
 	};
 };
@@ -262,9 +267,30 @@ namespace Yelo
 		};
 		s_game_time_globals*		GameTimeGlobals();
 
-		struct s_game_allegiance_globals : TStructImpl(0xB4)
+		struct s_game_allegiance_globals
 		{
-		};
+			struct s_allegiance
+			{
+				Enums::global_game_team this_team;
+				Enums::global_game_team other_team;
+				int16 threshold;
+				UNKNOWN_TYPE(int16);	// 0x6
+				UNKNOWN_TYPE(bool);		// 0x8
+				UNKNOWN_TYPE(bool);		// 0x9
+				bool is_broken;			// 0xA
+				UNKNOWN_TYPE(bool);		// 0xB
+				UNKNOWN_TYPE(bool);		// 0xC
+				PAD8;
+				int16 incidents_count;	// 0xE
+				UNKNOWN_TYPE(int16);	// 0x10
+			}; BOOST_STATIC_ASSERT( sizeof(s_allegiance) == 0x12 );
+
+			int16 current_incidents;
+			s_allegiance allegiances[8];
+			PAD16;
+			long_flags ally_mapping_flags[ BIT_VECTOR_SIZE_IN_DWORDS(Enums::_global_game_team * Enums::_global_game_team) ]; // 0x94
+			long_flags enemy_mapping_flags[ BIT_VECTOR_SIZE_IN_DWORDS(Enums::_global_game_team * Enums::_global_game_team) ]; // 0xA4
+		}; BOOST_STATIC_ASSERT( sizeof(s_game_allegiance_globals) == 0xB4 );
 		s_game_allegiance_globals*	GameAllegianceGlobals();
 
 		struct s_scenario_globals
@@ -330,11 +356,11 @@ namespace Yelo
 		// Scenario Tag data
 		TagGroups::scenario*		Scenario();
 		// Globals tag data
-		void*						Globals();
+		TagGroups::s_game_globals*	GlobalGameGlobals();
 		// Pointer to the current SBPS's bsp3d block
-		void*						Bsp3d();
+		TagGroups::collision_bsp*	Bsp3d();
 		// Pointer to the current SBPS's collision bsp block
-		void*						CollisionBsp();
+		TagGroups::collision_bsp*	CollisionBsp();
 		// Pointer to the current SBSP's definition
 		TagGroups::structure_bsp*	StructureBsp();
 		

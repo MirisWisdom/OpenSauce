@@ -90,9 +90,9 @@ namespace Yelo
 
 
 		TagGroups::scenario* Scenario()									PTR_IMP_GET(global_scenario);
-		void* Globals()													PTR_IMP_GET(global_game_globals);
-		void* Bsp3d()													PTR_IMP_GET(global_bsp3d);
-		void* CollisionBsp()											PTR_IMP_GET(global_collision_bsp);
+		TagGroups::s_game_globals* GlobalGameGlobals()					PTR_IMP_GET(global_game_globals);
+		TagGroups::collision_bsp* Bsp3d()								PTR_IMP_GET(global_bsp3d);
+		TagGroups::collision_bsp* CollisionBsp()						PTR_IMP_GET(global_collision_bsp);
 		TagGroups::structure_bsp* StructureBsp()						PTR_IMP_GET(global_structure_bsp);
 		s_physics_globals* Physics()									PTR_IMP_GET2(global_physics);
 		s_point_physics_globals* PointPhysics()							PTR_IMP_GET2(global_point_physics);
