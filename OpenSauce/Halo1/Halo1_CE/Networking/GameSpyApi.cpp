@@ -81,6 +81,8 @@ _return:
 	{
 		static void ChangeAdvertisedGameVersionId(long_enum version_id, bool and_game_build)
 		{
+			using namespace Enums;
+
 			if(version_id)
 			{
 				GET_PTR(game_version_id1) = version_id;
@@ -89,21 +91,17 @@ _return:
 
 				if(and_game_build)
 				{
-					cstring build_string = NULL;
+					cstring build_str = NULL;
 
-					if(version_id == Enums::_game_version_id_100)
-						build_string = NULL; // TODO
-					else if(version_id == Enums::_game_version_id_107)
-						build_string = NULL; // TODO
-					else if(version_id == Enums::_game_version_id_108)
-						build_string = NULL; // TODO
-					else if(version_id == Enums::_game_version_id_109)
-						build_string = NULL; // TODO
+						 if(version_id == _game_version_id_100)	build_str = "01.00.00.0609";
+					else if(version_id == _game_version_id_107) build_str = "01.00.07.0613";
+					else if(version_id == _game_version_id_108) build_str = "01.00.08.0616";
+					else if(version_id == _game_version_id_109) build_str = "01.00.09.0620";
 
-					if(build_string != NULL)
+					if(build_str != NULL)
 					{
-						strcpy(GameState::GameBuildString(), build_string);
-						strcpy(GameState::GamespyGameBuildString(), build_string);
+						strcpy(GameState::GameBuildString(), build_str);
+						strcpy(GameState::GamespyGameBuildString(), build_str);
 					}
 				}
 			}
@@ -111,19 +109,16 @@ _return:
 
 		bool ChangeAdvertisedGameVersion(cstring version_str, bool and_game_build)
 		{
+			using namespace Enums;
+
 			bool result = true;
 			long_enum version_id = 0;
 
-			if( strstr(version_str, "1.00") )
-				version_id = Enums::_game_version_id_100;
-			else if( strstr(version_str, "1.07") )
-				version_id = Enums::_game_version_id_107;
-			else if( strstr(version_str, "1.08") )
-				version_id = Enums::_game_version_id_108;
-			else if( strstr(version_str, "1.09") )
-				version_id = Enums::_game_version_id_109;
-			else
-				result = false;
+				 if( strstr(version_str, "1.00") ) version_id = _game_version_id_100;
+			else if( strstr(version_str, "1.07") ) version_id = _game_version_id_107;
+			else if( strstr(version_str, "1.08") ) version_id = _game_version_id_108;
+			else if( strstr(version_str, "1.09") ) version_id = _game_version_id_109;
+			else result = false;
 
 			if(result)
 				ChangeAdvertisedGameVersionId(version_id, and_game_build);
