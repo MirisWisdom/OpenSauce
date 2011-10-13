@@ -306,7 +306,7 @@ namespace Yelo
 			TStructGetPtrImpl(s_server_update_data, ServerUpdateData, 0xE8);
 
 			// !!! Only use this when the local machine is the host (ie, Networking::IsServer() == true) !!!
-			TStructGetPtrImpl(s_player_yelo_server_data, ServerYeloData, 0xE8);
+			TStructGetPtrImpl(s_player_yelo_server_data, ServerYeloData, 0x1C8);
 
 
 			Objects::s_unit_datum* GetPlayerUnit();
