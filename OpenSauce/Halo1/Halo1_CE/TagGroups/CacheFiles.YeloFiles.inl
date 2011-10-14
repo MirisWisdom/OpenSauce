@@ -17,18 +17,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-static int __cdecl CacheFormatPathHack(char* buffer, cstring format,
+static int __cdecl CacheFormatPathHack(string256 buffer, cstring format,
 	cstring root_directory, cstring maps_folder, cstring map_name)
 {
 	int access, result;
 
-	result = sprintf(buffer, format, root_directory, maps_folder, map_name);
-	access = _access(buffer, 0);
+	result = sprintf_s(buffer, sizeof(string256), format, root_directory, maps_folder, map_name);
+	access = _access_s(buffer, 0);
 
 	if(access == NONE && errno == ENOENT)
 	{
-		result = sprintf(buffer, "%s%s%s.yelo", root_directory, maps_folder, map_name);
-		access = _access(buffer, 0);
+		result = sprintf_s(buffer, sizeof(string256), "%s%s%s.yelo", root_directory, maps_folder, map_name);
+		access = _access_s(buffer, 0);
 
 		if(access == NONE && errno == ENOENT)
 			YELO_DEBUG_FORMAT("CacheFormatPathHack is about to fail on [%s]", buffer);
@@ -36,20 +36,21 @@ static int __cdecl CacheFormatPathHack(char* buffer, cstring format,
 
 	return result;
 }
-static int __cdecl CacheFormatPathHackN(char* buffer, size_t buffer_size, cstring format,
+static int __cdecl CacheFormatPathHackN(char* buffer, size_t max_count, cstring format,
 	cstring root_directory, cstring maps_folder, cstring map_name)
 {
+	const size_t buffer_size = max_count+1;
 	int access, result;
 
-	result = _snprintf(buffer, buffer_size, format, root_directory, maps_folder, map_name);
-	access = _access(buffer, 0);
+	result = _snprintf_s(buffer, buffer_size, _TRUNCATE, format, root_directory, maps_folder, map_name);
+	access = _access_s(buffer, 0);
 
 	if(access == NONE && errno == ENOENT)
 	{
 		format = format[2] == '\\' ? "%s\\%s%s.yelo" : "%s%s%s.yelo";
 
-		result = _snprintf(buffer, buffer_size, format, root_directory, maps_folder, map_name);
-		access = _access(buffer, 0);
+		result = _snprintf_s(buffer, buffer_size, _TRUNCATE, format, root_directory, maps_folder, map_name);
+		access = _access_s(buffer, 0);
 
 		if(access == NONE && errno == ENOENT)
 			YELO_DEBUG_FORMAT("CacheFormatPathHackN is about to fail on [%s]", buffer);

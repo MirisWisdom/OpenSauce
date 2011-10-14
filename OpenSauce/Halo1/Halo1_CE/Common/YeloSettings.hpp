@@ -28,6 +28,10 @@ namespace Yelo
 
 	namespace Settings
 	{
+		extern cstring K_DEBUG_FILENAME;
+		extern cstring K_EVENT_LOG_FILENAME;
+		extern cstring K_CHAT_LOG_FILENAME;
+
 		typedef void (API_FUNC* proc_settings_read)(TiXmlElement* element);
 		typedef void (API_FUNC* proc_settings_save)(TiXmlElement* element);
 
@@ -37,5 +41,9 @@ namespace Yelo
 
 		void LoadSettings();
 		void SaveSettings();
+
+		// Get the current time and format it into [time_str].
+		// Not the most obvious place for this function to exist in, I know...
+		void GetTimeStampString(_Out_ tag_string time_str);
 	};
 };

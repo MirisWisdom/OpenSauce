@@ -94,26 +94,26 @@ namespace Yelo
 		*/
 		void		c_version_check_manager_dedi::DisplayVersions(bool is_new_version)
 		{
+			Engine::Console::TerminalPrint("");
+
 			// if a new version is available display the versions
 			if(is_new_version)
 			{
 				// print the current and available versions to the console
 				// need to see how the console looks though to make sure we dont
 				// mess up anything, could make it colourful too
-				Engine::Console::TerminalPrint("");
 				Engine::Console::TerminalPrint("New version of OpenSauce available!");
 				Engine::Console::TerminalPrintF("Current version:\t\t%i.%i.%i", 
 					m_current_version.m_major, m_current_version.m_minor, m_current_version.m_build);
 				Engine::Console::TerminalPrintF("Available version:\t\t%i.%i.%i", 
 					m_available_version.m_major, m_available_version.m_minor, m_available_version.m_build);
-				Engine::Console::TerminalPrint("");
 			}
 			else
 			{
-				Engine::Console::TerminalPrint("");
 				Engine::Console::TerminalPrint("No updates available");
-				Engine::Console::TerminalPrint("");
 			}
+
+			Engine::Console::TerminalPrint("");
 		}
 	}; };
 };

@@ -71,11 +71,9 @@ namespace Yelo
 
 		void Dispose()		{}
 
-		void InitializeForNewMap()
+		static void FindCacheYeloDefinitions()
 		{
 			tag_iterator iter;
-
-			bool is_protected = Instances()[0].group_tag == Enums::k_protected_group_tag;
 
 			// find the yelo scenario tag
 			tag_iterator_new(iter, project_yellow::k_group_tag);
@@ -88,14 +86,6 @@ namespace Yelo
 					_global_yelo = &null_yelo_invalid;
 			}
 
-			// Just incase someone else comes out with a tool which 
-			// sets the bit when they protect the cache, we don't want 
-			// to undo their courtesy
-			if(!_global_yelo->IsCacheProtected())
-				// Hacks? In MY Yelo? Ya rly
-				CAST_QUAL(project_yellow*, _global_yelo)->flags.cache_is_protected_bit = 
-					is_protected;
-
 			// find the yelo globals tag
 			tag_iterator_new(iter, project_yellow_globals::k_group_tag);
 			tag_index = tag_iterator_next(iter);
@@ -106,36 +96,51 @@ namespace Yelo
 				if(_global_yelo_globals->version != project_yellow_globals::k_version)
 					_global_yelo_globals = &null_yelo_globals;
 			}
+		}
+		static bool VerifyYeloScriptDefinitions()
+		{
+			bool mismatch = false;
 
-
-			// Verify the scripting definitions
+			// Verify that the map's project_yellow's script definitions are included in this 
+			// build of Yelo.
+			const TAG_TBLOCK(& user_script_block, scripting_block) = _global_yelo->user_scripting;
+			if( user_script_block.Count == 1 &&
+				!Scripting::DefinitionsMatch( user_script_block[0] ))
 			{
-				bool mismatch = false;
+				mismatch = true;
+				Engine::Console::Warning("Map's project_yellow's script definitions don't match this build of Yelo!");
+			}
 
-				// Verify that the map's project_yellow's script definitions are included in this 
-				// build of Yelo.
-				const TAG_TBLOCK(& user_script_block, scripting_block) = _global_yelo->user_scripting;
-				if( user_script_block.Count == 1 &&
-					!Scripting::DefinitionsMatch( user_script_block[0] ))
-				{
-					mismatch = true;
-					Engine::Console::Warning("Map's project_yellow's script definitions don't match this build of Yelo!");
-				}
+			// Verify that the map's project_yellow_globals's script definitions are included in this 
+			// build of Yelo.
+			const TAG_TBLOCK(& global_script_block, scripting_block) = _global_yelo_globals->yelo_scripting;
+			if( global_script_block.Count == 1 &&
+				!Scripting::DefinitionsMatch( global_script_block[0] ))
+			{
+				mismatch = true;
+				Engine::Console::Warning("Map's project_yellow_globals's script definitions don't match this build of Yelo!");
+			}
 
-				// Verify that the map's project_yellow_globals's script definitions are included in this 
-				// build of Yelo.
-				const TAG_TBLOCK(& global_script_block, scripting_block) = _global_yelo_globals->yelo_scripting;
-				if( global_script_block.Count == 1 &&
-					!Scripting::DefinitionsMatch( global_script_block[0] ))
-				{
-					mismatch = true;
-					Engine::Console::Warning("Map's project_yellow_globals's script definitions don't match this build of Yelo!");
-				}
+			return mismatch;
+		}
+		void InitializeForNewMap()
+		{
+			bool is_protected = Instances()[0].group_tag == Enums::k_protected_group_tag;
 
-				if(mismatch)
-				{
-					// TODO: error here!
-				}
+			FindCacheYeloDefinitions();
+
+			// Just incase someone else comes out with a tool which 
+			// sets the bit when they protect the cache, we don't want 
+			// to undo their courtesy
+			if(!_global_yelo->IsCacheProtected())
+				// Hacks? In MY Yelo? Ya rly
+				CAST_QUAL(project_yellow*, _global_yelo)->flags.cache_is_protected_bit = 
+					is_protected;
+
+
+			if(!VerifyYeloScriptDefinitions())
+			{
+				// TODO: error here!
 			}
 		}
 
