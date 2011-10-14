@@ -30,28 +30,13 @@ namespace Yelo
 
 		void Initialize()
 		{
-			debug_file = Settings::CreateReport("Game.debug.log", true, true);
+			debug_file = Settings::CreateReport(Settings::K_DEBUG_FILENAME, true, true);
 		}
 
 		void Dispose()
 		{
 			if(debug_file != NULL)
-			{
-				//fwrite("\n", sizeof(char), 1, debug_file);
 				fclose(debug_file);
-			}
-		}
-
-		static void GetTimeStampString(_Out_ tag_string time_str)
-		{
-			const size_t k_time_str_sizeof = sizeof(tag_string);
-
-			memset(time_str, 0, k_time_str_sizeof);
-
-			tm newtime;
-			time_t aclock;	time( &aclock ); // Get time in seconds
-			localtime_s( &newtime, &aclock ); // Convert time to struct tm form
-			asctime_s( time_str, k_time_str_sizeof, &newtime );
 		}
 
 		static void WriteFirstLine()
@@ -59,7 +44,7 @@ namespace Yelo
 			static char format[] = "\n%s\n";
 
 			tag_string time_str;
-			GetTimeStampString(time_str);
+			Settings::GetTimeStampString(time_str);
 
 			fprintf_s(debug_file, format, time_str);
 			fflush(debug_file);
@@ -80,7 +65,7 @@ namespace Yelo
 
 			tag_string time_str;
 			if(write_time_stamp)
-				GetTimeStampString(time_str);
+				Settings::GetTimeStampString(time_str);
 
 			char time_buffer[16];
 			memset(time_buffer, 0, sizeof(time_buffer));

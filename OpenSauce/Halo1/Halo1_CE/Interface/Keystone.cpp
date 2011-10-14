@@ -128,7 +128,7 @@ namespace Yelo
 
 		void Initialize()
 		{
-			keystone_globals.chatlog_log = "Game.ChatLog.txt";
+			keystone_globals.chatlog_log = Settings::K_CHAT_LOG_FILENAME;
 			keystone_globals.log = Settings::CreateReport(keystone_globals.chatlog_log, true, true);
 
 			if(keystone_globals.log != NULL)
@@ -166,10 +166,8 @@ namespace Yelo
 				WriteFirstLine();
 			}
 
-			tm* newtime;
-			time_t aclock;	time( &aclock ); // Get time in seconds
-			newtime = localtime( &aclock ); // Convert time to struct tm form
-			char* time_str = asctime(newtime);
+			tag_string time_str;
+			Settings::GetTimeStampString(time_str);
 
 			char time_buffer[16];
 			memset(time_buffer, 0, sizeof(time_buffer));
@@ -188,53 +186,45 @@ namespace Yelo
 		{
 			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(KS_GETWINDOW);
 
-			__asm {
+			NAKED_FUNC_START()
 				push	child
 				push	keystone
 				call	TEMP_CALL_ADDR
-				add		esp, 4 * 2
-				retn	4 * 2
-			}
+			NAKED_FUNC_END_CDECL(2)
 		}
 
 		API_FUNC_NAKED void WindowRelease(void* handle)
 		{
 			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(KW_RELEASE);
 
-			__asm {
+			NAKED_FUNC_START()
 				push	handle
 				call	TEMP_CALL_ADDR
-				add		esp, 4 * 1
-				retn	4 * 1
-			}
+			NAKED_FUNC_END_CDECL(1)
 		}
 
 		API_FUNC_NAKED void* WindowGetControlByID(void* window, wcstring id)
 		{
 			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(KW_GETCONTROLBYID);
 
-			__asm {
+			NAKED_FUNC_START()
 				push	id
 				push	window
 				call	TEMP_CALL_ADDR
-				add		esp, 4 * 2
-				retn	4 * 2
-			}
+			NAKED_FUNC_END_CDECL(2)
 		}
 
 		API_FUNC_NAKED LRESULT ControlSendMessage(void* control, uint32 msg, WPARAM wParam, LPARAM lParam)
 		{
 			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(KC_SENDMESSAGE);
 
-			__asm {
+			NAKED_FUNC_START()
 				push	lParam
 				push	wParam
 				push	msg
 				push	control
 				call	TEMP_CALL_ADDR
-				add		esp, 4 * 4
-				retn	4 * 4
-			}
+			NAKED_FUNC_END_CDECL(4)
 		}
 	};
 };

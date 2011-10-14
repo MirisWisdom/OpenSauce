@@ -36,8 +36,8 @@ namespace Yelo
 		// Unload the data files, then reload them
 		API_FUNC_NAKED static void DataFilesReInitialize()
 		{
-			static uint32 OPEN = GET_FUNC_PTR(DATA_FILES_OPEN);
-			static uint32 CLOSE = GET_FUNC_PTR(DATA_FILES_CLOSE);
+			static const uint32 OPEN = GET_FUNC_PTR(DATA_FILES_OPEN);
+			static const uint32 CLOSE = GET_FUNC_PTR(DATA_FILES_CLOSE);
 
 			__asm {
 				call	CLOSE
@@ -138,10 +138,10 @@ namespace Yelo
 
 	namespace Cache
 	{
-#if !PLATFORM_IS_DEDI
+#if PLATFORM_IS_USER
 		struct s_yelo_settings {
 			// Scenario tag name of the mainmenu the user wants to use
-			char mainmenu_scenario_name[256];
+			string256 mainmenu_scenario_name;
 
 			bool InitializeMainmenuOverride(cstring override_name)
 			{
@@ -149,10 +149,10 @@ namespace Yelo
 
 				if(override_name != NULL && override_name[0] != '\0')
 				{
-					size_t name_length = strlen(override_name)+1; // +1 for null terminator
+					size_t name_length = strlen(override_name);
 
 					// If the override name fits and if it's not the same as the stock ui
-					if(name_length <= NUMBEROF(mainmenu_scenario_name) && 
+					if(name_length <= Enums::k_string_256_length && 
 						strcmp(override_name, k_stock_ui) != 0)
 						return strcpy_s(mainmenu_scenario_name, override_name) == k_errnone;
 				}
@@ -223,7 +223,7 @@ namespace Yelo
 		{
 			MemoryUpgradesInitialize();
 			CacheFormatPathHackInitialize();
-#if !PLATFORM_IS_DEDI
+#if PLATFORM_IS_USER
 			g_yelo_settings.InitializeMemoryOverrides();
 #endif
 
@@ -239,7 +239,7 @@ namespace Yelo
 		{
 			bool result = false;
 
-			char map_path[MAX_PATH];
+			string256 map_path;
 			CacheFormatPathHack(map_path, "%s%s%s.map", RootDirectory(), "maps\\", relative_map_name);
 
 			HANDLE f = CreateFileA(map_path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
@@ -261,7 +261,7 @@ namespace Yelo
 			return result;
 		}
 
-#if !PLATFORM_IS_DEDI
+#if PLATFORM_IS_USER
 		void LoadSettings(TiXmlElement* cf_element)
 		{
 			if(cf_element != NULL)

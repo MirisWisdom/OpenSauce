@@ -135,6 +135,10 @@ namespace Yelo
 
 	namespace Settings
 	{
+		cstring K_DEBUG_FILENAME = "Game.debug.log";
+		cstring K_EVENT_LOG_FILENAME = "Game.Log.txt";
+		cstring K_CHAT_LOG_FILENAME = "Game.ChatLog.txt";
+
 		cstring K_USER_FILENAME_XML = "OS_Settings.User.xml";
 		cstring K_SERVER_FILENAME_XML = "OS_Settings.Server.xml";
 
@@ -232,6 +236,19 @@ namespace Yelo
 		{
 			SaveSettingsUser();
 			SaveSettingsServer();
+		}
+
+
+		void GetTimeStampString(_Out_ tag_string time_str)
+		{
+			const size_t k_time_str_sizeof = sizeof(tag_string);
+
+			memset(time_str, 0, k_time_str_sizeof);
+
+			tm newtime;
+			time_t aclock;	time( &aclock ); // Get time in seconds
+			localtime_s( &newtime, &aclock ); // Convert time to struct tm form
+			asctime_s( time_str, k_time_str_sizeof, &newtime );
 		}
 	};
 };

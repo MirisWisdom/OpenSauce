@@ -26,7 +26,7 @@ static struct s_event_log_globals {
 
 static void EventLogInitialize()
 {
-	event_log_globals.filename = "Game.Log.txt";
+	event_log_globals.filename = Settings::K_EVENT_LOG_FILENAME;
 	event_log_globals.file_handle = Settings::CreateReport(event_log_globals.filename, true, true);
 }
 
@@ -40,11 +40,10 @@ static void WriteEventFirstLine()
 {
 	static const char format[] = "\n%s\n";
 
-	tm* newtime;
-	time_t aclock;	time( &aclock ); // Get time in seconds
-	newtime = localtime( &aclock ); // Convert time to struct tm form
+	tag_string time_str;
+	Settings::GetTimeStampString(time_str);
 
-	fprintf(event_log_globals.file_handle, format, asctime(newtime));
+	fprintf(event_log_globals.file_handle, format, time_str);
 	fflush(event_log_globals.file_handle);
 }
 
@@ -61,14 +60,9 @@ void WriteEvent(cstring str, bool write_time_stamp)
 		WriteEventFirstLine();
 	}
 
-	char* time_str;
+	tag_string time_str;
 	if(write_time_stamp)
-	{
-		tm* newtime;
-		time_t aclock;	time( &aclock ); // Get time in seconds
-		newtime = localtime( &aclock ); // Convert time to struct tm form
-		time_str = asctime(newtime);
-	}
+		Settings::GetTimeStampString(time_str);
 
 	char time_buffer[16];
 	memset(time_buffer, 0, sizeof(time_buffer));

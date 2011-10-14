@@ -64,11 +64,13 @@ namespace Yelo
 		{
 			ENGINE_PTR(VS_FIXEDFILEINFO, version_info, 0x81D598, 0x6E9598);
 
+			const __int64 version = 
 #if PLATFORM_VERSION == 0x1080
-			const __int64 version = 0x0008026800010000; // 01.00.08.0616
+			0x0008026800010000 // 01.00.08.0616
 #elif PLATFORM_VERSION == 0x1090
-			const __int64 version = 0x0009026C00010000; // 01.00.09.0620
+			0x0009026C00010000 // 01.00.09.0620
 #endif
+			;
 
 			if (!memcmp(&GET_PTR2(version_info)->dwFileVersionMS, &version, sizeof(version))) return true;
 

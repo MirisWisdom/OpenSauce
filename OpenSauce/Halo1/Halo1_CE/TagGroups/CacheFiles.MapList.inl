@@ -22,18 +22,18 @@ cstring* MapListIgnoredMapNames()				PTR_IMP_GET2(map_list_ignored_map_names);
 
 static void MapListInitialize()
 {
-	static uint32 Initialize = GET_FUNC_PTR(MULTIPLAYER_MAP_LIST_INITIALIZE);
+	static const uint32 INITIALIZE = GET_FUNC_PTR(MULTIPLAYER_MAP_LIST_INITIALIZE);
 
-	__asm	call	Initialize
+	__asm	call	INITIALIZE
 	MapListInitializeYelo();
 }
 
 API_FUNC_NAKED void MapListReIntialize()
 {
-	static uint32 Dispose = GET_FUNC_PTR(MULTIPLAYER_MAP_LIST_DISPOSE);
+	static const uint32 DISPOSE = GET_FUNC_PTR(MULTIPLAYER_MAP_LIST_DISPOSE);
 
 	__asm {
-		call	Dispose
+		call	DISPOSE
 		call	MapListInitialize
 		retn
 	}
