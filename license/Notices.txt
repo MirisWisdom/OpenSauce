@@ -5,5 +5,6 @@ Used with permission.
 
 Contains code which uses GameSpy OpenSDK (http://www.poweredbygamespy.com)
 	http://developer.poweredbygamespy.com/forum/sdk-usage-open-source-environment
+	Register with GS to gain access to their SDK for free.
 
 Contains binary references to SevenZipSharp (http://sevenzipsharp.codeplex.com/)

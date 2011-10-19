@@ -63,9 +63,9 @@
 		#pragma endregion
 
 		#pragma region Scale
-		// rasterizer_psuedo_dynamic_screen_quad_draw, ??, _rasterizer_psuedo_dynamic_screen_quad_draw, _rasterizer_hud_motion_sensor_blip_end
-		static void* Scale_allowed_refs[] = {
-			CAST_PTR(void*, 0x520E3C), CAST_PTR(void*, 0x518B7E), CAST_PTR(void*, 0x520AFC), CAST_PTR(void*, 0x52F912),
+		// ??, _rasterizer_psuedo_dynamic_screen_quad_draw, rasterizer_psuedo_dynamic_screen_quad_draw, _rasterizer_hud_motion_sensor_blip_end
+		static void* K_SCALE_ALLOWED_REFS[] = {
+			CAST_PTR(void*, 0x518B7E), CAST_PTR(void*, 0x520AFC), CAST_PTR(void*, 0x520E3C), CAST_PTR(void*, 0x52F912),
 		};
 		#pragma endregion
 
