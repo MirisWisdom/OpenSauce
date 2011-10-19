@@ -99,14 +99,18 @@ namespace Yelo
 			{
 				if (!scale_hud) return;
 
+				//////////////////////////////////////////////////////////////////////////
+				// Check to see if the callee address is one of the ones we're expecting
+				// K_SCALE_ALLOWED_REFS are actually return addresses, and thus so is [ref_ptr]
 				bool good_ref = false;
-				for (int32 i=0; i<NUMBEROF(Scale_allowed_refs); i++)
-					if (ref_ptr == Scale_allowed_refs[i])
+				for (int32 i = 0; !good_ref && i < NUMBEROF(K_SCALE_ALLOWED_REFS); i++)
+					if (ref_ptr == K_SCALE_ALLOWED_REFS[i])
 						good_ref = true;
 
-				if (!good_ref)
-					return;
+				if (!good_ref) return;
+				//////////////////////////////////////////////////////////////////////////
 
+				const size_t k_vertices_count = 4;
 				TEXTURE_VERTEX* vertices = CAST_PTR(TEXTURE_VERTEX*,pVertexStreamZeroData);
 
 				// allow fullscreen textures to be stretched (except the Halo title logo)
@@ -121,7 +125,7 @@ namespace Yelo
 					{
 						anchor.anchor.x = 0;
 						anchor.anchor.y = 0;
-						for (int32 i=0; i<4; i++)
+						for (int32 i = 0; i < k_vertices_count; i++)
 						{
 							anchor.anchor.x += vertices[i].x;
 							anchor.anchor.y += vertices[i].y;
@@ -132,7 +136,7 @@ namespace Yelo
 						anchor.is_defined = true;
 					}
 
-					for (int i=0; i<4; i++)
+					for (int32 i = 0; i < k_vertices_count; i++)
 					{
 						vertices[i].x = anchor.anchor.x - (anchor.anchor.x - vertices[i].x) * anchor.scale.x;
 						vertices[i].y = anchor.anchor.y - (anchor.anchor.y - vertices[i].y) * anchor.scale.y;
@@ -144,7 +148,7 @@ namespace Yelo
 					real shift_x = 640/2 * (1-anchor.scale.x);
 					real shift_y = 480/2 * (1-anchor.scale.y);
 
-					for (int32 i=0; i<4; i++)
+					for (int32 i = 0; i < k_vertices_count; i++)
 					{
 						vertices[i].x *= anchor.scale.x;
 						vertices[i].y *= anchor.scale.y;

@@ -71,6 +71,7 @@
 // GameSpy includes & definitions
 
 // Comment out this if you don't have access to the Open SDK
+// You'll also need to remove the code file references from the project
 #define YELO_USE_GAMESPY_OPEN
 
 #if defined(YELO_USE_GAMESPY_OPEN)
