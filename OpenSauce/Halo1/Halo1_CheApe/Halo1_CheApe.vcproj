@@ -2294,6 +2294,14 @@
 		<Filter
 			Name="Rasterizer"
 			>
+			<File
+				RelativePath=".\Rasterizer\Rasterizer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Rasterizer\Rasterizer.hpp"
+				>
+			</File>
 			<Filter
 				Name="DX9"
 				>
@@ -2313,6 +2321,18 @@
 						>
 					</File>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="Shared"
+				>
+				<File
+					RelativePath="..\..\shared\Include\Rasterizer\Halo1\RasterizerDefinitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\Rasterizer\Halo1\Render.Upgrades.inl"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -2339,6 +2359,10 @@
 				</File>
 				<File
 					RelativePath=".\Memory\_EngineLayout.Rasterizer.DX9.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\Memory\_EngineLayout.Rasterizer.inl"
 					>
 				</File>
 				<File

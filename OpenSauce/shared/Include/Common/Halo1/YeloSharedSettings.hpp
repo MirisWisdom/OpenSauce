@@ -32,6 +32,10 @@ namespace Yelo
 
 	namespace Settings
 	{
+		extern cstring K_USER_FILENAME_XML;
+		extern cstring K_SERVER_FILENAME_XML;
+		extern cstring K_EDITOR_FILENAME_XML;
+
 		// Path to the systems common application data folder
 		cstring CommonAppDataPath();
 		cstring UserProfilePath();

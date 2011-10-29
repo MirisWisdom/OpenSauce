@@ -20,6 +20,7 @@
 #include "CheApeInterface.hpp"
 
 #include "Engine/EngineFunctions.hpp"
+#include "Rasterizer/Rasterizer.hpp"
 #include "TagGroups/TagGroups.hpp"
 #include "TagGroups/yelo_definitions.hpp"
 #include "TagGroups/tag_database_definitions.hpp"
@@ -71,10 +72,18 @@ namespace Yelo
 		Scripting::Initialize();
 
 		OverrideTagFilesOpen();
+
+#ifndef PLATFORM_NO_DX9
+		Rasterizer::Initialize();
+#endif
 	}
 
 	void Dispose()
 	{
+#ifndef PLATFORM_NO_DX9
+		Rasterizer::Dispose();
+#endif
+
 		// Initializer called in InitializeForTagFilesOpen
 		if(TagGroups::_yelo_definition_globals.initialized)
 			PLATFORM_VALUE(Guerilla, Tool, Sapien)::Dispose();

@@ -2,6 +2,8 @@
 <osYeloSettings engine="Halo1_CE">
 	<client>		
 		<dx9>
+			<Upgrades dynamicTriangles="false" />
+			
 			<GBuffer enabled="true" />
 
 			<postprocessing>

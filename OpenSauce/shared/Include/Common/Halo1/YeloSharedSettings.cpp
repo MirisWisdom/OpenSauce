@@ -26,6 +26,10 @@ namespace Yelo
 {
 	namespace Settings
 	{
+		cstring K_USER_FILENAME_XML = "OS_Settings.User.xml";
+		cstring K_SERVER_FILENAME_XML = "OS_Settings.Server.xml";
+		cstring K_EDITOR_FILENAME_XML = "OS_Settings.Editor.xml";
+
 		static struct {
 			char CommonAppDataPath[MAX_PATH];
 			char UserProfilePath[MAX_PATH];
