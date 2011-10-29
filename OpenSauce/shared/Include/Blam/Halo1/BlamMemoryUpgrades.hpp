@@ -42,6 +42,8 @@ namespace Yelo
 
 			k_game_state_allocation_size =			0x00440000,
 		};
+
+		BOOST_STATIC_ASSERT( k_physical_memory_map_allocation_size_upgrade >= k_physical_memory_map_allocation_size );
 	};
 
 
@@ -84,6 +86,24 @@ namespace Yelo
 			k_hs_script_functions_count_upgrade = 1024,
 			k_hs_external_globals_count_upgrade = 1024 - k_maximum_hs_globals_per_scenario,
 		};
+
+		BOOST_STATIC_ASSERT( k_maximum_hs_syntax_nodes_per_scenario_upgrade >= k_maximum_hs_syntax_nodes_per_scenario );
+		BOOST_STATIC_ASSERT( k_maximum_hs_string_data_per_scenario_upgrade >= k_maximum_hs_string_data_per_scenario );
+	};
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Rasterizer
+	namespace Enums
+	{
+		enum {
+			k_rastizer_maximum_dynamic_triangles = 0x4000,
+
+			k_rastizer_maximum_dynamic_triangles_upgrade = 
+				CAST(uint32, k_rastizer_maximum_dynamic_triangles * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
+		};
+
+		BOOST_STATIC_ASSERT( k_rastizer_maximum_dynamic_triangles_upgrade >= k_rastizer_maximum_dynamic_triangles );
 	};
 
 
@@ -98,6 +118,8 @@ namespace Yelo
 			k_max_cache_size_upgrade = 
 				CAST(uint32, k_max_cache_size * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
 		};
+
+		BOOST_STATIC_ASSERT( k_max_cache_size_upgrade >= k_max_cache_size );
 	};
 
 

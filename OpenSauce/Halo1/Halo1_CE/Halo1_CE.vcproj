@@ -2769,6 +2769,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Shared"
+				>
+				<File
+					RelativePath="..\..\shared\Include\Rasterizer\Halo1\RasterizerDefinitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\Rasterizer\Halo1\Render.Upgrades.inl"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\Halo1_CE_Version.xml"

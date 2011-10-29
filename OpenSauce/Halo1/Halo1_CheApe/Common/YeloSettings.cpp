@@ -22,6 +22,7 @@
 #include <Shellapi.h>
 
 #include "Engine/EngineFunctions.hpp"
+#include "Rasterizer/Rasterizer.hpp"
 
 namespace Yelo
 {
@@ -197,10 +198,14 @@ namespace Yelo
 #undef CMDLINE_ARG_EDITOR_PROFILE
 		}
 
+		void LoadSettingsUserHack(); // defined at the bottom of the file
+
 		void LoadSettings()
 		{
+			LoadSettingsUserHack();
+
 			char file_path[MAX_PATH];
-			strcpy_s(file_path, "OS_Settings.Editor.xml");
+			strcpy_s(file_path, K_EDITOR_FILENAME_XML);
 
 			TiXmlDocument xml_settings = TiXmlDocument();
 			TiXmlElement* root_element = GenericSettingsParse(xml_settings, file_path, NULL);
@@ -224,6 +229,32 @@ namespace Yelo
 
 		void SaveSettings()
 		{
+		}
+
+
+		// HACK: Simple hack so we can reuse related settings without duplicating data (dup some code, but who cares)
+		static void LoadSettingsForClientHack(TiXmlElement* client)
+		{
+			TiXmlElement* dx9_element = NULL
+				;
+
+			if(client != NULL)
+			{
+				dx9_element = client->FirstChildElement("dx9");
+			}
+
+			Rasterizer::LoadSettings(dx9_element);
+		}
+		static void LoadSettingsUserHack()
+		{
+			TiXmlElement* root = NULL;
+			TiXmlDocument xml_settings = TiXmlDocument();
+
+			char file_path[MAX_PATH];
+			if(GetSettingsFilePath(K_USER_FILENAME_XML, file_path))
+				root = GenericSettingsParse(xml_settings, file_path, "client");
+
+			LoadSettingsForClientHack(root);
 		}
 	};
 };

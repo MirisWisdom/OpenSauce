@@ -94,6 +94,7 @@
 #include <cseries/MacrosCpp.hpp>
 #include <Common/BaseBlamTypes.hpp>
 #include <Common/BaseBlamTypesPc.hpp>
+#include <Blam/Halo1/BlamMemoryUpgrades.hpp>
 
 #include "Common/DebugFile.hpp"
 

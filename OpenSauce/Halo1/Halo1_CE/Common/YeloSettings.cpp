@@ -139,9 +139,6 @@ namespace Yelo
 		cstring K_EVENT_LOG_FILENAME = "Game.Log.txt";
 		cstring K_CHAT_LOG_FILENAME = "Game.ChatLog.txt";
 
-		cstring K_USER_FILENAME_XML = "OS_Settings.User.xml";
-		cstring K_SERVER_FILENAME_XML = "OS_Settings.Server.xml";
-
 #define __EL_INCLUDE_ID			__EL_INCLUDE_OPEN_SAUCE
 #define __EL_INCLUDE_FILE_ID	__EL_COMMON_YELO_SETTINGS
 #include "Memory/_EngineLayout.inl"
@@ -176,6 +173,7 @@ namespace Yelo
 		}
 
 
+		// HACK: if this ever changes, be sure to update LoadSettingsUserHack in CheApe's YeloSettings.cpp!
 		static void LoadSettingsUser()
 		{
 #if PLATFORM_IS_USER

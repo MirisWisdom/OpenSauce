@@ -36,6 +36,8 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_RASTERIZER
 #include "Memory/_EngineLayout.inl"
 
+#include <Rasterizer/Halo1/Render.Upgrades.inl>
+
 		//////////////////////////////////////////////////////////////////////////
 		// s_render_target
 		bool		s_render_target::IsEnabled() const { return (surface && texture); }
@@ -226,6 +228,8 @@ namespace Yelo
 #pragma warning( disable : 4312 ) // conversion from 'unsigned long' to 'void *' of greater size
 		void Rasterizer::Initialize()
 		{
+			g_render_upgrades.Initialize();
+
 			// TODO: If using DX_WRAPPER, refer to the DxWrapper.cpp file 
 			// instead of hooking the game render loop
 #if !defined(DX_WRAPPER)
@@ -278,6 +282,7 @@ namespace Yelo
 
 		void Dispose()
 		{
+			g_render_upgrades.Dispose();
 		}
 
 		void Update()
@@ -297,6 +302,7 @@ namespace Yelo
 
 		void LoadSettings(TiXmlElement* dx9_element)
 		{
+			g_render_upgrades.LoadSettings(dx9_element);
 			DX9::c_gbuffer_system::LoadSettings(dx9_element);
 			Postprocessing::LoadSettings(dx9_element);
 		}
@@ -305,6 +311,7 @@ namespace Yelo
 		{
 			DX9::c_gbuffer_system::SaveSettings(dx9_element);
 			Postprocessing::SaveSettings(dx9_element);
+			g_render_upgrades.SaveSettings(dx9_element);
 		}
 
 		void SetRenderStates()

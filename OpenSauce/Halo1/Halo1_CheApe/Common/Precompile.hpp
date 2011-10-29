@@ -69,6 +69,7 @@
 
 #include <Common/CheApeShared.hpp>
 
+#include <Blam/Halo1/BlamMemoryUpgrades.hpp>
 #include <Memory/Halo1/DataShared.hpp>
 #include <Memory/MemoryInterfaceShared.hpp>
 
