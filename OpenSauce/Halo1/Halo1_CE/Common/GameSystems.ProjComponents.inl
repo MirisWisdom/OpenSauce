@@ -19,6 +19,7 @@
 
 // This must come first, many systems use the Report filing system
 {Settings::Initialize,								Settings::Dispose},
+{FileIO::Initialize,								FileIO::Dispose},
 // ...like debugging for example
 #ifdef API_DEBUG
 	{DebugFile::Initialize,								DebugFile::Dispose},

@@ -51,13 +51,20 @@ namespace Yelo
 	{
 		static struct {
 			bool enabled;
+			HMODULE module_handle;
 		}_main_globals = {
 			false,
+			NULL
 		};
 
 		bool IsYeloEnabled()
 		{
 			return _main_globals.enabled;
+		}
+
+		HMODULE& YeloModuleHandle()
+		{
+			return _main_globals.module_handle;
 		}
 
 		static bool IsVersionInfoValid()
@@ -160,6 +167,8 @@ bool WINAPI DllMain(HMODULE hModule, DWORD dwReason, PVOID pvReserved)
 
 	if(dwReason == DLL_PROCESS_ATTACH && !done)
 	{
+		Yelo::Main::YeloModuleHandle() = hModule;
+
 #if PLATFORM_IS_USER && defined(DX_WRAPPER)
 		if(!LoadDX9(&hModule))
 		{
@@ -197,6 +206,7 @@ bool WINAPI DllMain(HMODULE hModule, DWORD dwReason, PVOID pvReserved)
 #ifdef API_DEBUG_MEMORY
 		DumpAllocatedMemory();
 #endif
+		Yelo::Main::YeloModuleHandle() = NULL;
 
 		done = false;
 

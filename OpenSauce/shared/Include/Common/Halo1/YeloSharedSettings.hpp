@@ -21,6 +21,8 @@
 #include <Common/BaseYeloSharedSettings.hpp>
 #include <Common/Halo1/YeloSettingsDefinitions.hpp>
 
+#include <string>
+
 namespace Yelo
 {
 	namespace Enums
@@ -80,5 +82,8 @@ namespace Yelo
 		// Writes the XML header to [doc]. Also adds the engine id attribute data. 
 		// Adds a new element named [branch_name] and returns its object data or NULL if any of this fails
 		TiXmlElement* GenericSettingsWrite(TiXmlDocument& doc, cstring root_name, cstring branch_name);
+
+		void ReplaceEnvironmentVariable(std::string& parse_string, const char* variable, const char* value);
+		void ParseEnvironmentVariables(std::string& parse_string);
 	};
 };

@@ -84,7 +84,7 @@ namespace Yelo
 			version_check_element = new TiXmlElement("version_check");
 				client->LinkEndChild(version_check_element);
 			cf_element = new TiXmlElement("cacheFiles");
-				client->LinkEndChild(objects_element);
+				client->LinkEndChild(cf_element);
 
 			Rasterizer::SaveSettings(dx9_element);
 			Fov::SaveSettings(fov_element);

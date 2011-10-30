@@ -20,6 +20,7 @@
 #include "Common/GameSystems.hpp"
 
 #include "Common/YeloSettings.hpp"
+#include "Common/FileIO.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 // User only includes

@@ -53,7 +53,7 @@ namespace Yelo
 			void		Release();
 
 			void		ApplyHooks();
-			HRESULT		SetVertexShaderConstantF(IDirect3DDevice9* pDevice, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount);
+			HRESULT		SetVertexShaderConstantF(uint32 render_stage, IDirect3DDevice9* pDevice, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount);
 		};
 	};
 };

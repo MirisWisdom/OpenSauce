@@ -27,6 +27,10 @@
 */
 #pragma once
 
+#if !PLATFORM_IS_EDITOR
+#include "Common/FileIO.hpp"
+#endif
+
 namespace Yelo
 {
 	class c_packed_file
@@ -65,8 +69,7 @@ namespace Yelo
 		};
 
 #if !PLATFORM_IS_EDITOR
-		HANDLE			m_file_handle;
-		HANDLE			m_mapping_handle;
+		FileIO::s_file_info	file_info;
 		union {
 			void*		m_address;
 			s_header*	m_header;
@@ -100,11 +103,8 @@ namespace Yelo
 
 	public:
 #if !PLATFORM_IS_EDITOR
-		c_packed_file() : 
-			m_file_handle(INVALID_HANDLE_VALUE), m_mapping_handle(INVALID_HANDLE_VALUE) {}
-
 		// Opens a packed file and memory maps it, read for accessing by pointer
-		void OpenFile(const char* packed_file);
+		void OpenFile(const char* packed_file, bool is_file_id = false);
 		// Releases the mapped file
 		void CloseFile();
 		// Returns a pointer to a block of data reference by index. Returns NULL if invalid.

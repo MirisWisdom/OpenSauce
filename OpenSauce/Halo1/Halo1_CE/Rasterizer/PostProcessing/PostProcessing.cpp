@@ -19,6 +19,7 @@
 #include "Common/Precompile.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 #if !PLATFORM_IS_DEDI
+#include "Common/FileIO.hpp"
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/Rasterizer.hpp"
 #include "Rasterizer/PostProcessing/PostProcessingShaderGenericBase.hpp"
@@ -334,14 +335,8 @@ namespace Yelo
 
 		void		Initialize()
 		{
-			char file_string[MAX_PATH];
-			file_string[0] = '\0';
-
 			// open the post processing shaders file for reading
-			strcat_s(file_string, MAX_PATH, Settings::CommonAppDataPath());
-			strcat_s(file_string, MAX_PATH, "shaders\\pp_shaders.shd");
-
-			Globals().m_shader_file.OpenFile(file_string);
+			Globals().m_shader_file.OpenFile("PP_PPShaders_SHD", true);
 		}
 		void		Dispose()
 		{
@@ -367,7 +362,7 @@ namespace Yelo
 			for(int32 i = 0; i <= subsystem_count; i++)
 				subsystems[i].AllocateResources(Globals().m_rendering.render_device);
 
-			// build the current vertex and index buffers			
+			// build the current vertex and index buffers
 			Globals().QuadManager().BuildBuffers(
 				Globals().m_rendering.render_device,
 				Globals().m_rendering.screen_dimensions.x,

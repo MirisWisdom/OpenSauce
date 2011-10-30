@@ -505,19 +505,20 @@ skip_disable_velocity:
 			}
 		}
 
-		void		c_gbuffer_system::Ctor(cstring package_file)
+		void		c_gbuffer_system::Ctor()
 		{
-			m_shader_package.OpenFile(package_file);
+			m_shader_package.OpenFile("GBUF_GBuffer_Shaders_SHD", true);
+		}
+		void		c_gbuffer_system::Dtor()
+		{
+			m_shader_package.CloseFile();
 		}
 		void		c_gbuffer_system::Initialize()
 		{
 			char file_string[MAX_PATH];
 			file_string[0] = '\0';
 
-			strcat_s(file_string, MAX_PATH, Settings::CommonAppDataPath());
-			strcat_s(file_string, MAX_PATH, "shaders\\gbuffer_shaders.shd");
-
-			g_default_system.Ctor(file_string);
+			g_default_system.Ctor();
 
 			c_gbuffer_system::g_output_object_tbn = false;
 			c_gbuffer_system::g_output_object_velocity = false;
@@ -564,7 +565,10 @@ skip_disable_velocity:
 				call_address, true);
 			Memory::WriteMemory(call_address + 5, &NOP, sizeof(NOP));
 		}
-		void		c_gbuffer_system::Dispose()		{}
+		void		c_gbuffer_system::Dispose()
+		{
+			g_default_system.Dtor();
+		}
 
 		void		c_gbuffer_system::Update(real delta_time)
 		{
@@ -718,7 +722,7 @@ skip_disable_velocity:
 			if((StartRegister == 0) ||
 				(g_current_render_state == Enums::_render_progress_objects) ||
 				(g_current_render_state == Enums::_render_progress_objects_transparent))
-				return Rasterizer::ShaderExtension::SetVertexShaderConstantF(pDevice, StartRegister, pConstantData, Vector4fCount);
+				return Rasterizer::ShaderExtension::SetVertexShaderConstantF(Enums::_render_progress_objects, pDevice, StartRegister, pConstantData, Vector4fCount);
 			else
 				return pDevice->SetVertexShaderConstantF(StartRegister, pConstantData, Vector4fCount);
 		}

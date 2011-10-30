@@ -131,6 +131,8 @@ namespace Yelo
 		// Returns the random [animation_index]
 		int16 AnimationPickRandomPermutation(bool animation_update_kind_affects_game_state, datum_index animation_graph_index, int32 animation_index);
 
+		void GenerateMD5(const char* data, const DWORD data_length, const char* output);
+
 		namespace Console
 		{
 			// Process a fully qualified string of script functions

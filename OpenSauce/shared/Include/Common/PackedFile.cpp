@@ -28,15 +28,19 @@
 namespace Yelo
 {
 #if !PLATFORM_IS_EDITOR
-	void c_packed_file::OpenFile(const char* packed_file)
+	void c_packed_file::OpenFile(const char* packed_file, bool is_file_id)
 	{
-		m_file_handle = CreateFile(packed_file, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
-		if(m_file_handle == INVALID_HANDLE_VALUE) return;
+		Enums::file_io_open_error open_success;
+		if(is_file_id)
+			open_success = FileIO::OpenFileByID(file_info, packed_file);
+		else
+			open_success = FileIO::OpenFile(file_info, packed_file);
+		if(open_success != Enums::_file_io_open_error_none) return;
 
-		m_mapping_handle = CreateFileMapping(m_file_handle, NULL, PAGE_READONLY, 0, 0, NULL);
-		if(m_mapping_handle == INVALID_HANDLE_VALUE) return;
+		Enums::file_io_read_error read_success = FileIO::MemoryMapFile(file_info);
+		if(read_success != Enums::_file_io_read_error_none) return;
 
-		m_address = MapViewOfFile(m_mapping_handle, FILE_MAP_READ, 0, 0, 0);
+		m_address = file_info.data_pointer;
 
 		if(m_header != NULL || m_header->IsValid())
 			m_file_mapped = true;
@@ -46,14 +50,9 @@ namespace Yelo
 	{
 		if(m_file_mapped)
 		{
-			UnmapViewOfFile(m_address);
 			m_header = NULL;
 
-			CloseHandle(m_mapping_handle);
-			m_mapping_handle = INVALID_HANDLE_VALUE;
-
-			CloseHandle(m_file_handle);
-			m_file_handle = INVALID_HANDLE_VALUE; 
+			FileIO::CloseFile(file_info);
 
 			m_file_mapped = false;
 		}
