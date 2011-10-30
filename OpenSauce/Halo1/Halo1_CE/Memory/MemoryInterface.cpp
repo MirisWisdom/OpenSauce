@@ -38,6 +38,7 @@ namespace Yelo
 	namespace Main
 	{
 		bool IsYeloEnabled();
+		HMODULE& YeloModuleHandle();
 	};
 
 	namespace Memory
@@ -50,6 +51,10 @@ namespace Yelo
 		bool IsYeloEnabled()
 		{
 			return Main::IsYeloEnabled();
+		}
+		HMODULE YeloModuleHandle()
+		{
+			return Main::YeloModuleHandle();
 		}
 
 #define CRC_TABLE_SIZE 256

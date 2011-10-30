@@ -158,6 +158,18 @@ namespace Yelo
 			NAKED_FUNC_END(3)
 		}
 
+		void API_FUNC_NAKED GenerateMD5(const char* data, const DWORD data_length, const char* output)
+		{
+			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(GENERATE_MD5);
+
+			NAKED_FUNC_START()
+				push	output
+				push	data_length
+				push	data
+				call	TEMP_CALL_ADDR
+			NAKED_FUNC_END_CDECL(3);
+		}
+
 		namespace Console
 		{
 			void ProcessCommand(cstring command)

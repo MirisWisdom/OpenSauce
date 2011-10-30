@@ -422,6 +422,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Common\FileIO.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Common\FileIO.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Common\GameSystems.cpp"
 				>
 			</File>
@@ -2370,7 +2378,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\resource.hpp"
+				RelativePath=".\resource.h"
 				>
 			</File>
 			<Filter
@@ -2768,6 +2776,18 @@
 					RelativePath=".\Rasterizer\ShaderExtension\ShaderExtension.hpp"
 					>
 				</File>
+				<Filter
+					Name="Impl"
+					>
+					<File
+						RelativePath=".\Rasterizer\ShaderExtension\ShaderExtension_Environment.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\ShaderExtension\ShaderExtension_Model.inl"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Shared"
@@ -2788,6 +2808,10 @@
 		</File>
 		<File
 			RelativePath=".\Main.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\YeloFileChecksums.xml"
 			>
 		</File>
 		<File

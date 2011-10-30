@@ -27,6 +27,8 @@ FUNC_PTR(RESOLUTION_LIST_ADD_RESOLUTION,	0x4BE320, FUNC_PTR_NULL);
 
 FUNC_PTR(ANIMATION_PICK_RANDOM_PERMUTATION,	0x4D9790, 0x4C1CC0);
 
+FUNC_PTR(GENERATE_MD5						0x5BFA30, 0x52F730);
+
 //////////////////////////////////////////////////////////////////////////
 // Console
 FUNC_PTR(CONSOLE_PROCESS_COMMAND,	0x4C9F10, 0x4B3960); // also in Console.cpp

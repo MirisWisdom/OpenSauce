@@ -58,6 +58,7 @@ namespace Yelo
 	namespace Memory
 	{
 		bool IsYeloEnabled();
+		HMODULE YeloModuleHandle();
 
 		uint32 CRC(uint32& crc_reference, void* buffer, int32 size);
 	};

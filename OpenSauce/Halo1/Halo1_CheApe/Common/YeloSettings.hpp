@@ -108,5 +108,7 @@ namespace Yelo
 
 		void LoadSettings();
 		void SaveSettings();
+
+		void ParseEnvironmentVariablesCheApe(std::string& parse_string);
 	};
 };

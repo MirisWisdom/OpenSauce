@@ -241,7 +241,8 @@ namespace Yelo
 				return m_is_loaded && m_render_gbuffer && g_system_enabled;
 			}
 		public:
-			void Ctor(cstring package_file);
+			void Ctor();
+			void Dtor();
 			// Hooks the non-reflection render call and opens the shader file 
 			static void	Initialize();
 			// Nothing

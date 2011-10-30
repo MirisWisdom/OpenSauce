@@ -256,5 +256,15 @@ namespace Yelo
 
 			LoadSettingsForClientHack(root);
 		}
+
+		void ParseEnvironmentVariablesCheApe(std::string& parse_string)
+		{
+			ParseEnvironmentVariables(parse_string);
+
+			ReplaceEnvironmentVariable(parse_string, "$(Root)", Get().GetRootPath());
+			ReplaceEnvironmentVariable(parse_string, "$(Data)", Get().GetDataPath());
+			ReplaceEnvironmentVariable(parse_string, "$(Tags)", Get().GetTagsPath());
+			ReplaceEnvironmentVariable(parse_string, "$(Maps)", Get().GetMapsPath());
+		}
 	};
 };

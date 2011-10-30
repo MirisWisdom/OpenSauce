@@ -71,6 +71,11 @@ namespace Yelo
 			_mkdir(Internal.ReportsPath);
 
 			_getcwd(Internal.WorkingDirectoryPath, MAX_PATH);
+			const char* string_end = strrchr(Internal.WorkingDirectoryPath, '\0');
+			string_end--;
+			// not using PathAppendA as it does not append empty paths
+			if(string_end[0] != '\\')
+				strcat_s(Internal.WorkingDirectoryPath, sizeof(Internal.WorkingDirectoryPath), "\\");
 		}
 
 		void SharedDispose()
@@ -189,6 +194,27 @@ namespace Yelo
 		TiXmlElement* GenericSettingsWrite(TiXmlDocument& doc, cstring root_name, cstring branch_name)
 		{
 			return GenericSettingsWrite("Halo1_CE", doc, root_name, branch_name);
+		}
+
+
+		void ReplaceEnvironmentVariable(std::string& parse_string, const char* variable, const char* value)
+		{
+			if(!variable || !value)
+				return;
+
+			size_t var_len = strlen(variable);
+			size_t offset;
+			while((offset = parse_string.find(variable, 0)) != std::string::npos)
+				parse_string.replace(offset, var_len, value);
+		}
+		void ParseEnvironmentVariables(std::string& parse_string)
+		{
+			ReplaceEnvironmentVariable(parse_string, "$(CommonAppData)", Settings::CommonAppDataPath());
+			ReplaceEnvironmentVariable(parse_string, "$(UserProfile)", Settings::UserProfilePath());
+			ReplaceEnvironmentVariable(parse_string, "$(UserSavedProfiles)", Settings::UserSavedProfilesPath());
+			ReplaceEnvironmentVariable(parse_string, "$(OpenSauceProfile)", Settings::OpenSauceProfilePath());
+			ReplaceEnvironmentVariable(parse_string, "$(Reports)", Settings::ReportsPath());
+			ReplaceEnvironmentVariable(parse_string, "$(WorkingDirectory)", Settings::WorkingDirectoryPath());
 		}
 	};
 };
