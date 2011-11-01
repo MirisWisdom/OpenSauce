@@ -135,11 +135,11 @@ namespace Yelo
 
 #ifdef API_DEBUG
 			*GameState::DeveloperMode() = 4; // make console messages appear
-#else
+#endif
 			// increment the game build by one so all games (hosted or browsed) aren't
 			// from the normal, non-Yelo, game pool.
-			//GameBuildString()[7]++;
-#endif
+			GameBuildString()[7] += 7;
+
 			*TransportDumping() = false;
 
 			// FFFFFFFFuck you. This enables the client to have it's own init.txt (also was causing crashes)
