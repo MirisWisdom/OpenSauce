@@ -23,6 +23,22 @@ namespace BlamLib
 {
 	internal static partial class Tool
 	{
+		/// <summary>If <paramref name="ex"/> is not null, prints exception details to the Console</summary>
+		/// <param name="mod_name"></param>
+		/// <param name="ex"></param>
+		static void DumpModificationException(string mod_name, Exception ex)
+		{
+			if (ex != null)
+			{
+				Console.WriteLine("error: an exception occurred when attempting to apply the {0} modifications", mod_name);
+				Console.WriteLine();
+				Console.WriteLine("exception details:");
+				if (ex.Message != null) Console.WriteLine(ex.Message);
+				Console.WriteLine(ex.StackTrace);
+				Console.WriteLine();
+			}
+		}
+
 		static void DumpArguments(int start_index, params string[] args)
 		{
 			Console.WriteLine("Argument dump follows:");
@@ -40,8 +56,10 @@ namespace BlamLib
 		public static Dictionary<string, CommandFunction> kCommands = new Dictionary<string, CommandFunction>()
 		{
 			{"build-tag-database", BuildTagDatabase},
-			{"apply-cheape", UnlockBlamTools}, //apply-cheape version g_path t_path s_path output
-			{"apply-opensauce", UnlockBlamGames}, //apply-opensauce version c_path d_path output
+			{"pack-cache-file", PackCache},
+			{"apply-cheape", UnlockBlamTools},		//apply-cheape version g_path t_path s_path output
+			{"apply-opensauce", UnlockBlamGames},	//apply-opensauce version c_path d_path output
+			{"apply-opensauce-xna", PatchXna},		//apply-opensauce-xna output-path [hint-path]
 		};
 
 		public static bool RunCommand(string command, params string[] args)

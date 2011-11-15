@@ -43,6 +43,15 @@ namespace BlamLib.Blam.Halo1
 						case Managers.BlamDefinition.ResourceVertexBuffers: add_rsrc = true; break;
 					}
 					break;
+				#region HA10 Xbox
+				case BlamVersion.Halo1_XboxX:
+					switch(resource_name)
+					{
+						case Managers.BlamDefinition.ResourceScripts:
+						case Managers.BlamDefinition.ResourceVertexBuffers: add_rsrc = true; break;
+					}
+					break;
+				#endregion
 				case BlamVersion.Halo1_PC:
 					switch (resource_name)
 					{
@@ -50,6 +59,15 @@ namespace BlamLib.Blam.Halo1
 						case Managers.BlamDefinition.ResourceVertexBuffers: add_rsrc = true; break;
 					}
 					break;
+				#region HA10 PC
+				case BlamVersion.Halo1_PCX:
+					switch (resource_name)
+					{
+						case Managers.BlamDefinition.ResourceScripts:
+						case Managers.BlamDefinition.ResourceVertexBuffers: add_rsrc = true; break;
+					}
+					break;
+				#endregion
 				case BlamVersion.Halo1_Mac:
 					switch (resource_name)
 					{
@@ -143,7 +161,9 @@ namespace BlamLib.Blam.Halo1
 
 		#region IScriptingController Members
 		int ScriptingCacheReferencesXbox = 0,
+			ScriptingCacheReferencesXboxX = 0,
 			ScriptingCacheReferencesPC = 0,
+			ScriptingCacheReferencesPCX = 0,
 			ScriptingCacheReferencesMac = 0,
 			ScriptingCacheReferencesCE = 0;
 
@@ -159,7 +179,9 @@ namespace BlamLib.Blam.Halo1
 			switch (game)
 			{
 				case BlamVersion.Halo1_Xbox:	count = Interlocked.Increment(ref ScriptingCacheReferencesXbox);break;
+				case BlamVersion.Halo1_XboxX:	count = Interlocked.Increment(ref ScriptingCacheReferencesXboxX);break;
 				case BlamVersion.Halo1_PC:		count = Interlocked.Increment(ref ScriptingCacheReferencesPC);	break;
+				case BlamVersion.Halo1_PCX:		count = Interlocked.Increment(ref ScriptingCacheReferencesPCX);	break;
 				case BlamVersion.Halo1_Mac:		count = Interlocked.Increment(ref ScriptingCacheReferencesMac);	break;
 				case BlamVersion.Halo1_CE:		count = Interlocked.Increment(ref ScriptingCacheReferencesCE);	break;
 
@@ -188,7 +210,9 @@ namespace BlamLib.Blam.Halo1
 			switch (game)
 			{
 				case BlamVersion.Halo1_Xbox:	count = Interlocked.Decrement(ref ScriptingCacheReferencesXbox);break;
+				case BlamVersion.Halo1_XboxX:	count = Interlocked.Decrement(ref ScriptingCacheReferencesXboxX);break;
 				case BlamVersion.Halo1_PC:		count = Interlocked.Decrement(ref ScriptingCacheReferencesPC);	break;
+				case BlamVersion.Halo1_PCX:		count = Interlocked.Decrement(ref ScriptingCacheReferencesPCX);	break;
 				case BlamVersion.Halo1_Mac:		count = Interlocked.Decrement(ref ScriptingCacheReferencesMac);	break;
 				case BlamVersion.Halo1_CE:		count = Interlocked.Decrement(ref ScriptingCacheReferencesCE);	break;
 
@@ -211,7 +235,9 @@ namespace BlamLib.Blam.Halo1
 		// and allows us to use the method logic below and make sure we're not trying to implement any unsupported
 		// engine variants. Savvy?
 		int VertexBufferCacheReferencesXbox = 0, 
+			VertexBufferCacheReferencesXboxX = 0, 
 //			VertexBufferCacheReferencesPC = 0, 
+//			VertexBufferCacheReferencesPCX = 0,
 //			VertexBufferCacheReferencesMac = 0,
 			VertexBufferCacheReferencesCE = 0;
 
@@ -227,7 +253,9 @@ namespace BlamLib.Blam.Halo1
 			switch (game)
 			{
 				case BlamVersion.Halo1_Xbox:	count = Interlocked.Increment(ref VertexBufferCacheReferencesXbox);	break;
+				case BlamVersion.Halo1_XboxX:	count = Interlocked.Increment(ref VertexBufferCacheReferencesXboxX);break;
 				case BlamVersion.Halo1_PC:		//count = Interlocked.Increment(ref VertexBufferCacheReferencesPC);	break;
+				case BlamVersion.Halo1_PCX:		//count = Interlocked.Increment(ref VertexBufferCacheReferencesPCX);break;
 				case BlamVersion.Halo1_Mac:		//count = Interlocked.Increment(ref VertexBufferCacheReferencesMac);break;
 				case BlamVersion.Halo1_CE:		count = Interlocked.Increment(ref VertexBufferCacheReferencesCE);	break;
 
@@ -256,7 +284,9 @@ namespace BlamLib.Blam.Halo1
 			switch (game)
 			{
 				case BlamVersion.Halo1_Xbox:	count = Interlocked.Decrement(ref VertexBufferCacheReferencesXbox);	break;
+				case BlamVersion.Halo1_XboxX:	count = Interlocked.Decrement(ref VertexBufferCacheReferencesXboxX);break;
 				case BlamVersion.Halo1_PC:		//count = Interlocked.Decrement(ref VertexBufferCacheReferencesPC);	break;
+				case BlamVersion.Halo1_PCX:		//count = Interlocked.Decrement(ref VertexBufferCacheReferencesPCX);break;
 				case BlamVersion.Halo1_Mac:		//count = Interlocked.Decrement(ref VertexBufferCacheReferencesMac);break;
 				case BlamVersion.Halo1_CE:		count = Interlocked.Decrement(ref VertexBufferCacheReferencesCE);	break;
 

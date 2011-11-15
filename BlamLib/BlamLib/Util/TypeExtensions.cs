@@ -143,5 +143,13 @@ namespace BlamLib
 			}
 		}
 		#endregion
+
+		/// <summary>Get the inverse of this byte order</summary>
+		/// <param name="ef"></param>
+		/// <returns></returns>
+		public static IO.EndianState Invert(this IO.EndianState ef)
+		{
+			return ef == IO.EndianState.Little ? IO.EndianState.Big : IO.EndianState.Little;
+		}
 	};
 }
