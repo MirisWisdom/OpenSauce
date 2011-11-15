@@ -43,7 +43,7 @@ namespace BlamLib.Blam.Halo1
 		{
 			int pos = 0;
 
-			Blam.CacheFile.ValidateHeader(s, 0x800);
+			Blam.CacheFile.ValidateHeaderAdjustEndian(s, 0x800);
 			s.Seek(4);
 
 			Halo1.Version ver = (Halo1.Version)(version = s.ReadInt32());
@@ -85,7 +85,17 @@ namespace BlamLib.Blam.Halo1
 
 			CacheFile cache = s.Owner as CacheFile;
 			if (ver == Halo1.Version.Xbox)										cache.EngineVersion = BlamVersion.Halo1_Xbox;
-			else if (ver == Halo1.Version.PC || ver == Halo1.Version.PC_Demo)	cache.EngineVersion = BlamVersion.Halo1_PC;
+			else if (ver == Halo1.Version.PC || ver == Halo1.Version.PC_Demo)
+			{
+				if(s.State == IO.EndianState.Big)								cache.EngineVersion = BlamVersion.Halo1_XboxX;
+				else
+				{
+					// Interestingly, HaloPC is build 01.00.00.0564, HA10 is build 01.00.01.0563
+																				// Little
+					if(build == "01.00.01.0563")								cache.EngineVersion = BlamVersion.Halo1_PCX;
+					else														cache.EngineVersion = BlamVersion.Halo1_PC;
+				}
+			}
 			else if (ver == Halo1.Version.CE)									cache.EngineVersion = BlamVersion.Halo1_CE;
 		}
 	};
@@ -145,7 +155,7 @@ namespace BlamLib.Blam.Halo1
 		public override void Read(BlamLib.IO.EndianReader s)
 		{
 			CacheFile cache = s.Owner as CacheFile;
-			bool isPC = cache.EngineVersion.IsPc();
+			bool isPC = cache.EngineVersion.IsPc() || cache.EngineVersion == BlamVersion.Halo1_XboxX;
 
 			#region base address
 			Managers.BlamDefinition bdef = Program.GetManager(cache.EngineVersion);
@@ -273,6 +283,9 @@ namespace BlamLib.Blam.Halo1
 
 		public override void Read(BlamLib.IO.EndianReader s)
 		{
+			CacheFile cache = s.Owner as CacheFile;
+			bool isHA10 = cache.EngineVersion == BlamVersion.Halo1_XboxX || cache.EngineVersion == BlamVersion.Halo1_PCX;
+
 			GameDefinition gd = Program.Halo1.Manager;
 
 			GroupTagInt = s.ReadUInt32();
@@ -295,7 +308,8 @@ namespace BlamLib.Blam.Halo1
 			tagNameOffset = s.ReadPointer();
 			
 			address = s.ReadUInt32(); // external index for pc\ce, if its a bitmap, ptr if its a sound or anything else
-			if(address > s.BaseAddress) offset = (int)(address - s.BaseAddress);
+			// TODO: HA10 Xbox doesn't use data files (and a PC port probably won't either)
+			if (isHA10 || address > s.BaseAddress) offset = (int)(address - s.BaseAddress);
 			this.location = (CacheIndex.ItemLocation)s.ReadInt32(); // bool_in_data_file
 			
 			s.ReadInt32();

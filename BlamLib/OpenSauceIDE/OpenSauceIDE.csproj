@@ -30,6 +30,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\CachePacker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Cache\CachePacker.Designer.cs">
+      <DependentUpon>CachePacker.cs</DependentUpon>
+    </Compile>
     <Compile Include="Cache\CacheView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +84,12 @@
     <Compile Include="OpenSauce\Halo1\UnlockH1.cs" />
     <Compile Include="OpenSauce\UnlockExeBase.cs" />
     <Compile Include="OpenSauce\UnlockGameBase.cs" />
+    <Compile Include="OpenSauce\XnaPatcherForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OpenSauce\XnaPatcherForm.Designer.cs">
+      <DependentUpon>XnaPatcherForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Cache\CacheView.resx">
@@ -99,6 +111,10 @@
     <EmbeddedResource Include="MainForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OpenSauce\XnaPatcherForm.resx">
+      <DependentUpon>XnaPatcherForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

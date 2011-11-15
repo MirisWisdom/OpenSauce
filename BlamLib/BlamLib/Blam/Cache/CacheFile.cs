@@ -1010,6 +1010,37 @@ namespace BlamLib.Blam
 
 			return result;
 		}
+		internal static int ValidateHeaderAdjustEndian(IO.EndianReader s, params int[] header_sizes)
+		{
+			bool invalid = true;
+			int result = -1;
+
+			foreach (int header_size in header_sizes)
+			{
+				if (s.Length < header_size) continue; // it HAS to be more than the size of a header...
+				s.Seek(0);
+				uint head = s.ReadTagUInt();
+
+				if (head != MiscGroups.head.ID)
+				{
+					if (IO.ByteSwap.SwapUDWord(head) == MiscGroups.head.ID)
+						s.State = s.State.Invert();
+				}
+
+				s.Seek(header_size - sizeof(uint));
+				if (s.ReadTagUInt() == MiscGroups.foot.ID)
+				{
+					invalid = false;
+					result = header_size;
+				}
+
+				if (!invalid) break;
+			}
+
+			if (invalid) throw new InvalidCacheFileException(s.FileName);
+
+			return result;
+		}
 		#endregion
 
 		/// <summary>

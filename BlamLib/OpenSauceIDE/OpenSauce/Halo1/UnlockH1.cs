@@ -127,7 +127,8 @@ namespace BlamLib
 	{
 		static void UnlockBlamGames(params string[] args)
 		{
-			const string kSupportedGameVersion = "1.09";
+			const string kModifcationName = "OpenSauce";
+			const string kSupportedExeVersion = "1.09";
 
 			if (args.Length < 4)
 			{
@@ -145,7 +146,7 @@ namespace BlamLib
 					break;
 			};
 
-			Console.WriteLine("Applying {0} modifications...", "OpenSauce");
+			Console.WriteLine("Applying {0} modifications...", kModifcationName);
 			DumpArguments(1, args);
 
 			Exception exception = null;
@@ -172,24 +173,16 @@ namespace BlamLib
 				catch (Exception ex)	{ exception = ex; }
 			}
 
-			if (exception != null)
-			{
-				Console.WriteLine("error: an exception occurred when attempting to apply the {0} modifications", "OpenSauce");
-				Console.WriteLine();
-				Console.WriteLine("exception details:");
-				if (exception.Message != null) Console.WriteLine(exception.Message);
-				Console.WriteLine(exception.StackTrace);
-				Console.WriteLine();
-			}
+			DumpModificationException(kModifcationName, exception);
 
 			string msg;
 			if (exception == null)
-				msg = "OpenSauce successfully applied!";
+				msg = kModifcationName + " successfully applied!";
 			else if (unlocker.EncounteredInvalidExe)
-				msg = "OpenSauce couldn't be applied to some or all of the exes. Check the debug log for more details";
+				msg = kModifcationName + " couldn't be applied to some or all of the exes. Check the debug log for more details";
 			else
-				msg = "There was an error while trying to apply OpenSauce. Validate that you selected original copies of the " +
-					"v" + kSupportedGameVersion + " game exes and try again.";
+				msg = "There was an error while trying to apply " + kModifcationName + ". Validate that you selected original copies of the " +
+					"v" + kSupportedExeVersion + " exe(s) and try again.";
 
 			Console.WriteLine(msg);
 		}

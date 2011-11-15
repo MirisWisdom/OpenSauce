@@ -307,6 +307,8 @@ namespace BlamLib
 		Epsilon = 32,
 		/// <summary>Mainly a 'hack' for HaloCE</summary>
 		Extended = 64,
+		/// <summary>Mainly a 'hack' for Halo Anniversary</summary>
+		Remake = 128,
 
 		kAll = Xbox | PC | Mac |
 			Beta | Epsilon | Extended
@@ -346,9 +348,8 @@ namespace BlamLib
 		Beta =		BlamPlatform.Beta,
 		Epsilon =	BlamPlatform.Epsilon,
 		Extended =	BlamPlatform.Extended,
+		Remake =	BlamPlatform.Remake,
 		#endregion
-
-		// 128 - could be used for either Type or a new Game
 
 		#region Base - Game (see BlamBuild)
 		/// <summary>Halo 1 base version</summary>
@@ -372,15 +373,19 @@ namespace BlamLib
 		#region Halo 1
 		/// <summary>Halo 1 (Xbox 1)</summary>
 		Halo1_Xbox =	Halo1 | Xbox,
+		/// <summary>Halo 1 (Xbox 360) Anniversary</summary>
+		Halo1_XboxX =	Halo1 | Xbox | Remake,
 		/// <summary>Halo 1 (PC)</summary>
 		Halo1_PC =		Halo1 | PC,
 		/// <summary>Halo 1 (PC) Custom Edition</summary>
 		Halo1_CE =		Halo1 | PC | Extended,
+		/// <summary>Halo 1 (PC) Anniversary</summary>
+		Halo1_PCX =		Halo1 | PC | Remake,
 		/// <summary>Halo 1 (Mac)</summary>
 		Halo1_Mac =		Halo1 | Mac,
 
 		/// <summary>Halo 1 (All)</summary>
-		kHalo1 = Halo1_Xbox | Halo1_PC | Halo1_CE | Halo1_Mac,
+		kHalo1 = Halo1_Xbox | Halo1_XboxX | Halo1_PC | Halo1_CE | Halo1_PCX | Halo1_Mac,
 		#endregion
 
 		#region Stubbs
