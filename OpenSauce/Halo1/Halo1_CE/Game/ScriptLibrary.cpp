@@ -390,13 +390,15 @@ namespace Yelo
 		{
 			if(data.pointer != NULL)
 			{
+				TypeHolder copy; copy.pointer = data.pointer;
+				data.pointer = NULL;
 				switch(type)
 				{
 				// also for byte
-				case HS_TYPE(bool):	data.byte = *data.ptr.byte;		break;
-				case HS_TYPE(short):data.uint16 = *data.ptr.uint16;	break;
+				case HS_TYPE(bool):	data.byte = *copy.ptr.byte;		break;
+				case HS_TYPE(short):data.uint16 = *copy.ptr.uint16;	break;
 				case HS_TYPE(real):
-				case HS_TYPE(long):	data.uint32 = *data.ptr.uint32;	break;
+				case HS_TYPE(long):	data.uint32 = *copy.ptr.uint32;	break;
 					break;
 				}
 			}
