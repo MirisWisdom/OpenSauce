@@ -404,6 +404,8 @@ namespace Yelo
 			}
 			else // the pointer is null, so default to NONE
 			{
+				data.pointer = NULL;
+
 				switch(type)
 				{
 				// also for byte
