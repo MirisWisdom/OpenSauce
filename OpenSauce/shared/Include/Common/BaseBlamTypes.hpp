@@ -38,30 +38,28 @@ namespace Yelo
 	protected:
 		unsigned char m_data[k_size];
 		
-		template<typename T, const size_t k_offset> API_INLINE T GetData()		{ return *( CAST_PTR(T*,		&m_data[k_offset]) ); }
-		template<typename T, const size_t k_offset> API_INLINE T GetData() const{ return *( CAST_PTR(const T*,	&m_data[k_offset]) ); }
-		template<typename T, const size_t k_offset> API_INLINE T* GetDataPtr()	{ return	CAST_PTR(T*,		&m_data[k_offset]); }
-
-		//inline * Get() { return GetDataPtr<, 0x>(); }
+		template<typename T, const size_t k_offset> API_INLINE T GetData()					{ return *( CAST_PTR(T*,		&m_data[k_offset]) ); }
+		template<typename T, const size_t k_offset> API_INLINE T GetData() const			{ return *( CAST_PTR(const T*,	&m_data[k_offset]) ); }
+		template<typename T, const size_t k_offset> API_INLINE T* GetDataPtr()				{ return	CAST_PTR(T*,		&m_data[k_offset]); }
+		template<typename T, const size_t k_offset> API_INLINE const T* GetDataPtr() const	{ return	CAST_PTR(const T*,	&m_data[k_offset]); }
 
 		// Usage - "struct some_object : TStructImpl(0x40) {};"
 		#define TStructImpl(size) public TStruct< size >
 
 		// Implement a by-value getter
 		#define TStructGetImpl(type, name, offset)															\
-			API_INLINE type Get##name()				{ return GetData<type, offset>(); }						\
-			API_INLINE type Get##name() const		{ return GetData<type, offset>(); }
+			API_INLINE type Get##name()					{ return GetData<type, offset>(); }					\
+			API_INLINE type Get##name() const			{ return GetData<type, offset>(); }
 		// Implement a by-address getter
 		#define TStructGetPtrImpl(type, name, offset)														\
-			API_INLINE type* Get##name()			{ return GetDataPtr<type, offset>(); }
+			API_INLINE type* Get##name()				{ return GetDataPtr<type, offset>(); }				\
+			API_INLINE type const* Get##name() const	{ return GetDataPtr<type, offset>(); }
+			//              ^ use const here, instead of before the type, in case [type] is defined as something like "int32*"
 
 		// Implement a by-value getter for fake TStruct sub-classes
-		#define TStructSubGetImpl(type, name, offset)														\
-			API_INLINE type Get##name()				{ return GetData<type, offset - DATA_OFFSET>(); }		\
-			API_INLINE type Get##name() const		{ return GetData<type, offset - DATA_OFFSET>(); }
+		#define TStructSubGetImpl(type, name, offset)		TStructGetImpl(type, name, offset - DATA_OFFSET)
 		// Implement a by-address getter for fake TStruct sub-classes
-		#define TStructSubGetPtrImpl(type, name, offset)													\
-			API_INLINE type* Get##name()			{ return GetDataPtr<type, offset - DATA_OFFSET>(); }
+		#define TStructSubGetPtrImpl(type, name, offset)	TStructGetPtrImpl(type, name, offset - DATA_OFFSET)
 	};
 
 
