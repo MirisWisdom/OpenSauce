@@ -22,6 +22,16 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
+		/* !-- Networking --! */
+		struct s_network_game_player_unit
+		{
+			TAG_FIELD(tag_string, name, "", "name of this block definition");
+			TAG_FIELD(tag_reference, definition, "unit", "unit definition for this player's biped");
+			TAG_PAD(int32, 5); // 20
+		};
+		/* !-- Networking --! */
+
+
 		/* !-- Gameplay --! */
 		/* !-- Gameplay --! */
 
@@ -142,15 +152,8 @@ namespace Yelo
 
 
 			/* !-- Networking --! */
-			struct network_game_player_biped
-			{
-				TAG_FIELD(tag_string, name, "", "name of this block definition");
-				TAG_FIELD(tag_reference, definition, "unit", "unit definition for this player's biped");
-				TAG_PAD(int32, 5); // 20
-			};
-
 			struct {
-				TAG_TBLOCK(player_bipeds, network_game_player_biped); // 2
+				TAG_TBLOCK(player_units, s_network_game_player_unit); // 32
 
 				TAG_PAD(int32, 5); // 20
 			}networking;

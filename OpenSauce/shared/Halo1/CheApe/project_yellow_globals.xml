@@ -28,7 +28,7 @@
 		</TagBlock>
 
 
-		<TagBlock name="network_game_player_biped" maxElements="2">
+		<TagBlock name="network_game_player_unit" maxElements="32">
 			<field type="String" name="name" blockname="true" tooltip="name of this block definition" />
 			<field type="TagReference" name="definition" definition="unit_reference" tooltip="unit definition for this player's biped" />
 			<field type="Pad" definition="20" />
@@ -94,7 +94,7 @@
 			<field type="Pad" definition="32" />
 
 			<field type="Explanation" name="Networking" definition="" />
-			<field type="Block" name="player bipeds" definition="network_game_player_biped" />
+			<field type="Block" name="player units" definition="network_game_player_unit" />
 			<field type="Pad" definition="20" />
 
 			<field type="Explanation" name="Gameplay" definition="" />

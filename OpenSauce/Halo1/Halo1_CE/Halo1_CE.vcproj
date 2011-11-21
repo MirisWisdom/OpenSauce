@@ -1917,6 +1917,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Game\Players.NetworkPlayerUnit.inl"
+					>
+				</File>
+				<File
 					RelativePath=".\Game\Players.Scripting.inl"
 					>
 				</File>

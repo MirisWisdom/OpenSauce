@@ -27,6 +27,7 @@
 #include "Memory/MemoryInterface.hpp"
 #include "Networking/Networking.hpp"
 #include "Objects/Objects.hpp"
+#include "TagGroups/project_yellow_definitions.hpp"
 #include <TagGroups/Halo1/scenario_definitions.hpp>
 
 namespace Yelo
@@ -44,6 +45,9 @@ namespace Yelo
 		s_player_effects_data* PlayerEffects()							DPTR_IMP_GET(player_effects);
 		datum_index* MachineToPlayerTable()								PTR_IMP_GET2(machine_to_player_table);
 
+
+// For the player unit overrides implementation
+#include "Game/Players.NetworkPlayerUnit.inl"
 
 #include "Game/Players.Scripting.inl"
 		void Initialize()
@@ -71,9 +75,10 @@ namespace Yelo
  				scripting_player_local_get_evaluate);
 
 
-			Memory::WriteRelativeJmp(&Players::UpdateServer, GET_FUNC_VPTR(PLAYERS_UPDATE_BEFORE_GAME_SERVER_HOOK), true);
-			Memory::WriteRelativeJmp(&Players::UpdateClient, GET_FUNC_VPTR(PLAYERS_UPDATE_BEFORE_GAME_CLIENT_HOOK), true);
-			Memory::WriteRelativeJmp(&Players::Update, GET_FUNC_VPTR(PLAYERS_UPDATE_AFTER_GAME_HOOK), true);
+			Memory::WriteRelativeJmp(PlayerSpawnCreateUnitMultiplayerHook, GET_FUNC_VPTR(PLAYER_SPAWN__CREATE_UNIT_MP_HOOK));
+			Memory::WriteRelativeJmp(UpdateServer, GET_FUNC_VPTR(PLAYERS_UPDATE_BEFORE_GAME_SERVER_HOOK), true);
+			Memory::WriteRelativeJmp(UpdateClient, GET_FUNC_VPTR(PLAYERS_UPDATE_BEFORE_GAME_CLIENT_HOOK), true);
+			Memory::WriteRelativeJmp(Update, GET_FUNC_VPTR(PLAYERS_UPDATE_AFTER_GAME_HOOK), true);
 		}
 
 		void Dispose()
