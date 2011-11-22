@@ -287,11 +287,35 @@ namespace Yelo
 		}
 		//////////////////////////////////////////////////////////////////////////
 
+		void YeloGlobalsDefinitionCullInvalidNetworkPlayerUnits(TAG_TBLOCK(& player_units, TagGroups::s_network_game_player_unit))
+		{
+			if(player_units.Count == 0) return;
+
+			for(int32 x = player_units.Count; x >= 0; x--)
+			{
+				const TagGroups::s_network_game_player_unit* player_unit = &player_units[x];
+				bool remove_element = true;
+
+				if( player_unit->name[0] == '\0' )
+					printf_s("CheApe: Culling unnamed network_game_player_unit element #%n\n", x);
+				else if( player_unit->definition.tag_index.IsNull() )
+					printf_s("CheApe: Culling invalid network_game_player_unit element #%n (%s)\n", x, player_unit->name);
+				else remove_element = false;
+
+				if(remove_element) tag_block_duplicate_element(player_units, x);
+			}
+		}
+		/*!
+		 * \brief
+		 * Removes "preprocess" related and otherwise invalid tag data from the PY globals tag
+		 */
 		void YeloGlobalsDefinitionCull(TagGroups::project_yellow_globals* globals)
 		{
 			YELO_ASSERT(globals);
 
 			tag_block_resize(globals->preprocess, 0);
+
+			YeloGlobalsDefinitionCullInvalidNetworkPlayerUnits(globals->networking.player_units);
 		}
 	};
 };
