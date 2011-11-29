@@ -19,120 +19,32 @@
 
 //////////////////////////////////////////////////////////////////////////
 // t_function_process
-template<const void* TAddress, bool TIsDisabled> const void* t_function_process<TAddress, TIsDisabled>::
+#define T_FUNCTION_PROCESS_SIGNATURE(...)	\
+	template<const void* TAddress, bool TIsDisabled> __VA_ARGS__ t_function_process<TAddress, TIsDisabled>
+
+T_FUNCTION_PROCESS_SIGNATURE(const void*)::
 	k_address = TAddress;
-template<const void* TAddress, bool TIsDisabled> bool t_function_process<TAddress, TIsDisabled>::
+T_FUNCTION_PROCESS_SIGNATURE(bool)::
 	g_is_disabled = TIsDisabled;
 
-// Have to define the function outside the template declaration due to our use of API_FUNC_NAKED
-template<const void* TAddress, bool TIsDisabled> API_FUNC_NAKED void t_function_process<TAddress, TIsDisabled>::
-	FunctionHook()
-{
-	__asm {
-		mov		al, g_is_disabled
-		test	al, al
-		jnz		is_disabled
-		call	k_address
-is_disabled:
-		retn
-	}
-}
+#undef T_FUNCTION_PROCESS_SIGNATURE
 //////////////////////////////////////////////////////////////////////////
 
 
 //////////////////////////////////////////////////////////////////////////
 // t_function_process_block
-template<const void* TAddress, 
-	const function_process_proc TBlockPreprocess[], const size_t TBlockPreprocessCount,
-	const function_process_proc TBlockPostprocess[], const size_t TBlockPostprocessCount,
-	bool TIsDisabled>
-const void* t_function_process_block<TAddress, TBlockPreprocess, TBlockPreprocessCount, TBlockPostprocess, TBlockPostprocessCount, TIsDisabled>::
+#define T_FUNCTION_PROCESS_BLOCK_SIGNATURE(...)															\
+	template<const void* TAddress,																		\
+		const function_process_proc TBlockPreprocess[], const size_t TBlockPreprocessCount,				\
+		const function_process_proc TBlockPostprocess[], const size_t TBlockPostprocessCount,			\
+		bool TIsDisabled>																				\
+	__VA_ARGS__ t_function_process_block<TAddress, TBlockPreprocess, TBlockPreprocessCount, TBlockPostprocess, TBlockPostprocessCount, TIsDisabled>
+
+T_FUNCTION_PROCESS_BLOCK_SIGNATURE(const void*)::
 	k_address = TAddress;
 
-template<const void* TAddress, 
-	const function_process_proc TBlockPreprocess[], const size_t TBlockPreprocessCount,
-	const function_process_proc TBlockPostprocess[], const size_t TBlockPostprocessCount,
-	bool TIsDisabled>
-const function_process_proc* t_function_process_block<TAddress, TBlockPreprocess, TBlockPreprocessCount, TBlockPostprocess, TBlockPostprocessCount, TIsDisabled>::
-	k_block_preprocess = TBlockPreprocess;
-
-template<const void* TAddress, 
-	const function_process_proc TBlockPreprocess[], const size_t TBlockPreprocessCount,
-	const function_process_proc TBlockPostprocess[], const size_t TBlockPostprocessCount,
-	bool TIsDisabled>
-const function_process_proc* t_function_process_block<TAddress, TBlockPreprocess, TBlockPreprocessCount, TBlockPostprocess, TBlockPostprocessCount, TIsDisabled>::
-	k_block_postprocess = TBlockPostprocess;
-
-template<const void* TAddress, 
-	const function_process_proc TBlockPreprocess[], const size_t TBlockPreprocessCount,
-	const function_process_proc TBlockPostprocess[], const size_t TBlockPostprocessCount,
-	bool TIsDisabled>
-bool t_function_process_block<TAddress, TBlockPreprocess, TBlockPreprocessCount, TBlockPostprocess, TBlockPostprocessCount, TIsDisabled>::
+T_FUNCTION_PROCESS_BLOCK_SIGNATURE(bool)::
 	g_is_disabled = TIsDisabled;
 
-// Have to define the function outside the template declaration due to our use of API_FUNC_NAKED
-template<const void* TAddress, 
-	const function_process_proc TBlockPreprocess[], const size_t TBlockPreprocessCount,
-	const function_process_proc TBlockPostprocess[], const size_t TBlockPostprocessCount,
-	bool TIsDisabled>
-API_FUNC_NAKED void t_function_process_block<TAddress, TBlockPreprocess, TBlockPreprocessCount, TBlockPostprocess, TBlockPostprocessCount, TIsDisabled>::
-	FunctionHook()
-{
-	__asm {
-		pushad
-		pushfd
-
-		mov		edx, k_block_preprocess
-		test	edx, edx
-		jz		function_preprocess_end
-		xor		ecx, ecx
-function_preprocess:
-		mov		eax, [edx+ecx*4]
-		test	eax, eax
-		jz		function_preprocess_is_null
-		push	ecx	// playing it safe: ecx *could* be modified in our code without being preserved (silly compiler)
-		push	edx
-		call	eax
-		pop		edx
-		pop		ecx
-function_preprocess_is_null:
-		inc		ecx
-		cmp		ecx, k_block_preprocess_count
-		jl		function_preprocess
-function_preprocess_end:
-
-		mov		al, g_is_disabled
-		test	al, al
-		jnz		is_disabled
-		popfd
-		popad
-		call	k_address
-		pushad
-		pushfd
-is_disabled:
-
-		mov		edx, k_block_postprocess
-		test	edx, edx
-		jz		function_postprocess_end
-		xor		ecx, ecx
-function_postprocess:
-		mov		eax, [edx+ecx*4]
-		test	eax, eax
-		jz		function_postprocess_is_null
-		push	ecx	// playing it safe: ecx *could* be modified in our code without being preserved (silly compiler)
-		push	edx
-		call	eax
-		pop		edx
-		pop		ecx
-function_postprocess_is_null:
-		inc		ecx
-		cmp		ecx, k_block_postprocess_count
-		jl		function_postprocess
-function_postprocess_end:
-
-		popfd
-		popad
-		retn
-	}
-}
+#undef T_FUNCTION_PROCESS_BLOCK_SIGNATURE
 //////////////////////////////////////////////////////////////////////////

@@ -22,6 +22,7 @@
 #define PLATFORM_TOOL		0x00000002
 #define PLATFORM_SAPIEN		0x00000003
 
+// PLATFORM_TYPE is defined in the vcproj build configurations
 #if !defined(PLATFORM_ID)
 	#if defined(PLATFORM_TYPE_GUERILLA)
 		#define PLATFORM_ID PLATFORM_GUERILLA

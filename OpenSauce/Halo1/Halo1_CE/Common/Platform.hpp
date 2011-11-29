@@ -21,12 +21,15 @@
 //////////////////////////////////////////////////////////////////////////
 //#define PLATFORM_TYPE 0x00??
 
-#if defined(PLATFORM_TYPE_CLIENT)
-	#define PLATFORM_TYPE 0x0000
-#elif defined(PLATFORM_TYPE_DEDI)
-	#define PLATFORM_TYPE 0x0001
-#else
-	#error PLATFORM_TYPE not defined. Step 1: Bash head on keyboard. Step 2: Repeat.
+// PLATFORM_TYPE is defined in the vcproj build configurations
+#if !defined(PLATFORM_TYPE)
+	#if defined(PLATFORM_TYPE_CLIENT)
+		#define PLATFORM_TYPE 0x0000
+	#elif defined(PLATFORM_TYPE_DEDI)
+		#define PLATFORM_TYPE 0x0001
+	#else
+		#error PLATFORM_TYPE not defined. Step 1: Bash head on keyboard. Step 2: Repeat.
+	#endif
 #endif
 
 // Is the target platform user based? (aka, haloce.exe)
@@ -67,5 +70,5 @@
 // The fucking *compiler* ignores 'write' with 'execute. Needs manual fix-up
 #pragma section( API_CODEDATA_SECTION_NAME, read,write,execute )
 // ...Actually, this fixes the problem of the compiler ignoring the 'write' attribute
-// When compiled into object-code (.obj), the 'write' attribute is lost, so it's not really the linkers fault
+// When compiled into object-code (.obj), the 'write' attribute is lost, so it's not really the linker's fault
 #pragma comment(linker, "/section:" API_CODEDATA_SECTION_NAME ",ERW")

@@ -287,7 +287,7 @@ namespace Yelo
 		}
 		//////////////////////////////////////////////////////////////////////////
 
-		void YeloGlobalsDefinitionCullInvalidNetworkPlayerUnits(TAG_TBLOCK(& player_units, TagGroups::s_network_game_player_unit))
+		static void YeloGlobalsDefinitionCullInvalidNetworkPlayerUnits(TAG_TBLOCK(& player_units, TagGroups::s_network_game_player_unit))
 		{
 			if(player_units.Count == 0) return;
 
