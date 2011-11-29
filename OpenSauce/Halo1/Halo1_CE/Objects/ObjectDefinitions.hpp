@@ -143,13 +143,21 @@ namespace Yelo
 
 			// --- 0x106 & 0x107
 
+			_object_cannot_take_damage_bit = 11,
+
+			// 1
+			// 2
 			_object_should_be_tracked_flag = FLAG(2),
+			// 8
+			// 16
 			_object_killed_flag = FLAG(5),
 			_object_killed_silent_flag = FLAG(6),
+			// 128
 			// 1
 			// 2
 			// 4
 			_object_cannot_take_damage_flag = FLAG(11), // 8
+			// 16
 			_object_killed_no_statistics = FLAG(13), // 32
 		};
 	};
@@ -190,6 +198,17 @@ namespace Yelo
 			real_vector3d forward;
 			real_vector3d up;
 			real_vector3d angular_velocity;
+
+			void CopyToPlacementData(s_object_placement_data& data)
+			{
+				data.player_index = owner_player_index;
+				data.owner_object_index = owner;
+				memcpy(&data.position,				&position, sizeof(position));
+				memcpy(&data.transitional_velocity,	&transitional_velocity, sizeof(transitional_velocity));
+				memcpy(&data.forward,				&forward, sizeof(forward));
+				memcpy(&data.up,					&up, sizeof(up));
+				memcpy(&data.angular_velocity,		&angular_velocity, sizeof(angular_velocity));
+			}
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_network_datum_data) == 0x48 );
 
 		struct s_object_data : TStructImpl( Enums::k_object_size_object )

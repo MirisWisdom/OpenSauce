@@ -41,7 +41,11 @@ namespace Yelo
 			static const void* k_address;
 			static bool g_is_disabled;
 
-			static void FunctionHook();
+			static void FunctionHook()
+			{
+				if(!g_is_disabled)
+					__asm	call k_address
+			}
 		};
 		//////////////////////////////////////////////////////////////////////////
 
@@ -55,16 +59,40 @@ namespace Yelo
 		struct t_function_process_block
 		{
 		private:
-			static const size_t k_block_preprocess_count = TBlockPreprocessCount;
 			static const function_process_proc* k_block_preprocess;
-			static const size_t k_block_postprocess_count = TBlockPostprocessCount;
 			static const function_process_proc* k_block_postprocess;
 
+			static void CallPreprocesses()
+			{
+				if(TBlockPreprocessCount == 0) return;
+
+				const function_process_proc* proc = &TBlockPreprocess[0];
+				for(int32 x = 0; x < TBlockPreprocessCount; proc++, x++)
+					if(proc != NULL)
+						(*proc)();
+			}
+			static void CallPostprocesses()
+			{
+				if(TBlockPostprocessCount == 0) return;
+
+				const function_process_proc* proc = &TBlockPostprocess[0];
+				for(int32 x = 0; x < TBlockPostprocessCount; proc++, x++)
+					if(proc != NULL)
+						(*proc)();
+			}
 		public:
 			static const void* k_address;
 			static bool g_is_disabled;
 
-			static void FunctionHook();
+			static void FunctionHook()
+			{
+				CallPreprocesses();
+
+				if(!g_is_disabled)
+					__asm	call k_address
+
+				CallPostprocesses();
+			}
 		};
 		//////////////////////////////////////////////////////////////////////////
 
