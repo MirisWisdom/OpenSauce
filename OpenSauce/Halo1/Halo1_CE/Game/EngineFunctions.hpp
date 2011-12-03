@@ -131,23 +131,15 @@ namespace Yelo
 		// Returns the random [animation_index]
 		int16 AnimationPickRandomPermutation(bool animation_update_kind_affects_game_state, datum_index animation_graph_index, int32 animation_index);
 
-		void GenerateMD5(const char* data, const DWORD data_length, const char* output);
+		void GenerateMD5(cstring data, const DWORD data_length, cstring output);
 
-		namespace Console
+		namespace AI
 		{
-			// Process a fully qualified string of script functions
-			void ProcessCommand(cstring command);
-			void ProcessRemoteCommand(int32 machine_index, cstring command);
+			// Deletes and detaches the specified actor from all AI (encounters, etc.)
+			void Delete(datum_index actor_index, bool is_dead = false);
 
-			// Prints [msg] to the console
-			void TerminalPrint(cstring msg);
-			// Formats and prints to the console
-			void TerminalPrintF(cstring format, ...);
-
-			void PrintF(cstring msg);
-
-			// Prints [msg] to the console with red coloring
-			void Warning(cstring msg);
+			// Attaches the specified actor_variant to the unit
+			void AttachFree(datum_index unit_index, datum_index actor_variant_definition);
 		};
 
 		namespace Cheats
@@ -177,6 +169,29 @@ namespace Yelo
 			void DirectorLoadCamera();
 		};
 
+		namespace Console
+		{
+			// Process a fully qualified string of script functions
+			void ProcessCommand(cstring command);
+			void ProcessRemoteCommand(int32 machine_index, cstring command);
+
+			// Prints [msg] to the console
+			void TerminalPrint(cstring msg);
+			// Formats and prints to the console
+			void TerminalPrintF(cstring format, ...);
+
+			void PrintF(cstring msg);
+
+			// Prints [msg] to the console with red coloring
+			void Warning(cstring msg);
+		};
+
+		namespace Effects
+		{
+			// Spawn an effect tag on the specified object's marker
+			void NewOnObjectMarker(datum_index effect_definition_index, datum_index object_index, cstring marker_name = "");
+		};
+
 		namespace Game
 		{
 			// Switches the bsp being used to the bsp at [index] in the scenario structure bsps block
@@ -185,7 +200,7 @@ namespace Yelo
 			// Plays the [bink] file
 			void PlayVideo(cstring bink);
 
-			// Prints [msg]
+			// Renders [msg]
 			void RasterizerMessage(wcstring msg, uint32 flags);
 
 			// Checks to see if [team_to_test] is an enemy of [team]
@@ -197,8 +212,8 @@ namespace Yelo
 
 		namespace HS
 		{
-			// Add [object] to the [object_list]
-			void ObjectListAdd(datum_index object_list, datum_index object);
+			// Add [object_index] to the [object_list]
+			void ObjectListAdd(datum_index object_list, datum_index object_index);
 		};
 
 		namespace Input
@@ -254,7 +269,7 @@ namespace Yelo
 		namespace Networking
 		{
 			// Sends a message_object_deletion packet for [obj], deleting it in the process
-			void EncodeObjectDeletionMessage(datum_index obj);
+			void EncodeObjectDeletionMessage(datum_index object_index);
 
 			void EncodeHudChatNetworkData(int32 player_number, _enum chat_type, wcstring msg);
 
@@ -266,68 +281,84 @@ namespace Yelo
 
 		namespace Objects
 		{
-			void PlacementDataNew(Yelo::Objects::s_object_placement_data& data, datum_index object_definition_index, datum_index object_index = datum_index::null);
+			void PlacementDataNew(Yelo::Objects::s_object_placement_data& data, datum_index object_definition_index, datum_index owner_object_index = datum_index::null);
 
 			datum_index New(Yelo::Objects::s_object_placement_data& data);
 
 			datum_index NewWithRole(Yelo::Objects::s_object_placement_data& data, long_enum /*Enums::networked_datum*/ role);
 
-			void StartInterpolation(datum_index obj_datum);
+			void Delete(datum_index object_index);
 
-			void Reset(datum_index obj);
+			// Attaches the object to the target_object (marker names can be empty strings)
+			void Attach(datum_index target_object_index, cstring target_marker_name, datum_index object_index, cstring marker_name);
 
-			void ReconnectToMap(datum_index obj, s_scenario_location* location_reference = NULL);
+			// Detaches the object from its parent
+			void Detach(datum_index object_index);
 
-			void DisconnectFromMap(datum_index obj);
+			void StartInterpolation(datum_index object_index, int32 interpolation_ticks);
 
-			// Get the origin of [obj]. Takes the parent object (if there is one) into account.
-			void GetOrigin(datum_index obj, real_point3d* out_origin);
+			void Reset(datum_index object_index);
 
-			// Get the orientation of [obj]. Takes the parent object (if there is one) into account.
-			void GetOrientation(datum_index obj, real_vector3d* out_forward, real_vector3d* out_up);
+			void ReconnectToMap(datum_index object_index, s_scenario_location* location_reference = NULL);
 
-			// Get the scenario location of [obj]
-			s_scenario_location* GetLocation(datum_index obj, s_scenario_location* out_location);
+			void DisconnectFromMap(datum_index object_index);
 
-			// precondition: obj is a valid object index, everything else can be null
-			void SetPosition(datum_index obj, real_point3d* new_pos = NULL, real_vector3d* new_forward = NULL, real_vector3d* new_up = NULL);
+			// Get the origin of [object_index]. Takes the parent object (if there is one) into account.
+			void GetOrigin(datum_index object_index, real_point3d* out_origin);
 
-			void SetPositionNetwork(datum_index obj, real_point3d* new_pos);
+			// Get the orientation of [object_index]. Takes the parent object (if there is one) into account.
+			void GetOrientation(datum_index object_index, real_vector3d* out_forward, real_vector3d* out_up);
 
-			bool RestoreBody(datum_index obj);
+			// Get the scenario location of [object_index]
+			s_scenario_location* GetLocation(datum_index object_index, s_scenario_location* out_location);
 
-			void DepleteBody(datum_index obj);
+			// precondition: [object_index] is a valid object index, everything else can be null
+			void SetPosition(datum_index object_index, real_point3d* new_pos = NULL, real_vector3d* new_forward = NULL, real_vector3d* new_up = NULL);
 
-			void DepleteShield(datum_index obj);
+			void SetPositionNetwork(datum_index object_index, real_point3d* new_pos);
 
-			void DoubleChargeShield(datum_index obj);
+			bool RestoreBody(datum_index object_index);
+
+			void DepleteBody(datum_index object_index);
+
+			void DepleteShield(datum_index object_index);
+
+			void DoubleChargeShield(datum_index object_index);
+
+			// Loads the predicted resources defined in [object_index]'s tag definition (if they're not already loaded)
+			void DefinitionPredict(datum_index object_index);
+
+			// Sets the scale of an object over a duration of time (game ticks)
+			void SetScale(datum_index object_index, real scale, int32 ticks);
+
+			void UnitOrientToCutsceneFlag(datum_index unit_index, int32 cutscene_flag_index, bool set_facing = true, bool i_dont_know = true);
 
 			// Calculates the viewing position based on the unit's 'head' marker if it has one. 
 			// If not, it will estimate the position based on the object's origin.
-			void GetCameraPosition(datum_index unit, real_point3d* out_position);
+			void UnitGetCameraPosition(datum_index unit_index, real_point3d* out_position);
 
-			// Loads the predicted resources defined in [obj]'s tag definition (if they're not already loaded)
-			void DefinitionPredict(datum_index obj);
+			void UnitSetAnimation(datum_index unit_index, datum_index animation_graph_index, int32 animation_index);
 
-			void OrientToCutsceneFlag(datum_index unit, int32 cutscene_flag_index, bool set_facing = true, bool i_dont_know = true);
+			// Returns the number of frames remaining in an unit's custom animation
+			int16 UnitGetCustomAnimationTime(datum_index unit_index);
 		};
 
 		namespace Players
 		{
-			// Get the player datum_index from an active unit object (via it's object datum_index)
-			datum_index IndexFromUnitIndex(datum_index unit_datum);
+			// Get the player datum_index from an active unit object (via its object datum_index)
+			datum_index IndexFromUnitIndex(datum_index unit_index);
 
-			bool Teleport(datum_index player, const real_point3d& position, datum_index source_unit_index = datum_index::null);
+			bool Teleport(datum_index player_index, const real_point3d& position, datum_index source_unit_index = datum_index::null);
 
-			void ScreenEffectOvershield(datum_index player);
+			void ScreenEffectOvershield(datum_index player_index);
 
-			void ScreenEffectCamo(datum_index player);
+			void ScreenEffectCamo(datum_index player_index);
 
-			void ScreenEffectHealth(datum_index player);
+			void ScreenEffectHealth(datum_index player_index);
 
 			// Get the player datum_index of the closest player relative to player
-			// represented by the [player] datum_index parameter
-			datum_index FindClosestPlayerIndex(datum_index player);
+			// represented by the [player_index] datum_index parameter
+			datum_index FindClosestPlayerIndex(datum_index player_index);
 		};
 
 		namespace Scenario

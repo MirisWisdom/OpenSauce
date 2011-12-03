@@ -28,11 +28,123 @@ namespace Yelo
 		enum {
 			k_maximum_regions_per_model = 8,
 		};
+
+		enum weapon_type_animation
+		{
+			_weapon_type_animation_reload1,
+			_weapon_type_animation_reload2,
+			_weapon_type_animation_chamber1,
+			_weapon_type_animation_chamber2,
+			_weapon_type_animation_fire1,
+			_weapon_type_animation_fire2,
+			_weapon_type_animation_charged1,
+			_weapon_type_animation_chareged2,
+			_weapon_type_animation_melee,
+			_weapon_type_animation_overheat,
+			_weapon_type_animation
+		};
+		enum weapon_class_animation
+		{
+			_weapon_class_animation_idle,
+			_weapon_class_animation_gesture,
+			_weapon_class_animation_turn_left,
+			_weapon_class_animation_turn_right,
+			_weapon_class_animation_dive_front,
+			_weapon_class_animation_dive_back,
+			_weapon_class_animation_dive_left,
+			_weapon_class_animation_dive_right,
+			_weapon_class_animation_move_front,
+			_weapon_class_animation_move_back,
+			_weapon_class_animation_move_left,
+			_weapon_class_animation_move_right,
+			_weapon_class_animation_slide_front,
+			_weapon_class_animation_slide_back,
+			_weapon_class_animation_slide_left,
+			_weapon_class_animation_slide_right,
+			_weapon_class_animation_airborne,
+			_weapon_class_animation_land_soft,
+			_weapon_class_animation_land_hard,
+			_weapon_class_animation_unused19,
+			_weapon_class_animation_throw_grenade,
+			_weapon_class_animation_disarm,
+			_weapon_class_animation_drop,
+			_weapon_class_animation_ready,
+			_weapon_class_animation_put_away,
+			_weapon_class_animation_aim_still,
+			_weapon_class_animation_aim_move,
+			_weapon_class_animation_surprise_front,
+			_weapon_class_animation_surprise_back,
+			_weapon_class_animation_berserk,
+			_weapon_class_animation_evade_left,
+			_weapon_class_animation_evade_right,
+			_weapon_class_animation_signal_move,
+			_weapon_class_animation_signal_attack,
+			_weapon_class_animation_warn,
+			_weapon_class_animation_stunned_front,
+			_weapon_class_animation_stunned_back,
+			_weapon_class_animation_stunned_left,
+			_weapon_class_animation_stunned_right,
+			_weapon_class_animation_melee,
+			_weapon_class_animation_celebrate,
+			_weapon_class_animation_panic,
+			_weapon_class_animation_melee_airborne,
+			_weapon_class_animation_flaming,
+			_weapon_class_animation_resurrect_front,
+			_weapon_class_animation_resurrect_back,
+			_weapon_class_animation_melee_continuous,
+			_weapon_class_animation_feeding,
+			_weapon_class_animation_leap_start,
+			_weapon_class_animation_leap_airborne,
+			_weapon_class_animation_leap_melee,
+			_weapon_class_animation_zapping,
+			_weapon_class_animation_unused52,
+			_weapon_class_animation_unused53,
+			_weapon_class_animation_unused54,
+			_weapon_class_animation,
+
+			_weapon_class_animation_yelo_infect_start = _weapon_class_animation_unused52,
+			_weapon_class_animation_yelo_infect_end = _weapon_class_animation_unused53,
+		};
+
+		enum unit_seat_animation
+		{
+			_unit_seat_animation_airborne_dead,
+			_unit_seat_animation_landing_dead,
+			_unit_seat_animation_acc_front_back,
+			_unit_seat_animation_acc_left_right,
+			_unit_seat_animation_acc_up_down,
+			_unit_seat_animation_push,
+			_unit_seat_animation_twist,
+			_unit_seat_animation_enter,
+			_unit_seat_animation_exit,
+			_unit_seat_animation_look,
+			_unit_seat_animation_talk,
+			_unit_seat_animation_emotions,
+			_unit_seat_animation_unused12,
+			_unit_seat_animation_user0,
+			_unit_seat_animation_user1,
+			_unit_seat_animation_user2,
+			_unit_seat_animation_user3,
+			_unit_seat_animation_user4,
+			_unit_seat_animation_user5,
+			_unit_seat_animation_user6,
+			_unit_seat_animation_user7,
+			_unit_seat_animation_user8,
+			_unit_seat_animation_user9,
+			_unit_seat_animation_flying_front,
+			_unit_seat_animation_flying_back,
+			_unit_seat_animation_flying_left,
+			_unit_seat_animation_flying_right,
+			_unit_seat_animation_opening,
+			_unit_seat_animation_closing,
+			_unit_seat_animation_hovering,
+			_unit_seat_animation
+		};
 	};
 
 	namespace TagGroups
 	{
-		struct s_model_marker_instance
+		struct model_marker_instance
 		{
 			TAG_FIELD(byte, region_index);
 			TAG_FIELD(byte, permutation_index);
@@ -40,18 +152,17 @@ namespace Yelo
 			PAD8;
 			TAG_FIELD(real_point3d, translation);
 			TAG_FIELD(real_quaternion, rotation);
-		}; BOOST_STATIC_ASSERT( sizeof(s_model_marker_instance) == 0x20 ); // max count: 32
-
-		struct s_model_markers
+		}; BOOST_STATIC_ASSERT( sizeof(model_marker_instance) == 0x20 ); // max count: 32
+		struct model_markers
 		{
 			TAG_FIELD(tag_string, name);
 			TAG_FIELD(int16, magic_identifier);
 			PAD16;
 			TAG_PAD(int32, 4);
-			TAG_TBLOCK(instances, s_model_marker_instance);
-		}; BOOST_STATIC_ASSERT( sizeof(s_model_markers) == 0x40 ); // max count: 256
+			TAG_TBLOCK(instances, model_marker_instance);
+		}; BOOST_STATIC_ASSERT( sizeof(model_markers) == 0x40 ); // max count: 256
 
-		struct s_model_node
+		struct model_node
 		{
 			TAG_FIELD(tag_string, name);
 			TAG_FIELD(int16, next_sibling_node_index);
@@ -63,9 +174,9 @@ namespace Yelo
 			TAG_FIELD(real, node_distance_from_parent);
 			TAG_PAD(int32, 8);
 			TAG_PAD(int32, 13);
-		}; BOOST_STATIC_ASSERT( sizeof(s_model_node) == 0x9C ); // max count: 64
+		}; BOOST_STATIC_ASSERT( sizeof(model_node) == 0x9C ); // max count: 64
 
-		struct s_model_region_permutation_marker
+		struct model_region_permutation_marker
 		{
 			TAG_FIELD(tag_string, name);
 			TAG_FIELD(int16, node_index);
@@ -73,9 +184,8 @@ namespace Yelo
 			TAG_FIELD(real_quaternion, rotation);
 			TAG_FIELD(real_point3d, translation);
 			TAG_PAD(int32, 4);
-		}; BOOST_STATIC_ASSERT( sizeof(s_model_region_permutation_marker) == 0x50 ); // max count: 64
-
-		struct s_gbxmodel_region_permutation
+		}; BOOST_STATIC_ASSERT( sizeof(model_region_permutation_marker) == 0x50 ); // max count: 64
+		struct gbxmodel_region_permutation
 		{
 			struct __flags
 			{
@@ -91,25 +201,23 @@ namespace Yelo
 			TAG_FIELD(int16, high);
 			TAG_FIELD(int16, super_high);
 			PAD16;
-			TAG_TBLOCK(markers, s_model_region_permutation_marker);
-		}; BOOST_STATIC_ASSERT( sizeof(s_gbxmodel_region_permutation) == 0x58 ); // max count: 32
-
-		struct s_gbxmodel_region
+			TAG_TBLOCK(markers, model_region_permutation_marker);
+		}; BOOST_STATIC_ASSERT( sizeof(gbxmodel_region_permutation) == 0x58 ); // max count: 32
+		struct gbxmodel_region
 		{
 			TAG_FIELD(tag_string, name);
 			TAG_PAD(int32, 8);
-			TAG_TBLOCK(permutations, s_gbxmodel_region_permutation);
-		}; BOOST_STATIC_ASSERT( sizeof(s_gbxmodel_region) == 0x4C ); // max count: 32
+			TAG_TBLOCK(permutations, gbxmodel_region_permutation);
+		}; BOOST_STATIC_ASSERT( sizeof(gbxmodel_region) == 0x4C ); // max count: 32
 
 
-		struct s_model_triangle
+		struct model_triangle
 		{
 			TAG_FIELD(int16, vertex0_index);
 			TAG_FIELD(int16, vertex1_index);
 			TAG_FIELD(int16, vertex2_index);
-		}; BOOST_STATIC_ASSERT( sizeof(s_model_triangle) == 0x6 ); // max count: 65535
-
-		struct s_gbxmodel_geometry_part
+		}; BOOST_STATIC_ASSERT( sizeof(model_triangle) == 0x6 ); // max count: 65535
+		struct gbxmodel_geometry_part
 		{
 			struct __flags
 			{
@@ -128,7 +236,7 @@ namespace Yelo
 			TAG_FIELD(real_point3d, centroid);
 			TAG_TBLOCK(uncompressed_vertices, Rasterizer::model_vertex_uncompressed); // max count: 65535
 			TAG_TBLOCK(compressed_vertices, Rasterizer::model_vertex_compressed); // max count: 65535
-			TAG_TBLOCK(triangles, s_model_triangle);
+			TAG_TBLOCK(triangles, model_triangle);
 			TAG_PAD(int32, 5);
 			TAG_PAD(int32, 4);
 			TAG_PAD(byte, 1);
@@ -136,9 +244,8 @@ namespace Yelo
 			TAG_PAD(byte, 1);
 			TAG_PAD(byte, 1);
 			TAG_PAD(int32, 6);
-		}; BOOST_STATIC_ASSERT( sizeof(s_gbxmodel_geometry_part) == 0x84 ); // max count: 32
-
-		struct s_gbxmodel_geometry
+		}; BOOST_STATIC_ASSERT( sizeof(gbxmodel_geometry_part) == 0x84 ); // max count: 32
+		struct gbxmodel_geometry
 		{
 			struct __flags
 			{
@@ -147,18 +254,17 @@ namespace Yelo
 
 			TAG_FIELD(__flags, flags);
 			TAG_PAD(int32, 8);
-			TAG_TBLOCK(parts, s_gbxmodel_geometry_part);
-		}; BOOST_STATIC_ASSERT( sizeof(s_gbxmodel_geometry) == 0x30 ); // max count: 256
+			TAG_TBLOCK(parts, gbxmodel_geometry_part);
+		}; BOOST_STATIC_ASSERT( sizeof(gbxmodel_geometry) == 0x30 ); // max count: 256
 
-		struct s_model_shader_reference
+		struct model_shader_reference
 		{
 			TAG_FIELD(tag_reference, shader, "shdr");
 			TAG_FIELD(int16, permutation);
 			PAD16;
 			TAG_PAD(int32, 3);
-		}; BOOST_STATIC_ASSERT( sizeof(s_model_shader_reference) == 0x20 ); // max count: 64
-
-		struct s_gbxmodel_definition
+		}; BOOST_STATIC_ASSERT( sizeof(model_shader_reference) == 0x20 ); // max count: 64
+		struct gbxmodel_definition
 		{
 			enum { k_group_tag = 'mod2' };
 
@@ -186,12 +292,12 @@ namespace Yelo
 			TAG_FIELD(real, base_map_u_scale, "", "0 defaults to 1");
 			TAG_FIELD(real, base_map_v_scale, "", "0 defaults to 1");
 			TAG_PAD(int32, 29);
-			TAG_TBLOCK(markers, s_model_markers);
-			TAG_TBLOCK(nodes, s_model_node);
-			TAG_TBLOCK(regions, s_gbxmodel_region);
-			TAG_TBLOCK(geometries, s_gbxmodel_geometry);
-			TAG_TBLOCK(shaders, s_model_shader_reference);
-		}; BOOST_STATIC_ASSERT( sizeof(s_gbxmodel_definition) == 0xE8 ); // max count: 1
+			TAG_TBLOCK(markers, model_markers);
+			TAG_TBLOCK(nodes, model_node);
+			TAG_TBLOCK(regions, gbxmodel_region);
+			TAG_TBLOCK(geometries, gbxmodel_geometry);
+			TAG_TBLOCK(shaders, model_shader_reference);
+		}; BOOST_STATIC_ASSERT( sizeof(gbxmodel_definition) == 0xE8 ); // max count: 1
 
 
 
@@ -270,7 +376,6 @@ namespace Yelo
 				PAD32;
 			}shield, body;
 		}; BOOST_STATIC_ASSERT( sizeof(collision_model_material) == 0x48 );
-
 		struct collision_model_region
 		{
 			TAG_FIELD(tag_string, name);
@@ -281,7 +386,6 @@ namespace Yelo
 			TAG_FIELD(tag_reference, destroyed_effect, 'effe');
 			TAG_TBLOCK(permutations, tag_string);
 		}; BOOST_STATIC_ASSERT( sizeof(collision_model_region) == 0x54 );
-
 		struct collision_model_pathfinding_sphere
 		{
 			TAG_FIELD(int16, node, collision_model_node);
@@ -290,7 +394,6 @@ namespace Yelo
 			TAG_FIELD(real_point3d, center);
 			TAG_FIELD(real, radius);
 		}; BOOST_STATIC_ASSERT( sizeof(collision_model_pathfinding_sphere) == 0x20 );
-
 		struct collision_model_node
 		{
 			TAG_FIELD(tag_string, name);
@@ -301,7 +404,6 @@ namespace Yelo
 			TAG_PAD(tag_block, 1);
 			TAG_TBLOCK(bsp, collision_bsp);
 		}; BOOST_STATIC_ASSERT( sizeof(collision_model_node) == 0x40 );
-
 		struct collision_model_definition
 		{
 			enum { k_group_tag = 'coll' };
@@ -327,6 +429,46 @@ namespace Yelo
 
 
 
+		struct animation_graph_weapon
+		{
+			TAG_FIELD(tag_string, name);
+			TAG_FIELD(tag_string, grip_marker, "", "the marker name on the weapon to which the hand is attached (leave blank to use origin)");
+			TAG_FIELD(tag_string, hand_marker, "", "the marker name on the unit to which the weapon is attached");
+
+			////////////////////////////////////////////////////////////////
+			// aiming screen bounds
+			TAG_FIELD(angle, right_yaw_per_frame);
+			TAG_FIELD(angle, left_yaw_per_frame);
+			TAG_FIELD(int16, right_frame_count);
+			TAG_FIELD(int16, left_frame_count);
+			TAG_FIELD(angle, down_pitch_per_frame);
+			TAG_FIELD(angle, up_pitch_per_frame);
+			TAG_FIELD(int16, down_pitch_frame_count);
+			TAG_FIELD(int16, up_pitch_frame_count);
+			TAG_PAD(int32, 8);
+			TAG_TBLOCK(animations, int16); // block index to model_animation
+			TAG_BLOCK(ik_points, animation_graph_unit_seat_ik_point);
+			TAG_BLOCK(weapon_types, animation_graph_weapon_type);
+		}; BOOST_STATIC_ASSERT( sizeof(animation_graph_weapon) == 0xBC ); // max count: 16
+		struct animation_graph_unit_seat
+		{
+			TAG_FIELD(tag_string, label);
+
+			////////////////////////////////////////////////////////////////
+			// looking screen bounds
+			TAG_FIELD(angle, right_yaw_per_frame);
+			TAG_FIELD(angle, left_yaw_per_frame);
+			TAG_FIELD(int16, right_frame_count);
+			TAG_FIELD(int16, left_frame_count);
+			TAG_FIELD(angle, down_pitch_per_frame);
+			TAG_FIELD(angle, up_pitch_per_frame);
+			TAG_FIELD(int16, down_pitch_frame_count);
+			TAG_FIELD(int16, up_pitch_frame_count);
+			TAG_PAD(int32, 2);
+			TAG_BLOCK(animations, unit_seat_animation);
+			TAG_BLOCK(ik_points, animation_graph_unit_seat_ik_point);
+			TAG_TBLOCK(weapons, animation_graph_weapon);
+		}; BOOST_STATIC_ASSERT( sizeof(animation_graph_unit_seat) == 0x64 ); // max count: 32
 		struct model_animation
 		{
 			TAG_FIELD(tag_string, name);
@@ -374,7 +516,7 @@ namespace Yelo
 			enum { k_group_tag = 'antr' };
 
 			TAG_BLOCK(objects, animation_graph_object_overlay);
-			TAG_BLOCK(units, animation_graph_unit_seat);
+			TAG_TBLOCK(units, animation_graph_unit_seat);
 			TAG_BLOCK(weapons, animation_graph_weapon_animation);
 			TAG_BLOCK(vehicles, animation_graph_vehicle_animation);
 			TAG_BLOCK(devices, device_animation);

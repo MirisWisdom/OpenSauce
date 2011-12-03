@@ -28,18 +28,18 @@
 {GameState::Initialize,								GameState::Dispose},
 {Cache::Initialize,									Cache::Dispose},
 {DataFiles::Initialize,								DataFiles::Dispose},
-{TagGroups::Initialize,								TagGroups::Dispose,		NULL,	TagGroups::InitializeForNewMap},
+{TagGroups::Initialize,								TagGroups::Dispose,					NULL,	TagGroups::InitializeForNewMap},
 
 {Scripting::Initialize,								Scripting::Dispose},	// No active code in Update game hook currently
 #if PLATFORM_IS_USER
 	{DX9::Initialize,								DX9::Dispose},
-	{DX9::c_gbuffer_system::Initialize,				DX9::c_gbuffer_system::Dispose, NULL, NULL, NULL, DX9::c_gbuffer_system::Update},
+	{DX9::c_gbuffer_system::Initialize,				DX9::c_gbuffer_system::Dispose,		NULL, NULL, NULL, DX9::c_gbuffer_system::Update},
 	{Rasterizer::Initialize,						Rasterizer::Dispose},
 	{Rasterizer::ShaderExtension::Initialize,		Rasterizer::ShaderExtension::Dispose},
-	{Postprocessing::Initialize,					Postprocessing::Dispose,NULL,	Postprocessing::InitializeForNewMap,	Postprocessing::DisposeFromOldMap,	Postprocessing::Update},
+	{Postprocessing::Initialize,					Postprocessing::Dispose,			NULL, Postprocessing::InitializeForNewMap,	Postprocessing::DisposeFromOldMap,	Postprocessing::Update},
 	{Camera::Initialize,							Camera::Dispose},
 #endif
-{Networking::VersionCheck::Initialize,			Networking::VersionCheck::Dispose, NULL, Networking::VersionCheck::InitializeForNewMap, NULL, Networking::VersionCheck::Update},
+{Networking::VersionCheck::Initialize,				Networking::VersionCheck::Dispose,	NULL, Networking::VersionCheck::InitializeForNewMap, NULL, Networking::VersionCheck::Update},
 //{Console::Initialize,								Console::Dispose},		// No active code currently
 
 {GameEngine::Initialize,							GameEngine::Dispose},
@@ -48,7 +48,7 @@
 
 //{Effects::Initialize,								Effects::Dispose},		// No active code currently
 //{AI::Initialize,									AI::Dispose},			// No active code currently
-{Objects::Initialize,								Objects::Dispose},		// No active code in Update game hook currently
+{Objects::Initialize,								Objects::Dispose,					NULL,		Objects::InitializeForNewMap},		// No active code in Update game hook currently
 
 #if PLATFORM_IS_USER
 	{GameUI::Initialize,							GameUI::Dispose},

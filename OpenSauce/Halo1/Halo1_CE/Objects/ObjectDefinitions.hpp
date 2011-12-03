@@ -141,6 +141,8 @@ namespace Yelo
 			_object_unk31_flag = FLAG(30),
 			_object_unk32_flag = FLAG(31),
 
+			_object_yelo_is_being_infected_bit = 31, // apparently bit 31 isn't used
+
 			// --- 0x106 & 0x107
 
 			_object_cannot_take_damage_bit = 11,

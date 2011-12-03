@@ -19,6 +19,7 @@
 #pragma once
 
 #include "Memory/Data.hpp"
+#include <Blam/Halo1/BlamScriptingDefinitions.hpp>
 
 namespace Yelo
 {
@@ -144,31 +145,7 @@ namespace Yelo
 		t_recorded_animations_data*		RecordedAnimations();
 		//////////////////////////////////////////////////////////////////////////
 
-		struct hs_syntax_node : Memory::s_datum_base
-		{
-			union {
-				int16 constant_type;
-				int16 function_index;
-			};
-			int16 type;
-			union {
-				uint16 flags;
-				int16 pointer_type;
-			};
-			datum_index next_expression;
-			int32 pointer;
-			union {
-				void* address;
-
-				struct {
-					bool _bool;
-					real _real;
-					int16 _short;
-					int32 _long;
-					datum_index _datum;
-				}Value;
-			};
-		};
+		// Note: the max count provided here is the stock count, not the OS "upgrade" count (which allows more)
 		typedef Memory::DataArray<hs_syntax_node, 19001> t_hs_syntax_data;
 		t_hs_syntax_data*				HSSyntax();
 

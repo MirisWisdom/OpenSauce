@@ -1905,18 +1905,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Game\GameState.EventLog.inl"
-					>
-				</File>
-				<File
-					RelativePath=".\Game\GameState.RuntimeData.inl"
-					>
-				</File>
-				<File
-					RelativePath=".\Game\GameState.Scripting.inl"
-					>
-				</File>
-				<File
 					RelativePath=".\Game\Players.NetworkPlayerUnit.inl"
 					>
 				</File>
@@ -1924,42 +1912,102 @@
 					RelativePath=".\Game\Players.Scripting.inl"
 					>
 				</File>
-				<File
-					RelativePath=".\Game\ScriptLibrary.Definitions.Objects.inl"
+				<Filter
+					Name="ScriptLibrary"
 					>
-				</File>
-				<File
-					RelativePath=".\Game\ScriptLibrary.Definitions.Players.inl"
+					<File
+						RelativePath=".\Game\ScriptLibrary.Definitions.Objects.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Game\ScriptLibrary.Definitions.Players.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Game\ScriptLibrary.Definitions.Postprocessing.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Game\ScriptLibrary.Definitions.RuntimeData.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Game\ScriptLibrary.Fixups.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Game\ScriptLibrary.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Game\ScriptLibrary.Macros.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Game\ScriptLibrary.MemoryUpgrades.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Game\ScriptLibrary.MiscScriptingFunctions.inl"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="GameState"
 					>
-				</File>
-				<File
-					RelativePath=".\Game\ScriptLibrary.Definitions.Postprocessing.inl"
+					<File
+						RelativePath=".\Game\GameState.EventLog.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Game\GameState.RuntimeData.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Game\GameState.Scripting.inl"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="EngineFunctions"
 					>
-				</File>
-				<File
-					RelativePath=".\Game\ScriptLibrary.Definitions.RuntimeData.inl"
-					>
-				</File>
-				<File
-					RelativePath=".\Game\ScriptLibrary.Fixups.inl"
-					>
-				</File>
-				<File
-					RelativePath=".\Game\ScriptLibrary.inl"
-					>
-				</File>
-				<File
-					RelativePath=".\Game\ScriptLibrary.Macros.inl"
-					>
-				</File>
-				<File
-					RelativePath=".\Game\ScriptLibrary.MemoryUpgrades.inl"
-					>
-				</File>
-				<File
-					RelativePath=".\Game\ScriptLibrary.MiscScriptingFunctions.inl"
-					>
-				</File>
+					<File
+						RelativePath=".\Game\EngineFunctions._Misc.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Game\EngineFunctions.Cheats.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Game\EngineFunctions.Console.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Game\EngineFunctions.Game.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Game\EngineFunctions.Interface.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Game\EngineFunctions.Memory.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Game\EngineFunctions.Networking.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Game\EngineFunctions.Objects.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Game\EngineFunctions.Players.inl"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -2194,6 +2242,10 @@
 				</File>
 				<File
 					RelativePath=".\Objects\Objects.Scripting.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\Objects\Objects.UnitInfections.inl"
 					>
 				</File>
 				<File

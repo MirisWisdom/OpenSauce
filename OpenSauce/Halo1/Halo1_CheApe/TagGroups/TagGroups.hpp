@@ -75,7 +75,7 @@ namespace Yelo
 
 	namespace Enums
 	{
-		enum field_type
+		enum field_type : _enum
 		{
 			_field_string,
 			_field_char_integer,

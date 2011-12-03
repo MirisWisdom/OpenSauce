@@ -46,10 +46,9 @@ namespace BlamLib
 				for (int x = 0; x < offsets.Length; x++)
 					offsets[x] = s.ReadInt32();
 
-				// TODO: the largest uncompressed block is 0x8000, so we should be able to just allocate that instead
 				// TODO: this can easily be multithreaded
-				byte[] dest = new byte[0x20000];
-				byte[] src = new byte[0x20000];
+				byte[] dest = new byte[0x8000]; // The largest uncompressed block is 0x8000
+				byte[] src = new byte[0x20000]; // window size is 1<<17
 				for (int x = 0; x < offsets.Length; x++)
 				{
 					IntPtr context = IO.XCompress.CreateDecompressionContext();

@@ -80,11 +80,7 @@ namespace Yelo
 			datum_index definition_index = *fp_weapon->GetCurrentWeapon();
 
 			if(!definition_index.IsNull())
-			{
-				s_cache_tag_instance const* tag_instance = Objects::GetObjectDefinition(definition_index);
-
-				return tag_instance->Definition<TagGroups::s_weapon_definition>();
-			}
+				return Objects::GetObjectDefinition<TagGroups::s_weapon_definition>(definition_index);
 
 			return NULL;
 		}

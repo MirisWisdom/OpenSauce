@@ -28,6 +28,7 @@
 #include <TagGroups/Halo1/damage_effect_definitions.hpp>
 #include "TagGroups/project_yellow_definitions.hpp"
 
+#include "Game/Camera.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Game/Scripting.hpp"
 #include "Game/ScriptLibrary.hpp"
@@ -71,6 +72,8 @@ namespace Yelo
 
 #include "Objects/Objects.Damage.inl"
 #include "Objects/Objects.Scripting.inl"
+#include "Objects/Objects.UnitInfections.inl"
+
 		void InitializeScripting()
 		{
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_objects_distance_to_object, 
@@ -101,18 +104,24 @@ namespace Yelo
 		{
 			//Memory::WriteRelativeCall(&Objects::Update, GET_FUNC_VPTR(OBJECTS_UPDATE_HOOK), false);
 
-			ToggleMultiTeamVehicles();
-
 			Weapon::Initialize();
 			Vehicle::Initialize();
+			UnitInfections::Initialize();
 
 			InitializeScripting();
 		}
 
 		void Dispose()
 		{
+			UnitInfections::Dispose();
 			Vehicle::Dispose();
 			Weapon::Dispose();
+		}
+
+		void InitializeForNewMap()
+		{
+			bool mtv_disabled = TagGroups::_global_yelo->gameplay.flags.prohibit_multiteam_vehicles_bit;
+			MultiTeamVehiclesSet(!mtv_disabled);
 		}
 
 		void PLATFORM_API Update()
@@ -158,27 +167,37 @@ namespace Yelo
 		}
 #endif
 
-		bool ToggleMultiTeamVehicles()
+		void MultiTeamVehiclesSet(bool enabled)
 		{
 			// mov bl, 1
 			// jmp
-			static byte enable_code[] = {0xB3, 0x01, 0xEB};
+			static const byte k_enable_code[] = {0xB3, 0x01, 0xEB};
 			// test al, al
 			// jz
-			static byte disable_code[] = {0x84, 0xC0, 0x74};
+			static const byte k_disable_code[] = {0x84, 0xC0, 0x74};
 
-			static bool enabled = false;
-
-			Memory::WriteMemory(GET_FUNC_VPTR(UNIT_CAN_ENTER_SEAT_MOD), (enabled ? disable_code : enable_code), sizeof(enable_code));
-			return enabled = !enabled;
+			Memory::WriteMemory(GET_FUNC_VPTR(UNIT_CAN_ENTER_SEAT_MOD), (enabled ? k_disable_code : k_enable_code), sizeof(k_enable_code));
 		}
 
-		datum_index GetUltimateObject(datum_index obj)
+
+		void PlacementDataNewAndCopy(s_object_placement_data& data, datum_index src_object_index, 
+			datum_index tag_index_override, datum_index owner_object_index)
 		{
-			if(!obj.IsNull())
+			s_object_data* src_object = (*Objects::ObjectHeader())[src_object_index]->_object;
+
+			if(tag_index_override.IsNull())
+				tag_index_override = *src_object->GetTagDefinition();
+
+			Engine::Objects::PlacementDataNew(data, tag_index_override, owner_object_index);
+			src_object->GetNetworkDatumData()->CopyToPlacementData(data);
+		}
+
+		datum_index GetUltimateObject(datum_index object_index)
+		{
+			if(!object_index.IsNull())
 			{
 				s_object_header_datum* object_header_datums = *Objects::ObjectHeader();
-				s_object_data* current_obj = object_header_datums[obj.index]._object;
+				s_object_data* current_obj = object_header_datums[object_index.index]._object;
 
 				datum_index parent_index;
 				while( !(parent_index = *current_obj->GetParentObjectIndex()).IsNull() )
@@ -187,33 +206,47 @@ namespace Yelo
 				}
 			}
 
-			return obj;
+			return object_index;
 		}
 
-		datum_index GetNextObjectN(datum_index obj, int16 n)
+		datum_index GetNextObjectN(datum_index object_index, int32 n)
 		{
-			if(!obj.IsNull())
+			if(!object_index.IsNull())
 			{
 				s_object_header_datum* object_header_datums = *Objects::ObjectHeader();
-				s_object_data* current_obj = object_header_datums[obj.index]._object;
+				s_object_data* current_obj = object_header_datums[object_index.index]._object;
 
 				do
 				{
-					obj = *current_obj->GetNextObjectIndex();
-					current_obj = object_header_datums[obj.index]._object;
+					object_index = *current_obj->GetNextObjectIndex();
+					current_obj = object_header_datums[object_index.index]._object;
 				}while(n--);
 			}
 
-			return obj;
+			return object_index;
 		}
 
-		s_cache_tag_instance const* GetObjectDefinition(datum_index obj)
+		TagGroups::s_object_definition const* GetObjectDefinition(datum_index object_index)
 		{
-			if(!obj.IsNull())
+			if(!object_index.IsNull())
 			{
-				s_object_data* obj_data = (*Objects::ObjectHeader())[obj]->_object;
+				s_object_data* object = (*Objects::ObjectHeader())[object_index]->_object;
 
-				return &TagGroups::Instances()[ obj_data->GetTagDefinition()->index ];
+				return TagGroups::Instances()[ object->GetTagDefinition()->index ].Definition<TagGroups::s_object_definition>();
+			}
+
+			return NULL;
+		}
+
+		TagGroups::model_animation_graph const* GetObjectAnimations(datum_index object_index)
+		{
+			if(!object_index.IsNull())
+			{
+				s_object_data* object = (*Objects::ObjectHeader())[object_index]->_object;
+				datum_index tag_index = *object->GetAnimationDefinition();
+
+				if(!tag_index.IsNull())
+					return TagGroups::Instances()[tag_index.index].Definition<TagGroups::model_animation_graph>();
 			}
 
 			return NULL;
@@ -233,6 +266,33 @@ namespace Yelo
 			}
 
 			return dist;
+		}
+
+		typedef void (* proc_object_action_perfomer)(datum_index object_index);
+		static void PerformActionOnChildrenByType(datum_index parent, long_flags object_type_mask,
+			proc_object_action_perfomer action_performer)
+		{
+			s_object_header_datum* object_header_datums = *Objects::ObjectHeader();
+			s_object_data* parent_object = object_header_datums[parent.index]._object;
+			s_object_data* child_object;
+
+			for(datum_index child_index = *parent_object->GetFirstObjectIndex();
+				!child_index.IsNull();
+				child_index = *child_object->GetNextObjectIndex())
+			{
+				child_object = object_header_datums[child_index.index]._object;
+
+				if(child_object->VerifyType(object_type_mask))
+					action_performer(child_index);
+			}
+		}
+		void DeleteChildrenByType(datum_index parent, long_flags object_type_mask)
+		{
+			PerformActionOnChildrenByType(parent, object_type_mask, Engine::Objects::Delete);
+		}
+		void DetachChildrenByType(datum_index parent, long_flags object_type_mask)
+		{
+			PerformActionOnChildrenByType(parent, object_type_mask, Engine::Objects::Detach);
 		}
 	};
 };

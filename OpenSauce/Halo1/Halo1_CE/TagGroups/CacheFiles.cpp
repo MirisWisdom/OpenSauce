@@ -251,7 +251,8 @@ namespace Yelo
 					if( out_header.ValidSignatures() && 
 						out_header.ValidFileSize(Enums::k_max_cache_size_upgrade) && 
 						out_header.ValidName() && 
-						out_header.version == s_cache_header::k_version)
+						out_header.version == s_cache_header::k_version && 
+						out_header.yelo.IsValid())
 						result = true;
 				}
 

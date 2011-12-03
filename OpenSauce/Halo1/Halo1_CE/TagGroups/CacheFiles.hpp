@@ -19,6 +19,7 @@
 #pragma once
 
 #include <Blam/Halo1/BlamMemoryUpgrades.hpp>
+#include <TagGroups/Halo1/CacheDefinitions.hpp>
 #include <TagGroups/Halo1/structure_bsp_definitions.hpp>
 #include "Memory/Data.hpp"
 

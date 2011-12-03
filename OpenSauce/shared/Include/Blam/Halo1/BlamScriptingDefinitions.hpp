@@ -18,6 +18,8 @@
 */
 #pragma once
 
+#include <Memory/DataShared.hpp>
+
 namespace Yelo
 {
 	namespace Enums
@@ -156,5 +158,32 @@ namespace Yelo
 		// It was chosen due to the hs_type being a 'real', which allows us to specify the version number as "MAJ.MIN"
 		// See: K_OPENSAUCE_VERSION
 		const cstring k_external_global_opensauce_override_name = "ai_debug_path_maximum_radius";
+
+
+		struct hs_syntax_node : Memory::s_datum_base
+		{
+			union {
+				int16 constant_type;
+				int16 function_index;
+			};
+			int16 type;
+			union {
+				uint16 flags;
+				int16 pointer_type;
+			};
+			datum_index next_expression;
+			int32 pointer;
+			union {
+				void* address;
+
+				struct {
+					bool _bool;
+					real _real;
+					int16 _short;
+					int32 _long;
+					datum_index _datum;
+				}Value;
+			};
+		};
 	};
 };

@@ -53,6 +53,7 @@ namespace Yelo
 
 		bool ScenarioStructureBspLightmapSetChange(cstring lightmap_set_name)
 		{
+#if 0
 			if(_global_yelo->bsp_information.Count == 1)
 			{
 				structure_bsp* current_sbsp = GameState::StructureBsp();
@@ -67,6 +68,7 @@ namespace Yelo
 							lightmap_set_name);
 				}
 			}
+#endif
 
 			return false;
 		}

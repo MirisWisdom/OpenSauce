@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="us-ascii" standalone="yes"?>
 <definitions game="Halo1">
+	<!-- see: OpenSauce\shared\Include\Blam\Halo1\project_yellow_globals_shared_definitions.hpp -->
 
 	<flags>
 		<Flag name="gameplay_game_type_player_settings_flags">
@@ -10,6 +11,7 @@
 			<field>hide health when zoomed</field>
 			<field>hide shield when zoomed</field>
 			<field>hide motion sensor when zoomed</field>
+			<field>ALLOW unit infections during cinematics#when enabled, units can become infected while a cutscene is active</field>
 		</Flag>
 	</flags>
 
@@ -19,7 +21,6 @@
 			<field type="TagReference" name="scenario" definition="scenario_reference_non_resolving" />
 			<field type="Pad" definition="24" />
 		</TagBlock>
-
 		<TagBlock name="preprocess_block" maxElements="1">
 			<field type="Pad" name="flags" definition="4" />
 			<field type="Block" name="campaign" definition="preprocess_maplist_block" />
@@ -31,21 +32,40 @@
 		<TagBlock name="network_game_player_unit" maxElements="32">
 			<field type="String" name="name" blockname="true" tooltip="name of this block definition" />
 			<field type="TagReference" name="definition" definition="unit_reference" tooltip="unit definition for this player's biped" />
+			<field type="Pad" definition="32" />
+		</TagBlock>
+
+
+		<TagBlock name="unit_infection_form_block" maxElements="8">
+			<field type="TagReference" name="unit" definition="object_reference" blockname="true" />
+		</TagBlock>
+		<TagBlock name="unit_infection_block" maxElements="64">
+			<field type="Pad" definition="2" />
+			<field type="ShortBlockIndex" name="infection form" definition="unit_infection_form_block" />
+			<field type="TagReference" name="unit" definition="unit_reference" blockname="true" tooltip="the unit being infected by an infection form (e.g. elite)" />
+			<field type="RealFraction" name="health threshold" tooltip="when our health reaches this threshold after a bj from an infection form, we'll be infected" />
+			
+			<field type="TagReference" name="infected unit" definition="unit_reference" tooltip="the unit we're transitioning to when we're infected (e.g. flood combat elite)" />
+			<field type="TagReference" name="infected unit actor variant" definition="actor_variant_reference" tooltip="the infected unit's actor variant after the transition" />
+			<field type="TagReference" name="transition effect" definition="effect_reference" tooltip="the effect played during our infection transition" />
+
+			<field type="TagReference" name="attachment object" definition="object_reference" tooltip="object attached to the unit during infection" />
+			<field type="String" name="attachment marker" tooltip="the marker our infection attachment object is attached to" />
+			<field type="ShortInteger" name="attachment marker count" tooltip="the number of attachment markers with this name" />
+			<field type="Pad" definition="2" />
+
 			<field type="Pad" definition="20" />
 		</TagBlock>
+		<TagBlock name="unit_infections_block" maxElements="1">
+			<field type="Pad" definition="4" />
+			<field type="Block" name="infection forms" definition="unit_infection_form_block" tooltip="units which can infect regular units" />
+			<field type="Block" name="infectable units" definition="unit_infection_block" />
 
-		<TagBlock name="gameplay_game_type_player_settings" maxElements="17">
-			<field type="LongFlags" name="flags" definition="gameplay_game_type_player_settings_flags" />
-			<field type="Pad" definition="76" />
-		</TagBlock>
-
-		<TagBlock name="gameplay_game_type_player" maxElements="64">
-			<field type="String" name="name" blockname="true" tooltip="name of the game type this block is for" />
-			<field type="Block" name="settings" definition="gameplay_game_type_player_settings" />
 			<field type="Pad" definition="24" />
 		</TagBlock>
-
-
+		
+		
+		<!-- UNUSED -->
 		<TagBlock name="dual_wield_weapon_block" maxElements="256">
 			<field type="TagReference" name="primary weapon" definition="weapon_reference" />
 			<field type="TagReference" name="secondary weapon" definition="weapon_reference" />
@@ -54,6 +74,7 @@
 			<field type="Pad" definition="32" />
 		</TagBlock>
 
+		<!-- UNUSED -->
 		<TagBlock name="object_damage_region_permutation_extension_block" maxElements="32">
 			<field type="String" name="name" blockname="true" />
 			<field type="Real" name="damage threshold" tooltip="if this region takes this amount of damage, it will be switch to this permutation" />
@@ -66,10 +87,12 @@
 			<field type="TagReference" name="transition damage effect" definition="damage_effect_reference" />
 			<field type="Pad" definition="32" />
 		</TagBlock>
+		<!-- UNUSED -->
 		<TagBlock name="object_damage_region_extension_block" maxElements="32">
 			<field type="String" name="name" blockname="true" />
 			<field type="Block" name="damage permutations" definition="object_damage_region_permutation_extension_block" />
 		</TagBlock>
+		<!-- UNUSED -->
 		<TagBlock name="object_damage_extension_block" maxElements="512">
 			<field type="TagReference" name="object" definition="object_reference" blockname="true" />
 			<field type="Block" name="damage regions" definition="object_damage_region_extension_block" />
@@ -93,22 +116,20 @@
 			<field type="TagReference" name="custom map list - mp" definition="string_list_reference" tooltip="SHOULD BE AUTOFILLED BY preprocess_maplist_block" />
 			<field type="Pad" definition="32" />
 
-			<field type="Explanation" name="Networking" definition="" />
+			<field type="Explanation" name="Netgame" definition="" />
 			<field type="Block" name="player units" definition="network_game_player_unit" />
 			<field type="Pad" definition="20" />
-
-			<field type="Explanation" name="Gameplay" definition="" />
-			<!--<field type="Block" name="game type players" definition="gameplay_game_type_player" />-->
-			<field type="Pad" definition="12" />
-			<field type="Pad" definition="24" />
-
+			
 			<field type="Explanation" name="Scripting" definition="External scripting definitions (Yelo)" />
 			<field type="Block" name="yelo scripting" definition="scripting_block" />
 
-			<field type="Block" name="dual wielding" definition="dual_wield_weapon_block" />
-			<field type="Block" name="object damage extensions" definition="object_damage_extension_block" />
+			<field type="Explanation" name="Misc" definition="" />
+			<field type="Block" name="unit infections" definition="unit_infections_block" />
 
-			<field type="Pad" definition="56" />
+			<!--<field type="Block" name="dual wielding" definition="dual_wield_weapon_block" />-->
+			<!--<field type="Block" name="object damage extensions" definition="object_damage_extension_block" />-->
+
+			<field type="Pad" definition="68" />
 		</TagGroup>
 	</groups>
 

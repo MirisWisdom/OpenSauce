@@ -319,6 +319,7 @@ namespace BlamLib.CheApe
 					case Import.FixupType.Memory:
 						return InternalFixupType.ReplaceMemory;
 
+					case Import.FixupType.StringPtr:
 					case Import.FixupType.Pointer:
 						return InternalFixupType.ReplacePointer;
 
@@ -337,6 +338,7 @@ namespace BlamLib.CheApe
 					case Import.FixupType.Memory:
 						return (short)fixup.DefinitionLength;
 
+//					case Import.FixupType.StringPtr:
 // 					case Import.FixupType.Pointer:
 // 						return 0;
 
@@ -356,6 +358,7 @@ namespace BlamLib.CheApe
 				switch (fixup.Type)
 				{
 					case Import.FixupType.String:
+					case Import.FixupType.StringPtr:
 					case Import.FixupType.Memory:
 						result_reference = stream.BaseAddress + stream.PositionUnsigned;
 						comp.RamToStream(stream, platform_reference, fixup.DefinitionLength);
@@ -602,7 +605,8 @@ namespace BlamLib.CheApe
 			var ms = RamMemory.BaseStream as System.IO.MemoryStream;
 
 			byte[] buffer = new byte[length];
-			ms.Read(buffer, (int)reference, length);
+			ms.Seek(reference, System.IO.SeekOrigin.Begin);
+			ms.Read(buffer, 0, length);
 
 			stream.Write(buffer);
 

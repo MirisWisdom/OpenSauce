@@ -36,13 +36,24 @@ static struct s_upgrade_globals {
 	{0, Enums::k_hs_external_globals_count_upgrade}
 };
 
-static void MemoryUpgradesSyntaxInitialize()
+// If [use_upgrades] is false, the code will revert the HEK modifications back to stock values
+static void MemoryUpgradesSyntaxInitialize(bool use_upgrades = true)
 {
+	static bool memory_is_upgraded = false;
+	if(memory_is_upgraded == use_upgrades) return;
+	memory_is_upgraded = use_upgrades;
+
 	enum {
+		// stock size
+		k_total_scenario_hs_syntax_data = sizeof(Memory::s_data_array)  + 
+			(sizeof(Scripting::hs_syntax_node) * Enums::k_maximum_hs_syntax_nodes_per_scenario),
+
 		k_total_scenario_hs_syntax_data_upgrade = sizeof(Memory::s_data_array)  + 
-			(/*sizeof(Scripting::hs_syntax_node)*/0x14 * Enums::k_maximum_hs_syntax_nodes_per_scenario_upgrade),
+			(sizeof(Scripting::hs_syntax_node) * Enums::k_maximum_hs_syntax_nodes_per_scenario_upgrade),
 	};
 
+	//////////////////////////////////////////////////////////////////////////
+	// Addresses we'll be updating
 	static uint32* K_MAX_HS_SYNTAX_NODES_PER_SCENARIO_UPGRADE_ADDRESS_LIST[] = {
 		CAST_PTR(uint32*, PLATFORM_VALUE(0x4F130C, 0x4C1AEC, 0x5834EC)),
 	};
@@ -53,26 +64,41 @@ static void MemoryUpgradesSyntaxInitialize()
 		CAST_PTR(uint32*, PLATFORM_VALUE(0xA132A4, 0x722EDC, 0xA84B74)),
 	};
 	static byte* K_ADDRESS_OF_SCENARIO_HS_SYNTAX_DATA_SIZE_CHECK = CAST_PTR(byte*, PLATFORM_VALUE(0x4F1303, 0x4C1AE3, 0x5834E3));
-
-	static uint32* K_TOTAL_SCENARIO_HS_STRING_DATA_UPGRADE_ADDRESS_LIST[] = {
-		CAST_PTR(uint32*, PLATFORM_VALUE(0xA132B4, 0x722EEC, 0xA84B84)),
-	};
-
-	static uint16* K_ADDRESS_OF_HS_EXTERNAL_GLOBALS_COUNT_CHECK_MOD = CAST_PTR(uint16*, PLATFORM_VALUE(0x4FA24F, 0x50705F, 0x62100F));
-	static uint32* K_ADDRESS_OF_HS_EXTERNAL_GLOBALS_COUNT_CHECK_VALUE = CAST_PTR(uint32*, PLATFORM_VALUE(0x4FA253, 0x507063, 0x62101F));
+	//////////////////////////////////////////////////////////////////////////
 
 
 	for(int32 x = 0; x < NUMBEROF(K_MAX_HS_SYNTAX_NODES_PER_SCENARIO_UPGRADE_ADDRESS_LIST); x++)
-		*K_MAX_HS_SYNTAX_NODES_PER_SCENARIO_UPGRADE_ADDRESS_LIST[x] = Enums::k_maximum_hs_syntax_nodes_per_scenario_upgrade;
+		*K_MAX_HS_SYNTAX_NODES_PER_SCENARIO_UPGRADE_ADDRESS_LIST[x] = use_upgrades ? 
+			Enums::k_maximum_hs_syntax_nodes_per_scenario_upgrade : Enums::k_maximum_hs_syntax_nodes_per_scenario;
+	
 	for(int32 x = 0; x < NUMBEROF(K_TOTAL_SCENARIO_HS_SYNTAX_DATA_UPGRADE_ADDRESS_LIST); x++)
-		*K_TOTAL_SCENARIO_HS_SYNTAX_DATA_UPGRADE_ADDRESS_LIST[x] = /*Enums::*/k_total_scenario_hs_syntax_data_upgrade;
-	for(int32 x = 0; x < NUMBEROF(K_TOTAL_SCENARIO_HS_STRING_DATA_UPGRADE_ADDRESS_LIST); x++)
-		*K_TOTAL_SCENARIO_HS_STRING_DATA_UPGRADE_ADDRESS_LIST[x] = Enums::k_maximum_hs_string_data_per_scenario_upgrade;
+		*K_TOTAL_SCENARIO_HS_SYNTAX_DATA_UPGRADE_ADDRESS_LIST[x] = use_upgrades ? 
+			k_total_scenario_hs_syntax_data_upgrade : k_total_scenario_hs_syntax_data;
 
 	// change from 'jz' (0x0F 0x84) to 'jge' (0x0F 0x8D)
 	// This allows us to support scenarios with original script nodes, or with
 	// Yelo based script nodes, which are larger (because of memory upgrades, duh)
 	*(K_ADDRESS_OF_SCENARIO_HS_SYNTAX_DATA_SIZE_CHECK+1) = 0x8D;
+}
+static void MemoryUpgradesSyntaxStringDataInitialize()
+{
+	//////////////////////////////////////////////////////////////////////////
+	// Addresses we'll be updating
+	static uint32* K_TOTAL_SCENARIO_HS_STRING_DATA_UPGRADE_ADDRESS_LIST[] = {
+		CAST_PTR(uint32*, PLATFORM_VALUE(0xA132B4, 0x722EEC, 0xA84B84)),
+	};
+	//////////////////////////////////////////////////////////////////////////
+
+	for(int32 x = 0; x < NUMBEROF(K_TOTAL_SCENARIO_HS_STRING_DATA_UPGRADE_ADDRESS_LIST); x++)
+		*K_TOTAL_SCENARIO_HS_STRING_DATA_UPGRADE_ADDRESS_LIST[x] = Enums::k_maximum_hs_string_data_per_scenario_upgrade;
+}
+static void MemoryUpgradesExternalGlobalsInitialize()
+{
+	//////////////////////////////////////////////////////////////////////////
+	// Addresses we'll be updating
+	static uint16* K_ADDRESS_OF_HS_EXTERNAL_GLOBALS_COUNT_CHECK_MOD = CAST_PTR(uint16*, PLATFORM_VALUE(0x4FA24F, 0x50705F, 0x62100F));
+	static uint32* K_ADDRESS_OF_HS_EXTERNAL_GLOBALS_COUNT_CHECK_VALUE = CAST_PTR(uint32*, PLATFORM_VALUE(0x4FA253, 0x507063, 0x62101F));
+	//////////////////////////////////////////////////////////////////////////
 
 	// change from 'shl REG, 1' to 'nop' x2
 	// This seems to used to limit the external globals to half of the total "hs globals" data array amount
@@ -85,6 +111,8 @@ static void MemoryUpgradesSyntaxInitialize()
 static void MemoryUpgradesInitialize()
 {
 	MemoryUpgradesSyntaxInitialize();
+	MemoryUpgradesSyntaxStringDataInitialize();
+	MemoryUpgradesExternalGlobalsInitialize();
 
 	//////////////////////////////////////////////////////////////////////////
 	// Add the game's functions/globals to our upgraded memory

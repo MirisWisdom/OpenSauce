@@ -18,7 +18,7 @@
 */
 typedef std::vector<std::string> t_string_vector;
 
-static const char* m_field_type_strings[] =
+static cstring m_field_type_strings[] =
 {	
 	"tag_string",
 	"byte",
@@ -212,7 +212,7 @@ public:
 // string editing
 
 // format the name to make it usable as a variable name
-void FormatName(std::string& name,
+static void FormatName(std::string& name,
 	const bool remove_bracket_description = true,
 	const bool remove_pre_underscores = true)
 {
@@ -280,7 +280,7 @@ void FormatName(std::string& name,
 		name.insert(0, "_");
 }
 // formats a string to replace invalid characters
-void FormatString(std::string& string)
+static void FormatString(std::string& string)
 {
 	struct {
 		cstring m_find;
@@ -306,7 +306,7 @@ void FormatString(std::string& string)
 	}
 }
 // iterates through a string vector ensuring the uniqueness of name
-void GetUniqueName(std::string& name,
+static void GetUniqueName(std::string& name,
 	t_string_vector& names_vector)
 {
 	std::string test_name(name);
@@ -347,7 +347,7 @@ void GetUniqueName(std::string& name,
 
 
 // gets a unique field name, returns true if the field had its own name, false if no_name was used
-bool GetName(std::string& name,
+static bool GetName(std::string& name,
 	cstring raw_name,
 	t_string_vector& names_vector,
 	const bool remove_bracket_description = true,
@@ -378,7 +378,7 @@ bool GetName(std::string& name,
 
 	return has_name;
 }
-bool GetUnits(std::string& units,
+static bool GetUnits(std::string& units,
 	cstring raw_name)
 {
 	if(raw_name)
@@ -393,7 +393,7 @@ bool GetUnits(std::string& units,
 
 	return units.size() != 0;
 }		
-bool GetDescription(std::string& description,
+static bool GetDescription(std::string& description,
 	cstring raw_name)
 {
 	if(raw_name)
@@ -409,7 +409,7 @@ bool GetDescription(std::string& description,
 	return description.size() != 0;
 }
 // creates a struct name from a name variable, optionally removing "_block" from block names
-void GetStructName(std::string& name,
+static void GetStructName(std::string& name,
 	t_string_vector& names_vector,
 	cstring prepend = "s_", 
 	cstring append = NULL,
@@ -437,6 +437,8 @@ void GetStructName(std::string& name,
 
 //////////////////////////////////////////////////////////////////////
 // globals
+// TODO: these are causing dynamic initializer funcs to be created by the compiler
+// Not bad, just not preferred. Possibly move these to a context object used for building cpp shit
 static std::vector<c_string_list_instance>		g_enum_list;
 static std::vector<c_array_instance>			g_array_list;
 static std::vector<c_block_instance>			g_block_list;
@@ -448,7 +450,7 @@ static c_definition_instance					g_taggroups_namespace;
 // field preprocessing/data collection
 
 // adds an enum to the global enums list
-void AddEnum(const tag_field* field)
+static void AddEnum(const tag_field* field)
 {
 	// look for a duplicate entry in the enums vector, if found add a reference
 	std::vector<c_string_list_instance>::iterator iter;
@@ -472,7 +474,7 @@ void AddEnum(const tag_field* field)
 	g_enum_list.push_back(enum_instance); 
 }
 // adds a flags instance to a blocks flags vector
-void AddFlags(const tag_field* field, 
+static void AddFlags(const tag_field* field, 
 	c_struct_instance& parent_struct)
 {
 	// look for a duplicate entry in the blocks flags vector, if found add a reference
@@ -498,7 +500,7 @@ void AddFlags(const tag_field* field,
 	flags_vector.push_back(flags_instance);
 }
 // adds an array instance to a blocks arrays vector
-void AddArray(const tag_field* field, 
+static void AddArray(const tag_field* field, 
 	c_struct_instance& parent_struct)
 {
 	// look for a duplicate entry in the blocks arrays vector, if found do nothing else...
@@ -517,7 +519,7 @@ void AddArray(const tag_field* field,
 	arrays_vector.push_back(array_instance);
 }
 // adds a block instance to the global blocks vector
-void AddBlock(const tag_block_definition* block_definition, 
+static void AddBlock(const tag_block_definition* block_definition, 
 	const bool is_definition = false,
 	const tag definition_tag = NONE)
 {
@@ -578,7 +580,7 @@ void AddBlock(const tag_block_definition* block_definition,
 
 //////////////////////////////////////////////////////////////////////
 // field text output
-void WriteExplanation(FILE* file, 
+static void WriteExplanation(FILE* file, 
 	const tag_field* field)
 {
 	// iterate through the definition string, writing each line
@@ -595,7 +597,7 @@ void WriteExplanation(FILE* file,
 		StringEditing::RemoveStringSegment(definition_string, NULL, "\n");
 	}
 }
-void WritePad(FILE* file, 
+static void WritePad(FILE* file, 
 	const tag_field* field)
 {
 	int pad_count = CAST_PTR(int, field->Definition<int>());
@@ -620,7 +622,7 @@ void WritePad(FILE* file,
 		fprintf_s(file, "\t\t\tTAG_PAD(%s, %i);\n", type, pad_count);
 	}
 }
-void WriteTagReference(FILE* file, 
+static void WriteTagReference(FILE* file, 
 	const tag_field* field, 
 	cstring name)
 {
@@ -665,7 +667,7 @@ void WriteTagReference(FILE* file,
 	}
 	fputs(");\n", file);
 }
-void WriteFlags(FILE* file, 
+static void WriteFlags(FILE* file, 
 	const tag_field* field,
 	cstring name,
 	cstring description,
@@ -690,7 +692,7 @@ void WriteFlags(FILE* file,
 	fputs(");\n", file);
 
 }
-void WriteEnum(FILE* file, 
+static void WriteEnum(FILE* file, 
 	const tag_field* field, 
 	cstring name, 
 	cstring description)
@@ -715,7 +717,7 @@ void WriteEnum(FILE* file,
 
 	fprintf_s(file, ");\n", name);
 }		
-void WriteArray(FILE* file, 
+static void WriteArray(FILE* file, 
 	const tag_field* field,
 	cstring name,
 	c_struct_instance& parent_struct)
@@ -736,7 +738,7 @@ void WriteArray(FILE* file,
 	fprintf_s(file, "\t\t\tTAG_ARRAY(%s, %s, %i);\n", 
 		array_instance->GetName().c_str(), name, CAST_PTR(int, field->Definition<int>()));
 }
-void WriteBlock(FILE* file, 
+static void WriteBlock(FILE* file, 
 	const tag_field* field, 
 	cstring name)
 {
@@ -755,7 +757,7 @@ void WriteBlock(FILE* file,
 	fprintf_s(file, "\t\t\tTAG_TBLOCK(%s, %s);\n",
 		name, block_instance->GetName().c_str());
 }		
-void WriteField(FILE* file, 
+static void WriteField(FILE* file, 
 	const tag_field* field, 
 	cstring name, 
 	cstring units, 
@@ -769,7 +771,7 @@ void WriteField(FILE* file,
 		fprintf_s(file, ", \"%s\"", description);
 	fputs(");\n", file);
 }
-void WriteTagField(FILE* file,
+static void WriteTagField(FILE* file,
 	const tag_field* field,
 	c_struct_instance& parent_block)
 {
@@ -834,7 +836,7 @@ void WriteTagField(FILE* file,
 	if(field[1].field_type == Enums::_field_explanation)
 		fputs("\n", file);
 }
-void WriteEnumDefinition(FILE* file,
+static void WriteEnumDefinition(FILE* file,
 	c_string_list_instance& instance)
 {
 	std::vector<const tag_field*>& references(instance.GetReferencesVector());
@@ -908,7 +910,7 @@ void WriteEnumDefinition(FILE* file,
 	fputs("\t\t};\n", file);
 	fputs("\n", stdout);
 }
-void WriteFlagsDefinition(FILE* file,
+static void WriteFlagsDefinition(FILE* file,
 	c_flags_instance& instance,
 	c_struct_instance& parent_block,
 	const bool add_boost_asserts)
@@ -1022,7 +1024,7 @@ void WriteFlagsDefinition(FILE* file,
 
 	fputs("\n\n", file);
 }
-void WriteArrayDefinition(FILE* file,
+static void WriteArrayDefinition(FILE* file,
 	c_array_instance& instance,
 	c_struct_instance& parent_block,
 	const bool add_boost_asserts)
@@ -1043,7 +1045,7 @@ void WriteArrayDefinition(FILE* file,
 
 	fputs("\t\t};\n", file);
 }
-void WriteBlockDefinition(FILE* file,
+static void WriteBlockDefinition(FILE* file,
 	c_block_instance& instance,
 	const bool add_boost_asserts)
 {			
@@ -1109,7 +1111,7 @@ void WriteBlockDefinition(FILE* file,
 	if(!instance.IsBase())
 		fputs("\n", file);
 }
-void WriteEnumList(FILE* file)
+static void WriteEnumList(FILE* file)
 {
 	// if a tag has no enums, don't write the Enums namespace
 	if(g_enum_list.size() == 0)
@@ -1128,7 +1130,7 @@ void WriteEnumList(FILE* file)
 		"\t};\n",
 		file);
 }
-void WriteBlockList(FILE* file, 
+static void WriteBlockList(FILE* file, 
 	const bool add_boost_asserts)
 {
 	fputs(
@@ -1144,7 +1146,7 @@ void WriteBlockList(FILE* file,
 		"\t};\n",
 		file);
 }
-void WriteCppDefinition(
+static void WriteCppDefinition(
 	FILE* file,
 	tag_block_definition* base_block,
 	tag definition_tag,

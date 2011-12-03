@@ -22,6 +22,7 @@
 #include <Blam/Halo1/BlamMemoryUpgrades.hpp>
 #include <Blam/Halo1/project_yellow_shared_definitions.hpp>
 #include <Blam/Halo1/BlamDataFileUpgrades.hpp>
+#include <TagGroups/Halo1/CacheDefinitions.hpp>
 #include <TagGroups/Halo1/scenario_definitions.hpp>
 #include <TagGroups/Halo1/object_definitions.hpp>
 #include <TagGroups/Halo1/model_definitions.hpp>
@@ -30,6 +31,7 @@
 
 #include "Common/YeloSettings.hpp"
 #include "Engine/EngineFunctions.hpp"
+#include "Engine/Scripting.hpp"
 #include "TagGroups/TagGroups.hpp"
 #include "TagGroups/yelo_definitions.hpp"
 #include "TagGroups/yelo_scenario_definitions.hpp"
@@ -61,9 +63,13 @@ namespace Yelo
 			#include "Tool/ImportClassDefinitions.inl"
 		};
 
-		int __cdecl s_import_class_compare(void *, const void* lhs, const void* rhs)
+		int __cdecl s_import_class_compare(void*, const void* lhs, const void* rhs)
 		{
 			return strcmp(CAST_PTR(const s_import_class*,lhs)->name, CAST_PTR(const s_import_class*,rhs)->name);
+		}
+		int __cdecl s_import_class_search_by_name(void*, const void* key, const void* element)
+		{
+			return strcmp(CAST_PTR(const char*,key), CAST_PTR(const s_import_class*,element)->name);
 		}
 		void ImportClassesInitialize()
 		{
@@ -101,6 +107,17 @@ namespace Yelo
 			for(int32 x = 0; x < NUMBEROF(import_classes_references_to_usage); x++)	*import_classes_references_to_usage[x] = &import_classes[0].usage;
 			// update code which contain the import class definitions count
 			for(int32 x = 0; x < NUMBEROF(import_classes_count); x++)				*import_classes_count[x] = NUMBEROF(import_classes);
+
+			// Modify build-cache-file to use our own implementation
+			{
+				s_import_class* bcf_definition = CAST_PTR(s_import_class*, 
+					bsearch_s("build-cache-file", import_classes, NUMBEROF(import_classes), sizeof(s_import_class), s_import_class_search_by_name, NULL));
+
+				if(bcf_definition != NULL)
+					bcf_definition->import_proc = build_cache_file_for_scenario_stock_override;
+				else
+					YELO_WARN("CheApe: failed to override build-cache-file :s");
+			}
 		}
 
 //////////////////////////////////////////////////////////////////////////

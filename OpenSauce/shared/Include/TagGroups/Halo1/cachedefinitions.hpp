@@ -19,6 +19,7 @@
 #pragma once
 
 #include <TagGroups/CacheDefinitions.hpp>
+#include <Blam/Halo1/BlamMemoryUpgrades.hpp>
 #include <Blam/Halo1/project_yellow_shared_definitions.hpp>
 
 namespace Yelo
@@ -42,6 +43,8 @@ namespace Yelo
 			uint32 decompressed_size;
 			uint32 offset;
 			PAD32;
+
+			tag_string build_string; // Build string for the CheApe tools (ie, OS HEK)
 		}cheape_definitions;
 
 		tag_string mod_name; // if the map uses a specific mod's data_files, this equals the mod prefix
@@ -53,7 +56,7 @@ namespace Yelo
 			time_t timestamp;
 
 			tag_string build_string;
-		}build_info;
+		}build_info; // User-defined build info
 
 #if PLATFORM_IS_EDITOR
 		void InitializeForNewMap()
@@ -93,9 +96,18 @@ namespace Yelo
 		}
 #endif
 
+		// Is there no yelo header present?
+		bool NoHeader() const
+		{
+			return signature == 0 && version == 0;
+		}
+		// Is the yelo header valid?
 		bool IsValid() const
 		{
-			return signature == k_signature && version == k_version;
+			return !NoHeader() || (
+				signature == k_signature && version == k_version && 
+				k_memory_upgrade_increase_amount <= K_MEMORY_UPGRADE_INCREASE_AMOUNT
+				);
 		}
 	};
 
