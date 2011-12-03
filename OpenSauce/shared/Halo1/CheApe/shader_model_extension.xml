@@ -35,7 +35,7 @@
 			<!--field type="Real" name="specular reflection exponent" tooltip="raises the final specular reflection to this power, 0 defaults to 1"/-->
 			<!--field type="Real" name="specular reflection coefficient" tooltip="multiplies the final specular reflection, 0 defaults to 1"/-->
 			<field type="Explanation" name="specular lighting" definition=""/>
-			"<field type="Real" name="specular lighting exponent"/>
+			<field type="Real" name="specular lighting exponent"/>
 			<field type="Real" name="specular lighting coefficient"/>
 			<field type="Pad" definition="16" />
 		</TagBlock>

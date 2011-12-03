@@ -55,6 +55,9 @@ static void build_cache_file_end_preprocess(s_cache_header* header, s_cache_head
 
 		delete buffer;
 	}
+
+	// Add the build date of the OS HEK tools
+	CheApeApi_GetPchBuildDateA(sizeof(ych.cheape_definitions.build_string), ych.cheape_definitions.build_string);
 }
 
 /*!
@@ -115,6 +118,9 @@ namespace BuildCacheFileEx
 {
 	void Initialize(bool only_using_data_file_hacks)
 	{
+		// Only allow script node upgrades when building with use-memory-upgrades on
+		if(only_using_data_file_hacks) Scripting::DisposeScriptNodeUpgrades();
+
 		BuildCacheFileEx::CullTags::Initialize();
 		BuildCacheFileEx::PredictedResources::Initialize();
 		BuildCacheFileEx::MemoryUpgrades::Initialize(only_using_data_file_hacks);
@@ -125,6 +131,8 @@ namespace BuildCacheFileEx
 		BuildCacheFileEx::MemoryUpgrades::Dispose(only_using_data_file_hacks);
 		BuildCacheFileEx::PredictedResources::Dispose();
 		BuildCacheFileEx::CullTags::Dispose();
+
+		if(only_using_data_file_hacks) Scripting::InitializeScriptNodeUpgrades();
 	}
 };
 
@@ -205,4 +213,26 @@ static void PLATFORM_API build_cache_file_for_scenario_extended(void** arguments
 	bcffs.BuildPostprocess(args->mod_name, using_mod_sets);
 
 	bcffs.DataFilesClose(store_resources);
+}
+
+/*!
+ * \brief
+ * We replace the stock build_cache_file_for_scenario implementation with out own to turn off non-stock-compliant things like script node upgrades (which are active on start-up)
+ */
+static void PLATFORM_API build_cache_file_for_scenario_stock_override(void** arguments)
+{
+	//////////////////////////////////////////////////////////////////////////
+	// Initialize arguments
+	struct s_arguments {
+		char* scenario_name;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	//////////////////////////////////////////////////////////////////////////
+
+	// Don't allow script node upgrades when building stock cache files
+	Scripting::DisposeScriptNodeUpgrades();
+
+	s_build_cache_file_for_scenario& bcffs = build_cache_file_for_scenario_internals;
+	bcffs._build_cache_file_for_scenario(args->scenario_name);
+
+	Scripting::InitializeScriptNodeUpgrades();
 }

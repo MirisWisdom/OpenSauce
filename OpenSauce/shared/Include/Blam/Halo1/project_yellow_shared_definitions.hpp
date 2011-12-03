@@ -48,6 +48,8 @@ namespace Yelo
 			TAG_PAD(int32, 8); // 32
 		};
 
+		//////////////////////////////////////////////////////////////////////////
+		// Currently unused
 		struct s_bsp_information_lightmap_set
 		{
 			TAG_FIELD(tag_string, name, "", "code name for this lightmap set");
@@ -83,13 +85,7 @@ namespace Yelo
 			TAG_PAD(tag_block, 5); // 60
 			TAG_TBLOCK(bsp_sets, s_bsp_information_bsp_set); // 64
 		};
-
-		struct s_trigger_volume_cubemap
-		{
-			TAG_FIELD(tag_string, trigger_volume_name);
-			TAG_FIELD(int16, cubemap_index);
-			PAD16;
-		}; BOOST_STATIC_ASSERT( sizeof(s_trigger_volume_cubemap) == 0x24 );
+		//////////////////////////////////////////////////////////////////////////
 
 		// yelo for scenarios
 		struct project_yellow
@@ -132,12 +128,7 @@ namespace Yelo
 
 			/* !-- UI/GUI --! */
 			struct {
-				struct _ui_flags {
-					TAG_FLAG16(unused);
-				}flags;	BOOST_STATIC_ASSERT( sizeof(_ui_flags) == sizeof(word_flags) );
-				PAD16;
-
-				TAG_PAD(tag_block, 2); // 24
+				TAG_PAD(int32, 7); // 28
 			}ui;
 			/* --- UI/GUI --- */
 
@@ -158,7 +149,7 @@ namespace Yelo
 			/* --- Physics --- */
 
 
-			/* !-- Networking --! */
+			/* !-- Netgame --! */
 			struct {
 				struct _networking_flags {
 					TAG_FLAG(unused);
@@ -166,7 +157,7 @@ namespace Yelo
 
 				TAG_PAD(int32, 5); // 20
 			}networking;
-			/* --- Networking --- */
+			/* --- Netgame --- */
 
 
 			/* !-- Gameplay --! */
@@ -185,11 +176,11 @@ namespace Yelo
 			/* !-- Scripting --! */
 
 			/* !-- Bsp Enhancements --! */
-			TAG_TBLOCK(bsp_information, s_project_yellow_bsp_information); // 1
+			//TAG_TBLOCK(bsp_information, s_project_yellow_bsp_information); // 1
 			/* !-- Bsp Enhancements --! */
 
 
-			TAG_PAD(int32, 20); // 80
+			TAG_PAD(int32, 23); // 92
 
 
 

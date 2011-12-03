@@ -71,6 +71,10 @@
 		<Reference name="weapon_reference">
 			<field>weap</field>
 		</Reference>
+
+		<Reference name="actor_variant_reference">
+			<field>actv</field>
+		</Reference>
 	</references>
 
 	<enums>
@@ -170,7 +174,6 @@
 		<TagBlock name="script_function_parameter_block" maxElements="32">
 			<field type="Enum" name="type" definition="hs_types_enum" blockname="true" locked="true" />
 		</TagBlock>
-
 		<TagBlock name="script_function_block" maxElements="464"> <!-- (k_hs_script_functions_count_upgrade - k_hs_functions_count) - 17 -->
 			<field type="ArrayStart" definition="2" />
 			<field type="String" name="name" locked="true" />
@@ -180,7 +183,6 @@
 			<field type="Enum" name="return type" definition="hs_types_enum" locked="true" />
 			<field type="Block" name="parameters" definition="script_function_parameter_block" locked="true" />
 		</TagBlock>
-
 		<TagBlock name="script_global_block" maxElements="880"> <!-- k_hs_external_globals_count_upgrade - 16 -->
 			<field type="ArrayStart" definition="2" />
 			<field type="String" name="name" locked="true" />
@@ -189,7 +191,6 @@
 
 			<field type="Enum" name="type" definition="hs_types_enum" locked="true" />
 		</TagBlock>
-
 		<TagBlock name="scripting_block" maxElements="1">
 			<field type="Block" name="new functions" definition="script_function_block" locked="true" />
 			<field type="Block" name="new globals" definition="script_global_block" locked="true" />
@@ -202,10 +203,15 @@
 			guerilla="0x9CD2E4" tool="0x6DB5AC" sapien="0xA346BC" definition="0x20" />
 
 
-		<fixup name="_fixup_animation_graph_sound_reference_block.max_count" type="Pointer" 
+		<fixup name="_fixup_animation_graph_sound_reference_block.max_count"	type="Pointer" 
 			guerilla="0x9D6BB8" tool="0x6BA8A0" sapien="0xA4E390" definition="0x202" />
-		<fixup name="_fixup_animation_block.max_count" type="Pointer" 
+		<fixup name="_fixup_animation_block.max_count"							type="Pointer" 
 			guerilla="0x9D6DE0" tool="0x6BAAC8" sapien="0xA4E5B8" definition="0x1F4" />
+		<!--modify the unused members of the animation state definition tables to provide support for unit infections-->
+		<fixup name="_fixup_animation_graph_animation_state.unused52"			type="StringPtr"
+			guerilla="0x9D7980" tool="0x6BB668" sapien="0xA4F158" definition="infect-start" />
+		<fixup name="_fixup_animation_graph_animation_state.unused53"			type="StringPtr"
+			guerilla="0x9D7988" tool="0x6BB670" sapien="0xA4F160" definition="infect-end" />
 
 		<fixup name="_fixup_model_shader_reference_block.max_count" type="Pointer" 
 			guerilla="0x9D7E8C" tool="0x6C6A14" sapien="0xA4F664" definition="0x40" />

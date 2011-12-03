@@ -62,8 +62,8 @@ namespace Yelo
 
 		static cstring PLATFORM_API py_globals_preprocess_maplist_format(datum_index tag_index, tag_block* block, int32 element, char formatted_buffer[Enums::k_tag_block_format_buffer_size])
 		{
-			project_yellow_globals::preprocess_maplist_block* elem = 
-				CAST_PTR(project_yellow_globals::preprocess_maplist_block*, tag_block_get_element(block, element));
+			s_yelo_preprocess_maplist_entry* elem = 
+				CAST_PTR(s_yelo_preprocess_maplist_entry*, tag_block_get_element(block, element));
 
 			cstring value = elem->name;
 			if( !strcmp(value, "") )
@@ -75,30 +75,6 @@ namespace Yelo
 			}
 
 			strncpy_s(formatted_buffer, Enums::k_tag_block_format_buffer_size, value, Enums::k_tag_string_length);
-
-			return formatted_buffer;
-		}
-
-		static bool PLATFORM_API py_globals_gtp_block_postprocess(void* block, byte_flags flags)
-		{
-			project_yellow_globals::gameplay_game_type_player* elem = 
-				CAST_PTR(project_yellow_globals::gameplay_game_type_player*,block);
-
-			if(elem->settings.Count == 0)
-				Yelo::tag_block_add_element(elem->settings.to_tag_block());
-
-			return true;
-		}
-
-		static cstring PLATFORM_API py_globals_gtps_block_format(datum_index tag_index, tag_block* block, int32 element, char formatted_buffer[Enums::k_tag_block_format_buffer_size])
-		{
-			project_yellow_globals::gameplay_game_type_player_settings* elem = 
-				CAST_PTR(project_yellow_globals::gameplay_game_type_player_settings*,tag_block_get_element(block, element));
-
-			if(element == 0)
-				strcpy_s(formatted_buffer, Enums::k_tag_block_format_buffer_size, "global player");
-			else
-				sprintf_s(formatted_buffer, Enums::k_tag_block_format_buffer_size, "player %d", element);
 
 			return formatted_buffer;
 		}
@@ -157,28 +133,6 @@ namespace Yelo
 					preprocess_map_block_def->format_proc = &TagGroups::py_globals_preprocess_maplist_format;
 				}
 
-				//////////////////////////////////////////////////////////////////////////
-				if(false) // this is no longer in the definition
-				{// gameplay_game_type_player
-					field_index = TagGroups::tag_block_find_field(py_globals_definition->definition, Enums::_field_block, "game type players");
-					if(field_index == NONE)
-					{
-						YELO_ERROR(_error_message_priority_assert, 
-							"CheApe: gameplay_game_type_player not found!");
-					}
-
-					tag_block_definition* gtp_block_def = py_globals_definition->definition->fields[field_index].Definition<tag_block_definition>();
-					gtp_block_def->postprocess_proc = &TagGroups::py_globals_gtp_block_postprocess;
-
-					field_index = TagGroups::tag_block_find_field(gtp_block_def, Enums::_field_block, "settings");
-					if(field_index == NONE)
-					{
-						YELO_ERROR(_error_message_priority_assert, 
-							"CheApe: gameplay_game_type_player_settings not found!");
-					}
-					tag_block_definition* gtps_block_def = gtp_block_def->fields[field_index].Definition<tag_block_definition>();
-					gtps_block_def->format_proc = &TagGroups::py_globals_gtps_block_format;
-				}
 
 				//////////////////////////////////////////////////////////////////////////
 				{// scripting_block

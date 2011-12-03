@@ -29,6 +29,27 @@ namespace Yelo
 {
 	struct s_cache_tag_instance;
 
+	namespace TagGroups
+	{
+		struct model_animation_graph;
+
+		struct s_object_definition;
+	};
+
+	namespace Flags
+	{
+		enum object_header_flags : byte_flags
+		{
+			_object_header_active_bit = 0,
+			_object_header_requires_motion_bit = 1,
+			// 2
+			_object_header_being_deleted_bit = 3,
+			// 4
+			_object_header_connected_to_map_bit = 5,
+			_object_header_child_bit = 6,
+		};
+	};
+
 	namespace Objects
 	{
 		typedef bool (PLATFORM_API* proc_object_type)(datum_index object_datum);
@@ -125,12 +146,7 @@ namespace Yelo
 
 		struct s_object_header_datum : Memory::s_datum_base
 		{
-			// _object_header_active_bit = 0
-			// _object_header_requires_motion_bit = 1
-			// _object_header_being_deleted_bit = 3
-			// _object_header_connected_to_map_bit = 5
-			// _object_header_child_bit = 6
-			byte flags;
+			byte flags;				// Enums::object_header_flags
 			byte object_type;
 			int16 cluster_index;
 			int16 data_size;
@@ -301,6 +317,7 @@ namespace Yelo
 
 		void Initialize();
 		void Dispose();
+		void InitializeForNewMap();
 
 		void PLATFORM_API Update();
 
@@ -309,23 +326,37 @@ namespace Yelo
 		void SaveSettings(TiXmlElement* objects_element);
 #endif
 
-		bool ToggleMultiTeamVehicles();
+		void MultiTeamVehiclesSet(bool enabled);
 
 
+		void PlacementDataNewAndCopy(s_object_placement_data& data, datum_index src_object_index, 
+			datum_index tag_index_override = datum_index::null, datum_index owner_object_index = datum_index::null);
 
-		// Walks the parent object datums of [obj] until it gets
+		// Walks the parent object datums of [object_index] until it gets
 		// to the upper most parent and returns that parent's
 		// datum index
-		datum_index GetUltimateObject(datum_index obj);
-		// Walks the next object datums of [obj] [n] amount of
+		datum_index GetUltimateObject(datum_index object_index);
+		// Walks the next object datums of [object_index] [n] amount of
 		// times, and returns the result datum_index.
 		// Say, if [n] is zero, it will return the datum_index
-		// that is returned by [obj]'s GetNextObjectIndex
-		datum_index GetNextObjectN(datum_index obj, int16 n = 0);
+		// that is returned by [object_index]'s GetNextObjectIndex
+		datum_index GetNextObjectN(datum_index object_index, int32 n = 0);
 
-		s_cache_tag_instance const* GetObjectDefinition(datum_index obj);
+		TagGroups::s_object_definition const* GetObjectDefinition(datum_index object_index);
+		template<typename TObjectDefinition>
+		TObjectDefinition const* GetObjectDefinition(datum_index object_index)
+		{
+			return CAST_PTR(TObjectDefinition const*, GetObjectDefinition(object_index));
+		}
 
-		real GetObjectDistanceFromPoint(datum_index obj, const real_vector3d& dest_point);
+		TagGroups::model_animation_graph const* GetObjectAnimations(datum_index object_index);
+
+		real GetObjectDistanceFromPoint(datum_index object_index, const real_vector3d& dest_point);
+
+		// Delete all children of the specified type(s) on the parent object
+		void DeleteChildrenByType(datum_index parent, long_flags object_type_mask);
+		// Detach all children of the specified type(s) from the parent object
+		void DetachChildrenByType(datum_index parent, long_flags object_type_mask);
 
 		namespace Weapon
 		{

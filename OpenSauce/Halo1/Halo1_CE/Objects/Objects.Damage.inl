@@ -22,6 +22,7 @@ static void PLATFORM_API object_damage_object_body_hook(datum_index object_index
 	const TagGroups::s_damage_data* damage_data_definition, void* damage_data,
 	void*, __out real&, __out real&, real, bool)
 {
+#if 0
 	//////////////////////////////////////////////////////////////////////////
 	// Does this map have any extensions defined at all?
 	const TAG_TBLOCK(& damage_extensions, TagGroups::s_object_damage_extension) = TagGroups::_global_yelo_globals->object_damage_extensions;
@@ -54,7 +55,7 @@ static void PLATFORM_API object_damage_object_body_hook(datum_index object_index
 		int32 region_vitality = (*object_data->GetRegionVitality()) + region_index;
 		real current_region_damage = CAST(real, region_vitality) / max_vitality;
 
-#if 0
+	#if 0
 		int32 region_count = dmg_ext->regions.Count;
 		const TagGroups::s_object_damage_region_extension& region_ext = dmg_ext->regions[region_index];
 
@@ -73,8 +74,9 @@ static void PLATFORM_API object_damage_object_body_hook(datum_index object_index
 			if (current_region_damage_threshold > 0.0f && current_region_damage >= current_region_damage_threshold)
 				*region_perm = CAST(byte, x);
 		}
-#endif
+	#endif
 	}
+#endif
 }
 
 static void DamageInitialize()

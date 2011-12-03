@@ -18,8 +18,6 @@
 */
 #pragma once
 
-#include <TagGroups/Halo1/CacheDefinitions.hpp>
-
 // How much more memory we're adding.
 // 50%
 #define K_MEMORY_UPGRADE_INCREASE_AMOUNT (1.5f)

@@ -42,6 +42,11 @@ namespace Yelo
 		void Initialize();
 		void Dispose();
 
+		// Turn on the script node upgrades (these upgrades are not backwards compatible with stock game builds)
+		void InitializeScriptNodeUpgrades();
+		// Turn off the script node upgrades (ie, reverts the max script nodes back the stock settings)
+		void DisposeScriptNodeUpgrades();
+
 		hs_function_definition* GetFunctionDefintion(int16 function_index);
 
 		// Copy the scripting definitions CheApe loaded into the tool code from the memory map

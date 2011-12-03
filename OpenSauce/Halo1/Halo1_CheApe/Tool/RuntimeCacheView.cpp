@@ -47,11 +47,11 @@ namespace Yelo
 
 		struct s_tag_field_description
 		{
-			const Enums::field_type		m_field_type;
+			const long_enum				m_field_type;
 			const DWORD					m_field_size;
 			const char*					m_field_type_name;
 			const char*					m_format_string;
-			const int					m_scan_count;
+			const int32					m_scan_count;
 			const BOOL					m_valid_edit;
 			const char*					m_scan_format;
 		};
@@ -59,6 +59,8 @@ namespace Yelo
 		
 		static const void* k_runtime_109_cache_globals_ptr = CAST_PTR(void*, 0x643060 + 0x804);
 
+		// Last I checked, compiler was initializing with a dynamic initializer.
+		// Guess there's just a shit load of fields, or the use of enum values is causing this. Oh well.
 		static const s_tag_field_description g_field_descriptions[] = 
 		{
 			{ Enums::_field_string,					sizeof(tag_string),				"string",				"%s",									1,	true,	"%s" },

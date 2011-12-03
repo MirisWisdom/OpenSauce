@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="us-ascii" standalone="yes"?>
 <definitions game="Halo1">
+	<!-- see: OpenSauce\shared\Include\Blam\Halo1\project_yellow_shared_definitions.hpp -->
+	
 	<enums>
 		<Enum name="production_build_stage_enum">
 			<field>ship</field>
@@ -12,6 +14,7 @@
 	</enums>
 
 	<flags>
+		<!-- UNUSED -->
 		<Flag name="bsp_information_lightmap_set_flags">
 			<field>is default</field>
 		</Flag>
@@ -31,6 +34,7 @@
 			<field type="Pad" definition="32" />
 		</TagBlock>
 
+		<!-- UNUSED -->
 		<TagBlock name="bsp_information_lightmap_set_block" maxElements="64">
 			<field type="String" name="name" blockname="true" tooltip="code name for this lightmap set" />
 			<field type="WordFlags" name="flags" definition="bsp_information_lightmap_set_flags" />
@@ -40,13 +44,13 @@
 			<field type="Pad" definition="8" />
 			<field type="Pad" definition="24" />
 		</TagBlock>
-
+		<!-- UNUSED -->
 		<TagBlock name="bsp_information_bsp_set_block" maxElements="64">
 			<field type="TagReference" name="bsp" definition="structure_bsp_reference" blockname="true" />
 			<field type="Block" name="lightmap sets" definition="bsp_information_lightmap_set_block" />
 			<field type="Pad" definition="12" />
 		</TagBlock>
-
+		<!-- UNUSED -->
 		<TagBlock name="bsp_information_block" maxElements="1">
 			<field type="Pad" definition="60" />
 			<field type="Block" name="bsp sets" definition="bsp_information_bsp_set_block" />
@@ -66,16 +70,14 @@
 			<field type="Pad" definition="40" />
 
 			<!--<field type="Explanation" name="UI/GUI" definition="" />-->
-			<field type="Pad" name="flags" definition="2" />
-			<field type="Pad" definition="2" />
-			<field type="Pad" definition="24" />
+			<field type="Pad" definition="28" />
 
 			<field type="Explanation" name="Physics" definition="" />
 			<field type="Real" name="gravity scale" units="[0,2]" tooltip="amount to scale gravity ingame" />
-			<field type="Real" name="player speed scale" units="[0,6]" tooltip="amount to scale each player's speed" />
+			<field type="Real" name="player speed scale" units="[0,6]" locked="true" tooltip="amount to scale each player's speed" />
 			<field type="Pad" definition="20" />
 
-			<!--<field type="Explanation" name="Networking" definition="" />-->
+			<!--<field type="Explanation" name="Netgame" definition="" />-->
 			<field type="Pad" definition="4" />
 			<field type="Pad" definition="20" />
 
@@ -86,10 +88,10 @@
 			<field type="Explanation" name="Scripting" definition="External scripting definitions (User)" />
 			<field type="Block" name="yelo scripting" definition="scripting_block" />
 
-			<field type="Explanation" name="Bsp Enhancements" definition="" />
-			<field type="Block" name="bsp information" definition="bsp_information_block" />
+			<!--<field type="Explanation" name="Bsp Enhancements" definition="" />-->
+			<!--<field type="Block" name="bsp information" definition="bsp_information_block" />-->
 
-			<field type="Pad" definition="80" />
+			<field type="Pad" definition="92" />
 		</TagGroup>
 	</groups>
 </definitions>

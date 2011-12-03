@@ -63,7 +63,7 @@ namespace Yelo
 		const hs_function_definition& HSYeloFunction(int16 index) { return *hs_yelo_functions[index]; }
 
 
-		static hs_function_definition** hs_function_table = GET_DPTR2(hs_function_table);
+		static hs_function_definition** hs_function_table;
 		const hs_function_definition* HSFunctionTable() DPTR_IMP_GET(hs_function_table);
 
 #pragma endregion
@@ -75,7 +75,7 @@ namespace Yelo
 		const hs_global_definition& HSYeloGlobal(int16 index) { return *hs_yelo_globals[index]; }
 
 
-		static hs_global_definition** hs_external_globals = GET_DPTR2(hs_external_globals);
+		static hs_global_definition** hs_external_globals;
 		const hs_global_definition* HSExternalGlobals() DPTR_IMP_GET(hs_external_globals);
 
 #pragma endregion
@@ -97,6 +97,11 @@ namespace Yelo
 
 		void InitializeLibrary()
 		{
+			// Moved this code here to stop the compiler from creating dynamic initializers for them
+			// Be sure you're not calling HSFunctionTable or HSExternalGlobals before InitializeLibrary has ran
+			hs_function_table = GET_DPTR2(hs_function_table);
+			hs_external_globals = GET_DPTR2(hs_external_globals);
+
 			//GET_HS_FUNCTION(null).evaluate = (hs_evaluate_proc)GET_FUNC_VPTR(HS_NULL_EVALUTE);
 
 			//////////////////////////////////////////////////////////////////////////

@@ -52,15 +52,18 @@ namespace Yelo
 
 
 		ENGINE_DPTR(hs_function_definition, hs_function_table, 0x9FD950, 0x6EC220, 0xA391A8);
-		static hs_function_definition** hs_function_table = GET_DPTR2(hs_function_table);
+		static hs_function_definition** hs_function_table;
 
 		ENGINE_DPTR(hs_global_definition, hs_external_globals, 0xA621E8, 0x728B00, 0xA933C0);
-		static hs_global_definition** hs_external_globals = GET_DPTR2(hs_external_globals);
+		static hs_global_definition** hs_external_globals;
 
 #include "Engine/ScriptLibraryMemoryUpgrades.inl"
 
 		void Initialize()
 		{
+			hs_function_table = GET_DPTR2(hs_function_table);
+			hs_external_globals = GET_DPTR2(hs_external_globals);
+
 			CheApe::s_cache_header& header = CheApe::GlobalCacheHeader();
 
 			if(	header.Scripting.Functions.Count > 0 || 
@@ -79,6 +82,9 @@ namespace Yelo
 		void Dispose()
 		{
 		}
+
+		void InitializeScriptNodeUpgrades()	{ MemoryUpgradesSyntaxInitialize(true); }
+		void DisposeScriptNodeUpgrades()	{ MemoryUpgradesSyntaxInitialize(false); }
 
 		hs_function_definition* GetFunctionDefintion(int16 function_index)
 		{

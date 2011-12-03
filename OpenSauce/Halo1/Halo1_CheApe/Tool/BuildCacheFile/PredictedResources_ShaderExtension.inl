@@ -51,7 +51,7 @@ namespace ShaderExtension
 		if(object_tag->object.references.render_model.tag_index.IsNull())
 			return true;
 
-		TagGroups::s_gbxmodel_definition* gbxmodel_tag = Yelo::tag_get<TagGroups::s_gbxmodel_definition>(object_tag->object.references.render_model.tag_index);
+		TagGroups::gbxmodel_definition* gbxmodel_tag = Yelo::tag_get<TagGroups::gbxmodel_definition>(object_tag->object.references.render_model.tag_index);
 		
 		for(int32 i = 0; i < gbxmodel_tag->shaders.Count; i++)
 		{

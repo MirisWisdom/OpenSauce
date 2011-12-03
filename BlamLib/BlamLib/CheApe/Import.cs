@@ -86,6 +86,10 @@ namespace BlamLib.CheApe
 			/// Replace an array of characters at a specific address
 			/// </summary>
 			String,
+			/// <summary>
+			/// Replace a pointer to a string with a pointer to a string internal to the cheape cache
+			/// </summary>
+			StringPtr,
 			Memory,
 			/// <summary>
 			/// Replace a pointer to a different address, at a specific address
@@ -219,7 +223,8 @@ namespace BlamLib.CheApe
 				bool add_def_memory = s.ReadAttributeOpt(attr_name, ref temp);
 				if(add_def_memory)
 				{
-					if (type == FixupType.String)		value = state.Compiler.RamAddString(temp, out definitionLength);
+					if (type == FixupType.String || type == FixupType.StringPtr)
+														value = state.Compiler.RamAddString(temp, out definitionLength);
 					else if (type == FixupType.Memory)	value = state.Compiler.RamAddMemory(temp, out definitionLength);
 					else if (type == FixupType.Pointer)	value = Convert.ToUInt32(definition, 16);
 				}
@@ -240,7 +245,8 @@ namespace BlamLib.CheApe
 				#region Definition
 				if (type != FixupType.Field && s.ReadAttributeOpt("definition", ref temp))
 				{
-					if (type == FixupType.String)		definition = state.Compiler.RamAddString(temp, out definitionLength).ToString("X8");
+					if (type == FixupType.String || type == FixupType.StringPtr)
+														definition = state.Compiler.RamAddString(temp, out definitionLength).ToString("X8");
 					else if (type == FixupType.Memory)	definition = state.Compiler.RamAddMemory(temp, out definitionLength).ToString("X8");
 					else if (type == FixupType.Pointer)	definition = temp;
 

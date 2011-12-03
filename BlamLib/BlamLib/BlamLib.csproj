@@ -316,6 +316,7 @@
     <Compile Include="Render\COLLADA\Validation\ColladaValidationTest.cs" />
     <Compile Include="Render\DeclarationTypes.cs" />
     <Compile Include="Render\VertexBufferInterface.cs" />
+    <Compile Include="S3D\PAK.cs" />
     <Compile Include="Scripting\Blocks.cs" />
     <Compile Include="Scripting\Data.cs" />
     <Compile Include="Scripting\XmlInterface.cs" />
