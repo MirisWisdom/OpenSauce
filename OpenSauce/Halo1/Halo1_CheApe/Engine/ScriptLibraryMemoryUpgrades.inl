@@ -43,15 +43,6 @@ static void MemoryUpgradesSyntaxInitialize(bool use_upgrades = true)
 	if(memory_is_upgraded == use_upgrades) return;
 	memory_is_upgraded = use_upgrades;
 
-	enum {
-		// stock size
-		k_total_scenario_hs_syntax_data = sizeof(Memory::s_data_array)  + 
-			(sizeof(Scripting::hs_syntax_node) * Enums::k_maximum_hs_syntax_nodes_per_scenario),
-
-		k_total_scenario_hs_syntax_data_upgrade = sizeof(Memory::s_data_array)  + 
-			(sizeof(Scripting::hs_syntax_node) * Enums::k_maximum_hs_syntax_nodes_per_scenario_upgrade),
-	};
-
 	//////////////////////////////////////////////////////////////////////////
 	// Addresses we'll be updating
 	static uint32* K_MAX_HS_SYNTAX_NODES_PER_SCENARIO_UPGRADE_ADDRESS_LIST[] = {
@@ -73,7 +64,7 @@ static void MemoryUpgradesSyntaxInitialize(bool use_upgrades = true)
 	
 	for(int32 x = 0; x < NUMBEROF(K_TOTAL_SCENARIO_HS_SYNTAX_DATA_UPGRADE_ADDRESS_LIST); x++)
 		*K_TOTAL_SCENARIO_HS_SYNTAX_DATA_UPGRADE_ADDRESS_LIST[x] = use_upgrades ? 
-			k_total_scenario_hs_syntax_data_upgrade : k_total_scenario_hs_syntax_data;
+		Enums::k_total_scenario_hs_syntax_data_upgrade : Enums::k_total_scenario_hs_syntax_data;
 
 	// change from 'jz' (0x0F 0x84) to 'jge' (0x0F 0x8D)
 	// This allows us to support scenarios with original script nodes, or with

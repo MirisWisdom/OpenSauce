@@ -39,6 +39,9 @@ namespace Yelo
 
 	namespace Scripting
 	{
+		size_t GetTotalScenarioHsSyntaxData();
+		size_t GetTotalScenarioHsSyntaxDataUpgrade();
+
 		void Initialize();
 		void Dispose();
 

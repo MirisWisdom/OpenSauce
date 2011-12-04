@@ -27,6 +27,18 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum {
+		// stock size
+		k_total_scenario_hs_syntax_data = sizeof(Memory::s_data_array)  + 
+			(sizeof(Scripting::hs_syntax_node) * Enums::k_maximum_hs_syntax_nodes_per_scenario),
+
+		k_total_scenario_hs_syntax_data_upgrade = sizeof(Memory::s_data_array)  + 
+			(sizeof(Scripting::hs_syntax_node) * Enums::k_maximum_hs_syntax_nodes_per_scenario_upgrade),
+		};
+	};
+
 	namespace Scripting
 	{
 		FUNC_PTR(HS_MACRO_FUNCTION_PARSE,		0x5A89B0, 0x5396A0, 0x67C9E0);
@@ -58,6 +70,8 @@ namespace Yelo
 		static hs_global_definition** hs_external_globals;
 
 #include "Engine/ScriptLibraryMemoryUpgrades.inl"
+		size_t GetTotalScenarioHsSyntaxData()		{ return Enums::k_total_scenario_hs_syntax_data; }
+		size_t GetTotalScenarioHsSyntaxDataUpgrade(){ return Enums::k_total_scenario_hs_syntax_data_upgrade; }
 
 		void Initialize()
 		{

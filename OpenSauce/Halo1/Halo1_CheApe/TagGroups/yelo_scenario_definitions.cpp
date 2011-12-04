@@ -23,6 +23,7 @@
 #include <TagGroups/Halo1/scenario_definitions.hpp>
 
 #include "Engine/EngineFunctions.hpp"
+#include "Engine/Scripting.hpp"
 #include "TagGroups/TagGroups.hpp"
 
 namespace Yelo
@@ -33,6 +34,22 @@ namespace Yelo
 		// yelo scenario	- project_yellow
 		// yelo globals		- project_yellow_globals
 		// blam scenario	- scenario
+
+		void YeloCleanseScenario(scenario* scnr)
+		{
+			YELO_ASSERT(scnr != NULL);
+
+			// Clear the yelo reference
+			tag_reference& yelo_reference = scnr->GetYeloReferenceHack();
+			if(yelo_reference.group_tag == project_yellow::k_group_tag)
+				tag_reference_clear(yelo_reference);
+
+			// If the scenario is using upgraded script node sizes, clear it
+			// Users will need to recompile their scenario's scripts
+			tag_data& hs_syntax_data = scnr->hs_syntax_data;
+			if(hs_syntax_data.size > Scripting::GetTotalScenarioHsSyntaxData())
+				tag_data_delete(hs_syntax_data); // TODO: does hs_syntax_data need to be initialized to GetTotalScenarioHsSyntaxData instead of just zero?
+		}
 
 		// Process a yelo scenario's globals data for the current operating mode (editing or cache building).
 		// Returns the loaded yelo global's handle or datum_index::null

@@ -89,6 +89,39 @@ namespace Yelo
 		}; BOOST_STATIC_ASSERT( sizeof(scenario_player) == 0x34 );
 
 
+		struct hs_scenario_data_base
+		{
+			struct _script {
+				TAG_ENUM(type, Enums::hs_script_type);
+				TAG_ENUM(return_type, Enums::hs_type);
+				TAG_FIELD(datum_index, root_expression_index);
+			};
+			struct _global {
+				TAG_ENUM(type, Enums::hs_type);
+				PAD16;
+				PAD32;
+				TAG_FIELD(datum_index, initialization_expression_index);
+			};
+			TAG_FIELD(tag_string, name);
+			union {
+				TAG_PAD(int32, 15); // 60
+				_script script;
+				_global global;
+			};
+		};
+		struct hs_script			: hs_scenario_data_base	{}; BOOST_STATIC_ASSERT( sizeof(hs_script) == 0x5C );
+		struct hs_global_internal	: hs_scenario_data_base	{}; BOOST_STATIC_ASSERT( sizeof(hs_global_internal) == 0x5C );
+		struct hs_tag_reference
+		{
+			TAG_PAD(int32, 6); // 24
+			TAG_FIELD(tag_reference, reference);
+		}; BOOST_STATIC_ASSERT( sizeof(hs_tag_reference) == 0x28 );
+		struct hs_source_file
+		{
+			TAG_FIELD(tag_string, name);
+			TAG_FIELD(tag_data, source);
+		}; BOOST_STATIC_ASSERT( sizeof(hs_source_file) == 0x34 );
+
 		struct scenario_cutscene_flag
 		{
 			PAD32;
@@ -194,15 +227,13 @@ namespace Yelo
 				1 // ai_conversation
 				);
 
-			TAG_PAD(tag_data,
-				1 + // hs_syntax_data
-				1); // hs_string_data
+			TAG_FIELD(tag_data, hs_syntax_data);
+			TAG_FIELD(tag_data, hs_string_data);
 
-			TAG_PAD(tag_block,
-				1 + // hs_script
-				1 + // hs_global_internal
-				1 + // hs_tag_reference
-				1); // hs_source_file
+			TAG_TBLOCK(scripts, hs_script);
+			TAG_TBLOCK(globals, hs_global_internal);
+			TAG_TBLOCK(references, hs_tag_reference);
+			TAG_TBLOCK(source_files, hs_source_file);
 			
 			TAG_PAD(tag_block, 2);
 
@@ -217,7 +248,8 @@ namespace Yelo
 			TAG_PAD(tag_block, 1); // scenario_structure_bsp_reference
 
 			// Get the tag reference we redefined for users to reference yelo definitions
-			tag_reference& GetYeloReferenceHack() { return _dont_use; }
+			tag_reference& GetYeloReferenceHack()				{ return _dont_use; }
+			tag_reference const& GetYeloReferenceHack() const	{ return _dont_use; }
 
 		}; BOOST_STATIC_ASSERT( sizeof(scenario) == 0x5B0 );
 	};

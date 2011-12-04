@@ -100,7 +100,7 @@
 	</blocks>
 
 	<groups>
-		<TagGroup name="project_yellow_globals" groupTag="gelo" version="1">
+		<TagGroup name="project_yellow_globals" groupTag="gelo" version="2">
 			<field type="ShortInteger" name="version" locked="true" />
 			<field type="WordFlags" name="flags" definition="project_yellow_global_flags" />
 			<field type="LongInteger" name="base_address" locked="true" />

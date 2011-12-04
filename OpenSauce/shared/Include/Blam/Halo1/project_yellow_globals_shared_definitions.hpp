@@ -149,7 +149,7 @@ namespace Yelo
 #if !PLATFORM_IS_EDITOR
 			const 
 #endif
-				int16 version;	enum { k_version = 1, k_group_tag = 'gelo' };
+				int16 version;	enum { k_version = 2, k_group_tag = 'gelo' };
 			struct _flags {
 				TAG_FLAG16(hide_health_when_zoomed);
 				TAG_FLAG16(hide_shield_when_zoomed);

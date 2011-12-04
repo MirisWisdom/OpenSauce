@@ -59,6 +59,18 @@ namespace Yelo
 
 			return NONE;
 		}
+
+		void tag_reference_clear(tag_reference& reference)
+		{
+			// The engine's code will free (ie, YELO_FREE) the reference's name 
+			// when tag_block_delete_element (which is called by tag_unload) is ran
+			void* ptr = YELO_MALLOC(Enums::k_max_tag_name_length+1, false);
+
+			reference.name = CAST_PTR(t_tag_reference_name, ptr);
+			reference.name_length = 0;
+			reference.group_tag = NONE;
+			reference.tag_index = datum_index::null;
+		}
 	};
 
 	API_FUNC_NAKED void* tag_get(tag group_tag, datum_index tag_index)
