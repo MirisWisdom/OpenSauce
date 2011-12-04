@@ -35,7 +35,11 @@ namespace Yelo
 			word_flags is_protected : 1;		// cache has protection applied
 		}flags; BOOST_STATIC_ASSERT( sizeof(s_flags) == 0x2 );
 
-		PAD32;
+		struct {
+			byte project_yellow;
+			byte project_yellow_globals;
+			PAD16;
+		}tag_versioning; // versions of core tags
 		real k_memory_upgrade_increase_amount;
 
 		struct {
@@ -101,12 +105,18 @@ namespace Yelo
 		{
 			return signature == 0 && version == 0;
 		}
+		bool TagVersioningIsValid() const
+		{
+			return	tag_versioning.project_yellow == TagGroups::project_yellow::k_version &&
+					tag_versioning.project_yellow == TagGroups::project_yellow_globals::k_version;
+		}
 		// Is the yelo header valid?
 		bool IsValid() const
 		{
 			return !NoHeader() || (
 				signature == k_signature && version == k_version && 
-				k_memory_upgrade_increase_amount <= K_MEMORY_UPGRADE_INCREASE_AMOUNT
+				k_memory_upgrade_increase_amount <= K_MEMORY_UPGRADE_INCREASE_AMOUNT && 
+				TagVersioningIsValid()
 				);
 		}
 	};

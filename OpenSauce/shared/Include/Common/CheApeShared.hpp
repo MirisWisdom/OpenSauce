@@ -21,6 +21,9 @@
 // Name of the memory map file with definitions for CheApe to load
 #define CHEAPE_CACHE_FILE_NAME "CheApe.map"
 
+#define CHEAPE_PLATFORM_HALO1 1
+#define CHEAPE_PLATFORM_HALO2 2
+
 // CheApeApi declarations
 extern "C" {
 	bool __declspec( dllexport ) CheApeApi_GetPchBuildDateA(__in DWORD nBufferLength,

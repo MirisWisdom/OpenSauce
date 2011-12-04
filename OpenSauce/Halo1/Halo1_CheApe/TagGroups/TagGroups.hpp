@@ -135,7 +135,7 @@ namespace Yelo
 	// the code that the editor is loading the tag.
 	// OR
 	// I have my namings wrong and what I have as 'verification' should
-	// actually be termed as 'loading for editor'
+	// actually be termed as 'loading for game runtime'
 
 	namespace Flags
 	{
@@ -211,7 +211,9 @@ namespace Yelo
 		tag* group_tags;
 	}; BOOST_STATIC_ASSERT( sizeof(tag_reference_definition) == 0xC );
 
-	typedef bool (PLATFORM_API* proc_tag_group_postprocess)(datum_index tag_index, bool verify_data);
+	// Postprocess a tag definition (eg, automate the creation of fields, etc)
+	// [for_runtime] - if true, prepare the tag for use in-game (Sapien and when building a cache)
+	typedef bool (PLATFORM_API* proc_tag_group_postprocess)(datum_index tag_index, bool for_runtime);
 	struct tag_group_definition
 	{
 		cstring name;
@@ -287,6 +289,9 @@ namespace Yelo
 		// Returns NONE if this fails.
 		int32 tag_block_find_field(const tag_block_definition* def, 
 			_enum field_type, cstring name, int32 start_index = NONE);
+
+		// Clear the values of a tag reference so that it references no tag
+		void tag_reference_clear(tag_reference& reference);
 
 		// Convenience function to handle deleting all of the data in tag_data field.
 		// Use [terminator_size] for tag_data which HAS to have a specific amount of 

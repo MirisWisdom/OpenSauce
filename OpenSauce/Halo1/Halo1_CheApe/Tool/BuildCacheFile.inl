@@ -44,6 +44,14 @@ static void build_cache_file_end_preprocess(s_cache_header* header, s_cache_head
 {
 	s_build_cache_file_for_scenario& bcffs = build_cache_file_for_scenario_internals;
 
+	//////////////////////////////////////////////////////////////////////////
+	// Setup the core tag versions
+	ych.tag_versioning.project_yellow = Yelo::TagGroups::project_yellow::k_version;
+	ych.tag_versioning.project_yellow_globals = Yelo::TagGroups::project_yellow_globals::k_version;
+	//////////////////////////////////////////////////////////////////////////
+
+	//////////////////////////////////////////////////////////////////////////
+	// Add the definitions for debugging purposes
 	void* buffer;
 	bool result = CheApe::GetCacheFileResourceBuffer(buffer, 
 		ych.cheape_definitions.decompressed_size, ych.cheape_definitions.size);
@@ -55,6 +63,7 @@ static void build_cache_file_end_preprocess(s_cache_header* header, s_cache_head
 
 		delete buffer;
 	}
+	//////////////////////////////////////////////////////////////////////////
 
 	// Add the build date of the OS HEK tools
 	CheApeApi_GetPchBuildDateA(sizeof(ych.cheape_definitions.build_string), ych.cheape_definitions.build_string);

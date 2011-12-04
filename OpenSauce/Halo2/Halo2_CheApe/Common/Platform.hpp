@@ -26,6 +26,7 @@
 #define PLATFORM_API __cdecl
 
 #define PLATFORM_IS_EDITOR 1
+#define CHEAPE_PLATFORM CHEAPE_PLATFORM_HALO2
 
 
 // See this header for more "Engine pointer markup system" documentation

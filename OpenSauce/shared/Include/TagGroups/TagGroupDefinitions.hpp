@@ -20,6 +20,21 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum {
+			k_max_tag_name_length = 255,
+		};
+	};
+
+// Halo1's editor allocates 256 characters for all tag_reference names, even if they're empty
+// Halo2's uses a managed constant pool for tag names so we don't want to allow write-access
+#if PLATFORM_IS_EDITOR && CHEAPE_PLATFORM == CHEAPE_PLATFORM_HALO1
+	typedef char* t_tag_reference_name;
+#else
+	typedef const char* t_tag_reference_name;
+#endif
+
 	struct string_list
 	{
 		int32 length;
@@ -33,7 +48,7 @@ namespace Yelo
 		tag group_tag;
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
 		// path, without tag group extension, to the tag reference
-		cstring name;
+		t_tag_reference_name name;
 		// length of the reference name
 		int32 name_length;
 #endif
@@ -118,7 +133,7 @@ namespace Yelo
 
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
 		// path, without tag group extension, to the tag reference
-		cstring Name;
+		t_tag_reference_name Name;
 		// length of the reference name
 		int32 NameLength;
 #endif
