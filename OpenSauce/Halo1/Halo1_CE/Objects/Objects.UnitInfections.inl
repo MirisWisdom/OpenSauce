@@ -92,7 +92,7 @@ namespace UnitInfections
 	static void InfectionStart(TagGroups::s_unit_infection const& unit_infection, 
 		s_unit_datum* target_unit, datum_index target_unit_index)
 	{
-		int32 infect_start_animation_index = UnitGetAnimationIndexFromWeaponClass(target_unit_index, Enums::_weapon_class_animation_yelo_infect_start);
+		int32 infect_start_animation_index = UnitGetAnimationIndexFromWeaponClass(target_unit_index, Enums::_weapon_class_animation_yelo_infect);
 		if(infect_start_animation_index != NONE)
 		{
 			datum_index actor_index = *target_unit->unit.GetActorIndex();
@@ -125,7 +125,7 @@ namespace UnitInfections
 			infected_unit = (*Objects::ObjectHeader())[infected_unit_index]->Type._unit;
 		}
 
-		int32 infect_end_animation_index = UnitGetAnimationIndexFromWeaponClass(infected_unit_index, Enums::_weapon_class_animation_yelo_infect_end);
+		int32 infect_end_animation_index = UnitGetAnimationIndexFromWeaponClass(infected_unit_index, Enums::_weapon_class_animation_yelo_infect);
 		if(infect_end_animation_index != NONE)
 		{
 			// Play the infect-end animation on the infected unit
@@ -182,7 +182,10 @@ namespace UnitInfections
 				{
 					int16 frames_left = Engine::Objects::UnitGetCustomAnimationTime(target_unit_index);
 
-					if(frames_left == 0)
+					// If the custom animation has finished playing...
+					// If an infection animation wasn't defined, the OR case will be true, since we would have started 
+					// the infection but would not have set the animation state to custom
+					if(frames_left == 0 || *target_unit_animation_state != Enums::_unit_animation_state_custom_animation)
 					{
 						// Set the target unit's health to 0 so we don't execute this code again
 						*target_unit_health = 0.0f;

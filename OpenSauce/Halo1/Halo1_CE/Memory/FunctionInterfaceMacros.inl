@@ -61,14 +61,6 @@
 		GET_HOOK_BLOCK_PREPROCESS(##preprocess_name##),	NUMBEROF( GET_HOOK_BLOCK_PREPROCESS(##preprocess_name##) ),		\
 		GET_HOOK_BLOCK_POSTPROCESS(##postprcess_name##),NUMBEROF( GET_HOOK_BLOCK_POSTPROCESS(##postprcess_name##) ),	\
 		__VA_ARGS__)
-
-// Old macro definition:
-// #define DEFINE_HOOK_BLOCK_PROCESS(name, address, preprocess_name, postprcess_name, ...)							\
-// 	Yelo::Memory::t_function_process_block<address,																\
-// 	GET_HOOK_BLOCK_PREPROCESS(##preprocess_name##),	NUMBEROF( GET_HOOK_BLOCK_PREPROCESS(##preprocess_name##) ),	\
-// 	GET_HOOK_BLOCK_POSTPROCESS(##postprcess_name##), NUMBEROF( GET_HOOK_BLOCK_PREPROCESS(##postprcess_name##) ),\
-// 	__VA_ARGS__>																								\
-// 	GET_HOOK_BLOCK_PROCESS(##name##)
 //////////////////////////////////////////////////////////////////////////
 
 

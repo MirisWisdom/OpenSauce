@@ -209,9 +209,9 @@
 			guerilla="0x9D6DE0" tool="0x6BAAC8" sapien="0xA4E5B8" definition="0x1F4" />
 		<!--modify the unused members of the animation state definition tables to provide support for unit infections-->
 		<fixup name="_fixup_animation_graph_animation_state.unused52"			type="StringPtr"
-			guerilla="0x9D7980" tool="0x6BB668" sapien="0xA4F158" definition="infect-start" />
-		<fixup name="_fixup_animation_graph_animation_state.unused53"			type="StringPtr"
-			guerilla="0x9D7988" tool="0x6BB670" sapien="0xA4F160" definition="infect-end" />
+			guerilla="0x9D7980" tool="0x6BB668" sapien="0xA4F158" definition="infect" />
+		<!-- <fixup name="_fixup_animation_graph_animation_state.unused53"			type="StringPtr"
+			guerilla="0x9D7988" tool="0x6BB670" sapien="0xA4F160" definition="" /> -->
 
 		<fixup name="_fixup_model_shader_reference_block.max_count" type="Pointer" 
 			guerilla="0x9D7E8C" tool="0x6C6A14" sapien="0xA4F664" definition="0x40" />
