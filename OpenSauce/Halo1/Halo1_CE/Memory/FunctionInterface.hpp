@@ -59,9 +59,6 @@ namespace Yelo
 		struct t_function_process_block
 		{
 		private:
-			static const function_process_proc* k_block_preprocess;
-			static const function_process_proc* k_block_postprocess;
-
 			static void CallPreprocesses()
 			{
 				if(TBlockPreprocessCount == 0) return;
