@@ -16,7 +16,43 @@ namespace OpenSauceIDE.Cache
 			InitializeComponent();
 		}
 
-		// TODO
+		void OnPathSource(object sender, EventArgs e)
+		{
+			if (dlgOpenFile.ShowDialog(this) == DialogResult.OK)
+				txtPathSource.Text = dlgOpenFile.FileName;
+		}
+
+		void OnPathOutput(object sender, EventArgs e)
+		{
+			if (dlgSaveFile.ShowDialog(this) == DialogResult.OK)
+				txtPathOutput.Text = dlgSaveFile.FileName;
+		}
+
+		void OnPackageException(Exception ex)
+		{
+			BlamLib.Debug.LogFile.WriteLine("CachePacker Apply failed in. Reason:{0}{1}", BlamLib.Program.NewLine, ex);
+		}
+		void OnPackageMsg(bool is_error, string format, params string[] args)
+		{
+			string msg = string.Format(format, args);
+			string title = is_error ? "Error" : "Success!";
+
+			MessageBox.Show(this, msg, title, MessageBoxButtons.OK,
+				is_error ? MessageBoxIcon.Error : MessageBoxIcon.Information);
+		}
+		void OnPack()
+		{
+		}
+		void OnUnpack()
+		{
+		}
+		void OnPackage(object sender, EventArgs e)
+		{
+			if(string.IsNullOrEmpty(txtPathSource.Text))
+				OnPackageMsg(true, "Select source file first!");
+			else if (sender == btPack) OnPack();
+			else if (sender == btUnpack) OnUnpack();
+		}
 	};
 }
 

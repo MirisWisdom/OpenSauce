@@ -26,6 +26,15 @@ namespace OpenSauceIDE
 	public partial class MainForm : Form
 	{
 		#region Build Menus
+		static void BuildMenuSeparator(ToolStripMenuItem owner)
+		{
+			var tss = new ToolStripSeparator();
+			tss.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			tss.ForeColor = System.Drawing.Color.LightGreen;
+
+			owner.DropDownItems.Add(tss);
+		}
+
 		/// <summary>We currently don't have any real engine-specific tools, so remove them from the tools menu</summary>
 		void RemoveUnusedMenus()
 		{
@@ -111,14 +120,30 @@ namespace OpenSauceIDE
 			ToolsMenu.DropDownItems.Add(CheApe);
 			command_dic.Add("CheApe", CheApe_handler);
 		}
+		void BuildCheApeMenusXnaPatcher(Dictionary<string, EventHandler> command_dic)
+		{
+			EventHandler XnaPatcher_handler;
+			var XnaPatcher = BlamLib.Forms.Util.CreateMenuItem("Xna Patcher", XnaPatcher_handler = (sender, e) =>
+			{
+				new OpenSauce.XnaPatcherForm().ShowDialog(this);
+			});
+			XnaPatcher.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			XnaPatcher.ForeColor = System.Drawing.Color.LightGreen;
+
+			ToolsMenu.DropDownItems.Add(XnaPatcher);
+			command_dic.Add("XnaPatcher", XnaPatcher_handler);
+		}
 		void BuildCheApeMenus(Dictionary<string, EventHandler> command_dic)
 		{
+			BuildMenuSeparator(ToolsMenu);
 			BuildCheApeMenusCheApeApply(command_dic);
 			BuildCheApeMenusCheApe(command_dic);
+			BuildCheApeMenusXnaPatcher(command_dic);
 		}
 		#endregion
 
-		void BuildCacheMenus(Dictionary<string, EventHandler> command_dic)
+		#region Cache menus
+		void BuildCacheMenusOpenCache(Dictionary<string, EventHandler> command_dic)
 		{
 			EventHandler OpenCache_handler;
 			var OpenCache = BlamLib.Forms.Util.CreateMenuItem("Open Cache", OpenCache_handler = (sender, e) =>
@@ -136,6 +161,26 @@ namespace OpenSauceIDE
 			ToolsMenu.DropDownItems.Add(OpenCache);
 			command_dic.Add("OpenCache", OpenCache_handler);
 		}
+		void BuildCacheMenusCachePacker(Dictionary<string, EventHandler> command_dic)
+		{
+			EventHandler CachePacker_handler;
+			var CachePacker = BlamLib.Forms.Util.CreateMenuItem("Cache Packer", CachePacker_handler = (sender, e) =>
+			{
+				new Cache.CachePacker().ShowDialog(this);
+			});
+			CachePacker.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			CachePacker.ForeColor = System.Drawing.Color.LightGreen;
+
+			ToolsMenu.DropDownItems.Add(CachePacker);
+			command_dic.Add("CachePacker", CachePacker_handler);
+		}
+		void BuildCacheMenus(Dictionary<string, EventHandler> command_dic)
+		{
+			BuildMenuSeparator(ToolsMenu);
+			BuildCacheMenusOpenCache(command_dic);
+			BuildCacheMenusCachePacker(command_dic);
+		}
+		#endregion
 		#endregion
 
 		public MainForm(string[] args)
