@@ -155,7 +155,7 @@ namespace Yelo
 			int16 reference_count;	// how many references there are to this list
 			int16 count;			// how many objects are in the list
 			datum_index first;		// handle to the first list object reference
-		};
+		}; BOOST_STATIC_ASSERT( sizeof(s_object_list_header_datum) == 0xC );
 		typedef Memory::DataArray<s_object_list_header_datum, 48> t_object_list_header_data;
 		t_object_list_header_data*		ObjectListHeader();
 
@@ -164,7 +164,7 @@ namespace Yelo
 		{
 			datum_index object_index;	// handle to the object datum
 			datum_index next_reference;	// handle to the next list object reference in the list
-		};
+		}; BOOST_STATIC_ASSERT( sizeof(s_list_object_reference_datum) == 0xC );
 		typedef Memory::DataArray<s_list_object_reference_datum, 128> t_list_object_reference_data;
 		t_list_object_reference_data*	ListObjectReference();
 
@@ -189,7 +189,7 @@ namespace Yelo
 			TypeHolder result;
 
 			byte stack_buffer[Enums::k_hs_thread_stack_size];
-		};
+		}; BOOST_STATIC_ASSERT( sizeof(s_hs_thread_datum) == 0x218 );
 		typedef Memory::DataArray<s_hs_thread_datum, 256> t_hs_thread_data;
 		t_hs_thread_data*				HSThreads();
 
@@ -199,7 +199,7 @@ namespace Yelo
 			union {
 				void* address;
 
-				struct {
+				union {
 					bool _bool;
 					int16 _short;
 					int32 _long;
@@ -208,7 +208,7 @@ namespace Yelo
 					char* _string;
 				}Value;
 			};
-		};
+		}; BOOST_STATIC_ASSERT( sizeof(s_hs_globals_datum) == 0x8 );
 		typedef Memory::DataArray<s_hs_globals_datum, 1024> t_hs_globals_data;
 		t_hs_globals_data*				HSGlobals();
 
