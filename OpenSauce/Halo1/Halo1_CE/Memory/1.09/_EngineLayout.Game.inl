@@ -90,7 +90,7 @@ namespace Fov
 	};
 
 	static cstring** ScenarioPathsReferences2[] = {
-		CAST_PTR(cstring**, 0x4A73F5), CAST_PTR(cstring**, 0x4CD10A), CAST_PTR(cstring**, 0x53C8CB),
+		CAST_PTR(cstring**, 0x4A73F5), CAST_PTR(cstring**, 0x4CD10C), CAST_PTR(cstring**, 0x53C8CB),
 		CAST_PTR(cstring**, 0x53C994),
 	};
 	#pragma endregion
@@ -129,8 +129,8 @@ namespace Fov
 	//////////////////////////////////////////////////////////////////////////
 
 	static byte* CampaignLevelCountReferences2_8bit[] = { // 0xA
-		CAST_PTR(byte*, 0x49FCD8), CAST_PTR(byte*, 0x49FD2C), CAST_PTR(byte*, 0x49FD64),
-		/*CAST_PTR(byte*, 0x49FED6),*/ CAST_PTR(byte*, 0x4CD0C9), CAST_PTR(byte*, 0x4CD106),
+		CAST_PTR(byte*, 0x49FCD4), CAST_PTR(byte*, 0x49FD2C), CAST_PTR(byte*, 0x49FD64),
+		/*CAST_PTR(byte*, 0x49FED6),*/ CAST_PTR(byte*, 0x4CD0C7), CAST_PTR(byte*, 0x4CD106),
 		CAST_PTR(byte*, 0x53C8C2),
 	};
 
