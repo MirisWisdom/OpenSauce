@@ -33,12 +33,10 @@ namespace BlamLib.Test
 				handler.Read();
 				var cache = handler.CacheInterface;
 
-				//var play_index = icsi.TagIndexManager.Open(new Blam.DatumIndex(1, unchecked((short)0xE176)));
 				var play_index = cache.TagIndexManager.OpenFirstInstance(Blam.Halo3.TagGroups.play);
 				var playman = cache.TagIndexManager[play_index];
 				var playdef = playman.TagDefinition as Blam.Halo3.Tags.cache_file_resource_layout_table_group;
 
-				//var zone_index = icsi.TagIndexManager.Open(new Blam.DatumIndex(3, unchecked((short)0xE178)));
 				var zone_index = cache.TagIndexManager.OpenFirstInstance(Blam.Halo3.TagGroups.zone);
 				var zoneman = cache.TagIndexManager[zone_index];
 				var zonedef = zoneman.TagDefinition as Blam.Halo3.Tags.cache_file_resource_gestalt_group;
@@ -49,8 +47,6 @@ namespace BlamLib.Test
 					var sbspman = cache.TagIndexManager[sbsp_index];
 					var sbspdef = sbspman.TagDefinition as Blam.Halo3.Tags.scenario_structure_bsp_group;
 
-					//Blam.DatumIndex rsrc_index = /*new Blam.DatumIndex(0x1136, unchecked((short)0xF299));*/ sbspdef.BspTagResourcesIndex.Value;
-					//TagInterface.Definition rsrcdef = zonedef.LoadResources(rsrc_index, cache, playdef.ResourceLayoutTable);
 					Blam.DatumIndex rsrc_index = sbspdef.BspRenderResourcesIndex.Value;
 					TagInterface.Definition rsrcdef = zonedef.LoadResources(rsrc_index, cache, playdef.ResourceLayoutTable);
 					cache.TagIndexManager.Unload(sbsp_index);

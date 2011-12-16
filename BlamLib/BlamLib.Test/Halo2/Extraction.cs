@@ -67,8 +67,6 @@ namespace BlamLib.Test
 		[TestMethod]
 		public void Halo2TestImportInfoExtraction()
 		{
-			// local for now, I need to reinstall H2V...
-			const string kTestTagIndexTagsPath = @"D:\Program Files (x86)\Microsoft Games\Halo 2 Map Editor\";
 			string test_results_path = EngineGetTestResultsPath(BlamVersion.Halo2_PC);
 
 			string[] coll = Directory.GetFiles(kTestTagIndexTagsPath + @"tags\", 

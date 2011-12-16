@@ -13,3 +13,5 @@ I've tried multiple code setups and project configurations to try and work aroun
 So with that said, LowLevel now builds as Debug, even when Release is selected.
 
 Fuck you and your compiler "support" MS.
+
+Also note that LowLevel has some harcoded paths for some compiler actions (i.e., nothing bound at runtime). See Readme.HardCodedPaths.txt for more.

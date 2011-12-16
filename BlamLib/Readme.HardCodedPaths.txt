@@ -22,3 +22,9 @@ BlamLib.Test
 			* kTestTagIndexTagsPath: Path which contains the "tags" folder which we'll perform TagIndex tests with
 		Halo2
 			* kTestTagIndexTagsPath: Path which contains the "tags" folder which we'll perform TagIndex tests with
+
+LowLevel
+	Precompile.hpp
+		* When LOWLEVEL_NO_X360 is NOT defined, code will add references to XDK libraries.
+	XMA\Xma.Lib.inl
+		* When LOWLEVEL_NO_X360_XMA is NOT defined, code will add a reference to the XMA encoder lib
