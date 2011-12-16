@@ -818,7 +818,7 @@ namespace XMA
 		if(ctx.data_size == NONE)
 		{
 			m_in_stream->seekg(0, ios::end);
-			ctx.data_size = m_in_stream->tellg() - ctx.offset;
+			ctx.data_size = (boost::int32_t)m_in_stream->tellg() - ctx.offset;
 		}
 
 		if(out_file != cpp_null)

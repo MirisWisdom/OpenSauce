@@ -18,17 +18,23 @@
 */
 #pragma once
 
+// Path to the 360 SDK
+#define PATH_XEDK PATH_PROGRAM_FILES "\\Microsoft Xbox 360 SDK"
+
 #ifndef LOWLEVEL_NO_X360
 	#ifdef _DEBUG
-		#pragma comment (lib, "C:\\Program Files (x86)\\Microsoft Xbox 360 SDK\\lib\\win32\\vs2008\\d3d9d.lib")
-		#pragma comment (lib, "C:\\Program Files (x86)\\Microsoft Xbox 360 SDK\\lib\\win32\\vs2008\\d3dx9d.lib")
-		#pragma comment (lib, "C:\\Program Files (x86)\\Microsoft Xbox 360 SDK\\lib\\win32\\vs2008\\xgraphicsd.lib")
+		#pragma comment (lib, PATH_XEDK "\\lib\\win32\\vs2008\\d3d9d.lib")
+		#pragma comment (lib, PATH_XEDK "\\lib\\win32\\vs2008\\d3dx9d.lib")
+		#pragma comment (lib, PATH_XEDK "\\lib\\win32\\vs2008\\xgraphicsd.lib")
 	#else
-		#pragma comment (lib, "C:\\Program Files (x86)\\Microsoft Xbox 360 SDK\\lib\\win32\\vs2008\\d3d9.lib")
-		#pragma comment (lib, "C:\\Program Files (x86)\\Microsoft Xbox 360 SDK\\lib\\win32\\vs2008\\d3dx9.lib")
-		#pragma comment (lib, "C:\\Program Files (x86)\\Microsoft Xbox 360 SDK\\lib\\win32\\vs2008\\xgraphics.lib")
+		#pragma comment (lib, PATH_XEDK "\\lib\\win32\\vs2008\\d3d9.lib")
+		#pragma comment (lib, PATH_XEDK "\\lib\\win32\\vs2008\\d3dx9.lib")
+		#pragma comment (lib, PATH_XEDK "\\lib\\win32\\vs2008\\xgraphics.lib")
 	#endif
 #else
+	// If LOWLEVEL_NO_X360 is defined, implicitly kill the XMA lib code
+	#define LOWLEVEL_NO_X360_XMA
+
 	#pragma comment (lib, "d3d9.lib")
 	#pragma comment (lib, "d3dx9.lib")
 #endif
