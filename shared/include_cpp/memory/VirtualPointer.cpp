@@ -1,3 +1,8 @@
+/*
+	Kornner Studios: Shared Code
+
+	See license\Shared for specific license information
+*/
 #include "Precompile.hpp"
 #include <memory/VirtualPointer.hpp>
 __CPP_CODE_START__
