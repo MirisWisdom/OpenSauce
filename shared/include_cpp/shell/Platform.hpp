@@ -71,3 +71,13 @@
 	#error "Unknown Platform"
 #endif
 #pragma endregion
+
+// Windows: Define the path to the Program Files folder
+#ifndef PATH_PROGRAM_FILES
+	#define PATH_PROGRAM_FILES_X86 "C:\\Program Files"
+	#define PATH_PROGRAM_FILES_X64 "C:\\Program Files (x86)"
+
+	// I'm not sure how to determine the host's processor size via the compiler, 
+	// so this is a manual setup. Set according to your computer's config
+	#define PATH_PROGRAM_FILES PATH_PROGRAM_FILES_X86
+#endif
