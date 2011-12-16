@@ -1,0 +1,7 @@
+syntax: glob
+*.ncb
+*.suo
+*.user
+bin\
+lib\
+obj\
