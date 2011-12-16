@@ -1,3 +1,8 @@
+/*
+	Kornner Studios: Shared Code
+
+	See license\Shared for specific license information
+*/
 #pragma once
 
 #include <boost/preprocessor.hpp>
@@ -49,7 +54,7 @@ protected:
 	// If this is true, we're emulating a memory range at a different base address.
 	// If this is false, nothing is emulated and the pointer value is treated normally 
 	// however, the value is always contained in 32-bit space but when accessed in 64-bit 
-	// environments, gets extended to 64-bit space)
+	// environments, gets extended to 64-bit space
 	template<class pointer_traits>
 	struct emulate_high_memory
 	{
