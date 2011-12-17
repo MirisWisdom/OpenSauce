@@ -18,7 +18,7 @@
 	#elif defined(PLATFORM_TYPE_SAPIEN)
 		#define PLATFORM_ID PLATFORM_SAPIEN
 	#else
-		#error PLATFORM_TYPE not defined. Step 1: Bash head on keyboard. Step 2: Repeat.
+		#error PLATFORM_TYPE not defined. Step 1: Bash head on keyboard. Step 2: Repeat. Are you selecting a build config that is just vanilla Debug or Release?
 	#endif
 #endif
 
