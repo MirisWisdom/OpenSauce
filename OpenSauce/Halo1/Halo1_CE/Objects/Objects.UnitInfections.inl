@@ -32,9 +32,13 @@ namespace UnitInfections
 	}
 	static bool AllowInfections(TagGroups::s_unit_infections_definition const& definition)
 	{
+#if PLATFORM_IS_USER
 		// Don't try to infect anything if we're in a cinematic, unless the designers say it's okay
 		return	!Camera::CinematicGlobals()->in_progress || 
 				TagGroups::_global_yelo_globals->flags.allow_unit_infections_during_cinematics_bit;
+#else // dedi builds
+		return true;
+#endif
 	}
 
 	static int32 UnitGetAnimationIndexFromWeaponClass(datum_index unit_index, _enum weapon_class_animation)
