@@ -406,6 +406,10 @@
 			Name="Common"
 			>
 			<File
+				RelativePath=".\Common\DebugAssert.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Common\DebugFile.cpp"
 				>
 			</File>
@@ -498,6 +502,14 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\Common\BaseYeloSharedSettings.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\Common\LinkedList.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\Common\LinkedList.hpp"
 					>
 				</File>
 				<File
@@ -1773,10 +1785,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Common\GameSystems.PostprocessingSubsystems.inl"
-					>
-				</File>
-				<File
 					RelativePath=".\Common\GameSystems.ProjComponents.inl"
 					>
 				</File>
@@ -2384,11 +2392,11 @@
 					Name="shader_postprocess"
 					>
 					<File
-						RelativePath="..\..\shared\Include\Blam\Halo1\shader_postprocess\shader_postprocess_collection_definitions.hpp"
+						RelativePath="..\..\shared\Include\Blam\Halo1\shader_postprocess\effect_postprocess_collection_definitions.hpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\shared\Include\Blam\Halo1\shader_postprocess\shader_postprocess_effect_generic_definitions.hpp"
+						RelativePath="..\..\shared\Include\Blam\Halo1\shader_postprocess\effect_postprocess_generic_definitions.hpp"
 						>
 					</File>
 					<File
@@ -2537,6 +2545,14 @@
 				Name="OpenSauceIDE"
 				>
 				<File
+					RelativePath="..\..\shared\Halo1\CheApe\effect_postprocess.xml"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Halo1\CheApe\effect_postprocess_collection.xml"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Halo1\CheApe\Halo1_CE.cheape_project"
 					>
 				</File>
@@ -2566,10 +2582,6 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Halo1\CheApe\shader_postprocess.xml"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Halo1\CheApe\shader_postprocess_collection.xml"
 					>
 				</File>
 				<File
@@ -2637,6 +2649,70 @@
 				Name="PostProcessing"
 				>
 				<File
+					RelativePath=".\Rasterizer\PostProcessing\c_effect_instance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Rasterizer\PostProcessing\c_effect_instance.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Rasterizer\PostProcessing\c_effect_postprocess.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Rasterizer\PostProcessing\c_effect_postprocess.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Rasterizer\PostProcessing\c_effect_render_set.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Rasterizer\PostProcessing\c_effect_render_set.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Rasterizer\PostProcessing\c_post_processing_main.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Rasterizer\PostProcessing\c_post_processing_main.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Rasterizer\PostProcessing\c_quad_manager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Rasterizer\PostProcessing\c_quad_manager.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Rasterizer\PostProcessing\c_shader_include_manager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Rasterizer\PostProcessing\c_shader_include_manager.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Rasterizer\PostProcessing\c_shader_instance.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Rasterizer\PostProcessing\c_shader_instance.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Rasterizer\PostProcessing\c_shader_postprocess.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Rasterizer\PostProcessing\c_shader_postprocess.hpp"
+					>
+				</File>
+				<File
 					RelativePath=".\Rasterizer\Postprocessing\PostProcessing.cpp"
 					>
 				</File>
@@ -2645,150 +2721,46 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Rasterizer\PostProcessing\PostProcessingDebug.cpp"
+					RelativePath=".\Rasterizer\PostProcessing\PostProcessingErrorReporting.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Rasterizer\PostProcessing\PostProcessingDebug.hpp"
+					RelativePath=".\Rasterizer\PostProcessing\PostProcessingErrorReporting.hpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Rasterizer\Postprocessing\PostProcessingEffect.cpp"
+					RelativePath=".\Rasterizer\PostProcessing\PostProcessingScripting.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Rasterizer\Postprocessing\PostProcessingEffect.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Rasterizer\PostProcessing\PostProcessingEffectGenericBase.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Rasterizer\PostProcessing\PostProcessingEffectGenericBase.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Rasterizer\PostProcessing\PostProcessingInterpLinear.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Rasterizer\PostProcessing\PostProcessingInterpLinear.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Rasterizer\PostProcessing\PostProcessingQuadManager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Rasterizer\PostProcessing\PostProcessingQuadManager.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Rasterizer\Postprocessing\PostProcessingRenderBlock.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Rasterizer\Postprocessing\PostProcessingRenderBlock.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Rasterizer\Postprocessing\PostProcessingShader.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Rasterizer\Postprocessing\PostProcessingShader.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Rasterizer\PostProcessing\PostProcessingShaderGenericBase.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Rasterizer\PostProcessing\PostProcessingShaderGenericBase.hpp"
+					RelativePath=".\Rasterizer\PostProcessing\PostProcessingScripting.hpp"
 					>
 				</File>
 				<Filter
-					Name="Bloom"
+					Name="Interfaces"
 					>
 					<File
-						RelativePath=".\Rasterizer\PostProcessing\Bloom\PostProcessingBloomEffect.cpp"
+						RelativePath=".\Rasterizer\PostProcessing\Interfaces\IInterpolator.hpp"
 						>
 					</File>
 					<File
-						RelativePath=".\Rasterizer\PostProcessing\Bloom\PostProcessingBloomEffect.hpp"
+						RelativePath=".\Rasterizer\PostProcessing\Interfaces\IPostProcessingCacheComponent.hpp"
 						>
 					</File>
 					<File
-						RelativePath=".\Rasterizer\PostProcessing\Bloom\PostProcessingBloomShader.cpp"
+						RelativePath=".\Rasterizer\PostProcessing\Interfaces\IPostProcessingComponent.hpp"
 						>
 					</File>
 					<File
-						RelativePath=".\Rasterizer\PostProcessing\Bloom\PostProcessingBloomShader.hpp"
+						RelativePath=".\Rasterizer\PostProcessing\Interfaces\IPostProcessingRenderable.hpp"
 						>
 					</File>
 					<File
-						RelativePath=".\Rasterizer\PostProcessing\Bloom\PostProcessingSubsystem_Bloom.cpp"
+						RelativePath=".\Rasterizer\PostProcessing\Interfaces\IPostProcessingUpdatable.hpp"
 						>
 					</File>
 					<File
-						RelativePath=".\Rasterizer\PostProcessing\Bloom\PostProcessingSubsystem_Bloom.hpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="External"
-					>
-					<File
-						RelativePath=".\Rasterizer\PostProcessing\External\PostProcessingExternalEffect.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Rasterizer\PostProcessing\External\PostProcessingExternalEffect.hpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Rasterizer\PostProcessing\External\PostProcessingExternalShader.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Rasterizer\PostProcessing\External\PostProcessingExternalShader.hpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Rasterizer\PostProcessing\External\PostProcessingSubsystem_External.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Rasterizer\PostProcessing\External\PostProcessingSubsystem_External.hpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Internal"
-					>
-					<File
-						RelativePath=".\Rasterizer\PostProcessing\Internal\PostProcessingInternalEffect.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Rasterizer\PostProcessing\Internal\PostProcessingInternalEffect.hpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Rasterizer\PostProcessing\Internal\PostProcessingInternalShader.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Rasterizer\PostProcessing\Internal\PostProcessingInternalShader.hpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Rasterizer\PostProcessing\Internal\PostProcessingSubsystem_Internal.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\Rasterizer\PostProcessing\Internal\PostProcessingSubsystem_Internal.hpp"
+						RelativePath=".\Rasterizer\PostProcessing\Interfaces\IPostProcessingUserSettings.hpp"
 						>
 					</File>
 				</Filter>
@@ -2796,27 +2768,311 @@
 					Name="MotionBlur"
 					>
 					<File
-						RelativePath=".\Rasterizer\PostProcessing\MotionBlur\PostProcessingMotionBlurEffect.cpp"
+						RelativePath=".\Rasterizer\PostProcessing\MotionBlur\c_shader_instance_motionblur.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\Rasterizer\PostProcessing\MotionBlur\PostProcessingMotionBlurEffect.hpp"
+						RelativePath=".\Rasterizer\PostProcessing\MotionBlur\c_shader_instance_motionblur.hpp"
 						>
 					</File>
 					<File
-						RelativePath=".\Rasterizer\PostProcessing\MotionBlur\PostProcessingMotionBlurShader.cpp"
+						RelativePath=".\Rasterizer\PostProcessing\MotionBlur\c_shader_motionblur.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\Rasterizer\PostProcessing\MotionBlur\PostProcessingMotionBlurShader.hpp"
+						RelativePath=".\Rasterizer\PostProcessing\MotionBlur\c_shader_motionblur.hpp"
 						>
 					</File>
 					<File
-						RelativePath=".\Rasterizer\PostProcessing\MotionBlur\PostProcessingSubsystem_MotionBlur.cpp"
+						RelativePath=".\Rasterizer\PostProcessing\MotionBlur\c_system_motionblur.cpp"
 						>
 					</File>
 					<File
-						RelativePath=".\Rasterizer\PostProcessing\MotionBlur\PostProcessingSubsystem_MotionBlur.hpp"
+						RelativePath=".\Rasterizer\PostProcessing\MotionBlur\c_system_motionblur.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\MotionBlur\MotionBlurDefinitions.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\MotionBlur\s_shader_motionblur_definition.hpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Bloom"
+					>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Bloom\BloomDefinitions.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Bloom\c_shader_bloom.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Bloom\c_shader_bloom.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Bloom\c_shader_instance_bloom.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Bloom\c_shader_instance_bloom.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Bloom\c_system_bloom.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Bloom\c_system_bloom.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Bloom\s_shader_bloom_definition.hpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="ShaderSources"
+					>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\ShaderSources\c_shader_data_base.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\ShaderSources\c_shader_data_external.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\ShaderSources\c_shader_data_external.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\ShaderSources\c_shader_data_postprocess_definition.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\ShaderSources\c_shader_data_postprocess_definition.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\ShaderSources\c_shader_data_pp_shaders.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\ShaderSources\c_shader_data_pp_shaders.hpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Generic"
+					>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Generic\c_effect_generic.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Generic\c_effect_generic.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Generic\c_effect_instance_generic.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Generic\c_effect_instance_generic.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Generic\c_parameter_instance.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Generic\c_parameter_instance.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Generic\c_shader_generic.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Generic\c_shader_generic.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Generic\c_shader_instance_generic.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Generic\c_shader_instance_generic.hpp"
+						>
+					</File>
+					<Filter
+						Name="Internal"
+						>
+						<File
+							RelativePath=".\Rasterizer\PostProcessing\Generic\Internal\c_effect_internal.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Rasterizer\PostProcessing\Generic\Internal\c_effect_internal.hpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Rasterizer\PostProcessing\Generic\Internal\c_shader_internal.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Rasterizer\PostProcessing\Generic\Internal\c_shader_internal.hpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Rasterizer\PostProcessing\Generic\Internal\c_system_internal.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Rasterizer\PostProcessing\Generic\Internal\c_system_internal.hpp"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="External"
+						>
+						<File
+							RelativePath=".\Rasterizer\PostProcessing\Generic\External\c_effect_external.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Rasterizer\PostProcessing\Generic\External\c_effect_external.hpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Rasterizer\PostProcessing\Generic\External\c_shader_external.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Rasterizer\PostProcessing\Generic\External\c_shader_external.hpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Rasterizer\PostProcessing\Generic\External\c_system_external.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Rasterizer\PostProcessing\Generic\External\c_system_external.hpp"
+							>
+						</File>
+						<File
+							RelativePath=".\Rasterizer\PostProcessing\Generic\External\s_effect_postprocess_external.hpp"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="Impl"
+						>
+						<File
+							RelativePath=".\Rasterizer\PostProcessing\Generic\PostProcessingGeneric_EvaluateRuntimeValue.inl"
+							>
+						</File>
+					</Filter>
+				</Filter>
+				<Filter
+					Name="Interpolation"
+					>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Interpolation\c_interp_base.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Interpolation\c_interp_function.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Interpolation\c_interp_linear.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Interpolation\Interpolation.hpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Fade"
+					>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Fade\c_shader_fade.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Fade\c_shader_fade.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Fade\c_shader_instance_fade.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Fade\c_shader_instance_fade.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Fade\c_system_fade.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Fade\c_system_fade.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Fade\FadeDefinitions.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\Fade\s_shader_fade_definition.hpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Impl"
+					>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\PostProcessing_ExternalSubsystemPaths.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\PostProcessing_RenderStates.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\PostProcessing_Systems.inl"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="FXAA"
+					>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\FXAA\c_shader_fxaa.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\FXAA\c_shader_fxaa.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\FXAA\c_system_fxaa.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\FXAA\c_system_fxaa.hpp"
+						>
+					</File>
+					<File
+						RelativePath=".\Rasterizer\PostProcessing\FXAA\FXAADefinitions.inl"
 						>
 					</File>
 				</Filter>

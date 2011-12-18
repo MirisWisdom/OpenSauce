@@ -36,6 +36,10 @@
 			Compressed='yes'
 			SummaryCodepage='1252' />
 
+		<Upgrade Id='6E7F244E-C79F-4925-A073-66362D92A99F'> <!-- Id MUST be the UpgradeCode -->
+			<UpgradeVersion OnlyDetect='yes' Property='NEWERFOUND' Minimum='2.5.0' IncludeMinimum='no'/>
+		</Upgrade>
+
 		<Property Id='ALLUSERS'>1</Property>
 		<Property Id='CREATESTARTMENUSHORTCUTS' Secure='yes' Value='1'/>
 		<Property Id='CREATEDESKTOPSHORTCUTS' Secure='yes' Value='1'/>
@@ -198,6 +202,7 @@
 			
 		</Directory>
 
+		<CustomAction Id='Newer_Found_CACT' Error='A later version of [ProductName] is already installed.' />
 		<CustomAction Id='DirectX_Install_CACT' FileKey='DirectX_dxsetup_FILE' ExeCommand='/silent' Execute='deferred' Impersonate='no' Return='check'/>
 		
 		<!-- Game specific custom actions are included here-->
@@ -206,6 +211,7 @@
 		<?endif?>
 		
 		<InstallExecuteSequence>
+			<Custom Action='Newer_Found_CACT' After='FindRelatedProducts'>NEWERFOUND</Custom>
 			<Custom Action='DirectX_Install_CACT' Before='InstallFinalize'>
 				<![CDATA[NOT REMOVE]]>
 			</Custom>

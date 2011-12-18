@@ -1,20 +1,8 @@
 /*
-    Yelo: Open Sauce SDK
+	Yelo: Open Sauce SDK
 		Halo 1 (CE) Edition
-    Copyright (C) 2005-2010  Kornner Studios (http://kornner.com)
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	See license\OpenSauce\Halo1_CE for specific license information
 */
 
 #ifndef __SCRIPTLIBRARY_INCLUDE_INL__
@@ -93,11 +81,13 @@
 
 		_hs_function_pp_load,
 		_hs_function_pp_unload,
-		_hs_function_pp_set_effect_active,
-		_hs_function_pp_set_effect_fade,
+
+		_hs_function_pp_get_effect_instance_index_by_name,
+		_hs_function_pp_set_effect_instance_active,
+		_hs_function_pp_set_effect_instance_fade,
+		_hs_function_pp_get_effect_instance_current_fade,
+		_hs_function_pp_get_effect_instance_fade_direction,
 		_hs_function_pp_get_effect_index_by_name,
-		_hs_function_pp_get_effect_current_fade,
-		_hs_function_pp_get_effect_fade_direction,
 		_hs_function_pp_get_effect_is_valid,
 		_hs_function_pp_get_effect_shader_variable_index_by_name,
 		_hs_function_pp_set_effect_shader_variable_boolean,
@@ -129,6 +119,7 @@
 
 		_hs_global_pp_external_post_processes_enabled,
 		_hs_global_pp_internal_post_processes_enabled,
+		_hs_global_pp_fxaa_enabled,
 		_hs_global_pp_motion_blur_enabled,
 		_hs_global_pp_motion_blur_amount,
 
@@ -208,13 +199,15 @@
 	HS_GLOBAL2(rasterizer_gbuffer_enabled, bool, &DX9::c_gbuffer_system::g_system_enabled, NULL);
 
 	HS_GLOBAL2(pp_external_post_processes_enabled, bool, 
-		&Postprocessing::Subsystem::External::c_external_subsystem::g_subsystem_enabled, NULL);
+		&Rasterizer::PostProcessing::Scripting::Globals::Enabled_External(), NULL);
 	HS_GLOBAL2(pp_internal_post_processes_enabled, bool, 
-		&Postprocessing::Subsystem::Internal::c_internal_subsystem::g_subsystem_enabled, NULL);
+		&Rasterizer::PostProcessing::Scripting::Globals::Enabled_Internal(), NULL);
+	HS_GLOBAL2(pp_fxaa_enabled, bool, 
+		&Rasterizer::PostProcessing::Scripting::Globals::Enabled_FXAA(), NULL);
 	HS_GLOBAL2(pp_motion_blur_enabled, bool, 
-		&Postprocessing::Subsystem::MotionBlur::c_motionblur_subsystem::g_subsystem_enabled, NULL);
+		&Rasterizer::PostProcessing::Scripting::Globals::Enabled_MotionBlur(), NULL);
 	HS_GLOBAL2(pp_motion_blur_amount, real, 
-		&Postprocessing::Subsystem::MotionBlur::c_motionblur_subsystem::g_shader.m_blur_amount, NULL);
+		&Rasterizer::PostProcessing::Scripting::Globals::MotionBlur_Amount(), NULL);
 
 	// debug globals
 	#ifdef API_DEBUG
@@ -275,11 +268,13 @@
 
 		&GET_HS_FUNCTION(pp_load),
 		&GET_HS_FUNCTION(pp_unload),
-		&GET_HS_FUNCTION(pp_set_effect_active),
-		&GET_HS_FUNCTION(pp_set_effect_fade),
+
+		&GET_HS_FUNCTION(pp_get_effect_instance_index_by_name),
+		&GET_HS_FUNCTION(pp_set_effect_instance_active),
+		&GET_HS_FUNCTION(pp_set_effect_instance_fade),
+		&GET_HS_FUNCTION(pp_get_effect_instance_current_fade),
+		&GET_HS_FUNCTION(pp_get_effect_instance_fade_direction),
 		&GET_HS_FUNCTION(pp_get_effect_index_by_name),
-		&GET_HS_FUNCTION(pp_get_effect_current_fade),
-		&GET_HS_FUNCTION(pp_get_effect_fade_direction),
 		&GET_HS_FUNCTION(pp_get_effect_is_valid),
 		&GET_HS_FUNCTION(pp_get_effect_shader_variable_index_by_name),
 		&GET_HS_FUNCTION(pp_set_effect_shader_variable_boolean),
@@ -314,6 +309,7 @@
 
 		&GET_HS_GLOBAL(pp_external_post_processes_enabled),
 		&GET_HS_GLOBAL(pp_internal_post_processes_enabled),
+		&GET_HS_GLOBAL(pp_fxaa_enabled),
 		&GET_HS_GLOBAL(pp_motion_blur_enabled),
 		&GET_HS_GLOBAL(pp_motion_blur_amount),
 

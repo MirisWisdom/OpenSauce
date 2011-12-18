@@ -1,20 +1,8 @@
 /*
-    Yelo: Open Sauce SDK
+	Yelo: Open Sauce SDK
 		Halo 1 (CE) Edition
-    Copyright (C) 2005-2010  Kornner Studios (http://kornner.com)
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	See license\OpenSauce\Halo1_CE for specific license information
 */
 #include "Common/Precompile.hpp"
 #include "Rasterizer/RenderTargetChain.hpp"
@@ -24,20 +12,32 @@ namespace Yelo
 {
 	namespace DX9
 	{
+		//////////////////////////////////////////////////////////////////////////
+		// s_render_target_chain
 		bool		s_render_target_chain::IsAvailable() const
 		{
 			return m_targets[0].IsEnabled() &&
 				m_targets[1].IsEnabled();
 		}
 
-		void		s_render_target_chain::AllocateResources(IDirect3DDevice9* device, uint32 width, uint32 height)
+		bool		s_render_target_chain::AllocateResources(IDirect3DDevice9* device, uint32 width, uint32 height, D3DFORMAT format)
 		{
+			HRESULT success = 0;
 			for(int i = 0; i < 2; i++)
-				m_targets[i].CreateTarget(device, 
-					width, 
-					height, 
-					Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].format);
+				success |= m_targets[i].CreateTarget(device,
+					width,
+					height,
+					format);
+
 			ResetTargets();
+
+			return SUCCEEDED(success);
+		}
+
+		void		s_render_target_chain::ResetTargets()
+		{
+			m_target_setup.current = &m_targets[0];
+			m_target_setup.next = &m_targets[1];
 		}
 
 		void		s_render_target_chain::ReleaseResources()
@@ -46,21 +46,33 @@ namespace Yelo
 				m_targets[i].ReleaseTarget();
 		}
 
-		void		s_render_target_chain::ResetTargets()
-		{
-			m_target_setup.scene = &Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary];
-			m_target_setup.current = &m_targets[0];
-			m_target_setup.next = &m_targets[1];
-		}
-
 		void		s_render_target_chain::Flip()
 		{
 			std::swap<Rasterizer::s_render_target*>(m_target_setup.current, m_target_setup.next);
 		}
 
-		void		s_render_target_chain::SetSceneToLast()
+		//////////////////////////////////////////////////////////////////////////
+		// s_render_target_chain_scene
+		bool		s_render_target_chain_scene::AllocateResources(IDirect3DDevice9* device, uint32 width, uint32 height)
 		{
-			std::swap<Rasterizer::s_render_target*>(m_target_setup.next, m_target_setup.scene);
+			bool success = s_render_target_chain::AllocateResources(
+				device, 
+				width, height, 
+				Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].format);
+
+			return success;
+		}
+
+		void		s_render_target_chain_scene::ResetTargets()
+		{
+			m_target_setup_scene.scene = &Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary];
+
+			s_render_target_chain::ResetTargets();
+		}
+
+		void		s_render_target_chain_scene::SetSceneToLast()
+		{
+			std::swap<Rasterizer::s_render_target*>(m_target_setup.next, m_target_setup_scene.scene);
 		}
 	};
 };

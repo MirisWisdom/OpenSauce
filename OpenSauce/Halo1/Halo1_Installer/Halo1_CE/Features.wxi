@@ -90,6 +90,12 @@
 			<ComponentRef Id='Halo1_CE_sepia_SHPG_COMP' />
 			<ComponentRef Id='Halo1_CE_sepia_blue_SHPG_COMP' />
 			<ComponentRef Id='Halo1_CE_visr_SHPG_COMP' />
+			
+			<ComponentRef Id='Halo1_CE_sepia_EFPG_COMP' />
+			<ComponentRef Id='Halo1_CE_sepia_blue_EFPG_COMP' />
+			<ComponentRef Id='Halo1_CE_visr_EFPG_COMP' />
+			
+			<ComponentRef Id='Halo1_CE_basic_collection_EFPC_COMP' />
 		</Feature>
 	</Feature>
 	

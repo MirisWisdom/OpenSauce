@@ -154,24 +154,29 @@
 		<!-- POSTPROCESSING -->
 		<function name="pp_load" returnType="void" help="loads post-processing" internal="true" />
 		<function name="pp_unload" returnType="void" help="unloads post-processing" internal="true" />
-		<function name="pp_set_effect_active" returnType="void" help="instantly set an effect to on or off" internal="true" >
-			<arg type="short"	name="effect_index" />
-			<arg type="boolean" name="effect_enabled" />
+		
+		<function name="pp_get_effect_instance_index_by_name" returnType="short" help="get the index of the effect named effect_name" internal="true" >
+			<arg type="string" name="instance name" />
 		</function>
-		<function name="pp_set_effect_fade" returnType="void" help="fade an effect in or out" internal="true" >
-			<arg type="short"	name="effect_index" />
+		<function name="pp_set_effect_instance_active" returnType="void" help="instantly set an effect instance to on or off" internal="true" >
+			<arg type="short"	name="instance_index" />
+			<arg type="boolean" name="instance_enabled" />
+		</function>
+		<function name="pp_set_effect_instance_fade" returnType="void" help="fade an effect instance in or out" internal="true" >
+			<arg type="short"	name="instance_index" />
 			<arg type="real"	name="fade_start" />
 			<arg type="real"	name="fade_end" />
 			<arg type="real"	name="fade_time" />
 		</function>
-		<function name="pp_get_effect_index_by_name" returnType="short" help="get the index of the effect named effect_name" internal="true" >
+		<function name="pp_get_effect_instance_current_fade" returnType="real" help="returns current fade amount of an effect instance" internal="true" >
+			<arg type="short" name="instance_index" />
+		</function>
+		<function name="pp_get_effect_instance_fade_direction" returnType="short" help="returns fade direction of an effect instance, -1 = no fade, 0 = fade out, 1 = fade in" internal="true" >
+			<arg type="short" name="instance_index" />
+		</function>
+		
+		<function name="pp_get_effect_index_by_name" returnType="short" help="returns the index of the effect named effect_name" internal="true" >
 			<arg type="string" name="effect_name" />
-		</function>
-		<function name="pp_get_effect_current_fade" returnType="real" help="get the current fade amount of an effect" internal="true" >
-			<arg type="short" name="effect_index" />
-		</function>
-		<function name="pp_get_effect_fade_direction" returnType="short" help="returns fade direction of an effect, -1 = no fade, 0 = fade out, 1 = fade in" internal="true" >
-			<arg type="short" name="effect_index" />
 		</function>
 		<function name="pp_get_effect_is_valid" returnType="boolean" help="get whether an effect is valid and ready to use" internal="true" >
 			<arg type="short" name="effect_index" />
@@ -205,8 +210,9 @@
 		<function name="pp_set_effect_shader_instance_active" returnType="void" help="disables/enables a shader instance in an effect" >
 			<arg type="short"	name="effect_index" />
 			<arg type="short"	name="shader_instance_index" />
-			<arg type="boolean" name="instance_enabled" />
+			<arg type="boolean" name="shader_instance_enabled" />
 		</function>
+		
 		<function name="pp_bloom_set_size" returnType="void" help="changes the bloom size over a period of time" >
 			<arg type="real" name="size" />
 			<arg type="real" name="change_time" />
@@ -239,6 +245,8 @@
 
 		<global name="pp_external_post_processes_enabled" type="boolean" help="toggles external effects on or off" internal="true" />
 		<global name="pp_internal_post_processes_enabled" type="boolean" help="toggles internal effects on or off" internal="true" />
+		
+		<global name="pp_fxaa_enabled" type="boolean" help="" internal="true" />
 		<global name="pp_motion_blur_enabled" type="boolean" help="" internal="true" />
 		<global name="pp_motion_blur_amount" type="real" help="" internal="true" />
 	</scriptGlobals>
