@@ -1,20 +1,8 @@
 /*
-    Yelo: Open Sauce SDK
+	Yelo: Open Sauce SDK
+		Halo 1 (CE) Edition
 
-    Copyright (C) 2005-2010  Kornner Studios (http://kornner.com)
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	See license\OpenSauce\Halo1_CE for specific license information
 */
 
 #include <string.h>
@@ -27,18 +15,15 @@ namespace Yelo
 #if !PLATFORM_IS_EDITOR && !PLATFORM_IS_DEDI
 		template<Enums::shader_variable_base_type TType, size_t TCount>
 		void s_shader_postprocess_shader_variable<TType, TCount>::
-			Initialize(LPD3DXEFFECT* effect, const char* id, void* data, bool semantic)
+			Initialize(LPD3DXEFFECT effect, const char* id, bool semantic)
 		{		
 			if(effect == NULL || id == NULL || *id == '\0')
 				return;
 
 			if(semantic)
-				runtime.dx_handle = (*effect)->GetParameterBySemantic(NULL, id);
+				runtime.dx_handle = effect->GetParameterBySemantic(NULL, id);
 			else					
-				runtime.dx_handle = (*effect)->GetParameterByName(NULL, id);
-
-			if(runtime.dx_handle != NULL)
-				SetVariable(effect, data);
+				runtime.dx_handle = effect->GetParameterByName(NULL, id);
 		}
 
 		template<Enums::shader_variable_base_type TType, size_t TCount>
@@ -84,7 +69,7 @@ namespace Yelo
 
 		template<Enums::shader_variable_base_type TType, size_t TCount>
 		void s_shader_postprocess_shader_variable<TType, TCount>::
-			SetVariableInterp(LPD3DXEFFECT* effect, const void* data1, const void* data2, const real* interp_values)
+			SetVariableInterp(LPD3DXEFFECT effect, const void* data1, const void* data2, const real* interp_values)
 		{
 			if(!IsUsed() || data1 == NULL || data2 == NULL)
 				return;
@@ -122,7 +107,7 @@ namespace Yelo
 
 		template<Enums::shader_variable_base_type TType, size_t TCount>
 		void s_shader_postprocess_shader_variable<TType, TCount>::
-			SetVariable(LPD3DXEFFECT* effect, void* data, const bool fixup_argb_color_hack)
+			SetVariable(LPD3DXEFFECT effect, void* data, const bool fixup_argb_color_hack)
 		{
 			if(!IsUsed() || data == NULL)
 				return;
@@ -132,44 +117,48 @@ namespace Yelo
 			default: return;
 
 			case Enums::_shader_variable_base_type_boolean:
-				if(TCount == 1)	(*effect)->SetBool(runtime.dx_handle, *CAST_PTR(BOOL*, data));
-				else			(*effect)->SetBoolArray(runtime.dx_handle, CAST_PTR(BOOL*, data), TCount);
+				if(TCount == 1)	effect->SetBool(runtime.dx_handle, *CAST_PTR(BOOL*, data));
+				else			effect->SetBoolArray(runtime.dx_handle, CAST_PTR(BOOL*, data), TCount);
 				break;
 
 			case Enums::_shader_variable_base_type_integer:
-				if(TCount == 1)	(*effect)->SetInt(runtime.dx_handle, *CAST_PTR(INT*, data));
-				else			(*effect)->SetIntArray(runtime.dx_handle, CAST_PTR(INT*, data), TCount);
+				if(TCount == 1)	effect->SetInt(runtime.dx_handle, *CAST_PTR(INT*, data));
+				else			effect->SetIntArray(runtime.dx_handle, CAST_PTR(INT*, data), TCount);
 				break;
 
 			case Enums::_shader_variable_base_type_float:
-				if(TCount == 1)	(*effect)->SetFloat(runtime.dx_handle, *CAST_PTR(FLOAT*, data));
-				else			(*effect)->SetFloatArray(runtime.dx_handle, CAST_PTR(FLOAT*, data), TCount);
+				if(TCount == 1)	effect->SetFloat(runtime.dx_handle, *CAST_PTR(FLOAT*, data));
+				else			effect->SetFloatArray(runtime.dx_handle, CAST_PTR(FLOAT*, data), TCount);
 				break;
 
 			case Enums::_shader_variable_base_type_argb_color:
-				if(fixup_argb_color_hack)
 				{
-					D3DXCOLOR values_out_data[TCount];
-					D3DXCOLOR* values_out = values_out_data;
-
-					for(size_t i = 0; i < TCount; i++, values_out++)
+					D3DXCOLOR rgba[TCount];
+					if(fixup_argb_color_hack)
 					{
-						memcpy_s(values_out, sizeof(*values_out), CAST_PTR(D3DXCOLOR*, data)+i, sizeof(*values_out));
-						std::swap(values_out->b, values_out->a);
+						real* data_real = CAST_PTR(real*, data);
+
+						for(size_t i = 0; i < TCount; i++)
+						{
+							rgba[i].a = *data_real; data_real++;
+							rgba[i].r = *data_real; data_real++;
+							rgba[i].g = *data_real; data_real++;
+							rgba[i].b = *data_real;
+						}
 					}
+					else
+						memcpy_s(rgba, sizeof(rgba), data, sizeof(rgba));
 
-					data = values_out_data;
+					effect->SetFloatArray(runtime.dx_handle, CAST_PTR(const FLOAT*, &rgba), TCount * 4);
 				}
-
-				(*effect)->SetFloatArray(runtime.dx_handle, CAST_PTR(FLOAT*, data), TCount * 4);
 				break;
 
 			case Enums::_shader_variable_base_type_matrix:
-				(*effect)->SetMatrix(runtime.dx_handle, CAST_PTR(D3DXMATRIX*,data));
+				effect->SetMatrix(runtime.dx_handle, CAST_PTR(D3DXMATRIX*,data));
 				break;
 
 			case Enums::_shader_variable_base_type_texture:
-				(*effect)->SetTexture(runtime.dx_handle, CAST_PTR(IDirect3DBaseTexture9*,data));
+				effect->SetTexture(runtime.dx_handle, CAST_PTR(IDirect3DBaseTexture9*,data));
 				break;
 			}
 		}

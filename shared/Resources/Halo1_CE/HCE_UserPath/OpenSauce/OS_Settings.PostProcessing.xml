@@ -1,19 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <osYeloSettings engine="Halo1_CE">
-	<!--postprocessing shader_directory="" 
+	<postprocessing shader_directory="" 
 			texture_directory="">
-		<shaders>
-			<shader id="shader_id">relative_shader_location</shader>
+		<!--shaders>
+			<shader id="shader_id">shader</shader>
 		</shaders>
 		<effects>
-			<effect name="effect_name" render_stage="0">				
-				<flags>
-					<flag name="not_active_during_cutscenes" value="true" />
-				</flags>
+			<effect id="effect_id">
 				<shaders>
 					<shader>shader_id</shader>
 				</shaders>
 			</effect>
 		</effects>
-	</postprocessing-->
+		<effect_instances>
+			<effect_instance name="name" effect="effect_id" render_stage="2" activation_operation="0">
+				<quad>
+					<tessellation x="5" y="5"/>
+					<x_bounds lower="0.0" upper="1.0"/>
+					<y_bounds lower="0.0" upper="1.0"/>
+				</quad>
+				<activation_controls>
+					<activation_control state="0" invert="false"/>
+				</activation_controls>
+			</effect_instance>
+		</effect_instances-->
+	</postprocessing>
 </osYeloSettings>

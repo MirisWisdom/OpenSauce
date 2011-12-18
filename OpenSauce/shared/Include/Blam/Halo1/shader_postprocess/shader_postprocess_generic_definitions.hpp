@@ -1,20 +1,8 @@
 /*
-    Yelo: Open Sauce SDK
+	Yelo: Open Sauce SDK
+		Halo 1 (CE) Edition
 
-    Copyright (C) 2005-2010  Kornner Studios (http://kornner.com)
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	See license\OpenSauce\Halo1_CE for specific license information
 */
 #pragma once
 
@@ -22,12 +10,59 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum parameter_runtime_value_bool : _enum
+		{
+			_parameter_runtime_value_bool_none,
+			//_parameter_runtime_value_bool_target_is_enemy, //not yet implemented
+			//_parameter_runtime_value_bool_weapon_zoomed, //not yet implemented
+			_parameter_runtime_value_bool
+		};
+		enum parameter_runtime_value_int : _enum
+		{
+			_parameter_runtime_value_int_none,
+			_parameter_runtime_value_int
+		};
+		enum parameter_runtime_value_float : _enum
+		{
+			_parameter_runtime_value_float_none,
+			//_parameter_runtime_value_float_weapon_zoom_amount, //not yet implemented
+			_parameter_runtime_value_float
+		};
+		enum parameter_runtime_value_float2 : _enum
+		{
+			_parameter_runtime_value_float2_none,
+			_parameter_runtime_value_float2
+		};
+		enum parameter_runtime_value_float3 : _enum
+		{
+			_parameter_runtime_value_float3_none,
+			_parameter_runtime_value_float3
+		};
+		enum parameter_runtime_value_float4 : _enum
+		{
+			_parameter_runtime_value_float4_none,
+			_parameter_runtime_value_float4
+		};
+		enum parameter_runtime_value_color : _enum
+		{
+			_parameter_runtime_value_color_none,
+			_parameter_runtime_value_color_player_team_color,
+			_parameter_runtime_value_color
+		};
+	};
+
 	namespace TagGroups
 	{
 		union s_shader_postprocess_value_union
 		{
 			static const size_t k_sizeof = 36;
 			TAG_PAD(byte, k_sizeof);
+
+			struct s_base {
+				t_shader_variable_base handle;
+			}base;
 
 			struct s_bitmap {
 				t_shader_variable_texture handle;
@@ -55,6 +90,7 @@ namespace Yelo
 				t_shader_variable_real handle;
 
 				TAG_FIELD(real, lower_bound);
+				PAD(byte, 12);
 				TAG_FIELD(real, upper_bound);
 			}real32;
 
@@ -62,6 +98,7 @@ namespace Yelo
 				t_shader_variable_real2d handle;
 
 				TAG_FIELD(real_vector2d, lower_bound);
+				PAD(byte, 8);
 				TAG_FIELD(real_vector2d, upper_bound);
 			}vector2d;
 
@@ -69,6 +106,7 @@ namespace Yelo
 				t_shader_variable_real3d handle;
 
 				TAG_FIELD(real_vector3d, lower_bound);
+				PAD(byte, 4);
 				TAG_FIELD(real_vector3d, upper_bound);
 			}vector3d;
 
@@ -88,6 +126,14 @@ namespace Yelo
 
 		}; BOOST_STATIC_ASSERT( sizeof(s_shader_postprocess_value_union) == s_shader_postprocess_value_union::k_sizeof );
 
+		struct s_shader_postprocess_value_runtime_override
+		{
+			TAG_FIELD(_enum, value);
+			struct _flags {
+				TAG_FLAG16(invert);
+			}flags;
+		};
+
 		struct s_shader_postprocess_value_animation_function
 		{
 			TAG_ENUM(function, Enums::periodic_function);
@@ -101,43 +147,27 @@ namespace Yelo
 			TAG_FIELD(real, animation_duration);
 			TAG_FIELD(real, animation_rate);
 		}; BOOST_STATIC_ASSERT( sizeof(s_shader_postprocess_value_animation_function) == 0xC );
+
 		struct s_shader_postprocess_value_base
 		{
 			TAG_FIELD(tag_string, value_name);
 
-			// Set by tag post-processing code
+			// set by tag post-processing code
 			shader_variable_type value_type;
 
 			s_shader_postprocess_value_union value;
+			s_shader_postprocess_value_runtime_override runtime_value;
 			s_shader_postprocess_value_animation_function animation_function;
 		};
 
 		struct s_shader_postprocess_bitmap : s_shader_postprocess_value_base
 		{
-			union {
-				struct {
-					TagGroups::s_bitmap_data* bitmap;
-					PAD32;
-				}_internal;	// We use a '_' prefix so intelli-sense doesn't get retarded
-
-				struct {
-					cstring source;
-					IDirect3DTexture9* texture_2d;
-				}external;
-			}runtime;
-
-			struct {
-				TAG_FLAG16(is_loaded);
-				TAG_FLAG16(is_external);
-			}flags; PAD16;
+			TAG_PAD(byte, 12);
 			TAG_FIELD(tag_reference, bitmap, 'bitm');
 		}; BOOST_STATIC_ASSERT( sizeof(s_shader_postprocess_bitmap) == 0x1C + sizeof(s_shader_postprocess_value_base) );
 
-		struct s_shader_postprocess_parameter
+		struct s_shader_postprocess_parameter : s_shader_postprocess_value_base
 		{
-			TAG_FIELD(tag_string, value_name);
-			shader_variable_type value_type;
-
 			struct
 			{
 				TAG_FIELD(tag_reference, bitmap);
@@ -149,7 +179,7 @@ namespace Yelo
 					}_internal;	// We use a '_' prefix so intelli-sense doesn't get retarded
 
 					struct {
-						cstring source;
+						char* source;
 						IDirect3DTexture9* texture_2d;
 					}external;
 				}runtime;
@@ -160,23 +190,14 @@ namespace Yelo
 				}flags; PAD16;
 			}bitmap_value;
 
-			s_shader_postprocess_value_union value;
-			s_shader_postprocess_value_animation_function animation_function;
-
 			void				GetBoundingValues(void*& lower_ref, void*& upper_ref);
-			void				SetVariableInterp(LPD3DXEFFECT* effect, const void* lower_data, const void* upper_data, const real* interp_values);
+			void				SetVariableInterp(LPD3DXEFFECT effect, const void* lower_data, const void* upper_data, const real* interp_values);
 
 			// [fixup_argb_color_hack] - internal use only, use default when calling externally
-			void				SetVariable(LPD3DXEFFECT* effect, void* data, const bool fixup_argb_color_hack = true);
-
-			// Sets the memory at [dst] to the default variable value (the 'upper' bound)
-			void				CopyDefaultVariable(void* dst);
+			void				SetVariable(LPD3DXEFFECT effect, void* data, const bool fixup_argb_color_hack = true);
 
 			//bitmap only functions
-			void				SetSource(TagGroups::s_bitmap_data* source_bitmap);
-			void				SetSource(cstring source_bitmap);
-
-			HRESULT				LoadCacheBitmap(IDirect3DDevice9* pDevice);
+			HRESULT				LoadBitmap(IDirect3DDevice9* pDevice);
 			void				ReleaseBitmap();
 
 			IDirect3DTexture9*	GetTexture();

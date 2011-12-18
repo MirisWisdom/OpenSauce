@@ -1,20 +1,8 @@
 /*
-    Yelo: Open Sauce SDK
+	Yelo: Open Sauce SDK
 		Halo 1 (CE) Edition
-    Copyright (C) 2005-2010  Kornner Studios (http://kornner.com)
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	See license\OpenSauce\Halo1_CE for specific license information
 */
 #include "Common\Precompile.hpp"
 #include "Common\FileIO.hpp"
@@ -113,7 +101,7 @@ namespace Yelo
 				strcpy_s(file_def.m_location, string_length, location.c_str());
 
 				// check the file exists
-				file_def.m_flags.file_exists = FileExists(file_def.m_location);
+				file_def.m_flags.file_exists = PathExists(file_def.m_location);
 
 				index++;
 			}while(file_element = file_element->NextSiblingElement("file"));
@@ -150,19 +138,42 @@ namespace Yelo
 				return Enums::_file_io_open_error_unknown;
 		}
 
-		bool FileExists(const char* file_path)
+		bool PathExists(const char* path)
 		{
-			// shameless copy from YeloSharedSettings
-			if(GetFileAttributes(file_path) != CAST(DWORD, NONE))
-				return true;
+			if(GetFileAttributes(path) == INVALID_FILE_ATTRIBUTES)
+				return false;
+			return true;
+		}
 
-			DWORD error = GetLastError();
-
-			if(error == ERROR_FILE_NOT_FOUND || ERROR_PATH_NOT_FOUND)
+		void AppendDirectorySlash(char* path, DWORD length)
+		{
+			const char* final_char = strrchr(path, '\0');
+			final_char--;
+			if(*final_char != '\\')
+				strcat_s(path, length, "\\");
+		}
+		
+		bool GetDirectoryPath(char* destination, uint32 size, const char* path)
+		{
+			if(!destination || (size <= 1))
 				return false;
 
-			// This should actually be unreachable...
-			return false;
+			// find the last occurance of '\\'
+			const char* filename_offset = strrchr(path, '\\');
+			if(!filename_offset)
+				return false;
+
+			destination[0] = '\0';
+			// calculate the character index from the two pointers
+			uint32 index = CAST(uint32, filename_offset - path);
+			// include the path divider
+			index++;
+			// copy the directory path to the destination
+			errno_t error = strncpy_s(destination, size, path, index);
+
+			if(error)
+				return false;
+			return true;
 		}
 
 		void UpdateFileSize(s_file_info& info)
@@ -230,7 +241,7 @@ namespace Yelo
 			const DWORD access_type,
 			const Enums::file_io_open_create_option creation_type)
 		{
-			if(!FileExists(file_path) && (creation_type != Enums::_file_io_open_create_options_create_if_missing))
+			if(!PathExists(file_path) && (creation_type != Enums::_file_io_open_create_options_create_if_missing))
 				return Enums::_file_io_open_error_file_does_not_exist;
 
 			// create the access flags value for reading and/or writing

@@ -1,20 +1,8 @@
 /*
-    Yelo: Open Sauce SDK
-		Halo 1 (Editing Kit) Edition
-    Copyright (C) 2005-2010  Kornner Studios (http://kornner.com)
+	Yelo: Open Sauce SDK
+		Halo 1 (CE) Edition
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	See license\OpenSauce\Halo1_CE for specific license information
 */
 
 namespace BuildCacheFileEx
@@ -37,10 +25,13 @@ namespace BuildCacheFileEx
 				switch( (*TagGroups::TagInstances())[tag_index]->group_tag )
 				{
 				case TagGroups::s_shader_postprocess_generic::k_group_tag:
-					PostProcessing::shader_postprocess_generic_setup_parameters(tag_index);
+					PostProcessing::shader_postprocess_generic_preprocess(tag_index);
 					break;
-				case TagGroups::s_shader_postprocess_collection::k_group_tag:
-					PostProcessing::shader_postprocess_collection_process_collection(tag_index);
+				case TagGroups::s_effect_postprocess_generic::k_group_tag:
+					PostProcessing::effect_postprocess_generic_preprocess(tag_index);
+					break;
+				case TagGroups::s_effect_postprocess_collection::k_group_tag:
+					PostProcessing::effect_postprocess_collection_preprocess(tag_index);
 					break;
 				case TagGroups::s_shader_model_definition::k_group_tag:
 					ShaderExtension::shader_model_extension_process(tag_index);

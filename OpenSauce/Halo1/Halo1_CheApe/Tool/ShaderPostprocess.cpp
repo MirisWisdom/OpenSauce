@@ -1,20 +1,8 @@
 /*
-    Yelo: Open Sauce SDK
-		Halo 1 (Editing Kit) Edition
-    Copyright (C) 2005-2010  Kornner Studios (http://kornner.com)
+	Yelo: Open Sauce SDK
+		Halo 1 (CE) Edition
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	See license\OpenSauce\Halo1_CE for specific license information
 */
 #include "Common/Precompile.hpp"
 #include "Tool/ShaderPostprocess.hpp"
@@ -28,6 +16,17 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum shader_model_mask
+		{
+			_shader_model_mask_1_0 = 1 << 0,
+			_shader_model_mask_2_0 = 1 << 1,
+			_shader_model_mask_3_0 = 1 << 2,
+
+			_shader_model_mask
+		};
+	};
 	namespace Tool
 	{
 #include "Tool/CompileShaderPostprocess.inl"
@@ -35,39 +34,44 @@ namespace Yelo
 		void PLATFORM_API compile_shader_postprocess(void** arguments)
 		{
 			struct s_arguments {
-				cstring data_file_name;
+				cstring data_path;
 			}* args = CAST_PTR(s_arguments*, arguments);
 
+			
 			std::string search_path(Settings::Get().GetDataPath());
 
-			search_path.append(args->data_file_name);
+			// append a folder divider if necessery
+			search_path.append(args->data_path);
 			std::string::reverse_iterator r_iter = search_path.rbegin();
 			if((*r_iter) != '\\')
 				search_path.append("\\");
-			search_path.append("*.fx");
+
+			// add *.fx to finish the search filter
+			std::string search_filter(search_path);
+			search_filter.append("*.fx");
 
 			puts("");
 
+			// search for the first file that matches the filter
 			WIN32_FIND_DATA data;
-			HANDLE search_handle = FindFirstFile(search_path.c_str(), &data);
+			HANDLE search_handle = FindFirstFile(search_filter.c_str(), &data);
+
+			// iterate through all matching files
 			do
 			{
 				if(search_handle == INVALID_HANDLE_VALUE)
 					break;
 
 				std::string file_name(data.cFileName);
-				if(file_name.size() < 3)
-					continue;
-				if(file_name.compare(file_name.size() - 3, 3, ".fx") != 0)
-					continue;
 
-				std::string fx_path(Settings::Get().GetDataPath());
-				fx_path.append(args->data_file_name);
-				fx_path.append("\\");
+				// build the shader files path
+				std::string fx_path(search_path);
 				fx_path.append(file_name);
 
-				std::string tag_path(args->data_file_name);	
-				tag_path.append("\\");
+				std::string tag_path(args->data_path);
+				r_iter = tag_path.rbegin();
+				if((*r_iter) != '\\')
+					tag_path.append("\\");
 				tag_path.append(file_name.c_str(), file_name.size() - 3);
 
 				// open the shader tag
@@ -79,19 +83,13 @@ namespace Yelo
 				// create effect compiler
 				LPD3DXEFFECTCOMPILER effect_compiler = NULL;
 				if(SUCCEEDED(hr)) hr = CreateEffectCompiler(
-					effect_compiler, 
+					effect_compiler,
 					shader_tag,
 					fx_path.c_str()
 					);
 
-				// compile the effect
-				LPD3DXBUFFER effect_buffer = NULL;
-				if(SUCCEEDED(hr)) hr = CompileEffect(
-					effect_compiler, 
-					effect_buffer);
-
 				// put new shader code
-				if(SUCCEEDED(hr)) hr = ReplaceShaderCode(effect_buffer, shader_tag);
+				if(SUCCEEDED(hr)) hr = SetPostprocessTag(effect_compiler, shader_tag);
 				// save shader tag
 				if(SUCCEEDED(hr)) hr = SaveShader(shader_index);
 
@@ -101,9 +99,9 @@ namespace Yelo
 					tag_unload(shader_index);
 
 				safe_release(effect_compiler);
-				safe_release(effect_buffer);
 			}
 			while(FindNextFile(search_handle, &data));
+			// close the search handle
 			FindClose(search_handle);
 
 			DWORD error = GetLastError();
@@ -114,12 +112,12 @@ namespace Yelo
 				case ERROR_FILE_NOT_FOUND:
 					YELO_ERROR(_error_message_priority_warning, 
 						"OS_Tool: no fx files found in directory \"%s\"\n",
-						args->data_file_name);
+						args->data_path);
 					break;
 				case ERROR_PATH_NOT_FOUND:
 					YELO_ERROR(_error_message_priority_warning, 
 						"OS_Tool: directory does not exist\"%s\"\n",
-						args->data_file_name);
+						args->data_path);
 					break;
 				case ERROR_NO_MORE_FILES:
 				default:

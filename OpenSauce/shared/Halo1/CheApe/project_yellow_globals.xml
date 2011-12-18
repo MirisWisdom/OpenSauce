@@ -22,7 +22,7 @@
 			<field type="Pad" definition="24" />
 		</TagBlock>
 		<TagBlock name="preprocess_block" maxElements="1">
-			<field type="Pad" name="flags" definition="4" />
+			<field type="Pad" definition="4" />
 			<field type="Block" name="campaign" definition="preprocess_maplist_block" />
 			<field type="Block" name="multiplayer" definition="preprocess_maplist_block" />
 			<field type="Pad" definition="80" />

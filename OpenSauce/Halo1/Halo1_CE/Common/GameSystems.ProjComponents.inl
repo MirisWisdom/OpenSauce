@@ -1,20 +1,8 @@
 /*
-    Yelo: Open Sauce SDK
+	Yelo: Open Sauce SDK
 		Halo 1 (CE) Edition
-    Copyright (C) 2005-2010  Kornner Studios (http://kornner.com)
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	See license\OpenSauce\Halo1_CE for specific license information
 */
 
 // This must come first, many systems use the Report filing system
@@ -36,7 +24,14 @@
 	{DX9::c_gbuffer_system::Initialize,				DX9::c_gbuffer_system::Dispose,		NULL, NULL, NULL, DX9::c_gbuffer_system::Update},
 	{Rasterizer::Initialize,						Rasterizer::Dispose},
 	{Rasterizer::ShaderExtension::Initialize,		Rasterizer::ShaderExtension::Dispose},
-	{Postprocessing::Initialize,					Postprocessing::Dispose,			NULL, Postprocessing::InitializeForNewMap,	Postprocessing::DisposeFromOldMap,	Postprocessing::Update},
+	{
+		Rasterizer::PostProcessing::Initialize,
+		Rasterizer::PostProcessing::Dispose,
+		NULL,
+		Rasterizer::PostProcessing::InitializeForNewMap,
+		Rasterizer::PostProcessing::DisposeFromOldMap,
+		Rasterizer::PostProcessing::Update
+	},
 	{Camera::Initialize,							Camera::Dispose},
 #endif
 {Networking::VersionCheck::Initialize,				Networking::VersionCheck::Dispose,	NULL, Networking::VersionCheck::InitializeForNewMap, NULL, Networking::VersionCheck::Update},

@@ -1,20 +1,8 @@
 /*
-    Yelo: Open Sauce SDK
+	Yelo: Open Sauce SDK
 		Halo 1 (CE) Edition
-    Copyright (C) 2005-2010  Kornner Studios (http://kornner.com)
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	See license\OpenSauce\Halo1_CE for specific license information
 */
 
 static void* scripting_structure_bsp_lightmap_reset_evaluate()
@@ -146,50 +134,52 @@ static void InitializeMiscFunctions()
 		scripting_abs_real_evaluate);
 
 #if !PLATFORM_IS_DEDI
-	InitializeScriptFunction(Enums::_hs_function_pp_load, 
-		Postprocessing::HS_Load);
-	InitializeScriptFunction(Enums::_hs_function_pp_unload, 
-		Postprocessing::HS_Unload);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_set_effect_active, 
-		Postprocessing::HS_SetEffectActive);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_set_effect_fade, 
-		Postprocessing::HS_SetEffectFade);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_get_effect_index_by_name, 
-		Postprocessing::HS_GetEffectIndexByName);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_get_effect_current_fade, 
-		Postprocessing::HS_GetEffectCurrentFade);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_get_effect_fade_direction, 
-		Postprocessing::HS_GetEffectFadeDirection);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_get_effect_is_valid, 
-		Postprocessing::HS_GetEffectIsValid);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_get_effect_shader_variable_index_by_name, 
-		Postprocessing::HS_GetEffectShaderVariableIndexByName);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_set_effect_shader_variable_boolean, 
-		Postprocessing::HS_SetEffectShaderVariableBoolean);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_set_effect_shader_variable_integer, 
-		Postprocessing::HS_SetEffectShaderVariableInteger);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_set_effect_shader_variable_real, 
-		Postprocessing::HS_SetEffectShaderVariableReal);
+	InitializeScriptFunction(Enums::_hs_function_pp_load,
+		Rasterizer::PostProcessing::Scripting::HS_Load);
+	InitializeScriptFunction(Enums::_hs_function_pp_unload,
+		Rasterizer::PostProcessing::Scripting::HS_Unload);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_get_effect_instance_index_by_name,
+		Rasterizer::PostProcessing::Scripting::Internal::HS_GetEffectInstanceIndexByName);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_set_effect_instance_active,
+		Rasterizer::PostProcessing::Scripting::Internal::HS_SetEffectInstanceActive);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_set_effect_instance_fade,
+		Rasterizer::PostProcessing::Scripting::Internal::HS_SetEffectInstanceFade);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_get_effect_instance_current_fade,
+		Rasterizer::PostProcessing::Scripting::Internal::HS_GetEffectInstanceCurrentFade);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_get_effect_instance_fade_direction,
+		Rasterizer::PostProcessing::Scripting::Internal::HS_GetEffectInstanceFadeDirection);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_get_effect_index_by_name,
+		Rasterizer::PostProcessing::Scripting::Internal::HS_GetEffectIndexByName);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_get_effect_is_valid,
+		Rasterizer::PostProcessing::Scripting::Internal::HS_GetEffectIsValid);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_get_effect_shader_variable_index_by_name,
+		Rasterizer::PostProcessing::Scripting::Internal::HS_GetEffectShaderVariableIndexByName);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_set_effect_shader_variable_boolean,
+		Rasterizer::PostProcessing::Scripting::Internal::HS_SetEffectShaderVariableBoolean);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_set_effect_shader_variable_integer,
+		Rasterizer::PostProcessing::Scripting::Internal::HS_SetEffectShaderVariableInteger);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_set_effect_shader_variable_real,
+		Rasterizer::PostProcessing::Scripting::Internal::HS_SetEffectShaderVariableReal);
 	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_set_effect_shader_instance_active, 
-		Postprocessing::HS_SetEffectShaderInstanceActive);
+		Rasterizer::PostProcessing::Scripting::Internal::HS_SetEffectShaderInstanceActive);
 	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_bloom_set_size, 
-		Postprocessing::HS_BloomSetSize);
+		Rasterizer::PostProcessing::Scripting::Bloom::HS_BloomSetSize);
 	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_bloom_set_exposure, 
-		Postprocessing::HS_BloomSetExposure);
+		Rasterizer::PostProcessing::Scripting::Bloom::HS_BloomSetExposure);
 	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_bloom_set_mix_amount, 
-		Postprocessing::HS_BloomSetMixAmount);
+		Rasterizer::PostProcessing::Scripting::Bloom::HS_BloomSetMixAmount);
 	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_bloom_set_minimum_color, 
-		Postprocessing::HS_BloomSetMinimumColor);
+		Rasterizer::PostProcessing::Scripting::Bloom::HS_BloomSetMinimumColor);
 	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_bloom_set_maximum_color, 
-		Postprocessing::HS_BloomSetMaximumColor);
+		Rasterizer::PostProcessing::Scripting::Bloom::HS_BloomSetMaximumColor);
 #else
 	NullifyScriptFunction( GET_HS_FUNCTION(pp_load) );
 	NullifyScriptFunction( GET_HS_FUNCTION(pp_unload) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_active) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_fade) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_get_effect_index_by_name) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_get_effect_current_fade) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_get_effect_fade_direction) );
+	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_get_effect_instance_index_by_name) );
+	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_instance_active) );
+	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_instance_fade) );
+	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_get_effect_instance_current_fade) );
+	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_get_effect_instance_fade_direction) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_get_effect_is_valid) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_get_effect_shader_variable_index_by_name) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_shader_variable_boolean) );
