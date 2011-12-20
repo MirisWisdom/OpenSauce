@@ -6,7 +6,8 @@
 */
 #pragma once
 
-//#define _WIN32_WINNT 0x0400 // wtf, why do I even need to define this??
+#include <cseries/KillCxxExceptions.hpp>
+
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 

@@ -5,6 +5,10 @@
 */
 #pragma once
 
+// Force no C++ exceptions since we always build LowLevel as Debug (even for releases)
+#define YELO_KILL_CXX_EXCEPTIONS
+#include <cseries/KillCxxExceptions.hpp>
+
 // Path to the 360 SDK
 #define PATH_XEDK PATH_PROGRAM_FILES "\\Microsoft Xbox 360 SDK"
 
