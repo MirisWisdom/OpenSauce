@@ -35,7 +35,7 @@ namespace Yelo
 			// If the scenario is using upgraded script node sizes, clear it
 			// Users will need to recompile their scenario's scripts
 			tag_data& hs_syntax_data = scnr->hs_syntax_data;
-			if(hs_syntax_data.size > Scripting::GetTotalScenarioHsSyntaxData())
+			if((size_t)hs_syntax_data.size > Scripting::GetTotalScenarioHsSyntaxData())
 				tag_data_delete(hs_syntax_data); // TODO: does hs_syntax_data need to be initialized to GetTotalScenarioHsSyntaxData instead of just zero?
 		}
 

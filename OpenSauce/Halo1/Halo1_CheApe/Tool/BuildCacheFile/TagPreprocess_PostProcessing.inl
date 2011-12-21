@@ -7,7 +7,7 @@
 
 namespace PostProcessing
 {
-	static void SetQuadToDefaults(TagGroups::s_effect_postprocess_quad_definition& quad)
+	static void SetQuadToDefaults(datum_index tag_index, TagGroups::s_effect_postprocess_quad_definition& quad)
 	{
 		if (quad.tessellation.x == 0)
 			quad.tessellation.x = 4;
@@ -18,8 +18,9 @@ namespace PostProcessing
 		if (quad.y_bounds.upper == 0)
 			quad.y_bounds.upper = 1;
 
-		if((quad.x_bounds.lower > quad.x_bounds.upper) || (quad.y_bounds.lower > quad.y_bounds.upper))
-			YELO_ERROR(_error_message_priority_warning, "warning: a post processing quads lower bound is higher than its upper bound");
+		if(quad.x_bounds.lower > quad.x_bounds.upper || quad.y_bounds.lower > quad.y_bounds.upper)
+			YELO_ERROR(_error_message_priority_warning, 
+			"warning: quads lower bound is higher than its upper bound in '%s'", (*TagGroups::TagInstances())[tag_index]->filename);
 	}
 
 	static bool shader_postprocess_generic_group_find_parameter(tag_string& test_string, Yelo::datum_index tag_index)
@@ -230,7 +231,7 @@ namespace PostProcessing
 
 		int i = 0;
 		// set quad to defaults
-		SetQuadToDefaults(definition->quad_definition);
+		SetQuadToDefaults(tag_index, definition->quad_definition);
 
 		// check the shaders block has at least one element with a shader referenced
 		if(!definition->shaders.Count)
@@ -328,7 +329,7 @@ namespace PostProcessing
 			}
 
 			// process the quads for default values
-			SetQuadToDefaults(instance.quad_definition);
+			SetQuadToDefaults(tag_index, instance.quad_definition);
 		}
 		return true;
 	}

@@ -40,11 +40,9 @@ namespace Yelo
 			
 			std::string search_path(Settings::Get().GetDataPath());
 
-			// append a folder divider if necessery
+			// append a folder divider if necessary
 			search_path.append(args->data_path);
-			std::string::reverse_iterator r_iter = search_path.rbegin();
-			if((*r_iter) != '\\')
-				search_path.append("\\");
+			StringEditing::AppendCharIfAbsent(search_path, '\\');
 
 			// add *.fx to finish the search filter
 			std::string search_filter(search_path);
@@ -54,14 +52,13 @@ namespace Yelo
 
 			// search for the first file that matches the filter
 			WIN32_FIND_DATA data;
-			HANDLE search_handle = FindFirstFile(search_filter.c_str(), &data);
+			HANDLE search_handle;			
 
 			// iterate through all matching files
-			do
+			for(search_handle = FindFirstFile(search_filter.c_str(), &data);
+				search_handle != INVALID_HANDLE_VALUE;
+				FindNextFile(search_handle, &data))
 			{
-				if(search_handle == INVALID_HANDLE_VALUE)
-					break;
-
 				std::string file_name(data.cFileName);
 
 				// build the shader files path
@@ -69,9 +66,7 @@ namespace Yelo
 				fx_path.append(file_name);
 
 				std::string tag_path(args->data_path);
-				r_iter = tag_path.rbegin();
-				if((*r_iter) != '\\')
-					tag_path.append("\\");
+				StringEditing::AppendCharIfAbsent(tag_path, '\\');
 				tag_path.append(file_name.c_str(), file_name.size() - 3);
 
 				// open the shader tag
@@ -100,7 +95,6 @@ namespace Yelo
 
 				safe_release(effect_compiler);
 			}
-			while(FindNextFile(search_handle, &data));
 			// close the search handle
 			FindClose(search_handle);
 

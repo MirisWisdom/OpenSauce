@@ -20,16 +20,18 @@ namespace Yelo
 			}flags;
 		}; BOOST_STATIC_ASSERT( sizeof(s_effect_postprocess_effect_activation_control) == 0x4);
 
-		//struct s_effect_postprocess_effect_fade_control
-		//{
-		//	TAG_FIELD(_enum, value);
-		//	struct _flags {
-		//		TAG_FLAG16(invert);
-		//	}flags;
+#if 0
+		struct s_effect_postprocess_effect_fade_control
+		{
+			TAG_FIELD(_enum, value);
+			struct _flags {
+				TAG_FLAG16(invert);
+			}flags;
 
-		//	TAG_FIELD(real_bounds, value_map);
-		//	PAD32;
-		//}; BOOST_STATIC_ASSERT( sizeof(s_effect_postprocess_effect_fade_control) == 0x10);
+			TAG_FIELD(real_bounds, value_map);
+			PAD32;
+		}; BOOST_STATIC_ASSERT( sizeof(s_effect_postprocess_effect_fade_control) == 0x10);
+#endif
 
 		struct s_effect_postprocess_generic_effect_instance
 		{
@@ -38,9 +40,14 @@ namespace Yelo
 			TAG_ENUM(render_stage, Enums::postprocess_render_stage);
 			TAG_FIELD(s_effect_postprocess_quad_definition, quad_definition);
 			TAG_FIELD(_enum, activation_operation);
-			TAG_PAD(byte, 6);
+			PAD16;
+			PAD32;
 			TAG_TBLOCK_(activation_controls, s_effect_postprocess_effect_activation_control);
-			TAG_PAD(byte, 12); //TAG_TBLOCK_(fade_controls, s_effect_postprocess_effect_fade_control);
+#if 0
+			TAG_TBLOCK_(fade_controls, s_effect_postprocess_effect_fade_control);
+#else
+			TAG_PAD(tag_block, 1);
+#endif
 			TAG_PAD(byte, 16);
 		}; BOOST_STATIC_ASSERT( sizeof(s_effect_postprocess_generic_effect_instance) == 0x74 );
 
