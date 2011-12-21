@@ -2541,11 +2541,11 @@
 					Name="shader_postprocess"
 					>
 					<File
-						RelativePath="..\..\shared\Include\Blam\Halo1\shader_postprocess\shader_postprocess_collection_definitions.hpp"
+						RelativePath="..\..\shared\Include\Blam\Halo1\shader_postprocess\effect_postprocess_collection_definitions.hpp"
 						>
 					</File>
 					<File
-						RelativePath="..\..\shared\Include\Blam\Halo1\shader_postprocess\shader_postprocess_effect_generic_definitions.hpp"
+						RelativePath="..\..\shared\Include\Blam\Halo1\shader_postprocess\effect_postprocess_generic_definitions.hpp"
 						>
 					</File>
 					<File
