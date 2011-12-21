@@ -8,3 +8,7 @@ Contains code which uses GameSpy OpenSDK (http://www.poweredbygamespy.com)
 	Register with GS to gain access to their SDK for free.
 
 Contains binary references to SevenZipSharp (http://sevenzipsharp.codeplex.com/)
+
+Contains 'slist', Copyright (c) 1997 Silicon Graphics Computer Systems, Inc.
+
+Contains TinyXML (http://www.sourceforge.net/projects/tinyxml)
