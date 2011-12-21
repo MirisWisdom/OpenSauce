@@ -28,5 +28,18 @@ namespace Yelo
 			const DWORD max_length,
 			const DWORD start_segment_length,
 			const char* seperator = "...");
+
+		// Appends the char [c] if [str] doesn't already end with it
+		template<class _Elem, class _Traits, class _Ax>
+		void AppendCharIfAbsent(
+			std::basic_string<_Elem, _Traits, _Ax>& str,
+			_Elem c)
+		{
+			typedef std::basic_string<_Elem, _Traits, _Ax> string_type;
+
+			string_type::reverse_iterator r_iter = str.rbegin();
+			if(*r_iter != c)
+				str.append(1, c);
+		}
 	};
 };
