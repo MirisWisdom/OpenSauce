@@ -72,8 +72,8 @@ namespace Yelo
 	{
 		int i = 0;
 
-		ILinkedListObject* current = *list_head;
-		while(current && current->GetNext() && (i < index))
+		ILinkedListObject* current;
+		for(current = *list_head; current && current->GetNext() && (i < index); i++)
 			current = current->GetNext();
 
 		if(i != index)

@@ -25,7 +25,7 @@
 			<File Id='Halo1_CE_OpenSauceDedi_FILE' Name='OpenSauceDedi.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Dedi\Halo1_CE\OpenSauceDedi.dll' KeyPath='yes'/>
 		</Component>
 
-		<?ifdef DEBUG?>
+		<?ifdef SYMBOLS?>
 		<Component Id='Halo1_CE_d3d9109_PDB_COMP' Guid='6919365B-416E-4151-B677-6271E56D1597'>
 			<File Id='Halo1_CE_d3d9109_PDB_FILE' Name='d3d9.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\Halo1_CE\d3d9.pdb' KeyPath='yes' />
 		</Component>
@@ -146,7 +146,7 @@
 			<File Id='Halo1_CE_CheApeDLLT_FILE' Name='CheApeDLLT.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Tool\Halo1_CheApe\CheApeDLLT.dll' KeyPath='yes' />
 		</Component>
 
-		<?ifdef DEBUG?>
+		<?ifdef SYMBOLS?>
 		<Component Id='Halo1_CE_CheApeDLLG_PDB_COMP' Guid='0074F5F4-C0CB-407f-9D93-716759472D4D'>
 			<File Id='Halo1_CE_CheApeDLLG_PDB_FILE' Name='CheApeDLLG.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Guerilla\Halo1_CheApe\CheApeDLLG.pdb' KeyPath='yes' />
 		</Component>

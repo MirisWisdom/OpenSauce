@@ -173,11 +173,10 @@ namespace Yelo
 					current->SetShaderInstanceVariables();
 					// render the shader using the effects quad instance
 					hr = current->GetShader()->Render(render_device, render_quad);
+
+					if(FAILED(hr)) break;
 				}
-
 				current = CAST_PTR(c_shader_instance*, current->GetNext());
-
-				if(FAILED(hr)) break;
 			}
 
 			// if the fade amount is less than 1.0f, fade the effects result
