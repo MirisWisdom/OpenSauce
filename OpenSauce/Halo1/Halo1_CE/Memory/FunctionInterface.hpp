@@ -52,7 +52,7 @@ namespace Yelo
 				if(TBlockPreprocessCount == 0) return;
 
 				const function_process_proc* proc = &TBlockPreprocess[0];
-				for(int32 x = 0; x < TBlockPreprocessCount; proc++, x++)
+				for(size_t x = 0; x < TBlockPreprocessCount; proc++, x++)
 					if(proc != NULL)
 						(*proc)();
 			}
@@ -61,7 +61,7 @@ namespace Yelo
 				if(TBlockPostprocessCount == 0) return;
 
 				const function_process_proc* proc = &TBlockPostprocess[0];
-				for(int32 x = 0; x < TBlockPostprocessCount; proc++, x++)
+				for(size_t x = 0; x < TBlockPostprocessCount; proc++, x++)
 					if(proc != NULL)
 						(*proc)();
 			}

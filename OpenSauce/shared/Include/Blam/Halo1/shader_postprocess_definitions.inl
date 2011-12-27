@@ -67,6 +67,8 @@ namespace Yelo
 			}
 		}
 
+#pragma warning( push )
+#pragma warning( disable : 6326 ) // Potential comparison of a constant with another constant
 		template<Enums::shader_variable_base_type TType, size_t TCount>
 		void s_shader_postprocess_shader_variable<TType, TCount>::
 			SetVariableInterp(LPD3DXEFFECT effect, const void* data1, const void* data2, const real* interp_values)
@@ -162,6 +164,7 @@ namespace Yelo
 				break;
 			}
 		}
+#pragma warning( pop )
 #endif
 	};
 };
