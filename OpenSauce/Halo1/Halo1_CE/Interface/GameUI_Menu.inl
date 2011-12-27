@@ -54,7 +54,7 @@ namespace Yelo
 
 			void WaitForReturn(bool (API_FUNC* AdjustSettings)())
 			{
-				Hud::_hud_globals.ShowCrosshair(false);
+				Hud::ShowCrosshair() = false;
 				Input::AllowMovement(false);
 
 				bool is_done = AdjustSettings();
@@ -65,7 +65,7 @@ namespace Yelo
 					Input::IsInMenu() || Input::IsInChat())
 				{
 					Settings::SaveSettings();
-					Hud::_hud_globals.ShowCrosshair(true);
+					Hud::ShowCrosshair() = true;
 					selection = Enums::_settings_menu_on;
 					returning = true;
 				}

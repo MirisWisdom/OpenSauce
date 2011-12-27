@@ -348,7 +348,10 @@ namespace Yelo
 		void Initialize();
 		void Dispose();
 
-		bool HudIsScaled();
+		void Update();
+
+		bool& ScaleHUD();
+		bool& ShowCrosshair();
 		void* HudGlobals(); // get the hud_globals tag definition
 
 		bool AdjustSettings();
@@ -356,8 +359,6 @@ namespace Yelo
 		void SaveSettings(TiXmlElement* hud_element);
 
 #if defined(DX_WRAPPER) // TODO: Need fallback initialization for when we're not using the DX_WRAPPER
-		void Scale(void* ref_ptr, void *pVertexStreamZeroData);
-
 		void Initialize3D(IDirect3DDevice9 *pDevice, D3DPRESENT_PARAMETERS *pPP);
 		void OnLostDevice();
 		void OnResetDevice(D3DPRESENT_PARAMETERS *pPP);

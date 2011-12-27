@@ -136,6 +136,7 @@ namespace Yelo
 
 		void PLATFORM_API Update()
 		{
+			Hud::Update();
 			HudHideInterfaceElementsUpdate();
 		}
 

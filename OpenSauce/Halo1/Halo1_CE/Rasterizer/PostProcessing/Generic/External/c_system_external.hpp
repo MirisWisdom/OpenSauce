@@ -171,7 +171,7 @@ namespace Yelo
 			/////////////////////////////////////////////////
 			// IPostProcessingRenderable
 		public:
-			bool Render(Enums::pp_render_stage render_stage);
+			bool Render(Enums::postprocess_render_stage render_stage);
 
 			/////////////////////////////////////////////////
 			// IPostProcessingUpdatable
@@ -246,7 +246,7 @@ namespace Yelo
 
 			void SetupRenderSets();
 			void ClearRenderSets();
-			void SetRenderSet(c_effect_render_set& set, Enums::pp_render_stage render_stage);
+			void SetRenderSet(c_effect_render_set& set, Enums::postprocess_render_stage render_stage);
 
 			void ValidateSystem();
 

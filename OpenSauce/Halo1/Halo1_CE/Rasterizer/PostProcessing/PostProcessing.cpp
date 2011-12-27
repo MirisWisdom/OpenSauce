@@ -377,24 +377,24 @@ namespace Yelo
 		{
 			c_post_processing_main::Instance().PollUpdate();
 
-			RenderSystems(Enums::pp_render_stage_pre_blur);
-			RenderSystems(Enums::pp_render_stage_blur);
-			RenderSystems(Enums::pp_render_stage_pre_alpha_blended);
+			RenderSystems(Enums::_postprocess_render_stage_pre_blur);
+			RenderSystems(Enums::_postprocess_render_stage_blur);
+			RenderSystems(Enums::_postprocess_render_stage_pre_alpha_blended);
 		}
 
 		void		RenderPreHUD()
 		{
-			RenderSystems(Enums::pp_render_stage_pre_hud);
+			RenderSystems(Enums::_postprocess_render_stage_pre_hud);
 		}
 
 		void		RenderPreMenu() 
 		{
-			RenderSystems(Enums::pp_render_stage_pre_menu);
+			RenderSystems(Enums::_postprocess_render_stage_pre_ui);
 		}
 
 		void		RenderPostMenu() 
 		{
-			RenderSystems(Enums::pp_render_stage_post_menu);
+			RenderSystems(Enums::_postprocess_render_stage_post_ui);
 		}
 
 		/*!
@@ -469,7 +469,7 @@ namespace Yelo
 		 * 
 		 * Applies all of the subsystems at a specified render stage.
 		 */
-		void		RenderSystems(Enums::pp_render_stage render_stage)
+		void		RenderSystems(Enums::postprocess_render_stage render_stage)
 		{
 			// return if the system is not ready
 			if(!c_post_processing_main::Instance().IsReady()) return;

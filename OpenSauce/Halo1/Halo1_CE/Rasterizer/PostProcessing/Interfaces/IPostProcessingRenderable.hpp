@@ -16,7 +16,7 @@ namespace Yelo
 		interface IPostProcessingRenderable
 			abstract
 		{
-			virtual bool Render(Enums::pp_render_stage render_stage) { return false; }
+			virtual bool Render(Enums::postprocess_render_stage render_stage) { return false; }
 		};
 	};};
 };

@@ -52,12 +52,13 @@ namespace Yelo
 
 			// search for the first file that matches the filter
 			WIN32_FIND_DATA data;
-			HANDLE search_handle;			
+			HANDLE search_handle;
+			BOOL find_success = TRUE;
 
 			// iterate through all matching files
 			for(search_handle = FindFirstFile(search_filter.c_str(), &data);
-				search_handle != INVALID_HANDLE_VALUE;
-				FindNextFile(search_handle, &data))
+				(search_handle != INVALID_HANDLE_VALUE) && find_success;
+				find_success = FindNextFile(search_handle, &data))
 			{
 				std::string file_name(data.cFileName);
 
