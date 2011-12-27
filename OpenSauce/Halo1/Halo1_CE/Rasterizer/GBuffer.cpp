@@ -535,7 +535,7 @@ skip_disable_velocity:
 			Memory::WriteRelativeJmp(&Hook_RenderObjectsTransparent,
 				GET_FUNC_VPTR(RENDER_WINDOW_CALL_RENDER_OBJECTS_TRANSPARENT_HOOK), true);
 
-			char NOP = 0x90;
+			byte NOP = 0x90;
 			byte* call_address;
 
 			call_address = CAST_PTR(byte*, GET_FUNC_VPTR(RASTERIZER_DRAW_STATIC_TRIANGLES_STATIC_VERTICES__DRAW_INDEXED_PRIMITIVE_HOOK));
