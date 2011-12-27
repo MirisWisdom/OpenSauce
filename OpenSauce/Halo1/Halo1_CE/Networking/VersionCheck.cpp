@@ -389,13 +389,13 @@ namespace Yelo
 				TiXmlElement* server_list = root->FirstChildElement("server_list");
 				if(server_list)
 				{
-					int version = 0;
-					const char* attribute = server_list->Attribute("version", &version);
+					int source_server_list_version = 0;
+					const char* attribute = server_list->Attribute("version", &source_server_list_version);
 
 					// if the list version is newer, update the xml locations
-					if(attribute && (server_list_version < version))
+					if(attribute && (server_list_version < source_server_list_version))
 					{
-						server_list_version = version;
+						server_list_version = source_server_list_version;
 
 						LoadXmlServers(server_list);
 					}

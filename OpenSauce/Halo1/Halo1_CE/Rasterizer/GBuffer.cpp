@@ -535,7 +535,7 @@ skip_disable_velocity:
 			Memory::WriteRelativeJmp(&Hook_RenderObjectsTransparent,
 				GET_FUNC_VPTR(RENDER_WINDOW_CALL_RENDER_OBJECTS_TRANSPARENT_HOOK), true);
 
-			byte NOP = 0x90;
+			char NOP = 0x90;
 			byte* call_address;
 
 			call_address = CAST_PTR(byte*, GET_FUNC_VPTR(RASTERIZER_DRAW_STATIC_TRIANGLES_STATIC_VERTICES__DRAW_INDEXED_PRIMITIVE_HOOK));
@@ -843,7 +843,7 @@ skip_disable_velocity:
 
 		HRESULT		c_gbuffer_system::DrawIndexedPrimitive_Impl(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type, INT BaseVertexIndex, UINT MinVertexIndex, UINT NumVertices, UINT startIndex, UINT primCount)
 		{
-			HRESULT hr = S_OK;
+			HRESULT hr;
 
 			UINT cPasses, p;
 			m_gbuffer_vs->Begin(NULL,0);
@@ -956,12 +956,7 @@ skip_disable_velocity:
 				Objects::s_object_header_datum& object_header = (*Objects::ObjectHeader())[g_object_index];
 
 				TeamIndex = *object_header._object->GetOwnerTeamIndex() + 1;
-				if(TeamIndex == NONE)
-					TeamIndex = 0;
-
 				MeshIndex = object_header.object_type + 3;
-				if(MeshIndex == NONE)
-					MeshIndex = 0;
 
 				if(GameEngine::Current() != NULL)	// becomes non-null during multiplayer
 					TeamIndex += 9;					// Offset TeamIndex by 9 for MP teams
