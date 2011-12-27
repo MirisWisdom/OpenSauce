@@ -843,7 +843,7 @@ skip_disable_velocity:
 
 		HRESULT		c_gbuffer_system::DrawIndexedPrimitive_Impl(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type, INT BaseVertexIndex, UINT MinVertexIndex, UINT NumVertices, UINT startIndex, UINT primCount)
 		{
-			HRESULT hr;
+			HRESULT hr = S_OK;
 
 			UINT cPasses, p;
 			m_gbuffer_vs->Begin(NULL,0);

@@ -95,7 +95,7 @@ namespace Yelo
 		bool TagVersioningIsValid() const
 		{
 			return	tag_versioning.project_yellow == TagGroups::project_yellow::k_version &&
-					tag_versioning.project_yellow == TagGroups::project_yellow_globals::k_version;
+					tag_versioning.project_yellow_globals == TagGroups::project_yellow_globals::k_version;
 		}
 		// Is the yelo header valid?
 		bool IsValid() const

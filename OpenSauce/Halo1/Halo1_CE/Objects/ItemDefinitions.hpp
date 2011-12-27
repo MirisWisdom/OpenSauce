@@ -59,10 +59,10 @@ namespace Yelo
 		{
 			enum { DATA_OFFSET = Enums::k_object_size_object, };
 
-			TStructGetPtrImpl(long_flags,				Flags, 0x1F4);
+			TStructSubGetPtrImpl(long_flags,			Flags, 0x1F4);
 			//TStructSubGetPtrImpl(s_scenario_location,	, 0x1F8);
 			//TStructSubGetPtrImpl(datum_index,					, 0x200); // object index
-			TStructGetPtrImpl(uint32,				LastUpdateTime, 0x204);
+			TStructSubGetPtrImpl(uint32,				LastUpdateTime, 0x204);
 			//TStructSubGetPtrImpl(datum_index,					, 0x208); // object index
 			//TStructSubGetPtrImpl(real_point3d,				, 0x20C);
 			//TStructSubGetPtrImpl(real_vector3d,				, 0x218);
@@ -115,8 +115,8 @@ namespace Yelo
 				int16 starting_loaded_rounds[Enums::k_maximum_number_of_magazines_per_weapon];
 			}; BOOST_STATIC_ASSERT( sizeof(s_start_reload_data) == 0x8 );
 
-			TStructGetPtrImpl(long_flags,						Flags, 0x22C);
-			TStructGetPtrImpl(word_flags,						OwnerFlags, 0x230); // owner being the controlling unit
+			TStructSubGetPtrImpl(long_flags,					Flags, 0x22C);
+			TStructSubGetPtrImpl(word_flags,					OwnerFlags, 0x230); // owner being the controlling unit
 			// 0x232 PAD16
 			TStructSubGetPtrImpl(real,							PrimaryTrigger, 0x234);
 			TStructSubGetPtrImpl(Enums::weapon_state,			WeaponState, 0x238);

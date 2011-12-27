@@ -40,7 +40,7 @@ namespace Yelo
 			va_start(argptr, format);
 
 			// get the required length of the buffer and create it
-			size_t length = (size_t)vsnprintf(NULL, 0, format, argptr) + 1; 
+			size_t length = (size_t)_vscprintf(format, argptr) + 1; 
 			char* buffer = new char[length];
 			memset(buffer, 0, length);
 
