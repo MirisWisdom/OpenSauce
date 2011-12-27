@@ -70,7 +70,7 @@ namespace Yelo
 			/////////////////////////////////////////////////
 			// IPostProcessingRenderable
 		public:
-			bool Render(Enums::pp_render_stage render_stage);
+			bool Render(Enums::postprocess_render_stage render_stage);
 
 			/////////////////////////////////////////////////
 			// IPostProcessingUserSettings

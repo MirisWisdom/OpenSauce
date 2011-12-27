@@ -21,6 +21,7 @@ namespace Yelo
 			_postprocess_render_stage_pre_hud,
 			_postprocess_render_stage_pre_ui,
 			_postprocess_render_stage_post_ui,
+			_postprocess_render_stage_blur,
 
 			_postprocess_render_stage
 		};

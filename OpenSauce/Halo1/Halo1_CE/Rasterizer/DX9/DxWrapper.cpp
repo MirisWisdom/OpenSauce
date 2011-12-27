@@ -224,12 +224,7 @@ HRESULT Yelo_IDirect3DDevice9::DrawPrimitive(D3DPRIMITIVETYPE PrimitiveType, UIN
 { return Yelo_pD3DDevice->DrawPrimitive(PrimitiveType, StartVertex, PrimitiveCount); }
 
 HRESULT Yelo_IDirect3DDevice9::DrawPrimitiveUP(D3DPRIMITIVETYPE PrimitiveType, UINT PrimitiveCount, CONST void *pVertexStreamZeroData, UINT VertexStreamZeroStride) 
-{
-	if(Yelo::Memory::IsYeloEnabled())
-		Yelo::Hud::Scale(_ReturnAddress(), CAST_QUAL(void*, pVertexStreamZeroData));
-
-	return Yelo_pD3DDevice->DrawPrimitiveUP(PrimitiveType, PrimitiveCount, pVertexStreamZeroData, VertexStreamZeroStride);
-}
+{ return Yelo_pD3DDevice->DrawPrimitiveUP(PrimitiveType, PrimitiveCount, pVertexStreamZeroData, VertexStreamZeroStride); }
 
 HRESULT Yelo_IDirect3DDevice9::BeginScene() 
 {

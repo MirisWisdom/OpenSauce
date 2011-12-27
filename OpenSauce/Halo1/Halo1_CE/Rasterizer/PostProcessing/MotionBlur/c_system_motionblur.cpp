@@ -231,12 +231,12 @@ namespace Yelo
 
 		/////////////////////////////////////////////////
 		// IPostProcessingRenderable
-		bool c_system_motionblur::Render(Enums::pp_render_stage render_stage)
+		bool c_system_motionblur::Render(Enums::postprocess_render_stage render_stage)
 		{
 			bool applied = false;
 			do
 			{
-				if(render_stage != Enums::pp_render_stage_blur) break;
+				if(render_stage != Enums::_postprocess_render_stage_blur) break;
 				if(!m_members.m_flags.is_enabled) break;
 
 				applied = Render(c_post_processing_main::Instance().Globals().render_device);

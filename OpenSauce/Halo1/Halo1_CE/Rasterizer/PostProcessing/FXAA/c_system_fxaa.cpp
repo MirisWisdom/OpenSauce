@@ -206,9 +206,9 @@ namespace Yelo
 
 		/////////////////////////////////////////////////
 		// IPostProcessingRenderable
-		bool c_system_fxaa::Render(Enums::pp_render_stage render_stage)
+		bool c_system_fxaa::Render(Enums::postprocess_render_stage render_stage)
 		{
-			if(!m_members.m_flags.is_enabled || (render_stage != Enums::pp_render_stage_pre_hud))
+			if(!m_members.m_flags.is_enabled || (render_stage != Enums::_postprocess_render_stage_pre_hud))
 				return false;
 
 			return Render(c_post_processing_main::Instance().Globals().render_device);

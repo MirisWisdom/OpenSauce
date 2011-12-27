@@ -7,6 +7,7 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
+#include <Blam/Halo1/shader_postprocess_definitions.hpp>
 
 //#define EXTERNAL_SUBSYSTEM_SHADERS
 
@@ -21,17 +22,6 @@ namespace Yelo
 			pp_component_status_initialisation_failed,
 
 			_pp_component_status
-		};
-		enum pp_render_stage : uint32
-		{
-			pp_render_stage_pre_blur,
-			pp_render_stage_pre_alpha_blended,
-			pp_render_stage_pre_hud,
-			pp_render_stage_pre_menu,
-			pp_render_stage_post_menu,
-			pp_render_stage_blur,
-
-			_pp_render_stage,
 		};
 	};
 	namespace Rasterizer { namespace PostProcessing
@@ -96,7 +86,7 @@ namespace Yelo
 		void		LoadSystem();
 		void		UnloadSystem();
 
-		void		RenderSystems(Enums::pp_render_stage render_stage);
+		void		RenderSystems(Enums::postprocess_render_stage render_stage);
 	};};
 };
 #endif

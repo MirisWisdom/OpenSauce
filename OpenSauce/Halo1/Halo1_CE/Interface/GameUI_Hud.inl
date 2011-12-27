@@ -14,205 +14,227 @@ namespace Yelo
 	namespace Hud
 	{
 		struct s_hud_globals {
-			bool show_hud;
-			bool scale_hud;
-			bool show_chat;		// not supported anymore, as Battery implementation interfered with chat-logging
-			bool show_kills;	// not supported anymore, as Battery implementation interfered with chat-logging
-			bool show_kd_msg;	// supplied Battery source didn't include this wtf...(not implemented)
-
-			bool show_crosshair;
-			PAD16;
-
-			TextBlock* menu;
 			struct {
-				int32 width, height;
-			}screen;
+				bool show_hud;
+				bool scale_hud;
+				bool show_crosshair;
+				bool enable_scaling;
+			}m_flags;
 
-			struct {
-				bool is_anchor;
-				bool is_defined;
-				PAD16;
-				real_point2d scale, anchor;
-			}anchor;
+			TextBlock* m_menu_text;
 
-			void Dispose()
-			{
-				if(menu != NULL)
-				{
-					delete menu;
-					menu = NULL;
-				}
-			}
-
-			void InitializeToDefaultSettings()
-			{
-				show_hud = true;
-				scale_hud = false;
-				show_chat = true;
-				show_kills = false;
-				show_kd_msg = false;
-			}
-
-			static void ShowCrosshair(bool visible)
-			{
-				static uint16 opcode_jz = 0x840F;
-				static uint16 opcode_jmp = 0xE990; // little-endian hack: nop, jmp
-				Memory::WriteMemory(GET_FUNC_VPTR(RENDER_CROSSHAIRS_DISABLE_MOD), visible ? &opcode_jz : &opcode_jmp, sizeof(uint16));
-			}
-
-			//////////////////////////////////////////////////////////////////////////
-			// show_hud
-			static void ShowHud(bool visible)
-			{
-				Memory::FunctionProcessRenderHudIsDisabled() = !visible;
-			}
-
-			//////////////////////////////////////////////////////////////////////////
-			// scale_hud
-			void UpdateScale()
-			{
-				anchor.scale.x = 1;
-				anchor.scale.y = 1;
-
-				const real old_ratio = (real)4/3;
-				real new_ratio = (real)screen.width/screen.height;
-
-				if (new_ratio > old_ratio)
-					anchor.scale.x = old_ratio / new_ratio;
-				else
-					anchor.scale.y = new_ratio / old_ratio;
-			}
-
-			void Scale(void* ref_ptr, void *pVertexStreamZeroData)
-			{
-				if (!scale_hud) return;
-
-				//////////////////////////////////////////////////////////////////////////
-				// Check to see if the callee address is one of the ones we're expecting
-				// K_SCALE_ALLOWED_REFS are actually return addresses, and thus so is [ref_ptr]
-				bool good_ref = false;
-				for (int32 i = 0; !good_ref && i < NUMBEROF(K_SCALE_ALLOWED_REFS); i++)
-					if (ref_ptr == K_SCALE_ALLOWED_REFS[i])
-						good_ref = true;
-
-				if (!good_ref) return;
-				//////////////////////////////////////////////////////////////////////////
-
-				const size_t k_vertices_count = 4;
-				TEXTURE_VERTEX* vertices = CAST_PTR(TEXTURE_VERTEX*,pVertexStreamZeroData);
-
-				// allow fullscreen textures to be stretched (except the Halo title logo)
-				if (vertices[0].x == 0 && vertices[2].x == 640 &&
-					vertices[0].y != 28 && vertices[2].y != 284)
-					return;
-
-				if (anchor.is_anchor)
-				{
-					// scale size and maintain position (i.e. navpoints)
-					if (!anchor.is_defined)
-					{
-						anchor.anchor.x = 0;
-						anchor.anchor.y = 0;
-						for (int32 i = 0; i < k_vertices_count; i++)
-						{
-							anchor.anchor.x += vertices[i].x;
-							anchor.anchor.y += vertices[i].y;
-						}
-						anchor.anchor.x /= 4;
-						anchor.anchor.y /= 4;
-
-						anchor.is_defined = true;
-					}
-
-					for (int32 i = 0; i < k_vertices_count; i++)
-					{
-						vertices[i].x = anchor.anchor.x - (anchor.anchor.x - vertices[i].x) * anchor.scale.x;
-						vertices[i].y = anchor.anchor.y - (anchor.anchor.y - vertices[i].y) * anchor.scale.y;
-					}
-				}
-				else
-				{
-					// scale size and center position (i.e. non-navpoints)
-					real shift_x = 640/2 * (1-anchor.scale.x);
-					real shift_y = 480/2 * (1-anchor.scale.y);
-
-					for (int32 i = 0; i < k_vertices_count; i++)
-					{
-						vertices[i].x *= anchor.scale.x;
-						vertices[i].y *= anchor.scale.y;
-						vertices[i].x += shift_x;
-						vertices[i].y += shift_y;
-					}
-				}
-			}
-
-			//////////////////////////////////////////////////////////////////////////
-			// show_kd_msg
-
-		}_hud_globals = {
-			true, false, true, false, false,
-			true,
-
-			NULL,
-			{0,0},
-
-			{
-				false, false,
-				{.0f, .0f},
-				{.0f, .0f},
-			},
+			D3DXMATRIX m_scale_matrix;
 		};
+		static s_hud_globals g_hud_globals;
 
+		bool& ScaleHUD() { return g_hud_globals.m_flags.scale_hud; }
+		bool& ShowCrosshair() { return g_hud_globals.m_flags.show_crosshair; }
 
-#pragma region render nav point
+		void* HudGlobals() DPTR_IMP_GET2(hud_globals);
+
+		// disable scaling when drawing screen space position arrows
 		API_FUNC_NAKED static void PLATFORM_API GAME_ENGINE_RENDER_NAV_POINTS_CALL_RENDER_NAV_POINT()
 		{
-			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(RENDER_NAV_POINT);
-			static uint32 jmp_back = GET_FUNC_PTR(GAME_ENGINE_RENDER_NAV_POINTS_CALL_HOOK_RENDER_NAV_POINT)+5;
+			static uint32 CALL_ADDR = GET_FUNC_PTR(RENDER_NAV_POINT);
+			static uint32 RETN_ADDRESS = GET_FUNC_PTR(GAME_ENGINE_RENDER_NAV_POINTS_CALL_HOOK_RENDER_NAV_POINT)+5;
 
 			__asm {
-				mov		_hud_globals.anchor.is_anchor, 1
-				mov		_hud_globals.anchor.is_defined, 0
-				call	TEMP_CALL_ADDR
-				mov		_hud_globals.anchor.is_anchor, 0
-				jmp		jmp_back // jmp back to GAME_ENGINE_RENDER_NAV_POINTS
+				mov		g_hud_globals.m_flags.enable_scaling, 0
+				call	CALL_ADDR
+				mov		g_hud_globals.m_flags.enable_scaling, 1
+				jmp		RETN_ADDRESS
 			}
 		}
-
 
 		API_FUNC_NAKED static void PLATFORM_API HUD_RENDER_NAV_POINTS_CALL_RENDER_NAV_POINT()
 		{
-			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(RENDER_NAV_POINT);
-			static uint32 jmp_back = GET_FUNC_PTR(HUD_RENDER_NAV_POINTS_CALL_HOOK_RENDER_NAV_POINT)+5;
+			static uint32 CALL_ADDR = GET_FUNC_PTR(RENDER_NAV_POINT);
+			static uint32 RETN_ADDRESS = GET_FUNC_PTR(HUD_RENDER_NAV_POINTS_CALL_HOOK_RENDER_NAV_POINT)+5;
 
 			__asm {
-				mov		_hud_globals.anchor.is_anchor, 1
-				mov		_hud_globals.anchor.is_defined, 0
-				call	TEMP_CALL_ADDR
-				mov		_hud_globals.anchor.is_anchor, 0
-				jmp		jmp_back // jmp back to HUD_RENDER_NAV_POINTS
+				mov		g_hud_globals.m_flags.enable_scaling, 0
+				call	CALL_ADDR
+				mov		g_hud_globals.m_flags.enable_scaling, 1
+				jmp		RETN_ADDRESS
 			}
 		}
-#pragma endregion
 
-#pragma region render team indicator
 		static void PLATFORM_API HUD_DRAW_PLAYERS_CALL_HUD_DRAW_FRIENDLY_INDICATOR()
 		{
 			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(HUD_DRAW_FRIENDLY_INDICATOR);
 
-			_hud_globals.anchor.is_anchor = true;
-			_hud_globals.anchor.is_defined = false;
+			g_hud_globals.m_flags.enable_scaling = false;
 			__asm call	TEMP_CALL_ADDR
-			_hud_globals.anchor.is_anchor = false;
+			g_hud_globals.m_flags.enable_scaling = true;
 		}
-#pragma endregion
 
+		// disable scaling when drawing the cinematic black bars
+		static void PLATFORM_API RASTERIZER_RENDER_WIDGET_CALL_CINEMATIC_RENDER()
+		{
+			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(CINEMATIC_RENDER);
+
+			g_hud_globals.m_flags.enable_scaling = false;
+			__asm call	TEMP_CALL_ADDR
+			g_hud_globals.m_flags.enable_scaling = true;
+		}
+
+		// disable scaling when drawing the loading UI
+		static void PLATFORM_API RASTERIZER_RENDER_WIDGET_CALL_DRAW_LOADING_UI()
+		{
+			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(DRAW_LOADING_UI);
+
+			g_hud_globals.m_flags.enable_scaling = false;
+			__asm call	TEMP_CALL_ADDR
+			g_hud_globals.m_flags.enable_scaling = true;
+		}
+
+		// disable scaling when drawing full screen UI widgets
+		API_FUNC_NAKED static void PLATFORM_API HOOK_RASTERIZER_RENDER_WIDGET_UI_WIDGET_BOUNDS()
+		{
+			static rectangle2d* WIDGET_BOUNDS = NULL;
+			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_RENDER_WIDGET_UI_WIDGET_BOUNDS_HOOK_RETN);
+
+			_asm {
+				mov		esi, [eax+ecx+14h]
+				mov		eax, [ebp+30h]
+				mov		WIDGET_BOUNDS, esi
+				add		WIDGET_BOUNDS, 24h
+				pushad
+			};
+
+			// doing this all on one go results in an exception
+			g_hud_globals.m_flags.enable_scaling = (WIDGET_BOUNDS->right - WIDGET_BOUNDS->left != 640);// && (WIDGET_BOUNDS->bottom - WIDGET_BOUNDS->top != 480);
+			g_hud_globals.m_flags.enable_scaling &= (WIDGET_BOUNDS->bottom - WIDGET_BOUNDS->top != 480);
+
+			_asm {
+				popad
+				jmp		RETN_ADDRESS
+			};
+		}
+
+		static void SetMatrixScale(D3DXMATRIX* original)
+		{
+			if(g_hud_globals.m_flags.scale_hud && g_hud_globals.m_flags.enable_scaling)
+			{
+				original->_11 = g_hud_globals.m_scale_matrix._11;
+				original->_14 = g_hud_globals.m_scale_matrix._14;
+				original->_22 = g_hud_globals.m_scale_matrix._22;
+				original->_24 = g_hud_globals.m_scale_matrix._24;
+			}
+		}
+
+		API_FUNC_NAKED static void HOOK_RENDER_WIDGET_SET_SCREENPROJ_MATRIX()
+		{
+			static D3DXMATRIX* original_matrix = NULL;
+			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RENDER_WIDGET_SET_SCREENPROJ_MATRIX_HOOK_RETN);
+
+			_asm
+			{
+				lea		edx, [esp+0ACh];
+				mov		original_matrix, edx;
+				pushad
+			}
+
+			SetMatrixScale(original_matrix);
+
+			_asm
+			{
+				popad
+				jmp		RETN_ADDRESS;
+			}
+		}
+
+		API_FUNC_NAKED static void HOOK_RENDER_TEXT_SET_SCREENPROJ_MATRIX()
+		{
+			static D3DXMATRIX* original_matrix = &GET_PTR(render_text_screenproj_matrix);
+			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RENDER_TEXT_SET_SCREENPROJ_MATRIX_HOOK_RETN);
+			
+			_asm
+			{
+				push	original_matrix
+				pushad
+			}
+
+			SetMatrixScale(original_matrix);
+
+			_asm
+			{
+				popad
+				jmp		RETN_ADDRESS;
+			}
+		}
+
+		API_FUNC_NAKED static void HOOK_RENDER_MOTION_TRACKER_SET_SCREENPROJ_MATRIX()
+		{
+			static D3DXMATRIX* original_matrix = NULL;
+			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RENDER_MOTION_TRACKER_SET_SCREENPROJ_MATRIX_HOOK_RETN);
+			
+			_asm
+			{
+				mov			dword ptr [esp+0C4h], 3F800000h
+				mov			original_matrix, ecx
+				pushad
+			}
+
+			SetMatrixScale(original_matrix);
+
+			_asm
+			{
+				popad
+				jmp		RETN_ADDRESS;
+			}
+		}
+
+		void InitializeHUDSettings()
+		{
+			g_hud_globals.m_flags.show_hud = true;
+			g_hud_globals.m_flags.show_crosshair = true;
+			g_hud_globals.m_flags.scale_hud = false;
+			g_hud_globals.m_flags.enable_scaling = true;
+
+			D3DXMatrixIdentity(&g_hud_globals.m_scale_matrix);
+		}
+
+		void UpdateUIScale(const uint16 screen_width, const uint16 screen_height)
+		{
+			real_point2d scale_amount;
+			scale_amount.x = 1;
+			scale_amount.y = 1;
+
+			const real old_ratio = (real)4/3;
+			const real new_ratio = (real)screen_width / screen_height;
+
+			if (new_ratio > old_ratio)
+				scale_amount.x = old_ratio / new_ratio;
+			else
+				scale_amount.y = new_ratio / old_ratio;
+
+			g_hud_globals.m_scale_matrix._11 = (2.0f / 640.0f) * scale_amount.x;	// x projection
+			g_hud_globals.m_scale_matrix._22 = (-2.0f / 480.0f) * scale_amount.y;	// y projection
+			g_hud_globals.m_scale_matrix._14 = -scale_amount.x;						// x offset
+			g_hud_globals.m_scale_matrix._24 = scale_amount.y;						// y offset
+		}
 
 		void Initialize()
 		{
+			// hook the screen projection matrix for widgets, text and the motion tracker
+			Memory::WriteRelativeJmp(
+				HOOK_RENDER_WIDGET_SET_SCREENPROJ_MATRIX,
+				GET_FUNC_VPTR(RENDER_WIDGET_SET_SCREENPROJ_MATRIX_HOOK), true);
+
+			Memory::WriteRelativeJmp(
+				HOOK_RENDER_TEXT_SET_SCREENPROJ_MATRIX,
+				GET_FUNC_VPTR(RENDER_TEXT_SET_SCREENPROJ_MATRIX_HOOK), true);
+
+			Memory::WriteRelativeJmp(
+				HOOK_RENDER_MOTION_TRACKER_SET_SCREENPROJ_MATRIX,
+				GET_FUNC_VPTR(RENDER_MOTION_TRACKER_SET_SCREENPROJ_MATRIX_HOOK), true);
+
+			// hooks for disabling scaling
 			Memory::WriteRelativeJmp(
 				GAME_ENGINE_RENDER_NAV_POINTS_CALL_RENDER_NAV_POINT,
 				GET_FUNC_VPTR(GAME_ENGINE_RENDER_NAV_POINTS_CALL_HOOK_RENDER_NAV_POINT), true);
+
 			Memory::WriteRelativeJmp(
 				HUD_RENDER_NAV_POINTS_CALL_RENDER_NAV_POINT,
 				GET_FUNC_VPTR(HUD_RENDER_NAV_POINTS_CALL_HOOK_RENDER_NAV_POINT), true);
@@ -220,16 +242,33 @@ namespace Yelo
 			Memory::WriteRelativeCall(
 				HUD_DRAW_PLAYERS_CALL_HUD_DRAW_FRIENDLY_INDICATOR,
 				GET_FUNC_VPTR(HUD_DRAW_PLAYERS_CALL_HOOK_HUD_DRAW_FRIENDLY_INDICATOR));
+
+			Memory::WriteRelativeCall(
+				RASTERIZER_RENDER_WIDGET_CALL_CINEMATIC_RENDER,
+				GET_FUNC_VPTR(RASTERIZER_RENDER_WIDGET_CALL_HOOK_CINEMATIC_RENDER), true);
+
+			Memory::WriteRelativeJmp(
+				HOOK_RASTERIZER_RENDER_WIDGET_UI_WIDGET_BOUNDS,
+				GET_FUNC_VPTR(RASTERIZER_RENDER_WIDGET_UI_WIDGET_BOUNDS_HOOK), true);
+
+			for(int i = 0; i < NUMBEROF(K_RASTERIZER_RENDER_WIDGET_DRAW_LOADING_UI_CALLS); i++)
+				Memory::WriteRelativeCall(
+					RASTERIZER_RENDER_WIDGET_CALL_DRAW_LOADING_UI,
+					K_RASTERIZER_RENDER_WIDGET_DRAW_LOADING_UI_CALLS[i], true);
 		}
 
-		void Dispose()
+		void Dispose() {}
+
+		void Update()
 		{
-			_hud_globals.Dispose();
+			if(g_hud_globals.m_flags.show_crosshair)
+				GET_PTR(render_crosshairs_jump_asm) = 0x840f;	// set to jz
+			else
+				GET_PTR(render_crosshairs_jump_asm) = 0xE990;	// set to nop, relative jmp
+
+			Memory::FunctionProcessRenderHudIsDisabled() = !g_hud_globals.m_flags.show_hud;
 		}
 
-
-		bool HudIsScaled() { return _hud_globals.scale_hud; }
-		void* HudGlobals() DPTR_IMP_GET2(hud_globals);
 
 		static void AdjustSettings_Render()
 		{
@@ -242,33 +281,22 @@ namespace Yelo
 				current_length = wcslen(text);						\
 				itr = text + current_length;
 
-			ADD_MENU_ITEM(L"\x2081. HUD				(%s)\n",	_hud_globals.show_hud ?		L"On" : L"Off");
-			ADD_MENU_ITEM(L"\x2082. HUD Scaling		(%s)\n",	_hud_globals.scale_hud ?	L"On" : L"Off");
-			//ADD_MENU_ITEM(L"\x2083. Chat Messages	(%s)\n",	_hud_globals.show_chat ?	L"On" : L"Off");
-			//ADD_MENU_ITEM(L"\x2084. Death Reports	(%s)\n",	_hud_globals.show_kills ?	L"On" : L"Off");
-			//ADD_MENU_ITEM(L"\x2085. My HUD Reports	(%s)\n",	_hud_globals.show_kd_msg ?	L"On" : L"Off");
+			ADD_MENU_ITEM(L"\x2081. HUD				(%s)\n",	g_hud_globals.m_flags.show_hud ?		L"On" : L"Off");
+			ADD_MENU_ITEM(L"\x2082. HUD Scaling		(%s)\n",	g_hud_globals.m_flags.scale_hud ?	L"On" : L"Off");
 			ADD_MENU_ITEM(L"\nLeft-Click to Save");
-			_hud_globals.menu->SetText(text);
-			_hud_globals.menu->Refresh();
-			_hud_globals.menu->Render();
+			g_hud_globals.m_menu_text->SetText(text);
+			g_hud_globals.m_menu_text->Refresh();
+			g_hud_globals.m_menu_text->Render();
 #undef ADD_MENU_ITEM
 		}
+
 		bool AdjustSettings()
 		{
 			if (Input::GetKeyState(Enums::_Key1) == 1)
-				_hud_globals.ShowHud(_hud_globals.show_hud = !_hud_globals.show_hud);
+				g_hud_globals.m_flags.show_hud = !g_hud_globals.m_flags.show_hud;
 
 			if (Input::GetKeyState(Enums::_Key2) == 1)
-				_hud_globals.scale_hud = !_hud_globals.scale_hud;
-
-			//if (Input::GetKeyState(Enums::_Key3) == 1)
-			//	_hud_globals.show_chat = !_hud_globals.show_chat;
-
-			//if (Input::GetKeyState(Enums::_Key4) == 1)
-			//	_hud_globals.show_kills = !_hud_globals.show_kills;
-
-			//if (Input::GetKeyState(Enums::_Key5) == 1)
-			//	_hud_globals.show_kd_msg = !_hud_globals.show_kd_msg;
+				g_hud_globals.m_flags.scale_hud = !g_hud_globals.m_flags.scale_hud;
 
 			AdjustSettings_Render();
 
@@ -277,83 +305,58 @@ namespace Yelo
 
 		void LoadSettings(TiXmlElement* hud_element)
 		{
-			_hud_globals.InitializeToDefaultSettings();
+			InitializeHUDSettings();
 
 			if(hud_element != NULL)
 			{
-				_hud_globals.show_hud = Settings::ParseBoolean( hud_element->Attribute("show") );
-				_hud_globals.scale_hud = Settings::ParseBoolean( hud_element->Attribute("scale") );
-				_hud_globals.show_chat = Settings::ParseBoolean( hud_element->Attribute("showChat") );
-
-				TiXmlElement* reports = hud_element->FirstChildElement("Reports");
-				if(reports != NULL)
-				{
-					_hud_globals.show_kills = Settings::ParseBoolean( reports->Attribute("showDeaths") );
-					_hud_globals.show_kd_msg = Settings::ParseBoolean( reports->Attribute("showMyKillDeaths") );
-				}
-
-				// This was causing the game to crash. Placed the code in Initialize3D.
-				// Code now works. Go figure.
-				//_hud_globals.ShowHud(_hud_globals.show_hud);
+				g_hud_globals.m_flags.show_hud = Settings::ParseBoolean( hud_element->Attribute("show") );
+				g_hud_globals.m_flags.scale_hud = Settings::ParseBoolean( hud_element->Attribute("scale") );
 			}
 		}
 
 		void SaveSettings(TiXmlElement* hud_element)
 		{
-			hud_element->SetAttribute("show", Settings::BooleanToString(_hud_globals.show_hud));
-			hud_element->SetAttribute("scale", Settings::BooleanToString(_hud_globals.scale_hud));
-			hud_element->SetAttribute("showChat", Settings::BooleanToString(_hud_globals.show_chat));
-
-			TiXmlElement* reports = new TiXmlElement("Reports");
-					hud_element->LinkEndChild(reports);
-			reports->SetAttribute("showDeaths", Settings::BooleanToString(_hud_globals.show_kills));
-			reports->SetAttribute("showMyKillDeaths", Settings::BooleanToString(_hud_globals.show_kd_msg));
+			hud_element->SetAttribute("show", Settings::BooleanToString(g_hud_globals.m_flags.show_hud));
+			hud_element->SetAttribute("scale", Settings::BooleanToString(g_hud_globals.m_flags.scale_hud));
 		}
 
 
 #if defined(DX_WRAPPER)
-		void Scale(void* ref_ptr, void *pVertexStreamZeroData)
-		{
-			_hud_globals.Scale(ref_ptr, pVertexStreamZeroData);
-		}
-
 		void Initialize3D(IDirect3DDevice9 *pDevice, D3DPRESENT_PARAMETERS *pPP)
 		{
-			_hud_globals.ShowHud(_hud_globals.show_hud);
+			UpdateUIScale((uint16)pPP->BackBufferWidth, (uint16)pPP->BackBufferHeight);
 
-			_hud_globals.screen.width = pPP->BackBufferWidth;
-			_hud_globals.screen.height = pPP->BackBufferHeight;
-			_hud_globals.UpdateScale();
+			g_hud_globals.m_menu_text = new TextBlock(pDevice, pPP);
+			g_hud_globals.m_menu_text->ApplyScheme();
+			g_hud_globals.m_menu_text->SetDimensions(200,0);
+			g_hud_globals.m_menu_text->Attach(Enums::_attach_method_center, 0,0,0,0);
+			g_hud_globals.m_menu_text->SetTextAlign(DT_LEFT);
 
-			_hud_globals.menu = new TextBlock(pDevice,pPP);
-			_hud_globals.menu->ApplyScheme();
-			_hud_globals.menu->SetDimensions(200,0);
-			_hud_globals.menu->Attach(Enums::_attach_method_center, 0,0,0,0);
-			_hud_globals.menu->SetTextAlign(DT_LEFT);
-
-			_hud_globals.menu->SetText(L"dumb");
-			_hud_globals.menu->Refresh();
+			g_hud_globals.m_menu_text->SetText(L"dumb");
+			g_hud_globals.m_menu_text->Refresh();
 		}
 
 		void OnLostDevice()
 		{
-			_hud_globals.menu->OnLostDevice();
+			g_hud_globals.m_menu_text->OnLostDevice();
 		}
 
 		void OnResetDevice(D3DPRESENT_PARAMETERS *pPP)
 		{
-			_hud_globals.screen.width = pPP->BackBufferWidth;
-			_hud_globals.screen.height = pPP->BackBufferHeight;
-			_hud_globals.UpdateScale();
+			UpdateUIScale((uint16)pPP->BackBufferWidth, (uint16)pPP->BackBufferHeight);
 
-			_hud_globals.menu->OnResetDevice(pPP);
-			_hud_globals.menu->Refresh();
+			g_hud_globals.m_menu_text->OnResetDevice(pPP);
+			g_hud_globals.m_menu_text->Refresh();
 		}
 
-		void Render() { /* nothing */ }
+		void Render() {}
+
 		void Release() 
 		{
-			_hud_globals.menu->Release();
+			g_hud_globals.m_menu_text->Release();
+
+			delete g_hud_globals.m_menu_text;
+			g_hud_globals.m_menu_text = NULL;
 		}
 #endif
 	};

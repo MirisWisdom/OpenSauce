@@ -226,7 +226,7 @@ namespace Yelo
 		 * 
 		 * Applies the effects for a specified render stage.
 		 */
-		bool c_system_internal::Render(Enums::pp_render_stage render_stage)
+		bool c_system_internal::Render(Enums::postprocess_render_stage render_stage)
 		{
 			if((render_stage > Enums::_postprocess_render_stage_post_ui) || !m_members.m_flags.is_enabled)
 				return false;
@@ -601,7 +601,7 @@ namespace Yelo
 			for(int i = 0; i < NUMBEROF(m_members_internal.m_render_sets); i++)
 			{
 				m_members_internal.m_render_sets[i].Ctor();
-				SetRenderSet(m_members_internal.m_render_sets[i], (Enums::pp_render_stage)i);
+				SetRenderSet(m_members_internal.m_render_sets[i], (Enums::postprocess_render_stage)i);
 			}
 		}
 
@@ -612,7 +612,7 @@ namespace Yelo
 				m_members_internal.m_render_sets[i].Dtor();
 		}
 
-		void c_system_internal::SetRenderSet(c_effect_render_set& set, Enums::pp_render_stage render_stage)
+		void c_system_internal::SetRenderSet(c_effect_render_set& set, Enums::postprocess_render_stage render_stage)
 		{
 			// get the number of effects for this render stage
 			uint32 count = 0;

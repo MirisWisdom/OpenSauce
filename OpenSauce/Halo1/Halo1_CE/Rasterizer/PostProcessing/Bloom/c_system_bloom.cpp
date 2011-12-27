@@ -207,7 +207,7 @@ namespace Yelo
 
 		/////////////////////////////////////////////////
 		// IPostProcessingRenderable
-		bool c_system_bloom::Render(Enums::pp_render_stage render_stage)
+		bool c_system_bloom::Render(Enums::postprocess_render_stage render_stage)
 		{
 			if(!m_members.m_flags.is_enabled)
 				return false;
@@ -220,11 +220,11 @@ namespace Yelo
 				// the bloom can be placed either before or after the HUD
 				if(g_bloom_globals_current->flags.apply_after_hud_bit)
 				{
-					if(render_stage != Enums::pp_render_stage_pre_menu) break;
+					if(render_stage != Enums::_postprocess_render_stage_pre_ui) break;
 				}
 				else
 				{
-					if(render_stage != Enums::pp_render_stage_pre_hud) break;
+					if(render_stage != Enums::_postprocess_render_stage_pre_hud) break;
 				}
 
 				applied = RenderBloom(c_post_processing_main::Instance().Globals().render_device);

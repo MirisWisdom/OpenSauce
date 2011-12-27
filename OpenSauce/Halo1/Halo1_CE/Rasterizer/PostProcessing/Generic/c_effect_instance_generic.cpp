@@ -88,7 +88,7 @@ namespace Yelo
 				return true;
 
 			// evaluate each control block
-			bool active = false;
+			bool active = m_members.m_flags.is_active;
 			for(int i = 0; i < m_members_generic.definition->activation_controls.Count; i++)
 			{
 				TagGroups::s_effect_postprocess_effect_activation_control& control = m_members_generic.definition->activation_controls[i];
