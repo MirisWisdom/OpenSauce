@@ -464,7 +464,7 @@ namespace Yelo
 		 * 
 		 * Searches through the quad list for a quad with the matching dimensions
 		 */
-		c_quad_instance*	c_quad_manager::GetExistingQuad(const point2d tesselation, const real_bounds x_bounds, const real_bounds y_bounds)
+		c_quad_instance*	c_quad_manager::GetExistingQuad(const point2d tesselation, const real_bounds& x_bounds, const real_bounds& y_bounds)
 		{
 			c_quad_instance* quad_out = NULL;
 			// loop through quad list
@@ -473,12 +473,12 @@ namespace Yelo
 			{
 				// compare x and y tesselation
 				if(
-					(quad_instance->Quad().tessellation.x == tesselation.x) &&
-					(quad_instance->Quad().tessellation.y == tesselation.y) &&
-					(quad_instance->Quad().x_bounds.lower == x_bounds.lower) &&
-					(quad_instance->Quad().x_bounds.upper == x_bounds.upper) &&
-					(quad_instance->Quad().y_bounds.lower == y_bounds.lower) &&
-					(quad_instance->Quad().y_bounds.upper == y_bounds.upper))
+					quad_instance->Quad().tessellation.x == tesselation.x &&
+					quad_instance->Quad().tessellation.y == tesselation.y &&
+					quad_instance->Quad().x_bounds.lower == x_bounds.lower &&
+					quad_instance->Quad().x_bounds.upper == x_bounds.upper &&
+					quad_instance->Quad().y_bounds.lower == y_bounds.lower &&
+					quad_instance->Quad().y_bounds.upper == y_bounds.upper)
 				{
 					// return quad instance pointer if a match is found
 					quad_out = quad_instance;

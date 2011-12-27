@@ -231,7 +231,7 @@ static void FormatName(std::string& name,
 			{
 				name.replace(iter, iter + 1, "");
 				if(name.size() == 0) return;
-				if(iter != name.begin()) iter--;
+				if(iter != name.begin()) --iter;
 			}
 			else
 				break;
@@ -242,7 +242,7 @@ static void FormatName(std::string& name,
 	// skip past preceding underscores
 	iter = name.begin();
 	while(*iter == '_' && (iter != name.end()))
-		iter++;
+		++iter;
 	for (; iter != name.end() - 1;)
 	{
 		do
@@ -251,7 +251,7 @@ static void FormatName(std::string& name,
 				break;
 			if((*iter == '_') && (*(iter + 1) == '_'))
 				name.replace(iter, iter + 1, "");
-			iter++;
+			++iter;
 		}
 		while(*iter == '_');
 	}
@@ -306,7 +306,7 @@ static void GetUniqueName(std::string& name,
 	{
 		is_unique = true;
 		// see if the name already exists in the vector
-		for(iter = names_vector.begin(); iter != names_vector.end(); iter++)
+		for(iter = names_vector.begin(); iter != names_vector.end(); ++iter)
 		{
 			if(test_name.compare(*iter) == 0)
 			{
@@ -443,7 +443,7 @@ static void AddEnum(const tag_field* field)
 	// look for a duplicate entry in the enums vector, if found add a reference
 	std::vector<c_string_list_instance>::iterator iter;
 
-	for(iter = g_enum_list.begin(); iter != g_enum_list.end(); iter++)
+	for(iter = g_enum_list.begin(); iter != g_enum_list.end(); ++iter)
 	{
 		if((*iter).GetList() == field->Definition<string_list>())
 		{
@@ -468,7 +468,7 @@ static void AddFlags(const tag_field* field,
 	// look for a duplicate entry in the blocks flags vector, if found add a reference
 	std::vector<c_flags_instance>::iterator  iter; 
 	std::vector<c_flags_instance>&   flags_vector(parent_struct.GetFlagsVector());
-	for(iter = flags_vector.begin(); iter != flags_vector.end(); iter++)
+	for(iter = flags_vector.begin(); iter != flags_vector.end(); ++iter)
 	{
 		if((*iter).GetList() == field->Definition<string_list>())
 		{
@@ -494,7 +494,7 @@ static void AddArray(const tag_field* field,
 	// look for a duplicate entry in the blocks arrays vector, if found do nothing else...
 	std::vector<c_array_instance>::iterator  iter; 
 	std::vector<c_array_instance>&   arrays_vector(parent_struct.GetArraysVector());
-	for(iter = arrays_vector.begin(); iter != arrays_vector.end(); iter++)
+	for(iter = arrays_vector.begin(); iter != arrays_vector.end(); ++iter)
 		if((*iter).GetArrayStart() == field)
 			return;
 
@@ -524,7 +524,7 @@ static void AddBlock(const tag_block_definition* block_definition,
 
 	// look for a duplicate entry in the blocks vector, if found do nothing else...
 	std::vector<c_block_instance>::iterator iter;
-	for(iter = g_block_list.begin(); iter != g_block_list.end(); iter++)
+	for(iter = g_block_list.begin(); iter != g_block_list.end(); ++iter)
 		if((*iter).GetDefinition() == block_definition)
 			return;
 
@@ -665,7 +665,7 @@ static void WriteFlags(FILE* file,
 	c_flags_instance* flags_instance = NULL;
 	std::vector<c_flags_instance>::iterator iter;
 	std::vector<c_flags_instance>& flags_vector(parent_struct.GetFlagsVector());
-	for(iter = flags_vector.begin(); iter != flags_vector.end(); iter++)
+	for(iter = flags_vector.begin(); iter != flags_vector.end(); ++iter)
 	{
 		if((*iter).GetList() == field->Definition<string_list>())
 		{
@@ -688,7 +688,7 @@ static void WriteEnum(FILE* file,
 	// look for the enums string_list in the global enums vector
 	c_string_list_instance* enum_instance = NULL;
 	std::vector<c_string_list_instance>::iterator iter;
-	for(iter = g_enum_list.begin(); iter != g_enum_list.end(); iter++)
+	for(iter = g_enum_list.begin(); iter != g_enum_list.end(); ++iter)
 	{
 		if((*iter).GetList() == field->Definition<string_list>())
 		{
@@ -703,7 +703,7 @@ static void WriteEnum(FILE* file,
 	if(description)
 		fprintf_s(file, ", \"%s\"", description);
 
-	fprintf_s(file, ");\n", name);
+	fprintf_s(file, ");\n");
 }		
 static void WriteArray(FILE* file, 
 	const tag_field* field,
@@ -714,7 +714,7 @@ static void WriteArray(FILE* file,
 	c_array_instance* array_instance = NULL;
 	std::vector<c_array_instance>& arrays_vector(parent_struct.GetArraysVector());
 	std::vector<c_array_instance>::iterator iter;
-	for(iter = arrays_vector.begin(); iter != arrays_vector.end(); iter++)
+	for(iter = arrays_vector.begin(); iter != arrays_vector.end(); ++iter)
 	{
 		if((*iter).GetArrayStart() == field)
 		{
@@ -733,7 +733,7 @@ static void WriteBlock(FILE* file,
 	// look for the block definition in the global blocks vector
 	c_block_instance* block_instance = NULL;
 	std::vector<c_block_instance>::iterator  iter; 
-	for(iter = g_block_list.begin(); iter != g_block_list.end(); iter++)
+	for(iter = g_block_list.begin(); iter != g_block_list.end(); ++iter)
 	{
 		if((*iter).GetDefinition() == field->Definition<tag_block_definition>())
 		{
@@ -845,7 +845,7 @@ static void WriteEnumDefinition(FILE* file,
 		puts("references:");
 
 		std::vector<const tag_field*>::iterator ref_iter;
-		for(ref_iter = references.begin(); ref_iter != references.end(); ref_iter++)
+		for(ref_iter = references.begin(); ref_iter != references.end(); ++ref_iter)
 		{
 			GetName(field_name, (*ref_iter)->name, instance.GetUsedNamesVector(), false, false, false, false, true);
 			printf_s("\t%s\n", field_name.c_str());			
@@ -866,7 +866,7 @@ static void WriteEnumDefinition(FILE* file,
 	input[0] = '\0';
 	if(gets(input) != NULL)
 	{
-		if(strlen(input) != 0)
+		if(input[0] != '\0')
 		{
 			input[NUMBEROF(input)-1] = '\0';
 			field_name.assign(input);
@@ -919,7 +919,7 @@ static void WriteFlagsDefinition(FILE* file,
 
 		// print the reference fields names to help the user decide on a name
 		std::vector<const tag_field*>::iterator ref_iter;
-		for(ref_iter = references.begin(); ref_iter != references.end(); ref_iter++)
+		for(ref_iter = references.begin(); ref_iter != references.end(); ++ref_iter)
 		{
 			GetName(field_name, (*ref_iter)->name, instance.GetUsedNamesVector(),
 				false, false, false, false, true);	
@@ -942,7 +942,7 @@ static void WriteFlagsDefinition(FILE* file,
 		if(gets(input) != NULL)
 		{
 			//if they do not specify a name, use the first references field name
-			if(strlen(input) != 0)
+			if(input[0] != '\0')
 			{
 				input[NUMBEROF(input)-1] = '\0';
 				field_name.assign(input);
@@ -1051,7 +1051,7 @@ static void WriteBlockDefinition(FILE* file,
 	// write the array structs before starting the block itself	
 	std::vector<c_array_instance>& arrays_vector(instance.GetArraysVector());
 	std::vector<c_array_instance>::iterator array_iter;
-	for(array_iter = arrays_vector.begin(); array_iter != arrays_vector.end(); array_iter++)
+	for(array_iter = arrays_vector.begin(); array_iter != arrays_vector.end(); ++array_iter)
 		WriteArrayDefinition(file, *array_iter, instance, add_boost_asserts);
 
 	// write the start of the struct
@@ -1068,7 +1068,7 @@ static void WriteBlockDefinition(FILE* file,
 	// write the flag structs		
 	std::vector<c_flags_instance>& flags_vector(instance.GetFlagsVector());
 	std::vector<c_flags_instance>::iterator flags_iter;
-	for(flags_iter = flags_vector.begin(); flags_iter != flags_vector.end(); flags_iter++)
+	for(flags_iter = flags_vector.begin(); flags_iter != flags_vector.end(); ++flags_iter)
 		WriteFlagsDefinition(file, *flags_iter, instance, add_boost_asserts);
 
 	// write all of the structs fields
@@ -1111,7 +1111,7 @@ static void WriteEnumList(FILE* file)
 		file);
 	
 	std::vector<c_string_list_instance>::iterator iter;
-	for(iter = g_enum_list.begin(); iter != g_enum_list.end(); iter++)
+	for(iter = g_enum_list.begin(); iter != g_enum_list.end(); ++iter)
 		WriteEnumDefinition(file, *iter);
 
 	fputs(
@@ -1127,7 +1127,7 @@ static void WriteBlockList(FILE* file,
 		file);
 	
 	std::vector<c_block_instance>::iterator iter;
-	for(iter = g_block_list.begin(); iter != g_block_list.end(); iter++)
+	for(iter = g_block_list.begin(); iter != g_block_list.end(); ++iter)
 		WriteBlockDefinition(file, *iter, add_boost_asserts);
 
 	fputs(

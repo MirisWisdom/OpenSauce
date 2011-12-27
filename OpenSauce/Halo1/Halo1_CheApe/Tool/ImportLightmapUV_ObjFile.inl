@@ -49,7 +49,7 @@ HRESULT c_obj_file::LoadFromFile(cstring obj_path)
 		s_face face;
 		if(sscanf_s(line, "g %s[^\n]", id, NUMBEROF(id)-1))
 		{
-			if(strlen(id) != 0)
+			if(id[0] != '\0')
 			{
 				if(current_group)
 				{	
@@ -95,8 +95,8 @@ HRESULT c_obj_file::LoadFromFile(cstring obj_path)
 
 	fputs("\n", stdout);
 	fputs("obj file stats\n", stdout);
-	printf_s("\tgroups: %s\n", m_groups.size());
-	printf_s("\ttexture coordinates: %s\n", m_texcoords.size());
+	printf_s("\tgroups: %d\n", m_groups.size());
+	printf_s("\ttexture coordinates: %d\n", m_texcoords.size());
 	fputs("\n", stdout);
 
 	return S_OK;

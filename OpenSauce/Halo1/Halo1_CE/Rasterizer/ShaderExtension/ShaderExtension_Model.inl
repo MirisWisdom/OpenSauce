@@ -696,7 +696,7 @@ no_extension:
 				// the vertex shader uses the constants in c10-c12 so they have to be set as well
 				hr = pDevice->SetVertexShaderConstantF(StartRegister, pConstantData, Vector4fCount);
 				// but the pixel shader only uses c12 so we only set that to the pixel shader
-				hr = pDevice->SetPixelShaderConstantF(4 + k_shader_constant_offset, &pConstantData[2 * 4], 1);
+				hr |= pDevice->SetPixelShaderConstantF(4 + k_shader_constant_offset, &pConstantData[2 * 4], 1);
 			}
 			else if(StartRegister == 13 && Vector4fCount == 2) // parallel and perpendicular colour
 				hr = pDevice->SetPixelShaderConstantF(5 + k_shader_constant_offset, pConstantData, 2);

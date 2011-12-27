@@ -148,6 +148,9 @@ namespace Yelo
 	// null value for a [wstring] or [wcstring]
 #define WSTRING_NULL	L"\0"
 
+	inline bool is_null_or_empty(const char* const str) { return str == NULL || str[0] == '\0'; }
+	inline bool is_null_or_empty(const wchar_t* const str) { return str == NULL || str[0] == L'\0'; }
+
 	// Takes [wide] and converts it to an ascii string, to be held in [string]. If [wide_length] is not -1, the string
 	// is assumed to be null terminated
 	// Returns [string] if successful

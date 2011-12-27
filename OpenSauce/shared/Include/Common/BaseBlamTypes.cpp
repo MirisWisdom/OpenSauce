@@ -29,18 +29,16 @@ namespace Yelo
 
 	char* wstring_to_string_lazy(char* string, int32 string_length, wcstring wide)
 	{
-		int32 x = 0;
-		while(wide[x] && string_length--)
-			string[x] = (char)wide[x++];
+		for(int32 x = 0; wide[x] && string_length--; x++)
+			string[x] = (char)wide[x];
 
 		return string;
 	}
 
 	wstring string_to_wstring_lazy(wstring string, int32 string_length, cstring ascii)
 	{
-		int32 x = 0;
-		while(ascii[x] && string_length--)
-			string[x] = (wchar_t)ascii[x++];
+		for(int32 x = 0; ascii[x] && string_length--; x++)
+			string[x] = (wchar_t)ascii[x];
 
 		return string;
 	}

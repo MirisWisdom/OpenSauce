@@ -78,7 +78,7 @@ namespace Yelo
 
 			DWORD error = GetLastError();
 
-			if(error == ERROR_FILE_NOT_FOUND || ERROR_PATH_NOT_FOUND)
+			if(error == ERROR_FILE_NOT_FOUND || error == ERROR_PATH_NOT_FOUND)
 				return false;
 
 			// This should actually be unreachable...

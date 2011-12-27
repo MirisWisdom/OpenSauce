@@ -213,8 +213,7 @@ namespace Yelo
 			TiXmlElement* server_list = new TiXmlElement("server_list");
 			for(int32 i = 0; i < NUMBEROF(m_xml_sources); i++)
 			{
-				if((m_xml_sources[i].xml_address == NULL) ||
-					(strlen(m_xml_sources[i].xml_address) == 0)) 
+				if(is_null_or_empty(m_xml_sources[i].xml_address))
 					continue;
 
 				TiXmlElement* server = new TiXmlElement("server");
@@ -264,7 +263,7 @@ namespace Yelo
 
 					// get the text value of each server
 					cstring text_value = server->GetText();
-					if(text_value && (strlen(text_value) != 0))
+					if( !is_null_or_empty(text_value) )
 					{
 						int text_length = strlen(text_value) + 1;
 						m_xml_sources[i].xml_address = new char[text_length];

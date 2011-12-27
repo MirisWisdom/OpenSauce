@@ -61,7 +61,7 @@ namespace Yelo
 
 	void* c_packed_file::GetDataPointer(const char* data_id, _Out_opt_ uint32* data_size)
 	{
-		if(!m_file_mapped || strlen(data_id) == 0)
+		if(!m_file_mapped || is_null_or_empty(data_id))
 			return NULL;
 
 		for(uint32 i = 0; i < m_header->element_count; i++)
@@ -95,7 +95,7 @@ namespace Yelo
 	c_packed_file::~c_packed_file()
 	{
 		std::vector<s_element_editor>::iterator iter;
-		for(iter = m_elements.begin(); iter != m_elements.end(); iter++)
+		for(iter = m_elements.begin(); iter != m_elements.end(); ++iter)
 			(*iter).Delete();
 		m_elements.clear();
 
@@ -110,7 +110,7 @@ namespace Yelo
 
 		std::vector<s_element_editor>::iterator iter;
 
-		for(iter = m_elements.begin(); iter != m_elements.end(); iter++)
+		for(iter = m_elements.begin(); iter != m_elements.end(); ++iter)
 		{
 			(*iter).element_id_offset = id_base_offset + id_offset;
 			id_offset += strlen((*iter).source_id) + 1;
@@ -119,7 +119,7 @@ namespace Yelo
 		uint32 data_base_offset = id_base_offset + id_offset;
 		uint32 data_offset = 0;
 
-		for(iter = m_elements.begin(); iter != m_elements.end(); iter++)
+		for(iter = m_elements.begin(); iter != m_elements.end(); ++iter)
 		{
 			(*iter).element_offset = data_base_offset + data_offset;
 			data_offset += (*iter).element_size;
@@ -153,17 +153,17 @@ namespace Yelo
 
 		std::vector<s_element_editor>::iterator iter;
 
-		for(iter = m_elements.begin(); iter != m_elements.end(); iter++)
+		for(iter = m_elements.begin(); iter != m_elements.end(); ++iter)
 			file.write(CAST_PTR(char*, &(*iter)), sizeof(s_element));
 
 		char null_char = 0;
-		for(iter = m_elements.begin(); iter != m_elements.end(); iter++)
+		for(iter = m_elements.begin(); iter != m_elements.end(); ++iter)
 		{
 			file.write((*iter).source_id, strlen((*iter).source_id));
 			file.write(&null_char, sizeof(null_char));
 		}
 
-		for(iter = m_elements.begin(); iter != m_elements.end(); iter++)
+		for(iter = m_elements.begin(); iter != m_elements.end(); ++iter)
 			file.write(CAST_PTR(char*, (*iter).source_data), (*iter).element_size);
 
 		file.flush();

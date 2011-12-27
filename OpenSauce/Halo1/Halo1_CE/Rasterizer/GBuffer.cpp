@@ -956,11 +956,11 @@ skip_disable_velocity:
 				Objects::s_object_header_datum& object_header = (*Objects::ObjectHeader())[g_object_index];
 
 				TeamIndex = *object_header._object->GetOwnerTeamIndex() + 1;
-				if(TeamIndex < 0)
+				if(TeamIndex == NONE)
 					TeamIndex = 0;
 
 				MeshIndex = object_header.object_type + 3;
-				if(MeshIndex < 0)
+				if(MeshIndex == NONE)
 					MeshIndex = 0;
 
 				if(GameEngine::Current() != NULL)	// becomes non-null during multiplayer

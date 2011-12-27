@@ -163,7 +163,7 @@ namespace Yelo
 			union {
 				void* address;
 
-				struct {
+				union {
 					bool _bool;
 					real _real;
 					int16 _short;
@@ -171,6 +171,6 @@ namespace Yelo
 					datum_index _datum;
 				}Value;
 			};
-		};
+		}; BOOST_STATIC_ASSERT( sizeof(hs_syntax_node) == 0x14 );
 	};
 };
