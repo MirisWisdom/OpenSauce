@@ -33,7 +33,7 @@ namespace Yelo
 			_object_type_mask_device = 
 				(1 << _object_type_machine) |
 				(1 << _object_type_control) |
-				(1 << _object_type_control),
+				(1 << _object_type_light_fixture),
 			_object_type_mask_item = 
 				(1 << _object_type_weapon) |
 				(1 << _object_type_equipment) |

@@ -80,11 +80,11 @@ namespace Yelo
 			/////////////////////////////////////////////////
 			// initializers
 		public:
-			void Ctor(const point2d tesselation, const real_bounds x_bounds, const real_bounds y_bounds)
+			void Ctor(const point2d tesselation, const real_bounds& x_bounds, const real_bounds& y_bounds)
 			{
 				m_quad.tessellation = tesselation;
-				m_quad.x_bounds = x_bounds;
-				m_quad.y_bounds = y_bounds;
+				memcpy(&m_quad.x_bounds, &x_bounds, sizeof(m_quad.x_bounds));
+				memcpy(&m_quad.y_bounds, &y_bounds, sizeof(m_quad.y_bounds));
 				m_quad.vertex_count = (m_quad.tessellation.x + 1) * (m_quad.tessellation.y + 1);
 				m_quad.primitive_count = (m_quad.tessellation.x * m_quad.tessellation.y) * 2;
 				m_quad.start_vertex = 0;
@@ -188,7 +188,7 @@ namespace Yelo
 			bool CreateBuffersImpl();
 			void DestroyBuffersImpl();
 			
-			c_quad_instance* GetExistingQuad(const point2d tesselation, const real_bounds x_bounds, const real_bounds y_bounds);
+			c_quad_instance* GetExistingQuad(const point2d tesselation, const real_bounds& x_bounds, const real_bounds& y_bounds);
 			int32 GetVertexCount();
 			int32 GetIndexCount();
 			void AddVertices(s_postprocess_vertex*& buffer_pointer, 

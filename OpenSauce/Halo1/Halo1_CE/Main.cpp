@@ -67,7 +67,8 @@ namespace Yelo
 #endif
 			;
 
-			if (!memcmp(&GET_PTR2(version_info)->dwFileVersionMS, &version, sizeof(version))) return true;
+			if (!memcmp(CAST_PTR(__int64*, &GET_PTR2(version_info)->dwFileVersionMS), 
+				&version, sizeof(version))) return true;
 
 			return false;
 		}

@@ -99,11 +99,11 @@ namespace Yelo
 		static void ScriptingNameCopyToTagNameData(cstring scripting_name, tag_string tag_name_data[2])
 		{
 			size_t length = strlen(scripting_name);
-			memset(tag_name_data[0], 0, sizeof(tag_name_data[0])*2);
+			memset(tag_name_data, 0, sizeof(tag_name_data[0])*2);
 
+			char local[Enums::k_tag_string_length*2];
 			if(length > Enums::k_tag_string_length*2)
 			{
-				char local[Enums::k_tag_string_length*2];
 				memcpy(local, scripting_name, sizeof(local));
 
 				scripting_name = local;

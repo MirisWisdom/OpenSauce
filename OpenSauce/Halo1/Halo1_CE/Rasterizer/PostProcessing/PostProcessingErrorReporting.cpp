@@ -69,7 +69,7 @@ namespace Yelo
 
 			size_t string_length = strlen(string_pointer);
 			int32 count = 0;
-			while(strlen(string_pointer) > 0 && count < k_max_error_line_count)
+			while(string_pointer[0] != '\0' && count < k_max_error_line_count)
 			{
 				if(strlen(string_pointer) < work_dir_path_len)
 					remove_path = false;
