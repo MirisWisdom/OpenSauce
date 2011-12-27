@@ -40,7 +40,7 @@ namespace Yelo
 			va_start(argptr, format);
 
 			// get the required length of the buffer and create it
-			size_t length = (size_t)_vscprintf(format, argptr) + 1; 
+			size_t length = (size_t)vsnprintf(NULL, 0, format, argptr) + 1; 
 			char* buffer = new char[length];
 			memset(buffer, 0, length);
 
@@ -94,21 +94,21 @@ namespace Yelo
 				size_t line_length = strcspn(string_pointer, "\n");
 
 				// copy the line to a new buffer
-				char* buffer = new char[line_length + 1];
-				strncpy_s(buffer, line_length + 1, string_pointer, _TRUNCATE);
+				char* line_buffer = new char[line_length + 1];
+				strncpy_s(line_buffer, line_length + 1, string_pointer, _TRUNCATE);
 
 				// move the string pointer past the current line
 				string_pointer += line_length + 1;
 
 				// only print strings that have "error" in them
-				if(strstr(buffer, "error"))
+				if(strstr(line_buffer, "error"))
 				{
-					Write(buffer);
+					Write(line_buffer);
 					count++;
 				}
 
-				delete[] buffer;
-				buffer = NULL;
+				delete[] line_buffer;
+				line_buffer = NULL;
 			}
 		};};};
 	};

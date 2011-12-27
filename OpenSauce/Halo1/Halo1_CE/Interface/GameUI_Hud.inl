@@ -112,77 +112,19 @@ namespace Yelo
 			};
 		}
 
-		static void SetMatrixScale(D3DXMATRIX* original)
+		static HRESULT SetVertexShaderConstantF_ScreenProj(IDirect3DDevice9* device, UINT StartRegister,CONST float* pConstantData,UINT Vector4fCount)
 		{
+			D3DXMATRIX* original_matrix = CAST_PTR(D3DXMATRIX*, (float*)pConstantData);
+
 			if(g_hud_globals.m_flags.scale_hud && g_hud_globals.m_flags.enable_scaling)
 			{
-				original->_11 = g_hud_globals.m_scale_matrix._11;
-				original->_14 = g_hud_globals.m_scale_matrix._14;
-				original->_22 = g_hud_globals.m_scale_matrix._22;
-				original->_24 = g_hud_globals.m_scale_matrix._24;
-			}
-		}
-
-		API_FUNC_NAKED static void HOOK_RENDER_WIDGET_SET_SCREENPROJ_MATRIX()
-		{
-			static D3DXMATRIX* original_matrix = NULL;
-			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RENDER_WIDGET_SET_SCREENPROJ_MATRIX_HOOK_RETN);
-
-			_asm
-			{
-				lea		edx, [esp+0ACh];
-				mov		original_matrix, edx;
-				pushad
+				original_matrix->_11 = g_hud_globals.m_scale_matrix._11;
+				original_matrix->_14 = g_hud_globals.m_scale_matrix._14;
+				original_matrix->_22 = g_hud_globals.m_scale_matrix._22;
+				original_matrix->_24 = g_hud_globals.m_scale_matrix._24;
 			}
 
-			SetMatrixScale(original_matrix);
-
-			_asm
-			{
-				popad
-				jmp		RETN_ADDRESS;
-			}
-		}
-
-		API_FUNC_NAKED static void HOOK_RENDER_TEXT_SET_SCREENPROJ_MATRIX()
-		{
-			static D3DXMATRIX* original_matrix = &GET_PTR(render_text_screenproj_matrix);
-			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RENDER_TEXT_SET_SCREENPROJ_MATRIX_HOOK_RETN);
-			
-			_asm
-			{
-				push	original_matrix
-				pushad
-			}
-
-			SetMatrixScale(original_matrix);
-
-			_asm
-			{
-				popad
-				jmp		RETN_ADDRESS;
-			}
-		}
-
-		API_FUNC_NAKED static void HOOK_RENDER_MOTION_TRACKER_SET_SCREENPROJ_MATRIX()
-		{
-			static D3DXMATRIX* original_matrix = NULL;
-			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RENDER_MOTION_TRACKER_SET_SCREENPROJ_MATRIX_HOOK_RETN);
-			
-			_asm
-			{
-				mov			dword ptr [esp+0C4h], 3F800000h
-				mov			original_matrix, ecx
-				pushad
-			}
-
-			SetMatrixScale(original_matrix);
-
-			_asm
-			{
-				popad
-				jmp		RETN_ADDRESS;
-			}
+			return device->SetVertexShaderConstantF(StartRegister, pConstantData, Vector4fCount);
 		}
 
 		void InitializeHUDSettings()
@@ -218,17 +160,14 @@ namespace Yelo
 		void Initialize()
 		{
 			// hook the screen projection matrix for widgets, text and the motion tracker
-			Memory::WriteRelativeJmp(
-				HOOK_RENDER_WIDGET_SET_SCREENPROJ_MATRIX,
-				GET_FUNC_VPTR(RENDER_WIDGET_SET_SCREENPROJ_MATRIX_HOOK), true);
+			for(int i = 0; i < NUMBEROF(K_RASTERIZER_RENDER_UI_SET_SCREENPROJ_CALLS); i++)
+			{
+				void*& call_address = K_RASTERIZER_RENDER_UI_SET_SCREENPROJ_CALLS[i];
 
-			Memory::WriteRelativeJmp(
-				HOOK_RENDER_TEXT_SET_SCREENPROJ_MATRIX,
-				GET_FUNC_VPTR(RENDER_TEXT_SET_SCREENPROJ_MATRIX_HOOK), true);
-
-			Memory::WriteRelativeJmp(
-				HOOK_RENDER_MOTION_TRACKER_SET_SCREENPROJ_MATRIX,
-				GET_FUNC_VPTR(RENDER_MOTION_TRACKER_SET_SCREENPROJ_MATRIX_HOOK), true);
+				Memory::WriteRelativeCall(SetVertexShaderConstantF_ScreenProj, call_address, true);
+				byte* nop_offset = CAST_PTR(byte*, call_address) + 5;
+				*nop_offset = Enums::_x86_opcode_nop;
+			}
 
 			// hooks for disabling scaling
 			Memory::WriteRelativeJmp(
