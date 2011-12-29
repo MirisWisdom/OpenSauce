@@ -1,8 +1,15 @@
 syntax: glob
-*.ncb
-*.suo
-*.user
+
+glob:_scripts/
+glob:OpenSauce/shared/Include/GameSpyOpen/
+glob:test_results/
+
 bin\
 lib\
 obj\
-OpenSauce\shared\Include\GameSpyOpen\
+
+*.user
+*.ncb
+*.sdf
+*.suo
+*.opensdf
