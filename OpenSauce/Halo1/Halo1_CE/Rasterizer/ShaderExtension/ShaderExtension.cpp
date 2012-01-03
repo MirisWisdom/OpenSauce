@@ -131,9 +131,9 @@ namespace Yelo
 					switch(render_stage)
 					{
 					case Enums::_render_progress_objects:
-						hr = Model::SetVertexShaderConstantF(pDevice, StartRegister, pConstantData, Vector4fCount);
+						hr = Model::SetVertexShaderConstantF(pDevice, StartRegister, pConstantData, Vector4fCount); break;
 					default:
-						hr = pDevice->SetVertexShaderConstantF(StartRegister, pConstantData, Vector4fCount);
+						hr = pDevice->SetVertexShaderConstantF(StartRegister, pConstantData, Vector4fCount); break;
 					}
 				}
 				else
