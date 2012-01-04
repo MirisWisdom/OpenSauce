@@ -150,9 +150,9 @@ HRESULT		AddTechniqueBlock(LPD3DXEFFECTCOMPILER& compiler, D3DXHANDLE technique,
 	else
 		shader_model_mask = Yelo::Enums::_shader_model_mask_1_0 | Yelo::Enums::_shader_model_mask_2_0 | Yelo::Enums::_shader_model_mask_3_0;
 
-	technique_block.shader_model.sm_1_0_bit = (shader_model_mask & Yelo::Enums::_shader_model_mask_1_0);
-	technique_block.shader_model.sm_2_0_bit = (shader_model_mask & Yelo::Enums::_shader_model_mask_2_0);
-	technique_block.shader_model.sm_3_0_bit = (shader_model_mask & Yelo::Enums::_shader_model_mask_3_0);
+	technique_block.shader_model.sm_1_0_bit = (shader_model_mask & Yelo::Enums::_shader_model_mask_1_0) == Yelo::Enums::_shader_model_mask_1_0;
+	technique_block.shader_model.sm_2_0_bit = (shader_model_mask & Yelo::Enums::_shader_model_mask_2_0) == Yelo::Enums::_shader_model_mask_2_0;
+	technique_block.shader_model.sm_3_0_bit = (shader_model_mask & Yelo::Enums::_shader_model_mask_3_0) == Yelo::Enums::_shader_model_mask_3_0;
 
 	// add passes to the technique block
 	for(uint32 i = 0; i < technique_desc.Passes; i++)

@@ -252,7 +252,7 @@ namespace Yelo
 
 			if(!parent_element) return;
 
-			TiXmlElement* element = parent_element->FirstChildElement("postprocessing");
+			TiXmlElement* element = parent_element->FirstChildElement("PostProcessing");
 
 			if(!element) return;
 
@@ -273,14 +273,14 @@ namespace Yelo
 		 */
 		void		SaveSettings(TiXmlElement* parent_element)
 		{
-			TiXmlElement* element = new TiXmlElement("postprocessing");
+			TiXmlElement* element = new TiXmlElement("PostProcessing");
 
 			c_post_processing_main::Instance().SaveSettings(element);
 
 			for(int i = 0; i < NUMBEROF(g_postprocess_usersettings_subsystems); i++)
 				g_postprocess_usersettings_subsystems[i]->SaveSettings(element);
 
-			// if the pp_element has a child then add it tot the settings file, otherwise there is no point so delete it
+			// if the pp_element has a child then add it to the settings file, otherwise there is no point so delete it
 			if(element->FirstChildElement())
 				parent_element->LinkEndChild(element);
 			else

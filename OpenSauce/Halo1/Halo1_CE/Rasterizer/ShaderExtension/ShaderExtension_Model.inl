@@ -73,97 +73,97 @@ namespace Model
 
 	s_shader_feature_mix g_feature_mix_list[] = {
 		{
-			Enums::_shader_extension_usage_none,
+			Enums::_model_extension_usage_none,
 			NUMBEROF(g_base_shader_list) * 0,
 			(NUMBEROF(g_base_shader_list) / 2) * 0,
 			""
 		},
 		{
-			Enums::_shader_extension_usage_normal_map,
+			Enums::_model_extension_usage_normal_map,
 			NUMBEROF(g_base_shader_list) * 1,
 			(NUMBEROF(g_base_shader_list) / 2) * 1,
 			"BaseNorm"
 		},
 		{
-			Enums::_shader_extension_usage_normal_map | Enums::_shader_extension_usage_specular_map,
+			Enums::_model_extension_usage_normal_map | Enums::_model_extension_usage_specular_map,
 			NUMBEROF(g_base_shader_list) * 2,
 			(NUMBEROF(g_base_shader_list) / 2) * 2,
 			"BaseNormSpecMap"
 		},
 		{
-			Enums::_shader_extension_usage_normal_map | Enums::_shader_extension_usage_specular_lighting,
+			Enums::_model_extension_usage_normal_map | Enums::_model_extension_usage_specular_lighting,
 			NUMBEROF(g_base_shader_list) * 3,
 			(NUMBEROF(g_base_shader_list) / 2) * 3,
 			"BaseNormSpecLighting"
 		},
 		{
-			Enums::_shader_extension_usage_normal_map | Enums::_shader_extension_usage_specular_map | Enums::_shader_extension_usage_specular_lighting,
+			Enums::_model_extension_usage_normal_map | Enums::_model_extension_usage_specular_map | Enums::_model_extension_usage_specular_lighting,
 			NUMBEROF(g_base_shader_list) * 4,
 			(NUMBEROF(g_base_shader_list) / 2) * 4,
 			"BaseNormSpecMapSpecLighting"
 		},
 		{
-			Enums::_shader_extension_usage_normal_map | Enums::_shader_extension_usage_detail_normal,
+			Enums::_model_extension_usage_normal_map | Enums::_model_extension_usage_detail_normal,
 			NUMBEROF(g_base_shader_list) * 5,
 			(NUMBEROF(g_base_shader_list) / 2) * 5,
 			"BaseNormDetailNorm"
 		},
 		{
-			Enums::_shader_extension_usage_normal_map | Enums::_shader_extension_usage_detail_normal | Enums::_shader_extension_usage_specular_map,
+			Enums::_model_extension_usage_normal_map | Enums::_model_extension_usage_detail_normal | Enums::_model_extension_usage_specular_map,
 			NUMBEROF(g_base_shader_list) * 6,
 			(NUMBEROF(g_base_shader_list) / 2) * 6,
 			"BaseNormDetailNormSpecMap"
 		},
 		{
-			Enums::_shader_extension_usage_normal_map | Enums::_shader_extension_usage_detail_normal | Enums::_shader_extension_usage_specular_lighting,
+			Enums::_model_extension_usage_normal_map | Enums::_model_extension_usage_detail_normal | Enums::_model_extension_usage_specular_lighting,
 			NUMBEROF(g_base_shader_list) * 7,
 			(NUMBEROF(g_base_shader_list) / 2) * 7,
 			"BaseNormDetailNormSpecLighting"
 		},
 		{
-			Enums::_shader_extension_usage_normal_map | Enums::_shader_extension_usage_detail_normal | Enums::_shader_extension_usage_specular_map | Enums::_shader_extension_usage_specular_lighting,
+			Enums::_model_extension_usage_normal_map | Enums::_model_extension_usage_detail_normal | Enums::_model_extension_usage_specular_map | Enums::_model_extension_usage_specular_lighting,
 			NUMBEROF(g_base_shader_list) * 8,
 			(NUMBEROF(g_base_shader_list) / 2) * 8,
 			"BaseNormDetailNormSpecMapSpecLighting"
 		},
 		{
-			Enums::_shader_extension_usage_detail_normal,
+			Enums::_model_extension_usage_detail_normal,
 			NUMBEROF(g_base_shader_list) * 9,
 			(NUMBEROF(g_base_shader_list) / 2) * 9,
 			"DetailNorm"
 		},
 		{
-			Enums::_shader_extension_usage_detail_normal | Enums::_shader_extension_usage_specular_map,
+			Enums::_model_extension_usage_detail_normal | Enums::_model_extension_usage_specular_map,
 			NUMBEROF(g_base_shader_list) * 10,
 			(NUMBEROF(g_base_shader_list) / 2) * 10,
 			"DetailNormSpecMap"
 		},
 		{
-			Enums::_shader_extension_usage_detail_normal | Enums::_shader_extension_usage_specular_lighting,
+			Enums::_model_extension_usage_detail_normal | Enums::_model_extension_usage_specular_lighting,
 			NUMBEROF(g_base_shader_list) * 11,
 			(NUMBEROF(g_base_shader_list) / 2) * 11,
 			"DetailNormSpecLighting"
 		},
 		{
-			Enums::_shader_extension_usage_detail_normal | Enums::_shader_extension_usage_specular_map | Enums::_shader_extension_usage_specular_lighting,
+			Enums::_model_extension_usage_detail_normal | Enums::_model_extension_usage_specular_map | Enums::_model_extension_usage_specular_lighting,
 			NUMBEROF(g_base_shader_list) * 12,
 			(NUMBEROF(g_base_shader_list) / 2) * 12,
 			"DetailNormSpecMapSpecLighting"
 		},
 		{
-			Enums::_shader_extension_usage_specular_map,
+			Enums::_model_extension_usage_specular_map,
 			NUMBEROF(g_base_shader_list) * 13,
 			(NUMBEROF(g_base_shader_list) / 2) * 13,
 			"SpecMap"
 		},
 		{
-			Enums::_shader_extension_usage_specular_map | Enums::_shader_extension_usage_specular_lighting,
+			Enums::_model_extension_usage_specular_map | Enums::_model_extension_usage_specular_lighting,
 			NUMBEROF(g_base_shader_list) * 14,
 			(NUMBEROF(g_base_shader_list) / 2) * 14,
 			"SpecMapSpecLighting"
 		},
 		{
-			Enums::_shader_extension_usage_specular_lighting,
+			Enums::_model_extension_usage_specular_lighting,
 			NUMBEROF(g_base_shader_list) * 15,
 			(NUMBEROF(g_base_shader_list) / 2) * 15,
 			"SpecLighting"
@@ -182,6 +182,7 @@ namespace Model
 	static s_shader_feature_mix*		g_current_feature_mix = &g_feature_mix_list[0];
 	static s_vertex_shader_variables	g_vertex_shader_variables;
 	static s_pixel_shader_variables		g_pixel_shader_variables;
+	static _enum						g_extension_usage_mask;
 
 	// hooks to correctly skip past inverse shaders in the usage id list
 	API_FUNC_NAKED static void Hook_EnvironmentNoPixelShaderIDOffset()
@@ -453,11 +454,14 @@ no_extension:
 		DX9::c_gbuffer_system::OutputObjectTBN() = false;
 
 		_enum feature_usage = shader_base->shader.extension_usage;
-#ifdef DEBUG
-		// add and break point here and modify the feature mask to disable certain features
-		static _enum feature_mask = 0xFFFF;
-		feature_usage &= feature_mask;
-#endif
+
+		// disable feature as per the users settings
+		feature_usage &= g_extension_usage_mask;
+
+		// disable specular effects when they are disabled on the environment
+		if(!DebugOptions()->environment_specular_lights)
+			feature_usage &= Enums::_model_extension_usage_normal_map | Enums::_model_extension_usage_detail_normal;
+
 		for(int i = 0; i < NUMBEROF(g_feature_mix_list); i++)
 			if(g_feature_mix_list[i].feature_mask == feature_usage)
 				g_current_feature_mix = &g_feature_mix_list[i];
@@ -474,7 +478,7 @@ no_extension:
 				// maps must have been built with build-cache-file-ex for the usage enum to be set
 
 				// base normal map is present
-				if(feature_usage & Enums::_shader_extension_usage_normal_map)
+				if(feature_usage & Enums::_model_extension_usage_normal_map)
 				{
 					DX9::c_gbuffer_system::OutputObjectTBN() = true;
 					SetTexture(Yelo::DX9::Direct3DDevice(), 4, extension.base_normal.map.tag_index);
@@ -486,7 +490,7 @@ no_extension:
 				}
 
 				// either of the detail normal maps are present
-				if(feature_usage & Enums::_shader_extension_usage_detail_normal)
+				if(feature_usage & Enums::_model_extension_usage_detail_normal)
 				{
 					// if there is no base normal map then detail normal 1 is the only one present
 					// however it might not be present if there is a base normal map so check whether its null
@@ -504,7 +508,7 @@ no_extension:
 						g_pixel_shader_variables.detail_normal_map_1_interpolation = 0.0f;
 
 					// if a base normal map is present either detail normal map may be present so check for the second map
-					if(feature_usage & Enums::_shader_extension_usage_normal_map)
+					if(feature_usage & Enums::_model_extension_usage_normal_map)
 					{
 						if(!extension.detail_normals[1].map.tag_index.IsNull())
 						{
@@ -522,7 +526,7 @@ no_extension:
 				}
 
 				// setup specular map
-				if(shader_model->shader.extension_usage & Enums::_shader_extension_usage_specular_map)
+				if(shader_model->shader.extension_usage & Enums::_model_extension_usage_specular_map)
 				{
 					SetTexture(Yelo::DX9::Direct3DDevice(), 7, extension.specular_color.map.tag_index);
 
@@ -531,7 +535,7 @@ no_extension:
 				}
 
 				// setup specular lighting
-				if(shader_model->shader.extension_usage & Enums::_shader_extension_usage_specular_lighting)
+				if(shader_model->shader.extension_usage & Enums::_model_extension_usage_specular_lighting)
 				{
 					g_pixel_shader_variables.specular_lighting_exponent = extension.specular_lighting_exponent;
 					g_pixel_shader_variables.specular_lighting_coefficient = extension.specular_lighting_coefficient;
@@ -620,6 +624,69 @@ no_extension:
 		}
 	}
 
+	void		LoadSettings(TiXmlElement* parent_element)
+	{
+		g_extension_usage_mask = Enums::_model_extension_usage_normal_map | Enums::_model_extension_usage_detail_normal |
+			Enums::_model_extension_usage_specular_map | Enums::_model_extension_usage_specular_lighting;
+
+		if(parent_element != NULL)
+		{
+			int32 usage_mask = Enums::_model_extension_usage_none;
+			TiXmlElement* model_element = parent_element->FirstChildElement("Model");
+
+			if(model_element != NULL)
+			{
+				TiXmlElement* feature_element = NULL;
+				char* feature_attribute = NULL;
+
+				if(feature_element = model_element->FirstChildElement("NormalMap"))
+					usage_mask |= (Settings::ParseBoolean(feature_element->Attribute("enabled")) ? Enums::_model_extension_usage_normal_map : Enums::_model_extension_usage_none);
+
+				if(feature_element = model_element->FirstChildElement("DetailNormalMaps"))
+					usage_mask |= (Settings::ParseBoolean(feature_element->Attribute("enabled")) ? Enums::_model_extension_usage_detail_normal : Enums::_model_extension_usage_none);
+
+				if(feature_element = model_element->FirstChildElement("SpecularMap"))
+					usage_mask |= (Settings::ParseBoolean(feature_element->Attribute("enabled")) ? Enums::_model_extension_usage_specular_map : Enums::_model_extension_usage_none);
+
+				if(feature_element = model_element->FirstChildElement("SpecularLighting"))
+					usage_mask |= (Settings::ParseBoolean(feature_element->Attribute("enabled")) ? Enums::_model_extension_usage_specular_lighting : Enums::_model_extension_usage_none);
+
+				g_extension_usage_mask &= usage_mask;
+			}
+		}
+	}
+
+	void		SaveSettings(TiXmlElement* parent_element)
+	{
+		if(parent_element != NULL)
+		{
+			TiXmlElement* model_element = new TiXmlElement("Model");
+			parent_element->LinkEndChild(model_element);
+
+			TiXmlElement* feature_element = NULL;
+
+			feature_element = new TiXmlElement("NormalMap");
+			feature_element->SetAttribute("enabled",
+				Settings::BooleanToString((g_extension_usage_mask & Enums::_model_extension_usage_normal_map) == Enums::_model_extension_usage_normal_map));
+			model_element->LinkEndChild(feature_element);
+
+			feature_element = new TiXmlElement("DetailNormalMaps");
+			feature_element->SetAttribute("enabled",
+				Settings::BooleanToString((g_extension_usage_mask & Enums::_model_extension_usage_detail_normal) == Enums::_model_extension_usage_detail_normal));
+			model_element->LinkEndChild(feature_element);
+
+			feature_element = new TiXmlElement("SpecularMap");
+			feature_element->SetAttribute("enabled",
+				Settings::BooleanToString((g_extension_usage_mask & Enums::_model_extension_usage_specular_map) == Enums::_model_extension_usage_specular_map));
+			model_element->LinkEndChild(feature_element);
+
+			feature_element = new TiXmlElement("SpecularLighting");
+			feature_element->SetAttribute("enabled",
+				Settings::BooleanToString((g_extension_usage_mask & Enums::_model_extension_usage_specular_lighting) == Enums::_model_extension_usage_specular_lighting));
+			model_element->LinkEndChild(feature_element);
+		}
+	}
+
 	void		ApplyHooks()
 	{
 		BuildShaderIDs();
@@ -682,7 +749,7 @@ no_extension:
 	HRESULT		SetVertexShaderConstantF(IDirect3DDevice9* pDevice, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount)
 	{
 		HRESULT hr = S_OK;
-		if(g_ps_support > _ps_2_x_support_2_0)
+		if(g_extensions_enabled)
 		{
 			//always pass the eye position since it doesn't get updated for each object	
 			if(StartRegister == 0)

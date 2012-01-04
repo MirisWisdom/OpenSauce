@@ -49,6 +49,8 @@
 		CAST_PTR(void**, 0x4BE401), CAST_PTR(void**, 0x4BE516), CAST_PTR(void**, 0x4BE98C),
 		CAST_PTR(void**, 0x4BEC6A),
 	};
+
+	ENGINE_PTR(byte, NVIDIA_USE_BASIC_CAMO_TOGGLE,					0x51AB88, PTR_NULL);
 #else
 	#error Undefined engine layout include for: __EL_INCLUDE_RASTERIZER
 #endif

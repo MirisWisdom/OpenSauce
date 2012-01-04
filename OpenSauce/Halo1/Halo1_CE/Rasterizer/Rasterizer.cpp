@@ -15,6 +15,7 @@
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
+#include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
 
 namespace Yelo
 {
@@ -158,7 +159,8 @@ namespace Yelo
 #pragma endregion
 
 		s_rasterizer_frame_inputs* FrameInputs()	PTR_IMP_GET2(rasterizer_frame_inputs);
-		
+
+		static bool g_nvidia_use_basic_camo = false;		
 		static s_rasterizer_resolution g_resolution_list[64];
 
 		void SetupResolutions()
@@ -265,6 +267,10 @@ namespace Yelo
 
 			// replace the original resolution populator with the new one
 			Memory::WriteRelativeCall(&SetupResolutions, GET_FUNC_VPTR(RESOLUTION_LIST_SETUP_RESOLUTIONS_CALL), true);
+
+			// when 0x637D50 (1.09) is 1, the basic active camouflage is used; at 0x51ABB2 (1.09) it is forced to 1 when an nVidia card is detected
+			// if the user changes this in their settings they need to restart the game for it to take effect
+			GET_PTR(NVIDIA_USE_BASIC_CAMO_TOGGLE) = g_nvidia_use_basic_camo;
 		}
 #pragma warning( pop )
 
@@ -290,16 +296,34 @@ namespace Yelo
 
 		void LoadSettings(TiXmlElement* dx9_element)
 		{
+			g_nvidia_use_basic_camo = false;
+			if(dx9_element != NULL)
+			{
+				TiXmlElement* camo_element = dx9_element->FirstChildElement("nVidiaActiveCamouflage");
+				if(camo_element)
+					g_nvidia_use_basic_camo = Settings::ParseBoolean(camo_element->Attribute("basic"));
+			}
+
 			g_render_upgrades.LoadSettings(dx9_element);
 			DX9::c_gbuffer_system::LoadSettings(dx9_element);
 			PostProcessing::LoadSettings(dx9_element);
+			ShaderExtension::LoadSettings(dx9_element);
 		}
 
 		void SaveSettings(TiXmlElement* dx9_element)
 		{
+			if(dx9_element != NULL)
+			{
+				TiXmlElement* camo_element = new TiXmlElement("nVidiaActiveCamouflage");
+				dx9_element->LinkEndChild(camo_element);
+
+				camo_element->SetAttribute("basic", Settings::BooleanToString(g_nvidia_use_basic_camo));
+			}
+
 			DX9::c_gbuffer_system::SaveSettings(dx9_element);
 			PostProcessing::SaveSettings(dx9_element);
 			g_render_upgrades.SaveSettings(dx9_element);
+			ShaderExtension::SaveSettings(dx9_element);
 		}
 
 		void SetRenderStates()

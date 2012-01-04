@@ -40,6 +40,9 @@ namespace Yelo
 			void		Render();
 			void		Release();
 
+			void		LoadSettings(TiXmlElement* parent_element);
+			void		SaveSettings(TiXmlElement* parent_element);
+
 			void		ApplyHooks();
 			HRESULT		SetVertexShaderConstantF(uint32 render_stage, IDirect3DDevice9* pDevice, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount);
 		};

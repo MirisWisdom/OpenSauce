@@ -145,12 +145,6 @@ namespace Yelo
 		void		c_version_check_manager_base::Dispose()
 		{
 			ghttpCleanup();
-
-			for(int32 i = 0; i < NUMBEROF(m_xml_sources); i++)
-			{
-				delete m_xml_sources[i].xml_address;
-				m_xml_sources[i].xml_address = NULL;
-			}
 		}
 		/*!
 		 * \brief
@@ -223,6 +217,15 @@ namespace Yelo
 				server_list->LinkEndChild(server);
 			}
 			xml_element->LinkEndChild(server_list);
+
+			// clean up address memory after saving
+			// this used to be in Dispose, but the reverse order used when disposing the components in Main.cpp
+			// results in the addresses being deleted before they have been saved
+			for(int32 i = 0; i < NUMBEROF(m_xml_sources); i++)
+			{
+				delete m_xml_sources[i].xml_address;
+				m_xml_sources[i].xml_address = NULL;
+			}
 		}
 		/*!
 		 * \brief

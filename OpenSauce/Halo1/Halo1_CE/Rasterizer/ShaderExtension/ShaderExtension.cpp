@@ -21,6 +21,7 @@
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
 
 #if !PLATFORM_IS_DEDI
+#include "Common/YeloSettings.hpp"
 #include "Common/FileIO.hpp"
 #include <sys/stat.h>
 #include "Rasterizer/DX9/DX9.hpp"
@@ -66,6 +67,7 @@ namespace Yelo
 
 			static bool							g_shader_files_present = false;
 			static ps_2_x_support				g_ps_support = _ps_2_x_support_none;
+			static bool							g_extensions_enabled = true;
 
 			void		SetTexture(IDirect3DDevice9* pDevice, uint16 sampler, datum_index bitmap_tag_index);
 
@@ -159,6 +161,8 @@ namespace Yelo
 
 			void		Initialize3D(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* params)
 			{
+				g_extensions_enabled = false;
+
 				// the shader files are not present, so do not set up the hooks
 				if(!g_shader_files_present)
 					return;
@@ -180,6 +184,7 @@ namespace Yelo
 				// add normal goodness
 				if(g_ps_support > _ps_2_x_support_2_0)
 				{
+					g_extensions_enabled = true;
 					ApplyHooks();
 					Model::ApplyHooks();
 					Environment::ApplyHooks();
@@ -189,6 +194,27 @@ namespace Yelo
 			void		OnResetDevice(D3DPRESENT_PARAMETERS* params){}
 			void		Release(){}
 			void		Render() {}
+
+			void		LoadSettings(TiXmlElement* parent_element)
+			{
+				if(parent_element != NULL)
+				{
+					TiXmlElement* extension_element = parent_element->FirstChildElement("ShaderExtension");
+
+					Model::LoadSettings(extension_element);
+				}
+			}
+
+			void		SaveSettings(TiXmlElement* parent_element)
+			{
+				if(parent_element != NULL)
+				{
+					TiXmlElement* extension_element = new TiXmlElement("ShaderExtension");
+					parent_element->LinkEndChild(extension_element);
+
+					Model::SaveSettings(extension_element);
+				}
+			}
 		};
 	};
 };

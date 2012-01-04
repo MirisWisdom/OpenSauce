@@ -9,7 +9,7 @@
 			<field type="Pad" definition="4" />
 			<field type="Real" name="specular color exponent" tooltip="0 defaults to 1" />
 			<field type="Pad" definition="4" />
-			<field type="Explanation" name="normal maps" definition="RGB holds the normal color data~NAlpha interpolates between no detail normals and detail normals 1 and 2~N~NThe alpha channel uses:~N255/1.0 for detail normal 1~N127/0.5 for detail normal 2~N0/0.0 for no detail normals" />
+			<field type="Explanation" name="normal maps" definition="RGB holds the normal color data~NAlpha interpolates between no detail normals and detail normals 1 and 2~N~NThe alpha channel uses:~NA = no detail normals~NB = detail normals 1~NC = detail normals 2~N~N    A  =======>  B  =======>  C  =======>  A    ~N 0/0.000       85/0.333      170/0.666      255/1.000" />
 			<field type="TagReference" name="base normal map" definition="bitmap_reference" />
 			<field type="Real" name="base normal coefficient" tooltip="0 defaults to 1" />
 			<field type="Pad" definition="4" />

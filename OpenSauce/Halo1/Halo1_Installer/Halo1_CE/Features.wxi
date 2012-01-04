@@ -84,18 +84,18 @@
 			Level='1'
 			AllowAdvertise='no'>
 
-			<ComponentRef Id='Halo1_CE_sepia_FX_COMP' />
-			<ComponentRef Id='Halo1_CE_visr_FX_COMP' />
+			<ComponentRef Id='Halo1_CE_sepia_example_FX_COMP' />
+			<ComponentRef Id='Halo1_CE_visr_example_FX_COMP' />
 
-			<ComponentRef Id='Halo1_CE_sepia_SHPG_COMP' />
-			<ComponentRef Id='Halo1_CE_sepia_blue_SHPG_COMP' />
-			<ComponentRef Id='Halo1_CE_visr_SHPG_COMP' />
+			<ComponentRef Id='Halo1_CE_sepia_example_SHPG_COMP' />
+			<ComponentRef Id='Halo1_CE_sepia_blue_example_SHPG_COMP' />
+			<ComponentRef Id='Halo1_CE_visr_example_SHPG_COMP' />
 			
-			<ComponentRef Id='Halo1_CE_sepia_EFPG_COMP' />
-			<ComponentRef Id='Halo1_CE_sepia_blue_EFPG_COMP' />
-			<ComponentRef Id='Halo1_CE_visr_EFPG_COMP' />
+			<ComponentRef Id='Halo1_CE_sepia_example_EFPG_COMP' />
+			<ComponentRef Id='Halo1_CE_sepia_blue_example_EFPG_COMP' />
+			<ComponentRef Id='Halo1_CE_visr_example_EFPG_COMP' />
 			
-			<ComponentRef Id='Halo1_CE_basic_collection_EFPC_COMP' />
+			<ComponentRef Id='Halo1_CE_example_collection_EFPC_COMP' />
 		</Feature>
 	</Feature>
 	
