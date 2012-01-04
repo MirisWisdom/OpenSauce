@@ -45,15 +45,15 @@ namespace Yelo
 
 			_detail_map_function,
 		};
-		enum shader_extension_usage : _enum
+		enum model_extension_usage : _enum
 		{
-			_shader_extension_usage_none				= 0,
-			_shader_extension_usage_normal_map			= 1 << 0,
-			_shader_extension_usage_detail_normal		= 1 << 1,
-			_shader_extension_usage_specular_map		= 1 << 2,
-			_shader_extension_usage_specular_lighting	= 1 << 3,
+			_model_extension_usage_none					= 0,
+			_model_extension_usage_normal_map			= 1 << 0,
+			_model_extension_usage_detail_normal		= 1 << 1,
+			_model_extension_usage_specular_map			= 1 << 2,
+			_model_extension_usage_specular_lighting	= 1 << 3,
 
-			_shader_extension_usage,
+			_model_extension_usage,
 		};
 		enum animation_function : _enum
 		{

@@ -94,11 +94,11 @@
 					</Directory>
 
 					<!-- Example post processes-->
-					<Component Id='Halo1_CE_sepia_FX_COMP' Guid='F991E8D7-4DD3-4A14-B62C-79AEF83B6DF6'>
-						<File Id='Halo1_CE_sepia_FX_FILE' Name='sepia.fx' DiskId='1' KeyPath='yes' />
+					<Component Id='Halo1_CE_sepia_example_FX_COMP' Guid='F991E8D7-4DD3-4A14-B62C-79AEF83B6DF6'>
+						<File Id='Halo1_CE_sepia_example_FX_FILE' Name='sepia example.fx' DiskId='1' KeyPath='yes' />
 					</Component>
-					<Component Id='Halo1_CE_visr_FX_COMP' Guid='ED3FA66A-119F-4193-94A3-E875A33E2C86'>
-						<File Id='Halo1_CE_visr_FX_FILE' Name='visr.fx' DiskId='1' KeyPath='yes' />
+					<Component Id='Halo1_CE_visr_example_FX_COMP' Guid='ED3FA66A-119F-4193-94A3-E875A33E2C86'>
+						<File Id='Halo1_CE_visr_example_FX_FILE' Name='visr example.fx' DiskId='1' KeyPath='yes' />
 					</Component>
 				</Directory>
 			</Directory>
@@ -108,29 +108,29 @@
 			<Directory Id='Halo1_CE_tags_postprocess_DIR' Name='postprocess'>
 				<Directory Id='Halo1_CE_tags_postprocess_shaders_DIR' Name='shaders'>
 					<!-- Compiled postprocess shaders-->
-					<Component Id='Halo1_CE_sepia_SHPG_COMP' Guid='7498F601-2905-49E2-A8C4-EE63BD6DE633'>
-						<File Id='Halo1_CE_sepia_SHPG_FILE' Name='sepia.shader_postprocess_generic' DiskId='1' KeyPath='yes' />
+					<Component Id='Halo1_CE_sepia_example_SHPG_COMP' Guid='7498F601-2905-49E2-A8C4-EE63BD6DE633'>
+						<File Id='Halo1_CE_sepia_example_SHPG_FILE' Name='sepia example.shader_postprocess_generic' DiskId='1' KeyPath='yes' />
 					</Component>
-					<Component Id='Halo1_CE_sepia_blue_SHPG_COMP' Guid='343978B8-8FDE-4935-901A-3AAC7945D1E1'>
-						<File Id='Halo1_CE_sepia_blue_SHPG_FILE' Name='sepia blue.shader_postprocess_generic' DiskId='1' KeyPath='yes' />
+					<Component Id='Halo1_CE_sepia_blue_example_SHPG_COMP' Guid='343978B8-8FDE-4935-901A-3AAC7945D1E1'>
+						<File Id='Halo1_CE_sepia_blue_example_SHPG_FILE' Name='sepia blue example.shader_postprocess_generic' DiskId='1' KeyPath='yes' />
 					</Component>
-					<Component Id='Halo1_CE_visr_SHPG_COMP' Guid='A2B2EAE2-022D-416B-AE80-3CD8683D5B8C'>
-						<File Id='Halo1_CE_visr_SHPG_FILE' Name='visr.shader_postprocess_generic' DiskId='1' KeyPath='yes' />
+					<Component Id='Halo1_CE_visr_example_SHPG_COMP' Guid='A2B2EAE2-022D-416B-AE80-3CD8683D5B8C'>
+						<File Id='Halo1_CE_visr_example_SHPG_FILE' Name='visr example.shader_postprocess_generic' DiskId='1' KeyPath='yes' />
 					</Component>
 				</Directory>
 				<Directory Id='Halo1_CE_tags_postprocess_effects_DIR' Name='effects'>
-					<Component Id='Halo1_CE_sepia_EFPG_COMP' Guid='F853B526-2A12-4012-BC74-F7B7AFFB936C'>
-						<File Id='Halo1_CE_sepia_EFPG_FILE' Name='sepia.effect_postprocess_generic' DiskId='1' KeyPath='yes' />
+					<Component Id='Halo1_CE_sepia_example_EFPG_COMP' Guid='F853B526-2A12-4012-BC74-F7B7AFFB936C'>
+						<File Id='Halo1_CE_sepia_EFPG_FILE' Name='sepia example.effect_postprocess_generic' DiskId='1' KeyPath='yes' />
 					</Component>
-					<Component Id='Halo1_CE_sepia_blue_EFPG_COMP' Guid='FD5F4A1E-B05F-4416-A5F5-33ECC2591EE0'>
-						<File Id='Halo1_CE_sepia_blue_EFPG_FILE' Name='sepia blue.effect_postprocess_generic' DiskId='1' KeyPath='yes' />
+					<Component Id='Halo1_CE_sepia_blue_example_EFPG_COMP' Guid='FD5F4A1E-B05F-4416-A5F5-33ECC2591EE0'>
+						<File Id='Halo1_CE_sepia_blue_example_EFPG_FILE' Name='sepia blue example.effect_postprocess_generic' DiskId='1' KeyPath='yes' />
 					</Component>
-					<Component Id='Halo1_CE_visr_EFPG_COMP' Guid='0D63ADC4-106F-4242-8195-29314DBB2F49'>
-						<File Id='Halo1_CE_visr_EFPG_FILE' Name='visr.effect_postprocess_generic' DiskId='1' KeyPath='yes' />
+					<Component Id='Halo1_CE_visr_example_EFPG_COMP' Guid='0D63ADC4-106F-4242-8195-29314DBB2F49'>
+						<File Id='Halo1_CE_visr_example_EFPG_FILE' Name='visr example.effect_postprocess_generic' DiskId='1' KeyPath='yes' />
 					</Component>
 				</Directory>
-				<Component Id='Halo1_CE_basic_collection_EFPC_COMP' Guid='215662C5-F7DB-42a2-AF11-62B2360CBDA1'>
-					<File Id='Halo1_CE_basic_collection_EFPC_FILE' Name='basic_collection.effect_postprocess_collection' DiskId='1' KeyPath='yes' />
+				<Component Id='Halo1_CE_example_collection_EFPC_COMP' Guid='215662C5-F7DB-42a2-AF11-62B2360CBDA1'>
+					<File Id='Halo1_CE_example_collection_EFPC_FILE' Name='example collection.effect_postprocess_collection' DiskId='1' KeyPath='yes' />
 				</Component>
 			</Directory>
 		</Directory>

@@ -2,12 +2,23 @@
 <osYeloSettings engine="Halo1_CE">
     <client>
         <dx9>
+            <nVidiaActiveCamouflage basic="false" />
             <GBuffer enabled="true" />
-            <postprocessing>
+            <PostProcessing>
                 <MotionBlur enabled="true" amount="1" />
+                <FXAA enabled="false" />
                 <Internal enabled="true" />
                 <External enabled="true" />
-            </postprocessing>
+            </PostProcessing>
+            <Upgrades dynamicTriangles="false" />
+            <ShaderExtension>
+                <Model>
+                    <NormalMap enabled="true" />
+                    <DetailNormalMaps enabled="true" />
+                    <SpecularMap enabled="true" />
+                    <SpecularLighting enabled="true" />
+                </Model>
+            </ShaderExtension>
         </dx9>
         <Fov value="1.02414" />
         <Hud show="true" scale="true" showChat="true">

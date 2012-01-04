@@ -62,7 +62,9 @@ namespace Yelo
 			{
 				void* parameter_instance; //void* to avoid a problematic include
 			}runtime;
-		}; BOOST_STATIC_ASSERT( sizeof(s_effect_postprocess_generic_exposed_parameter) == 0x4C);
+
+			PAD32;
+		}; BOOST_STATIC_ASSERT( sizeof(s_effect_postprocess_generic_exposed_parameter) == 0x50);
 
 		struct s_effect_postprocess_generic : s_effect_postprocess_definition
 		{

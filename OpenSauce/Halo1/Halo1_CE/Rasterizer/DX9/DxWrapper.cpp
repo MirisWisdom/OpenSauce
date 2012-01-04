@@ -480,17 +480,7 @@ HRESULT Yelo_IDirect3D9::GetAdapterDisplayMode(UINT Adapter, D3DDISPLAYMODE *pMo
 { return Yelo_pD3D->GetAdapterDisplayMode(Adapter, pMode); }
 
 HRESULT Yelo_IDirect3D9::GetAdapterIdentifier(UINT Adapter, DWORD Flags, D3DADAPTER_IDENTIFIER9 *pIdentifier)
-{
-	// NOTE: "active camo bug" fix
-	// http://www.modacity.net/forums/showpost.php?p=444719&postcount=56
-	// Thanks FireScythe!
-	// "It just returns a different nVidia VendorId, taken from the config.txt file. Tested on my GeForce 9600GT and works fine."
-	HRESULT hr = Yelo_pD3D->GetAdapterIdentifier(Adapter, Flags, pIdentifier);
-	if(Yelo::Memory::IsYeloEnabled())
-		if (SUCCEEDED(hr) && pIdentifier->VendorId == 0x10de)
-			pIdentifier->VendorId = 0x12d2;
-	return hr;
-}
+{ return Yelo_pD3D->GetAdapterIdentifier(Adapter, Flags, pIdentifier); }
 
 UINT Yelo_IDirect3D9::GetAdapterModeCount(THIS_ UINT Adapter,D3DFORMAT Format) 
 { return Yelo_pD3D->GetAdapterModeCount(Adapter,Format); }
