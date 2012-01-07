@@ -1,6 +1,5 @@
 syntax: glob
 
-glob:_scripts/
 glob:OpenSauce/shared/Include/GameSpyOpen/
 glob:test_results/
 
