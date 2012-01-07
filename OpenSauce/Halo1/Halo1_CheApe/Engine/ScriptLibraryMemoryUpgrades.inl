@@ -57,7 +57,7 @@ static void MemoryUpgradesSyntaxInitialize(bool use_upgrades = true)
 	// change from 'jz' (0x0F 0x84) to 'jge' (0x0F 0x8D)
 	// This allows us to support scenarios with original script nodes, or with
 	// Yelo based script nodes, which are larger (because of memory upgrades, duh)
-	*(K_ADDRESS_OF_SCENARIO_HS_SYNTAX_DATA_SIZE_CHECK+1) = 0x8D;
+	*(K_ADDRESS_OF_SCENARIO_HS_SYNTAX_DATA_SIZE_CHECK+1) = use_upgrades ? 0x8D : 0x84;
 }
 static void MemoryUpgradesSyntaxStringDataInitialize()
 {
