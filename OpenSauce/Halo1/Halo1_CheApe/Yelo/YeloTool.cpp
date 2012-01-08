@@ -39,8 +39,8 @@ namespace Yelo
 			k_number_of_tool_import_classes = 0x15,
 		};
 
-		#include "Tool/BuildCacheFile.inl"
 		#include "Tool/CompileScripts.inl"
+		#include "Tool/BuildCacheFile.inl"
 		#include "Tool/Help.inl"
 
 

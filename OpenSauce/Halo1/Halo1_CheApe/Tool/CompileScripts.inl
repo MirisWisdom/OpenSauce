@@ -14,7 +14,7 @@ static void PLATFORM_API scenario_compile_scripts(void** arguments)
 
 	// load scenario tag
 
-	// call...ugh why do I even try? :|
+	// call 4C27C0 (hs_scenario_postprocess or hs_scenario_initialize_for_new_map?)
 
 	// save scenario tag
 

@@ -27,6 +27,13 @@ static struct s_upgrade_globals {
 // If [use_upgrades] is false, the code will revert the HEK modifications back to stock values
 static void MemoryUpgradesSyntaxInitialize(bool use_upgrades = true)
 {
+	// We had to enable upgrade toggling because the game runtime preallocates a buffer of the stock node memory size.
+	// When it tried to copy the map's hs_scenario data to this preallocated buffer, it would skip the syntax node copy 
+	// because the scenario data was larger. However, it wouldn't stop the hs scripts from being ran. Since the script 
+	// nodes weren't copied, the game would end up running on "zero" initialized syntax datums, and thus exception.
+	// By toggling off the upgrades, tool will reinitialize the hs_scenario data normally (ie, with the stock size) 
+	// and recompile the scripts (it already does this during the cache build process).
+	// If this all sounds like gibberish you probably shouldn't be mucking around in this part of the code to begin with
 	static bool memory_is_upgraded = false;
 	if(memory_is_upgraded == use_upgrades) return;
 	memory_is_upgraded = use_upgrades;
@@ -40,8 +47,11 @@ static void MemoryUpgradesSyntaxInitialize(bool use_upgrades = true)
 	static uint32* K_TOTAL_SCENARIO_HS_SYNTAX_DATA_UPGRADE_ADDRESS_LIST[] = {
 		//CAST_PTR(uint32*, PLATFORM_VALUE(0x4F12FF, 0x4C1ADF, 0x5834DF)), // don't modify this one, modify the size check using the address below
 		CAST_PTR(uint32*, PLATFORM_VALUE(0x4F1367, 0x4C1B47, 0x583547)),
-		CAST_PTR(uint32*, PLATFORM_VALUE(0xA132A4, 0x722EDC, 0xA84B74)),
 	};
+	// We separated this from K_TOTAL_SCENARIO_HS_SYNTAX_DATA_UPGRADE_ADDRESS_LIST because we want the tag_data definition to always accept upgraded
+	// sizes. So, when the syntax node upgrades are disabled in the tools, the scenario will load without error, but when they recompile the scripts 
+	// they'll use the (expected) stock sizes.
+	static uint32* K_HS_SYNTAX_DATA_DEFINITION_MAX_SIZE = CAST_PTR(uint32*, PLATFORM_VALUE(0xA132A4, 0x722EDC, 0xA84B74));
 	static byte* K_ADDRESS_OF_SCENARIO_HS_SYNTAX_DATA_SIZE_CHECK = CAST_PTR(byte*, PLATFORM_VALUE(0x4F1303, 0x4C1AE3, 0x5834E3));
 	//////////////////////////////////////////////////////////////////////////
 
@@ -53,6 +63,8 @@ static void MemoryUpgradesSyntaxInitialize(bool use_upgrades = true)
 	for(int32 x = 0; x < NUMBEROF(K_TOTAL_SCENARIO_HS_SYNTAX_DATA_UPGRADE_ADDRESS_LIST); x++)
 		*K_TOTAL_SCENARIO_HS_SYNTAX_DATA_UPGRADE_ADDRESS_LIST[x] = use_upgrades ? 
 		Enums::k_total_scenario_hs_syntax_data_upgrade : Enums::k_total_scenario_hs_syntax_data;
+	// We ALWAYS want this set to the upgraded memory size
+	*K_HS_SYNTAX_DATA_DEFINITION_MAX_SIZE = Enums::k_total_scenario_hs_syntax_data_upgrade;
 
 	// change from 'jz' (0x0F 0x84) to 'jge' (0x0F 0x8D)
 	// This allows us to support scenarios with original script nodes, or with
