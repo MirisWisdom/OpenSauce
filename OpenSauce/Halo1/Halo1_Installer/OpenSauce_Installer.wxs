@@ -23,7 +23,7 @@
 		UpgradeCode='6E7F244E-C79F-4925-A073-66362D92A99F'
 		Language='1033'
 		Codepage='1252'
-		Version='2.5.0'
+		Version='3.0.0'
 		Manufacturer='Kornner Studios'>
 
 		<Package Id='*'
@@ -37,7 +37,7 @@
 			SummaryCodepage='1252' />
 
 		<Upgrade Id='6E7F244E-C79F-4925-A073-66362D92A99F'> <!-- Id MUST be the UpgradeCode -->
-			<UpgradeVersion OnlyDetect='yes' Property='NEWERFOUND' Minimum='2.5.0' IncludeMinimum='no'/>
+			<UpgradeVersion OnlyDetect='yes' Property='NEWERFOUND' Minimum='3.0.0' IncludeMinimum='no'/>
 		</Upgrade>
 
 		<Property Id='ALLUSERS'>1</Property>
@@ -223,7 +223,7 @@
 		</InstallExecuteSequence>
 
 		<Feature Id='OpenSauce_Complete_FEAT'
-			Title='OS V2.5'
+			Title='OS V3.0'
 			Description='All the Sauce you will ever need.'
 			Display='expand'
 			Level='1'

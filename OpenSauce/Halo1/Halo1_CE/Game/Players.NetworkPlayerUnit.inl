@@ -34,8 +34,8 @@ static datum_index PlayerFindTeamUnitDefinitionOverride(const s_player_datum* pl
 		{
 			const TagGroups::s_network_game_player_unit& game_player_unit = player_units[x];
 
-			// TODO: need to put postprocessing code into tool to validate on cache-build that the definition isn't null
-			if( !strcmp(game_player_unit.name, player_team_name) && !game_player_unit.definition.tag_index.IsNull() )
+			// Null definitions are removed by CheApe extensions, so tag_index should never be null (unless modified by non-OS tools)
+			if( !strcmp(game_player_unit.name, player_team_name) )
 				unit_definition_index = game_player_unit.definition.tag_index;
 		}
 	}

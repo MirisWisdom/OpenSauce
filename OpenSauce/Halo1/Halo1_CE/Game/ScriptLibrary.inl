@@ -55,7 +55,6 @@
 		_hs_function_unit_data_set_integer,
 		_hs_function_unit_data_get_real,
 		_hs_function_unit_data_set_real,
-		//_hs_function_unit_has_equipment,
 
 		_hs_function_physics_get_gravity,
 		_hs_function_physics_set_gravity,

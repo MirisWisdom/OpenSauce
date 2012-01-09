@@ -1,6 +1,11 @@
 syntax: glob
 
 glob:OpenSauce/shared/Include/GameSpyOpen/
+glob:shared/Resources/Halo1_CE/HCE_CommonData/
+glob:shared/Resources/Halo1_CE/HCE_InstallDir/
+glob:shared/Resources/Halo1_CE/HCE_UserPath/OpenSauce/shaders/
+glob:shared/Resources/Halo1_CheApe/HEK_InstallDir/tags/
+glob:shared/Resources/Installer/dxredist/
 glob:test_results/
 
 bin\
@@ -12,3 +17,8 @@ obj\
 *.sdf
 *.suo
 *.opensdf
+*.aps
+*.cache
+
+*.psd
+*.map
