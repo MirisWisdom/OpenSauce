@@ -28,11 +28,19 @@ SET VS_COMMON_IDE="%VS90COMNTOOLS%"
 IF %VS_COMMON_IDE%=="" GOTO INVALID_VS
 SET VS_COMMON_IDE="%VS_COMMON_IDE%..\IDE\"
 
+REM Your machine's globalization settings will determine the values of A,B,C
+REM EG, on my machine I have YY/MM/DD, but the default format is DD/MM/YY
+REM YY/MM/DD is a better raw sorting format
 FOR /F "tokens=1,2,3 delims=/ " %%A IN ('DATE /t') DO @(
     SET DateDay=%%A
     SET DateMonth=%%B
     SET DateYear=%%C
-    SET DateAll=%%C%%B%%A
+    SET DateAll=%%A%%B%%C
+)
+FOR /F "tokens=1,2,3 delims=: " %%A IN ('TIME /t') DO @(
+    SET TimeHr=%%A
+    SET TimeMin=%%B
+    SET TimePrd=%%C
 )
 
 REM We assume the bat's directory is \bin\_scripts\
@@ -44,22 +52,53 @@ SET "osBinPath=%osRepoDir%bin"
 
 SET "osInstallerSolution=%osRepoDir%OpenSauce\OpenSauce_Installer.sln"
 
+
+:: Parse optional arguments
+SET ExpectedMsiCount=3
+SET BuildDebug=1
+SET BuildRelease=1
+SET BuildReleaseSymbols=1
+REM We quoting the arguments so unspecified args expand to just ""
+IF "%1"=="0" (
+	SET /A ExpectedMsiCount-=1
+	SET /A BuildDebug=0
+)
+IF "%2"=="0" (
+	SET /A ExpectedMsiCount-=1
+	SET /A BuildRelease=0
+)
+IF "%3"=="0" (
+	SET /A ExpectedMsiCount-=1
+	SET /A BuildReleaseSymbols=0
+)
+
+
 :: Run the meat of this script
-
-ECHO Compiling Debug configuration
+IF %ExpectedMsiCount% NEQ 0 (
+	ECHO Starting build at %TimeHr%:%TimeMin% %TimePrd%
+	ECHO Building %ExpectedMsiCount% installers
+) ELSE @ECHO WARNING: No MSI files are going to be built...
 ECHO.
 
-"%VS_COMMON_IDE%devenv.exe" /rebuild Debug %osInstallerSolution%
+IF %BuildDebug% NEQ 0 (
+	ECHO Compiling Debug configuration
+	ECHO.
 
-ECHO Compiling Release configuration
-ECHO.
+	"%VS_COMMON_IDE%devenv.exe" /rebuild Debug %osInstallerSolution%
+)
+IF %BuildRelease% NEQ 0 (
+	ECHO Compiling Release configuration
+	ECHO.
 
-"%VS_COMMON_IDE%devenv.exe" /rebuild Release %osInstallerSolution%
+	"%VS_COMMON_IDE%devenv.exe" /rebuild Release %osInstallerSolution%
+)
+IF %BuildReleaseSymbols% NEQ 0 (
+	ECHO Compiling ReleaseSymbols configuration
+	ECHO.
 
-ECHO Compiling ReleaseSymbols configuration
-ECHO.
+	"%VS_COMMON_IDE%devenv.exe" /rebuild ReleaseSymbols %osInstallerSolution%
+)
 
-"%VS_COMMON_IDE%devenv.exe" /rebuild ReleaseSymbols %osInstallerSolution%
 
 :: Copy the build installers
 
@@ -76,9 +115,9 @@ FOR %%A IN ("%osBinPath%\Debug\x86\OpenSauce_Installer\*.msi") DO copy %%A "%Bui
 ECHO.
 
 REM Count the number of files in the build path, if less than 3 something didn't build correctly
-SET /A "MSICount=0"
-FOR %%A IN ("%BuildPath%\*.msi") DO SET /A "MSICount+=1"
-IF "%MSICount%" NEQ "3" GOTO BUILD_FAILED
+SET /A "MsiCount=0"
+FOR %%A IN ("%BuildPath%\*.msi") DO SET /A "MsiCount+=1"
+IF "%MsiCount%" LSS "%ExpectedMsiCount%" GOTO BUILD_FAILED
 
 :: Archive the installers
 
@@ -102,7 +141,7 @@ ECHO WARNING: 7-Zip is not installed, build archive creation has been skipped
 GOTO END
 
 :BUILD_FAILED
-ECHO ERROR: An installer is missing, one or more of the project configurations may have failed to build
+ECHO ERROR: An installer is missing (expected %ExpectedMsiCount%, got %MsiCount%), one or more of the project configurations may have failed to build
 GOTO END
 
 :END
