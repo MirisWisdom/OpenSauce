@@ -45,14 +45,13 @@ static void MemoryUpgradesSyntaxInitialize(bool use_upgrades = true)
 	};
 
 	static uint32* K_TOTAL_SCENARIO_HS_SYNTAX_DATA_UPGRADE_ADDRESS_LIST[] = {
-		//CAST_PTR(uint32*, PLATFORM_VALUE(0x4F12FF, 0x4C1ADF, 0x5834DF)), // don't modify this one, modify the size check using the address below
+		CAST_PTR(uint32*, PLATFORM_VALUE(0x4F12FF, 0x4C1ADF, 0x5834DF)),
 		CAST_PTR(uint32*, PLATFORM_VALUE(0x4F1367, 0x4C1B47, 0x583547)),
 	};
 	// We separated this from K_TOTAL_SCENARIO_HS_SYNTAX_DATA_UPGRADE_ADDRESS_LIST because we want the tag_data definition to always accept upgraded
 	// sizes. So, when the syntax node upgrades are disabled in the tools, the scenario will load without error, but when they recompile the scripts 
 	// they'll use the (expected) stock sizes.
 	static uint32* K_HS_SYNTAX_DATA_DEFINITION_MAX_SIZE = CAST_PTR(uint32*, PLATFORM_VALUE(0xA132A4, 0x722EDC, 0xA84B74));
-	static byte* K_ADDRESS_OF_SCENARIO_HS_SYNTAX_DATA_SIZE_CHECK = CAST_PTR(byte*, PLATFORM_VALUE(0x4F1303, 0x4C1AE3, 0x5834E3));
 	//////////////////////////////////////////////////////////////////////////
 
 
@@ -65,11 +64,6 @@ static void MemoryUpgradesSyntaxInitialize(bool use_upgrades = true)
 		Enums::k_total_scenario_hs_syntax_data_upgrade : Enums::k_total_scenario_hs_syntax_data;
 	// We ALWAYS want this set to the upgraded memory size
 	*K_HS_SYNTAX_DATA_DEFINITION_MAX_SIZE = Enums::k_total_scenario_hs_syntax_data_upgrade;
-
-	// change from 'jz' (0x0F 0x84) to 'jge' (0x0F 0x8D)
-	// This allows us to support scenarios with original script nodes, or with
-	// Yelo based script nodes, which are larger (because of memory upgrades, duh)
-	*(K_ADDRESS_OF_SCENARIO_HS_SYNTAX_DATA_SIZE_CHECK+1) = use_upgrades ? 0x8D : 0x84;
 }
 static void MemoryUpgradesSyntaxStringDataInitialize()
 {

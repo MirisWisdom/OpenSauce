@@ -229,7 +229,7 @@ static void PLATFORM_API build_cache_file_for_scenario_stock_override(void** arg
 	Scripting::DisposeScriptNodeUpgrades();
 
 	s_build_cache_file_for_scenario& bcffs = build_cache_file_for_scenario_internals;
-	bcffs._build_cache_file_for_scenario(args->scenario_name);
+	bcffs.build_cache_file_for_scenario_command(arguments);
 
 	Scripting::InitializeScriptNodeUpgrades();
 }

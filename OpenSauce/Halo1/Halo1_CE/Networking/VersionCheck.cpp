@@ -12,6 +12,8 @@
 #include <time.h>
 #include <ctime>
 
+#include <Common/Halo1/YeloSettingsVersion.hpp>
+
 #if PLATFORM_IS_USER
 	#include "Networking/VersionCheckClient.hpp"
 #elif PLATFORM_IS_DEDI
@@ -128,8 +130,8 @@ namespace Yelo
 		{
 			ghttpStartup();
 
-			m_current_version.SetBuild(2, 5, 0);
-			m_available_version.SetBuild(2, 5, 0);
+			m_current_version.SetBuild(K_OPENSAUCE_VERSION_BUILD_MAJ, K_OPENSAUCE_VERSION_BUILD_MIN, K_OPENSAUCE_VERSION_BUILD);
+			m_available_version.SetBuild(K_OPENSAUCE_VERSION_BUILD_MAJ, K_OPENSAUCE_VERSION_BUILD_MIN, K_OPENSAUCE_VERSION_BUILD);
 
 			// when no requests are made and a new map is loaded GS asserts as 0 is a valid connection id
 			// -1 is not so we check against this later to avoid trying to close a non existant request
@@ -453,8 +455,8 @@ namespace Yelo
 			m_states.last_checked_month = local_time->tm_mon;
 			m_states.last_checked_year = 1900 + local_time->tm_year;
 
-			m_states.is_new_version =	(m_current_version.m_major < m_available_version.m_major) ||
-										(m_current_version.m_minor < m_available_version.m_minor) ||
+			m_states.is_new_version =	(m_current_version.m_major < m_available_version.m_major) &&
+										(m_current_version.m_minor < m_available_version.m_minor) &&
 										(m_current_version.m_build < m_available_version.m_build);
 		}
 	}; };

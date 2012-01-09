@@ -531,6 +531,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\Common\Halo1\YeloSettingsVersion.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\Common\Halo1\YeloSharedSettings.cpp"
 					>
 				</File>

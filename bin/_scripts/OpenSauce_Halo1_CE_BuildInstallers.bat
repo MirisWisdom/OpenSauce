@@ -40,35 +40,26 @@ SET "BatDir=%~dp0"
 REM Thus we have to go up two directories to get root
 SET "osRepoDir=%BatDir%..\..\"
 SET "osBinPath=%osRepoDir%bin"
-SET "osBuildLogPath=%osBinPath%\log"
 
-REM The log directory is not automatically created when building
-IF NOT EXIST "%osBuildLogPath%" mkdir "%osBuildLogPath%"
 
 SET "osInstallerSolution=%osRepoDir%OpenSauce\OpenSauce_Installer.sln"
 
 :: Run the meat of this script
 
 ECHO Compiling Debug configuration
-SET "BuildLogFile=%osBuildLogPath%\log_debug.log"
-ECHO Log: "%BuildLogFile%"
 ECHO.
 
-"%VS_COMMON_IDE%devenv.exe" /rebuild Debug %osInstallerSolution% /out %BuildLogFile%
+"%VS_COMMON_IDE%devenv.exe" /rebuild Debug %osInstallerSolution%
 
 ECHO Compiling Release configuration
-SET "BuildLogFile=%osBuildLogPath%\log_release.log"
-ECHO Log: "%BuildLogFile%"
 ECHO.
 
-"%VS_COMMON_IDE%devenv.exe" /rebuild Release %osInstallerSolution% /out %BuildLogFile%
+"%VS_COMMON_IDE%devenv.exe" /rebuild Release %osInstallerSolution%
 
 ECHO Compiling ReleaseSymbols configuration
-SET "BuildLogFile=%osBuildLogPath%\log_releasesymbols.log"
-ECHO Log: "%BuildLogFile%"
 ECHO.
 
-"%VS_COMMON_IDE%devenv.exe" /rebuild ReleaseSymbols %osInstallerSolution% /out %BuildLogFile%
+"%VS_COMMON_IDE%devenv.exe" /rebuild ReleaseSymbols %osInstallerSolution%
 
 :: Copy the build installers
 

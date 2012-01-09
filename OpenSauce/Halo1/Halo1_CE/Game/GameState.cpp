@@ -123,10 +123,11 @@ namespace Yelo
 
 #ifdef API_DEBUG
 			*GameState::DeveloperMode() = 4; // make console messages appear
-#endif
+
 			// increment the game build by one so all games (hosted or browsed) aren't
 			// from the normal, non-Yelo, game pool.
 			GameBuildString()[7] += 7;
+#endif
 
 			*TransportDumping() = false;
 

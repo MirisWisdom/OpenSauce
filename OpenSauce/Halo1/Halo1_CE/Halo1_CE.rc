@@ -53,8 +53,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,0,0,1
- PRODUCTVERSION 2,0,0,1
+ FILEVERSION 3,0,0,0
+ PRODUCTVERSION 3,0,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -69,13 +69,14 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
+            VALUE "CompanyName", "Kornner Studios"
             VALUE "FileDescription", "OpenSauce - Yelo Module (Halo1_CE)"
-            VALUE "FileVersion", "2.50"
+            VALUE "FileVersion", "3.00"
             VALUE "InternalName", "Halo1_CE"
-            VALUE "LegalCopyright", "Copyright (C) 2011"
+            VALUE "LegalCopyright", "Copyright (C) 2012"
             VALUE "OriginalFilename", "Halo1_CE.dll"
             VALUE "ProductName", "OpenSauce - Yelo Module (Halo1_CE)"
-            VALUE "ProductVersion", "2.50"
+            VALUE "ProductVersion", "3.00"
         END
     END
     BLOCK "VarFileInfo"
