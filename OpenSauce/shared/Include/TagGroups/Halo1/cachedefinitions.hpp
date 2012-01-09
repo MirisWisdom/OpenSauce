@@ -8,6 +8,7 @@
 #include <TagGroups/CacheDefinitions.hpp>
 #include <Blam/Halo1/BlamMemoryUpgrades.hpp>
 #include <Blam/Halo1/project_yellow_shared_definitions.hpp>
+#include <Common/Halo1/YeloSettingsVersion.hpp>
 
 namespace Yelo
 {
@@ -47,6 +48,13 @@ namespace Yelo
 			time_t timestamp;
 
 			tag_string build_string;
+
+			// This actually isn't specific to CheApe, but the OS version values used when CheApe was built
+			struct {
+				byte maj;
+				byte min;
+				uint16 build;
+			}cheape;
 		}build_info; // User-defined build info
 
 #if PLATFORM_IS_EDITOR
@@ -84,6 +92,10 @@ namespace Yelo
 				date_tm.tm_mon, date_tm.tm_mday, 
 				date_tm.tm_hour, date_tm.tm_sec,
 				stage_string);
+
+			build_info.cheape.maj = CAST(byte, K_OPENSAUCE_VERSION_BUILD_MAJ);
+			build_info.cheape.min = CAST(byte, K_OPENSAUCE_VERSION_BUILD_MIN);
+			build_info.cheape.build = CAST(uint16, K_OPENSAUCE_VERSION_BUILD);
 		}
 #endif
 
@@ -105,6 +117,17 @@ namespace Yelo
 				k_memory_upgrade_increase_amount <= K_MEMORY_UPGRADE_INCREASE_AMOUNT && 
 				TagVersioningIsValid()
 				);
+		}
+
+		bool BuiltWithOlderTools() const
+		{
+			return build_info.cheape.maj < K_OPENSAUCE_VERSION_BUILD_MAJ &&
+				build_info.cheape.min < K_OPENSAUCE_VERSION_BUILD_MIN;
+		}
+		bool BuiltWithNewerTools() const
+		{
+			return build_info.cheape.maj > K_OPENSAUCE_VERSION_BUILD_MAJ &&
+				build_info.cheape.min > K_OPENSAUCE_VERSION_BUILD_MIN;
 		}
 	};
 
