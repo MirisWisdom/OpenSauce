@@ -9,10 +9,12 @@
   <PropertyGroup Condition=" '$(OutputType)' == 'Library' ">
     <OutDir>$(SolutionDir)..\lib\$(Configuration)\$(Platform)\$(AssemblyName)\</OutDir>
     <OutputPath>$(SolutionDir)..\lib\$(Configuration)\$(Platform)\$(AssemblyName)\</OutputPath>
+    <DocumentationFile Condition=" '$(Configuration)' == 'Release' ">$(SolutionDir)..\lib\$(Configuration)\$(Platform)\$(AssemblyName)\$(AssemblyName).XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(OutputType)' == 'Exe' Or '$(OutputType)' == 'WinExe' ">
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\$(AssemblyName)\</OutDir>
     <OutputPath>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\$(AssemblyName)\</OutputPath>
+    <DocumentationFile Condition=" '$(Configuration)' == 'Release' ">$(SolutionDir)..\bin\$(Configuration)\$(Platform)\$(AssemblyName)\$(AssemblyName).XML</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -37,8 +39,6 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <DefineConstants>TRACE</DefineConstants>
-
-    <DocumentationFile>$(SolutionDir)..\lib\$(Configuration)\$(Platform)\$(AssemblyName)\$(AssemblyName).XML</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
