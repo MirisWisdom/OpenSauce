@@ -133,7 +133,7 @@ namespace Yelo
 					int16* _short;
 					int32* _long;
 					char* _string;
-					datum_index _datum;
+					datum_index* _datum;
 				}Value;
 			};
 			Flags::hs_access_flag access;

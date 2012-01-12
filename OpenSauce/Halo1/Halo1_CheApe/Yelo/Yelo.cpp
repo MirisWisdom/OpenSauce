@@ -58,6 +58,9 @@ namespace Yelo
 	{
 		c_memory_fixups::Initialize();
 		Scripting::Initialize();
+#if PLATFORM_ID != PLATFORM_TOOL
+		Scripting::InitializeCustomScriptingDefinitions();
+#endif
 
 		OverrideTagFilesOpen();
 

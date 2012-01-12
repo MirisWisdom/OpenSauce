@@ -66,23 +66,23 @@ namespace Yelo
 			hs_function_table = GET_DPTR2(hs_function_table);
 			hs_external_globals = GET_DPTR2(hs_external_globals);
 
+			// We enable tag definition upgrades by default on all platforms, but custom scripting must be explicitly setup
+			MemoryUpdatesInitializeTagDefinitions();
+		}
+
+		void Dispose()
+		{
+		}
+
+		void InitializeCustomScriptingDefinitions()
+		{
 			CheApe::s_cache_header& header = CheApe::GlobalCacheHeader();
 
 			if(	header.Scripting.Functions.Count > 0 || 
 				header.Scripting.Globals.Count > 0)
 			{
-				MemoryUpgradesInitialize();
-
-				hs_global_definition** globals = _upgrade_globals.globals.table;
-
-				for(int32 x = 0; x < _upgrade_globals.globals.count; x++)
-					if( !strcmp(globals[x]->name, "") && globals[x]->address != NULL )
-						globals[x]->Value._bool = false;
+				MemoryUpgradesCustomScriptingDefinitions();
 			}
-		}
-
-		void Dispose()
-		{
 		}
 
 		void InitializeScriptNodeUpgrades()	{ MemoryUpgradesSyntaxInitialize(true); }

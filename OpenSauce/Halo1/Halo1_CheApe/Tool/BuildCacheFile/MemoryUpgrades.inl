@@ -321,10 +321,14 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 	{
 		InterceptorsInitialize(only_using_data_file_hacks);
 
-		if(!only_using_data_file_hacks)
+		// Only allow script node upgrades when building with use-memory-upgrades on
+		if(only_using_data_file_hacks)
+			Scripting::DisposeScriptNodeUpgrades();
+		else
 		{
 			TagMemoryInitialize();
 			CacheMemoryInitialize();
+			Scripting::InitializeCustomScriptingDefinitions();
 		}
 
 		TagGroups::ScenarioYeloLoadHookInitialize();
@@ -334,10 +338,13 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 	{
 		InterceptorsDispose(only_using_data_file_hacks);
 
-		if(!only_using_data_file_hacks)
+		if(only_using_data_file_hacks)
+			Scripting::InitializeScriptNodeUpgrades();
+		else
 		{
 			TagMemoryDispose();
 			CacheMemoryDispose();
+			// TODO: Implement a DisposeCustomScriptingDefinitions to be consitant?
 		}
 
 		TagGroups::ScenarioYeloLoadHookDispose();

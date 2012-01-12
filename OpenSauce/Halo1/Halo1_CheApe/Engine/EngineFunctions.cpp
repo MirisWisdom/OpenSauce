@@ -111,7 +111,9 @@ namespace Yelo
 		s_file_reference& file_reference_create(s_file_reference& reference, cstring directory, cstring name, cstring ext, long_enum location)
 		{
 			char buffer[256];
-			_snprintf_s(buffer, NUMBEROF(buffer)-1, "%s\\%s.%s", directory, name, ext);
+			_snprintf_s(buffer, NUMBEROF(buffer)-1, "%s%s%s.%s", directory, 
+				!is_null_or_empty(directory) ? "\\" : "",
+				name, ext);
 
 			file_reference_create(reference, location);
 			file_reference_set_name(reference, buffer);

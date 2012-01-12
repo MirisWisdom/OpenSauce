@@ -27,13 +27,6 @@ static struct s_upgrade_globals {
 // If [use_upgrades] is false, the code will revert the HEK modifications back to stock values
 static void MemoryUpgradesSyntaxInitialize(bool use_upgrades = true)
 {
-	// We had to enable upgrade toggling because the game runtime preallocates a buffer of the stock node memory size.
-	// When it tried to copy the map's hs_scenario data to this preallocated buffer, it would skip the syntax node copy 
-	// because the scenario data was larger. However, it wouldn't stop the hs scripts from being ran. Since the script 
-	// nodes weren't copied, the game would end up running on "zero" initialized syntax datums, and thus exception.
-	// By toggling off the upgrades, tool will reinitialize the hs_scenario data normally (ie, with the stock size) 
-	// and recompile the scripts (it already does this during the cache build process).
-	// If this all sounds like gibberish you probably shouldn't be mucking around in this part of the code to begin with
 	static bool memory_is_upgraded = false;
 	if(memory_is_upgraded == use_upgrades) return;
 	memory_is_upgraded = use_upgrades;
@@ -65,6 +58,7 @@ static void MemoryUpgradesSyntaxInitialize(bool use_upgrades = true)
 	// We ALWAYS want this set to the upgraded memory size
 	*K_HS_SYNTAX_DATA_DEFINITION_MAX_SIZE = Enums::k_total_scenario_hs_syntax_data_upgrade;
 }
+// Increasing the max size of the HS string data doesn't conflict with the stock runtime
 static void MemoryUpgradesSyntaxStringDataInitialize()
 {
 	//////////////////////////////////////////////////////////////////////////
@@ -93,19 +87,21 @@ static void MemoryUpgradesExternalGlobalsInitialize()
 	*K_ADDRESS_OF_HS_EXTERNAL_GLOBALS_COUNT_CHECK_VALUE = Enums::k_hs_external_globals_count_upgrade;
 }
 
-static void MemoryUpgradesInitialize()
+// Initialize the memory updates related to tag definitions
+static void MemoryUpdatesInitializeTagDefinitions()
 {
 	MemoryUpgradesSyntaxInitialize();
 	MemoryUpgradesSyntaxStringDataInitialize();
+}
+// Initialize the memory upgrades related to code definitions
+static void MemoryUpgradesCustomScriptingDefinitions()
+{
 	MemoryUpgradesExternalGlobalsInitialize();
 
 	//////////////////////////////////////////////////////////////////////////
 	// Add the game's functions/globals to our upgraded memory
-	static const int32 K_HS_FUNCTION_TABLE_COUNT = 0x21F;
-	static const int32 K_HS_EXTERNAL_GLOBALS_COUNT = 0x1EF;
-
 	for(int32 x = 0, index = 0; 
-		x < K_HS_FUNCTION_TABLE_COUNT; 
+		x < Enums::k_hs_functions_count; 
 		index++)
 	{
 		if(_upgrade_globals.functions.table[index] == NULL)
@@ -116,7 +112,7 @@ static void MemoryUpgradesInitialize()
 	}
 
 	for(int32 x = 0, index = 0; 
-		x < K_HS_EXTERNAL_GLOBALS_COUNT; 
+		x < Enums::k_hs_external_globals_count; 
 		index++)
 	{
 		if(_upgrade_globals.globals.table[index] == NULL)
@@ -172,11 +168,11 @@ static void MemoryUpgradesInitialize()
 		CAST_PTR(void*, PLATFORM_VALUE(0x4F1898, 0x4C1EA8, 0x583A78)),
 		CAST_PTR(void*, PLATFORM_VALUE(0x4F1B26, 0x4C20A6, 0x583D06)),
 		CAST_PTR(void*, PLATFORM_VALUE(0x4F2496, 0x4C25F6, 0x584676)),
-		CAST_PTR(void*, PLATFORM_VALUE(0x4F2572, 0x4C2A58, 0x584752)),
-		CAST_PTR(void*, PLATFORM_VALUE(0x4F2948, 0x4C2B0D, 0x584B28)),
 #if PLATFORM_ID != PLATFORM_TOOL
-		CAST_PTR(void*, PLATFORM_VALUE(0x4F29FD, NULL, 0x584BDD)),
+		CAST_PTR(void*, PLATFORM_VALUE(0x4F2572, NULL, 0x584752)), // hs function get name
 #endif
+		CAST_PTR(void*, PLATFORM_VALUE(0x4F2948, 0x4C2A58, 0x584B28)), // help
+		CAST_PTR(void*, PLATFORM_VALUE(0x4F29FD, 0x4C2B0D, 0x584BDD)), // hs doc
 	};
 
 	static void* K_HS_EXTERNAL_GLOBALS_REFERENCES[] = {
@@ -189,17 +185,15 @@ static void MemoryUpgradesInitialize()
 	
 	{
 		hs_function_definition**** definitions = CAST_PTR(hs_function_definition****, K_HS_FUNCTION_TABLE_REFERENCES);
-		const int32 k_count = NUMBEROF(K_HS_FUNCTION_TABLE_REFERENCES);
 
-		for(int32 x = 0; x < k_count; x++)
+		for(int32 x = 0; x < NUMBEROF(K_HS_FUNCTION_TABLE_REFERENCES); x++)
 			*definitions[x] = &_upgrade_globals.functions.table[0];
 	}
 
 	{
 		hs_global_definition**** definitions = CAST_PTR(hs_global_definition****, K_HS_EXTERNAL_GLOBALS_REFERENCES);
-		const int32 k_count = NUMBEROF(K_HS_EXTERNAL_GLOBALS_REFERENCES);
 
-		for(int32 x = 0; x < k_count; x++)
+		for(int32 x = 0; x < NUMBEROF(K_HS_EXTERNAL_GLOBALS_REFERENCES); x++)
 			*definitions[x] = &_upgrade_globals.globals.table[0];
 	}
 	//////////////////////////////////////////////////////////////////////////
@@ -214,7 +208,7 @@ static void MemoryUpgradesInitialize()
 		CAST_PTR(int16*, PLATFORM_VALUE(0x4F1B99, 0x4C2119, 0x583D79)),
 		CAST_PTR(int16*, PLATFORM_VALUE(0x4F246C, 0x4C25CC, 0x58464C)),
 #if PLATFORM_ID != PLATFORM_TOOL
-		CAST_PTR(int16*, PLATFORM_VALUE(0x4F2548, NULL, 0x584728)),
+		CAST_PTR(int16*, PLATFORM_VALUE(0x4F2548, NULL, 0x584728)), // hs function get name
 #endif
 		CAST_PTR(int16*, PLATFORM_VALUE(0x4F291E, 0x4C2A2E, 0x584AFE)),
 		CAST_PTR(int16*, PLATFORM_VALUE(0x4F2A09, 0x4C2B19, 0x584BE9)),

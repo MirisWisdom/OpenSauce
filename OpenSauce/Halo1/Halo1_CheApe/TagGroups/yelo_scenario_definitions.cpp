@@ -36,7 +36,7 @@ namespace Yelo
 			// Users will need to recompile their scenario's scripts
 			tag_data& hs_syntax_data = scnr->hs_syntax_data;
 			if((size_t)hs_syntax_data.size > Scripting::GetTotalScenarioHsSyntaxData())
-				tag_data_delete(hs_syntax_data); // TODO: does hs_syntax_data need to be initialized to GetTotalScenarioHsSyntaxData instead of just zero?
+				tag_data_delete(hs_syntax_data); // If hs_syntax_data.size != GetTotalScenarioHsSyntaxData, the engine will recompile the scripts
 		}
 
 		// Process a yelo scenario's globals data for the current operating mode (editing or cache building).
