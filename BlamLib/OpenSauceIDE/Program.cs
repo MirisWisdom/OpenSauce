@@ -11,6 +11,15 @@ namespace OpenSauceIDE
 {
 	static class Program
 	{
+		public static bool WorkInProgress(IWin32Window owner)
+		{
+			bool wip = true;
+			if (wip)
+				MessageBox.Show(owner, "This is a WIP", "Check back later...",
+					MessageBoxButtons.OK, MessageBoxIcon.Information);
+			return wip;
+		}
+
 		public const uint PeAddressMask = 0x400000;
 
 		public static string ReadCString(uint offset, BlamLib.IO.EndianReader io)
@@ -22,19 +31,19 @@ namespace OpenSauceIDE
 			io.Seek(offset);
 
 			byte btchar = 0;
-			string cstring = "";
+			var cstring = new System.Text.StringBuilder();
 
 			do
 			{
 				btchar = io.ReadByte();
 				if (btchar != 0)
-					cstring += (char)btchar;
+					cstring.Append((char)btchar);
 
 			} while (btchar != 0);
 
 			io.Seek(pos);
 
-			return cstring;
+			return cstring.ToString();
 		}
 
 		[System.Runtime.InteropServices.DllImport("kernel32.dll")]
