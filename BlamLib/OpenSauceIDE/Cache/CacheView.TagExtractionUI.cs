@@ -1,20 +1,7 @@
 ﻿/*
-    BlamLib: .NET SDK for the Blam Engine
+	BlamLib: .NET SDK for the Blam Engine
 
-    Copyright (C)  Kornner Studios (http://kornner.com)
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	See license\BlamLib\BlamLib for specific license information
 */
 using System;
 using System.Windows.Forms;
@@ -27,15 +14,11 @@ namespace OpenSauceIDE.Cache
 		{
 			if (info != null)
 			{
-				m_waitEvent.Reset();
 				SetStatusBarText(string.Format("Extracting {0}", 
 					m_cache.GetReferenceName(info.Instance.ReferenceName)));
 			}
 			else
-			{
-				m_waitEvent.Set();
 				SetStatusBarText(null);
-			}
 		}
 		void OnTagInstanceExtract(TagInstanceExtractionInfo info)
 		{
@@ -50,10 +33,14 @@ namespace OpenSauceIDE.Cache
 			if (SaveFileDlg.ShowDialog(this) == DialogResult.OK)
 			{
 				string path = SaveFileDlg.FileName;
-				var tiei = new TagInstanceExtractionInfo(tag_instance,
+				var tiei = new TagInstanceExtractionInfo();
+
+				tiei.InitializeStateForTagInstance(tag_instance,
 					System.IO.Path.Combine(System.IO.Path.GetDirectoryName(path), @"\"),
 					System.IO.Path.GetFileNameWithoutExtension(path));
-				OnTagInstanceExtract(tiei);
+				tiei.InitializeExtractionForTagInstance();
+
+				bgwTagExtract.RunWorkerAsync(tiei);
 			}
 			SaveFileDlg.Filter = "";
 		}
@@ -69,6 +56,8 @@ namespace OpenSauceIDE.Cache
 		}
 		void OnTagInstanceExtract(object sender, EventArgs e)
 		{
+			if (Program.WorkInProgress(this)) return;
+
 			string path = null;
 			if (sender != MenuTagInstanceExtractAs && // this has its own dialog for saving
 				!OnTagInstanceExtractAskForPath(out path))
@@ -82,16 +71,21 @@ namespace OpenSauceIDE.Cache
 				tag_instance = sel_node.Tag as BlamLib.Blam.CacheIndex.Item;
 			};
 
+			var tiei = new TagInstanceExtractionInfo();
 			if (sender == MenuTagInstanceExtractFolder)
 			{
-				var tiei = new TagInstanceExtractionInfo(tag_instance, path, null);
-				OnTagInstanceExtract(tiei);
+				tiei.InitializeStateForTagInstance(tag_instance, path, null);
+				tiei.InitializeExtractionForTagInstance();
+
+				bgwTagExtract.RunWorkerAsync(tiei);
 			}
 			else if (sender == MenuTagInstanceExtractFolderAll)
 			{
-				var tiei = new TagInstanceExtractionInfo(
-					GetTagInstanceExtractionArguments(path, true), tag_instance);
-				OnTagInstanceExtract(tiei);
+//				tiei.InitializeStateForTagHierarchy(
+//					GetTagInstanceExtractionArguments(path, true), tag_instance);
+//				tiei.InitializeExtractionForTagInstance();
+
+				bgwTagExtract.RunWorkerAsync(tiei);
 			}
 			else if (sender == MenuTagInstanceExtractAs)
 				OnTagInstanceExtractAs(tag_instance);
@@ -112,7 +106,7 @@ namespace OpenSauceIDE.Cache
 
 				tiei.Instance = n.Tag as BlamLib.Blam.CacheIndex.Item;
 				OnTagInstanceExtract(tiei);
-				m_waitEvent.WaitOne(); // wait until this tag finishes extracting before moving onto the next
+				//m_waitEvent.WaitOne(); // wait until this tag finishes extracting before moving onto the next
 			}
 		}
 		void OnTagInstanceExtractAll(string path, bool all, bool r_checked)
@@ -120,7 +114,6 @@ namespace OpenSauceIDE.Cache
 			var tiei = new TagInstanceExtractionInfo(null, path, null);
 			// Disable the tag tree, and set a worker task to process all checked 
 			// tags. Once the task finishes, it releases the tag tree back to the user
-			m_extractAllWaitEvent.Reset();
 			TagTreeView.Enabled = false;
 			TagTreeView.UseWaitCursor = true;
 			StatusProgressCancel.Enabled = true;
@@ -129,15 +122,16 @@ namespace OpenSauceIDE.Cache
 				foreach (TreeNode n in TagTreeView.Nodes)
 					OnTagInstanceExtractAll(tiei, n, all, r_checked);
 
-				m_extractAllWaitEvent.Set();
 				TagTreeView.Enabled = true;
 				TagTreeView.UseWaitCursor = false;
 				StatusProgressCancel.Enabled = false;
-			});
+			}, null);
 		}
 
 		void OnTagInstanceExtractAll(object sender, EventArgs e)
 		{
+			if (Program.WorkInProgress(this)) return;
+
 			string path;
 			if (!OnTagInstanceExtractAskForPath(out path))
 				return;

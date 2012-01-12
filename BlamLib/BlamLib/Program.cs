@@ -53,7 +53,7 @@ namespace BlamLib
 		/// <summary>Name of executing assembly</summary>
 		public static readonly string Name = System.Windows.Forms.Application.ProductName;
 		/// <summary>Version string of the executing assembly</summary>
-		public static readonly string Version = System.Windows.Forms.Application.ProductVersion;
+		public static readonly string Version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString(4);
 
 		static readonly string DocumentsFolderPath;
 		static void InitializeDocumentsFolderPath(out string documents_folder_path)

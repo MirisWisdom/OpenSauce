@@ -1,20 +1,7 @@
 ﻿/*
-    BlamLib: .NET SDK for the Blam Engine
+	BlamLib: .NET SDK for the Blam Engine
 
-    Copyright (C)  Kornner Studios (http://kornner.com)
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	See license\BlamLib\BlamLib for specific license information
 */
 using System;
 
@@ -43,6 +30,7 @@ namespace OpenSauceIDE.Cache
 			TagExtractionSender m_sender;
 			public bool Result;
 
+			public TagInstanceExtractionInfo() { }
 			/// <summary>Constructor for processing a tag hierarchy</summary>
 			/// <param name="args"></param>
 			/// <param name="instance"></param>
@@ -65,16 +53,6 @@ namespace OpenSauceIDE.Cache
 
 			public string BaseDirectory, NameOverride;
 
-			/// <summary>Initialize state for processing a tag hierarchy</summary>
-			/// <param name="args"></param>
-			/// <param name="instance"></param>
-			public void InitializeStateForTagHierarchy(BlamLib.Blam.CacheExtractionArguments args, BlamLib.Blam.CacheIndex.Item instance)
-			{
-				m_sender = TagExtractionSender.TagTree;
-
-				Arguments = args;
-				Instance = instance;
-			}
 			/// <summary>Initialize state for processing a single tag</summary>
 			/// <param name="instance"></param>
 			/// <param name="base_dir"></param>
@@ -86,6 +64,16 @@ namespace OpenSauceIDE.Cache
 				Instance = instance;
 				BaseDirectory = base_dir;
 				NameOverride = name_override;
+			}
+			/// <summary>Initialize state for processing a tag hierarchy</summary>
+			/// <param name="args"></param>
+			/// <param name="instance"></param>
+			public void InitializeStateForTagHierarchy(BlamLib.Blam.CacheExtractionArguments args, BlamLib.Blam.CacheIndex.Item instance)
+			{
+				m_sender = TagExtractionSender.TagTree;
+
+				Arguments = args;
+				Instance = instance;
 			}
 			#endregion
 
@@ -122,6 +110,80 @@ namespace OpenSauceIDE.Cache
 
 				if (BgWorker != null)
 					BgWorker.ReportProgress(m_progressPercent, this);
+			}
+			#endregion
+
+			#region Initialize Extract
+			public void InitializeExtractionForTagInstance()
+			{
+			}
+
+			System.Windows.Forms.TreeNodeCollection m_extractAllNodes;
+			bool m_extractAll, m_extractAllChecked;
+			public void InitializeExtractionForTagHierarchy(System.Windows.Forms.TreeNodeCollection nodes,
+				bool all, bool r_checked)
+			{
+				m_extractAllNodes = nodes;
+				m_extractAll = all;
+				m_extractAllChecked = r_checked;
+			}
+			#endregion
+
+			#region Extraction
+			CacheView m_ownerView;
+
+			void PerformExtractionTagInstance()
+			{
+				m_ownerView.OnTagInstanceExtractUpdateStatus(this);
+
+				var ti = m_ownerView.m_cache.TagIndexManager;
+
+				ti.ExtractionInitialize();
+				this.Result = false;
+
+				if (ExtractingSingleTag)
+					this.Result = ti.Extract(this.Instance.Datum, this.BaseDirectory, this.NameOverride);
+				else
+				{
+					var cei = ti.ExtractionBegin(this.Instance.Datum, this.Arguments);
+					this.Result = ti.Extract(cei);
+					ti.ExtractionEnd();
+				}
+
+				m_ownerView.OnTagInstanceExtractUpdateStatus(null);
+			}
+
+			void PerformExtractionTagHierarchyNode(System.Windows.Forms.TreeNode node, bool all, bool r_checked)
+			{
+				foreach (System.Windows.Forms.TreeNode n in node.Nodes)
+				{
+					if (!all)
+						if ((r_checked && !n.Checked) || (!r_checked && n.Checked))
+							continue; // skip tags not checked or checked
+
+					this.Instance = n.Tag as BlamLib.Blam.CacheIndex.Item;
+					PerformExtractionTagInstance();
+				}
+			}
+			void PerformExtractionTagHierarchy()
+			{
+				foreach (System.Windows.Forms.TreeNode n in m_extractAllNodes)
+					PerformExtractionTagHierarchyNode(n, m_extractAll, m_extractAllChecked);
+			}
+
+			public void PerformExtraction(CacheView owner_view)
+			{
+				m_ownerView = owner_view;
+
+				switch (m_sender)
+				{
+					case TagExtractionSender.TagInstance:
+						PerformExtractionTagInstance();
+						break;
+					case TagExtractionSender.TagTree:
+						PerformExtractionTagHierarchy();
+						break;
+				}
 			}
 			#endregion
 		};
