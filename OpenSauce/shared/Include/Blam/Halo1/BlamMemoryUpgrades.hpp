@@ -62,6 +62,7 @@ namespace Yelo
 			k_maximum_hs_string_data_per_scenario = 256 * 1024,
 			k_maximum_hs_globals_per_scenario = 128,
 			k_hs_functions_count = 543, // the normal hs_function count in the engine under an editor build
+			k_hs_external_globals_count = 495, // the normal hs external globals count in the engine under an editor build
 
 			k_maximum_hs_syntax_nodes_per_scenario_upgrade = 
 				CAST(uint32, k_maximum_hs_syntax_nodes_per_scenario * K_MEMORY_UPGRADE_INCREASE_AMOUNT),

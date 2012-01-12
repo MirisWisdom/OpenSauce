@@ -115,9 +115,6 @@ namespace BuildCacheFileEx
 {
 	void Initialize(bool only_using_data_file_hacks)
 	{
-		// Only allow script node upgrades when building with use-memory-upgrades on
-		if(only_using_data_file_hacks) Scripting::DisposeScriptNodeUpgrades();
-
 		BuildCacheFileEx::CullTags::Initialize();
 		BuildCacheFileEx::PredictedResources::Initialize();
 		BuildCacheFileEx::MemoryUpgrades::Initialize(only_using_data_file_hacks);
@@ -128,8 +125,6 @@ namespace BuildCacheFileEx
 		BuildCacheFileEx::MemoryUpgrades::Dispose(only_using_data_file_hacks);
 		BuildCacheFileEx::PredictedResources::Dispose();
 		BuildCacheFileEx::CullTags::Dispose();
-
-		if(only_using_data_file_hacks) Scripting::InitializeScriptNodeUpgrades();
 	}
 };
 
@@ -214,7 +209,7 @@ static void PLATFORM_API build_cache_file_for_scenario_extended(void** arguments
 
 /*!
  * \brief
- * We replace the stock build_cache_file_for_scenario implementation with out own to turn off non-stock-compliant things like script node upgrades (which are active on start-up)
+ * We replace the stock build_cache_file_for_scenario implementation with out own to turn off non-stock-compliant things like custom script definitions
  */
 static void PLATFORM_API build_cache_file_for_scenario_stock_override(void** arguments)
 {
@@ -224,6 +219,10 @@ static void PLATFORM_API build_cache_file_for_scenario_stock_override(void** arg
 		char* scenario_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
 	//////////////////////////////////////////////////////////////////////////
+
+	printf_s(	"CheApe: warning: build-cache-file doesn't support custom script definitions...\n"
+				"> Script compiling will fail on scripts with OS-functions and globals\n"
+				"> Use build-cache-file-ex with memory upgrades enabled if you use any\n\n");
 
 	// Don't allow script node upgrades when building stock cache files
 	Scripting::DisposeScriptNodeUpgrades();
