@@ -76,7 +76,7 @@ IF "%3"=="0" (
 :: Run the meat of this script
 IF %ExpectedMsiCount% NEQ 0 (
 	ECHO Starting build at %TimeHr%:%TimeMin% %TimePrd%
-	ECHO Building %ExpectedMsiCount% installers
+	ECHO Building %ExpectedMsiCount% installer[s]
 ) ELSE @ECHO WARNING: No MSI files are going to be built...
 ECHO.
 
@@ -109,9 +109,15 @@ IF NOT EXIST "%BuildPath%" mkdir "%BuildPath%"
 REM Delete existing installers to be sure we don't archive old builds when building multiple times in a day, and a later build fails
 FOR %%A IN (%BuildPath%\*.*) DO DEL %%A
 
-FOR %%A IN ("%osBinPath%\Release\x86\OpenSauce_Installer\*.msi") DO copy %%A "%BuildPath%\%%~nA.msi"
-FOR %%A IN ("%osBinPath%\ReleaseSymbols\x86\OpenSauce_Installer\*.msi") DO copy %%A "%BuildPath%\%%~nA_ReleaseSymbols.msi"
-FOR %%A IN ("%osBinPath%\Debug\x86\OpenSauce_Installer\*.msi") DO copy %%A "%BuildPath%\%%~nA_Debug.msi"
+IF %BuildDebug% NEQ 0 (
+	FOR %%A IN ("%osBinPath%\Debug\x86\OpenSauce_Installer\*.msi") DO copy %%A "%BuildPath%\%%~nA_Debug.msi"
+)
+IF %BuildRelease% NEQ 0 (
+	FOR %%A IN ("%osBinPath%\Release\x86\OpenSauce_Installer\*.msi") DO copy %%A "%BuildPath%\%%~nA.msi"
+)
+IF %BuildReleaseSymbols% NEQ 0 (
+	FOR %%A IN ("%osBinPath%\ReleaseSymbols\x86\OpenSauce_Installer\*.msi") DO copy %%A "%BuildPath%\%%~nA_ReleaseSymbols.msi"
+)
 ECHO.
 
 REM Count the number of files in the build path, if less than 3 something didn't build correctly
