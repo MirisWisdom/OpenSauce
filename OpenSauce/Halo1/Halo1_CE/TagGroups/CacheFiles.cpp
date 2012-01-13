@@ -223,9 +223,10 @@ namespace Yelo
 			MemoryUpgradesDispose();
 		}
 
-		bool ReadHeader(cstring relative_map_name, s_cache_header& out_header)
+		bool ReadHeader(cstring relative_map_name, s_cache_header& out_header, bool& yelo_is_ok, bool exception_on_fail)
 		{
 			bool result = false;
+			yelo_is_ok = true;
 
 			string256 map_path;
 			CacheFormatPathHack(map_path, "%s%s%s.map", RootDirectory(), "maps\\", relative_map_name);
@@ -236,15 +237,31 @@ namespace Yelo
 				DWORD lpNumberOfBytesRead;
 				if(ReadFile(f, &out_header, sizeof(out_header), &lpNumberOfBytesRead, NULL) != FALSE && lpNumberOfBytesRead == sizeof(out_header))
 				{
-					if( out_header.ValidSignatures() && 
-						out_header.ValidFileSize(Enums::k_max_cache_size_upgrade) && 
-						out_header.ValidName() && 
-						out_header.version == s_cache_header::k_version && 
-						out_header.yelo.IsValid())
-						result = true;
+					if(out_header.ValidSignatures())
+					{
+						if( out_header.ValidFileSize(Enums::k_max_cache_size_upgrade) && 
+							out_header.ValidName() && 
+							out_header.version == s_cache_header::k_version && 
+							(yelo_is_ok = out_header.yelo.IsValid())) // IsValid returns true on non-OS (ie, stock) maps
+							result = true;
+						else
+							YELO_DEBUG_FORMAT("[%s] has proper signatures but invalid header values!", map_path);
+					}
 				}
 
 				CloseHandle(f);
+			}
+
+			if(!result && exception_on_fail)
+			{
+				if(!yelo_is_ok)
+				{
+					cstring text = "Detected an invalid (probably old) .yelo map. See next message for map that needs removing.";
+					MessageBox(NULL, text, "Prepare to Drop!", MB_OK | MB_ICONEXCLAMATION);
+				}
+				// This isn't actually specific to cache_file_read_header, but to the exception code. I'm just too lazy to add it to EngineFunctions.hpp
+				*K_CACHE_FILE_READ_HEADER_EXCEPTION_MAP_NAME = map_path;
+				Engine::GatherException(map_path, 0x89, 0x7E, 1);
 			}
 
 			return result;
