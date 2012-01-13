@@ -13,13 +13,13 @@ static int __cdecl CacheFormatPathHack(string256 buffer, cstring format,
 	result = sprintf_s(buffer, sizeof(string256), format, root_directory, maps_folder, map_name);
 	access = _access_s(buffer, 0);
 
-	if(access == NONE && errno == ENOENT)
+	if(access == ENOENT)
 	{
 		result = sprintf_s(buffer, sizeof(string256), "%s%s%s.yelo", root_directory, maps_folder, map_name);
 		access = _access_s(buffer, 0);
 
-		if(access == NONE && errno == ENOENT)
-			YELO_DEBUG_FORMAT("CacheFormatPathHack is about to fail on [%s]", buffer);
+		if(access == ENOENT)
+			YELO_DEBUG_FORMAT("CacheFormatPathHack is about to fail on [%s] %d %d", buffer, access, errno);
 	}
 
 	return result;
@@ -33,18 +33,35 @@ static int __cdecl CacheFormatPathHackN(char* buffer, size_t max_count, cstring 
 	result = _snprintf_s(buffer, buffer_size, _TRUNCATE, format, root_directory, maps_folder, map_name);
 	access = _access_s(buffer, 0);
 
-	if(access == NONE && errno == ENOENT)
+	if(access == ENOENT)
 	{
 		format = format[2] == '\\' ? "%s\\%s%s.yelo" : "%s%s%s.yelo";
 
 		result = _snprintf_s(buffer, buffer_size, _TRUNCATE, format, root_directory, maps_folder, map_name);
 		access = _access_s(buffer, 0);
 
-		if(access == NONE && errno == ENOENT)
+		if(access == ENOENT)
 			YELO_DEBUG_FORMAT("CacheFormatPathHackN is about to fail on [%s]", buffer);
 	}
 
 	return result;
+}
+static bool CacheFileReadHeaderHackImpl(cstring relative_map_name, s_cache_header& out_header)
+{
+	bool yelo_is_ok;
+	return ReadHeader(relative_map_name, out_header, yelo_is_ok, true);
+}
+static API_FUNC_NAKED bool __cdecl CacheFileReadHeaderHack()
+{
+	__asm {
+		// eax = relative_map_name
+		// esi = out_header
+
+		push	esi
+		push	eax
+		call	CacheFileReadHeaderHackImpl
+		retn
+	}
 }
 static void CacheFormatPathHackInitialize()
 {
@@ -52,6 +69,10 @@ static void CacheFormatPathHackInitialize()
 		Memory::WriteRelativeCall(CacheFormatPathHack, K_CACHE_PATH_SPRINTF_CALLS[x]);
 	for(int32 x = 0; x < NUMBEROF(K_CACHE_PATH_SNPRINTF_CALLS)-1; x++)
 		Memory::WriteRelativeCall(CacheFormatPathHackN, K_CACHE_PATH_SNPRINTF_CALLS[x]);
+
+	// Redirect all game calls to cache_file_read_header to our implementation which supports .yelo validation
+	for(int32 x = 0; x < NUMBEROF(K_CACHE_FILE_READ_HEADER_CALLS); x++)
+		Memory::WriteRelativeCall(CacheFileReadHeaderHack, K_CACHE_FILE_READ_HEADER_CALLS[x]);
 }
 
 

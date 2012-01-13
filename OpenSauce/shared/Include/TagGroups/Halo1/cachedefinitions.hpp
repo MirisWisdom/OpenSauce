@@ -99,10 +99,10 @@ namespace Yelo
 		}
 #endif
 
-		// Is there no yelo header present?
-		bool NoHeader() const
+		// Is there a yelo header present?
+		bool HasHeader() const
 		{
-			return signature == 0 && version == 0;
+			return signature != 0 && version != 0;
 		}
 		bool TagVersioningIsValid() const
 		{
@@ -112,11 +112,12 @@ namespace Yelo
 		// Is the yelo header valid?
 		bool IsValid() const
 		{
-			return !NoHeader() || (
-				signature == k_signature && version == k_version && 
-				k_memory_upgrade_increase_amount <= K_MEMORY_UPGRADE_INCREASE_AMOUNT && 
-				TagVersioningIsValid()
-				);
+			if(HasHeader())
+				return signature == k_signature && version == k_version && 
+					k_memory_upgrade_increase_amount <= K_MEMORY_UPGRADE_INCREASE_AMOUNT && 
+					TagVersioningIsValid();
+
+			return true;
 		}
 
 		bool BuiltWithOlderTools() const
