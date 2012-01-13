@@ -18,12 +18,6 @@ void build_cache_file_begin_preprocess(cstring scenario_name);
  * \brief
  * Code to execute before we commit the yelo header and the tool's code finishes building the cache.
  * 
- * \param header
- * Description of parameter header.
- * 
- * \param ych
- * Description of parameter ych.
- * 
  * This function is called before we commit the yelo header to the resulting cache file's header. The implementing code which 
  * calls this (MemoryUpgrades.inl, InterceptorEnd) calls the tool's build_cache_file_end function after this function completes.
  * 
@@ -220,9 +214,8 @@ static void PLATFORM_API build_cache_file_for_scenario_stock_override(void** arg
 	}* args = CAST_PTR(s_arguments*, arguments);
 	//////////////////////////////////////////////////////////////////////////
 
-	printf_s(	"CheApe: warning: build-cache-file doesn't support custom script definitions...\n"
-				"> Script compiling will fail on scripts with OS-functions and globals\n"
-				"> Use build-cache-file-ex with memory upgrades enabled if you use any\n\n");
+	printf_s("CheApe: warning: build-cache-file doesn't support custom script definitions...\n");
+	BuildCacheFileEx::MemoryUpgrades::PrintScriptUpgradesUsage();
 
 	// Don't allow script node upgrades when building stock cache files
 	Scripting::DisposeScriptNodeUpgrades();
