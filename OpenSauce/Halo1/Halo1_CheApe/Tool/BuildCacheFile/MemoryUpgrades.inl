@@ -317,13 +317,24 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 	}
 	#pragma endregion
 
+	static void PrintScriptUpgradesUsage()
+	{
+		printf_s(	"> Script compiling will fail on scripts with OS-functions and globals\n"
+					"> Use build-cache-file-ex with memory upgrades enabled if you use any\n\n");
+	}
+
 	static void Initialize(bool only_using_data_file_hacks)
 	{
 		InterceptorsInitialize(only_using_data_file_hacks);
 
 		// Only allow script node upgrades when building with use-memory-upgrades on
 		if(only_using_data_file_hacks)
+		{
+			printf_s("CheApe: warning: memory upgrades are off, turning off custom script definitions support...\n");
+			PrintScriptUpgradesUsage();
+
 			Scripting::DisposeScriptNodeUpgrades();
+		}
 		else
 		{
 			TagMemoryInitialize();
