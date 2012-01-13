@@ -90,15 +90,32 @@ namespace Yelo
 			}m_xml_sources[3];
 
 			struct s_version{
-				int32	m_major;
-				int32	m_minor;
-				int32	m_build;
+				int	m_major;
+				int	m_minor;
+				int	m_build;
 
 				void SetBuild(const int major, const int minor, const int build)
 				{
 					m_major = major;
 					m_minor = minor;
 					m_build = build;
+				}
+				void SetBuild(const s_version& other)
+				{
+					m_major = other.m_major;
+					m_minor = other.m_minor;
+					m_build = other.m_build;
+				}
+
+				int CompareTo(const s_version& other) const
+				{
+					if(m_major == other.m_major)
+						if(m_minor == other.m_minor)
+						{	return m_build - other.m_build; }
+						else
+						{	return m_minor - other.m_minor; }
+					else
+					{ return m_major - other.m_major; }
 				}
 			};
 			/// The version of the current OS installation

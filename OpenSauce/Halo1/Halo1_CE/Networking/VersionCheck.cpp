@@ -365,25 +365,21 @@ namespace Yelo
 				TiXmlElement* version = root->FirstChildElement("version");
 				while(version)
 				{
-					int major = 0;
-					int minor = 0;
-					int build = 0;
+					s_version other_version;
 
 					const char* attribute = NULL;
 					
 					do
 					{
-						attribute = version->Attribute("major", &major);
+						attribute = version->Attribute("major", &other_version.m_major);
 						if(attribute == NULL) break;
-						attribute = version->Attribute("minor", &minor);
+						attribute = version->Attribute("minor", &other_version.m_minor);
 						if(attribute == NULL) break;
-						attribute = version->Attribute("build", &build);
+						attribute = version->Attribute("build", &other_version.m_build);
 						if(attribute == NULL) break;
 
-						if((m_available_version.m_major < major) ||
-							(m_available_version.m_minor < minor) ||
-							(m_available_version.m_build < build))
-							m_available_version.SetBuild(major, minor, build);
+						if(m_available_version.CompareTo(other_version) < 0)
+							m_available_version.SetBuild(other_version);
 					}
 					while(false);
 
@@ -455,9 +451,7 @@ namespace Yelo
 			m_states.last_checked_month = local_time->tm_mon;
 			m_states.last_checked_year = 1900 + local_time->tm_year;
 
-			m_states.is_new_version =	(m_current_version.m_major < m_available_version.m_major) &&
-										(m_current_version.m_minor < m_available_version.m_minor) &&
-										(m_current_version.m_build < m_available_version.m_build);
+			m_states.is_new_version = m_current_version.CompareTo(m_available_version) < 0;
 		}
 	}; };
 };
