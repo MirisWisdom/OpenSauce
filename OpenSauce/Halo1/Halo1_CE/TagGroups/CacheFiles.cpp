@@ -178,7 +178,7 @@ namespace Yelo
 
 //////////////////////////////////////////////////////////////////////////
 
-		static s_original_multipler_map original_multiplayer_maps[] = {
+		static const s_original_multipler_map k_original_multiplayer_maps[] = {
 			{0,  "beavercreek", true},
 			{1,  "sidewinder", true},
 			{2,  "damnation", true},
@@ -223,8 +223,17 @@ namespace Yelo
 			MemoryUpgradesDispose();
 		}
 
+		static bool MapIsOriginal(cstring map_name)
+		{
+			for(int x = 0; x < NUMBEROF(k_original_multiplayer_maps); x++)
+				if( !strcmp(map_name, k_original_multiplayer_maps[x].name) )
+					return true;
+
+			return false;
+		}
 		bool ReadHeader(cstring relative_map_name, s_cache_header& out_header, bool& yelo_is_ok, bool exception_on_fail)
 		{
+			bool file_exists = false;
 			bool result = false;
 			yelo_is_ok = true;
 
@@ -234,6 +243,8 @@ namespace Yelo
 			HANDLE f = CreateFileA(map_path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
 			if(f != INVALID_HANDLE_VALUE)
 			{
+				file_exists = true;
+
 				DWORD lpNumberOfBytesRead;
 				if(ReadFile(f, &out_header, sizeof(out_header), &lpNumberOfBytesRead, NULL) != FALSE && lpNumberOfBytesRead == sizeof(out_header))
 				{
@@ -254,14 +265,17 @@ namespace Yelo
 
 			if(!result && exception_on_fail)
 			{
-				if(!yelo_is_ok)
+				if(!file_exists && !MapIsOriginal(relative_map_name))
 				{
-					cstring text = "Detected an invalid (probably old) .yelo map. See next message for map that needs removing.";
-					MessageBox(NULL, text, "Prepare to Drop!", MB_OK | MB_ICONEXCLAMATION);
+					if(!yelo_is_ok)
+					{
+						cstring text = "Detected an invalid (probably old) .yelo map. See next message for map that needs removing.";
+						MessageBox(NULL, text, "Prepare to Drop!", MB_OK | MB_ICONEXCLAMATION);
+					}
+					// This isn't actually specific to cache_file_read_header, but to the exception code. I'm just too lazy to add it to EngineFunctions.hpp
+					*K_CACHE_FILE_READ_HEADER_EXCEPTION_MAP_NAME = map_path;
+					Engine::GatherException(map_path, 0x89, 0x7E, 1);
 				}
-				// This isn't actually specific to cache_file_read_header, but to the exception code. I'm just too lazy to add it to EngineFunctions.hpp
-				*K_CACHE_FILE_READ_HEADER_EXCEPTION_MAP_NAME = map_path;
-				Engine::GatherException(map_path, 0x89, 0x7E, 1);
 			}
 
 			return result;
