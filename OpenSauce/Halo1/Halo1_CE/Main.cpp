@@ -37,6 +37,10 @@ namespace Yelo
 
 	namespace Main
 	{
+		enum {
+			k_process_enumeration_dword_array_increment = 256
+		};
+
 		static struct {
 			bool enabled;
 			HMODULE module_handle;
@@ -141,18 +145,88 @@ namespace Yelo
 
 			return result_code;
 		}
+
+		static bool DetectXfire()
+		{
+			// create a list of all the currently running processes
+			DWORD* processes = NULL;
+			DWORD dword_count = 0, bytes_written = 0, byte_count = 0;
+			do
+			{
+				// if the array was not big enough reallocate a bigger array
+				if(bytes_written == byte_count)
+				{
+					dword_count += k_process_enumeration_dword_array_increment;
+
+					delete[] processes;
+					processes = new DWORD[dword_count];
+				}
+
+				byte_count = dword_count * sizeof(DWORD);
+
+				// enumerate the systems processes
+				if(!EnumProcesses( processes, byte_count, &bytes_written ))
+				{
+					delete[] processes;
+					return false;
+				}
+			}
+			while(bytes_written == byte_count);
+
+			DWORD process_count = bytes_written / sizeof(DWORD);
+
+			// loop through all of the processes
+			for (DWORD i = 0; i < process_count; i++ )
+			{
+				HANDLE process = NULL;
+				if((processes[i] != 0) && (process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processes[i])))
+				{
+					// get the process name
+					HMODULE module_handle;
+					DWORD modules_bytes_needed;
+
+					// we only need the first module since that will be the main executable
+					if (EnumProcessModules(process, &module_handle, sizeof(module_handle), &modules_bytes_needed))
+					{
+						char process_name[MAX_PATH] = "";
+
+						GetModuleBaseName(process, module_handle, process_name, sizeof(process_name));
+
+						_strlwr(process_name);
+
+						// determine whether the process is an instance of xfire
+						if(!strcmp(process_name, "xfire.exe"))
+							return true;
+					}
+				}
+			}
+			return false;
+		}
 	};
 };
-
 
 
 bool WINAPI DllMain(HMODULE hModule, DWORD dwReason, PVOID pvReserved)
 {
 	static bool done = false;
 
-	if( dwReason == DLL_PROCESS_ATTACH && 
-		Yelo::Main::GetVersionResultCode() == Yelo::Enums::_version_result_code_invalid )
-		return false;
+	if( dwReason == DLL_PROCESS_ATTACH )
+	{
+		if(Yelo::Main::GetVersionResultCode() == Yelo::Enums::_version_result_code_invalid )
+			return false;
+#if PLATFORM_IS_USER && defined(DX_WRAPPER)
+		if(Yelo::Main::DetectXfire())
+		{
+			char error[128];
+			sprintf_s(error,
+				"Xfire is not compatible with Open Sauce."
+				"\n\n"
+				"Please close Xfire and restart Halo CE.");
+			MessageBox(NULL, error, "Xfire Incompatibility", MB_OK | MB_ICONERROR);
+			return false;
+		}
+#endif
+	}
 
 	if(dwReason == DLL_PROCESS_ATTACH && !done)
 	{
