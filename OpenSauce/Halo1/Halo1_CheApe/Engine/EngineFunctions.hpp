@@ -56,7 +56,7 @@ namespace Yelo
 
 		extern proc_error error;
 
-#ifdef _DEBUG
+#ifndef YELO_NO_ERROR_MACRO
 	#define YELO_ERROR(priority, format, ...) \
 		Yelo::EngineFunctions::error(Yelo::Enums::priority, format, __VA_ARGS__)
 #else
