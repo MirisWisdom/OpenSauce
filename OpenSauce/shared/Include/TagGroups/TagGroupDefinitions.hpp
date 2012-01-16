@@ -165,6 +165,14 @@ namespace Yelo
 	template<typename T> class TagBlock
 	{
 	public:
+		typedef T*			iterator;
+		typedef const T*	const_iterator;
+		typedef T			value_type;
+		typedef T&			reference;
+		typedef const T&	const_reference;
+		typedef T*			pointer;
+		typedef const T*	const_pointer;
+
 		// Element count for this block
 		int32 Count;
 
@@ -207,6 +215,17 @@ namespace Yelo
 		API_INLINE T& operator [](int32 index)				{ return this->Definitions[index]; }
 		// Indexer for getting a (const) definition reference via the definition's index in the block
 		API_INLINE const T& operator [](int32 index) const	{ return this->Definitions[index]; }
+
+
+		//////////////////////////////////////////////////////////////////////////
+		// STL-like APIs
+		inline const_iterator	begin() const	{ return Definitions; }
+		inline iterator			begin()			{ return Definitions; }
+		inline const_iterator	end() const		{ return Definitions + Count; }
+		inline iterator			end()			{ return Definitions + Count; }
+
+		inline bool empty() const { return Count == 0; }
+		inline size_t size() const { return CAST(size_t, Count); }
 	};
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
 	BOOST_STATIC_ASSERT( sizeof(TagBlock<byte>) == 0xC );
