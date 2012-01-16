@@ -219,10 +219,14 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////////
 		// STL-like APIs
-		inline const_iterator	begin() const	{ return Definitions; }
-		inline iterator			begin()			{ return Definitions; }
-		inline const_iterator	end() const		{ return Definitions + Count; }
-		inline iterator			end()			{ return Definitions + Count; }
+		inline const_iterator	begin() const		{ return Definitions; }
+		inline iterator			begin()				{ return Definitions; }
+		inline const_iterator	const_begin() const	{ return Definitions; }
+		inline const_iterator	const_begin()		{ return Definitions; }
+		inline const_iterator	end() const			{ return Definitions + Count; }
+		inline iterator			end()				{ return Definitions + Count; }
+		inline const_iterator	const_end() const	{ return Definitions + Count; }
+		inline const_iterator	const_end()			{ return Definitions + Count; }
 
 		inline bool empty() const { return Count == 0; }
 		inline size_t size() const { return CAST(size_t, Count); }
