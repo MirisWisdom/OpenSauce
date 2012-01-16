@@ -112,10 +112,12 @@ static void* scripting_abs_real_evaluate(void** arguments)
 
 static void InitializeMiscFunctions()
 {
+#if 0
 	InitializeScriptFunction(Enums::_hs_function_structure_bsp_lightmap_reset, 
 		scripting_structure_bsp_lightmap_reset_evaluate);
 	InitializeScriptFunctionWithParams(Enums::_hs_function_structure_bsp_lightmap_set_change, 
 		scripting_structure_bsp_lightmap_set_change_evaluate);
+#endif
 
 	InitializeScriptFunctionWithParams(Enums::_hs_function_game_change_version_id, 
 		scripting_game_change_version_id_evaluate);
