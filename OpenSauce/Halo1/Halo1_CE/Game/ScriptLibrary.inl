@@ -66,8 +66,10 @@
 		_hs_function_runtime_integer_inc,
 		_hs_function_runtime_integer_dec,
 
+#if 0
 		_hs_function_structure_bsp_lightmap_reset,
 		_hs_function_structure_bsp_lightmap_set_change,
+#endif
 
 		_hs_function_game_change_version_id,
 		_hs_function_game_engine_data_get_integer,
@@ -150,10 +152,12 @@
 	#include "Game/ScriptLibrary.Definitions.RuntimeData.inl"
 	
 
-	HS_FUNCTION(structure_bsp_lightmap_reset, void, "reset the current bsp's lightmap to the default lightmap-set");
-	HS_FUNCTION_WITH_PARAMS(structure_bsp_lightmap_set_change, bool, "returns whether the change was successful or not", "<lightmap-set-name>", 1,
+#if 0
+	HS_FUNCTION(structure_bsp_lightmap_reset, void, "[DEPRECATED] reset the current bsp's lightmap to the default lightmap-set");
+	HS_FUNCTION_WITH_PARAMS(structure_bsp_lightmap_set_change, bool, "[DEPRECATED] returns whether the change was successful or not", "<lightmap-set-name>", 1,
 		HS_TYPE(string)
 	);
+#endif
 
 	HS_FUNCTION_WITH_PARAMS(game_change_version_id, bool, "returns whether the change was successful or not", 
 			"<also-change-game-build-string> <version-string> ", 2,
@@ -253,8 +257,10 @@
 		&GET_HS_FUNCTION(runtime_integer_inc),
 		&GET_HS_FUNCTION(runtime_integer_dec),
 
+#if 0
 		&GET_HS_FUNCTION(structure_bsp_lightmap_reset),
 		&GET_HS_FUNCTION(structure_bsp_lightmap_set_change),
+#endif
 
 		&GET_HS_FUNCTION(game_change_version_id),
 		&GET_HS_FUNCTION(game_engine_data_get_integer),
