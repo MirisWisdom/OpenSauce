@@ -251,7 +251,7 @@ namespace PostProcessing
 
 		// check the shader indices are valid
 		for(i = 0; i < definition->shader_indices.Count; i++)
-			if(definition->shader_indices[i] >= definition->shaders.Count)
+			if((definition->shader_indices[i] >= definition->shaders.Count) || (definition->shader_indices[i] == NONE))
 			{
 				YELO_ERROR(_error_message_priority_critical,
 					"error: an effect_postprocess_generic has a shader_index with an invalid value\ntag: %s", (*TagGroups::TagInstances())[tag_index]->filename);
@@ -262,6 +262,13 @@ namespace PostProcessing
 		for(i = 0; i < definition->exposed_parameters.Count; i++)
 		{
 			TagGroups::s_effect_postprocess_generic_exposed_parameter& parameter = definition->exposed_parameters[i];
+			if(parameter.shader_index == NONE)
+			{
+				YELO_ERROR(_error_message_priority_critical,
+					"error: an effect_postprocess_generic has an exposed parameter with no shader referenced\ntag: %s", (*TagGroups::TagInstances())[tag_index]->filename);
+				return false;
+			}
+
 			if(!shader_postprocess_generic_group_find_parameter(parameter.parameter_name, definition->shaders[definition->shader_indices[parameter.shader_index]].tag_index))
 			{
 				YELO_ERROR(_error_message_priority_critical,
@@ -303,12 +310,24 @@ namespace PostProcessing
 			}
 
 			for(j = 0; j < effect.script_variables.Count; j++)
-				if(!effect_postprocess_generic_group_find_exposed_parameter(effect.script_variables[j].exposed_parameter_name, effect.effect.tag_index))
+			{
+				TagGroups::s_effect_postprocess_collection_script_variable& variable = effect.script_variables[j];
+
+				if(!effect_postprocess_generic_group_find_exposed_parameter(variable.exposed_parameter_name, effect.effect.tag_index))
 				{
 					YELO_ERROR(_error_message_priority_critical,
 					"error: an effect_postprocess_collection has a scripted variable without a valid exposed variable\ntag: %s", (*TagGroups::TagInstances())[tag_index]->filename);
 					return false;
 				}
+
+				// the variable name is forced to lower case as Halo script is compiled that way
+				std::string name(variable.script_variable_name);
+
+				std::string::iterator iter;
+				for(iter = name.begin(); iter != name.end(); ++iter)
+					(*iter) = tolower(*iter);
+				strcpy_s(variable.script_variable_name, sizeof(variable.script_variable_name), name.c_str());
+			}
 
 			TagGroups::s_effect_postprocess_generic* definition = Yelo::tag_get<TagGroups::s_effect_postprocess_generic>(effect.effect.tag_index);
 
@@ -322,7 +341,7 @@ namespace PostProcessing
 			TagGroups::s_effect_postprocess_generic_effect_instance& instance = collection->effect_instances[i];
 
 			// check the effect index is valid
-			if(instance.effect_index >= collection->effects.Count)
+			if((instance.effect_index >= collection->effects.Count) || (instance.effect_index == NONE))
 			{
 				YELO_ERROR(_error_message_priority_critical, "error: effect instance \"%s\" has an invalid effect index", instance.name);
 				return false;
