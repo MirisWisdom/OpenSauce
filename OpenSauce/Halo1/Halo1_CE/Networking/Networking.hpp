@@ -458,6 +458,8 @@ namespace Yelo
 
 		// Gets the current connection, returning a [game_connection]
 		Enums::game_connection GameConnection();
+		// Is the game *only* running the simulation locally? (ie, campaign or splitscreen)
+		bool IsLocal();
 		// Is this machine a server?
 		bool IsServer();
 		// Is this machine a client?

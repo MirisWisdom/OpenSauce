@@ -67,6 +67,7 @@ namespace Yelo
 		network_update_globals* UpdateSettings()							PTR_IMP_GET2(network_update_globals);
 
 		Enums::game_connection GameConnection()								PTR_IMP_GET(global_game_connection);
+		bool IsLocal()	{ return GET_PTR(global_game_connection) == Enums::_game_connection_local; }
 		bool IsServer() { return GET_PTR(global_game_connection) == Enums::_game_connection_network_server; }
 		bool IsClient() { return GET_PTR(global_game_connection) == Enums::_game_connection_network_client; }
 

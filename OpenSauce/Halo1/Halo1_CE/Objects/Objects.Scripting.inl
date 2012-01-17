@@ -113,6 +113,7 @@ static void* scripting_object_data_set_real_evaluate(void** arguments)
 		real data_value;
 	}* args = CAST_PTR(s_arguments*, arguments);
 
+	// FIXME: I believe some of the unit-based properties aren't sync'd...need to disable setting them when !Networking::IsLocal()
 	if(!args->object_index.IsNull())
 	{
 		s_object_header_datum* object = (*Objects::ObjectHeader())[args->object_index];
@@ -130,13 +131,18 @@ static void* scripting_object_data_set_real_evaluate(void** arguments)
 //////////////////////////////////////////////////////////////////////////
 // WEAPONS
 
-static real* weapon_data_get_real_by_name(s_weapon_datum* weapon, cstring data_name, Enums::hs_type& out_type)
+static real* weapon_data_get_real_by_name(s_weapon_datum* weapon, cstring data_name, Enums::hs_type& out_type, bool& out_is_networked)
 {
 	cstring s = data_name; // alias for keeping the code width down
+	out_is_networked = false; // by default, we assume the properties aren't sync'd
 
 	out_type = HS_TYPE(real);
 		 if( !strcmp(s,"heat") )		return weapon->weapon.GetHeat();
-	else if( !strcmp(s,"age") )			return weapon->weapon.GetAge();
+	else if( !strcmp(s,"age") )
+	{
+										out_is_networked = true;
+										return weapon->weapon.GetAge();
+	}
 	else if( !strcmp(s,"light_power") )	return weapon->weapon.GetIntegratedLightPower();
 
 	return NULL;
@@ -159,7 +165,8 @@ static void* scripting_weapon_data_get_real_evaluate(void** arguments)
 			s_weapon_datum* weapon = header->Type._weapon;
 
 			Enums::hs_type result_type;
-			result.ptr.real = weapon_data_get_real_by_name(weapon, args->data_name, result_type);
+			bool is_networked;
+			result.ptr.real = weapon_data_get_real_by_name(weapon, args->data_name, result_type, is_networked);
 			Scripting::UpdateTypeHolderFromPtrToData(result, result_type);
 		}
 	}
@@ -174,7 +181,7 @@ static void* scripting_weapon_data_set_real_evaluate(void** arguments)
 		real data_value;
 	}* args = CAST_PTR(s_arguments*, arguments);
 
-	if(!args->weapon_index.IsNull())
+	if(Networking::IsLocal() && !args->weapon_index.IsNull())
 	{
 		s_object_header_datum* header = (*Objects::ObjectHeader())[args->weapon_index];
 
@@ -184,8 +191,11 @@ static void* scripting_weapon_data_set_real_evaluate(void** arguments)
 
 			TypeHolder result;
 			Enums::hs_type result_type;
-			result.ptr.real = weapon_data_get_real_by_name(weapon, args->data_name, result_type);
-			Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &args->data_value);
+			bool is_networked;
+			result.ptr.real = weapon_data_get_real_by_name(weapon, args->data_name, result_type, is_networked);
+			// Only set properties in local games, or if the properties are sync'd
+			if(Networking::IsLocal() || is_networked)
+				Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &args->data_value);
 		}
 	}
 
@@ -239,7 +249,8 @@ static void* scripting_weapon_data_trigger_set_real_evaluate(void** arguments)
 		real data_value;
 	}* args = CAST_PTR(s_arguments*, arguments);
 
-	if(!args->weapon_index.IsNull())
+	// We don't support modifying trigger data in anything but local games because it writes to tag memory
+	if(Networking::IsLocal() && !args->weapon_index.IsNull())
 	{
 		s_object_header_datum* header = (*Objects::ObjectHeader())[args->weapon_index];
 
@@ -301,15 +312,18 @@ static void* scripting_unit_data_get_object_evaluate(void** arguments)
 	return result.pointer;
 }
 
-static void* scripting_unit_data_get_integer_by_name(s_unit_datum* unit, cstring data_name, Enums::hs_type& out_type)
+static void* scripting_unit_data_get_integer_by_name(s_unit_datum* unit, cstring data_name, Enums::hs_type& out_type, bool& out_is_networked)
 {
 	cstring s = data_name; // alias for keeping the code width down
+	out_is_networked = true;
 
 	out_type = HS_TYPE(bool);
 	// designers should use 'unit_get_total_grenade_count' for overall grenade count
 		 if( !strcmp(s,"total_grenade_count[plasma]") )	return unit->unit.GetGrenadePlasmaCount();
 	else if( !strcmp(s,"total_grenade_count[frag]") )	return unit->unit.GetGrenadeFragCount();
-	else if( !strcmp(s,"current_grenade_index") )		return unit->unit.GetCurrentGrenadeIndex();
+	// Everything below this isn't exactly sync'd...so fuck it
+	out_is_networked = false;
+		 if( !strcmp(s,"current_grenade_index") )		return unit->unit.GetCurrentGrenadeIndex();
 	// designers should NOT set the zoom this way...
 	else if( !strcmp(s,"zoom_level") )					return unit->unit.GetZoomLevel();
 	// ...they should set it via this
@@ -337,7 +351,8 @@ static void* scripting_unit_data_get_integer_evaluate(void** arguments)
 		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->Type._unit;
 
 		Enums::hs_type result_type;
-		result.pointer = scripting_unit_data_get_integer_by_name(unit, args->data_name, result_type);
+		bool is_networked;
+		result.pointer = scripting_unit_data_get_integer_by_name(unit, args->data_name, result_type, is_networked);
 		Scripting::UpdateTypeHolderFromPtrToData(result, result_type);
 	}
 
@@ -357,8 +372,11 @@ static void* scripting_unit_data_set_integer_evaluate(void** arguments)
 
 		TypeHolder result;
 		Enums::hs_type result_type;
-		result.pointer = scripting_unit_data_get_integer_by_name(unit, args->data_name, result_type);
-		Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &args->data_value);
+		bool is_networked;
+		result.pointer = scripting_unit_data_get_integer_by_name(unit, args->data_name, result_type, is_networked);
+		// Only set properties in local games, or if the properties are sync'd
+		if(Networking::IsLocal() || is_networked)
+			Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &args->data_value);
 	}
 
 	return NULL;
@@ -404,7 +422,7 @@ static void* scripting_unit_data_set_real_evaluate(void** arguments)
 		real data_value;
 	}* args = CAST_PTR(s_arguments*, arguments);
 
-	if(!args->unit_index.IsNull())
+	if(Networking::IsLocal() && !args->unit_index.IsNull())
 	{
 		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->Type._unit;
 
