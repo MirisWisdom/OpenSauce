@@ -140,6 +140,12 @@ static void PLATFORM_API build_cache_file_for_scenario_extended(void** arguments
 	use_memory_upgrades = Settings::ParseBoolean(args->use_memory_upgrades_str);
 	//////////////////////////////////////////////////////////////////////////
 
+	if(store_resources && !use_memory_upgrades)
+	{
+		printf_s("CheApe: store-resources was set, but use-memory-upgrades wasn't! Aborting build\n");
+		return;
+	}
+
 
 	//////////////////////////////////////////////////////////////////////////
 	// Initialize locals and globals

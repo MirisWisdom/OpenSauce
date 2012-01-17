@@ -21,6 +21,7 @@
 #include "Game/Scripting.hpp"
 #include "Game/ScriptLibrary.hpp"
 #include "Memory/MemoryInterface.hpp"
+#include "Networking/Networking.hpp"
 #include "TagGroups/TagGroups.hpp"
 
 namespace Yelo
