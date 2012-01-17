@@ -164,6 +164,8 @@ namespace Yelo
 
 		void PLATFORM_API InitializeForNewMap()
 		{
+			Physics()->Reset(); // Reset the physics constants on each new map load since these are engine globals, not game state globals.
+
 			RuntimeData::InitializeForNewMap();
 
 			Yelo::Main::s_project_component* components;
