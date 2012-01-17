@@ -1,10 +1,10 @@
+@ECHO OFF
 :: Checks this machine for the prerequisites needed to build the various parts of the OpenSauce codebase
 :: Obviously, this is for developers only...
 REM There are some things we just can't (reliably) check for:
-REM 	GameSpyOpen
+REM 	GameSpyOpen (we do try checking for stuff in OpenSauce\shared\Include\GameSpyOpen\ tho)
 REM 	SlimDX
 REM See http://code.google.com/p/open-sauce/wiki/UsingTheCode
-@ECHO OFF
 
 REM Setup the paths we need to execute external programs
 IF "%PROCESSOR_ARCHITECTURE%" == "x86" GOTO PROCESSOR_IS_32BIT
@@ -15,6 +15,12 @@ GOTO SET_PROGFILES_END
 	SET "ProgFilesDir=%PROGRAMFILES%"
 	SET "ProgFilesDir86=%PROGRAMFILES%"
 :SET_PROGFILES_END
+
+REM We assume the bat's directory is \bin\_scripts\
+SET "BatDir=%~dp0"
+REM Thus we have to go up two directories to get root
+SET "osRepoDir=%BatDir%..\..\"
+
 
 SET MissingReqs=0
 SET MissingOpts=0
@@ -65,6 +71,14 @@ IF "%XEDK%"=="" (
 	SET MissingOpts=1
 )
 :FINISHED_CHECK_XEDK
+
+
+REM Optional: Check for the GameSpyOpen SDK
+IF NOT EXIST "%osRepoDir%OpenSauce\shared\Include\GameSpyOpen\darray.h" (
+	ECHO WARNING: GameSpyOpen SDK not detected
+	SET MissingOpts=1
+)
+:FINISHED_CHECK_GAMESPYOPEN
 
 
 :FINISHED_CHECKS
