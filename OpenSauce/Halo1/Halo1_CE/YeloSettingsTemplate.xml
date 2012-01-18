@@ -2,23 +2,40 @@
 <osYeloSettings engine="Halo1_CE">
 	<client>		
 		<dx9>
-			<Upgrades dynamicTriangles="false" />
+            <nVidiaActiveCamouflage basic="" />
 			
-			<GBuffer enabled="true" />
+			<Upgrades dynamicTriangles="" />
+			
+			<GBuffer enabled="" />
 
-			<postprocessing>
-				<External enabled="false" />
-				<Internal enabled="false" />
-
-				<MotionBlur enabled="false" amount="0.0" />
-			</postprocessing>
+            <PostProcessing>
+                <MotionBlur enabled="" amount="" />
+				
+                <FXAA enabled="" />
+				
+                <Internal enabled="" />
+				
+                <External enabled="" />
+            </PostProcessing>
+			
+            <ShaderExtension>
+                <Model>
+                    <NormalMap enabled="" />
+					
+                    <DetailNormalMaps enabled="" />
+					
+                    <SpecularMap enabled="" />
+					
+                    <SpecularLighting enabled="" />
+                </Model>
+            </ShaderExtension>
 		</dx9>
 
 		<!--value=vertifical radians-->
 		<Fov value="" />
 
-		<Hud show="true" scale="false" showChat="true">
-			<reports showDeaths="true" showMyKillDeaths="true" />
+		<Hud show="" scale="" showChat="">
+			<reports showDeaths="" showMyKillDeaths="" />
 		</Hud>
 
 		<objects>
@@ -45,18 +62,40 @@
 	</client>
 	
 	<server>
+
+		<version_check year="" month="" day="">
+			<server_list>
+				<Server></Server>
+			</server_list>
+		</version_check>
+		
 	</server>
 
-	<osShaderSettings>
+	<postprocessing shader_directory="" 
+			texture_directory="">
 		<shaders>
-			<Shader filename="" />
+			<shader id=""></shader>
 		</shaders>
 		<effects>
-			<Effect name="" render_point="" >
-				<Shader index="" />
-			</Effect>
+			<effect id="">
+				<shaders>
+					<shader></shader>
+				</shaders>
+			</effect>
 		</effects>
-	</osShaderSettings>
+		<effect_instances>
+			<effect_instance name="" effect="" render_stage="" activation_operation="">
+				<quad>
+					<tessellation x="" y=""/>
+					<x_bounds lower="" upper=""/>
+					<y_bounds lower="" upper=""/>
+				</quad>
+				<activation_controls>
+					<activation_control state="" invert=""/>
+				</activation_controls>
+			</effect_instance>
+		</effect_instances>
+	</postprocessing>
 
 	<osModSetSettings>
 		<modSets>
