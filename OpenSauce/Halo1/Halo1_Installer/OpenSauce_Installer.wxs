@@ -4,11 +4,13 @@
 	<!-- Global folder definitions -->
 	<?define ResourceFolder='..\..\..\shared\Resources\'?>
 	<?define BinariesFolder='..\..\..\bin\'?>
+	<?define SourceFolder='..\..\..\'?>
 	
 	<!-- Define the installer strings based on the game version -->
 	<?ifdef Halo1_CE?>
 	<?define ProductName='OpenSauce for Halo CE'?>
 	<?define GameTarget='Halo CE'?>
+	<?define ConfigVersion='3.0.0'?>
 	<?endif?>
 
 	<!-- Define whether to pack debug or release binaries -->
@@ -18,12 +20,14 @@
 	<?define CompiledConfiguration='Release'?>
 	<?endif?>
 	
+	<?define UpgradeCodeGUID='6E7F244E-C79F-4925-A073-66362D92A99F'?>
+	
 	<Product Name='$(var.ProductName)'
 		Id='BEF3C4CC-CCAB-47FF-AE26-F44319A220AA'
-		UpgradeCode='6E7F244E-C79F-4925-A073-66362D92A99F'
+		UpgradeCode='$(var.UpgradeCodeGUID)'
 		Language='1033'
 		Codepage='1252'
-		Version='3.0.0'
+		Version='$(var.ConfigVersion)'
 		Manufacturer='Kornner Studios'>
 
 		<Package Id='*'
@@ -36,9 +40,7 @@
 			Compressed='yes'
 			SummaryCodepage='1252' />
 
-		<Upgrade Id='6E7F244E-C79F-4925-A073-66362D92A99F'> <!-- Id MUST be the UpgradeCode -->
-			<UpgradeVersion OnlyDetect='yes' Property='NEWERFOUND' Minimum='3.0.0' IncludeMinimum='no'/>
-		</Upgrade>
+		<MajorUpgrade MigrateFeatures='yes' Schedule='afterInstallFinalize' DowngradeErrorMessage='A later version of [ProductName] is already installed. Setup will now exit.'/>
 
 		<Property Id='ALLUSERS'>1</Property>
 		<Property Id='CREATESTARTMENUSHORTCUTS' Secure='yes' Value='1'/>
@@ -75,6 +77,11 @@
 						</Directory>
 						
 						<Directory Id='OpenSauce_OpenSauceIDE_DIR' Name='OpenSauceIDE'>
+							<Directory Id='OpenSauce_License_DIR' Name='License'>
+								<Component Id='OpenSauce_License_COMP' Guid='CC4D32F5-CE90-4c7a-9B48-74601CADEDC0'>
+									<File Id='OpenSauce_License_FILE' Name='License.txt' DiskId='1' Source='$(var.SourceFolder)license\License.txt' KeyPath='yes' />
+								</Component>
+							</Directory>
 							<!-- OpenSauceIDE is installed here-->
 							<Component Id='OpenSauce_OpenSauceIDE_COMP' Guid='B9699EB8-F18C-4FAF-B97B-227B865AF0BB'>
 								<File Id='OpenSauce_OpenSauceIDE_FILE' Name='OpenSauceIDE.exe' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\OpenSauceIDE\OpenSauceIDE.exe' KeyPath='yes' />
@@ -223,7 +230,7 @@
 		</InstallExecuteSequence>
 
 		<Feature Id='OpenSauce_Complete_FEAT'
-			Title='OS V3.0'
+			Title='OS V$(var.ConfigVersion)'
 			Description='All the Sauce you will ever need.'
 			Display='expand'
 			Level='1'
@@ -234,6 +241,7 @@
 			<ComponentRef Id='OpenSauce_BlamLib_COMP' />
 			<ComponentRef Id='OpenSauce_BlamLib_Forms_COMP' />
 			<ComponentRef Id='OpenSauce_LowLevel_COMP' />
+			<ComponentRef Id='OpenSauce_License_COMP' />
 
 			<?ifdef DEBUG?>
 				<ComponentRef Id='OpenSauce_OpenSauceIDE_PDB_COMP' />
