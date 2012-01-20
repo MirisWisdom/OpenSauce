@@ -54,11 +54,11 @@ static bool CacheFileReadHeaderHackImpl(cstring relative_map_name, s_cache_heade
 static API_FUNC_NAKED bool __cdecl CacheFileReadHeaderHack()
 {
 	__asm {
-		// eax = relative_map_name
+		// eax (client), ecx (dedi) = relative_map_name
 		// esi = out_header
 
 		push	esi
-		push	eax
+		push	PLATFORM_VALUE(eax, ecx)
 		call	CacheFileReadHeaderHackImpl
 		retn
 	}
