@@ -88,7 +88,7 @@ namespace Yelo
 		{
 			element->SetDoubleAttribute(is_vector ? "i" : "x", r3d[0]);
 			element->SetDoubleAttribute(is_vector ? "j" : "y", r3d[1]);
-			element->SetDoubleAttribute(is_vector ? "k" : "d", r3d[2]);
+			element->SetDoubleAttribute(is_vector ? "k" : "z", r3d[2]);
 		}
 	};
 };
