@@ -37,7 +37,7 @@ DEFINE_HOOK_BLOCK_POSTPROCESS(render_structure) = {
 	GET_HOOK_PROCESS(func_gbuffer_render_structure_postprocess).FunctionHook,
 };
 
-
+	
 DEFINE_HOOK_PROCESS(func_postprocessing_weather_particle_systems_render_preprocess, Rasterizer::PostProcessing::RenderPreAlphaBlended);	
 
 DEFINE_HOOK_BLOCK_PREPROCESS(weather_particle_systems_render) = {
@@ -47,7 +47,7 @@ DEFINE_HOOK_BLOCK_PREPROCESS(weather_particle_systems_render) = {
 
 DEFINE_HOOK_PROCESS(func_gbuffer_render_hud_preprocess, DX9::c_gbuffer_system::render_progress::UIPreProcess);
 DEFINE_HOOK_PROCESS(func_postprocessing_render_hud_preprocess, Rasterizer::PostProcessing::RenderPreHUD);
-DEFINE_HOOK_PROCESS(func_postprocessing_render_hud_postprocess, Rasterizer::PostProcessing::RenderPreMenu);	
+DEFINE_HOOK_PROCESS(func_postprocessing_render_hud_postprocess, Rasterizer::PostProcessing::RenderPreMenu);
 
 DEFINE_HOOK_BLOCK_PREPROCESS(render_hud) = {
 	GET_HOOK_PROCESS(func_postprocessing_render_hud_preprocess).FunctionHook,
@@ -64,6 +64,15 @@ DEFINE_HOOK_BLOCK_POSTPROCESS(render_ui) = {
 	GET_HOOK_PROCESS(func_postprocessing_render_ui_postprocess).FunctionHook,
 };
 
+DEFINE_HOOK_PROCESS(func_gameui_hud_render_cursor_preprocess, Hud::RenderCursorPreprocess);
+DEFINE_HOOK_PROCESS(func_gameui_hud_render_cursor_postprocess, Hud::RenderCursorPostprocess);
+
+DEFINE_HOOK_BLOCK_PREPROCESS(render_cursor) = {
+	GET_HOOK_PROCESS(func_gameui_hud_render_cursor_preprocess).FunctionHook,
+};
+DEFINE_HOOK_BLOCK_POSTPROCESS(render_cursor) = {
+	GET_HOOK_PROCESS(func_gameui_hud_render_cursor_postprocess).FunctionHook,
+};
 
 DEFINE_HOOK_BLOCK_PROCESS(render_sky, GET_FUNC_VPTR(RENDER_SKY), render_sky, render_sky);
 DEFINE_HOOK_BLOCK_PROCESS(render_objects, GET_FUNC_VPTR(RENDER_OBJECTS), render_objects, render_objects);
@@ -71,5 +80,6 @@ DEFINE_HOOK_BLOCK_PROCESS(render_structure, GET_FUNC_VPTR(STRUCTURE_RENDER_LIGHT
 DEFINE_HOOK_BLOCK_PROCESS_PRE(weather_particle_systems_render, GET_FUNC_VPTR(WEATHER_PARTICLE_SYSTEMS_RENDER), weather_particle_systems_render);
 DEFINE_HOOK_BLOCK_PROCESS(render_hud, GET_FUNC_VPTR(INTERFACE_DRAW_SCREEN), render_hud, render_hud);
 DEFINE_HOOK_BLOCK_PROCESS_POST(render_ui, GET_FUNC_VPTR(RENDER_UI_WIDGETS), render_ui);
+DEFINE_HOOK_BLOCK_PROCESS(render_cursor, GET_FUNC_VPTR(RENDER_UI_CURSOR), render_cursor, render_cursor);
 
 bool& FunctionProcessRenderHudIsDisabled() { return GET_HOOK_BLOCK_PROCESS(render_hud).g_is_disabled; }

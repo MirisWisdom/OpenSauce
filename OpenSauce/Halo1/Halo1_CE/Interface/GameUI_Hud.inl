@@ -112,6 +112,16 @@ namespace Yelo
 			};
 		}
 
+		void RenderCursorPreprocess()
+		{
+			g_hud_globals.m_flags.enable_scaling = true;
+		}
+
+		void RenderCursorPostprocess()
+		{
+			g_hud_globals.m_flags.enable_scaling = false;
+		}
+
 		static HRESULT SetVertexShaderConstantF_ScreenProj(IDirect3DDevice9* device, UINT StartRegister,CONST float* pConstantData,UINT Vector4fCount)
 		{
 			D3DXMATRIX* original_matrix = CAST_PTR(D3DXMATRIX*, (float*)pConstantData);
