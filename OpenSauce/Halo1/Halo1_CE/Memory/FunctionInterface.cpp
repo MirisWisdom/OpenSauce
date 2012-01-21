@@ -9,6 +9,7 @@
 
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
+#include "Interface/GameUI.hpp"
 
 namespace Yelo
 {
@@ -31,6 +32,7 @@ namespace Yelo
 			WRITE_HOOK_BLOCK_PROCESS(weather_particle_systems_render, GET_FUNC_PTR(RENDER_WINDOW_CALL_HOOK_WEATHER_PARTICLE_SYSTEMS_RENDER));
 			WRITE_HOOK_BLOCK_PROCESS(render_hud, GET_FUNC_PTR(RENDER_WINDOW_CALL_HOOK_INTERFACE_DRAW_SCREEN));
 			WRITE_HOOK_BLOCK_PROCESS(render_ui, GET_FUNC_PTR(RENDER_WINDOW_CALL_HOOK_RENDER_UI_WIDGETS));
+			WRITE_HOOK_BLOCK_PROCESS(render_cursor, GET_FUNC_PTR(CALL_HOOK_RENDER_UI_CURSOR));
 #endif
 		}
 	};
