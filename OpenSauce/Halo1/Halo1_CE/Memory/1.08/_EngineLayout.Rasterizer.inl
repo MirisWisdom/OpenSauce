@@ -9,6 +9,7 @@
 //////////////////////////////////////////////////////////////////////////
 // Rasterizer.cpp
 #if __EL_INCLUDE_FILE_ID == __EL_RASTERIZER_RASTERIZER
+	ENGINE_PTR(s_rasterizer_config, rasterizer_config,				0x6BDD30, PTR_NULL);
 	ENGINE_PTR(s_render_globals, render_globals,					0x75E020, PTR_NULL);
 	ENGINE_PTR(s_render_target, global_render_targets,				0x638A20, PTR_NULL);
 	ENGINE_PTR(s_rasterizer_debug_options, rasterizer_debug_data,	0x6249C0, PTR_NULL);
