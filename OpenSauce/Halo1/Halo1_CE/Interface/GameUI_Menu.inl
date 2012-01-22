@@ -133,7 +133,10 @@ namespace Yelo
 				L"\x2081. Field of View\n"
 				L"\x2082. Weapon Views\n"
 				L"\x2083. HUD Options\n"
-				L"\x2084. Vehicle Views");
+	#if YELO_HAS_VEHICLE_VIEWS == TRUE
+				L"\x2084. Vehicle Views"
+	#endif
+				);
 			_menu_globals.menu->Refresh();
 		}
 
