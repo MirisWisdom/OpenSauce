@@ -48,7 +48,7 @@ namespace Yelo
 
 
 		//////////////////////////////////////////////////////////////////////
-		// s_gbuffer
+		// c_gbuffer
 		void		c_gbuffer::ReleaseTargets()
 		{
 			m_rt_depth.ReleaseTarget();
@@ -478,7 +478,7 @@ skip_disable_velocity:
 			};
 		}
 
-		// the hooked function takes arguments, for which FunctionInterface in unsuited
+		// the hooked function takes arguments, for which FunctionInterface is unsuited
 		API_FUNC_NAKED void c_gbuffer_system::Hook_RenderObjectsTransparent()
 		{
 			static uint32 CALL_ADDRESS = GET_FUNC_PTR(RENDER_OBJECTS_TRANSPARENT);
@@ -622,7 +622,7 @@ skip_disable_velocity:
 
 		HRESULT		c_gbuffer_system::DrawIndexedPrimitive(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type, INT BaseVertexIndex, UINT MinVertexIndex, UINT NumVertices, UINT startIndex, UINT primCount)
 		{
-			HRESULT hr;
+			HRESULT hr = S_OK;
 			// Get the current render target
 			LPDIRECT3DSURFACE9 origTarget;
 			pDevice->GetRenderTarget(0, &origTarget);
@@ -744,6 +744,9 @@ skip_disable_velocity:
 			if(FAILED(pDevice->TestCooperativeLevel()))
 				return;
 
+			if(Rasterizer::RasterizerConfig()->disable_render_targets || Rasterizer::RasterizerConfig()->disable_alpha_render_targets)
+				return;
+
 			HRESULT hr;
 			D3DCAPS9 device_caps;
 			hr = pDevice->GetDeviceCaps(&device_caps);
@@ -860,7 +863,7 @@ skip_disable_velocity:
 
 				pDevice->SetPixelShaderConstantF(0, g_pixel_shader_input, 1);
 
-				hr = pDevice->DrawIndexedPrimitive(Type,BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
+				hr = pDevice->DrawIndexedPrimitive(Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
 				m_gbuffer_ps->EndPass();
 
 				for(uint32 i = 1; i < m_multi_rt.count; i++)

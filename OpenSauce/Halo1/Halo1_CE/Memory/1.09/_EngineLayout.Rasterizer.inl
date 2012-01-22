@@ -9,6 +9,7 @@
 //////////////////////////////////////////////////////////////////////////
 // Rasterizer.cpp
 #if __EL_INCLUDE_FILE_ID == __EL_RASTERIZER_RASTERIZER
+	ENGINE_PTR(s_rasterizer_config, rasterizer_config,				0x6BDE18, PTR_NULL);
 	ENGINE_PTR(s_render_globals, render_globals,					0x75E100, PTR_NULL);
 	ENGINE_PTR(s_render_target, global_render_targets,				0x638A20, PTR_NULL);
 	ENGINE_PTR(s_rasterizer_debug_options, rasterizer_debug_data,	0x6249C0, PTR_NULL);
@@ -32,7 +33,6 @@
 		CAST_PTR(uint16*, 0x557387), CAST_PTR(uint16*, 0x5573F7),
 		CAST_PTR(uint16*, 0x55745A), CAST_PTR(uint16*, 0x557577),
 	};
-
 
 	ENGINE_PTR(DWORD, RASTERIZER_DEVICE_ADAPTER_INDEX,				0x6B8438, PTR_NULL);
 	ENGINE_PTR(char, RESOLUTION_LIST_COUNT,							0x4BE38C, PTR_NULL);

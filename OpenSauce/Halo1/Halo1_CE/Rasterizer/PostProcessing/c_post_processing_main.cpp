@@ -197,6 +197,9 @@ namespace Yelo
 
 		bool c_post_processing_main::CreateScreenBufferChain()
 		{
+			if(Rasterizer::RasterizerConfig()->disable_render_targets || Rasterizer::RasterizerConfig()->disable_alpha_render_targets)
+				return false;
+
 			return m_globals.scene_buffer_chain.AllocateResources(m_globals.render_device,
 				m_globals.screen_dimensions.x,
 				m_globals.screen_dimensions.y);
@@ -209,6 +212,9 @@ namespace Yelo
 
 		bool c_post_processing_main::CreateSecondaryBufferChain()
 		{
+			if(Rasterizer::RasterizerConfig()->disable_render_targets || Rasterizer::RasterizerConfig()->disable_alpha_render_targets)
+				return false;
+
 			return m_globals.secondary_buffer_chain.AllocateResources(m_globals.render_device,
 				m_globals.screen_dimensions.x,
 				m_globals.screen_dimensions.y,

@@ -25,6 +25,37 @@ namespace Yelo
 
 	namespace Rasterizer
 	{
+		struct s_rasterizer_config
+		{
+			const BOOL linear_texture_addressing;
+			const BOOL linear_texture_addressing_zoom;
+			const BOOL linear_texture_addressing_sun;
+			const BOOL use_fixed_function;
+			const BOOL disable_driver_management;
+			const BOOL unsupported_card;
+			const BOOL prototype_card;
+			const BOOL old_driver;
+			const BOOL old_sound_driver;
+			const BOOL invalid_driver;
+			const BOOL invalid_sound_driver;
+			const BOOL disable_buffering;
+			const BOOL enable_stop_start;
+			const BOOL head_relative_speech;
+			const BOOL safe_mode;
+			const DWORD force_shader;
+			const BOOL use_anisotropic_filter;
+			const BOOL disable_specular;
+			const BOOL disable_render_targets;
+			const BOOL disable_alpha_render_targets;
+			const BOOL use_alternative_convolve_mask;
+			const BOOL min_max_blend_op_is_broken;
+			const FLOAT decal_z_bias_value;
+			const FLOAT transparent_decal_z_bias_value;
+			const FLOAT decal_slope_z_bias_value;
+			const FLOAT transparent_decal_slope_z_bias_value;
+		};
+		s_rasterizer_config* RasterizerConfig();
+
 		s_render_globals* RenderGlobals();
 
 		struct s_render_target

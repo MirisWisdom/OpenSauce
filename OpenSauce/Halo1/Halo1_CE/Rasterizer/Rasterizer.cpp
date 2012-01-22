@@ -68,6 +68,7 @@ namespace Yelo
 		}
 		//////////////////////////////////////////////////////////////////////////
 
+		s_rasterizer_config* RasterizerConfig()		PTR_IMP_GET2(rasterizer_config)
 		s_render_globals* RenderGlobals()			PTR_IMP_GET2(render_globals);
 		s_render_target* GlobalRenderTargets()		PTR_IMP_GET2(global_render_targets);
 #pragma region DebugOptions
