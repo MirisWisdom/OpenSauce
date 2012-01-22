@@ -37,13 +37,17 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////////
 		// project_yellow_globals
-		static bool PLATFORM_API py_globals_group_postprocess(Yelo::datum_index tag_index, bool verify_data)
+		static bool PLATFORM_API py_globals_group_postprocess(Yelo::datum_index tag_index, bool for_runtime)
 		{
 			project_yellow_globals* def = Yelo::tag_get<project_yellow_globals>(tag_index);
 
 			def->version = project_yellow_globals::k_version;
 
-			Scripting::ScriptingBlockAddDefinitions(def->yelo_scripting, true);
+			Scripting::ScriptingBlockClear(def->yelo_scripting);
+			if(for_runtime)
+			{
+				Scripting::ScriptingBlockAddDefinitions(def->yelo_scripting, true);
+			}
 
 			return true;
 		}
@@ -70,19 +74,20 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////////
 		// project_yellow
-		bool PLATFORM_API py_group_postprocess(datum_index tag_index, bool verify_data)
+		static bool PLATFORM_API py_group_postprocess(datum_index tag_index, bool for_runtime)
 		{
 			project_yellow* def = Yelo::tag_get<project_yellow>(tag_index);
 
 			def->version = project_yellow::k_version;
 
-			if(verify_data)
+			Scripting::ScriptingBlockClear(def->user_scripting);
+			if(for_runtime)
 			{
-				if(!def->physics.IsGravityScaleValid())		def->physics.ResetGravityScale();
-				if(!def->physics.IsPlayerSpeedScaleValid())	def->physics.ResetPlayerSpeedScale();
-			}
+				if(!def->physics.IsGravityScaleValid() || def->physics.gravity_scale == 0.0f)			def->physics.ResetGravityScale();
+				if(!def->physics.IsPlayerSpeedScaleValid() || def->physics.player_speed_scale == 0.0f)	def->physics.ResetPlayerSpeedScale();
 
-			Scripting::ScriptingBlockAddDefinitions(def->user_scripting, false);
+				Scripting::ScriptingBlockAddDefinitions(def->user_scripting, false);
+			}
 
 			return true;
 		}

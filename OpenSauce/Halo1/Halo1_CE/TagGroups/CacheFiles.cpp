@@ -54,13 +54,28 @@ namespace Yelo
 			// its data files off the original ones, but I thought it would be good practice %-)
 			static bool revert_file_names = false;
 
-			if(cache_header->yelo.flags.uses_mod_data_files && cache_header->yelo.mod_name[0] != '\0')
+			if(cache_header->yelo.flags.uses_mod_data_files && !is_null_or_empty(cache_header->yelo.mod_name))
 			{
 				const char (*bitmaps)[MAX_PATH];
 				const char (*sounds) [MAX_PATH];
 				const char (*locale) [MAX_PATH];
-				FindSet(cache_header->yelo.mod_name,
+				bool set_is_registered = FindSet(cache_header->yelo.mod_name,
 					bitmaps, sounds, locale);
+
+				if(!set_is_registered)
+				{
+					char error_text[MAX_PATH+64];
+					sprintf_s(error_text, "Mod-set '%s' for map '%s' is not registered in the user's settings, crashing...",
+						cache_header->yelo.mod_name, cache_header->name);
+					PrepareToDropError(error_text);
+
+					Engine::GatherException(cache_header->yelo.mod_name, 0x89, 0x7E, 1);
+				}
+				
+				// Validate the files in the mod-set exist on disk and exception (with details) if any don't.
+				char missing_set_file[MAX_PATH];
+				if(!VerifySetFilesExist(*bitmaps, *sounds, *locale, missing_set_file))
+					Engine::GatherException(missing_set_file, 0x89, 0x7E, 1);
 
 				DataFilesUseNewFiles(*bitmaps, *sounds, *locale);
 
@@ -269,8 +284,7 @@ namespace Yelo
 				{
 					if(!yelo_is_ok)
 					{
-						cstring text = "Detected an invalid (probably old) .yelo map. See next message for map that needs removing.";
-						MessageBox(NULL, text, "Prepare to Drop!", MB_OK | MB_ICONEXCLAMATION);
+						PrepareToDropError("Detected an invalid (probably old) .yelo map. See next message for map that needs removing.");
 					}
 					// This isn't actually specific to cache_file_read_header, but to the exception code. I'm just too lazy to add it to EngineFunctions.hpp
 					*K_CACHE_FILE_READ_HEADER_EXCEPTION_MAP_NAME = map_path;

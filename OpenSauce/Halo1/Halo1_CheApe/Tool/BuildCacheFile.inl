@@ -140,11 +140,25 @@ static void PLATFORM_API build_cache_file_for_scenario_extended(void** arguments
 	use_memory_upgrades = Settings::ParseBoolean(args->use_memory_upgrades_str);
 	//////////////////////////////////////////////////////////////////////////
 
-	if(store_resources && !use_memory_upgrades)
+	if(!use_memory_upgrades)
 	{
-		printf_s("CheApe: store-resources was set, but use-memory-upgrades wasn't! Aborting build\n");
-		return;
+		bool abort_build = false;
+
+		if(abort_build = store_resources)
+			printf_s("CheApe: store-resources was set, but use-memory-upgrades wasn't! Aborting build\n");
+
+		if(!abort_build && copy_data_files_first)
+		{
+			printf_s("CheApe: ignoring meaningless create-anew argument when no memory upgrades are active\n");
+			copy_data_files_first = false;
+		}
+
+		if(abort_build)
+			return;
 	}
+
+	if(copy_data_files_first == true && store_resources == false)
+		printf_s("CheApe: creating mod-set files, but not storing anything in them (is this intentional?)\n");
 
 
 	//////////////////////////////////////////////////////////////////////////

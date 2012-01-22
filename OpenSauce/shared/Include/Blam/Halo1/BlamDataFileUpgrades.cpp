@@ -135,6 +135,27 @@ namespace Yelo
 			return Globals.Mods.FindSet(name, bitmaps, sounds, locale);
 		}
 
+		bool VerifySetFilesExist(cstring bitmaps, cstring sounds, cstring locale,
+			char details_buffer[MAX_PATH])
+		{
+			int access;
+			
+			// The names given to use are raw data-set names that don't include the extension or maps folder path
+			cstring set_files[3] = {
+				bitmaps, sounds, locale
+			};
+			for(int x = 0; x < NUMBEROF(set_files); x++)
+			{
+				// TODO: We assume the data files are stored within the maps directory
+				sprintf_s(details_buffer, MAX_PATH, "maps\\%s.map", set_files[x]);
+
+				int access = _access_s(details_buffer, 0);
+				if(access == ENOENT) return false;
+			}
+
+			return true;
+		}
+
 #if PLATFORM_IS_EDITOR
 		void SaveSettings()
 		{

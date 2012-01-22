@@ -320,6 +320,10 @@ namespace Yelo
 			static const real	WaterDensityConstant()	{ return 1.0f; }
 			static const real	AirDensityConstant()	{ return 0.0011f; }
 
+			void SetGravityScale(real scale)
+			{
+				gravity = GravityConstant() * scale;
+			}
 			void SetWaterDensity(real density)
 			{
 				PointPhysics()->SetWaterMass(water_density = density);

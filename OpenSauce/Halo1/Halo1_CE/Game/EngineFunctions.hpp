@@ -101,7 +101,7 @@ namespace Yelo
 
 	namespace Engine
 	{
-		void GatherException(void* data = NULL, int32 arg_0 = 0x89, int32 arg_4 = 0x7E, int32 arg_8 = 1);
+		void GatherException(const void* data = NULL, int32 arg_0 = 0x89, int32 arg_4 = 0x7E, int32 arg_8 = 1);
 
 		// Setting [block_thread] to true causes the engine to immediately create the rasterizer (D3D) data for it
 		IDirect3DBaseTexture9** TextureCacheRequestTexture(TagGroups::s_bitmap_data* bitmap, 
