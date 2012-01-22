@@ -358,8 +358,8 @@ namespace Yelo
 		void LoadSettings(TiXmlElement* hud_element);
 		void SaveSettings(TiXmlElement* hud_element);
 
-		void RenderCursorPreprocess();
-		void RenderCursorPostprocess();
+		void EnableScaling();
+		void DisableScaling();
 
 #if defined(DX_WRAPPER) // TODO: Need fallback initialization for when we're not using the DX_WRAPPER
 		void Initialize3D(IDirect3DDevice9 *pDevice, D3DPRESENT_PARAMETERS *pPP);
