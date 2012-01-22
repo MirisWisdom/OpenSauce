@@ -8,6 +8,7 @@
 #if !PLATFORM_IS_DEDI
 
 #include "Interface/ControlTypes.hpp"
+#define YELO_HAS_VEHICLE_VIEWS FALSE // vehicle views is currently unimplemented
 
 namespace Yelo
 {
@@ -30,11 +31,13 @@ namespace Yelo
 		enum settings_menu_key {
 			k_settings_menu_key = Enums::_KeyF7,
 
-			k_settings_menu_base_key =		Enums::_Key1-1, // base key used in figuring out the catagory selection
+			k_settings_menu_base_key =		Enums::_Key1-1, // base key used in figuring out the category selection
 			k_settings_menu_fov_key,		// +1
 			k_settings_menu_weapons_key,	// +2
 			k_settings_menu_hud_key,		// +3
+#if YELO_HAS_VEHICLE_VIEWS == TRUE
 			k_settings_menu_vehicles_key,	// +4
+#endif
 			k_settings_menu_last_key,
 
 			k_settings_menu_key_first_catagory = k_settings_menu_base_key+1,
