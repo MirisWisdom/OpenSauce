@@ -25,6 +25,7 @@
 #include <stdarg.h>
 #include <time.h>
 #include <errno.h>
+#include <io.h>
 
 // _mkdir
 #include <direct.h>

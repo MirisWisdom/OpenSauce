@@ -92,3 +92,11 @@
 
 
 #define HRESULT_ERETURN(p) if(FAILED(p)) return E_FAIL
+
+namespace Yelo
+{
+	// Displays a message to the user using the WinAPI
+	// Use this when are probably about to get really messy...
+	// Fucking nasty location to put this function, but for the time being, it will do
+	void PrepareToDropError(cstring text);
+};

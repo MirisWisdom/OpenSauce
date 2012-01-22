@@ -5,7 +5,7 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-ENGINE_PTR(void*, gather_exception_data,	0x6BDEAC, 0x626524);
+ENGINE_PTR(const void*, gather_exception_data,	0x6BDEAC, 0x626524);
 FUNC_PTR(GATHER_EXCEPTION,					0x582780, 0x52AEB0);
 
 FUNC_PTR(TEXTURE_CACHE_TEXTURE_REQUEST,		0x445080, FUNC_PTR_NULL);

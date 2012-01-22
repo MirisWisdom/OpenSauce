@@ -184,23 +184,23 @@
 			<arg type="short" name="effect_index" />
 		</function>
 
-		<function name="pp_get_effect_shader_variable_index_by_name" returnType="short" help="returns the index of a shader variable for a specific effect" >
+		<function name="pp_get_effect_shader_variable_index_by_name" returnType="short" help="returns the index of a shader variable for a specific effect" internal="true" >
 			<arg type="short"	name="effect_index" />
 			<arg type="string"	name="variable_name" />
 		</function>
-		<function name="pp_set_effect_shader_variable_boolean" returnType="void" help="sets the boolean value of an effect shader variable" >
+		<function name="pp_set_effect_shader_variable_boolean" returnType="void" help="sets the boolean value of an effect shader variable" internal="true" >
 			<arg type="short"	name="effect_index" />
 			<arg type="short"	name="variable_index" />
 			<arg type="boolean" name="bool" />
 			<arg type="real"	name="change_time" />
 		</function>
-		<function name="pp_set_effect_shader_variable_integer" returnType="void" help="sets the integer value of an effect shader variable" >
+		<function name="pp_set_effect_shader_variable_integer" returnType="void" help="sets the integer value of an effect shader variable" internal="true" >
 			<arg type="short"	name="effect_index" />
 			<arg type="short"	name="variable_index" />
 			<arg type="long"	name="value" />
 			<arg type="real"	name="change_time" />
 		</function>
-		<function name="pp_set_effect_shader_variable_real" returnType="void" help="sets the real values of an effect shader variable" >
+		<function name="pp_set_effect_shader_variable_real" returnType="void" help="sets the real values of an effect shader variable" internal="true" >
 			<arg type="short"	name="effect_index" />
 			<arg type="short"	name="variable_index" />
 			<arg type="real"	name="value0" />
@@ -209,31 +209,31 @@
 			<arg type="real"	name="value3" />
 			<arg type="real"	name="change_time" />
 		</function>
-		<function name="pp_set_effect_shader_instance_active" returnType="void" help="disables/enables a shader instance in an effect" >
+		<function name="pp_set_effect_shader_instance_active" returnType="void" help="disables/enables a shader instance in an effect" internal="true" >
 			<arg type="short"	name="effect_index" />
 			<arg type="short"	name="shader_instance_index" />
 			<arg type="boolean" name="shader_instance_enabled" />
 		</function>
 		
-		<function name="pp_bloom_set_size" returnType="void" help="changes the bloom size over a period of time" >
+		<function name="pp_bloom_set_size" returnType="void" help="changes the bloom size over a period of time" internal="true" >
 			<arg type="real" name="size" />
 			<arg type="real" name="change_time" />
 		</function>
-		<function name="pp_bloom_set_exposure" returnType="void" help="changes the bloom exposure over a period of time" >
+		<function name="pp_bloom_set_exposure" returnType="void" help="changes the bloom exposure over a period of time" internal="true" >
 			<arg type="real" name="exposure" />
 			<arg type="real" name="change_time" />
 		</function>
-		<function name="pp_bloom_set_mix_amount" returnType="void" help="changes the bloom mix amount over a period of time" >
+		<function name="pp_bloom_set_mix_amount" returnType="void" help="changes the bloom mix amount over a period of time" internal="true" >
 			<arg type="real" name="mix_amount" />
 			<arg type="real" name="change_time" />
 		</function>
-		<function name="pp_bloom_set_minimum_color" returnType="void" help="changes the bloom minimum color over a period of time" >
+		<function name="pp_bloom_set_minimum_color" returnType="void" help="changes the bloom minimum color over a period of time" internal="true" >
 			<arg type="real" name="red" />
 			<arg type="real" name="green" />
 			<arg type="real" name="blue" />
 			<arg type="real" name="change_time" />
 		</function>
-		<function name="pp_bloom_set_maximum_color" returnType="void" help="changes the bloom maximum color over a period of time" >
+		<function name="pp_bloom_set_maximum_color" returnType="void" help="changes the bloom maximum color over a period of time" internal="true" >
 			<arg type="real" name="red" />
 			<arg type="real" name="green" />
 			<arg type="real" name="blue" />

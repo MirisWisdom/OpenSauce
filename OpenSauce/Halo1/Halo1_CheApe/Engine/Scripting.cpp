@@ -131,7 +131,7 @@ namespace Yelo
 			{
 				def = _upgrade_globals.functions.table[x];
 
-				if( only_internals && !TEST_FLAG(def->flags, Flags::_hs_yelo_definition_internal_bit) )
+				if( only_internals != TEST_FLAG(def->flags, Flags::_hs_yelo_definition_internal_bit) )
 					continue;
 
 				script_function_block* element = tag_block_get_element(functions, tag_block_add_element(functions));
@@ -165,7 +165,7 @@ namespace Yelo
 			{
 				def = _upgrade_globals.globals.table[x];
 
-				if( only_internals && !TEST_FLAG(def->flags, Flags::_hs_yelo_definition_internal_bit) )
+				if( only_internals != TEST_FLAG(def->flags, Flags::_hs_yelo_definition_internal_bit) )
 					continue;
 
 				script_global_block* element = tag_block_get_element(globals, tag_block_add_element(globals));
@@ -178,12 +178,17 @@ namespace Yelo
 			_CrtSetDebugFillThreshold( old_threshold );
 		}
 
+		void ScriptingBlockClear(
+			TAG_TBLOCK(& script_block, TagGroups::scripting_block))
+		{
+			tag_block_resize(script_block, 0);
+		}
 		void ScriptingBlockAddDefinitions(
 			TAG_TBLOCK(& script_block, TagGroups::scripting_block), bool only_internals)
 		{
 			using namespace TagGroups;
 
-			tag_block_resize(script_block, 0);
+			ScriptingBlockClear(script_block);
 
 			scripting_block* element = tag_block_get_element(script_block, tag_block_add_element(script_block));
 

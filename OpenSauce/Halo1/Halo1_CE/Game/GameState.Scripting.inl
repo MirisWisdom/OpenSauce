@@ -23,7 +23,7 @@ static void* scripting_physics_set_gravity_evaluate(void** arguments)
 		real gravity_fraction;
 	}* args = CAST_PTR(s_arguments*, arguments);
 
-	GameState::Physics()->gravity = GameState::s_physics_globals::GravityConstant() * args->gravity_fraction;
+	GameState::Physics()->SetGravityScale(args->gravity_fraction);
 
 	return NULL;
 }

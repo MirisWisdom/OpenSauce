@@ -57,6 +57,8 @@ namespace Yelo
 
 		hs_function_definition* GetFunctionDefintion(int16 function_index);
 
+		void ScriptingBlockClear(
+			TAG_TBLOCK(& script_block, TagGroups::scripting_block));
 		// Copy the scripting definitions CheApe loaded into the tool code from the memory map
 		// [only_internals] - Copy definitions that are part of the stock OpenSauce source code 
 		// only, else copy only the user's definitions

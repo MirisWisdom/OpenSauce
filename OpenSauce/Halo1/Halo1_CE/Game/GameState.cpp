@@ -15,6 +15,7 @@
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 
 #include "TagGroups/TagGroups.hpp"
+#include "TagGroups/project_yellow_definitions.hpp"
 
 namespace Yelo
 {
@@ -165,6 +166,12 @@ namespace Yelo
 		void PLATFORM_API InitializeForNewMap()
 		{
 			Physics()->Reset(); // Reset the physics constants on each new map load since these are engine globals, not game state globals.
+			// Update the gravity based on the scenario's yelo tag settings
+			{
+				const real& gravity_scale = TagGroups::_global_yelo->physics.gravity_scale;
+				if(gravity_scale > 0 && gravity_scale != 1.0f)
+					Physics()->SetGravityScale(gravity_scale);
+			}
 
 			RuntimeData::InitializeForNewMap();
 

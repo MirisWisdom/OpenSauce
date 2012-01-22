@@ -109,7 +109,7 @@ namespace Yelo
 				Engine::Console::Warning("Map's project_yellow_globals's script definitions don't match this build of Yelo!");
 			}
 
-			return mismatch;
+			return !mismatch;
 		}
 		void InitializeForNewMap()
 		{
@@ -128,7 +128,7 @@ namespace Yelo
 
 			if(!VerifyYeloScriptDefinitions())
 			{
-				// TODO: error here!
+				PrepareToDropError("This map's yelo script definitions appear to differ from this build of OS. We're probably about to crash...");
 			}
 		}
 

@@ -5,7 +5,7 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-void GatherException(void* data, int32 arg_0, int32 arg_4, int32 arg_8)
+void GatherException(const void* data, int32 arg_0, int32 arg_4, int32 arg_8)
 {
 	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(GATHER_EXCEPTION);
 
