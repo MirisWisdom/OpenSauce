@@ -41,7 +41,6 @@ namespace Yelo
 			__asm {
 				mov		g_hud_globals.m_flags.enable_scaling, 0
 				call	CALL_ADDR
-				mov		g_hud_globals.m_flags.enable_scaling, 1
 				jmp		RETN_ADDRESS
 			}
 		}
@@ -54,7 +53,6 @@ namespace Yelo
 			__asm {
 				mov		g_hud_globals.m_flags.enable_scaling, 0
 				call	CALL_ADDR
-				mov		g_hud_globals.m_flags.enable_scaling, 1
 				jmp		RETN_ADDRESS
 			}
 		}
@@ -65,7 +63,6 @@ namespace Yelo
 
 			g_hud_globals.m_flags.enable_scaling = false;
 			__asm call	TEMP_CALL_ADDR
-			g_hud_globals.m_flags.enable_scaling = true;
 		}
 
 		// disable scaling when drawing the cinematic black bars
@@ -75,7 +72,6 @@ namespace Yelo
 
 			g_hud_globals.m_flags.enable_scaling = false;
 			__asm call	TEMP_CALL_ADDR
-			g_hud_globals.m_flags.enable_scaling = true;
 		}
 
 		// disable scaling when drawing the loading UI
@@ -85,7 +81,6 @@ namespace Yelo
 
 			g_hud_globals.m_flags.enable_scaling = false;
 			__asm call	TEMP_CALL_ADDR
-			g_hud_globals.m_flags.enable_scaling = true;
 		}
 
 		// disable scaling when drawing full screen UI widgets
@@ -112,12 +107,12 @@ namespace Yelo
 			};
 		}
 
-		void RenderCursorPreprocess()
+		void EnableScaling()
 		{
 			g_hud_globals.m_flags.enable_scaling = true;
 		}
 
-		void RenderCursorPostprocess()
+		void DisableScaling()
 		{
 			g_hud_globals.m_flags.enable_scaling = false;
 		}

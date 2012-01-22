@@ -852,9 +852,9 @@ namespace Yelo
 			GetAnnotationValue(compiler, handle, "shader_model_mask", 
 				Yelo::Enums::_shader_model_mask_1_0 | Yelo::Enums::_shader_model_mask_2_0 | Yelo::Enums::_shader_model_mask_3_0, shader_model_mask);
 			
-			technique.shader_model.sm_1_0_bit = (shader_model_mask & Yelo::Enums::_shader_model_mask_1_0);
-			technique.shader_model.sm_2_0_bit = (shader_model_mask & Yelo::Enums::_shader_model_mask_2_0);
-			technique.shader_model.sm_3_0_bit = (shader_model_mask & Yelo::Enums::_shader_model_mask_3_0);
+			technique.shader_model.sm_1_0_bit = (shader_model_mask & Yelo::Enums::_shader_model_mask_1_0) ==  Yelo::Enums::_shader_model_mask_1_0;
+			technique.shader_model.sm_2_0_bit = (shader_model_mask & Yelo::Enums::_shader_model_mask_2_0) ==  Yelo::Enums::_shader_model_mask_2_0;
+			technique.shader_model.sm_3_0_bit = (shader_model_mask & Yelo::Enums::_shader_model_mask_3_0) ==  Yelo::Enums::_shader_model_mask_3_0;
 
 			if(technique_desc.Passes == 0)
 				return;
