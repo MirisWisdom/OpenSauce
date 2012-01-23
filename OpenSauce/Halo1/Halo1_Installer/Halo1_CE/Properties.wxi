@@ -66,5 +66,8 @@
 	<!-- Setting any value to this property defaults to launching OS_IDE when guerilla\sapien\tool is missing -->
 	<Property Id='HALO1_CE_HEK_LAUNCHOSIDE_PROP' Secure='yes' Value='1' />
 	<Property Id='HALO1_CE_HEK_SKIPCREATEOSEXES_PROP' Secure='yes'/>
-	
+
+	<Property Id='HALO1_CE_README_LAUNCH_PROP' Secure='yes' Value='1' />
+	<Property Id='HALO1_CE_HEK_README_LAUNCH_PROP' Secure='yes' Value='1' />
+
 </Include>

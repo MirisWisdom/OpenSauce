@@ -17,6 +17,8 @@
 		<ComponentRef Id='Halo1_CE_OpenSauceDedi_COMP'/>
 		<ComponentRef Id='Halo1_CE_DediExeRemove_COMP'/>
 
+		<ComponentRef Id='Halo1_CE_Readme_COMP' />
+
 		<?ifdef SYMBOLS?>
 		<ComponentRef Id='Halo1_CE_d3d9109_PDB_COMP' />
 		<ComponentRef Id='Halo1_CE_OpenSauceDedi_PDB_COMP'/>
@@ -50,6 +52,8 @@
 		<ComponentRef Id='Halo1_CE_CheApeDLLG_COMP' />
 		<ComponentRef Id='Halo1_CE_CheApeDLLS_COMP' />
 		<ComponentRef Id='Halo1_CE_CheApeDLLT_COMP' />
+
+		<ComponentRef Id='Halo1_CE_CheApe_Readme_COMP' />
 
 		<?ifdef SYMBOLS?>
 		<ComponentRef Id='Halo1_CE_CheApeDLLG_PDB_COMP' />

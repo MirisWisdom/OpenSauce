@@ -10,7 +10,7 @@
 	<?ifdef Halo1_CE?>
 	<?define ProductName='OpenSauce for Halo CE'?>
 	<?define GameTarget='Halo CE'?>
-	<?define ConfigVersion='3.0.0'?>
+	<?define ConfigVersion='3.0.1'?>
 	<?endif?>
 
 	<!-- Define whether to pack debug or release binaries -->
@@ -23,7 +23,7 @@
 	<?define UpgradeCodeGUID='6E7F244E-C79F-4925-A073-66362D92A99F'?>
 	
 	<Product Name='$(var.ProductName)'
-		Id='BEF3C4CC-CCAB-47FF-AE26-F44319A220AA'
+		Id='076F20E0-AF23-4480-814F-13C80418FD8F'
 		UpgradeCode='$(var.UpgradeCodeGUID)'
 		Language='1033'
 		Codepage='1252'
@@ -231,7 +231,7 @@
 
 		<Feature Id='OpenSauce_Complete_FEAT'
 			Title='OS V$(var.ConfigVersion)'
-			Description='All the Sauce you will ever need.'
+			Description='Installs the OpenSauce IDE. If no other options are available you need to reinstall Halo CE v1.09 and/or the HEK.'
 			Display='expand'
 			Level='1'
 			AllowAdvertise='no'

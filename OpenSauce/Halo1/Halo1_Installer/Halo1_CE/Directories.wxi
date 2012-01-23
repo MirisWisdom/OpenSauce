@@ -25,6 +25,10 @@
 			<File Id='Halo1_CE_OpenSauceDedi_FILE' Name='OpenSauceDedi.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Dedi\Halo1_CE\OpenSauceDedi.dll' KeyPath='yes'/>
 		</Component>
 
+		<Component Id='Halo1_CE_Readme_COMP' Guid='17B81049-EC68-41c0-803C-612BBB4869FE'>
+			<File Id='Halo1_CE_Readme_FILE' Name='Halo1_CE_Readme.txt' DiskId='1' Source='$(var.SourceFolder)OpenSauce\Halo1\Halo1_CE\Halo1_CE_Readme.txt' KeyPath='yes' />
+		</Component>
+
 		<?ifdef SYMBOLS?>
 		<Component Id='Halo1_CE_d3d9109_PDB_COMP' Guid='6919365B-416E-4151-B677-6271E56D1597'>
 			<File Id='Halo1_CE_d3d9109_PDB_FILE' Name='d3d9.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\Halo1_CE\d3d9.pdb' KeyPath='yes' />
@@ -144,6 +148,10 @@
 		</Component>
 		<Component Id='Halo1_CE_CheApeDLLT_COMP' Guid='457412A1-749A-4B82-AAFF-91C848D81E70'>
 			<File Id='Halo1_CE_CheApeDLLT_FILE' Name='CheApeDLLT.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Tool\Halo1_CheApe\CheApeDLLT.dll' KeyPath='yes' />
+		</Component>
+
+		<Component Id='Halo1_CE_CheApe_Readme_COMP' Guid='8A7C9ADD-1298-4329-9BE6-EC5306748823'>
+			<File Id='Halo1_CE_CheApe_Readme_FILE' Name='Halo1_CheApe_Readme.txt' DiskId='1' Source='$(var.SourceFolder)OpenSauce\Halo1\Halo1_CheApe\Halo1_CheApe_Readme.txt' KeyPath='yes' />
 		</Component>
 
 		<?ifdef SYMBOLS?>

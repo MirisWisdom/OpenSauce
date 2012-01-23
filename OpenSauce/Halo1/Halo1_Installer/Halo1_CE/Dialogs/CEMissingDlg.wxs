@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright (c) Microsoft Corporation.  All rights reserved.
+    
+    The use and distribution terms for this software are covered by the
+    Common Public License 1.0 (http://opensource.org/licenses/cpl1.0.php)
+    which can be found in the file CPL.TXT at the root of this distribution.
+    By using this software in any fashion, you are agreeing to be bound by
+    the terms of this license.
+    
+    You must not remove this notice, or any other, from this software.
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+		<UI>
+			<Dialog Id="CEMissingDlg" Width="270" Height="105" Title="Warning!" ErrorDialog="no">
+				<Control Id="WarningText" Type="Text" X="48" Y="15" Width="205" Height="60" TabSkip="no" NoPrefix="yes" Text="Unable to find Halo CE v1.09 via it's registry entry. Installation of the OS runtime will not be available until you reinstall and update Halo CE." />
+				<Control Id="ButtonOK" Type="PushButton" X="100" Y="80" Width="56" Height="17" TabSkip="yes" Text="!(loc.WixUIOK)"/>
+			</Dialog>
+		</UI>
+	</Fragment>
+</Wix>

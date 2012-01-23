@@ -10,4 +10,12 @@
 	<!-- Launches the OS_IDE with no command -->
 	<CustomAction Id='Halo1_CE_LaunchOSIDE_CACT' FileKey='OpenSauce_OpenSauceIDE_FILE'  Return='asyncNoWait' ExeCommand='' />
 
+	<!--Opens the OS Client readme-->
+	<CustomAction Id='Halo1_CE_SetReadmeTarget_CACT' Property='WixShellExecTarget' Value='[#Halo1_CE_Readme_FILE]'/>
+	<CustomAction Id='Halo1_CE_OpenReadme_CACT' BinaryKey='WixCA' DllEntry='WixShellExec' Impersonate='yes'/>
+
+	<!--Opens the OS HEK readme-->
+	<CustomAction Id='Halo1_CE_HEK_SetReadmeTarget_CACT' Property='WixShellExecTarget' Value='[#Halo1_CE_CheApe_Readme_FILE]'/>
+	<CustomAction Id='Halo1_CE_HEK_OpenReadme_CACT' BinaryKey='WixCA' DllEntry='WixShellExec' Impersonate='yes'/>
+
 </Include>
