@@ -67,7 +67,9 @@
     <Content Include="Halo1_CE\Properties.wxi" />
     <Content Include="Halo1_CE\UI.wxi" />
     <Compile Include="Dialogs\OpenSauce_CustomizeDlg.wxs" />
+    <Compile Include="Dialogs\OpenSauce_ExitDialog.wxs" />
     <Compile Include="Dialogs\OpenSauce_FeatureTree.wxs" />
+    <Compile Include="Halo1_CE\Dialogs\CEMissingDlg.wxs" />
     <Compile Include="Halo1_CE\Dialogs\HEKPathsDlg.wxs" />
     <Compile Include="Halo1_CE\Dialogs\HEKPathsMissingDlg.wxs" />
     <Compile Include="OpenSauce_Installer.wxs" />

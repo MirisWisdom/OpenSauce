@@ -49,7 +49,7 @@ Patch dialog sequence:
             <DialogRef Id="ResumeDlg" />
             <DialogRef Id="UserExit" />
 
-            <Publish Dialog="ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
+            <Publish Dialog="OpenSauce_ExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
 
             <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="LicenseAgreementDlg">NOT Installed</Publish>
             <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="VerifyReadyDlg">Installed AND PATCH</Publish>
