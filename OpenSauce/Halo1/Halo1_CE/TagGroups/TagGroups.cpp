@@ -61,6 +61,10 @@ namespace Yelo
 
 		static void FindCacheYeloDefinitions()
 		{
+			// Reset first, in case map has no definitions
+			_global_yelo = &null_yelo;
+			_global_yelo_globals = &null_yelo_globals;
+
 			tag_iterator iter;
 
 			// find the yelo scenario tag
@@ -120,7 +124,7 @@ namespace Yelo
 			// Just incase someone else comes out with a tool which 
 			// sets the bit when they protect the cache, we don't want 
 			// to undo their courtesy
-			if(!_global_yelo->IsCacheProtected())
+			if(!_global_yelo->IsNull() && !_global_yelo->IsCacheProtected())
 				// Hacks? In MY Yelo? Ya rly
 				CAST_QUAL(project_yellow*, _global_yelo)->flags.cache_is_protected_bit = 
 					is_protected;
