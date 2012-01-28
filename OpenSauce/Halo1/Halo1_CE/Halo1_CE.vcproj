@@ -3121,6 +3121,10 @@
 			</Filter>
 		</Filter>
 		<File
+			RelativePath=".\Halo1_CE_Readme.txt"
+			>
+		</File>
+		<File
 			RelativePath=".\Halo1_CE_Version.xml"
 			>
 		</File>
