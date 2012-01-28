@@ -1,20 +1,8 @@
 /*
-    Yelo: Open Sauce SDK
+	Yelo: Open Sauce SDK
 		Halo 1 (CE) Edition
-    Copyright (C) 2005-2010  Kornner Studios (http://kornner.com)
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	See license\OpenSauce\Halo1_CE for specific license information
 */
 #include "Common/Precompile.hpp"
 #include "Networking/MessageDefinitions.hpp"
@@ -51,6 +39,37 @@ namespace Yelo
 			return false;
 		}
 
+#if 0
+		//////////////////////////////////////////////////////////////////////////
+		// _message_delta_script_global_update
+		struct MDP_STRUCT_NAME(script_global_update)
+		{
+			MDP_STRUCT_DEFINE_TRAITS(1, 4, _message_delta_script_global_update);
+
+			boolean is_external; // is an engine global
+			integer_small type;
+			integer_medium index;
+			union {
+				byte data[4];
+
+				short word;
+				long dword;
+				real single;
+				datum_index datum;
+			}value;
+		};
+
+		MDP_DEFINITION_START(script_global_update, MDP_GET_FIELD_SET_DEFINITION(empty))
+			MDP_DEFINITION_FIELD(script_global_update, is_external, boolean),
+			MDP_DEFINITION_FIELD(script_global_update, type, integer_medium),
+			MDP_DEFINITION_FIELD(script_global_update, index, integer_medium),
+			MDP_DEFINITION_FIELD(script_global_update, value, integer_large),
+		MDP_DEFINITION_END();
+
+
+	#ifdef API_DEBUG
+		//////////////////////////////////////////////////////////////////////////
+		// _message_delta_test
 		struct MDP_STRUCT_NAME(test)
 		{
 			MDP_STRUCT_DEFINE_TRAITS(1, 1, _message_delta_test);
@@ -97,68 +116,64 @@ namespace Yelo
 
 			return NULL;
 		}
+	#endif
 
+#endif
 
-		struct MDP_STRUCT_NAME(update_script_global)
-		{
-			MDP_STRUCT_DEFINE_TRAITS(1, 4, _message_delta_update_script_global);
-
-			boolean is_external; // is an engine global
-			integer_small type;
-			integer_medium index;
-			union {
-				byte data[4];
-
-				short word;
-				long dword;
-				real single;
-				datum_index datum;
-			}value;
-		};
-
-		MDP_DEFINITION_START(update_script_global, MDP_GET_FIELD_SET_DEFINITION(empty))
-			MDP_DEFINITION_FIELD(update_script_global, is_external, boolean),
-			MDP_DEFINITION_FIELD(update_script_global, type, integer_medium),
-			MDP_DEFINITION_FIELD(update_script_global, index, integer_medium),
-			MDP_DEFINITION_FIELD(update_script_global, value, integer_large),
-		MDP_DEFINITION_END();
-
-
-
-		struct MDP_STRUCT_NAME(player_biped_update)
-		{
-			MDP_STRUCT_DEFINE_TRAITS(1, 2, _message_delta_player_biped_update);
-
-			player_index player;
-			definition_index biped;
-		};
-
-		MDP_DEFINITION_START(player_biped_update, MDP_GET_FIELD_SET_DEFINITION(empty))
-			MDP_DEFINITION_FIELD(player_biped_update, player, player_index),
-			MDP_DEFINITION_FIELD(player_biped_update, biped, definition_index),
-		MDP_DEFINITION_END();
 
 		/* --- CUSTOM PACKET DEF POINTERS --- */
+		// TODO: Game will crash when a delta definition is left null (ie, unimplemented).
 
 		message_delta_definition* kYeloMessageDeltas[] = {
+#if 0
+			NULL, // _message_delta_yelo_version
+			NULL, // _message_delta_yelo_game_state_update
+
+			&GET_NEW_MDP_DEFINITION(script_global_update),
+
+			NULL, // _message_delta_switch_bsp
+
+			NULL, // _message_delta_device_group_update
+			NULL, // _message_delta_device_new
+			NULL, // _message_delta_device_update
+
+	#ifdef API_DEBUG
 			&GET_NEW_MDP_DEFINITION(test),
-			&GET_NEW_MDP_DEFINITION(update_script_global),
-			&GET_NEW_MDP_DEFINITION(player_biped_update),
+	#endif
+#endif
+			NULL // EOL
 		};
 
 		const packet_decoder kYeloMessageDeltaDecoders[] = {
+#if 0
+			{FLAG(Enums::_message_deltas_new_client_bit), // _message_delta_yelo_version
+				MessageDeltaFromNetworkResultHandler<NullFromNetwork>},
+			{FLAG(Enums::_message_deltas_new_client_bit), // _message_delta_yelo_game_state_update
+				MessageDeltaFromNetworkResultHandler<NullFromNetwork>},
 
+			{FLAG(Enums::_message_deltas_new_client_bit), // _message_delta_script_global_update
+				MessageDeltaFromNetworkResultHandler<NullFromNetwork>},
+
+			{FLAG(Enums::_message_deltas_new_client_bit), // _message_delta_switch_bsp
+				MessageDeltaFromNetworkResultHandler<NullFromNetwork>},
+
+			{FLAG(Enums::_message_deltas_new_client_bit), // _message_delta_device_group_update
+				MessageDeltaFromNetworkResultHandler<NullFromNetwork>},
+			{FLAG(Enums::_message_deltas_new_client_bit), // _message_delta_device_new
+				MessageDeltaFromNetworkResultHandler<NullFromNetwork>},
+			{FLAG(Enums::_message_deltas_new_client_bit), // _message_delta_device_update
+				MessageDeltaFromNetworkResultHandler<NullFromNetwork>},
+
+	#ifdef API_DEBUG
 			{FLAG(Enums::_message_deltas_new_client_bit), 
 				MessageDeltaFromNetworkResultHandler<MDP_STRUCT_NAME(test)::FromNetwork>},
-			{FLAG(Enums::_message_deltas_new_client_bit), 
-				MessageDeltaFromNetworkResultHandler<NullFromNetwork>},
-			{FLAG(Enums::_message_deltas_new_client_bit), 
-				MessageDeltaFromNetworkResultHandler<NullFromNetwork>},
-
+	#endif
+#endif
+			{} // EOL
 		};
 		BOOST_STATIC_ASSERT( 
-			NUMBEROF(kYeloMessageDeltas) == Enums::k_message_deltas_yelo_count &&
-			NUMBEROF(kYeloMessageDeltaDecoders) == Enums::k_message_deltas_yelo_count 
+			NUMBEROF(kYeloMessageDeltas)-1 == Enums::k_message_deltas_yelo_count &&
+			NUMBEROF(kYeloMessageDeltaDecoders)-1 == Enums::k_message_deltas_yelo_count 
 		);
 #endif
 	};

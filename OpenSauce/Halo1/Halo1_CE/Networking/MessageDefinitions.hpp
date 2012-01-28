@@ -1,20 +1,8 @@
 /*
-    Yelo: Open Sauce SDK
+	Yelo: Open Sauce SDK
 		Halo 1 (CE) Edition
-    Copyright (C) 2005-2010  Kornner Studios (http://kornner.com)
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	See license\OpenSauce\Halo1_CE for specific license information
 */
 #pragma once
 
@@ -28,9 +16,27 @@ namespace Yelo
 		enum message_deltas_new
 		{
 #ifndef YELO_NO_NETWORK
-			_message_delta_test = k_message_deltas_count,
-			_message_delta_update_script_global,
-			_message_delta_player_biped_update,
+	#if 0
+			_message_delta_yelo_version = k_message_deltas_count,	// TODO hook replicate_current_state_to_new_player
+			_message_delta_yelo_game_state_update,					// TODO hook replicate_current_state_to_new_player
+
+			_message_delta_script_global_update,
+
+			//////////////////////////////////////////////////////////////////////////
+			// everything below this comment is experimental (and so none of these should ever be used in a non-internal build)
+
+			_message_delta_switch_bsp,								// TODO hook scenario_switch_structure_bsp
+			
+			_message_delta_device_group_update,
+			_message_delta_device_new,
+			_message_delta_device_update,
+
+		#ifdef API_DEBUG
+			// This should only ever be defined in debug builds and used for testing purposes only
+			// NO new delta types should come after this. This should always be last.
+			_message_delta_test,
+		#endif
+	#endif
 
 			k_message_deltas_new_count,
 #else

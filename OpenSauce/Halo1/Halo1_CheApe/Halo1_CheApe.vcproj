@@ -2607,6 +2607,10 @@
 			RelativePath=".\Halo1_CheApe.cpp"
 			>
 		</File>
+		<File
+			RelativePath=".\Halo1_CheApe_Readme.txt"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
