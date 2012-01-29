@@ -115,7 +115,7 @@ namespace Yelo
 			g_shader_bloom.Dtor();
 		}
 
-		void c_system_bloom::InitializeResources_Base(D3DPRESENT_PARAMETERS* parameters)
+		void c_system_bloom::InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters)
 		{
 			HRESULT hr = E_FAIL;
 			// create the direct3d resources of the shader

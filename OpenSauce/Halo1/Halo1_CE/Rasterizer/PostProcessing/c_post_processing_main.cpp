@@ -77,9 +77,9 @@ namespace Yelo
 			m_globals.render_device = NULL;
 		}
 
-		void c_post_processing_main::InitializeResources_Base(D3DPRESENT_PARAMETERS* parameters)
+		void c_post_processing_main::InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters)
 		{
-			GetRenderProperties(parameters);
+			GetRenderProperties(device, parameters);
 
 			if(CreateScreenBufferChain() && CreateSecondaryBufferChain()) { m_members.status = Enums::pp_component_status_initialised; }
 			else { m_members.status = Enums::pp_component_status_initialisation_failed; }
@@ -99,7 +99,7 @@ namespace Yelo
 
 		void c_post_processing_main::OnResetDevice_Base(D3DPRESENT_PARAMETERS* parameters)
 		{
-			GetRenderProperties(parameters);
+			GetRenderProperties(DX9::Direct3DDevice(), parameters);
 
 			if(!m_members.m_flags.is_unloaded)
 			{
@@ -159,9 +159,9 @@ namespace Yelo
 
 		/////////////////////////////////////////////////
 		// system setup
-		void c_post_processing_main::GetRenderProperties(D3DPRESENT_PARAMETERS* parameters)
+		void c_post_processing_main::GetRenderProperties(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters)
 		{
-			m_globals.render_device = DX9::Direct3DDevice();
+			m_globals.render_device = device;
 
 			m_globals.render_device->GetDeviceCaps(&m_globals.device_caps);
 
