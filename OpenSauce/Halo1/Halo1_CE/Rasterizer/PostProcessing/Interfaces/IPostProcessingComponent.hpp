@@ -18,7 +18,7 @@ namespace Yelo
 			virtual void Initialize() {}
 			virtual void Dispose() {}
 
-			virtual void InitializeResources_Base(D3DPRESENT_PARAMETERS* parameters) {}
+			virtual void InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters) {}
 			virtual void OnLostDevice_Base() {}
 			virtual void OnResetDevice_Base(D3DPRESENT_PARAMETERS* parameters) {}
 			virtual void ReleaseResources_Base() {}

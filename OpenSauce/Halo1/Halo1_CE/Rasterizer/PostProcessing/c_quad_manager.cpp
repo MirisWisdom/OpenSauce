@@ -89,7 +89,7 @@ namespace Yelo
 		 * called what the game is first loaded, to create the buffers for the built in
 		 * post processes.
 		 */
-		void c_quad_manager::InitializeResources_Base(D3DPRESENT_PARAMETERS* parameters)
+		void c_quad_manager::InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters)
 		{
 			// remove unnecessary quads
 			CullUnusedQuads();

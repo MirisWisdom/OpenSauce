@@ -137,7 +137,7 @@ namespace Yelo
 		{
 			// initialize the global resources in the main post processing component
 			// if this fails, return
-			c_post_processing_main::Instance().InitializeResources_Base(pParameters);
+			c_post_processing_main::Instance().InitializeResources_Base(pDevice, pParameters);
 
 			ASSERT(!c_post_processing_main::Instance().IsReady(), "The main post processing component failed to initialise it's resources");
 
@@ -147,12 +147,12 @@ namespace Yelo
 			// initialise the subsystems
 			for(int i = 0; i < NUMBEROF(g_postprocess_subsystems); i++)
 			{
-				g_postprocess_subsystems[i].m_component->InitializeResources_Base(pParameters);
+				g_postprocess_subsystems[i].m_component->InitializeResources_Base(pDevice, pParameters);
 				g_postprocess_subsystems[i].is_ready = g_postprocess_subsystems[i].m_component->IsReady();
 			}
 
 			// create the quad buffers
-			c_quad_manager::Instance().InitializeResources_Base(pParameters);
+			c_quad_manager::Instance().InitializeResources_Base(pDevice, pParameters);
 		}
 
 		/*!

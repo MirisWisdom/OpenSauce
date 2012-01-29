@@ -93,7 +93,7 @@ namespace Yelo
 		 * 
 		 * Loads the external system, and allocates D3D resources.
 		 */
-		void c_system_external::InitializeResources_Base(D3DPRESENT_PARAMETERS* parameters)
+		void c_system_external::InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters)
 		{
 			HRESULT hr = S_OK;
 			// create the direct3d resources of the shader

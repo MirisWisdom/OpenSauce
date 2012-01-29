@@ -58,7 +58,7 @@ namespace Yelo
 			void Initialize();
 			void Dispose();
 
-			void InitializeResources_Base(D3DPRESENT_PARAMETERS* parameters);
+			void InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters);
 			void OnLostDevice_Base();
 			void OnResetDevice_Base(D3DPRESENT_PARAMETERS* parameters);
 			void ReleaseResources_Base();
