@@ -8,7 +8,11 @@
 void		WriteD3DXErrors(LPD3DXBUFFER error_buffer, int32 error_count)
 {
 	if(!error_buffer)
+	{
+		YELO_ERROR(_error_message_priority_warning,
+			"\tNO D3DX ERRORS?");
 		return;
+	}
 	std::string error_string(CAST_PTR(char*, error_buffer->GetBufferPointer()));
 	std::string error_line;
 
@@ -218,7 +222,7 @@ HRESULT		CompileEffect(
 		puts("failed");
 		// inform the user that an error occurred and print the first two D3DX errors
 		YELO_ERROR(_error_message_priority_warning, 
-			"OS_tool: failed to compile effect");
+			"OS_tool: failed to compile effect (%X)", hr);
 		WriteD3DXErrors(error_buffer, 3);
 		safe_release(effect_buffer);
 	}
@@ -274,7 +278,7 @@ HRESULT		CreateEffectCompiler(
 		puts("failed");
 		// inform the user that an error occurred and print the first three D3DX errors
 		YELO_ERROR(_error_message_priority_warning, 
-			"OS_tool: failed to create effect compiler");
+			"OS_tool: failed to create effect compiler (%X)", hr);
 		WriteD3DXErrors(error_buffer, 3);
 		safe_release(effect_compiler);
 	}
@@ -318,7 +322,7 @@ HRESULT		LoadShader(
 	else
 	{		
 		YELO_ERROR(_error_message_priority_warning, 
-			"OS_tool: failed to open/create postprocess tag");
+			"OS_tool: failed to open/create postprocess tag (%X)", hr);
 	}
 	return hr;
 }
