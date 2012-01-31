@@ -225,7 +225,7 @@ namespace Yelo
 
 		void c_system_motionblur::SetDefaultSettings()
 		{
-			m_members.m_flags.is_enabled = true;
+			m_members.m_flags.is_enabled = false;
 			g_shader_instance_motionblur.BlurAmount() = 1.0f;
 		}
 

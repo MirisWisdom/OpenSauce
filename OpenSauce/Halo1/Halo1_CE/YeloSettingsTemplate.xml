@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <osYeloSettings engine="Halo1_CE">
-	<client>		
+	<client>
 		<dx9>
-            <nVidiaActiveCamouflage basic="" />
-			
+			<nVidiaActiveCamouflage basic="" />
+
 			<Upgrades dynamicTriangles="" />
-			
+
 			<GBuffer enabled="" />
 
-            <PostProcessing>
-                <MotionBlur enabled="" amount="" />
-				
-                <FXAA enabled="" />
-				
-                <Internal enabled="" />
-				
-                <External enabled="" />
-            </PostProcessing>
-			
-            <ShaderExtension>
-                <Model>
-                    <NormalMap enabled="" />
-					
-                    <DetailNormalMaps enabled="" />
-					
-                    <SpecularMap enabled="" />
-					
-                    <SpecularLighting enabled="" />
-                </Model>
-            </ShaderExtension>
+			<PostProcessing>
+				<Bloom enabled="" />
+
+				<MotionBlur enabled="" amount="" />
+
+				<FXAA enabled="" />
+
+				<Internal enabled="" />
+
+				<External enabled="" />
+			</PostProcessing>
+
+			<ShaderExtension>
+				<Model>
+					<NormalMap enabled="" />
+
+					<DetailNormalMaps enabled="" />
+
+					<SpecularMap enabled="" />
+
+					<SpecularLighting enabled="" />
+				</Model>
+			</ShaderExtension>
 		</dx9>
 
 		<!--value=vertifical radians-->
