@@ -39,6 +39,7 @@ static s_component_toggle_ref<IPostProcessingRenderable> g_postprocess_renderabl
 
 static IPostProcessingUserSettings* g_postprocess_usersettings_subsystems[] = 
 {
+	&Bloom::c_system_bloom::Instance(),
 	&MotionBlur::c_system_motionblur::Instance(),
 	&FXAA::c_system_fxaa::Instance(),
 	&Generic::Internal::c_system_internal::Instance(),

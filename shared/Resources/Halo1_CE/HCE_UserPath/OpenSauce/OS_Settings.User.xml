@@ -5,7 +5,8 @@
             <nVidiaActiveCamouflage basic="false" />
             <GBuffer enabled="true" />
             <PostProcessing>
-                <MotionBlur enabled="true" amount="1" />
+                <Bloom enabled="true" />
+                <MotionBlur enabled="false" amount="1" />
                 <FXAA enabled="false" />
                 <Internal enabled="true" />
                 <External enabled="true" />

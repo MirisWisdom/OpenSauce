@@ -8,6 +8,7 @@
 #include "Rasterizer/PostProcessing/Bloom/c_system_bloom.hpp"
 
 #if !PLATFORM_IS_DEDI
+#include "Common/YeloSettings.hpp"
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
 
 #include "Rasterizer/PostProcessing/Bloom/s_shader_bloom_definition.hpp"
@@ -58,7 +59,6 @@ namespace Yelo
 		{
 			m_members.status = Enums::pp_component_status_uninitialised;
 
-			m_members.m_flags.is_enabled = true;
 			m_members.m_flags.is_ready = false;
 			m_members.m_flags.is_unloaded = false;
 
@@ -105,7 +105,6 @@ namespace Yelo
 		{
 			m_members.status = Enums::pp_component_status_uninitialised;
 
-			m_members.m_flags.is_enabled = true;
 			m_members.m_flags.is_ready = false;
 			m_members.m_flags.is_unloaded = false;
 
@@ -255,6 +254,32 @@ namespace Yelo
 		{
 			// set the shaders variables to the defaults
 			SetBloomShaderVariables();
+		}
+
+		/////////////////////////////////////////////////
+		// IPostProcessingUserSettings
+		void c_system_bloom::LoadSettings(TiXmlElement* parent_element)
+		{
+			TiXmlElement* element = parent_element->FirstChildElement("Bloom");
+
+			if(!element) return;
+
+			m_members.m_flags.is_enabled = Settings::ParseBoolean( element->Attribute("enabled") );
+		}
+
+		void c_system_bloom::SaveSettings(TiXmlElement* parent_element)
+		{
+			TiXmlElement* element = NULL;
+
+			element = new TiXmlElement("Bloom");
+			parent_element->LinkEndChild(element);
+
+			element->SetAttribute("enabled", Settings::BooleanToString(m_members.m_flags.is_enabled));
+		}
+
+		void c_system_bloom::SetDefaultSettings()
+		{
+			m_members.m_flags.is_enabled = true;
 		}
 
 		/////////////////////////////////////////////////
