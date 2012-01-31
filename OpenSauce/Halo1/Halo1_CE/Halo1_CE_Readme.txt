@@ -26,11 +26,11 @@ We have an Issues system that we use to track *problems* (nothing else; we're NO
   * FIX			Fixed possible issue where _global_yelo could reference invalid memory
   * FIX [19]	Unregistered mod-sets crash game w/o warning		http://code.google.com/p/open-sauce/issues/detail?id=19
   * FIX [17]	External PP effects problem w/ single model mask	http://code.google.com/p/open-sauce/issues/detail?id=17
-  * FIX [14]	Weapon Views not saving correctly					http://code.google.com/p/open-sauce/issues/detail?id=14
+  * FIX [14]	Weapon Views not saving correctly					http://code.google.com/p/open-sauce/issues/detail?id=14 (Thanks jellymasterer!)
   * FIX [13]	OS_haloceded crashes on startup						http://code.google.com/p/open-sauce/issues/detail?id=13
   * FIX [11]	Black screen when DisableAlphaRenderTargets is set	http://code.google.com/p/open-sauce/issues/detail?id=11 (Thanks as7raios!)
-  * FIX [8]		HUD scaling causes problems with UI					http://code.google.com/p/open-sauce/issues/detail?id=8
-  * FIX [5]		HUD scaling has chatbox problem w/ hi-res			http://code.google.com/p/open-sauce/issues/detail?id=5
+  * FIX [8]		HUD scaling causes problems with UI					http://code.google.com/p/open-sauce/issues/detail?id=8 (Thanks SeanAero!)
+  * FIX [5]		HUD scaling has chatbox problem w/ hi-res			http://code.google.com/p/open-sauce/issues/detail?id=5 (Thanks SeanAero!)
 
 
 == Known Issues ==
