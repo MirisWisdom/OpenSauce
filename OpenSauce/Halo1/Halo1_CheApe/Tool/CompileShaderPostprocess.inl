@@ -279,6 +279,8 @@ HRESULT		CreateEffectCompiler(
 		// inform the user that an error occurred and print the first three D3DX errors
 		YELO_ERROR(_error_message_priority_warning, 
 			"OS_tool: failed to create effect compiler (%X)", hr);
+		YELO_ERROR(_error_message_priority_warning, 
+			"OS_tool: %s", fx_file);
 		WriteD3DXErrors(error_buffer, 3);
 		safe_release(effect_compiler);
 	}

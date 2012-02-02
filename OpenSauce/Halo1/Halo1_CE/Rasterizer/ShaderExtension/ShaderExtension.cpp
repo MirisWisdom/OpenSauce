@@ -68,6 +68,7 @@ namespace Yelo
 			static bool							g_shader_files_present = false;
 			static ps_2_x_support				g_ps_support = _ps_2_x_support_none;
 			static bool							g_extensions_enabled = true;
+			static bool							g_extensions_enabled_user_override = true;
 
 			void		SetTexture(IDirect3DDevice9* pDevice, uint16 sampler, datum_index bitmap_tag_index);
 
@@ -163,6 +164,10 @@ namespace Yelo
 			{
 				g_extensions_enabled = false;
 
+				// user settings override to completely disable the shader extensions
+				if(!g_extensions_enabled_user_override)
+					return;
+
 				// the shader files are not present, so do not set up the hooks
 				if(!g_shader_files_present)
 					return;
@@ -197,9 +202,16 @@ namespace Yelo
 
 			void		LoadSettings(TiXmlElement* parent_element)
 			{
+				g_extensions_enabled_user_override = true;
+
 				if(parent_element != NULL)
 				{
 					TiXmlElement* extension_element = parent_element->FirstChildElement("ShaderExtension");
+
+					// read the user override value, default to enabled if the attribute is not set
+					const char* enabled = extension_element->Attribute("enabled");
+					if(enabled)
+						g_extensions_enabled_user_override = Settings::ParseBoolean(enabled);
 
 					Model::LoadSettings(extension_element);
 				}
@@ -211,6 +223,8 @@ namespace Yelo
 				{
 					TiXmlElement* extension_element = new TiXmlElement("ShaderExtension");
 					parent_element->LinkEndChild(extension_element);
+
+					extension_element->SetAttribute("enabled", Settings::BooleanToString(g_extensions_enabled_user_override));
 
 					Model::SaveSettings(extension_element);
 				}

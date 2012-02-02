@@ -20,7 +20,7 @@
 				<External enabled="" />
 			</PostProcessing>
 
-			<ShaderExtension>
+			<ShaderExtension enabled="">
 				<Model>
 					<NormalMap enabled="" />
 
