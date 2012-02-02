@@ -12,7 +12,7 @@
                 <External enabled="true" />
             </PostProcessing>
             <Upgrades dynamicTriangles="false" />
-            <ShaderExtension>
+            <ShaderExtension enabled="true">
                 <Model>
                     <NormalMap enabled="true" />
                     <DetailNormalMaps enabled="true" />
