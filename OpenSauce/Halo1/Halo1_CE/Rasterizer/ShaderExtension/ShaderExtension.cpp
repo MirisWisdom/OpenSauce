@@ -172,19 +172,48 @@ namespace Yelo
 				if(!g_shader_files_present)
 					return;
 
-				// determine whether the device supports ps_2_a or ps_2_b
-				// this affects which effect collection will eventually be loaded
-				D3DCAPS9 dev_caps;
-				device->GetDeviceCaps(&dev_caps);
-				if(dev_caps.PS20Caps.NumInstructionSlots == 96)
-					g_ps_support = _ps_2_x_support_2_0;
-				else if(dev_caps.PS20Caps.NumInstructionSlots == 512)
+				// determine the maximum pixel shader profile the graphics device supports
+
+				// get the profile string id
+				const char* ps_profile = D3DXGetPixelShaderProfile(device);
+				if(!ps_profile)
+					return;
+
+				// parse the profile string to get the major version as an integer and the minor version as a char
+				int profile_major = 0;
+				char profile_minor_char = 0;
+
+				int fields_read = sscanf_s(ps_profile, "ps_%i_%c", &profile_major, &profile_minor_char, 1);
+				if(fields_read != 2)
+					return;
+
+				// no need to have the minor version as an int as we only need to compare it with a or b when major version is 2
+				switch(profile_major)
 				{
-					if(dev_caps.PS20Caps.NumTemps == 22)
+				case 2:
+					{
+						if(profile_minor_char == 'a')
+							g_ps_support = _ps_2_x_support_2_a;
+						else if(profile_minor_char == 'b')
+							g_ps_support = _ps_2_x_support_2_b;
+						else
+							g_ps_support = _ps_2_x_support_2_0;
+						break;
+					}
+				default:
+					{
+						// if the major version is less than 2 disable the shader extension
+						if(profile_major < 2)
+						{
+							g_ps_support = _ps_2_x_support_none;
+							return;
+						}
+						// if the pixel shader major version is more than 2 use ps_2_a as that has more features
 						g_ps_support = _ps_2_x_support_2_a;
-					else if(dev_caps.PS20Caps.NumTemps == 32)
-						g_ps_support = _ps_2_x_support_2_b;
+						break;
+					}
 				}
+
 				// if the required shader version is supported, put the hooks in place to
 				// add normal goodness
 				if(g_ps_support > _ps_2_x_support_2_0)
