@@ -59,6 +59,7 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
   * ADD			Implemented project_yellow's gravity_scale override field
   * ADD			Prompts user with a MessageBox when a map contains mismatching yelo script defintiions with the current build of OS
   * ADD			Bloom toggle added to the users settings
+  * ADD			Shader extension toggle added to the user settings to completely disable it if needed
   * CHANGE		Motion blur is now disabled by default
   * FIX			Fixed potential issue when a proxy calling OS stores the device pointer in a local variable
   * FIX			Fixed possible issue where _global_yelo could reference invalid memory
@@ -74,3 +75,4 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
 == Known Issues ==
   * XFire crashes OS. We can't fix this, it's on XFire's end. http://code.google.com/p/open-sauce/issues/detail?id=4&can=1
   * Running Steam with Halo in general causes the Function keys to not work. We can't fix this, it's on Valve's end. http://code.google.com/p/open-sauce/issues/detail?id=6&can=1
+  * [21] It has been reported that for some users Halo will inexplicably close when opened with no exception or other error dialog appearing. If this occurs for you, completely disable the shader extension in your user settings.
