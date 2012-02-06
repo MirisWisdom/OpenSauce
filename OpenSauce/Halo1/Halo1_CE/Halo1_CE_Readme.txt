@@ -11,13 +11,13 @@ It is still early days for OpenSauce so the way ahead may have a few bumps for s
 == System Requirements ==
 These requirements are mainly guesswork as we do not have the resources for broad testing on multiple hardware configurations.
 
-Operating System: Microsoft Windows XP SP3, Microsoft.Windows Vista SP2.
+Operating System: Microsoft Windows XP SP3, Microsoft Windows Vista SP2, Microsoft Windows 7 SP1
 Computer/Processor: 1GHz processor.
 DirectX: DirectX® 9.0c or later.
 Memory: 512 megabytes (MB) of RAM.
 Video card: 256 MB with shader model 2.a or 2.b, shader model 3.0 recommended.
 
-You should not expect your current hardware to run Halo CE with OS at the same level of performace you had before. What OS adds goes not come for free. If you feel that you would rather sacrifice some features for better performance, you can turn off various additions in the user settings file (see our Google code wiki for details).
+You should not expect your current hardware to run Halo CE with OS at the same level of performace you had before. What OS adds does not come for free. If you feel that you would rather sacrifice some features for better performance, you can turn off various additions in the user settings file (see our Google code wiki for details).
 
 == Installation ==
 If you have cut and pasted or have otherwise moved your Halo CE installation from it's original install location, you will not have the option to install the OS runtime. This is due to your registry entries for Halo CE having incorrect paths.
