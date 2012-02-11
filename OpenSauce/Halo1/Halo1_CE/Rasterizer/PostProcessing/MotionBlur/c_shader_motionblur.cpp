@@ -99,6 +99,9 @@ namespace Yelo
 		 */
 		bool c_shader_motionblur::ValidateImpl()
 		{
+			if(!c_shader_postprocess::ValidateImpl())
+				return false;
+
 			bool valid = false;
 			do
 			{
@@ -110,7 +113,7 @@ namespace Yelo
 				valid = true;
 			}while(false);
 
-			return valid && c_shader_postprocess::ValidateImpl();
+			return valid;
 		}
 	}; }; };
 };
