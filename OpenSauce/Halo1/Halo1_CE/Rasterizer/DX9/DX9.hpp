@@ -29,6 +29,9 @@ namespace Yelo
 		// D3D Properties
 		IDirect3D9* Direct3D9();
 
+		// D3D Caps
+		D3DCAPS9* D3DCaps();
+
 		// D3D Device Properties
 		IDirect3DDevice9* Direct3DDevice();
 

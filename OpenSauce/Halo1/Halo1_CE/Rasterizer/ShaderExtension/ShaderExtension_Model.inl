@@ -701,10 +701,6 @@ no_extension:
 		// replace the function used for shader_model when on a model
 		GET_PTR(RASTERIZER_MODEL_DRAW_ENVIRONMENT_SHADER_SETUP__SET_SHADER_MODEL_PTR) =			&ShaderSetupOverride_Model_ShaderModel;
 
-		// replace the vertex shader collection paths
-		for(int32 i = 0; i < NUMBEROF(K_VSH_COLLECTION_PATH_REFERENCES); i++)
-			*K_VSH_COLLECTION_PATH_REFERENCES[i] = g_vs_collection_path;
-
 		// change the shader usage id offsets on effects that only have 12 shaders
 		Memory::WriteRelativeJmp(&Hook_EnvironmentNoPixelShaderIDOffset,	GET_FUNC_VPTR(RASTERIZER_MODEL_ENVIRONMENT_NO_USAGE_ID_OFFSET_HOOK), true);
 		Memory::WriteRelativeJmp(&Hook_NoPixelShaderIDOffset,				GET_FUNC_VPTR(RASTERIZER_MODEL_NO_USAGE_ID_OFFSET_HOOK), true);

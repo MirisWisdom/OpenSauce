@@ -343,61 +343,61 @@ namespace Yelo
 			D3DCAPS9& device_caps = c_post_processing_main::Instance().Globals().device_caps;
 
 			// iterate through each effect
-			D3DXEFFECT_DESC effect_description;
 			LPD3DXEFFECT effect = m_members.definition->runtime.dx_effect;
-			effect->GetDesc(&effect_description);
-			for (UINT i = 0; i < effect_description.Techniques; i++)
+
+			// iterate through each technique
+			D3DXHANDLE technique = effect->GetTechniqueByName(m_members.definition->runtime.active_technique->name);
+
+			if(!technique)
+				return false;
+
+			D3DXTECHNIQUE_DESC technique_description;
+			effect->GetTechniqueDesc(technique, &technique_description);
+			for (UINT j = 0; j < technique_description.Passes; j++)
 			{
-				// iterate through each technique
-				D3DXHANDLE technique = effect->GetTechnique(i);
-				D3DXTECHNIQUE_DESC technique_description;
-				effect->GetTechniqueDesc(technique, &technique_description);
-				for (UINT j = 0; j < technique_description.Passes; j++)
-				{
-					// iterate through each pass
-					D3DXHANDLE pass = effect->GetPass(technique, j);
-					D3DXPASS_DESC pass_description;
-					effect->GetPassDesc(pass, &pass_description);
-					// get the pixel and vertex shader versions
-					union{
-						DWORD version;
-						struct{
-							union{
-								WORD major_minor_version;
-								struct{
-									char minor_version;
-									char major_version;
-								};
+				// iterate through each pass
+				D3DXHANDLE pass = effect->GetPass(technique, j);
+				D3DXPASS_DESC pass_description;
+				effect->GetPassDesc(pass, &pass_description);
+				// get the pixel and vertex shader versions
+				union{
+					DWORD version;
+					struct{
+						union{
+							WORD major_minor_version;
+							struct{
+								char minor_version;
+								char major_version;
 							};
-							WORD type;
 						};
-					} pass_vs_version, pass_ps_version;
-					pass_vs_version.version = D3DXGetShaderVersion(pass_description.pVertexShaderFunction);
-					pass_ps_version.version = D3DXGetShaderVersion(pass_description.pPixelShaderFunction);
+						WORD type;
+					};
+				} pass_vs_version, pass_ps_version;
+				pass_vs_version.version = D3DXGetShaderVersion(pass_description.pVertexShaderFunction);
+				pass_ps_version.version = D3DXGetShaderVersion(pass_description.pPixelShaderFunction);
 
-					// check the shaders can be used on the current graphics device
-					bool ps_version_ok = !(pass_vs_version.version > device_caps.VertexShaderVersion);
-					bool vs_version_ok = !(pass_ps_version.version > device_caps.PixelShaderVersion);
-					if(!ps_version_ok || !vs_version_ok)
-					{
-						ErrorReporting::Write("Failed to load shader:");
-						ErrorReporting::Write(m_members.source_data->DataSourceID());
-						ErrorReporting::WriteLine("The device does not support the required shader model [VS:%i.%i, PS:%i.%i]", 
-							pass_vs_version.major_version, pass_vs_version.minor_version, pass_ps_version.major_version, pass_ps_version.minor_version);
-						return false;
-					}
+				// check the shaders can be used on the current graphics device
+				bool ps_version_ok = !(pass_vs_version.version > device_caps.VertexShaderVersion);
+				bool vs_version_ok = !(pass_ps_version.version > device_caps.PixelShaderVersion);
+				if(!ps_version_ok || !vs_version_ok)
+				{
+					ErrorReporting::Write("Failed to load shader:");
+					ErrorReporting::Write(m_members.source_data->DataSourceID());
+					ErrorReporting::WriteLine("The device does not support the required shader model [VS:%i.%i, PS:%i.%i]", 
+						pass_vs_version.major_version, pass_vs_version.minor_version, pass_ps_version.major_version, pass_ps_version.minor_version);
+					return false;
+				}
 
-					// if either the pixel or vertex shader version is 3.0 or above, then ensure that
-					// they are both of the same version.
-					if((pass_ps_version.version >= D3DPS_VERSION(3,0) || pass_vs_version.version >= D3DPS_VERSION(3,0))
-						&& (pass_ps_version.major_minor_version != pass_vs_version.major_minor_version))
-					{
-						ErrorReporting::Write("Failed to load shader:");
-						ErrorReporting::Write(m_members.source_data->DataSourceID());
-						ErrorReporting::WriteLine("Incompatible shader models [VS:%i.%i, PS:%i.%i]", 
-							pass_vs_version.major_version, pass_vs_version.minor_version, pass_ps_version.major_version, pass_ps_version.minor_version);
-						return false;
-					}
+				// if either the pixel or vertex shader version is 3.0 or above, then ensure that
+				// they are both of the same version.
+				if((pass_ps_version.version >= D3DPS_VERSION(3,0) || pass_vs_version.version >= D3DPS_VERSION(3,0))
+					&& (pass_ps_version.major_minor_version != pass_vs_version.major_minor_version))
+				{
+					ErrorReporting::Write("Failed to load shader:");
+					ErrorReporting::Write(m_members.source_data->DataSourceID());
+					ErrorReporting::WriteLine("Incompatible shader models [VS:%i.%i, PS:%i.%i]", 
+						pass_vs_version.major_version, pass_vs_version.minor_version, pass_ps_version.major_version, pass_ps_version.minor_version);
+					return false;
 				}
 			}
 			return true;

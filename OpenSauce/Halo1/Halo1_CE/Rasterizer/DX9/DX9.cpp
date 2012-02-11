@@ -53,6 +53,7 @@ namespace Yelo
 
 		D3DPRESENT_PARAMETERS*	D3DPresetParams()		PTR_IMP_GET2(Params);
 		IDirect3D9*				Direct3D9()				{ return d3d; }
+		D3DCAPS9*				D3DCaps()				PTR_IMP_GET2(Caps);
 		IDirect3DDevice9*		Direct3DDevice()		{ return global_d3d_device; }
 		IDirectInput8*			DirectInput8()			DPTR_IMP_GET(DInput8);
 		IDirectInputDevice8*	InputDeviceKeyboard()	DPTR_IMP_GET(DInput8DeviceKeyboard);

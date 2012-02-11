@@ -42,13 +42,14 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_SHADEREXTENSION
 #include "Memory/_EngineLayout.inl"
 
-			enum ps_2_x_support{
-				_ps_2_x_support_none,
-				_ps_2_x_support_2_0,
-				_ps_2_x_support_2_a,
-				_ps_2_x_support_2_b,
+			enum ps_support{
+				_ps_support_legacy,
+				_ps_support_2_0,
+				_ps_support_2_a,
+				_ps_support_2_b,
+				_ps_support_3_0,
 
-				_ps_2_x_support
+				_ps_support
 			};
 
 			typedef char t_shader_usage_id[128];
@@ -66,9 +67,10 @@ namespace Yelo
 			};
 
 			static bool							g_shader_files_present = false;
-			static ps_2_x_support				g_ps_support = _ps_2_x_support_none;
+			static ps_support					g_ps_support = _ps_support_legacy;
 			static bool							g_extensions_enabled = true;
 			static bool							g_extensions_enabled_user_override = true;
+			static DWORD						g_ps_version_iterator_start = 0xFFFF0101;
 
 			void		SetTexture(IDirect3DDevice9* pDevice, uint16 sampler, datum_index bitmap_tag_index);
 
@@ -107,29 +109,45 @@ namespace Yelo
 			int PLATFORM_API BuildEffectCollectionPath(char* string_out, const char* format_string, const int major, const int minor)
 			{
 				const char* format = format_string;
-				if((major == 2) && (minor == 2) && (g_ps_support == _ps_2_x_support_2_a))
-					format = g_ps_collection_format_a;
-				if((major == 2) && (minor == 1) && (g_ps_support == _ps_2_x_support_2_b))
-					format = g_ps_collection_format_b;
+
+				if((major >= 2) && (minor >= 0) && (g_ps_support > _ps_support_2_0))
+				{
+					switch(g_ps_support)
+					{
+					case _ps_support_3_0:
+					case _ps_support_2_a:
+						format = g_ps_collection_format_a;
+						break;
+					case _ps_support_2_b:
+						format = g_ps_collection_format_b;
+						break;
+					default:
+						break;
+					}
+				}
 				return sprintf(string_out, format, major, minor);
 			}
 
 			void		ApplyHooks()
 			{
+				int32 i = 0;
 				// replace the vertex shader collection paths
-				for(int32 i = 0; i < NUMBEROF(K_VSH_COLLECTION_PATH_REFERENCES); i++)
+				for(i = 0; i < NUMBEROF(K_VSH_COLLECTION_PATH_REFERENCES); i++)
 					*K_VSH_COLLECTION_PATH_REFERENCES[i] = g_vs_collection_path;
 
 				// replace the sprintf call to intercept the collection path creation and edit it as necessary
 				Memory::WriteRelativeCall(&BuildEffectCollectionPath, GET_FUNC_VPTR(RASTERIZER_DX9_SHADERS_EFFECT_SHADERS_INITIALIZE__SPRINTF_CALL), true);
 				// Forces the backface normals of a two sided face to be inverted to fix lighting issues on trees
 				Memory::WriteRelativeJmp(&Hook_RenderObject_ForceInvertBackfaceNormals, GET_FUNC_VPTR(RASTERIZER_MODEL_DRAW_INVERT_BACKFACE_NORMALS_CHECK_HOOK), true);
+
+				for(i = 0; i < NUMBEROF(K_PS_VERSION_ITERATOR_START); i++)
+					*K_PS_VERSION_ITERATOR_START[i] = &g_ps_version_iterator_start;
 			}
 
 			HRESULT		SetVertexShaderConstantF(uint32 render_stage, IDirect3DDevice9* pDevice, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount)
 			{
 				HRESULT hr = S_OK;
-				if(g_ps_support > _ps_2_x_support_2_0)
+				if(g_ps_support > _ps_support_2_0)
 				{
 					switch(render_stage)
 					{
@@ -190,34 +208,44 @@ namespace Yelo
 				// no need to have the minor version as an int as we only need to compare it with a or b when major version is 2
 				switch(profile_major)
 				{
+				case 3:
+					g_ps_support = _ps_support_3_0;
+					break;
 				case 2:
 					{
 						if(profile_minor_char == 'a')
-							g_ps_support = _ps_2_x_support_2_a;
+							g_ps_support = _ps_support_2_a;
 						else if(profile_minor_char == 'b')
-							g_ps_support = _ps_2_x_support_2_b;
+							g_ps_support = _ps_support_2_b;
 						else
-							g_ps_support = _ps_2_x_support_2_0;
+							g_ps_support = _ps_support_2_0;
 						break;
 					}
 				default:
-					{
-						// if the major version is less than 2 disable the shader extension
-						if(profile_major < 2)
-						{
-							g_ps_support = _ps_2_x_support_none;
-							return;
-						}
-						// if the pixel shader major version is more than 2 use ps_2_a as that has more features
-						g_ps_support = _ps_2_x_support_2_a;
-						break;
-					}
+					g_ps_support = _ps_support_legacy;
+					break;
 				}
 
 				// if the required shader version is supported, put the hooks in place to
 				// add normal goodness
-				if(g_ps_support > _ps_2_x_support_2_0)
+				if(g_ps_support > _ps_support_2_0)
 				{
+					// modify the pixel shader version used for finding the correct shader collection and shaders
+					// the *ShaderVersion value in D3DCAPS does include 2.a and 2.b, instead it just shows 2.0
+
+					// since this value is used to iterate through the shaders when loading, it would start at ps_2_0 and miss
+					// the custom shaders at ps_2_1/ps_2_2 and Halo would close because the new shaders are expected, but not loaded
+
+					// this does not affect shader model 3.0 cards as the iteration starts at ps_3_0 and works down.
+
+					D3DCAPS9* device_caps = DX9::D3DCaps();
+					if(g_ps_support == _ps_support_2_a)
+						g_ps_version_iterator_start = 0xFFFF0202;
+					else if(g_ps_support == _ps_support_2_b)
+						g_ps_version_iterator_start = 0xFFFF0201;
+					else
+						g_ps_version_iterator_start = device_caps->PixelShaderVersion;
+					
 					g_extensions_enabled = true;
 					ApplyHooks();
 					Model::ApplyHooks();
