@@ -88,6 +88,7 @@
             this.Name = "Settings";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Unable To Find XBox";
+            this.TopMost = true;
             this.ResumeLayout(false);
             this.PerformLayout();
 

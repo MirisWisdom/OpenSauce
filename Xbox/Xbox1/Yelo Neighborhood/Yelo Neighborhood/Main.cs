@@ -11,7 +11,7 @@ namespace Yelo_Neighborhood
 {
     public partial class Main : Form
     {
-        public int Version { get { return 8; } }
+        public int Version { get { return 9; } }
 
         public enum Images
         {
@@ -555,5 +555,17 @@ namespace Yelo_Neighborhood
             else
                 LoadFileScripts(Path.GetExtension(listFiles.SelectedItems[0].Text));
         }
+
+        private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        { new SystemProperties().ShowDialog(); }
+
+        private void syncTimeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are You Sure You Want To Synchronize The XBox System Time With The Computer's Current Time?", "Confirm Synchronization", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                Program.XBox.SynchronizeTime();
+        }
+
+        private void lEDStateToolStripMenuItem_Click(object sender, EventArgs e)
+        { Program.LEDStateChanger.ShowDialog(); }
     };
 }

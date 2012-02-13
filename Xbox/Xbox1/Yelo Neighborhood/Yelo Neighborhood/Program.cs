@@ -5,6 +5,7 @@ using YeloDebug;
 using System.Threading;
 using System.Xml;
 using System.IO;
+using YeloDebug.Exceptions;
 
 namespace Yelo_Neighborhood
 {
@@ -19,6 +20,9 @@ namespace Yelo_Neighborhood
         public static XBoxLocator XBoxLocator { get { return _xboxLocator; } }
         static XBoxLocator _xboxLocator;
 
+        public static LEDStateChanger LEDStateChanger { get { return _LEDStateChanger; } }
+        static LEDStateChanger _LEDStateChanger;
+
         public static List<Executable> Executables { get { return _executables; } }
         static List<Executable> _executables = new List<Executable>();
 
@@ -31,9 +35,10 @@ namespace Yelo_Neighborhood
             Control.CheckForIllegalCrossThreadCalls = false;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
+            
             _xboxLocator = new XBoxLocator();
             _screenshotTool = new ScreenshotTool();
+            _LEDStateChanger = new LEDStateChanger();
 
             LoadExecutables();
 
@@ -85,22 +90,20 @@ namespace Yelo_Neighborhood
         static void Connect(object xbox)
         {
             try
-            {
-                _xbox.Connect((string)xbox);
-                _xboxLocator.Hide();
-            }
-            catch
+            { _xbox.Connect((string)xbox); }
+            catch (Exception e)
+            { MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation); }
+            finally
             { _xboxLocator.Hide(); }
         }
 
         static void Connect()
         {
             try
-            {
-                _xbox.Connect();
-                _xboxLocator.Hide();
-            }
-            catch
+            { _xbox.Connect(); }
+            catch (Exception e)
+            { MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation); }
+            finally
             { _xboxLocator.Hide(); }
         }
 

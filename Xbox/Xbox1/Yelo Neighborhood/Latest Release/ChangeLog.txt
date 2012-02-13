@@ -1,4 +1,11 @@
 v8
+Added Error Messages For When Connecting
+Added System Properties Viewer/Editor
+Allows Setting Fan Speed
+Added LED State Changer
+Added Time Syncronisation Option
+
+v8
 Fixed Screenshot Saving
 
 v7
