@@ -14,7 +14,6 @@
 #if defined(__cplusplus)
 extern "C" {
 #endif
-	XBOX_LIB_EXPORT boost::uint32_t k_exports_title_id = 0x4D530064; // Halo 2 TitleId
 
 void XBOXAPI ModuleExit()
 {

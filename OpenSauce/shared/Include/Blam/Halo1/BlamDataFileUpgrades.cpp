@@ -137,9 +137,7 @@ namespace Yelo
 
 		bool VerifySetFilesExist(cstring bitmaps, cstring sounds, cstring locale,
 			char details_buffer[MAX_PATH])
-		{
-			int access;
-			
+		{			
 			// The names given to use are raw data-set names that don't include the extension or maps folder path
 			cstring set_files[3] = {
 				bitmaps, sounds, locale

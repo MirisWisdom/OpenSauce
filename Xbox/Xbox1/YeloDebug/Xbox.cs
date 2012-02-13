@@ -1,20 +1,7 @@
 /*
-    OpenSauceBox: SDK for Xbox User Modding
+	OpenSauceBox: SDK for Xbox User Modding
 
-    Copyright (C)  Kornner Studios (http://kornner.com)
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	See license\Xbox\Xbox for specific license information
 */
 using System;
 using System.IO;
@@ -56,8 +43,8 @@ using System.Xml;
 // 0xFEF00000   NIC address space
 // 0xFF000000   Flash address space
 
-// dont assume xbdm is loaded at base 0xB0000000, xmt's is at 0xB0011000
-// YeloDebug not compatable with Complex_4627Debug.bin bios
+// don't assume xbdm is loaded at base 0xB0000000, xmt's is at 0xB0011000
+// YeloDebug not compatible with Complex_4627Debug.bin bios
 // it loads xbdm at 0xB0011000 instead of 0xB0000000 and my xbdm hacks use static addressing (might fix later on)
 
 // todo: for remote execution, have a way to specify type of return value...
@@ -79,7 +66,7 @@ namespace YeloDebug
         public XboxGamepad Gamepad;
 
         // since this spends most of its time sleeping waiting for responses from the xbox...
-        // for people who dont like cpu usage looking like 100% utilization, even though the app
+        // for people who don't like cpu usage looking like 100% utilization, even though the app
         // will readily relinquish its time slice for others if asked to do so...
         public int SleepTime = 0;   // zero to be efficient, 1 to make it look like its not using up cpu
 
@@ -376,7 +363,7 @@ namespace YeloDebug
 		/// <summary>
 		/// Gets or sets the xbox system time.
 		/// </summary>
-		public unsafe DateTime SystemTime
+		public /*unsafe*/ DateTime SystemTime
 		{
 			get
 			{
@@ -394,8 +381,8 @@ namespace YeloDebug
             set
             {
                 long fileTime = value.ToFileTimeUtc();
-                int lo = *(int*)&fileTime;
-                int hi = *((int*)&fileTime + 1);
+				int lo = (int)(fileTime & 0xFFFFFFFF); // *(int*)&fileTime;
+				int hi = (int)(((ulong)fileTime & 0xFFFFFFFF00000000UL) >> 32);// *((int*)&fileTime + 1);
 
                 StatusResponse response = SendCommand(string.Format("setsystime clockhi=0x{0} clocklo=0x{1} tz=1", Convert.ToString(hi, 16), Convert.ToString(lo, 16)));
                 if (response.Type != ResponseType.SingleResponse)
@@ -1516,7 +1503,7 @@ namespace YeloDebug
         /// Receives binary data of specified size sent from the xbox.
         /// </summary>
         /// <param name="data"></param>
-        public void ReceiveBinaryData(ref byte[] data)
+        public void ReceiveBinaryData(byte[] data)
         {
             Wait(data.Length);
             connection.Client.Receive(data, data.Length, SocketFlags.None);
@@ -1526,7 +1513,7 @@ namespace YeloDebug
         /// Receives binary data of specified size sent from the xbox.
         /// </summary>
         /// <param name="data"></param>
-        public void ReceiveBinaryData(ref byte[] data, int offset, int size)
+        public void ReceiveBinaryData(byte[] data, int offset, int size)
         {
             Wait(size);
             connection.Client.Receive(data, offset, size, SocketFlags.None);
@@ -1575,7 +1562,7 @@ namespace YeloDebug
 			DateTime memWriteStart = DateTime.Now;
             for (int i = 0; i < 400; i++)
             {
-                MemoryStream.Write(TestBuffer, (int)membuf.Length, ref membuf, 0);
+                MemoryStream.Write(TestBuffer, (int)membuf.Length, membuf, 0);
             }
 			TimeSpan memWriteElapse = DateTime.Now - memWriteStart;
 			string memWriteSpeed = (((float)400 * (float)memBufferSize * toMegs) / (float)memWriteElapse.TotalSeconds).ToString();

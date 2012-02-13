@@ -56,69 +56,7 @@ extern struct _XBOX_STD_VTABLE XboxStd;				// !!! DEFINE IN YOUR DXT !!!
 
 
 typedef struct _XBOX_API_VTABLE {
-// ******************************************************************
-// * Directory I\O
-// ******************************************************************
-	_CreateDirectoryA CreateDirectory;
-	_RemoveDirectoryA RemoveDirectory;
-
-// ******************************************************************
-// * File I\O
-// ******************************************************************
-	_GetFileSize GetFileSize;
-	_GetFileSizeEx GetFileSizeEx;
-	_WriteFile WriteFile;
-	_ReadFile ReadFile;
-	_FlushFileBuffers FlushFileBuffers;
-	_SetEndOfFile SetEndOfFile;
-	_SetFilePointer SetFilePointer;
-	_SetFilePointerEx SetFilePointerEx;
-	_GetFileTime GetFileTime;
-	_CreateFileA CreateFile;
-	_DeleteFileA DeleteFile;
-	_FindFirstFileA FindFirstFile;
-	_FindNextFileA FindNextFile;
-
-// ******************************************************************
-// * Misc
-// ******************************************************************
-	_GetSystemTimeAsFileTime GetSystemTimeAsFileTime;
-	_CloseHandle CloseHandle;
-	_GetLastError GetLastError;
-	_MultiByteToWideChar MultiByteToWideChar;
-	_WideCharToMultiByte WideCharToMultiByte;
-
-// ******************************************************************
-// * Networking
-// ******************************************************************
-	_XNetGetTitleXnAddr XNetGetTitleXnAddr;
-
-// ******************************************************************
-// * Threading
-// ******************************************************************
-	_CreateThread CreateThread;
-	_GetCurrentThreadId GetCurrentThreadId;
-	_CreateEventA CreateEvent;
-	_CreateSemaphoreA CreateSemaphore;
-
-// ******************************************************************
-// * Signature
-// ******************************************************************
-	_XCalculateSignatureBegin XCalculateSignatureBegin;
-	_XCalculateSignatureBeginEx XCalculateSignatureBeginEx;
-	_XCalculateSignatureEnd XCalculateSignatureEnd;
-	_XCalculateSignatureGetSize XCalculateSignatureGetSize;
-	_XCalculateSignatureUpdate XCalculateSignatureUpdate;
-
-// ******************************************************************
-// * Virtual Memory
-// ******************************************************************
-	_VirtualAlloc VirtualAlloc;
-	_VirtualFree VirtualFree;
-	_VirtualProtect VirtualProtect;
-
-	_XMemAlloc XMemAlloc;
-	_XMemFree XMemFree;
+	#include "XboxVTable.Api.inl"
 }XBOX_API_VTABLE;
 extern const XBOX_API_VTABLE* gXBOX_API_VTABLE;
 
@@ -157,80 +95,7 @@ bool XboxApiContainsNullFunctions();
 //??2@YAPAXI@Z "new"
 
 typedef struct _XBOX_STD_VTABLE {
-// ******************************************************************
-// * File I\O
-// ******************************************************************
-	__fsopen fsopen;
-	_fclose fclose;
-	_fflush fflush;
-	_fopen fopen;
-	_fgets fgets;
-	_fseek fseek;
-	_ftell ftell;
-
-// ******************************************************************
-// * Math
-// ******************************************************************
-	_srand srand;
-	_rand rand;
-
-// ******************************************************************
-// * Memory
-// ******************************************************************
-	_malloc malloc;
-
-// ******************************************************************
-// * Networking
-// ******************************************************************
-	_socket socket;
-	_closesocket closesocket;
-	_shutdown shutdown;
-	_ioctlsocket ioctlsocket;
-	_setsockopt setsockopt;
-	_getsockopt getsockopt;
-	_bind bind;
-	_connect connect;
-	_select select;
-	_recv recv;
-	_recvfrom recvfrom;
-	_send send;
-	_sendto sendto;
-	_inet_addr inet_addr;
-	_htons htons;
-	_ntohl ntohl;
-
-// ******************************************************************
-// * Strings
-// ******************************************************************
-	_strlen strlen;
-	__snprintf snprintf;
-	_strncpy strncpy;
-	__strnicmp strnicmp;
-	__stricmp stricmp;
-	__snwprintf snwprintf;
-	_sprintf sprintf;
-	_wcsncpy wcsncpy;
-	_wcscat wcscat;
-	_wcscpy wcscpy;
-	_wcslen wcslen;
-	_memcpy memcpy;
-	_atexit atexit;
-	_strncmp strncmp;
-	_qsort qsort;
-	_atol atol;
-	__atoi64 atoi64;
-	_strstr strstr;
-	_wcschr wcschr;
-	_wcsncmp wcsncmp;
-	_wcsstr wcsstr;
-	__wcsnicmp wcsnicmp;
-	_strrchr strrchr;
-	_wcsncat wcsncat;
-	_vsprintf vsprintf;
-
-	// Determines if any of this object's function pointers are NULL
-	bool ContainsAnyNullFunctions() const;
-
+	#include "XboxVTable.Std.inl"
 }XBOX_STD_VTABLE;
 extern const XBOX_STD_VTABLE* gXBOX_STD_VTABLE;
 

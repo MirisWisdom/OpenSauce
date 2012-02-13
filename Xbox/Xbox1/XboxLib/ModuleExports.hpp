@@ -14,6 +14,14 @@
 #pragma section(K_XBOX_LIB_EXPORT_SECTION, read,discard)
 
 // Declaration prefix for storing code elements in our module export section
+// but without actually exporting them
+#define XBOX_LIB_EXPORT_HIDDEN							\
+	__declspec( allocate(K_XBOX_LIB_EXPORT_SECTION) )	\
+	static
+
+// Declaration prefix for storing code elements in our module export section
 #define XBOX_LIB_EXPORT									\
 	__declspec( allocate(K_XBOX_LIB_EXPORT_SECTION) )	\
 	__declspec( dllexport )
+
+extern DWORD				k_module_title_id; // !!! DEFINE IN YOUR DXT !!!

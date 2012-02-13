@@ -1,20 +1,7 @@
 ﻿/*
-    OpenSauceBox: SDK for Xbox User Modding
+	OpenSauceBox: SDK for Xbox User Modding
 
-    Copyright (C)  Kornner Studios (http://kornner.com)
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	See license\Xbox\Xbox for specific license information
 */
 using System;
 using System.IO;
@@ -112,7 +99,7 @@ namespace YeloDebug
             Xbox.SetFileSize(FileName, (int)value);
         }
 
-        public void Read(string name, int offset, ref byte[] buffer, int length, ref int read)
+        public void Read(string name, int offset, byte[] buffer, int length, ref int read)
         {
             int iterations = length / bufferSize;
             int remainder = length % bufferSize;
@@ -166,12 +153,12 @@ namespace YeloDebug
         public override int Read(byte[] buffer, int offset, int count)
         {
             int bytesRead = 0;
-            Read(FileName, offset, ref buffer, count, ref bytesRead);
+            Read(FileName, offset, buffer, count, ref bytesRead);
             return bytesRead;
         }
 
 
-        public void Write(string name, int offset, ref byte[] buffer, int length)
+        public void Write(string name, int offset, byte[] buffer, int length)
         {
             int iterations = length / bufferSize;
             int remainder = length % bufferSize;
@@ -218,7 +205,7 @@ namespace YeloDebug
 
         public override void Write(byte[] buffer, int offset, int count)
         {
-            Write(FileName, offset, ref buffer, count);
+            Write(FileName, offset, buffer, count);
         }
         #endregion
     };

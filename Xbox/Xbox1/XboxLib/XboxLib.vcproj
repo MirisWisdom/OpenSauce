@@ -18,8 +18,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)..\lib\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\obj\$(ProjectName)\$(ConfigurationName)"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseLib.Cpp.vsprops"
 			ConfigurationType="4"
 			CharacterSet="1"
 			>
@@ -40,31 +39,20 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				UseUnicodeResponseFiles="false"
 				Optimization="3"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="2"
 				OmitFramePointers="true"
 				WholeProgramOptimization="false"
-				AdditionalIncludeDirectories="..\$(ProjectName);$(SolutionDir)..\shared\include_cpp"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				StringPooling="true"
 				MinimalRebuild="true"
-				ExceptionHandling="0"
 				BasicRuntimeChecks="0"
 				RuntimeLibrary="0"
-				StructMemberAlignment="1"
 				BufferSecurityCheck="false"
 				EnableEnhancedInstructionSet="2"
-				DefaultCharIsUnsigned="true"
-				RuntimeTypeInfo="false"
-				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="XboxLib.hpp"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
-				CallingConvention="2"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -77,8 +65,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				UseUnicodeResponseFiles="false"
-				LinkLibraryDependencies="false"
 				OutputFile="$(SolutionDir)..\lib\$(ConfigurationName)\$(ProjectName).lib"
 			/>
 			<Tool
@@ -99,8 +85,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)..\lib\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\obj\$(ProjectName)\$(ConfigurationName)"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseLib.Cpp.vsprops"
 			ConfigurationType="4"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
@@ -122,28 +107,16 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				UseUnicodeResponseFiles="false"
 				Optimization="3"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="2"
 				OmitFramePointers="true"
-				AdditionalIncludeDirectories="..\$(ProjectName);$(SolutionDir)..\shared\include_cpp"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB"
-				StringPooling="true"
-				ExceptionHandling="0"
 				RuntimeLibrary="0"
-				StructMemberAlignment="1"
 				BufferSecurityCheck="false"
 				EnableEnhancedInstructionSet="2"
-				DefaultCharIsUnsigned="true"
-				RuntimeTypeInfo="false"
-				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="XboxLib.hpp"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
-				CallingConvention="2"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -156,7 +129,6 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				UseUnicodeResponseFiles="false"
 				OutputFile="$(SolutionDir)..\lib\$(ConfigurationName)\$(ProjectName).lib"
 			/>
 			<Tool
@@ -453,6 +425,14 @@
 		</File>
 		<File
 			RelativePath=".\XboxTypes.hpp"
+			>
+		</File>
+		<File
+			RelativePath=".\XboxVTable.Api.inl"
+			>
+		</File>
+		<File
+			RelativePath=".\XboxVTable.Std.inl"
 			>
 		</File>
 	</Files>

@@ -16,7 +16,7 @@ namespace Yelo
 		enum message_deltas_new
 		{
 #ifndef YELO_NO_NETWORK
-	#if 0
+	#if FALSE
 			_message_delta_yelo_version = k_message_deltas_count,	// TODO hook replicate_current_state_to_new_player
 			_message_delta_yelo_game_state_update,					// TODO hook replicate_current_state_to_new_player
 
@@ -38,7 +38,11 @@ namespace Yelo
 		#endif
 	#endif
 
+	#if FALSE
 			k_message_deltas_new_count,
+	#else
+			k_message_deltas_new_count = k_message_deltas_count,
+	#endif
 #else
 			k_message_deltas_new_count = k_message_deltas_count,
 #endif
@@ -78,7 +82,7 @@ namespace Yelo
 		extern const packet_decoder kYeloMessageDeltaDecoders[];
 #endif
 
-#ifndef YELO_NO_NETWORK
+#if !defined(YELO_NO_NETWORK) && FALSE
 		void* TestToNetwork();
 #endif
 	};

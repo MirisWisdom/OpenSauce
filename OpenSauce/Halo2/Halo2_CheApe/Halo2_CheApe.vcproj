@@ -18,8 +18,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)..\bin\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\obj\$(ProjectName)\$(ConfigurationName)"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -40,23 +39,13 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				UseUnicodeResponseFiles="false"
-				Optimization="0"
-				AdditionalIncludeDirectories="..\$(ProjectName);$(SolutionDir)shared\Include;$(SolutionDir)..\shared\include_cpp"
+				AdditionalIncludeDirectories="$(SolutionDir)shared\Include;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;HALO2_CHEAPE_EXPORTS"
+				ExceptionHandling="1"
 				StringPooling="true"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				StructMemberAlignment="1"
-				DefaultCharIsUnsigned="true"
-				RuntimeTypeInfo="false"
-				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="4"
-				CallingConvention="2"
 				DisableSpecificWarnings="4311;4312"
 			/>
 			<Tool
@@ -70,15 +59,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				UseUnicodeResponseFiles="false"
-				LinkIncremental="2"
-				GenerateDebugInformation="true"
-				GenerateMapFile="true"
-				MapFileName="$(OutDir)\$(ProjectName).map"
-				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -104,8 +84,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)..\bin\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\obj\$(ProjectName)\$(ConfigurationName)"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -127,21 +106,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				UseUnicodeResponseFiles="false"
-				AdditionalIncludeDirectories="..\$(ProjectName);$(SolutionDir)shared\Include;$(SolutionDir)..\shared\include_cpp"
+				AdditionalIncludeDirectories="$(SolutionDir)shared\Include;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;HALO2_CHEAPE_EXPORTS"
-				StringPooling="true"
-				ExceptionHandling="0"
-				RuntimeLibrary="2"
-				StructMemberAlignment="1"
-				DefaultCharIsUnsigned="true"
-				RuntimeTypeInfo="false"
-				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
-				CallingConvention="2"
 				DisableSpecificWarnings="4311;4312"
 			/>
 			<Tool
@@ -155,17 +122,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				UseUnicodeResponseFiles="false"
-				LinkIncremental="1"
-				GenerateDebugInformation="true"
-				GenerateMapFile="true"
-				MapFileName="$(OutDir)\$(ProjectName).map"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -191,8 +147,7 @@
 		</Configuration>
 		<Configuration
 			Name="DebugTool|Win32"
-			OutputDirectory="$(SolutionDir)..\bin\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\obj\$(ProjectName)\$(ConfigurationName)"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -213,23 +168,13 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				UseUnicodeResponseFiles="false"
-				Optimization="0"
-				AdditionalIncludeDirectories="..\$(ProjectName);$(SolutionDir)shared\Include;$(SolutionDir)..\shared\include_cpp"
+				AdditionalIncludeDirectories="$(SolutionDir)shared\Include;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;HALO2_CHEAPE_EXPORTS;PLATFORM_TYPE_TOOL"
+				ExceptionHandling="1"
 				StringPooling="true"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				StructMemberAlignment="1"
-				DefaultCharIsUnsigned="true"
-				RuntimeTypeInfo="false"
-				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="4"
-				CallingConvention="2"
 				DisableSpecificWarnings="4311;4312"
 			/>
 			<Tool
@@ -243,16 +188,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				UseUnicodeResponseFiles="false"
 				OutputFile="$(OutDir)\H2CheApeDLLT.dll"
-				LinkIncremental="2"
-				GenerateDebugInformation="true"
-				GenerateMapFile="true"
-				MapFileName="$(OutDir)\$(ProjectName).map"
-				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -278,8 +214,7 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseTool|Win32"
-			OutputDirectory="$(SolutionDir)..\bin\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\obj\$(ProjectName)\$(ConfigurationName)"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -301,21 +236,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				UseUnicodeResponseFiles="false"
-				AdditionalIncludeDirectories="..\$(ProjectName);$(SolutionDir)shared\Include;$(SolutionDir)..\shared\include_cpp"
+				AdditionalIncludeDirectories="$(SolutionDir)shared\Include;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;HALO2_CHEAPE_EXPORTS;PLATFORM_TYPE_TOOL"
-				StringPooling="true"
-				ExceptionHandling="0"
-				RuntimeLibrary="2"
-				StructMemberAlignment="1"
-				DefaultCharIsUnsigned="true"
-				RuntimeTypeInfo="false"
-				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
-				CallingConvention="2"
 				DisableSpecificWarnings="4311;4312"
 			/>
 			<Tool
@@ -329,18 +252,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				UseUnicodeResponseFiles="false"
 				OutputFile="$(OutDir)\H2CheApeDLLT.dll"
-				LinkIncremental="1"
-				GenerateDebugInformation="true"
-				GenerateMapFile="true"
-				MapFileName="$(OutDir)\$(ProjectName).map"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -366,8 +278,7 @@
 		</Configuration>
 		<Configuration
 			Name="DebugGuerilla|Win32"
-			OutputDirectory="$(SolutionDir)..\bin\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\obj\$(ProjectName)\$(ConfigurationName)"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -388,23 +299,13 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				UseUnicodeResponseFiles="false"
-				Optimization="0"
-				AdditionalIncludeDirectories="..\$(ProjectName);$(SolutionDir)shared\Include;$(SolutionDir)..\shared\include_cpp"
+				AdditionalIncludeDirectories="$(SolutionDir)shared\Include;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;HALO2_CHEAPE_EXPORTS;PLATFORM_TYPE_GUERILLA"
+				ExceptionHandling="1"
 				StringPooling="true"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				StructMemberAlignment="1"
-				DefaultCharIsUnsigned="true"
-				RuntimeTypeInfo="false"
-				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="4"
-				CallingConvention="2"
 				DisableSpecificWarnings="4311;4312"
 			/>
 			<Tool
@@ -418,16 +319,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				UseUnicodeResponseFiles="false"
 				OutputFile="$(OutDir)\H2CheApeDLLG.dll"
-				LinkIncremental="2"
-				GenerateDebugInformation="true"
-				GenerateMapFile="true"
-				MapFileName="$(OutDir)\$(ProjectName).map"
-				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -453,8 +345,7 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseGuerilla|Win32"
-			OutputDirectory="$(SolutionDir)..\bin\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\obj\$(ProjectName)\$(ConfigurationName)"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -476,21 +367,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				UseUnicodeResponseFiles="false"
-				AdditionalIncludeDirectories="..\$(ProjectName);$(SolutionDir)shared\Include;$(SolutionDir)..\shared\include_cpp"
+				AdditionalIncludeDirectories="$(SolutionDir)shared\Include;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;HALO2_CHEAPE_EXPORTS;PLATFORM_TYPE_GUERILLA"
-				StringPooling="true"
-				ExceptionHandling="0"
-				RuntimeLibrary="2"
-				StructMemberAlignment="1"
-				DefaultCharIsUnsigned="true"
-				RuntimeTypeInfo="false"
-				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
-				CallingConvention="2"
 				DisableSpecificWarnings="4311;4312"
 			/>
 			<Tool
@@ -504,18 +383,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				UseUnicodeResponseFiles="false"
 				OutputFile="$(OutDir)\H2CheApeDLLG.dll"
-				LinkIncremental="1"
-				GenerateDebugInformation="true"
-				GenerateMapFile="true"
-				MapFileName="$(OutDir)\$(ProjectName).map"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -541,8 +409,7 @@
 		</Configuration>
 		<Configuration
 			Name="DebugSapien|Win32"
-			OutputDirectory="$(SolutionDir)..\bin\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\obj\$(ProjectName)\$(ConfigurationName)"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -563,23 +430,13 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				UseUnicodeResponseFiles="false"
-				Optimization="0"
-				AdditionalIncludeDirectories="..\$(ProjectName);$(SolutionDir)shared\Include;$(SolutionDir)..\shared\include_cpp"
+				AdditionalIncludeDirectories="$(SolutionDir)shared\Include;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;HALO2_CHEAPE_EXPORTS;PLATFORM_TYPE_SAPIEN"
+				ExceptionHandling="1"
 				StringPooling="true"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				StructMemberAlignment="1"
-				DefaultCharIsUnsigned="true"
-				RuntimeTypeInfo="false"
-				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="4"
-				CallingConvention="2"
 				DisableSpecificWarnings="4311;4312"
 			/>
 			<Tool
@@ -593,16 +450,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				UseUnicodeResponseFiles="false"
 				OutputFile="$(OutDir)\H2CheApeDLLS.dll"
-				LinkIncremental="2"
-				GenerateDebugInformation="true"
-				GenerateMapFile="true"
-				MapFileName="$(OutDir)\$(ProjectName).map"
-				SubSystem="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -628,8 +476,7 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseSapien|Win32"
-			OutputDirectory="$(SolutionDir)..\bin\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\obj\$(ProjectName)\$(ConfigurationName)"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -651,21 +498,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				UseUnicodeResponseFiles="false"
-				AdditionalIncludeDirectories="..\$(ProjectName);$(SolutionDir)shared\Include;$(SolutionDir)..\shared\include_cpp"
+				AdditionalIncludeDirectories="$(SolutionDir)shared\Include;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;HALO2_CHEAPE_EXPORTS;PLATFORM_TYPE_SAPIEN"
-				StringPooling="true"
-				ExceptionHandling="0"
-				RuntimeLibrary="2"
-				StructMemberAlignment="1"
-				DefaultCharIsUnsigned="true"
-				RuntimeTypeInfo="false"
-				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
-				CallingConvention="2"
 				DisableSpecificWarnings="4311;4312"
 			/>
 			<Tool
@@ -679,18 +514,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				UseUnicodeResponseFiles="false"
 				OutputFile="$(OutDir)\H2CheApeDLLS.dll"
-				LinkIncremental="1"
-				GenerateDebugInformation="true"
-				GenerateMapFile="true"
-				MapFileName="$(OutDir)\$(ProjectName).map"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"

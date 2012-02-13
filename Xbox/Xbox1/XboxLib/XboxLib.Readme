@@ -17,6 +17,8 @@ a symbol to be defined in your module):
 		- ModuleMain (function)
 		- XboxApi (object)
 		- XboxStd (object)
+	* Tier2\ModuleExports.hpp
+		- k_module_title_id (data)
 	* Tier2\XboxInterface.hpp
 		- XboxLib::DisplayLastError (function)
 
