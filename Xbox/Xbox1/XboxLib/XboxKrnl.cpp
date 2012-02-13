@@ -104,5 +104,6 @@ const void* K_NV_FRAME_BUFFER_ADDRESS = CAST_PTR(void*, 0xFD600800);
 const DWORD K_NV_FRAME_BUFFER_SIZE = 640 * 480 * sizeof(DWORD);
 
 
+#include "XboxApi.hpp" // Exports references some Api definitions
 // We define the exports here in hopes that the symbols will never be removed by the linker 
 #include "ModuleExports.inl"
