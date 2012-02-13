@@ -19,6 +19,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -38,6 +39,12 @@
       <DependentUpon>ExecutableTool.cs</DependentUpon>
     </Compile>
     <Compile Include="Executable\Script.cs" />
+    <Compile Include="LEDStateChanger.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LEDStateChanger.Designer.cs">
+      <DependentUpon>LEDStateChanger.cs</DependentUpon>
+    </Compile>
     <Compile Include="Screenshot Tools\ImageFormatSelector.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -60,6 +67,10 @@
       <DependentUpon>ScriptTool.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="LEDStateChanger.resx">
+      <DependentUpon>LEDStateChanger.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Screenshot Tools\ImageFormatSelector.resx">
       <DependentUpon>ImageFormatSelector.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -79,6 +90,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SystemProperties.resx">
+      <DependentUpon>SystemProperties.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="XBoxLocator.resx">
@@ -110,6 +125,12 @@
     </Compile>
     <Compile Include="Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SystemProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemProperties.Designer.cs">
+      <DependentUpon>SystemProperties.cs</DependentUpon>
     </Compile>
     <Compile Include="XBoxLocator.cs">
       <SubType>Form</SubType>

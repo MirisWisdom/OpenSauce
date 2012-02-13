@@ -14,6 +14,7 @@ using System.Net.NetworkInformation;
 using System.Diagnostics;   // debugger display
 using YeloDebug.Exceptions;
 using System.Xml;
+using System.ComponentModel;
 
 //////////////////////
 // rules /////////////
@@ -77,6 +78,7 @@ namespace YeloDebug
         /// <summary>
         /// Gets the main connection used for pc to xbox communication.
         /// </summary>
+        [Browsable(false)]
         public TcpClient Connection { get { return connection; } }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private TcpClient connection = new TcpClient();
@@ -84,6 +86,7 @@ namespace YeloDebug
         /// <summary>
         /// Gets the xbox kernel information.
         /// </summary>
+        [Browsable(false)]
         public XboxKernel Kernel { get { return kernel; } }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private XboxKernel kernel;
@@ -91,6 +94,7 @@ namespace YeloDebug
         /// <summary>
         /// Gets or sets the maximum waiting time given (in milliseconds) for a response.
         /// </summary>
+        [Browsable(false)]
         public int Timeout { get { return timeout; } set { timeout = value; } }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int timeout = 5000;
@@ -98,7 +102,8 @@ namespace YeloDebug
 		/// <summary>
 		/// Gets the current connection status known to YeloDebug.  For an actual status update you need to Ping() the xbox.
 		/// </summary>
-		public bool Connected	{ get { return connected; } }
+        [Browsable(false)]
+        public bool Connected	{ get { return connected; } }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private bool connected = false;
 
@@ -119,6 +124,7 @@ namespace YeloDebug
         /// <summary>
         /// Gets or sets whether or not the notification session will be enabled.
         /// </summary>
+        [Browsable(false)]
         public bool EnableNotificationSession { get { return notificationSessionEnabled; } set { notificationSessionEnabled = value; } }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private bool notificationSessionEnabled = false;
@@ -126,6 +132,7 @@ namespace YeloDebug
         /// <summary>
         /// Gets the notification listener registered with the xbox that listens for incoming notification session requests.
         /// </summary>
+        [Browsable(false)]
         public TcpListener NotificationListener { get { return notificationListener; } }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private TcpListener notificationListener;
@@ -133,6 +140,8 @@ namespace YeloDebug
         /// <summary>
         /// Gets the current notification session registered with the xbox.
         /// </summary>
+
+        [Browsable(false)]
         public TcpClient NotificationSession { get { return notificationSession; } }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private TcpClient notificationSession;
@@ -140,6 +149,7 @@ namespace YeloDebug
         /// <summary>
         /// Gets or sets the xbox notification port.
         /// </summary>
+        [Browsable(false)]
         public int NotificationPort { get { return notificationPort; } set { notificationPort = value; } }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private int notificationPort = 731;
@@ -147,6 +157,7 @@ namespace YeloDebug
         /// <summary>
         /// Gets or sets the list of notifications.
         /// </summary>
+        [Browsable(false)]
         public List<string> Notifications { get { return notifications; } set { notifications = value; } }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private List<string> notifications = new List<string>();
@@ -161,9 +172,17 @@ namespace YeloDebug
 		/// <summary>
 		/// Gets the xbox process id.
 		/// </summary>
-		public uint ProcessID { get	{ return processID;	} }
+        [Browsable(false)]
+        public uint ProcessID { get	{ return processID;	} }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private uint processID = 0;
+
+        /// <summary>
+        /// Gets xbox executable information.
+        /// </summary>
+        public XbeInfo XbeInfo { get { return xbeInfo; } }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private XbeInfo xbeInfo;
 
         /// <summary>
         /// Gets a list of modules loaded by the xbox.
@@ -173,11 +192,105 @@ namespace YeloDebug
         private List<ModuleInfo> modules;
 
         /// <summary>
-        /// Gets xbox executable information.
+        /// Gets the xbox CPU temperature in degrees celsius.
         /// </summary>
-        public XbeInfo XbeInfo { get { return xbeInfo; } }
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private XbeInfo xbeInfo;
+        public uint CPUTemperature
+        {
+            get
+            {
+                CallAddressEx(Kernel.HalReadSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.CpuTemperature, 0, History.ScratchBuffer);
+                return GetUInt32(History.ScratchBuffer);
+            }
+        }
+
+        /// <summary>
+        /// Gets the xbox air temperature in degrees celsius.
+        /// </summary>
+        public uint AirTemperature
+        {
+            get
+            {
+                CallAddressEx(Kernel.HalReadSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.AirTemperature, 0, History.ScratchBuffer);
+                uint temp = GetUInt32(History.ScratchBuffer);
+                if (version == "Xbox v1.6") temp = (uint)(temp * 0.8f); // v1.6 box shows temp too high
+                return temp;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the xbox fan speed percentage.
+        /// </summary>
+        public int FanSpeed
+        {
+            get
+            {
+                CallAddressEx(Kernel.HalReadSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.ReadFanSpeed, 0, History.ScratchBuffer);
+                int result = GetInt32(History.ScratchBuffer);
+                return (int)(((float)result / 50) * 100);
+            }
+            set
+            {
+                int speed = (int)(value * 0.5f);
+                CallAddressEx(Kernel.HalWriteSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.FanOverride, 0, FanModeSubCommand.Custom);
+                CallAddressEx(Kernel.HalWriteSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.RequestFanSpeed, 0, speed);
+                CallAddressEx(Kernel.HalWriteSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.FanOverride, 0, FanModeSubCommand.Custom);
+                CallAddressEx(Kernel.HalWriteSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.RequestFanSpeed, 0, speed);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the xbox system time.
+        /// </summary>
+        public /*unsafe*/ DateTime SystemTime
+        {
+            get
+            {
+                StatusResponse response = SendCommand("systime");
+                if (response.Type == ResponseType.SingleResponse)
+                {
+                    string ticks = string.Format("0x{0}{1}",
+                        response.Message.Substring(7, 7),
+                        response.Message.Substring(21).PadLeft(8, '0')
+                        );
+                    return DateTime.FromFileTime(Convert.ToInt64(ticks, 16));
+                }
+                else throw new ApiException("Failed to get xbox system time.");
+            }
+            set
+            {
+                long fileTime = value.ToFileTimeUtc();
+                int lo = (int)(fileTime & 0xFFFFFFFF); // *(int*)&fileTime;
+                int hi = (int)(((ulong)fileTime & 0xFFFFFFFF00000000UL) >> 32);// *((int*)&fileTime + 1);
+
+                StatusResponse response = SendCommand(string.Format("setsystime clockhi=0x{0} clocklo=0x{1} tz=1", Convert.ToString(hi, 16), Convert.ToString(lo, 16)));
+                if (response.Type != ResponseType.SingleResponse)
+                    throw new ApiException("Failed to set xbox system time.");
+            }
+        }
+
+        /// <summary>
+        /// Gets the amount of time the xbox has been powered on for or the time since its last cold boot.
+        /// </summary>
+        public TimeSpan TimePoweredOn
+        {
+            get
+            {
+                //rdtsc
+                //mov	dword ptr ds:[010004h], eax
+                //mov	dword ptr ds:[010008h], edx
+                //mov	eax, 02DB0000h	;fake success
+                //retn	010h
+                SetMemory(XboxHistory.ScriptBufferAddress, Util.HexStringToBytes("0F31A304000100891508000100B80000DB02C21000"));
+                SendCommand("crashdump");
+
+                uint performaceFrequency;
+                if (processor.Model == 11) performaceFrequency = 1481200000; // DreamX console
+                else if (processor.Model == 8 && processor.Stepping == 6) performaceFrequency = 999985000;   // Intel Pentium III Coppermine
+                else performaceFrequency = 733333333;
+
+                return TimeSpan.FromSeconds(GetUInt64(0x10004) / performaceFrequency);    // performanceFrequency in Hz (counts per second)
+            }
+        }
 
         /// <summary>
         /// Gets the xbox debug monitor version.
@@ -192,6 +305,95 @@ namespace YeloDebug
         public Version KernelVersion { get { return kernelVersion; } }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private Version kernelVersion;
+
+        /// <summary>
+        /// Gets the xbox version.
+        /// </summary>
+        public string Version
+        {
+            get
+            {
+                if (version == null)
+                {
+                    // xbox version info
+                    CallAddressEx(Kernel.HalReadSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.FirmwareVersion, 0, History.ScratchBuffer);
+                    CallAddressEx(Kernel.HalReadSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.FirmwareVersion, 0, History.ScratchBuffer + 1);
+                    CallAddressEx(Kernel.HalReadSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.FirmwareVersion, 0, History.ScratchBuffer + 2);
+                    string code = ASCIIEncoding.ASCII.GetString(GetMemory(History.ScratchBuffer, 3));
+                    switch (code)
+                    {
+                        case "01D":
+                        case "D01":
+                        case "1D0":
+                        case "0D1": version = "Xbox Development Kit"; break;
+                        case "P01": version = "Xbox v1.0"; break;
+                        case "P05": version = "Xbox v1.1"; break;
+                        case "P11":
+                        case "1P1":
+                        case "11P":
+                            if (videoEncoderType == VideoEncoder.Focus) version = "1.4";
+                            else version = "Xbox v1.2/3"; break;
+                        case "P2L": version = "Xbox v1.6"; break;
+                        case "B11":
+                        case "DBG": version = "Xbox Debug Kit"; break;   // green
+
+                        default: version = code + ": Unknown Xbox Version"; break;
+                    }
+                    return version;
+                }
+                else return version;
+            }
+        }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string version;
+
+        /// <summary>
+        /// Gets the xbox processor information.
+        /// </summary>
+        public ProcessorInformation Processor { get { return processor; } }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private ProcessorInformation processor;
+
+        /// <summary>
+        /// Gets the xbox manufacturer production information.
+        /// </summary>
+        public ProductionInfo ProductionInfo { get { return productionInfo; } }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private ProductionInfo productionInfo;
+
+        /// <summary>
+        /// Gets the current AV-Pack status.
+        /// </summary>
+        public AVPack AVPack
+        {
+            get
+            {
+                CallAddressEx(Kernel.HalReadSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.VideoMode, 0, History.ScratchBuffer);
+                return (AVPack)GetByte(History.ScratchBuffer);
+            }
+        }
+
+        public SurfaceInformation DisplayBufferInformation
+        {
+            get
+            {
+                SurfaceInformation si = new SurfaceInformation();
+                StatusResponse response = SendCommand("getsurf id={0}", (int)Surface.FrontBuffer);
+                List<object> info = Util.ExtractResponseInformation(response.Message);
+                si.Size = (uint)info[0];
+                si.Format = (uint)info[1];
+                si.Address = (uint)info[2];
+                si.PushBufferPut = (uint)info[3];
+                return si;
+            }
+        }
+
+        /// <summary>
+        /// Gets the current xbox ethernet link status.
+        /// </summary>
+        public LinkStatus LinkStatus { get { return linkStatus; } }
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private LinkStatus linkStatus;
 
         /// <summary>
         /// Gets the xbox hard drive key.
@@ -257,47 +459,6 @@ namespace YeloDebug
         private string macAddress;
 
         /// <summary>
-        /// Gets the xbox version.
-        /// </summary>
-        public string Version
-        {
-            get
-            {
-                if (version == null)
-                {
-                    // xbox version info
-                    CallAddressEx(Kernel.HalReadSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.FirmwareVersion, 0, History.ScratchBuffer);
-                    CallAddressEx(Kernel.HalReadSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.FirmwareVersion, 0, History.ScratchBuffer + 1);
-                    CallAddressEx(Kernel.HalReadSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.FirmwareVersion, 0, History.ScratchBuffer + 2);
-                    string code = ASCIIEncoding.ASCII.GetString(GetMemory(History.ScratchBuffer, 3));
-                    switch (code)
-                    {
-                        case "01D":
-                        case "D01":
-                        case "1D0":
-                        case "0D1": version = "Xbox Development Kit"; break;
-                        case "P01": version = "Xbox v1.0"; break;
-                        case "P05": version = "Xbox v1.1"; break;
-                        case "P11":
-                        case "1P1":
-                        case "11P":
-                            if (videoEncoderType == VideoEncoder.Focus) version = "1.4";
-                            else version = "Xbox v1.2/3"; break;
-                        case "P2L": version = "Xbox v1.6"; break;
-                        case "B11":
-                        case "DBG": version = "Xbox Debug Kit"; break;   // green
-
-                        default: version = code + ": Unknown Xbox Version"; break;
-                    }
-                    return version;
-                }
-                else return version;
-            }
-        }
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string version;
-
-        /// <summary>
         /// Gets the xbox hardware info.
         /// </summary>
         public string HardwareInfo { get { return hardwareInfo; } }
@@ -312,20 +473,6 @@ namespace YeloDebug
         private VideoEncoder videoEncoderType;
 
         /// <summary>
-        /// Gets the xbox processor information.
-        /// </summary>
-        public ProcessorInformation Processor { get { return processor; } }
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ProcessorInformation processor;
-
-        /// <summary>
-        /// Gets the current xbox ethernet link status.
-        /// </summary>
-        public LinkStatus LinkStatus { get { return linkStatus; } }
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private LinkStatus linkStatus;
-
-        /// <summary>
         /// Gets the xbox EEPROM.
         /// </summary>
         public byte[] EEPROM { get { return eeprom; } }
@@ -335,6 +482,7 @@ namespace YeloDebug
         /// <summary>
         /// Gets or sets the last xbox connection used.
         /// </summary>
+        [Browsable(false)]
         public string LastConnectionUsed
         {
             get { return (string)Microsoft.Win32.Registry.GetValue(xdkRegistryPath, "XboxName", string.Empty); }
@@ -342,83 +490,10 @@ namespace YeloDebug
         }
 
         /// <summary>
-        /// Gets the xbox manufacturer production information.
-        /// </summary>
-        public ProductionInfo ProductionInfo { get { return productionInfo; } }
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private ProductionInfo productionInfo;
-
-        /// <summary>
-        /// Gets the current AV-Pack status.
-        /// </summary>
-        public AVPack AVPack
-        {
-            get
-            {
-                CallAddressEx(Kernel.HalReadSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.VideoMode, 0, History.ScratchBuffer);
-                return (AVPack)GetByte(History.ScratchBuffer);
-            }
-        }
-
-		/// <summary>
-		/// Gets or sets the xbox system time.
-		/// </summary>
-		public /*unsafe*/ DateTime SystemTime
-		{
-			get
-			{
-				StatusResponse response = SendCommand("systime");
-				if (response.Type == ResponseType.SingleResponse)
-				{
-					string ticks = string.Format("0x{0}{1}",
-						response.Message.Substring(7, 7),
-						response.Message.Substring(21).PadLeft(8, '0')
-						);
-					return DateTime.FromFileTime(Convert.ToInt64(ticks, 16));
-				}
-				else throw new ApiException("Failed to get xbox system time.");
-			}
-            set
-            {
-                long fileTime = value.ToFileTimeUtc();
-				int lo = (int)(fileTime & 0xFFFFFFFF); // *(int*)&fileTime;
-				int hi = (int)(((ulong)fileTime & 0xFFFFFFFF00000000UL) >> 32);// *((int*)&fileTime + 1);
-
-                StatusResponse response = SendCommand(string.Format("setsystime clockhi=0x{0} clocklo=0x{1} tz=1", Convert.ToString(hi, 16), Convert.ToString(lo, 16)));
-                if (response.Type != ResponseType.SingleResponse)
-                    throw new ApiException("Failed to set xbox system time.");
-            }
-		}
-
-        /// <summary>
-        /// Gets the amount of time the xbox has been powered on for or the time since its last cold boot.
-        /// </summary>
-        public TimeSpan TimePoweredOn
-        {
-            get
-            {
-                //rdtsc
-                //mov	dword ptr ds:[010004h], eax
-                //mov	dword ptr ds:[010008h], edx
-                //mov	eax, 02DB0000h	;fake success
-                //retn	010h
-                SetMemory(XboxHistory.ScriptBufferAddress, Util.HexStringToBytes("0F31A304000100891508000100B80000DB02C21000"));
-                SendCommand("crashdump");
-
-                uint performaceFrequency;
-                if (processor.Model == 11) performaceFrequency = 1481200000; // DreamX console
-                else if (processor.Model == 8 && processor.Stepping == 6) performaceFrequency = 999985000;   // Intel Pentium III Coppermine
-                else performaceFrequency = 733333333;
-
-                return TimeSpan.FromSeconds(GetUInt64(0x10004) / performaceFrequency);    // performanceFrequency in Hz (counts per second)
-            }
-        }
-
-
-        /// <summary>
         /// Gets a list of xbox threads.
         /// </summary>
-		public List<ThreadInfo> Threads
+        [Browsable(false)]
+        public List<ThreadInfo> Threads
 		{
 			get
 			{
@@ -453,68 +528,6 @@ namespace YeloDebug
                 return threads;
 			}
 		}
-
-        /// <summary>
-        /// Gets the xbox CPU temperature in degrees celsius.
-        /// </summary>
-        public uint CPUTemperature
-        {
-            get
-            {
-                CallAddressEx(Kernel.HalReadSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.CpuTemperature, 0, History.ScratchBuffer);
-                return GetUInt32(History.ScratchBuffer);
-            }
-        }
-
-        /// <summary>
-        /// Gets the xbox air temperature in degrees celsius.
-        /// </summary>
-        public uint AirTemperature
-        {
-            get
-            {
-                CallAddressEx(Kernel.HalReadSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.AirTemperature, 0, History.ScratchBuffer);
-                uint temp = GetUInt32(History.ScratchBuffer);
-                if (version == "Xbox v1.6") temp = (uint)(temp * 0.8f); // v1.6 box shows temp too high
-                return temp;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the xbox fan speed percentage.
-        /// </summary>
-        public int FanSpeed
-        {
-            get
-            {
-                CallAddressEx(Kernel.HalReadSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.ReadFanSpeed, 0, History.ScratchBuffer);
-                int result = GetInt32(History.ScratchBuffer);
-                return (int)(((float)result / 50) * 100);
-            }
-            set
-            {
-                int speed = (int)(value * 0.5f);
-                CallAddressEx(Kernel.HalWriteSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.FanOverride, 0, FanModeSubCommand.Custom);
-                CallAddressEx(Kernel.HalWriteSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.RequestFanSpeed, 0, speed);
-                CallAddressEx(Kernel.HalWriteSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.FanOverride, 0, FanModeSubCommand.Custom);
-                CallAddressEx(Kernel.HalWriteSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.RequestFanSpeed, 0, speed);
-            }
-        }
-
-        public SurfaceInformation DisplayBufferInformation
-        {
-            get
-            {
-                SurfaceInformation si = new SurfaceInformation();
-                StatusResponse response = SendCommand("getsurf id={0}", (int)Surface.FrontBuffer);
-                List<object> info = Util.ExtractResponseInformation(response.Message);
-                si.Size = (uint)info[0];
-                si.Format = (uint)info[1];
-                si.Address = (uint)info[2];
-                si.PushBufferPut = (uint)info[3];
-                return si;
-            }
-        }
 
 		#endregion
 
@@ -848,6 +861,7 @@ namespace YeloDebug
             catch (Exception ex)
             {
                 connected = false;
+                throw ex;
             }
         }
 
@@ -880,9 +894,10 @@ namespace YeloDebug
                     Initialize(debugIP.ToString());
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                connected = false; 
+                connected = false;
+                throw ex;
             }
         }
 

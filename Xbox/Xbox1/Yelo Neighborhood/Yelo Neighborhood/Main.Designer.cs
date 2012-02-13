@@ -49,6 +49,9 @@
             this.menuStrip2 = new System.Windows.Forms.MenuStrip();
             this.xBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.screenshotToolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.systemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.cmdCyclePower = new System.Windows.Forms.ToolStripMenuItem();
             this.cmdReset = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,6 +65,9 @@
             this.launchTitleWorker = new System.ComponentModel.BackgroundWorker();
             this.sendFileWorker = new System.ComponentModel.BackgroundWorker();
             this.deleteFileWorker = new System.ComponentModel.BackgroundWorker();
+            this.syncTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.lEDStateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.mnuFiles.SuspendLayout();
@@ -229,6 +235,8 @@
             // 
             this.xBoxToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.screenshotToolToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.systemToolStripMenuItem,
             this.toolStripSeparator1,
             this.cmdCyclePower,
             this.cmdReset,
@@ -248,6 +256,29 @@
             this.screenshotToolToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.screenshotToolToolStripMenuItem.Text = "Screenshot Tool";
             this.screenshotToolToolStripMenuItem.Click += new System.EventHandler(this.screenshotToolToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(156, 6);
+            // 
+            // systemToolStripMenuItem
+            // 
+            this.systemToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.propertiesToolStripMenuItem,
+            this.toolStripSeparator4,
+            this.syncTimeToolStripMenuItem,
+            this.lEDStateToolStripMenuItem});
+            this.systemToolStripMenuItem.Name = "systemToolStripMenuItem";
+            this.systemToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.systemToolStripMenuItem.Text = "System";
+            // 
+            // propertiesToolStripMenuItem
+            // 
+            this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
+            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.propertiesToolStripMenuItem.Text = "Properties";
+            this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -331,6 +362,25 @@
             this.deleteFileWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.deleteFileWorker_DoWork);
             this.deleteFileWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.Worker_RunWorkerCompleted);
             // 
+            // syncTimeToolStripMenuItem
+            // 
+            this.syncTimeToolStripMenuItem.Name = "syncTimeToolStripMenuItem";
+            this.syncTimeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.syncTimeToolStripMenuItem.Text = "Sync Time";
+            this.syncTimeToolStripMenuItem.Click += new System.EventHandler(this.syncTimeToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(149, 6);
+            // 
+            // lEDStateToolStripMenuItem
+            // 
+            this.lEDStateToolStripMenuItem.Name = "lEDStateToolStripMenuItem";
+            this.lEDStateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.lEDStateToolStripMenuItem.Text = "LED State";
+            this.lEDStateToolStripMenuItem.Click += new System.EventHandler(this.lEDStateToolStripMenuItem_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -390,6 +440,12 @@
         private System.Windows.Forms.ToolStripMenuItem mnuScripts;
         private System.Windows.Forms.ToolStripSeparator sepAddToScriptsMenu;
         private System.Windows.Forms.ToolStripMenuItem cmdAddToScriptsMenu;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripMenuItem systemToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem propertiesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem syncTimeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem lEDStateToolStripMenuItem;
 
     }
 }

@@ -14,6 +14,16 @@ namespace YeloDebug
 		public uint Format;
 		public uint Address;
 		public uint PushBufferPut;
+
+        public override string ToString()
+        {
+            return
+                "{ Size: " + Size +
+                " Format: " + Format +
+                " Address: " + Address +
+                " PushBufferPut: " + PushBufferPut +
+                " }";
+        }
 	};
 
 
@@ -70,6 +80,16 @@ namespace YeloDebug
 		public uint Stepping;
 		public uint Model;
 		public uint Family;
+
+        public override string ToString()
+        {
+            return
+                "{ Identification: " + Identification +
+                " Stepping: " + Stepping +
+                " Model: " + Model +
+                " Family: " + Family +
+                " }";
+        }
 	};
 
 	public struct ProductionInfo
@@ -78,6 +98,16 @@ namespace YeloDebug
 		public uint LineNumber;
 		public uint Week;
 		public uint Year;
+
+        public override string ToString()
+        {
+            return
+                "{ Country: " + Country +
+                " LineNumber: " + LineNumber +
+                " Week: " + Week +
+                " Year: " + Year +
+                " }";
+        }
 	};
 	//public struct ThreadStopInfo
 	//{
@@ -140,6 +170,17 @@ namespace YeloDebug
 		/// Sections contained within the module.
 		/// </summary>
 		public System.Collections.Generic.List<ModuleSection> Sections;
+
+        public override string ToString()
+        {
+            return
+                "{ Name: " + Name +
+                " BaseAddress: " + BaseAddress +
+                " Size: " + Size +
+                " TimeStamp: " + TimeStamp.ToString() +
+                " Checksum: " + Checksum +
+                " }";
+        }
 	};
 
 	/// <summary>
@@ -152,6 +193,17 @@ namespace YeloDebug
 		public uint Size;
 		public uint Index;
 		public uint Flags;
+
+        public override string ToString()
+        {
+            return
+                "{ Name: " + Name +
+                " Base: " + Base +
+                " Size: " + Size +
+                " Index: " + Index +
+                " Flags: " + Flags +
+                " }";
+        }
 	};
 
 	/// <summary>
@@ -163,6 +215,16 @@ namespace YeloDebug
 		public DateTime TimeStamp;
 		public uint Checksum;
 		public uint StackSize;
+
+        public override string ToString()
+        {
+            return
+                "{ LaunchPath: " + LaunchPath +
+                " TimeStamp: " + TimeStamp +
+                " Checksum: " + Checksum +
+                " StackSize: " + StackSize +
+                " }";
+        }
 	};
 
 	/// <summary>
@@ -193,6 +255,23 @@ namespace YeloDebug
 		public uint FileCachePages;
 		public uint ContiguousPages;
 		public uint DebuggerPages;
+
+        public override string ToString()
+        {
+            return
+                "{ TotalPages: " + TotalPages +
+                " AvailablePages: " + AvailablePages +
+                " StackPages: " + StackPages +
+                " VirtualPageTablePages: " + VirtualPageTablePages +
+                " SystemPageTablePages: " + SystemPageTablePages +
+                " PoolPages: " + PoolPages +
+                " VirtualMappedPages: " + VirtualMappedPages +
+                " ImagePages: " + ImagePages +
+                " FileCachePages: " + FileCachePages +
+                " ContiguousPages: " + ContiguousPages +
+                " DebuggerPages: " + DebuggerPages +
+                " }";
+        }
 	};
 
 	/// <summary>

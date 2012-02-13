@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using YeloDebug.Exceptions;
+using System.ComponentModel;
 
 namespace YeloDebug
 {
@@ -36,7 +37,7 @@ namespace YeloDebug
 		/// <summary>
 		/// Gets the xbox memory statistics.
 		/// </summary>
-		public MemoryStatistics MemoryStatistics
+        public MemoryStatistics MemoryStatistics
 		{
 			get
 			{
@@ -69,7 +70,8 @@ namespace YeloDebug
 		/// <summary>
 		/// Gets a list of valid xbox memory segments.
 		/// </summary>
-		public List<MemoryRegion> CommittedMemory
+        [Browsable(false)]
+        public List<MemoryRegion> CommittedMemory
 		{
 			get
 			{
@@ -88,6 +90,7 @@ namespace YeloDebug
 				return mem;
 			}
 		}
+        [Browsable(false)]
 		public List<MemoryRegion> CombinedCommittedMemory
 		{
 			get
@@ -507,7 +510,8 @@ namespace YeloDebug
 		/// <summary>
 		/// Gets or sets whether or not allocation table will be kept in sync with the xbox.
 		/// </summary>
-		public bool AllocationTableSyncing { get { return allocationTableSyncing; } set { allocationTableSyncing = value; } }
+		[Browsable(false)]
+        public bool AllocationTableSyncing { get { return allocationTableSyncing; } set { allocationTableSyncing = value; } }
 		[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 		bool allocationTableSyncing = true;
 
