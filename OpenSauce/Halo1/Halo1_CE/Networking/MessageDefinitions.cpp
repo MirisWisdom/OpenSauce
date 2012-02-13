@@ -39,7 +39,7 @@ namespace Yelo
 			return false;
 		}
 
-#if 0
+#if FALSE
 		//////////////////////////////////////////////////////////////////////////
 		// _message_delta_script_global_update
 		struct MDP_STRUCT_NAME(script_global_update)
@@ -125,7 +125,7 @@ namespace Yelo
 		// TODO: Game will crash when a delta definition is left null (ie, unimplemented).
 
 		message_delta_definition* kYeloMessageDeltas[] = {
-#if 0
+#if FALSE
 			NULL, // _message_delta_yelo_version
 			NULL, // _message_delta_yelo_game_state_update
 
@@ -145,7 +145,7 @@ namespace Yelo
 		};
 
 		const packet_decoder kYeloMessageDeltaDecoders[] = {
-#if 0
+#if FALSE
 			{FLAG(Enums::_message_deltas_new_client_bit), // _message_delta_yelo_version
 				MessageDeltaFromNetworkResultHandler<NullFromNetwork>},
 			{FLAG(Enums::_message_deltas_new_client_bit), // _message_delta_yelo_game_state_update

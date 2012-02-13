@@ -17,8 +17,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Xbox 360"
-			OutputDirectory="$(SolutionDir)..\bin\$(ConfigurationName)\$(PlatformName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\obj\$(ProjectName)\$(ConfigurationName)\$(PlatformName)"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin.Cpp.vsprops"
 			ConfigurationType="1"
 			UseOfMFC="-1"
 			UseOfATL="0"
@@ -41,18 +40,11 @@
 			/>
 			<Tool
 				Name="VCCLX360CompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;&quot;$(SolutionDir)..\shared\include_cpp&quot;"
 				PreprocessorDefinitions="_DEBUG;_XBOX"
 				MinimalRebuild="true"
-				ExceptionHandling="0"
 				RuntimeLibrary="1"
 				BufferSecurityCheck="false"
-				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="Precompile.hpp"
-				WarningLevel="3"
-				DebugInformationFormat="3"
-				CallAttributedProfiling="2"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -66,8 +58,6 @@
 			<Tool
 				Name="VCX360LinkerTool"
 				AdditionalDependencies="xapilibd.lib d3d9d.lib d3dx9d.lib xgraphicsd.lib xboxkrnl.lib xnetd.lib xaudiod2.lib xactd3.lib x3daudiod.lib xmcored.lib xbdm.lib vcompd.lib"
-				LinkIncremental="2"
-				GenerateDebugInformation="true"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -89,8 +79,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Xbox 360"
-			OutputDirectory="$(SolutionDir)..\bin\$(ConfigurationName)\$(PlatformName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\obj\$(ProjectName)\$(ConfigurationName)\$(PlatformName)"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin.Cpp.vsprops"
 			ConfigurationType="1"
 			UseOfMFC="-1"
 			UseOfATL="0"
@@ -113,19 +102,12 @@
 			/>
 			<Tool
 				Name="VCCLX360CompilerTool"
-				Optimization="3"
 				FavorSizeOrSpeed="2"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)&quot;;&quot;$(SolutionDir)..\shared\include_cpp&quot;"
 				PreprocessorDefinitions="NDEBUG;_XBOX"
-				StringPooling="true"
-				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				BufferSecurityCheck="false"
 				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="Precompile.hpp"
-				WarningLevel="3"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -139,10 +121,6 @@
 			<Tool
 				Name="VCX360LinkerTool"
 				AdditionalDependencies="xapilib.lib d3d9.lib d3dx9.lib xgraphics.lib xboxkrnl.lib xnet.lib xaudio2.lib xact3.lib x3daudio.lib xmcore.lib vcomp.lib"
-				LinkIncremental="1"
-				GenerateDebugInformation="true"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
 				SetChecksum="true"
 			/>
 			<Tool

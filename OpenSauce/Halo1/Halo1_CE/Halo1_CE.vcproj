@@ -18,8 +18,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)..\bin\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\obj\$(ProjectName)\$(ConfigurationName)"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -40,25 +39,15 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				UseUnicodeResponseFiles="false"
-				Optimization="0"
-				AdditionalIncludeDirectories="..\$(ProjectName);$(SolutionDir)shared\Include\;$(SolutionDir)..\shared\include_cpp;$(SolutionDir)..\shared\ticpp;"
+				AdditionalIncludeDirectories="$(SolutionDir)shared\Include\;$(SolutionDir)..\shared\ticpp;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;HALO1_CE_EXPORTS;DX_WRAPPER;PLATFORM_TYPE_CLIENT;GSI_NO_THREADS"
+				ExceptionHandling="1"
 				StringPooling="true"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="0"
-				RuntimeLibrary="3"
-				StructMemberAlignment="1"
 				BufferSecurityCheck="false"
 				EnableEnhancedInstructionSet="1"
-				DefaultCharIsUnsigned="true"
-				RuntimeTypeInfo="false"
-				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
-				CallingConvention="2"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -71,23 +60,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				UseUnicodeResponseFiles="false"
 				AdditionalDependencies="d3dxof.lib dxguid.lib d3dx9.lib d3d9.lib dinput8.lib winmm.lib ws2_32.lib"
 				OutputFile="$(OutDir)\d3d9.dll"
-				Version=""
-				LinkIncremental="1"
-				AdditionalLibraryDirectories=""
 				IgnoreDefaultLibraryNames="LIBC"
 				ModuleDefinitionFile="Halo1_CE.def"
-				GenerateDebugInformation="true"
-				GenerateMapFile="true"
-				MapFileName="$(OutDir)\$(ProjectName).map"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="0"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -113,8 +89,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)..\bin\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\obj\$(ProjectName)\$(ConfigurationName)"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -136,29 +111,16 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				UseUnicodeResponseFiles="false"
-				Optimization="3"
 				InlineFunctionExpansion="1"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="false"
-				AdditionalIncludeDirectories="..\$(ProjectName);$(SolutionDir)shared\Include\;$(SolutionDir)..\shared\include_cpp;$(SolutionDir)..\shared\ticpp;"
+				AdditionalIncludeDirectories="$(SolutionDir)shared\Include\;$(SolutionDir)..\shared\ticpp;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;HALO1_CE_EXPORTS;DX_WRAPPER;PLATFORM_TYPE_CLIENT;GSI_NO_THREADS"
-				StringPooling="true"
-				ExceptionHandling="0"
 				BasicRuntimeChecks="0"
-				RuntimeLibrary="2"
-				StructMemberAlignment="1"
 				BufferSecurityCheck="false"
 				EnableEnhancedInstructionSet="1"
-				DefaultCharIsUnsigned="true"
-				RuntimeTypeInfo="false"
-				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
-				CallingConvention="2"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -171,22 +133,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				UseUnicodeResponseFiles="false"
 				AdditionalDependencies="d3dxof.lib dxguid.lib d3dx9.lib d3d9.lib dinput8.lib winmm.lib ws2_32.lib"
 				OutputFile="$(OutDir)\d3d9.dll"
-				LinkIncremental="1"
-				AdditionalLibraryDirectories=""
 				IgnoreDefaultLibraryNames="LIBC"
 				ModuleDefinitionFile="Halo1_CE.def"
-				GenerateDebugInformation="true"
-				GenerateMapFile="true"
-				MapFileName="$(OutDir)\$(ProjectName).map"
-				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -212,8 +164,7 @@
 		</Configuration>
 		<Configuration
 			Name="DebugDedi|Win32"
-			OutputDirectory="$(SolutionDir)..\bin\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\obj\$(ProjectName)\$(ConfigurationName)"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -234,24 +185,14 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				UseUnicodeResponseFiles="false"
-				Optimization="0"
-				AdditionalIncludeDirectories="..\$(ProjectName);$(SolutionDir)shared\Include\;$(SolutionDir)..\shared\include_cpp;$(SolutionDir)..\shared\ticpp;"
+				AdditionalIncludeDirectories="$(SolutionDir)shared\Include\;$(SolutionDir)..\shared\ticpp;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;HALO1_CE_EXPORTS;PLATFORM_TYPE_DEDI;GSI_NO_THREADS"
+				ExceptionHandling="1"
 				StringPooling="true"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="0"
-				RuntimeLibrary="3"
-				StructMemberAlignment="1"
 				EnableEnhancedInstructionSet="1"
-				DefaultCharIsUnsigned="true"
-				RuntimeTypeInfo="false"
-				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
-				CallingConvention="2"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -264,22 +205,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				UseUnicodeResponseFiles="false"
 				AdditionalDependencies="ws2_32.lib"
 				OutputFile="$(OutDir)\OpenSauceDedi.dll"
-				LinkIncremental="1"
-				AdditionalLibraryDirectories=""
 				IgnoreDefaultLibraryNames="LIBC"
 				ModuleDefinitionFile="Halo1_CE.def"
-				GenerateDebugInformation="true"
-				GenerateMapFile="true"
-				MapFileName="$(OutDir)\$(ProjectName).map"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -305,8 +234,7 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseDedi|Win32"
-			OutputDirectory="$(SolutionDir)..\bin\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\obj\$(ProjectName)\$(ConfigurationName)"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -328,27 +256,14 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				UseUnicodeResponseFiles="false"
-				Optimization="3"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="..\$(ProjectName);$(SolutionDir)shared\Include\;$(SolutionDir)..\shared\include_cpp;$(SolutionDir)..\shared\ticpp;"
+				AdditionalIncludeDirectories="$(SolutionDir)shared\Include\;$(SolutionDir)..\shared\ticpp;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;HALO1_CE_EXPORTS;PLATFORM_TYPE_DEDI;GSI_NO_THREADS"
-				StringPooling="true"
-				ExceptionHandling="0"
 				BasicRuntimeChecks="0"
-				RuntimeLibrary="2"
-				StructMemberAlignment="1"
 				EnableEnhancedInstructionSet="1"
-				DefaultCharIsUnsigned="true"
-				RuntimeTypeInfo="false"
-				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
-				WarningLevel="3"
-				Detect64BitPortabilityProblems="false"
-				DebugInformationFormat="3"
-				CallingConvention="2"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -361,22 +276,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				UseUnicodeResponseFiles="false"
 				AdditionalDependencies="ws2_32.lib"
 				OutputFile="$(OutDir)\OpenSauceDedi.dll"
-				LinkIncremental="1"
-				AdditionalLibraryDirectories=""
 				IgnoreDefaultLibraryNames="LIBC"
 				ModuleDefinitionFile="Halo1_CE.def"
-				GenerateDebugInformation="true"
-				GenerateMapFile="true"
-				MapFileName="$(OutDir)\$(ProjectName).map"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				RandomizedBaseAddress="1"
-				DataExecutionPrevention="0"
-				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"

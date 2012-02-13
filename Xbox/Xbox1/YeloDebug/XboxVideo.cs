@@ -1,20 +1,7 @@
 ﻿/*
-    OpenSauceBox: SDK for Xbox User Modding
+	OpenSauceBox: SDK for Xbox User Modding
 
-    Copyright (C)  Kornner Studios (http://kornner.com)
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	See license\Xbox\Xbox for specific license information
 */
 using System;
 using System.IO;
@@ -29,7 +16,7 @@ namespace YeloDebug
     // ~56fps with regular immediate presentation, 30fps with regular presentation interval two
     // ~63fps with a small video size using an immediate presentation window
 
-    // todo: need to implement alternate videostream (doesnt work with halo - too old), 
+    // todo: need to implement alternate videostream (doesn't work with halo - too old), 
     // where we manually inject something to grab frame data locally on xbox
     // have it dump frame as quick as possible to second buffer in memory, 
     // then we can grab it off xbox and transfer to computer
@@ -95,9 +82,9 @@ namespace YeloDebug
             /// <summary>
             /// 24bpp - actually returns 32bpp in the raw frame data, 
             /// making a high quality medium feed use almost as much 
-            /// bandwith as a regular quality full sized one.  The
+            /// bandwidth as a regular quality full sized one.  The
             /// actual quality between the two settings is not noticeable,
-            /// therefore I reccommend you never use the High quality setting.
+            /// therefore I recommend you never use the High quality setting.
             /// </summary>
             High = 4
         };

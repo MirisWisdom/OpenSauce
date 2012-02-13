@@ -18,9 +18,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)..\bin\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\obj\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			CharacterSet="1"
 			>
 			<Tool
@@ -40,16 +39,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="0"
-				AdditionalIncludeDirectories="..\$(ProjectName);$(SolutionDir)shared\Include;$(SolutionDir)..\shared\include_cpp"
+				AdditionalIncludeDirectories="$(SolutionDir)shared\Include;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;XLIVE_EXPORTS"
-				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="3"
-				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
-				WarningLevel="3"
-				DebugInformationFormat="4"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -62,14 +55,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				LinkIncremental="2"
+				LinkIncremental="0"
 				ModuleDefinitionFile="XLive.def"
-				GenerateDebugInformation="true"
-				GenerateMapFile="true"
-				MapFileName="$(OutDir)\$(ProjectName).map"
-				SubSystem="2"
-				RandomizedBaseAddress="1"
-				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -95,9 +82,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)..\bin\$(ConfigurationName)\$(ProjectName)"
-			IntermediateDirectory="$(SolutionDir)..\obj\$(ProjectName)\$(ConfigurationName)"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
@@ -118,16 +104,11 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\$(ProjectName);$(SolutionDir)shared\Include;$(SolutionDir)..\shared\include_cpp"
+				AdditionalIncludeDirectories="$(SolutionDir)shared\Include;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;XLIVE_EXPORTS"
-				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
-				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
-				WarningLevel="3"
-				DebugInformationFormat="3"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -140,16 +121,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				LinkIncremental="1"
 				ModuleDefinitionFile="XLive.def"
-				GenerateDebugInformation="true"
-				GenerateMapFile="true"
-				MapFileName="$(OutDir)\$(ProjectName).map"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				RandomizedBaseAddress="1"
-				TargetMachine="1"
 			/>
 			<Tool
 				Name="VCALinkTool"

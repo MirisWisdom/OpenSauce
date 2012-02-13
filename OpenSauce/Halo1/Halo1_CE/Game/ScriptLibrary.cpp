@@ -103,7 +103,7 @@ namespace Yelo
 			NullifyScriptFunctionWithParams( GET_HS_FUNCTION(dump_view_state) );
 	#endif
 
-	#ifndef YELO_NO_NETWORK
+	#if !defined(YELO_NO_NETWORK) && FALSE
 			InitializeScriptFunction(Enums::_hs_function_test_networking, MessageDeltas::TestToNetwork);
 	#else
 			NullifyScriptFunction( GET_HS_FUNCTION(test_networking) );

@@ -30,7 +30,7 @@ namespace Yelo
 #ifndef YELO_NO_NETWORK
 		void PLATFORM_API NetworkGameClientHandleMessageDeltaMessageBodyEx(); // forward declare
 
-		static message_delta_definition* NewMessageDeltaList[Enums::k_message_deltas_new_count];
+		static message_delta_definition* NewMessageDeltaList[Enums::k_message_deltas_new_count + 1]; // +1 so we can compile when there are no new deltas
 		const message_delta_definition* const* NewPackets() { return NewMessageDeltaList; }
 
 		void InitializeNewMessageDeltaList()

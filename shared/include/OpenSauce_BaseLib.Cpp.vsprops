@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="OpenSauce_BaseLib"
+
+	InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_Base.Cpp.vsprops"
+
+	OutputDirectory="$(SolutionDir)..\lib\$(ConfigurationName)\$(PlatformName)\$(ProjectName)"
+	>
+	<Tool
+		Name="VCCLCompilerTool"
+	/>
+	<Tool
+		Name="VCLibrarianTool"
+	/>
+</VisualStudioPropertySheet>
