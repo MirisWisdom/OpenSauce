@@ -10,12 +10,13 @@
 #if __EL_INCLUDE_FILE_ID == __EL_CACHE_CACHE
 namespace Cache
 {
-	FUNC_PTR(GAME_STATE_INITIALIZE_FOR_NEW_MAP_MOD,		NULL);
+	FUNC_PTR(GAME_STATE_INITIALIZE_FOR_NEW_MAP_MOD,		0xB3F32);
 };
 
 namespace GameState
 {
-	ENGINE_DPTR(Cache::s_header, _CacheHeader,			NULL);
+	ENGINE_DPTR(Cache::s_header, _CacheHeader,			0x6F79C0);
+	ENGINE_DPTR(Cache::s_tag_index, _TagIndex,			0x6F81C0);
 	ENGINE_DPTR(Cache::s_tag_instance, _TagInstances,	0x655C04);
 };
 

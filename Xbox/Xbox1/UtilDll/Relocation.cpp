@@ -49,7 +49,7 @@ struct s_reloc_table
 
 #pragma warning(pop)
 
-UTILDLL_API HRESULT Util_CalculateModuleCodeSize(LPCWSTR lpFileName, PSIZE_T code_size)
+UTILDLL_API HRESULT Util_CalculateModuleCodeSize(LPCWSTR lpFileName, PUINT32 code_size)
 {
 	struct s_file_struct {
 		IMAGE_DOS_HEADER Dos;
@@ -127,7 +127,7 @@ UTILDLL_API HRESULT Util_CalculateModuleCodeSize(LPCWSTR lpFileName, PSIZE_T cod
 	return result;
 }
 
-UTILDLL_API HRESULT Util_RebaseModule(LPCWSTR lpFileName, PBYTE reloc_dll, SIZE_T reloc_dll_size, PDWORD base_address, SIZE_T reloc_alloc_count)
+UTILDLL_API HRESULT Util_RebaseModule(LPCWSTR lpFileName, PBYTE reloc_dll, UINT32 reloc_dll_size, PUINT32 base_address, UINT32 reloc_alloc_count)
 {
 	if(reloc_alloc_count <= 0)
 	{

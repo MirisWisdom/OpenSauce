@@ -19,7 +19,8 @@ namespace Yelo
 extern "C" {
 #endif
 
-DWORD k_module_title_id = 0x4D530064; // Halo 2 TitleId
+DWORD k_module_title_id =		PLATFORM_VALUE(0x4D530064, 0x4D530064, 0x4D530082); // Halo 2 TitleId
+DWORD k_module_title_version =	PLATFORM_VALUE(0x00000003, 0x00000803, 0x00000001);
 
 #pragma region XboxLib declares
 XBOX_API_VTABLE XboxApi = {

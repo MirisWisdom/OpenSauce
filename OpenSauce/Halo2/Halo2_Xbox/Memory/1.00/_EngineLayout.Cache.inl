@@ -16,6 +16,7 @@ namespace Cache
 namespace GameState
 {
 	ENGINE_DPTR(Cache::s_header, _CacheHeader,			0x547700);
+	ENGINE_DPTR(Cache::s_tag_index, _TagIndex,			0x547F00);
 	ENGINE_DPTR(Cache::s_tag_instance, _TagInstances,	0x4E3B44);
 };
 

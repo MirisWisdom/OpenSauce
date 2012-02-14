@@ -12,6 +12,9 @@
 		<Platform
 			Name="Win32"
 		/>
+		<Platform
+			Name="x64"
+		/>
 	</Platforms>
 	<ToolFiles>
 	</ToolFiles>
@@ -82,6 +85,72 @@
 			/>
 		</Configuration>
 		<Configuration
+			Name="Debug|x64"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin.Cpp.vsprops"
+			ConfigurationType="2"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				PreprocessorDefinitions="_WIN64;_DEBUG;_WINDOWS;_USRDLL;UTILDLL_EXPORTS"
+				StringPooling="true"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="1"
+				UsePrecompiledHeader="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				TargetMachine="17"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine="md &quot;$(SolutionDir)..\bin\$(ConfigurationName)\&quot;&#x0D;&#x0A;copy /Y &quot;$(TargetPath)&quot; /B &quot;$(SolutionDir)..\bin\$(ConfigurationName)\&quot; /B&#x0D;&#x0A;"
+			/>
+		</Configuration>
+		<Configuration
 			Name="Release|Win32"
 			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin.Cpp.vsprops"
 			ConfigurationType="2"
@@ -123,6 +192,73 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				CommandLine="md &quot;$(SolutionDir)..\bin\$(ConfigurationName)\&quot;&#x0D;&#x0A;copy /Y &quot;$(TargetPath)&quot; /B &quot;$(SolutionDir)..\bin\$(ConfigurationName)\&quot; /B&#x0D;&#x0A;"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release|x64"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin.Cpp.vsprops"
+			ConfigurationType="2"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="true"
+				FavorSizeOrSpeed="1"
+				PreprocessorDefinitions="WIN64;NDEBUG;_WINDOWS;_USRDLL;UTILDLL_EXPORTS"
+				RuntimeLibrary="0"
+				UsePrecompiledHeader="0"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				TargetMachine="17"
 			/>
 			<Tool
 				Name="VCALinkTool"

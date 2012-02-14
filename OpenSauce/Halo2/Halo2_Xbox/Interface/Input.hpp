@@ -10,6 +10,10 @@ namespace Yelo
 {
 	namespace Enums
 	{
+		enum {
+			k_number_of_controllers = 4,
+		};
+
 		enum input_button
 		{
 			_input_button_a,

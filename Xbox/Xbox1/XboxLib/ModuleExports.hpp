@@ -24,4 +24,7 @@
 	__declspec( allocate(K_XBOX_LIB_EXPORT_SECTION) )	\
 	__declspec( dllexport )
 
-extern DWORD				k_module_title_id; // !!! DEFINE IN YOUR DXT !!!
+// Target game's TitleId (match with the XBE certificate)
+extern DWORD				k_module_title_id;		// !!! DEFINE IN YOUR DXT !!!
+// Target game's Version (match with the XBE certificate)
+extern DWORD				k_module_title_version;	// !!! DEFINE IN YOUR DXT !!!
