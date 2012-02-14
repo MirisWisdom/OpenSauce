@@ -36,7 +36,9 @@
     <Compile Include="XboxAudio.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="Util.cs" />
-    <Compile Include="XboxDll.cs" />
+    <Compile Include="XboxDll.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="XboxFileSystem.cs" />
     <Compile Include="XboxHistory.cs" />
     <Compile Include="XboxMemory.cs" />

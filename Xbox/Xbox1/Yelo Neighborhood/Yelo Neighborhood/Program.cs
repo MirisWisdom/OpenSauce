@@ -26,6 +26,9 @@ namespace Yelo_Neighborhood
         public static ModuleManager ModuleManager { get { return _moduleManager; } }
         static ModuleManager _moduleManager;
 
+        public static NewModule NewModule { get { return _newModule; } }
+        static NewModule _newModule;
+
         public static List<Executable> Executables { get { return _executables; } }
         static List<Executable> _executables = new List<Executable>();
 

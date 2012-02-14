@@ -39,16 +39,16 @@
       <DependentUpon>ExecutableTool.cs</DependentUpon>
     </Compile>
     <Compile Include="Executable\Script.cs" />
-    <Compile Include="LEDStateChanger.cs">
+    <Compile Include="System Tools\LEDStateChanger.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="LEDStateChanger.Designer.cs">
+    <Compile Include="System Tools\LEDStateChanger.Designer.cs">
       <DependentUpon>LEDStateChanger.cs</DependentUpon>
     </Compile>
-    <Compile Include="ModuleManager.cs">
+    <Compile Include="System Tools\ModuleManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ModuleManager.Designer.cs">
+    <Compile Include="System Tools\ModuleManager.Designer.cs">
       <DependentUpon>ModuleManager.cs</DependentUpon>
     </Compile>
     <Compile Include="Screenshot Tools\ImageFormatSelector.cs">
@@ -73,11 +73,11 @@
       <DependentUpon>ScriptTool.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="LEDStateChanger.resx">
+    <EmbeddedResource Include="System Tools\LEDStateChanger.resx">
       <DependentUpon>LEDStateChanger.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ModuleManager.resx">
+    <EmbeddedResource Include="System Tools\ModuleManager.resx">
       <DependentUpon>ModuleManager.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -102,7 +102,11 @@
       <DependentUpon>Settings.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="SystemProperties.resx">
+    <EmbeddedResource Include="System Tools\NewModule.resx">
+      <DependentUpon>NewModule.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="System Tools\SystemProperties.resx">
       <DependentUpon>SystemProperties.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -136,10 +140,16 @@
     <Compile Include="Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
-    <Compile Include="SystemProperties.cs">
+    <Compile Include="System Tools\NewModule.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SystemProperties.Designer.cs">
+    <Compile Include="System Tools\NewModule.Designer.cs">
+      <DependentUpon>NewModule.cs</DependentUpon>
+    </Compile>
+    <Compile Include="System Tools\SystemProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="System Tools\SystemProperties.Designer.cs">
       <DependentUpon>SystemProperties.cs</DependentUpon>
     </Compile>
     <Compile Include="XBoxLocator.cs">

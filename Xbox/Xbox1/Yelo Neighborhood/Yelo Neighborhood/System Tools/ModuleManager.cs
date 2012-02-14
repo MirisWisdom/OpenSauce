@@ -13,19 +13,19 @@ namespace Yelo_Neighborhood
     {
 		class YeloModule : INotifyPropertyChanged
 		{
-			uint m_mainAddress, m_exitAddress;
-			FileInfo m_fileInfo;
+			uint mainAddress, exitAddress;
+			FileInfo fileInfo;
 
-			public string Module { get { return m_fileInfo.Name; } }
-			ModuleStatus m_status;
+			public string Module { get { return fileInfo.Name; } }
+			ModuleStatus status;
 			public ModuleStatus Status
 			{
-				get { return m_status; }
+				get { return status; }
 				set
 				{
-					if (m_status != value)
+					if (status != value)
 					{
-						m_status = value;
+						status = value;
 						NotifyPropertyChanged("Status");
 					}
 				}
@@ -39,19 +39,19 @@ namespace Yelo_Neighborhood
 				Running,
 			};
 
-			public YeloModule(string filename)
+			public YeloModule(string filename, long baseAddress)
 			{
-				m_mainAddress = m_exitAddress = uint.MaxValue;
+				mainAddress = exitAddress = uint.MaxValue;
 
-				m_fileInfo = new FileInfo(filename);
-				m_status = ModuleStatus.Error;
+				fileInfo = new FileInfo(filename);
+				status = ModuleStatus.Error;
 				Reload();
 			}
 
 			bool Run(out string error_details)
 			{
 				error_details = "";
-				YeloDebug.XboxDll.RebaseModuleAndSave(m_fileInfo.FullName, 0, out error_details); // Testing...
+				YeloDebug.XboxDll.RebaseModuleAndSave(fileInfo.FullName, 0, out error_details); // Testing...
 				// TODO
 				return false;
 			}
@@ -68,7 +68,7 @@ namespace Yelo_Neighborhood
 
 			public void Unload()
 			{
-				if (m_exitAddress != uint.MaxValue)
+				if (exitAddress != uint.MaxValue)
 				{
 					// TODO
 					Status = ModuleStatus.Unloaded;
@@ -104,8 +104,8 @@ namespace Yelo_Neighborhood
 
         private void cmdNew_Click(object sender, EventArgs e)
         {
-            if (OFD.ShowDialog() != DialogResult.OK) return;
-            modules.Add(new YeloModule(OFD.FileName));
+            if (Program.NewModule.ShowDialog() != DialogResult.OK) return;
+            modules.Add(new YeloModule(Program.NewModule.FileName, Program.NewModule.BaseAddress));
         }
 
         private void cmdReload_Click(object sender, EventArgs e)
