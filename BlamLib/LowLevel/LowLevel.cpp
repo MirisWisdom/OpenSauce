@@ -73,6 +73,19 @@ void LowLevel::StructBitConverter::ToValue(array<mcpp_byte>^ buffer, mcpp_int st
 //////////////////////////////////////////////////////////////////////////
 // Single
 
+mcpp_real LowLevel::ByteSwap::SingleFromUInt32(mcpp_uint val)
+{
+	mcpp_real* real_number = CAST_PTR(mcpp_real*, &val);
+
+	return *real_number;
+}
+mcpp_uint LowLevel::ByteSwap::SingleToUInt32(mcpp_real real_number)
+{
+	mcpp_uint* val = CAST_PTR(mcpp_uint*, &real_number);
+
+	return *val;
+}
+
 mcpp_real LowLevel::ByteSwap::SwapSingle(mcpp_real dword)
 {
 	mcpp_uint* val = CAST_PTR(mcpp_uint*, &dword);

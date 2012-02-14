@@ -21,8 +21,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			CharacterSet="1"
 			ManagedExtensions="1"
 			>
@@ -84,8 +84,8 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			CharacterSet="1"
 			ManagedExtensions="1"
 			>
@@ -149,8 +149,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			CharacterSet="1"
 			ManagedExtensions="1"
 			WholeProgramOptimization="1"
@@ -213,8 +213,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			CharacterSet="1"
 			ManagedExtensions="1"
 			WholeProgramOptimization="1"
