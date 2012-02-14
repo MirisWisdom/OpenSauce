@@ -80,7 +80,7 @@ namespace YeloDebug
 			return result;
 		}
 
-		public static void RebaseModuleAndSave(string module_path, uint base_address, out string error_details)
+		public static bool RebaseModuleAndSave(string module_path, uint base_address, out string error_details)
 		{
 			error_details = null;
 			LowLevel.HResult result;
@@ -88,7 +88,7 @@ namespace YeloDebug
 			if (!File.Exists(module_path))
 			{
 				error_details = "File does not exist!";
-				return;
+				return false;
 			}
 
 			byte[] rebased_module;
@@ -112,9 +112,11 @@ namespace YeloDebug
 
 			if (error_details == null)
 				error_details = GetResultString(result);
+
+			return result == LowLevel.HResult.Success;
 		}
 
-		public static void RunModule(Xbox xbox, string module_path, uint base_address, 
+		public static bool RunModule(Xbox xbox, string module_path, uint base_address, 
 			out uint entry_point, out uint exit_address, out string error_details)
 		{
 			entry_point = exit_address = uint.MaxValue;
@@ -124,7 +126,7 @@ namespace YeloDebug
 			if (!File.Exists(module_path))
 			{
 				error_details = "File does not exist!";
-				return;
+				return false;
 			}
 
 			byte[] rebased_module;
@@ -149,6 +151,15 @@ namespace YeloDebug
 
 			if(error_details == null)
 				error_details = GetResultString(result);
+
+			return result == LowLevel.HResult.Success;
+		}
+
+		public static bool UnloadModule(Xbox xbox, uint exit_address)
+		{
+			xbox.CallAddress(exit_address, false);
+
+			return true;
 		}
     };
 }
