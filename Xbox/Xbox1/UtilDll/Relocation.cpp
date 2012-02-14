@@ -33,6 +33,12 @@ static bool section_name_is_usable(const char* section_name)
 			memcmp(section_name, k_section_name_const, IMAGE_SIZEOF_SHORT_NAME) == 0 || 
 			memcmp(section_name, k_section_name_data, IMAGE_SIZEOF_SHORT_NAME) == 0;
 }
+// Currently, the only other section that is allowed to have relocs is the module export section
+static bool section_name_is_usable_or_can_contain_relocs(const char* section_name)
+{
+	return	section_name_is_usable(section_name) ||
+			memcmp(section_name, k_section_name_modexport, IMAGE_SIZEOF_SHORT_NAME) == 0;
+}
 
 struct s_reloc_table
 {
@@ -278,7 +284,7 @@ UTILDLL_API HRESULT Util_RebaseModule(LPCWSTR lpFileName, PBYTE reloc_dll, UINT3
 		if(result != S_OK) return result;
 	}
 
-	DebugCode( s_managed_file debug_file = s_managed_file("utildll.txt", "wb") );
+	DebugCode( s_managed_file debug_file = s_managed_file("UtilDll.log", "wb") );
 	DebugCode( fprintf_s(debug_file, "length:%d\tsections:%d\n", dll_buffer.size, DllStruct.SectionCount) );
 
 
@@ -376,7 +382,7 @@ UTILDLL_API HRESULT Util_RebaseModule(LPCWSTR lpFileName, PBYTE reloc_dll, UINT3
 				section_info_index = y;
 
 				const char* section_name = reinterpret_cast<char*>(DllStruct.Sections[y].Name);
-				if( !section_name_is_usable(section_name) )
+				if( !section_name_is_usable_or_can_contain_relocs(section_name) )
 				{
 					DebugCode(
 						char name[8+1];
