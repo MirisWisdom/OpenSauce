@@ -11,44 +11,87 @@ namespace Yelo_Neighborhood
 {
     partial class ModuleManager : Form
     {
-        class YeloModule : INotifyPropertyChanged
-        {
-            FileInfo fileInfo;
+		class YeloModule : INotifyPropertyChanged
+		{
+			uint m_mainAddress, m_exitAddress;
+			FileInfo m_fileInfo;
 
-            public string Module { get { return fileInfo.Name; } }
-            public ModuleStatus Status { get { return status; } }
-            ModuleStatus status;
+			public string Module { get { return m_fileInfo.Name; } }
+			ModuleStatus m_status;
+			public ModuleStatus Status
+			{
+				get { return m_status; }
+				set
+				{
+					if (m_status != value)
+					{
+						m_status = value;
+						NotifyPropertyChanged("Status");
+					}
+				}
+			}
 
-            public enum ModuleStatus
-            {
-                Stopped,
-                Running
-            }
+			public enum ModuleStatus
+			{
+				Error,
 
-            public YeloModule(string filename)
-            {
-                fileInfo = new FileInfo(filename);
-                status = ModuleStatus.Running;
-            }
+				Unloaded,
+				Running,
+			};
 
-            public void Reload()
-            { NotifyPropertyChanged("Status"); }
+			public YeloModule(string filename)
+			{
+				m_mainAddress = m_exitAddress = uint.MaxValue;
 
-            public void Stop()
-            { NotifyPropertyChanged("Status"); }
+				m_fileInfo = new FileInfo(filename);
+				m_status = ModuleStatus.Error;
+				Reload();
+			}
 
-            #region INotifyPropertyChanged Members
+			bool Run(out string error_details)
+			{
+				error_details = "";
+				// TODO
+				return false;
+			}
 
-            public event PropertyChangedEventHandler PropertyChanged;
+			public void Reload()
+			{
+				string error_details;
+				if (Run(out error_details))
+					Status = ModuleStatus.Running;
+				else
+					MessageBox.Show(Program.ModuleManager, string.Format("Module failed to run!\n{0}", error_details),
+						Module, MessageBoxButtons.OK, MessageBoxIcon.Hand);
+			}
 
-            private void NotifyPropertyChanged(string name)
-            {
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs(name));
-            }
+			public void Unload()
+			{
+				if (m_exitAddress != uint.MaxValue)
+				{
+					// TODO
+					Status = ModuleStatus.Unloaded;
+				}
+				else
+					MessageBox.Show(Program.ModuleManager, "Module has no unload functionality!",
+						Module, MessageBoxButtons.OK, MessageBoxIcon.Hand);
+			}
 
-            #endregion
-        }
+			#region INotifyPropertyChanged Members
+			public event PropertyChangedEventHandler PropertyChanged;
+
+			private void NotifyPropertyChanged(string name)
+			{
+				if (PropertyChanged != null)
+					PropertyChanged(this, new PropertyChangedEventArgs(name));
+			}
+			#endregion
+
+			public override string ToString()
+			{
+				return string.Format("[{0}] {1}", Status.ToString(), Module);
+			}
+		};
 
         BindingList<YeloModule> modules = new BindingList<YeloModule>();
 
@@ -73,7 +116,7 @@ namespace Yelo_Neighborhood
         private void cmdEnd_Click(object sender, EventArgs e)
         {
             for (int i = 0; i < gridModules.SelectedRows.Count; i++)
-                modules[gridModules.SelectedRows[i].Index].Stop();
+                modules[gridModules.SelectedRows[i].Index].Unload();
         }
     }
 }

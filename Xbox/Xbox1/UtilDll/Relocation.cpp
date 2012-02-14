@@ -49,7 +49,7 @@ struct s_reloc_table
 
 #pragma warning(pop)
 
-UTILDLL_API HRESULT Util_CalculateModuleCodeSize(LPCTSTR lpFileName, PSIZE_T code_size)
+UTILDLL_API HRESULT Util_CalculateModuleCodeSize(LPCWSTR lpFileName, PSIZE_T code_size)
 {
 	struct s_file_struct {
 		IMAGE_DOS_HEADER Dos;
@@ -76,7 +76,7 @@ UTILDLL_API HRESULT Util_CalculateModuleCodeSize(LPCTSTR lpFileName, PSIZE_T cod
 	}DllStruct;
 	DWORD lpNumberOfBytesRead;
 
-	HANDLE dll_file = CreateFile(lpFileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE dll_file = CreateFileW(lpFileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	HRESULT result = S_OK;
 
 	*code_size = 0;
@@ -127,7 +127,7 @@ UTILDLL_API HRESULT Util_CalculateModuleCodeSize(LPCTSTR lpFileName, PSIZE_T cod
 	return result;
 }
 
-UTILDLL_API HRESULT Util_RebaseModule(LPCTSTR lpFileName, PBYTE reloc_dll, SIZE_T reloc_dll_size, PDWORD base_address, SIZE_T reloc_alloc_count)
+UTILDLL_API HRESULT Util_RebaseModule(LPCWSTR lpFileName, PBYTE reloc_dll, SIZE_T reloc_dll_size, PDWORD base_address, SIZE_T reloc_alloc_count)
 {
 	if(reloc_alloc_count <= 0)
 	{
@@ -235,7 +235,7 @@ UTILDLL_API HRESULT Util_RebaseModule(LPCTSTR lpFileName, PBYTE reloc_dll, SIZE_
 
 	s_buffer dll_buffer;
 	{
-		HANDLE dll_file = CreateFile(lpFileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+		HANDLE dll_file = CreateFileW(lpFileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 		if(dll_file == INVALID_HANDLE_VALUE) return E_FAIL;
 
 		HRESULT result = S_OK;

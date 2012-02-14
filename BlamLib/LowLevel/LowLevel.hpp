@@ -5,9 +5,27 @@
 */
 #pragma once
 
-using namespace System;
-
 namespace LowLevel {
+
+	using namespace System;
+
+	public mcpp_enum HResult : mcpp_uint
+	{
+		Success = S_OK,
+
+		Unexpected =		mcpp_cast_to(mcpp_uint, E_UNEXPECTED),
+		NotImplemented =	mcpp_cast_to(mcpp_uint, E_NOTIMPL),
+		OutOfMemory =		mcpp_cast_to(mcpp_uint, E_OUTOFMEMORY),
+		InvalidArg =		mcpp_cast_to(mcpp_uint, E_INVALIDARG),
+		NoInterface =		mcpp_cast_to(mcpp_uint, E_NOINTERFACE),
+		InvalidPointer =	mcpp_cast_to(mcpp_uint, E_POINTER),
+		InvalidHandle =		mcpp_cast_to(mcpp_uint, E_HANDLE),
+		Abort =				mcpp_cast_to(mcpp_uint, E_ABORT),
+		Fail =				mcpp_cast_to(mcpp_uint, E_FAIL),
+		AccessDenied =		mcpp_cast_to(mcpp_uint, E_ACCESSDENIED),
+
+		DataPending =		mcpp_cast_to(mcpp_uint, E_PENDING),
+	};
 
 	public mcpp_class StructBitConverter abstract sealed
 	{

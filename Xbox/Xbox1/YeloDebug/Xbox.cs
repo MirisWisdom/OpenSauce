@@ -4,17 +4,16 @@
 	See license\Xbox\Xbox for specific license information
 */
 using System;
-using System.IO;
-using System.Text;
 using System.Collections.Generic;
-using System.Threading;
-using System.Net;
-using System.Net.Sockets;
-using System.Net.NetworkInformation;
-using System.Diagnostics;   // debugger display
-using YeloDebug.Exceptions;
-using System.Xml;
 using System.ComponentModel;
+using System.Diagnostics;   // debugger display
+using System.IO;
+using System.Net;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading;
+using YeloDebug.Exceptions;
 
 //////////////////////
 // rules /////////////
@@ -70,11 +69,9 @@ namespace YeloDebug
         // for people who don't like cpu usage looking like 100% utilization, even though the app
         // will readily relinquish its time slice for others if asked to do so...
         public int SleepTime = 0;   // zero to be efficient, 1 to make it look like its not using up cpu
-
 		#endregion
 
 		#region Properties
-
         /// <summary>
         /// Gets the main connection used for pc to xbox communication.
         /// </summary>
@@ -528,7 +525,6 @@ namespace YeloDebug
                 return threads;
 			}
 		}
-
 		#endregion
 
 		#region Constructor / Destructor
@@ -538,7 +534,7 @@ namespace YeloDebug
 		public Xbox()
         {
             // load settings file
-            XmlDocument xmlDoc = new XmlDocument();
+            var xmlDoc = new System.Xml.XmlDocument();
             xmlDoc.Load("YeloDebugSettings.xml");
 
             // check that setting and assembly versions match
@@ -590,8 +586,7 @@ namespace YeloDebug
                 }
             }
 
-            DateTime before = DateTime.Now;
-            TimeSpan elapse = new TimeSpan();
+			Stopwatch sw = new Stopwatch();
             do
             {
                 Thread.Sleep(1);
@@ -607,9 +602,9 @@ namespace YeloDebug
                         connections.Add(new DebugConnection(((IPEndPoint)end).Address, ASCIIEncoding.ASCII.GetString(data, 2, data.Length - 2).Replace("\0", "")));
                     }
                 }
-                elapse = DateTime.Now - before;
             }
-            while (elapse.TotalMilliseconds < 25);            // wait for response
+            while (sw.ElapsedMilliseconds < 25);            // wait for response
+			sw.Stop();
 
             if (connections.Count == 0)
                 throw new NoConnectionException("No xbox connection detected.");
@@ -1135,11 +1130,9 @@ namespace YeloDebug
                 connection.Client.Receive(new byte[connection.Available]);
             Reconnect(15000);
         }
-
 		#endregion
 
 		#region Command Processing
-
 		/// <summary>
         /// Waits for the receive buffer to stop receiving, then clears it.
         /// Call this before you send anything to the xbox to help keep the channel in sync.
@@ -1533,11 +1526,9 @@ namespace YeloDebug
             Wait(size);
             connection.Client.Receive(data, offset, size, SocketFlags.None);
         }
-
 		#endregion
 
 		#region Misc.
-
         /// <summary>
         /// Synchronizes the xbox system time with the computer's current time.
         /// </summary>
@@ -1568,47 +1559,46 @@ namespace YeloDebug
 			uint TestBuffer = AllocateMemory(memBufferSize); //64kb
 			byte[] membuf = new byte[memBufferSize];
 
-			DateTime memReadStart = DateTime.Now;
+			Stopwatch memReadTimer = new Stopwatch();
 			for (int i = 0; i < 400; i++)
 				membuf = GetMemory(TestBuffer, memBufferSize);
-			TimeSpan memReadElapse = DateTime.Now - memReadStart;
-			string memReadSpeed = (((float)400 * (float)memBufferSize * toMegs) / (float)memReadElapse.TotalSeconds).ToString();
+			memReadTimer.Stop();
+			string memReadSpeed = ((400.0f * (float)memBufferSize * toMegs) / (float)memReadTimer.Elapsed.TotalSeconds).ToString();
 
-			DateTime memWriteStart = DateTime.Now;
+			Stopwatch memWriteTimer = new Stopwatch();
             for (int i = 0; i < 400; i++)
-            {
                 MemoryStream.Write(TestBuffer, (int)membuf.Length, membuf, 0);
-            }
-			TimeSpan memWriteElapse = DateTime.Now - memWriteStart;
-			string memWriteSpeed = (((float)400 * (float)memBufferSize * toMegs) / (float)memWriteElapse.TotalSeconds).ToString();
+			memWriteTimer.Stop();
+			string memWriteSpeed = ((400.0f * (float)memBufferSize * toMegs) / (float)memWriteTimer.Elapsed.TotalSeconds).ToString();
 
 			FreeMemory(TestBuffer);
 
 			// filestream tests
-            XboxFileStream xbfs = new XboxFileStream(this, "E:\\test.bin");
-			BinaryReader br = new BinaryReader(xbfs);
-			BinaryWriter bw = new BinaryWriter(xbfs);
-			byte[] filebuf = new byte[fileBufferSize];
-
-			DateTime fileWriteStart = DateTime.Now;
-			for (int i = 0; i < 16; i++)
+			string fileWriteSpeed, fileReadSpeed;
+            using(XboxFileStream xbfs = new XboxFileStream(this, "E:\\test.bin"))
+			using(BinaryReader br = new BinaryReader(xbfs))
+			using (BinaryWriter bw = new BinaryWriter(xbfs))
 			{
-				xbfs.Position = 0;
-				bw.Write(filebuf, 0, fileBufferSize);
-			}
-			TimeSpan fileWriteElapse = DateTime.Now - fileWriteStart;
-			string fileWriteSpeed = (((float)16 * (float)fileBufferSize * toMegs) / (float)fileWriteElapse.TotalSeconds).ToString();
+				byte[] filebuf = new byte[fileBufferSize];
 
-			DateTime fileReadStart = DateTime.Now;
-			for (int i = 0; i < 16; i++)
-			{
-				xbfs.Position = 0;
-				filebuf = br.ReadBytes(fileBufferSize);
-			}
-			TimeSpan fileReadElapse = DateTime.Now - fileReadStart;
-			string fileReadSpeed = (((float)16 * (float)fileBufferSize * toMegs) / (float)fileReadElapse.TotalSeconds).ToString();
+				Stopwatch fileWriteTimer = new Stopwatch();
+				for (int i = 0; i < 16; i++)
+				{
+					xbfs.Position = 0;
+					bw.Write(filebuf, 0, fileBufferSize);
+				}
+				fileWriteTimer.Stop();
+				fileWriteSpeed = ((16.0f * (float)fileBufferSize * toMegs) / (float)fileWriteTimer.Elapsed.TotalSeconds).ToString();
 
-			xbfs.Close();
+				Stopwatch fileReadTimer = new Stopwatch();
+				for (int i = 0; i < 16; i++)
+				{
+					xbfs.Position = 0;
+					filebuf = br.ReadBytes(fileBufferSize);
+				}
+				fileReadTimer.Stop();
+				fileReadSpeed = ((16.0f * (float)fileBufferSize * toMegs) / (float)fileReadTimer.Elapsed.TotalSeconds).ToString();
+			}
 			DeleteFile("E:\\test.bin");
 
             // determine link speed
@@ -1639,11 +1629,8 @@ namespace YeloDebug
 		#endregion
 
         #region Console
-
-        private void SendATACommand()
+        void SendATACommand()
         {
-
-
         }
 
         public TrayState GetTrayState()
@@ -1778,6 +1765,8 @@ namespace YeloDebug
             Thread.Sleep(10);
         }
 
+		const uint kAddressOfQueryVideoFlags = 0x10004;
+
         /// <summary>
         /// Gets the xbox video flags.
         /// </summary>
@@ -1785,7 +1774,7 @@ namespace YeloDebug
 		public VideoFlags GetVideoFlags()
 		{
             CallAddressEx(Kernel.ExQueryNonVolatileSetting, null, false, 0x8, 0x10008, 0x10004, 4, 0);
-			return (VideoFlags)((GetUInt32(0x10004) >> 16) & 0x5F);
+			return (VideoFlags)((GetUInt32(kAddressOfQueryVideoFlags) >> 16) & 0x5F);
 		}
 
         /// <summary>
@@ -1795,7 +1784,7 @@ namespace YeloDebug
 		public VideoStandard GetVideoStandard()
 		{
             CallAddressEx(Kernel.ExQueryNonVolatileSetting, null, false, 0x103, 0x10008, 0x10004, 4, 0);
-			return (VideoStandard)GetByte(0x10005);
+			return (VideoStandard)GetByte(kAddressOfQueryVideoFlags + 1);
 		}
 
         /// <summary>
@@ -1834,20 +1823,21 @@ namespace YeloDebug
             //retn	010h
 
             byte[] callScript = new byte[62];
-            BinaryWriter call = new BinaryWriter(new System.IO.MemoryStream(callScript));
-            call.BaseStream.Position = 0;
-            call.Write((ushort)0xC933);
-            call.Write((byte)0xB8);
-            call.Write(History.ScratchBuffer);
-            byte[] one = { 0x60, 0x66, 0xC7, 0x04, 0x01, 0x00, 0x00, 0x8D, 0x1C, 0x01, 0x53, 0x6A, 0x00, 0x51, 0x68, 0xA8, 0x00, 0x00, 0x00, 0xBA };
-            call.Write(one);
-            call.Write(Kernel.HalReadSMBusValue);
-            byte[] two = { 0xFF, 0xD2, 0x61, 0x51, 0xB9 };
-            call.Write(two);
-            call.Write((int)0x100);   // modify spin count if we find out that its not reading all of the eeprom
-            byte[] three = { 0xF3, 0x90, 0xE2, 0xFC, 0x59, 0x41, 0x81, 0xF9, 0xFF, 0x00, 0x00, 0x00, 0x7C, 0xD1, 0xB8, 0x00, 0x00, 0xDB, 0x02, 0xC2, 0x10, 0x00 };
-            call.Write(three);  // change 0xF3 to 0x90 to get rid of the pause instruction
-            call.Close();
+			using (BinaryWriter call = new BinaryWriter(new System.IO.MemoryStream(callScript)))
+			{
+				call.BaseStream.Position = 0;
+				call.Write((ushort)0xC933);
+				call.Write((byte)0xB8);
+				call.Write(History.ScratchBuffer);
+				byte[] one = { 0x60, 0x66, 0xC7, 0x04, 0x01, 0x00, 0x00, 0x8D, 0x1C, 0x01, 0x53, 0x6A, 0x00, 0x51, 0x68, 0xA8, 0x00, 0x00, 0x00, 0xBA };
+				call.Write(one);
+				call.Write(Kernel.HalReadSMBusValue);
+				byte[] two = { 0xFF, 0xD2, 0x61, 0x51, 0xB9 };
+				call.Write(two);
+				call.Write((int)0x100);   // modify spin count if we find out that its not reading all of the eeprom
+				byte[] three = { 0xF3, 0x90, 0xE2, 0xFC, 0x59, 0x41, 0x81, 0xF9, 0xFF, 0x00, 0x00, 0x00, 0x7C, 0xD1, 0xB8, 0x00, 0x00, 0xDB, 0x02, 0xC2, 0x10, 0x00 };
+				call.Write(three);  // change 0xF3 to 0x90 to get rid of the pause instruction
+			}
 
 			// inject script
             SetMemory(XboxHistory.ScriptBufferAddress, callScript);
@@ -1864,6 +1854,8 @@ namespace YeloDebug
         // you won't be able to call certain pieces of code that require execution to take place
         // in a different thread (DirectX, some kernel functions, etc...)
 
+		const uint kAddressOfReturnValue = 0x10000;
+		const uint kAddressOfXmmContextBuffer = 0x10004;
 
 		/// <summary>
 		/// Simple function call with optional return value.  Average execution time of 1.3 ms without return or 1.75ms with return.
@@ -1886,13 +1878,13 @@ namespace YeloDebug
             {
                 // build call script
                 callBuffer.Position = 0;
-                callScript.Write((byte)0x60); // pushad
-                callScript.Write((byte)0xB8);
+                callScript.Write(LowLevel.Intel.x86.pushad);
+                callScript.Write(LowLevel.Intel.x86.mov_eax_prefix_dword);
                 callScript.Write(address);
-                callScript.Write((ushort)0xD0FF);   // call
+                callScript.Write(LowLevel.Intel.x86.call_eax);   // call
                 callScript.Write((byte)0xA3); // mov dst, eax
-                callScript.Write(0x10000);
-                callScript.Write((byte)0x61); // popad
+                callScript.Write(kAddressOfReturnValue);
+                callScript.Write(LowLevel.Intel.x86.popad);
                 byte[] script = { 0xB8, 0x00, 0x00, 0xDB, 0x02, 0xC2, 0x10, 0x00 };
                 callScript.Write(script);
 
@@ -1905,7 +1897,7 @@ namespace YeloDebug
             SendCommand("crashdump");
 
 			// return the value of eax after the call
-            if (returnValue) return GetUInt32(0x10000);
+			if (returnValue) return GetUInt32(kAddressOfReturnValue);
             else return 0;
 		}
 
@@ -1927,115 +1919,115 @@ namespace YeloDebug
 		/// <returns></returns>
 		public uint CallAddressEx(uint address, CPUContext context, bool returnValue, params object[] pushArgs)
 		{
+			// NOTE: Documented execution timing is probably different now that we don't use straight up objects in the CPUContext
 			// buffer to hold our call data
             using (System.IO.MemoryStream callScript = new System.IO.MemoryStream())
             using (BinaryWriter call = new BinaryWriter(callScript))
             {
-                call.Write((byte)0x60); // pushad
+                call.Write(LowLevel.Intel.x86.pushad);
 
                 // push arguments in reverse order
                 for (int i = pushArgs.Length - 1; i >= 0; i--)
                 {
-                    call.Write((byte)0x68); //push
+                    call.Write(LowLevel.Intel.x86.push_prefix_dword);
                     call.Write(Util.ObjectToDwordBytes(pushArgs[i]));    // hack: improper conversion of floating point values
                 }
 
                 if (context != null)
                 {
                     // assign registers
-                    if (context.Eax != null)
+                    if (context.Eax.HasValue)
                     {
-                        call.Write((byte)0xB8); //mov eax
-                        call.Write(Util.ObjectToDwordBytes(context.Eax));
+                        call.Write(LowLevel.Intel.x86.mov_eax_prefix_dword);
+                        call.Write(context.Eax.Value);
                     }
-                    if (context.Ebx != null)
+					if (context.Ebx.HasValue)
                     {
-                        call.Write((byte)0xBB); //mov ebx
-                        call.Write(Util.ObjectToDwordBytes(context.Ebx));
+						call.Write(LowLevel.Intel.x86.mov_ebx_prefix_dword);
+						call.Write(context.Ebx.Value);
                     }
-                    if (context.Ecx != null)
+					if (context.Ecx.HasValue)
                     {
-                        call.Write((byte)0xB9); //mov ecx
-                        call.Write(Util.ObjectToDwordBytes(context.Ecx));
+						call.Write(LowLevel.Intel.x86.mov_ecx_prefix_dword);
+						call.Write(context.Ecx.Value);
                     }
-                    if (context.Edx != null)
+					if (context.Edx.HasValue)
                     {
-                        call.Write((byte)0xBA); //mov edx
-                        call.Write(Util.ObjectToDwordBytes(context.Edx));
+						call.Write(LowLevel.Intel.x86.mov_edx_prefix_dword);
+						call.Write(context.Edx.Value);
                     }
-                    if (context.Esi != null)
+					if (context.Esi.HasValue)
                     {
-                        call.Write((byte)0xBE); //mov esi
-                        call.Write(Util.ObjectToDwordBytes(context.Esi));
+						call.Write(LowLevel.Intel.x86.mov_esi_prefix_dword);
+						call.Write(context.Esi.Value);
                     }
-                    if (context.Edi != null)
+					if (context.Edi.HasValue)
                     {
-                        call.Write((byte)0xBF); //mov edi
-                        call.Write(Util.ObjectToDwordBytes(context.Edi));
+						call.Write(LowLevel.Intel.x86.mov_edi_prefix_dword);
+						call.Write(context.Edi.Value);
                     }
-                    if (context.Esp != null)
+					if (context.Esp.HasValue)
                     {
-                        call.Write((byte)0xBC); //mov esp
-                        call.Write(Util.ObjectToDwordBytes(context.Esp));
+						call.Write(LowLevel.Intel.x86.mov_esp_prefix_dword);
+						call.Write(context.Esp.Value);
                     }
-                    if (context.Ebp != null)
+					if (context.Ebp.HasValue)
                     {
-                        call.Write((byte)0xBD); //mov ebp
-                        call.Write(Util.ObjectToDwordBytes(context.Ebp));
+						call.Write(LowLevel.Intel.x86.mov_ebp_prefix_dword);
+						call.Write(context.Ebp.Value);
                     }
 
                     // assign xmm registers
                     // remember that its a pointer, not a value you are db'ing
                     // so we need to dump the values somewhere, then store the pointers to those...
 
-                    uint XmmContextBuffer = 0x10004;
-                    if (context.Xmm0 != null)
+					if (context.Xmm0.HasValue)
                     {
-                        SetMemory(XmmContextBuffer, Convert.ToSingle(context.Xmm0));    // shouldnt assume its floating point input but meh
-                        call.Write(0x05100FF3); //movss xmm0
-                        call.Write(XmmContextBuffer);   //dword ptr ds:[addr]
+                        SetMemory(kAddressOfXmmContextBuffer, (float)context.Xmm0.Value);    // shouldnt assume its floating point input but meh
+                        call.Write(LowLevel.Intel.SSE.movss_xmm0_prefix_addr);
+                        call.Write(kAddressOfXmmContextBuffer);   //dword ptr ds:[addr]
                     }
-                    if (context.Xmm1 != null)
+					if (context.Xmm1.HasValue)
                     {
-                        SetMemory(XmmContextBuffer + 4, Convert.ToSingle(context.Xmm1));
-                        call.Write(0x0D100FF3); //movss xmm1
-                        call.Write(XmmContextBuffer + 4);
+						SetMemory(kAddressOfXmmContextBuffer + 4, (float)context.Xmm0.Value);
+						call.Write(LowLevel.Intel.SSE.movss_xmm1_prefix_addr);
+                        call.Write(kAddressOfXmmContextBuffer + 4);
                     }
-                    if (context.Xmm2 != null)
+					if (context.Xmm2.HasValue)
                     {
-                        SetMemory(XmmContextBuffer + 8, Convert.ToSingle(context.Xmm2));
-                        call.Write(0x15100FF3); //movss xmm2
-                        call.Write(XmmContextBuffer + 8);
+						SetMemory(kAddressOfXmmContextBuffer + 8, (float)context.Xmm0.Value);
+						call.Write(LowLevel.Intel.SSE.movss_xmm2_prefix_addr);
+                        call.Write(kAddressOfXmmContextBuffer + 8);
                     }
-                    if (context.Xmm3 != null)
+					if (context.Xmm3.HasValue)
                     {
-                        SetMemory(XmmContextBuffer + 12, Convert.ToSingle(context.Xmm3));
-                        call.Write(0x1D100FF3); //movss xmm3
-                        call.Write(XmmContextBuffer + 12);
+						SetMemory(kAddressOfXmmContextBuffer + 12, (float)context.Xmm0.Value);
+						call.Write(LowLevel.Intel.SSE.movss_xmm3_prefix_addr);
+                        call.Write(kAddressOfXmmContextBuffer + 12);
                     }
-                    if (context.Xmm4 != null)
+					if (context.Xmm4.HasValue)
                     {
-                        SetMemory(XmmContextBuffer + 16, Convert.ToSingle(context.Xmm4));
-                        call.Write(0x25100FF3); //movss xmm4
-                        call.Write(XmmContextBuffer + 16);
+						SetMemory(kAddressOfXmmContextBuffer + 16, (float)context.Xmm0.Value);
+						call.Write(LowLevel.Intel.SSE.movss_xmm4_prefix_addr);
+                        call.Write(kAddressOfXmmContextBuffer + 16);
                     }
-                    if (context.Xmm5 != null)
+					if (context.Xmm5.HasValue)
                     {
-                        SetMemory(XmmContextBuffer + 20, Convert.ToSingle(context.Xmm5));
-                        call.Write(0x2D100FF3); //movss xmm5
-                        call.Write(XmmContextBuffer + 20);
+						SetMemory(kAddressOfXmmContextBuffer + 20, (float)context.Xmm0.Value);
+						call.Write(LowLevel.Intel.SSE.movss_xmm5_prefix_addr);
+                        call.Write(kAddressOfXmmContextBuffer + 20);
                     }
-                    if (context.Xmm6 != null)
+					if (context.Xmm6.HasValue)
                     {
-                        SetMemory(XmmContextBuffer + 24, Convert.ToSingle(context.Xmm6));
-                        call.Write(0x35100FF3); //movss xmm6
-                        call.Write(XmmContextBuffer + 24);
+						SetMemory(kAddressOfXmmContextBuffer + 24, (float)context.Xmm0.Value);
+						call.Write(LowLevel.Intel.SSE.movss_xmm6_prefix_addr);
+                        call.Write(kAddressOfXmmContextBuffer + 24);
                     }
-                    if (context.Xmm7 != null)
+					if (context.Xmm7.HasValue)
                     {
-                        SetMemory(XmmContextBuffer + 28, Convert.ToSingle(context.Xmm7));
-                        call.Write(0x3D100FF3); //movss xmm7
-                        call.Write(XmmContextBuffer + 28);
+						SetMemory(kAddressOfXmmContextBuffer + 28, (float)context.Xmm0.Value);
+						call.Write(LowLevel.Intel.SSE.movss_xmm7_prefix_addr);
+                        call.Write(kAddressOfXmmContextBuffer + 28);
                     }
                 }
 
@@ -2049,11 +2041,11 @@ namespace YeloDebug
                 //popad
                 //mov   eax, 02DB0000h  ;fake success
                 //retn  10h
-                call.Write((ushort)0x15FF);
+                call.Write(LowLevel.Intel.x86.call_prefix_absolute);
                 call.Write((uint)(XboxHistory.ScriptBufferAddress + call.BaseStream.Position + 18));
                 call.Write((byte)0xA3);
-                call.Write((uint)0x10000);
-                call.Write((byte)0x61); // popad
+                call.Write(kAddressOfReturnValue);
+                call.Write(LowLevel.Intel.x86.popad);
                 call.Write(0xDB0000B8);
                 call.Write(0x0010C202);
                 call.Write(address);
@@ -2067,13 +2059,12 @@ namespace YeloDebug
             SendCommand("crashdump");
 
 			// return the value of eax after the call
-            if (returnValue) return GetUInt32(0x10000);
+			if (returnValue) return GetUInt32(kAddressOfReturnValue);
             else return 0;
 		}
 		#endregion
 
         #region Debugging
-
         /// <summary>
         /// Some debugging events require title execution to be suspended.
         /// But there are some debugging events where thread suspension is an option.
