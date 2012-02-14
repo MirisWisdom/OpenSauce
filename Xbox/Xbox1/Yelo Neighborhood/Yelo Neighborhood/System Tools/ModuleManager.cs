@@ -13,8 +13,13 @@ namespace Yelo_Neighborhood
     {
 		class YeloModule : INotifyPropertyChanged
 		{
-			uint mainAddress, exitAddress;
 			FileInfo fileInfo;
+
+            public uint MainAddress { get { return mainAddress; } }
+            uint mainAddress;
+
+            public uint ExitAddress { get { return exitAddress; } }
+            uint exitAddress;
 
 			public string Module { get { return fileInfo.Name; } }
 			ModuleStatus status;

@@ -13,7 +13,7 @@ namespace Yelo_Neighborhood
     {
         public string Filename { get; set; }
         public string BaseAddressString { get; set; }
-        public long BaseAddress { get; set; }
+        public uint BaseAddress { get; set; }
 
         public NewModule()
         {
@@ -30,7 +30,7 @@ namespace Yelo_Neighborhood
                 cboAddress.Items.Add(cboAddress.Text);
             BaseAddressString = cboAddress.Text;
 
-            try { BaseAddress = Convert.ToInt64(BaseAddressString); }
+            try { BaseAddress = Convert.ToUInt32(BaseAddressString); }
             catch(Exception ex)
             { 
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
