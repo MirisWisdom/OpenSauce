@@ -54,6 +54,9 @@ It is also useful for us to know your system specifications such as your graphic
 NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how to use OS, please consult our wiki and/or create a post on Halomods to get community assistance. We are also NOT taking feature requests in any way.
 
 == Change Log ==
+=== Version 3.0.2 ===
+  * ADD			Increased the maximum amount of files tool will process during an import (this means tool won't stop importing after 500 animations)
+
 === Version 3.0.1 ===
   * ADD			More verbose debug output to compile-shader-postprocess
   * ADD			More sanity checks and messages to build-cache-fil-ex
