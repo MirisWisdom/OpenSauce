@@ -13,6 +13,13 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum {
+			k_maximum_tool_import_files = 1024, // stock size is 500
+		};
+	};
+
 #include "Yelo/MemoryFixups.Paths.inl"
 #include "Yelo/MemoryFixups.TagTextIO.inl"
 	void c_memory_fixups::InitializePaths()
@@ -73,6 +80,14 @@ namespace Yelo
 	{
 		c_memory_fixups::ProcessFixups();
 		c_memory_fixups::FixupsInitializeTagTextIOFixes();
+
+#if PLATFORM_ID == PLATFORM_TOOL
+		uint32* k_tool_import_find_files_references_size = CAST_PTR(uint32*, 0x415099);
+		*k_tool_import_find_files_references_size = Enums::k_maximum_tool_import_files * sizeof(s_file_reference);
+
+		uint32* k_tool_import_find_files_references_count = CAST_PTR(uint32*, 0x4150E1);
+		*k_tool_import_find_files_references_count = Enums::k_maximum_tool_import_files;
+#endif
 
 #if 0
 		c_memory_fixups::DebugPaths();
