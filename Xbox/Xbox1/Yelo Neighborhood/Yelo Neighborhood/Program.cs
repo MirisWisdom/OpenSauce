@@ -23,6 +23,9 @@ namespace Yelo_Neighborhood
         public static LEDStateChanger LEDStateChanger { get { return _LEDStateChanger; } }
         static LEDStateChanger _LEDStateChanger;
 
+        public static ModuleManager ModuleManager { get { return _moduleManager; } }
+        static ModuleManager _moduleManager;
+
         public static List<Executable> Executables { get { return _executables; } }
         static List<Executable> _executables = new List<Executable>();
 
@@ -39,6 +42,7 @@ namespace Yelo_Neighborhood
             _xboxLocator = new XBoxLocator();
             _screenshotTool = new ScreenshotTool();
             _LEDStateChanger = new LEDStateChanger();
+            _moduleManager = new ModuleManager();
 
             LoadExecutables();
 
