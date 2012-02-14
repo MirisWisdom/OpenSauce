@@ -153,8 +153,8 @@ namespace Yelo
 			datum_index Scenario;
 
 #if PLATFORM_ID != PLATFORM_H2_ALPHA
-			// First tag datum
-			datum_index Start;
+			// Globals tag datum
+			datum_index Globals;
 #endif
 
 			uint32 UNKNOWN(0);

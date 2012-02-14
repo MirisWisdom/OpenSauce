@@ -75,10 +75,7 @@ namespace Yelo
 	namespace GameState
 	{
 		Cache::s_header* _CacheHeader()			DPTR_IMP_GET(_CacheHeader);
-		Cache::s_tag_index* _TagIndex()
-		{
-			return CAST_PTR(Cache::s_tag_index*,		0x80061000);
-		}
+		Cache::s_tag_index* _TagIndex()			DPTR_IMP_GET(_TagIndex);
 		Cache::s_tag_instance* _TagInstances()	DPTR_IMP_GET(_TagInstances);
 	};
 };

@@ -157,9 +157,7 @@
     <Compile Include="Render\COLLADA\ColladaInterface.cs" />
     <Compile Include="Render\COLLADA\ErrorReporting\ColladaExceptionStrings.cs" />
     <Compile Include="Render\COLLADA\Export\Halo1\Base.cs" />
-    <Compile Include="Render\COLLADA\Export\Halo1\ExporterBSP.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Render\COLLADA\Export\Halo1\ExporterBSP.cs" />
     <Compile Include="Render\COLLADA\Export\Halo1\ColladaHalo1.cs" />
     <Compile Include="Render\COLLADA\Export\Halo1\Interfaces.cs" />
     <Compile Include="Render\COLLADA\Export\Halo1\ExporterModel.cs" />

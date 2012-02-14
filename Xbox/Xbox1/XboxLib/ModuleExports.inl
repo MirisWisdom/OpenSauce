@@ -9,12 +9,14 @@
 #if defined(__cplusplus)
 extern "C" {
 #endif
-	XBOX_LIB_EXPORT DWORD				k_exports_signature =			1+ (1 + 1 + 1+1 + 1+1 + 1+1) +	// 'Version id' based on the number of exports.
+	XBOX_LIB_EXPORT DWORD				k_exports_signature =			1+ (1+1 + 1 + 1+1 + 1+1 + 1+1) +// 'Version id' based on the number of exports.
 																		(1+1+1) +						// Includes this export in the count.
 																		(1+1+1)
 																		;
 
 	XBOX_LIB_EXPORT const DWORD*		k_exports_title_id =			&k_module_title_id;
+	XBOX_LIB_EXPORT const DWORD*		k_exports_title_version =		&k_module_title_version;
+
 	XBOX_LIB_EXPORT BOOL*				k_exports_emulation_mode =		&k_xbox_lib_emulation_mode;		// Xbox Emulators must set this to non-FALSE
 
 	XBOX_LIB_EXPORT XBOX_EXPORT_TABLE*	k_exports_kernel_table =		&K_KERNEL_EXPORTS;

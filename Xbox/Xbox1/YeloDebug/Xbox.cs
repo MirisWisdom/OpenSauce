@@ -586,7 +586,7 @@ namespace YeloDebug
                 }
             }
 
-			Stopwatch sw = new Stopwatch();
+			Stopwatch sw = Stopwatch.StartNew();
             do
             {
                 Thread.Sleep(1);
@@ -1559,13 +1559,13 @@ namespace YeloDebug
 			uint TestBuffer = AllocateMemory(memBufferSize); //64kb
 			byte[] membuf = new byte[memBufferSize];
 
-			Stopwatch memReadTimer = new Stopwatch();
+			Stopwatch memReadTimer = Stopwatch.StartNew();
 			for (int i = 0; i < 400; i++)
 				membuf = GetMemory(TestBuffer, memBufferSize);
 			memReadTimer.Stop();
 			string memReadSpeed = ((400.0f * (float)memBufferSize * toMegs) / (float)memReadTimer.Elapsed.TotalSeconds).ToString();
 
-			Stopwatch memWriteTimer = new Stopwatch();
+			Stopwatch memWriteTimer = Stopwatch.StartNew();
             for (int i = 0; i < 400; i++)
                 MemoryStream.Write(TestBuffer, (int)membuf.Length, membuf, 0);
 			memWriteTimer.Stop();
@@ -1581,7 +1581,7 @@ namespace YeloDebug
 			{
 				byte[] filebuf = new byte[fileBufferSize];
 
-				Stopwatch fileWriteTimer = new Stopwatch();
+				Stopwatch fileWriteTimer = Stopwatch.StartNew();
 				for (int i = 0; i < 16; i++)
 				{
 					xbfs.Position = 0;
@@ -1590,7 +1590,7 @@ namespace YeloDebug
 				fileWriteTimer.Stop();
 				fileWriteSpeed = ((16.0f * (float)fileBufferSize * toMegs) / (float)fileWriteTimer.Elapsed.TotalSeconds).ToString();
 
-				Stopwatch fileReadTimer = new Stopwatch();
+				Stopwatch fileReadTimer = Stopwatch.StartNew();
 				for (int i = 0; i < 16; i++)
 				{
 					xbfs.Position = 0;

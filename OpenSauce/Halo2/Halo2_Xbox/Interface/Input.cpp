@@ -52,7 +52,7 @@ namespace Yelo
 		{
  			HANDLE handle;
  
- 			for(int32 x = 0; x < 4; x++)
+			for(int32 x = 0; x < Enums::k_number_of_controllers; x++)
  			{
  				if( handle = GamepadHandles(x) )
  					YeloPadCreate( CurrentStates(x) );
@@ -351,7 +351,7 @@ namespace Yelo
 
 		s_yelopad& CurrentStates(int32 controller_index)
 		{
-			static s_yelopad instances[4] = {
+			static s_yelopad instances[Enums::k_number_of_controllers] = {
 				{0},
 				{1},
 				{2},
