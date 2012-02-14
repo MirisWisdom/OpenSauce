@@ -567,5 +567,8 @@ namespace Yelo_Neighborhood
 
         private void lEDStateToolStripMenuItem_Click(object sender, EventArgs e)
         { Program.LEDStateChanger.ShowDialog(); }
+
+        private void moduleManagerToolStripMenuItem_Click(object sender, EventArgs e)
+        { Program.ModuleManager.ShowDialog(); }
     };
 }
