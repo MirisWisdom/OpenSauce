@@ -129,7 +129,6 @@
             this.Name = "NewModule";
             this.Text = "New Module";
             this.TopMost = true;
-            this.Load += new System.EventHandler(this.NewModule_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

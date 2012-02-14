@@ -30,7 +30,7 @@ namespace Yelo_Neighborhood
                 cboAddress.Items.Add(cboAddress.Text);
             BaseAddressString = cboAddress.Text;
 
-            try { BaseAddress = Convert.ToUInt32(BaseAddressString); }
+            try { BaseAddress = Convert.ToUInt32(BaseAddressString, 16); }
             catch(Exception ex)
             { 
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -42,8 +42,8 @@ namespace Yelo_Neighborhood
 
         private void cmdBrowse_Click(object sender, EventArgs e)
         {
-            if (OFD.ShowDialog() != DialogResult.OK) return;
-            cboAddress.Text = OFD.FileName;
+            if (OFD.ShowDialog() == DialogResult.OK)
+				cboAddress.Text = OFD.FileName;
         }
     }
 }

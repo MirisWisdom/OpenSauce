@@ -13,14 +13,10 @@ namespace Yelo_Neighborhood
     {
 		class YeloModule : INotifyPropertyChanged
 		{
+			uint mainAddress, exitAddress;
 			FileInfo fileInfo;
 
-            public uint MainAddress { get { return mainAddress; } }
-            uint mainAddress;
-
-            public uint ExitAddress { get { return exitAddress; } }
-            uint exitAddress;
-
+			public uint BaseAddress { get; private set; }
 			public string Module { get { return fileInfo.Name; } }
 			ModuleStatus status;
 			public ModuleStatus Status
@@ -44,10 +40,11 @@ namespace Yelo_Neighborhood
 				Running,
 			};
 
-			public YeloModule(string filename, long baseAddress)
+			public YeloModule(string filename, uint baseAddress)
 			{
 				mainAddress = exitAddress = uint.MaxValue;
 
+				BaseAddress = baseAddress;
 				fileInfo = new FileInfo(filename);
 				status = ModuleStatus.Error;
 				Reload();
@@ -55,10 +52,15 @@ namespace Yelo_Neighborhood
 
 			bool Run(out string error_details)
 			{
-				error_details = "";
-				YeloDebug.XboxDll.RebaseModuleAndSave(fileInfo.FullName, 0, out error_details); // Testing...
-				// TODO
-				return false;
+				YeloDebug.XboxDll.RebaseModuleAndSave(fileInfo.FullName, BaseAddress, out error_details); // Testing...
+
+				bool result = false;
+				if (result)
+				{
+					result = YeloDebug.XboxDll.RunModule(Program.XBox, fileInfo.FullName, BaseAddress, 
+						out mainAddress, out exitAddress, out error_details);
+				}
+				return result;
 			}
 
 			public void Reload()
@@ -75,7 +77,7 @@ namespace Yelo_Neighborhood
 			{
 				if (exitAddress != uint.MaxValue)
 				{
-					// TODO
+					YeloDebug.XboxDll.UnloadModule(Program.XBox, exitAddress);
 					Status = ModuleStatus.Unloaded;
 				}
 				else
@@ -109,8 +111,8 @@ namespace Yelo_Neighborhood
 
         private void cmdNew_Click(object sender, EventArgs e)
         {
-            if (Program.NewModule.ShowDialog() != DialogResult.OK) return;
-            modules.Add(new YeloModule(Program.NewModule.FileName, Program.NewModule.BaseAddress));
+            if (Program.NewModule.ShowDialog() == DialogResult.OK)
+				modules.Add(new YeloModule(Program.NewModule.Filename, Program.NewModule.BaseAddress));
         }
 
         private void cmdReload_Click(object sender, EventArgs e)
