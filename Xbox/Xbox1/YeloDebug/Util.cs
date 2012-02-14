@@ -152,8 +152,6 @@ namespace YeloDebug
             return (uint)(1.8f * degrees + 32);
         }
 
-        public static unsafe uint FloatToUInt32(float value) { return *(uint*)&value; }
-
         /// <summary>
         /// Makes sure size is aligned to specs.  Unaligned sizes will be rounded up to the next 4kb page boundary.
         /// </summary>
@@ -184,7 +182,7 @@ namespace YeloDebug
 						bw.Write(Convert.ToUInt32(obj));
 						break;
 					case TypeCode.Single:
-						bw.Write(FloatToUInt32((float)obj));
+						bw.Write(LowLevel.ByteSwap.SingleToUInt32((float)obj));
 						break;
 				}
 			}

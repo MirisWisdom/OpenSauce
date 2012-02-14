@@ -14,15 +14,16 @@ namespace YeloDebug
     /// </summary>
     public class XboxDll
     {
-        [DllImport("UtilDll.dll", EntryPoint = "Util_RelocateDll", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
-        public extern static int RelocateDll(
+		[DllImport("UtilDll.dll", EntryPoint = "Util_RebaseModule", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
+        public extern static int RebaseModule(
             [MarshalAs(UnmanagedType.LPStr)] string Path,
             [In, Out, MarshalAs(UnmanagedType.LPArray)] byte[] reloc_dll,
             uint reloc_dll_size,
-            ref uint base_address);
+            ref uint base_address,
+			uint reloc_alloc_count);
 
-        [DllImport("UtilDll.dll", EntryPoint = "Util_CalculateDllCodeSize", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
-        public extern static int CalculateDllCodeSize(
+		[DllImport("UtilDll.dll", EntryPoint = "Util_CalculateModuleCodeSize", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
+        public extern static int CalculateModuleCodeSize(
             [MarshalAs(UnmanagedType.LPStr)] string Path,
             out uint code_size);
     }

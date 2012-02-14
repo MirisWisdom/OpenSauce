@@ -954,7 +954,7 @@ namespace YeloDebug
                     else notificationSessionEnabled = false;
                 }
 			}
-            catch (Exception ex)
+            catch (Exception /*ex*/)
             { 
                 notificationSessionEnabled = false;
                 notificationListener.Stop();
@@ -1448,7 +1448,7 @@ namespace YeloDebug
                 {
                     connection.Client.Send(ASCIIEncoding.ASCII.GetBytes(string.Format(command, args) + Environment.NewLine));
                 }
-                catch (Exception ex)
+                catch (Exception /*ex*/)
                 {
                     Disconnect();
                     throw new NoConnectionException();

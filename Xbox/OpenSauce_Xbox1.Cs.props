@@ -40,11 +40,4 @@
 
     <DocumentationFile>$(SolutionDir)..\lib\$(Configuration)\$(Platform)\$(AssemblyName)\$(AssemblyName).XML</DocumentationFile>
   </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DefineConstants>TRACE</DefineConstants>
-  </PropertyGroup>
 </Project>

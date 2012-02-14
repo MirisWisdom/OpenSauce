@@ -29,6 +29,9 @@ namespace LowLevel {
 	public mcpp_class ByteSwap abstract sealed
 	{
 	mcpp_public
+		static mcpp_real SingleFromUInt32(mcpp_uint val);
+		static mcpp_uint SingleToUInt32(mcpp_real real_number);
+
 		/// <summary>
 		/// Swaps a single-precision number and returns the value
 		/// </summary>

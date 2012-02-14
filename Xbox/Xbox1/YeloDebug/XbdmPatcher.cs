@@ -61,7 +61,7 @@ namespace YeloDebug
 		public bool ApplyPatch(string output_file_path)
 		{
 			try { File.Copy(m_xbdmFilePath, output_file_path, true); }
-			catch (UnauthorizedAccessException ex)
+			catch (UnauthorizedAccessException /*ex*/)
 			{
 				return false;
 			}

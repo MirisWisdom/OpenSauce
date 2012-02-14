@@ -207,7 +207,7 @@ namespace YeloDebug
                 System.Threading.Thread.Sleep(100); // wait for it to fully activate
                 isActive = true;
             }
-            catch(Exception ex)
+            catch(Exception /*ex*/)
             {
                 End();
             }
