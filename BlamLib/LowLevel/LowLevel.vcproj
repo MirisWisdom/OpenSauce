@@ -518,6 +518,14 @@
 			</File>
 		</Filter>
 		<File
+			RelativePath=".\IntelAsm.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\IntelAsm.hpp"
+			>
+		</File>
+		<File
 			RelativePath=".\LowLevel.cpp"
 			>
 		</File>

@@ -46,7 +46,8 @@ namespace Yelo_Neighborhood
         public void LoadPartitions()
         {
             CurrentDirectory = "";
-            
+
+			listFiles.BeginUpdate();
             listFiles.Clear();
 
             ListViewGroup partitionsGroup = new ListViewGroup("Partitions");
@@ -57,6 +58,7 @@ namespace Yelo_Neighborhood
 
             listFiles.LabelEdit = false;
             listFiles.ContextMenuStrip = null;
+			listFiles.EndUpdate();
             cmdNewFolder.Enabled = false;
         }
 
@@ -73,6 +75,7 @@ namespace Yelo_Neighborhood
 
             CurrentDirectory = dir;
 
+			listFiles.BeginUpdate();
             listFiles.Clear();
             
             ListViewGroup foldersGroup = new ListViewGroup("Folders");
@@ -118,6 +121,7 @@ namespace Yelo_Neighborhood
 
             listFiles.LabelEdit = true;
             listFiles.ContextMenuStrip = mnuFiles;
+			listFiles.EndUpdate();
             cmdNewFolder.Enabled = true;
         }
 

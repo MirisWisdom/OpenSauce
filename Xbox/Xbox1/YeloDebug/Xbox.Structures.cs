@@ -351,24 +351,25 @@ namespace YeloDebug
 	public class CPUContext
 	{
 		// general purpose - assumes integer assignment
-		public object Eax;
-		public object Ebx;
-		public object Ecx;
-		public object Edx;
-		public object Esi;
-		public object Edi;
-		public object Esp;
-		public object Ebp;
+		public uint? Eax;
+		public uint? Ebx;
+		public uint? Ecx;
+		public uint? Edx;
+		public uint? Esi;
+		public uint? Edi;
+		public uint? Esp;
+		public uint? Ebp;
 
 		// sse - assumes floating point assignment
-		public object Xmm0;
-		public object Xmm1;
-		public object Xmm2;
-		public object Xmm3;
-		public object Xmm4;
-		public object Xmm5;
-		public object Xmm6;
-		public object Xmm7;
+		// TODO: these really should be doubles
+		public float? Xmm0;
+		public float? Xmm1;
+		public float? Xmm2;
+		public float? Xmm3;
+		public float? Xmm4;
+		public float? Xmm5;
+		public float? Xmm6;
+		public float? Xmm7;
 	};
 
 	/// <summary>
@@ -399,19 +400,16 @@ namespace YeloDebug
 	/// </summary>
 	public class StatusResponse
 	{
-		private string full;
-		public string Full { get { return full; } }
-		private ResponseType type;
-		public ResponseType Type { get { return type; } }
-		private string message;
-		public string Message { get { return message; } }
-		public bool Success { get { return ((int)type & 200) == 200; } }
+		public string Full { get; private set; }
+		public ResponseType Type { get; private set; }
+		public string Message { get; private set; }
+		public bool Success { get { return ((int)Type & 200) == 200; } }
 
 		public StatusResponse(string full, ResponseType type, string message)
 		{
-			this.full = full;
-			this.type = type;
-			this.message = message;
+			this.Full = full;
+			this.Type = type;
+			this.Message = message;
 		}
 	};
 
