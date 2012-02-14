@@ -14,7 +14,7 @@ extern "C" { // Mark as C code so the compiler doesn't mangle the exported funct
 	// returns: S_OK if everything went ok, else E_FAIL, and E_ABORT if internal operations failed
 	// ASSUMES:
 	//	The file exists. It handles non-existent files, however, will just return zero.
-	UTILDLL_API HRESULT Util_CalculateModuleCodeSize(IN LPCTSTR lpFileName, OUT PUINT32 code_size);
+	UTILDLL_API HRESULT Util_CalculateModuleCodeSize(IN LPCWSTR lpFileName, OUT PUINT32 code_size);
 
 	// [lpFileName]	- path to the dll who's addresses we will rebase
 	// [reloc_dll]	- buffer to receive the rebased dll file (should be at least as large as the dll in bytes)
@@ -33,6 +33,6 @@ extern "C" { // Mark as C code so the compiler doesn't mangle the exported funct
 	//	.text is the first section
 	//	.text, .rdata, and .data sections (however many) all come before discardable sections (eg, .edata, .reloc, etc)
 	//	.reloc is the last section of needed data (that has to be in memory) to run the code
-	UTILDLL_API HRESULT Util_RebaseModule(IN LPCTSTR lpFileName, OUT PBYTE reloc_dll, IN UINT32 reloc_dll_size, 
+	UTILDLL_API HRESULT Util_RebaseModule(IN LPCWSTR lpFileName, OUT PBYTE reloc_dll, IN UINT32 reloc_dll_size, 
 		IN OUT PUINT32 base_address, IN UINT32 reloc_alloc_count);
 };

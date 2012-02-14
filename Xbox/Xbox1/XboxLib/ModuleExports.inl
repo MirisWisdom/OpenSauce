@@ -28,10 +28,6 @@ extern "C" {
 	XBOX_LIB_EXPORT XBOX_KERNEL_VTABLE* k_exports_kernel_vtable =		&K_KERNEL_5933;
 	//XBOX_LIB_EXPORT XBOX_KERNEL_DATA* k_exports_kernel_data =			&K_KERNELDATA_5933;
 
-	// Note: since we have pointers that reference data within our export section,
-	// this will probably cause relocation entries for this section. Need to validate
-	// that our module rebaser utility doesn't choke on this
-
 	XBOX_LIB_EXPORT XBOX_API_VTABLE*	k_exports_api =					&XboxApi;
 	XBOX_LIB_EXPORT_HIDDEN const char	k_exports_api_names_[][32] = {
 		#define VTABLE_ENTRY(function) #function ,

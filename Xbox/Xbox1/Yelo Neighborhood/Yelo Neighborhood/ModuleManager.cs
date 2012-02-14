@@ -51,6 +51,7 @@ namespace Yelo_Neighborhood
 			bool Run(out string error_details)
 			{
 				error_details = "";
+				YeloDebug.XboxDll.RebaseModuleAndSave(m_fileInfo.FullName, 0, out error_details); // Testing...
 				// TODO
 				return false;
 			}
