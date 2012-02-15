@@ -41,7 +41,6 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="$(SolutionDir)shared\Include;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;XLIVE_EXPORTS"
-				BasicRuntimeChecks="3"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
 			/>
 			<Tool
@@ -55,7 +54,6 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				LinkIncremental="0"
 				ModuleDefinitionFile="XLive.def"
 			/>
 			<Tool
@@ -174,10 +172,6 @@
 			</File>
 			<File
 				RelativePath=".\Common\Precompile.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Common\targetver.hpp"
 				>
 			</File>
 			<File
