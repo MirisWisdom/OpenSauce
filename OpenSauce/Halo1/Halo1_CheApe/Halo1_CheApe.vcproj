@@ -18,8 +18,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -41,9 +41,9 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="$(SolutionDir)shared\Include;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;HALO1_CHEAPE_EXPORTS"
-				ExceptionHandling="1"
 				StringPooling="true"
 				MinimalRebuild="true"
+				ExceptionHandling="1"
 				BasicRuntimeChecks="3"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
 				DisableSpecificWarnings="4311;4312"
@@ -84,8 +84,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -151,8 +151,8 @@
 		</Configuration>
 		<Configuration
 			Name="DebugTool|Win32"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -175,9 +175,9 @@
 				Optimization="0"
 				AdditionalIncludeDirectories="$(SolutionDir)shared\Include;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;HALO1_CHEAPE_EXPORTS;PLATFORM_TYPE_TOOL"
-				ExceptionHandling="1"
 				StringPooling="true"
 				MinimalRebuild="true"
+				ExceptionHandling="1"
 				BasicRuntimeChecks="3"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
 				DisableSpecificWarnings="4311;4312"
@@ -220,8 +220,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseTool|Win32"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -288,8 +288,8 @@
 		</Configuration>
 		<Configuration
 			Name="DebugGuerilla|Win32"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -311,9 +311,9 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="$(SolutionDir)shared\Include;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;HALO1_CHEAPE_EXPORTS;PLATFORM_TYPE_GUERILLA"
-				ExceptionHandling="1"
 				StringPooling="true"
 				MinimalRebuild="true"
+				ExceptionHandling="1"
 				BasicRuntimeChecks="3"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
 				DisableSpecificWarnings="4311;4312"
@@ -355,8 +355,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseGuerilla|Win32"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -422,8 +422,8 @@
 		</Configuration>
 		<Configuration
 			Name="DebugSapien|Win32"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -445,9 +445,9 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="$(SolutionDir)shared\Include;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;HALO1_CHEAPE_EXPORTS;PLATFORM_TYPE_SAPIEN"
-				ExceptionHandling="1"
 				StringPooling="true"
 				MinimalRebuild="true"
+				ExceptionHandling="1"
 				BasicRuntimeChecks="3"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
 				DisableSpecificWarnings="4311;4312"
@@ -490,8 +490,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseSapien|Win32"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -1211,6 +1211,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1219,6 +1220,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1227,6 +1229,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1235,6 +1238,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1243,6 +1247,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1251,6 +1256,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1259,6 +1265,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1267,6 +1274,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 					</File>
@@ -1279,6 +1287,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1287,6 +1296,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1295,6 +1305,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1303,6 +1314,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1311,6 +1323,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1319,6 +1332,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1327,6 +1341,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1335,6 +1350,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 					</File>
@@ -1347,6 +1363,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1355,6 +1372,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1363,6 +1381,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1371,6 +1390,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1379,6 +1399,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1387,6 +1408,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1395,6 +1417,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1403,6 +1426,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 					</File>
@@ -1703,6 +1727,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1711,6 +1736,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1719,6 +1745,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1727,6 +1754,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1735,6 +1763,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1743,6 +1772,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1751,6 +1781,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1759,6 +1790,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4996"
 							/>
 						</FileConfiguration>
 					</File>

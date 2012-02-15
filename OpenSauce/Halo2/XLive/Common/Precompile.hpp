@@ -7,8 +7,6 @@
 
 #pragma comment(lib, "Ws2_32.lib")
 
-#include "Common/targetver.hpp"
-
 #define WIN32_LEAN_AND_MEAN             // Exclude rarely-used stuff from Windows headers
 #include <windows.h>
 #include <stdlib.h>
