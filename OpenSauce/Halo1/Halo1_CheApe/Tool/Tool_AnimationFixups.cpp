@@ -18,6 +18,7 @@ namespace Yelo
 		int32 c_animation_fixups::max_animations = NONE;
 		bool* c_animation_fixups::importer_valid_animations_array = NULL;
 		int32* c_animation_fixups::importer_animation_index_array = NULL;
+		int16* c_animation_fixups::importer_animation_remapping_index_array = NULL;
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -186,6 +187,74 @@ _result_is_le:
 		//////////////////////////////////////////////////////////////////////////
 
 
+		//////////////////////////////////////////////////////////////////////////
+		// animation index array
+
+		API_FUNC_NAKED static void _importer_animation_remapping_index_set_indice()
+		{
+			static const uint32 RETN_ADDRESS = 0x40332B;
+
+			__asm {
+				// eax isn't used around this code, so it is safe
+				mov		eax, c_animation_fixups::importer_animation_remapping_index_array
+				mov		[eax+ebp*2], si
+
+				jmp		RETN_ADDRESS
+			}
+		}
+
+		API_FUNC_NAKED static void _importer_animation_remapping_index_get_indice()
+		{
+			static const uint32 RETN_ADDRESS = 0x4033B4;
+
+			__asm {
+				// eax isn't used around this code, so it is safe
+				mov		eax, c_animation_fixups::importer_animation_remapping_index_array
+				mov		dx, [eax+ecx*2]
+
+				jmp		RETN_ADDRESS
+			}
+		}
+
+		API_FUNC_NAKED static void _importer_animation_remapping_index_get_indice2()
+		{
+			static const uint32 RETN_ADDRESS = 0x4034A2;
+
+			__asm {
+				// eax isn't used around this code, so it is safe
+				mov		eax, c_animation_fixups::importer_animation_remapping_index_array
+				mov		ax, [eax+edx*2]
+
+				jmp		RETN_ADDRESS
+			}
+		}
+
+		void c_animation_fixups::InitializeAnimationRemappingIndexArrayFixups()
+		{
+			importer_animation_remapping_index_array = YELO_NEW_ARRAY(int16, max_animations);
+			YELO_ASSERT( importer_animation_remapping_index_array );
+			memset(importer_animation_remapping_index_array, NONE, max_animations * sizeof(importer_animation_remapping_index_array[0]));
+
+			void* IMPORTER_ANIMATION_REMAPPING_INDEX_SET_INDICE_HOOK = CAST_PTR(void*, 0x403326);
+			Memory::WriteRelativeJmp(_importer_animation_remapping_index_set_indice, 
+				IMPORTER_ANIMATION_REMAPPING_INDEX_SET_INDICE_HOOK, true);
+
+			void* IMPORTER_ANIMATION_REMAPPING_INDEX_GET_INDICE_HOOK = CAST_PTR(void*, 0x4033AF);
+			Memory::WriteRelativeJmp(_importer_animation_remapping_index_get_indice, 
+				IMPORTER_ANIMATION_REMAPPING_INDEX_GET_INDICE_HOOK, true);
+
+			void* IMPORTER_ANIMATION_REMAPPING_INDEX_GET_INDICE2_HOOK = CAST_PTR(void*, 0x40349D);
+			Memory::WriteRelativeJmp(_importer_animation_remapping_index_get_indice2, 
+				IMPORTER_ANIMATION_REMAPPING_INDEX_GET_INDICE2_HOOK, true);
+		}
+
+		void c_animation_fixups::DisposeAnimationRemappingIndexArrayFixups()
+		{
+			YELO_DELETE(importer_animation_remapping_index_array);
+		}
+		//////////////////////////////////////////////////////////////////////////
+
+
 		void c_animation_fixups::InitializeIntermediateMemoryFixups()
 		{
 			int32* INTERMEDIATE_DATA_MEMORY_ALLOCATION_SIZE = CAST_PTR(int32*, 0x402420);
@@ -209,12 +278,13 @@ _result_is_le:
 				// then use that value to fix-up tool, else no animation code fix-ups are performed
 				if(max_animations != NONE)
 				{
-					if(max_animations > 500)
+					if(max_animations > Enums::k_maximum_tool_import_files)
 						EngineFunctions::error(Enums::_error_message_priority_warning, 
-						"CheApe: tool has been known to stop processing after the 500th animation (user defined: %d)", max_animations);
+						"CheApe: maximum animations is greater than maximum number of import files tool is able to process (%d > %d)", max_animations, Enums::k_maximum_tool_import_files);
 
 					InitializeValidAnimationsArrayFixups();
 					InitializeAnimationIndexArrayFixups();
+					InitializeAnimationRemappingIndexArrayFixups();
 
 					InitializeIntermediateMemoryFixups();
 				}
@@ -227,6 +297,7 @@ _result_is_le:
 			{
 				DisposeValidAnimationsArrayFixups();
 				DisposeAnimationIndexArrayFixups();
+				DisposeAnimationRemappingIndexArrayFixups();
 			}
 		}
 	};

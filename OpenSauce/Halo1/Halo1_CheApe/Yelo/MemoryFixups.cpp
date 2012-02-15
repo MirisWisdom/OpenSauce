@@ -13,13 +13,6 @@
 
 namespace Yelo
 {
-	namespace Enums
-	{
-		enum {
-			k_maximum_tool_import_files = 1024, // stock size is 500
-		};
-	};
-
 #include "Yelo/MemoryFixups.Paths.inl"
 #include "Yelo/MemoryFixups.TagTextIO.inl"
 	void c_memory_fixups::InitializePaths()

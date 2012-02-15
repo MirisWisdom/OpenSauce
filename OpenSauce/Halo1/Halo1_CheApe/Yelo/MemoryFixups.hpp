@@ -8,6 +8,13 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum {
+			k_maximum_tool_import_files = 2048, // stock size is 500
+		};
+	};
+
 	class c_memory_fixups
 	{
 		static struct s_override_paths {
