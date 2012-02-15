@@ -40,6 +40,21 @@ static bool section_name_is_usable_or_can_contain_relocs(const char* section_nam
 			memcmp(section_name, k_section_name_modexport, IMAGE_SIZEOF_SHORT_NAME) == 0;
 }
 
+// For cases like .data, where SizeOfRawData is the smaller value.
+// In such a case, bytes past SizeOfRawData are suppose to be "uninitialized", and aren't stored within the PE (ie, no space is consumed for what is essentially zero bytes)
+static DWORD section_get_correct_copy_size(IMAGE_SECTION_HEADER& header)
+{
+	DWORD section_size = min(header.Misc.VirtualSize, header.SizeOfRawData);
+
+	return section_size;
+}
+static DWORD section_get_correct_alloc_size(IMAGE_SECTION_HEADER& header)
+{
+	DWORD section_size = max(header.Misc.VirtualSize, header.SizeOfRawData);
+
+	return section_size;
+}
+
 struct s_reloc_table
 {
 	IMAGE_BASE_RELOCATION Header;
@@ -54,6 +69,42 @@ struct s_reloc_table
 };
 
 #pragma warning(pop)
+
+struct s_section_info
+{
+	DWORD Start, End;
+	// SizeOfRawData is the size of the section when padded/aligned out
+	// VirtualSize is the actual size of the section
+	// Since our modules don't actually have individual sections, we treat the rebased
+	// module as one giant section. Meaning that useless padding is useless.
+	// We need to track how much extra we need to lob off addresses we rebase in this
+	// section to implement this.
+	DWORD UselessAlignAdjustment;
+
+	DWORD Size() { return End - Start; }
+
+	void Initialize(IMAGE_SECTION_HEADER& h, IMAGE_SECTION_HEADER* prev_h, DWORD& align_adjust)
+	{
+		Start = h.VirtualAddress;
+		End = h.VirtualAddress + h.Misc.VirtualSize;
+
+		if(prev_h != NULL)
+		{
+			UselessAlignAdjustment = h.VirtualAddress - prev_h->VirtualAddress;
+			UselessAlignAdjustment -= prev_h->SizeOfRawData;
+			UselessAlignAdjustment += align_adjust;
+		}
+		else
+			UselessAlignAdjustment = 0;
+
+		align_adjust = UselessAlignAdjustment;
+	}
+
+	void Dump(FILE* debug_file)
+	{
+		fprintf_s(debug_file, "%X\t%X\t%X\n", Start, End, UselessAlignAdjustment);
+	}
+};
 
 UTILDLL_API HRESULT Util_CalculateModuleCodeSize(LPCWSTR lpFileName, PUINT32 code_size)
 {
@@ -115,16 +166,13 @@ UTILDLL_API HRESULT Util_CalculateModuleCodeSize(LPCWSTR lpFileName, PUINT32 cod
 
 		if(result == S_OK)
 		{
-//			DWORD sub = 0;
 			for(size_t x = 0; x < DllStruct.SectionCount; x++)
 			{
 				const char* section_name = reinterpret_cast<char*>(DllStruct.Sections[x].Name);
 				if(	!section_name_is_usable(section_name) )
 					continue;
 
-// 				*code_size = DllStruct.Sections[x].VirtualAddress - sub;
-// 				sub = DllStruct.Sections[x].VirtualAddress;
-				*code_size += DllStruct.Sections[x].SizeOfRawData;
+				*code_size += section_get_correct_alloc_size(DllStruct.Sections[x]);
 			}
 		}
 	}
@@ -135,7 +183,7 @@ UTILDLL_API HRESULT Util_CalculateModuleCodeSize(LPCWSTR lpFileName, PUINT32 cod
 
 UTILDLL_API HRESULT Util_RebaseModule(LPCWSTR lpFileName, PBYTE reloc_dll, UINT32 reloc_dll_size, PUINT32 base_address, UINT32 reloc_alloc_count)
 {
-	if(reloc_alloc_count <= 0)
+	if(reloc_alloc_count == 0)
 	{
 		// the default size of this table may not be big enough since the xbox dll will always be compiled with max optimization settings
 		reloc_alloc_count = 4096;
@@ -197,10 +245,7 @@ UTILDLL_API HRESULT Util_RebaseModule(LPCWSTR lpFileName, PBYTE reloc_dll, UINT3
 		IMAGE_SECTION_HEADER* RelocSection;
 		DWORD RelocationsCount;
 		s_reloc_table** Relocations;
-		struct _SectionInfo {
-			DWORD Start;
-			DWORD End;
-		}* SectionInfo;
+		s_section_info* SectionInfo;
 
 		s_file_struct()	{ memset(this, 0, sizeof(*this)); }
 		~s_file_struct()
@@ -230,11 +275,25 @@ UTILDLL_API HRESULT Util_RebaseModule(LPCWSTR lpFileName, PBYTE reloc_dll, UINT3
 		{
 			SectionCount = count;
 			Sections = new IMAGE_SECTION_HEADER[count];
-			SectionInfo = new _SectionInfo[count];
+			SectionInfo = new s_section_info[count];
 		}
 		void AllocateRelocations(size_t count)
 		{
 			Relocations = new s_reloc_table*[count];
+		}
+
+		DWORD FindSectionIndexForVA(DWORD va)
+		{
+			for(DWORD x = 0; x < SectionCount; x++)
+			{
+				IMAGE_SECTION_HEADER& h = Sections[x];
+				DWORD start = h.VirtualAddress;
+				DWORD end = start + h.Misc.VirtualSize;
+
+				if(va >= start && va < end) return x;
+			}
+
+			return MAXDWORD;
 		}
 	}DllStruct;
 	DWORD lpNumberOfBytesRead;
@@ -285,21 +344,19 @@ UTILDLL_API HRESULT Util_RebaseModule(LPCWSTR lpFileName, PBYTE reloc_dll, UINT3
 	}
 
 	DebugCode( s_managed_file debug_file = s_managed_file("UtilDll.log", "wb") );
-	DebugCode( fprintf_s(debug_file, "length:%d\tsections:%d\n", dll_buffer.size, DllStruct.SectionCount) );
+	DebugCode( fprintf_s(debug_file, "src:%X\tdst:%X\tsections:%d\n", dll_buffer.size, reloc_dll_size, DllStruct.SectionCount) );
 
 
-
-	DWORD x;
 
 	// !--- Get the relocation section data ---
 	DWORD modexport_index = MAXDWORD, reloc_index = MAXDWORD;
-	for(x = 0; x < DllStruct.SectionCount; x++)
+	for(DWORD x = 0, align_adjust = 0; x < DllStruct.SectionCount; x++)
 	{
+		IMAGE_SECTION_HEADER* prev_h = x > 0 ? &DllStruct.Sections[x-1] : NULL;
 		// calculate ranges
-		DllStruct.SectionInfo[x].Start = DllStruct.Sections[x].VirtualAddress;
-		DllStruct.SectionInfo[x].End = (DllStruct.Sections[x].VirtualAddress + DllStruct.Sections[x].SizeOfRawData);
+		DllStruct.SectionInfo[x].Initialize(DllStruct.Sections[x], prev_h, align_adjust);
 
-		DebugCode( fprintf_s(debug_file, "%X\t%X\n", DllStruct.SectionInfo[x].Start, DllStruct.SectionInfo[x].End) );
+		DebugCode( DllStruct.SectionInfo[x].Dump(debug_file) );
 
 		const char* section_name = reinterpret_cast<char*>(DllStruct.Sections[x].Name);
 		if(!memcmp(section_name, k_section_name_modexport, 
@@ -314,19 +371,8 @@ UTILDLL_API HRESULT Util_RebaseModule(LPCWSTR lpFileName, PBYTE reloc_dll, UINT3
 	if(modexport_index == MAXDWORD || reloc_index == MAXDWORD)
 		return E_ABORT; // we couldn't find a fucking relocation section and the export section isn't present. so sod off, get your own cheese...
 
-	// TODO: we shouldn't need to do this anymore since we check for only valid section names now
-#if FALSE
-	if( (reloc_index - modexport_index) != 1 )
-	{
-		DebugCode( fprintf_s(debug_file, "ERROR: modexport doesn't come immediate before reloc! %d %d\n", modexport_index, reloc_index) );
-		return E_ABORT;
-	}
-#endif
-
 	DllStruct.RelocSection = &DllStruct.Sections[reloc_index]; // hey, why not make it a little easier and add a pointer to that reloc section header
 	DebugCode( fputs("\n", debug_file) );
-
-	DllStruct.SectionCount--;// the last section should be the reloc, everything else should be what we want
 	// !--- Get the relocation section data ---
 
 
@@ -334,13 +380,13 @@ UTILDLL_API HRESULT Util_RebaseModule(LPCWSTR lpFileName, PBYTE reloc_dll, UINT3
 
 	// !--- Fill in the relocation section pointers ---
 	BYTE* reloc_buffer = &dll_buffer.buffer[DllStruct.RelocSection->PointerToRawData]; // pointer to the relocation table section's *data*
-	DWORD reloc_buffer_size = DllStruct.RelocSection->SizeOfRawData; // size of the relocation table section's *data*
+	DWORD reloc_buffer_size = DllStruct.RelocSection->Misc.VirtualSize; // size of the relocation table section's *data*
 
 	DebugCode( fputs("reloc buffer sizes\n", debug_file) );
 	DllStruct.AllocateRelocations(reloc_alloc_count);
-	x = 0; // x = offset in the relocations section buffer
+	// x = offset in the relocations section buffer
 	// index = indexer to the relocations table we're building
-	for(DWORD index = 0; x <= reloc_buffer_size; index++)
+	for(DWORD x = 0, index = 0; x <= reloc_buffer_size; index++)
 	{
 		if(x >= reloc_alloc_count)
 		{
@@ -375,19 +421,19 @@ UTILDLL_API HRESULT Util_RebaseModule(LPCWSTR lpFileName, PBYTE reloc_dll, UINT3
 		DWORD tmp = rt->Header.VirtualAddress;
 		DWORD section_info_index = MAXDWORD;
 
-		for(DWORD y = 0; y < DllStruct.SectionCount; y++)
+		for(DWORD x = 0; x < DllStruct.SectionCount; x++)
 		{
-			if(tmp >= DllStruct.SectionInfo[y].Start && tmp <= DllStruct.SectionInfo[y].End)
+			if(tmp >= DllStruct.SectionInfo[x].Start && tmp <= DllStruct.SectionInfo[x].End)
 			{
-				section_info_index = y;
+				section_info_index = x;
 
-				const char* section_name = reinterpret_cast<char*>(DllStruct.Sections[y].Name);
+				const char* section_name = reinterpret_cast<char*>(DllStruct.Sections[x].Name);
 				if( !section_name_is_usable_or_can_contain_relocs(section_name) )
 				{
 					DebugCode(
 						char name[8+1];
 						name[8] = '\0';
-						memcpy(name, DllStruct.Sections[y].Name, sizeof(name)-1);
+						memcpy(name, DllStruct.Sections[x].Name, sizeof(name)-1);
 
 						fprintf_s(debug_file, "ERROR: found relocation to an unusable section: %s", name);
 					);
@@ -408,52 +454,60 @@ UTILDLL_API HRESULT Util_RebaseModule(LPCWSTR lpFileName, PBYTE reloc_dll, UINT3
 		DebugCode( fprintf_s(debug_file, "-- 0x%04X\t0x%04X\t0x%08X\t0x%08X\t0x%08X --\n", 
 			index, section_info_index,
 			rt->Header.VirtualAddress, rt->Count(), section_offset) );
-		for(DWORD i = 0; i < rt->Count(); i++)
+		for(DWORD x = 0; x < rt->Count(); x++)
 		{
-			if(rt->RelocIsEmpty(i)) break; // there was a padding address added, this is the last one so quit
+			if(rt->RelocIsEmpty(x)) break; // there was a padding address added, this is the last one so quit
 
-			if(rt->Get(i)->Type == IMAGE_REL_BASED_HIGHLOW)
+			if(rt->Get(x)->Type == IMAGE_REL_BASED_HIGHLOW)
 			{
-				DebugCode( fprintf_s(debug_file, "\t0x%08X\t0x%08X\t\t", rt->Get(i)->Type, rt->Get(i)->Offset) );
-				DWORD* ptr = reinterpret_cast<DWORD*>(&dll_buffer.buffer[section_offset + rt->Get(i)->Offset]);
+				DebugCode( fprintf_s(debug_file, "\t0x%08X\t0x%08X\t\t", rt->Get(x)->Type, rt->Get(x)->Offset) );
+				DWORD* ptr = reinterpret_cast<DWORD*>(&dll_buffer.buffer[section_offset + rt->Get(x)->Offset]);
 				DebugCode( fprintf_s(debug_file, "\t0x%08X\t", *ptr) );
 
 				tmp = (*ptr - old); // take out the built in base
-				DebugCode( fprintf(debug_file, "\t0x%08X", tmp + *base_address) );
+				DWORD dst_section_index = DllStruct.FindSectionIndexForVA(*ptr);
+
 				*ptr = tmp + *base_address; // and add our base
+				DebugCode( fprintf(debug_file, "\t0x%08X", *ptr) );
+
+				DWORD align_adjust = DllStruct.SectionInfo[dst_section_index].UselessAlignAdjustment;
+				*ptr = *ptr - align_adjust; // plus adjust for the fact that we don't copy useless alignment bytes
+				DebugCode( fprintf(debug_file, "\t0x%08X", *ptr) );
 
 				DebugCode( fputs("\n", debug_file) );
 			}
 			else
 			{
-				DebugCode( fprintf_s(debug_file, "\tignoring relocation type 0x%08X\n", rt->Get(i)->Type) );
+				DebugCode( fprintf_s(debug_file, "\tignoring relocation type 0x%08X\n", rt->Get(x)->Type) );
 			}
 		}
 	}
 	*base_address = (DllStruct.Header.AddressOfEntryPoint - old) /*+ *base_address*/; // calculate the entry point *offset* in the reloc_dll buffer
-	DebugCode( fprintf_s(debug_file, "0x%X\n\n", *base_address) );
+	DebugCode( fprintf_s(debug_file, "entry point=0x%X\n\n", *base_address) );
 	// !--- Perform relocations ---
 
 
 	// !--- Put the result data in the user buffer ---
-	x = 0;
-	for(DWORD offset = 0; x < DllStruct.SectionCount; x++)
+	for(DWORD x = 0, offset = 0; x < DllStruct.SectionCount; x++)
 	{
 		const char* section_name = reinterpret_cast<char*>(DllStruct.Sections[x].Name);
 		if(	!section_name_is_usable(section_name) )
 			continue;
+
+		DWORD section_size_copy = section_get_correct_copy_size(DllStruct.Sections[x]);
+		DWORD section_size_alloc = section_get_correct_alloc_size(DllStruct.Sections[x]);
 
 		DebugCode( 
 			char name[8+1];
 			name[8] = '\0';
 			memcpy(name, DllStruct.Sections[x].Name, sizeof(name)-1);
 
-			fprintf_s(debug_file, "%8s\t0x%08X\t0x%08X\n", name, DllStruct.Sections[x].PointerToRawData, DllStruct.Sections[x].SizeOfRawData)
+			fprintf_s(debug_file, "%8s\t0x%08X\t0x%08X\t0x%08X\t0x%08X\n", name, offset, DllStruct.Sections[x].PointerToRawData, section_size_alloc, section_size_copy)
 			);
 		memcpy(reloc_dll + offset, 
 			dll_buffer.buffer + DllStruct.Sections[x].PointerToRawData, 
-			DllStruct.Sections[x].SizeOfRawData);
-		offset += DllStruct.Sections[x].SizeOfRawData;
+			section_size_copy);
+		offset += section_size_alloc;
 	}
 	// !--- Put the result data in the user buffer ---
 

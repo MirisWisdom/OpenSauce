@@ -56,6 +56,7 @@ extern "C" {
 	#pragma endregion
 
 
+#define USE_CR0_HACK
 	#pragma region cr0 hacks
 
 #if defined(USE_CR0_HACK)

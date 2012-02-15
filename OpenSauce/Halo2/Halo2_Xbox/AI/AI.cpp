@@ -7,6 +7,8 @@
 #include "Common/Precompile.hpp"
 #include "AI/AI.hpp"
 
+#include "Memory/Runtime.hpp"
+
 namespace Yelo
 {
 #define __EL_INCLUDE_ID			__EL_INCLUDE_AI
@@ -17,15 +19,19 @@ namespace Yelo
 	{
 		void Initialize()
 		{
-			// Allow AI code to execute in MP games
-			*CAST_PTR(void**, GET_DATA_PTR(AI_INITIALIZE_FOR_NEW_MAP_MOD)) =
-				CAST_PTR(void*, GET_FUNC_PTR(AI_INITIALIZE_FOR_NEW_MAP) + 22);
+			YELO_MEM_WLIST_BEGIN()
+				// Allow AI code to execute in MP games
+				*CAST_PTR(void**, GET_DATA_PTR(AI_INITIALIZE_FOR_NEW_MAP_MOD)) =
+					CAST_PTR(void*, GET_FUNC_PTR(AI_INITIALIZE_FOR_NEW_MAP) + 22);
+			YELO_MEM_WLIST_END();
 		}
 
 		void Dispose()
 		{
-			*CAST_PTR(void**, GET_DATA_PTR(AI_INITIALIZE_FOR_NEW_MAP_MOD)) =
-				CAST_PTR(void*, GET_FUNC_PTR(AI_INITIALIZE_FOR_NEW_MAP));
+			YELO_MEM_WLIST_BEGIN()
+				*CAST_PTR(void**, GET_DATA_PTR(AI_INITIALIZE_FOR_NEW_MAP_MOD)) =
+					CAST_PTR(void*, GET_FUNC_PTR(AI_INITIALIZE_FOR_NEW_MAP));
+			YELO_MEM_WLIST_END();
 		}
 
 		void Update()

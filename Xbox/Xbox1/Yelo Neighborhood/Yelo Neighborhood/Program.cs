@@ -46,6 +46,7 @@ namespace Yelo_Neighborhood
             _screenshotTool = new ScreenshotTool();
             _LEDStateChanger = new LEDStateChanger();
             _moduleManager = new ModuleManager();
+			_newModule = new NewModule();
 
             LoadExecutables();
 
