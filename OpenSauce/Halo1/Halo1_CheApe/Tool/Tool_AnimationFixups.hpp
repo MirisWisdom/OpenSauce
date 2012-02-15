@@ -16,12 +16,16 @@ namespace Yelo
 			static int32 max_animations;
 			static bool* importer_valid_animations_array;
 			static int32* importer_animation_index_array;
+			static int16* importer_animation_remapping_index_array;
 
 			static void InitializeValidAnimationsArrayFixups();
 			static void DisposeValidAnimationsArrayFixups();
 
 			static void InitializeAnimationIndexArrayFixups();
 			static void DisposeAnimationIndexArrayFixups();
+
+			static void InitializeAnimationRemappingIndexArrayFixups();
+			static void DisposeAnimationRemappingIndexArrayFixups();
 
 			static void InitializeIntermediateMemoryFixups();
 		public:
