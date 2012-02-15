@@ -16,7 +16,8 @@ namespace Yelo_Neighborhood
 			uint mainAddress, exitAddress;
 			FileInfo fileInfo;
 
-			public uint BaseAddress { get; private set; }
+			uint baseAddress;
+			public uint BaseAddress { get { return baseAddress; } }
 			public string Module { get { return fileInfo.Name; } }
 			ModuleStatus status;
 			public ModuleStatus Status
@@ -40,11 +41,11 @@ namespace Yelo_Neighborhood
 				Running,
 			};
 
-			public YeloModule(string filename, uint baseAddress)
+			public YeloModule(string filename, uint base_address)
 			{
 				mainAddress = exitAddress = uint.MaxValue;
 
-				BaseAddress = baseAddress;
+				baseAddress = base_address;
 				fileInfo = new FileInfo(filename);
 				status = ModuleStatus.Error;
 				Reload();
@@ -52,12 +53,12 @@ namespace Yelo_Neighborhood
 
 			bool Run(out string error_details)
 			{
-				YeloDebug.XboxDll.RebaseModuleAndSave(fileInfo.FullName, BaseAddress, out error_details); // Testing...
+				//YeloDebug.XboxDll.RebaseModuleAndSave(fileInfo.FullName, BaseAddress, out error_details); // Testing...
 
-				bool result = false;
-				if (result)
+				bool result = true;
+				//if (result)
 				{
-					result = YeloDebug.XboxDll.RunModule(Program.XBox, fileInfo.FullName, BaseAddress, 
+					result = YeloDebug.XboxDll.RunModule(Program.XBox, fileInfo.FullName, ref baseAddress, 
 						out mainAddress, out exitAddress, out error_details);
 				}
 				return result;
@@ -77,7 +78,7 @@ namespace Yelo_Neighborhood
 			{
 				if (exitAddress != uint.MaxValue)
 				{
-					YeloDebug.XboxDll.UnloadModule(Program.XBox, exitAddress);
+					YeloDebug.XboxDll.UnloadModule(Program.XBox, baseAddress, exitAddress);
 					Status = ModuleStatus.Unloaded;
 				}
 				else

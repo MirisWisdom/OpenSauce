@@ -6,7 +6,7 @@
 
 	InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_Base.Cpp.vsprops"
 
-	OutputDirectory="$(SolutionDir)..\bin\$(ConfigurationName)\$(ProjectName)"
+	OutputDirectory="$(SolutionDir)..\bin\$(ConfigurationName)\$(PlatformName)\$(ProjectName)"
 	>
 	<Tool
 		Name="VCCLCompilerTool"

@@ -29,6 +29,6 @@
 		Name="VCLibrarianTool"
 		UseUnicodeResponseFiles="false"
 		LinkLibraryDependencies="false"
-		OutputFile="$(SolutionDir)..\lib\$(ConfigurationName)\$(ProjectName).lib"
+		OutputFile="$(SolutionDir)..\lib\$(ConfigurationName)\$(PlatformName)\$(ProjectName).lib"
 	/>
 </VisualStudioPropertySheet>

@@ -47,8 +47,8 @@ namespace Yelo
 
 			GameState::s_unit_datum* player_unit;
 
-			if(!player.IsNull() &&
-				( player = *(*GameState::_Players())[player]->GetSlaveUnitIndex() ).IsNull() &&
+			if(	!player.IsNull() &&
+				!( player = *(*GameState::_Players())[player]->GetSlaveUnitIndex() ).IsNull() &&
 				GameState::ObjectTryAndGet<GameState::s_unit_datum>(player, &player_unit) != NULL
 				)
 			{

@@ -116,7 +116,7 @@ namespace YeloDebug
 			return result == LowLevel.HResult.Success;
 		}
 
-		public static bool RunModule(Xbox xbox, string module_path, uint base_address, 
+		public static bool RunModule(Xbox xbox, string module_path, ref uint base_address, 
 			out uint entry_point, out uint exit_address, out string error_details)
 		{
 			entry_point = exit_address = uint.MaxValue;
@@ -134,6 +134,13 @@ namespace YeloDebug
 
 			if (result == LowLevel.HResult.Success)
 			{
+				try { base_address = xbox.AllocateDebugMemory((uint)rebased_module.Length); }
+				catch (Exception ex)
+				{
+					result = LowLevel.HResult.Unexpected;
+					error_details = ex.ToString();
+				}
+
 				entry_point = base_address;
 				try { result = RebaseModule(xbox, module_path, rebased_module, ref entry_point); }
 				catch (Exception ex)
@@ -141,11 +148,14 @@ namespace YeloDebug
 					result = LowLevel.HResult.Unexpected;
 					error_details = ex.ToString();
 				}
+				entry_point += base_address;
 
 				if (result == LowLevel.HResult.Success)
 				{
+					xbox.Pause();
 					xbox.SetMemory(base_address, rebased_module);
-					exit_address = xbox.CallAddress(base_address, true);
+					exit_address = xbox.CallAddress(entry_point, true);
+					xbox.Continue();
 				}
 			}
 
@@ -155,9 +165,12 @@ namespace YeloDebug
 			return result == LowLevel.HResult.Success;
 		}
 
-		public static bool UnloadModule(Xbox xbox, uint exit_address)
+		public static bool UnloadModule(Xbox xbox, uint base_address, uint exit_address)
 		{
+			xbox.Pause();
 			xbox.CallAddress(exit_address, false);
+			xbox.FreeDebugMemory(base_address);
+			xbox.Continue();
 
 			return true;
 		}

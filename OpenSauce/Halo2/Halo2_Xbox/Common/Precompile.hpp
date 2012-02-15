@@ -8,7 +8,6 @@
 
 #include <XboxLib.hpp>
 #include <XboxApi.hpp>
-//#include <xbdm.h>
 #include <XboxInterface.hpp>
 #include <Std/Math.hpp>
 

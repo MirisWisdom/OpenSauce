@@ -43,7 +43,7 @@ namespace Yelo_Neighborhood
         private void cmdBrowse_Click(object sender, EventArgs e)
         {
             if (OFD.ShowDialog() == DialogResult.OK)
-				cboAddress.Text = OFD.FileName;
+				cboModule.Text = OFD.FileName;
         }
     }
 }
