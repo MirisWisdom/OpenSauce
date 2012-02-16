@@ -11,6 +11,8 @@
 #include <TagGroups/Halo1/structure_bsp_definitions.hpp>
 #include "Engine/EngineFunctions.hpp"
 #include "TagGroups/TagGroups.hpp"
+#include "Common/YeloSettings.hpp"
+#include "Common/StringEditing.hpp"
 
 namespace Yelo
 {
@@ -59,7 +61,7 @@ namespace Yelo
 			}
 			~c_obj_file();
 
-			HRESULT LoadFromFile(cstring obj_path);
+			HRESULT LoadFromFile(std::string obj_path);
 			HRESULT CheckBspCompatibility(TagGroups::structure_bsp* bsp);
 			HRESULT ReplaceVertexUVs(TagGroups::structure_bsp* bsp);
 		};
@@ -82,8 +84,21 @@ namespace Yelo
 
 				TagGroups::structure_bsp* bsp = tag_get<TagGroups::structure_bsp>(bsp_index);
 
-				char obj_file_path[_MAX_PATH];
-				sprintf_s(obj_file_path, sizeof(obj_file_path), "data\\%s", args->obj_file);
+				std::string obj_file_path(Yelo::Settings::Get().GetDataPath());
+				StringEditing::AppendCharIfAbsent(obj_file_path, '\\');
+
+				char* obj_argument = CAST_QUAL(char*, args->obj_file);
+				while(obj_argument[0] == '\\')
+					obj_argument++;
+
+				obj_file_path.append(obj_argument);
+
+				bool has_extension = false;
+				if(obj_file_path.find(".obj", obj_file_path.length() - 4) != std::string::npos)
+					has_extension = true;
+
+				if(!has_extension)
+					obj_file_path.append(".obj");
 
 				c_obj_file obj_file = c_obj_file();
 				if(SUCCEEDED(hr)) hr = obj_file.LoadFromFile(obj_file_path);
