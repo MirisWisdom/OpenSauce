@@ -15,11 +15,12 @@ c_obj_file::~c_obj_file()
 	m_texcoords.clear();
 }
 
-HRESULT c_obj_file::LoadFromFile(cstring obj_path)
+HRESULT c_obj_file::LoadFromFile(std::string obj_path)
 {
 	fputs("loading lightmaps obj file...", stdout);
+
 	FILE* file = NULL;
-	fopen_s(&file, obj_path, "r+");
+	fopen_s(&file, obj_path.c_str(), "r+");
 	if(!file || ferror(file))
 	{
 		if(file)
