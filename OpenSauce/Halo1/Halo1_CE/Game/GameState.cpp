@@ -123,7 +123,7 @@ namespace Yelo
 			MemoryUpgradesInitialize();
 
 #ifdef API_DEBUG
-			*GameState::DeveloperMode() = 4; // make console messages appear
+			*GameState::DeveloperMode() = Enums::k_developer_mode_level_debug_output; // make console messages appear
 
 			// increment the game build by one so all games (hosted or browsed) aren't
 			// from the normal, non-Yelo, game pool.

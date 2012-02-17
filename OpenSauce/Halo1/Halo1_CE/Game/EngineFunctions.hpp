@@ -243,10 +243,10 @@ namespace Yelo
 			void DatumDelete(Yelo::Memory::s_data_array* data, datum_index datum);
 
 			// Get a reference to the next valid datum data in a s_data_array
-			// See: Memory/Data.hpp
+			// See: Memory/DataShared.hpp and Memory/MemoryInterface.cpp
 			void* DataIteratorNext(void* iterator);
 
-			datum_index DatumNextIndex(Yelo::Memory::s_data_array* data, datum_index base);
+			datum_index DatumNextIndex(Yelo::Memory::s_data_array* data, datum_index cursor);
 
 			// Get the data associated with [datum] from the [data] array
 			void* DatumGet(Yelo::Memory::s_data_array* data, datum_index datum);

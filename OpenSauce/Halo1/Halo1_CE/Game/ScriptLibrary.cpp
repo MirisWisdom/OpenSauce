@@ -329,6 +329,9 @@ namespace Yelo
 
 		bool DefinitionsMatch(const TagGroups::scripting_block& data)
 		{
+			const byte k_developer_mode = *GameState::DeveloperMode();
+			char developer_mode_msg[256];
+
 			bool is_valid = false;
 
 			for(int32 x = 0; x < data.new_functions.Count; x++)
@@ -340,16 +343,24 @@ namespace Yelo
 				// continue checking each EXPORTED function with the yelo script definitions
 				for(int32 f = 0; f < K_HS_YELO_FUNCTION_COUNT && !is_valid; f++)
 				{
-					if( DefinitionsNameMatch(hs_yelo_functions[f]->name, def.name) &&		// check if names match...
-						def.parameters.Count == hs_yelo_functions[f]->paramc &&				// check if we have the same amount of parameters
-						(is_valid = def.return_type == hs_yelo_functions[f]->return_type)	// check if we have the same return type
+					const hs_function_definition& yelo_def = *hs_yelo_functions[f];
+
+					if( DefinitionsNameMatch(yelo_def.name, def.name) &&			// check if names match...
+						def.parameters.Count == yelo_def.paramc &&					// check if we have the same amount of parameters
+						(is_valid = def.return_type == yelo_def.return_type)		// check if we have the same return type
 						)
 					{
-						const _enum* params = def.parameters.Definitions;					// check if the parameter types are the same
+						const _enum* params = def.parameters.Definitions;			// check if the parameter types are the same
 						for(int32 p = 0; 
-							p < def.parameters.Count && is_valid; // continue checking while things compare as a match
+							p < def.parameters.Count && is_valid;					// continue checking while things compare as a match
 							p++)
-							is_valid = params[p] == hs_yelo_functions[f]->params[p];
+							is_valid = params[p] == yelo_def.params[p];
+					}
+
+					if(!is_valid && k_developer_mode >= Enums::k_developer_mode_level_debug_output)
+					{
+						sprintf_s(developer_mode_msg, "Script (%s) mismatch info: %s", "function", def.name);
+						PrepareToDropError(developer_mode_msg);
 					}
 				}
 
@@ -365,9 +376,16 @@ namespace Yelo
 				is_valid = false;
 				for(int32 g = 0; g < K_HS_YELO_GLOBALS_COUNT && !is_valid; g++)
 				{
-					is_valid = 
-						DefinitionsNameMatch(hs_yelo_globals[g]->name, def.name) &&// check if names match...
-						def.type == hs_yelo_globals[g]->type;						// check if the global types match too
+					const hs_global_definition& yelo_def = *hs_yelo_globals[g];
+
+					is_valid =	DefinitionsNameMatch(yelo_def.name, def.name) &&	// check if names match...
+								def.type == yelo_def.type;							// check if the global types match too
+
+					if(!is_valid && k_developer_mode >= Enums::k_developer_mode_level_debug_output)
+					{
+						sprintf_s(developer_mode_msg, "Script (%s) mismatch info: %s", "global", def.name);
+						PrepareToDropError(developer_mode_msg);
+					}
 				}
 
 				if(!is_valid)
