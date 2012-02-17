@@ -59,18 +59,18 @@ void* DataIteratorNext(void* iterator)
 	}
 }
 
-datum_index DatumNextIndex(Yelo::Memory::s_data_array* data, datum_index base)
+datum_index DatumNextIndex(Yelo::Memory::s_data_array* data, datum_index cursor)
 {
 	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(DATUM_NEXT_INDEX);
 
-	if(data == NULL || base.index == NONE) return datum_index::null;
+	if(data == NULL || cursor.index == NONE) return datum_index::null;
 
 	__asm {
 		push	edi
 		push	esi
 
 		mov		edi, data
-		mov		esi, base
+		mov		esi, cursor
 		call	TEMP_CALL_ADDR
 
 		pop		esi

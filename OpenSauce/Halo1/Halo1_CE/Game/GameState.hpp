@@ -46,6 +46,11 @@ namespace Yelo
 			// How many values we allow in the runtime data game state for each type (ie, integers, real, etc)
 			k_runtime_data_max_values_count = 32,
 		};
+
+		enum {
+			// This is a partially made up constant, though when dev-mode is >= this, it outputs messages to the console
+			k_developer_mode_level_debug_output = 4,
+		};
 	};
 
 	namespace GameState
