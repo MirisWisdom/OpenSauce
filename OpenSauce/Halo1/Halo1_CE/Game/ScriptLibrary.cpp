@@ -356,12 +356,12 @@ namespace Yelo
 							p++)
 							is_valid = params[p] == yelo_def.params[p];
 					}
+				}
 
-					if(!is_valid && k_developer_mode >= Enums::k_developer_mode_level_debug_output)
-					{
-						sprintf_s(developer_mode_msg, "Script (%s) mismatch info: %s", "function", def.name);
-						PrepareToDropError(developer_mode_msg);
-					}
+				if(!is_valid && k_developer_mode >= Enums::k_developer_mode_level_debug_output)
+				{
+					sprintf_s(developer_mode_msg, "Script (%s) mismatch info: %s", "function", def.name);
+					PrepareToDropError(developer_mode_msg);
 				}
 
 				if(!is_valid)
@@ -380,12 +380,12 @@ namespace Yelo
 
 					is_valid =	DefinitionsNameMatch(yelo_def.name, def.name) &&	// check if names match...
 								def.type == yelo_def.type;							// check if the global types match too
+				}
 
-					if(!is_valid && k_developer_mode >= Enums::k_developer_mode_level_debug_output)
-					{
-						sprintf_s(developer_mode_msg, "Script (%s) mismatch info: %s", "global", def.name);
-						PrepareToDropError(developer_mode_msg);
-					}
+				if(!is_valid && k_developer_mode >= Enums::k_developer_mode_level_debug_output)
+				{
+					sprintf_s(developer_mode_msg, "Script (%s) mismatch info: %s", "global", def.name);
+					PrepareToDropError(developer_mode_msg);
 				}
 
 				if(!is_valid)
