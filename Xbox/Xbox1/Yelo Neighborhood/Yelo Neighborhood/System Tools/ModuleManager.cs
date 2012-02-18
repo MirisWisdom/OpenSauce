@@ -11,121 +11,69 @@ namespace Yelo_Neighborhood
 {
     partial class ModuleManager : Form
     {
-		class YeloModule : INotifyPropertyChanged
-		{
-			uint mainAddress, exitAddress;
-			FileInfo fileInfo;
-
-			uint baseAddress;
-			public uint BaseAddress { get { return baseAddress; } }
-			public string Module { get { return fileInfo.Name; } }
-			ModuleStatus status;
-			public ModuleStatus Status
-			{
-				get { return status; }
-				set
-				{
-					if (status != value)
-					{
-						status = value;
-						NotifyPropertyChanged("Status");
-					}
-				}
-			}
-
-			public enum ModuleStatus
-			{
-				Error,
-
-				Unloaded,
-				Running,
-			};
-
-			public YeloModule(string filename, uint base_address)
-			{
-				mainAddress = exitAddress = uint.MaxValue;
-
-				baseAddress = base_address;
-				fileInfo = new FileInfo(filename);
-				status = ModuleStatus.Error;
-				Reload();
-			}
-
-			bool Run(out string error_details)
-			{
-				//YeloDebug.XboxDll.RebaseModuleAndSave(fileInfo.FullName, BaseAddress, out error_details); // Testing...
-
-				bool result = true;
-				//if (result)
-				{
-					result = YeloDebug.XboxDll.RunModule(Program.XBox, fileInfo.FullName, ref baseAddress, 
-						out mainAddress, out exitAddress, out error_details);
-				}
-				return result;
-			}
-
-			public void Reload()
-			{
-				string error_details;
-				if (Run(out error_details))
-					Status = ModuleStatus.Running;
-				else
-					MessageBox.Show(Program.ModuleManager, string.Format("Module failed to run!\n{0}", error_details),
-						Module, MessageBoxButtons.OK, MessageBoxIcon.Hand);
-			}
-
-			public void Unload()
-			{
-				if (exitAddress != uint.MaxValue)
-				{
-					YeloDebug.XboxDll.UnloadModule(Program.XBox, baseAddress, exitAddress);
-					Status = ModuleStatus.Unloaded;
-				}
-				else
-					MessageBox.Show(Program.ModuleManager, "Module has no unload functionality!",
-						Module, MessageBoxButtons.OK, MessageBoxIcon.Hand);
-			}
-
-			#region INotifyPropertyChanged Members
-			public event PropertyChangedEventHandler PropertyChanged;
-
-			private void NotifyPropertyChanged(string name)
-			{
-				if (PropertyChanged != null)
-					PropertyChanged(this, new PropertyChangedEventArgs(name));
-			}
-			#endregion
-
-			public override string ToString()
-			{
-				return string.Format("[{0}] {1}", Status.ToString(), Module);
-			}
-		};
-
-        BindingList<YeloModule> modules = new BindingList<YeloModule>();
+        BindingList<Executable.Module> modules = new BindingList<Executable.Module>();
 
         public ModuleManager()
         {
             InitializeComponent();
+
+            for (int e = 0; e < Program.Executables.Count; e++)
+                for (int m = 0; m < Program.Executables[e].Modules.Count; m++)
+                modules.Add(Program.Executables[e].Modules[m]);
+
             gridModules.DataSource = modules;
+        }
+
+        public void LoadModule(Executable.Module module)
+        {
+            if (!Program.XBox.Connected) new Settings().ShowDialog();
+            if(this.Visible) this.Enabled = false;
+            Program.MainWindow.Enabled = false;
+            Program.MainWindow.probar.Style = ProgressBarStyle.Marquee;
+            Program.MainWindow.lblStatus.Text = "Loading Module: " + module.Name;
+            launchModuleWorker.RunWorkerAsync(module);
         }
 
         private void cmdNew_Click(object sender, EventArgs e)
         {
             if (Program.NewModule.ShowDialog() == DialogResult.OK)
-				modules.Add(new YeloModule(Program.NewModule.Filename, Program.NewModule.BaseAddress));
+            {
+                Executable.Module newModule = new Executable.Module(Program.NewModule.Filename, Program.NewModule.BaseAddress) { Name = Path.GetFileNameWithoutExtension(Program.NewModule.Filename) };
+                if(Program.NewModule.ExecutableIndex != -1)
+                    Program.Executables[Program.NewModule.ExecutableIndex].Modules.Add(newModule);
+                modules.Add(newModule);
+                Program.MainWindow.SaveExecutables();
+                Program.MainWindow.LoadScripts();
+                LoadModule(newModule);
+            }
         }
 
         private void cmdReload_Click(object sender, EventArgs e)
         {
+            if (!Program.XBox.Connected) new Settings().ShowDialog();
             for (int i = 0; i < gridModules.SelectedRows.Count; i++)
                 modules[gridModules.SelectedRows[i].Index].Reload();
         }
 
         private void cmdEnd_Click(object sender, EventArgs e)
         {
+            if (!Program.XBox.Connected) new Settings().ShowDialog();
             for (int i = 0; i < gridModules.SelectedRows.Count; i++)
                 modules[gridModules.SelectedRows[i].Index].Unload();
+        }
+
+        private void launchModuleWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Executable.Module module = (Executable.Module)e.Argument;
+            module.Reload();
+        }
+
+        private void launchModuleWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            this.Enabled = true;
+            Program.MainWindow.Enabled = true;
+            Program.MainWindow.probar.Style = ProgressBarStyle.Blocks;
+            Program.MainWindow.lblStatus.Text = "Ready.";
         }
     }
 }

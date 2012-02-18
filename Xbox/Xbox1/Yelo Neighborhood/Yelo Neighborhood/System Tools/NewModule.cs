@@ -14,6 +14,7 @@ namespace Yelo_Neighborhood
         public string Filename { get; set; }
         public string BaseAddressString { get; set; }
         public uint BaseAddress { get; set; }
+        public int ExecutableIndex { get; set; }
 
         public NewModule()
         {
@@ -37,6 +38,8 @@ namespace Yelo_Neighborhood
                 return;
             }
 
+            ExecutableIndex = cboExecutable.SelectedIndex - 1;
+
             DialogResult = DialogResult.OK;
         }
 
@@ -44,6 +47,14 @@ namespace Yelo_Neighborhood
         {
             if (OFD.ShowDialog() == DialogResult.OK)
 				cboModule.Text = OFD.FileName;
+        }
+
+        private void NewModule_Shown(object sender, EventArgs e)
+        {
+            cboExecutable.Items.Clear();
+            cboExecutable.Items.Add("Any");
+            cboExecutable.Items.AddRange(Program.Executables.ToArray());
+            cboExecutable.SelectedIndex = 0;
         }
     }
 }

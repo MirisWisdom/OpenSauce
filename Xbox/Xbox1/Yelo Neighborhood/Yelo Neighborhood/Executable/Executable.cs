@@ -11,6 +11,9 @@ namespace Yelo_Neighborhood
         public List<Script> Scripts { get { return _scripts; } }
         List<Script> _scripts = new List<Script>();
 
+        public List<Module> Modules { get { return _module; } }
+        List<Module> _module = new List<Module>();
+
         public override string ToString()
         { return Name; }
 

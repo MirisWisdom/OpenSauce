@@ -180,6 +180,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "ScreenshotTool";
             this.Text = "Screenshot Tool";
+            this.TopMost = true;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ScreenshotTool_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ScreenshotTool_KeyDown);
             this.menuStrip1.ResumeLayout(false);
