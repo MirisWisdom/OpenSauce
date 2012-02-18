@@ -38,6 +38,7 @@
     <Compile Include="Executable Tools\ExecutableTool.Designer.cs">
       <DependentUpon>ExecutableTool.cs</DependentUpon>
     </Compile>
+    <Compile Include="Executable\Module.cs" />
     <Compile Include="Executable\Script.cs" />
     <Compile Include="System Tools\LEDStateChanger.cs">
       <SubType>Form</SubType>

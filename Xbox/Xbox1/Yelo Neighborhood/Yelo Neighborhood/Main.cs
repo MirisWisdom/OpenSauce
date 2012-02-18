@@ -11,7 +11,7 @@ namespace Yelo_Neighborhood
 {
     public partial class Main : Form
     {
-        public int Version { get { return 9; } }
+        public int Version { get { return 10; } }
 
         public enum Images
         {
@@ -39,12 +39,15 @@ namespace Yelo_Neighborhood
 
         public void RefreshFiles()
         {
+            if (!Program.XBox.Connected) new Settings().ShowDialog();
             if (CurrentDirectory == "") LoadPartitions();
             else LoadDirectory(CurrentDirectory);
         }
 
         public void LoadPartitions()
         {
+            if (!Program.XBox.Connected) new Settings().ShowDialog();
+
             CurrentDirectory = "";
 
 			listFiles.BeginUpdate();
@@ -64,12 +67,15 @@ namespace Yelo_Neighborhood
 
         public void LoadDirectory(string dir)
         {
+            if(!Program.XBox.Connected) new Settings().ShowDialog();
+
             List<FileInformation> files = null;
             try
             { files = Program.XBox.GetDirectoryList(dir); }
             catch
             {
                 MessageBox.Show("Could Not Access: " + dir, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                if (!Program.XBox.Connected) new Settings().ShowDialog();
                 return;
             }
 
@@ -131,6 +137,7 @@ namespace Yelo_Neighborhood
 
         void listFiles_DragDrop(object sender, DragEventArgs e)
         {
+            if (!Program.XBox.Connected) new Settings().ShowDialog();
             this.Enabled = false;
             List<FileInformation> files = new List<FileInformation>();
             foreach (string s in (string[])e.Data.GetData(DataFormats.FileDrop))
@@ -141,6 +148,7 @@ namespace Yelo_Neighborhood
                 files.Add(fi);
             }
 
+            this.Enabled = false;
             probar.Style = ProgressBarStyle.Marquee;
             sendFileWorker.RunWorkerAsync(files);
         }
@@ -158,6 +166,7 @@ namespace Yelo_Neighborhood
 
         void SendDirectory(FileInformation dir, string workingDir)
         {
+            if (!Program.XBox.Connected) new Settings().ShowDialog();
             string dirname = Path.GetFileName(dir.Name);
             if (!Program.XBox.FileExists(Path.Combine(workingDir, dirname))) Program.XBox.CreateDirectory(Path.Combine(workingDir, dirname));
             foreach (string s in Directory.GetFiles(dir.Name, "*", SearchOption.TopDirectoryOnly))
@@ -176,6 +185,7 @@ namespace Yelo_Neighborhood
 
         void SendFile(FileInformation file, string workingDir)
         {
+            if (!Program.XBox.Connected) new Settings().ShowDialog();
             string filename = Path.GetFileName(file.Name);
             string xboxFilename = Path.Combine(workingDir, filename);
             if (Program.XBox.FileExists(xboxFilename) && MessageBox.Show(filename + "\n\nWould You Like To Overwrite The Old File?", "File Already Exists.", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.No) return;
@@ -188,6 +198,7 @@ namespace Yelo_Neighborhood
         #region Navigation
         void cmdUpDir_Click(object sender, EventArgs e)
         {
+            if (!Program.XBox.Connected) new Settings().ShowDialog();
             if (CurrentDirectory == "") return;
             
             DirectoryBackHistory.Push(CurrentDirectory);
@@ -203,6 +214,7 @@ namespace Yelo_Neighborhood
 
         void cmdBack_Click(object sender, EventArgs e)
         {
+            if (!Program.XBox.Connected) new Settings().ShowDialog();
             DirectoryForwardHistory.Push(CurrentDirectory);
             string dir = DirectoryBackHistory.Pop();
 
@@ -215,6 +227,7 @@ namespace Yelo_Neighborhood
 
         void cmdForward_Click(object sender, EventArgs e)
         {
+            if (!Program.XBox.Connected) new Settings().ShowDialog();
             DirectoryBackHistory.Push(CurrentDirectory);
             string dir = DirectoryForwardHistory.Pop();
 
@@ -305,7 +318,8 @@ namespace Yelo_Neighborhood
                     case ".xbe":
                         lblStatus.Text = "Launching: " + fi.Name;
                         probar.Style = ProgressBarStyle.Marquee;
-                        launchTitleWorker.RunWorkerAsync(fi);
+                        this.Enabled = false;
+                        launchTitleWorker.RunWorkerAsync(new LaunchInfo() { FileInfo = fi, Module = null });
                         break;
                 }
             }
@@ -314,18 +328,33 @@ namespace Yelo_Neighborhood
         void screenshotToolToolStripMenuItem_Click(object sender, EventArgs e)
         { Program.ScreenshotTool.ShowDialog(); }
 
+        class LaunchInfo
+        {
+            public FileInfo FileInfo { get; set; }
+            public Executable.Module Module { get; set; }
+        }
+
         void launchTitleWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            FileInfo fi = (FileInfo)e.Argument;
-            Program.XBox.LaunchTitle(fi.FullName);
+            LaunchInfo lmi = (LaunchInfo)e.Argument;
+            Program.XBox.LaunchTitle(lmi.FileInfo.FullName);
+            e.Result = lmi.Module;
         }
 
         void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            this.Enabled = true;
-            probar.Style = ProgressBarStyle.Blocks;
-            lblStatus.Text = "Ready.";
-            RefreshFiles();
+            if (!Program.XBox.Connected) new Settings().ShowDialog();
+
+            Executable.Module m = (Executable.Module)e.Result;
+            if (m != null)
+                Program.ModuleManager.LoadModule(m);
+            else
+            {
+                this.Enabled = true;
+                probar.Style = ProgressBarStyle.Blocks;
+                lblStatus.Text = "Ready.";
+                RefreshFiles();
+            }
         }
 
         void listFiles_KeyUp(object sender, KeyEventArgs e)
@@ -397,6 +426,7 @@ namespace Yelo_Neighborhood
             List<FileInformation> files = new List<FileInformation>();
             foreach (ListViewItem lvt in listFiles.SelectedItems)
                 files.Add((FileInformation)lvt.Tag);
+            this.Enabled = false;
             deleteFileWorker.RunWorkerAsync(files);
         }
 
@@ -440,7 +470,8 @@ namespace Yelo_Neighborhood
             FileInfo fi = new FileInfo(exe.Filename);
             lblStatus.Text = "Launching: " + fi.Name;
             probar.Style = ProgressBarStyle.Marquee;
-            launchTitleWorker.RunWorkerAsync(fi);
+            this.Enabled = false;
+            launchTitleWorker.RunWorkerAsync(new LaunchInfo() { FileInfo = fi, Module = null });
         }
 
         void ExecutableScript_Click(object sender, EventArgs e)
@@ -455,16 +486,30 @@ namespace Yelo_Neighborhood
             cmd.Run(Path.GetFileNameWithoutExtension(listFiles.SelectedItems[0].Text));
         }
 
-        void LoadFileScripts(string fileType)
+        void ExecutableFileModule_Click(object sender, EventArgs e)
+        {
+            LaunchInfo li = (LaunchInfo)((ToolStripMenuItem)sender).Tag;
+            lblStatus.Text = "Launching: " + li.FileInfo.Name;
+            probar.Style = ProgressBarStyle.Marquee;
+            this.Enabled = false;
+            launchTitleWorker.RunWorkerAsync(li);
+        }
+
+        void LoadFileScripts(string filename, string fileType)
         {
             mnuFiles.Items.Clear();
+            cmdLaunch.DropDown.Items.Clear();
+
             mnuFiles.Items.Add(cmdRename);
             mnuFiles.Items.Add(cmdDelete);
-            mnuFiles.Items.Add(new ToolStripSeparator());
+
             if (fileType == ".xbe")
             {
-                mnuFiles.Items.Add(cmdAddToScriptsMenu);
                 mnuFiles.Items.Add(new ToolStripSeparator());
+                mnuFiles.Items.Add(cmdAddToScriptsMenu);
+
+                cmdLaunch.Tag = new Executable() { Name = Path.GetFileName(filename), Filename = filename };
+                mnuFiles.Items.Add(cmdLaunch);
             }
 
             foreach (Executable exe in Program.Executables)
@@ -483,11 +528,25 @@ namespace Yelo_Neighborhood
                     mi.DropDown.Items.Add(miScript);
                 }
 
-                if (mi.DropDown.Items.Count > 0) mnuFiles.Items.Add(mi);
+                if (mi.DropDown.Items.Count > 0)
+                    mnuFiles.Items.Add(mi);
+
+                if (filename == exe.Filename && exe.Modules.Count > 0)
+                {
+                    cmdLaunch.Tag = exe;
+                    foreach (Executable.Module m in exe.Modules)
+                    {
+                        ToolStripMenuItem miModule = new ToolStripMenuItem();
+                        miModule.Tag = new LaunchInfo() { Module = m, FileInfo = new FileInfo(exe.Filename) };
+                        miModule.Text = m.Name;
+                        miModule.Click += new EventHandler(ExecutableFileModule_Click);
+                        cmdLaunch.DropDown.Items.Add(miModule);
+                    }
+                }
             }
         }
 
-        void LoadScripts()
+        public void LoadScripts()
         {
             mnuScripts.DropDown.Items.Clear();
 
@@ -521,6 +580,15 @@ namespace Yelo_Neighborhood
                 miLaunch.Click += new EventHandler(ExecutableLaunch_Click);
                 mi.DropDown.Items.Add(miLaunch);
 
+                foreach (Executable.Module m in exe.Modules)
+                {
+                    ToolStripMenuItem miModule = new ToolStripMenuItem();
+                    miModule.Tag = new LaunchInfo() { Module = m, FileInfo = new FileInfo(exe.Filename) };
+                    miModule.Text = m.Name;
+                    miModule.Click += new EventHandler(ExecutableFileModule_Click);
+                    miLaunch.DropDown.Items.Add(miModule);
+                }
+
                 mnuScripts.DropDown.Items.Add(mi);
             }
         }
@@ -546,6 +614,15 @@ namespace Yelo_Neighborhood
                     scriptNode.InnerText = s.Code;
                     exeNode.AppendChild(scriptNode);
                 }
+
+                foreach (Executable.Module m in exe.Modules)
+                {
+                    XmlElement moduleNode = xd.CreateElement("Module");
+                    moduleNode.SetAttribute("Name", m.Name);
+                    moduleNode.SetAttribute("Filename", m.Filename);
+                    moduleNode.SetAttribute("BaseAddress", Convert.ToString(m.BaseAddress, 16));
+                    exeNode.AppendChild(moduleNode);
+                }
             }
 
             xd.Save("Executables.xml");
@@ -557,7 +634,7 @@ namespace Yelo_Neighborhood
             if (listFiles.SelectedItems.Count != 1)
                 e.Cancel = true;
             else
-                LoadFileScripts(Path.GetExtension(listFiles.SelectedItems[0].Text));
+                LoadFileScripts(Path.Combine(CurrentDirectory, listFiles.SelectedItems[0].Text), Path.GetExtension(listFiles.SelectedItems[0].Text));
         }
 
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -566,13 +643,22 @@ namespace Yelo_Neighborhood
         private void syncTimeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Are You Sure You Want To Synchronize The XBox System Time With The Computer's Current Time?", "Confirm Synchronization", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                if (!Program.XBox.Connected) new Settings().ShowDialog();
                 Program.XBox.SynchronizeTime();
+            }
         }
 
         private void lEDStateToolStripMenuItem_Click(object sender, EventArgs e)
-        { Program.LEDStateChanger.ShowDialog(); }
+        {
+            if (!Program.XBox.Connected) new Settings().ShowDialog();
+            Program.LEDStateChanger.ShowDialog(); 
+        }
 
         private void moduleManagerToolStripMenuItem_Click(object sender, EventArgs e)
-        { Program.ModuleManager.ShowDialog(); }
+        {
+            if (!Program.XBox.Connected) new Settings().ShowDialog();
+            Program.ModuleManager.ShowDialog(); 
+        }
     };
 }

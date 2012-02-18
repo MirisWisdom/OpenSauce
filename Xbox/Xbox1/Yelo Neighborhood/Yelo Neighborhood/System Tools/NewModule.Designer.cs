@@ -36,12 +36,14 @@
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdBrowse = new System.Windows.Forms.Button();
             this.OFD = new System.Windows.Forms.OpenFileDialog();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cboExecutable = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // cmdOK
             // 
             this.cmdOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmdOK.Location = new System.Drawing.Point(158, 68);
+            this.cmdOK.Location = new System.Drawing.Point(158, 97);
             this.cmdOK.Name = "cmdOK";
             this.cmdOK.Size = new System.Drawing.Size(75, 23);
             this.cmdOK.TabIndex = 1;
@@ -93,7 +95,7 @@
             // 
             this.cmdCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cmdCancel.Location = new System.Drawing.Point(239, 68);
+            this.cmdCancel.Location = new System.Drawing.Point(239, 97);
             this.cmdCancel.Name = "cmdCancel";
             this.cmdCancel.Size = new System.Drawing.Size(75, 23);
             this.cmdCancel.TabIndex = 6;
@@ -103,7 +105,7 @@
             // cmdBrowse
             // 
             this.cmdBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmdBrowse.Location = new System.Drawing.Point(320, 68);
+            this.cmdBrowse.Location = new System.Drawing.Point(320, 97);
             this.cmdBrowse.Name = "cmdBrowse";
             this.cmdBrowse.Size = new System.Drawing.Size(75, 23);
             this.cmdBrowse.TabIndex = 7;
@@ -115,9 +117,34 @@
             // 
             this.OFD.Filter = "Yelo Module (*.yxt)|*.yxt";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(23, 69);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(63, 13);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Executable:";
+            // 
+            // cboExecutable
+            // 
+            this.cboExecutable.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cboExecutable.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboExecutable.FormattingEnabled = true;
+            this.cboExecutable.Items.AddRange(new object[] {
+            "Any"});
+            this.cboExecutable.Location = new System.Drawing.Point(92, 66);
+            this.cboExecutable.Name = "cboExecutable";
+            this.cboExecutable.Size = new System.Drawing.Size(303, 21);
+            this.cboExecutable.Sorted = true;
+            this.cboExecutable.TabIndex = 8;
+            // 
             // NewModule
             // 
-            this.ClientSize = new System.Drawing.Size(407, 103);
+            this.ClientSize = new System.Drawing.Size(407, 132);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.cboExecutable);
             this.Controls.Add(this.cmdBrowse);
             this.Controls.Add(this.cmdCancel);
             this.Controls.Add(this.label2);
@@ -129,6 +156,7 @@
             this.Name = "NewModule";
             this.Text = "New Module";
             this.TopMost = true;
+            this.Shown += new System.EventHandler(this.NewModule_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -144,5 +172,7 @@
         private global::System.Windows.Forms.Button cmdCancel;
         private global::System.Windows.Forms.Button cmdBrowse;
         private System.Windows.Forms.OpenFileDialog OFD;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cboExecutable;
     }
 }

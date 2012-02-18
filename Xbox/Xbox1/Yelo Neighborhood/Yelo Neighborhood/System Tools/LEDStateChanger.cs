@@ -21,6 +21,9 @@ namespace Yelo_Neighborhood
         }
 
         private void cmdApply_Click(object sender, EventArgs e)
-        { Program.XBox.SetLEDState((LEDState)cboState1.SelectedItem, (LEDState)cboState2.SelectedItem, (LEDState)cboState3.SelectedItem, (LEDState)cboState4.SelectedItem); }
+        {
+            if (!Program.XBox.Connected) new Settings().ShowDialog();
+            Program.XBox.SetLEDState((LEDState)cboState1.SelectedItem, (LEDState)cboState2.SelectedItem, (LEDState)cboState3.SelectedItem, (LEDState)cboState4.SelectedItem); 
+        }
     }
 }

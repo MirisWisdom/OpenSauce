@@ -51,6 +51,7 @@
             this.screenshotToolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.systemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moduleManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.syncTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,7 +69,7 @@
             this.launchTitleWorker = new System.ComponentModel.BackgroundWorker();
             this.sendFileWorker = new System.ComponentModel.BackgroundWorker();
             this.deleteFileWorker = new System.ComponentModel.BackgroundWorker();
-            this.moduleManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmdLaunch = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.mnuFiles.SuspendLayout();
@@ -178,9 +179,10 @@
             this.cmdRename,
             this.cmdDelete,
             this.sepAddToScriptsMenu,
-            this.cmdAddToScriptsMenu});
+            this.cmdAddToScriptsMenu,
+            this.cmdLaunch});
             this.mnuFiles.Name = "mnuFiles";
-            this.mnuFiles.Size = new System.Drawing.Size(186, 76);
+            this.mnuFiles.Size = new System.Drawing.Size(186, 98);
             this.mnuFiles.Opening += new System.ComponentModel.CancelEventHandler(this.mnuFiles_Opening);
             // 
             // cmdRename
@@ -274,6 +276,13 @@
             this.systemToolStripMenuItem.Name = "systemToolStripMenuItem";
             this.systemToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.systemToolStripMenuItem.Text = "System";
+            // 
+            // moduleManagerToolStripMenuItem
+            // 
+            this.moduleManagerToolStripMenuItem.Name = "moduleManagerToolStripMenuItem";
+            this.moduleManagerToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
+            this.moduleManagerToolStripMenuItem.Text = "Module Manager";
+            this.moduleManagerToolStripMenuItem.Click += new System.EventHandler(this.moduleManagerToolStripMenuItem_Click);
             // 
             // propertiesToolStripMenuItem
             // 
@@ -383,12 +392,12 @@
             this.deleteFileWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.deleteFileWorker_DoWork);
             this.deleteFileWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.Worker_RunWorkerCompleted);
             // 
-            // moduleManagerToolStripMenuItem
+            // cmdLaunch
             // 
-            this.moduleManagerToolStripMenuItem.Name = "moduleManagerToolStripMenuItem";
-            this.moduleManagerToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
-            this.moduleManagerToolStripMenuItem.Text = "Module Manager";
-            this.moduleManagerToolStripMenuItem.Click += new System.EventHandler(this.moduleManagerToolStripMenuItem_Click);
+            this.cmdLaunch.Name = "cmdLaunch";
+            this.cmdLaunch.Size = new System.Drawing.Size(185, 22);
+            this.cmdLaunch.Text = "Launch";
+            this.cmdLaunch.Click += new System.EventHandler(this.ExecutableLaunch_Click);
             // 
             // Main
             // 
@@ -423,8 +432,6 @@
         private System.Windows.Forms.ToolStripMenuItem cmdForward;
         private System.Windows.Forms.ToolStripMenuItem cmdUpDir;
         private System.Windows.Forms.ListView listFiles;
-        private System.Windows.Forms.ToolStripStatusLabel lblStatus;
-        private System.Windows.Forms.ToolStripProgressBar probar;
         private System.Windows.Forms.ImageList imgLstFiles;
         private System.Windows.Forms.MenuStrip menuStrip2;
         private System.Windows.Forms.ToolStripMenuItem xBoxToolStripMenuItem;
@@ -456,6 +463,9 @@
         private System.Windows.Forms.ToolStripMenuItem syncTimeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lEDStateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem moduleManagerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cmdLaunch;
+        public System.Windows.Forms.ToolStripStatusLabel lblStatus;
+        public System.Windows.Forms.ToolStripProgressBar probar;
 
     }
 }

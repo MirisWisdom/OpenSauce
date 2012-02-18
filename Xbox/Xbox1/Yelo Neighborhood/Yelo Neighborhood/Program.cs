@@ -14,6 +14,9 @@ namespace Yelo_Neighborhood
         public static Xbox XBox { get { return _xbox; } }
         static Xbox _xbox;
 
+        public static Main MainWindow { get { return _mainWindow; } }
+        static Main _mainWindow;
+
         public static ScreenshotTool ScreenshotTool { get { return _screenshotTool; } }
         static ScreenshotTool _screenshotTool;
 
@@ -41,14 +44,14 @@ namespace Yelo_Neighborhood
             Control.CheckForIllegalCrossThreadCalls = false;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
+
+            LoadExecutables();
+
             _xboxLocator = new XBoxLocator();
             _screenshotTool = new ScreenshotTool();
             _LEDStateChanger = new LEDStateChanger();
             _moduleManager = new ModuleManager();
 			_newModule = new NewModule();
-
-            LoadExecutables();
 
             if (Properties.Settings.Default.AutoDiscover) FindXBox();
             else FindXBox(Properties.Settings.Default.XBoxIP);
@@ -73,17 +76,38 @@ namespace Yelo_Neighborhood
 					{
 						case "Executable":
 							if (xr.NodeType == XmlNodeType.EndElement) continue;
-							workingExe = new Executable() { Name = xr.GetAttribute("Name"), Filename = xr.GetAttribute("Filename") };
+							workingExe = new Executable()
+                            { 
+                                Name = xr.GetAttribute("Name"),
+                                Filename = xr.GetAttribute("Filename")
+                            };
 							_executables.Add(workingExe);
 							break;
 						case "Script":
 							if (xr.NodeType == XmlNodeType.EndElement) continue;
-							Executable.Script script = new Executable.Script();
-							script.Name = xr.GetAttribute("Name");
-							script.FileType = xr.GetAttribute("FileType");
-							script.Code = xr.ReadInnerXml();
+							Executable.Script script = new Executable.Script()
+                            {
+							    Name = xr.GetAttribute("Name"),
+							    FileType = xr.GetAttribute("FileType"),
+							    Code = xr.ReadInnerXml(),
+                            };
 							workingExe.Scripts.Add(script);
 							break;
+                        case "Module":
+                            if (xr.NodeType == XmlNodeType.EndElement) continue;
+
+                            uint baseAddress = 0;
+                            try { baseAddress = Convert.ToUInt32(xr.GetAttribute("BaseAddress"), 16); }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(ex.Message, "Error Reading Module For: " + workingExe.Filename, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                break;
+                            }
+
+                            Executable.Module module = new Executable.Module(xr.GetAttribute("Filename"), baseAddress)
+                            { Name = xr.GetAttribute("Name") };
+                            workingExe.Modules.Add(module);
+                            break;
 					}
 				}
 			}
@@ -117,15 +141,18 @@ namespace Yelo_Neighborhood
 
         public static void FindXBox()
         {
-            _xbox = new Xbox();
-            AsyncConnect();
+             _xbox = new Xbox();
+             AsyncConnect();
             _xboxLocator.ShowDialog();
 
             if (XBox.Connected)
             {
-                //MessageBox.Show(XBox.StreamTest());
-                new Main().ShowDialog();
-                XBox.Disconnect();
+                if (_mainWindow == null)
+                {
+                    _mainWindow = new Main();
+                    _mainWindow.ShowDialog();
+                    XBox.Disconnect();
+                }
             }
             else new Settings().ShowDialog();
         }
@@ -138,8 +165,12 @@ namespace Yelo_Neighborhood
 
             if (XBox.Connected)
             {
-                new Main().ShowDialog();
-                XBox.Disconnect();
+                if (_mainWindow == null)
+                {
+                    _mainWindow = new Main();
+                    _mainWindow.ShowDialog();
+                    XBox.Disconnect();
+                }
             }
             else new Settings().ShowDialog();
         }

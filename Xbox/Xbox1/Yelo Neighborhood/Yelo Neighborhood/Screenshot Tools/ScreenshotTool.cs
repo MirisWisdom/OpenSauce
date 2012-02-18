@@ -24,6 +24,7 @@ namespace Yelo_Neighborhood
 
         public void TakeScreenshot()
         {
+            if (!Program.XBox.Connected) new Settings().ShowDialog();
             DateTime now = DateTime.Now;
             listImages.Items.Add(new ListViewItem(now.ToString() + " " + now.Second.ToString() + "." + now.Millisecond.ToString(), imageList.Images.Count, listImages.Groups[0]));
             Pauser.Reset();
@@ -62,6 +63,7 @@ namespace Yelo_Neighborhood
         {
             if (checkLiveStream.Checked)
             {
+                if (!Program.XBox.Connected) new Settings().ShowDialog();
                 checkLiveStream.Text = "Live Stream (On)";
                 new Thread(new ParameterizedThreadStart(LiveStream)).Start(imageBox);
             }

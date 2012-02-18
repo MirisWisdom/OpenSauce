@@ -16,5 +16,6 @@ XBox.SetMemory(0x4ED39D, (byte)1);</Script>
 XBox.SetMemory(0x547F70, (byte)1);</Script>
     <Script Name="Load Checkpoint" FileType="">XBox.SetMemory(0x547F6F, (byte)1);
 XBox.SetMemory(0x547F74, (ushort)0x0101);</Script>
+    <Module Name="Yelo" Filename="C:\Users\Mark\Desktop\Yelo.yxt" BaseAddress="0xFFFFFFFF" />
   </Executable>
 </Executables>
