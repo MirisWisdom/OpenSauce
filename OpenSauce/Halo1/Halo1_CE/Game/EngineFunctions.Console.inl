@@ -82,7 +82,7 @@ void TerminalPrintF(cstring format, ...)
 	}
 }
 
-void PrintF(cstring msg)
+void Print(cstring msg)
 {
 	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(CONSOLE_PRINTF);
 

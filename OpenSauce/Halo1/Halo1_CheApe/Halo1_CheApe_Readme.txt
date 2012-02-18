@@ -57,6 +57,7 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
 === Version 3.0.2 ===
   * ADD			Increased the maximum amount of files tool will process during an import (this means tool won't stop importing after 500 animations)
   * CHANGE		Increased maximum animations from 500 to 2048. Crazy shit. I dare someone to use all 2048. Can I get a Challenge Accepted?
+  * FIX			Corrected the project_yellow_scripting.xml data to match the code (should no longer get script mismatch messages with new builds)
   * FIX			Patched some tool code that is ran when reimporting an animation tag to use the increased limit (wasn't patched before, resulting in buffer overflows)
 
 === Version 3.0.1 ===

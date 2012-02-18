@@ -54,6 +54,10 @@ It is also useful for us to know your system specifications such as your graphic
 NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how to use OS, please consult our wiki and/or create a post on Halomods to get community assistance. We are also NOT taking feature requests in any way.
 
 == Change Log ==
+=== Version 3.0.2 ===
+  * ADD			Verbose script definition mismatch messages when developer_mode is >= 4
+  * FIX			Fixed tag-based gravity settings problem
+
 === Version 3.0.1 ===
   * REMOVED		Vehicle Views from F7 menu (it's unimplemented)
   * ADD			Implemented project_yellow's gravity_scale override field
