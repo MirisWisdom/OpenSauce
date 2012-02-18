@@ -38,7 +38,7 @@ namespace Yelo_Neighborhood
         {
             if (Program.NewModule.ShowDialog() == DialogResult.OK)
             {
-                Executable.Module newModule = new Executable.Module(Program.NewModule.Filename, Program.NewModule.BaseAddress) { Name = Path.GetFileNameWithoutExtension(Program.NewModule.Filename) };
+                Executable.Module newModule = new Executable.Module(Program.NewModule.Filename, Program.NewModule.BaseAddress) { Name = Program.NewModule.ModuleName };
                 if(Program.NewModule.ExecutableIndex != -1)
                     Program.Executables[Program.NewModule.ExecutableIndex].Modules.Add(newModule);
                 modules.Add(newModule);
