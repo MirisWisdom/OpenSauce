@@ -39,9 +39,10 @@ namespace Yelo
 			GameState::s_object_data* obj_data;
 			real_vector3d* object_pos;
 
-			int16 last_index = GameState::_Object()->Header.next_index;
+			// TODO: use data iterator
+			datum_index::index_t last_index = GameState::_Object()->Header.next_datum.index;
 			GameState::s_object_header_datum* header_datums = *GameState::_Object();
-			for(int16 x = 0; x <= last_index; x++)
+			for(datum_index::index_t x = 0; x <= last_index; x++)
 			{
 				if((tmp.index = header_datums[x].GetHeader()) == NONE) continue;
 

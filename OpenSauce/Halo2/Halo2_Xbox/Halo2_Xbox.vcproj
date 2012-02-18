@@ -460,6 +460,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Memory\MemoryInterface.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Memory\MemoryInterface.hpp"
 				>
 			</File>

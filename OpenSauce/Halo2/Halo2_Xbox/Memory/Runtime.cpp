@@ -16,7 +16,7 @@ namespace Yelo
 			memcpy(address, &call, sizeof(call));
 		}
 
-		void WriteCall(void* call_buffer, void* address, void* target)
+		void WriteCall(void* call_buffer, void* address, const void* target)
 		{
 			Opcode::Call* call = CAST_PTR(Opcode::Call*, call_buffer);
 			Opcode::Call* call_address = CAST_PTR(Opcode::Call*, address);
@@ -31,7 +31,7 @@ namespace Yelo
 				);
 		}
 
-		void WriteCallRet(void* call_ret_buffer, void* address, void* target)
+		void WriteCallRet(void* call_ret_buffer, void* address, const void* target)
 		{	
 			CAST_PTR(Opcode::CallRet*, call_ret_buffer)->Ret = 
 				CAST_PTR(Opcode::CallRet*, address)->Ret;					// copy the old
@@ -39,7 +39,7 @@ namespace Yelo
 			CAST_PTR(Opcode::CallRet*, address)->Ret = Enums::_opcode_ret;	// set the new
 		}
 
-		void WriteCallRet(void* call_ret_buffer, void* address, void* target, uint16 count)
+		void WriteCallRet(void* call_ret_buffer, void* address, const void* target, const uint16 count)
 		{
 			CAST_PTR(Opcode::CallRet*, call_ret_buffer)->Ret = 
 				CAST_PTR(Opcode::CallRet*, address)->Ret;					// copy the old
@@ -60,7 +60,7 @@ namespace Yelo
 			memcpy(address, &call, sizeof(call));
 		}
 
-		void WriteJmp(void* jmp_buffer, void* address, void* target)
+		void WriteJmp(void* jmp_buffer, void* address, const void* target)
 		{
 			Opcode::Call* jmp = CAST_PTR(Opcode::Call*, jmp_buffer);
 			Opcode::Call* jmp_address = CAST_PTR(Opcode::Call*, address);
@@ -75,18 +75,19 @@ namespace Yelo
 				);
 		}
 
-		void OverwriteJmp(void* jmp_buffer, void* address, void* target)
+		void OverwriteJmp(void* jmp_buffer, void* address, const void* target)
 		{
 			Opcode::Call* jmp_address = CAST_PTR(Opcode::Call*, address);
 
 			CAST_PTR(Opcode::Call*, jmp_buffer)->Address = jmp_address->Address; // copy the old
-			jmp_address->Address = // set the new
+			jmp_address->Address =				// set the new
 				CAST_PTR(uint32, target) -		// cast the pointer to a number to perform math on
 				(
 					CAST_PTR(uint32, address) + sizeof(Opcode::Call)
 				);
 		}
 
+#if FALSE
 		void StorePushRet(void* address, void* target)
 		{
 			Opcode::CallRet* store = (Opcode::CallRet*)address;
@@ -95,5 +96,6 @@ namespace Yelo
 			store->Address = CAST_PTR(uint32, target);
 			store->Ret = Enums::_opcode_ret;
 		}
+#endif
 	};
 };

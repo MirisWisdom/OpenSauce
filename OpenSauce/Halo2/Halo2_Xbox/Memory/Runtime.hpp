@@ -98,19 +98,19 @@ namespace Yelo
 		// [call_buffer] is a buffer to receive the old bytes
 		// [address] address to put\overwrite a call
 		// [target] address to make the call goto
-		void WriteCall(void* call_buffer, void* address, void* target);
+		void WriteCall(void* call_buffer, void* address, const void* target);
 
 		// [call_ret_buffer] is a buffer to receive the old bytes
 		// [address] address to put\overwrite a call and ret
 		// [target] address to make the call goto
-		void WriteCallRet(void* call_ret_buffer, void* address, void* target);
+		void WriteCallRet(void* call_ret_buffer, void* address, const void* target);
 
 		// [call_ret_buffer] is a buffer to receive the old bytes
 		// [address] address to put\overwrite a call and ret
 		// [target] address to make the call goto
-		// [count] number of args in the function we're modding has. If there are any 
+		// [count] number of 32-bit args in the function we're modding. If there are any 
 		// 64-bit arguments, count them twice!
-		void WriteCallRet(void* call_ret_buffer, void* address, void* target, uint16 count);
+		void WriteCallRet(void* call_ret_buffer, void* address, const void* target, const uint16 count);
 
 		// [call] buffer containing the data we wish to write
 		// [address] address to put [call]
@@ -123,19 +123,68 @@ namespace Yelo
 		// [jmp_buffer] is a buffer to receive the old bytes
 		// [address] address to put\overwrite a jmp
 		// [target] address to make the jmp goto
-		void WriteJmp(void* jmp_buffer, void* address, void* target);
+		void WriteJmp(void* jmp_buffer, void* address, const void* target);
 
 		// [jmp_buffer] is a buffer to receive the old jmp address
 		// [address] address to overwrite a jmp
 		// [target] address to make the jmp goto
 		// REMARKS:
 		// Jmp type can be anything as long as the address used is 32bits
-		void OverwriteJmp(void* jmp_buffer, void* address, void* target);
+		void OverwriteJmp(void* jmp_buffer, void* address, const void* target);
 
+#if FALSE // Can't touch this, ha!
 		// [address] address to perform the store-push-ret code at
 		// [target] address to make the store-push-ret goto
 		// REMARKS:
 		// Ported for legacy code. USE IS HIGHLY DISCOURAGED!
 		void StorePushRet(void* address, void* target);
+#endif
+
+		// Overwrite the memory at [address] with [array]
+		// Copies the original memory at [address] into [array] before returning
+		// This is useful when writing an array of opaque bytes to game memory
+		template<typename T, size_t TSizeOfArray>
+		void OverwriteMemory(void* address, T(& array)[TSizeOfArray])
+		{
+			T old_memory[TSizeOfArray];
+			// Copy the old memory from the address
+			memcpy(old_memory, address, TSizeOfArray);
+			// Write the new memory to the address
+			memcpy(address, array, TSizeOfArray);
+			// Fill [array] with the old memory
+			memcpy(array, old_memory, TSizeOfArray);
+		}
+		// Overwrite the memory at [address] with [array]
+		// Does NOT copy the original memory at [address] into [array] before returning
+		// This is useful when writing an array of opaque bytes to game memory, esp. during unwinding operations
+		template<typename T, size_t TSizeOfArray>
+		void OverwriteMemorySansCopy(void* address, const T(& array)[TSizeOfArray])
+		{
+			// Write the new memory to the address
+			memcpy(address, array, TSizeOfArray);
+		}
+		// Overwrite the memory at [address] with [data]
+		// Copies the original memory at [address] into [data] before returning
+		// This is useful when writing a concrete object to game memory
+		template<typename T>
+		void OverwriteMemory(void* address, T& data)
+		{
+			T old_memory;
+			// Copy the old memory from the address
+			memcpy(&old_memory, address, sizeof(T));
+			// Write the new memory to the address
+			memcpy(address, &data, sizeof(T));
+			// Fill [data] with the old memory
+			memcpy(&data, &old_memory, sizeof(T));
+		}
+		// Overwrite the memory at [address] with [data]
+		// Does NOT copy the original memory at [address] into [data] before returning
+		// This is useful when writing a concrete object to game memory, esp. during unwinding operations
+		template<typename T>
+		void OverwriteMemorySansCopy(void* address, const T& data)
+		{
+			// Write the new memory to the address
+			memcpy(address, &data, sizeof(T));
+		}
 	};
 };

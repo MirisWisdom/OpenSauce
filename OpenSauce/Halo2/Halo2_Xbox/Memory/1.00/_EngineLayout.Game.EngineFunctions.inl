@@ -63,6 +63,12 @@ namespace Engine
 		FUNC_PTR(HUD_SET_STATE_TEXT, 0x24CA1D);
 	};
 
+	namespace Memory
+	{
+		FUNC_PTR(DATA_ITERATOR_NEXT,						FUNC_PTR_NULL);
+		FUNC_PTR(DATA_NEXT_INDEX,							0x16BC00);
+	};
+
 	namespace Players
 	{
 		FUNC_PTR(LOCAL_PLAYER_GET_PLAYER_INDEX, 0x14DE70);

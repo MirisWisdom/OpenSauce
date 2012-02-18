@@ -25,7 +25,7 @@ namespace Yelo
 		{
 			API_FUNC_NAKED void Erase(datum_index ai_index)
 			{
-				static uint32 CALL_ADDR = GET_FUNC_PTR(AI_ERASE_ALL);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(AI_ERASE_ALL);
 
 				API_FUNC_NAKED_START()
 
@@ -43,7 +43,7 @@ namespace Yelo
 		{
 			API_FUNC_NAKED void InfiniteAmmo(bool is_on)
 			{
-				static uint32 info_ammo_codes[] = { // TODO: is this code platform independent?
+				static const uint32 info_ammo_codes[] = { // TODO: is this code platform independent?
 					0x008418966,
 					0x086110FF3,
 					0x000000184,
@@ -93,7 +93,7 @@ toggle:
 
 			void InfiniteGrenades(bool is_on)
 			{
-				static unsigned short inf_grenades_code[] = { // TODO: is this code platform independent?
+				static const unsigned short inf_grenades_code[] = { // TODO: is this code platform independent?
 					0x08FE,
 					0x9090,
 				};
@@ -111,7 +111,7 @@ toggle:
 		{
 			API_FUNC_NAKED void LightingSetPrimaryLight(angle horiz, angle vert, real_rgb_color* color)
 			{
-				static uint32 CALL_ADDR = GET_FUNC_PTR(LIGHTING_SET_PRIMARY_LIGHT);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(LIGHTING_SET_PRIMARY_LIGHT);
 
 				API_FUNC_NAKED_START()
 
@@ -128,7 +128,7 @@ toggle:
 
 			API_FUNC_NAKED void LightingSetSecondaryLight(angle horiz, angle vert, real_rgb_color* color)
 			{
-				static uint32 CALL_ADDR = GET_FUNC_PTR(LIGHTING_SET_SECONDARY_LIGHT);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(LIGHTING_SET_SECONDARY_LIGHT);
 
 				API_FUNC_NAKED_START()
 
@@ -146,7 +146,7 @@ toggle:
 			API_FUNC_NAKED void FadeIn(short time, real_rgb_color* color)
 			{
 				// TODO: ALPHA REQUIRES DIFF CODE!!
-				static uint32 CALL_ADDR = GET_FUNC_PTR(FADE_IN);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(FADE_IN);
 
 				API_FUNC_NAKED_START()
 
@@ -163,7 +163,7 @@ toggle:
 			API_FUNC_NAKED void FadeOut(short time, real_rgb_color* color)
 			{
 				// TODO: ALPHA REQUIRES DIFF CODE!!
-				static uint32 CALL_ADDR = GET_FUNC_PTR(FADE_OUT);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(FADE_OUT);
 
 				API_FUNC_NAKED_START()
 
@@ -179,7 +179,7 @@ toggle:
 
 			API_FUNC_NAKED void Start()
 			{
-				static uint32 CALL_ADDR = GET_FUNC_PTR(CINEMATIC_START);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(CINEMATIC_START);
 
 				API_FUNC_NAKED_START_()
 
@@ -190,7 +190,7 @@ toggle:
 
 			API_FUNC_NAKED void Stop()
 			{
-				static uint32 CALL_ADDR = GET_FUNC_PTR(CINEMATIC_STOP);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(CINEMATIC_STOP);
 
 				API_FUNC_NAKED_START_()
 
@@ -225,7 +225,7 @@ toggle:
 			API_FUNC_NAKED void SetFilterBitmap(datum_index bitmap_index)
 			{
 				// Alpha has more args and resembles the function in halo1
-				static uint32 CALL_ADDR = GET_FUNC_PTR(CINEMATIC_SCREEN_EFFECT_SET_FILTER_BITMAP);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(CINEMATIC_SCREEN_EFFECT_SET_FILTER_BITMAP);
 
 				API_FUNC_NAKED_START()
 
@@ -237,7 +237,7 @@ toggle:
 
 			API_FUNC_NAKED void RenderLightsEnableCinematicShadow(real arg_value)
 			{
-				static uint32 CALL_ADDR = GET_FUNC_PTR(RENDER_LIGHTS_ENABLE_CINEMATIC_SHADOW);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(RENDER_LIGHTS_ENABLE_CINEMATIC_SHADOW);
 
 				API_FUNC_NAKED_START()
 					push	esi // render light index?
@@ -297,7 +297,7 @@ toggle:
 			API_FUNC_NAKED void GameRate(real one, real two, real three)
 			{
 				// TODO: ALPHA REQUIRES DIFF CODE!!
-				static uint32 CALL_ADDR = GET_FUNC_PTR(GAME_RATE);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(GAME_RATE);
 
 				API_FUNC_NAKED_START()
 
@@ -347,7 +347,7 @@ is_saving:
 
 			API_FUNC_NAKED void Won()
 			{
-				static uint32 CALL_ADDR = GET_FUNC_PTR(GAME_WON);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(GAME_WON);
 
 				API_FUNC_NAKED_START_()
 
@@ -362,7 +362,7 @@ is_saving:
 
 			API_FUNC_NAKED void PlaySound(datum_index sound_index, real volume)
 			{
-				static uint32 CALL_ADDR = GET_FUNC_PTR(PLAY_SOUND);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(PLAY_SOUND);
 
 				API_FUNC_NAKED_START()
 
@@ -378,7 +378,7 @@ is_saving:
 		{
 			API_FUNC_NAKED DWORD XInputGetState(HANDLE device, void* state)
 			{
-				static uint32 CALL_ADDR = GET_FUNC_PTR(XINPUT_GET_STATE);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(XINPUT_GET_STATE);
 
 				API_FUNC_NAKED_START()
 
@@ -391,7 +391,7 @@ is_saving:
 
 			API_FUNC_NAKED void HudCinematicFade(real init_opcaity, real final_opcaity)
 			{
-				static uint32 CALL_ADDR = GET_FUNC_PTR(HUD_CINEMATIC_FADE);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(HUD_CINEMATIC_FADE);
 
 				API_FUNC_NAKED_START()
 
@@ -405,7 +405,7 @@ is_saving:
 
 			API_FUNC_NAKED void HudMessagePrint(wcstring string, int32 player_index)
 			{
-				static uint32 CALL_ADDR = GET_FUNC_PTR(HUD_MESSAGE_PRINT);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(HUD_MESSAGE_PRINT);
 
 				API_FUNC_NAKED_START()
 
@@ -418,7 +418,7 @@ is_saving:
 
 			API_FUNC_NAKED void HudAddItemMessage(wcstring string, int32 player_index)
 			{
-				static uint32 CALL_ADDR = GET_FUNC_PTR(HUD_ADD_ITEM_MESSAGE);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(HUD_ADD_ITEM_MESSAGE);
 
 				API_FUNC_NAKED_START()
 
@@ -432,7 +432,7 @@ is_saving:
 
 			API_FUNC_NAKED void HudTimerSet(int16 minutes, int16 seconds)
 			{
-				static uint32 CALL_ADDR = GET_FUNC_PTR(SCRIPTED_HUD_SET_TIMER_TIME);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(SCRIPTED_HUD_SET_TIMER_TIME);
 
 				API_FUNC_NAKED_START()
 
@@ -460,7 +460,7 @@ is_saving:
 
 			API_FUNC_NAKED void HudTimerPause(bool pause_timer)
 			{
-				static uint32 CALL_ADDR = GET_FUNC_PTR(SCRIPTED_HUD_PAUSE_TIMER);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(SCRIPTED_HUD_PAUSE_TIMER);
 
 				API_FUNC_NAKED_START()
 
@@ -473,7 +473,7 @@ is_saving:
 
 			API_FUNC_NAKED void HudSetStateText(wcstring state_text, int32 player_index, int32 up_time, datum_index optional_sound)
 			{
-				static uint32 CALL_ADDR = GET_FUNC_PTR(HUD_SET_STATE_TEXT);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(HUD_SET_STATE_TEXT);
 
 				API_FUNC_NAKED_START()
 
@@ -487,11 +487,66 @@ is_saving:
 			}
 		};
 
+		namespace Memory
+		{
+			PLATFORM_CODE_H2_ALPHA( API_FUNC_NAKED ) void* DataIteratorNext(void* _iter)
+			{
+#if PLATFORM_ID == PLATFORM_H2_ALPHA
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(DATA_ITERATOR_NEXT);
+
+				API_FUNC_NAKED_START()
+
+					mov		edi, iter
+					call	CALL_ADDR
+
+				API_FUNC_NAKED_END(1);
+#else
+				Yelo::Memory::s_data_array_iterator* iter = CAST_PTR(Yelo::Memory::s_data_array_iterator*, _iter);
+				const Yelo::Memory::s_data_array* array = iter->array;
+
+				void* datum_ptr = NULL;
+				int32 next_index = iter->datum.IsNull() ? 0 : (iter->datum.index + 1);
+				next_index = DataNextIndex(iter->array, next_index);
+
+				if(next_index != NONE)
+				{
+					iter->cursor = next_index;
+					datum_ptr = &(CAST_PTR(byte*, array->data)[array->datum_size * next_index]);
+					iter->datum = datum_index::Create(CAST(int16,next_index), datum_ptr);
+				}
+				else
+				{
+					iter->datum = datum_index::null;
+					iter->cursor = NONE;
+				}
+
+				return datum_ptr;
+#endif
+			}
+
+			API_FUNC_NAKED int32 DataNextIndex(Yelo::Memory::s_data_array* array, int32 cursor)
+			{
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(DATA_NEXT_INDEX);
+
+				API_FUNC_NAKED_START()
+
+					mov		eax, cursor
+					mov		ecx, array
+					call	CALL_ADDR
+
+				API_FUNC_NAKED_END(2);
+			}
+		};
+
+		namespace Networking
+		{
+		};
+
 		namespace Players
 		{
 			API_FUNC_NAKED datum_index LocalGetPlayerIndex(int32 local_player_index)
 			{
-				static uint32 CALL_ADDR = GET_FUNC_PTR(LOCAL_PLAYER_GET_PLAYER_INDEX);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(LOCAL_PLAYER_GET_PLAYER_INDEX);
 
 				API_FUNC_NAKED_START()
 
@@ -503,7 +558,7 @@ is_saving:
 
 			API_FUNC_NAKED datum_index PlayerFromUnitIndex(datum_index unit_index)
 			{
-				static uint32 CALL_ADDR = GET_FUNC_PTR(PLAYER_INDEX_FROM_UNIT_INDEX);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(PLAYER_INDEX_FROM_UNIT_INDEX);
 
 				API_FUNC_NAKED_START()
 
@@ -518,7 +573,7 @@ is_saving:
 		{
 			API_FUNC_NAKED bool IsOrContainsPlayer(datum_index object_index)
 			{
-				static uint32 CALL_ADDR = GET_FUNC_PTR(OBJECT_IS_OR_CONTAINS_PLAYER);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(OBJECT_IS_OR_CONTAINS_PLAYER);
 
 				API_FUNC_NAKED_START()
 
@@ -530,7 +585,7 @@ is_saving:
 
 			API_FUNC_NAKED void Hide(datum_index object_index, bool hide_it)
 			{
-				static uint32 CALL_ADDR = GET_FUNC_PTR(OBJECT_HIDE);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(OBJECT_HIDE);
 
 				API_FUNC_NAKED_START()
 
@@ -544,7 +599,7 @@ is_saving:
 
 			API_FUNC_NAKED void SetPosition(datum_index object_index, real_vector3d* pos, real_vector3d* forward, real_euler_angles3d* up)
 			{
-				static uint32 CALL_ADDR = GET_FUNC_PTR(OBJECT_SET_POSITION);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(OBJECT_SET_POSITION);
 
 				API_FUNC_NAKED_START()
 
@@ -561,7 +616,7 @@ is_saving:
 
 			API_FUNC_NAKED void UnitLowerWeapon(datum_index unit_index, int32 duration_seconds)
 			{
-				static uint32 CALL_ADDR = GET_FUNC_PTR(UNIT_SCRIPTING_LOWER_WEAPON);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(UNIT_SCRIPTING_LOWER_WEAPON);
 
 				API_FUNC_NAKED_START()
 
@@ -574,7 +629,7 @@ is_saving:
 
 			API_FUNC_NAKED void UnitRaiseWeapon(datum_index unit_index, int32 duration_seconds)
 			{
-				static uint32 CALL_ADDR = GET_FUNC_PTR(UNIT_SCRIPTING_RAISE_WEAPON);
+				static const uint32 CALL_ADDR = GET_FUNC_PTR(UNIT_SCRIPTING_RAISE_WEAPON);
 
 				API_FUNC_NAKED_START()
 

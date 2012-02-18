@@ -30,12 +30,10 @@ namespace Yelo
 
 		void InitializeForNewMap()
 		{
-			uint32 count = GameState::_TagIndex()->Count;
 			s_tag_instance* tag_definition = GameState::_TagInstances();
-			byte* tag_data;
-			for(uint32 x = 0; x < count; x++, tag_definition++)
+			for(uint32 x = 0; x < GameState::_TagIndex()->Count; x++, tag_definition++)
 			{
-				tag_data = CAST_PTR(byte*, tag_definition->Definition);
+				byte* tag_data = CAST_PTR(byte*, tag_definition->Definition);
 				switch(tag_definition->GroupTag)
 				{
 				case 'weap':
