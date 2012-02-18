@@ -25,7 +25,8 @@ namespace Yelo_Neighborhood
 
             public string Name { get; set; }
 
-            public string Filename { get { return fileInfo.Name; } }
+            [Browsable(false)]
+            public string Filename { get { return fileInfo.FullName; } }
 
             uint baseAddress;
             public uint BaseAddress { get { return baseAddress; } }
