@@ -11,6 +11,7 @@ namespace Yelo
 	namespace Memory
 	{
 		struct s_data_array;
+		struct s_data_array_iterator;
 	};
 
 	namespace Engine
@@ -106,7 +107,7 @@ namespace Yelo
 		{
 			// Get a reference to the next valid datum data in a s_data_array
 			// See: Memory/DataShared.hpp and Memory/MemoryInterface.cpp
-			void* DataIteratorNext(void* iter);
+			void* DataIteratorNext(Yelo::Memory::s_data_array_iterator* iter);
 
 			// Get the next (valid) datum's absolute index, relative to [cursor]
 			// [cursor] - an absolute index
