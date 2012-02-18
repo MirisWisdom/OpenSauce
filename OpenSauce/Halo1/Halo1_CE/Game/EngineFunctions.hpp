@@ -168,7 +168,7 @@ namespace Yelo
 			// Formats and prints to the console
 			void TerminalPrintF(cstring format, ...);
 
-			void PrintF(cstring msg);
+			void Print(cstring msg);
 
 			// Prints [msg] to the console with red coloring
 			void Warning(cstring msg);

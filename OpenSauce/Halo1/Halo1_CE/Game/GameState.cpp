@@ -166,12 +166,6 @@ namespace Yelo
 		void PLATFORM_API InitializeForNewMap()
 		{
 			Physics()->Reset(); // Reset the physics constants on each new map load since these are engine globals, not game state globals.
-			// Update the gravity based on the scenario's yelo tag settings
-			{
-				const real& gravity_scale = TagGroups::_global_yelo->physics.gravity_scale;
-				if(gravity_scale > 0 && gravity_scale != 1.0f)
-					Physics()->SetGravityScale(gravity_scale);
-			}
 
 			RuntimeData::InitializeForNewMap();
 
@@ -181,6 +175,14 @@ namespace Yelo
 			for(int32 x = 0; x <= component_count; x++)
 				if( components[x].InitializeForNewMap != NULL )
 					components[x].InitializeForNewMap();
+
+			// Update the gravity based on the scenario's yelo tag settings
+			if(!TagGroups::_global_yelo->IsNull())
+			{
+				const real& gravity_scale = TagGroups::_global_yelo->physics.gravity_scale;
+				if(gravity_scale > 0 && gravity_scale != 1.0f)
+					Physics()->SetGravityScale(gravity_scale);
+			}
 		}
 
 		void PLATFORM_API DisposeFromOldMap()

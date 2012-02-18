@@ -137,7 +137,7 @@
 			<arg type="boolean" name="also-change-game-build-string" />
 			<arg type="string"	name="version-string" />
 		</function>
-		<function name="game_engine_data_get_integer" returnType="void" help="returns an integer value property of the current game engine. -1 if this fails" internal="true" >
+		<function name="game_engine_data_get_integer" returnType="long" help="returns an integer value property of the current game engine. -1 if this fails" internal="true" >
 			<arg type="string" name="data_name" />
 		</function>
 
