@@ -13,18 +13,14 @@
 #include "Interface/Input.hpp"
 #include "Game/Players.hpp"
 
-static Yelo::Memory::Opcode::CallRet UNWIND_PLAYER_CONTROL_UPDATE;
-static Yelo::Memory::Opcode::Call UNWIND_PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_HORIZ;
-static Yelo::Memory::Opcode::Call UNWIND_PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_VERT;
-static Yelo::Memory::Opcode::Call UNWIND_OBSERVER_UPDATE_POSITIONS;
-static Yelo::Memory::Opcode::Call UNWIND_OBSERVER_UPDATE_VELOCITIES =
-{0xF3, 0x300C110F};
-static Yelo::Memory::Opcode::Call UNWIND_OBSERVER_UPDATE_POSITIONS1 =
-{0xF3, 0x2814110F};
-static Yelo::Memory::Opcode::Call UNWIND_OBSERVER_UPDATE_POSITIONS2 =
-{0xF3, 0x1004110F};
-static Yelo::byte				  UNWIND_DIRECTOR_SET_CAMERA[3] =
-{0x89, 0x51, 0x0C};
+static Yelo::Memory::Opcode::CallRet	UNWIND_PLAYER_CONTROL_UPDATE;
+static Yelo::Memory::Opcode::Call		UNWIND_OBSERVER_UPDATE_VELOCITIES_NULLING =	{0x90, 0x90909090};
+static Yelo::Memory::Opcode::Call		UNWIND_OBSERVER_UPDATE_POSITIONS_NULLING1 =	{0x90, 0x90909090};
+static Yelo::Memory::Opcode::Call		UNWIND_OBSERVER_UPDATE_POSITIONS_NULLING2 =	{0x90, 0x90909090};
+static Yelo::byte						UNWIND_DIRECTOR_SET_CAMERA_NULLING[] =		{0x90, 0x90, 0x90};
+static Yelo::Memory::Opcode::Call		UNWIND_PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_HORIZ;
+static Yelo::Memory::Opcode::Call		UNWIND_PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_VERT;
+static Yelo::Memory::Opcode::Call		UNWIND_OBSERVER_UPDATE_POSITIONS_START;
 
 namespace Yelo
 {
@@ -57,9 +53,9 @@ namespace Yelo
 		{
 			YELO_MEM_WLIST_BEGIN();
 
-			YELO_MEM_WRITE(WriteRetn, 
-				UNWIND_PLAYER_CONTROL_UPDATE, 
-				GET_FUNC_VPTR(PLAYER_CONTROL_UPDATE_HOOK));
+			YELO_MEM_WRITE(OverwriteMemorySansCopy, 
+				GET_FUNC_VPTR(PLAYER_CONTROL_UPDATE_HOOK),
+				UNWIND_PLAYER_CONTROL_UPDATE);
 			c_yelo_camera::DebugDispose();
 
 			YELO_MEM_WLIST_END();
@@ -136,24 +132,18 @@ namespace Yelo
 
 		void c_yelo_camera::DebugInitialize()
 		{
-			Yelo::Memory::Opcode::Call this_is_a_hack = {0x90, 0x90909090};
-
-			memcpy(
+			YELO_MEM_WLIST_ITEM(OverwriteMemory, 
 				GET_FUNC_VPTR(OBSERVER_UPDATE_VELOCITIES_NULLING),
-				&this_is_a_hack,
-				sizeof(this_is_a_hack));
-			memcpy(
+				UNWIND_OBSERVER_UPDATE_VELOCITIES_NULLING);
+			YELO_MEM_WLIST_ITEM(OverwriteMemory, 
 				GET_FUNC_VPTR(OBSERVER_UPDATE_POSITIONS_NULLING1),
-				&this_is_a_hack,
-				sizeof(this_is_a_hack));
-			memcpy(
+				UNWIND_OBSERVER_UPDATE_POSITIONS_NULLING1);
+			YELO_MEM_WLIST_ITEM(OverwriteMemory, 
 				GET_FUNC_VPTR(OBSERVER_UPDATE_POSITIONS_NULLING2),
-				&this_is_a_hack,
-				sizeof(this_is_a_hack));
-			memset(
+				UNWIND_OBSERVER_UPDATE_POSITIONS_NULLING2);
+			YELO_MEM_WLIST_ITEM(OverwriteMemory, 
 				GET_FUNC_VPTR(DIRECTOR_SET_CAMERA_NULLING),
-				0x90,
-				3);
+				UNWIND_DIRECTOR_SET_CAMERA_NULLING);
 
 			YELO_MEM_WLIST_ITEM(WriteJmp, 
 				&UNWIND_PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_HORIZ,
@@ -164,41 +154,35 @@ namespace Yelo
 				GET_FUNC_VPTR(PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_VERT_START),
 				&Yelo::Camera::c_yelo_camera::UpdateAngleVert);
 			YELO_MEM_WLIST_ITEM(WriteJmp, 
-				&UNWIND_OBSERVER_UPDATE_POSITIONS,
+				&UNWIND_OBSERVER_UPDATE_POSITIONS_START,
 				GET_FUNC_VPTR(OBSERVER_UPDATE_POSITIONS_START),
 				&Yelo::Camera::c_yelo_camera::UpdateObserverPositions);
 		}
 
 		void c_yelo_camera::DebugDispose()
 		{
-			memcpy(
+			YELO_MEM_WLIST_ITEM(OverwriteMemorySansCopy, 
 				GET_FUNC_VPTR(OBSERVER_UPDATE_VELOCITIES_NULLING),
-				&UNWIND_OBSERVER_UPDATE_VELOCITIES,
-				sizeof(UNWIND_OBSERVER_UPDATE_VELOCITIES));
-			memcpy(
+				UNWIND_OBSERVER_UPDATE_VELOCITIES_NULLING);
+			YELO_MEM_WLIST_ITEM(OverwriteMemorySansCopy, 
 				GET_FUNC_VPTR(OBSERVER_UPDATE_POSITIONS_NULLING1),
-				&UNWIND_OBSERVER_UPDATE_POSITIONS1,
-				sizeof(UNWIND_OBSERVER_UPDATE_POSITIONS1));
-			memcpy(
+				UNWIND_OBSERVER_UPDATE_POSITIONS_NULLING1);
+			YELO_MEM_WLIST_ITEM(OverwriteMemorySansCopy, 
 				GET_FUNC_VPTR(OBSERVER_UPDATE_POSITIONS_NULLING2),
-				&UNWIND_OBSERVER_UPDATE_POSITIONS2,
-				sizeof(UNWIND_OBSERVER_UPDATE_POSITIONS2));
-			memcpy(
+				UNWIND_OBSERVER_UPDATE_POSITIONS_NULLING2);
+			YELO_MEM_WLIST_ITEM(OverwriteMemorySansCopy, 
 				GET_FUNC_VPTR(DIRECTOR_SET_CAMERA_NULLING),
-				&UNWIND_DIRECTOR_SET_CAMERA,
-				sizeof(UNWIND_DIRECTOR_SET_CAMERA));
-			memcpy(
+				UNWIND_DIRECTOR_SET_CAMERA_NULLING);
+
+			YELO_MEM_WLIST_ITEM(OverwriteMemorySansCopy, 
 				GET_FUNC_VPTR(PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_HORIZ_START),
-				&UNWIND_PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_HORIZ,
-				sizeof(UNWIND_PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_HORIZ));
-			memcpy(
+				UNWIND_PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_HORIZ);
+			YELO_MEM_WLIST_ITEM(OverwriteMemorySansCopy, 
 				GET_FUNC_VPTR(PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_VERT_START),
-				&UNWIND_PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_VERT,
-				sizeof(UNWIND_PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_VERT));
-			memcpy(
+				UNWIND_PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_VERT);
+			YELO_MEM_WLIST_ITEM(OverwriteMemorySansCopy, 
 				GET_FUNC_VPTR(OBSERVER_UPDATE_POSITIONS_START),
-				&UNWIND_OBSERVER_UPDATE_POSITIONS,
-				sizeof(UNWIND_OBSERVER_UPDATE_POSITIONS));
+				UNWIND_OBSERVER_UPDATE_POSITIONS_START);
 		}
 
 		// Finds out if the player associated to the pointer to the
@@ -650,8 +634,9 @@ _cleanup:
 
 		bool c_yelo_camera::IsValid(int32 controller_index)
 		{
+			// TODO: use data iterator
 			GameState::s_player_datum* players = *GameState::_Players(); // get players
-			for(uint32 x = 0; x <GameState::_Players()->GetDatumCount(); x++) // loop and check for the valid cases
+			for(uint32 x = 0; x < GameState::_Players()->GetDatumCount(); x++) // loop and check for the valid cases
 				if(players->GetHeader() != NONE && // the header must be valid first
 					*players[x].GetControllerIndex() == controller_index && // only look for the controller we want
 					*players[x].GetSlaveUnitIndex() != datum_index::null) // if the player is not existing as a unit in-game right now, they're considered invalid to us

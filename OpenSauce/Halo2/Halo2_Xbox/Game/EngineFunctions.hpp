@@ -8,6 +8,11 @@
 
 namespace Yelo
 {
+	namespace Memory
+	{
+		struct s_data_array;
+	};
+
 	namespace Engine
 	{
 		namespace AI
@@ -95,6 +100,17 @@ namespace Yelo
 				int32 player_index = 0, 
 				int32 up_time = NONE, 
 				datum_index optional_sound = datum_index::null);
+		};
+
+		namespace Memory
+		{
+			// Get a reference to the next valid datum data in a s_data_array
+			// See: Memory/DataShared.hpp and Memory/MemoryInterface.cpp
+			void* DataIteratorNext(void* iter);
+
+			// Get the next (valid) datum's absolute index, relative to [cursor]
+			// [cursor] - an absolute index
+			int32 DataNextIndex(Yelo::Memory::s_data_array* array, int32 cursor);
 		};
 
 		namespace Networking

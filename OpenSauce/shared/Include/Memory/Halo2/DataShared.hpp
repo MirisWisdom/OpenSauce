@@ -52,52 +52,54 @@ namespace Yelo
 				int32 length;		// Current length (in bits) of the bit index
 			}active_indices;
 			int32 actual_count;		// Number of datums in use
-			int16 next_salt;
-			int16 next_index;
+			datum_index next_datum;
 			void* data;
 			byte* active_indices_bit_vector;
 
 			__forceinline int32 GetLength() const { return actual_count; }
-		}; BOOST_STATIC_ASSERT( sizeof(s_data_array) == 0x4C );
 
-		template<typename DatumT, const uint32 DatumCount> struct DataArray {
+			static void* IteratorNext(void* iter);
+
+		}; BOOST_STATIC_ASSERT( sizeof(s_data_array) == 0x4C );
+		struct s_data_array_iterator {
+			s_data_array* array;
+			datum_index datum;
+			int32 cursor;
+		}; BOOST_STATIC_ASSERT( sizeof(s_data_array_iterator) == 0xC );
+
+		template<typename DatumT, const size_t DatumCount> struct DataArray {
 		private:
 			typedef DataArray<DatumT,DatumCount> DataArrayT;
 
 		public:
-			// TODO: Need to research the iterator in Halo 2, I forget 
-			// if it's the same as it was in Halo 1
-// 			struct Iterator {
-// 			private:
-// 				DataArrayT* Array;
-// 				int16 CurrentIndex;
-// 				PAD16;
-// 				datum_index Datum;
-// 				tag Signature;
-// 
-// 			public:
-// 				Iterator(DataArrayT* array)
-// 				{
-// 					Array = array;
-// 					CurrentIndex = 0;
-// 					Datum = datum_index::null;
-// 					Signature = CAST_PTR(uint32, this) ^ Enums::k_data_iterator_signature;
-// 				}
-// 
-// 				DatumT* Next() {
-// 					return CAST_PTR(DatumT*, s_data_array::IteratorNext(this));
-// 				}
-// 
-// 				datum_index Current() const { return this->Datum; }
-// 			};
+			struct Iterator {
+			private:
+				DataArrayT* Array;
+				datum_index Datum;
+				int32 CurrentIndex;
+
+			public:
+				Iterator(DataArrayT* array)
+				{
+					Array = array;
+					Datum = datum_index::null;
+					CurrentIndex = NONE;
+				}
+
+				DatumT* Next() {
+					return CAST_PTR(DatumT*, s_data_array::IteratorNext(this));
+				}
+
+				datum_index Current() const { return this->Datum; }
+			}; BOOST_STATIC_ASSERT( sizeof(Iterator) == sizeof(s_data_array_iterator) );
 
 			s_data_array Header;
 
 		public:
 
-// 			Iterator& IteratorNew(Iterator& iter) {
-// 				iter = Iterator(this);
-// 			}
+			Iterator& IteratorNew(Iterator& iter) {
+				iter = Iterator(this);
+			}
 
 			API_INLINE DatumT* operator [](datum_index handle) { return &CAST_PTR(DatumT*, this->Header.data)[handle.index]; }
 
@@ -106,7 +108,7 @@ namespace Yelo
 				return CAST_PTR(DatumT*, this->Header.data);
 			}
 
-			API_INLINE uint32 GetDatumCount() { return DatumCount; }
+			API_INLINE size_t GetDatumCount() const { return DatumCount; }
 		};
 
 		struct s_memory_pool_block_header {
