@@ -106,62 +106,74 @@ struct s_section_info
 	}
 };
 
+struct s_file_struct_base
+{
+	IMAGE_DOS_HEADER Dos;
+	IMAGE_FILE_HEADER File;
+	IMAGE_OPTIONAL_HEADER32 Header;
+	size_t SectionCount;
+	IMAGE_SECTION_HEADER* Sections;
+
+	virtual ~s_file_struct_base()
+	{
+		if(Sections != NULL)
+		{
+			delete[] Sections;
+			Sections = NULL;
+
+			SectionCount = 0;
+		}
+	}
+
+	virtual void AllocateSections(size_t count)
+	{
+		SectionCount = count;
+		Sections = new IMAGE_SECTION_HEADER[count];
+	}
+
+	HANDLE OpenFile(LPCWSTR lpFileName)
+	{
+		return CreateFileW(lpFileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	}
+	void ReadFileHeaders(HANDLE dll_file, DWORD& lpNumberOfBytesRead, HRESULT& result)
+	{
+		SetFilePointer(dll_file, 0, NULL, FILE_BEGIN);
+
+		if(! ReadFile(dll_file, &Dos, sizeof(Dos), &lpNumberOfBytesRead, NULL) ) result = E_FAIL;
+		else
+		{
+			SetFilePointer(dll_file, Dos.e_lfanew + sizeof(DWORD), NULL, FILE_BEGIN);
+
+			if(! ReadFile(dll_file, &File, sizeof(File), &lpNumberOfBytesRead, NULL) ) result = E_FAIL;
+			if(! ReadFile(dll_file, &Header, sizeof(Header), &lpNumberOfBytesRead, NULL) ) result = E_FAIL;
+		}
+	}
+	void ReadFileSections(HANDLE dll_file, DWORD& lpNumberOfBytesRead, HRESULT& result)
+	{
+		if(result == S_OK)
+		{
+			AllocateSections(File.NumberOfSections);
+			if(! ReadFile(dll_file, Sections, sizeof(Sections[0]) * SectionCount, &lpNumberOfBytesRead, NULL) ) result = E_FAIL;
+		}
+	}
+};
+
 UTILDLL_API HRESULT Util_CalculateModuleCodeSize(LPCWSTR lpFileName, PUINT32 code_size)
 {
-	struct s_file_struct {
-		IMAGE_DOS_HEADER Dos;
-		IMAGE_FILE_HEADER File;
-		IMAGE_OPTIONAL_HEADER32 Header;
-		size_t SectionCount;
-		IMAGE_SECTION_HEADER* Sections;
-
+	struct s_file_struct : public s_file_struct_base {
 		s_file_struct()	{ memset(this, 0, sizeof(*this)); }
-		~s_file_struct()
-		{
-			if(Sections != NULL)
-			{
-				delete[] Sections;
-				Sections = NULL;
-			}
-		}
-
-		void AllocateSections(size_t count)
-		{
-			SectionCount = count;
-			Sections = new IMAGE_SECTION_HEADER[count];
-		}
 	}DllStruct;
 	DWORD lpNumberOfBytesRead;
 
-	HANDLE dll_file = CreateFileW(lpFileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	HANDLE dll_file = DllStruct.OpenFile(lpFileName);
 	HRESULT result = S_OK;
 
 	*code_size = 0;
 
 	if(dll_file != INVALID_HANDLE_VALUE)
 	{
-		// !--- Read file headers ---
-		if(! ReadFile(dll_file, &DllStruct.Dos, sizeof(DllStruct.Dos), &lpNumberOfBytesRead, NULL) ) result = E_ABORT;
-		else
-		{
-			SetFilePointer(dll_file, DllStruct.Dos.e_lfanew + sizeof(DWORD), NULL, FILE_BEGIN);
-
-			if(! ReadFile(dll_file, &DllStruct.File, sizeof(DllStruct.File), &lpNumberOfBytesRead, NULL) ) result = E_ABORT;
-			if(! ReadFile(dll_file, &DllStruct.Header, sizeof(DllStruct.Header), &lpNumberOfBytesRead, NULL) ) result = E_ABORT;
-		}
-		// !--- Read file headers ---
-
-
-
-		// !--- Read file sections ---
-		if(result == S_OK)
-		{
-			DllStruct.AllocateSections(DllStruct.File.NumberOfSections);
-			if(! ReadFile(dll_file, DllStruct.Sections, sizeof(DllStruct.Sections[0]) * DllStruct.SectionCount, &lpNumberOfBytesRead, NULL) ) result = E_ABORT;
-		}
-		// !--- Read file sections ---
-
-		// will close the file even if there were errors above
+		DllStruct.ReadFileHeaders(dll_file, lpNumberOfBytesRead, result);
+		DllStruct.ReadFileSections(dll_file, lpNumberOfBytesRead, result);
 		CloseHandle(dll_file);
 
 		if(result == S_OK)
@@ -236,25 +248,17 @@ UTILDLL_API HRESULT Util_RebaseModule(LPCWSTR lpFileName, PBYTE reloc_dll, UINT3
 		operator BYTE*() { return buffer; }
 	};
 
-	struct s_file_struct {
-		IMAGE_DOS_HEADER Dos;
-		IMAGE_FILE_HEADER File;
-		IMAGE_OPTIONAL_HEADER32 Header;
-		size_t SectionCount;
-		IMAGE_SECTION_HEADER* Sections;
+	struct s_file_struct : public s_file_struct_base {
 		IMAGE_SECTION_HEADER* RelocSection;
 		DWORD RelocationsCount;
 		s_reloc_table** Relocations;
 		s_section_info* SectionInfo;
 
 		s_file_struct()	{ memset(this, 0, sizeof(*this)); }
-		~s_file_struct()
+		virtual ~s_file_struct()
 		{
-			if(Sections != NULL)
+			if(SectionInfo != NULL)
 			{
-				delete[] Sections;
-				Sections = NULL;
-
 				delete[] SectionInfo;
 				SectionInfo = NULL;
 
@@ -271,10 +275,9 @@ UTILDLL_API HRESULT Util_RebaseModule(LPCWSTR lpFileName, PBYTE reloc_dll, UINT3
 			}
 		}
 
-		void AllocateSections(size_t count)
+		virtual void AllocateSections(size_t count)
 		{
-			SectionCount = count;
-			Sections = new IMAGE_SECTION_HEADER[count];
+			s_file_struct_base::AllocateSections(count);
 			SectionInfo = new s_section_info[count];
 		}
 		void AllocateRelocations(size_t count)
@@ -300,7 +303,7 @@ UTILDLL_API HRESULT Util_RebaseModule(LPCWSTR lpFileName, PBYTE reloc_dll, UINT3
 
 	s_buffer dll_buffer;
 	{
-		HANDLE dll_file = CreateFileW(lpFileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+		HANDLE dll_file = DllStruct.OpenFile(lpFileName);
 		if(dll_file == INVALID_HANDLE_VALUE) return E_FAIL;
 
 		HRESULT result = S_OK;
@@ -311,35 +314,10 @@ UTILDLL_API HRESULT Util_RebaseModule(LPCWSTR lpFileName, PBYTE reloc_dll, UINT3
 		if(! ReadFile(dll_file, dll_buffer, dll_buffer.size, &lpNumberOfBytesRead, NULL) ) result = E_FAIL;
 		// !--- Read file size and data ---
 
-
-
-
-		// !--- Read file headers ---
-		if(result == S_OK)
-		{
-			SetFilePointer(dll_file, 0, NULL, FILE_BEGIN);
-
-			if(! ReadFile(dll_file, &DllStruct.Dos, sizeof(DllStruct.Dos), &lpNumberOfBytesRead, NULL) ) result = E_FAIL;
-			else
-				SetFilePointer(dll_file, DllStruct.Dos.e_lfanew + sizeof(DWORD), NULL, FILE_BEGIN);
-
-			if(! ReadFile(dll_file, &DllStruct.File, sizeof(DllStruct.File), &lpNumberOfBytesRead, NULL) ) result = E_FAIL;
-
-			if(! ReadFile(dll_file, &DllStruct.Header, sizeof(DllStruct.Header), &lpNumberOfBytesRead, NULL) ) result = E_FAIL;
-		}
-		// !--- Read file headers ---
-
-
-
-		// !--- Read file sections ---
-		if(result == S_OK)
-		{
-			DllStruct.AllocateSections(DllStruct.File.NumberOfSections);
-			if(! ReadFile(dll_file, DllStruct.Sections, sizeof(DllStruct.Sections[0]) * DllStruct.SectionCount, &lpNumberOfBytesRead, NULL) ) result = E_FAIL;
-		}
-		// !--- Read file sections ---
-
+		DllStruct.ReadFileHeaders(dll_file, lpNumberOfBytesRead, result);
+		DllStruct.ReadFileSections(dll_file, lpNumberOfBytesRead, result);
 		CloseHandle(dll_file);
+
 		if(result != S_OK) return result;
 	}
 

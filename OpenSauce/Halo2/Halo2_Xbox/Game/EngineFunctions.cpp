@@ -489,7 +489,7 @@ is_saving:
 
 		namespace Memory
 		{
-			PLATFORM_CODE_H2_ALPHA( API_FUNC_NAKED ) void* DataIteratorNext(void* _iter)
+			PLATFORM_CODE_H2_ALPHA( API_FUNC_NAKED ) void* DataIteratorNext(Yelo::Memory::s_data_array_iterator* iter)
 			{
 #if PLATFORM_ID == PLATFORM_H2_ALPHA
 				static const uint32 CALL_ADDR = GET_FUNC_PTR(DATA_ITERATOR_NEXT);
@@ -501,7 +501,6 @@ is_saving:
 
 				API_FUNC_NAKED_END(1);
 #else
-				Yelo::Memory::s_data_array_iterator* iter = CAST_PTR(Yelo::Memory::s_data_array_iterator*, _iter);
 				const Yelo::Memory::s_data_array* array = iter->array;
 
 				void* datum_ptr = NULL;
