@@ -161,7 +161,8 @@ namespace Yelo
 
 		s_rasterizer_frame_inputs* FrameInputs()	PTR_IMP_GET2(rasterizer_frame_inputs);
 
-		static bool g_nvidia_use_basic_camo = false;		
+		static bool g_nvidia_use_basic_camo = false;
+		static bool g_is_rendering_reflection = false;
 		static s_rasterizer_resolution g_resolution_list[64];
 
 		void SetupResolutions()
@@ -213,6 +214,21 @@ namespace Yelo
 			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_DISPOSE);
 			__asm	call RETN_ADDRESS
 		}
+
+		API_FUNC_NAKED void Hook_RenderWindowReflection()
+		{
+			static uint32 CALL_ADDRESS = GET_FUNC_PTR(RENDER_WINDOW);
+			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RENDER_WINDOW_REFLECTION_CALL_RETN);
+
+			__asm {
+				mov		g_is_rendering_reflection, 1
+				call	CALL_ADDRESS
+				mov		g_is_rendering_reflection, 0
+				jmp		RETN_ADDRESS
+			}
+		}
+		
+		bool IsRenderingReflection() { return g_is_rendering_reflection; }
 
 #pragma warning( push )
 #pragma warning( disable : 4311 ) // pointer truncation
@@ -272,6 +288,9 @@ namespace Yelo
 			// when 0x637D50 (1.09) is 1, the basic active camouflage is used; at 0x51ABB2 (1.09) it is forced to 1 when an nVidia card is detected
 			// if the user changes this in their settings they need to restart the game for it to take effect
 			GET_PTR(NVIDIA_USE_BASIC_CAMO_TOGGLE) = g_nvidia_use_basic_camo;
+			
+			Memory::WriteRelativeJmp(&Hook_RenderWindowReflection,
+				GET_FUNC_VPTR(RENDER_WINDOW_REFLECTION_CALL), true);
 		}
 #pragma warning( pop )
 

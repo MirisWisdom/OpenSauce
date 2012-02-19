@@ -473,6 +473,8 @@ namespace Yelo
 		{
 			// return if the system is not ready
 			if(!c_post_processing_main::Instance().IsReady()) return;
+			// return if the engine is rendering a reflection buffer
+			if(Rasterizer::IsRenderingReflection()) return;
 
 			IDirect3DDevice9* render_device = c_post_processing_main::Instance().Globals().render_device;
 

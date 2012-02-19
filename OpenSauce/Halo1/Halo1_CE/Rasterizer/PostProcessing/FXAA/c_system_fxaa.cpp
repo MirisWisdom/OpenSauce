@@ -237,7 +237,7 @@ namespace Yelo
 
 		void c_system_fxaa::SetDefaultSettings()
 		{
-			// default to false is FXAA is a performance hog
+			// default to false as FXAA is a performance hog
 			m_members.m_flags.is_enabled = false;
 		}
 

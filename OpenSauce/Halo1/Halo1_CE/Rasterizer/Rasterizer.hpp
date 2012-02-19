@@ -180,6 +180,8 @@ namespace Yelo
 		};
 		s_rasterizer_frame_inputs* FrameInputs();
 
+		bool IsRenderingReflection();
+
 		struct s_rasterizer_resolution
 		{
 			DWORD			width;

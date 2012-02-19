@@ -369,19 +369,6 @@ namespace Yelo
 			Enums::_rasterizer_vs_model_scenery,
 		};
 
-		API_FUNC_NAKED void c_gbuffer_system::Hook_RenderWindow()
-		{
-			static uint32 CALL_ADDRESS = GET_FUNC_PTR(RENDER_WINDOW);
-			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RENDER_WINDOW_CALL_RETN);
-
-			__asm {
-				mov		c_gbuffer_system::g_is_rendering_reflection, 0
-				call	CALL_ADDRESS
-				mov		c_gbuffer_system::g_is_rendering_reflection, 1
-				jmp		RETN_ADDRESS
-			}
-		}
-
 		API_FUNC_NAKED void c_gbuffer_system::Hook_RenderObjectList_GetObjectIndex()
 		{
 			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RENDER_OBJECT_LIST_HOOK_RETN);
@@ -512,9 +499,6 @@ skip_disable_velocity:
 			c_gbuffer_system::g_output_object_velocity = false;
 
 			c_gbuffer_system::g_output_velocity = true;
-			
-			Memory::WriteRelativeJmp(&Hook_RenderWindow,
-				GET_FUNC_VPTR(RENDER_WINDOW_CALL), true);
 
 			Memory::WriteRelativeJmp(&Hook_RenderObjectList_GetObjectIndex,
 				GET_FUNC_VPTR(RENDER_OBJECT_LIST_HOOK), true);
@@ -665,7 +649,7 @@ skip_disable_velocity:
 			HRESULT hr = pDevice->DrawIndexedPrimitive(Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
 
 			if(g_default_system.IsRenderable() &&
-				!g_is_rendering_reflection && g_current_render_state == Enums::_render_progress_structure)
+				!Rasterizer::IsRenderingReflection() && g_current_render_state == Enums::_render_progress_structure)
 			{
 				hr &= g_default_system.DrawIndexedPrimitive_StructureImpl(pDevice, Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
 				hr &= DrawIndexedPrimitive(pDevice, Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
@@ -678,7 +662,7 @@ skip_disable_velocity:
 			HRESULT hr = pDevice->DrawIndexedPrimitive(Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
 
 			if(g_default_system.IsRenderable() &&
-				!g_is_rendering_reflection &&
+				!Rasterizer::IsRenderingReflection() &&
 				(g_current_render_state == Enums::_render_progress_sky || g_current_render_state == Enums::_render_progress_objects))
 			{
 				hr &= g_default_system.DrawIndexedPrimitive_ObjectImpl(pDevice, Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
@@ -690,7 +674,7 @@ skip_disable_velocity:
 
 		HRESULT		c_gbuffer_system::SetVertexShaderConstantF_WVP(IDirect3DDevice9* device, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount)
 		{
-			if(g_is_rendering_reflection == false && g_system_enabled && !g_wvp_stored)
+			if(Rasterizer::IsRenderingReflection() == false && g_system_enabled && !g_wvp_stored)
 			{
 				device->SetVertexShaderConstantF(96, g_stored_worldviewproj[g_stored_wvp_index], 4);
 				memcpy_s(&g_stored_worldviewproj[1 - g_stored_wvp_index], sizeof(D3DMATRIX), pConstantData, sizeof(D3DMATRIX));
@@ -1048,7 +1032,6 @@ skip_disable_velocity:
 		c_gbuffer&	c_gbuffer_system::GBuffer() { return c_gbuffer_system::g_default_system.m_gbuffer; }
 		/////////////////////////////////////////////////////////////////////
 		// c_gbuffer_system		
-		BOOL					c_gbuffer_system::g_is_rendering_reflection = true;
 		uint16					c_gbuffer_system::g_object_index;
 		c_gbuffer_system		c_gbuffer_system::g_default_system;
 		int16					c_gbuffer_system::g_debug_index;
