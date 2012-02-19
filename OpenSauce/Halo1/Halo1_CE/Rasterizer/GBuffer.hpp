@@ -168,9 +168,6 @@ namespace Yelo
 			static BOOL						g_wvp_stored;
 			static D3DXMATRIX				g_stored_worldviewproj[2];
 			static BOOL						g_stored_wvp_index;
-			
-			static BOOL						g_is_rendering_reflection;
-			static void Hook_RenderWindow();
 
 			static uint16					g_object_index;
 			static void Hook_RenderObjectList_GetObjectIndex();
