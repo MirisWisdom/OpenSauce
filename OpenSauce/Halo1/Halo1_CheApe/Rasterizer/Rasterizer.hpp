@@ -12,10 +12,6 @@ namespace Yelo
 {
 	namespace Rasterizer
 	{
-#if PLATFORM_ID == PLATFORM_SAPIEN
-		s_render_globals* RenderGlobals();
-#endif
-
 		void Initialize();
 		void Dispose();
 		void LoadSettings(TiXmlElement* dx9_element);

@@ -8,6 +8,8 @@
 #include "Rasterizer/Rasterizer.hpp"
 #if !PLATFORM_IS_DEDI
 
+#include <TagGroups/Halo1/model_definitions.hpp>
+
 #include "Memory/MemoryInterface.hpp"
 #include "Game/ScriptLibrary.hpp"
 #include "Game/EngineFunctions.hpp"
@@ -68,7 +70,8 @@ namespace Yelo
 		}
 		//////////////////////////////////////////////////////////////////////////
 
-		s_rasterizer_config* RasterizerConfig()		PTR_IMP_GET2(rasterizer_config)
+		s_rasterizer_config* RasterizerConfig()		PTR_IMP_GET2(rasterizer_config);
+		s_rasterizer_globals* RasterizerGlobals()	PTR_IMP_GET2(rasterizer_globals);
 		s_render_globals* RenderGlobals()			PTR_IMP_GET2(render_globals);
 		s_render_target* GlobalRenderTargets()		PTR_IMP_GET2(global_render_targets);
 #pragma region DebugOptions
@@ -76,10 +79,10 @@ namespace Yelo
 
 		struct rasterizer_debug_table
 		{
-			uint32 field;
+			size_t field;
 			uint32 index;
 		};
-		static rasterizer_debug_table _rasterizer_debug_table[] = {
+		static const rasterizer_debug_table k_rasterizer_debug_table[] = {
 			{offsetof(s_rasterizer_debug_options, stats),									0xC},
 			{offsetof(s_rasterizer_debug_options, mode),									0xD},
 			{offsetof(s_rasterizer_debug_options, smart),									0xF},
@@ -156,7 +159,6 @@ namespace Yelo
 			{offsetof(s_rasterizer_debug_options, f5),										0x5A},
 			//{offsetof(s_rasterizer_debug_options, ), 0x},
 		};
-		static const int32 RASTERIZER_DEBUG_TABLE_COUNT = NUMBEROF(_rasterizer_debug_table);
 #pragma endregion
 
 		s_rasterizer_frame_inputs* FrameInputs()	PTR_IMP_GET2(rasterizer_frame_inputs);
@@ -236,6 +238,7 @@ namespace Yelo
 		void Rasterizer::Initialize()
 		{
 			g_render_upgrades.Initialize();
+			InitializeMaximumNodesPerModelFixes();
 
 			// TODO: If using DX_WRAPPER, refer to the DxWrapper.cpp file 
 			// instead of hooking the game render loop
@@ -246,16 +249,14 @@ namespace Yelo
 			Memory::WriteRelativeCall(&RasterizerDisposeHook, GET_FUNC_VPTR(RASTERIZER_DISPOSE_CALL_FROM_RASTERIZER));
 			Memory::WriteRelativeCall(&RasterizerDisposeHook, GET_FUNC_VPTR(RASTERIZER_DISPOSE_CALL_FROM_SHELL));
 
-			rasterizer_debug_table* rdt = NULL;
-			Scripting::hs_global_definition* global_def = NULL;
-			uint32 address = CAST_PTR(uint32, Rasterizer::DebugOptions());
-			for(int32 x = 0; x < RASTERIZER_DEBUG_TABLE_COUNT; x++)
+			size_t address = CAST_PTR(size_t, Rasterizer::DebugOptions());
+			for(size_t x = 0; x < NUMBEROF(k_rasterizer_debug_table); x++)
 			{
-				rdt = &_rasterizer_debug_table[x];
+				const rasterizer_debug_table* rdt = &k_rasterizer_debug_table[x];
 
 				// this is the only time we should be modifying the hs definitions
 				// outside of the ScriptLibrary code, so do some cast magic
-				global_def = CAST_QUAL(Scripting::hs_global_definition*, 
+				Scripting::hs_global_definition* global_def = CAST_QUAL(Scripting::hs_global_definition*, 
 					&(Scripting::HSExternalGlobals()[rdt->index]) );	// get the hs global definition we're about to fix up
 
 				global_def->address = CAST_PTR(void*, address + rdt->field);// fix the global definition's address to point to the correct memory
@@ -263,7 +264,7 @@ namespace Yelo
 
 			
 			// update the resolution definition array length
-			// definition count has been increased to 64 so that rediculous amounts of resolutions in the future are accomodated
+			// definition count has been increased to 64 so that ridiculous amounts of resolutions in the future are accommodated
 			GET_PTR(RESOLUTION_LIST_COUNT) = NUMBEROF(g_resolution_list);
 
 			// redirect all resolution definition pointers to the new array

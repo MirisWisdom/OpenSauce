@@ -8,6 +8,8 @@
 #include "Rasterizer/Rasterizer.hpp"
 #ifndef PLATFORM_NO_DX9
 
+#include <TagGroups/Halo1/model_definitions.hpp>
+
 #include "Common/YeloSettings.hpp"
 
 namespace Yelo
@@ -21,13 +23,16 @@ namespace Yelo
 
 	#include <Rasterizer/Halo1/Render.Upgrades.inl>
 
+		s_rasterizer_globals* RasterizerGlobals()	PTR_IMP_GET2(rasterizer_globals);
 		s_render_globals* RenderGlobals()			PTR_IMP_GET2(render_globals);
+		s_rasterizer_debug_options* DebugOptions()	PTR_IMP_GET2(rasterizer_debug_data);
 #endif
 
 		void Initialize()
 		{
 #if PLATFORM_ID == PLATFORM_SAPIEN
 			g_render_upgrades.Initialize();
+			InitializeMaximumNodesPerModelFixes();
 #endif
 		}
 

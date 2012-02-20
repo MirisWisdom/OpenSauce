@@ -11,6 +11,14 @@ namespace Yelo
 {
 	namespace Enums
 	{
+		enum triangle_buffer_type : _enum
+		{
+			_triangle_buffer_type_0,
+			_triangle_buffer_type_precompiled_strip,
+
+			NUMBER_OF_TRIANGLE_BUFFER_TYPES
+		};
+
 		enum rasterizer_vertex_type : _enum
 		{
 			_rasterizer_vertex_type_environment_uncompressed,
@@ -45,6 +53,15 @@ namespace Yelo
 
 	namespace Rasterizer
 	{
+		struct rasterizer_triangle_buffer
+		{
+			Enums::triangle_buffer_type type;
+			PAD16;
+			int32 count;
+			void* data;
+			void* hardware_format;
+		}; BOOST_STATIC_ASSERT( sizeof(rasterizer_triangle_buffer) == 0x10 );
+
 		struct rasterizer_vertex_buffer
 		{
 			Enums::rasterizer_vertex_type type;
