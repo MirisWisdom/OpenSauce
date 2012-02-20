@@ -51,6 +51,8 @@ namespace BlamLib.Blam.Halo2.CheApe
 				Import import = comp.OwnerState.Importer as Import;
 
 				short real_count = (short)import.Groups.Count;
+				var next_index = new DatumIndex((ushort)real_count,
+					0); // note that this default value isn't ideal
 				stream.Write("dynamic tag groups", false);
 				stream.Write(DataArray.MaxValue);
 				stream.Write(Item.Size);
@@ -62,8 +64,7 @@ namespace BlamLib.Blam.Halo2.CheApe
 				stream.Write((int)0); // bit vector next index
 				stream.Write(Datums.Count); // bit vector length
 				stream.Write(Datums.Count); // actual count
-				stream.Write(ushort.MinValue); // next identifier. note that this default value isn't ideal
-				stream.Write(real_count); // next index
+				next_index.Write(stream); // next index
 				stream.WritePointer(stream.PositionUnsigned + 8);
 				stream.Write((int)0); // bit vector pointer
 

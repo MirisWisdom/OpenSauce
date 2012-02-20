@@ -109,7 +109,7 @@ namespace Yelo
 					// then, copy our new tag group addresses
 					count = 0;
 					for(s_custom_tag_group_datum* data = CAST(s_custom_tag_group_datum*, *data_array); 
-						count < data_array->Header.next_index; count++, address++)
+						count < data_array->Header.next_datum.index; count++, address++)
 						*address = data[count].definition;
 				}
 			}new_tag_groups;
@@ -157,7 +157,7 @@ namespace Yelo
 
 			// use the memory following the cache file data for the tag groups address list
 			_globals.new_tag_groups.address = CAST_PTR(void**, CAST_PTR(uint32,_globals.cache.base_address) + _globals.cache.data_size );
-			_globals.new_tag_groups.count = (kTagGroupDefinitionsCount-1)+_globals.new_tag_groups.data_array->Header.next_index;
+			_globals.new_tag_groups.count = (kTagGroupDefinitionsCount-1)+_globals.new_tag_groups.data_array->Header.next_datum.index;
 
 			// HACK to make it unload the map and not use it since there are no extra tags
 			if(_globals.new_tag_groups.count == (kTagGroupDefinitionsCount-1))

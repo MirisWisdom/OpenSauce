@@ -208,6 +208,9 @@
 		<!-- This size must be <= the maximum number of files tool can import (which is 500 in the stock). -->
 		<fixup name="_fixup_animation_block.max_count"							type="Pointer" 
 			guerilla="0x9D6DE0" tool="0x6BAAC8" sapien="0xA4E5B8" definition="0x800" />
+		<!--2x increase in seat count-->
+		<fixup name="_fixup_animation_graph_unit_seat_block.max_count"	type="Pointer" 
+			guerilla="0x9D7224" tool="0x6BAF0C" sapien="0xA4E9FC" definition="0x40" />
 		<!--modify the unused members of the animation state definition tables to provide support for unit infections-->
 		<fixup name="_fixup_animation_graph_animation_state.unused52"			type="StringPtr"
 			guerilla="0x9D7980" tool="0x6BB668" sapien="0xA4F158" definition="infect" />
