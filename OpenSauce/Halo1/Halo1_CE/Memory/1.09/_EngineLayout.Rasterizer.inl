@@ -9,7 +9,19 @@
 //////////////////////////////////////////////////////////////////////////
 // Rasterizer.cpp
 #if __EL_INCLUDE_FILE_ID == __EL_RASTERIZER_RASTERIZER
+	static real_matrix3x3** K_VSH_CONSTANTS__NODEMATRICES_REFERENCES[] = {
+		CAST_PTR(real_matrix3x3**, 0x51C733), CAST_PTR(real_matrix3x3**, 0x52A4BF), CAST_PTR(real_matrix3x3**, 0x52A516), 
+		CAST_PTR(real_matrix3x3**, 0x52A56E), CAST_PTR(real_matrix3x3**, 0x52A5CC), CAST_PTR(real_matrix3x3**, 0x52A66B)
+	};
+	static void** K_VSH_CONSTANTS__NODEMATRICES_REFERENCES_PLUS_8[] = {
+		CAST_PTR(void**, 0x51C6AA), 
+	};
+	static uint16* K_RASTERIZER_GLOBALS_MAXIMUM_NODES_PER_MODEL_WRITE_VALUES[] = {
+		CAST_PTR(uint16*, 0x51AEF1), 
+	};
+
 	ENGINE_PTR(s_rasterizer_config, rasterizer_config,				0x6BDE18, PTR_NULL);
+	ENGINE_PTR(s_rasterizer_globals, rasterizer_globals,			0x637CF8, PTR_NULL);
 	ENGINE_PTR(s_render_globals, render_globals,					0x75E100, PTR_NULL);
 	ENGINE_PTR(s_render_target, global_render_targets,				0x638A20, PTR_NULL);
 	ENGINE_PTR(s_rasterizer_debug_options, rasterizer_debug_data,	0x6249C0, PTR_NULL);

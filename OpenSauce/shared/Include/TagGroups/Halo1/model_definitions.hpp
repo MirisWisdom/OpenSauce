@@ -14,6 +14,9 @@ namespace Yelo
 	{
 		enum {
 			k_maximum_regions_per_model = 8,
+
+			k_maximum_nodes_per_model = 64,
+			k_maximum_nodes_per_model_halopc_stock = 44, // Why Gearbox, why?
 		};
 
 		enum weapon_type_animation
@@ -225,12 +228,12 @@ namespace Yelo
 			TAG_TBLOCK(uncompressed_vertices, Rasterizer::model_vertex_uncompressed); // max count: 65535
 			TAG_TBLOCK(compressed_vertices, Rasterizer::model_vertex_compressed); // max count: 65535
 			TAG_TBLOCK(triangles, model_triangle);
-			TAG_PAD(int32, 5);
-			TAG_PAD(int32, 4);
+			Rasterizer::rasterizer_triangle_buffer triangle_buffer;
+			Rasterizer::rasterizer_vertex_buffer vertex_buffer;
 			TAG_PAD(byte, 1);
 			TAG_PAD(byte, 1);
 			TAG_PAD(byte, 1);
-			TAG_PAD(byte, 1);
+			sbyte num_nodes;
 			TAG_PAD(int32, 6);
 		}; BOOST_STATIC_ASSERT( sizeof(gbxmodel_geometry_part) == 0x84 ); // max count: 32
 		struct gbxmodel_geometry

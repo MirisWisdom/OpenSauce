@@ -10,7 +10,21 @@
 #if __EL_INCLUDE_FILE_ID == __EL_RASTERIZER_RASTERIZER
 
 	#if PLATFORM_ID == PLATFORM_SAPIEN
+		static real_matrix3x3** K_VSH_CONSTANTS__NODEMATRICES_REFERENCES[] = {
+			CAST_PTR(real_matrix3x3**, 0x5E8B02), CAST_PTR(real_matrix3x3**, 0x5F47DC), CAST_PTR(real_matrix3x3**, 0x5F4833), 
+			CAST_PTR(real_matrix3x3**, 0x5F488B), CAST_PTR(real_matrix3x3**, 0x5F48E9), CAST_PTR(real_matrix3x3**, 0x5F4981)
+		};
+		static void** K_VSH_CONSTANTS__NODEMATRICES_REFERENCES_PLUS_8[] = {
+			CAST_PTR(void**, 0x5E8A79), 
+		};
+		static uint16* K_RASTERIZER_GLOBALS_MAXIMUM_NODES_PER_MODEL_WRITE_VALUES[] = {
+			CAST_PTR(uint16*, 0x5EA43E), 
+		};
+
 		ENGINE_PTR(s_render_globals, render_globals,					PTR_NULL, PTR_NULL, 0xF9A4C0);
+		ENGINE_PTR(s_rasterizer_globals, rasterizer_globals,			PTR_NULL, PTR_NULL, 0xA2A6F8);
+
+		ENGINE_PTR(s_rasterizer_debug_options, rasterizer_debug_data,	PTR_NULL, PTR_NULL, 0xA2A758);
 
 		static void** K_DYNAMIC_TRIANGLE_ARRAY_UPGRADE_ADDRESS_LIST[] = {
 			CAST_PTR(void**, 0x6B9CB4), CAST_PTR(void**, 0x6B9E23), CAST_PTR(void**, 0x6B9EA8), 
