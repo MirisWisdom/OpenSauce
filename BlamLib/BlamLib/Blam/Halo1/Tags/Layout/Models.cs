@@ -171,11 +171,7 @@ namespace BlamLib.Blam.Halo1.Tags
 					Add(UncompressedVertices = new TI.Block<model_vertex_uncompressed_block>(this, 65535));
 					Add(CompressedVertices = new TI.Block<model_vertex_compressed_block>(this, 65535));
 					Add(Triangles = new TI.Block<model_triangle_block>(this, 65535));
-
-					// TODO:
-					// rasterizer_vertex
-					// rasterizer_triangle
-					Add(new TI.Pad(20 + 16));
+					Add(new TI.Pad(kSizeOf_rasterizer_triangle_buffer + kSizeOf_rasterizer_vertex_buffer));
 				}
 			};
 			#endregion
@@ -241,7 +237,7 @@ namespace BlamLib.Blam.Halo1.Tags
 			#region model_geometry_part_block
 			public partial class model_geometry_part_block
 			{
-				public model_geometry_part_block() : base(13)
+				public model_geometry_part_block() : base(37)
 				{
 					Add(Flags = new TI.Flags());
 					Add(ShaderIndex = new TI.BlockIndex());
@@ -255,16 +251,12 @@ namespace BlamLib.Blam.Halo1.Tags
 					Add(UncompressedVertices = new TI.Block<model_group.model_geometry_block.model_geometry_part_block.model_vertex_uncompressed_block>(this, 65535));
 					Add(CompressedVertices = new TI.Block<model_group.model_geometry_block.model_geometry_part_block.model_vertex_compressed_block>(this, 65535));
 					Add(Triangles = new TI.Block<model_group.model_geometry_block.model_geometry_part_block.model_triangle_block>(this, 65535));
-
-					// TODO:
-					// rasterizer_vertex
-					// rasterizer_triangle
-					// ?
-					Add(new TI.Skip(20 + 16
+					Add(new TI.Skip(model_group.kSizeOf_rasterizer_triangle_buffer + model_group.kSizeOf_rasterizer_vertex_buffer
 						+ 1 + 1 + 1));
 					Add(NodeMapCount = new BlamLib.TagInterface.ByteInteger());
 					for (int x = 0; x < NodeMap.Length; x++)
 						Add(NodeMap[x] = new TI.ByteInteger());
+					Add(TI.Pad.Word);
 				}
 			};
 			#endregion

@@ -13,6 +13,9 @@ namespace BlamLib.Blam.Halo1.Tags
 	[TI.TagGroup((int)TagGroups.Enumerated.mode, 4, 232)]
 	public partial class model_group : TI.Definition
 	{
+		public const int kSizeOf_rasterizer_triangle_buffer = 0x10;
+		public const int kSizeOf_rasterizer_vertex_buffer = 0x14;
+
 		#region model_markers_block
 		[TI.Definition(-1, 64)]
 		public partial class model_markers_block : TI.Definition
@@ -196,7 +199,7 @@ namespace BlamLib.Blam.Halo1.Tags
 				public TI.Block<model_group.model_geometry_block.model_geometry_part_block.model_vertex_compressed_block> CompressedVertices;
 				public TI.Block<model_group.model_geometry_block.model_geometry_part_block.model_triangle_block> Triangles;
 				public TI.ByteInteger NodeMapCount;
-				public TI.ByteInteger[] NodeMap = new TI.ByteInteger[24];
+				public TI.ByteInteger[] NodeMap = new TI.ByteInteger[22];
 			};
 			#endregion
 
