@@ -10,9 +10,9 @@
 #if __EL_INCLUDE_FILE_ID == __EL_RASTERIZER_RASTERIZER
 
 	#if PLATFORM_ID == PLATFORM_SAPIEN
-		static real_matrix3x3** K_VSH_CONSTANTS__NODEMATRICES_REFERENCES[] = {
-			CAST_PTR(real_matrix3x3**, 0x5E8B02), CAST_PTR(real_matrix3x3**, 0x5F47DC), CAST_PTR(real_matrix3x3**, 0x5F4833), 
-			CAST_PTR(real_matrix3x3**, 0x5F488B), CAST_PTR(real_matrix3x3**, 0x5F48E9), CAST_PTR(real_matrix3x3**, 0x5F4981)
+		static real_matrix3x4** K_VSH_CONSTANTS__NODEMATRICES_REFERENCES[] = {
+			CAST_PTR(real_matrix3x4**, 0x5E8B02), CAST_PTR(real_matrix3x4**, 0x5F47DC), CAST_PTR(real_matrix3x4**, 0x5F4833), 
+			CAST_PTR(real_matrix3x4**, 0x5F488B), CAST_PTR(real_matrix3x4**, 0x5F48E9), CAST_PTR(real_matrix3x4**, 0x5F4981)
 		};
 		static void** K_VSH_CONSTANTS__NODEMATRICES_REFERENCES_PLUS_8[] = {
 			CAST_PTR(void**, 0x5E8A79), 

@@ -9,9 +9,9 @@
 //////////////////////////////////////////////////////////////////////////
 // Rasterizer.cpp
 #if __EL_INCLUDE_FILE_ID == __EL_RASTERIZER_RASTERIZER
-	static real_matrix3x3** K_VSH_CONSTANTS__NODEMATRICES_REFERENCES[] = {
-		CAST_PTR(real_matrix3x3**, 0x51C703), CAST_PTR(real_matrix3x3**, 0x52A48F), CAST_PTR(real_matrix3x3**, 0x52A4E6), 
-		CAST_PTR(real_matrix3x3**, 0x52A53E), CAST_PTR(real_matrix3x3**, 0x52A59C), CAST_PTR(real_matrix3x3**, 0x52A63B)
+	static real_matrix3x4** K_VSH_CONSTANTS__NODEMATRICES_REFERENCES[] = {
+		CAST_PTR(real_matrix3x4**, 0x51C703), CAST_PTR(real_matrix3x4**, 0x52A48F), CAST_PTR(real_matrix3x4**, 0x52A4E6), 
+		CAST_PTR(real_matrix3x4**, 0x52A53E), CAST_PTR(real_matrix3x4**, 0x52A59C), CAST_PTR(real_matrix3x4**, 0x52A63B)
 	};
 	static real_matrix3x3** K_VSH_CONSTANTS__NODEMATRICES_REFERENCES_PLUS_8[] = {
 		CAST_PTR(void**, 0x51C67A), 
