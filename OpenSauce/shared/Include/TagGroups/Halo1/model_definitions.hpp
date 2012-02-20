@@ -16,7 +16,9 @@ namespace Yelo
 			k_maximum_regions_per_model = 8,
 
 			k_maximum_nodes_per_model = 64,
-			k_maximum_nodes_per_model_halopc_stock = 44, // Why Gearbox, why?
+			k_maximum_nodes_per_model_halo_stock = 44, // 'Cause Xbox1 has limits
+
+			k_number_of_rows_per_node_matrix = 4,
 		};
 
 		enum weapon_type_animation

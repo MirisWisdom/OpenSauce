@@ -461,6 +461,11 @@ namespace Yelo
 		}
 	};
 
+	struct real_matrix3x4
+	{
+		float m[4][3];
+	};
+
 	struct real_orientation3d
 	{
 		real_quaternion rotation;

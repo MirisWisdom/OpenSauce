@@ -55,16 +55,14 @@ struct s_render_upgrades {
 // Not actually an upgrade, but a fix (nodes at index >43 would get stretched). However, we fix it in both sapien and ingame so I put the code here
 void InitializeMaximumNodesPerModelFixes()
 {
-#if API_DEBUG // Currently crashes the engine in release builds...optimizations fucking things up maybe? When the game crashes, it appears to be trying to treat a floating pointer value as a pointer, which suggests a buffer overrun somewhere...but how does it run without fault in debug if that's the case?
-	static real_matrix3x3 vsh_constants__nodematrices[5+Enums::k_maximum_nodes_per_model+1+5];
+	static real_matrix3x4 vsh_constants__nodematrices[Enums::k_maximum_nodes_per_model+1];
 
 	for(size_t x = 0; x < NUMBEROF(K_VSH_CONSTANTS__NODEMATRICES_REFERENCES); x++)
-		*K_VSH_CONSTANTS__NODEMATRICES_REFERENCES[x] = &vsh_constants__nodematrices[5];
+		*K_VSH_CONSTANTS__NODEMATRICES_REFERENCES[x] = &vsh_constants__nodematrices[0];
 	for(size_t x = 0; x < NUMBEROF(K_VSH_CONSTANTS__NODEMATRICES_REFERENCES_PLUS_8); x++)
-		*K_VSH_CONSTANTS__NODEMATRICES_REFERENCES_PLUS_8[x] = CAST_PTR(byte*,&vsh_constants__nodematrices[5]) + 8;
+		*K_VSH_CONSTANTS__NODEMATRICES_REFERENCES_PLUS_8[x] = CAST_PTR(byte*,&vsh_constants__nodematrices[0]) + 8;
 
 	for(size_t x = 0; x < NUMBEROF(K_RASTERIZER_GLOBALS_MAXIMUM_NODES_PER_MODEL_WRITE_VALUES); x++)
 		*K_RASTERIZER_GLOBALS_MAXIMUM_NODES_PER_MODEL_WRITE_VALUES[x] = Enums::k_maximum_nodes_per_model;
 	RasterizerGlobals()->maximum_nodes_per_model = Enums::k_maximum_nodes_per_model;
-#endif
 }
