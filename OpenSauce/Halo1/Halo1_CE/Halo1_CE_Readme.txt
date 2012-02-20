@@ -55,7 +55,7 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
 
 == Change Log ==
 === Version 3.0.2 ===
-  * PATCH		Fixed the HaloPC engine bug where model nodes over 43 were causing rendering fuck ups. Blame Gearbox.
+  * PATCH		Fixed the HaloPC engine bug where model nodes over 43 were causing rendering fuck ups.
   * ADD			Verbose script definition mismatch messages when developer_mode is >= 4
   * FIX			Fixed tag-based gravity settings problem
 
