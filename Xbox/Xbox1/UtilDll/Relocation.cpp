@@ -5,6 +5,7 @@
 */
 #include "UtilDll.hpp"
 
+#include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -114,6 +115,15 @@ struct s_file_struct_base
 	size_t SectionCount;
 	IMAGE_SECTION_HEADER* Sections;
 
+	static void memset_ctor(void* _this, const size_t size)
+	{
+		const size_t k_start_offset = offsetof(s_file_struct_base, Dos);
+
+		char* ptr = reinterpret_cast<char*>(_this);
+		ptr += k_start_offset;
+
+		memset(ptr, 0, size - k_start_offset);
+	}
 	virtual ~s_file_struct_base()
 	{
 		if(Sections != NULL)
@@ -161,7 +171,7 @@ struct s_file_struct_base
 UTILDLL_API HRESULT Util_CalculateModuleCodeSize(LPCWSTR lpFileName, PUINT32 code_size)
 {
 	struct s_file_struct : public s_file_struct_base {
-		s_file_struct()	{ memset(this, 0, sizeof(*this)); }
+		s_file_struct()	{ memset_ctor(this, sizeof(*this)); }
 	}DllStruct;
 	DWORD lpNumberOfBytesRead;
 
@@ -254,7 +264,7 @@ UTILDLL_API HRESULT Util_RebaseModule(LPCWSTR lpFileName, PBYTE reloc_dll, UINT3
 		s_reloc_table** Relocations;
 		s_section_info* SectionInfo;
 
-		s_file_struct()	{ memset(this, 0, sizeof(*this)); }
+		s_file_struct()	{ memset_ctor(this, sizeof(*this)); }
 		virtual ~s_file_struct()
 		{
 			if(SectionInfo != NULL)

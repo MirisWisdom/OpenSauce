@@ -137,7 +137,6 @@ namespace YeloDebug
         /// <summary>
         /// Gets the current notification session registered with the xbox.
         /// </summary>
-
         [Browsable(false)]
         public TcpClient NotificationSession { get { return notificationSession; } }
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]

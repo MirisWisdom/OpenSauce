@@ -10,7 +10,7 @@
 	<?ifdef Halo1_CE?>
 	<?define ProductName='OpenSauce for Halo CE'?>
 	<?define GameTarget='Halo CE'?>
-	<?define ConfigVersion='3.0.1'?>
+	<?define ConfigVersion='3.0.3'?>
 	<?endif?>
 
 	<!-- Define whether to pack debug or release binaries -->
@@ -23,7 +23,7 @@
 	<?define UpgradeCodeGUID='6E7F244E-C79F-4925-A073-66362D92A99F'?>
 	
 	<Product Name='$(var.ProductName)'
-		Id='076F20E0-AF23-4480-814F-13C80418FD8F'
+		Id='D0DD6BC5-B569-4081-8EF3-D0A689B1A3E7'
 		UpgradeCode='$(var.UpgradeCodeGUID)'
 		Language='1033'
 		Codepage='1252'

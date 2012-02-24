@@ -238,7 +238,6 @@ namespace Yelo
 		void Rasterizer::Initialize()
 		{
 			g_render_upgrades.Initialize();
-			InitializeMaximumNodesPerModelFixes();
 
 			// TODO: If using DX_WRAPPER, refer to the DxWrapper.cpp file 
 			// instead of hooking the game render loop

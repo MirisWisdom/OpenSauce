@@ -7,8 +7,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Halo1_CE", "Halo1\Halo1_CE\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Halo2", "Halo2", "{84D64AD9-C6B7-4CFD-867B-9D4058A5CFF9}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XLive", "Halo2\XLive\XLive.vcproj", "{4709DB47-9CF3-4D8D-8977-84C8A509514C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,30 +43,11 @@ Global
 		{2647697B-680F-4155-B6A2-041C184A479D}.ReleaseDedi|Mixed Platforms.Build.0 = ReleaseDedi|Win32
 		{2647697B-680F-4155-B6A2-041C184A479D}.ReleaseDedi|Win32.ActiveCfg = ReleaseDedi|Win32
 		{2647697B-680F-4155-B6A2-041C184A479D}.ReleaseDedi|Win32.Build.0 = ReleaseDedi|Win32
-		{4709DB47-9CF3-4D8D-8977-84C8A509514C}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{4709DB47-9CF3-4D8D-8977-84C8A509514C}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{4709DB47-9CF3-4D8D-8977-84C8A509514C}.Debug|Mixed Platforms.Build.0 = Debug|Win32
-		{4709DB47-9CF3-4D8D-8977-84C8A509514C}.Debug|Win32.ActiveCfg = Debug|Win32
-		{4709DB47-9CF3-4D8D-8977-84C8A509514C}.Debug|Win32.Build.0 = Debug|Win32
-		{4709DB47-9CF3-4D8D-8977-84C8A509514C}.DebugDedi|Any CPU.ActiveCfg = Debug|Win32
-		{4709DB47-9CF3-4D8D-8977-84C8A509514C}.DebugDedi|Mixed Platforms.ActiveCfg = Debug|Win32
-		{4709DB47-9CF3-4D8D-8977-84C8A509514C}.DebugDedi|Win32.ActiveCfg = Debug|Win32
-		{4709DB47-9CF3-4D8D-8977-84C8A509514C}.DebugDedi|Win32.Build.0 = Debug|Win32
-		{4709DB47-9CF3-4D8D-8977-84C8A509514C}.Release|Any CPU.ActiveCfg = Release|Win32
-		{4709DB47-9CF3-4D8D-8977-84C8A509514C}.Release|Mixed Platforms.ActiveCfg = Release|Win32
-		{4709DB47-9CF3-4D8D-8977-84C8A509514C}.Release|Mixed Platforms.Build.0 = Release|Win32
-		{4709DB47-9CF3-4D8D-8977-84C8A509514C}.Release|Win32.ActiveCfg = Release|Win32
-		{4709DB47-9CF3-4D8D-8977-84C8A509514C}.Release|Win32.Build.0 = Release|Win32
-		{4709DB47-9CF3-4D8D-8977-84C8A509514C}.ReleaseDedi|Any CPU.ActiveCfg = Release|Win32
-		{4709DB47-9CF3-4D8D-8977-84C8A509514C}.ReleaseDedi|Mixed Platforms.ActiveCfg = Release|Win32
-		{4709DB47-9CF3-4D8D-8977-84C8A509514C}.ReleaseDedi|Win32.ActiveCfg = Release|Win32
-		{4709DB47-9CF3-4D8D-8977-84C8A509514C}.ReleaseDedi|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2647697B-680F-4155-B6A2-041C184A479D} = {F0CB6288-8B6C-45B8-93D7-EC703558F574}
-		{4709DB47-9CF3-4D8D-8977-84C8A509514C} = {84D64AD9-C6B7-4CFD-867B-9D4058A5CFF9}
 	EndGlobalSection
 EndGlobal

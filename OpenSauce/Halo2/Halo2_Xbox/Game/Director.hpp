@@ -270,7 +270,7 @@ namespace Yelo
 			// Figures out the enumeration for to return based on the current
 			// player's perspective (useful when reconnecting to the player and we
 			// don't know explicitly what state they are in or were left in)
-			_enum GetPerspectiveFromGame();
+			_enum GetPerspectiveFromGame() const;
 			// Handles setting the director mode
 			// Also handles debug camera code enabling and disabling
 			// Note: use [_director_mode] to set to current perspective
@@ -281,7 +281,7 @@ namespace Yelo
 			// Changes the director mode the camera is using
 			void ChangePerspective(_enum mode);
 			// Get the resistance fraction based on a mode and a velocity
-			real GetResistance(_enum resistance, real velocity);
+			real GetResistance(_enum resistance, real velocity) const;
 
 			// Invalidates the camera so it can't be used without being
 			// initialized

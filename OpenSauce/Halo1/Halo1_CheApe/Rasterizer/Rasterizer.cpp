@@ -32,7 +32,6 @@ namespace Yelo
 		{
 #if PLATFORM_ID == PLATFORM_SAPIEN
 			g_render_upgrades.Initialize();
-			InitializeMaximumNodesPerModelFixes();
 #endif
 		}
 

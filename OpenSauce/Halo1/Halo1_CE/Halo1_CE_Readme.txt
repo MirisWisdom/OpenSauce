@@ -54,9 +54,13 @@ It is also useful for us to know your system specifications such as your graphic
 NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how to use OS, please consult our wiki and/or create a post on Halomods to get community assistance. We are also NOT taking feature requests in any way.
 
 == Change Log ==
+=== Version 3.0.3 ===
+  * N/A			Nothing you all need to concern yourselves with. Go play Halo.
+
 === Version 3.0.2 ===
-  * PATCH		Fixed the HaloPC engine bug where model nodes over 43 were causing rendering fuck ups.
+  * PATCH		Made a work-around for the HaloPC engine bug where model nodes over 43 were rendering wrong.
   * ADD			Verbose script definition mismatch messages when developer_mode is >= 4
+  * FIX			Script definition mismatch error message erroneously prompting
   * FIX			Fixed tag-based gravity settings problem
 
 === Version 3.0.1 ===

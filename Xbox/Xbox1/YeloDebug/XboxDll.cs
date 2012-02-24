@@ -116,6 +116,18 @@ namespace YeloDebug
 			return result == LowLevel.HResult.Success;
 		}
 
+		const uint k_breakpoint_address = 0x12B6B5;
+		static void SetBreakpointOn(Xbox xbox)
+		{
+			xbox.SetBreakPoint(k_breakpoint_address);
+			System.Threading.Thread.Sleep(25);
+		}
+		static void SetBreakpointOff(Xbox xbox)
+		{
+			xbox.ClearAllBreakpoints();// RemoveBreakPoint(k_breakpoint_address);
+			xbox.Continue();
+		}
+
 		public static bool RunModule(Xbox xbox, string module_path, ref uint base_address, 
 			out uint entry_point, out uint exit_address, out string error_details)
 		{
