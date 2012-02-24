@@ -123,7 +123,7 @@ namespace YeloDebug
                 {
                     responses.Add(Convert.ToUInt32(value.Substring(2), 16));
                 }
-                else responses.Add(Convert.ToUInt32(value));
+                else responses.Add(Convert.ToInt32(value));
 
                 current = after + 1;
             }

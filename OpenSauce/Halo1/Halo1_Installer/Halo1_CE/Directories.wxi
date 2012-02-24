@@ -18,11 +18,11 @@
 
 		<!-- Extension DLLs for the client and server-->
 		<Component Id='Halo1_CE_d3d9109_COMP' Guid='F5D1A284-D067-443F-BE7C-4E6FD5574553'>
-			<File Id='Halo1_CE_d3d9109_FILE' Name='d3d9.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\Halo1_CE\d3d9.dll' KeyPath='yes' />
+			<File Id='Halo1_CE_d3d9109_FILE' Name='d3d9.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\Win32\Halo1_CE\d3d9.dll' KeyPath='yes' />
 		</Component>
 
 		<Component Id='Halo1_CE_OpenSauceDedi_COMP' Guid='37269616-A4B7-4d85-999E-2168F05D0CE8'>
-			<File Id='Halo1_CE_OpenSauceDedi_FILE' Name='OpenSauceDedi.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Dedi\Halo1_CE\OpenSauceDedi.dll' KeyPath='yes'/>
+			<File Id='Halo1_CE_OpenSauceDedi_FILE' Name='OpenSauceDedi.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Dedi\Win32\Halo1_CE\OpenSauceDedi.dll' KeyPath='yes'/>
 		</Component>
 
 		<Component Id='Halo1_CE_Readme_COMP' Guid='17B81049-EC68-41c0-803C-612BBB4869FE'>
@@ -31,11 +31,11 @@
 
 		<?ifdef SYMBOLS?>
 		<Component Id='Halo1_CE_d3d9109_PDB_COMP' Guid='6919365B-416E-4151-B677-6271E56D1597'>
-			<File Id='Halo1_CE_d3d9109_PDB_FILE' Name='d3d9.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\Halo1_CE\d3d9.pdb' KeyPath='yes' />
+			<File Id='Halo1_CE_d3d9109_PDB_FILE' Name='d3d9.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\Win32\Halo1_CE\d3d9.pdb' KeyPath='yes' />
 		</Component>
 		
 		<Component Id='Halo1_CE_OpenSauceDedi_PDB_COMP' Guid='C57240B8-4FE5-4e1c-83E1-22D02A1BD982'>
-			<File Id='Halo1_CE_OpenSauceDedi_PDB_FILE' Name='OpenSauceDedi.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Dedi\Halo1_CE\OpenSauceDedi.pdb' KeyPath='yes'/>
+			<File Id='Halo1_CE_OpenSauceDedi_PDB_FILE' Name='OpenSauceDedi.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Dedi\Win32\Halo1_CE\OpenSauceDedi.pdb' KeyPath='yes'/>
 		</Component>
 		<?endif?>
 
@@ -141,13 +141,13 @@
 
 		<!-- DLLs for extending the HEK-->
 		<Component Id='Halo1_CE_CheApeDLLG_COMP' Guid='B8C6DFF9-6CF7-4571-8A7E-3082D16548BE'>
-			<File Id='Halo1_CE_CheApeDLLG_FILE' Name='CheApeDLLG.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Guerilla\Halo1_CheApe\CheApeDLLG.dll' KeyPath='yes' />
+			<File Id='Halo1_CE_CheApeDLLG_FILE' Name='CheApeDLLG.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Guerilla\Win32\Halo1_CheApe\CheApeDLLG.dll' KeyPath='yes' />
 		</Component>
 		<Component Id='Halo1_CE_CheApeDLLS_COMP' Guid='79045663-35F5-41EC-BBFE-F4CA58C1410C'>
-			<File Id='Halo1_CE_CheApeDLLS_FILE' Name='CheApeDLLS.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Sapien\Halo1_CheApe\CheApeDLLS.dll' KeyPath='yes' />
+			<File Id='Halo1_CE_CheApeDLLS_FILE' Name='CheApeDLLS.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Sapien\Win32\Halo1_CheApe\CheApeDLLS.dll' KeyPath='yes' />
 		</Component>
 		<Component Id='Halo1_CE_CheApeDLLT_COMP' Guid='457412A1-749A-4B82-AAFF-91C848D81E70'>
-			<File Id='Halo1_CE_CheApeDLLT_FILE' Name='CheApeDLLT.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Tool\Halo1_CheApe\CheApeDLLT.dll' KeyPath='yes' />
+			<File Id='Halo1_CE_CheApeDLLT_FILE' Name='CheApeDLLT.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Tool\Win32\Halo1_CheApe\CheApeDLLT.dll' KeyPath='yes' />
 		</Component>
 
 		<Component Id='Halo1_CE_CheApe_Readme_COMP' Guid='8A7C9ADD-1298-4329-9BE6-EC5306748823'>
@@ -156,13 +156,13 @@
 
 		<?ifdef SYMBOLS?>
 		<Component Id='Halo1_CE_CheApeDLLG_PDB_COMP' Guid='0074F5F4-C0CB-407f-9D93-716759472D4D'>
-			<File Id='Halo1_CE_CheApeDLLG_PDB_FILE' Name='CheApeDLLG.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Guerilla\Halo1_CheApe\CheApeDLLG.pdb' KeyPath='yes' />
+			<File Id='Halo1_CE_CheApeDLLG_PDB_FILE' Name='CheApeDLLG.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Guerilla\Win32\Halo1_CheApe\CheApeDLLG.pdb' KeyPath='yes' />
 		</Component>
 		<Component Id='Halo1_CE_CheApeDLLS_PDB_COMP' Guid='64088ECA-8008-4e8b-8695-3988E16FFC32'>
-			<File Id='Halo1_CE_CheApeDLLS_PDB_FILE' Name='CheApeDLLS.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Sapien\Halo1_CheApe\CheApeDLLS.pdb' KeyPath='yes' />
+			<File Id='Halo1_CE_CheApeDLLS_PDB_FILE' Name='CheApeDLLS.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Sapien\Win32\Halo1_CheApe\CheApeDLLS.pdb' KeyPath='yes' />
 		</Component>
 		<Component Id='Halo1_CE_CheApeDLLT_PDB_COMP' Guid='A2BB445A-890A-453f-9598-DCC10DEBB12F'>
-			<File Id='Halo1_CE_CheApeDLLT_PDB_FILE' Name='CheApeDLLT.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Tool\Halo1_CheApe\CheApeDLLT.pdb' KeyPath='yes' />
+			<File Id='Halo1_CE_CheApeDLLT_PDB_FILE' Name='CheApeDLLT.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Tool\Win32\Halo1_CheApe\CheApeDLLT.pdb' KeyPath='yes' />
 		</Component>
 		<?endif?>
 

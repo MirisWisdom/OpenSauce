@@ -67,7 +67,8 @@ namespace Yelo
 			{
 				c_yelo_camera& yc = c_yelo_camera::Get(x);
 
-				if(c_yelo_camera::IsValid(x))
+				// TODO: false until IsValid recoded
+				if(false && c_yelo_camera::IsValid(x))
 				{
 					if(!c_yelo_camera::IsReady(x))
 						yc.Initialize(x, 
@@ -153,10 +154,10 @@ namespace Yelo
 				&UNWIND_PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_VERT,
 				GET_FUNC_VPTR(PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_VERT_START),
 				&Yelo::Camera::c_yelo_camera::UpdateAngleVert);
-			YELO_MEM_WLIST_ITEM(WriteJmp, 
-				&UNWIND_OBSERVER_UPDATE_POSITIONS_START,
-				GET_FUNC_VPTR(OBSERVER_UPDATE_POSITIONS_START),
-				&Yelo::Camera::c_yelo_camera::UpdateObserverPositions);
+// 			YELO_MEM_WLIST_ITEM(WriteJmp, 
+// 				&UNWIND_OBSERVER_UPDATE_POSITIONS_START,
+// 				GET_FUNC_VPTR(OBSERVER_UPDATE_POSITIONS_START),
+// 				&Yelo::Camera::c_yelo_camera::UpdateObserverPositions);
 		}
 
 		void c_yelo_camera::DebugDispose()
@@ -180,9 +181,9 @@ namespace Yelo
 			YELO_MEM_WLIST_ITEM(OverwriteMemorySansCopy, 
 				GET_FUNC_VPTR(PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_VERT_START),
 				UNWIND_PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_VERT);
-			YELO_MEM_WLIST_ITEM(OverwriteMemorySansCopy, 
-				GET_FUNC_VPTR(OBSERVER_UPDATE_POSITIONS_START),
-				UNWIND_OBSERVER_UPDATE_POSITIONS_START);
+// 			YELO_MEM_WLIST_ITEM(OverwriteMemorySansCopy, 
+// 				GET_FUNC_VPTR(OBSERVER_UPDATE_POSITIONS_START),
+// 				UNWIND_OBSERVER_UPDATE_POSITIONS_START);
 		}
 
 		// Finds out if the player associated to the pointer to the
@@ -314,6 +315,8 @@ the_fucking_end:
 				cmp		edi, esi		// test player 4
 				inc		ecx				// increase our indexer
 				jz		found_player
+
+				xor		eax, eax
 				jmp		get_the_fuck_out	// we didn't find a matching player?
 
 found_player:
@@ -338,13 +341,16 @@ get_the_fuck_out:
 				inc		ecx
 				//}
 
-				push	edx
+				push	ebp
+				xor		ebp, ebp		// NULL
 
 				push	edi
 				call	CheckObserverPtr
-				mov		edx, eax
+				cmp		eax, ebp		// Did it return NULL?
+				jz		_continue
+				mov		ebp, eax
 
-				movsx	eax, [edx]c_yelo_camera.DirectorModeInternal // get the camera's perspective
+				movsx	eax, [ebp]c_yelo_camera.DirectorModeInternal // get the camera's perspective
 				cmp		eax, _director_mode_debug
 				je		_skip_camera
 				cmp		eax, _director_mode_third_person
@@ -372,7 +378,7 @@ _continue:		// continues writing to camera array
 				mov		eax, GET_FUNC_PTR(OBSERVER_UPDATE_POSITIONS_END2)
 
 _cleanup:
-				pop		edx
+				pop		ebp
 				ret
 			}
 		}
@@ -549,7 +555,7 @@ _cleanup:
 				mode != Enums::_director_mode ? mode : this->DirectorMode;
 		}
 
-		_enum c_yelo_camera::GetPerspectiveFromGame()
+		_enum c_yelo_camera::GetPerspectiveFromGame() const
 		{
 			uint32 ptr = CAST_PTR(uint32, GameState::_Directors()[this->LocalPlayerIndex].UpdateProc);
 			switch(ptr)
@@ -603,7 +609,7 @@ _cleanup:
 				DirectorModeProc(mode);
 		}
 
-		real c_yelo_camera::GetResistance(_enum resistance, real velocity)
+		real c_yelo_camera::GetResistance(_enum resistance, real velocity) const
 		{
 			switch(resistance)
 			{
@@ -635,12 +641,20 @@ _cleanup:
 		bool c_yelo_camera::IsValid(int32 controller_index)
 		{
 			// TODO: use data iterator
-			GameState::s_player_datum* players = *GameState::_Players(); // get players
-			for(uint32 x = 0; x < GameState::_Players()->GetDatumCount(); x++) // loop and check for the valid cases
-				if(players->GetHeader() != NONE && // the header must be valid first
-					*players[x].GetControllerIndex() == controller_index && // only look for the controller we want
-					*players[x].GetSlaveUnitIndex() != datum_index::null) // if the player is not existing as a unit in-game right now, they're considered invalid to us
+			GameState::t_players_data::Iterator iter(GameState::_Players());
+			GameState::s_player_datum* player;
+			while( (player = iter.Next()) != NULL )
+			{
+				if( *player->GetControllerIndex() == controller_index && // only look for the controller we want
+					*player->GetSlaveUnitIndex() != datum_index::null)
 					return true;
+			}
+// 			GameState::s_player_datum* players = *GameState::_Players(); // get players
+// 			for(uint32 x = 0; x < GameState::_Players()->GetDatumCount(); x++) // loop and check for the valid cases
+// 				if(players->GetHeader() != NONE && // the header must be valid first
+// 					*players[x].GetControllerIndex() == controller_index && // only look for the controller we want
+// 					*players[x].GetSlaveUnitIndex() != datum_index::null) // if the player is not existing as a unit in-game right now, they're considered invalid to us
+// 					return true;
 			return false; // nothing was valid
 		}
 

@@ -55,7 +55,7 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
 
 == Change Log ==
 === Version 3.0.2 ===
-  * PATCH		Fixed the HaloPC engine bug where model nodes over 43 were rendering fuck ups.
+  * PATCH		Made a work-around for the HaloPC engine bug where model nodes over 43 were rendering wrong.
   * ADD			Increased the maximum amount of files tool will process during an import (this means tool won't stop importing after 500 animations)
   * CHANGE		Increased maximum animation seat elements from 32 to 64 in light of the increased max animations
   * CHANGE		Increased maximum animations from 500 to 2048. Crazy shit. I dare someone to use all 2048. Can I get a Challenge Accepted?

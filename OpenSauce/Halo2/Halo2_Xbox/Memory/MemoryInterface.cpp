@@ -16,7 +16,7 @@ namespace Yelo
 	{
 		void* s_data_array::IteratorNext(void* iter)
 		{
-			return Engine::Memory::DataIteratorNext(iter);
+			return Engine::Memory::DataIteratorNext(CAST_PTR(s_data_array_iterator*,iter));
 		}
 	}
 };

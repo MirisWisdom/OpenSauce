@@ -1,6 +1,8 @@
 // Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
+#include "../../shared/Include/Common/Halo1/YeloSettingsVersion.hpp"
+#include <boost/preprocessor/stringize.hpp>
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
@@ -53,8 +55,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 3,0,1,0
- PRODUCTVERSION 3,0,1,0
+ FILEVERSION K_OPENSAUCE_VERSION_BUILD_MAJ,K_OPENSAUCE_VERSION_BUILD_MIN,K_OPENSAUCE_VERSION_BUILD,0
+ PRODUCTVERSION K_OPENSAUCE_VERSION_BUILD_MAJ,K_OPENSAUCE_VERSION_BUILD_MIN,K_OPENSAUCE_VERSION_BUILD,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -71,12 +73,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "Kornner Studios"
             VALUE "FileDescription", "OpenSauce - Yelo Module (Halo1_CE)"
-            VALUE "FileVersion", "3.0.1"
+            VALUE "FileVersion", BOOST_PP_STRINGIZE(K_OPENSAUCE_VERSION_BUILD_MAJ) "." BOOST_PP_STRINGIZE(K_OPENSAUCE_VERSION_BUILD_MIN) "." BOOST_PP_STRINGIZE(K_OPENSAUCE_VERSION_BUILD)
             VALUE "InternalName", "Halo1_CE"
             VALUE "LegalCopyright", "Copyright (C) 2012"
             VALUE "OriginalFilename", "Halo1_CE.dll"
             VALUE "ProductName", "OpenSauce - Yelo Module (Halo1_CE)"
-            VALUE "ProductVersion", "3.0.1"
+            VALUE "ProductVersion", BOOST_PP_STRINGIZE(K_OPENSAUCE_VERSION_BUILD_MAJ) "." BOOST_PP_STRINGIZE(K_OPENSAUCE_VERSION_BUILD_MIN) "." BOOST_PP_STRINGIZE(K_OPENSAUCE_VERSION_BUILD)
         END
     END
     BLOCK "VarFileInfo"
