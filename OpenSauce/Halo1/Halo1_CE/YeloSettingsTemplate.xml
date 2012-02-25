@@ -60,7 +60,7 @@
 			</server_list>
 		</version_check>
 
-		<cacheFiles mainmenuScenario="" />
+		<cacheFiles checkForYeloFilesFirst="" mainmenuScenario="" />
 	</client>
 	
 	<server>

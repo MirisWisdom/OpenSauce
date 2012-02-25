@@ -54,6 +54,10 @@ It is also useful for us to know your system specifications such as your graphic
 NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how to use OS, please consult our wiki and/or create a post on Halomods to get community assistance. We are also NOT taking feature requests in any way.
 
 == Change Log ==
+=== Version 3.0.4 ===
+  * ADD			Added new setting for forcing OS to use .yelo files first when searching for .map files (off by default)
+  * FIX			Fixed a bug where a non-existant map (of any kind) would cause the 'missing <mapname>.yelo' exception, when the stock game already had code to handle such cases
+
 === Version 3.0.3 ===
   * N/A			Nothing you all need to concern yourselves with. Go play Halo.
 
