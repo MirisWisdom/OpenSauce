@@ -23,10 +23,10 @@ namespace YeloDebug
 			SurfaceInformation si = new SurfaceInformation();
 			StatusResponse response = SendCommand("getsurf id={0}", (int)surface);
 			var info = Util.ExtractResponseInformation(response.Message);
-			si.Size = (uint)info[0];
-			si.Format = (uint)info[1];
-			si.Address = (uint)info[2];
-			si.PushBufferPut = (uint)info[3];
+			si.Size = Convert.ToUInt32(info[0]);
+			si.Format = Convert.ToUInt32(info[1]);
+			si.Address = Convert.ToUInt32(info[2]);
+			si.PushBufferPut = Convert.ToUInt32(info[3]);
 			return si;
 		}
 

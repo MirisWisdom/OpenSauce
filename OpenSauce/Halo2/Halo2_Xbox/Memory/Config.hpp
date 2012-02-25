@@ -19,6 +19,9 @@ namespace Yelo
 	{
 		struct s_definition
 		{
+			bool Initialized;
+			PAD24;
+
 			struct _Cheats {
 				bool InfAmmo;
 				bool InfGrenades;
@@ -27,17 +30,11 @@ namespace Yelo
 				bool EnablePrintFunction;
 				bool IceCreamFlavors[21 + 2];
 
-				struct _Toggle {
-					struct _Input {
-						word_flags On;
-						word_flags Off;
-					}	InfAmmo,
-						InfGrenades,
-						Invincible,
-						Cloak;
-				}Toggle;
-
 				struct _Input {
+					word_flags InfAmmo;
+					word_flags InfGrenades;
+					word_flags Invincible;
+					word_flags Cloak;
 					word_flags AiEraseAll;
 					word_flags AutoWin;
 				}Input;
@@ -63,6 +60,8 @@ namespace Yelo
 					word_flags ScriptedCamera;
 					word_flags EditorCamera;
 					word_flags AnchoredCamera;
+					word_flags LookControlThumb; // thumbstick to use for look control
+					PAD16;
 				}InputCamera;
 
 				struct _InputSliders {
@@ -88,6 +87,7 @@ namespace Yelo
 					real Resistance;
 				}Look, Move;
 
+				void ToDefaults();
 			}View;
 
 			struct _Input {
@@ -112,6 +112,8 @@ namespace Yelo
 
 				real AdjustScale; // does this belong in this group?
 				real Tolerance; // thumbstick debounce
+
+				void ToDefaults();
 			}Input;
 
 			struct _Misc {
@@ -122,7 +124,12 @@ namespace Yelo
 				bool HighSpeedCapture;
 				bool CoordinateDisplay;
 				PAD8;
+
+				void ToDefaults();
 			}Misc;
+
+			void ToDefaults();
+			void ToInputDefaults();
 		};
 
 		void Initialize();

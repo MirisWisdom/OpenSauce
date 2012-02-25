@@ -14,4 +14,4 @@
 {AI::Initialize,		AI::Dispose},
 {Players::Initialize,	Players::Dispose},
 {Statistics::Initialize,Statistics::Dispose},
-//{Camera::Initialize,	Camera::Dispose},
+{Camera::Initialize,	Camera::Dispose},

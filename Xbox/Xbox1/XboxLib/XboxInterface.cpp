@@ -180,10 +180,10 @@ namespace XboxLib
 			xor		eax, eax
 			mov		ecx, count
 			mov		edi, dst
-			rep stos al
+			rep stosb
 
 			pop		edi
-		API_FUNC_NAKED_END(3);
+		API_FUNC_NAKED_END(2);
 	}
 
 	API_FUNC_NAKED bool XBOXAPI IsAddressValid(void* address)
