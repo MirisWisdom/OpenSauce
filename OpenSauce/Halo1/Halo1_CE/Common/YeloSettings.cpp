@@ -93,24 +93,30 @@ namespace Yelo
 		static void LoadSettingsForServer(TiXmlElement* server)
 		{
 #if PLATFORM_IS_DEDI
-			TiXmlElement* version_check_element = NULL;
+			// TODO: make the Cache settings load as readonly from the client settings
+			TiXmlElement* version_check_element = NULL,
+						* cf_element = NULL
+				;
 
 			if(server != NULL)
 			{
 				version_check_element = server->FirstChildElement("version_check");
+				cf_element = server->FirstChildElement("cacheFiles");
 			}
 
 			Networking::VersionCheck::LoadSettings(version_check_element);
+			Cache::LoadSettings(cf_element);
 #endif
 		}
 
 		static void SaveSettingsForServer(TiXmlElement* server)
 		{
 #if PLATFORM_IS_DEDI
-			TiXmlElement* version_check_element = NULL;
+			TiXmlElement* version_check_element = NULL
+				;
 
 			version_check_element = new TiXmlElement("version_check");
-			server->LinkEndChild(version_check_element);
+				server->LinkEndChild(version_check_element);
 
 			Networking::VersionCheck::SaveSettings(version_check_element);
 #endif

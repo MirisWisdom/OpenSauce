@@ -141,8 +141,10 @@ namespace Yelo
 
 	namespace Cache
 	{
-#if PLATFORM_IS_USER
 		struct s_yelo_settings {
+			bool check_for_yelo_files_first; // if true, checks for .yelo files first before .map files
+			PAD24;
+#if PLATFORM_IS_USER
 			// Scenario tag name of the mainmenu the user wants to use
 			string256 mainmenu_scenario_name;
 
@@ -167,17 +169,43 @@ namespace Yelo
 
 			// Returns true if the override is valid and can be used
 			bool UseMainmenuOverride() { return mainmenu_scenario_name[0] != '\0'; }
+#endif
 
 			void InitializeMemoryOverrides()
 			{
+#if PLATFORM_IS_USER
 				if(UseMainmenuOverride())
 				{
 					for(int32 x = 0; x < NUMBEROF(K_UI_SCENARIO_NAME_REFERENCES); x++)
 						*K_UI_SCENARIO_NAME_REFERENCES[x] = mainmenu_scenario_name;
 				}
-			}
-		}g_yelo_settings;
 #endif
+			}
+
+			void LoadSettings(TiXmlElement* cf_element)
+			{
+				if(cf_element != NULL)
+				{
+					check_for_yelo_files_first = Settings::ParseBoolean(cf_element->Attribute("checkForYeloFilesFirst"));
+
+#if PLATFORM_IS_USER
+					cstring mainmenu_override_name = cf_element->Attribute("mainmenuScenario");
+
+					InitializeMainmenuOverride(mainmenu_override_name);
+#endif
+				}
+			}
+			void SaveSettings(TiXmlElement* cf_element)
+			{
+				cf_element->SetAttribute("checkForYeloFilesFirst", Settings::BooleanToString(check_for_yelo_files_first));
+
+#if PLATFORM_IS_USER
+				if(UseMainmenuOverride())
+					cf_element->SetAttribute("mainmenuScenario", mainmenu_scenario_name);
+#endif
+			}
+
+		}g_yelo_settings;
 //////////////////////////////////////////////////////////////////////////
 // Cache Size upgrades
 
@@ -225,10 +253,8 @@ namespace Yelo
 		void Initialize()
 		{
 			MemoryUpgradesInitialize();
-			CacheFormatPathHackInitialize();
-#if PLATFORM_IS_USER
+			c_cache_format_path_hacks::Initialize();
 			g_yelo_settings.InitializeMemoryOverrides();
-#endif
 
 			Memory::WriteRelativeCall(MapListInitialize, GET_FUNC_VPTR(MULTIPLAYER_MAP_LIST_INITIALIZE_CALL));
 		}
@@ -253,7 +279,7 @@ namespace Yelo
 			yelo_is_ok = true;
 
 			string256 map_path;
-			CacheFormatPathHack(map_path, "%s%s%s.map", RootDirectory(), "maps\\", relative_map_name);
+			c_cache_format_path_hacks::PathHack(map_path, "%s%s%s.map", RootDirectory(), "maps\\", relative_map_name);
 
 			HANDLE f = CreateFileA(map_path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
 			if(f != INVALID_HANDLE_VALUE)
@@ -295,22 +321,14 @@ namespace Yelo
 			return result;
 		}
 
-#if PLATFORM_IS_USER
 		void LoadSettings(TiXmlElement* cf_element)
 		{
-			if(cf_element != NULL)
-			{
-				cstring mainmenu_override_name = cf_element->Attribute("mainmenuScenario");
-
-				g_yelo_settings.InitializeMainmenuOverride(mainmenu_override_name);
-			}
+			g_yelo_settings.LoadSettings(cf_element);
 		}
 
 		void SaveSettings(TiXmlElement* cf_element)
 		{
-			if(g_yelo_settings.UseMainmenuOverride())
-				cf_element->SetAttribute("mainmenuScenario", g_yelo_settings.mainmenu_scenario_name);
+			g_yelo_settings.SaveSettings(cf_element);
 		}
-#endif
 	};
 };

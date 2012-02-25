@@ -112,9 +112,7 @@ namespace Yelo
 		// * If exception_on_fail is true, the standard game exception message for invalid maps will play
 		bool ReadHeader(cstring relative_map_name, s_cache_header& out_header, bool& yelo_is_ok, bool exception_on_fail = false);
 
-#if !PLATFORM_IS_DEDI
 		void LoadSettings(TiXmlElement* cf_element);
 		void SaveSettings(TiXmlElement* cf_element);
-#endif
 	};
 };
