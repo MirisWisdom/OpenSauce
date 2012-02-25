@@ -68,6 +68,8 @@ namespace Yelo
 			Camera::c_yelo_camera& camera = Camera::c_yelo_camera::Get(pad.Index); // get the yelo camera for the player
 
 			Config::s_definition& config = Config::Current();
+			if(!config.Initialized) return;
+
 			word_flags new_state = pad.wButtons;
 			if(new_state != pad.wOldButtons) // execute once per press
 			{
@@ -161,19 +163,19 @@ namespace Yelo
 					Engine::Cinematic::LightmapShadow(false);
 					Engine::Cinematic::AmbienceDetails(false);
 				}
-				else if(new_state == config.Cheats.Toggle.Invincible.On)
+				else if(new_state == config.Cheats.Input.Invincible)
 				{
 				}
-				else if(new_state == config.Cheats.Toggle.Cloak.On)
+				else if(new_state == config.Cheats.Input.Cloak)
 				{
 				}
-				else if(new_state == config.Cheats.Toggle.InfAmmo.On)
+				else if(new_state == config.Cheats.Input.InfAmmo)
 				{
 					static bool InfAmmo = false;
 
 					Engine::Cheats::InfiniteAmmo( InfAmmo ^= true );
 				}
-				else if(new_state == config.Cheats.Toggle.InfGrenades.On)
+				else if(new_state == config.Cheats.Input.InfGrenades)
 				{
 					static bool InfGrens = false;
 
@@ -219,19 +221,19 @@ namespace Yelo
 
 				if(new_state == config.View.Look.Input.IncSpeed)
 				{
-					real limit = config.View.Look.SpeedBounds.upper;
+					const real k_limit = config.View.Look.SpeedBounds.upper;
 					real_ptr = &config.View.Look.Speed;
 					real_tmp = (*real_ptr -= Adjustment);
-					if(real_tmp > limit)
-						*real_ptr = limit;
+					if(real_tmp > k_limit)
+						*real_ptr = k_limit;
 				}
 				else if(new_state == config.View.Look.Input.DecSpeed)
 				{
-					real limit = config.View.Look.SpeedBounds.lower;
+					const real k_limit = config.View.Look.SpeedBounds.lower;
 					real_ptr = &config.View.Look.Speed;
 					real_tmp = (*real_ptr -= Adjustment);
-					if(real_tmp < limit)
-						*real_ptr = limit;
+					if(real_tmp < k_limit)
+						*real_ptr = k_limit;
 				}
 				else if(new_state == config.View.Look.Input.IncHorizShift)
 				{
@@ -252,19 +254,19 @@ namespace Yelo
 
 				else if(new_state == config.View.Move.Input.IncSpeed)
 				{
-					real limit = config.View.Move.SpeedBounds.upper;
+					const real k_limit = config.View.Move.SpeedBounds.upper;
 					real_ptr = &config.View.Move.Speed;
 					real_tmp = (*real_ptr -= Adjustment);
-					if(real_tmp > limit)
-						*real_ptr = limit;
+					if(real_tmp > k_limit)
+						*real_ptr = k_limit;
 				}
 				else if(new_state == config.View.Move.Input.DecSpeed)
 				{
-					real limit = config.View.Move.SpeedBounds.lower;
+					const real k_limit = config.View.Move.SpeedBounds.lower;
 					real_ptr = &config.View.Move.Speed;
 					real_tmp = (*real_ptr -= Adjustment);
-					if(real_tmp < limit)
-						*real_ptr = limit;
+					if(real_tmp < k_limit)
+						*real_ptr = k_limit;
 				}
 				else if(new_state == config.View.Move.Input.IncHorizShift)
 				{

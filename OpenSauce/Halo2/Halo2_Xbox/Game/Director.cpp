@@ -66,11 +66,11 @@ namespace Yelo
 			for(int16 x = 0; x < Enums::k_camera_count; x++)
 			{
 				c_yelo_camera& yc = c_yelo_camera::Get(x);
+				const bool is_ready = c_yelo_camera::IsReady(x);
 
-				// TODO: false until IsValid recoded
-				if(false && c_yelo_camera::IsValid(x))
+				if(c_yelo_camera::IsValid(x))
 				{
-					if(!c_yelo_camera::IsReady(x))
+					if(!is_ready)
 						yc.Initialize(x, 
 						Enums::_director_mode); // this causes it to use the existing mode used by the game
 
@@ -78,7 +78,7 @@ namespace Yelo
 				}
 				else
 				{
-					if(c_yelo_camera::IsReady(x)) // dispose of cameras that exist for old players
+					if(is_ready) // dispose of cameras that exist for old players
 						yc.Dispose();
 				}
 			}
@@ -123,7 +123,7 @@ namespace Yelo
 
 	namespace Camera
 	{
-		int32 c_yelo_camera::DebugInUse = false;
+		int32 c_yelo_camera::DebugInUse = FALSE;
 		bool c_yelo_camera::DebugInUseList[Enums::k_camera_count] = {
 			false,
 			false,
@@ -154,10 +154,10 @@ namespace Yelo
 				&UNWIND_PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_VERT,
 				GET_FUNC_VPTR(PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_VERT_START),
 				&Yelo::Camera::c_yelo_camera::UpdateAngleVert);
-// 			YELO_MEM_WLIST_ITEM(WriteJmp, 
-// 				&UNWIND_OBSERVER_UPDATE_POSITIONS_START,
-// 				GET_FUNC_VPTR(OBSERVER_UPDATE_POSITIONS_START),
-// 				&Yelo::Camera::c_yelo_camera::UpdateObserverPositions);
+			YELO_MEM_WLIST_ITEM(WriteJmp, 
+				&UNWIND_OBSERVER_UPDATE_POSITIONS_START,
+				GET_FUNC_VPTR(OBSERVER_UPDATE_POSITIONS_START),
+				&Yelo::Camera::c_yelo_camera::UpdateObserverPositions);
 		}
 
 		void c_yelo_camera::DebugDispose()
@@ -181,9 +181,9 @@ namespace Yelo
 			YELO_MEM_WLIST_ITEM(OverwriteMemorySansCopy, 
 				GET_FUNC_VPTR(PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_VERT_START),
 				UNWIND_PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_VERT);
-// 			YELO_MEM_WLIST_ITEM(OverwriteMemorySansCopy, 
-// 				GET_FUNC_VPTR(OBSERVER_UPDATE_POSITIONS_START),
-// 				UNWIND_OBSERVER_UPDATE_POSITIONS_START);
+			YELO_MEM_WLIST_ITEM(OverwriteMemorySansCopy, 
+				GET_FUNC_VPTR(OBSERVER_UPDATE_POSITIONS_START),
+				UNWIND_OBSERVER_UPDATE_POSITIONS_START);
 		}
 
 		// Finds out if the player associated to the pointer to the
@@ -198,6 +198,7 @@ namespace Yelo
 			API_FUNC_NAKED_START()
 				push	edi
 				push	esi
+				push	ecx
 
 				call	GameState::_PlayerControlGlobals
 				mov		edi, eax
@@ -229,6 +230,7 @@ found_player:
 				mov		al, c_yelo_camera::DebugInUseList[ecx]
 
 get_the_fuck_out:
+				pop		ecx
 				pop		esi
 				pop		edi
 			API_FUNC_NAKED_END(1);
@@ -240,13 +242,14 @@ get_the_fuck_out:
 				xorps	xmm1, xmm1					// this is code that we wrote-over in our hook, so re-create it
 				pushfd
 				cmp		c_yelo_camera::DebugInUse, 0
-				jnz		use_debug_cam				// we have a debug camera in use
+				jz		dont_use_debug_cam			// we don't have a debug camera in use
 
 				push	edi
 				call	CheckPlayerControlPtr		// check to see if EDI is a debug camera player
 				test	al, al
 				jnz		use_debug_cam				// we found the exact debug camera in use
 
+dont_use_debug_cam:
 				movss	dword ptr [edi+0x10], xmm0	// player control globals look horiz angle
 
 use_debug_cam:
@@ -262,13 +265,14 @@ use_debug_cam:
 				comiss	xmm1, xmm0					// this is code that we wrote-over in our hook, so re-create it
 				pushfd
 				cmp		c_yelo_camera::DebugInUse, 0
-				jnz		use_debug_cam				// we have a debug camera in use
+				jz		dont_use_debug_cam			// we don't have a debug camera in use
 
 				push	edi
 				call	CheckPlayerControlPtr		// check to see if EDI is a debug camera player
 				test	al, al
 				jnz		use_debug_cam				// we found the exact debug camera in use
 
+dont_use_debug_cam:
 				movss	dword ptr [edi+0x14], xmm0 // player control globals look vert angle
 				mov		eax, GET_FUNC_PTR(PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_VERT_END2)
 				jmp		the_fucking_end
@@ -277,8 +281,7 @@ use_debug_cam:
 				mov		eax, GET_FUNC_PTR(PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_VERT_END)
 the_fucking_end:
 				popfd
-				push	eax
-				ret
+				jmp		eax
 			}
 		}
 
@@ -379,7 +382,7 @@ _continue:		// continues writing to camera array
 
 _cleanup:
 				pop		ebp
-				ret
+				jmp		eax
 			}
 		}
 
@@ -387,8 +390,9 @@ _cleanup:
 		{
 			this->LocalPlayerIndex = local_player_index;
 			this->TrackMovement = false;
-			this->DirectorMode =
-				this->DirectorModeInternal = Enums::_director_mode;
+			this->DirectorModeInternal = NONE;
+			//this->DirectorMode =
+			//	this->DirectorModeInternal = Enums::_director_mode;
 			ChangePerspectiveInternal(mode);
 
 			this->ObserverOrigin = NULL;
@@ -427,10 +431,12 @@ _cleanup:
 			// Update the origin with the current player's observer state
 			this->ObserverOrigin = 
 				GameState::_Observers()[this->LocalPlayerIndex].GetOrigin();
+
 			// Update the look angle with the current player's control state
-			// TODO: Get a value to indicate which thumbstick to use for the look control
-			this->ControlLookAngle = 
-				GameState::_PlayerControlGlobals()->Players[this->LocalPlayerIndex].GetRightThumb();
+			const Config::s_definition& k_config = Config::Current();
+			GameState::s_player_control_globals::s_player& controls = GameState::_PlayerControlGlobals()->Players[this->LocalPlayerIndex];
+			this->ControlLookAngle = k_config.View.InputCamera.LookControlThumb == Flags::_input_button_left_thumb ?
+				controls.GetLeftThumb() : controls.GetRightThumb();
 		}
 
 		void c_yelo_camera::UpdateMovement() // ASM CONVERSION: "UpdateCamera", second portion
@@ -440,28 +446,28 @@ _cleanup:
 				const real kAdjustment = 0.01f;
 
 				GameState::_PlayerGlobals()->CameraControl(false);
-				Config::s_definition& config = Config::Current();
+				const Config::s_definition& k_config = Config::Current();
 
 				// get the user input
-				Input::s_yelopad& s_yelopad = Input::CurrentStates(CAST(int32, this->LocalPlayerIndex));
+				const Input::s_yelopad& k_yelopad = Input::CurrentStates(CAST(int32, this->LocalPlayerIndex));
 
 
 				// calculate forward/backward movement force
-				this->MoveForce = this->ObserverOrigin->Forward * s_yelopad.ThumbLeft.y;
+				this->MoveForce = this->ObserverOrigin->Forward * k_yelopad.ThumbLeft.y;
 
 				// calculates sideways movement force
 				this->MoveForce.i += XboxLib::Math::cosf( (this->ControlLookAngle->x + XboxLib::Math::RealConstants.Deg90) * 
-					s_yelopad.ThumbLeft.x );
+					k_yelopad.ThumbLeft.x );
 				this->MoveForce.j += XboxLib::Math::sinf( (this->ControlLookAngle->x + XboxLib::Math::RealConstants.Deg90) * 
-					s_yelopad.ThumbLeft.x );
+					k_yelopad.ThumbLeft.x );
 
 				// calculates vertical movement force
-				this->MoveForce.k += s_yelopad.RightTrigger - s_yelopad.LeftTrigger;
+				this->MoveForce.k += k_yelopad.RightTrigger - k_yelopad.LeftTrigger;
 
 				// updates movement velocity
 				{
-					this->MoveVelocity += this->MoveForce * kAdjustment * config.View.Move.Speed; // after user input
-					this->MoveVelocity -= this->MoveVelocity * config.View.Look.Resistance; // after resistance
+					this->MoveVelocity += this->MoveForce * kAdjustment * k_config.View.Move.Speed; // after user input
+					this->MoveVelocity -= this->MoveVelocity * k_config.View.Look.Resistance; // after resistance
 
 					// updates movement position
 					this->ObserverOrigin->Origin += *CAST_PTR(real_point3d*, &this->MoveVelocity);
@@ -475,21 +481,21 @@ _cleanup:
 			{
 				const real kAdjustment = 0.01f;
 
-				Config::s_definition& config = Config::Current();
+				const Config::s_definition& k_config = Config::Current();
 
 				// get the user input
-				Input::s_yelopad& s_yelopad = Input::CurrentStates(CAST(int32, this->LocalPlayerIndex));
+				const Input::s_yelopad& k_yelopad = Input::CurrentStates(CAST(int32, this->LocalPlayerIndex));
 
 
 				// updates horizontal look velocity and position
 				this->LookVelocity.i += 
-					(s_yelopad.ThumbRight.x * kAdjustment) - (config.View.Look.Resistance * this->LookVelocity.i);
+					(k_yelopad.ThumbRight.x * kAdjustment) - (k_config.View.Look.Resistance * this->LookVelocity.i);
 				this->ControlLookAngle->x += this->LookVelocity.i;
 
 				// updates vertical look velocity and position
 				{
 					this->LookVelocity.j += 
-						(s_yelopad.ThumbRight.y * kAdjustment) - (config.View.Look.Resistance * this->LookVelocity.j);
+						(k_yelopad.ThumbRight.y * kAdjustment) - (k_config.View.Look.Resistance * this->LookVelocity.j);
 					this->ControlLookAngle->y += this->LookVelocity.j;
 
 					// keeps vertical look in bounds
@@ -503,8 +509,8 @@ _cleanup:
 				// ASM CONVERSION: "UpdateLookVector":
 
 				// get look direction
-				real h_look_angle = this->ControlLookAngle->x;
-				real v_look_angle = this->ControlLookAngle->y;
+				const real h_look_angle = this->ControlLookAngle->x;
+				const real v_look_angle = this->ControlLookAngle->y;
 
 				// calculate ijk forward look vectors
 				this->ObserverOrigin->Forward.i = XboxLib::Math::cosf(h_look_angle) * XboxLib::Math::cosf(v_look_angle);
@@ -557,7 +563,7 @@ _cleanup:
 
 		_enum c_yelo_camera::GetPerspectiveFromGame() const
 		{
-			uint32 ptr = CAST_PTR(uint32, GameState::_Directors()[this->LocalPlayerIndex].UpdateProc);
+			uintptr_t ptr = CAST_PTR(uintptr_t, GameState::_Directors()[this->LocalPlayerIndex].UpdateProc);
 			switch(ptr)
 			{
 			case GET_DATA_PTR(SCRIPTED_CAMERA_UPDATE):
@@ -640,7 +646,6 @@ _cleanup:
 
 		bool c_yelo_camera::IsValid(int32 controller_index)
 		{
-			// TODO: use data iterator
 			GameState::t_players_data::Iterator iter(GameState::_Players());
 			GameState::s_player_datum* player;
 			while( (player = iter.Next()) != NULL )
@@ -649,12 +654,6 @@ _cleanup:
 					*player->GetSlaveUnitIndex() != datum_index::null)
 					return true;
 			}
-// 			GameState::s_player_datum* players = *GameState::_Players(); // get players
-// 			for(uint32 x = 0; x < GameState::_Players()->GetDatumCount(); x++) // loop and check for the valid cases
-// 				if(players->GetHeader() != NONE && // the header must be valid first
-// 					*players[x].GetControllerIndex() == controller_index && // only look for the controller we want
-// 					*players[x].GetSlaveUnitIndex() != datum_index::null) // if the player is not existing as a unit in-game right now, they're considered invalid to us
-// 					return true;
 			return false; // nothing was valid
 		}
 

@@ -508,15 +508,15 @@ namespace YeloDebug
                     ThreadInfo threadInfo = new ThreadInfo();
                     SendCommand("threadinfo thread={0}", id);
                     threadInfo.ID = id;
-                    List<object> info = Util.ExtractResponseInformation(ReceiveSocketLine());
-                    threadInfo.Suspend = (uint)info[0];
-                    threadInfo.Priority = (uint)info[1];
-                    threadInfo.TlsBase = (uint)info[2];
-                    threadInfo.Start = (uint)info[3];
-                    threadInfo.Base = (uint)info[4];
-                    threadInfo.Limit = (uint)info[5];
-                    long ticks = (uint)info[7];
-                    ticks |= (((long)(uint)info[6] << 32));
+                    var info = Util.ExtractResponseInformation(ReceiveSocketLine());
+                    threadInfo.Suspend = Convert.ToUInt32(info[0]);
+					threadInfo.Priority = Convert.ToUInt32(info[1]);
+					threadInfo.TlsBase = Convert.ToUInt32(info[2]);
+					threadInfo.Start = Convert.ToUInt32(info[3]);
+					threadInfo.Base = Convert.ToUInt32(info[4]);
+					threadInfo.Limit = Convert.ToUInt32(info[5]);
+					long ticks = Convert.ToUInt32(info[7]);
+					ticks |= (((long)Convert.ToUInt32(info[6]) << 32));
                     threadInfo.CreationTime = DateTime.FromFileTime(ticks);
                     threads.Add(threadInfo);
                     ReceiveSocketLine();    //'.'
@@ -653,9 +653,9 @@ namespace YeloDebug
                 {
                     ModuleInfo module = new ModuleInfo();
                     module.Sections = new List<ModuleSection>();
-                    List<object> info = Util.ExtractResponseInformation(line);
+                    var info = Util.ExtractResponseInformation(line);
                     module.Name = (string)info[0];
-                    module.BaseAddress = (uint)info[1];
+                    module.BaseAddress = Convert.ToUInt32(info[1]);
 
                     if (module.Name == "xbdm.dll" && module.BaseAddress != 0xB0000000)
                         throw new Exception("You seem to be most likely running the Complex v4627 Debug Bios.  YeloDebug is not compatible with this bios.");
@@ -674,12 +674,12 @@ namespace YeloDebug
                     foreach (string r in response)
                     {
                         ModuleSection modSection = new ModuleSection();
-                        List<object> info = Util.ExtractResponseInformation(r);
+                        var info = Util.ExtractResponseInformation(r);
                         modSection.Name = (string)info[0];
-                        modSection.Base = (uint)info[1];
-                        modSection.Size = (uint)info[2];
-                        modSection.Index = (uint)info[3];
-                        modSection.Flags = (uint)info[4];
+                        modSection.Base = Convert.ToUInt32(info[1]);
+                        modSection.Size = Convert.ToUInt32(info[2]);
+                        modSection.Index = Convert.ToUInt32(info[3]);
+                        modSection.Flags = Convert.ToUInt32(info[4]);
                         module.Sections.Add(modSection);
                     }
                 }
@@ -1671,10 +1671,35 @@ namespace YeloDebug
             return (TrayState)GetUInt16(History.ScratchBuffer);
         }
 
+		public void DmReboot(BootFlag flags, string xbe)
+		{
+			string wait = "";
+			if ((flags & BootFlag.Stop) != 0) wait = " Stop";
+			else if ((flags & BootFlag.Wait) != 0) wait = " Wait";
+
+			string warm = (flags & BootFlag.Warm) != 0 ? " Warm" : "";
+			string nodebug = (flags & BootFlag.NoDebug) != 0 ? " NoDebug" : "";
+
+			if (string.IsNullOrEmpty(xbe))
+				SendCommand("reboot{0}{1}{2}", wait, warm, nodebug);
+			else
+				SendCommand("magicboot title={0}{1}", xbe, nodebug != "" ? nodebug : " Debug");
+
+			Thread.Sleep(25);
+
+			if ((flags & BootFlag.NoDebug) == 0)
+				Reconnect(15000);
+			else
+			{
+				Disconnect();
+				throw new ApiException("Xbox has been shut down with NoDebug");
+			}
+		}
+
         /// <summary>
         /// Shuts down the xbox console and then turns it on again.
         /// </summary>
-        public void CyclePower()
+        internal void CyclePower()
         {
             CallAddressEx(Kernel.HalWriteSMBusValue, null, false, SMCDevices.SMBus, SMBusCommand.Reset, 0, ResetCommand.PowerCycle);
             Thread.Sleep(25);   // let it shut down first
@@ -1683,7 +1708,7 @@ namespace YeloDebug
         }
 
         /// <summary>
-        /// Resets the xbox console.
+        /// Resets the xbox console (machine name, etc).
         /// </summary>
         public void Reset()
         {
@@ -2070,9 +2095,10 @@ namespace YeloDebug
         /// For these events, you can elect to have the debugging subsystem suspend title execution by calling this function.
         /// </summary>
         /// <param name="flags"></param>
-        public void StopOn(StopOnFlags flags)
+		/// <remarks>DmStopOn</remarks>
+        public void StopOn(StopOnFlags flags, bool stop)
         {
-            SendCommand("stopon {0}", flags.ToString().Replace(",", ""));
+            SendCommand("{0}stopon {0}", !stop ? "no" : "", flags.ToString().Replace(",", " "));
         }
 
         /// <summary>
@@ -2083,6 +2109,12 @@ namespace YeloDebug
             SendCommand("break clearall");
         }
 
+		/// <remarks>DmSetInitialBreakpoint</remarks>
+		public void SetInitialBreakpoint()
+		{
+			SendCommand("break start");
+		}
+
         /// <summary>
         /// Sets a hardware breakpoint that suspends title execution when a particular section of memory is referenced.
         /// </summary>
@@ -2090,33 +2122,52 @@ namespace YeloDebug
         /// <param name="size">The size, in bytes, of the memory to be watched.
         /// The only allowable values for this parameter are 1, 2, and 4.</param>
         /// <param name="type">Type of access to watch for.</param>
-        public void SetBreakPoint(uint address, uint size, BreakpointType type)
+		/// <remarks>DmSetDataBreakpoint</remarks>
+        public void SetDataBreakPoint(uint address, uint size, BreakpointType type)
         {
-            SendCommand("break addr={0} size={1} {2}", address, size, type.ToString().Replace(",", ""));
+			if (size != sizeof(byte) || size != sizeof(short) || size != sizeof(int))
+				throw new ArgumentOutOfRangeException("size", size.ToString());
+
+			bool clear = type == BreakpointType.None;
+
+			// xboxdbg.dll only uses one breakpoint type, so multiple types shouldn't be bitted together...
+			string type_str = type.ToString().Replace(",", "");
+
+			SendCommand("break {0}=0x{1} size={2} {3}", type_str, address.ToString("X8"), size,
+				clear ? "clear" : "");
         }
 
         /// <summary>
         /// Sets a breakpoint in an xbox title.
         /// </summary>
         /// <param name="address">Address where you would like to set a breakpoint.</param>
-        public void SetBreakPoint(uint address)
+		/// <param name="type">Type of access to watch for.</param>
+		/// <remarks>DmSetDataBreakpoint</remarks>
+        public void SetDataBreakPoint(uint address, BreakpointType type)
         {
-            SetBreakPoint(address, 1, BreakpointType.ReadWrite | BreakpointType.Execute);
+            SetDataBreakPoint(address, 1, type);
         }
+
+		public void SetBreakPoint(uint address)
+		{
+			SendCommand("break addr=0x{0}", address.ToString("X8"));
+		}
 
         /// <summary>
         /// Removes a breakpoint in an xbox title.
         /// </summary>
         /// <param name="address">Address where you would like to remove a breakpoint.</param>
+		/// <remarks>DmRemoveBreakpoint</remarks>
         public void RemoveBreakPoint(uint address)
         {
-            SendCommand("break clear addr={0}", address);
+			SendCommand("break addr=0x{0} clear", address.ToString("X8"));
         }
 
         /// <summary>
         /// Sends a request to the xbox that the specified thread break as soon as possible.
         /// </summary>
         /// <param name="thread">ID of the thread to be halted. Send 0 as the thread ID to have the debugging subsystem select a thread to break into.</param>
+		/// <remarks>DmHaltThread</remarks>
         public void HaltThread(uint thread)
         {
             SendCommand("halt thread={0}", thread);
@@ -2126,9 +2177,10 @@ namespace YeloDebug
         /// Resumes the execution of an xbox thread that has been stopped.
         /// </summary>
         /// <param name="thread">Thread ID.</param>
-        public void ContinueThread(uint thread)
+		/// <remarks>DmContinueThread</remarks>
+        public void ContinueThread(uint thread, bool exception)
         {
-            try { SendCommand("continue thread={0}", thread); }
+            try { SendCommand("continue thread={0} {1}", thread, exception ? "exception" : ""); }
             catch { }
         }
 
@@ -2138,7 +2190,7 @@ namespace YeloDebug
         public void ContinueAllThreads()
         {
             foreach (ThreadInfo thread in Threads)
-                try { SendCommand("continue thread={0}", thread.ID); }
+                try { ContinueThread(thread.ID, false); }
                 catch { /* 408- not stopped */ }
         }
 
@@ -2146,6 +2198,7 @@ namespace YeloDebug
         /// Suspends a given xbox thread.
         /// </summary>
         /// <param name="thread">ID of the thread to suspend.</param>
+		/// <remarks>DmSuspendThread</remarks>
         public void SuspendThread(uint thread)
         {
             SendCommand("suspend thread={0}", thread);
@@ -2157,6 +2210,7 @@ namespace YeloDebug
         /// Resumes a given xbox thread.
         /// </summary>
         /// <param name="thread">ID of the thread to resume.</param>
+		/// <remarks>DmResumeThread</remarks>
         public void ResumeThread(uint thread)
         {
             SendCommand("resume thread={0}", thread);
@@ -2195,6 +2249,7 @@ namespace YeloDebug
         /// <summary>
         /// Suspends all xbox title threads.
         /// </summary>
+		/// <remarks>DmStop</remarks>
         public void Pause()
         {
             if (connection != null)
@@ -2208,6 +2263,7 @@ namespace YeloDebug
         /// <summary>
         /// Resumes all xbox title threads.
         /// </summary>
+		/// <remarks>DmGo</remarks>
         public void Continue()
         {
             if (connection != null)

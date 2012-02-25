@@ -124,7 +124,7 @@ namespace YeloDebug
 		}
 		static void SetBreakpointOff(Xbox xbox)
 		{
-			xbox.ClearAllBreakpoints();// RemoveBreakPoint(k_breakpoint_address);
+			xbox.RemoveBreakPoint(k_breakpoint_address);
 			xbox.Continue();
 		}
 
@@ -179,10 +179,10 @@ namespace YeloDebug
 
 		public static bool UnloadModule(Xbox xbox, uint base_address, uint exit_address)
 		{
-			xbox.Pause();
+			SetBreakpointOn(xbox);//xbox.Pause();
 			xbox.CallAddress(exit_address, false);
 			xbox.FreeDebugMemory(base_address);
-			xbox.Continue();
+			SetBreakpointOff(xbox);//xbox.Continue();
 
 			return true;
 		}

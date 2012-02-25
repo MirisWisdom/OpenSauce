@@ -232,7 +232,7 @@ namespace Yelo
 		// Gets the angle and distance of [target_object] relative to [source_object]
 		void GetAngleAndDistance(datum_index source_object, datum_index target_object, real& angle, real& distance);
 
-		void GetObjectInView(datum_index source_object, long_flags types_mask, int16& index, real& distance);
+		void GetObjectInView(datum_index source_object, long_flags types_mask, datum_index::index_t& index, real& distance);
 	};
 
 	namespace GameState

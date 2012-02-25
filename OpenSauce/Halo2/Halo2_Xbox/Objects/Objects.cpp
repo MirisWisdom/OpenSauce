@@ -29,37 +29,32 @@ namespace Yelo
 			angle = XboxLib::Math::fabsf( XboxLib::Math::acosf(dot_product) );
 		}
 
-		void GetObjectInView(datum_index source_object, long_flags types_mask, short& index, real& distance)
+		void GetObjectInView(datum_index source_object, long_flags types_mask, datum_index::index_t& index, real& distance)
 		{
-			int16 closest_datum;
-			datum_index tmp;
+			datum_index::index_t closest_datum;
 			real closest_angle = 0.0f;
 			real closest_dist;
 			int32 num_found = 0;
-			GameState::s_object_data* obj_data;
-			real_vector3d* object_pos;
 
-			// TODO: use data iterator
-			datum_index::index_t last_index = GameState::_Object()->Header.next_datum.index;
-			GameState::s_object_header_datum* header_datums = *GameState::_Object();
-			for(datum_index::index_t x = 0; x <= last_index; x++)
+			GameState::t_object_data::Iterator iter(GameState::_Object());
+			GameState::s_object_header_datum* header_datum;
+			while( (header_datum = iter.Next()) != NULL )
 			{
-				if((tmp.index = header_datums[x].GetHeader()) == NONE) continue;
-
-				obj_data = header_datums[x].As.Object;
+				GameState::s_object_data* obj_data = header_datum->As.Object;
 				if(!obj_data || !ObjectTypesInMask(types_mask, (_enum)obj_data->GetType()) ) continue;
 
+				datum_index obj_index = iter.Current();
 				num_found++;
 
 				// compute relative position
-				object_pos = obj_data->GetOrigin();
+				real_vector3d* object_pos = obj_data->GetOrigin();
 				real angle, dist;
-				GetAngleAndDistance(source_object, tmp, angle, dist);
+				GetAngleAndDistance(source_object, obj_index, angle, dist);
 
 				// store if closer than prev object
 				if(angle < 0.785f && (num_found == 1 || angle < closest_angle))
 				{
-					closest_datum = x;
+					closest_datum = obj_index.index;
 					closest_angle = angle;
 					closest_dist = dist;
 				}

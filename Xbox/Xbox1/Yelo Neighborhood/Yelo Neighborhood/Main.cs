@@ -246,7 +246,7 @@ namespace Yelo_Neighborhood
         void cmdCyclePower_Click(object sender, EventArgs e)
         {
             this.Enabled = false;
-            try { Program.XBox.CyclePower(); }
+			try { Program.XBox.DmReboot(BootFlag.Cold, null); }
             catch { }
             finally
             {

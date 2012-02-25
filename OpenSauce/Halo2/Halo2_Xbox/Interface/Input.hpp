@@ -55,6 +55,8 @@ namespace Yelo
 
 			_input_button_left_trigger =			FLAG(14), // custom
 			_input_button_right_trigger =			FLAG(15), // custom
+
+			_input_button_undefined =				NONE, // For unassigned config in-game keys
 		};
 
 		enum input_thumb_direction
