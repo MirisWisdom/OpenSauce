@@ -55,13 +55,16 @@ namespace Yelo
 			for(int32 x = 0; x < Enums::k_number_of_controllers; x++)
  			{
  				if( handle = GamepadHandles(x) )
- 					YeloPadCreate( CurrentStates(x) );
+				{
+ 					s_yelopad& pad = YeloPadCreate( CurrentStates(x) );
+					HandleYeloInput(pad);
+				}
  			}
 		}
 
-		void HandleYeloInput(s_yelopad& pad)
+		void HandleYeloInput(const s_yelopad& pad)
 		{
-			float Adjustment = 0.01f;
+			const float kAdjustment = 0.01f;
 			real real_tmp;
 
 			bool camera_is_valid = Camera::c_yelo_camera::IsValid(pad.Index); // is this player's camera currently valid?
@@ -165,9 +168,11 @@ namespace Yelo
 				}
 				else if(new_state == config.Cheats.Input.Invincible)
 				{
+					config.Cheats.UpdateFlags.Invincible = true;
 				}
 				else if(new_state == config.Cheats.Input.Cloak)
 				{
+					config.Cheats.UpdateFlags.Invincible = true;
 				}
 				else if(new_state == config.Cheats.Input.InfAmmo)
 				{
@@ -215,15 +220,15 @@ namespace Yelo
 			}
 			else // execute multiple times per press
 			{
-				GameState::s_game_observer::s_calculated_origin* origin = 
-					GameState::_Observers()[pad.Index].GetOrigin();
+				GameState::s_observer::s_calculated_origin* origin = 
+					&GameState::_Observers()[pad.Index].origin;
 				real* real_ptr;
 
 				if(new_state == config.View.Look.Input.IncSpeed)
 				{
 					const real k_limit = config.View.Look.SpeedBounds.upper;
 					real_ptr = &config.View.Look.Speed;
-					real_tmp = (*real_ptr -= Adjustment);
+					real_tmp = (*real_ptr -= kAdjustment);
 					if(real_tmp > k_limit)
 						*real_ptr = k_limit;
 				}
@@ -231,32 +236,32 @@ namespace Yelo
 				{
 					const real k_limit = config.View.Look.SpeedBounds.lower;
 					real_ptr = &config.View.Look.Speed;
-					real_tmp = (*real_ptr -= Adjustment);
+					real_tmp = (*real_ptr -= kAdjustment);
 					if(real_tmp < k_limit)
 						*real_ptr = k_limit;
 				}
 				else if(new_state == config.View.Look.Input.IncHorizShift)
 				{
-					origin->LookDisplacement.x += Adjustment;
+					origin->look_offset.x += kAdjustment;
 				}
 				else if(new_state == config.View.Look.Input.DecHorizShift)
 				{
-					origin->LookDisplacement.x -= Adjustment;
+					origin->look_offset.x -= kAdjustment;
 				}
 				else if(new_state == config.View.Look.Input.IncVertShift)
 				{
-					origin->LookDisplacement.y += Adjustment;
+					origin->look_offset.y += kAdjustment;
 				}
 				else if(new_state == config.View.Look.Input.DecVertShift)
 				{
-					origin->LookDisplacement.y -= Adjustment;
+					origin->look_offset.y -= kAdjustment;
 				}
 
 				else if(new_state == config.View.Move.Input.IncSpeed)
 				{
 					const real k_limit = config.View.Move.SpeedBounds.upper;
 					real_ptr = &config.View.Move.Speed;
-					real_tmp = (*real_ptr -= Adjustment);
+					real_tmp = (*real_ptr -= kAdjustment);
 					if(real_tmp > k_limit)
 						*real_ptr = k_limit;
 				}
@@ -264,56 +269,56 @@ namespace Yelo
 				{
 					const real k_limit = config.View.Move.SpeedBounds.lower;
 					real_ptr = &config.View.Move.Speed;
-					real_tmp = (*real_ptr -= Adjustment);
+					real_tmp = (*real_ptr -= kAdjustment);
 					if(real_tmp < k_limit)
 						*real_ptr = k_limit;
 				}
 				else if(new_state == config.View.Move.Input.IncHorizShift)
 				{
-					origin->Displacement.x += Adjustment;
+					origin->offset.x += kAdjustment;
 				}
 				else if(new_state == config.View.Move.Input.DecHorizShift)
 				{
-					origin->Displacement.x -= Adjustment;
+					origin->offset.x -= kAdjustment;
 				}
 				else if(new_state == config.View.Move.Input.IncVertShift)
 				{
-					origin->Displacement.y += Adjustment;
+					origin->offset.y += kAdjustment;
 				}
 				else if(new_state == config.View.Move.Input.DecVertShift)
 				{
-					origin->Displacement.y -= Adjustment;
+					origin->offset.y -= kAdjustment;
 				}
 
 				else if(new_state == config.Input.GameSpeed.Inc)
 				{
-					GameState::_GameTimeGlobals()->GameSpeed += Adjustment;
+					GameState::_GameTimeGlobals()->GameSpeed += kAdjustment;
 				}
 				else if(new_state == config.Input.GameSpeed.Dec)
 				{
 					real_ptr = &GameState::_GameTimeGlobals()->GameSpeed;
-					real_tmp = (*real_ptr -= Adjustment);
+					real_tmp = (*real_ptr -= kAdjustment);
 					if(real_tmp < XboxLib::Math::RealConstants.Zero)
 						*real_ptr = XboxLib::Math::RealConstants.Zero;
 				}
 				else if(new_state == config.View.InputSliders.Depth.Inc)
 				{
-					origin->Depth += Adjustment;
+					origin->depth += kAdjustment;
 				}
 				else if(new_state == config.View.InputSliders.Depth.Dec)
 				{
-					real_ptr = &origin->Depth;
-					real_tmp = (*real_ptr -= Adjustment);
+					real_ptr = &origin->depth;
+					real_tmp = (*real_ptr -= kAdjustment);
 					if(real_tmp < XboxLib::Math::RealConstants.Zero)
 						*real_ptr = XboxLib::Math::RealConstants.Zero;
 				}
 				else if(new_state == config.View.InputSliders.Fov.Inc)
 				{
-					origin->Fov += Adjustment;
+					origin->fov += kAdjustment;
 				}
 				else if(new_state == config.View.InputSliders.Fov.Dec)
 				{
-					origin->Fov -= Adjustment;
+					origin->fov -= kAdjustment;
 				}
 			}
 		}

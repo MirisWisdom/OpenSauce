@@ -11,6 +11,7 @@
 
 #include "Game/EngineFunctions.hpp"
 #include "Interface/Input.hpp"
+#include "Memory/Config.hpp"
 #include "Objects/Objects.hpp"
 #include "Cache/Cache.hpp"
 
@@ -41,6 +42,46 @@ namespace Yelo
 			YELO_MEM_WLIST_END();
 		}
 
+		// Updates a player's (unit) state with the current config settings
+		static void UpdatePlayerWithConfig(GameState::s_player_datum* player, GameState::s_unit_datum* player_unit, 
+			Config::s_definition& config)
+		{
+			// invincibility
+			if(config.Cheats.UpdateFlags.Invincible) {
+				byte_flags	*	coll_flags = player_unit->object.GetCollisionFlags(),
+							*	health_flags = player_unit->object.GetHealthFlags();
+				const bool invincible = config.Cheats.Invincible;
+
+				SET_FLAG(*coll_flags, Flags::_object_datum_cannot_take_damage_bit, invincible);
+				SET_FLAG(*health_flags, Flags::_object_datum_cannot_die_bit, invincible);
+
+				config.Cheats.UpdateFlags.Invincible = false;
+			}
+
+			// cloak...this will override the camo powerup!
+			if(config.Cheats.UpdateFlags.Cloak) {
+				*player_unit->unit.GetCamoPower() = config.Cheats.Cloak ? 
+					XboxLib::Math::RealConstants.One : XboxLib::Math::RealConstants.Zero;
+
+				config.Cheats.UpdateFlags.Cloak = false;
+			}
+
+			// jump height modifier
+			if(config.Misc.UpdateFlags.JumpHeight) {
+				player_unit->object.GetUp()->k = config.Misc.JumpHeight;
+//				byte* def = CAST_PTR(byte*, GameState::_TagInstances()[ player_unit->object.GetDefinition()->index ].Definition);
+//				*CAST_PTR(real*, &def[0x1F8]) = 6.16f;
+
+				config.Misc.UpdateFlags.JumpHeight = false;
+			}
+
+			//player size modifier
+			if(config.Misc.UpdateFlags.PlayerSize) {
+				*player_unit->object.GetScale() = config.Misc.PlayerSize;
+
+				config.Misc.UpdateFlags.PlayerSize = false;
+			}
+		}
 		void UpdateBefore(DWORD arg_0)
 		{
 			datum_index player = Engine::Players::LocalGetPlayerIndex();
@@ -53,8 +94,8 @@ namespace Yelo
 				)
 			{
 				// when i flipped these bit values (ie take damage = bit value of no die) the player died every time he spawned
-				*player_unit->object.GetCollisionFlags() |= Flags::_object_datum_cannot_take_damage_flag;
-				*player_unit->object.GetHealthFlags() |= Flags::_object_datum_cannot_die_flag;
+				*player_unit->object.GetCollisionFlags() |= FLAG(Flags::_object_datum_cannot_take_damage_bit);
+				*player_unit->object.GetHealthFlags() |= FLAG(Flags::_object_datum_cannot_die_bit);
 				//*player_unit->object.GetJumpHeightScale() = 2.0f;
 				byte* def = CAST_PTR(byte*, GameState::_TagInstances()[ player_unit->object.GetDefinition()->index ].Definition);
 				*CAST_PTR(real*, &def[0x1F8]) = 6.16f;

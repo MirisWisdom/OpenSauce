@@ -16,6 +16,8 @@ namespace Yelo
 
 		struct s_physics_constants
 		{
+			static const real k_gravity;
+
 			real Gravity; // scale inputs using 4.1712594f
 			real WaterDensity;
 			real AirDensity;
@@ -23,7 +25,8 @@ namespace Yelo
 			PAD24;
 			real_vector3d VelocityFrame;
 
-			inline void ScaleGravity(real scale) { Gravity *= scale; }
+			inline void ScaleGravity(real scale){ Gravity = k_gravity * scale; }
+			inline void ResetGravity()			{ Gravity = k_gravity; }
 		};
 		s_physics_constants* _PhysicsConstants();
 

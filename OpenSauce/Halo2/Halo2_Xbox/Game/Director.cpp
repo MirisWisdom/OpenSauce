@@ -113,7 +113,7 @@ namespace Yelo
 	namespace GameState
 	{
 		Camera::s_director_camera* _Directors()				DPTR_IMP_GET(_Directors);
-		s_game_observer* _Observers()						DPTR_IMP_GET(_Observers);
+		s_observer* _Observers()							DPTR_IMP_GET(_Observers);
 		s_camera_globals* _CameraGlobals()					DPTR_IMP_GET(_CameraGlobals);
 		s_scripted_camera_globals* _ScriptedCameraGlobals()	DPTR_IMP_GET(_ScriptedCameraGlobals);
 		s_observer_globals* _ObserverGlobals()				DPTR_IMP_GET(_ObserverGlobals);
@@ -285,10 +285,10 @@ the_fucking_end:
 			}
 		}
 
-		API_FUNC_NAKED static c_yelo_camera* CheckObserverPtr(GameState::s_game_observer* obptr)
+		API_FUNC_NAKED static c_yelo_camera* CheckObserverPtr(GameState::s_observer* obptr)
 		{
 			enum {
-				_sizeof_of_observer = sizeof(GameState::s_game_observer)
+				_sizeof_of_observer = sizeof(GameState::s_observer)
 			};
 
 			API_FUNC_NAKED_START()
@@ -337,6 +337,7 @@ get_the_fuck_out:
 		{
 			using namespace Yelo::Enums;
 
+			static size_t g_saved_eax;
 			__asm {
 				// this is code that we wrote-over in our hook, so re-create it
 				//{
@@ -346,6 +347,7 @@ get_the_fuck_out:
 
 				push	ebp
 				xor		ebp, ebp		// NULL
+				mov		g_saved_eax,eax // _continue needs the original eax value (an offset)
 
 				push	edi
 				call	CheckObserverPtr
@@ -377,6 +379,7 @@ _skip_camera:	// skips writing to camera array which allows for custom input
 				jmp		_cleanup
 
 _continue:		// continues writing to camera array
+				mov		eax, g_saved_eax
 				mov		[eax+edx], ebx		// command that writes to the camera array
 				mov		eax, GET_FUNC_PTR(OBSERVER_UPDATE_POSITIONS_END2)
 
@@ -410,8 +413,12 @@ _cleanup:
 		void c_yelo_camera::Update()
 		{
 			this->UpdateOnOutOfSync();	// just in case the player has re-spawned in the last tick
-			this->UpdateMovement();		// update any needed movement changes to this camera
-			this->UpdateLookDirection();// update any needed look changes to this camera
+			if(c_yelo_camera::DebugInUse)
+			{
+				this->UpdateLookDirection();// update any needed look changes to this camera
+				this->UpdateLookVector();
+				this->UpdateMovement();		// update any needed movement changes to this camera
+			}
 		}
 
 		void c_yelo_camera::UpdateOnOutOfSync()
@@ -430,7 +437,7 @@ _cleanup:
 		{
 			// Update the origin with the current player's observer state
 			this->ObserverOrigin = 
-				GameState::_Observers()[this->LocalPlayerIndex].GetOrigin();
+				&GameState::_Observers()[this->LocalPlayerIndex].origin;
 
 			// Update the look angle with the current player's control state
 			const Config::s_definition& k_config = Config::Current();
@@ -439,86 +446,91 @@ _cleanup:
 				controls.GetLeftThumb() : controls.GetRightThumb();
 		}
 
-		void c_yelo_camera::UpdateMovement() // ASM CONVERSION: "UpdateCamera", second portion
+		void c_yelo_camera::UpdateLookVector() // ASM CONVERSION: "UpdateLookVector":
 		{
-			if(c_yelo_camera::DebugInUse)
-			{
-				const real kAdjustment = 0.01f;
+			// get look direction. reminder, these are all radians
+			const real h_look_angle = this->ControlLookAngle->x;
+			const real v_look_angle = this->ControlLookAngle->y;
 
-				GameState::_PlayerGlobals()->CameraControl(false);
-				const Config::s_definition& k_config = Config::Current();
+			// calculate ijk forward look vectors
+			this->ObserverOrigin->forward.i = XboxLib::Math::cosf(v_look_angle) * XboxLib::Math::cosf(h_look_angle);
+			this->ObserverOrigin->forward.j = XboxLib::Math::cosf(v_look_angle) * XboxLib::Math::sinf(h_look_angle);
+			this->ObserverOrigin->forward.k = XboxLib::Math::sinf(v_look_angle);
 
-				// get the user input
-				const Input::s_yelopad& k_yelopad = Input::CurrentStates(CAST(int32, this->LocalPlayerIndex));
-
-
-				// calculate forward/backward movement force
-				this->MoveForce = this->ObserverOrigin->Forward * k_yelopad.ThumbLeft.y;
-
-				// calculates sideways movement force
-				this->MoveForce.i += XboxLib::Math::cosf( (this->ControlLookAngle->x + XboxLib::Math::RealConstants.Deg90) * 
-					k_yelopad.ThumbLeft.x );
-				this->MoveForce.j += XboxLib::Math::sinf( (this->ControlLookAngle->x + XboxLib::Math::RealConstants.Deg90) * 
-					k_yelopad.ThumbLeft.x );
-
-				// calculates vertical movement force
-				this->MoveForce.k += k_yelopad.RightTrigger - k_yelopad.LeftTrigger;
-
-				// updates movement velocity
-				{
-					this->MoveVelocity += this->MoveForce * kAdjustment * k_config.View.Move.Speed; // after user input
-					this->MoveVelocity -= this->MoveVelocity * k_config.View.Look.Resistance; // after resistance
-
-					// updates movement position
-					this->ObserverOrigin->Origin += *CAST_PTR(real_point3d*, &this->MoveVelocity);
-				}
-			}
+			// calculate ijk up vectors; keeps camera upright
+			this->ObserverOrigin->up.Set(0.0f, 0.0f, 1.0f);
 		}
-
 		void c_yelo_camera::UpdateLookDirection() // ASM CONVERSION: "UpdateCamera", first portion
 		{
-			if(c_yelo_camera::DebugInUse)
+			const real kAdjustment = 0.01f;
+
+			const Config::s_definition& k_config = Config::Current();
+
+			// get the user input
+			const Input::s_yelopad& k_yelopad = Input::CurrentStates(CAST(int32, this->LocalPlayerIndex));
+
+
+			// updates horizontal look velocity and position
+			//this->LookVelocity.i += 
+			//	(k_yelopad.ThumbRight.x * kAdjustment) - (k_config.View.Look.Resistance * this->LookVelocity.i);
+			real accel = k_yelopad.ThumbRight.x * kAdjustment * k_config.View.Look.Speed + this->LookVelocity.i;
+			real decel = k_config.View.Look.Resistance * accel;
+			this->LookVelocity.i = accel - decel;
+			this->ControlLookAngle->x += this->LookVelocity.i;
+
+			// updates vertical look velocity and position
 			{
-				const real kAdjustment = 0.01f;
+				//this->LookVelocity.j += 
+				//	(k_yelopad.ThumbRight.y * kAdjustment) - (k_config.View.Look.Resistance * this->LookVelocity.j);
+				accel = k_yelopad.ThumbRight.y * kAdjustment * k_config.View.Look.Speed + this->LookVelocity.j;
+				decel = k_config.View.Look.Resistance * accel;
+				this->LookVelocity.j = accel - decel;
+				this->ControlLookAngle->y += this->LookVelocity.j;
 
-				const Config::s_definition& k_config = Config::Current();
+				// keeps vertical look in bounds; clamp vertical look angle within the range of [-1.57,1.57] radians
+					 if(this->ControlLookAngle->x >  XboxLib::Math::RealConstants.Deg90) this->ControlLookAngle->x =  XboxLib::Math::RealConstants.Deg90;
+				else if(this->ControlLookAngle->y < -XboxLib::Math::RealConstants.Deg90) this->ControlLookAngle->y = -XboxLib::Math::RealConstants.Deg90;
+			}
+		}
+		void c_yelo_camera::UpdateMovement() // ASM CONVERSION: "UpdateCamera", second portion
+		{
+			const real kAdjustment = 0.01f;
 
-				// get the user input
-				const Input::s_yelopad& k_yelopad = Input::CurrentStates(CAST(int32, this->LocalPlayerIndex));
+			GameState::_PlayerGlobals()->CameraControl(false);
+			const Config::s_definition& k_config = Config::Current();
 
-
-				// updates horizontal look velocity and position
-				this->LookVelocity.i += 
-					(k_yelopad.ThumbRight.x * kAdjustment) - (k_config.View.Look.Resistance * this->LookVelocity.i);
-				this->ControlLookAngle->x += this->LookVelocity.i;
-
-				// updates vertical look velocity and position
-				{
-					this->LookVelocity.j += 
-						(k_yelopad.ThumbRight.y * kAdjustment) - (k_config.View.Look.Resistance * this->LookVelocity.j);
-					this->ControlLookAngle->y += this->LookVelocity.j;
-
-					// keeps vertical look in bounds
-					if(this->ControlLookAngle->x > XboxLib::Math::RealConstants.Deg90)
-						this->ControlLookAngle->x = XboxLib::Math::RealConstants.Deg90;
-					else if(this->ControlLookAngle->y < -XboxLib::Math::RealConstants.Deg90)
-						this->ControlLookAngle->y = -XboxLib::Math::RealConstants.Deg90;
-				}
+			// get the user input
+			const Input::s_yelopad& k_yelopad = Input::CurrentStates(CAST(int32, this->LocalPlayerIndex));
 
 
-				// ASM CONVERSION: "UpdateLookVector":
+			// calculate forward/backward movement force
+			this->MoveForce = this->ObserverOrigin->forward * k_yelopad.ThumbLeft.y;
 
-				// get look direction
-				const real h_look_angle = this->ControlLookAngle->x;
-				const real v_look_angle = this->ControlLookAngle->y;
+			// calculates sideways movement force
+			this->MoveForce.i += XboxLib::Math::cosf( this->ControlLookAngle->x + XboxLib::Math::RealConstants.Deg90 ) * 
+				k_yelopad.ThumbLeft.x;
+			this->MoveForce.j += XboxLib::Math::sinf( this->ControlLookAngle->x + XboxLib::Math::RealConstants.Deg90 ) * 
+				k_yelopad.ThumbLeft.x;
 
-				// calculate ijk forward look vectors
-				this->ObserverOrigin->Forward.i = XboxLib::Math::cosf(h_look_angle) * XboxLib::Math::cosf(v_look_angle);
-				this->ObserverOrigin->Forward.j = XboxLib::Math::sinf(h_look_angle) * XboxLib::Math::cosf(v_look_angle);
-				this->ObserverOrigin->Forward.k = XboxLib::Math::sinf(v_look_angle);
+			// calculates vertical movement force
+			this->MoveForce.k += k_yelopad.RightTrigger - k_yelopad.LeftTrigger;
 
-				// calculate ijk up vectors; keeps camera upright
-				this->ObserverOrigin->Up.Set(0.0f, 0.0f, 1.0f);
+			// updates movement velocity
+			ptrdiff_t x = 0;
+			for(real* vel = &this->MoveVelocity.i, * force = &this->MoveForce.i, * pos = &this->ObserverOrigin->position.x;
+				x < (sizeof(real_vector3d) / sizeof(real));
+				x++)
+			{
+				//this->MoveVelocity += this->MoveForce * kAdjustment * k_config.View.Move.Speed; // after user input
+				//this->MoveVelocity -= this->MoveVelocity * k_config.View.Move.Resistance; // after resistance
+
+				// updates movement position
+				//this->ObserverOrigin->position += *CAST_PTR(real_point3d*, &this->MoveVelocity);
+
+				real accel = force[x] * kAdjustment * k_config.View.Move.Speed + vel[x];
+				real decel = k_config.View.Move.Resistance * accel;
+
+				pos[x] += accel - decel;
 			}
 		}
 
@@ -598,11 +610,11 @@ _cleanup:
 			// for third person camera cases
 			if(mode == Enums::_director_mode_third_person)
 			{
-				this->ObserverOrigin->Displacement.y = 0.0f;
-				this->ObserverOrigin->Displacement.z = 0.1f;
-				this->ObserverOrigin->LookDisplacement.y = 0.0f;
-				this->ObserverOrigin->Depth = 1.0f;
-				this->ObserverOrigin->Fov = 1.92f;
+				this->ObserverOrigin->offset.y = 0.0f;
+				this->ObserverOrigin->offset.z = 0.1f;
+				this->ObserverOrigin->look_offset.y = 0.0f;
+				this->ObserverOrigin->depth = 1.0f;
+				this->ObserverOrigin->fov = 1.92f;
 			}
 			// for debug camera cases
 			else if(mode == Enums::_director_mode_debug)

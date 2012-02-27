@@ -23,12 +23,17 @@ namespace Yelo
 			PAD24;
 
 			struct _Cheats {
+				// When true, means Yelo should update the game state with the config values
+				struct _UpdateFlags {
+					byte_flags Invincible : 1;
+					byte_flags Cloak : 1;
+				}UpdateFlags; BOOST_STATIC_ASSERT( sizeof(_UpdateFlags) == sizeof(byte_flags) );
 				bool InfAmmo;
 				bool InfGrenades;
 				bool Invincible;
 				bool Cloak;
 				bool EnablePrintFunction;
-				bool IceCreamFlavors[21 + 2];
+				bool IceCreamFlavors[21 + 1];
 
 				struct _Input {
 					word_flags InfAmmo;
@@ -117,13 +122,19 @@ namespace Yelo
 			}Input;
 
 			struct _Misc {
-				real JumpHeight;
-				real PlayerSize;
-				real GravityScale;
+				// Update flags. When true, means Yelo should update the game state with the config values
+				struct _UpdateFlags {
+					byte_flags JumpHeight : 1;
+					byte_flags PlayerSize : 1;
+					byte_flags GravityScale : 1;
+				}UpdateFlags; BOOST_STATIC_ASSERT( sizeof(_UpdateFlags) == sizeof(byte_flags) );
 				bool SaveStats;
 				bool HighSpeedCapture;
 				bool CoordinateDisplay;
-				PAD8;
+
+				real JumpHeight;
+				real PlayerSize;
+				real GravityScale;
 
 				void ToDefaults();
 			}Misc;

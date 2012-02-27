@@ -34,11 +34,11 @@ namespace Yelo
 
 		namespace Cinematic
 		{
-			void LightingSetPrimaryLight(angle horiz, angle vert, real_rgb_color* color);
-			void LightingSetSecondaryLight(angle horiz, angle vert, real_rgb_color* color);
+			void LightingSetPrimaryLight(angle horiz, angle vert, const real_rgb_color* color);
+			void LightingSetSecondaryLight(angle horiz, angle vert, const real_rgb_color* color);
 
-			void FadeIn(int16 time, real_rgb_color* color);
-			void FadeOut(int16 time, real_rgb_color* color);
+			void FadeIn(int16 time, const real_rgb_color* color);
+			void FadeOut(int16 time, const real_rgb_color* color);
 
 			void Start();
 			void Stop();
@@ -111,7 +111,7 @@ namespace Yelo
 
 			// Get the next (valid) datum's absolute index, relative to [cursor]
 			// [cursor] - an absolute index
-			int32 DataNextIndex(Yelo::Memory::s_data_array* array, int32 cursor);
+			int32 DataNextIndex(const Yelo::Memory::s_data_array* array, int32 cursor);
 		};
 
 		namespace Networking
@@ -136,7 +136,7 @@ namespace Yelo
 			// Hide or stop hiding [object_index]
 			void Hide(datum_index object_index, bool hide_it = true);
 			// Set the position of [object_index], while optionally set its forward vector and up angles
-			void SetPosition(datum_index object_index, real_vector3d* pos, real_vector3d* forward, real_euler_angles3d* up);
+			void SetPosition(datum_index object_index, const real_vector3d* pos, const real_vector3d* forward, const real_euler_angles3d* up);
 
 			// Make [unit_index] play its weapon lowering animation with a given time frame
 			void UnitLowerWeapon(datum_index unit_index, int32 duration_seconds); // really a short

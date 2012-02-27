@@ -218,7 +218,7 @@ namespace Yelo
 		void Dispose();
 		void Update();
 
-		void HandleYeloInput(s_yelopad& pad);
+		void HandleYeloInput(const s_yelopad& pad);
 
 		HANDLE GamepadHandles(int32 gamepad_index = 0);
 		s_gamepad* GamepadStates(int32 gamepad_index = 0);

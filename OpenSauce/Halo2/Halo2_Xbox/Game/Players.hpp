@@ -71,7 +71,7 @@ namespace Yelo
 			TStructGetPtrImpl(int16, MachineIndex, 0x14);
 			TStructGetPtrImpl(int16, MachineUserIndex, 0x16);
 			//TStructGetPtrImpl(int16, , 0x1A);
-			TStructGetPtrImpl(int16, UserIndex,				PLATFORM_VALUE(0x20, 0x20, NULL_HANDLE)); // TODO: I think I have Alpha set to null since this didn't exist in that build?
+			TStructGetPtrImpl(int16, UserIndex,				PLATFORM_VALUE(0x20, 0x20, 0x20));
 			TStructGetPtrImpl(int32, ControllerIndex,		PLATFORM_VALUE(0x24, 0x24, 0x1C));
 			TStructGetPtrImpl(int16, LocalIndex,			PLATFORM_VALUE(0x28, 0x28, 0x20));
 			//TStructGetPtrImpl(int16, , 0x2A);

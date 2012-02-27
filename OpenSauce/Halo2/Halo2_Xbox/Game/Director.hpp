@@ -90,56 +90,81 @@ namespace Yelo
 		Camera::s_director_camera* _Directors();
 
 
-		struct s_game_observer : TStructImpl(856)
+		struct s_camera_command
 		{
-			struct s_destination
-			{
-				real_point3d Position; // 0x0
-				real_point3d Offset; // 0xC
-				real Depth; // 0x18
-				real Fov; // 0x1C
-				real_vector3d Forward; // 0x20
-				real_euler_angles3d Up; // 0x2C
-				//real_vector3d Vector; // not sure if this in halo2...
-			};
+			byte_flags flags;
+			PAD24;
 
+			real_point3d position;			// 0x4
+			real_point3d offset;			// 0x10
+			real depth;						// 0x1C
+			real fov;						// 0x20
+			UNKNOWN_TYPE(real);				// 0x24
+			UNKNOWN_TYPE(real);				// 0x28, seems to be another fov value
+			real_vector3d forward;			// 0x2C
+			real_vector3d up;				// 0x38
+			real_vector3d vector;			// 0x44			
+			real_matrix4x3 matrix;			// 0x50
+			UNKNOWN_TYPE(int32);			// 0x84
+			UNKNOWN_TYPE(int32);			// 0x88
+			byte_flags command_flags[6];	// 0x8C
+			PAD16;
+			real commands[6];				// 0x94
+		}; BOOST_STATIC_ASSERT( sizeof(s_camera_command) == 0xAC );
+
+		struct s_observer //: TStructImpl(0x358)
+		{
 			struct s_calculated_result
 			{
-				real_point3d Position; // 0x0
-				s_scenario_location Location; // 0xC
-				real_vector3d Velocity; // 0x14
-				real_vector3d Forward; // 0x20
-				real_euler_angles3d Up; // 0x2C
-				real Fov; // 0x38
-				UNKNOWN_TYPE(int32); // 0x3C, i'm not sure what this field's type is...
-				UNKNOWN_TYPE(real); // 0x40
-				UNKNOWN_TYPE(real); // 0x44
+				real_point3d position;			// 0x0
+				s_scenario_location location;	// 0xC
+				real_vector3d velocity;			// 0x14
+				real_vector3d forward;			// 0x20
+				real_euler_angles3d up;			// 0x2C
+				real fov;						// 0x38
+				UNKNOWN_TYPE(int32);			// 0x3C, i'm not sure what this field's type is...
+				UNKNOWN_TYPE(real);				// 0x40
+				UNKNOWN_TYPE(real);				// 0x44
 			}; BOOST_STATIC_ASSERT( sizeof(s_calculated_result) == 0x48 );
 
+			// focus. this structure isn't a real structure in the game's code (these fields are part of s_observer)
 			struct s_calculated_origin
 			{
-				real_point3d Origin; // 0x0
-				real_point3d Displacement; // 0xC
-				real_point2d LookDisplacement; // 0x18
-				real Depth; // 0x20
-				real Fov; // 0x24
-				real_vector3d Forward; // 0x28 Direction
-				real_vector3d Up; // 0x34 Rotation
+				real_point3d position;		// 0x0
+				real_point3d offset;		// 0xC
+				real_point2d look_offset;	// 0x18
+				real depth;					// 0x20 distance
+				real fov;					// 0x24
+				real_vector3d forward;		// 0x28 Direction
+				real_vector3d up;			// 0x34 Rotation
 			}; BOOST_STATIC_ASSERT( sizeof(s_calculated_origin) == 0x40 );
 
-			// 0xAC byte sub-structure at 0x8
-			// bool @ 0xB4, 0xB5, 0xB6 (0xB7 must be a PAD8 field)
+			tag header_signature;				// 0x0
 
-			//TStructGetPtrImpl(, , 0x);
-			TStructGetPtrImpl(s_destination, Destination, 0x2C);
+			s_camera_command* command_update;	// 0x4
+			s_camera_command command;			// 0x8
+			bool updated_for_frame;				// 0xB4
+			UNKNOWN_TYPE(bool);
+			UNKNOWN_TYPE(bool);
+			PAD8;
+			s_calculated_result result;			// 0xB8
+			UNKNOWN_TYPE(int32); UNKNOWN_TYPE(int32); UNKNOWN_TYPE(int32); // 12 bytes in between
+			s_calculated_origin origin;			// 0x10C
+			real_matrix4x3 matrix;				// 0x14C
 
-			TStructGetPtrImpl(s_calculated_result, Result, 0xB8);
-			// 12 bytes in between
-			TStructGetPtrImpl(s_calculated_origin, Origin, 0x10C);
+			real_matrix4x3 matrix0;				// 0x180
+			real_matrix4x3 matrix1;				// 0x1B4
+			real_matrix4x3 matrix2;				// 0x1E8
+			real_matrix4x3 matrix3;				// 0x21C
+			real_matrix4x3 matrix4;				// 0x250
+			real_matrix4x3 matrix5;				// 0x284
+			real_matrix4x3 matrix6;				// 0x2B8
+			real_matrix4x3 matrix7;				// 0x2EC
+			real_matrix4x3 matrix8;				// 0x320
 
-			// maxtrix4x3 @ 0x14C
-		};
-		s_game_observer* _Observers();
+			tag trailer_signature;				// 0x354
+		}; BOOST_STATIC_ASSERT( sizeof(s_observer) == 0x358 );
+		s_observer* _Observers();
 
 		struct s_camera_globals
 		{
@@ -244,7 +269,7 @@ namespace Yelo
 			real_vector3d MoveVelocity;
 			real_vector3d LookVelocity;
 
-			GameState::s_game_observer::s_calculated_origin* ObserverOrigin;
+			GameState::s_observer::s_calculated_origin* ObserverOrigin;
 			real_point2d* ControlLookAngle;// should point to the player's control global's look angle
 		public:
 
@@ -262,10 +287,12 @@ namespace Yelo
 			void UpdateOnOutOfSync();
 			// Updates the game state pointers in this object
 			void UpdateReferences();
-			// If we have to, update the movement of this camera
-			void UpdateMovement();
-			// If we have to, update the look direction of this camera
+			// Updates the camera look vector based on the current horizontal and vertical look angles of the player
+			void UpdateLookVector();
+			// Updates the look direction of this camera
 			void UpdateLookDirection();
+			// Updates the movement of this camera
+			void UpdateMovement();
 
 			// Figures out the enumeration for to return based on the current
 			// player's perspective (useful when reconnecting to the player and we

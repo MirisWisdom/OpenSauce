@@ -177,9 +177,9 @@ namespace Yelo
 					real_vector3d right_vec;
 					obs->GetRightVector(right_vec);
 					*position += 
-						obs->forward * preset->offset.i +
+						obs->origin.forward * preset->offset.i +
 						right_vec * preset->offset.j +
-						obs->up * preset->offset.k;
+						obs->origin.up * preset->offset.k;
 				}
 
 				__asm {
