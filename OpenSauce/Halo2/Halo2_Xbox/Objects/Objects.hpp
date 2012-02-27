@@ -124,8 +124,8 @@ namespace Yelo
 			_object_datum_31_flag = FLAG(30),
 			_object_datum_32_flag = FLAG(31),
 
-			_object_datum_cannot_take_damage_flag = FLAG(7),
-			_object_datum_cannot_die_flag = FLAG(6),
+			_object_datum_cannot_take_damage_bit = 7,
+			_object_datum_cannot_die_bit = 6,
 		};
 	};
 

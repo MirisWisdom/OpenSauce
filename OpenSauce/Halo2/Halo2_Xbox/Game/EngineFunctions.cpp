@@ -43,7 +43,7 @@ namespace Yelo
 		{
 			API_FUNC_NAKED void InfiniteAmmo(bool is_on)
 			{
-				static const uint32 info_ammo_codes[] = { // TODO: is this code platform independent?
+				static const uint32 k_info_ammo_codes[] = { // TODO: is this code platform independent?
 					0x008418966,
 					0x086110FF3,
 					0x000000184,
@@ -52,8 +52,9 @@ namespace Yelo
 				};
 
 				API_FUNC_NAKED_START()
-					push	edi
 					push	ebx
+					push	edi
+					push	edx
 					push	esi
 
 					CR0_BEGIN()
@@ -61,14 +62,14 @@ namespace Yelo
 					test	al, al
 					jz		turn_off
 /*turn_on:*/
-					mov		ecx, 90909090
-					mov		edx, ecx
-					mov		edi, edx
-					mov		ebx, edi
-					mov		esi, ebx
+					mov		ecx, 0x90909090	// [0]
+					mov		ebx, ecx		// [4]
+					mov		edi, ecx		// [8]
+					mov		edx, ecx		// [12]
+					mov		esi, ecx		// [16]
 					jmp		toggle
 turn_off:
-					mov		eax, info_ammo_codes
+					mov		eax, k_info_ammo_codes
 					mov		ecx, [eax]
 					mov		ebx, [eax+4]
 					mov		edi, [eax+8]
@@ -86,22 +87,23 @@ toggle:
 
 					CR0_END()
 					pop		esi
-					pop		ebx
+					pop		edx
 					pop		edi
+					pop		ebx
 				API_FUNC_NAKED_END(1);
 			}
 
 			void InfiniteGrenades(bool is_on)
 			{
-				static const unsigned short inf_grenades_code[] = { // TODO: is this code platform independent?
+				static const uint16 k_inf_grenades_code[] = { // TODO: is this code platform independent?
 					0x08FE,
 					0x9090,
 				};
 
 				CR0_BEGIN()
 
-				*CAST_PTR(unsigned short*, GET_FUNC_VPTR(UNIT_THROW_GRENADE_MOVE_TO_HAND)) =
-					inf_grenades_code[is_on];
+				*CAST_PTR(uint16*, GET_FUNC_VPTR(UNIT_THROW_GRENADE_MOVE_TO_HAND)) =
+					k_inf_grenades_code[is_on];
 
 				CR0_END()
 			}
@@ -109,16 +111,16 @@ toggle:
 
 		namespace Cinematic
 		{
-			API_FUNC_NAKED void LightingSetPrimaryLight(angle horiz, angle vert, real_rgb_color* color)
+			API_FUNC_NAKED void LightingSetPrimaryLight(angle horiz, angle vert, const real_rgb_color* color)
 			{
 				static const uint32 CALL_ADDR = GET_FUNC_PTR(LIGHTING_SET_PRIMARY_LIGHT);
 
 				API_FUNC_NAKED_START()
 
 					mov		eax, color
-					push	[eax+0x8]
-					push	[eax+0x4]
-					push	[eax]
+					push	[eax]real_rgb_color.blue
+					push	[eax]real_rgb_color.green
+					push	[eax]real_rgb_color.red
 					push	horiz
 					push	vert
 					call	CALL_ADDR
@@ -126,16 +128,16 @@ toggle:
 				API_FUNC_NAKED_END(3);
 			}
 
-			API_FUNC_NAKED void LightingSetSecondaryLight(angle horiz, angle vert, real_rgb_color* color)
+			API_FUNC_NAKED void LightingSetSecondaryLight(angle horiz, angle vert, const real_rgb_color* color)
 			{
 				static const uint32 CALL_ADDR = GET_FUNC_PTR(LIGHTING_SET_SECONDARY_LIGHT);
 
 				API_FUNC_NAKED_START()
 
 					mov		eax, color
-					push	[eax+0x8]
-					push	[eax+0x4]
-					push	[eax]
+					push	[eax]real_rgb_color.blue
+					push	[eax]real_rgb_color.green
+					push	[eax]real_rgb_color.red
 					push	horiz
 					push	vert
 					call	CALL_ADDR
@@ -143,7 +145,7 @@ toggle:
 				API_FUNC_NAKED_END(3);
 			}
 
-			API_FUNC_NAKED void FadeIn(short time, real_rgb_color* color)
+			API_FUNC_NAKED void FadeIn(short time, const real_rgb_color* color)
 			{
 				// TODO: ALPHA REQUIRES DIFF CODE!!
 				static const uint32 CALL_ADDR = GET_FUNC_PTR(FADE_IN);
@@ -151,16 +153,17 @@ toggle:
 				API_FUNC_NAKED_START()
 
 					mov		eax, color
-					push	[eax+0x8]
-					push	[eax+0x4]
-					movss	xmm0, [eax]
+					push	[eax]real_rgb_color.blue
+					push	[eax]real_rgb_color.green
+					movss	xmm0, [eax]real_rgb_color.red
+					xor		eax, eax
 					movsx	ax, time
 					call	CALL_ADDR
 
 				API_FUNC_NAKED_END(2);
 			}
 
-			API_FUNC_NAKED void FadeOut(short time, real_rgb_color* color)
+			API_FUNC_NAKED void FadeOut(short time, const real_rgb_color* color)
 			{
 				// TODO: ALPHA REQUIRES DIFF CODE!!
 				static const uint32 CALL_ADDR = GET_FUNC_PTR(FADE_OUT);
@@ -168,9 +171,10 @@ toggle:
 				API_FUNC_NAKED_START()
 
 					mov		eax, color
-					push	[eax+0x8]
-					push	[eax+0x4]
-					movss	xmm0, [eax]
+					push	[eax]real_rgb_color.blue
+					push	[eax]real_rgb_color.green
+					movss	xmm0, [eax]real_rgb_color.red
+					xor		eax, eax
 					movsx	ax, time
 					call	CALL_ADDR
 
@@ -523,7 +527,7 @@ is_saving:
 #endif
 			}
 
-			API_FUNC_NAKED int32 DataNextIndex(Yelo::Memory::s_data_array* array, int32 cursor)
+			API_FUNC_NAKED int32 DataNextIndex(const Yelo::Memory::s_data_array* array, int32 cursor)
 			{
 				static const uint32 CALL_ADDR = GET_FUNC_PTR(DATA_NEXT_INDEX);
 
@@ -596,7 +600,7 @@ is_saving:
 				API_FUNC_NAKED_END(2);
 			}
 
-			API_FUNC_NAKED void SetPosition(datum_index object_index, real_vector3d* pos, real_vector3d* forward, real_euler_angles3d* up)
+			API_FUNC_NAKED void SetPosition(datum_index object_index, const real_vector3d* pos, const real_vector3d* forward, const real_euler_angles3d* up)
 			{
 				static const uint32 CALL_ADDR = GET_FUNC_PTR(OBJECT_SET_POSITION);
 

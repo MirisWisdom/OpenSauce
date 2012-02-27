@@ -56,48 +56,40 @@ namespace Yelo
 			real commands[5]; // all the same during transitions, 0.0f = command finished
 		}; BOOST_STATIC_ASSERT( sizeof(s_camera_command) == 0x68 );
 
-		struct s_player_director_data
-		{
-			s_camera_command command;
-			bool UNKNOWN(0);
-			PAD24;
-			real_vector3d UNKNOWN(1)[4];
-			real UNKNOWN(2);
-		}; BOOST_STATIC_ASSERT( sizeof(s_player_director_data) == 0xA0 );
-
 		struct s_observer
 		{ 
-			tag header_signature;		// 0x0
-			s_player_director_data* local_player_director; // 0x4, only one local player so this will always be 0x647420 in HaloCE 1.08
-
-			s_camera_command command;	// 0x8
-
-			bool updated_for_frame;	// 0x70
-			UNKNOWN_TYPE(bool);		// 0x71, equal TRUE
-			PAD16;					// 0x72
+			tag header_signature;				// 0x0
+			s_camera_command* command_update;	// 0x4
+			s_camera_command command;			// 0x8
+			bool updated_for_frame;
+			UNKNOWN_TYPE(bool);
+			PAD16;
 
 			// calculated / camera
-			struct {
-				real_point3d position;	// 0x74
-				s_scenario_location location; // 0x80
-				real_vector3d velocity;	// 0x88
-				real_vector3d forward;	// 0x94
-				real_euler_angles3d up;	// 0xA0
-				real fov;				// 0xAC
-			}result;
+			struct s_calculated_result
+			{
+				real_point3d position;			// 0x74
+				s_scenario_location location;	// 0x80
+				real_vector3d velocity;			// 0x88
+				real_vector3d forward;			// 0x94
+				real_euler_angles3d up;			// 0xA0
+				real fov;						// 0xAC
+			}result;	BOOST_STATIC_ASSERT( sizeof(s_calculated_result) == 0x3C );
 
-			struct {
+			// focus. this structure isn't a real structure in the game's code (these fields are part of s_observer)
+			struct s_calculated_origin
+			{
 				real_point3d position;	// 0xB0
 				real_point3d offset;	// 0xBC
-				real distance;			// 0xC8
-			}focus;
-
-			real field_of_view;			// 0xCC
-			real_vector3d forward;		// 0xD0
-			real_vector3d up;			// 0xDC
+				real depth;				// 0xC8 distance
+				real fov;				// 0xCC
+				real_vector3d forward;	// 0xD0
+				real_vector3d up;		// 0xDC
+			}origin;	BOOST_STATIC_ASSERT( sizeof(s_calculated_origin) == 0x38 );
 
 			byte __pad[432]; // 0xE8
 
+			// I'm thinking these are actually real_matrix3x3
 			// k_count = 11
 			// 0x0E8 real velocities[k_count]
 
@@ -119,7 +111,7 @@ namespace Yelo
 
 			tag trailer_signature; // 0x298
 
-			void GetRightVector(real_vector3d& right) const					{ right = this->forward ^ this->up; }
+			void GetRightVector(real_vector3d& right) const					{ right = this->origin.forward ^ this->origin.up; }
 		}; BOOST_STATIC_ASSERT( sizeof(s_observer) == 0x29C );
 		s_observer*		Observer();
 

@@ -15,6 +15,8 @@ namespace Yelo
 
 	namespace GameState
 	{
+		const real s_physics_constants::k_gravity = 4.1712594f;
+
 		Havok::hkWorld* _HavokWorld()							DPTR_IMP_GET(_HavokWorld);
 		s_physics_constants* _PhysicsConstants()				DPTR_IMP_GET(_PhysicsConstants);
 		s_kill_volumes* _KillVolumes()							DPTR_IMP_GET(_KillVolumes);

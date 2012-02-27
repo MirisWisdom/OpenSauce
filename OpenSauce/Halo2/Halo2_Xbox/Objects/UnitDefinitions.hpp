@@ -23,13 +23,16 @@ namespace Yelo
 			// 2 = actively controlled
 			TStructSubGetPtrImpl(byte_flags, ControlFlags, 0x134);
 			TStructSubGetPtrImpl(datum_index, PlayerIndex, 0x13C);
-			TStructSubGetPtrImpl(int16, CurrentSeatIndex, 0x1FC);
+
+			TStructSubGetPtrImpl(int16, VehicleSeatIndex, 0x1FC);
+
 			TStructSubGetPtrImpl(byte, CurrentWeaponIndex, 0x212);
-			TStructSubGetPtrImpl(byte, CurrentWeaponIndex2, 0x213); // duel'd weapon?
+			TStructSubGetPtrImpl(byte, CurrentWeaponIndex2, 0x213); // dual'd weapon?
 			//TStructSubGetPtrImpl(int32, , 0x214);
 			TStructSubGetPtrImpl(datum_index, WeaponsList, 0x218);
 			TStructSubGetPtrImpl(byte, CurrentGrenadesIndex, 0x23D);
 			TStructSubGetPtrImpl(byte, GrenadesList, 0x23E);
+
 			TStructSubGetPtrImpl(real, CamoPower, 0x2B0);
 #endif
 		};

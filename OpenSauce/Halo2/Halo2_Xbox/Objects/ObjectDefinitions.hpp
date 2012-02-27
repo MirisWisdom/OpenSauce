@@ -44,7 +44,7 @@ namespace Yelo
 			TStructGetPtrImpl(datum_index, ParentIndex, 0x14);
 			TStructGetPtrImpl(int16, PlacementIndex, 0x1A);
 
-			TStructGetPtrImpl(real_point2d, Location, 0x28);
+			TStructGetPtrImpl(s_scenario_location, Location, 0x28);
 			TStructGetPtrImpl(real_point3d, Center, 0x30);
 			TStructGetPtrImpl(real, Radius, 0x3C);
 
@@ -57,7 +57,7 @@ namespace Yelo
 #else
 			TStructGetPtrImpl(real_vector3d, Origin, 0x64); // really a real_point3d
 			TStructGetPtrImpl(real_vector3d, Forward, 0x70);
-			TStructGetPtrImpl(real_euler_angles3d, Up, 0x7C);
+			TStructGetPtrImpl(real_vector3d, Up, 0x7C);
 			TStructGetPtrImpl(real_vector3d, TransitionalVelocity, 0x88);
 			TStructGetPtrImpl(real_vector3d, AngularVelocity, 0x94);
 			TStructGetPtrImpl(real, Scale, 0xA0);
@@ -67,13 +67,14 @@ namespace Yelo
 			TStructGetPtrImpl(int16, NameListIndex, 0xAC);
 			TStructGetPtrImpl(byte, NetgameEquipmentIndex, 0xAF); // index in the game engine global's equipment indices
 			TStructGetPtrImpl(datum_index, HavokComponent, 0xB4);
+
 			TStructGetPtrImpl(real, MaximumVitality, 0xE4); // just a guess
 			TStructGetPtrImpl(real, CurrentVitality, 0xE8); // just a guess
 			TStructGetPtrImpl(real, Health, 0xEC);
 			TStructGetPtrImpl(real, Shields, 0xF0);
 
-			TStructGetPtrImpl(byte_enum, CollisionFlags, 0x10A); // these are just bs names btw
-			TStructGetPtrImpl(byte_enum, HealthFlags, 0x10B);
+			TStructGetPtrImpl(byte_flags, CollisionFlags, 0x10A); // these are just bs names btw
+			TStructGetPtrImpl(byte_flags, HealthFlags, 0x10B);
 #endif
 		};
 

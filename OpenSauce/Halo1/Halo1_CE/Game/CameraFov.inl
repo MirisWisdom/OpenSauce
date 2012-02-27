@@ -137,14 +137,14 @@ namespace Yelo
 
 		void Update()
 		{
-			real player_fov = Camera::Observer()->local_player_director->command.fov;
+			real player_fov = Camera::Observer()->command_update->fov;
 			if(player_fov != 0.0f)
 				Camera::Observer()->command.fov = _fov_globals.fov.height * player_fov / DEF_FOV_H;
 		}
 
 		bool RequiresZoomFix()
 		{
-			real h = Camera::Observer()->field_of_view;
+			real h = Camera::Observer()->origin.fov;
 			real v = atanf(_fov_globals.screen.height/_fov_globals.screen.width * tanf(h/2.f)) * 2.f;
 			
 			return Camera::Observer()->command.fov < h && v > 1.28f;
