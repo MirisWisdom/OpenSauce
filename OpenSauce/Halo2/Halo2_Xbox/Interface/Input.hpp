@@ -10,10 +10,6 @@ namespace Yelo
 {
 	namespace Enums
 	{
-		enum {
-			k_number_of_controllers = 4,
-		};
-
 		enum input_button
 		{
 			_input_button_a,
@@ -177,7 +173,7 @@ namespace Yelo
 				uint16 RightTrigger : 1;
 			};
 
-			int32 Index;
+			int32 Index; // controller index
 
 
 			union { // 0x4

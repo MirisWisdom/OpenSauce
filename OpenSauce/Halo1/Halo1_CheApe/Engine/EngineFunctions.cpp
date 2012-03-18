@@ -19,7 +19,7 @@ namespace Yelo
 		{
 			static uint32 FUNCTION = GET_FUNC_PTR(DISPLAY_ASSERT);
 
-			NAKED_FUNC_START()
+			API_FUNC_NAKED_START()
 				xor		ecx, ecx
 				mov		cl, halt
 				push	ecx
@@ -27,15 +27,14 @@ namespace Yelo
 				push	file
 				push	reason
 				call	FUNCTION
-				add		esp, 4 * 4
-			NAKED_FUNC_END(4);
+			API_FUNC_NAKED_END_CDECL(4);
 		}
 
 		API_FUNC_NAKED void* debug_malloc(const size_t ptr_size, const bool fill_with_garbage, cstring file, const uint32 line)
 		{
 			static uint32 FUNCTION = GET_FUNC_PTR(DEBUG_MALLOC);
 
-			NAKED_FUNC_START()
+			API_FUNC_NAKED_START()
 				push	line
 				push	file
 				xor		ecx, ecx
@@ -43,35 +42,32 @@ namespace Yelo
 				push	ecx
 				push	ptr_size
 				call	FUNCTION
-				add		esp, 4 * 4
-			NAKED_FUNC_END(4);
+			API_FUNC_NAKED_END_CDECL(4);
 		}
 
 		API_FUNC_NAKED void debug_free(void* pointer, cstring file, const uint32 line)
 		{
 			static uint32 FUNCTION = GET_FUNC_PTR(DEBUG_FREE);
 
-			NAKED_FUNC_START()
+			API_FUNC_NAKED_START()
 				push	line
 				push	file
 				push	pointer
 				call	FUNCTION
-				add		esp, 4 * 3
-			NAKED_FUNC_END(3);
+			API_FUNC_NAKED_END_CDECL(3);
 		}
 
 		API_FUNC_NAKED void* debug_realloc(void* pointer, const size_t new_size, cstring file, const uint32 line)
 		{
 			static uint32 FUNCTION = GET_FUNC_PTR(DEBUG_REALLOC);
 
-			NAKED_FUNC_START()
+			API_FUNC_NAKED_START()
 				push	line
 				push	file
 				push	new_size
 				push	pointer
 				call	FUNCTION
-				add		esp, 4 * 4
-			NAKED_FUNC_END(4);
+			API_FUNC_NAKED_END_CDECL(4);
 		}
 
 
@@ -79,33 +75,33 @@ namespace Yelo
 		{
 			static const uint32 FUNCTION = GET_FUNC_PTR(FILE_REFERENCE_CREATE);
 
-			NAKED_FUNC_START()
+			API_FUNC_NAKED_START()
 				push	location
 				push	reference
 				call	FUNCTION
-			NAKED_FUNC_END_CDECL(2);
+			API_FUNC_NAKED_END_CDECL(2);
 		}
 
 		API_FUNC_NAKED s_file_reference& file_reference_add_directory(s_file_reference& reference, cstring directory)
 		{
 			static const uint32 FUNCTION = GET_FUNC_PTR(FILE_REFERENCE_ADD_DIRECTORY);
 
-			NAKED_FUNC_START()
+			API_FUNC_NAKED_START()
 				push	directory
 				push	reference
 				call	FUNCTION
-			NAKED_FUNC_END_CDECL(2);
+			API_FUNC_NAKED_END_CDECL(2);
 		}
 
 		API_FUNC_NAKED s_file_reference& file_reference_set_name(s_file_reference& reference, cstring name)
 		{
 			static const uint32 FUNCTION = GET_FUNC_PTR(FILE_REFERENCE_SET_NAME);
 
-			NAKED_FUNC_START()
+			API_FUNC_NAKED_START()
 				push	name
 				push	reference
 				call	FUNCTION
-			NAKED_FUNC_END_CDECL(2);
+			API_FUNC_NAKED_END_CDECL(2);
 		}
 
 		s_file_reference& file_reference_create(s_file_reference& reference, cstring directory, cstring name, cstring ext, long_enum location)
@@ -125,13 +121,13 @@ namespace Yelo
 		{
 			static const uint32 FUNCTION = GET_FUNC_PTR(FIND_FILES);
 
-			NAKED_FUNC_START()
+			API_FUNC_NAKED_START()
 				push	references
 				push	maximum_count
 				push	directory
 				push	flags
 				call	FUNCTION
-			NAKED_FUNC_END_CDECL(4);
+			API_FUNC_NAKED_END_CDECL(4);
 		}
 	};
 };

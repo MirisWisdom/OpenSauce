@@ -784,6 +784,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\Common\PlatformShared.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\Common\Halo1\YeloSettingsDefinitions.hpp"
 					>
 				</File>

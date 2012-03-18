@@ -23,6 +23,7 @@
 #include <cseries/MacrosCpp.hpp>
 #include <Common/BaseBlamTypes.hpp>
 #include <Common/BaseBlamTypesXbox.hpp>
+#include <Blam/Halo2/BlamDefinitions.hpp>
 #include "Common/BlamTypes.hpp"
 
 #include "TagGroups/TagGroups.hpp"

@@ -110,7 +110,7 @@ int16 API_FUNC_NAKED AnimationPickRandomPermutation(bool animation_update_kind_a
 {
 	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(ANIMATION_PICK_RANDOM_PERMUTATION);
 
-	NAKED_FUNC_START()
+	API_FUNC_NAKED_START()
 		push	ecx
 		movzx	ecx, animation_update_kind_affects_game_state
 
@@ -121,17 +121,17 @@ int16 API_FUNC_NAKED AnimationPickRandomPermutation(bool animation_update_kind_a
 		add		esp, 4 * 1
 
 		pop		ecx
-	NAKED_FUNC_END(3)
+	API_FUNC_NAKED_END(3)
 }
 
 void API_FUNC_NAKED GenerateMD5(cstring data, const DWORD data_length, cstring output)
 {
 	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(GENERATE_MD5);
 
-	NAKED_FUNC_START()
+	API_FUNC_NAKED_START()
 		push	output
 		push	data_length
 		push	data
 		call	TEMP_CALL_ADDR
-	NAKED_FUNC_END_CDECL(3);
+	API_FUNC_NAKED_END_CDECL(3);
 }

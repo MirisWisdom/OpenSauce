@@ -98,12 +98,12 @@ namespace Yelo
 		}
 		static API_FUNC_NAKED void PLATFORM_API FirstPersonWeaponSetStateHook()
 		{
-			NAKED_FUNC_START()
+			API_FUNC_NAKED_START()
 				push	edi
 				push	ebx
 				push	esi
 				call	FirstPersonWeaponSetStatePermutateAnimation
-			NAKED_FUNC_END(0)
+			API_FUNC_NAKED_END(0)
 		}
 		static void FirstPersonWeaponSetStateHookCreateHook()
 		{

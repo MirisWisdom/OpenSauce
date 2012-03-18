@@ -30,13 +30,17 @@
 #if PLATFORM_ID == PLATFORM_H2
 
 	#define PLATFORM_VALUE(h2_value, h2au_value, alpha_value) h2_value
+	// For cases where h2 and h2au are the exact same
+	#define PLATFORM_VALUE_(h2_value, alpha_value) h2_value
 
 #elif PLATFORM_ID == PLATFORM_H2_AU
 
 	#define PLATFORM_VALUE(h2_value, h2au_value, alpha_value) h2au_value
+	#define PLATFORM_VALUE_(h2_value, alpha_value) h2_value
 
 #elif PLATFORM_ID == PLATFORM_H2_ALPHA
 
 	#define PLATFORM_VALUE(h2_value, h2au_value, alpha_value) alpha_value
+	#define PLATFORM_VALUE_(h2_value, alpha_value) alpha_value
 
 #endif

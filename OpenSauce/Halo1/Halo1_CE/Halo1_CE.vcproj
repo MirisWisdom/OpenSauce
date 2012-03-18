@@ -18,8 +18,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -41,9 +41,9 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="$(SolutionDir)shared\Include\;$(SolutionDir)..\shared\ticpp;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;HALO1_CE_EXPORTS;DX_WRAPPER;PLATFORM_TYPE_CLIENT;GSI_NO_THREADS"
-				ExceptionHandling="1"
 				StringPooling="true"
 				MinimalRebuild="true"
+				ExceptionHandling="1"
 				BasicRuntimeChecks="0"
 				BufferSecurityCheck="false"
 				EnableEnhancedInstructionSet="1"
@@ -89,8 +89,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -164,8 +164,8 @@
 		</Configuration>
 		<Configuration
 			Name="DebugDedi|Win32"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -187,9 +187,9 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="$(SolutionDir)shared\Include\;$(SolutionDir)..\shared\ticpp;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;HALO1_CE_EXPORTS;PLATFORM_TYPE_DEDI;GSI_NO_THREADS"
-				ExceptionHandling="1"
 				StringPooling="true"
 				MinimalRebuild="true"
+				ExceptionHandling="1"
 				BasicRuntimeChecks="0"
 				EnableEnhancedInstructionSet="1"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
@@ -234,8 +234,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseDedi|Win32"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -427,6 +427,10 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\Common\PackedFile.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\Common\PlatformShared.hpp"
 					>
 				</File>
 				<File

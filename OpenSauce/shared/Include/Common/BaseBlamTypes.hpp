@@ -5,6 +5,13 @@
 */
 #pragma once
 
+#if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
+	#include <d3dx9math.h>
+#endif
+
+//#include <errno.h>
+extern const errno_t k_errnone;
+
 namespace Yelo
 {
 	namespace Enums
@@ -12,6 +19,10 @@ namespace Yelo
 		enum {
 			// character count in a [tag_string] type
 			k_tag_string_length = 31,
+			// character count in a [long_string] type
+			k_long_string_length = 255,
+
+			k_string_id_length = 127,
 
 			k_string_64_length = 63,
 			k_string_128_length = 127,
@@ -148,8 +159,8 @@ namespace Yelo
 	// null value for a [wstring] or [wcstring]
 #define WSTRING_NULL	L"\0"
 
-	inline bool is_null_or_empty(const char* const str) { return str == NULL || str[0] == '\0'; }
-	inline bool is_null_or_empty(const wchar_t* const str) { return str == NULL || str[0] == L'\0'; }
+	API_INLINE bool is_null_or_empty(const char* const str) { return str == NULL || str[0] == '\0'; }
+	API_INLINE bool is_null_or_empty(const wchar_t* const str) { return str == NULL || str[0] == L'\0'; }
 
 	// Takes [wide] and converts it to an ascii string, to be held in [string]. If [wide_length] is not -1, the string
 	// is assumed to be null terminated
@@ -168,6 +179,13 @@ namespace Yelo
 	// 32 character ASCII string, with null terminator
 	typedef char tag_string[Yelo::Enums::k_tag_string_length+1];
 #define pad_tag_string PAD32 PAD32 PAD32 PAD32 PAD32 PAD32 PAD32 PAD32
+	// 256 character ASCII string, with null terminator
+	typedef char long_string[Yelo::Enums::k_long_string_length+1];
+#define pad_long_string PAD128 PAD128 PAD128 PAD128 PAD128 PAD128 PAD128 PAD128 PAD128 PAD128 PAD128 PAD128 PAD128 PAD128 PAD128 PAD128
+
+	typedef char string_id_value[Yelo::Enums::k_string_id_length+1];
+	typedef uint32 string_id;
+#define pad_string_id PAD32
 
 	// 128 character ASCII string, with null terminator
 	typedef char string128[Yelo::Enums::k_string_128_length+1];
@@ -199,6 +217,7 @@ namespace Yelo
 
 	// an enumerated value in a 4 byte range (not an officially used type in halo 1 tags, at least not up front anyway)
 	typedef unsigned long long_enum;
+#define pad_long_enum PAD32
 
 	// bit flags in a 1 byte range
 	typedef unsigned char byte_flags;
@@ -286,23 +305,454 @@ namespace Yelo
 	// a fraction represented in a floating-point number
 	typedef float real_fraction;
 
+	struct real_vector2d;
+	struct real_vector3d;
+
+	// a point in real 2d space.
+	/*union*/ struct real_point2d
+	{
+		// X-Axis
+		real x;
+
+		// Y-Axis
+		real y;
+
+		OVERRIDE_OPERATOR_CAST_THIS(float);
+		OVERRIDE_OPERATOR_CAST_THIS(real_vector2d);
+#if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
+		OVERRIDE_OPERATOR_CAST_THIS(D3DXVECTOR2);
+#endif
+	};
 	#define pad_real_point2d PAD32 PAD32
+
+	// a point in real 3d space
+	/*union*/ struct real_point3d
+	{
+		// X-Axis
+		real x;
+
+		// Y-Axis
+		real y;
+
+		// Z-Axis
+		real z;
+
+		OVERRIDE_OPERATOR_CAST_THIS(float);
+		OVERRIDE_OPERATOR_CAST_THIS(real_point2d);
+		OVERRIDE_OPERATOR_CAST_THIS(real_vector3d);
+#if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
+		OVERRIDE_OPERATOR_CAST_THIS(D3DXVECTOR3);
+#endif
+	};
 	#define pad_real_point3d PAD32 PAD32 PAD32
+
+	// A 2d real vector
+	/*union*/ struct real_vector2d
+	{
+		// X-Component
+		real i;
+
+		// Y-Component
+		real j;
+
+		OVERRIDE_OPERATOR_CAST_THIS(float);
+#if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
+		OVERRIDE_OPERATOR_CAST_THIS(D3DXVECTOR2);
+#endif
+
+		real Magnitude() const;
+
+		API_INLINE void Normalize()
+		{
+			real len = this->Magnitude();
+			this->i /= len;
+			this->j /= len;
+		}
+
+		API_INLINE void Inverse()
+		{ this->i = -this->i; this->j = -this->j; }
+
+		API_INLINE void Set(real _i, real _j)
+		{ this->i = _i; this->j = _j; }
+
+		API_INLINE real_vector2d& operator += (const real_vector2d& v)
+		{
+			this->i += v.i;		this->j += v.j;		return *this;
+		}
+
+		API_INLINE real_vector2d& operator -= (const real_vector2d& v)
+		{
+			this->i -= v.i;		this->j -= v.j;		return *this;
+		}
+
+		API_INLINE real_vector2d& operator *= (real scalar)
+		{
+			this->i *= scalar;		this->j *= scalar;		return *this;
+		}
+
+		API_INLINE real_vector2d& operator /= (real scalar)
+		{
+			this->i /= scalar;		this->j /= scalar;		return *this;
+		}
+
+		API_INLINE real_vector2d operator - () const ///< Conjugate
+		{
+			real_vector2d value; value.Set(-this->i, -this->j);
+			return value;
+		}
+
+		API_INLINE real_vector2d operator + (const real_vector2d& rh) const ///< Addition
+		{
+			real_vector2d value; value.Set(this->i+rh.i, this->j+rh.j);
+			return value;
+		}
+
+		API_INLINE real_vector2d operator + (const real_point2d& rh) const ///< Addition
+		{
+			real_vector2d value; value.Set(this->i+rh.x, this->j+rh.y);
+			return value;
+		}
+
+
+		API_INLINE real_vector2d operator - (const real_vector2d& rh) const ///< Subtraction
+		{
+			real_vector2d value; value.Set(this->i-rh.i, this->j-rh.j);
+			return value;
+		}
+
+		API_INLINE real_vector2d operator - (const real_point2d& rh) const ///< Subtraction
+		{
+			real_vector2d value; value.Set(this->i-rh.x, this->j-rh.y);
+			return value;
+		}
+
+
+		API_INLINE real operator * (const real_vector2d& rh) const ///< Dot Product
+		{ return this->i*rh.i + this->j*rh.j; }
+
+		API_INLINE real operator * (const real_point2d& rh) const ///< Dot Product
+		{ return this->i*rh.x + this->j*rh.y; }
+
+
+		API_INLINE real_vector2d operator * (real rh) const ///< Scalar Multiplication
+		{
+			real_vector2d value; value.Set(this->i*rh, this->j*rh);
+			return value;
+		}
+
+		API_INLINE real_vector2d operator / (real rh) const ///< Scalar Division
+		{
+			real_vector2d value; value.Set(this->i/rh, this->j/rh);
+			return value;
+		}
+
+		static void DotProduct2D(real_vector2d* a, real_vector2d* b, real& out_value);
+	};
 	#define pad_real_vector2d PAD32 PAD32
+
+	// a 3d real vector
+	/*union*/ struct real_vector3d
+	{
+		// X-Component
+		real i;
+
+		// Y-Component
+		real j;
+
+		// Z-Component
+		real k;
+
+		OVERRIDE_OPERATOR_CAST_THIS(float);
+		OVERRIDE_OPERATOR_CAST_THIS(real_vector2d);
+#if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
+		OVERRIDE_OPERATOR_CAST_THIS(D3DXVECTOR3);
+#endif
+
+		real Magnitude() const;
+
+		API_INLINE void Normalize()
+		{
+			real len = this->Magnitude();
+			this->i /= len;
+			this->j /= len;
+			this->k /= len;
+		}
+
+		API_INLINE void Inverse()
+		{
+			this->i = -this->i;
+			this->j = -this->j;
+			this->k = -this->k;
+		}
+
+		API_INLINE void Set(real _i, real _j, real _k)
+		{ this->i = _i; this->j = _j; this->k = _k; }
+
+		API_INLINE real_vector3d& operator += (const real_vector3d& v)
+		{
+			this->i += v.i;
+			this->j += v.j;
+			this->k += v.k;
+			return *this;
+		}
+
+		API_INLINE real_vector3d& operator -= (const real_vector3d& v)
+		{
+			this->i -= v.i;
+			this->j -= v.j;
+			this->k -= v.k;
+			return *this;
+		}
+
+		API_INLINE real_vector3d& operator *= (real scalar)
+		{
+			this->i *= scalar;
+			this->j *= scalar;
+			this->k *= scalar;
+			return *this;
+		}
+
+		API_INLINE real_vector3d& operator /= (real scalar)
+		{
+			this->i /= scalar;
+			this->j /= scalar;
+			this->k /= scalar;
+			return *this;
+		}
+
+		API_INLINE real_vector3d operator - () const ///< Conjugate
+		{
+			real_vector3d value; 
+			value.Set(-this->i, -this->j, -this->k);
+			return value;
+		}
+
+		API_INLINE real_vector3d operator + (const real_vector3d& rh) const ///< Addition
+		{
+			real_vector3d value; value.Set(this->i+rh.i, this->j+rh.j, this->k+rh.k);
+			return value;
+		}
+
+		API_INLINE real_vector3d operator + (const real_point3d& rh) const ///< Addition
+		{
+			real_vector3d value; value.Set(this->i+rh.x, this->j+rh.y, this->k+rh.z);
+			return value;
+		}
+
+
+		API_INLINE real_vector3d operator - (const real_vector3d& rh) const ///< Subtraction
+		{
+			real_vector3d value; value.Set(this->i-rh.i, this->j-rh.j, this->k-rh.k);
+			return value;
+		}
+
+		API_INLINE real_vector3d operator - (const real_point3d& rh) const ///< Subtraction
+		{
+			real_vector3d value; value.Set(this->i-rh.x, this->j-rh.y, this->k-rh.z);
+			return value;
+		}
+
+
+		API_INLINE real_vector3d operator ^ (const real_vector3d& rh) const ///< Cross Product
+		{
+			real_vector3d value; value.Set(
+				this->j*rh.k - this->k*rh.j,
+				-this->i*rh.k + this->k*rh.i,
+				this->i*rh.j - this->j*rh.i
+				);
+			return value;
+		}
+
+		API_INLINE real_vector3d operator ^ (const real_point3d& rh) const ///< Cross Product
+		{
+			real_vector3d value; value.Set(
+				this->j*rh.z - this->k*rh.y,
+				-this->i*rh.z + this->k*rh.x,
+				this->i*rh.y - this->j*rh.x
+				);
+			return value;
+		}
+
+
+		API_INLINE real operator * (const real_vector3d& rh) const ///< Dot Product
+		{ return this->i*rh.i + this->j*rh.j + this->k*rh.k; }
+
+		API_INLINE real operator * (const real_point3d& rh) const ///< Dot Product
+		{ return this->i*rh.x + this->j*rh.y + this->k*rh.z; }
+
+
+		API_INLINE real_vector3d operator * (real rh) const ///< Scalar Multiplication
+		{
+			real_vector3d value; value.Set(this->i*rh, this->j*rh, this->k*rh);
+			return value;
+		}
+
+		API_INLINE real_vector3d operator / (real rh) const ///< Scalar Division
+		{
+			real_vector3d value; value.Set(this->i/rh, this->j/rh, this->k/rh);
+			return value;
+		}
+	};
 	#define pad_real_vector3d PAD32 PAD32 PAD32
+
+	// a 3d real vector with ?
+	struct real_quaternion
+	{
+		// X-Component
+		real i;
+
+		// Y-Component
+		real j;
+
+		// Z-Component
+		real k;
+
+		// ?
+		real w;
+
+		OVERRIDE_OPERATOR_CAST_THIS(float);
+#if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
+		OVERRIDE_OPERATOR_CAST_THIS(D3DXVECTOR4);
+		OVERRIDE_OPERATOR_CAST_THIS(D3DXQUATERNION);
+#endif
+
+		void Compress64bit(uint16 out[4]) const;
+		void Decompress64bit(int16 in[4]);
+
+		API_INLINE void Inverse()
+		{
+			this->i = -this->i;
+			this->j = -this->j;
+			this->k = -this->k;
+			this->w = -this->w;
+		}
+
+		API_INLINE void Conjugate()
+		{
+			this->i = -this->i;
+			this->j = -this->j;
+			this->k = -this->k;
+		}
+
+		void FromAngles(struct real_euler_angles3d* angles);
+		void Lerp(real_quaternion* q1, real_quaternion* q2, real interp);
+		void SLerp(real_quaternion* q1, real_quaternion* q2, real interp);
+		void ToAxisAngle(real_point3d* axis, real& angle);
+		void Normalize();
+	};
 	#define pad_real_quaternion PAD32 PAD32 PAD32 PAD32
+
+	// real Euler angles in 2d space
+	/*union*/ struct real_euler_angles2d
+	{
+		// Up, Down offset degrees
+		angle yaw;
+
+		// Side to Side offset degrees
+		angle pitch;
+
+		OVERRIDE_OPERATOR_CAST_THIS(float);
+	};
 	#define pad_real_euler_angles2d PAD32 PAD32
+
+	// real Euler angles in 3d space
+	/*union*/ struct real_euler_angles3d
+	{
+		// Up, Down offset degrees
+		angle yaw;
+
+		// Side to Side offset degrees
+		angle pitch;
+
+		// Left to Right offset degrees
+		angle roll;
+
+		OVERRIDE_OPERATOR_CAST_THIS(float);
+		OVERRIDE_OPERATOR_CAST_THIS(real_euler_angles2d);
+	};
 	#define pad_real_euler_angles3d PAD32 PAD32 PAD32
+
+	// 
+	struct real_plane2d
+	{
+		// X-Component of plane's normal
+		real i;
+
+		// Y-Component of plane's normal
+		real j;
+
+		// Distance the plane is from the origin
+		real d;
+
+		OVERRIDE_OPERATOR_CAST_THIS(float);
+
+		API_INLINE void Normalize();
+	};
 	#define pad_real_plane2d PAD32 PAD32 PAD32
+
+	// 
+	struct real_plane3d
+	{
+		// X-Component of plane's normal
+		real i;
+
+		// Y-Component of plane's normal
+		real j;
+
+		// Z-Component of plane's normal
+		real k;
+
+		// Distance the plane is from the origin
+		real d;
+
+		OVERRIDE_OPERATOR_CAST_THIS(float);
+		OVERRIDE_OPERATOR_CAST_THIS(real_plane2d);
+#if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
+		OVERRIDE_OPERATOR_CAST_THIS(D3DXPLANE);
+#endif
+
+		API_INLINE void Normalize();
+	};
 	#define pad_real_plane3d PAD32 PAD32 PAD32 PAD32
+
+	struct real_matrix3x3
+	{
+		real_vector3d Forward;
+		real_vector3d Left;
+		real_vector3d Up;
+	};
 	#define pad_real_matrix3x3	PAD_TYPE(real_vector3d) \
 								PAD_TYPE(real_vector3d) \
 								PAD_TYPE(real_vector3d)
+
+	struct real_matrix4x3
+	{
+		real Scale;
+		real_vector3d Forward;
+		real_vector3d Left;
+		real_vector3d Up;
+		real_point3d Position;
+
+#if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
+		void ConvertTo4x4(D3DMATRIX& d3dmat) const
+		{
+			d3dmat._11 = Forward.i;		d3dmat._12 = Forward.j;		d3dmat._13 = Forward.k;		d3dmat._14 = 0.0f;
+			d3dmat._21 = Left.i;		d3dmat._22 = Left.j;		d3dmat._23 = Left.k;		d3dmat._24 = 0.0f;
+			d3dmat._31 = Up.i;			d3dmat._32 = Up.j;			d3dmat._33 = Up.k;			d3dmat._34 = 0.0f;
+			d3dmat._41 = Position.x;	d3dmat._42 = Position.y;	d3dmat._43 = Position.z;	d3dmat._44 = Scale;
+		}
+#endif
+	};
 	#define pad_real_matrix4x3	PAD32 \
 								PAD_TYPE(real_vector3d) \
 								PAD_TYPE(real_vector3d) \
 								PAD_TYPE(real_vector3d) \
 								PAD_TYPE(real_point3d)
+
+	struct real_matrix3x4
+	{
+		float m[4][3];
+	};
 
 	/*union*/ struct real_rectangle2d
 	{
@@ -322,6 +772,12 @@ namespace Yelo
 									PAD32 PAD32 \
 									PAD32 PAD32
 
+	struct real_orientation3d
+	{
+		real_quaternion rotation;
+		real_point3d translation;
+		real scale;
+	};
 	#define pad_real_orientation3d	PAD_TYPE(real_quaternion)	\
 									PAD_TYPE(real_point3d)		\
 									PAD32

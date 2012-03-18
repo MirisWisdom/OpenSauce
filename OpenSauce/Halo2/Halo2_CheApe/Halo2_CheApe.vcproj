@@ -18,8 +18,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -41,9 +41,9 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="$(SolutionDir)shared\Include;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;HALO2_CHEAPE_EXPORTS"
-				ExceptionHandling="1"
 				StringPooling="true"
 				MinimalRebuild="true"
+				ExceptionHandling="1"
 				BasicRuntimeChecks="3"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
 				DisableSpecificWarnings="4311;4312"
@@ -84,8 +84,8 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -147,8 +147,8 @@
 		</Configuration>
 		<Configuration
 			Name="DebugTool|Win32"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -170,9 +170,9 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="$(SolutionDir)shared\Include;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;HALO2_CHEAPE_EXPORTS;PLATFORM_TYPE_TOOL"
-				ExceptionHandling="1"
 				StringPooling="true"
 				MinimalRebuild="true"
+				ExceptionHandling="1"
 				BasicRuntimeChecks="3"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
 				DisableSpecificWarnings="4311;4312"
@@ -214,8 +214,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseTool|Win32"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -278,8 +278,8 @@
 		</Configuration>
 		<Configuration
 			Name="DebugGuerilla|Win32"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -301,9 +301,9 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="$(SolutionDir)shared\Include;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;HALO2_CHEAPE_EXPORTS;PLATFORM_TYPE_GUERILLA"
-				ExceptionHandling="1"
 				StringPooling="true"
 				MinimalRebuild="true"
+				ExceptionHandling="1"
 				BasicRuntimeChecks="3"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
 				DisableSpecificWarnings="4311;4312"
@@ -345,8 +345,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseGuerilla|Win32"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -409,8 +409,8 @@
 		</Configuration>
 		<Configuration
 			Name="DebugSapien|Win32"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			CharacterSet="2"
 			>
 			<Tool
@@ -432,9 +432,9 @@
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="$(SolutionDir)shared\Include;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;HALO2_CHEAPE_EXPORTS;PLATFORM_TYPE_SAPIEN"
-				ExceptionHandling="1"
 				StringPooling="true"
 				MinimalRebuild="true"
+				ExceptionHandling="1"
 				BasicRuntimeChecks="3"
 				PrecompiledHeaderThrough="Common\Precompile.hpp"
 				DisableSpecificWarnings="4311;4312"
@@ -476,8 +476,8 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseSapien|Win32"
-			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			ConfigurationType="2"
+			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -551,6 +551,10 @@
 			</File>
 			<File
 				RelativePath=".\Common\Platform.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\shared\Include\Common\PlatformShared.hpp"
 				>
 			</File>
 			<File
@@ -665,6 +669,10 @@
 					</File>
 					<File
 						RelativePath="..\..\shared\Include\Common\BaseBlamTypesPc.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\Blam\Halo2\BlamDefinitions.hpp"
 						>
 					</File>
 				</Filter>

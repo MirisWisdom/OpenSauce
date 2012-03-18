@@ -35,25 +35,25 @@ namespace Yelo
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(ACTOR_DELETE);
 
-				NAKED_FUNC_START()
+				API_FUNC_NAKED_START()
 					movzx	eax, is_dead
 					push	eax
 					mov		ebx, actor_index
 					call	TEMP_CALL_ADDR
 					add		esp, 4 * 1
-				NAKED_FUNC_END(2)
+				API_FUNC_NAKED_END(2)
 			}
 
 			void API_FUNC_NAKED AttachFree(datum_index unit_index, datum_index actor_variant_definition)
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(AI_SCRIPTING_ATTACH_FREE);
 
-				NAKED_FUNC_START()
+				API_FUNC_NAKED_START()
 					mov		eax, actor_variant_definition
 					push	unit_index
 					call	TEMP_CALL_ADDR
 					add		esp, 4 * 1
-				NAKED_FUNC_END(2)
+				API_FUNC_NAKED_END(2)
 			}
 		};
 
@@ -73,7 +73,7 @@ namespace Yelo
 			{
 				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(EFFECT_NEW_ON_OBJECT_MARKER);
 
-				NAKED_FUNC_START()
+				API_FUNC_NAKED_START()
 					push	esi
 					push	edi
 
@@ -86,7 +86,7 @@ namespace Yelo
 
 					pop		edi
 					pop		esi
-				NAKED_FUNC_END(3)
+				API_FUNC_NAKED_END(3)
 			}
 		};
 

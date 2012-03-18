@@ -15,7 +15,7 @@ namespace TagGroups
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(SHADER_FILL_POSTPROCESS_DEFINITION);
 
-		NAKED_FUNC_START()
+		API_FUNC_NAKED_START()
 			push	shader_postprocess_definition
 			push	shader_properties
 			push	shader_light_response_index
@@ -23,7 +23,7 @@ namespace TagGroups
 			push	global_shader_parameters
 			push	shader_index
 			call	FUNCTION
-		NAKED_FUNC_END_CDECL(6);
+		API_FUNC_NAKED_END_CDECL(6);
 	}
 	static bool PLATFORM_API shader_fill_postprocess_definition_override(datum_index shader_index, tag_block& global_shader_parameters,
 		datum_index shader_template_index, datum_index shader_light_response_index, 
@@ -43,13 +43,13 @@ namespace TagGroups
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(SHADER_POSTPROCESS);
 
-		NAKED_FUNC_START()
+		API_FUNC_NAKED_START()
 			push	shader_postprocess_definition
 			push	shader_template_index
 			push	global_shader_parameters
 			push	owner_tag_index
 			call	FUNCTION
-		NAKED_FUNC_END_CDECL(4);
+		API_FUNC_NAKED_END_CDECL(4);
 	}
 	static void PLATFORM_API shader_postprocess_override(datum_index owner_tag_index, tag_block& global_shader_parameters, 
 		datum_index shader_template_index, tag_block& shader_postprocess_definition)
@@ -65,10 +65,10 @@ namespace TagGroups
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(SHADER_TEMPLATE_PLATFORM_POSTPROCESS);
 
-		NAKED_FUNC_START()
+		API_FUNC_NAKED_START()
 			push	shader_template_index
 			call	FUNCTION
-		NAKED_FUNC_END_CDECL(1);
+		API_FUNC_NAKED_END_CDECL(1);
 	}
 	static void PLATFORM_API shader_template_platform_postprocess_override(datum_index shader_template_index)
 	{
@@ -84,10 +84,10 @@ namespace TagGroups
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(SHADER_PASS_PLATFORM_POSTPROCESS);
 
-		NAKED_FUNC_START()
+		API_FUNC_NAKED_START()
 			push	shader_pass_index
 			call	FUNCTION
-		NAKED_FUNC_END_CDECL(1);
+		API_FUNC_NAKED_END_CDECL(1);
 	}
 	static void PLATFORM_API shader_pass_platform_postprocess_override(datum_index shader_pass_index)
 	{

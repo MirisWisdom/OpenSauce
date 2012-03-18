@@ -12,26 +12,26 @@ namespace Yelo
 	{
 		enum object_sizes
 		{
-			k_object_size_object =			300,
-			k_object_size_projectile =		128 + k_object_size_object,
-			k_object_size_scenery =			16  + k_object_size_object,
-			k_object_size_sound_scenery =	28  + k_object_size_object,
-			k_object_size_crate =			4   + k_object_size_object,
-			k_object_size_creature =		220 + k_object_size_object,
+			k_object_size_object =			PLATFORM_VALUE_(0x12C, 0xFC),
+			k_object_size_projectile =		PLATFORM_VALUE_(0x80, 0x74) + k_object_size_object,
+			k_object_size_scenery =			0x10						+ k_object_size_object,
+			k_object_size_sound_scenery =	0x1C						+ k_object_size_object,
+			k_object_size_crate =			0x04						+ k_object_size_object,
+			k_object_size_creature =		PLATFORM_VALUE_(0xDC, 0xC4) + k_object_size_object,
 
-			k_object_size_device =			160 + k_object_size_object,
-			k_object_size_machine =			20  + k_object_size_device,
-			k_object_size_control =			8   + k_object_size_device,
-			k_object_size_light_fixture =	24  + k_object_size_device,
+			k_object_size_device =			PLATFORM_VALUE_(0xA0, 0x98) + k_object_size_object,
+			k_object_size_machine =			PLATFORM_VALUE_(0x14, 0x20) + k_object_size_device,
+			k_object_size_control =			0x08						+ k_object_size_device,
+			k_object_size_light_fixture =	0x18						+ k_object_size_device,
 
-			k_object_size_item =			64   + k_object_size_object, // only 4 bytes larger than Halo 1
-			k_object_size_weapon =			240  + k_object_size_item,
-			k_object_size_equipment =		24   + k_object_size_item,
-			k_object_size_garbage =			4    + k_object_size_item,
+			k_object_size_item =			PLATFORM_VALUE_(0x40, 0x3C) + k_object_size_object, // only 4 bytes larger than Halo 1
+			k_object_size_weapon =			PLATFORM_VALUE_(0xF0, 0xE8) + k_object_size_item,
+			k_object_size_equipment =		0x18						+ k_object_size_item,
+			k_object_size_garbage =			0x04						+ k_object_size_item,
 
-			k_object_size_unit =			540  + k_object_size_object,
-			k_object_size_biped =			284  + k_object_size_unit,
-			k_object_size_vehicle =			224  + k_object_size_unit,
+			k_object_size_unit =			PLATFORM_VALUE_(0x21C, 0x204) + k_object_size_object,
+			k_object_size_biped =			PLATFORM_VALUE_(0x11C, 0x118) + k_object_size_unit,
+			k_object_size_vehicle =			PLATFORM_VALUE_(0x0E0, 0x8C)  + k_object_size_unit,
 		};
 	};
 

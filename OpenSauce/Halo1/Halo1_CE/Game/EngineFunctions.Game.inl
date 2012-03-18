@@ -9,11 +9,11 @@ API_FUNC_NAKED void SwitchBsp(int16 index)
 {
 	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(SCENARIO_SWITCH_STRUCTURE_BSP);
 
-	NAKED_FUNC_START()
+	API_FUNC_NAKED_START()
 		xor		esi, esi
 		mov		si, index
 		call	TEMP_CALL_ADDR
-	NAKED_FUNC_END(1)
+	API_FUNC_NAKED_END(1)
 }
 
 void PlayVideo(cstring bink)
@@ -47,11 +47,11 @@ API_FUNC_NAKED void RasterizerMessage(wcstring msg, uint32 flags)
 #if !PLATFORM_IS_DEDI
 	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(GAME_ENGINE_RASTERIZE_MESSAGE);
 
-	NAKED_FUNC_START()
+	API_FUNC_NAKED_START()
 		push	flags
 		push	msg
 		call	TEMP_CALL_ADDR
-	NAKED_FUNC_END_CDECL(2)
+	API_FUNC_NAKED_END_CDECL(2)
 #endif
 }
 

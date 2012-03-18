@@ -29,7 +29,7 @@ API_FUNC_NAKED static void PLATFORM_API reimport_sound_proc(wcstring* arguments)
 	// arg_4 = indent_length
 	static const uint32 REIMPORT_SOUND = 0x4E6950;
 
-	NAKED_FUNC_START()
+	API_FUNC_NAKED_START()
 
-	NAKED_FUNC_END(0);
+	API_FUNC_NAKED_END(0);
 }
