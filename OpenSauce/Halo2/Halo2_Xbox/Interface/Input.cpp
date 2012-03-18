@@ -79,26 +79,32 @@ namespace Yelo
 				if(camera_is_valid && new_state == config.View.InputCamera.FpCamera)
 				{
 					camera.ChangePerspective(Enums::_director_mode_first_person);
+					DebugOnly( Engine::Interface::HudMessagePrint(L"First person") );
 				}
 				else if(camera_is_valid && new_state == config.View.InputCamera.TpCamera)
 				{
 					camera.ChangePerspective(Enums::_director_mode_third_person);
+					DebugOnly( Engine::Interface::HudMessagePrint(L"Third person") );
 				}
 				else if(camera_is_valid && new_state == config.View.InputCamera.ChaseCamera)
 				{
 					camera.ChangePerspective(Enums::_director_mode_following);
+					DebugOnly( Engine::Interface::HudMessagePrint(L"Chase camera") );
 				}
 				else if(camera_is_valid && new_state == config.View.InputCamera.ScriptedCamera)
 				{
 					camera.ChangePerspective(Enums::_director_mode_scripted);
+					DebugOnly( Engine::Interface::HudMessagePrint(L"Scripted camera") );
 				}
 				else if(camera_is_valid && new_state == config.View.InputCamera.EditorCamera)
 				{
 					camera.ChangePerspective(Enums::_director_mode_editor);
+					DebugOnly( Engine::Interface::HudMessagePrint(L"Editor camera") );
 				}
 				else if(camera_is_valid && new_state == config.View.InputCamera.AnchoredCamera)
 				{
 					camera.ChangePerspective(Enums::_director_mode_static);
+					DebugOnly( Engine::Interface::HudMessagePrint(L"Static camera") );
 				}
 				else if(new_state == config.View.Input.Wireframe)
 				{
@@ -112,11 +118,13 @@ namespace Yelo
 				}
 				else if(new_state == config.Input.SaveGameState)
 				{
+					DebugOnly( Engine::Interface::HudMessagePrint(L"Saving...") );
 					Engine::Game::Save();
 				}
 				else if(new_state == config.Input.LoadGameState)
 				{
 					Engine::Game::Revert();
+					DebugOnly( Engine::Interface::HudMessagePrint(L"Loaded") );
 				}
 				else if(new_state == config.Input.AiToggle)
 				{
@@ -158,6 +166,8 @@ namespace Yelo
 					Engine::Cinematic::RenderLightsEnableCinematicShadow();
 					Engine::Cinematic::LightmapShadow();
 					Engine::Cinematic::AmbienceDetails();
+
+					DebugOnly( Engine::Interface::HudMessagePrint(L"Cinematic on") );
 				}
 				else if(new_state == config.Input.Cinematic.Off)
 				{
@@ -165,6 +175,8 @@ namespace Yelo
 					Engine::Cinematic::ScreenEffectStop();
 					Engine::Cinematic::LightmapShadow(false);
 					Engine::Cinematic::AmbienceDetails(false);
+
+					DebugOnly( Engine::Interface::HudMessagePrint(L"Cinematic off", pad.Index) );
 				}
 				else if(new_state == config.Cheats.Input.Invincible)
 				{

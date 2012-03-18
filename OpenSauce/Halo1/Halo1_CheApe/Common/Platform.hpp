@@ -6,9 +6,10 @@
 */
 #pragma once
 
-#define PLATFORM_GUERILLA	0x00000001
-#define PLATFORM_TOOL		0x00000002
-#define PLATFORM_SAPIEN		0x00000003
+#include <Common/PlatformShared.hpp>
+#define PLATFORM_TARGET		PLATFORM_TARGET_PC
+#define PLATFORM_IS_EDITOR	TRUE
+#define CHEAPE_PLATFORM		CHEAPE_PLATFORM_HALO1
 
 // PLATFORM_TYPE is defined in the vcproj build configurations
 #if !defined(PLATFORM_ID)
@@ -25,9 +26,6 @@
 
 // Calling convention of guerilla\tool\sapien
 #define PLATFORM_API __cdecl
-
-#define PLATFORM_IS_EDITOR 1
-#define CHEAPE_PLATFORM CHEAPE_PLATFORM_HALO1
 
 
 // See this header for more "Engine pointer markup system" documentation

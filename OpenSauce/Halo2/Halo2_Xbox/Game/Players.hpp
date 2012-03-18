@@ -60,22 +60,36 @@ namespace Yelo
 
 	namespace GameState
 	{
-		struct s_player_datum : TStructImpl(540)
+		struct s_machine_identifier
+		{
+			UNKNOWN_TYPE(int32);
+			UNKNOWN_TYPE(int16); // machine index...
+		}; BOOST_STATIC_ASSERT( sizeof(s_machine_identifier) == 0x6 );
+		struct s_player_identifier
+		{
+			UNKNOWN_TYPE(int32);
+			UNKNOWN_TYPE(int32);
+			UNKNOWN_TYPE(int32);
+		}; BOOST_STATIC_ASSERT( sizeof(s_player_identifier) == 0xC );
+
+		struct s_player_datum : TStructImpl( PLATFORM_VALUE_(0x21C, 0x19C) )
 		{
 			TStructGetImpl(int16, Header, 0x0);
 			// bit 0 - _player_connecting_to_game_bit
 			// bit 1 - _player_left_game_bit
 			TStructGetPtrImpl(byte_flags, Flags, 0x2);
-			//TStructGetPtrImpl(void*, Identifier, 0x4); // 3 dword structure, simulation_identifier
+			TStructGetPtrImpl(s_player_identifier, Identifier, 0x4);
 			//TStructGetPtrImpl(int32, , 0x10);
-			TStructGetPtrImpl(int16, MachineIndex, 0x14);
-			TStructGetPtrImpl(int16, MachineUserIndex, 0x16);
-			//TStructGetPtrImpl(int16, , 0x1A);
-			TStructGetPtrImpl(int16, UserIndex,				PLATFORM_VALUE(0x20, 0x20, 0x20));
-			TStructGetPtrImpl(int32, ControllerIndex,		PLATFORM_VALUE(0x24, 0x24, 0x1C));
-			TStructGetPtrImpl(int16, LocalIndex,			PLATFORM_VALUE(0x28, 0x28, 0x20));
-			//TStructGetPtrImpl(int16, , 0x2A);
-			TStructGetPtrImpl(datum_index, SlaveUnitIndex,	PLATFORM_VALUE(0x2C, 0x2C, 0x24));
+#if PLATFORM_ID != PLATFORM_H2_ALPHA
+			TStructGetPtrImpl(s_machine_identifier, MachineIdentifer, 0x14);
+#else
+			TStructGetPtrImpl(int16, MachineIndex,			0x14);
+#endif
+			TStructGetPtrImpl(int16, MachineUserIndex,		PLATFORM_VALUE_(0x1A, 0x16));
+			TStructGetPtrImpl(int32, MachineControllerIndex,PLATFORM_VALUE_(0x1C, 0x18));
+			TStructGetPtrImpl(int32, ControllerIndex,		PLATFORM_VALUE_(0x24, 0x1C));
+			TStructGetPtrImpl(int16, UserIndex,				PLATFORM_VALUE_(0x28, 0x20));
+			TStructGetPtrImpl(datum_index, SlaveUnitIndex,	PLATFORM_VALUE_(0x2C, 0x24));
 			//TStructGetPtrImpl(int32, , 0x30);
 			//TStructGetPtrImpl(int32, , 0x34);
 			//TStructGetPtrImpl(byte, , 0x3E);
@@ -103,22 +117,28 @@ namespace Yelo
 		typedef Memory::DataArray<s_player_datum, 16> t_players_data;
 		t_players_data* _Players();
 
-		struct s_player_globals : TStructImpl(304)
+		struct s_player_globals : TStructImpl( PLATFORM_VALUE_(0x130, 0x124) )
 		{
+			TStructGetPtrImpl(int32, PlayersInGameCount, 0x0);
 			TStructGetPtrImpl(bool, EnableInput, 0x6);
 			TStructGetPtrImpl(bool, DisableMovement, 0x7);
 			TStructGetPtrImpl(int16, PlayerUserCount, 0x8);
 			TStructGetPtrImpl(int16, PlayerControllerCount, 0xA);
-			TStructGetPtrImpl(long_flags, CameraFlags, 0x10);
-			// int32 player_controller_mapping[]; // 0x1C
-
-			void CameraControl(bool enable)
-			{
-				*this->GetEnableInput() = true;
-
-				long_flags* flags = this->GetCameraFlags();
-				SET_FLAG(*flags, 0, enable);
-			}
+			// user index to player index
+			TStructGetPtrImpl(datum_index, PlayerUserMapping, 0xC);			// [k_number_of_users]
+			// controller index to player index
+			TStructGetPtrImpl(datum_index, PlayerControllerMapping, 0x1C);	// [k_number_of_users]
+			TStructGetPtrImpl(long_flags, MachineValidMask, 0x2C);
+			TStructGetPtrImpl(s_machine_identifier, MachineIdentifiers, 0x30);
+#if PLATFORM_ID != PLATFORM_H2_ALPHA
+			// 0x90 bool (local machine identifier valid?)
+			// 0x91 s_machine_identifier (local machine identifier?)
+			// 0x98 PAD8?
+#endif
+			TStructGetPtrImpl(int32, LocalMachineIndex, PLATFORM_VALUE_(0x98, 0x90));
+			// PLATFORM_VALUE_(0xA4, 0x9C) int16 block index to bsp switch triggers
+			// PLATFORM_VALUE_(0xA6, 0x9E) int16
+			// PLATFORM_VALUE_(0xA8, 0xA0) datum_index player causing a bsp switch
 		};
 		s_player_globals* _PlayerGlobals();
 
@@ -144,16 +164,22 @@ namespace Yelo
 				//TStructGetPtrImpl(datum_index?, , 0x40); // same as unit's 0x3E4
 			};
 
-			UNKNOWN_TYPE(int32);
+			UNKNOWN_TYPE(int32);		// 0x0
 
-			long_flags ActionFlags; // player_action
-			UNKNOWN_TYPE(int32);
-			UNKNOWN_TYPE(int32);
+			long_flags ActionFlags;		// 0x4 player_action
+			UNKNOWN_TYPE(int32);		// 0x8
+			UNKNOWN_TYPE(int32);		// 0xC
 
-			UNKNOWN_TYPE(long_flags);
-			bool CameraControlIsActive; PAD24;
+			long_flags CameraFlags;		// 0x10
 
 			s_player Players[4]; // 0x14
+
+			void CameraControl(bool enable)
+			{
+				*_PlayerGlobals()->GetEnableInput() = true;
+
+				SET_FLAG(CameraFlags, 0, enable);
+			}
 		};
 		s_player_control_globals* _PlayerControlGlobals();
 

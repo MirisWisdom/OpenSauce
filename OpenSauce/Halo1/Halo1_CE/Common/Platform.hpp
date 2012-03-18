@@ -6,6 +6,10 @@
 */
 #pragma once
 
+#include <Common/PlatformShared.hpp>
+#define PLATFORM_TARGET		PLATFORM_TARGET_PC
+#define PLATFORM_IS_EDITOR	FALSE
+
 //////////////////////////////////////////////////////////////////////////
 //#define PLATFORM_TYPE 0x00??
 
@@ -47,8 +51,6 @@
 
 // Calling convention of blam engine
 #define PLATFORM_API __cdecl
-
-#define PLATFORM_IS_EDITOR 0
 
 
 // Name of the section where we'll place executable data

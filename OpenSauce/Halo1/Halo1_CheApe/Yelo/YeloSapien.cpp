@@ -39,21 +39,21 @@ namespace Yelo
 		{
 			static const uint32 TEMP_CALL_ADDR = 0x5DD060;
 
-			NAKED_FUNC_START()
+			API_FUNC_NAKED_START()
 				push	local_player_index
 				call	TEMP_CALL_ADDR
-			NAKED_FUNC_END_CDECL(1)
+			API_FUNC_NAKED_END_CDECL(1)
 		}
 		API_FUNC_NAKED static void player_ui_set_current_player_profile(int32 local_player_index, int32 unknown, byte profile[Enums::k_player_profile_buffer_size])
 		{
 			static const uint32 TEMP_CALL_ADDR = 0x5DD470;
 
-			NAKED_FUNC_START()
+			API_FUNC_NAKED_START()
 				push	profile
 				push	unknown
 				push	local_player_index
 				call	TEMP_CALL_ADDR
-			NAKED_FUNC_END_CDECL(3)
+			API_FUNC_NAKED_END_CDECL(3)
 		}
 
 		static void PLATFORM_API profile_load_override(cstring profile_name)

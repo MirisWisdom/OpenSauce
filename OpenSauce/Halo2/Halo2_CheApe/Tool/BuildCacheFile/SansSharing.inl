@@ -89,7 +89,7 @@ namespace build_cache_file_ex_hacks
 		static void* TAG_SHARING_LOAD_MULTIPLAYER_SHARED_CALL	= CAST_PTR(void*, 0x5883DE);
 		static API_FUNC_NAKED bool PLATFORM_API tag_sharing_load_multiplayer_shared_nullsub(s_shared_tag_index* shared_tag_index, s_shared_tag_index* out_shared_tag_index_sorted)
 		{
-			NAKED_FUNC_START()
+			API_FUNC_NAKED_START()
 
 				mov		eax, out_shared_tag_index_sorted
 				mov		build_cache_shared_tag_index_sorted, eax
@@ -98,7 +98,7 @@ namespace build_cache_file_ex_hacks
 				xor		eax, eax
 				mov		al, 1
 
-			NAKED_FUNC_END(0)
+			API_FUNC_NAKED_END(0)
 		}
 
 		static void shared_dependency_graph_clear(s_shared_dependency_graph* graph)
@@ -126,7 +126,7 @@ namespace build_cache_file_ex_hacks
 			static uint32 CALL_ADDRESS = 0x580AF0;
 			static uint32 global_shared_tag_index = 0xA801DC;
 
-			NAKED_FUNC_START()
+			API_FUNC_NAKED_START()
 
 				push	shared_tag_index
 				call	shared_tag_data_clear
@@ -138,7 +138,7 @@ namespace build_cache_file_ex_hacks
 				mov		eax, global_shared_tag_index
 				mov		[eax], 0
 
-			NAKED_FUNC_END(0)
+			API_FUNC_NAKED_END(0)
 		}
 
 		static void* BUILD_CACHE_FILE_FOR_SCENARIO__ADD_DEBUG_TAG_NAMES_CALL = CAST_PTR(void*, 0x589031);
@@ -147,7 +147,7 @@ namespace build_cache_file_ex_hacks
 			static uint32 CALL_ADDRESS = 0x580AF0;
 			static uint32 JMP_ADDRESS = 0x589036;
 
-			NAKED_FUNC_START()
+			API_FUNC_NAKED_START()
 
 				push	0
 				push	cache_header
@@ -155,7 +155,7 @@ namespace build_cache_file_ex_hacks
 				add		esp, 4 * 2
 				//jmp		JMP_ADDRESS
 
-			NAKED_FUNC_END(0)
+			API_FUNC_NAKED_END(0)
 		}
 
 		static int32* _tag_sharing_expected_tag_count		= CAST_PTR(int32*,0x5817C7);

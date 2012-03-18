@@ -281,10 +281,16 @@
 	// End the code to a naked function which takes arguments 
 	// and is also __stdcall
 	#define API_FUNC_NAKED_END(arg_count)	\
-			__asm mov	esp, ebp			\
 			__asm pop	ebp					\
 			__asm retn	(arg_count * 4)		\
 		}
+
+	// For usage after calling cdecl functions in assembly code.
+	// In the case were our assembly code is just interfacing 
+	// with an outside function.
+	#define API_FUNC_NAKED_END_CDECL(arg_count)	\
+			__asm add	esp, (arg_count * 4)	\
+		API_FUNC_NAKED_END(arg_count)
 
 	// Start the code to a naked function with no args
 	#define API_FUNC_NAKED_START_() __asm	\
@@ -299,6 +305,7 @@
 
 	#define API_FUNC_NAKED_START()
 	#define API_FUNC_NAKED_END(arg_count)
+	#define API_FUNC_NAKED_END_CDECL(arg_count)
 
 	#define API_FUNC_NAKED_START_()
 	#define API_FUNC_NAKED_END_()

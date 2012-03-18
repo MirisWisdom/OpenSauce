@@ -174,45 +174,45 @@ namespace Yelo
 		{
 			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(KS_GETWINDOW);
 
-			NAKED_FUNC_START()
+			API_FUNC_NAKED_START()
 				push	child
 				push	keystone
 				call	TEMP_CALL_ADDR
-			NAKED_FUNC_END_CDECL(2)
+			API_FUNC_NAKED_END_CDECL(2)
 		}
 
 		API_FUNC_NAKED void WindowRelease(void* handle)
 		{
 			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(KW_RELEASE);
 
-			NAKED_FUNC_START()
+			API_FUNC_NAKED_START()
 				push	handle
 				call	TEMP_CALL_ADDR
-			NAKED_FUNC_END_CDECL(1)
+			API_FUNC_NAKED_END_CDECL(1)
 		}
 
 		API_FUNC_NAKED void* WindowGetControlByID(void* window, wcstring id)
 		{
 			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(KW_GETCONTROLBYID);
 
-			NAKED_FUNC_START()
+			API_FUNC_NAKED_START()
 				push	id
 				push	window
 				call	TEMP_CALL_ADDR
-			NAKED_FUNC_END_CDECL(2)
+			API_FUNC_NAKED_END_CDECL(2)
 		}
 
 		API_FUNC_NAKED LRESULT ControlSendMessage(void* control, uint32 msg, WPARAM wParam, LPARAM lParam)
 		{
 			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(KC_SENDMESSAGE);
 
-			NAKED_FUNC_START()
+			API_FUNC_NAKED_START()
 				push	lParam
 				push	wParam
 				push	msg
 				push	control
 				call	TEMP_CALL_ADDR
-			NAKED_FUNC_END_CDECL(4)
+			API_FUNC_NAKED_END_CDECL(4)
 		}
 	};
 };

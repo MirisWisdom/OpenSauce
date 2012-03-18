@@ -287,21 +287,33 @@
 				Name="Shared"
 				>
 				<File
-					RelativePath="..\..\shared\Include\Common\BaseBlamTypes.cpp"
+					RelativePath="..\..\shared\Include\Common\PlatformShared.hpp"
 					>
 				</File>
-				<File
-					RelativePath="..\..\shared\Include\Common\BaseBlamTypes.hpp"
+				<Filter
+					Name="Blam"
 					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Common\BaseBlamTypesXbox.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Common\BaseBlamTypesXbox.hpp"
-					>
-				</File>
+					<File
+						RelativePath="..\..\shared\Include\Common\BaseBlamTypes.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\Common\BaseBlamTypes.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\Common\BaseBlamTypesXbox.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\Common\BaseBlamTypesXbox.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\Blam\Halo2\BlamDefinitions.hpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Impl"

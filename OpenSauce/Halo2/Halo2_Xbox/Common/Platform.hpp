@@ -6,6 +6,11 @@
 */
 #pragma once
 
+#include <Common/PlatformShared.hpp>
+#define PLATFORM_TARGET		PLATFORM_TARGET_XBOX
+#define PLATFORM_IS_EDITOR	FALSE
+
+
 #define PLATFORM_H2			0x00000001
 // The last Auto-Update
 #define PLATFORM_H2_AU		0x00000002
@@ -28,7 +33,6 @@
 // Calling convention of Halo 2 Xbox
 #define PLATFORM_API __stdcall
 
-#define PLATFORM_IS_EDITOR 0
 
 // The Halo 2 alpha was the only game build which still used debug data in the tag interface structures
 #if PLATFORM_ID != PLATFORM_H2_ALPHA

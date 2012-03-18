@@ -46,17 +46,17 @@ void API_FUNC_NAKED Delete(datum_index object_index)
 {
 	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_DELETE);
 
-	NAKED_FUNC_START()
+	API_FUNC_NAKED_START()
 		mov		eax, object_index
 		call	TEMP_CALL_ADDR
-	NAKED_FUNC_END(1)
+	API_FUNC_NAKED_END(1)
 }
 
 void API_FUNC_NAKED Attach(datum_index target_object_index, cstring target_marker_name, datum_index object_index, cstring marker_name)
 {
 	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_ATTACH_TO_MARKER);
 
-	NAKED_FUNC_START()
+	API_FUNC_NAKED_START()
 		push	esi
 		push	edi
 
@@ -71,17 +71,17 @@ void API_FUNC_NAKED Attach(datum_index target_object_index, cstring target_marke
 
 		pop		edi
 		pop		esi
-	NAKED_FUNC_END(4)
+	API_FUNC_NAKED_END(4)
 }
 
 void API_FUNC_NAKED Detach(datum_index object_index)
 {
 	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_DETACH);
 
-	NAKED_FUNC_START()
+	API_FUNC_NAKED_START()
 		push	object_index
 		call	TEMP_CALL_ADDR
-	NAKED_FUNC_END_CDECL(1)
+	API_FUNC_NAKED_END_CDECL(1)
 }
 
 
@@ -293,13 +293,13 @@ void API_FUNC_NAKED SetScale(datum_index object_index, real scale, int32 ticks)
 {
 	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_SET_SCALE);
 
-	NAKED_FUNC_START()
+	API_FUNC_NAKED_START()
 		push    ticks
 		push    scale
 		mov		eax, object_index
 		call	TEMP_CALL_ADDR
 		add     esp, 4 * 2
-	NAKED_FUNC_END(3)
+	API_FUNC_NAKED_END(3)
 }
 
 void UnitOrientToCutsceneFlag(datum_index unit_index, int32 cutscene_flag_index, bool set_facing, bool i_dont_know)
@@ -362,8 +362,8 @@ int16 API_FUNC_NAKED UnitGetCustomAnimationTime(datum_index unit_index)
 {
 	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(UNIT_GET_CUSTOM_ANIMATION_TIME);
 
-	NAKED_FUNC_START()
+	API_FUNC_NAKED_START()
 		mov		eax, unit_index
 		call	TEMP_CALL_ADDR
-	NAKED_FUNC_END(1)
+	API_FUNC_NAKED_END(1)
 }

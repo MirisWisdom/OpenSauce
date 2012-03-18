@@ -27,7 +27,7 @@ API_FUNC_NAKED static void import_model_animations_proc_impl(s_file_reference& r
 	static const uint32 sub_52A540 = 0x52A540;
 	static const uint32 sub_412430 = 0x412430;
 
-	NAKED_FUNC_START()
+	API_FUNC_NAKED_START()
 
 		push	1
 		push	data_directory
@@ -42,7 +42,7 @@ API_FUNC_NAKED static void import_model_animations_proc_impl(s_file_reference& r
 		call	sub_412430
 		add		esp, 4 * 4
 
-	NAKED_FUNC_END(1);
+	API_FUNC_NAKED_END(1);
 }
 
 /* s_intermediate_animation, 0x21C
