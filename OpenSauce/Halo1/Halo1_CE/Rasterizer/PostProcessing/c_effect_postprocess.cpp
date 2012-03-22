@@ -53,7 +53,7 @@ namespace Yelo
 		 */
 		void c_effect_postprocess::AddShaderInstance(c_shader_instance* instance)
 		{
-			Yelo::AppendLinkedListObject(CAST_PTR(ILinkedListObject**, &m_members.m_shaders.list), instance);
+			Yelo::AppendLinkedListNode(m_members.m_shaders.list, instance);
 			m_members.m_shaders.count++;
 		}
 
