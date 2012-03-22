@@ -15,23 +15,8 @@ namespace Yelo
 {
 	namespace Rasterizer { namespace PostProcessing
 	{
-		class c_shader_instance : public ILinkedListObject
+		class c_shader_instance : public LinkedListNode<c_shader_instance>
 		{
-			/////////////////////////////////////////////////
-			// ILinkedListObject
-		private:
-			struct
-			{
-				c_shader_instance* previous;
-				c_shader_instance* next;
-			}m_list_tree;
-
-		public:
-			ILinkedListObject* GetPrevious() { return m_list_tree.previous; }
-			ILinkedListObject* GetNext() { return m_list_tree.next; }
-			void SetPrevious(ILinkedListObject* object) { m_list_tree.previous = CAST_PTR(c_shader_instance*, object); }
-			void SetNext(ILinkedListObject* object) { m_list_tree.next = CAST_PTR(c_shader_instance*, object); }
-
 			/////////////////////////////////////////////////
 			// members
 		protected:
@@ -61,8 +46,7 @@ namespace Yelo
 		public:
 			virtual void Ctor()
 			{
-				m_list_tree.previous = NULL;
-				m_list_tree.next = NULL;
+				ClearNodeData();
 
 				m_members.m_flags.is_valid = false;
 				m_members.m_flags.is_active = true;
@@ -71,8 +55,7 @@ namespace Yelo
 
 			virtual void Dtor()
 			{
-				m_list_tree.next = NULL;
-				m_list_tree.previous = NULL;
+				ClearNodeData();
 
 				m_members.m_flags.is_valid = false;
 				m_members.m_flags.is_active = true;

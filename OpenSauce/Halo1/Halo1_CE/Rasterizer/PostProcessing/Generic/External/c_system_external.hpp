@@ -46,20 +46,9 @@ namespace Yelo
 			public IPostProcessingUserSettings
 		{
 		private:
-			class s_parameter_handle : public ILinkedListObject
+			class s_parameter_handle : public LinkedListNode<s_parameter_handle>
 			{
 			public:
-				struct{
-					s_parameter_handle* previous;
-					s_parameter_handle* next;
-				}m_tree;
-
-				ILinkedListObject* GetNext() { return CAST_PTR(ILinkedListObject*, m_tree.next); }
-				ILinkedListObject* GetPrevious() { return CAST_PTR(ILinkedListObject*, m_tree.previous); }
-
-				void SetNext(ILinkedListObject* next) { m_tree.next = CAST_PTR(s_parameter_handle*, next); }
-				void SetPrevious(ILinkedListObject* previous) { m_tree.previous = CAST_PTR(s_parameter_handle*, previous); }
-
 				D3DXHANDLE handle;
 				TagGroups::shader_variable_type type;
 			};
@@ -220,7 +209,7 @@ namespace Yelo
 			/////////////////////////////////////////////////
 			// shader parameters
 			uint32 GetParameterHandles(LPD3DXEFFECTCOMPILER compiler,
-				s_parameter_handle** list,
+				s_parameter_handle*& list,
 				const char* semantic_format,
 				const uint32 count,
 				const int16 parameter_type,

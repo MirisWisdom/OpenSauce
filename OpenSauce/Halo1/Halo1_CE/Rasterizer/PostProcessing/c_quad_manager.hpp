@@ -43,21 +43,8 @@ namespace Yelo
 			}
 		};
 
-		class c_quad_instance : public ILinkedListObject
+		class c_quad_instance : public LinkedListNode<c_quad_instance>
 		{
-			/////////////////////////////////////////////////
-			// ILinkedListObject
-			struct{
-				c_quad_instance*	previous;
-				c_quad_instance*	next;
-			}m_list;
-		public:			
-			ILinkedListObject* GetNext() { return m_list.next; }
-			ILinkedListObject* GetPrevious() { return m_list.previous; }
-
-			void SetNext(ILinkedListObject* next) { m_list.next = CAST_PTR(c_quad_instance*, next); }
-			void SetPrevious(ILinkedListObject* previous) { m_list.previous = CAST_PTR(c_quad_instance*, previous); }
-
 			/////////////////////////////////////////////////
 			// members
 		protected:
@@ -89,8 +76,7 @@ namespace Yelo
 				m_quad.primitive_count = (m_quad.tessellation.x * m_quad.tessellation.y) * 2;
 				m_quad.start_vertex = 0;
 				m_quad.start_index = 0;
-				m_list.next = NULL; 
-				m_list.previous = NULL;
+				ClearNodeData();
 				m_reference_count = 0;
 			}
 
@@ -103,8 +89,7 @@ namespace Yelo
 				m_quad.primitive_count = 0;
 				m_quad.start_vertex = 0;
 				m_quad.start_index = 0;
-				m_list.next = NULL; 
-				m_list.previous = NULL;
+				ClearNodeData();
 				m_reference_count = 0;
 			}
 

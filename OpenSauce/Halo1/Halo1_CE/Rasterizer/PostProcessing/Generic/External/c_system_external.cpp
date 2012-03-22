@@ -912,21 +912,21 @@ namespace Yelo
 			uint32 parameter_count = 0;
 			s_parameter_handle* parameter_list = NULL;
 			//textures
-			parameter_count += GetParameterHandles(compiler, &parameter_list, "VARTEXTURE_%i", 4, Enums::_shader_variable_base_type_texture, 1);
+			parameter_count += GetParameterHandles(compiler, parameter_list, "VARTEXTURE_%i", 4, Enums::_shader_variable_base_type_texture, 1);
 			//booleans
-			parameter_count += GetParameterHandles(compiler, &parameter_list, "VARBOOL_%i", 16, Enums::_shader_variable_base_type_boolean, 1);
+			parameter_count += GetParameterHandles(compiler, parameter_list, "VARBOOL_%i", 16, Enums::_shader_variable_base_type_boolean, 1);
 			//integers
-			parameter_count += GetParameterHandles(compiler, &parameter_list, "VARINT_%i", 16, Enums::_shader_variable_base_type_integer, 1);
+			parameter_count += GetParameterHandles(compiler, parameter_list, "VARINT_%i", 16, Enums::_shader_variable_base_type_integer, 1);
 			//floats
-			parameter_count += GetParameterHandles(compiler, &parameter_list, "VARFLOAT_%i", 16, Enums::_shader_variable_base_type_float, 1);
+			parameter_count += GetParameterHandles(compiler, parameter_list, "VARFLOAT_%i", 16, Enums::_shader_variable_base_type_float, 1);
 			//float2s
-			parameter_count += GetParameterHandles(compiler, &parameter_list, "VARFLOAT2_%i", 16, Enums::_shader_variable_base_type_float, 2);
+			parameter_count += GetParameterHandles(compiler, parameter_list, "VARFLOAT2_%i", 16, Enums::_shader_variable_base_type_float, 2);
 			//float3s
-			parameter_count += GetParameterHandles(compiler, &parameter_list, "VARFLOAT3_%i", 16, Enums::_shader_variable_base_type_float, 3);
+			parameter_count += GetParameterHandles(compiler, parameter_list, "VARFLOAT3_%i", 16, Enums::_shader_variable_base_type_float, 3);
 			//float4s
-			parameter_count += GetParameterHandles(compiler, &parameter_list, "VARFLOAT4_%i", 16, Enums::_shader_variable_base_type_float, 4);
+			parameter_count += GetParameterHandles(compiler, parameter_list, "VARFLOAT4_%i", 16, Enums::_shader_variable_base_type_float, 4);
 			//colors
-			parameter_count += GetParameterHandles(compiler, &parameter_list, "VARCOLOR_%i", 16, Enums::_shader_variable_base_type_argb_color, 1);
+			parameter_count += GetParameterHandles(compiler, parameter_list, "VARCOLOR_%i", 16, Enums::_shader_variable_base_type_argb_color, 1);
 
 			if(parameter_count == 0)
 				return;
@@ -942,23 +942,7 @@ namespace Yelo
 			}
 
 			// delete the parameter handles
-			// get the last element in the list
-			current = parameter_list;
-			while(current->GetNext())
-				current = CAST_PTR(s_parameter_handle*, current->GetNext());
-
-			do
-			{
-				// store the next object to delete
-				s_parameter_handle* previous = CAST_PTR(s_parameter_handle*, current->GetPrevious());
-
-				// remove the current object from the list and delete it
-				RemoveLinkedListObject(CAST_PTR(ILinkedListObject**, &parameter_list), current);
-				delete current;
-
-				// move on to the next object
-				current = previous;
-			}while(current);
+			DeleteLinkedList(parameter_list);
 		}
 
 		void c_system_external::DestroyShaderDefinition(TagGroups::s_shader_postprocess_generic* definition)
@@ -1147,7 +1131,7 @@ namespace Yelo
 		/////////////////////////////////////////////////
 		// parameters
 		uint32 c_system_external::GetParameterHandles(LPD3DXEFFECTCOMPILER compiler,
-			s_parameter_handle** list,
+			s_parameter_handle*& list,
 			const char* semantic_format,
 			const uint32 count,
 			const int16 parameter_type,
@@ -1170,7 +1154,7 @@ namespace Yelo
 				parameter->type.type = parameter_type;
 				parameter->type.count = parameter_type_count;
 
-				AppendLinkedListObject(CAST_PTR(ILinkedListObject**, list), CAST_PTR(ILinkedListObject*, parameter));
+				AppendLinkedListNode(list, parameter);
 				parameter_count++;
 			}
 			return parameter_count;

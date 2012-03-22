@@ -372,7 +372,7 @@ namespace Yelo
 				quad = new c_quad_instance();
 				quad->Ctor(tess_final, quad_definition.x_bounds, quad_definition.y_bounds);
 
-				AppendLinkedListObject(CAST_PTR(ILinkedListObject**, &m_globals.m_quad_list), quad);
+				AppendLinkedListNode(m_globals.m_quad_list, quad);
 			}
 
 			// increase the reference count of the quad
@@ -439,7 +439,7 @@ namespace Yelo
 				// if the quad isn't being used
 				if(!quad_instance->GetRef())
 				{
-					RemoveLinkedListObject(CAST_PTR(ILinkedListObject**, &m_globals.m_quad_list), quad_instance);
+					RemoveLinkedListNode(m_globals.m_quad_list, quad_instance);
 
 					quad_instance->Dtor();
 					delete quad_instance;
