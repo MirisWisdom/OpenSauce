@@ -77,8 +77,12 @@ class TiXmlString
 	// TiXmlString constructor, based on a string
 	TIXML_EXPLICIT TiXmlString ( const char * copy) : rep_(0)
 	{
-		init( static_cast<size_type>( strlen(copy) ));
-		memcpy(start(), copy, length());
+		if(copy != NULL)
+		{
+			init( static_cast<size_type>( strlen(copy) ));
+			memcpy(start(), copy, length());
+		}
+		else init(0); // handle null string cases
 	}
 
 	// TiXmlString constructor, based on a string
@@ -96,6 +100,12 @@ class TiXmlString
 
 	TiXmlString& operator = (const char * copy)
 	{
+		if(copy == NULL) // handle null string cases
+		{
+			clear();
+			return *this;
+		}
+
 		return assign( copy, (size_type)strlen(copy));
 	}
 

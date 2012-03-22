@@ -78,7 +78,15 @@ distribution.
 		#define TIXML_SNPRINTF snprintf
 		#define TIXML_SSCANF   sscanf
 	#endif
-#endif	
+#endif
+
+// If TIXML_SAFE is undefined, these won't ever be defined...
+#ifndef TIXML_SNPRINTF
+	#define TIXML_SNPRINTF snprintf
+#endif
+#ifndef TIXML_SSCANF
+	#define TIXML_SSCANF sscanf
+#endif
 
 class TiXmlDocument;
 class TiXmlElement;
