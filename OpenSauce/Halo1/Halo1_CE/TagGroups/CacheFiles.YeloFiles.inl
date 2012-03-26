@@ -127,7 +127,7 @@ static void MapListInitializeYelo()
 		do Engine::MapListAddMap(fd.cFileName);
 		while(FindNextFileA(h, &fd));
 
-		*GET_PTR2(map_list_map_extension_ref) = GET_PTR(map_list_map_extension);
+		*GET_PTR2(map_list_map_extension_ref) = GET_PTR2(map_list_map_extension);
 
 		FindClose(h);
 	}
