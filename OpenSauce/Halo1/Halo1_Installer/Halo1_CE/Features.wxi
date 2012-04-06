@@ -28,6 +28,7 @@
 		<ComponentRef Id='Halo1_CE_OSUserSettings_COMP' />
 		<ComponentRef Id='Halo1_CE_OSServerSettings_COMP' />
 		<ComponentRef Id='Halo1_CE_OSPPSettings_COMP' />
+		<ComponentRef Id='Halo1_CE_OpenSauceSettingsRemove_COMP' />
 		<ComponentRef Id='Halo1_CE_OpenSauceRemove_COMP' />
 		<ComponentRef Id='Halo1_CE_YeloRemove_COMP' />
 

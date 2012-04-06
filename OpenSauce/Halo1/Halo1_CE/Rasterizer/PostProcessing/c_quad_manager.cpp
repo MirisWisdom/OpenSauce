@@ -309,7 +309,7 @@ namespace Yelo
 					vertex_offset += quad_instance->Quad().vertex_count;
 					index_offset += quad_instance->Quad().primitive_count * 3;
 
-					quad_instance = CAST_PTR(c_quad_instance*, quad_instance->GetNext());
+					quad_instance = quad_instance->GetNext();
 				}
 				// unlock the buffers
 				m_globals.m_buffers.vertex->Unlock();
@@ -434,7 +434,7 @@ namespace Yelo
 			c_quad_instance* quad_instance = m_globals.m_quad_list;
 			while(quad_instance)
 			{
-				c_quad_instance* quad_next = CAST_PTR(c_quad_instance*, quad_instance->GetNext());
+				c_quad_instance* quad_next = quad_instance->GetNext();
 
 				// if the quad isn't being used
 				if(!quad_instance->GetRef())
@@ -484,7 +484,7 @@ namespace Yelo
 					quad_out = quad_instance;
 					break;
 				}
-				quad_instance = CAST_PTR(c_quad_instance*, quad_instance->GetNext());
+				quad_instance = quad_instance->GetNext();
 			}
 			// return NULL if no match is found
 			return quad_out;
@@ -507,7 +507,7 @@ namespace Yelo
 			while(quad_instance)
 			{
 				count += quad_instance->Quad().vertex_count;
-				quad_instance = CAST_PTR(c_quad_instance*, quad_instance->GetNext());
+				quad_instance = quad_instance->GetNext();
 			}
 			return count;
 		}
@@ -529,7 +529,7 @@ namespace Yelo
 			while(quad_instance)
 			{
 				count += quad_instance->Quad().primitive_count * 3;
-				quad_instance = CAST_PTR(c_quad_instance*, quad_instance->GetNext());
+				quad_instance = quad_instance->GetNext();
 			}
 			return count;
 		}

@@ -46,6 +46,11 @@
 		<Property Id='CREATESTARTMENUSHORTCUTS' Secure='yes' Value='1'/>
 		<Property Id='CREATEDESKTOPSHORTCUTS' Secure='yes' Value='1'/>
 
+		<PropertyRef Id="NETFRAMEWORK35" />
+		<Condition Message="This setup requires the .NET Framework 3.5 to be installed.">
+			<![CDATA[Installed OR NETFRAMEWORK35]]>
+		</Condition>
+
 		<!-- Set the icon in Add/Remove programs-->
 		<Icon Id='OpenSauce_Icon_PROP' SourceFile='$(var.ResourceFolder)Installer\icon.ico'/>
 		<Property Id='ARPPRODUCTICON' Value='OpenSauce_Icon_PROP'/>
@@ -59,6 +64,7 @@
 		<Property Id='DiskPrompt' Value='$(var.ProductName) Installation [1]' />	
 
 		<Directory Id='TARGETDIR' Name='SourceDir'>
+			<Merge Id="VCRedist_MERGE" SourceFile="$(var.ResourceFolder)Installer\vs_runtime\Microsoft_VC90_CRT_x86.msm" DiskId="1" Language="0"/>
 			<!-- Files and folders that belong in the common application data folder-->
 			<Directory Id='CommonAppDataFolder'>
 				<Directory Id='OpenSauce_KornnerStudios_DIR' Name='Kornner Studios'>
@@ -263,10 +269,21 @@
 							 AllowAdvertise='no'
 							 Display='hidden'
 							 Level='1'>
-				
+
 				<ComponentRef Id='DirectX_Redist_COMP'/>
-				
+
 			</Feature>
+
+			<Feature Id='VS_Runtime_FEAT'
+							 Title='Visual C++ 9.0 Redist'
+							 AllowAdvertise='no'
+							 Display='hidden'
+							 Level='1'>
+
+				<MergeRef Id='VCRedist_MERGE'/>
+
+			</Feature>
+			
 			<!-- Game specific features are included here-->
 			<?ifdef Halo1_CE?>
 			<?include Halo1_CE/Features.wxi?>

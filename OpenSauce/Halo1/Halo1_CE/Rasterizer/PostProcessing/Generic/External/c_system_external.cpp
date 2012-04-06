@@ -938,7 +938,7 @@ namespace Yelo
 			for(int i = 0; (i < definition->parameters.Count) && current; i++)
 			{
 				SetupParameter(compiler, *current, definition->parameters[i]);
-				current = CAST_PTR(s_parameter_handle*, current->GetNext());
+				current = current->GetNext();
 			}
 
 			// delete the parameter handles
