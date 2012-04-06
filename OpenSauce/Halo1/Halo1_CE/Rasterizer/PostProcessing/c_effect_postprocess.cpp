@@ -37,7 +37,7 @@ namespace Yelo
 			while(current)
 			{
 				m_members.effect_definition->runtime.flags.uses_gbuffer_bit |= current->UsesGBuffer();
-				current = CAST_PTR(c_shader_instance*, current->GetNext());
+				current = current->GetNext();
 			}
 		}
 
@@ -81,7 +81,7 @@ namespace Yelo
 				current->Validate();
 
 				valid &= current->IsValid();
-				current = CAST_PTR(c_shader_instance*, current->GetNext());
+				current = current->GetNext();
 			}
 
 			return valid;
@@ -104,7 +104,7 @@ namespace Yelo
 			while(current)
 			{
 				current->UpdateShaderInstance(delta_time);
-				current = CAST_PTR(c_shader_instance*, current->GetNext());
+				current = current->GetNext();
 			}
 		}
 
@@ -176,7 +176,7 @@ namespace Yelo
 
 					if(FAILED(hr)) break;
 				}
-				current = CAST_PTR(c_shader_instance*, current->GetNext());
+				current = current->GetNext();
 			}
 
 			// if the fade amount is less than 1.0f, fade the effects result

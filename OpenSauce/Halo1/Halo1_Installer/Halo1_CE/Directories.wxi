@@ -67,6 +67,10 @@
 				<File Id='Halo1_CE_OSPPSettings_FILE' Name='OS_Settings.PostProcessing.xml' KeyPath='yes' />
 			</Component>
 
+			<Component Id='Halo1_CE_OpenSauceSettingsRemove_COMP' Guid='7F60DC01-7553-4a30-8D52-50A1D009FC80'>
+				<RemoveFile Id='Halo1_CE_OpenSauceSettings_REM' Name='*.*' On='both'/>
+			</Component>
+
 			<!-- Remove the OpenSauce directory if empty -->
 			<Component Id='Halo1_CE_OpenSauceRemove_COMP' Guid='4ED59B1D-1E70-4853-98CE-CD4EE118CB3B'>
 				<RemoveFolder Id='Halo1_CE_OpenSauce_REMDIR' On='uninstall' />
