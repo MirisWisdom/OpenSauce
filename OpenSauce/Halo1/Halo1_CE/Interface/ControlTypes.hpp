@@ -313,9 +313,9 @@ namespace Yelo
 	{
 		enum buffered_key_flags : byte_flags
 		{
-			_buffered_key_shift_flag =	FLAG(0),// SHIFT key pressed
-			_buffered_key_control_flag =FLAG(1),// CTRL key pressed
-			_buffered_key_alt_flag =	FLAG(2),// ALT key pressed
+			_buffered_key_shift_bit,	// SHIFT key pressed
+			_buffered_key_control_bit,	// CTRL key pressed
+			_buffered_key_alt_bit,		// ALT key pressed
 		};
 	};
 

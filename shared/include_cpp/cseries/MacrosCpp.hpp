@@ -198,11 +198,11 @@
 #define MASK(count) ( (unsigned)(1 << (count)) - (unsigned)1 )
 
 // Checks to see if [flags] has only the flags it's allowed to have, enabled
-#define VALID_FLAGS(flags, flags_count)			\
-	(											\
-		(										\
-			(flags) & ( ~(1<<(flags_count)) )	\
-		) == 0									\
+#define VALID_FLAGS(flags, flags_count)					\
+	(													\
+		(												\
+			(flags) & ( ~( (1<<(flags_count)) - 1) )	\
+		) == 0											\
 	)
 
 // How many 8 bit integers it takes to hold a bit vector with [size] bits

@@ -23,6 +23,11 @@ namespace Yelo
 		struct bitmap_data;
 
 		struct s_sound_permutation;
+
+		struct s_hud_absolute_placement;
+
+		struct s_hud_element_number;
+		struct s_hud_element_static;
 	};
 };
 
@@ -96,6 +101,22 @@ namespace Yelo
 			_multiplayer_sound_custom16, // default max s_game_globals_multiplayer_information::sounds instances = 60
 
 			_multiplayer_sound_custom,
+		};
+	};
+
+	namespace Flags
+	{
+		enum objects_find_flags : long_flags
+		{
+			_objects_find_collideable_bit,
+			_objects_find_noncollideable_bit,
+		};
+
+		enum hud_draw_element_flags : long_flags
+		{
+			_hud_draw_element_0_bit,
+			_hud_draw_element_1_bit,
+			_hud_draw_element_2_bit,
 		};
 	};
 
@@ -215,6 +236,16 @@ namespace Yelo
 			// Add a string to the hud-chat view
 			void KeystoneChatLogAddString(wcstring str);
 
+			//////////////////////////////////////////////////////////////////////////
+			// TODO
+			void HudDrawMeter(int16 local_player_index, TagGroups::s_hud_absolute_placement* placement, TagGroups::s_hud_element_number* element, 
+				... /*TODO*/ );
+			void HudDrawNumbers(int16 local_player_index, TagGroups::s_hud_absolute_placement* placement, TagGroups::s_hud_element_number* element,
+				int32 number, int32, long_flags, real, real);
+			void HudDrawStaticElement(int16 local_player_index, TagGroups::s_hud_absolute_placement* placement, TagGroups::s_hud_element_static* element, 
+				long_flags flags, argb_color default_color_override);
+			//////////////////////////////////////////////////////////////////////////
+
 			// Print [str] to the hud message queue.
 			// IE, text you see when the game says "Picked up 30 rounds"
 			void HudPrintMessage(wcstring str);
@@ -282,6 +313,10 @@ namespace Yelo
 
 			// Detaches the object from its parent
 			void Detach(datum_index object_index);
+
+			int16 FindInSphere(Flags::objects_find_flags find_flags, long_flags object_type_flags, 
+				const s_scenario_location& location, const real_point3d& center, real radius, 
+				datum_index object_indices[], int16 maximum_object_indices);
 
 			void StartInterpolation(datum_index object_index, int32 interpolation_ticks);
 

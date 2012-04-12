@@ -2135,6 +2135,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Objects\Equipment.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Objects\Equipment.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Objects\ItemDefinitions.hpp"
 				>
 			</File>
@@ -2148,6 +2156,10 @@
 			</File>
 			<File
 				RelativePath=".\Objects\Objects.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Objects\UnitControl.hpp"
 				>
 			</File>
 			<File
@@ -2227,6 +2239,10 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\TagGroups\Halo1\global_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\TagGroups\Halo1\hud_definitions.hpp"
 					>
 				</File>
 				<File

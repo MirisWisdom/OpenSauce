@@ -14,7 +14,7 @@ namespace Yelo
 	namespace Enums
 	{
 		enum {
-			MAXIMUM_NUMBER_OF_HUD_SOUNDS = 12,
+			k_maximum_number_of_hud_sounds = 12, // MAXIMUM_NUMBER_OF_HUD_SOUNDS
 		};
 
 		enum text_style : _enum
@@ -84,27 +84,27 @@ namespace Yelo
 
 	namespace Flags
 	{
-		enum unit_interface_flags
+		enum unit_interface_flags : long_flags
 		{
-			_unit_interface_show_health_flag = FLAG(0),
-			_unit_interface_blink_health_flag = FLAG(1),
-			_unit_interface_show_shield_flag = FLAG(2),
-			_unit_interface_blink_shield_flag = FLAG(3),
-			_unit_interface_show_motion_sensor_flag = FLAG(4),
-			_unit_interface_blink_motion_sensor_flag = FLAG(5),
+			_unit_interface_show_health_bit,
+			_unit_interface_blink_health_bit,
+			_unit_interface_show_shield_bit,
+			_unit_interface_blink_shield_bit,
+			_unit_interface_show_motion_sensor_bit,
+			_unit_interface_blink_motion_sensor_bit,
 		};
 
 		enum weapon_interface_show : byte_flags // TODO: verify this flags field size
 		{
-			_weapon_interface_show_crosshair_flag = FLAG(0),
+			_weapon_interface_show_crosshair_bit,
 		};
 
 		enum text_flag : long_flags
 		{
-			_text_flag1 = FLAG(0),
-			_text_flag2 = FLAG(1),
-			_text_flag4 = FLAG(2),
-			_text_flag8 = FLAG(3),
+			_text_bit1,
+			_text_bit2,
+			_text_bit4,
+			_text_bit8,
 		};
 	};
 
@@ -139,7 +139,7 @@ namespace Yelo
 			int16 integrated_light_time;
 			word_flags active_sound_elements;
 			PAD16;
-			datum_index sound_elements[Enums::MAXIMUM_NUMBER_OF_HUD_SOUNDS]; // sound cache index
+			datum_index sound_elements[Enums::k_maximum_number_of_hud_sounds]; // sound cache index
 		}; BOOST_STATIC_ASSERT( sizeof(s_hud_unit_interface_unit) == 0x58 );
 		struct s_hud_unit_interface
 		{

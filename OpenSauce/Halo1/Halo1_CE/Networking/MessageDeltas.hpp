@@ -476,19 +476,19 @@ namespace Yelo
 		typedef unsigned char	integer_small;
 		typedef short			integer_medium;
 		typedef long			integer_large;
-		typedef float			real;
+//		typedef float			real;
 		typedef bool			boolean;
 		typedef unsigned char	ascii_character;
 		typedef wchar_t			wide_character;
-		typedef unsigned char	ascii_string;
-		typedef wchar_t			wide_string;
-		typedef unsigned char	arbitary_data;
+		typedef unsigned char	ascii_string_t;
+		typedef wchar_t			wide_string_t;
+		typedef unsigned char	arbitary_data_t;
 		
 
-		typedef const void*		pointer;
-		typedef short			enumeration;
+		typedef const void*		pointer_t;
+		typedef short			enumeration_t;
 		
-		typedef long			translated_index;
+		typedef long			translated_index_t;
 
 		struct					point2d
 		{
@@ -504,64 +504,64 @@ namespace Yelo
 
 		struct					vector2d
 		{
-			float i;
-			float j;
+			real i;
+			real j;
 		};
 		struct					vector3d
 		{
-			float i;
-			float j;
-			float k;
+			real i;
+			real j;
+			real k;
 		};
-		typedef float			angle;
-		typedef unsigned long	time;
+//		typedef float			angle;
+		typedef unsigned long	time_t;
 		struct					grenade_counts
 		{
-			short plasma;
-			short frags;
+			int16 plasma;
+			int16 frags;
 		};
 
-		typedef float			fixed_width_1bit;
-		typedef float			fixed_width_3bits;
-		typedef float			fixed_width_6bits;
+		typedef real			fixed_width_1bit;
+		typedef real			fixed_width_3bits;
+		typedef real			fixed_width_6bits;
 
 		typedef struct			t_fixed_width_normal_4bit
 		{
-			float i;
-			float j;
-			float k;
-		}fixed_width_normal_4bit, fixed_width_normal_8bit;
+			real i;
+			real j;
+			real k;
+		}fixed_width_normal_4bit_t, fixed_width_normal_8bit_t;
 		typedef struct			t_fixed_width_normal_16bit
 		{
-			float i;
-			float j;
-			float k;
-			float w;
-		}fixed_width_normal_16bit;
+			real i;
+			real j;
+			real k;
+			real w;
+		}fixed_width_normal_16bit_t;
 		struct					locality_reference_position
 		{
-			float x;
-			float y;
-			float z;
+			real x;
+			real y;
+			real z;
 		};
 		struct					digital_throttle
 		{
-			float unknown1;
-			float unknown2;
+			real unknown1;
+			real unknown2;
 		};
-		typedef short			fixed_width_weapon_index;
-		typedef short			fixed_width_grenade_index;
+		typedef short			fixed_width_weapon_index_t;
+		typedef short			fixed_width_grenade_index_t;
 		typedef struct			t_smart_vector
 		{
-			float i;
-			float j;
-			float k;
-		}smart_vector, angular_velocity, translational_velocity;
+			real i;
+			real j;
+			real k;
+		}smart_vector_t, angular_velocity_t, translational_velocity_t;
 		struct					item_placement_position
 		{
-			float x;
-			float y;
-			float z;
+			real x;
+			real y;
+			real z;
 		};
 #pragma endregion
 
@@ -571,10 +571,10 @@ namespace Yelo
 		typedef unsigned char	remote_player_update_sequence_number;
 		typedef unsigned char	remote_player_action_update_baseline_id;
 		typedef long			update_tick_count;
-		typedef unsigned char	update_id;
-		typedef datum_index		object_index;
-		typedef datum_index		player_index;
-		typedef datum_index		definition_index;
+		typedef unsigned char	update_id_t;
+		typedef datum_index		object_index_t;
+		typedef datum_index		player_index_t;
+		typedef datum_index		definition_index_t;
 		struct					control_flags
 		{
 			unsigned long flag1 : 1;
@@ -594,7 +594,7 @@ namespace Yelo
 			unsigned long flagF : 1;
 		}; BOOST_STATIC_ASSERT( sizeof(control_flags) == 0x4 );
 
-		typedef ascii_character map_name[128];
+		typedef ascii_character	map_name[128];
 		struct					network_map
 		{
 			integer_large		version;
@@ -672,7 +672,7 @@ namespace Yelo
 		};
 		typedef integer_large	parameters_protocol_array[64];
 		typedef wide_character	hud_chat_message[255+1];
-		typedef pointer			hud_chat_message_ptr;
+		typedef pointer_t		hud_chat_message_ptr;
 		typedef real_rgb_color	object_change_colors[4];
 		typedef integer_large	ctf_score_array[2];
 		typedef integer_large	race_score_array[16];
@@ -700,12 +700,12 @@ namespace Yelo
 
 		struct message_delta_guaranteed_object_header
 		{
-			object_index	_object_index;
+			object_index_t	_object_index;
 		};
 
 		struct message_delta_game_object_header
 		{
-			object_index	_object_index;
+			object_index_t	_object_index;
 			integer_small	baseline_index;
 			integer_small	message_index;
 			boolean			update_baseline;
@@ -714,17 +714,17 @@ namespace Yelo
 
 		struct message_delta_game_object_header_timestamped
 		{
-			object_index	_object_index;
+			object_index_t	_object_index;
 			integer_small	baseline_index;
 			integer_small	message_index;
 			boolean			update_baseline;
 			PAD8;
-			time			timestamp;
+			time_t			timestamp;
 		};
 
 		struct biped_update_header
 		{
-			object_index	_object_index;
+			object_index_t	_object_index;
 			integer_small	baseline_index;
 			integer_small	message_index;
 			boolean			update_baseline;
@@ -738,25 +738,25 @@ namespace Yelo
 
 		struct client_game_update_header
 		{
-			update_id		id;
+			update_id_t		id;
 		};
 
 		struct player_score_update_header
 		{
-			player_index	player;
+			player_index_t	player;
 		};
 
 		struct remote_player_action_update_header
 		{
-			player_index	player;
-			update_id		update_id;
+			player_index_t	player;
+			update_id_t		update_id;
 			remote_player_action_update_baseline_id baseline_id;
 		};
 
 		struct remote_player_position_update_header
 		{
-			player_index	player_index;
-			update_id		update_id;
+			player_index_t	player_index;
+			update_id_t		update_id;
 			remote_player_action_update_baseline_id	baseline_id;
 		};
 
