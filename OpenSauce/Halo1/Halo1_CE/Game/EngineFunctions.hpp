@@ -300,6 +300,8 @@ namespace Yelo
 
 		namespace Objects
 		{
+			bool HeaderBlockAllocate(datum_index object_index, size_t block_reference_offset, size_t size);
+
 			void PlacementDataNew(Yelo::Objects::s_object_placement_data& data, datum_index object_definition_index, datum_index owner_object_index = datum_index::null);
 
 			datum_index New(Yelo::Objects::s_object_placement_data& data);

@@ -72,6 +72,10 @@ namespace Yelo
 			//TStructSubGetPtrImpl(real_euler_angles2d,			, 0x224);
 		};
 
+
+		//////////////////////////////////////////////////////////////////////////
+		// weapon
+
 		struct s_weapon_datum_network_data
 		{
 			real_point3d position;
@@ -149,26 +153,40 @@ namespace Yelo
 			TStructSubGetPtrImpl(s_weapon_datum_network_data,	UpdateDelta, 0x314);
 		};
 
+
+		//////////////////////////////////////////////////////////////////////////
+		// equipment
+
+		struct s_equipment_datum_yelo_network_data
+		{
+		};
+		struct s_equipment_data_yelo
+		{
+			enum { k_max_size = 0x18 }; // size of the unknown/useless data in s_equipment_data
+
+		}; BOOST_STATIC_ASSERT( sizeof(s_equipment_data_yelo) <= s_equipment_data_yelo::k_max_size );
 		struct s_equipment_datum_network_data
 		{
 			real_point3d position;
 			real_vector3d transitional_velocity;
 			real_vector3d angular_velocity;
 		}; BOOST_STATIC_ASSERT( sizeof(s_equipment_datum_network_data) == 0x24 );
-		struct s_equipment_data : TStructImpl(Enums::k_object_size_equipment - Enums::k_object_size_item)
+		struct s_equipment_data
 		{
-			enum { DATA_OFFSET = Enums::k_object_size_item, };
+			union {												// 0x22C, unknown (and unused?) bytes
+				struct s_unknown { PAD128; PAD64; }unknown;
 
-			// 0x22C, 0x18 unknown (and unused?) bytes...
-			TStructSubGetPtrImpl(bool,							BaselineValid, 0x244);
-			TStructSubGetPtrImpl(byte,							BaselineIndex, 0x245);
-			TStructSubGetPtrImpl(byte,							MessageIndex, 0x246);
-			// 0x247 PAD8?
-			TStructSubGetPtrImpl(s_equipment_datum_network_data,UpdateBaseline, 0x248);
-			// 0x26C, bool
-			// 0x26D, PAD24
-			TStructSubGetPtrImpl(s_equipment_datum_network_data,UpdateDelta, 0x270);
-		};
+				s_equipment_data_yelo yelo;
+			};
+			bool baseline_valid;								// 0x244
+			byte baseline_index;
+			byte message_index;
+			PAD8;
+			s_equipment_datum_network_data update_baseline;		// 0x248
+			UNKNOWN_TYPE(bool);									// 0x26C probably delta_valid
+			PAD24;
+			s_equipment_datum_network_data update_delta;		// 0x270
+		}; BOOST_STATIC_ASSERT( sizeof(s_equipment_data) == (Enums::k_object_size_equipment - Enums::k_object_size_item) );
 
 		struct s_garbage_data
 		{

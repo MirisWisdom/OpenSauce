@@ -16,6 +16,8 @@
 #include <TagGroups/Halo1/damage_effect_definitions.hpp>
 #include "TagGroups/project_yellow_definitions.hpp"
 
+#include "Objects/Equipment.hpp"
+
 #include "Game/Camera.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Game/Scripting.hpp"
@@ -31,6 +33,9 @@ namespace Yelo
 #define __EL_INCLUDE_ID			__EL_INCLUDE_OBJECTS
 #define __EL_INCLUDE_FILE_ID	__EL_OBJECTS_OBJECTS
 #include "Memory/_EngineLayout.inl"
+
+		s_object_type_definition** ObjectTypeDefinitions()							PTR_IMP_GET(object_type_definitions);
+		s_widget_type_definition*  WidgetTypeDefinitions()							PTR_IMP_GET(widget_type_definitions);
 
 		t_widget_data* Widgets()													DPTR_IMP_GET(widgets);
 		t_flag_data* Flags()														DPTR_IMP_GET(flags);
@@ -93,18 +98,19 @@ namespace Yelo
 		{
 			//Memory::WriteRelativeCall(&Objects::Update, GET_FUNC_VPTR(OBJECTS_UPDATE_HOOK), false);
 
-			Weapon::Initialize();
-			Vehicle::Initialize();
 			UnitInfections::Initialize();
+			Vehicle::Initialize();
+			Weapon::Initialize();
+			Equipment::Initialize();
 
 			InitializeScripting();
 		}
 
 		void Dispose()
-		{
-			UnitInfections::Dispose();
-			Vehicle::Dispose();
+		{			
 			Weapon::Dispose();
+			Vehicle::Dispose();
+			UnitInfections::Dispose();
 		}
 
 		void InitializeForNewMap()

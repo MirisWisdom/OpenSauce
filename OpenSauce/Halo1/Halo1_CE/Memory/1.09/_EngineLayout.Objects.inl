@@ -8,6 +8,9 @@
 //////////////////////////////////////////////////////////////////////////
 // Objects.cpp
 #if __EL_INCLUDE_FILE_ID == __EL_OBJECTS_OBJECTS
+	ENGINE_PTR(s_object_type_definition**, object_type_definitions,				0x6376A4, 0x5AD07C);
+	ENGINE_PTR(s_widget_type_definition*,  widget_type_definitions,				0x6376D8, 0x5AD0B0);
+
 	ENGINE_DPTR(t_widget_data, widgets,											0x7FB398, 0x6C69D8);
 	ENGINE_DPTR(t_flag_data, flags,												0x7FB3A8, 0x6C69E8);
 	ENGINE_DPTR(t_antenna_data, antennas,										0x7FB3AC, 0x6C69EC);

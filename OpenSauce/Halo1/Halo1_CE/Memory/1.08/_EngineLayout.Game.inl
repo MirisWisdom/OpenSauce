@@ -272,6 +272,10 @@ namespace Fov
 	FUNC_PTR(PLAYERS_UPDATE_BEFORE_GAME_CLIENT_HOOK,	0x4777DB, 0x46F25B);
 	FUNC_PTR(PLAYERS_UPDATE_AFTER_GAME_HOOK,			0x477B6B, 0x46F5EB);
 
+	namespace ActionResults
+	{
+	};
+
 
 //////////////////////////////////////////////////////////////////////////
 // Scripting.cpp

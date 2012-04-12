@@ -16,15 +16,15 @@ namespace Yelo
 			k_maximum_number_of_magazines_per_weapon = 2,
 		};
 
-		enum global_grenade_type
+		enum grenade_type : _enum
 		{
-			_global_grenade_type_frag,
-			_global_grenade_type_plasma,
+			_grenade_type_frag,
+			_grenade_type_plasma,
 
-			_global_grenade_type
+			_grenade_type
 		};
 
-		enum equipment_powerup
+		enum equipment_powerup : _enum
 		{
 			_equipment_powerup_none,
 
@@ -37,6 +37,30 @@ namespace Yelo
 			_equipment_powerup_grenade,
 
 			_equipment_powerup
+		};
+
+		enum equipment_yelo_type : _enum
+		{
+			_equipment_yelo_type_none,
+
+			_equipment_yelo_type_armor_ability,
+			_equipment_yelo_type_deployable,
+
+			_equipment_yelo_type,
+		};
+
+		enum equipment_yelo_function_mode : _enum
+		{
+			_equipment_yelo_function_mode_none,
+
+			_equipment_yelo_function_mode,
+		};
+	};
+
+	namespace Flags
+	{
+		enum equipment_yelo_flags : word_flags
+		{
 		};
 	};
 
@@ -68,7 +92,7 @@ namespace Yelo
 			TAG_PAD(int32, 30);
 
 			struct {
-				real_bounds Delay;
+				real_bounds delay;
 				TAG_FIELD(tag_reference, detonating_effect, "effe");
 				TAG_FIELD(tag_reference, effect, "effe");
 			}detonation;
@@ -81,15 +105,54 @@ namespace Yelo
 		};
 
 
+		//////////////////////////////////////////////////////////////////////////
+		// equipment
 
+		struct s_equipment_yelo_armor_ability
+		{
+			struct s_tank {
+				TAG_FIELD(real, size);
+				TAG_FIELD(real, recharge_rate);
+				TAG_FIELD(int16, count);
+				TAG_FIELD(int16, swap_time);
+			}fuel_tank;
+
+			struct s_fuel {
+				TAG_FIELD(real, cost);
+				TAG_FIELD(real, recharge_rate);
+				TAG_FIELD(real, recharge_cooldown);
+			}fuel;
+		};
+		struct s_equipment_yelo_deployable
+		{
+			TAG_FIELD(int16, usage_count);
+			PAD16;
+		};
+
+		struct s_equipment_yelo_definition
+		{
+			enum { k_max_definition_size = sizeof(tag_reference)*9 }; // size of the useless padding in equipment
+
+			TAG_FIELD(Flags::equipment_yelo_flags, flags);
+			PAD16;
+			PAD32; PAD32; PAD32;
+
+			struct s_effects {
+				TAG_FIELD(tag_reference, activate, 'effe', 'snd!');
+				TAG_FIELD(tag_reference, active, 'effe', 'snd!');
+				TAG_FIELD(tag_reference, deactivate, 'effe', 'snd!');
+			}effects;
+
+		}; BOOST_STATIC_ASSERT( sizeof(s_equipment_yelo_definition) <= s_equipment_yelo_definition::k_max_definition_size );
 		struct _equipment_definition
 		{
 			TAG_ENUM(powerup_type, Enums::equipment_powerup);
-			TAG_ENUM(grenade_type, Enums::global_grenade_type);
+			TAG_ENUM(grenade_type, Enums::grenade_type);
 			TAG_FIELD(real, powerup_time);
 			TAG_FIELD(tag_reference, pickup_sound, 'snd!');
 			union {
-				TAG_PAD(tag_reference, 9);
+				TAG_PAD(byte, s_equipment_yelo_definition::k_max_definition_size);
+				//s_equipment_yelo_definition yelo;
 			};
 		}; BOOST_STATIC_ASSERT( sizeof(_equipment_definition) == 0xA8 );
 		struct s_equipment_definition : s_item_definition
@@ -99,6 +162,9 @@ namespace Yelo
 			_equipment_definition equipment;
 		};
 
+
+		//////////////////////////////////////////////////////////////////////////
+		// weapon
 
 		struct aim_assist_parameters
 		{

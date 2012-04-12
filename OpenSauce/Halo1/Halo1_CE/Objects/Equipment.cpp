@@ -13,34 +13,44 @@
 namespace Yelo
 {
 	namespace Objects { namespace Equipment {
-		
-		void InitializeType(s_object_type_definition* equipment_type)
+
+		void InitializeType(s_object_type_definition*);
+		void Initialize()
+		{
+			if(true) return; // TODO: finish the equipment code then remove this
+
+			InitializeType(ObjectTypeDefinitions()[Enums::_object_type_equipment]);
+		}
+
+		static bool PLATFORM_API New(datum_index equipment_index)
+		{
+			s_equipment_datum* equipment = (*Objects::ObjectHeader())[equipment_index]->Type._equipment;
+			TagGroups::s_equipment_definition const* definition = GetObjectDefinition<TagGroups::s_equipment_definition>(equipment_index);
+
+			return true;
+		}
+
+		static void PLATFORM_API Delete(datum_index equipment_index)
+		{
+		}
+
+		static bool PLATFORM_API Update(datum_index equipment_index)
+		{
+			return true;
+		}
+
+		static void PLATFORM_API ExportFunctionValues(datum_index equipment_index)
+		{
+			s_equipment_datum* equipment = (*Objects::ObjectHeader())[equipment_index]->Type._equipment;
+			TagGroups::s_equipment_definition const* definition = GetObjectDefinition<TagGroups::s_equipment_definition>(equipment_index);
+		}
+
+		static void InitializeType(s_object_type_definition* equipment_type)
 		{
 			equipment_type->new_ = &New;
 			equipment_type->delete_ = &Delete;
 			equipment_type->update = &Update;
 			equipment_type->export_function_values = &ExportFunctionValues;
-		}
-
-		bool PLATFORM_API New(datum_index equipment_index)
-		{
-			return true;
-		}
-
-		void PLATFORM_API Delete(datum_index equipment_index)
-		{
-		}
-
-		bool PLATFORM_API Update(datum_index equipment_index)
-		{
-			return true;
-		}
-
-		void PLATFORM_API ExportFunctionValues(datum_index equipment_index)
-		{
-			s_equipment_datum* equipment = (*Objects::ObjectHeader())[equipment_index]->Type._equipment;
-
-			TagGroups::s_equipment_definition const* definition = GetObjectDefinition<TagGroups::s_equipment_definition>(equipment_index);
 		}
 
 	}; };

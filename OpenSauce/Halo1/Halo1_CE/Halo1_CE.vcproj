@@ -1825,14 +1825,6 @@
 					RelativePath=".\Game\Campaign.inl"
 					>
 				</File>
-				<File
-					RelativePath=".\Game\Players.NetworkPlayerUnit.inl"
-					>
-				</File>
-				<File
-					RelativePath=".\Game\Players.Scripting.inl"
-					>
-				</File>
 				<Filter
 					Name="ScriptLibrary"
 					>
@@ -1926,6 +1918,22 @@
 					</File>
 					<File
 						RelativePath=".\Game\EngineFunctions.Players.inl"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Players"
+					>
+					<File
+						RelativePath=".\Game\Players.ActionResults.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Game\Players.NetworkPlayerUnit.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Game\Players.Scripting.inl"
 						>
 					</File>
 				</Filter>

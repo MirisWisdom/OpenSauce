@@ -154,11 +154,17 @@ namespace Yelo
 
 	namespace Objects
 	{
+		// Object datums in the memory pool can have dynamically allocated nested-blocks.
+		// Due to the way the game implements this, OS can allocate a nested-block of its own in an object,
+		// and when the stock game uses a gamesave with an object like this, it will silently but safely
+		// operate on it, even when it comes time to delete the object from the pool.
+		// An object gets reallocated when a nested-block is requested (and the additional size is added to
+		// the object's overall pool block size)
 		struct s_object_header_block_reference
 		{
-			uint16 offset;
 			uint16 size;
-		};
+			uint16 offset;
+		}; BOOST_STATIC_ASSERT( sizeof(s_object_header_block_reference) == 0x4 );
 
 		struct s_object_placement_data
 		{
@@ -203,6 +209,12 @@ namespace Yelo
 
 		struct s_object_data : TStructImpl( Enums::k_object_size_object )
 		{
+			enum {
+				k_block_reference_offset_node_orientations = 0x1E8,
+				k_block_reference_offset_node_orientations2 = 0x1EC,
+				k_block_reference_offset_node_matrices = 0x1F0,
+			};
+
 			TStructGetPtrImpl(datum_index,				TagDefinition, 0x0);
 			TStructGetPtrImpl(Enums::networked_datum,	DatumnRole, 0x4);
 			// 0x8 - boolean
@@ -227,7 +239,8 @@ namespace Yelo
 			TStructGetPtrImpl(datum_index,				AnimationDefinition, 0xCC);
 			TStructGetPtrImpl(int16,					AnimationCurrentIndex, 0xD0);
 			TStructGetPtrImpl(int16,					AnimationCurrentFrameIndex, 0xD2);
-			// 0xD4?
+			//TStructGetPtrImpl(int16,					, 0xD4);
+			//TStructGetPtrImpl(int16,					, 0xD6);
 			TStructGetPtrImpl(real,						MaximumVitality, 0xD8);
 			TStructGetPtrImpl(real,						CurrentVitality, 0xDC);
 			TStructGetPtrImpl(real,						Health, 0xE0); // health = body
@@ -262,15 +275,25 @@ namespace Yelo
 
 			TStructGetPtrImpl(int16,					ShaderPermutation, 0x176); // shader's bitmap block index
 			TStructGetPtrImpl(byte,						RegionVitality, 0x178); // [k_maximum_regions_per_model]
-			TStructGetPtrImpl(byte,						RegionPermutationIndices, 0x180); 
+			TStructGetPtrImpl(byte,						RegionPermutationIndices, 0x180); // [k_maximum_regions_per_model]
+			// 0x188?
 			TStructGetPtrImpl(real_rgb_color,			ChangeColors, 0x1B8); // [4]
-			TStructGetPtrImpl(s_object_header_block_reference, NodeOrientations, 0x1E8); // real_orientation3d[node_count]
-			//TStructGetPtrImpl(s_object_header_block_reference, , 0x1EC); // real_orientation3d[node_count]
-			TStructGetPtrImpl(s_object_header_block_reference, NodeMatrixBlock, 0x1F0); // real_matrix4x3[node_count]
+			// one of these are for interpolating
+			TStructGetPtrImpl(s_object_header_block_reference, NodeOrientations, k_block_reference_offset_node_orientations); // real_orientation3d[node_count]
+			TStructGetPtrImpl(s_object_header_block_reference, NodeOrientations2, k_block_reference_offset_node_orientations2); // real_orientation3d[node_count]
+			TStructGetPtrImpl(s_object_header_block_reference, NodeMatrixBlock, k_block_reference_offset_node_matrices); // real_matrix4x3[node_count]
 
 			API_INLINE bool VerifyType(uint32 type_mask)
 			{
 				return TEST_FLAG( type_mask, *this->GetType() );
+			}
+
+			template<typename TBlockData, size_t block_reference_offset>
+			API_INLINE TBlockData* GetBlock()
+			{
+				s_object_header_block_reference* ref = GetDataPtr<s_object_header_block_reference, block_reference_offset>();
+
+				return ref->offset == 0 ? NULL : CAST_PTR(TBlockData*, &m_data[ref->offset]);
 			}
 
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_data) == Enums::k_object_size_object );

@@ -38,6 +38,7 @@ namespace Yelo
 #include "Game/Players.NetworkPlayerUnit.inl"
 
 #include "Game/Players.Scripting.inl"
+#include "Game/Players.ActionResults.inl"
 		void Initialize()
 		{
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_volume_test_player_team, 

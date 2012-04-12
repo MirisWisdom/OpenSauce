@@ -11,54 +11,54 @@ namespace Yelo
 {
 	namespace Enums
 	{
-		enum biped_input : _enum
+		enum biped_function_mode : _enum
 		{
-			_biped_input_none,
-			_biped_input_flying_velocity,
+			_biped_function_mode_none,
+			_biped_function_mode_flying_velocity,
 
-			_biped_input,
+			_biped_function_mode,
 		};
-		enum vehicle_input : _enum
+		enum vehicle_function_mode : _enum
 		{
-			_vehicle_input_none,
-			_vehicle_input_speed_absolute,
-			_vehicle_input_speed_forward,
-			_vehicle_input_speed_backward,
-			_vehicle_input_slide_absolute,
-			_vehicle_input_slide_left,
-			_vehicle_input_slide_right,
-			_vehicle_input_speed_slide_maximum,
-			_vehicle_input_turn_absolute,
-			_vehicle_input_turn_left,
-			_vehicle_input_turn_right,
-			_vehicle_input_crouch,
-			_vehicle_input_jump,
-			_vehicle_input_walk,
-			_vehicle_input_velocity_air,
-			_vehicle_input_velocity_water,
-			_vehicle_input_velocity_ground,
-			_vehicle_input_velocity_forward,
-			_vehicle_input_velocity_left,
-			_vehicle_input_velocity_up,
-			_vehicle_input_left_tread_position,
-			_vehicle_input_right_tread_position,
-			_vehicle_input_left_tread_velocity,
-			_vehicle_input_right_tread_velocity,
-			_vehicle_input_front_left_tire_position,
-			_vehicle_input_front_right_tire_position,
-			_vehicle_input_back_left_tire_position,
-			_vehicle_input_back_right_tire_position,
-			_vehicle_input_front_left_tire_velocity,
-			_vehicle_input_front_right_tire_velocity,
-			_vehicle_input_back_left_tire_velocity,
-			_vehicle_input_back_right_tire_velocity,
-			_vehicle_input_wingtip_contrail,
-			_vehicle_input_hover,
-			_vehicle_input_thrust,
-			_vehicle_input_engine_hack,
-			_vehicle_input_wingtip_contrail_new,
+			_vehicle_function_mode_none,
+			_vehicle_function_mode_speed_absolute,
+			_vehicle_function_mode_speed_forward,
+			_vehicle_function_mode_speed_backward,
+			_vehicle_function_mode_slide_absolute,
+			_vehicle_function_mode_slide_left,
+			_vehicle_function_mode_slide_right,
+			_vehicle_function_mode_speed_slide_maximum,
+			_vehicle_function_mode_turn_absolute,
+			_vehicle_function_mode_turn_left,
+			_vehicle_function_mode_turn_right,
+			_vehicle_function_mode_crouch,
+			_vehicle_function_mode_jump,
+			_vehicle_function_mode_walk,
+			_vehicle_function_mode_velocity_air,
+			_vehicle_function_mode_velocity_water,
+			_vehicle_function_mode_velocity_ground,
+			_vehicle_function_mode_velocity_forward,
+			_vehicle_function_mode_velocity_left,
+			_vehicle_function_mode_velocity_up,
+			_vehicle_function_mode_left_tread_position,
+			_vehicle_function_mode_right_tread_position,
+			_vehicle_function_mode_left_tread_velocity,
+			_vehicle_function_mode_right_tread_velocity,
+			_vehicle_function_mode_front_left_tire_position,
+			_vehicle_function_mode_front_right_tire_position,
+			_vehicle_function_mode_back_left_tire_position,
+			_vehicle_function_mode_back_right_tire_position,
+			_vehicle_function_mode_front_left_tire_velocity,
+			_vehicle_function_mode_front_right_tire_velocity,
+			_vehicle_function_mode_back_left_tire_velocity,
+			_vehicle_function_mode_back_right_tire_velocity,
+			_vehicle_function_mode_wingtip_contrail,
+			_vehicle_function_mode_hover,
+			_vehicle_function_mode_thrust,
+			_vehicle_function_mode_engine_hack,
+			_vehicle_function_mode_wingtip_contrail_new,
 
-			_vehicle_input,
+			_vehicle_function_mode,
 		};
 		enum vehicle_type : _enum
 		{
@@ -301,7 +301,7 @@ namespace Yelo
 			TAG_FIELD(angle, stationary_turning_threshold);
 			TAG_PAD(int32, 4);
 			struct{
-				TAG_ENUM(source, Enums::biped_input);
+				TAG_ENUM(source, Enums::biped_function_mode);
 			}inputs[4];
 			TAG_FIELD(tag_reference, don_t_use, "jpt!");
 
@@ -403,7 +403,7 @@ namespace Yelo
 			TAG_FIELD(real, turn_rate);
 			TAG_FIELD(real, blur_speed);
 			struct{
-				TAG_ENUM(source, Enums::vehicle_input);
+				TAG_ENUM(source, Enums::vehicle_function_mode);
 			}inputs[4];
 			TAG_PAD(int32, 3);
 			TAG_FIELD(real, maximum_left_slide);
