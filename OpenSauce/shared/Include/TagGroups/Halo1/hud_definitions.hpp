@@ -93,6 +93,20 @@ namespace Yelo
 
 			_hud_auxilary_meter_type,
 		};
+
+
+		enum weapon_hud_state
+		{
+			_weapon_hud_state_total_ammo,
+			_weapon_hud_state_loaded_ammo,
+			_weapon_hud_state_heat,
+			_weapon_hud_state_age,
+			_weapon_hud_state_secondary_weapon_total_ammo,
+			_weapon_hud_state_secondary_weapon_loaded_ammo,
+			_weapon_hud_state_dist_to_target,
+			_weapon_hud_state_elevation_to_target,
+			_weapon_hud_state,
+		};
 	};
 
 	namespace Flags

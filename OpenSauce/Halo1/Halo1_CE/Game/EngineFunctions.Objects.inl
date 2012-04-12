@@ -5,6 +5,19 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
+bool API_FUNC_NAKED HeaderBlockAllocate(datum_index object_index, size_t block_reference_offset, size_t _size)
+{
+	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_HEADER_BLOCK_ALLOCATE);
+
+	API_FUNC_NAKED_START()
+		push	_size
+		push	block_reference_offset
+		mov		eax, object_index
+		call	TEMP_CALL_ADDR
+		add		esp, 4 * 2
+	API_FUNC_NAKED_END(3)
+}
+
 void PlacementDataNew(Yelo::Objects::s_object_placement_data& data, datum_index object_definition_index, datum_index owner_object_index)
 {
 	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_PLACEMENT_DATA_NEW);

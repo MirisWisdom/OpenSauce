@@ -8,6 +8,7 @@
 
 #if !PLATFORM_IS_DEDI
 #include <TagGroups/Halo1/global_definitions.hpp> // for game teams
+#include <TagGroups/Halo1/hud_definitions.hpp>
 
 namespace Yelo
 {
@@ -66,19 +67,6 @@ namespace Yelo
 			_rasterize_score_d_remaining,
 			_rasterize_score_telefragged,
 			_rasterize_score,
-		};
-
-		enum weapon_hud_state
-		{
-			_weapon_hud_state_total_ammo,
-			_weapon_hud_state_loaded_ammo,
-			_weapon_hud_state_heat,
-			_weapon_hud_state_age,
-			_weapon_hud_state_secondary_weapon_total_ammo,
-			_weapon_hud_state_secondary_weapon_loaded_ammo,
-			_weapon_hud_state_dist_to_target,
-			_weapon_hud_state_elevation_to_target,
-			_weapon_hud_state,
 		};
 	};
 

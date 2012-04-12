@@ -97,6 +97,7 @@ namespace Yelo
 			s_object_type_definition* next;
 			PAD32;
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_type_definition) == 0xC8 );
+		s_object_type_definition** ObjectTypeDefinitions();
 
 
 		typedef bool (*proc_widget_type)(datum_index object_datum);
@@ -113,6 +114,7 @@ namespace Yelo
 			proc_widget_type 			update_proc;
 			proc_widget_type 			render_proc;
 		};
+		s_widget_type_definition* WidgetTypeDefinitions();
 
 
 
