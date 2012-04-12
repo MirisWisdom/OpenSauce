@@ -127,7 +127,7 @@ namespace Yelo
 			TStructGetPtrImpl(sbyte,				AnimationState, 0xB);	// 0x2A3 [Enums::unit_animation_state]
 			//TStructGetPtrImpl(sbyte,				, 0xC);					// 0x2A4
 			//TStructGetPtrImpl(sbyte,				, 0xD);					// 0x2A5
-			//TStructGetPtrImpl(byte,				, 0xE);					// 0x2A6, set from s_unit_control_data's animation_state
+			TStructGetPtrImpl(byte,				DesiredAnimationState, 0xE);// 0x2A6, set from s_unit_control_data's animation_state
 			//TStructGetPtrImpl(sbyte,				, 0xF);					// 0x2A7
 			//TStructGetPtrImpl(sbyte,				, 0x10);				// 0x2A8
 			//PAD8?
@@ -151,7 +151,7 @@ namespace Yelo
 			//TStructSubGetPtrImpl(datum_index,			, 0x1FC);
 			TStructSubGetPtrImpl(datum_index,			SwamPrevUnitIndex, 0x200);
 			TStructSubGetPtrImpl(long_flags,			Flags, 0x204);
-			//TStructSubGetPtrImpl(long_flags,			, 0x208);
+			TStructSubGetPtrImpl(long_flags,			ControlFlags, 0x208); // zero extended unit control flags (which normally use word_flags)
 			//TStructSubGetPtrImpl(uint16,				, 0x20C);
 			TStructSubGetPtrImpl(sbyte,					ShieldSapping, 0x20E);
 			TStructSubGetPtrImpl(sbyte,					BaseSeatIndex, 0x20F);
@@ -231,9 +231,9 @@ namespace Yelo
 			// 0x474, bool, networking related
 			// 0x475, bool, networking related
 
-			TStructSubGetPtrImpl(int32,					LastCompletedClientUpdateId, 0x47C); // I had this as 37C..I think I meant 4...need to verify things later
-
-			// 0x4B8 bool
+			// 0x4B8 bool, true if LastCompletedClientUpdateId != NONE
+			//PAD24;
+			TStructSubGetPtrImpl(int32,					LastCompletedClientUpdateId, 0x4BC);
 		};
 
 		struct s_biped_datum_network_data

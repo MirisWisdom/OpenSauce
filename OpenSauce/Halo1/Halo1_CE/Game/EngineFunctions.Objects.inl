@@ -84,6 +84,24 @@ void API_FUNC_NAKED Detach(datum_index object_index)
 	API_FUNC_NAKED_END_CDECL(1)
 }
 
+int16 API_FUNC_NAKED FindInSphere(Flags::objects_find_flags find_flags, long_flags object_type_flags, 
+					const s_scenario_location& location, const real_point3d& center, real radius, 
+					datum_index object_indices[], int16 maximum_object_indices)
+{
+	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECTS_FIND_IN_SPHERE);
+
+	API_FUNC_NAKED_START()
+		push	maximum_object_indices
+		push	object_indices
+		push	radius
+		push	center
+		push	location
+		push	object_type_flags
+		push	find_flags
+		call	TEMP_CALL_ADDR
+	API_FUNC_NAKED_END_CDECL(7)
+}
+
 
 void StartInterpolation(datum_index object_index, int32 interpolation_ticks) // Until PY's netcode is finalized, this function don't mean shit for MP games (read: doesn't sync)
 {

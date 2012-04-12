@@ -2352,6 +2352,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\TagGroups\Halo1\hud_definitions.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\TagGroups\Halo1\item_definitions.hpp"
 					>
 				</File>

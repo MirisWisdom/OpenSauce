@@ -40,7 +40,16 @@ namespace Yelo
 
 	namespace Objects
 	{
-		typedef bool (PLATFORM_API* proc_object_type)(datum_index object_datum);
+		typedef void (PLATFORM_API* proc_object_type)(datum_index object_index);
+		typedef bool (PLATFORM_API* proc_object_type_new)(datum_index object_index);
+		typedef bool (PLATFORM_API* proc_object_type_update)(datum_index object_index);
+		typedef void (PLATFORM_API* proc_object_type_handle_deleted_object)(datum_index object_index, datum_index deleted_object_index);
+		typedef void (PLATFORM_API* proc_object_type_handle_region_destroyed)(datum_index object_index, int32 region_index, long_flags damage_region_flags);
+		typedef bool (PLATFORM_API* proc_object_type_handle_parent_destroyed)(datum_index object_index);
+		typedef void (PLATFORM_API* proc_object_type_preprocess_node_orientations)(datum_index object_index, real_orientation3d* orientations);
+		typedef void (PLATFORM_API* proc_object_type_postprocess_node_matrices)(datum_index object_index, real_matrix4x3* matrices);
+		typedef void (PLATFORM_API* proc_object_type_notify_impulse_sound)(datum_index object_index, datum_index sound_definition_index, datum_index sound_index);
+		typedef bool (PLATFORM_API* proc_object_type_render_message_debug)(datum_index object_index);
 		typedef int32 (PLATFORM_API* proc_object_type_create_to_network)(datum_index object_index, void* buffer, int32 buffer_size_in_bits);
 		typedef bool (PLATFORM_API* proc_object_type_network)(void* unk, void* header, void* client);
 		struct s_object_type_definition
@@ -52,28 +61,28 @@ namespace Yelo
 			int16 palette_tag_block_offset;									// 0xC
 			int16 placement_tag_block_size;									// 0xE
 			int32 update_message_type;										// 0x10
-			proc_initialize				proc_initialize;					// 0x14
-			proc_dispose				proc_dispose;						// 0x18
-			proc_initialize_for_new_map proc_initialize_for_new_map;		// 0x1C
-			proc_dispose_from_old_map	proc_dispose_from_old_map;			// 0x20
-			proc_object_type			proc_adjust_placement;				// 0x24
-			proc_object_type 			proc_new;							// 0x28
-			proc_object_type 			proc_place;							// 0x2C
-			proc_object_type 			proc_delete;						// 0x30
-			proc_object_type 			proc_update;						// 0x34
-			void* proc_export_function_values;								// 0x38
-			void* proc_handle_deleted_object;								// 0x3C
-			void* proc_handle_region_destroyed;								// 0x40
-			void* proc_handle_parent_destroyed;								// 0x44
-			void* proc_preprocess_node_orientations;						// 0x48
-			void* proc_postprocess_node_matrices;							// 0x4C
-			proc_object_type 			proc_reset;							// 0x50
-			proc_object_type 			proc_disconnect_from_structure_bsp;	// 0x54
-			void* proc_notify_impulse_sound;								// 0x58
-			proc_object_type 			proc_render_debug;					// 0x5C
+			proc_initialize				initialize;										// 0x14
+			proc_dispose				dispose;										// 0x18
+			proc_initialize_for_new_map initialize_for_new_map;							// 0x1C
+			proc_dispose_from_old_map	dispose_from_old_map;							// 0x20
+			proc_object_type			adjust_placement;								// 0x24
+			proc_object_type_new 		new_;											// 0x28
+			proc_object_type 			place;											// 0x2C
+			proc_object_type 			delete_;										// 0x30
+			proc_object_type_update 	update;											// 0x34
+			proc_object_type			export_function_values;							// 0x38
+			proc_object_type_handle_deleted_object handle_deleted_object;				// 0x3C
+			proc_object_type_handle_region_destroyed handle_region_destroyed;			// 0x40
+			proc_object_type_handle_parent_destroyed handle_parent_destroyed;			// 0x44
+			proc_object_type_preprocess_node_orientations preprocess_node_orientations;	// 0x48
+			proc_object_type_postprocess_node_matrices postprocess_node_matrices;		// 0x4C
+			proc_object_type 			reset;											// 0x50
+			proc_object_type 			disconnect_from_structure_bsp;					// 0x54
+			proc_object_type_notify_impulse_sound notify_impulse_sound;					// 0x58
+			proc_object_type 			render_debug;									// 0x5C
 
-			void* render_message_debug_proc;								// 0x60, bool (*)(datum_index object_index)
-			proc_object_type_create_to_network create_to_network_proc;		// 0x64
+			proc_object_type_render_message_debug render_message_debug;					// 0x60
+			proc_object_type_create_to_network create_to_network;						// 0x64
 			void* update_baseline_proc;										// 0x68
 			void* build_update_delta_proc;									// 0x6C, int32 (*)(datum_index object_index, void* buffer, int32 buffer_size_in_bits, _enum message_delta_mode)
 			void* process_update_delta_proc;								// 0x70
@@ -86,7 +95,7 @@ namespace Yelo
 			s_object_type_definition* base_object_types[2];
 			int32 _unused1[13]; // s_object_type_definition*.
 			s_object_type_definition* next;
-			int32 _unused2;
+			PAD32;
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_type_definition) == 0xC8 );
 
 

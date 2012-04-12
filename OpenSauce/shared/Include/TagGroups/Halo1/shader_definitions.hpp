@@ -103,26 +103,26 @@ namespace Yelo
 
 			_first_map_type,
 		};
-		enum framebuffer_blend_function : _enum
+		enum shader_framebuffer_blend_function : _enum
 		{
-			_framebuffer_blend_function_alpha_blend,
-			_framebuffer_blend_function_multiply,
-			_framebuffer_blend_function_double_multiply,
-			_framebuffer_blend_function_add,
-			_framebuffer_blend_function_subtract,
-			_framebuffer_blend_function_component_min,
-			_framebuffer_blend_function_component_max,
-			_framebuffer_blend_function_alpha_multiply_add,
+			_shader_framebuffer_blend_function_alpha_blend,
+			_shader_framebuffer_blend_function_multiply,
+			_shader_framebuffer_blend_function_double_multiply,
+			_shader_framebuffer_blend_function_add,
+			_shader_framebuffer_blend_function_subtract,
+			_shader_framebuffer_blend_function_component_min,
+			_shader_framebuffer_blend_function_component_max,
+			_shader_framebuffer_blend_function_alpha_multiply_add,
 
-			_framebuffer_blend_function,
+			_shader_framebuffer_blend_function,
 		};
-		enum framebuffer_fade_mode : _enum
+		enum shader_framebuffer_fade_mode : _enum
 		{
-			_framebuffer_fade_mode_none,
-			_framebuffer_fade_mode_fade_when_perpendicular,
-			_framebuffer_fade_mode_fade_when_parallel,
+			_shader_framebuffer_fade_mode_none,
+			_shader_framebuffer_fade_mode_fade_when_perpendicular,
+			_shader_framebuffer_fade_mode_fade_when_parallel,
 
-			_framebuffer_fade_mode,
+			_shader_framebuffer_fade_mode,
 		};
 		enum color_function : _enum
 		{
@@ -293,7 +293,7 @@ namespace Yelo
 			PAD128; PAD128; PAD64;
 
 			word_flags shader_flags;
-			_enum framebuffer_blend_function, framebuffer_fade_mode;
+			_enum shader_framebuffer_blend_function, shader_framebuffer_fade_mode;
 			word_flags shader_map_flags;
 
 			PAD128; PAD64; PAD32;
@@ -322,13 +322,13 @@ namespace Yelo
 			TAG_FIELD(real, animation_phase, "seconds");
 			TAG_PAD(int32, 6);
 		}; BOOST_STATIC_ASSERT( sizeof(s_shader_color_function) == 60 );
-		struct s_shader_framebuffer_function
+		struct s_shader_shader_framebuffer_function
 		{
-			TAG_ENUM(framebuffer_blend_function, Enums::framebuffer_blend_function);
-			TAG_ENUM(framebuffer_fade_mode, Enums::framebuffer_fade_mode);
-			TAG_ENUM(framebuffer_fade_source, Enums::input_output_channel, "fade is multiplied by this external value");
+			TAG_ENUM(shader_framebuffer_blend_function, Enums::shader_framebuffer_blend_function);
+			TAG_ENUM(shader_framebuffer_fade_mode, Enums::shader_framebuffer_fade_mode);
+			TAG_ENUM(shader_framebuffer_fade_source, Enums::input_output_channel, "fade is multiplied by this external value");
 			PAD16;
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_framebuffer_function) == 8 );
+		}; BOOST_STATIC_ASSERT( sizeof(s_shader_shader_framebuffer_function) == 8 );
 		struct s_shader_radiosity_properties
 		{
 			struct __flags
@@ -346,7 +346,7 @@ namespace Yelo
 			TAG_FIELD(byte, numeric_counter_limit, "[0,255]");
 			TAG_FIELD(__flags, flags);
 			TAG_ENUM(first_map_type, Enums::first_map_type);
-			s_shader_framebuffer_function framebuffer_function;
+			s_shader_shader_framebuffer_function shader_framebuffer_function;
 		}; BOOST_STATIC_ASSERT( sizeof(s_shader_radiosity_properties) == 12 );
 		//////////////////////////////////////////////////////////////////////////
 		struct _shader_definition
@@ -393,7 +393,7 @@ namespace Yelo
 		{
 			byte_flags flags;
 			PAD8;
-			s_shader_framebuffer_function framebuffer_function;
+			s_shader_shader_framebuffer_function shader_framebuffer_function;
 			PAD128; PAD128;
 			tag_reference bitmap;
 			_enum permutation_function;

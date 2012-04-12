@@ -61,10 +61,13 @@ namespace Yelo
 
 			TStructSubGetPtrImpl(long_flags,			Flags, 0x1F4);
 			//TStructSubGetPtrImpl(s_scenario_location,	, 0x1F8);
+			// 0x1FC?
 			//TStructSubGetPtrImpl(datum_index,					, 0x200); // object index
 			TStructSubGetPtrImpl(uint32,				LastUpdateTime, 0x204);
 			//TStructSubGetPtrImpl(datum_index,					, 0x208); // object index
 			//TStructSubGetPtrImpl(real_point3d,				, 0x20C);
+			// 0x210?
+			// 0x214?
 			//TStructSubGetPtrImpl(real_vector3d,				, 0x218);
 			//TStructSubGetPtrImpl(real_euler_angles2d,			, 0x224);
 		};
@@ -146,9 +149,25 @@ namespace Yelo
 			TStructSubGetPtrImpl(s_weapon_datum_network_data,	UpdateDelta, 0x314);
 		};
 
+		struct s_equipment_datum_network_data
+		{
+			real_point3d position;
+			real_vector3d transitional_velocity;
+			real_vector3d angular_velocity;
+		}; BOOST_STATIC_ASSERT( sizeof(s_equipment_datum_network_data) == 0x24 );
 		struct s_equipment_data : TStructImpl(Enums::k_object_size_equipment - Enums::k_object_size_item)
 		{
 			enum { DATA_OFFSET = Enums::k_object_size_item, };
+
+			// 0x22C, 0x18 unknown (and unused?) bytes...
+			TStructSubGetPtrImpl(bool,							BaselineValid, 0x244);
+			TStructSubGetPtrImpl(byte,							BaselineIndex, 0x245);
+			TStructSubGetPtrImpl(byte,							MessageIndex, 0x246);
+			// 0x247 PAD8?
+			TStructSubGetPtrImpl(s_equipment_datum_network_data,UpdateBaseline, 0x248);
+			// 0x26C, bool
+			// 0x26D, PAD24
+			TStructSubGetPtrImpl(s_equipment_datum_network_data,UpdateDelta, 0x270);
 		};
 
 		struct s_garbage_data

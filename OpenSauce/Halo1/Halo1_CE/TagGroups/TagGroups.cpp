@@ -26,6 +26,7 @@
 #include <TagGroups/Halo1/damage_effect_definitions.hpp>
 #include <TagGroups/Halo1/game_globals_definitions.hpp>
 #include <TagGroups/Halo1/global_definitions.hpp>
+#include <TagGroups/Halo1/hud_definitions.hpp>
 #include <TagGroups/Halo1/model_definitions.hpp>
 #include <TagGroups/Halo1/scenario_definitions.hpp>
 #include <TagGroups/Halo1/shader_definitions.hpp>

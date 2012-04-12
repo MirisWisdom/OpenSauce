@@ -82,6 +82,24 @@ namespace Yelo
 
 
 
+		struct _equipment_definition
+		{
+			TAG_ENUM(powerup_type, Enums::equipment_powerup);
+			TAG_ENUM(grenade_type, Enums::global_grenade_type);
+			TAG_FIELD(real, powerup_time);
+			TAG_FIELD(tag_reference, pickup_sound, 'snd!');
+			union {
+				TAG_PAD(tag_reference, 9);
+			};
+		}; BOOST_STATIC_ASSERT( sizeof(_equipment_definition) == 0xA8 );
+		struct s_equipment_definition : s_item_definition
+		{
+			enum { k_group_tag = 'eqip' };
+
+			_equipment_definition equipment;
+		};
+
+
 		struct aim_assist_parameters
 		{
 			TAG_FIELD(angle, autoaim_angle);

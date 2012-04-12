@@ -135,6 +135,23 @@ namespace Yelo
 		};
 	};
 
+	namespace Flags
+	{
+		enum damage_region_flags : long_flags
+		{
+			_damage_region_lives_unit_object_dies_bit,
+			_damage_region_forces_object_to_die_bit,
+			_damage_region_dies_when_object_dies_bit,
+			_damage_region_dies_when_object_is_damaged_bit,
+			_damage_region_disappears_when_shield_is_off_bit,
+			_damage_region_inhibits_melee_attack_bit,
+			_damage_region_inhibits_weapon_attack_bit,
+			_damage_region_inhibits_walking_bit,
+			_damage_region_forces_drop_weapon_bit,
+			_damage_region_causes_head_maimed_scream_bit,
+		};
+	};
+
 	namespace TagGroups
 	{
 		struct model_marker_instance
@@ -372,13 +389,13 @@ namespace Yelo
 		struct collision_model_region
 		{
 			TAG_FIELD(tag_string, name);
-			TAG_FIELD(long_flags, flags);
+			TAG_FIELD(Flags::damage_region_flags, flags);
 			PAD32;
 			TAG_FIELD(real, damage_threshold);
 			TAG_PAD(int32, 3);
 			TAG_FIELD(tag_reference, destroyed_effect, 'effe');
 			TAG_TBLOCK(permutations, tag_string);
-		}; BOOST_STATIC_ASSERT( sizeof(collision_model_region) == 0x54 );
+		}; BOOST_STATIC_ASSERT( sizeof(collision_model_region) == 0x54 ); // aka damage region
 		struct collision_model_pathfinding_sphere
 		{
 			TAG_FIELD(int16, node, collision_model_node);
