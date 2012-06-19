@@ -428,7 +428,7 @@ namespace Yelo
 		}
 		void UpdateTypeHolderDataFromPtr(const TypeHolder& data, const Enums::hs_type type, void* ptr)
 		{
-			if(ptr != NULL)
+			if(data.pointer != NULL && ptr != NULL)
 			{
 				switch(type)
 				{
