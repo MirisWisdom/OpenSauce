@@ -194,8 +194,8 @@ namespace Yelo
 			TStructSubGetPtrImpl(sbyte,					CurrentGrenadeIndex, 0x31C);
 			TStructSubGetPtrImpl(sbyte,					NextGrenadeIndex, 0x31D);
 			TStructSubGetPtrImpl(byte,					GrenadeCounts, 0x31E); // [2]
-				TStructSubGetPtrImpl(byte,				GrenadePlasmaCount, 0x31E);
-				TStructSubGetPtrImpl(byte,				GrenadeFragCount, 0x31F);
+				TStructSubGetPtrImpl(byte,				GrenadeFragCount, 0x31E);
+				TStructSubGetPtrImpl(byte,				GrenadePlasmaCount, 0x31F);
 			TStructSubGetPtrImpl(byte,					ZoomLevel, 0x320);
 			TStructSubGetPtrImpl(byte,					DesiredZoomLevel, 0x321);
 			//TStructSubGetPtrImpl(sbyte,					, 0x322);
