@@ -107,11 +107,17 @@ namespace Yelo
 		}
 #pragma endregion
 
+		static API_FUNC_NAKED void GameStateUpdate_Hook()
+		{
+			GameEngine::Update();
+
+			_asm retn;
+		}
 
 		void Initialize()
 		{
 			Memory::CreateHookRelativeCall(&GameEngine::InitializeForNewMap, GET_FUNC_VPTR(GAME_ENGINE_INITIALIZE_FOR_NEW_MAP_HOOK), Enums::_x86_opcode_retn);
-			Memory::CreateHookRelativeCall(&GameEngine::Update, GET_FUNC_VPTR(GAME_ENGINE_UPDATE_HOOK), Enums::_x86_opcode_retn);
+			Memory::WriteRelativeJmp(&GameStateUpdate_Hook, GET_FUNC_VPTR(GAME_ENGINE_UPDATE_HOOK), true);
 
 #pragma region New Engines implementation
 			// copy the game engine pointers into our list

@@ -416,6 +416,7 @@ namespace Yelo
 
 					m_members_internal.m_shaders.shader_list[i].SetShaderDefinition(shpg);
 					m_members_internal.m_shaders.shader_list[i].SetDatumIndex(shader_index);
+					m_members_internal.m_shaders.shader_list[i].SetShaderName(TagGroups::Instances()[shader_index.index].name);
 					m_members_internal.m_shaders.shader_list[i].SetupShader();
 				}
 				else
