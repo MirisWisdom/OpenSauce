@@ -47,7 +47,7 @@ namespace Yelo
 			{
 				ASSERT(index >= m_members.m_shaders.count, "shader instance index outside the bounds of the array");
 
-				return CAST_PTR(T*, GetNodeByIndex(m_members.m_shaders.list, index));
+				return CAST_PTR(T*, GetNodeByIndex(&m_members.m_shaders.list, index));
 			}
 
 			/////////////////////////////////////////////////

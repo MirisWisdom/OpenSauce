@@ -458,7 +458,7 @@ HRESULT Yelo_IDirect3D9::CreateDevice(UINT Adapter, D3DDEVTYPE DeviceType, HWND 
 	HRESULT hr =  Yelo_pD3D->CreateDevice(Adapter, DeviceType, hFocusWindow, BehaviorFlags, pPresentationParameters, ppReturnedDeviceInterface);
 
 	
-	if(Yelo::Memory::IsYeloEnabled())
+	if(SUCCEEDED(hr) && Yelo::Memory::IsYeloEnabled())
 	{
 		Yelo::Main::s_dx_component* components;
 		const Yelo::int32 component_count = Yelo::Main::GetDXComponents(components);
