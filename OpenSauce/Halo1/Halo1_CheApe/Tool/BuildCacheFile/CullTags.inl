@@ -13,12 +13,7 @@ namespace BuildCacheFileEx
 		static void* BUILD_CACHE_FILE_CULL_TAGS_CALL = CAST_PTR(void*, 0x455541);
 		static bool PLATFORM_API cull_custom_tags()
 		{
-			static void* BUILD_CACHE_FILE_CULL_TAGS = CAST_PTR(void*, 0x453260);
-
-			typedef bool (PLATFORM_API* call_proc)();
-			static const call_proc build_cache_file_cull_tags = CAST_PTR(call_proc, BUILD_CACHE_FILE_CULL_TAGS);
-
-			bool result = build_cache_file_cull_tags();
+			bool result = build_cache_file_for_scenario_internals.build_cache_file_cull_tags();
 
 			TagGroups::tag_iterator tag_iter;
 			tag_iterator_new(tag_iter);

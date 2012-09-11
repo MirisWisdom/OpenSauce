@@ -11,7 +11,7 @@
 #if defined(API_DEBUG) && defined(ASSERTS_ENABLED)
 #include "Common/DebugFile.hpp"
 
-#define ASSERT(value, message, ...) if(value ##__VA_ARGS__) Yelo::Assert(#value, message, __FILE__, __LINE__, __FUNCTION__)
+#define ASSERT(value, message) if(value ##__VA_ARGS__) Yelo::Assert(#value, message, __FILE__, __LINE__, __FUNCTION__)
 
 namespace Yelo
 {

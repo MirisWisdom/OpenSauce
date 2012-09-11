@@ -92,16 +92,16 @@ namespace Yelo
 			{
 				PAD8; // sbyte
 				Enums::weapon_trigger_state state;
-				uint16 time;
+				int16 time;
 				UNKNOWN_TYPE(long_flags);			// 0x4
-				UNKNOWN_TYPE(int16);				// 0x8
-				UNKNOWN_TYPE(int16);
-				UNKNOWN_TYPE(int16);				// 0xC
-				UNKNOWN_TYPE(int16); // uint16
-				UNKNOWN_TYPE(real);					// 0x10
-				UNKNOWN_TYPE(real);					// 0x14
-				UNKNOWN_TYPE(real);					// 0x18
-				UNKNOWN_TYPE(real);					// 0x1C
+				UNKNOWN_TYPE(int16);				// 0x8 firing effect related
+				UNKNOWN_TYPE(int16);				// 0xA firing effect related
+				UNKNOWN_TYPE(int16);				// 0xC firing effect related
+				int16 rounds_since_last_tracer;
+				real rate_of_fire;					// 0x10
+				real ejection_port_recovery_time;	// 0x14
+				real illumination_recovery_time;	// 0x18
+				UNKNOWN_TYPE(real);					// 0x1C used in the calculation of projectile error angle
 				datum_index charging_effect_index;	// 0x20
 				PAD32; // ?
 			}; BOOST_STATIC_ASSERT( sizeof(s_trigger_state) == 0x28 );

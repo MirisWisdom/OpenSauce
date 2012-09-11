@@ -33,12 +33,7 @@ namespace BuildCacheFileEx
 		static void* BUILD_STRUCTURE_BSP_PREDICTED_RESOURCES_CALL = CAST_PTR(void*, 0x45557A);
 		static bool PLATFORM_API build_custom_predicted_resources()
 		{
-			static void* BUILD_STRUCTURE_BSP_PREDICTED_RESOURCES = CAST_PTR(void*, 0x453860);
-
-			typedef bool (PLATFORM_API* call_proc)();
-			static const call_proc build_structure_bsp_predicted_resources = CAST_PTR(call_proc, BUILD_STRUCTURE_BSP_PREDICTED_RESOURCES);
-
-			bool result = build_structure_bsp_predicted_resources();
+			bool result = build_cache_file_for_scenario_internals.build_structure_bsp_predicted_resources();
 
 			TagGroups::tag_iterator tag_iter;
 			tag_iterator_new(tag_iter, NULL_HANDLE);

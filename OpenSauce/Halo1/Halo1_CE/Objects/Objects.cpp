@@ -96,7 +96,9 @@ namespace Yelo
 		}
 		void Initialize()
 		{
-			//Memory::WriteRelativeCall(&Objects::Update, GET_FUNC_VPTR(OBJECTS_UPDATE_HOOK), false);
+#if !PLATFORM_DISABLE_UNUSED_CODE
+			Memory::WriteRelativeCall(&Objects::Update, GET_FUNC_VPTR(OBJECTS_UPDATE_HOOK), false);
+#endif
 
 			UnitInfections::Initialize();
 			Vehicle::Initialize();
@@ -164,14 +166,12 @@ namespace Yelo
 
 		void MultiTeamVehiclesSet(bool enabled)
 		{
-			// mov bl, 1
 			// jmp
-			static const byte k_enable_code[] = {0xB3, 0x01, 0xEB};
-			// test al, al
+			static const byte k_enable_code[] = {0xEB};
 			// jz
-			static const byte k_disable_code[] = {0x84, 0xC0, 0x74};
+			static const byte k_disable_code[] = {0x74};
 
-			Memory::WriteMemory(GET_FUNC_VPTR(UNIT_CAN_ENTER_SEAT_MOD), (enabled ? k_disable_code : k_enable_code), sizeof(k_enable_code));
+			Memory::WriteMemory(GET_FUNC_VPTR(UNIT_CAN_ENTER_SEAT_MOD), (enabled ? k_enable_code : k_disable_code), sizeof(k_enable_code));
 		}
 
 

@@ -31,6 +31,11 @@ namespace Yelo
 	namespace Enums
 	{
 		enum {
+			// Default address of the game state in memory
+			k_game_state_base_address = Enums::k_physical_memory_base_address,
+			// Max amount of memory addressable by the game state. After this comes tag memory
+			k_game_state_cpu_size = Enums::k_game_state_allocation_size,
+
 			// 0x42974 bytes available in game state allocation for Clients.
 			// Dedis should have a little bit more (since they don't alloc a few render based things) 
 			// but to keep things simple we'll limit both sides of the spectrum to the same size.
@@ -39,12 +44,15 @@ namespace Yelo
 			// Why? Because the game state is saved to file when the player saves the game or dumps a core. 
 			// So if there's a project component which requires serialization, we'd want to allocate its 
 			// memory in the game state, not anywhere else.
-			k_game_state_allocation_maximum_size_for_yelo = 0x42000,
+			k_game_state_allocation_maximum_size_for_yelo = 0x42970,
+
+			// Default address of the tag cache in memory (comes right after the game state memory by default)
+			k_tag_cache_base_address = k_game_state_base_address + k_game_state_cpu_size,
 		};
 
 		enum {
 			// How many values we allow in the runtime data game state for each type (ie, integers, real, etc)
-			k_runtime_data_max_values_count = 32,
+			k_runtime_data_max_values_count = 64,
 		};
 
 		enum {
@@ -172,7 +180,7 @@ namespace Yelo
 #endif
 
 			void* game_state_base_address;
-			void* tag_memory_base_address;
+			void* tag_cache_base_address;
 			void* texture_cache_base_address;
 			void* sound_cache_base_address;
 		};
@@ -210,6 +218,10 @@ namespace Yelo
 			T* Malloc()
 			{
 				byte* base_addr = CAST_PTR(byte*, base_address) + cpu_allocation_size;
+
+				// Debug check that we don't allocate more memory than the game state has available
+				ASSERT((base_addr + sizeof(T)) <= PhysicalMemoryMapGlobals()->tag_cache_base_address, 
+					"Bit off more game-state than the game could chew!");
 
 				cpu_allocation_size += sizeof(T);
 

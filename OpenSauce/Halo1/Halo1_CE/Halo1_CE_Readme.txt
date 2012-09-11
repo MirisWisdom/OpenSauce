@@ -54,9 +54,15 @@ It is also useful for us to know your system specifications such as your graphic
 NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how to use OS, please consult our wiki and/or create a post on Halomods to get community assistance. We are also NOT taking feature requests in any way.
 
 == Change Log ==
-=== Version 3.0.4 ===
+=== Version 3.0.4 (Unreleased) ===
+  * CHANGE		Increased hardcoded 'k_game_state_allocation_maximum_size_for_yelo' by 0x970 bytes
+  * CHANGE		Increased hardcoded 'k_runtime_data_max_values_count' to a total of 64 (up from 32)
   * ADD			Added new setting for forcing OS to use .yelo files first when searching for .map files (off by default)
+  * ADD			Script functions for bit operations (AND, OR, etc) and converting hex string to an integer
+  * ADD			Runtime vector3d values (part of the game state)
   * FIX			Fixed a bug where a non-existant map (of any kind) would cause the 'missing <mapname>.yelo' exception, when the stock game already had code to handle such cases
+  * FIX			project_yellow tag's "prohibit_multiteam_vehicles" flag should work as expected now
+  * FIX			Multi-team vehicles should no longer allow 'double loading'
 
 === Version 3.0.3 ===
   * N/A			Nothing you all need to concern yourselves with. Go play Halo.

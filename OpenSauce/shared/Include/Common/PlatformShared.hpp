@@ -36,3 +36,6 @@
 // Define the following in specific editor codebases
 //#define PLATFORM_IS_EDITOR TRUE
 //#define CHEAPE_PLATFORM CHEAPE_PLATFORM_
+
+// Set to zero to enable code blocks which are unused (eg, engine hooks which have no special code, yet, in OS)
+#define PLATFORM_DISABLE_UNUSED_CODE 1

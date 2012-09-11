@@ -2396,6 +2396,10 @@
 				Name="Shared"
 				>
 				<File
+					RelativePath="..\..\shared\Include\Blam\Halo1\project_yellow_globals_shared_definitions.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\Blam\Halo1\project_yellow_shared_definitions.hpp"
 					>
 				</File>

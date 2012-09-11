@@ -63,8 +63,10 @@ namespace Yelo
 
 			InitializeLibrary();
 
+#if !PLATFORM_DISABLE_UNUSED_CODE
 			// Currently, no code is ran in Update, so don't bother hooking
-			//Memory::CreateHookRelativeCall(&Scripting::Update, GET_FUNC_VPTR(HS_UPDATE_HOOK), Enums::_x86_opcode_retn);
+			Memory::CreateHookRelativeCall(&Scripting::Update, GET_FUNC_VPTR(HS_UPDATE_HOOK), Enums::_x86_opcode_retn);
+#endif
 		}
 
 		void Dispose()
