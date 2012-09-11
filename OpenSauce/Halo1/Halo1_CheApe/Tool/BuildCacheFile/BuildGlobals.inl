@@ -31,6 +31,26 @@ struct s_build_cache_file_globals
 		locale_data_file.PreprocessForSave();
 		bitmaps_data_file.PreprocessForSave();
 	}
+
+	void TemporaryFileOpen(cstring filename = "temporary uncompressed cache file.bin")
+	{
+		file_handle = CreateFileA(filename, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	}
+	void TemporaryFileClose(cstring filename = "temporary uncompressed cache file.bin")
+	{
+		if(file_handle != INVALID_HANDLE_VALUE)
+		{
+			CloseHandle(file_handle);
+			file_handle = INVALID_HANDLE_VALUE;
+		}
+
+		if(file_handle != NULL)
+			DeleteFileA(filename);
+	}
+	void TemporaryFileCopy(cstring new_filename, cstring filename = "temporary uncompressed cache file.bin")
+	{
+		CopyFileA(filename, new_filename, FALSE);
+	}
 };
 
 struct s_build_cache_file_for_scenario {
@@ -47,12 +67,18 @@ struct s_build_cache_file_for_scenario {
 
 	s_build_cache_file_globals* globals;
 
+	typedef bool (PLATFORM_API* _build_cache_file_cull_tags)();
+	typedef bool (PLATFORM_API* _build_structure_bsp_predicted_resources)();
+	typedef bool (PLATFORM_API* _build_cache_file_add_tags)(s_cache_header& header, void* scratch_buffer, datum_index tag_indexes[], int32 prior_tag_memory_space_used);
 	typedef void (PLATFORM_API* __build_cache_file_for_scenario)(cstring scenario_name);
 	typedef bool (PLATFORM_API* _build_cache_file_begin)(cstring scenario_name);
 	typedef bool (PLATFORM_API* _build_cache_file_end)(s_cache_header* header);
 	typedef void (PLATFORM_API* _build_cache_file_failed)();
 	typedef bool (PLATFORM_API* _build_cache_file_add_resource)(const void* buffer, size_t buffer_size, uint32* out_file_offset, bool update_crc);
 
+	_build_cache_file_cull_tags		build_cache_file_cull_tags;
+	_build_structure_bsp_predicted_resources build_structure_bsp_predicted_resources;
+	_build_cache_file_add_tags		build_cache_file_add_tags;
 	__build_cache_file_for_scenario	_build_cache_file_for_scenario;
 	_import_class_proc				build_cache_file_for_scenario_command;
 	_build_cache_file_begin			build_cache_file_begin;
@@ -60,10 +86,15 @@ struct s_build_cache_file_for_scenario {
 	_build_cache_file_failed		build_cache_file_failed;
 	_build_cache_file_add_resource	build_cache_file_add_resource;
 
+	void*		build_cache_file_add_structure_bsps;	// address of the build_cache_file_add_structure_bsps (requires wrapper due to non-stack parameters)
+	void*		build_cache_file_write;					// address of the build_cache_file_write function (requires wrapper due to non-stack parameters)
 	void*		build_cache_file_end_sprintf_call;		// address of the call to sprintf for building the output map file path
 	cstring*	build_cache_file_output_path_format;	// address which references "%s%s%s.map"
 	char*		build_cache_file_output_directory;		static const size_t k_build_cache_file_output_directory_size = 256;
 
+
+	static bool AddStructureBsps(void* scratch_buffer, datum_index tag_indexes[], int32& out_largest_bsp_size);
+	static void Write(void* buffer, size_t buffer_size, int32* out_file_offset);
 
 	// Initialize the cache and data_file file systems
 	static void InitializeFileSystem(c_data_files& data_files, 
@@ -94,6 +125,9 @@ struct s_build_cache_file_for_scenario {
 
 	CAST_PTR(s_build_cache_file_globals*,										0x10A1030),
 
+	CAST_PTR(s_build_cache_file_for_scenario::_build_cache_file_cull_tags,		0x453260),
+	CAST_PTR(s_build_cache_file_for_scenario::_build_structure_bsp_predicted_resources,		0x453860),
+	CAST_PTR(s_build_cache_file_for_scenario::_build_cache_file_add_tags,		0x454D40),
 	CAST_PTR(s_build_cache_file_for_scenario::__build_cache_file_for_scenario,	0x4553A0),
 	CAST_PTR(_import_class_proc,												0x455640),
 	CAST_PTR(s_build_cache_file_for_scenario::_build_cache_file_begin,			0x4B9250),
@@ -101,12 +135,34 @@ struct s_build_cache_file_for_scenario {
 	CAST_PTR(s_build_cache_file_for_scenario::_build_cache_file_failed,			0x4B9030),
 	CAST_PTR(s_build_cache_file_for_scenario::_build_cache_file_add_resource,	0x4B9350),
 
+	CAST_PTR(void*,																0x454B70),
+	CAST_PTR(void*,																0x4B9180),
 	CAST_PTR(void*,																0x4B944D),
 	CAST_PTR(cstring*,															0x4B9448),
 	CAST_PTR(char*,																0x10FD510),
 };
 
 
+
+API_FUNC_NAKED bool s_build_cache_file_for_scenario::AddStructureBsps(void* scratch_buffer, datum_index tag_indexes[], int32& out_largest_bsp_size)
+{
+	API_FUNC_NAKED_START()
+		push	out_largest_bsp_size
+		push	tag_indexes
+		mov		eax, scratch_buffer
+		call	build_cache_file_for_scenario_internals.build_cache_file_add_structure_bsps
+		add		esp, 4 * 2
+	API_FUNC_NAKED_END(3);
+}
+API_FUNC_NAKED void s_build_cache_file_for_scenario::Write(void* buffer, size_t buffer_size, int32* out_file_offset)
+{
+	API_FUNC_NAKED_START()
+		mov		edi, buffer_size
+		mov		ecx, buffer
+		call	build_cache_file_for_scenario_internals.build_cache_file_write
+		add		esp, 4 * 1
+	API_FUNC_NAKED_END(3);
+}
 
 void s_build_cache_file_for_scenario::InitializeFileSystem(c_data_files& data_files, 
 														   cstring mod_name, bool using_mod_sets)

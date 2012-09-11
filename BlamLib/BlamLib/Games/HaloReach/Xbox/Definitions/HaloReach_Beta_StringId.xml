@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="us-ascii" standalone="yes"?>
 <stringIds game="HaloReach_Beta">
-	<definition method="BySet" />
+	<definition method="BySet" indexBitCount="16" setBitCount="8" lengthBitCount="7" />
 	<sets>
 		<Set key="0" value="static_globals">
 			<entry key="00000000" value="" />

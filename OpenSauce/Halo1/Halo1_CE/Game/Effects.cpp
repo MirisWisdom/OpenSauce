@@ -35,7 +35,9 @@ namespace Yelo
 
 		void Initialize()
 		{
+#if !PLATFORM_DISABLE_UNUSED_CODE
 			Memory::CreateHookRelativeCall(&Effects::Update, GET_FUNC_VPTR(EFFECTS_UPDATE_HOOK), Enums::_x86_opcode_retn);
+#endif
 		}
 
 		void Dispose()

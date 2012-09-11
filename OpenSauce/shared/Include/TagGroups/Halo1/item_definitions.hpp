@@ -283,7 +283,14 @@ namespace Yelo
 			TAG_FIELD(real, overload_time);
 			TAG_PAD(int32, 2);
 			TAG_PAD(tag_string, 1);
-			TAG_PAD(tag_block, 2);
+			struct { // all times are in game ticks (source fields are in seconds)
+				real illumination_recovery_time;
+				real ejection_port_recovery_time;
+				real firing_acceleration_time;
+				real firing_deceleration_time;
+				real error_acceleration_time;
+				real error_deceleration_time;
+			}postprocessed;
 			TAG_TBLOCK(firing_effects, weapon_trigger_firing_effect);
 		}; BOOST_STATIC_ASSERT( sizeof(weapon_trigger_definition) == 0x114);
 		struct _weapon_definition
