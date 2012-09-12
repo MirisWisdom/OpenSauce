@@ -69,8 +69,9 @@
 			<field type="Block" name="build info" definition="project_yellow_scenario_build_info_block" />
 			<field type="Pad" definition="40" />
 
-			<!--<field type="Explanation" name="UI/GUI" definition="" />-->
-			<field type="Pad" definition="28" />
+			<field type="Explanation" name="UI/GUI" definition="" />
+			<field type="Block" name="scripted ui widgets" definition="project_yellow_scripted_ui_widget_block" />
+			<field type="Pad" definition="16" />
 
 			<field type="Explanation" name="Physics" definition="" />
 			<field type="Real" name="gravity scale" units="[0,2]" tooltip="amount to scale gravity ingame" />

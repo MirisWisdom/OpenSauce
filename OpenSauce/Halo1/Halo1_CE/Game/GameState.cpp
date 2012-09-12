@@ -22,7 +22,6 @@ namespace Yelo
 	namespace GameState
 	{
 #include "Game/GameState.EventLog.inl"
-#include "Game/GameState.RuntimeData.inl"
 #include "Game/GameState.Scripting.inl"
 
 
@@ -153,8 +152,6 @@ namespace Yelo
 
 		void PLATFORM_API InitializeForNewGameState()
 		{
-			RuntimeData::InitializeForNewGameState();
-
 			Yelo::Main::s_project_component* components;
 			const int32 component_count = Yelo::Main::GetProjectComponents(components);
 
@@ -166,8 +163,6 @@ namespace Yelo
 		void PLATFORM_API InitializeForNewMap()
 		{
 			Physics()->Reset(); // Reset the physics constants on each new map load since these are engine globals, not game state globals.
-
-			RuntimeData::InitializeForNewMap();
 
 			Yelo::Main::s_project_component* components;
 			const int32 component_count = Yelo::Main::GetProjectComponents(components);
@@ -213,8 +208,6 @@ namespace Yelo
 				scripting_physics_set_gravity_evaluate);
 			Scripting::InitializeScriptFunction(Enums::_hs_function_physics_constants_reset, 
 				scripting_physics_constants_reset_evaluate);
-
-			RuntimeData::InitializeScripting();
 		}
 	};
 };

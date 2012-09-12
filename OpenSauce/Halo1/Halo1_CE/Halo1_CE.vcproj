@@ -1771,6 +1771,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Game\GameStateRuntimeData.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Game\GameStateRuntimeData.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Game\Lights.cpp"
 				>
 			</File>
@@ -1829,6 +1837,10 @@
 					Name="ScriptLibrary"
 					>
 					<File
+						RelativePath=".\Game\ScriptLibrary.Definitions.Numbers.inl"
+						>
+					</File>
+					<File
 						RelativePath=".\Game\ScriptLibrary.Definitions.Objects.inl"
 						>
 					</File>
@@ -1873,11 +1885,11 @@
 						>
 					</File>
 					<File
-						RelativePath=".\Game\GameState.RuntimeData.inl"
+						RelativePath=".\Game\GameState.Scripting.inl"
 						>
 					</File>
 					<File
-						RelativePath=".\Game\GameState.Scripting.inl"
+						RelativePath=".\Game\GameStateRuntimeData.Scripting.inl"
 						>
 					</File>
 				</Filter>

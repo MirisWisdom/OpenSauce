@@ -107,7 +107,7 @@
 		</function>
 		<function name="physics_constants_reset" returnType="void" help="resets all physics constants to earthly values" internal="true" />
 
-		<!-- RUNTIME DATA SCRIPTING INTERFACE -->
+		<!-- RUNTIME DATA SCRIPTING INTERFACE (INTEGERS) -->
 		<function name="runtime_integers_reset" returnType="void" help="reset ALL runtime integers back to zero" internal="true" />
 		<function name="runtime_integer_get" returnType="long" help="get the runtime integer's current value" internal="true" >
 			<arg type="short" name="value_index" />
@@ -239,6 +239,93 @@
 			<arg type="real" name="blue" />
 			<arg type="real" name="change_time" />
 		</function>
+
+		<!-- BIT OPERATIONS -->
+		<function name="bitwise_and" returnType="long" help="AND 'value' with 'flags'" internal="true" >
+			<arg type="long" name="value" />
+			<arg type="long" name="flags" />
+		</function>
+		<function name="bitwise_or" returnType="long" help="OR 'value' with 'flags'" internal="true" >
+			<arg type="long" name="value" />
+			<arg type="long" name="flags" />
+		</function>
+		<function name="bitwise_xor" returnType="long" help="XOR 'value' with 'flags'" internal="true" >
+			<arg type="long" name="value" />
+			<arg type="long" name="flags" />
+		</function>
+		<function name="bitwise_lhs" returnType="long" help="Bit-shift (to the left) 'value' by 'bit_count'" internal="true" >
+			<arg type="long" name="value" />
+			<arg type="long" name="bit_count" help="Any value between 1 and 32, inclusive. Returns value if count is out of range. 0 will just return 'value'" />
+		</function>
+		<function name="bitwise_rhs" returnType="long" help="Bit-shift (to the right) 'value' by 'bit_count'" internal="true" >
+			<arg type="long" name="value" />
+			<arg type="long" name="bit_count" help="Any value between 1 and 32, inclusive. Returns value if count is out of range. 0 will just return 'value'" />
+		</function>
+		<function name="bit_test" returnType="boolean" help="Test whether 'value' has the same bits set as 'flags'" internal="true" >
+			<arg type="long" name="value" />
+			<arg type="short" name="bit_index" />
+		</function>
+		<function name="bit_toggle" returnType="long" help="Turns on or off the bit at 'bit_index' in 'value'" internal="true" >
+			<arg type="long" name="value" />
+			<arg type="short" name="bit_index" />
+			<arg type="boolean" name="on_or_off" help="on_or_off as in true_or_false" />
+		</function>
+		<function name="bit_flags_test" returnType="boolean" help="Test whether 'value' has the same bits set as 'flags'" internal="true" >
+			<arg type="long" name="value" />
+			<arg type="long" name="flags" />
+		</function>
+		<function name="bit_flags_toggle" returnType="long" help="Adds or removes 'flags' to or from 'value'" internal="true" >
+			<arg type="long" name="value" />
+			<arg type="long" name="flags" />
+			<arg type="boolean" name="add_or_remove" help="add_or_remove as in true_or_false" />
+		</function>
+		<function name="hex_string_to_long" returnType="long" help="converts a hex string (eg, 'DEADBEEF') to an integer" internal="true" >
+			<arg type="string" name="value" />
+		</function>
+
+		<function name="runtime_integer_operation" returnType="long" help="perform an operation on a runtime integer. returns result of operation" internal="true" >
+			<arg type="short" name="value_index" />
+			<arg type="string" name="operation_name" />
+			<arg type="long" name="operation_value" help="only required for some operations" />
+		</function>
+		<!-- RUNTIME DATA SCRIPTING INTERFACE (VECTORS) -->
+		<function name="runtime_vectors_reset" returnType="void" help="reset ALL runtime vectors back to zero" internal="true" />
+		<function name="runtime_vector_get_element" returnType="real" help="get the runtime vector's element value" internal="true" >
+			<arg type="short" name="value_index" />
+			<arg type="short" name="element_index" />
+		</function>
+		<function name="runtime_vector_set_element" returnType="boolean" help="set the runtime vector's element value. returns true if successful" internal="true" >
+			<arg type="short" name="value_index" />
+			<arg type="short" name="element_index" />
+			<arg type="string" name="operation_name" />
+			<arg type="real" name="operation_value" />
+		</function>
+		<function name="runtime_vector_set" returnType="boolean" help="set the runtime vector's elements. returns true if successful" internal="true" >
+			<arg type="short" name="value_index" />
+			<arg type="string" name="operation_name" />
+			<arg type="real" name="value_x" />
+			<arg type="real" name="value_y" />
+			<arg type="real" name="value_z" />
+		</function>
+		<function name="runtime_vector_operation" returnType="boolean" help="perform an operation on a runtime vector. returns true if successful" internal="true" >
+			<arg type="short" name="value_index" />
+			<arg type="string" name="operation_name" />
+			<arg type="short" name="operation_vector_index" help="only required for some operations" />
+		</function>
+		<function name="runtime_vector_to_string" returnType="cstring" help="returns the vector in a string as 'x y z', or an empty string if this fails" internal="true" >
+			<arg type="short" name="value_index" />
+		</function>
+		<function name="object_data_set_vector" returnType="bool" help="" internal="true" >
+			<arg type="object" name="object" />
+			<arg type="string" name="data_name" />
+			<arg type="short" name="vector_index" />
+		</function>
+
+		<function name="display_scripted_ui_widget" returnType="boolean" help="returns true if successful" internal="true" >
+			<arg type="short" name="local_player_index" help="On PC, this will always default to player0 no matter what value is given" />
+			<arg type="string" name="widget_name" help="name of the widget as it appears in the yelo tags. searches the scenario's yelo first, then globals" />
+		</function>
+		
 	</scriptFunctions>
 
 	<scriptGlobals>

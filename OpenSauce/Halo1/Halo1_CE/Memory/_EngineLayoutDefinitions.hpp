@@ -51,6 +51,7 @@
 	#define __EL_INTERFACE_CONTROLS		(__EL_INCLUDE_INTERFACE + 0)
 	#define __EL_INTERFACE_GAME_UI		(__EL_INCLUDE_INTERFACE + 1)
 	#define __EL_INTERFACE_KEYSTONE		(__EL_INCLUDE_INTERFACE + 2)
+	#define __EL_INTERFACE_UI_WIDGET	(__EL_INCLUDE_INTERFACE + 3)
 
 
 //////////////////////////////////////////////////////////////////////////

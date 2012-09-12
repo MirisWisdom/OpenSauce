@@ -33,6 +33,18 @@ namespace Yelo
 		/* !-- Preprocessing --! */
 
 
+		/* !-- UI --! */
+		struct s_project_yellow_scripted_ui_widget
+		{
+			TAG_FIELD(tag_string, name);
+			TAG_FIELD(tag_reference, definition, 'DeLa');
+
+			PAD32; // future flags
+			TAG_PAD(tag_block, 2);
+		};
+		/* !-- UI --! */
+
+
 		/* !-- Netgame --! */
 		struct s_network_game_player_unit
 		{
@@ -161,7 +173,9 @@ namespace Yelo
 			struct {
 				TAG_FIELD(tag_reference, custom_sp_map_list, 'str#'); // SHOULD BE AUTOFILLED BY preprocess_maplist_block
 				TAG_FIELD(tag_reference, custom_mp_map_list, 'str#'); // SHOULD BE AUTOFILLED BY preprocess_maplist_block
-				TAG_PAD(tag_reference, 2); // 32
+				TAG_PAD(tag_reference, 1); // 16
+				PAD32;
+				TAG_TBLOCK(scripted_widgets, s_project_yellow_scripted_ui_widget); // 128
 			}ui;
 			/* !-- UI --! */
 
@@ -185,6 +199,22 @@ namespace Yelo
 			//TAG_TBLOCK(object_damage_extensions, s_object_damage_extension); // 512
 
 			TAG_PAD(int32, 17); // 68
+		};
+
+		struct s_shared_cache_file_definition
+		{
+#if !PLATFORM_IS_EDITOR
+			const 
+#endif
+				int16 version;	enum { k_version = 1, k_group_tag = 'cher' };
+			struct _flags {
+				TAG_FLAG16(unused);
+			}flags; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
+			TAG_FIELD(uint32, base_address);
+			TAG_FIELD(int32, starting_tag_index);
+			PAD32;
+
+			TAG_FIELD(tag_reference, explicit_references, 'tagc');
 		};
 	};
 };

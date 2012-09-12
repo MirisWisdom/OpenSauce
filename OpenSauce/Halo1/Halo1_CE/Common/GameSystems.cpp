@@ -44,6 +44,7 @@
 	#include "Game/Console.hpp"
 
 	#include "Game/Scripting.hpp"
+	#include "Game/GameStateRuntimeData.hpp"
 	#include "Game/GameEngine.hpp"
 
 	#include "Networking/Networking.hpp"

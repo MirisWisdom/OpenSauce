@@ -17,6 +17,8 @@
 // Includes for MiscScriptingFunctions.inl
 #include "Game/GameEngine.hpp"
 #include "Game/GameState.hpp"
+#include "Game/GameStateRuntimeData.hpp"
+#include "Interface/UIWidget.hpp"
 #include "Networking/MessageDeltas.hpp"
 #include "Networking/GameSpyApi.hpp"
 #include "TagGroups/project_yellow_definitions.hpp"
@@ -112,6 +114,7 @@ namespace Yelo
 
 			InitializeMiscFunctions();
 			GameState::InitializeScripting();
+			GameState::RuntimeData::InitializeScripting();
 
 			//////////////////////////////////////////////////////////////////////////
 			AllowFullAccess(true);

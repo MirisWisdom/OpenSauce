@@ -109,6 +109,158 @@ static void* scripting_abs_real_evaluate(void** arguments)
 	return result.pointer;
 }
 
+static void* scripting_bitwise_and_evaluate(void** arguments)
+{
+	struct s_arguments {
+		int32 value;
+		int32 flags;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+
+	result.uint32 = CAST(uint32,args->value) & CAST(uint32,args->flags);
+
+	return result.pointer;
+}
+static void* scripting_bitwise_or_evaluate(void** arguments)
+{
+	struct s_arguments {
+		int32 value;
+		int32 flags;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+
+	result.uint32 = CAST(uint32,args->value) | CAST(uint32,args->flags);
+
+	return result.pointer;
+}
+static void* scripting_bitwise_xor_evaluate(void** arguments)
+{
+	struct s_arguments {
+		int32 value;
+		int32 flags;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+
+	result.uint32 = CAST(uint32,args->value) ^ CAST(uint32,args->flags);
+
+	return result.pointer;
+}
+static void* scripting_bitwise_lhs_evaluate(void** arguments)
+{
+	struct s_arguments {
+		int32 value;
+		int32 bit_count;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+
+	if(args->bit_count >= 0 && args->bit_count < BIT_COUNT(int32))
+		result.uint32 = CAST(uint32,args->value) << args->bit_count;
+
+	return result.pointer;
+}
+static void* scripting_bitwise_rhs_evaluate(void** arguments)
+{
+	struct s_arguments {
+		int32 value;
+		int32 bit_count;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+
+	if(args->bit_count >= 0 && args->bit_count < BIT_COUNT(int32))
+		result.uint32 = CAST(uint32,args->value) >> args->bit_count;
+
+	return result.pointer;
+}
+static void* scripting_bit_test_evaluate(void** arguments)
+{
+	struct s_arguments {
+		int32 value;
+		int16 bit_index;
+		PAD16;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+
+	if(args->bit_index >= 0 && args->bit_index < BIT_COUNT(int32))
+		result.boolean = TEST_FLAG(CAST(uint32,args->value), args->bit_index);
+
+	return result.pointer;
+}
+static void* scripting_bit_toggle_evaluate(void** arguments)
+{
+	struct s_arguments {
+		int32 value;
+		int16 bit_index;
+		PAD16;
+		bool add_or_remove;
+		PAD24;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+
+	if(args->bit_index >= 0 && args->bit_index < BIT_COUNT(int32))
+	{
+		uint32 value = CAST(uint32,args->value);
+		result.uint32 = SET_FLAG(value, args->bit_index, args->add_or_remove);
+	}
+	else result.uint32 = CAST(uint32,args->value);
+
+	return result.pointer;
+}
+static void* scripting_bit_flags_test_evaluate(void** arguments)
+{
+	struct s_arguments {
+		int32 value;
+		int32 flags;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+
+	result.boolean = (CAST(uint32,args->value) & CAST(uint32,args->flags)) != 0;
+
+	return result.pointer;
+}
+static void* scripting_bit_flags_toggle_evaluate(void** arguments)
+{
+	struct s_arguments {
+		int32 value;
+		int32 flags;
+		bool add_or_remove;
+		PAD24;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+
+	{
+		uint32 value = CAST(uint32,args->value);
+		uint32 flags = CAST(uint32,args->flags);
+		result.uint32 = args->add_or_remove ? value | flags : value & ~flags;
+	}
+
+	return result.pointer;
+}
+static void* scripting_hex_string_to_long_evaluate(void** arguments)
+{
+	struct s_arguments {
+		cstring str;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+
+	sscanf_s(args->str, "%x", &result.uint32);
+
+	return result.pointer;
+}
+
+
+static void* scripting_display_scripted_ui_widget_evaluate(void** arguments)
+{
+	struct s_arguments {
+		int16 local_player_index;
+		PAD16;
+		cstring name;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+
+	result.boolean = UIWidget::DisplayScriptedWidget(args->local_player_index, args->name);
+	return result.pointer;
+}
+
 
 static void InitializeMiscFunctions()
 {
@@ -130,10 +282,33 @@ static void InitializeMiscFunctions()
 	InitializeScriptFunction(Enums::_hs_function_machine_is_dedi, 
 		scripting_machine_is_dedi);
 
+	//////////////////////////////////////////////////////////////////////////
+	// Numbers
 	InitializeScriptFunctionWithParams(Enums::_hs_function_abs_integer, 
 		scripting_abs_integer_evaluate);
 	InitializeScriptFunctionWithParams(Enums::_hs_function_abs_real, 
 		scripting_abs_real_evaluate);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_bitwise_and, 
+		scripting_bitwise_or_evaluate);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_bitwise_or, 
+		scripting_bitwise_or_evaluate);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_bitwise_xor, 
+		scripting_bitwise_xor_evaluate);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_bitwise_lhs, 
+		scripting_bitwise_lhs_evaluate);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_bitwise_rhs, 
+		scripting_bitwise_rhs_evaluate);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_bit_test, 
+		scripting_bit_test_evaluate);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_bit_toggle, 
+		scripting_bit_toggle_evaluate);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_bit_flags_test, 
+		scripting_bit_flags_test_evaluate);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_bit_flags_toggle, 
+		scripting_bit_flags_toggle_evaluate);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_hex_string_to_long, 
+		scripting_hex_string_to_long_evaluate);
+	//////////////////////////////////////////////////////////////////////////
 
 #if !PLATFORM_IS_DEDI
 	InitializeScriptFunction(Enums::_hs_function_pp_load,
@@ -174,6 +349,9 @@ static void InitializeMiscFunctions()
 		Rasterizer::PostProcessing::Scripting::Bloom::HS_BloomSetMinimumColor);
 	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_bloom_set_maximum_color, 
 		Rasterizer::PostProcessing::Scripting::Bloom::HS_BloomSetMaximumColor);
+
+	InitializeScriptFunctionWithParams(Enums::_hs_function_display_scripted_ui_widget, 
+		scripting_display_scripted_ui_widget_evaluate);
 #else
 	NullifyScriptFunction( GET_HS_FUNCTION(pp_load) );
 	NullifyScriptFunction( GET_HS_FUNCTION(pp_unload) );
@@ -193,5 +371,7 @@ static void InitializeMiscFunctions()
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_bloom_set_mix_amount) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_bloom_set_minimum_color) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_bloom_set_maximum_color) );
+
+	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(display_scripted_ui_widget) );
 #endif
 }

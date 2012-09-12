@@ -24,6 +24,12 @@
 		HS_TYPE(string),
 		HS_TYPE(real)
 	);
+	HS_FUNCTION_WITH_PARAMS(object_data_set_vector, bool, "", 
+			"<object> <data-name> <vector-index>", 3,
+		HS_TYPE(object),
+		HS_TYPE(string),
+		HS_TYPE(short)
+	);
 
 	HS_FUNCTION_WITH_PARAMS(weapon_data_get_real, real, "", 
 			"<weapon> <data-name>", 2,

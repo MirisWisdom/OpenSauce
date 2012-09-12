@@ -115,7 +115,9 @@ namespace Yelo
 
 			/* !-- UI/GUI --! */
 			struct {
-				TAG_PAD(int32, 7); // 28
+				TAG_TBLOCK(scripted_widgets, s_project_yellow_scripted_ui_widget); // 128
+
+				TAG_PAD(int32, 4); // 16
 			}ui;
 			/* --- UI/GUI --- */
 
