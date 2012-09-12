@@ -72,6 +72,10 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 		// the campaign case
 		static uint32* CacheSizeMax = CAST_PTR(uint32*, 0x4531B7); // build_cache_file_write_header_and_compress
 
+		// Fix up the scratch buffer tool uses when streaming out the vertex and index data
+		// * This buffer is actually never free'd in tool...and add_tags is called twice. Memory leak!
+		static uint32* VertexAndIndexBufferSizeMax = CAST_PTR(uint32*, 0x454D57); // build_cache_file_add_tags
+
 		// Addresses of the value used for the tag memory's base address
 		static uint32* TagMemoryBaseAddress[] = {
 			CAST_PTR(uint32*, 0x454EBE),
@@ -307,6 +311,8 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 		*AddressOf::CacheSizeJmpAddress = 0xEB;
 
 		*AddressOf::CacheSizeMax = Yelo::Enums::k_max_cache_size_upgrade;
+
+		*AddressOf::VertexAndIndexBufferSizeMax = Yelo::Enums::k_max_cache_vertex_y_index_buffer_size_upgrade;
 	}
 
 	static void CacheMemoryDispose()
@@ -314,6 +320,8 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 		*AddressOf::CacheSizeJmpAddress = 0x74;
 
 		*AddressOf::CacheSizeMax = Yelo::Enums::k_max_cache_size;
+
+		*AddressOf::VertexAndIndexBufferSizeMax = Yelo::Enums::k_max_cache_vertex_y_index_buffer_size;
 	}
 	#pragma endregion
 
