@@ -41,6 +41,34 @@ static void* scripting_objects_distance_to_object_evaluate(void** arguments)
 }
 
 
+static real_vector3d* object_data_get_vector_by_name(s_object_header_datum* obj, cstring data_name)
+{
+	cstring s = data_name; // alias for keeping the code width down
+
+	real_vector3d* value_ptr = NULL;
+
+		 if( !strcmp(s,"position") )				value_ptr = CAST_PTR(real_vector3d*, &obj->_object->GetNetworkDatumData()->position);
+	else if( !strcmp(s,"transitional_velocity") )	value_ptr = &obj->_object->GetNetworkDatumData()->transitional_velocity;
+	else if( !strcmp(s,"forward") )					value_ptr = &obj->_object->GetNetworkDatumData()->forward;
+	else if( !strcmp(s,"up") )						value_ptr = &obj->_object->GetNetworkDatumData()->up;
+	else if( !strcmp(s,"angular_velocity") )		value_ptr = &obj->_object->GetNetworkDatumData()->angular_velocity;
+	//else if( !strcmp(s,"") )	value_ptr = &obj->_object-;
+
+	if(obj->object_type == Enums::_object_type_biped || obj->object_type == Enums::_object_type_vehicle)
+	{
+		s_unit_data* unit = &obj->Type._unit->unit;
+
+			 if( !strcmp(s,"desired_facing") )	value_ptr = unit->GetDesiredFacingVector();
+		else if( !strcmp(s,"desired_aiming") )	value_ptr = unit->GetDesiredAimingVector();
+		else if( !strcmp(s,"aiming") )			value_ptr = unit->GetAimingVector();
+		else if( !strcmp(s,"aiming_velocity") )	value_ptr = unit->GetAimingVelocity();
+		else if( !strcmp(s,"looking") )			value_ptr = unit->GetLookingVector();
+		else if( !strcmp(s,"looking_angles") )	value_ptr = CAST_PTR(real_vector3d*, unit->GetLookingAngles());
+		else if( !strcmp(s,"looking_velocity") )value_ptr = unit->GetLookingVelocity();
+	}
+
+	return value_ptr;
+}
 static real* object_data_get_real_by_name(s_object_header_datum* obj, cstring data_name, cstring subdata_name, Enums::hs_type& out_type)
 {
 	cstring s = data_name; // alias for keeping the code width down
@@ -48,25 +76,7 @@ static real* object_data_get_real_by_name(s_object_header_datum* obj, cstring da
 	real* value_ptr = NULL;
 
 	out_type = HS_TYPE(real);
-		 if( !strcmp(s,"position") )				value_ptr = &obj->_object->GetNetworkDatumData()->position.x;
-	else if( !strcmp(s,"transitional_velocity") )	value_ptr = &obj->_object->GetNetworkDatumData()->transitional_velocity.i;
-	else if( !strcmp(s,"forward") )					value_ptr = &obj->_object->GetNetworkDatumData()->forward.i;
-	else if( !strcmp(s,"up") )						value_ptr = &obj->_object->GetNetworkDatumData()->up.i;
-	else if( !strcmp(s,"angular_velocity") )		value_ptr = &obj->_object->GetNetworkDatumData()->angular_velocity.i;
-	//else if( !strcmp(s,"") )	value_ptr = *obj->_object-;
-
-	if(obj->object_type == Enums::_object_type_biped || obj->object_type == Enums::_object_type_vehicle)
-	{
-		s_unit_data* unit = &obj->Type._unit->unit;
-
-			 if( !strcmp(s,"desired_facing") )	value_ptr = &unit->GetDesiredFacingVector()->i;
-		else if( !strcmp(s,"desired_aiming") )	value_ptr = &unit->GetDesiredAimingVector()->i;
-		else if( !strcmp(s,"aiming") )			value_ptr = &unit->GetAimingVector()->i;
-		else if( !strcmp(s,"aiming_velocity") )	value_ptr = &unit->GetAimingVelocity()->i;
-		else if( !strcmp(s,"looking") )			value_ptr = &unit->GetLookingVector()->i;
-		else if( !strcmp(s,"looking_angles") )	value_ptr = &unit->GetLookingAngles()->yaw;
-		else if( !strcmp(s,"looking_velocity") )value_ptr = &unit->GetLookingVelocity()->i;
-	}
+	value_ptr = CAST_PTR(real*, object_data_get_vector_by_name(obj, data_name));
 
 	if(value_ptr != NULL)
 	{
@@ -125,6 +135,32 @@ static void* scripting_object_data_set_real_evaluate(void** arguments)
 	}
 
 	return NULL;
+}
+static void* scripting_object_data_set_vector_evaluate(void** arguments)
+{
+	struct s_arguments {
+		datum_index object_index;
+		cstring data_name;
+		int16 vector_index;
+		PAD16;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+
+	// FIXME: I believe some of the unit-based properties aren't sync'd...need to disable setting them when !Networking::IsLocal()
+	if(!args->object_index.IsNull())
+	{
+		s_object_header_datum* object = (*Objects::ObjectHeader())[args->object_index];
+
+		real_vector3d* obj_vector = object_data_get_vector_by_name(object, args->data_name);
+		const real_vector3d* vector = GameState::RuntimeData::VectorValueGet(args->vector_index);
+		if(obj_vector != NULL && vector != NULL)
+		{
+			*obj_vector = *vector;
+			result.boolean = true;
+		}
+	}
+
+	return result.pointer;
 }
 
 

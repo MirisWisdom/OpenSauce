@@ -19,6 +19,7 @@
 {TagGroups::Initialize,								TagGroups::Dispose,					NULL,	TagGroups::InitializeForNewMap},
 
 {Scripting::Initialize,								Scripting::Dispose},	// No active code in Update game hook currently
+{GameState::RuntimeData::Initialize,				GameState::RuntimeData::Dispose,	GameState::RuntimeData::InitializeForNewGameState,	GameState::RuntimeData::InitializeForNewMap},
 #if PLATFORM_IS_USER
 	{DX9::Initialize,								DX9::Dispose},
 	{DX9::c_gbuffer_system::Initialize,				DX9::c_gbuffer_system::Dispose,		NULL, NULL, NULL, DX9::c_gbuffer_system::Update},

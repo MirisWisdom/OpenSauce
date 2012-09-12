@@ -75,6 +75,10 @@
 		<Reference name="actor_variant_reference">
 			<field>actv</field>
 		</Reference>
+
+		<Reference name="ui_widget_definition_reference">
+			<field>DeLa</field>
+		</Reference>
 	</references>
 
 	<enums>
@@ -194,6 +198,14 @@
 		<TagBlock name="scripting_block" maxElements="1">
 			<field type="Block" name="new functions" definition="script_function_block" locked="true" />
 			<field type="Block" name="new globals" definition="script_global_block" locked="true" />
+		</TagBlock>
+
+		<TagBlock name="project_yellow_scripted_ui_widget_block" maxElements="128">
+			<field type="String" name="name" blockname="true" />
+			<field type="TagReference" name="definition" definition="ui_widget_definition_reference" />
+
+			<field type="Pad" definition="4" />
+			<field type="Pad" definition="24" />
 		</TagBlock>
 	</blocks>
 

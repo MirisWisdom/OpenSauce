@@ -114,7 +114,9 @@
 			<field type="Explanation" name="UI" definition="~N(If this is a ui cache) Map lists specify what maps to add to the map chooser ui" />
 			<field type="TagReference" name="custom map list - sp" definition="string_list_reference" tooltip="SHOULD BE AUTOFILLED BY preprocess_maplist_block" />
 			<field type="TagReference" name="custom map list - mp" definition="string_list_reference" tooltip="SHOULD BE AUTOFILLED BY preprocess_maplist_block" />
-			<field type="Pad" definition="32" />
+			<field type="Pad" definition="16" />
+			<field type="Pad" definition="4" />
+			<field type="Block" name="scripted ui widgets" definition="project_yellow_scripted_ui_widget_block" />
 
 			<field type="Explanation" name="Netgame" definition="" />
 			<field type="Block" name="player units" definition="network_game_player_unit" />

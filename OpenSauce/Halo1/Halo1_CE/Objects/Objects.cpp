@@ -20,6 +20,7 @@
 
 #include "Game/Camera.hpp"
 #include "Game/EngineFunctions.hpp"
+#include "Game/GameStateRuntimeData.hpp"
 #include "Game/Scripting.hpp"
 #include "Game/ScriptLibrary.hpp"
 #include "Memory/MemoryInterface.hpp"
@@ -77,6 +78,8 @@ namespace Yelo
 				scripting_object_data_get_real_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_object_data_set_real, 
 				scripting_object_data_set_real_evaluate);
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_object_data_set_vector, 
+				scripting_object_data_set_vector_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_weapon_data_get_real, 
 				scripting_weapon_data_get_real_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_weapon_data_set_real, 

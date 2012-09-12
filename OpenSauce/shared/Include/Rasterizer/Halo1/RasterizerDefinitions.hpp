@@ -52,11 +52,10 @@ namespace Yelo
 
 			UNKNOWN_TYPE(bool); // controls the rendering of stuff related to certain objects
 			PAD24;
-			UNKNOWN_TYPE(real);
-			UNKNOWN_TYPE(rectangle2d);
-			UNKNOWN_TYPE(rectangle2d);
-			PAD32;
-			UNKNOWN_TYPE(real);
+			real vertical_field_of_view;
+			rectangle2d viewport_bounds;
+			rectangle2d window_bounds;
+			real z_near ,z_far;
 			PAD32; PAD32; PAD32; PAD32; // just looks like 16 bytes of unused poop
 		}; BOOST_STATIC_ASSERT( sizeof(s_render_camera) == 0x54 );
 
@@ -101,6 +100,33 @@ namespace Yelo
 			}
 		}; BOOST_STATIC_ASSERT( sizeof(s_render_frustum) == 0x18C );
 
+		struct s_render_window
+		{
+			int16 local_player_index;
+			UNKNOWN_TYPE(bool);
+			PAD8;
+			s_render_camera render_camera, rasterizer_camera;
+		}; BOOST_STATIC_ASSERT( sizeof(s_render_window) == 0xAC );
+
+		struct s_render_fog
+		{
+			word_flags flags; // same flags as in the tag definition
+			PAD16;
+			real_rgb_color atmospheric_color;
+			real atmospheric_maximum_density,
+				atmospheric_minimum_distance,
+				atmospheric_maximum_distance;
+			UNKNOWN_TYPE(int16);
+			PAD16;
+			real_plane3d plane; // copied from the bsp's fog planes
+			real_rgb_color color; // copied from tag definition
+			real max_density; // copied from tag definition
+			real planar_maximum_distance;
+			real opaque_depth; // copied from tag definition
+			const void* screen_layers_definition; // pointer to the tag definition data
+			UNKNOWN_TYPE(real);
+		}; BOOST_STATIC_ASSERT( sizeof(s_render_fog) == 0x50 );
+
 		struct s_render_globals
 		{
 			UNKNOWN_TYPE(int32);
@@ -111,8 +137,7 @@ namespace Yelo
 			UNKNOWN_TYPE(real);
 			s_render_camera camera;
 			s_render_frustum frustum;
-			byte fog[0x4C];
-			PAD32;
+			s_render_fog fog;
 			int32 leaf_index;
 			int32 cluster_index;
 			PAD8; // probably an unused bool
@@ -133,6 +158,29 @@ namespace Yelo
 			}dynamic_triangles;
 		}; BOOST_STATIC_ASSERT( sizeof(s_render_globals) == 0x9D298 );
 		s_render_globals* RenderGlobals(); // defined in the implementing extension's code
+
+		struct s_player_screen_flash // this header file isn't the best place for this...
+		{
+			_enum type;
+			PAD16;
+			real intensity;
+			UNKNOWN_TYPE(real);
+			UNKNOWN_TYPE(real); UNKNOWN_TYPE(real); UNKNOWN_TYPE(real);
+			UNKNOWN_TYPE(int32); // unused?
+			UNKNOWN_TYPE(int32); // unused?
+		}; BOOST_STATIC_ASSERT( sizeof(s_player_screen_flash) == 0x20 );
+		struct s_rasterizer_window_parameters
+		{
+			_enum rasterizer_target;
+			int16 window_index;
+			UNKNOWN_TYPE(bool); // mirror rendering related
+			UNKNOWN_TYPE(bool);
+			PAD16;
+			s_render_camera camera;
+			s_render_frustum frustum;
+			s_render_fog fog;
+			s_player_screen_flash screen_flash;
+		}; BOOST_STATIC_ASSERT( sizeof(s_rasterizer_window_parameters) == 0x258 );
 
 		struct s_rasterizer_debug_options
 		{

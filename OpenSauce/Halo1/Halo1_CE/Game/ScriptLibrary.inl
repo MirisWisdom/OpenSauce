@@ -101,6 +101,28 @@
 		_hs_function_pp_bloom_set_minimum_color,
 		_hs_function_pp_bloom_set_maximum_color,
 
+		_hs_function_bitwise_and,
+		_hs_function_bitwise_or,
+		_hs_function_bitwise_xor,
+		_hs_function_bitwise_lhs,
+		_hs_function_bitwise_rhs,
+		_hs_function_bit_test,
+		_hs_function_bit_toggle,
+		_hs_function_bit_flags_test,
+		_hs_function_bit_flags_toggle,
+		_hs_function_hex_string_to_long,
+
+		_hs_function_runtime_integer_operation,
+		_hs_function_runtime_vectors_reset,
+		_hs_function_runtime_vector_get_element,
+		_hs_function_runtime_vector_set_element,
+		_hs_function_runtime_vector_set,
+		_hs_function_runtime_vector_operation,
+		_hs_function_runtime_vector_to_string,
+		_hs_function_object_data_set_vector,
+
+		_hs_function_display_scripted_ui_widget,
+
 	// debug functions
 	#ifdef API_DEBUG
 		_hs_function_dump_view_state,
@@ -174,18 +196,16 @@
 	HS_FUNCTION(machine_is_dedi, bool, "returns whether or not the local machine is a dedicated server");
 
 
-	HS_FUNCTION_WITH_PARAMS(abs_integer, long, "", 
-			"<value>", 1,
-		HS_TYPE(long)
-	);
-	HS_FUNCTION_WITH_PARAMS(abs_real, real, "", 
-			"<value>", 1,
-		HS_TYPE(real)
-	);
-
-
+	#include "Game/ScriptLibrary.Definitions.Numbers.inl"
 	#include "Game/ScriptLibrary.Definitions.Postprocessing.inl"
-	
+
+
+	HS_FUNCTION_WITH_PARAMS(display_scripted_ui_widget, bool, "", 
+			"<local-player-index> <data-name>", 2,
+		HS_TYPE(short),
+		HS_TYPE(string)
+	);
+
 
 	// debug functions
 	#ifdef API_DEBUG
@@ -291,6 +311,28 @@
 		&GET_HS_FUNCTION(pp_bloom_set_mix_amount),
 		&GET_HS_FUNCTION(pp_bloom_set_minimum_color),
 		&GET_HS_FUNCTION(pp_bloom_set_maximum_color),
+
+		&GET_HS_FUNCTION(bitwise_and),
+		&GET_HS_FUNCTION(bitwise_or),
+		&GET_HS_FUNCTION(bitwise_xor),
+		&GET_HS_FUNCTION(bitwise_lhs),
+		&GET_HS_FUNCTION(bitwise_rhs),
+		&GET_HS_FUNCTION(bit_test),
+		&GET_HS_FUNCTION(bit_toggle),
+		&GET_HS_FUNCTION(bit_flags_test),
+		&GET_HS_FUNCTION(bit_flags_toggle),
+		&GET_HS_FUNCTION(hex_string_to_long),
+
+		&GET_HS_FUNCTION(runtime_integer_operation),
+		&GET_HS_FUNCTION(runtime_vectors_reset),
+		&GET_HS_FUNCTION(runtime_vector_get_element),
+		&GET_HS_FUNCTION(runtime_vector_set_element),
+		&GET_HS_FUNCTION(runtime_vector_set),
+		&GET_HS_FUNCTION(runtime_vector_operation),
+		&GET_HS_FUNCTION(runtime_vector_to_string),
+		&GET_HS_FUNCTION(object_data_set_vector),
+
+		&GET_HS_FUNCTION(display_scripted_ui_widget),
 
 	// debug functions
 	#ifdef API_DEBUG

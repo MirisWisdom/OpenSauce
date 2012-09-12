@@ -92,6 +92,11 @@
 	FUNC_PTR(KW_GETCONTROLBYID,	0x6BD0D4, FUNC_PTR_NULL);
 	FUNC_PTR(KC_SENDMESSAGE,	0x6BD0F0, FUNC_PTR_NULL);
 
+//////////////////////////////////////////////////////////////////////////
+// UIWidget.cpp
+#elif __EL_INCLUDE_FILE_ID == __EL_INTERFACE_UI_WIDGET
+	FUNC_PTR(UI_WIDGET_LOAD_BY_NAME_OR_TAG,		0x49ABA0, FUNC_PTR_NULL);
+
 #else
 	#error Undefined engine layout include for: __EL_INCLUDE_INTERFACE
 #endif
