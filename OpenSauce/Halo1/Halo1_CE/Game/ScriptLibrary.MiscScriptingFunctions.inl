@@ -257,7 +257,10 @@ static void* scripting_display_scripted_ui_widget_evaluate(void** arguments)
 	}* args = CAST_PTR(s_arguments*, arguments);
 	TypeHolder result; result.pointer = NULL;
 
+#if !PLATFORM_IS_DEDI 
 	result.boolean = UIWidget::DisplayScriptedWidget(args->local_player_index, args->name);
+#endif
+
 	return result.pointer;
 }
 
