@@ -312,10 +312,10 @@
 			<arg type="string" name="operation_name" />
 			<arg type="short" name="operation_vector_index" help="only required for some operations" />
 		</function>
-		<function name="runtime_vector_to_string" returnType="cstring" help="returns the vector in a string as 'x y z', or an empty string if this fails" internal="true" >
+		<function name="runtime_vector_to_string" returnType="string" help="returns the vector in a string as 'x y z', or an empty string if this fails" internal="true" >
 			<arg type="short" name="value_index" />
 		</function>
-		<function name="object_data_set_vector" returnType="bool" help="" internal="true" >
+		<function name="object_data_set_vector" returnType="boolean" help="" internal="true" >
 			<arg type="object" name="object" />
 			<arg type="string" name="data_name" />
 			<arg type="short" name="vector_index" />
