@@ -135,12 +135,12 @@ namespace BlamLib
 {
 	partial class Tool
 	{
-		static void UnlockBlamTools(params string[] args)
+		static int UnlockBlamTools(params string[] args)
 		{
 			if (args.Length < 5)
 			{
 				Console.WriteLine("error: invalid command argument count");
-				return;
+				return -1;
 			}
 
 			BlamVersion version = BlamVersion.Unknown;
@@ -199,6 +199,8 @@ namespace BlamLib
 				msg = "There was an error while trying to apply CheApe. Validate that you selected copies of the original tools and try again.";
 
 			Console.WriteLine(msg);
+
+			return exception == null ? 0 : -1;
 		}
 	};
 }

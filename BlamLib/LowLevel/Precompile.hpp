@@ -9,18 +9,24 @@
 #define YELO_KILL_CXX_EXCEPTIONS
 #include <cseries/KillCxxExceptions.hpp>
 
+#include <Windows.h>
+#include <shell/Platform.hpp>
+
 // Path to the 360 SDK
 #define PATH_XEDK PATH_PROGRAM_FILES "\\Microsoft Xbox 360 SDK"
+#define PATH_XEDK_LIBS	PATH_XEDK "\\lib\\win32\\vs2010\\"
 
 #ifndef LOWLEVEL_NO_X360
 	#ifdef _DEBUG
-		#pragma comment (lib, PATH_XEDK "\\lib\\win32\\vs2008\\d3d9d.lib")
-		#pragma comment (lib, PATH_XEDK "\\lib\\win32\\vs2008\\d3dx9d.lib")
-		#pragma comment (lib, PATH_XEDK "\\lib\\win32\\vs2008\\xgraphicsd.lib")
+		#pragma comment (lib, PATH_XEDK_LIBS "d3d9d.lib")
+		#pragma comment (lib, PATH_XEDK_LIBS "d3dx9d.lib")
+		#pragma comment (lib, PATH_XEDK_LIBS "xgraphicsd.lib")
+		#pragma comment (lib, PATH_XEDK_LIBS "xcompressd.lib")
 	#else
-		#pragma comment (lib, PATH_XEDK "\\lib\\win32\\vs2008\\d3d9.lib")
-		#pragma comment (lib, PATH_XEDK "\\lib\\win32\\vs2008\\d3dx9.lib")
-		#pragma comment (lib, PATH_XEDK "\\lib\\win32\\vs2008\\xgraphics.lib")
+		#pragma comment (lib, PATH_XEDK_LIBS "d3d9.lib")
+		#pragma comment (lib, PATH_XEDK_LIBS "d3dx9.lib")
+		#pragma comment (lib, PATH_XEDK_LIBS "xgraphics.lib")
+		#pragma comment (lib, PATH_XEDK_LIBS "xcompress.lib")
 	#endif
 #else
 	// If LOWLEVEL_NO_X360 is defined, implicitly kill the XMA lib code
@@ -30,8 +36,6 @@
 	#pragma comment (lib, "d3dx9.lib")
 #endif
 
-#include <Windows.h>
-#include <shell/Platform.hpp>
 #include <cseries/MacrosCpp.hpp>
 #include <cseries/MacrosClr.hpp>
 

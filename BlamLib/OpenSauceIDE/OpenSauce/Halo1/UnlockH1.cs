@@ -112,7 +112,7 @@ namespace BlamLib
 {
 	partial class Tool
 	{
-		static void UnlockBlamGames(params string[] args)
+		static int UnlockBlamGames(params string[] args)
 		{
 			const string kModifcationName = "OpenSauce";
 			const string kSupportedExeVersion = "1.09";
@@ -120,7 +120,7 @@ namespace BlamLib
 			if (args.Length < 4)
 			{
 				Console.WriteLine("error: invalid command argument count");
-				return;
+				return -1;
 			}
 
 			BlamVersion version = BlamVersion.Unknown;
@@ -172,6 +172,8 @@ namespace BlamLib
 					"v" + kSupportedExeVersion + " exe(s) and try again.";
 
 			Console.WriteLine(msg);
+
+			return exception == null ? 0 : -1;
 		}
 	};
 }

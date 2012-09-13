@@ -14,14 +14,12 @@ __CPP_CODE_START__
 //#ifndef _X86_
 //	#define _X86_
 //#endif
-#ifndef LOWLEVEL_NO_X360
-	#include <Xboxmath.h>
-	#include <XGraphics.h>
-#else
-	#include <xnamath.h>
-#endif
 #include <D3dx9math.h>
 #include <d3d9.h>
+#include <xnamath.h>
+#ifndef LOWLEVEL_NO_X360
+	#include <XGraphics.h>
+#endif
 
 #include "XNA/XNA.inl"
 __CPP_CODE_END__
@@ -138,6 +136,148 @@ namespace LowLevel { namespace Xbox360 {
 	void Graphics::EndianSwapMemory32(System::IntPtr dst, System::IntPtr src, mcpp_int count)
 	{
 		return ::Internal::EndianSwapMemory32(dst.ToPointer(), src.ToPointer(), count);
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Decompress
+	System::IntPtr Compression::ContextCreateForDecompression(Compression::CodecType type, Compression::ContextFlags flags)
+	{
+		return System::IntPtr(::Internal::ContextCreateForDecompression(
+			mcpp_cast_to(cpp_uint,type), mcpp_cast_to(cpp_uint,flags)));
+	}
+	System::IntPtr Compression::ContextCreateForDecompression(Compression::CodecType type, Compression::ContextFlags flags, Compression::LzxParameters params)
+	{
+		XMEMCODEC_PARAMETERS_LZX cpp_params = {
+			params.Flags, params.WindowSize, params.CompressionPartitionSize
+		};
+		return System::IntPtr(::Internal::ContextCreateForDecompression(
+			mcpp_cast_to(cpp_uint,type), mcpp_cast_to(cpp_uint,flags), &cpp_params));
+	}
+
+	mcpp_uint Compression::Decompress(System::IntPtr ctxt, array<mcpp_byte>^ dst, mcpp_out(mcpp_uint) dst_size,
+		array<mcpp_byte>^ src, mcpp_int decompress_amount)
+	{
+		dst_size = 0;
+
+		pin_ptr<cpp_byte> dst_ptr = &dst[0];
+		pin_ptr<const cpp_byte> src_ptr = &dst[0];
+		SIZE_T dest_size = dst->Length;
+		if(decompress_amount <= 0) decompress_amount = src->Length;
+
+		HRESULT hr = XMemDecompress(ctxt.ToPointer(), 
+			dst_ptr, &dest_size, src_ptr, decompress_amount);
+
+		if(SUCCEEDED(hr)) dst_size = mcpp_cast_to(mcpp_uint,dest_size);
+		return hr;
+	}
+
+	mcpp_uint Compression::DecompressStream(System::IntPtr ctxt, array<mcpp_byte>^ dst, mcpp_out(mcpp_uint) dst_size,
+		array<mcpp_byte>^ src, mcpp_ref(mcpp_uint) decompress_amount)
+	{
+		dst_size = 0;
+
+		pin_ptr<cpp_byte> dst_ptr = &dst[0];
+		pin_ptr<const cpp_byte> src_ptr = &dst[0];
+		SIZE_T dest_size = dst->Length;
+		if(decompress_amount <= 0) decompress_amount = src->Length;
+		SIZE_T src_size = decompress_amount;
+
+		HRESULT hr = XMemDecompressStream(ctxt.ToPointer(), 
+			dst_ptr, &dest_size, src_ptr, &src_size);
+
+		if(SUCCEEDED(hr))
+		{
+			dst_size = mcpp_cast_to(mcpp_uint,dest_size);
+			decompress_amount = mcpp_cast_to(mcpp_uint,src_size);
+		}
+
+		return hr;
+	}
+	void Compression::DecompressContextReset(System::IntPtr ctxt)
+	{
+		XMemResetDecompressionContext(ctxt.ToPointer());
+	}
+
+	void Compression::DecompressContextDispose(mcpp_ref(System::IntPtr) ctxt)
+	{
+		if(ctxt != System::IntPtr::Zero)
+		{
+			XMemDestroyDecompressionContext( ctxt.ToPointer() );
+			ctxt = System::IntPtr::Zero;
+		}
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	// Compress
+	System::IntPtr Compression::ContextCreateForCompression(Compression::CodecType type, Compression::ContextFlags flags, 
+		mcpp_out(array<mcpp_byte>^) ctxt_data)
+	{
+		return System::IntPtr(::Internal::ContextCreateForCompression(
+			mcpp_cast_to(cpp_uint,type), mcpp_cast_to(cpp_uint,flags)));
+	}
+	System::IntPtr Compression::ContextCreateForCompression(Compression::CodecType type, Compression::ContextFlags flags, 
+		mcpp_out(array<mcpp_byte>^) ctxt_data, Compression::LzxParameters params)
+	{
+		XMEMCODEC_PARAMETERS_LZX cpp_params = {
+			params.Flags, params.WindowSize, params.CompressionPartitionSize
+		};
+		return System::IntPtr(::Internal::ContextCreateForCompression(
+			mcpp_cast_to(cpp_uint,type), mcpp_cast_to(cpp_uint,flags), &cpp_params));
+	}
+
+	mcpp_uint Compression::Compress(System::IntPtr ctxt, array<mcpp_byte>^ dst, mcpp_out(mcpp_uint) dst_size,
+		array<mcpp_byte>^ src, mcpp_int compress_amount)
+	{
+		dst_size = 0;
+
+		pin_ptr<cpp_byte> dst_ptr = &dst[0];
+		pin_ptr<const cpp_byte> src_ptr = &dst[0];
+		SIZE_T dest_size = dst->Length;
+		// Passing a value of 0 concludes the data stream, so don't check <= 0
+		if(compress_amount < 0) compress_amount = src->Length;
+
+		HRESULT hr = XMemCompress(ctxt.ToPointer(), 
+			dst_ptr, &dest_size, src_ptr, compress_amount);
+
+		if(SUCCEEDED(hr)) dst_size = mcpp_cast_to(mcpp_uint,dest_size);
+		return hr;
+	}
+
+	mcpp_uint Compression::CompressStream(System::IntPtr ctxt, array<mcpp_byte>^ dst, mcpp_out(mcpp_uint) dst_size,
+		array<mcpp_byte>^ src, mcpp_ref(mcpp_uint) compress_amount)
+	{
+		dst_size = 0;
+
+		pin_ptr<cpp_byte> dst_ptr = &dst[0];
+		pin_ptr<const cpp_byte> src_ptr = &dst[0];
+		SIZE_T dest_size = dst->Length;
+		if(compress_amount <= 0) compress_amount = src->Length;
+		SIZE_T src_size = compress_amount;
+
+		HRESULT hr = XMemCompressStream(ctxt.ToPointer(), 
+			dst_ptr, &dest_size, src_ptr, &src_size);
+
+		if(SUCCEEDED(hr))
+		{
+			dst_size = mcpp_cast_to(mcpp_uint,dest_size);
+			compress_amount = mcpp_cast_to(mcpp_uint,src_size);
+		}
+
+		return hr;
+	}
+	void Compression::CompressContextReset(System::IntPtr ctxt)
+	{
+		XMemResetCompressionContext(ctxt.ToPointer());
+	}
+
+	void Compression::CompressContextDispose(mcpp_ref(System::IntPtr) ctxt)
+	{
+		if(ctxt != System::IntPtr::Zero)
+		{
+			XMemDestroyCompressionContext( ctxt.ToPointer() );
+			ctxt = System::IntPtr::Zero;
+		}
 	}
 
 }; };

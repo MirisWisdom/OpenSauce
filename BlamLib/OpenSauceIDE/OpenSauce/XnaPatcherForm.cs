@@ -161,7 +161,7 @@ namespace BlamLib
 {
 	partial class Tool
 	{
-		static void PatchXna(params string[] args)
+		static int PatchXna(params string[] args)
 		{
 			const string kModifcationName = "OpenSauce-XNA";
 			const string kSupportedExeVersion = "4.0";
@@ -169,7 +169,7 @@ namespace BlamLib
 			if (args.Length < 1)
 			{
 				Console.WriteLine("error: invalid command argument count");
-				return;
+				return -1;
 			}
 
 			string output_path = args[0];
@@ -214,6 +214,8 @@ namespace BlamLib
 					"v" + kSupportedExeVersion + " exe(s) and try again.";
 
 			Console.WriteLine(msg);
+
+			return exception == null ? 0 : -1;
 		}
 	};
 }

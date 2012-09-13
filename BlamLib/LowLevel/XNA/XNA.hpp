@@ -136,6 +136,8 @@ namespace LowLevel { namespace Xna {
 }; };
 
 #ifndef LOWLEVEL_NO_X360
+#include <xcompress.h>
+
 namespace LowLevel { namespace Xbox360 {
 	public mcpp_class Graphics abstract sealed {
 	mcpp_public
@@ -145,6 +147,48 @@ namespace LowLevel { namespace Xbox360 {
 		static mcpp_uint GetFormatSize(mcpp_uint fmt);
 
 		static void EndianSwapMemory32(System::IntPtr dst, System::IntPtr src, mcpp_int count);
+	};
+
+	public mcpp_class Compression abstract sealed {
+	mcpp_public
+		mcpp_enum CodecType
+		{
+			Default = XMEMCODEC_DEFAULT,
+			Lzx = XMEMCODEC_LZX,
+		};
+		[System::Flags]
+		mcpp_enum ContextFlags
+		{
+			Stream = XMEMCOMPRESS_STREAM,
+		};
+
+		mcpp_struct LzxParameters {
+			mcpp_uint Flags;
+			mcpp_uint WindowSize;
+			mcpp_uint CompressionPartitionSize;
+		};
+
+		static System::IntPtr ContextCreateForDecompression(CodecType type, ContextFlags flags);
+		static System::IntPtr ContextCreateForDecompression(CodecType type, ContextFlags flags, LzxParameters params);
+
+		static mcpp_uint Decompress(System::IntPtr ctxt, array<mcpp_byte>^ dst, mcpp_out(mcpp_uint) dst_size,
+			array<mcpp_byte>^ src, mcpp_int decompress_amount);
+		static mcpp_uint DecompressStream(System::IntPtr ctxt, array<mcpp_byte>^ dst, mcpp_out(mcpp_uint) dst_size,
+			array<mcpp_byte>^ src, mcpp_ref(mcpp_uint) decompress_amount);
+		static void DecompressContextReset(System::IntPtr ctxt);
+		static void DecompressContextDispose(mcpp_ref(System::IntPtr) ctxt);
+
+		static System::IntPtr ContextCreateForCompression(CodecType type, ContextFlags flags, 
+			mcpp_out(array<mcpp_byte>^) ctxt_data);
+		static System::IntPtr ContextCreateForCompression(CodecType type, ContextFlags flags, 
+			mcpp_out(array<mcpp_byte>^) ctxt_data, LzxParameters params);
+
+		static mcpp_uint Compress(System::IntPtr ctxt, array<mcpp_byte>^ dst, mcpp_out(mcpp_uint) dst_size,
+			array<mcpp_byte>^ src, mcpp_int compress_amount);
+		static mcpp_uint CompressStream(System::IntPtr ctxt, array<mcpp_byte>^ dst, mcpp_out(mcpp_uint) dst_size,
+			array<mcpp_byte>^ src, mcpp_ref(mcpp_uint) compress_amount);
+		static void CompressContextReset(System::IntPtr ctxt);
+		static void CompressContextDispose(mcpp_ref(System::IntPtr) ctxt);
 	};
 
 }; };
