@@ -38,7 +38,7 @@ namespace BlamLib
 				Console.WriteLine();
 			}
 		}
-		public delegate void CommandFunction(params string[] args);
+		public delegate int CommandFunction(params string[] args);
 
 		public static Dictionary<string, CommandFunction> kCommands = new Dictionary<string, CommandFunction>()
 		{
@@ -49,12 +49,14 @@ namespace BlamLib
 			{"apply-opensauce-xna", PatchXna},		//apply-opensauce-xna output-path [hint-path]
 		};
 
-		public static bool RunCommand(string command, params string[] args)
+		public static bool RunCommand(string command, out int result_code, params string[] args)
 		{
+			result_code = 0;
+
 			BlamLib.Tool.CommandFunction func;
 			if (kCommands.TryGetValue(command, out func))
 			{
-				func(args);
+				result_code = func(args);
 				return true;
 			}
 
@@ -72,16 +74,18 @@ namespace BlamLib
 			}
 		}
 
-		static void BuildTagDatabase(params string[] args)
+		static int BuildTagDatabase(params string[] args)
 		{
 			if (args.Length < 2)
 			{
 				Console.WriteLine("");
-				return;
+				return -1;
 			}
 
 			string arg_source_tag = args[0];
 			string arg_dest_db = args[1];
+
+			return 0;
 		}
 	};
 }

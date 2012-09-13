@@ -2,7 +2,7 @@
 __CPP_CODE_START__
 #ifndef LOWLEVEL_NO_X360_XMA
 
-#pragma comment (lib, PATH_XEDK "\\lib\\win32\\vs2008\\xmaencoder.lib")
+#pragma comment (lib, PATH_XEDK_LIBS "xmaencoder.lib")
 
 // Define some xmaencoder.lib extern objects that we need for decoding...
 class CXMATarget

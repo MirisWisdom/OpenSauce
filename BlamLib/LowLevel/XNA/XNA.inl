@@ -143,6 +143,39 @@ namespace Internal
 			reinterpret_cast<D3DTexture*>(texture_header), 
 			reinterpret_cast<cpp_uint*>(out_base_size), reinterpret_cast<cpp_uint*>(out_mip_size));
 	}
+
+	static XMEMDECOMPRESSION_CONTEXT ContextCreateForDecompression(
+		cpp_uint type, cpp_uint flags, XMEMCODEC_PARAMETERS_LZX* params = NULL)
+	{
+		XMEMDECOMPRESSION_CONTEXT ctxt = NULL;
+
+		if(SUCCEEDED(XMemCreateDecompressionContext(cpp_cast_to(XMEMCODEC_TYPE,type), params, flags, &ctxt)))
+			return ctxt;
+
+		return NULL;
+	}
+
+	static XMEMDECOMPRESSION_CONTEXT ContextCreateForCompression(
+		cpp_uint type, cpp_uint flags, XMEMCODEC_PARAMETERS_LZX* params = NULL)
+	{
+		XMEMDECOMPRESSION_CONTEXT ctxt = NULL;
+
+		if(SUCCEEDED(XMemCreateCompressionContext(cpp_cast_to(XMEMCODEC_TYPE,type), params, flags, &ctxt)))
+			return ctxt;
+
+		return NULL;
+	}
+
+	static SIZE_T ContextCalcSizeForCompression(
+		cpp_uint type, cpp_uint flags, XMEMCODEC_PARAMETERS_LZX* params = NULL)
+	{
+		return XMemGetCompressionContextSize(cpp_cast_to(XMEMCODEC_TYPE,type), params, flags);
+	}
+	static XMEMDECOMPRESSION_CONTEXT ContextCreateForCompression(
+		cpp_uint type, cpp_uint flags, void* ctxt_data, SIZE_T ctxt_size, XMEMCODEC_PARAMETERS_LZX* params = NULL)
+	{
+		return XMemInitializeCompressionContext(cpp_cast_to(XMEMCODEC_TYPE,type), params, flags, ctxt_data, ctxt_size);
+	}
 #endif
 };
 __CPP_CODE_END__

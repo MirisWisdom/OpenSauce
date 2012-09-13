@@ -51,7 +51,7 @@ namespace OpenSauceIDE
 		[System.Runtime.InteropServices.DllImport("kernel32.dll")]
 		static extern bool FreeConsole();
 
-		static void MainTool(string[] args)
+		static int MainTool(string[] args)
 		{
 			var command = args[1];
 			var commands = BlamLib.Tool.kCommands;
@@ -62,9 +62,10 @@ namespace OpenSauceIDE
 
 			AllocConsole();
 
+			int result_code = 0;
 			try
 			{
-				if (!BlamLib.Tool.RunCommand(command, cmd_args.ToArray()))
+				if (!BlamLib.Tool.RunCommand(command, out result_code, cmd_args.ToArray()))
 					BlamLib.Tool.PrintUsage(command);
 			}
 			catch (Exception ex)
@@ -75,11 +76,13 @@ namespace OpenSauceIDE
 
 			System.Threading.Thread.Sleep(5000);
 			FreeConsole();
+
+			return result_code;
 		}
 
 		/// <summary>The main entry point for the application.</summary>
 		[STAThread]
-		static void Main(string[] args)
+		static int Main(string[] args)
 		{
 			bool cmdline = false;
 			if(args.Length > 0)
@@ -91,13 +94,15 @@ namespace OpenSauceIDE
 			}
 
 			if (cmdline && args.Length > 1)
-				MainTool(args);
+				return MainTool(args);
 			else if(!cmdline)
 			{
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault(false);
 				Application.Run(new MainForm(args));
 			}
+
+			return 0;
 		}
 	};
 }

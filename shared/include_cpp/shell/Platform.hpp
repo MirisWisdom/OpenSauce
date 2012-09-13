@@ -66,5 +66,5 @@
 
 	// I'm not sure how to determine the host's processor size via the compiler, 
 	// so this is a manual setup. Set according to your computer's config
-	#define PATH_PROGRAM_FILES PATH_PROGRAM_FILES_X86
+	#define PATH_PROGRAM_FILES PATH_PROGRAM_FILES_X64
 #endif
