@@ -135,12 +135,12 @@ namespace BlamLib
 {
 	partial class Tool
 	{
-		static int UnlockBlamTools(params string[] args)
+		static ExitCode UnlockBlamTools(params string[] args)
 		{
 			if (args.Length < 5)
 			{
 				Console.WriteLine("error: invalid command argument count");
-				return -1;
+				return ExitCode.InvalidArgsCount;
 			}
 
 			BlamVersion version = BlamVersion.Unknown;
@@ -150,7 +150,7 @@ namespace BlamLib
                 case "Halo2_PC":	version = BlamVersion.Halo2_PC;	break;
 				default:
 					Console.WriteLine("error: unsupported engine version - {0}", version.ToString());
-					break;
+					return ExitCode.InvalidArgs;
 			};
 
 			Console.WriteLine("Applying {0} modifications...", "CheApe");
@@ -190,17 +190,24 @@ namespace BlamLib
 				Console.WriteLine();
 			}
 
+			ExitCode exit_code = ExitCode.Success;
 			string msg;
 			if (exception == null)
 				msg = "CheApe successfully applied!";
 			else if (unlocker.EncounteredInvalidExe)
+			{
 				msg = "CheApe couldn't be applied to some or all of the exes. Check the debug log for more details";
+				exit_code = ExitCode.InvalidInput;
+			}
 			else
+			{
 				msg = "There was an error while trying to apply CheApe. Validate that you selected copies of the original tools and try again.";
+				exit_code = ExitCode.Failure;
+			}
 
 			Console.WriteLine(msg);
 
-			return exception == null ? 0 : -1;
+			return exit_code;
 		}
 	};
 }

@@ -54,7 +54,6 @@ namespace OpenSauceIDE
 		static int MainTool(string[] args)
 		{
 			var command = args[1];
-			var commands = BlamLib.Tool.kCommands;
 
 			var cmd_args = new List<string>();
 			for (int x = 2; x < args.Length; x++)

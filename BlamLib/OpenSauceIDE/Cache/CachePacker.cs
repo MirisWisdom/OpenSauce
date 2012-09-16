@@ -108,18 +108,18 @@ namespace BlamLib
 				}
 			}
 		}
-		static int PackCache(params string[] args)
+		static ExitCode PackCache(params string[] args)
 		{
 			// <version> <mode> <input-file> <output-file>
 			if (args.Length < 4)
 			{
 				Console.WriteLine("error: invalid command argument count");
-				return -1;
+				return ExitCode.InvalidArgsCount;
 			}
 
 			// TODO
 
-			return 0;
+			return ExitCode.Success;
 		}
 	};
 }
