@@ -161,7 +161,7 @@ namespace BlamLib
 {
 	partial class Tool
 	{
-		static int PatchXna(params string[] args)
+		static ExitCode PatchXna(params string[] args)
 		{
 			const string kModifcationName = "OpenSauce-XNA";
 			const string kSupportedExeVersion = "4.0";
@@ -169,7 +169,7 @@ namespace BlamLib
 			if (args.Length < 1)
 			{
 				Console.WriteLine("error: invalid command argument count");
-				return -1;
+				return ExitCode.InvalidArgsCount;
 			}
 
 			string output_path = args[0];
@@ -181,8 +181,16 @@ namespace BlamLib
 				hint_path = Path.Combine(hint_path, @"Microsoft Shared\XNA\Framework\v" + kSupportedExeVersion + @"\");
 			}
 
-			if (!Directory.Exists(output_path)) Console.WriteLine("Output path does not exist: {0}", output_path);
-			if (!Directory.Exists(hint_path)) Console.WriteLine("XnaNative path does not exist: {0}", hint_path);
+			if (!Directory.Exists(output_path))
+			{
+				Console.WriteLine("Output path does not exist: {0}", output_path);
+				return ExitCode.InvalidArgs;
+			}
+			if (!Directory.Exists(hint_path))
+			{
+				Console.WriteLine("XnaNative path does not exist: {0}", hint_path);
+				return ExitCode.InvalidArgs;
+			}
 
 			Console.WriteLine("Applying {0} modifications...", kModifcationName);
 			DumpArguments(0, args);
@@ -204,18 +212,25 @@ namespace BlamLib
 
 			DumpModificationException(kModifcationName, exception);
 
+			ExitCode exit_code = ExitCode.Success;
 			string msg;
 			if (exception == null)
 				msg = kModifcationName + " successfully applied!";
 			else if (patcher.EncounteredInvalidExe)
+			{
 				msg = kModifcationName + " couldn't be applied to some or all of the exes. Check the debug log for more details";
+				exit_code = ExitCode.InvalidInput;
+			}
 			else
+			{
 				msg = "There was an error while trying to apply " + kModifcationName + ". Validate that you selected original copies of the " +
 					"v" + kSupportedExeVersion + " exe(s) and try again.";
+				exit_code = ExitCode.Failure;
+			}
 
 			Console.WriteLine(msg);
 
-			return exception == null ? 0 : -1;
+			return exit_code;
 		}
 	};
 }

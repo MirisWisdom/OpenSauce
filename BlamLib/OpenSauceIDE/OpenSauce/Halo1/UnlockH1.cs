@@ -112,7 +112,7 @@ namespace BlamLib
 {
 	partial class Tool
 	{
-		static int UnlockBlamGames(params string[] args)
+		static ExitCode UnlockBlamGames(params string[] args)
 		{
 			const string kModifcationName = "OpenSauce";
 			const string kSupportedExeVersion = "1.09";
@@ -120,7 +120,7 @@ namespace BlamLib
 			if (args.Length < 4)
 			{
 				Console.WriteLine("error: invalid command argument count");
-				return -1;
+				return ExitCode.InvalidArgsCount;
 			}
 
 			BlamVersion version = BlamVersion.Unknown;
@@ -130,7 +130,7 @@ namespace BlamLib
 				//case "Halo2_PC": version = BlamVersion.Halo2_PC; break;
 				default:
 					Console.WriteLine("error: unsupported engine version - {0}", version.ToString());
-					break;
+					return ExitCode.InvalidArgs;
 			};
 
 			Console.WriteLine("Applying {0} modifications...", kModifcationName);
@@ -162,18 +162,25 @@ namespace BlamLib
 
 			DumpModificationException(kModifcationName, exception);
 
+			ExitCode exit_code = ExitCode.Success;
 			string msg;
 			if (exception == null)
 				msg = kModifcationName + " successfully applied!";
 			else if (unlocker.EncounteredInvalidExe)
+			{
 				msg = kModifcationName + " couldn't be applied to some or all of the exes. Check the debug log for more details";
+				exit_code = ExitCode.InvalidInput;
+			}
 			else
+			{
 				msg = "There was an error while trying to apply " + kModifcationName + ". Validate that you selected original copies of the " +
 					"v" + kSupportedExeVersion + " exe(s) and try again.";
+				exit_code = ExitCode.Failure;
+			}
 
 			Console.WriteLine(msg);
 
-			return exception == null ? 0 : -1;
+			return exit_code;
 		}
 	};
 }

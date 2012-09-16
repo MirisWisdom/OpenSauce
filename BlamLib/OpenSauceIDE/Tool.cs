@@ -10,6 +10,21 @@ namespace BlamLib
 {
 	internal static partial class Tool
 	{
+		enum ExitCode : int
+		{
+			/// <summary>Everything ran without error</summary>
+			Success = 0,
+			/// <summary>General failure type, extended (eg, exception) details should be printed to stdout</summary>
+			Failure = -1,
+
+			/// <summary>Not enough arguments were provided</summary>
+			InvalidArgsCount = -2,
+			/// <summary>One or more arguments were invalid (eg, out of range, path not found, etc)</summary>
+			InvalidArgs = -3,
+			/// <summary>Supplied non-argument input (nomrally a file) was invalid for processing</summary>
+			InvalidInput = -4,
+		};
+
 		/// <summary>If <paramref name="ex"/> is not null, prints exception details to the Console</summary>
 		/// <param name="mod_name"></param>
 		/// <param name="ex"></param>
@@ -38,9 +53,9 @@ namespace BlamLib
 				Console.WriteLine();
 			}
 		}
-		public delegate int CommandFunction(params string[] args);
+		delegate ExitCode CommandFunction(params string[] args);
 
-		public static Dictionary<string, CommandFunction> kCommands = new Dictionary<string, CommandFunction>()
+		static Dictionary<string, CommandFunction> kCommands = new Dictionary<string, CommandFunction>()
 		{
 			{"build-tag-database", BuildTagDatabase},
 			{"pack-cache-file", PackCache},
@@ -56,7 +71,7 @@ namespace BlamLib
 			BlamLib.Tool.CommandFunction func;
 			if (kCommands.TryGetValue(command, out func))
 			{
-				result_code = func(args);
+				result_code = (int)func(args);
 				return true;
 			}
 
@@ -74,18 +89,18 @@ namespace BlamLib
 			}
 		}
 
-		static int BuildTagDatabase(params string[] args)
+		static ExitCode BuildTagDatabase(params string[] args)
 		{
 			if (args.Length < 2)
 			{
 				Console.WriteLine("");
-				return -1;
+				return ExitCode.InvalidArgsCount;
 			}
 
 			string arg_source_tag = args[0];
 			string arg_dest_db = args[1];
 
-			return 0;
+			return ExitCode.Success;
 		}
 	};
 }
