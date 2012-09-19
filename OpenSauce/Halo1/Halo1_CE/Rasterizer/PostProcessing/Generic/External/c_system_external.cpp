@@ -942,7 +942,7 @@ namespace Yelo
 			}
 
 			// delete the parameter handles
-			DeleteLinkedList(&parameter_list);
+			DeleteLinkedList(parameter_list);
 		}
 
 		void c_system_external::DestroyShaderDefinition(TagGroups::s_shader_postprocess_generic* definition)
@@ -1154,7 +1154,7 @@ namespace Yelo
 				parameter->type.type = parameter_type;
 				parameter->type.count = parameter_type_count;
 
-				AppendLinkedListNode(&list, parameter);
+				AppendLinkedListNode(list, parameter);
 				parameter_count++;
 			}
 			return parameter_count;

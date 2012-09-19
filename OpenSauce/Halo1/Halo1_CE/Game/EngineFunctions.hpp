@@ -124,6 +124,8 @@ namespace Yelo
 	{
 		void GatherException(const void* data = NULL, int32 arg_0 = 0x89, int32 arg_4 = 0x7E, int32 arg_8 = 1);
 
+
+		void SetTextureSamplerStage(Yelo::TagGroups::s_bitmap_data* bitmap, uint32 texture_stage);
 		// Setting [block_thread] to true causes the engine to immediately create the rasterizer (D3D) data for it
 		IDirect3DBaseTexture9** TextureCacheRequestTexture(TagGroups::s_bitmap_data* bitmap, 
 			bool add_to_cache = true, bool block_thread = false);
@@ -131,7 +133,8 @@ namespace Yelo
 		bool SoundCacheRequestSound(TagGroups::s_sound_permutation* sound_perm, 
 			bool add_to_cache = true, bool block_thread = false, bool unknown2 = false);
 
-		void MapListAddMap(cstring map_name, int32 map_index = 0x13);
+		void MapListAddMap(cstring map_name, cstring extension = ".map", bool skip_crc = false, int32 map_index = 0x13);
+
 		// adds a resolution definition to the resolution list
 		void RasterizerAddResolution(uint32 width, uint32 height, uint32 refresh_rate);
 
@@ -141,6 +144,10 @@ namespace Yelo
 		int16 AnimationPickRandomPermutation(bool animation_update_kind_affects_game_state, datum_index animation_graph_index, int32 animation_index);
 
 		void GenerateMD5(cstring data, const DWORD data_length, cstring output);
+		bool CompareMD5(cstring data, const DWORD data_length, cstring comparison_md5);
+
+		bool GetCmdLineParameter(const char* parameter, char** value_out);
+
 
 		namespace AI
 		{
@@ -296,6 +303,11 @@ namespace Yelo
 			datum_index TranslateObject(datum_index network_object);
 			// Translate a network_player_index to a local player_index
 			datum_index TranslatePlayer(datum_index network_player);
+
+#if !PLATFORM_IS_DEDI
+			// Connect to a multiplayer server using it's ip:port and password
+			void ConnectToServer(cstring address, cstring password);
+#endif
 		};
 
 		namespace Objects

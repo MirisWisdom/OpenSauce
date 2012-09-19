@@ -13,8 +13,11 @@ namespace BlamLib.Render.COLLADA.Enums
 	public enum ColladaFXSurfaceTypeEnum
 	{
 		UNTYPED,
+		[XmlEnum(Name="1D")]
 		_1D,
+		[XmlEnum(Name = "2D")]
 		_2D,
+		[XmlEnum(Name = "3D")]
 		_3D,
 		CUBE,
 		DEPTH,

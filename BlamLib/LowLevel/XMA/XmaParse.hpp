@@ -8,6 +8,8 @@
 	Used with permission.
 */
 #pragma once
+
+#ifdef _DEBUG
 __CPP_CODE_START__
 
 #include "XMA/XmaUtil.hpp"
@@ -226,3 +228,5 @@ namespace XMA
 };
 
 __CPP_CODE_END__
+
+#endif

@@ -17,7 +17,7 @@ namespace Yelo
 		{
 			void		Initialize();
 			void		InitializeForNewMap();
-			void		UpdateState();
+			void		UpdateVersion();
 
 		private:
 			void		DisplayVersions(bool is_new_version);

@@ -9,6 +9,8 @@
 */
 #include "Precompile.hpp"
 #include "XMA/XmaUtil.hpp"
+
+#ifdef _DEBUG
 __CPP_CODE_START__
 
 const boost::uint32_t k_bits_per_byte = 8;
@@ -88,3 +90,5 @@ namespace XMA
 };
 
 __CPP_CODE_END__
+
+#endif

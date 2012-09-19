@@ -28,11 +28,72 @@ namespace Yelo
 		s_network_sv_mapcycle_globals* NetworkSvMapcycleGlobals()			PTR_IMP_GET2(network_sv_mapcycle_globals);
 		s_network_sv_globals* NetworkSvGlobals()							PTR_IMP_GET2(network_sv_globals);
 
+#if PLATFORM_IS_DEDI
+		struct s_network_sv_logging_extension
+		{
+			wcstring m_log_titles[Enums::_server_event_type];
+
+			byte m_event_enable_logging[Enums::_server_event_type];
+			byte m_event_enable_echoing[Enums::_server_event_type];
+		};
+		static s_network_sv_logging_extension g_network_sv_logging_extension;
+
+		byte& EnableEventLogging(Enums::server_event_type event_type)
+		{
+			ASSERT(event_type >= Enums::_server_event_type, "server event type is invalid");
+
+			return g_network_sv_logging_extension.m_event_enable_logging[event_type];
+		}
+
+		byte& EnableEventEchoing(Enums::server_event_type event_type)
+		{
+			ASSERT(event_type >= Enums::_server_event_type, "server event type is invalid");
+
+			return g_network_sv_logging_extension.m_event_enable_echoing[event_type];
+		}
+#endif
+
 		void Initialize()
 		{
 #if PLATFORM_IS_DEDI
 			EventLog = CAST_PTR(proc_sv_event_log, GET_FUNC_VPTR(SV_EVENT_LOG_WITH_TIME));
 			EventEcho = CAST_PTR(proc_sv_event_log, GET_FUNC_VPTR(SV_EVENT_ECHO));
+
+			// copy the log title pointers to the new array
+			memcpy_s(g_network_sv_logging_extension.m_log_titles,
+				sizeof(g_network_sv_logging_extension.m_log_titles),
+				GET_PTR2(log_entry_titles),
+				sizeof(wcstring) * Enums::_server_event_type_stock);
+
+			// set the titles for any new event types
+			g_network_sv_logging_extension.m_log_titles[Enums::_server_event_type_http_server] = L"HTTP_SERVER";
+
+			// redirect the title list reference to the new array
+			GET_PTR(log_entry_titles_ref) = &g_network_sv_logging_extension.m_log_titles[0];
+
+			// no need to copy the logging/echoing arrays as they haven't been set yet
+
+			// redirect all references to the enable logging/echoing toggle lists
+			for(uint32 i = 0; i < NUMBEROF(K_EVENT_ENABLE_LOGGING_0_REFS); i++)
+				*K_EVENT_ENABLE_LOGGING_0_REFS[i] = &g_network_sv_logging_extension.m_event_enable_logging[0];
+
+			*GET_PTR(event_enable_logging_4_ref) = &g_network_sv_logging_extension.m_event_enable_logging[4];
+			*GET_PTR(event_enable_logging_8_ref) = &g_network_sv_logging_extension.m_event_enable_logging[8];
+			*GET_PTR(event_enable_logging_12_ref) = &g_network_sv_logging_extension.m_event_enable_logging[12];
+
+
+			for(uint32 i = 0; i < NUMBEROF(K_EVENT_ENABLE_ECHOING_0_REFS); i++)
+				*K_EVENT_ENABLE_ECHOING_0_REFS[i] = &g_network_sv_logging_extension.m_event_enable_echoing[0];
+
+			*GET_PTR(event_enable_echoing_2_ref) = &g_network_sv_logging_extension.m_event_enable_echoing[2];
+			*GET_PTR(event_enable_echoing_3_ref) = &g_network_sv_logging_extension.m_event_enable_echoing[3];
+			*GET_PTR(event_enable_echoing_4_ref) = &g_network_sv_logging_extension.m_event_enable_echoing[4];
+			*GET_PTR(event_enable_echoing_8_ref) = &g_network_sv_logging_extension.m_event_enable_echoing[8];
+			*GET_PTR(event_enable_logging_12_ref) = &g_network_sv_logging_extension.m_event_enable_echoing[12];
+
+			// set the toggles for any new logging events
+			g_network_sv_logging_extension.m_event_enable_logging[Enums::_server_event_type_http_server] = 1;
+			g_network_sv_logging_extension.m_event_enable_echoing[Enums::_server_event_type_http_server] = 0;
 #endif
 		}
 

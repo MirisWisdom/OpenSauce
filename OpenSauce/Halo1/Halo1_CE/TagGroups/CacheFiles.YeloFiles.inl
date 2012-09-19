@@ -122,12 +122,8 @@ static void MapListInitializeYelo()
 	HANDLE h = FindFirstFileA("maps\\*.yelo", &fd);
 	if(h != INVALID_HANDLE_VALUE)
 	{
-		*GET_PTR2(map_list_map_extension_ref) = ".yelo";
-
-		do Engine::MapListAddMap(fd.cFileName);
+		do Engine::MapListAddMap(fd.cFileName, ".yelo");
 		while(FindNextFileA(h, &fd));
-
-		*GET_PTR2(map_list_map_extension_ref) = GET_PTR2(map_list_map_extension);
 
 		FindClose(h);
 	}

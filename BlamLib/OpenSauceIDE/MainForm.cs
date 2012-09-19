@@ -120,12 +120,26 @@ namespace OpenSauceIDE
 			ToolsMenu.DropDownItems.Add(XnaPatcher);
 			command_dic.Add("XnaPatcher", XnaPatcher_handler);
 		}
+		void BuildCheApeMenusServerTool(Dictionary<string, EventHandler> command_dic)
+		{
+			EventHandler ServerTool_handler;
+			var ServerTool = BlamLib.Forms.Util.CreateMenuItem("Server Map Download Tool", ServerTool_handler = (sender, e) =>
+			{
+				AddMdiChild(new ServerMapDownloadTool.MainForm());
+			});
+			ServerTool.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			ServerTool.ForeColor = System.Drawing.Color.LightGreen;
+
+			ToolsMenu.DropDownItems.Add(ServerTool);
+			command_dic.Add("ServerTool", ServerTool_handler);
+		}
 		void BuildCheApeMenus(Dictionary<string, EventHandler> command_dic)
 		{
 			BuildMenuSeparator(ToolsMenu);
 			BuildCheApeMenusCheApeApply(command_dic);
 			BuildCheApeMenusCheApe(command_dic);
 			BuildCheApeMenusXnaPatcher(command_dic);
+			BuildCheApeMenusServerTool(command_dic);
 		}
 		#endregion
 

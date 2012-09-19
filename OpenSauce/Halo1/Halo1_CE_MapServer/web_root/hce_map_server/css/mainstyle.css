@@ -1,0 +1,66 @@
+/*
+	Yelo: Open Sauce SDK
+		Halo 1 (CE) Edition
+
+	See license\OpenSauce\Halo1_CE for specific license information
+*/
+* {
+	margin: 0;
+	padding: 0;
+}
+html, body {
+	height: 100%;
+	padding-bottom: 0;
+}
+body {
+	font: 14px Calibri, Arial, Helvetica, sans-serif;
+	width: 100%;
+	height: auto;
+	background-color: #35363D;
+}
+#title {
+	width: 100%;
+	height: auto;
+	padding: 10px;
+	background-color: #242631;
+	color: #47484D;
+}
+#contents {
+	width: 100%;
+	height: auto;
+	padding: 10px;
+	color: #808080;
+}
+#contents #contents_gap {
+	width: 100%;
+	height: 5px;
+}
+#return_link {
+	padding-top: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+#map_file_list {
+	width:100%;
+}
+#map_file_list table {
+	text-align: left;
+	border: 2px solid #808080;
+	color: #808080;
+}
+#map_file_list th, td {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+#map_database {
+	width:100%;
+}
+#map_database table {
+	text-align: left;
+	border: 2px solid #808080;
+	color: #808080;
+}
+#map_database th, td {
+	padding-left: 10px;
+	padding-right: 10px;
+}

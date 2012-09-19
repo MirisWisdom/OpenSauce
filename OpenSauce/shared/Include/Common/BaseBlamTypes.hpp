@@ -40,7 +40,7 @@ namespace Yelo
 	// System Dispose from old map function pointer
 	typedef void (* proc_dispose_from_old_map)();
 	// System Update function pointer
-	typedef void (* proc_update)();
+	typedef void (* proc_update)(float);
 
 
 	/// Template class for defining an interface for blocks of data whose memory layout is not entirely mapped out

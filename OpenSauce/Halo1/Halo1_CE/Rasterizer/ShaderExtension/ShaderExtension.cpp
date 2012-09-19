@@ -22,15 +22,18 @@
 
 #if !PLATFORM_IS_DEDI
 #include "Common/YeloSettings.hpp"
+#include "Common/CmdLineSettings.hpp"
 #include "Common/FileIO.hpp"
 #include <sys/stat.h>
 #include "Rasterizer/DX9/DX9.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Game/EngineFunctions.hpp"
+#include "Game/GameState.hpp"
 #include "TagGroups/TagGroups.hpp"
 #include <TagGroups/Halo1/shader_definitions.hpp>
 #include <TagGroups/Halo1/bitmap_definitions.hpp>
 #include "Rasterizer/GBuffer.hpp"
+#include "Rasterizer/DX9/DX9.hpp"
 
 namespace Yelo
 {
@@ -95,15 +98,13 @@ namespace Yelo
 				TagGroups::s_bitmap_definition*	bitmap = TagGroups::Instances()[bitmap_tag_index.index].Definition<TagGroups::s_bitmap_definition>();
 				TagGroups::s_bitmap_data*		bitmap_datum = CAST_PTR(TagGroups::s_bitmap_data*, &bitmap->bitmaps[0]);
 
-				// if the bitmap hasn't been created yet, create it
-				if(bitmap_datum->hardware_format == NULL)
-					Yelo::Engine::TextureCacheRequestTexture(bitmap_datum, true, true);
-
 				// set the texture to the device
-				pDevice->SetTexture(sampler, CAST_PTR(IDirect3DBaseTexture9*, bitmap_datum->hardware_format));
+				Engine::SetTextureSamplerStage(bitmap_datum, sampler);
+
 				pDevice->SetSamplerState(sampler, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
 				pDevice->SetSamplerState(sampler, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
 				pDevice->SetSamplerState(sampler, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+
 			}
 
 			int PLATFORM_API BuildEffectCollectionPath(char* string_out, const char* format_string, const int major, const int minor)
@@ -182,6 +183,9 @@ namespace Yelo
 			{
 				g_extensions_enabled = false;
 
+				if(CMDLINE_GET_PARAM(no_os_gfx).ParameterSet())
+					return;
+
 				// user settings override to completely disable the shader extensions
 				if(!g_extensions_enabled_user_override)
 					return;
@@ -231,7 +235,7 @@ namespace Yelo
 				if(g_ps_support > _ps_support_2_0)
 				{
 					// modify the pixel shader version used for finding the correct shader collection and shaders
-					// the *ShaderVersion value in D3DCAPS does include 2.a and 2.b, instead it just shows 2.0
+					// the *ShaderVersion value in D3DCAPS doesn't include 2.a and 2.b, instead it just shows 2.0
 
 					// since this value is used to iterate through the shaders when loading, it would start at ps_2_0 and miss
 					// the custom shaders at ps_2_1/ps_2_2 and Halo would close because the new shaders are expected, but not loaded

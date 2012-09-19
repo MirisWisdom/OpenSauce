@@ -8,6 +8,9 @@
 	Used with permission.
 */
 #pragma once
+
+#ifdef _DEBUG
+
 __CPP_CODE_START__
 
 extern const boost::uint32_t k_bits_per_byte;
@@ -97,3 +100,5 @@ namespace XMA
 	};
 };
 __CPP_CODE_END__
+
+#endif

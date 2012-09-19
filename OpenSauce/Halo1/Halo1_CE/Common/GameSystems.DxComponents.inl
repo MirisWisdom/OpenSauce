@@ -28,6 +28,7 @@ DX_COMPONENT(Hud),
 DX_COMPONENT(Objects::Vehicle),
 DX_COMPONENT(Rasterizer::ShaderExtension),
 DX_COMPONENT(Networking::VersionCheck),
+DX_COMPONENT(Networking::HTTP::Client::MapDownload),
 
 
 #undef DX_COMPONENT

@@ -332,6 +332,7 @@ namespace Yelo
 			TStructGetPtrImpl(s_transport_address, SvIpAddress, 0xAB4);
 			// 0x10 of unknown bytes between here...
 			TStructGetPtrImpl(s_network_connection*, Connection, 0xADC);
+			TStructGetPtrImpl(wchar_t, Password, 0xAF0);
 			// 0x34 of unknown bytes between here...
 			TStructGetPtrImpl(s_network_game, Game, 0xB14);
 			// 0xF04 int32

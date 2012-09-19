@@ -7,11 +7,14 @@
 #include "Common/Precompile.hpp"
 #include "Common/YeloSettings.hpp"
 
+#include "Common/CmdLineSettings.hpp"
+#include "Game/EngineFunctions.hpp"
 #include "Memory/MemoryInterface.hpp"
 
 #include "Game/Camera.hpp"
 #include "Interface/GameUI.hpp"
 #include "Networking/VersionCheck.hpp"
+#include "Networking/HTTP/MapDownloadClient.hpp"
 #include "Objects/Objects.hpp"
 #include "Rasterizer/Rasterizer.hpp"
 #include "TagGroups/CacheFiles.hpp"
@@ -30,7 +33,8 @@ namespace Yelo
 						* hud_element = NULL,
 						* objects_element = NULL,
 						* version_check_element = NULL,
-						* cf_element = NULL
+						* cf_element = NULL,
+						* networking_element = NULL
 				;
 
 			if(client != NULL)
@@ -41,6 +45,7 @@ namespace Yelo
 				objects_element = client->FirstChildElement("objects");
 				version_check_element = client->FirstChildElement("version_check");
 				cf_element = client->FirstChildElement("cacheFiles");
+				networking_element = client->FirstChildElement("networking");
 			}
 
 			Rasterizer::LoadSettings(dx9_element);
@@ -49,6 +54,7 @@ namespace Yelo
 			Objects::LoadSettings(objects_element);
 			Networking::VersionCheck::LoadSettings(version_check_element);
 			Cache::LoadSettings(cf_element);
+			Networking::HTTP::Client::MapDownload::LoadSettings(networking_element);
 		}
 
 		static void SaveSettingsForClient(TiXmlElement* client)
@@ -58,6 +64,7 @@ namespace Yelo
 						* hud_element = NULL,
 						* objects_element = NULL,
 						* version_check_element = NULL,
+						* networking_element = NULL,
 						* cf_element = NULL
 				;
 
@@ -73,6 +80,8 @@ namespace Yelo
 				client->LinkEndChild(version_check_element);
 			cf_element = new TiXmlElement("cacheFiles");
 				client->LinkEndChild(cf_element);
+			networking_element = new TiXmlElement("networking");
+				client->LinkEndChild(networking_element);
 
 			Rasterizer::SaveSettings(dx9_element);
 			Fov::SaveSettings(fov_element);
@@ -80,6 +89,7 @@ namespace Yelo
 			Objects::SaveSettings(objects_element);
 			Networking::VersionCheck::SaveSettings(version_check_element);
 			Cache::SaveSettings(cf_element);
+			Networking::HTTP::Client::MapDownload::SaveSettings(networking_element);
 		}
 	};
 #endif
@@ -143,18 +153,16 @@ namespace Yelo
 		}Internal;
 
 	//////////////////////////////////////////////////////////////////////////
-
 		void Initialize()
 		{
-			// get the override profile path, if any
-			cstring profile_path = Internal.ProfilePath();
-			
+			ReadCmdLineSettings();
+
+			char* profile_path = "";
+
+			if(CMDLINE_GET_PARAM(path).ParameterSet())
+				profile_path = CMDLINE_GET_PARAM(path).GetValue();
+
 			Settings::SharedInitialize(profile_path);
-
-			// Get the usable profile path. Either overridden with '-profile'
-			// or defaulting to the User's documents folder.
-			profile_path = Settings::UserProfilePath();
-
 
 			LoadSettings();
 		}
@@ -241,6 +249,25 @@ namespace Yelo
 			time_t aclock;	time( &aclock ); // Get time in seconds
 			localtime_s( &newtime, &aclock ); // Convert time to struct tm form
 			asctime_s( time_str, k_time_str_sizeof, &newtime );
+		}
+
+		void GetTimeStampStringForFile(_Out_ tag_string time_str)
+		{
+			const size_t k_time_str_sizeof = sizeof(tag_string);
+
+			memset(time_str, 0, k_time_str_sizeof);
+
+			tm newtime;
+			time_t aclock;	time( &aclock ); // Get time in seconds
+			localtime_s( &newtime, &aclock ); // Convert time to struct tm form
+
+			sprintf_s(time_str, k_time_str_sizeof, "%04d_%02d_%02d_%02d_%02d_%02d", 
+				newtime.tm_year + 1900,
+				newtime.tm_mon + 1,
+				newtime.tm_mday,
+				newtime.tm_hour,
+				newtime.tm_min,
+				newtime.tm_sec);
 		}
 	};
 };

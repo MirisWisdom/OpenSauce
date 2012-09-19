@@ -372,7 +372,7 @@ namespace Yelo
 				quad = new c_quad_instance();
 				quad->Ctor(tess_final, quad_definition.x_bounds, quad_definition.y_bounds);
 
-				AppendLinkedListNode(&m_globals.m_quad_list, quad);
+				AppendLinkedListNode(m_globals.m_quad_list, quad);
 			}
 
 			// increase the reference count of the quad
@@ -382,21 +382,12 @@ namespace Yelo
 
 		/*!
 		 * \brief
-		 * Write brief comment for SetBuffers here.
+		 * Sets the stream source and index buffer of the device for drawing the quad.
 		 * 
 		 * \returns
-		 * Write description of return value here.
+		 * Returns S_OK if successful, otherwise return non-zero.
 		 * 
-		 * \throws <exception class>
-		 * Description of criteria for throwing this exception.
-		 * 
-		 * Write detailed description for SetBuffers here.
-		 * 
-		 * \remarks
-		 * Write remarks for SetBuffers here.
-		 * 
-		 * \see
-		 * Separate items with the '|' character.
+		 * Sets the stream source and index buffer of the device for drawing the quad.
 		 */
 		HRESULT				c_quad_manager::SetBuffers()
 		{
@@ -439,7 +430,7 @@ namespace Yelo
 				// if the quad isn't being used
 				if(!quad_instance->GetRef())
 				{
-					RemoveLinkedListNode(&m_globals.m_quad_list, quad_instance);
+					RemoveLinkedListNode(m_globals.m_quad_list, quad_instance);
 
 					quad_instance->Dtor();
 					delete quad_instance;

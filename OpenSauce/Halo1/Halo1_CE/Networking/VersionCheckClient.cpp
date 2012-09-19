@@ -8,8 +8,8 @@
 #include "Networking/VersionCheckClient.hpp"
 
 #if PLATFORM_IS_USER && defined(YELO_VERSION_CHECK_ENABLE)
+#include "Networking/HTTP/HTTPClient.hpp"
 #include "Interface/TextBlock.hpp"
-
 #include "Game/GameState.hpp"
 
 namespace Yelo
@@ -109,7 +109,7 @@ namespace Yelo
 			m_states_user.is_in_menu = GameState::MainGlobals()->map.main_menu_scenario_loaded;
 
 			// if we are on the main menu, and a new version is available play the animation
-			if(m_states_user.is_in_menu && m_states.is_new_version)
+			if(m_states_user.is_in_menu && m_states.is_new_version_available)
 				c_version_display_manager::g_instance.StartUpdateDisplay(20);
 			else
 				c_version_display_manager::g_instance.ResetDisplay();
@@ -118,23 +118,11 @@ namespace Yelo
 			// otherwise if we are loading a new map and the version check is not complete, cancel 
 			// the requests
 			if(m_states_user.is_in_menu && !m_states.checked_today)
-				CheckForUpdates(false);
+				CheckForUpdates();
 			else if(m_states.is_request_in_progress)
 			{
 				for(int i = 0; i < NUMBEROF(m_xml_sources); i++)
-				{
-					s_xml_source& source = m_xml_sources[i];
-
-					if(source.request_id > -1)
-						ghttpCancelRequest(source.request_id);
-
-					source.request_id = -1;
-					source.request_get_attempted = false;
-					source.request_get_completed = false;
-					source.request_get_succeeded = false;
-					delete source.data;
-					source.data = NULL;
-				}
+					m_xml_sources[i].Stop();
 				m_states.is_request_in_progress = false;
 			}
 		}
@@ -161,11 +149,11 @@ namespace Yelo
 		 * If a new version is available, the display manager strings are updated
 		 * and it is instructed to display its animation for 20 seconds.
 		 */
-		void		c_version_check_manager_user::UpdateState()
+		void		c_version_check_manager_user::UpdateVersion()
 		{
-			c_version_check_manager_base::UpdateState();
+			c_version_check_manager_base::UpdateVersion();
 
-			if(!m_states.is_new_version) return;
+			if(!m_states.is_new_version_available) return;
 
 			wchar_t available_string[32];
 			swprintf_s(available_string, 32, L"v%i.%i.%i available!", m_available_version.m_major, m_available_version.m_minor, m_available_version.m_build);

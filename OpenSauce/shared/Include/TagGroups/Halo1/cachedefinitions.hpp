@@ -201,7 +201,7 @@ namespace Yelo
 			int32 count;
 			int32 offset;
 		}vertices, indices;		// 0x10, 0x18
-		uint32 crc;				// 0x20
+		uint32 model_data_size;	// 0x20
 		tag signature;			// 0x24
 
 		// nasty hack assumption

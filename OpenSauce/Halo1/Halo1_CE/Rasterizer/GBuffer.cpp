@@ -6,8 +6,10 @@
 */
 #include "Common/Precompile.hpp"
 #include "Rasterizer/GBuffer.hpp"
+
 #if !PLATFORM_IS_DEDI
-#include <Common/Halo1/YeloSharedSettings.hpp>
+#include "Common/YeloSettings.hpp"
+#include "Common/CmdLineSettings.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Rasterizer/Rasterizer.hpp"
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
@@ -496,6 +498,7 @@ skip_disable_velocity:
 			g_default_system.Ctor();
 
 			c_gbuffer_system::g_output_object_tbn = false;
+			// leave as false, not enough vertex shader registers available to do object velocity with bones
 			c_gbuffer_system::g_output_object_velocity = false;
 
 			c_gbuffer_system::g_output_velocity = true;
@@ -577,6 +580,9 @@ skip_disable_velocity:
 
 		void		c_gbuffer_system::Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters)
 		{
+			if(CMDLINE_GET_PARAM(no_os_gfx).ParameterSet())
+				return;
+
 			g_debug_index = 0;
 			g_default_system.AllocateResources(pDevice, pParameters);
 		}
@@ -588,6 +594,9 @@ skip_disable_velocity:
 
 		void		c_gbuffer_system::OnResetDevice(D3DPRESENT_PARAMETERS* pParameters)
 		{
+			if(CMDLINE_GET_PARAM(no_os_gfx).ParameterSet())
+				return;
+
 			g_default_system.OnResetDeviceImpl(pParameters);
 		}
 
@@ -620,10 +629,12 @@ skip_disable_velocity:
 
 			D3DXMATRIX WorldViewT;
 			Matricies.world_view_transpose->ConvertTo4x4(WorldViewT);
+			//TODO: change this to 225 once the gbuffer shaders are back in business
 			pDevice->SetVertexShaderConstantF(100, WorldViewT, 3);
 
 			D3DXVECTOR4 linear_depth_mul;
 			linear_depth_mul.x = pow(Rasterizer::RenderGlobals()->frustum.z_far, -1.0f);
+			//TODO: change this to 228 once the gbuffer shaders are back in business
 			pDevice->SetVertexShaderConstantF(103, linear_depth_mul, 1);
 
 			// We don't want to write to the Z-Buffer as it's already been done
@@ -676,6 +687,7 @@ skip_disable_velocity:
 		{
 			if(Rasterizer::IsRenderingReflection() == false && g_system_enabled && !g_wvp_stored)
 			{
+				//TODO: change this to 221 once the gbuffer shaders are back in business
 				device->SetVertexShaderConstantF(96, g_stored_worldviewproj[g_stored_wvp_index], 4);
 				memcpy_s(&g_stored_worldviewproj[1 - g_stored_wvp_index], sizeof(D3DMATRIX), pConstantData, sizeof(D3DMATRIX));
 				g_wvp_stored = true;
@@ -734,6 +746,26 @@ skip_disable_velocity:
 			HRESULT hr;
 			D3DCAPS9 device_caps;
 			hr = pDevice->GetDeviceCaps(&device_caps);
+
+			union{
+				DWORD version;
+				struct{
+					union{
+						WORD major_minor_version;
+						struct{
+							char minor_version;
+							char major_version;
+						};
+					};
+					WORD type;
+				};
+			} ps_version, vs_version;
+
+			vs_version.version = device_caps.VertexShaderVersion;
+			ps_version.version = device_caps.PixelShaderVersion;
+
+			if(vs_version.major_version < 3) return;
+			if(ps_version.major_version < 3) return;
 
 			if(FAILED(LoadEffect(pDevice, &m_gbuffer_ps,		"GBuffer_PS")))		return;
 			if(FAILED(LoadEffect(pDevice, &m_gbuffer_vs,		"GBuffer_VS")))		return;

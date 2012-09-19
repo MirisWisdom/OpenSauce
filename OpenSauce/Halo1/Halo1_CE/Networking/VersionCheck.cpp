@@ -14,6 +14,7 @@
 
 #include <Common/Halo1/YeloSettingsVersion.hpp>
 
+#include "Networking/HTTP/HTTPClient.hpp"
 #if PLATFORM_IS_USER
 	#include "Networking/VersionCheckClient.hpp"
 #elif PLATFORM_IS_DEDI
@@ -53,6 +54,22 @@ namespace Yelo
 			c_version_check_manager_base::VersionChecker().Update(delta_time);
 		}
 
+		void*		RequestCompleted_Callback(const bool download_succeeded,
+			const char* buffer,
+			const GHTTPByteCount buffer_length,
+			void* component_data)
+		{
+			return c_version_check_manager_base::VersionChecker().RequestCompleted_Callback(download_succeeded,
+				buffer,
+				buffer_length,
+				component_data);
+		}
+
+		void*		RequestCancelled_Callback(void* component_data)
+		{
+			return c_version_check_manager_base::VersionChecker().RequestCancelled_Callback(component_data);
+		}
+
 #if PLATFORM_IS_USER
 		static c_version_check_manager_user		g_instance;
 		
@@ -84,70 +101,65 @@ namespace Yelo
 		//c_version_check_manager_base
 		/////////////////////////////////////////
 		cstring						c_version_check_manager_base::g_fallback_xml_location = 
-			"http://open-sauce.googlecode.com/hg/OpenSauce/Halo1/Halo1_CE/Halo1_CE_Version.xml";
+			"http://www.thefieryscythe.co.uk/Halo1_CE_Version.xml";
 
 		/////////////////////////////////////////
 		//static functions
 		c_version_check_manager_base& c_version_check_manager_base::VersionChecker() { return g_instance; }
 
-		GHTTPBool	c_version_check_manager_base::GetRequestComplete(GHTTPRequest request,
-			GHTTPResult result,
-			char* buffer,
-			GHTTPByteCount bufferLen,
-			char* headers,
-			void* param)
+		void*	c_version_check_manager_base::RequestCompleted_Callback(const bool download_succeeded, const char* buffer, const GHTTPByteCount buffer_length, void* component_data)
 		{
-			s_xml_source* source = CAST_PTR(s_xml_source*, param);
-			source->request_get_completed = true;
+			ASSERT(!component_data, "the component data for a http request is NULL");
 
-			// delete any data left behind from previous gets
-			delete source->data;
-			source->data = NULL;
+			c_version_downloader* source = CAST_PTR(c_version_downloader*, component_data);
 
-			// copy the file into the source xml object
-			if(result == GHTTPSuccess)
-			{
-				source->request_get_succeeded = true;
-				source->data = new char[(unsigned int)bufferLen];
-				memcpy_s(source->data, (rsize_t)bufferLen, buffer, (rsize_t)bufferLen);
-			}
-			else
-				source->request_get_succeeded = false;
+			source->DownloadCompleteCallback(download_succeeded, buffer, buffer_length, component_data);
 
-			g_instance.ProcessVersionXml();
-
-			return GHTTPTrue;
+			return "";
 		}
+
+		void*	c_version_check_manager_base::RequestCancelled_Callback(void* component_data)
+		{
+			ASSERT(!component_data, "the component data for a http request is NULL");
+
+			c_version_downloader* source = CAST_PTR(c_version_downloader*, component_data);
+
+			source->DownloadCancelledCallback(component_data);
+
+			return "";
+		}
+
 		/////////////////////////////////////////
 		//non-static functions
 		/*!
 		 * \brief
-		 * Initialises the ghttp library.
+		 * Initializes the xml downloaders.
 		 *
-		 * Starts up the ghttp library and sets the initial build version.
+		 * Initializes the xml downloaders and sets the initial build version.
 		 */
 		void		c_version_check_manager_base::Initialize()
 		{
-			ghttpStartup();
-
 			m_current_version.SetBuild(K_OPENSAUCE_VERSION_BUILD_MAJ, K_OPENSAUCE_VERSION_BUILD_MIN, K_OPENSAUCE_VERSION_BUILD);
 			m_available_version.SetBuild(K_OPENSAUCE_VERSION_BUILD_MAJ, K_OPENSAUCE_VERSION_BUILD_MIN, K_OPENSAUCE_VERSION_BUILD);
 
 			// when no requests are made and a new map is loaded GS asserts as 0 is a valid connection id
 			// -1 is not so we check against this later to avoid trying to close a non existant request
 			for(int32 i = 0; i < NUMBEROF(m_xml_sources); i++)
-				m_xml_sources[i].request_id = -1;
+				m_xml_sources[i].Ctor();
 		}
+
 		/*!
 		 * \brief
-		 * Disposes of the ghttp library.
+		 * Disposes of the xml downloaders.
 		 * 
-		 * Disposes of the ghttp library.
+		 * Disposes of the xml downloaders.
 		 */
 		void		c_version_check_manager_base::Dispose()
 		{
-			ghttpCleanup();
+			for(int32 i = 0; i < NUMBEROF(m_xml_sources); i++)
+				m_xml_sources[i].Dtor();
 		}
+
 		/*!
 		 * \brief
 		 * Loads the server list from the user settings.
@@ -155,40 +167,59 @@ namespace Yelo
 		 * \param xml_element
 		 * Pointer to an xml element that parents the version checkers settings.
 		 * 
-		 * Loads the server list and the date the available was last checked on, from the users settings.
+		 * Loads the server list and the date the available version was last checked on, from the users settings.
 		 */
 		void		c_version_check_manager_base::LoadSettings(TiXmlElement* xml_element)
 		{
 			m_states.last_checked_day = 0;
 			m_states.last_checked_month = 0;
 			m_states.last_checked_year = 0;
+
+			for(int i = 0; i < NUMBEROF(m_version_xml.urls); i++)
+				m_version_xml.urls[i][0] = 0;
+
 			// if there is no settings element, we still want to set the default
 			// xml location
 			if(xml_element == NULL)
 			{
-				LoadXmlServers(NULL);
+				m_version_xml.list_version = 0;
+				strcpy_s(m_version_xml.urls[0], sizeof(HTTP::t_http_url), c_version_check_manager_base::g_fallback_xml_location);
 				return;
 			}
 
+			//do-while-false for easy fall-through
 			do
 			{
-				const char* attribute = NULL;
 				//get the last date the version was checked
-				attribute = xml_element->Attribute("day", &m_states.last_checked_day);
-				if(attribute == NULL) { m_states.last_checked_day = 0; break; }
-				attribute = xml_element->Attribute("month", &m_states.last_checked_month);
-				if(attribute == NULL) { m_states.last_checked_month = 0; break; }
-				attribute = xml_element->Attribute("year", &m_states.last_checked_year);
-				if(attribute == NULL) { m_states.last_checked_year = 0; break; }
+				if(!xml_element->Attribute("day", &m_states.last_checked_day)) { m_states.last_checked_day = 0; break; }
+				if(!xml_element->Attribute("month", &m_states.last_checked_month)) { m_states.last_checked_month = 0; break; }
+				if(!xml_element->Attribute("year", &m_states.last_checked_year)) { m_states.last_checked_year = 0; break; }
 			}while(false);
 
 			UpdateDateState();
 
 			//get the xml locations from the user settings
 			TiXmlElement* server_list = xml_element->FirstChildElement("server_list");
-			if(server_list)
-				LoadXmlServers(server_list);
+			if(!server_list)
+				return;
+
+			if(!server_list->Attribute("version", &m_version_xml.list_version))
+				return;
+
+			TiXmlElement* server = server_list->FirstChildElement("server");
+			if(!server)
+				return;
+
+			for(int i = 0; server && (i < NUMBEROF(m_version_xml.urls)); i++)
+			{
+				const char* url = server->GetText();
+				if(!is_null_or_empty(url))
+					strcpy_s(m_version_xml.urls[i], sizeof(HTTP::t_http_url), url);
+
+				server = server->NextSiblingElement("server");
+			}
 		}
+
 		/*!
 		 * \brief
 		 * Saves the current server list to the users settings.
@@ -205,214 +236,74 @@ namespace Yelo
 			xml_element->SetAttribute("month", m_states.last_checked_month);
 			xml_element->SetAttribute("year", m_states.last_checked_year);
 
-			//save the current file locations to the user settings
+			//save the current file urls to the user settings
 			TiXmlElement* server_list = new TiXmlElement("server_list");
-			for(int32 i = 0; i < NUMBEROF(m_xml_sources); i++)
+			server_list->SetAttribute("version", m_version_xml.list_version);
+
+			for(int32 i = 0; i < NUMBEROF(m_version_xml.urls); i++)
 			{
-				if(is_null_or_empty(m_xml_sources[i].xml_address))
+				if(is_null_or_empty(m_version_xml.urls[i]))
 					continue;
 
 				TiXmlElement* server = new TiXmlElement("server");
-				TiXmlText* server_address = new TiXmlText(m_xml_sources[i].xml_address);
+				TiXmlText* server_address = new TiXmlText(m_version_xml.urls[i]);
 
 				server->LinkEndChild(server_address);
 				server_list->LinkEndChild(server);
 			}
 			xml_element->LinkEndChild(server_list);
-
-			// clean up address memory after saving
-			// this used to be in Dispose, but the reverse order used when disposing the components in Main.cpp
-			// results in the addresses being deleted before they have been saved
-			for(int32 i = 0; i < NUMBEROF(m_xml_sources); i++)
-			{
-				delete m_xml_sources[i].xml_address;
-				m_xml_sources[i].xml_address = NULL;
-			}
 		}
+
 		/*!
 		 * \brief
-		 * Updates the ghttp library.
+		 * Updates the xml downloaders.
 		 * 
 		 * \param delta_time
 		 * Time in seconds that has passed since the last update.
 		 * 
-		 * Updates the ghttp library to progress any requests.
+		 * Updates the xml downloaders.
 		 */
 		void		c_version_check_manager_base::Update(real delta_time)
-		{	
-			// update the ghttp library so that it can update the requests
-			if(m_states.is_request_in_progress)
-				ghttpThink();
-		}
-		/*!
-		 * \brief
-		 * Reads new xml locations from an xml element.
-		 * 
-		 * Reads new xml locations from an xml element. Currently the
-		 * maximum number of locations is 3.
-		 */
-		void		c_version_check_manager_base::LoadXmlServers(TiXmlElement* server_list)
-		{	
-			bool has_valid_source = false;
+		{
+			if(!m_states.is_request_in_progress)
+				return;
 
-			if(server_list)
+			m_states.is_request_in_progress = false;
+			for(int32 i = 0; i < NUMBEROF(m_xml_sources); i++)
 			{
-				TiXmlElement* server = server_list->FirstChildElement("server");
-				for(int32 i = 0; i < NUMBEROF(m_xml_sources); i++)
-				{
-					// delete the previous locations regardless of whether there is a replacement
-					delete m_xml_sources[i].xml_address;
-					m_xml_sources[i].xml_address = NULL;
-
-					if(server == NULL) continue;
-
-					// get the text value of each server
-					cstring text_value = server->GetText();
-					if( !is_null_or_empty(text_value) )
-					{
-						int text_length = strlen(text_value) + 1;
-						m_xml_sources[i].xml_address = new char[text_length];
-						memcpy_s(m_xml_sources[i].xml_address, text_length, text_value, text_length);
-
-						server = server->NextSiblingElement("server");
-						has_valid_source = true;
-					}
-				}
+				m_xml_sources[i].Update(delta_time);
+				m_states.is_request_in_progress |= (m_xml_sources[i].Status() == Enums::_http_file_download_status_in_progress);
 			}
-			// if there are no server list entries, set index 0 to use the fallback
-			if(!has_valid_source)
-			{
-				int text_length = strlen(g_fallback_xml_location) + 1;
-				m_xml_sources[0].xml_address = new char[text_length];
-				memcpy_s(m_xml_sources[0].xml_address, text_length, g_fallback_xml_location, text_length);
-			}
+
+			// if all of the requests are complete, update the clients xml sources
+			if(!m_states.is_request_in_progress)
+				UpdateVersion();
 		}
+
 		/*!
 		 * \brief
 		 * Starts the update checking process.
 		 * 
-		 * Sends the get requests for the xml files from the xml locations.
+		 * Sends the requests for the xml files from the xml urls.
 		 */
-		void		c_version_check_manager_base::CheckForUpdates(bool do_blocking)
+		void		c_version_check_manager_base::CheckForUpdates()
 		{
-			m_states.is_request_in_progress = true;
+			m_states.is_request_in_progress = false;
 
-			// if we are blocking, request_get_attempted must be set to true on 
-			// all valid source objects before any requests are made, so that
-			// the update process does not continue until all requests are complete
-			if(do_blocking)
-			{
-				for(int i = 0; i < NUMBEROF(m_xml_sources); i++)
-					if(m_xml_sources[i].xml_address)
-						m_xml_sources[i].request_get_attempted = true;
-			}
-
-			// send a get request to the server using the ghttp library
-			// if do_blocking is false this will return immediately but will call 
-			// the request complete callback once the get request is complete, which
-			// will then continue the update checking process.
-			// if do_blocking is true the function will not return until the request
-			// is complete
+			// start the xml downloaders
 			for(int i = 0; i < NUMBEROF(m_xml_sources); i++)
 			{
-				if(m_xml_sources[i].xml_address)
-				{
-					m_xml_sources[i].request_id = ghttpGetEx(m_xml_sources[i].xml_address,
-						NULL,
-						NULL,
-						0,
-						NULL,
-						GHTTPFalse,
-						do_blocking ? GHTTPTrue : GHTTPFalse,
-						NULL,
-						GetRequestComplete,
-						&m_xml_sources[i]);
-					m_xml_sources[i].request_get_attempted = true;
-				}
+				// if the xml source is empty, don't start the download
+				if(is_null_or_empty(m_version_xml.urls[i]))
+					continue;
+
+				m_xml_sources[i].SetURL(m_version_xml.urls[i]);
+				m_xml_sources[i].Start();
+
+				m_states.is_request_in_progress |= (m_xml_sources[i].Status() == Enums::_http_file_download_status_in_progress);
 			}
-		}		
-		/*!
-		 * \brief
-		 * Processes the downloaded xml files.
-		 * 
-		 * Once all of the file requests are complete, this function parses the xml files
-		 * to get the latest version that is available, and updates the xml file locations.
-		 */
-		void		c_version_check_manager_base::ProcessVersionXml()
-		{
-			// do not continue until all of the attempted http requests are complete
-			for(int i = 0; i < NUMBEROF(m_xml_sources); i++)
-				if(m_xml_sources[i].request_get_attempted &&
-					!m_xml_sources[i].request_get_completed)
-					return;
-
-			int server_list_version = 0;
-
-			// process the downloaded xml files
-			for(int i = 0; i < NUMBEROF(m_xml_sources); i++)
-			{
-				if(!m_xml_sources[i].request_get_attempted || 
-					!m_xml_sources[i].request_get_completed ||
-					!m_xml_sources[i].request_get_succeeded) continue;
-
-				TiXmlDocument version_doc("version_doc");
-				version_doc.Parse(m_xml_sources[i].data);
-
-				TiXmlElement* root = version_doc.RootElement();
-				if(!root) continue;
-
-				// process all of the version elements, getting the latest one
-				TiXmlElement* version = root->FirstChildElement("version");
-				while(version)
-				{
-					s_version other_version;
-
-					const char* attribute = NULL;
-					
-					do
-					{
-						attribute = version->Attribute("major", &other_version.m_major);
-						if(attribute == NULL) break;
-						attribute = version->Attribute("minor", &other_version.m_minor);
-						if(attribute == NULL) break;
-						attribute = version->Attribute("build", &other_version.m_build);
-						if(attribute == NULL) break;
-
-						if(m_available_version.CompareTo(other_version) < 0)
-							m_available_version.SetBuild(other_version);
-					}
-					while(false);
-
-					version = version->NextSiblingElement("version");
-				}
-
-				// update the server list
-				TiXmlElement* server_list = root->FirstChildElement("server_list");
-				if(server_list)
-				{
-					int source_server_list_version = 0;
-					const char* attribute = server_list->Attribute("version", &source_server_list_version);
-
-					// if the list version is newer, update the xml locations
-					if(attribute && (server_list_version < source_server_list_version))
-					{
-						server_list_version = source_server_list_version;
-
-						LoadXmlServers(server_list);
-					}
-				}
-
-				// the xml data has been parsed so is no longer needed
-				delete m_xml_sources[i].data;
-				m_xml_sources[i].data = NULL;
-				m_xml_sources[i].request_get_attempted = false;
-				m_xml_sources[i].request_get_completed = false;
-				m_xml_sources[i].request_get_succeeded = false;
-				m_xml_sources[i].request_id = -1;
-			}
-
-			UpdateState();
 		}
+
 		/*!
 		 * \brief
 		 * Updates the m_states.checked_today flag.
@@ -431,17 +322,15 @@ namespace Yelo
 				(m_states.last_checked_year == 1900 + local_time->tm_year))
 				m_states.checked_today = true;
 		}
+
 		/*!
 		 * \brief
-		 * Updates the state the version checker is in.
+		 * Updates the available os version.
 		 * 
-		 * Updates the state of the component after the version check is complete.
+		 * Updates the available os version from the data that has been downloaded.
 		 */
-		void		c_version_check_manager_base::UpdateState()
-		{
-			// this point is only reached once the update attempts are complete
-			m_states.is_request_in_progress = false;
-			
+		void		c_version_check_manager_base::UpdateVersion()
+		{			
 			// set the last date checked to todays date
 			time_t time_today;
 			time(&time_today);
@@ -451,7 +340,40 @@ namespace Yelo
 			m_states.last_checked_month = local_time->tm_mon;
 			m_states.last_checked_year = 1900 + local_time->tm_year;
 
-			m_states.is_new_version = m_current_version.CompareTo(m_available_version) < 0;
+			for(int i = 0; i < NUMBEROF(m_xml_sources); i++)
+			{
+				c_version_downloader& downloader = m_xml_sources[i];
+
+				// clean up the download request
+				if(downloader.Status() != Enums::_http_file_download_status_idle)
+					downloader.Stop();
+
+				if(downloader.Status() != Enums::_http_file_download_status_succeeded)
+					continue;
+
+				// see whether the downloaded version is newer than the current
+				if(m_available_version.CompareTo(downloader.OSVersion()) > 0)
+				{
+					m_available_version = downloader.OSVersion();
+					m_states.is_new_version_available = true;
+				}
+
+				// if the server list version is newer, copy the new list
+				if(m_version_xml.list_version < downloader.URLListVersion())
+				{
+					m_version_xml.list_version = downloader.URLListVersion();
+
+					LinkedListIterator<c_version_server> url_iterator(downloader.VersionURLList());
+
+					for(int j = 0; j < NUMBEROF(m_version_xml.urls); j++)
+					{
+						m_version_xml.urls[j][0] = 0;
+
+						if(url_iterator.MoveNext())
+							strcpy_s(m_version_xml.urls[j], sizeof(HTTP::t_http_url), url_iterator.Current()->m_version_xml_url);
+					}
+				}
+			}
 		}
 	}; };
 };

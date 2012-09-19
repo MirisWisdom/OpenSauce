@@ -19,6 +19,10 @@
   </PropertyGroup>
   <Import Project="$(SolutionDir)BlamLib.Cs.props" />
   <ItemGroup>
+    <Reference Include="SevenZipSharp, Version=0.64.3890.29348, Culture=neutral, PublicKeyToken=20de82c62b055c88, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\shared\bin\SevenZipSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -67,6 +71,12 @@
     <Compile Include="CheApe\Halo1\UnlockH1.cs" />
     <Compile Include="CheApe\Halo1\UnlockH1.AddressOf.cs" />
     <Compile Include="CheApe\UnlockToolsBase.cs" />
+    <Compile Include="Controls\OSIDEComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\OSIDEComboBox.Designer.cs">
+      <DependentUpon>OSIDEComboBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="EngineSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,6 +139,12 @@
       <DependentUpon>SelectEngineDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="ServerMapDownloadTool\MapCompressorUI.resx">
+      <DependentUpon>MapCompressorUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerMapDownloadTool\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -149,6 +165,31 @@
     <Compile Include="SelectEngineDialog.Designer.cs">
       <DependentUpon>SelectEngineDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="ServerMapDownloadTool\Code\Helpers.cs" />
+    <Compile Include="ServerMapDownloadTool\Code\MapCompressor.cs" />
+    <Compile Include="ServerMapDownloadTool\Code\MapCompressorUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ServerMapDownloadTool\Code\FileSplitter.cs" />
+    <Compile Include="ServerMapDownloadTool\Code\ProgressController.cs" />
+    <Compile Include="ServerMapDownloadTool\Code\Util.cs" />
+    <Compile Include="ServerMapDownloadTool\MapCompressorUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ServerMapDownloadTool\MapCompressorUI.Designer.cs">
+      <DependentUpon>MapCompressorUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ServerMapDownloadTool\MapDownloadList\MapIncludeClass.cs" />
+    <Compile Include="ServerMapDownloadTool\MapDownloadList\MapDownloadClass.cs" />
+    <Compile Include="ServerMapDownloadTool\MapDownloadList\MapPartClass.cs" />
+    <Compile Include="ServerMapDownloadTool\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServerMapDownloadTool\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ServerMapDownloadTool\SettingsHandler.cs" />
+    <Compile Include="Settings\SettingsManager.cs" />
     <Compile Include="Tool.cs" />
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
@@ -194,6 +235,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="7z.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Properties\OS IDE.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

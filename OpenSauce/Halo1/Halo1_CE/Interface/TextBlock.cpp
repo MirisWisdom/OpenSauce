@@ -13,17 +13,25 @@ namespace Yelo
 {
 	TextBlock::TextBlock(IDirect3DDevice9* pDevice,D3DPRESENT_PARAMETERS* pPP)
 	{
+		ZeroMemory(&block, sizeof(block));
+
 		this->pDevice = pDevice;
 		block.screen_width = pPP->BackBufferWidth;
 		block.screen_height = pPP->BackBufferHeight;
+		pFont = NULL;
 
 		pDevice->CreateVertexBuffer(sizeof(COLOR_VERTEX) * 4, NULL,D3DFVF_XYZRHW | D3DFVF_DIFFUSE,D3DPOOL_MANAGED,&vertexBuffer,NULL);
 	}
 
 	void TextBlock::SetFade(bool fade)	{ block.fade = fade; }
 
+	void TextBlock::SetIgnoreTextHeight(bool ignore_text_height)	{ block.ignore_text_height = ignore_text_height; }
+
 	void TextBlock::SetFont(cstring face, int32 size, uint32 weight, bool italic, uint32 quality)
 	{
+		if(pFont)
+			safe_release(pFont);
+
 		D3DXCreateFont( pDevice,					// D3D device
 							 size,					// Height
 							 0,                     // Width
@@ -71,7 +79,8 @@ namespace Yelo
 	void TextBlock::Refresh()
 	{
 		SetRect(&block.rect, block.width, 0, 0, 0);
-		block.height = pFont->DrawTextW(NULL, block.text, NONE, &block.rect, DT_CALCRECT | block.text_format, 0);
+		if(pFont && !block.ignore_text_height)
+			block.height = pFont->DrawTextW(NULL, block.text, NONE, &block.rect, DT_CALCRECT | block.text_format, 0);
 
 		// add padding for the actual block around the text
 		block.height += block.padding*2;
@@ -165,20 +174,24 @@ namespace Yelo
 		vertexBuffer->Unlock();
 	}
 
-	void TextBlock::Render()
+	void TextBlock::Render(wcstring text)
 	{
-		// set appropriate render states
-		pDevice->SetVertexShader(NULL);
-		pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
-		pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-		pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+		// the the block colors alpha is zero, don't bother drawing it
+		if(0 != (block.back_color & 0xFF000000))
+		{
+			// set appropriate render states
+			pDevice->SetVertexShader(NULL);
+			pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+			pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+			pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+			pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
-		// draw block
-		pDevice->SetTexture(0,NULL);
-		pDevice->SetFVF(D3DFVF_XYZRHW | D3DFVF_DIFFUSE);
-		pDevice->SetStreamSource(0, vertexBuffer, 0, sizeof(COLOR_VERTEX));
-		pDevice->DrawPrimitive(D3DPT_TRIANGLEFAN, 0, 2);
+			// draw block
+			pDevice->SetTexture(0,NULL);
+			pDevice->SetFVF(D3DFVF_XYZRHW | D3DFVF_DIFFUSE);
+			pDevice->SetStreamSource(0, vertexBuffer, 0, sizeof(COLOR_VERTEX));
+			pDevice->DrawPrimitive(D3DPT_TRIANGLEFAN, 0, 2);
+		}
 
 		// add padding for the text
 		RECT text_rect;
@@ -189,7 +202,13 @@ namespace Yelo
 			block.rect.bottom - block.padding);
 
 		// draw text
-		pFont->DrawTextW(NULL, block.text, NONE, &text_rect, block.text_format, block.text_color);
+		if(pFont)
+		{
+			if(text)
+				pFont->DrawTextW(NULL, text, NONE, &text_rect, block.text_format, block.text_color);
+			else
+				pFont->DrawTextW(NULL, block.text, NONE, &text_rect, block.text_format, block.text_color);
+		}
 	}
 
 	void TextBlock::OnResetDevice(D3DPRESENT_PARAMETERS *pPP)

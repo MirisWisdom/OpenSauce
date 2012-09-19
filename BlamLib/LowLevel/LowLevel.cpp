@@ -5,6 +5,8 @@
 */
 #include "Precompile.hpp"
 
+#include "Cryptography/XXTEA.hpp"
+#include "Compression/LZMA.hpp"
 #include "Math/Math.hpp"
 #include "LowLevel.hpp"
 

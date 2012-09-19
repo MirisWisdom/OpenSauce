@@ -9,6 +9,9 @@
 */
 #include "Precompile.hpp"
 #include "XMA/XmaParse.hpp"
+
+#ifdef _DEBUG
+
 __CPP_CODE_START__
 
 #define LOWLEVEL_NO_X360_XMA_VERBOSE
@@ -945,3 +948,5 @@ namespace XMA
 };
 
 __CPP_CODE_END__
+
+#endif

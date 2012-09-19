@@ -37,6 +37,8 @@
 		<ComponentRef Id='Halo1_CE_ShadersRemove_COMP' />
 		<ComponentRef Id='Halo1_CE_HaloCERemove_COMP' />
 
+		<ComponentRef Id='Halo1_CE_dbghelp_COMP' />
+
 		<Condition Level='0'>
 			<![CDATA[NOT (HALO1_CE_HCE_VERSION_109_PROP AND HALO1_CE_HCEDEDI_VERSION_109_PROP)]]>
 		</Condition>

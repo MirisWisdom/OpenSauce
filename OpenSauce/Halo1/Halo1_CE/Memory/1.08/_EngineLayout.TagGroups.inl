@@ -71,8 +71,6 @@
 		ENGINE_PTR(char, maps_folder_parent_dir,			0x68C5D0, 0x5F4E50);
 
 		ENGINE_PTR(t_multiplayer_map_data, multiplayer_maps,0x6ADD4C, 0x61654C);
-		ENGINE_PTR(const char, map_list_map_extension,	0x6094B4, 0x563C70); // ".map"
-		ENGINE_PTR(cstring, map_list_map_extension_ref,	0x49810D, 0x48DAFD);
 		ENGINE_PTR(cstring, map_list_ignored_map_names,	0x629B3C, 0x59F4DC);
 		FUNC_PTR(MULTIPLAYER_MAP_LIST_INITIALIZE_CALL,	0x4CABB2, 0x4B3F1A);
 		FUNC_PTR(MULTIPLAYER_MAP_LIST_INITIALIZE,		0x498280, 0x48DC70);

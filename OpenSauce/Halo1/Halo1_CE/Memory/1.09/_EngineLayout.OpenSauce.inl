@@ -8,7 +8,7 @@
 //////////////////////////////////////////////////////////////////////////
 // YeloSettings.cpp
 #if __EL_INCLUDE_FILE_ID == __EL_COMMON_YELO_SETTINGS
-	ENGINE_PTR(char, g_profile_path, 0x647850, 0x5B9640); // set by -path in haloce
+	ENGINE_PTR(char, g_profile_path, 0x647850, 0x5B9630); // set by -path in haloce
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -37,6 +37,24 @@
 
 	FUNC_PTR(UPDATE_UI_WIDGETS,											0x49AFE0, FUNC_PTR_NULL);
 	FUNC_PTR(CALL_HOOK_UPDATE_UI_WIDGETS,								0x4CB0D7, FUNC_PTR_NULL);
+
+
+//////////////////////////////////////////////////////////////////////////
+// Common/GameSystems.cpp
+#elif __EL_INCLUDE_FILE_ID == __EL_COMMON_GAME_SYSTEMS
+	FUNC_PTR(QUERY_EXITFLAG_REG_CALL,									0x5450A1, 0x4FF3D6);
+	FUNC_PTR(QUERY_EXITFLAG_REG,										0x582560, 0x52ACF0);
+	FUNC_PTR(RELEASE_RESOURCES_ON_EXIT_CALL,							0x5452C0, 0x4FF5B7);
+	FUNC_PTR(RELEASE_RESOURCES_ON_EXIT,									0x5447C0, 0x4FF100);
+
+	DATA_PTR(PE_DATA_SIZE,												0x215000, 0x171000);
+
+
+//////////////////////////////////////////////////////////////////////////
+// Common/DebugDump.cpp
+#elif __EL_INCLUDE_FILE_ID == __EL_COMMON_DEBUG_DUMP
+	FUNC_PTR(PRE_DR_WATSON_LAUNCH_HOOK,									0x5471AC, 0x5006BC);
+	FUNC_PTR(PRE_DR_WATSON_LAUNCH_RETN,									0x5471B3, 0x5006C3);
 
 #else
 	#error Undefined engine layout include for: __EL_INCLUDE_OPEN_SAUCE

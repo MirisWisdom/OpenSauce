@@ -28,6 +28,23 @@ void GatherException(const void* data, int32 arg_0, int32 arg_4, int32 arg_8)
 	}
 }
 
+void SetTextureSamplerStage(Yelo::TagGroups::s_bitmap_data* bitmap, uint32 texture_stage)
+{
+	// use this instead of TextureCacheRequestTexture where applicable as this function
+	// tests whether the texture is already loaded and sets the texture sampler itself
+
+	// TODO: set pointer properly
+	static uint32 TEMP_CALL_ADDR = 0x51C370;
+
+	_asm
+	{
+		mov		esi, bitmap
+		push	texture_stage
+		call	TEMP_CALL_ADDR
+		add		esp, 4
+	}
+}
+
 IDirect3DBaseTexture9** TextureCacheRequestTexture(Yelo::TagGroups::s_bitmap_data* bitmap, 
 												   bool add_to_cache, bool block_thread)
 {
@@ -78,17 +95,53 @@ bool SoundCacheRequestSound(Yelo::TagGroups::s_sound_permutation* sound_perm,
 #endif
 }
 
-void MapListAddMap(cstring map_name, int32 map_index)
+void MapListAddMap(cstring map_name, cstring extension, bool skip_crc, int32 map_index)
 {
 	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(MAP_LIST_ADD_MAP);
+	static void* SKIP_CRC_JZ_ADDRESS = GET_PTR2(MAP_LIST_ADD_SKIP_CRC_JZ);
+	static void* MAP_LIST_EXTENSION_REF = GET_PTR2(MAP_LIST_MAP_EXTENSION_REF);
+	static const char* MAP_LIST_EXTENSION_STOCK = GET_PTR2(MAP_LIST_MAP_EXTENSION);
 
 	__asm {
+		cmp		skip_crc, 0
+		jz		skip_crc_disable
+		push	eax
+		mov		eax, SKIP_CRC_JZ_ADDRESS
+		mov		byte ptr [eax], 0xEB
+		pop		eax
+skip_crc_disable:
+
+		push	eax
+		push	ebx
+		mov		eax, MAP_LIST_EXTENSION_REF
+		mov		ebx, extension
+		mov		dword ptr [eax], ebx
+		pop		ebx
+		pop		eax
+
 		push	map_index
 		mov		eax, map_name
 		call	TEMP_CALL_ADDR
 		add		esp, 4 * 1
+
+		push	eax
+		push	ebx
+		mov		eax, MAP_LIST_EXTENSION_REF
+		mov		ebx, MAP_LIST_EXTENSION_STOCK
+		mov		dword ptr [eax], ebx
+		pop		ebx
+		pop		eax
+
+		cmp		skip_crc, 0
+		jz		skip_crc_enable
+		push	eax
+		mov		eax, SKIP_CRC_JZ_ADDRESS
+		mov		byte ptr [eax], 0x74
+		pop		eax
+skip_crc_enable:
 	}
 }
+
 void RasterizerAddResolution(uint32 width, uint32 height, uint32 refresh_rate)
 {
 #if !PLATFORM_IS_DEDI
@@ -134,4 +187,29 @@ void API_FUNC_NAKED GenerateMD5(cstring data, const DWORD data_length, cstring o
 		push	data
 		call	TEMP_CALL_ADDR
 	API_FUNC_NAKED_END_CDECL(3);
+}
+
+bool CompareMD5(cstring data, const DWORD data_length, cstring comparison_md5)
+{
+	char data_md5[33];
+
+	data_md5[0] = 0;
+	GenerateMD5(data, data_length, data_md5);
+
+	return stricmp(data_md5, comparison_md5) == 0;
+}
+
+bool GetCmdLineParameter(const char* parameter, char** value_out)
+{
+	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(GET_CMD_LINE_PARAMETER);
+
+	_asm
+	{
+		push	edi
+		push	parameter
+		mov		edi, value_out
+		call	TEMP_CALL_ADDR
+		add		esp, 4
+		pop		edi
+	};
 }

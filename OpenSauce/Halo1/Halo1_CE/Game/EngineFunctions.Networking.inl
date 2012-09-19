@@ -79,3 +79,20 @@ datum_index TranslatePlayer(datum_index network_player)
 		pop		esi
 	}
 }
+
+#if !PLATFORM_IS_DEDI
+
+void ConnectToServer(cstring address, cstring password)
+{
+	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(CONNECT_TO_MP_SERVER);
+
+	__asm {
+		push	password
+		push	address
+		call	TEMP_CALL_ADDR
+		
+		add		esp, 8
+	}
+}
+
+#endif

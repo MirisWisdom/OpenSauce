@@ -418,7 +418,7 @@ namespace BlamLib
 
 			StringBuilder sb = new StringBuilder(data.Length * 2);
 			for (int x = start_index; x < data.Length; x++)
-				sb.Append(data[x].ToString("X").PadLeft(2, '0'));
+				sb.Append(data[x].ToString("X2"));
 
 			return sb.ToString();
 		}
