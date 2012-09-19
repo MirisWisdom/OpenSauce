@@ -6,11 +6,19 @@
 #pragma once
 
 #include <TagGroups/Halo1/TagGroupDefinitions.hpp>
+#include <TagGroups/Halo1/object_definitions.hpp>
 
 namespace Yelo
 {
 	namespace Enums
 	{
+		enum {
+			// Stock number of grenade types
+			k_number_of_unit_grenade_types = 2,
+			// Number of supported grenade types in OS-modified game states
+			k_number_of_unit_grenade_types_yelo = k_number_of_unit_grenade_types + 2,
+		};
+
 		enum biped_function_mode : _enum
 		{
 			_biped_function_mode_none,

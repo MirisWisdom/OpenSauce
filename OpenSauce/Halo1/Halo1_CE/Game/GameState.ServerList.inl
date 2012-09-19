@@ -6,14 +6,6 @@
 */
 static const char* g_forced_mp_version = NULL;
 
-static const char* g_valid_server_versions[] =
-{
-	"01.00.00.0609",
-	"01.00.07.0613",
-	"01.00.08.0616",
-	"01.00.09.0620",
-};
-
 static BOOL PLATFORM_API ServerVersionIsValid(const char* server_version)
 {
 	if(g_forced_mp_version)
@@ -29,8 +21,8 @@ static BOOL PLATFORM_API ServerVersionIsValid(const char* server_version)
 		return true;
 
 	// compare all known official versions
-	for(int i = 0; i < NUMBEROF(g_valid_server_versions); i++)
-		if(strcmp(g_valid_server_versions[i], server_version) == 0)
+	for(int i = 0; i < NUMBEROF(Networking::g_game_build_numbers); i++)
+		if(strcmp(Networking::g_game_build_numbers[i], server_version) == 0)
 			return true;
 	return false;
 }
@@ -44,17 +36,17 @@ void ServerListInitialize()
 			return;
 
 		if(strcmp(mp_version, "1.00") == 0)
-			g_forced_mp_version = g_valid_server_versions[0];
+			g_forced_mp_version = Networking::g_game_build_numbers[Enums::_game_build_number_index_100];
 		else if(strcmp(mp_version, "1.07") == 0)
-			g_forced_mp_version = g_valid_server_versions[1];
+			g_forced_mp_version = Networking::g_game_build_numbers[Enums::_game_build_number_index_107];
 		else if(strcmp(mp_version, "1.08") == 0)
-			g_forced_mp_version = g_valid_server_versions[2];
+			g_forced_mp_version = Networking::g_game_build_numbers[Enums::_game_build_number_index_108];
 		else if(strcmp(mp_version, "1.09") == 0)
-			g_forced_mp_version = g_valid_server_versions[3];
+			g_forced_mp_version = Networking::g_game_build_numbers[Enums::_game_build_number_index_109];
 		else
 			g_forced_mp_version = NULL;
 	}
 
 	// override the function call that omits servers of a different version from the server browser
-	Memory::WriteRelativeCall(ServerVersionIsValid, GET_FUNC_VPTR(GAME_SERVER_VERSION_TEST_CALL), true);
+	Memory::WriteRelativeCall(ServerVersionIsValid, GET_FUNC_VPTR(GAME_SERVER_QR2_STRING_MATCHES_GAMEVER_CALL), true);
 }

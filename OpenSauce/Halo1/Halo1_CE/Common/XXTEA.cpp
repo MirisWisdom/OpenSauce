@@ -31,7 +31,7 @@ namespace Yelo
 		void XXTEAEncrypt(unsigned long* data, unsigned long block_size, long* key)
 		{
 			unsigned long z = data[block_size - 1], y = data[0], sum = 0, e, DELTA = 0x9e3779b9;
-			long p, q ;
+			unsigned long p, q ;
 
 			q = 6 + 52 / block_size;
 			while (q-- > 0)
@@ -62,7 +62,7 @@ namespace Yelo
 		void XXTEADecrypt(unsigned long* data, unsigned long block_size, long* key)
 		{
 			unsigned long z = data[block_size - 1], y = data[0], sum = 0, e, DELTA = 0x9e3779b9;
-			long p, q ;
+			unsigned long p, q ;
 
 			q = 6 + 52 / block_size;
 			sum = q * DELTA;

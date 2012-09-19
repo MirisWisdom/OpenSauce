@@ -99,6 +99,16 @@ namespace Yelo
 			GT2InvalidMessage,
 			GT2SendFailed
 		};
+
+		enum game_build_number_index
+		{
+			_game_build_number_index_100,
+			_game_build_number_index_107,
+			_game_build_number_index_108,
+			_game_build_number_index_109,
+
+			k_max_game_build_number_index,
+		};
 	};
 
 	namespace Networking
@@ -317,6 +327,8 @@ namespace Yelo
 			// However, this structure shouldn't even be accessed in dedi builds so I'm not researching further!
 		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_server_browser_globals) == 0x27C );
 
+
+		extern cstring g_game_build_numbers[Enums::k_max_game_build_number_index];
 
 		s_gamespy_socket* GsSocket();
 		s_gamespy_socket* GsLoopbackSocket();

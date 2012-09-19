@@ -79,7 +79,7 @@ namespace Yelo
 		static void InitializeExternalGlobalOpenSauceOverride(hs_global_definition& global)
 		{
 			// Not really constant but should be treated as such
-			static real k_opensauce_version = K_OPENSAUCE_VERSION;
+			static real k_opensauce_version = real(K_OPENSAUCE_VERSION);
 
 			if(global.address == NULL && global.type == HS_TYPE(real))
 				global.Value._real = &k_opensauce_version;

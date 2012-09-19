@@ -30,6 +30,8 @@ namespace Yelo
 
 			// Called from Yelo::GameState on each game tick
 			proc_update					Update;
+
+			void						(*InitializeForYeloGameState)(bool enabled);
 		};
 
 		//	[out_components] - Returns a list of components, or NULL if no components exist

@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D9931E1A-1A8A-4707-A27C-9AFEFD60D25B}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -54,6 +54,9 @@
     <Compile Include="Blam\DataHandles\MapId.cs" />
     <Compile Include="Blam\DataHandles\ResourcePtr.cs" />
     <Compile Include="Blam\DataHandles\StringId.cs" />
+    <Compile Include="Compression\LZMA.cs" />
+    <Compile Include="Cryptography\MD5.cs" />
+    <Compile Include="Cryptography\XXTEA.cs" />
     <Compile Include="IO\EndianStreams.cs" />
     <Compile Include="IO\EndianStreams.Reader.cs" />
     <Compile Include="IO\EndianStreams.Writer.cs" />
@@ -462,6 +465,11 @@
     <Compile Include="Blam\HaloReach\Tags\Groups\TagGroupsCode.cs" />
     <Compile Include="Blam\HaloReach\Tags\Groups\TagGroupsInit.cs" />
   </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
+    <Compile Include="Blam\Halo4\CacheFile.cs" />
+    <Compile Include="Blam\Halo4\Game.cs" />
+    <Compile Include="Blam\Halo4\Program.Halo4.cs" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>
@@ -551,6 +559,7 @@
     <Folder Include="Blam\Stubbs\Tags\Layout\" />
     <Folder Include="Documentation\Blam\Halo3\" />
     <Folder Include="Games\Halo1\Mac\Definitions\" />
+    <Folder Include="Games\Halo4\Xbox\Definitions\" />
     <Folder Include="Games\Stubbs\Mac\Definitions\" />
     <Folder Include="Games\Stubbs\PC\Definitions\" />
     <Folder Include="Games\Stubbs\Xbox\Definitions\" />

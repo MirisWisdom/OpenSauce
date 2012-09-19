@@ -270,8 +270,10 @@ namespace BlamLib
 		HaloOdst = 4096,
 		/// <summary>Halo Reach engine</summary>
 		HaloReach = 8192,
+		/// <summary>Halo 4 engine</summary>
+		Halo4 = 16384,
 
-		kAll = Halo1 | Stubbs | Halo2 | Halo3 | HaloOdst | HaloReach
+		kAll = Halo1 | Stubbs | Halo2 | Halo3 | HaloOdst | HaloReach | Halo4
 	};
 
 	/// <summary>The various platforms for the blam engine</summary>
@@ -351,9 +353,10 @@ namespace BlamLib
 		HaloOdst =	BlamBuild.HaloOdst,
 		/// <summary>Halo Reach base version</summary>
 		HaloReach =	BlamBuild.HaloReach,
+		/// <summary>Halo 4 base version</summary>
+		Halo4 =		BlamBuild.Halo4,
 		#endregion
 
-		// 16384 - could be used for potential future Blam engines
 		// 32768 - could be used for potential future Blam engines
 
 
@@ -410,21 +413,21 @@ namespace BlamLib
 		Halo3_Beta =	Halo3 | Xbox | Beta,
 		/// <summary>Halo 3 (Xbox 360) Epsilon</summary>
 		Halo3_Epsilon =	Halo3 | Xbox | Epsilon,
-		/// <summary>Halo 3 (PC)</summary>
+//		/// <summary>Halo 3 (PC)</summary>
 //		Halo3_PC =		Halo3 | PC,
 
-		/// <summary>Halo 3 (All)</summary>
-		/// <remarks>Intentionally doesn't include <see cref="Halo3_Epsilon"/></remarks>
+//		/// <summary>Halo 3 (All)</summary>
+//		/// <remarks>Intentionally doesn't include <see cref="Halo3_Epsilon"/></remarks>
 //		kHalo3 = Halo3_Beta | Halo3_Xbox /*| Halo3_PC*/,
 		#endregion
 
 		#region HaloOdst
 		/// <summary>Halo 3: ODST (Xbox 360)</summary>
 		HaloOdst_Xbox =	HaloOdst | Xbox,
-		/// <summary>Halo 3: ODST (PC)</summary>
+//		/// <summary>Halo 3: ODST (PC)</summary>
 //		HaloOdst_PC =	HaloOdst | PC,
 
-		/// <summary>Halo 3: ODST (All)</summary>
+//		/// <summary>Halo 3: ODST (All)</summary>
 //		kHaloOdst = HaloOdst_Xbox | HaloOdst_PC,
 		#endregion
 
@@ -433,11 +436,21 @@ namespace BlamLib
 		HaloReach_Xbox = HaloReach | Xbox,
 		/// <summary>Halo: Reach (Xbox 360) Beta</summary>
 		HaloReach_Beta = HaloReach | Xbox | Beta,
-		/// <summary>Halo: Reach (PC)</summary>
-//		HaloReach_PC = Halo3 | PC,
+//		/// <summary>Halo: Reach (PC)</summary>
+//		HaloReach_PC = HaloReach | PC,
 
-		/// <summary>Halo: Reach (All)</summary>
+//		/// <summary>Halo: Reach (All)</summary>
 //		kHaloReach = HaloReach_Beta | HaloReach_Xbox | HaloReach_PC,
+		#endregion
+
+		#region Halo4
+		/// <summary>Halo 4 (Xbox 360)</summary>
+		Halo4_Xbox = Halo4 | Xbox,
+//		/// <summary>Halo 4 (PC)</summary>
+//		Halo4_PC = Halo4 | PC,
+
+//		/// <summary>Halo: Reach (All)</summary>
+//		kHalo4 = Halo4_Xbox | Halo4_PC,
 		#endregion
 
 		/// <summary>All supported base games</summary>
@@ -446,7 +459,8 @@ namespace BlamLib
 		kAll = kHalo1 | kStubbs | kHalo2 |
 			/*kHalo3*/Halo3_Beta | Halo3_Xbox | // TODO: If Halo3 ever gets a PC version, uncomment and use kHalo3
 			/*kHaloOdst*/HaloOdst_Xbox | // TODO: If ODST ever gets a PC version, uncomment and use kHaloOdst
-			/*kHaloReach*/HaloReach_Beta | HaloReach_Xbox, // TODO: If Reach ever gets a PC version, uncomment and use kHaloReach
+			/*kHaloReach*/HaloReach_Beta | HaloReach_Xbox | // TODO: If Reach ever gets a PC version, uncomment and use kHaloReach
+			/*kHalo4*/Halo4_Xbox, // TODO: If Halo4 ever gets a PC version, uncomment and use kHalo3
 	};
 
 	/// <summary>Exception thrown when the library encounters a mismatch in expected engine versions</summary>

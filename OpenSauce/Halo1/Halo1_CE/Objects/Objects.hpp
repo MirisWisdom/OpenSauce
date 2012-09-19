@@ -8,6 +8,8 @@
 
 #include "Memory/Data.hpp"
 
+#include <TagGroups/Halo1/scenario_definitions.hpp>
+
 #include "Objects/ObjectDefinitions.hpp"
 #include "Objects/DeviceDefinitions.hpp"
 #include "Objects/ItemDefinitions.hpp"
@@ -22,6 +24,15 @@ namespace Yelo
 		struct model_animation_graph;
 
 		struct s_object_definition;
+	};
+
+	namespace Enums
+	{
+		enum {
+			// Stock game state allocation size for the object memory pool
+			// When running in editor tools, this and the max number of objects is increased by 5x
+			k_object_memory_pool_allocation_size = 0x200000,
+		};
 	};
 
 	namespace Flags
@@ -129,7 +140,8 @@ namespace Yelo
 		{
 			UNKNOWN_TYPE(int16);
 			UNKNOWN_TYPE(int16);
-			UNKNOWN_TYPE(int32);
+			UNKNOWN_TYPE(bool);
+			PAD24;
 		};
 		s_unit_globals_data*								UnitGlobals();
 
@@ -185,7 +197,7 @@ namespace Yelo
 		{
 			Memory::s_memory_pool header;
 
-			byte data[2 * (1024*1024)];
+			byte data[Enums::k_object_memory_pool_allocation_size];
 		};
 		s_objects_pool_data*								ObjectsPool();
 
@@ -209,7 +221,7 @@ namespace Yelo
 
 		struct s_object_name_list_data
 		{
-			datum_index object_name_to_datum_table[512];
+			datum_index object_name_to_datum_table[Enums::k_maximum_object_names_per_scenario];
 		};
 		s_object_name_list_data*							ObjectNameList();
 
@@ -356,6 +368,8 @@ namespace Yelo
 		void DeleteChildrenByType(datum_index parent, long_flags object_type_mask);
 		// Detach all children of the specified type(s) from the parent object
 		void DetachChildrenByType(datum_index parent, long_flags object_type_mask);
+
+		size_t PredictMemoryPoolUsage(Enums::object_type type, int32 node_count, bool include_yelo_upgrades = false);
 
 		namespace Weapon
 		{

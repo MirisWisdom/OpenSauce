@@ -292,7 +292,7 @@ static void InitializeMiscFunctions()
 	InitializeScriptFunctionWithParams(Enums::_hs_function_abs_real, 
 		scripting_abs_real_evaluate);
 	InitializeScriptFunctionWithParams(Enums::_hs_function_bitwise_and, 
-		scripting_bitwise_or_evaluate);
+		scripting_bitwise_and_evaluate);
 	InitializeScriptFunctionWithParams(Enums::_hs_function_bitwise_or, 
 		scripting_bitwise_or_evaluate);
 	InitializeScriptFunctionWithParams(Enums::_hs_function_bitwise_xor, 

@@ -21,7 +21,12 @@ namespace Yelo
 			_grenade_type_frag,
 			_grenade_type_plasma,
 
-			_grenade_type
+			_grenade_type,
+
+			_grenade_type_yelo2 = _grenade_type, // ie, "custom 2"
+			_grenade_type_yelo3, // ie, "custom 3"
+
+			_grenade_type_yelo
 		};
 
 		enum equipment_powerup : _enum
@@ -309,7 +314,7 @@ namespace Yelo
 				TAG_FLAG(detonates_when_dropped);
 				TAG_FLAG(cannot_fire_at_maximum_age);
 				TAG_FLAG(secondary_trigger_overrides_grenades);
-				TAG_FLAG(OBSOLETEdoes_not_depower_active_camo_in_multilplayer);
+				TAG_FLAG(OBSOLETEdoes_not_depower_active_camo_in_multiplayer);
 				TAG_FLAG(enables_integrated_night_vision);
 				TAG_FLAG(AIs_use_weapon_melee_damage);
 				TAG_FLAG(third_person_weapon);

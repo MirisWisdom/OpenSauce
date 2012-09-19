@@ -36,6 +36,8 @@ namespace Yelo
 			// Max amount of memory addressable by the game state. After this comes tag memory
 			k_game_state_cpu_size = Enums::k_game_state_allocation_size,
 
+			// How much addition memory, if any, we allocate for the objects pool
+			k_game_state_allocation_size_object_memory_pool_upgrade = 0x10000,
 			// 0x42974 bytes available in game state allocation for Clients.
 			// Dedis should have a little bit more (since they don't alloc a few render based things) 
 			// but to keep things simple we'll limit both sides of the spectrum to the same size.
@@ -44,11 +46,13 @@ namespace Yelo
 			// Why? Because the game state is saved to file when the player saves the game or dumps a core. 
 			// So if there's a project component which requires serialization, we'd want to allocate its 
 			// memory in the game state, not anywhere else.
-			k_game_state_allocation_maximum_size_for_yelo = 0x42970,
+			k_game_state_allocation_maximum_size_for_yelo = 0x42970
+				- k_game_state_allocation_size_object_memory_pool_upgrade,
 
 			// Default address of the tag cache in memory (comes right after the game state memory by default)
 			k_tag_cache_base_address = k_game_state_base_address + k_game_state_cpu_size,
 		};
+		BOOST_STATIC_ASSERT( k_game_state_allocation_maximum_size_for_yelo >= 0 );
 
 		enum {
 			// How many values we allow in the runtime data game state for each type (ie, integers, real, etc)
@@ -189,7 +193,7 @@ namespace Yelo
 
 		struct s_header_data
 		{
-			uint32 header_crc;
+			uint32 allocation_crc;
 			char level[256];
 			tag_string version;
 			int16 player_spawn_count;
@@ -218,12 +222,16 @@ namespace Yelo
 			T* Malloc()
 			{
 				byte* base_addr = CAST_PTR(byte*, base_address) + cpu_allocation_size;
+				const size_t size_of = sizeof(T);
 
 				// Debug check that we don't allocate more memory than the game state has available
 				ASSERT((base_addr + sizeof(T)) <= PhysicalMemoryMapGlobals()->tag_cache_base_address, 
 					"Bit off more game-state than the game could chew!");
 
-				cpu_allocation_size += sizeof(T);
+				cpu_allocation_size += size_of;
+#if 0 // TODO: If the allocation crc is updated, game states won't be loadable by stock games
+				Memory::CRC(header->allocation_crc, &size_of, sizeof(size_of));
+#endif
 
 				return CAST_PTR(T*, base_addr);
 			}
@@ -381,6 +389,10 @@ namespace Yelo
 		char*		GameBuildString();
 		char*		GamespyGameBuildString();
 		bool		DevmodeEnabled();
+
+		// Are OS-modified game states in effect?
+		// If so, these will render game saves incompatible with stock games
+		bool		YeloGameStateEnabled();
 
 		void Initialize();
 		void Dispose();

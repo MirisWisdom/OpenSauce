@@ -123,6 +123,10 @@
 
 		_hs_function_display_scripted_ui_widget,
 
+		
+		//////////////////////////////////////////////////////////////////////////
+		// everything after is runtime-only, ie not defined in the CheApe scripting definitions
+
 		_hs_function_sv_httpserver_log_enable,
 		_hs_function_sv_httpserver_set_connection_ban,
 		_hs_function_sv_httpserver_banlist,

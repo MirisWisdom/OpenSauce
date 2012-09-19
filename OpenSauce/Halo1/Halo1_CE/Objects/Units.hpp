@@ -6,11 +6,13 @@
 */
 #pragma once
 
-#include "Objects/ItemDefinitions.hpp"
+#include "Objects/UnitDefinitions.hpp"
 
 namespace Yelo
 {
-	namespace Objects { namespace Equipment {
+	namespace Objects { namespace Units {
 		void Initialize();
+
+		void InitializeForYeloGameState(bool enabled);
 	}; };
 };

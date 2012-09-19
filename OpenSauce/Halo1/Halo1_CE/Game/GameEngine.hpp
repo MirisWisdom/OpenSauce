@@ -106,6 +106,11 @@ namespace Yelo
 
 			_oddball_ball_type,
 		};
+
+		enum race_type : long_enum
+		{
+			_race_type_normal,
+		};
 	};
 
 	namespace Flags
@@ -374,7 +379,7 @@ namespace Yelo
 			}king;
 
 			struct {
-				int32 race_type;
+				Enums::race_type race_type;
 				UNKNOWN_TYPE(int32); // enum...
 			}race;
 		}; BOOST_STATIC_ASSERT( sizeof(s_game_engine_variant) == 0x38 );

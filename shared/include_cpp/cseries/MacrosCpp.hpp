@@ -264,6 +264,11 @@
 #define __DOC_TODO_STRING2(x) #x
 #define __DOC_TODO_STRING(x) __DOC_TODO_STRING2(x)
 #define DOC_TODO(msg) __pragma( message(__FILE__ "(" __DOC_TODO_STRING(__LINE__) "): TODO: " msg) )
+#if _DEBUG
+	#define DOC_TODO_DEBUG(msg) DOC_TODO(msg)
+#else
+	#define DOC_TODO_DEBUG(msg)
+#endif
 
 
 

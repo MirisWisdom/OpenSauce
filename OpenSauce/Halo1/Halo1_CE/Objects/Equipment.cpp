@@ -13,6 +13,9 @@
 namespace Yelo
 {
 	namespace Objects { namespace Equipment {
+#define __EL_INCLUDE_ID			__EL_INCLUDE_OBJECTS
+#define __EL_INCLUDE_FILE_ID	__EL_OBJECTS_EQUIPMENT
+#include "Memory/_EngineLayout.inl"
 
 		void InitializeType(s_object_type_definition*);
 		void Initialize()

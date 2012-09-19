@@ -67,6 +67,13 @@ _return:
 
 	namespace Networking
 	{
+		cstring g_game_build_numbers[Enums::k_max_game_build_number_index] = {
+			"01.00.00.0609",
+			"01.00.07.0613",
+			"01.00.08.0616",
+			"01.00.09.0620",
+		};
+
 		static void ChangeAdvertisedGameVersionId(long_enum version_id, bool and_game_build)
 		{
 			using namespace Enums;
@@ -81,10 +88,10 @@ _return:
 				{
 					cstring build_str = NULL;
 
-						 if(version_id == _game_version_id_100)	build_str = "01.00.00.0609";
-					else if(version_id == _game_version_id_107) build_str = "01.00.07.0613";
-					else if(version_id == _game_version_id_108) build_str = "01.00.08.0616";
-					else if(version_id == _game_version_id_109) build_str = "01.00.09.0620";
+						 if(version_id == _game_version_id_100)	build_str = g_game_build_numbers[Enums::_game_build_number_index_100];
+					else if(version_id == _game_version_id_107) build_str = g_game_build_numbers[Enums::_game_build_number_index_107];
+					else if(version_id == _game_version_id_108) build_str = g_game_build_numbers[Enums::_game_build_number_index_108];
+					else if(version_id == _game_version_id_109) build_str = g_game_build_numbers[Enums::_game_build_number_index_109];
 
 					if(build_str != NULL)
 					{

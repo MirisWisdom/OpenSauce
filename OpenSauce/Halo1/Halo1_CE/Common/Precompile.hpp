@@ -76,17 +76,17 @@
 
 			// Find the new location.
             /////////////////////////
-            location = strstr(headers, "\r\nLocation:");
+            location = strstr(headers, "\r\nLocation:");// YELO: UPDATE THIS LINE
             if(location)
             {
                 char * end;
 
                 // Find the start of the URL.
                 /////////////////////////////
-                location += 11;
+                location += 11;							// YELO: UPDATE THIS LINE
 
 	*/
-	BOOST_STATIC_ASSERT(false); // comment this out once the fix is applied
+//	BOOST_STATIC_ASSERT(false); // comment this out once the fix is applied
 
 	// Just to make sure we're always using ASCII
 	#undef GSI_UNICODE

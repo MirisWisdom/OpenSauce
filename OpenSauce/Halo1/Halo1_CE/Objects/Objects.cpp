@@ -292,6 +292,38 @@ namespace Yelo
 		{
 			PerformActionOnChildrenByType(parent, object_type_mask, Engine::Objects::Detach);
 		}
+
+		size_t PredictMemoryPoolUsage(Enums::object_type type, int32 node_count, bool include_yelo_upgrades)
+		{
+			size_t total_headers_size = sizeof(Memory::s_memory_pool_block);
+			size_t total_node_memory_size = (sizeof(real_orientation3d) * 2) + sizeof(real_matrix4x3);
+			total_node_memory_size *= node_count;
+
+			size_t object_type_size = 0;
+			switch(type)
+			{
+			case Enums::_object_type_biped: object_type_size = Enums::k_object_size_biped;
+			case Enums::_object_type_vehicle: object_type_size = Enums::k_object_size_vehicle;
+
+			case Enums::_object_type_weapon: object_type_size = Enums::k_object_size_weapon;
+			case Enums::_object_type_equipment: object_type_size = Enums::k_object_size_equipment;
+			case Enums::_object_type_garbage: object_type_size = Enums::k_object_size_garbage;
+
+			case Enums::_object_type_projectile: object_type_size = Enums::k_object_size_projectile;
+			case Enums::_object_type_scenery: object_type_size = Enums::k_object_size_scenery;
+
+			case Enums::_object_type_machine: object_type_size = Enums::k_object_size_machine;
+			case Enums::_object_type_control: object_type_size = Enums::k_object_size_control;
+			case Enums::_object_type_light_fixture: object_type_size = Enums::k_object_size_light_fixture;
+
+			case Enums::_object_type_placeholder: object_type_size = Enums::k_object_size_placeholder;
+			case Enums::_object_type_sound_scenery: object_type_size = Enums::k_object_size_sound_scenery;
+
+			default: return 0;
+			}
+
+			return object_type_size + total_node_memory_size + total_headers_size;
+		}
 	};
 };
 
