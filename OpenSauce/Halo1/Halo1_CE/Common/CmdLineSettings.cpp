@@ -15,13 +15,13 @@ namespace Yelo
 {
 	namespace Settings
 	{
-		CMDLINE_ARG(path, char*);
+		CMDLINE_ARG(path, cstring);
 
 		#if PLATFORM_IS_DEDI
-			CMDLINE_ARG(http_root, char*);
+			CMDLINE_ARG(http_root, cstring);
 			CMDLINE_ARG(http_threads, int32);
 		#else
-			CMDLINE_ARG(mp_version, char*);
+			CMDLINE_ARG(mp_version, cstring);
 			CMDLINE_SWITCH(no_os_gfx);
 		#endif
 

@@ -24,10 +24,10 @@ namespace Yelo
 		protected:
 			bool m_parameter_set;
 			PAD24;
-			const char* m_parameter;
+			cstring m_parameter;
 
 		public:
-			virtual void Ctor(const char* parameter)
+			virtual void Ctor(cstring parameter)
 			{
 				m_parameter_set = false;
 				m_parameter = parameter;
@@ -38,11 +38,11 @@ namespace Yelo
 				return m_parameter_set;
 			}
 
-			virtual bool ParseValue(char*) = 0;
+			virtual bool ParseValue(cstring) = 0;
 
 			void GetParameter()
 			{
-				char* value = NULL;
+				cstring value = NULL;
 				m_parameter_set = Engine::GetCmdLineParameter(m_parameter, &value);
 
 				// if the parameter has been set, parse the parameters value
@@ -59,15 +59,15 @@ namespace Yelo
 		};
 
 		template<>
-		class c_cmd_line_argument<char*> : public c_cmd_line_parameter
+		class c_cmd_line_argument<cstring> : public c_cmd_line_parameter
 		{
-			char* m_value;
+			cstring m_value;
 
 		public:
-			char* GetValue() { return m_value; }
+			cstring GetValue() { return m_value; }
 
 			// string specialization
-			bool c_cmd_line_argument<char*>::ParseValue(char* value)
+			bool c_cmd_line_argument<cstring>::ParseValue(cstring value)
 			{
 				if(!value) return false;
 
@@ -75,7 +75,7 @@ namespace Yelo
 				return true;
 			}
 
-			void c_cmd_line_argument<char*>::Ctor(const char* argument)
+			void c_cmd_line_argument<cstring>::Ctor(cstring argument)
 			{
 				c_cmd_line_parameter::Ctor(argument);
 
@@ -92,7 +92,7 @@ namespace Yelo
 			int32 GetValue() { return m_value; }
 
 			// int32 specialization
-			bool c_cmd_line_argument<int32>::ParseValue(char* value)
+			bool c_cmd_line_argument<int32>::ParseValue(cstring value)
 			{
 				if(!value) return false;
 
@@ -101,7 +101,7 @@ namespace Yelo
 				return true;
 			}
 
-			void c_cmd_line_argument<int32>::Ctor(const char* argument)
+			void c_cmd_line_argument<int32>::Ctor(cstring argument)
 			{
 				c_cmd_line_parameter::Ctor(argument);
 
@@ -113,7 +113,7 @@ namespace Yelo
 		{
 		public:
 			// switch's shouldn't have a value set so it is ignored
-			bool ParseValue(char* value) { return true; }
+			bool ParseValue(cstring) { return true; }
 		};
 
 #include "YeloSettings.CmdLineSettings.inl"

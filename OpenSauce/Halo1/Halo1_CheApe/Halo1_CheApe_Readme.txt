@@ -54,7 +54,7 @@ It is also useful for us to know your system specifications such as your graphic
 NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how to use OS, please consult our wiki and/or create a post on Halomods to get community assistance. We are also NOT taking feature requests in any way.
 
 == Change Log ==
-=== Version 3.0.4 (Unreleased) ===
+=== Version 3.1 (Unreleased) ===
   * FIX			Increased the maximum buffer size for model vertex and index data. Tool crashes (buffer overflow) if you actually hit this limit (Gearbox's fault, not ours!)
 
 === Version 3.0.2 ===

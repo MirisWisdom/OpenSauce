@@ -199,7 +199,7 @@ bool CompareMD5(cstring data, const DWORD data_length, cstring comparison_md5)
 	return stricmp(data_md5, comparison_md5) == 0;
 }
 
-bool GetCmdLineParameter(const char* parameter, char** value_out)
+bool GetCmdLineParameter(cstring parameter, cstring* value_out)
 {
 	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(GET_CMD_LINE_PARAMETER);
 

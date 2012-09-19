@@ -54,7 +54,7 @@ It is also useful for us to know your system specifications such as your graphic
 NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how to use OS, please consult our wiki and/or create a post on Halomods to get community assistance. We are also NOT taking feature requests in any way.
 
 == Change Log ==
-=== Version 3.0.4 (Unreleased) ===
+=== Version 3.1 (Unreleased) ===
   * CHANGE		Increased hardcoded 'k_game_state_allocation_maximum_size_for_yelo' by 0x970 bytes
   * CHANGE		Increased hardcoded 'k_runtime_data_max_values_count' to a total of 64 (up from 32)
   * ADD			Added new setting for forcing OS to use .yelo files first when searching for .map files (off by default)

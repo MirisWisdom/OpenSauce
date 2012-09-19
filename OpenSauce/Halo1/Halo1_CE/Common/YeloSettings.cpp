@@ -157,7 +157,7 @@ namespace Yelo
 		{
 			ReadCmdLineSettings();
 
-			char* profile_path = "";
+			cstring profile_path = "";
 
 			if(CMDLINE_GET_PARAM(path).ParameterSet())
 				profile_path = CMDLINE_GET_PARAM(path).GetValue();

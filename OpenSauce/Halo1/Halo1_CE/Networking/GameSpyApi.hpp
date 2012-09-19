@@ -343,6 +343,12 @@ namespace Yelo
 
 		s_gamespy_client* GsGetClient(int32 client_id);
 
+		// Returns true if build_number matches one of the numbers in g_game_build_numbers
+		bool GameBuildNumberIsValid(cstring build_number);
+
+		// Parses a major.minor build version string, eg "1.07", to the full build number
+		// Returns NULL if given an unidentified version
+		cstring GameVersionToBuildNumberString(cstring maj_minor_str);
 
 		// If [and_game_build] is true, it will also change the GameState::GameBuildStrings
 		bool ChangeAdvertisedGameVersion(cstring version_str, bool and_game_build);
