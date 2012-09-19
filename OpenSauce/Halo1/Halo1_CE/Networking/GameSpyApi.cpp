@@ -74,6 +74,26 @@ _return:
 			"01.00.09.0620",
 		};
 
+		bool GameBuildNumberIsValid(cstring build_number)
+		{
+			for(int i = 0; i < NUMBEROF(g_game_build_numbers); i++)
+				if(strcmp(g_game_build_numbers[i], build_number) == 0)
+					return true;
+
+			return false;
+		}
+
+		cstring GameVersionToBuildNumberString(cstring maj_minor_str)
+		{
+			using namespace Enums;
+
+				 if( strstr(maj_minor_str, "1.00") ) return g_game_build_numbers[_game_build_number_index_100];
+			else if( strstr(maj_minor_str, "1.07") ) return g_game_build_numbers[_game_build_number_index_107];
+			else if( strstr(maj_minor_str, "1.08") ) return g_game_build_numbers[_game_build_number_index_108];
+			else if( strstr(maj_minor_str, "1.09") ) return g_game_build_numbers[_game_build_number_index_109];
+			else return NULL;
+		}
+
 		static void ChangeAdvertisedGameVersionId(long_enum version_id, bool and_game_build)
 		{
 			using namespace Enums;
@@ -88,10 +108,10 @@ _return:
 				{
 					cstring build_str = NULL;
 
-						 if(version_id == _game_version_id_100)	build_str = g_game_build_numbers[Enums::_game_build_number_index_100];
-					else if(version_id == _game_version_id_107) build_str = g_game_build_numbers[Enums::_game_build_number_index_107];
-					else if(version_id == _game_version_id_108) build_str = g_game_build_numbers[Enums::_game_build_number_index_108];
-					else if(version_id == _game_version_id_109) build_str = g_game_build_numbers[Enums::_game_build_number_index_109];
+						 if(version_id == _game_version_id_100)	build_str = g_game_build_numbers[_game_build_number_index_100];
+					else if(version_id == _game_version_id_107) build_str = g_game_build_numbers[_game_build_number_index_107];
+					else if(version_id == _game_version_id_108) build_str = g_game_build_numbers[_game_build_number_index_108];
+					else if(version_id == _game_version_id_109) build_str = g_game_build_numbers[_game_build_number_index_109];
 
 					if(build_str != NULL)
 					{
