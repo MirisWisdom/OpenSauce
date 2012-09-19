@@ -33,6 +33,8 @@
 	#ifdef API_DEBUG
 		#include "Common/DebugFile.hpp"
 	#endif
+	// this is for debugging but it needs to be in the release build too
+	#include "Common/DebugDump.hpp"
 //////////////////////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////////////////////
@@ -59,6 +61,14 @@
 	#include "Networking/VersionCheck.hpp"
 //////////////////////////////////////////////////////////////////////////
 
+#if PLATFORM_IS_DEDI
+	#include "Networking/Server.hpp"
+	#include "Networking/HTTP/HTTPServer.hpp"
+	#include "Networking/HTTP/MapDownloadServer.hpp"
+#else
+	#include "Networking/HTTP/MapDownloadClient.hpp"
+#endif
+	#include "Networking/HTTP/HTTPClient.hpp"
 
 //#define API_YELO_NO_PROJECT_COMPONENTS
 //#define API_YELO_NO_DX_COMPONENTS
@@ -69,6 +79,10 @@ namespace Yelo
 {
 	namespace Main
 	{
+#define __EL_INCLUDE_ID			__EL_INCLUDE_OPEN_SAUCE
+#define __EL_INCLUDE_FILE_ID	__EL_COMMON_GAME_SYSTEMS
+#include "Memory/_EngineLayout.inl"
+
 		int32 GetProjectComponents(s_project_component*& out_components)
 		{
 			out_components = NULL;
@@ -105,6 +119,61 @@ namespace Yelo
 			return components_count;
 		}
 #endif
+
+		void PLATFORM_API InitializeOnStartup()
+		{
+			s_project_component* components;
+			const int32 component_count = GetProjectComponents(components);
+
+			for(Yelo::int32 x = 0; x <= component_count; x++)
+				components[x].Initialize();
+		}
+
+		void PLATFORM_API DisposeOnExit()
+		{
+			s_project_component* components;
+			const int32 component_count = GetProjectComponents(components);
+
+			for(int32 x = component_count; x >= 0; x--)
+				components[x].Dispose();
+		}
+
+		// hooks the call that starts the main game loop to init OS beforehand
+		static void PLATFORM_API InitializeOnStartupHook()
+		{
+			static uint32 TEMP_ADDRESS = GET_FUNC_PTR(QUERY_EXITFLAG_REG);
+
+			_asm push ebx
+
+			InitializeOnStartup();
+
+			_asm pop ebx
+
+			_asm call TEMP_ADDRESS;
+
+		}
+
+		// hooks the call that release resources to dispose of OS systems afterwards
+		static void PLATFORM_API DisposeOnExitHook()
+		{
+			static uint32 TEMP_ADDRESS = GET_FUNC_PTR(RELEASE_RESOURCES_ON_EXIT);
+
+			_asm call TEMP_ADDRESS;
+
+			DisposeOnExit();
+		}
+
+		void InsertHooks()
+		{
+//////////////////////////////////////////////////////////////////////////
+// Unprotect the exe's code so we can freely modify it
+			DWORD old;
+			VirtualProtect(CAST_PTR(void*, 0x400000),GET_DATA_PTR(PE_DATA_SIZE),PAGE_EXECUTE_READWRITE,&old);
+//////////////////////////////////////////////////////////////////////////
+
+			Memory::WriteRelativeCall(&InitializeOnStartupHook, GET_FUNC_VPTR(QUERY_EXITFLAG_REG_CALL), true);
+			Memory::WriteRelativeCall(&DisposeOnExitHook, GET_FUNC_VPTR(RELEASE_RESOURCES_ON_EXIT_CALL), true);
+		}
 	};
 };
 

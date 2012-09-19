@@ -84,6 +84,11 @@ namespace Yelo
 			//GAMEINFO
 			_server_event_type_game_info,
 
+			_server_event_type_stock,
+
+			//HTTP_SERVER
+			_server_event_type_http_server = _server_event_type_stock,
+
 			_server_event_type,
 		};
 	};
@@ -143,9 +148,8 @@ namespace Yelo
 
 			uint32 log_rotation_threshold;
 
-		private:
-			byte event_enable_logging[Enums::_server_event_type];
-			byte event_enable_echoing[Enums::_server_event_type];
+			byte event_enable_logging[Enums::_server_event_type_stock];
+			byte event_enable_echoing[Enums::_server_event_type_stock];
 			PAD32;
 #endif
 		private:
@@ -197,6 +201,10 @@ namespace Yelo
 			}motd;
 		}; BOOST_STATIC_ASSERT( sizeof(s_network_sv_globals) == PLATFORM_VALUE(0x334,0x33C) );
 
+#if PLATFORM_IS_DEDI
+		byte& EnableEventLogging(Enums::server_event_type event_type);
+		byte& EnableEventEchoing(Enums::server_event_type event_type);
+#endif
 
 		s_network_sv_file_globals* NetworkSvFileGlobals();
 

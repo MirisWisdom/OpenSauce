@@ -10,6 +10,7 @@
 #include <TagGroups/Halo1/CacheDefinitions.hpp>
 #include <TagGroups/Halo1/structure_bsp_definitions.hpp>
 #include "Memory/Data.hpp"
+#include "Common/FileIO.hpp"
 
 namespace Yelo
 {
@@ -106,6 +107,9 @@ namespace Yelo
 		void Dispose();
 
 		void MapListReIntialize();
+
+		uint32 CalculateCRC(void* cache_file);
+		uint32 CalculateCRC(const char* cache_file_path);
 
 		// Reads the cache file [relative_map_name] from the maps folder, and returns true if its header is valid
 		// * If the cache file is made by OS tools, and the yelo header is invalid yelo_is_ok will be false

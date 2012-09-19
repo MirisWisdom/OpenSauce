@@ -42,7 +42,7 @@ namespace Yelo
 			void			InitializeForNewMap();
 			void			Update(real delta_time);
 		protected:
-			void			UpdateState();
+			void			UpdateVersion();
 		};
 		/*!
 		 * \brief

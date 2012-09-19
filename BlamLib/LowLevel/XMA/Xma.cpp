@@ -6,6 +6,8 @@
 #include "Precompile.hpp"
 #include "XMA/Xma.hpp"
 
+#ifdef _DEBUG
+
 #include "XMA/XmaParse.hpp"
 #include "XMA/Xma.Lib.inl"
 
@@ -160,3 +162,5 @@ namespace LowLevel { namespace Xma {
 }; };
 
 __MCPP_CODE_END__
+
+#endif

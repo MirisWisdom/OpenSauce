@@ -20,28 +20,9 @@ namespace BlamLib.Render.COLLADA.Fx
 		#endregion
 
 		#region Attributes
-		[XmlIgnore]
+		[XmlAttribute("type")]
 		public Enums.ColladaFXSurfaceTypeEnum Type
 		{ get { return _type.Value; } set { _type.Value = value; } }
-
-		[XmlAttribute("type")]
-		public string TypeAsString
-		{
-			get
-			{
-				switch (Type)
-				{
-					default: return "UNTYPED";
-					case COLLADA.Enums.ColladaFXSurfaceTypeEnum._1D: return "1D";
-					case COLLADA.Enums.ColladaFXSurfaceTypeEnum._2D: return "2D";
-					case COLLADA.Enums.ColladaFXSurfaceTypeEnum._3D: return "3D";
-					case COLLADA.Enums.ColladaFXSurfaceTypeEnum.CUBE: return "CUBE";
-					case COLLADA.Enums.ColladaFXSurfaceTypeEnum.DEPTH: return "DEPTH";
-					case COLLADA.Enums.ColladaFXSurfaceTypeEnum.RECT: return "RECT";
-				}
-			}
-			set { }
-		}
 		#endregion
 
 		#region Children

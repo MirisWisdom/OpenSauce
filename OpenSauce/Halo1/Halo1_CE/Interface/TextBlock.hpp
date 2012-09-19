@@ -54,13 +54,16 @@ namespace Yelo
 			uint32 text_color;
 			uint32 back_color;
 			int32 padding;
-			bool fade; PAD24;
+			bool fade;
+			bool ignore_text_height;
+			PAD16;
 		}block;
 
 	public:
 		TextBlock(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pPP);
 
 		void SetFade(bool fade);
+		void SetIgnoreTextHeight(bool ignore_text_height);
 		void SetFont(cstring face, int32 size, uint32 weight, bool italic, uint32 quality);
 		void SetDimensions(int32 width, int32 height);
 		void SetTextAlign(uint32 format);
@@ -79,7 +82,7 @@ namespace Yelo
 		int32 GetHeight() const;
 
 		void Refresh();
-		void Render();
+		void Render(wcstring text = NULL);
 
 		void OnResetDevice(D3DPRESENT_PARAMETERS *pPP);
 		void OnLostDevice();

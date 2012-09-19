@@ -123,6 +123,19 @@
 
 		_hs_function_display_scripted_ui_widget,
 
+		_hs_function_sv_httpserver_log_enable,
+		_hs_function_sv_httpserver_set_connection_ban,
+		_hs_function_sv_httpserver_banlist,
+		_hs_function_sv_httpserver_banlist_file,
+		_hs_function_sv_httpserver_ban_ip,
+		_hs_function_sv_httpserver_unban_ip,
+
+		_hs_function_sv_mapdownload_start_server,
+		_hs_function_sv_mapdownload_stop_server,
+		_hs_function_sv_mapdownload_set_part_definitions_path,
+		_hs_function_sv_mapdownload_set_host,
+		_hs_function_sv_mapdownload_reload_map_part_definitions,
+
 	// debug functions
 	#ifdef API_DEBUG
 		_hs_function_dump_view_state,
@@ -198,7 +211,8 @@
 
 	#include "Game/ScriptLibrary.Definitions.Numbers.inl"
 	#include "Game/ScriptLibrary.Definitions.Postprocessing.inl"
-
+	#include "Game/ScriptLibrary.Definitions.HTTPServer.inl"
+	#include "Game/ScriptLibrary.Definitions.HTTPServer.MapDownload.inl"
 
 	HS_FUNCTION_WITH_PARAMS(display_scripted_ui_widget, bool, "", 
 			"<local-player-index> <data-name>", 2,
@@ -333,6 +347,19 @@
 		&GET_HS_FUNCTION(object_data_set_vector),
 
 		&GET_HS_FUNCTION(display_scripted_ui_widget),
+
+		&GET_HS_FUNCTION(sv_httpserver_log_enable),
+		&GET_HS_FUNCTION(sv_httpserver_set_connection_ban),
+		&GET_HS_FUNCTION(sv_httpserver_banlist),
+		&GET_HS_FUNCTION(sv_httpserver_banlist_file),
+		&GET_HS_FUNCTION(sv_httpserver_ban_ip),
+		&GET_HS_FUNCTION(sv_httpserver_unban_ip),
+
+		&GET_HS_FUNCTION(sv_mapdownload_start_server),
+		&GET_HS_FUNCTION(sv_mapdownload_stop_server),
+		&GET_HS_FUNCTION(sv_mapdownload_set_part_definitions_path),
+		&GET_HS_FUNCTION(sv_mapdownload_set_host),
+		&GET_HS_FUNCTION(sv_mapdownload_reload_map_part_definitions),
 
 	// debug functions
 	#ifdef API_DEBUG

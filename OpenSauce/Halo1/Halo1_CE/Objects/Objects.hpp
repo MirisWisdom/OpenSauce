@@ -154,8 +154,8 @@ namespace Yelo
 
 				s_object_data* _object; // Note: since 's_object_data' is the base of all object datums, we can do this
 
-				// Allow us to explicitly cast (without the cast) to a object type 
-				// in scenarios were we're programming for something specific (ie, unit types only)
+				// Allows us to implicitly treat 'address' as an specific object type ptr
+				// in situations where we're programming for something more specific (eg, unit types only)
 				union {
 					s_scenery_datum* _scenery;
 					s_sound_scenery_datum* _sound_scenery;

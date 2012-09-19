@@ -10,7 +10,7 @@
 	<?ifdef Halo1_CE?>
 	<?define ProductName='OpenSauce for Halo CE'?>
 	<?define GameTarget='Halo CE'?>
-	<?define ConfigVersion='3.0.3'?>
+	<?define ConfigVersion='3.1.0'?>
 	<?endif?>
 
 	<!-- Define whether to pack debug or release binaries -->
@@ -23,7 +23,7 @@
 	<?define UpgradeCodeGUID='6E7F244E-C79F-4925-A073-66362D92A99F'?>
 	
 	<Product Name='$(var.ProductName)'
-		Id='D0DD6BC5-B569-4081-8EF3-D0A689B1A3E7'
+		Id='350A9783-FEF6-4428-9DF6-048E8AF4772B'
 		UpgradeCode='$(var.UpgradeCodeGUID)'
 		Language='1033'
 		Codepage='1252'
@@ -101,6 +101,12 @@
 							<Component Id='OpenSauce_LowLevel_COMP' Guid='F93E1D0E-103F-42C1-A5AF-42FD8021D302'>
 								<File Id='OpenSauce_LowLevel_FILE' Name='LowLevel.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\OpenSauceIDE\LowLevel.dll' KeyPath='yes' />
 							</Component>
+							<Component Id='OpenSauce_SevenZipSharp_COMP' Guid='2F8EA575-2CCA-4e68-BF93-F7558D9755DD'>
+								<File Id='OpenSauce_SevenZipSharp_FILE' Name='SevenZipSharp.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\OpenSauceIDE\SevenZipSharp.dll' KeyPath='yes' />
+							</Component>
+							<Component Id='OpenSauce_SevenZip_COMP' Guid='88422AF0-1AA1-401c-80A5-1DAD0D42BCFE'>
+								<File Id='OpenSauce_SevenZip_FILE' Name='7z.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\OpenSauceIDE\7z.dll' KeyPath='yes' />
+							</Component>
 							
 							<?ifdef DEBUG?>
 							<Component Id='OpenSauce_OpenSauceIDE_PDB_COMP' Guid='E19A12E4-7AF4-4cb7-A7A1-4E237D924B37'>
@@ -121,6 +127,11 @@
 							<Component Id='OpenSauce_OpenSauceIDERemove_COMP' Guid='ED6BD4C1-05B5-4925-9898-B80B552B781F'>
 								<RemoveFolder Id='OpenSauce_OpenSauceIDE_REMDIR' On='uninstall' />
 							</Component>
+							
+							<!-- Removes the settings.bin file on uninstall-->
+							<Component Id='OpenSauce_SettingsRemove_COMP' Guid='58402421-C106-429f-BB32-4801DDB432DA'>
+								<RemoveFile Name='settings.bin' Id='OpenSauce_Settings_REMFILE' On='uninstall' />
+							</Component>
 						</Directory>
 
 						<!-- Removes the OpenSauce folder on uninstall-->
@@ -140,7 +151,39 @@
 					</Component>
 				</Directory>
 			</Directory>
-
+			
+			<!-- Remove files and folders from the users AppData\Roaming directory-->
+			<Directory Id='AppDataFolder' Name='AddDataFolder'>
+				<Directory Id='OpenSauce_RoamingKornnerStudios_DIR' Name='Kornner Studios'>
+					<Directory Id='OpenSauce_RoamingOpenSauceIDE_DIR' Name='OpenSauceIDE'>
+						<Component Id='OpenSauce_RoamingOpenSauceIDE_COMP' Guid='402DAFCB-5635-4c1d-BAE5-F9634920F0D3'>
+							<RegistryValue Id='OpenSauce_RoamingOpenSauceIDE_REG'
+								Root='HKCU'
+								Key='Software\KornnerStudios\OpenSauce'
+								Name='KeyPathsRoaming'
+								Type='multiString'
+								Action='append'
+								Value='RoamingOpenSauceIDE'
+								KeyPath='yes'/>
+							<RemoveFile Id='OpenSauce_RoamingOpenSauceIDE_REM' Name='*.*' On='uninstall' />
+							<RemoveFolder Id='OpenSauce_RoamingOpenSauceIDE_REMDIR' On='uninstall' />
+						</Component>
+					</Directory>
+					
+					<Component Id='OpenSauce_RoamingKornnerStudios_COMP' Guid='29508CA6-5F0F-49c3-BCFF-1416EEE7FCEA'>
+						<RegistryValue Id='OpenSauce_RoamingKornnerStudios_REG'
+							Root='HKCU'
+							Key='Software\KornnerStudios\OpenSauce'
+							Name='KeyPathsRoaming'
+							Type='multiString'
+							Action='append'
+							Value='RoamingKornnerStudios'
+							KeyPath='yes'/>
+						<RemoveFolder Id='OpenSauce_RoamingKornnerStudios_REMDIR' On='uninstall' />
+					</Component>
+				</Directory>
+			</Directory>
+			
 			<Directory Id='ProgramMenuFolder'>
 				<Directory Id='OpenSauce_KornnerStudiosMenu_DIR' Name='Kornner Studios'>
 					<Directory Id='OpenSauce_OpenSauceMenu_DIR' Name='OpenSauce'>
@@ -248,6 +291,8 @@
 			<ComponentRef Id='OpenSauce_BlamLib_Forms_COMP' />
 			<ComponentRef Id='OpenSauce_LowLevel_COMP' />
 			<ComponentRef Id='OpenSauce_License_COMP' />
+			<ComponentRef Id='OpenSauce_SevenZipSharp_COMP' />
+			<ComponentRef Id='OpenSauce_SevenZip_COMP' />
 
 			<?ifdef DEBUG?>
 				<ComponentRef Id='OpenSauce_OpenSauceIDE_PDB_COMP' />
@@ -255,11 +300,15 @@
 				<ComponentRef Id='OpenSauce_BlamLib_Forms_PDB_COMP' />
 				<ComponentRef Id='OpenSauce_LowLevel_PDB_COMP' />
 			<?endif?>
-			
+
+			<ComponentRef Id='OpenSauce_SettingsRemove_COMP' />
 			<ComponentRef Id='OpenSauce_OpenSauceIDERemove_COMP' />
 			<ComponentRef Id='OpenSauce_OpenSauceRemove_COMP' />
 			<ComponentRef Id='OpenSauce_KornnerStudiosRemove_COMP' />
 			<ComponentRef Id='OpenSauce_KornnerStudiosMenuRemove_COMP' />
+			
+			<ComponentRef Id='OpenSauce_RoamingOpenSauceIDE_COMP' />
+			<ComponentRef Id='OpenSauce_RoamingKornnerStudios_COMP' />
 			
 			<ComponentRef Id='OpenSauce_OpenSauceIDEMenuShortcut_COMP' />
 			<ComponentRef Id='OpenSauce_OpenSauceIDEDesktopShortcut_COMP' />

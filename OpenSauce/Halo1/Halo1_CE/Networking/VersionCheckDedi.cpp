@@ -28,7 +28,7 @@ namespace Yelo
 			if(!m_states.checked_today)
 			{
 				Engine::Console::TerminalPrint("Checking for updates...");
-				CheckForUpdates(true);
+				CheckForUpdates();
 			}
 		}
 		/*!
@@ -57,9 +57,9 @@ namespace Yelo
 			if(m_states.is_request_in_progress) return;
 
 			if(!m_states.checked_today)
-				CheckForUpdates(false);
+				CheckForUpdates();
 			else
-				DisplayVersions(m_states.is_new_version);
+				DisplayVersions(m_states.is_new_version_available);
 		}
 		/*!
 		* \brief
@@ -67,12 +67,12 @@ namespace Yelo
 		*
 		* Prints the available version if a new version is available.
 		*/
-		void		c_version_check_manager_dedi::UpdateState()
+		void		c_version_check_manager_dedi::UpdateVersion()
 		{
-			c_version_check_manager_base::UpdateState();
+			c_version_check_manager_base::UpdateVersion();
 
 			// if a new version is available, print it to the console
-			DisplayVersions(m_states.is_new_version);
+			DisplayVersions(m_states.is_new_version_available);
 		}
 		/*!
 		* \brief

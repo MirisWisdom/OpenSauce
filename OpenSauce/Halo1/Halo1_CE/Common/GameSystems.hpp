@@ -29,7 +29,7 @@ namespace Yelo
 			proc_dispose_from_old_map	DisposeFromOldMap;
 
 			// Called from Yelo::GameState on each game tick
-			void						(*Update)(real delta_time);
+			proc_update					Update;
 		};
 
 		//	[out_components] - Returns a list of components, or NULL if no components exist
@@ -55,7 +55,8 @@ namespace Yelo
 		//	[out_components] - Returns a list of components, or NULL if no components exist
 		//	returns: Number of components in [out_components] minus 1, or just or 0 if no components exist
 		int32 GetDXComponents(s_dx_component*& out_components);
-
 #endif
+
+		void InsertHooks();
 	};
 };

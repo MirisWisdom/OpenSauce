@@ -25,6 +25,10 @@
 			<File Id='Halo1_CE_OpenSauceDedi_FILE' Name='OpenSauceDedi.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)Dedi\Win32\Halo1_CE\OpenSauceDedi.dll' KeyPath='yes'/>
 		</Component>
 
+		<Component Id='Halo1_CE_dbghelp_COMP' Guid='4E8356ED-1936-4795-8287-84E6EC370915'>
+			<File Id='Halo1_CE_dbghelp_FILE' Name='dbghelp.dll' DiskId='1' Source='$(var.ResourceFolder)Halo1_CE\HCE_InstallDir\dbghelp.dll' KeyPath='yes'/>
+		</Component>
+
 		<Component Id='Halo1_CE_Readme_COMP' Guid='17B81049-EC68-41c0-803C-612BBB4869FE'>
 			<File Id='Halo1_CE_Readme_FILE' Name='Halo1_CE_Readme.txt' DiskId='1' Source='$(var.SourceFolder)OpenSauce\Halo1\Halo1_CE\Halo1_CE_Readme.txt' KeyPath='yes' />
 		</Component>

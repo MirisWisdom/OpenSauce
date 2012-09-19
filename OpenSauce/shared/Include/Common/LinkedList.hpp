@@ -30,14 +30,14 @@ namespace Yelo
 		void SetPrevious(T* previous) { m_prev = previous; }
 	};
 
-	template<typename T>
+	template<typename TNode>
 	class LinkedListIterator
 	{
-		T** m_list_head;
-		T* m_current_node;
+		TNode*& m_list_head;
+		TNode* m_current_node;
 
 	public:
-		T* Current() { return m_current_node; }
+		TNode* Current() { return m_current_node; }
 
 		bool MoveNext()
 		{
@@ -46,7 +46,7 @@ namespace Yelo
 			else if(m_current_node && m_current_node->GetNext())
 				m_current_node = m_current_node->GetNext();
 			else
-				m_current_node = *m_list_head;
+				m_current_node = m_list_head;
 			return m_current_node != NULL;
 		}
 
@@ -66,51 +66,49 @@ namespace Yelo
 
 		void Reset() { m_current_node = NULL; }
 
-		LinkedListIterator(T** list_head) : m_list_head(list_head), m_current_node(NULL)
+		LinkedListIterator(TNode*& list_head) : m_list_head(list_head), m_current_node(NULL)
 		{ }
 	};
 
 	// TNode's are LinkedListNode's
 
 	template<typename TNode>
-	size_t GetListLength(TNode** list_head)
+	size_t GetListLength(TNode*& list_head)
 	{
 		size_t count = 0;
-		for(const TNode* cur = *list_head; cur != NULL; cur = cur->GetNext(), count++)
+		for(const TNode* cur = CAST_PTR(TNode*, list_head); cur != NULL; cur = CAST_PTR(TNode*, cur->GetNext()), count++)
 			;
 
 		return count;
 	}
 
 	template<typename TNode>
-	void DeleteLinkedList(TNode** list_head)
+	void DeleteLinkedList(TNode*& list_head)
 	{
-		ASSERT((list_head == NULL) || (*list_head == NULL), "attepting to delete a linked list with a NULL list head");
+		ASSERT(list_head == NULL, "attepting to delete a linked list with a NULL list head");
 
-		for(TNode* cur = (*list_head)->GetNext(); cur != NULL; )
+		for(TNode* cur = CAST_PTR(TNode*, list_head->GetNext()); cur != NULL; )
 		{
-			TNode* next = cur->GetNext();
+			TNode* next = CAST_PTR(TNode*, cur->GetNext());
 			delete cur;
 			cur = next;
 		}
 
-		delete *list_head;
-		*list_head = NULL;
+		delete list_head;
+		list_head = NULL;
 	}
 
 	template<typename TNode>
-	void AppendLinkedListNode(TNode** list_head, TNode* object)
+	void AppendLinkedListNode(TNode*& list_head, TNode* object)
 	{
-		ASSERT(list_head == NULL, "attepting to append a linked list with a NULL list head");
-
-		if(*list_head == NULL)
+		if(list_head == NULL)
 		{
-			*list_head = object;
+			list_head = object;
 			return;
 		}
 
 		TNode* cur, * next;
-		for(cur = *list_head, next = cur->GetNext(); next != NULL; cur = next, next = cur->GetNext())
+		for(cur = list_head, next = CAST_PTR(TNode*, cur->GetNext()); next != NULL; cur = next, next = CAST_PTR(TNode*, cur->GetNext()))
 			;
 
 		cur->SetNext(object);
@@ -118,18 +116,18 @@ namespace Yelo
 	}
 
 	template<typename TNode>
-	void RemoveLinkedListNode(TNode** list_head, const TNode* object)
+	void RemoveLinkedListNode(TNode*& list_head, const TNode* object)
 	{
-		ASSERT((list_head == NULL) || (*list_head == NULL), "attepting to remove from a linked list with a NULL list head");
+		ASSERT(list_head == NULL, "attepting to remove from a linked list with a NULL list head");
 
-		TNode* next = object->GetNext();
-		TNode* prev = object->GetPrevious();
+		TNode* next = CAST_PTR(TNode*, object->GetNext());
+		TNode* prev = CAST_PTR(TNode*, object->GetPrevious());
 
-		if(*list_head == object)
+		if(list_head == object)
 		{
 			if(next != NULL)
 				next->SetPrevious(NULL);
-			*list_head = next;
+			list_head = next;
 			return;
 		}
 
@@ -151,12 +149,12 @@ namespace Yelo
 	}
 
 	template<typename TNode>
-	TNode* GetNodeByIndex(TNode** list_head, int32 index)
+	TNode* GetNodeByIndex(TNode*& list_head, int32 index)
 	{
 		int32 i = 0;
 
 		TNode* cur, * next;
-		for(cur = *list_head; cur != NULL && (next = cur->GetNext()) != NULL && i < index; cur = next, i++)
+		for(cur = list_head; cur != NULL && (next = CAST_PTR(TNode*, cur->GetNext())) != NULL && i < index; cur = next, i++)
 			;
 
 		if(i != index)

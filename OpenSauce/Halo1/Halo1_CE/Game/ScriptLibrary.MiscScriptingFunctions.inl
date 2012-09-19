@@ -355,6 +355,20 @@ static void InitializeMiscFunctions()
 
 	InitializeScriptFunctionWithParams(Enums::_hs_function_display_scripted_ui_widget, 
 		scripting_display_scripted_ui_widget_evaluate);
+
+	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(sv_httpserver_log_enable) );
+	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(sv_httpserver_set_connection_ban) );
+	NullifyScriptFunction( GET_HS_FUNCTION(sv_httpserver_banlist) );
+	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(sv_httpserver_banlist_file) );
+	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(sv_httpserver_ban_ip) );
+	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(sv_httpserver_unban_ip) );
+
+	NullifyScriptFunction( GET_HS_FUNCTION(sv_mapdownload_start_server) );
+	NullifyScriptFunction( GET_HS_FUNCTION(sv_mapdownload_stop_server) );
+	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(sv_mapdownload_set_part_definitions_path) );
+	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(sv_mapdownload_set_host) );
+	NullifyScriptFunction( GET_HS_FUNCTION(sv_mapdownload_reload_map_part_definitions) );
+
 #else
 	NullifyScriptFunction( GET_HS_FUNCTION(pp_load) );
 	NullifyScriptFunction( GET_HS_FUNCTION(pp_unload) );
@@ -376,5 +390,29 @@ static void InitializeMiscFunctions()
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_bloom_set_maximum_color) );
 
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(display_scripted_ui_widget) );
+
+	InitializeScriptFunctionWithParams(Enums::_hs_function_sv_httpserver_log_enable,
+		Networking::HTTP::Server::HTTPServerLogEnable);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_sv_httpserver_set_connection_ban,
+		Networking::HTTP::Server::BanManager::HTTPServerSetConnectionBan);
+	InitializeScriptFunction(Enums::_hs_function_sv_httpserver_banlist,
+		Networking::HTTP::Server::BanManager::HTTPServerBanlist);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_sv_httpserver_banlist_file,
+		Networking::HTTP::Server::BanManager::HTTPServerBanlistFile);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_sv_httpserver_ban_ip,
+		Networking::HTTP::Server::BanManager::HTTPServerBanIP);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_sv_httpserver_unban_ip,
+		Networking::HTTP::Server::BanManager::HTTPServerUnbanIP);
+
+	InitializeScriptFunction(Enums::_hs_function_sv_mapdownload_start_server,
+		Networking::HTTP::Server::MapDownload::MapDownloadStartServer);
+	InitializeScriptFunction(Enums::_hs_function_sv_mapdownload_stop_server,
+		Networking::HTTP::Server::MapDownload::MapDownloadStopServer);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_sv_mapdownload_set_part_definitions_path,
+		Networking::HTTP::Server::MapDownload::MapDownloadSetPartDefinitionsPath);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_sv_mapdownload_set_host,
+		Networking::HTTP::Server::MapDownload::MapDownloadSetHost);
+	InitializeScriptFunction(Enums::_hs_function_sv_mapdownload_reload_map_part_definitions,
+		Networking::HTTP::Server::MapDownload::MapDownloadReloadMapPartDefinitions);
 #endif
 }

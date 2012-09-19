@@ -197,6 +197,25 @@
 
 		ENGINE_PTR(bool, event_type_logging,		PTR_NULL, 0x5C53CC);
 		ENGINE_PTR(bool, event_type_echoing,		PTR_NULL, 0x5C53DC);
+
+		ENGINE_PTR(wcstring*, log_entry_titles,		PTR_NULL, 0x5AA7A0);
+		ENGINE_PTR(wcstring*, log_entry_titles_ref,PTR_NULL, 0x4D186D);
+
+		static byte** K_EVENT_ENABLE_LOGGING_0_REFS[] =
+		{ CAST_PTR(byte**, 0x4D0808), CAST_PTR(byte**, 0x4D180A) };
+
+		ENGINE_PTR(byte**, event_enable_logging_4_ref, PTR_NULL, 0x4D0812);
+		ENGINE_PTR(byte**, event_enable_logging_8_ref, PTR_NULL, 0x4D0823);
+		ENGINE_PTR(byte**, event_enable_logging_12_ref, PTR_NULL, 0x4D083E);
+		
+		static byte** K_EVENT_ENABLE_ECHOING_0_REFS[] =
+		{ CAST_PTR(byte**, 0x4D07F9), CAST_PTR(byte**, 0x4D084A), CAST_PTR(byte**, 0x4D1908) };
+
+		ENGINE_PTR(byte**, event_enable_echoing_2_ref, PTR_NULL, 0x4D0856);
+		ENGINE_PTR(byte**, event_enable_echoing_3_ref, PTR_NULL, 0x4D0850);
+		ENGINE_PTR(byte**, event_enable_echoing_4_ref, PTR_NULL, 0x4D0818);
+		ENGINE_PTR(byte**, event_enable_echoing_8_ref, PTR_NULL, 0x4D0829);
+		ENGINE_PTR(byte**, event_enable_echoing_12_ref, PTR_NULL, 0x4D0844);
 	#endif
 	};
 

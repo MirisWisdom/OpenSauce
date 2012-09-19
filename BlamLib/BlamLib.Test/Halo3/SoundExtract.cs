@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+#if _DEBUG
 namespace BlamLib.Test
 {
 	partial class Halo3
@@ -255,3 +256,4 @@ namespace BlamLib.Test
 		}
 	};
 }
+#endif

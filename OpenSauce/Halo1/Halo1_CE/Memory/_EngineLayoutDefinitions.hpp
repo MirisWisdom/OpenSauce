@@ -26,6 +26,8 @@
 #define __EL_INCLUDE_OPEN_SAUCE	0x00
 	#define __EL_COMMON_YELO_SETTINGS		(__EL_INCLUDE_OPEN_SAUCE + 0)
 	#define __EL_MEMORY_FUNCTION_INTERFACE	(__EL_INCLUDE_OPEN_SAUCE + 1)
+	#define __EL_COMMON_GAME_SYSTEMS		(__EL_INCLUDE_OPEN_SAUCE + 2)
+	#define __EL_COMMON_DEBUG_DUMP			(__EL_INCLUDE_OPEN_SAUCE + 3)
 
 
 //////////////////////////////////////////////////////////////////////////

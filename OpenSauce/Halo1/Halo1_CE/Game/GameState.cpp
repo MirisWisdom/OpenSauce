@@ -11,7 +11,9 @@
 #include "Memory/MemoryInterface.hpp"
 #include "Common/GameSystems.hpp"
 #include "Common/YeloSettings.hpp"
+#include "Common/CmdLineSettings.hpp"
 #include "Game/ScriptLibrary.hpp"
+#include "Game/EngineFunctions.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 
 #include "TagGroups/TagGroups.hpp"
@@ -28,6 +30,10 @@ namespace Yelo
 #define __EL_INCLUDE_ID			__EL_INCLUDE_GAME
 #define __EL_INCLUDE_FILE_ID	__EL_GAME_GAME_STATE
 #include "Memory/_EngineLayout.inl"
+
+#if !PLATFORM_IS_DEDI
+	#include "Game/GameState.ServerList.inl"
+#endif
 
 		s_main_globals* MainGlobals()								PTR_IMP_GET2(main_globals);
 
@@ -111,13 +117,9 @@ namespace Yelo
 				jmp		GameState::InitializeForNewMap
 			}
 		}
+
 		void Initialize()
 		{
-//////////////////////////////////////////////////////////////////////////
-// Unprotect the exe's code so we can freely modify it
-			DWORD old;
-			VirtualProtect(CAST_PTR(void*, 0x400000),GET_DATA_PTR(PE_DATA_SIZE),PAGE_EXECUTE_READWRITE,&old);
-//////////////////////////////////////////////////////////////////////////
 
 			MemoryUpgradesInitialize();
 
@@ -142,6 +144,10 @@ namespace Yelo
 			Memory::WriteRelativeJmp(&InitializeForNewGameStateHook, GET_FUNC_VPTR(GAME_INITIALIZE_HOOK), true);
 			Memory::WriteRelativeJmp(&InitializeForNewMapHook, GET_FUNC_VPTR(GAME_INITIALIZE_FOR_NEW_MAP_HOOK), true);
 			Memory::CreateHookRelativeCall(&DisposeFromOldMap, GET_FUNC_VPTR(GAME_DISPOSE_FROM_OLD_MAP_HOOK), Enums::_x86_opcode_retn);
+
+#if !PLATFORM_IS_DEDI
+			ServerListInitialize();
+#endif
 		}
 
 		void Dispose()

@@ -38,6 +38,24 @@
 	FUNC_PTR(UPDATE_UI_WIDGETS,											0x49AFB0, FUNC_PTR_NULL);
 	FUNC_PTR(CALL_HOOK_UPDATE_UI_WIDGETS,								0x4CB0A7, FUNC_PTR_NULL);
 
+
+//////////////////////////////////////////////////////////////////////////
+// Common/GameSystems.cpp
+#elif __EL_INCLUDE_FILE_ID == __EL_COMMON_GAME_SYSTEMS
+	FUNC_PTR(QUERY_EXITFLAG_REG_CALL,									0x545071, 0x4FF3A6);
+	FUNC_PTR(QUERY_EXITFLAG_REG,										0x582530, 0x52ACB0);
+	FUNC_PTR(RELEASE_RESOURCES_ON_EXIT_CALL,							0x545290, 0x4FF587);
+	FUNC_PTR(RELEASE_RESOURCES_ON_EXIT,									0x544790, 0x4FF0D0);
+
+	DATA_PTR(PE_DATA_SIZE,												0x215000, 0x171000);
+
+
+//////////////////////////////////////////////////////////////////////////
+// Common/DebugDump.cpp
+#elif __EL_INCLUDE_FILE_ID == __EL_COMMON_DEBUG_DUMP
+	FUNC_PTR(PRE_DR_WATSON_LAUNCH_HOOK,									0x54717C, 0x50068C);
+	FUNC_PTR(PRE_DR_WATSON_LAUNCH_RETN,									0x547183, 0x500693);
+
 #else
 	#error Undefined engine layout include for: __EL_INCLUDE_OPEN_SAUCE
 #endif

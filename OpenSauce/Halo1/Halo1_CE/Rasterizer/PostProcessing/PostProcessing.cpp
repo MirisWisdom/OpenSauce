@@ -8,6 +8,9 @@
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 
 #if !PLATFORM_IS_DEDI
+#include "Common/YeloSettings.hpp"
+#include "Common/CmdLineSettings.hpp"
+
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingComponent.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingCacheComponent.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUpdatable.hpp"
@@ -135,6 +138,9 @@ namespace Yelo
 		 */
 		void		Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters)
 		{
+			if(CMDLINE_GET_PARAM(no_os_gfx).ParameterSet())
+				return;
+
 			// initialize the global resources in the main post processing component
 			// if this fails, return
 			c_post_processing_main::Instance().InitializeResources_Base(pDevice, pParameters);
@@ -189,6 +195,9 @@ namespace Yelo
 		 */
 		void		OnResetDevice(D3DPRESENT_PARAMETERS* pParameters)
 		{
+			if(CMDLINE_GET_PARAM(no_os_gfx).ParameterSet())
+				return;
+
 			// run device reset logic for the main system resources
 			c_post_processing_main::Instance().OnResetDevice_Base(pParameters);
 
@@ -301,6 +310,9 @@ namespace Yelo
 		 */
 		void		InitializeForNewMap()
 		{
+			if(CMDLINE_GET_PARAM(no_os_gfx).ParameterSet())
+				return;
+
 			// initialize cache dependencies in the main post processing component
 			c_post_processing_main::Instance().Initialize_Cache();
 
@@ -405,6 +417,9 @@ namespace Yelo
 		 */
 		void		LoadSystem()
 		{
+			if(CMDLINE_GET_PARAM(no_os_gfx).ParameterSet())
+				return;
+
 			// the system has been loaded already
 			if(!c_post_processing_main::Instance().IsUnloaded())
 				return;

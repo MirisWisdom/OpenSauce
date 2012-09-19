@@ -5,6 +5,8 @@
 */
 #pragma once
 
+#ifdef _DEBUG
+
 __MCPP_CODE_START__
 
 namespace LowLevel { namespace Xma {
@@ -65,3 +67,5 @@ namespace LowLevel { namespace Xma {
 }; };
 
 __MCPP_CODE_END__
+
+#endif

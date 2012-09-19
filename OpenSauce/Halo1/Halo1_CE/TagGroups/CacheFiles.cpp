@@ -9,9 +9,15 @@
 
 #include <Blam/Halo1/BlamMemoryUpgrades.hpp>
 #include <Blam/Halo1/BlamDataFileUpgrades.hpp>
+#include <TagGroups/Halo1/scenario_definitions.hpp>
 #include "Memory/MemoryInterface.hpp"
 #include "Common/YeloSettings.hpp"
 #include "Game/EngineFunctions.hpp"
+#include "Game/GameState.hpp"
+
+#if !PLATFORM_IS_DEDI
+#include "Networking/HTTP/MapDownloadClient.hpp"
+#endif
 
 namespace Yelo
 {
@@ -249,6 +255,7 @@ namespace Yelo
 
 #include "TagGroups/CacheFiles.YeloFiles.inl"
 #include "TagGroups/CacheFiles.MapList.inl"
+#include "TagGroups/CacheFiles.CRC.inl"
 
 		void Initialize()
 		{
@@ -316,6 +323,13 @@ namespace Yelo
 					*K_CACHE_FILE_READ_HEADER_EXCEPTION_MAP_NAME = map_path;
 					Engine::GatherException(map_path, 0x89, 0x7E, 1);
 				}
+			}
+			else if(!result && !exception_on_fail)
+			{
+#if !PLATFORM_IS_DEDI
+				// insert map download here as this is probably only reached on multiplayer
+				Networking::HTTP::Client::MapDownload::AddMapForDownload(relative_map_name);
+#endif
 			}
 
 			return result;

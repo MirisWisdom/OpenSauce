@@ -242,7 +242,7 @@ namespace Fov
 	FUNC_PTR(GAME_INITIALIZE_FOR_NEW_MAP_HOOK,							0x45BEEB, 0x4588B5);
 	FUNC_PTR(GAME_DISPOSE_FROM_OLD_MAP_HOOK,							0x45C060, 0x458A18);
 
-	DATA_PTR(PE_DATA_SIZE, 0x215000, 0x171000);
+	FUNC_PTR(GAME_SERVER_VERSION_TEST_CALL,								0x4BA7CB, FUNC_PTR_NULL);
 
 
 //////////////////////////////////////////////////////////////////////////

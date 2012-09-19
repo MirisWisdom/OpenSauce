@@ -87,5 +87,7 @@ DEFINE_HOOK_BLOCK_PROCESS_PRE(weather_particle_systems_render, GET_FUNC_VPTR(WEA
 DEFINE_HOOK_BLOCK_PROCESS(render_hud, GET_FUNC_VPTR(INTERFACE_DRAW_SCREEN), render_hud, render_hud);
 DEFINE_HOOK_BLOCK_PROCESS(render_ui, GET_FUNC_VPTR(RENDER_UI_WIDGETS), render_ui, render_ui);
 DEFINE_HOOK_BLOCK_PROCESS(render_cursor, GET_FUNC_VPTR(RENDER_UI_CURSOR), render_cursor, render_cursor);
+DEFINE_HOOK_BLOCK_PROCESS_NONE(update_ui_widgets, GET_FUNC_VPTR(UPDATE_UI_WIDGETS));
 
 bool& FunctionProcessRenderHudIsDisabled() { return GET_HOOK_BLOCK_PROCESS(render_hud).g_is_disabled; }
+bool& FunctionProcessUpdateUIWidgetsDisabled() { return GET_HOOK_BLOCK_PROCESS(update_ui_widgets).g_is_disabled; }

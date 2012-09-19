@@ -17,6 +17,7 @@
 #include "Common/GameSystems.hpp"
 
 #if PLATFORM_IS_USER && defined(DX_WRAPPER)
+	#include "Game/EngineFunctions.hpp"
 	#include "Rasterizer/DX9/DxWrapper.hpp"
 #endif
 
@@ -175,8 +176,9 @@ namespace Yelo
 
 			DWORD process_count = bytes_written / sizeof(DWORD);
 
+			bool xfire_found = false;
 			// loop through all of the processes
-			for (DWORD i = 0; i < process_count; i++ )
+			for (DWORD i = 0; !xfire_found && (i < process_count); i++ )
 			{
 				HANDLE process = NULL;
 				if((processes[i] != 0) && (process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processes[i])))
@@ -196,15 +198,17 @@ namespace Yelo
 
 						// determine whether the process is an instance of xfire
 						if(!strcmp(process_name, "xfire.exe"))
-							return true;
+							xfire_found = true;
 					}
 				}
 			}
-			return false;
+
+			delete [] processes;
+
+			return xfire_found;
 		}
 	};
 };
-
 
 bool WINAPI DllMain(HMODULE hModule, DWORD dwReason, PVOID pvReserved)
 {
@@ -215,13 +219,15 @@ bool WINAPI DllMain(HMODULE hModule, DWORD dwReason, PVOID pvReserved)
 		if(Yelo::Main::GetVersionResultCode() == Yelo::Enums::_version_result_code_invalid )
 			return false;
 #if PLATFORM_IS_USER && defined(DX_WRAPPER)
-		if(Yelo::Main::DetectXfire())
+		if(Yelo::Main::DetectXfire() && !Yelo::Engine::GetCmdLineParameter("-allow_xfire", NULL))
 		{
-			char error[128];
-			sprintf_s(error,
-				"Xfire is not compatible with Open Sauce."
-				"\n\n"
-				"Please close Xfire and restart Halo CE.");
+			char error[] = 
+				"A running Xfire process has been found.\n"
+				"Xfire can cause a crash/exception when used with OpenSauce.\n"
+				"Please close Xfire and restart Halo CE.\n"
+				"\n"
+				"Start Halo with the \"-allow_xfire\" command line parameter if you wish to disable this check."
+				"However, we do not support the use of Xfire with OpenSauce.";
 			MessageBox(NULL, error, "Xfire Incompatibility", MB_OK | MB_ICONERROR);
 			return false;
 		}
@@ -247,24 +253,13 @@ bool WINAPI DllMain(HMODULE hModule, DWORD dwReason, PVOID pvReserved)
 
 		if(Yelo::Main::IsYeloEnabled())
 		{
-			Yelo::Main::s_project_component* components;
-			const Yelo::int32 component_count = Yelo::Main::GetProjectComponents(components);
-
-			for(Yelo::int32 x = 0; x <= component_count; x++)
-				components[x].Initialize();
+			Yelo::Main::InsertHooks();
 		}
 		done = true;
 	}
 	else if(dwReason == DLL_PROCESS_DETACH && done)
 	{
-		if(Yelo::Main::IsYeloEnabled())
-		{
-			Yelo::Main::s_project_component* components;
-			const Yelo::int32 component_count = Yelo::Main::GetProjectComponents(components);
-
-			for(Yelo::int32 x = component_count; x >= 0; x--)
- 				components[x].Dispose();
-		}
+		// component disposal occurs in GameSystems.cpp
 
 #ifdef API_DEBUG_MEMORY
 		DumpAllocatedMemory();

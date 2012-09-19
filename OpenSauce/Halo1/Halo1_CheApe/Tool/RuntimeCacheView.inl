@@ -533,7 +533,8 @@ BOOL HasCacheChanged()
 	if(status != k_status_ok)
 		return status;
 
-	return (g_cache_view_globals.m_cache_file_globals.crc != comparison_globals.crc) ? k_status_index_changed : k_status_index_matches;
+	// TODO: model_data_size used to be crc, but it isn't a crc, should change this to get the crc in the cache header
+	return (g_cache_view_globals.m_cache_file_globals.model_data_size != comparison_globals.model_data_size) ? k_status_index_changed : k_status_index_matches;
 }
 /*!
  * \brief

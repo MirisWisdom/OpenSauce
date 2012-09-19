@@ -67,6 +67,27 @@
 
 #if defined(YELO_USE_GAMESPY_OPEN)
 
+	/*
+		GameSpy SDK bug fix:
+		There is a bug in GHTTP that causes HTTP redirects to fail if both
+		the 'Content-Location' and 'Location' headers are returned by the server.
+
+		Use the following on line 1695 in ghttpProcess.c to fix this:
+
+			// Find the new location.
+            /////////////////////////
+            location = strstr(headers, "\r\nLocation:");
+            if(location)
+            {
+                char * end;
+
+                // Find the start of the URL.
+                /////////////////////////////
+                location += 11;
+
+	*/
+	BOOST_STATIC_ASSERT(false); // comment this out once the fix is applied
+
 	// Just to make sure we're always using ASCII
 	#undef GSI_UNICODE
 
@@ -89,7 +110,6 @@
 
 #include "Common/DebugFile.hpp"
 #include "Common/DebugAssert.hpp"
-
 
 #define HRESULT_ERETURN(p) if(FAILED(p)) return E_FAIL
 

@@ -443,8 +443,6 @@ no_extension:
 		g_pixel_shader_variables.detail_normal_map_1_coefficient = 1.0f;
 		g_pixel_shader_variables.detail_normal_map_2_coefficient = 1.0f;
 
-		//g_pixel_shader_variables.specular_reflection_exponent = 1.0f;
-		//g_pixel_shader_variables.specular_reflection_coefficient = 1.0f;
 		g_pixel_shader_variables.specular_lighting_exponent = 1.0f;
 		g_pixel_shader_variables.specular_lighting_coefficient = 0.0f;
 
@@ -765,7 +763,7 @@ no_extension:
 				hr = pDevice->SetPixelShaderConstantF(5 + k_shader_constant_offset, pConstantData, 2);
 			else if(StartRegister == 15) // light positions rotations and colours (2 dynamic, 2 ambient)
 				hr = pDevice->SetPixelShaderConstantF(7 + k_shader_constant_offset, pConstantData, Vector4fCount);
-			else						
+			else
 				hr = pDevice->SetVertexShaderConstantF(StartRegister, pConstantData, Vector4fCount);
 		}
 		else
