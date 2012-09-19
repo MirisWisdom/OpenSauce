@@ -78,7 +78,7 @@ namespace Yelo
 			uint32 _SendMessageUpdatePtrECX = CAST_PTR(uint32,&SendMessageUpdateECX);
 			uint32 _SendMessageUpdatePtrEDX = CAST_PTR(uint32,&SendMessageUpdateEDX);
 
-			DOC_TODO("Update these if you change Client platform version")
+			DOC_TODO_DEBUG("Update these if you change Client platform version")
 #if PLATFORM_VERSION == 0x1080
 			CALL_SENDMSG_HOOK(EDX, 0x45D1EA);
 			CALL_SENDMSG_HOOK(EAX, 0x461229);

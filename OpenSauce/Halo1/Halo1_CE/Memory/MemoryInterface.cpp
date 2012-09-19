@@ -64,15 +64,15 @@ namespace Yelo
 			}
 		}
 
-		uint32 CRC(uint32& crc_reference, void* buffer, int32 size)
+		uint32 CRC(uint32& crc_reference, const void* buffer, int32 size)
 		{
 			if( !crc_table_initialized ) BuildCrcTable();
 
-			byte* p;
+			const byte* p;
 			uint32 a;
 			uint32 b;
 
-			p = CAST_PTR(byte*, buffer);
+			p = CAST_PTR(const byte*, buffer);
 			while (size--) 
 			{
 				a = (crc_reference >> 8) & 0x00FFFFFFL;

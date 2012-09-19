@@ -6,6 +6,7 @@
 #pragma once
 
 #include <TagGroups/Halo1/TagGroupDefinitions.hpp>
+#include <TagGroups/Halo1/object_definitions.hpp>
 
 namespace Yelo
 {

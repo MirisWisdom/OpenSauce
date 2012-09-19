@@ -132,6 +132,43 @@ namespace Yelo
 			_actor_fire_target_prop = 1,
 			_actor_fire_target_manual_point = 2,
 		};
+
+		enum actor_acknowledgement : _enum
+		{
+			_actor_acknowledgement_never,
+			_actor_acknowledgement_combat,
+			_actor_acknowledgement_instant,
+			_actor_acknowledgement_searching,
+			_actor_acknowledgement_definite,
+		};
+
+		enum actor_knowledge_type : _enum
+		{
+			_actor_knowledge_type_noncombat0,
+			_actor_knowledge_type_guard1,
+			_actor_knowledge_type_guard2,
+			_actor_knowledge_type_noncombat3,
+
+			NUMBER_OF_ACTOR_KNOWLEDGE_TYPES,
+		};
+
+		enum actor_perception_type : _enum
+		{
+			_actor_perception_type_none,
+			_actor_perception_type_partial,
+			_actor_perception_type_full,
+			_actor_perception_type_unmistakable,
+
+			NUMBER_OF_ACTOR_PERCEPTION_TYPES,
+		};
+
+		enum actor_movement_state : _enum
+		{
+			_actor_movement_state_noncombat,
+			_actor_movement_state_asleep,
+			_actor_movement_state_combat,
+			_actor_movement_state_flee,
+		};
 	};
 
 	namespace AI
@@ -187,26 +224,29 @@ namespace Yelo
 		struct s_actor_datum : TStructImpl(1828)
 		{
 			TStructGetPtrImpl(bool,				MetaSwarm, 0x6);
+			//TStructGetPtrImpl(bool,				Meta, 0x7);
 
 			TStructGetPtrImpl(bool,				MetaEncounterless, 0x9);
 			//TStructGetPtrImpl(bool,				Meta, 0xA);
 
 			TStructGetPtrImpl(datum_index,		MetaUnitIndex, 0x18);
 			// 0x1C ?
-			TStructGetPtrImpl(int16,			MetaUnitCount, 0x1E); // MAXIMUM_NUMBER_OF_UNITS_PER_SWARM = 16
+			TStructGetPtrImpl(int16,			MetaSwarmUnitCount, 0x1E); // MAXIMUM_NUMBER_OF_UNITS_PER_SWARM = 16
 
 			TStructGetPtrImpl(datum_index,		MetaSwarmUnitIndex, 0x24);
 			TStructGetPtrImpl(datum_index,		MetaSwarmCacheIndex, 0x28);
 			//TStructGetPtrImpl(datum_index,		Meta, 0x2C); // an actor index
-
+			//TStructGetPtrImpl(datum_index,		Meta, 0x30);
 			TStructGetPtrImpl(datum_index,		MetaEncounterIndex, 0x34);
 
 			TStructGetPtrImpl(int16,			MetaSquadIndex, 0x3A);
 			TStructGetPtrImpl(int16,			MetaPlatoonIndex, 0x3C);
 
 			TStructGetPtrImpl(bool,				MetaTimeslice, 0x4C);
-
+			// 0x50 int32
+			// 0x54 int32
 			TStructGetPtrImpl(datum_index,		MetaActorDefinition, 0x58);
+			TStructGetPtrImpl(datum_index,		MetaActorVariantDefinition, 0x5C);
 
 			//TStructGetPtrImpl(_enum,		, 0x6A);
 			TStructGetPtrImpl(Enums::actor_action,		StateAction, 0x6C);
@@ -237,6 +277,14 @@ namespace Yelo
 
 			TStructGetPtrImpl(datum_index,		DangerZoneObjectIndex, 0x28C);
 
+			//TStructGetPtrImpl(real,				, 0x294);
+
+			//TStructGetPtrImpl(real_point3d,		, 0x2B0);
+			//TStructGetPtrImpl(real_vector3d,	, 0x2BC);
+
+			//TStructGetPtrImpl(real,				, 0x2D8);
+			//TStructGetPtrImpl(real_point3d,	, 0x2DC);
+
 			TStructGetPtrImpl(_enum,			StimuliPanicType, 0x308);
 			TStructGetPtrImpl(datum_index,		StimuliPanicPropIndex, 0x30C);
 
@@ -244,7 +292,16 @@ namespace Yelo
 
 			TStructGetPtrImpl(datum_index,		StimuliCombatTransitionPropIndex, 0x340);
 
+			// 0x350, 0x68 byte structure
 			TStructGetPtrImpl(int16,			FiringPositionsCurrentPositionIndex, 0x3B8);
+
+			//TStructGetPtrImpl(int16,			FiringPositions, 0x3C6); // a count of sorts
+			// 0x3C8, array of [4] elements, struct made of 2 int16
+			//TStructGetPtrImpl(bool,			FiringPositions, 0x3D8);
+			//TStructGetPtrImpl(bool,			FiringPositions, 0x3D9);
+			//TStructGetPtrImpl(real_vector3d,	FiringPositions, 0x3DC);
+
+			// 0x4A8, 0x5C byte structure
 
 			//////////////////////////////////////////////////////////////////////////
 			// control
@@ -274,6 +331,7 @@ namespace Yelo
 			TStructGetPtrImpl(real_vector3d,	ControlDesiredFacingVector, 0x5A4);
 			TStructGetPtrImpl(real_vector3d,	ControlDesiredAimingVector, 0x5B0);
 			TStructGetPtrImpl(real_vector3d,	ControlDesiredLookingVector, 0x5BC);
+			// 0x5C8, 0x10 byte structure
 
 			TStructGetPtrImpl(_enum,			ControlFireState, 0x5F2);
 
@@ -281,6 +339,24 @@ namespace Yelo
 			TStructGetPtrImpl(datum_index,		ControlCurrentFireTargetPropIndex, 0x610);
 
 			TStructGetPtrImpl(real_vector3d,	ControlBurstAimVector, 0x68C);
+
+			TStructGetPtrImpl(word_flags,		ControlDataFlags, 0x6D0); // unit_control_flags
+			// PAD16?
+			//TStructGetPtrImpl(int16,			Control, 0x6D4);
+			// PAD16?
+			TStructGetPtrImpl(long_flags,		ControlPersistentControlFlags, 0x6D8);
+
+			TStructGetPtrImpl(Enums::actor_movement_state,			ControlMovementState, 0x6DC);
+			TStructGetPtrImpl(real_vector3d,	ControlDataThrottle, 0x6E0);
+
+			//TStructGetPtrImpl(int16,			ControlAnimation, 0x6EC);
+			TStructGetPtrImpl(real_vector2d,	ControlAnimationFacing, 0x6F0);
+			TStructGetPtrImpl(_enum,			ControlDataAimingType, 0x6F8); // 0=alert, 1=casual, casted to byte then set to ctrl_data's aiming_speed
+			// PAD24
+			TStructGetPtrImpl(real_vector3d,	ControlDataFacingVector, 0x6FC);
+			TStructGetPtrImpl(real_vector3d,	ControlDataAimingVector, 0x708);
+			TStructGetPtrImpl(real_vector3d,	ControlDataLookingVector, 0x714);
+			TStructGetPtrImpl(real,				ControlDataPrimaryTrigger, 0x720);
 		};
 		typedef Memory::DataArray<s_actor_datum, 256> t_actor_data;
 		t_actor_data*					Actors();
@@ -306,10 +382,21 @@ namespace Yelo
 		struct s_prop_datum : TStructImpl(312)
 		{
 			TStructGetPtrImpl(datum_index,		OwnerActorIndex, 0x4);
-
+			TStructGetPtrImpl(datum_index,		NextPropIndex, 0x4);
+			TStructGetPtrImpl(datum_index,		ParentPropIndex, 0xC); // guess these are union'd?
 			TStructGetPtrImpl(datum_index,		OrphanPropIndex, 0xC);
 
+			//TStructGetPtrImpl(bool,				, 0x14);
+			//TStructGetPtrImpl(datum_index,			, 0x18); // unit_index
+			//TStructGetPtrImpl(datum_index,			, 0x1C); // actor_index
+			TStructGetPtrImpl(_enum,			State, 0x24);
+
+			TStructGetPtrImpl(Enums::actor_perception_type,			Perception, 0x30);
+
 			TStructGetPtrImpl(bool,				Enemy, 0x60);
+
+			TStructGetPtrImpl(int16,			UnopposableCasualtiesInflicted, 0xA6);
+			//TStructGetPtrImpl(int16,			, 0xA8);
 
 			TStructGetPtrImpl(bool,				Dead, 0x127);
 		};

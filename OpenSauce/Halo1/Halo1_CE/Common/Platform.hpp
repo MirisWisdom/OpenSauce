@@ -39,8 +39,10 @@
 
 #if PLATFORM_VERSION == 0x1080
 	#define PLATFORM_VERSION_VALUE 1.08
+	#define PLATFORM_VERSION_BUILD 0616
 #elif PLATFORM_VERSION == 0x1090
 	#define PLATFORM_VERSION_VALUE 1.09
+	#define PLATFORM_VERSION_BUILD 0620
 #else
 	#error FUCK YOU, this version isn't supported
 #endif

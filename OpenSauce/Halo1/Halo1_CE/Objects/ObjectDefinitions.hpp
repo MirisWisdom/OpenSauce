@@ -53,6 +53,7 @@ namespace Yelo
 
 		enum object_sizes
 		{
+			// The base object datum allocates 2 real_orientation3d and 1 real_matrix4x3 FOR EVERY model node
 			k_object_size_object =			0x1F4,
 			k_object_size_projectile =		0xBC + k_object_size_object,
 			k_object_size_scenery =			0x4  + k_object_size_object,

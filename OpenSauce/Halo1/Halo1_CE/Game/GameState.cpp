@@ -16,6 +16,10 @@
 #include "Game/EngineFunctions.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 
+#if !PLATFORM_IS_DEDI // for ServerList.inl
+	#include "Networking/GameSpyApi.hpp"
+#endif
+
 #include "TagGroups/TagGroups.hpp"
 #include "TagGroups/project_yellow_definitions.hpp"
 
@@ -31,6 +35,7 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_GAME_GAME_STATE
 #include "Memory/_EngineLayout.inl"
 
+#include "Game/GameState.BuildNumber.inl"
 #if !PLATFORM_IS_DEDI
 	#include "Game/GameState.ServerList.inl"
 #endif
@@ -100,6 +105,16 @@ namespace Yelo
 		static bool* TransportDumping()									PTR_IMP_GET2(transport_dumping);
 		bool DevmodeEnabled()											PTR_IMP_GET(devmode_enabled);
 
+
+		bool YeloGameStateEnabled()
+		{
+			return false;
+		}
+		static void InitializeForYeloGameState()
+		{
+			// TODO: change game_state_init build-numbers string code to reference ours
+			// TODO: change game save code to use our build-number checks
+		}
 
 		API_FUNC_NAKED static void PLATFORM_API InitializeForNewGameStateHook()
 		{

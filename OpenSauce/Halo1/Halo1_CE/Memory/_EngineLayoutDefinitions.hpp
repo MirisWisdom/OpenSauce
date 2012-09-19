@@ -71,6 +71,8 @@
 // 0x40 Objects		__EL_OBJECTS_
 #define __EL_INCLUDE_OBJECTS	0x40
 	#define __EL_OBJECTS_OBJECTS	(__EL_INCLUDE_OBJECTS + 0)
+	#define __EL_OBJECTS_EQUIPMENT	(__EL_INCLUDE_OBJECTS + 1)
+	#define __EL_OBJECTS_UNITS		(__EL_INCLUDE_OBJECTS + 2)
 
 
 //////////////////////////////////////////////////////////////////////////

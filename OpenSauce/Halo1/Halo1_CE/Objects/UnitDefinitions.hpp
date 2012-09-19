@@ -7,11 +7,16 @@
 #pragma once
 
 #include "Objects/ObjectDefinitions.hpp"
+#include <TagGroups/Halo1/unit_definitions.hpp>
 
 namespace Yelo
 {
 	namespace Enums
 	{
+		enum {
+			k_maximum_weapons_per_unit = 4,
+		};
+
 		enum unit_animation_state
 		{
 			_unit_animation_state_invalid = NONE,
@@ -144,7 +149,17 @@ namespace Yelo
 		};
 		struct s_unit_data : TStructImpl(Enums::k_object_size_unit - Enums::k_object_size_object)
 		{
-			enum { DATA_OFFSET = Enums::k_object_size_object, };
+			enum { DATA_OFFSET = Enums::k_object_size_object, 
+
+				//////////////////////////////////////////////////////////////////////////
+				// Stock offsets
+				k_offset_ZoomLevel = 0x320,
+				k_offset_DesiredZoomLevel = 0x321,
+				//////////////////////////////////////////////////////////////////////////
+				// Offsets in OS-modified game states
+				k_offset_ZoomLevel_Yelo = 0x4BA,
+				k_offset_DesiredZoomLevel_Yelo = 0x4BB,
+			};
 
 			TStructSubGetPtrImpl(datum_index,			ActorIndex, 0x1F4);
 			TStructSubGetPtrImpl(datum_index,			SwarmActorIndex, 0x1F8);
@@ -152,7 +167,7 @@ namespace Yelo
 			TStructSubGetPtrImpl(datum_index,			SwamPrevUnitIndex, 0x200);
 			TStructSubGetPtrImpl(long_flags,			Flags, 0x204);
 			TStructSubGetPtrImpl(long_flags,			ControlFlags, 0x208); // zero extended unit control flags (which normally use word_flags)
-			//TStructSubGetPtrImpl(uint16,				, 0x20C);
+			//TStructSubGetPtrImpl(uint16,				, 0x20C); // related to the first two int16's in s_unit_globals_data
 			TStructSubGetPtrImpl(sbyte,					ShieldSapping, 0x20E);
 			TStructSubGetPtrImpl(sbyte,					BaseSeatIndex, 0x20F);
 			//TStructSubGetPtrImpl(uint32,				ControlTime?, 0x210);
@@ -189,15 +204,23 @@ namespace Yelo
 			TStructSubGetPtrImpl(int16,					VehicleSeatIndex, 0x2F0);
 			TStructSubGetPtrImpl(int16,					CurrentWeaponIndex, 0x2F2);
 			TStructSubGetPtrImpl(int16,					NextWeaponIndex, 0x2F4);
-			TStructSubGetPtrImpl(datum_index,			WeaponObjectIndices, 0x2F8); // [4]
+			TStructSubGetPtrImpl(datum_index,			WeaponObjectIndices, 0x2F8); // [k_maximum_weapons_per_unit]
+			TStructSubGetPtrImpl(uint32,				WeaponReadyTimes, 0x308); // [k_maximum_weapons_per_unit]
 			TStructSubGetPtrImpl(datum_index,			CurrentEquipment, 0x318);
 			TStructSubGetPtrImpl(sbyte,					CurrentGrenadeIndex, 0x31C);
 			TStructSubGetPtrImpl(sbyte,					NextGrenadeIndex, 0x31D);
-			TStructSubGetPtrImpl(byte,					GrenadeCounts, 0x31E); // [2]
+			TStructSubGetPtrImpl(byte,					GrenadeCounts, 0x31E); // [k_number_of_unit_grenade_types]
 				TStructSubGetPtrImpl(byte,				GrenadeFragCount, 0x31E);
 				TStructSubGetPtrImpl(byte,				GrenadePlasmaCount, 0x31F);
-			TStructSubGetPtrImpl(byte,					ZoomLevel, 0x320);
-			TStructSubGetPtrImpl(byte,					DesiredZoomLevel, 0x321);
+		private:
+				//////////////////////////////////////////////////////////////////////////
+				// OS-modified game states only
+				TStructSubGetPtrImpl(byte,				YeloGrenade2Count_, 0x320);
+				TStructSubGetPtrImpl(byte,				YeloGrenade3Count_, 0x321);
+				//////////////////////////////////////////////////////////////////////////
+			TStructSubGetPtrImpl(byte,					ZoomLevel_, k_offset_ZoomLevel);
+			TStructSubGetPtrImpl(byte,					DesiredZoomLevel_, k_offset_DesiredZoomLevel);
+		public:
 			//TStructSubGetPtrImpl(sbyte,					, 0x322);
 			TStructSubGetPtrImpl(byte,					AimingChange, 0x323);
 			TStructSubGetPtrImpl(datum_index,			DriverObj, 0x324);
@@ -234,11 +257,24 @@ namespace Yelo
 			// 0x4B8 bool, true if LastCompletedClientUpdateId != NONE
 			//PAD24;
 			TStructSubGetPtrImpl(int32,					LastCompletedClientUpdateId, 0x4BC);
+
+		public: // see Objects/Units.cpp
+			byte* GetYeloGrenade2Count();
+			byte* GetYeloGrenade3Count();
+
+			byte* GetZoomLevel();
+			byte* GetDesiredZoomLevel();
+		private:
+			//////////////////////////////////////////////////////////////////////////
+			// OS-modified game states only
+			TStructSubGetPtrImpl(byte,					YeloZoomLevel, k_offset_ZoomLevel_Yelo);
+			TStructSubGetPtrImpl(byte,					YeloDesiredZoomLevel, k_offset_DesiredZoomLevel_Yelo);
+			//////////////////////////////////////////////////////////////////////////
 		};
 
 		struct s_biped_datum_network_data
 		{
-			byte grenade_counts[2];
+			byte grenade_counts[Enums::k_number_of_unit_grenade_types];
 			PAD16;
 			real body_vitality, shield_vitality;
 			bool shield_stun_ticks_greater_than_zero;

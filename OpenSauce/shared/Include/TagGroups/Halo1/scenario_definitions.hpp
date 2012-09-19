@@ -11,6 +11,10 @@ namespace Yelo
 {
 	namespace Enums
 	{
+		enum {
+			k_maximum_object_names_per_scenario = 512,
+		};
+
 		enum scenario_netgame_type
 		{
 			_scenario_netgame_type_none,

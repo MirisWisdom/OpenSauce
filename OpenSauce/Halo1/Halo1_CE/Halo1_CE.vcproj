@@ -3193,6 +3193,10 @@
 					Name="GameState"
 					>
 					<File
+						RelativePath=".\Game\GameState.BuildNumber.inl"
+						>
+					</File>
+					<File
 						RelativePath=".\Game\GameState.EventLog.inl"
 						>
 					</File>
@@ -3570,6 +3574,14 @@
 				RelativePath=".\Objects\UnitDefinitions.hpp"
 				>
 			</File>
+			<File
+				RelativePath=".\Objects\Units.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Objects\Units.hpp"
+				>
+			</File>
 			<Filter
 				Name="Impl"
 				>
@@ -3591,6 +3603,10 @@
 				</File>
 				<File
 					RelativePath=".\Objects\Objects.Weapon.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\Objects\Units.GrenadeCounts.inl"
 					>
 				</File>
 			</Filter>

@@ -357,6 +357,8 @@ static void* scripting_unit_data_get_integer_by_name(s_unit_datum* unit, cstring
 	// designers should use 'unit_get_total_grenade_count' for overall grenade count
 		 if( !strcmp(s,"total_grenade_count[frag]") )	return unit->unit.GetGrenadeFragCount();
 	else if( !strcmp(s,"total_grenade_count[plasma]") )	return unit->unit.GetGrenadePlasmaCount();
+	else if( !strcmp(s,"total_grenade_count[custom2]") )return unit->unit.GetYeloGrenade2Count();
+	else if( !strcmp(s,"total_grenade_count[custom3]") )return unit->unit.GetYeloGrenade3Count();
 	// Everything below this isn't exactly sync'd...so fuck it
 	out_is_networked = false;
 		 if( !strcmp(s,"current_grenade_index") )		return unit->unit.GetCurrentGrenadeIndex();

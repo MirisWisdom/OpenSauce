@@ -207,6 +207,7 @@ namespace Yelo
 				else if( __VECTOR_OP_CASE("-=") )					*element_ptr -= op_value;
 				else if( __VECTOR_OP_CASE("*=") )					*element_ptr *= op_value;
 				else if( __VECTOR_OP_CASE("/=")&&op_value != 0.0f )	*element_ptr /= op_value;
+				else result = false;
 			}
 
 			return result;
@@ -219,6 +220,8 @@ namespace Yelo
 			{
 				real_vector3d& vector = runtime_data->vectors.values[value_index];
 
+				result = true;
+
 					 if( __VECTOR_OP_CASE("=") )		vector.Set(x, y, z);
 				else if( __VECTOR_OP_CASE("+=") )		vector.Set(vector.i+x, vector.j+y, vector.k+z);
 				else if( __VECTOR_OP_CASE("-=") )		vector.Set(vector.i-x, vector.j-y, vector.k-z);
@@ -230,8 +233,7 @@ namespace Yelo
 					if(z == 0.0f) z = 1.0f;
 					vector.Set(vector.i/x, vector.j/y, vector.k/z);
 				}
-
-				return true;
+				else result = false;
 			}
 
 			return result;
