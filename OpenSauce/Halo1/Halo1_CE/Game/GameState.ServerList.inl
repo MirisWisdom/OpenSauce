@@ -17,11 +17,11 @@ static BOOL PLATFORM_API ServerVersionIsValid(cstring server_version)
 	}
 
 	// compare with the games version
-	if(strcmp(GameBuildString(), server_version) == 0)
+	if(strcmp(BuildNumber::GameBuildString(), server_version) == 0)
 		return true;
 
 	// compare all known official versions
-	return Networking::GameBuildNumberIsValid(server_version);
+	return BuildNumber::StringIsValid(server_version);
 }
 
 void ServerListInitialize()
@@ -32,7 +32,7 @@ void ServerListInitialize()
 		if(mp_version && (strcmp(mp_version, "disable") == 0))
 			return;
 
-		g_forced_mp_version = Networking::GameVersionToBuildNumberString(mp_version);
+		g_forced_mp_version = BuildNumber::VersionToBuildNumberString(mp_version);
 	}
 
 	// override the function call that omits servers of a different version from the server browser

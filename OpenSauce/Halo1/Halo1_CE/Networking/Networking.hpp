@@ -307,7 +307,7 @@ namespace Yelo
 			TStructGetImpl(Enums::network_game_server_state, State, 0x4);
 			// game_is_open = FLAG(0)
 			// server_is_dedicated = FLAG(2) // doesn't show sv_status info when not set
-			TStructGetPtrImpl(uint16, Flags, 0x6);
+			TStructGetPtrImpl(word_flags, Flags, 0x6);
 			TStructGetPtrImpl(s_network_game, Game, 0x8);
 			TStructGetPtrImpl(s_network_machine, ClientMachines, 0x3F8); // [16]
 
@@ -316,6 +316,10 @@ namespace Yelo
 			TStructGetPtrImpl(int32, NextUpdateNumber, PLATFORM_VALUE(0x9F8, 0x9F8+0x8C0) );
 			TStructGetPtrImpl(int32, TimeOfLastKeepAlive, PLATFORM_VALUE(0x9FC, 0x9FC+0x8C0) );
 			TStructGetPtrImpl(int32, TimeOfFirstClientLoadingCompletion, PLATFORM_VALUE(0xA04, 0xA04+0x8C0) );
+			// 0xA15 bool
+			// 0xA38 bool
+			TStructGetPtrImpl(bool, GameHasStarted, PLATFORM_VALUE(0xA39, 0xA39+0x8C0) );
+			// 0xA3A bool
 			// 0xA4E bool
 			// 0xA4F bool
 			TStructGetPtrImpl(wchar_t, Password, PLATFORM_VALUE(0xA3C, 0xA3C+0x8C0) ); // [8]

@@ -36,7 +36,7 @@ namespace Yelo
 			// Max amount of memory addressable by the game state. After this comes tag memory
 			k_game_state_cpu_size = Enums::k_game_state_allocation_size,
 
-			// How much addition memory, if any, we allocate for the objects pool
+			// How much additional memory, if any, we allocate for the objects pool
 			k_game_state_allocation_size_object_memory_pool_upgrade = 0x10000,
 			// 0x42974 bytes available in game state allocation for Clients.
 			// Dedis should have a little bit more (since they don't alloc a few render based things) 
@@ -135,10 +135,27 @@ namespace Yelo
 
 			int16 lost_map_count;
 			int16 respawn_count;
-			
-			// there appears to be a lot more to the main_globals after here,
-			// but I stopped giving a damn here.
-		}; BOOST_STATIC_ASSERT( sizeof(s_main_globals) == 0x6C );
+
+			UNKNOWN_TYPE(bool);
+			PAD24;
+			UNKNOWN_TYPE(bool);
+			char scenario_tag_path[256];
+			char multiplayer_map_name[256];
+			char queued_map[256];
+
+			UNKNOWN_TYPE(bool);
+			UNKNOWN_TYPE(tag_string);
+			PAD(0, 8+1); // char[8+1]
+			PAD8;
+			PAD32;
+
+			void QuitToMainMenu()
+			{
+				map.switch_to_structure_bsp = NONE;
+				map.save_map = false;
+				map.main_menu_scenario_load = true;
+			}
+		}; BOOST_STATIC_ASSERT( sizeof(s_main_globals) == 0x3A0 );
 		s_main_globals* MainGlobals();
 
 #if !PLATFORM_IS_DEDI
@@ -200,7 +217,7 @@ namespace Yelo
 			_enum game_difficulty;
 			uint32 cache_crc;
 			byte _unk3[32];
-		};
+		}; BOOST_STATIC_ASSERT( sizeof(s_header_data) == 0x14C );
 		struct s_game_state_globals
 		{
 			void* base_address;
@@ -219,13 +236,13 @@ namespace Yelo
 			// Allocate an object of type [T] inside the game state memory and return its address.
 			// Note: Also updates the game state's cpu allocation size by adding 'sizeof([T])'
 			template<typename T>
-			T* Malloc()
+			T* Malloc(size_t count = 1)
 			{
 				byte* base_addr = CAST_PTR(byte*, base_address) + cpu_allocation_size;
-				const size_t size_of = sizeof(T);
+				const size_t size_of = sizeof(T) * count;
 
 				// Debug check that we don't allocate more memory than the game state has available
-				ASSERT((base_addr + sizeof(T)) <= PhysicalMemoryMapGlobals()->tag_cache_base_address, 
+				ASSERT((base_addr + size_of) <= PhysicalMemoryMapGlobals()->tag_cache_base_address, 
 					"Bit off more game-state than the game could chew!");
 
 				cpu_allocation_size += size_of;
@@ -386,8 +403,6 @@ namespace Yelo
 		// Index of the current SBSP in the Scenario's structure bsps block
 		int16		StructureBspIndex();
 		byte*		DeveloperMode();
-		char*		GameBuildString();
-		char*		GamespyGameBuildString();
 		bool		DevmodeEnabled();
 
 		// Are OS-modified game states in effect?
@@ -402,6 +417,8 @@ namespace Yelo
 		void PLATFORM_API DisposeFromOldMap();
 		// Don't call me unless your name is GameEngine!
 		void Update(real delta_time);
+		// Called in Initialize(). Don't call me from anywhere else for now.
+		void InitializeForYeloGameState(bool enabled);
 
 		// Called from ScriptingLibrary's Initialize (since the GameState is initialized before Scripting is)
 		void InitializeScripting();

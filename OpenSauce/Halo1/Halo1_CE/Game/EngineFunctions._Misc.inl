@@ -196,7 +196,7 @@ bool CompareMD5(cstring data, const DWORD data_length, cstring comparison_md5)
 	data_md5[0] = 0;
 	GenerateMD5(data, data_length, data_md5);
 
-	return stricmp(data_md5, comparison_md5) == 0;
+	return _stricmp(data_md5, comparison_md5) == 0;
 }
 
 bool GetCmdLineParameter(cstring parameter, cstring* value_out)

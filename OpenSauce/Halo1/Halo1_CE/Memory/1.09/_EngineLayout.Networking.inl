@@ -103,8 +103,11 @@
 //////////////////////////////////////////////////////////////////////////
 // MessageDeltas.cpp
 #elif __EL_INCLUDE_FILE_ID == __EL_NETWORKING_MESSAGE_DELTAS
-	ENGINE_PTR(s_misc_encoding_globals, misc_encoding_globals,						0x635994, 0x5AB36C);
+	ENGINE_PTR(s_message_delta_parameters, message_delta_parameters,				0x635994, 0x5AB36C);
+	ENGINE_PTR(field_type_definition, message_delta_global_field_type_list,			0x6359B8, 0x5AB390);
 	ENGINE_PTR(Enums::message_delta_encoding_class, g_message_delta_encoding_class,	0x636A18, 0x5AC3F0);
+	ENGINE_PTR(exposed_parameters_t, g_exposed_params,								0x653610, 0x5C54F8);
+	ENGINE_PTR(s_parameters_protocol_globals, mdp_parameters_protocol_globals,		0x6B8260, 0x620A30);
 
 	ENGINE_PTR(byte, mdp_packet_buffer_received_data,			0x7FCE20, 0x6C8D20);
 	ENGINE_PTR(byte, mdp_packet_buffer_sent_data,				0x80CE20, 0x6D8D20);
@@ -235,11 +238,6 @@
 
 		DATA_PTR(compiler_null_string,			0x5F363C, 0x54F2FC); // TODO: not the best place for this...
 		FUNC_PTR(GAMESPY_GET_CLIENT_KEY_HASH,	0x579CD0, 0x5283D0);
-
-
-		ENGINE_PTR(long_enum, game_version_id1,								0x4DC2D6, 0x4C3866);
-		ENGINE_PTR(long_enum, game_version_id2,								0x4DC4B3, 0x4C3A43);
-		ENGINE_PTR(long_enum, game_version_id3,								0x4E3FF3, 0x4CB583);
 	};
 
 

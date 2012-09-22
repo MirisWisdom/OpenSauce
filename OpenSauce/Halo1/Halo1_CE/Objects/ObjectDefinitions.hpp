@@ -217,20 +217,28 @@ namespace Yelo
 			};
 
 			TStructGetPtrImpl(datum_index,				TagDefinition, 0x0);
+			//////////////////////////////////////////////////////////////////////////
+			// Added in HaloPC
 			TStructGetPtrImpl(Enums::networked_datum,	DatumnRole, 0x4);
 			// 0x8 - boolean
-			TStructGetPtrImpl(uint32,					ShouldForceBaselineUpdate, 0x9);
+			TStructGetPtrImpl(bool,						ShouldForceBaselineUpdate, 0x9);
 			// 0xA?
 			TStructGetPtrImpl(uint32,					NetworkTime, 0xC);
+			//////////////////////////////////////////////////////////////////////////
 			TStructGetPtrImpl(long_flags,				Flags, 0x10);
+			//TStructGetPtrImpl(int32,					, 0x14);
+			//TStructGetPtrImpl(bool,					, 0x18);
+			// PAD24?
+			// 0x1C, unknown 0x34 bytes
 			TStructGetPtrImpl(s_object_network_datum_data, NetworkDatumData, 0x50);
 			TStructGetPtrImpl(s_scenario_location,		ScenarioLocation, 0x98);
 			TStructGetPtrImpl(real_point3d,				Center, 0xA0); // position, used for stock game code's trigger volume point testing
 			TStructGetPtrImpl(real,						Radius, 0xAC);
 			TStructGetPtrImpl(real,						Scale, 0xB0);
-			TStructGetPtrImpl(byte,						Type, 0xB4);
+			TStructGetPtrImpl(byte_flags,				Type, 0xB4);
 			TStructGetPtrImpl(int16,					OwnerTeamIndex, 0xB8);
 			TStructGetPtrImpl(int16,					NameListIndex, 0xBA);
+			//TStructGetPtrImpl(int16,					, 0xBC);
 			TStructGetPtrImpl(int16,					RegionPermutationVariantId, 0xBE);
 			TStructGetPtrImpl(datum_index,				PlayerIndex, 0xC0);
 			// If this were a projectile, I believe this would be the handle to
@@ -257,6 +265,7 @@ namespace Yelo
 			TStructGetPtrImpl(word_flags,				DamageFlags, 0x106);
 			// 0x108?
 			TStructGetPtrImpl(datum_index,				ClusterPartitionIndex, 0x10C);
+			//TStructGetPtrImpl(datum_index,				, 0x110); // object_index, garbage collection related
 			TStructGetPtrImpl(datum_index,				NextObjectIndex, 0x114);
 			TStructGetPtrImpl(datum_index,				FirstObjectIndex, 0x118);
 			TStructGetPtrImpl(datum_index,				ParentObjectIndex, 0x11C);
@@ -266,14 +275,15 @@ namespace Yelo
 			TStructGetPtrImpl(byte_flags,				ValidOutgoingFunctions, 0x123); // 1<<function_index
 			TStructGetPtrImpl(real,						IncomingFunctionValues, 0x124); // [4]
 			TStructGetPtrImpl(real,						OutgoingFunctionValues, 0x134); // [4]
-
 			TStructGetPtrImpl(byte_enum,				AttachmentsTypes, 0x144); // Enums::attachment_type [k_maximum_number_of_attachments_per_object]
+			// 0x148?
 			// game state datum_index
 			// ie, if Attachments[x]'s definition (object_attachment_block[x]) says it is a 'cont'
 			// then the datum_index is a contrail_data handle
 			TStructGetPtrImpl(datum_index,				Attachments, 0x14C); // [k_maximum_number_of_attachments_per_object]
 			TStructGetPtrImpl(datum_index,				FirstWidget, 0x16C);
-
+			// 0x170?
+			// 0x174?
 			TStructGetPtrImpl(int16,					ShaderPermutation, 0x176); // shader's bitmap block index
 			TStructGetPtrImpl(byte,						RegionVitality, 0x178); // [k_maximum_regions_per_model]
 			TStructGetPtrImpl(byte,						RegionPermutationIndices, 0x180); // [k_maximum_regions_per_model]

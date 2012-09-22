@@ -37,8 +37,8 @@ namespace Yelo
 
 	struct string_list
 	{
-		int32 length;
-		cstring* elements;
+		int32 count;
+		cstring* strings;
 	}; BOOST_STATIC_ASSERT( sizeof(string_list) == 0x8 );
 
 

@@ -572,6 +572,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Engine\GrenadeTypesUpgrade.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Engine\GrenadeTypesUpgrade.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Engine\Scripting.cpp"
 				>
 			</File>

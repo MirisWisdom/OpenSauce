@@ -19,6 +19,7 @@
 
 #include "Common/YeloSettings.hpp"
 #include "Engine/EngineFunctions.hpp"
+#include "Engine/GrenadeTypesUpgrade.hpp"
 #include "Engine/Scripting.hpp"
 #include "TagGroups/TagGroups.hpp"
 #include "TagGroups/yelo_definitions.hpp"

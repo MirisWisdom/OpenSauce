@@ -17,9 +17,11 @@
 #include "TagGroups/project_yellow_definitions.hpp"
 
 #include "Objects/Equipment.hpp"
+#include "Objects/Units.hpp"
 
 #include "Game/Camera.hpp"
 #include "Game/EngineFunctions.hpp"
+#include "Game/GameState.hpp"
 #include "Game/GameStateRuntimeData.hpp"
 #include "Game/Scripting.hpp"
 #include "Game/ScriptLibrary.hpp"
@@ -107,12 +109,15 @@ namespace Yelo
 			Vehicle::Initialize();
 			Weapon::Initialize();
 			Equipment::Initialize();
+			Units::Initialize();
 
 			InitializeScripting();
 		}
 
 		void Dispose()
-		{			
+		{
+			Units::Dispose();
+
 			Weapon::Dispose();
 			Vehicle::Dispose();
 			UnitInfections::Dispose();
@@ -132,6 +137,15 @@ namespace Yelo
 			}
 
 			// Do custom code here:
+		}
+
+		void InitializeForYeloGameState(bool enabled)
+		{
+			size_t* omp_allocation_size = GET_PTR2(object_memory_pool_allocation_size);
+			*omp_allocation_size = Enums::k_object_memory_pool_allocation_size;
+			if(enabled) *omp_allocation_size += Enums::k_game_state_allocation_size_object_memory_pool_upgrade;
+
+			Units::InitializeForYeloGameState(enabled);
 		}
 
 #if !PLATFORM_IS_DEDI

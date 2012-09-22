@@ -8,6 +8,8 @@
 
 #include "Memory/MemoryInterface.hpp"
 
+#include "Networking/MessageDeltaDefinitions.hpp"
+
 #define GET_NEW_MDP_DEFINITION(name) mdp_definition_##name
 
 #define MDP_STRUCT_NAME(base_name)	s_##base_name##_network_data
@@ -76,11 +78,12 @@ namespace Yelo
 {
 	namespace MessageDeltas
 	{
-#define MDP_FIELD_TYPE_NAME( type )				message_delta_field_##type
+#define MDP_FIELD_TYPE_NAME( type )				BOOST_PP_CAT(message_delta_field_, type)
+#define MDP_FIELD_SET_NAME( type )				BOOST_PP_CAT(BOOST_PP_CAT(message_delta_, type), _field_set)
 
-#define MDP_GET_FIELD_TYPE_DEFINITION( type ) GET_PTR2( MDP_FIELD_TYPE_NAME(type) )
+#define MDP_GET_FIELD_TYPE_DEFINITION( type ) MessageDeltas::GET_PTR2( MDP_FIELD_TYPE_NAME(type) )
 
-#define MDP_GET_FIELD_SET_DEFINITION( type ) GET_PTR2(message_delta_##type##_field_set)
+#define MDP_GET_FIELD_SET_DEFINITION( type )  MessageDeltas::GET_PTR2( MDP_FIELD_SET_NAME(type) )
 
 #define __EL_INCLUDE_ID			__EL_INCLUDE_NETWORKING
 #define __EL_INCLUDE_FILE_ID	__EL_NETWORKING_MDP

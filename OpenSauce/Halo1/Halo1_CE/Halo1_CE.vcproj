@@ -3059,6 +3059,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Game\GameBuildNumber.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Game\GameBuildNumber.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Game\GameEngine.cpp"
 				>
 			</File>
@@ -3192,10 +3200,6 @@
 				<Filter
 					Name="GameState"
 					>
-					<File
-						RelativePath=".\Game\GameState.BuildNumber.inl"
-						>
-					</File>
 					<File
 						RelativePath=".\Game\GameState.EventLog.inl"
 						>
@@ -3416,6 +3420,10 @@
 			</File>
 			<File
 				RelativePath=".\Networking\MessageDefinitions.hpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Networking\MessageDeltaDefinitions.hpp"
 				>
 			</File>
 			<File

@@ -168,6 +168,23 @@ namespace Fov
 
 
 //////////////////////////////////////////////////////////////////////////
+// GameBuildNumber.cpp
+#elif __EL_INCLUDE_FILE_ID == __EL_GAME_BUILD_NUMBER
+	ENGINE_PTR(char, game_build_version,							0x60A3E8, 0x564B74);
+	ENGINE_PTR(char, game_build_version_gamespy,					0x6BDC30, 0x6262F8);
+
+	ENGINE_PTR(long_enum, game_version_id1,							0x4DC2A6, 0x4C3836);
+	ENGINE_PTR(long_enum, game_version_id2,							0x4DC483, 0x4C3A13);
+	ENGINE_PTR(long_enum, game_version_id3,							0x4E3FC3, 0x4CB553);
+
+	FUNC_PTR(GAME_STATE_HEADER_IS_VALID_HOOK,						0x53BBB7, 0x4F7187);
+	FUNC_PTR(GAME_STATE_HEADER_IS_VALID_HOOK_RET,					0x53BC0B, 0x4F71DB);
+	FUNC_PTR(GAME_STATE_HEADER_TRY_AND_LOAD_HOOK,					0x53B96E, 0x4F6F3E);
+	FUNC_PTR(GAME_STATE_HEADER_TRY_AND_LOAD_HOOK_RET_TRUE,			0x53B9CE, 0x4F6F9E);
+	FUNC_PTR(GAME_STATE_HEADER_TRY_AND_LOAD_HOOK_RET_FALSE,			0x53BA89, 0x4F7059);
+
+
+//////////////////////////////////////////////////////////////////////////
 // GameEngine.cpp
 #elif __EL_INCLUDE_FILE_ID == __EL_GAME_GAME_ENGINE
 	ENGINE_PTR(s_ctf_globals, ctf_globals,				0x64BCF0, 0x5BDB20);
@@ -232,8 +249,6 @@ namespace Fov
 	ENGINE_PTR(datum_index, global_scenario_index,						0x6397DC, 0x5AD85C);
 	ENGINE_PTR(int16, structure_bsp_index,								0x6397E0, 0x5AD860);
 	ENGINE_PTR(byte, developer_mode,									0x815CE6, 0x6E1BE6);
-	ENGINE_PTR(char, game_build_version,								0x60A3E8, 0x564B74);
-	ENGINE_PTR(char, game_build_version_gamespy,						0x6BDC30, 0x6262F8);
 	ENGINE_PTR(bool, transport_dumping,									0x621F60, 0x597918);
 	ENGINE_PTR(char, init_txt_filename,									0x60AB14, PTR_NULL);
 	ENGINE_PTR(bool, devmode_enabled,									0x6BD096, 0x6257C6);

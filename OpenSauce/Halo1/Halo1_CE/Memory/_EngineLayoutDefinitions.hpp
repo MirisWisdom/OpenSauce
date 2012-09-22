@@ -45,6 +45,7 @@
 	#define __EL_GAME_PLAYERS			(__EL_INCLUDE_GAME + 9)
 	#define __EL_GAME_SCRIPTING			(__EL_INCLUDE_GAME + 0xA)
 	#define __EL_GAME_SCRIPT_LIBRARY	(__EL_INCLUDE_GAME + 0xB)
+	#define __EL_GAME_BUILD_NUMBER		(__EL_INCLUDE_GAME + 0xC)
 
 
 //////////////////////////////////////////////////////////////////////////
