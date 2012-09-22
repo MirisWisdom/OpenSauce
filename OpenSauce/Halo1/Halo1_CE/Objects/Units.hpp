@@ -12,6 +12,7 @@ namespace Yelo
 {
 	namespace Objects { namespace Units {
 		void Initialize();
+		void Dispose();
 
 		void InitializeForYeloGameState(bool enabled);
 	}; };

@@ -34,7 +34,7 @@ void* scripting_game_change_version_id_evaluate(void** arguments)
 	}* args = CAST_PTR(s_arguments*, arguments);
 	TypeHolder result; result.pointer = NULL;
 
-	result.boolean = Networking::ChangeAdvertisedGameVersion(args->version_str, args->and_game_build);
+	result.boolean = BuildNumber::ChangeAdvertisedVersion(args->version_str, args->and_game_build);
 
 	return result.pointer;
 }

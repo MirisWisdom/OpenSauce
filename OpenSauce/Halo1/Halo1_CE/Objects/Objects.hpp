@@ -332,6 +332,8 @@ namespace Yelo
 
 		void PLATFORM_API Update();
 
+		void InitializeForYeloGameState(bool enabled);
+
 #if !PLATFORM_IS_DEDI
 		void LoadSettings(TiXmlElement* objects_element);
 		void SaveSettings(TiXmlElement* objects_element);

@@ -29,7 +29,9 @@ namespace Yelo
 
 		void Initialize()
 		{
+#if !PLATFORM_DISABLE_UNUSED_CODE
 			Memory::WriteRelativeCall(&Console::Update, GET_FUNC_VPTR(CONSOLE_UPDATE_HOOK));
+#endif
 		}
 
 		void Dispose()

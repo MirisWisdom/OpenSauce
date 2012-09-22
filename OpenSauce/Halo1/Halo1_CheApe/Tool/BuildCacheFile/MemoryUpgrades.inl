@@ -91,7 +91,7 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 	//////////////////////////////////////////////////////////////////////////
 	// Interceptor system
 	static const uint32 BUILD_CACHE_FILE_ADD_TAGS = 0x454D40;
-	static datum_index new_tag_handles[K_MAXIMUM_TAG_COUNT_UPGRADE];
+	static datum_index new_tag_handles[Enums::k_maximum_tag_count_upgrade];
 
 	static const uint32 INTERCEPTOR1_HOOK_ADDR = 0x455583;
 	API_FUNC_NAKED static void Interceptor1()
@@ -279,15 +279,15 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 	static void TagMemoryInitialize()
 	{
 		for(int32 x = 0; x < NUMBEROF(AddressOf::MaxTagsCheck); x++)
-			*AddressOf::MaxTagsCheck[x] = Konstants::MaximumTagCountUpgrade();
+			*AddressOf::MaxTagsCheck[x] = Enums::k_maximum_tag_count_upgrade;
 
-		*AddressOf::TagMaxAddress = Konstants::TagMaxAddressUpgrade();
+		*AddressOf::TagMaxAddress = Enums::k_tag_max_address_upgrade;
 
 		for(int32 x = 0; x < NUMBEROF(AddressOf::TagAllocationSize); x++)
-			*AddressOf::TagAllocationSize[x] = Konstants::TagAllocationSizeUpgrade();
+			*AddressOf::TagAllocationSize[x] = Enums::k_tag_allocation_size_upgrade;
 
 		for(int32 x = 0; x < NUMBEROF(AddressOf::TagAllocationSizeNegitive); x++)
-			*AddressOf::TagAllocationSizeNegitive[x] = -Konstants::TagAllocationSizeUpgrade();
+			*AddressOf::TagAllocationSizeNegitive[x] = -Enums::k_tag_allocation_size_upgrade;
 	}
 
 	static void TagMemoryDispose()
@@ -348,6 +348,7 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 			TagMemoryInitialize();
 			CacheMemoryInitialize();
 			Scripting::InitializeCustomScriptingDefinitions();
+			Objects::Items::GrenadeTypesUpgrade(true);
 		}
 
 		TagGroups::ScenarioYeloLoadHookInitialize();

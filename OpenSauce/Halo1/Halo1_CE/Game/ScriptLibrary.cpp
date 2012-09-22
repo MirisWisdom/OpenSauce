@@ -15,12 +15,12 @@
 #include <Blam/Halo1/BlamMemoryUpgrades.hpp>
 
 // Includes for MiscScriptingFunctions.inl
+#include "Game/GameBuildNumber.hpp"
 #include "Game/GameEngine.hpp"
 #include "Game/GameState.hpp"
 #include "Game/GameStateRuntimeData.hpp"
 #include "Interface/UIWidget.hpp"
 #include "Networking/MessageDeltas.hpp"
-#include "Networking/GameSpyApi.hpp"
 #include "TagGroups/project_yellow_definitions.hpp"
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/PostProcessing/PostProcessingScripting.hpp"

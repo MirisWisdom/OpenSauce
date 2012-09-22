@@ -177,3 +177,76 @@ static void InitializeForYeloGameState_UnitGrenadeCounts(bool enabled)
 		Memory::WriteMemory(code_addr, asm_code, asm_code_size);
 	}
 }
+
+
+static void InitializeForYeloGameState_MessageDeltaGrenadeCounts(bool enabled)
+{
+#ifndef YELO_NO_NETWORK
+	using namespace MessageDeltas;
+
+	field_type_definition& grenade_counts_type = GlobalFieldTypeList()[Enums::_field_type_grenade_counts];
+	field_properties_definition* grenade_counts_props = MDP_GET_FIELD_TYPE_DEFINITION(grenade_counts);
+
+	static mdp_field_type_maximum_size_calculator g_type_stock_maximum_size_calculator;
+	static mdp_field_encode g_props_stock_encoder;
+	static mdp_field_decode g_props_stock_decoder;
+	if(g_type_stock_maximum_size_calculator == NULL)
+	{
+		g_type_stock_maximum_size_calculator = grenade_counts_type.proc_maximum_size_calculator;
+		g_props_stock_encoder = grenade_counts_props->proc_encode;
+		g_props_stock_decoder = grenade_counts_props->proc_decode;
+	}
+
+	class mdp_grenade_counts_upgrade
+	{
+	public:
+		static int32 PLATFORM_API maximum_size_calculator(field_properties_definition*)
+		{
+			return Enums::k_bits_in_grenade_counts_type_upgrade;
+		}
+
+		static int32 PLATFORM_API encoder(field_properties_definition* field_properties, const void* baseline_data, const void* source_data, Networking::s_bitstream* output_stream)
+		{
+			int32 bits_written = 0;
+
+			BOOST_STATIC_ASSERT( sizeof(grenade_counts) == sizeof(byte)*2 );
+
+			const grenade_counts* baseline_data_gc = CAST_PTR(const grenade_counts*, baseline_data);
+			const grenade_counts* source_data_gc = CAST_PTR(const grenade_counts*, source_data);
+
+			bits_written =  g_props_stock_encoder(field_properties, baseline_data_gc,   source_data_gc,   output_stream);
+			bits_written += g_props_stock_encoder(field_properties, baseline_data_gc+1, source_data_gc+1, output_stream);
+
+			return bits_written;
+		}
+
+		static int32 PLATFORM_API decoder(field_properties_definition* field_properties, void* baseline_data, void* destination_data, Networking::s_bitstream* input_stream)
+		{
+			int32 bits_read = 0;
+
+			grenade_counts* destination_data_gc = CAST_PTR(grenade_counts*, destination_data);
+
+			// stock decoder doesn't use baseline_data when decoding
+			bits_read =  g_props_stock_decoder(field_properties, destination_data_gc,   baseline_data, input_stream);
+			bits_read += g_props_stock_decoder(field_properties, destination_data_gc+1, baseline_data, input_stream);
+
+			return bits_read;
+		}
+	};
+
+	if(enabled)
+	{
+		grenade_counts_type.proc_maximum_size_calculator = mdp_grenade_counts_upgrade::maximum_size_calculator;
+		grenade_counts_props->proc_encode = mdp_grenade_counts_upgrade::encoder;
+		grenade_counts_props->proc_decode = mdp_grenade_counts_upgrade::decoder;
+		grenade_counts_props->maximum_size = Enums::k_bits_in_grenade_counts_type_upgrade;
+	}
+	else
+	{
+		grenade_counts_type.proc_maximum_size_calculator = g_type_stock_maximum_size_calculator;
+		grenade_counts_props->proc_encode = g_props_stock_encoder;
+		grenade_counts_props->proc_decode = g_props_stock_decoder;
+		grenade_counts_props->maximum_size = Enums::k_bits_in_grenade_counts_type;
+	}
+#endif
+}

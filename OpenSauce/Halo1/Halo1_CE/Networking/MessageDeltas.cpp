@@ -20,10 +20,13 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_NETWORKING_MESSAGE_DELTAS
 #include "Memory/_EngineLayout.inl"
 
-		s_misc_encoding_globals* MiscEncodingGlobals()			PTR_IMP_GET2(misc_encoding_globals);
-		Enums::message_delta_encoding_class* EncodingClass()	PTR_IMP_GET2(g_message_delta_encoding_class);
-		byte* PacketBufferReceived()							PTR_IMP_GET2(mdp_packet_buffer_received_data);
-		byte* PacketBufferSent()								PTR_IMP_GET2(mdp_packet_buffer_sent_data);
+		s_message_delta_parameters* Parameters()					PTR_IMP_GET2(message_delta_parameters);
+		field_type_definition* GlobalFieldTypeList()				PTR_IMP_GET2(message_delta_global_field_type_list);
+		Enums::message_delta_encoding_class* EncodingClass()		PTR_IMP_GET2(g_message_delta_encoding_class);
+		exposed_parameters_t* ExposedProtocolParameters()			PTR_IMP_GET2(g_exposed_params);
+		s_parameters_protocol_globals* ParametersProtocolGlobals()	PTR_IMP_GET2(mdp_parameters_protocol_globals);
+		byte* PacketBufferReceived()								PTR_IMP_GET2(mdp_packet_buffer_received_data);
+		byte* PacketBufferSent()									PTR_IMP_GET2(mdp_packet_buffer_sent_data);
 
 		const message_delta_definition* const* OriginalPackets() { return GET_DPTR2(message_delta_packets); }
 

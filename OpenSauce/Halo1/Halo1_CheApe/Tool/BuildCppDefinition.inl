@@ -855,8 +855,8 @@ static void WriteEnumDefinition(FILE* file,
 	const string_list* list = instance.GetList();
 	puts("entries:");
 
-	cstring* element = list->elements;
-	for(int i = 0; i < list->length; i++, element++)
+	cstring* element = list->strings;
+	for(int i = 0; i < list->count; i++, element++)
 		printf_s("\t%s\n", *element);
 
 	// ask the user what they want to call the enum
@@ -881,8 +881,8 @@ static void WriteEnumDefinition(FILE* file,
 	fprintf(file, "\t\tenum %s : _enum\n", field_name.c_str());
 	fputs("\t\t{\n", file);
 
-	element = list->elements;
-	for(int32 i = 0; i < list->length; i++, element++)
+	element = list->strings;
+	for(int32 i = 0; i < list->count; i++, element++)
 	{
 		std::string element_formatted;
 
@@ -930,8 +930,8 @@ static void WriteFlagsDefinition(FILE* file,
 		const string_list* list = instance.GetList();
 		puts("entries:");
 
-		cstring* element = list->elements;
-		for(int i = 0; i < list->length; i++, element++)
+		cstring* element = list->strings;
+		for(int i = 0; i < list->count; i++, element++)
 			printf_s("\t%s\n", *element);	
 
 		// ask the user what they want to call the enum
@@ -982,8 +982,8 @@ static void WriteFlagsDefinition(FILE* file,
 	std::string element_name;
 	std::string element_description;
 
-	cstring* element = instance.GetList()->elements;
-	for(int32 i = 0; i < instance.GetList()->length; i++, element++)
+	cstring* element = instance.GetList()->strings;
+	for(int32 i = 0; i < instance.GetList()->count; i++, element++)
 	{
 		// names need to be unique withing the scope of the flags struct
 		GetName(element_name, *element, instance.GetUsedNamesVector(), false);
@@ -997,7 +997,7 @@ static void WriteFlagsDefinition(FILE* file,
 	}
 	// it is possible that a flags value is defined but has no entries
 	// so in that case, add a single entry to ensure the size of the struct is correct
-	if(instance.GetList()->length == 0)
+	if(instance.GetList()->count == 0)
 		fprintf(file, "\t\t\t\t%s(unused);\n", flag_type);
 
 	fputs("\t\t\t};", file);

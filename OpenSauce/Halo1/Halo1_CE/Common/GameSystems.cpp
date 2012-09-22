@@ -40,6 +40,7 @@
 //////////////////////////////////////////////////////////////////////////
 // Component includes
 	#include "Game/GameState.hpp"
+	#include "Game/GameBuildNumber.hpp"
 	#include "TagGroups/CacheFiles.hpp"
 	#include "TagGroups/TagGroups.hpp"
 

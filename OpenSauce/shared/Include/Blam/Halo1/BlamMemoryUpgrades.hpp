@@ -38,17 +38,23 @@ namespace Yelo
 	{
 		enum {
 			k_maximum_tag_count =				0x00001400, // 5120
+			k_maximum_tag_count_upgrade = 
+				CAST(uint32, Yelo::Enums::k_maximum_tag_count * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
 
 			k_tag_base_address =				// 0x40440000
 				k_physical_memory_base_address + 
 				k_game_state_allocation_size,
 
 			k_tag_allocation_size =				0x01700000,
+			k_tag_allocation_size_upgrade = 
+				CAST(uint32, Enums::k_tag_allocation_size * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
 
 			// Highest Tag Memory Address
 			k_tag_max_address =					// 0x41B40000
 				k_tag_base_address + 
 				k_tag_allocation_size,
+			k_tag_max_address_upgrade = 
+				k_tag_base_address + k_tag_allocation_size_upgrade,
 		};
 	};
 
@@ -116,13 +122,6 @@ namespace Yelo
 
 	namespace Konstants
 	{
-#define K_MAXIMUM_TAG_COUNT_UPGRADE					CAST(uint32, Yelo::Enums::k_maximum_tag_count * K_MEMORY_UPGRADE_INCREASE_AMOUNT)
-
-		API_INLINE uint32 MaximumTagCountUpgrade()	{ return K_MAXIMUM_TAG_COUNT_UPGRADE; }
-
-		API_INLINE int32 TagAllocationSizeUpgrade()	{ return CAST(uint32, Enums::k_tag_allocation_size * K_MEMORY_UPGRADE_INCREASE_AMOUNT); }
-
-		API_INLINE uint32 TagMaxAddressUpgrade()	{ return Enums::k_tag_base_address + TagAllocationSizeUpgrade(); }
 	};
 };
 

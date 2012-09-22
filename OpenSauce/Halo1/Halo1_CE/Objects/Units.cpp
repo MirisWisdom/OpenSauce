@@ -9,6 +9,8 @@
 
 #include "Game/GameState.hpp"
 #include "Memory/MemoryInterface.hpp"
+#include "Networking/MDP.hpp"
+#include "Networking/MessageDeltas.hpp"
 
 #include <TagGroups/Halo1/unit_definitions.hpp>
 #include "Objects/Objects.hpp"
@@ -44,6 +46,10 @@ namespace Yelo
 		{
 		}
 
+		void Dispose()
+		{
+		}
+
 #include "Objects/Units.GrenadeCounts.inl"
 		void InitializeForYeloGameState(bool enabled)
 		{
@@ -51,6 +57,7 @@ namespace Yelo
 			InitializeForYeloGameState_UnitDesiredZoomLevelRefs(enabled);
 			InitializeForYeloGameState_NumberOfUnitGrenadeTypes(enabled);
 			InitializeForYeloGameState_UnitGrenadeCounts(enabled);
+			InitializeForYeloGameState_MessageDeltaGrenadeCounts(enabled);
 		}
 
 	}; };

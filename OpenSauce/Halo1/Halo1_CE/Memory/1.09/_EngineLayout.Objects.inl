@@ -34,6 +34,8 @@
 	ENGINE_DPTR(t_cluster_noncollideable_object_reference_data, cluster_noncollideable_object_reference,0x7FB3C4, 0x6C6A04);
 	ENGINE_DPTR(t_noncollideable_object_cluster_reference_data, noncollideable_object_cluster_reference,0x7FB3C8, 0x6C6A08);
 
+	ENGINE_PTR(size_t, object_memory_pool_allocation_size,						0x4F875D+0x30, 0x4DF74D+0x30);
+
 	FUNC_PTR(OBJECTS_UPDATE_HOOK,						0x4F8D6E, 0x4DFB10);
 	FUNC_PTR(OBJECTS_GARBAGE_COLLECTION,				0x4FD8F0, 0x4E47E0);
 	FUNC_PTR(OBJECT_DAMAGE_OBJECT_BODY_HOOK,			0x4F34AA, 0x4DC70A);

@@ -13,6 +13,7 @@
 #include "TagGroups/yelo_definitions.hpp"
 #include "TagGroups/tag_database_definitions.hpp"
 
+#include "Engine/GrenadeTypesUpgrade.hpp"
 #include "Engine/Scripting.hpp"
 #include "Yelo/MemoryFixups.hpp"
 
@@ -57,6 +58,7 @@ namespace Yelo
 	void Initialize()
 	{
 		c_memory_fixups::Initialize();
+		Objects::Items::GrenadeTypesUpgradeInitialize();
 		Scripting::Initialize();
 #if PLATFORM_ID != PLATFORM_TOOL
 		Scripting::InitializeCustomScriptingDefinitions();
@@ -81,6 +83,7 @@ namespace Yelo
 
 		TagGroups::YeloDefinitionsDispose();
 		Scripting::Dispose();
+		Objects::Items::GrenadeTypesUpgradeDispose();
 		c_memory_fixups::Dispose();
 	}
 };

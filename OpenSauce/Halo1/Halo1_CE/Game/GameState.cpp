@@ -14,11 +14,8 @@
 #include "Common/CmdLineSettings.hpp"
 #include "Game/ScriptLibrary.hpp"
 #include "Game/EngineFunctions.hpp"
+#include "Game/GameBuildNumber.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
-
-#if !PLATFORM_IS_DEDI // for ServerList.inl
-	#include "Networking/GameSpyApi.hpp"
-#endif
 
 #include "TagGroups/TagGroups.hpp"
 #include "TagGroups/project_yellow_definitions.hpp"
@@ -35,7 +32,6 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_GAME_GAME_STATE
 #include "Memory/_EngineLayout.inl"
 
-#include "Game/GameState.BuildNumber.inl"
 #if !PLATFORM_IS_DEDI
 	#include "Game/GameState.ServerList.inl"
 #endif
@@ -100,8 +96,6 @@ namespace Yelo
 		datum_index ScenarioIndex()										PTR_IMP_GET(global_scenario_index);
 		int16 StructureBspIndex()										PTR_IMP_GET(structure_bsp_index);
 		byte* DeveloperMode()											PTR_IMP_GET2(developer_mode);
-		char* GameBuildString()											PTR_IMP_GET2(game_build_version);
-		char* GamespyGameBuildString()									PTR_IMP_GET2(game_build_version_gamespy);
 		static bool* TransportDumping()									PTR_IMP_GET2(transport_dumping);
 		bool DevmodeEnabled()											PTR_IMP_GET(devmode_enabled);
 
@@ -137,13 +131,16 @@ namespace Yelo
 		{
 
 			MemoryUpgradesInitialize();
+#if 0 // NOT DONE YET!
+			InitializeForYeloGameState(true);
+#endif
 
 #ifdef API_DEBUG
 			*GameState::DeveloperMode() = Enums::k_developer_mode_level_debug_output; // make console messages appear
 
 			// increment the game build by one so all games (hosted or browsed) aren't
 			// from the normal, non-Yelo, game pool.
-			GameBuildString()[7] += 7;
+			BuildNumber::GameBuildString()[7] += 7;
 #endif
 
 			*TransportDumping() = false;
@@ -219,6 +216,16 @@ namespace Yelo
 			for(int32 x = 0; x <= component_count; x++)
 				if( components[x].Update != NULL )
 					components[x].Update(delta_time);
+		}
+
+		void InitializeForYeloGameState(bool enabled)
+		{
+			Yelo::Main::s_project_component* components;
+			const int32 component_count = Yelo::Main::GetProjectComponents(components);
+
+			for(int32 x = 0; x <= component_count; x++)
+				if( components[x].InitializeForYeloGameState != NULL )
+					components[x].InitializeForYeloGameState(enabled);
 		}
 
 		void InitializeScripting()
