@@ -18,6 +18,9 @@ namespace Yelo
 		enum {
 			k_ipv4_address_length = 4,
 			k_ipv6_address_length = 16,
+
+			k_message_highest_priority = 0,
+			k_message_lowest_priority = 9,
 		};
 
 		enum bitstream_mode : long_enum
@@ -31,8 +34,9 @@ namespace Yelo
 			_game_connection_local,
 			_game_connection_network_client,
 			_game_connection_network_server,
+			_game_connection_film_playback,
 
-			_game_connection = 4,
+			_game_connection,
 		};
 
 		enum transport_type : byte_enum
@@ -56,6 +60,21 @@ namespace Yelo
 			_transport_rejection_code_game_is_closed,
 			_transport_rejection_code_blacklisted_machine,
 			_transport_rejection_code,
+		};
+
+		enum network_connection_class : long_enum
+		{
+			_network_connection_class_0,
+			_network_connection_class_1,
+			_network_connection_class_2,
+			_network_connection_class_3,
+			_network_connection_class_4,
+			_network_connection_class_5,
+			_network_connection_class_6,
+			_network_connection_class_7,
+			_network_connection_class_8,
+
+			_network_connection_class,
 		};
 
 		enum network_game_server_state : _enum
@@ -88,6 +107,13 @@ namespace Yelo
 			_network_game_generic_state,
 		};
 
+		enum network_messsage_type
+		{
+			_network_messsage_type_message, // 'old' packets
+			_network_messsage_type_message_delta,
+
+			_network_messsage_type,
+		};
 		// Old halo packets
 		enum message_type
 		{
@@ -98,9 +124,11 @@ namespace Yelo
 			_message_server_new_client_challenge, // new
 			_message_server_machine_accepted,
 			_message_server_machine_rejected,
+			// Makes the client set its state to _network_game_client_state_postgame
 			_message_server_game_is_ending_holdup, // new
 			_message_server_game_settings_update,
 			_message_server_pregame_countdown,
+			// always written to local connection
 			_message_server_begin_game,
 			_message_server_graceful_game_exit_pregame,
 			_message_server_pregame_keep_alive,
@@ -130,6 +158,16 @@ namespace Yelo
 			_message_client_switch_to_pregame,
 			_message_client_graceful_game_exit_postgame,
 			_message_type,
+		};
+	};
+
+	namespace Flags
+	{
+		enum network_connection_flags
+		{
+			_connection_create_server_bit,
+			_connection_create_clientside_client_bit,
+			_connection_create_serverside_client_bit,
 		};
 	};
 
@@ -202,32 +240,73 @@ namespace Yelo
 			void* bit_in_byte;	// 0x10 bitNum in torque
 			void* last_bit;		// 0x14 last bit where we can write to
 			int32 size;			// 0x18 size of buffer
-			PAD32;				// 0x1C bool error?
-		};
+		}; BOOST_STATIC_ASSERT( sizeof(s_bitstream) == 0x1C );
 
 
-		struct s_network_connection : TStructImpl(0xAE4)
+		struct s_message_stream
+		{
+			enum { k_protocol_bits = 0x2880 };
+
+			s_bitstream bitstream;
+			bool empty;
+			byte buffer[k_protocol_bits / (sizeof(byte)*8)]; // 0x1D
+			PAD24;
+			PAD32;
+		}; BOOST_STATIC_ASSERT( sizeof(s_message_stream) == 0x534 );
+
+		struct s_connection_message // made up name, nothing to verify name with
+		{
+			bool has_data; PAD24; // engine sets this to false after the message stream has been flushed
+			int32 priority;
+			int32 headerMaxSizeInBytes;
+			int32 dataMaxSizeInBytes;
+			int32 header_size_in_bits;
+			int32 data_size_in_bits;
+			byte* header_buffer;
+			byte* data_buffer;
+		}; BOOST_STATIC_ASSERT( sizeof(s_connection_message) == 0x20 );
+		struct s_connection_prioritization_buffer
+		{
+			int32 numMessages;				// 0xA78
+			s_connection_message* messages;	// 0xA7C
+			UNKNOWN_TYPE(uint32);			// 0xA80
+			UNKNOWN_TYPE(uint32);			// 0xA84, initialize by GetTickCount
+		}; BOOST_STATIC_ASSERT( sizeof(s_connection_prioritization_buffer) == 0x10 );
+
+		struct s_network_server_connection;
+		struct s_network_connection : TStructImpl(0xA9C)
 		{
 			TStructGetPtrImpl(s_transport_endpoint*, ReliableEndpoint, 0x0);
-			// 0x4, bool?
-			TStructGetPtrImpl(Memory::s_circular_queue*, ReliableIncomingQueue, 0xC);
-			// 0x10, message stream?
-
+			TStructGetPtrImpl(uint32, KeepAliveTime, 0x4);
+			// 0x8, function pointer, void (*)(void* endpoint, long_enum rejection_code)
+			TStructGetPtrImpl(Memory::s_circular_queue*, IncomingQueue, 0xC);
+			TStructGetPtrImpl(s_message_stream, ReliableOutgoingSled, 0x10);
+			TStructGetPtrImpl(s_message_stream, UnreliableOutgoingSled, 0x544);
 			// 0xA78, prioritization_buffer.numMessages
 			// 0xA7C, prioritization_buffer.messages, array of sizeof(32) structure
+				// 0x0, bool
+				// 0x4, connection class
 				// 0x8, headerMaxSizeInBytes
 				// 0xC, dataMaxSizeInBytes
-				// 0x14, s_bitstream*
-
-			// 0xA80, int32
+				// 0x10, s_message_stream*
+				// 0x14, s_message_stream*
+				// 0x18, byte* buffer
+			// 0xA80, uint32
+			// 0xA84, initialize by GetTickCount
 			// 0xA88, connection_class
-			// BIT(0) - _connection_create_server_bit
-			TStructGetPtrImpl(long_flags, Flags, 0xA8C);
-			// 0xA98, bool
-			TStructGetPtrImpl(s_transport_endpoint_set, EndpointSet, 0xA9C );
-			TStructGetPtrImpl(s_network_connection*, ClientList, 0xAA0 ); // [16]
-			// 0xAE0, pad here or value?
-			TStructGetPtrImpl(bool, HasLocalConnection, 0xAE1 );
+			TStructGetPtrImpl(long_flags, Flags, 0xA8C); // Flags::network_connection_flags
+			// 0xA90 unused
+			TStructGetPtrImpl(s_network_server_connection*, ServerConnection, 0xA94);
+			TStructGetPtrImpl(bool, IsLocalConnection, 0xA98);
+		};
+		struct s_network_server_connection : TStructImpl(0xAE4)
+		{
+			TStructGetPtrImpl(s_network_connection, Connection, 0x0);
+			TStructGetPtrImpl(s_transport_endpoint_set*, EndpointSet, 0xA9C);
+			TStructGetPtrImpl(s_network_connection*, ClientList, 0xAA0); // [16]
+			//TStructGetPtrImpl(bool, , 0xAE0);
+			TStructGetPtrImpl(bool, HasLocalConnection, 0xAE1);
+			//PAD24
 		};
 
 		struct s_network_machine : TStructImpl( PLATFORM_VALUE(0x60, 0xEC) )
@@ -296,6 +375,16 @@ namespace Yelo
 		}; BOOST_STATIC_ASSERT( sizeof(s_network_game) == 0x3F0 );
 
 
+		struct s_countdown_timer
+		{
+			int32 time_remaining;
+			int32 relative_to; // system tick when time remaining was set
+			int32 start_time;
+			UNKNOWN_TYPE(bool);
+			bool pause_countdown;
+			UNKNOWN_TYPE(bool);
+			PAD8;
+		}; BOOST_STATIC_ASSERT( sizeof(s_countdown_timer) == 0x10 );
 		struct s_network_game_server : TStructImpl( PLATFORM_VALUE(0xA50, 0xA50+0x8C0) )
 		{
 			enum {
@@ -303,7 +392,7 @@ namespace Yelo
 				_server_is_dedicated = 2,
 			};
 
-			TStructGetPtrImpl(s_network_connection*, Connection, 0x0);
+			TStructGetPtrImpl(s_network_server_connection*, Connection, 0x0);
 			TStructGetImpl(Enums::network_game_server_state, State, 0x4);
 			// game_is_open = FLAG(0)
 			// server_is_dedicated = FLAG(2) // doesn't show sv_status info when not set
@@ -316,7 +405,7 @@ namespace Yelo
 			TStructGetPtrImpl(int32, NextUpdateNumber, PLATFORM_VALUE(0x9F8, 0x9F8+0x8C0) );
 			TStructGetPtrImpl(int32, TimeOfLastKeepAlive, PLATFORM_VALUE(0x9FC, 0x9FC+0x8C0) );
 			TStructGetPtrImpl(int32, TimeOfFirstClientLoadingCompletion, PLATFORM_VALUE(0xA04, 0xA04+0x8C0) );
-			// 0xA15 bool
+			TStructGetPtrImpl(s_countdown_timer, CountdownTimer, PLATFORM_VALUE(0xA08, 0xA08+0x8C0) );
 			// 0xA38 bool
 			TStructGetPtrImpl(bool, GameHasStarted, PLATFORM_VALUE(0xA39, 0xA39+0x8C0) );
 			// 0xA3A bool
@@ -324,7 +413,7 @@ namespace Yelo
 			// 0xA4F bool
 			TStructGetPtrImpl(wchar_t, Password, PLATFORM_VALUE(0xA3C, 0xA3C+0x8C0) ); // [8]
 
-			// bool pause_countdown; // 0xA15
+			// 0xAF4 bool
 
 			bool IsDedi() { return TEST_FLAG(*GetFlags(), _server_is_dedicated); }
 		};
@@ -351,6 +440,7 @@ namespace Yelo
 			// 0xF21 bool
 			// PAD16?
 			// 0xF24 0x30 byte data structure
+			// 0xF50 int32
 			// 0xF54 0x34 byte data structure
 
 			struct s_player_update_history
@@ -427,27 +517,20 @@ namespace Yelo
 		struct network_update_globals
 		{
 			struct _local_player {
-				// 15
-				int32 update_rate;
-				// 15
-				int32 vehicle_update_rate;
+				int32 update_rate;						// 15
+				int32 vehicle_update_rate;				// 15
 			}local_player;
 
 			struct _remote_player {
-				// 180
-				int32 action_baseline_update_rate;
-				// 30
-				int32 position_update_rate;
-				// 90
-				int32 position_baseline_update_rate;
-				// 15
-				int32 vehicle_update_rate;
-				// 90, not used
-				int32 vehicle_baseline_update_rate;
+				int32 action_baseline_update_rate;		// 180
+				int32 position_update_rate;				// 30
+				int32 position_baseline_update_rate;	// 90
+				int32 vehicle_update_rate;				// 15
+				int32 vehicle_baseline_update_rate;		// 90, not used
 			}remote_player;
 
-			bool use_super_remote_players_action_update; // true
-			bool use_new_vehicle_update_scheme; //true
+			bool use_super_remote_players_action_update;// true
+			bool use_new_vehicle_update_scheme;			// true
 		};
 		// Network settings dealing with the rate of updating certain data
 		network_update_globals* UpdateSettings();
@@ -476,6 +559,52 @@ namespace Yelo
 
 		// Gets the network game client pointer
 		s_network_game_client* NetworkGameClient();
+
+
+		// Writes [data_size_in_bits] of the packet buffer to the connection
+		// returns true if it was successful
+		bool ConnectionWrite(s_network_connection& connection, 
+			const void* data, size_t data_size_in_bits,
+			const void* header, size_t header_size_in_bits,
+			bool unbuffered = false, bool flush_queue = false, int32 buffer_priority = Enums::k_message_highest_priority);
+
+		bool ClientSendMessageToServer(
+			const void* data, size_t data_size_in_bits, 
+			Enums::network_messsage_type message_type = Enums::_network_messsage_type_message_delta, 
+			bool unbuffered = false, bool flush_queue = false, int32 buffer_priority = Enums::k_message_highest_priority);
+
+		bool ServerSendRejectionMessage(s_network_player& rejected_player, Enums::transport_rejection_code code);
+		bool ServerHoldupNewClient(s_network_machine& client_machine);
+
+		// Sends [data] of the packet buffer to [machine_index]
+		bool SvSendMessageToMachine(int32 machine_index, 
+			const void* data, size_t data_size_in_bits, 
+			Enums::network_messsage_type message_type = Enums::_network_messsage_type_message_delta, 
+			BOOL unbuffered = false, BOOL flush_queue = false, BOOL write_to_local_connection = false, 
+			int32 buffer_priority = Enums::k_message_highest_priority);
+
+		// Sends [data] of the packet buffer to all machines
+		bool SvSendMessageToAll(
+			const void* data, size_t data_size_in_bits, 
+			Enums::network_messsage_type message_type = Enums::_network_messsage_type_message_delta, 
+			BOOL unbuffered = false, BOOL flush_queue = false, BOOL write_to_local_connection = false, 
+			int32 buffer_priority = Enums::k_message_highest_priority,
+			BOOL ingame_only = false);
+
+		// Sends [data] of the packet buffer to all machines ingame
+		inline bool SvSendMessageToAllIngame(
+			const void* data, size_t data_size_in_bits, 
+			Enums::network_messsage_type message_type = Enums::_network_messsage_type_message_delta, 
+			BOOL unbuffered = false, BOOL flush_queue = false, BOOL write_to_local_connection = false, 
+			int32 buffer_priority = Enums::k_message_highest_priority)
+		{
+			return SvSendMessageToAll(
+				data, data_size_in_bits, 
+				message_type, 
+				unbuffered, flush_queue, write_to_local_connection, 
+				buffer_priority, 
+				true);
+		}
 
 
 		API_INLINE Enums::network_game_generic_state GetNetworkGameState()

@@ -161,7 +161,7 @@ namespace Yelo
 		// Special yelo data used for player datums when running as a server
 		struct s_player_yelo_server_data
 		{
-			static const size_t k_max_struct_size = 0x38;
+			enum { k_max_struct_size = 0x38 };
 
 			struct _rcon_access {
 				uint32 last_bad_password_time;		// Game tick of when the last failure took place
@@ -201,7 +201,7 @@ namespace Yelo
 			TStructGetPtrImpl(datum_index, AutoAimTarget, 0x40); // biped_index
 			TStructGetPtrImpl(uint32, AutoAimUpdateTime, 0x44);
 			TStructGetPtrImpl(Networking::s_network_player, NetworkPlayer, 0x48);
-			TStructGetPtrImpl(uint16, PowerupTimes, 0x68); // int16[Enums::_player_powerup]
+			TStructGetPtrImpl(int16, PowerupTimes, 0x68); // int16[Enums::_player_powerup]
 			TStructGetPtrImpl(real, Speed, 0x6C);
 			TStructGetPtrImpl(int32, SourceTeleporterNetgameIndex, 0x70); // index to a netgame flag in the scenario, or NONE
 			struct s_game_engine_state_message
@@ -216,7 +216,7 @@ namespace Yelo
 			TStructGetPtrImpl(s_game_engine_state_message, EngineStateMessage, 0x74);
 			TStructGetPtrImpl(uint32, LastDeathTime, 0x84); // game tick of the last time this player was killed
 			TStructGetPtrImpl(datum_index, TargetPlayerIndex, 0x88); // player index of the slayer target for this player
-			TStructGetPtrImpl(boolean, OddManOut, 0x8C);
+			TStructGetPtrImpl(bool, OddManOut, 0x8C);
 			// PAD24
 			// 0x90 UNUSED_TYPE(int32)
 			// 0x94 UNUSED_TYPE(int16)
