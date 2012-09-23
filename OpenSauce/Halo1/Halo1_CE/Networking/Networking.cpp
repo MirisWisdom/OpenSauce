@@ -143,15 +143,188 @@ namespace Yelo
 
 			// NOTE: Uncomment these if you wish to detect
 			// when players enter and leave
-			//Memory::WriteRelativeCall(OnPlayerJoinDelegate, 
-			//	GET_FUNC_VPTR(NETWORK_GAME_SERVER_ADD_PLAYER_TO_GAME__HOOK_ADD_PLAYER));
-			//Memory::WriteRelativeCall(OnPlayerExitDelegate, 
-			//	GET_FUNC_VPTR(CLIENT_MACHINE_CLEANUP__HOOK_REMOVE_PLAYER));
+#if !PLATFORM_DISABLE_UNUSED_CODE
+			Memory::WriteRelativeCall(OnPlayerJoinDelegate, 
+				GET_FUNC_VPTR(NETWORK_GAME_SERVER_ADD_PLAYER_TO_GAME__HOOK_ADD_PLAYER));
+			Memory::WriteRelativeCall(OnPlayerExitDelegate, 
+				GET_FUNC_VPTR(CLIENT_MACHINE_CLEANUP__HOOK_REMOVE_PLAYER));
+#endif
 		}
 
 		void Dispose()
 		{
 			MessageDeltas::Dispose();
+		}
+
+		static API_FUNC_NAKED bool NetworkConnectionWrite(s_network_connection& connection,
+			const void* data, size_t data_size_in_bits,
+			const void* header, size_t header_size_in_bits,
+			BOOL unbuffered, BOOL flush_queue, int32 buffer_priority)
+		{
+			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(NETWORK_CONNECTION_WRITE);
+
+			API_FUNC_NAKED_START()
+				push	edi
+				push	ebx
+
+				push	buffer_priority
+				push	flush_queue
+				push	unbuffered
+				push	header_size_in_bits
+				push	header
+				mov		ebx, data_size_in_bits
+				push	data
+				mov		edi, connection
+				call	CALL_ADDR
+				add		esp, 4 * 6
+
+				pop		ebx
+				pop		edi
+			API_FUNC_NAKED_END(8)
+		}
+		bool ConnectionWrite(s_network_connection& connection, 
+			const void* data, size_t data_size_in_bits,
+			const void* header, size_t header_size_in_bits,
+			bool unbuffered, bool flush_queue, int32 buffer_priority)
+		{
+			return NetworkConnectionWrite(connection, 
+				data, data_size_in_bits, 
+				header, header_size_in_bits, 
+				unbuffered, flush_queue, buffer_priority);
+		}
+
+		bool ClientSendMessageToServer(
+			const void* data, size_t data_size_in_bits, 
+			Enums::network_messsage_type message_type, 
+			bool unbuffered, bool flush_queue, int32 buffer_priority)
+		{
+			using namespace Networking;
+
+			s_network_game_client* client = NetworkGameClient();
+			s_network_connection& client_connection = **client->GetConnection();
+			long_flags flags = *client_connection.GetFlags();
+
+			if(!TEST_FLAG(flags, Flags::_connection_create_server_bit))
+			{
+				Enums::network_messsage_type header = Enums::_network_messsage_type_message_delta;
+				return ConnectionWrite(client_connection, 
+					data, data_size_in_bits,
+					&message_type, 1,
+					unbuffered, flush_queue, buffer_priority);
+			}
+
+			return false;
+		}
+
+		API_FUNC_NAKED bool ServerSendRejectionMessage(s_network_player& rejected_player, Enums::transport_rejection_code code)
+		{
+			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(NETWORK_GAME_SERVER_SEND_REJECTION_MESSAGE);
+
+			API_FUNC_NAKED_START()
+				push	esi
+
+				call	IsServer
+				test	al, al
+				jz		not_a_server // al will be our return value, which would be 0 if this jmp is hit
+
+				call	NetworkGameServer
+				mov		esi, eax
+
+				mov		ecx, code
+				mov		eax, rejected_player
+#if PLATFORM_IS_USER
+				push	esi
+#endif
+				call	CALL_ADDR
+#if PLATFORM_IS_USER
+				add		esp, 4 * 1
+#endif
+
+not_a_server:
+				pop		esi
+			API_FUNC_NAKED_END(2)
+		}
+
+		API_FUNC_NAKED bool ServerHoldupNewClient(s_network_machine& client_machine)
+		{
+			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(NETWORK_GAME_SERVER_SEND_REJECTION_MESSAGE);
+
+			API_FUNC_NAKED_START()
+				call	IsServer
+				test	al, al
+				jz		not_a_server
+
+				push	client_machine
+				// function takes the server as a parameter in debug builds, but param is unreferenced in release builds
+				call	CALL_ADDR
+				add		esp, 4 * 1
+not_a_server:
+			API_FUNC_NAKED_END(1)
+		}
+
+		API_FUNC_NAKED bool SvSendMessageToMachine(int32 machine_index, 
+			const void* data, size_t data_size_in_bits, 
+			Enums::network_messsage_type message_type, 
+			BOOL unbuffered, BOOL flush_queue, BOOL write_to_local_connection, 
+			int32 buffer_priority)
+		{
+			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(NETWORK_GAME_SERVER_SEND_MESSAGE_TO_MACHINE);
+
+			API_FUNC_NAKED_START()
+				push	esi
+
+				push	buffer_priority
+				push	write_to_local_connection
+				push	flush_queue
+				push	unbuffered
+				push	data_size_in_bits
+				push	data
+				push	message_type
+				call	NetworkGameServer
+				mov		esi, eax
+				mov		eax, machine_index
+				call	CALL_ADDR
+				add		esp, 4 * 7
+
+				pop		esi
+			API_FUNC_NAKED_END(8)
+		}
+
+		API_FUNC_NAKED bool SvSendMessageToAll(
+			const void* data, size_t data_size_in_bits, 
+			Enums::network_messsage_type message_type, 
+			BOOL unbuffered, BOOL flush_queue, BOOL write_to_local_connection, 
+			int32 buffer_priority, 
+			BOOL ingame_only)
+		{
+			static const uintptr_t CALL_ALL_MACHINES = GET_FUNC_PTR(NETWORK_GAME_SERVER_SEND_MESSAGE_TO_ALL_MACHINES);
+			static const uintptr_t CALL_ALL_MACHINES_INGAME = GET_FUNC_PTR(NETWORK_GAME_SERVER_SEND_MESSAGE_TO_ALL_MACHINES_INGAME);
+
+			API_FUNC_NAKED_START()
+				push	ebp
+
+				push	buffer_priority
+				push	write_to_local_connection
+				push	flush_queue
+				push	unbuffered
+				push	data
+				push	message_type
+				call	NetworkGameServer
+				mov		ecx, eax
+				mov		eax, data_size_in_bits
+
+				mov		ebp, ingame_only
+				test	ebp, ebp
+				jnz		all_machines_ingame
+				call	CALL_ALL_MACHINES
+				jmp		cleanup
+all_machines_ingame:
+				call	CALL_ALL_MACHINES_INGAME
+cleanup:
+				add		esp, 4 * 6
+
+				pop		ebp
+			API_FUNC_NAKED_END(8)
 		}
 	};
 };

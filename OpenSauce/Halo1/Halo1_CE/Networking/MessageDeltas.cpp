@@ -14,6 +14,13 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum {
+			k_mdp_packet_buffer_sent_data_size_in_bits = 0x7FF8,
+		};
+	};
+
 	namespace MessageDeltas
 	{
 #define __EL_INCLUDE_ID			__EL_INCLUDE_NETWORKING
@@ -70,6 +77,28 @@ namespace Yelo
 			// need a method to hook network_game_server_handle_message_delta_message so we can intercept client based packets
 			Memory::WriteRelativeCall(&NetworkGameClientHandleMessageDeltaMessageBodyEx, GET_FUNC_VPTR(NETWORK_GAME_CLIENT_HANDLE_MESSAGE_DELTA_MESSAGE_BODY_CALL));
 		}
+
+
+		static bool NetworkGameClientGameSettingsUpdatedHook(Networking::s_network_game_client* client, const Networking::s_network_game* settings)
+		{
+			return true;
+		}
+		static API_FUNC_NAKED bool PLATFORM_API NetworkGameClientGameSettingsUpdatedCallHook(const Networking::s_network_game* settings)
+		{
+			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(NETWORK_GAME_CLIENT_GAME_SETTINGS_UPDATED);
+
+			__asm {
+				push	ebx
+				call	CALL_ADDR
+				test	al, al
+				jz		skip_hook
+				push	settings
+				push	ebx // client
+				call	NetworkGameClientGameSettingsUpdatedHook
+skip_hook:
+				retn
+			}
+		}
 #endif
 
 		void Initialize()
@@ -77,7 +106,14 @@ namespace Yelo
 #ifndef YELO_NO_NETWORK
 
 			if(Enums::k_message_deltas_yelo_count > 0)
+			{
 				InitializeYeloMessageDeltaDefinitions();
+
+				Memory::WriteRelativeCall(NetworkGameClientGameSettingsUpdatedCallHook, 
+					GET_FUNC_VPTR(NETWORK_GAME_CLIENT_GAME_SETTINGS_UPDATED_CALL1)); // network_game_client_handle_message_server_game_settings_update
+				Memory::WriteRelativeCall(NetworkGameClientGameSettingsUpdatedCallHook, 
+					GET_FUNC_VPTR(NETWORK_GAME_CLIENT_GAME_SETTINGS_UPDATED_CALL2)); // network_game_data_from_network
+			}
 #endif
 		}
 
@@ -192,195 +228,83 @@ the_end:
 #pragma endregion
 
 
-#pragma region SvWrite
-		int32 SvWrite(int32 data_size_in_bits, int32 dont_bit_encode, int32 dont_flush)
+#pragma region MdpiEncode
+		API_FUNC_NAKED int32 MdpiEncode(long_enum mode, long_enum definition_type, 
+			const void* buffer, size_t buffer_size_in_bits, 
+			const void** headers, const void** datas, const void** baselines, 
+			int32 iterations, int32 unk)
 		{
-			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(NETWORK_GAME_SERVER_WRITE);
+			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(MDPI_ENCODE);
 
-			byte header_buffer = 1;
-			int32 shit = dont_bit_encode ? 3 : 2;
-
-			__asm {
-				push	shit
-				push	dont_flush
-				push	dont_bit_encode
-				push	1
-				lea		edi, header_buffer
-				push	edi
-				push	GET_PTR2(mdp_packet_buffer_sent_data)
-				mov		edi, GET_PTR2(global_network_game_server_data)
-				mov		edi, [edi] // get the game server's s_network_connection
-				mov		ebx, data_size_in_bits
-				call	TEMP_CALL_ADDR
-				add		esp, 4 * 6
-			}
-		}
-#pragma endregion
-
-#pragma region EncodeStateless
-		int32 EncodeStateless(long_enum mode, long_enum def_type, void** headers, void** datas, void** baselines, int32 iterations, int32 unk)
-		{
-			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(MDP_ENCODE_STATELESS);
-
-			__asm {
-				mov		edx, 0x7FF8
-				mov		eax, GET_PTR2(mdp_packet_buffer_sent_data)
+			API_FUNC_NAKED_START()
+				mov		edx, buffer_size_in_bits
+				mov		eax, buffer
 				push	unk
 				push	iterations
 				push	baselines
 				push	datas
 				push	headers
-				push	def_type
+				push	definition_type
 				push	mode
-				call	TEMP_CALL_ADDR
+				call	CALL_ADDR
 				add		esp, 4 * 7
-			}
+			API_FUNC_NAKED_END(9)
 		}
 #pragma endregion
+
+		int32 EncodeStateless(long_enum definition_type, 
+			const void* source_header, const void* source_data, 
+			void* buffer, size_t buffer_size_in_bits)
+		{
+			return MdpiEncode(Enums::_message_delta_mode_stateless, definition_type, 
+				buffer, buffer_size_in_bits, 
+				&source_header, &source_data);
+		}
+		int32 EncodeStateless(long_enum definition_type, 
+			const void* source_header, const void* source_data)
+		{
+			return EncodeStateless(definition_type,
+				source_header, source_data,
+				PacketBufferSent(), Enums::k_mdp_packet_buffer_sent_data_size_in_bits);
+		}
 
 #pragma region DecodeStatelessIterated
-		bool DecodeStatelessIterated(void* header, void* out_buffer)
+		API_FUNC_NAKED bool DecodeStatelessIterated(message_dependant_header* header, void* destination_data)
 		{
-			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(MDP_DECODE_STATELESS_ITERATED);
+			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(MDP_DECODE_STATELESS_ITERATED);
 
-			__asm {
+			API_FUNC_NAKED_START()
 				mov		eax, header
-				mov		ecx, out_buffer
-				call	TEMP_CALL_ADDR
-			}
+				mov		ecx, destination_data
+				call	CALL_ADDR
+			API_FUNC_NAKED_END(2)
 		}
 #pragma endregion
 
-#pragma region ClientSendMessageToServer
-		bool ClientSendMessageToServer(int32 data_size_in_bits)
+		API_FUNC_NAKED bool DecodeIncrementalIterated(message_dependant_header* header, void* destination_data, 
+			void* baseline_data, bool has_no_iteration_body)
 		{
-			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(NETWORK_CONNECTION_FLUSH_QUEUE);
-			static uint32 TEMP_CALL_ADDR2 = GET_FUNC_PTR(BITSTREAM_WRITE_BUFFER);
+			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(MDP_DECODE_INCREMENTAL_ITERATED);
 
-			bool result = false;
-
-			if(data_size_in_bits == 0) return result;
-
-			byte shit = 1;
-
-			__asm {
-				//push	edi
-				push	ebx // if this is uncommented, the compiler catches it, but if it is commented, it fucking doesn't....
-
-				mov		ebx, data_size_in_bits
-				inc		ebx
-
-				mov		eax, GET_PTR2(global_network_game_client_data)
-				mov		edi, [eax+0xADC]			// s_network_game_client->connection
-				test	byte ptr [edi+0xA8C], 1		// test for _connection_create_server_bit
-				jnz		_the_exit
-
-				//////////////////////////////////////////////////////////////////////////
-				// bitstream_get_bits_remaining
-				mov		ecx, [edi+0x1C]
-				mov		edx, [edi+0x24]
-				mov		eax, [edi+0x20]
-				lea		esi, [edi+0x10]
-				shl		ecx, 3
-				sub		edx, ecx
-				sub		edx, eax
-				inc		edx
-				//////////////////////////////////////////////////////////////////////////
-				cmp		ebx, edx
-				jle		bit_writes
-				push	1
-				push	edi
-				call	TEMP_CALL_ADDR // NETWORK_CONNECTION_FLUSH_QUEUE
-				add		esp, 4 * 2
-				test	al, al
-				jz		_the_exit
-
-bit_writes:
-				add		[edi+0xA80], ebx
-				push	1
-				lea		ecx, shit
-				mov		eax, esi
-				call	TEMP_CALL_ADDR2 // BITSTREAM_WRITE_BUFFER
+			API_FUNC_NAKED_START()
+				push	has_no_iteration_body
+				mov		edx, baseline_data
+				mov		eax, header
+				mov		ecx, destination_data
+				call	CALL_ADDR
 				add		esp, 4 * 1
-
-				push	data_size_in_bits
-				mov		ecx, GET_PTR2(mdp_packet_buffer_sent_data)
-				mov		eax, esi
-				mov		byte ptr [esi+0x1C], 0
-				call	TEMP_CALL_ADDR2
-				add		esp, 4 * 1
-				mov		byte ptr [esi+0x1C], 0
-
-				mov		result, TRUE
-_the_exit:
-				pop		ebx
-				//pop		edi
-			}
-
-			return result;
+			API_FUNC_NAKED_END(4)
 		}
-#pragma endregion
-
-#pragma region SvSendMessageToAll
-		bool SvSendMessageToAll(int32 data_size_in_bits, int32 dont_bit_encode, int32 dont_flush, int32 send_even_after_fail, int32 shit)
-		{
-			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(NETWORK_GAME_SERVER_SEND_MESSAGE_TO_ALL_MACHINES); // all machines in-game
-
-			if(shit == -1)
-				shit = dont_bit_encode ? 3 : 2;
-
-			__asm {
-				push	shit
-				push	send_even_after_fail // false = if fail, don't send
-				push	dont_flush
-				push	dont_bit_encode
-				push	GET_PTR2(mdp_packet_buffer_sent_data)
-				push	1 // new packet system, 0 for old packet system
-				mov		ecx, GET_PTR2(global_network_game_server_data)
-				mov		eax, data_size_in_bits
-				call	TEMP_CALL_ADDR
-				add		esp, 4 * 6
-			}
-		}
-#pragma endregion
-
-#pragma region SvSendMessageToMachine
-		bool SvSendMessageToMachine(int32 machine_index, int32 data_size_in_bits, int32 dont_bit_encode, int32 dont_flush, int32 send_even_after_fail, int32 shit)
-		{
-			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(NETWORK_GAME_SERVER_SEND_MESSAGE_TO_MACHINE);
-
-			if(shit == -1)
-				shit = dont_bit_encode ? 3 : 2;
-
-			__asm {
-				push	esi
-
-				push	shit
-				push	send_even_after_fail // false = if fail, don't send
-				push	dont_flush
-				push	dont_bit_encode
-				push	data_size_in_bits
-				push	GET_PTR2(mdp_packet_buffer_sent_data)
-				push	1
-				mov		eax, machine_index
-				mov		esi, GET_PTR2(global_network_game_server_data)
-				call	TEMP_CALL_ADDR
-				add		esp, 4 * 7
-
-				pop		esi
-			}
-		}
-#pragma endregion
 
 #pragma region DiscardIterationBody
-		void DiscardIterationBody(void* header)
+		API_FUNC_NAKED void DiscardIterationBody(message_dependant_header* header)
 		{
-			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(MDP_DISCARD_ITERATION_BODY);
+			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(MDP_DISCARD_ITERATION_BODY);
 
-			__asm {
+			API_FUNC_NAKED_START()
 				mov		eax, header
-				call	TEMP_CALL_ADDR
-			}
+				call	CALL_ADDR
+			API_FUNC_NAKED_END(1)
 		}
 #pragma endregion
 #endif

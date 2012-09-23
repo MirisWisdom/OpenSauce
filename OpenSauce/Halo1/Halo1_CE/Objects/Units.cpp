@@ -29,11 +29,11 @@ namespace Yelo
 
 		byte* s_unit_data::GetZoomLevel()
 		{
-			return !GameState::YeloGameStateEnabled() ? this->GetYeloZoomLevel() : this->GetZoomLevel_();
+			return !GameState::YeloGameStateEnabled() ? this->GetZoomLevel_() : this->GetYeloZoomLevel();
 		}
 		byte* s_unit_data::GetDesiredZoomLevel()
 		{
-			return !GameState::YeloGameStateEnabled() ? this->GetYeloDesiredZoomLevel() : this->GetDesiredZoomLevel_();
+			return !GameState::YeloGameStateEnabled() ? this->GetDesiredZoomLevel_() : this->GetYeloDesiredZoomLevel();
 		}
 	};
 

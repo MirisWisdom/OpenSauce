@@ -77,7 +77,8 @@ namespace Yelo
 			int32 message_size)
 		{
 			if(send_predicate == SendHudChatToEveryonePredicate)
-				return MessageDeltas::SvSendMessageToAll(message_size);
+				return MessageDeltas::SvSendMessageToAllIngame(message_size, 
+					true, false, true, 3);
 			else
 			{
 				Players::s_player_datum* src_player = Players::GetPlayerFromNumber(src_player_number);
@@ -93,7 +94,8 @@ namespace Yelo
 						!send_predicate(player, src_player, src_player_vehicle_index))
 						continue;
 
-					if(!MessageDeltas::SvSendMessageToMachine(player_machine_index, message_size))
+					if(!MessageDeltas::SvSendMessageToMachine(player_machine_index, message_size,
+						true, false, true, 3))
 					{
 						YELO_DEBUG_FORMAT("SendHudChatToPlayers failed for %S", player->GetNetworkPlayer()->name);
 					}
@@ -122,7 +124,7 @@ namespace Yelo
 
 		static bool SendHudChatClient(int32 message_size)
 		{
-			return MessageDeltas::ClientSendMessageToServer(message_size);
+			return MessageDeltas::ClientSendMessageToServer(message_size, true);
 		}
 #endif
 		void SendHudChat(Enums::hud_chat_type msg_type, wcstring message, byte src_player_number,
@@ -139,11 +141,9 @@ namespace Yelo
 				network_data.player_number = src_player_number;
 				network_data.message = message;
 
-				void* encode_data = &network_data;
 				int32 bits_encoded = MessageDeltas::EncodeStateless(
-					Enums::_message_delta_mode_stateless,
 					Enums::_message_delta_hud_chat,
-					NULL, &encode_data);
+					NULL, &network_data);
 
 				bool result = false;
 				if(bits_encoded <= 0)

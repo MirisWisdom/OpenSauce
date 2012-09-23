@@ -111,6 +111,14 @@ namespace Yelo
 		{
 			_race_type_normal,
 		};
+
+		enum game_engine_mode : long_enum
+		{
+			_game_engine_mode_active,
+			_game_engine_mode_postgame_delay,
+			_game_engine_mode_postgame_rasterize_delay,
+			_game_engine_mode_3,
+		};
 	};
 
 	namespace Flags
@@ -315,11 +323,11 @@ namespace Yelo
 		struct s_universal_variant
 		{
 			bool							teams;
-			PAD24;
+			PAD24;										// these three pad bytes are encoded in game settings update messages...
 			Flags::game_variant_flags		flags;
 			Enums::game_variant_goal_radar	goal_rader;
 			bool odd_man_out;
-			PAD24;
+			PAD24;										// these three pad bytes are encoded in game settings update messages...
 
 			int32							respawn_time_growth;
 			int32							respawn_time;
@@ -344,9 +352,12 @@ namespace Yelo
 
 		union s_game_engine_variant
 		{
-			PAD(0, sizeof(int32)*14);
+			// The message delta definition for this struct encodes this as a byte[], so everything is copied across the wire
+			enum { k_max_variant_size = 0x38 };
 
-			struct {
+			PAD(0, k_max_variant_size);
+
+			struct s_ctf {
 				bool assault;
 				PAD8; // unused...
 
@@ -356,14 +367,16 @@ namespace Yelo
 					int32 flag_type; // 1 = single
 				}flag;
 			}ctf;
+			BOOST_STATIC_ASSERT( sizeof(s_ctf) == 0x8 );
 
-			struct {
+			struct s_slayer {
 				bool death_handicap; // True: killed player's speed increases in magnitudes of one
 				bool kill_handicap; // True: killer's speed decreases in magnitudes of two
 				bool kill_in_order;
 			}slayer;
+			BOOST_STATIC_ASSERT( sizeof(s_slayer) == 0x3 );
 
-			struct {
+			struct s_oddball {
 				UNKNOWN_TYPE(bool);
 				PAD24;
 				Enums::oddball_carrier_speed ball_speed;
@@ -373,16 +386,20 @@ namespace Yelo
 				Enums::oddball_ball_type type;
 				int32 ball_count;
 			}oddball;
+			BOOST_STATIC_ASSERT( sizeof(s_oddball) == 0x18 );
 
-			struct {
+			struct s_king {
 				UNKNOWN_TYPE(bool);
 			}king;
+			//BOOST_STATIC_ASSERT( sizeof(s_king) == 0x0 );
 
-			struct {
+			struct s_race {
 				Enums::race_type race_type;
 				UNKNOWN_TYPE(int32); // enum...
 			}race;
-		}; BOOST_STATIC_ASSERT( sizeof(s_game_engine_variant) == 0x38 );
+			//BOOST_STATIC_ASSERT( sizeof(s_race) == 0x0 );
+
+		}; BOOST_STATIC_ASSERT( sizeof(s_game_engine_variant) == s_game_engine_variant::k_max_variant_size );
 
 		struct s_game_variant
 		{

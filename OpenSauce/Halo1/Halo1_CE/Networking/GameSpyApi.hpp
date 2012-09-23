@@ -123,7 +123,7 @@ namespace Yelo
 			void* socketErrorCallback;
 			void* sendDumpCallback;
 			void* receiveDumpCallback;
-			void* unrecongizedMessageCallback;
+			void* unrecognizedMessageCallback;
 			void* user_data; // 0x30, engine treats this as s_transport_endpoint*
 			int32 incomingBufferSize;
 			int32 outgoingBufferSize;
@@ -144,7 +144,16 @@ namespace Yelo
 
 			uint32 startTime, timeout;
 
-			PAD(0, sizeof(int32)*8);
+			int32 callbackLevel;
+			void* connectedCallback;
+			void* receivedCallback;
+			void* closedCallback;
+			void* pingCallback;
+
+			char* initialMessage;
+			int32 initialMessageLen;
+
+			void* user_data;
 
 			s_gamespy_buffer incomingBuffer, outgoingBuffer;
 			void* incomingBufferMessages;

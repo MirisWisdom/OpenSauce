@@ -134,15 +134,19 @@ namespace Yelo
 			_message_delta_weapon_update,
 			_message_delta_biped_update,
 			_message_delta_vehicle_update,
+			// always written to local connection
 			_message_delta_hud_add_item,
 			_message_delta_player_create,
+			// always written to local connection
 			_message_delta_player_spawn,
 			_message_delta_player_exit_vehicle,
 			_message_delta_player_set_action_result,
+			// always written to local connection
 			_message_delta_player_effect_start,
 			_message_delta_unit_kill,
 			_message_delta_client_game_update,
 			_message_delta_player_handle_powerup,
+			// always written to local connection
 			_message_delta_hud_chat,
 			_message_delta_slayer_update,
 			_message_delta_ctf_update,
@@ -417,8 +421,8 @@ namespace Yelo
 		struct message_dependant_header
 		{
 			decoding_information_data* decoding_information;
-			BOOL body_field_exists[16];
-			void* custom_header_destination;
+			bool body_field_exists[64];
+			void* custom_header_destination; // max size 0x84
 		}; BOOST_STATIC_ASSERT( sizeof(message_dependant_header) == 0x48 );
 
 

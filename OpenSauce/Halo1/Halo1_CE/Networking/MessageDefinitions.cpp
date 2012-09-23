@@ -101,12 +101,9 @@ namespace Yelo
 			MDP_STRUCT_NAME(test) test;
 			test.value = GameState::Physics()->gravity;
 
-			void* data = &test;
-
 			int32 bits_encoded = MessageDeltas::EncodeStateless(
-				Enums::_message_delta_mode_stateless,
 				Enums::_message_delta_test,
-				NULL, &data);
+				NULL, &test);
 			
 			if( bits_encoded <= 0 || !MessageDeltas::SvSendMessageToAll(bits_encoded) )
 			{
@@ -124,7 +121,7 @@ namespace Yelo
 		/* --- CUSTOM PACKET DEF POINTERS --- */
 		// TODO: Game will crash when a delta definition is left null (ie, unimplemented).
 
-		message_delta_definition* kYeloMessageDeltas[] = {
+		message_delta_definition* kYeloMessageDeltas[Enums::k_message_deltas_yelo_count+1] = {
 #if FALSE
 			NULL, // _message_delta_yelo_version
 			NULL, // _message_delta_yelo_game_state_update
@@ -144,7 +141,7 @@ namespace Yelo
 			NULL // EOL
 		};
 
-		const packet_decoder kYeloMessageDeltaDecoders[] = {
+		const packet_decoder kYeloMessageDeltaDecoders[Enums::k_message_deltas_yelo_count+1] = {
 #if FALSE
 			{FLAG(Enums::_message_deltas_new_client_bit), // _message_delta_yelo_version
 				MessageDeltaFromNetworkResultHandler<NullFromNetwork>},

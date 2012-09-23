@@ -20,11 +20,11 @@ namespace Yelo
 		struct s_message_delta_parameters
 		{
 			struct s_locality_reference_position {
-				uint32 bits_per_component_full;		// 25
+				uint32 bits_per_component_full;		// 25, beta used 20
 				uint32 bits_per_component_delta;	// 9
 				real delta_cutoff_distance;			// 8.0
 				real minimum_move_distance;			// 0.0099999998
-				uint32 bits_per_component_lan;		// 31
+				uint32 bits_per_component_lan;		// 31, this wasn't in the beta
 			}locality;
 
 			struct s_item_placement {
@@ -72,10 +72,49 @@ namespace Yelo
 		bool EnableNetworkingSteroids();
 
 #ifndef YELO_NO_NETWORK
-		// Writes [data_size_in_bits] of the packet buffer to the server connection
-		// returns the size in bits of the header
-		int32 SvWrite(int32 data_size_in_bits, 
-			int32 /*bool*/ dont_bit_encode = true, int32 /*bool*/ dont_flush = false);
+		inline bool ClientSendMessageToServer(
+			size_t data_size_in_bits,
+			bool unbuffered = false, bool flush_queue = false, int32 buffer_priority = Enums::k_message_highest_priority)
+		{
+			return Networking::ClientSendMessageToServer(
+				PacketBufferSent(), data_size_in_bits,
+				Enums::_network_messsage_type_message_delta, 
+				unbuffered, flush_queue, buffer_priority);
+		}
+
+		inline bool SvSendMessageToMachine(int32 machine_index, 
+			size_t data_size_in_bits, 
+			bool unbuffered = false, bool flush_queue = false, bool write_to_local_connection = false, 
+			int32 buffer_priority = Enums::k_message_highest_priority)
+		{
+			return Networking::SvSendMessageToMachine(machine_index,
+				PacketBufferSent(), data_size_in_bits,
+				Enums::_network_messsage_type_message_delta, 
+				unbuffered, flush_queue, write_to_local_connection, 
+				buffer_priority);
+		}
+		inline bool SvSendMessageToAll(
+			size_t data_size_in_bits, 
+			BOOL unbuffered = false, BOOL flush_queue = false, BOOL write_to_local_connection = false, 
+			int32 buffer_priority = Enums::k_message_highest_priority)
+		{
+			return Networking::SvSendMessageToAll(
+				PacketBufferSent(), data_size_in_bits,
+				Enums::_network_messsage_type_message_delta, 
+				unbuffered, flush_queue, write_to_local_connection, 
+				buffer_priority);
+		}
+		inline bool SvSendMessageToAllIngame(
+			size_t data_size_in_bits, 
+			BOOL unbuffered = false, BOOL flush_queue = false, BOOL write_to_local_connection = false, 
+			int32 buffer_priority = Enums::k_message_highest_priority)
+		{
+			return Networking::SvSendMessageToAllIngame(
+				PacketBufferSent(), data_size_in_bits,
+				Enums::_network_messsage_type_message_delta, 
+				unbuffered, flush_queue, write_to_local_connection, 
+				buffer_priority);
+		}
 
 		// [message_delta_mode]
 		// [message_delta]
@@ -84,27 +123,25 @@ namespace Yelo
 		// pointer array (0,1-n) for the base line updates for each of the datas
 		// # of iterations
 		// ?
-		int32 EncodeStateless(long_enum mode, long_enum def_type, void** headers, void** datas, 
-			void** baselines = NULL, int32 iterations = 1, int32 /*bool*/ unk = false);
+		int32 MdpiEncode(long_enum mode, long_enum definition_type, 
+			const void* buffer, size_t buffer_size_in_bits, 
+			const void** headers, const void** datas, const void** baselines = NULL, 
+			int32 iterations = 1, int32 /*bool*/ unk = false);
 
-		// Decodes the current data in the packet buffer, and puts the data into [header] if there is a header, and [out_buffer] for the main packet body
-		bool DecodeStatelessIterated(void* header, void* out_buffer);
+		int32 EncodeStateless(long_enum definition_type, 
+			const void* source_header, const void* source_data, 
+			void* buffer, size_t buffer_size_in_bits);
+		int32 EncodeStateless(long_enum definition_type, 
+			const void* source_header, const void* source_data);
 
-		//bool ConnectionFlush(int32 /*bool*/ unk = 1);
+		// Decodes the current data in the packet buffer, and puts the data into [header] if there is a header, and [destination_data] for the main packet body
+		bool DecodeStatelessIterated(message_dependant_header* header, void* destination_data);
 
-		// Sends [data_size_in_bits] of the packet buffer to the server
-		bool ClientSendMessageToServer(int32 data_size_in_bits);
-
-		// Sends [data_size_in_bits] of the packet buffer to all machines
-		bool SvSendMessageToAll(int32 data_size_in_bits, 
-			int32 /*bool*/ dont_bit_encode = true, int32 /*bool*/ dont_flush = false, int32 /*bool*/ send_even_after_fail = false, int32 shit = -1);
-
-		// Sends [data_size_in_bits] of the packet buffer to [machine_index]
-		bool SvSendMessageToMachine(int32 machine_index, int32 data_size_in_bits, 
-			int32 /*bool*/ dont_bit_encode = true, int32 /*bool*/ dont_flush = false, int32 /*bool*/ send_even_after_fail = false, int32 shit = -1);
+		bool DecodeIncrementalIterated(message_dependant_header* header, void* destination_data, 
+			void* baseline_data, bool has_no_iteration_body = false);
 
 		// This is called when in a decode function for a mdp type, the call to network_decode_message fails, so it removes the data sent to this machine
-		void DiscardIterationBody(void* header);
+		void DiscardIterationBody(message_dependant_header* header);
 #endif
 	};
 };
