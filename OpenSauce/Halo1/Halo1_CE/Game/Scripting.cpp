@@ -31,10 +31,6 @@ namespace Yelo
 
 		static void MemoryUpgradesInitialize()
 		{
-			//hs_allocate
-			//-1x k_maximum_hs_syntax_nodes_per_scenario_upgrade
-			//-2x k_total_scenario_hs_syntax_data_upgrade
-
 			for(int32 x = 0; x < NUMBEROF(K_MAX_HS_SYNTAX_NODES_PER_SCENARIO_UPGRADE_ADDRESS_LIST); x++)
 				*K_MAX_HS_SYNTAX_NODES_PER_SCENARIO_UPGRADE_ADDRESS_LIST[x] = Enums::k_maximum_hs_syntax_nodes_per_scenario_upgrade;
 			for(int32 x = 0; x < NUMBEROF(K_TOTAL_SCENARIO_HS_SYNTAX_DATA_UPGRADE_ADDRESS_LIST); x++)

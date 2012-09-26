@@ -7,7 +7,9 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <TagGroups/Halo1/global_definitions.hpp> // for game teams
+#include <blamlib/Halo1/game/game_globals.hpp> // for game teams
+#include <blamlib/Halo1/game/players.hpp>
+
 #include <TagGroups/Halo1/hud_definitions.hpp>
 
 namespace Yelo
@@ -131,7 +133,7 @@ namespace Yelo
 		}; BOOST_STATIC_ASSERT( sizeof(s_hud_unit_interface_unit) == 0x58 );
 		struct s_hud_unit_interface
 		{
-			s_hud_unit_interface_unit units[1]; // 0x0
+			s_hud_unit_interface_unit units[Enums::k_maximum_number_of_local_players]; // 0x0
 			long_flags flags; // 0x58, unit_interface_flags
 		}; BOOST_STATIC_ASSERT( sizeof(s_hud_unit_interface) == 0x5C );
 		s_hud_unit_interface*		HudUnitInterface();
@@ -175,7 +177,7 @@ namespace Yelo
 				s_nav_point nav_points[4];
 			};
 
-			s_local_player local_players[1];
+			s_local_player local_players[Enums::k_maximum_number_of_local_players];
 		}; BOOST_STATIC_ASSERT( sizeof(s_hud_nav_points) == 0x30 );
 		s_hud_nav_points*			HudNavPoints();
 
@@ -225,7 +227,7 @@ namespace Yelo
 			}; BOOST_STATIC_ASSERT( sizeof(s_local_player) == 0x568 );
 
 
-			s_local_player local_players[1];
+			s_local_player local_players[Enums::k_maximum_number_of_local_players];
 
 			struct {
 				UNKNOWN_TYPE(int32); // game time related
@@ -293,7 +295,7 @@ namespace Yelo
 		};
 		struct s_first_person_weapons : TStructImpl(0x1EA0)
 		{
-			s_first_person_weapon local_players[1];
+			s_first_person_weapon local_players[Enums::k_maximum_number_of_local_players];
 		};
 		s_first_person_weapons*		FirstPersonWeapons();
 

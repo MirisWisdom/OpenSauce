@@ -81,7 +81,7 @@ namespace Yelo
 		s_game_globals* GameGlobals()									DPTR_IMP_GET(game_globals);
 		s_game_time_globals* GameTimeGlobals()							DPTR_IMP_GET(game_time_globals);
 		s_game_allegiance_globals* GameAllegianceGlobals()				DPTR_IMP_GET(game_allegiance_globals);
-		s_scenario_globals* ScenarioGlobals()							DPTR_IMP_GET(scenario_globals);
+		Game::s_scenario_globals* ScenarioGlobals()						DPTR_IMP_GET(scenario_globals);
 
 
 		TagGroups::scenario* Scenario()									PTR_IMP_GET(global_scenario);

@@ -229,7 +229,7 @@ namespace Yelo
 			BanManager::Initialize();
 
 			// get the http root folder if the dedi will be serving files itself
-			char* http_root = NULL;
+			cstring http_root = NULL;
 			Engine::GetCmdLineParameter("-http_root", &http_root);
 			g_http_server_globals.m_flags.serve_files = (http_root != NULL);
 

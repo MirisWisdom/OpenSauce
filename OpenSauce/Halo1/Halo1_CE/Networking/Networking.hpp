@@ -11,90 +11,26 @@
 #include "Game/GameEngine.hpp"
 #include "Networking/GameSpyApi.hpp"
 
+#include <blamlib/Halo1/bungie_net/network/transport_address.hpp>
+#include <blamlib/Halo1/bungie_net/network/transport_endpoint_winsock.hpp>
+#include <blamlib/Halo1/bungie_net/network/transport_endpoint_set_winsock.hpp>
+#include <blamlib/Halo1/game/main.hpp>
+#include <blamlib/Halo1/game/players.hpp>
+#include <blamlib/Halo1/memory/bitstream.hpp>
+#include <blamlib/Halo1/networking/network_connection.hpp>
+#include <blamlib/Halo1/networking/network_client_manager.hpp>
+#include <blamlib/Halo1/networking/network_game_globals.hpp>
+#include <blamlib/Halo1/networking/network_game_manager.hpp>
+#include <blamlib/Halo1/networking/network_messages.hpp>
+#include <blamlib/Halo1/networking/network_server_manager.hpp>
+
 namespace Yelo
 {
 	namespace Enums
 	{
 		enum {
-			k_ipv4_address_length = 4,
-			k_ipv6_address_length = 16,
-
 			k_message_highest_priority = 0,
 			k_message_lowest_priority = 9,
-		};
-
-		enum bitstream_mode : long_enum
-		{
-			_bitstream_mode_write,
-			_bitstream_mode_read,
-		};
-
-		enum game_connection : _enum
-		{
-			_game_connection_local,
-			_game_connection_network_client,
-			_game_connection_network_server,
-			_game_connection_film_playback,
-
-			_game_connection,
-		};
-
-		enum transport_type : byte_enum
-		{
-			_transport_type_udp = 17,
-			_transport_type_tcp,
-
-			_transport_type_gamespy = 20, // I just pulled this name out of my ass
-		};
-
-		enum transport_rejection_code : long_enum
-		{
-			_transport_rejection_code_none,
-			_transport_rejection_code_unknown,
-			_transport_rejection_code_too_many_connection_attempts,
-			_transport_rejection_code_invalid_protocol,
-
-			_transport_rejection_code_version_too_old,
-			_transport_rejection_code_version_too_new,
-			_transport_rejection_code_game_is_full,
-			_transport_rejection_code_game_is_closed,
-			_transport_rejection_code_blacklisted_machine,
-			_transport_rejection_code,
-		};
-
-		enum network_connection_class : long_enum
-		{
-			_network_connection_class_0,
-			_network_connection_class_1,
-			_network_connection_class_2,
-			_network_connection_class_3,
-			_network_connection_class_4,
-			_network_connection_class_5,
-			_network_connection_class_6,
-			_network_connection_class_7,
-			_network_connection_class_8,
-
-			_network_connection_class,
-		};
-
-		enum network_game_server_state : _enum
-		{
-			_network_game_server_state_pregame,
-			_network_game_server_state_ingame,
-			_network_game_server_state_postgame,
-
-			_network_game_server_state,
-		};
-
-		enum network_game_client_state : _enum
-		{
-			_network_game_client_state_searching,
-			_network_game_client_state_joining,
-			_network_game_client_state_pregame,
-			_network_game_client_state_ingame,
-			_network_game_client_state_postgame,
-
-			_network_game_client_state,
 		};
 
 		enum network_game_generic_state : _enum // made this up for Yelo's code
@@ -106,372 +42,10 @@ namespace Yelo
 			_network_game_generic_state_unknown,
 			_network_game_generic_state,
 		};
-
-		enum network_messsage_type
-		{
-			_network_messsage_type_message, // 'old' packets
-			_network_messsage_type_message_delta,
-
-			_network_messsage_type,
-		};
-		// Old halo packets
-		enum message_type
-		{
-			_message_client_broadcast_game_search,
-			_message_client_ping,
-			_message_server_game_advertise,
-			_message_server_pong,
-			_message_server_new_client_challenge, // new
-			_message_server_machine_accepted,
-			_message_server_machine_rejected,
-			// Makes the client set its state to _network_game_client_state_postgame
-			_message_server_game_is_ending_holdup, // new
-			_message_server_game_settings_update,
-			_message_server_pregame_countdown,
-			// always written to local connection
-			_message_server_begin_game,
-			_message_server_graceful_game_exit_pregame,
-			_message_server_pregame_keep_alive,
-			_message_server_postgame_keep_alive,
-			_message_client_join_game_request,
-			_message_client_add_player_request_pregame,
-			_message_client_remove_player_request_pregame,
-			_message_client_settings_request,
-			_message_client_player_settings_request,
-			_message_client_game_start_request,
-			_message_client_graceful_game_exit_pregame,
-			_message_client_map_is_precached_pregame,
-			_message_server_game_update,
-			_message_server_add_player_ingame,
-			_message_server_remove_player_ingame,
-			_message_server_game_over,
-			_message_client_loaded,
-			_message_client_game_update,
-			_message_client_add_player_request_ingame,
-			_message_client_remove_player_request_ingame,
-			_message_client_graceful_game_exit_ingame, // new
-			_message_client_host_crashed_cry_for_help,
-			_message_client_join_new_host,
-			_message_server_reconnect, // new
-			_message_server_graceful_game_exit,
-			_message_client_remove_player_request_postgame,
-			_message_client_switch_to_pregame,
-			_message_client_graceful_game_exit_postgame,
-			_message_type,
-		};
-	};
-
-	namespace Flags
-	{
-		enum network_connection_flags
-		{
-			_connection_create_server_bit,
-			_connection_create_clientside_client_bit,
-			_connection_create_serverside_client_bit,
-		};
 	};
 
 	namespace Networking
 	{
-		struct s_transport_address
-		{
-			union
-			{
-				struct _ipv4 {
-					byte class_a;
-					byte class_b;
-					byte class_c;
-					byte class_d;
-				}ipv4;
-
-				struct _ipv6 {
-					int16 class_a;
-					int16 class_b;
-					int16 class_c;
-					int16 class_d;
-
-					int16 class_e;
-					int16 class_f;
-					int16 class_g;
-					int16 class_h;
-				}ipv6;
-
-				byte ip[Enums::k_ipv6_address_length];
-			};
-			int16 address_length;
-			int16 port;
-
-			int32 unknown;
-		}; BOOST_STATIC_ASSERT( sizeof(s_transport_address) == 0x18 );
-
-		struct s_transport_endpoint
-		{
-			s_gamespy_connection* gs_connection;
-			bool is_listening_endpoint;	// 0x4
-			UNKNOWN_TYPE(byte);			// 0x5, bool
-			PAD16;
-
-			SOCKET socket;				// 0x8, unused in PC, use gs_connection
-			byte_flags flags;			// 0xC
-			Enums::transport_type type;	// 0xD
-			int16 error_code;			// 0xE
-			Memory::s_circular_queue* received_data_queue;
-			int32 gamespy_log_column;
-			Enums::transport_rejection_code rejection_code;
-
-		}; BOOST_STATIC_ASSERT( sizeof(s_transport_endpoint) == 0x1C );
-
-		struct s_transport_endpoint_set
-		{
-			fd_set select_set;
-
-			s_transport_endpoint** ep_array;
-			int32 max_endpoints;
-			int32 count;
-			int32 array_cursor;
-		}; BOOST_STATIC_ASSERT( sizeof(s_transport_endpoint_set) == 0x114 );
-
-		struct s_bitstream
-		{
-			Enums::bitstream_mode mode;
-			void* buffer;		// 0x4
-			void* first_bit;	// 0x8 first bit where we can write to
-			void* byte_number;	// 0xC byte index in the buffer
-			void* bit_in_byte;	// 0x10 bitNum in torque
-			void* last_bit;		// 0x14 last bit where we can write to
-			int32 size;			// 0x18 size of buffer
-		}; BOOST_STATIC_ASSERT( sizeof(s_bitstream) == 0x1C );
-
-
-		struct s_message_stream
-		{
-			enum { k_protocol_bits = 0x2880 };
-
-			s_bitstream bitstream;
-			bool empty;
-			byte buffer[k_protocol_bits / (sizeof(byte)*8)]; // 0x1D
-			PAD24;
-			PAD32;
-		}; BOOST_STATIC_ASSERT( sizeof(s_message_stream) == 0x534 );
-
-		struct s_connection_message // made up name, nothing to verify name with
-		{
-			bool has_data; PAD24; // engine sets this to false after the message stream has been flushed
-			int32 priority;
-			int32 headerMaxSizeInBytes;
-			int32 dataMaxSizeInBytes;
-			int32 header_size_in_bits;
-			int32 data_size_in_bits;
-			byte* header_buffer;
-			byte* data_buffer;
-		}; BOOST_STATIC_ASSERT( sizeof(s_connection_message) == 0x20 );
-		struct s_connection_prioritization_buffer
-		{
-			int32 numMessages;				// 0xA78
-			s_connection_message* messages;	// 0xA7C
-			UNKNOWN_TYPE(uint32);			// 0xA80
-			UNKNOWN_TYPE(uint32);			// 0xA84, initialize by GetTickCount
-		}; BOOST_STATIC_ASSERT( sizeof(s_connection_prioritization_buffer) == 0x10 );
-
-		struct s_network_server_connection;
-		struct s_network_connection : TStructImpl(0xA9C)
-		{
-			TStructGetPtrImpl(s_transport_endpoint*, ReliableEndpoint, 0x0);
-			TStructGetPtrImpl(uint32, KeepAliveTime, 0x4);
-			// 0x8, function pointer, void (*)(void* endpoint, long_enum rejection_code)
-			TStructGetPtrImpl(Memory::s_circular_queue*, IncomingQueue, 0xC);
-			TStructGetPtrImpl(s_message_stream, ReliableOutgoingSled, 0x10);
-			TStructGetPtrImpl(s_message_stream, UnreliableOutgoingSled, 0x544);
-			// 0xA78, prioritization_buffer.numMessages
-			// 0xA7C, prioritization_buffer.messages, array of sizeof(32) structure
-				// 0x0, bool
-				// 0x4, connection class
-				// 0x8, headerMaxSizeInBytes
-				// 0xC, dataMaxSizeInBytes
-				// 0x10, s_message_stream*
-				// 0x14, s_message_stream*
-				// 0x18, byte* buffer
-			// 0xA80, uint32
-			// 0xA84, initialize by GetTickCount
-			// 0xA88, connection_class
-			TStructGetPtrImpl(long_flags, Flags, 0xA8C); // Flags::network_connection_flags
-			// 0xA90 unused
-			TStructGetPtrImpl(s_network_server_connection*, ServerConnection, 0xA94);
-			TStructGetPtrImpl(bool, IsLocalConnection, 0xA98);
-		};
-		struct s_network_server_connection : TStructImpl(0xAE4)
-		{
-			TStructGetPtrImpl(s_network_connection, Connection, 0x0);
-			TStructGetPtrImpl(s_transport_endpoint_set*, EndpointSet, 0xA9C);
-			TStructGetPtrImpl(s_network_connection*, ClientList, 0xAA0); // [16]
-			//TStructGetPtrImpl(bool, , 0xAE0);
-			TStructGetPtrImpl(bool, HasLocalConnection, 0xAE1);
-			//PAD24
-		};
-
-		struct s_network_machine : TStructImpl( PLATFORM_VALUE(0x60, 0xEC) )
-		{
-			TStructGetPtrImpl(s_network_connection*, Connection, 0x0);
-			TStructGetPtrImpl(int32, LastReceivedUpdateSequenceNumber, 0x4);
-			TStructGetPtrImpl(int32, StallStartTime, 0x8);
-			TStructGetPtrImpl(int16, MachineIndex, 0xC);
-			// BIT(0) - marked for removal
-			// BIT(1) - is_joined_to_game
-			// BIT(2) - game_loading_complete
-			// BIT(3) - is_precached
-			// BIT(4) - is holding up
-			TStructGetPtrImpl(word_flags, Flags, 0xE);
-
-			TStructGetPtrImpl(uint32, RemovalRejectTime, 0x14); // game time the removal was initiated
-			TStructGetPtrImpl(uint32, RemovalProcessTime, 0x18);// game time the removal will take effect
-
-			TStructGetPtrImpl(bool, HasPlayers, 0x50);
-
-			TStructGetPtrImpl(char, GsChallengeStr, 0x52); // char[7+1]
-			TStructGetPtrImpl(int32, GsMachineKey, 0x5C); // same value as gs_machine_data->unknown1
-
-#if PLATFORM_IS_DEDI
-			TStructGetPtrImpl(wchar_t, PlayerName, 0x60); // [12]
-			TStructGetPtrImpl(int32, PlayerNumber, 0x78);
-			TStructGetPtrImpl(int32, TeamIndex, 0x7C);
-			TStructGetPtrImpl(char, IpAddress, 0x80);
-			TStructGetPtrImpl(char, CdKey, 0xA0);
-#endif
-		};
-
-		struct s_network_map
-		{
-			int32 version;
-			char name[128];
-		}; BOOST_STATIC_ASSERT( sizeof(s_network_map) == 0x84 );
-
-		struct s_network_player
-		{
-			wchar_t name[12];			// 0x0
-			int16 primary_color_index;	// 0x18
-			int16 icon_index;			// 0x1A
-			sbyte machine_index;		// 0x1C
-			sbyte controller_index;		// 0x1D
-			// These values will be the same on the client as they are on the server, so 
-			// we can use them safely for player operations in multiplayer code
-			sbyte team_index;			// 0x1E
-			sbyte player_list_index;	// 0x1F
-		}; BOOST_STATIC_ASSERT( sizeof(s_network_player) == 0x20 );
-
-		struct s_network_game
-		{
-			wchar_t name[64];						// 0x0
-			s_network_map map;						// 0x80
-			GameEngine::s_game_variant game_variant;// 0x104
-			byte _unused_game_engine;				// 0x1DC
-			byte maximum_players;					// 0x1DD
-			int16 difficulty_level;					// 0x1DE
-			int16 player_count;						// 0x1E0
-			s_network_player players[16];			// 0x1E2
-			PAD16;									// 0x3E2
-			int32 network_game_random_seed;			// 0x3E4
-			int32 number_of_games_played;			// 0x3E8
-			int32 local_data;						// 0x3EC
-		}; BOOST_STATIC_ASSERT( sizeof(s_network_game) == 0x3F0 );
-
-
-		struct s_countdown_timer
-		{
-			int32 time_remaining;
-			int32 relative_to; // system tick when time remaining was set
-			int32 start_time;
-			UNKNOWN_TYPE(bool);
-			bool pause_countdown;
-			UNKNOWN_TYPE(bool);
-			PAD8;
-		}; BOOST_STATIC_ASSERT( sizeof(s_countdown_timer) == 0x10 );
-		struct s_network_game_server : TStructImpl( PLATFORM_VALUE(0xA50, 0xA50+0x8C0) )
-		{
-			enum {
-				_game_is_open = 0,
-				_server_is_dedicated = 2,
-			};
-
-			TStructGetPtrImpl(s_network_server_connection*, Connection, 0x0);
-			TStructGetImpl(Enums::network_game_server_state, State, 0x4);
-			// game_is_open = FLAG(0)
-			// server_is_dedicated = FLAG(2) // doesn't show sv_status info when not set
-			TStructGetPtrImpl(word_flags, Flags, 0x6);
-			TStructGetPtrImpl(s_network_game, Game, 0x8);
-			TStructGetPtrImpl(s_network_machine, ClientMachines, 0x3F8); // [16]
-
-			// sizeof(s_network_machine) is different under dedicated builds 
-			// which causes us to have to offset all proceeding members by 0x8C0
-			TStructGetPtrImpl(int32, NextUpdateNumber, PLATFORM_VALUE(0x9F8, 0x9F8+0x8C0) );
-			TStructGetPtrImpl(int32, TimeOfLastKeepAlive, PLATFORM_VALUE(0x9FC, 0x9FC+0x8C0) );
-			TStructGetPtrImpl(int32, TimeOfFirstClientLoadingCompletion, PLATFORM_VALUE(0xA04, 0xA04+0x8C0) );
-			TStructGetPtrImpl(s_countdown_timer, CountdownTimer, PLATFORM_VALUE(0xA08, 0xA08+0x8C0) );
-			// 0xA38 bool
-			TStructGetPtrImpl(bool, GameHasStarted, PLATFORM_VALUE(0xA39, 0xA39+0x8C0) );
-			// 0xA3A bool
-			// 0xA4E bool
-			// 0xA4F bool
-			TStructGetPtrImpl(wchar_t, Password, PLATFORM_VALUE(0xA3C, 0xA3C+0x8C0) ); // [8]
-
-			// 0xAF4 bool
-
-			bool IsDedi() { return TEST_FLAG(*GetFlags(), _server_is_dedicated); }
-		};
-
-		struct s_network_game_client : TStructImpl(0xF90)
-		{
-			TStructGetPtrImpl(int16, MachineIndex, 0x0);
-
-			TStructGetPtrImpl(s_transport_address, SvIpAddress, 0xAB4);
-			// 0x10 of unknown bytes between here...
-			TStructGetPtrImpl(s_network_connection*, Connection, 0xADC);
-			TStructGetPtrImpl(wchar_t, Password, 0xAF0);
-			// 0x34 of unknown bytes between here...
-			TStructGetPtrImpl(s_network_game, Game, 0xB14);
-			// 0xF04 int32
-			// 0xF08 int32
-			TStructGetPtrImpl(uint32, NextExpectedUpdate, 0xF0C);
-			TStructGetPtrImpl(uint32, TimeOfLastUpdate, 0xF10);
-			// 0xF18 int16 (set to NONE, so its signed)
-			TStructGetImpl(Enums::network_game_client_state, State, 0xF1A);
-			// 0xF1C int16
-			// 0xF1E word_flags
-			// 0xF20 bool
-			// 0xF21 bool
-			// PAD16?
-			// 0xF24 0x30 byte data structure
-			// 0xF50 int32
-			// 0xF54 0x34 byte data structure
-
-			struct s_player_update_history
-			{
-				uint32 next_update_history_id; // maximum = 64
-				PAD32; // void* to 0x418 structure (0x4 in that structure references the 'next', if once exists, 0x414 is another GlobalAlloc'd pointer)
-				PAD32;
-				uint32 number_of_playbacks;
-				uint32 total_ticks;
-				uint32 total_updates;
-				PAD32; // 0x18
-				PAD32; // 0x1C
-				PAD32; // 0x20
-				real avg_prediction_error;
-				real avg_ticks_played_back;
-			};
-			TStructGetPtrImpl(s_player_update_history*, UpdateHistory, 0xF88);
-		};
-
-
-		struct s_player_action
-		{
-			uint32 update_id;
-			real_euler_angles2d desired_facing;
-			real_vector2d throttle;
-			real primary_trigger;
-			int16 weapon_index, grenade_index;
-			int16 zoom_index;
-			PAD16;
-		}; BOOST_STATIC_ASSERT( sizeof(s_player_action) == 0x20 );
-
 		struct s_action_update : TStructImpl(40)
 		{
 		};
@@ -484,7 +58,7 @@ namespace Yelo
 			uint32 current_update_id;
 			PAD32;
 			struct {
-				s_player_action actions[1];
+				Players::s_player_action actions[Enums::k_maximum_number_of_local_players];
 			}saved_action_collection;
 			uint32 ticks_to_apply_action_to;
 			PAD32;
@@ -514,24 +88,6 @@ namespace Yelo
 		s_update_server_globals* UpdateServerGlobals();
 
 
-		struct network_update_globals
-		{
-			struct _local_player {
-				int32 update_rate;						// 15
-				int32 vehicle_update_rate;				// 15
-			}local_player;
-
-			struct _remote_player {
-				int32 action_baseline_update_rate;		// 180
-				int32 position_update_rate;				// 30
-				int32 position_baseline_update_rate;	// 90
-				int32 vehicle_update_rate;				// 15
-				int32 vehicle_baseline_update_rate;		// 90, not used
-			}remote_player;
-
-			bool use_super_remote_players_action_update;// true
-			bool use_new_vehicle_update_scheme;			// true
-		};
 		// Network settings dealing with the rate of updating certain data
 		network_update_globals* UpdateSettings();
 
@@ -563,7 +119,7 @@ namespace Yelo
 
 		// Writes [data_size_in_bits] of the packet buffer to the connection
 		// returns true if it was successful
-		bool ConnectionWrite(s_network_connection& connection, 
+		bool ConnectionWrite(const s_network_connection& connection, 
 			const void* data, size_t data_size_in_bits,
 			const void* header, size_t header_size_in_bits,
 			bool unbuffered = false, bool flush_queue = false, int32 buffer_priority = Enums::k_message_highest_priority);
@@ -573,8 +129,8 @@ namespace Yelo
 			Enums::network_messsage_type message_type = Enums::_network_messsage_type_message_delta, 
 			bool unbuffered = false, bool flush_queue = false, int32 buffer_priority = Enums::k_message_highest_priority);
 
-		bool ServerSendRejectionMessage(s_network_player& rejected_player, Enums::transport_rejection_code code);
-		bool ServerHoldupNewClient(s_network_machine& client_machine);
+		bool ServerSendRejectionMessage(s_network_game_player& rejected_player, Enums::transport_rejection_code code);
+		bool ServerHoldupNewClient(s_network_client_machine& client_machine);
 
 		// Sends [data] of the packet buffer to [machine_index]
 		bool SvSendMessageToMachine(int32 machine_index, 
@@ -610,9 +166,9 @@ namespace Yelo
 		API_INLINE Enums::network_game_generic_state GetNetworkGameState()
 		{
 			if(IsClient())		return CAST(Enums::network_game_generic_state, 
-				NetworkGameClient()->GetState()-Enums::_network_game_client_state_pregame);
+				NetworkGameClient()->state-Enums::_network_game_client_state_pregame);
 			else if(IsServer()) return CAST(Enums::network_game_generic_state, 
-				NetworkGameServer()->GetState()-Enums::_network_game_server_state_pregame);
+				NetworkGameServer()->state-Enums::_network_game_server_state_pregame);
 
 			return Enums::_network_game_generic_state_unknown;
 		}

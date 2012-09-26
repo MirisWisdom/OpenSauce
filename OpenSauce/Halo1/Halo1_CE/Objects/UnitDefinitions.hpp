@@ -7,6 +7,7 @@
 #pragma once
 
 #include "Objects/ObjectDefinitions.hpp"
+#include <TagGroups/Halo1/game_globals_definitions.hpp>
 #include <TagGroups/Halo1/unit_definitions.hpp>
 
 namespace Yelo
@@ -274,7 +275,7 @@ namespace Yelo
 
 		struct s_biped_datum_network_data
 		{
-			byte grenade_counts[Enums::k_number_of_unit_grenade_types];
+			byte grenade_counts[Enums::k_unit_grenade_types_count];
 			PAD16;
 			real body_vitality, shield_vitality;
 			bool shield_stun_ticks_greater_than_zero;

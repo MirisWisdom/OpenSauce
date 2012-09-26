@@ -71,16 +71,18 @@ namespace Yelo
 		bool IsServer() { return GET_PTR(global_game_connection) == Enums::_game_connection_network_server; }
 		bool IsClient() { return GET_PTR(global_game_connection) == Enums::_game_connection_network_client; }
 
+		// Points to a static structure, 'network_game_server_memory_do_not_use_directly'
 		s_network_game_server* NetworkGameServer()							DPTR_IMP_GET(global_network_game_server);
+		// Points to a static structure, 'network_game_client_memory_do_not_use_directly'
 		s_network_game_client* NetworkGameClient()							DPTR_IMP_GET(global_network_game_client);
 
 		//////////////////////////////////////////////////////////////////////////
 		// Player Hooks (join/leave)
-		static void OnPlayerJoin(s_network_player* player)
+		static void OnPlayerJoin(s_network_game_player* player)
 		{
 		}
 
-		static void OnPlayerExit(s_network_player* player)
+		static void OnPlayerExit(s_network_game_player* player)
 		{
 		}
 
@@ -156,7 +158,7 @@ namespace Yelo
 			MessageDeltas::Dispose();
 		}
 
-		static API_FUNC_NAKED bool NetworkConnectionWrite(s_network_connection& connection,
+		static API_FUNC_NAKED bool NetworkConnectionWrite(const s_network_connection& connection,
 			const void* data, size_t data_size_in_bits,
 			const void* header, size_t header_size_in_bits,
 			BOOL unbuffered, BOOL flush_queue, int32 buffer_priority)
@@ -182,7 +184,7 @@ namespace Yelo
 				pop		edi
 			API_FUNC_NAKED_END(8)
 		}
-		bool ConnectionWrite(s_network_connection& connection, 
+		bool ConnectionWrite(const s_network_connection& connection, 
 			const void* data, size_t data_size_in_bits,
 			const void* header, size_t header_size_in_bits,
 			bool unbuffered, bool flush_queue, int32 buffer_priority)
@@ -201,8 +203,8 @@ namespace Yelo
 			using namespace Networking;
 
 			s_network_game_client* client = NetworkGameClient();
-			s_network_connection& client_connection = **client->GetConnection();
-			long_flags flags = *client_connection.GetFlags();
+			const s_network_connection& client_connection = *client->connection;
+			long_flags flags = client_connection.flags;
 
 			if(!TEST_FLAG(flags, Flags::_connection_create_server_bit))
 			{
@@ -216,7 +218,7 @@ namespace Yelo
 			return false;
 		}
 
-		API_FUNC_NAKED bool ServerSendRejectionMessage(s_network_player& rejected_player, Enums::transport_rejection_code code)
+		API_FUNC_NAKED bool ServerSendRejectionMessage(s_network_game_player& rejected_player, Enums::transport_rejection_code code)
 		{
 			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(NETWORK_GAME_SERVER_SEND_REJECTION_MESSAGE);
 
@@ -245,7 +247,7 @@ not_a_server:
 			API_FUNC_NAKED_END(2)
 		}
 
-		API_FUNC_NAKED bool ServerHoldupNewClient(s_network_machine& client_machine)
+		API_FUNC_NAKED bool ServerHoldupNewClient(s_network_client_machine& client_machine)
 		{
 			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(NETWORK_GAME_SERVER_SEND_REJECTION_MESSAGE);
 

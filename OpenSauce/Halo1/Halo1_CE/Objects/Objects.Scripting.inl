@@ -107,9 +107,13 @@ static void* scripting_object_data_get_real_evaluate(void** arguments)
 	{
 		s_object_header_datum* object = (*Objects::ObjectHeader())[args->object_index];
 
+#if 0
 		Enums::hs_type result_type;
 		result.ptr.real = object_data_get_real_by_name(object, args->data_name, args->subdata_name, result_type);
 		Scripting::UpdateTypeHolderFromPtrToData(result, result_type);
+#else
+		ObjectDataGetRealByName(object, args->data_name, args->subdata_name, result);
+#endif
 	}
 
 	return result.pointer;
@@ -128,10 +132,14 @@ static void* scripting_object_data_set_real_evaluate(void** arguments)
 	{
 		s_object_header_datum* object = (*Objects::ObjectHeader())[args->object_index];
 
+#if 0
 		TypeHolder result;
 		Enums::hs_type result_type;
 		result.ptr.real = object_data_get_real_by_name(object, args->data_name, args->subdata_name, result_type);
 		Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &args->data_value);
+#else
+		ObjectDataSetRealByName(object, args->data_name, args->subdata_name, args->data_value);
+#endif
 	}
 
 	return NULL;
@@ -151,7 +159,11 @@ static void* scripting_object_data_set_vector_evaluate(void** arguments)
 	{
 		s_object_header_datum* object = (*Objects::ObjectHeader())[args->object_index];
 
+#if 0
 		real_vector3d* obj_vector = object_data_get_vector_by_name(object, args->data_name);
+#else
+		real_vector3d* obj_vector = ObjectDataGetVectorByName(object, args->data_name);
+#endif
 		const real_vector3d* vector = GameState::RuntimeData::VectorValueGet(args->vector_index);
 		if(obj_vector != NULL && vector != NULL)
 		{
@@ -200,10 +212,14 @@ static void* scripting_weapon_data_get_real_evaluate(void** arguments)
 		{
 			s_weapon_datum* weapon = header->Type._weapon;
 
+#if 0
 			Enums::hs_type result_type;
 			bool is_networked;
 			result.ptr.real = weapon_data_get_real_by_name(weapon, args->data_name, result_type, is_networked);
 			Scripting::UpdateTypeHolderFromPtrToData(result, result_type);
+#else
+			WeaponDataGetRealByName(weapon, args->data_name, result);
+#endif
 		}
 	}
 
@@ -225,6 +241,7 @@ static void* scripting_weapon_data_set_real_evaluate(void** arguments)
 		{
 			s_weapon_datum* weapon = header->Type._weapon;
 
+#if 0
 			TypeHolder result;
 			Enums::hs_type result_type;
 			bool is_networked;
@@ -232,6 +249,9 @@ static void* scripting_weapon_data_set_real_evaluate(void** arguments)
 			// Only set properties in local games, or if the properties are sync'd
 			if(Networking::IsLocal() || is_networked)
 				Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &args->data_value);
+#else
+			WeaponDataSetRealByName(weapon, args->data_name, args->data_value);
+#endif
 		}
 	}
 
@@ -294,10 +314,14 @@ static void* scripting_weapon_data_trigger_set_real_evaluate(void** arguments)
 		{
 			s_weapon_datum* weapon = header->Type._weapon;
 
+#if 0
 			TypeHolder result;
 			Enums::hs_type result_type;
 			result.ptr.real = weapon_data_trigger_set_real_by_name(weapon, args->trigger_index, args->data_name, args->subdata_name, result_type);
 			Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &args->data_value);
+#else
+			WeaponTagDataTriggerSetRealByName(weapon, args->trigger_index, args->data_name, args->subdata_name, args->data_value);
+#endif
 		}
 	}
 
@@ -342,16 +366,22 @@ static void* scripting_unit_data_get_object_evaluate(void** arguments)
 	{
 		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->Type._unit;
 
+#if 0
 		result.datum = scripting_unit_data_get_object_by_name(unit, args->data_name);
+#else
+		UnitDataGetObjectIndexByName(unit, args->data_name, result);
+#endif
 	}
 
 	return result.pointer;
 }
 
-static void* scripting_unit_data_get_integer_by_name(s_unit_datum* unit, cstring data_name, Enums::hs_type& out_type, bool& out_is_networked)
+static void* scripting_unit_data_get_integer_by_name(s_unit_datum* unit, cstring data_name, 
+													 Enums::hs_type& out_type, bool& out_is_networked, bool& out_readonly)
 {
 	cstring s = data_name; // alias for keeping the code width down
 	out_is_networked = true;
+	out_readonly = false;
 
 	out_type = HS_TYPE(bool);
 	// designers should use 'unit_get_total_grenade_count' for overall grenade count
@@ -368,9 +398,11 @@ static void* scripting_unit_data_get_integer_by_name(s_unit_datum* unit, cstring
 	else if( !strcmp(s,"desired_zoom_level") )			return unit->unit.GetDesiredZoomLevel();
 
 	out_type = HS_TYPE(short);
+	out_readonly = true;
 		 if( !strcmp(s,"vehicle_seat_index") )		return unit->unit.GetVehicleSeatIndex();
 	else if( !strcmp(s,"current_weapon_index") )	return unit->unit.GetCurrentWeaponIndex();
-	else if( !strcmp(s,"feign_death_timer") )		return unit->unit.GetFeignDeathTimer();
+	out_readonly = false;
+		 if( !strcmp(s,"feign_death_timer") )		return unit->unit.GetFeignDeathTimer();
 
 	out_type = HS_TYPE(void);
 	return NULL;
@@ -388,10 +420,15 @@ static void* scripting_unit_data_get_integer_evaluate(void** arguments)
 	{
 		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->Type._unit;
 
+#if 0
 		Enums::hs_type result_type;
 		bool is_networked;
-		result.pointer = scripting_unit_data_get_integer_by_name(unit, args->data_name, result_type, is_networked);
+		bool is_readonly;
+		result.pointer = scripting_unit_data_get_integer_by_name(unit, args->data_name, result_type, is_networked, is_readonly);
 		Scripting::UpdateTypeHolderFromPtrToData(result, result_type);
+#else
+		UnitDataGetIntegerByName(unit, args->data_name, result);
+#endif
 	}
 
 	return result.pointer;
@@ -408,13 +445,18 @@ static void* scripting_unit_data_set_integer_evaluate(void** arguments)
 	{
 		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->Type._unit;
 
+#if 0
 		TypeHolder result;
 		Enums::hs_type result_type;
 		bool is_networked;
-		result.pointer = scripting_unit_data_get_integer_by_name(unit, args->data_name, result_type, is_networked);
+		bool is_readonly;
+		result.pointer = scripting_unit_data_get_integer_by_name(unit, args->data_name, result_type, is_networked, is_readonly);
 		// Only set properties in local games, or if the properties are sync'd
 		if(Networking::IsLocal() || is_networked)
 			Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &args->data_value);
+#else
+		UnitDataSetIntegerByName(unit, args->data_name, args->data_value);
+#endif
 	}
 
 	return NULL;
@@ -445,9 +487,13 @@ static void* scripting_unit_data_get_real_evaluate(void** arguments)
 	{
 		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->Type._unit;
 
+#if 0
 		Enums::hs_type result_type;
 		result.ptr.real = scripting_unit_data_get_real_by_name(unit, args->data_name, result_type);
 		Scripting::UpdateTypeHolderFromPtrToData(result, result_type);
+#else
+		UnitDataGetRealByName(unit, args->data_name, result);
+#endif
 	}
 
 	return result.pointer;
@@ -464,10 +510,14 @@ static void* scripting_unit_data_set_real_evaluate(void** arguments)
 	{
 		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->Type._unit;
 
+#if 0
 		TypeHolder result;
 		Enums::hs_type result_type;
 		result.ptr.real = scripting_unit_data_get_real_by_name(unit, args->data_name, result_type);
 		Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &args->data_value);
+#else
+		UnitDataSetRealByName(unit, args->data_name,args->data_value);
+#endif
 	}
 
 	return NULL;

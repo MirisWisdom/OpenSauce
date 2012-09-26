@@ -36,14 +36,6 @@ namespace Yelo
 
 	namespace Memory
 	{
-		struct s_dynamic_array
-		{
-			size_t element_size;
-			int32 count;
-			void* elements;
-		}; BOOST_STATIC_ASSERT( sizeof(s_dynamic_array) == 0xC );
-
-
 		// for data structures which DO use the proceeding 16 bits after the 'salt' header
 		struct s_datum_base
 		{

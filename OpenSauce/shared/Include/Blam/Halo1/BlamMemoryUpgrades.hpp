@@ -5,6 +5,9 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/networking/network_connection.hpp> // for k_maximum_network_machine_count
+#include <blamlib/Halo1/game/players.hpp> // for k_multiplayer_maximum_players
+
 // How much more memory we're adding.
 // 50%
 #define K_MEMORY_UPGRADE_INCREASE_AMOUNT (1.5f)
@@ -55,6 +58,15 @@ namespace Yelo
 				k_tag_allocation_size,
 			k_tag_max_address_upgrade = 
 				k_tag_base_address + k_tag_allocation_size_upgrade,
+
+
+			k_multiplayer_maximum_additional_players = 0,
+
+			k_multiplayer_maximum_players_upgrade = 
+				k_multiplayer_maximum_players + k_multiplayer_maximum_additional_players,
+
+			k_maximum_network_machine_count_upgrade = 
+				k_maximum_network_machine_count + k_multiplayer_maximum_additional_players,
 		};
 	};
 

@@ -236,7 +236,7 @@ namespace Fov
 	ENGINE_DPTR(s_game_globals, game_globals,						0x64BAD0, 0x5BD8B0);
 	ENGINE_DPTR(s_game_time_globals, game_time_globals,				0x68CD90, 0x5F55BC);
 	ENGINE_DPTR(s_game_allegiance_globals, game_allegiance_globals,	0x64BAD4, 0x5BD8B4);
-	ENGINE_DPTR(s_scenario_globals, scenario_globals,				0x6E2274, 0x629454);
+	ENGINE_DPTR(Game::s_scenario_globals, scenario_globals,			0x6E2274, 0x629454);
 
 	ENGINE_PTR(TagGroups::scenario*, global_scenario,					0x6E226C, 0x62944C);
 	ENGINE_PTR(TagGroups::s_game_globals*, global_game_globals,			0x6E2280, 0x629460);

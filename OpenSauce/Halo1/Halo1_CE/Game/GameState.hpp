@@ -7,6 +7,15 @@
 #pragma once
 #include "Memory/Data.hpp"
 
+#include <blamlib/Halo1/game/game_allegiance.hpp>
+#include <blamlib/Halo1/game/game_globals.hpp>
+#include <blamlib/Halo1/game/game_time.hpp>
+#include <blamlib/Halo1/game/main.hpp>
+#include <blamlib/Halo1/physics/physics.hpp>
+#include <blamlib/Halo1/physics/point_physics.hpp>
+#include <blamlib/Halo1/saved_games/game_state.hpp>
+#include <blamlib/Halo1/scenario/scenario.hpp>
+
 #include <TagGroups/Halo1/global_definitions.hpp> // for game teams
 
 namespace Yelo
@@ -41,6 +50,7 @@ namespace Yelo
 			// 0x42974 bytes available in game state allocation for Clients.
 			// Dedis should have a little bit more (since they don't alloc a few render based things) 
 			// but to keep things simple we'll limit both sides of the spectrum to the same size.
+			// UPDATE: 0x50A78 bytes for Dedi (stock only allocates 0x3EF588 bytes)
 			// NOTE: Basically, the game doesn't fully use the amount it sets aside for game state data 
 			// (ie, objects, players, etc), so we're able to steal some of this memory for our own use. 
 			// Why? Because the game state is saved to file when the player saves the game or dumps a core. 
@@ -70,92 +80,6 @@ namespace Yelo
 		void WriteEvent(cstring str = "", bool write_time_stamp = true);
 
 
-		struct s_main_globals
-		{
-			UNKNOWN_TYPE(uint32); // time related
-			PAD32;
-			LARGE_INTEGER performance_counter;
-			UNKNOWN_TYPE(bool);
-			bool is_taking_screenshot;
-			PAD16;
-			real delta_time;
-			_enum game_connection;
-
-			struct s_screenshot {
-				int16 counter;
-				void* movie; // screenshot bitmap
-				PAD32; PAD32;
-				int32 movie_frame_index;
-				UNKNOWN_TYPE(real);
-			}screenshot;
-
-			struct s_map {
-				bool reset_map;
-				bool switch_to_campaign;
-				bool revert_map;
-				bool skip_cinematic;
-				bool save_map;
-				bool save_map_nonsafe;
-				bool save_map_with_timeout;
-				bool is_saving_map;
-				int32 saving_map_timeout_countdown;
-				int32 saving_map_timeout_timer;
-				UNKNOWN_TYPE(int32);
-				UNKNOWN_TYPE(int16);
-				bool won_map;
-				bool lost_map;
-				bool respawn_coop_players;
-
-				struct s_core {
-					bool save;
-					bool load;
-					bool load_at_startup;
-				}core;
-
-				int16 switch_to_structure_bsp; // if not NONE, switches to the scenario's bsp by index
-				bool main_menu_scenario_loaded;
-				bool main_menu_scenario_load;
-			}map;
-
-			UNUSED_TYPE(bool);
-			UNKNOWN_TYPE(bool);
-			UNKNOWN_TYPE(bool);
-			bool quit;
-			UNKNOWN_TYPE(int32);
-			UNKNOWN_TYPE(int32);
-			UNKNOWN_TYPE(int32);
-			bool set_game_connection_to_film_playback;
-			bool time_is_stopped;
-			bool start_time;
-			UNUSED_TYPE(bool);
-
-			bool skip_frames;
-			PAD8;
-			int16 skip_frames_count;
-
-			int16 lost_map_count;
-			int16 respawn_count;
-
-			UNKNOWN_TYPE(bool);
-			PAD24;
-			UNKNOWN_TYPE(bool);
-			char scenario_tag_path[256];
-			char multiplayer_map_name[256];
-			char queued_map[256];
-
-			UNKNOWN_TYPE(bool);
-			UNKNOWN_TYPE(tag_string);
-			PAD(0, 8+1); // char[8+1]
-			PAD8;
-			PAD32;
-
-			void QuitToMainMenu()
-			{
-				map.switch_to_structure_bsp = NONE;
-				map.save_map = false;
-				map.main_menu_scenario_load = true;
-			}
-		}; BOOST_STATIC_ASSERT( sizeof(s_main_globals) == 0x3A0 );
 		s_main_globals* MainGlobals();
 
 #if !PLATFORM_IS_DEDI
@@ -208,180 +132,35 @@ namespace Yelo
 		s_physical_memory_map_globals* PhysicalMemoryMapGlobals();
 
 
-		struct s_header_data
+		s_game_state_globals* GameStateGlobals();
+		// Allocate an object of type [T] inside the game state memory and return its address.
+		// Note: Also updates the game state's cpu allocation size by adding 'sizeof([T])'
+		template<typename T>
+		T* GameStateMalloc(size_t count = 1)
 		{
-			uint32 allocation_crc;
-			char level[256];
-			tag_string version;
-			int16 player_spawn_count;
-			_enum game_difficulty;
-			uint32 cache_crc;
-			byte _unk3[32];
-		}; BOOST_STATIC_ASSERT( sizeof(s_header_data) == 0x14C );
-		struct s_game_state_globals
-		{
-			void* base_address;
-			uint32 cpu_allocation_size;
-			PAD32; // unused
-			uint32 crc;
-			bool locked;
-			bool saved;
-			PAD16;
-			uint32 revert_time;
-			s_header_data* header;
+			s_game_state_globals* gsg = GameStateGlobals();
 
-			// etc... there are more fields to this but I could give a flying fuck less about them
+			byte* base_addr = CAST_PTR(byte*, gsg->base_address) + gsg->cpu_allocation_size;
+			const size_t size_of = sizeof(T) * count;
 
+			// Debug check that we don't allocate more memory than the game state has available
+			ASSERT((base_addr + size_of) <= PhysicalMemoryMapGlobals()->tag_cache_base_address, 
+				"Bit off more game-state than the game could chew!");
 
-			// Allocate an object of type [T] inside the game state memory and return its address.
-			// Note: Also updates the game state's cpu allocation size by adding 'sizeof([T])'
-			template<typename T>
-			T* Malloc(size_t count = 1)
-			{
-				byte* base_addr = CAST_PTR(byte*, base_address) + cpu_allocation_size;
-				const size_t size_of = sizeof(T) * count;
-
-				// Debug check that we don't allocate more memory than the game state has available
-				ASSERT((base_addr + size_of) <= PhysicalMemoryMapGlobals()->tag_cache_base_address, 
-					"Bit off more game-state than the game could chew!");
-
-				cpu_allocation_size += size_of;
+			gsg->cpu_allocation_size += size_of;
 #if 0 // TODO: If the allocation crc is updated, game states won't be loadable by stock games
-				Memory::CRC(header->allocation_crc, &size_of, sizeof(size_of));
+			Memory::CRC(gsg->header->allocation_crc, &size_of, sizeof(size_of));
 #endif
 
-				return CAST_PTR(T*, base_addr);
-			}
-		};
-		s_game_state_globals* GameStateGlobals();
+			return CAST_PTR(T*, base_addr);
+		}
 
 
-		struct s_game_options
-		{
-			UNKNOWN_TYPE(int16);
-			UNKNOWN_TYPE(int16); // ?, not sure about this field
-			UNKNOWN_TYPE(int16); // ?, not sure about this field
-			_enum difficulty_level;
-			int32 random_seed;
-			char map_name[0x7F+1];
-			byte unknown[0x7F+1]; // pretty sure this is just an unused string
-		}; BOOST_STATIC_ASSERT( sizeof(s_game_options) == 0x10C );
-
-		struct s_game_globals
-		{
-			bool map_loaded;
-			bool active;
-			bool players_are_double_speed;
-			UNKNOWN_TYPE(bool);
-			UNKNOWN_TYPE(real);
-
-			s_game_options options;
-		}; BOOST_STATIC_ASSERT( sizeof(s_game_globals) == 0x114 );
 		s_game_globals*				GameGlobals();
-
-		struct s_game_time_globals
-		{
-			bool initialized;		// 0x0
-			bool active;			// 0x1
-			bool paused;			// 0x2
-			PAD8;
-			UNKNOWN_TYPE(int16);	// 0x4
-			UNKNOWN_TYPE(int16);	// 0x6
-			UNKNOWN_TYPE(int16);	// 0x8
-			PAD16;
-			uint32 local_time;		// 0xC, game time
-			uint32 elapsed_time;	// 0x10
-			uint32 server_time;		// 0x14
-			real game_speed;		// 0x18
-			real leftover_time_sec;	// 0x1C
-		};
 		s_game_time_globals*		GameTimeGlobals();
-
-		struct s_game_allegiance_globals
-		{
-			struct s_allegiance
-			{
-				Enums::global_game_team this_team;
-				Enums::global_game_team other_team;
-				int16 threshold;
-				UNKNOWN_TYPE(int16);	// 0x6
-				UNKNOWN_TYPE(bool);		// 0x8
-				UNKNOWN_TYPE(bool);		// 0x9
-				bool is_broken;			// 0xA
-				UNKNOWN_TYPE(bool);		// 0xB
-				UNKNOWN_TYPE(bool);		// 0xC
-				PAD8;
-				int16 incidents_count;	// 0xE
-				UNKNOWN_TYPE(int16);	// 0x10
-			}; BOOST_STATIC_ASSERT( sizeof(s_allegiance) == 0x12 );
-
-			int16 current_incidents;
-			s_allegiance allegiances[8];
-			PAD16;
-			long_flags ally_mapping_flags[ BIT_VECTOR_SIZE_IN_DWORDS(Enums::_global_game_team * Enums::_global_game_team) ]; // 0x94
-			long_flags enemy_mapping_flags[ BIT_VECTOR_SIZE_IN_DWORDS(Enums::_global_game_team * Enums::_global_game_team) ]; // 0xA4
-		}; BOOST_STATIC_ASSERT( sizeof(s_game_allegiance_globals) == 0xB4 );
 		s_game_allegiance_globals*	GameAllegianceGlobals();
-
-		struct s_scenario_globals
-		{
-			int16 current_structure_bsp_index;
-			PAD16;
-			byte UNKNOWN(0)[0x2C][1]; // only one element on pc, so related to each local player then something about the fog around them?
-			bool UNKNOWN(1);
-			PAD24;
-			byte sound_environment[0x48]; // if I gave a fuck about defining the tag structure, I'd use it here
-		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_globals) == 0x7C );
-		s_scenario_globals*			ScenarioGlobals();
-
-
-		struct s_point_physics_globals
-		{
-		private:
-			real water_mass;
-			real air_mass;
-
-			static const real DensityToMass(real density) { return density * 118613.34f; }
-		public:
-
-			void SetWaterMass(real density)	{ water_mass = DensityToMass(density); }
-			void SetAirMass(real density)	{ air_mass = DensityToMass(density); }
-		};
+		Game::s_scenario_globals*	ScenarioGlobals();
 		s_point_physics_globals*	PointPhysics();
-
-		struct s_physics_globals
-		{
-			real gravity;
-		private:
-			real water_density;
-			real air_density;
-		public:
-
-			// Halo's normal gravity value constant
-			static const real	GravityConstant()		{ return 3.5651792e-3f; }
-			static const real	WaterDensityConstant()	{ return 1.0f; }
-			static const real	AirDensityConstant()	{ return 0.0011f; }
-
-			void SetGravityScale(real scale)
-			{
-				gravity = GravityConstant() * scale;
-			}
-			void SetWaterDensity(real density)
-			{
-				PointPhysics()->SetWaterMass(water_density = density);
-			}
-			void SetAirDensity(real density)
-			{
-				PointPhysics()->SetAirMass(air_density = density);
-			}
-
-			void Reset()
-			{
-				gravity = GravityConstant();
-				SetWaterDensity(WaterDensityConstant());
-				SetAirDensity(AirDensityConstant());
-			}
-		}; BOOST_STATIC_ASSERT( sizeof(s_physics_globals) == 0xC );
 		// Reference to the current platform's physics globals
 		s_physics_globals*			Physics();
 

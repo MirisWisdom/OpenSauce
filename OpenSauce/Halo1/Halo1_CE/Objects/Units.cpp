@@ -13,6 +13,7 @@
 #include "Networking/MessageDeltas.hpp"
 
 #include <TagGroups/Halo1/unit_definitions.hpp>
+#include <TagGroups/Halo1/game_globals_definitions.hpp>
 #include "Objects/Objects.hpp"
 
 namespace Yelo
