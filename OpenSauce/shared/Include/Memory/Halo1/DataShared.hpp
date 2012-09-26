@@ -7,34 +7,17 @@
 
 #include <Memory/DataShared.hpp>
 
+#include <blamlib/Halo1/game/simple_circular_queue.hpp>
+#include <blamlib/Halo1/memory/array.hpp>
+#include <blamlib/Halo1/memory/circular_queue.hpp>
+#include <blamlib/Halo1/memory/data.hpp>
+#include <blamlib/Halo1/memory/lruv_cache.hpp>
+#include <blamlib/Halo1/memory/memory_pool.hpp>
+
 namespace Yelo
 {
-	namespace Enums
-	{
-		enum {
-			k_circular_queue_signature = 'circ',
-		};
-	};
-
 	namespace Memory
 	{
-		struct s_data_array
-		{
-			tag_string name;
-			int16 max_datum;
-			int16 datum_size;
-			bool is_valid;
-			bool identifier_zero_invalid;
-			PAD16;
-			tag signature;
-			int16 next_index;		// Next index to use when creating a new datum
-			int16 last_datum;		// Last used datum index
-			datum_index next_datum;	// Next datum value to use
-			void* data;
-
-			static void* IteratorNext(void* iter);
-		};
-
 		template<typename DatumT, uint32 DatumCount> struct DataArray {
 		private:
 			typedef DataArray<DatumT,DatumCount> DataArrayT;
@@ -80,17 +63,6 @@ namespace Yelo
 			}
 
 //			API_INLINE DatumT* Datums()					{ return CAST_PTR(DatumT*, this->Header.data); }
-		};
-
-
-		struct s_circular_queue
-		{
-			cstring name;
-			tag signature;
-			int32 read_offset;
-			int32 write_offset;
-			int32 buffer_size;
-			void* buffer;
 		};
 	};
 };

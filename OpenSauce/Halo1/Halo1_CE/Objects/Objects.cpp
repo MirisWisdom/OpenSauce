@@ -16,6 +16,7 @@
 #include <TagGroups/Halo1/damage_effect_definitions.hpp>
 #include "TagGroups/project_yellow_definitions.hpp"
 
+#include "Objects/ObjectFieldDefinitions.hpp"
 #include "Objects/Equipment.hpp"
 #include "Objects/Units.hpp"
 
@@ -112,6 +113,7 @@ namespace Yelo
 			Units::Initialize();
 
 			InitializeScripting();
+			InitializeObjectFieldDefinitions();
 		}
 
 		void Dispose()

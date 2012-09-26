@@ -11,6 +11,9 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
+// Only because we end up including the various bnet network transport headers
+#include <WinSock2.h>
+
 #include <shlobj.h>
 #include <shlwapi.h>
 #pragma comment (lib, "shlwapi.lib")

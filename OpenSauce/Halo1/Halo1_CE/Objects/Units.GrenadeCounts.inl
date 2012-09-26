@@ -33,13 +33,13 @@ static void InitializeForYeloGameState_UnitDesiredZoomLevelRefs(bool enabled)
 }
 static void InitializeForYeloGameState_NumberOfUnitGrenadeTypes(bool enabled)
 {
-	uint32 count = enabled ? Enums::k_number_of_unit_grenade_types_yelo : Enums::k_number_of_unit_grenade_types;
+	uint32 count = enabled ? Enums::k_unit_grenade_types_count_yelo : Enums::k_unit_grenade_types_count;
 
 	for(int x = 0; x < NUMBEROF(K_NUMBER_OF_UNIT_GRENADE_TYPES_REFS); x++)
 	{
 		uint32* count_ref = CAST_PTR(uint32*, K_NUMBER_OF_UNIT_GRENADE_TYPES_REFS[x]);
 
-		DebugOnly( if(enabled) ASSERT( Enums::k_number_of_unit_grenade_types == *count_ref, "GrenadeCounts asm mismtach!" ) );
+		DebugOnly( if(enabled) ASSERT( Enums::k_unit_grenade_types_count == *count_ref, "GrenadeCounts asm mismtach!" ) );
 		*count_ref = count;
 	}
 }
@@ -187,16 +187,47 @@ static void InitializeForYeloGameState_MessageDeltaGrenadeCounts(bool enabled)
 	field_type_definition& grenade_counts_type = GlobalFieldTypeList()[Enums::_field_type_grenade_counts];
 	field_properties_definition* grenade_counts_props = MDP_GET_FIELD_TYPE_DEFINITION(grenade_counts);
 
-	static mdp_field_type_maximum_size_calculator g_type_stock_maximum_size_calculator;
-	static mdp_field_encode g_props_stock_encoder;
-	static mdp_field_decode g_props_stock_decoder;
-	if(g_type_stock_maximum_size_calculator == NULL)
+	field_type_definition& fixed_width_grenade_index_type = GlobalFieldTypeList()[Enums::_field_type_fixed_width_grenade_index];
+	field_properties_definition* fixed_width_grenade_index_props = MDP_GET_FIELD_TYPE_DEFINITION(fixed_width_grenade_index);
+
+	// local copies of the original game definitions
+	static struct {
+		mdp_field_type_maximum_size_calculator maximum_size_calculator;
+		mdp_field_encode encoder;
+		mdp_field_decode decoder;
+
+		void Initialize(const field_type_definition& type, const field_properties_definition* props)
+		{
+			maximum_size_calculator = type.proc_maximum_size_calculator;
+			encoder = props->proc_encode;
+			decoder = props->proc_decode;
+		}
+		// Returns [props] so we can fluently modify its maximum size
+		field_properties_definition* CopyTo(field_type_definition& type, field_properties_definition* props) const
+		{
+			type.proc_maximum_size_calculator = maximum_size_calculator;
+			props->proc_encode = encoder;
+			props->proc_decode = decoder;
+
+			return props;
+		}
+	}	g_stock_grenade_counts, g_stock_fixed_width_grenade_index, 
+		g_fixed_width_weapon_index;
+
+	if(g_stock_grenade_counts.maximum_size_calculator == NULL)
 	{
-		g_type_stock_maximum_size_calculator = grenade_counts_type.proc_maximum_size_calculator;
-		g_props_stock_encoder = grenade_counts_props->proc_encode;
-		g_props_stock_decoder = grenade_counts_props->proc_decode;
+		field_type_definition& fixed_width_weapon_index_type = GlobalFieldTypeList()[Enums::_field_type_fixed_width_weapon_index];
+		field_properties_definition* fixed_width_weapon_index_props = MDP_GET_FIELD_TYPE_DEFINITION(fixed_width_weapon_index);
+
+		g_stock_grenade_counts
+			.Initialize(grenade_counts_type, grenade_counts_props);
+		g_stock_fixed_width_grenade_index
+			.Initialize(fixed_width_grenade_index_type, fixed_width_grenade_index_props);
+		g_fixed_width_weapon_index
+			.Initialize(fixed_width_weapon_index_type, fixed_width_weapon_index_props);
 	}
 
+	// We only define a custom grenade_counts impl as we re-use fixed_width_weapon_index for fixed_width_grenade_index
 	class mdp_grenade_counts_upgrade
 	{
 	public:
@@ -205,7 +236,7 @@ static void InitializeForYeloGameState_MessageDeltaGrenadeCounts(bool enabled)
 			return Enums::k_bits_in_grenade_counts_type_upgrade;
 		}
 
-		static int32 PLATFORM_API encoder(field_properties_definition* field_properties, const void* baseline_data, const void* source_data, Networking::s_bitstream* output_stream)
+		static int32 PLATFORM_API encoder(field_properties_definition* field_properties, const void* baseline_data, const void* source_data, Memory::s_bitstream* output_stream)
 		{
 			int32 bits_written = 0;
 
@@ -214,21 +245,21 @@ static void InitializeForYeloGameState_MessageDeltaGrenadeCounts(bool enabled)
 			const grenade_counts* baseline_data_gc = CAST_PTR(const grenade_counts*, baseline_data);
 			const grenade_counts* source_data_gc = CAST_PTR(const grenade_counts*, source_data);
 
-			bits_written =  g_props_stock_encoder(field_properties, baseline_data_gc,   source_data_gc,   output_stream);
-			bits_written += g_props_stock_encoder(field_properties, baseline_data_gc+1, source_data_gc+1, output_stream);
+			bits_written =  g_stock_grenade_counts.encoder(field_properties, baseline_data_gc,   source_data_gc,   output_stream);
+			bits_written += g_stock_grenade_counts.encoder(field_properties, baseline_data_gc+1, source_data_gc+1, output_stream);
 
 			return bits_written;
 		}
 
-		static int32 PLATFORM_API decoder(field_properties_definition* field_properties, void* baseline_data, void* destination_data, Networking::s_bitstream* input_stream)
+		static int32 PLATFORM_API decoder(field_properties_definition* field_properties, void* baseline_data, void* destination_data, Memory::s_bitstream* input_stream)
 		{
 			int32 bits_read = 0;
 
 			grenade_counts* destination_data_gc = CAST_PTR(grenade_counts*, destination_data);
 
 			// stock decoder doesn't use baseline_data when decoding
-			bits_read =  g_props_stock_decoder(field_properties, destination_data_gc,   baseline_data, input_stream);
-			bits_read += g_props_stock_decoder(field_properties, destination_data_gc+1, baseline_data, input_stream);
+			bits_read =  g_stock_grenade_counts.decoder(field_properties, destination_data_gc,   baseline_data, input_stream);
+			bits_read += g_stock_grenade_counts.decoder(field_properties, destination_data_gc+1, baseline_data, input_stream);
 
 			return bits_read;
 		}
@@ -240,13 +271,20 @@ static void InitializeForYeloGameState_MessageDeltaGrenadeCounts(bool enabled)
 		grenade_counts_props->proc_encode = mdp_grenade_counts_upgrade::encoder;
 		grenade_counts_props->proc_decode = mdp_grenade_counts_upgrade::decoder;
 		grenade_counts_props->maximum_size = Enums::k_bits_in_grenade_counts_type_upgrade;
+
+		// We re-use weapon_index's field type definitions as it's limited to 4 indexes as well
+		g_fixed_width_weapon_index
+			.CopyTo(fixed_width_grenade_index_type, fixed_width_grenade_index_props)
+			->maximum_size = g_fixed_width_weapon_index.maximum_size_calculator(NULL); // release builds don't use the prop parameter in this field type
 	}
 	else
 	{
-		grenade_counts_type.proc_maximum_size_calculator = g_type_stock_maximum_size_calculator;
-		grenade_counts_props->proc_encode = g_props_stock_encoder;
-		grenade_counts_props->proc_decode = g_props_stock_decoder;
-		grenade_counts_props->maximum_size = Enums::k_bits_in_grenade_counts_type;
+		g_stock_grenade_counts
+			.CopyTo(grenade_counts_type, grenade_counts_props)
+			->maximum_size = Enums::k_bits_in_grenade_counts_type;
+		g_stock_fixed_width_grenade_index
+			.CopyTo(fixed_width_grenade_index_type, fixed_width_grenade_index_props)
+			->maximum_size = g_stock_fixed_width_grenade_index.maximum_size_calculator(NULL); // release builds don't use the prop parameter in this field type
 	}
 #endif
 }

@@ -96,7 +96,7 @@ namespace Yelo
 			}
 
 			for(int32 x = 0; x < NUMBEROF(AddressOf::MaxTagsCheck); x++)
-				*AddressOf::MaxTagsCheck[x] = CAST(uint16, Konstants::MaximumTagCountUpgrade());
+				*AddressOf::MaxTagsCheck[x] = Enums::k_maximum_tag_count_upgrade;
 
 			// Cause the gamespy metrics dump code to NEVER execute
 			for(int32 x = 0; x < NUMBEROF(AddressOf::GAMESPY_METRICS_DUMP_FUNCTIONS); x++)

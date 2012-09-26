@@ -3547,23 +3547,11 @@
 			Name="Objects"
 			>
 			<File
-				RelativePath=".\Objects\DeviceDefinitions.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Objects\Equipment.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\Objects\Equipment.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Objects\ItemDefinitions.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Objects\ObjectDefinitions.hpp"
 				>
 			</File>
 			<File
@@ -3579,10 +3567,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Objects\UnitDefinitions.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Objects\Units.cpp"
 				>
 			</File>
@@ -3593,6 +3577,22 @@
 			<Filter
 				Name="Impl"
 				>
+				<File
+					RelativePath=".\Objects\ObjectFieldDefinitions.ImplObjects.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\Objects\ObjectFieldDefinitions.ImplUnits.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\Objects\ObjectFieldDefinitions.ImplWeapon.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\Objects\ObjectFieldDefinitions.inl"
+					>
+				</File>
 				<File
 					RelativePath=".\Objects\Objects.Damage.inl"
 					>
@@ -3615,6 +3615,38 @@
 				</File>
 				<File
 					RelativePath=".\Objects\Units.GrenadeCounts.inl"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Definitions"
+				>
+				<File
+					RelativePath=".\Objects\DeviceDefinitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Objects\ItemDefinitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Objects\ObjectDefinitions.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Objects\ObjectDefinitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Objects\ObjectFieldDefinitions.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Objects\ObjectFieldDefinitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Objects\UnitDefinitions.hpp"
 					>
 				</File>
 			</Filter>
@@ -4471,6 +4503,182 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\Rasterizer\Halo1\Render.Upgrades.inl"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="blamlib"
+			>
+			<Filter
+				Name="bungie_net"
+				>
+				<Filter
+					Name="network"
+					>
+					<File
+						RelativePath="..\..\shared\Include\blamlib\Halo1\bungie_net\network\transport_address.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\blamlib\Halo1\bungie_net\network\transport_endpoint_set_winsock.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\blamlib\Halo1\bungie_net\network\transport_endpoint_winsock.hpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="networking"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\networking\message_delta_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\networking\message_delta_parameters_protocol.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\networking\network_client_manager.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\networking\network_client_time.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\networking\network_connection.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\networking\network_game_globals.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\networking\network_game_manager.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\networking\network_messages.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\networking\network_server_manager.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\networking\player_update_history.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="memory"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\memory\array.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\memory\bitstream.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\memory\circular_queue.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\memory\data.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\memory\lruv_cache.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\memory\memory_pool.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="game"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\game.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\game_allegiance.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\game_engine.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\game_globals.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\game_time.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\main.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\players.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\simple_circular_queue.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="saved_games"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\saved_games\game_state.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\saved_games\game_variant.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="hs"
+				>
+			</Filter>
+			<Filter
+				Name="scenario"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\scenario\scenario.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="physics"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\physics\physics.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\physics\point_physics.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="objects"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\objects\object_types.hpp"
 					>
 				</File>
 			</Filter>

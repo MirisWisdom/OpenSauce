@@ -8,7 +8,7 @@
 #include "Engine/GrenadeTypesUpgrade.hpp"
 
 #include <TagGroups/TagGroupDefinitions.hpp>
-#include <TagGroups/Halo1/item_definitions.hpp>
+#include <TagGroups/Halo1/game_globals_definitions.hpp>
 
 #include "TagGroups/TagGroups.hpp"
 
@@ -19,7 +19,7 @@ namespace Yelo
 		ENGINE_PTR(string_list, global_grenade_type_enum, 0x9D1728, 0x6DE850, 0xA496AC);
 		ENGINE_PTR(tag_block_definition, grenades_block, 0x9D237C, 0x6DF4A4, 0xA4A2FC);
 
-		static cstring global_grenade_type_yelo_enum_strings[Enums::_grenade_type_yelo] = {
+		static cstring global_grenade_type_yelo_enum_strings[Enums::k_unit_grenade_types_count_yelo] = {
 			"",
 			"",
 			"custom 2",
@@ -36,10 +36,10 @@ namespace Yelo
 
 			string_list* types_enum = GET_PTR2(global_grenade_type_enum);
 			tag_block_definition* block_definition = GET_PTR2(grenades_block);
-			assert(types_enum->count == _grenade_type && block_definition->max_elements == _grenade_type);
+			assert(types_enum->count == k_unit_grenade_types_count && block_definition->max_elements == k_unit_grenade_types_count);
 
-			global_grenade_type_yelo_enum_strings[_grenade_type_frag] = types_enum->strings[_grenade_type_frag];
-			global_grenade_type_yelo_enum_strings[_grenade_type_plasma] = types_enum->strings[_grenade_type_plasma];
+			global_grenade_type_yelo_enum_strings[_unit_grenade_type_frag] = types_enum->strings[_unit_grenade_type_frag];
+			global_grenade_type_yelo_enum_strings[_unit_grenade_type_plasma] = types_enum->strings[_unit_grenade_type_plasma];
 
 #if PLATFORM_ID != PLATFORM_TOOL
 			GrenadeTypesUpgrade(true);

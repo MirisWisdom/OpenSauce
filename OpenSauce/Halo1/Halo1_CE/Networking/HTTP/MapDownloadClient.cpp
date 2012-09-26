@@ -271,45 +271,45 @@ namespace Yelo
 			bool	SetServerAddresses()
 			{
 				// get the server address
-				Networking::s_transport_address* server_transport = NetworkGameClient()->GetSvIpAddress();
+				const Networking::s_transport_address& server_transport = NetworkGameClient()->server_address;
 
 				bool success = true;
 				char server_ip_string[Enums::k_max_ip_port_string_length] = "";
 
 				// set up the server url string
 				// generate the ip string for either ipv4 or ipv6
-				if(server_transport->address_length == 4)
+				if(server_transport.address_length == Enums::k_ipv4_address_length)
 				{
 					if(-1 == sprintf_s(server_ip_string, Enums::k_max_ip_string_length,
 						"%i.%i.%i.%i",
-						server_transport->ipv4.class_d,
-						server_transport->ipv4.class_c,
-						server_transport->ipv4.class_b,
-						server_transport->ipv4.class_a))
+						server_transport.ipv4.class_d,
+						server_transport.ipv4.class_c,
+						server_transport.ipv4.class_b,
+						server_transport.ipv4.class_a))
 						success = false;
 				}
 				else
 				{
 					if(-1 == sprintf_s(server_ip_string, Enums::k_max_ip_string_length,
 						"[%04X:%04X:%04X:%04X:%04X:%04X:%04X:%04X]",
-						server_transport->ipv6.class_h,
-						server_transport->ipv6.class_g,
-						server_transport->ipv6.class_f,
-						server_transport->ipv6.class_e,
-						server_transport->ipv6.class_d,
-						server_transport->ipv6.class_c,
-						server_transport->ipv6.class_b,
-						server_transport->ipv6.class_a))
+						server_transport.ipv6.class_h,
+						server_transport.ipv6.class_g,
+						server_transport.ipv6.class_f,
+						server_transport.ipv6.class_e,
+						server_transport.ipv6.class_d,
+						server_transport.ipv6.class_c,
+						server_transport.ipv6.class_b,
+						server_transport.ipv6.class_a))
 						success = false;
 				}
 
 				// build a string with the ip and port, for reconnecting to the server
-				if(-1 == sprintf_s(m_mp_address, Enums::k_max_ip_port_string_length, "%s:%i", server_ip_string, server_transport->port))
+				if(-1 == sprintf_s(m_mp_address, Enums::k_max_ip_port_string_length, "%s:%i", server_ip_string, server_transport.port))
 					success = false;
 
 				if(-1 == sprintf_s(server_ip_string, Enums::k_max_ip_port_string_length, "%s:%i/%s",
 					server_ip_string,
-					server_transport->port + 1,
+					server_transport.port + 1,
 					Server::GetServiceURIRoot(Enums::_http_service_enumeration_map_download)))
 					success = false;
 
@@ -352,7 +352,7 @@ namespace Yelo
 				// copy the server password
 				m_mp_password[0] = 0;
 
-				if(-1 == sprintf_s(m_mp_password, sizeof(m_mp_password), "%S", Networking::NetworkGameClient()->GetPassword()))
+				if(-1 == sprintf_s(m_mp_password, sizeof(m_mp_password), "%S", Networking::NetworkGameClient()->join_data.parameters.password))
 					return false;
 
 				// generate the server password hash

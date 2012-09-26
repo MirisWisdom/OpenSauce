@@ -13,6 +13,8 @@ namespace Yelo
 	{
 		enum {
 			k_maximum_number_of_attachments_per_object = 8,
+
+			k_object_change_color_count = 4,
 		};
 	};
 

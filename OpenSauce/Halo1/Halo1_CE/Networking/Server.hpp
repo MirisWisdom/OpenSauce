@@ -6,6 +6,8 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/networking/network_game_globals.hpp>
+
 #include "Memory/Data.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Game/GameEngine.hpp"
@@ -178,7 +180,7 @@ namespace Yelo
 			bool initialized;
 			PAD24;
 			uint32 last_status_display_time; // game_time
-			wchar_t server_password[8+1];
+			wchar_t server_password[Enums::k_network_server_password_length+1];
 			bool single_flag_force_reset;
 			PAD8;
 			char banlist_path[MAX_PATH];
@@ -186,7 +188,7 @@ namespace Yelo
 			HANDLE banlist_mutex;
 #endif
 			long_enum friendly_fire_type;
-			char rcon_password[12];
+			char rcon_password[Enums::k_network_server_password_length+1]; PAD24;
 #if PLATFORM_IS_DEDI
 			struct {
 				uint32 last_time; // (last rotation time) game_time

@@ -287,7 +287,8 @@ the_end:
 			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(MDP_DECODE_INCREMENTAL_ITERATED);
 
 			API_FUNC_NAKED_START()
-				push	has_no_iteration_body
+				movzx	edx, has_no_iteration_body
+				push	edx
 				mov		edx, baseline_data
 				mov		eax, header
 				mov		ecx, destination_data

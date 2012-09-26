@@ -288,7 +288,7 @@ namespace Yelo
 			TStructGetPtrImpl(byte,						RegionVitality, 0x178); // [k_maximum_regions_per_model]
 			TStructGetPtrImpl(byte,						RegionPermutationIndices, 0x180); // [k_maximum_regions_per_model]
 			// 0x188?
-			TStructGetPtrImpl(real_rgb_color,			ChangeColors, 0x1B8); // [4]
+			TStructGetPtrImpl(real_rgb_color,			ChangeColors, 0x1B8); // [k_object_change_color_count]
 			// one of these are for interpolating
 			TStructGetPtrImpl(s_object_header_block_reference, NodeOrientations, k_block_reference_offset_node_orientations); // real_orientation3d[node_count]
 			TStructGetPtrImpl(s_object_header_block_reference, NodeOrientations2, k_block_reference_offset_node_orientations2); // real_orientation3d[node_count]

@@ -12,7 +12,7 @@ namespace Yelo
 {
 	namespace Networking
 	{
-		struct s_network_player;
+		struct s_network_game_player;
 	};
 
 	namespace Objects
@@ -200,7 +200,7 @@ namespace Yelo
 			// PAD8
 			TStructGetPtrImpl(datum_index, AutoAimTarget, 0x40); // biped_index
 			TStructGetPtrImpl(uint32, AutoAimUpdateTime, 0x44);
-			TStructGetPtrImpl(Networking::s_network_player, NetworkPlayer, 0x48);
+			TStructGetPtrImpl(Networking::s_network_game_player, NetworkPlayer, 0x48);
 			TStructGetPtrImpl(int16, PowerupTimes, 0x68); // int16[Enums::_player_powerup]
 			TStructGetPtrImpl(real, Speed, 0x6C);
 			TStructGetPtrImpl(int32, SourceTeleporterNetgameIndex, 0x70); // index to a netgame flag in the scenario, or NONE
@@ -310,7 +310,7 @@ namespace Yelo
 			Objects::s_unit_datum* GetPlayerUnit();
 			datum_index GetVehicleIndex();
 		};
-		typedef Memory::DataArray<s_player_datum, 16> t_players_data;
+		typedef Memory::DataArray<s_player_datum, Enums::k_multiplayer_maximum_players_upgrade> t_players_data;
 		t_players_data*					Players();
 
 
@@ -320,7 +320,7 @@ namespace Yelo
 			// could have no real fields...maybe use it 
 			// for our own evil deeds?
 		};
-		typedef Memory::DataArray<s_team_datum, 16> t_teams_data;
+		typedef Memory::DataArray<s_team_datum, Enums::k_multiplayer_maximum_players> t_teams_data;
 		t_teams_data*					Teams();
 
 
@@ -369,7 +369,7 @@ namespace Yelo
 			PAD32; // TODO: document the fields in the first 12 bytes of this struct
 			long_flags flags; // FLAG(0) = camera control
 
-			s_player_control local_players[1];
+			s_player_control local_players[Enums::k_maximum_number_of_local_players];
 		}; BOOST_STATIC_ASSERT( sizeof(s_player_control_globals_data) == 0x50 );
 		s_player_control_globals_data*	PlayerControlGlobals();
 

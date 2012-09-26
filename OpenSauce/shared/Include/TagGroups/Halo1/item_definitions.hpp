@@ -16,19 +16,6 @@ namespace Yelo
 			k_maximum_number_of_magazines_per_weapon = 2,
 		};
 
-		enum grenade_type : _enum
-		{
-			_grenade_type_frag,
-			_grenade_type_plasma,
-
-			_grenade_type,
-
-			_grenade_type_yelo2 = _grenade_type, // ie, "custom 2"
-			_grenade_type_yelo3, // ie, "custom 3"
-
-			_grenade_type_yelo
-		};
-
 		enum equipment_powerup : _enum
 		{
 			_equipment_powerup_none,

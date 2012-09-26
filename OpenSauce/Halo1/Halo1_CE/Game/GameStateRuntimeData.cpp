@@ -296,7 +296,7 @@ namespace Yelo
 
 		void InitializeForNewGameState()
 		{
-			runtime_data = GameState::GameStateGlobals()->Malloc<s_runtime_data>();
+			runtime_data = GameState::GameStateMalloc<s_runtime_data>();
 		}
 		void InitializeForNewMap()
 		{
