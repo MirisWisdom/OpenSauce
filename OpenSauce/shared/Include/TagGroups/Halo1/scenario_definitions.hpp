@@ -149,7 +149,7 @@ namespace Yelo
 			TAG_FIELD(tag_reference, _wont_use);
 			TAG_FIELD(tag_reference, _cant_use);
 
-			TAG_PAD(tag_block, 1); // scenario_sky_reference_block
+			TAG_TBLOCK_(skies, tag_reference);
 
 			PAD16; // type
 			PAD16; // flags
@@ -162,7 +162,8 @@ namespace Yelo
 				1); // scenario_function
 			TAG_PAD(tag_data, 1); // editor_scenario_data
 			TAG_PAD(tag_block, 1); // editor_comment_definition
-			TAG_PAD(int32, 56); // 224
+			TAG_PAD(tag_block, 1); // Halo2. scenario_environment_object
+			TAG_PAD(int32, 53); // 212
 
 			TAG_PAD(tag_block,
 				1 + // scenario_object_name
@@ -194,10 +195,13 @@ namespace Yelo
 				1 + // scenario_object_palette_entry
 
 				1 + // s_scenario_sound_scenery
-				1 // scenario_object_palette_entry
+				1 + // scenario_object_palette_entry
+
+				1 + // Halo2. s_scenario_light
+				1   // Halo2. scenario_object_palette_entry
 				);
 
-			TAG_PAD(int32, 21); // 84
+			TAG_PAD(int32, 15); // 60
 
 			TAG_TBLOCK(player_starting_profiles, scenario_starting_profile);
 			TAG_TBLOCK(player_starting_locations, scenario_player);
@@ -210,11 +214,17 @@ namespace Yelo
 				1 + // scenario_bsp_switch_trigger_volume
 				1 + // scenario_decal
 				1 + // scenario_decal_palette_entry
-				1 // scenario_detail_object_collection_palette_entry
+				1   // scenario_detail_object_collection_palette_entry
 				);
 
-			TAG_PAD(int32, 21); // 84
+			TAG_PAD(int32, 9); // 36
 
+			TAG_PAD(tag_block,
+				1 + // Halo2. style_palette_entry
+				1 + // Halo2. squad_group_definition
+				1 + // Halo2. squad_definition
+				1   // Halo2. zone_definition
+				);
 			TAG_PAD(tag_block,
 				1 + // actor_palette_entry
 				1 + // encounter_definition
@@ -222,7 +232,7 @@ namespace Yelo
 				1 + // ai_animation_reference_definition
 				1 + // ai_script_reference_definition
 				1 + // ai_recording_reference_definition
-				1 // ai_conversation
+				1   // ai_conversation
 				);
 
 			TAG_FIELD(tag_data, hs_syntax_data);
@@ -233,7 +243,8 @@ namespace Yelo
 			TAG_TBLOCK(references, hs_tag_reference);
 			TAG_TBLOCK(source_files, hs_source_file);
 			
-			TAG_PAD(tag_block, 2);
+			TAG_PAD(tag_block, 1); // Halo2. cs_script_data
+			TAG_PAD(tag_block, 1);
 
 			TAG_TBLOCK(cutscene_flags, scenario_cutscene_flag);
 			TAG_TBLOCK(cutscene_camera_points, scenario_cutscene_camera_point);

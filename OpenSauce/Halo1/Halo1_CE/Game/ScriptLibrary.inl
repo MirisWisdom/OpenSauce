@@ -66,11 +66,6 @@
 		_hs_function_runtime_integer_inc,
 		_hs_function_runtime_integer_dec,
 
-#if 0
-		_hs_function_structure_bsp_lightmap_reset,
-		_hs_function_structure_bsp_lightmap_set_change,
-#endif
-
 		_hs_function_game_change_version_id,
 		_hs_function_game_engine_data_get_integer,
 
@@ -120,8 +115,14 @@
 		_hs_function_runtime_vector_operation,
 		_hs_function_runtime_vector_to_string,
 		_hs_function_object_data_set_vector,
+		_hs_function_object_data_save_vector,
 
 		_hs_function_display_scripted_ui_widget,
+
+		_hs_function_scenario_faux_zones_reset,
+		_hs_function_scenario_faux_zone_current_switch_variant,
+		_hs_function_scenario_faux_zone_switch_variant,
+		_hs_function_scenario_faux_zone_switch_sky,
 
 		
 		//////////////////////////////////////////////////////////////////////////
@@ -191,13 +192,6 @@
 	#include "Game/ScriptLibrary.Definitions.RuntimeData.inl"
 	
 
-#if 0
-	HS_FUNCTION(structure_bsp_lightmap_reset, void, "[DEPRECATED] reset the current bsp's lightmap to the default lightmap-set");
-	HS_FUNCTION_WITH_PARAMS(structure_bsp_lightmap_set_change, bool, "[DEPRECATED] returns whether the change was successful or not", "<lightmap-set-name>", 1,
-		HS_TYPE(string)
-	);
-#endif
-
 	HS_FUNCTION_WITH_PARAMS(game_change_version_id, bool, "returns whether the change was successful or not", 
 			"<also-change-game-build-string> <version-string> ", 2,
 		HS_TYPE(bool),
@@ -221,6 +215,21 @@
 	HS_FUNCTION_WITH_PARAMS(display_scripted_ui_widget, bool, "", 
 			"<local-player-index> <data-name>", 2,
 		HS_TYPE(short),
+		HS_TYPE(string)
+	);
+
+	HS_FUNCTION(scenario_faux_zones_reset, void, "resets the zones in the scenario back to their starting states");
+	HS_FUNCTION_WITH_PARAMS(scenario_faux_zone_current_switch_variant, bool, "returns whether the change was successful or not", 
+			"<variant-name>", 1,
+		HS_TYPE(string)
+	);
+	HS_FUNCTION_WITH_PARAMS(scenario_faux_zone_switch_variant, bool, "returns whether the change was successful or not", 
+			"<zone-name> <variant-name>", 2,
+		HS_TYPE(string),
+		HS_TYPE(string)
+	);
+	HS_FUNCTION_WITH_PARAMS(scenario_faux_zone_switch_sky, bool, "returns whether the change was successful or not", 
+			"<zone-sky-name>", 1,
 		HS_TYPE(string)
 	);
 
@@ -295,11 +304,6 @@
 		&GET_HS_FUNCTION(runtime_integer_inc),
 		&GET_HS_FUNCTION(runtime_integer_dec),
 
-#if 0
-		&GET_HS_FUNCTION(structure_bsp_lightmap_reset),
-		&GET_HS_FUNCTION(structure_bsp_lightmap_set_change),
-#endif
-
 		&GET_HS_FUNCTION(game_change_version_id),
 		&GET_HS_FUNCTION(game_engine_data_get_integer),
 
@@ -349,8 +353,15 @@
 		&GET_HS_FUNCTION(runtime_vector_operation),
 		&GET_HS_FUNCTION(runtime_vector_to_string),
 		&GET_HS_FUNCTION(object_data_set_vector),
+		&GET_HS_FUNCTION(object_data_save_vector),
 
 		&GET_HS_FUNCTION(display_scripted_ui_widget),
+
+		&GET_HS_FUNCTION(scenario_faux_zones_reset),
+		&GET_HS_FUNCTION(scenario_faux_zone_current_switch_variant),
+		&GET_HS_FUNCTION(scenario_faux_zone_switch_variant),
+		&GET_HS_FUNCTION(scenario_faux_zone_switch_sky),
+
 
 		&GET_HS_FUNCTION(sv_httpserver_log_enable),
 		&GET_HS_FUNCTION(sv_httpserver_set_connection_ban),

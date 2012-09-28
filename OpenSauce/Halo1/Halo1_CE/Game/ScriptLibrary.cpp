@@ -24,6 +24,7 @@
 #include "TagGroups/project_yellow_definitions.hpp"
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/PostProcessing/PostProcessingScripting.hpp"
+#include "Scenario/ScenarioFauxZones.hpp"
 
 #if PLATFORM_IS_DEDI
 #include "Networking/HTTP/HTTPServer.hpp"
@@ -160,10 +161,20 @@ namespace Yelo
 		{
 			ScriptFunctionSetEvaluteProc( function, CAST_PTR(hs_evaluate_proc,GET_FUNC_VPTR(HS_NULL_EVALUATE)) );
 		}
+		void NullifyScriptFunction(Enums::hs_function_enumeration function)
+		{
+			if(function > NONE && function < Enums::k_hs_function_enumeration_count)
+				NullifyScriptFunction( *hs_yelo_functions[function] );
+		}
 
 		void NullifyScriptFunctionWithParams(hs_function_definition& function)
 		{
 			ScriptFunctionWithParamsSetEvaluteProc( function, CAST_PTR(hs_evaluate_proc,GET_FUNC_VPTR(HS_NULL_WITH_PARAMS_EVALUATE)) );
+		}
+		void NullifyScriptFunctionWithParams(Enums::hs_function_enumeration function)
+		{
+			if(function > NONE && function < Enums::k_hs_function_enumeration_count)
+				NullifyScriptFunctionWithParams( *hs_yelo_functions[function] );
 		}
 
 

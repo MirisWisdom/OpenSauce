@@ -73,7 +73,7 @@ namespace Yelo
 			datum_index tag_index = tag_iterator_next(iter); // there should only be one yelo tag so we only need to call this once
 			if(!tag_index.IsNull())
 			{
-				_global_yelo = Instances()[tag_index.index].Definition<project_yellow>();
+				_global_yelo = TagGetUnsafe<project_yellow>(tag_index);
 
 				if(_global_yelo->version != project_yellow::k_version)
 					_global_yelo = &null_yelo_invalid;
@@ -84,7 +84,7 @@ namespace Yelo
 			tag_index = tag_iterator_next(iter);
 			if(!tag_index.IsNull())
 			{
-				_global_yelo_globals = Instances()[tag_index.index].Definition<project_yellow_globals>();
+				_global_yelo_globals = TagGetUnsafe<project_yellow_globals>(tag_index);
 
 				if(_global_yelo_globals->version != project_yellow_globals::k_version)
 					_global_yelo_globals = &null_yelo_globals;

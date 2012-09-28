@@ -35,7 +35,7 @@ namespace Yelo
 			// base shader definition to it's base class
 			TagGroups::s_shader_postprocess_generic* current_definition = m_members_generic.definition;
 			while(!current_definition->base_shader.tag_index.IsNull())
-				current_definition = TagGroups::Instances()[current_definition->base_shader.tag_index.index].Definition<TagGroups::s_shader_postprocess_generic>();
+				current_definition = TagGroups::TagGetForModify<TagGroups::s_shader_postprocess_generic>(current_definition->base_shader.tag_index);
 			c_shader_postprocess::SetShaderDefinition(current_definition);
 		}
 		void c_shader_internal::SetShaderName(const char* name)
@@ -86,7 +86,7 @@ namespace Yelo
 				if(bitmap_datum.IsNull())
 					return;
 
-				TagGroups::s_bitmap_definition* definition = TagGroups::Instances()[bitmap_datum.index].Definition<TagGroups::s_bitmap_definition>();
+				TagGroups::s_bitmap_definition* definition = TagGroups::TagGetForModify<TagGroups::s_bitmap_definition>(bitmap_datum);
 
 				// invalid bitmap index
 				ASSERT(definition->bitmaps.Count <= parameter.value.bitmap.bitmap_index, "parameter bitmap index is outside the bounds of the referenced bitmap");

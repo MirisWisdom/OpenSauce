@@ -370,7 +370,7 @@ namespace Yelo
 			
 			// set the current shader collection tag reference to the tag found
 			if(!tag_index.IsNull())
-				m_members_internal.cache_shader_collection = TagGroups::Instances()[tag_index.index].Definition<TagGroups::s_effect_postprocess_collection>();
+				m_members_internal.cache_shader_collection = TagGroups::TagGetForModify<TagGroups::s_effect_postprocess_collection>(tag_index);
 		}
 
 		/*!
@@ -412,7 +412,7 @@ namespace Yelo
 				datum_index shader_index = m_members_internal.cache_shader_collection->shaders[i].tag_index;
 				if(TagGroups::Instances()[shader_index.index].MatchesGroup(TagGroups::s_shader_postprocess_generic::k_group_tag))
 				{
-					TagGroups::s_shader_postprocess_generic* shpg = TagGroups::Instances()[shader_index.index].Definition<TagGroups::s_shader_postprocess_generic>();
+					TagGroups::s_shader_postprocess_generic* shpg = TagGroups::TagGetForModify<TagGroups::s_shader_postprocess_generic>(shader_index);
 
 					m_members_internal.m_shaders.shader_list[i].SetShaderDefinition(shpg);
 					m_members_internal.m_shaders.shader_list[i].SetDatumIndex(shader_index);
@@ -521,7 +521,7 @@ namespace Yelo
 
 		void c_system_internal::SetupEffect(s_effect_set& effect_set, TagGroups::s_effect_postprocess_collection_effect* definition)
 		{
-			TagGroups::s_effect_postprocess_generic* effect_definition = TagGroups::Instances()[definition->effect.tag_index.index].Definition<TagGroups::s_effect_postprocess_generic>();
+			TagGroups::s_effect_postprocess_generic* effect_definition = TagGroups::TagGetForModify<TagGroups::s_effect_postprocess_generic>(definition->effect.tag_index);
 
 			ASSERT(effect_definition == NULL, "effect collection block has no effect referenced");
 

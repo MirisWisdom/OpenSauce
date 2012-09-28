@@ -355,9 +355,9 @@ namespace BlamLib.Blam.Halo1.Tags
 			Add(Model = new TI.TagReference(this, TagGroups.mod2));
 			Add(Animation = new TI.TagReference(this, TagGroups.antr));
 			Add(new TI.Pad(24));
-			Add(IndoorAbientRadiosityColor = new TI.RealColor(TI.FieldType.RealRgbColor));
+			Add(IndoorAmbientRadiosityColor = new TI.RealColor(TI.FieldType.RealRgbColor));
 			Add(IndoorAmbientRadiosityPower = new TI.Real());
-			Add(OutdoorAbientRadiosityColor = new TI.RealColor(TI.FieldType.RealRgbColor));
+			Add(OutdoorAmbientRadiosityColor = new TI.RealColor(TI.FieldType.RealRgbColor));
 			Add(OutdoorAmbientRadiosityPower = new TI.Real());
 			Add(OutdoorFogColor = new TI.RealColor(TI.FieldType.RealRgbColor));
 			Add(new TI.Pad(8));

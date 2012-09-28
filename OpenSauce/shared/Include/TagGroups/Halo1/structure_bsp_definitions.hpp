@@ -330,7 +330,7 @@ namespace Yelo
 
 			struct {
 				TAG_FIELD(real_rgb_color, ambient_color);
-				PAD32; // future alpha padding?
+				PAD32; // future power value?
 
 				struct {
 					TAG_FIELD(real_rgb_color, color);
@@ -341,7 +341,7 @@ namespace Yelo
 				TAG_FIELD(real_argb_color, reflection_tint);
 				TAG_FIELD(real_vector3d, shadow_vector);
 				TAG_FIELD(real_rgb_color, shadow_color);
-				PAD32; // future alpha padding?
+				PAD32; // future power value?
 			}defaults;
 
 			TAG_TBLOCK(collision_materials, structure_collision_material);

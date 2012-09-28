@@ -221,9 +221,9 @@ namespace BlamLib.Blam.Halo1.Tags
 		#endregion
 
 		public TI.TagReference Model, Animation;
-		public TI.RealColor IndoorAbientRadiosityColor;
+		public TI.RealColor IndoorAmbientRadiosityColor;
 		public TI.Real IndoorAmbientRadiosityPower;
-		public TI.RealColor OutdoorAbientRadiosityColor;
+		public TI.RealColor OutdoorAmbientRadiosityColor;
 		public TI.Real OutdoorAmbientRadiosityPower;
 
 		public TI.RealColor OutdoorFogColor;

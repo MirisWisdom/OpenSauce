@@ -6,18 +6,39 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/game/players.hpp>
+#include <blamlib/Halo1/sound/sound_environment_definitions.hpp>
+
 namespace Yelo
 {
 	namespace Game
 	{
+		struct s_scenario_player_atmospheric_fog // made up name
+		{
+			bool is_inside; PAD24;
+			UNKNOWN_TYPE(real_vector3d);
+			UNKNOWN_TYPE(real_vector3d);
+			UNKNOWN_TYPE(real_rgb_color);
+			UNKNOWN_TYPE(real);
+		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_player_atmospheric_fog) == 0x2C );
+
 		struct s_scenario_globals
 		{
 			int16 current_structure_bsp_index;
+#if FALSE
 			PAD16;
-			byte UNKNOWN(0)[0x2C][1]; // only one element on pc, so related to each local player then something about the fog around them?
-			bool UNKNOWN(1);
-			PAD24;
-			byte sound_environment[0x48]; // if I gave a fuck about defining the tag structure, I'd use it here
+#else
+			//////////////////////////////////////////////////////////////////////////
+			// OS-modified game states only
+		private:
+			int16 yelo_zone_set_variant_index;
+		public:
+#endif
+			s_scenario_player_atmospheric_fog player_fog[Enums::k_maximum_number_of_local_players];
+			struct {
+				bool copy_environment_tag; PAD24; // never seen this set to true
+				TagGroups::sound_environment environment;
+			}sound;
 		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_globals) == 0x7C );
 	};
 };

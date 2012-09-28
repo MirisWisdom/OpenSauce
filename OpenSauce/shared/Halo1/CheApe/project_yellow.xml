@@ -14,11 +14,6 @@
 	</enums>
 
 	<flags>
-		<!-- UNUSED -->
-		<Flag name="bsp_information_lightmap_set_flags">
-			<field>is default</field>
-		</Flag>
-
 		<Flag name="gameplay_flags">
 			<field>prohibit multi-team vehicles</field>
 		</Flag>
@@ -34,26 +29,43 @@
 			<field type="Pad" definition="32" />
 		</TagBlock>
 
-		<!-- UNUSED -->
-		<TagBlock name="bsp_information_lightmap_set_block" maxElements="64">
-			<field type="String" name="name" blockname="true" tooltip="code name for this lightmap set" />
-			<field type="WordFlags" name="flags" definition="bsp_information_lightmap_set_flags" />
 
-			<field type="TagReference" name="lightmap" definition="bitmap_reference" />
+		<!-- SCENARIO INFORMATION -->
+		<TagBlock name="scenario_information_sky_block" maxElements="32"> <!-- k_maximum_skies_per_scenario -->
+			<field type="TagReference"		name="sky"				definition="sky_reference" blockname="true" />
+		</TagBlock>
+		<TagBlock name="scenario_faux_zone_sky_block" maxElements="64">
+			<field type="String"			name="name"				blockname="true"							tooltip="code name for this zone set" />
+			<field type="Pad" definition="2" />
+			<field type="ShortBlockIndex"	name="sky to replace"	definition="scenario_information_sky_block"	tooltip="scenario sky entry we will replace at runtime" />
+			<field type="TagReference"		name="new sky"			definition="sky_reference" />
+		</TagBlock>
 
-			<field type="Pad" definition="8" />
+		<TagBlock name="scenario_faux_zone_lightmap_set_block" maxElements="128">
+			<field type="TagReference" name="lightmap" definition="bitmap_reference" blockname="true" />
+			<field type="Pad" definition="48" />
+		</TagBlock>
+		<TagBlock name="scenario_faux_zone_set_variant_block" maxElements="128">
+			<field type="String"			name="name"			blockname="true"									tooltip="code name for this set variant" />
+			<field type="Pad" definition="2" />
+			<field type="ShortBlockIndex"	name="new lightmap"	definition="scenario_faux_zone_lightmap_set_block"	tooltip="structure bsp lightmap replacement definition" />
+			<field type="ShortBlockIndex"	name="new sky"		definition="scenario_faux_zone_sky_block"			tooltip="scenario sky replacement definition" />
+			<field type="Pad" definition="2" />
+			<field type="Pad" definition="4" />
+		</TagBlock>
+		<TagBlock name="scenario_faux_zone_set_block" maxElements="64">
+			<field type="String"		name="name"			blockname="true"										tooltip="code name for this zone set" />
+			<field type="TagReference"	name="bsp"			definition="structure_bsp_reference"					tooltip="the actual 'zone'" />
+			<field type="Block"			name="lightmaps"	definition="scenario_faux_zone_lightmap_set_block" />
+			<field type="Block"			name="variants"		definition="scenario_faux_zone_lightmap_set_block" />
 			<field type="Pad" definition="24" />
 		</TagBlock>
-		<!-- UNUSED -->
-		<TagBlock name="bsp_information_bsp_set_block" maxElements="64">
-			<field type="TagReference" name="bsp" definition="structure_bsp_reference" blockname="true" />
-			<field type="Block" name="lightmap sets" definition="bsp_information_lightmap_set_block" />
+		<TagBlock name="scenario_information_block" maxElements="1">
+			<field type="Block" name="scenario skies"	definition="scenario_information_sky_block"					tooltip="skies used in the scenario which zone skies will replace" />
 			<field type="Pad" definition="12" />
-		</TagBlock>
-		<!-- UNUSED -->
-		<TagBlock name="bsp_information_block" maxElements="1">
-			<field type="Pad" definition="60" />
-			<field type="Block" name="bsp sets" definition="bsp_information_bsp_set_block" />
+			<field type="Block" name="zone skies"		definition="scenario_faux_zone_sky_block" />
+			<field type="Block" name="zones"			definition="scenario_faux_zone_set_block" />
+			<field type="Pad" definition="36" />
 		</TagBlock>
 	</blocks>
 
@@ -89,10 +101,10 @@
 			<field type="Explanation" name="Scripting" definition="External scripting definitions (User)" />
 			<field type="Block" name="yelo scripting" definition="scripting_block" />
 
-			<!--<field type="Explanation" name="Bsp Enhancements" definition="" />-->
-			<!--<field type="Block" name="bsp information" definition="bsp_information_block" />-->
+			<field type="Explanation" name="Scenario Enhancements" definition="" />
+			<field type="Block" name="scenario info" definition="scenario_information_block" />
 
-			<field type="Pad" definition="92" />
+			<field type="Pad" definition="80" />
 		</TagGroup>
 	</groups>
 </definitions>

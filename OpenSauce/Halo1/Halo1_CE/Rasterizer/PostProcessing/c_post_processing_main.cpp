@@ -236,7 +236,7 @@ namespace Yelo
 			if(!tag_index.IsNull())
 			{
 				// set the current shader globals tag reference to the tag found
-				m_globals.map_postprocess_globals = TagGroups::Instances()[tag_index.index].Definition<TagGroups::s_shader_postprocess_globals>();
+				m_globals.map_postprocess_globals = TagGroups::TagGetForModify<TagGroups::s_shader_postprocess_globals>(tag_index);
 			}
 			else
 				m_globals.map_postprocess_globals = NULL;

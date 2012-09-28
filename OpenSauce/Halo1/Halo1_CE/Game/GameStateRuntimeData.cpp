@@ -334,6 +334,13 @@ namespace Yelo
 				scripting_runtime_vector_to_string_evaluate);
 		}
 
+		real_vector3d* VectorValueGetForModify(int16 value_index)
+		{
+			if(VectorOperationValidate(value_index))
+				return &runtime_data->vectors.values[value_index];
+
+			return NULL;
+		}
 		const real_vector3d* VectorValueGet(int16 value_index)
 		{
 			if(VectorOperationValidate(value_index))

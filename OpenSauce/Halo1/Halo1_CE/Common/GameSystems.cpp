@@ -48,6 +48,7 @@
 
 	#include "Game/Scripting.hpp"
 	#include "Game/GameStateRuntimeData.hpp"
+	#include "Scenario/ScenarioFauxZones.hpp"
 	#include "Game/GameEngine.hpp"
 
 	#include "Networking/Networking.hpp"
