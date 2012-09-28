@@ -72,9 +72,7 @@ namespace Yelo
 					datum_index definition_index = *weapon->object.GetTagDefinition();
 					if(!definition_index.IsNull())
 					{
-						TagGroups::s_item_definition* definition = TagGroups::Instances()[ definition_index.index ]
-							.Definition<TagGroups::s_item_definition>();
-
+						const TagGroups::s_item_definition* definition = TagGroups::TagGet<TagGroups::s_item_definition>(definition_index);
 						if(definition != NULL) // WTF! HOW? idk. also, lazy :(
 						{
 							int32 msg_index = definition->item.message_index;

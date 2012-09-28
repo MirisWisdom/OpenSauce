@@ -17,10 +17,5 @@ namespace Yelo
 		extern const project_yellow_globals* _global_yelo_globals;
 		// Note: actually defined in TagGroups.cpp
 		extern const project_yellow* _global_yelo;
-
-		// Changes the current structure_bsp's lightmaps to the lightmap-set named 
-		// [lightmap_set_name] in the [_global_yelo] definition's bsp-information block.
-		// NOTE: Uses the current structure_bsp when finding the bsp-set to use.
-		bool ScenarioStructureBspLightmapSetChange(cstring lightmap_set_name);
 	};
 };

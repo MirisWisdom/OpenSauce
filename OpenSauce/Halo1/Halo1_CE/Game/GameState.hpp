@@ -6,6 +6,7 @@
 */
 #pragma once
 #include "Memory/Data.hpp"
+#include "Memory/MemoryInterface.hpp"
 
 #include <blamlib/Halo1/game/game_allegiance.hpp>
 #include <blamlib/Halo1/game/game_globals.hpp>
@@ -136,7 +137,7 @@ namespace Yelo
 		// Allocate an object of type [T] inside the game state memory and return its address.
 		// Note: Also updates the game state's cpu allocation size by adding 'sizeof([T])'
 		template<typename T>
-		T* GameStateMalloc(size_t count = 1)
+		T* GameStateMalloc(const bool k_update_allocation_crc = true, const size_t count = 1)
 		{
 			s_game_state_globals* gsg = GameStateGlobals();
 
@@ -144,13 +145,13 @@ namespace Yelo
 			const size_t size_of = sizeof(T) * count;
 
 			// Debug check that we don't allocate more memory than the game state has available
-			ASSERT((base_addr + size_of) <= PhysicalMemoryMapGlobals()->tag_cache_base_address, 
+			ASSERT_TRUE((base_addr + size_of) <= PhysicalMemoryMapGlobals()->tag_cache_base_address, 
 				"Bit off more game-state than the game could chew!");
 
 			gsg->cpu_allocation_size += size_of;
-#if 0 // TODO: If the allocation crc is updated, game states won't be loadable by stock games
-			Memory::CRC(gsg->header->allocation_crc, &size_of, sizeof(size_of));
-#endif
+			// If the allocation crc is updated, game states won't be loadable by stock games
+			if(k_update_allocation_crc)
+				Memory::CRC(gsg->header->allocation_crc, &size_of, sizeof(size_of));
 
 			return CAST_PTR(T*, base_addr);
 		}

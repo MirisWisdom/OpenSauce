@@ -5,21 +5,44 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-static void* scripting_structure_bsp_lightmap_reset_evaluate()
+static void* scripting_scenario_faux_zones_reset_evaluate()
 {
-	TagGroups::ScenarioStructureBspLightmapSetChange("default");
+	ScenarioFauxZones::Reset();
 
 	return NULL;
 }
 
-static void* scripting_structure_bsp_lightmap_set_change_evaluate(void** arguments)
+static void* scripting_scenario_faux_zone_current_switch_variant_evaluate(void** arguments)
 {
 	struct s_arguments {
-		cstring lightmap_set_name;
+		cstring variant_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
 	TypeHolder result; result.pointer = NULL;
 
-	result.boolean = TagGroups::ScenarioStructureBspLightmapSetChange(args->lightmap_set_name);
+	result.boolean = ScenarioFauxZones::SwitchCurrentZoneVariant(args->variant_name);
+
+	return result.pointer;
+}
+static void* scripting_scenario_faux_zone_switch_variant_evaluate(void** arguments)
+{
+	struct s_arguments {
+		cstring zone_name;
+		cstring variant_name;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+
+	result.boolean = ScenarioFauxZones::SwitchZoneVariant(args->zone_name, args->variant_name);
+
+	return result.pointer;
+}
+static void* scripting_scenario_faux_zone_switch_sky_evaluate(void** arguments)
+{
+	struct s_arguments {
+		cstring zone_sky_name;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+
+	result.boolean = ScenarioFauxZones::SwitchZoneSky(args->zone_sky_name);
 
 	return result.pointer;
 }
@@ -267,13 +290,6 @@ static void* scripting_display_scripted_ui_widget_evaluate(void** arguments)
 
 static void InitializeMiscFunctions()
 {
-#if 0
-	InitializeScriptFunction(Enums::_hs_function_structure_bsp_lightmap_reset, 
-		scripting_structure_bsp_lightmap_reset_evaluate);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_structure_bsp_lightmap_set_change, 
-		scripting_structure_bsp_lightmap_set_change_evaluate);
-#endif
-
 	InitializeScriptFunctionWithParams(Enums::_hs_function_game_change_version_id, 
 		scripting_game_change_version_id_evaluate);
 
@@ -284,6 +300,46 @@ static void InitializeMiscFunctions()
 		scripting_machine_is_host);
 	InitializeScriptFunction(Enums::_hs_function_machine_is_dedi, 
 		scripting_machine_is_dedi);
+
+
+	YELO_INIT_SCRIPT_FUNCTION_USER(Enums::_hs_function_pp_load,
+		Rasterizer::PostProcessing::Scripting::HS_Load);
+	YELO_INIT_SCRIPT_FUNCTION_USER(Enums::_hs_function_pp_unload,
+		Rasterizer::PostProcessing::Scripting::HS_Unload);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_pp_get_effect_instance_index_by_name,
+		Rasterizer::PostProcessing::Scripting::Internal::HS_GetEffectInstanceIndexByName);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_pp_set_effect_instance_active,
+		Rasterizer::PostProcessing::Scripting::Internal::HS_SetEffectInstanceActive);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_pp_set_effect_instance_fade,
+		Rasterizer::PostProcessing::Scripting::Internal::HS_SetEffectInstanceFade);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_pp_get_effect_instance_current_fade,
+		Rasterizer::PostProcessing::Scripting::Internal::HS_GetEffectInstanceCurrentFade);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_pp_get_effect_instance_fade_direction,
+		Rasterizer::PostProcessing::Scripting::Internal::HS_GetEffectInstanceFadeDirection);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_pp_get_effect_index_by_name,
+		Rasterizer::PostProcessing::Scripting::Internal::HS_GetEffectIndexByName);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_pp_get_effect_is_valid,
+		Rasterizer::PostProcessing::Scripting::Internal::HS_GetEffectIsValid);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_pp_get_effect_shader_variable_index_by_name,
+		Rasterizer::PostProcessing::Scripting::Internal::HS_GetEffectShaderVariableIndexByName);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_pp_set_effect_shader_variable_boolean,
+		Rasterizer::PostProcessing::Scripting::Internal::HS_SetEffectShaderVariableBoolean);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_pp_set_effect_shader_variable_integer,
+		Rasterizer::PostProcessing::Scripting::Internal::HS_SetEffectShaderVariableInteger);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_pp_set_effect_shader_variable_real,
+		Rasterizer::PostProcessing::Scripting::Internal::HS_SetEffectShaderVariableReal);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_pp_set_effect_shader_instance_active, 
+		Rasterizer::PostProcessing::Scripting::Internal::HS_SetEffectShaderInstanceActive);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_pp_bloom_set_size, 
+		Rasterizer::PostProcessing::Scripting::Bloom::HS_BloomSetSize);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_pp_bloom_set_exposure, 
+		Rasterizer::PostProcessing::Scripting::Bloom::HS_BloomSetExposure);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_pp_bloom_set_mix_amount, 
+		Rasterizer::PostProcessing::Scripting::Bloom::HS_BloomSetMixAmount);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_pp_bloom_set_minimum_color, 
+		Rasterizer::PostProcessing::Scripting::Bloom::HS_BloomSetMinimumColor);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_pp_bloom_set_maximum_color, 
+		Rasterizer::PostProcessing::Scripting::Bloom::HS_BloomSetMaximumColor);
 
 	//////////////////////////////////////////////////////////////////////////
 	// Numbers
@@ -313,106 +369,40 @@ static void InitializeMiscFunctions()
 		scripting_hex_string_to_long_evaluate);
 	//////////////////////////////////////////////////////////////////////////
 
-#if !PLATFORM_IS_DEDI
-	InitializeScriptFunction(Enums::_hs_function_pp_load,
-		Rasterizer::PostProcessing::Scripting::HS_Load);
-	InitializeScriptFunction(Enums::_hs_function_pp_unload,
-		Rasterizer::PostProcessing::Scripting::HS_Unload);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_get_effect_instance_index_by_name,
-		Rasterizer::PostProcessing::Scripting::Internal::HS_GetEffectInstanceIndexByName);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_set_effect_instance_active,
-		Rasterizer::PostProcessing::Scripting::Internal::HS_SetEffectInstanceActive);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_set_effect_instance_fade,
-		Rasterizer::PostProcessing::Scripting::Internal::HS_SetEffectInstanceFade);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_get_effect_instance_current_fade,
-		Rasterizer::PostProcessing::Scripting::Internal::HS_GetEffectInstanceCurrentFade);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_get_effect_instance_fade_direction,
-		Rasterizer::PostProcessing::Scripting::Internal::HS_GetEffectInstanceFadeDirection);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_get_effect_index_by_name,
-		Rasterizer::PostProcessing::Scripting::Internal::HS_GetEffectIndexByName);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_get_effect_is_valid,
-		Rasterizer::PostProcessing::Scripting::Internal::HS_GetEffectIsValid);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_get_effect_shader_variable_index_by_name,
-		Rasterizer::PostProcessing::Scripting::Internal::HS_GetEffectShaderVariableIndexByName);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_set_effect_shader_variable_boolean,
-		Rasterizer::PostProcessing::Scripting::Internal::HS_SetEffectShaderVariableBoolean);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_set_effect_shader_variable_integer,
-		Rasterizer::PostProcessing::Scripting::Internal::HS_SetEffectShaderVariableInteger);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_set_effect_shader_variable_real,
-		Rasterizer::PostProcessing::Scripting::Internal::HS_SetEffectShaderVariableReal);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_set_effect_shader_instance_active, 
-		Rasterizer::PostProcessing::Scripting::Internal::HS_SetEffectShaderInstanceActive);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_bloom_set_size, 
-		Rasterizer::PostProcessing::Scripting::Bloom::HS_BloomSetSize);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_bloom_set_exposure, 
-		Rasterizer::PostProcessing::Scripting::Bloom::HS_BloomSetExposure);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_bloom_set_mix_amount, 
-		Rasterizer::PostProcessing::Scripting::Bloom::HS_BloomSetMixAmount);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_bloom_set_minimum_color, 
-		Rasterizer::PostProcessing::Scripting::Bloom::HS_BloomSetMinimumColor);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_pp_bloom_set_maximum_color, 
-		Rasterizer::PostProcessing::Scripting::Bloom::HS_BloomSetMaximumColor);
-
-	InitializeScriptFunctionWithParams(Enums::_hs_function_display_scripted_ui_widget, 
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_display_scripted_ui_widget, 
 		scripting_display_scripted_ui_widget_evaluate);
 
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(sv_httpserver_log_enable) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(sv_httpserver_set_connection_ban) );
-	NullifyScriptFunction( GET_HS_FUNCTION(sv_httpserver_banlist) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(sv_httpserver_banlist_file) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(sv_httpserver_ban_ip) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(sv_httpserver_unban_ip) );
+	InitializeScriptFunction(Enums::_hs_function_scenario_faux_zones_reset, 
+		scripting_scenario_faux_zones_reset_evaluate);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_scenario_faux_zone_current_switch_variant, 
+		scripting_scenario_faux_zone_current_switch_variant_evaluate);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_scenario_faux_zone_switch_variant, 
+		scripting_scenario_faux_zone_switch_variant_evaluate);
+	InitializeScriptFunctionWithParams(Enums::_hs_function_scenario_faux_zone_switch_sky, 
+		scripting_scenario_faux_zone_switch_sky_evaluate);
 
-	NullifyScriptFunction( GET_HS_FUNCTION(sv_mapdownload_start_server) );
-	NullifyScriptFunction( GET_HS_FUNCTION(sv_mapdownload_stop_server) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(sv_mapdownload_set_part_definitions_path) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(sv_mapdownload_set_host) );
-	NullifyScriptFunction( GET_HS_FUNCTION(sv_mapdownload_reload_map_part_definitions) );
 
-#else
-	NullifyScriptFunction( GET_HS_FUNCTION(pp_load) );
-	NullifyScriptFunction( GET_HS_FUNCTION(pp_unload) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_get_effect_instance_index_by_name) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_instance_active) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_instance_fade) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_get_effect_instance_current_fade) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_get_effect_instance_fade_direction) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_get_effect_is_valid) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_get_effect_shader_variable_index_by_name) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_shader_variable_boolean) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_shader_variable_integer) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_shader_variable_real) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_set_effect_shader_instance_active) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_bloom_set_size) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_bloom_set_exposure) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_bloom_set_mix_amount) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_bloom_set_minimum_color) );
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(pp_bloom_set_maximum_color) );
-
-	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(display_scripted_ui_widget) );
-
-	InitializeScriptFunctionWithParams(Enums::_hs_function_sv_httpserver_log_enable,
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_DEDI(Enums::_hs_function_sv_httpserver_log_enable,
 		Networking::HTTP::Server::HTTPServerLogEnable);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_sv_httpserver_set_connection_ban,
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_DEDI(Enums::_hs_function_sv_httpserver_set_connection_ban,
 		Networking::HTTP::Server::BanManager::HTTPServerSetConnectionBan);
-	InitializeScriptFunction(Enums::_hs_function_sv_httpserver_banlist,
+	YELO_INIT_SCRIPT_FUNCTION_DEDI(Enums::_hs_function_sv_httpserver_banlist,
 		Networking::HTTP::Server::BanManager::HTTPServerBanlist);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_sv_httpserver_banlist_file,
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_DEDI(Enums::_hs_function_sv_httpserver_banlist_file,
 		Networking::HTTP::Server::BanManager::HTTPServerBanlistFile);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_sv_httpserver_ban_ip,
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_DEDI(Enums::_hs_function_sv_httpserver_ban_ip,
 		Networking::HTTP::Server::BanManager::HTTPServerBanIP);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_sv_httpserver_unban_ip,
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_DEDI(Enums::_hs_function_sv_httpserver_unban_ip,
 		Networking::HTTP::Server::BanManager::HTTPServerUnbanIP);
 
-	InitializeScriptFunction(Enums::_hs_function_sv_mapdownload_start_server,
+	YELO_INIT_SCRIPT_FUNCTION_DEDI(Enums::_hs_function_sv_mapdownload_start_server,
 		Networking::HTTP::Server::MapDownload::MapDownloadStartServer);
-	InitializeScriptFunction(Enums::_hs_function_sv_mapdownload_stop_server,
+	YELO_INIT_SCRIPT_FUNCTION_DEDI(Enums::_hs_function_sv_mapdownload_stop_server,
 		Networking::HTTP::Server::MapDownload::MapDownloadStopServer);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_sv_mapdownload_set_part_definitions_path,
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_DEDI(Enums::_hs_function_sv_mapdownload_set_part_definitions_path,
 		Networking::HTTP::Server::MapDownload::MapDownloadSetPartDefinitionsPath);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_sv_mapdownload_set_host,
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_DEDI(Enums::_hs_function_sv_mapdownload_set_host,
 		Networking::HTTP::Server::MapDownload::MapDownloadSetHost);
-	InitializeScriptFunction(Enums::_hs_function_sv_mapdownload_reload_map_part_definitions,
+	YELO_INIT_SCRIPT_FUNCTION_DEDI(Enums::_hs_function_sv_mapdownload_reload_map_part_definitions,
 		Networking::HTTP::Server::MapDownload::MapDownloadReloadMapPartDefinitions);
-#endif
 }

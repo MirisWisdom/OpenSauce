@@ -95,7 +95,7 @@ namespace Yelo
 			void		SetTexture(IDirect3DDevice9* pDevice, uint16 sampler, datum_index bitmap_tag_index)
 			{
 				// get the bitmap datum pointer
-				TagGroups::s_bitmap_definition*	bitmap = TagGroups::Instances()[bitmap_tag_index.index].Definition<TagGroups::s_bitmap_definition>();
+				TagGroups::s_bitmap_definition*	bitmap = TagGroups::TagGetForModify<TagGroups::s_bitmap_definition>(bitmap_tag_index);
 				TagGroups::s_bitmap_data*		bitmap_datum = CAST_PTR(TagGroups::s_bitmap_data*, &bitmap->bitmaps[0]);
 
 				// set the texture to the device

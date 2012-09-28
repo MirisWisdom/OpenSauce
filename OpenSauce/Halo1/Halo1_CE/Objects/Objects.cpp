@@ -83,6 +83,8 @@ namespace Yelo
 				scripting_object_data_set_real_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_object_data_set_vector, 
 				scripting_object_data_set_vector_evaluate);
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_object_data_save_vector, 
+				scripting_object_data_save_vector_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_weapon_data_get_real, 
 				scripting_weapon_data_get_real_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_weapon_data_set_real, 
@@ -246,7 +248,7 @@ namespace Yelo
 			{
 				s_object_data* object = (*Objects::ObjectHeader())[object_index]->_object;
 
-				return TagGroups::Instances()[ object->GetTagDefinition()->index ].Definition<TagGroups::s_object_definition>();
+				return TagGroups::TagGet<TagGroups::s_object_definition>( *object->GetTagDefinition() );
 			}
 
 			return NULL;
@@ -259,8 +261,7 @@ namespace Yelo
 				s_object_data* object = (*Objects::ObjectHeader())[object_index]->_object;
 				datum_index tag_index = *object->GetAnimationDefinition();
 
-				if(!tag_index.IsNull())
-					return TagGroups::Instances()[tag_index.index].Definition<TagGroups::model_animation_graph>();
+				return TagGroups::TagGet<TagGroups::model_animation_graph>(tag_index);
 			}
 
 			return NULL;

@@ -4661,6 +4661,14 @@
 					RelativePath="..\..\shared\Include\blamlib\Halo1\scenario\scenario.hpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\scenario\scenario_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\scenario\sky_definitions.hpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="physics"
@@ -4682,6 +4690,26 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="sound"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\sound\sound_environment_definitions.hpp"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="Scenario"
+			>
+			<File
+				RelativePath=".\Scenario\ScenarioFauxZones.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Scenario\ScenarioFauxZones.hpp"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\Halo1_CE_Readme.txt"

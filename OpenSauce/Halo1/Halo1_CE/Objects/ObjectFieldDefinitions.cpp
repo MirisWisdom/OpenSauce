@@ -43,11 +43,18 @@ namespace Yelo
 				qsort_s(list, _SizeOfArray, sizeof(s_object_field_definition), qsort_proc, NULL);
 			}
 
+			static int __cdecl bsearch_proc(void* ctxt, const void* key, const void* field_definition)
+			{
+				const char* lhs = CAST_PTR(const char*, key);
+				const s_object_field_definition* rhs = CAST_PTR(const s_object_field_definition*, field_definition);
+
+				return _stricmp(lhs, rhs->name);
+			}
 			template<size_t _SizeOfArray>
 			static const s_object_field_definition* bsearch_list(const s_object_field_definition (&list)[_SizeOfArray], cstring name)
 			{
 				return CAST_PTR(s_object_field_definition*, 
-					bsearch_s(name, list, _SizeOfArray, sizeof(s_object_field_definition), qsort_proc, NULL));
+					bsearch_s(name, list, _SizeOfArray, sizeof(s_object_field_definition), bsearch_proc, NULL));
 			}
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_field_definition) == 0xC );
 #define FIELD_INDEX_NAME(object_type, field_type, field_name)		\
@@ -197,8 +204,7 @@ namespace Yelo
 		{
 			datum_index definition_index = *weapon->object.GetTagDefinition();
 
-			const TagGroups::s_weapon_definition* definition = TagGroups::Instances()[ definition_index.index ]
-				.Definition<TagGroups::s_weapon_definition>();
+			const TagGroups::s_weapon_definition* definition = TagGroups::TagGet<TagGroups::s_weapon_definition>(definition_index);
 
 			if (trigger_index >= 0 && trigger_index < definition->weapon.triggers.Count)
 			{

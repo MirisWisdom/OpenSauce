@@ -87,6 +87,7 @@ namespace Yelo
 
 		void InitializeScripting();
 
+		real_vector3d* VectorValueGetForModify(int16 value_index);
 		const real_vector3d* VectorValueGet(int16 value_index);
 
 	}; };
