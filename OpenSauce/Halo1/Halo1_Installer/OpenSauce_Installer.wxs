@@ -35,7 +35,7 @@
 			Description='$(var.ProductName) Installer'
 			Comments='Extensions for $(var.GameTarget) that add new features and capabilities'
 			Manufacturer='Kornner Studios'
-			InstallerVersion='100'
+			InstallerVersion='300'
 			Languages='1033'
 			Compressed='yes'
 			SummaryCodepage='1252' />
@@ -50,6 +50,10 @@
 		<Condition Message="This setup requires the .NET Framework 3.5 to be installed.">
 			<![CDATA[Installed OR NETFRAMEWORK35]]>
 		</Condition>
+		
+		<Condition Message="This application is only supported on Windows XP SP3 or above.">
+			<![CDATA[Installed OR ((VersionNT > 501) OR ((VersionNT = 501) AND (ServicePackLevel >= 3)))]]>
+		</Condition>
 
 		<!-- Set the icon in Add/Remove programs-->
 		<Icon Id='OpenSauce_Icon_PROP' SourceFile='$(var.ResourceFolder)Installer\icon.ico'/>
@@ -60,8 +64,14 @@
 		<?include Halo1_CE/Properties.wxi?>
 		<?endif?>
 		
-		<Media Id='1' Cabinet='OpenSauce.cab' EmbedCab='yes' DiskPrompt='CD-ROM #1' />	
-		<Property Id='DiskPrompt' Value='$(var.ProductName) Installation [1]' />	
+		<Media Id='1' Cabinet='OpenSauce.cab' EmbedCab='yes' DiskPrompt='CD-ROM #1' />
+		<Property Id='DiskPrompt' Value='$(var.ProductName) Installation [1]' />
+
+		<Property Id='INSTALLVALIDATORDEF' Secure='yes' Value='Unset'/>
+		<Property Id='INSTALLVALIDATORPATH' Secure='yes' Value='Unset'/>
+
+		<Property Id='FILEPATCHERID' Secure='yes' Value='Unset'/>
+		<Property Id='FILEPATCHERPATH' Secure='yes' Value='Unset'/>
 
 		<Directory Id='TARGETDIR' Name='SourceDir'>
 			<Merge Id="VCRedist_MERGE" SourceFile="$(var.ResourceFolder)Installer\vs_runtime\Microsoft_VC90_CRT_x86.msm" DiskId="1" Language="0"/>
@@ -260,18 +270,21 @@
 
 		<CustomAction Id='Newer_Found_CACT' Error='A later version of [ProductName] is already installed.' />
 		<CustomAction Id='DirectX_Install_CACT' FileKey='DirectX_dxsetup_FILE' ExeCommand='/silent' Execute='deferred' Impersonate='no' Return='check'/>
-		
+
+		<Binary Id='InstallValidator_BIN' SourceFile='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\InstallValidator\InstallValidator.CA.dll'/>
+		<Binary Id='FilePatcher_BIN' SourceFile='$(var.BinariesFolder)$(var.CompiledConfiguration)\x86\FilePatcher\FilePatcher.CA.dll'/>
+
 		<!-- Game specific custom actions are included here-->
 		<?ifdef Halo1_CE?>
 		<?include Halo1_CE/CustomActions.wxi?>
 		<?endif?>
-		
+
 		<InstallExecuteSequence>
 			<Custom Action='Newer_Found_CACT' After='FindRelatedProducts'>NEWERFOUND</Custom>
 			<Custom Action='DirectX_Install_CACT' Before='InstallFinalize'>
 				<![CDATA[NOT REMOVE]]>
 			</Custom>
-			
+
 			<!-- Game specific install sequences are included here-->
 			<?ifdef Halo1_CE?>
 			<?include Halo1_CE/InstallSequences.wxi?>
@@ -286,32 +299,40 @@
 			AllowAdvertise='no'
 			Absent='disallow'>
 
-			<ComponentRef Id='OpenSauce_OpenSauceIDE_COMP' />
-			<ComponentRef Id='OpenSauce_BlamLib_COMP' />
-			<ComponentRef Id='OpenSauce_BlamLib_Forms_COMP' />
-			<ComponentRef Id='OpenSauce_LowLevel_COMP' />
-			<ComponentRef Id='OpenSauce_License_COMP' />
-			<ComponentRef Id='OpenSauce_SevenZipSharp_COMP' />
-			<ComponentRef Id='OpenSauce_SevenZip_COMP' />
+			<Feature Id='OpenSauce_OpenSauceIDE_FEAT'
+				Title='OpenSauce IDE'
+				Description='Tools that compliment the OpenSauce runtimes.'
+				Display='expand'
+				Level='1'
+				AllowAdvertise='no'>
+				<ComponentRef Id='OpenSauce_OpenSauceIDE_COMP' />
+				<ComponentRef Id='OpenSauce_BlamLib_COMP' />
+				<ComponentRef Id='OpenSauce_BlamLib_Forms_COMP' />
+				<ComponentRef Id='OpenSauce_LowLevel_COMP' />
+				<ComponentRef Id='OpenSauce_License_COMP' />
+				<ComponentRef Id='OpenSauce_SevenZipSharp_COMP' />
+				<ComponentRef Id='OpenSauce_SevenZip_COMP' />
 
-			<?ifdef DEBUG?>
+				<?ifdef DEBUG?>
 				<ComponentRef Id='OpenSauce_OpenSauceIDE_PDB_COMP' />
 				<ComponentRef Id='OpenSauce_BlamLib_PDB_COMP' />
 				<ComponentRef Id='OpenSauce_BlamLib_Forms_PDB_COMP' />
 				<ComponentRef Id='OpenSauce_LowLevel_PDB_COMP' />
-			<?endif?>
+				<?endif?>
 
-			<ComponentRef Id='OpenSauce_SettingsRemove_COMP' />
-			<ComponentRef Id='OpenSauce_OpenSauceIDERemove_COMP' />
+				<ComponentRef Id='OpenSauce_SettingsRemove_COMP' />
+				<ComponentRef Id='OpenSauce_OpenSauceIDERemove_COMP' />
+
+				<ComponentRef Id='OpenSauce_RoamingOpenSauceIDE_COMP' />
+				<ComponentRef Id='OpenSauce_RoamingKornnerStudios_COMP' />
+
+				<ComponentRef Id='OpenSauce_OpenSauceIDEMenuShortcut_COMP' />
+				<ComponentRef Id='OpenSauce_OpenSauceIDEDesktopShortcut_COMP' />
+			</Feature>
+			
 			<ComponentRef Id='OpenSauce_OpenSauceRemove_COMP' />
 			<ComponentRef Id='OpenSauce_KornnerStudiosRemove_COMP' />
 			<ComponentRef Id='OpenSauce_KornnerStudiosMenuRemove_COMP' />
-			
-			<ComponentRef Id='OpenSauce_RoamingOpenSauceIDE_COMP' />
-			<ComponentRef Id='OpenSauce_RoamingKornnerStudios_COMP' />
-			
-			<ComponentRef Id='OpenSauce_OpenSauceIDEMenuShortcut_COMP' />
-			<ComponentRef Id='OpenSauce_OpenSauceIDEDesktopShortcut_COMP' />
 
 			<Feature Id='DirectX_Redist_FEAT'
 							 Title='DirectX Runtime Redist'
@@ -340,6 +361,7 @@
 		</Feature>
 		
 		<UI Id='OpenSauce_WixUI_FeatureTree_Ext'>
+			<ProgressText Action='SxSInstallCA'>Installing Visual C++ 9.0 Runtime</ProgressText>
 			<ProgressText Action='DirectX_Install_CACT'>Installing DirectX</ProgressText>
 			
 			<UIRef Id='OpenSauce_FeatureTree' />

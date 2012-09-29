@@ -12,3 +12,7 @@ Contains binary references to SevenZipSharp (http://sevenzipsharp.codeplex.com/)
 Contains 'slist', Copyright (c) 1997 Silicon Graphics Computer Systems, Inc.
 
 Contains TinyXML (http://www.sourceforge.net/projects/tinyxml)
+
+Contains Mongoose (https://github.com/valenok/mongoose)
+
+Contains code from 7zip (http://sourceforge.net/projects/sevenzip/)

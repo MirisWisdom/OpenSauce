@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Halo1_Installer", "Halo1\Halo1_Installer\Halo1_Installer.wixproj", "{494F320A-B5EB-4623-BE2D-77D5C7BE7CA5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilePatcher", "Halo1\Halo1_Installer\FilePatcher\FilePatcher.csproj", "{226CBE41-DF44-4BAA-BCFA-0602D8864AF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstallValidator", "Halo1\Halo1_Installer\InstallValidator\InstallValidator.csproj", "{A7DEC09C-D521-48BB-A564-E039D3E9F850}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -16,6 +20,18 @@ Global
 		{494F320A-B5EB-4623-BE2D-77D5C7BE7CA5}.Release|x86.Build.0 = Release|x86
 		{494F320A-B5EB-4623-BE2D-77D5C7BE7CA5}.ReleaseSymbols|x86.ActiveCfg = ReleaseSymbols|x86
 		{494F320A-B5EB-4623-BE2D-77D5C7BE7CA5}.ReleaseSymbols|x86.Build.0 = ReleaseSymbols|x86
+		{226CBE41-DF44-4BAA-BCFA-0602D8864AF4}.Debug|x86.ActiveCfg = Debug|x86
+		{226CBE41-DF44-4BAA-BCFA-0602D8864AF4}.Debug|x86.Build.0 = Debug|x86
+		{226CBE41-DF44-4BAA-BCFA-0602D8864AF4}.Release|x86.ActiveCfg = Release|x86
+		{226CBE41-DF44-4BAA-BCFA-0602D8864AF4}.Release|x86.Build.0 = Release|x86
+		{226CBE41-DF44-4BAA-BCFA-0602D8864AF4}.ReleaseSymbols|x86.ActiveCfg = Release|x86
+		{226CBE41-DF44-4BAA-BCFA-0602D8864AF4}.ReleaseSymbols|x86.Build.0 = Release|x86
+		{A7DEC09C-D521-48BB-A564-E039D3E9F850}.Debug|x86.ActiveCfg = Debug|x86
+		{A7DEC09C-D521-48BB-A564-E039D3E9F850}.Debug|x86.Build.0 = Debug|x86
+		{A7DEC09C-D521-48BB-A564-E039D3E9F850}.Release|x86.ActiveCfg = Release|x86
+		{A7DEC09C-D521-48BB-A564-E039D3E9F850}.Release|x86.Build.0 = Release|x86
+		{A7DEC09C-D521-48BB-A564-E039D3E9F850}.ReleaseSymbols|x86.ActiveCfg = Release|x86
+		{A7DEC09C-D521-48BB-A564-E039D3E9F850}.ReleaseSymbols|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
