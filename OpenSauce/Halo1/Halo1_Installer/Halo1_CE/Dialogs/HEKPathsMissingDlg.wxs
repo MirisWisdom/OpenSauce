@@ -20,10 +20,8 @@
 				<Control Id='BottomLine' Type='Line' X='0' Y='234' Width='370' Height='0' />
 				
 				<Control Id='DescriptionLabel' Type='Text' X='15' Y='60' Width='340' Height='40' NoPrefix='yes'>
-					<Text>The HEK executables (Guerilla, Sapien and Tool) could not be found in the HEK default directory. The OpenSauce HEK executables will therefore not be created by this installer. You can manually create the exe's using the OpenSauceIDE program after the installation is completed.</Text>
+					<Text>The HEK executables (Guerilla, Sapien and Tool) could not be found in the HEK default directory. The OpenSauce HEK executables will therefore not be created by this installer. You can manually create the exe's using the OpenSauceIDE program after the installation is complete, if you have it installed.</Text>
 				</Control>
-				
-				<Control Id='LaunchOSIDECheck' Type='CheckBox' X='50' Y='110' Width='280' Height='18' CheckBoxValue='1' Property='HALO1_CE_HEK_LAUNCHOSIDE_PROP' Text='Launch OpenSauceIDE after installation' />
 
 			</Dialog>
 		</UI>

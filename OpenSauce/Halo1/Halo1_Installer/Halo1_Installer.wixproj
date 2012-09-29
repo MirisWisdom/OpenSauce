@@ -97,4 +97,22 @@
     <Folder Include="Halo1_CE\Dialogs" />
     <Folder Include="Dialogs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="FilePatcher\FilePatcher.csproj">
+      <Name>FilePatcher</Name>
+      <Project>{226cbe41-df44-4baa-bcfa-0602d8864af4}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="InstallValidator\InstallValidator.csproj">
+      <Name>InstallValidator</Name>
+      <Project>{a7dec09c-d521-48bb-a564-e039d3e9f850}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

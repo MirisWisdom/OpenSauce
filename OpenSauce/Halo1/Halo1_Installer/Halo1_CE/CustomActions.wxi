@@ -1,21 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Include>
 
-	<!-- Launches the OS_IDE with the command to enable OpenSauce in the HaloCE dedi executable -->
-	<CustomAction Id='Halo1_CE_CreateOSHCEEXEs_CACT' FileKey='OpenSauce_OpenSauceIDE_FILE' ExeCommand='-cmdline apply-opensauce Halo1_CE "[HALO1_CE_HCE_VERSION_109_PROP]" "[HALO1_CE_HCEDEDI_VERSION_109_PROP]" "[HALO1_CE_HCE_INSTALLDIR_PROP]\"' Execute='deferred' Impersonate='no' />
+	<!-- Validate Halo CE Installation -->
+	<CustomAction Id='Halo1_CE_SetValidationDefHCE_CACT' Property='INSTALLVALIDATORDEF' Value='Halo1_CE'/>
+	<CustomAction Id='Halo1_CE_SetValidationPathHCE_CACT' Property='INSTALLVALIDATORPATH' Value='[HALO1_CE_HCE_INSTALLDIR_PROP]'/>
+	<CustomAction Id='Halo1_CE_ValidateInstallHCE_CACT' BinaryKey='InstallValidator_BIN' DllEntry='ValidateInstall' Execute='immediate' Return='check'/>
 
-	<!-- Launches the OS_IDE with the command to create the OS HEK executables -->
-	<CustomAction Id='Halo1_CE_CreateOSHEKEXEs_CACT' FileKey='OpenSauce_OpenSauceIDE_FILE' ExeCommand='-cmdline apply-cheape Halo1_CE "[HALO1_CE_HEK_GUERILLAPATH_PROP]" "[HALO1_CE_HEK_TOOLPATH_PROP]" "[HALO1_CE_HEK_SAPIENPATH_PROP]" "[HALO1_CE_HEK_OUTPUTPATH_PROP]\"' Execute='deferred' Impersonate='no' />
+	<!-- Validate Halo Editing Kit Installation -->
+	<CustomAction Id='Halo1_CE_SetValidationDefHEK_CACT' Property='INSTALLVALIDATORDEF' Value='Halo1_HEK'/>
+	<CustomAction Id='Halo1_CE_SetValidationPathHEK_CACT' Property='INSTALLVALIDATORPATH' Value='[HALO1_CE_HEK_INSTALLDIR_PROP]'/>
+	<CustomAction Id='Halo1_CE_ValidateInstallHEK_CACT' BinaryKey='InstallValidator_BIN' DllEntry='ValidateInstall' Execute='immediate' Return='check'/>
 
-	<!-- Launches the OS_IDE with no command -->
-	<CustomAction Id='Halo1_CE_LaunchOSIDE_CACT' FileKey='OpenSauce_OpenSauceIDE_FILE'  Return='asyncNoWait' ExeCommand='' />
+	<!-- Patch OS_haloceded -->
+	<CustomAction Id='Halo1_CE_SetFilePatcherIDHaloCEDed_CACT' Property='FILEPATCHERID' Value='Halo1_HCE_Dedi'/>
+	<CustomAction Id='Halo1_CE_SetFilePatcherSrcFileHaloCEDed_CACT' Property='FILEPATCHERSRCFILE' Value='[HALO1_CE_HCEDEDI_VERSION_109_PROP]'/>
+	<CustomAction Id='Halo1_CE_SetFilePatcherOutPathHaloCEDed_CACT' Property='FILEPATCHEROUTPATH' Value='[HALO1_CE_HCE_INSTALLDIR_PROP]'/>
+	<CustomAction Id='Halo1_CE_PatchOSHaloCEDed_CACT' BinaryKey='FilePatcher_BIN' DllEntry='PatchFile' Execute='immediate' Return='check'/>
 
-	<!--Opens the OS Client readme-->
+	<!-- Patch OS_Guerilla -->
+	<CustomAction Id='Halo1_CE_SetFilePatcherIDGuerilla_CACT' Property='FILEPATCHERID' Value='Halo1_HEK_Guerilla'/>
+	<CustomAction Id='Halo1_CE_SetFilePatcherSrcFileGuerilla_CACT' Property='FILEPATCHERSRCFILE' Value='[HALO1_CE_HEK_GUERILLAPATH_PROP]'/>
+	<CustomAction Id='Halo1_CE_SetFilePatcherOutPathGuerilla_CACT' Property='FILEPATCHEROUTPATH' Value='[HALO1_CE_HEK_INSTALLDIR_PROP]'/>
+	<CustomAction Id='Halo1_CE_PatchOSGuerilla_CACT' BinaryKey='FilePatcher_BIN' DllEntry='PatchFile' Execute='immediate' Return='check'/>
+
+	<!-- Patch OS_Tool -->
+	<CustomAction Id='Halo1_CE_SetFilePatcherIDTool_CACT' Property='FILEPATCHERID' Value='Halo1_HEK_Tool'/>
+	<CustomAction Id='Halo1_CE_SetFilePatcherSrcFileTool_CACT' Property='FILEPATCHERSRCFILE' Value='[HALO1_CE_HEK_TOOLPATH_PROP]'/>
+	<CustomAction Id='Halo1_CE_SetFilePatcherOutPathTool_CACT' Property='FILEPATCHEROUTPATH' Value='[HALO1_CE_HEK_INSTALLDIR_PROP]'/>
+	<CustomAction Id='Halo1_CE_PatchOSTool_CACT' BinaryKey='FilePatcher_BIN' DllEntry='PatchFile' Execute='immediate' Return='check'/>
+
+	<!-- Patch OS_Sapien -->
+	<CustomAction Id='Halo1_CE_SetFilePatcherIDSapien_CACT' Property='FILEPATCHERID' Value='Halo1_HEK_Sapien'/>
+	<CustomAction Id='Halo1_CE_SetFilePatcherSrcFileSapien_CACT' Property='FILEPATCHERSRCFILE' Value='[HALO1_CE_HEK_SAPIENPATH_PROP]'/>
+	<CustomAction Id='Halo1_CE_SetFilePatcherOutPathSapien_CACT' Property='FILEPATCHEROUTPATH' Value='[HALO1_CE_HEK_INSTALLDIR_PROP]'/>
+	<CustomAction Id='Halo1_CE_PatchOSSapien_CACT' BinaryKey='FilePatcher_BIN' DllEntry='PatchFile' Execute='immediate' Return='check'/>
+
+	<!-- Open the OS Client readme-->
 	<CustomAction Id='Halo1_CE_SetReadmeTarget_CACT' Property='WixShellExecTarget' Value='[#Halo1_CE_Readme_FILE]'/>
 	<CustomAction Id='Halo1_CE_OpenReadme_CACT' BinaryKey='WixCA' DllEntry='WixShellExec' Impersonate='yes'/>
 
-	<!--Opens the OS HEK readme-->
+	<!-- Open the OS HEK readme-->
 	<CustomAction Id='Halo1_CE_HEK_SetReadmeTarget_CACT' Property='WixShellExecTarget' Value='[#Halo1_CE_CheApe_Readme_FILE]'/>
 	<CustomAction Id='Halo1_CE_HEK_OpenReadme_CACT' BinaryKey='WixCA' DllEntry='WixShellExec' Impersonate='yes'/>
-
 </Include>

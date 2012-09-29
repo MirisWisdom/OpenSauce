@@ -546,7 +546,8 @@ namespace Yelo
 					c_url_interface url_interface;
 					url_interface.ParseURL(g_map_download_globals.m_host_address);
 
-					url_interface.AppendPath(host_directory);
+					if(host_directory && (strlen(host_directory) > 0))
+						url_interface.AppendPath(host_directory);
 					url_interface.AppendPath(name);
 
 					part_element->m_redirect_address = url_interface.GetURL();
@@ -631,7 +632,7 @@ namespace Yelo
 				md5_valid = (strlen(md5) == 32);
 
 			// if the map is valid, create a new map element
-			if(name && md5 && host_directory && md5_valid && algorithm)
+			if(name && md5 && md5_valid && algorithm)
 			{
 				// remove the extension from the map name
 				std::string map_name(name);
@@ -659,7 +660,7 @@ namespace Yelo
 				map_element->m_part_definition = map_node->Clone()->ToElement();
 				map_element->m_part_definition->RemoveAttribute("host_directory");
 
-				// add the parts to the map element
+				// add the parts to the map element, host_directory can be null
 				if(!AddMapParts(map_element, map_node, host_directory))
 				{
 					// a problem occured when adding the maps part elements so delete the map element and return
