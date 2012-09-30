@@ -318,7 +318,6 @@
 		</function>
 
 		<function name="display_scripted_ui_widget" returnType="boolean" help="returns true if successful" internal="true" >
-			<arg type="short" name="local_player_index" help="On PC, this will always default to player0 no matter what value is given" />
 			<arg type="string" name="widget_name" help="name of the widget as it appears in the yelo tags. searches the scenario's yelo first, then globals" />
 		</function>
 

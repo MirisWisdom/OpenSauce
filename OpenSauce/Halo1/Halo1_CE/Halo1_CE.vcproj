@@ -3315,11 +3315,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Interface\UIWidget.cpp"
+				RelativePath=".\Interface\UIWidgets.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Interface\UIWidget.hpp"
+				RelativePath=".\Interface\UIWidgets.hpp"
 				>
 			</File>
 			<Filter
@@ -4695,6 +4695,14 @@
 				>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\sound\sound_environment_definitions.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="interface"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\hud_definitions.hpp"
 					>
 				</File>
 			</Filter>
