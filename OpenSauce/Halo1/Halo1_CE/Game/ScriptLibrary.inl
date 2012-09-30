@@ -213,8 +213,7 @@
 	#include "Game/ScriptLibrary.Definitions.HTTPServer.MapDownload.inl"
 
 	HS_FUNCTION_WITH_PARAMS(display_scripted_ui_widget, bool, "", 
-			"<local-player-index> <data-name>", 2,
-		HS_TYPE(short),
+			"<name>", 1,
 		HS_TYPE(string)
 	);
 

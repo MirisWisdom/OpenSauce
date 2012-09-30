@@ -19,7 +19,7 @@
 #include "Game/GameEngine.hpp"
 #include "Game/GameState.hpp"
 #include "Game/GameStateRuntimeData.hpp"
-#include "Interface/UIWidget.hpp"
+#include "Interface/UIWidgets.hpp"
 #include "Networking/MessageDeltas.hpp"
 #include "TagGroups/project_yellow_definitions.hpp"
 #include "Rasterizer/GBuffer.hpp"

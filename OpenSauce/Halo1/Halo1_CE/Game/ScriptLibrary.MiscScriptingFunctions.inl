@@ -274,14 +274,12 @@ static void* scripting_hex_string_to_long_evaluate(void** arguments)
 static void* scripting_display_scripted_ui_widget_evaluate(void** arguments)
 {
 	struct s_arguments {
-		int16 local_player_index;
-		PAD16;
 		cstring name;
 	}* args = CAST_PTR(s_arguments*, arguments);
 	TypeHolder result; result.pointer = NULL;
 
 #if !PLATFORM_IS_DEDI 
-	result.boolean = UIWidget::DisplayScriptedWidget(args->local_player_index, args->name);
+	result.boolean = UIWidgets::DisplayScriptedWidget(args->name);
 #endif
 
 	return result.pointer;

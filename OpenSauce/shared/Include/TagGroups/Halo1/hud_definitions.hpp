@@ -9,21 +9,12 @@
 #include <TagGroups/Halo1/global_definitions.hpp>
 #include <TagGroups/Halo1/shader_definitions.hpp>
 
+#include <blamlib/Halo1/interface/hud_definitions.hpp>
+
 namespace Yelo
 {
 	namespace Enums
 	{
-		enum hud_anchor : _enum
-		{
-			_hud_anchor_top_left,
-			_hud_anchor_top_right,
-			_hud_anchor_bottom_left,
-			_hud_anchor_bottom_right,
-			_hud_anchor_center,
-
-			_hud_anchor,
-		};
-
 		enum hud_multitexture_overlay_effector_type : _enum
 		{
 			_hud_multitexture_overlay_effector_type_tint,
@@ -111,13 +102,6 @@ namespace Yelo
 
 	namespace Flags
 	{
-		enum hud_scaling_flags : word_flags
-		{
-			_hud_scaling_dont_scale_offset_bit,
-			_hud_scaling_dont_scale_size_bit,
-			_hud_scaling_use_high_res_scale_bit,
-		};
-
 		enum hud_flash_flags : word_flags
 		{
 			_hud_flash_reverse_colors_bit, // reverse default/flashing
@@ -157,13 +141,6 @@ namespace Yelo
 
 	namespace TagGroups
 	{
-		struct s_hud_absolute_placement
-		{
-			TAG_ENUM(anchor, Enums::hud_anchor);
-			PAD16;
-			TAG_PAD(int32, 8);
-		}; BOOST_STATIC_ASSERT( sizeof(s_hud_absolute_placement) == 0x24 );
-
 		struct s_hud_color_flash // aka global_hud_color
 		{
 			TAG_FIELD(argb_color, default_color);
@@ -179,16 +156,6 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////////
 		// generic hud elements
-		struct s_hud_element // same size as s_hud_absolute_placement...I think this is union'd
-		{
-			TAG_FIELD(point2d, anchor_offset);
-			TAG_FIELD(real, width_scale);
-			TAG_FIELD(real, height_scale);
-			TAG_FIELD(Flags::hud_scaling_flags, scaling_flags);
-			PAD16;
-			TAG_PAD(int32, 5);
-		}; BOOST_STATIC_ASSERT( sizeof(s_hud_element) == 0x24 );
-
 		struct s_hud_element_number : public s_hud_element // aka global_hud_element
 		{
 			s_hud_color_flash color;
