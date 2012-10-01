@@ -9,7 +9,7 @@
 		ConfigurableDirectory='HALO1_CE_HCE_INSTALLDIR_PROP'
 		AllowAdvertise='no'>
 
-		<ComponentRef Id='Halo1_CE_d3d9109_COMP' />
+		<ComponentRef Id='Halo1_CE_dinput8109_COMP' />
 		<ComponentRef Id='Halo1_CE_vsh_OS_COMP' />
 		<ComponentRef Id='Halo1_CE_EffectCollection_ps_2_a_COMP' />
 		<ComponentRef Id='Halo1_CE_EffectCollection_ps_2_b_COMP' />
@@ -20,7 +20,7 @@
 		<ComponentRef Id='Halo1_CE_Readme_COMP' />
 
 		<?ifdef SYMBOLS?>
-		<ComponentRef Id='Halo1_CE_d3d9109_PDB_COMP' />
+		<ComponentRef Id='Halo1_CE_dinput8109_PDB_COMP' />
 		<ComponentRef Id='Halo1_CE_OpenSauceDedi_PDB_COMP'/>
 		<?endif?>
 		

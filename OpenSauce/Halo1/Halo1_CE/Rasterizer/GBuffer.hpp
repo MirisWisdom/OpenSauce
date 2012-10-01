@@ -226,6 +226,7 @@ namespace Yelo
 				return m_is_loaded && m_render_gbuffer && g_system_enabled;
 			}
 		public:
+
 			void Ctor();
 			void Dtor();
 			// Hooks the non-reflection render call and opens the shader file 
@@ -252,18 +253,15 @@ namespace Yelo
 			// Exposes g_output_object_tbn
 			static BOOL& OutputObjectTBN();
 
-
+			static bool& RenderGBuffer();
 		public:
-			// The vertex shader is used to determine if a mesh should be rendered to the GBuffer
-			static void			VertexShaderChanged(IDirect3DVertexShader9* pShader);
 			// Called for each mesh drawn to render to the GBuffer
 			static HRESULT	 	DrawIndexedPrimitive(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type,INT BaseVertexIndex,UINT MinVertexIndex,UINT NumVertices,UINT startIndex,UINT primCount);
 			static HRESULT	 	DrawIndexedPrimitive_Structure(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type,INT BaseVertexIndex,UINT MinVertexIndex,UINT NumVertices,UINT startIndex,UINT primCount);
 			static HRESULT	 	DrawIndexedPrimitive_Object(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type,INT BaseVertexIndex,UINT MinVertexIndex,UINT NumVertices,UINT startIndex,UINT primCount);			
-			static HRESULT		SetVertexShaderConstantF_WVP(IDirect3DDevice9* device, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount);
+			static bool			SetViewProj(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount);
 			// Clears all GBuffer surfaces, ready for the next frame
 			static void			ClearGBuffer(IDirect3DDevice9* pDevice);
-			static HRESULT		SetVertexShaderConstantF_All(IDirect3DDevice9* device, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount);
 
 		private:
 			static c_gbuffer_system			g_default_system;
@@ -274,8 +272,6 @@ namespace Yelo
 			void		AllocateResources(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* params);
 			// Releases GBuffer textures and shaders
 			void		ReleaseResources();
-			// The vertex shader is used to determine if a mesh should be rendered to the GBuffer
-			void		VertexShaderChangedImpl(IDirect3DVertexShader9* pShader);
 			// Called for each mesh drawn to render to the GBuffer
 			HRESULT	 	DrawIndexedPrimitive_Impl(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type,INT BaseVertexIndex,UINT MinVertexIndex,UINT NumVertices,UINT startIndex,UINT primCount);
 			HRESULT	 	DrawIndexedPrimitive_StructureImpl(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type,INT BaseVertexIndex,UINT MinVertexIndex,UINT NumVertices,UINT startIndex,UINT primCount);
@@ -286,6 +282,7 @@ namespace Yelo
 			void		RenderDebugQuad(IDirect3DDevice9* pDevice);
 			// Loads an effect from a packed file
 			HRESULT		LoadEffect(IDirect3DDevice9* pDevice, LPD3DXEFFECT* pEffect, const char* EffectID);
+			bool&		RenderGBufferImpl();
 
 		public:
 			static c_gbuffer&				GBuffer();

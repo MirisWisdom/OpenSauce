@@ -21,6 +21,47 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_COMMON_DEBUG_DUMP
 #include "Memory/_EngineLayout.inl"
 
+		BOOL CALLBACK MiniDumpCallback(PVOID pParam, const PMINIDUMP_CALLBACK_INPUT pInput, PMINIDUMP_CALLBACK_OUTPUT pOutput )
+		{
+			BOOL bRet = FALSE;
+
+			// Check parameters 
+			if( pInput == 0 )
+				return FALSE;
+			if( pOutput == 0 )
+				return FALSE;
+
+			// Process the callbacks
+			switch( pInput->CallbackType )
+			{
+				// Include the module into the dump
+				case IncludeModuleCallback: bRet = TRUE; break;
+				// Include the thread into the dump 
+				case IncludeThreadCallback: bRet = TRUE; break;
+				case ModuleCallback:
+				{
+					// Does the module have ModuleReferencedByMemory flag set ?
+					if(!(pOutput->ModuleWriteFlags & ModuleReferencedByMemory))
+					{
+						// No, it does not - exclude it
+						pOutput->ModuleWriteFlags &= (~ModuleWriteModule); 
+					}
+					bRet = TRUE;
+				}
+				break;
+
+				// Include all thread information into the minidump
+				case ThreadCallback: bRet = TRUE; break;
+				// Include this information
+				case ThreadExCallback: bRet = TRUE; break;
+				// We do not include any information here -> return FALSE
+				case MemoryCallback: bRet = FALSE; break;
+				case CancelCallback: break;
+			}
+
+			return bRet;
+		}
+
 		void CreateMiniDump()
 		{
 			HANDLE process = GetCurrentProcess();
@@ -45,7 +86,17 @@ namespace Yelo
 				Enums::_file_io_open_create_option_new))
 				return;
 
-			BOOL success = MiniDumpWriteDump(process, process_id, file_info.file_handle, MiniDumpNormal, NULL, NULL, NULL);
+			MINIDUMP_CALLBACK_INFORMATION dump_callback;
+			dump_callback.CallbackParam = 0;
+			dump_callback.CallbackRoutine = MiniDumpCallback;
+
+			BOOL success = MiniDumpWriteDump(process,
+				process_id,
+				file_info.file_handle,
+				(MINIDUMP_TYPE)(MiniDumpWithIndirectlyReferencedMemory | MiniDumpScanMemory),
+				NULL,
+				NULL,
+				&dump_callback);
 
 			if(success)
 			{
@@ -53,7 +104,7 @@ namespace Yelo
 				char message_box_text[MAX_PATH + 180] = "";
 
 				sprintf_s(message_box_text, sizeof(message_box_text),
-					"A minidump for this exception has been saved to your OpenSauce Reports directory:\n%s\nAttach this file if you report this issue.",
+					"A crashdump for this exception has been saved to your OpenSauce Reports directory:\n%s\nAttach this file if you report this issue.",
 						dump_path);
 
 				MessageBox(NULL, message_box_text, "Minidump Saved", MB_OK);

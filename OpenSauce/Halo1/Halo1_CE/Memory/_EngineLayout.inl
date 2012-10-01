@@ -50,6 +50,8 @@
 	#include __EL_INCLUDE_FILE_MACRO(_EngineLayout.Rasterizer.DX9.inl)
 #elif BOOST_PP_ITERATION() == __EL_INCLUDE_RASTERIZER_SHADEREXTENSION
 	#include __EL_INCLUDE_FILE_MACRO(_EngineLayout.Rasterizer.ShaderExtension.inl)
+#elif BOOST_PP_ITERATION() == __EL_INCLUDE_RASTERIZER_SHADERDRAW
+	#include __EL_INCLUDE_FILE_MACRO(_EngineLayout.Rasterizer.ShaderDraw.inl)
 	
 //////////////////////////////////////////////////////////////////////////
 // TagGroups

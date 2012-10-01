@@ -25,9 +25,11 @@
 {GameState::RuntimeData::Initialize,				GameState::RuntimeData::Dispose,	GameState::RuntimeData::InitializeForNewGameState,	GameState::RuntimeData::InitializeForNewMap},
 {ScenarioFauxZones::Initialize,						ScenarioFauxZones::Dispose,			ScenarioFauxZones::InitializeForNewGameState,		ScenarioFauxZones::InitializeForNewMap},
 #if PLATFORM_IS_USER
+	{Rasterizer::DeviceHooks::Initialize,			Rasterizer::DeviceHooks::Dispose},
 	{DX9::Initialize,								DX9::Dispose},
 	{DX9::c_gbuffer_system::Initialize,				DX9::c_gbuffer_system::Dispose,		NULL, NULL, NULL, DX9::c_gbuffer_system::Update},
 	{Rasterizer::Initialize,						Rasterizer::Dispose},
+	{Rasterizer::ShaderDraw::Initialize,			Rasterizer::ShaderDraw::Dispose},
 	{Rasterizer::ShaderExtension::Initialize,		Rasterizer::ShaderExtension::Dispose},
 	{
 		Rasterizer::PostProcessing::Initialize,

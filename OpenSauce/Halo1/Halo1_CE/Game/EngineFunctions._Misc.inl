@@ -33,8 +33,8 @@ void SetTextureSamplerStage(Yelo::TagGroups::s_bitmap_data* bitmap, uint32 textu
 	// use this instead of TextureCacheRequestTexture where applicable as this function
 	// tests whether the texture is already loaded and sets the texture sampler itself
 
-	// TODO: set pointer properly
-	static uint32 TEMP_CALL_ADDR = 0x51C370;
+#if !PLATFORM_IS_DEDI
+	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(SET_TEXTURE_SAMPLER_STAGE);
 
 	_asm
 	{
@@ -43,6 +43,7 @@ void SetTextureSamplerStage(Yelo::TagGroups::s_bitmap_data* bitmap, uint32 textu
 		call	TEMP_CALL_ADDR
 		add		esp, 4
 	}
+#endif
 }
 
 IDirect3DBaseTexture9** TextureCacheRequestTexture(Yelo::TagGroups::s_bitmap_data* bitmap, 

@@ -32,6 +32,7 @@
 #include "TagGroups/TagGroups.hpp"
 #include <TagGroups/Halo1/shader_definitions.hpp>
 #include <TagGroups/Halo1/bitmap_definitions.hpp>
+#include <TagGroups/Halo1/structure_bsp_definitions.hpp>
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
 
@@ -95,7 +96,7 @@ namespace Yelo
 			void		SetTexture(IDirect3DDevice9* pDevice, uint16 sampler, datum_index bitmap_tag_index)
 			{
 				// get the bitmap datum pointer
-				TagGroups::s_bitmap_definition*	bitmap = TagGroups::TagGetForModify<TagGroups::s_bitmap_definition>(bitmap_tag_index);
+				TagGroups::s_bitmap_definition*	bitmap = TagGroups::Instances()[bitmap_tag_index.index].Definition<TagGroups::s_bitmap_definition>();
 				TagGroups::s_bitmap_data*		bitmap_datum = CAST_PTR(TagGroups::s_bitmap_data*, &bitmap->bitmaps[0]);
 
 				// set the texture to the device
@@ -236,6 +237,7 @@ namespace Yelo
 					ApplyHooks();
 					Model::ApplyHooks();
 					Environment::ApplyHooks();
+					Particle::ApplyHooks();
 				}
 			}
 			void		OnLostDevice(){}
@@ -257,6 +259,7 @@ namespace Yelo
 						g_extensions_enabled_user_override = Settings::ParseBoolean(enabled);
 
 					Model::LoadSettings(extension_element);
+					Particle::LoadSettings(extension_element);
 				}
 			}
 
@@ -270,6 +273,7 @@ namespace Yelo
 					extension_element->SetAttribute("enabled", Settings::BooleanToString(g_extensions_enabled_user_override));
 
 					Model::SaveSettings(extension_element);
+					Particle::SaveSettings(extension_element);
 				}
 			}
 		};

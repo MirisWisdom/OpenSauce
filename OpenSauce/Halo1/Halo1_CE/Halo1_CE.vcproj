@@ -61,7 +61,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="d3dxof.lib dxguid.lib d3dx9.lib d3d9.lib dinput8.lib winmm.lib ws2_32.lib dbghelp.lib"
-				OutputFile="$(OutDir)\d3d9.dll"
+				OutputFile="$(OutDir)\dinput8.dll"
 				IgnoreDefaultLibraryNames="LIBC"
 				ModuleDefinitionFile="Halo1_CE.def"
 			/>
@@ -133,8 +133,8 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="d3dxof.lib dxguid.lib d3dx9.lib d3d9.lib dinput8.lib winmm.lib ws2_32.lib  dbghelp.lib"
-				OutputFile="$(OutDir)\d3d9.dll"
+				AdditionalDependencies="d3dxof.lib dxguid.lib d3dx9.lib d3d9.lib dinput8.lib winmm.lib ws2_32.lib dbghelp.lib"
+				OutputFile="$(OutDir)\dinput8.dll"
 				IgnoreDefaultLibraryNames="LIBC"
 				ModuleDefinitionFile="Halo1_CE.def"
 				OptimizeReferences="2"
@@ -3878,6 +3878,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Memory\1.08\_EngineLayout.Rasterizer.ShaderDraw.inl"
+					>
+				</File>
+				<File
 					RelativePath=".\Memory\1.08\_EngineLayout.Rasterizer.ShaderExtension.inl"
 					>
 				</File>
@@ -3923,6 +3927,10 @@
 				</File>
 				<File
 					RelativePath=".\Memory\1.09\_EngineLayout.Rasterizer.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\Memory\1.09\_EngineLayout.Rasterizer.ShaderDraw.inl"
 					>
 				</File>
 				<File
@@ -4010,9 +4018,25 @@
 				RelativePath=".\Rasterizer\RenderTargetChain.hpp"
 				>
 			</File>
+			<File
+				RelativePath=".\Rasterizer\ShaderDraw.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Rasterizer\ShaderDraw.hpp"
+				>
+			</File>
 			<Filter
 				Name="DX9"
 				>
+				<File
+					RelativePath=".\Rasterizer\DX9\DeviceHooks.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Rasterizer\DX9\DeviceHooks.hpp"
+					>
+				</File>
 				<File
 					RelativePath=".\Rasterizer\DX9\DX9.cpp"
 					>

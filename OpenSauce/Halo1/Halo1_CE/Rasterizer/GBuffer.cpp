@@ -363,14 +363,6 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////
 		// c_gbuffer_system interface
-		Enums::rasterizer_vertex_shader const c_gbuffer_system::kValidShaders[] = {
-			Enums::_rasterizer_vs_environment_lightmap,
-			Enums::_rasterizer_vs_model_fogged,
-			Enums::_rasterizer_vs_model,
-			Enums::_rasterizer_vs_model_fast,
-			Enums::_rasterizer_vs_model_scenery,
-		};
-
 		API_FUNC_NAKED void c_gbuffer_system::Hook_RenderObjectList_GetObjectIndex()
 		{
 			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RENDER_OBJECT_LIST_HOOK_RETN);
@@ -534,11 +526,6 @@ skip_disable_velocity:
 			Memory::WriteRelativeCall(&DrawIndexedPrimitive_Structure,
 				call_address, true);
 			Memory::WriteMemory(call_address + 5, &NOP, sizeof(NOP));
-
-			call_address = CAST_PTR(byte*, GET_FUNC_VPTR(RASTERIZER_SET_WORLD_VIEW_PROJECTION_MATRIX_VERTEX_CONSTANT_HOOK));
-			Memory::WriteRelativeCall(&SetVertexShaderConstantF_WVP,
-				call_address, true);
-			Memory::WriteMemory(call_address + 5, &NOP, sizeof(NOP));
 		}
 		void		c_gbuffer_system::Dispose()
 		{
@@ -607,11 +594,7 @@ skip_disable_velocity:
 			g_default_system.ReleaseResources();
 		}
 
-
-		void		c_gbuffer_system::VertexShaderChanged(IDirect3DVertexShader9* pShader)
-		{
-			g_default_system.VertexShaderChangedImpl(pShader);
-		}
+		bool&		c_gbuffer_system::RenderGBuffer() { return g_default_system.RenderGBufferImpl(); }
 
 		HRESULT		c_gbuffer_system::DrawIndexedPrimitive(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type, INT BaseVertexIndex, UINT MinVertexIndex, UINT NumVertices, UINT startIndex, UINT primCount)
 		{
@@ -683,7 +666,7 @@ skip_disable_velocity:
 			return hr;
 		}
 
-		HRESULT		c_gbuffer_system::SetVertexShaderConstantF_WVP(IDirect3DDevice9* device, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount)
+		bool		c_gbuffer_system::SetViewProj(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount)
 		{
 			if(Rasterizer::IsRenderingReflection() == false && g_system_enabled && !g_wvp_stored)
 			{
@@ -693,22 +676,11 @@ skip_disable_velocity:
 				g_wvp_stored = true;
 			}
 
-			return device->SetVertexShaderConstantF(StartRegister, pConstantData, Vector4fCount);
+			return true;
 		}
 		void		c_gbuffer_system::ClearGBuffer(IDirect3DDevice9* pDevice)
 		{
 			g_default_system.ClearGBufferImpl(pDevice);
-		}
-		
-		HRESULT		c_gbuffer_system::SetVertexShaderConstantF_All(IDirect3DDevice9* pDevice, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount)
-		{
-			//eye position doesn't get updated in the object code so always pass it through so we have the most recent value
-			if((StartRegister == 0) ||
-				(g_current_render_state == Enums::_render_progress_objects) ||
-				(g_current_render_state == Enums::_render_progress_objects_transparent))
-				return Rasterizer::ShaderExtension::SetVertexShaderConstantF(Enums::_render_progress_objects, pDevice, StartRegister, pConstantData, Vector4fCount);
-			else
-				return pDevice->SetVertexShaderConstantF(StartRegister, pConstantData, Vector4fCount);
 		}
 		//////////////////////////////////////////////////////////////////////
 
@@ -849,16 +821,7 @@ skip_disable_velocity:
 			m_is_loaded = false;
 		}
 
-		void		c_gbuffer_system::VertexShaderChangedImpl(IDirect3DVertexShader9* pShader)
-		{
-			// Sky can use many different vertex shaders so just say yes
-			m_render_gbuffer = (g_current_render_state == Enums::_render_progress_sky);
-
-			// Halo has a fixed vertex shader array so comparing pointers works ok
-			int32 i = 0;
-			while (!m_render_gbuffer && i < NUMBEROF(kValidShaders))
-				m_render_gbuffer = GET_PTR(VSF_TABLE_START_REFERENCE)[kValidShaders[i++]].shader == pShader;
-		}
+		bool&		c_gbuffer_system::RenderGBufferImpl() { return m_render_gbuffer; }
 
 		HRESULT		c_gbuffer_system::DrawIndexedPrimitive_Impl(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type, INT BaseVertexIndex, UINT MinVertexIndex, UINT NumVertices, UINT startIndex, UINT primCount)
 		{
@@ -991,7 +954,7 @@ skip_disable_velocity:
 					if(*object_header._object->GetHealth() <= 0.0f)
 						TeamIndex |= 1 << 6;
 				}
-		}
+			}
 
 			g_pixel_shader_input.x = (float)MeshIndex * (1.0f / 255.0f);
 			g_pixel_shader_input.y = (float)TeamIndex * (1.0f / 255.0f);
