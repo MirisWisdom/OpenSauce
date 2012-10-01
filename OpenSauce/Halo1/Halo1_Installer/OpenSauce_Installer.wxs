@@ -293,43 +293,12 @@
 
 		<Feature Id='OpenSauce_Complete_FEAT'
 			Title='OS V$(var.ConfigVersion)'
-			Description='Installs the OpenSauce IDE. If no other options are available you need to reinstall Halo CE v1.09 and/or the HEK.'
+			Description='Installs OpenSauce. If OpenSauce IDE is the only option you need to reinstall Halo CE v1.09 and/or the HEK.'
 			Display='expand'
 			Level='1'
 			AllowAdvertise='no'
 			Absent='disallow'>
 
-			<Feature Id='OpenSauce_OpenSauceIDE_FEAT'
-				Title='OpenSauce IDE'
-				Description='Tools that compliment the OpenSauce runtimes.'
-				Display='expand'
-				Level='1'
-				AllowAdvertise='no'>
-				<ComponentRef Id='OpenSauce_OpenSauceIDE_COMP' />
-				<ComponentRef Id='OpenSauce_BlamLib_COMP' />
-				<ComponentRef Id='OpenSauce_BlamLib_Forms_COMP' />
-				<ComponentRef Id='OpenSauce_LowLevel_COMP' />
-				<ComponentRef Id='OpenSauce_License_COMP' />
-				<ComponentRef Id='OpenSauce_SevenZipSharp_COMP' />
-				<ComponentRef Id='OpenSauce_SevenZip_COMP' />
-
-				<?ifdef DEBUG?>
-				<ComponentRef Id='OpenSauce_OpenSauceIDE_PDB_COMP' />
-				<ComponentRef Id='OpenSauce_BlamLib_PDB_COMP' />
-				<ComponentRef Id='OpenSauce_BlamLib_Forms_PDB_COMP' />
-				<ComponentRef Id='OpenSauce_LowLevel_PDB_COMP' />
-				<?endif?>
-
-				<ComponentRef Id='OpenSauce_SettingsRemove_COMP' />
-				<ComponentRef Id='OpenSauce_OpenSauceIDERemove_COMP' />
-
-				<ComponentRef Id='OpenSauce_RoamingOpenSauceIDE_COMP' />
-				<ComponentRef Id='OpenSauce_RoamingKornnerStudios_COMP' />
-
-				<ComponentRef Id='OpenSauce_OpenSauceIDEMenuShortcut_COMP' />
-				<ComponentRef Id='OpenSauce_OpenSauceIDEDesktopShortcut_COMP' />
-			</Feature>
-			
 			<ComponentRef Id='OpenSauce_OpenSauceRemove_COMP' />
 			<ComponentRef Id='OpenSauce_KornnerStudiosRemove_COMP' />
 			<ComponentRef Id='OpenSauce_KornnerStudiosMenuRemove_COMP' />
@@ -358,6 +327,38 @@
 			<?ifdef Halo1_CE?>
 			<?include Halo1_CE/Features.wxi?>
 			<?endif?>
+
+			<Feature Id='OpenSauce_OpenSauceIDE_FEAT'
+				Title='OpenSauce IDE'
+				Description='Tools that compliment the OpenSauce runtimes.'
+				Display='expand'
+				Level='100'
+				AllowAdvertise='no'>
+				<ComponentRef Id='OpenSauce_OpenSauceIDE_COMP' />
+				<ComponentRef Id='OpenSauce_BlamLib_COMP' />
+				<ComponentRef Id='OpenSauce_BlamLib_Forms_COMP' />
+				<ComponentRef Id='OpenSauce_LowLevel_COMP' />
+				<ComponentRef Id='OpenSauce_License_COMP' />
+				<ComponentRef Id='OpenSauce_SevenZipSharp_COMP' />
+				<ComponentRef Id='OpenSauce_SevenZip_COMP' />
+
+				<?ifdef DEBUG?>
+				<ComponentRef Id='OpenSauce_OpenSauceIDE_PDB_COMP' />
+				<ComponentRef Id='OpenSauce_BlamLib_PDB_COMP' />
+				<ComponentRef Id='OpenSauce_BlamLib_Forms_PDB_COMP' />
+				<ComponentRef Id='OpenSauce_LowLevel_PDB_COMP' />
+				<?endif?>
+
+				<ComponentRef Id='OpenSauce_SettingsRemove_COMP' />
+				<ComponentRef Id='OpenSauce_OpenSauceIDERemove_COMP' />
+
+				<ComponentRef Id='OpenSauce_RoamingOpenSauceIDE_COMP' />
+				<ComponentRef Id='OpenSauce_RoamingKornnerStudios_COMP' />
+
+				<ComponentRef Id='OpenSauce_OpenSauceIDEMenuShortcut_COMP' />
+				<ComponentRef Id='OpenSauce_OpenSauceIDEDesktopShortcut_COMP' />
+			</Feature>
+
 		</Feature>
 		
 		<UI Id='OpenSauce_WixUI_FeatureTree_Ext'>

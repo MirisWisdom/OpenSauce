@@ -426,8 +426,11 @@ no_extension:
 		};
 	}
 
-	void PLATFORM_API SetModelNormSpec(void* shader_pointer)
+	void SetModelNormSpec(void* shader_pointer)
 	{
+		if((g_ps_support <= _ps_support_2_0) || !g_extensions_enabled)
+			return;
+
 		// reset to defaults
 		g_current_feature_mix = NULL;
 
@@ -545,11 +548,6 @@ no_extension:
 				shader_model->model.reflection_properties.perpendicular_brightness = extension.perpendicular_brightness;
 				shader_model->model.reflection_properties.perpendicular_tint_color = extension.perpendicular_tint_color;
 
-				// currently removed as this broke the ambient factor of the specular reflection
-				// causing the reflection to disappear at high exponents
-				//g_pixel_shader_variables.specular_reflection_exponent = extension.specular_reflection_exponent;
-				//g_pixel_shader_variables.specular_reflection_coefficient = extension.specular_reflection_coefficient;
-
 			}
 		}
 		else if(shader_base->shader.shader_type == Enums::_shader_type_environment)
@@ -585,28 +583,6 @@ no_extension:
 		}
 		Yelo::DX9::Direct3DDevice()->SetPixelShaderConstantF(0 + k_shader_constant_offset, (float*)&g_pixel_shader_variables, k_vector_4_count);
 		Yelo::DX9::Direct3DDevice()->SetVertexShaderConstantF(13, (float*)&g_vertex_shader_variables, 1);
-	}
-
-	void PLATFORM_API ShaderSetupOverride_Model_ShaderEnvironment(void* shader_pointer, void* arg2, void* arg3, void* arg4, void* arg5, void* arg6, void* arg7)
-	{
-		//call any custom shader setup functions
-		SetModelNormSpec(shader_pointer);
-
-		// call the original function
-		static shadersetup_func shader_function = 
-			CAST_PTR(shadersetup_func, GET_FUNC_VPTR(RASTERIZER_MODEL_DRAW_ENVIRONMENT_SHADER));
-		(*shader_function)(shader_pointer, arg2, arg3, arg4, arg5, arg6, arg7);
-	}
-
-	void PLATFORM_API ShaderSetupOverride_Model_ShaderModel(void* shader_pointer, void* arg2, void* arg3, void* arg4, void* arg5, void* arg6, void* arg7)
-	{
-		//call any custom shader setup functions
-		SetModelNormSpec(shader_pointer);
-
-		// call the original function
-		static shadersetup_func shader_function = 
-			CAST_PTR(shadersetup_func, GET_FUNC_VPTR(RASTERIZER_MODEL_DRAW_ENVIRONMENT_SHADER_MODEL));
-		(*shader_function)(shader_pointer, arg2, arg3, arg4, arg5, arg6, arg7);
 	}
 
 	void		BuildShaderIDs()
@@ -689,16 +665,6 @@ no_extension:
 	{
 		BuildShaderIDs();
 
-		// Halo uses function pointers to point to the appropriate functions for
-		// whatever shader model the device supports
-		// Here, we replace the pointer to the highest level shader model functions
-		// for shader_model and shader_environment
-
-		// replace the function used for shader_environment when on a model
-		GET_PTR(RASTERIZER_MODEL_DRAW_ENVIRONMENT_SHADER_SETUP__SET_SHADER_ENVIRONMENT_PTR) =	&ShaderSetupOverride_Model_ShaderEnvironment;
-		// replace the function used for shader_model when on a model
-		GET_PTR(RASTERIZER_MODEL_DRAW_ENVIRONMENT_SHADER_SETUP__SET_SHADER_MODEL_PTR) =			&ShaderSetupOverride_Model_ShaderModel;
-
 		// change the shader usage id offsets on effects that only have 12 shaders
 		Memory::WriteRelativeJmp(&Hook_EnvironmentNoPixelShaderIDOffset,	GET_FUNC_VPTR(RASTERIZER_MODEL_ENVIRONMENT_NO_USAGE_ID_OFFSET_HOOK), true);
 		Memory::WriteRelativeJmp(&Hook_NoPixelShaderIDOffset,				GET_FUNC_VPTR(RASTERIZER_MODEL_NO_USAGE_ID_OFFSET_HOOK), true);
@@ -740,34 +706,49 @@ no_extension:
 		Memory::WriteRelativeJmp(&Hook_SelfIlluminationInversePixelShader, GET_FUNC_VPTR(RASTERIZER_MODEL_PS_INDEX_SELF_ILLUMINATION_INV_HOOK), true);
 	}
 
-	HRESULT		SetVertexShaderConstantF(IDirect3DDevice9* pDevice, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount)
+	bool		SetTexScale(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount)
 	{
-		HRESULT hr = S_OK;
-		if(g_extensions_enabled)
+		if((g_ps_support > _ps_support_2_0) && g_extensions_enabled)
 		{
-			//always pass the eye position since it doesn't get updated for each object	
-			if(StartRegister == 0)
-			{
-				// both the pixel shader and vertex shader use constant c0
-				hr = pDevice->SetPixelShaderConstantF(3 + k_shader_constant_offset, &pConstantData[4 * 4], 1);
-				hr |= pDevice->SetVertexShaderConstantF(StartRegister, pConstantData, Vector4fCount);
-			}
-			else if(StartRegister == 10) // c_unknown_c12
-			{
-				// the vertex shader uses the constants in c10-c12 so they have to be set as well
-				hr = pDevice->SetVertexShaderConstantF(StartRegister, pConstantData, Vector4fCount);
-				// but the pixel shader only uses c12 so we only set that to the pixel shader
-				hr |= pDevice->SetPixelShaderConstantF(4 + k_shader_constant_offset, &pConstantData[2 * 4], 1);
-			}
-			else if(StartRegister == 13 && Vector4fCount == 2) // parallel and perpendicular colour
-				hr = pDevice->SetPixelShaderConstantF(5 + k_shader_constant_offset, pConstantData, 2);
-			else if(StartRegister == 15) // light positions rotations and colours (2 dynamic, 2 ambient)
-				hr = pDevice->SetPixelShaderConstantF(7 + k_shader_constant_offset, pConstantData, Vector4fCount);
-			else
-				hr = pDevice->SetVertexShaderConstantF(StartRegister, pConstantData, Vector4fCount);
+			device->SetPixelShaderConstantF(4 + k_shader_constant_offset,
+				&pConstantData[2 * 4],
+				1);
 		}
-		else
-			hr = pDevice->SetVertexShaderConstantF(StartRegister, pConstantData, Vector4fCount);
-		return hr;
+		return true;
+	}
+
+	bool		SetViewProj(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount)
+	{
+		if((g_ps_support > _ps_support_2_0) && g_extensions_enabled)
+		{
+			device->SetPixelShaderConstantF(3 + k_shader_constant_offset,
+				&pConstantData[4 * 4],
+				1);
+		}
+		return true;
+	}
+
+	bool		SetSpecColor(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount)
+	{
+		if((g_ps_support > _ps_support_2_0) && g_extensions_enabled)
+		{
+			device->SetPixelShaderConstantF(5 + k_shader_constant_offset,
+				pConstantData,
+				2);
+			return false;
+		}
+		return true;
+	}
+
+	bool		SetVertexLight(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount)
+	{
+		if((g_ps_support > _ps_support_2_0) && g_extensions_enabled)
+		{
+			device->SetPixelShaderConstantF(7 + k_shader_constant_offset,
+				pConstantData,
+				Vector4fCount);
+			return false;
+		}
+		return true;
 	}
 };

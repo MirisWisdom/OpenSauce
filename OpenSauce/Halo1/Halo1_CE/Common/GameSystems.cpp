@@ -15,8 +15,10 @@
 	#if PLATFORM_IS_USER
 		#include "Rasterizer/DX9/DxWrapper.hpp"
 		#include "Rasterizer/DX9/DX9.hpp"
-		#include "Rasterizer/GBuffer.hpp"
+		#include "Rasterizer/DX9/DeviceHooks.hpp"
 		#include "Rasterizer/Rasterizer.hpp"
+		#include "Rasterizer/ShaderDraw.hpp"
+		#include "Rasterizer/GBuffer.hpp"
 		#include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
 		#include "Rasterizer/PostProcessing/PostProcessing.hpp"
 		#include "Game/Camera.hpp"

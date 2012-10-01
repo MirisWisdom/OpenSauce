@@ -16,9 +16,9 @@
 			</Component>
 		</Directory>
 
-		<!-- Extension DLLs for the client and server-->
-		<Component Id='Halo1_CE_d3d9109_COMP' Guid='F5D1A284-D067-443F-BE7C-4E6FD5574553'>
-			<File Id='Halo1_CE_d3d9109_FILE' Name='d3d9.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\Win32\Halo1_CE\d3d9.dll' KeyPath='yes' />
+		<!-- Extension DLLs for the client and server-->		
+		<Component Id='Halo1_CE_dinput8109_COMP' Guid='4FFDA1C3-BE47-4349-A4EF-7612D3A7FC54'>
+			<File Id='Halo1_CE_dinput8109_FILE' Name='dinput8.dll' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\Win32\Halo1_CE\dinput8.dll' KeyPath='yes' />
 		</Component>
 
 		<Component Id='Halo1_CE_OpenSauceDedi_COMP' Guid='37269616-A4B7-4d85-999E-2168F05D0CE8'>
@@ -34,8 +34,8 @@
 		</Component>
 
 		<?ifdef SYMBOLS?>
-		<Component Id='Halo1_CE_d3d9109_PDB_COMP' Guid='6919365B-416E-4151-B677-6271E56D1597'>
-			<File Id='Halo1_CE_d3d9109_PDB_FILE' Name='d3d9.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\Win32\Halo1_CE\d3d9.pdb' KeyPath='yes' />
+		<Component Id='Halo1_CE_dinput8109_PDB_COMP' Guid='C8F4CB07-549E-4e2d-B3FC-0E847CD7CCF0'>
+			<File Id='Halo1_CE_dinput8109_PDB_FILE' Name='dinput8.pdb' DiskId='1' Source='$(var.BinariesFolder)$(var.CompiledConfiguration)\Win32\Halo1_CE\dinput8.pdb' KeyPath='yes' />
 		</Component>
 		
 		<Component Id='Halo1_CE_OpenSauceDedi_PDB_COMP' Guid='C57240B8-4FE5-4e1c-83E1-22D02A1BD982'>

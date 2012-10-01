@@ -106,7 +106,7 @@ namespace Yelo
 					"The plugin's interface to DirectX 9 will continue to run, but note that this is a kludge."
 					"\n\n"
 					"If you don't wish to see this message anymore, then remove this file to uninstall the plugin: \n"
-					"%s\\d3d9.dll",
+					"%s\\dinput8.dll",
 					name, dir);
 #elif PLATFORM_IS_DEDI
 				sprintf_s(warning,
@@ -131,7 +131,7 @@ namespace Yelo
 					"%s\\haloupdate.exe"
 					"\n\n"
 					"If you don't wish to use Yelo, then remove this file to uninstall it: \n"
-					"%s\\d3d9.dll",
+					"%s\\dinput8.dll",
 					dir, dir);
 #elif PLATFORM_IS_DEDI
 				sprintf_s(warning,
@@ -146,67 +146,6 @@ namespace Yelo
 
 			return result_code;
 		}
-
-		static bool DetectXfire()
-		{
-			// create a list of all the currently running processes
-			DWORD* processes = NULL;
-			DWORD dword_count = 0, bytes_written = 0, byte_count = 0;
-			do
-			{
-				// if the array was not big enough reallocate a bigger array
-				if(bytes_written == byte_count)
-				{
-					dword_count += k_process_enumeration_dword_array_increment;
-
-					delete[] processes;
-					processes = new DWORD[dword_count];
-				}
-
-				byte_count = dword_count * sizeof(DWORD);
-
-				// enumerate the systems processes
-				if(!EnumProcesses( processes, byte_count, &bytes_written ))
-				{
-					delete[] processes;
-					return false;
-				}
-			}
-			while(bytes_written == byte_count);
-
-			DWORD process_count = bytes_written / sizeof(DWORD);
-
-			bool xfire_found = false;
-			// loop through all of the processes
-			for (DWORD i = 0; !xfire_found && (i < process_count); i++ )
-			{
-				HANDLE process = NULL;
-				if((processes[i] != 0) && (process = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processes[i])))
-				{
-					// get the process name
-					HMODULE module_handle;
-					DWORD modules_bytes_needed;
-
-					// we only need the first module since that will be the main executable
-					if (EnumProcessModules(process, &module_handle, sizeof(module_handle), &modules_bytes_needed))
-					{
-						char process_name[MAX_PATH] = "";
-
-						GetModuleBaseName(process, module_handle, process_name, sizeof(process_name));
-
-						_strlwr(process_name);
-
-						// determine whether the process is an instance of xfire
-						if(!strcmp(process_name, "xfire.exe"))
-							xfire_found = true;
-					}
-				}
-			}
-
-			delete [] processes;
-
-			return xfire_found;
-		}
 	};
 };
 
@@ -218,20 +157,6 @@ bool WINAPI DllMain(HMODULE hModule, DWORD dwReason, PVOID pvReserved)
 	{
 		if(Yelo::Main::GetVersionResultCode() == Yelo::Enums::_version_result_code_invalid )
 			return false;
-#if PLATFORM_IS_USER && defined(DX_WRAPPER)
-		if(Yelo::Main::DetectXfire() && !Yelo::Engine::GetCmdLineParameter("-allow_xfire", NULL))
-		{
-			char error[] = 
-				"A running Xfire process has been found.\n"
-				"Xfire can cause a crash/exception when used with OpenSauce.\n"
-				"Please close Xfire and restart Halo CE.\n"
-				"\n"
-				"Start Halo with the \"-allow_xfire\" command line parameter if you wish to disable this check."
-				"However, we do not support the use of Xfire with OpenSauce.";
-			MessageBox(NULL, error, "Xfire Incompatibility", MB_OK | MB_ICONERROR);
-			return false;
-		}
-#endif
 	}
 
 	if(dwReason == DLL_PROCESS_ATTACH && !done)
@@ -239,11 +164,11 @@ bool WINAPI DllMain(HMODULE hModule, DWORD dwReason, PVOID pvReserved)
 		Yelo::Main::YeloModuleHandle() = hModule;
 
 #if PLATFORM_IS_USER && defined(DX_WRAPPER)
-		if(!LoadDX9(&hModule))
+		if(!LoadDXProxy(&hModule))
 		{
 			char error[128];
 			sprintf_s(error,
-				"Yelo (Open Sauce) failed to load DirectX (or the DirectX proxy)."
+				"Yelo (Open Sauce) failed to load DirectXInput."
 				"\n\n"
 				"Nothing left to do but crash now, good bye!");
 			MessageBox(NULL, error, "Oh noes!", MB_OK | MB_ICONERROR);
@@ -269,7 +194,7 @@ bool WINAPI DllMain(HMODULE hModule, DWORD dwReason, PVOID pvReserved)
 		done = false;
 
 #if PLATFORM_IS_USER && defined(DX_WRAPPER)
-		FreeDX9(hModule);
+		FreeDXProxy(hModule);
 #endif
 	}
 
