@@ -302,8 +302,8 @@ namespace Yelo
 			WaitForSingleObject(g_request_index_mutex, INFINITE);
 			s_http_client_request_data* request_user_data = CAST_PTR(s_http_client_request_data*, param);
 
-			ASSERT(g_http_components[request_user_data->m_component_index].CompletedCallback == NULL, "a http component has no completed callback assigned");
-			ASSERT(g_http_components[request_user_data->m_component_index].CancelledCallback == NULL, "a http component has no cancelled callback assigned");
+			ASSERT(g_http_components[request_user_data->m_component_index].CompletedCallback != NULL, "a http component has no completed callback assigned");
+			ASSERT(g_http_components[request_user_data->m_component_index].CancelledCallback != NULL, "a http component has no cancelled callback assigned");
 
 			if(result == GHTTPRequestCancelled)
 			{
@@ -338,7 +338,7 @@ namespace Yelo
 				else
 					return GHTTPFalse;
 			default:
-				ASSERT(true, "unsupported ghttp request completed");
+				ASSERT(false, "unsupported ghttp request completed");
 			}
 
 			return GHTTPTrue;
@@ -423,10 +423,10 @@ namespace Yelo
 		{
 			WaitForSingleObject(g_request_index_mutex, INFINITE);
 
-			ASSERT((index < 0) || (index >= k_max_simultaneous_requests), "http request index outside of the arrays bounds");
+			ASSERT((index >= 0) && (index < k_max_simultaneous_requests), "http request index outside of the arrays bounds");
 
 			// cancel the http request
-			ASSERT(g_request_index[index].m_request_id < 0, "attempting to abort an invalid request");
+			ASSERT(g_request_index[index].m_request_id >= 0, "attempting to abort an invalid request");
 			if(g_request_index[index].m_request_id >= 0)
 			{
 				ghttpCancelRequest(g_request_index[index].m_request_id);
@@ -454,7 +454,7 @@ namespace Yelo
 		 */
 		void		HTTPRequestThink(int32 index)
 		{
-			ASSERT((index < 0) || (index >= k_max_simultaneous_requests), "http request index outside of the arrays bounds");
+			ASSERT((index >= 0) && (index < k_max_simultaneous_requests), "http request index outside of the arrays bounds");
 			ghttpRequestThink(g_request_index[index].m_request_id);
 		}
 

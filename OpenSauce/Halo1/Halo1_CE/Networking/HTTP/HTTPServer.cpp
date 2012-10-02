@@ -54,7 +54,7 @@ namespace Yelo
 		 */
 		const char* GetServiceURIRoot(Enums::http_service_enumeration service)
 		{
-			ASSERT(service >= Enums::_http_service_enumeration, "Invalid HTTP service root requested");
+			ASSERT(service < Enums::_http_service_enumeration, "Invalid HTTP service root requested");
 
 			return g_http_services[service].m_uri_root;
 		}
@@ -175,7 +175,7 @@ namespace Yelo
 				Yelo::Server::EventLog(Enums::_server_event_type_http_server, L"MONGOOSE\t%S", request_info->log_message);
 				return "";
 			case MG_INIT_SSL:
-				ASSERT(callback_event == MG_INIT_SSL, "mongoose is attepting to use SSL, this cannot be happening!");
+				ASSERT(callback_event != MG_INIT_SSL, "mongoose is attepting to use SSL, this cannot be happening!");
 			case MG_HTTP_ERROR:    // HTTP error must be returned to the client
 			case MG_REQUEST_COMPLETE:  // Mongoose has finished handling the request
 				return "";

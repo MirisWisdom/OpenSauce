@@ -55,7 +55,7 @@ namespace Yelo
 		 */
 		void c_shader_motionblur::SetupShader()
 		{
-			ASSERT(m_members_motionblur.shader_data != NULL, "Shader data object has not been deleted and NULLed before being set again.");
+			ASSERT(m_members_motionblur.shader_data == NULL, "Shader data object has not been deleted and NULLed before being set again.");
 
 #ifdef EXTERNAL_SUBSYSTEM_SHADERS
 			m_members_motionblur.shader_data = new c_shader_data_external();

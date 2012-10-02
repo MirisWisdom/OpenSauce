@@ -57,7 +57,7 @@ namespace Yelo
 				SetupTextureValue();
 				break;
 			default:
-				ASSERT(true, "invalid parameter instance value type");
+				ASSERT(false, "invalid parameter instance value type");
 				break;
 			};
 		}
@@ -75,7 +75,7 @@ namespace Yelo
 			switch(m_members.parameter->value_type.type)
 			{
 			default:
-				ASSERT(true, "a parameter instance has an invalid value type");
+				ASSERT(false, "a parameter instance has an invalid value type");
 				return;
 			case Enums::_shader_variable_base_type_boolean:
 				AllocateValueMemory<bool>();
@@ -105,7 +105,7 @@ namespace Yelo
 					*m_members.m_values[0].quaternion = *m_members.m_values[1].quaternion = m_members.parameter->value.vector4d.upper_bound;
 					break;
 				default:
-					ASSERT(m_members.parameter->value_type.count == 0, "Invalid value type count");
+					ASSERT(m_members.parameter->value_type.count != 0, "Invalid value type count");
 					break;
 				};
 			case Enums::_shader_variable_base_type_argb_color:
@@ -113,7 +113,7 @@ namespace Yelo
 				*m_members.m_values[0].color = *m_members.m_values[1].color = m_members.parameter->value.color4d.upper_bound;
 				break;
 			case Enums::_shader_variable_base_type_matrix:
-				ASSERT(m_members.parameter->value_type.type == Enums::_shader_variable_base_type_matrix, "Scripted intepolation of matrices is not supported");
+				ASSERT(m_members.parameter->value_type.type != Enums::_shader_variable_base_type_matrix, "Scripted intepolation of matrices is not supported");
 				return;
 			}
 			m_members.m_flags.is_overriden = true;
@@ -162,7 +162,7 @@ namespace Yelo
 
 		void c_parameter_instance::CreateInterpolatorFunction()
 		{
-			ASSERT(m_members.interpolator != NULL, "interpolator being created before the current interpolator has been deleted");
+			ASSERT(m_members.interpolator == NULL, "interpolator being created before the current interpolator has been deleted");
 
 			// create an interpolator that uses halos function code for interpolating between two values with up to 4 channels
 			switch(m_members.parameter->value_type.count)
@@ -185,7 +185,7 @@ namespace Yelo
 
 		void c_parameter_instance::CreateInterpolatorLinear()
 		{
-			ASSERT(m_members.interpolator != NULL, "interpolator being created before the current interpolator has been deleted");
+			ASSERT(m_members.interpolator == NULL, "interpolator being created before the current interpolator has been deleted");
 
 			// create an interpolator that linearly interpolates between 0 and 1 for up to 4 channels
 			switch(m_members.parameter->value_type.count)
@@ -249,13 +249,13 @@ namespace Yelo
 				return;
 			case Enums::_parameter_process_type_animated:
 				{
-					ASSERT(m_members.interpolator == NULL, "updating a parameter instance that has no interpolator allocated");
+					ASSERT(m_members.interpolator != NULL, "updating a parameter instance that has no interpolator allocated");
 					if(m_members.interpolator)
 						m_members.interpolator->Update(delta_time);
 				}
 				break;
 			default:
-				ASSERT(true, "updating a parameter instance with an invalid parameter type");
+				ASSERT(false, "updating a parameter instance with an invalid parameter type");
 				break;
 			}
 		}
@@ -272,7 +272,7 @@ namespace Yelo
 			// runtime values are taken directly from the engine
 			if(m_members.parameter_type == Enums::_parameter_process_type_runtime_value)
 			{
-				ASSERT(m_members.evaluate_runtime_value == NULL, "parameter set as a runtime value, has no evaluate function assigned");
+				ASSERT(m_members.evaluate_runtime_value != NULL, "parameter set as a runtime value, has no evaluate function assigned");
 
 				// using a real_quaternion as it is the largest possible variable size in a parameter
 				real_quaternion value;
@@ -305,8 +305,8 @@ namespace Yelo
 		// parameter instance override application
 		void c_parameter_instance::SetOverrideInterp(bool value, real change_time)
 		{
-			ASSERT(!m_members.m_flags.is_overriden, "parameter instance not set up to be overriden");
-			ASSERT(m_members.parameter->value_type.type != Enums::_shader_variable_base_type_boolean, "parameter being overriden with an incorrect type");
+			ASSERT(m_members.m_flags.is_overriden, "parameter instance not set up to be overriden");
+			ASSERT(m_members.parameter->value_type.type == Enums::_shader_variable_base_type_boolean, "parameter being overriden with an incorrect type");
 
 			// set the start value using the current values and interpolation amount
 			SetStartValueToCurrent();
@@ -321,8 +321,8 @@ namespace Yelo
 
 		void c_parameter_instance::SetOverrideInterp(int32 value, real change_time)
 		{
-			ASSERT(!m_members.m_flags.is_overriden, "parameter instance not set up to be overriden");
-			ASSERT(m_members.parameter->value_type.type != Enums::_shader_variable_base_type_integer, "parameter being overriden with an incorrect type");
+			ASSERT(m_members.m_flags.is_overriden, "parameter instance not set up to be overriden");
+			ASSERT(m_members.parameter->value_type.type == Enums::_shader_variable_base_type_integer, "parameter being overriden with an incorrect type");
 
 			// set the start value using the current values and interpolation amount
 			SetStartValueToCurrent();
@@ -337,8 +337,8 @@ namespace Yelo
 
 		void c_parameter_instance::SetOverrideInterp(real value, real change_time)
 		{
-			ASSERT(!m_members.m_flags.is_overriden, "parameter instance not set up to be overriden");
-			ASSERT(m_members.parameter->value_type.type != Enums::_shader_variable_base_type_float, "parameter being overriden with an incorrect type");
+			ASSERT(m_members.m_flags.is_overriden, "parameter instance not set up to be overriden");
+			ASSERT(m_members.parameter->value_type.type == Enums::_shader_variable_base_type_float, "parameter being overriden with an incorrect type");
 
 			// set the start value using the current values and interpolation amount
 			SetStartValueToCurrent();
@@ -353,8 +353,8 @@ namespace Yelo
 
 		void c_parameter_instance::SetOverrideInterp(real_vector2d value, real change_time)
 		{
-			ASSERT(!m_members.m_flags.is_overriden, "parameter instance not set up to be overriden");
-			ASSERT(m_members.parameter->value_type.type != Enums::_shader_variable_base_type_float, "parameter being overriden with an incorrect type");
+			ASSERT(m_members.m_flags.is_overriden, "parameter instance not set up to be overriden");
+			ASSERT(m_members.parameter->value_type.type == Enums::_shader_variable_base_type_float, "parameter being overriden with an incorrect type");
 
 			// set the start value using the current values and interpolation amount
 			SetStartValueToCurrent();
@@ -369,8 +369,8 @@ namespace Yelo
 
 		void c_parameter_instance::SetOverrideInterp(real_vector3d value, real change_time)
 		{
-			ASSERT(!m_members.m_flags.is_overriden, "parameter instance not set up to be overriden");
-			ASSERT(m_members.parameter->value_type.type != Enums::_shader_variable_base_type_float, "parameter being overriden with an incorrect type");
+			ASSERT(m_members.m_flags.is_overriden, "parameter instance not set up to be overriden");
+			ASSERT(m_members.parameter->value_type.type == Enums::_shader_variable_base_type_float, "parameter being overriden with an incorrect type");
 
 			// set the start value using the current values and interpolation amount
 			SetStartValueToCurrent();
@@ -385,8 +385,8 @@ namespace Yelo
 
 		void c_parameter_instance::SetOverrideInterp(real_quaternion value, real change_time)
 		{
-			ASSERT(!m_members.m_flags.is_overriden, "parameter instance not set up to be overriden");
-			ASSERT(m_members.parameter->value_type.type != Enums::_shader_variable_base_type_float, "parameter being overriden with an incorrect type");
+			ASSERT(m_members.m_flags.is_overriden, "parameter instance not set up to be overriden");
+			ASSERT(m_members.parameter->value_type.type == Enums::_shader_variable_base_type_float, "parameter being overriden with an incorrect type");
 
 			// set the start value using the current values and interpolation amount
 			SetStartValueToCurrent();
@@ -401,8 +401,8 @@ namespace Yelo
 
 		void c_parameter_instance::SetOverrideInterp(real_argb_color value, real change_time)
 		{
-			ASSERT(!m_members.m_flags.is_overriden, "parameter instance not set up to be overriden");
-			ASSERT(m_members.parameter->value_type.type != Enums::_shader_variable_base_type_argb_color, "parameter being overriden with an incorrect type");
+			ASSERT(m_members.m_flags.is_overriden, "parameter instance not set up to be overriden");
+			ASSERT(m_members.parameter->value_type.type == Enums::_shader_variable_base_type_argb_color, "parameter being overriden with an incorrect type");
 
 			// set the start value using the current values and interpolation amount
 			SetStartValueToCurrent();
@@ -461,7 +461,7 @@ namespace Yelo
 						m_members.m_values[0].real32);
 					break;
 				default:
-					ASSERT(m_members.parameter->value_type.count == 0, "invalid value type count");
+					ASSERT(m_members.parameter->value_type.count != 0, "invalid value type count");
 					break;
 				};
 			case Enums::_shader_variable_base_type_argb_color:
@@ -471,7 +471,7 @@ namespace Yelo
 					m_members.m_values[0].real32);
 				break;
 			case Enums::_shader_variable_base_type_matrix:
-				ASSERT(m_members.parameter->value_type.type == Enums::_shader_variable_base_type_matrix, "scripted interpolation of matrices is not supported");
+				ASSERT(m_members.parameter->value_type.type != Enums::_shader_variable_base_type_matrix, "scripted interpolation of matrices is not supported");
 				return;
 			}
 		}

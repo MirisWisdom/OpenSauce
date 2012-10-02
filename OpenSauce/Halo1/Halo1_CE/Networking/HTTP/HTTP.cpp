@@ -122,7 +122,7 @@ namespace Yelo
 		 */
 		void c_query_pair::Set(const char* field, const char* value)
 		{
-			ASSERT(!field || (strlen(field) == 0), "attempting to set a query pair with a null or zero-length string");
+			ASSERT(field && (strlen(field) > 0), "attempting to set a query pair with a null or zero-length string");
 
 			m_field.assign(field);
 

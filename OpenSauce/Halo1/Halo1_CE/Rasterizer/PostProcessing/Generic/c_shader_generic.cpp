@@ -59,7 +59,7 @@ namespace Yelo
 		void c_shader_generic::SetupShader()
 		{
 			// if the source data is null this function is being called directly
-			ASSERT(m_members.source_data == NULL, "c_shader_generic setup function does not create the source data, it must be created in a derived class");
+			ASSERT(m_members.source_data != NULL, "c_shader_generic setup function does not create the source data, it must be created in a derived class");
 
 			c_shader_postprocess::SetupShader();
 		}

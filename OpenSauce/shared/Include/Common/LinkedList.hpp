@@ -85,7 +85,7 @@ namespace Yelo
 	template<typename TNode>
 	void DeleteLinkedList(TNode*& list_head)
 	{
-		ASSERT(list_head == NULL, "attepting to delete a linked list with a NULL list head");
+		ASSERT(list_head != NULL, "attepting to delete a linked list with a NULL list head");
 
 		for(TNode* cur = CAST_PTR(TNode*, list_head->GetNext()); cur != NULL; )
 		{
@@ -118,7 +118,7 @@ namespace Yelo
 	template<typename TNode>
 	void RemoveLinkedListNode(TNode*& list_head, const TNode* object)
 	{
-		ASSERT(list_head == NULL, "attepting to remove from a linked list with a NULL list head");
+		ASSERT(list_head != NULL, "attepting to remove from a linked list with a NULL list head");
 
 		TNode* next = CAST_PTR(TNode*, object->GetNext());
 		TNode* prev = CAST_PTR(TNode*, object->GetPrevious());

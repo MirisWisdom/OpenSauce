@@ -82,10 +82,10 @@ namespace Yelo
 		void c_shader_instance_motionblur::SetShaderInstanceVariables()
 		{
 			s_shader_motionblur_definition* definition = m_members_motionblur.definition->GetShaderDefinition<s_shader_motionblur_definition>();
-			ASSERT(definition == NULL, "Motion blur shader class has no valid definition");
+			ASSERT(definition != NULL, "Motion blur shader class has no valid definition");
 
 			LPD3DXEFFECT effect = m_members_motionblur.definition->GetEffect();
-			ASSERT(effect == NULL, "Motion blur shader class has no effect");
+			ASSERT(effect != NULL, "Motion blur shader class has no effect");
 
 			real vignette_amount;
 			Interpolation::InterpolateValues<1>(&m_members_motionblur.start_vignette, &m_members_motionblur.target_vignette, m_members_motionblur.vignette_interp.GetValues(), &vignette_amount);

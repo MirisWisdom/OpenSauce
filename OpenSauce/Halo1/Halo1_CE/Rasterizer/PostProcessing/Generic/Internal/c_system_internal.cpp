@@ -420,7 +420,7 @@ namespace Yelo
 					m_members_internal.m_shaders.shader_list[i].SetupShader();
 				}
 				else
-					ASSERT(true, "internal shader reference is not a shader_postprocess_generic");
+					ASSERT(false, "internal shader reference is not a shader_postprocess_generic");
 			}
 		}
 
@@ -523,7 +523,7 @@ namespace Yelo
 		{
 			TagGroups::s_effect_postprocess_generic* effect_definition = TagGroups::TagGetForModify<TagGroups::s_effect_postprocess_generic>(definition->effect.tag_index);
 
-			ASSERT(effect_definition == NULL, "effect collection block has no effect referenced");
+			ASSERT(effect_definition != NULL, "effect collection block has no effect referenced");
 
 			// create the internal effect class and initialize it
 			effect_set.effect = new c_effect_internal();

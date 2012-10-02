@@ -46,7 +46,7 @@ namespace Yelo
 			{
 				TagGroups::s_shader_postprocess_parameter* parameter = m_members_generic.parameters[index].GetParameter();
 
-				ASSERT(parameter == NULL, "parameter instance has no assigned parameter");
+				ASSERT(parameter != NULL, "parameter instance has no assigned parameter");
 
 				// compare the parameter instances name with the requested name
 				if(strcmp(parameter->value_name, name) == 0)

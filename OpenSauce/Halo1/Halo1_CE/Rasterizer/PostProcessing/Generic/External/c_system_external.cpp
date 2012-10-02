@@ -461,7 +461,7 @@ namespace Yelo
 
 			if(!FileIO::PathExists(m_members_external.m_paths.shaders_path) || !FileIO::PathExists(m_members_external.m_paths.textures_path))
 			{
-				ASSERT(true, "external postprocessing shaders path or textures path does not exist");
+				ASSERT(false, "external postprocessing shaders path or textures path does not exist");
 				return false;
 			}
 			return true;
@@ -840,7 +840,7 @@ namespace Yelo
 			D3DXTECHNIQUE_DESC technique_desc;
 			HRESULT success = compiler->GetTechniqueDesc(handle, &technique_desc);
 			
-			ASSERT(FAILED(success), "failed to get a techniques description");
+			ASSERT(SUCCEEDED(success), "failed to get a techniques description");
 
 			// reset to defaults
 			ZeroMemory(&technique, sizeof(technique));
@@ -878,7 +878,7 @@ namespace Yelo
 			D3DXPASS_DESC pass_desc;
 			HRESULT success = compiler->GetPassDesc(handle, &pass_desc);
 			
-			ASSERT(FAILED(success), "failed to get a pass' description");
+			ASSERT(SUCCEEDED(success), "failed to get a pass' description");
 
 			// reset to zeros
 			ZeroMemory(&pass, sizeof(pass));
@@ -1382,7 +1382,7 @@ namespace Yelo
 			texture_location =			compiler->GetAnnotationByName(handle.handle, "texture_location");
 
 			// get the texture string
-			ASSERT(parameter.bitmap_value.runtime.external.source != NULL, "allocating string memory before the previous value is deleted");
+			ASSERT(parameter.bitmap_value.runtime.external.source == NULL, "allocating string memory before the previous value is deleted");
 			const char* location;
 			HRESULT success = compiler->GetString(texture_location, &location);
 			if(SUCCEEDED(success) && location)

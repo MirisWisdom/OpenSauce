@@ -1596,7 +1596,7 @@ namespace Yelo
 				}
 				break;
 			default:
-				ASSERT(true, "invalid compression format");
+				ASSERT(false, "invalid compression format");
 			};
 
 			// if the decompression failed, delete the data
@@ -1741,7 +1741,7 @@ namespace Yelo
 			// TODO: move this to a global shuffle namespace
 			//shuffle loop
 			int list_length = GetListLength(g_map_download_globals.m_master_server_list.server_list);
-			ASSERT(list_length > 256, "max server list count reached");
+			ASSERT(list_length <= 256, "max server list count reached");
 
 			if(list_length > 0)
 			{
@@ -1946,7 +1946,7 @@ namespace Yelo
 					case Enums::_http_file_download_status_in_progress:
 						break;
 					default:
-						ASSERT(true, "invalid file download status");
+						ASSERT(false, "invalid file download status");
 					};
 				}
 				break;
@@ -1969,7 +1969,7 @@ namespace Yelo
 				}
 				break;
 			default:
-				ASSERT(true, "invalid master server list state");
+				ASSERT(false, "invalid master server list state");
 			}
 
 			// if this stage is complete, move on to the next stage
@@ -2004,7 +2004,7 @@ namespace Yelo
 			{
 			case _map_part_definition_state_begin:
 				{
-					ASSERT(!g_map_download_globals.m_servers.server_iterator->Current(), "server list iterators current instance is null");
+					ASSERT(g_map_download_globals.m_servers.server_iterator->Current(), "server list iterators current instance is null");
 
 					c_http_server* current_server = g_map_download_globals.m_servers.server_iterator->Current()->Server();
 
@@ -2040,7 +2040,7 @@ namespace Yelo
 					case Enums::_http_file_download_status_in_progress:
 						break;
 					default:
-						ASSERT(true, "invalid file download status");
+						ASSERT(false, "invalid file download status");
 					};
 				}
 				break;
@@ -2061,7 +2061,7 @@ namespace Yelo
 				}
 				break;
 			default:
-				ASSERT(true, "invalid map part definition state");
+				ASSERT(false, "invalid map part definition state");
 			}
 
 			// if this stage is complete, move on to the next stage
@@ -2119,7 +2119,7 @@ namespace Yelo
 				}
 			case _part_download_state_ready_to_download:
 				{
-					ASSERT(!g_map_download_globals.m_servers.server_iterator->Current(), "server list iterators current instance is null");
+					ASSERT(g_map_download_globals.m_servers.server_iterator->Current(), "server list iterators current instance is null");
 
 					c_http_server* current_server = g_map_download_globals.m_servers.server_iterator->Current()->Server();
 
@@ -2158,7 +2158,7 @@ namespace Yelo
 					case Enums::_http_file_download_status_in_progress:
 						break;
 					default:
-						ASSERT(true, "invalid file download status");
+						ASSERT(false, "invalid file download status");
 					};
 				}
 				break;
@@ -2192,7 +2192,7 @@ namespace Yelo
 				}
 				break;
 			default:
-				ASSERT(true, "invalid part download state");
+				ASSERT(false, "invalid part download state");
 			}
 
 			// if this stage is complete, move on to the next stage
@@ -2306,7 +2306,7 @@ namespace Yelo
 					return_value = 2;
 					break;
 				default:
-					ASSERT(true, "invalid map download stage");
+					ASSERT(false, "invalid map download stage");
 				};
 
 				ReleaseMutex(g_globals_access_mutex);
@@ -2388,7 +2388,7 @@ namespace Yelo
 					case 2:
 						return _map_download_update_stage_map_download_completion;
 					default:
-						ASSERT(true, "map download thread returned an invalid code");
+						ASSERT(false, "map download thread returned an invalid code");
 					}
 				}
 				break;
@@ -2396,11 +2396,11 @@ namespace Yelo
 				// the thread is still running
 				break;
 			case WAIT_FAILED:
-				ASSERT(true, "WAIT_FAILED value in c_map_download_manager::Update");
+				ASSERT(false, "WAIT_FAILED value in c_map_download_manager::Update");
 			case WAIT_ABANDONED:
-				ASSERT(true, "WAIT_ABANDONED value in c_map_download_manager::Update");
+				ASSERT(false, "WAIT_ABANDONED value in c_map_download_manager::Update");
 			default:
-				ASSERT(true, "invalid wait return value in c_map_download_manager::Update");
+				ASSERT(false, "invalid wait return value in c_map_download_manager::Update");
 			};
 
 			return _map_download_update_stage_downloading_map;
@@ -2533,7 +2533,7 @@ namespace Yelo
 				Memory::FunctionProcessUpdateUIWidgetsDisabled() = false;
 				break;
 			default:
-				ASSERT(true, "invalid map download stage");
+				ASSERT(false, "invalid map download stage");
 			};
 
 			// update the display strings
@@ -2682,7 +2682,7 @@ namespace Yelo
 		 */
 		void*	RequestCompleted_Callback(const bool download_succeeded, const char* buffer, const GHTTPByteCount buffer_length, void* component_data)
 		{
-			ASSERT(!component_data, "the component data for a http request is NULL");
+			ASSERT(component_data, "the component data for a http request is NULL");
 
 			s_request_data* request_data = CAST_PTR(s_request_data*, component_data);
 

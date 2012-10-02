@@ -56,15 +56,33 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
 == Change Log ==
 === Version 3.1 (Unreleased) ===
   * CHANGE		Game hooking is now done via dinput8.dll instead of d3d9.dll
+  * CHANGE		Removed XFire restriction now that we use dinput8.dll
+  * CHANGE		Changed the server list to list all servers regardless of their version
+  * CHANGE		Made OpensauceIDE an optional installation
+  * CHANGE		Made XP SP3 a minimum requirement when installing
+  * CHANGE		Installation now requires .NET 3.5
   * CHANGE		Increased hardcoded 'k_game_state_allocation_maximum_size_for_yelo' by 0x970 bytes
   * CHANGE		Increased hardcoded 'k_runtime_data_max_values_count' to a total of 64 (up from 32)
+  * ADD			Added an in-game map download system to the client
+  * ADD			Added a HTTP server to the OS dedi
+  * ADD			Added a map server component to the OS dedi
+  * ADD			Added an installation validation component to the installer
+  * ADD			Added file patching component to the installer
   * ADD			Added new setting for forcing OS to use .yelo files first when searching for .map files (off by default)
   * ADD			Script functions for bit operations (AND, OR, etc) and converting hex string to an integer
-  * ADD			Runtime vector3d values (part of the game state)
+  * ADD			Added system for adding custom dedicated server logging events
   * ADD			Added a new tag/script system for changing sky/lightmaps called 'scenario faux zones'
+  * ADD			Runtime vector3d values (part of the game state)
+  * ADD			Added a mini crashdump creator for easier debugging
+  * ADD			Added command line argument to disable all OS graphics
+  * ADD			Added Visual C++ 9.0 runtime to the installer
+  * FIX			Fixed an exception on load when the device doesn't support hardware rendering (Intel integrated)
   * FIX			Fixed a bug where a non-existant map (of any kind) would cause the 'missing <mapname>.yelo' exception, when the stock game already had code to handle such cases
   * FIX			project_yellow tag's "prohibit_multiteam_vehicles" flag should work as expected now
   * FIX			Multi-team vehicles should no longer allow 'double loading'
+  * FIX			Fix for instant respawns when using the OS dedi
+  * FIX			Fixed the -path argument being ignored by OS
+  * FIX			Fixed the roaming/appdata folders made by OS not being removed on uninstall
 
 === Version 3.0.3 ===
   * N/A			Nothing you all need to concern yourselves with. Go play Halo.

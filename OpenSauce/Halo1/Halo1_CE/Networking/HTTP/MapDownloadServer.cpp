@@ -55,7 +55,7 @@ namespace Yelo
 			void Ctor()
 			{
 				m_access_mutex = CreateMutex(NULL, false, NULL);
-				ASSERT(m_access_mutex == NULL, "failed to create map element mutex");
+				ASSERT(m_access_mutex != NULL, "failed to create map element mutex");
 				m_lock_count = 0;
 
 				ClearNodeData();
@@ -108,7 +108,7 @@ namespace Yelo
 			void Ctor()
 			{
 				m_access_mutex = CreateMutex(NULL, false, NULL);
-				ASSERT(m_access_mutex == NULL, "failed to create map list mutex");
+				ASSERT(m_access_mutex != NULL, "failed to create map list mutex");
 
 				m_map_part_definitions = NULL;
 			}
@@ -149,7 +149,7 @@ namespace Yelo
 					{
 						if(!map_iterator.Current()->Lock())
 						{
-							ASSERT(true, "failed to lock a map element when searching a part definition list");
+							ASSERT(false, "failed to lock a map element when searching a part definition list");
 							continue;
 						}
 
@@ -183,7 +183,7 @@ namespace Yelo
 			{
 				if(!Lock())
 				{
-					ASSERT(true, "failed to lock a definition list for map removal");
+					ASSERT(false, "failed to lock a definition list for map removal");
 					return false;
 				}
 
@@ -201,7 +201,7 @@ namespace Yelo
 			{
 				if(!Lock())
 				{
-					ASSERT(true, "failed to lock a definition list");
+					ASSERT(false, "failed to lock a definition list");
 					return false;
 				}
 
@@ -1045,7 +1045,7 @@ namespace Yelo
 				}
 
 				// request complete, reduce the requests in progress count
-				ASSERT(g_map_download_globals.m_requests_in_progress == 0, "requests in progress is already 0");
+				ASSERT(g_map_download_globals.m_requests_in_progress != 0, "requests in progress is already 0");
 				g_map_download_globals.m_requests_in_progress--;
 			}
 			else

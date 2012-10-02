@@ -262,7 +262,7 @@ namespace Yelo
 					&m_globals.m_buffers.vertex,
 					NULL);
 
-				ASSERT(FAILED(result), "failed to create the post processing vertex buffer");
+				ASSERT(SUCCEEDED(result), "failed to create the post processing vertex buffer");
 				if(FAILED(result)) { success = false; break; }
 
 				// create the index buffer
@@ -274,7 +274,7 @@ namespace Yelo
 					&m_globals.m_buffers.index, 
 					NULL);
 
-				ASSERT(FAILED(result), "failed to create the post processing index buffer");
+				ASSERT(SUCCEEDED(result), "failed to create the post processing index buffer");
 				if(FAILED(result)) { success = false; break; }
 
 				// lock the vertex buffer

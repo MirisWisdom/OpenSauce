@@ -40,14 +40,14 @@ namespace Yelo
 
 		byte& EnableEventLogging(Enums::server_event_type event_type)
 		{
-			ASSERT(event_type >= Enums::_server_event_type, "server event type is invalid");
+			ASSERT(event_type < Enums::_server_event_type, "server event type is invalid");
 
 			return g_network_sv_logging_extension.m_event_enable_logging[event_type];
 		}
 
 		byte& EnableEventEchoing(Enums::server_event_type event_type)
 		{
-			ASSERT(event_type >= Enums::_server_event_type, "server event type is invalid");
+			ASSERT(event_type < Enums::_server_event_type, "server event type is invalid");
 
 			return g_network_sv_logging_extension.m_event_enable_echoing[event_type];
 		}

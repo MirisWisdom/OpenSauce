@@ -45,7 +45,7 @@ namespace Yelo
 			template<class T>
 			T*						GetShaderInstance(int index)
 			{
-				ASSERT(index >= m_members.m_shaders.count, "shader instance index outside the bounds of the array");
+				ASSERT(index < m_members.m_shaders.count, "shader instance index outside the bounds of the array");
 
 				return CAST_PTR(T*, GetNodeByIndex(m_members.m_shaders.list, index));
 			}
