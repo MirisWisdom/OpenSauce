@@ -364,7 +364,8 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 		{
 			TagMemoryDispose();
 			CacheMemoryDispose();
-			// TODO: Implement a DisposeCustomScriptingDefinitions to be consitant?
+			// TODO: Implement a DisposeCustomScriptingDefinitions to be consistent?
+			Objects::Items::GrenadeTypesUpgrade(false);
 		}
 
 		TagGroups::ScenarioYeloLoadHookDispose();

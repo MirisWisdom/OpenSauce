@@ -13,6 +13,11 @@
 
 namespace Yelo
 {
+	namespace MessageDeltas
+	{
+		struct field_properties_definition;
+	};
+
 	namespace Objects
 	{
 		struct s_object_placement_data;
@@ -272,6 +277,17 @@ namespace Yelo
 
 		namespace Memory
 		{
+			Yelo::Memory::s_data_array* DataNew(cstring name, int32 maximum_count, size_t datum_size);
+
+			// Engine inlines this, so there's nothing to wrap
+			API_INLINE void DataDelete(Yelo::Memory::s_data_array*& data)
+			{
+				if(data != NULL)
+				{
+					data = CAST_PTR(Yelo::Memory::s_data_array*, GlobalFree(data));
+				}
+			}
+
 			datum_index DatumNewAtIndex(Yelo::Memory::s_data_array* data, datum_index index);
 
 			// creates a new element in [data] and returns the datum index
@@ -279,6 +295,9 @@ namespace Yelo
 
 			// Delete the data associated with the [datum] handle in [data]
 			void DatumDelete(Yelo::Memory::s_data_array* data, datum_index datum);
+
+			// Note: does not set data->is_valid, caller still has to do it
+			void DataMakeValid(Yelo::Memory::s_data_array* data);
 
 			// Get a reference to the next valid datum data in a s_data_array
 			// See: Memory/DataShared.hpp and Memory/MemoryInterface.cpp
@@ -290,6 +309,9 @@ namespace Yelo
 			void* DatumGet(Yelo::Memory::s_data_array* data, datum_index datum);
 
 			void DatumInitialize(Yelo::Memory::s_data_array* data, void* buffer);
+
+
+			Yelo::Memory::s_data_array* DataNewAndMakeValid(cstring name, int32 maximum_count, size_t datum_size);
 		};
 
 		namespace Networking
@@ -299,6 +321,7 @@ namespace Yelo
 
 			void EncodeHudChatNetworkData(int32 player_number, _enum chat_type, wcstring msg);
 
+			datum_index TranslateIndex(MessageDeltas::field_properties_definition* properties_definition, datum_index network_index);
 			// Translate a network_object_index to a local object_index
 			datum_index TranslateObject(datum_index network_object);
 			// Translate a network_player_index to a local player_index

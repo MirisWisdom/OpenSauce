@@ -27,13 +27,15 @@ namespace Yelo
 
 		void PlayAudioFeedbackSound(Enums::ui_audio_feedback_sound type);
 
-		s_ui_widget_instance* LoadByNameOrTag(cstring name, datum_index tag_index, 
-			s_ui_widget_instance* parent = NULL, int16 controller_index = 0, 
-			datum_index arg_10 = datum_index::null, // DeLa tag_index. error message?
-			datum_index arg_14 = datum_index::null, 
-			int32 /*int16*/ arg_18 = NONE); // some sort of index
+		s_ui_widget_instance* LoadByNameOrTag(datum_index tag_index, cstring name = NULL, 
+			s_ui_widget_instance* parent = NULL, 
+			// don't set ctrl'er index unless you specify the last three params as well
+			int16 controller_index = NONE, 
+			datum_index arg_10 = datum_index::null, // DeLa tag_index
+			datum_index arg_14 = datum_index::null, // DeLa tag_index
+			int16 arg_18 = NONE); // some sort of index
 
-		bool DisplayScriptedWidget(int16 local_player_index, cstring name);
+		bool DisplayScriptedWidget(cstring name);
 	};
 };
 #endif

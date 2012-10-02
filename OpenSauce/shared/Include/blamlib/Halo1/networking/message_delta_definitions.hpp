@@ -246,8 +246,8 @@ namespace Yelo
 
 #pragma region field_type_definition
 		typedef int32 (PLATFORM_API* mdp_field_type_maximum_size_calculator)(struct field_properties_definition* properties_definition);
-		typedef bool (PLATFORM_API* mdp_field_type_verify_parameters)(struct field_properties_definition* properties_definition);
-		typedef void (PLATFORM_API* mdp_field_type_unk_proc)(struct field_properties_definition* properties_definition);
+		typedef bool (PLATFORM_API* mdp_field_type_initialize)(struct field_properties_definition* properties_definition);
+		typedef void (PLATFORM_API* mdp_field_type_dispose)(struct field_properties_definition* properties_definition);
 
 		struct field_type_definition
 		{
@@ -255,8 +255,8 @@ namespace Yelo
 			bool requires_parameters;
 			PAD24;
 			mdp_field_type_maximum_size_calculator proc_maximum_size_calculator;
-			mdp_field_type_verify_parameters proc_verify_parameters;
-			mdp_field_type_unk_proc proc_unk;
+			mdp_field_type_initialize proc_initialize;
+			mdp_field_type_dispose proc_dispose;
 			bool initialized;
 			PAD24;
 		};
@@ -338,7 +338,7 @@ namespace Yelo
 			}bounded_index;
 			union {
 				int32 maximum_active_at_once;
-				PAD32;				// unknown
+				int32 unknown;				// initial count?
 				int32 bits_needed;
 				s_index_resolution_table table;
 				int32 cursor;

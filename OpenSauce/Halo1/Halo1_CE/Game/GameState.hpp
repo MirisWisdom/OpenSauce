@@ -11,7 +11,7 @@
 #include <blamlib/Halo1/game/game_allegiance.hpp>
 #include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/game/game_time.hpp>
-#include <blamlib/Halo1/game/main.hpp>
+#include <blamlib/Halo1/main/main.hpp>
 #include <blamlib/Halo1/physics/physics.hpp>
 #include <blamlib/Halo1/physics/point_physics.hpp>
 #include <blamlib/Halo1/saved_games/game_state.hpp>

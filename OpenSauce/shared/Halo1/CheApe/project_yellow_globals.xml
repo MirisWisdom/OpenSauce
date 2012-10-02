@@ -104,7 +104,7 @@
 			<field type="ShortInteger" name="version" locked="true" />
 			<field type="WordFlags" name="flags" definition="project_yellow_global_flags" />
 			<field type="LongInteger" name="base_address" locked="true" />
-			<field type="String" name="mod name" tooltip="name of the engine 'mod' these globals and, inheriting scenario, are for" />
+			<field type="String" name="mod name" tooltip="name of the engine 'mod' these globals, and inheriting scenario, are for" />
 
 			<field type="TagReference" name="global explicit references" definition="tag_collection_reference" />
 			<field type="Pad" definition="32" />

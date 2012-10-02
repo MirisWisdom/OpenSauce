@@ -4650,10 +4650,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Include\blamlib\Halo1\game\main.hpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\game\players.hpp"
 					>
 				</File>
@@ -4710,9 +4706,29 @@
 				Name="objects"
 				>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\objects\damage.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\objects\index_resolution.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\objects\object_lights.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\objects\object_types.hpp"
 					>
 				</File>
+				<Filter
+					Name="widgets"
+					>
+					<File
+						RelativePath="..\..\shared\Include\blamlib\Halo1\objects\widgets\widgets.hpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="sound"
@@ -4727,6 +4743,30 @@
 				>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\hud_definitions.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="main"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\main\levels.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\main\main.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="structures"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\structures\cluster_partitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\structures\structure_bsp_definitions.hpp"
 					>
 				</File>
 			</Filter>

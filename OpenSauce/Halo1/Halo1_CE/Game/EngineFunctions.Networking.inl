@@ -7,7 +7,7 @@
 
 void EncodeObjectDeletionMessage(datum_index object_index)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(MDP_ENCODE_OBJECT_DELETION_MESSAGE);
+	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(MDP_ENCODE_OBJECT_DELETION_MESSAGE);
 
 	if(object_index.IsNull()) return;
 
@@ -15,7 +15,7 @@ void EncodeObjectDeletionMessage(datum_index object_index)
 		push	edi
 
 		mov		edi, object_index
-		call	TEMP_CALL_ADDR
+		call	CALL_ADDR
 
 		pop		edi
 	}
@@ -23,7 +23,7 @@ void EncodeObjectDeletionMessage(datum_index object_index)
 
 void EncodeHudChatNetworkData(int32 player_number, _enum chat_type, wcstring msg)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(ENCODE_HUD_CHAT_NETWORK_DATA);
+	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(ENCODE_HUD_CHAT_NETWORK_DATA);
 
 #if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 	wchar_t local[255];
@@ -41,58 +41,59 @@ void EncodeHudChatNetworkData(int32 player_number, _enum chat_type, wcstring msg
 		mov		edx, local
 #endif
 		push	player_number // really a byte, but you can't push a byte!
-		call	TEMP_CALL_ADDR
+		call	CALL_ADDR
 		add		esp, 4 * 1
 	}
 }
 
+API_FUNC_NAKED datum_index TranslateIndex(MessageDeltas::field_properties_definition* properties_definition, datum_index network_index)
+{
+	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(MDP_TRANSLATED_INDEX_TRANSLATE);
+
+	API_FUNC_NAKED_START()
+		push	esi
+
+		mov		ecx, network_index
+		mov		esi, properties_definition
+		call	CALL_ADDR
+
+		pop		esi
+	API_FUNC_NAKED_END(2)
+}
+
 datum_index TranslateObject(datum_index network_object)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(MDP_TRANSLATED_INDEX_TRANSLATE);
-
 	if(network_object.IsNull()) return datum_index::null;
 
 	__asm {
-		push	esi
-
-		mov		ecx, network_object
-		mov		esi, [GET_DATA_PTR(MESSAGE_DELTA_FIELD_OBJECT_INDEX_PARAMETERS)]
-		call	TEMP_CALL_ADDR
-
-		pop		esi
+		push	network_object
+		push	[GET_DATA_PTR(MESSAGE_DELTA_FIELD_OBJECT_INDEX_PARAMETERS)]
+		call	TranslateIndex
 	}
 }
 
 datum_index TranslatePlayer(datum_index network_player)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(MDP_TRANSLATED_INDEX_TRANSLATE);
-
 	if(network_player.IsNull()) return datum_index::null;
 
 	__asm {
-		push	esi
-
-		mov		ecx, network_player
-		mov		esi, [GET_DATA_PTR(MESSAGE_DELTA_FIELD_PLAYER_INDEX_PARAMETERS)]
-		call	TEMP_CALL_ADDR
-
-		pop		esi
+		push	network_player
+		push	[GET_DATA_PTR(MESSAGE_DELTA_FIELD_PLAYER_INDEX_PARAMETERS)]
+		call	TranslateIndex
 	}
 }
 
 #if !PLATFORM_IS_DEDI
 
-void ConnectToServer(cstring address, cstring password)
+API_FUNC_NAKED void ConnectToServer(cstring address, cstring password)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(CONNECT_TO_MP_SERVER);
+	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(CONNECT_TO_MP_SERVER);
 
-	__asm {
+	API_FUNC_NAKED_START()
 		push	password
 		push	address
-		call	TEMP_CALL_ADDR
-		
-		add		esp, 8
-	}
+		call	CALL_ADDR
+	API_FUNC_NAKED_END_CDECL(2)
 }
 
 #endif
