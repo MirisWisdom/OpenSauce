@@ -108,11 +108,6 @@
 #include <Common/BaseBlamTypesPc.hpp>
 #include <Blam/Halo1/BlamMemoryUpgrades.hpp>
 
-#include "Common/DebugFile.hpp"
-#include "Common/DebugAssert.hpp"
-
-#define HRESULT_ERETURN(p) if(FAILED(p)) return E_FAIL
-
 namespace Yelo
 {
 	// Displays a message to the user using the WinAPI
@@ -120,3 +115,8 @@ namespace Yelo
 	// Fucking nasty location to put this function, but for the time being, it will do
 	void PrepareToDropError(cstring text);
 };
+
+#include "Common/DebugFile.hpp"
+#include "Common/DebugAssert.hpp"
+
+#define HRESULT_ERETURN(p) if(FAILED(p)) return E_FAIL

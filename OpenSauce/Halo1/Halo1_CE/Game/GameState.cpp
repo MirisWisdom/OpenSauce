@@ -100,9 +100,10 @@ namespace Yelo
 		bool DevmodeEnabled()											PTR_IMP_GET(devmode_enabled);
 
 
+		static bool g_yelo_game_state_enabled;
 		bool YeloGameStateEnabled()
 		{
-			return false;
+			return g_yelo_game_state_enabled;
 		}
 		static void InitializeForYeloGameState()
 		{
@@ -131,9 +132,12 @@ namespace Yelo
 		{
 
 			MemoryUpgradesInitialize();
-#if 0 // NOT DONE YET!
-			InitializeForYeloGameState(true);
-#endif
+			if(CMDLINE_GET_PARAM(use_os_gamestate).ParameterSet())
+			{
+				InitializeForYeloGameState(g_yelo_game_state_enabled = true);
+			}
+			else
+				g_yelo_game_state_enabled = false;
 
 #ifdef API_DEBUG
 			*GameState::DeveloperMode() = Enums::k_developer_mode_level_debug_output; // make console messages appear

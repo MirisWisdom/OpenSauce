@@ -8,12 +8,10 @@
 
 #include "Game/EngineFunctions.hpp"
 
-// macros for adding cmd line parameters
-#define CMDLINE_DEFINE_ARG(name, type)		extern c_cmd_line_argument<##type##> cmd_line_param_##name
-#define CMDLINE_DEFINE_SWITCH(name)			extern c_cmd_line_switch cmd_line_param_##name
+#define CMDLINE_PARAM_NAME(name)BOOST_PP_CAT(cmd_line_param_, name)
 
 // macro for getting a cmd line parameter object (CLP)
-#define CMDLINE_GET_PARAM(name) Settings::cmd_line_param_##name
+#define CMDLINE_GET_PARAM(name) Settings::CMDLINE_PARAM_NAME(name)
 
 namespace Yelo
 {
@@ -116,6 +114,10 @@ namespace Yelo
 			bool ParseValue(cstring) { return true; }
 		};
 
+		//////////////////////////////////////////////////////////////////////////
+		// Declare the params here
+#define CMDLINE_DEFINE_ARG(name, type)		extern c_cmd_line_argument<##type##> CMDLINE_PARAM_NAME(name);
+#define CMDLINE_DEFINE_SWITCH(name)			extern c_cmd_line_switch CMDLINE_PARAM_NAME(name);
 #include "YeloSettings.CmdLineSettings.inl"
 
 		void ReadCmdLineSettings();
