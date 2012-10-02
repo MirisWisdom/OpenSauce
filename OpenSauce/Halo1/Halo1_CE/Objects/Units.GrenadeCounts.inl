@@ -15,7 +15,7 @@ static void InitializeForYeloGameState_UnitZoomLevelRefs(bool enabled)
 	{
 		uint32* offset_ref = CAST_PTR(uint32*, K_UNIT_ZOOM_LEVEL_OFFSET_REFS[x]);
 
-		DebugOnly( if(enabled) ASSERT_TRUE( s_unit_data::k_offset_ZoomLevel == *count_ref, "GrenadeCounts asm mismtach!" ) );
+		DebugOnly( if(enabled) ASSERT_TRUE( s_unit_data::k_offset_ZoomLevel == *offset_ref, "GrenadeCounts asm mismtach!" ) );
 		*offset_ref = offset;
 	}
 }
@@ -27,7 +27,7 @@ static void InitializeForYeloGameState_UnitDesiredZoomLevelRefs(bool enabled)
 	{
 		uint32* offset_ref = CAST_PTR(uint32*, K_UNIT_DESIRED_ZOOM_LEVEL_OFFSET_REFS[x]);
 
-		DebugOnly( if(enabled) ASSERT_TRUE( s_unit_data::k_offset_DesiredZoomLevel == *count_ref, "GrenadeCounts asm mismtach!" ) );
+		DebugOnly( if(enabled) ASSERT_TRUE( s_unit_data::k_offset_DesiredZoomLevel == *offset_ref, "GrenadeCounts asm mismtach!" ) );
 		*offset_ref = offset;
 	}
 }
@@ -134,12 +134,12 @@ static void InitializeForYeloGameState_UnitGrenadeCounts(bool enabled)
 	//////////////////////////////////////////////////////////////////////////
 	// biped_build_update_delta
 	{
-		// mov	dx, [eax+31Eh]
-		static const byte k_unit_grenade_count_word1[] = { 0x66,0x8B, 0x90, 0x1E, 0x03, 0x00, 0x00 };
+		// mov	dx, [edi+31Eh]
+		static const byte k_unit_grenade_count_word1[] = { 0x66,0x8B, 0x97, 0x1E, 0x03, 0x00, 0x00 };
 		// mov	[esp+44h+var_10], dx
 		static const byte k_unit_grenade_count_word2[] = { 0x66,0x89, 0x54, 0x24, 0x34, };
 
-		static const byte k_unit_grenade_count_dword1[] = {		0x8B, 0x90, 0x1E, 0x03, 0x00, 0x00, Enums::_x86_opcode_nop };
+		static const byte k_unit_grenade_count_dword1[] = {		0x8B, 0x97, 0x1E, 0x03, 0x00, 0x00, Enums::_x86_opcode_nop };
 		static const byte k_unit_grenade_count_dword2[] = {		0x89, 0x54, 0x24, 0x34, Enums::_x86_opcode_nop };
 		BOOST_STATIC_ASSERT( sizeof(k_unit_grenade_count_word1) == sizeof(k_unit_grenade_count_dword1) );
 		BOOST_STATIC_ASSERT( sizeof(k_unit_grenade_count_word2) == sizeof(k_unit_grenade_count_dword2) );
@@ -159,19 +159,17 @@ static void InitializeForYeloGameState_UnitGrenadeCounts(bool enabled)
 		Memory::WriteMemory(code_addr, asm_code, asm_code_size);
 	}
 	//////////////////////////////////////////////////////////////////////////
-	// unit_place
+	// biped_process_update_delta
 	{
-		// mov	word ptr [esi+31Eh], 0
-		static const byte k_unit_grenade_count_word[] = { 0x66, 0xC7, 0x86, 0x1E, 0x03, 0x00, 0x00, 0x00, 0x00, };
-		// xor	eax, ecx
+		// mov	word ptr [esi+31Eh], ax
+		static const byte k_unit_grenade_count_word[] = { 0x66, 0x89, 0x86, 0x1E, 0x03, 0x00, 0x00, };
 		// mov	dword ptr [esi+31Eh], eax
-		static const byte k_unit_grenade_count_dword[] = { 0x33, 0xC0, 
-			0x89, 0x86, 0x1E, 0x03, 0x00, 0x00, Enums::_x86_opcode_nop };
+		static const byte k_unit_grenade_count_dword[] = {		0x89, 0x86, 0x1E, 0x03, 0x00, 0x00, Enums::_x86_opcode_nop };
 		BOOST_STATIC_ASSERT( sizeof(k_unit_grenade_count_word) == sizeof(k_unit_grenade_count_dword) );
 
 		size_t asm_code_size = sizeof(k_unit_grenade_count_word);
 		const void* asm_code = enabled ? k_unit_grenade_count_dword : k_unit_grenade_count_word;
-		void* code_addr = GET_FUNC_VPTR(UNIT_PLACE_UNIT_GRENADE_COUNT_MOD);
+		void* code_addr = GET_FUNC_VPTR(BIPED_PROCESS_UPDATE_DELTA_UNIT_GRENADE_COUNT_MOD);
 
 		DebugOnly( if(enabled) ASSERT_TRUE( memcmp(code_addr, k_unit_grenade_count_word, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
 		Memory::WriteMemory(code_addr, asm_code, asm_code_size);
@@ -242,11 +240,15 @@ static void InitializeForYeloGameState_MessageDeltaGrenadeCounts(bool enabled)
 
 			BOOST_STATIC_ASSERT( sizeof(grenade_counts) == sizeof(byte)*2 );
 
-			const grenade_counts* baseline_data_gc = CAST_PTR(const grenade_counts*, baseline_data);
+			const grenade_counts* baseline_data_gc = CAST_PTR(const grenade_counts*, baseline_data); // should always be NULL...
 			const grenade_counts* source_data_gc = CAST_PTR(const grenade_counts*, source_data);
 
-			bits_written =  g_stock_grenade_counts.encoder(field_properties, baseline_data_gc,   source_data_gc,   output_stream);
-			bits_written += g_stock_grenade_counts.encoder(field_properties, baseline_data_gc+1, source_data_gc+1, output_stream);
+			bits_written =  g_stock_grenade_counts.encoder(field_properties, baseline_data_gc, source_data_gc,   output_stream);
+
+			baseline_data_gc = baseline_data_gc != NULL ? baseline_data_gc+1 : NULL;
+			source_data_gc += 1;
+
+			bits_written += g_stock_grenade_counts.encoder(field_properties, baseline_data_gc, source_data_gc+1, output_stream);
 
 			return bits_written;
 		}
@@ -255,11 +257,16 @@ static void InitializeForYeloGameState_MessageDeltaGrenadeCounts(bool enabled)
 		{
 			int32 bits_read = 0;
 
+			grenade_counts* baseline_data_gc = CAST_PTR(grenade_counts*, baseline_data); // should always be NULL...
 			grenade_counts* destination_data_gc = CAST_PTR(grenade_counts*, destination_data);
 
 			// stock decoder doesn't use baseline_data when decoding
-			bits_read =  g_stock_grenade_counts.decoder(field_properties, destination_data_gc,   baseline_data, input_stream);
-			bits_read += g_stock_grenade_counts.decoder(field_properties, destination_data_gc+1, baseline_data, input_stream);
+			bits_read =  g_stock_grenade_counts.decoder(field_properties, baseline_data_gc, destination_data_gc, input_stream);
+
+			baseline_data_gc = baseline_data_gc != NULL ? baseline_data_gc+1 : NULL;
+			destination_data_gc += 1;
+
+			bits_read += g_stock_grenade_counts.decoder(field_properties, baseline_data_gc, destination_data_gc, input_stream);
 
 			return bits_read;
 		}

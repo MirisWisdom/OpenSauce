@@ -26,6 +26,7 @@ namespace Yelo
 		YELO_DEBUG_FORMAT("Line: %i", line);
 		YELO_DEBUG_FORMAT("Function: %s", function);
 
+		PrepareToDropError(message);
 		throw;
 	}
 };

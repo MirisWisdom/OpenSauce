@@ -9,6 +9,7 @@
 
 #include "Memory/MemoryInterface.hpp"
 
+#include "Common/YeloSettings.hpp"
 #include "Game/GameState.hpp"
 
 namespace Yelo
@@ -47,7 +48,7 @@ namespace Yelo
 			"01.00.02.0581",
 		};
 
-		static cstring k_build_number_yelo_current = BOOST_STRINGIZE( K_OPENSAUCE_VERSION_HCE_BUILD_NUMBER(PLATFORM_VERSION_BUILD) );
+		static cstring k_build_number_yelo_current = K_OPENSAUCE_VERSION_HCE_BUILD_NUMBER(PLATFORM_VERSION_BUILD);
 		static cstring k_binary_compatible_build_numbers_yelo[] = {
 			k_build_number_yelo_current
 		};
