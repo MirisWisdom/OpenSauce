@@ -8,9 +8,9 @@
 #include "Scenario/ScenarioFauxZones.hpp"
 
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+#include <blamlib/Halo1/structures/structure_bsp_definitions.hpp>
 
 #include <TagGroups/Halo1/scenario_definitions.hpp>
-#include <TagGroups/Halo1/structure_bsp_definitions.hpp>
 
 #include "Game/GameState.hpp"
 #include "TagGroups/project_yellow_definitions.hpp"

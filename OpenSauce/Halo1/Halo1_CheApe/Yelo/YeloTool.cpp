@@ -13,9 +13,10 @@
 #include <TagGroups/Halo1/CacheDefinitions.hpp>
 #include <TagGroups/Halo1/scenario_definitions.hpp>
 #include <TagGroups/Halo1/object_definitions.hpp>
-#include <TagGroups/Halo1/model_definitions.hpp>
 #include <TagGroups/Halo1/shader_definitions.hpp>
 #include <Blam/Halo1/shader_postprocess_definitions.hpp>
+
+#include <blamlib/Halo1/models/model_definitions.hpp>
 
 #include "Common/YeloSettings.hpp"
 #include "Engine/EngineFunctions.hpp"

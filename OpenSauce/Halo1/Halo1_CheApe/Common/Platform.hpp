@@ -41,36 +41,18 @@
 //////////////////////////////////////////////////////////////////////////
 
 #if PLATFORM_ID == PLATFORM_GUERILLA
-	#define ENGINE_DPTR(type, name, g_addr, t_addr, s_addr) \
-		static type##** const pp##name = CAST_PTR(type##**, g_addr);							BOOST_STATIC_ASSERT( g_addr != NULL );
-
-	#define ENGINE_PTR(type, name, g_addr, t_addr, s_addr) \
-		static type##* const p##name = CAST_PTR(type##*, g_addr);								BOOST_STATIC_ASSERT( g_addr != NULL );
-
-	#define FUNC_PTR(name, g_addr, t_addr, s_addr) enum FUNC_PTR_##name { PTR_##name = g_addr };BOOST_STATIC_ASSERT( PTR_##name != NULL );
-	#define DATA_PTR(name, g_addr, t_addr, s_addr) enum DATA_PTR_##name { PTR_##name = g_addr };BOOST_STATIC_ASSERT( PTR_##name != NULL );
-
 	#define PLATFORM_VALUE(g_value, t_value, s_value) g_value
 #elif PLATFORM_ID == PLATFORM_TOOL
-	#define ENGINE_DPTR(type, name, g_addr, t_addr, s_addr) \
-		static type##** const pp##name = CAST_PTR(type##**, t_addr);							BOOST_STATIC_ASSERT( t_addr != NULL );
-
-	#define ENGINE_PTR(type, name, g_addr, t_addr, s_addr) \
-		static type##* const p##name = CAST_PTR(type##*, t_addr);								BOOST_STATIC_ASSERT( t_addr != NULL );
-
-	#define FUNC_PTR(name, g_addr, t_addr, s_addr) enum FUNC_PTR_##name { PTR_##name = t_addr };BOOST_STATIC_ASSERT( PTR_##name != NULL );
-	#define DATA_PTR(name, g_addr, t_addr, s_addr) enum DATA_PTR_##name { PTR_##name = g_addr };BOOST_STATIC_ASSERT( PTR_##name != NULL );
-
 	#define PLATFORM_VALUE(g_value, t_value, s_value) t_value
 #elif PLATFORM_ID == PLATFORM_SAPIEN
-	#define ENGINE_DPTR(type, name, g_addr, t_addr, s_addr) \
-		static type##** const pp##name = CAST_PTR(type##**, s_addr);							BOOST_STATIC_ASSERT( s_addr != NULL );
-
-	#define ENGINE_PTR(type, name, g_addr, t_addr, s_addr) \
-		static type##* const p##name = CAST_PTR(type##*, s_addr);								BOOST_STATIC_ASSERT( s_addr != NULL );
-
-	#define FUNC_PTR(name, g_addr, t_addr, s_addr) enum FUNC_PTR_##name { PTR_##name = s_addr };BOOST_STATIC_ASSERT( PTR_##name != NULL );
-	#define DATA_PTR(name, g_addr, t_addr, s_addr) enum DATA_PTR_##name { PTR_##name = s_addr };BOOST_STATIC_ASSERT( PTR_##name != NULL );
-
 	#define PLATFORM_VALUE(g_value, t_value, s_value) s_value
 #endif
+
+#define ENGINE_DPTR(type, name, g_addr, t_addr, s_addr) \
+	static type##** const pp##name = CAST_PTR(type##**, PLATFORM_VALUE(g_addr,t_addr,s_addr));								BOOST_STATIC_ASSERT( PLATFORM_VALUE(g_addr,t_addr,s_addr) != NULL );
+
+#define ENGINE_PTR(type, name, g_addr, t_addr, s_addr) \
+	static type##* const p##name = CAST_PTR(type##*, PLATFORM_VALUE(g_addr,t_addr,s_addr));									BOOST_STATIC_ASSERT( PLATFORM_VALUE(g_addr,t_addr,s_addr) != NULL );
+
+#define FUNC_PTR(name, g_addr, t_addr, s_addr) enum FUNC_PTR_##name { PTR_##name = PLATFORM_VALUE(g_addr,t_addr,s_addr) };	BOOST_STATIC_ASSERT( GET_FUNC_PTR(name) != NULL );
+#define DATA_PTR(name, g_addr, t_addr, s_addr) enum DATA_PTR_##name { PTR_##name = PLATFORM_VALUE(g_addr,t_addr,s_addr) };	BOOST_STATIC_ASSERT( GET_DATA_PTR(name) != NULL );

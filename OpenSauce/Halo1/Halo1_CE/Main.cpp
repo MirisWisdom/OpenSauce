@@ -171,7 +171,7 @@ bool WINAPI DllMain(HMODULE hModule, DWORD dwReason, PVOID pvReserved)
 				"Yelo (Open Sauce) failed to load DirectXInput."
 				"\n\n"
 				"Nothing left to do but crash now, good bye!");
-			MessageBox(NULL, error, "Oh noes!", MB_OK | MB_ICONERROR);
+			Yelo::PrepareToDropError(error);
 			return false;
 		}
 #endif

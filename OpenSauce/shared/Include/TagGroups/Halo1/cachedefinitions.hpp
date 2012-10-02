@@ -100,17 +100,17 @@ namespace Yelo
 #endif
 
 		// Is there a yelo header present?
-		bool HasHeader() const
+		API_INLINE bool HasHeader() const
 		{
 			return signature != 0 && version != 0;
 		}
-		bool TagVersioningIsValid() const
+		API_INLINE bool TagVersioningIsValid() const
 		{
 			return	tag_versioning.project_yellow == TagGroups::project_yellow::k_version &&
 					tag_versioning.project_yellow_globals == TagGroups::project_yellow_globals::k_version;
 		}
 		// Is the yelo header valid?
-		bool IsValid() const
+		API_INLINE bool IsValid() const
 		{
 			if(HasHeader())
 				return signature == k_signature && version == k_version && 
@@ -120,12 +120,12 @@ namespace Yelo
 			return true;
 		}
 
-		bool BuiltWithOlderTools() const
+		API_INLINE bool BuiltWithOlderTools() const
 		{
 			return build_info.cheape.maj < K_OPENSAUCE_VERSION_BUILD_MAJ &&
 				build_info.cheape.min < K_OPENSAUCE_VERSION_BUILD_MIN;
 		}
-		bool BuiltWithNewerTools() const
+		API_INLINE bool BuiltWithNewerTools() const
 		{
 			return build_info.cheape.maj > K_OPENSAUCE_VERSION_BUILD_MAJ &&
 				build_info.cheape.min > K_OPENSAUCE_VERSION_BUILD_MIN;
@@ -163,9 +163,9 @@ namespace Yelo
 
 		tag footer_signature;
 
-		bool ValidSignatures() const		{ return header_signature == k_header_signature && footer_signature == k_footer_signature; }
-		bool ValidFileSize(int32 max) const	{ return file_length >= 0 && file_length <= max; }
-		bool ValidName() const				{ return strnlen_s(name, Enums::k_tag_string_length) <= Enums::k_tag_string_length; }
+		API_INLINE bool ValidSignatures() const			{ return header_signature == k_header_signature && footer_signature == k_footer_signature; }
+		API_INLINE bool ValidFileSize(int32 max) const	{ return file_length >= 0 && file_length <= max; }
+		API_INLINE bool ValidName() const				{ return strnlen_s(name, Enums::k_tag_string_length) <= Enums::k_tag_string_length; }
 	}; BOOST_STATIC_ASSERT( sizeof(s_cache_header) == 0x800 );
 
 	struct s_cache_tag_instance
@@ -182,7 +182,7 @@ namespace Yelo
 
 		// Is this an instance of a certain tag group?
 		// If this instance a child of a certain tag group?
-		bool MatchesGroup(tag group_tag) const
+		API_INLINE bool MatchesGroup(tag group_tag) const
 		{
 			return this->group_tag == group_tag ||
 				// test the hierarchy graph

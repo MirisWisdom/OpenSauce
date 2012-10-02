@@ -2368,10 +2368,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Include\TagGroups\Halo1\model_definitions.hpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\shared\Include\TagGroups\Halo1\object_definitions.hpp"
 					>
 				</File>
@@ -2385,10 +2381,6 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\TagGroups\Halo1\sound_definitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\TagGroups\Halo1\structure_bsp_definitions.hpp"
 					>
 				</File>
 				<File

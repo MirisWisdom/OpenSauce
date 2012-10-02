@@ -8,7 +8,7 @@
 #include "Rasterizer/Rasterizer.hpp"
 #if !PLATFORM_IS_DEDI
 
-#include <TagGroups/Halo1/model_definitions.hpp>
+#include <blamlib/Halo1/models/model_definitions.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Game/ScriptLibrary.hpp"

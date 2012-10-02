@@ -41,7 +41,7 @@ Problem Event Name: APPCRASH
 Application Name: haloce.exe
 Application Version: 1.0.9.620
 Application Timestamp: 4ac7faf1
-Fault Module Name: d3d9.dll
+Fault Module Name: dinput8.dll
 Fault Module Version: 3.0.0.0
 Fault Module Timestamp: 4f16444a
 Exception Code: c0000005

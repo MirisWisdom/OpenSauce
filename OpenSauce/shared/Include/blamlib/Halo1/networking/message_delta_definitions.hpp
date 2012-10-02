@@ -217,31 +217,40 @@ namespace Yelo
 			}value;
 		}; BOOST_STATIC_ASSERT( sizeof(message_delta_parameter) == 0xC );
 
-		// TODO: I've had some issues with disassembling s_entry and s_slot's structure definitions..
-		// Just assume they are wrong until this comment is gone.
+		// Essentially a hash table
 		struct s_index_resolution_table
 		{
 			struct s_entry
 			{
-				uint32 index;
-				uint32 value;
-				struct s_slot* parent;
-			};
+				datum_index key;// local_index
+				int32 value;	// translated_index, what we get from the network
+				s_entry* next;
+			}; BOOST_STATIC_ASSERT( sizeof(s_entry) == 0xC );
 
-			struct s_slot
+			struct s_entry_pool
 			{
 				enum { k_entry_count = 50 };
 
-				s_entry* entries;
-				s_slot* prev;
-			};
+				s_entry entries[k_entry_count];
+			}; BOOST_STATIC_ASSERT( sizeof(s_entry_pool) == 0x258 );
+			struct s_entry_pool_list
+			{
+				s_entry_pool* pool;
+				s_entry* next_entry;
+			}; BOOST_STATIC_ASSERT( sizeof(s_entry_pool_list) == 0x8 );
+
+			struct s_slot
+			{
+				int32 count;
+				s_entry* first_entry;
+			}; BOOST_STATIC_ASSERT( sizeof(s_slot) == 0x8 );
 
 			bool is_initialized; PAD24;
 			int32 number_of_slots;
-			s_slot* slots;
+			s_slot* slots;						// [number_of_slots]
 			int32 slots_in_use;
-			s_slot* entry_free_list;
-			s_slot* entry_pool_list;
+			s_entry* entry_free_list;
+			s_entry_pool_list* entry_pool_list;
 		};
 
 #pragma region field_type_definition
@@ -303,6 +312,24 @@ namespace Yelo
 		};
 
 #pragma region field_type_definition_parameters
+		struct field_type_translated_index_parameters {
+			// On initialization:
+			// NONE is registered with network_index '0'
+			// [translated_index_allocations] are memset to NONE (datum_index::null)
+			// First element of [translated_index_allocations] is set to '1'
+
+			int32 maximum_active_at_once; // should be +1 of actual max, for the 'null' entry (which is always the first)
+			int32 number_of_slots;
+			int32 bits_needed;
+			s_index_resolution_table table;
+			int32 cursor;
+			// allocations[translated_index] == local_index (eg, player_index)
+			datum_index* translated_index_allocations; // [maximum_active_at_once]. These are the local indexes
+			int32 peak;
+			int32 codings;
+			int32 none;
+		};
+
 		union field_type_definition_parameters // Note: engine code doesn't actually use unions, so be sure you're accessing the right structure!
 		{
 			struct {
@@ -336,17 +363,7 @@ namespace Yelo
 				int32 minimum_value;
 				int32 maximum_value;
 			}bounded_index;
-			union {
-				int32 maximum_active_at_once;
-				int32 unknown;				// initial count?
-				int32 bits_needed;
-				s_index_resolution_table table;
-				int32 cursor;
-				datum_index* allocations;
-				int32 peak;
-				int32 codings;
-				int32 none;
-			}translated_index;
+			field_type_translated_index_parameters translated_index;
 			struct {
 				int32 component_count;
 			}point, vector;

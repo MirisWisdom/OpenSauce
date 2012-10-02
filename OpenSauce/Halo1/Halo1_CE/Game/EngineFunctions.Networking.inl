@@ -46,41 +46,34 @@ void EncodeHudChatNetworkData(int32 player_number, _enum chat_type, wcstring msg
 	}
 }
 
-API_FUNC_NAKED datum_index TranslateIndex(MessageDeltas::field_properties_definition* properties_definition, datum_index network_index)
+API_FUNC_NAKED int32 TranslateIndex(MessageDeltas::s_index_resolution_table& table, datum_index local_index)
 {
-	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(MDP_TRANSLATED_INDEX_TRANSLATE);
+	// Function is actually part of the index_resolution module in objects/
+	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(INDEX_RESOLUTION_TABLE_TRANSLATE);
 
 	API_FUNC_NAKED_START()
 		push	esi
 
-		mov		ecx, network_index
-		mov		esi, properties_definition
+		mov		ecx, local_index
+		mov		esi, table
 		call	CALL_ADDR
 
 		pop		esi
 	API_FUNC_NAKED_END(2)
 }
 
-datum_index TranslateObject(datum_index network_object)
+int32 TranslateObject(datum_index local_object_index)
 {
-	if(network_object.IsNull()) return datum_index::null;
+	if(local_object_index.IsNull()) return 0;
 
-	__asm {
-		push	network_object
-		push	[GET_DATA_PTR(MESSAGE_DELTA_FIELD_OBJECT_INDEX_PARAMETERS)]
-		call	TranslateIndex
-	}
+	return TranslateIndex(MessageDeltas::ObjectIndexParameters()->table, local_object_index);
 }
 
-datum_index TranslatePlayer(datum_index network_player)
+int32 TranslatePlayer(datum_index local_player_index)
 {
-	if(network_player.IsNull()) return datum_index::null;
+	if(local_player_index.IsNull()) return 0;
 
-	__asm {
-		push	network_player
-		push	[GET_DATA_PTR(MESSAGE_DELTA_FIELD_PLAYER_INDEX_PARAMETERS)]
-		call	TranslateIndex
-	}
+	return TranslateIndex(MessageDeltas::PlayerIndexParameters()->table, local_player_index);
 }
 
 #if !PLATFORM_IS_DEDI
