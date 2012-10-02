@@ -18,7 +18,7 @@ namespace Yelo
 	{
 		bool OpenZipFile(const char* archive_file, unzFile* output_zip_file)
 		{
-			ASSERT(!output_zip_file, "no zip file struct passed to OpenZipFile");
+			ASSERT(output_zip_file, "no zip file struct passed to OpenZipFile");
 
 			*output_zip_file = unzOpen64(archive_file);
 

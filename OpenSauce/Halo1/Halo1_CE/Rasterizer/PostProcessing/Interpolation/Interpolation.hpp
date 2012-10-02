@@ -15,10 +15,10 @@ namespace Yelo
 		template<size_t count>
 		static void InterpolateValues(bool* lower, bool* upper, real* interp, bool* output)
 		{
-			ASSERT(lower == NULL, "Interpolation lower values pointer is null");
-			ASSERT(upper == NULL, "Interpolation upper values pointer is null");
-			ASSERT(interp == NULL, "Interpolation interp values pointer is null");
-			ASSERT(output == NULL, "Interpolation output pointer is null");
+			ASSERT(lower != NULL, "Interpolation lower values pointer is null");
+			ASSERT(upper != NULL, "Interpolation upper values pointer is null");
+			ASSERT(interp != NULL, "Interpolation interp values pointer is null");
+			ASSERT(output != NULL, "Interpolation output pointer is null");
 
 			// interp the values to a temporary buffer
 			bool values[count];
@@ -31,10 +31,10 @@ namespace Yelo
 		template<size_t count>
 		static void InterpolateValues(int32* lower, int32* upper, real* interp, int32* output)
 		{
-			ASSERT(lower == NULL, "Interpolation lower values pointer is null");
-			ASSERT(upper == NULL, "Interpolation upper values pointer is null");
-			ASSERT(interp == NULL, "Interpolation interp values pointer is null");
-			ASSERT(output == NULL, "Interpolation output pointer is null");
+			ASSERT(lower != NULL, "Interpolation lower values pointer is null");
+			ASSERT(upper != NULL, "Interpolation upper values pointer is null");
+			ASSERT(interp != NULL, "Interpolation interp values pointer is null");
+			ASSERT(output != NULL, "Interpolation output pointer is null");
 
 			// interp the values to a temporary buffer
 			int32 values[count];
@@ -50,10 +50,10 @@ namespace Yelo
 		template<size_t count>
 		static void InterpolateValues(real* lower, real* upper, real* interp, real* output)
 		{
-			ASSERT(lower == NULL, "Interpolation lower values pointer is null");
-			ASSERT(upper == NULL, "Interpolation upper values pointer is null");
-			ASSERT(interp == NULL, "Interpolation interp values pointer is null");
-			ASSERT(output == NULL, "Interpolation output pointer is null");
+			ASSERT(lower != NULL, "Interpolation lower values pointer is null");
+			ASSERT(upper != NULL, "Interpolation upper values pointer is null");
+			ASSERT(interp != NULL, "Interpolation interp values pointer is null");
+			ASSERT(output != NULL, "Interpolation output pointer is null");
 
 			// interp the values to a temporary buffer
 			real values[count];

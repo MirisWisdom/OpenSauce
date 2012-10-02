@@ -6,15 +6,13 @@
 */
 #pragma once
 
-//#define ASSERTS_ENABLED
+#define ASSERTS_ENABLED
 
 #if defined(API_DEBUG) && defined(ASSERTS_ENABLED)
 #include "Common/DebugFile.hpp"
 
-#define ASSERT(value, message) if(value) Yelo::Assert(#value, message, __FILE__, __LINE__, __FUNCTION__)
-// suppose to be the normal assert implementation
 // Assert the condition is true. Run assertion logic when it's false
-#define ASSERT_TRUE(value, message) if(!(value)) Yelo::Assert(#value, message, __FILE__, __LINE__, __FUNCTION__)
+#define ASSERT(value, message) if(!(value)) Yelo::Assert(#value, message, __FILE__, __LINE__, __FUNCTION__)
 
 namespace Yelo
 {
@@ -26,7 +24,6 @@ namespace Yelo
 		YELO_DEBUG_FORMAT("Line: %i", line);
 		YELO_DEBUG_FORMAT("Function: %s", function);
 
-		PrepareToDropError(message);
 		throw;
 	}
 };

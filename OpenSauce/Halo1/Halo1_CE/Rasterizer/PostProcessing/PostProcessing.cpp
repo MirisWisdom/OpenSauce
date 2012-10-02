@@ -145,7 +145,7 @@ namespace Yelo
 			// if this fails, return
 			c_post_processing_main::Instance().InitializeResources_Base(pDevice, pParameters);
 
-			ASSERT(!c_post_processing_main::Instance().IsReady(), "The main post processing component failed to initialise it's resources");
+			ASSERT(c_post_processing_main::Instance().IsReady(), "The main post processing component failed to initialise it's resources");
 
 			if(!c_post_processing_main::Instance().IsReady())
 				return;
@@ -204,7 +204,7 @@ namespace Yelo
 			if(c_post_processing_main::Instance().IsUnloaded())
 				return;
 
-			ASSERT(!c_post_processing_main::Instance().IsReady(), "The main post processing component failed to be reset");
+			ASSERT(c_post_processing_main::Instance().IsReady(), "The main post processing component failed to be reset");
 
 			if(!c_post_processing_main::Instance().IsReady())
 				return;
@@ -320,7 +320,7 @@ namespace Yelo
 			for(int i = 0; i < NUMBEROF(g_postprocess_cache_subsystems); i++)
 				g_postprocess_cache_subsystems[i].m_component->Initialize_Cache();
 
-			ASSERT(!c_post_processing_main::Instance().IsReady(), "The main post processing component failed to be initialised for a new map");
+			ASSERT(c_post_processing_main::Instance().IsReady(), "The main post processing component failed to be initialised for a new map");
 			if(!c_post_processing_main::Instance().IsReady())
 				return;
 
@@ -427,7 +427,7 @@ namespace Yelo
 			// load the main post processing component
 			c_post_processing_main::Instance().Load();
 
-			ASSERT(!c_post_processing_main::Instance().IsReady(), "The main post processing component failed to be loaded");
+			ASSERT(c_post_processing_main::Instance().IsReady(), "The main post processing component failed to be loaded");
 
 			if(!c_post_processing_main::Instance().IsReady())
 				return;

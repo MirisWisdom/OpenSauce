@@ -43,7 +43,7 @@ namespace Yelo
 		void c_shader_external::SetupShader()
 		{
 			// if the source data is not null this shader has not been Dtor'd, which is bad
-			ASSERT(m_members_external.shader_source_data != NULL, "source data pointer being set before it has been deleted and nulled");
+			ASSERT(m_members_external.shader_source_data == NULL, "source data pointer being set before it has been deleted and nulled");
 
 			// create a source data class for the base class to compile the shader from
 			m_members_external.shader_source_data = new c_shader_data_external();

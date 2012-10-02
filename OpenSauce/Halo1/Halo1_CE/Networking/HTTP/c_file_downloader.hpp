@@ -116,7 +116,7 @@ namespace Yelo
 
 			virtual void	Dtor()
 			{
-				ASSERT(m_file_downloader.m_http.request_index != -1, "a http request has not been cleaned up before being destroyed");
+				ASSERT(m_file_downloader.m_http.request_index == -1, "a http request has not been cleaned up before being destroyed");
 
 				m_file_downloader.m_flags.is_downloading = false;
 				m_file_downloader.m_flags.manual_think = false;

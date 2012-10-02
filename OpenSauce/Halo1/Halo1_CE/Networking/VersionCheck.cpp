@@ -109,7 +109,7 @@ namespace Yelo
 
 		void*	c_version_check_manager_base::RequestCompleted_Callback(const bool download_succeeded, const char* buffer, const GHTTPByteCount buffer_length, void* component_data)
 		{
-			ASSERT(!component_data, "the component data for a http request is NULL");
+			ASSERT(component_data, "the component data for a http request is NULL");
 
 			c_version_downloader* source = CAST_PTR(c_version_downloader*, component_data);
 
@@ -120,7 +120,7 @@ namespace Yelo
 
 		void*	c_version_check_manager_base::RequestCancelled_Callback(void* component_data)
 		{
-			ASSERT(!component_data, "the component data for a http request is NULL");
+			ASSERT(component_data, "the component data for a http request is NULL");
 
 			c_version_downloader* source = CAST_PTR(c_version_downloader*, component_data);
 

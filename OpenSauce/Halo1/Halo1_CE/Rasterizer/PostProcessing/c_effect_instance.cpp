@@ -64,7 +64,7 @@ namespace Yelo
 
 		HRESULT c_effect_instance::LoadEffectInstance()
 		{
-			ASSERT(m_members.quad_definition == NULL, "no quad definition has been set for an effect instance");
+			ASSERT(m_members.quad_definition != NULL, "no quad definition has been set for an effect instance");
 
 			if(m_members.quad_definition)
 				m_members.render_quad = c_quad_manager::Instance().CreateQuad(*m_members.quad_definition);

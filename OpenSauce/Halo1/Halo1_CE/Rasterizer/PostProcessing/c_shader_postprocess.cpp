@@ -139,7 +139,7 @@ namespace Yelo
 		void c_shader_postprocess::GetHandles()
 		{
 			m_members.definition->runtime.postprocess_handle = GetTechniqueHandle();
-			ASSERT(m_members.definition->runtime.postprocess_handle == NULL, "Unabled to find the active technique in the effect");
+			ASSERT(m_members.definition->runtime.postprocess_handle != NULL, "Unabled to find the active technique in the effect");
 
 			m_members.definition->ortho_wvp_matrix.Initialize(m_members.definition->runtime.dx_effect,
 				"ORTHOWORLDVIEWPROJECTION", true);
@@ -236,8 +236,8 @@ namespace Yelo
 			LPD3DXBUFFER error_buffer = NULL;
 
 			// if the shader does not have the required data something is horrifically wrong
-			ASSERT(!m_members.definition, "c_shader_postprocess has no shader assigned to it");
-			ASSERT(!m_members.source_data, "c_shader_postprocess has no source data object assigned to it");
+			ASSERT(m_members.definition, "c_shader_postprocess has no shader assigned to it");
+			ASSERT(m_members.source_data, "c_shader_postprocess has no source data object assigned to it");
 			if(!m_members.definition || !m_members.source_data)
 				return E_FAIL;
 
@@ -249,8 +249,8 @@ namespace Yelo
 				const void* data = m_members.source_data->GetData(data_size);
 
 				// if the data is not available, return E_FAIL
-				ASSERT(data == NULL, "source data object has no data to use");
-				ASSERT(data_size == 0, "source data object has no data to use");
+				ASSERT(data != NULL, "source data object has no data to use");
+				ASSERT(data_size != 0, "source data object has no data to use");
 
 				// for ascii files loaded from external sources, their includes are handled manually
 				c_shader_include_manager include_manager(m_members.source_data->GetIncludePath());
@@ -279,7 +279,7 @@ namespace Yelo
 			}
 
 			m_members.definition->runtime.active_technique = GetActiveTechnique();
-			ASSERT(m_members.definition->runtime.active_technique == NULL, "a c_shader_postprocess does not have an active technique");
+			ASSERT(m_members.definition->runtime.active_technique != NULL, "a c_shader_postprocess does not have an active technique");
 
 			return hr;
 		}
@@ -542,15 +542,15 @@ namespace Yelo
 		{
 			LPD3DXEFFECT effect = m_members.definition->runtime.dx_effect;
 
-			ASSERT(!effect, "a c_shader_postprocess is trying to be rendered when its effect is NULL");
+			ASSERT(effect, "a c_shader_postprocess is trying to be rendered when its effect is NULL");
 
 			// start the effect
 			UINT pass_count;
 			HRESULT_ERETURN(effect->Begin( &pass_count, 0 ));
 
 			// if there is no active technique, or the techniques pass count does not match that from the effect
-			ASSERT(!m_members.definition->runtime.active_technique, "a c_shader_postprocess is tring to be rendered when it has no active technique");
-			ASSERT(m_members.definition->runtime.active_technique->passes.Count != pass_count, "a c_shader_postprocess' active technique pass count does not match the effect technique");
+			ASSERT(m_members.definition->runtime.active_technique, "a c_shader_postprocess is tring to be rendered when it has no active technique");
+			ASSERT(m_members.definition->runtime.active_technique->passes.Count == pass_count, "a c_shader_postprocess' active technique pass count does not match the effect technique");
 
 			DX9::s_render_target_chain_scene& main_chain = c_post_processing_main::Instance().Globals().scene_buffer_chain;
 			DX9::s_render_target_chain& secondary_chain = c_post_processing_main::Instance().Globals().secondary_buffer_chain;

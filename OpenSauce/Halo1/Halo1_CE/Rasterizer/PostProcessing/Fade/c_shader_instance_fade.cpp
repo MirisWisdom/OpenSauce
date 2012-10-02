@@ -41,10 +41,10 @@ namespace Yelo
 		void c_shader_instance_fade::SetShaderInstanceVariables()
 		{
 			s_shader_fade_definition* definition = m_members.definition->GetShaderDefinition<s_shader_fade_definition>();
-			ASSERT(definition == NULL, "Fade shader has no tag definition");
+			ASSERT(definition != NULL, "Fade shader has no tag definition");
 
 			LPD3DXEFFECT effect = m_members.definition->GetEffect();
-			ASSERT(definition == NULL, "Fade shader has no valid effect");
+			ASSERT(definition != NULL, "Fade shader has no valid effect");
 
 			definition->fade_amount_handle.SetVariable(effect, &m_members_fade.fade_amount, false);
 		};

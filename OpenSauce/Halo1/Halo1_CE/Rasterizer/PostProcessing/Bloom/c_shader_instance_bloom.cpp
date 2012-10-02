@@ -84,10 +84,10 @@ namespace Yelo
 		void c_shader_instance_bloom::SetShaderInstanceVariables()
 		{
 			s_shader_bloom_definition* definition = m_members.definition->GetShaderDefinition<s_shader_bloom_definition>();
-			ASSERT(definition == NULL, "Bloom shader has no tag definition");
+			ASSERT(definition != NULL, "Bloom shader has no tag definition");
 
 			LPD3DXEFFECT effect = m_members.definition->GetEffect();
-			ASSERT(definition == NULL, "Bloom shader has no valid effect");
+			ASSERT(definition != NULL, "Bloom shader has no valid effect");
 
 			definition->size_handle.SetVariableInterp(effect,
 				&m_members_bloom.m_variable_animation.current_values.size,
