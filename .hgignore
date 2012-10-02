@@ -1,6 +1,10 @@
 syntax: glob
 
+glob:BlamLib/LowLevel/Compression/LZMA/
 glob:OpenSauce/shared/Include/GameSpyOpen/
+glob:OpenSauce/shared/Include/7zip/
+glob:OpenSauce/shared/Include/mongoose/
+
 glob:shared/Resources/Halo1_CE/HCE_CommonData/
 glob:shared/Resources/Halo1_CE/HCE_InstallDir/
 glob:shared/Resources/Halo1_CE/HCE_UserPath/OpenSauce/shaders/

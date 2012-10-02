@@ -48,6 +48,7 @@ class c_cache_format_path_hacks
 		_phase_yelo ,	// by default, .yelo's come second
 	};
 
+	// Get the format override based on the current file search phase
 	static cstring GetFormat(cstring format, _enum phase)
 	{
 		static cstring k_yelo_map_format = "%s%s%s.yelo";
@@ -59,43 +60,68 @@ class c_cache_format_path_hacks
 
 		return format;
 	}
+
+	// returns [access]
+	static int PathHackImpl(string256 buffer, cstring format,
+		cstring root_directory, cstring maps_folder, cstring map_name,
+		__out int& sprintf_result, __out int& access, _enum phase)
+	{
+		sprintf_result = sprintf_s(buffer, sizeof(string256), GetFormat(format, phase), root_directory, maps_folder, map_name);
+		access = _access_s(buffer, 0);
+
+		return access;
+	}
 public:
 	static int __cdecl PathHack(string256 buffer, cstring format,
 		cstring root_directory, cstring maps_folder, cstring map_name)
 	{
 		int access, result;
 
-		result = sprintf_s(buffer, sizeof(string256), GetFormat(format, _phase_map), root_directory, maps_folder, map_name);
-		access = _access_s(buffer, 0);
+		PathHackImpl(buffer, format, root_directory, maps_folder, map_name, 
+			result, access, _phase_map);
 
-		if(access == ENOENT)
+		if(ENOENT == access)
 		{
-			result = sprintf_s(buffer, sizeof(string256), GetFormat(format, _phase_yelo), root_directory, maps_folder, map_name);
-			access = _access_s(buffer, 0);
+			PathHackImpl(buffer, format, root_directory, maps_folder, map_name,
+				result, access, _phase_yelo);
+		}
 
-			if(access == ENOENT)
-				YELO_DEBUG_FORMAT("CacheFormatPathHack is about to fail on [%s] %d %d", buffer, access, errno);
+		if(ENOENT == access)
+		{
+			YELO_DEBUG_FORMAT("CacheFormatPathHack is about to fail on [%s] %d %d", buffer, access, errno);
 		}
 
 		return result;
 	}
 private:
+	// returns [access]
+	static int PathHackNImpl(char* buffer, cstring format,
+		cstring root_directory, cstring maps_folder, cstring map_name, 
+		__out int& sprintf_result, __out int& access, const size_t buffer_size, _enum phase)
+	{
+		sprintf_result = _snprintf_s(buffer, buffer_size, _TRUNCATE, GetFormat(format, phase), root_directory, maps_folder, map_name);
+		access = _access_s(buffer, 0);
+
+		return access;
+	}
 	static int __cdecl PathHackN(char* buffer, size_t max_count, cstring format,
 		cstring root_directory, cstring maps_folder, cstring map_name)
 	{
 		const size_t buffer_size = max_count+1;
 		int access, result;
 
-		result = _snprintf_s(buffer, buffer_size, _TRUNCATE, GetFormat(format, _phase_map), root_directory, maps_folder, map_name);
-		access = _access_s(buffer, 0);
+		PathHackNImpl(buffer, format, root_directory, maps_folder, map_name, 
+			result, access, buffer_size, _phase_map);
 
-		if(access == ENOENT)
+		if(ENOENT == access)
 		{
-			result = _snprintf_s(buffer, buffer_size, _TRUNCATE, GetFormat(format, _phase_yelo), root_directory, maps_folder, map_name);
-			access = _access_s(buffer, 0);
+			PathHackNImpl(buffer, format, root_directory, maps_folder, map_name, 
+				result, access, buffer_size, _phase_yelo);
+		}
 
-			if(access == ENOENT)
-				YELO_DEBUG_FORMAT("CacheFormatPathHackN is about to fail on [%s]", buffer);
+		if(ENOENT == access)
+		{
+			YELO_DEBUG_FORMAT("CacheFormatPathHackN is about to fail on [%s] %d %d", buffer, access, errno);
 		}
 
 		return result;

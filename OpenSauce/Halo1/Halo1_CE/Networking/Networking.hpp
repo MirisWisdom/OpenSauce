@@ -14,8 +14,8 @@
 #include <blamlib/Halo1/bungie_net/network/transport_address.hpp>
 #include <blamlib/Halo1/bungie_net/network/transport_endpoint_winsock.hpp>
 #include <blamlib/Halo1/bungie_net/network/transport_endpoint_set_winsock.hpp>
-#include <blamlib/Halo1/game/main.hpp>
 #include <blamlib/Halo1/game/players.hpp>
+#include <blamlib/Halo1/main/main.hpp>
 #include <blamlib/Halo1/memory/bitstream.hpp>
 #include <blamlib/Halo1/networking/network_connection.hpp>
 #include <blamlib/Halo1/networking/network_client_manager.hpp>
