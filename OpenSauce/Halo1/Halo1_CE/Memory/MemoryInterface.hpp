@@ -18,28 +18,19 @@
 //////////////////////////////////////////////////////////////////////////
 
 #if PLATFORM_IS_DEDI
-	#define ENGINE_DPTR(type, name, ce_offset, cededi_offset) \
-		static type##** const pp##name = CAST_PTR(type##**, cededi_offset); BOOST_STATIC_ASSERT( cededi_offset != NULL );
-
-	#define ENGINE_PTR(type, name, ce_offset, cededi_offset) \
-		static type##* const p##name = CAST_PTR(type##*, cededi_offset); BOOST_STATIC_ASSERT( cededi_offset != NULL );
-
-	#define FUNC_PTR(name, ce_offset, cededi_offset) enum FUNC_PTR_##name { PTR_##name = cededi_offset }; BOOST_STATIC_ASSERT( PTR_##name != NULL );
-	#define DATA_PTR(name, ce_offset, cededi_offset) enum DATA_PTR_##name { PTR_##name = cededi_offset }; BOOST_STATIC_ASSERT( PTR_##name != NULL );
-
 	#define PLATFORM_VALUE(ce_value, cededi_value) cededi_value
 #elif PLATFORM_IS_USER
-	#define ENGINE_DPTR(type, name, ce_offset, cededi_offset) \
-		static type##** const pp##name = CAST_PTR(type##**, ce_offset); BOOST_STATIC_ASSERT( ce_offset != NULL );
-
-	#define ENGINE_PTR(type, name, ce_offset, cededi_offset) \
-		static type##* const p##name = CAST_PTR(type##*, ce_offset); BOOST_STATIC_ASSERT( ce_offset != NULL );
-
-	#define FUNC_PTR(name, ce_offset, cededi_offset) enum FUNC_PTR_##name { PTR_##name = ce_offset }; BOOST_STATIC_ASSERT( PTR_##name != NULL );
-	#define DATA_PTR(name, ce_offset, cededi_offset) enum DATA_PTR_##name { PTR_##name = ce_offset }; BOOST_STATIC_ASSERT( PTR_##name != NULL );
-
 	#define PLATFORM_VALUE(ce_value, cededi_value) ce_value
 #endif
+
+#define ENGINE_DPTR(type, name, ce_offset, cededi_offset) \
+	static type##** const pp##name = CAST_PTR(type##**, PLATFORM_VALUE(ce_offset,cededi_offset));								BOOST_STATIC_ASSERT( PLATFORM_VALUE(ce_offset,cededi_offset) != NULL );
+
+#define ENGINE_PTR(type, name, ce_offset, cededi_offset) \
+	static type##* const p##name = CAST_PTR(type##*, PLATFORM_VALUE(ce_offset,cededi_offset));									BOOST_STATIC_ASSERT( PLATFORM_VALUE(ce_offset,cededi_offset) != NULL );
+
+#define FUNC_PTR(name, ce_offset, cededi_offset) enum FUNC_PTR_##name { PTR_##name = PLATFORM_VALUE(ce_offset,cededi_offset) }; BOOST_STATIC_ASSERT( GET_FUNC_PTR(name) != NULL );
+#define DATA_PTR(name, ce_offset, cededi_offset) enum DATA_PTR_##name { PTR_##name = PLATFORM_VALUE(ce_offset,cededi_offset) }; BOOST_STATIC_ASSERT( GET_DATA_PTR(name) != NULL );
 
 namespace Yelo
 {

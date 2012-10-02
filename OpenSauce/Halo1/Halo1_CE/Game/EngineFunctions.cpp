@@ -10,6 +10,7 @@
 #include "Game/Console.hpp"
 #include "Game/GameState.hpp"
 #include "Game/ScriptLibrary.hpp"
+#include "Networking/MDP.hpp"
 #include "Objects/Objects.hpp"
 
 // comment the following to just use the parameters as-is 

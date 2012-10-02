@@ -8,7 +8,7 @@
 #include "Rasterizer/Rasterizer.hpp"
 #ifndef PLATFORM_NO_DX9
 
-#include <TagGroups/Halo1/model_definitions.hpp>
+#include <blamlib/Halo1/models/model_definitions.hpp>
 
 #include "Common/YeloSettings.hpp"
 

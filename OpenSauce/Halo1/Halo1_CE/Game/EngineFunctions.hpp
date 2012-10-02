@@ -15,7 +15,7 @@ namespace Yelo
 {
 	namespace MessageDeltas
 	{
-		struct field_properties_definition;
+		struct s_index_resolution_table;
 	};
 
 	namespace Objects
@@ -321,11 +321,22 @@ namespace Yelo
 
 			void EncodeHudChatNetworkData(int32 player_number, _enum chat_type, wcstring msg);
 
-			datum_index TranslateIndex(MessageDeltas::field_properties_definition* properties_definition, datum_index network_index);
-			// Translate a network_object_index to a local object_index
-			datum_index TranslateObject(datum_index network_object);
-			// Translate a network_player_index to a local player_index
-			datum_index TranslatePlayer(datum_index network_player);
+			// TODO:
+			// TranslatedIndexClientRegister
+			// TranslatedIndexUnregister
+
+			int32 TranslateIndex(MessageDeltas::s_index_resolution_table& table, datum_index network_index);
+			// Translate a local object_index to a translated_index (ie, network)
+			int32 TranslateObject(datum_index local_object_index);
+			// Translate a local player_index to a translated_index (ie, network)
+			int32 TranslatePlayer(datum_index local_player_index);
+
+			API_INLINE int32 TranslatedIndexRegister(MessageDeltas::s_index_resolution_table& table, datum_index local_index)
+			{
+				if(local_index.IsNull()) return 0;
+
+				return TranslateIndex(table, local_index);
+			}
 
 #if !PLATFORM_IS_DEDI
 			// Connect to a multiplayer server using it's ip:port and password

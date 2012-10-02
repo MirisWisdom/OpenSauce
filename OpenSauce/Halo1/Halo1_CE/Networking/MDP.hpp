@@ -109,5 +109,14 @@ namespace Yelo
 				16 - internet
 				32 - lan
 		*/
+
+		API_INLINE field_type_translated_index_parameters* ObjectIndexParameters()
+		{
+			return &MDP_GET_FIELD_TYPE_DEFINITION(object_index)->parameters->translated_index;
+		}
+		API_INLINE field_type_translated_index_parameters* PlayerIndexParameters()
+		{
+			return &MDP_GET_FIELD_TYPE_DEFINITION(player_index)->parameters->translated_index;
+		}
 	};
 };

@@ -3710,10 +3710,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Include\TagGroups\Halo1\model_definitions.hpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\shared\Include\TagGroups\Halo1\object_definitions.hpp"
 					>
 				</File>
@@ -3727,10 +3723,6 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\TagGroups\Halo1\sound_definitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\TagGroups\Halo1\structure_bsp_definitions.hpp"
 					>
 				</File>
 				<File
@@ -4767,6 +4759,30 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\structures\structure_bsp_definitions.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="rasterizer"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\rasterizer\rasterizer_geometry.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="models"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\models\collision_model_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\models\model_animation_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\models\model_definitions.hpp"
 					>
 				</File>
 			</Filter>

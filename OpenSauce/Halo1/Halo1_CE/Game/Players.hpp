@@ -320,7 +320,7 @@ namespace Yelo
 			// could have no real fields...maybe use it 
 			// for our own evil deeds?
 		};
-		typedef Memory::DataArray<s_team_datum, Enums::k_multiplayer_maximum_players> t_teams_data;
+		typedef Memory::DataArray<s_team_datum, Enums::k_multiplayer_maximum_teams> t_teams_data;
 		t_teams_data*					Teams();
 
 

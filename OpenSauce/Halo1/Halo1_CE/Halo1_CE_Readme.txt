@@ -41,7 +41,7 @@ Problem Event Name: APPCRASH
 Application Name: haloce.exe
 Application Version: 1.0.9.620
 Application Timestamp: 4ac7faf1
-Fault Module Name: d3d9.dll
+Fault Module Name: dinput8.dll
 Fault Module Version: 3.0.0.0
 Fault Module Timestamp: 4f16444a
 Exception Code: c0000005
@@ -55,11 +55,13 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
 
 == Change Log ==
 === Version 3.1 (Unreleased) ===
+  * CHANGE		Game hooking is now done via dinput8.dll instead of d3d9.dll
   * CHANGE		Increased hardcoded 'k_game_state_allocation_maximum_size_for_yelo' by 0x970 bytes
   * CHANGE		Increased hardcoded 'k_runtime_data_max_values_count' to a total of 64 (up from 32)
   * ADD			Added new setting for forcing OS to use .yelo files first when searching for .map files (off by default)
   * ADD			Script functions for bit operations (AND, OR, etc) and converting hex string to an integer
   * ADD			Runtime vector3d values (part of the game state)
+  * ADD			Added a new tag/script system for changing sky/lightmaps called 'scenario faux zones'
   * FIX			Fixed a bug where a non-existant map (of any kind) would cause the 'missing <mapname>.yelo' exception, when the stock game already had code to handle such cases
   * FIX			project_yellow tag's "prohibit_multiteam_vehicles" flag should work as expected now
   * FIX			Multi-team vehicles should no longer allow 'double loading'
