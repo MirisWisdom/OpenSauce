@@ -143,7 +143,7 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 
 	static cstring* K_TAGS_PATH_REFERENCE_FIXUPS[] = { // "tags"
 #if PLATFORM_ID == PLATFORM_GUERILLA
-		// The first reference is in a start-up think. If we didn't initialize before those thunks were ran, 
+		// The first reference is in a start-up thunk. If we didn't initialize before those thunks were ran, 
 		// we'd need to handled it with a 'strcpy'.
 		CAST_PTR(cstring*, 0x41453B), CAST_PTR(cstring*, 0x439C61), CAST_PTR(cstring*, 0x43A096),
 		CAST_PTR(cstring*, 0x43BAEE), CAST_PTR(cstring*, 0x43BEB8), CAST_PTR(cstring*, 0x43C0F8),
