@@ -13,6 +13,9 @@ namespace Yelo
 		void GrenadeTypesUpgradeInitialize();
 		void GrenadeTypesUpgradeDispose();
 
+		void GrenadeTypesUpgradeInitializeTagDefinitions();
+		void GrenadeTypesUpgradeDisposeTagDefinitions();
+
 		void GrenadeTypesUpgrade(bool enabled);
 
 	}; };

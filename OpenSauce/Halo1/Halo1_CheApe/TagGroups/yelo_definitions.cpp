@@ -11,6 +11,7 @@
 #include <TagGroups/Halo1/scenario_definitions.hpp>
 
 #include "Engine/EngineFunctions.hpp"
+#include "Engine/GrenadeTypesUpgrade.hpp"
 #include "Engine/Scripting.hpp"
 #include "TagGroups/tag_database_definitions.hpp"
 #include "TagGroups/TagGroups.hpp"
@@ -220,10 +221,12 @@ namespace Yelo
 			//////////////////////////////////////////////////////////////////////////
 			// Now initialize the complex subsystems
 			s_tag_database::Initialize();
+			Objects::Items::GrenadeTypesUpgradeInitializeTagDefinitions();
 		}
 
 		void YeloDefinitionsDispose()
 		{
+			Objects::Items::GrenadeTypesUpgradeDisposeTagDefinitions();
 			s_tag_database::Dispose();
 
 			if(_yelo_definition_globals.initialized)
