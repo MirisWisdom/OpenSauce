@@ -29,5 +29,4 @@ namespace Yelo
 };
 #else
 #define ASSERT(value, message) __noop;
-#define ASSERT_TRUE(value, message) __noop;
 #endif
