@@ -145,7 +145,7 @@ namespace Yelo
 			const size_t size_of = sizeof(T) * count;
 
 			// Debug check that we don't allocate more memory than the game state has available
-			ASSERT_TRUE((base_addr + size_of) <= PhysicalMemoryMapGlobals()->tag_cache_base_address, 
+			ASSERT((base_addr + size_of) <= PhysicalMemoryMapGlobals()->tag_cache_base_address, 
 				"Bit off more game-state than the game could chew!");
 
 			gsg->cpu_allocation_size += size_of;

@@ -54,7 +54,7 @@ namespace Yelo
 			datum_index arg_14, 
 			int16 arg_18)
 		{
-			ASSERT_TRUE( tag_index != datum_index::null || name != NULL, "ui widget: tried to load without a name or tag index" );
+			ASSERT( tag_index != datum_index::null || name != NULL, "ui widget: tried to load without a name or tag index" );
 			return LoadByNameOrTag(name, tag_index, parent, controller_index, arg_10, arg_14, arg_18);
 		}
 
