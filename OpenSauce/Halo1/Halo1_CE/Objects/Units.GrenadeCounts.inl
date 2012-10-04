@@ -179,7 +179,6 @@ static void InitializeForYeloGameState_UnitGrenadeCounts(bool enabled)
 
 static void InitializeForYeloGameState_MessageDeltaGrenadeCounts(bool enabled)
 {
-#ifndef YELO_NO_NETWORK
 	using namespace MessageDeltas;
 
 	field_type_definition& grenade_counts_type = GlobalFieldTypeList()[Enums::_field_type_grenade_counts];
@@ -293,5 +292,4 @@ static void InitializeForYeloGameState_MessageDeltaGrenadeCounts(bool enabled)
 			.CopyTo(fixed_width_grenade_index_type, fixed_width_grenade_index_props)
 			->maximum_size = g_stock_fixed_width_grenade_index.maximum_size_calculator(NULL); // release builds don't use the prop parameter in this field type
 	}
-#endif
 }
