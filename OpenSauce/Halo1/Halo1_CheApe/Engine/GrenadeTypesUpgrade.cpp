@@ -103,36 +103,16 @@ namespace Yelo
 		}
 
 
-		static uintptr_t K_GLOBAL_GRENADE_TYPE_ENUM_STRINGS_REFS[] = {
-			PLATFORM_VALUE(0x491376, 0x48D186, 0x5A7576),
-		};
-		static uintptr_t K_GLOBAL_GRENADE_TYPE_ENUM_REFS[] = {
-			PLATFORM_VALUE(0x49134B, 0x48D15B, 0x5A754B), PLATFORM_VALUE(0x9C97E0, 0x6D7AA8, 0xA467A0),
-			PLATFORM_VALUE(0x9D1774, 0x6DE89C, 0xA496F4), PLATFORM_VALUE(0x9D5E28, 0x6E2F50, 0xA4DDA8),
-		};
-
 		void GrenadeTypesUpgrade(bool enabled)
 		{
 			g_grenade_types_upgrade_enabled = enabled;
 
-			string_list* types_enum = enabled ? &global_grenade_type_yelo_enum : GET_PTR2(global_grenade_type_enum);
-
-			for(int x = 0; x < NUMBEROF(K_GLOBAL_GRENADE_TYPE_ENUM_STRINGS_REFS); x++)
-			{
-				cstring*** strings_ref = CAST_PTR(cstring***, K_GLOBAL_GRENADE_TYPE_ENUM_STRINGS_REFS[x]);
-
-				*strings_ref = &types_enum->strings;
-			}
-
-			for(int x = 0; x < NUMBEROF(K_GLOBAL_GRENADE_TYPE_ENUM_REFS); x++)
-			{
-				string_list** enum_ref = CAST_PTR(string_list**, K_GLOBAL_GRENADE_TYPE_ENUM_REFS[x]);
-
-				*enum_ref = types_enum;
-			}
+			string_list* global_grenade_type_enum = GET_PTR2(global_grenade_type_enum);
+			global_grenade_type_enum->strings = global_grenade_type_yelo_enum.strings;
+			global_grenade_type_enum->count = enabled ? Enums::k_unit_grenade_types_count_yelo : Enums::k_unit_grenade_types_count;
 
 			tag_block_definition* block_definition = GET_PTR2(grenades_block);
-			block_definition->max_elements = types_enum->count;
+			block_definition->max_elements = global_grenade_type_enum->count;
 		}
 		
 		static void GrenadeTypesUpgradeTagDefinitions(bool enabled)

@@ -94,6 +94,19 @@ static void PLATFORM_API tool_if_you_dont_get_help_at_charter(void** arguments)
 			"			correct\n"
 			);
 	}
+	else if( !strcmp(args->tool_command, "runtime-cache-view") )
+	{
+	}
+	else if( !strcmp(args->tool_command, "remove-os-mods-from-scenario") )
+	{
+		printf_s(
+			"Formats a scenario into a tag that can be read by stock tools\n"
+			"Back up your tag before hand to be safe"
+			"Arguments:\n"
+			"	<scenario-name>\n"
+			"		TagName: Name of the .scenario cleanse of OS-modifications\n"
+			);
+	}
 	else
 		printf_s(
 			"You didn't supply a tool yelo-command name (or had a typo).\n"

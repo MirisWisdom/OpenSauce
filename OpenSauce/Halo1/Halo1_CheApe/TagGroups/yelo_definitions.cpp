@@ -8,6 +8,7 @@
 #include "TagGroups/yelo_definitions.hpp"
 
 #include <Blam/Halo1/project_yellow_shared_definitions.hpp>
+#include <TagGroups/Halo1/game_globals_definitions.hpp>
 #include <TagGroups/Halo1/scenario_definitions.hpp>
 
 #include "Engine/EngineFunctions.hpp"
@@ -267,5 +268,34 @@ namespace Yelo
 
 			YeloGlobalsDefinitionCullInvalidNetworkPlayerUnits(globals->networking.player_units);
 		}
+
+#if PLATFORM_ID == PLATFORM_TOOL
+		static bool GameGlobalsRequiresYeloGameStateUpgrades(datum_index game_globals_index)
+		{
+			TagGroups::s_game_globals* game_globals = tag_get<TagGroups::s_game_globals>(game_globals_index);
+
+			return game_globals->grenades.Count > Enums::k_unit_grenade_types_count;
+		}
+
+		bool YeloToolCheckTagsForGameStateUpgradeRequirements()
+		{
+			bool result = false;
+
+			TagGroups::tag_iterator iter;
+			tag_iterator_new(iter);
+
+			datum_index tag_index;
+			while( !(tag_index = tag_iterator_next(iter)).IsNull() )
+			{
+				switch((*TagGroups::TagInstances())[tag_index.index].group_tag)
+				{
+				case TagGroups::s_game_globals::k_group_tag:
+					result |= GameGlobalsRequiresYeloGameStateUpgrades(tag_index); 
+				}
+			}
+
+			return result;
+		}
+#endif
 	};
 };

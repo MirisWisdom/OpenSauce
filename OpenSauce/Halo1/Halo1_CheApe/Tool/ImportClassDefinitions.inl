@@ -33,4 +33,8 @@
 			0, "", 
 		&runtime_cache_view),
 
+	IMPORT_CLASS_DEFINITION("remove-os-mods-from-scenario", 
+			1, "<scenario-name>", 
+		&scenario_cleanse_of_yelo_data),
+
 	// TODO: add new import classes here
