@@ -8,13 +8,11 @@
 
 #include "Memory/Data.hpp"
 
+#include <blamlib/Halo1/game/players.hpp>
+#include <blamlib/Halo1/networking/network_game_manager.hpp>
+
 namespace Yelo
 {
-	namespace Networking
-	{
-		struct s_network_game_player;
-	};
-
 	namespace Objects
 	{
 		struct s_unit_datum;
@@ -23,36 +21,6 @@ namespace Yelo
 
 namespace Yelo
 {
-	namespace Enums
-	{
-		enum player_powerup
-		{
-			_player_powerup_active_camo,
-			_player_powerup_full_spectrum_vision,
-			_player_powerup,
-		};
-
-		enum player_action_result
-		{
-			_player_action_result_none,
-			_player_action_result_pickup1,
-			_player_action_result_pickup2,
-			_player_action_result_exit_seat,
-			_player_action_result_4, // game engine related
-
-			_player_action_result_swap_equipment,
-			_player_action_result_swap_weapon,
-			_player_action_result_pickup_weapon,
-
-			_player_action_result_enter_seat,
-			_player_action_result_force_ai_to_exit_seat,
-			_player_action_result_touch_device,
-			_player_action_result_flip_vehicle,
-
-			_player_action_result,
-		};
-	};
-
 	namespace Players
 	{
 		struct s_player_set_action_result_network_data
@@ -326,20 +294,22 @@ namespace Yelo
 
 		struct s_players_globals_data
 		{
-			struct _local_player {
-				int32 count1;
-				uint32 players[8];
-				int32 count2;
-				bool are_all_dead;
-				bool input_enabled;
-				bool teleport_on_bsp_switch;
-				PAD24;
-				bool was_teleported; // or respawned
-				PAD8;
-			}local_player;
-
-			byte pad[104];
-		};
+			UNUSED_TYPE(int32);																// 0x0, initialized to NONE but that's all I can tell
+			// the player_index for each local player
+			datum_index local_player_players[Enums::k_maximum_number_of_local_players];		// 0x4
+			// the object_index of each local player's dead unit (their old body)
+			datum_index local_player_dead_units[Enums::k_maximum_number_of_local_players];	// 0x8
+			int16 local_player_count;														// 0xC
+			int16 double_speed_ticks_remaining;												// 0xE
+			bool are_all_dead;																// 0x10
+			bool input_disabled;															// 0x11
+			UNKNOWN_TYPE(int16);															// 0x12, bsp switch trigger index
+			_enum respawn_failure;															// 0x14
+			bool was_teleported;															// 0x16, or respawned
+			PAD8;
+			long_flags pvs[BIT_VECTOR_SIZE_IN_DWORDS(512)];								// 0x18
+			long_flags pvs2[BIT_VECTOR_SIZE_IN_DWORDS(512)];								// 0x58
+		}; BOOST_STATIC_ASSERT( sizeof(s_players_globals_data) == 0x98 );
 		s_players_globals_data*			PlayersGlobals();
 
 		struct s_player_control : TStructImpl(0x40)
@@ -379,7 +349,7 @@ namespace Yelo
 		s_player_effects_data*			PlayerEffects();
 
 
-		datum_index*					MachineToPlayerTable();
+		datum_index*					MachineToPlayerTable(); // [k_multiplayer_maximum_players][k_maximum_number_of_local_players]
 
 		void Initialize();
 		void Dispose();

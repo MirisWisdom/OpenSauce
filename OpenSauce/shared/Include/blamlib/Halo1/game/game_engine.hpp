@@ -7,6 +7,7 @@
 #pragma once
 
 #include <blamlib/Halo1/game/players.hpp>
+#include <blamlib/Halo1/saved_games/game_variant.hpp>
 
 namespace Yelo
 {
@@ -31,15 +32,6 @@ namespace Yelo
 			_game_engine_race,
 			_game_engine_stub,
 			_game_engine,
-		};
-
-		enum game_trait : long_enum
-		{
-			_game_trait_none,
-			_game_trait_invisible,
-			_game_trait_extra_damage,
-			_game_trait_damage_resistant,
-			_game_trait,
 		};
 	};
 

@@ -91,7 +91,7 @@ namespace Yelo
 			datum_index object_index = *this->GetSlaveUnitIndex();
 			if(object_index.IsNull()) return NULL;
 
-			return (*Objects::ObjectHeader())[object_index]->Type._unit;
+			return (*Objects::ObjectHeader())[object_index]->_unit;
 		}
 
 		datum_index s_player_datum::GetVehicleIndex()
@@ -101,7 +101,7 @@ namespace Yelo
 			Objects::s_unit_datum* unit = this->GetPlayerUnit();
 			if(unit != NULL)
 			{
-				datum_index parent_object_index = *unit->object.GetParentObjectIndex();
+				datum_index parent_object_index = unit->object.parent_object_index;
 				if(	!parent_object_index.IsNull() && *unit->unit.GetVehicleSeatIndex() == NONE )
 					vehicle_index = parent_object_index;
 			}
@@ -183,11 +183,11 @@ namespace Yelo
 			if(current_seat_index)
 				*current_seat_index = *unit->unit.GetVehicleSeatIndex();
 
-			datum_index parent_index = *unit->object.GetParentObjectIndex();
+			datum_index parent_index = unit->object.parent_object_index;
 			if(parent_index.IsNull())
 				return NULL;
 
-			return (*Objects::ObjectHeader())[parent_index]->Type._unit;
+			return (*Objects::ObjectHeader())[parent_index]->_unit;
 		}
 	};
 };

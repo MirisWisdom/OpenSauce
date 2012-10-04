@@ -8,7 +8,10 @@
 
 #include "Memory/Data.hpp"
 
-#include <TagGroups/Halo1/scenario_definitions.hpp>
+#include <blamlib/Halo1/devices/devices.hpp>
+#include <blamlib/Halo1/objects/objects.hpp>
+#include <blamlib/Halo1/objects/widgets/widgets.hpp>
+#include <blamlib/Halo1/units/units.hpp>
 
 #include "Objects/ObjectDefinitions.hpp"
 #include "Objects/DeviceDefinitions.hpp"
@@ -26,107 +29,10 @@ namespace Yelo
 		struct s_object_definition;
 	};
 
-	namespace Enums
-	{
-		enum {
-			// Stock game state allocation size for the object memory pool
-			// When running in editor tools, this and the max number of objects is increased by 5x
-			k_object_memory_pool_allocation_size = 0x200000,
-		};
-	};
-
-	namespace Flags
-	{
-		enum object_header_flags : byte_flags
-		{
-			_object_header_active_bit = 0,
-			_object_header_requires_motion_bit = 1,
-			// 2
-			_object_header_being_deleted_bit = 3,
-			// 4
-			_object_header_connected_to_map_bit = 5,
-			_object_header_child_bit = 6,
-		};
-	};
-
 	namespace Objects
 	{
-		typedef void (PLATFORM_API* proc_object_type)(datum_index object_index);
-		typedef bool (PLATFORM_API* proc_object_type_new)(datum_index object_index);
-		typedef bool (PLATFORM_API* proc_object_type_update)(datum_index object_index);
-		typedef void (PLATFORM_API* proc_object_type_handle_deleted_object)(datum_index object_index, datum_index deleted_object_index);
-		typedef void (PLATFORM_API* proc_object_type_handle_region_destroyed)(datum_index object_index, int32 region_index, long_flags damage_region_flags);
-		typedef bool (PLATFORM_API* proc_object_type_handle_parent_destroyed)(datum_index object_index);
-		typedef void (PLATFORM_API* proc_object_type_preprocess_node_orientations)(datum_index object_index, real_orientation3d* orientations);
-		typedef void (PLATFORM_API* proc_object_type_postprocess_node_matrices)(datum_index object_index, real_matrix4x3* matrices);
-		typedef void (PLATFORM_API* proc_object_type_notify_impulse_sound)(datum_index object_index, datum_index sound_definition_index, datum_index sound_index);
-		typedef bool (PLATFORM_API* proc_object_type_render_message_debug)(datum_index object_index);
-		typedef int32 (PLATFORM_API* proc_object_type_create_to_network)(datum_index object_index, void* buffer, int32 buffer_size_in_bits);
-		typedef bool (PLATFORM_API* proc_object_type_network)(void* unk, void* header, void* client);
-		struct s_object_type_definition
-		{
-			cstring name;													// 0x0
-			tag group_tag;													// 0x4
-			int16 datum_size;												// 0x8
-			int16 placement_tag_block_offset;								// 0xA
-			int16 palette_tag_block_offset;									// 0xC
-			int16 placement_tag_block_size;									// 0xE
-			int32 update_message_type;										// 0x10
-			proc_initialize				initialize;										// 0x14
-			proc_dispose				dispose;										// 0x18
-			proc_initialize_for_new_map initialize_for_new_map;							// 0x1C
-			proc_dispose_from_old_map	dispose_from_old_map;							// 0x20
-			proc_object_type			adjust_placement;								// 0x24
-			proc_object_type_new 		new_;											// 0x28
-			proc_object_type 			place;											// 0x2C
-			proc_object_type 			delete_;										// 0x30
-			proc_object_type_update 	update;											// 0x34
-			proc_object_type			export_function_values;							// 0x38
-			proc_object_type_handle_deleted_object handle_deleted_object;				// 0x3C
-			proc_object_type_handle_region_destroyed handle_region_destroyed;			// 0x40
-			proc_object_type_handle_parent_destroyed handle_parent_destroyed;			// 0x44
-			proc_object_type_preprocess_node_orientations preprocess_node_orientations;	// 0x48
-			proc_object_type_postprocess_node_matrices postprocess_node_matrices;		// 0x4C
-			proc_object_type 			reset;											// 0x50
-			proc_object_type 			disconnect_from_structure_bsp;					// 0x54
-			proc_object_type_notify_impulse_sound notify_impulse_sound;					// 0x58
-			proc_object_type 			render_debug;									// 0x5C
-
-			proc_object_type_render_message_debug render_message_debug;					// 0x60
-			proc_object_type_create_to_network create_to_network;						// 0x64
-			void* update_baseline_proc;										// 0x68
-			void* build_update_delta_proc;									// 0x6C, int32 (*)(datum_index object_index, void* buffer, int32 buffer_size_in_bits, _enum message_delta_mode)
-			void* process_update_delta_proc;								// 0x70
-			
-			void* is_network_time_valid_proc;								// 0x74
-			void* unknown_proc;												// 0x78, unused. Only networked object types implemented this (and they only returned true)
-			void* update_network_time_proc;									// 0x7C
-
-			s_object_type_definition* object_type;
-			s_object_type_definition* base_object_types[2];
-			int32 _unused1[13]; // s_object_type_definition*.
-			s_object_type_definition* next;
-			PAD32;
-		}; BOOST_STATIC_ASSERT( sizeof(s_object_type_definition) == 0xC8 );
 		s_object_type_definition** ObjectTypeDefinitions();
-
-
-		typedef bool (*proc_widget_type)(datum_index object_datum);
-		struct s_widget_type_definition
-		{
-			tag group_tag;
-			bool needs_lighting; PAD24;
-			proc_initialize				initialize_proc;
-			proc_initialize_for_new_map initialize_for_new_map_proc;
-			proc_dispose_from_old_map	dispose_from_old_map_proc;
-			proc_dispose				dispose_proc;
-			proc_widget_type			new_proc;
-			proc_widget_type 			delete_proc;
-			proc_widget_type 			update_proc;
-			proc_widget_type 			render_proc;
-		};
 		s_widget_type_definition* WidgetTypeDefinitions();
-
 
 
 		struct s_cached_object_render_states_datum : TStructImpl(256)
@@ -136,93 +42,20 @@ namespace Yelo
 		t_cached_object_render_states_data*				CachedObjectRenderStates();
 
 
-		struct s_unit_globals_data
-		{
-			UNKNOWN_TYPE(int16);
-			UNKNOWN_TYPE(int16);
-			UNKNOWN_TYPE(bool);
-			PAD24;
-		};
 		s_unit_globals_data*								UnitGlobals();
 
 
-		struct s_device_groups_datum : Memory::s_datum_base
-		{
-			word_flags flags;
-			real value;
-		};
 		typedef Memory::DataArray<s_device_groups_datum, 1024> t_device_groups_data;
 		t_device_groups_data*							DeviceGroups();
 
 
-		struct s_object_header_datum : Memory::s_datum_base
-		{
-			byte flags;				// Enums::object_header_flags
-			byte object_type;
-			int16 cluster_index;
-			int16 data_size;
-			union {
-				void* address;
-
-				s_object_data* _object; // Note: since 's_object_data' is the base of all object datums, we can do this
-
-				// Allows us to implicitly treat 'address' as an specific object type ptr
-				// in situations where we're programming for something more specific (eg, unit types only)
-				union {
-					s_scenery_datum* _scenery;
-					s_sound_scenery_datum* _sound_scenery;
-					s_garbage_datum* _garbage;
-					s_projectile_datum* _projectile;
-					s_placeholder_datum* _placeholder;
-
-					s_device_datum* _device;
-					s_device_machine_datum* _machine;
-					s_device_control_datum* _control;
-					s_device_lightfixture_datum* _lightfixture;
-
-					s_item_datum* _item;
-					s_weapon_datum* _weapon;
-					s_equipment_datum* _equipment;
-
-					s_unit_datum* _unit;
-					s_biped_datum* _biped;
-					s_vehicle_datum* _vehicle;
-				}Type;
-			};
-		};
 		typedef Memory::DataArray<s_object_header_datum, 2048> t_object_header_data;
 		t_object_header_data*							ObjectHeader();
 
-		struct s_objects_pool_data
-		{
-			Memory::s_memory_pool header;
-
-			byte data[Enums::k_object_memory_pool_allocation_size];
-		};
 		s_objects_pool_data*								ObjectsPool();
 
-		struct s_object_globals_data
-		{
-			bool object_is_being_placed;
-			bool object_marker_initialized;
-			bool garbage_collect_now;
-			UNKNOWN_TYPE(bool);
-			int16 object_type_being_placed; // script value enum
-			UNKNOWN_TYPE(int16);
-			UNKNOWN_TYPE(datum_index);
-			byte pad[140];
-			// _enum object_pvs_set 0x90
-			// none = 0
-			// object = 1
-			// camera = 2
-			// short object_pvs_object 0x94
-		};
 		s_object_globals_data*							ObjectGlobals();
 
-		struct s_object_name_list_data
-		{
-			datum_index object_name_to_datum_table[Enums::k_maximum_object_names_per_scenario];
-		};
 		s_object_name_list_data*							ObjectNameList();
 
 
@@ -273,12 +106,6 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////////
 		// Object widgets
-		struct s_widget_datum : Memory::s_datum_base
-		{
-			_enum type;
-			datum_index type_datum_index; // index to the type's data array (eg, antenna)
-			datum_index next_widget_index;
-		}; BOOST_STATIC_ASSERT( sizeof(s_widget_datum) == 0xC );
 		typedef Memory::DataArray<s_widget_datum, 64> t_widget_data;
 		t_widget_data*			Widgets();
 

@@ -204,7 +204,7 @@ namespace Yelo
 
 				Yelo::Objects::s_object_data* obj = (*Yelo::Objects::ObjectHeader())[object]->_object;
 
-				return TriggerVolumeTestPoint(trigger_volume_index, obj->GetNetworkDatumData()->position);
+				return TriggerVolumeTestPoint(trigger_volume_index, obj->center);
 			}
 		};
 

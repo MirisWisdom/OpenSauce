@@ -204,10 +204,10 @@ namespace Yelo
 			s_object_data* src_object = (*Objects::ObjectHeader())[src_object_index]->_object;
 
 			if(tag_index_override.IsNull())
-				tag_index_override = *src_object->GetTagDefinition();
+				tag_index_override = src_object->definition_index;
 
 			Engine::Objects::PlacementDataNew(data, tag_index_override, owner_object_index);
-			src_object->GetNetworkDatumData()->CopyToPlacementData(data);
+			src_object->network.CopyToPlacementData(data);
 		}
 
 		datum_index GetUltimateObject(datum_index object_index)
@@ -218,7 +218,7 @@ namespace Yelo
 				s_object_data* current_obj = object_header_datums[object_index.index]._object;
 
 				datum_index parent_index;
-				while( !(parent_index = *current_obj->GetParentObjectIndex()).IsNull() )
+				while( !(parent_index = current_obj->parent_object_index).IsNull() )
 				{
 					current_obj = object_header_datums[parent_index.index]._object;
 				}
@@ -236,7 +236,7 @@ namespace Yelo
 
 				do
 				{
-					object_index = *current_obj->GetNextObjectIndex();
+					object_index = current_obj->next_object_index;
 					current_obj = object_header_datums[object_index.index]._object;
 				}while(n--);
 			}
@@ -250,7 +250,7 @@ namespace Yelo
 			{
 				s_object_data* object = (*Objects::ObjectHeader())[object_index]->_object;
 
-				return TagGroups::TagGet<TagGroups::s_object_definition>( *object->GetTagDefinition() );
+				return TagGroups::TagGet<TagGroups::s_object_definition>(object->definition_index);
 			}
 
 			return NULL;
@@ -261,7 +261,7 @@ namespace Yelo
 			if(!object_index.IsNull())
 			{
 				s_object_data* object = (*Objects::ObjectHeader())[object_index]->_object;
-				datum_index tag_index = *object->GetAnimationDefinition();
+				datum_index tag_index = object->animation.definition_index;
 
 				return TagGroups::TagGet<TagGroups::model_animation_graph>(tag_index);
 			}
@@ -285,7 +285,7 @@ namespace Yelo
 			return dist;
 		}
 
-		typedef void (* proc_object_action_perfomer)(datum_index object_index);
+		typedef void (API_FUNC* proc_object_action_perfomer)(datum_index object_index);
 		static void PerformActionOnChildrenByType(datum_index parent, long_flags object_type_mask,
 			proc_object_action_perfomer action_performer)
 		{
@@ -293,9 +293,9 @@ namespace Yelo
 			s_object_data* parent_object = object_header_datums[parent.index]._object;
 			s_object_data* child_object;
 
-			for(datum_index child_index = *parent_object->GetFirstObjectIndex();
+			for(datum_index child_index = parent_object->first_object_index;
 				!child_index.IsNull();
-				child_index = *child_object->GetNextObjectIndex())
+				child_index = child_object->next_object_index)
 			{
 				child_object = object_header_datums[child_index.index]._object;
 

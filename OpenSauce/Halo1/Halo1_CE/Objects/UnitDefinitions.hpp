@@ -18,9 +18,14 @@ namespace Yelo
 			k_maximum_weapons_per_unit = 4,
 		};
 
-		enum unit_animation_state
+		enum unit_animation_state : sbyte
 		{
+			// TODO: remove this pragma warning off in any later migrations newer VS versions
+			// http://connect.microsoft.com/VisualStudio/feedback/details/674442/enumeration-with-negative-values-are-popping-c4341-warnings
+#pragma warning( push )
+#pragma warning( disable : 4341 ) // signed value is out of range for enum constant
 			_unit_animation_state_invalid = NONE,
+#pragma warning( pop )
 
 			_unit_animation_state_idle,
 			_unit_animation_state_gesture,
@@ -123,7 +128,7 @@ namespace Yelo
 			TStructGetPtrImpl(word_flags,			Flags, 0x0);			// 0x298
 			//TStructGetPtrImpl(int16,				, 0x2);					// 0x29A animation index, weapon type
 			//TStructGetPtrImpl(int16,				, 0x4);					// 0x29C animation index
-			// 0x6?
+			//TStructGetPtrImpl(int16,				, 0x6);					// 0x29E, appears unused except for getting initialized in unit_new
 			//////////////////////////////////////////////////////////////////////////
 			// animation graph unit indexes
 			TStructGetPtrImpl(sbyte,				SeatIndex, 0x8);		// 0x2A0

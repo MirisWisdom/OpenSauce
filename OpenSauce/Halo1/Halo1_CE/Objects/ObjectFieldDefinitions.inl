@@ -5,7 +5,9 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-static s_object_field_definition g_object_vector_fields[] = {
+static s_object_field_definition g_object_real_fields[] = {
+	FIELD_ENTRY(object, real, real, function_out, false, true),
+
 	FIELD_ENTRY(object, real, vector, position,					true),
 	FIELD_ENTRY(object, real, vector, transitional_velocity,	true),
 	FIELD_ENTRY(object, real, vector, forward,					true),

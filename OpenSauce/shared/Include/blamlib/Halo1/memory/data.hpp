@@ -6,6 +6,9 @@
 */
 #pragma once
 
+#include <Memory/DataShared.hpp>
+#include <Memory/Halo1/DataShared.hpp>
+
 namespace Yelo
 {
 	namespace Memory

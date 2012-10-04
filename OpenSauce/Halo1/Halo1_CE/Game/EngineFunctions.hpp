@@ -321,6 +321,7 @@ namespace Yelo
 
 			void EncodeHudChatNetworkData(int32 player_number, _enum chat_type, wcstring msg);
 
+#ifndef YELO_NO_NETWORK
 			// TODO:
 			// TranslatedIndexClientRegister
 			// TranslatedIndexUnregister
@@ -337,6 +338,7 @@ namespace Yelo
 
 				return TranslateIndex(table, local_index);
 			}
+#endif
 
 #if !PLATFORM_IS_DEDI
 			// Connect to a multiplayer server using it's ip:port and password

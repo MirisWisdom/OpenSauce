@@ -4706,11 +4706,23 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\objects\object_definitions.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\objects\object_lights.hpp"
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\objects\object_structures.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\objects\object_types.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\objects\objects.hpp"
 					>
 				</File>
 				<Filter
@@ -4783,6 +4795,62 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\models\model_definitions.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="items"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\items\projectile_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\items\projectiles.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="units"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\units\bipeds.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\units\unit_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\units\units.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\units\vehicles.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="devices"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\devices\device_controls.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\devices\device_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\devices\device_light_fixtures.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\devices\device_machines.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\devices\devices.hpp"
 					>
 				</File>
 			</Filter>

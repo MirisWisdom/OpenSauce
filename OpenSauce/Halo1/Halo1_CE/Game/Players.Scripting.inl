@@ -219,7 +219,7 @@ static datum_index scripting_player_data_get_object_by_name(s_player_datum* play
 		}
 		else if( _HS_UTIL_STRNCMP(s,"weapon") )
 		{
-			Objects::s_unit_datum* unit = (*Objects::ObjectHeader())[object_index]->Type._unit;
+			Objects::s_unit_datum* unit = (*Objects::ObjectHeader())[object_index]->_unit;
 
 				 if( !strcmp(s,"weapon0") ) return unit->unit.GetWeaponObjectIndices()[0];
 			else if( !strcmp(s,"weapon1") ) return unit->unit.GetWeaponObjectIndices()[1];
