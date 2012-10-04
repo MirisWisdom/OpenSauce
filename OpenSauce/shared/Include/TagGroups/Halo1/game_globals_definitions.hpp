@@ -46,6 +46,8 @@ namespace Yelo
 		};
 		struct s_game_globals
 		{
+			enum { k_group_tag = 'matg' };
+
 			TAG_PAD(byte, 248);
 
 			TAG_TBLOCK(sounds, tag_reference);

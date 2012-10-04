@@ -49,6 +49,11 @@ static void build_cache_file_end_preprocess(s_cache_header* header, s_cache_head
 
 	// Add the build date of the OS HEK tools
 	CheApeApi_GetPchBuildDateA(sizeof(ych.cheape_definitions.build_string), ych.cheape_definitions.build_string);
+
+	printf_s("Checking tags for OS-modified game-state requirements...\n");
+	bool uses_game_state_upgrades = TagGroups::YeloToolCheckTagsForGameStateUpgradeRequirements();
+	if(ych.flags.uses_game_state_upgrades = uses_game_state_upgrades)
+		printf_s("\tFound tag(s) which require OS-modified game-states to (fully) function\n");
 }
 
 /*!

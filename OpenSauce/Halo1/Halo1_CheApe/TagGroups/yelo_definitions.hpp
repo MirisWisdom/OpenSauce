@@ -21,5 +21,9 @@ namespace Yelo
 		void YeloDefinitionsDispose();
 
 		void YeloGlobalsDefinitionCull(TagGroups::project_yellow_globals* globals);
+
+#if PLATFORM_ID == PLATFORM_TOOL
+		bool YeloToolCheckTagsForGameStateUpgradeRequirements();
+#endif
 	};
 };

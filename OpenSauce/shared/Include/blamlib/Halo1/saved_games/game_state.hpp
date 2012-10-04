@@ -10,6 +10,14 @@ namespace Yelo
 {
 	namespace GameState
 	{
+		struct s_yelo_header_data
+		{
+			PAD8; // since the unused 32 bytes in s_header_data is more than likely a tag_string, we don't want to touch what is actually the first char (we want it to stay zero)
+			struct {
+				bool initialized : 1;
+				bool game_state_upgrades_on : 1;
+			}flags;
+		}; BOOST_STATIC_ASSERT( sizeof(s_yelo_header_data) <= 0x20 );
 		struct s_header_data
 		{
 			uint32 allocation_crc;
@@ -18,7 +26,11 @@ namespace Yelo
 			int16 player_spawn_count;
 			_enum game_difficulty;
 			uint32 cache_crc;
-			byte _unk3[32];
+
+			union {
+				byte _unused[32];
+				s_yelo_header_data yelo;
+			};
 		}; BOOST_STATIC_ASSERT( sizeof(s_header_data) == 0x14C );
 
 		struct s_game_state_globals

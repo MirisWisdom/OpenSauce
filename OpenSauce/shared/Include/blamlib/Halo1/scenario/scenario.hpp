@@ -25,15 +25,7 @@ namespace Yelo
 		struct s_scenario_globals
 		{
 			int16 current_structure_bsp_index;
-#if FALSE
 			PAD16;
-#else
-			//////////////////////////////////////////////////////////////////////////
-			// OS-modified game states only
-		private:
-			int16 yelo_zone_set_variant_index;
-		public:
-#endif
 			s_scenario_player_atmospheric_fog player_fog[Enums::k_maximum_number_of_local_players];
 			struct {
 				bool copy_environment_tag; PAD24; // never seen this set to true

@@ -21,6 +21,7 @@ namespace Yelo
 			word_flags uses_memory_upgrades : 1;// cache requires upgraded memory
 			word_flags uses_mod_data_files : 1;	// cache relies on a set of 'mod' data files for it's resources
 			word_flags is_protected : 1;		// cache has protection applied
+			word_flags uses_game_state_upgrades : 1; // cache has tag data that either requires or needs OS-modified game state memory in order to (fully) function
 		}flags; BOOST_STATIC_ASSERT( sizeof(s_flags) == 0x2 );
 
 		struct {

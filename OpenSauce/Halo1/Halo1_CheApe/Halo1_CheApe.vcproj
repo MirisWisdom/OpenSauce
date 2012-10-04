@@ -2084,15 +2084,19 @@
 				RelativePath=".\Tool\ToolDefinitions.hpp"
 				>
 			</File>
+			<File
+				RelativePath=".\Tool\ToolMisc.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Tool\ToolMisc.hpp"
+				>
+			</File>
 			<Filter
 				Name="Impl"
 				>
 				<File
 					RelativePath=".\Tool\BuildCppDefinition.inl"
-					>
-				</File>
-				<File
-					RelativePath=".\Tool\CompileScripts.inl"
 					>
 				</File>
 				<File
