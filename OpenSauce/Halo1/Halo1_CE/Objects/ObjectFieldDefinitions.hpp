@@ -11,6 +11,8 @@ namespace Yelo
 	namespace Enums
 	{
 		enum object_field_index : _enum {
+			_object_field_real_function_out,
+
 			_object_field_vector_position,
 			_object_field_vector_transitional_velocity,
 			_object_field_vector_forward,

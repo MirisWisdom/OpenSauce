@@ -937,7 +937,7 @@ skip_disable_velocity:
 			{
 				Objects::s_object_header_datum& object_header = (*Objects::ObjectHeader())[g_object_index];
 
-				TeamIndex = *object_header._object->GetOwnerTeamIndex() + 1;
+				TeamIndex = object_header._object->owner_team_index + 1;
 				MeshIndex = object_header.object_type + 3;
 
 				if(GameEngine::Current() != NULL)	// becomes non-null during multiplayer
@@ -948,10 +948,10 @@ skip_disable_velocity:
 					Players::s_player_datum* player = Players::LocalPlayer();
 					Objects::s_object_header_datum& player_object = (*Objects::ObjectHeader())[player->GetSlaveUnitIndex()->index];
 
-					if(Engine::Game::TeamIsEnemy(*player_object._object->GetOwnerTeamIndex(), *object_header._object->GetOwnerTeamIndex()))
+					if(Engine::Game::TeamIsEnemy(player_object._object->owner_team_index, object_header._object->owner_team_index))
 						TeamIndex |= 1 << 5;
 
-					if(*object_header._object->GetHealth() <= 0.0f)
+					if(object_header._object->damage.health <= 0.0f)
 						TeamIndex |= 1 << 6;
 				}
 			}

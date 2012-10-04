@@ -148,7 +148,7 @@ static void* scripting_weapon_data_get_real_evaluate(void** arguments)
 
 		if(header->object_type == Enums::_object_type_weapon)
 		{
-			s_weapon_datum* weapon = header->Type._weapon;
+			s_weapon_datum* weapon = header->_weapon;
 
 			WeaponDataGetRealByName(weapon, args->data_name, result);
 		}
@@ -170,7 +170,7 @@ static void* scripting_weapon_data_set_real_evaluate(void** arguments)
 
 		if(header->object_type == Enums::_object_type_weapon)
 		{
-			s_weapon_datum* weapon = header->Type._weapon;
+			s_weapon_datum* weapon = header->_weapon;
 
 			WeaponDataSetRealByName(weapon, args->data_name, args->data_value);
 		}
@@ -203,7 +203,7 @@ static void* scripting_weapon_data_trigger_set_real_evaluate(void** arguments)
 
 		if(header->object_type == Enums::_object_type_weapon)
 		{
-			s_weapon_datum* weapon = header->Type._weapon;
+			s_weapon_datum* weapon = header->_weapon;
 
 			WeaponTagDataTriggerSetRealByName(weapon, args->trigger_index, args->data_name, args->subdata_name, args->data_value);
 		}
@@ -227,7 +227,7 @@ static void* scripting_unit_data_get_object_evaluate(void** arguments)
 
 	if(!args->unit_index.IsNull())
 	{
-		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->Type._unit;
+		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->_unit;
 
 		UnitDataGetObjectIndexByName(unit, args->data_name, result);
 	}
@@ -246,7 +246,7 @@ static void* scripting_unit_data_get_integer_evaluate(void** arguments)
 
 	if(!args->unit_index.IsNull())
 	{
-		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->Type._unit;
+		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->_unit;
 
 		UnitDataGetIntegerByName(unit, args->data_name, result);
 	}
@@ -263,7 +263,7 @@ static void* scripting_unit_data_set_integer_evaluate(void** arguments)
 
 	if(!args->unit_index.IsNull())
 	{
-		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->Type._unit;
+		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->_unit;
 
 		UnitDataSetIntegerByName(unit, args->data_name, args->data_value);
 	}
@@ -282,7 +282,7 @@ static void* scripting_unit_data_get_real_evaluate(void** arguments)
 
 	if(!args->unit_index.IsNull())
 	{
-		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->Type._unit;
+		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->_unit;
 
 		UnitDataGetRealByName(unit, args->data_name, result);
 	}
@@ -299,7 +299,7 @@ static void* scripting_unit_data_set_real_evaluate(void** arguments)
 
 	if(Networking::IsLocal() && !args->unit_index.IsNull())
 	{
-		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->Type._unit;
+		s_unit_datum* unit = (*Objects::ObjectHeader())[args->unit_index]->_unit;
 
 		UnitDataSetRealByName(unit, args->data_name,args->data_value);
 	}

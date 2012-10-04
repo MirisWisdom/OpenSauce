@@ -46,6 +46,7 @@ void EncodeHudChatNetworkData(int32 player_number, _enum chat_type, wcstring msg
 	}
 }
 
+#ifndef YELO_NO_NETWORK
 API_FUNC_NAKED int32 TranslateIndex(MessageDeltas::s_index_resolution_table& table, datum_index local_index)
 {
 	// Function is actually part of the index_resolution module in objects/
@@ -75,6 +76,8 @@ int32 TranslatePlayer(datum_index local_player_index)
 
 	return TranslateIndex(MessageDeltas::PlayerIndexParameters()->table, local_player_index);
 }
+#endif
+
 
 #if !PLATFORM_IS_DEDI
 

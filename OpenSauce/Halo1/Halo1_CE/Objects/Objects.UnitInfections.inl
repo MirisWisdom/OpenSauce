@@ -48,7 +48,7 @@ namespace UnitInfections
 
 		if(animation_graph != NULL)
 		{
-			s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->Type._unit;
+			s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
 			s_unit_animation_data& unit_animation = *unit->unit.GetAnimation();
 
 			sbyte	seat_block_index = *unit_animation.GetSeatIndex(),
@@ -73,7 +73,7 @@ namespace UnitInfections
 		{	// Create the attachment based on the target_unit's world data and the infection tag data
 			s_object_placement_data attachment_placement_data;
 			Engine::Objects::PlacementDataNew(attachment_placement_data, unit_infection.attachment_object.tag_index);
-			attachment_placement_data.position = target_unit->object.GetNetworkDatumData()->position;
+			attachment_placement_data.position = target_unit->object.network.position;
 
 			attachment_object_index = Engine::Objects::New(attachment_placement_data);
 			attachment_object = (*Objects::ObjectHeader())[attachment_object_index]->_object;
@@ -106,13 +106,13 @@ namespace UnitInfections
 			// Set the current animation state to that of a "custom" animation (to avoid the engine doing any weirdness)
 			*target_unit->unit.GetAnimation()->GetAnimationState() = Enums::_unit_animation_state_custom_animation;
 			// Play the infect-start animation on the target unit
-			Engine::Objects::UnitSetAnimation(target_unit_index, *target_unit->object.GetAnimationDefinition(), 
+			Engine::Objects::UnitSetAnimation(target_unit_index, target_unit->object.animation.definition_index, 
 				infect_start_animation_index);
 		}
 
 		InfectionAttachObjects(unit_infection, target_unit, target_unit_index);
 
-		SET_FLAG(*target_unit->object.GetFlags(), Flags::_object_yelo_is_being_infected_bit, true);
+		SET_FLAG(target_unit->object.flags, Flags::_object_yelo_is_being_infected_bit, true);
 	}
 
 	// Ends an infection sequence on the target unit
@@ -126,14 +126,14 @@ namespace UnitInfections
 			PlacementDataNewAndCopy(infected_unit_placement_data, target_unit_index, 
 				unit_infection.infected_unit.tag_index);
 			infected_unit_index = Engine::Objects::New(infected_unit_placement_data);
-			infected_unit = (*Objects::ObjectHeader())[infected_unit_index]->Type._unit;
+			infected_unit = (*Objects::ObjectHeader())[infected_unit_index]->_unit;
 		}
 
 		int32 infect_end_animation_index = UnitGetAnimationIndexFromWeaponClass(infected_unit_index, Enums::_weapon_class_animation_yelo_infect);
 		if(infect_end_animation_index != NONE)
 		{
 			// Play the infect-end animation on the infected unit
-			Engine::Objects::UnitSetAnimation(infected_unit_index, *infected_unit->object.GetAnimationDefinition(), 
+			Engine::Objects::UnitSetAnimation(infected_unit_index, infected_unit->object.animation.definition_index, 
 				infect_end_animation_index);
 			// Set the current animation state to that of a "custom" animation (to avoid the engine doing any weirdness)
 			*infected_unit->unit.GetAnimation()->GetAnimationState() = Enums::_unit_animation_state_custom_animation;
@@ -160,27 +160,27 @@ namespace UnitInfections
 		if(	!AllowInfections(definition) )
 			return;
 
-		datum_index target_unit_index = *infection_unit->object.GetParentObjectIndex();
-		s_unit_datum* target_unit = (*Objects::ObjectHeader())[target_unit_index]->Type._unit;
+		datum_index target_unit_index = infection_unit->object.parent_object_index;
+		s_unit_datum* target_unit = (*Objects::ObjectHeader())[target_unit_index]->_unit;
 
 		// Find the s_unit_infection based on the infection form's unit definition and the target unit's definition indexes
 		int32 unit_infection_definition_index = DefinitionFindInfectableUnitIndex(definition,
-			DefinitionFindInfectionUnitIndex(definition, *infection_unit->object.GetTagDefinition()),
-			*target_unit->object.GetTagDefinition());
+			DefinitionFindInfectionUnitIndex(definition, infection_unit->object.definition_index),
+			target_unit->object.definition_index);
 
 		// If the target unit can be infected by the infection_unit...
 		if(unit_infection_definition_index != NONE)
 		{
 			TagGroups::s_unit_infection const& unit_infection = definition.infectable_units[unit_infection_definition_index];
 
-			real* target_unit_health = target_unit->object.GetHealth();
+			real* target_unit_health = &target_unit->object.damage.health;
 			sbyte* target_unit_animation_state = target_unit->unit.GetAnimation()->GetAnimationState();
 
 			// If the target unit's health is below the threshold and hasn't died yet...
 			if(*target_unit_health <= unit_infection.health_threshold && *target_unit_health > 0.0f)
 			{
 				// If the target unit isn't already infected...
-				if( !TEST_FLAG(*target_unit->object.GetFlags(), Flags::_object_yelo_is_being_infected_bit) )
+				if( !TEST_FLAG(target_unit->object.flags, Flags::_object_yelo_is_being_infected_bit) )
 					InfectionStart(unit_infection, target_unit, target_unit_index);
 				else // They're already infected, wait until the animation is done playing then start the transition
 				{
@@ -199,8 +199,7 @@ namespace UnitInfections
 					{
 						// Prevent the target from being killed while in the transition
 						// TODO: Expose a flag in the definition to allow a unit being infected to be killed?
-						word_flags* dmg_flags = target_unit->object.GetDamageFlags();
-						SET_FLAG(*dmg_flags, Flags::_object_cannot_take_damage_bit, true);
+						SET_FLAG(target_unit->object.damage.flags, Flags::_object_cannot_take_damage_bit, true);
 
 						// Detach the infection forms on each update call. This prevents the infection 
 						// forms from disappearing when we delete the (uninfected) target unit

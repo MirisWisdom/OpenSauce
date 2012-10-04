@@ -11,6 +11,13 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum {
+			k_network_game_maximum_player_count = k_multiplayer_maximum_players,
+		};
+	};
+
 	namespace Networking
 	{
 		struct s_network_game_map
@@ -41,7 +48,7 @@ namespace Yelo
 			byte maximum_players;					// 0x1DD
 			int16 difficulty_level;					// 0x1DE
 			int16 player_count;						// 0x1E0
-			s_network_game_player players[Enums::k_multiplayer_maximum_players];	// 0x1E2
+			s_network_game_player players[Enums::k_network_game_maximum_player_count];	// 0x1E2
 			PAD16;									// 0x3E2
 			int32 network_game_random_seed;			// 0x3E4
 			int32 number_of_games_played;			// 0x3E8

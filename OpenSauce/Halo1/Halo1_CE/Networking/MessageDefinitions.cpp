@@ -18,7 +18,7 @@ namespace Yelo
 #ifndef YELO_NO_NETWORK
 		//////////////////////////////////////////////////////////////////////////
 		// Template'd handler for automatically handling DiscardIterationBody when a message fails to be decoded from the network
-		typedef bool (* proc_message_delta_from_network_impl)(Networking::s_network_game_client* client, message_dependant_header* header);
+		typedef bool (API_FUNC* proc_message_delta_from_network_impl)(Networking::s_network_game_client* client, message_dependant_header* header);
 		
 		template<const proc_message_delta_from_network_impl k_impl>
 		static void MessageDeltaFromNetworkResultHandler(Networking::s_network_game_client* client, message_dependant_header* header)

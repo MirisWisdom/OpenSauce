@@ -60,7 +60,7 @@ namespace Yelo
 
 					datum_index weapon_index;
 					if(weapons && !(weapon_index = weapons[curr_weapon_index]).IsNull())
-						return (*Objects::ObjectHeader())[weapon_index]->Type._item;
+						return (*Objects::ObjectHeader())[weapon_index]->_item;
 
 					return NULL;
 				}
@@ -69,7 +69,7 @@ namespace Yelo
 				{
 					static char weapon_name[Enums::k_weapon_view_name_length];
 
-					datum_index definition_index = *weapon->object.GetTagDefinition();
+					datum_index definition_index = weapon->object.definition_index;
 					if(!definition_index.IsNull())
 					{
 						const TagGroups::s_item_definition* definition = TagGroups::TagGet<TagGroups::s_item_definition>(definition_index);

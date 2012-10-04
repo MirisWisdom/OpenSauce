@@ -38,6 +38,15 @@ namespace Yelo
 			_game_variant_weapon_set,
 		};
 
+		enum game_trait : long_enum
+		{
+			_game_trait_none,
+			_game_trait_invisible,
+			_game_trait_extra_damage,
+			_game_trait_damage_resistant,
+			_game_trait,
+		};
+
 		enum oddball_carrier_speed : long_enum
 		{
 			_oddball_carrier_speed_normal,
@@ -163,7 +172,7 @@ namespace Yelo
 		struct s_game_variant
 		{
 			wchar_t name[24];							// 0x0
-			Enums::game_engine game_engine_index;		// 0x30
+			long_enum game_engine_index;				// 0x30 Enums::game_engine
 			s_universal_variant universal_variant;		// 0x34
 			PAD64 PAD64 PAD64 PAD64;					// 0x7C, unused...
 			s_game_engine_variant game_engine_variant;	// 0x9C

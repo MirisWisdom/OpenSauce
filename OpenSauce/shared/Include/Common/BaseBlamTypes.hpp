@@ -32,15 +32,19 @@ namespace Yelo
 
 
 	// System Initialize function pointer
-	typedef void (* proc_initialize)();
+	// Note: We can use this in engine definitions as well since it takes no parameters
+	typedef void (API_FUNC* proc_initialize)();
 	// System Dispose function pointer
-	typedef void (* proc_dispose)();
+	// Note: We can use this in engine definitions as well since it takes no parameters
+	typedef void (API_FUNC* proc_dispose)();
 	// System Initialize for new map function pointer
-	typedef void (* proc_initialize_for_new_map)();
+	// Note: We can use this in engine definitions as well since it takes no parameters
+	typedef void (API_FUNC* proc_initialize_for_new_map)();
 	// System Dispose from old map function pointer
-	typedef void (* proc_dispose_from_old_map)();
+	// Note: We can use this in engine definitions as well since it takes no parameters
+	typedef void (API_FUNC* proc_dispose_from_old_map)();
 	// System Update function pointer
-	typedef void (* proc_update)(float);
+	typedef void (API_FUNC* proc_update)(float);
 
 
 	/// Template class for defining an interface for blocks of data whose memory layout is not entirely mapped out

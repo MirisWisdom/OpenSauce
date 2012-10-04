@@ -16,7 +16,8 @@ namespace EvaluateRuntimeValue
 			return;
 
 		//TODO: this doesn't seem to work quite right, doesn't always match the units colour
-		real_rgb_color* unit_color = &player_unit->object.GetChangeColors()[2];
+		// TODO: KM00: There are actually two blobs related to change_colors. When this code was written, it used the one at 0x1B8. I think it needs to use the one 0x188. Leaving it to use 0x1B8 for now.
+		real_rgb_color* unit_color = &player_unit->object.change_colors2[2];
 
 		D3DXCOLOR* color = CAST_PTR(D3DXCOLOR*, data);
 		color->a = 1.0f;

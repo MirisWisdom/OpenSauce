@@ -72,6 +72,21 @@ namespace Yelo
 #undef FIELD_ENTRY2
 
 
+		static int ObjectFunctionNameToIndex(cstring function_name)
+		{
+			if(function_name != NULL)
+			{
+				switch(function_name[0])
+				{
+				case 'a': return Enums::_outgoing_object_function_a;
+				case 'b': return Enums::_outgoing_object_function_b;
+				case 'c': return Enums::_outgoing_object_function_c;
+				case 'd': return Enums::_outgoing_object_function_d;
+				}
+			}
+
+			return NONE;
+		}
 		static bool ObjectFieldIndexIsVector(_enum definition_index)
 		{
 			using namespace Enums;
@@ -89,11 +104,11 @@ namespace Yelo
 				switch(field_name[0])
 				{
 				case 'y':	case 'j':	if(vector_size >= sizeof(real_vector2d))
-						field_index = 1;
+						field_index = 1; break;
 				case 'z':	case 'k':	if(vector_size >= sizeof(real_vector3d))
-						field_index = 2;
+						field_index = 2; break;
 				case 'w':	case 'd':	if(vector_size >= sizeof(real_quaternion))
-						field_index = 3;
+						field_index = 3; break;
 				}
 			}
 
@@ -122,11 +137,11 @@ namespace Yelo
 			s_object_field_definition (&list)[_SizeOfArray], cstring name, TObjectDatum& obj, 
 			__inout TypeHolder& result,
 			TGetterParam getter_param,
-			void (* getter_proc)(const s_object_field_definition&, TObjectDatum&, __inout TypeHolder&, TGetterParam)
+			void (API_FUNC* getter_proc)(const s_object_field_definition&, TObjectDatum&, __inout TypeHolder&, TGetterParam)
 			)
 		{
 			const s_object_field_definition* field = 
-				s_object_field_definition::bsearch_list(g_object_vector_fields, name);
+				s_object_field_definition::bsearch_list(list, name);
 
 			if( field != NULL )
 			{
@@ -141,11 +156,11 @@ namespace Yelo
 			s_object_field_definition (&list)[_SizeOfArray], cstring name, TObjectDatum& obj, 
 			TDataType data_value,
 			TGetterParam getter_param,
-			void (* getter_proc)(const s_object_field_definition&, TObjectDatum&, __inout TypeHolder&, TGetterParam)
+			void (API_FUNC* getter_proc)(const s_object_field_definition&, TObjectDatum&, __inout TypeHolder&, TGetterParam)
 			)
 		{
 			const s_object_field_definition* field = 
-				s_object_field_definition::bsearch_list(g_object_vector_fields, name);
+				s_object_field_definition::bsearch_list(list, name);
 
 			if( field != NULL && 
 				!field->is_readonly && 
@@ -164,9 +179,9 @@ namespace Yelo
 			cstring data_name)
 		{
 			const s_object_field_definition* field = 
-				s_object_field_definition::bsearch_list(g_object_vector_fields, data_name);
+				s_object_field_definition::bsearch_list(g_object_real_fields, data_name);
 
-			if( field != NULL )
+			if( field != NULL && ObjectFieldIndexIsVector(field->definition_index) )
 				return ObjectDataFieldGetVector(*field, *header);
 
 			return NULL;
@@ -177,20 +192,16 @@ namespace Yelo
 			cstring data_name, cstring subdata_name,
 			__inout TypeHolder& result)
 		{
-			int subfield_index = VectorFieldNameToIndex(subdata_name, sizeof(real_vector3d));
-
-			ObjectFieldGetImpl(g_object_vector_fields, data_name, *header, 
-				result, subfield_index,
+			ObjectFieldGetImpl(g_object_real_fields, data_name, *header, 
+				result, subdata_name,
 				ObjectDataFieldGetReal);
 		}
 		void ObjectDataSetRealByName(s_object_header_datum* header, 
 			cstring data_name, cstring subdata_name,
 			real data_value)
 		{
-			int subfield_index = VectorFieldNameToIndex(subdata_name, sizeof(real_vector3d));
-
-			ObjectFieldSetImpl(g_object_vector_fields, data_name, *header, 
-				data_value, subfield_index,
+			ObjectFieldSetImpl(g_object_real_fields, data_name, *header, 
+				data_value, subdata_name,
 				ObjectDataFieldGetReal);
 		}
 
@@ -202,7 +213,7 @@ namespace Yelo
 			cstring data_name, cstring subdata_name, 
 			real data_value)
 		{
-			datum_index definition_index = *weapon->object.GetTagDefinition();
+			datum_index definition_index = weapon->object.definition_index;
 
 			const TagGroups::s_weapon_definition* definition = TagGroups::TagGet<TagGroups::s_weapon_definition>(definition_index);
 
@@ -289,7 +300,7 @@ namespace Yelo
 
 		void InitializeObjectFieldDefinitions()
 		{
-			s_object_field_definition::qsort_list(g_object_vector_fields);
+			s_object_field_definition::qsort_list(g_object_real_fields);
 			s_object_field_definition::qsort_list(g_weapon_tag_real_trigger_fields);
 			s_object_field_definition::qsort_list(g_weapon_real_fields);
 			s_object_field_definition::qsort_list(g_unit_object_index_fields);

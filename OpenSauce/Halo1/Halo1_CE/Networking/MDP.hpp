@@ -110,6 +110,7 @@ namespace Yelo
 				32 - lan
 		*/
 
+#ifndef YELO_NO_NETWORK
 		API_INLINE field_type_translated_index_parameters* ObjectIndexParameters()
 		{
 			return &MDP_GET_FIELD_TYPE_DEFINITION(object_index)->parameters->translated_index;
@@ -118,5 +119,6 @@ namespace Yelo
 		{
 			return &MDP_GET_FIELD_TYPE_DEFINITION(player_index)->parameters->translated_index;
 		}
+#endif
 	};
 };

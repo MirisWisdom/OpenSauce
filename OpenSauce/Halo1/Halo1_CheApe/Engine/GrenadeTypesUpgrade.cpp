@@ -36,7 +36,7 @@ namespace Yelo
 			global_grenade_type_yelo_enum_strings
 		};
 
-		static cstring k_scenario_profiles_block_unused_grenade_count_field_name =			"starting <unknown> grenade count";
+		static cstring k_scenario_profiles_block_unused_grenade_count_field_name = "starting <unknown> grenade count";
 		static cstring k_scenario_profiles_block_unused_grenade_count_field_names_yelo[k_unit_grenade_types_new_count] = {
 			"starting custom-2 grenade count",
 			"starting custom-3 grenade count",

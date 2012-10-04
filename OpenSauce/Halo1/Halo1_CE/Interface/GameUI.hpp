@@ -143,7 +143,7 @@ namespace Yelo
 		{
 			// 0x0, uint32 state_last_render_times[Enums::_weapon_hud_state]; // last render for each weapon hud state type
 			// 0x20, datum_index weapon_index
-			// 0x24, real
+			// 0x24, argb_color flash color
 
 			// 0x4C, long_flags render_crosshair_types_mask
 		};

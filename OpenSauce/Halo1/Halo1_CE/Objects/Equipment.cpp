@@ -27,7 +27,7 @@ namespace Yelo
 
 		static bool PLATFORM_API New(datum_index equipment_index)
 		{
-			s_equipment_datum* equipment = (*Objects::ObjectHeader())[equipment_index]->Type._equipment;
+			s_equipment_datum* equipment = (*Objects::ObjectHeader())[equipment_index]->_equipment;
 			TagGroups::s_equipment_definition const* definition = GetObjectDefinition<TagGroups::s_equipment_definition>(equipment_index);
 
 			return true;
@@ -44,7 +44,7 @@ namespace Yelo
 
 		static void PLATFORM_API ExportFunctionValues(datum_index equipment_index)
 		{
-			s_equipment_datum* equipment = (*Objects::ObjectHeader())[equipment_index]->Type._equipment;
+			s_equipment_datum* equipment = (*Objects::ObjectHeader())[equipment_index]->_equipment;
 			TagGroups::s_equipment_definition const* definition = GetObjectDefinition<TagGroups::s_equipment_definition>(equipment_index);
 		}
 
