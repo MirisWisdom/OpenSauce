@@ -32,6 +32,7 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_GAME_GAME_STATE
 #include "Memory/_EngineLayout.inl"
 
+#include "Game/GameState.Procs.inl"
 #if !PLATFORM_IS_DEDI
 	#include "Game/GameState.ServerList.inl"
 #endif
@@ -130,7 +131,7 @@ namespace Yelo
 
 		void Initialize()
 		{
-
+			InitializeProcs();
 			MemoryUpgradesInitialize();
 			if(CMDLINE_GET_PARAM(use_os_gamestate).ParameterSet())
 			{
@@ -159,7 +160,7 @@ namespace Yelo
 
 			Memory::WriteRelativeJmp(&InitializeForNewGameStateHook, GET_FUNC_VPTR(GAME_INITIALIZE_HOOK), true);
 			Memory::WriteRelativeJmp(&InitializeForNewMapHook, GET_FUNC_VPTR(GAME_INITIALIZE_FOR_NEW_MAP_HOOK), true);
-			Memory::CreateHookRelativeCall(&DisposeFromOldMap, GET_FUNC_VPTR(GAME_DISPOSE_FROM_OLD_MAP_HOOK), Enums::_x86_opcode_retn);
+			Memory::CreateHookRelativeCall(&DisposeFromOldMap, GET_FUNC_VPTR(GAME_DISPOSE_FROM_OLD_MAP_HOOK), Enums::_x86_opcode_ret);
 
 #if !PLATFORM_IS_DEDI
 			ServerListInitialize();
@@ -172,21 +173,21 @@ namespace Yelo
 			MemoryUpgradesDispose();
 		}
 
-		void PLATFORM_API InitializeForNewGameState()
+		void Update(real delta_time)
 		{
 			Yelo::Main::s_project_component* components;
 			const int32 component_count = Yelo::Main::GetProjectComponents(components);
 
 			for(int32 x = 0; x <= component_count; x++)
-				if( components[x].InitializeForNewGameState != NULL )
-					components[x].InitializeForNewGameState();
+				if( components[x].Update != NULL )
+					components[x].Update(delta_time);
 		}
 
 		void PLATFORM_API InitializeForNewMap()
 		{
 			Physics()->Reset(); // Reset the physics constants on each new map load since these are engine globals, not game state globals.
 
-			Yelo::Main::s_project_component* components;
+			Yelo::Main::s_project_map_component* components;
 			const int32 component_count = Yelo::Main::GetProjectComponents(components);
 
 			for(int32 x = 0; x <= component_count; x++)
@@ -201,10 +202,9 @@ namespace Yelo
 					Physics()->SetGravityScale(gravity_scale);
 			}
 		}
-
 		void PLATFORM_API DisposeFromOldMap()
 		{
-			Yelo::Main::s_project_component* components;
+			Yelo::Main::s_project_map_component* components;
 			const int32 component_count = Yelo::Main::GetProjectComponents(components);
 
 			for(int32 x = component_count; x >= 0; x--)
@@ -212,24 +212,49 @@ namespace Yelo
 					components[x].DisposeFromOldMap();
 		}
 
-		void Update(real delta_time)
+		void PLATFORM_API InitializeForNewGameState()
 		{
-			Yelo::Main::s_project_component* components;
+			Yelo::Main::s_project_game_state_component* components;
 			const int32 component_count = Yelo::Main::GetProjectComponents(components);
 
 			for(int32 x = 0; x <= component_count; x++)
-				if( components[x].Update != NULL )
-					components[x].Update(delta_time);
+				if( components[x].InitializeForNewGameState != NULL )
+					components[x].InitializeForNewGameState();
 		}
-
 		void InitializeForYeloGameState(bool enabled)
 		{
-			Yelo::Main::s_project_component* components;
+			Yelo::Main::s_project_game_state_component* components;
 			const int32 component_count = Yelo::Main::GetProjectComponents(components);
 
 			for(int32 x = 0; x <= component_count; x++)
 				if( components[x].InitializeForYeloGameState != NULL )
 					components[x].InitializeForYeloGameState(enabled);
+		}
+		static void HandleGameStateLifeCycle(Enums::project_game_state_component_life_cycle life_cycle)
+		{
+			ASSERT( IN_RANGE_ENUM(life_cycle, Enums::k_number_of_project_game_state_component_life_cycles), "What fucking life cycle is this shit?");
+
+			Yelo::Main::s_project_game_state_component* components;
+			const int32 component_count = Yelo::Main::GetProjectComponents(components);
+
+			for(int32 x = 0; x <= component_count; x++)
+				if( components[x].HandleGameStateLifeCycle != NULL )
+					components[x].HandleGameStateLifeCycle(life_cycle);
+		}
+		void PLATFORM_API HandleBeforeSaveLifeCycle()
+		{
+			Engine::Console::Warning("before_save");
+			HandleGameStateLifeCycle(Enums::_project_game_state_component_life_cycle_before_save);
+		}
+		void PLATFORM_API HandleBeforeLoadLifeCycle()
+		{
+			Engine::Console::Warning("before_load");
+			HandleGameStateLifeCycle(Enums::_project_game_state_component_life_cycle_before_load);
+		}
+		void PLATFORM_API HandleAfterLoadLifeCycle()
+		{
+			Engine::Console::Warning("after_load");
+			HandleGameStateLifeCycle(Enums::_project_game_state_component_life_cycle_after_load);
 		}
 
 		void InitializeScripting()

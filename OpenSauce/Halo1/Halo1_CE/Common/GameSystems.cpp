@@ -13,6 +13,8 @@
 //////////////////////////////////////////////////////////////////////////
 // User only includes
 	#if PLATFORM_IS_USER
+		#include <Blam/Halo1/shader_postprocess_definitions.hpp>
+
 		#include "Rasterizer/DX9/DxWrapper.hpp"
 		#include "Rasterizer/DX9/DX9.hpp"
 		#include "Rasterizer/DX9/DeviceHooks.hpp"
@@ -95,6 +97,38 @@ namespace Yelo
 #if !defined(API_YELO_NO_PROJECT_COMPONENTS)
 			static s_project_component k_components[] = {
 				#include "Common/GameSystems.ProjComponents.inl"
+			};
+
+			out_components = k_components;
+			components_count = NUMBEROF(k_components)-1;
+#endif
+
+			return components_count;
+		}
+		int32 GetProjectComponents(s_project_map_component*& out_components)
+		{
+			out_components = NULL;
+			int32 components_count = NONE;
+
+#if !defined(API_YELO_NO_PROJECT_COMPONENTS)
+			static s_project_map_component k_components[] = {
+				#include "Common/GameSystems.ProjMapComponents.inl"
+			};
+
+			out_components = k_components;
+			components_count = NUMBEROF(k_components)-1;
+#endif
+
+			return components_count;
+		}
+		int32 GetProjectComponents(s_project_game_state_component*& out_components)
+		{
+			out_components = NULL;
+			int32 components_count = NONE;
+
+#if !defined(API_YELO_NO_PROJECT_COMPONENTS)
+			static s_project_game_state_component k_components[] = {
+				#include "Common/GameSystems.ProjGameStateComponents.inl"
 			};
 
 			out_components = k_components;

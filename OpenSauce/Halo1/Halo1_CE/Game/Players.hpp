@@ -319,13 +319,13 @@ namespace Yelo
 			// 0x8, word
 			// 0xA, word
 			TStructGetPtrImpl(real_euler_angles2d, DesiredAngles, 0xC); // facing
-			// 0x14, real
-
+			TStructGetPtrImpl(real_vector2d, Throttle, 0x14);
+			TStructGetPtrImpl(real, PrimaryTrigger, 0x1C);
 			TStructGetPtrImpl(int16, CurrentWeaponIndex, 0x20);
 			TStructGetPtrImpl(int16, CurrentGrenadeIndex, 0x22);
 			TStructGetPtrImpl(int16, ZoomLevel, 0x24);
-			// 0x26, sbyte
-			// 0x27, sbyte
+			TStructGetPtrImpl(sbyte, WeaponSwapTicks, 0x26);
+			// 0x27, sbyte, unused ticks counter
 			TStructGetPtrImpl(datum_index, TargetUnitIndex, 0x28);
 			TStructGetPtrImpl(real, AutoaimLevel, 0x2C);
 			// 0x30, real

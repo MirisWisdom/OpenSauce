@@ -6,56 +6,37 @@
 */
 #pragma once
 
-#include <Blam/Halo1/shader_postprocess_definitions.hpp>
-#include "Common/YeloSettings.hpp"
+#include "Common/GameSystemDefinitions.hpp"
 
 namespace Yelo
 {
 	namespace Main
 	{
-		struct s_project_component
-		{
-			// Called from Main on startup
-			proc_initialize				Initialize;
-			// Called from Main on shutdown
-			proc_dispose				Dispose;
+		/*
+		  Yes, there's a reason why we return component_count minus 1.
+		  For most components, there's a dispose/shutdown pattern that can be ran.
+		  So we can easily do for loops that are:
+			'x <= count' for initialize
+			'x >= 0' for dispose
+		  In both cases 'x' will be a valid index into the components array.
+		  Then since we use NONE for component arrays that don't exist, the for loops will never run
+		  (thus the arrays will never get dereferenced. they're null in said conditions after all)
+		*/
 
-			// Called from Yelo::GameState on init for new game state
-			proc_initialize				InitializeForNewGameState;
-
-			// Called from Yelo::GameState on init for a new map
-			proc_initialize_for_new_map	InitializeForNewMap;
-			// Called from Yelo::GameState on disposing from an old map
-			proc_dispose_from_old_map	DisposeFromOldMap;
-
-			// Called from Yelo::GameState on each game tick
-			proc_update					Update;
-
-			void						(*InitializeForYeloGameState)(bool enabled);
-		};
-
-		//	[out_components] - Returns a list of components, or NULL if no components exist
-		//	returns: Number of components in [out_components] minus 1, or just 0 if no components exist
+		// [out_components] - Returns a list of components, or NULL if no components exist
+		// returns: Number of components in [out_components] minus 1, or NONE if no components exist in this build
 		int32 GetProjectComponents(s_project_component*& out_components);
+		// [out_components] - Returns a list of components, or NULL if no components exist
+		// returns: Number of components in [out_components] minus 1, or NONE if no components exist in this build
+		int32 GetProjectComponents(s_project_map_component*& out_components);
+		// [out_components] - Returns a list of components, or NULL if no components exist
+		// returns: Number of components in [out_components] minus 1, or NONE if no components exist in this build
+		int32 GetProjectComponents(s_project_game_state_component*& out_components);
 
 
 #if PLATFORM_IS_USER
-		struct s_dx_component
-		{
-			// Called from [Yelo_]IDirect3D9::CreateDevice
-			void (*Initialize)(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* params);
-			// Called from [Yelo_]IDirect3DDevice9::Reset
-			void (*OnLostDevice)();
-			// Called from [Yelo_]IDirect3DDevice9::Reset
-			void (*OnResetDevice)(D3DPRESENT_PARAMETERS* params);
-			// Called from [Yelo_]IDirect3DDevice9::EndScene
-			void (*Render)();
-			// Called from Rasterizer::Hook_RasterizerDispose
-			void (*Release)();
-		};
-
-		//	[out_components] - Returns a list of components, or NULL if no components exist
-		//	returns: Number of components in [out_components] minus 1, or just or 0 if no components exist
+		// [out_components] - Returns a list of components, or NULL if no components exist
+		// returns: Number of components in [out_components] minus 1, or NONE if no components exist in this build
 		int32 GetDXComponents(s_dx_component*& out_components);
 #endif
 

@@ -79,14 +79,59 @@ namespace Yelo
 	{
 		enum x86_opcode : byte {
 			_x86_opcode_nop = 0x90,
-			_x86_opcode_retn = 0xC3,
+			// return near imm16\32
+			_x86_opcode_retn = 0xC2,
+			// regular return near
+			_x86_opcode_ret = 0xC3,
+			// call near imm16\32
 			_x86_opcode_call_near = 0xE8,
+			// jmp near imm16\32
 			_x86_opcode_jmp_near = 0xE9,
 		};
+		enum x86_opcode_twobyte : uint16 {
+			// call ds:[address]
+			_x86_opcode_call_abs = 0x15FF, /*FF 15*/
+			// call ds:[address]
+			_x86_opcode_jmp_abs = 0x25FF, /*FF 25*/
+		};
+		BOOST_STATIC_ASSERT( sizeof(Enums::_x86_opcode_call_abs)==2 );
 	};
 
 	namespace Memory
 	{
+		struct Opcode
+		{
+			struct s_call
+			{
+				byte Op;
+				uint32 Address;
+			};
+
+			struct s_call_ret
+			{
+				byte Op;
+				uint32 Address;
+				byte Ret;
+				uint16 Count;
+			};
+
+			// absolute call opcode
+			struct s_call_abs
+			{
+				uint16 Op;
+				uint32 Address;
+			};
+
+			// absolute call opcode with return
+			struct s_call_abs_ret
+			{
+				uint16 Op;
+				uint32 Address;
+				byte Ret;
+				uint16 Count;
+			};
+		};
+
 		// Copies [size] bytes of [src] to [address]
 		// Changes the protection of [address] while its coping [src]
 		// Then changes the protection of [address] back
@@ -107,6 +152,37 @@ namespace Yelo
 		// Writes '0xE8' if [write_opcode]
 		// returns the original call address (absolute)
 		uint32 WriteRelativeCall(void* to_address, void* call_address, bool write_opcode = false);
+
+
+		// [call] buffer containing the data we wish to write
+		// [address] address to put [call]
+		void Write(Opcode::s_call& call, void* address);
+		// [call_buffer] is a buffer to receive the old bytes
+		// [address] address to put\overwrite a call
+		// [target] address to make the call goto
+		void WriteCall(void* call_buffer, void* address, const void* target);
+
+		// [call_ret_buffer] is a buffer to receive the old bytes
+		// [address] address to put\overwrite a call and ret
+		// [target] address to make the call goto
+		void WriteCallRet(void* call_ret_buffer, void* address, const void* target);
+		// [call_ret_buffer] is a buffer to receive the old bytes
+		// [address] address to put\overwrite a call and ret
+		// [target] address to make the call goto
+		// [count] number of 32-bit args in the function we're modding. If there are any 
+		// 64-bit arguments, count them twice!
+		void WriteCallRet(void* call_ret_buffer, void* address, const void* target, const uint16 count);
+		// [call] buffer containing the data we wish to write
+		// [address] address to put [call]
+		void WriteRet(Opcode::s_call_ret& call, void* address);
+		// [call] buffer containing the data we wish to write
+		// [address] address to put [call]
+		void WriteRetn(Opcode::s_call_ret& call, void* address);
+
+		// [jmp_buffer] is a buffer to receive the old bytes
+		// [address] address to put\overwrite a jmp
+		// [target] address to make the jmp goto
+		void WriteJmp(void* jmp_buffer, void* address, const void* target);
 
 
 		struct s_memory_exec_change_data {
@@ -140,5 +216,53 @@ namespace Yelo
 			CAST_PTR(void*, (call_address) ),							\
 			__VA_ARGS__													\
 		};
+
+
+		// Overwrite the memory at [address] with [array]
+		// Copies the original memory at [address] into [array] before returning
+		// This is useful when writing an array of opaque bytes to game memory
+		template<typename T, size_t TSizeOfArray>
+		void OverwriteMemory(void* address, T(& array)[TSizeOfArray])
+		{
+			T old_memory[TSizeOfArray];
+			// Copy the old memory from the address
+			memcpy(old_memory, address, TSizeOfArray);
+			// Write the new memory to the address
+			memcpy(address, array, TSizeOfArray);
+			// Fill [array] with the old memory
+			memcpy(array, old_memory, TSizeOfArray);
+		}
+		// Overwrite the memory at [address] with [array]
+		// Does NOT copy the original memory at [address] into [array] before returning
+		// This is useful when writing an array of opaque bytes to game memory, esp. during unwinding operations
+		template<typename T, size_t TSizeOfArray>
+		void OverwriteMemorySansCopy(void* address, const T(& array)[TSizeOfArray])
+		{
+			// Write the new memory to the address
+			memcpy(address, array, TSizeOfArray);
+		}
+		// Overwrite the memory at [address] with [data]
+		// Copies the original memory at [address] into [data] before returning
+		// This is useful when writing a concrete object to game memory
+		template<typename T>
+		void OverwriteMemory(void* address, T& data)
+		{
+			T old_memory;
+			// Copy the old memory from the address
+			memcpy(&old_memory, address, sizeof(T));
+			// Write the new memory to the address
+			memcpy(address, &data, sizeof(T));
+			// Fill [data] with the old memory
+			memcpy(&data, &old_memory, sizeof(T));
+		}
+		// Overwrite the memory at [address] with [data]
+		// Does NOT copy the original memory at [address] into [data] before returning
+		// This is useful when writing a concrete object to game memory, esp. during unwinding operations
+		template<typename T>
+		void OverwriteMemorySansCopy(void* address, const T& data)
+		{
+			// Write the new memory to the address
+			memcpy(address, &data, sizeof(T));
+		}
 	};
 };
