@@ -14,41 +14,26 @@ enum {
 	k_number_of_game_state_after_load_procs = 13,
 };
 
-// TODO: If we're just going to always have Handle<X>LifeCycle functions, remove the NULL and -1 shit
-
 //////////////////////////////////////////////////////////////////////////
 // before save
 static game_state_proc game_state_before_save_procs_yelo[] = {
 	HandleBeforeSaveLifeCycle,
-	NULL, // must come last
 };
-static const size_t k_number_of_game_state_before_save_procs_yelo = 
-	NUMBEROF(game_state_before_save_procs_yelo)-1;
-static game_state_proc game_state_before_save_procs_new[k_number_of_game_state_before_save_procs + k_number_of_game_state_before_save_procs_yelo] = {
-};
+static game_state_proc game_state_before_save_procs_new[k_number_of_game_state_before_save_procs + NUMBEROF(game_state_before_save_procs_yelo)] = {};
 
 //////////////////////////////////////////////////////////////////////////
 // before load
 static game_state_proc game_state_before_load_procs_yelo[] = {
 	HandleBeforeLoadLifeCycle,
-	NULL, // must come last
 };
-static const size_t k_number_of_game_state_before_load_procs_yelo = 
-	NUMBEROF(game_state_before_load_procs_yelo)-1;
-static game_state_proc game_state_before_load_procs_new[k_number_of_game_state_before_load_procs + k_number_of_game_state_before_load_procs_yelo] = {
-};
+static game_state_proc game_state_before_load_procs_new[k_number_of_game_state_before_load_procs + NUMBEROF(game_state_before_load_procs_yelo)] = {};
 
 //////////////////////////////////////////////////////////////////////////
 // after load
 static game_state_proc game_state_after_load_procs_yelo[] = {
 	HandleAfterLoadLifeCycle,
-	NULL, // must come last
 };
-static const size_t k_number_of_game_state_after_load_procs_yelo = 
-	NUMBEROF(game_state_after_load_procs_yelo)-1;
-static game_state_proc game_state_after_load_procs_new[k_number_of_game_state_after_load_procs + k_number_of_game_state_after_load_procs_yelo] = {
-	// ...
-};
+static game_state_proc game_state_after_load_procs_new[k_number_of_game_state_after_load_procs + NUMBEROF(game_state_after_load_procs_yelo)] = {};
 
 //////////////////////////////////////////////////////////////////////////
 // impl
@@ -68,8 +53,8 @@ static void PLATFORM_API game_state_call_before_load_procs_new()
 static void InitializeNewProcsArrays()
 {
 	using namespace Enums;
-
-	if(k_number_of_game_state_before_save_procs_yelo > 0)
+	//////////////////////////////////////////////////////////////////////////
+	// before save
 	{
 		// Get the one-and-only save proc from the first call address
 		game_state_proc* before_save_proc = *CAST_PTR(game_state_proc**,
@@ -82,8 +67,8 @@ static void InitializeNewProcsArrays()
 			game_state_before_save_procs_new[x+k_number_of_game_state_before_save_procs] = 
 				game_state_before_save_procs_yelo[x];
 	}
-
-	if(k_number_of_game_state_before_load_procs_yelo > 0)
+	//////////////////////////////////////////////////////////////////////////
+	// before load
 	{
 		// Get the one-and-only load proc from the first call address
 		game_state_proc* before_load_proc = *CAST_PTR(game_state_proc**,
@@ -96,8 +81,8 @@ static void InitializeNewProcsArrays()
 			game_state_before_load_procs_new[x+k_number_of_game_state_before_load_procs] = 
 			game_state_before_load_procs_yelo[x];
 	}
-
-	if(k_number_of_game_state_after_load_procs_yelo > 0)
+	//////////////////////////////////////////////////////////////////////////
+	// after load
 	{
 		// Get the address of the first element of the game's after load procs
 		game_state_proc* after_load_procs = *CAST_PTR(game_state_proc**,
@@ -116,22 +101,22 @@ static void InitializeNewProcsArrays()
 static void InitializeProcs()
 {
 	InitializeNewProcsArrays();
-
-	if(k_number_of_game_state_before_save_procs_yelo > 0)
+	//////////////////////////////////////////////////////////////////////////
+	// before save
 	{
 		for(int x = 0; x < NUMBEROF(K_GAME_STATE_BEFORE_SAVE_PROCS_CALLS); x++)
 			Memory::CreateHookRelativeCall(&game_state_call_before_save_procs_new, 
 				CAST_PTR(void*,K_GAME_STATE_BEFORE_SAVE_PROCS_CALLS[x]), Enums::_x86_opcode_nop);
 	}
-
-	if(k_number_of_game_state_before_load_procs_yelo > 0)
+	//////////////////////////////////////////////////////////////////////////
+	// before load
 	{
 		for(int x = 0; x < NUMBEROF(K_GAME_STATE_BEFORE_LOAD_PROCS_CALLS); x++)
 			Memory::CreateHookRelativeCall(&game_state_call_before_load_procs_new, 
 				CAST_PTR(void*,K_GAME_STATE_BEFORE_LOAD_PROCS_CALLS[x]), Enums::_x86_opcode_nop);
 	}
-
-	if(k_number_of_game_state_after_load_procs_yelo > 0)
+	//////////////////////////////////////////////////////////////////////////
+	// after load
 	{
 		BOOST_STATIC_ASSERT( NUMBEROF(K_GAME_STATE_AFTER_LOAD_PROCS_REFS) == NUMBEROF(K_GAME_STATE_AFTER_LOAD_PROCS_COUNTS) );
 
