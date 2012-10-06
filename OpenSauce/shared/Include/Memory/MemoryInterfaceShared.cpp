@@ -6,6 +6,18 @@
 #include "Common/Precompile.hpp"
 #include <Memory/MemoryInterfaceShared.hpp>
 
+// We apply '__declspec(noinline)' to the memory functions to avoid
+// any invalid inlining cases with the linker when it thinks a supplied
+// address is actually in our DLL's code when it's not...it's a pointer to halo's
+// code.
+// Ex:
+// 1>\memory\memoryinterface.cpp(149) : fatal error C1001: An internal error has occurred in the compiler.
+// 1>(compiler file 'F:\SP\vctools\compiler\utc\src\P2\main.c[0x10BEFEAB:0x003A0073]', line 182)
+// 1> To work around this problem, try simplifying or changing the program near the locations listed above.
+// 
+// This was from 'WriteMemory' before it was marked as noinline, and was trying
+// to inline with a halo address
+
 namespace Yelo
 {
 	namespace Memory
@@ -87,6 +99,80 @@ namespace Yelo
 			WriteMemory(CAST_PTR(void*, CAST_PTR(uint32, call_address)+1 ), CAST_PTR(void*, relative));
 
 			return original;
+		}
+
+
+		void Write(Opcode::s_call& call, void* address)
+		{
+			memcpy(address, &call, sizeof(call));
+		}
+		void WriteCall(void* call_buffer, void* address, const void* target)
+		{
+			Opcode::s_call* call = CAST_PTR(Opcode::s_call*, call_buffer);
+			Opcode::s_call* call_address = CAST_PTR(Opcode::s_call*, address);
+
+			call->Op = call_address->Op;					// copy the old
+			call_address->Op = Enums::_x86_opcode_call_near;// set the new
+			call->Address = call_address->Address;			// copy the old
+			call_address->Address =							// set the new
+				CAST_PTR(uint32, target) -		// cast the pointer to a number to perform math on
+				(
+					CAST_PTR(uint32, address) + sizeof(Opcode::s_call)
+				);
+		}
+
+		void WriteCallRet(void* call_ret_buffer, void* address, const void* target)
+		{	
+			CAST_PTR(Opcode::s_call_ret*, call_ret_buffer)->Ret = 
+				CAST_PTR(Opcode::s_call_ret*, address)->Ret;						// copy the old
+			WriteCall(call_ret_buffer, address, target);
+			CAST_PTR(Opcode::s_call_ret*, address)->Ret = Enums::_x86_opcode_ret;	// set the new
+		}
+		void WriteCallRet(void* call_ret_buffer, void* address, const void* target, const uint16 count)
+		{
+			CAST_PTR(Opcode::s_call_ret*, call_ret_buffer)->Ret = 
+				CAST_PTR(Opcode::s_call_ret*, address)->Ret;						// copy the old
+			WriteCall(call_ret_buffer, address, target);
+			CAST_PTR(Opcode::s_call_ret*, address)->Ret = Enums::_x86_opcode_retn;	// set the new
+			CAST_PTR(Opcode::s_call_ret*, call_ret_buffer)->Count = 
+				CAST_PTR(Opcode::s_call_ret*, address)->Count;						// copy the old
+			CAST_PTR(Opcode::s_call_ret*, address)->Count = (count * 4);			// set the new
+		}
+
+		void WriteRet(Opcode::s_call_ret& call, void* address)
+		{
+			memcpy(address, &call, sizeof(call) - sizeof(uint16)); // don't include the retn's count
+		}
+		void WriteRetn(Opcode::s_call_ret& call, void* address)
+		{
+			memcpy(address, &call, sizeof(call));
+		}
+
+		void WriteJmp(void* jmp_buffer, void* address, const void* target)
+		{
+			Opcode::s_call* jmp = CAST_PTR(Opcode::s_call*, jmp_buffer);
+			Opcode::s_call* jmp_address = CAST_PTR(Opcode::s_call*, address);
+
+			jmp->Op = jmp_address->Op;						// copy the old
+			jmp_address->Op = Enums::_x86_opcode_jmp_near;	// set the new
+			jmp->Address = jmp_address->Address;			// copy the old
+			jmp_address->Address =							// set the new
+				CAST_PTR(uint32, target) -		// cast the pointer to a number to perform math on
+				(
+					CAST_PTR(uint32, address) + sizeof(Opcode::s_call)
+				);
+		}
+
+		void OverwriteJmp(void* jmp_buffer, void* address, const void* target)
+		{
+			Opcode::s_call* jmp_address = CAST_PTR(Opcode::s_call*, address);
+
+			CAST_PTR(Opcode::s_call*, jmp_buffer)->Address = jmp_address->Address; // copy the old
+			jmp_address->Address =				// set the new
+				CAST_PTR(uint32, target) -		// cast the pointer to a number to perform math on
+				(
+					CAST_PTR(uint32, address) + sizeof(Opcode::s_call)
+				);
 		}
 #pragma warning( pop )
 

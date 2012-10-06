@@ -328,6 +328,10 @@ namespace Yelo
 			TStructGetPtrImpl(s_direction_specification,	ControlIdleMajorDirection, 0x56C);
 			TStructGetPtrImpl(s_direction_specification,	ControlIdleMinorDirection, 0x57C);
 
+			//TStructGetPtrImpl(bool,				Control, 0x591);
+			//PAD24
+			//TStructGetPtrImpl(real,				Control, 0x594);
+
 			TStructGetPtrImpl(real_vector3d,	ControlDesiredFacingVector, 0x5A4);
 			TStructGetPtrImpl(real_vector3d,	ControlDesiredAimingVector, 0x5B0);
 			TStructGetPtrImpl(real_vector3d,	ControlDesiredLookingVector, 0x5BC);

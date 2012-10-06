@@ -116,7 +116,7 @@ namespace Yelo
 
 		void Initialize()
 		{
-			Memory::CreateHookRelativeCall(&GameEngine::InitializeForNewMap, GET_FUNC_VPTR(GAME_ENGINE_INITIALIZE_FOR_NEW_MAP_HOOK), Enums::_x86_opcode_retn);
+			Memory::CreateHookRelativeCall(&GameEngine::InitializeForNewMap, GET_FUNC_VPTR(GAME_ENGINE_INITIALIZE_FOR_NEW_MAP_HOOK), Enums::_x86_opcode_ret);
 			Memory::WriteRelativeJmp(&GameStateUpdate_Hook, GET_FUNC_VPTR(GAME_ENGINE_UPDATE_HOOK), true);
 
 #pragma region New Engines implementation

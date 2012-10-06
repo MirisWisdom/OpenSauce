@@ -85,7 +85,7 @@ namespace Yelo
 
 	namespace Flags
 	{
-		enum unit_control_flags
+		enum unit_control_flags : word_flags
 		{
 			_unit_control_crouch_bit,
 			_unit_control_jump_bit,

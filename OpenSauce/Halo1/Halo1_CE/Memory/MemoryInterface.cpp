@@ -9,18 +9,6 @@
 
 #include "Game/EngineFunctions.hpp"
 
-// We apply '__declspec(noinline)' to the memory functions to avoid
-// any invalid inlining cases with the linker when it thinks a supplied
-// address is actually in our DLL's code when it's not...it's a pointer to halo's
-// code.
-// Ex:
-// 1>\memory\memoryinterface.cpp(149) : fatal error C1001: An internal error has occurred in the compiler.
-// 1>(compiler file 'F:\SP\vctools\compiler\utc\src\P2\main.c[0x10BEFEAB:0x003A0073]', line 182)
-// 1> To work around this problem, try simplifying or changing the program near the locations listed above.
-// 
-// This was from 'WriteMemory' before it was marked as noinline, and was trying
-// to inline with a halo address
-
 namespace Yelo
 {
 	namespace Main

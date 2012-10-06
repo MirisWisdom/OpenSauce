@@ -118,5 +118,6 @@ namespace Yelo
 
 #include "Common/DebugFile.hpp"
 #include "Common/DebugAssert.hpp"
+#include "Common/YeloSettings.hpp"
 
 #define HRESULT_ERETURN(p) if(FAILED(p)) return E_FAIL

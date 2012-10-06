@@ -355,6 +355,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Common\GameSystemDefinitions.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Common\GameSystems.cpp"
 				>
 			</File>
@@ -2982,6 +2986,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Common\GameSystems.ProjGameStateComponents.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\Common\GameSystems.ProjMapComponents.inl"
+					>
+				</File>
+				<File
 					RelativePath=".\Common\YeloSettings.CmdLineSettings.inl"
 					>
 				</File>
@@ -3202,6 +3214,10 @@
 					>
 					<File
 						RelativePath=".\Game\GameState.EventLog.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Game\GameState.Procs.inl"
 						>
 					</File>
 					<File

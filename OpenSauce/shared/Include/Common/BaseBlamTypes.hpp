@@ -45,6 +45,9 @@ namespace Yelo
 	typedef void (API_FUNC* proc_dispose_from_old_map)();
 	// System Update function pointer
 	typedef void (API_FUNC* proc_update)(float);
+	// System Update function pointer
+	// Note: We can use this in engine definitions as well since it takes no parameters
+	typedef void (API_FUNC* proc_update_no_args)();
 
 
 	/// Template class for defining an interface for blocks of data whose memory layout is not entirely mapped out

@@ -191,14 +191,20 @@ namespace Yelo
 
 		void Initialize();
 		void Dispose();
-		// Called only once: after all other game systems have been initialized at game startup.
-		void PLATFORM_API InitializeForNewGameState();
-		void PLATFORM_API InitializeForNewMap();
-		void PLATFORM_API DisposeFromOldMap();
 		// Don't call me unless your name is GameEngine!
 		void Update(real delta_time);
+
+		void PLATFORM_API InitializeForNewMap();
+		void PLATFORM_API DisposeFromOldMap();
+		
+		// Called only once: after all other game systems have been initialized at game startup.
+		void PLATFORM_API InitializeForNewGameState();
 		// Called in Initialize(). Don't call me from anywhere else for now.
 		void InitializeForYeloGameState(bool enabled);
+		// These handlers are called by internal game state procs code. Don't touch.
+		void PLATFORM_API HandleBeforeSaveLifeCycle();
+		void PLATFORM_API HandleBeforeLoadLifeCycle();
+		void PLATFORM_API HandleAfterLoadLifeCycle();
 
 		// Called from ScriptingLibrary's Initialize (since the GameState is initialized before Scripting is)
 		void InitializeScripting();
