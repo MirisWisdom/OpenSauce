@@ -243,17 +243,14 @@ namespace Yelo
 		}
 		void PLATFORM_API HandleBeforeSaveLifeCycle()
 		{
-			Engine::Console::Warning("before_save");
 			HandleGameStateLifeCycle(Enums::_project_game_state_component_life_cycle_before_save);
 		}
 		void PLATFORM_API HandleBeforeLoadLifeCycle()
 		{
-			Engine::Console::Warning("before_load");
 			HandleGameStateLifeCycle(Enums::_project_game_state_component_life_cycle_before_load);
 		}
 		void PLATFORM_API HandleAfterLoadLifeCycle()
 		{
-			Engine::Console::Warning("after_load");
 			HandleGameStateLifeCycle(Enums::_project_game_state_component_life_cycle_after_load);
 		}
 
