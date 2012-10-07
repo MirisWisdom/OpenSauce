@@ -26,7 +26,7 @@ namespace Yelo_Neighborhood
 
         public void LoadModule(Executable.Module module)
         {
-            if (!Program.XBox.Connected) new Settings().ShowDialog();
+            if (!Program.XBox.Ping()) new Settings().ShowDialog();
             if(this.Visible) this.Enabled = false;
             Program.MainWindow.Enabled = false;
             Program.MainWindow.probar.Style = ProgressBarStyle.Marquee;
@@ -50,14 +50,14 @@ namespace Yelo_Neighborhood
 
         private void cmdReload_Click(object sender, EventArgs e)
         {
-            if (!Program.XBox.Connected) new Settings().ShowDialog();
+            if (!Program.XBox.Ping()) new Settings().ShowDialog();
             for (int i = 0; i < gridModules.SelectedRows.Count; i++)
                 modules[gridModules.SelectedRows[i].Index].Reload();
         }
 
         private void cmdEnd_Click(object sender, EventArgs e)
         {
-            if (!Program.XBox.Connected) new Settings().ShowDialog();
+            if (!Program.XBox.Ping()) new Settings().ShowDialog();
             for (int i = 0; i < gridModules.SelectedRows.Count; i++)
                 modules[gridModules.SelectedRows[i].Index].Unload();
         }

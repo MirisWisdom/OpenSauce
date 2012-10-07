@@ -45,6 +45,7 @@
             this.cmdDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.sepAddToScriptsMenu = new System.Windows.Forms.ToolStripSeparator();
             this.cmdAddToScriptsMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmdLaunch = new System.Windows.Forms.ToolStripMenuItem();
             this.imgLstFiles = new System.Windows.Forms.ImageList(this.components);
             this.menuStrip2 = new System.Windows.Forms.MenuStrip();
             this.xBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,7 +70,10 @@
             this.launchTitleWorker = new System.ComponentModel.BackgroundWorker();
             this.sendFileWorker = new System.ComponentModel.BackgroundWorker();
             this.deleteFileWorker = new System.ComponentModel.BackgroundWorker();
-            this.cmdLaunch = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmdDownload = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.SFD = new System.Windows.Forms.SaveFileDialog();
+            this.downloadFileWorker = new System.ComponentModel.BackgroundWorker();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.mnuFiles.SuspendLayout();
@@ -178,11 +182,13 @@
             this.mnuFiles.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cmdRename,
             this.cmdDelete,
+            this.toolStripSeparator5,
+            this.cmdDownload,
             this.sepAddToScriptsMenu,
             this.cmdAddToScriptsMenu,
             this.cmdLaunch});
             this.mnuFiles.Name = "mnuFiles";
-            this.mnuFiles.Size = new System.Drawing.Size(186, 98);
+            this.mnuFiles.Size = new System.Drawing.Size(186, 126);
             this.mnuFiles.Opening += new System.ComponentModel.CancelEventHandler(this.mnuFiles_Opening);
             // 
             // cmdRename
@@ -210,6 +216,13 @@
             this.cmdAddToScriptsMenu.Size = new System.Drawing.Size(185, 22);
             this.cmdAddToScriptsMenu.Text = "Add To Scripts Menu";
             this.cmdAddToScriptsMenu.Click += new System.EventHandler(this.cmdAddToScriptsMenu_Click);
+            // 
+            // cmdLaunch
+            // 
+            this.cmdLaunch.Name = "cmdLaunch";
+            this.cmdLaunch.Size = new System.Drawing.Size(185, 22);
+            this.cmdLaunch.Text = "Launch";
+            this.cmdLaunch.Click += new System.EventHandler(this.ExecutableLaunch_Click);
             // 
             // imgLstFiles
             // 
@@ -392,12 +405,22 @@
             this.deleteFileWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.deleteFileWorker_DoWork);
             this.deleteFileWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.Worker_RunWorkerCompleted);
             // 
-            // cmdLaunch
+            // cmdDownload
             // 
-            this.cmdLaunch.Name = "cmdLaunch";
-            this.cmdLaunch.Size = new System.Drawing.Size(185, 22);
-            this.cmdLaunch.Text = "Launch";
-            this.cmdLaunch.Click += new System.EventHandler(this.ExecutableLaunch_Click);
+            this.cmdDownload.Name = "cmdDownload";
+            this.cmdDownload.Size = new System.Drawing.Size(185, 22);
+            this.cmdDownload.Text = "Download...";
+            this.cmdDownload.Click += new System.EventHandler(this.cmdDownload_Click);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(182, 6);
+            // 
+            // downloadFileWorker
+            // 
+            this.downloadFileWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.downloadFileWorker_DoWork);
+            this.downloadFileWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.Worker_RunWorkerCompleted);
             // 
             // Main
             // 
@@ -466,6 +489,10 @@
         private System.Windows.Forms.ToolStripMenuItem cmdLaunch;
         public System.Windows.Forms.ToolStripStatusLabel lblStatus;
         public System.Windows.Forms.ToolStripProgressBar probar;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripMenuItem cmdDownload;
+        private System.Windows.Forms.SaveFileDialog SFD;
+        private System.ComponentModel.BackgroundWorker downloadFileWorker;
 
     }
 }

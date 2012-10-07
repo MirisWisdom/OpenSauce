@@ -145,7 +145,7 @@ namespace Yelo_Neighborhood
              AsyncConnect();
             _xboxLocator.ShowDialog();
 
-            if (XBox.Connected)
+            if (XBox.Ping())
             {
                 if (_mainWindow == null)
                 {
@@ -163,7 +163,7 @@ namespace Yelo_Neighborhood
             AsyncConnect(xbox);
             _xboxLocator.ShowDialog();
 
-            if (XBox.Connected)
+            if (XBox.Ping())
             {
                 if (_mainWindow == null)
                 {
