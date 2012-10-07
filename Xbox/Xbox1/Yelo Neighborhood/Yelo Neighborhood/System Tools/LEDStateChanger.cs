@@ -22,7 +22,7 @@ namespace Yelo_Neighborhood
 
         private void cmdApply_Click(object sender, EventArgs e)
         {
-            if (!Program.XBox.Connected) new Settings().ShowDialog();
+            if (!Program.XBox.Ping()) new Settings().ShowDialog();
             Program.XBox.SetLEDState((LEDState)cboState1.SelectedItem, (LEDState)cboState2.SelectedItem, (LEDState)cboState3.SelectedItem, (LEDState)cboState4.SelectedItem); 
         }
     }

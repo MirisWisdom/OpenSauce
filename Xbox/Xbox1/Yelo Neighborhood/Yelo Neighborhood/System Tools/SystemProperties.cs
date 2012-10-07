@@ -14,7 +14,7 @@ namespace Yelo_Neighborhood
         {
             InitializeComponent();
 
-            if (!Program.XBox.Connected) new Settings().ShowDialog();
+            if (!Program.XBox.Ping()) new Settings().ShowDialog();
             xboxProperties.SelectedObject = Program.XBox;
         }
     }

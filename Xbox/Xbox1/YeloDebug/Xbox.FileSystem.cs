@@ -208,7 +208,7 @@ namespace YeloDebug
         {
             SendCommand("getfile name=\"{0}\"", remoteName);
             int fileSize = BitConverter.ToInt32(ReceiveBinaryData(4), 0);
-			using (var lfs = new System.IO.FileStream(localName, FileMode.CreateNew))
+			using (var lfs = new System.IO.FileStream(localName, FileMode.Create))
 			{
 				byte[] fileData = new byte[connection.Client.ReceiveBufferSize];
 

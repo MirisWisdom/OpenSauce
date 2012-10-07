@@ -146,7 +146,7 @@ namespace YeloDebug
 
 			if (result == LowLevel.HResult.Success)
 			{
-				try { base_address = xbox.AllocateDebugMemory((uint)rebased_module.Length); }
+				try { base_address = xbox.AllocateMemory((uint)rebased_module.Length); }
 				catch (Exception ex)
 				{
 					result = LowLevel.HResult.Unexpected;
