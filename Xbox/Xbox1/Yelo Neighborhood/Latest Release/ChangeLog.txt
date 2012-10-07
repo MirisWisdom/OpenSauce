@@ -1,3 +1,7 @@
+v10
+Download Files By Right Click -> Download...
+Offers To Reconnect When Connection Lost
+
 v9
 Added Error Messages For When Connecting
 Added System Properties Viewer/Editor
