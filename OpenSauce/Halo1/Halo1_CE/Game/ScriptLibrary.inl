@@ -118,6 +118,7 @@
 		_hs_function_object_data_save_vector,
 
 		_hs_function_display_scripted_ui_widget,
+		_hs_function_play_bink_movie,
 
 		_hs_function_scenario_faux_zones_reset,
 		_hs_function_scenario_faux_zone_current_switch_variant,
@@ -214,6 +215,10 @@
 
 	HS_FUNCTION_WITH_PARAMS(display_scripted_ui_widget, bool, "", 
 			"<name>", 1,
+		HS_TYPE(string)
+	);
+	HS_FUNCTION_WITH_PARAMS(play_bink_movie, void, "", 
+			"<filename>", 1,
 		HS_TYPE(string)
 	);
 
@@ -355,6 +360,7 @@
 		&GET_HS_FUNCTION(object_data_save_vector),
 
 		&GET_HS_FUNCTION(display_scripted_ui_widget),
+		&GET_HS_FUNCTION(play_bink_movie),
 
 		&GET_HS_FUNCTION(scenario_faux_zones_reset),
 		&GET_HS_FUNCTION(scenario_faux_zone_current_switch_variant),

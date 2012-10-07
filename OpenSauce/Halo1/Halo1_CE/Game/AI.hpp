@@ -262,7 +262,8 @@ namespace Yelo
 			// input @ 0x120, sizeof(0xA8)
 			
 			TStructGetPtrImpl(bool,				InputVehiclePassenger, 0x160);
-
+			//TStructGetPtrImpl(int32,			InputSurfaceIndex, 0x164);
+			//TStructGetPtrImpl(real_vector3d,	InputPosition, 0x168);
 			TStructGetPtrImpl(real_vector3d,	InputFacingVector, 0x174);
 			TStructGetPtrImpl(real_vector3d,	InputAimingVector, 0x180);
 			TStructGetPtrImpl(real_vector3d,	InputLookingVector, 0x18C);
@@ -313,6 +314,8 @@ namespace Yelo
 				datum_index prop_index;
 				PAD32; PAD32;
 			}; BOOST_STATIC_ASSERT( sizeof(s_direction_specification) == 0x10 );
+
+			//TStructGetPtrImpl(datum_index,	control.path.destination_orders.ignore_target_object_index, 0x480);
 
 			TStructGetPtrImpl(_enum,			ControlSecondaryLookType, 0x544);
 			// 0x48 ?
@@ -392,7 +395,7 @@ namespace Yelo
 
 			//TStructGetPtrImpl(bool,				, 0x14);
 			//TStructGetPtrImpl(datum_index,			, 0x18); // unit_index
-			//TStructGetPtrImpl(datum_index,			, 0x1C); // actor_index
+			//TStructGetPtrImpl(datum_index,			, 0x1C); // actor_index (swarm?)
 			TStructGetPtrImpl(_enum,			State, 0x24);
 
 			TStructGetPtrImpl(Enums::actor_perception_type,			Perception, 0x30);

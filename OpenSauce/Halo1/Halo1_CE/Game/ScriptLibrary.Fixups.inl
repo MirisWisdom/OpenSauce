@@ -64,7 +64,7 @@ HS_FUNCTION_WITH_PARAMS(oid_status, void, "", "", 1,
 	HS_TYPE(string)
 );
 
-#if PLATFORM_IS_DEDI
+#if PLATFORM_IS_USER
 	HS_FUNCTION_WITH_PARAMS(sound_enable_eax, void, "", "", 1,
 		HS_TYPE(bool)
 	);
@@ -134,7 +134,7 @@ struct s_fixup_globals {
 		{0x1A8, &GET_HS_FUNCTION(reload_shader_transparent_chicago)},
 		{0x1A9, &GET_HS_FUNCTION(rasterizer_reload_effects)},
 
-#if PLATFORM_IS_DEDI
+#if PLATFORM_IS_USER
 		{0x1C0, &GET_HS_FUNCTION(sound_enable_eax)},
 		{0x1C1, &GET_HS_FUNCTION(sound_eax_enabled)},
 		{0x1C2, &GET_HS_FUNCTION(sound_set_env)},
@@ -179,7 +179,7 @@ static void NullifyScriptLibraryFixups()
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(oid_dump) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(oid_status) );
 
-#if PLATFORM_IS_DEDI
+#if PLATFORM_IS_USER
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(sound_enable_eax) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(sound_eax_enabled) );
 	NullifyScriptFunctionWithParams( GET_HS_FUNCTION(sound_set_env) );

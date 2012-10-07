@@ -278,11 +278,25 @@ static void* scripting_display_scripted_ui_widget_evaluate(void** arguments)
 	}* args = CAST_PTR(s_arguments*, arguments);
 	TypeHolder result; result.pointer = NULL;
 
-#if !PLATFORM_IS_DEDI 
+#if !PLATFORM_IS_DEDI
 	result.boolean = UIWidgets::DisplayScriptedWidget(args->name);
 #endif
 
 	return result.pointer;
+}
+
+static void* scripting_play_bink_movie_evaluate(void** arguments)
+{
+	struct s_arguments {
+		cstring name;
+	}* args = CAST_PTR(s_arguments*, arguments);
+
+#if !PLATFORM_IS_DEDI
+	if(Networking::IsLocal())
+		Engine::Game::PlayVideo(args->name);
+#endif
+
+	return NULL;
 }
 
 
@@ -369,6 +383,8 @@ static void InitializeMiscFunctions()
 
 	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_display_scripted_ui_widget, 
 		scripting_display_scripted_ui_widget_evaluate);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_play_bink_movie, 
+		scripting_play_bink_movie_evaluate);
 
 	InitializeScriptFunction(Enums::_hs_function_scenario_faux_zones_reset, 
 		scripting_scenario_faux_zones_reset_evaluate);
