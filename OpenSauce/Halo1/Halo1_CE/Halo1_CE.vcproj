@@ -4741,6 +4741,10 @@
 					RelativePath="..\..\shared\Include\blamlib\Halo1\objects\objects.hpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\objects\vehicle_remapper.hpp"
+					>
+				</File>
 				<Filter
 					Name="widgets"
 					>

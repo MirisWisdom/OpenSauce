@@ -8,6 +8,7 @@
 #include "Networking/Networking.hpp"
 
 #include "Memory/MemoryInterface.hpp"
+#include "Networking/GameSpyApi.hpp"
 #include "Networking/MessageDeltas.hpp"
 
 namespace Yelo
@@ -60,6 +61,11 @@ namespace Yelo
 			"client-graceful_game_exit_postgame",
 		};
 #endif
+
+		struct s_network_yelo_settings {
+			bool gs_no_update_check;
+			PAD24;
+		}g_network_yelo_settings;
 
 		s_update_client_globals* UpdateClientGlobals()						PTR_IMP_GET2(update_client_globals);
 		s_update_server_globals* UpdateServerGlobals()						PTR_IMP_GET2(update_server_globals);
@@ -141,6 +147,9 @@ namespace Yelo
 
 		void Initialize()
 		{
+			if(g_network_yelo_settings.gs_no_update_check)
+				GsTurnOffUpdateCheck();
+
 			MessageDeltas::Initialize();
 
 			// NOTE: Uncomment these if you wish to detect
@@ -156,6 +165,19 @@ namespace Yelo
 		void Dispose()
 		{
 			MessageDeltas::Dispose();
+		}
+
+		void LoadSettings(TiXmlElement* xml_element)
+		{
+			if(xml_element == NULL) return;
+
+			g_network_yelo_settings.gs_no_update_check = 
+				Settings::ParseBoolean(xml_element->Attribute("gsNoUpdateCheck"));
+		}
+		void SaveSettings(TiXmlElement* xml_element)
+		{
+			xml_element->SetAttribute("gsNoUpdateCheck", 
+				Settings::BooleanToString(g_network_yelo_settings.gs_no_update_check));
 		}
 
 		static API_FUNC_NAKED bool NetworkConnectionWrite(const s_network_connection& connection,

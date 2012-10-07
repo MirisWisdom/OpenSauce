@@ -268,6 +268,10 @@ namespace Yelo
 			TStructGetPtrImpl(real_vector3d,	InputAimingVector, 0x180);
 			TStructGetPtrImpl(real_vector3d,	InputLookingVector, 0x18C);
 
+			// Not sure if this part of 'target'
+			//TStructGetPtrImpl(_enum,			, 0x1E4);
+			//TStructGetPtrImpl(datum_index,		, 0x1E8); // prop_index
+
 			TStructGetPtrImpl(Enums::actor_target_type,		TargetTargetType, 0x268);
 
 			TStructGetPtrImpl(datum_index,		TargetTargetPropIndex, 0x270);
@@ -302,8 +306,6 @@ namespace Yelo
 			//TStructGetPtrImpl(bool,			FiringPositions, 0x3D9);
 			//TStructGetPtrImpl(real_vector3d,	FiringPositions, 0x3DC);
 
-			// 0x4A8, 0x5C byte structure
-
 			//////////////////////////////////////////////////////////////////////////
 			// control
 			struct s_direction_specification
@@ -315,7 +317,15 @@ namespace Yelo
 				PAD32; PAD32;
 			}; BOOST_STATIC_ASSERT( sizeof(s_direction_specification) == 0x10 );
 
+			//TStructGetPtrImpl(_enum,			control.path.destination_orders, 0x46C);
+			//TStructGetPtrImpl(int16,			control.path.destination_orders, 0x470);
+
 			//TStructGetPtrImpl(datum_index,	control.path.destination_orders.ignore_target_object_index, 0x480);
+			TStructGetPtrImpl(bool,				ControlPathDestinationOrdersComplete, 0x484); // true when at destination
+
+			//TStructGetPtrImpl(int32,			control.path, 0x4A0);
+
+			//TStructGetPtrImpl(,	control.path, 0x4A8); // 0x5C byte structure
 
 			TStructGetPtrImpl(_enum,			ControlSecondaryLookType, 0x544);
 			// 0x48 ?
@@ -343,7 +353,23 @@ namespace Yelo
 			TStructGetPtrImpl(_enum,			ControlFireState, 0x5F2);
 
 			TStructGetPtrImpl(Enums::actor_fire_target,		ControlCurrentFireTargetType, 0x60C);
+			//////////////////////////////////////////////////////////////////////////
+			// _actor_fire_target_prop
 			TStructGetPtrImpl(datum_index,		ControlCurrentFireTargetPropIndex, 0x610);
+			//////////////////////////////////////////////////////////////////////////
+			// _actor_fire_target_manual_point
+			//TStructGetPtrImpl(real_point3d,		ControlCurrentFireTargetManualPoint?, 0x610);
+			//TStructGetPtrImpl(int32,				Control, 0x61C);
+
+			//TStructGetPtrImpl(bool,				Control, 0x621);
+			//TStructGetPtrImpl(bool,				Control, 0x622);
+			//TStructGetPtrImpl(bool,				Control, 0x623);
+			//TStructGetPtrImpl(sbyte,				Control, 0x624);
+			//TStructGetPtrImpl(int16,				Control, 0x626);
+
+			//TStructGetPtrImpl(real_vector3d,	Control, 0x62C);
+
+			//TStructGetPtrImpl(real,				Control, 0x638);
 
 			TStructGetPtrImpl(real_vector3d,	ControlBurstAimVector, 0x68C);
 

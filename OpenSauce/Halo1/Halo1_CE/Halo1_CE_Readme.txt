@@ -63,6 +63,7 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
   * CHANGE		Installation now requires .NET 3.5
   * CHANGE		Increased hardcoded 'k_game_state_allocation_maximum_size_for_yelo' by 0x970 bytes
   * CHANGE		Increased hardcoded 'k_runtime_data_max_values_count' to a total of 64 (up from 32)
+  * ADD			Added an xml setting for completely turning off game update checks
   * ADD			Added an in-game map download system to the client
   * ADD			Added a HTTP server to the OS dedi
   * ADD			Added a map server component to the OS dedi
@@ -70,6 +71,8 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
   * ADD			Added file patching component to the installer
   * ADD			Added new setting for forcing OS to use .yelo files first when searching for .map files (off by default)
   * ADD			Script functions for bit operations (AND, OR, etc) and converting hex string to an integer
+  * ADD			Script function for playing a .bik movie just like how the engine plays credits.bik, etc (local games only)
+  * ADD			New tag/script system for displaying ui widgets to the user
   * ADD			Added system for adding custom dedicated server logging events
   * ADD			Added a new tag/script system for changing sky/lightmaps called 'scenario faux zones'
   * ADD			Runtime vector3d values (part of the game state)

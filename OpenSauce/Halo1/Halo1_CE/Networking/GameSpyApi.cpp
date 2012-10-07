@@ -24,6 +24,7 @@ namespace Yelo
 		s_gamespy_globals* GsGlobals()										PTR_IMP_GET2(gamespy_globals);
 #if PLATFORM_IS_USER											// While the getter for this is only in User builds, I keep the definition around just for documentation's sake
 		s_gamespy_server_browser_globals* GsServerBrowserGlobals()			PTR_IMP_GET2(gamespy_server_browser_globals);
+		static bool* GsPatchCheckForUpdates()								PTR_IMP_GET2(g_gamespy_patch_check_for_updates);
 #endif
 
 		s_gamespy_product* GsProducts()										PTR_IMP_GET2(gamespy_products_list);
@@ -32,9 +33,7 @@ namespace Yelo
 		{
 			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(GAMESPY_GET_CLIENT_KEY_HASH);
 
-			__asm {
-				push	ebp
-				mov		ebp, esp
+			API_FUNC_NAKED_START()
 				push	ecx
 
 				mov		eax, client_id
@@ -47,9 +46,21 @@ _return:
 				sub		eax, 4
 
 				pop		ecx
-				pop		ebp
-				retn	4 * 1
-			}
+			API_FUNC_NAKED_END(1)
+		}
+
+		static int32 gamespy_patch_check_for_updates_sans_check()
+		{
+			return GsConfig()->check_for_updates_status = Enums::_gamespy_update_status_no_update;
+		}
+		void GsTurnOffUpdateCheck()
+		{
+#if PLATFORM_IS_USER
+			*GsPatchCheckForUpdates() = false; // pretend we've checked for updates already
+
+			Memory::WriteRelativeCall(&gamespy_patch_check_for_updates_sans_check, 
+				GET_DATA_VPTR(GAMESPY_PATCH_SPAWN_CHECK_FOR_UPDATES_THREAD_CALL));
+#endif
 		}
 	};
 };

@@ -40,6 +40,9 @@
 			<reports showDeaths="" showMyKillDeaths="" />
 		</Hud>
 
+		<networking gsNoUpdateCheck="">
+		</networking>
+
 		<objects>
 			<weaponViews>
 				<entry name="">
