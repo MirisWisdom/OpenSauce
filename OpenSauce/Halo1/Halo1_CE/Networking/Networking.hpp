@@ -100,6 +100,9 @@ namespace Yelo
 		void Initialize();
 		void Dispose();
 
+		void LoadSettings(TiXmlElement* xml_element);
+		void SaveSettings(TiXmlElement* xml_element);
+
 		// Gets the current connection, returning a [game_connection]
 		Enums::game_connection GameConnection();
 		// Is the game *only* running the simulation locally? (ie, campaign or splitscreen)

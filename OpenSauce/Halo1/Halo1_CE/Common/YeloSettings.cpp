@@ -13,6 +13,7 @@
 
 #include "Game/Camera.hpp"
 #include "Interface/GameUI.hpp"
+#include "Networking/Networking.hpp"
 #include "Networking/VersionCheck.hpp"
 #include "Networking/HTTP/MapDownloadClient.hpp"
 #include "Objects/Objects.hpp"
@@ -42,15 +43,16 @@ namespace Yelo
 				dx9_element = client->FirstChildElement("dx9");
 				fov_element = client->FirstChildElement("Fov");
 				hud_element = client->FirstChildElement("Hud");
+				networking_element = client->FirstChildElement("networking");
 				objects_element = client->FirstChildElement("objects");
 				version_check_element = client->FirstChildElement("version_check");
 				cf_element = client->FirstChildElement("cacheFiles");
-				networking_element = client->FirstChildElement("networking");
 			}
 
 			Rasterizer::LoadSettings(dx9_element);
 			Fov::LoadSettings(fov_element);
 			Hud::LoadSettings(hud_element);
+			Networking::LoadSettings(networking_element);
 			Objects::LoadSettings(objects_element);
 			Networking::VersionCheck::LoadSettings(version_check_element);
 			Cache::LoadSettings(cf_element);
@@ -74,18 +76,19 @@ namespace Yelo
 				client->LinkEndChild(fov_element);
 			hud_element = new TiXmlElement("Hud");
 				client->LinkEndChild(hud_element);
+			networking_element = new TiXmlElement("networking");
+				client->LinkEndChild(networking_element);
 			objects_element = new TiXmlElement("objects");
 				client->LinkEndChild(objects_element);
 			version_check_element = new TiXmlElement("version_check");
 				client->LinkEndChild(version_check_element);
 			cf_element = new TiXmlElement("cacheFiles");
 				client->LinkEndChild(cf_element);
-			networking_element = new TiXmlElement("networking");
-				client->LinkEndChild(networking_element);
 
 			Rasterizer::SaveSettings(dx9_element);
 			Fov::SaveSettings(fov_element);
 			Hud::SaveSettings(hud_element);
+			Networking::SaveSettings(networking_element);
 			Objects::SaveSettings(objects_element);
 			Networking::VersionCheck::SaveSettings(version_check_element);
 			Cache::SaveSettings(cf_element);

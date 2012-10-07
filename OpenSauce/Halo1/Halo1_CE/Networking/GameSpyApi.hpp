@@ -99,6 +99,17 @@ namespace Yelo
 			GT2InvalidMessage,
 			GT2SendFailed
 		};
+
+		enum e_gamespy_update_status : int32
+		{
+			_gamespy_update_status_invalid = NONE,
+
+			_gamespy_update_status_none = 0,
+			_gamespy_update_status_searching,
+			_gamespy_update_status_no_update,
+			_gamespy_update_status_found_update,
+			_gamespy_update_status_updating,
+		};
 	};
 
 	namespace Networking
@@ -246,7 +257,7 @@ namespace Yelo
 			int32 game_pid;
 			bool is_public_server;
 			PAD24;
-			int32 check_for_updates_status;
+			Enums::e_gamespy_update_status check_for_updates_status;
 		};
 		struct s_gamespy_globals
 		{
@@ -339,5 +350,7 @@ namespace Yelo
 		s_gamespy_product* GsProducts(); // [4]
 
 		s_gamespy_client* GsGetClient(int32 client_id);
+
+		void GsTurnOffUpdateCheck();
 	};
 };

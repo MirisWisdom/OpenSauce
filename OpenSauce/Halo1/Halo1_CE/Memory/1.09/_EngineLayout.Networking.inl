@@ -238,11 +238,13 @@
 		ENGINE_PTR(s_gamespy_config, gamespy_config,								0x63AD04, 0x5AED34);
 		ENGINE_PTR(s_gamespy_globals, gamespy_globals,								0x6BDA88, 0x626100);
 		ENGINE_PTR(s_gamespy_server_browser_globals, gamespy_server_browser_globals,0x6B4500, 0x61CD2C);
+		ENGINE_PTR(bool, g_gamespy_patch_check_for_updates,							0x62E101, PTR_NULL);
 
 		ENGINE_PTR(s_gamespy_product, gamespy_products_list,						0x6BE4E8, 0x626968); // [4]
 
 		DATA_PTR(compiler_null_string,			0x5F363C, 0x54F2FC); // TODO: not the best place for this...
 		FUNC_PTR(GAMESPY_GET_CLIENT_KEY_HASH,	0x579CD0, 0x5283D0);
+		DATA_PTR(GAMESPY_PATCH_SPAWN_CHECK_FOR_UPDATES_THREAD_CALL,					0x4A7A30+0x30, DATA_PTR_NULL);
 	};
 
 
