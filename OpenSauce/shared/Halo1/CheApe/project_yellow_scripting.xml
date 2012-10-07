@@ -320,6 +320,9 @@
 		<function name="display_scripted_ui_widget" returnType="boolean" help="returns true if successful" internal="true" >
 			<arg type="string" name="widget_name" help="name of the widget as it appears in the yelo tags. searches the scenario's yelo first, then globals" />
 		</function>
+		<function name="play_bink_movie" returnType="void" help="" internal="true" >
+			<arg type="string" name="filename" help="" />
+		</function>
 
 		<function name="scenario_faux_zones_reset" returnType="void" help="reset the current bsp's lightmap to the default lightmap-set" internal="true" />
 		<function name="scenario_faux_zone_current_switch_variant" returnType="boolean" help="returns whether the change was successful or not" internal="true" >

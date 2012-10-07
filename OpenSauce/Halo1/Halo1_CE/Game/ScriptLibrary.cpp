@@ -15,6 +15,7 @@
 #include <Blam/Halo1/BlamMemoryUpgrades.hpp>
 
 // Includes for MiscScriptingFunctions.inl
+#include "Game/EngineFunctions.hpp"
 #include "Game/GameBuildNumber.hpp"
 #include "Game/GameEngine.hpp"
 #include "Game/GameState.hpp"
@@ -97,7 +98,7 @@ namespace Yelo
 			hs_function_table = GET_DPTR2(hs_function_table);
 			hs_external_globals = GET_DPTR2(hs_external_globals);
 
-			//GET_HS_FUNCTION(null).evaluate = (hs_evaluate_proc)GET_FUNC_VPTR(HS_NULL_EVALUTE);
+			//GET_HS_FUNCTION(null).evaluate = CAST_PTR(hs_evaluate_proc, GET_FUNC_VPTR(HS_NULL_EVALUTE);
 
 			//////////////////////////////////////////////////////////////////////////
 			MemoryUpgradesInitialize();

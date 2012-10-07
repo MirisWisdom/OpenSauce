@@ -277,7 +277,7 @@ namespace Yelo
 			real incoming_function_values[Enums::k_number_of_incoming_object_functions];	// 0x124
 			real outgoing_function_values[Enums::k_number_of_outgoing_object_functions];	// 0x134
 
-			s_object_attachments_datum_data attachments;									// 0x
+			s_object_attachments_datum_data attachments;									// 0x144
 			UNKNOWN_TYPE(int32);	// 0x170, idk what is here, could be part of s_object_attachments_datum_data
 			UNKNOWN_TYPE(int16);	// 0x174, idk what is here, could be part of s_object_attachments_datum_data
 			int16 shader_permutation;														// 0x176, shader's bitmap block index
