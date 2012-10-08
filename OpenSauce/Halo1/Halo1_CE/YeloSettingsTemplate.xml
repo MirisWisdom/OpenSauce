@@ -41,6 +41,7 @@
 		</Hud>
 
 		<networking gsNoUpdateCheck="">
+			<map_download enabled="" />
 		</networking>
 
 		<objects>

@@ -30,7 +30,6 @@
 		{
 			this.components = new System.ComponentModel.Container();
 			this.MapCompressorGroupbox = new System.Windows.Forms.GroupBox();
-			this.RecentDefinitionsFolderComboBox = new OpenSauceIDE.Controls.OSIDEComboBox();
 			this.DefinitionsFolderBrowseButton = new System.Windows.Forms.Button();
 			this.DefinitionsFolderTextBox = new System.Windows.Forms.TextBox();
 			this.DefinitionsFolderLabel = new System.Windows.Forms.Label();
@@ -38,11 +37,12 @@
 			this.ServerPasswordTextBox = new System.Windows.Forms.TextBox();
 			this.ServerPasswordLabel = new System.Windows.Forms.Label();
 			this.EncryptArchiveCheckbox = new System.Windows.Forms.CheckBox();
-			this.RecentPartsFolderComboBox = new OpenSauceIDE.Controls.OSIDEComboBox();
 			this.PartsFolderBrowseButton = new System.Windows.Forms.Button();
 			this.PartsFolderTextBox = new System.Windows.Forms.TextBox();
 			this.PartsFolderLabel = new System.Windows.Forms.Label();
 			this.MapCompressorToolTip = new System.Windows.Forms.ToolTip(this.components);
+			this.RecentDefinitionsFolderComboBox = new OpenSauceIDE.Controls.OSIDEComboBox();
+			this.RecentPartsFolderComboBox = new OpenSauceIDE.Controls.OSIDEComboBox();
 			this.MapCompressorGroupbox.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -71,22 +71,6 @@
 			this.MapCompressorGroupbox.TabStop = false;
 			this.MapCompressorGroupbox.Text = "Map Compressor";
 			// 
-			// RecentDefinitionsFolderComboBox
-			// 
-			this.RecentDefinitionsFolderComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.RecentDefinitionsFolderComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.RecentDefinitionsFolderComboBox.DropDownWidth = 10;
-			this.RecentDefinitionsFolderComboBox.DropDownWidthPadding = ((uint)(10u));
-			this.RecentDefinitionsFolderComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.RecentDefinitionsFolderComboBox.FormattingEnabled = true;
-			this.RecentDefinitionsFolderComboBox.Location = new System.Drawing.Point(567, 46);
-			this.RecentDefinitionsFolderComboBox.MaxDropDownItems = 10;
-			this.RecentDefinitionsFolderComboBox.MaximumDropDownWidth = ((uint)(800u));
-			this.RecentDefinitionsFolderComboBox.MinimumDropDownWidth = ((uint)(0u));
-			this.RecentDefinitionsFolderComboBox.Name = "RecentDefinitionsFolderComboBox";
-			this.RecentDefinitionsFolderComboBox.Size = new System.Drawing.Size(17, 21);
-			this.RecentDefinitionsFolderComboBox.TabIndex = 14;
-			// 
 			// DefinitionsFolderBrowseButton
 			// 
 			this.DefinitionsFolderBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -104,7 +88,7 @@
 			// 
 			this.DefinitionsFolderTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.DefinitionsFolderTextBox.BackColor = System.Drawing.Color.BlueViolet;
+			this.DefinitionsFolderTextBox.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			this.DefinitionsFolderTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.DefinitionsFolderTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
 			this.DefinitionsFolderTextBox.ForeColor = System.Drawing.Color.LightGreen;
@@ -173,22 +157,6 @@
 			this.EncryptArchiveCheckbox.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.EncryptArchiveCheckbox.UseVisualStyleBackColor = true;
 			// 
-			// RecentPartsFolderComboBox
-			// 
-			this.RecentPartsFolderComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.RecentPartsFolderComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.RecentPartsFolderComboBox.DropDownWidth = 10;
-			this.RecentPartsFolderComboBox.DropDownWidthPadding = ((uint)(10u));
-			this.RecentPartsFolderComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.RecentPartsFolderComboBox.FormattingEnabled = true;
-			this.RecentPartsFolderComboBox.Location = new System.Drawing.Point(567, 17);
-			this.RecentPartsFolderComboBox.MaxDropDownItems = 10;
-			this.RecentPartsFolderComboBox.MaximumDropDownWidth = ((uint)(800u));
-			this.RecentPartsFolderComboBox.MinimumDropDownWidth = ((uint)(0u));
-			this.RecentPartsFolderComboBox.Name = "RecentPartsFolderComboBox";
-			this.RecentPartsFolderComboBox.Size = new System.Drawing.Size(17, 21);
-			this.RecentPartsFolderComboBox.TabIndex = 4;
-			// 
 			// PartsFolderBrowseButton
 			// 
 			this.PartsFolderBrowseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -205,7 +173,7 @@
 			// 
 			this.PartsFolderTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.PartsFolderTextBox.BackColor = System.Drawing.Color.BlueViolet;
+			this.PartsFolderTextBox.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			this.PartsFolderTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.PartsFolderTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
 			this.PartsFolderTextBox.ForeColor = System.Drawing.Color.LightGreen;
@@ -227,6 +195,38 @@
 			// 
 			this.MapCompressorToolTip.Active = false;
 			this.MapCompressorToolTip.AutomaticDelay = 50;
+			// 
+			// RecentDefinitionsFolderComboBox
+			// 
+			this.RecentDefinitionsFolderComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.RecentDefinitionsFolderComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.RecentDefinitionsFolderComboBox.DropDownWidth = 10;
+			this.RecentDefinitionsFolderComboBox.DropDownWidthPadding = ((uint)(10u));
+			this.RecentDefinitionsFolderComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.RecentDefinitionsFolderComboBox.FormattingEnabled = true;
+			this.RecentDefinitionsFolderComboBox.Location = new System.Drawing.Point(567, 46);
+			this.RecentDefinitionsFolderComboBox.MaxDropDownItems = 10;
+			this.RecentDefinitionsFolderComboBox.MaximumDropDownWidth = ((uint)(800u));
+			this.RecentDefinitionsFolderComboBox.MinimumDropDownWidth = ((uint)(0u));
+			this.RecentDefinitionsFolderComboBox.Name = "RecentDefinitionsFolderComboBox";
+			this.RecentDefinitionsFolderComboBox.Size = new System.Drawing.Size(17, 21);
+			this.RecentDefinitionsFolderComboBox.TabIndex = 14;
+			// 
+			// RecentPartsFolderComboBox
+			// 
+			this.RecentPartsFolderComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.RecentPartsFolderComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.RecentPartsFolderComboBox.DropDownWidth = 10;
+			this.RecentPartsFolderComboBox.DropDownWidthPadding = ((uint)(10u));
+			this.RecentPartsFolderComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.RecentPartsFolderComboBox.FormattingEnabled = true;
+			this.RecentPartsFolderComboBox.Location = new System.Drawing.Point(567, 17);
+			this.RecentPartsFolderComboBox.MaxDropDownItems = 10;
+			this.RecentPartsFolderComboBox.MaximumDropDownWidth = ((uint)(800u));
+			this.RecentPartsFolderComboBox.MinimumDropDownWidth = ((uint)(0u));
+			this.RecentPartsFolderComboBox.Name = "RecentPartsFolderComboBox";
+			this.RecentPartsFolderComboBox.Size = new System.Drawing.Size(17, 21);
+			this.RecentPartsFolderComboBox.TabIndex = 4;
 			// 
 			// MapCompressorUI
 			// 
