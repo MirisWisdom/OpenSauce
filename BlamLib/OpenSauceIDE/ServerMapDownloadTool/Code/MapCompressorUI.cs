@@ -132,16 +132,16 @@ namespace OpenSauceIDE.ServerMapDownloadTool
 			if (e.PropertyName == "PartsFolder")
 			{
 				if (!Directory.Exists(m_map_compressor_globals.PartsFolder))
-					PartsFolderTextBox.BackColor = Color.BlueViolet;
+					PartsFolderTextBox.ForeColor = Color.Salmon;
 				else
-					PartsFolderTextBox.BackColor = Color.FromKnownColor(KnownColor.ControlDark);
+					PartsFolderTextBox.ForeColor = Color.LightGreen;
 			}
 			else if (e.PropertyName == "DefinitionsFolder")
 			{
 				if (!Directory.Exists(m_map_compressor_globals.DefinitionsFolder))
-					DefinitionsFolderTextBox.BackColor = Color.BlueViolet;
+					DefinitionsFolderTextBox.ForeColor = Color.Salmon;
 				else
-					DefinitionsFolderTextBox.BackColor = Color.FromKnownColor(KnownColor.ControlDark);
+					DefinitionsFolderTextBox.ForeColor = Color.LightGreen;
 			}
 			else if (e.PropertyName == "EncryptArchive" || e.PropertyName == "ServerPassword")
 			{
@@ -150,12 +150,10 @@ namespace OpenSauceIDE.ServerMapDownloadTool
 				if (m_map_compressor_globals.EncryptArchive)
 				{
 					if (m_map_compressor_globals.ServerPassword == "")
-						ServerPasswordTextBox.BackColor = Color.FromKnownColor(KnownColor.BlueViolet);
+						ServerPasswordTextBox.ForeColor = Color.Salmon;
 					else
-						ServerPasswordTextBox.BackColor = Color.FromKnownColor(KnownColor.ControlDark);
+						ServerPasswordTextBox.ForeColor = Color.LightGreen;
 				}
-				else
-					ServerPasswordTextBox.BackColor = Color.FromKnownColor(KnownColor.ControlDarkDark);
 			}
 
 			if (!ValidateVariables())
@@ -165,7 +163,7 @@ namespace OpenSauceIDE.ServerMapDownloadTool
 			}
 			else
 			{
-				CompressMapButton.ForeColor = Color.FromKnownColor(KnownColor.LightGreen);
+				CompressMapButton.ForeColor = Color.LightGreen;
 				CompressMapButton.Enabled = true;
 			}
 		}

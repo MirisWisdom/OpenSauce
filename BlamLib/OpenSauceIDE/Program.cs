@@ -96,9 +96,13 @@ namespace OpenSauceIDE
 				return MainTool(args);
 			else if(!cmdline)
 			{
+				Settings.SettingsManager.LoadSettings();
+
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault(false);
 				Application.Run(new MainForm(args));
+
+				Settings.SettingsManager.SaveSettings();
 			}
 
 			return 0;
