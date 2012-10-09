@@ -27,17 +27,23 @@
 #include <TagGroups/Halo1/game_globals_definitions.hpp>
 #include <TagGroups/Halo1/global_definitions.hpp>
 #include <TagGroups/Halo1/hud_definitions.hpp>
-#include <TagGroups/Halo1/scenario_definitions.hpp>
 #include <TagGroups/Halo1/shader_definitions.hpp>
 #include <TagGroups/Halo1/sound_definitions.hpp>
 //#include <TagGroups/Halo1>
 
+#include <blamlib/Halo1/devices/device_definitions.hpp>
+#include <blamlib/Halo1/effects/effect_definitions.hpp>
+#include <blamlib/Halo1/effects/material_effect_definitions.hpp>
 #include <blamlib/Halo1/interface/hud_definitions.hpp>
+#include <blamlib/Halo1/interface/ui_widget_group.hpp>
 #include <blamlib/Halo1/models/collision_model_definitions.hpp>
 #include <blamlib/Halo1/models/model_animation_definitions.hpp>
 #include <blamlib/Halo1/models/model_definitions.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+#include <blamlib/Halo1/scenario/sky_definitions.hpp>
+#include <blamlib/Halo1/sound/sound_environment_definitions.hpp>
 #include <blamlib/Halo1/structures/structure_bsp_definitions.hpp>
+#include <blamlib/Halo1/units/unit_definitions.hpp>
 //////////////////////////////////////////////////////////////////////////
 
 namespace Yelo

@@ -7,9 +7,10 @@
 #include "Common/Precompile.hpp"
 #include "Engine/GrenadeTypesUpgrade.hpp"
 
+#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+
 #include <TagGroups/TagGroupDefinitions.hpp>
 #include <TagGroups/Halo1/game_globals_definitions.hpp>
-#include <TagGroups/Halo1/scenario_definitions.hpp>
 
 #include "TagGroups/TagGroups.hpp"
 

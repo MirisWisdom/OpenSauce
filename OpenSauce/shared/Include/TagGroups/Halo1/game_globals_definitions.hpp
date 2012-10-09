@@ -44,6 +44,19 @@ namespace Yelo
 		{
 			tag_reference reference;
 		};
+
+		struct s_game_globals_multiplayer_information
+		{
+			TAG_FIELD(tag_reference, flag, 'item');
+			TAG_FIELD(tag_reference, unit, 'unit');
+			TAG_TBLOCK(vehicles, s_game_globals_tag_reference); // 20
+			TAG_FIELD(tag_reference, hill_shader, 'shdr');
+			TAG_FIELD(tag_reference, flag_shader, 'shdr');
+			TAG_FIELD(tag_reference, ball, 'item');
+			TAG_TBLOCK(sounds, s_game_globals_tag_reference); // 60
+			TAG_PAD(int32, 14);
+		}; BOOST_STATIC_ASSERT( sizeof(s_game_globals_multiplayer_information) == 0xA0 );
+
 		struct s_game_globals
 		{
 			enum { k_group_tag = 'matg' };
@@ -65,9 +78,9 @@ namespace Yelo
 
 			TAG_TBLOCK(weapons_list, s_game_globals_tag_reference);
 			TAG_TBLOCK(cheat_powerups, s_game_globals_tag_reference);
+			TAG_TBLOCK(multiplayer_info, s_game_globals_multiplayer_information);
 
 			TAG_PAD(tag_block,
-				1 + // s_game_globals_multiplayer_information
 				1 + // s_game_globals_player_information
 				1 + // s_game_globals_player_representation
 				1 + // s_game_globals_falling_damage

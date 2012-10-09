@@ -16,7 +16,6 @@
 #include "Networking/Networking.hpp"
 #include "Objects/Objects.hpp"
 #include "TagGroups/project_yellow_definitions.hpp"
-#include <TagGroups/Halo1/scenario_definitions.hpp>
 
 namespace Yelo
 {

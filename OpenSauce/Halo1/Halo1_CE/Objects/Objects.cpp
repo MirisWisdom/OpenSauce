@@ -154,9 +154,14 @@ namespace Yelo
 			Units::InitializeForYeloGameState(enabled);
 		}
 
-#if !PLATFORM_IS_DEDI
+
 		void LoadSettings(TiXmlElement* objects_element)
 		{
+			// TODO: store this setting somewhere!
+			if(objects_element != NULL && Settings::ParseBoolean(objects_element->Attribute("disableVehicleRemapper")))
+				VehicleRemapperEnable(false);
+
+#if !PLATFORM_IS_DEDI
 			TiXmlElement* weapons_element = NULL,
 						* vehicles_element = NULL
 				;
@@ -169,10 +174,17 @@ namespace Yelo
 
 			Weapon::LoadSettings(weapons_element);
 			Vehicle::LoadSettings(vehicles_element);
+#endif
 		}
 
 		void SaveSettings(TiXmlElement* objects_element)
 		{
+			// TODO:
+			if(false)
+				objects_element->SetAttribute("disableVehicleRemapper", 
+					Settings::BooleanToString(true));
+
+#if !PLATFORM_IS_DEDI
 			TiXmlElement* weapons_element = NULL,
 						* vehicles_element = NULL
 				;
@@ -184,8 +196,8 @@ namespace Yelo
 
 			Weapon::SaveSettings(weapons_element);
 			Vehicle::SaveSettings(vehicles_element);
-		}
 #endif
+		}
 
 		void MultiTeamVehiclesSet(bool enabled)
 		{
@@ -195,6 +207,15 @@ namespace Yelo
 			static const byte k_disable_code[] = {0x74};
 
 			Memory::WriteMemory(GET_FUNC_VPTR(UNIT_CAN_ENTER_SEAT_MOD), (enabled ? k_enable_code : k_disable_code), sizeof(k_enable_code));
+		}
+		void VehicleRemapperEnable(bool enabled)
+		{
+			// jnz eip+2+10
+			static const byte k_enable_code[] = {0x75, 0x0A};
+			// nop, nop
+			static const byte k_disable_code[] = {Enums::_x86_opcode_nop, Enums::_x86_opcode_nop};
+
+			Memory::WriteMemory(GET_FUNC_VPTR(OBJECT_TYPES_PLACE_ALL_MOD_VEHI_REMAP), (enabled ? k_enable_code : k_disable_code), sizeof(k_enable_code));
 		}
 
 

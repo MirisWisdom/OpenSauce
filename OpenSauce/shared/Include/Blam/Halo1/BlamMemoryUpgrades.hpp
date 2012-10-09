@@ -5,8 +5,10 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/cache/physical_memory_map.hpp>
 #include <blamlib/Halo1/networking/network_connection.hpp> // for k_maximum_network_machine_count
 #include <blamlib/Halo1/game/players.hpp> // for k_multiplayer_maximum_players
+#include <blamlib/Halo1/saved_games/game_state.hpp>
 
 // How much more memory we're adding.
 // 50%
@@ -20,15 +22,9 @@ namespace Yelo
 	namespace Enums
 	{
 		enum {
-			k_physical_memory_base_address =		0x40000000,
-
-			// Original allocation size
-			k_physical_memory_map_allocation_size = 0x01B40000,
 			// Our upgraded memory allocation size.
 			k_physical_memory_map_allocation_size_upgrade = 
 				CAST(uint32, k_physical_memory_map_allocation_size * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
-
-			k_game_state_allocation_size =			0x00440000,
 		};
 
 		BOOST_STATIC_ASSERT( k_physical_memory_map_allocation_size_upgrade >= k_physical_memory_map_allocation_size );

@@ -7,11 +7,12 @@
 #include "Common/Precompile.hpp"
 
 #if PLATFORM_ID == PLATFORM_TOOL
+#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+
 #include <Blam/Halo1/BlamMemoryUpgrades.hpp>
 #include <Blam/Halo1/project_yellow_shared_definitions.hpp>
 #include <Blam/Halo1/BlamDataFileUpgrades.hpp>
 #include <TagGroups/Halo1/CacheDefinitions.hpp>
-#include <TagGroups/Halo1/scenario_definitions.hpp>
 #include <TagGroups/Halo1/object_definitions.hpp>
 #include <TagGroups/Halo1/shader_definitions.hpp>
 #include <Blam/Halo1/shader_postprocess_definitions.hpp>

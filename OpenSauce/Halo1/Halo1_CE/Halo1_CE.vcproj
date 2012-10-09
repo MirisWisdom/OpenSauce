@@ -3579,10 +3579,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Objects\UnitControl.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Objects\Units.cpp"
 				>
 			</File>
@@ -3727,10 +3723,6 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\TagGroups\Halo1\object_definitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\TagGroups\Halo1\scenario_definitions.hpp"
 					>
 				</File>
 				<File
@@ -4681,6 +4673,10 @@
 			<Filter
 				Name="hs"
 				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\hs\hs_scenario_definitions.hpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="scenario"
@@ -4769,6 +4765,26 @@
 					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\hud_definitions.hpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\ui_widget.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\ui_widget_event_handler_functions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\ui_widget_game_data_input_functions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\ui_widget_group.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\ui_widget_text_search_and_replace_functions.hpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="main"
@@ -4822,6 +4838,10 @@
 				Name="items"
 				>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\items\item_structures.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\items\projectile_definitions.hpp"
 					>
 				</File>
@@ -4838,7 +4858,15 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\units\unit_control.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\units\unit_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\units\unit_structures.hpp"
 					>
 				</File>
 				<File
@@ -4870,7 +4898,63 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\devices\device_structures.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\devices\devices.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="cutscene"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\cutscene\recorded_animation_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\cutscene\recorded_animations.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="ai"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\ai\ai_scenario_definitions.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="effects"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\effects\effect_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\effects\material_effect_definitions.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="cache"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\cache\cache_files.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\cache\pc_sound_cache.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\cache\pc_texture_cache.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\cache\physical_memory_map.hpp"
 					>
 				</File>
 			</Filter>

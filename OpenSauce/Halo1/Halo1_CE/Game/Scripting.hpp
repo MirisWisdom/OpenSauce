@@ -7,9 +7,8 @@
 #pragma once
 
 #include "Memory/Data.hpp"
+#include <blamlib/Halo1/cutscene/recorded_animations.hpp>
 #include <Blam/Halo1/BlamScriptingDefinitions.hpp>
-
-#include "Objects/UnitControl.hpp"
 
 namespace Yelo
 {
@@ -30,24 +29,8 @@ namespace Yelo
 
 	namespace Scripting
 	{
-		//////////////////////////////////////////////////////////////////////////
-		// recorded animations
-		struct s_recorded_animations_datum : Memory::s_datum_base_aligned
-		{
-			datum_index unit_index;
-			uint16 time_left;
-			word_flags flags;
-			uint32 relative_ticks;
-			void* event_stream;
-			Objects::s_unit_control_data control_data;
-
-			// unknown
-			PAD32; PAD32; PAD32;
-			PAD16; PAD16;
-		}; BOOST_STATIC_ASSERT( sizeof(s_recorded_animations_datum) == 0x64 );
 		typedef Memory::DataArray<s_recorded_animations_datum, 64> t_recorded_animations_data;
 		t_recorded_animations_data*		RecordedAnimations();
-		//////////////////////////////////////////////////////////////////////////
 
 		// Note: the max count provided here is the stock count, not the OS "upgrade" count (which allows more)
 		typedef Memory::DataArray<hs_syntax_node, 19001> t_hs_syntax_data;

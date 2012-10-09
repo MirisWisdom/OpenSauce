@@ -5,9 +5,10 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 #pragma once
-#include "Memory/Data.hpp"
-#include "Memory/MemoryInterface.hpp"
 
+#include "Memory/MemoryInterface.hpp" // for CRC
+
+#include <blamlib/Halo1/cache/physical_memory_map.hpp>
 #include <blamlib/Halo1/game/game_allegiance.hpp>
 #include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/game/game_time.hpp>
@@ -23,10 +24,6 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
-		struct bitmap_data;
-
-		struct s_sound_permutation;
-
 		struct scenario;
 
 		struct s_game_globals;
@@ -41,11 +38,6 @@ namespace Yelo
 	namespace Enums
 	{
 		enum {
-			// Default address of the game state in memory
-			k_game_state_base_address = Enums::k_physical_memory_base_address,
-			// Max amount of memory addressable by the game state. After this comes tag memory
-			k_game_state_cpu_size = Enums::k_game_state_allocation_size,
-
 			// How much additional memory, if any, we allocate for the objects pool
 			k_game_state_allocation_size_object_memory_pool_upgrade = 0x10000,
 			// 0x42974 bytes available in game state allocation for Clients.
@@ -82,54 +74,6 @@ namespace Yelo
 
 
 		s_main_globals* MainGlobals();
-
-#if !PLATFORM_IS_DEDI
-		struct s_sound_cache_datum : Memory::s_datum_base
-		{
-			UNKNOWN_TYPE(bool);
-			UNKNOWN_TYPE(bool);
-			UNKNOWN_TYPE(byte); // haven't seen this used, don't know the exact type
-			UNKNOWN_TYPE(byte);
-			UNKNOWN_TYPE(bool);
-			UNKNOWN_TYPE(byte); // haven't seen this used, don't know the exact type
-			int16 cache_read_request_index;
-			PAD16;
-			TagGroups::s_sound_permutation* sound;
-		}; BOOST_STATIC_ASSERT( sizeof(s_sound_cache_datum) == 0x10 );
-
-		// TODO: this structure layout needs some fixin'
-		struct s_texture_cache_datum : Memory::s_datum_base
-		{
-			int16 cache_read_request_index;
-			UNKNOWN_TYPE(bool);
-			UNKNOWN_TYPE(bool);
-			PAD16;
-			TagGroups::bitmap_data* bitmap;
-			IDirect3DBaseTexture9* hardware_format; // the address of this field is returned by the texture request function
-		}; BOOST_STATIC_ASSERT( sizeof(s_texture_cache_datum) == 0x10 );
-
-		template<typename DatumT, uint32 DatumCount> struct s_resource_cache
-		{
-			Memory::DataArray<DatumT, DatumCount>* data;
-			void* base_address;
-			Memory::s_lruv_cache* lruv_cache;
-			bool initialized;
-			PAD24;
-		};
-#endif
-
-		struct s_physical_memory_map_globals
-		{
-#if !PLATFORM_IS_DEDI
-			s_resource_cache<s_sound_cache_datum, 512> pc_sound_cache;
-			s_resource_cache<s_texture_cache_datum, 4096> pc_texture_cache;
-#endif
-
-			void* game_state_base_address;
-			void* tag_cache_base_address;
-			void* texture_cache_base_address;
-			void* sound_cache_base_address;
-		};
 		s_physical_memory_map_globals* PhysicalMemoryMapGlobals();
 
 

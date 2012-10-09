@@ -8,7 +8,7 @@
 #if PLATFORM_ID == PLATFORM_TOOL
 #include "Tool/ToolMisc.hpp"
 
-#include <TagGroups/Halo1/scenario_definitions.hpp>
+#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 
 #include "TagGroups/TagGroups.hpp"
 #include "TagGroups/yelo_scenario_definitions.hpp"

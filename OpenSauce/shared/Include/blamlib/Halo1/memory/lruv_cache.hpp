@@ -10,6 +10,8 @@ namespace Yelo
 {
 	namespace Memory
 	{
+		struct s_data_array;
+
 		//////////////////////////////////////////////////////////////////////////
 		// Least Recently Used Cache
 
