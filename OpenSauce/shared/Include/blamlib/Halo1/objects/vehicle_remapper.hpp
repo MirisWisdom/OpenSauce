@@ -6,13 +6,30 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/game/game_engine.hpp>
 #include <blamlib/Halo1/game/players.hpp>
 
 namespace Yelo
 {
 	namespace Enums
 	{
+		enum e_vehicle_remapper_vehicle
+		{
+			_vehicle_remapper_vehicle_warthog,
+			_vehicle_remapper_vehicle_ghost,
+			_vehicle_remapper_vehicle_scorpion,
+			_vehicle_remapper_vehicle_rwarthog,
+			_vehicle_remapper_vehicle_banshee,
+			_vehicle_remapper_vehicle_cg_turret,
+
+			k_number_of_vehicle_remapper_vehicles,
+
+			_vehicle_remapper_vehicle_yelo1 = k_number_of_vehicle_remapper_vehicles,
+			_vehicle_remapper_vehicle_yelo2,
+			_vehicle_remapper_vehicle_yelo3,
+
+			k_number_of_vehicle_remapper_vehicles_yelo,
+		};
+
 		enum e_vehicle_set
 		{
 			_vehicle_set_default,
@@ -23,12 +40,13 @@ namespace Yelo
 			_vehicle_set_rwarthogs,
 			_vehicle_set_banshees,
 			_vehicle_set_cg_turrets,
+			_vehicle_set_custom,
 
 			k_number_of_vehicle_sets,
 
-			_vehicle_set_yelo8 = k_number_of_vehicle_sets,
-			_vehicle_set_yelo9,
-			_vehicle_set_yelo10,
+			_vehicle_set_yelo1 = k_number_of_vehicle_sets,
+			_vehicle_set_yelo2,
+			_vehicle_set_yelo3,
 
 			k_number_of_vehicle_sets_yelo,
 		};
@@ -44,12 +62,14 @@ namespace Yelo
 			unsigned rwarthogs : 3;
 			unsigned banshees : 3;
 			unsigned cg_turrets : 3;
-			unsigned yelo8 : 3;
-			unsigned yelo9 : 3;
-			unsigned yelo10 : 3;
+			unsigned yelo1 : 3;
+			unsigned yelo2 : 3;
+			unsigned yelo3 : 3;
 			unsigned pad : 1;
 		}; BOOST_STATIC_ASSERT( sizeof(s_vehicle_set) == sizeof(int32) );
 
+		//////////////////////////////////////////////////////////////////////////
+		// This is still a WIP
 		struct s_vehicle_team_remapper
 		{
 			int32 team_index;
@@ -65,16 +85,17 @@ namespace Yelo
 				PAD16;
 			}datums[8];
 		}; BOOST_STATIC_ASSERT( sizeof(s_vehicle_team_remapper) == 0x50 );
-		struct s_vehicle_game_type_remapper
-		{
-			s_vehicle_team_remapper team_mappings[Enums::k_number_of_multiplayer_teams];
-		}; BOOST_STATIC_ASSERT( sizeof(s_vehicle_game_type_remapper) == 0xA0 );
+		//////////////////////////////////////////////////////////////////////////
 		struct s_vehicle_remapper
 		{
-			s_vehicle_game_type_remapper game_type_mappings[Enums::_game_engine-1];
+			s_vehicle_team_remapper team_mappings[Enums::k_number_of_multiplayer_teams];
+		}; BOOST_STATIC_ASSERT( sizeof(s_vehicle_remapper) == 0xA0 );
+		struct s_vehicle_remapper_globals
+		{
+			s_vehicle_remapper vehicle_mappings[Enums::k_number_of_vehicle_remapper_vehicles];
 
 			bool processed;
 			bool is_teamplay;
-		}; BOOST_STATIC_ASSERT( sizeof(s_vehicle_remapper) == 0x3C2 );
+		}; BOOST_STATIC_ASSERT( sizeof(s_vehicle_remapper_globals) == 0x3C2 );
 	};
 };

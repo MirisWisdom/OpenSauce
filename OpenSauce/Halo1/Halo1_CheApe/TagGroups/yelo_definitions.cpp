@@ -7,9 +7,10 @@
 #include "Common/Precompile.hpp"
 #include "TagGroups/yelo_definitions.hpp"
 
+#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+
 #include <Blam/Halo1/project_yellow_shared_definitions.hpp>
 #include <TagGroups/Halo1/game_globals_definitions.hpp>
-#include <TagGroups/Halo1/scenario_definitions.hpp>
 
 #include "Engine/EngineFunctions.hpp"
 #include "Engine/GrenadeTypesUpgrade.hpp"

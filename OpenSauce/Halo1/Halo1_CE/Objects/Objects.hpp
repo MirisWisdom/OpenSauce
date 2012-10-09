@@ -161,12 +161,11 @@ namespace Yelo
 
 		void InitializeForYeloGameState(bool enabled);
 
-#if !PLATFORM_IS_DEDI
 		void LoadSettings(TiXmlElement* objects_element);
 		void SaveSettings(TiXmlElement* objects_element);
-#endif
 
 		void MultiTeamVehiclesSet(bool enabled);
+		void VehicleRemapperEnable(bool enabled);
 
 
 		void PlacementDataNewAndCopy(s_object_placement_data& data, datum_index src_object_index, 

@@ -6,7 +6,8 @@
 */
 #include "Common/Precompile.hpp"
 #include "Yelo/ScenarioResources.hpp"
-#include <TagGroups/Halo1/scenario_definitions.hpp>
+
+#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 
 #include "TagGroups/TagGroups.hpp"
 

@@ -106,17 +106,20 @@ namespace Yelo
 		static void LoadSettingsForServer(TiXmlElement* server)
 		{
 #if PLATFORM_IS_DEDI
-			// TODO: make the Cache settings load as readonly from the client settings
+			// TODO: make the Cache and Objects settings load as readonly from the client settings
 			TiXmlElement* version_check_element = NULL,
+						* objects_element = NULL,
 						* cf_element = NULL
 				;
 
 			if(server != NULL)
 			{
+				objects_element = server->FirstChildElement("objects");
 				version_check_element = server->FirstChildElement("version_check");
 				cf_element = server->FirstChildElement("cacheFiles");
 			}
 
+			Objects::LoadSettings(objects_element);
 			Networking::VersionCheck::LoadSettings(version_check_element);
 			Cache::LoadSettings(cf_element);
 #endif

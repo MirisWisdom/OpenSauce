@@ -6,6 +6,9 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/game/players.hpp>
+#include <blamlib/Halo1/objects/vehicle_remapper.hpp>
+
 namespace Yelo
 {
 	namespace Enums
@@ -106,7 +109,7 @@ namespace Yelo
 			int32							score_to_win;
 			Enums::game_variant_weapon_set	weapon_set;
 
-			int32							vehicle_set[2]; // red, blue
+			Objects::s_vehicle_set			vehicle_set[Enums::k_number_of_multiplayer_teams];
 			int32							vehicles_respawn;
 
 			byte							friendly_fire; // need an enum for this

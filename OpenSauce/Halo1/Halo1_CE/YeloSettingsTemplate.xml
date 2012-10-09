@@ -44,7 +44,7 @@
 			<map_download enabled="" />
 		</networking>
 
-		<objects>
+		<objects disableVehicleRemapper="">
 			<weaponViews>
 				<entry name="">
 					<position x="" y="" z="" />

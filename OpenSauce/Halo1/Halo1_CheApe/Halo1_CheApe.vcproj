@@ -2376,10 +2376,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Include\TagGroups\Halo1\scenario_definitions.hpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\shared\Include\TagGroups\Halo1\shader_definitions.hpp"
 					>
 				</File>

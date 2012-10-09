@@ -83,7 +83,7 @@ namespace Yelo
 		int32 size;
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
 		// unknown
-		PAD32;
+		long_flags flags;
 		// offset relative to the start of owner tag group?
 		int32 data_offset;
 #endif

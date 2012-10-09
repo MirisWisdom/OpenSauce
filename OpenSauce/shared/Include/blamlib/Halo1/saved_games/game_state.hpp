@@ -6,8 +6,22 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/cache/physical_memory_map.hpp>
+
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum {
+			k_game_state_allocation_size =			0x00440000,
+
+			// Default address of the game state in memory
+			k_game_state_base_address =				k_physical_memory_base_address,
+			// Max amount of memory addressable by the game state. After this comes tag memory
+			k_game_state_cpu_size =					k_game_state_allocation_size,
+		};
+	};
+
 	namespace GameState
 	{
 		struct s_yelo_header_data

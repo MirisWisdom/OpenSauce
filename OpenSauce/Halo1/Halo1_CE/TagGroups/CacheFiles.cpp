@@ -7,9 +7,11 @@
 #include "Common/Precompile.hpp"
 #include "TagGroups/CacheFiles.hpp"
 
+#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+
 #include <Blam/Halo1/BlamMemoryUpgrades.hpp>
 #include <Blam/Halo1/BlamDataFileUpgrades.hpp>
-#include <TagGroups/Halo1/scenario_definitions.hpp>
+
 #include "Memory/MemoryInterface.hpp"
 #include "Common/YeloSettings.hpp"
 #include "Game/EngineFunctions.hpp"

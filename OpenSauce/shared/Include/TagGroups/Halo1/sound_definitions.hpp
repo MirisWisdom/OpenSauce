@@ -19,11 +19,10 @@ namespace Yelo
 			TAG_FIELD(_enum, compression);
 			TAG_FIELD(int16, next_permutation_index);
 
-			UNKNOWN_TYPE(int32);				// 0x30, idk
-			UNKNOWN_TYPE(int32);				// 0x34, idk
-			UNKNOWN_TYPE(uint32);				// 0x38
-			datum_index owner_tag_index;		// 0x3C
-			datum_index lruv_desired_page_count;// 0x40
+			datum_index cache_block_index;		// 0x2C
+			void* cache_base_address;			// 0x30
+			datum_index cache_tag_index;		// 0x34
+			int32 unused0[2];					// 0x38, it's actually used! in pc anyway
 
 			TAG_FIELD(tag_data, samples);
 			TAG_FIELD(tag_data, mouth_data);
