@@ -49,18 +49,69 @@ _return:
 			API_FUNC_NAKED_END(1)
 		}
 
-		static int32 gamespy_patch_check_for_updates_sans_check()
-		{
-			return GsConfig()->check_for_updates_status = Enums::_gamespy_update_status_no_update;
-		}
-		void GsTurnOffUpdateCheck()
-		{
-#if PLATFORM_IS_USER
-			*GsPatchCheckForUpdates() = false; // pretend we've checked for updates already
 
-			Memory::WriteRelativeCall(&gamespy_patch_check_for_updates_sans_check, 
-				GET_DATA_VPTR(GAMESPY_PATCH_SPAWN_CHECK_FOR_UPDATES_THREAD_CALL));
+		namespace GameSpy
+		{
+			game_build_string_t& GetGameVer()
+			{
+				static game_build_string_t g_game_ver;
+
+				return g_game_ver;
+			}
+
+			static void Qr2GetGameVer(char* buffer)
+			{
+				strcpy_s(buffer, 0x100, GetGameVer());
+			}
+
+			static int PLATFORM_API Qr2StringMatchesGameVer(const char* buffer)
+			{
+				return strcmp(buffer, GetGameVer())==0;
+			}
+
+			static int32 gamespy_patch_check_for_updates_sans_check()
+			{
+				return GsConfig()->check_for_updates_status = Enums::_gamespy_update_status_no_update;
+			}
+			void TurnOffUpdateCheck()
+			{
+#if PLATFORM_IS_USER
+				*GsPatchCheckForUpdates() = false; // pretend we've checked for updates already
+
+				Memory::WriteRelativeCall(&gamespy_patch_check_for_updates_sans_check, 
+					GET_DATA_VPTR(GAMESPY_PATCH_SPAWN_CHECK_FOR_UPDATES_THREAD_CALL));
 #endif
-		}
+			}
+
+			struct s_gamespy_yelo_settings {
+				bool no_update_check;
+				PAD24;
+			}g_gamespy_yelo_settings;
+
+			void Initialize()
+			{
+				// TODO: populate GetGameVer()
+
+				if(g_gamespy_yelo_settings.no_update_check)
+					TurnOffUpdateCheck();
+			}
+
+			void Dispose()
+			{
+			}
+
+			void LoadSettings(TiXmlElement* xml_element)
+			{
+				if(xml_element == NULL) return;
+
+				g_gamespy_yelo_settings.no_update_check = 
+					Settings::ParseBoolean(xml_element->Attribute("gsNoUpdateCheck"));
+			}
+			void SaveSettings(TiXmlElement* xml_element)
+			{
+				xml_element->SetAttribute("gsNoUpdateCheck", 
+					Settings::BooleanToString(g_gamespy_yelo_settings.no_update_check));
+			}
+		};
 	};
 };

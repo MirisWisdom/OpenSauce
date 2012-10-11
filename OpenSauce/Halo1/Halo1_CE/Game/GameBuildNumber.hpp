@@ -10,6 +10,23 @@ namespace Yelo
 {
 	namespace Enums
 	{
+		enum {
+			// MJ.MN.BD.REV#
+			k_game_build_string_length = 15,
+
+			k_game_build_string_major_offset = 0,
+			k_game_build_string_major_length = 2,
+
+			k_game_build_string_minor_offset = 3,
+			k_game_build_string_minor_length = 2,
+
+			k_game_build_string_build_offset = 6,
+			k_game_build_string_build_length = 2,
+
+			k_game_build_string_revision_offset = 9,
+			k_game_build_string_revision_length = 4,
+		};
+
 		enum game_build_number_index
 		{
 			_game_build_number_index_100,
@@ -21,15 +38,19 @@ namespace Yelo
 		};
 	};
 
+	typedef char game_build_string_t[Enums::k_game_build_string_length+1];
+
 	namespace BuildNumber
 	{
-		char*		GameBuildString();
+		char*		GameBuildString();			// [k_game_build_string_length+1]
 		char*		GamespyGameBuildString();
 
 
 		void Initialize();
 		void Dispose();
 		void InitializeForNewMap();
+
+		void InitializeForYeloGameState(bool enabled);
 
 
 		// Returns true if build_number matches one of the numbers in g_game_build_numbers

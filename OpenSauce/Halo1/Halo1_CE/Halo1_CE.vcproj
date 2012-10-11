@@ -1737,6 +1737,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4090"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1745,6 +1746,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4090"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1753,6 +1755,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4090"
 							/>
 						</FileConfiguration>
 						<FileConfiguration
@@ -1761,6 +1764,7 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
+								DisableSpecificWarnings="4090"
 							/>
 						</FileConfiguration>
 					</File>
@@ -1936,6 +1940,7 @@
 							>
 							<Tool
 								Name="VCCLCompilerTool"
+								PreprocessorDefinitions="_CRT_NONSTDC_NO_DEPRECATE"
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
@@ -1944,6 +1949,7 @@
 							>
 							<Tool
 								Name="VCCLCompilerTool"
+								PreprocessorDefinitions="_CRT_NONSTDC_NO_DEPRECATE"
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
@@ -1952,6 +1958,7 @@
 							>
 							<Tool
 								Name="VCCLCompilerTool"
+								PreprocessorDefinitions="_CRT_NONSTDC_NO_DEPRECATE"
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
@@ -1960,6 +1967,7 @@
 							>
 							<Tool
 								Name="VCCLCompilerTool"
+								PreprocessorDefinitions="_CRT_NONSTDC_NO_DEPRECATE"
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
@@ -1972,6 +1980,7 @@
 							>
 							<Tool
 								Name="VCCLCompilerTool"
+								PreprocessorDefinitions="_CRT_NONSTDC_NO_DEPRECATE"
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
@@ -1980,6 +1989,7 @@
 							>
 							<Tool
 								Name="VCCLCompilerTool"
+								PreprocessorDefinitions="_CRT_NONSTDC_NO_DEPRECATE"
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
@@ -1988,6 +1998,7 @@
 							>
 							<Tool
 								Name="VCCLCompilerTool"
+								PreprocessorDefinitions="_CRT_NONSTDC_NO_DEPRECATE"
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
@@ -1996,6 +2007,7 @@
 							>
 							<Tool
 								Name="VCCLCompilerTool"
+								PreprocessorDefinitions="_CRT_NONSTDC_NO_DEPRECATE"
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
@@ -2008,6 +2020,7 @@
 							>
 							<Tool
 								Name="VCCLCompilerTool"
+								PreprocessorDefinitions="_CRT_NONSTDC_NO_DEPRECATE"
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
@@ -2016,6 +2029,7 @@
 							>
 							<Tool
 								Name="VCCLCompilerTool"
+								PreprocessorDefinitions="_CRT_NONSTDC_NO_DEPRECATE"
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
@@ -2024,6 +2038,7 @@
 							>
 							<Tool
 								Name="VCCLCompilerTool"
+								PreprocessorDefinitions="_CRT_NONSTDC_NO_DEPRECATE"
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
@@ -2032,6 +2047,7 @@
 							>
 							<Tool
 								Name="VCCLCompilerTool"
+								PreprocessorDefinitions="_CRT_NONSTDC_NO_DEPRECATE"
 								UsePrecompiledHeader="0"
 							/>
 						</FileConfiguration>
@@ -3214,6 +3230,10 @@
 					>
 					<File
 						RelativePath=".\Game\GameState.EventLog.inl"
+						>
+					</File>
+					<File
+						RelativePath=".\Game\GameState.MemoryUpgrades.inl"
 						>
 					</File>
 					<File

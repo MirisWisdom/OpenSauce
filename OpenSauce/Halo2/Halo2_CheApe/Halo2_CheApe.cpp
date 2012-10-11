@@ -36,7 +36,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 		g_initialized = true;
 	}
 	else if(ul_reason_for_call == DLL_PROCESS_DETACH && g_initialized) {
-dispose:
+//dispose:
 		if(Yelo::CheApe::_InitError == Yelo::CheApe::k_error_none)
 			Yelo::Dispose();
 

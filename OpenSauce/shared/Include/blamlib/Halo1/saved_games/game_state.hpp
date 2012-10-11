@@ -30,7 +30,13 @@ namespace Yelo
 			struct {
 				bool initialized : 1;
 				bool game_state_upgrades_on : 1;
-			}flags;
+			}flags;									// 0x01
+			struct {
+				byte major;							// 0x2
+				byte minor;							// 0x3
+				uint16 build;						// 0x4
+			}version;
+			PAD16;									// 0x6
 		}; BOOST_STATIC_ASSERT( sizeof(s_yelo_header_data) <= 0x20 );
 		struct s_header_data
 		{

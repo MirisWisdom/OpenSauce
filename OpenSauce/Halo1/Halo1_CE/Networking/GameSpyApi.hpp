@@ -6,6 +6,8 @@
 */
 #pragma once
 
+#include "Game/GameBuildNumber.hpp"
+
 namespace Yelo
 {
 	namespace Enums
@@ -351,6 +353,16 @@ namespace Yelo
 
 		s_gamespy_client* GsGetClient(int32 client_id);
 
-		void GsTurnOffUpdateCheck();
+
+		namespace GameSpy
+		{
+			game_build_string_t& GetGameVer();
+
+			void Initialize();
+			void Dispose();
+
+			void LoadSettings(TiXmlElement* xml_element);
+			void SaveSettings(TiXmlElement* xml_element);
+		};
 	};
 };
