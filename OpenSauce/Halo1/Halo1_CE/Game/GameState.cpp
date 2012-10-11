@@ -33,50 +33,14 @@ namespace Yelo
 #include "Memory/_EngineLayout.inl"
 
 #include "Game/GameState.Procs.inl"
+#include "Game/GameState.MemoryUpgrades.inl"
 #if !PLATFORM_IS_DEDI
 	#include "Game/GameState.ServerList.inl"
 #endif
 
 		s_main_globals* MainGlobals()								PTR_IMP_GET2(main_globals);
-
 		s_physical_memory_map_globals* PhysicalMemoryMapGlobals()	PTR_IMP_GET2(physical_memory_globals);
 
-// This memory upgrade design can only work with a DLL override system
-#if defined(DX_WRAPPER) || PLATFORM_IS_DEDI
-
-		static void PhysicalMemoryReInitialize()
-		{
-			static uint32 INITIALIZE = GET_FUNC_PTR(PHYSICAL_MEMORY_INITIALIZE);
-
-			s_physical_memory_map_globals* globals = PhysicalMemoryMapGlobals();
-
-			VirtualFree(globals->sound_cache_base_address, 0, MEM_RELEASE);
-			VirtualFree(globals->texture_cache_base_address, 0, MEM_RELEASE);
-			VirtualFree(globals->game_state_base_address, 0, MEM_RELEASE);
-
-			__asm	call	INITIALIZE
-		}
-
-		static void MemoryUpgradesInitialize()
-		{
-			const uint32 k_allocation_size = Enums::k_physical_memory_map_allocation_size_upgrade;
-			Memory::WriteMemory(GET_DATA_VPTR(PHYSICAL_MEMORY_ALLOCATION_SIZE), CAST_PTR(void*, k_allocation_size));
-
-			// NOTE: the default haloceded hook loads the Yelo DLL before the physical memory is initialized, 
-			// so for Dedi builds, we don't need to do this
-	#if !PLATFORM_IS_DEDI
-			PhysicalMemoryReInitialize();
-	#endif
-		}
-
-		static void MemoryUpgradesDispose()
-		{
-		}
-
-#else
-		static void MemoryUpgradesInitialize() {}
-		static void MemoryUpgradesDispose() {}
-#endif
 
 		s_game_state_globals* GameStateGlobals()						PTR_IMP_GET2(game_state_globals);
 		s_game_globals* GameGlobals()									DPTR_IMP_GET(game_globals);
@@ -129,6 +93,22 @@ namespace Yelo
 			}
 		}
 
+		static void InitializeForDebug()
+		{
+			*GameState::DeveloperMode() = Enums::k_developer_mode_level_debug_output; // make console messages appear
+
+			// increment the game build by one so all games (hosted or browsed) aren't
+			// from the normal, non-Yelo, game pool.
+			BuildNumber::GameBuildString()[Enums::k_game_build_string_build_offset+1] += 7;
+		}
+		static void InitializeInitTextFix()
+		{
+			// FFFFFFFFuck you. This enables the client to have it's own init.txt (also was causing crashes)
+			// Obviously this isn't ran in Dedi builds
+#if PLATFORM_IS_USER
+			strcpy_s(GET_PTR2(init_txt_filename), 12, "init_c.txt"); // 11 characters (including '\0')
+#endif
+		}
 		void Initialize()
 		{
 			InitializeProcs();
@@ -141,20 +121,11 @@ namespace Yelo
 				g_yelo_game_state_enabled = false;
 
 #ifdef API_DEBUG
-			*GameState::DeveloperMode() = Enums::k_developer_mode_level_debug_output; // make console messages appear
-
-			// increment the game build by one so all games (hosted or browsed) aren't
-			// from the normal, non-Yelo, game pool.
-			BuildNumber::GameBuildString()[7] += 7;
+			InitializeForDebug();
 #endif
-
 			*TransportDumping() = false;
 
-			// FFFFFFFFuck you. This enables the client to have it's own init.txt (also was causing crashes)
-			// Obviously this isn't ran in Dedi builds
-#if PLATFORM_IS_USER
-			strcpy_s(GET_PTR2(init_txt_filename), 12, "init_c.txt"); // 11 characters (including '\0')
-#endif
+			InitializeInitTextFix();
 
 			EventLogInitialize();
 
@@ -183,9 +154,23 @@ namespace Yelo
 					components[x].Update(delta_time);
 		}
 
-		void PLATFORM_API InitializeForNewMap()
+		static void InitializeForNewMapPrologue()
 		{
 			Physics()->Reset(); // Reset the physics constants on each new map load since these are engine globals, not game state globals.
+		}
+		static void InitializeForNewMapEpilogue()
+		{
+			// Update the gravity based on the scenario's yelo tag settings
+			if(!TagGroups::_global_yelo->IsNull())
+			{
+				const real& gravity_scale = TagGroups::_global_yelo->physics.gravity_scale;
+				if(gravity_scale > 0 && gravity_scale != 1.0f)
+					Physics()->SetGravityScale(gravity_scale);
+			}
+		}
+		void PLATFORM_API InitializeForNewMap()
+		{
+			InitializeForNewMapPrologue();
 
 			Yelo::Main::s_project_map_component* components;
 			const int32 component_count = Yelo::Main::GetProjectComponents(components);
@@ -194,13 +179,7 @@ namespace Yelo
 				if( components[x].InitializeForNewMap != NULL )
 					components[x].InitializeForNewMap();
 
-			// Update the gravity based on the scenario's yelo tag settings
-			if(!TagGroups::_global_yelo->IsNull())
-			{
-				const real& gravity_scale = TagGroups::_global_yelo->physics.gravity_scale;
-				if(gravity_scale > 0 && gravity_scale != 1.0f)
-					Physics()->SetGravityScale(gravity_scale);
-			}
+			InitializeForNewMapEpilogue();
 		}
 		void PLATFORM_API DisposeFromOldMap()
 		{

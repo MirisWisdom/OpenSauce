@@ -117,6 +117,10 @@ is_invalid:
 			}
 		}
 
+		void InitializeForYeloGameState(bool enabled)
+		{
+		}
+
 
 		cstring k_game_build_numbers[Enums::k_max_game_build_number_index] = {
 			"01.00.00.0609",

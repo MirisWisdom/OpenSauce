@@ -148,7 +148,7 @@ int  gz_compress_mmap OF((FILE   *in, gzFile out));
 void gz_uncompress    OF((gzFile in, FILE   *out));
 void file_compress    OF((char  *file, char *mode));
 void file_uncompress  OF((char  *file));
-int  main             OF((int argc, char *argv[]));
+int  main_             OF((int argc, char *argv[]));
 
 /* ===========================================================================
  * Display error message and exit
@@ -346,7 +346,7 @@ void file_uncompress(file)
  *   -1 to -9 : compression level
  */
 
-int main(argc, argv)
+int main_(argc, argv)
     int argc;
     char *argv[];
 {

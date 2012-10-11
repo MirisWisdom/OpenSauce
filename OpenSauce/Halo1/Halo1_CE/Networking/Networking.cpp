@@ -147,10 +147,8 @@ namespace Yelo
 
 		void Initialize()
 		{
-			if(g_network_yelo_settings.gs_no_update_check)
-				GsTurnOffUpdateCheck();
-
 			MessageDeltas::Initialize();
+			GameSpy::Initialize();
 
 			// NOTE: Uncomment these if you wish to detect
 			// when players enter and leave
@@ -165,19 +163,18 @@ namespace Yelo
 		void Dispose()
 		{
 			MessageDeltas::Dispose();
+			GameSpy::Dispose();
 		}
 
 		void LoadSettings(TiXmlElement* xml_element)
 		{
 			if(xml_element == NULL) return;
 
-			g_network_yelo_settings.gs_no_update_check = 
-				Settings::ParseBoolean(xml_element->Attribute("gsNoUpdateCheck"));
+			GameSpy::LoadSettings(xml_element);
 		}
 		void SaveSettings(TiXmlElement* xml_element)
 		{
-			xml_element->SetAttribute("gsNoUpdateCheck", 
-				Settings::BooleanToString(g_network_yelo_settings.gs_no_update_check));
+			GameSpy::SaveSettings(xml_element);
 		}
 
 		static API_FUNC_NAKED bool NetworkConnectionWrite(const s_network_connection& connection,
