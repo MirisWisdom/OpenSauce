@@ -18,25 +18,28 @@ namespace Yelo
 {
 	namespace Objects { namespace Items {
 
+		// cmp     dword ptr [esi+128h], 2
+		// modify the jz to be jge
+		// jz      short 48D579
+		FUNC_PTR(GAME_GLOBALS_POSTPROCESS_GRENADE_COUNT_MOD, 0x491751, 0x48D561, 0x5A7951);
+		ENGINE_PTR(string_list, global_grenade_type_enum, 0x9D1728, 0x6DE850, 0xA496A8);
+		ENGINE_PTR(tag_block_definition, grenades_block, 0x9D237C, 0x6DF4A4, 0xA4A2FC);
+
 		// How many new types OS adds
 		static const int k_unit_grenade_types_new_count = Enums::k_unit_grenade_types_count_yelo - Enums::k_unit_grenade_types_count;
 
 		static bool g_grenade_types_upgrade_enabled;
 
-		ENGINE_PTR(string_list, global_grenade_type_enum, 0x9D1728, 0x6DE850, 0xA496A8);
-		ENGINE_PTR(tag_block_definition, grenades_block, 0x9D237C, 0x6DF4A4, 0xA4A2FC);
-
+		//////////////////////////////////////////////////////////////////////////
+		// new grenade_type enum strings
 		static cstring global_grenade_type_yelo_enum_strings[Enums::k_unit_grenade_types_count_yelo] = {
 			"",
 			"",
 			"custom 2",
 			"custom 3",
 		};
-		static string_list global_grenade_type_yelo_enum = {
-			NUMBEROF(global_grenade_type_yelo_enum_strings),
-			global_grenade_type_yelo_enum_strings
-		};
-
+		//////////////////////////////////////////////////////////////////////////
+		// Scenario modifications
 		static cstring k_scenario_profiles_block_unused_grenade_count_field_name = "starting <unknown> grenade count";
 		static cstring k_scenario_profiles_block_unused_grenade_count_field_names_yelo[k_unit_grenade_types_new_count] = {
 			"starting custom-2 grenade count",
@@ -69,6 +72,7 @@ namespace Yelo
 
 			return &scenario_profiles_block_def->fields[field_index];
 		}
+		//////////////////////////////////////////////////////////////////////////
 
 
 		void GrenadeTypesUpgradeInitialize()
@@ -108,8 +112,16 @@ namespace Yelo
 		{
 			g_grenade_types_upgrade_enabled = enabled;
 
+			//////////////////////////////////////////////////////////////////////////
+			// Make the postprocess not error out on grenade_types.count != 2
+			// TODO: Ideally, we should hook this part of the code to do our own checks with our own error, but bigger fish to fry right now
+			byte* game_globals_postprocess_jmp_mod = CAST_PTR(byte*, GET_FUNC_VPTR(GAME_GLOBALS_POSTPROCESS_GRENADE_COUNT_MOD));
+			// jge : jz
+			*game_globals_postprocess_jmp_mod = enabled ? 0x7D : 0x74;
+			//////////////////////////////////////////////////////////////////////////
+
 			string_list* global_grenade_type_enum = GET_PTR2(global_grenade_type_enum);
-			global_grenade_type_enum->strings = global_grenade_type_yelo_enum.strings;
+			global_grenade_type_enum->strings = global_grenade_type_yelo_enum_strings;
 			global_grenade_type_enum->count = enabled ? Enums::k_unit_grenade_types_count_yelo : Enums::k_unit_grenade_types_count;
 
 			tag_block_definition* block_definition = GET_PTR2(grenades_block);
