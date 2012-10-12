@@ -23,7 +23,7 @@ namespace Yelo
 
 		static bool g_grenade_types_upgrade_enabled;
 
-		ENGINE_PTR(string_list, global_grenade_type_enum, 0x9D1728, 0x6DE850, 0xA496AC);
+		ENGINE_PTR(string_list, global_grenade_type_enum, 0x9D1728, 0x6DE850, 0xA496A8);
 		ENGINE_PTR(tag_block_definition, grenades_block, 0x9D237C, 0x6DF4A4, 0xA4A2FC);
 
 		static cstring global_grenade_type_yelo_enum_strings[Enums::k_unit_grenade_types_count_yelo] = {
