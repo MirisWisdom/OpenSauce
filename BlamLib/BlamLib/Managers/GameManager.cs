@@ -201,6 +201,7 @@ namespace BlamLib.Managers
 			Halo3,
 			HaloOdst,
 			HaloReach,
+			Halo4,
 		};
 
 		/// <summary>
@@ -240,6 +241,7 @@ namespace BlamLib.Managers
 				case Namespace.Halo3:		g |= BlamVersion.Halo3; break;
 				case Namespace.HaloOdst:	g |= BlamVersion.HaloOdst; break;
 				case Namespace.HaloReach:	g |= BlamVersion.HaloReach; break;
+				case Namespace.Halo4:		g |= BlamVersion.Halo4; break;
 			}
 
 			return g;
@@ -265,6 +267,7 @@ namespace BlamLib.Managers
 			else if ((g & BlamVersion.Halo3) != 0)		n = Namespace.Halo3;
 			else if ((g & BlamVersion.HaloOdst) != 0)	n = Namespace.HaloOdst;
 			else if ((g & BlamVersion.HaloReach) != 0)	n = Namespace.HaloReach;
+			else if ((g & BlamVersion.Halo4) != 0)		n = Namespace.Halo4;
 		}
 		#endregion
 

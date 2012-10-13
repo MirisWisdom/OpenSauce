@@ -12,7 +12,7 @@ namespace BlamLib.Blam.HaloOdst
 	/// <summary>
 	/// Halo Odst game definition implementation
 	/// </summary>
-	public sealed class GameDefinition : Managers.BlamDefinition, Managers.IStringIdController, Managers.IScriptingController, Managers.IVertexBufferController
+	public sealed class GameDefinition : Managers.BlamDefinitionGen3
 	{
 		#region Implementation
 		public override TI.TagGroupCollection TagGroups						{ get { return HaloOdst.TagGroups.Groups; } }
@@ -81,18 +81,6 @@ namespace BlamLib.Blam.HaloOdst
 			return gr;
 		}
 
-		internal protected override Blam.Cache.BuilderBase ConstructCacheBuilder(BlamVersion game)
-		{
-			Blam.Cache.BuilderBase cb = null;
-
-			if ((game & BlamVersion.Halo3) != 0) // TODO: odst
-			{
-				cb = new Halo3.Builder();
-			}
-
-			return cb;
-		}
-
 		internal protected override Blam.CacheFile LoadCacheFile(BlamVersion game, string file_path, bool is_resource)
 		{
 			Blam.CacheFile cf = null;
@@ -109,14 +97,6 @@ namespace BlamLib.Blam.HaloOdst
 
 		public override Blam.CacheFile GetCacheFileFromLocation(BlamVersion ver, string cache_name) { return Program.HaloOdst.FromLocation(ver, cache_name); }
 		public override Blam.CacheFile GetCacheFileFromLocation(BlamVersion ver, string cache_name, out bool is_internal) { return Program.HaloOdst.FromLocation(ver, cache_name, out is_internal); }
-
-		public override Managers.TagDatabase CreateTagDatabase() { throw new NotSupportedException();/*return new HaloOdst.Tags.TagDatabase()*/; }
-
-		protected override Managers.CacheTagDatabase CreateCacheTagDatabaseInternal(DatumIndex cache_id) { throw new NotSupportedException();/*return new HaloOdst.Tags.CacheTagDatabase((HaloOdst.CacheFile)Program.GetCacheFile(cache_id))*/; }
-
-		public override Managers.ErrorTagDatabase CreateErrorTagDatabase() { throw new NotSupportedException();/*return new HaloOdst.Tags.ErrorTagDatabase()*/; }
-
-		public override TI.TagGroup TagDatabaseGroup { get { throw new NotSupportedException();/*return Halo3.TagGroups.tag_*/; } }
 		#endregion
 
 		internal GameDefinition() {}
@@ -134,7 +114,7 @@ namespace BlamLib.Blam.HaloOdst
 		/// </summary>
 		/// <param name="game"></param>
 		/// <returns></returns>
-		public bool StringIdCacheOpen(BlamVersion game)
+		public override bool StringIdCacheOpen(BlamVersion game)
 		{
 			int count = 0;
 
@@ -161,7 +141,7 @@ namespace BlamLib.Blam.HaloOdst
 		/// </summary>
 		/// <param name="game"></param>
 		/// <returns></returns>
-		public bool StringIdCacheClose(BlamVersion game)
+		public override bool StringIdCacheClose(BlamVersion game)
 		{
 			int count = -1;
 
@@ -194,7 +174,7 @@ namespace BlamLib.Blam.HaloOdst
 		/// </summary>
 		/// <param name="game"></param>
 		/// <returns></returns>
-		public bool ScriptingCacheOpen(BlamVersion game)
+		public override bool ScriptingCacheOpen(BlamVersion game)
 		{
 			int count = 0;
 
@@ -221,7 +201,7 @@ namespace BlamLib.Blam.HaloOdst
 		/// </summary>
 		/// <param name="game"></param>
 		/// <returns></returns>
-		public bool ScriptingCacheClose(BlamVersion game)
+		public override bool ScriptingCacheClose(BlamVersion game)
 		{
 			int count = -1;
 
@@ -257,7 +237,7 @@ namespace BlamLib.Blam.HaloOdst
 		/// </summary>
 		/// <param name="game"></param>
 		/// <returns></returns>
-		public bool VertexBufferCacheOpen(BlamVersion game)
+		public override bool VertexBufferCacheOpen(BlamVersion game)
 		{
 			int count = 0;
 
@@ -284,7 +264,7 @@ namespace BlamLib.Blam.HaloOdst
 		/// </summary>
 		/// <param name="game"></param>
 		/// <returns></returns>
-		public bool VertexBufferCacheClose(BlamVersion game)
+		public override bool VertexBufferCacheClose(BlamVersion game)
 		{
 			int count = -1;
 

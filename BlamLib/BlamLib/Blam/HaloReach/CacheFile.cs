@@ -243,27 +243,7 @@ namespace BlamLib.Blam.HaloReach
 			#endregion
 
 			#region Load tag names
-			if(cache.EngineVersion == BlamVersion.HaloReach_Xbox)
-			{
-				string tag_name;
-				foreach (var ci in items)
-				{
-					ci.TagNameOffset = uint.MaxValue;
-
-					if (!ci.IsEmpty)
-					{
-						tag_name = ci.Datum.ToString();
-					}
-					else
-					{
-						ci.ReferenceName = DatumIndex.Null;
-						continue;
-					}
-
-					ci.ReferenceName = cache.References.AddOptimized(ci.GroupTag, tag_name);
-				}
-			}
-			else using (var buffer = cache.DecryptCacheSegment(CacheSectionType.Debug, cache.HeaderHaloReach.TagNamesBufferOffset, cache.HeaderHaloReach.TagNamesBufferSize))
+			using (var buffer = cache.DecryptCacheSegment(CacheSectionType.Debug, cache.HeaderHaloReach.TagNamesBufferOffset, cache.HeaderHaloReach.TagNamesBufferSize))
 			{
 				string tag_name;
 				foreach (var ci in items)

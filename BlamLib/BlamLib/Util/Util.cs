@@ -7,7 +7,6 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
-using System.Xml.Linq;
 
 namespace BlamLib
 {

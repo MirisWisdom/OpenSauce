@@ -17,7 +17,7 @@ namespace BlamLib
 			#region Manager
 			static Blam.HaloReach.GameDefinition manager = new Blam.HaloReach.GameDefinition();
 			/// <summary>
-			/// Halo ODST's specific manager instance
+			/// Halo Reach's specific manager instance
 			/// </summary>
 			public static Blam.HaloReach.GameDefinition Manager { get { return manager; } }
 			#endregion
