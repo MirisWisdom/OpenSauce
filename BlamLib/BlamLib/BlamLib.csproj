@@ -20,18 +20,12 @@
   <ItemGroup>
     <Reference Include="SlimDX" />
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Blam\Cache\Tags\CacheTagsGen2nd.cs" />
@@ -48,6 +42,12 @@
     <Compile Include="Blam\Halo2\Tags\Code\Sound.cs" />
     <Compile Include="Blam\Halo2\Tags\Definitions\Shaders.cs" />
     <Compile Include="Blam\Halo2\Tags\Layout\Shaders.cs" />
+    <Compile Include="Blam\Halo4\Tags\Groups\StructGroups.cs" />
+    <Compile Include="Blam\Halo4\Tags\Groups\StructGroupsCode.cs" />
+    <Compile Include="Blam\Halo4\Tags\Groups\StructGroupsInit.cs" />
+    <Compile Include="Blam\Halo4\Tags\Groups\TagGroups.cs" />
+    <Compile Include="Blam\Halo4\Tags\Groups\TagGroupsCode.cs" />
+    <Compile Include="Blam\Halo4\Tags\Groups\TagGroupsInit.cs" />
     <Compile Include="Blam\HaloReach\Tags\Globals.cs" />
     <Compile Include="Blam\HaloReach\Tags\Scenario.cs" />
     <Compile Include="Blam\DataHandles\DatumIndex.cs" />
@@ -64,8 +64,9 @@
     <Compile Include="IO\WaveMaterialLibWriter.cs" />
     <Compile Include="IO\WaveObjWriter.cs" />
     <Compile Include="IO\XCompress.cs" />
+    <Compile Include="Managers\BlamDefinition\GameGen3.cs" />
     <Compile Include="Managers\StringIdCollections.cs" />
-    <Compile Include="Managers\TagIndex.Base.cs" />
+    <Compile Include="Managers\TagIndex\TagIndex.Base.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -146,15 +147,15 @@
     <Compile Include="IO\Streams.cs" />
     <Compile Include="Managers\Controllers.cs" />
     <Compile Include="Managers\FileManager.cs" />
-    <Compile Include="Managers\Game.cs" />
+    <Compile Include="Managers\BlamDefinition\Game.cs" />
     <Compile Include="Managers\GameManager.cs" />
     <Compile Include="Managers\DataArray.cs" />
     <Compile Include="Managers\ReferenceManager.cs" />
     <Compile Include="Managers\StringIdManager.cs" />
     <Compile Include="Managers\TagDatabase.cs" />
-    <Compile Include="Managers\TagIndex.cs" />
-    <Compile Include="Managers\TagIndex.Cache.cs" />
-    <Compile Include="Managers\TagIndex.CacheExtraction.cs" />
+    <Compile Include="Managers\TagIndex\TagIndex.cs" />
+    <Compile Include="Managers\TagIndex\TagIndex.Cache.cs" />
+    <Compile Include="Managers\TagIndex\TagIndex.CacheExtraction.cs" />
     <Compile Include="Managers\TagManager.cs" />
     <Compile Include="Render\COLLADA\Export\ColladaExporter.cs" />
     <Compile Include="Render\COLLADA\ColladaInterface.cs" />
@@ -548,6 +549,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Games\Halo4\Halo4.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Blam\Halo4\Tags\Code\" />
+    <Folder Include="Blam\Halo4\Tags\Definitions\" />
+    <Folder Include="Blam\Halo4\Tags\Layout\" />
     <Folder Include="Blam\HaloOdst\Tags\Code\" />
     <Folder Include="Blam\HaloOdst\Tags\Trace\" />
     <Folder Include="Blam\HaloReach\Tags\Code\" />

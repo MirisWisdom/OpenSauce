@@ -6,7 +6,7 @@
 ﻿using System;
 using BlamLib.TagInterface;
 
-namespace BlamLib.Blam.HaloReach
+namespace BlamLib.Blam.Halo4
 {
 	partial class TagGroups
 	{
@@ -302,26 +302,6 @@ namespace BlamLib.Blam.HaloReach
 				wigl,
 				wind,
 				zone,
-
-				#region Beta only
-				bkey,
-				bmp3,
-				dsrc,
-				grup,
-				lst3,
-				mdl3,
-				scn3,
-				skn3,
-				txt3,
-				wacd,
-				wclr,
-				wgan,
-				wpos,
-				wrot,
-				wscl,
-				wspr,
-				wtuv,
-				#endregion
 
 				srdmpr,//Reach
 				ebhd,//Reach
@@ -745,45 +725,6 @@ namespace BlamLib.Blam.HaloReach
 			wind,
 			/// <summary>cache_file_resource_gestalt</summary>
 			zone,
-
-			#region Beta only
-			/// <summary>gui_button_key_definition</summary>
-			bkey,
-			/// <summary>gui_bitmap_widget_definition</summary>
-			bmp3,
-			/// <summary>gui_datasource_definition</summary>
-			dsrc,
-			/// <summary>gui_group_widget_definition</summary>
-			grup,
-			/// <summary>gui_list_widget_definition</summary>
-			lst3,
-			/// <summary>gui_model_widget_definition</summary>
-			mdl3,
-			/// <summary>gui_screen_widget_definition</summary>
-			scn3,
-			/// <summary>gui_skin_definition</summary>
-			skn3,
-			/// <summary>gui_text_widget_definition</summary>
-			txt3,
-			/// <summary>gui_widget_animation_collection_definition</summary>
-			wacd,
-			/// <summary>gui_widget_color_animation_definition</summary>
-			wclr,
-			/// <summary>gui_widget_font_animation_definition</summary>
-			wfon,
-			/// <summary>gui_widget_animation_definition</summary>
-			wgan,
-			/// <summary>gui_widget_position_animation_definition</summary>
-			wpos,
-			/// <summary>gui_widget_rotation_animation_definition</summary>
-			wrot,
-			/// <summary>gui_widget_scale_animation_definition</summary>
-			wscl,
-			/// <summary>gui_widget_sprite_animation_definition</summary>
-			wspr,
-			/// <summary>gui_widget_texture_coordinate_animation_definition</summary>
-			wtuv,
-			#endregion
 
 			/// <summary>scenario_dumplings_resource</summary>
 			srdmpr,

@@ -40,9 +40,6 @@ namespace BlamLib.Blam
 
 namespace BlamLib.Blam.Cache
 {
-
-
-
 	/// <summary>
 	/// Various streams we can write to when building a cache
 	/// </summary>

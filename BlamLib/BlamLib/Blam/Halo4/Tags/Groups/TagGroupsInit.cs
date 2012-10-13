@@ -6,7 +6,7 @@
 ﻿using System;
 using BlamLib.TagInterface;
 
-namespace BlamLib.Blam.HaloReach
+namespace BlamLib.Blam.Halo4
 {
 	partial class TagGroups
 	{
@@ -257,29 +257,8 @@ namespace BlamLib.Blam.HaloReach
 			//wxcg.Definition = new Tags.weather_globals_group().State;
 			//zone.Definition = new Tags.cache_file_resource_gestalt_group().State;
 
-			#region Beta only
-// 			bkey.Definition = new Tags.gui_button_key_definition_group().State;
-// 			bmp3.Definition = new Tags.gui_bitmap_widget_definition_group().State;
-// 			dsrc.Definition = new Tags.gui_datasource_definition_group().State;
-// 			grup.Definition = new Tags.gui_group_widget_definition_group().State;
-// 			lst3.Definition = new Tags.gui_list_widget_definition_group().State;
-// 			mdl3.Definition = new Tags.gui_model_widget_definition_group().State;
-// 			scn3.Definition = new Tags.gui_screen_widget_definition_group().State;
-// 			skn3.Definition = new Tags.gui_skin_definition_group().State;
-// 			txt3.Definition = new Tags.gui_text_widget_definition_group().State;
-// 			wacd.Definition = new Tags.gui_widget_animation_collection_definition_group().State;
-// 			wclr.Definition = new Tags.gui_widget_color_animation_definition_group().State;
-// 			wfon.Definition = new Tags.gui_widget_font_animation_definition_group().State;
-// 			wgan.Definition = new Tags.gui_widget_animation_definition_group().State;
-// 			wpos.Definition = new Tags.gui_widget_position_animation_definition_group().State;
-// 			wrot.Definition = new Tags.gui_widget_rotation_animation_definition_group().State;
-// 			wscl.Definition = new Tags.gui_widget_scale_animation_definition_group().State;
-// 			wspr.Definition = new Tags.gui_widget_sprite_animation_definition_group().State;
-// 			wtuv.Definition = new Tags.gui_widget_texture_coordinate_animation_definition_group().State;
-			#endregion
-
 			for (int x = 1; x < Groups.Count; x++)
-				Groups[x].InitializeHandle(BlamVersion.Halo4, x, false);
+				Groups[x].InitializeHandle(BlamVersion.HaloReach, x, false);
 		}
 	};
 }

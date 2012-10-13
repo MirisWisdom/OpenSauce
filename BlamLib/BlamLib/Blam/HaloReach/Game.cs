@@ -5,7 +5,6 @@
 */
 using System;
 using System.Threading;
-using Crypt = System.Security.Cryptography;
 using TI = BlamLib.TagInterface;
 
 namespace BlamLib.Blam.HaloReach
@@ -13,7 +12,7 @@ namespace BlamLib.Blam.HaloReach
 	/// <summary>
 	/// Halo Reach game definition implementation
 	/// </summary>
-	public sealed class GameDefinition : Managers.BlamDefinition, Managers.IStringIdController, Managers.IScriptingController, Managers.IVertexBufferController
+	public sealed class GameDefinition : Managers.BlamDefinitionGen3
 	{
 		#region Implementation
 		public override TI.TagGroupCollection TagGroups						{ get { return HaloReach.TagGroups.Groups; } }
@@ -90,18 +89,6 @@ namespace BlamLib.Blam.HaloReach
 			return gr;
 		}
 
-		internal protected override Blam.Cache.BuilderBase ConstructCacheBuilder(BlamVersion game)
-		{
-			Blam.Cache.BuilderBase cb = null;
-
-			if ((game & BlamVersion.HaloReach) != 0)
-			{
-				cb = new HaloReach.Builder();
-			}
-
-			return cb;
-		}
-
 		internal protected override Blam.CacheFile LoadCacheFile(BlamVersion game, string file_path, bool is_resource)
 		{
 			Blam.CacheFile cf = null;
@@ -118,15 +105,6 @@ namespace BlamLib.Blam.HaloReach
 
 		public override Blam.CacheFile GetCacheFileFromLocation(BlamVersion ver, string cache_name) { return Program.HaloReach.FromLocation(ver, cache_name); }
 		public override Blam.CacheFile GetCacheFileFromLocation(BlamVersion ver, string cache_name, out bool is_internal) { return Program.HaloReach.FromLocation(ver, cache_name, out is_internal); }
-
-
-		public override Managers.TagDatabase CreateTagDatabase() { throw new NotSupportedException();/*return new HaloReach.Tags.TagDatabase()*/; }
-
-		protected override Managers.CacheTagDatabase CreateCacheTagDatabaseInternal(DatumIndex cache_id) { throw new NotSupportedException();/*return new HaloReach.Tags.CacheTagDatabase((HaloReach.CacheFile)Program.GetCacheFile(cache_id))*/; }
-
-		public override Managers.ErrorTagDatabase CreateErrorTagDatabase() { throw new NotSupportedException();/*return new HaloReach.Tags.ErrorTagDatabase()*/; }
-
-		public override TI.TagGroup TagDatabaseGroup { get { throw new NotSupportedException();/*return HaloReach.TagGroups.tag_*/; } }
 		#endregion
 
 		internal GameDefinition() {}
@@ -144,7 +122,7 @@ namespace BlamLib.Blam.HaloReach
 		/// </summary>
 		/// <param name="game"></param>
 		/// <returns></returns>
-		public bool StringIdCacheOpen(BlamVersion game)
+		public override bool StringIdCacheOpen(BlamVersion game)
 		{
 			int count = 0;
 
@@ -172,7 +150,7 @@ namespace BlamLib.Blam.HaloReach
 		/// </summary>
 		/// <param name="game"></param>
 		/// <returns></returns>
-		public bool StringIdCacheClose(BlamVersion game)
+		public override bool StringIdCacheClose(BlamVersion game)
 		{
 			int count = -1;
 
@@ -206,7 +184,7 @@ namespace BlamLib.Blam.HaloReach
 		/// </summary>
 		/// <param name="game"></param>
 		/// <returns></returns>
-		public bool ScriptingCacheOpen(BlamVersion game)
+		public override bool ScriptingCacheOpen(BlamVersion game)
 		{
 			int count = 0;
 
@@ -234,7 +212,7 @@ namespace BlamLib.Blam.HaloReach
 		/// </summary>
 		/// <param name="game"></param>
 		/// <returns></returns>
-		public bool ScriptingCacheClose(BlamVersion game)
+		public override bool ScriptingCacheClose(BlamVersion game)
 		{
 			int count = -1;
 
@@ -271,7 +249,7 @@ namespace BlamLib.Blam.HaloReach
 		/// </summary>
 		/// <param name="game"></param>
 		/// <returns></returns>
-		public bool VertexBufferCacheOpen(BlamVersion game)
+		public override bool VertexBufferCacheOpen(BlamVersion game)
 		{
 			int count = 0;
 
@@ -299,7 +277,7 @@ namespace BlamLib.Blam.HaloReach
 		/// </summary>
 		/// <param name="game"></param>
 		/// <returns></returns>
-		public bool VertexBufferCacheClose(BlamVersion game)
+		public override bool VertexBufferCacheClose(BlamVersion game)
 		{
 			int count = -1;
 
@@ -323,34 +301,14 @@ namespace BlamLib.Blam.HaloReach
 		}
 		#endregion
 
-		class AesInputs
-		{
-			public byte[] Root;
-			public byte[] Key;
-			public byte[] Iv;
-
-			static void CalculateInputs(byte[] root, out byte[] key, out byte[] iv)
-			{
-				key = new byte[root.Length];
-				iv = new byte[root.Length];
-
-				for (int x = 0; x < root.Length; x++)
-				{
-					key[x] = (byte)(root[x] ^ 0xFFA5);
-					iv[x] = (byte)(key[x] ^ 0x3C);
-				}
-			}
-			public AesInputs(string root)
-			{
-				Root = System.Text.Encoding.ASCII.GetBytes(root);
-
-				CalculateInputs(Root, out Key, out Iv);
-			}
-		};
 		static readonly AesInputs kAesBeta = new AesInputs("rs&m*l#/t%_()e;[");
 		static readonly AesInputs[] kAesRetail = {
 			new AesInputs("BungieHaloReach!"),
+#if false
 			new AesInputs("HackGetsUBanned!"),
+#else
+			new AesInputs("ILikeSafeStrings"),
+#endif
 			new AesInputs("Keep_Reach_Clean"),
 			new AesInputs("SneakerNetReigns"),
 		};
@@ -372,8 +330,8 @@ namespace BlamLib.Blam.HaloReach
 					}
 					else if(type == CacheSectionType.Debug)
 					{
-						key = null;
-						iv = null;
+						key = kAesRetail[1].Key;
+						iv = kAesRetail[1].Iv;
 					}
 					else goto default;
 					break;
@@ -384,23 +342,7 @@ namespace BlamLib.Blam.HaloReach
 
 		internal static void SecurityAesDecrypt(BlamVersion game, CacheSectionType section_type, byte[] input, out byte[] output)
 		{
-			output = null;
-
-			using (var aesm = new Crypt.AesManaged())
-			{
-				aesm.KeySize = 128;
-				aesm.Padding = Crypt.PaddingMode.Zeros;
-				aesm.Mode = Crypt.CipherMode.CBC;
-
-				byte[] key, iv;
-				GetAesParameters(game, section_type, out key, out iv);
-
-				if(key != null && iv != null)
-					using (var ctx = aesm.CreateDecryptor(key, iv))
-					{
-						output = ctx.TransformFinalBlock(input, 0, input.Length);
-					}
-			}
+			SecurityAesDecrypt(game, section_type, input, out output, GetAesParameters);
 		}
 	};
 }
