@@ -39,7 +39,7 @@
 		HS_TYPE(long),
 		HS_TYPE(long)
 	);
-	HS_FUNCTION_WITH_PARAMS(bit_test, long, "", 
+	HS_FUNCTION_WITH_PARAMS(bit_test, bool, "", 
 			"<value> <bit-index>", 2,
 		HS_TYPE(long),
 		HS_TYPE(short)
@@ -50,7 +50,7 @@
 		HS_TYPE(short),
 		HS_TYPE(bool)
 	);
-	HS_FUNCTION_WITH_PARAMS(bit_flags_test, long, "", 
+	HS_FUNCTION_WITH_PARAMS(bit_flags_test, bool, "", 
 			"<value> <flags>", 2,
 		HS_TYPE(long),
 		HS_TYPE(long)
