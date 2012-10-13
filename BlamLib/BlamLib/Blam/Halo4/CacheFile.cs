@@ -323,7 +323,7 @@ namespace BlamLib.Blam.Halo4
 		Halo4.CacheIndex cacheIndex = null;
 		public override BlamLib.Blam.CacheIndex Index { get { return cacheIndex; } }
 
-		public Halo4.CacheIndex IndexHaloReach { get { return cacheIndex; } }
+		public Halo4.CacheIndex IndexHalo4 { get { return cacheIndex; } }
 		#endregion
 
 		#region StringIdManager
@@ -335,9 +335,9 @@ namespace BlamLib.Blam.Halo4
 
 		bool SharableReferenceXbox(string path)
 		{
-			if (SharableReference(path, Program.Halo4.XboxMainmenu)) ShareCacheStreams(this, Program.HaloReach.XboxMainmenu);
-			else if (SharableReference(path, Program.Halo4.XboxShared)) ShareCacheStreams(this, Program.HaloReach.XboxShared);
-			else if (SharableReference(path, Program.Halo4.XboxCampaign)) ShareCacheStreams(this, Program.HaloReach.XboxCampaign);
+			if (SharableReference(path, Program.Halo4.XboxMainmenu)) ShareCacheStreams(this, Program.Halo4.XboxMainmenu);
+			else if (SharableReference(path, Program.Halo4.XboxShared)) ShareCacheStreams(this, Program.Halo4.XboxShared);
+			else if (SharableReference(path, Program.Halo4.XboxCampaign)) ShareCacheStreams(this, Program.Halo4.XboxCampaign);
 			else return false;
 
 			return true;
