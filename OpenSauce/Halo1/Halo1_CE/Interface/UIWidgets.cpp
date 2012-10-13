@@ -28,12 +28,12 @@ namespace Yelo
 		}
 
 		static API_FUNC_NAKED s_ui_widget_instance* LoadByNameOrTag(cstring name, datum_index tag_index, 
-			s_ui_widget_instance* parent, int16 controller_index, 
+			s_ui_widget_instance* parent, int32 controller_index, 
 			datum_index arg_10,
 			datum_index arg_14, 
 			int32 /*int16*/ arg_18)
 		{
-			static uint32 CALL_ADDR = GET_FUNC_PTR(UI_WIDGET_LOAD_BY_NAME_OR_TAG);
+			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(UI_WIDGET_LOAD_BY_NAME_OR_TAG);
 
 			API_FUNC_NAKED_START()
 				push	arg_18
