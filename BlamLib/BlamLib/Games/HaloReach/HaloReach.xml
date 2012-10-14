@@ -18,11 +18,12 @@
 	<game id="HaloReach_Beta" platform="Xbox" xdkVersion="9328">
 		<cache ext=".map" baseAddress="0xA0000000" baseAddressBsp="0x00000000" >
 			<types>
-				<type id="0" version="11" name="campaign" maxSize="0x1F400000" isResource="false" />
-				<type id="1" version="11" name="multiplayer" maxSize="0x09600000" isResource="false" />
-				<type id="2" version="11" name="mainmenu" maxSize="0x04100000" isResource="false" />
-				<type id="3" version="11" name="shared" maxSize="0x0D200000" isResource="true" />
-				<type id="4" version="11" name="shared_campaign" maxSize="0x21200000" isResource="true" />
+				<type id="0" version="11" name="campaign" maxSize="0x7FFFFFFF" isResource="false" />
+				<type id="1" version="11" name="multiplayer" maxSize="0x1F400000" isResource="false" />
+				<type id="2" version="11" name="mainmenu" maxSize="0x09600000" isResource="false" />
+				<type id="3" version="11" name="shared" maxSize="0x04100000" isResource="true" />
+				<type id="4" version="11" name="shared_campaign" maxSize="0x0D200000" isResource="true" />
+				<type id="5" version="11" name="unknown5" maxSize="0x21200000" isResource="false" />
 			</types>
 		</cache>
 
@@ -43,11 +44,12 @@
 	<game id="HaloReach_Xbox" platform="Xbox" xdkVersion="9328">
 		<cache ext=".map" baseAddress="0xA0000000" baseAddressBsp="0x00000000" >
 			<types>
-				<type id="0" version="12" name="campaign" maxSize="0x1AE00000" isResource="false" />
-				<type id="1" version="12" name="multiplayer" maxSize="0x09400000" isResource="false" />
-				<type id="2" version="12" name="mainmenu" maxSize="0x06900000" isResource="false" />
-				<type id="3" version="12" name="shared" maxSize="0x18000000" isResource="true" />
-				<type id="4" version="12" name="shared_campaign" maxSize="0x29E00000" isResource="true" />
+				<type id="0" version="12" name="campaign" maxSize="0x7FFFFFFF" isResource="false" />
+				<type id="1" version="12" name="multiplayer" maxSize="0x1AE00000" isResource="false" />
+				<type id="2" version="12" name="mainmenu" maxSize="0x09400000" isResource="false" />
+				<type id="3" version="12" name="shared" maxSize="0x06900000" isResource="true" />
+				<type id="4" version="12" name="shared_campaign" maxSize="0x18000000" isResource="true" />
+				<type id="5" version="12" name="unknown5" maxSize="0x29E00000" isResource="false" />
 			</types>
 		</cache>
 

@@ -14,7 +14,7 @@ namespace BlamLib.Blam.Halo4
 	/// </summary>
 	public class CacheHeader : Cache.CacheHeaderGen3
 	{
-		const int kSizeOf = 0xA000;
+		const int kSizeOf = 0x1E000;
 
 		internal System.Runtime.InteropServices.ComTypes.FILETIME Filetime;
 
@@ -75,16 +75,20 @@ namespace BlamLib.Blam.Halo4
 			tagNamesBufferOffset = s.ReadInt32(); // cstring buffer
 			tagNamesBufferSize = s.ReadInt32(); // cstring buffer total size in bytes
 			tagNameIndicesOffset = s.ReadInt32();
+
+			s.ReadInt32(); // count
+			s.ReadInt32(); // offset
+			s.Seek(8, System.IO.SeekOrigin.Current); // only seen as zero
 			#endregion
 
-			checksum = s.ReadUInt32(); // 0x2C4
-			s.Seek(32, System.IO.SeekOrigin.Current); // these bytes are always the same
+			checksum = s.ReadUInt32(); // 0x2D4
+			s.Seek(32, System.IO.SeekOrigin.Current); // these bytes are always the same. first 8 changed in Halo4
 
 			baseAddress = s.ReadUInt32(); // expected base address
 			xdkVersion = s.ReadInt32(); // xdk version
 
 			#region memory partitions
-			// 0x2E8
+			// 0x300
 
 			// memory partitions
 			memoryPartitions = new Partition[6];
@@ -113,7 +117,7 @@ namespace BlamLib.Blam.Halo4
 			// place where it can be
 			s.Seek(20 /*SHA1*/ + 40 + 256 /*RSA*/, System.IO.SeekOrigin.Current); // ???
 
-			// 0x46C
+			// 0x47C
 			cacheInterop.Read(s);
 			cacheInterop.PostprocessForCacheRead(k_local_sizeof);
 
@@ -137,31 +141,27 @@ namespace BlamLib.Blam.Halo4
 			// dword
 			// long
 			// buffer [0x14] (probably a sha1 hash)
-			s.Seek((320 - count) * 28, System.IO.SeekOrigin.Current); // seek past the unused elements
+			s.Seek((3600 - count) * 28, System.IO.SeekOrigin.Current); // seek past the unused elements
 			#endregion
 
-			// this shit has changed. fuck you.
 			#region blah 2
 #if false
 			{
-				// 0x27C4
-				// This on the other hand, sc110 french and english had MINOR differences. Those differences were in 
-				// DWORDs @ 0x4 and 0x8
+				// 0x18E94
 
-				// going to punt and just assume there is a max count of 10 of these possible
+				// going to punt and just assume there is a max count of 13 of these possible
 
 				// maybe related to bsp\'zones'?
-				const int blah2_sizeof = 180;
+				const int blah2_sizeof = 0x60C;
 
 				count = (int)(s.ReadUInt32() >> 24); // did someone forget to fucking byte swap something?
 				s.Seek(count * blah2_sizeof, System.IO.SeekOrigin.Current); // seek past the elements
-				s.Seek((10 - count) * blah2_sizeof, System.IO.SeekOrigin.Current); // seek past the unused elements
+				s.Seek((13 - count) * blah2_sizeof, System.IO.SeekOrigin.Current); // seek past the unused elements
 			}
 #endif
 			#endregion
 
-			//s.Seek(300 + sizeof(uint), System.IO.SeekOrigin.Current); // zero
-			s.Seek(6200 + sizeof(uint), System.IO.SeekOrigin.Current);
+			s.Seek(716 + sizeof(uint), System.IO.SeekOrigin.Current);
 
 
 			int offset_mask = (int)cacheInterop[CacheSectionType.Debug].AddressMask;
@@ -368,11 +368,11 @@ namespace BlamLib.Blam.Halo4
 
 		void DetermineEngineVersion()
 		{
-			var str = cacheHeader.Build.Substring(20);
+			var str = cacheHeader.Build;
 
 			switch (str)
 			{
-				case "omaha_relea":
+				case "20810.12.09.22.1647.main":
 					engineVersion = BlamVersion.Halo4_Xbox;
 					break;
 

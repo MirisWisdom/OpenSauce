@@ -13,17 +13,23 @@
 		<entry id="9" name="ChineseSimplified"	langName="zh" langId="0xFFFF" localName="zh-CN" localId="0xFFFF" />
 		<entry id="10" name="Portuguese"		langName="pt" langId="0xFFFF" localName="pt-PT" localId="0xFFFF" />
 		<entry id="11" name="Polish"			langName="pl" langId="0xFFFF" localName="pl-PL" localId="0xFFFF" />
+		<entry id="12" name="Russian"			langName="ru" langId="0xFFFF" localName="ru-RU" localId="0xFFFF" />
+		<entry id="13" name="Danish"			langName="dk" langId="0xFFFF" localName="da-DK" localId="0xFFFF" />
+		<entry id="14" name="Finnish"			langName="fi" langId="0xFFFF" localName="fi-FI" localId="0xFFFF" />
+		<entry id="15" name="Dutch"				langName="nl" langId="0xFFFF" localName="nl-NL" localId="0xFFFF" />
+		<entry id="16" name="Norwegian"			langName="no" langId="0xFFFF" localName="nb-NO" localId="0xFFFF" />
 	</localization>
 
 
-	<game id="Halo4_Xbox" platform="Xbox" xdkVersion="9328">
+	<game id="Halo4_Xbox" platform="Xbox" xdkVersion="21119">
 		<cache ext=".map" baseAddress="0xA0000000" baseAddressBsp="0x00000000" >
 			<types>
-				<type id="0" version="12" name="campaign" maxSize="0x1AE00000" isResource="false" />
-				<type id="1" version="12" name="multiplayer" maxSize="0x09400000" isResource="false" />
-				<type id="2" version="12" name="mainmenu" maxSize="0x06900000" isResource="false" />
-				<type id="3" version="12" name="shared" maxSize="0x18000000" isResource="true" />
-				<type id="4" version="12" name="shared_campaign" maxSize="0x29E00000" isResource="true" />
+				<type id="0" version="12" name="campaign" maxSize="0x7FFFFFFF" isResource="false" />
+				<type id="1" version="12" name="multiplayer" maxSize="0x32000000" isResource="false" />
+				<type id="2" version="12" name="mainmenu" maxSize="0x09400000" isResource="false" />
+				<type id="3" version="12" name="shared" maxSize="0x0FA00000" isResource="true" />
+				<type id="4" version="12" name="shared_campaign" maxSize="0x18000000" isResource="true" />
+				<type id="5" version="12" name="unknown5" maxSize="0x29E00000" isResource="false" />
 			</types>
 		</cache>
 

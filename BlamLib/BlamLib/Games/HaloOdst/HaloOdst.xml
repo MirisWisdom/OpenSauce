@@ -18,11 +18,13 @@
 	<game id="HaloOdst_Xbox" platform="Xbox" xdkVersion="7978">
 		<cache ext=".map" baseAddress="0xA0000000" baseAddressBsp="0x00000000" >
 			<types>
-				<type id="0" version="11" name="campaign" maxSize="0x1F400000" isResource="false" />
-				<type id="1" version="11" name="multiplayer" maxSize="0x09600000" isResource="false" />
-				<type id="2" version="11" name="mainmenu" maxSize="0x04100000" isResource="false" />
-				<type id="3" version="11" name="shared" maxSize="0x0BE00000" isResource="true" />
-				<type id="4" version="11" name="shared_campaign" maxSize="0x22600000" isResource="true" />
+				<type id="0" version="11" name="campaign" maxSize="0x07D00000" isResource="false" />
+				<type id="1" version="11" name="multiplayer" maxSize="0x26200000" isResource="false" />
+				<type id="2" version="11" name="mainmenu" maxSize="0x17700000" isResource="false" />
+				<type id="3" version="11" name="shared" maxSize="0x16800000" isResource="true" />
+				<type id="4" version="11" name="shared_campaign" maxSize="0x0F000000" isResource="true" />
+				<type id="5" version="11" name="unknown5" maxSize="0x04600000" isResource="false" />
+				<type id="6" version="11" name="unknown6" maxSize="0x09100000" isResource="false" />
 			</types>
 		</cache>
 
