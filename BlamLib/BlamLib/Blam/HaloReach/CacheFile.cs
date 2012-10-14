@@ -86,7 +86,7 @@ namespace BlamLib.Blam.HaloReach
 			xdkVersion = s.ReadInt32(); // xdk version
 
 			#region memory partitions
-			// 0x2E8
+			// 0x2F0
 
 			// memory partitions
 			memoryPartitions = new Partition[6];

@@ -41,6 +41,9 @@ namespace BlamLib.Blam
 		/// resources used in campaign cache files
 		/// </summary>
 		SharedCampaign,
+
+		Unknown5,
+		Unknown6,
 	};
 
 	/// <summary>
@@ -535,6 +538,8 @@ namespace BlamLib.Blam
 			public const string kMainMenu =			"mainmenu";
 			public const string kShared =			"shared";
 			public const string kSharedCampaign =	"shared_campaign";
+			public const string kUnknown5 =			"unknown5";
+			public const string kUnknown6 =			"unknown6";
 
 			/// <summary>
 			/// Get the string identifier for the specified cache type
@@ -550,6 +555,8 @@ namespace BlamLib.Blam
 					case CacheType.MainMenu:		return kMainMenu;
 					case CacheType.Shared:			return kShared;
 					case CacheType.SharedCampaign:	return kSharedCampaign;
+					case CacheType.Unknown5:		return kUnknown5;
+					case CacheType.Unknown6:		return kUnknown6;
 				}
 
 				return null;
