@@ -69,4 +69,11 @@ namespace BlamLib.Test
 
 		const string kDirectoryXbox = @"C:\Mount\A\Bungie\Games\HaloReach\Xbox\";
 	};
+
+	partial class Halo4
+	{
+		internal const string kTestResultsPath = TestLibrary.kTestResultsPath + @"Halo4\";
+
+		const string kDirectoryXbox = @"C:\Mount\A\Bungie\Games\Halo4\Xbox\";
+	};
 }

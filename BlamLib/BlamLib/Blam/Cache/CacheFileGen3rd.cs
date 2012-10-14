@@ -211,6 +211,11 @@ namespace BlamLib.Blam.Cache
 			public uint UnknownBaseAddress;
 			SectionInterop[] sections;
 
+			public bool IsNull { get {
+				return ResourceBaseAddress == 0 && DebugSectionSize == 0 && RuntimeBaseAddress == 0 && 
+					UnknownBaseAddress == 0;
+			} }
+
 			public CacheInterop()
 			{
 				sections = new SectionInterop[(int)CacheSectionType.kMax];

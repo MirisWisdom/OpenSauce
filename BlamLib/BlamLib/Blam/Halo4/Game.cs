@@ -288,10 +288,10 @@ namespace BlamLib.Blam.Halo4
 		#endregion
 
 		static readonly AesInputs[] kAesRetail = {
-			new AesInputs("BungieHaloReach!"),
-			new AesInputs("ILikeSafeStrings"),
-			new AesInputs("LetsAllPlayNice!"),
-			new AesInputs("SneakerNetReigns"),
+			new AesInputs("BungieHaloReach!"), // Localization
+			new AesInputs("ILikeSafeStrings"), // Strings
+			new AesInputs("LetsAllPlayNice!"), // Tag names
+			new AesInputs("SneakerNetReigns"), // Networking
 		};
 		static void GetAesParameters(BlamVersion game, CacheSectionType type, out byte[] key, out byte[] iv)
 		{
@@ -307,6 +307,11 @@ namespace BlamLib.Blam.Halo4
 					{
 						key = kAesRetail[1].Key;
 						iv = kAesRetail[1].Iv;
+					}
+					else if (type == CacheSectionType.Tag)
+					{
+						key = kAesRetail[2].Key;
+						iv = kAesRetail[2].Iv;
 					}
 					else goto default;
 					break;

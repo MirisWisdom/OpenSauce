@@ -2,7 +2,7 @@
 <stringIds game="Halo3_Beta">
 	<definition method="BySet" indexBitCount="16" setBitCount="8" lengthBitCount="7" />
 	<sets>
-		<Set key="0" value="static_globals">
+		<Set key="0" value="global">
 			<entry key="00000000" value="" />
 			<entry key="00000001" value="default" />
 			<entry key="00000002" value="reload_1" />
@@ -2146,7 +2146,7 @@
 			<entry key="0001038D" value="friends_enumeration_in_progress_title" />
 			<entry key="0001038E" value="friends_enumeration_in_progress_message" />
 		</Set>
-		<Set key="2" value="gui_alerts">
+		<Set key="2" value="gui_alert">
 			<entry key="00020000" value="alpha_custom_games_disabled" />
 			<entry key="00020001" value="alpha_network_mode_disabled" />
 			<entry key="00020002" value="alpha_sign_in_failed_no_split_screen" />
@@ -2235,7 +2235,7 @@
 			<entry key="00020055" value="utility_drive_was_cleared" />
 			<entry key="00020056" value="saved_film_oos_alert" />
 		</Set>
-		<Set key="3" value="events">
+		<Set key="3" value="gui_dialog">
 			<entry key="00030000" value="not_signed_in_bring_up_guide" />
 			<entry key="00030001" value="not_signed_in_bring_up_guide_or_use_temporary_account" />
 			<entry key="00030002" value="confirm_the_use_of_a_temporary_account" />
@@ -2275,7 +2275,7 @@
 			<entry key="00030024" value="file_share_confirm_delete_from_share" />
 			<entry key="00030025" value="file_share_name_conflict" />
 		</Set>
-		<Set key="5" value="result_codes">
+		<Set key="5" value="game_start">
 			<entry key="00050000" value="status_none" />
 			<entry key="00050001" value="status_not_pregame" />
 			<entry key="00050002" value="status_join_in_progress" />
@@ -2332,7 +2332,7 @@
 			<entry key="00050035" value="status_countdown_delayed" />
 			<entry key="00050036" value="error_unknown" />
 		</Set>
-		<Set key="4" value="mp_events">
+		<Set key="4" value="game_engine">
 			<entry key="00040000" value="map_default" />
 			<entry key="00040001" value="frag_grenade" />
 			<entry key="00040002" value="plasma_grenade" />
@@ -2397,7 +2397,7 @@
 			<entry key="0006002B" value="_achievement_full_warthog_kill" />
 			<entry key="0006002C" value="_achievement_temporary_placeholder" />
 		</Set>
-		<Set key="7" value="default_formats">
+		<Set key="7" value="saved_game">
 			<entry key="00070000" value="default_map_variant_save_name_format" />
 			<entry key="00070001" value="default_map_variant_save_description_format" />
 			<entry key="00070002" value="default_game_variant_save_name_format" />

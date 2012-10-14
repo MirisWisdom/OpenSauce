@@ -2,7 +2,7 @@
 <stringIds game="HaloReach_Beta">
 	<definition method="BySet" indexBitCount="16" setBitCount="8" lengthBitCount="7" />
 	<sets>
-		<Set key="0" value="static_globals">
+		<Set key="0" value="global">
 			<entry key="00000000" value="" />
 			<entry key="00000001" value="default" />
 			<entry key="00000002" value="reload_1" />
@@ -1128,7 +1128,7 @@
 			<entry key="00000462" value="out_of_bounds" />
 			<entry key="00000463" value="event_time" />
 		</Set>
-		<Set key="1" value="ui">
+		<Set key="1" value="gui">
 			<entry key="00010000" value="primary_label" />
 			<entry key="00010001" value="secondary_label" />
 			<entry key="00010002" value="tertiary_label" />
@@ -2606,7 +2606,7 @@
 			<entry key="000105C2" value="appearance_update_in_progress_title" />
 			<entry key="000105C3" value="appearance_update_in_progress_message" />
 		</Set>
-		<Set key="2" value="ui_alerts">
+		<Set key="2" value="gui_alert">
 			<entry key="00020000" value="alpha_custom_games_disabled" />
 			<entry key="00020001" value="alpha_network_mode_disabled" />
 			<entry key="00020002" value="alpha_sign_in_failed_no_split_screen" />
@@ -2778,7 +2778,7 @@
 			<entry key="000200A8" value="toast_active_roster_queued_join_failed" />
 			<entry key="000200A9" value="saved_films_uploading" />
 		</Set>
-		<Set key="3" value="events">
+		<Set key="3" value="gui_dialog">
 			<entry key="00030000" value="choice_1" />
 			<entry key="00030001" value="choice_2" />
 			<entry key="00030002" value="choice_3" />
@@ -2881,7 +2881,7 @@
 			<entry key="00030063" value="confirm_content_item_deletion" />
 			<entry key="00030064" value="confirm_transfer_cancellation" />
 		</Set>
-		<Set key="4" value="ui_events">
+		<Set key="4" value="cui">
 			<entry key="00040000" value="event_tab_up" />
 			<entry key="00040001" value="event_tab_left" />
 			<entry key="00040002" value="event_tab_right" />
@@ -3096,7 +3096,7 @@
 			<entry key="000400D3" value="dialog" />
 			<entry key="000400D4" value="toast" />
 		</Set>
-		<Set key="5" value="widget_events">
+		<Set key="5" value="cui_animation">
 			<entry key="00050000" value="widget_idle" />
 			<entry key="00050001" value="custom_bitmap_crossfade_in" />
 			<entry key="00050002" value="custom_bitmap_crossfade_out" />
@@ -3135,7 +3135,7 @@
 			<entry key="00050023" value="widget_show" />
 			<entry key="00050024" value="widget_unfocused" />
 		</Set>
-		<Set key="6">
+		<Set key="6" value="cui_shader">
 			<entry key="00060000" value="change_channel" />
 			<entry key="00060001" value="directional_blur" />
 			<entry key="00060002" value="linear_gradient" />
@@ -3143,7 +3143,7 @@
 			<entry key="00060004" value="gamma_correct_overlay_mask" />
 		</Set>
 		<Set key="7" value="properties">
-			<entry key="00070000" value="prop_DUMMY" />
+			<entry key="00070000" value="prop_dummy" />
 			<entry key="00070001" value="prop_abort_input_event_id" />
 			<entry key="00070002" value="prop_abort_input_event_name" />
 			<entry key="00070003" value="prop_abort_option_name" />
@@ -4560,7 +4560,7 @@
 			<entry key="00070586" value="prop_wrap_horizontally" />
 			<entry key="00070587" value="prop_xuid" />
 		</Set>
-		<Set key="8" value="cui_events">
+		<Set key="8" value="components">
 			<entry key="00080000" value="active_challenge_details_list_data_component" />
 			<entry key="00080001" value="active_challenges_list_data_component" />
 			<entry key="00080002" value="active_roster_list_data" />
@@ -4886,7 +4886,7 @@
 			<entry key="00080142" value="upload_user_image" />
 			<entry key="00080143" value="widget" />
 		</Set>
-		<Set key="9" value="mp_events">
+		<Set key="9" value="game_engine">
 			<entry key="00090000" value="map_default" />
 			<entry key="00090001" value="frag_grenade" />
 			<entry key="00090002" value="plasma_grenade" />
@@ -4903,7 +4903,7 @@
 			<entry key="0009000D" value="teleporter_cannot_send" />
 			<entry key="0009000E" value="teleporter_sent" />
 		</Set>
-		<Set key="10" value="result_codes">
+		<Set key="10" value="game_start">
 			<entry key="000A0000" value="status_none" />
 			<entry key="000A0001" value="status_not_pregame" />
 			<entry key="000A0002" value="status_join_in_progress" />
@@ -4999,7 +4999,7 @@
 		</Set>
 		<Set key="11" value="achievement">
 		</Set>
-		<Set key="12" value="default_formats">
+		<Set key="12" value="saved_game">
 			<entry key="000C0000" value="default_map_variant_save_name_format" />
 			<entry key="000C0001" value="default_map_variant_save_description_format" />
 			<entry key="000C0002" value="default_game_variant_save_name_format" />
@@ -5025,7 +5025,7 @@
 			<entry key="000C0016" value="default_film_save_name_format_editor" />
 			<entry key="000C0017" value="default_film_save_description_format_editor" />
 		</Set>
-		<Set key="13" value="engine_globals">
+		<Set key="13">
 			<entry key="000D0000" value="g_all_memexport" />
 			<entry key="000D0001" value="g_all_state" />
 			<entry key="000D0002" value="g_all_functions" />
@@ -5040,7 +5040,7 @@
 			<entry key="000D000B" value="g_strip" />
 			<entry key="000D000C" value="g_hidden_from_compiler" />
 		</Set>
-		<Set key="14">
+		<Set key="14" value="ai_stimulus">
 			<entry key="000E0000" value="custom" />
 			<entry key="000E0001" value="surprise" />
 			<entry key="000E0002" value="surprise_combat_started" />
@@ -5081,7 +5081,7 @@
 			<entry key="000E0025" value="designer_3" />
 			<entry key="000E0026" value="designer_4" />
 		</Set>
-		<Set key="15" value="hud_message">
+		<Set key="15" value="incident">
 			<entry key="000F0000" value="kill" />
 			<entry key="000F0001" value="assist" />
 			<entry key="000F0002" value="death" />
