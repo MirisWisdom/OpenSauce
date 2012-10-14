@@ -6,8 +6,8 @@
   <TestList name="Halo Reach Tests" id="9f720de1-e475-4e97-821a-5288944a3d3b" parentListId="8c43106b-9dc1-4907-a29f-aa66a61bf5b6">
     <TestLinks>
       <TestLink id="ad3e3249-8103-c5f1-45e2-1cfe904bcaf3" name="HaloReachBuildCacheSymbols" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
-      <TestLink id="452f1964-e328-c006-8a06-9e3aecae0916" name="HaloReachTestCacheOutputXboxBeta" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
       <TestLink id="53699db4-f5db-0518-3194-78119e685f41" name="HaloReachTestScanForScriptFunctions" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="452f1964-e328-c006-8a06-9e3aecae0916" name="HaloReachTestCacheOutputXboxBeta" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
       <TestLink id="ecf786be-6b85-3dca-f390-69a231287701" name="HaloReachTestCacheOutputXbox" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
       <TestLink id="64c18f9a-d275-b2f9-e4df-27203cabcc04" name="HaloReachTestDumpScriptGraphs" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
     </TestLinks>
@@ -26,6 +26,7 @@
       <TestLink id="b41bb8b6-c8db-22ea-6c54-96b919f5c946" name="Halo1TestTagIndexSharingThreaded" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
     </TestLinks>
   </TestList>
+  <TestList name="Halo4" id="d4fcdaa9-c456-4921-9741-9c97e7d28665" parentListId="8c43106b-9dc1-4907-a29f-aa66a61bf5b6" />
   <TestList name="Halo 2 Tests" id="dafc7dfa-c1f5-4b57-8c77-0658282b97e7" parentListId="8c43106b-9dc1-4907-a29f-aa66a61bf5b6">
     <Description>Tests related to Halo 2 code</Description>
     <TestLinks>
@@ -63,12 +64,11 @@
   </TestList>
   <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d">
     <TestLinks>
-      <TestLink id="f36a25a8-c05e-a191-8d03-9dd9a8264d0e" name="TestXmaConversion" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
-      <TestLink id="877c92a2-6b3f-50a0-9b41-33a355ef1be6" name="StubbsTestCacheOutputXbox" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
-      <TestLink id="c9ae9421-d247-b0e8-e2af-2af48c119485" name="BlamTestSystemTagIndex" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
       <TestLink id="d16e47f3-7b39-269d-39bf-cf7d4387edb9" name="BlamTestNewStringIdManagerResources" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
-      <TestLink id="30ab6a3a-df24-ff4e-9e4d-0de842dbf674" name="StubbsTestCacheOutputPc" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="877c92a2-6b3f-50a0-9b41-33a355ef1be6" name="StubbsTestCacheOutputXbox" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
       <TestLink id="7e511516-415a-0f07-de5c-191ac60c8a05" name="BlamTestSystemStringIdCache" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="30ab6a3a-df24-ff4e-9e4d-0de842dbf674" name="StubbsTestCacheOutputPc" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
+      <TestLink id="c9ae9421-d247-b0e8-e2af-2af48c119485" name="BlamTestSystemTagIndex" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
       <TestLink id="d92ed676-e7c1-7275-f95f-030631e33b08" name="BlamTestSystemVertexBufferCache" storage="..\lib\debug\x86\blamlib.test\blamlib.test.dll" enabled="false" type="Microsoft.VisualStudio.TestTools.TestTypes.Unit.UnitTestElement, Microsoft.VisualStudio.QualityTools.Tips.UnitTest.ObjectModel,   PublicKeyToken=b03f5f7f11d50a3a" />
     </TestLinks>
   </TestList>

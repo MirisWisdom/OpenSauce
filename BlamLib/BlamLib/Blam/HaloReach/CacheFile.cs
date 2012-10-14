@@ -243,7 +243,7 @@ namespace BlamLib.Blam.HaloReach
 			#endregion
 
 			#region Load tag names
-			using (var buffer = cache.DecryptCacheSegment(CacheSectionType.Debug, cache.HeaderHaloReach.TagNamesBufferOffset, cache.HeaderHaloReach.TagNamesBufferSize))
+			using (var buffer = cache.DecryptCacheSegment(CacheSectionType.Tag, cache.HeaderHaloReach.TagNamesBufferOffset, cache.HeaderHaloReach.TagNamesBufferSize))
 			{
 				string tag_name;
 				foreach (var ci in items)

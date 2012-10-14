@@ -306,10 +306,11 @@ namespace BlamLib.Blam.HaloReach
 			new AesInputs("BungieHaloReach!"),
 #if false
 			new AesInputs("HackGetsUBanned!"),
+			new AesInputs("Keep_Reach_Clean"),
 #else
 			new AesInputs("ILikeSafeStrings"),
+			new AesInputs("LetsAllPlayNice!"),
 #endif
-			new AesInputs("Keep_Reach_Clean"),
 			new AesInputs("SneakerNetReigns"),
 		};
 
@@ -332,6 +333,11 @@ namespace BlamLib.Blam.HaloReach
 					{
 						key = kAesRetail[1].Key;
 						iv = kAesRetail[1].Iv;
+					}
+					else if (type == CacheSectionType.Tag)
+					{
+						key = kAesRetail[2].Key;
+						iv = kAesRetail[2].Iv;
 					}
 					else goto default;
 					break;

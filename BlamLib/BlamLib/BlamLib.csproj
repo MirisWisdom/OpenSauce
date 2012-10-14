@@ -42,14 +42,6 @@
     <Compile Include="Blam\Halo2\Tags\Code\Sound.cs" />
     <Compile Include="Blam\Halo2\Tags\Definitions\Shaders.cs" />
     <Compile Include="Blam\Halo2\Tags\Layout\Shaders.cs" />
-    <Compile Include="Blam\Halo4\Tags\Groups\StructGroups.cs" />
-    <Compile Include="Blam\Halo4\Tags\Groups\StructGroupsCode.cs" />
-    <Compile Include="Blam\Halo4\Tags\Groups\StructGroupsInit.cs" />
-    <Compile Include="Blam\Halo4\Tags\Groups\TagGroups.cs" />
-    <Compile Include="Blam\Halo4\Tags\Groups\TagGroupsCode.cs" />
-    <Compile Include="Blam\Halo4\Tags\Groups\TagGroupsInit.cs" />
-    <Compile Include="Blam\HaloReach\Tags\Globals.cs" />
-    <Compile Include="Blam\HaloReach\Tags\Scenario.cs" />
     <Compile Include="Blam\DataHandles\DatumIndex.cs" />
     <Compile Include="Blam\DataHandles\MapId.cs" />
     <Compile Include="Blam\DataHandles\ResourcePtr.cs" />
@@ -458,7 +450,9 @@
     <Compile Include="Blam\HaloReach\CacheFile.cs" />
     <Compile Include="Blam\HaloReach\Game.cs" />
     <Compile Include="Blam\HaloReach\Program.HaloReach.cs" />
+    <Compile Include="Blam\HaloReach\Tags\Globals.cs" />
     <Compile Include="Blam\HaloReach\Tags\Resources.cs" />
+    <Compile Include="Blam\HaloReach\Tags\Scenario.cs" />
     <Compile Include="Blam\HaloReach\Tags\Groups\StructGroups.cs" />
     <Compile Include="Blam\HaloReach\Tags\Groups\StructGroupsCode.cs" />
     <Compile Include="Blam\HaloReach\Tags\Groups\StructGroupsInit.cs" />
@@ -470,6 +464,12 @@
     <Compile Include="Blam\Halo4\CacheFile.cs" />
     <Compile Include="Blam\Halo4\Game.cs" />
     <Compile Include="Blam\Halo4\Program.Halo4.cs" />
+    <Compile Include="Blam\Halo4\Tags\Groups\StructGroups.cs" />
+    <Compile Include="Blam\Halo4\Tags\Groups\StructGroupsCode.cs" />
+    <Compile Include="Blam\Halo4\Tags\Groups\StructGroupsInit.cs" />
+    <Compile Include="Blam\Halo4\Tags\Groups\TagGroups.cs" />
+    <Compile Include="Blam\Halo4\Tags\Groups\TagGroupsCode.cs" />
+    <Compile Include="Blam\Halo4\Tags\Groups\TagGroupsInit.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -552,6 +552,9 @@
     <EmbeddedResource Include="Games\Halo4\Halo4.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Games\Halo4\Xbox\Definitions\Halo4_Xbox_StringIds.xml" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Blam\Halo4\Tags\Code\" />
     <Folder Include="Blam\Halo4\Tags\Definitions\" />
     <Folder Include="Blam\Halo4\Tags\Layout\" />
@@ -566,7 +569,6 @@
     <Folder Include="Blam\Stubbs\Tags\Layout\" />
     <Folder Include="Documentation\Blam\Halo3\" />
     <Folder Include="Games\Halo1\Mac\Definitions\" />
-    <Folder Include="Games\Halo4\Xbox\Definitions\" />
     <Folder Include="Games\Stubbs\Mac\Definitions\" />
     <Folder Include="Games\Stubbs\PC\Definitions\" />
     <Folder Include="Games\Stubbs\Xbox\Definitions\" />

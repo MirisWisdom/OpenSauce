@@ -18,6 +18,9 @@ namespace BlamLib.Blam.Halo4
 
 		internal System.Runtime.InteropServices.ComTypes.FILETIME Filetime;
 
+		internal int TagNamesUnknownCount; // 0x10 byte structure
+		internal int TagNamesUnknownOffset;
+
 		public override void Read(IO.EndianReader s)
 		{
 			int k_local_sizeof = Blam.CacheFile.ValidateHeader(s, kSizeOf);
@@ -76,8 +79,8 @@ namespace BlamLib.Blam.Halo4
 			tagNamesBufferSize = s.ReadInt32(); // cstring buffer total size in bytes
 			tagNameIndicesOffset = s.ReadInt32();
 
-			s.ReadInt32(); // count
-			s.ReadInt32(); // offset
+			TagNamesUnknownCount = s.ReadInt32();
+			TagNamesUnknownOffset = s.ReadInt32();
 			s.Seek(8, System.IO.SeekOrigin.Current); // only seen as zero
 			#endregion
 
@@ -166,11 +169,15 @@ namespace BlamLib.Blam.Halo4
 
 			int offset_mask = (int)cacheInterop[CacheSectionType.Debug].AddressMask;
 
-			stringIdIndicesOffset -= offset_mask;
-			stringIdsBufferOffset -= offset_mask;
+			if (!cacheInterop.IsNull)
+			{
+				stringIdIndicesOffset -= offset_mask;
+				stringIdsBufferOffset -= offset_mask;
 
-			tagNamesBufferOffset -= offset_mask;
-			tagNameIndicesOffset -= offset_mask;
+				tagNamesBufferOffset -= offset_mask;
+				tagNameIndicesOffset -= offset_mask;
+				TagNamesUnknownOffset -= offset_mask;
+			}
 
 
 			offset_mask = (int)cacheInterop[CacheSectionType.Tag].AddressMask;
@@ -178,7 +185,8 @@ namespace BlamLib.Blam.Halo4
 
 			#region address mask
 			uint base_address = memoryPartitions[0].BaseAddress - (uint)cacheInterop[CacheSectionType.Tag].CacheOffset;
-			(s.Owner as Blam.CacheFile).AddressMask = base_address;
+			if(s.Owner != null) // TODO: temp, until test code is done
+				(s.Owner as Blam.CacheFile).AddressMask = base_address;
 
 			offsetToIndex = (int)(tagIndexAddress - base_address);
 			memoryPartitions[0].Offset = (int)(memoryPartitions[0].BaseAddress - baseAddress);
@@ -241,7 +249,7 @@ namespace BlamLib.Blam.Halo4
 			#endregion
 
 			#region Load tag names
-			using (var buffer = cache.DecryptCacheSegment(CacheSectionType.Debug, cache.HeaderHalo4.TagNamesBufferOffset, cache.HeaderHalo4.TagNamesBufferSize))
+			using (var buffer = cache.DecryptCacheSegment(CacheSectionType.Tag, cache.HeaderHalo4.TagNamesBufferOffset, cache.HeaderHalo4.TagNamesBufferSize))
 			{
 				string tag_name;
 				foreach (var ci in items)

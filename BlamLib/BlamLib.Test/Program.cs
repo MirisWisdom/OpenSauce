@@ -98,6 +98,7 @@ namespace BlamLib.Test
 				case BlamBuild.Halo3: return Halo3.kTestResultsPath;
 				case BlamBuild.HaloOdst: return HaloOdst.kTestResultsPath;
 				case BlamBuild.HaloReach: return HaloReach.kTestResultsPath;
+				case BlamBuild.Halo4: return Halo4.kTestResultsPath;
 				case BlamBuild.Stubbs: return Stubbs.kTestResultsPath;
 
 				default: throw new Debug.Exceptions.UnreachableException(Game.ToString());

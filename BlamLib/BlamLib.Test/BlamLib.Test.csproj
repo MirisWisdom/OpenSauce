@@ -36,6 +36,7 @@
     <Compile Include="Halo3\Scripting.cs" />
     <Compile Include="Halo3\SoundComparer.cs" />
     <Compile Include="Halo3\SoundExtract.cs" />
+    <Compile Include="Halo4\Halo4.cs" />
     <Compile Include="HaloOdst\HaloOdst.cs" />
     <Compile Include="HaloReach\HaloReach.cs" />
     <Compile Include="Program.cs" />
@@ -53,9 +54,6 @@
       <Project>{5E5B9F4E-1067-4470-8AA9-B25BBBEA063A}</Project>
       <Name>LowLevel</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Halo4\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -2,7 +2,7 @@
 <stringIds game="Halo3_Xbox">
 	<definition method="BySet" indexBitCount="16" setBitCount="8" lengthBitCount="7" />
 	<sets>
-		<Set key="0" value="static_globals">
+		<Set key="0" value="global">
 			<entry key="00000000" value="" />
 			<entry key="00000001" value="default" />
 			<entry key="00000002" value="reload_1" />
@@ -2691,7 +2691,7 @@
 			<entry key="000105C4" value="recommend_film_clip_pt" />
 			<entry key="000105C5" value="recommend_screenshot_pt" />
 		</Set>
-		<Set key="2" value="gui_alerts">
+		<Set key="2" value="gui_alert">
 			<entry key="00020000" value="alpha_custom_games_disabled" />
 			<entry key="00020001" value="alpha_network_mode_disabled" />
 			<entry key="00020002" value="alpha_sign_in_failed_no_split_screen" />
@@ -2839,7 +2839,7 @@
 			<entry key="00020090" value="content_almost_out_of_slots" />
 			<entry key="00020091" value="content_almost_out_of_slots_for_screenshot" />
 		</Set>
-		<Set key="3" value="events">
+		<Set key="3" value="gui_dialog">
 			<entry key="00030000" value="not_signed_in_bring_up_guide" />
 			<entry key="00030001" value="not_signed_in_bring_up_guide_or_use_temporary_account" />
 			<entry key="00030002" value="confirm_the_use_of_a_temporary_account" />
@@ -2925,7 +2925,7 @@
 			<entry key="00030052" value="in_game_forge_reset_map" />
 			<entry key="00030053" value="in_game_change_network_privacy" />
 		</Set>
-		<Set key="5" value="result_codes">
+		<Set key="5" value="game_start">
 			<entry key="00050000" value="status_none" />
 			<entry key="00050001" value="status_not_pregame" />
 			<entry key="00050002" value="status_join_in_progress" />
@@ -3003,7 +3003,7 @@
 			<entry key="0005004A" value="match_error_invalid_film_selected_language" />
 			<entry key="0005004B" value="error_signedin_controller_detatched" />
 		</Set>
-		<Set key="4" value="mp_events">
+		<Set key="4" value="game_engine">
 			<entry key="00040000" value="map_default" />
 			<entry key="00040001" value="frag_grenade" />
 			<entry key="00040002" value="plasma_grenade" />
@@ -3072,7 +3072,7 @@
 			<entry key="0006002F" value="_achievement_tripmine_vehicle_kill" />
 			<entry key="00060030" value="_achievement_full_vehicle_kill" />
 		</Set>
-		<Set key="7" value="default_formats">
+		<Set key="7" value="saved_game">
 			<entry key="00070000" value="default_map_variant_save_name_format" />
 			<entry key="00070001" value="default_map_variant_save_description_format" />
 			<entry key="00070002" value="default_game_variant_save_name_format" />
@@ -3094,7 +3094,7 @@
 			<entry key="00070012" value="default_film_save_name_format_editor" />
 			<entry key="00070013" value="default_film_save_description_format_editor" />
 		</Set>
-		<Set key="8" value="engine_globals">
+		<Set key="8">
 			<entry key="00080000" value="g_all_memexport" />
 			<entry key="00080001" value="g_all_state" />
 			<entry key="00080002" value="g_all_functions" />
