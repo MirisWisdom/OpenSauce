@@ -18,6 +18,7 @@ namespace BlamLib
 		internal const string kDefaultGuidStubbs = "{0ffebbf1-2eff-429d-ba48-1ef7f40c4232}";
 		internal const string kDefaultGuidHaloOdst = "{532b463e-7f32-42ce-93f6-a5f1874ab007}";
 		internal const string kDefaultGuidHaloReach = "{9755fe07-04b1-4bb9-a896-766ba111bb15}";
+		internal const string kDefaultGuidHalo4 = "{D49D8313-E598-4c74-8C94-11C321D0D1CB}";
 
 		public static bool HasFlag(this BlamVersion ver, BlamVersion flag)
 		{
@@ -127,7 +128,8 @@ namespace BlamLib
 				((version & BlamVersion.Xbox) != 0) && (
 					((version & BlamVersion.Halo3) != 0) ||
 					((version & BlamVersion.HaloOdst) != 0) ||
-					((version & BlamVersion.HaloReach) != 0)
+					((version & BlamVersion.HaloReach) != 0) ||
+					((version & BlamVersion.Halo4) != 0)
 				);
 		}
 
@@ -178,6 +180,9 @@ namespace BlamLib
 #if !NO_HALO_REACH
 			else if ((v & BlamVersion.HaloReach) != 0)	return Blam.HaloReach.TagGroups.Groups;
 #endif
+#if !NO_HALO4
+			else if ((v & BlamVersion.Halo4) != 0)		return Blam.Halo4.TagGroups.Groups;
+#endif
 			else if ((v & BlamVersion.Stubbs) != 0)		return Blam.Stubbs.TagGroups.Groups;
 			else	throw new Debug.Exceptions.UnreachableException(v);
 		}
@@ -203,6 +208,10 @@ namespace BlamLib
 #endif
 #if !NO_HALO_REACH
 			if ((version & BlamVersion.HaloReach) != 0)	return Blam.HaloReach.StructGroups.Groups;
+			else
+#endif
+#if !NO_HALO4
+			if ((version & BlamVersion.Halo4) != 0)		return Blam.Halo4.StructGroups.Groups;
 			else
 #endif
 			throw new Debug.Exceptions.UnreachableException(version);

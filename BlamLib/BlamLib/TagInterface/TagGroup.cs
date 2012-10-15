@@ -77,7 +77,8 @@ namespace BlamLib.TagInterface
 				engine != BlamVersion.Unknown &&
 					(engine & BlamVersion.Halo3) == 0 &&// TODO: remove this when Halo3 support is good to go
 					(engine & BlamVersion.HaloOdst) == 0 &&
-					(engine & BlamVersion.HaloReach) == 0
+					(engine & BlamVersion.HaloReach) == 0 &&
+					(engine & BlamVersion.Halo4) == 0
 				)
 				throw new Debug.ExceptionLog("{0}\t{1}\t{2:X4}\t{3}", engine, name, index, is_struct);
 		}

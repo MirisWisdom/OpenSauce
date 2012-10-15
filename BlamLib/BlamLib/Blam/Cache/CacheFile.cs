@@ -1108,17 +1108,17 @@ namespace BlamLib.Blam
 			{
 				if (!map_string_ids_only)
 				{
-					switch (sidm.Definition.HandleMethod)
+					switch (sidm.Definition.Description.Method)
 					{
-						case Blam.StringID.GenerateIdMethod.ByLength:
+						case Blam.StringIdDesc.GenerateIdMethod.ByLength:
 							foreach (var kv in sidm.StaticIdsContainer.StringIdsEnumerator())
-								s.WriteLine("{0}\t{1}", kv.Key.Handle.ToString("X8"), kv.Value);
+								s.WriteLine("{0}\t{1}", kv.Key.ToUInt32().ToString("X8"), kv.Value);
 							break;
 
-						case Blam.StringID.GenerateIdMethod.BySet:
+						case Blam.StringIdDesc.GenerateIdMethod.BySet:
 							foreach (var kv in sidm.StaticIdsContainer.StringIdsEnumerator())
-								if (Blam.StringID.ToSet(kv.Key) == 0)
-									s.WriteLine("{0}\t{1}", kv.Key.Handle.ToString("X8"), kv.Value);
+								if (kv.Key.Set == 0)
+									s.WriteLine("{0}\t{1}", kv.Key.ToUInt32().ToString("X8"), kv.Value);
 							break;
 					}
 				}
@@ -1126,7 +1126,7 @@ namespace BlamLib.Blam
 				s.WriteLine("Cache String Ids:");
 
 				foreach (var kv in sidm.DynamicIdsContainer.StringIdsEnumerator())
-					s.WriteLine("\t{0}\t{1}", kv.Key.Handle.ToString("X8"), kv.Value);
+					s.WriteLine("\t{0}\t{1}", kv.Key.ToUInt32().ToString("X8"), kv.Value);
 			}
 		}
 

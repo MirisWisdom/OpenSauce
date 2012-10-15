@@ -275,7 +275,7 @@ namespace BlamLib.TagInterface
 	};
 	#endregion
 
-	#region StringID
+	#region StringId
 	/// <summary>
 	/// Blam String ID definition class
 	/// </summary>
@@ -287,7 +287,7 @@ namespace BlamLib.TagInterface
 		/// </summary>
 		public const string kEncryptedResult = "ERROR_ENCRYPTED";
 
-		public Blam.StringID Handle = Blam.StringID.Null;
+		public Blam.StringId Handle = Blam.StringId.Null;
 		/// <summary>
 		/// This is either a handle to a <see cref="BlamLib.Blam.CacheFile"/> or to a 
 		/// <see cref="BlamLib.Managers.ITagIndex"/>, depending on where this string was
@@ -317,14 +317,14 @@ namespace BlamLib.TagInterface
 			set
 			{
 				object[] val = value as object[];
-				Handle = (Blam.StringID)val[0];
+				Handle = (Blam.StringId)val[0];
 				OwnerId = (Blam.DatumIndex)val[1];
 			}
 		}
 
 		public string GetStringValue()
 		{
-			if (OwnerId != Blam.DatumIndex.Null && Handle != Blam.StringID.Null)
+			if (OwnerId != Blam.DatumIndex.Null && Handle != Blam.StringId.Null)
 			{
 				var ti = Program.GetTagIndex(OwnerId);
 				// TODO: can't decrypt these yet!
@@ -462,7 +462,8 @@ namespace BlamLib.TagInterface
 				if (value != null /*&& Handle != Blam.StringID.Null*/)
 				{
 					Program.GetTagIndex(OwnerId).StringIds.TryAndGetStringId(value, out Handle);
-					Handle.Set = byte.MaxValue; // HACK used to tell Read that we already read the string data (as this is an old halo 2 tag)
+					Handle = new Blam.StringId(Handle.Description, Handle.Index, Handle.Length, 
+						-1); // HACK used to tell Read that we already read the string data (as this is an old halo 2 tag)
 				}
 			}
 			catch (Exception ex)
@@ -480,9 +481,9 @@ namespace BlamLib.TagInterface
 		/// <exception cref="Exceptions.InvalidStringId"></exception>
 		public override void Read(IO.ITagStream ts)
 		{
-			if (Handle.Set == byte.MaxValue) // HACK used to tell Read that we already read the string data (as this is an old halo 2 tag)
+			if (Handle.Set == -1) // HACK used to tell Read that we already read the string data (as this is an old halo 2 tag)
 			{
-				Handle.Set = 0;
+				Handle = new Blam.StringId(Handle.Description, Handle.Index, Handle.Length, 0);
 				return;
 			}
 
@@ -494,7 +495,7 @@ namespace BlamLib.TagInterface
 				try
 				{
 					value = new string(s.ReadChars(Handle.Length));
-					if (Handle != Blam.StringID.Null)
+					if (Handle != Blam.StringId.Null)
 						Program.GetTagIndex(OwnerId).StringIds.TryAndGetStringId(value, out Handle);
 				}
 				catch (Exception ex)
@@ -524,7 +525,7 @@ namespace BlamLib.TagInterface
 		/// <param name="ts"></param>
 		public override void Write(IO.ITagStream ts)
 		{
-			if (Handle != Blam.StringID.Null && !ts.Flags.Test(IO.ITagStreamFlags.DontStreamStringData))
+			if (Handle != Blam.StringId.Null && !ts.Flags.Test(IO.ITagStreamFlags.DontStreamStringData))
 			{
 				string value = Program.GetTagIndex(OwnerId).StringIds.GetStringIdValue(Handle);
 				ts.GetOutputStream().Write(value, value.Length);

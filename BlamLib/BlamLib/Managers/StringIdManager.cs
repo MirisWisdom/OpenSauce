@@ -5,8 +5,8 @@
 */
 using System;
 using System.Collections.Generic;
-using StringID = BlamLib.Blam.StringID;
-using GenerateIdMethod = BlamLib.Blam.StringID.GenerateIdMethod;
+using StringId = BlamLib.Blam.StringId;
+using GenerateIdMethod = BlamLib.Blam.StringIdDesc.GenerateIdMethod;
 
 namespace BlamLib.Managers
 {
@@ -39,12 +39,12 @@ namespace BlamLib.Managers
 
 			m_staticCollection = static_collection;
 
-			m_dynamicCollection = new StringIdDynamicCollection(Definition.HandleMethod, Definition.GenerateInitialIdForAdding());
+			m_dynamicCollection = new StringIdDynamicCollection(this, 0);
 		}
 		#endregion
 
 		#region IStringIdContainer Members
-		public IEnumerable<KeyValuePair<StringID, string>> StringIdsEnumerator()
+		public IEnumerable<KeyValuePair<StringId, string>> StringIdsEnumerator()
 		{
 			foreach (var kv in (m_staticCollection as IStringIdContainer).StringIdsEnumerator())
 				yield return kv;
@@ -55,12 +55,12 @@ namespace BlamLib.Managers
 		/// <summary>Determines if the ID exists in this container</summary>
 		/// <param name="sid"></param>
 		/// <returns></returns>
-		public bool ContainsStringId(StringID sid)
+		public bool ContainsStringId(StringId sid)
 		{
 			return m_staticCollection.ContainsStringId(sid) || m_dynamicCollection.ContainsStringId(sid);
 		}
 
-		public string GetStringIdValue(StringID sid)
+		public string GetStringIdValue(StringId sid)
 		{
 			string value = m_staticCollection.GetValue(sid);
 
@@ -73,13 +73,13 @@ namespace BlamLib.Managers
 			return value;
 		}
 
-		public string GetStringIdValueUnsafe(short absolute_index)
+		public string GetStringIdValueUnsafe(int absolute_index)
 		{
 			string value = m_staticCollection.GetValueUnsafe(absolute_index);
 
 			if (value == null)
 			{
-				absolute_index -= (short)StaticCount;
+				absolute_index -= StaticCount;
 				value = m_dynamicCollection.GetValueUnsafe(absolute_index);
 			}
 
@@ -89,7 +89,7 @@ namespace BlamLib.Managers
 			return value;
 		}
 
-		public bool TryAndGetStringId(string value, out StringID sid)
+		public bool TryAndGetStringId(string value, out StringId sid)
 		{
 			bool result = m_staticCollection.TryAndGetStringId(value, out sid);
 
@@ -119,7 +119,7 @@ namespace BlamLib.Managers
 		/// </remarks>
 		public void GenerateDebugStream(out System.IO.MemoryStream offsets, out System.IO.MemoryStream buffer, bool pack)
 		{
-			int fixed_length = pack ? 0 : StringID.kMaxLength; // TODO: figure out a good starting buffer size for packed
+			int fixed_length = pack ? 0 : Definition.Description.ValueBufferSize; // TODO: figure out a good starting buffer size for packed
 
 			int count = Count;
 			offsets = new System.IO.MemoryStream(count * sizeof(int));

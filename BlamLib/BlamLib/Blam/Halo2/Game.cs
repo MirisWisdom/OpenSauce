@@ -37,7 +37,7 @@ namespace BlamLib.Blam.Halo2
 	/// </summary>
 	struct s_cache_unicode_string_reference : IO.IStreamable
 	{
-		public Blam.StringID NameId;
+		public Blam.StringId NameId;
 		public int Offset;
 
 		#region IStreamable Members
@@ -203,7 +203,7 @@ namespace BlamLib.Blam.Halo2
 		/// <param name="dst_offset"></param>
 		/// <param name="name"></param>
 		/// <returns></returns>
-		internal int CopyStringReferenceData(int reference_index, byte[] dst, int dst_offset, out Blam.StringID name)
+		internal int CopyStringReferenceData(int reference_index, byte[] dst, int dst_offset, out Blam.StringId name)
 		{
 			int offset = GetStringBaseOffset(reference_index);
 			int size = GetStringBufferSize(reference_index);

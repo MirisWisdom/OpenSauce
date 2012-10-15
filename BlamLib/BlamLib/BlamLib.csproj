@@ -32,16 +32,7 @@
     <Compile Include="Blam\Cache\Tags\CacheTagsGen3rd.cs" />
     <Compile Include="Blam\Cache\Tags\Code\CacheTagsGen3rd.cs" />
     <Compile Include="Blam\Cache\Tags\Trace\CacheTagsGen3rd.cs" />
-    <Compile Include="Blam\Halo2\Tags\Code\Bsp.cs" />
-    <Compile Include="Blam\Halo2\Tags\Code\Effects.cs" />
-    <Compile Include="Blam\Halo2\Tags\Code\Globals.cs" />
-    <Compile Include="Blam\Halo2\Tags\Code\Misc.cs" />
-    <Compile Include="Blam\Halo2\Tags\Code\Resources.cs" />
-    <Compile Include="Blam\Halo2\Tags\Code\Scenario.cs" />
-    <Compile Include="Blam\Halo2\Tags\Code\Shaders.cs" />
-    <Compile Include="Blam\Halo2\Tags\Code\Sound.cs" />
-    <Compile Include="Blam\Halo2\Tags\Definitions\Shaders.cs" />
-    <Compile Include="Blam\Halo2\Tags\Layout\Shaders.cs" />
+    <Compile Include="Blam\DataHandles\StringId.Description.cs" />
     <Compile Include="Blam\DataHandles\DatumIndex.cs" />
     <Compile Include="Blam\DataHandles\MapId.cs" />
     <Compile Include="Blam\DataHandles\ResourcePtr.cs" />
@@ -149,6 +140,7 @@
     <Compile Include="Managers\TagIndex\TagIndex.Cache.cs" />
     <Compile Include="Managers\TagIndex\TagIndex.CacheExtraction.cs" />
     <Compile Include="Managers\TagManager.cs" />
+    <Compile Include="Reflection\Util.Enum.cs" />
     <Compile Include="Render\COLLADA\Export\ColladaExporter.cs" />
     <Compile Include="Render\COLLADA\ColladaInterface.cs" />
     <Compile Include="Render\COLLADA\ErrorReporting\ColladaExceptionStrings.cs" />
@@ -335,7 +327,10 @@
     <Compile Include="TagInterface\Fields\String.cs" />
     <Compile Include="TagInterface\Fields\Struct.cs" />
     <Compile Include="TagInterface\Fields\Structures.cs" />
+    <Compile Include="Util\EnumBitEncoder.cs" />
+    <Compile Include="Util\HandleBitEncoder.cs" />
     <Compile Include="Util\TypeExtensions.cs" />
+    <Compile Include="Util\Util.Bits.cs" />
     <Compile Include="Util\Util.cs" />
     <Compile Include="Util\Util.Math.cs" />
     <Compile Include="Util\Util.Security.cs" />
@@ -365,7 +360,16 @@
     <Compile Include="Blam\Halo2\Tags\Resources.cs" />
     <Compile Include="Blam\Halo2\Tags\Scenario.cs" />
     <Compile Include="Blam\Halo2\Tags\Sound.cs" />
+	<Compile Include="Blam\Halo2\Tags\Code\Bsp.cs" />
+    <Compile Include="Blam\Halo2\Tags\Code\Effects.cs" />
+    <Compile Include="Blam\Halo2\Tags\Code\Globals.cs" />
+    <Compile Include="Blam\Halo2\Tags\Code\Misc.cs" />
     <Compile Include="Blam\Halo2\Tags\Code\Models.cs" />
+	<Compile Include="Blam\Halo2\Tags\Code\Resources.cs" />
+    <Compile Include="Blam\Halo2\Tags\Code\Scenario.cs" />
+    <Compile Include="Blam\Halo2\Tags\Code\Shaders.cs" />
+    <Compile Include="Blam\Halo2\Tags\Code\Sound.cs" />
+    <Compile Include="Blam\Halo2\Tags\Definitions\Shaders.cs" />
     <Compile Include="Blam\Halo2\Tags\Definitions\AI.cs" />
     <Compile Include="Blam\Halo2\Tags\Groups\StructGroups.cs" />
     <Compile Include="Blam\Halo2\Tags\Groups\StructGroupsCode.cs" />
@@ -374,6 +378,7 @@
     <Compile Include="Blam\Halo2\Tags\Groups\TagGroupsCode.cs" />
     <Compile Include="Blam\Halo2\Tags\Groups\TagGroupsInit.cs" />
     <Compile Include="Blam\Halo2\Tags\Layout\AI.cs" />
+	<Compile Include="Blam\Halo2\Tags\Layout\Shaders.cs" />
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
     <Compile Include="Blam\Halo3\BLF.cs" />
@@ -542,17 +547,15 @@
     <EmbeddedResource Include="Games\HaloReach\Xbox\Definitions\HaloReach_Xbox_Scripting.xml" />
     <EmbeddedResource Include="Games\HaloReach\Xbox\Definitions\HaloReach_Xbox_StringId.xml" />
   </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
+    <EmbeddedResource Include="Games\Halo4\Halo4.xml" />
+    <EmbeddedResource Include="Games\Halo4\Xbox\Definitions\Halo4_Xbox_StringId.xml" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LowLevel\LowLevel.vcproj">
       <Project>{5E5B9F4E-1067-4470-8AA9-B25BBBEA063A}</Project>
       <Name>LowLevel</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Games\Halo4\Halo4.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Games\Halo4\Xbox\Definitions\Halo4_Xbox_StringIds.xml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Blam\Halo4\Tags\Code\" />

@@ -5,8 +5,9 @@
 */
 using System;
 using System.Collections.Generic;
-using StringID = BlamLib.Blam.StringID;
-using GenerateIdMethod = BlamLib.Blam.StringID.GenerateIdMethod;
+using StringId = BlamLib.Blam.StringId;
+using StringIdDesc = BlamLib.Blam.StringIdDesc;
+using GenerateIdMethod = BlamLib.Blam.StringIdDesc.GenerateIdMethod;
 
 namespace BlamLib.Managers
 {
@@ -14,25 +15,25 @@ namespace BlamLib.Managers
 	{
 		/// <summary>Interface for enumerating through all the IDs and their values in this container</summary>
 		/// <returns></returns>
-		IEnumerable<KeyValuePair<StringID, string>> StringIdsEnumerator();
+		IEnumerable<KeyValuePair<StringId, string>> StringIdsEnumerator();
 
 		/// <summary>Determines if the ID exists in this container</summary>
 		/// <param name="sid"></param>
 		/// <returns></returns>
-		bool ContainsStringId(StringID sid);
+		bool ContainsStringId(StringId sid);
 
 		/// <summary>Lookup an ID's value</summary>
 		/// <param name="sid">ID to get the value for</param>
 		/// <returns></returns>
 		/// <exception cref="ArgumentOutOfRangeException"><paramref name="sid"/> is invalid</exception>
 		/// <exception cref="KeyNotFoundException"><paramref name="sid"/> was not found in this container</exception>
-		string GetStringIdValue(StringID sid);
+		string GetStringIdValue(StringId sid);
 
 		/// <summary> </summary>
 		/// <param name="absolute_index"></param>
 		/// <returns></returns>
 		/// <exception cref="ArgumentOutOfRangeException"><paramref name="absolute_index"/> is out the range of this container</exception>
-		string GetStringIdValueUnsafe(short absolute_index);
+		string GetStringIdValueUnsafe(int absolute_index);
 
 		/// <summary>Find an ID based on its string</summary>
 		/// <param name="value">String value to find</param>
@@ -43,7 +44,7 @@ namespace BlamLib.Managers
 		/// returning the new ID. It all depends on the context and if <see cref="IsReadOnly"/> is false
 		/// </remarks>
 		/// <exception cref="ArgumentNullException"><paramref name="value"/> is null</exception>
-		bool TryAndGetStringId(string value, out StringID sid);
+		bool TryAndGetStringId(string value, out StringId sid);
 
 		/// <summary>Does this container allow new ids to be added from dynamic strings?</summary>
 		bool IsReadOnly { get; }
@@ -51,11 +52,8 @@ namespace BlamLib.Managers
 
 	internal sealed class StringIdCollectionDefintion
 	{
-		#region HandleMethod
-		GenerateIdMethod m_handleMethod;
-		/// <summary>Method used which to create new handles</summary>
-		public GenerateIdMethod HandleMethod { get { return m_handleMethod; } }
-		#endregion
+		StringIdDesc mDesc;
+		public StringIdDesc Description { get { return mDesc; } }
 
 		/// <summary>Set to add new (non-predefined) string ids to</summary>
 		/// <remarks>Default is 0</remarks>
@@ -64,21 +62,18 @@ namespace BlamLib.Managers
 		/// <remarks>Default is 0</remarks>
 		public int InitialIndexForAdding { get; private set; }
 
-		/// <summary>Only for <see cref="StringIdStaticCollection"/></summary>
-		internal StringIdCollectionDefintion() { }
-
-		public StringIdCollectionDefintion(GenerateIdMethod method, 
+		public StringIdCollectionDefintion(StringIdDesc desc, 
 			int set_for_adding, int initial_index_for_adding)
 		{
 			if (set_for_adding < 0) throw new ArgumentOutOfRangeException("set_for_adding", set_for_adding, "Must be greater than or equal to zero");
 			if (initial_index_for_adding < 0) throw new ArgumentOutOfRangeException("initial_index_for_adding", initial_index_for_adding, "Must be greater than or equal to zero");
 
-			m_handleMethod = method;
+			mDesc = desc;
 
 			SetForAdding = set_for_adding;
 			InitialIndexForAdding = initial_index_for_adding;
 		}
-		public StringIdCollectionDefintion(GenerateIdMethod method) : this(method, 0, 0) { }
+		public StringIdCollectionDefintion() : this(StringIdDesc.Null, 0, 0) { }
 
 		/// <summary>If the initial index for adding is zero, calculate the index based on the supplied sets</summary>
 		/// <param name="static_collection"></param>
@@ -87,9 +82,9 @@ namespace BlamLib.Managers
 			if (InitialIndexForAdding == 0)
 				InitialIndexForAdding = static_collection.SetFromId(SetForAdding).Count;
 		}
-		public StringID GenerateInitialIdForAdding()
+		public StringId GenerateInitialIdForAdding()
 		{
-			return new StringID((short)InitialIndexForAdding, 0, (byte)SetForAdding);
+			return Description.Generate(InitialIndexForAdding, 0, SetForAdding);
 		}
 
 		#region IXmlElementStreamable Members
@@ -105,7 +100,7 @@ namespace BlamLib.Managers
 
 		public void StreamXml(IO.XmlStream s)
 		{
-			s.ReadAttribute("method", ref m_handleMethod);
+			StringIdDesc.Serialize(s, ref mDesc);
 
 			int set_index, set_initial_index;
 			foreach (System.Xml.XmlNode n in s.Cursor.ChildNodes)
@@ -133,15 +128,16 @@ namespace BlamLib.Managers
 		/// <summary>Index of this set in a list of <see cref="StringIdSet"/></summary>
 		internal int Index { get; private set; }
 
+		public StringIdCollectionDefintion Definition { get; private set; }
 		/// <summary>Id used for <see cref="Data.StringId"/>s in this set</summary>
 		public int Id { get; private set; }
 		/// <summary>Special name for this id set (eg, a category)</summary>
 		public string Name { get; private set; }
 		/// <summary>Actual set data, linking ids to their values</summary>
-		public Dictionary<StringID, string> Set { get; internal set; }
+		public Dictionary<StringId, string> Set { get; internal set; }
 		/// <summary>Look-up table for this set</summary>
 		/// <remarks>TKey=string hash code, TValue=Id for the string</remarks>
-		public Dictionary<int, StringID> SetLookup { get; internal set; }
+		public Dictionary<int, StringId> SetLookup { get; internal set; }
 
 		/// <summary>Number of string ids in this set</summary>
 		public int Count { get { return Set.Count; } }
@@ -151,28 +147,25 @@ namespace BlamLib.Managers
 		{
 			if (capacity <= 0)
 			{
-				Set = new Dictionary<StringID, string>(StringID.kEqualityComparer);
-				SetLookup = new Dictionary<int, StringID>();
+				Set = new Dictionary<StringId, string>(StringId.kEqualityComparer);
+				SetLookup = new Dictionary<int, StringId>();
 			}
 			else
 			{
-				Set = new Dictionary<StringID, string>(capacity, StringID.kEqualityComparer);
-				SetLookup = new Dictionary<int, StringID>(capacity);
+				Set = new Dictionary<StringId, string>(capacity, StringId.kEqualityComparer);
+				SetLookup = new Dictionary<int, StringId>(capacity);
 			}
 		}
 
 		/// <summary>Only for <see cref="StringIdStaticCollection"/></summary>
-		internal StringIdSet(int index, IO.XmlStream s)
+		internal StringIdSet(StringIdCollectionDefintion def, int index)
 		{
 			Index = index;
-
-			StreamFromXml(s);
+			Definition = def;
 		}
 
-		public StringIdSet(int index, string name, int id, int capacity)
+		public StringIdSet(StringIdCollectionDefintion def, int index, string name, int id, int capacity) : this(def, index)
 		{
-			Index = index;
-
 			Id = id;
 			Name = name ?? kDefaultName;
 
@@ -193,21 +186,23 @@ namespace BlamLib.Managers
 
 			InitializeSets(s.Cursor.ChildNodes.Count);
 
-			string val; StringID sid = StringID.kInvalid;
 			foreach (System.Xml.XmlNode n in s.Cursor.ChildNodes)
 			{
 				if (n.Name != "entry") continue;
 
-				val = null;
+				uint val_id = 0;
+				string val = null;
 
 				s.SaveCursor(n as System.Xml.XmlElement);
-					s.ReadAttribute("key", 16, ref sid.Handle);
+					s.ReadAttribute("key", 16, ref val_id);
 					s.ReadAttributeOpt("value", ref val);
 				s.RestoreCursor();
 
 				// If the definition didn't specify the value, generate a generic value as a placeholder
 				if (val == null)
-					val = string.Format("{0}{1}", kDefaultValuePrefix, sid.Handle.ToString("X8"));
+					val = string.Format("{0}{1}", kDefaultValuePrefix, val_id.ToString("X8"));
+
+				StringId sid = new StringId(Definition.Description, val_id);
 
 				Set.Add(sid, val);
 				SetLookup.Add(val.GetHashCode(), sid);
@@ -215,7 +210,7 @@ namespace BlamLib.Managers
 		}
 		#endregion
 
-		public void Add(StringID sid, string value)
+		public void Add(StringId sid, string value)
 		{
 			Set.Add(sid, value);
 			SetLookup.Add(value.GetHashCode(), sid);
@@ -245,7 +240,7 @@ namespace BlamLib.Managers
 		#endregion
 
 		#region Set Util
-		bool SetIsValid(byte set_index)	{ return set_index >= 0 && set_index < m_sets.Count; }
+		bool SetIsValid(int set_index)	{ return set_index >= 0 && set_index < m_sets.Count; }
 
 		StringIdSet SetFromIndex(int index)
 		{
@@ -263,14 +258,26 @@ namespace BlamLib.Managers
 		}
 		#endregion
 
-		public IEnumerable<KeyValuePair<StringID, string>> GetEnumerator()
+		#region Ctor
+		/// <remarks>Only for <see cref="StringIdManager"/></remarks>
+		internal StringIdStaticCollection() : this(null) { }
+
+		public StringIdStaticCollection(StringIdCollectionDefintion definition)
+		{
+			//Contract.Requires(definition != null);
+
+			Definition = definition;
+		}
+		#endregion
+
+		public IEnumerable<KeyValuePair<StringId, string>> GetEnumerator()
 		{
 			foreach(var set in m_sets)
 				foreach(var kv in set.Set)
 					yield return kv;
 		}
 
-		internal string GetValue(StringID sid)
+		internal string GetValue(StringId sid)
 		{
 			if (SetIsValid(sid.Set))
 			{
@@ -281,19 +288,18 @@ namespace BlamLib.Managers
 
 			return null;
 		}
-		internal string GetValueUnsafe(short absolute_index)
+		internal string GetValueUnsafe(int absolute_index)
 		{
-			int index = absolute_index;
 			foreach (var set in m_sets)
 			{
-				if (index >= 0 && index < set.Count)
+				if (absolute_index >= 0 && absolute_index < set.Count)
 				{
 					foreach (var kv in set.Set)
-						if (kv.Key.Index == index)
+						if (kv.Key.Index == absolute_index)
 							return kv.Value;
 				}
 
-				index -= set.Count;
+				absolute_index -= set.Count;
 			}
 
 			return null;
@@ -343,8 +349,10 @@ namespace BlamLib.Managers
 			foreach (System.Xml.XmlNode n in s.Cursor.ChildNodes)
 				if (n.Name == "Set")
 				{
+					var set = new StringIdSet(Definition, index);
+
 					s.SaveCursor(n as System.Xml.XmlElement);
-						var set = new StringIdSet(index, s);
+						set.StreamFromXml(s);
 					s.RestoreCursor();
 
 					m_sets.Add(set);
@@ -404,7 +412,7 @@ namespace BlamLib.Managers
 		#endregion
 
 		#region IStringIdContainer Members
-		IEnumerable<KeyValuePair<StringID, string>> IStringIdContainer.StringIdsEnumerator()
+		IEnumerable<KeyValuePair<StringId, string>> IStringIdContainer.StringIdsEnumerator()
 		{
 			return GetEnumerator();
 		}
@@ -412,7 +420,7 @@ namespace BlamLib.Managers
 		/// <summary>Determines if the ID exists in this container</summary>
 		/// <param name="sid"></param>
 		/// <returns></returns>
-		public bool ContainsStringId(StringID sid)
+		public bool ContainsStringId(StringId sid)
 		{
 			if (SetIsValid(sid.Set))
 				return SetFromId(sid.Set).Set.ContainsKey(sid);
@@ -420,7 +428,7 @@ namespace BlamLib.Managers
 			return false;
 		}
 
-		string IStringIdContainer.GetStringIdValue(StringID sid)
+		string IStringIdContainer.GetStringIdValue(StringId sid)
 		{
 			string value = GetValue(sid);
 
@@ -430,7 +438,7 @@ namespace BlamLib.Managers
 			return value;
 		}
 
-		string IStringIdContainer.GetStringIdValueUnsafe(short absolute_index)
+		string IStringIdContainer.GetStringIdValueUnsafe(int absolute_index)
 		{
 			string value = GetValueUnsafe(absolute_index);
 
@@ -440,14 +448,14 @@ namespace BlamLib.Managers
 			return value;
 		}
 
-		public bool TryAndGetStringId(string value, out StringID sid)
+		public bool TryAndGetStringId(string value, out StringId sid)
 		{
-			sid = StringID.kInvalid;
+			sid = StringId.kInvalid;
 
 			var hc = value.GetHashCode();
 			foreach(var set in m_sets)
 			{
-				StringID tgv;
+				StringId tgv;
 				if(set.SetLookup.TryGetValue(hc, out tgv))
 				{
 					sid = tgv;
@@ -465,7 +473,7 @@ namespace BlamLib.Managers
 	};
 
 	/// <summary>Internal representation for dynamic <see cref="Data.StringId"/>s</summary>
-	sealed class StringIdDynamicCollection : IStringIdContainer, IEnumerable<KeyValuePair<StringID, string>>
+	sealed class StringIdDynamicCollection : IStringIdContainer, IEnumerable<KeyValuePair<StringId, string>>
 	{
 		#region HandleMethod
 		GenerateIdMethod m_handleMethod;
@@ -473,60 +481,54 @@ namespace BlamLib.Managers
 		public GenerateIdMethod HandleMethod { get { return m_handleMethod; } }
 		#endregion
 
-		readonly Func<short, byte, byte, StringID> kGenerateMethod;
-
+		StringIdManager mOwner;
 		StringIdSet m_set;
 
 		/// <summary>ID of the first string in this dynamic collection</summary>
 		/// <remarks>Getter is private as no outside code should ever need to get this</remarks>
-		internal StringID InitialId { private get; set; }
+		internal StringId InitialId { private get; set; }
 
 		public int Count { get { return m_set.Count; } }
 
 		#region Construction
 		void InitializeSet(int capacity)
 		{
-			m_set = new StringIdSet(-1, "dynamic globals", InitialId.Set, capacity);
+			m_set = new StringIdSet(mOwner.Definition, -1, "dynamic globals", InitialId.Set, capacity);
 		}
-		public StringIdDynamicCollection(GenerateIdMethod method, StringID initial_id, int capacity)
+		public StringIdDynamicCollection(StringIdManager owner, int capacity)
 		{
-			m_handleMethod = method;
+			mOwner = owner;
 
-			kGenerateMethod = StringID.GetGenerateFunc(m_handleMethod);
-
-			InitialId = initial_id;
+			InitialId = owner.Definition.GenerateInitialIdForAdding();
 			IsReadOnly = false;
 
 			InitializeSet(capacity);
 		}
-		public StringIdDynamicCollection(GenerateIdMethod method, StringID initial_id) : this(method, initial_id, 0) {}
 		#endregion
 
-		bool SetIsValid(byte set_index) { return InitialId.Set == set_index; }
+		bool SetIsValid(int set_index) { return InitialId.Set == set_index; }
 
-		StringID Add(string value)
+		StringId Add(string value)
 		{
-			short index = (short)(InitialId.Index + Count);
-			var sid = kGenerateMethod((short)index, (byte)value.Length, InitialId.Set);
+			var sid = mOwner.Definition.Description.Generate(InitialId.Index + Count, value.Length, InitialId.Set);
 			m_set.Add(sid, value);
 
 			return sid;
 		}
 
-		internal string GetValue(StringID sid)
+		internal string GetValue(StringId sid)
 		{
 			if (SetIsValid(sid.Set))
 				return m_set.Set[sid];
 
 			return null;
 		}
-		internal string GetValueUnsafe(short absolute_index)
+		internal string GetValueUnsafe(int absolute_index)
 		{
-			int index = absolute_index;
-			if (index >= 0 && index < Count)
+			if (absolute_index >= 0 && absolute_index < Count)
 			{
 				foreach (var kv in m_set.Set)
-					if (kv.Key.Index == index)
+					if (kv.Key.Index == absolute_index)
 						return kv.Value;
 			}
 
@@ -544,7 +546,7 @@ namespace BlamLib.Managers
 			{
 				offsets.Write(buffer.Position);
 				if (pack) buffer.Write(kv.Value, true);
-				else buffer.Write(kv.Value, 128);
+				else buffer.Write(kv.Value, mOwner.Definition.Description.ValueBufferSize);
 			}
 		}
 		/// <summary></summary>
@@ -562,8 +564,6 @@ namespace BlamLib.Managers
 		{
 			if (count <= 0) throw new ArgumentOutOfRangeException("count", count, "Must be greater than zero");
 
-			var gen_func = StringID.GetGenerateFunc(m_handleMethod);
-
 			// Assume the strings are in sequential order in [buffer]
 			offsets.Seek(sizeof(uint) * count, System.IO.SeekOrigin.Current);
 
@@ -573,7 +573,7 @@ namespace BlamLib.Managers
 			for (int x = 0; x < count; x++)
 			{
 				var str = is_packed ? buffer.ReadCString() : buffer.ReadAsciiString(128);
-				var sid = gen_func((short)(initial_index + x), (byte)str.Length, (byte)set_index);
+				var sid = mOwner.Definition.Description.Generate(initial_index + x, str.Length, set_index);
 
 				m_set.Set.Add(sid, str);
 				m_set.SetLookup.Add(str.GetHashCode(), sid);
@@ -582,7 +582,7 @@ namespace BlamLib.Managers
 		#endregion
 
 		#region IEnumerable<KeyValuePair<StringId,string>> Members
-		public IEnumerator<KeyValuePair<StringID, string>> GetEnumerator()
+		public IEnumerator<KeyValuePair<StringId, string>> GetEnumerator()
 		{
 			return m_set.Set.GetEnumerator();
 		}
@@ -594,7 +594,7 @@ namespace BlamLib.Managers
 		#endregion
 
 		#region IStringIdContainer Members
-		IEnumerable<KeyValuePair<StringID, string>> IStringIdContainer.StringIdsEnumerator()
+		IEnumerable<KeyValuePair<StringId, string>> IStringIdContainer.StringIdsEnumerator()
 		{
 			foreach (var kv in m_set.Set)
 				yield return kv;
@@ -603,7 +603,7 @@ namespace BlamLib.Managers
 		/// <summary>Determines if the ID exists in this container</summary>
 		/// <param name="sid"></param>
 		/// <returns></returns>
-		public bool ContainsStringId(StringID sid)
+		public bool ContainsStringId(StringId sid)
 		{
 			if (SetIsValid(sid.Set))
 				return m_set.Set.ContainsKey(sid);
@@ -611,7 +611,7 @@ namespace BlamLib.Managers
 			return false;
 		}
 
-		string IStringIdContainer.GetStringIdValue(StringID sid)
+		string IStringIdContainer.GetStringIdValue(StringId sid)
 		{
 			string value = GetValue(sid);
 
@@ -621,7 +621,7 @@ namespace BlamLib.Managers
 			return value;
 		}
 
-		string IStringIdContainer.GetStringIdValueUnsafe(short absolute_index)
+		string IStringIdContainer.GetStringIdValueUnsafe(int absolute_index)
 		{
 			string value = GetValueUnsafe(absolute_index);
 
@@ -631,14 +631,14 @@ namespace BlamLib.Managers
 			return value;
 		}
 
-		public bool TryAndGetStringId(string value, out StringID sid)
+		public bool TryAndGetStringId(string value, out StringId sid)
 		{
-			sid = StringID.kInvalid;
+			sid = StringId.kInvalid;
 			bool result = false;
 
 			#region Try to find
 			var hc = value.GetHashCode();
-			StringID tgv;
+			StringId tgv;
 			if (m_set.SetLookup.TryGetValue(hc, out tgv))
 			{
 				sid = tgv;

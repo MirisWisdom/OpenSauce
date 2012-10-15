@@ -109,6 +109,9 @@ namespace BlamLib
 #if !NO_HALO_REACH
 			else if ((engine & BlamVersion.HaloReach) != 0)	return HaloReach.Manager;
 #endif
+#if !NO_HALO4
+			else if ((engine & BlamVersion.Halo4) != 0)		return Halo4.Manager;
+#endif
 			else if ((engine & BlamVersion.Stubbs) != 0)	return Stubbs.Manager;
 			else throw new Debug.Exceptions.UnreachableException(engine);
 		}
@@ -233,6 +236,9 @@ namespace BlamLib
 #if !NO_HALO_REACH
 				HaloReach.Initialize();
 #endif
+#if !NO_HALO4
+				Halo4.Initialize();
+#endif
 				Stubbs.Initialize();
 
 				TagInterface.DefinitionStatePool.PostProcess();
@@ -247,6 +253,9 @@ namespace BlamLib
 			if (isInitialized)
 			{
 				Stubbs.Close();
+#if !NO_HALO4
+				Halo4.Close();
+#endif
 #if !NO_HALO_REACH
 				HaloReach.Close();
 #endif

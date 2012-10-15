@@ -177,7 +177,7 @@ namespace BlamLib.Blam.Halo3.Tags
 			foreach (sound_gestalt_pitch_ranges_block def in block)
 			{
 				int name_index = def.Name.Value;
-				Blam.StringID name = name_index >= 0 ? owner.ImportNames[name_index].ImportName.Handle : Blam.StringID.Null;
+				Blam.StringId name = name_index >= 0 ? owner.ImportNames[name_index].ImportName.Handle : Blam.StringId.Null;
 
 				s.WriteLine(format, (x++).ToString(),
 					def.Parameters.Value.ToString(), def.Unknown04.Value.ToString(),
@@ -202,7 +202,7 @@ namespace BlamLib.Blam.Halo3.Tags
 			foreach (sound_gestalt_permutations_block def in block)
 			{
 				int name_index = def.Name.Value;
-				Blam.StringID name = name_index >= 0 ? owner.ImportNames[name_index].ImportName.Handle : Blam.StringID.Null;
+				Blam.StringId name = name_index >= 0 ? owner.ImportNames[name_index].ImportName.Handle : Blam.StringId.Null;
 
 				s.WriteLine(format, (x++).ToString(),
 					def.PermutationInfoIndex.ToString(), def.FirstChunk.Value.ToString(), def.ChunkCount.Value.ToString(), def.GetPermutationIndex().ToString(), 
