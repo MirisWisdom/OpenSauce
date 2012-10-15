@@ -99,6 +99,16 @@ namespace BlamLib
 			/// <param name="flags"></param>
 			public static void Add(ref uint value, uint flags) { value |= flags; }
 
+			/// <summary>Adds <paramref name="rhs"/> to <paramref name="lhs"/></summary>
+			/// <param name="lhs">Existing bit-vector</param>
+			/// <param name="rhs">Other bit-vector whose bits we wish to add to <paramref name="lhs"/></param>
+			/// <returns><paramref name="lhs"/> != <paramref name="rhs"/></returns>
+			public static ulong Add(ulong lhs, ulong rhs)		{ return lhs |= rhs; }
+			/// <summary>Adds <paramref name="rhs"/> to <paramref name="lhs"/></summary>
+			/// <param name="lhs">Existing bit-vector reference</param>
+			/// <param name="rhs">Other bit-vector whose bits we wish to add to <paramref name="lhs"/></param>
+			public static void Add(ref ulong lhs, ulong rhs)	{ lhs |= rhs; }
+
 
 			/// <summary>
 			/// Removes <paramref name="flags"/> from <paramref name="value"/>
@@ -113,6 +123,16 @@ namespace BlamLib
 			/// <param name="value"></param>
 			/// <param name="flags"></param>
 			public static void Remove(ref uint value, uint flags) { value &= ~flags; }
+
+			/// <summary>Removes <paramref name="rhs"/> from <paramref name="lhs"/></summary>
+			/// <param name="lhs">Existing bit-vector</param>
+			/// <param name="rhs">Other bit-vector whose bits we wish to remove from <paramref name="lhs"/></param>
+			/// <returns><paramref name="lhs"/> &= <paramref name="rhs"/></returns>
+			public static ulong Remove(ulong lhs, ulong rhs)	{ return lhs &= ~rhs; }
+			/// <summary>Removes <paramref name="rhs"/> from <paramref name="lhs"/></summary>
+			/// <param name="lhs">Existing bit-vector</param>
+			/// <param name="rhs">Other bit-vector whose bits we wish to remove from <paramref name="lhs"/></param>
+			public static void Remove(ref ulong lhs, ulong rhs)	{ lhs &= ~rhs; }
 
 
 			/// <summary>

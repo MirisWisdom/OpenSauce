@@ -378,7 +378,7 @@ namespace BlamLib.Blam.Cache
 
 	public abstract class CacheItemGroupTagGen3 : CacheItemGroupTagGen2
 	{
-		public StringID Name;
+		public StringId Name;
 
 		public override string ToString()
 		{

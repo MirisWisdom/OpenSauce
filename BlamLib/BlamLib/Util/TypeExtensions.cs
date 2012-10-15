@@ -4,6 +4,8 @@
 	See license\BlamLib\BlamLib for specific license information
 */
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using DX = SlimDX;
 using DECLT = BlamLib.Render.DeclarationTypes;
 
@@ -13,7 +15,7 @@ namespace BlamLib
 	{
 		// HACK: The new string id code was ported from some .NET 4 from a different project, which uses some .NET 4 constructs
 		// This is just a workaround to continue to use those constructs (kinda)
-		public static bool HasFlag(this Blam.StringID.GenerateIdMethod method, Blam.StringID.GenerateIdMethod flag)
+		public static bool HasFlag(this Blam.StringIdDesc.GenerateIdMethod method, Blam.StringIdDesc.GenerateIdMethod flag)
 		{
 			return (method & flag) != 0;
 		}
@@ -138,5 +140,49 @@ namespace BlamLib
 		{
 			return ef == IO.EndianState.Little ? IO.EndianState.Big : IO.EndianState.Little;
 		}
+
+
+		// *sigh*, this wasn't added to .NET until 4.0
+		public static Type GetEnumUnderlyingType(this Type t)
+		{
+			if (!t.IsEnum)
+			{
+				throw new ArgumentException("Arg_MustBeEnum", "enumType");
+			}
+			var fields = t.GetFields(System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+			if ((fields == null) || (fields.Length != 0x1))
+			{
+				throw new ArgumentException("Argument_InvalidEnum", "enumType");
+			}
+			return fields[0x0].FieldType;
+		}
+
+		#region GetCustomAttribute
+		//http://www.codeproject.com/Tips/72637/Get-CustomAttributes-the-easy-way.aspx
+
+		/// <summary>Returns first custom attribute of type T in the inheritance chain</summary>
+		public static T GetCustomAttribute<T>(this System.Reflection.ICustomAttributeProvider provider/*, bool inherited = false*/)
+			where T : Attribute
+		{
+			bool inherited = false;
+			return provider.GetCustomAttributes<T>(inherited).FirstOrDefault();
+		}
+
+		/// <summary>Returns all custom attributes of type T in the inheritance chain</summary>
+		public static List<T> GetCustomAttributes<T>(this System.Reflection.ICustomAttributeProvider provider, bool inherited/* = false*/)
+			where T : Attribute
+		{
+			return provider.GetCustomAttributes(typeof (T), inherited).Cast<T>().ToList();
+		}
+		#endregion
+
+		#region Enum Bit Encoders
+		public static class BitEncoders
+		{
+			// KSoft.Data
+			public static readonly EnumBitEncoder32<Blam.StringIdDesc.GenerateIdMethod>
+				GenerateIdMethod = new EnumBitEncoder32<Blam.StringIdDesc.GenerateIdMethod>();
+		};
+		#endregion
 	};
 }

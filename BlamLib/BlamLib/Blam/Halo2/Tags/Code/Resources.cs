@@ -207,7 +207,7 @@ namespace BlamLib.Blam.Halo2.Tags
 			#endregion
 
 			#region Reconstruct
-			static multilingual_unicode_string_reference_block AddOrGetReferenceByName(multilingual_unicode_string_list_group def, Blam.StringID name)
+			static multilingual_unicode_string_reference_block AddOrGetReferenceByName(multilingual_unicode_string_list_group def, Blam.StringId name)
 			{
 				// See if a reference already exists for [name]...
 				foreach (var sref in def.StringRefs)
@@ -233,7 +233,7 @@ namespace BlamLib.Blam.Halo2.Tags
 				{
 					var dst = owner.StringData.Value;
 
-					Blam.StringID name;
+					Blam.StringId name;
 					size = languagePack.CopyStringReferenceData(referenceIndex + x, dst, dst_offset, out name);
 
 					var sref = AddOrGetReferenceByName(owner, name);

@@ -70,7 +70,7 @@ namespace BlamLib.TagInterface
 				Exception inner, 
 				uint offset_field, uint offset_data, 
 				IO.ITagStream tag,
-				byte length, string value) : base(inner, "Invalid String Id")
+				int length, string value) : base(inner, "Invalid String Id")
 			{
 				Debug.LogFile.WriteLine(
 					"Invalid string_id: field@{0:X8}\tdata@{1:X8}\tlength:{2:X2}\tvalue:{3}" + Program.NewLine +

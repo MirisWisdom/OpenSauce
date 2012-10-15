@@ -141,7 +141,7 @@ namespace BlamLib.Scripting
 				v.NodeOffset = index.Index;
 
 				if (v.Name == TagInterface.StringId.kEncryptedResult)
-					v.Name = (hs.Name as TagInterface.StringId).Handle.Handle.ToString("X8");
+					v.Name = (hs.Name as TagInterface.StringId).Handle.ToUInt32().ToString("X8");
 			}
 
 			return value;

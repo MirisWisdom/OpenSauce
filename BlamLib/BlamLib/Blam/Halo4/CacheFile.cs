@@ -185,8 +185,7 @@ namespace BlamLib.Blam.Halo4
 
 			#region address mask
 			uint base_address = memoryPartitions[0].BaseAddress - (uint)cacheInterop[CacheSectionType.Tag].CacheOffset;
-			if(s.Owner != null) // TODO: temp, until test code is done
-				(s.Owner as Blam.CacheFile).AddressMask = base_address;
+			(s.Owner as Blam.CacheFile).AddressMask = base_address;
 
 			offsetToIndex = (int)(tagIndexAddress - base_address);
 			memoryPartitions[0].Offset = (int)(memoryPartitions[0].BaseAddress - baseAddress);
