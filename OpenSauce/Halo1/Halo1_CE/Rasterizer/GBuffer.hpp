@@ -169,7 +169,7 @@ namespace Yelo
 			static D3DXMATRIX				g_stored_worldviewproj[2];
 			static BOOL						g_stored_wvp_index;
 
-			static uint16					g_object_index;
+			static datum_index				g_object_index;
 			static void Hook_RenderObjectList_GetObjectIndex();
 			static void Hook_RenderObjectList_ClearObjectIndex();
 			static void Hook_FirstPersonWeaponDraw_GetObjectIndex();

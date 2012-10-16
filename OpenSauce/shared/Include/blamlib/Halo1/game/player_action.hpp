@@ -33,6 +33,13 @@ namespace Yelo
 
 	namespace Players
 	{
+		struct s_player_action_result
+		{
+			datum_index action_object_index;
+			int16 action_result;			// enum object_type
+			int16 action_seat_index;
+		};
+
 		struct s_player_action
 		{
 			int32 update_id;

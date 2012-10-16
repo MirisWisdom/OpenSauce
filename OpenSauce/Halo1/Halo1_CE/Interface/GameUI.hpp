@@ -7,7 +7,7 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <blamlib/Halo1/game/game_globals.hpp> // for game teams
+#include <blamlib/Halo1/game/game_allegiance.hpp> // for game teams
 #include <blamlib/Halo1/game/players.hpp>
 
 #include <TagGroups/Halo1/hud_definitions.hpp>
@@ -221,7 +221,7 @@ namespace Yelo
 			}; BOOST_STATIC_ASSERT( sizeof(s_team_data) == 0x84 );
 			struct s_local_player
 			{
-				s_team_data nearby_team_objects[Enums::_global_game_team];
+				s_team_data nearby_team_objects[Enums::k_number_of_game_teams];
 				
 				byte UNKNOWN(0)[0x40];
 			}; BOOST_STATIC_ASSERT( sizeof(s_local_player) == 0x568 );

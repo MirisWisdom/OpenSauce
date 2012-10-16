@@ -28,7 +28,7 @@ namespace Yelo
 
 		struct s_network_game_player
 		{
-			wchar_t name[12];			// 0x0
+			wchar_t name[Enums::k_player_name_length+1];	// 0x0
 			int16 primary_color_index;	// 0x18
 			int16 icon_index;			// 0x1A
 			sbyte machine_index;		// 0x1C

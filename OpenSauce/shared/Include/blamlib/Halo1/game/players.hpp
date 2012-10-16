@@ -16,6 +16,8 @@ namespace Yelo
 			k_maximum_number_of_local_players = 1,
 
 			k_multiplayer_maximum_players = 16,
+
+			k_player_name_length = 11,
 		};
 
 		enum multiplayer_team
@@ -33,40 +35,12 @@ namespace Yelo
 		{
 			_player_powerup_active_camo,
 			_player_powerup_full_spectrum_vision,
-			_player_powerup,
+			
+			k_number_of_of_player_powerups,
 		};
 	};
 
 	namespace Players
 	{
-		union u_player_datum_scores
-		{
-			PAD64;
-
-			struct s_ctf {
-				int16 flag_grabs;
-				int16 flag_returns;
-				int16 flag_scores;
-			}ctf;
-
-			struct s_slayer {
-			}slayer;
-
-			struct s_oddball {
-				UNKNOWN_TYPE(int16);
-				int16 target_kills;
-				int16 kills;
-			}oddball;
-
-			struct s_king {
-				int16 hill_score;
-			}king;
-
-			struct s_race {
-				int16 time;
-				int16 laps;
-				int16 best_time;
-			}race;
-		}; BOOST_STATIC_ASSERT( sizeof(u_player_datum_scores) == 8 );
 	};
 };

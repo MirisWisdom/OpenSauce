@@ -23,9 +23,10 @@ static datum_index PlayerFindTeamUnitDefinitionOverride(const s_player_datum* pl
 	const TAG_TBLOCK(& player_units, TagGroups::s_network_game_player_unit))
 {
 	// HACK: not the best way of doing this (hate hard coding stuff), but for now it works
-	static cstring k_team_names[] = { "red_team", "blue_team" };
+	static cstring k_team_names[Enums::k_number_of_multiplayer_teams] = { 
+		"red_team", "blue_team" };
 
-	int32 player_team_index = *player->GetTeamIndex();
+	int32 player_team_index = player->team_index;
 	if(player_team_index >= 0 && player_team_index < NUMBEROF(k_team_names))
 	{
 		cstring player_team_name = k_team_names[player_team_index];

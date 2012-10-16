@@ -87,7 +87,7 @@ namespace Yelo
 
 		Objects::s_unit_datum* s_player_datum::GetPlayerUnit()
 		{
-			datum_index object_index = *this->GetSlaveUnitIndex();
+			datum_index object_index = this->slave_unit_index;
 			if(object_index.IsNull()) return NULL;
 
 			return (*Objects::ObjectHeader())[object_index]->_unit;
@@ -114,7 +114,7 @@ namespace Yelo
 			s_player_datum* player;
 			while( (player = iter.Next()) != NULL )
 			{
-				if(*player->GetLocalIndex() != NONE)
+				if(player->local_player_index != NONE)
 					return iter.Current();
 			}
 
@@ -127,7 +127,7 @@ namespace Yelo
 			s_player_datum* player;
 			while( (player = iter.Next()) != NULL )
 			{
-				if(*player->GetLocalIndex() != NONE)
+				if(player->local_player_index != NONE)
 					return player;
 			}
 
@@ -143,7 +143,7 @@ namespace Yelo
 			s_player_datum* player;
 			while( (player = iter.Next()) != NULL )
 			{
-				if(player->GetNetworkPlayer()->player_list_index == player_number)
+				if(player->network_player.player_list_index == player_number)
 				{
 					if(player_index_reference != NULL) *player_index_reference = iter.Current();
 					return player;
