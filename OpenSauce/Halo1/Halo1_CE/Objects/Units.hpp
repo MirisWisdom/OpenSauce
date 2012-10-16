@@ -13,6 +13,8 @@ namespace Yelo
 	namespace Objects { namespace Units {
 		void Initialize();
 		void Dispose();
+		void InitializeForNewMap();
+		void DisposeFromOldMap();
 
 		void InitializeForYeloGameState(bool enabled);
 	}; };

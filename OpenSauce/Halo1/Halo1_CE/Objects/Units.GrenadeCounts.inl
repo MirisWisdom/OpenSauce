@@ -7,7 +7,7 @@
 
 // DEBUG: Before each memory write when we're enabling, we assert we're overwriting the expected value or bytes
 
-static void InitializeForYeloGameState_UnitZoomLevelRefs(bool enabled)
+static void InitializeGrenadeCounts_UnitZoomLevelRefs(bool enabled)
 {
 	uint32 offset = enabled ? s_unit_data::k_offset_ZoomLevel_Yelo : s_unit_data::k_offset_ZoomLevel;
 
@@ -15,11 +15,11 @@ static void InitializeForYeloGameState_UnitZoomLevelRefs(bool enabled)
 	{
 		uint32* offset_ref = CAST_PTR(uint32*, K_UNIT_ZOOM_LEVEL_OFFSET_REFS[x]);
 
-		DebugOnly( if(enabled) ASSERT( s_unit_data::k_offset_ZoomLevel == *offset_ref, "GrenadeCounts asm mismtach!" ) );
+		DebugRunOnce( ASSERT( s_unit_data::k_offset_ZoomLevel == *offset_ref, "GrenadeCounts asm mismtach!" ) );
 		*offset_ref = offset;
 	}
 }
-static void InitializeForYeloGameState_UnitDesiredZoomLevelRefs(bool enabled)
+static void InitializeGrenadeCounts_UnitDesiredZoomLevelRefs(bool enabled)
 {
 	uint32 offset = enabled ? s_unit_data::k_offset_DesiredZoomLevel_Yelo : s_unit_data::k_offset_DesiredZoomLevel;
 
@@ -27,26 +27,45 @@ static void InitializeForYeloGameState_UnitDesiredZoomLevelRefs(bool enabled)
 	{
 		uint32* offset_ref = CAST_PTR(uint32*, K_UNIT_DESIRED_ZOOM_LEVEL_OFFSET_REFS[x]);
 
-		DebugOnly( if(enabled) ASSERT( s_unit_data::k_offset_DesiredZoomLevel == *offset_ref, "GrenadeCounts asm mismtach!" ) );
+		DebugRunOnce( ASSERT( s_unit_data::k_offset_DesiredZoomLevel == *offset_ref, "GrenadeCounts asm mismtach!" ) );
 		*offset_ref = offset;
 	}
 }
-static void InitializeForYeloGameState_NumberOfUnitGrenadeTypes(bool enabled)
+static void InitializeGrenadeCounts_NumberOfUnitGrenadeTypes(uint32 count/*bool enabled*/)
 {
-	uint32 count = enabled ? Enums::k_unit_grenade_types_count_yelo : Enums::k_unit_grenade_types_count;
+	//uint32 count = enabled ? Enums::k_unit_grenade_types_count_yelo : Enums::k_unit_grenade_types_count;
 
 	for(int x = 0; x < NUMBEROF(K_NUMBER_OF_UNIT_GRENADE_TYPES_REFS); x++)
 	{
 		uint32* count_ref = CAST_PTR(uint32*, K_NUMBER_OF_UNIT_GRENADE_TYPES_REFS[x]);
 
-		DebugOnly( if(enabled) ASSERT( Enums::k_unit_grenade_types_count == *count_ref, "GrenadeCounts asm mismtach!" ) );
+		DebugRunOnce( ASSERT( Enums::k_unit_grenade_types_count == *count_ref, "GrenadeCounts asm mismtach!" ) );
 		*count_ref = count;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	// patch the maximum unit grenade index
+	count--;
+
+	for(int x = 0; x < NUMBEROF(K_MAXIMUM_UNIT_GRENADE_INDEX_REFS_32bit); x++)
+	{
+		uint32* count_ref = CAST_PTR(uint32*, K_MAXIMUM_UNIT_GRENADE_INDEX_REFS_32bit[x]);
+
+		DebugRunOnce( ASSERT( Enums::k_unit_grenade_types_count-1 == *count_ref, "GrenadeCounts asm mismtach!" ) );
+		*count_ref = count;
+	}
+	for(int x = 0; x < NUMBEROF(K_MAXIMUM_UNIT_GRENADE_INDEX_REFS_8bit); x++)
+	{
+		byte* count_ref = CAST_PTR(byte*, K_MAXIMUM_UNIT_GRENADE_INDEX_REFS_8bit[x]);
+
+		DebugRunOnce( ASSERT( Enums::k_unit_grenade_types_count-1 == *count_ref, "GrenadeCounts asm mismtach!" ) );
+		*count_ref = CAST(byte, count);
 	}
 }
 
 
 
-static void InitializeForYeloGameState_UnitGrenadeCounts(bool enabled)
+static void InitializeGrenadeCounts_UnitGrenadeCounts(bool enabled)
 {
 	//////////////////////////////////////////////////////////////////////////
 	// actor_died
@@ -63,7 +82,7 @@ static void InitializeForYeloGameState_UnitGrenadeCounts(bool enabled)
 		const void* asm_code = enabled ? k_unit_grenade_count_dword : k_unit_grenade_count_word;
 		void* code_addr = GET_FUNC_VPTR(ACTOR_DIED_UNIT_GRENADE_COUNT_MOD);
 
-		DebugOnly( if(enabled) ASSERT( memcmp(code_addr, k_unit_grenade_count_word, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
+		DebugRunOnce( ASSERT( memcmp(code_addr, k_unit_grenade_count_word, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
 		Memory::WriteMemory(code_addr, asm_code, asm_code_size);
 	}
 	//////////////////////////////////////////////////////////////////////////
@@ -79,7 +98,7 @@ static void InitializeForYeloGameState_UnitGrenadeCounts(bool enabled)
 		const void* asm_code = enabled ? k_unit_grenade_count_dword : k_unit_grenade_count_word;
 		void* code_addr = GET_FUNC_VPTR(PLAYER_ADD_EQUIPMENT_UNIT_GRENADE_COUNT_MOD);
 
-		DebugOnly( if(enabled) ASSERT( memcmp(code_addr, k_unit_grenade_count_word, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
+		DebugRunOnce( ASSERT( memcmp(code_addr, k_unit_grenade_count_word, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
 		Memory::WriteMemory(code_addr, asm_code, asm_code_size);
 	}
 	//////////////////////////////////////////////////////////////////////////
@@ -101,7 +120,7 @@ static void InitializeForYeloGameState_UnitGrenadeCounts(bool enabled)
 		const void* asm_code = enabled ? k_unit_grenade_count_dword : k_unit_grenade_count_word;
 		void* code_addr = GET_FUNC_VPTR(BIPED_NEW_FROM_NETWORK_UNIT_GRENADE_COUNT_MOD);
 
-		DebugOnly( if(enabled) ASSERT( memcmp(code_addr, k_unit_grenade_count_word, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
+		DebugRunOnce( ASSERT( memcmp(code_addr, k_unit_grenade_count_word, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
 		Memory::WriteMemory(code_addr, asm_code, asm_code_size);
 	}
 	//////////////////////////////////////////////////////////////////////////
@@ -121,14 +140,14 @@ static void InitializeForYeloGameState_UnitGrenadeCounts(bool enabled)
 		const void* asm_code = enabled ? k_unit_grenade_count_dword1 : k_unit_grenade_count_word1;
 		void* code_addr = GET_FUNC_VPTR(BIPED_UPDATE_BASELINE_UNIT_GRENADE_COUNT_MOD1);
 
-		DebugOnly( if(enabled) ASSERT( memcmp(code_addr, k_unit_grenade_count_word1, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
+		DebugRunOnce( ASSERT( memcmp(code_addr, k_unit_grenade_count_word1, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
 		Memory::WriteMemory(code_addr, asm_code, asm_code_size);
 
 		asm_code_size = sizeof(k_unit_grenade_count_word2);
 		asm_code = enabled ? k_unit_grenade_count_dword2 : k_unit_grenade_count_word2;
 		code_addr = GET_FUNC_VPTR(BIPED_UPDATE_BASELINE_UNIT_GRENADE_COUNT_MOD2);
 
-		DebugOnly( if(enabled) ASSERT( memcmp(code_addr, k_unit_grenade_count_word2, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
+		DebugRunOnce( ASSERT( memcmp(code_addr, k_unit_grenade_count_word2, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
 		Memory::WriteMemory(code_addr, asm_code, asm_code_size);
 	}
 	//////////////////////////////////////////////////////////////////////////
@@ -148,14 +167,14 @@ static void InitializeForYeloGameState_UnitGrenadeCounts(bool enabled)
 		const void* asm_code = enabled ? k_unit_grenade_count_dword1 : k_unit_grenade_count_word1;
 		void* code_addr = GET_FUNC_VPTR(BIPED_BUILD_UPDATE_DELTA_UNIT_GRENADE_COUNT_MOD1);
 
-		DebugOnly( if(enabled) ASSERT( memcmp(code_addr, k_unit_grenade_count_word1, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
+		DebugRunOnce( ASSERT( memcmp(code_addr, k_unit_grenade_count_word1, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
 		Memory::WriteMemory(code_addr, asm_code, asm_code_size);
 
 		asm_code_size = sizeof(k_unit_grenade_count_word2);
 		asm_code = enabled ? k_unit_grenade_count_dword2 : k_unit_grenade_count_word2;
 		code_addr = GET_FUNC_VPTR(BIPED_BUILD_UPDATE_DELTA_UNIT_GRENADE_COUNT_MOD2);
 
-		DebugOnly( if(enabled) ASSERT( memcmp(code_addr, k_unit_grenade_count_word2, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
+		DebugRunOnce( ASSERT( memcmp(code_addr, k_unit_grenade_count_word2, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
 		Memory::WriteMemory(code_addr, asm_code, asm_code_size);
 	}
 	//////////////////////////////////////////////////////////////////////////
@@ -171,13 +190,13 @@ static void InitializeForYeloGameState_UnitGrenadeCounts(bool enabled)
 		const void* asm_code = enabled ? k_unit_grenade_count_dword : k_unit_grenade_count_word;
 		void* code_addr = GET_FUNC_VPTR(BIPED_PROCESS_UPDATE_DELTA_UNIT_GRENADE_COUNT_MOD);
 
-		DebugOnly( if(enabled) ASSERT( memcmp(code_addr, k_unit_grenade_count_word, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
+		DebugRunOnce( ASSERT( memcmp(code_addr, k_unit_grenade_count_word, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
 		Memory::WriteMemory(code_addr, asm_code, asm_code_size);
 	}
 }
 
 
-static void InitializeForYeloGameState_MessageDeltaGrenadeCounts(bool enabled)
+static void InitializeGrenadeCounts_MessageDeltaGrenadeCounts(bool enabled)
 {
 	using namespace MessageDeltas;
 

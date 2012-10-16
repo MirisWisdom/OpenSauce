@@ -10,6 +10,8 @@
 
 #include <blamlib/Halo1/game/players.hpp>
 #include <blamlib/Halo1/networking/network_game_manager.hpp>
+#include <blamlib/Halo1/networking/player_update_client.hpp>
+#include <blamlib/Halo1/networking/player_update_server.hpp>
 
 namespace Yelo
 {
@@ -23,109 +25,6 @@ namespace Yelo
 {
 	namespace Players
 	{
-		struct s_player_set_action_result_network_data
-		{
-			datum_index player_index;
-			int32 action_result_type;
-			datum_index action_object_index;
-			int16 action_result;
-			int16 action_seat_index;
-			datum_index weapon_to_drop_as_result_of_swap;
-		}; BOOST_STATIC_ASSERT( sizeof(s_player_set_action_result_network_data) == 0x14 );
-
-		struct s_action_update_data
-		{
-			long_flags control_flags;
-			PAD64;
-			struct {
-				real r0, r1;
-			}throttle;
-			real primary_trigger;
-			int16 desired_weapon_index;
-			int16 desired_grenade_index;
-		}; BOOST_STATIC_ASSERT( sizeof(s_action_update_data) == 0x1C );
-
-		struct s_vehicle_update_data
-		{
-			datum_index vehicle_index;
-			real_point3d position;
-			real_vector3d translational_velocity, angular_velocity;
-			real_vector3d forward, up;
-		}; BOOST_STATIC_ASSERT( sizeof(s_vehicle_update_data) == 0x40 );
-
-		struct s_remote_player_position_update_network_data
-		{
-			real_point3d position;
-		}; BOOST_STATIC_ASSERT( sizeof(s_remote_player_position_update_network_data) == 0xC );
-		struct s_remote_player_action_update_network_data
-		{
-			int32 ticks_to_apply_update_to;
-			s_action_update_data action;
-			PAD32;
-			real_vector3d facing_vector;
-		}; BOOST_STATIC_ASSERT( sizeof(s_remote_player_action_update_network_data) == 0x30 );
-
-
-		struct s_action_queue_entry : TStructImpl(44)
-		{
-			// 0x4 int32 remaining_ticks_to_apply_action_to
-		};
-		struct s_action_queue
-		{
-			Memory::s_simple_circular_queue queue;
-			s_action_queue_entry* entries;			// 0x14, #120, user_data
-			UNKNOWN_TYPE(bool);						// 0x18
-			PAD24;
-		}; BOOST_STATIC_ASSERT( sizeof(s_action_queue) == 0x1C );
-
-		struct s_position_queue_entry : TStructImpl(20)
-		{
-		};
-		struct s_position_queue
-		{
-			Memory::s_simple_circular_queue queue;
-			s_position_queue_entry* entries;		// 0x14, #30, user_data
-		}; BOOST_STATIC_ASSERT( sizeof(s_position_queue) == 0x18 );
-
-		struct s_vehicle_update_queue_entry : TStructImpl(72)
-		{
-		};
-		struct s_vehicle_update_queue
-		{
-			Memory::s_simple_circular_queue queue;
-			s_vehicle_update_queue_entry* entries;	// 0x14, #30, user_data
-		}; BOOST_STATIC_ASSERT( sizeof(s_vehicle_update_queue) == 0x18 );
-
-
-		union u_player_datum_scores
-		{
-			byte data[sizeof(int32)*2];
-
-			struct s_ctf {
-				int16 flag_grabs;
-				int16 flag_returns;
-				int16 flag_scores;
-			}ctf;
-
-			struct s_slayer {
-			}slayer;
-
-			struct s_oddball {
-				UNKNOWN_TYPE(int16);
-				int16 target_kills;
-				int16 kills;
-			}oddball;
-
-			struct s_king {
-				int16 hill_score;
-			}king;
-
-			struct s_race {
-				int16 time;
-				int16 laps;
-				int16 best_time;
-			}race;
-		}; BOOST_STATIC_ASSERT( sizeof(u_player_datum_scores) == 8 );
 		// Special yelo data used for player datums when running as a server
 		struct s_player_yelo_server_data
 		{
@@ -199,80 +98,39 @@ namespace Yelo
 			TStructGetPtrImpl(int16, FriendlyFireKills, 0xAC);
 			TStructGetPtrImpl(int16, Deaths, 0xAE);
 			TStructGetPtrImpl(int16, Suicides, 0xB0);
-			// 0xB2? 0xB4? 0xB8? 0xBC?
+			// PAD16
+			// 0xB4 UNUSED_TYPE(int32)
+			// 0xB8 UNUSED_TYPE(int32)
+			// 0xBC UNUSED_TYPE(int32)
 			TStructGetPtrImpl(int16, TKs, 0xC0);
-			// 0xC2?
+			// PAD16
 			TStructGetPtrImpl(u_player_datum_scores, Scores, 0xC4);
 			TStructGetPtrImpl(uint32, TelefragCounter, 0xCC); // # of ticks spent blocking teleporter
 			TStructGetPtrImpl(int32, QuickGameTick, 0xD0); // game tick the player quick at
 			TStructGetPtrImpl(bool, TelefragEnabled, 0xD4); // if we're blocking a teleporter, this will be true
 			TStructGetPtrImpl(bool, QuitOutOfGame, 0xD5);
-			// 0xD6?
-			// 0xD8?
+			// PAD16
+			// 0xD8 UNUSED_TYPE(int32)
 			TStructGetPtrImpl(int32, Ping, 0xDC);
 			TStructGetPtrImpl(int32, TKNum, 0xE0);
 			TStructGetPtrImpl(int32, TKTimer, 0xE4);
-
-			struct s_client_update_data
-			{
-				// 0xE8 int32
-				// 0xEC int32
-				// 0xF0, s_remote_player_action_update_network_data
-				// 0x120 s_action_queue
-				// 0x13C, 0x20 byte structure
-				// 0x15C int32
-				// 0x160 int32
-				// 0x164, s_remote_player_position_update_network_data
-				// 0x170 s_position_queue
-				// 0x188 uint32
-				// 0x18C int32
-				// 0x190, s_vehicle_update_data
-				// 0x1D0 s_vehicle_update_queue
-				// 0x1E8 uint32
-				// 0x1EC uint32
-				// 0x1F0 uint32
-				// 0x1F4 uint32
-				// 0x1F8 uint32
-
-				// 0x1FC?
-			};
-			struct s_server_update_data
-			{
-				UNKNOWN_TYPE(uint32); // 0xE8
-				UNKNOWN_TYPE(int32);  // 0xEC
-				UNKNOWN_TYPE(int32);  // 0xF0
-				int32 last_completed_update_id;
-				real_point3d position;
-
-				// 0x104 datum_index or int32
-				// 0x108 boolean, PAD24
-				// 0x10C uint32
-				// 0x110 uint32
-				// 0x114 uint32
-				// 0x118 uint32
-				// 0x11C uint32
-				// 0x120 int32
-				// 0x124 int32
-				// 0x128 int32
-				// 0x12C int32 server_update_data.action_baseline_id, NUMBER_OF_REMOTE_PLAYER_ACTION_UPDATE_BASELINE_IDS = 2
-				// 0x130, s_remote_player_action_update_network_data
-				// 0x160 uint32
-				// 0x164 datum_index or int32
-				// 0x168 datum_index or int32
-				// 0x16C datum_index or int32
-				// 0x170 real_point3d predict_position
-				// 0x17C datum_index or int32
-				// 0x180 datum_index or int32
-				// 0x184 datum_index or int32
-				// 0x188, 0x40 byte structure
-
-				// 0x1C8?
-			}; //BOOST_STATIC_ASSERT( sizeof(s_server_update_data) == 0xE0 );
-			TStructGetPtrImpl(s_client_update_data, ClientUpdateData, 0xE8);
-			TStructGetPtrImpl(s_server_update_data, ServerUpdateData, 0xE8);
-
+			TStructGetPtrImpl(Networking::s_player_client_update, ClientUpdateData, 0xE8);
+			TStructGetPtrImpl(Networking::s_player_server_update, ServerUpdateData, 0xE8);
 			// !!! Only use this when the local machine is the host (ie, Networking::IsServer() == true) !!!
 			TStructGetPtrImpl(s_player_yelo_server_data, ServerYeloData, 0x1C8);
+
+#if FALSE
+			union {
+				byte _unused_networking_buffer[0x200 - 0xE8];
+
+				Networking::s_player_client_update client_update_data;
+				struct {
+					Networking::s_player_server_update update_data;
+					// !!! Only use this when the local machine is the host (ie, Networking::IsServer() == true) !!!
+					s_player_yelo_server_data yelo_data;
+				}server;
+			};
+#endif
 
 
 			Objects::s_unit_datum* GetPlayerUnit();

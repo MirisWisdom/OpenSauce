@@ -194,7 +194,6 @@ namespace Yelo
 			datum_index definition_index;	// 0xCC
 			int16 current_index;			// 0xD0
 			int16 current_frame_index;		// 0xD2
-			// not actually sure if these fields are part of this struct
 			UNKNOWN_TYPE(int16);			// 0xD4
 			UNKNOWN_TYPE(int16);			// 0xD6
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_animation_datum_data) == 0xC );

@@ -156,6 +156,7 @@ namespace Yelo
 		void Initialize();
 		void Dispose();
 		void InitializeForNewMap();
+		void DisposeFromOldMap();
 
 		void PLATFORM_API Update();
 

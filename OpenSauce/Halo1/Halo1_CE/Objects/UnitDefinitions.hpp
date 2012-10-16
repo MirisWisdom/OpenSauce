@@ -152,6 +152,7 @@ namespace Yelo
 			//TStructGetPtrImpl(byte?,				, 0x1F);				// 0x2B7 aim related
 			TStructGetPtrImpl(real_rectangle2d,		LookingBounds, 0x20);	// 0x2B8
 			TStructGetPtrImpl(real_rectangle2d,		AimingBounds, 0x30);	// 0x2C8
+			// PAD64 (or unused)											// 0x2D8
 		};
 		struct s_unit_data : TStructImpl(Enums::k_object_size_unit - Enums::k_object_size_object)
 		{
@@ -178,7 +179,7 @@ namespace Yelo
 			TStructSubGetPtrImpl(sbyte,					BaseSeatIndex, 0x20F);
 			//TStructSubGetPtrImpl(uint32,				ControlTime?, 0x210);
 			//TStructSubGetPtrImpl(long_flags,			ControlFlags, 0x214);
-			//TStructSubGetPtrImpl(datum_index,			ControllingPlayerIndex, 0x218);
+			TStructSubGetPtrImpl(datum_index,			ControllingPlayerIndex, 0x218);
 			//TStructSubGetPtrImpl(_enum,				EffectType, 0x21C); // ai_unit_effect
 			TStructSubGetPtrImpl(int16,					EmotionAnimationIndex, 0x21E);
 			//TStructSubGetPtrImpl(uint32,				, 0x220); // time (game ticks) of next update for EffectType related code
@@ -202,7 +203,6 @@ namespace Yelo
 			// 0x292 PAD16 (or unused)
 			TStructSubGetPtrImpl(datum_index,			ThrownGrenade, 0x294); // object_index to the grenade being thrown
 			TStructSubGetPtrImpl(s_unit_animation_data,	Animation, 0x298);
-			// 0x2D8 PAD64 (or unused)
 			TStructSubGetPtrImpl(real,					Ambient, 0x2E0);
 			TStructSubGetPtrImpl(real,					Illumination, 0x2E4);
 			TStructSubGetPtrImpl(real,					MouthAperture, 0x2E8);
@@ -239,7 +239,10 @@ namespace Yelo
 			TStructSubGetPtrImpl(int32,					IntegratedLightPower, 0x340);
 
 			// 0x348, real, related to zoom, night vision, and the player's hud
-
+			//TStructSubGetPtrImpl(real_vector3d,			, 0x34C); // seat related
+			//TStructSubGetPtrImpl(real_vector3d,			, 0x358); // seat related
+			//TStructSubGetPtrImpl(real_vector3d,			, 0x364); // seat related
+			//TStructSubGetPtrImpl(real_vector3d,			, 0x370); // seat related
 			TStructSubGetPtrImpl(real,					CamoPower, 0x37C);
 
 			// 0x3B8, int16
