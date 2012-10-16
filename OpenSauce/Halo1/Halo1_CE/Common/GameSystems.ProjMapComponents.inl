@@ -39,7 +39,7 @@
 
 
 
-{Objects::InitializeForNewMap,						NULL},
+{Objects::InitializeForNewMap,						Objects::DisposeFromOldMap},
 
 #if PLATFORM_IS_USER
 

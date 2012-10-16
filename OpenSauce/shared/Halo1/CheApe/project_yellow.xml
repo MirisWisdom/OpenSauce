@@ -57,7 +57,7 @@
 			<field type="String"		name="name"			blockname="true"										tooltip="code name for this zone set" />
 			<field type="TagReference"	name="bsp"			definition="structure_bsp_reference"					tooltip="the actual 'zone'" />
 			<field type="Block"			name="lightmaps"	definition="scenario_faux_zone_lightmap_set_block" />
-			<field type="Block"			name="variants"		definition="scenario_faux_zone_lightmap_set_block" />
+			<field type="Block"			name="variants"		definition="scenario_faux_zone_set_variant_block" />
 			<field type="Pad" definition="24" />
 		</TagBlock>
 		<TagBlock name="scenario_information_block" maxElements="1">

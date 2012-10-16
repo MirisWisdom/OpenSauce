@@ -42,6 +42,7 @@ namespace Yelo
 #define __EL_INCLUDE_ID			__EL_INCLUDE_OBJECTS
 #define __EL_INCLUDE_FILE_ID	__EL_OBJECTS_UNITS
 #include "Memory/_EngineLayout.inl"
+#include "Objects/Units.GrenadeCounts.inl"
 
 		void Initialize()
 		{
@@ -51,14 +52,32 @@ namespace Yelo
 		{
 		}
 
-#include "Objects/Units.GrenadeCounts.inl"
+		void InitializeForNewMap()
+		{
+			GameState::s_yelo_header_data& yelo_header = GameState::GameStateGlobals()->header->yelo;
+			// handle the grenade types upgrading, if needed
+			if(yelo_header.flags.update_unit_grenade_types_count)
+			{
+				uint32 count = yelo_header.unit_grenade_types_count;
+
+				bool enabled = count > Enums::k_unit_grenade_types_count;
+
+				InitializeGrenadeCounts_UnitZoomLevelRefs(enabled);
+				InitializeGrenadeCounts_UnitDesiredZoomLevelRefs(enabled);
+				InitializeGrenadeCounts_NumberOfUnitGrenadeTypes(count);
+				InitializeGrenadeCounts_UnitGrenadeCounts(enabled);
+				InitializeGrenadeCounts_MessageDeltaGrenadeCounts(enabled);
+
+				yelo_header.flags.update_unit_grenade_types_count = false;
+			}
+		}
+
+		void DisposeFromOldMap()
+		{
+		}
+
 		void InitializeForYeloGameState(bool enabled)
 		{
-			InitializeForYeloGameState_UnitZoomLevelRefs(enabled);
-			InitializeForYeloGameState_UnitDesiredZoomLevelRefs(enabled);
-			InitializeForYeloGameState_NumberOfUnitGrenadeTypes(enabled);
-			InitializeForYeloGameState_UnitGrenadeCounts(enabled);
-			InitializeForYeloGameState_MessageDeltaGrenadeCounts(enabled);
 		}
 
 	}; };

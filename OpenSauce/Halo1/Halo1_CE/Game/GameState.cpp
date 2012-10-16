@@ -7,6 +7,8 @@
 #include "Common/Precompile.hpp"
 #include "Game/GameState.hpp"
 
+#include <TagGroups/Halo1/game_globals_definitions.hpp>
+
 #include <Blam/Halo1/BlamMemoryUpgrades.hpp>
 #include "Memory/MemoryInterface.hpp"
 #include "Common/GameSystems.hpp"
@@ -157,6 +159,29 @@ namespace Yelo
 		static void InitializeForNewMapPrologue()
 		{
 			Physics()->Reset(); // Reset the physics constants on each new map load since these are engine globals, not game state globals.
+
+			s_yelo_header_data& yelo_header = GameStateGlobals()->header->yelo;
+			const TagGroups::s_game_globals* game_globals = GameState::GlobalGameGlobals();
+			if(!yelo_header.flags.initialized)
+			{
+				yelo_header.flags.initialized = true;
+				yelo_header.unit_grenade_types_count = Enums::k_unit_grenade_types_count;
+			}
+
+			yelo_header.flags.game_state_upgrades_on = YeloGameStateEnabled();
+
+			// check this map's grenade count vs the previous map's
+			if(game_globals->grenades.Count != yelo_header.unit_grenade_types_count)
+			{
+				// inform the unit grenade counts code to run an assembly update
+				yelo_header.flags.update_unit_grenade_types_count = true;
+				// figure out the new grenade count
+				// defaulting to the stock count if there is suspicious number
+				if(game_globals->grenades.Count <= Enums::k_unit_grenade_types_count_yelo)
+					yelo_header.unit_grenade_types_count = CAST(byte, game_globals->grenades.Count);
+				else
+					yelo_header.unit_grenade_types_count = Enums::k_unit_grenade_types_count;
+			}
 		}
 		static void InitializeForNewMapEpilogue()
 		{
@@ -181,8 +206,13 @@ namespace Yelo
 
 			InitializeForNewMapEpilogue();
 		}
+		static void DisposeFromOldMapPrologue()
+		{
+		}
 		void PLATFORM_API DisposeFromOldMap()
 		{
+			DisposeFromOldMapPrologue();
+
 			Yelo::Main::s_project_map_component* components;
 			const int32 component_count = Yelo::Main::GetProjectComponents(components);
 

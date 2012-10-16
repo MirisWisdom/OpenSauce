@@ -108,6 +108,19 @@
 #include <Common/BaseBlamTypesPc.hpp>
 #include <Blam/Halo1/BlamMemoryUpgrades.hpp>
 
+#if defined(_DEBUG)
+	// Mostly just useful for debug checking something (eg, game memory) on startup or on the first pass
+	#define DebugRunOnce(...)							\
+	{	static volatile bool iran_once_##__COUNTER__;	\
+		if( iran_once_##__COUNTER__ == false )			\
+		{												\
+			iran_once_##__COUNTER__ = true;				\
+			__VA_ARGS__	;								\
+	} }
+#else
+	#define DebugRunOnce(...) __noop
+#endif
+
 namespace Yelo
 {
 	// Displays a message to the user using the WinAPI

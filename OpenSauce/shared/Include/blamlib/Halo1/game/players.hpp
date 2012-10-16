@@ -6,6 +6,8 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/game/player_action.hpp>
+
 namespace Yelo
 {
 	namespace Enums
@@ -33,39 +35,38 @@ namespace Yelo
 			_player_powerup_full_spectrum_vision,
 			_player_powerup,
 		};
-
-		enum player_action_result
-		{
-			_player_action_result_none,
-			_player_action_result_pickup1,
-			_player_action_result_pickup2,
-			_player_action_result_exit_seat,
-			_player_action_result_4, // game engine related
-
-			_player_action_result_swap_equipment,
-			_player_action_result_swap_weapon,
-			_player_action_result_pickup_weapon,
-
-			_player_action_result_enter_seat,
-			_player_action_result_force_ai_to_exit_seat,
-			_player_action_result_touch_device,
-			_player_action_result_flip_vehicle,
-
-			_player_action_result,
-		};
 	};
 
 	namespace Players
 	{
-		struct s_player_action
+		union u_player_datum_scores
 		{
-			int32 update_id;
-			real_euler_angles2d desired_facing;
-			real_vector2d throttle;
-			real primary_trigger;
-			int16 weapon_index, grenade_index;
-			int16 zoom_index;
-			PAD16;
-		}; BOOST_STATIC_ASSERT( sizeof(s_player_action) == 0x20 );
+			PAD64;
+
+			struct s_ctf {
+				int16 flag_grabs;
+				int16 flag_returns;
+				int16 flag_scores;
+			}ctf;
+
+			struct s_slayer {
+			}slayer;
+
+			struct s_oddball {
+				UNKNOWN_TYPE(int16);
+				int16 target_kills;
+				int16 kills;
+			}oddball;
+
+			struct s_king {
+				int16 hill_score;
+			}king;
+
+			struct s_race {
+				int16 time;
+				int16 laps;
+				int16 best_time;
+			}race;
+		}; BOOST_STATIC_ASSERT( sizeof(u_player_datum_scores) == 8 );
 	};
 };

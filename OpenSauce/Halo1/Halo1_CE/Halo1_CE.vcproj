@@ -319,6 +319,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Common\DebugAssert.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Common\DebugAssert.hpp"
 				>
 			</File>
@@ -3447,30 +3451,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Networking\MDP.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Networking\MessageDefinitions.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Networking\MessageDefinitions.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Networking\MessageDeltaDefinitions.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Networking\MessageDeltas.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Networking\MessageDeltas.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Networking\Networking.cpp"
 				>
 			</File>
@@ -3575,6 +3555,38 @@
 				</File>
 				<File
 					RelativePath=".\Networking\HTTP\MapDownloadServer.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="MessageDeltas"
+				>
+				<File
+					RelativePath="..\..\..\Doc\Blam\Halo1\Halo1_CE.message_delta_definitions.xml"
+					>
+				</File>
+				<File
+					RelativePath=".\Networking\MDP.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Networking\MessageDefinitions.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Networking\MessageDefinitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Networking\MessageDeltaDefinitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Networking\MessageDeltas.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Networking\MessageDeltas.hpp"
 					>
 				</File>
 			</Filter>
@@ -4614,7 +4626,19 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\networking\player_update.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\networking\player_update_client.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\networking\player_update_history.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\networking\player_update_server.hpp"
 					>
 				</File>
 			</Filter>
@@ -4650,6 +4674,10 @@
 				Name="game"
 				>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\action_queue.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\game\game.hpp"
 					>
 				</File>
@@ -4670,11 +4698,23 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\player_action.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\game\players.hpp"
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\position_queue.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\game\simple_circular_queue.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\vehicle_update_queue.hpp"
 					>
 				</File>
 			</Filter>

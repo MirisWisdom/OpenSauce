@@ -113,7 +113,12 @@ namespace Yelo
 		{
 			if(scenario_faux_zone_globals == NULL) return;
 
-			scenario_faux_zone_globals->Initialize(GameState::Scenario());
+			if(GameState::MainGlobals()->map.reset_map)
+			{
+				ScenarioFauxZones::Reset();
+			}
+			else
+				scenario_faux_zone_globals->Initialize(GameState::Scenario());
 		}
 
 		static bool ScenarioFauxZoneSetSwitchVariantUpdateGameStateWithZoneSky(scenario* scnr,

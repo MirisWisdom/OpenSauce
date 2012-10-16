@@ -133,6 +133,13 @@ namespace Yelo
 		{
 			bool mtv_disabled = TagGroups::_global_yelo->gameplay.flags.prohibit_multiteam_vehicles_bit;
 			MultiTeamVehiclesSet(!mtv_disabled);
+
+			Units::InitializeForNewMap();
+		}
+
+		void DisposeFromOldMap()
+		{
+			Units::DisposeFromOldMap();
 		}
 
 		void PLATFORM_API Update()
@@ -148,8 +155,8 @@ namespace Yelo
 		void InitializeForYeloGameState(bool enabled)
 		{
 			size_t* omp_allocation_size = GET_PTR2(object_memory_pool_allocation_size);
-			*omp_allocation_size = Enums::k_object_memory_pool_allocation_size;
-			if(enabled) *omp_allocation_size += Enums::k_game_state_allocation_size_object_memory_pool_upgrade;
+//			*omp_allocation_size = Enums::k_object_memory_pool_allocation_size;
+//			if(enabled) *omp_allocation_size += Enums::k_game_state_allocation_size_object_memory_pool_upgrade;
 
 			Units::InitializeForYeloGameState(enabled);
 		}
