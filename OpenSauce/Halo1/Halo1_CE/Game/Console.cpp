@@ -61,7 +61,7 @@ namespace Yelo
 		static bool SendHutChatToTeamPredicate(Players::s_player_datum* player, 
 			Players::s_player_datum* src_player, datum_index src_player_vehicle_index)
 		{
-			return player->GetNetworkPlayer()->team_index == src_player->GetNetworkPlayer()->team_index;
+			return player->network_player.team_index == src_player->network_player.team_index;
 		}
 		static bool SendHudChatToPlayersInVehiclePredicate(Players::s_player_datum* player, 
 			Players::s_player_datum* src_player, datum_index src_player_vehicle_index)
@@ -89,7 +89,7 @@ namespace Yelo
 				Players::s_player_datum* player;
 				while( (player = iter.Next()) != NULL )
 				{
-					int32 player_machine_index = player->GetNetworkPlayer()->machine_index;
+					int32 player_machine_index = player->network_player.machine_index;
 					if(	player_machine_index == NONE ||
 						!send_predicate(player, src_player, src_player_vehicle_index))
 						continue;
@@ -97,7 +97,7 @@ namespace Yelo
 					if(!MessageDeltas::SvSendMessageToMachine(player_machine_index, message_size,
 						true, false, true, 3))
 					{
-						YELO_DEBUG_FORMAT("SendHudChatToPlayers failed for %S", player->GetNetworkPlayer()->name);
+						YELO_DEBUG_FORMAT("SendHudChatToPlayers failed for %S", player->network_player.name);
 					}
 				}
 			}

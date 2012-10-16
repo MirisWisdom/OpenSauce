@@ -4702,6 +4702,18 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\player_control.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\player_effects.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\player_structures.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\game\players.hpp"
 					>
 				</File>

@@ -368,7 +368,7 @@ namespace Yelo
 			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RENDER_OBJECT_LIST_HOOK_RETN);
 
 			__asm {
-				mov		c_gbuffer_system::g_object_index, ax
+				mov		c_gbuffer_system::g_object_index, eax
 				and		eax, 0FFFFh
 				lea		edi, [eax+eax*2]
 				jmp		RETN_ADDRESS
@@ -378,7 +378,7 @@ namespace Yelo
 		API_FUNC_NAKED void c_gbuffer_system::Hook_RenderObjectList_ClearObjectIndex()
 		{
 			__asm {
-				mov		c_gbuffer_system::g_object_index, 0FFFFh
+				mov		c_gbuffer_system::g_object_index, NONE//datum_index::null
 				retn
 			}
 		}
@@ -390,7 +390,7 @@ namespace Yelo
 			__asm {
 				mov		edx, [edx+34h]
 				mov		eax, esi
-				mov		c_gbuffer_system::g_object_index, ax
+				mov		c_gbuffer_system::g_object_index, eax
 				jmp		RETN_ADDRESS
 			}
 		}
@@ -933,25 +933,25 @@ skip_disable_velocity:
 
 			if(g_current_render_state == Enums::_render_progress_sky)
 				MeshIndex = 1;
-			else if(g_object_index != 0xFFFF)
+			else if(!g_object_index.IsNull())
 			{
-				Objects::s_object_header_datum& object_header = (*Objects::ObjectHeader())[g_object_index];
+				Objects::s_object_data* g_object = (*Objects::ObjectHeader())[g_object_index]->_object;
 
-				TeamIndex = object_header._object->owner_team_index + 1;
-				MeshIndex = object_header.object_type + 3;
+				TeamIndex = g_object->owner_team_index + 1;
+				MeshIndex = g_object->type + 3;
 
 				if(GameEngine::Current() != NULL)	// becomes non-null during multiplayer
-					TeamIndex += 9;					// Offset TeamIndex by 9 for MP teams
+					TeamIndex += Enums::k_number_of_game_teams;	// Offset TeamIndex by game_teams for MP teams
 
-				if(object_header._object->VerifyType(Enums::_object_type_mask_unit))
+				if(g_object->VerifyType(Enums::_object_type_mask_unit))
 				{
 					Players::s_player_datum* player = Players::LocalPlayer();
-					Objects::s_object_header_datum& player_object = (*Objects::ObjectHeader())[player->GetSlaveUnitIndex()->index];
+					Objects::s_object_data* player_object = (*Objects::ObjectHeader())[player->slave_unit_index]->_object;
 
-					if(Engine::Game::TeamIsEnemy(player_object._object->owner_team_index, object_header._object->owner_team_index))
+					if(Engine::Game::TeamIsEnemy(player_object->owner_team_index, g_object->owner_team_index))
 						TeamIndex |= 1 << 5;
 
-					if(object_header._object->damage.health <= 0.0f)
+					if(g_object->damage.health <= 0.0f)
 						TeamIndex |= 1 << 6;
 				}
 			}
@@ -1027,7 +1027,7 @@ skip_disable_velocity:
 		c_gbuffer&	c_gbuffer_system::GBuffer() { return c_gbuffer_system::g_default_system.m_gbuffer; }
 		/////////////////////////////////////////////////////////////////////
 		// c_gbuffer_system		
-		uint16					c_gbuffer_system::g_object_index;
+		datum_index				c_gbuffer_system::g_object_index;
 		c_gbuffer_system		c_gbuffer_system::g_default_system;
 		int16					c_gbuffer_system::g_debug_index;
 		bool					c_gbuffer_system::g_system_enabled;
