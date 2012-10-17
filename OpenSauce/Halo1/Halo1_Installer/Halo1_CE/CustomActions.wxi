@@ -11,29 +11,20 @@
 	<CustomAction Id='Halo1_CE_SetValidationPathHEK_CACT' Property='INSTALLVALIDATORPATH' Value='[HALO1_CE_HEK_INSTALLDIR_PROP]'/>
 	<CustomAction Id='Halo1_CE_ValidateInstallHEK_CACT' BinaryKey='InstallValidator_BIN' DllEntry='ValidateInstall' Execute='immediate' Return='check'/>
 
-	<!-- Patch OS_haloceded -->
-	<CustomAction Id='Halo1_CE_SetFilePatcherIDHaloCEDed_CACT' Property='FILEPATCHERID' Value='Halo1_HCE_Dedi'/>
-	<CustomAction Id='Halo1_CE_SetFilePatcherSrcFileHaloCEDed_CACT' Property='FILEPATCHERSRCFILE' Value='[HALO1_CE_HCEDEDI_VERSION_109_PROP]'/>
-	<CustomAction Id='Halo1_CE_SetFilePatcherOutPathHaloCEDed_CACT' Property='FILEPATCHEROUTPATH' Value='[HALO1_CE_HCE_INSTALLDIR_PROP]'/>
-	<CustomAction Id='Halo1_CE_PatchOSHaloCEDed_CACT' BinaryKey='FilePatcher_BIN' DllEntry='PatchFile' Execute='immediate' Return='check'/>
+	<!-- Queue patching OS_haloceded -->
+	<CustomAction Id='Halo1_CE_AppendFilePatcherDataHaloCEDed_CACT' Property='Halo1_CE_PatchFiles_CACT' Value='[Halo1_CE_PatchFiles_CACT]Halo1_HCE_Dedi;[HALO1_CE_HCEDEDI_VERSION_109_PROP];[HALO1_CE_HCE_INSTALLDIR_PROP];'/>
 
-	<!-- Patch OS_Guerilla -->
-	<CustomAction Id='Halo1_CE_SetFilePatcherIDGuerilla_CACT' Property='FILEPATCHERID' Value='Halo1_HEK_Guerilla'/>
-	<CustomAction Id='Halo1_CE_SetFilePatcherSrcFileGuerilla_CACT' Property='FILEPATCHERSRCFILE' Value='[HALO1_CE_HEK_GUERILLAPATH_PROP]'/>
-	<CustomAction Id='Halo1_CE_SetFilePatcherOutPathGuerilla_CACT' Property='FILEPATCHEROUTPATH' Value='[HALO1_CE_HEK_INSTALLDIR_PROP]'/>
-	<CustomAction Id='Halo1_CE_PatchOSGuerilla_CACT' BinaryKey='FilePatcher_BIN' DllEntry='PatchFile' Execute='immediate' Return='check'/>
+	<!-- Queue patching OS_Guerilla -->
+	<CustomAction Id='Halo1_CE_AppendFilePatcherDataGuerilla_CACT' Property='Halo1_CE_PatchFiles_CACT' Value='[Halo1_CE_PatchFiles_CACT]Halo1_HEK_Guerilla;[HALO1_CE_HEK_GUERILLAPATH_PROP];[HALO1_CE_HEK_INSTALLDIR_PROP];'/>
 
-	<!-- Patch OS_Tool -->
-	<CustomAction Id='Halo1_CE_SetFilePatcherIDTool_CACT' Property='FILEPATCHERID' Value='Halo1_HEK_Tool'/>
-	<CustomAction Id='Halo1_CE_SetFilePatcherSrcFileTool_CACT' Property='FILEPATCHERSRCFILE' Value='[HALO1_CE_HEK_TOOLPATH_PROP]'/>
-	<CustomAction Id='Halo1_CE_SetFilePatcherOutPathTool_CACT' Property='FILEPATCHEROUTPATH' Value='[HALO1_CE_HEK_INSTALLDIR_PROP]'/>
-	<CustomAction Id='Halo1_CE_PatchOSTool_CACT' BinaryKey='FilePatcher_BIN' DllEntry='PatchFile' Execute='immediate' Return='check'/>
+	<!-- Queue patching OS_Tool -->
+	<CustomAction Id='Halo1_CE_AppendFilePatcherDataTool_CACT' Property='Halo1_CE_PatchFiles_CACT' Value='[Halo1_CE_PatchFiles_CACT]Halo1_HEK_Tool;[HALO1_CE_HEK_TOOLPATH_PROP];[HALO1_CE_HEK_INSTALLDIR_PROP];'/>
 
-	<!-- Patch OS_Sapien -->
-	<CustomAction Id='Halo1_CE_SetFilePatcherIDSapien_CACT' Property='FILEPATCHERID' Value='Halo1_HEK_Sapien'/>
-	<CustomAction Id='Halo1_CE_SetFilePatcherSrcFileSapien_CACT' Property='FILEPATCHERSRCFILE' Value='[HALO1_CE_HEK_SAPIENPATH_PROP]'/>
-	<CustomAction Id='Halo1_CE_SetFilePatcherOutPathSapien_CACT' Property='FILEPATCHEROUTPATH' Value='[HALO1_CE_HEK_INSTALLDIR_PROP]'/>
-	<CustomAction Id='Halo1_CE_PatchOSSapien_CACT' BinaryKey='FilePatcher_BIN' DllEntry='PatchFile' Execute='immediate' Return='check'/>
+	<!-- Queue patching OS_Sapien -->
+	<CustomAction Id='Halo1_CE_AppendFilePatcherDataSapien_CACT' Property='Halo1_CE_PatchFiles_CACT' Value='[Halo1_CE_PatchFiles_CACT]Halo1_HEK_Sapien;[HALO1_CE_HEK_SAPIENPATH_PROP];[HALO1_CE_HEK_INSTALLDIR_PROP];'/>
+
+	<!-- Patch all queued files -->
+	<CustomAction Id='Halo1_CE_PatchFiles_CACT' BinaryKey='FilePatcher_BIN' DllEntry='PatchFile' Execute='deferred' Return='check' Impersonate='no'/>
 
 	<!-- Open the OS Client readme-->
 	<CustomAction Id='Halo1_CE_SetReadmeTarget_CACT' Property='WixShellExecTarget' Value='[#Halo1_CE_Readme_FILE]'/>

@@ -47,8 +47,5 @@
 	<ProgressText Action='Halo1_CE_ValidateInstallHCE_CACT'>Validating Halo Custom Edition Installation</ProgressText>
 	<ProgressText Action='Halo1_CE_ValidateInstallHEK_CACT'>Validating Halo Editing Kit Installation</ProgressText>
 
-	<ProgressText Action='Halo1_CE_PatchOSHaloCEDed_CACT'>Applying Halo CE Dedi modifications</ProgressText>
-	<ProgressText Action='Halo1_CE_PatchOSGuerilla_CACT'>Applying Guerilla modifications</ProgressText>
-	<ProgressText Action='Halo1_CE_PatchOSTool_CACT'>Applying Sapien modifications</ProgressText>
-	<ProgressText Action='Halo1_CE_PatchOSSapien_CACT'>Applying Tool modifications</ProgressText>
+	<ProgressText Action='Halo1_CE_PatchFiles_CACT'>Applying OpenSauce EXE modifications</ProgressText>
 </Include>

@@ -17,7 +17,10 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <ApplicationIcon>Properties\OS IDE.ico</ApplicationIcon>
   </PropertyGroup>
-  <Import Project="$(SolutionDir)BlamLib.Cs.props" />
+  <PropertyGroup>
+    <ImportPropsDir Condition=" '$(ImportPropsDir)' == '' ">$(SolutionDir)</ImportPropsDir>
+  </PropertyGroup>
+  <Import Project="$(ImportPropsDir)BlamLib.Cs.props" />
   <ItemGroup>
     <Reference Include="SevenZipSharp, Version=0.64.3890.29348, Culture=neutral, PublicKeyToken=20de82c62b055c88, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
