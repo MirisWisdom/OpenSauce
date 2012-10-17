@@ -26,60 +26,29 @@
 		(HALO1_CE_HEK_GUERILLAPATH_PROP AND HALO1_CE_HEK_SAPIENPATH_PROP AND HALO1_CE_HEK_TOOLPATH_PROP)]]>
 	</Custom>
 
-	<!-- Patch OS_haloceded -->
-	<Custom Action='Halo1_CE_SetFilePatcherIDHaloCEDed_CACT' Before='InstallFinalize'>
-		<![CDATA[((&Halo1_CE_ClientServer_FEAT = 3) AND NOT (!Halo1_CE_ClientServer_FEAT = 3))]]>
-	</Custom>
-	<Custom Action='Halo1_CE_SetFilePatcherSrcFileHaloCEDed_CACT' After='Halo1_CE_SetFilePatcherIDHaloCEDed_CACT'>
-		<![CDATA[((&Halo1_CE_ClientServer_FEAT = 3) AND NOT (!Halo1_CE_ClientServer_FEAT = 3))]]>
-	</Custom>
-	<Custom Action='Halo1_CE_SetFilePatcherOutPathHaloCEDed_CACT' After='Halo1_CE_SetFilePatcherSrcFileHaloCEDed_CACT'>
-		<![CDATA[((&Halo1_CE_ClientServer_FEAT = 3) AND NOT (!Halo1_CE_ClientServer_FEAT = 3))]]>
-	</Custom>
-	<Custom Action='Halo1_CE_PatchOSHaloCEDed_CACT' After='Halo1_CE_SetFilePatcherOutPathHaloCEDed_CACT'>
+	<!-- Append patch arguments for OS_haloceded -->
+	<Custom Action='Halo1_CE_AppendFilePatcherDataHaloCEDed_CACT' Before='InstallFinalize'>
 		<![CDATA[((&Halo1_CE_ClientServer_FEAT = 3) AND NOT (!Halo1_CE_ClientServer_FEAT = 3))]]>
 	</Custom>
 
-	<!-- Patch OS_Guerilla -->
-	<Custom Action='Halo1_CE_SetFilePatcherIDGuerilla_CACT' After='Halo1_CE_PatchOSHaloCEDed_CACT'>
-		<![CDATA[(NOT HALO1_CE_HEK_SKIPCREATEOSEXES_PROP) AND((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND HALO1_CE_HEK_GUERILLAPATH_PROP]]>
-	</Custom>
-	<Custom Action='Halo1_CE_SetFilePatcherSrcFileGuerilla_CACT' After='Halo1_CE_SetFilePatcherIDGuerilla_CACT'>
-		<![CDATA[(NOT HALO1_CE_HEK_SKIPCREATEOSEXES_PROP) AND((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND HALO1_CE_HEK_GUERILLAPATH_PROP]]>
-	</Custom>
-	<Custom Action='Halo1_CE_SetFilePatcherOutPathGuerilla_CACT' After='Halo1_CE_SetFilePatcherSrcFileGuerilla_CACT'>
-		<![CDATA[(NOT HALO1_CE_HEK_SKIPCREATEOSEXES_PROP) AND((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND HALO1_CE_HEK_GUERILLAPATH_PROP]]>
-	</Custom>
-	<Custom Action='Halo1_CE_PatchOSGuerilla_CACT' After='Halo1_CE_SetFilePatcherOutPathGuerilla_CACT'>
+	<!-- Append patch arguments for OS_Guerilla -->
+	<Custom Action='Halo1_CE_AppendFilePatcherDataGuerilla_CACT' After='Halo1_CE_AppendFilePatcherDataHaloCEDed_CACT'>
 		<![CDATA[(NOT HALO1_CE_HEK_SKIPCREATEOSEXES_PROP) AND((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND HALO1_CE_HEK_GUERILLAPATH_PROP]]>
 	</Custom>
 
-	<!-- Patch OS_Tool-->
-	<Custom Action='Halo1_CE_SetFilePatcherIDTool_CACT' After='Halo1_CE_PatchOSGuerilla_CACT'>
-		<![CDATA[(NOT HALO1_CE_HEK_SKIPCREATEOSEXES_PROP) AND((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND HALO1_CE_HEK_TOOLPATH_PROP]]>
-	</Custom>
-	<Custom Action='Halo1_CE_SetFilePatcherSrcFileTool_CACT' After='Halo1_CE_SetFilePatcherIDTool_CACT'>
-		<![CDATA[(NOT HALO1_CE_HEK_SKIPCREATEOSEXES_PROP) AND((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND HALO1_CE_HEK_TOOLPATH_PROP]]>
-	</Custom>
-	<Custom Action='Halo1_CE_SetFilePatcherOutPathTool_CACT' After='Halo1_CE_SetFilePatcherSrcFileTool_CACT'>
-		<![CDATA[(NOT HALO1_CE_HEK_SKIPCREATEOSEXES_PROP) AND((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND HALO1_CE_HEK_TOOLPATH_PROP]]>
-	</Custom>
-	<Custom Action='Halo1_CE_PatchOSTool_CACT' After='Halo1_CE_SetFilePatcherOutPathTool_CACT'>
+	<!-- Append patch arguments for OS_Tool -->
+	<Custom Action='Halo1_CE_AppendFilePatcherDataTool_CACT' After='Halo1_CE_AppendFilePatcherDataGuerilla_CACT'>
 		<![CDATA[(NOT HALO1_CE_HEK_SKIPCREATEOSEXES_PROP) AND((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND HALO1_CE_HEK_TOOLPATH_PROP]]>
 	</Custom>
 
-	<!-- Patch OS_Sapien-->
-	<Custom Action='Halo1_CE_SetFilePatcherIDSapien_CACT' After='Halo1_CE_PatchOSTool_CACT'>
+	<!-- Append patch arguments for OS_Sapien -->
+	<Custom Action='Halo1_CE_AppendFilePatcherDataSapien_CACT' After='Halo1_CE_AppendFilePatcherDataTool_CACT'>
 		<![CDATA[(NOT HALO1_CE_HEK_SKIPCREATEOSEXES_PROP) AND((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND HALO1_CE_HEK_SAPIENPATH_PROP]]>
 	</Custom>
-	<Custom Action='Halo1_CE_SetFilePatcherSrcFileSapien_CACT' After='Halo1_CE_SetFilePatcherIDSapien_CACT'>
-		<![CDATA[(NOT HALO1_CE_HEK_SKIPCREATEOSEXES_PROP) AND((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND HALO1_CE_HEK_SAPIENPATH_PROP]]>
-	</Custom>
-	<Custom Action='Halo1_CE_SetFilePatcherOutPathSapien_CACT' After='Halo1_CE_SetFilePatcherSrcFileSapien_CACT'>
-		<![CDATA[(NOT HALO1_CE_HEK_SKIPCREATEOSEXES_PROP) AND((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND HALO1_CE_HEK_SAPIENPATH_PROP]]>
-	</Custom>
-	<Custom Action='Halo1_CE_PatchOSSapien_CACT' After='Halo1_CE_SetFilePatcherOutPathSapien_CACT'>
-		<![CDATA[(NOT HALO1_CE_HEK_SKIPCREATEOSEXES_PROP) AND((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND HALO1_CE_HEK_SAPIENPATH_PROP]]>
+
+	<!-- Patch OpenSauce exe's -->
+	<Custom Action='Halo1_CE_PatchFiles_CACT' After='Halo1_CE_AppendFilePatcherDataSapien_CACT'>
+		<![CDATA[((&Halo1_CE_ClientServer_FEAT = 3) AND NOT (!Halo1_CE_ClientServer_FEAT = 3))]]>
 	</Custom>
 
 </Include>

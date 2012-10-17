@@ -32,5 +32,17 @@
 
 			<Message id="MSG_tool_misserror" type="error">Your HEK installation does not have a tool.exe, please reinstall the HEK</Message>
 		</File>
+
+		<File id="FILE_os_sapienbeta" name="os_sapienbeta.exe" onpresent="MSG_os_sapienbeta_preserror">
+			<Message id="MSG_os_sapienbeta_preserror" type="warn">OS_sapienbeta is out of date and incompatible with current versions of OpenSauce, you should remove it</Message>
+		</File>
+		
+		<File id="FILE_os_guerillabeta" name="os_guerillabeta.exe" onpresent="MSG_os_guerillabeta_preserror">
+			<Message id="MSG_os_guerillabeta_preserror" type="warn">OS_guerillabeta is out of date and incompatible with current versions of OpenSauce, you should remove it</Message>
+		</File>
+		
+		<File id="FILE_os_toolbeta" name="os_toolbeta.exe" onpresent="MSG_os_toolbeta_preserror">
+			<Message id="MSG_os_toolbeta_preserror" type="warn">OS_toolbeta is out of date and incompatible with current versions of OpenSauce, you should remove it</Message>
+		</File>
 	</Directory>
 </Installation>

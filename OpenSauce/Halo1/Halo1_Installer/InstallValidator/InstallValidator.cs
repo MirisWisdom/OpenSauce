@@ -14,13 +14,13 @@ namespace InstallValidator
 {
 	public class CustomActions
 	{
-		private static Validator g_game_validator = null;
+		private static Validator g_validator = null;
 
-		public static void ValidateInstallPath(string game_version, string installation_path)
+		public static void ValidateInstallPath(string install_definition, string installation_path)
 		{
-			g_game_validator = new Validator(game_version);
+			g_validator = new Validator(install_definition);
 
-			g_game_validator.Validate(installation_path);
+			g_validator.Validate(installation_path);
 		}
 
 		[CustomAction]
@@ -44,44 +44,51 @@ namespace InstallValidator
 			}
 
 			// log the properties for debugging if necessary
-			session.Log("LOG: INSTALLVALIDATORGAME : " + definition_to_use);
+			session.Log("LOG: INSTALLVALIDATORDEF : " + definition_to_use);
 			session.Log("LOG: INSTALLVALIDATORPATH : " + path_to_validate);
 
 			// validate the installation path
 			ValidateInstallPath(definition_to_use, path_to_validate);
 
 			// show warning messages
-			if (g_game_validator.WarningMessages.Count != 0)
+			if (g_validator.WarningMessages.Count != 0)
 			{
-				Record record = new Record(g_game_validator.WarningMessages.Count + 1);
+				Record message_record = new Record(1);
+				MessageResult view_warnings_result;
 
-				record.SetString(0, "The following warnings were reported when validating:");
-
-				int index = 1;
-				foreach (var message in g_game_validator.WarningMessages)
+				// ask the user if they want to see the warnings that were raised
+				message_record.SetString(0, String.Format("{0} warnings were raised when validating your installation.\n\nDo you want to view them (Recommended)?",
+					g_validator.WarningMessages.Count));
+				view_warnings_result = session.Message(InstallMessage.Warning | (InstallMessage)(MessageIcon.Warning) | (InstallMessage)MessageButtons.YesNo, message_record);
+				if(MessageResult.Yes == view_warnings_result)
 				{
-					session.Log("InstallValidator: {0}", message);
-					record.SetString(index, message);
-					index++;
+					// display each warning in a seperate dialog
+					foreach (var message in g_validator.WarningMessages)
+					{
+						session.Log("InstallValidator: {0}", message);
+						message_record.SetString(0, message);
+						session.Message(InstallMessage.Warning | (InstallMessage)(MessageIcon.Warning) | (InstallMessage)MessageButtons.OK, message_record);
+					}
+
+					// see if the user still wants to continue the installation
+					message_record.SetString(0, "Do you want to continue the installation?");
+					view_warnings_result = session.Message(InstallMessage.Warning | (InstallMessage)(MessageIcon.Warning) | (InstallMessage)MessageButtons.YesNo, message_record);
+
+					// if the user wants to cancel the installation return user exit
+					if (view_warnings_result == MessageResult.No)
+						return ActionResult.UserExit;
 				}
-
-				// present a warning message to the user
-				MessageResult result = session.Message(InstallMessage.Warning | (InstallMessage)(MessageIcon.Warning) | (InstallMessage)MessageButtons.OKCancel, record);
-
-				// if the user wants to cancel the installation return user exit
-				if(result == MessageResult.Cancel)
-					return ActionResult.UserExit;
 			}
 
 			// show error messages
-			if (g_game_validator.ErrorMessages.Count != 0)
+			if (g_validator.ErrorMessages.Count != 0)
 			{
-				Record record = new Record(g_game_validator.ErrorMessages.Count);
+				Record record = new Record(g_validator.ErrorMessages.Count);
 				
-				// there should only ever be one error message since it returns immediately after
+				// there should only ever be one error message since it returns immediately after finding one
 				// but just in case, log and display all in the list
 				int index = 0;
-				foreach (var message in g_game_validator.ErrorMessages)
+				foreach (var message in g_validator.ErrorMessages)
 				{
 					session.Log("InstallValidator: {0}", message);
 					record.SetString(index, message);

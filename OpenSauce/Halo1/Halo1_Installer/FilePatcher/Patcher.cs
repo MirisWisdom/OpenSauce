@@ -511,6 +511,9 @@ namespace FilePatcher
 			}
 
 			// save the patched file
+			if (!Directory.Exists(outpath))
+				Directory.CreateDirectory(outpath);
+
 			string output_path = Path.Combine(outpath, m_file_patch.OutputFile);
 			using (FileStream output_file = new FileStream(output_path, FileMode.Create))
 			{
