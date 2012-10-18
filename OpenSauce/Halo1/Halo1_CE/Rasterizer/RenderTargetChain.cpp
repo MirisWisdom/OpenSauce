@@ -48,7 +48,7 @@ namespace Yelo
 
 		void		s_render_target_chain::Flip()
 		{
-			std::swap<Rasterizer::s_render_target*>(m_target_setup.current, m_target_setup.next);
+			std::swap<Render::s_render_target*>(m_target_setup.current, m_target_setup.next);
 		}
 
 		//////////////////////////////////////////////////////////////////////////
@@ -58,21 +58,21 @@ namespace Yelo
 			bool success = s_render_target_chain::AllocateResources(
 				device, 
 				width, height, 
-				Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].format);
+				Render::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].format);
 
 			return success;
 		}
 
 		void		s_render_target_chain_scene::ResetTargets()
 		{
-			m_target_setup_scene.scene = &Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary];
+			m_target_setup_scene.scene = &Render::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary];
 
 			s_render_target_chain::ResetTargets();
 		}
 
 		void		s_render_target_chain_scene::SetSceneToLast()
 		{
-			std::swap<Rasterizer::s_render_target*>(m_target_setup.next, m_target_setup_scene.scene);
+			std::swap<Render::s_render_target*>(m_target_setup.next, m_target_setup_scene.scene);
 		}
 	};
 };

@@ -8,7 +8,8 @@
 //////////////////////////////////////////////////////////////////////////
 // Rasterizer.cpp
 #if __EL_INCLUDE_FILE_ID == __EL_RASTERIZER_RASTERIZER
-
+	namespace Rasterizer
+	{
 	#if PLATFORM_ID == PLATFORM_SAPIEN
 		static real_matrix3x4** K_VSH_CONSTANTS__NODEMATRICES_REFERENCES[] = {
 			CAST_PTR(real_matrix3x4**, 0x5E8B02), CAST_PTR(real_matrix3x4**, 0x5F47DC), CAST_PTR(real_matrix3x4**, 0x5F4833), 
@@ -21,7 +22,6 @@
 			CAST_PTR(uint16*, 0x5EA43E), 
 		};
 
-		ENGINE_PTR(s_render_globals, render_globals,					PTR_NULL, PTR_NULL, 0xF9A4C0);
 		ENGINE_PTR(s_rasterizer_globals, rasterizer_globals,			PTR_NULL, PTR_NULL, 0xA2A6F8);
 
 		ENGINE_PTR(s_rasterizer_debug_options, rasterizer_debug_data,	PTR_NULL, PTR_NULL, 0xA2A758);
@@ -38,6 +38,13 @@
 			CAST_PTR(uint16*, 0x6BE5A5), CAST_PTR(uint16*, 0x6BE717),
 		};
 	#endif
+	};
+	namespace Render
+	{
+	#if PLATFORM_ID == PLATFORM_SAPIEN
+		ENGINE_PTR(s_render_globals, render_globals,					PTR_NULL, PTR_NULL, 0xF9A4C0);
+	#endif
+	};
 
 #else
 	#error Undefined engine layout include for: __EL_INCLUDE_RASTERIZER

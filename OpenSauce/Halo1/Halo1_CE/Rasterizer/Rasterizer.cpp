@@ -21,59 +21,16 @@
 
 namespace Yelo
 {
-	namespace Rasterizer
-	{
 #define __EL_INCLUDE_ID			__EL_INCLUDE_RASTERIZER
 #define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_RASTERIZER
 #include "Memory/_EngineLayout.inl"
 
+	namespace Rasterizer
+	{
 #include <Rasterizer/Halo1/Render.Upgrades.inl>
-
-		//////////////////////////////////////////////////////////////////////////
-		// s_render_target
-		bool		s_render_target::IsEnabled() const { return (surface && texture); }
-		HRESULT		s_render_target::CreateTarget(IDirect3DDevice9* device, uint32 rt_width, uint32 rt_height, D3DFORMAT rt_format)
-		{
-			width = rt_width;
-			height = rt_height;
-			format = rt_format;
-			HRESULT hr = device->CreateTexture(						
-					width,
-					height,
-					1,
-					D3DUSAGE_RENDERTARGET,
-					format,
-					D3DPOOL_DEFAULT,
-					&texture,
-					NULL);
-
-			if(SUCCEEDED(hr))
-				hr = texture->GetSurfaceLevel(0, &surface);
-
-			if(FAILED(hr))
-				this->ReleaseTarget();
-			return hr;
-		}
-
-		void		s_render_target::ReleaseTarget()
-		{
-			Yelo::safe_release(surface);
-			Yelo::safe_release(texture);
-		}
-
-		void		s_render_target::ClearTarget(IDirect3DDevice9* device, D3DCOLOR color, DWORD flags)
-		{
-			if(!IsEnabled())	return;
-			
-			device->SetRenderTarget(0, surface);
-			device->Clear( 0L, NULL, flags, color, 1.0f, 0L );
-		}
-		//////////////////////////////////////////////////////////////////////////
 
 		s_rasterizer_config* RasterizerConfig()		PTR_IMP_GET2(rasterizer_config);
 		s_rasterizer_globals* RasterizerGlobals()	PTR_IMP_GET2(rasterizer_globals);
-		s_render_globals* RenderGlobals()			PTR_IMP_GET2(render_globals);
-		s_render_target* GlobalRenderTargets()		PTR_IMP_GET2(global_render_targets);
 #pragma region DebugOptions
 		s_rasterizer_debug_options* DebugOptions()	PTR_IMP_GET2(rasterizer_debug_data);
 
@@ -164,7 +121,6 @@ namespace Yelo
 		s_rasterizer_frame_inputs* FrameInputs()	PTR_IMP_GET2(rasterizer_frame_inputs);
 
 		static bool g_nvidia_use_basic_camo = false;
-		static bool g_is_rendering_reflection = false;
 		static s_rasterizer_resolution g_resolution_list[64];
 
 		void SetupResolutions()
@@ -217,33 +173,15 @@ namespace Yelo
 			__asm	call RETN_ADDRESS
 		}
 
-		API_FUNC_NAKED void Hook_RenderWindowReflection()
-		{
-			static uint32 CALL_ADDRESS = GET_FUNC_PTR(RENDER_WINDOW);
-			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RENDER_WINDOW_REFLECTION_CALL_RETN);
-
-			__asm {
-				mov		g_is_rendering_reflection, 1
-				call	CALL_ADDRESS
-				mov		g_is_rendering_reflection, 0
-				jmp		RETN_ADDRESS
-			}
-		}
-		
-		bool IsRenderingReflection() { return g_is_rendering_reflection; }
-
 #pragma warning( push )
 #pragma warning( disable : 4311 ) // pointer truncation
 #pragma warning( disable : 4312 ) // conversion from 'unsigned long' to 'void *' of greater size
 		void Rasterizer::Initialize()
 		{
-			g_render_upgrades.Initialize();
+			Render::Initialize();
 
-			// TODO: If using DX_WRAPPER, refer to the DxWrapper.cpp file 
-			// instead of hooking the game render loop
-#if !defined(DX_WRAPPER)
-			Memory::WriteRelativeCall(&Rasterizer::Update, GET_FUNC_VPTR(RENDER_WINDOW_END_HOOK));
-#endif			
+			g_render_upgrades.Initialize();
+		
 			// hook the calls to rasterizer_dispose
 			Memory::WriteRelativeCall(&RasterizerDisposeHook, GET_FUNC_VPTR(RASTERIZER_DISPOSE_CALL_FROM_RASTERIZER));
 			Memory::WriteRelativeCall(&RasterizerDisposeHook, GET_FUNC_VPTR(RASTERIZER_DISPOSE_CALL_FROM_SHELL));
@@ -288,15 +226,14 @@ namespace Yelo
 			// when 0x637D50 (1.09) is 1, the basic active camouflage is used; at 0x51ABB2 (1.09) it is forced to 1 when an nVidia card is detected
 			// if the user changes this in their settings they need to restart the game for it to take effect
 			GET_PTR(NVIDIA_USE_BASIC_CAMO_TOGGLE) = g_nvidia_use_basic_camo;
-			
-			Memory::WriteRelativeJmp(&Hook_RenderWindowReflection,
-				GET_FUNC_VPTR(RENDER_WINDOW_REFLECTION_CALL), true);
 		}
 #pragma warning( pop )
 
 		void Dispose()
 		{
 			g_render_upgrades.Dispose();
+
+			Render::Dispose();
 		}
 
 		void Update()
@@ -305,8 +242,9 @@ namespace Yelo
 			// only thing that changes is the vertex type (texture or color)
 			// so I just made a global render states function
 			// and put the setFVF (vertex change function) in each class
-			//Rasterizer::SetRenderStates();
+			//Render::SetRenderStates();
 
+			// TODO: need to make this a naked function in order for the compiler to possibly not push & pop edx
 			__asm {
 				call DX9::Direct3DDevice
 				mov edx, [eax]
@@ -344,6 +282,85 @@ namespace Yelo
 			PostProcessing::SaveSettings(dx9_element);
 			g_render_upgrades.SaveSettings(dx9_element);
 			ShaderExtension::SaveSettings(dx9_element);
+		}
+	};
+
+	namespace Render
+	{
+		s_render_globals* RenderGlobals()			PTR_IMP_GET2(render_globals);
+		s_render_target* GlobalRenderTargets()		PTR_IMP_GET2(global_render_targets);
+
+		static bool g_is_rendering_reflection = false;
+		bool IsRenderingReflection() { return g_is_rendering_reflection; }
+
+		//////////////////////////////////////////////////////////////////////////
+		// s_render_target
+		bool		s_render_target::IsEnabled() const { return (surface && texture); }
+		HRESULT		s_render_target::CreateTarget(IDirect3DDevice9* device, uint32 rt_width, uint32 rt_height, D3DFORMAT rt_format)
+		{
+			width = rt_width;
+			height = rt_height;
+			format = rt_format;
+			HRESULT hr = device->CreateTexture(						
+					width,
+					height,
+					1,
+					D3DUSAGE_RENDERTARGET,
+					format,
+					D3DPOOL_DEFAULT,
+					&texture,
+					NULL);
+
+			if(SUCCEEDED(hr))
+				hr = texture->GetSurfaceLevel(0, &surface);
+
+			if(FAILED(hr))
+				this->ReleaseTarget();
+			return hr;
+		}
+
+		void		s_render_target::ReleaseTarget()
+		{
+			Yelo::safe_release(surface);
+			Yelo::safe_release(texture);
+		}
+
+		void		s_render_target::ClearTarget(IDirect3DDevice9* device, D3DCOLOR color, DWORD flags)
+		{
+			if(!IsEnabled())	return;
+			
+			device->SetRenderTarget(0, surface);
+			device->Clear( 0L, NULL, flags, color, 1.0f, 0L );
+		}
+		//////////////////////////////////////////////////////////////////////////
+
+		API_FUNC_NAKED void RenderWindowReflectionHook()
+		{
+			static const uintptr_t CALL_ADDRESS = GET_FUNC_PTR(RENDER_WINDOW);
+			static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RENDER_WINDOW_REFLECTION_CALL_RETN);
+
+			__asm {
+				mov		g_is_rendering_reflection, 1
+				call	CALL_ADDRESS
+				mov		g_is_rendering_reflection, 0
+				jmp		RETN_ADDRESS
+			}
+		}
+
+		void Initialize()
+		{
+			// TODO: If using DX_WRAPPER, refer to the DxWrapper.cpp file 
+			// instead of hooking the game render loop
+#if !defined(DX_WRAPPER)
+			Memory::WriteRelativeCall(&Rasterizer::Update, GET_FUNC_VPTR(RENDER_WINDOW_END_HOOK));
+#endif
+
+			Memory::WriteRelativeJmp(&RenderWindowReflectionHook,
+				GET_FUNC_VPTR(RENDER_WINDOW_REFLECTION_CALL), true);
+		}
+
+		void Dispose()
+		{
 		}
 
 		void SetRenderStates()

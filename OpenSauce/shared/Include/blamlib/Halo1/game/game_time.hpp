@@ -20,9 +20,9 @@ namespace Yelo
 			UNKNOWN_TYPE(int16);	// 0x6
 			UNKNOWN_TYPE(int16);	// 0x8
 			PAD16;
-			uint32 local_time;		// 0xC, game time
-			uint32 elapsed_time;	// 0x10
-			uint32 server_time;		// 0x14
+			int32 game_time;		// 0xC
+			int32 elapsed_time;		// 0x10
+			int32 server_time;		// 0x14
 			real game_speed;		// 0x18
 			real leftover_time_sec;	// 0x1C
 		}; BOOST_STATIC_ASSERT( sizeof(s_game_time_globals) == 0x20 );

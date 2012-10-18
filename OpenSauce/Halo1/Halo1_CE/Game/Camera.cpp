@@ -83,8 +83,8 @@ namespace Yelo
 
 			if(f != NULL)
 			{
-				fwrite(&Rasterizer::RenderGlobals()->camera, sizeof(Rasterizer::s_render_camera), 1, f);
-				fwrite(&Rasterizer::RenderGlobals()->frustum, sizeof(Rasterizer::s_render_frustum), 1, f);
+				fwrite(&Render::RenderGlobals()->camera, sizeof(Render::s_render_camera), 1, f);
+				fwrite(&Render::RenderGlobals()->frustum, sizeof(Render::s_render_frustum), 1, f);
 				fclose(f);
 			}
 		}

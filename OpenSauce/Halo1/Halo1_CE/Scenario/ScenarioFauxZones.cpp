@@ -11,6 +11,7 @@
 #include <blamlib/Halo1/structures/structure_bsp_definitions.hpp>
 
 #include "Game/GameState.hpp"
+#include "Rasterizer/Rasterizer.hpp"
 #include "TagGroups/project_yellow_definitions.hpp"
 
 namespace Yelo
@@ -26,6 +27,12 @@ namespace Yelo
 			// Original tag index of the scenario skies block
 			datum_index original_skies[Enums::k_maximum_skies_per_scenario];
 			datum_index original_lightmap_bitmaps[Enums::k_maximum_structure_bsps_per_scenario_upgrade];
+
+			void ChangeLightmap(structure_bsp* bsp, datum_index lightmap_bitmap_index)
+			{
+				bsp->lightmap_bitmaps.tag_index = lightmap_bitmap_index;
+				// TODO: force the object lighting to update
+			}
 
 			void InitializeOriginalSkies( const TAG_TBLOCK_(& skies, tag_reference) )
 			{
@@ -73,14 +80,14 @@ namespace Yelo
 					structure_bsp* bsp = TagGetForModify<structure_bsp>(bsps[x].structure_bsp.tag_index);
 
 					if(bsp != NULL) // should never happen, but just to be safe
-						bsp->lightmap_bitmaps.tag_index = original_lightmap_bitmaps[x];
+						ChangeLightmap(bsp, original_lightmap_bitmaps[x]);
 				}
 			}
 			bool ReplaceBspLightmap(structure_bsp* bsp, datum_index new_lightmap_bitmap_index)
 			{
 				if(!new_lightmap_bitmap_index.IsNull())
 				{
-					bsp->lightmap_bitmaps.tag_index = new_lightmap_bitmap_index;
+					ChangeLightmap(bsp, new_lightmap_bitmap_index);
 					return true;
 				}
 
@@ -94,6 +101,10 @@ namespace Yelo
 				InitializeOriginalSkies(scnr->skies);
 				InitializeOriginalLightmaps(scnr->structure_bsps);
 			}
+
+			void Update()
+			{
+			}
 		};
 		static s_scenario_faux_zone_globals* scenario_faux_zone_globals;
 
@@ -102,6 +113,13 @@ namespace Yelo
 		}
 		void Dispose()
 		{
+		}
+
+		void Update(real delta_time)
+		{
+			if(scenario_faux_zone_globals == NULL) return;
+
+			scenario_faux_zone_globals->Update();
 		}
 
 		void InitializeForNewGameState()

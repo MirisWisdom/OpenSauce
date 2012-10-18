@@ -6,14 +6,9 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/game/players.hpp>
-
 namespace Yelo
 {
-	namespace Players
+	namespace Render
 	{
-		struct s_player_effects_data : TStructImpl(0x128)
-		{
-		};
 	};
 };

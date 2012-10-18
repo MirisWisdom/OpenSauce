@@ -67,7 +67,7 @@ namespace Yelo
 		bool		c_gbuffer::SetEffectVar(LPD3DXEFFECT& effect,
 			bool& variable_used,
 			cstring texture_semantic,
-			Rasterizer::s_render_target& target,
+			Render::s_render_target& target,
 			cstring x_handle_semantic, const int x_index,
 			cstring y_handle_semantic, const int y_index,
 			cstring z_handle_semantic, const int z_index,
@@ -251,13 +251,13 @@ namespace Yelo
 			UINT cPasses, p;
 			device->SetFVF(D3DFVF_XYZRHW | D3DFVF_TEX1);
 
-			Rasterizer::s_render_target& rt = Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary];
+			Render::s_render_target& rt = Render::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary];
 			device->SetRenderTarget(0, rt.surface);
 
 			m_effect->SetTechnique(debug_target == NONE ?
 				m_technique_all : m_technique_single);
 
-			m_effect->SetFloat(m_far_clip_handle, Rasterizer::RenderGlobals()->frustum.z_far);
+			m_effect->SetFloat(m_far_clip_handle, Render::RenderGlobals()->frustum.z_far);
 			m_effect->SetInt(m_target_handle, debug_target);
 
 			m_effect->Begin(&cPasses, 0);
@@ -607,8 +607,8 @@ skip_disable_velocity:
 			pDevice->GetVertexShader(&origVShader);
 
 			// Using the transpose of the world view for normal output
-			Rasterizer::s_render_frustum_matricies Matricies;
-			Rasterizer::RenderGlobals()->frustum.GetMatricies(Matricies);
+			Render::s_render_frustum_matricies Matricies;
+			Render::RenderGlobals()->frustum.GetMatricies(Matricies);
 
 			D3DXMATRIX WorldViewT;
 			Matricies.world_view_transpose->ConvertTo4x4(WorldViewT);
@@ -616,7 +616,7 @@ skip_disable_velocity:
 			pDevice->SetVertexShaderConstantF(100, WorldViewT, 3);
 
 			D3DXVECTOR4 linear_depth_mul;
-			linear_depth_mul.x = pow(Rasterizer::RenderGlobals()->frustum.z_far, -1.0f);
+			linear_depth_mul.x = pow(Render::RenderGlobals()->frustum.z_far, -1.0f);
 			//TODO: change this to 228 once the gbuffer shaders are back in business
 			pDevice->SetVertexShaderConstantF(103, linear_depth_mul, 1);
 
@@ -643,7 +643,7 @@ skip_disable_velocity:
 			HRESULT hr = pDevice->DrawIndexedPrimitive(Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
 
 			if(g_default_system.IsRenderable() &&
-				!Rasterizer::IsRenderingReflection() && g_current_render_state == Enums::_render_progress_structure)
+				!Render::IsRenderingReflection() && g_current_render_state == Enums::_render_progress_structure)
 			{
 				hr &= g_default_system.DrawIndexedPrimitive_StructureImpl(pDevice, Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
 				hr &= DrawIndexedPrimitive(pDevice, Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
@@ -656,7 +656,7 @@ skip_disable_velocity:
 			HRESULT hr = pDevice->DrawIndexedPrimitive(Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
 
 			if(g_default_system.IsRenderable() &&
-				!Rasterizer::IsRenderingReflection() &&
+				!Render::IsRenderingReflection() &&
 				(g_current_render_state == Enums::_render_progress_sky || g_current_render_state == Enums::_render_progress_objects))
 			{
 				hr &= g_default_system.DrawIndexedPrimitive_ObjectImpl(pDevice, Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
@@ -668,7 +668,7 @@ skip_disable_velocity:
 
 		bool		c_gbuffer_system::SetViewProj(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount)
 		{
-			if(Rasterizer::IsRenderingReflection() == false && g_system_enabled && !g_wvp_stored)
+			if(Render::IsRenderingReflection() == false && g_system_enabled && !g_wvp_stored)
 			{
 				//TODO: change this to 221 once the gbuffer shaders are back in business
 				device->SetVertexShaderConstantF(96, g_stored_worldviewproj[g_stored_wvp_index], 4);

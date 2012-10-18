@@ -169,7 +169,7 @@ namespace Yelo
 
 				if(preset)
 				{
-					real_vector3d* position = CAST(real_vector3d*, Rasterizer::RenderGlobals()->camera.point);
+					real_vector3d* position = CAST(real_vector3d*, Render::RenderGlobals()->camera.point);
 					const Camera::s_observer* obs = Camera::Observer();
 
 					real_vector3d right_vec;
