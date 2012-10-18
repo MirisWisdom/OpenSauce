@@ -23,13 +23,13 @@ namespace Yelo
 			bool m_first_render;
 			PAD24;
 			// 2 render targets
-			Rasterizer::s_render_target m_targets[2];
+			Render::s_render_target m_targets[2];
 			// pointers to the current setup of targets
 			struct{
 				// current holds the target currently being rendered to
-				Rasterizer::s_render_target* current;
+				Render::s_render_target* current;
 				// next hold the next (also last) target rendered to
-				Rasterizer::s_render_target* next;
+				Render::s_render_target* next;
 			}m_target_setup;
 
 			// returns true if both of the extra render targets are ok to use
@@ -57,7 +57,7 @@ namespace Yelo
 		{
 			struct{
 				// scene holds the scene as it was before an effect is started
-				Rasterizer::s_render_target* scene;
+				Render::s_render_target* scene;
 			}m_target_setup_scene;
 
 			// create the render targets

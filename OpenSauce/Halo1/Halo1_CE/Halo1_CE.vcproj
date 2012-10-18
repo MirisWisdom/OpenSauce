@@ -4567,26 +4567,6 @@
 			Name="blamlib"
 			>
 			<Filter
-				Name="bungie_net"
-				>
-				<Filter
-					Name="network"
-					>
-					<File
-						RelativePath="..\..\shared\Include\blamlib\Halo1\bungie_net\network\transport_address.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\shared\Include\blamlib\Halo1\bungie_net\network\transport_endpoint_set_winsock.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\shared\Include\blamlib\Halo1\bungie_net\network\transport_endpoint_winsock.hpp"
-						>
-					</File>
-				</Filter>
-			</Filter>
-			<Filter
 				Name="networking"
 				>
 				<File
@@ -4706,10 +4686,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Include\blamlib\Halo1\game\player_effects.hpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\game\player_structures.hpp"
 					>
 				</File>
@@ -4727,18 +4703,6 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\game\vehicle_update_queue.hpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="saved_games"
-				>
-				<File
-					RelativePath="..\..\shared\Include\blamlib\Halo1\saved_games\game_state.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\blamlib\Halo1\saved_games\game_variant.hpp"
 					>
 				</File>
 			</Filter>
@@ -4885,6 +4849,10 @@
 			<Filter
 				Name="rasterizer"
 				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\rasterizer\rasterizer.hpp"
+					>
+				</File>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\rasterizer\rasterizer_geometry.hpp"
 					>
@@ -5057,6 +5025,10 @@
 					RelativePath="..\..\shared\Include\blamlib\Halo1\effects\material_effect_definitions.hpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\effects\player_effects.hpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="cache"
@@ -5077,6 +5049,54 @@
 					RelativePath="..\..\shared\Include\blamlib\Halo1\cache\physical_memory_map.hpp"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="render"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\render\render.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\render\render_cameras.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\render\render_objects.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="saved_games"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\saved_games\game_state.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\saved_games\game_variant.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="bungie_net"
+				>
+				<Filter
+					Name="network"
+					>
+					<File
+						RelativePath="..\..\shared\Include\blamlib\Halo1\bungie_net\network\transport_address.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\blamlib\Halo1\bungie_net\network\transport_endpoint_set_winsock.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\blamlib\Halo1\bungie_net\network\transport_endpoint_winsock.hpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter

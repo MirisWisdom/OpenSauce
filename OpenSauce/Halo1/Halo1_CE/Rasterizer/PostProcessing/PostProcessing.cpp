@@ -489,7 +489,7 @@ namespace Yelo
 			// return if the system is not ready
 			if(!c_post_processing_main::Instance().IsReady()) return;
 			// return if the engine is rendering a reflection buffer
-			if(Rasterizer::IsRenderingReflection()) return;
+			if(Render::IsRenderingReflection()) return;
 
 			IDirect3DDevice9* render_device = c_post_processing_main::Instance().Globals().render_device;
 
@@ -513,12 +513,12 @@ namespace Yelo
 					{
 						// it's probable that the last surface rendered to isn't halos primary buffer
 						// in that case, stretchrect the result to the primary buffer
-						if((Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface !=
+						if((Render::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface !=
 								c_post_processing_main::Instance().Globals().scene_buffer_chain.GetSceneSurface()))
 							render_device->StretchRect(
 								c_post_processing_main::Instance().Globals().scene_buffer_chain.GetSceneSurface(), 
 								NULL, 
-								Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface,
+								Render::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface,
 								NULL, 
 								D3DTEXF_NONE);
 					}
@@ -527,7 +527,7 @@ namespace Yelo
 				g_render_state_managers[render_stage].RestoreStates(render_device);
 
 				// reset the devices render target to halos primary buffer
-				render_device->SetRenderTarget(0, Rasterizer::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface);
+				render_device->SetRenderTarget(0, Render::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface);
 			}
 		}
 	};};

@@ -56,25 +56,6 @@ namespace Yelo
 		};
 		s_rasterizer_config* RasterizerConfig();
 
-		struct s_render_target
-		{
-			uint32 width, height;
-			D3DFORMAT format;
-
-			IDirect3DSurface9* surface;
-			IDirect3DTexture9* texture;
-			
-			// returns whether the texture and surface are valid
-			bool		IsEnabled() const;
-			// Create the render target texture and surface. If either of those fails [enabled] will be false
-			HRESULT		CreateTarget(IDirect3DDevice9* device, uint32 rt_width, uint32 rt_height, D3DFORMAT rt_format);
-			// Release the texture and surface
-			void		ReleaseTarget();
-			// Set the device target to [surface] then clear it
-			void		ClearTarget(IDirect3DDevice9* device, D3DCOLOR color = 0x00000000, DWORD flags = D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL);
-		};
-		s_render_target* GlobalRenderTargets();
-
 		struct s_rasterizer_frame_inputs
 		{
 			double elapsed_time; // just going off some documentation from FireScythe
@@ -82,8 +63,6 @@ namespace Yelo
 			real UNKNOWN(1);
 		};
 		s_rasterizer_frame_inputs* FrameInputs();
-
-		bool IsRenderingReflection();
 
 		struct s_rasterizer_resolution
 		{
@@ -101,6 +80,33 @@ namespace Yelo
 
 		void LoadSettings(TiXmlElement* dx9_element);
 		void SaveSettings(TiXmlElement* dx9_element);
+	};
+
+	namespace Render
+	{
+		struct s_render_target
+		{
+			uint32 width, height;
+			D3DFORMAT format;
+
+			IDirect3DSurface9* surface;
+			IDirect3DTexture9* texture;
+
+			// returns whether the texture and surface are valid
+			bool		IsEnabled() const;
+			// Create the render target texture and surface. If either of those fails [enabled] will be false
+			HRESULT		CreateTarget(IDirect3DDevice9* device, uint32 rt_width, uint32 rt_height, D3DFORMAT rt_format);
+			// Release the texture and surface
+			void		ReleaseTarget();
+			// Set the device target to [surface] then clear it
+			void		ClearTarget(IDirect3DDevice9* device, D3DCOLOR color = 0x00000000, DWORD flags = D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL);
+		};
+		s_render_target* GlobalRenderTargets();
+
+		bool IsRenderingReflection();
+
+		void Initialize();
+		void Dispose();
 
 		void SetRenderStates();
 	};

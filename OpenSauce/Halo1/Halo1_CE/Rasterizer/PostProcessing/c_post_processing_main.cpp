@@ -289,8 +289,8 @@ namespace Yelo
 
 			m_globals.m_hud.value = Hud::ScaleHUD() ? m_globals.m_hud.scaled_ratio : m_globals.m_hud.default_ratio;
 
-			m_globals.m_clipping.near_clip = Rasterizer::RenderGlobals()->frustum.z_near;
-			m_globals.m_clipping.far_clip = Rasterizer::RenderGlobals()->frustum.z_far;
+			m_globals.m_clipping.near_clip = Render::RenderGlobals()->frustum.z_near;
+			m_globals.m_clipping.far_clip = Render::RenderGlobals()->frustum.z_far;
 
 			m_globals.delta_time = GameState::MainGlobals()->delta_time;
 

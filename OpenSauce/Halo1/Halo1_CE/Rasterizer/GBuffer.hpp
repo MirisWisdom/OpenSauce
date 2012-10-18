@@ -58,9 +58,9 @@ namespace Yelo
 				k_gbuffer_index_x = 2,		//R8G8B8A8			Z
 				k_gbuffer_index_y = 3,		//R8G8B8A8				W
 			};
-			Rasterizer::s_render_target					m_rt_depth;
-			Rasterizer::s_render_target					m_rt_velocity;
-			Rasterizer::s_render_target					m_rt_normals_index;
+			Render::s_render_target					m_rt_depth;
+			Render::s_render_target					m_rt_velocity;
+			Render::s_render_target					m_rt_normals_index;
 
 			void ReleaseTargets();
 			void ClearTargets(IDirect3DDevice9* pDevice);
@@ -72,7 +72,7 @@ namespace Yelo
 			bool SetEffectVar(LPD3DXEFFECT& effect,
 				bool& variable_used,
 				cstring texture_semantic,
-				Rasterizer::s_render_target& target,
+				Render::s_render_target& target,
 				cstring x_handle_semantic = NULL, const int x_index = 0,
 				cstring y_handle_semantic = NULL, const int y_index = 0,
 				cstring z_handle_semantic = NULL, const int z_index = 0,

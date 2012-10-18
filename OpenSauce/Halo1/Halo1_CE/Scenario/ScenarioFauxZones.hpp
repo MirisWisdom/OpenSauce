@@ -12,6 +12,7 @@ namespace Yelo
 	{
 		void Initialize();
 		void Dispose();
+		void Update(real delta_time);
 
 		void InitializeForNewGameState();
 
