@@ -57,15 +57,15 @@ namespace Yelo
 			//////////////////////////////////////////////////////////////////////////
 			// View
 			View.Input.Wireframe =		_input_button_b | _input_button_dpad_down;
-			View.Input.Letterbox =		_input_button_b | _input_button_dpad_left;
-			View.Input.HudOpacity =		_input_button_b | _input_button_dpad_right;
+			View.Input.Letterbox =										_input_button_undefined;//_input_button_b | _input_button_dpad_left;
+			View.Input.HudOpacity =										_input_button_undefined;//_input_button_b | _input_button_dpad_right;
 			View.Input.Screenshot =	_input_button_white | _input_button_dpad_up;
 			View.Input.DisplayPosition =_input_button_b | _input_button_y;
 			View.Input.ToggleDof =										_input_button_undefined;
 			View.Input.ToggleBloom =									_input_button_undefined;
 			View.Input.ToggleCrossFade =								_input_button_undefined;
 			View.InputCamera.FpCamera =			_input_button_back | _input_button_dpad_up;
-			View.InputCamera.TpCamera =			_input_button_back | _input_button_dpad_down;
+			View.InputCamera.TpCamera =			_input_button_b | _input_button_dpad_left;//_input_button_back | _input_button_dpad_down;
 			View.InputCamera.ChaseCamera =		_input_button_back | _input_button_dpad_left;
 			View.InputCamera.ScriptedCamera =	_input_button_back | _input_button_right_thumb;
 			View.InputCamera.EditorCamera =		_input_button_back | _input_button_dpad_right;
@@ -96,7 +96,7 @@ namespace Yelo
 			Input.HighSpeedCapture =									_input_button_undefined;
 			Input.TrackMovement = _input_button_black | _input_button_b;
 			Input.ChangeActiveConfig =									_input_button_undefined;
-			Input.GameSpeed.Inc =										_input_button_undefined;
+			Input.GameSpeed.Inc =	_input_button_b | _input_button_dpad_right;									//_input_button_undefined;
 			Input.GameSpeed.Dec =										_input_button_undefined;
 			Input.Cinematic.On =	_input_button_black | _input_button_x;
 			Input.Cinematic.Off =	_input_button_black | _input_button_y;

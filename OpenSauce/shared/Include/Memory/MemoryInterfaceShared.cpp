@@ -18,22 +18,18 @@
 // This was from 'WriteMemory' before it was marked as noinline, and was trying
 // to inline with a halo address
 
+#if PLATFORM_TARGET == PLATFORM_TARGET_XBOX
+	#define memcpy Std_memcpy
+	#define memcpy_s(dst, dst_size, src, src_size) (dst==memcpy(dst, src, src_size))
+#endif
+
 namespace Yelo
 {
 	namespace Memory
 	{
 		__declspec(noinline) BOOL WriteMemory(void* address, const void* src, int32 size)
 		{
-			//DWORD old, old2;
-
-			if( 
-		//		VirtualProtect(address, size, PAGE_EXECUTE_READWRITE, &old) && 
-				memcpy(address, src, size) 
-				)
-				return TRUE;
-		//		return VirtualProtect(address, size, old, &old2);
-			else
-				return FALSE;
+			return address == memcpy(address, src, size);
 		}
 
 #pragma warning( push )
@@ -41,16 +37,8 @@ namespace Yelo
 #pragma warning( disable : 4312 ) // bitching about typecast
 		__declspec(noinline) BOOL WriteMemory(void* address, void* value)
 		{
-			//int32 size = 1<<2;
-			//DWORD old, old2;
-			//	if( VirtualProtect(address, size, PAGE_EXECUTE_READWRITE, &old) )
-			//	{
 			*CAST_PTR(uint32*, address) = CAST_PTR(uint32, value);
 			return true;
-			//		return VirtualProtect(address, size, old, &old2);
-			//	}
-			//	else
-			//		return FALSE;
 		}
 
 		__declspec(noinline) void CreateHookRelativeCall(void* hook, void* hook_address, byte end)
@@ -204,3 +192,8 @@ namespace Yelo
 		}
 	};
 };
+
+#if PLATFORM_TARGET == PLATFORM_TARGET_XBOX
+	#undef memcpy
+	#undef memcpy_s
+#endif

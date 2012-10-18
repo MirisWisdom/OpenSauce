@@ -487,6 +487,22 @@
 				RelativePath=".\Memory\Runtime.hpp"
 				>
 			</File>
+			<Filter
+				Name="Shared"
+				>
+				<File
+					RelativePath="..\..\shared\Include\Memory\DataShared.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\Memory\MemoryInterfaceShared.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\Memory\MemoryInterfaceShared.hpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Models"

@@ -10,10 +10,6 @@ namespace Yelo
 {
 	namespace Enums
 	{
-		enum {
-			k_camera_count = 4,
-		};
-
 		enum director_mode
 		{
 			_director_mode_none,
@@ -43,53 +39,8 @@ namespace Yelo
 		};
 	};
 
-
-	namespace Camera
-	{
-		struct camera_data
-		{
-			UNKNOWN_TYPE(real);					// 0x0
-			real_point3d Position;				// 0x4
-			real_vector3d Velocity;				// 0x10
-			UNKNOWN_TYPE(int32);				// 0x1C
-			real Fov;							// 0x20
-			UNKNOWN_TYPE(real);					// 0x24
-			UNKNOWN_TYPE(real);					// 0x28
-			real_vector3d Forward;				// 0x2C
-			real_euler_angles3d Up;				// 0x38
-			real_vector3d TransitionalVelocity;	// 0x44
-			real_vector3d AngularVelocity;		// 0x50
-
-			// float @ 0x88
-			// float @ 0xA4
-			TAG_PAD(int32, 20);					// 0x5C
-		}; BOOST_STATIC_ASSERT( sizeof(camera_data) == 0xAC );
-
-		typedef void (API_FUNC* camera_update_proc)(camera_data* camera, datum_index* player_index, camera_data* result);
-
-		struct s_director_camera
-		{
-			UNKNOWN_TYPE(int32);
-			UNKNOWN_TYPE(int32);
-			camera_update_proc UpdateProc;
-			TAG_PAD(int32, 20); // 0x5C
-			camera_data UpdateResult;
-			TAG_PAD(int32, 14); // 0x104
-		}; BOOST_STATIC_ASSERT( sizeof(s_director_camera) == 0x140 );
-
-
-		void Initialize();
-		void Dispose();
-		void Update();
-
-		camera_update_proc DirectorModeProc(_enum mode);
-	};
-
 	namespace GameState
 	{
-		Camera::s_director_camera* _Directors();
-
-
 		struct s_camera_command
 		{
 			byte_flags flags;
@@ -111,8 +62,52 @@ namespace Yelo
 			PAD16;
 			real commands[6];				// 0x94
 		}; BOOST_STATIC_ASSERT( sizeof(s_camera_command) == 0xAC );
+	};
 
-		struct s_observer //: TStructImpl(0x358)
+	namespace Camera
+	{
+		typedef void (API_FUNC* camera_update_proc)(GameState::s_camera_command* camera, datum_index* player_index, GameState::s_camera_command* result);
+
+		struct s_director_camera // TODO: Alpha is a bit different from retail (s_camera_command?)
+		{
+			UNKNOWN_TYPE(int32);
+			UNKNOWN_TYPE(real);
+			UNKNOWN_TYPE(int32);
+			camera_update_proc UpdateProc;
+			//////////////////////////////////////////////////////////////////////////
+			// union here...data is dependent on the director mode
+			TAG_PAD(int32, 19);
+			//////////////////////////////////////////////////////////////////////////
+			GameState::s_camera_command UpdateResult; // 0x5C
+			UNKNOWN_TYPE(bool); // 0x108
+			PAD24;
+			UNKNOWN_TYPE(real); // 0x10C
+			TAG_PAD(int32, 12); // 0x110
+		}; BOOST_STATIC_ASSERT( sizeof(s_director_camera) == PLATFORM_VALUE(0x140, 0x140, 0x134) );
+		
+		struct s_director_globals
+		{
+			UNKNOWN_TYPE(real);
+			UNKNOWN_TYPE(long_enum); // Enums::director_mode
+			UNKNOWN_TYPE(bool);
+			PAD24;
+			s_director_camera Directors[Enums::k_number_of_users]; // director for each local player
+		}; BOOST_STATIC_ASSERT( sizeof(s_director_globals) == 0x50C );
+
+
+		void Initialize();
+		void Dispose();
+		void Update();
+
+		camera_update_proc DirectorModeProc(_enum mode);
+	};
+
+	namespace GameState
+	{
+		Camera::s_director_globals* _DirectorGlobals();
+
+
+		struct s_observer
 		{
 			struct s_calculated_result
 			{
@@ -247,7 +242,7 @@ namespace Yelo
 			static int32 DebugInUse;
 			// Table to use to figure out which cameras are the ones in
 			// debug mode for easy lookups
-			static bool DebugInUseList[Enums::k_camera_count];
+			static bool DebugInUseList[Enums::k_number_of_users];
 			// Hack hook function for debug camera
 			static void UpdateAngleHoriz();
 			// Hack hook function for debug camera
@@ -256,7 +251,7 @@ namespace Yelo
 			static void UpdateObserverPositions();
 
 			// Local machine's player this camera is attached to
-			int16 LocalPlayerIndex;
+			int16 UserIndex;
 			// Are we tracking this camera's movements?
 			bool TrackMovement;
 			PAD8;
@@ -274,7 +269,7 @@ namespace Yelo
 		public:
 
 			// Attach this camera to a player
-			void Initialize(int16 local_player_index, _enum mode);
+			void Initialize(int16 user_index, _enum mode);
 			// Detach and dispose of this camera
 			void Dispose();
 			// Update this camera for game state changes
@@ -319,9 +314,9 @@ namespace Yelo
 
 
 		private:
-			static c_yelo_camera Cameras[Enums::k_camera_count];
+			static c_yelo_camera Cameras[Enums::k_number_of_users];
 		public:
-			// Determines if the controller index is usable
+			// Determines if the controller index is valid for camera operations
 			// remarks: SHOULD return false if the controller was unplugged
 			// during game play
 			static bool IsValid(int32 controller_index = 0);

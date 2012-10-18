@@ -21,7 +21,7 @@ namespace Camera
 
 namespace GameState
 {
-	ENGINE_DPTR(Camera::s_director_camera, _Directors,				NULL);
+	ENGINE_DPTR(Camera::s_director_globals, _DirectorGlobals,		NULL);
 	ENGINE_DPTR(s_observer, _Observers,								NULL);
 	ENGINE_DPTR(s_camera_globals, _CameraGlobals,					NULL);
 	ENGINE_DPTR(s_scripted_camera_globals, _ScriptedCameraGlobals,	NULL);

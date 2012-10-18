@@ -28,7 +28,7 @@
 	}[4];
 */
 
-static Yelo::Memory::Opcode::CallRet UNWIND_INPUT_UPDATE;
+static Yelo::Memory::Opcode::s_call_ret UNWIND_INPUT_UPDATE;
 
 namespace Yelo
 {

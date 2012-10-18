@@ -13,14 +13,14 @@
 #include "Interface/Input.hpp"
 #include "Game/Players.hpp"
 
-static Yelo::Memory::Opcode::CallRet	UNWIND_PLAYER_CONTROL_UPDATE;
-static Yelo::Memory::Opcode::Call		UNWIND_OBSERVER_UPDATE_VELOCITIES_NULLING =	{0x90, 0x90909090};
-static Yelo::Memory::Opcode::Call		UNWIND_OBSERVER_UPDATE_POSITIONS_NULLING1 =	{0x90, 0x90909090};
-static Yelo::Memory::Opcode::Call		UNWIND_OBSERVER_UPDATE_POSITIONS_NULLING2 =	{0x90, 0x90909090};
+static Yelo::Memory::Opcode::s_call_ret	UNWIND_PLAYER_CONTROL_UPDATE;
+static Yelo::Memory::Opcode::s_call		UNWIND_OBSERVER_UPDATE_VELOCITIES_NULLING =	{0x90, 0x90909090};
+static Yelo::Memory::Opcode::s_call		UNWIND_OBSERVER_UPDATE_POSITIONS_NULLING1 =	{0x90, 0x90909090};
+static Yelo::Memory::Opcode::s_call		UNWIND_OBSERVER_UPDATE_POSITIONS_NULLING2 =	{0x90, 0x90909090};
 static Yelo::byte						UNWIND_DIRECTOR_SET_CAMERA_NULLING[] =		{0x90, 0x90, 0x90};
-static Yelo::Memory::Opcode::Call		UNWIND_PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_HORIZ;
-static Yelo::Memory::Opcode::Call		UNWIND_PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_VERT;
-static Yelo::Memory::Opcode::Call		UNWIND_OBSERVER_UPDATE_POSITIONS_START;
+static Yelo::Memory::Opcode::s_call		UNWIND_PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_HORIZ;
+static Yelo::Memory::Opcode::s_call		UNWIND_PLAYER_CONTROL_MODIFY_DESIRED_ANGLES_VERT;
+static Yelo::Memory::Opcode::s_call		UNWIND_OBSERVER_UPDATE_POSITIONS_START;
 
 namespace Yelo
 {
@@ -63,15 +63,22 @@ namespace Yelo
 
 		void Update()
 		{
-			for(int16 x = 0; x < Enums::k_camera_count; x++)
+			for(int16 user_index = 0; false && user_index < Enums::k_number_of_users; user_index++)
 			{
-				c_yelo_camera& yc = c_yelo_camera::Get(x);
-				const bool is_ready = c_yelo_camera::IsReady(x);
+				datum_index player_index = Engine::Players::LocalGetPlayerIndex(user_index);
+				if(player_index.IsNull()) continue;
 
-				if(c_yelo_camera::IsValid(x))
+				GameState::s_player_datum* player = (*GameState::_Players())[player_index];
+				int32 controller_index = *player->GetMachineControllerIndex();
+				if(controller_index == NONE) continue;
+
+				c_yelo_camera& yc = c_yelo_camera::Get(controller_index);
+				const bool is_ready = c_yelo_camera::IsReady(controller_index);
+
+				if(c_yelo_camera::IsValid(controller_index))
 				{
 					if(!is_ready)
-						yc.Initialize(x, 
+						yc.Initialize(user_index, 
 						Enums::_director_mode); // this causes it to use the existing mode used by the game
 
 					yc.Update();
@@ -112,7 +119,7 @@ namespace Yelo
 	#pragma region GameState
 	namespace GameState
 	{
-		Camera::s_director_camera* _Directors()				DPTR_IMP_GET(_Directors);
+		Camera::s_director_globals* _DirectorGlobals()		DPTR_IMP_GET(_DirectorGlobals);
 		s_observer* _Observers()							DPTR_IMP_GET(_Observers);
 		s_camera_globals* _CameraGlobals()					DPTR_IMP_GET(_CameraGlobals);
 		s_scripted_camera_globals* _ScriptedCameraGlobals()	DPTR_IMP_GET(_ScriptedCameraGlobals);
@@ -124,7 +131,7 @@ namespace Yelo
 	namespace Camera
 	{
 		int32 c_yelo_camera::DebugInUse = FALSE;
-		bool c_yelo_camera::DebugInUseList[Enums::k_camera_count] = {
+		bool c_yelo_camera::DebugInUseList[Enums::k_number_of_users] = {
 			false,
 			false,
 			false,
@@ -389,9 +396,9 @@ _cleanup:
 			}
 		}
 
-		void c_yelo_camera::Initialize(int16 local_player_index, _enum mode)
+		void c_yelo_camera::Initialize(int16 user_index, _enum mode)
 		{
-			this->LocalPlayerIndex = local_player_index;
+			this->UserIndex = user_index;
 			this->TrackMovement = false;
 			this->DirectorModeInternal = NONE;
 			//this->DirectorMode =
@@ -407,7 +414,7 @@ _cleanup:
 		void c_yelo_camera::Dispose()
 		{
 			ChangePerspectiveInternal(Enums::_director_mode_none); // little 'hack' to turn off debug camera if in use
-			this->LocalPlayerIndex = NONE;
+			this->UserIndex = NONE;
 		}
 
 		void c_yelo_camera::Update()
@@ -425,7 +432,7 @@ _cleanup:
 		{
 			// get the player's current director proc
 			camera_update_proc curr_proc = 
-				GameState::_Directors()[this->LocalPlayerIndex].UpdateProc;
+				GameState::_DirectorGlobals()->Directors[this->UserIndex].UpdateProc;
 			// get the current internal mode we're using
 			_enum mode = this->DirectorModeInternal;
 
@@ -437,11 +444,11 @@ _cleanup:
 		{
 			// Update the origin with the current player's observer state
 			this->ObserverOrigin = 
-				&GameState::_Observers()[this->LocalPlayerIndex].origin;
+				&GameState::_Observers()[this->UserIndex].origin;
 
 			// Update the look angle with the current player's control state
 			const Config::s_definition& k_config = Config::Current();
-			GameState::s_player_control_globals::s_player& controls = GameState::_PlayerControlGlobals()->Players[this->LocalPlayerIndex];
+			GameState::s_player_control_globals::s_player& controls = GameState::_PlayerControlGlobals()->Players[this->UserIndex];
 			this->ControlLookAngle = k_config.View.InputCamera.LookControlThumb == Flags::_input_button_left_thumb ?
 				controls.GetLeftThumb() : controls.GetRightThumb();
 		}
@@ -467,7 +474,7 @@ _cleanup:
 			const Config::s_definition& k_config = Config::Current();
 
 			// get the user input
-			const Input::s_yelopad& k_yelopad = Input::CurrentStates(CAST(int32, this->LocalPlayerIndex));
+			const Input::s_yelopad& k_yelopad = Input::CurrentStates(CAST(int32, this->UserIndex));
 
 
 			// updates horizontal look velocity and position
@@ -496,11 +503,11 @@ _cleanup:
 		{
 			const real kAdjustment = 0.01f;
 
-			GameState::_PlayerGlobals()->CameraControl(false);
+			GameState::_PlayerControlGlobals()->CameraControl(false);
 			const Config::s_definition& k_config = Config::Current();
 
 			// get the user input
-			const Input::s_yelopad& k_yelopad = Input::CurrentStates(CAST(int32, this->LocalPlayerIndex));
+			const Input::s_yelopad& k_yelopad = Input::CurrentStates(CAST(int32, this->UserIndex));
 
 
 			// calculate forward/backward movement force
@@ -543,7 +550,7 @@ _cleanup:
 			if(this->DirectorModeInternal == Enums::_director_mode_debug)
 			{
 				DebugInUse--; // decrease the debug camera count
-				DebugInUseList[this->LocalPlayerIndex] = false;
+				DebugInUseList[this->UserIndex] = false;
 			}
 			
 			// change to third person camera
@@ -553,7 +560,7 @@ _cleanup:
 			else if(mode == Enums::_director_mode_debug)
 			{
 				DebugInUse++; // increase the debug camera count
-				DebugInUseList[this->LocalPlayerIndex] = true;
+				DebugInUseList[this->UserIndex] = true;
 
 				this->DirectorMode = mode = Enums::_director_mode_none;
 			}
@@ -575,7 +582,7 @@ _cleanup:
 
 		_enum c_yelo_camera::GetPerspectiveFromGame() const
 		{
-			uintptr_t ptr = CAST_PTR(uintptr_t, GameState::_Directors()[this->LocalPlayerIndex].UpdateProc);
+			uintptr_t ptr = CAST_PTR(uintptr_t, GameState::_DirectorGlobals()->Directors[this->UserIndex].UpdateProc);
 			switch(ptr)
 			{
 			case GET_DATA_PTR(SCRIPTED_CAMERA_UPDATE):
@@ -603,7 +610,7 @@ _cleanup:
 
 		void c_yelo_camera::ChangePerspective(_enum mode)
 		{
-			int32 local_player_index = CAST(int32, this->LocalPlayerIndex);
+			int32 user_index = CAST(int32, this->UserIndex);
 
 			this->ChangePerspectiveInternal(mode);
 
@@ -623,8 +630,8 @@ _cleanup:
 				memset(&this->LookVelocity, 0, sizeof(this->LookVelocity));
 			}
 
-			GameState::_Directors()[local_player_index].UpdateProc = // update the player's camera update proc
-				DirectorModeProc(mode);
+			GameState::_DirectorGlobals()->Directors[user_index].UpdateProc = // update the player's camera update proc
+				DirectorModeProc(this->DirectorMode);
 		}
 
 		real c_yelo_camera::GetResistance(_enum resistance, real velocity) const
@@ -646,7 +653,7 @@ _cleanup:
 
 		void c_yelo_camera::Invalidate()
 		{
-			this->LocalPlayerIndex = NONE;
+			this->UserIndex = NONE;
 		}
 
 		void c_yelo_camera::ToggleTrackMovement()
@@ -654,15 +661,23 @@ _cleanup:
 			this->TrackMovement ^= true;
 		}
 
-		c_yelo_camera c_yelo_camera::Cameras[Enums::k_camera_count];
+		c_yelo_camera c_yelo_camera::Cameras[Enums::k_number_of_users];
 
 		bool c_yelo_camera::IsValid(int32 controller_index)
 		{
-			GameState::t_players_data::Iterator iter(GameState::_Players());
 			GameState::s_player_datum* player;
+
+#if 0
+			GameState::t_players_data::Iterator iter(GameState::_Players());
 			while( (player = iter.Next()) != NULL )
+#else
+			if(controller_index == Enums::k_no_controller) return false;
+
+			datum_index player_index = GameState::_PlayerGlobals()->GetPlayerControllerMapping()[controller_index];
+			if(!player_index.IsNull() && (player = (*GameState::_Players())[player_index]) != NULL)
+#endif
 			{
-				if( *player->GetControllerIndex() == controller_index && // only look for the controller we want
+				if( *player->GetMachineControllerIndex() == controller_index && // only look for the controller we want
 					*player->GetSlaveUnitIndex() != datum_index::null)
 					return true;
 			}
@@ -671,7 +686,7 @@ _cleanup:
 
 		bool c_yelo_camera::IsReady(int32 controller_index)
 		{
-			return Cameras[controller_index].LocalPlayerIndex != NONE;
+			return Cameras[controller_index].UserIndex != NONE;
 		}
 
 		c_yelo_camera& c_yelo_camera::Get(int32 controller_index)
