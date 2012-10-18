@@ -10,7 +10,7 @@
 #include "Game/EngineFunctions.hpp"
 #include "Memory/Runtime.hpp"
 
-static Yelo::Memory::Opcode::CallRet UNWIND_GAME_STATE_INITIALIZE_FOR_NEW_MAP;
+static Yelo::Memory::Opcode::s_call_ret UNWIND_GAME_STATE_INITIALIZE_FOR_NEW_MAP;
 
 namespace Yelo
 {

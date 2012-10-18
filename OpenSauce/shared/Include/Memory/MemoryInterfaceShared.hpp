@@ -78,6 +78,8 @@ namespace Yelo
 	namespace Enums
 	{
 		enum x86_opcode : byte {
+			// push imm16\32
+			_x86_opcode_push_imm = 0x68,
 			_x86_opcode_nop = 0x90,
 			// return near imm16\32
 			_x86_opcode_retn = 0xC2,
@@ -183,6 +185,13 @@ namespace Yelo
 		// [address] address to put\overwrite a jmp
 		// [target] address to make the jmp goto
 		void WriteJmp(void* jmp_buffer, void* address, const void* target);
+
+		// [jmp_buffer] is a buffer to receive the old jmp address
+		// [address] address to overwrite a jmp
+		// [target] address to make the jmp goto
+		// REMARKS:
+		// Jmp type can be anything as long as the address used is 32bits
+		void OverwriteJmp(void* jmp_buffer, void* address, const void* target);
 
 
 		struct s_memory_exec_change_data {

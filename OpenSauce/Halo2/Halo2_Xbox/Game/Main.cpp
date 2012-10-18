@@ -19,7 +19,7 @@ namespace XboxLib
 	}
 }
 
-static Yelo::Memory::Opcode::CallRet UNWIND_MAIN;
+static Yelo::Memory::Opcode::s_call_ret UNWIND_MAIN;
 
 namespace Yelo
 {
@@ -63,7 +63,7 @@ namespace Yelo
 		#pragma endregion
 
 		#pragma region Goto the main loop
-		static proc_update MainLoop = CAST_PTR(proc_update, GET_FUNC_PTR(MAIN_LOOP));
+		static proc_update_no_args MainLoop = CAST_PTR(proc_update_no_args, GET_FUNC_PTR(MAIN_LOOP));
 		MainLoop();
 		#pragma endregion
 	}

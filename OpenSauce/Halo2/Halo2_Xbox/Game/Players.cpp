@@ -15,8 +15,8 @@
 #include "Objects/Objects.hpp"
 #include "Cache/Cache.hpp"
 
-static Yelo::Memory::Opcode::Call UNWIND_PLAYERS_BEFORE;
-static Yelo::Memory::Opcode::Call UNWIND_PLAYERS_AFTER;
+static Yelo::Memory::Opcode::s_call UNWIND_PLAYERS_BEFORE;
+static Yelo::Memory::Opcode::s_call UNWIND_PLAYERS_AFTER;
 
 namespace Yelo
 {
@@ -109,7 +109,7 @@ namespace Yelo
 
 			#pragma region Goto the games function
 			typedef void (PLATFORM_API* update_before)(DWORD arg_0);
-			static update_before players_update_before_game = (update_before)GET_FUNC_PTR(PLAYERS_UPDATE_BEFORE_GAME);
+			static update_before players_update_before_game = CAST_PTR(update_before, GET_FUNC_PTR(PLAYERS_UPDATE_BEFORE_GAME));
 			players_update_before_game(arg_0);
 			#pragma endregion
 		}
@@ -117,7 +117,7 @@ namespace Yelo
 		void UpdateAfter()
 		{
 			#pragma region Goto the games function
-			static proc_update players_update_after_game = (proc_update)GET_FUNC_PTR(PLAYERS_UPDATE_AFTER_GAME_HOOK);
+			static proc_update_no_args players_update_after_game = CAST_PTR(proc_update_no_args, GET_FUNC_PTR(PLAYERS_UPDATE_AFTER_GAME_HOOK));
 			players_update_after_game();
 			#pragma endregion
 		}

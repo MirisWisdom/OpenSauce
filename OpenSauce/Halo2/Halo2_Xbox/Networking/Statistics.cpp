@@ -31,7 +31,7 @@
 
 // 0x1B7FE1	0x232D77
 
-static Yelo::Memory::Opcode::CallRet UNWIND_STATISTICS_UPDATE;
+static Yelo::Memory::Opcode::s_call_ret UNWIND_STATISTICS_UPDATE;
 
 namespace Yelo
 {
@@ -162,7 +162,7 @@ DISPLAY_LAST_ERROR:
 		void OnBuildPcr()
 		{
 			#pragma region Goto the games function
-			static proc_update build_postgame_carnage_report = (proc_update)GET_FUNC_PTR(BUILD_POST_GAME_CARNAGE_REPORT);
+			static proc_update_no_args build_postgame_carnage_report = CAST_PTR(proc_update_no_args, GET_FUNC_PTR(BUILD_POST_GAME_CARNAGE_REPORT));
 			build_postgame_carnage_report();
 			#pragma endregion
 		}
