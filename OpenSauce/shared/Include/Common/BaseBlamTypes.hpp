@@ -763,8 +763,8 @@ namespace Yelo
 
 	/*union*/ struct real_rectangle2d
 	{
-		real x0, x1;
-		real y0, y1;
+		real x0, x1; // top, bottom
+		real y0, y1; // left, right
 	};
 	#define pad_real_rectangle2d	PAD32 PAD32 \
 									PAD32 PAD32

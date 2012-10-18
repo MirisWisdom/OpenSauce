@@ -18,6 +18,8 @@ namespace Yelo
 	{
 		enum {
 			k_maximum_number_of_hud_sounds = 12, // MAXIMUM_NUMBER_OF_HUD_SOUNDS
+
+			k_max_custom_blips = 16, // MAX_CUSTOM_BLIPS
 		};
 
 		enum text_style : _enum
@@ -69,6 +71,17 @@ namespace Yelo
 			_rasterize_score_d_remaining,
 			_rasterize_score_telefragged,
 			_rasterize_score,
+		};
+
+		enum blip_type : byte_enum
+		{
+			_blip_type_local_player,			// 1, .5, 0
+			_blip_type_friendly_team,			// 1, 1, 0
+			_blip_type_enemy_team,				// 1, 0, 0
+			_blip_type_friendly_team_vehicle,	// 1, 1, 0
+			_blip_type_enemy_team_vehicle,		// 1, 0, 0
+			_blip_type_objective,				// .5, .5, 1
+			_blip_type_none,					// 0, 0, 0
 		};
 	};
 
@@ -183,18 +196,6 @@ namespace Yelo
 
 		struct s_motion_sensor
 		{
-			/*
-				0 local player // 1, .5, 0
-				1 friendly team // 1, 1, 0
-				2 enemy team // 1, 0, 0
-				3 friendly team vehicle // 1, 1, 0
-				4 enemy team vehicle (c_dropship) // 1, 0, 0
-				5 objective // .5, .5, 1
-				6 = _blip_type_none // 0,0,0
-
-				16 = MAX_CUSTOM_BLIPS
-			*/
-
 			struct s_custom_blip
 			{
 				sbyte x;
@@ -202,28 +203,27 @@ namespace Yelo
 			};
 			struct s_blip : s_custom_blip
 			{
-				byte_enum type; // [blip_type], set to _blip_type_none when not used
-				byte_enum size; // a la object's size (tiny, large, etc)
+				Enums::blip_type type; // set to _blip_type_none when not used
+				byte_enum size;	// a la object's size (tiny, large, etc)
 			}; BOOST_STATIC_ASSERT( sizeof(s_blip) == 0x4 );
 			struct s_team_data
 			{
-				s_blip object_blips[16];	// objects belonging to just this team
+				s_blip object_blips[Enums::k_max_custom_blips];			// objects belonging to just this team
 				struct {
-					s_custom_blip goal_blips[16]; // MAX_CUSTOM_BLIPS
-					sbyte goal_indices[16]; // indices to the game engine's global goals
+					s_custom_blip goal_blips[Enums::k_max_custom_blips];
+					sbyte goal_indices[Enums::k_max_custom_blips];		// indices to the game engine's global goals
 				}game_engine;
 
 				real_point2d world_position;
 				UNKNOWN_TYPE(int32); // game time related
 				UNKNOWN_TYPE(real); // related to calculations with objects and facing angle of the player
-				byte active_object_blips_count;
+				sbyte active_object_blips_count;
 				PAD24;
 			}; BOOST_STATIC_ASSERT( sizeof(s_team_data) == 0x84 );
 			struct s_local_player
 			{
 				s_team_data nearby_team_objects[Enums::k_number_of_game_teams];
-				
-				byte UNKNOWN(0)[0x40];
+				datum_index nearby_object_indexes[Enums::k_max_custom_blips];
 			}; BOOST_STATIC_ASSERT( sizeof(s_local_player) == 0x568 );
 
 

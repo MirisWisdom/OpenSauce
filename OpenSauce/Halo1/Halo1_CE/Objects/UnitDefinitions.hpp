@@ -195,7 +195,7 @@ namespace Yelo
 			TStructSubGetPtrImpl(byte,					AimingSpeed, 0x288);
 			//TStructSubGetPtrImpl(byte,				, 0x289); // melee related (state enum?)
 			//TStructSubGetPtrImpl(byte,				, 0x28A); // melee related (some kind of counter)
-			//TStructSubGetPtrImpl(sbyte,				, 0x28B); // related to flame deaths (some kind of counter)
+			TStructSubGetPtrImpl(sbyte,					TicksUntilFlameToDeath, 0x28B); // related to flame deaths (some kind of counter)
 			//TStructSubGetPtrImpl(sbyte,				, 0x28C); // looks like the amount of frames left for the ping animation
 			TStructSubGetPtrImpl(byte,					ThrowingGrenadeState, 0x28D);
 			//TStructSubGetPtrImpl(int16,				, 0x28E);
@@ -246,6 +246,8 @@ namespace Yelo
 			TStructSubGetPtrImpl(real,					CamoPower, 0x37C);
 
 			// 0x3B8, int16
+
+			TStructSubGetPtrImpl(datum_index,			ResponsibleFlamerObjectIndex, 0x410); // object which caused us to start flaming to death
 
 			TStructSubGetPtrImpl(int16,					FeignDeathTimer, 0x420);
 
