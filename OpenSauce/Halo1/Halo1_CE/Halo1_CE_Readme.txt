@@ -86,6 +86,7 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
   * FIX			Fix for instant respawns when using the OS dedi
   * FIX			Fixed the -path argument being ignored by OS
   * FIX			Fixed the roaming/appdata folders made by OS not being removed on uninstall
+  * FIX [56]	Fixed the team index offset for MP teams for the GBuffer. MP teams now start at 10, not 9. This is a breaking fix, but I'm not aware of any major MP map releases that used this specific part of postprocessing
 
 === Version 3.0.3 ===
   * N/A			Nothing you all need to concern yourselves with. Go play Halo.

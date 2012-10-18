@@ -6,112 +6,32 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/ai/actions.hpp>
+#include <blamlib/Halo1/ai/actor_types.hpp>
+#include <blamlib/Halo1/ai/ai_communication.hpp>
+
 #include "Memory/Data.hpp"
 
 namespace Yelo
 {
 	namespace Enums
 	{
-		enum ai_communication_type : _enum
+		enum actor_default_state
 		{
-			_ai_communication_type_death,
-			_ai_communication_type_killing_spree,
-			_ai_communication_type_hurt,
-			_ai_communication_type_damage,
-			_ai_communication_type_sighted_enemy,
-			_ai_communication_type_found_enemy,
-			_ai_communication_type_unexpected_enemy,
-			_ai_communication_type_found_dead_friend,
-			_ai_communication_type_allegiance_changed,
-			_ai_communication_type_grenade_throwing,
-			_ai_communication_type_grenade_startle,
-			_ai_communication_type_grenade_sighted,
-			_ai_communication_type_grenade_danger,
-			_ai_communication_type_lost_contact,
-			_ai_communication_type_blocked,
-			_ai_communication_type_alert_noncombat,
-			_ai_communication_type_search_start,
-			_ai_communication_type_search_query,
-			_ai_communication_type_search_report,
-			_ai_communication_type_search_abandon,
-			_ai_communication_type_search_group_abandon,
-			_ai_communication_type_uncover_start,
-			_ai_communication_type_advance,
-			_ai_communication_type_retreat,
-			_ai_communication_type_cover,
-			_ai_communication_type_sighted_friend_player,
-			_ai_communication_type_shooting,
-			_ai_communication_type_shooting_vehicle,
-			_ai_communication_type_shooting_berserk,
-			_ai_communication_type_shooting_group,
-			_ai_communication_type_shooting_traitor,
-			_ai_communication_type_flee,
-			_ai_communication_type_flee_leader_died,
-			_ai_communication_type_flee_idle,
-			_ai_communication_type_attempted_flee,
-			_ai_communication_type_hiding_finished,
-			_ai_communication_type_vehicle_entry,
-			_ai_communication_type_vehicle_exit,
-			_ai_communication_type_vehicle_woohoo,
-			_ai_communication_type_vehicle_scared,
-			_ai_communication_type_vehicle_falling,
-			_ai_communication_type_surprise,
-			_ai_communication_type_berserk,
-			_ai_communication_type_melee,
-			_ai_communication_type_dive,
-			_ai_communication_type_uncover_exclamation,
-			_ai_communication_type_falling,
-			_ai_communication_type_leap,
-			_ai_communication_type_postcombat_alone,
-			_ai_communication_type_postcombat_unscathed,
-			_ai_communication_type_postcombat_wounded,
-			_ai_communication_type_postcombat_massacre,
-			_ai_communication_type_postcombat_triumph,
-			_ai_communication_type_postcombat_check_enemy,
-			_ai_communication_type_postcombat_check_friend,
-			_ai_communication_type_postcombat_shoot_corpse,
-			_ai_communication_type_postcombat_celebrate,
+			_actor_default_state_none,
+			_actor_default_state_sleeping,
+			_actor_default_state_alert,
+			_actor_default_state_moving_repeat_same_position,
+			_actor_default_state_moving_loop,
+			_actor_default_state_moving_loop_back_and_forth,
+			_actor_default_state_moving_loop_randomly,
+			_actor_default_state_moving_randomly,
+			_actor_default_state_guarding,
+			_actor_default_state_guarding_at_guard_position,
+			_actor_default_state_searching,
+			_actor_default_state_fleeing,
 
-			_ai_communication_type,
-		};
-
-		enum ai_communication_priority
-		{
-			_ai_communication_priority_none,
-			_ai_communication_priority_filler,
-			_ai_communication_priority_chatter,
-			_ai_communication_priority_talk,
-			_ai_communication_priority_communicate,
-			_ai_communication_priority_shout,
-			_ai_communication_priority_yell,
-			_ai_communication_priority_exclaim,
-
-			_ai_communication_priority,
-		};
-
-		enum actor_action : _enum
-		{
-			_actor_action_none,
-			_actor_action_sleep,
-			_actor_action_alert,
-			_actor_action_fight,
-			_actor_action_flee,
-			_actor_action_uncover,
-			_actor_action_guard,
-			_actor_action_search,
-			_actor_action_wait,
-			_actor_action_vehicle,
-			_actor_action_charge,
-			_actor_action_obey,
-			_actor_action_converse,
-			_actor_action_avoid,
-
-			NUMBER_OF_ACTOR_ACTIONS
-		};
-
-		enum action_class : _enum
-		{
-			_action_class_passive = 1,
+			k_number_of_actor_default_states,
 		};
 
 		enum actor_target_type : _enum
@@ -173,49 +93,6 @@ namespace Yelo
 
 	namespace AI
 	{
-		struct s_ai_communication_packet
-		{
-			UNKNOWN_TYPE(int32);
-			UNKNOWN_TYPE(int16); // 4
-			Enums::ai_communication_type dialogue_type_index; // 6
-			UNKNOWN_TYPE(int16); // 8
-			PAD16; // A ?
-
-			UNKNOWN_TYPE(int16); // C
-			PAD16; // E ?
-			PAD32; // 10 ?
-			UNKNOWN_TYPE(int16); // 14
-			PAD16; // 16 ?
-			UNKNOWN_TYPE(int16); // 18
-			UNKNOWN_TYPE(int16); // 1A
-			bool broken; // 1C false = reformed
-			PAD24;
-		}; BOOST_STATIC_ASSERT( sizeof(s_ai_communication_packet) == 0x20 );
-
-		typedef void (PLATFORM_API* proc_action_function)(datum_index actor_index);
-		typedef void (PLATFORM_API* proc_action_function_2C)(datum_index actor_index, datum_index, datum_index);
-		struct s_action_function_definition
-		{
-			Enums::actor_action action;
-			PAD16;
-			cstring name;
-			const real_argb_color debug_color;
-			size_t action_data_size;
-			Enums::action_class action_class;
-			PAD16;
-			proc_action_function begin;
-			proc_action_function perform;
-			proc_action_function update;
-			proc_action_function control;
-			proc_action_function end;
-			proc_action_function func28;
-			proc_action_function_2C func2C;
-			proc_action_function func30;
-			proc_action_function func34;
-			proc_action_function func38;
-		};
-
-
 		struct s_ai_globals_data : TStructImpl(2268)
 		{
 		};
@@ -267,6 +144,8 @@ namespace Yelo
 			TStructGetPtrImpl(real_vector3d,	InputFacingVector, 0x174);
 			TStructGetPtrImpl(real_vector3d,	InputAimingVector, 0x180);
 			TStructGetPtrImpl(real_vector3d,	InputLookingVector, 0x18C);
+
+			TStructGetPtrImpl(bool,				InputIsBurningToDeath, 0x1B5);
 
 			// Not sure if this part of 'target'
 			//TStructGetPtrImpl(_enum,			, 0x1E4);

@@ -63,7 +63,7 @@ namespace Yelo
 			//TStructSubGetPtrImpl(s_scenario_location,	, 0x1F8);
 			// 0x1FC?
 			//TStructSubGetPtrImpl(datum_index,					, 0x200); // object index
-			TStructSubGetPtrImpl(uint32,				LastUpdateTime, 0x204);
+			TStructSubGetPtrImpl(int32,					LastUpdateTime, 0x204);
 			//TStructSubGetPtrImpl(datum_index,					, 0x208); // object index
 			//TStructSubGetPtrImpl(real_point3d,				, 0x20C);
 			// 0x210?
@@ -122,6 +122,7 @@ namespace Yelo
 				int16 starting_loaded_rounds[Enums::k_maximum_number_of_magazines_per_weapon];
 			}; BOOST_STATIC_ASSERT( sizeof(s_start_reload_data) == 0x8 );
 
+			// FLAG(3) - _weapon_must_be_readied_bit
 			TStructSubGetPtrImpl(long_flags,					Flags, 0x22C);
 			TStructSubGetPtrImpl(word_flags,					OwnerFlags, 0x230); // owner being the controlling unit
 			// 0x232 PAD16
@@ -140,12 +141,12 @@ namespace Yelo
 			// 0x25E PAD16
 			TStructSubGetPtrImpl(s_trigger_state,				Triggers, 0x260); // [Enums::k_maximum_number_of_magazines_per_weapon]
 			TStructSubGetPtrImpl(s_magazine_state,				Magazines, 0x2B0); // [Enums::k_maximum_number_of_magazines_per_weapon]
-			TStructSubGetPtrImpl(uint32,						LastTriggerFireTime, 0x2D0);
+			TStructSubGetPtrImpl(int32,							LastTriggerFireTime, 0x2D0);
 			TStructSubGetPtrImpl(s_start_reload_data,			StartReloadUpdate, 0x2D4);
 			// 0x2DC PAD32?
 			TStructSubGetPtrImpl(bool,							BaselineValid, 0x2E0);
-			TStructSubGetPtrImpl(byte,							BaselineIndex, 0x2E1);
-			TStructSubGetPtrImpl(byte,							MessageIndex, 0x2E2);
+			TStructSubGetPtrImpl(sbyte,							BaselineIndex, 0x2E1);
+			TStructSubGetPtrImpl(sbyte,							MessageIndex, 0x2E2);
 			// 0x2E3 PAD8
 			TStructSubGetPtrImpl(s_weapon_datum_network_data,	UpdateBaseline, 0x2E4);
 			// 0x310, bool
@@ -179,8 +180,8 @@ namespace Yelo
 				s_equipment_data_yelo yelo;
 			};
 			bool baseline_valid;								// 0x244
-			byte baseline_index;
-			byte message_index;
+			sbyte baseline_index;
+			sbyte message_index;
 			PAD8;
 			s_equipment_datum_network_data update_baseline;		// 0x248
 			UNKNOWN_TYPE(bool);									// 0x26C probably delta_valid
@@ -190,7 +191,7 @@ namespace Yelo
 
 		struct s_garbage_data
 		{
-			uint16 ticks_until_gc;
+			int16 ticks_until_gc;
 			PAD16;
 			int32 _unused[5];
 		}; BOOST_STATIC_ASSERT( sizeof(s_garbage_data) == (Enums::k_object_size_garbage - Enums::k_object_size_item) );

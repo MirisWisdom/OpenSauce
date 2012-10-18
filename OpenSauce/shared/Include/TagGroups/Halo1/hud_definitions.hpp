@@ -102,11 +102,6 @@ namespace Yelo
 
 	namespace Flags
 	{
-		enum hud_flash_flags : word_flags
-		{
-			_hud_flash_reverse_colors_bit, // reverse default/flashing
-		};
-
 		enum hud_meter_flags : byte_flags
 		{
 			_hud_meter_use_min_max_for_state_changes_bit,
@@ -141,19 +136,6 @@ namespace Yelo
 
 	namespace TagGroups
 	{
-		struct s_hud_color_flash // aka global_hud_color
-		{
-			TAG_FIELD(argb_color, default_color);
-			TAG_FIELD(argb_color, flashing_color);
-			TAG_FIELD(real, flash_period);
-			TAG_FIELD(real, flash_delay);
-			TAG_FIELD(int16, number_of_flashes);
-			TAG_FIELD(Flags::hud_flash_flags, flash_flags);
-			TAG_FIELD(real, flash_length);
-			TAG_FIELD(argb_color, disabled_color);
-			PAD32;
-		}; BOOST_STATIC_ASSERT( sizeof(s_hud_color_flash) == 0x20 );
-
 		//////////////////////////////////////////////////////////////////////////
 		// generic hud elements
 		struct s_hud_element_number : public s_hud_element // aka global_hud_element
@@ -385,7 +367,7 @@ namespace Yelo
 		{
 			enum { k_group_tag = 'wphi' };
 
-			TAG_FIELD(tag_reference, child_hud, "wphi");
+			TAG_FIELD(tag_reference, child_hud, 'wphi');
 
 		}; //BOOST_STATIC_ASSERT( sizeof(weapon_hud_interface_definition) == 0x17C );
 	};
