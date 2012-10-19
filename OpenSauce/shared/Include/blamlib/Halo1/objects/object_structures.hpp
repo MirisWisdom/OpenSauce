@@ -237,9 +237,9 @@ namespace Yelo
 			int32 network_time;																// 0xC
 			//////////////////////////////////////////////////////////////////////////
 			long_flags flags;																// 0x10
+			int32 object_marker_id;															// 0x14
 			//////////////////////////////////////////////////////////////////////////
 			// Added in HaloPC
-			UNKNOWN_TYPE(int32);															// 0x14
 			UNKNOWN_TYPE(bool);																// 0x18
 			PAD24;
 			byte unknown1C[0x34];															// 0x1C
