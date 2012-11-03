@@ -252,11 +252,13 @@ namespace Yelo
 					TiXmlElement* extension_element = parent_element->FirstChildElement("ShaderExtension");
 
 					// read the user override value, default to enabled if the attribute is not set
-					const char* enabled = extension_element->Attribute("enabled");
-					if(enabled)
-						g_extensions_enabled_user_override = Settings::ParseBoolean(enabled);
-
-					Model::LoadSettings(extension_element);
+					if(extension_element)
+					{
+						const char* enabled = extension_element->Attribute("enabled");
+						if(enabled)
+							g_extensions_enabled_user_override = Settings::ParseBoolean(enabled);
+						Model::LoadSettings(extension_element);
+					}
 				}
 			}
 

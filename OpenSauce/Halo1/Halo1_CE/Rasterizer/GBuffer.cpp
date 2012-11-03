@@ -606,19 +606,19 @@ skip_disable_velocity:
 			LPDIRECT3DVERTEXSHADER9 origVShader;
 			pDevice->GetVertexShader(&origVShader);
 
+			pDevice->SetVertexShaderConstantF(222, g_stored_worldviewproj[g_stored_wvp_index], 4);
+
 			// Using the transpose of the world view for normal output
 			Render::s_render_frustum_matricies Matricies;
 			Render::RenderGlobals()->frustum.GetMatricies(Matricies);
 
 			D3DXMATRIX WorldViewT;
 			Matricies.world_view_transpose->ConvertTo4x4(WorldViewT);
-			//TODO: change this to 225 once the gbuffer shaders are back in business
-			pDevice->SetVertexShaderConstantF(100, WorldViewT, 3);
+			pDevice->SetVertexShaderConstantF(226, WorldViewT, 3);
 
 			D3DXVECTOR4 linear_depth_mul;
 			linear_depth_mul.x = pow(Render::RenderGlobals()->frustum.z_far, -1.0f);
-			//TODO: change this to 228 once the gbuffer shaders are back in business
-			pDevice->SetVertexShaderConstantF(103, linear_depth_mul, 1);
+			pDevice->SetVertexShaderConstantF(229, linear_depth_mul, 1);
 
 			// We don't want to write to the Z-Buffer as it's already been done
 			DWORD ZWriteEnable;
@@ -670,9 +670,7 @@ skip_disable_velocity:
 		{
 			if(Render::IsRenderingReflection() == false && g_system_enabled && !g_wvp_stored)
 			{
-				//TODO: change this to 221 once the gbuffer shaders are back in business
-				device->SetVertexShaderConstantF(96, g_stored_worldviewproj[g_stored_wvp_index], 4);
-				memcpy_s(&g_stored_worldviewproj[1 - g_stored_wvp_index], sizeof(D3DMATRIX), pConstantData, sizeof(D3DMATRIX));
+				g_stored_worldviewproj[1 - g_stored_wvp_index] = *CAST_PTR(D3DMATRIX*, (float*)pConstantData);
 				g_wvp_stored = true;
 			}
 
