@@ -44,14 +44,8 @@
 #include <boost/preprocessor.hpp>
 #include <boost/static_assert.hpp>
 
-//#include <boost/filesystem.hpp>
-
 
 #include <TinyXml/tinyxml.hpp>
-
-#include <cseries/MacrosCpp.hpp>
-#include <Common/BaseBlamTypes.hpp>
-#include <Common/BaseBlamTypesPc.hpp>
 
 
 #include "Common/Platform.hpp"
@@ -59,18 +53,19 @@
 	#define PLATFORM_NO_DX9
 #endif
 
-#include <Common/CheApeShared.hpp>
+#include <blamlib/Halo1/cseries/cseries.hpp>
+#include <blamlib/scenario/scenario_location.hpp>
+#include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 
-#include <Blam/Halo1/BlamMemoryUpgrades.hpp>
-#include <Memory/Halo1/DataShared.hpp>
-#include <Memory/MemoryInterfaceShared.hpp>
-
+#include <YeloLib/open_sauce/che_ape/che_ape_api.hpp>
 
 #ifndef PLATFORM_NO_DX9
 	#include <d3dx9.h>
 	#include <d3d9.h>
 #endif
 
+#include "Common/YeloSettings.hpp"
+#include "Memory/MemoryInterface.hpp"
 
 #ifdef _DEBUG
 	#define MSG_BOX(title, msg) MessageBoxA(NULL, msg, title, MB_OK)

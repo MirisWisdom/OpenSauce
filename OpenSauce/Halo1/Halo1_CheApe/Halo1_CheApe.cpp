@@ -6,17 +6,37 @@
 */
 #include "Common/Precompile.hpp"
 
-#include "Common/YeloSettings.hpp"
-#include "Engine/EngineFunctions.hpp"
 #include "CheApeInterface.hpp"
+#include "Engine/EngineFunctions.hpp"
+#include "Common/YeloSettings.hpp"
 #include "Yelo/MemoryFixups.hpp"
 
+
+namespace Yelo
+{
+	namespace Main
+	{
+		bool IsYeloEnabled()
+		{
+			return true;
+		}
+
+		HMODULE& YeloModuleHandle()
+		{
+			static HMODULE g_module = NULL;
+
+			return g_module;
+		}
+	};
+};
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
 {
 	static bool g_initialized = false;
 
 	if(ul_reason_for_call == DLL_PROCESS_ATTACH && !g_initialized) {
+		Yelo::Main::YeloModuleHandle() = hModule;
+
 		Yelo::CheApe::UnProtectMemoryRegion();
 
 		Yelo::Settings::Initialize();
@@ -51,6 +71,7 @@ dispose:
 		Yelo::c_memory_fixups::DisposePaths();
 		Yelo::Settings::Dispose();
 
+		Yelo::Main::YeloModuleHandle() = NULL;
 		g_initialized = false;
 	}
 

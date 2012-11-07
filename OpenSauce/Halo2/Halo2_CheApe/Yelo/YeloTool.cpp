@@ -10,6 +10,8 @@
 #include "Engine/EngineFunctions.hpp"
 #include "TagGroups/TagGroups.hpp"
 
+#include <blamlib/Halo2/cache/cache_files.hpp>
+
 // http://www.modacity.net/forums/showthread.php?t=4355
 // http://www.modacity.net/forums/showthread.php?t=6270
 // animations: http://forums.remnantmods.com/viewtopic.php?f=13&t=1574&st=0&sk=t&sd=a

@@ -4,21 +4,11 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-
-/*
-	User Add-on
-		Component: GBuffer
-		Original Author: FireScythe
-		Integration: kornman00
-
-	This component adds a GBuffer to Halo's rendering pipeline, providing
-	access to the screen space Depth, Normals, Velocity and an Index buffer
-	that provides the objects type and team.
-*/
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <Common/PackedFile.hpp>
+#include <YeloLib/Halo1/files/packed_file.hpp>
+
 #include "Rasterizer/Rasterizer.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
 #include "Rasterizer/DX9/rasterizer_dx9_shaders_vshader9.hpp"

@@ -430,14 +430,14 @@ BOOL LoadTagIndex()
 	Console::ColorPrint(k_color_default, "reading tag instance array...", true);
 
 	// allocate memory for a local copy of the tag instance array
-	g_cache_view_globals.m_cache_tag_instances = new s_cache_tag_instance[g_cache_view_globals.m_cache_file_globals.count];
+	g_cache_view_globals.m_cache_tag_instances = new Cache::s_cache_tag_instance[g_cache_view_globals.m_cache_file_globals.count];
 
 	// copy the tag instance array into local memory
 	// since the tag instance array in the cache file globals has no defined elements, using
 	// the g_cache_view_globals.m_cache_file_globals size to get to the top of the array works
 	status = ReadHaloMemory(CAST_PTR(void*, ((uint32)cache_tag_header_ptr) + sizeof(g_cache_view_globals.m_cache_file_globals)), 
 		g_cache_view_globals.m_cache_tag_instances, 
-		sizeof(s_cache_tag_instance) * g_cache_view_globals.m_cache_file_globals.count);
+		sizeof(Cache::s_cache_tag_instance) * g_cache_view_globals.m_cache_file_globals.count);
 
 	if(status != k_status_ok)
 	{
@@ -523,7 +523,7 @@ BOOL HasCacheChanged()
 	if(status != k_status_ok)
 		return status;
 
-	s_cache_tag_header comparison_globals;
+	Cache::s_cache_tag_header comparison_globals;
 
 	// copy cache globals into local memory
 	status = ReadHaloMemory(cache_tag_header_ptr, 

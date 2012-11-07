@@ -7,6 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "Memory/FunctionInterface.hpp"
 
+#include "Memory/MemoryInterface.hpp"
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 #include "Interface/GameUI.hpp"
@@ -35,6 +36,10 @@ namespace Yelo
 			WRITE_HOOK_BLOCK_PROCESS(render_cursor, GET_FUNC_PTR(CALL_HOOK_RENDER_UI_CURSOR));
 			WRITE_HOOK_BLOCK_PROCESS(update_ui_widgets, GET_FUNC_VPTR(CALL_HOOK_UPDATE_UI_WIDGETS));
 #endif
+		}
+
+		void c_function_interface_system::Dispose()
+		{
 		}
 	};
 };

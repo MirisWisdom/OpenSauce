@@ -6,50 +6,11 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/cseries/errors.hpp>
+#include <blamlib/Halo1/tag_files/files.hpp>
+
 namespace Yelo
 {
-	namespace Enums
-	{
-		enum file_reference_location : _enum
-		{
-			_file_reference_location_none = CAST(_enum, NONE),
-			_file_reference_location_data = 0,
-			_file_reference_location_tags,
-			_file_reference_location_2,
-			_file_reference_location_3,
-
-			_file_reference_location
-		};
-
-		enum error_message_priority : long_enum
-		{
-			_error_message_priority_none, // ?
-			_error_message_priority_warning,
-			_error_message_priority_assert,
-			_error_message_priority_critical,
-			_error_message_priority,
-		};
-	};
-
-	namespace Flags
-	{
-		enum file_reference_flags : word_flags
-		{
-			_name_directory_bit = 1,
-			_name_parent_directory_bit = 2,
-			_name_file_bit = 3,
-			_name_extension_bit = 4,
-		};
-	};
-
-	struct s_file_reference {
-		tag			signature;
-		Flags::file_reference_flags		flags;
-		Enums::file_reference_location	location;
-		char		file_name[256];
-		HANDLE		handle;
-	}; BOOST_STATIC_ASSERT( sizeof(s_file_reference) == 0x10C );
-
 	namespace EngineFunctions
 	{
 		typedef void (PLATFORM_API* proc_error)(Enums::error_message_priority priority, cstring format, ...);

@@ -9,20 +9,17 @@ static void UnitDataFieldGetObjectIndex(const s_object_field_definition& field, 
 											   TypeHolder& result, cstring data_name)
 {
 	using namespace Enums;
+	result.ptr.datum = NULL;
 
 	int subfield_index = SubscriptStringToIndex(data_name);
 
 	switch(field.definition_index)
 	{
 	case _unit_field_object_index_weapon:				if(subfield_index >= 0 && subfield_index < Enums::k_maximum_weapons_per_unit)
-		result.datum = unit.GetWeaponObjectIndices()[subfield_index];
+		result.ptr.datum = &unit.GetWeaponObjectIndices()[subfield_index];
 		break;
 	case _unit_field_object_index_recent_damage_unit:	if(subfield_index >= 0 && subfield_index < 4)
-		result.datum = unit.GetRecentDamage()[subfield_index].responsible_unit;
-		break;
-
-	default:
-		result.datum = datum_index::null;
+		result.ptr.datum = &unit.GetRecentDamage()[subfield_index].responsible_unit;
 		break;
 	}
 }

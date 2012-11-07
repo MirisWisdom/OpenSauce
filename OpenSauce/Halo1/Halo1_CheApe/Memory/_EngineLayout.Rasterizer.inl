@@ -22,6 +22,7 @@
 			CAST_PTR(uint16*, 0x5EA43E), 
 		};
 
+		ENGINE_PTR(s_rasterizer_config, rasterizer_config,				PTR_NULL, PTR_NULL, 0xDF6600);
 		ENGINE_PTR(s_rasterizer_globals, rasterizer_globals,			PTR_NULL, PTR_NULL, 0xA2A6F8);
 
 		ENGINE_PTR(s_rasterizer_debug_options, rasterizer_debug_data,	PTR_NULL, PTR_NULL, 0xA2A758);

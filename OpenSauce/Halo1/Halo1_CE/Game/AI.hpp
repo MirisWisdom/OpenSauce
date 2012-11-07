@@ -9,8 +9,7 @@
 #include <blamlib/Halo1/ai/actions.hpp>
 #include <blamlib/Halo1/ai/actor_types.hpp>
 #include <blamlib/Halo1/ai/ai_communication.hpp>
-
-#include "Memory/Data.hpp"
+#include <blamlib/Halo1/memory/data.hpp>
 
 namespace Yelo
 {
@@ -36,7 +35,7 @@ namespace Yelo
 
 		enum actor_target_type : _enum
 		{
-			NUMBER_OF_ACTOR_TARGET_TYPES = 12
+			k_number_of_actor_target_types = 12
 		};
 
 		enum actor_danger_zone : _enum
@@ -69,7 +68,7 @@ namespace Yelo
 			_actor_knowledge_type_guard2,
 			_actor_knowledge_type_noncombat3,
 
-			NUMBER_OF_ACTOR_KNOWLEDGE_TYPES,
+			k_number_of_actor_knowledge_types,
 		};
 
 		enum actor_perception_type : _enum
@@ -79,7 +78,7 @@ namespace Yelo
 			_actor_perception_type_full,
 			_actor_perception_type_unmistakable,
 
-			NUMBER_OF_ACTOR_PERCEPTION_TYPES,
+			k_number_of_actor_perception_types,
 		};
 
 		enum actor_movement_state : _enum

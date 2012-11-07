@@ -5,7 +5,9 @@
 	See license\OpenSauce\Halo2_Xbox for specific license information
 */
 #pragma once
-#include "Memory/Data.hpp"
+
+#include <blamlib/Halo2/memory/data.hpp>
+#include <blamlib/Halo2/memory/memory_pool.hpp>
 
 #include "Objects/ObjectDefinitions.hpp"
 #include "Objects/DeviceDefinitions.hpp"

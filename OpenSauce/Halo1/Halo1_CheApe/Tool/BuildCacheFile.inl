@@ -11,7 +11,7 @@
 #include "Tool/BuildCacheFile/PredictedResources.inl"
 #include "Tool/BuildCacheFile/TagPreprocess.inl"
 
-void build_cache_file_end_preprocess(s_cache_header* header, s_cache_header_yelo& ych);
+void build_cache_file_end_preprocess(Cache::s_cache_header* header, Cache::s_cache_header_yelo& ych);
 void build_cache_file_begin_preprocess(cstring scenario_name);
 #include "Tool/BuildCacheFile/MemoryUpgrades.inl"
 /*!
@@ -22,7 +22,7 @@ void build_cache_file_begin_preprocess(cstring scenario_name);
  * calls this (MemoryUpgrades.inl, InterceptorEnd) calls the tool's build_cache_file_end function after this function completes.
  * 
  */
-static void build_cache_file_end_preprocess(s_cache_header* header, s_cache_header_yelo& ych)
+static void build_cache_file_end_preprocess(Cache::s_cache_header* header, Cache::s_cache_header_yelo& ych)
 {
 	s_build_cache_file_for_scenario& bcffs = build_cache_file_for_scenario_internals;
 

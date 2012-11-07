@@ -118,7 +118,7 @@ namespace Yelo
 		// Declare the params here
 #define CMDLINE_DEFINE_ARG(name, type)		extern c_cmd_line_argument<##type##> CMDLINE_PARAM_NAME(name);
 #define CMDLINE_DEFINE_SWITCH(name)			extern c_cmd_line_switch CMDLINE_PARAM_NAME(name);
-#include "YeloSettings.CmdLineSettings.inl"
+#include "Common/YeloSettings.CmdLineSettings.inl"
 
 		void ReadCmdLineSettings();
 	};

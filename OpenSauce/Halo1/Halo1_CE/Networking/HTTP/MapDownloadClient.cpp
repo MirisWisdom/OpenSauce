@@ -8,13 +8,13 @@
 #include "Networking/HTTP/MapDownloadClient.hpp"
 
 #if !PLATFORM_IS_DEDI
+#include <YeloLib/memory/linked_list.hpp>
+#include <YeloLib/memory/compression/7zip_codec.hpp>
+#include <YeloLib/memory/compression/zip_codec.hpp>
+#include <YeloLib/memory/security/xxtea.hpp>
 
-#include "Common/LinkedList.hpp"
 #include "Common/FileIO.hpp"
 #include "Common/YeloSettings.hpp"
-#include "Common/XXTEA.hpp"
-#include "Common/7zip.hpp"
-#include "Common/Zip.hpp"
 
 #include "Networking/Networking.hpp"
 #include "Networking/Server.hpp"

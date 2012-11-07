@@ -102,35 +102,18 @@
 	#define YELO_NO_NETWORK
 #endif
 
-#include "Common/Platform.hpp"
-#include <cseries/MacrosCpp.hpp>
-#include <Common/BaseBlamTypes.hpp>
-#include <Common/BaseBlamTypesPc.hpp>
-#include <Blam/Halo1/BlamMemoryUpgrades.hpp>
-
-#if defined(_DEBUG)
-	// Mostly just useful for debug checking something (eg, game memory) on startup or on the first pass
-	#define DebugRunOnce(...)							\
-	{	static volatile bool iran_once_##__COUNTER__;	\
-		if( iran_once_##__COUNTER__ == false )			\
-		{												\
-			iran_once_##__COUNTER__ = true;				\
-			__VA_ARGS__	;								\
-	} }
-#else
-	#define DebugRunOnce(...) __noop
+#define ASSERTS_ENABLED
+//#define API_DEBUG_MEMORY
+#if PLATFORM_IS_DEDI
+	#define API_NO_7ZIP_CODEC
+	#define API_NO_ZIP_CODEC
 #endif
 
-namespace Yelo
-{
-	// Displays a message to the user using the WinAPI
-	// Use this when are probably about to get really messy...
-	// Fucking nasty location to put this function, but for the time being, it will do
-	void PrepareToDropError(cstring text);
-};
+#include "Common/Platform.hpp"
 
-#include "Common/DebugFile.hpp"
-#include "Common/DebugAssert.hpp"
+#include <blamlib/Halo1/cseries/cseries.hpp>
+#include <blamlib/scenario/scenario_location.hpp>
+#include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
+
+#include <YeloLib/cseries/errors_yelo.hpp>
 #include "Common/YeloSettings.hpp"
-
-#define HRESULT_ERETURN(p) if(FAILED(p)) return E_FAIL

@@ -10,11 +10,31 @@
 #include "Engine/EngineFunctions.hpp"
 
 
+namespace Yelo
+{
+	namespace Main
+	{
+		bool IsYeloEnabled()
+		{
+			return true;
+		}
+
+		HMODULE& YeloModuleHandle()
+		{
+			static HMODULE g_module = NULL;
+
+			return g_module;
+		}
+	};
+};
+
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
 {
 	static bool g_initialized = false;
 
 	if(ul_reason_for_call == DLL_PROCESS_ATTACH && !g_initialized) {
+		Yelo::Main::YeloModuleHandle() = hModule;
+
  		Yelo::CheApe::UnProtectMemoryRegion();
 // 		Yelo::CheApe::PhysicalMemoryMapInitialize();
 // 		Yelo::CheApe::LoadCacheFile();
@@ -42,6 +62,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 
 //		Yelo::CheApe::Dispose();
 
+		Yelo::Main::YeloModuleHandle() = NULL;
 		g_initialized = false;
 	}
 

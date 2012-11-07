@@ -215,15 +215,6 @@ static datum_index scripting_player_data_get_object_by_name(s_player_datum* play
 			if(!target_player.IsNull())
 				return (*Players::Players())[target_player]->slave_unit_index;
 		}
-		else if( _HS_UTIL_STRNCMP(s,"weapon") )
-		{
-			Objects::s_unit_datum* unit = (*Objects::ObjectHeader())[object_index]->_unit;
-
-				 if( !strcmp(s,"weapon0") ) return unit->unit.GetWeaponObjectIndices()[0];
-			else if( !strcmp(s,"weapon1") ) return unit->unit.GetWeaponObjectIndices()[1];
-			else if( !strcmp(s,"weapon2") ) return unit->unit.GetWeaponObjectIndices()[2];
-			else if( !strcmp(s,"weapon3") ) return unit->unit.GetWeaponObjectIndices()[3];
-		}
 	}
 	
 	return datum_index::null;

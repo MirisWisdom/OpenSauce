@@ -6,8 +6,7 @@
 */
 #pragma once
 
-#include <Common/Halo1/YeloSettingsDefinitions.hpp>
-#include <Common/Halo1/YeloSharedSettings.hpp>
+#include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
 
 namespace Yelo
 {

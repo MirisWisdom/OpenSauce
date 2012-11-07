@@ -7,12 +7,12 @@
 #include "Common/Precompile.hpp"
 #include "Game/ScriptLibrary.hpp"
 
+#include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
+
 #include "Common/YeloSettings.hpp"
 #include "TagGroups/project_yellow_definitions.hpp"
 #include "Game/Camera.hpp"
 #include "Networking/MessageDefinitions.hpp"
-
-#include <Blam/Halo1/BlamMemoryUpgrades.hpp>
 
 // Includes for MiscScriptingFunctions.inl
 #include "Game/EngineFunctions.hpp"
@@ -22,7 +22,6 @@
 #include "Game/GameStateRuntimeData.hpp"
 #include "Interface/UIWidgets.hpp"
 #include "Networking/MessageDeltas.hpp"
-#include "TagGroups/project_yellow_definitions.hpp"
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/PostProcessing/PostProcessingScripting.hpp"
 #include "Scenario/ScenarioFauxZones.hpp"
@@ -348,7 +347,7 @@ namespace Yelo
 			return result;
 		}
 
-		bool DefinitionsMatch(const TagGroups::scripting_block& data)
+		bool DefinitionsMatch(const TagGroups::s_scripting_definitions& data)
 		{
 			const byte k_developer_mode = *GameState::DeveloperMode();
 			char developer_mode_msg[256];
@@ -357,7 +356,7 @@ namespace Yelo
 
 			for(int32 x = 0; x < data.new_functions.Count; x++)
 			{
-				const TagGroups::script_function_block& def = 
+				const TagGroups::s_script_function_definition& def = 
 					data.new_functions[x];
 
 				is_valid = false;
@@ -391,7 +390,7 @@ namespace Yelo
 
 			for(int32 x = 0; x < data.new_globals.Count; x++)
 			{
-				const TagGroups::script_global_block& def = 
+				const TagGroups::s_script_global_definition& def = 
 					data.new_globals[x];
 
 				is_valid = false;
@@ -426,8 +425,39 @@ namespace Yelo
 				{
 				// also for byte
 				case HS_TYPE(bool):	data.byte = *copy.ptr.byte;		break;
+				//////////////////////////////////////////////////////////////////////////
+				// block index based types
+				case HS_TYPE(trigger_volume):
+				case HS_TYPE(cutscene_flag):
+				case HS_TYPE(cutscene_camera_point):
+				case HS_TYPE(cutscene_title):
+				case HS_TYPE(cutscene_recording):
+				case HS_TYPE(device_group):
+				//case HS_TYPE(ai):
+				case HS_TYPE(ai_command_list):
+				case HS_TYPE(starting_profile):
+				case HS_TYPE(conversation):
+				//////////////////////////////////////////////////////////////////////////
 				case HS_TYPE(short):data.uint16 = *copy.ptr.uint16;	break;
 				case HS_TYPE(real):
+				//////////////////////////////////////////////////////////////////////////
+				// datum_index based types
+				case HS_TYPE(object_list):
+				case HS_TYPE(sound):
+				case HS_TYPE(effect):
+				case HS_TYPE(damage):
+				case HS_TYPE(looping_sound):
+				case HS_TYPE(animation_graph):
+				case HS_TYPE(actor_variant):
+				case HS_TYPE(damage_effect):
+				case HS_TYPE(object_definition):
+				case HS_TYPE(object):
+				case HS_TYPE(unit):
+				case HS_TYPE(vehicle):
+				case HS_TYPE(weapon):
+				case HS_TYPE(device):
+				case HS_TYPE(scenery):
+				//////////////////////////////////////////////////////////////////////////
 				case HS_TYPE(long):	data.uint32 = *copy.ptr.uint32;	break;
 					break;
 				}
@@ -440,8 +470,39 @@ namespace Yelo
 				{
 				// also for byte
 				case HS_TYPE(bool):	data.byte = NONE;	break;
+				//////////////////////////////////////////////////////////////////////////
+				// block index based types
+				case HS_TYPE(trigger_volume):
+				case HS_TYPE(cutscene_flag):
+				case HS_TYPE(cutscene_camera_point):
+				case HS_TYPE(cutscene_title):
+				case HS_TYPE(cutscene_recording):
+				case HS_TYPE(device_group):
+				//case HS_TYPE(ai):
+				case HS_TYPE(ai_command_list):
+				case HS_TYPE(starting_profile):
+				case HS_TYPE(conversation):
+				//////////////////////////////////////////////////////////////////////////
 				case HS_TYPE(short):data.int16 = NONE;	break;
 				case HS_TYPE(real): data.real = -1.0f;	break;
+				//////////////////////////////////////////////////////////////////////////
+				// datum_index based types
+				case HS_TYPE(object_list):
+				case HS_TYPE(sound):
+				case HS_TYPE(effect):
+				case HS_TYPE(damage):
+				case HS_TYPE(looping_sound):
+				case HS_TYPE(animation_graph):
+				case HS_TYPE(actor_variant):
+				case HS_TYPE(damage_effect):
+				case HS_TYPE(object_definition):
+				case HS_TYPE(object):
+				case HS_TYPE(unit):
+				case HS_TYPE(vehicle):
+				case HS_TYPE(weapon):
+				case HS_TYPE(device):
+				case HS_TYPE(scenery):
+				//////////////////////////////////////////////////////////////////////////
 				case HS_TYPE(long):	data.int32 = NONE;	break;
 					break;
 				}
@@ -455,8 +516,39 @@ namespace Yelo
 				{
 				// also for byte
 				case HS_TYPE(bool):	*data.ptr.byte = *CAST_PTR(byte*, ptr);		break;
+				//////////////////////////////////////////////////////////////////////////
+				// block index based types
+				case HS_TYPE(trigger_volume):
+				case HS_TYPE(cutscene_flag):
+				case HS_TYPE(cutscene_camera_point):
+				case HS_TYPE(cutscene_title):
+				case HS_TYPE(cutscene_recording):
+				case HS_TYPE(device_group):
+				//case HS_TYPE(ai):
+				case HS_TYPE(ai_command_list):
+				case HS_TYPE(starting_profile):
+				case HS_TYPE(conversation):
+				//////////////////////////////////////////////////////////////////////////
 				case HS_TYPE(short):*data.ptr.uint16 = *CAST_PTR(uint16*, ptr);	break;
 				case HS_TYPE(real):
+				//////////////////////////////////////////////////////////////////////////
+				// datum_index based types
+				case HS_TYPE(object_list):
+				case HS_TYPE(sound):
+				case HS_TYPE(effect):
+				case HS_TYPE(damage):
+				case HS_TYPE(looping_sound):
+				case HS_TYPE(animation_graph):
+				case HS_TYPE(actor_variant):
+				case HS_TYPE(damage_effect):
+				case HS_TYPE(object_definition):
+				case HS_TYPE(object):
+				case HS_TYPE(unit):
+				case HS_TYPE(vehicle):
+				case HS_TYPE(weapon):
+				case HS_TYPE(device):
+				case HS_TYPE(scenery):
+				//////////////////////////////////////////////////////////////////////////
 				case HS_TYPE(long):	*data.ptr.uint32 = *CAST_PTR(uint32*, ptr);	break;
 					break;
 				}

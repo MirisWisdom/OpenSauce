@@ -8,9 +8,9 @@
 {Settings::Initialize,								Settings::Dispose},
 {FileIO::Initialize,								FileIO::Dispose},
 #ifdef API_DEBUG
-	{DebugFile::Initialize,								DebugFile::Dispose},
+	{Debug::FileInitialize,							Debug::FileDispose},
 #endif
-{DebugDump::Initialize,								DebugDump::Dispose},
+{Debug::DumpInitialize,								Debug::DumpDispose},
 
 {GameState::Initialize,								GameState::Dispose},
 {BuildNumber::Initialize,							BuildNumber::Dispose},

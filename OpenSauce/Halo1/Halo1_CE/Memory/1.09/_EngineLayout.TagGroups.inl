@@ -80,7 +80,7 @@
 //////////////////////////////////////////////////////////////////////////
 // TagGroups.cpp
 #elif __EL_INCLUDE_FILE_ID == __EL_TAGGROUPS_TAG_GROUPS
-	ENGINE_DPTR(s_cache_tag_instance, tag_instances,0x816DE4, 0x6E2CA4);
+	ENGINE_DPTR(Cache::s_cache_tag_instance, tag_instances,	0x816DE4, 0x6E2CA4);
 
 	FUNC_PTR(TAG_ITERATOR_NEXT,	0x442A20, 0x4435B0);
 

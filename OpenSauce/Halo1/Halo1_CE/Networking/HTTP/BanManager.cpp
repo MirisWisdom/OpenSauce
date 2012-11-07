@@ -8,9 +8,9 @@
 #include "Networking/HTTP/BanManager.hpp"
 
 #if PLATFORM_IS_DEDI
+#include <YeloLib/memory/linked_list.hpp>
+#include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
 
-#include <Common/LinkedList.hpp>
-#include <Common/Halo1/YeloSharedSettings.hpp>
 #include "Common/FileIO.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Networking/HTTP/HTTP.hpp"

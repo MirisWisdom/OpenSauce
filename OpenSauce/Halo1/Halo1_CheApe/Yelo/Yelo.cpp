@@ -7,6 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "CheApeInterface.hpp"
 
+#include "Common/DebugDump.hpp"
 #include "Engine/EngineFunctions.hpp"
 #include "Rasterizer/Rasterizer.hpp"
 #include "TagGroups/TagGroups.hpp"
@@ -57,6 +58,7 @@ namespace Yelo
 
 	void Initialize()
 	{
+		Debug::DumpInitialize();
 		c_memory_fixups::Initialize();
 		Objects::Items::GrenadeTypesUpgradeInitialize();
 		Scripting::Initialize();
@@ -85,5 +87,6 @@ namespace Yelo
 		Scripting::Dispose();
 		Objects::Items::GrenadeTypesUpgradeDispose();
 		c_memory_fixups::Dispose();
+		Debug::DumpDispose();
 	}
 };

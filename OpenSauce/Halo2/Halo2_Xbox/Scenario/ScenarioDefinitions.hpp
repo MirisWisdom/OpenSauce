@@ -5,6 +5,9 @@
 	See license\OpenSauce\Halo2_Xbox for specific license information
 */
 #pragma once
+
+#include <blamlib/Halo2/cache/predicted_resources.hpp>
+
 #include "Game/GlobalDefinitions.hpp"
 #include "Scenario/SkyDefinitions.hpp"
 #include "Scenario/ObjectScenariioDefinitions.hpp"
@@ -258,11 +261,11 @@ namespace Yelo
 			TagBlock<scenario_bsp_switch_trigger_volume> BspSwitchTriggerVolumes; // 0x130
 
 			TagBlock<scenario_decal> Decals; // 0x138
-			TagBlock<TagGroups::reference_block> DecalPalette; // 0x140
+			TagBlock<tag_reference> DecalPalette; // 0x140
 
 			TagBlock<scenario_detail_object_collection_palette_entry> DetailObjectCollectionPalette; // 0x148
 
-			TagBlock<TagGroups::reference_block> StylePalette; // 0x150
+			TagBlock<tag_reference> StylePalette; // 0x150
 			TagBlock<squad_group_definition> SquadGroups; // 0x158
 			TagBlock<squad_definition> Squads; // 0x160
 			TagBlock<zone_definition> Zones; // 0x168

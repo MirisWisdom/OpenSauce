@@ -20,13 +20,11 @@
 // Library's function convention
 #define API_FUNC __stdcall
 
-#include <cseries/MacrosCpp.hpp>
-#include <Common/BaseBlamTypes.hpp>
-#include <Common/BaseBlamTypesXbox.hpp>
-#include <Blam/Halo2/BlamDefinitions.hpp>
+#include <blamlib/Halo2/cseries/cseries.hpp>
+#include <blamlib/scenario/scenario_location.hpp>
+#include <blamlib/Halo2/tag_files/tag_groups.hpp>
 #include "Common/BlamTypes.hpp"
 
-#include "TagGroups/TagGroups.hpp"
 #include "Cache/StringsIds.hpp"
 
 #include "Memory/MemoryInterface.hpp"

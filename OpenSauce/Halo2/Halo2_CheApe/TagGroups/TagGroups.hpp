@@ -6,9 +6,7 @@
 */
 #pragma once
 
-#include <TagGroups/Halo2/CacheDefinitions.hpp>
-#include <TagGroups/Halo2/TagGroupDefinitions.hpp>
-#include "Memory/Data.hpp"
+#include <blamlib/Halo2/tag_files/tag_groups.hpp>
 
 namespace Yelo
 {

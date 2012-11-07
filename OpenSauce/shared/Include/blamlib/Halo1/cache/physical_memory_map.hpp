@@ -10,6 +10,7 @@
 	#include <blamlib/Halo1/cache/pc_texture_cache.hpp>
 #endif
 #include <blamlib/Halo1/memory/data.hpp>
+#include <blamlib/Halo1/memory/lruv_cache.hpp>
 
 namespace Yelo
 {

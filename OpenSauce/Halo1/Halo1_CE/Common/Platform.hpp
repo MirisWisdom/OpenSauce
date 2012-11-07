@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <Common/PlatformShared.hpp>
+#include <YeloLib/shell/platform_yelo.hpp>
 #define PLATFORM_TARGET		PLATFORM_TARGET_PC
 #define PLATFORM_IS_EDITOR	FALSE
 

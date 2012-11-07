@@ -6,7 +6,8 @@
 */
 #pragma once
 
-#include "Memory/Data.hpp"
+#include <blamlib/Halo1/memory/data.hpp>
+#include <blamlib/Halo1/memory/lruv_cache.hpp>
 
 namespace Yelo
 {

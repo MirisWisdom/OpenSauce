@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <TagGroups/Halo1/TagGroupDefinitions.hpp>
+#include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 namespace Yelo
 {
@@ -26,6 +26,86 @@ namespace Yelo
 
 			_hud_anchor,
 		};
+
+
+		enum hud_multitexture_overlay_effector_type : _enum
+		{
+			_hud_multitexture_overlay_effector_type_tint,
+			_hud_multitexture_overlay_effector_type_horizontal_offset,
+			_hud_multitexture_overlay_effector_type_vertical_offset,
+			_hud_multitexture_overlay_effector_type_fade,
+
+			_hud_multitexture_overlay_effector_type,
+		};
+		enum hud_multitexture_overlay_effector_destination : _enum
+		{
+			_hud_multitexture_overlay_effector_destination_geometry_offset,
+			_hud_multitexture_overlay_effector_destination_primary_map,
+			_hud_multitexture_overlay_effector_destination_secondary_map,
+			_hud_multitexture_overlay_effector_destination_tertiary_map,
+
+			_hud_multitexture_overlay_effector_destination,
+		};
+		enum hud_multitexture_overlay_effector_source : _enum
+		{
+			_hud_multitexture_overlay_effector_source_player_pitch,
+			_hud_multitexture_overlay_effector_source_player_pitch_tangent,
+			_hud_multitexture_overlay_effector_source_player_yaw,
+			_hud_multitexture_overlay_effector_source_weapon_ammo_total,
+			_hud_multitexture_overlay_effector_source_weapon_ammo_loaded,
+			_hud_multitexture_overlay_effector_source_weapon_heat,
+			_hud_multitexture_overlay_effector_source_explicit_uses_low_bound,
+			_hud_multitexture_overlay_effector_source_weapon_zoom_level,
+
+			_hud_multitexture_overlay_effector_source,
+		};
+
+		enum hud_multitexture_overlay_anchor : _enum
+		{
+			_hud_multitexture_overlay_anchor_texture,
+			_hud_multitexture_overlay_anchor_screen,
+
+			_hud_multitexture_overlay_anchor,
+		};
+		enum hud_multitexture_overlay_blend_mode : _enum
+		{
+			_hud_multitexture_overlay_blend_mode_add,
+			_hud_multitexture_overlay_blend_mode_subtract,
+			_hud_multitexture_overlay_blend_mode_multiply,
+			_hud_multitexture_overlay_blend_mode_multiply2x,
+			_hud_multitexture_overlay_blend_mode_dot,
+
+			_hud_multitexture_overlay_blend_mode,
+		};
+		enum hud_multitexture_overlay_address : _enum
+		{
+			_hud_multitexture_overlay_address_clamp,
+			_hud_multitexture_overlay_address_wrap,
+
+			_hud_multitexture_overlay_address,
+		};
+
+		enum auxilary_overlay_type : _enum
+		{
+			_auxilary_overlay_type_team_icon,
+
+			_auxilary_overlay_type,
+		};
+		enum hud_auxilary_meter_type : _enum
+		{
+			_hud_auxilary_meter_type_integrated_light,
+
+			_hud_auxilary_meter_type,
+		};
+
+		enum hud_use_on_map_type : _enum
+		{
+			_hud_use_on_map_type_any,
+			_hud_use_on_map_type_solo,
+			_hud_use_on_map_type_multiplayer,
+
+			_hud_use_on_map_type,
+		};
 	};
 
 	namespace Flags
@@ -40,6 +120,25 @@ namespace Yelo
 		enum hud_flash_flags : word_flags
 		{
 			_hud_flash_reverse_colors_bit, // reverse default/flashing
+		};
+
+		enum hud_meter_flags : byte_flags
+		{
+			_hud_meter_use_min_max_for_state_changes_bit,
+			_hud_meter_interpolate_between_min_max_flash_colors_as_state_changes_bit,
+			_hud_meter_interpolate_color_along_hsv_space_bit,
+			_hud_meter_more_colors_for_hsv_interpolation_bit,
+			_hud_meter_invert_interpolation_bit,
+		};
+
+		enum hud_auxilary_overlay_flags : word_flags
+		{
+			_hud_auxilary_overlay_use_team_color_bit,
+		};
+		enum hud_auxilary_panel_flags : long_flags
+		{
+			_hud_auxilary_panel_show_only_when_active_bit,
+			_hud_auxilary_panel_flash_once_if_activated_while_disabled_bit,
 		};
 	};
 
@@ -176,5 +275,186 @@ namespace Yelo
 				TAG_PAD(int32, 24);
 			}misc;
 		}; BOOST_STATIC_ASSERT( sizeof(hud_globals_definition) == 0x450 );
+
+
+		//////////////////////////////////////////////////////////////////////////
+		// generic hud elements
+		struct s_hud_element_number : public s_hud_element // aka global_hud_element
+		{
+			s_hud_color_flash color;
+			TAG_FIELD(sbyte, maximum_number_of_digits);
+			TAG_FIELD(byte_flags, flags);
+			TAG_FIELD(sbyte, number_of_fractional_digits);
+			PAD8;
+			TAG_PAD(tag_block, 1);
+		}; BOOST_STATIC_ASSERT( sizeof(s_hud_element_number) == 0x54 );
+
+		struct s_hud_element_static : public s_hud_element // aka global_hud_interface_element
+		{
+			TAG_FIELD(tag_reference, interface_bitmap, 'bitm');
+			s_hud_color_flash color;
+		}; BOOST_STATIC_ASSERT( sizeof(s_hud_element_static) == 0x54 );
+
+		struct s_hud_element_meter : public s_hud_element // aka global_hud_meter
+		{
+			TAG_FIELD(tag_reference, interface_bitmap, 'bitm');
+			TAG_FIELD(rgb_color, color_at_meter_minimum);
+			TAG_FIELD(rgb_color, color_at_meter_maximum);
+			TAG_FIELD(rgb_color, flash_color);
+			TAG_FIELD(argb_color, empty_color);
+			TAG_FIELD(Flags::hud_meter_flags, flags);
+			TAG_FIELD(byte, minumum_meter_value);
+			TAG_FIELD(int16, sequence_index);
+			TAG_FIELD(byte, alpha_multiplier);
+			TAG_FIELD(byte, alpha_bias);
+			TAG_FIELD(int16, value_scale, "used for non-integral values, i.e. health and shields");
+			TAG_FIELD(real, opacity);
+			TAG_FIELD(real, translucency);
+			TAG_FIELD(argb_color, disabled_color);
+			TAG_PAD(tag_block, 1);
+			PAD32;
+		}; BOOST_STATIC_ASSERT( sizeof(s_hud_element_meter) == 0x68 );
+
+		struct hud_screen_effect_definition
+		{
+			PAD32;
+			struct {
+				TAG_FIELD(word_flags, flags);
+				PAD16;
+				TAG_PAD(tag_reference, 1);
+				TAG_FIELD(tag_reference, fullscreen_bitmap, 'bitm');
+				TAG_FIELD(tag_reference, splitscreen_bitmap, 'bitm');
+				TAG_PAD(int32, 2);
+			}mask;
+			struct {
+				TAG_FIELD(word_flags, flags);
+				PAD16;
+				TAG_FIELD(angle_bounds, fov_in_bounds);
+				TAG_FIELD(real_bounds, radius_out_bounds);
+				TAG_PAD(int32, 6);
+			}convolution;
+			struct {
+				TAG_FIELD(word_flags, flags);
+				TAG_FIELD(int16, script_source);
+				TAG_FIELD(real, intensity);
+				TAG_PAD(int32, 6);
+			}night_vision;
+			struct {
+				TAG_FIELD(word_flags, flags);
+				TAG_FIELD(int16, script_source);
+				TAG_FIELD(real, intensity);
+				TAG_FIELD(real_rgb_color, tint);
+				TAG_PAD(int32, 6);
+			}desaturation;
+		}; BOOST_STATIC_ASSERT( sizeof(hud_screen_effect_definition) == 0xB8 );
+
+		struct sound_hud_element_definition
+		{
+			TAG_FIELD(tag_reference, sound, 'snd!', 'lsnd');
+			TAG_FIELD(long_flags, latched_to); // unit_hud_sound_flags, grenade_hud_sound_flags
+			TAG_FIELD(real, scale);
+			TAG_PAD(int32, 8);
+		}; BOOST_STATIC_ASSERT( sizeof(sound_hud_element_definition) == 0x38 );
+
+
+		//////////////////////////////////////////////////////////////////////////
+		// hud overlays
+		struct multitexture_overlay_hud_element_effector_definition // aka global_hud_multitexture_overlay_effector_definition
+		{
+			TAG_PAD(int32, 16);
+
+			////////////////////////////////////////////////////////////////
+			// source/destination
+			// These describe the relationship that causes the effect.
+			// * destination type is the type of variable you want to be effected
+			// * destination tells which texture map (or geometry offset) to apply it to
+			// * source says which value to look at when computing the effect
+			TAG_ENUM(destination_type, Enums::hud_multitexture_overlay_effector_type);
+			TAG_ENUM(destination, Enums::hud_multitexture_overlay_effector_destination);
+			TAG_ENUM(source, Enums::hud_multitexture_overlay_effector_source);
+			PAD16;
+
+			////////////////////////////////////////////////////////////////
+			// in/out bounds
+			// When the source is at the lower inbound, the destination ends up the lower outbound and vice-versa applies for the upper values.
+			TAG_FIELD(real_bounds, in_bounds, "source units");
+			TAG_FIELD(real_bounds, out_bounds, "pixels");
+			TAG_PAD(int32, 16);
+
+			////////////////////////////////////////////////////////////////
+			// tint color bounds
+			// If destination is tint, these values are used instead of the out bounds.
+			TAG_FIELD(real_rgb_color, tint_color_lower_bound);
+			TAG_FIELD(real_rgb_color, tint_color_upper_bound);
+
+			////////////////////////////////////////////////////////////////
+			// periodic functions
+			// If you use a periodic function as the source, this lets you tweak it.
+			TAG_ENUM(periodic_function, Enums::periodic_function);
+			PAD16;
+			TAG_FIELD(real, function_period, "seconds");
+			TAG_FIELD(real, function_phase, "seconds");
+			TAG_PAD(int32, 8);
+		}; BOOST_STATIC_ASSERT( sizeof(multitexture_overlay_hud_element_effector_definition) == 0xDC ); // max count: 30
+		struct multitexture_overlay_hud_element_definition // aka 'global_hud_multitexture_overlay_definition'
+		{
+			PAD16;
+			TAG_FIELD(int16, type);
+			TAG_ENUM(framebuffer_blend_func, Enums::shader_framebuffer_blend_function);
+			PAD16;
+			TAG_PAD(int32, 8);
+
+			////////////////////////////////////////////////////////////////
+			// anchors
+			// where you want the origin of the texture.
+			// *"texture" uses the texture coordinates supplied
+			// *"screen" uses the origin of the screen as the origin of the texture
+			TAG_ENUM(primary_anchor, Enums::hud_multitexture_overlay_anchor);
+			TAG_ENUM(secondary_anchor, Enums::hud_multitexture_overlay_anchor);
+			TAG_ENUM(tertiary_anchor, Enums::hud_multitexture_overlay_anchor);
+
+			////////////////////////////////////////////////////////////////
+			// blending function
+			// how to blend the textures together
+			TAG_ENUM(_0_to_1_blend_func, Enums::hud_multitexture_overlay_blend_mode);
+			TAG_ENUM(_1_to_2_blend_func, Enums::hud_multitexture_overlay_blend_mode);
+			PAD16;
+
+			////////////////////////////////////////////////////////////////
+			// map scales
+			// how much to scale the textures
+			TAG_FIELD(real_point2d, primary_scale);
+			TAG_FIELD(real_point2d, secondary_scale);
+			TAG_FIELD(real_point2d, tertiary_scale);
+
+			////////////////////////////////////////////////////////////////
+			// map offsets
+			// how much to offset the origin of the texture
+			TAG_FIELD(real_point2d, primary_offset);
+			TAG_FIELD(real_point2d, secondary_offset);
+			TAG_FIELD(real_point2d, tertiary_offset);
+
+			////////////////////////////////////////////////////////////////
+			// map
+			// which maps to use
+			TAG_FIELD(tag_reference, primary, 'bitm');
+			TAG_FIELD(tag_reference, secondary, 'bitm');
+			TAG_FIELD(tag_reference, tertiary, 'bitm');
+			TAG_ENUM(primary_wrap_mode, Enums::hud_multitexture_overlay_address);
+			TAG_ENUM(secondary_wrap_mode, Enums::hud_multitexture_overlay_address);
+			TAG_ENUM(tertiary_wrap_mode, Enums::hud_multitexture_overlay_address);
+			PAD16;
+			TAG_PAD(int32, 46);
+			TAG_TBLOCK(effectors, multitexture_overlay_hud_element_effector_definition);
+			TAG_PAD(int32, 32);
+		}; BOOST_STATIC_ASSERT( sizeof(multitexture_overlay_hud_element_definition) == 0x1E0 ); // max count: 30
+
+		struct s_hud_element_overlay : public s_hud_element_static
+		{
+			TAG_FIELD(int16, sequence_index);
+			PAD16;
+			TAG_TBLOCK(multitex_overlay, multitexture_overlay_hud_element_definition);
+			PAD32;
+		}; BOOST_STATIC_ASSERT( sizeof(s_hud_element_overlay) == 0x68 );
 	};
 };

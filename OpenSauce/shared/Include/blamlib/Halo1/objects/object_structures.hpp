@@ -281,10 +281,10 @@ namespace Yelo
 			UNKNOWN_TYPE(int16);	// 0x174, idk what is here, could be part of s_object_attachments_datum_data
 			int16 shader_permutation;														// 0x176, shader's bitmap block index
 			byte region_vitality[Enums::k_maximum_regions_per_model];						// 0x178
-			byte region_permutation_indices[Enums::k_maximum_regions_per_model];			// 0x180
+			sbyte region_permutation_indices[Enums::k_maximum_regions_per_model];			// 0x180
 
-			real_rgb_color change_colors[Enums::k_object_change_color_count];				// 0x188
-			real_rgb_color change_colors2[Enums::k_object_change_color_count];				// 0x1B8
+			real_rgb_color change_colors[Enums::k_number_of_object_change_colors];			// 0x188
+			real_rgb_color change_colors2[Enums::k_number_of_object_change_colors];			// 0x1B8
 
 			// one of these are for interpolating
 			s_object_header_block_reference node_orientations;								// 0x1E8 real_orientation3d[node_count]

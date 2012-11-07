@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include "Memory/Data.hpp"
+#include <blamlib/Halo1/memory/data.hpp>
 
 namespace Yelo
 {

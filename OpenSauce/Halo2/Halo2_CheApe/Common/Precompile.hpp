@@ -33,16 +33,15 @@
 
 #include <TinyXml/tinyxml.hpp>
 
-#include <cseries/MacrosCpp.hpp>
-#include <Common/BaseBlamTypes.hpp>
-#include <Common/BaseBlamTypesPc.hpp>
+
 #include "Common/Platform.hpp"
-#include "Common/BlamTypes.hpp"
 
-#include <Common/CheApeShared.hpp>
+#include <blamlib/cseries/cseries_base.hpp>
+#include <YeloLib/cseries/cseries_yelo_base.hpp>
 
-#include <Memory/Halo2/DataShared.hpp>
-#include <Memory/MemoryInterfaceShared.hpp>
+#include <YeloLib/open_sauce/che_ape/che_ape_api.hpp>
+
+#include "Memory/MemoryInterface.hpp"
 
 #ifdef _DEBUG
 	#define MSG_BOX(title, msg) MessageBoxW(NULL, msg, title, MB_OK)

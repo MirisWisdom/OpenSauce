@@ -6,8 +6,10 @@
 */
 #pragma once
 
+#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
+
 #include "TagGroups/TagGroups.hpp"
-#include <Blam/Halo1/project_yellow_shared_definitions.hpp>
 
 namespace Yelo
 {

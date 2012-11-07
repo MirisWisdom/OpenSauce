@@ -7,16 +7,11 @@
 #include "Common/Precompile.hpp"
 #include "Objects/Objects.hpp"
 
-#include <TagGroups/Halo1/object_definitions.hpp>
-#include <TagGroups/Halo1/device_definitions.hpp>
-#include <TagGroups/Halo1/item_definitions.hpp>
-#include <TagGroups/Halo1/unit_definitions.hpp>
-
-#include <TagGroups/Halo1/damage_effect_definitions.hpp>
-#include "TagGroups/project_yellow_definitions.hpp"
-
+#include <blamlib/Halo1/effects/damage_effect_definitions.hpp>
 #include <blamlib/Halo1/models/collision_model_definitions.hpp>
 #include <blamlib/Halo1/models/model_animation_definitions.hpp>
+
+#include "TagGroups/project_yellow_definitions.hpp"
 
 #include "Objects/ObjectFieldDefinitions.hpp"
 #include "Objects/Equipment.hpp"

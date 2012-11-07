@@ -6,7 +6,6 @@
 */
 #pragma once
 
-#include "Memory/Data.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Game/GameEngine.hpp"
 #include "Networking/GameSpyApi.hpp"
@@ -15,8 +14,10 @@
 #include <blamlib/Halo1/bungie_net/network/transport_endpoint_winsock.hpp>
 #include <blamlib/Halo1/bungie_net/network/transport_endpoint_set_winsock.hpp>
 #include <blamlib/Halo1/game/players.hpp>
+#include <blamlib/Halo1/game/simple_circular_queue.hpp>
 #include <blamlib/Halo1/main/main.hpp>
 #include <blamlib/Halo1/memory/bitstream.hpp>
+#include <blamlib/Halo1/memory/data.hpp>
 #include <blamlib/Halo1/networking/network_connection.hpp>
 #include <blamlib/Halo1/networking/network_client_manager.hpp>
 #include <blamlib/Halo1/networking/network_game_globals.hpp>

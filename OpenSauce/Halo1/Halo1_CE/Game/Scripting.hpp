@@ -6,9 +6,9 @@
 */
 #pragma once
 
-#include "Memory/Data.hpp"
 #include <blamlib/Halo1/cutscene/recorded_animations.hpp>
-#include <Blam/Halo1/BlamScriptingDefinitions.hpp>
+#include <blamlib/Halo1/hs/hs.hpp>
+#include <blamlib/Halo1/memory/data.hpp>
 
 namespace Yelo
 {

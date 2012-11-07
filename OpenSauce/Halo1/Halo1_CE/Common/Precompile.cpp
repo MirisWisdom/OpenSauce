@@ -8,10 +8,4 @@
 
 namespace Yelo
 {
-	void PrepareToDropError(cstring text)
-	{
-		if(text == NULL) text = "(null)";
-
-		MessageBox(NULL, text, "Prepare to Drop!", MB_OK | MB_ICONEXCLAMATION);
-	}
 };

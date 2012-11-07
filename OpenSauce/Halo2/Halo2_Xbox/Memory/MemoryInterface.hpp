@@ -7,7 +7,7 @@
 #pragma once
 
 // See this header for more "Engine pointer markup system" documentation
-#include <Memory/MemoryInterfaceShared.hpp>
+#include <YeloLib/memory/memory_interface_base.hpp>
 
 //////////////////////////////////////////////////////////////////////////
 // Engine pointer markup system

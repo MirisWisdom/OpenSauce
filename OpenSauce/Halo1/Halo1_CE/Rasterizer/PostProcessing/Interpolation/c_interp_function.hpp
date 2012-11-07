@@ -5,10 +5,12 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 #pragma once
+
+#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
+
 #include "Rasterizer/Rasterizer.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Rasterizer/PostProcessing/Interpolation/c_interp_base.hpp"
-#include <Blam/Halo1/shader_postprocess_definitions.hpp>
 
 namespace Yelo
 {
@@ -69,7 +71,7 @@ namespace Yelo
 				if(m_members_function.animation->animation_duration == 0.0f)
 					function_input = 0.0f;
 				else
-					function_input = Rasterizer::FrameInputs()->elapsed_time / m_members_function.animation->animation_duration;
+					function_input = Rasterizer::FrameParameters()->elapsed_time / m_members_function.animation->animation_duration;
 
 				for(int32 i = 0; i < C; i++)
 				{

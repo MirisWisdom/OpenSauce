@@ -6,10 +6,11 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/math/periodic_functions.hpp>
+#include <blamlib/Halo1/memory/data.hpp>
+#include <blamlib/Halo1/tag_files/tag_groups.hpp>
+
 #include "Memory/MemoryInterface.hpp"
-#include "Memory/Data.hpp"
-#include <TagGroups/Halo1/TagGroupDefinitions.hpp>
-#include <TagGroups/Halo1/bitmap_definitions.hpp>
 
 namespace Yelo
 {
@@ -23,9 +24,14 @@ namespace Yelo
 		struct s_object_placement_data;
 	};
 
+	namespace Physics
+	{
+		struct s_collision_result;
+	};
+
 	namespace TagGroups
 	{
-		struct bitmap_data;
+		struct s_bitmap_data;
 
 		struct s_sound_permutation;
 
@@ -33,6 +39,9 @@ namespace Yelo
 
 		struct s_hud_element_number;
 		struct s_hud_element_static;
+		struct s_hud_element_meter;
+
+		struct predicted_resource;
 	};
 };
 
@@ -250,7 +259,7 @@ namespace Yelo
 
 			//////////////////////////////////////////////////////////////////////////
 			// TODO
-			void HudDrawMeter(int16 local_player_index, TagGroups::s_hud_absolute_placement* placement, TagGroups::s_hud_element_number* element, 
+			void HudDrawMeter(int16 local_player_index, TagGroups::s_hud_absolute_placement* placement, TagGroups::s_hud_element_meter* element, 
 				... /*TODO*/ );
 			void HudDrawNumbers(int16 local_player_index, TagGroups::s_hud_absolute_placement* placement, TagGroups::s_hud_element_number* element,
 				int32 number, int32, long_flags, real, real);
@@ -414,6 +423,12 @@ namespace Yelo
 
 			// Returns the number of frames remaining in an unit's custom animation
 			int16 UnitGetCustomAnimationTime(datum_index unit_index);
+		};
+
+		namespace Physics
+		{
+			bool PLATFORM_API CollisionTestVector(long_flags flags, real_point3d& location, real_vector3d& vector, 
+				datum_index object_index, Yelo::Physics::s_collision_result& collision);
 		};
 
 		namespace Players

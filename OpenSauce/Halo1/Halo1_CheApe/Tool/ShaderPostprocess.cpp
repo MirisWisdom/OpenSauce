@@ -8,8 +8,8 @@
 #include "Tool/ShaderPostprocess.hpp"
 #if PLATFORM_ID == PLATFORM_TOOL
 
-#include <Blam/Halo1/shader_postprocess_definitions.hpp>
-#include <Common/Halo1/YeloSharedSettings.hpp>
+#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
+
 #include "Common/YeloSettings.hpp"
 #include "Common/StringEditing.hpp"
 #include "TagGroups/TagGroups.hpp"

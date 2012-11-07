@@ -13,13 +13,58 @@
 #if PLATFORM_TARGET == PLATFORM_TARGET_XBOX
 	// TODO
 #else
-	interface IDirect3DBaseTexture9;
+	#include <d3d9.h>
+	#include <blamlib/Halo1/rasterizer/dx9/rasterizer_dx9_render_targets.hpp>
 #endif
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum rasterizer_target_render
+		{
+			_rasterizer_target_render_d3d,
+			_rasterizer_target_render_primary,
+			_rasterizer_target_render_secondary,
+
+			k_number_of_rasterizer_target_renders
+		};
+	};
+
 	namespace Rasterizer
 	{
+		struct s_rasterizer_config
+		{
+			const BOOL linear_texture_addressing;
+			const BOOL linear_texture_addressing_zoom;
+			const BOOL linear_texture_addressing_sun;
+			const BOOL use_fixed_function;
+			const BOOL disable_driver_management;
+			const BOOL unsupported_card;
+			const BOOL prototype_card;
+			const BOOL old_driver;
+			const BOOL old_sound_driver;
+			const BOOL invalid_driver;
+			const BOOL invalid_sound_driver;
+			const BOOL disable_buffering;
+			const BOOL enable_stop_start;
+			const BOOL head_relative_speech;
+			const BOOL safe_mode;
+			const DWORD force_shader;
+			const BOOL use_anisotropic_filter;
+			const BOOL disable_specular;
+			const BOOL disable_render_targets;
+			const BOOL disable_alpha_render_targets;
+			const BOOL use_alternative_convolve_mask;
+			const BOOL min_max_blend_op_is_broken;
+			const FLOAT decal_z_bias_value;
+			const FLOAT transparent_decal_z_bias_value;
+			const FLOAT decal_slope_z_bias_value;
+			const FLOAT transparent_decal_slope_z_bias_value;
+		};
+		s_rasterizer_config* RasterizerConfig(); // defined in the project implementation
+
+
 		struct s_rasterizer_globals
 		{
 			bool initialized;
@@ -48,7 +93,7 @@ namespace Yelo
 			UNKNOWN_TYPE(bool); // render targets related
 			PAD8; PAD32;
 		}; BOOST_STATIC_ASSERT( sizeof(s_rasterizer_globals) == 0x60 );
-		s_rasterizer_globals* RasterizerGlobals(); // defined in the implementing extension's code
+		s_rasterizer_globals* RasterizerGlobals(); // defined in the project implementation
 
 
 		struct s_rasterizer_window_parameters
@@ -157,6 +202,14 @@ namespace Yelo
 			real f4;
 			real f5;
 		}; BOOST_STATIC_ASSERT( sizeof(s_rasterizer_debug_options) == 0x90 );
-		s_rasterizer_debug_options* DebugOptions(); // defined in the implementing extension's code
+		s_rasterizer_debug_options* DebugOptions(); // defined in the project implementation
+
+		struct s_rasterizer_frame_parameters
+		{
+			double elapsed_time;
+			real UNKNOWN(0);
+			real UNKNOWN(1);
+		};
+		s_rasterizer_frame_parameters* FrameParameters(); // defined in the project implementation
 	};
 };

@@ -20,8 +20,9 @@ namespace Yelo
 	namespace Rasterizer
 	{
 #if PLATFORM_ID == PLATFORM_SAPIEN
-	#include <Rasterizer/Halo1/Render.Upgrades.inl>
+	#include <YeloLib/Halo1/rasterizer/rasterizer_upgrades.inl>
 
+		s_rasterizer_config* RasterizerConfig()		PTR_IMP_GET2(rasterizer_config);
 		s_rasterizer_globals* RasterizerGlobals()	PTR_IMP_GET2(rasterizer_globals);
 		s_rasterizer_debug_options* DebugOptions()	PTR_IMP_GET2(rasterizer_debug_data);
 #endif

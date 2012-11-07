@@ -29,7 +29,7 @@ static void WriteEventFirstLine()
 	static const char format[] = "\n%s\n";
 
 	tag_string time_str;
-	Settings::GetTimeStampString(time_str);
+	GetTimeStampString(time_str);
 
 	fprintf(event_log_globals.file_handle, format, time_str);
 	fflush(event_log_globals.file_handle);
@@ -50,7 +50,7 @@ void WriteEvent(cstring str, bool write_time_stamp)
 
 	tag_string time_str;
 	if(write_time_stamp)
-		Settings::GetTimeStampString(time_str);
+		GetTimeStampString(time_str);
 
 	char time_buffer[16];
 	memset(time_buffer, 0, sizeof(time_buffer));

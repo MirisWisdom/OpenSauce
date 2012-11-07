@@ -6,8 +6,7 @@
 */
 #pragma once
 
-#include "Memory/Data.hpp"
-
+#include <blamlib/Halo1/memory/data.hpp>
 #include <blamlib/Halo1/devices/devices.hpp>
 #include <blamlib/Halo1/objects/objects.hpp>
 #include <blamlib/Halo1/objects/widgets/widgets.hpp>

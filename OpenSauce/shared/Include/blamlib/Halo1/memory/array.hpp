@@ -1,6 +1,5 @@
 /*
 	Yelo: Open Sauce SDK
-		Halo 1 (CE) Edition
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
@@ -18,3 +17,5 @@ namespace Yelo
 		}; BOOST_STATIC_ASSERT( sizeof(s_dynamic_array) == 0xC );
 	};
 };
+
+#include <YeloLib/memory/array_yelo.hpp>

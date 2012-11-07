@@ -7,7 +7,7 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <Common/LinkedList.hpp>
+#include <YeloLib/memory/linked_list.hpp>
 
 #include "Rasterizer/PostProcessing/c_effect_postprocess.hpp"
 

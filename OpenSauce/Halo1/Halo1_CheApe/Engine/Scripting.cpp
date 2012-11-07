@@ -7,9 +7,9 @@
 #include "Common/Precompile.hpp"
 #include "Engine/Scripting.hpp"
 
-#include <Blam/Halo1/project_yellow_shared_definitions.hpp>
-#include <Memory/Halo1/DataShared.hpp>
-#include "Blam/Halo1/BlamMemoryUpgrades.hpp"
+#include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
+
 #include "CheApeCore.hpp"
 #include "Engine/EngineFunctions.hpp"
 
@@ -120,7 +120,7 @@ namespace Yelo
 		}
 
 		static void ScriptingBlockAddFunctionDefinitions(
-			TAG_TBLOCK(& functions, TagGroups::script_function_block), bool only_internals)
+			TAG_TBLOCK(& functions, TagGroups::s_script_function_definition), bool only_internals)
 		{
 			size_t old_threshold = _CrtSetDebugFillThreshold( 0 ); // so the CRT doesn't fill our name buffer with 0xFD
 			using namespace TagGroups;
@@ -134,7 +134,7 @@ namespace Yelo
 				if( only_internals != TEST_FLAG(def->flags, Flags::_hs_yelo_definition_internal_bit) )
 					continue;
 
-				script_function_block* element = tag_block_get_element(functions, tag_block_add_element(functions));
+				s_script_function_definition* element = tag_block_get_element(functions, tag_block_add_element(functions));
 
 				ScriptingNameCopyToTagNameData(def->name, element->name);
 				element->index = CAST(int16, x);
@@ -154,7 +154,7 @@ namespace Yelo
 		}
 
 		static void ScriptingBlockAddGlobalDefinitions(
-			TAG_TBLOCK(& globals, TagGroups::script_global_block), bool only_internals)
+			TAG_TBLOCK(& globals, TagGroups::s_script_global_definition), bool only_internals)
 		{
 			size_t old_threshold = _CrtSetDebugFillThreshold( 0 ); // so the CRT doesn't fill our name buffer with 0xFD
 			using namespace TagGroups;
@@ -168,7 +168,7 @@ namespace Yelo
 				if( only_internals != TEST_FLAG(def->flags, Flags::_hs_yelo_definition_internal_bit) )
 					continue;
 
-				script_global_block* element = tag_block_get_element(globals, tag_block_add_element(globals));
+				s_script_global_definition* element = tag_block_get_element(globals, tag_block_add_element(globals));
 
 				ScriptingNameCopyToTagNameData(def->name, element->name);
 				element->index = CAST(int16, x)+1; // NOTE: for globals, we do +1 since in game builds there is a global which isn't present in editor builds
@@ -179,18 +179,18 @@ namespace Yelo
 		}
 
 		void ScriptingBlockClear(
-			TAG_TBLOCK(& script_block, TagGroups::scripting_block))
+			TAG_TBLOCK(& script_block, TagGroups::s_scripting_definitions))
 		{
 			tag_block_resize(script_block, 0);
 		}
 		void ScriptingBlockAddDefinitions(
-			TAG_TBLOCK(& script_block, TagGroups::scripting_block), bool only_internals)
+			TAG_TBLOCK(& script_block, TagGroups::s_scripting_definitions), bool only_internals)
 		{
 			using namespace TagGroups;
 
 			ScriptingBlockClear(script_block);
 
-			scripting_block* element = tag_block_get_element(script_block, tag_block_add_element(script_block));
+			s_scripting_definitions* element = tag_block_get_element(script_block, tag_block_add_element(script_block));
 
 			ScriptingBlockAddFunctionDefinitions(element->new_functions, only_internals);
 			ScriptingBlockAddGlobalDefinitions(element->new_globals, only_internals);

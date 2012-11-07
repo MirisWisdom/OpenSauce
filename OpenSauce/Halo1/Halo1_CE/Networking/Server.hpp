@@ -6,9 +6,9 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/memory/array.hpp>
 #include <blamlib/Halo1/networking/network_game_globals.hpp>
 
-#include "Memory/Data.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Game/GameEngine.hpp"
 #include "Networking/GameSpyApi.hpp"

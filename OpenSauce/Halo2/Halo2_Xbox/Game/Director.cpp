@@ -7,6 +7,8 @@
 #include "Common/Precompile.hpp"
 #include "Game/Director.hpp"
 
+#include <blamlib/Halo2/interface/user_interface_controller.hpp>
+
 #include "Memory/Runtime.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Memory/Config.hpp"
