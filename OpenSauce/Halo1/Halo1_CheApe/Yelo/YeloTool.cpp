@@ -7,17 +7,17 @@
 #include "Common/Precompile.hpp"
 
 #if PLATFORM_ID == PLATFORM_TOOL
-#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
-
-#include <Blam/Halo1/BlamMemoryUpgrades.hpp>
-#include <Blam/Halo1/project_yellow_shared_definitions.hpp>
-#include <Blam/Halo1/BlamDataFileUpgrades.hpp>
-#include <TagGroups/Halo1/CacheDefinitions.hpp>
-#include <TagGroups/Halo1/object_definitions.hpp>
-#include <TagGroups/Halo1/shader_definitions.hpp>
-#include <Blam/Halo1/shader_postprocess_definitions.hpp>
-
+#include <blamlib/Halo1/cache/cache_files.hpp>
 #include <blamlib/Halo1/models/model_definitions.hpp>
+#include <blamlib/Halo1/objects/object_definitions.hpp>
+#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+#include <blamlib/Halo1/shaders/shader_definitions.hpp>
+
+#include <YeloLib/Halo1/cache/data_file_yelo.hpp>
+#include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
 
 #include "Common/YeloSettings.hpp"
 #include "Engine/EngineFunctions.hpp"

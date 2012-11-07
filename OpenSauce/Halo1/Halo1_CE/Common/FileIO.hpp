@@ -5,7 +5,7 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 #pragma once
-#include <Common/FileIOBase.hpp>
+#include <YeloLib/files/files.hpp>
 
 #define FILE_IO_DO_MD5_CHECK
 
@@ -36,6 +36,6 @@ namespace Yelo
 		void Initialize();
 		void Dispose();
 
-		Enums::file_io_open_error OpenFileByID(s_file_info& info_out, const char* file_id);
+		Enums::file_io_open_error OpenFileByID(s_file_info& info_out, cstring file_id);
 	};
 };

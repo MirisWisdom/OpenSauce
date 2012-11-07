@@ -6,6 +6,8 @@
 */
 #pragma once
 
+#include <blamlib/Halo2/interface/user_interface.hpp>
+
 namespace Yelo
 {
 	namespace Enums

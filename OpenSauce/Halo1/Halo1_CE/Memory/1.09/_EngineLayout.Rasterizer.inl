@@ -22,10 +22,10 @@
 			CAST_PTR(uint16*, 0x51AEF1), 
 		};
 
-		ENGINE_PTR(s_rasterizer_config, rasterizer_config,				0x6BDE18, PTR_NULL);
-		ENGINE_PTR(s_rasterizer_globals, rasterizer_globals,			0x637CF8, PTR_NULL);
-		ENGINE_PTR(s_rasterizer_debug_options, rasterizer_debug_data,	0x6249C0, PTR_NULL);
-		ENGINE_PTR(s_rasterizer_frame_inputs, rasterizer_frame_inputs,	0x75C210, PTR_NULL);
+		ENGINE_PTR(s_rasterizer_config, rasterizer_config,					0x6BDE18, PTR_NULL);
+		ENGINE_PTR(s_rasterizer_globals, rasterizer_globals,				0x637CF8, PTR_NULL);
+		ENGINE_PTR(s_rasterizer_debug_options, rasterizer_debug_data,		0x6249C0, PTR_NULL);
+		ENGINE_PTR(s_rasterizer_frame_parameters, rasterizer_frame_params,	0x75C210, PTR_NULL);
 
 		FUNC_PTR(RASTERIZER_DISPOSE,									0x51C140, FUNC_PTR_NULL);
 		FUNC_PTR(RASTERIZER_DISPOSE_CALL_FROM_RASTERIZER,				0x51B110, FUNC_PTR_NULL);

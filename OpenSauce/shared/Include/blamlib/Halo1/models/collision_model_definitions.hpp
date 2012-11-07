@@ -6,9 +6,10 @@
 */
 #pragma once
 
-#include <TagGroups/Halo1/TagGroupDefinitions.hpp>
-
 #include <blamlib/Halo1/models/model_definitions.hpp>
+#include <blamlib/Halo1/physics/collision_bsp_definitions.hpp>
+
+#include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 namespace Yelo
 {
@@ -31,66 +32,6 @@ namespace Yelo
 
 	namespace TagGroups
 	{
-		struct bsp3d_node
-		{
-			TAG_FIELD(int32, plane);
-			TAG_FIELD(int32, back_child);
-			TAG_FIELD(int32, front_child);
-		};
-		struct collision_leaf
-		{
-			TAG_FIELD(word_flags, flags);
-			TAG_FIELD(int16, reference_count, "bsp2d");
-			TAG_FIELD(int32, first_reference, "bsp2d");
-		};
-		struct bsp2d_reference
-		{
-			TAG_FIELD(int32, plane);
-			TAG_FIELD(int32, bsp2d_node);
-		};
-		struct bsp2d_node
-		{
-			TAG_FIELD(real_plane2d, plane);
-			TAG_FIELD(int32, left_child);
-			TAG_FIELD(int32, rigt_child);
-		};
-		struct collision_surface
-		{
-			TAG_FIELD(int32, plane);
-			TAG_FIELD(int32, first_edge);
-			TAG_FIELD(byte_flags, flags);
-			TAG_FIELD(sbyte, breakable_surface);
-			TAG_FIELD(int16, material);
-		};
-		struct collision_edge
-		{
-			TAG_FIELD(int32, start_vertex);
-			TAG_FIELD(int32, end_vertex);
-			TAG_FIELD(int32, forward_edge);
-			TAG_FIELD(int32, reverse_edge);
-			TAG_FIELD(int32, left_surface);
-			TAG_FIELD(int32, right_surface);
-		};
-		struct collision_vertex
-		{
-			TAG_FIELD(real_point3d, point);
-			TAG_FIELD(int32, first_edge);
-		};
-		struct collision_bsp
-		{
-			TAG_TBLOCK(bsp3d_nodes, bsp3d_node);
-			TAG_TBLOCK(planes, real_plane3d);
-			TAG_TBLOCK(leaves, collision_leaf);
-			struct {
-				TAG_TBLOCK(references, bsp2d_reference);
-				TAG_TBLOCK(nodes, bsp2d_node);
-			}bsp2d;
-			TAG_TBLOCK(surfaces, collision_surface);
-			TAG_TBLOCK(edges, collision_edge);
-			TAG_TBLOCK(vertices, collision_vertex);
-		};
-
-
 		struct s_body_damage_resistance
 		{
 			TAG_FIELD(real, maximum_vitality);

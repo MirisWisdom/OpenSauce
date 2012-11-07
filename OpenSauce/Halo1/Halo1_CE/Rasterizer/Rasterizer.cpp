@@ -27,12 +27,12 @@ namespace Yelo
 
 	namespace Rasterizer
 	{
-#include <Rasterizer/Halo1/Render.Upgrades.inl>
+#include <YeloLib/Halo1/rasterizer/rasterizer_upgrades.inl>
 
-		s_rasterizer_config* RasterizerConfig()		PTR_IMP_GET2(rasterizer_config);
-		s_rasterizer_globals* RasterizerGlobals()	PTR_IMP_GET2(rasterizer_globals);
+		s_rasterizer_config* RasterizerConfig()			PTR_IMP_GET2(rasterizer_config);
+		s_rasterizer_globals* RasterizerGlobals()		PTR_IMP_GET2(rasterizer_globals);
 #pragma region DebugOptions
-		s_rasterizer_debug_options* DebugOptions()	PTR_IMP_GET2(rasterizer_debug_data);
+		s_rasterizer_debug_options* DebugOptions()		PTR_IMP_GET2(rasterizer_debug_data);
 
 		struct rasterizer_debug_table
 		{
@@ -118,7 +118,7 @@ namespace Yelo
 		};
 #pragma endregion
 
-		s_rasterizer_frame_inputs* FrameInputs()	PTR_IMP_GET2(rasterizer_frame_inputs);
+		s_rasterizer_frame_parameters* FrameParameters()PTR_IMP_GET2(rasterizer_frame_params);
 
 		static bool g_nvidia_use_basic_camo = false;
 		static s_rasterizer_resolution g_resolution_list[64];
@@ -292,47 +292,6 @@ namespace Yelo
 
 		static bool g_is_rendering_reflection = false;
 		bool IsRenderingReflection() { return g_is_rendering_reflection; }
-
-		//////////////////////////////////////////////////////////////////////////
-		// s_render_target
-		bool		s_render_target::IsEnabled() const { return (surface && texture); }
-		HRESULT		s_render_target::CreateTarget(IDirect3DDevice9* device, uint32 rt_width, uint32 rt_height, D3DFORMAT rt_format)
-		{
-			width = rt_width;
-			height = rt_height;
-			format = rt_format;
-			HRESULT hr = device->CreateTexture(						
-					width,
-					height,
-					1,
-					D3DUSAGE_RENDERTARGET,
-					format,
-					D3DPOOL_DEFAULT,
-					&texture,
-					NULL);
-
-			if(SUCCEEDED(hr))
-				hr = texture->GetSurfaceLevel(0, &surface);
-
-			if(FAILED(hr))
-				this->ReleaseTarget();
-			return hr;
-		}
-
-		void		s_render_target::ReleaseTarget()
-		{
-			Yelo::safe_release(surface);
-			Yelo::safe_release(texture);
-		}
-
-		void		s_render_target::ClearTarget(IDirect3DDevice9* device, D3DCOLOR color, DWORD flags)
-		{
-			if(!IsEnabled())	return;
-			
-			device->SetRenderTarget(0, surface);
-			device->Clear( 0L, NULL, flags, color, 1.0f, 0L );
-		}
-		//////////////////////////////////////////////////////////////////////////
 
 		API_FUNC_NAKED void RenderWindowReflectionHook()
 		{

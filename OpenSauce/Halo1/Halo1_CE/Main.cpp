@@ -6,10 +6,6 @@
 */
 #include "Common/Precompile.hpp"
 
-#ifdef API_DEBUG
-#include "Common/DebugMemory.hpp"
-#endif
-
 #include <psapi.h>
 #pragma comment (lib, "psapi.lib")
 
@@ -38,10 +34,6 @@ namespace Yelo
 
 	namespace Main
 	{
-		enum {
-			k_process_enumeration_dword_array_increment = 256
-		};
-
 		static struct {
 			bool enabled;
 			HMODULE module_handle;
@@ -101,7 +93,7 @@ namespace Yelo
 			{
 #if PLATFORM_IS_USER && defined(DX_WRAPPER)
 				sprintf_s(warning,
-					"An application (%s) tried to run Yelo (Open Sauce) which is a plugin that is only compatible with Halo (CE) "
+					"An application (%s) tried to run Open Sauce which is a plugin that is only compatible with Halo (CE) "
 					"v" BOOST_PP_STRINGIZE(PLATFORM_VERSION_VALUE) ". \n"
 					"The plugin's interface to DirectX 9 will continue to run, but note that this is a kludge."
 					"\n\n"
@@ -110,7 +102,7 @@ namespace Yelo
 					name, dir);
 #elif PLATFORM_IS_DEDI
 				sprintf_s(warning,
-					"An application (%s) tried to run Yelo (Open Sauce) which is a plugin that is only compatible with Halo Dedi (CE) "
+					"An application (%s) tried to run Open Sauce which is a plugin that is only compatible with Halo Dedi (CE) "
 					"v" BOOST_PP_STRINGIZE(PLATFORM_VERSION_VALUE) ". \n"
 					"Plugin will not be loaded, this is just warning.",
 					name);
@@ -125,19 +117,19 @@ namespace Yelo
 			{
 #if PLATFORM_IS_USER && defined(DX_WRAPPER)
 				sprintf_s(warning,
-					"Yelo (Open Sauce) is a plugin that is only compatible with Halo (CE) v" BOOST_PP_STRINGIZE(PLATFORM_VERSION_VALUE) ". Your version is incompatible."
+					"Open Sauce is a plugin that is only compatible with Halo (CE) v" BOOST_PP_STRINGIZE(PLATFORM_VERSION_VALUE) ". Your version is incompatible."
 					"\n\n"
-					"If you wish to use Yelo, you must update by running this file: \n"
+					"If you wish to use OS, you must update by running this file: \n"
 					"%s\\haloupdate.exe"
 					"\n\n"
-					"If you don't wish to use Yelo, then remove this file to uninstall it: \n"
+					"If you don't wish to use OS, then remove this file to uninstall it: \n"
 					"%s\\dinput8.dll",
 					dir, dir);
 #elif PLATFORM_IS_DEDI
 				sprintf_s(warning,
-					"Yelo (Open Sauce) is a plugin that is only compatible with Halo Dedi (CE) v" BOOST_PP_STRINGIZE(PLATFORM_VERSION_VALUE) ". Your version is incompatible."
+					"Open Sauce is a plugin that is only compatible with Halo Dedi (CE) v" BOOST_PP_STRINGIZE(PLATFORM_VERSION_VALUE) ". Your version is incompatible."
 					"\n\n"
-					"If you wish to use Yelo, you must update or downgrade your haloded.exe file");
+					"If you wish to use OS, you must update or downgrade your haloded.exe file");
 #endif
 			}
 
@@ -151,7 +143,7 @@ namespace Yelo
 
 bool WINAPI DllMain(HMODULE hModule, DWORD dwReason, PVOID pvReserved)
 {
-	static bool done = false;
+	static bool g_initialized = false;
 
 	if( dwReason == DLL_PROCESS_ATTACH )
 	{
@@ -159,7 +151,7 @@ bool WINAPI DllMain(HMODULE hModule, DWORD dwReason, PVOID pvReserved)
 			return false;
 	}
 
-	if(dwReason == DLL_PROCESS_ATTACH && !done)
+	if(dwReason == DLL_PROCESS_ATTACH && !g_initialized)
 	{
 		Yelo::Main::YeloModuleHandle() = hModule;
 
@@ -168,7 +160,7 @@ bool WINAPI DllMain(HMODULE hModule, DWORD dwReason, PVOID pvReserved)
 		{
 			char error[128];
 			sprintf_s(error,
-				"Yelo (Open Sauce) failed to load DirectXInput."
+				"Open Sauce failed to load DirectXInput."
 				"\n\n"
 				"Nothing left to do but crash now, good bye!");
 			Yelo::PrepareToDropError(error);
@@ -180,22 +172,22 @@ bool WINAPI DllMain(HMODULE hModule, DWORD dwReason, PVOID pvReserved)
 		{
 			Yelo::Main::InsertHooks();
 		}
-		done = true;
+		g_initialized = true;
 	}
-	else if(dwReason == DLL_PROCESS_DETACH && done)
+	else if(dwReason == DLL_PROCESS_DETACH && g_initialized)
 	{
 		// component disposal occurs in GameSystems.cpp
 
 #ifdef API_DEBUG_MEMORY
-		DumpAllocatedMemory();
+		DumpAllocatedMemory("Halo1_CE");
 #endif
-		Yelo::Main::YeloModuleHandle() = NULL;
-
-		done = false;
 
 #if PLATFORM_IS_USER && defined(DX_WRAPPER)
 		FreeDXProxy(hModule);
 #endif
+
+		Yelo::Main::YeloModuleHandle() = NULL;
+		g_initialized = false;
 	}
 
 	return true;

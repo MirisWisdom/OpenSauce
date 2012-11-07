@@ -31,10 +31,8 @@ static void InitializeGrenadeCounts_UnitDesiredZoomLevelRefs(bool enabled)
 		*offset_ref = offset;
 	}
 }
-static void InitializeGrenadeCounts_NumberOfUnitGrenadeTypes(uint32 count/*bool enabled*/)
+static void InitializeGrenadeCounts_NumberOfUnitGrenadeTypes(uint32 count)
 {
-	//uint32 count = enabled ? Enums::k_unit_grenade_types_count_yelo : Enums::k_unit_grenade_types_count;
-
 	for(int x = 0; x < NUMBEROF(K_NUMBER_OF_UNIT_GRENADE_TYPES_REFS); x++)
 	{
 		uint32* count_ref = CAST_PTR(uint32*, K_NUMBER_OF_UNIT_GRENADE_TYPES_REFS[x]);

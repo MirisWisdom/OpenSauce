@@ -8,6 +8,8 @@
 #include "Rasterizer/PostProcessing/Generic/External/c_system_external.hpp"
 
 #if !PLATFORM_IS_DEDI
+#include <blamlib/Halo1/math/periodic_functions.hpp>
+
 #include "Common/YeloSettings.hpp"
 #include "Rasterizer/PostProcessing/PostProcessingErrorReporting.hpp"
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
@@ -1338,7 +1340,7 @@ namespace Yelo
 			success = compiler->GetInt(animation_function, &integer32);
 			if(SUCCEEDED(success) && integer32)
 			{
-				if((integer32 >= 0) && (integer32 < Enums::_periodic_function))
+				if((integer32 >= 0) && (integer32 < Enums::k_number_of_periodic_functions))
 					parameter.animation_function.function = integer32;
 			}
 			if(!parameter.animation_function.function) return;

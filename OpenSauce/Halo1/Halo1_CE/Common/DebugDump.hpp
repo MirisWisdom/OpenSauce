@@ -4,11 +4,13 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
+#pragma once
+
 namespace Yelo
 {
-	namespace DebugDump
+	namespace Debug
 	{
-		void Initialize();
-		void Dispose();
+		void DumpInitialize();
+		void DumpDispose();
 	};
 };

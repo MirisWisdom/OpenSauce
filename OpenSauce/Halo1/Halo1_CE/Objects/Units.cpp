@@ -7,13 +7,14 @@
 #include "Common/Precompile.hpp"
 #include "Objects/Units.hpp"
 
+#include <blamlib/Halo1/game/game_globals.hpp>
+#include <blamlib/Halo1/units/unit_definitions.hpp>
+
 #include "Game/GameState.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Networking/MDP.hpp"
 #include "Networking/MessageDeltas.hpp"
 
-#include <TagGroups/Halo1/unit_definitions.hpp>
-#include <TagGroups/Halo1/game_globals_definitions.hpp>
 #include "Objects/Objects.hpp"
 
 namespace Yelo

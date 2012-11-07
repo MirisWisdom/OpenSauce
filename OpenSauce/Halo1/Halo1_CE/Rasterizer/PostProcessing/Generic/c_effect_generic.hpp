@@ -7,7 +7,7 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <Blam/Halo1/shader_postprocess_definitions.hpp>
+#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
 #include "Rasterizer/PostProcessing/c_effect_postprocess.hpp"
 #include "Rasterizer/PostProcessing/Generic/c_shader_generic.hpp"
 #include "Rasterizer/PostProcessing/Generic/c_parameter_instance.hpp"

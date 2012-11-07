@@ -8,8 +8,8 @@
 #include "Rasterizer/PostProcessing/ShaderSources/c_shader_data_external.hpp"
 
 #if !PLATFORM_IS_DEDI
+#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
 #include "Rasterizer/PostProcessing/ShaderSources/c_shader_data_base.hpp"
-#include <Blam/Halo1/shader_postprocess_definitions.hpp>
 
 namespace Yelo
 {
@@ -38,7 +38,7 @@ namespace Yelo
 			{
 				if(FileIO::OpenFile(file_info, m_file_path))
 					break;
-				if(FileIO::ReadFileToMemory(file_info, &m_file_data))
+				if(FileIO::ReadFileToMemory(file_info, CAST_PTR(void**,&m_file_data)))
 					break;
 				data_size = file_info.file_size;
 

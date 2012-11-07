@@ -6,9 +6,11 @@
 */
 #pragma once
 
-#include <TagGroups/Halo1/TagGroupDefinitions.hpp>
+#include <blamlib/Halo1/cache/predicted_resources.hpp>
+#include <blamlib/Halo1/physics/collision_bsp_definitions.hpp>
+#include <blamlib/Halo1/rasterizer/rasterizer_geometry.hpp>
 
-#include <blamlib/Halo1/models/collision_model_definitions.hpp>
+#include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 namespace Yelo
 {
@@ -16,8 +18,11 @@ namespace Yelo
 	{
 		struct structure_collision_material
 		{
-			TAG_FIELD(tag_reference, shader, "shdr");
-			TAG_PAD(int32, 1);
+			TAG_FIELD(tag_reference, shader, 'shdr');
+			struct {
+				PAD16;
+				int16 shader_material_type; // Enums::material_type or NONE if shdr is null
+			}runtime;
 		};
 		struct structure_node
 		{
@@ -109,6 +114,13 @@ namespace Yelo
 			TAG_BLOCK(portals, int16);
 		}; BOOST_STATIC_ASSERT( sizeof(structure_cluster) == 0x68 );
 
+		struct s_structure_fog_plane
+		{
+			TAG_FIELD(int16, front_region, s_structure_fog_region);
+			int16 runtime_material_type; // NONE or _material_type_water
+			TAG_FIELD(real_plane3d, plane);
+			TAG_TBLOCK(vertices, real_vector3d);
+		};
 		struct s_structure_fog_region
 		{
 			TAG_PAD(int32, 9);

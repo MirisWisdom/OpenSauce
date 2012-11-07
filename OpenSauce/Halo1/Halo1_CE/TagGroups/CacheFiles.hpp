@@ -6,12 +6,13 @@
 */
 #pragma once
 
-#include <Blam/Halo1/BlamMemoryUpgrades.hpp>
-#include <TagGroups/Halo1/CacheDefinitions.hpp>
-#include "Memory/Data.hpp"
-#include "Common/FileIO.hpp"
-
+#include <blamlib/Halo1/cache/cache_files.hpp>
+#include <blamlib/Halo1/memory/array.hpp>
 #include <blamlib/Halo1/structures/structure_bsp_definitions.hpp>
+
+#include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
+
+#include "Common/FileIO.hpp"
 
 namespace Yelo
 {

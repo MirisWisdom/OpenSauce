@@ -6,9 +6,9 @@
 */
 #pragma once
 
-#include <TagGroups/Halo1/TagGroupDefinitions.hpp>
-
 #include <blamlib/Halo1/rasterizer/rasterizer_geometry.hpp>
+
+#include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 namespace Yelo
 {

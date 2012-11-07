@@ -7,7 +7,7 @@
 #pragma once
 
 // See this header for more "Engine pointer markup system" documentation
-#include <Memory/MemoryInterfaceShared.hpp>
+#include <YeloLib/memory/memory_interface_base.hpp>
 
 //////////////////////////////////////////////////////////////////////////
 // Engine pointer markup system
@@ -31,14 +31,3 @@
 
 #define FUNC_PTR(name, ce_offset, cededi_offset) enum FUNC_PTR_##name { PTR_##name = PLATFORM_VALUE(ce_offset,cededi_offset) }; BOOST_STATIC_ASSERT( GET_FUNC_PTR(name) != NULL );
 #define DATA_PTR(name, ce_offset, cededi_offset) enum DATA_PTR_##name { PTR_##name = PLATFORM_VALUE(ce_offset,cededi_offset) }; BOOST_STATIC_ASSERT( GET_DATA_PTR(name) != NULL );
-
-namespace Yelo
-{
-	namespace Memory
-	{
-		bool IsYeloEnabled();
-		HMODULE YeloModuleHandle();
-
-		uint32 CRC(uint32& crc_reference, const void* buffer, int32 size);
-	};
-};

@@ -7,12 +7,13 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
+#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
+
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingCacheComponent.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUpdatable.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingRenderable.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUserSettings.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
-#include <Blam/Halo1/shader_postprocess_definitions.hpp>
 
 namespace Yelo
 {

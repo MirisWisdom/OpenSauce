@@ -7,7 +7,8 @@
 #include "Common/Precompile.hpp"
 
 #if PLATFORM_ID == PLATFORM_SAPIEN
-#include <Blam/Halo1/BlamMemoryUpgrades.hpp>
+#include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
+
 #include "CheApeInterface.hpp" // for Memory functions
 #include "Common/YeloSettings.hpp"
 #include "Engine/Scripting.hpp"

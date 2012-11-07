@@ -7,9 +7,8 @@
 #include "Common/Precompile.hpp"
 #include "Game/GameState.hpp"
 
-#include <TagGroups/Halo1/game_globals_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 
-#include <Blam/Halo1/BlamMemoryUpgrades.hpp>
 #include "Memory/MemoryInterface.hpp"
 #include "Common/GameSystems.hpp"
 #include "Common/YeloSettings.hpp"

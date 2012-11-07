@@ -10,6 +10,14 @@
 // .cpp
 #if __EL_INCLUDE_FILE_ID == __EL_COMMON_YELO_SETTINGS
 
+
+//////////////////////////////////////////////////////////////////////////
+// DebugDump.cpp
+#elif __EL_INCLUDE_FILE_ID == __EL_COMMON_DEBUG_DUMP
+	FUNC_PTR(GENERIC_EXCEPTION_FILTER_CALL,	FUNC_PTR_NULL,	0x415456, 0x4A8278);
+	FUNC_PTR(GENERIC_EXCEPTION_FILTER,		0x42DA20,		0x437090, 0x4F81E0);
+
+
 //////////////////////////////////////////////////////////////////////////
 // CheApeCore.cpp
 #elif __EL_INCLUDE_FILE_ID == __EL_MEMORY_CHE_APE_INTERFACE

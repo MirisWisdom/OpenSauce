@@ -6,7 +6,8 @@
 */
 #pragma once
 
-#include <Blam/Halo1/BlamScriptingDefinitions.hpp>
+#include <blamlib/Halo1/hs/hs.hpp>
+
 #include "TagGroups/TagGroups.hpp"
 
 /*
@@ -26,7 +27,7 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
-		struct scripting_block;
+		struct s_scripting_definitions;
 	};
 
 	namespace Enums
@@ -58,11 +59,11 @@ namespace Yelo
 		hs_function_definition* GetFunctionDefintion(int16 function_index);
 
 		void ScriptingBlockClear(
-			TAG_TBLOCK(& script_block, TagGroups::scripting_block));
+			TAG_TBLOCK(& script_block, TagGroups::s_scripting_definitions));
 		// Copy the scripting definitions CheApe loaded into the tool code from the memory map
 		// [only_internals] - Copy definitions that are part of the stock OpenSauce source code 
 		// only, else copy only the user's definitions
 		void ScriptingBlockAddDefinitions(
-			TAG_TBLOCK(& script_block, TagGroups::scripting_block), bool only_internals);
+			TAG_TBLOCK(& script_block, TagGroups::s_scripting_definitions), bool only_internals);
 	};
 };

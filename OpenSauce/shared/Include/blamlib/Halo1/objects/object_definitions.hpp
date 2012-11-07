@@ -5,9 +5,10 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/cache/predicted_resources.hpp>
 #include <blamlib/Halo1/models/model_definitions.hpp>
 
-#include <TagGroups/Halo1/TagGroupDefinitions.hpp>
+#include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 namespace Yelo
 {
@@ -15,8 +16,6 @@ namespace Yelo
 	{
 		enum {
 			k_maximum_number_of_attachments_per_object = 8,
-
-			k_object_change_color_count = 4,
 		};
 
 		enum object_type
@@ -77,6 +76,26 @@ namespace Yelo
 			_object_function_reference_d,
 
 			k_number_of_object_function_references,
+		};
+
+		enum object_change_color : _enum
+		{
+			_object_change_color_a,
+			_object_change_color_b,
+			_object_change_color_c,
+			_object_change_color_d,
+
+			k_number_of_object_change_colors,
+		};
+		enum object_change_color_reference : _enum
+		{
+			_object_change_color_reference_none,
+			_object_change_color_reference_a,
+			_object_change_color_reference_b,
+			_object_change_color_reference_c,
+			_object_change_color_reference_d,
+
+			k_number_of_object_change_color_references,
 		};
 	};
 

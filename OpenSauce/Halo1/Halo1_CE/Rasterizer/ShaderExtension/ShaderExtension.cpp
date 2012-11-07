@@ -21,19 +21,20 @@
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
 
 #if !PLATFORM_IS_DEDI
+#include <sys/stat.h>
+
+#include <blamlib/Halo1/bitmaps/bitmap_group.hpp>
+#include <blamlib/Halo1/shaders/shader_definitions.hpp>
+
 #include "Common/YeloSettings.hpp"
 #include "Common/CmdLineSettings.hpp"
 #include "Common/FileIO.hpp"
-#include <sys/stat.h>
-#include "Rasterizer/DX9/DX9.hpp"
-#include "Memory/MemoryInterface.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameState.hpp"
-#include "TagGroups/TagGroups.hpp"
-#include <TagGroups/Halo1/shader_definitions.hpp>
-#include <TagGroups/Halo1/bitmap_definitions.hpp>
+#include "Memory/MemoryInterface.hpp"
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
+#include "TagGroups/TagGroups.hpp"
 
 namespace Yelo
 {

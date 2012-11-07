@@ -82,12 +82,12 @@ namespace build_cache_file_ex_hacks
 			k_tag_memory_virtual_address_pc = 0x1400000, 
 		};
 
-		static s_shared_dependency_graph* build_cache_shared_dependency_graph;
-		static s_shared_tag_index* build_cache_shared_tag_index_sorted;
+		static Cache::s_shared_dependency_graph* build_cache_shared_dependency_graph;
+		static Cache::s_shared_tag_index* build_cache_shared_tag_index_sorted;
 
 		static void* TAG_SHARING_LOAD_MULTIPLAYER_SHARED		= CAST_PTR(void*, 0x5813C0);
 		static void* TAG_SHARING_LOAD_MULTIPLAYER_SHARED_CALL	= CAST_PTR(void*, 0x5883DE);
-		static API_FUNC_NAKED bool PLATFORM_API tag_sharing_load_multiplayer_shared_nullsub(s_shared_tag_index* shared_tag_index, s_shared_tag_index* out_shared_tag_index_sorted)
+		static API_FUNC_NAKED bool PLATFORM_API tag_sharing_load_multiplayer_shared_nullsub(Cache::s_shared_tag_index* shared_tag_index, Cache::s_shared_tag_index* out_shared_tag_index_sorted)
 		{
 			API_FUNC_NAKED_START()
 
@@ -101,27 +101,27 @@ namespace build_cache_file_ex_hacks
 			API_FUNC_NAKED_END(0)
 		}
 
-		static void shared_dependency_graph_clear(s_shared_dependency_graph* graph)
+		static void shared_dependency_graph_clear(Cache::s_shared_dependency_graph* graph)
 		{
-			s_shared_dependency_graph_buffer* buffer = graph->buffer;
+			Cache::s_shared_dependency_graph_buffer* buffer = graph->buffer;
 			if(buffer != NULL)
 				for(int32 x = 0; x < buffer->count; x++)
 					if(!buffer->entries[x].IsNull())
 						buffer->entries[x].Nullify();
 		}
-		static void shared_tag_index_clear(s_shared_tag_index* shared_tag_index)
+		static void shared_tag_index_clear(Cache::s_shared_tag_index* shared_tag_index)
 		{
 			memset(shared_tag_index->entries, 0, sizeof(shared_tag_index->entries));
 			shared_tag_index->count = 0;
 		}
-		static void API_FUNC shared_tag_data_clear(s_shared_tag_index* shared_tag_index)
+		static void API_FUNC shared_tag_data_clear(Cache::s_shared_tag_index* shared_tag_index)
 		{
 			shared_dependency_graph_clear(build_cache_shared_dependency_graph);
 			shared_tag_index_clear(shared_tag_index);
 			//shared_tag_index_clear(build_cache_shared_tag_index_sorted);
 		}
 		static void* TAG_GROUPS_INITIALIZE_FOR_BUILD_CACHE_CALL	= CAST_PTR(void*, 0x588410);
-		static API_FUNC_NAKED void PLATFORM_API tag_groups_initialize_for_build_cache_interceptor(s_shared_tag_index* shared_tag_index)
+		static API_FUNC_NAKED void PLATFORM_API tag_groups_initialize_for_build_cache_interceptor(Cache::s_shared_tag_index* shared_tag_index)
 		{
 			static uint32 CALL_ADDRESS = 0x580AF0;
 			static uint32 global_shared_tag_index = 0xA801DC;

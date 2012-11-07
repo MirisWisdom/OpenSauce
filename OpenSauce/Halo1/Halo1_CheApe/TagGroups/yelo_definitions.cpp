@@ -7,10 +7,11 @@
 #include "Common/Precompile.hpp"
 #include "TagGroups/yelo_definitions.hpp"
 
+#include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 
-#include <Blam/Halo1/project_yellow_shared_definitions.hpp>
-#include <TagGroups/Halo1/game_globals_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #include "Engine/EngineFunctions.hpp"
 #include "Engine/GrenadeTypesUpgrade.hpp"
@@ -26,8 +27,8 @@ namespace Yelo
 		// scripting_block
 		static cstring PLATFORM_API scripting_block_construct_format(datum_index tag_index, tag_block* block, int32 element, char formatted_buffer[Enums::k_tag_block_format_buffer_size])
 		{
-			script_construct_block* elem = 
-				CAST_PTR(script_construct_block*, tag_block_get_element(block, element));
+			s_script_construct_definition* elem = 
+				CAST_PTR(s_script_construct_definition*, tag_block_get_element(block, element));
 
 			if(elem->name[0][0] != '\0')
 				strncpy_s(formatted_buffer, Enums::k_tag_block_format_buffer_size, elem->name[0], Enums::k_tag_string_length);
@@ -275,13 +276,15 @@ namespace Yelo
 		{
 			TagGroups::s_game_globals* game_globals = tag_get<TagGroups::s_game_globals>(game_globals_index);
 
-			return game_globals->grenades.Count > Enums::k_unit_grenade_types_count;
+			return false;
 		}
 
 		bool YeloToolCheckTagsForGameStateUpgradeRequirements()
 		{
 			bool result = false;
 
+	// no tags currently need to be checked
+	#if FALSE
 			TagGroups::tag_iterator iter;
 			tag_iterator_new(iter);
 
@@ -294,6 +297,7 @@ namespace Yelo
 					result |= GameGlobalsRequiresYeloGameStateUpgrades(tag_index); 
 				}
 			}
+	#endif
 
 			return result;
 		}

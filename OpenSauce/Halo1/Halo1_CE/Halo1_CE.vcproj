@@ -319,35 +319,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Common\DebugAssert.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Common\DebugAssert.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Common\DebugDump.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\Common\DebugDump.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Common\DebugFile.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Common\DebugFile.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Common\DebugMemory.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Common\DebugMemory.hpp"
 				>
 			</File>
 			<File
@@ -415,14 +391,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Common\XXTEA.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Common\XXTEA.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Common\YeloSettings.cpp"
 				>
 			</File>
@@ -434,59 +402,7 @@
 				Name="Shared"
 				>
 				<File
-					RelativePath="..\..\shared\Include\Common\BaseYeloSharedSettings.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Common\BaseYeloSharedSettings.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Common\FileIOBase.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Common\FileIOBase.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Common\LinkedList.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Common\LinkedList.hpp"
-					>
-				</File>
-				<File
 					RelativePath="..\..\..\shared\include_cpp\cseries\MacrosCpp.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Common\PackedFile.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Common\PackedFile.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Common\PlatformShared.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Common\Halo1\YeloSettingsDefinitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Common\Halo1\YeloSettingsVersion.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Common\Halo1\YeloSharedSettings.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Common\Halo1\YeloSharedSettings.hpp"
 					>
 				</File>
 				<Filter
@@ -518,26 +434,6 @@
 					</File>
 					<File
 						RelativePath="..\..\shared\Include\TinyXml\tinyxmlparser.cpp"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Blam"
-					>
-					<File
-						RelativePath="..\..\shared\Include\Common\BaseBlamTypes.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\shared\Include\Common\BaseBlamTypes.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\shared\Include\Common\BaseBlamTypesPc.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\shared\Include\Common\BaseBlamTypesPc.hpp"
 						>
 					</File>
 				</Filter>
@@ -3018,26 +2914,6 @@
 					>
 				</File>
 			</Filter>
-			<Filter
-				Name="Compression"
-				>
-				<File
-					RelativePath=".\Common\7zip.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Common\7zip.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Common\Zip.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Common\Zip.hpp"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Game"
@@ -3154,18 +3030,6 @@
 				RelativePath=".\Game\ScriptLibrary.hpp"
 				>
 			</File>
-			<Filter
-				Name="Shared"
-				>
-				<File
-					RelativePath="..\..\shared\Include\Blam\Halo1\BlamMemoryUpgrades.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Blam\Halo1\BlamScriptingDefinitions.hpp"
-					>
-				</File>
-			</Filter>
 			<Filter
 				Name="Impl"
 				>
@@ -3383,19 +3247,11 @@
 			Name="Memory"
 			>
 			<File
-				RelativePath=".\Memory\Data.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Memory\FunctionInterface.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\Memory\FunctionInterface.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Memory\FunctionInterfaceMacros.inl"
 				>
 			</File>
 			<File
@@ -3411,30 +3267,6 @@
 				>
 				<File
 					RelativePath=".\Memory\FunctionInterface.Client.inl"
-					>
-				</File>
-				<File
-					RelativePath=".\Memory\FunctionInterface.inl"
-					>
-				</File>
-				<File
-					RelativePath=".\Memory\FunctionInterface.Test.inl"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Shared"
-				>
-				<File
-					RelativePath="..\..\shared\Include\Memory\Halo1\DataShared.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Memory\MemoryInterfaceShared.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Memory\MemoryInterfaceShared.hpp"
 					>
 				</File>
 			</Filter>
@@ -3722,114 +3554,6 @@
 				RelativePath=".\TagGroups\TagGroups.hpp"
 				>
 			</File>
-			<Filter
-				Name="Definitions"
-				>
-				<File
-					RelativePath="..\..\shared\Include\TagGroups\Halo1\bitmap_definitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\TagGroups\Halo1\damage_effect_definitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\TagGroups\Halo1\device_definitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\TagGroups\Halo1\game_globals_definitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\TagGroups\Halo1\global_definitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\TagGroups\Halo1\hud_definitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\TagGroups\Halo1\item_definitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\TagGroups\Halo1\object_definitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\TagGroups\Halo1\shader_definitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\TagGroups\Halo1\sound_definitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\TagGroups\Halo1\unit_definitions.hpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Shared"
-				>
-				<File
-					RelativePath="..\..\shared\Include\Blam\Halo1\BlamDataFileUpgrades.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Blam\Halo1\BlamDataFileUpgrades.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\TagGroups\Halo1\CacheDefinitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Blam\Halo1\project_yellow_globals_shared_definitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Blam\Halo1\project_yellow_shared_definitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Blam\Halo1\shader_postprocess_definitions.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Blam\Halo1\shader_postprocess_definitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Blam\Halo1\shader_postprocess_definitions.inl"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\TagGroups\Halo1\TagGroupDefinitions.hpp"
-					>
-				</File>
-				<Filter
-					Name="shader_postprocess"
-					>
-					<File
-						RelativePath="..\..\shared\Include\Blam\Halo1\shader_postprocess\effect_postprocess_collection_definitions.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\shared\Include\Blam\Halo1\shader_postprocess\effect_postprocess_generic_definitions.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\shared\Include\Blam\Halo1\shader_postprocess\shader_postprocess_generic_definitions.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\shared\Include\Blam\Halo1\shader_postprocess\shader_postprocess_globals_definitions.hpp"
-						>
-					</File>
-				</Filter>
-			</Filter>
 			<Filter
 				Name="Impl"
 				>
@@ -4550,21 +4274,9 @@
 					</File>
 				</Filter>
 			</Filter>
-			<Filter
-				Name="Shared"
-				>
-				<File
-					RelativePath="..\..\shared\Include\Rasterizer\Halo1\RasterizerDefinitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Rasterizer\Halo1\Render.Upgrades.inl"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
-			Name="blamlib"
+			Name=".blamlib"
 			>
 			<Filter
 				Name="networking"
@@ -4642,6 +4354,18 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\memory\data_base.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\memory\data_base.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\memory\datum_index.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\memory\lruv_cache.hpp"
 					>
 				</File>
@@ -4710,6 +4434,10 @@
 				Name="hs"
 				>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\hs\hs.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\hs\hs_scenario_definitions.hpp"
 					>
 				</File>
@@ -4726,6 +4454,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\scenario\scenario_location.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\scenario\sky_definitions.hpp"
 					>
 				</File>
@@ -4733,6 +4465,26 @@
 			<Filter
 				Name="physics"
 				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\physics\collision_bsp.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\physics\collision_bsp_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\physics\collision_features.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\physics\collision_models.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\physics\collisions.hpp"
+					>
+				</File>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\physics\physics.hpp"
 					>
@@ -4790,6 +4542,10 @@
 				Name="sound"
 				>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\sound\sound_definitions.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\sound\sound_environment_definitions.hpp"
 					>
 				</File>
@@ -4819,6 +4575,14 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\ui_widget_text_search_and_replace_functions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\unit_hud_interface_definition.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\weapon_hud_interface_definition.hpp"
 					>
 				</File>
 			</Filter>
@@ -4857,6 +4621,18 @@
 					RelativePath="..\..\shared\Include\blamlib\Halo1\rasterizer\rasterizer_geometry.hpp"
 					>
 				</File>
+				<Filter
+					Name="dx9"
+					>
+					<File
+						RelativePath="..\..\shared\Include\blamlib\Halo1\rasterizer\dx9\rasterizer_dx9_render_targets.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\blamlib\Halo1\rasterizer\dx9\rasterizer_dx9_render_targets.hpp"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="models"
@@ -4878,6 +4654,14 @@
 				Name="items"
 				>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\items\equipment_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\items\item_definitions.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\items\item_structures.hpp"
 					>
 				</File>
@@ -4889,12 +4673,24 @@
 					RelativePath="..\..\shared\Include\blamlib\Halo1\items\projectiles.hpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\items\weapon_definitions.hpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="units"
 				>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\units\biped_definitions.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\units\bipeds.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\units\dialogue_definitions.hpp"
 					>
 				</File>
 				<File
@@ -4906,11 +4702,19 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\units\unit_dialogue.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\units\unit_structures.hpp"
 					>
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\units\units.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\units\vehicle_definitions.hpp"
 					>
 				</File>
 				<File
@@ -5018,6 +4822,10 @@
 				Name="effects"
 				>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\effects\damage_effect_definitions.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\effects\effect_definitions.hpp"
 					>
 				</File>
@@ -5038,6 +4846,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\cache\cache_files_base.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\cache\pc_sound_cache.hpp"
 					>
 				</File>
@@ -5047,6 +4859,10 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\cache\physical_memory_map.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\cache\predicted_resources.hpp"
 					>
 				</File>
 			</Filter>
@@ -5077,6 +4893,10 @@
 					RelativePath="..\..\shared\Include\blamlib\Halo1\saved_games\game_variant.hpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\saved_games\player_profile.hpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="bungie_net"
@@ -5098,6 +4918,82 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="bitmaps"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\bitmaps\bitmap_group.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="shaders"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\shaders\shader_definitions.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="math"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\math\color_math.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\math\integer_math.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\math\matrix_math.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\math\periodic_functions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\math\real_math.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\math\real_math.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="cseries"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\cseries\cseries.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\cseries\cseries_base.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\cseries\errors.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="tag_files"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\tag_files\files.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\tag_files\tag_groups_base.hpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Scenario"
@@ -5110,6 +5006,318 @@
 				RelativePath=".\Scenario\ScenarioFauxZones.hpp"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name=".YeloLib"
+			>
+			<Filter
+				Name="cache"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\cache\cache_files_yelo.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\cache\cache_files_yelo.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\cache\cache_files_yelo_base.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\cache\data_file_yelo.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\cache\data_file_yelo.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\cache\shared_cache_file_definitions.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="saved_games"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\saved_games\game_state_yelo.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="open_sauce"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\open_sauce\blam_memory_upgrades.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_global_definitions.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_global_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_scenario_definitions.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_scenario_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\open_sauce\yelo_version.hpp"
+					>
+				</File>
+				<Filter
+					Name="settings"
+					>
+					<File
+						RelativePath="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\yelo_settings_definitions.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\yelo_shared_settings.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\yelo_shared_settings.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\YeloLib\open_sauce\settings\yelo_shared_settings_base.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\YeloLib\open_sauce\settings\yelo_shared_settings_base.hpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="files"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\files\files.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\files\files.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\files\packed_file.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\files\packed_file.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="memory"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\memory\array_yelo.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\memory\data_yelo.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\memory\function_interface.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\memory\function_interface.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\memory\function_interface.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\memory\function_interface_macros.inl"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\memory\linked_list.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\memory\linked_list.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\memory\memory_interface_base.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\memory\memory_interface_base.hpp"
+					>
+				</File>
+				<Filter
+					Name="compression"
+					>
+					<File
+						RelativePath="..\..\shared\Include\YeloLib\memory\compression\7zip_codec.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\YeloLib\memory\compression\7zip_codec.hpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\YeloLib\memory\compression\zip_codec.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\YeloLib\memory\compression\zip_codec.hpp"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="security"
+					>
+					<File
+						RelativePath="..\..\shared\Include\YeloLib\memory\security\xxtea.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\YeloLib\memory\security\xxtea.hpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="cseries"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\cseries\cseries_yelo.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\cseries\cseries_yelo.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\cseries\cseries_yelo_base.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\cseries\cseries_yelo_base.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\cseries\debug_memory_yelo.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\cseries\debug_memory_yelo.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\cseries\errors_yelo.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\cseries\errors_yelo.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\cseries\pc_minidump_yelo.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\cseries\pc_minidump_yelo.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="tag_files"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\tag_files\tag_groups_markup.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\tag_files\tag_groups_yelo.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="hs"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\hs\hs_yelo.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="shaders"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\shaders\effect_postprocess_collection_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\shaders\effect_postprocess_generic_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\shaders\shader_postprocess_definitions.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\shaders\shader_postprocess_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\shaders\shader_postprocess_generic_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\shaders\shader_postprocess_globals_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\shaders\shader_postprocess_runtime.inl"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="shell"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\shell\platform_yelo.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="main"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\main\main_yelo_base.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="rasterizer"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\rasterizer\rasterizer.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\rasterizer\rasterizer_upgrades.inl"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\Halo1_CE_Readme.txt"

@@ -5,40 +5,12 @@
 	See license\OpenSauce\Halo2_Xbox for specific license information
 */
 #pragma once
-#include "Memory/Data.hpp"
-#include <Blam/Halo2/BlamScriptingDefinitions.hpp>
+
+#include <blamlib/Halo2/hs/hs.hpp>
+#include <blamlib/Halo2/memory/data.hpp>
 
 namespace Yelo
 {
-	namespace Scripting
-	{
-		struct hs_syntax_node : Memory::s_datum_base
-		{
-			union {
-				int16 ConstantType;
-				int16 FunctionIndex;
-			};
-			int16 Type;
-			union {
-				uint16 Flags;
-				int16 PointerType;
-			};
-			datum_index NextExpression;
-			int32 Pointer;
-			union {
-				void* Address;
-
-				struct {
-					bool _bool;
-					real _real;
-					int16 _short;
-					int32 _long;
-					datum_index _datum;
-				}Value;
-			};
-		};
-	};
-
 	namespace GameState
 	{
 		struct s_object_list_header_datum : Memory::s_datum_base_aligned

@@ -179,6 +179,17 @@ namespace Yelo
 			#include "Game/EngineFunctions.Objects.inl"
 		};
 
+		namespace Physics
+		{
+			API_FUNC_NAKED bool PLATFORM_API CollisionTestVector(long_flags flags, real_point3d& location, real_vector3d& vector, 
+				datum_index object_index, Yelo::Physics::s_collision_result& collision)
+			{
+				static const uintptr_t JMP_ADDR = GET_FUNC_PTR(COLLISION_TEST_VECTOR);
+
+				__asm jmp	JMP_ADDR
+			}
+		};
+
 		namespace Players
 		{
 			#include "Game/EngineFunctions.Players.inl"

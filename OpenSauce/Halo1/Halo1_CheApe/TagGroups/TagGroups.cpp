@@ -54,7 +54,7 @@ namespace Yelo
 			// when tag_block_delete_element (which is called by tag_unload) is ran
 			void* ptr = YELO_MALLOC(Enums::k_max_tag_name_length+1, false);
 
-			reference.name = CAST_PTR(t_tag_reference_name, ptr);
+			reference.name = CAST_PTR(tag_reference_name_t, ptr);
 			reference.name_length = 0;
 			reference.group_tag = NONE;
 			reference.tag_index = datum_index::null;

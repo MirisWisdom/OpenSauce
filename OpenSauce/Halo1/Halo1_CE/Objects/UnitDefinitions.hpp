@@ -6,9 +6,11 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/game/game_globals.hpp>
+#include <blamlib/Halo1/units/unit_definitions.hpp>
+#include <blamlib/Halo1/units/unit_structures.hpp>
+
 #include "Objects/ObjectDefinitions.hpp"
-#include <TagGroups/Halo1/game_globals_definitions.hpp>
-#include <TagGroups/Halo1/unit_definitions.hpp>
 
 namespace Yelo
 {
@@ -245,7 +247,18 @@ namespace Yelo
 			//TStructSubGetPtrImpl(real_vector3d,			, 0x370); // seat related
 			TStructSubGetPtrImpl(real,					CamoPower, 0x37C);
 
-			// 0x3B8, int16
+			TStructSubGetPtrImpl(s_unit_speech,			SpeechCurrent, 0x388);
+			//TStructSubGetPtrImpl(s_unit_speech,			SpeechNext?, 0x3B8);
+
+			//TStructSubGetPtrImpl(bool,					Speech, 0x3F4);
+			//TStructSubGetPtrImpl(bool,					Speech, 0x3F5);
+			//TStructSubGetPtrImpl(bool,					Speech, 0x3F6);
+			//PAD8
+			//TStructSubGetPtrImpl(int16,					Speech, 0x3F8);
+			//TStructSubGetPtrImpl(int16,					Speech, 0x3FA);
+			//TStructSubGetPtrImpl(int16,					Speech, 0x3FC);
+			//TStructSubGetPtrImpl(int16,					Speech, 0x3FE);
+			//TStructSubGetPtrImpl(int32,					Speech, 0x400);
 
 			TStructSubGetPtrImpl(datum_index,			ResponsibleFlamerObjectIndex, 0x410); // object which caused us to start flaming to death
 

@@ -10,10 +10,11 @@
 #if PLATFORM_ID == PLATFORM_TOOL
 #include <psapi.h>
 
+#include <blamlib/Halo1/cache/cache_files.hpp>
+
 #include "Common/StringEditing.hpp"
 #include "TagGroups/TagGroups.hpp"
 #include "Tool/Console.hpp"
-#include <TagGroups/Halo1/CacheDefinitions.hpp>
 
 namespace Yelo
 {
@@ -104,8 +105,8 @@ namespace Yelo
 			HANDLE m_halo_handle;
 			BOOL m_accepted_edit_warning;
 
-			s_cache_tag_instance* m_cache_tag_instances;
-			s_cache_tag_header m_cache_file_globals;
+			Cache::s_cache_tag_instance* m_cache_tag_instances;
+			Cache::s_cache_tag_header m_cache_file_globals;
 		};
 		static s_cache_view_globals g_cache_view_globals;
 

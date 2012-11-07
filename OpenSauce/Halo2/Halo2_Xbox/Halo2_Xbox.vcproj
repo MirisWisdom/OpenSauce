@@ -284,38 +284,6 @@
 				>
 			</File>
 			<Filter
-				Name="Shared"
-				>
-				<File
-					RelativePath="..\..\shared\Include\Common\PlatformShared.hpp"
-					>
-				</File>
-				<Filter
-					Name="Blam"
-					>
-					<File
-						RelativePath="..\..\shared\Include\Common\BaseBlamTypes.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\shared\Include\Common\BaseBlamTypes.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\shared\Include\Common\BaseBlamTypesXbox.cpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\shared\Include\Common\BaseBlamTypesXbox.hpp"
-						>
-					</File>
-					<File
-						RelativePath="..\..\shared\Include\Blam\Halo2\BlamDefinitions.hpp"
-						>
-					</File>
-				</Filter>
-			</Filter>
-			<Filter
 				Name="Impl"
 				>
 				<File
@@ -449,14 +417,6 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Math"
-			>
-			<File
-				RelativePath=".\Math\PeriodicFunctions.hpp"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name="Memory"
 			>
 			<File
@@ -465,10 +425,6 @@
 			</File>
 			<File
 				RelativePath=".\Memory\Config.hpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Memory\Data.hpp"
 				>
 			</File>
 			<File
@@ -487,34 +443,10 @@
 				RelativePath=".\Memory\Runtime.hpp"
 				>
 			</File>
-			<Filter
-				Name="Shared"
-				>
-				<File
-					RelativePath="..\..\shared\Include\Memory\DataShared.hpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Memory\MemoryInterfaceShared.cpp"
-					>
-				</File>
-				<File
-					RelativePath="..\..\shared\Include\Memory\MemoryInterfaceShared.hpp"
-					>
-				</File>
-			</Filter>
 		</Filter>
 		<Filter
 			Name="Models"
 			>
-			<File
-				RelativePath=".\Models\Animations.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Models\Animations.hpp"
-				>
-			</File>
 			<File
 				RelativePath=".\Models\ModelDefinitions.hpp"
 				>
@@ -633,18 +565,6 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Shaders"
-			>
-			<File
-				RelativePath=".\Shaders\Shaders.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Shaders\Shaders.hpp"
-				>
-			</File>
-		</Filter>
-		<Filter
 			Name="Sound"
 			>
 			<File
@@ -653,18 +573,6 @@
 			</File>
 			<File
 				RelativePath=".\Sound\Sound.hpp"
-				>
-			</File>
-		</Filter>
-		<Filter
-			Name="Structures"
-			>
-			<File
-				RelativePath=".\Structures\StructureBsp.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Structures\StructureBsp.hpp"
 				>
 			</File>
 		</Filter>
@@ -855,6 +763,194 @@
 				RelativePath=".\TagGroups\TagGroups.hpp"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name=".blamlib"
+			>
+			<Filter
+				Name="cseries"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo2\cseries\cseries.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="game"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo2\game\players.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="hs"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo2\hs\hs.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="interface"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo2\interface\user_interface.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo2\interface\user_interface_controller.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="memory"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo2\memory\constant_pool.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo2\memory\data.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\memory\data_base.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\memory\data_base.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo2\memory\hashtable.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo2\memory\lruv_cache.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo2\memory\memory_pool.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="networking"
+				>
+				<Filter
+					Name="session"
+					>
+					<File
+						RelativePath="..\..\shared\Include\blamlib\Halo2\networking\session\network_session.hpp"
+						>
+					</File>
+				</Filter>
+			</Filter>
+			<Filter
+				Name="tag_files"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo2\tag_files\files.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo2\tag_files\tag_groups.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="cache"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo2\cache\cache_files.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo2\cache\predicted_resources.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="shaders"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo2\shaders\shader_definitions.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="sound"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo2\sound\sound_definitions.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="math"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\math\color_math.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\math\integer_math.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\math\matrix_math.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\math\real_math.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\math\real_math.hpp"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name=".YeloLib"
+			>
+			<Filter
+				Name="cseries"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\cseries\cseries_yelo_base.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\cseries\cseries_yelo_base.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="memory"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo2\memory\data_yelo.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\memory\memory_interface_base.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\memory\memory_interface_base.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="hs"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo2\hs\hs_yelo.hpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\Halo2_Xbox.cpp"

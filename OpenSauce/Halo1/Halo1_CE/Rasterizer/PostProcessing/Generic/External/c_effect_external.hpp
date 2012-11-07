@@ -7,7 +7,8 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <Blam/Halo1/shader_postprocess_definitions.hpp>
+#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
+
 #include "Rasterizer/PostProcessing/Generic/c_effect_generic.hpp"
 
 namespace Yelo

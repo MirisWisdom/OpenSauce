@@ -9,7 +9,8 @@
 
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 
-#include <Blam/Halo1/project_yellow_shared_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #include "Engine/EngineFunctions.hpp"
 #include "Engine/Scripting.hpp"

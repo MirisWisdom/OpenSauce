@@ -7,7 +7,8 @@
 #include "Common/Precompile.hpp"
 #include "Game/Scripting.hpp"
 
-#include <Blam/Halo1/BlamMemoryUpgrades.hpp>
+#include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
+
 #include "Game/EngineFunctions.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Game/ScriptLibrary.hpp"

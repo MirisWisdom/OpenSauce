@@ -10,11 +10,11 @@
 // Memory upgrade hacks
 namespace BuildCacheFileEx { namespace MemoryUpgrades {
 
-	static s_cache_header_yelo yelo_cache_header_globals;
+	static Cache::s_cache_header_yelo yelo_cache_header_globals;
 
 	static void InitializeHeaderGlobals(bool using_mod_sets, cstring mod_name, bool use_memory_upgrades)
 	{
-		s_cache_header_yelo& header = yelo_cache_header_globals;
+		Cache::s_cache_header_yelo& header = yelo_cache_header_globals;
 
 		if(header.flags.uses_mod_data_files = using_mod_sets)
 			strcpy_s(header.mod_name, mod_name);
@@ -26,14 +26,14 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 	// Initializes the yelo header with the default build info settings
 	static void InitializeHeaderGlobalsBuildInfo()
 	{
-		s_cache_header_yelo& header = yelo_cache_header_globals;
+		Cache::s_cache_header_yelo& header = yelo_cache_header_globals;
 
-		header.InitializeBuildInfo();
+		header.InitializeBuildInfo(Enums::_production_build_stage_ship, 0);
 	}
 	// Initializes the yelo header with a scenario's yelo build info
 	static void InitializeHeaderGlobalsBuildInfo(const TagGroups::s_project_yellow_scenario_build_info& build_info)
 	{
-		s_cache_header_yelo& header = yelo_cache_header_globals;
+		Cache::s_cache_header_yelo& header = yelo_cache_header_globals;
 
 		header.InitializeBuildInfo(build_info.build_stage, build_info.revision);
 	}
@@ -159,7 +159,7 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 	}
 
 	static const uint32 INTERCEPTOR_END_HOOK_ADDR = 0x453221; // build_cache_file_write_header_and_compress
-	static bool PLATFORM_API InterceptorEnd(s_cache_header* header)
+	static bool PLATFORM_API InterceptorEnd(Cache::s_cache_header* header)
 	{
 		build_cache_file_end_preprocess(header, yelo_cache_header_globals);
 

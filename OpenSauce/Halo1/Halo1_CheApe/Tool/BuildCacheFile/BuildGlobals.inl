@@ -69,10 +69,10 @@ struct s_build_cache_file_for_scenario {
 
 	typedef bool (PLATFORM_API* _build_cache_file_cull_tags)();
 	typedef bool (PLATFORM_API* _build_structure_bsp_predicted_resources)();
-	typedef bool (PLATFORM_API* _build_cache_file_add_tags)(s_cache_header& header, void* scratch_buffer, datum_index tag_indexes[], int32 prior_tag_memory_space_used);
+	typedef bool (PLATFORM_API* _build_cache_file_add_tags)(Cache::s_cache_header& header, void* scratch_buffer, datum_index tag_indexes[], int32 prior_tag_memory_space_used);
 	typedef void (PLATFORM_API* __build_cache_file_for_scenario)(cstring scenario_name);
 	typedef bool (PLATFORM_API* _build_cache_file_begin)(cstring scenario_name);
-	typedef bool (PLATFORM_API* _build_cache_file_end)(s_cache_header* header);
+	typedef bool (PLATFORM_API* _build_cache_file_end)(Cache::s_cache_header* header);
 	typedef void (PLATFORM_API* _build_cache_file_failed)();
 	typedef bool (PLATFORM_API* _build_cache_file_add_resource)(const void* buffer, size_t buffer_size, uint32* out_file_offset, bool update_crc);
 

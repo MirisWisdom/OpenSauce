@@ -18,8 +18,6 @@
 #include <blamlib/Halo1/saved_games/game_state.hpp>
 #include <blamlib/Halo1/scenario/scenario.hpp>
 
-#include <TagGroups/Halo1/global_definitions.hpp> // for game teams
-
 namespace Yelo
 {
 	namespace TagGroups

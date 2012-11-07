@@ -11,39 +11,39 @@
 #include "Game/ScriptLibrary.hpp"
 #include "Game/EngineFunctions.hpp"
 
-#include <Blam/Halo1/shader_postprocess_definitions.hpp>
 #include "TagGroups/CacheFiles.hpp"
 #include "TagGroups/project_yellow_definitions.hpp"
 
 //////////////////////////////////////////////////////////////////////////
 // 
-#include <TagGroups/Halo1/object_definitions.hpp>
-#include <TagGroups/Halo1/device_definitions.hpp>
-#include <TagGroups/Halo1/item_definitions.hpp>
-#include <TagGroups/Halo1/unit_definitions.hpp>
-
-#include <TagGroups/Halo1/bitmap_definitions.hpp>
-#include <TagGroups/Halo1/damage_effect_definitions.hpp>
-#include <TagGroups/Halo1/game_globals_definitions.hpp>
-#include <TagGroups/Halo1/global_definitions.hpp>
-#include <TagGroups/Halo1/hud_definitions.hpp>
-#include <TagGroups/Halo1/shader_definitions.hpp>
-#include <TagGroups/Halo1/sound_definitions.hpp>
-//#include <TagGroups/Halo1>
-
+#include <blamlib/Halo1/bitmaps/bitmap_group.hpp>
 #include <blamlib/Halo1/devices/device_definitions.hpp>
+#include <blamlib/Halo1/effects/damage_effect_definitions.hpp>
 #include <blamlib/Halo1/effects/effect_definitions.hpp>
 #include <blamlib/Halo1/effects/material_effect_definitions.hpp>
+#include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/interface/hud_definitions.hpp>
 #include <blamlib/Halo1/interface/ui_widget_group.hpp>
+#include <blamlib/Halo1/interface/unit_hud_interface_definition.hpp>
+#include <blamlib/Halo1/interface/weapon_hud_interface_definition.hpp>
+#include <blamlib/Halo1/items/equipment_definitions.hpp>
+#include <blamlib/Halo1/items/item_definitions.hpp>
+#include <blamlib/Halo1/items/projectile_definitions.hpp>
+#include <blamlib/Halo1/items/weapon_definitions.hpp>
 #include <blamlib/Halo1/models/collision_model_definitions.hpp>
 #include <blamlib/Halo1/models/model_animation_definitions.hpp>
 #include <blamlib/Halo1/models/model_definitions.hpp>
+#include <blamlib/Halo1/objects/object_definitions.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 #include <blamlib/Halo1/scenario/sky_definitions.hpp>
+#include <blamlib/Halo1/shaders/shader_definitions.hpp>
+#include <blamlib/Halo1/sound/sound_definitions.hpp>
 #include <blamlib/Halo1/sound/sound_environment_definitions.hpp>
 #include <blamlib/Halo1/structures/structure_bsp_definitions.hpp>
+#include <blamlib/Halo1/units/dialogue_definitions.hpp>
+#include <blamlib/Halo1/units/biped_definitions.hpp>
 #include <blamlib/Halo1/units/unit_definitions.hpp>
+#include <blamlib/Halo1/units/vehicle_definitions.hpp>
 //////////////////////////////////////////////////////////////////////////
 
 namespace Yelo
@@ -63,8 +63,8 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_TAGGROUPS_TAG_GROUPS
 #include "Memory/_EngineLayout.inl"
 
-		s_cache_tag_header* Index()					{ return Cache::CacheFileGlobals()->current_cache.tag_header; }
-		s_cache_tag_instance const* Instances()		DPTR_IMP_GET(tag_instances);
+		Cache::s_cache_tag_header* Index()					{ return Cache::CacheFileGlobals()->current_cache.tag_header; }
+		Cache::s_cache_tag_instance const* Instances()		DPTR_IMP_GET(tag_instances);
 
 
 		void Initialize()	{}
@@ -107,7 +107,7 @@ namespace Yelo
 
 			// Verify that the map's project_yellow's script definitions are included in this 
 			// build of Yelo.
-			const TAG_TBLOCK(& user_script_block, scripting_block) = _global_yelo->user_scripting;
+			const TAG_TBLOCK(& user_script_block, s_scripting_definitions) = _global_yelo->user_scripting;
 			if( user_script_block.Count == 1 &&
 				!Scripting::DefinitionsMatch( user_script_block[0] ))
 			{
@@ -117,7 +117,7 @@ namespace Yelo
 
 			// Verify that the map's project_yellow_globals's script definitions are included in this 
 			// build of Yelo.
-			const TAG_TBLOCK(& global_script_block, scripting_block) = _global_yelo_globals->yelo_scripting;
+			const TAG_TBLOCK(& global_script_block, s_scripting_definitions) = _global_yelo_globals->yelo_scripting;
 			if( global_script_block.Count == 1 &&
 				!Scripting::DefinitionsMatch( global_script_block[0] ))
 			{

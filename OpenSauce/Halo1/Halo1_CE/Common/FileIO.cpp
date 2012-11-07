@@ -6,7 +6,9 @@
 */
 #include "Common\Precompile.hpp"
 #include "Common\FileIO.hpp"
-#include "Common\FileIOBase.hpp"
+
+#include <YeloLib/files/files.hpp>
+#include <YeloLib/main/main_yelo_base.hpp>
 
 #include "Memory\MemoryInterface.hpp"
 #include "Common\YeloSettings.hpp"
@@ -25,12 +27,12 @@ namespace Yelo
 		 * 
 		 * Reads file ID definitions from an embedded XML resource. The XML file has the files location and its md5 checksum for later validation.
 		 */
-		void ReadIDFileDefinitions()
+		static void ReadIDFileDefinitions()
 		{
 			// get the resouce from the module
-			HRSRC resource = FindResource(Yelo::Memory::YeloModuleHandle(), MAKEINTRESOURCE(OS_CHECKSUMS_XML), "XML");
+			HRSRC resource = FindResource(Main::YeloModuleHandle(), MAKEINTRESOURCE(OS_CHECKSUMS_XML), "XML");
 			if(!resource) return;
-			HGLOBAL resource_handle = LoadResource(Yelo::Memory::YeloModuleHandle(), resource);
+			HGLOBAL resource_handle = LoadResource(Main::YeloModuleHandle(), resource);
 			if(!resource_handle) return;
 			void* resource_pointer = LockResource(resource_handle);
 			if(!resource_pointer) return;

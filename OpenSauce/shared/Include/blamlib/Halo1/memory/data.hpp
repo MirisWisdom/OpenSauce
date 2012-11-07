@@ -6,8 +6,7 @@
 */
 #pragma once
 
-#include <Memory/DataShared.hpp>
-#include <Memory/Halo1/DataShared.hpp>
+#include <blamlib/memory/data_base.hpp>
 
 namespace Yelo
 {
@@ -31,3 +30,5 @@ namespace Yelo
 		};
 	};
 };
+
+#include <YeloLib/Halo1/memory/data_yelo.hpp>

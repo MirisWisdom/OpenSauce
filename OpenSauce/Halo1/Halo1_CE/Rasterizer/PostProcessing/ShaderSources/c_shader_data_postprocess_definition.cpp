@@ -8,8 +8,9 @@
 #include "Rasterizer/PostProcessing/ShaderSources/c_shader_data_postprocess_definition.hpp"
 
 #if !PLATFORM_IS_DEDI
+#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
+
 #include "Rasterizer/PostProcessing/ShaderSources/c_shader_data_base.hpp"
-#include <Blam/Halo1/shader_postprocess_definitions.hpp>
 
 namespace Yelo
 {

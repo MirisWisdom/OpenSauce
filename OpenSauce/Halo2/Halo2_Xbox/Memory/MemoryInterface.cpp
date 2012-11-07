@@ -7,8 +7,9 @@
 #include "Common/Precompile.hpp"
 #include "Memory/MemoryInterface.hpp"
 
+#include <blamlib/Halo2/memory/data.hpp>
+
 #include "Game/EngineFunctions.hpp"
-#include "Memory/Data.hpp"
 
 namespace Yelo
 {

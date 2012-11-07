@@ -6,8 +6,11 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/items/item_definitions.hpp>
+#include <blamlib/Halo1/items/equipment_definitions.hpp>
+#include <blamlib/Halo1/items/weapon_definitions.hpp>
+
 #include "Objects/ObjectDefinitions.hpp"
-#include <TagGroups/Halo1/item_definitions.hpp>
 
 namespace Yelo
 {

@@ -16,7 +16,6 @@
 #include "Game/Players.hpp"
 #include "Objects/Objects.hpp"
 
-#include <TagGroups/Halo1/item_definitions.hpp>
 #include "TagGroups/project_yellow_definitions.hpp"
 
 namespace Yelo

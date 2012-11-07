@@ -129,6 +129,10 @@ FUNC_PTR(UNIT_SET_ANIMATION,			0x572910, 0x521010);
 FUNC_PTR(UNIT_GET_CUSTOM_ANIMATION_TIME,0x573EF0, 0x522600);
 
 //////////////////////////////////////////////////////////////////////////
+// Physics
+FUNC_PTR(COLLISION_TEST_VECTOR,			0x5094F0+0x30, 0x4EF5D0+0x30);
+
+//////////////////////////////////////////////////////////////////////////
 // Players
 FUNC_PTR(PLAYER_INDEX_FROM_UNIT_INDEX,		0x477BF0, 0x46F670);
 FUNC_PTR(PLAYER_TELEPORT,					0x478A90, 0x470510);

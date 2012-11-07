@@ -155,7 +155,7 @@ namespace Yelo
 			}
 
 			tag_string time_str;
-			Settings::GetTimeStampString(time_str);
+			GetTimeStampString(time_str);
 
 			char time_buffer[16];
 			memset(time_buffer, 0, sizeof(time_buffer));

@@ -10,8 +10,6 @@
 #include <blamlib/Halo1/game/game_allegiance.hpp> // for game teams
 #include <blamlib/Halo1/game/players.hpp>
 
-#include <TagGroups/Halo1/hud_definitions.hpp>
-
 namespace Yelo
 {
 	namespace Enums

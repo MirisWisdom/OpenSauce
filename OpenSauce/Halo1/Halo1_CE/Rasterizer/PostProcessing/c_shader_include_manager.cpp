@@ -56,7 +56,7 @@ namespace Yelo
 			// read the file
 			do
 			{
-				if(FileIO::ReadFileToMemory(info, (char**)ppData) != Enums::_file_io_read_error_none)
+				if(FileIO::ReadFileToMemory(info, CAST_QUAL(LPVOID*, ppData)) != Enums::_file_io_read_error_none)
 					break;
 				*pBytes = info.file_size;
 

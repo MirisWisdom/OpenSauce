@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <Memory/Halo2/DataShared.hpp>
+#include <blamlib/Halo2/memory/data.hpp>
 
 namespace Yelo
 {

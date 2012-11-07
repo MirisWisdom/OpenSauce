@@ -8,6 +8,8 @@
 #include "Rasterizer/DX9/DeviceHooks.hpp"
 
 #if !PLATFORM_IS_DEDI
+#include <YeloLib/main/main_yelo_base.hpp>
+
 #include "Memory/MemoryInterface.hpp"
 
 #include "Common/GameSystems.hpp"
@@ -84,7 +86,7 @@ namespace Yelo
 		{
 			HRESULT hr = d3d->CreateDevice(Adapter, DeviceType, hFocusWindow, BehaviorFlags, pPresentationParameters, ppReturnedDeviceInterface);
 
-			if(SUCCEEDED(hr) && Yelo::Memory::IsYeloEnabled())
+			if(SUCCEEDED(hr) && Yelo::Main::IsYeloEnabled())
 			{
 				Yelo::Main::s_dx_component* components;
 				const Yelo::int32 component_count = Yelo::Main::GetDXComponents(components);
@@ -98,7 +100,7 @@ namespace Yelo
 
 		static HRESULT Reset(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS *pPresentationParameters)
 		{
-			if(Yelo::Memory::IsYeloEnabled())
+			if(Yelo::Main::IsYeloEnabled())
 			{
 				Yelo::Main::s_dx_component* components;
 				const Yelo::int32 component_count = Yelo::Main::GetDXComponents(components);
@@ -109,7 +111,7 @@ namespace Yelo
 
 			HRESULT hr = device->Reset(pPresentationParameters);
 
-			if(Yelo::Memory::IsYeloEnabled())
+			if(Yelo::Main::IsYeloEnabled())
 			{
 				Yelo::Main::s_dx_component* components;
 				const Yelo::int32 component_count = Yelo::Main::GetDXComponents(components);
@@ -125,7 +127,7 @@ namespace Yelo
 		{
 			HRESULT hr = device->BeginScene();
 
-			if(Yelo::Memory::IsYeloEnabled())
+			if(Yelo::Main::IsYeloEnabled())
 				Yelo::DX9::c_gbuffer_system::ClearGBuffer(device);
 
 			return hr;
@@ -133,7 +135,7 @@ namespace Yelo
 
 		static HRESULT EndScene(IDirect3DDevice9* device)
 		{
-			if(Yelo::Memory::IsYeloEnabled())
+			if(Yelo::Main::IsYeloEnabled())
 			{
 				Yelo::Main::s_dx_component* components;
 				const Yelo::int32 component_count = Yelo::Main::GetDXComponents(components);

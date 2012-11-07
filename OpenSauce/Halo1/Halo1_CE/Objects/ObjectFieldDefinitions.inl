@@ -37,8 +37,8 @@ static s_object_field_definition g_weapon_tag_real_trigger_fields[] = {
 
 
 static s_object_field_definition g_unit_object_index_fields[] = {
-	FIELD_ENTRY( unit, weapon,		object_index, weapon,									true,  true),
-	FIELD_ENTRY2(unit, unit,		object_index, recent_damage_unit, "recent_damage.unit",	false, true),
+	FIELD_ENTRY( unit, weapon,		object_index, weapon,									true,  true, true),
+	FIELD_ENTRY2(unit, unit,		object_index, recent_damage_unit, "recent_damage.unit",	false, true, true),
 };
 
 

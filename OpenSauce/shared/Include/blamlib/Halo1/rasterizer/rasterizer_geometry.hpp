@@ -15,7 +15,7 @@ namespace Yelo
 			_triangle_buffer_type_0,
 			_triangle_buffer_type_precompiled_strip,
 
-			NUMBER_OF_TRIANGLE_BUFFER_TYPES
+			k_number_of_triangle_buffer_types
 		};
 
 		enum rasterizer_vertex_type : _enum
@@ -47,7 +47,7 @@ namespace Yelo
 
 			_rasterizer_vertex_type_environment_single_stream_ff,
 
-			NUMBER_OF_RASTERIZER_VERTEX_TYPES,
+			k_number_of_rasterizer_vertex_types,
 		};
 	};
 

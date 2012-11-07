@@ -12,7 +12,7 @@
 #include <time.h>
 #include <ctime>
 
-#include <Common/Halo1/YeloSettingsVersion.hpp>
+#include <YeloLib/Halo1/open_sauce/yelo_version.hpp>
 
 #include "Networking/HTTP/HTTPClient.hpp"
 #if PLATFORM_IS_USER

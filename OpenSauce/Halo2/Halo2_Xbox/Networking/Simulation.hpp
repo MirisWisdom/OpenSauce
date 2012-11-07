@@ -14,7 +14,7 @@ namespace Yelo
 		{
 			_simulation_world_type_none,
 			_simulation_world_type_local,
-			_simulation_world_typesynchronous_client,
+			_simulation_world_type_synchronous_client,
 			_simulation_world_type_synchronous_server,
 			_simulation_world_type_film_playback,
 			_simulation_world_type_distributed_client,

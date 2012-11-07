@@ -6,15 +6,15 @@
 */
 #pragma once
 
-#include <TagGroups/Halo1/CacheDefinitions.hpp>
-#include <TagGroups/Halo1/TagGroupDefinitions.hpp>
+#include <blamlib/Halo1/cache/cache_files.hpp>
+#include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 namespace Yelo
 {
 	namespace TagGroups
 	{
-		s_cache_tag_header* Index();
-		s_cache_tag_instance const* Instances(); // Don't use this for getting tags, use the TagGet* functions
+		Cache::s_cache_tag_header* Index();
+		Cache::s_cache_tag_instance const* Instances(); // Don't use this for getting tags, use the TagGet* functions
 
 		void Initialize();
 		void Dispose();
@@ -33,7 +33,7 @@ namespace Yelo
 		{
 			if(!tag_index.IsNull() && tag_index.index < Index()->count)
 			{
-				s_cache_tag_instance const& instance = Instances()[tag_index.index];
+				Cache::s_cache_tag_instance const& instance = Instances()[tag_index.index];
 
 				if(instance.MatchesGroup(T::k_group_tag))
 					return instance.Definition<T>();
@@ -48,7 +48,7 @@ namespace Yelo
 		{
 			if(!tag_index.IsNull() && tag_index.index < Index()->count)
 			{
-				s_cache_tag_instance const& instance = Instances()[tag_index.index];
+				Cache::s_cache_tag_instance const& instance = Instances()[tag_index.index];
 
 				if(instance.MatchesGroup(T::k_group_tag))
 					return instance.Definition<T>();
@@ -62,7 +62,7 @@ namespace Yelo
 		template<typename T>
 		T* TagGetUnsafe(datum_index tag_index)
 		{
-			s_cache_tag_instance const& instance = Instances()[tag_index.index];
+			Cache::s_cache_tag_instance const& instance = Instances()[tag_index.index];
 
 			return instance.Definition<T>();
 		}

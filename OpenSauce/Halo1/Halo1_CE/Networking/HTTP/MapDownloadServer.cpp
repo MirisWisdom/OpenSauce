@@ -8,7 +8,8 @@
 #include "Networking/HTTP/MapDownloadServer.hpp"
 
 #if PLATFORM_IS_DEDI
-#include <Common/LinkedList.hpp>
+#include <YeloLib/memory/linked_list.hpp>
+
 #include "Common/FileIO.hpp"
 #include "Common/YeloSettings.hpp"
 #include "Networking/HTTP/HTTP.hpp"

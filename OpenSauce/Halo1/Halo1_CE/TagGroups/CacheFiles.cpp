@@ -9,8 +9,8 @@
 
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 
-#include <Blam/Halo1/BlamMemoryUpgrades.hpp>
-#include <Blam/Halo1/BlamDataFileUpgrades.hpp>
+#include <YeloLib/Halo1/cache/data_file_yelo.hpp>
+#include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Common/YeloSettings.hpp"
@@ -55,7 +55,7 @@ namespace Yelo
 			for(x = 0; x < NUMBEROF(K_DATA_FILE_LOCALE_NAME_REFERENCES);  x++)	*K_DATA_FILE_LOCALE_NAME_REFERENCES[x] = locale;
 		}
 
-		static void ScenarioTagsLoadPreprocess(s_cache_header* cache_header)
+		static void ScenarioTagsLoadPreprocess(Cache::s_cache_header* cache_header)
 		{
 			// when a yelo made cache is loaded, this will be set to true, causing non-yelo-made 
 			// caches to load the original data files. This isn't required as yelo bases 

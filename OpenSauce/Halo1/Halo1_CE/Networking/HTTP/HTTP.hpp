@@ -12,8 +12,6 @@
 #define K_HTTP_CLIENT_ID "OpenSauce_Halo1_CE_Client"
 #define K_HTTP_DEDI_ID "OpenSauce_Halo1_CE_Dedi"
 
-#include <Common/Halo1/YeloSettingsVersion.hpp>
-
 #include <vector>
 #include <string>
 #include <sstream>

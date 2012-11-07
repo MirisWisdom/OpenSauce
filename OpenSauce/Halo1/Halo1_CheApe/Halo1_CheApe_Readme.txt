@@ -55,6 +55,7 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
 
 == Change Log ==
 === Version 3.1 (Unreleased) ===
+  * ADD			Mini-dump support for tool and sapien builds (no guerilla support)
   * FIX			Increased the maximum buffer size for model vertex and index data. Tool crashes (buffer overflow) if you actually hit this limit (Gearbox's fault, not ours!)
 
 === Version 3.0.2 ===

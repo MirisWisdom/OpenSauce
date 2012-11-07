@@ -7,9 +7,8 @@
 #include "Common/Precompile.hpp"
 #include "TagGroups/TagGroups.hpp"
 
-#include "Memory/Data.hpp"
-#include <TagGroups/Halo2/shader_definitions.hpp>
-#include <TagGroups/Halo2/sound_definitions.hpp>
+#include <blamlib/Halo2/shaders/shader_definitions.hpp>
+#include <blamlib/Halo2/sound/sound_definitions.hpp>
 
 namespace Yelo
 {

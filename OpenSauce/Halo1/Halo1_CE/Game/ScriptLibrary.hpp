@@ -6,19 +6,15 @@
 */
 #pragma once
 
-#include "Memory/MemoryInterface.hpp"
-#include <Blam/Halo1/BlamScriptingDefinitions.hpp>
+#include <blamlib/Halo1/hs/hs.hpp>
 
-// Utility function for checking input strings against a base string.
-// eg, the base string of "weapon0" is "weapon".
-// used in Players.Scripting.inl and Objects.Scripting.inl
-#define _HS_UTIL_STRNCMP(value, str)	(strncmp(value,str,NUMBEROF(str)-1)==0)
+#include "Memory/MemoryInterface.hpp"
 
 namespace Yelo
 {
 	namespace TagGroups
 	{
-		struct scripting_block;
+		struct s_scripting_definitions;
 	};
 };
 
@@ -116,7 +112,7 @@ namespace Yelo
 
 		// True if the script definitions in [data] match the functions/globals 
 		// defined by Yelo's code.
-		bool DefinitionsMatch(const TagGroups::scripting_block& data);
+		bool DefinitionsMatch(const TagGroups::s_scripting_definitions& data);
 
 		// Interpret [data] as [type] data. Takes the [data].pointer and sets [data] to the dereferenced value.
 		// If [data].pointer is NULL, then this sets [data] to [type]'s NONE equivalent.
