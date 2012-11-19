@@ -311,14 +311,6 @@
 			Name="Common"
 			>
 			<File
-				RelativePath=".\Common\CmdLineSettings.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Common\CmdLineSettings.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Common\DebugDump.cpp"
 				>
 			</File>
@@ -4394,6 +4386,30 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\game_engine_ctf.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\game_engine_king.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\game_engine_oddball.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\game_engine_race.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\game_engine_slayer.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\game_engine_stub.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\game\game_globals.hpp"
 					>
 				</File>
@@ -4526,6 +4542,18 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\objects\placeholder_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\objects\scenery_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\objects\sound_scenery_definitions.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\objects\vehicle_remapper.hpp"
 					>
 				</File>
@@ -4553,6 +4581,10 @@
 			<Filter
 				Name="interface"
 				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\first_person_weapons.hpp"
+					>
+				</File>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\hud_definitions.hpp"
 					>
@@ -4658,6 +4690,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\items\garbage_definitions.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\items\item_definitions.hpp"
 					>
 				</File>
@@ -4758,6 +4794,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\cutscene\recorded_animation_playback.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\cutscene\recorded_animation_playback_v1.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\cutscene\recorded_animations.hpp"
 					>
 				</File>
@@ -4821,6 +4865,10 @@
 			<Filter
 				Name="effects"
 				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\effects\damage_effect_definitions.cpp"
+					>
+				</File>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\effects\damage_effect_definitions.hpp"
 					>
@@ -4991,6 +5039,14 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\tag_files\tag_groups_base.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="input"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\input\input_abstraction.hpp"
 					>
 				</File>
 			</Filter>
@@ -5297,6 +5353,14 @@
 					RelativePath="..\..\shared\Include\YeloLib\shell\platform_yelo.hpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\shell\shell_windows_command_line.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\shell\shell_windows_command_line.hpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="main"
@@ -5315,6 +5379,14 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\YeloLib\Halo1\rasterizer\rasterizer_upgrades.inl"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="interface"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\interface\equipment_hud_interface_definition.hpp"
 					>
 				</File>
 			</Filter>

@@ -8,11 +8,11 @@
 #include "Game/GameState.hpp"
 
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
+#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Common/GameSystems.hpp"
 #include "Common/YeloSettings.hpp"
-#include "Common/CmdLineSettings.hpp"
 #include "Game/ScriptLibrary.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameBuildNumber.hpp"

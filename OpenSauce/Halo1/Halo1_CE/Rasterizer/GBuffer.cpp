@@ -8,8 +8,9 @@
 #include "Rasterizer/GBuffer.hpp"
 
 #if !PLATFORM_IS_DEDI
+#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
+
 #include "Common/YeloSettings.hpp"
-#include "Common/CmdLineSettings.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Rasterizer/Rasterizer.hpp"
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"

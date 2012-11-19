@@ -9,8 +9,10 @@
 //////////////////////////////////////////////////////////////////////////
 // .cpp
 #if __EL_INCLUDE_FILE_ID == __EL_GAME_ENGINE_FUNCTIONS
-	namespace EngineFunctions
+	namespace Engine
 	{
+		FUNC_PTR(GET_CMD_LINE_PARAMETER,			0x421ED0, 0x42DC70, 0x492E60);
+
 		proc_error error = CAST_PTR(proc_error, PLATFORM_VALUE(0x4206B0, 0x42CB90, 0x417500));
 
 		FUNC_PTR(DISPLAY_ASSERT,	0x42C840, 0x435F10, 0x4F7000);

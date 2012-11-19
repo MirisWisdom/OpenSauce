@@ -22,20 +22,32 @@ namespace Yelo
 	namespace Objects {
 		byte* s_unit_data::GetYeloGrenade2Count()
 		{
-			return !GameState::YeloGameStateEnabled() ? NULL : this->GetYeloGrenade2Count_();
+			GameState::s_yelo_header_data& yelo_header = GameState::GameStateGlobals()->header->yelo;
+
+			return GameState::YeloGameStateEnabled() && yelo_header.unit_grenade_types_count >= Enums::_unit_grenade_type_yelo2+1
+				? this->GetYeloGrenade2Count_() : NULL;
 		}
 		byte* s_unit_data::GetYeloGrenade3Count()
 		{
-			return !GameState::YeloGameStateEnabled() ? NULL : this->GetYeloGrenade3Count_();
+			GameState::s_yelo_header_data& yelo_header = GameState::GameStateGlobals()->header->yelo;
+
+			return GameState::YeloGameStateEnabled() && yelo_header.unit_grenade_types_count >= Enums::_unit_grenade_type_yelo3+1
+				? this->GetYeloGrenade3Count_() : NULL;
 		}
 
 		byte* s_unit_data::GetZoomLevel()
 		{
-			return !GameState::YeloGameStateEnabled() ? this->GetZoomLevel_() : this->GetYeloZoomLevel();
+			GameState::s_yelo_header_data& yelo_header = GameState::GameStateGlobals()->header->yelo;
+
+			return GameState::YeloGameStateEnabled() && yelo_header.unit_grenade_types_count > Enums::k_unit_grenade_types_count
+				? this->GetYeloZoomLevel() : this->GetZoomLevel_();
 		}
 		byte* s_unit_data::GetDesiredZoomLevel()
 		{
-			return !GameState::YeloGameStateEnabled() ? this->GetDesiredZoomLevel_() : this->GetYeloDesiredZoomLevel();
+			GameState::s_yelo_header_data& yelo_header = GameState::GameStateGlobals()->header->yelo;
+
+			return GameState::YeloGameStateEnabled() && yelo_header.unit_grenade_types_count > Enums::k_unit_grenade_types_count
+				? this->GetYeloDesiredZoomLevel() : this->GetDesiredZoomLevel_();
 		}
 	};
 

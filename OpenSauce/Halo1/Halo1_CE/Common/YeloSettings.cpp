@@ -7,7 +7,8 @@
 #include "Common/Precompile.hpp"
 #include "Common/YeloSettings.hpp"
 
-#include "Common/CmdLineSettings.hpp"
+#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
+
 #include "Game/EngineFunctions.hpp"
 #include "Memory/MemoryInterface.hpp"
 

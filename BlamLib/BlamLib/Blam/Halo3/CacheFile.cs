@@ -120,9 +120,7 @@ namespace BlamLib.Blam.Halo3
 			uint base_address = (s.Owner as Blam.CacheFile).AddressMask = bdef[BlamVersion.Halo3_Beta].CacheTypes.BaseAddress - (uint)MemoryBufferOffset;
 
 			offsetToIndex = (int)(tagIndexAddress - base_address);
-			memoryPartitions[0].Offset = (int)(memoryPartitions[0].BaseAddress - baseAddress);
-			memoryPartitions[1].Offset = (int)(memoryPartitions[1].BaseAddress - baseAddress);
-			memoryPartitions[2].Offset = (int)(memoryPartitions[2].BaseAddress - baseAddress);
+			CalculatePartitionOffsets();
 		}
 
 		public override void Read(BlamLib.IO.EndianReader s)
@@ -303,30 +301,9 @@ namespace BlamLib.Blam.Halo3
 			s.Seek((!is_odst ? 380 : 300) + sizeof(uint), System.IO.SeekOrigin.Current); // zero
 
 
-			int offset_mask = (int)cacheInterop[CacheSectionType.Debug].AddressMask;
+			ReadPostprocessForInterop();
 
-			stringIdIndicesOffset -= offset_mask;
-			stringIdsBufferOffset -= offset_mask;
-
-			tagNamesBufferOffset -= offset_mask;
-			tagNameIndicesOffset -= offset_mask;
-
-
-			offset_mask = (int)cacheInterop[CacheSectionType.Tag].AddressMask;
-			memoryBufferOffset -= offset_mask;
-
-			#region address mask
-			uint base_address = memoryPartitions[0].BaseAddress - (uint)cacheInterop[CacheSectionType.Tag].CacheOffset;
-			(s.Owner as Blam.CacheFile).AddressMask = base_address;
-
-			offsetToIndex = (int)(tagIndexAddress - base_address);
-			memoryPartitions[0].Offset = (int)(memoryPartitions[0].BaseAddress - baseAddress);
-			memoryPartitions[1].Offset = (int)(memoryPartitions[1].BaseAddress - baseAddress);
-			memoryPartitions[2].Offset = (int)(memoryPartitions[2].BaseAddress - baseAddress);
-			memoryPartitions[3].Offset = (int)(memoryPartitions[3].BaseAddress - baseAddress);
-			memoryPartitions[4].Offset = (int)(memoryPartitions[4].BaseAddress - baseAddress);
-			memoryPartitions[5].Offset = (int)(memoryPartitions[5].BaseAddress - baseAddress);
-			#endregion
+			ReadPostprocessForBaseAddresses(s);
 		}
 	};
 	#endregion

@@ -10,6 +10,9 @@ namespace Yelo
 {
 	namespace Flags
 	{
+		//NUMBER_OF_UNIT_ANIMATION_STATES = 7
+		//NUMBER_OF_UNIT_AIMING_SPEEDS = 2
+
 		enum unit_control_flags : word_flags
 		{
 			_unit_control_crouch_bit,

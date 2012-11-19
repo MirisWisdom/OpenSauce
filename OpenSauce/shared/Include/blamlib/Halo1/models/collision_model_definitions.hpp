@@ -81,7 +81,7 @@ namespace Yelo
 
 			TAG_FIELD(tag_reference, recharging_effect, 'effe');
 		}; BOOST_STATIC_ASSERT( sizeof(s_shield_damage_resistance) == 0xEC );
-		struct s_damage_resistance
+		struct s_damage_resistance // or s_model_damage_info
 		{
 			TAG_FIELD(long_flags, flags);
 			TAG_FIELD(int16, indirect_damage_material, collision_model_material);

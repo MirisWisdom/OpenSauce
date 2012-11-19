@@ -6,8 +6,6 @@
 */
 #pragma once
 
-#include "Game/EngineFunctions.hpp"
-
 #define CMDLINE_PARAM_NAME(name)BOOST_PP_CAT(cmd_line_param_, name)
 
 // macro for getting a cmd line parameter object (CLP)
@@ -25,28 +23,13 @@ namespace Yelo
 			cstring m_parameter;
 
 		public:
-			virtual void Ctor(cstring parameter)
-			{
-				m_parameter_set = false;
-				m_parameter = parameter;
-			}
+			virtual void Ctor(cstring parameter);
 
-			bool ParameterSet()
-			{
-				return m_parameter_set;
-			}
+			bool ParameterSet() const;
 
 			virtual bool ParseValue(cstring) = 0;
 
-			void GetParameter()
-			{
-				cstring value = NULL;
-				m_parameter_set = Engine::GetCmdLineParameter(m_parameter, &value);
-
-				// if the parameter has been set, parse the parameters value
-				if(m_parameter_set && value)
-					m_parameter_set = ParseValue(value);
-			}
+			void GetParameter();
 		};
 
 		template<typename T>
@@ -111,7 +94,7 @@ namespace Yelo
 		{
 		public:
 			// switch's shouldn't have a value set so it is ignored
-			bool ParseValue(cstring) { return true; }
+			inline bool ParseValue(cstring) { return true; }
 		};
 
 		//////////////////////////////////////////////////////////////////////////

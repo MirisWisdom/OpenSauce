@@ -6,10 +6,13 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/game/players.hpp>
 #include <blamlib/Halo1/networking/message_delta_definitions.hpp>
 #include <blamlib/Halo1/networking/network_connection.hpp>
 #include <blamlib/Halo1/networking/network_game_globals.hpp>
 #include <blamlib/Halo1/networking/network_game_manager.hpp>
+
+#include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 
 namespace Yelo
 {
@@ -41,7 +44,7 @@ namespace Yelo
 					Enums::k_maximum_network_machine_count * s_network_client_machine_dedi::k_sizeof,
 			};
 
-			wchar_t player_name[12];
+			wchar_t player_name[Enums::k_player_name_length+1];
 			int32 player_number;
 			int32 team_index;
 			char ip_address[32];
@@ -87,16 +90,16 @@ namespace Yelo
 		struct s_network_game_server
 		{
 			enum {
+				//////////////////////////////////////////////////////////////////////////
+				// flag bits
 				_game_is_open = 0,
-				_server_is_dedicated = 2,
+				_server_is_dedicated = 2, // doesn't show sv_status info when not set
 
 				k_dedi_offset = s_network_client_machine_dedi::k_network_game_server_client_machines_offset_amount,
 			};
 
 			s_network_server_connection* connection;			// 0x0
 			Enums::network_game_server_state state;				// 0x4
-			// game_is_open = BIT(0)
-			// server_is_dedicated = BIT(2) // doesn't show sv_status info when not set
 			word_flags flags;									// 0x6
 			s_network_game game;								// 0x8
 			s_network_client_machine client_machines
@@ -122,13 +125,37 @@ namespace Yelo
 			{
 				if(machine_index >= 0 && machine_index < Enums::k_maximum_network_machine_count)
 				{
+					s_network_client_machine* machines = client_machines;
+
 					for(int x = 0; x < Enums::k_maximum_network_machine_count; x++)
-						if(machine_index == client_machines[x].machine_index)
-							return &client_machines[x];
+						if(machine_index == machines[x].machine_index)
+							return &machines[x];
 				}
 
 				return NULL;
 			}
 		}; BOOST_STATIC_ASSERT( sizeof(s_network_game_server) == (0xA50 + s_network_client_machine_dedi::k_network_game_server_client_machines_offset_amount) );
+
+		// For increased player counts game states
+		struct s_network_game_server_yelo : s_network_game_server
+		{
+			s_network_game game_yelo;
+			s_network_client_machine client_machines_yelo
+				[Enums::k_maximum_network_machine_count_upgrade];
+
+			s_network_client_machine* GetClientYelo(int machine_index)
+			{
+				if(machine_index >= 0 && machine_index < Enums::k_maximum_network_machine_count_upgrade)
+				{
+					s_network_client_machine* machines = client_machines_yelo;
+
+					for(int x = 0; x < Enums::k_maximum_network_machine_count_upgrade; x++)
+						if(machine_index == machines[x].machine_index)
+							return &machines[x];
+				}
+
+				return NULL;
+			}
+		};
 	};
 };

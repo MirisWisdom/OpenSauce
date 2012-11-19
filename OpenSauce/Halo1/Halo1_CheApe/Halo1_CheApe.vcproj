@@ -1952,6 +1952,14 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="Impl"
+				>
+				<File
+					RelativePath=".\Common\YeloSettings.CmdLineSettings.inl"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Tool"
@@ -2441,6 +2449,18 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\YeloLib\files\files.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="shell"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\shell\shell_windows_command_line.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\shell\shell_windows_command_line.hpp"
 					>
 				</File>
 			</Filter>

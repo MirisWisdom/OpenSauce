@@ -93,5 +93,11 @@ namespace Yelo
 			s_player_update_history* update_history;		// 0xF88
 			PAD32;											// 0xF8C, can't find any references to this offset so assuming alignment
 		}; BOOST_STATIC_ASSERT( sizeof(s_network_game_client) <= 0xF90 );
+
+		// For increased player counts game states
+		struct s_network_game_client_yelo : s_network_game_client
+		{
+			s_network_game_yelo game_yelo;
+		};
 	};
 };

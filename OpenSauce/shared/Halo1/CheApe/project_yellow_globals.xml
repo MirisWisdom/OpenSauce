@@ -12,6 +12,7 @@
 			<field>hide shield when zoomed</field>
 			<field>hide motion sensor when zoomed</field>
 			<field>ALLOW unit infections during cinematics#when enabled, units can become infected while a cutscene is active</field>
+			<field>ALLOW grenade chain reactions in MP#when enabled, grenades will explode in chain reactions like they do in camapaign</field>
 		</Flag>
 	</flags>
 

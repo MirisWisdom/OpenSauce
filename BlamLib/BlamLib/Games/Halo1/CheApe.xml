@@ -247,6 +247,11 @@
 		
 		<type opcode="0x2C" size="0x00" name="Terminator">
 			<byteSwap> <code value="-101" /> </byteSwap>
-		</type>		
+		</type>	
+		
+		<!-- THIS IS A FAKE FIELD TYPE -->
+		<type opcode="0x2D" size="0x00" name="Struct" needsDefinition="true">
+			<byteSwap> <code value="0" /> </byteSwap>
+		</type>
 	</fieldTypes>
 </CheApeDefinition>

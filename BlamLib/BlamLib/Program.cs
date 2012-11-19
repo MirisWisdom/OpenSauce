@@ -53,7 +53,7 @@ namespace BlamLib
 		/// <summary>Name of executing assembly</summary>
 		public static readonly string Name = System.Windows.Forms.Application.ProductName;
 		/// <summary>Version string of the executing assembly</summary>
-		public static readonly string Version = System.Reflection.Assembly.GetEntryAssembly().GetName().Version.ToString(4);
+		public static readonly string Version;
 
 		static readonly string DocumentsFolderPath;
 		static void InitializeDocumentsFolderPath(out string documents_folder_path)
@@ -195,6 +195,11 @@ namespace BlamLib
 		#region Initialize\Dispose
 		static Program()
 		{
+			var assembly = System.Reflection.Assembly.GetEntryAssembly();
+			if (assembly == null)
+				assembly = System.Reflection.Assembly.GetCallingAssembly();
+			Version = assembly.GetName().Version.ToString(4);
+
 			InitializeDocumentsFolderPath(out DocumentsFolderPath);
 			DebugFile = BuildDocumentPath("debug.log");
 			TracePath = BuildDocumentPath(@"Logs\");

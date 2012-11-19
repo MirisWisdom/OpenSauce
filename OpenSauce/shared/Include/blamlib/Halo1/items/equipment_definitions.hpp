@@ -62,13 +62,13 @@ namespace Yelo
 				TAG_FIELD(real, recharge_rate);
 				TAG_FIELD(int16, count);
 				TAG_FIELD(int16, swap_time);
-			}fuel_tank;
+			}energy_tank;
 
-			struct s_fuel {
-				TAG_FIELD(real, cost);
+			struct s_energy {
+				TAG_FIELD(real, use_rate);
 				TAG_FIELD(real, recharge_rate);
-				TAG_FIELD(real, recharge_cooldown);
-			}fuel;
+				TAG_FIELD(real, recharge_delay);
+			}energy;
 		};
 		struct s_equipment_yelo_deployable
 		{

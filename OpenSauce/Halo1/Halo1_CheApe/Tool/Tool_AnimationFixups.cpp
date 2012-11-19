@@ -279,8 +279,8 @@ _result_is_le:
 				if(max_animations != NONE)
 				{
 					if(max_animations > Enums::k_maximum_tool_import_files)
-						EngineFunctions::error(Enums::_error_message_priority_warning, 
-						"CheApe: maximum animations is greater than maximum number of import files tool is able to process (%d > %d)", max_animations, Enums::k_maximum_tool_import_files);
+						YELO_WARN("CheApe: maximum animations is greater than maximum number of import files tool is able to process (%d > %d)", 
+							max_animations, Enums::k_maximum_tool_import_files);
 
 					InitializeValidAnimationsArrayFixups();
 					InitializeAnimationIndexArrayFixups();

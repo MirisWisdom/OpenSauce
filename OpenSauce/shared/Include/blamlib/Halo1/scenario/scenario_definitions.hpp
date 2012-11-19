@@ -253,7 +253,7 @@ namespace Yelo
 			TAG_PAD(tag_block,
 				1 + // actor_palette_entry
 				1 + // encounter_definition
-				1 + // ai_command_list
+				1 + // ai_command_list_definition
 				1 + // ai_animation_reference_definition
 				1 + // ai_script_reference_definition
 				1 + // ai_recording_reference_definition

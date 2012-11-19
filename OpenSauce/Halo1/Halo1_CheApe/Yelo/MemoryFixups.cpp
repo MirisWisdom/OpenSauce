@@ -109,7 +109,7 @@ namespace Yelo
 				p.paths.maps,
 				p.paths.tags,
 				p.paths.tags_folder_name);
-		EngineFunctions::error(Enums::_error_message_priority_warning, buffer);
+		YELO_ERROR(_error_message_priority_warning, buffer);
 
 		const s_override_paths& o = _override_paths;
 		sprintf_s(buffer, k_buffer_size, "\r\n"
@@ -145,7 +145,7 @@ namespace Yelo
 				
 				o.tags.folder_name_with_slash,
 				o.tags.folder_name_with_slash_relative);
-		EngineFunctions::error(Enums::_error_message_priority_warning, buffer);
+		YELO_ERROR(_error_message_priority_warning, buffer);
 
 		delete[] buffer;
 	}

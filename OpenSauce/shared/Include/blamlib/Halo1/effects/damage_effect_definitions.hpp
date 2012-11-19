@@ -101,8 +101,19 @@ namespace Yelo
 			TAG_FIELD(real, max_stun);
 			TAG_FIELD(real, stun_time);
 			PAD32;
-			TAG_FIELD(real, instantaneous_acceleration);
-			PAD32; PAD32;
+
+			union {
+				TAG_FIELD(real, instantaneous_acceleration);
+				//PAD32; PAD32;
+
+				// modifies instantaneous_acceleration to support specifying the j & k component acceleration
+				TAG_FIELD(real_vector3d, instantaneous_acceleration3d);
+			};
+
+			bool UseInstantaneousAcceleration3D() const;
+			void GetAcceleration(const real acceleration_scale, 
+				const real_vector3d& direction, real_vector3d& acceleration, 
+				const real secs_per_tick = 0.033333335f) const;
 		}; BOOST_STATIC_ASSERT( sizeof(s_damage_data) == 0x3C );
 
 		struct s_damage_modifiers
@@ -111,19 +122,10 @@ namespace Yelo
 			TAG_PAD(int32, 7);
 		}; BOOST_STATIC_ASSERT( sizeof(s_damage_modifiers) == 0xA0 );
 
-		struct s_continuous_damage_effect_definition
-		{
-			s_damage_effect damage_effect;
-
-			TAG_FIELD(real_fraction_bounds, vibrate_frequency);
-			s_damage_camera_effect damage_camera_effect;
-			s_damage_breaking_effect breaking_effect; // not exposed
-			s_damage_data damage_data;
-			s_damage_modifiers damage_modifiers;
-		}; BOOST_STATIC_ASSERT( sizeof(s_continuous_damage_effect_definition) == 0x200 );
-
 		struct s_damage_effect_definition
 		{
+			enum { k_group_tag = 'jpt!' };
+
 			struct s_duration_function {
 				TAG_FIELD(real, duration);
 				TAG_ENUM(fade_function, Enums::transition_function);
@@ -167,5 +169,19 @@ namespace Yelo
 			s_damage_data damage_data;
 			s_damage_modifiers damage_modifiers;
 		}; BOOST_STATIC_ASSERT( sizeof(s_damage_effect_definition) == 0x2A0 );
+
+
+		struct s_continuous_damage_effect_definition
+		{
+			enum { k_group_tag = 'cdmg' };
+
+			s_damage_effect damage_effect;
+
+			TAG_FIELD(real_fraction_bounds, vibrate_frequency);
+			s_damage_camera_effect damage_camera_effect;
+			s_damage_breaking_effect breaking_effect; // not exposed
+			s_damage_data damage_data;
+			s_damage_modifiers damage_modifiers;
+		}; BOOST_STATIC_ASSERT( sizeof(s_continuous_damage_effect_definition) == 0x200 );
 	};
 };

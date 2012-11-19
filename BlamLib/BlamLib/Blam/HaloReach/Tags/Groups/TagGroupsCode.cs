@@ -154,9 +154,9 @@ namespace BlamLib.Blam.HaloReach
 
 		//Reach Retail
 		/// <summary>
-		/// airs
+		/// airstrike
 		/// </summary>
-		public static TagGroup airs = new TagGroup("airs", "airs_unknown");
+		public static TagGroup airs = new TagGroup("airs", "airstrike");
 
 		/// <summary>
 		/// antenna
@@ -171,15 +171,15 @@ namespace BlamLib.Blam.HaloReach
 
 		//Reach Retail
 		/// <summary>
-		/// avat
+		/// avatar_awards
 		/// </summary>
-		public static TagGroup avat = new TagGroup("avat", "avat_unknown");
+		public static TagGroup avat = new TagGroup("avat", "avatar_awards");
 
 		//Reach Retail
 		/// <summary>
-		/// bbcr
+		/// big_battle_creature
 		/// </summary>
-		public static TagGroup bbcr = new TagGroup("bbcr", "bbcr_unknown");
+		public static TagGroup bbcr = new TagGroup("bbcr", "big_battle_creature");
 
 		//Reach
 		/// <summary>
@@ -301,9 +301,9 @@ namespace BlamLib.Blam.HaloReach
 
 		//Reach Retail
 		/// <summary>
-		/// cmoe
+		/// camo
 		/// </summary>
-		public static TagGroup cmoe = new TagGroup("cmoe", "cmoe_unknown");
+		public static TagGroup cmoe = new TagGroup("cmoe", "camo");
 
 		/// <summary>
 		/// contrail_system
@@ -372,7 +372,7 @@ namespace BlamLib.Blam.HaloReach
 		/// <summary>
 		/// camera_shake
 		/// </summary>
-		public static TagGroup csdt = new TagGroup("csdt", "camera_shake"); // or maybe this is just 'crte' renamed...
+		public static TagGroup csdt = new TagGroup("csdt", "camera_shake");
 
 		/// <summary>
 		/// device_control
@@ -452,16 +452,16 @@ namespace BlamLib.Blam.HaloReach
 		/// </summary>
 		public static TagGroup dsrc = new TagGroup("dsrc", "gui_datasource_definition");
 
-		/// <summary>
-		/// effect
-		/// </summary>
-		public static TagGroup effe = new TagGroup("effe", "effect");
-
 		//Reach
 		/// <summary>
 		/// particle_emitter_boat_hull_shape
 		/// </summary>
 		public static TagGroup ebhd = new TagGroup("ebhd", "particle_emitter_boat_hull_shape");
+
+		/// <summary>
+		/// effect
+		/// </summary>
+		public static TagGroup effe = new TagGroup("effe", "effect");
 
 		/// <summary>
 		/// effect_globals
@@ -651,9 +651,9 @@ namespace BlamLib.Blam.HaloReach
 
 		//Reach Retail
 		/// <summary>
-		/// ldsc
+		/// load_screen
 		/// </summary>
-		public static TagGroup ldsc = new TagGroup("ldsc", "ldsc_unknown");
+		public static TagGroup ldsc = new TagGroup("ldsc", "load_screen");
 
 		/// <summary>
 		/// lens_flare
@@ -802,9 +802,9 @@ namespace BlamLib.Blam.HaloReach
 
 		//Reach Retail
 		/// <summary>
-		/// pfmc
+		/// performance_template
 		/// </summary>
-		public static TagGroup pfmc = new TagGroup("pfmc", "pfmc_unknown");
+		public static TagGroup pfmc = new TagGroup("pfmc", "performance_template");
 
 		//Reach
 		/// <summary>
@@ -976,7 +976,7 @@ namespace BlamLib.Blam.HaloReach
 		/// <summary>
 		/// shader_screen
 		/// </summary>
-		public static TagGroup rmss = new TagGroup("rmss", Halo3.TagGroups.rm__, "shader_screen");
+		public static TagGroup rmss = new TagGroup("rmss", rm__, "shader_screen");
 
 		/// <summary>
 		/// render_method_template
@@ -1047,9 +1047,9 @@ namespace BlamLib.Blam.HaloReach
 
 		//Reach Retail
 		/// <summary>
-		/// sdzg (structure_design_zone_globals?)
+		/// scenario_required_resource
 		/// </summary>
-		public static TagGroup sdzg = new TagGroup("sdzg", "sdzg_unknown");
+		public static TagGroup sdzg = new TagGroup("sdzg", "scenario_required_resource");
 
 		/// <summary>
 		/// area_screen_effect
@@ -1090,9 +1090,9 @@ namespace BlamLib.Blam.HaloReach
 
 		//Reach Retail
 		/// <summary>
-		/// sirp
+		/// scenario_interpolator
 		/// </summary>
-		public static TagGroup sirp = new TagGroup("sirp", "sirp_unknown");
+		public static TagGroup sirp = new TagGroup("sirp", "scenario_interpolator");
 
 		/// <summary>
 		/// gui_skin_definition
@@ -1253,9 +1253,9 @@ namespace BlamLib.Blam.HaloReach
 
 		//Reach Retail
 		/// <summary>
-		/// vtgl (vertex_shader_globals?)
+		/// variant_globals
 		/// </summary>
-		public static TagGroup vtgl = new TagGroup("vtgl", "vtgl_unknown");
+		public static TagGroup vtgl = new TagGroup("vtgl", "variant_globals");
 
 		/// <summary>
 		/// vertex_shader
