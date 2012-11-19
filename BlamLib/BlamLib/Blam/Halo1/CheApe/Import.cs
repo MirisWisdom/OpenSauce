@@ -12,32 +12,8 @@ namespace BlamLib.Blam.Halo1.CheApe
 {
 	internal sealed class Import : BlamLib.CheApe.Import
 	{
-		/// <summary>
-		/// XmlNode interface for a tag block definition
-		/// [string: name]
-		/// [int: maxElements]
-		/// [boolean: dontReadChildren]
-		/// [list: fields]
-		/// </summary>
-		public sealed class TagBlock : BlamLib.CheApe.Import.Block
+		public sealed class FieldContainer
 		{
-			/// <summary>
-			/// The maximum complexity level which this object can achieve.
-			/// </summary>
-			public const int XmlNodeComplexity = 1 + 
-				Field.XmlNodeComplexity;
-
-			#region MaxElements
-			private int maxElements = 1;
-			/// <summary>
-			/// 
-			/// </summary>
-			public int MaxElements	{ get { return maxElements; } }
-			#endregion
-
-			public readonly bool DontReadChildren;
-
-			#region Fields
 			private List<Field> fields = new List<Field>();
 			/// <summary>
 			/// 
@@ -88,14 +64,9 @@ namespace BlamLib.Blam.Halo1.CheApe
 
 				return size;
 			}
-			#endregion
 
-			public TagBlock() : base() {}
-			public TagBlock(BlamLib.CheApe.ProjectState state, IO.XmlStream s) : base(state, s)
+			public void Read(BlamLib.CheApe.ProjectState state, IO.XmlStream s)
 			{
-				s.ReadAttribute("maxElements", 10, ref maxElements);
-				s.ReadAttributeOpt("dontReadChildren", ref DontReadChildren);
-
 				foreach (XmlNode n in s.Cursor.ChildNodes)
 				{
 					if (n.Name != "field") continue;
@@ -105,19 +76,85 @@ namespace BlamLib.Blam.Halo1.CheApe
 					s.RestoreCursor();
 				}
 			}
+		};
+
+		public sealed class TagStruct
+		{
+			public string Name { get; private set; }
+
+			public FieldContainer Fields { get; private set; }
+
+			public TagStruct(BlamLib.CheApe.ProjectState state, IO.XmlStream s)
+			{
+				string name_string = null;
+				s.ReadAttribute("name", ref name_string);
+				Name = name_string;
+
+				Fields = new FieldContainer();
+			}
+
+			public void Read(BlamLib.CheApe.ProjectState state, IO.XmlStream s)
+			{
+				Fields.Read(state, s);
+			}
+		};
+
+		/// <summary>
+		/// XmlNode interface for a tag block definition
+		/// [string: name]
+		/// [int: maxElements]
+		/// [boolean: dontReadChildren]
+		/// [list: fields]
+		/// </summary>
+		public sealed class TagBlock : BlamLib.CheApe.Import.Block
+		{
+			/// <summary>
+			/// The maximum complexity level which this object can achieve.
+			/// </summary>
+			public const int XmlNodeComplexity = 1 + 
+				Field.XmlNodeComplexity;
+
+			#region MaxElements
+			private int maxElements = 1;
+			/// <summary>
+			/// 
+			/// </summary>
+			public int MaxElements	{ get { return maxElements; } }
+			#endregion
+
+			public readonly bool DontReadChildren;
+
+			#region Fields
+			FieldContainer mFields = new FieldContainer();
+
+			public List<Field> Fields { get { return mFields.Fields; } }
+
+			/// <summary>
+			/// Calculates the block size in bytes via the field for this block
+			/// eliminating the need for programmers to aid designers in creating
+			/// the tag group definition files
+			/// </summary>
+			/// <returns></returns>
+			public int CalculateSize(BlamLib.CheApe.ProjectState state)
+			{
+				return mFields.CalculateSize(state);
+			}
+			#endregion
+
+			public TagBlock() : base() {}
+			public TagBlock(BlamLib.CheApe.ProjectState state, IO.XmlStream s) : base(state, s)
+			{
+				s.ReadAttribute("maxElements", 10, ref maxElements);
+				s.ReadAttributeOpt("dontReadChildren", ref DontReadChildren);
+
+				mFields.Read(state, s);
+			}
 
 			public override void Read(BlamLib.CheApe.ProjectState state, IO.XmlStream s)
 			{
 				base.Read(state, s);
 
-				foreach(XmlNode n in s.Cursor.ChildNodes)
-				{
-					if (n.Name != "field") continue;
-
-					s.SaveCursor(n);
-					fields.Add(new Field(state, s));
-					s.RestoreCursor();
-				}
+				mFields.Read(state, s);
 			}
 		};
 
@@ -158,6 +195,10 @@ namespace BlamLib.Blam.Halo1.CheApe
 
 
 		/// <summary>
+		/// Tag Struct Definitions found in the XML files
+		/// </summary>
+		public Dictionary<string, TagStruct> Structs = new Dictionary<string, TagStruct>();
+		/// <summary>
 		/// Tag Block Definitions found in the XML files
 		/// </summary>
 		public Dictionary<string, TagBlock> Blocks = new Dictionary<string, TagBlock>();
@@ -173,6 +214,7 @@ namespace BlamLib.Blam.Halo1.CheApe
 		{
 			base.Reset();
 
+			Structs.Clear();
 			Blocks.Clear();
 			Groups.Clear();
 		}
@@ -191,6 +233,25 @@ namespace BlamLib.Blam.Halo1.CheApe
 
 			switch (node.Name)
 			{
+				#region Tag Structs
+				case "structs":
+					s.SaveCursor(node);
+					foreach (XmlNode n in s.Cursor.ChildNodes)
+					{
+						if (n.Name != "Struct") continue;
+
+						s.SaveCursor(n);
+						TagStruct block = new TagStruct(state, s);
+						s.RestoreCursor();
+						name_str = block.ToString();
+
+						try { Structs.Add(name_str, block); }
+						catch (ArgumentException) { Debug.LogFile.WriteLine(CheApe.Import.kDuplicateErrorStr, "tag struct definition", name_str); }
+					}
+					s.RestoreCursor();
+					break;
+				#endregion
+
 				#region Tag Blocks
 				case "blocks":
 					s.SaveCursor(node);

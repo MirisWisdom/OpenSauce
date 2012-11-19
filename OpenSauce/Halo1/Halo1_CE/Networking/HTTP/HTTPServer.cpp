@@ -8,14 +8,16 @@
 #include "Networking/HTTP/HTTPServer.hpp"
 
 #if PLATFORM_IS_DEDI
+#include <mongoose/mongoose.h>
+
+#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
+
 #include "Common/YeloSettings.hpp"
-#include "Common/CmdLineSettings.hpp"
-#include "mongoose/mongoose.h"
+#include "Game/EngineFunctions.hpp"
 #include "Networking/HTTP/HTTP.hpp"
 #include "Networking/HTTP/BanManager.hpp"
 #include "Networking/HTTP/MapDownloadServer.hpp"
 #include "Networking/Server.hpp"
-#include "Game/EngineFunctions.hpp"
 #endif
 
 namespace Yelo

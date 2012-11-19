@@ -167,34 +167,12 @@ namespace BlamLib.Blam.Halo4
 			s.Seek(716 + sizeof(uint), System.IO.SeekOrigin.Current);
 
 
-			int offset_mask = (int)cacheInterop[CacheSectionType.Debug].AddressMask;
+			ReadPostprocessForInterop();
 
-			if (!cacheInterop.IsNull)
-			{
-				stringIdIndicesOffset -= offset_mask;
-				stringIdsBufferOffset -= offset_mask;
+			if(!cacheInterop.IsNull)
+				TagNamesUnknownOffset -= (int)cacheInterop[CacheSectionType.Debug].AddressMask;
 
-				tagNamesBufferOffset -= offset_mask;
-				tagNameIndicesOffset -= offset_mask;
-				TagNamesUnknownOffset -= offset_mask;
-			}
-
-
-			offset_mask = (int)cacheInterop[CacheSectionType.Tag].AddressMask;
-			memoryBufferOffset -= offset_mask;
-
-			#region address mask
-			uint base_address = memoryPartitions[0].BaseAddress - (uint)cacheInterop[CacheSectionType.Tag].CacheOffset;
-			(s.Owner as Blam.CacheFile).AddressMask = base_address;
-
-			offsetToIndex = (int)(tagIndexAddress - base_address);
-			memoryPartitions[0].Offset = (int)(memoryPartitions[0].BaseAddress - baseAddress);
-			memoryPartitions[1].Offset = (int)(memoryPartitions[1].BaseAddress - baseAddress);
-			memoryPartitions[2].Offset = (int)(memoryPartitions[2].BaseAddress - baseAddress);
-			memoryPartitions[3].Offset = (int)(memoryPartitions[3].BaseAddress - baseAddress);
-			memoryPartitions[4].Offset = (int)(memoryPartitions[4].BaseAddress - baseAddress);
-			memoryPartitions[5].Offset = (int)(memoryPartitions[5].BaseAddress - baseAddress);
-			#endregion
+			ReadPostprocessForBaseAddresses(s);
 		}
 	};
 	#endregion
@@ -277,11 +255,25 @@ namespace BlamLib.Blam.Halo4
 
 		void ReadGroupTags(BlamLib.IO.EndianReader s)
 		{
-			groupTags = new HaloReach.CacheItemGroupTag[groupTagsCount];
+			groupTags = new Halo4.CacheItemGroupTag[groupTagsCount];
 			s.Seek(groupTagsOffset, System.IO.SeekOrigin.Begin);
 			for (int x = 0; x < groupTagsCount; x++)
-				(groupTags[x] = new HaloReach.CacheItemGroupTag()).Read(s);
+				(groupTags[x] = new Halo4.CacheItemGroupTag()).Read(s);
 		}
+	};
+	#endregion
+
+	#region ItemGroupTag
+	public sealed class CacheItemGroupTag : Cache.CacheItemGroupTagGen3
+	{
+		#region IStreamable Members
+		public override void Read(BlamLib.IO.EndianReader s)
+		{
+			base.ReadGroupTags(Program.Halo4.Manager, s);
+
+			Name.Read(s);
+		}
+		#endregion
 	};
 	#endregion
 

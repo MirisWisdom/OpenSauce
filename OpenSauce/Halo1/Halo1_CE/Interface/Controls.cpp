@@ -28,7 +28,7 @@ namespace Yelo
 			// key states (how long its been pressed until 0xFF, 0 if not pressed)
 			byte Keys[Enums::_Key];
 
-			PAD(0, sizeof(byte)*388);
+			PAD(0, sizeof(byte)*383);
 
 			int32 MouseAxis[Enums::_MouseAxis];
 			byte MouseButton[Enums::_MouseButton];

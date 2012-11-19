@@ -9,6 +9,8 @@
 #include <blamlib/Halo1/game/players.hpp>
 #include <blamlib/Halo1/saved_games/game_variant.hpp>
 
+#include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
+
 namespace Yelo
 {
 	namespace Enums
@@ -54,5 +56,11 @@ namespace Yelo
 			int32 number_of_games_played;			// 0x3E8
 			int32 local_data;						// 0x3EC
 		}; BOOST_STATIC_ASSERT( sizeof(s_network_game) == 0x3F0 );
+
+		// For increased player counts game states
+		struct s_network_game_yelo : s_network_game
+		{
+			s_network_game_player players_yelo[Enums::k_maximum_network_machine_count_upgrade];
+		};
 	};
 };

@@ -90,6 +90,8 @@ namespace BlamLib.Blam.Cache
 			public int Size;
 
 			public int Offset;
+
+			public bool IsEmpty { get { return BaseAddress == 0; } }
 		};
 		#region MemoryPartitions
 		protected Partition[] memoryPartitions;
@@ -113,6 +115,21 @@ namespace BlamLib.Blam.Cache
 			else if (address > memoryPartitions[memoryPartitions.Length - 1].BaseAddress)
 				return -2;
 			else throw new Debug.Exceptions.UnreachableException();
+		}
+
+		protected Partition GetFirstNonEmptyPartition()
+		{
+			foreach (var p in memoryPartitions)
+				if (!p.IsEmpty) return p;
+
+			throw new Debug.Exceptions.UnreachableException();
+		}
+
+		protected void CalculatePartitionOffsets()
+		{
+			for(int x = 0; x < memoryPartitions.Length; x++)
+				if(!memoryPartitions[x].IsEmpty)
+					memoryPartitions[x].Offset = (int)(memoryPartitions[x].BaseAddress - baseAddress);
 		}
 		#endregion
 
@@ -145,8 +162,14 @@ namespace BlamLib.Blam.Cache
 			/// </summary>
 			public uint AddressMask;
 
-			internal void InitializeCacheOffset(int cache_offset)
+			internal void InitializeCacheOffset(int cache_offset, bool interop_is_null)
 			{
+				if (interop_is_null)
+				{
+					CacheOffset = (int)VirtualAddress;
+					return;
+				}
+
 				CacheOffset = cache_offset;
 
 				if (VirtualAddress != 0)
@@ -211,6 +234,9 @@ namespace BlamLib.Blam.Cache
 			public uint UnknownBaseAddress;
 			SectionInterop[] sections;
 
+			/// <summary>
+			/// When the interop data is null, virtual addresses are actual cache offsets (so no fixups are needed)
+			/// </summary>
 			public bool IsNull { get {
 				return ResourceBaseAddress == 0 && DebugSectionSize == 0 && RuntimeBaseAddress == 0 && 
 					UnknownBaseAddress == 0;
@@ -257,7 +283,7 @@ namespace BlamLib.Blam.Cache
 
 				var type = CacheSectionType.Debug;
 				var section = this[type];
-				section.InitializeCacheOffset(cache_offset);
+				section.InitializeCacheOffset(cache_offset, this.IsNull);
 
 				int release_offset = DebugSectionSize; // offset for release build data
 				for(++type; type < CacheSectionType.kMax; type++,
@@ -266,7 +292,7 @@ namespace BlamLib.Blam.Cache
 					section = this[type];
 					if (section.Size == 0) continue;
 
-					section.InitializeCacheOffset(release_offset);
+					section.InitializeCacheOffset(release_offset, this.IsNull);
 				}
 			}
 		};
@@ -285,6 +311,42 @@ namespace BlamLib.Blam.Cache
 		/// </summary>
 		public Cache.SharedType SharedType { get { return sharedType; } }
 		#endregion
+
+		/// <summary>
+		/// Call this at the end of a header's Read method to update fields that use the interop data
+		/// </summary>
+		/// <returns></returns>
+		protected int ReadPostprocessForInterop()
+		{
+			int offset_mask = (int)cacheInterop[CacheSectionType.Debug].AddressMask;
+
+			if (!cacheInterop.IsNull)
+			{
+				stringIdIndicesOffset -= offset_mask;
+				stringIdsBufferOffset -= offset_mask;
+
+				tagNamesBufferOffset -= offset_mask;
+				tagNameIndicesOffset -= offset_mask;
+			}
+
+
+			offset_mask = (int)cacheInterop[CacheSectionType.Tag].AddressMask;
+			memoryBufferOffset -= offset_mask;
+
+			return offset_mask;
+		}
+		/// <summary>
+		/// Call this at the end of the header's Read method to update data that uses some kind of base address
+		/// </summary>
+		/// <param name="s"></param>
+		protected void ReadPostprocessForBaseAddresses(IO.EndianReader s)
+		{
+			uint base_address = GetFirstNonEmptyPartition().BaseAddress - (uint)cacheInterop[CacheSectionType.Tag].CacheOffset;
+			(s.Owner as Blam.CacheFile).AddressMask = base_address;
+
+			this.offsetToIndex = (int)(tagIndexAddress - base_address);
+			CalculatePartitionOffsets();
+		}
 	};
 
 
@@ -447,7 +509,7 @@ namespace BlamLib.Blam.Cache
 
 			foreach (var item in items)
 			{
-				if (item.IsEmpty) continue;
+				if (item.IsEmpty || item.IsNull) continue;
 
 				int p = header_gen3.GetMemoryPartitionFromAddress(item.Address);
 				if (p == -1)

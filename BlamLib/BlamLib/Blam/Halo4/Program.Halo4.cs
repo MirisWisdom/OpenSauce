@@ -23,7 +23,7 @@ namespace BlamLib
 			#endregion
 
 			/// <summary>
-			/// Initialize the resources used by the Halo Reach systems
+			/// Initialize the resources used by the Halo 4 systems
 			/// </summary>
 			public static void Initialize()
 			{
@@ -31,7 +31,7 @@ namespace BlamLib
 			}
 
 			/// <summary>
-			/// Close the resources used by the Halo Reach systems
+			/// Close the resources used by the Halo 4 systems
 			/// </summary>
 			public static void Close()
 			{
@@ -62,7 +62,7 @@ namespace BlamLib
 			public static BlamLib.Blam.Halo4.CacheFile XboxCampaign;
 
 			/// <summary>
-			/// Loads the Halo Reach files needed to fully run this library
+			/// Loads the Halo 4 files needed to fully run this library
 			/// </summary>
 			/// <remarks>
 			/// Path[0] = Mainmenu

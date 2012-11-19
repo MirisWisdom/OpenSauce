@@ -103,7 +103,7 @@ namespace Yelo
 			datum_index auto_aim_target;						// 0x40 biped_index
 			int32 auto_aim_update_time;							// 0x44
 			Networking::s_network_game_player network_player;	// 0x48
-			int16 powerup_times[Enums::k_number_of_of_player_powerups];	// 0x68
+			int16 powerup_times[Enums::k_number_of_player_powerups];	// 0x68
 			real speed;											// 0x6C
 			int32 source_teleporter_netgame_index;				// 0x70 index to a netgame flag in the scenario, or NONE
 			s_game_engine_state_message engine_state_messsage;	// 0x74

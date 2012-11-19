@@ -57,7 +57,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 		if(Yelo::CheApe::_InitError == Yelo::CheApe::k_error_none)
 			Yelo::Initialize();
 		else
-			Yelo::EngineFunctions::error(Yelo::Enums::_error_message_priority_none, "CheApe: Yelo initialization failed!");
+			Yelo::Engine::error(Yelo::Enums::_error_message_priority_none, "CheApe: Yelo initialization failed!");
 
 		g_initialized = true;
 	}

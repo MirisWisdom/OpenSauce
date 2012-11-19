@@ -249,7 +249,7 @@ namespace Yelo
 			_KeyJ,
 			_KeyK,
 			_KeyL,
-			_KeyColon,
+			_KeySemiColon,
 			_KeyQuote,
 			_KeyEnter,
 
@@ -304,6 +304,13 @@ namespace Yelo
 			_KeyNumAdd,
 			_KeyNumEnter,
 			_KeyNumDot,
+
+			_KeyBackwardSlash,
+			_KeyAtSymbol,
+			_KeyColon,
+			_KeyCaret,
+
+			_Key102oem,
 
 			_Key,
 		};

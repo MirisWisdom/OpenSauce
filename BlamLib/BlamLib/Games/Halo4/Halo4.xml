@@ -11,13 +11,13 @@
 		<entry id="7" name="Korean"				langName="ko" langId="0xFFFF" localName="ko-KO" localId="0xFFFF" />
 		<entry id="8" name="ChineseTraditional"	langName="zh" langId="0xFFFF" localName="zh-TW" localId="0xFFFF" />
 		<entry id="9" name="ChineseSimplified"	langName="zh" langId="0xFFFF" localName="zh-CN" localId="0xFFFF" />
-		<entry id="10" name="Portuguese"		langName="pt" langId="0xFFFF" localName="pt-PT" localId="0xFFFF" />
-		<entry id="11" name="Polish"			langName="pl" langId="0xFFFF" localName="pl-PL" localId="0xFFFF" />
-		<entry id="12" name="Russian"			langName="ru" langId="0xFFFF" localName="ru-RU" localId="0xFFFF" />
-		<entry id="13" name="Danish"			langName="dk" langId="0xFFFF" localName="da-DK" localId="0xFFFF" />
-		<entry id="14" name="Finnish"			langName="fi" langId="0xFFFF" localName="fi-FI" localId="0xFFFF" />
-		<entry id="15" name="Dutch"				langName="nl" langId="0xFFFF" localName="nl-NL" localId="0xFFFF" />
-		<entry id="16" name="Norwegian"			langName="no" langId="0xFFFF" localName="nb-NO" localId="0xFFFF" />
+		<entry id="A" name="Portuguese"			langName="pt" langId="0xFFFF" localName="pt-PT" localId="0xFFFF" />
+		<entry id="B" name="Polish"				langName="pl" langId="0xFFFF" localName="pl-PL" localId="0xFFFF" />
+		<entry id="C" name="Russian"			langName="ru" langId="0xFFFF" localName="ru-RU" localId="0xFFFF" />
+		<entry id="D" name="Danish"				langName="dk" langId="0xFFFF" localName="da-DK" localId="0xFFFF" />
+		<entry id="E" name="Finnish"			langName="fi" langId="0xFFFF" localName="fi-FI" localId="0xFFFF" />
+		<entry id="F" name="Dutch"				langName="nl" langId="0xFFFF" localName="nl-NL" localId="0xFFFF" />
+		<entry id="10" name="Norwegian"			langName="no" langId="0xFFFF" localName="nb-NO" localId="0xFFFF" />
 	</localization>
 
 

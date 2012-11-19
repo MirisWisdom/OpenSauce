@@ -906,23 +906,23 @@ namespace BlamLib.Blam.HaloReach
 			/// <summary>weather_globals</summary>
 			wxcg,
 
-			/// <summary></summary>
+			/// <summary>airstrike</summary>
 			airs,
-			/// <summary></summary>
+			/// <summary>avatar_awards</summary>
 			avat,
-			/// <summary></summary>
+			/// <summary>big_battle_creature</summary>
 			bbcr,
-			/// <summary></summary>
+			/// <summary>camo</summary>
 			cmoe,
-			/// <summary></summary>
+			/// <summary>load_screen</summary>
 			ldsc,
-			/// <summary></summary>
+			/// <summary>performance_template</summary>
 			pfmc,
-			/// <summary></summary>
+			/// <summary>scenario_required_resource</summary>
 			sdzg,
-			/// <summary></summary>
+			/// <summary>scenario_interpolator</summary>
 			sirp,
-			/// <summary></summary>
+			/// <summary>variant_globals</summary>
 			vtgl,
 		};
 		#endregion

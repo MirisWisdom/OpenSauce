@@ -126,10 +126,8 @@ namespace BlamLib.Test
 				if (MapNeedsUniqueName(header_name))
 					header_name = cache.GetUniqueName();
 
-				// TODO: Can't decrypt these yet!
-				if (args.Game != BlamVersion.HaloReach_Xbox)
-					Blam.CacheFile.OutputStringIds(cache,
-						BuildResultPath(kTestResultsPath, args.Game, header_name, "string_ids", "txt"), true);
+				Blam.CacheFile.OutputStringIds(cache,
+					BuildResultPath(kTestResultsPath, args.Game, header_name, "string_ids", "txt"), true);
 				Blam.CacheFile.OutputTags(cache,
 					BuildResultPath(kTestResultsPath, args.Game, header_name, null, "txt"));
 			}

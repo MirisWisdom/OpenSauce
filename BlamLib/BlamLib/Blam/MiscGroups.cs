@@ -41,7 +41,10 @@ namespace BlamLib.Blam
 			else if ((game & BlamVersion.HaloOdst) != 0)	return HaloOdst.TagGroups.Groups.FindTagGroup(group_tag);
 #endif
 #if !NO_HALO_REACH
-			else if ((game & BlamVersion.HaloReach) != 0)	return HaloOdst.TagGroups.Groups.FindTagGroup(group_tag);
+			else if ((game & BlamVersion.HaloReach) != 0)	return HaloReach.TagGroups.Groups.FindTagGroup(group_tag);
+#endif
+#if !NO_HALO4
+			else if ((game & BlamVersion.Halo4) != 0)	return Halo4.TagGroups.Groups.FindTagGroup(group_tag);
 #endif
 			else if ((game & BlamVersion.Stubbs) != 0)		return Stubbs.TagGroups.Groups.FindTagGroup(group_tag);
 			else if (game == BlamVersion.Unknown)			return MiscGroups.Groups.FindTagGroup(group_tag);
@@ -92,6 +95,12 @@ namespace BlamLib.Blam
 				case BlamVersion.HaloReach:
 					if (is_struct) return HaloReach.StructGroups.Groups[index];
 					return HaloReach.TagGroups.Groups[index];
+#endif
+
+#if !NO_HALO4
+				case BlamVersion.Halo4:
+					if (is_struct) return Halo4.StructGroups.Groups[index];
+					return Halo4.TagGroups.Groups[index];
 #endif
 
 				case BlamVersion.Stubbs:

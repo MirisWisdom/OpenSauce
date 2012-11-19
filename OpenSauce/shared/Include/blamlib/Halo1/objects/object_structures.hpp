@@ -313,5 +313,47 @@ namespace Yelo
 				return GetBlock<TBlockData>(*ref);
 			}
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_data) == Enums::k_object_size_object );
+
+
+		//////////////////////////////////////////////////////////////////////////
+		// scenery
+		struct s_scenery_data
+		{
+			long_flags flags; // FLAG(0) - playing animation
+		}; BOOST_STATIC_ASSERT( sizeof(s_scenery_data) == (Enums::k_object_size_scenery - Enums::k_object_size_object) );
+
+		struct s_scenery_datum
+		{
+			s_object_data object;
+			s_scenery_data scenery;
+		}; BOOST_STATIC_ASSERT( sizeof(s_scenery_datum) == Enums::k_object_size_scenery );
+
+
+		//////////////////////////////////////////////////////////////////////////
+		// placeholder
+		struct s_placeholder_data
+		{
+			PAD64;
+		}; BOOST_STATIC_ASSERT( sizeof(s_placeholder_data) == (Enums::k_object_size_placeholder - Enums::k_object_size_object) );
+
+		struct s_placeholder_datum
+		{
+			s_object_data object;
+			s_placeholder_data placeholder;
+		}; BOOST_STATIC_ASSERT( sizeof(s_placeholder_datum) == Enums::k_object_size_placeholder );
+
+
+		//////////////////////////////////////////////////////////////////////////
+		// sound_scenery
+		struct s_sound_scenery_data
+		{
+			PAD32;
+		}; BOOST_STATIC_ASSERT( sizeof(s_sound_scenery_data) == (Enums::k_object_size_sound_scenery - Enums::k_object_size_object) );
+
+		struct s_sound_scenery_datum
+		{
+			s_object_data object;
+			s_sound_scenery_data sound_scenery;
+		}; BOOST_STATIC_ASSERT( sizeof(s_sound_scenery_datum) == Enums::k_object_size_sound_scenery );
 	};
 };

@@ -28,8 +28,11 @@ namespace BlamLib.Blam.Halo4
 				vehi,
 				devi, // device
 				ctrl,
+				dspn,
 				mach,
 				term,
+				ents, // entity
+				spnr,
 				item, // item
 				eqip,
 				weap
@@ -47,8 +50,23 @@ namespace BlamLib.Blam.Halo4
 			GroupsDevices = new TagGroupCollection(false,
 				devi,
 				ctrl,
+				dspn,
 				mach,
 				term
+			);
+		}
+		#endregion
+
+		#region Entities Group
+		/// <summary>
+		/// Entities Group
+		/// </summary>
+		public static TagGroupCollection GroupsEntities;
+		static void GroupsEntitiesInitialize()
+		{
+			GroupsEntities = new TagGroupCollection(false,
+				ents,
+				spnr
 			);
 		}
 		#endregion
@@ -95,7 +113,6 @@ namespace BlamLib.Blam.Halo4
 				rm__,
 				_rmc,
 				_rmp,
-				rmb_,
 				rmcs,
 				rmct,
 				rmd_,
@@ -104,6 +121,7 @@ namespace BlamLib.Blam.Halo4
 				rmfu,//Reach
 				rmgl,//Reach
 				rmhg,
+				rmla,//Halo4
 				rmlv,
 				rmmm,//Reach
 				rmmx,//Reach
@@ -111,21 +129,23 @@ namespace BlamLib.Blam.Halo4
 				rmsk,
 				rmss,//ODST
 				rmtr,
-				rmw_
+				rmw_,
+				rmwf //Halo4
 			);
 		}
 		#endregion
 
 
-		#region Halo Reach Tags Group Collection
+		#region Halo 4 Tags Group Collection
 		/// <summary>
-		/// All tag groups in Halo Reach
+		/// All tag groups in Halo 4
 		/// </summary>
 		public static TagGroupCollection Groups;
 		static void GroupsInitialize()
 		{
 			GroupsObjectsInitialize();
 			GroupsDevicesInitialize();
+			GroupsEntitiesInitialize();
 			GroupsItemsInitialize();
 			GroupsUnitsInitialize();
 			GroupsShadersInitialize();
@@ -134,29 +154,16 @@ namespace BlamLib.Blam.Halo4
 				_rmc,
 				_rmp,
 				shit,
-				srscen,
-				srweap,
-				srvehi,
-				srefsc,
-				srligh,
-				srbipd,
-				sreqip,
-				srcrea,
-				srssce,
-				srcmmt,
 				_fx_,
 				BooM,
 				LMgS,//Reach
 				Lbsp,//ODST
-				ZZAP,//Reach
 				achi,//ODST
 				adlg,
-				srai,
 				aigl,//ODST
 				ant_,
 				atgf,//Reach
 				bdpd,//Reach
-				beam,
 				bink,
 				bipd,
 				bitm,
@@ -164,19 +171,12 @@ namespace BlamLib.Blam.Halo4
 				bsdt,
 				cddf,
 				cfxs,
-				chad,
 				char_,
 				chdg,//Reach
-				chdt,
-				chgd,
-				chmt,
-				srcine,
 				cine,
 				cisc,
 				citr,//Reach
-				srclut,
 				clwd,
-				cntl,
 				coll,
 				colo,
 				comg,//Reach
@@ -189,16 +189,12 @@ namespace BlamLib.Blam.Halo4
 				crea,
 				csdt,//Reach
 				ctrl,
-				srcube,
 				cusc,//Reach
 				cust,//Reach
-				srdcrs,
 				dctr,
-				srdeca,
 				decs,
 				devi,
 				devo,
-				srdgrp,
 				dobc,
 				draw,
 				drdf,
@@ -215,7 +211,7 @@ namespace BlamLib.Blam.Halo4
 				goof,
 				hlmt,
 				hlsl,
-				srhscf,
+				hsc_,
 				item,
 				jmad,
 				jmrq,
@@ -246,7 +242,6 @@ namespace BlamLib.Blam.Halo4
 				prt3,
 				rasg,
 				rm__,
-				rmb_,
 				rmcs,
 				rmct,
 				rmd_,
@@ -261,7 +256,6 @@ namespace BlamLib.Blam.Halo4
 				rmtr,
 				rmw_,
 				rwrd,
-				sFdT,
 				sLdT,
 				sbsp,
 				scen,
@@ -272,8 +266,6 @@ namespace BlamLib.Blam.Halo4
 				sgp_,
 				shit2,
 				sily,
-				srsky_,
-				skya,
 				smap,
 				sncl,
 				snd_,
@@ -281,13 +273,11 @@ namespace BlamLib.Blam.Halo4
 				snmx,
 				spk_,
 				ssce,
-				srsslt,
 				stli,
 				stse,
 				styl,
 				term,
 				trak,
-				srtrgr,
 				udlg,
 				ugh_,
 				uise,
@@ -303,7 +293,6 @@ namespace BlamLib.Blam.Halo4
 				wind,
 				zone,
 
-				srdmpr,//Reach
 				ebhd,//Reach
 				fogg,//Reach
 				form,//ODST
@@ -334,7 +323,6 @@ namespace BlamLib.Blam.Halo4
 				pfpt,//Reach
 				pggd,//Reach
 				pmcg,//Reach
-				srprfr,//Reach
 				rain,//Reach
 				rmbl,//Reach
 				rmfs,//Reach
@@ -354,14 +342,9 @@ namespace BlamLib.Blam.Halo4
 				ttag,//ODST
 				uttt,//ODST
 				vmdx,//ODST
-				wadt,//Reach
 				wave,//Reach
-				wdst,//Reach
 				wetn,//Reach
 				wpdp,//Reach
-				wpdt,//Reach
-				wrdt,//Reach
-				wsdt,//Reach
 				wxcg,//Reach
 
 				airs,//Reach Retail
@@ -372,7 +355,72 @@ namespace BlamLib.Blam.Halo4
 				pfmc,//Reach Retail
 				sdzg,//Reach Retail
 				sirp,//Reach Retail
-				vtgl //Reach Retail
+				vtgl,//Reach Retail
+
+				LMMg,
+				SDzs,
+				armg,
+				aulp,
+				capg,
+				cisd,
+				cnmp,
+				coag,
+				crvs,
+				culo,
+				dpnd,
+				dspn,
+				egfd,
+				ents,
+				ffgd,
+				ffgt,
+				forg,
+				gggl,
+				ggol,
+				hscn,
+				hsdt,
+				iuii,
+				kccd,
+				licn,
+				lrig,
+				mat_,
+				mats,
+				mdsv,
+				mech,
+				meco,
+				mgee,
+				mmvo,
+				mtsb,
+				narg,
+				paas,
+				patg,
+				pcaa,
+				pdti,
+				pegd,
+				pfnd,
+				pman,
+				ppod,
+				prfb,
+				prog,
+				rmla,
+				rmwf,
+				sbnk,
+				scol,
+				sgrp,
+				shvr,
+				sict,
+				sigd,
+				sirg,
+				slag,
+				smet,
+				sndo,
+				sndx,
+				spnr,
+				ssdf,
+				trac,
+				uihg,
+				uiss,
+				vaas,
+				vchd
 			);
 		}
 
@@ -389,26 +437,6 @@ namespace BlamLib.Blam.Halo4
 			_rmp,
 			/// <summary>cache_file_sound</summary>
 			shit,
-			/// <summary>scenario_scenery_resource</summary>
-			srscen,
-			/// <summary>scenario_weapons_resource</summary>
-			srweap,
-			/// <summary>scenario_vehicles_resource</summary>
-			srvehi,
-			/// <summary>scenario_effect_scenery_resource</summary>
-			srefsc,
-			/// <summary>scenario_lights_resource</summary>
-			srligh,
-			/// <summary>scenario_bipeds_resource</summary>
-			srbipd,
-			/// <summary>scenario_equipment_resource</summary>
-			sreqip,
-			/// <summary>scenario_creature_resource</summary>
-			srcrea,
-			/// <summary>scenario_sound_scenery_resource</summary>
-			srssce,
-			/// <summary>scenario_comments_resource</summary>
-			srcmmt,
 			/// <summary>sound_effect_template</summary>
 			_fx_,
 			/// <summary>stereo_system</summary>
@@ -417,14 +445,10 @@ namespace BlamLib.Blam.Halo4
 			LMgS,
 			/// <summary>scenario_lightmap_bsp_data</summary>
 			Lbsp,
-			/// <summary>lightning_system</summary>
-			ZZAP,
 			/// <summary>achievements</summary>
 			achi,
 			/// <summary>ai_dialogue_globals</summary>
 			adlg,
-			/// <summary>scenario_ai_resource</summary>
-			srai,
 			/// <summary>ai_globals</summary>
 			aigl,
 			/// <summary>antenna</summary>
@@ -433,8 +457,6 @@ namespace BlamLib.Blam.Halo4
 			atgf,
 			/// <summary>death_program_selector</summary>
 			bdpd,
-			/// <summary>beam_system</summary>
-			beam,
 			/// <summary>bink</summary>
 			bink,
 			/// <summary>biped</summary>
@@ -449,32 +471,18 @@ namespace BlamLib.Blam.Halo4
 			cddf,
 			/// <summary>camera_fx_settings</summary>
 			cfxs,
-			/// <summary>chud_animation_definition</summary>
-			chad,
 			/// <summary>character</summary>
 			char_,
 			/// <summary>challenge_globals_definition</summary>
 			chdg,
-			/// <summary>chud_definition</summary>
-			chdt,
-			/// <summary>chud_globals_definition</summary>
-			chgd,
-			/// <summary>chocolate_mountain_new</summary>
-			chmt,
-			/// <summary>scenario_cinematics_resource</summary>
-			srcine,
 			/// <summary>cinematic</summary>
 			cine,
 			/// <summary>cinematic_scene</summary>
 			cisc,
 			/// <summary>cinematic_transition</summary>
 			citr,
-			/// <summary>scenario_cluster_data_resource</summary>
-			srclut,
 			/// <summary>cloth</summary>
 			clwd,
-			/// <summary>contrail_system</summary>
-			cntl,
 			/// <summary>collision_model</summary>
 			coll,
 			/// <summary>color_table</summary>
@@ -499,26 +507,18 @@ namespace BlamLib.Blam.Halo4
 			csdt,
 			/// <summary>device_control</summary>
 			ctrl,
-			/// <summary>scenario_cubemap_resource</summary>
-			srcube,
 			/// <summary>cui_screen</summary>
 			cusc,
 			/// <summary>cui_static_data</summary>
 			cust,
-			/// <summary>scenario_decorators_resource</summary>
-			srdcrs,
 			/// <summary>decorator_set</summary>
 			dctr,
-			/// <summary>scenario_decals_resource</summary>
-			srdeca,
 			/// <summary>decal_system</summary>
 			decs,
 			/// <summary>device</summary>
 			devi,
 			/// <summary>cellular_automata</summary>
 			devo,
-			/// <summary>scenario_devices_resource</summary>
-			srdgrp,
 			/// <summary>detail_object_collection</summary>
 			dobc,
 			/// <summary>rasterizer_cache_file_globals</summary>
@@ -551,8 +551,8 @@ namespace BlamLib.Blam.Halo4
 			hlmt,
 			/// <summary>hlsl_include</summary>
 			hlsl,
-			/// <summary>scenario_hs_source_file</summary>
-			srhscf,
+			/// <summary>hsc</summary>
+			hsc_,
 			/// <summary>item</summary>
 			item,
 			/// <summary>model_animation_graph</summary>
@@ -613,8 +613,6 @@ namespace BlamLib.Blam.Halo4
 			rasg,
 			/// <summary>render_method</summary>
 			rm__,
-			/// <summary>shader_beam</summary>
-			rmb_,
 			/// <summary>shader_custom</summary>
 			rmcs,
 			/// <summary>shader_cortana</summary>
@@ -643,8 +641,6 @@ namespace BlamLib.Blam.Halo4
 			rmw_,
 			/// <summary>render_water_ripple</summary>
 			rwrd,
-			/// <summary>scenario_faux_data</summary>
-			sFdT,
 			/// <summary>scenario_lightmap</summary>
 			sLdT,
 			/// <summary>scenario_structure_bsp</summary>
@@ -665,10 +661,6 @@ namespace BlamLib.Blam.Halo4
 			shit2,
 			/// <summary>text_value_pair_definition</summary>
 			sily,
-			/// <summary>scenario_sky_references_resource</summary>
-			srsky_,
-			/// <summary>sky_atm_parameters</summary>
-			skya,
 			/// <summary>shared_cache_file_layout</summary>
 			smap,
 			/// <summary>sound_classes</summary>
@@ -683,8 +675,6 @@ namespace BlamLib.Blam.Halo4
 			spk_,
 			/// <summary>sound_scenery</summary>
 			ssce,
-			/// <summary>scenario_structure_lighting_resource</summary>
-			srsslt,
 			/// <summary>scenario_structure_lighting_info</summary>
 			stli,
 			/// <summary>structure_seams</summary>
@@ -695,8 +685,6 @@ namespace BlamLib.Blam.Halo4
 			term,
 			/// <summary>camera_track</summary>
 			trak,
-			/// <summary>scenario_trigger_volumes_resource</summary>
-			srtrgr,
 			/// <summary>dialogue</summary>
 			udlg,
 			/// <summary>sound_cache_file_gestalt</summary>
@@ -726,8 +714,6 @@ namespace BlamLib.Blam.Halo4
 			/// <summary>cache_file_resource_gestalt</summary>
 			zone,
 
-			/// <summary>scenario_dumplings_resource</summary>
-			srdmpr,
 			/// <summary>particle_emitter_boat_hull_shape</summary>
 			ebhd,
 			/// <summary>atmosphere_fog</summary>
@@ -788,8 +774,6 @@ namespace BlamLib.Blam.Halo4
 			pggd,
 			/// <summary>player_model_customization_globals</summary>
 			pmcg,
-			/// <summary>scenario_performances_resource</summary>
-			srprfr,
 			/// <summary>rain_definition</summary>
 			rain,
 			/// <summary>rumble</summary>
@@ -828,43 +812,98 @@ namespace BlamLib.Blam.Halo4
 			uttt,
 			/// <summary>vision_mode</summary>
 			vmdx,
-			/// <summary>chud_widget_animation_data_template</summary>
-			wadt,
 			/// <summary>wave_template</summary>
 			wave,
-			/// <summary>chud_widget_datasource_template</summary>
-			wdst,
 			/// <summary>scenario_wetness_bsp_data</summary>
 			wetn,
 			/// <summary>water_physics_drag_properties</summary>
 			wpdp,
-			/// <summary>chud_widget_placement_data_template</summary>
-			wpdt,
-			/// <summary>chud_widget_render_data_template</summary>
-			wrdt,
-			/// <summary>chud_widget_state_data_template</summary>
-			wsdt,
 			/// <summary>weather_globals</summary>
 			wxcg,
 
-			/// <summary></summary>
+			/// <summary>airstrike</summary>
 			airs,
-			/// <summary></summary>
+			/// <summary>avatar_awards</summary>
 			avat,
-			/// <summary></summary>
+			/// <summary>big_battle_creature</summary>
 			bbcr,
-			/// <summary></summary>
+			/// <summary>camo</summary>
 			cmoe,
-			/// <summary></summary>
+			/// <summary>load_screen</summary>
 			ldsc,
-			/// <summary></summary>
+			/// <summary>performance_template</summary>
 			pfmc,
-			/// <summary></summary>
+			/// <summary>scenario_required_resource</summary>
 			sdzg,
-			/// <summary></summary>
+			/// <summary>scenario_interpolator</summary>
 			sirp,
-			/// <summary></summary>
+			/// <summary>variant_globals</summary>
 			vtgl,
+
+			LMMg,
+			SDzs,
+			armg,
+			aulp,
+			capg,
+			cisd,
+			cnmp,
+			coag,
+			crvs,
+			culo,
+			dpnd,
+			dspn,
+			egfd,
+			ents,
+			ffgd,
+			ffgt,
+			forg,
+			gggl,
+			ggol,
+			hscn,
+			hsdt,
+			iuii,
+			kccd,
+			licn,
+			lrig,
+			mat_,
+			mats,
+			mdsv,
+			mech,
+			meco,
+			mgee,
+			mmvo,
+			mtsb,
+			narg,
+			paas,
+			patg,
+			pcaa,
+			pdti,
+			pegd,
+			pfnd,
+			pman,
+			ppod,
+			prfb,
+			prog,
+			rmla,
+			rmwf,
+			sbnk,
+			scol,
+			sgrp,
+			shvr,
+			sict,
+			sigd,
+			sirg,
+			slag,
+			smet,
+			sndo,
+			sndx,
+			spnr,
+			ssdf,
+			trac,
+			uihg,
+			uiss,
+			vaas,
+			vchd,
 		};
 		#endregion
 	};

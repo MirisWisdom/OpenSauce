@@ -160,7 +160,7 @@ namespace Yelo
 		void GenerateMD5(cstring data, const DWORD data_length, cstring output);
 		bool CompareMD5(cstring data, const DWORD data_length, cstring comparison_md5);
 
-		bool GetCmdLineParameter(cstring parameter, cstring* value_out);
+		bool GetCmdLineParameter(cstring parameter, cstring* value_out = NULL);
 
 
 		namespace AI

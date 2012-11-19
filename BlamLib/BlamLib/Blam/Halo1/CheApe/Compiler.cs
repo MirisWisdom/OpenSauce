@@ -101,7 +101,8 @@ namespace BlamLib.Blam.Halo1.CheApe
 			TypeIndexArrayEnd = -1,
 			TypeIndexExplanation = -1,
 			TypeIndexCustom = -1,
-			TypeIndexTerminator = -1;
+			TypeIndexTerminator = -1,
+			TypeIndexStruct = -1;
 
 		private void InitializeTypeIndicies()
 		{
@@ -121,6 +122,7 @@ namespace BlamLib.Blam.Halo1.CheApe
 			TypeIndexExplanation = OwnerState.Definition.GetTypeIndex("Explanation");
 			TypeIndexCustom = OwnerState.Definition.GetTypeIndex("Custom");
 			TypeIndexTerminator = OwnerState.Definition.GetTypeIndex("Terminator");
+			TypeIndexStruct = OwnerState.Definition.GetTypeIndex("Struct");
 		}
 		#endregion
 
@@ -188,6 +190,46 @@ namespace BlamLib.Blam.Halo1.CheApe
 			return new Field(def);
 		}
 
+		struct FieldsWriter
+		{
+			List<Import.Field> mFields;
+
+			public FieldsWriter(List<Import.Field> fields) { mFields = fields; }
+
+			static void WriteFieldsRecursive(IO.EndianWriter stream, Compiler comp, List<Import.Field> fields)
+			{
+				Field temp = new Field();
+				foreach (Import.Field f in fields)
+				{
+					if (f.TypeIndex == comp.TypeIndexStruct)
+					{
+						var import = comp.OwnerState.Importer as Import;
+						Import.TagStruct ts;
+						// Assert that the field references a valid definition
+						if (import.Structs.TryGetValue(f.Definition, out ts))
+							WriteFieldsRecursive(stream, comp, ts.Fields.Fields);
+						else
+							Debug.Assert.If(false, "Field '{0}' references an undefined tag struct '{1}'",
+								comp.Strings[f.Name], f.ToString());
+					}
+					else
+					{
+						temp.Reset(f);
+						temp.Write(stream);
+					}
+				}
+			}
+			public uint WriteFields(IO.EndianWriter stream, Compiler comp)
+			{
+				uint fieldsAddress = stream.PositionUnsigned;
+
+				WriteFieldsRecursive(stream, comp, mFields);
+
+				stream.Write(comp.TypeIndexTerminator); stream.Write((int)0); stream.Write((int)0);
+				return fieldsAddress;
+			}
+		}
+
 		/// <summary>
 		/// string name;
 		/// long flags;
@@ -215,35 +257,7 @@ namespace BlamLib.Blam.Halo1.CheApe
 			{
 				Compiler comp = stream.Owner as Compiler;
 
-				#region Fields
-				#region Byte swap codes
-				/*
-				uint fieldBSCodesAddress = stream.PositionUnsigned;
-				stream.Write(comp.OwnerState.Definition.FieldTypes[comp.TypeIndexArrayStart].ByteSwapCodes[0]);
-				stream.Write((int)1); // array count
-				foreach (Import.Field f in tagBlock.Fields)
-				{
-					if (f.TypeIndex == comp.TypeIndexPad || f.TypeIndex == comp.TypeIndexSkip)
-						stream.Write(f.ToInt());
-					else
-						foreach (int x in comp.OwnerState.Definition.FieldTypes[f.TypeIndex].ByteSwapCodes)
-							if (x != 0)
-								stream.Write(x);
-				}
-				stream.Write(comp.OwnerState.Definition.FieldTypes[comp.TypeIndexArrayEnd].ByteSwapCodes[0]);
-				*/
-				#endregion
-
-				uint fieldsAddress = stream.PositionUnsigned;
-				Field temp = new Field();
-				foreach (Import.Field f in tagBlock.Fields)
-				{
-					temp.Reset(f);
-					temp.Write(stream);
-				}
-				stream.Write(comp.TypeIndexTerminator); stream.Write((int)0); stream.Write((int)0);
-				#endregion
-
+				uint fieldsAddress = new FieldsWriter(tagBlock.Fields).WriteFields(stream, comp);
 				comp.MarkLocationFixup(tagBlock.Name, stream, false);
 
 				int flags = (
@@ -260,7 +274,7 @@ namespace BlamLib.Blam.Halo1.CheApe
 				// procs
 				stream.Write((int)0); stream.Write((int)0); stream.Write((int)0); stream.Write((int)0);
 
-				stream.Write((int)0);//stream.WritePointer(fieldBSCodesAddress);
+				stream.Write((int)0); // byte swap codes address
 			}
 			#endregion
 		};
@@ -297,48 +311,26 @@ namespace BlamLib.Blam.Halo1.CheApe
 				int flags;
 
 				#region Block
-				#region Fields
-				#region Byte swap codes
-				/*
-				uint fieldBSCodesAddress = stream.PositionUnsigned;
-				stream.Write(comp.OwnerState.Definition.FieldTypes[comp.TypeIndexArrayStart].ByteSwapCodes[0]);
-				stream.Write((int)1); // array count
-				foreach (Import.Field f in ((Import.TagBlock)tagGroup.Block).Fields)
-				{
-					foreach (int x in comp.OwnerState.Definition.FieldTypes[f.TypeIndex].ByteSwapCodes)
-						if (x != 0)
-							stream.Write(x);
-				}
-				stream.Write(comp.OwnerState.Definition.FieldTypes[comp.TypeIndexArrayEnd].ByteSwapCodes[0]);
-				*/
-				#endregion
-
-				uint fieldsAddress = stream.PositionUnsigned;
-				Field temp = new Field();
-				foreach (Import.Field f in ((Import.TagBlock)tagGroup.Block).Fields)
-				{
-					temp.Reset(f);
-					temp.Write(stream);
-				}
-				stream.Write(comp.TypeIndexTerminator); stream.Write((int)0); stream.Write((int)0);
-				#endregion
+				var tag_block = tagGroup.Block as Import.TagBlock;
+				uint fieldsAddress = new FieldsWriter(tag_block.Fields).WriteFields(stream, comp);
+				//comp.MarkLocationFixup(tag_block.Name, stream, false);
 
 				flags = (
-						((tagGroup.Block as Import.TagBlock).DontReadChildren ? 1 << 0 : 0)
+						(tag_block.DontReadChildren ? 1 << 0 : 0)
 					);
 
 				uint blockAddress = stream.PositionUnsigned;
 				stream.Write(tagGroup.BlockName);
 				stream.Write(flags);
 				stream.Write((int)1); // max elements
-				stream.Write(((Import.TagBlock)tagGroup.Block).CalculateSize(comp.OwnerState));
+				stream.Write(tag_block.CalculateSize(comp.OwnerState));
 				stream.Write((int)0);
 				stream.WritePointer(fieldsAddress);
 
 				// procs
 				stream.Write((int)0); stream.Write((int)0); stream.Write((int)0); stream.Write((int)0);
 
-				stream.Write((int)0);//stream.WritePointer(fieldBSCodesAddress);
+				stream.Write((int)0); // byte swap codes address
 				#endregion
 
 				comp.MarkLocationFixup(tagGroup.Name, stream, false);

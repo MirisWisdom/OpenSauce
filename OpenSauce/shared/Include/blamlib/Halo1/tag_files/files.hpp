@@ -19,7 +19,7 @@ namespace Yelo
 			_file_reference_location_none = CAST(_enum, NONE),
 			_file_reference_location_data = 0,
 			_file_reference_location_tags,
-			_file_reference_location_unused,
+			_file_reference_location_absolute, // _file_reference_absolute
 
 			k_number_of_file_reference_locations
 		};

@@ -576,7 +576,15 @@ namespace BlamLib.Managers
 				var sid = mOwner.Definition.Description.Generate(initial_index + x, str.Length, set_index);
 
 				m_set.Set.Add(sid, str);
-				m_set.SetLookup.Add(str.GetHashCode(), sid);
+
+				int hc = str.GetHashCode();
+				StringId first_sid;
+				if (m_set.SetLookup.TryGetValue(hc, out first_sid))
+					Debug.Warn.If(false, "Hash collision! '{0}' ({1}) collides with '{2}' ({3})", 
+						m_set.Set[first_sid], first_sid.ToString(),
+						str, sid.ToString());
+				else
+					m_set.SetLookup.Add(str.GetHashCode(), sid);
 			}
 		}
 		#endregion

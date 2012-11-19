@@ -36,7 +36,7 @@ namespace Yelo
 			_player_powerup_active_camo,
 			_player_powerup_full_spectrum_vision,
 			
-			k_number_of_of_player_powerups,
+			k_number_of_player_powerups,
 		};
 	};
 

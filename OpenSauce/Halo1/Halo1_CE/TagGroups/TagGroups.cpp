@@ -24,9 +24,11 @@
 #include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/interface/hud_definitions.hpp>
 #include <blamlib/Halo1/interface/ui_widget_group.hpp>
+#include <YeloLib/Halo1/interface/equipment_hud_interface_definition.hpp>
 #include <blamlib/Halo1/interface/unit_hud_interface_definition.hpp>
 #include <blamlib/Halo1/interface/weapon_hud_interface_definition.hpp>
 #include <blamlib/Halo1/items/equipment_definitions.hpp>
+#include <blamlib/Halo1/items/garbage_definitions.hpp>
 #include <blamlib/Halo1/items/item_definitions.hpp>
 #include <blamlib/Halo1/items/projectile_definitions.hpp>
 #include <blamlib/Halo1/items/weapon_definitions.hpp>
@@ -34,6 +36,9 @@
 #include <blamlib/Halo1/models/model_animation_definitions.hpp>
 #include <blamlib/Halo1/models/model_definitions.hpp>
 #include <blamlib/Halo1/objects/object_definitions.hpp>
+#include <blamlib/Halo1/objects/placeholder_definitions.hpp>
+#include <blamlib/Halo1/objects/scenery_definitions.hpp>
+#include <blamlib/Halo1/objects/sound_scenery_definitions.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 #include <blamlib/Halo1/scenario/sky_definitions.hpp>
 #include <blamlib/Halo1/shaders/shader_definitions.hpp>

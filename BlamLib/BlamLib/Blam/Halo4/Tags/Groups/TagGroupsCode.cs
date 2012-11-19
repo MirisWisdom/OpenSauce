@@ -19,7 +19,12 @@ namespace BlamLib.Blam.Halo4
 		/// device
 		/// </summary>
 		public static TagGroup devi = new TagGroup("devi", obje, "device");
-		
+
+		/// <summary>
+		/// entity
+		/// </summary>
+		public static TagGroup ents = new TagGroup("ents", obje, "entity");
+
 		/// <summary>
 		/// item
 		/// </summary>
@@ -53,56 +58,6 @@ namespace BlamLib.Blam.Halo4
 		public static TagGroup shit = new TagGroup("$#!+", "cache_file_sound");
 
 		/// <summary>
-		/// scenario_scenery_resource
-		/// </summary>
-		public static TagGroup srscen = new TagGroup("*cen", "scenario_scenery_resource");
-
-		/// <summary>
-		/// scenario_weapons_resource
-		/// </summary>
-		public static TagGroup srweap = new TagGroup("*eap", "scenario_weapons_resource");
-		
-		/// <summary>
-		/// scenario_vehicles_resource
-		/// </summary>
-		public static TagGroup srvehi = new TagGroup("*ehi", "scenario_vehicles_resource");
-
-		/// <summary>
-		/// scenario_effect_scenery_resource
-		/// </summary>
-		public static TagGroup srefsc = new TagGroup("*fsc", "scenario_effect_scenery_resource");
-
-		/// <summary>
-		/// scenario_lights_resource
-		/// </summary>
-		public static TagGroup srligh = new TagGroup("*igh", "scenario_lights_resource");
-
-		/// <summary>
-		/// scenario_bipeds_resource
-		/// </summary>
-		public static TagGroup srbipd = new TagGroup("*ipd", "scenario_bipeds_resource");
-
-		/// <summary>
-		/// scenario_equipment_resource
-		/// </summary>
-		public static TagGroup sreqip = new TagGroup("*qip", "scenario_equipment_resource");
-
-		/// <summary>
-		/// scenario_creature_resource
-		/// </summary>
-		public static TagGroup srcrea = new TagGroup("*rea", "scenario_creature_resource");
-
-		/// <summary>
-		/// scenario_sound_scenery_resource
-		/// </summary>
-		public static TagGroup srssce = new TagGroup("*sce", "scenario_sound_scenery_resource");
-
-		/// <summary>
-		/// scenario_comments_resource
-		/// </summary>
-		public static TagGroup srcmmt = new TagGroup("/**/", "scenario_comments_resource");
-
-		/// <summary>
 		/// sound_effect_template
 		/// </summary>
 		public static TagGroup _fx_ = new TagGroup("<fx>", "sound_effect_template");
@@ -111,6 +66,12 @@ namespace BlamLib.Blam.Halo4
 		/// stereo_system
 		/// </summary>
 		public static TagGroup BooM = new TagGroup("BooM", "stereo_system");
+
+		//Halo4
+		/// <summary>
+		/// lightmap_model_globals
+		/// </summary>
+		public static TagGroup LMMg = new TagGroup("LMMg", "lightmap_model_globals");
 
 		//Reach
 		/// <summary>
@@ -124,11 +85,11 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup Lbsp = new TagGroup("Lbsp", "scenario_lightmap_bsp_data");
 
-		//Reach
+		//Halo4
 		/// <summary>
-		/// lightning_system
+		/// StreamingZoneSet
 		/// </summary>
-		public static TagGroup ZZAP = new TagGroup("ZZAP", "lightning_system");
+		public static TagGroup SDzs = new TagGroup("SDzs", "StreamingZoneSet");
 
 		//ODST
 		/// <summary>
@@ -141,11 +102,6 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup adlg = new TagGroup("adlg", "ai_dialogue_globals");
 
-		/// <summary>
-		/// scenario_ai_resource
-		/// </summary>
-		public static TagGroup srai = new TagGroup("ai**", "scenario_ai_resource");
-
 		//ODST
 		/// <summary>
 		/// ai_globals
@@ -154,14 +110,20 @@ namespace BlamLib.Blam.Halo4
 
 		//Reach Retail
 		/// <summary>
-		/// airs
+		/// airstrike
 		/// </summary>
-		public static TagGroup airs = new TagGroup("airs", "airs_unknown");
+		public static TagGroup airs = new TagGroup("airs", "airstrike");
 
 		/// <summary>
 		/// antenna
 		/// </summary>
 		public static TagGroup ant_ = new TagGroup("ant!", "antenna");
+
+		//Halo4
+		/// <summary>
+		/// armormod_globals
+		/// </summary>
+		public static TagGroup armg = new TagGroup("armg", "armormod_globals");
 
 		//Reach
 		/// <summary>
@@ -169,28 +131,29 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup atgf = new TagGroup("atgf", "atmosphere_globals");
 
-		//Reach Retail
+		//Halo4
 		/// <summary>
-		/// avat
+		/// authored_light_probe
 		/// </summary>
-		public static TagGroup avat = new TagGroup("avat", "avat_unknown");
+		public static TagGroup aulp = new TagGroup("aulp", "authored_light_probe");
 
 		//Reach Retail
 		/// <summary>
-		/// bbcr
+		/// avatar_awards
 		/// </summary>
-		public static TagGroup bbcr = new TagGroup("bbcr", "bbcr_unknown");
+		public static TagGroup avat = new TagGroup("avat", "avatar_awards");
+
+		//Reach Retail
+		/// <summary>
+		/// big_battle_creature
+		/// </summary>
+		public static TagGroup bbcr = new TagGroup("bbcr", "big_battle_creature");
 
 		//Reach
 		/// <summary>
 		/// death_program_selector
 		/// </summary>
 		public static TagGroup bdpd = new TagGroup("bdpd", "death_program_selector");
-
-		/// <summary>
-		/// beam_system
-		/// </summary>
-		public static TagGroup beam = new TagGroup("beam", "beam_system");
 
 		/// <summary>
 		/// bink
@@ -217,6 +180,12 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup bsdt = new TagGroup("bsdt", "breakable_surface");
 
+		//Halo4
+		/// <summary>
+		/// custom_app_globals
+		/// </summary>
+		public static TagGroup capg = new TagGroup("capg", "custom_app_globals");
+
 		/// <summary>
 		/// collision_damage
 		/// </summary>
@@ -226,11 +195,6 @@ namespace BlamLib.Blam.Halo4
 		/// camera_fx_settings
 		/// </summary>
 		public static TagGroup cfxs = new TagGroup("cfxs", "camera_fx_settings");
-
-		/// <summary>
-		/// chud_animation_definition
-		/// </summary>
-		public static TagGroup chad = new TagGroup("chad", "chud_animation_definition");
 
 		/// <summary>
 		/// character
@@ -244,26 +208,6 @@ namespace BlamLib.Blam.Halo4
 		public static TagGroup chdg = new TagGroup("chdg", "challenge_globals_definition");
 
 		/// <summary>
-		/// chud_definition
-		/// </summary>
-		public static TagGroup chdt = new TagGroup("chdt", "chud_definition");
-
-		/// <summary>
-		/// chud_globals_definition
-		/// </summary>
-		public static TagGroup chgd = new TagGroup("chgd", "chud_globals_definition");
-
-		/// <summary>
-		/// chocolate_mountain_new
-		/// </summary>
-		public static TagGroup chmt = new TagGroup("chmt", "chocolate_mountain_new");
-
-		/// <summary>
-		/// scenario_cinematics_resource
-		/// </summary>
-		public static TagGroup srcine = new TagGroup("cin*", "scenario_cinematics_resource");
-
-		/// <summary>
 		/// cinematic
 		/// </summary>
 		public static TagGroup cine = new TagGroup("cine", "cinematic");
@@ -273,16 +217,17 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup cisc = new TagGroup("cisc", "cinematic_scene");
 
+		//Halo4
+		/// <summary>
+		/// cinematic_scene_data
+		/// </summary>
+		public static TagGroup cisd = new TagGroup("cisd", "cinematic_scene_data");
+
 		//Reach
 		/// <summary>
 		/// cinematic_transition
 		/// </summary>
 		public static TagGroup citr = new TagGroup("citr", "cinematic_transition");
-
-		/// <summary>
-		/// scenario_cluster_data_resource
-		/// </summary>
-		public static TagGroup srclut = new TagGroup("clu*", "scenario_cluster_data_resource");
 
 		/// <summary>
 		/// cloth
@@ -291,14 +236,21 @@ namespace BlamLib.Blam.Halo4
 
 		//Reach Retail
 		/// <summary>
-		/// cmoe
+		/// camo
 		/// </summary>
-		public static TagGroup cmoe = new TagGroup("cmoe", "cmoe_unknown");
+		public static TagGroup cmoe = new TagGroup("cmoe", "camo");
 
+		//Halo4
 		/// <summary>
-		/// contrail_system
+		/// controller_mapping
 		/// </summary>
-		public static TagGroup cntl = new TagGroup("cntl", "contrail_system");
+		public static TagGroup cnmp = new TagGroup("cnmp", "controller_mapping");
+
+		//Halo4
+		/// <summary>
+		/// commendation_aggregator_list
+		/// </summary>
+		public static TagGroup coag = new TagGroup("coag", "commendation_aggregator_list");
 
 		/// <summary>
 		/// collision_model
@@ -357,22 +309,28 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup crea = new TagGroup("crea", obje, "creature");
 
-		// Removed: crte	cortana_effect_definition
+		//Halo4
+		/// <summary>
+		/// curve_scalar
+		/// </summary>
+		public static TagGroup crvs = new TagGroup("crvs", "curve_scalar");
+
 		//Reach
 		/// <summary>
 		/// camera_shake
 		/// </summary>
-		public static TagGroup csdt = new TagGroup("csdt", "camera_shake"); // or maybe this is just 'crte' renamed...
+		public static TagGroup csdt = new TagGroup("csdt", "camera_shake");
 
 		/// <summary>
 		/// device_control
 		/// </summary>
 		public static TagGroup ctrl = new TagGroup("ctrl", devi, "device_control");
 
+		//Halo4
 		/// <summary>
-		/// scenario_cubemap_resource
+		/// cui_logic
 		/// </summary>
-		public static TagGroup srcube = new TagGroup("cub*", "scenario_cubemap_resource");
+		public static TagGroup culo = new TagGroup("culo", "cui_logic");
 
 		//Reach
 		/// <summary>
@@ -387,19 +345,9 @@ namespace BlamLib.Blam.Halo4
 		public static TagGroup cust = new TagGroup("cust", "cui_static_data");
 
 		/// <summary>
-		/// scenario_decorators_resource
-		/// </summary>
-		public static TagGroup srdcrs = new TagGroup("dc*s", "scenario_decorators_resource");
-
-		/// <summary>
 		/// decorator_set
 		/// </summary>
 		public static TagGroup dctr = new TagGroup("dctr", "decorator_set");
-
-		/// <summary>
-		/// scenario_decals_resource
-		/// </summary>
-		public static TagGroup srdeca = new TagGroup("dec*", "scenario_decals_resource");
 
 		/// <summary>
 		/// decal_system
@@ -412,20 +360,15 @@ namespace BlamLib.Blam.Halo4
 		public static TagGroup devo = new TagGroup("devo", "cellular_automata");
 
 		/// <summary>
-		/// scenario_devices_resource
-		/// </summary>
-		public static TagGroup srdgrp = new TagGroup("dgr*", "scenario_devices_resource");
-
-		//Reach
-		/// <summary>
-		/// scenario_dumplings_resource
-		/// </summary>
-		public static TagGroup srdmpr = new TagGroup("dmp*", "scenario_dumplings_resource");
-
-		/// <summary>
 		/// detail_object_collection
 		/// </summary>
 		public static TagGroup dobc = new TagGroup("dobc", "detail_object_collection");
+
+		//Halo4
+		/// <summary>
+		/// dependency
+		/// </summary>
+		public static TagGroup dpnd = new TagGroup("dpnd", "dependency");
 
 		/// <summary>
 		/// rasterizer_cache_file_globals
@@ -437,16 +380,22 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup drdf = new TagGroup("drdf", "damage_response_definition");
 
+		//Halo4
 		/// <summary>
-		/// effect
+		/// device_dispenser
 		/// </summary>
-		public static TagGroup effe = new TagGroup("effe", "effect");
+		public static TagGroup dspn = new TagGroup("dspn", devi, "device_dispenser");
 
 		//Reach
 		/// <summary>
 		/// particle_emitter_boat_hull_shape
 		/// </summary>
 		public static TagGroup ebhd = new TagGroup("ebhd", "particle_emitter_boat_hull_shape");
+
+		/// <summary>
+		/// effect
+		/// </summary>
+		public static TagGroup effe = new TagGroup("effe", "effect");
 
 		/// <summary>
 		/// effect_globals
@@ -458,10 +407,28 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup efsc = new TagGroup("efsc", obje, "effect_scenery");
 
+		//Halo4
+		/// <summary>
+		/// effect_global_force
+		/// </summary>
+		public static TagGroup egfd = new TagGroup("egfd", "effect_global_force");
+
 		/// <summary>
 		/// equipment
 		/// </summary>
 		public static TagGroup eqip = new TagGroup("eqip", item, "equipment");
+
+		//Halo4
+		/// <summary>
+		/// firefight_globals
+		/// </summary>
+		public static TagGroup ffgd = new TagGroup("ffgd", "firefight_globals");
+
+		//Halo4
+		/// <summary>
+		/// GameEngineFirefightVariantTag
+		/// </summary>
+		public static TagGroup ffgt = new TagGroup("ffgt", "GameEngineFirefightVariantTag");
 
 		/// <summary>
 		/// flock
@@ -473,7 +440,6 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup fldy = new TagGroup("fldy", "fluid_dynamics");
 
-		//Removed: 'fog '	planar_fog
 		//Reach
 		/// <summary>
 		/// atmosphere_fog
@@ -485,14 +451,17 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup foot = new TagGroup("foot", "material_effects");
 
+		//Halo4
+		/// <summary>
+		/// forge_globals
+		/// </summary>
+		public static TagGroup forg = new TagGroup("forg", "forge_globals");
+
 		//ODST
 		/// <summary>
 		/// formation
 		/// </summary>
 		public static TagGroup form = new TagGroup("form", "formation");
-
-		//Removed: 'fpch'	patchy_fog
-		//Removed: 'frag'	fragment
 
 		//Reach
 		/// <summary>
@@ -517,6 +486,18 @@ namespace BlamLib.Blam.Halo4
 		/// game_engine_globals
 		/// </summary>
 		public static TagGroup gegl = new TagGroup("gegl", "game_engine_globals");
+
+		//Halo4
+		/// <summary>
+		/// game_globals_grenade_list
+		/// </summary>
+		public static TagGroup gggl = new TagGroup("gggl", "game_globals_grenade_list");
+
+		//Halo4
+		/// <summary>
+		/// game_globals_ordnance_list
+		/// </summary>
+		public static TagGroup ggol = new TagGroup("ggol", "game_globals_ordnance_list");
 
 		/// <summary>
 		/// giant
@@ -586,9 +567,22 @@ namespace BlamLib.Blam.Halo4
 		public static TagGroup hlsl = new TagGroup("hlsl", "hlsl_include");
 
 		/// <summary>
-		/// scenario_hs_source_file
+		/// hsc
 		/// </summary>
-		public static TagGroup srhscf = new TagGroup("hsc*", "scenario_hs_source_file");
+		/// <remarks>scenario_hs_source_file used to use this group tag</remarks>
+		public static TagGroup hsc_ = new TagGroup("hsc*", "hsc");
+
+		//Halo4
+		/// <summary>
+		/// script_container
+		/// </summary>
+		public static TagGroup hscn = new TagGroup("hscn", "script_container");
+
+		//Halo4
+		/// <summary>
+		/// script
+		/// </summary>
+		public static TagGroup hsdt = new TagGroup("hsdt", "script");
 
 		//Reach
 		/// <summary>
@@ -614,6 +608,12 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup ingd = new TagGroup("ingd", "incident_globals_definition");
 
+		//Halo4
+		/// <summary>
+		/// InfinityUIImages
+		/// </summary>
+		public static TagGroup iuii = new TagGroup("iuii", "InfinityUIImages");
+
 		/// <summary>
 		/// model_animation_graph
 		/// </summary>
@@ -629,11 +629,17 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup jpt_ = new TagGroup("jpt!", "damage_effect");
 
+		//Halo4
+		/// <summary>
+		/// KillCamCameraParamter
+		/// </summary>
+		public static TagGroup kccd = new TagGroup("kccd", "KillCamCameraParamter");
+
 		//Reach Retail
 		/// <summary>
-		/// ldsc
+		/// load_screen
 		/// </summary>
-		public static TagGroup ldsc = new TagGroup("ldsc", "ldsc_unknown");
+		public static TagGroup ldsc = new TagGroup("ldsc", "load_screen");
 
 		/// <summary>
 		/// lens_flare
@@ -646,6 +652,12 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup lgtd = new TagGroup("lgtd", "loadout_globals_definition");
 
+		//Halo4
+		/// <summary>
+		/// light_cone
+		/// </summary>
+		public static TagGroup licn = new TagGroup("licn", "light_cone");
+
 		/// <summary>
 		/// light
 		/// </summary>
@@ -656,6 +668,12 @@ namespace BlamLib.Blam.Halo4
 		/// location_name_globals_definition
 		/// </summary>
 		public static TagGroup locs = new TagGroup("locs", "location_name_globals_definition");
+
+		//Halo4
+		/// <summary>
+		/// light_rig
+		/// </summary>
+		public static TagGroup lrig = new TagGroup("lrig", "light_rig");
 
 		/// <summary>
 		/// sound_looping
@@ -677,15 +695,45 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup mach = new TagGroup("mach", devi, "device_machine");
 
+		//Halo4
+		/// <summary>
+		/// material
+		/// </summary>
+		public static TagGroup mat_ = new TagGroup("mat ", "material");
+
 		/// <summary>
 		/// globals
 		/// </summary>
 		public static TagGroup matg = new TagGroup("matg", "globals");
 
+		//Halo4
+		/// <summary>
+		/// material_shader
+		/// </summary>
+		public static TagGroup mats = new TagGroup("mats", "material_shader");
+
 		/// <summary>
 		/// ai_mission_dialogue
 		/// </summary>
 		public static TagGroup mdlg = new TagGroup("mdlg", "ai_mission_dialogue");
+
+		//Halo4
+		/// <summary>
+		/// model_dissolve_definition
+		/// </summary>
+		public static TagGroup mdsv = new TagGroup("mdsv", "model_dissolve_definition");
+
+		//Halo4
+		/// <summary>
+		/// medal_challenge_aggregator_list
+		/// </summary>
+		public static TagGroup mech = new TagGroup("mech", "medal_challenge_aggregator_list");
+
+		//Halo4
+		/// <summary>
+		/// medal_commendation_aggregator_list
+		/// </summary>
+		public static TagGroup meco = new TagGroup("meco", "medal_commendation_aggregator_list");
 
 		/// <summary>
 		/// meter
@@ -696,6 +744,12 @@ namespace BlamLib.Blam.Halo4
 		/// muffin
 		/// </summary>
 		public static TagGroup mffn = new TagGroup("mffn", "muffin");
+
+		//Halo4
+		/// <summary>
+		/// MultiplayerEffects
+		/// </summary>
+		public static TagGroup mgee = new TagGroup("mgee", "MultiplayerEffects");
 
 		//Reach
 		/// <summary>
@@ -708,6 +762,12 @@ namespace BlamLib.Blam.Halo4
 		/// emblem_library
 		/// </summary>
 		public static TagGroup mlib = new TagGroup("mlib", "emblem_library");
+
+		//Halo4
+		/// <summary>
+		/// main_menu_voiceover
+		/// </summary>
+		public static TagGroup mmvo = new TagGroup("mmvo", "main_menu_voiceover");
 
 		/// <summary>
 		/// render_model
@@ -731,6 +791,12 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup msit = new TagGroup("msit", "megalo_string_id_table");
 
+		//Halo4
+		/// <summary>
+		/// material_shader_bank
+		/// </summary>
+		public static TagGroup mtsb = new TagGroup("mtsb", "material_shader_bank");
+
 		/// <summary>
 		/// multiplayer_globals
 		/// </summary>
@@ -742,10 +808,22 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup muxg = new TagGroup("muxg", "mux_generator");
 
+		//Halo4
+		/// <summary>
+		/// NarrativeGlobals
+		/// </summary>
+		public static TagGroup narg = new TagGroup("narg", "NarrativeGlobals");
+
 		/// <summary>
 		/// new_cinematic_lighting
 		/// </summary>
 		public static TagGroup nclt = new TagGroup("nclt", "new_cinematic_lighting");
+
+		//Halo4
+		/// <summary>
+		/// polyart_asset
+		/// </summary>
+		public static TagGroup paas = new TagGroup("paas", "polyart_asset");
 
 		//Reach
 		/// <summary>
@@ -753,17 +831,41 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup pach = new TagGroup("pach", "tag_package_manifest");
 
+		//Halo4
+		/// <summary>
+		/// patch_globals
+		/// </summary>
+		public static TagGroup patg = new TagGroup("patg", "patch_globals");
+
+		//Halo4
+		/// <summary>
+		/// pca_animation
+		/// </summary>
+		public static TagGroup pcaa = new TagGroup("pcaa", "pca_animation");
+
 		//Reach
 		/// <summary>
 		/// pgcr_enemy_to_category_mapping_definition
 		/// </summary>
 		public static TagGroup pcec = new TagGroup("pcec", "pgcr_enemy_to_category_mapping_definition");
 
+		//Halo4
+		/// <summary>
+		/// pgcr_damage_type_image_mapping_definition
+		/// </summary>
+		public static TagGroup pdti = new TagGroup("pdti", "pgcr_damage_type_image_mapping_definition");
+
 		//ODST
 		/// <summary>
 		/// particle_emitter_custom_points
 		/// </summary>
 		public static TagGroup pecp = new TagGroup("pecp", "particle_emitter_custom_points");
+
+		//Halo4
+		/// <summary>
+		/// player_enlistment_globals_definition
+		/// </summary>
+		public static TagGroup pegd = new TagGroup("pegd", "player_enlistment_globals_definition");
 
 		/// <summary>
 		/// performance_throttles
@@ -772,9 +874,15 @@ namespace BlamLib.Blam.Halo4
 
 		//Reach Retail
 		/// <summary>
-		/// pfmc
+		/// performance_template
 		/// </summary>
-		public static TagGroup pfmc = new TagGroup("pfmc", "pfmc_unknown");
+		public static TagGroup pfmc = new TagGroup("pfmc", "performance_template");
+
+		//Halo4
+		/// <summary>
+		/// pathfinding
+		/// </summary>
+		public static TagGroup pfnd = new TagGroup("pfnd", "pathfinding");
 
 		//Reach
 		/// <summary>
@@ -803,6 +911,12 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup play = new TagGroup("play", "cache_file_resource_layout_table");
 
+		//Halo4
+		/// <summary>
+		/// ParticleMan
+		/// </summary>
+		public static TagGroup pman = new TagGroup("pman", "ParticleMan");
+
 		//Reach
 		/// <summary>
 		/// player_model_customization_globals
@@ -824,11 +938,23 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup pphy = new TagGroup("pphy", "point_physics");
 
-		//Reach
+		//Halo4
 		/// <summary>
-		/// scenario_performances_resource
+		/// portrait_poses_definition
 		/// </summary>
-		public static TagGroup srprfr = new TagGroup("prf*", "scenario_performances_resource");
+		public static TagGroup ppod = new TagGroup("ppod", "portrait_poses_definition");
+
+		//Halo4
+		/// <summary>
+		/// prefab
+		/// </summary>
+		public static TagGroup prfb = new TagGroup("prfb", "prefab");
+
+		//Halo4
+		/// <summary>
+		/// progression
+		/// </summary>
+		public static TagGroup prog = new TagGroup("prog", "progression");
 
 		/// <summary>
 		/// projectile
@@ -850,11 +976,6 @@ namespace BlamLib.Blam.Halo4
 		/// rasterizer_globals
 		/// </summary>
 		public static TagGroup rasg = new TagGroup("rasg", "rasterizer_globals");
-
-		/// <summary>
-		/// shader_beam
-		/// </summary>
-		public static TagGroup rmb_ = new TagGroup("rmb ", rm__, "shader_beam");
 
 		//Reach
 		/// <summary>
@@ -910,6 +1031,12 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup rmhg = new TagGroup("rmhg", rm__, "shader_halogram");
 
+		//Halo4
+		/// <summary>
+		/// render_model_lightmap_atlas
+		/// </summary>
+		public static TagGroup rmla = new TagGroup("rmla", rm__, "render_model_lightmap_atlas");
+
 		/// <summary>
 		/// shader_light_volume
 		/// </summary>
@@ -946,7 +1073,7 @@ namespace BlamLib.Blam.Halo4
 		/// <summary>
 		/// shader_screen
 		/// </summary>
-		public static TagGroup rmss = new TagGroup("rmss", Halo3.TagGroups.rm__, "shader_screen");
+		public static TagGroup rmss = new TagGroup("rmss", rm__, "shader_screen");
 
 		/// <summary>
 		/// render_method_template
@@ -963,15 +1090,16 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup rmw_ = new TagGroup("rmw ", rm__, "shader_water");
 
+		//Halo4
+		/// <summary>
+		/// shader_waterfall
+		/// </summary>
+		public static TagGroup rmwf = new TagGroup("rmwf", rm__, "shader_waterfall");
+
 		/// <summary>
 		/// render_water_ripple
 		/// </summary>
 		public static TagGroup rwrd = new TagGroup("rwrd", "render_water_ripple");
-
-		/// <summary>
-		/// scenario_faux_data
-		/// </summary>
-		public static TagGroup sFdT = new TagGroup("sFdT", "scenario_faux_data");
 
 		/// <summary>
 		/// scenario_lightmap
@@ -983,6 +1111,12 @@ namespace BlamLib.Blam.Halo4
 		/// spring_acceleration
 		/// </summary>
 		public static TagGroup sadt = new TagGroup("sadt", "spring_acceleration");
+
+		//Halo4
+		/// <summary>
+		/// SoundBank
+		/// </summary>
+		public static TagGroup sbnk = new TagGroup("sbnk", "SoundBank");
 
 		/// <summary>
 		/// scenario_structure_bsp
@@ -1005,6 +1139,12 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup scnr = new TagGroup("scnr", "scenario");
 
+		//Halo4
+		/// <summary>
+		/// scenario_ordnance_list
+		/// </summary>
+		public static TagGroup scol = new TagGroup("scol", "scenario_ordnance_list");
+
 		/// <summary>
 		/// structure_design
 		/// </summary>
@@ -1012,9 +1152,9 @@ namespace BlamLib.Blam.Halo4
 
 		//Reach Retail
 		/// <summary>
-		/// sdzg (structure_design_zone_globals?)
+		/// scenario_required_resource
 		/// </summary>
-		public static TagGroup sdzg = new TagGroup("sdzg", "sdzg_unknown");
+		public static TagGroup sdzg = new TagGroup("sdzg", "scenario_required_resource");
 
 		/// <summary>
 		/// area_screen_effect
@@ -1031,16 +1171,40 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup sgp_ = new TagGroup("sgp!", "sound_global_propagation");
 
+		//Halo4
+		/// <summary>
+		/// sound_response
+		/// </summary>
+		public static TagGroup sgrp = new TagGroup("sgrp", "sound_response");
+
 		/// <summary>
 		/// shield_impact
 		/// </summary>
 		public static TagGroup shit2 = new TagGroup("shit", "shield_impact");
+
+		//Halo4
+		/// <summary>
+		/// shared_variables
+		/// </summary>
+		public static TagGroup shvr = new TagGroup("shvr", "shared_variables");
+
+		//Halo4
+		/// <summary>
+		/// self_illumination
+		/// </summary>
+		public static TagGroup sict = new TagGroup("sict", "self_illumination");
 
 		//Reach
 		/// <summary>
 		/// simulated_input
 		/// </summary>
 		public static TagGroup sidt = new TagGroup("sidt", "simulated_input");
+
+		//Halo4
+		/// <summary>
+		/// SuppressedIncident
+		/// </summary>
+		public static TagGroup sigd = new TagGroup("sigd", "SuppressedIncident");
 
 		//Reach
 		/// <summary>
@@ -1053,21 +1217,23 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup sily = new TagGroup("sily", "text_value_pair_definition");
 
+		//Halo4
+		/// <summary>
+		/// sound_incident_response
+		/// </summary>
+		public static TagGroup sirg = new TagGroup("sirg", "sound_incident_response");
+
 		//Reach Retail
 		/// <summary>
-		/// sirp
+		/// scenario_interpolator
 		/// </summary>
-		public static TagGroup sirp = new TagGroup("sirp", "sirp_unknown");
+		public static TagGroup sirp = new TagGroup("sirp", "scenario_interpolator");
 
+		//Halo4
 		/// <summary>
-		/// scenario_sky_references_resource
+		/// silent_assist_globals
 		/// </summary>
-		public static TagGroup srsky_ = new TagGroup("sky*", "scenario_sky_references_resource");
-
-		/// <summary>
-		/// sky_atm_parameters
-		/// </summary>
-		public static TagGroup skya = new TagGroup("skya", "sky_atm_parameters");
+		public static TagGroup slag = new TagGroup("slag", "silent_assist_globals");
 
 		/// <summary>
 		/// shared_cache_file_layout
@@ -1079,6 +1245,12 @@ namespace BlamLib.Blam.Halo4
 		/// survival_mode_globals
 		/// </summary>
 		public static TagGroup smdt = new TagGroup("smdt", "survival_mode_globals");
+
+		//Halo4
+		/// <summary>
+		/// structure_meta
+		/// </summary>
+		public static TagGroup smet = new TagGroup("smet", "structure_meta");
 
 		/// <summary>
 		/// sound_classes
@@ -1095,6 +1267,18 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup snde = new TagGroup("snde", "sound_environment");
 
+		//Halo4
+		/// <summary>
+		/// sound_old
+		/// </summary>
+		public static TagGroup sndo = new TagGroup("sndo", "sound_old");
+
+		//Halo4
+		/// <summary>
+		/// sound2
+		/// </summary>
+		public static TagGroup sndx = new TagGroup("sndx", "sound2");
+
 		/// <summary>
 		/// sound_mix
 		/// </summary>
@@ -1104,6 +1288,12 @@ namespace BlamLib.Blam.Halo4
 		/// sound_dialogue_constants
 		/// </summary>
 		public static TagGroup spk_ = new TagGroup("spk!", "sound_dialogue_constants");
+
+		//Halo4
+		/// <summary>
+		/// spawner
+		/// </summary>
+		public static TagGroup spnr = new TagGroup("spnr", ents, "spawner");
 
 		//ODST
 		/// <summary>
@@ -1128,10 +1318,11 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup ssce = new TagGroup("ssce", obje, "sound_scenery");
 
+		//Halo4
 		/// <summary>
-		/// scenario_structure_lighting_resource
+		/// SpawnSettings
 		/// </summary>
-		public static TagGroup srsslt = new TagGroup("sslt", "scenario_structure_lighting_resource");
+		public static TagGroup ssdf = new TagGroup("ssdf", "SpawnSettings");
 
 		/// <summary>
 		/// scenario_structure_lighting_info
@@ -1153,15 +1344,16 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup term = new TagGroup("term", devi, "device_terminal");
 
+		//Halo4
+		/// <summary>
+		/// tracer_system
+		/// </summary>
+		public static TagGroup trac = new TagGroup("trac", "tracer_system");
+
 		/// <summary>
 		/// camera_track
 		/// </summary>
 		public static TagGroup trak = new TagGroup("trak", "camera_track");
-
-		/// <summary>
-		/// scenario_trigger_volumes_resource
-		/// </summary>
-		public static TagGroup srtrgr = new TagGroup("trg*", "scenario_trigger_volumes_resource");
 
 		//ODST
 		/// <summary>
@@ -1179,10 +1371,22 @@ namespace BlamLib.Blam.Halo4
 		/// </summary>
 		public static TagGroup ugh_ = new TagGroup("ugh!", "sound_cache_file_gestalt");
 
+		//Halo4
+		/// <summary>
+		/// user_interface_hud_globals_definition
+		/// </summary>
+		public static TagGroup uihg = new TagGroup("uihg", "user_interface_hud_globals_definition");
+
 		/// <summary>
 		/// user_interface_sounds_definition
 		/// </summary>
 		public static TagGroup uise = new TagGroup("uise", "user_interface_sounds_definition");
+
+		//Halo4
+		/// <summary>
+		/// style_sheet_list
+		/// </summary>
+		public static TagGroup uiss = new TagGroup("uiss", "style_sheet_list");
 
 		/// <summary>
 		/// multilingual_unicode_string_list
@@ -1194,6 +1398,18 @@ namespace BlamLib.Blam.Halo4
 		/// tag_template_unit_test
 		/// </summary>
 		public static TagGroup uttt = new TagGroup("uttt", "tag_template_unit_test");
+
+		//Halo4
+		/// <summary>
+		/// vectorart_asset
+		/// </summary>
+		public static TagGroup vaas = new TagGroup("vaas", "vectorart_asset");
+
+		//Halo4
+		/// <summary>
+		/// vector_hud_definition
+		/// </summary>
+		public static TagGroup vchd = new TagGroup("vchd", "vector_hud_definition");
 
 		/// <summary>
 		/// vehicle
@@ -1208,9 +1424,9 @@ namespace BlamLib.Blam.Halo4
 
 		//Reach Retail
 		/// <summary>
-		/// vtgl (vertex_shader_globals?)
+		/// variant_globals
 		/// </summary>
-		public static TagGroup vtgl = new TagGroup("vtgl", "vtgl_unknown");
+		public static TagGroup vtgl = new TagGroup("vtgl", "variant_globals");
 
 		/// <summary>
 		/// vertex_shader
@@ -1219,21 +1435,9 @@ namespace BlamLib.Blam.Halo4
 
 		//Reach
 		/// <summary>
-		/// chud_widget_animation_data_template
-		/// </summary>
-		public static TagGroup wadt = new TagGroup("wadt", "chud_widget_animation_data_template");
-
-		//Reach
-		/// <summary>
 		/// wave_template
 		/// </summary>
 		public static TagGroup wave = new TagGroup("wave", "wave_template");
-
-		//Reach
-		/// <summary>
-		/// chud_widget_datasource_template
-		/// </summary>
-		public static TagGroup wdst = new TagGroup("wdst", "chud_widget_datasource_template");
 
 		/// <summary>
 		/// weapon
@@ -1276,24 +1480,6 @@ namespace BlamLib.Blam.Halo4
 		/// water_physics_drag_properties
 		/// </summary>
 		public static TagGroup wpdp = new TagGroup("wpdp", "water_physics_drag_properties");
-
-		//Reach
-		/// <summary>
-		/// chud_widget_placement_data_template
-		/// </summary>
-		public static TagGroup wpdt = new TagGroup("wpdt", "chud_widget_placement_data_template");
-
-		//Reach
-		/// <summary>
-		/// chud_widget_render_data_template
-		/// </summary>
-		public static TagGroup wrdt = new TagGroup("wrdt", "chud_widget_render_data_template");
-
-		//Reach
-		/// <summary>
-		/// chud_widget_state_data_template
-		/// </summary>
-		public static TagGroup wsdt = new TagGroup("wsdt", "chud_widget_state_data_template");
 
 		//Reach
 		/// <summary>

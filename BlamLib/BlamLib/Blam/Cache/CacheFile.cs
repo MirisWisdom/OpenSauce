@@ -223,6 +223,11 @@ namespace BlamLib.Blam
 			/// </summary>
 			[System.ComponentModel.Browsable(false)]
 			public bool IsEmpty { get { return datum.Handle == uint.MaxValue; } }
+			/// <summary>
+			/// Returns true if this item points to a null address
+			/// </summary>
+			[System.ComponentModel.Browsable(false)]
+			public bool IsNull { get { return Address == 0; } }
 
 			#region GroupTag
 			public uint GroupTagInt;

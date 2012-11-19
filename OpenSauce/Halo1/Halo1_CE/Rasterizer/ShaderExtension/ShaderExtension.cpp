@@ -4,19 +4,6 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-
-/*
-	User Add-on
-		Component: ShaderExtension
-		Original Author: FireScythe
-
-	This component adds a normal maps and a specular map to Halo's
-	rendering engine, allowing for per pixel lighting.
-	shader_model tags can now have a base normal map, two detail
-	normal maps and a specular colour map.
-	shader_environment tags that have a normal map assigned will
-	also have per pixel lighting applied when used on a model.
-*/
 #include "Common/Precompile.hpp"
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
 
@@ -25,9 +12,9 @@
 
 #include <blamlib/Halo1/bitmaps/bitmap_group.hpp>
 #include <blamlib/Halo1/shaders/shader_definitions.hpp>
+#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
 #include "Common/YeloSettings.hpp"
-#include "Common/CmdLineSettings.hpp"
 #include "Common/FileIO.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameState.hpp"

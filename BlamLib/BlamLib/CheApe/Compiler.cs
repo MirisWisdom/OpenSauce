@@ -437,11 +437,10 @@ namespace BlamLib.CheApe
 		/// <summary>
 		/// long length;
 		/// cstring* elements;
-		/// void* definition
 		/// </summary>
 		internal sealed class StringList : Object
 		{
-			public const int Size = 4 * 3;
+			public const int Size = 4 * 2;
 
 			Import.StringList stringList = null;
 			public void Reset(Import.StringList def) { stringList = def; }
@@ -461,7 +460,6 @@ namespace BlamLib.CheApe
 
 				stream.Write(stringList.Elements.Count);
 				stream.WritePointer(elementsAddress);
-				stream.Write((int)0);
 			}
 			#endregion
 		};

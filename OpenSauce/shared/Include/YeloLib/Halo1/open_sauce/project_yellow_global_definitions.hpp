@@ -157,6 +157,7 @@ namespace Yelo
 				TAG_FLAG16(hide_shield_when_zoomed);
 				TAG_FLAG16(hide_motion_sensor_when_zoomed);
 				TAG_FLAG16(allow_unit_infections_during_cinematics);
+				TAG_FLAG16(allow_grenade_chain_reactions_in_mp);
 			}flags; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
 			TAG_FIELD(uint32, base_address);
 
