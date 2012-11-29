@@ -261,6 +261,6 @@ namespace Yelo
 			enum { k_group_tag = 'weap' };
 
 			_weapon_definition weapon;
-		};
+		}; BOOST_STATIC_ASSERT( sizeof(s_weapon_definition) == 0x508);
 	};
 };

@@ -3702,7 +3702,15 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Halo1\CheApe\equipment_hud_interface_definition.xml"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Halo1\CheApe\Halo1_CE.cheape_project"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Halo1\CheApe\model_animations_yelo.xml"
 					>
 				</File>
 				<File
@@ -4818,6 +4826,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\ai\actor_definitions.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\ai\actor_moving.hpp"
 					>
 				</File>
@@ -4866,6 +4878,10 @@
 				Name="effects"
 				>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\effects\contrails.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\effects\damage_effect_definitions.cpp"
 					>
 				</File>
@@ -4878,11 +4894,31 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\effects\effects.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\effects\effects_constants.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\effects\material_effect_definitions.hpp"
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\effects\particle_systems.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\effects\particles.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\effects\player_effects.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\effects\weather_particle_systems.hpp"
 					>
 				</File>
 			</Filter>
@@ -5387,6 +5423,22 @@
 				>
 				<File
 					RelativePath="..\..\shared\Include\YeloLib\Halo1\interface\equipment_hud_interface_definition.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="models"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\models\model_animation_definitions_yelo.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="effects"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\effects\effects_constants_yelo.hpp"
 					>
 				</File>
 			</Filter>

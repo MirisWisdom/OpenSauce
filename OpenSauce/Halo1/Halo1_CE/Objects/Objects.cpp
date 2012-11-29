@@ -8,6 +8,7 @@
 #include "Objects/Objects.hpp"
 
 #include <blamlib/Halo1/effects/damage_effect_definitions.hpp>
+#include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/models/collision_model_definitions.hpp>
 #include <blamlib/Halo1/models/model_animation_definitions.hpp>
 
@@ -124,10 +125,30 @@ namespace Yelo
 			UnitInfections::Dispose();
 		}
 
+		static void UseBipedJumpPenalty(bool use_fix)
+		{
+			const size_t k_game_globals_player_stun_offset = 
+				FIELD_OFFSET(TagGroups::s_game_globals_player_information, stun);
+			const size_t k_game_globals_player_stun_turning_penalty_offset = 
+				k_game_globals_player_stun_offset + 
+				FIELD_OFFSET(TagGroups::s_game_globals_player_information::_stun, turning_penalty);
+			const size_t k_game_globals_player_stun_jumping_penalty_offset = 
+				k_game_globals_player_stun_offset + 
+				FIELD_OFFSET(TagGroups::s_game_globals_player_information::_stun, jumping_penalty);
+
+			BOOST_STATIC_ASSERT( k_game_globals_player_stun_turning_penalty_offset == 0x84 );
+			BOOST_STATIC_ASSERT( k_game_globals_player_stun_jumping_penalty_offset == 0x88 );
+			*CAST_PTR(size_t*, GET_FUNC_VPTR(BIPED_JUMP_MOD_STUN_PENALTY_FIELD_REF)) = 
+				use_fix ? k_game_globals_player_stun_jumping_penalty_offset : 
+					k_game_globals_player_stun_turning_penalty_offset; // stock code uses turning penalty for whatever reason
+		}
 		void InitializeForNewMap()
 		{
 			bool mtv_disabled = TagGroups::_global_yelo->gameplay.flags.prohibit_multiteam_vehicles_bit;
 			MultiTeamVehiclesSet(!mtv_disabled);
+
+			bool use_jump_penalty_fix = TagGroups::_global_yelo_globals->flags.force_game_to_use_stun_jumping_penalty_bit;
+			UseBipedJumpPenalty(use_jump_penalty_fix);
 
 			Units::InitializeForNewMap();
 		}

@@ -9,79 +9,23 @@
 #include <blamlib/Halo1/memory/data.hpp>
 #include <blamlib/Halo1/memory/lruv_cache.hpp>
 
+#include <blamlib/Halo1/effects/contrails.hpp>
+#include <blamlib/Halo1/effects/effects.hpp>
+#include <blamlib/Halo1/effects/particle_systems.hpp>
+#include <blamlib/Halo1/effects/particles.hpp>
+#include <blamlib/Halo1/effects/weather_particle_systems.hpp>
+
 namespace Yelo
 {
 	namespace Effects
 	{
-		//////////////////////////////////////////////////////////////////////////
-		// game-state: contrails
-		struct s_contrail_datum : TStructImpl(68)
-		{
-		};
-		typedef Memory::DataArray<s_contrail_datum, 256> t_contrail_data;
 		t_contrail_data*					Contrails();
-		//////////////////////////////////////////////////////////////////////////
-
-
-		//////////////////////////////////////////////////////////////////////////
-		// game-state: contrail points
-		struct s_contrail_point_datum : TStructImpl(56)
-		{
-		};
-		typedef Memory::DataArray<s_contrail_point_datum, 1024> t_contrail_point_data;
 		t_contrail_point_data*				ContrailPoints();
-		//////////////////////////////////////////////////////////////////////////
-
-
-		//////////////////////////////////////////////////////////////////////////
-		// game-state: particles
-		struct s_particle_datum : TStructImpl(112)
-		{
-		};
-		typedef Memory::DataArray<s_particle_datum, 1024> t_particle_data;
 		t_particle_data*					Particles();
-		//////////////////////////////////////////////////////////////////////////
-
-
-		//////////////////////////////////////////////////////////////////////////
-		// game-state: effects
-		struct s_effect_datum : TStructImpl(252)
-		{
-		};
-		typedef Memory::DataArray<s_effect_datum, 256> t_effect_data;
 		t_effect_data*						Effects();
-		//////////////////////////////////////////////////////////////////////////
-
-
-		//////////////////////////////////////////////////////////////////////////
-		// game-state: effect locations
-		struct s_effect_location_datum : TStructImpl(60)
-		{
-		};
-		typedef Memory::DataArray<s_effect_location_datum, 512> t_effect_location_data;
 		t_effect_location_data*				EffectLocations();
-		//////////////////////////////////////////////////////////////////////////
-
-
-		//////////////////////////////////////////////////////////////////////////
-		// game-state: particle-systems
-		struct s_particle_systems_datum : TStructImpl(344)
-		{
-		};
-		typedef Memory::DataArray<s_particle_systems_datum, 64> t_particle_systems_data;
 		t_particle_systems_data*			ParticleSystems();
-		//////////////////////////////////////////////////////////////////////////
-
-
-		//////////////////////////////////////////////////////////////////////////
-		// game-state: particle-system particles
-		struct s_particle_system_particles_datum : TStructImpl(128)
-		{
-		};
-		typedef Memory::DataArray<s_particle_system_particles_datum, 512> t_particle_system_particles_data;
 		t_particle_system_particles_data*	ParticleSystemParticles();
-		//////////////////////////////////////////////////////////////////////////
-
 
 
 		//////////////////////////////////////////////////////////////////////////

@@ -117,6 +117,7 @@ namespace Yelo
 
 			TStructGetPtrImpl(int16,			MetaSquadIndex, 0x3A);
 			TStructGetPtrImpl(int16,			MetaPlatoonIndex, 0x3C);
+			TStructGetPtrImpl(_enum,			MetaTeam, 0x3E); // Enums::game_team
 
 			TStructGetPtrImpl(bool,				MetaTimeslice, 0x4C);
 			// 0x50 int32
@@ -127,6 +128,8 @@ namespace Yelo
 			//TStructGetPtrImpl(_enum,		, 0x6A);
 			TStructGetPtrImpl(Enums::actor_action,		StateAction, 0x6C);
 
+			//TStructGetPtrImpl(bool,				State, 0x8D);
+
 			// 0x9C union state.action_data (total size: 0x84)
 
 			TStructGetPtrImpl(bool,				StateActionDataChargeFinishedMeleeAttack, 0xA3);
@@ -136,7 +139,8 @@ namespace Yelo
 
 			//////////////////////////////////////////////////////////////////////////
 			// input @ 0x120, sizeof(0xA8)
-			
+			//TStructGetPtrImpl(real_point3d,	Input, 0x120);
+
 			TStructGetPtrImpl(bool,				InputVehiclePassenger, 0x160);
 			//TStructGetPtrImpl(int32,			InputSurfaceIndex, 0x164);
 			//TStructGetPtrImpl(real_vector3d,	InputPosition, 0x168);
@@ -152,9 +156,11 @@ namespace Yelo
 			TStructGetPtrImpl(real,				InputUnitDamageShieldRecent, 0x1C4);
 			//////////////////////////////////////////////////////////////////////////
 
-			// Not sure if this part of 'target'
 			//TStructGetPtrImpl(_enum,			, 0x1E4);
 			//TStructGetPtrImpl(datum_index,		, 0x1E8); // prop_index
+			//////////////////////////////////////////////////////////////////////////
+			// situation @ 0x1EC, sizeof(0x7B)
+			//////////////////////////////////////////////////////////////////////////
 
 			TStructGetPtrImpl(Enums::actor_target_type,		TargetTargetType, 0x268);
 
@@ -174,12 +180,25 @@ namespace Yelo
 			//TStructGetPtrImpl(real,				, 0x2D8);
 			//TStructGetPtrImpl(real_point3d,	, 0x2DC);
 
+			//////////////////////////////////////////////////////////////////////////
+			// stimulus @ 0x2EC, sizeof(0x64)
+			TStructGetPtrImpl(bool,				StimuliVehicleEviction, 0x2ED);
+
+			TStructGetPtrImpl(bool,				StimuliWasSurprised, 0x2F0);
+
 			TStructGetPtrImpl(_enum,			StimuliPanicType, 0x308);
 			TStructGetPtrImpl(datum_index,		StimuliPanicPropIndex, 0x30C);
 
 			TStructGetPtrImpl(_enum,			StimuliCombatTransition, 0x312);
 
 			TStructGetPtrImpl(datum_index,		StimuliCombatTransitionPropIndex, 0x340);
+
+			//////////////////////////////////////////////////////////////////////////
+
+			//TStructGetPtrImpl(real,				, 0x354);
+			//TStructGetPtrImpl(bool,				, 0x358);
+			//PAD8;
+			//TStructGetPtrImpl(int16,				, 0x35A);
 
 			// 0x350, 0x68 byte structure
 			TStructGetPtrImpl(int16,			FiringPositionsCurrentPositionIndex, 0x3B8);
@@ -189,6 +208,14 @@ namespace Yelo
 			//TStructGetPtrImpl(bool,			FiringPositions, 0x3D8);
 			//TStructGetPtrImpl(bool,			FiringPositions, 0x3D9);
 			//TStructGetPtrImpl(real_vector3d,	FiringPositions, 0x3DC);
+
+			//////////////////////////////////////////////////////////////////////////
+			// orders  @ 0x3E8, sizeof(0x84)
+
+			//TStructGetPtrImpl(int16,			Orders, 0x418);
+
+			//TStructGetPtrImpl(int16,			Orders, 0x42C);
+			//TStructGetPtrImpl(int16,			Orders, 0x42E);
 
 			//////////////////////////////////////////////////////////////////////////
 			// control

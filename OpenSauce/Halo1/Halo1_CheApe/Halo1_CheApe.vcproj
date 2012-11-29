@@ -2180,7 +2180,15 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Halo1\CheApe\equipment_hud_interface_definition.xml"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Halo1\CheApe\Halo1_CE.cheape_project"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Halo1\CheApe\model_animations_yelo.xml"
 					>
 				</File>
 				<File
@@ -2461,6 +2469,22 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\YeloLib\Halo1\shell\shell_windows_command_line.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="models"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\models\model_animation_definitions_yelo.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="interface"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\interface\equipment_hud_interface_definition.hpp"
 					>
 				</File>
 			</Filter>

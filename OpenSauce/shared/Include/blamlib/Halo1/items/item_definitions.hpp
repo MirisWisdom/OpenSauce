@@ -49,6 +49,6 @@ namespace Yelo
 		struct s_item_definition : s_object_definition
 		{
 			_item_definition item;
-		};
+		}; BOOST_STATIC_ASSERT( sizeof(s_item_definition) == 0x308 );
 	};
 };

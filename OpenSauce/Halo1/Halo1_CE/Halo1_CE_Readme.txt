@@ -55,6 +55,7 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
 
 == Change Log ==
 === Version 3.1 (Unreleased) ===
+  * PATCH		project_yellow_globals tag features new flag for forcing the game to use 'stun jumping penalty' instead of 'turning penalty' in the engine's biped jump code
   * CHANGE		Game hooking is now done via dinput8.dll instead of d3d9.dll
   * CHANGE		Removed XFire restriction now that we use dinput8.dll
   * CHANGE		Changed the server list to list all servers regardless of their version
