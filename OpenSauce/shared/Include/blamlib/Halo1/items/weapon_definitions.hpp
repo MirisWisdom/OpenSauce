@@ -16,6 +16,8 @@ namespace Yelo
 	{
 		enum {
 			k_maximum_number_of_magazines_per_weapon = 2,
+
+			k_maximum_number_of_magazine_objects_per_magazine = 8,
 		};
 	};
 

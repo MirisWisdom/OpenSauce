@@ -9,6 +9,21 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum {
+			k_maximum_hs_syntax_nodes_per_scenario = 19001,
+			k_maximum_hs_string_data_per_scenario = 256 * 1024,
+
+			k_maximum_hs_scripts_per_scenario = 512,
+			k_maximum_hs_globals_per_scenario = 128,
+			k_maximum_hs_references_per_scenario = 256,
+
+			k_maximum_hs_source_files_per_scenario = 8,
+			k_maximum_hs_source_data_per_file = 0x40000
+		};
+	};
+
 	namespace TagGroups
 	{
 		struct hs_scenario_data_base

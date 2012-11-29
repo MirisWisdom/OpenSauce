@@ -124,6 +124,58 @@ namespace Yelo
 			_unit_seat_animation_hovering,
 			_unit_seat_animation
 		};
+
+		enum vehicle_animation
+		{
+			_vehicle_animation_steering,
+			_vehicle_animation_roll,
+			_vehicle_animation_throttle,
+			_vehicle_animation_velocity,
+			_vehicle_animation_braking,
+			_vehicle_animation_ground_speed,
+			_vehicle_animation_occupied,
+			_vehicle_animation_unoccupied,
+			_vehicle_animation,
+		};
+
+		enum device_animation
+		{
+			_device_animation_position,
+			_device_animation_power,
+			_device_animation,
+		};
+
+		enum first_person_weapon_animation
+		{
+			_first_person_weapon_animation_idle,
+			_first_person_weapon_animation_posing,
+			_first_person_weapon_animation_fire1,
+			_first_person_weapon_animation_moving,
+			_first_person_weapon_animation_overlays,
+			_first_person_weapon_animation_light_off,
+			_first_person_weapon_animation_light_on,
+			_first_person_weapon_animation_reload_empty,
+			_first_person_weapon_animation_reload_full,
+			_first_person_weapon_animation_overheated,
+			_first_person_weapon_animation_ready,
+			_first_person_weapon_animation_put_away,
+			_first_person_weapon_animation_overcharged,
+			_first_person_weapon_animation_melee,
+			_first_person_weapon_animation_fire2,
+			_first_person_weapon_animation_overcharged_jitter,
+			_first_person_weapon_animation_throw_grenade,
+			_first_person_weapon_animation_misfire1,
+			_first_person_weapon_animation_misfire2,
+			_first_person_weapon_animation_throw_overheated,
+			_first_person_weapon_animation_overheating,
+			_first_person_weapon_animation_overheating_again,
+			_first_person_weapon_animation_enter,
+			_first_person_weapon_animation_exit_empty,
+			_first_person_weapon_animation_exit_full,
+			_first_person_weapon_animation_overheating_exit, // o-h-exit
+			_first_person_weapon_animation_overheating_enter,// o-h-s-enter
+			_first_person_weapon_animation,
+		};
 	};
 
 	namespace TagGroups
@@ -214,7 +266,7 @@ namespace Yelo
 		{
 			enum { k_group_tag = 'antr' };
 
-			TAG_BLOCK(objects, animation_graph_object_overlay);
+			TAG_BLOCK(objects, s_object_overlay);
 			TAG_TBLOCK(units, animation_graph_unit_seat);
 			TAG_BLOCK(weapons, animation_graph_weapon_animation);
 			TAG_BLOCK(vehicles, animation_graph_vehicle_animation);

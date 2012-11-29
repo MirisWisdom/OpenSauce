@@ -145,6 +145,12 @@ namespace Yelo
 			TStructGetPtrImpl(real_vector3d,	InputLookingVector, 0x18C);
 
 			TStructGetPtrImpl(bool,				InputIsBurningToDeath, 0x1B5);
+			//PAD16
+			TStructGetPtrImpl(real,				InputUnitDamageBody, 0x1B8);
+			TStructGetPtrImpl(real,				InputUnitDamageShield, 0x1BC);
+			TStructGetPtrImpl(real,				InputUnitDamageBodyRecent, 0x1C0);
+			TStructGetPtrImpl(real,				InputUnitDamageShieldRecent, 0x1C4);
+			//////////////////////////////////////////////////////////////////////////
 
 			// Not sure if this part of 'target'
 			//TStructGetPtrImpl(_enum,			, 0x1E4);
@@ -253,7 +259,7 @@ namespace Yelo
 
 			TStructGetPtrImpl(word_flags,		ControlDataFlags, 0x6D0); // unit_control_flags
 			// PAD16?
-			//TStructGetPtrImpl(int16,			Control, 0x6D4);
+			TStructGetPtrImpl(int16,			ControlPersistentControlTicks, 0x6D4);
 			// PAD16?
 			TStructGetPtrImpl(long_flags,		ControlPersistentControlFlags, 0x6D8);
 

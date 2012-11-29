@@ -29,7 +29,7 @@ namespace Yelo
 			_shader_type_transparent_meter,
 			_shader_type_transparent_plasma,
 
-			_shader_type,
+			k_number_of_shader_types,
 		};
 		enum environment_shader_type : _enum
 		{

@@ -7,6 +7,8 @@
 #include "Common/Precompile.hpp"
 #include "TagGroups/TagGroups.hpp"
 
+#include <blamlib/Halo1/items/weapon_definitions.hpp>
+
 namespace Yelo
 {
 #define __EL_INCLUDE_ID			__EL_INCLUDE_TAGGROUPS
@@ -25,6 +27,41 @@ namespace Yelo
 				call	FUNCTION
 				retn
 			}
+		}
+
+		static void InitializeFixesForWeaponGroup()
+		{
+			tag_group_definition* weapon_group = tag_group_get<s_weapon_definition>();
+
+			// field the weapon's magazines field
+			int32 field_index = tag_block_find_field(weapon_group->definition, Enums::_field_block, "magazines");
+			if(field_index != NONE)
+			{
+				tag_block_definition* magazines_block = weapon_group->definition->fields[field_index].Definition<tag_block_definition>();
+
+				// find the magazine's magazine-objects field
+				field_index = tag_block_find_field(magazines_block, Enums::_field_block, "magazines");
+				if(field_index != NONE)
+				{
+					tag_field& magazine_objects_field = magazines_block->fields[field_index];
+					magazine_objects_field.name = "magazine objects"; // give the field a more descriptive name
+
+					tag_block_definition* magazine_objects_block = magazine_objects_field.Definition<tag_block_definition>();
+					magazine_objects_block->format_proc = NULL; // Bungie seems to have made a copy&paste error and gave the objects block the format-magazines function
+
+					// find the magazine-object's equipment reference field
+					field_index = tag_block_find_field(magazine_objects_block, Enums::_field_tag_reference, "equipment");
+					if(field_index != NONE)
+					{
+						tag_field& equipment_reference_field = magazine_objects_block->fields[field_index];
+						equipment_reference_field.name = "equipment^"; // set the name to include markup for 'block name' (since we zapped the, incorrect, format function for this block)
+					}
+				}
+			}
+		}
+		void InitializeFixes()
+		{
+			InitializeFixesForWeaponGroup();
 		}
 
 		int32 tag_block_find_field(const tag_block_definition* def, 
@@ -60,6 +97,16 @@ namespace Yelo
 			reference.tag_index = datum_index::null;
 		}
 	};
+
+	API_FUNC_NAKED cstring tag_get_name(datum_index tag_index)
+	
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GET_NAME);
+
+		API_FUNC_NAKED_START()
+			push	tag_index
+			call	FUNCTION
+		API_FUNC_NAKED_END_CDECL(1);
+	}
 
 	API_FUNC_NAKED void* tag_get(tag group_tag, datum_index tag_index)
 	{

@@ -6,6 +6,7 @@
 #pragma once
 
 #include <blamlib/Halo1/cache/physical_memory_map.hpp>
+#include <blamlib/Halo1/hs/hs_scenario_definitions.hpp>
 #include <blamlib/Halo1/networking/network_connection.hpp> // for k_maximum_network_machine_count
 #include <blamlib/Halo1/game/players.hpp> // for k_multiplayer_maximum_players
 #include <blamlib/Halo1/saved_games/game_state.hpp>
@@ -72,9 +73,6 @@ namespace Yelo
 	namespace Enums
 	{
 		enum {
-			k_maximum_hs_syntax_nodes_per_scenario = 19001,
-			k_maximum_hs_string_data_per_scenario = 256 * 1024,
-			k_maximum_hs_globals_per_scenario = 128,
 			k_hs_functions_count = 543, // the normal hs_function count in the engine under an editor build
 			k_hs_external_globals_count = 495, // the normal hs external globals count in the engine under an editor build
 
