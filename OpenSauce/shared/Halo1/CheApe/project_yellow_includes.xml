@@ -51,6 +51,10 @@
 			<field>str#</field>
 		</Reference>
 
+		<Reference name="animation_graph_reference">
+			<field>antr</field>
+		</Reference>
+
 		<Reference name="effect_reference">
 			<field>effe</field>
 		</Reference>

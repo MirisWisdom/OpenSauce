@@ -81,6 +81,26 @@ namespace Yelo
 			TAG_PAD(int32, 14);
 		}; BOOST_STATIC_ASSERT( sizeof(s_game_globals_multiplayer_information) == 0xA0 );
 
+		struct s_game_globals_falling_damage
+		{
+			PAD64;
+			TAG_FIELD(real_bounds, harmful_falling_distance);
+			TAG_FIELD(tag_reference, falling_damage, 'jpt!');
+			PAD64;
+			TAG_FIELD(real, maximum_falling_distance);
+			TAG_FIELD(tag_reference, distance_damage, 'jpt!');
+			TAG_FIELD(tag_reference, vehicle_environment_collision_damage_effect, 'jpt!');
+			TAG_FIELD(tag_reference, vehicle_killed_unit_damage_effect, 'jpt!');
+			TAG_FIELD(tag_reference, vehicle_collision_damage, 'jpt!');
+			TAG_FIELD(tag_reference, flaming_death_damage, 'jpt!');
+			PAD_TYPE(tag_reference);
+
+			struct { // multiply the tag values by 0.0071303584f, and you get these runtime values
+				real maximum_falling_distance;
+				real_bounds harmful_falling_distance;
+			}runtime;
+		}; BOOST_STATIC_ASSERT( sizeof(s_game_globals_falling_damage) == 0x98 );
+
 		struct s_game_globals
 		{
 			enum { k_group_tag = 'matg' };
@@ -106,8 +126,11 @@ namespace Yelo
 
 			TAG_PAD(tag_block,
 				1 + // s_game_globals_player_information
-				1 + // s_game_globals_player_representation
-				1 + // s_game_globals_falling_damage
+				1); // s_game_globals_player_representation
+
+			TAG_TBLOCK(falling_damage, s_game_globals_falling_damage);
+
+			TAG_PAD(tag_block,
 				1 + // material_definition
 				1); // playlist_autogenerate_choice
 		}; BOOST_STATIC_ASSERT( sizeof(s_game_globals) == 0x1AC );

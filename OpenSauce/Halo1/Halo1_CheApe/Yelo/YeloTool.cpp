@@ -113,12 +113,34 @@ namespace Yelo
 
 //////////////////////////////////////////////////////////////////////////
 
+		// patch the shader-type-names list with the shader types gbx added
+		static void FixupShaderTypeNamesList()
+		{
+			static cstring const k_fixed_shader_type_names[] = {
+				"screen",
+				"effect",
+				"decal",
+
+				"environment",
+				"model",
+				"transparent generic",
+				"transparent chicago",			// gbx forgot to add this one
+				"transparent chicago extended",	// gbx forgot to add this one
+				"transparent water",
+				"transparent glass",
+				"transparent meter",
+				"transparent plasma",
+			};
+
+			*CAST_PTR(cstring const**, 0x44F2B0+3) = k_fixed_shader_type_names;
+		}
 		void Initialize()
 		{
 			c_animation_fixups::Initialize();
 
 			Yelo::DataFiles::SharedInitialize();
 			ImportClassesInitialize();
+			FixupShaderTypeNamesList();
 		}
 
 		void Dispose()

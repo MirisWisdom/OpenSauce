@@ -37,6 +37,8 @@ namespace Yelo
 		TagGroups::YeloDefinitionsInitialize();
 		if(TagGroups::_yelo_definition_globals.initialized)
 			PLATFORM_VALUE(Guerilla, Tool, Sapien)::Initialize();
+
+		TagGroups::InitializeFixes();
 	}
 	static void OverrideTagFilesOpen()
 	{

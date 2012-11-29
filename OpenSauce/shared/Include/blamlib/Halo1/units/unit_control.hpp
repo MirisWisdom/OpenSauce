@@ -8,11 +8,14 @@
 
 namespace Yelo
 {
-	namespace Flags
+	namespace Enums
 	{
 		//NUMBER_OF_UNIT_ANIMATION_STATES = 7
 		//NUMBER_OF_UNIT_AIMING_SPEEDS = 2
+	};
 
+	namespace Flags
+	{
 		enum unit_control_flags : word_flags
 		{
 			_unit_control_crouch_bit,
@@ -33,7 +36,14 @@ namespace Yelo
 			_unit_control_swap_weapon_bit,
 
 			k_number_of_unit_control_flags, // NUMBER_OF_UNIT_CONTROL_FLAGS
+
+			// There's technically room left for one more control flag
+			_unit_control_unused_bit = k_number_of_unit_control_flags,
+
+			// If we in fact do use the above unused bit, editor code will need to have their VALID_FLAGS updated to test with this
+			k_number_of_unit_control_flags_yelo,
 		};
+		BOOST_STATIC_ASSERT( k_number_of_unit_control_flags_yelo <= BIT_COUNT(word_flags) );
 	};
 
 	namespace Objects

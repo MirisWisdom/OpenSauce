@@ -260,6 +260,10 @@ namespace Yelo
 
 		void Initialize();
 
+		// Patches stock tag groups for various *fixes* (eg, to correct behavior), not additions or the like
+		// Should be called after the engine's and Yelo's TagGroups initializer are ran
+		void InitializeFixes();
+
 		// If I haven't taken the time to find the address of a tag function 
 		// or if the function I need doesn't exist to my knowledge
 		// I'll add an implementation or declaration here
@@ -291,6 +295,8 @@ namespace Yelo
 	};
 
 
+
+	cstring tag_get_name(datum_index tag_index);
 
 	// Get the tag definition's address by it's expected group tag and 
 	// it's tag handle [tag_index]
