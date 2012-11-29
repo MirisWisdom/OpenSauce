@@ -7,6 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "Game/Effects.hpp"
 
+#include "Game/GameState.hpp"
 #include "Memory/MemoryInterface.hpp"
 
 namespace Yelo
@@ -33,8 +34,26 @@ namespace Yelo
 		s_decal_vertex_cache_data* DecalVertexCache()					DPTR_IMP_GET(decal_vertex_cache);
 
 
+		static void InitializePerMapUpgrades()
+		{
+#if PLATFORM_IS_USER
+			*CAST_PTR(size_t*, GET_FUNC_VPTR(GAME_INITIALIZE_MOD_PER_MAP_UPGRADE_PARTICLES)) = 
+				Enums::k_maximum_number_of_particles_per_map_upgrade;
+
+			*CAST_PTR(size_t*, GET_FUNC_VPTR(GAME_INITIALIZE_MOD_PER_MAP_UPGRADE_EFFECTS)) = 
+				Enums::k_maximum_number_of_effects_per_map_upgrade;
+			*CAST_PTR(size_t*, GET_FUNC_VPTR(GAME_INITIALIZE_MOD_PER_MAP_UPGRADE_EFFECT_LOCATIONS)) = 
+				Enums::k_maximum_number_of_effect_locations_per_map_upgrade;
+
+			*CAST_PTR(size_t*, GET_FUNC_VPTR(GAME_INITIALIZE_MOD_PER_MAP_UPGRADE_PARTICLE_SYSTEM_PARTICLES)) = 
+				Enums::k_maximum_number_of_particle_system_particles_per_map_upgrade;
+#endif
+		}
 		void Initialize()
 		{
+			if(GameState::YeloGameStateEnabled())
+				InitializePerMapUpgrades();
+
 #if !PLATFORM_DISABLE_UNUSED_CODE
 			Memory::CreateHookRelativeCall(&Effects::Update, GET_FUNC_VPTR(EFFECTS_UPDATE_HOOK), Enums::_x86_opcode_retn);
 #endif

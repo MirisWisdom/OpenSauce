@@ -99,7 +99,7 @@ namespace Yelo
 	};
 
 	API_FUNC_NAKED cstring tag_get_name(datum_index tag_index)
-	
+	{
 		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GET_NAME);
 
 		API_FUNC_NAKED_START()

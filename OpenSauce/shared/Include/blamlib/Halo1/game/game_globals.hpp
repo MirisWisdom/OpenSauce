@@ -81,6 +81,60 @@ namespace Yelo
 			TAG_PAD(int32, 14);
 		}; BOOST_STATIC_ASSERT( sizeof(s_game_globals_multiplayer_information) == 0xA0 );
 
+		struct s_game_globals_player_information
+		{
+			TAG_FIELD(tag_reference, unit, 'unit');
+			PAD_TYPE(tag_reference);
+			struct {
+				PAD32;
+				PAD32;
+				PAD32;
+				TAG_FIELD(real, speed);
+			}walk;
+			TAG_FIELD(real, double_speed_multiplier);
+			struct {
+				TAG_FIELD(real, forward);
+				TAG_FIELD(real, backward);
+				TAG_FIELD(real, sideways);
+				TAG_FIELD(real, acceleration);
+			}	run,
+				sneak;
+			TAG_FIELD(real, airborne_acceleration);
+			PAD_TYPE(tag_reference);
+			TAG_FIELD(real_point3d, grenade_origin);
+			PAD_TYPE(real_point3d);
+			struct _stun {
+				TAG_FIELD(real, movement_penalty);
+				TAG_FIELD(real, turning_penalty);
+				TAG_FIELD(real, jumping_penalty);
+				TAG_FIELD(real, minimum_time);
+				TAG_FIELD(real, maximum_time);
+			}stun;													// 0x80
+			PAD_TYPE(real_bounds);
+			struct {
+				TAG_FIELD(real_bounds, idle_time);
+				TAG_FIELD(real_fraction, skip_fraction);
+			}first_person;
+			PAD_TYPE(tag_reference);
+			TAG_FIELD(tag_reference, coop_respawn_effect, 'effe'); // 0xB8
+			TAG_PAD(int32, 11);
+		}; BOOST_STATIC_ASSERT( sizeof(s_game_globals_player_information) == 0xF4 );
+
+		struct s_game_globals_player_representation
+		{
+			TAG_FIELD(tag_reference, fp_hands, 'mod2');
+			TAG_FIELD(tag_reference, base_bitmap, 'bitm');
+			struct {
+				TAG_FIELD(tag_reference, meter, 'metr');
+				TAG_FIELD(point2d, meter_origin);
+			}shield, body;
+			struct {
+				TAG_FIELD(tag_reference, off_on_effect, 'effe');
+				TAG_FIELD(tag_reference, on_off_effect, 'effe');
+			}night_vision;
+			TAG_PAD(int32, 22);
+		}; BOOST_STATIC_ASSERT( sizeof(s_game_globals_player_representation) == 0xC0 );
+
 		struct s_game_globals_falling_damage
 		{
 			PAD64;
@@ -123,11 +177,8 @@ namespace Yelo
 			TAG_TBLOCK(weapons_list, s_game_globals_tag_reference);
 			TAG_TBLOCK(cheat_powerups, s_game_globals_tag_reference);
 			TAG_TBLOCK(multiplayer_info, s_game_globals_multiplayer_information);
-
-			TAG_PAD(tag_block,
-				1 + // s_game_globals_player_information
-				1); // s_game_globals_player_representation
-
+			TAG_TBLOCK(player_info, s_game_globals_player_information);
+			TAG_TBLOCK(player_representation, s_game_globals_player_representation);
 			TAG_TBLOCK(falling_damage, s_game_globals_falling_damage);
 
 			TAG_PAD(tag_block,

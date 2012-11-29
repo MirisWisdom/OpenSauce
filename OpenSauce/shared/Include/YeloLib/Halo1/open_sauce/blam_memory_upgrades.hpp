@@ -11,6 +11,10 @@
 #include <blamlib/Halo1/game/players.hpp> // for k_multiplayer_maximum_players
 #include <blamlib/Halo1/saved_games/game_state.hpp>
 
+// for effects upgrades
+#include <blamlib/Halo1/effects/effects_constants.hpp>
+#include <YeloLib/Halo1/effects/effects_constants_yelo.hpp>
+
 // How much more memory we're adding.
 // 50%
 #define K_MEMORY_UPGRADE_INCREASE_AMOUNT (1.5f)
@@ -64,6 +68,20 @@ namespace Yelo
 
 			k_maximum_network_machine_count_upgrade = 
 				k_maximum_network_machine_count + k_multiplayer_maximum_additional_players,
+
+			//////////////////////////////////////////////////////////////////////////
+			// effects upgrades
+			k_maximum_number_of_particles_per_map_upgrade = 
+				k_maximum_number_of_particles_per_map + k_maximum_number_of_particles_per_map_upgrade_amount,
+
+			k_maximum_number_of_effects_per_map_upgrade = 
+				k_maximum_number_of_effects_per_map + k_maximum_number_of_effects_per_map_upgrade_amount,
+			k_maximum_number_of_effect_locations_per_map_upgrade = 
+				k_maximum_number_of_effect_locations_per_map + k_maximum_number_of_effect_locations_per_map_upgrade_amount,
+
+			k_maximum_number_of_particle_system_particles_per_map_upgrade = 
+				k_maximum_number_of_particle_system_particles_per_map + k_maximum_number_of_particle_system_particles_per_map_upgrade_amount,
+			//////////////////////////////////////////////////////////////////////////
 		};
 	};
 

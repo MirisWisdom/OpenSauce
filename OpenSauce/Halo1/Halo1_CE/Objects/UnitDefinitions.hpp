@@ -76,6 +76,19 @@ namespace Yelo
 
 			_unit_animation_state
 		};
+
+		enum unit_camo_regrowth : _enum
+		{
+			_unit_camo_regrowth_off,
+			_unit_camo_regrowth_on, // they fired their weapon, requiring active_camo_regrowth_rate to be applied
+		};
+
+		enum biped_movement_state : byte_enum
+		{
+			_biped_movement_state_moving,
+			_biped_movement_state_idle_or_turning,
+			_biped_movement_state_gesturing,
+		};
 	};
 
 	namespace Flags
@@ -118,8 +131,8 @@ namespace Yelo
 
 		enum biped_flags
 		{
-			_biped_airborne_flag = FLAG(0),
-			_biped_hovering_flag = FLAG(1),
+			_biped_airborne_bit,
+			_biped_slipping_bit,
 		};
 	};
 
@@ -176,15 +189,15 @@ namespace Yelo
 			TStructSubGetPtrImpl(datum_index,			SwamPrevUnitIndex, 0x200);
 			TStructSubGetPtrImpl(long_flags,			Flags, 0x204);
 			TStructSubGetPtrImpl(long_flags,			ControlFlags, 0x208); // zero extended unit control flags (which normally use word_flags)
-			//TStructSubGetPtrImpl(uint16,				, 0x20C); // related to the first two int16's in s_unit_globals_data
+			//TStructSubGetPtrImpl(int16,				, 0x20C); // related to the first two int16's in s_unit_globals_data
 			TStructSubGetPtrImpl(sbyte,					ShieldSapping, 0x20E);
 			TStructSubGetPtrImpl(sbyte,					BaseSeatIndex, 0x20F);
-			//TStructSubGetPtrImpl(uint32,				ControlTime?, 0x210);
-			//TStructSubGetPtrImpl(long_flags,			ControlFlags, 0x214);
+			TStructSubGetPtrImpl(int32,					PersistentControlTicks, 0x210); // number of ticks left for persistent control
+			TStructSubGetPtrImpl(long_flags,			PersistentControlFlags, 0x214);
 			TStructSubGetPtrImpl(datum_index,			ControllingPlayerIndex, 0x218);
 			//TStructSubGetPtrImpl(_enum,				EffectType, 0x21C); // ai_unit_effect
 			TStructSubGetPtrImpl(int16,					EmotionAnimationIndex, 0x21E);
-			//TStructSubGetPtrImpl(uint32,				, 0x220); // time (game ticks) of next update for EffectType related code
+			//TStructSubGetPtrImpl(int32,				, 0x220); // time (game ticks) of next update for EffectType related code
 			TStructSubGetPtrImpl(real_vector3d,			DesiredFacingVector, 0x224);
 			TStructSubGetPtrImpl(real_vector3d,			DesiredAimingVector, 0x230);
 			TStructSubGetPtrImpl(real_vector3d,			AimingVector, 0x23C);
@@ -197,8 +210,10 @@ namespace Yelo
 			TStructSubGetPtrImpl(byte,					AimingSpeed, 0x288);
 			//TStructSubGetPtrImpl(byte,				, 0x289); // melee related (state enum?)
 			//TStructSubGetPtrImpl(byte,				, 0x28A); // melee related (some kind of counter)
-			TStructSubGetPtrImpl(sbyte,					TicksUntilFlameToDeath, 0x28B); // related to flame deaths (some kind of counter)
-			//TStructSubGetPtrImpl(sbyte,				, 0x28C); // looks like the amount of frames left for the ping animation
+			TStructSubGetPtrImpl(sbyte,					TicksUntilFlameToDeath, 0x28B);
+			// looks like the amount of frames left for the ping animation
+			// also set to the same PersistentControlTicks value when an actor dies and they fire-wildely
+			//TStructSubGetPtrImpl(sbyte,				, 0x28C);
 			TStructSubGetPtrImpl(byte,					ThrowingGrenadeState, 0x28D);
 			//TStructSubGetPtrImpl(int16,				, 0x28E);
 			//TStructSubGetPtrImpl(int16,				, 0x290);
@@ -229,27 +244,37 @@ namespace Yelo
 			TStructSubGetPtrImpl(byte,					ZoomLevel_, k_offset_ZoomLevel);
 			TStructSubGetPtrImpl(byte,					DesiredZoomLevel_, k_offset_DesiredZoomLevel);
 		public:
-			//TStructSubGetPtrImpl(sbyte,					, 0x322);
+			TStructSubGetPtrImpl(sbyte,					LastVehicleSpeechTimer, 0x322); // ticks since a vehicle 'woohoo', scared, or falling communication was given
 			TStructSubGetPtrImpl(byte,					AimingChange, 0x323);
 			TStructSubGetPtrImpl(datum_index,			DriverObj, 0x324);
 			TStructSubGetPtrImpl(datum_index,			GunnerObj, 0x328);
-			// 32C?
-			// 330?
-			// 334?
+			//////////////////////////////////////////////////////////////////////////
+			// these fields are all related
+			//TStructSubGetPtrImpl(datum_index,			, 0x32C); // object index
+			//TStructSubGetPtrImpl(int32,					, 0x320); // game time
+			//TStructSubGetPtrImpl(datum_index,			, 0x334); // object index
+			//////////////////////////////////////////////////////////////////////////
 			TStructSubGetPtrImpl(real,					DriverPower, 0x338);
 			TStructSubGetPtrImpl(real,					GunnerPower, 0x33C);
-			TStructSubGetPtrImpl(int32,					IntegratedLightPower, 0x340);
-
-			// 0x348, real, related to zoom, night vision, and the player's hud
+			TStructSubGetPtrImpl(real,					IntegratedLightPower, 0x340);
+			TStructSubGetPtrImpl(real,					IntegratedLightTogglePower, 0x344);
+			TStructSubGetPtrImpl(real,					IntegratedNightVisionTogglePower, 0x348);
 			//TStructSubGetPtrImpl(real_vector3d,			, 0x34C); // seat related
 			//TStructSubGetPtrImpl(real_vector3d,			, 0x358); // seat related
 			//TStructSubGetPtrImpl(real_vector3d,			, 0x364); // seat related
 			//TStructSubGetPtrImpl(real_vector3d,			, 0x370); // seat related
 			TStructSubGetPtrImpl(real,					CamoPower, 0x37C);
-
+			//TStructSubGetPtrImpl(real,					, 0x380); // gets updated in unit_update, but nothing actually seems to *use* it...full spectrum vision power?
+			TStructSubGetPtrImpl(datum_index,			DialogueDefinitionIndex, 0x384);
+			//////////////////////////////////////////////////////////////////////////
+			// speech, sizeof(0x7C)
 			TStructSubGetPtrImpl(s_unit_speech,			SpeechCurrent, 0x388);
 			//TStructSubGetPtrImpl(s_unit_speech,			SpeechNext?, 0x3B8);
-
+			//TStructSubGetPtrImpl(int16,					Speech, 0x3E8);
+			//TStructSubGetPtrImpl(int16,					Speech, 0x3EA);
+			//TStructSubGetPtrImpl(int16,					Speech, 0x3EC);
+			//TStructSubGetPtrImpl(int16,					Speech, 0x3EE);
+			//TStructSubGetPtrImpl(int32,					Speech, 0x3F0); // time related
 			//TStructSubGetPtrImpl(bool,					Speech, 0x3F4);
 			//TStructSubGetPtrImpl(bool,					Speech, 0x3F5);
 			//TStructSubGetPtrImpl(bool,					Speech, 0x3F6);
@@ -259,28 +284,47 @@ namespace Yelo
 			//TStructSubGetPtrImpl(int16,					Speech, 0x3FC);
 			//TStructSubGetPtrImpl(int16,					Speech, 0x3FE);
 			//TStructSubGetPtrImpl(int32,					Speech, 0x400);
-
+			//////////////////////////////////////////////////////////////////////////
+			// these fields are all related; damage related
+			//TStructSubGetPtrImpl(_enum,					, 0x404);
+			//TStructSubGetPtrImpl(int16,					, 0x406); // some kind of countdown timer
+			//TStructSubGetPtrImpl(real,					, 0x408);
+			//TStructSubGetPtrImpl(datum_index,			ResponsibleUnitIndex, 0x40C);
+			//////////////////////////////////////////////////////////////////////////
 			TStructSubGetPtrImpl(datum_index,			ResponsibleFlamerObjectIndex, 0x410); // object which caused us to start flaming to death
-
+			// 0x414 PAD32 (or unused)
+			// 0x418 PAD32 (or unused)
+			TStructSubGetPtrImpl(int32,					DeathTime, 0x41C); // game time when this unit died
 			TStructSubGetPtrImpl(int16,					FeignDeathTimer, 0x420);
-
+			TStructSubGetPtrImpl(Enums::unit_camo_regrowth,	CamoRegrowth, 0x422);
+			TStructSubGetPtrImpl(real,					Stun, 0x424);
+			TStructSubGetPtrImpl(int16,					StunTimer, 0x428);
+			TStructSubGetPtrImpl(int16,					KillingSpreeCount, 0x42A);
+			TStructSubGetPtrImpl(int32,					KillingSpreeStartTime, 0x42C);
 			// These values are also used in determining assists
 			// These values would be checked in the killed unit's data.
 			struct s_recent_damage
 			{
-				uint32 game_tick;				// the last game tick damage was dealt
+				int32 game_tick;				// the last game tick damage was dealt
 				real damage;					// total (read: additive) damage the responsible object has done
 				datum_index responsible_unit;
 				datum_index responsible_player;	// would be NONE if killed by AI
 			};
 			TStructSubGetPtrImpl(s_recent_damage,		RecentDamage, 0x430); // [4]
-
-			// 0x474, bool, networking related
-			// 0x475, bool, networking related
-
+			// 0x470 PAD32 (or unused)
+			//////////////////////////////////////////////////////////////////////////
+			// Added in HaloPC
+			// 0x474, bool, networking related. engine only writes to this, never reads. consider it 'unused'
+			// 0x475, bool, networking related. engine only writes to this, never reads. consider it 'unused'
+			//PAD16
+			TStructSubGetPtrImpl(s_unit_control_data,	ControlData, 0x478);
 			// 0x4B8 bool, true if LastCompletedClientUpdateId != NONE
 			//PAD24;
 			TStructSubGetPtrImpl(int32,					LastCompletedClientUpdateId, 0x4BC);
+			// 0x4C0 PAD32 (or unused)
+			// 0x4C4 PAD32 (or unused)
+			// 0x4C8 PAD32 (or unused)
+			//////////////////////////////////////////////////////////////////////////
 
 		public: // see Objects/Units.cpp
 			byte* GetYeloGrenade2Count();
@@ -309,12 +353,34 @@ namespace Yelo
 			enum { DATA_OFFSET = Enums::k_object_size_unit, };
 
 			TStructSubGetPtrImpl(long_flags,					Flags, 0x4CC);
-
-			// 0x4F8, int32
-			TStructSubGetPtrImpl(real_point3d,					HoveringPosition, 0x4FC);
-
-			// 0x514, real_plane3d
-			// 0x524 ?
+			//TStructSubGetPtrImpl(byte,							, 0x4D0);
+			//TStructSubGetPtrImpl(byte,							, 0x4D1);
+			TStructSubGetPtrImpl(Enums::biped_movement_state,	MovementState, 0x4D2);
+			//TStructSubGetPtrImpl(byte,							, 0x4D3);
+			//TStructSubGetPtrImpl(int32,							, 0x4D4);
+			//TStructSubGetPtrImpl(int32,							, 0x4D8);
+			//TStructSubGetPtrImpl(int32,							, 0x4DC);
+			//TStructSubGetPtrImpl(real_point3d,					, 0x4E0);
+			//TStructSubGetPtrImpl(int32,							, 0x4EC);
+			//TStructSubGetPtrImpl(int32,							, 0x4F0);
+			//TStructSubGetPtrImpl(int32,							, 0x4F4);
+			//TStructSubGetPtrImpl(int32,							, 0x4F8);
+			TStructSubGetPtrImpl(datum_index,					BumpSourceUnitIndex, 0x4FC); // unit that bumped into (or possessed) us
+			TStructSubGetPtrImpl(sbyte,							TicksSinceBump, 0x500);
+			TStructSubGetPtrImpl(sbyte,							AirborneTicks, 0x501);
+			TStructSubGetPtrImpl(sbyte,							SlippingTicks, 0x502);
+			//TStructSubGetPtrImpl(sbyte,							, 0x503);
+			//TStructSubGetPtrImpl(sbyte,							, 0x504);
+			//TStructSubGetPtrImpl(sbyte,							, 0x505); // timer, melee related
+			//TStructSubGetPtrImpl(sbyte,							, 0x506); // timer, melee related
+			//PAD8; // unused
+			//TStructSubGetPtrImpl(int16,							, 0x508);
+			//PAD16;
+			//TStructSubGetPtrImpl(real,								, 0x50C);
+			//TStructSubGetPtrImpl(real,								, 0x510);
+			//TStructSubGetPtrImpl(real_plane3d,						, 0x514); // physics related
+			//TStructSubGetPtrImpl(sbyte,							, 0x524);
+			//TStructSubGetPtrImpl(sbyte,							, 0x525);
 			TStructSubGetPtrImpl(bool,							BaselineValid, 0x526);
 			TStructSubGetPtrImpl(byte,							BaselineIndex, 0x527);
 			TStructSubGetPtrImpl(byte,							MessageIndex, 0x528);
@@ -352,9 +418,7 @@ namespace Yelo
 			// 0x4EC, DWORD
 			// 0x4F0, DWORD
 			// 0x4F4, sizeof(0x8)
-			// 0x4FC, ?, probably a real_vector3d or something here
-			// 0x500, ?
-			// 0x504, ?
+			TStructSubGetPtrImpl(real_point3d,					HoveringPosition, 0x4FC);
 			// 0x508, DWORD
 			// 0x50C, DWORD
 			// 0x510, DWORD

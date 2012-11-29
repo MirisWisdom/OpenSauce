@@ -8,6 +8,7 @@
 
 #include <blamlib/Halo1/ai/ai_scenario_definitions.hpp>
 #include <blamlib/Halo1/cutscene/recorded_animation_definitions.hpp>
+#include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/hs/hs_scenario_definitions.hpp>
 
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
@@ -75,7 +76,7 @@ namespace Yelo
 				TAG_FIELD(int16, rounds_loaded);
 				TAG_FIELD(int16, rounds_total);
 			}weapons[2];
-			TAG_FIELD(byte, grenade_counts[4]);
+			TAG_FIELD(byte, grenade_counts[Enums::k_unit_grenade_types_count_yelo]);
 			TAG_PAD(int32, 5);
 		}; BOOST_STATIC_ASSERT( sizeof(scenario_starting_profile) == 0x68 );
 

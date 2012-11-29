@@ -11,9 +11,9 @@ namespace Yelo
 {
 	namespace Memory
 	{
-		template<typename DatumT, uint32 DatumCount> struct DataArray {
+		template<typename DatumT, size_t MaxDatumCount, size_t MaxDatumCountUpgrade = MaxDatumCount> struct DataArray {
 		private:
-			typedef DataArray<DatumT,DatumCount> DataArrayT;
+			typedef DataArray<DatumT,MaxDatumCount,MaxDatumCountUpgrade> DataArrayT;
 
 		public:
 			struct Iterator {
