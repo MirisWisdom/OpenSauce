@@ -28,20 +28,20 @@ namespace Yelo
 			PAD16;
 
 			TAG_PAD(int32, 4);
-			_enum function_exports[4];
+			_enum function_exports[Enums::k_number_of_incoming_object_functions];
 			TAG_PAD(int32, 41);
 
 			struct {
-				TAG_FIELD(tag_reference, material_effects, "foot");
-				TAG_FIELD(tag_reference, collision_sound, "snd!");
+				TAG_FIELD(tag_reference, material_effects, 'foot');
+				TAG_FIELD(tag_reference, collision_sound, 'snd!');
 			}references;
 
 			TAG_PAD(int32, 30);
 
 			struct {
 				real_bounds delay;
-				TAG_FIELD(tag_reference, detonating_effect, "effe");
-				TAG_FIELD(tag_reference, effect, "effe");
+				TAG_FIELD(tag_reference, detonating_effect, 'effe');
+				TAG_FIELD(tag_reference, effect, 'effe');
 			}detonation;
 		}; BOOST_STATIC_ASSERT( sizeof(_item_definition) == 0x18C );
 

@@ -4698,6 +4698,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\items\equipment_structures.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\items\garbage_definitions.hpp"
 					>
 				</File>
@@ -4721,12 +4725,20 @@
 					RelativePath="..\..\shared\Include\blamlib\Halo1\items\weapon_definitions.hpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\items\weapon_structures.hpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="units"
 				>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\units\biped_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\units\biped_structures.hpp"
 					>
 				</File>
 				<File
@@ -4759,6 +4771,10 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\units\vehicle_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\units\vehicle_structures.hpp"
 					>
 				</File>
 				<File
@@ -5439,6 +5455,18 @@
 				>
 				<File
 					RelativePath="..\..\shared\Include\YeloLib\Halo1\effects\effects_constants_yelo.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="items"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\items\equipment_definitions_yelo.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\items\equipment_structures_yelo.hpp"
 					>
 				</File>
 			</Filter>

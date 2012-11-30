@@ -20,19 +20,25 @@
 namespace Yelo
 {
 	namespace Objects {
+		const size_t s_unit_data::k_offset_zoom_level = FIELD_OFFSET(s_unit_datum, unit.zoom_level);
+		const size_t s_unit_data::k_offset_desired_zoom_level = FIELD_OFFSET(s_unit_datum, unit.desired_zoom_level);
+
+		const size_t s_unit_data::k_offset_zoom_level_yelo = FIELD_OFFSET(s_unit_datum, unit.zoom_level_yelo);
+		const size_t s_unit_data::k_offset_desired_zoom_level_yelo = FIELD_OFFSET(s_unit_datum, unit.desired_zoom_level_yelo);
+
 		byte* s_unit_data::GetYeloGrenade2Count()
 		{
 			GameState::s_yelo_header_data& yelo_header = GameState::GameStateGlobals()->header->yelo;
 
 			return GameState::YeloGameStateEnabled() && yelo_header.unit_grenade_types_count >= Enums::_unit_grenade_type_yelo2+1
-				? this->GetYeloGrenade2Count_() : NULL;
+				? &this->grenade_counts[Enums::_unit_grenade_type_yelo2] : NULL;
 		}
 		byte* s_unit_data::GetYeloGrenade3Count()
 		{
 			GameState::s_yelo_header_data& yelo_header = GameState::GameStateGlobals()->header->yelo;
 
 			return GameState::YeloGameStateEnabled() && yelo_header.unit_grenade_types_count >= Enums::_unit_grenade_type_yelo3+1
-				? this->GetYeloGrenade3Count_() : NULL;
+				? &this->grenade_counts[Enums::_unit_grenade_type_yelo3] : NULL;
 		}
 
 		byte* s_unit_data::GetZoomLevel()
@@ -40,14 +46,14 @@ namespace Yelo
 			GameState::s_yelo_header_data& yelo_header = GameState::GameStateGlobals()->header->yelo;
 
 			return GameState::YeloGameStateEnabled() && yelo_header.unit_grenade_types_count > Enums::k_unit_grenade_types_count
-				? this->GetYeloZoomLevel() : this->GetZoomLevel_();
+				? &this->zoom_level_yelo : &this->zoom_level;
 		}
 		byte* s_unit_data::GetDesiredZoomLevel()
 		{
 			GameState::s_yelo_header_data& yelo_header = GameState::GameStateGlobals()->header->yelo;
 
 			return GameState::YeloGameStateEnabled() && yelo_header.unit_grenade_types_count > Enums::k_unit_grenade_types_count
-				? this->GetYeloDesiredZoomLevel() : this->GetDesiredZoomLevel_();
+				? &this->desired_zoom_level_yelo : &this->desired_zoom_level;
 		}
 	};
 
@@ -69,7 +75,8 @@ namespace Yelo
 		{
 			GameState::s_yelo_header_data& yelo_header = GameState::GameStateGlobals()->header->yelo;
 			// handle the grenade types upgrading, if needed
-			if(yelo_header.flags.update_unit_grenade_types_count)
+			if(	GameState::YeloGameStateEnabled() && 
+				yelo_header.flags.update_unit_grenade_types_count)
 			{
 				uint32 count = yelo_header.unit_grenade_types_count;
 

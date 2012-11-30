@@ -12,6 +12,13 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum {
+			k_maximum_weapons_per_unit = 4,
+		};
+	};
+
 	namespace TagGroups
 	{
 		struct s_unit_camera_track
@@ -139,10 +146,7 @@ namespace Yelo
 
 			TAG_FIELD(tag_reference, integrated_light_toggle, 'effe');
 
-			TAG_ENUM(a_in, unit_function_mode);
-			TAG_ENUM(b_in, unit_function_mode);
-			TAG_ENUM(c_in, unit_function_mode);
-			TAG_ENUM(d_in, unit_function_mode);
+			_enum function_exports[Enums::k_number_of_incoming_object_functions]; // Enums::unit_function_mode
 
 			TAG_FIELD(real, camera_fov, "degrees");
 			TAG_FIELD(real, camera_stiffness);

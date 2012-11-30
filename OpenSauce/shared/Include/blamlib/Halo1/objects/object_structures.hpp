@@ -262,7 +262,7 @@ namespace Yelo
 			UNKNOWN_TYPE(int32); // haven't verified if this is padding or not yet
 			s_object_animation_datum_data animation;										// 0xCC
 			s_object_damage_datum_data damage;												// 0xD8
-			PAD32; // haven't verified if this is padding or not yet
+			PAD32; // 0x108 haven't verified if this is padding or not yet
 			datum_index cluster_partition_index;											// 0x10C
 			UNKNOWN_TYPE(datum_index);														// 0x110, object_index, garbage collection related
 

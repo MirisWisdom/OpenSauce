@@ -9,25 +9,25 @@
 
 static void InitializeGrenadeCounts_UnitZoomLevelRefs(bool enabled)
 {
-	uint32 offset = enabled ? s_unit_data::k_offset_ZoomLevel_Yelo : s_unit_data::k_offset_ZoomLevel;
+	uint32 offset = enabled ? s_unit_data::k_offset_zoom_level_yelo : s_unit_data::k_offset_zoom_level;
 
 	for(int x = 0; x < NUMBEROF(K_UNIT_ZOOM_LEVEL_OFFSET_REFS); x++)
 	{
 		uint32* offset_ref = CAST_PTR(uint32*, K_UNIT_ZOOM_LEVEL_OFFSET_REFS[x]);
 
-		DebugRunOnce( ASSERT( s_unit_data::k_offset_ZoomLevel == *offset_ref, "GrenadeCounts asm mismtach!" ) );
+		DebugRunOnce( ASSERT( s_unit_data::k_offset_zoom_level == *offset_ref, "GrenadeCounts asm mismtach!" ) );
 		*offset_ref = offset;
 	}
 }
 static void InitializeGrenadeCounts_UnitDesiredZoomLevelRefs(bool enabled)
 {
-	uint32 offset = enabled ? s_unit_data::k_offset_DesiredZoomLevel_Yelo : s_unit_data::k_offset_DesiredZoomLevel;
+	uint32 offset = enabled ? s_unit_data::k_offset_desired_zoom_level_yelo : s_unit_data::k_offset_desired_zoom_level;
 
 	for(int x = 0; x < NUMBEROF(K_UNIT_DESIRED_ZOOM_LEVEL_OFFSET_REFS); x++)
 	{
 		uint32* offset_ref = CAST_PTR(uint32*, K_UNIT_DESIRED_ZOOM_LEVEL_OFFSET_REFS[x]);
 
-		DebugRunOnce( ASSERT( s_unit_data::k_offset_DesiredZoomLevel == *offset_ref, "GrenadeCounts asm mismtach!" ) );
+		DebugRunOnce( ASSERT( s_unit_data::k_offset_desired_zoom_level == *offset_ref, "GrenadeCounts asm mismtach!" ) );
 		*offset_ref = offset;
 	}
 }

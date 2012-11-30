@@ -49,9 +49,13 @@ namespace Yelo
 			_unit_field_integer_current_weapon_index,
 			_unit_field_integer_feign_death_timer,
 
-			_unit_field_real_camo_power,
 			_unit_field_real_driver_power,
 			_unit_field_real_gunner_power,
+			_unit_field_real_integrated_light_power,
+			_unit_field_real_integrated_light_toggle_power,
+			_unit_field_real_integrated_night_vision_toggle_power,
+			_unit_field_real_camo_power,
+			_unit_field_real_full_spectrum_vision_power,
 		};
 	};
 

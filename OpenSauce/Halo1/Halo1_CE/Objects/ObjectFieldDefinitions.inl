@@ -60,7 +60,11 @@ static s_object_field_definition g_unit_integer_fields[] = {
 
 
 static s_object_field_definition g_unit_real_fields[] = {
-	FIELD_ENTRY(unit, real, real, camo_power),
 	FIELD_ENTRY(unit, real, real, driver_power),
 	FIELD_ENTRY(unit, real, real, gunner_power),
+	FIELD_ENTRY(unit, real, real, integrated_light_power),
+	FIELD_ENTRY(unit, real, real, integrated_light_toggle_power),
+	FIELD_ENTRY(unit, real, real, integrated_night_vision_toggle_power),
+	FIELD_ENTRY(unit, real, real, camo_power),
+	FIELD_ENTRY(unit, real, real, full_spectrum_vision_power),
 };
