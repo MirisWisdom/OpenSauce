@@ -110,7 +110,7 @@ namespace Yelo
 				_enum secondary_scale;
 				_enum change_color;
 				PAD16;
-			}function_inputs; // _object_definition.function_exports
+			}function_references; // Enums::object_function_reference
 			TAG_PAD(int32, 4);
 		};
 
@@ -148,7 +148,7 @@ namespace Yelo
 
 			real render_bounding_radius;
 			
-			_enum function_exports[4];
+			_enum function_exports[Enums::k_number_of_incoming_object_functions];
 			TAG_PAD(int32, 11);
 			int16 hud_text_message_index;
 			int16 forced_shader_permutation;

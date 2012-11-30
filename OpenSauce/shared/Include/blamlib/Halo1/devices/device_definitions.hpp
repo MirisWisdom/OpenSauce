@@ -25,10 +25,7 @@ namespace Yelo
 				TAG_FIELD(real, acceleration_time, "seconds");
 			}power_time, position_time, depower_time;
 
-			TAG_ENUM(a_in, device_function_mode);
-			TAG_ENUM(b_in, device_function_mode);
-			TAG_ENUM(c_in, device_function_mode);
-			TAG_ENUM(d_in, device_function_mode);
+			_enum function_exports[Enums::k_number_of_incoming_object_functions]; // Enums::device_function_mode
 
 			TAG_FIELD(tag_reference, open, 'snd!', 'effe');
 			TAG_FIELD(tag_reference, close, 'snd!', 'effe');
@@ -39,11 +36,11 @@ namespace Yelo
 			TAG_FIELD(tag_reference, depowered, 'snd!', 'effe');
 			TAG_FIELD(tag_reference, repowered, 'snd!', 'effe');
 
-			TAG_FIELD(real, delay_time, "seconds", "");
+			TAG_FIELD(real, delay_time, "seconds");
 			TAG_PAD(real, 2); // 8
 
 			TAG_FIELD(tag_reference, delay_effect, 'snd!', 'effe');
-			TAG_FIELD(real, automatic_activation_radius, "world units", "");
+			TAG_FIELD(real, automatic_activation_radius, "world units");
 			TAG_PAD(int32, 21 + 7);
 		}; BOOST_STATIC_ASSERT( sizeof(_device_definition) == 0x114 );
 

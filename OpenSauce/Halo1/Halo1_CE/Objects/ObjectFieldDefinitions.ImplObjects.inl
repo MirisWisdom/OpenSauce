@@ -31,13 +31,13 @@ static real_vector3d* UnitDataFieldGetVector(const s_object_field_definition& fi
 
 	switch(field.definition_index)
 	{
-	case _unit_field_vector_desired_facing:		return unit.GetDesiredFacingVector();
-	case _unit_field_vector_desired_aiming:		return unit.GetDesiredAimingVector();
-	case _unit_field_vector_aiming:				return unit.GetAimingVector();
-	case _unit_field_vector_aiming_velocity:	return unit.GetAimingVelocity();
-	case _unit_field_vector_looking:			return unit.GetLookingVector();
-	case _unit_field_vector_looking_angles:		return CAST_PTR(real_vector3d*, unit.GetLookingAngles());
-	case _unit_field_vector_looking_velocity:	return unit.GetLookingVelocity();
+	case _unit_field_vector_desired_facing:		return &unit.desired_facing_vector;
+	case _unit_field_vector_desired_aiming:		return &unit.desired_aiming_vector;
+	case _unit_field_vector_aiming:				return &unit.aiming_vector;
+	case _unit_field_vector_aiming_velocity:	return &unit.aiming_velocity;
+	case _unit_field_vector_looking:			return &unit.looking_vector;
+	case _unit_field_vector_looking_angles:		return CAST_PTR(real_vector3d*, &unit.looking_angles);
+	case _unit_field_vector_looking_velocity:	return &unit.looking_velocity;
 	default: return NULL;
 	}
 }

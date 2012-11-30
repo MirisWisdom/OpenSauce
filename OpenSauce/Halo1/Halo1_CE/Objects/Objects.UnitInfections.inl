@@ -49,7 +49,7 @@ namespace UnitInfections
 		if(animation_graph != NULL)
 		{
 			s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
-			s_unit_animation_data& unit_animation = *unit->unit.GetAnimation();
+			s_unit_animation_data& unit_animation = unit->unit.animation;
 
 			sbyte	seat_block_index = *unit_animation.GetSeatIndex(),
 					weapon_block_index = *unit_animation.GetSeatWeaponIndex();
@@ -99,12 +99,12 @@ namespace UnitInfections
 		int32 infect_start_animation_index = UnitGetAnimationIndexFromWeaponClass(target_unit_index, Enums::_weapon_class_animation_yelo_infect);
 		if(infect_start_animation_index != NONE)
 		{
-			datum_index actor_index = *target_unit->unit.GetActorIndex();
+			datum_index actor_index = target_unit->unit.actor_index;
 			// Detach any AI from the target unit so the anim can be played without interruption
 			if(!actor_index.IsNull())
 				Engine::AI::Delete(actor_index);
 			// Set the current animation state to that of a "custom" animation (to avoid the engine doing any weirdness)
-			*target_unit->unit.GetAnimation()->GetAnimationState() = Enums::_unit_animation_state_custom_animation;
+			*target_unit->unit.animation.GetAnimationState() = Enums::_unit_animation_state_custom_animation;
 			// Play the infect-start animation on the target unit
 			Engine::Objects::UnitSetAnimation(target_unit_index, target_unit->object.animation.definition_index, 
 				infect_start_animation_index);
@@ -136,7 +136,7 @@ namespace UnitInfections
 			Engine::Objects::UnitSetAnimation(infected_unit_index, infected_unit->object.animation.definition_index, 
 				infect_end_animation_index);
 			// Set the current animation state to that of a "custom" animation (to avoid the engine doing any weirdness)
-			*infected_unit->unit.GetAnimation()->GetAnimationState() = Enums::_unit_animation_state_custom_animation;
+			*infected_unit->unit.animation.GetAnimationState() = Enums::_unit_animation_state_custom_animation;
 		}
 
 		// Kill the unit being infected
@@ -174,7 +174,7 @@ namespace UnitInfections
 			TagGroups::s_unit_infection const& unit_infection = definition.infectable_units[unit_infection_definition_index];
 
 			real* target_unit_health = &target_unit->object.damage.health;
-			sbyte* target_unit_animation_state = target_unit->unit.GetAnimation()->GetAnimationState();
+			sbyte* target_unit_animation_state = target_unit->unit.animation.GetAnimationState();
 
 			// If the target unit's health is below the threshold and hasn't died yet...
 			if(*target_unit_health <= unit_infection.health_threshold && *target_unit_health > 0.0f)

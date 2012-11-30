@@ -31,9 +31,9 @@ static void WeaponDataFieldGetReal(const s_object_field_definition& field, s_wea
 
 	switch(field.definition_index)
 	{
-	case _weapon_field_real_heat:		result.ptr.real = weapon.GetHeat(); break;
-	case _weapon_field_real_age:		result.ptr.real = weapon.GetAge(); break;
-	case _weapon_field_real_light_power:result.ptr.real = weapon.GetIntegratedLightPower(); break;
+	case _weapon_field_real_heat:		result.ptr.real = &weapon.heat; break;
+	case _weapon_field_real_age:		result.ptr.real = &weapon.age; break;
+	case _weapon_field_real_light_power:result.ptr.real = &weapon.integrated_light_power; break;
 	
 	default: result.ptr.real = NULL;  break;
 	}

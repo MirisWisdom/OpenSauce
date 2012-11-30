@@ -101,7 +101,7 @@ namespace Yelo
 			if(unit != NULL)
 			{
 				datum_index parent_object_index = unit->object.parent_object_index;
-				if(	!parent_object_index.IsNull() && *unit->unit.GetVehicleSeatIndex() == NONE )
+				if(	!parent_object_index.IsNull() && unit->unit.vehicle_seat_index == NONE )
 					vehicle_index = parent_object_index;
 			}
 
@@ -168,9 +168,9 @@ namespace Yelo
 			if(unit == NULL) return NULL;
 
 			if(current_weapon_index)
-				*current_weapon_index = *unit->unit.GetCurrentWeaponIndex();
+				*current_weapon_index = unit->unit.current_weapon_index;
 
-			return unit->unit.GetWeaponObjectIndices();
+			return unit->unit.weapon_object_indices;
 		}
 
 		Objects::s_unit_datum* GetVehicle(datum_index player_index, int16* current_seat_index)
@@ -180,7 +180,7 @@ namespace Yelo
 			if(unit == NULL) return NULL;
 
 			if(current_seat_index)
-				*current_seat_index = *unit->unit.GetVehicleSeatIndex();
+				*current_seat_index = unit->unit.vehicle_seat_index;
 
 			datum_index parent_index = unit->object.parent_object_index;
 			if(parent_index.IsNull())
