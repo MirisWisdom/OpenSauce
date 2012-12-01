@@ -13,7 +13,8 @@ namespace Yelo
 {
 	namespace Networking { namespace HTTP { namespace Server { namespace MapDownload
 	{
-		void* ServerCallback(mg_event callback_event, mg_connection* connection, const mg_request_info* request_info);
+		bool ServiceStarted();
+		void* ServerCallback(mg_event callback_event, mg_connection* connection);
 
 		void Initialize();
 		void Dispose();

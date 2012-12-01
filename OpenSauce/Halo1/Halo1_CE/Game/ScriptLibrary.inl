@@ -129,6 +129,13 @@
 		//////////////////////////////////////////////////////////////////////////
 		// everything after is runtime-only, ie not defined in the CheApe scripting definitions
 
+		_hs_function_sv_httpserver_set_thread_count,
+		_hs_function_sv_httpserver_set_root,
+		_hs_function_sv_httpserver_set_throttle,
+		_hs_function_sv_httpserver_set_ports,
+		_hs_function_sv_httpserver_show_config,
+		_hs_function_sv_httpserver_start,
+		_hs_function_sv_httpserver_stop,
 		_hs_function_sv_httpserver_log_enable,
 		_hs_function_sv_httpserver_set_connection_ban,
 		_hs_function_sv_httpserver_banlist,
@@ -368,6 +375,13 @@
 		&GET_HS_FUNCTION(scenario_faux_zone_switch_sky),
 
 
+		&GET_HS_FUNCTION(sv_httpserver_set_thread_count),
+		&GET_HS_FUNCTION(sv_httpserver_set_root),
+		&GET_HS_FUNCTION(sv_httpserver_set_throttle),
+		&GET_HS_FUNCTION(sv_httpserver_set_ports),
+		&GET_HS_FUNCTION(sv_httpserver_show_config),
+		&GET_HS_FUNCTION(sv_httpserver_start),
+		&GET_HS_FUNCTION(sv_httpserver_stop),
 		&GET_HS_FUNCTION(sv_httpserver_log_enable),
 		&GET_HS_FUNCTION(sv_httpserver_set_connection_ban),
 		&GET_HS_FUNCTION(sv_httpserver_banlist),
