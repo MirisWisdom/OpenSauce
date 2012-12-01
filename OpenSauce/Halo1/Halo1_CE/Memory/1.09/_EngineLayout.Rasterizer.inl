@@ -74,6 +74,10 @@
 		};
 
 		ENGINE_PTR(byte, NVIDIA_USE_BASIC_CAMO_TOGGLE,					0x51ABB8, PTR_NULL);
+
+		static char** K_SCREENSHOT_FOLDER_REFERENCES[] = {
+			CAST_PTR(char**, 0x4CD8BC), CAST_PTR(char**, 0x4CD8D3)
+		};
 	};
 	namespace Render
 	{
