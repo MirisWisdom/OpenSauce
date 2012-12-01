@@ -3427,6 +3427,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Objects\ObjectFieldDefinitions.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Objects\ObjectFieldDefinitions.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Objects\Objects.cpp"
 				>
 			</File>
@@ -3483,38 +3491,6 @@
 				</File>
 				<File
 					RelativePath=".\Objects\Units.GrenadeCounts.inl"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Definitions"
-				>
-				<File
-					RelativePath=".\Objects\DeviceDefinitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Objects\ItemDefinitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Objects\ObjectDefinitions.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Objects\ObjectDefinitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Objects\ObjectFieldDefinitions.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Objects\ObjectFieldDefinitions.hpp"
-					>
-				</File>
-				<File
-					RelativePath=".\Objects\UnitDefinitions.hpp"
 					>
 				</File>
 			</Filter>

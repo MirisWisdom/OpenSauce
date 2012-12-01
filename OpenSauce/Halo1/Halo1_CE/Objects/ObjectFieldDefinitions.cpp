@@ -7,10 +7,6 @@
 #include "Common/Precompile.hpp"
 #include "Objects/ObjectFieldDefinitions.hpp"
 
-#include "Objects/DeviceDefinitions.hpp"
-#include "Objects/ItemDefinitions.hpp"
-#include "Objects/UnitDefinitions.hpp"
-
 #include "Game/EngineFunctions.hpp"
 #include "Game/Scripting.hpp"
 #include "Game/ScriptLibrary.hpp"

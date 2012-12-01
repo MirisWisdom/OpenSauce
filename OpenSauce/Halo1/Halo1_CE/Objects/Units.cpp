@@ -15,8 +15,6 @@
 #include "Networking/MDP.hpp"
 #include "Networking/MessageDeltas.hpp"
 
-#include "Objects/Objects.hpp"
-
 namespace Yelo
 {
 	namespace Objects {

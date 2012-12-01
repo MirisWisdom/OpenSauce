@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include "Objects/UnitDefinitions.hpp"
+#include "Objects/Objects.hpp"
 
 namespace Yelo
 {

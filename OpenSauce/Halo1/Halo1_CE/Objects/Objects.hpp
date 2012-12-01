@@ -8,14 +8,20 @@
 
 #include <blamlib/Halo1/memory/data.hpp>
 #include <blamlib/Halo1/devices/devices.hpp>
+#include <blamlib/Halo1/objects/object_definitions.hpp>
+#include <blamlib/Halo1/objects/object_structures.hpp>
 #include <blamlib/Halo1/objects/objects.hpp>
 #include <blamlib/Halo1/objects/widgets/widgets.hpp>
 #include <blamlib/Halo1/units/units.hpp>
 
-#include "Objects/ObjectDefinitions.hpp"
-#include "Objects/DeviceDefinitions.hpp"
-#include "Objects/ItemDefinitions.hpp"
-#include "Objects/UnitDefinitions.hpp"
+#include <blamlib/Halo1/items/projectiles.hpp>
+#include <blamlib/Halo1/devices/device_structures.hpp>
+#include <blamlib/Halo1/items/item_structures.hpp>
+#include <blamlib/Halo1/items/equipment_structures.hpp>
+#include <blamlib/Halo1/items/weapon_structures.hpp>
+#include <blamlib/Halo1/units/unit_structures.hpp>
+#include <blamlib/Halo1/units/biped_structures.hpp>
+#include <blamlib/Halo1/units/vehicle_structures.hpp>
 
 namespace Yelo
 {
