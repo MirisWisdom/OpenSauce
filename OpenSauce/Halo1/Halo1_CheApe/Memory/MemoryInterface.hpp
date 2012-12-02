@@ -8,6 +8,7 @@
 
 // See this header for more "Engine pointer markup system" documentation
 #include <YeloLib/memory/memory_interface_base.hpp>
+#include <YeloLib/memory/naked_func_writer.hpp>
 
 //////////////////////////////////////////////////////////////////////////
 // Engine pointer markup system
