@@ -396,6 +396,21 @@ static void InitializeMiscFunctions()
 		scripting_scenario_faux_zone_switch_sky_evaluate);
 
 
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_DEDI(Enums::_hs_function_sv_httpserver_set_thread_count,
+		Networking::HTTP::Server::HTTPServerSetThreadCount);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_DEDI(Enums::_hs_function_sv_httpserver_set_root,
+		Networking::HTTP::Server::HTTPServerSetRoot);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_DEDI(Enums::_hs_function_sv_httpserver_set_throttle,
+		Networking::HTTP::Server::HTTPServerSetThrottle);
+	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_DEDI(Enums::_hs_function_sv_httpserver_set_ports,
+		Networking::HTTP::Server::HTTPServerSetPorts);
+	YELO_INIT_SCRIPT_FUNCTION_DEDI(Enums::_hs_function_sv_httpserver_show_config,
+		Networking::HTTP::Server::HTTPServerShowConfig);
+	YELO_INIT_SCRIPT_FUNCTION_DEDI(Enums::_hs_function_sv_httpserver_start,
+		Networking::HTTP::Server::HTTPServerStart);
+	YELO_INIT_SCRIPT_FUNCTION_DEDI(Enums::_hs_function_sv_httpserver_stop,
+		Networking::HTTP::Server::HTTPServerStop);
+
 	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_DEDI(Enums::_hs_function_sv_httpserver_log_enable,
 		Networking::HTTP::Server::HTTPServerLogEnable);
 	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_DEDI(Enums::_hs_function_sv_httpserver_set_connection_ban,

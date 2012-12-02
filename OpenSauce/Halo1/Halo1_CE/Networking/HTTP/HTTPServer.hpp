@@ -26,16 +26,20 @@ namespace Yelo
 	namespace Networking { namespace HTTP { namespace Server
 	{
 #if PLATFORM_IS_DEDI
+		typedef bool (*t_service_started)(void);
 
 		struct s_http_service
 		{
 #ifdef _DEBUG
-			const char*		m_id;
+			const char*			m_id;
 #endif
-			const char*		m_uri_root;
+			const char*			m_uri_root;
 
-			mg_callback_t	Callback;
+			t_service_started	ServiceStarted;
+			mg_callback_t		Callback;
 		};
+
+		bool ServerStarted();
 
 		void Initialize();
 		void Dispose();
@@ -45,12 +49,18 @@ namespace Yelo
 		int FindHeader(const mg_request_info* request_info, const char* name);
 
 		void SendResponse(mg_connection* connection,
-			const mg_request_info* request_info,
 			const Enums::http_status_code status,
 			c_http_header* header = NULL,
 			const char* body = NULL,
 			const uint32 body_length = 0);
 
+		void* HTTPServerSetThreadCount(void** arguments);
+		void* HTTPServerSetRoot(void** arguments);
+		void* HTTPServerSetThrottle(void** arguments);
+		void* HTTPServerSetPorts(void** arguments);
+		void* HTTPServerShowConfig();
+		void* HTTPServerStart();
+		void* HTTPServerStop();
 		void* HTTPServerLogEnable(void** arguments);
 #else
 		struct s_http_service

@@ -121,6 +121,7 @@ namespace Yelo
 		s_rasterizer_frame_parameters* FrameParameters()PTR_IMP_GET2(rasterizer_frame_params);
 
 		static bool g_nvidia_use_basic_camo = false;
+		static char g_screenshot_folder[MAX_PATH] = "screenshots\\";
 		static s_rasterizer_resolution g_resolution_list[64];
 
 		void SetupResolutions()
@@ -226,6 +227,13 @@ namespace Yelo
 			// when 0x637D50 (1.09) is 1, the basic active camouflage is used; at 0x51ABB2 (1.09) it is forced to 1 when an nVidia card is detected
 			// if the user changes this in their settings they need to restart the game for it to take effect
 			GET_PTR(NVIDIA_USE_BASIC_CAMO_TOGGLE) = g_nvidia_use_basic_camo;
+
+			// make the screenshot function use a unique subfolder
+			tag_string screenshots_folder;
+			GetTimeStampStringForFile(screenshots_folder);
+			strcat_s(g_screenshot_folder, sizeof(g_screenshot_folder), screenshots_folder);
+			for(i = 0; i < NUMBEROF(K_SCREENSHOT_FOLDER_REFERENCES); i++)
+				*K_SCREENSHOT_FOLDER_REFERENCES[i] = &g_screenshot_folder[0];
 		}
 #pragma warning( pop )
 
