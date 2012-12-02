@@ -238,6 +238,8 @@ namespace Yelo
 		static c_map_download_globals		g_map_download_globals;
 		static c_map_part_definition_list	g_map_part_definition_lists[k_definition_list_count];
 
+		bool ServiceStarted() { return g_map_download_globals.m_flags.system_active; }
+
 		/*!
 		 * \brief
 		 * Sets the folder containing the map part definitions.
@@ -799,8 +801,10 @@ namespace Yelo
 		 * \remarks
 		 * If the request cannot be generated for any reason a server error response code is sent to the client.
 		 */
-		static void SendMapPartDefinition(mg_connection* connection, const mg_request_info* request_info, c_map_element* map)
+		static void SendMapPartDefinition(mg_connection* connection, c_map_element* map)
 		{
+			const mg_request_info* request_info = mg_get_request_info(connection);
+
 			// create a new xml document
 			TiXmlDocument map_part_definition;
 
@@ -808,7 +812,7 @@ namespace Yelo
 			TiXmlDeclaration* declaration = new TiXmlDeclaration("1.0", "utf-8", NULL);
 			if(!declaration)
 			{
-				SendResponse(connection, request_info, Enums::_http_status_code_server_error_internal_server_error);
+				SendResponse(connection, Enums::_http_status_code_server_error_internal_server_error);
 				return;
 			}
 			map_part_definition.LinkEndChild(declaration);
@@ -817,14 +821,14 @@ namespace Yelo
 			TiXmlElement* root = new TiXmlElement("osHTTPServer");
 			if(!root)
 			{
-				SendResponse(connection, request_info, Enums::_http_status_code_server_error_internal_server_error);
+				SendResponse(connection, Enums::_http_status_code_server_error_internal_server_error);
 				return;
 			}
 			map_part_definition.LinkEndChild(root);
 
 			if(!map->Lock())
 			{
-				SendResponse(connection, request_info, Enums::_http_status_code_server_error_internal_server_error);
+				SendResponse(connection, Enums::_http_status_code_server_error_internal_server_error);
 				return;
 			}
 
@@ -835,7 +839,7 @@ namespace Yelo
 
 			if(!map_element_clone)
 			{
-				SendResponse(connection, request_info, Enums::_http_status_code_server_error_internal_server_error);
+				SendResponse(connection, Enums::_http_status_code_server_error_internal_server_error);
 				return;
 			}
 
@@ -844,7 +848,7 @@ namespace Yelo
 			{
 				delete map_element_clone;
 
-				SendResponse(connection, request_info, Enums::_http_status_code_server_error_internal_server_error);
+				SendResponse(connection, Enums::_http_status_code_server_error_internal_server_error);
 				return;
 			}
 			root->LinkEndChild(map_element);
@@ -858,7 +862,7 @@ namespace Yelo
 			char length_string[11];
 			if(-1 == sprintf_s(length_string, sizeof(length_string), "%i", xml_printer.Size()))
 			{
-				SendResponse(connection, request_info, Enums::_http_status_code_server_error_internal_server_error);
+				SendResponse(connection, Enums::_http_status_code_server_error_internal_server_error);
 				return;
 			}
 
@@ -867,7 +871,7 @@ namespace Yelo
 			response_headers.AddHeader("Content-Type", "text/xml");
 			response_headers.AddHeader("Content-Length", length_string);
 
-			SendResponse(connection, request_info, Enums::_http_status_code_successful_ok, &response_headers, xml_printer.CStr(), xml_printer.Size());
+			SendResponse(connection, Enums::_http_status_code_successful_ok, &response_headers, xml_printer.CStr(), xml_printer.Size());
 		}
 
 		/*!
@@ -886,21 +890,22 @@ namespace Yelo
 		 * A client error status code is returned to the client if the request is incomplete or if no matching map is found.
 		 */
 		static void ProcessMapPartDefinitionRequest(mg_connection* connection,
-			const mg_request_info* request_info,
 			std::string map_name)
 		{
+			const mg_request_info* request_info = mg_get_request_info(connection);
+
 			// look for the map definition element
 			c_map_element* map_element = FindMap(map_name.c_str());
 
 			if(!map_element)
 			{
 				// the map wasn't found so respond with the file not found status code
-				SendResponse(connection, request_info, Enums::_http_status_code_client_error_not_found);
+				SendResponse(connection, Enums::_http_status_code_client_error_not_found);
 				return;
 			}
 
 			// the map was found so respond with its map part definition
-			SendMapPartDefinition(connection, request_info, map_element);
+			SendMapPartDefinition(connection, map_element);
 		}
 
 		/*!
@@ -919,10 +924,11 @@ namespace Yelo
 		 * A client error status code is sent to the client if the request is incomplete, or if the map/part was not found.
 		 */
 		static void ProcessMapPartDownloadReferral(mg_connection* connection,
-			const mg_request_info* request_info,
 			std::string map_name,
 			std::string part_name)
 		{
+			const mg_request_info* request_info = mg_get_request_info(connection);
+
 			// remove the extension from the map name
 			std::string::size_type extension_offset = std::string::npos;
 			if((extension_offset = map_name.find(".map")) != std::string::npos)
@@ -936,14 +942,14 @@ namespace Yelo
 			if(!map_element)
 			{
 				// the part was not found so respond with the file not found status code
-				SendResponse(connection, request_info, Enums::_http_status_code_client_error_not_found);
+				SendResponse(connection, Enums::_http_status_code_client_error_not_found);
 				return;
 			}
 
 			if(!map_element->Lock())
 			{
 				// the part was not found so respond with the file not found status code
-				SendResponse(connection, request_info, Enums::_http_status_code_client_error_request_timeout);
+				SendResponse(connection, Enums::_http_status_code_client_error_request_timeout);
 				return;
 			}
 
@@ -957,12 +963,12 @@ namespace Yelo
 				response_headers.AddHeader("Content-Length", "0");
 				response_headers.AddHeader("Location", part_element->m_redirect_address.c_str());
 
-				SendResponse(connection, request_info, Enums::_http_status_code_redirection_found, &response_headers);
+				SendResponse(connection, Enums::_http_status_code_redirection_found, &response_headers);
 			}
 			else
 			{
 				// the part was not found so respond with the file not found status code
-				SendResponse(connection, request_info, Enums::_http_status_code_client_error_not_found);
+				SendResponse(connection, Enums::_http_status_code_client_error_not_found);
 			}
 
 			map_element->Unlock();
@@ -986,18 +992,20 @@ namespace Yelo
 		 * 
 		 * The callback called by the HTTP server when a URL starting with "map_download" is requested.
 		 */
-		void* ServerCallback(mg_event callback_event, mg_connection* connection, const mg_request_info* request_info)
+		void* ServerCallback(mg_event callback_event, mg_connection* connection)
 		{
+			const mg_request_info* request_info = mg_get_request_info(connection);
+
 			// the system is not running, so deny the request
 			if(!g_map_download_globals.m_flags.system_active)
-				SendResponse(connection, request_info, Enums::_http_status_code_server_error_service_unavailable);
+				SendResponse(connection, Enums::_http_status_code_server_error_service_unavailable);
 			else if(callback_event == MG_NEW_REQUEST)
 			{
 				// deny the request if it has come from somewhere other than the HCE client
 				int agent_header_index = FindHeader(request_info, "User-Agent");
 				if((-1 == agent_header_index) || (!request_info->http_headers[agent_header_index].value))
 				{
-					SendResponse(connection, request_info, Enums::_http_status_code_client_error_method_not_allowed);
+					SendResponse(connection, Enums::_http_status_code_client_error_method_not_allowed);
 					return "";
 				}
 				else
@@ -1005,7 +1013,7 @@ namespace Yelo
 					const char* value_pointer = strstr(request_info->http_headers[agent_header_index].value, K_HTTP_CLIENT_ID);
 					if(value_pointer != request_info->http_headers[agent_header_index].value)
 					{
-						SendResponse(connection, request_info, Enums::_http_status_code_client_error_method_not_allowed);
+						SendResponse(connection, Enums::_http_status_code_client_error_method_not_allowed);
 						return "";
 					}
 				}
@@ -1016,7 +1024,7 @@ namespace Yelo
 				if(strcmp(request_info->request_method, "GET") != 0)
 				{
 					// the other http methods are not supported
-					SendResponse(connection, request_info, Enums::_http_status_code_client_error_method_not_allowed);
+					SendResponse(connection, Enums::_http_status_code_client_error_method_not_allowed);
 				}
 				else
 				{
@@ -1028,7 +1036,7 @@ namespace Yelo
 
 					// the actual part definition file might not be called this but it is accessed by this id anyway
 					if((resource.length() == 0) || (resource.compare("map_download") != 0))
-						SendResponse(connection, request_info, Enums::_http_status_code_client_error_method_not_allowed);
+						SendResponse(connection, Enums::_http_status_code_client_error_method_not_allowed);
 					else
 					{
 						std::string map_name = "";
@@ -1037,11 +1045,11 @@ namespace Yelo
 						bool has_part_name = url_interface.GetQueryValue("part", part_name) && (part_name.length() != 0);
 
 						if(has_map_name && has_part_name)
-							ProcessMapPartDownloadReferral(connection, request_info, map_name, part_name);
+							ProcessMapPartDownloadReferral(connection, map_name, part_name);
 						else if(has_map_name && !has_part_name)
-							ProcessMapPartDefinitionRequest(connection, request_info, map_name);
+							ProcessMapPartDefinitionRequest(connection, map_name);
 						else
-							SendResponse(connection, request_info, Enums::_http_status_code_client_error_bad_request);
+							SendResponse(connection, Enums::_http_status_code_client_error_bad_request);
 					}
 				}
 
@@ -1050,7 +1058,7 @@ namespace Yelo
 				g_map_download_globals.m_requests_in_progress--;
 			}
 			else
-				SendResponse(connection, request_info, Enums::_http_status_code_client_error_method_not_allowed);
+				SendResponse(connection, Enums::_http_status_code_client_error_method_not_allowed);
 
 			return "";
 		}
@@ -1067,6 +1075,12 @@ namespace Yelo
 		void StartMapServer()
 		{
 			// check the server startup conditions are met
+			if(!HTTP::Server::ServerStarted())
+			{
+				Engine::Console::TerminalPrint("The HTTP server is not running");
+				return;
+			}
+
 			if(Yelo::Server::NetworkSvGlobals()->initialized)
 			{
 				Engine::Console::TerminalPrint("Cannot start the map download server whilst the mp server is running");
