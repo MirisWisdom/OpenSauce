@@ -242,7 +242,7 @@
 #if defined(_DEBUG)
 	#define MACRO_ML_START	do{
 	#define MACRO_ML_END	}while(false)
-#else	// for release, use a more compiler friendly statment
+#else	// for release, use a more compiler friendly statement
 	#define MACRO_ML_START	if(true){
 	#define MACRO_ML_END	} else
 #endif

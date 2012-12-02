@@ -3,6 +3,14 @@
 
 	See license\OpenSauce\Halo1_CheApe for specific license information
 */
+
+/* COPY&PASTE THE FOLLOWING IN THE PROJECT'S PRECOMPILED HEADER .CPP FILE
+
+static const char* k_cheape_api_pch_path_ascii = __FILE__;
+static const wchar_t* k_cheape_api_pch_path_wide = BOOST_PP_CAT(L, __FILE__);
+#include <YeloLib/open_sauce/che_ape/che_ape_api.inl>
+*/
+
 extern "C" {
 
 	bool __declspec( dllexport ) CheApeApi_GetPchBuildDateA(__in DWORD nBufferLength,

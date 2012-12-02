@@ -34,28 +34,14 @@ namespace Yelo
 		s_decal_vertex_cache_data* DecalVertexCache()					DPTR_IMP_GET(decal_vertex_cache);
 
 
-		static void InitializePerMapUpgradesParticles()
-		{
-			return;
-#if PLATFORM_IS_USER
-			struct s_rendered_particle
-			{
-				int16 particle_index;
-				int16 particle_datum_field_04;
-				int16 particle_datum_field_2C;
-				bool particle_datum_flags_bit5;
-				PAD8;
-			}; BOOST_STATIC_ASSERT( sizeof(s_rendered_particle) == 8 );
-			static s_rendered_particle render_particles__rendered_particles[Enums::k_maximum_number_of_particles_per_map_upgrade];
-
-			*CAST_PTR(size_t*, GET_FUNC_VPTR(GAME_INITIALIZE_MOD_PER_MAP_UPGRADE_PARTICLES)) = 
-				Enums::k_maximum_number_of_particles_per_map_upgrade;
-#endif
-		}
+#include <YeloLib/Halo1/render/render_particles_upgrades.inl>
 		static void InitializePerMapUpgrades()
 		{
-			InitializePerMapUpgradesParticles();
 #if PLATFORM_IS_USER
+			render_particles_mods::Initialize();
+
+			// For now, we're leaving these upgrades off
+	#if !PLATFORM_DISABLE_UNUSED_CODE
 			*CAST_PTR(size_t*, GET_FUNC_VPTR(GAME_INITIALIZE_MOD_PER_MAP_UPGRADE_EFFECTS)) = 
 				Enums::k_maximum_number_of_effects_per_map_upgrade;
 			*CAST_PTR(size_t*, GET_FUNC_VPTR(GAME_INITIALIZE_MOD_PER_MAP_UPGRADE_EFFECT_LOCATIONS)) = 
@@ -63,10 +49,12 @@ namespace Yelo
 
 			*CAST_PTR(size_t*, GET_FUNC_VPTR(GAME_INITIALIZE_MOD_PER_MAP_UPGRADE_PARTICLE_SYSTEM_PARTICLES)) = 
 				Enums::k_maximum_number_of_particle_system_particles_per_map_upgrade;
+	#endif
 #endif
 		}
 		void Initialize()
 		{
+			// TODO: before the next release, determine if a settings option is needed to turn these upgrades off (eg for crappy computers)
 			if(GameState::YeloGameStateEnabled())
 				InitializePerMapUpgrades();
 

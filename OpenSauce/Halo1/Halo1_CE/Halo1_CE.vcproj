@@ -5245,6 +5245,10 @@
 					RelativePath="..\..\shared\Include\YeloLib\memory\memory_interface_base.hpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\memory\naked_func_writer.hpp"
+					>
+				</File>
 				<Filter
 					Name="compression"
 					>
@@ -5443,6 +5447,14 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\YeloLib\Halo1\items\equipment_structures_yelo.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="render"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\render\render_particles_upgrades.inl"
 					>
 				</File>
 			</Filter>

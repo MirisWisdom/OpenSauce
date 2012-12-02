@@ -17,6 +17,16 @@ namespace Yelo
 #define __EL_INCLUDE_ID			__EL_INCLUDE_RASTERIZER
 #define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_RASTERIZER
 #include "Memory/_EngineLayout.inl"
+
+	namespace Render
+	{
+#if PLATFORM_ID == PLATFORM_SAPIEN
+		#include <YeloLib/Halo1/render/render_particles_upgrades.inl>
+
+		s_render_globals* RenderGlobals()			PTR_IMP_GET2(render_globals);
+#endif
+	};
+
 	namespace Rasterizer
 	{
 #if PLATFORM_ID == PLATFORM_SAPIEN
@@ -31,6 +41,11 @@ namespace Yelo
 		{
 			PLATFORM_VALUE(__noop, __noop,
 				g_render_upgrades.Initialize());
+			// TODO: remove this once/if we renable effects rendering in sapien
+#if !PLATFORM_DISABLE_UNUSED_CODE
+			PLATFORM_VALUE(__noop, __noop,
+				Render::render_particles_mods::Initialize());
+#endif
 		}
 
 		void Dispose()
@@ -50,13 +65,6 @@ namespace Yelo
 			PLATFORM_VALUE(__noop, __noop,
 				g_render_upgrades.SaveSettings(dx9_element));
 		}
-	};
-
-	namespace Render
-	{
-#if PLATFORM_ID == PLATFORM_SAPIEN
-		s_render_globals* RenderGlobals()			PTR_IMP_GET2(render_globals);
-#endif
 	};
 };
 #else

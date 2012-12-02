@@ -72,7 +72,6 @@
 // Pointer implement get by-reference
 #define PTR_IMP_GET2(name)	{ return GET_PTR2(##name##); }
 
-
 namespace Yelo
 {
 	namespace Enums
@@ -96,7 +95,7 @@ namespace Yelo
 			// call ds:[address]
 			_x86_opcode_jmp_abs = 0x25FF, /*FF 25*/
 		};
-		BOOST_STATIC_ASSERT( sizeof(Enums::_x86_opcode_call_abs)==2 );
+		BOOST_STATIC_ASSERT( sizeof(Enums::x86_opcode_twobyte)==2 );
 	};
 
 	namespace Memory

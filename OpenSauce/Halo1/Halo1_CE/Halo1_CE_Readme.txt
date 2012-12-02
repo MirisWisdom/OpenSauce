@@ -64,6 +64,7 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
   * CHANGE		Installation now requires .NET 3.5
   * CHANGE		Increased hardcoded 'k_game_state_allocation_maximum_size_for_yelo' by 0x970 bytes
   * CHANGE		Increased hardcoded 'k_runtime_data_max_values_count' to a total of 64 (up from 32)
+  * ADD			Upgraded the max number of particles active/rendered at once
   * ADD			Added an xml setting for completely turning off game update checks
   * ADD			Added an in-game map download system to the client
   * ADD			Added a HTTP server to the OS dedi

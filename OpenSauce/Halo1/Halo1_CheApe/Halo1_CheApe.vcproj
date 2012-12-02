@@ -2427,6 +2427,10 @@
 					RelativePath="..\..\shared\Include\YeloLib\memory\memory_interface_base.hpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\memory\naked_func_writer.hpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="cseries"
@@ -2485,6 +2489,22 @@
 				>
 				<File
 					RelativePath="..\..\shared\Include\YeloLib\Halo1\interface\equipment_hud_interface_definition.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="render"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\render\render_particles_upgrades.inl"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="rasterizer"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\rasterizer\rasterizer_upgrades.inl"
 					>
 				</File>
 			</Filter>
