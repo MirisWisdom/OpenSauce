@@ -7,12 +7,15 @@
 
 static s_object_field_definition g_object_real_fields[] = {
 	FIELD_ENTRY(object, real, real, function_out, false, true),
+	FIELD_ENTRY(object, real, real, radius, false, true),
+	FIELD_ENTRY(object, real, real, scale, false, true),
 
 	FIELD_ENTRY(object, real, vector, position,					true),
 	FIELD_ENTRY(object, real, vector, transitional_velocity,	true),
 	FIELD_ENTRY(object, real, vector, forward,					true),
 	FIELD_ENTRY(object, real, vector, up,						true),
 	FIELD_ENTRY(object, real, vector, angular_velocity,			true),
+	FIELD_ENTRY(object, real, vector, center,					false, true),
 
 	FIELD_ENTRY(unit, real, vector, desired_facing,				true),
 	FIELD_ENTRY(unit, real, vector, desired_aiming),
@@ -37,25 +40,33 @@ static s_object_field_definition g_weapon_tag_real_trigger_fields[] = {
 
 
 static s_object_field_definition g_unit_object_index_fields[] = {
+	FIELD_ENTRY( unit, object,		object_index, thrown_grenade_projectile,				false, true),
 	FIELD_ENTRY( unit, weapon,		object_index, weapon,									true,  true, true),
+	// TODO: when we add network support for equipment, update this field entry's flags
+	FIELD_ENTRY( unit, object,		object_index, equipment,								false, true),
+	//FIELD_ENTRY( unit, unit,		object_index, 40C,										false, true),
+	FIELD_ENTRY( unit, object,		object_index, damage_responsible_flamer_object,				false, true),
 	FIELD_ENTRY2(unit, unit,		object_index, recent_damage_unit, "recent_damage.unit",	false, true, true),
 };
 
 
 // We use bool for byte-size fields as hs_type doesn't have an 8-bit integer
 static s_object_field_definition g_unit_integer_fields[] = {
-	FIELD_ENTRY2(unit, bool, integer, total_grenade_count_frag,		"total_grenade_count[frag]",	true),
-	FIELD_ENTRY2(unit, bool, integer, total_grenade_count_plasma,	"total_grenade_count[plasma]",	true),
-	FIELD_ENTRY2(unit, bool, integer, total_grenade_count_custom2,	"total_grenade_count[custom2]",	true),
-	FIELD_ENTRY2(unit, bool, integer, total_grenade_count_custom3,	"total_grenade_count[custom3]",	true),
+	FIELD_ENTRY(unit, byte, integer, ticks_until_flame_to_death,	false, true),
 
-	FIELD_ENTRY(unit, bool, integer, current_grenade_index,	false, true),
-	FIELD_ENTRY(unit, bool, integer, zoom_level,			false, true),
-	FIELD_ENTRY(unit, bool, integer, desired_zoom_level,	true),
+	FIELD_ENTRY2(unit, byte, integer, total_grenade_count_frag,		"total_grenade_count[frag]",	true),
+	FIELD_ENTRY2(unit, byte, integer, total_grenade_count_plasma,	"total_grenade_count[plasma]",	true),
+	FIELD_ENTRY2(unit, byte, integer, total_grenade_count_custom2,	"total_grenade_count[custom2]",	true),
+	FIELD_ENTRY2(unit, byte, integer, total_grenade_count_custom3,	"total_grenade_count[custom3]",	true),
+
+	FIELD_ENTRY(unit, byte, integer, current_grenade_index,	false, true),
+	FIELD_ENTRY(unit, byte, integer, zoom_level,			false, true),
+	FIELD_ENTRY(unit, byte, integer, desired_zoom_level,	true),
 
 	FIELD_ENTRY(unit, short, integer, vehicle_seat_index,	false, true),
 	FIELD_ENTRY(unit, short, integer, current_weapon_index,	true,  true),
-	FIELD_ENTRY(unit, short, integer, feign_death_timer),
+	FIELD_ENTRY(unit, short, integer, feign_death_timer,	false, true),
+	FIELD_ENTRY(unit, short, integer, killing_spree_count,	false, true),
 };
 
 

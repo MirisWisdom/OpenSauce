@@ -128,30 +128,31 @@ namespace Yelo
 	{
 		enum /*tag_field_flags*/
 		{
-			// Never streamed unless the tag is loaded for verification purposes
-			_tag_data_flag_never_streamed =			FLAG(0),
-			// the sound board is available for data blobs of this type
-			//_tag_data_flag_playable = FLAG(0),
-			_tag_data_flag_is_text_data =			FLAG(1),
+			// Never streamed, unless the tag is loaded with _tag_load_verify_bit
+			_tag_data_never_streamed_bit = 0,
+			_tag_data_is_text_data_bit,
 			// ie, 'debug data'
-			_tag_data_flag_not_streamed_to_cache =	FLAG(2),
+			_tag_data_not_streamed_to_cache_bit,
 
 			// checked in the tag reference solving code.
 			// last condition checked after an assortment of conditionals
 			// and if this is TRUE, it won't resolve
-			_tag_reference_flag_1 =				FLAG(0),
-			_tag_reference_flag_non_resolving =	FLAG(1),
+			_tag_reference_unknown0_bit = 0,
+			_tag_reference_non_resolving_bit,
 
-			_tag_block_flag_1 =	FLAG(0),
+			_tag_block_dont_read_children_bit =	0,
 
-			_tag_group_flag_initialized =	FLAG(0),
-			_tag_group_flag_2 =				FLAG(1),
-			_tag_group_flag_3 =				FLAG(2),
-			_tag_group_flag_4 =				FLAG(3),
+			_tag_group_initialized_bit = 0,
+			_tag_group_unknown1_bit,
+			_tag_group_unknown2_bit,
+			_tag_group_unknown3_bit,
 
-			_tag_load_verify =					FLAG(0),
-			_tag_load_verify_exist_first =		FLAG(1),
-			_tag_load_non_resolving_references =FLAG(2),
+			_tag_load_verify_bit = 0,
+			// Verify the tag file exists first
+			_tag_load_verify_exist_first_bit,
+			// If set: child references of the tag being loaded are not loaded themselves
+			// Else, child references are loaded from disk
+			_tag_load_non_resolving_references_bit,
 		};
 	};
 
@@ -220,7 +221,7 @@ namespace Yelo
 		char filename[256];			// 0x4
 		tag group_tag;				// 0x104
 		tag parent_group_tags[2];	// 0x108 0x10C
-		PAD8;						// 0x110
+		bool is_verified;			// 0x110 was loaded with Flags::_tag_load_verify_bit
 		bool is_read_only;			// 0x111
 		bool is_orphan;				// 0x112
 		bool null_definition;		// 0x113

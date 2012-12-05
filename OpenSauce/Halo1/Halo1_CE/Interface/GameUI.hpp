@@ -9,6 +9,13 @@
 #if !PLATFORM_IS_DEDI
 #include <blamlib/Halo1/game/game_allegiance.hpp> // for game teams
 #include <blamlib/Halo1/game/players.hpp>
+#include <blamlib/Halo1/interface/first_person_weapons.hpp>
+#include <blamlib/Halo1/interface/hud.hpp>
+#include <blamlib/Halo1/interface/hud_messaging.hpp>
+#include <blamlib/Halo1/interface/hud_nav_points.hpp>
+#include <blamlib/Halo1/interface/hud_weapon.hpp>
+#include <blamlib/Halo1/interface/interface.hpp>
+#include <blamlib/Halo1/interface/motion_sensor.hpp>
 
 namespace Yelo
 {

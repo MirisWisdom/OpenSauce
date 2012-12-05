@@ -64,6 +64,10 @@ namespace Yelo
 			_hs_type_device_name,
 			_hs_type_scenery_name,
 			_hs_type,
+
+			// faux HS type, only for the sake of OS code which exposes 8-bit integers
+			// NOTE: we treat sbyte as a byte still!
+			_hs_type_byte = _hs_type_bool,
 		};
 	};
 

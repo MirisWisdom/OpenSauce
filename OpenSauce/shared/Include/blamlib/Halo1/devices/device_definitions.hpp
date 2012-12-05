@@ -15,12 +15,12 @@ namespace Yelo
 	{
 		struct _device_definition
 		{
-			struct _Flags {
+			struct _flags {
 				TAG_FLAG(position_loops);
 				TAG_FLAG(position_not_interpolated);
 			}flags;
 
-			struct _Timing{
+			struct _timing {
 				TAG_FIELD(real, transition_time, "seconds");
 				TAG_FIELD(real, acceleration_time, "seconds");
 			}power_time, position_time, depower_time;
@@ -41,7 +41,16 @@ namespace Yelo
 
 			TAG_FIELD(tag_reference, delay_effect, 'snd!', 'effe');
 			TAG_FIELD(real, automatic_activation_radius, "world units");
-			TAG_PAD(int32, 21 + 7);
+			TAG_PAD(int32, 21);
+
+			struct { // if([tag values] != 0) then * 30.0f, then 1.0f / result
+				struct {
+					real transition_time;
+					real acceleration_time;
+				}power_time, position_time, depower_time;
+
+				real delay_time;
+			}runtime;
 		}; BOOST_STATIC_ASSERT( sizeof(_device_definition) == 0x114 );
 
 		//////////////////////////////////////////////////////////////////////////
@@ -73,7 +82,9 @@ namespace Yelo
 
 			TAG_ENUM(collision_response, machine_collision_response);
 			TAG_FIELD(short, elevator_node);
-			TAG_PAD(int32, 13 + 1); // 52 + 4
+			TAG_PAD(int32, 13); // 52
+
+			real runtime_door_open_time; // door_open_time * 30.0f
 		}; BOOST_STATIC_ASSERT( sizeof(_machine_definition) == 0x94 );
 
 		//////////////////////////////////////////////////////////////////////////

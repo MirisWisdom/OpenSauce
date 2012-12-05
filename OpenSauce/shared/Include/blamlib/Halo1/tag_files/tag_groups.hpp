@@ -13,6 +13,11 @@ namespace Yelo
 	namespace Enums
 	{
 		enum {
+			k_maximum_tags_per_tag_chain = 4,
+			k_maximum_children_per_tag = 16,
+
+			k_maximum_field_byte_swap_codes = 1024,
+
 			k_protected_group_tag = 'prot', // HEK+: this overrides the scenario's group tag in the tag index.
 		};
 	};

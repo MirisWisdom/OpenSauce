@@ -130,7 +130,7 @@ namespace Yelo
 		{
 			_hud_draw_element_0_bit,
 			_hud_draw_element_1_bit,
-			_hud_draw_element_2_bit,
+			_hud_draw_element_2_bit, // set when the local player count is > 1
 		};
 	};
 

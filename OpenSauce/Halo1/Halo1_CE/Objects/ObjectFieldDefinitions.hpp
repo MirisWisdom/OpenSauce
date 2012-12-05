@@ -12,12 +12,15 @@ namespace Yelo
 	{
 		enum object_field_index : _enum {
 			_object_field_real_function_out,
+			_object_field_real_radius,
+			_object_field_real_scale,
 
 			_object_field_vector_position,
 			_object_field_vector_transitional_velocity,
 			_object_field_vector_forward,
 			_object_field_vector_up,
 			_object_field_vector_angular_velocity,
+			_object_field_vector_center,
 
 			_unit_field_vector_desired_facing,
 			_unit_field_vector_desired_aiming,
@@ -34,9 +37,14 @@ namespace Yelo
 			_weapon_tag_field_real_trigger_spew_time,
 			_weapon_tag_field_real_trigger_rounds_per_second,
 
+			_unit_field_object_index_thrown_grenade_projectile,
 			_unit_field_object_index_weapon,
+			_unit_field_object_index_equipment,
+			_unit_field_object_index_40C, // TBD, when we verify the full extent of the  field at 0x40C
+			_unit_field_object_index_damage_responsible_flamer_object,
 			_unit_field_object_index_recent_damage_unit,
 
+			_unit_field_integer_ticks_until_flame_to_death,
 			_unit_field_integer_total_grenade_count_frag,
 			_unit_field_integer_total_grenade_count_plasma,
 			_unit_field_integer_total_grenade_count_custom2,
@@ -48,6 +56,7 @@ namespace Yelo
 			_unit_field_integer_vehicle_seat_index,
 			_unit_field_integer_current_weapon_index,
 			_unit_field_integer_feign_death_timer,
+			_unit_field_integer_killing_spree_count,
 
 			_unit_field_real_driver_power,
 			_unit_field_real_gunner_power,

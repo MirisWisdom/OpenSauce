@@ -299,7 +299,7 @@ HRESULT		LoadShader(
 	{
 		// add any new formats based upon shpp here
 		tag_index = tag_load<TagGroups::s_shader_postprocess_generic>(
-			tag_path, Flags::_tag_load_verify_exist_first);
+			tag_path, FLAG(Flags::_tag_load_verify_exist_first_bit));
 		if(!tag_index.IsNull()) break;
 	}
 	while(false);

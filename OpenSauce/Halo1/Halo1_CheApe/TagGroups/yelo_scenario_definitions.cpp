@@ -104,8 +104,8 @@ namespace Yelo
 		{
 			// If we're not building a cache file, just load the scenario into memory without any of its references
 			datum_index scenario_index = tag_load<TagGroups::scenario>(scenario_name, for_build_cache ? 
-				Flags::_tag_load_verify_exist_first : 
-				Flags::_tag_load_non_resolving_references);
+				FLAG(Flags::_tag_load_verify_exist_first_bit) : 
+				FLAG(Flags::_tag_load_non_resolving_references_bit));
 
 			if(!scenario_index.IsNull())
 			{

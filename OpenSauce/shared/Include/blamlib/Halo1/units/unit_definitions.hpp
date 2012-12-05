@@ -17,6 +17,13 @@ namespace Yelo
 		enum {
 			k_maximum_weapons_per_unit = 4,
 		};
+
+		enum powered_seat {
+			_powered_seat_driver,
+			_powered_seat_gunner,
+
+			k_number_of_powered_seats
+		};
 	};
 
 	namespace TagGroups
@@ -200,7 +207,11 @@ namespace Yelo
 			TAG_FIELD(real, grenade_velocity, "world units per second");
 			TAG_ENUM(grenade_type);
 			TAG_FIELD(int16, grenade_count);
-			PAD32;
+
+			struct { // tag value * 30f
+				int16 soft;
+				int16 hard;
+			}runtime_ping_interrupt_time;
 
 			TAG_TBLOCK(powered_seats, powered_seat_definition);
 			TAG_TBLOCK(weapons, unit_initial_weapon);
