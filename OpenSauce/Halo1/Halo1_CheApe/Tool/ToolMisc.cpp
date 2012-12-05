@@ -41,7 +41,7 @@ namespace Yelo
 				cstring scenario_name;
 			}* args = CAST_PTR(s_arguments*, arguments);
 
-			datum_index scnr_index = tag_load<TagGroups::scenario>(args->scenario_name, Flags::_tag_load_non_resolving_references);
+			datum_index scnr_index = tag_load<TagGroups::scenario>(args->scenario_name, FLAG(Flags::_tag_load_non_resolving_references_bit));
 
 			if(scnr_index.IsNull())
 			{

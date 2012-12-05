@@ -68,7 +68,7 @@ namespace Yelo
 			// --- 0x10
 
 			_object_unk1_bit = 0,
-			_object_unk2_bit,
+			_object_is_on_the_ground_bit,
 			_object_unk3_bit,
 			_object_is_in_water_bit,
 			_object_unk5_bit,
@@ -102,6 +102,7 @@ namespace Yelo
 
 			_object_yelo_is_being_infected_bit = _object_unk32_bit, // apparently this bit isn't used
 
+			_object_is_on_the_ground_flag = FLAG(_object_is_on_the_ground_bit),
 			_object_is_in_water_flag = FLAG(_object_is_in_water_bit),
 			_object_update_physics_flag = FLAG(_object_update_physics_bit),
 			_object_connected_to_map_flag = FLAG(_object_connected_to_map_bit),
@@ -111,25 +112,30 @@ namespace Yelo
 
 			// --- 0x106
 
-			_object_damage_unk0_bit = 0,
-			_object_damage_unk1_bit,
-			_object_should_be_tracked_bit,
-			_object_damage_unk3_bit,
-			_object_damage_unk4_bit,
+			// These are set when the damage thresholds are reached and the game applies the
+			// respective s_damage_resistance's damage_effect
+			_object_body_damage_effect_applied_bit = 0,
+			_object_shield_damage_effect_applied_bit,
+			// test this bit if you want to see if the unit is_dead
+			_object_body_depleted_bit, // if this is et, _hud_draw_element_1_bit will be set when the unit interface is rendered
+			_object_shield_depleted_bit, // if this is set, _hud_draw_element_0_bit will be set when the unit interface is rendered
+			_object_damage_unk4_bit, // shield related
 			_object_killed_bit,
 			_object_killed_silent_bit,
-			_object_damage_unk7_bit,
-			_object_damage_unk8_bit,
-			_object_damage_unk9_bit,
-			_object_damage_unk10_bit,
+			_object_damage_unk7_bit, // actor berserk related
+			_object_damage_unk8_bit, // unused?
+			_object_damage_unk9_bit, // unused?
+			_object_damage_unk10_bit, // unused?
 			_object_cannot_take_damage_bit,
-			_object_damage_unk12_bit,
+			_object_shield_recharging_bit,
 			_object_killed_no_statistics_bit,
 
-			_object_should_be_tracked_flag = FLAG(_object_should_be_tracked_bit),
+			_object_body_depleted_flag = FLAG(_object_body_depleted_bit),
+			_object_shield_depleted_flag = FLAG(_object_shield_depleted_bit),
 			_object_killed_flag = FLAG(_object_killed_bit),
 			_object_killed_silent_flag = FLAG(_object_killed_silent_bit),
 			_object_cannot_take_damage_flag = FLAG(_object_cannot_take_damage_bit),
+			_object_shield_recharging_flag = FLAG(_object_shield_recharging_bit),
 			_object_killed_no_statistics_flag = FLAG(_object_killed_no_statistics_bit),
 		};
 	};

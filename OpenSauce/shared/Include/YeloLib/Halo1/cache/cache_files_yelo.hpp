@@ -6,11 +6,42 @@
 #pragma once
 
 #include <YeloLib/cache/cache_files_yelo_base.hpp>
+#include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
 
 namespace Yelo
 {
 	namespace Cache
 	{
+		struct s_cache_file_strings_storage_header
+		{
+			int32 count;				// number of strings in the storage
+			uint32 offset;				// offset of the null-terminated strings buffer
+			uint32 size;				// total size of the strings buffer
+			uint32 index_buffer_offset;	// offset of the buffer containing the offsets to each null-terminated string
+		};
+
+		struct s_cache_file_string_id_storage_header
+		{
+			enum {
+				k_signature = 'cssh',
+			};
+			tag signature;
+			int16 set_count;
+			PAD16;
+			//////////////////////////////////////////////////////////////////////////
+			// compression parameters for set_storage (which is compressed as a whole, not per-set)
+			uint32 compressed_length;
+			uint32 decompressed_length;
+
+			s_cache_file_strings_storage_header set_storage[_string_id::k_number_of_sets];
+
+
+#if PLATFORM_IS_EDITOR
+			void Initialize();
+#endif
+			bool IsValid() const;
+		};
+
 		struct s_cache_header_yelo : public s_cache_header_yelo_base {
 			enum {
 				k_version = 1,
@@ -56,6 +87,13 @@ namespace Yelo
 					uint16 build;
 				}cheape;
 			}build_info; // User-defined build info
+
+			struct {
+				uint32 string_id_storage_header_offset;
+				PAD32;
+				PAD64;
+				PAD128;
+			}debug;
 
 #if PLATFORM_IS_EDITOR
 			void InitializeForNewMap();

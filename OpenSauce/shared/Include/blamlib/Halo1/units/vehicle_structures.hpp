@@ -6,6 +6,7 @@
 #pragma once
 
 #include <blamlib/Halo1/units/unit_structures.hpp>
+#include <blamlib/Halo1/units/vehicle_definitions.hpp>
 
 namespace Yelo
 {
@@ -15,6 +16,14 @@ namespace Yelo
 
 	namespace Flags
 	{
+		enum vehicle_flags
+		{
+			_vehicle_unk0_bit,
+			_vehicle_unk1_bit,
+			_vehicle_crouched_bit,
+			_vehicle_jumping_bit,
+			_vehicle_unk4_bit,
+		};
 	};
 
 	namespace Objects
@@ -40,15 +49,15 @@ namespace Yelo
 			// 0x4D1, BYTE
 			// 0x4D2, BYTE
 			// 0x4D3, BYTE
-			// 0x4D4, DWORD
-			// 0x4D8, DWORD
-			// 0x4DC, DWORD
-			// 0x4E0, DWORD
-			// 0x4E4, DWORD
-			// 0x4E8, DWORD
-			// 0x4EC, DWORD
-			// 0x4F0, DWORD
-			// 0x4F4, sizeof(0x8)
+			TStructSubGetPtrImpl(real,							Speed, 0x4D4);
+			TStructSubGetPtrImpl(real,							Slide, 0x4D8);
+			TStructSubGetPtrImpl(real,							Turn, 0x4DC);
+			TStructSubGetPtrImpl(real,							TirePosition, 0x4E0);
+			TStructSubGetPtrImpl(real,							TreadPositionLeft, 0x4E4);
+			TStructSubGetPtrImpl(real,							TreadPositionRight, 0x4E8);
+			TStructSubGetPtrImpl(real,							Hover, 0x4EC);
+			TStructSubGetPtrImpl(real,							Thrust, 0x4F0);
+			// 0x4F4, sbyte suspension states[Enums::k_max_vehicle_suspensions]?
 			TStructSubGetPtrImpl(real_point3d,					HoveringPosition, 0x4FC);
 			// 0x508, DWORD
 			// 0x50C, DWORD

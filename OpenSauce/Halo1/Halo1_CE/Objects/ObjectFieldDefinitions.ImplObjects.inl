@@ -22,6 +22,9 @@ static real* ObjectDataFieldGetRealImpl(const s_object_field_definition& field, 
 		}
 		// fall through to default. if we got here, something in the function code didn't compute
 	default: return NULL;
+
+	case _object_field_real_radius:			return &object.radius; break;
+	case _object_field_real_scale:			return &object.scale; break;
 	}
 }
 
@@ -53,6 +56,7 @@ static real_vector3d* ObjectDataFieldGetVector(const s_object_field_definition& 
 	case _object_field_vector_forward:				return &object->network.forward;
 	case _object_field_vector_up:					return &object->network.up;
 	case _object_field_vector_angular_velocity:		return &object->network.angular_velocity;
+	case _object_field_vector_center:				return CAST_PTR(real_vector3d*, &object->center);
 	}
 
 	if(obj.object_type == Enums::_object_type_biped || obj.object_type == Enums::_object_type_vehicle)

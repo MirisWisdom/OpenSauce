@@ -423,7 +423,7 @@ namespace Yelo
 				data.pointer = NULL;
 				switch(type)
 				{
-				// also for byte
+				//case HS_TYPE(byte):
 				case HS_TYPE(bool):	data.byte = *copy.ptr.byte;		break;
 				//////////////////////////////////////////////////////////////////////////
 				// block index based types
@@ -468,7 +468,7 @@ namespace Yelo
 
 				switch(type)
 				{
-				// also for byte
+				//case HS_TYPE(byte):
 				case HS_TYPE(bool):	data.byte = NONE;	break;
 				//////////////////////////////////////////////////////////////////////////
 				// block index based types
@@ -514,7 +514,7 @@ namespace Yelo
 			{
 				switch(type)
 				{
-				// also for byte
+				//case HS_TYPE(byte):
 				case HS_TYPE(bool):	*data.ptr.byte = *CAST_PTR(byte*, ptr);		break;
 				//////////////////////////////////////////////////////////////////////////
 				// block index based types

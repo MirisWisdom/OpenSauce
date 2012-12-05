@@ -14,6 +14,10 @@ namespace Yelo
 {
 	namespace Enums
 	{
+		enum {
+			k_max_vehicle_suspensions = 8,
+		};
+
 		enum vehicle_function_mode : _enum
 		{
 			_vehicle_function_mode_none,
@@ -107,9 +111,7 @@ namespace Yelo
 			TAG_FIELD(real, wheel_circumference);
 			TAG_FIELD(real, turn_rate);
 			TAG_FIELD(real, blur_speed);
-			struct{
-				TAG_ENUM(source, Enums::vehicle_function_mode);
-			}inputs[4];
+			_enum function_exports[Enums::k_number_of_incoming_object_functions]; // Enums::vehicle_function_mode
 			TAG_PAD(int32, 3);
 			TAG_FIELD(real, maximum_left_slide);
 			TAG_FIELD(real, maximum_right_slide);

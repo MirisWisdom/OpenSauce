@@ -83,38 +83,48 @@ namespace Yelo
 	{
 		enum unit_flags
 		{
-			_unit_unk1_flag = FLAG(0),
-			_unit_unk2_flag = FLAG(1),
-			_unit_unk3_flag = FLAG(2),
-			_unit_unk4_flag = FLAG(3),
-			_unit_powerup_on_flag = FLAG(4),
-			_unit_powerup_additional_flag = FLAG(5),
-			_unit_controllable_flag = FLAG(6),
-			_unit_unk8_flag = FLAG(7),
-			_unit_unk9_flag = FLAG(8),
-			_unit_unk10_flag = FLAG(9),
-			_unit_unk11_flag = FLAG(10),
-			_unit_unk12_flag = FLAG(11),
-			_unit_unk13_flag = FLAG(12),
-			_unit_unk14_flag = FLAG(13),
-			_unit_unk15_flag = FLAG(14),
-			_unit_unk16_flag = FLAG(15),
-			_unit_unk17_flag = FLAG(16),
-			_unit_unk18_flag = FLAG(17),
-			_unit_unk19_flag = FLAG(18),
-			_unit_unk20_flag = FLAG(19),
-			_unit_doesnt_drop_items_flag = FLAG(20),
-			_unit_unk22_flag = FLAG(21),
-			_unit_can_blink_flag = FLAG(22),
-			_unit_unk24_flag = FLAG(23),
-			_unit_suspended_flag = FLAG(24),
-			_unit_unk26_flag = FLAG(25),
-			_unit_unk27_flag = FLAG(26),
-			_unit_possessed_flag = FLAG(27),
-			_unit_desires_flashlight_on_flag = FLAG(28),
-			_unit_desires_flashlight_off_flag = FLAG(29),
-			_unit_unk31_flag = FLAG(30),
-			_unit_unk32_flag = FLAG(31)
+			_unit_unk0_bit,
+			_unit_unk1_bit,
+			_unit_unk2_bit,
+			_unit_unk3_bit,
+			_unit_powerup_on_bit,
+			_unit_powerup_additional_bit,
+			_unit_controllable_bit,
+			_unit_unk7_bit,
+			_unit_unk8_bit,
+			_unit_unk9_bit,
+			_unit_unk10_bit,
+			_unit_unk11_bit,
+			_unit_unk12_bit,
+			_unit_unk13_bit,
+			_unit_unk14_bit,
+			_unit_unk15_bit,
+			_unit_unk16_bit,
+			_unit_unk17_bit,
+			_unit_unk18_bit,
+			_unit_unk19_bit,
+			_unit_doesnt_drop_items_bit,
+			_unit_unk21_bit,
+			_unit_can_blink_bit,
+			_unit_unk23_bit,
+			_unit_suspended_bit,
+			_unit_unk25_bit,
+			_unit_unk26_bit,
+			_unit_possessed_bit,
+			_unit_desires_flashlight_on_bit,
+			_unit_desires_flashlight_off_bit,
+			_unit_unk30_bit,
+			_unit_unk31_bit,
+
+			_unit_powerup_on_flag = FLAG(_unit_powerup_on_bit),
+			_unit_powerup_additional_flag = FLAG(_unit_powerup_additional_bit),
+			_unit_controllable_flag = FLAG(_unit_controllable_bit),
+			_unit_doesnt_drop_items_flag = FLAG(_unit_doesnt_drop_items_bit),
+			_unit_can_blink_flag = FLAG(_unit_can_blink_bit),
+			_unit_suspended_flag = FLAG(_unit_suspended_bit),
+			_unit_possessed_flag = FLAG(_unit_possessed_bit),
+			_unit_desires_flashlight_on_flag = FLAG(_unit_desires_flashlight_on_bit),
+			_unit_desires_flashlight_off_flag = FLAG(_unit_desires_flashlight_off_bit),
 		};
 	};
 
@@ -230,16 +240,14 @@ namespace Yelo
 		public:
 			sbyte last_vehicle_speech_timer;								// 0x322
 			byte aiming_change;												// 0x323
-			datum_index driver_object_index;								// 0x324
-			datum_index gunner_object_index;								// 0x328
+			datum_index powered_seats_riders[Enums::k_number_of_powered_seats];	// 0x324
 			//////////////////////////////////////////////////////////////////////////
 			// these fields are all related
 			UNKNOWN_TYPE(datum_index);										// 0x32C object index
 			UNKNOWN_TYPE(int32);											// 0x330 game time
 			UNKNOWN_TYPE(datum_index);										// 0x334 object index
 			//////////////////////////////////////////////////////////////////////////
-			real driver_power;												// 0x338
-			real gunner_power;												// 0x33C
+			real powered_seats_power[Enums::k_number_of_powered_seats];		// 0x338
 			real integrated_light_power;									// 0x340
 			real integrated_light_toggle_power;								// 0x344
 			real integrated_night_vision_toggle_power;						// 0x348
