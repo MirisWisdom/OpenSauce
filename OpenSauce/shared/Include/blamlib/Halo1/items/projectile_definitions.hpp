@@ -80,10 +80,7 @@ namespace Yelo
 			TAG_ENUM(detonation_timer_starts, projectile_detonation_timer_mode);
 			TAG_ENUM(impact_noise, ai_sound_volume);
 
-			TAG_ENUM(a_in, projectile_function);
-			TAG_ENUM(b_in, projectile_function);
-			TAG_ENUM(c_in, projectile_function);
-			TAG_ENUM(d_in, projectile_function);
+			_enum function_exports[Enums::k_number_of_incoming_object_functions];
 
 			TAG_FIELD(tag_reference, super_detonation, 'effe');
 

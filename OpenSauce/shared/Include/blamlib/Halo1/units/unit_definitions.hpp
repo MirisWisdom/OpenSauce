@@ -118,7 +118,7 @@ namespace Yelo
 		//////////////////////////////////////////////////////////////////////////
 		struct _unit_definition
 		{
-			struct __unit_definition_flags {
+			struct _flags {
 				TAG_FLAG(circular_aiming);
 				TAG_FLAG(destroyed_after_dying);
 				TAG_FLAG(half_speed_interpolation);
