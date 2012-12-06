@@ -35,6 +35,16 @@ namespace Yelo
 		};
 	};
 
+	namespace Flags
+	{
+		enum game_engine_flags : long_flags
+		{
+			_game_engine_player_spawn_in_team_designator_locations_only_bit,
+			// Engine's score is based on the kills a player has
+			_game_engine_uses_slayer_scoring_bit,
+		};
+	};
+
 	namespace GameEngine
 	{
 		struct s_ctf_globals

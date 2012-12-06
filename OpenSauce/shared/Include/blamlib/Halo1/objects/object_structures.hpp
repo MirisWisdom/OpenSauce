@@ -6,6 +6,7 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/game/game_allegiance.hpp>
 #include <blamlib/Halo1/objects/object_definitions.hpp>
 
 namespace Yelo
@@ -67,46 +68,47 @@ namespace Yelo
 		{
 			// --- 0x10
 
-			_object_unk1_bit = 0,
+			_object_unk0_bit = 0,
 			_object_is_on_the_ground_bit,
-			_object_unk3_bit,
+			_object_unk2_bit,
 			_object_is_in_water_bit,
-			_object_unk5_bit,
-			_object_update_physics_bit,
+			_object_unk4_bit,
+			_object_at_reset_bit, // when set, physics aren't updated
+			_object_unk6_bit,
 			_object_unk7_bit,
 			_object_unk8_bit,
 			_object_unk9_bit,
 			_object_unk10_bit,
-			_object_unk11_bit,
 			_object_connected_to_map_bit,
+			_object_unk12_bit,
 			_object_unk13_bit,
 			_object_unk14_bit,
 			_object_unk15_bit,
-			_object_unk16_bit,
-			_object_unk17_bit,
 			_object_garbage_bit,
+			_object_unk17_bit,
+			_object_does_not_cast_shadow_bit,
 			_object_unk19_bit,
 			_object_unk20_bit,
-			_object_unk21_bit,
-			_object_unk22_bit,
+			_object_outside_map_bit,
 			_object_beautify_bit,
-			_object_unk24_bit,
+			_object_unk23_bit,
 			_object_collideable_bit,
+			_object_unk25_bit,
 			_object_unk26_bit,
 			_object_unk27_bit,
 			_object_unk28_bit,
 			_object_unk29_bit,
 			_object_unk30_bit,
 			_object_unk31_bit,
-			_object_unk32_bit,
 
-			_object_yelo_is_being_infected_bit = _object_unk32_bit, // apparently this bit isn't used
+			_object_yelo_is_being_infected_bit = _object_unk31_bit, // apparently this bit isn't used
 
 			_object_is_on_the_ground_flag = FLAG(_object_is_on_the_ground_bit),
 			_object_is_in_water_flag = FLAG(_object_is_in_water_bit),
-			_object_update_physics_flag = FLAG(_object_update_physics_bit),
+			_object_at_reset_flag = FLAG(_object_at_reset_bit),
 			_object_connected_to_map_flag = FLAG(_object_connected_to_map_bit),
 			_object_garbage_flag = FLAG(_object_garbage_bit),
+			_object_does_not_cast_shadow_flag = FLAG(_object_does_not_cast_shadow_bit),
 			_object_beautify_flag = FLAG(_object_beautify_bit),
 			_object_collideable_flag = FLAG(_object_collideable_bit),
 
@@ -161,7 +163,7 @@ namespace Yelo
 			datum_index player_index;
 			datum_index owner_object_index;
 			UNKNOWN_TYPE(int32);
-			int16 owner_team_index;
+			Enums::game_team owner_team;
 			int16 region_permutation; // variant id
 			real_point3d position;
 			UNKNOWN_TYPE(real); // angle?
@@ -257,21 +259,21 @@ namespace Yelo
 			real scale;																		// 0xB0
 			_enum type;																		// 0xB4
 			PAD16;
-			int16 owner_team_index;															// 0xB8
+			Enums::game_team owner_team;													// 0xB8
 			int16 name_list_index;															// 0xBA
-			UNKNOWN_TYPE(int16);															// 0xBC
+			// ticks spent not at_rest. only biped updates this
+			int16 moving_time;																// 0xBC
 			int16 region_permutation;														// 0xBE, variant id
 			datum_index player_index;														// 0xC0
 			// If this were a projectile, I believe this would be the handle to
 			// the weapon which spawned it
 			datum_index owner_object_index;													// 0xC4
-			UNKNOWN_TYPE(int32); // haven't verified if this is padding or not yet
+			PAD32;																			// 0xC8 unused
 			s_object_animation_datum_data animation;										// 0xCC
 			s_object_damage_datum_data damage;												// 0xD8
-			PAD32; // 0x108 haven't verified if this is padding or not yet
+			PAD32;																			// 0x108 unused
 			datum_index cluster_partition_index;											// 0x10C
 			UNKNOWN_TYPE(datum_index);														// 0x110, object_index, garbage collection related
-
 			datum_index next_object_index;													// 0x114
 			datum_index first_object_index;													// 0x118
 			datum_index parent_object_index;												// 0x11C
