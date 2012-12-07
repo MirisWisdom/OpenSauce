@@ -23,8 +23,10 @@ static real* ObjectDataFieldGetRealImpl(const s_object_field_definition& field, 
 		// fall through to default. if we got here, something in the function code didn't compute
 	default: return NULL;
 
-	case _object_field_real_radius:			return &object.radius; break;
-	case _object_field_real_scale:			return &object.scale; break;
+	case _object_field_real_radius:				return &object.radius; break;
+	case _object_field_real_scale:				return &object.scale; break;
+	case _object_field_real_maximum_vitality:	return &object.damage.maximum_vitality; break;
+	case _object_field_real_current_vitality:	return &object.damage.current_vitality; break;
 	}
 }
 

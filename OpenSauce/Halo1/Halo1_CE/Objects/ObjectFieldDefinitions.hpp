@@ -14,6 +14,8 @@ namespace Yelo
 			_object_field_real_function_out,
 			_object_field_real_radius,
 			_object_field_real_scale,
+			_object_field_real_maximum_vitality,
+			_object_field_real_current_vitality,
 
 			_object_field_vector_position,
 			_object_field_vector_transitional_velocity,
