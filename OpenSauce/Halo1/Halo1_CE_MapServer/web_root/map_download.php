@@ -17,6 +17,8 @@
 		public $map_compression_stage;
 		public $map_compression_type;
 		public $map_md5;
+		public $map_uncompressed_size;
+		public $map_compressed_size;
 		public $map_parts_path;
 		public $map_part_count;
 		
@@ -27,6 +29,7 @@
 	{
 		public $part_name;
 		public $part_md5;
+		public $part_size;
 		
 		public function PartEntryReader($database, $sql) { parent::__construct($database, $sql, SQLInterfaceType::SQL_IO_TYPE_READ); }
 	};
@@ -53,6 +56,8 @@
 
 		$map_download->setAttribute("name", $map_entry->map_name.'.'.$map_entry->map_extension);
 		$map_download->setAttribute("md5", $map_entry->map_md5);
+		$map_download->setAttribute("uncompressed_size", $map_entry->map_uncompressed_size);
+		$map_download->setAttribute("compressed_size", $map_entry->map_compressed_size);
 		
 		// get the number of parts and add them to the xml in order
 		$part_count = $map_entry->map_part_count;
@@ -78,6 +83,7 @@
 			$part->setAttribute("name", $part_entry->part_name);
 			$part->setAttribute("index", $i);
 			$part->setAttribute("md5", $part_entry->part_md5);
+			$part->setAttribute("size", $part_entry->part_size);
 		}
 		
 		// set the xml as the response data
@@ -95,8 +101,8 @@
 	
 	// open the sql database
 	$database = OpenDatabase($config->map_database->data_source_name,
-		$config->map_database->username,
-		$config->map_database->password);
+		$config->map_database->username_readonly,
+		$config->map_database->password_readonly);
 		
 	$map_name_set = isset($_REQUEST['map']) && !empty($_REQUEST['map']);
 	$map_part_set = isset($_REQUEST['part']) && !empty($_REQUEST['part']);
@@ -118,6 +124,8 @@
 				SendMapPartDefinition($map_entry, $database);
 		}
 	}
+	else
+		header("HTTP/1.0 404 Not Found");
 
 	$database = NULL;
 ?>

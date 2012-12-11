@@ -13,6 +13,7 @@ namespace OpenSauceIDE.ServerMapDownloadTool
 			public string Location;
 			public string MD5;
 			public int Index;
+			public uint Size;
 			public bool Encrypted;
 			public string UnencryptedMD5;
 		};
@@ -81,6 +82,7 @@ namespace OpenSauceIDE.ServerMapDownloadTool
 
 					// get the final files MD5 for download validation on the client
 					file_list_entry.MD5 = BlamLib.Cryptography.MD5.GenerateMD5String(part_file);
+					file_list_entry.Size = (uint)part_file.Length;
 
 					file_list.Add(file_list_entry);
 				}

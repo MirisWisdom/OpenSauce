@@ -3374,6 +3374,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Networking\HTTP\MapDownloadClientDisplay.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\Networking\HTTP\MapDownloadClientDisplay.hpp"
+					>
+				</File>
+				<File
 					RelativePath=".\Networking\HTTP\MapDownloadServer.cpp"
 					>
 				</File>

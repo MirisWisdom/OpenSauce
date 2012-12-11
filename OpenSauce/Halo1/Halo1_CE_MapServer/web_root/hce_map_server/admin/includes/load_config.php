@@ -49,6 +49,8 @@
 		
 	class MapDatabaseBlock extends INIBlockReader
 	{
+		public $username_readonly;
+		public $password_readonly;
 		public $username;
 		public $password;
 		public $data_source_name;

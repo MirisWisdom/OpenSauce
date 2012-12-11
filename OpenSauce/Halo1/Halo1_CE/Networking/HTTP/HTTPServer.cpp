@@ -362,7 +362,7 @@ namespace Yelo
 					NULL,
 					g_http_server_options);
 
-			if(g_http_server_globals.m_context)
+			if(!g_http_server_globals.m_context)
 				Engine::Console::TerminalPrint("HTTP server failed to start");
 			else
 				Engine::Console::TerminalPrint("HTTP server started successfully");

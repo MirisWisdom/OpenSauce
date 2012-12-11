@@ -26,12 +26,14 @@
 		public $map_name;
 		public $map_extension;
 		public $map_md5;
+		public $map_uncompressed_size;
 		
 		public function MapEntryWriter($database, $sql) { parent::__construct($database, $sql, SQLInterfaceType::SQL_IO_TYPE_WRITE); }
 	};
 	
 	class MapEntryUpdater extends SQLInterface
 	{
+		public $map_compressed_size;
 		public $map_compression_type;
 		public $map_parts_path;
 		public $map_part_count;
@@ -52,6 +54,7 @@
 		public $part_id;
 		public $part_name;
 		public $part_md5;
+		public $part_size;
 		
 		public function MapPartWriter($database, $sql) { parent::__construct($database, $sql, SQLInterfaceType::SQL_IO_TYPE_WRITE); }
 	};
@@ -114,6 +117,7 @@
 			$map_definition->algorithm = 0;
 			$map_definition->name = $map_file_name;
 			$map_definition->md5 = md5_file($map_file);
+			$map_definition->uncompressed_size = filesize($map_file);
 			
 			$map_name_info = pathinfo($map_file);
 		}
@@ -162,6 +166,7 @@
 	$map_writer->map_name = $map_file_name;
 	$map_writer->map_extension = $map_name_info["extension"];
 	$map_writer->map_md5 = $map_definition->md5;
+	$map_writer->map_uncompressed_size = $map_definition->uncompressed_size;
 	
 	$map_writer->ExecuteQuery(NULL);
 	
@@ -195,6 +200,8 @@
 			
 			print("<b>".$output_file."</b> created</br>");
 
+			$map_definition->compressed_size = filesize($output_file);
+			
 			// split the archive
 			print("Splitting the archive...</br>");
 			
@@ -213,6 +220,7 @@
 				$part->name = $part_info["basename"];
 				$part->index = $i;
 				$part->md5 = md5_file($part_manifest[$i]);
+				$part->size = filesize($part_manifest[$i]);
 				
 				$map_definition->part[] = $part;
 			}
@@ -251,6 +259,7 @@
 		$part_entry->part_id = $map_definition->part[$i]->index;
 		$part_entry->part_name = $map_definition->part[$i]->name;
 		$part_entry->part_md5 = $map_definition->part[$i]->md5;
+		$part_entry->part_size = $map_definition->part[$i]->size;
 				
 		print("Part: <i>".$part_entry->part_name."</i>	MD5: <i>".$part_entry->part_md5."</i></br>");
 				
@@ -261,6 +270,7 @@
 	// update the maps database with the parts path
 	$map_entry_update = new MapEntryUpdater($database, "UPDATE `map_list` SET {0} WHERE file_id = ?");
 	
+	$map_entry_update->map_compressed_size = $map_definition->compressed_size;
 	$map_entry_update->map_compression_type = $map_definition->algorithm;
 	$map_entry_update->map_parts_path = $http_parts_path."/".$map_file_name;
 	$map_entry_update->map_part_count = count($map_definition->part);

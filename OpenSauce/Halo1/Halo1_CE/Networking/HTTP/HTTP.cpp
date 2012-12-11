@@ -626,6 +626,9 @@ namespace Yelo
 			// get the scheme
 			SplitString(url_string, m_scheme, "://", true, false);
 
+			if(m_scheme.length() == 0)
+				m_scheme.assign("http");
+
 			// get the network location
 			SplitString(url_string, network_location, "/", true);
 			if(!network_location.length())
@@ -662,7 +665,10 @@ namespace Yelo
 			std::ostringstream url_stream("");
 
 			// add the scheme
-			url_stream << m_scheme << "://";
+			if(m_scheme.length() == 0)
+				url_stream << "http://";
+			else
+				url_stream << m_scheme << "://";
 
 			// add the username and password
 			url_stream << Escape(m_username);
