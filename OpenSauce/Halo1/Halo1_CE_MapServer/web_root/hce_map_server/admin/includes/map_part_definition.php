@@ -10,6 +10,7 @@
 		public $name;
 		public $index;
 		public $md5;
+		public $size;
 		public $encrypted;
 		public $unencrypted_md5;
 
@@ -18,6 +19,7 @@
 			$this->name = $element->getAttribute("name");
 			$this->index = intval($element->getAttribute("index"));
 			$this->md5 = strtolower($element->getAttribute("md5"));
+			$this->size = intval($element->getAttribute("size"));
 			$this->encrypted = ($element->getAttribute("encrypted") === 'true');
 			$this->unencrypted_md5 = strtolower($element->getAttribute("unencrypted_md5"));
 
@@ -33,6 +35,8 @@
 		public $algorithm;
 		public $name;
 		public $md5;
+		public $uncompressed_size;
+		public $compressed_size;
 		public $part = array();
 
 		function ReadElement(DOMElement $element)
@@ -43,6 +47,8 @@
 			if($algorithm == "7zip") $this->algorithm = 1;
 			$this->name = $element->getAttribute("name");
 			$this->md5 = strtolower($element->getAttribute("md5"));
+			$this->uncompressed_size = intval($element->getAttribute("uncompressed_size"));
+			$this->compressed_size = intval($element->getAttribute("compressed_size"));
 
 			$part_nodes_list = $element->getElementsByTagName("part");
 			foreach($part_nodes_list as $value)
@@ -57,6 +63,8 @@
 
 			if($this->name == "") return false;
 			if($this->md5 == "") return false;
+			if($this->uncompressed_size == 0) return false;
+			if($this->compressed_size == 0) return false;
 			if(count($this->part) == 0) return false;
 			return true;
 		}

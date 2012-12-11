@@ -79,6 +79,12 @@ namespace OpenSauceIDE.ServerMapDownloadTool
 			MapDownloadList.MapDownloadClass map_entry = null;
 			List<FileSplitter.FileListEntry> file_list = null;
 
+			uint UncompressedSize;
+			uint CompressedSize;
+
+			using(FileStream map_file = File.OpenRead(arguments.Map))
+				UncompressedSize = (uint)map_file.Length;
+
 			using (MemoryStream compressed_file = new MemoryStream())
 			{
 				try
@@ -104,6 +110,8 @@ namespace OpenSauceIDE.ServerMapDownloadTool
 
 				string archive_filename = string.Format("{0}.7z", map_filename);
 
+				CompressedSize = (uint)compressed_file.Length;
+
 				// save the archive parts, encrypting if necessary
 				file_list = FileSplitter.SaveStream(compressed_file,
 					1048576,
@@ -121,6 +129,8 @@ namespace OpenSauceIDE.ServerMapDownloadTool
 				map_entry.Algorithm = MapDownloadList.MapDownloadCompressionFormat.SevenZip;
 				map_entry.Name = Path.GetFileName(arguments.Map);
 				map_entry.MD5 = BlamLib.Cryptography.MD5.GenerateFileMD5String(arguments.Map);
+				map_entry.UncompressedSize = UncompressedSize;
+				map_entry.CompressedSize = CompressedSize;
 				map_entry.HostDirectory = Path.GetFileNameWithoutExtension(arguments.Map);
 
 				map_entry.Parts = new List<MapDownloadList.MapPartClass>();
@@ -133,6 +143,7 @@ namespace OpenSauceIDE.ServerMapDownloadTool
 					part.Name = Path.GetFileName(file.Location);
 					part.MD5 = file.MD5;
 					part.Index = file.Index;
+					part.Size = file.Size;
 					if (file.Encrypted)
 					{
 						part.Encrypted = true;

@@ -35,6 +35,8 @@ CREATE TABLE IF NOT EXISTS `map_list` (
   `map_compression_stage` tinyint(1) NOT NULL DEFAULT '0',
   `map_compression_type` tinyint(1) NOT NULL,
   `map_md5` varchar(32) NOT NULL,
+  `map_uncompressed_size` int(11) unsigned NOT NULL,
+  `map_compressed_size` int(11) unsigned NOT NULL,
   `map_parts_path` varchar(255) NOT NULL,
   `map_part_count` smallint(1) NOT NULL,
   PRIMARY KEY (`file_id`),
@@ -53,6 +55,7 @@ CREATE TABLE IF NOT EXISTS `map_part_list` (
   `part_id` int(11) NOT NULL,
   `part_name` varchar(255) NOT NULL,
   `part_md5` varchar(32) NOT NULL,
+  `part_size` int(11) unsigned NOT NULL,
   KEY `map_chunk_id` (`part_id`),
   KEY `file_id` (`map_file_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

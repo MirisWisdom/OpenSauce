@@ -17,6 +17,9 @@ namespace OpenSauceIDE.ServerMapDownloadTool.MapDownloadList
 		[XmlAttribute(AttributeName = "md5")]
 		public string MD5 = "";
 
+		[XmlAttribute(AttributeName = "size")]
+		public uint Size = 0;
+
 		[XmlAttribute(AttributeName = "encrypted"), DefaultValue(false)]
 		public bool Encrypted = false;
 

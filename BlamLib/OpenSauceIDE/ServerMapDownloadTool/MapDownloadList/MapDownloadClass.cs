@@ -24,6 +24,12 @@ namespace OpenSauceIDE.ServerMapDownloadTool.MapDownloadList
 		[XmlAttribute(AttributeName = "md5")]
 		public string MD5;
 
+		[XmlAttribute(AttributeName = "uncompressed_size")]
+		public uint UncompressedSize;
+
+		[XmlAttribute(AttributeName = "compressed_size")]
+		public uint CompressedSize;
+
 		[XmlAttribute(AttributeName = "host_directory")]
 		public string HostDirectory;
 

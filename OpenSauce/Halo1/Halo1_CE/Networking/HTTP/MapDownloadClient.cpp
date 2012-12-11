@@ -30,17 +30,25 @@
 #include "Networking/HTTP/c_file_downloader.hpp"
 #include "Networking/HTTP/c_xml_downloader.hpp"
 
+#include "Networking/HTTP/MapDownloadClientDisplay.hpp"
+
 namespace Yelo
 {
 	// TODO: set the master server list to add servers directly to the global list rather than copying after the download
-	//TODO: comments, check current are correct and add missing comments
+	// TODO: comments, check current are correct and add missing comments
 	namespace Networking { namespace HTTP { namespace Client { namespace MapDownload
 	{
-		static const char* g_master_server_list_url = "http://os.halomods.com/Halo1/CE/MapDownload/Halo1_CE_MapDownloadMasterServers.xml";
+		static const char* g_master_server_list_url = 
+#ifdef _DEBUG
+			"http://os.halomods.com/Halo1/CE/MapDownload/Halo1_CE_MapDownloadMasterServers.debug.xml";
+#else
+			"http://os.halomods.com/Halo1/CE/MapDownload/Halo1_CE_MapDownloadMasterServers.xml";
+#endif
 
 		enum
 		{
-			k_server_name_length_max = 65,
+			k_server_name_length_max = 64,
+			k_server_description_length_max = 256,
 			k_md5_string_length_max = 33,
 			k_max_download_attempts = 3,
 			k_max_part_size = 1048576, // maps are split in to 1MB parts
@@ -161,10 +169,12 @@ namespace Yelo
 		public:
 			char					m_name[MAX_PATH];
 			char					m_md5[k_md5_string_length_max];
+			uint32					m_size;
 			bool					m_encrypted;
 			PAD24;
 			char					m_unencrypted_md5[k_md5_string_length_max];
-			real					m_download_progress;
+			uint32					m_total_bytes;
+			uint32					m_received_bytes;
 
 			void Ctor()
 			{
@@ -173,7 +183,8 @@ namespace Yelo
 				m_md5[0] = 0;
 				m_encrypted = false;
 				m_unencrypted_md5[0] = 0;
-				m_download_progress = 0.0f;
+				m_total_bytes = 0;
+				m_received_bytes = 0;
 			}
 		};
 
@@ -183,6 +194,8 @@ namespace Yelo
 			char					m_name[MAX_PATH];
 			char					m_filename[MAX_PATH];
 			char					m_md5[k_md5_string_length_max];
+			uint32					m_uncompressed_size;
+			uint32					m_compressed_size;
 			map_compression_format	m_format;
 			bool					m_map_is_yelo;
 			PAD8;
@@ -221,6 +234,7 @@ namespace Yelo
 		public:
 			char		m_name[k_server_name_length_max];
 			char		m_address[Enums::k_max_url_length];
+			char		m_description[k_server_description_length_max];
 
 			virtual void Ctor()
 			{
@@ -228,23 +242,29 @@ namespace Yelo
 
 				m_name[0] = 0;
 				m_address[0] = 0;
+				m_description[0] = 0;
 			}
 
 			virtual void Dtor()
 			{
 				m_name[0] = 0;
 				m_address[0] = 0;
+				m_description[0] = 0;
 			}
 
-			bool SetHTTPServer(const char* name, const char* address)
+			bool SetHTTPServer(const char* name, const char* address, const char* description)
 			{
-				m_name[0] = NULL;
-				m_address[0] = NULL;
+				m_name[0] = 0;
+				m_address[0] = 0;
+				m_description[0] = 0;
 
 				if(-1 == strcpy_s(m_name, k_server_name_length_max, name))
 					return false;
 
 				if(-1 == strcpy_s(m_address, Enums::k_max_url_length, address))
+					return false;
+
+				if(-1 == strcpy_s(m_description, k_server_description_length_max, description))
 					return false;
 
 				return true;
@@ -314,7 +334,7 @@ namespace Yelo
 					success = false;
 
 				if(success)
-					success = SetHTTPServer("Dedicated Server", server_ip_string);
+					success = SetHTTPServer("Dedicated Server", server_ip_string, "This download is being provided to you by the dedicated server host");
 
 				return success;
 			}
@@ -368,37 +388,6 @@ namespace Yelo
 			}
 		};
 
-		class c_master_server : public c_http_server
-		{
-		public:
-			/*!
-			 * \brief
-			 * Duplicates the node and all of its siblings to create a complete copy of the list.
-			 * 
-			 * \param previous_node
-			 * The node to set as the previous node.
-			 * 
-			 * \returns
-			 * Returns a copy of the node with all of it's sibling nodes.
-			 * 
-			 * Duplicates the node and all of it's siblings to create a completed copy of the list.
-			 */
-			c_master_server* DeepCopy(c_master_server* previous_node)
-			{
-				c_master_server* copy = new c_master_server();
-
-				copy->Ctor();
-				copy->SetHTTPServer(m_name, m_address);
-
-				if(GetNext())
-					copy->SetNext(CAST_PTR(c_master_server*, GetNext())->DeepCopy(copy));
-
-				copy->SetPrevious(previous_node);
-
-				return copy;
-			}
-		};
-
 		class c_http_server_instance : public LinkedListNode<c_http_server_instance>
 		{
 			c_http_server*		m_server;
@@ -412,7 +401,7 @@ namespace Yelo
 		{
 			struct
 			{
-				c_master_server*		server_list;
+				c_http_server**		server_list;
 			}m_master_server_list;
 
 			/*!
@@ -426,6 +415,8 @@ namespace Yelo
 			 */
 			bool	ProcessMasterServerList()
 			{
+				ASSERT(m_master_server_list.server_list, "master server list downloader list pointer not set");
+
 				// get the root element
 				TiXmlElement* root = Document().FirstChildElement("osHTTPServer");
 				if(!root)
@@ -439,17 +430,29 @@ namespace Yelo
 				do
 				{
 					const char* name = server_node->Attribute("name");
-					const char* address = server_node->Attribute("address");
+					TiXmlElement* address_element = server_node->FirstChildElement("address");
+					TiXmlElement* description_element = server_node->FirstChildElement("description");
 
-					if(name && address)
+					if(name && address_element && address_element->GetText())
 					{
+						c_url_interface address;
+						address.ParseURLA(address_element->GetText());
+
+						if(address.m_address.length() == 0)
+							continue;
+
+						const char* description;
+						if(description_element && description_element->GetText())
+							description = description_element->GetText();
+						else
+							description = "";
+
 						// create a new master server entry
-						c_master_server* download_server = new c_master_server();
+						c_http_server* download_server = new c_http_server();
 						download_server->Ctor();
+						download_server->SetHTTPServer(name, address.GetURL().c_str(), description);
 
-						download_server->SetHTTPServer(name, address);
-
-						AppendLinkedListNode(m_master_server_list.server_list, download_server);
+						AppendLinkedListNode(*m_master_server_list.server_list, download_server);
 					}
 					else
 						continue;
@@ -474,7 +477,7 @@ namespace Yelo
 			}
 
 		public:
-			c_master_server*& ServerList() { return m_master_server_list.server_list; }
+			void SetServerList(c_http_server** server_list) { m_master_server_list.server_list = server_list; }
 
 			void Ctor()
 			{
@@ -486,10 +489,6 @@ namespace Yelo
 			void Dtor()
 			{
 				c_xml_downloader::Dtor();
-
-				if(m_master_server_list.server_list)
-					DeleteLinkedList(m_master_server_list.server_list);
-
 				m_master_server_list.server_list = NULL;
 			}
 
@@ -566,6 +565,7 @@ namespace Yelo
 				{
 					const char* name = current_part->Attribute("name");
 					const char* md5 = current_part->Attribute("md5");
+					const char* size = current_part->Attribute("size");
 					const char* encrypted = current_part->Attribute("encrypted");
 					const char* unencrypted_md5 = current_part->Attribute("unencrypted_md5");
 
@@ -578,7 +578,7 @@ namespace Yelo
 						encryption_valid = false;
 
 					// every part must have a name and md5 checksum
-					if(name && md5 && encryption_valid)
+					if(name && md5 && encryption_valid && size)
 					{
 						c_part_element* part_element = new c_part_element();
 
@@ -586,6 +586,8 @@ namespace Yelo
 
 						strcpy_s(part_element->m_name, MAX_PATH, name);
 						strcpy_s(part_element->m_md5, k_md5_string_length_max, md5);
+						if(1 != sscanf_s(size, "%i", &part_element->m_size))
+							part_element->m_size = 0;
 						part_element->m_encrypted = encrypted_value;
 						if(encrypted && unencrypted_md5)
 							strcpy_s(part_element->m_unencrypted_md5, k_md5_string_length_max, unencrypted_md5);
@@ -663,10 +665,12 @@ namespace Yelo
 
 				const char* name = map->Attribute("name");
 				const char* md5 = map->Attribute("md5");
+				const char* uncompressed_size = map->Attribute("uncompressed_size");
+				const char* compressed_size = map->Attribute("compressed_size");
 				const char* algorithm = map->Attribute("algorithm");
 
 				// must have both the name and md5 checksum
-				if(name && md5 && algorithm)
+				if(name && md5 && algorithm && uncompressed_size && compressed_size)
 				{
 					// get the maps extension to determine whether it is yelo or not
 					char extension[6] = "";
@@ -682,6 +686,11 @@ namespace Yelo
 
 					strcpy_s(m_map_part_definition.map_element.m_filename, MAX_PATH, name);
 					strcpy_s(m_map_part_definition.map_element.m_md5, k_md5_string_length_max, md5);
+
+					if(1 != sscanf_s(uncompressed_size, "%i", &m_map_part_definition.map_element.m_uncompressed_size))
+						uncompressed_size = 0;
+					if(1 != sscanf_s(compressed_size, "%i", &m_map_part_definition.map_element.m_compressed_size))
+						compressed_size = 0;
 
 					// set which format the map is compressed with
 					if(strcmp(algorithm, "zip") == 0)
@@ -737,7 +746,8 @@ namespace Yelo
 			struct
 			{
 				c_part_element*				m_part_element;
-				uint32						m_size;
+				uint32						m_total_bytes;
+				uint32						m_received_bytes;
 				char						m_data[k_max_part_download_size];
 				byte*						m_decryption_key;
 			}m_part_downloader;
@@ -768,7 +778,8 @@ namespace Yelo
 				m_file_downloader.m_attempts.retry_delay = k_retry_delay_time;
 
 				m_part_downloader.m_part_element = NULL;
-				m_part_downloader.m_size = 0;
+				m_part_downloader.m_total_bytes = 0;
+				m_part_downloader.m_received_bytes = 0;
 				ZeroMemory(&m_part_downloader.m_data[0], sizeof(m_part_downloader.m_data));
 				m_part_downloader.m_decryption_key = NULL;
 			}
@@ -781,7 +792,8 @@ namespace Yelo
 				m_file_downloader.m_attempts.retry_delay = k_retry_delay_time;
 
 				m_part_downloader.m_part_element = NULL;
-				m_part_downloader.m_size = 0;
+				m_part_downloader.m_total_bytes = 0;
+				m_part_downloader.m_received_bytes = 0;
 				ZeroMemory(&m_part_downloader.m_data[0], sizeof(m_part_downloader.m_data));
 				m_part_downloader.m_decryption_key = NULL;
 			}
@@ -807,9 +819,12 @@ namespace Yelo
 			 */
 			bool	ValidatePart()
 			{
+				if(m_part_downloader.m_total_bytes != m_part_downloader.m_part_element->m_size)
+					return false;
+
 				//compare the datas md5 with that in the part definition
 				return Engine::CompareMD5(m_part_downloader.m_data,
-					m_part_downloader.m_size,
+					m_part_downloader.m_total_bytes,
 					m_part_downloader.m_part_element->m_md5);
 			}
 
@@ -830,13 +845,13 @@ namespace Yelo
 				// decrypt the part using the supplied server password key
 				if(!Cryptography::XXTEA::Decrypt(Enums::_cryptography_xxtea_block_size_256,
 					m_part_downloader.m_data,
-					m_part_downloader.m_size,
+					m_part_downloader.m_total_bytes,
 					m_part_downloader.m_decryption_key))
 					return false;
 
 				// verify the unencrypted data with the parts unencrypted md5
 				if(!Engine::CompareMD5(m_part_downloader.m_data,
-					m_part_downloader.m_size,
+					m_part_downloader.m_total_bytes,
 					m_part_downloader.m_part_element->m_unencrypted_md5))
 					return false;
 
@@ -852,7 +867,7 @@ namespace Yelo
 			 * 
 			 * Saves the current parts downloaded data to file.
 			 */
-			bool SavePart(const char* save_location)
+			bool	SavePart(const char* save_location)
 			{
 				char save_file[MAX_PATH] = "";
 
@@ -874,7 +889,7 @@ namespace Yelo
 					// write the part data to file
 					if(Enums::_file_io_write_error_none != FileIO::WriteToFile(file_info,
 						m_part_downloader.m_data,
-						m_part_downloader.m_size))
+						m_part_downloader.m_total_bytes))
 						break;
 
 					success = true;
@@ -895,7 +910,7 @@ namespace Yelo
 			 * 
 			 * Updates the file downloader, and sets the parts download progress.
 			 */
-			void Update(real delta)
+			void	Update(real delta)
 			{
 				c_file_downloader::Update(delta);
 
@@ -903,25 +918,29 @@ namespace Yelo
 				{
 					if(QueryDownloadState(m_file_downloader.m_http.request_index) >= GHTTPReceivingFile)
 					{
-						int total_bytes = QueryBytesTotal(m_file_downloader.m_http.request_index);
-						int received_bytes = QueryBytesReceived(m_file_downloader.m_http.request_index);
-
-						m_part_downloader.m_part_element->m_download_progress = (real)received_bytes / (real)total_bytes;
+						m_part_downloader.m_total_bytes = QueryBytesTotal(m_file_downloader.m_http.request_index);
+						m_part_downloader.m_received_bytes = QueryBytesReceived(m_file_downloader.m_http.request_index);
 					}
-					else
-						m_part_downloader.m_part_element->m_download_progress = 0.0f;
+				}
+				else if(Status() != Enums::_http_file_download_status_succeeded)
+				{
+					m_part_downloader.m_total_bytes = 0;
+					m_part_downloader.m_received_bytes = 0;
 				}
 
+				m_part_downloader.m_part_element->m_total_bytes = m_part_downloader.m_total_bytes;
+				m_part_downloader.m_part_element->m_received_bytes = m_part_downloader.m_received_bytes;
 			}
 
-			void* DownloadCompleteCallback(const bool download_succeeded, const char* buffer, const GHTTPByteCount buffer_length, void* component_data)
+			void*	DownloadCompleteCallback(const bool download_succeeded, const char* buffer, const GHTTPByteCount buffer_length, void* component_data)
 			{
 				c_file_downloader::DownloadCompleteCallback(download_succeeded, buffer, buffer_length, component_data);
 
 				s_request_data* request_data = CAST_PTR(s_request_data*, component_data);
 				delete request_data;
 
-				m_part_downloader.m_size = 0;
+				m_part_downloader.m_total_bytes = 0;
+				m_part_downloader.m_received_bytes = 0;
 
 				// if the returned data is larger than the maximum permitted, fail
 				if(!download_succeeded || !buffer || (buffer_length > k_max_part_size) || (buffer_length == 0))
@@ -930,8 +949,15 @@ namespace Yelo
 					return NULL;
 				}
 
+				if(buffer_length != m_part_downloader.m_part_element->m_size)
+				{
+					Status() = Enums::_http_file_download_status_failed;
+					return NULL;
+				}
+
 				// download size can be less than 1MB
-				m_part_downloader.m_size = (uint32)buffer_length;
+				m_part_downloader.m_total_bytes = (uint32)buffer_length;
+				m_part_downloader.m_received_bytes = (uint32)buffer_length;
 
 				// validate and decrypt the part
 				if(!ValidatePart() || !DecryptPart())
@@ -946,14 +972,15 @@ namespace Yelo
 				return NULL;
 			}
 
-			void* DownloadCancelledCallback(void* component_data)
+			void*	DownloadCancelledCallback(void* component_data)
 			{
 				c_file_downloader::DownloadCancelledCallback(component_data);
 
 				s_request_data* request_data = CAST_PTR(s_request_data*, component_data);
 				delete request_data;
 
-				m_part_downloader.m_size = 0;
+				m_part_downloader.m_total_bytes = 0;
+				m_part_downloader.m_received_bytes = 0;
 
 				Status() = Enums::_http_file_download_status_cancelled;
 
@@ -998,7 +1025,7 @@ namespace Yelo
 				bool						completed;
 				bool						succeeded;
 
-				c_master_server*			server_list;
+				c_http_server*			server_list;
 				c_master_server_list		downloader;
 			}m_master_server_list;
 
@@ -1036,125 +1063,9 @@ namespace Yelo
 		static s_map_download_globals	g_map_download_globals;
 		static HANDLE					g_globals_access_mutex;
 
-		enum
-		{
-			k_display_title_string_length = 19 + MAX_PATH,
-			k_display_labels_string_length = 31,
-			k_display_details_string_length = 100,
-			k_display_cancel_string_length = 22,
-		};
-
-		struct s_download_display_globals
-		{
-			TextBlock* m_background_tint;
-			TextBlock* m_dialog_background;
-
-			TextBlock* m_title;
-			TextBlock* m_details_labels;
-			TextBlock* m_details_values;
-			TextBlock* m_cancel;
-
-			wchar_t m_title_string[k_display_title_string_length];
-			wchar_t m_details_labels_string[k_display_labels_string_length];
-			wchar_t m_details_values_string[k_display_details_string_length];
-			wchar_t m_cancel_string[k_display_cancel_string_length];
-		};
-		static s_download_display_globals g_download_display_globals;
-
 		/*!
 		 * \brief
-		 * Resets the display strings to their initial values.
-		 * 
-		 * Resets the display strings to their initial values.
-		 */
-		void	ResetDownloadDisplay()
-		{
-			g_download_display_globals.m_title_string[0] = 0;
-			g_download_display_globals.m_details_labels_string[0] = 0;
-			g_download_display_globals.m_details_values_string[0] = 0;
-			g_download_display_globals.m_cancel_string[0] = 0;
-
-			wcscpy_s(g_download_display_globals.m_title_string, k_display_title_string_length, L"OS Map Downloader\n");
-			wcscpy_s(g_download_display_globals.m_details_labels_string, k_display_labels_string_length, L"Stage:\nProgress:\nStatus:\nHost:");
-			wcscpy_s(g_download_display_globals.m_details_values_string, k_display_details_string_length, L"\n\n");
-			wcscpy_s(g_download_display_globals.m_cancel_string, k_display_cancel_string_length, L"Press [esc] to cancel");
-		}
-
-		/*!
-		 * \brief
-		 * Initializes the display components to their sizes and positions.
-		 * 
-		 * Initializes the display components to their sizes and positions.
-		 */
-		void	SetupDisplay(D3DPRESENT_PARAMETERS* pParameters)
-		{
-			// full screen black tint
-			g_download_display_globals.m_background_tint->SetIgnoreTextHeight(true);
-			g_download_display_globals.m_background_tint->SetDimensions(pParameters->BackBufferWidth, pParameters->BackBufferHeight);
-			g_download_display_globals.m_background_tint->SetBackColor(0xCC000000);
-			g_download_display_globals.m_background_tint->Attach(Enums::_attach_method_top_left, 0, 0, 0, 0);
-
-			// opaque background for the whole display
-			g_download_display_globals.m_dialog_background->SetIgnoreTextHeight(true);
-			g_download_display_globals.m_dialog_background->SetDimensions(500, 180);
-			g_download_display_globals.m_dialog_background->SetBackColor(0xFF555555);
-			g_download_display_globals.m_dialog_background->Attach(Enums::_attach_method_center, 0, 0, 0, 0);
-
-			// title bar for the display title and map name
-			g_download_display_globals.m_title->SetIgnoreTextHeight(true);
-			g_download_display_globals.m_title->SetPadding(8);
-			g_download_display_globals.m_title->SetFont("Lucida Sans Unicode", 25, FW_NORMAL, false, 6);
-			g_download_display_globals.m_title->SetDimensions(500, 60);
-			g_download_display_globals.m_title->SetBackColor(0xFF777777);
-			g_download_display_globals.m_title->Attach(Enums::_attach_method_center, 0, 0, 0, -70);
-			g_download_display_globals.m_title->SetText(g_download_display_globals.m_title_string);
-			g_download_display_globals.m_title->SetTextAlign(DT_LEFT | DT_VCENTER);
-			g_download_display_globals.m_title->SetTextColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.75f));
-
-			// labels for the download details
-			g_download_display_globals.m_details_labels->SetIgnoreTextHeight(true);
-			g_download_display_globals.m_details_labels->SetFont("Lucida Sans Unicode", 25, FW_NORMAL, false, 6);
-			g_download_display_globals.m_details_labels->SetPadding(0);
-			g_download_display_globals.m_details_labels->SetDimensions(120, 115);
-			g_download_display_globals.m_details_labels->SetBackColor(0x00000000);
-			g_download_display_globals.m_details_labels->Attach(Enums::_attach_method_center, 0, 0, -190, 25);
-			g_download_display_globals.m_details_labels->SetText(g_download_display_globals.m_details_labels_string);
-			g_download_display_globals.m_details_labels->SetTextAlign(DT_RIGHT);
-			g_download_display_globals.m_details_labels->SetTextColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.75f));
-
-			// download details
-			g_download_display_globals.m_details_values->SetIgnoreTextHeight(true);
-			g_download_display_globals.m_details_values->SetFont("Lucida Sans Unicode", 25, FW_NORMAL, false, 6);
-			g_download_display_globals.m_details_values->SetPadding(0);
-			g_download_display_globals.m_details_values->SetDimensions(376, 115);
-			g_download_display_globals.m_details_values->SetBackColor(0x00000000);
-			g_download_display_globals.m_details_values->Attach(Enums::_attach_method_center, 0, 0, 62, 25);
-			g_download_display_globals.m_details_values->SetText(g_download_display_globals.m_details_values_string);
-			g_download_display_globals.m_details_values->SetTextAlign(DT_LEFT);
-			g_download_display_globals.m_details_values->SetTextColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.75f));
-
-			// cancel bar
-			g_download_display_globals.m_cancel->SetIgnoreTextHeight(true);
-			g_download_display_globals.m_cancel->SetPadding(0);
-			g_download_display_globals.m_cancel->SetFont("Lucida Sans Unicode", 25, FW_NORMAL, false, 6);
-			g_download_display_globals.m_cancel->SetDimensions(500, 30);
-			g_download_display_globals.m_cancel->SetBackColor(0xFF777777);
-			g_download_display_globals.m_cancel->Attach(Enums::_attach_method_center, 0, 0, 0, 100);
-			g_download_display_globals.m_cancel->SetText(g_download_display_globals.m_cancel_string);
-			g_download_display_globals.m_cancel->SetTextAlign(DT_CENTER | DT_VCENTER);
-			g_download_display_globals.m_cancel->SetTextColor(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.75f));
-
-			g_download_display_globals.m_background_tint->Refresh();
-			g_download_display_globals.m_dialog_background->Refresh();
-			g_download_display_globals.m_title->Refresh();
-			g_download_display_globals.m_details_labels->Refresh();
-			g_download_display_globals.m_details_values->Refresh();
-			g_download_display_globals.m_cancel->Refresh();
-		}
-
-		/*!
-		 * \brief
-		 * Allocates the TextBlocks used to display the download progress.
+		 * Initializes the map download display.
 		 * 
 		 * \param pDevice
 		 * The current render device.
@@ -1162,19 +1073,11 @@ namespace Yelo
 		 * \param pParameters
 		 * The current devices presentation parameters.
 		 * 
-		 * Allocates the TextBlocks used to display the download progress.
+		 * Initializes the map download display.
 		 */
 		void	Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters)
 		{
-			g_download_display_globals.m_background_tint = new TextBlock(pDevice, pParameters);
-			g_download_display_globals.m_dialog_background = new TextBlock(pDevice, pParameters);
-			g_download_display_globals.m_title = new TextBlock(pDevice, pParameters);
-			g_download_display_globals.m_details_labels = new TextBlock(pDevice, pParameters);
-			g_download_display_globals.m_details_values = new TextBlock(pDevice, pParameters);
-			g_download_display_globals.m_cancel = new TextBlock(pDevice, pParameters);
-
-			ResetDownloadDisplay();
-			SetupDisplay(pParameters);
+			g_map_download_display.Initialize(pDevice, pParameters);
 		}
 
 		/*!
@@ -1185,86 +1088,46 @@ namespace Yelo
 		 */
 		void	OnLostDevice()
 		{
-			g_download_display_globals.m_background_tint->OnLostDevice();
-			g_download_display_globals.m_dialog_background->OnLostDevice();
-			g_download_display_globals.m_title->OnLostDevice();
-			g_download_display_globals.m_details_labels->OnLostDevice();
-			g_download_display_globals.m_details_values->OnLostDevice();
-			g_download_display_globals.m_cancel->OnLostDevice();
+			g_map_download_display.DeviceLost();
 		}
 
 		/*!
 		 * \brief
-		 * Re-allocates resources after the device has been reset.
+		 * Re-allocates download display after the device has been reset.
 		 * 
 		 * \param pParameters
 		 * The presentation parameters the device was reset with.
 		 * 
-		 * Re-allocates resources after the device has been reset.
+		 * Re-allocates download display after the device has been reset.
 		 */
 		void	OnResetDevice(D3DPRESENT_PARAMETERS* pParameters)
 		{
-			g_download_display_globals.m_background_tint->OnResetDevice(pParameters);
-			g_download_display_globals.m_dialog_background->OnResetDevice(pParameters);
-			g_download_display_globals.m_title->OnResetDevice(pParameters);
-			g_download_display_globals.m_details_labels->OnResetDevice(pParameters);
-			g_download_display_globals.m_details_values->OnResetDevice(pParameters);
-			g_download_display_globals.m_cancel->OnResetDevice(pParameters);
-
-			SetupDisplay(pParameters);
+			g_map_download_display.DeviceReset(pParameters);
 		}
 
 		/*!
 		 * \brief
-		 * Renders the download progress display.
+		 * Renders the download display.
 		 * 
-		 * Renders the download progress display.
+		 * Renders the download display.
 		 */
 		void	Render()
 		{
 			if(g_map_download_globals.m_map_download_update_stage == _map_download_update_stage_idle)
 				return;
 
-			g_download_display_globals.m_background_tint->Render();
-			g_download_display_globals.m_dialog_background->Render();
-			g_download_display_globals.m_title->Render(g_download_display_globals.m_title_string);
-			g_download_display_globals.m_details_labels->Render(g_download_display_globals.m_details_labels_string);
-			g_download_display_globals.m_details_values->Render(g_download_display_globals.m_details_values_string);
-			g_download_display_globals.m_cancel->Render(g_download_display_globals.m_cancel_string);
+			g_map_download_display.Render();
 		}
 
 		/*!
 		 * \brief
-		 * Releases the displays resources and deletes the display components.
+		 * Disposes of the download display.
 		 * 
-		 * Releases the displays resources and deletes the display components.
+		 * Disposes of the download display.
 		 */
 		void	Release()
 		{
-			g_download_display_globals.m_background_tint->Release();
-			g_download_display_globals.m_dialog_background->Release();
-			g_download_display_globals.m_title->Release();
-			g_download_display_globals.m_details_labels->Release();
-			g_download_display_globals.m_details_values->Release();
-			g_download_display_globals.m_cancel->Release();
-
-			delete g_download_display_globals.m_background_tint;
-			g_download_display_globals.m_background_tint = NULL;
-
-			delete g_download_display_globals.m_dialog_background;
-			g_download_display_globals.m_dialog_background = NULL;
-
-			delete g_download_display_globals.m_title;
-			g_download_display_globals.m_title = NULL;
-
-			delete g_download_display_globals.m_details_labels;
-			g_download_display_globals.m_details_labels = NULL;
-
-			delete g_download_display_globals.m_details_values;
-			g_download_display_globals.m_details_values = NULL;
-
-			delete g_download_display_globals.m_cancel;
-			g_download_display_globals.m_cancel = NULL;
+			g_map_download_display.Dispose();
 		}
 
 		/*!
@@ -1277,100 +1140,83 @@ namespace Yelo
 		{
 			WaitForSingleObject(g_globals_access_mutex, INFINITE);
 
-			// has to be MAX_PATH as we print a map name to it (just in case)
-			wchar_t buffer[MAX_PATH];
-
-			// build the title string
-			swprintf_s(g_download_display_globals.m_title_string,
-				k_display_title_string_length,
-				L"OS Map Downloader\n%S",
-				g_map_download_globals.m_map_part_definition.downloader.MapElement().m_name);
+			g_map_download_display.SetMapName(g_map_download_globals.m_map_part_definition.downloader.MapElement().m_name);
 
 			// build the details string
-			g_download_display_globals.m_details_values_string[0] = 0;
-
-			wcstring stage_string = NULL;
 			switch(g_map_download_globals.m_map_download_update_stage)
 			{
 			case _map_download_update_stage_downloading_map:
 				{
 					switch(g_map_download_globals.m_download_thread.stage)
 					{
+					default:
 					case _map_download_stage_map_part_definition:
-						stage_string = L"Downloading Map Part List";
-						break;
+						g_map_download_display.SetProviderTitle("");
+						g_map_download_display.SetProviderDescription("");
 					case _map_download_stage_map_part_download:
-						stage_string = L"Downloading Map";
+						g_map_download_display.SetMapExtracting(false);
+						g_map_download_display.SetReconnecting(false);
+						g_map_download_display.SetFailed(false);
 						break;
 					case _map_download_stage_map_archive_extraction:
-						stage_string = L"Extracting Map";
-						break;
-					default:
-						stage_string = L"";
+						g_map_download_display.SetMapExtracting(true);
+						g_map_download_display.SetReconnecting(false);
+						g_map_download_display.SetFailed(false);
 						break;
 					};
 				}
 				break;
 			case _map_download_update_stage_map_download_completion:
-				stage_string = L"Connecting To Server";
+				g_map_download_display.SetMapExtracting(false);
+				g_map_download_display.SetReconnecting(true);
+				g_map_download_display.SetFailed(false);
 				break;
 			case _map_download_update_stage_failed:
-				stage_string = L"Download Failed";
+				g_map_download_display.SetMapExtracting(false);
+				g_map_download_display.SetReconnecting(false);
+				g_map_download_display.SetFailed(true);
+				g_map_download_display.SetProviderTitle("");
+				g_map_download_display.SetProviderDescription("");
 				break;
 			}
-
-			if(stage_string)
-				wcscat_s(g_download_display_globals.m_details_values_string,
-					k_display_details_string_length,
-					stage_string);
 			
 			// display the countdown to server reconnection
 			if(_map_download_update_stage_map_download_completion == g_map_download_globals.m_map_download_update_stage)
 			{
-				swprintf_s(buffer, MAX_PATH, L" (%1.f)",
-					ceil(g_map_download_globals.m_download_completion.reconnect_delay));
-
-				wcscat_s(g_download_display_globals.m_details_values_string,
-					k_display_details_string_length,
-					buffer);
+				g_map_download_display.SetReconnectTime(g_map_download_globals.m_download_completion.reconnect_delay);
 			}
 
-			wcscat_s(g_download_display_globals.m_details_values_string,
-				k_display_details_string_length,
-				L"\n");
-
-			// print the part download details
+			// set the part download details
 			if(_map_download_stage_map_part_download == g_map_download_globals.m_download_thread.stage)
 			{
-				// get the number of parts
-				int part_count = GetListLength(g_map_download_globals.m_map_part_definition.downloader.MapElement().m_parts);
-
 				LinkedListIterator<c_part_element> part_iterator(g_map_download_globals.m_map_part_definition.downloader.MapElement().m_parts);
 
-				// get the cumulative progress of all the parts downloaded
-				real percentage = 0.0f;
+				// get the cumulative byte count of all the parts downloaded
+				uint32 received_bytes_total = 0;
 				while(part_iterator.MoveNext())
-					percentage += part_iterator.Current()->m_download_progress;
+					received_bytes_total += part_iterator.Current()->m_received_bytes;
 
-				// calculate the percentage of the total
-				percentage = (percentage / (real)part_count) * 100;
+				// calculate the progress of the download
+				real progress;
+				if(received_bytes_total == 0)
+					progress = 0;
+				else
+					progress = (received_bytes_total / (real)g_map_download_globals.m_map_part_definition.downloader.MapElement().m_compressed_size);
 
-				swprintf_s(buffer, MAX_PATH, L"%3.f%%", percentage);
+				// clamp the progress between 0 and 1
+				progress = max(0, progress);
+				progress = min(1, progress);
 
-				wcscat_s(g_download_display_globals.m_details_values_string,
-					k_display_details_string_length,
-					buffer);
+				g_map_download_display.SetMapProgress(progress);
 			}
-
-			wcscat_s(g_download_display_globals.m_details_values_string,
-				k_display_details_string_length,
-				L"\n");
 
 			if((_map_download_stage_map_part_definition == g_map_download_globals.m_download_thread.stage) ||
 				(_map_download_stage_map_part_download == g_map_download_globals.m_download_thread.stage))
 			{
 				int32 http_request = -1;
-				// print the download status
+				real progress = 0;
+
+				// set the download status
 				switch(g_map_download_globals.m_download_thread.stage)
 				{
 				case _map_download_stage_map_part_definition:
@@ -1378,56 +1224,39 @@ namespace Yelo
 					break;
 				case _map_download_stage_map_part_download:
 					http_request = g_map_download_globals.m_part_download.downloader.HTTPRequestIndex();
+
+					// get the download progress of the part
+					uint32 received = 0;
+					uint32 total = 0;
+					if(g_map_download_globals.m_part_download.part_iterator && g_map_download_globals.m_part_download.part_iterator->Current())
+					{
+						received = g_map_download_globals.m_part_download.part_iterator->Current()->m_received_bytes;
+						total = g_map_download_globals.m_part_download.part_iterator->Current()->m_total_bytes;
+					}
+
+					if((received == 0) || (total == 0))
+						progress = 0;
+					else
+						progress = (real)received / (real)total;
 					break;
 				};
 
-				// default to printing "Connecting" text if no download is in progress
-				bool print_connecting = true;
+				// clamp the progress between 0 and 1
+				progress = max(0, progress);
+				progress = min(1, progress);
 
-				if(-1 != http_request)
-				{
-					GHTTPState download_state = QueryDownloadState(http_request);
-
-					// if the status code is not 2xx either something has gone wrong, or we are being redirected
-					// either way, display the connecting text
-					bool status_successful = false;
-					if(download_state > GHTTPReceivingStatus)
-					{
-						int status_code = QueryResponseStatus(http_request);
-
-						// integer math, shouldn't round this up
-						if(status_code / 100 == 2)
-							status_successful = true;
-					}
-
-					// only display the download details if the intended file is being downloaded (only on a 2xx status code)
-					if((GHTTPReceivingFile == download_state) && status_successful)
-					{
-						wcscat_s(g_download_display_globals.m_details_values_string,
-							k_display_details_string_length,
-							L"Downloading");
-
-						print_connecting = false;
-					}
-				}
-
-				if(print_connecting)
-				{
-					wcscat_s(g_download_display_globals.m_details_values_string,
-						k_display_details_string_length,
-						L"Connecting");
-				}
+				g_map_download_display.SetPartProgress(progress);
 
 				if(g_map_download_globals.m_servers.server_iterator && g_map_download_globals.m_servers.server_iterator->Current())
 				{
-					// add the host name
-					swprintf_s(buffer, MAX_PATH, L"\n%S", g_map_download_globals.m_servers.server_iterator->Current()->Server()->m_name);
-
-					wcscat_s(g_download_display_globals.m_details_values_string,
-						k_display_details_string_length,
-						buffer);
+					// add the provider title
+					g_map_download_display.SetProviderTitle(g_map_download_globals.m_servers.server_iterator->Current()->Server()->m_name);
+					// add the provider description
+					g_map_download_display.SetProviderDescription(g_map_download_globals.m_servers.server_iterator->Current()->Server()->m_description);
 				}
 			}
+
+			g_map_download_display.Update();
 
 			ReleaseMutex(g_globals_access_mutex);
 		}
@@ -1605,6 +1434,7 @@ namespace Yelo
 
 			// validate the data
 			success = Engine::CompareMD5(CAST_PTR(cstring, uncompressed_data), (DWORD)uncompressed_size, map_element.m_md5);
+			success &= (uncompressed_size == map_element.m_uncompressed_size);
 
 			if(success)
 			{
@@ -1886,6 +1716,7 @@ namespace Yelo
 			g_map_download_globals.m_master_server_list.succeeded = false;
 			g_map_download_globals.m_master_server_list.server_list = NULL;
 			g_map_download_globals.m_master_server_list.downloader.Ctor();
+			g_map_download_globals.m_master_server_list.downloader.SetServerList(&g_map_download_globals.m_master_server_list.server_list);
 		}
 
 		/*!
@@ -2166,6 +1997,12 @@ namespace Yelo
 				{
 					// clean up the request
 					part_downloader.Stop();
+
+					if(g_map_download_globals.m_part_download.part_iterator && g_map_download_globals.m_part_download.part_iterator->Current())
+					{
+						g_map_download_globals.m_part_download.part_iterator->Current()->m_total_bytes = 0;
+						g_map_download_globals.m_part_download.part_iterator->Current()->m_received_bytes = 0;
+					}
 
 					return _map_download_stage_failed;
 				}
@@ -2477,8 +2314,7 @@ namespace Yelo
 				if((g_map_download_globals.m_master_server_list.completed = UpdateStage_MasterServerList(delta)) &&
 					g_map_download_globals.m_master_server_list.succeeded)
 				{
-					// download is completed, so deep copy the server list and destroy the downloaders copy
-					g_map_download_globals.m_master_server_list.server_list = g_map_download_globals.m_master_server_list.downloader.ServerList()->DeepCopy(NULL);
+					// download is completed, so destroy the downloader
 					g_map_download_globals.m_master_server_list.downloader.Dtor();
 				}
 			}
@@ -2526,7 +2362,7 @@ namespace Yelo
 				// reset for the next download
 				CleanupMapDownload();
 				ResetMapDownload();
-				ResetDownloadDisplay();
+				g_map_download_display.ResetDisplay();
 				g_map_download_globals.m_map_download_update_stage = _map_download_update_stage_idle;
 
 				// the download is complete/cancelled so re-enable the ui widget update function
