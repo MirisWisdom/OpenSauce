@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="us-ascii" standalone="yes"?>
 <definitions game="Halo1">
-	<!-- see: OpenSauce\shared\Include\Blam\Halo1\project_yellow_globals_shared_definitions.hpp -->
+	<!-- see: OpenSauce\shared\YeloLib\Halo1\open_sauce\project_yellow_global_definitions.hpp -->
 
 	<flags>
 		<Flag name="gameplay_game_type_player_settings_flags">
@@ -18,12 +18,14 @@
 	</flags>
 
 	<blocks>
+		<!-- TODO: Remove -->
 		<TagBlock name="preprocess_maplist_block" maxElements="32">
 			<field type="String" name="name" />
 			<field type="TagReference" name="scenario" definition="scenario_reference_non_resolving" />
 			<field type="Pad" definition="24" />
 		</TagBlock>
-		<TagBlock name="preprocess_block" maxElements="1">
+		<!-- TODO: Remove -->
+		<TagBlock name="preprocess_block" maxElements="0">
 			<field type="Pad" definition="4" />
 			<field type="Block" name="campaign" definition="preprocess_maplist_block" />
 			<field type="Block" name="multiplayer" definition="preprocess_maplist_block" />
@@ -31,7 +33,8 @@
 		</TagBlock>
 
 
-		<TagBlock name="network_game_player_unit" maxElements="32">
+		<!-- TODO: Hidden until we finalize the tag structure -->
+		<TagBlock name="network_game_player_unit" maxElements="0">
 			<field type="String" name="name" blockname="true" tooltip="name of this block definition" />
 			<field type="TagReference" name="definition" definition="unit_reference" tooltip="unit definition for this player's biped" />
 			<field type="Pad" definition="32" />
@@ -111,17 +114,24 @@
 			<field type="TagReference" name="global explicit references" definition="tag_collection_reference" />
 			<field type="Pad" definition="32" />
 
-			<field type="Block" name="preprocess" definition="preprocess_block" />
+			<!-- TODO: Remove -->
+			<field type="Block" name="" definition="preprocess_block" />
 
+			<field type="Explanation" name="UI" />
+			<field type="Pad" definition="16" />
+			<field type="Pad" definition="16" />
+			<!-- TODO: Remove
 			<field type="Explanation" name="UI" definition="~N(If this is a ui cache) Map lists specify what maps to add to the map chooser ui" />
 			<field type="TagReference" name="custom map list - sp" definition="string_list_reference" tooltip="SHOULD BE AUTOFILLED BY preprocess_maplist_block" />
 			<field type="TagReference" name="custom map list - mp" definition="string_list_reference" tooltip="SHOULD BE AUTOFILLED BY preprocess_maplist_block" />
+			-->
 			<field type="Pad" definition="16" />
 			<field type="Pad" definition="4" />
 			<field type="Block" name="scripted ui widgets" definition="project_yellow_scripted_ui_widget_block" />
 
-			<field type="Explanation" name="Netgame" definition="" />
-			<field type="Block" name="player units" definition="network_game_player_unit" />
+			<!-- <field type="Explanation" name="Netgame" definition="" /> -->
+			<!-- TODO: Hidden until we finalize the tag structure -->
+			<field type="Block" name="" definition="network_game_player_unit" />
 			<field type="Pad" definition="20" />
 			
 			<field type="Explanation" name="Scripting" definition="External scripting definitions (Yelo)" />

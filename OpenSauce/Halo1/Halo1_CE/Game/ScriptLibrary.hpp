@@ -29,17 +29,6 @@ namespace Yelo
 	namespace Scripting
 	{
 		#pragma region hs_function
-//////////////////////////////////////////////////////////////////////////
-// Macro glue for declaring/defining a hs function which takes no arguments
-#define DECLARE_HS_FUNCTION(name) extern Yelo::Scripting::hs_function_definition function_##name##_definition
-
-//////////////////////////////////////////////////////////////////////////
-// Macro glue for declaring/defining a hs function which takes various arguments for input
-#define DECLARE_HS_FUNCTION_WITH_PARAMS(name) extern hs_function_definition function_##name##_definition
-
-#define GET_HS_FUNCTION(name) Yelo::Scripting::function_##name##_definition
-
-
 		const hs_function_definition* HSFunctionTable();
 
 		const hs_function_definition& HSYeloFunction(int16 index);
@@ -47,22 +36,6 @@ namespace Yelo
 		#pragma endregion
 
 		#pragma region hs_global
-//////////////////////////////////////////////////////////////////////////
-// Macro glue for declaring/defining a normal hs global
-#define DECLARE_HS_GLOBAL(name) extern Yelo::Scripting::hs_global_definition global_##name##_definition
-
-//////////////////////////////////////////////////////////////////////////
-// Macro glue for declaring/defining an hs global with special flags
-#define DECLARE_HS_GLOBAL_EX(name) extern Yelo::Scripting::hs_global_definition global_##name##_definition
-
-//////////////////////////////////////////////////////////////////////////
-// Macro glue for declaring/defining a hs global whose value is stored
-// in the engine itself. Was useful in the case of 'gravity'
-#define DECLARE_HS_GLOBAL2(name) extern Yelo::Scripting::hs_global_definition global_##name##_definition
-
-#define GET_HS_GLOBAL(name) Yelo::Scripting::global_##name##_definition
-
-
 		const hs_global_definition* HSExternalGlobals();
 
 		const hs_global_definition& HSYeloGlobal(int16 index);
@@ -113,12 +86,5 @@ namespace Yelo
 		// True if the script definitions in [data] match the functions/globals 
 		// defined by Yelo's code.
 		bool DefinitionsMatch(const TagGroups::s_scripting_definitions& data);
-
-		// Interpret [data] as [type] data. Takes the [data].pointer and sets [data] to the dereferenced value.
-		// If [data].pointer is NULL, then this sets [data] to [type]'s NONE equivalent.
-		void UpdateTypeHolderFromPtrToData(TypeHolder& data, const Enums::hs_type type);
-		// Interpret [ptr] as a [type] pointer. Takes [ptr], deferences it and sets [data] to the value.
-		// [data] is 'const' as this doesn't modify the pointer, but the data which it points to.
-		void UpdateTypeHolderDataFromPtr(const TypeHolder& data, const Enums::hs_type type, void* ptr);
 	};
 };

@@ -5,7 +5,7 @@
 	</blocks>
 
 	<groups>
-		<TagGroup name="equipment_hud_interface" groupTag="eqhi" version="1">
+		<TagGroup name="equipment_hud_interface" groupTag="eqhi" version="0">
 		</TagGroup>
 	</groups>
 

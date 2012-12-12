@@ -26,5 +26,6 @@ namespace Yelo
 			PAD32; PAD32; PAD32;
 			PAD16; PAD16;
 		}; BOOST_STATIC_ASSERT( sizeof(s_recorded_animations_datum) == 0x64 );
+		typedef Memory::DataArray<s_recorded_animations_datum, 64> t_recorded_animations_data;
 	};
 };

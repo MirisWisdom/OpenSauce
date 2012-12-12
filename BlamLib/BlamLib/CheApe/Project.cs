@@ -276,9 +276,10 @@ namespace BlamLib.CheApe
 			{
 				ShowMessageInForm(owner_form, dbg_name, k_error, "CheApe", is_embedded ? " (Embedded)" : "");
 				return;
-			}catch(System.Exception)
+			}catch(System.Exception ex)
 			{
 				ShowMessageInForm(owner_form, dbg_name, k_error, ".NET", is_embedded ? " (Embedded)" : "");
+				Debug.LogFile.WriteLine("CheApe: .NET parsing error in {0}.{1}{2}", dbg_name, Program.NewLine, ex);
 				return;
 			}
 
@@ -419,7 +420,6 @@ namespace BlamLib.CheApe
 			proj.OwnerState = this;
 			project = proj;
 
-			// TODO: uncomment this for scripting support
  			Managers.BlamDefinition gd = Program.GetManager(engine);
  			(gd as Managers.IScriptingController).ScriptingCacheOpen(engine);
 			scriptingInterface = gd[engine].GetResource<Scripting.XmlInterface>(Managers.BlamDefinition.ResourceScripts);

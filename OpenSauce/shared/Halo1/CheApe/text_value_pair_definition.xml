@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+	<flags>
+		<Flag name="text_value_pair_reference_flags">
+			<field>default setting</field>
+			<field>use real value#use the real value instead of the integer</field>
+		</Flag>
+	</flags>
+
+	<blocks>
+		<TagBlock name="text_value_pair_reference_block" maxElements="32">
+			<field type="WordFlags" name="flags" definition="text_value_pair_reference_flags" />
+			<field type="Pad" definition="2" />
+			<field type="StringId" name="label string id" blockname="true" />
+			<field type="LongInteger" name="integer" />
+			<field type="Real" name="real" />
+			<field type="Pad" definition="16" />
+		</TagBlock>
+	</blocks>
+
+	<groups>
+		<TagGroup name="text_value_pair_definition" groupTag="sily" version="0">
+			<field type="StringId" name="parameter" />
+			<field type="TagReference" name="string list" definition="multilingual_unicode_string_list_reference" />
+			<field type="StringId" name="title text" />
+			<field type="StringId" name="header text" />
+			<field type="StringId" name="description text" />
+			<field type="Block" name="text value pairs" definition="text_value_pair_reference_block" />
+		</TagGroup>
+	</groups>
+
+</definitions>

@@ -45,9 +45,6 @@ namespace Yelo
 		// Returns the loaded yelo global's handle or datum_index::null
 		static datum_index YeloPrepareDefinitionsYeloGlobals(project_yellow& yelo, const bool for_build_cache)
 		{
-			// internal name of the cache's Yelo Globals when the user doesn't supply a definition
-			static cstring k_yelo_globals_name = "there they are all standing in a row";
-
 			datum_index yelo_globals_index = datum_index::null;
 
 			// check if the Yelo definition has a Yelo Globals tag reference and load it
@@ -55,10 +52,10 @@ namespace Yelo
 				yelo_globals_index = tag_load<project_yellow_globals>(yelo.yelo_globals.name, 0);
 			else if(for_build_cache) // Only use the internal tag for cache-building only, not for editing
 			{
-				yelo_globals_index = tag_new<project_yellow_globals>(k_yelo_globals_name);
+				yelo_globals_index = tag_new<project_yellow_globals>(project_yellow_globals::k_default_name);
 
 				if(!yelo_globals_index.IsNull())
-					tag_reference_set<project_yellow_globals>(&yelo.yelo_globals, k_yelo_globals_name);
+					tag_reference_set<project_yellow_globals>(yelo.yelo_globals, project_yellow_globals::k_default_name);
 			}
 
 			return yelo_globals_index;
@@ -68,9 +65,6 @@ namespace Yelo
 		// Returns the loaded yelo scenario's handle or datum_index::null
 		static datum_index YeloPrepareDefinitionsYeloScenario(tag_reference& yelo_reference, const bool for_build_cache)
 		{
-			// internal name of the cache's Yelo tag when the user doesn't supply a definition
-			static cstring k_yelo_name = "i've got a lovely bunch of corncobs";
-
 			datum_index yelo_index = datum_index::null;
 
 			// check if the scenario has a Yelo definition and load it and if not, create it
@@ -81,7 +75,7 @@ namespace Yelo
 				yelo_isnt_new = true;
 			}
 			else if(for_build_cache) // Only use the internal tag for cache-building only, not for editing
-				yelo_index = tag_new<project_yellow>(k_yelo_name);
+				yelo_index = tag_new<project_yellow>(project_yellow::k_default_name);
 
 			// Just in case the tag fails to load or fails to be created
 			if(!yelo_index.IsNull())
@@ -90,7 +84,7 @@ namespace Yelo
 
 				// set the scenario's yelo reference if it isn't already set-up
 				if(!yelo_isnt_new)
-					tag_reference_set<project_yellow>(&yelo_reference, k_yelo_name);
+					tag_reference_set<project_yellow>(yelo_reference, project_yellow::k_default_name);
 
 				YeloPrepareDefinitionsYeloGlobals(*yelo, for_build_cache);
 			}

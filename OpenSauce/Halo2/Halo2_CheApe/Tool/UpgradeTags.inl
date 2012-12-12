@@ -57,7 +57,7 @@ static void PLATFORM_API tool_upgrade_all_tags_proc(wcstring* arguments)
 			char name[_MAX_PATH];
 			if(fscanf_s(file, "%4s\t%s\r\n", group_tag_str, NUMBEROF(group_tag_str), name, NUMBEROF(name)) == 2)
 			{
-				tag group_tag = string_to_group_tag(group_tag_str);
+				tag group_tag = TagGroups::string_to_group_tag(group_tag_str);
 				datum_index tag_index = tag_loaded(group_tag, name);
 				if(tag_index.IsNull())
 					tag_index = tag_load(group_tag, name, flags);

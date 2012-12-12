@@ -56,6 +56,7 @@ namespace Yelo
 			return true;
 		}
 
+#if FALSE
 		static cstring PLATFORM_API py_globals_preprocess_maplist_format(datum_index tag_index, tag_block* block, int32 element, char formatted_buffer[Enums::k_tag_block_format_buffer_size])
 		{
 			s_yelo_preprocess_maplist_entry* elem = 
@@ -74,6 +75,7 @@ namespace Yelo
 
 			return formatted_buffer;
 		}
+#endif
 		//////////////////////////////////////////////////////////////////////////
 
 		//////////////////////////////////////////////////////////////////////////
@@ -109,6 +111,7 @@ namespace Yelo
 			{// project_yellow_globals
 				py_globals_definition->postprocess_proc = &TagGroups::py_globals_group_postprocess;
 
+#if FALSE
 				//////////////////////////////////////////////////////////////////////////
 				{// preprocess_block
 					field_index = TagGroups::tag_block_find_field(py_globals_definition->definition, Enums::_field_block, "preprocess");
@@ -129,6 +132,7 @@ namespace Yelo
 					tag_block_definition* preprocess_map_block_def = preprocess_block_def->fields[field_index].Definition<tag_block_definition>();
 					preprocess_map_block_def->format_proc = &TagGroups::py_globals_preprocess_maplist_format;
 				}
+#endif
 
 
 				//////////////////////////////////////////////////////////////////////////
@@ -239,37 +243,6 @@ namespace Yelo
 			_yelo_definition_globals.initialized = false;
 		}
 		//////////////////////////////////////////////////////////////////////////
-
-		static void YeloGlobalsDefinitionCullInvalidNetworkPlayerUnits(TAG_TBLOCK(& player_units, TagGroups::s_network_game_player_unit))
-		{
-			if(player_units.Count == 0) return;
-
-			for(int32 x = player_units.Count; x >= 0; x--)
-			{
-				const TagGroups::s_network_game_player_unit* player_unit = &player_units[x];
-				bool remove_element = true;
-
-				if( player_unit->name[0] == '\0' )
-					printf_s("CheApe: Culling unnamed network_game_player_unit element #%n\n", x);
-				else if( player_unit->definition.tag_index.IsNull() )
-					printf_s("CheApe: Culling invalid network_game_player_unit element #%n (%s)\n", x, player_unit->name);
-				else remove_element = false;
-
-				if(remove_element) tag_block_duplicate_element(player_units, x);
-			}
-		}
-		/*!
-		 * \brief
-		 * Removes "preprocess" related and otherwise invalid tag data from the PY globals tag
-		 */
-		void YeloGlobalsDefinitionCull(TagGroups::project_yellow_globals* globals)
-		{
-			YELO_ASSERT(globals);
-
-			tag_block_resize(globals->preprocess, 0);
-
-			YeloGlobalsDefinitionCullInvalidNetworkPlayerUnits(globals->networking.player_units);
-		}
 
 #if PLATFORM_ID == PLATFORM_TOOL
 		static bool GameGlobalsRequiresYeloGameStateUpgrades(datum_index game_globals_index)

@@ -17,14 +17,25 @@ namespace Yelo
 
 	struct string_id_yelo
 	{
-		enum {
-			k_signature = 'sidy'
-		};
+		enum { k_signature = 'sidy' };
 
 		tag signature;
 		string_id_yelo_value_t value;
 		int32 value_length;
+		datum_index tag_index;
+
 		string_id id;
+	}; BOOST_STATIC_ASSERT( sizeof(string_id_yelo) == 0x14 );
+
+	namespace TagGroups
+	{
+		struct s_string_id_yelo_definition
+		{
+			enum { k_group_tag = string_id_yelo::k_signature };
+
+			tag_data documentation;
+			PAD_TYPE(tag_data);
+		};
 	};
 
 	namespace _string_id

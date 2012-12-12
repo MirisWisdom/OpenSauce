@@ -3690,11 +3690,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Halo1\CheApe\Halo1_CE.cheape_project"
+					RelativePath="..\..\shared\Halo1\CheApe\model_animations_yelo.xml"
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Halo1\CheApe\model_animations_yelo.xml"
+					RelativePath="..\..\shared\Halo1\CheApe\multilingual_unicode_string_list.xml"
 					>
 				</File>
 				<File
@@ -3710,25 +3710,41 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Halo1\CheApe\project_yellow_misc.xml"
-					>
-				</File>
-				<File
 					RelativePath="..\..\shared\Halo1\CheApe\project_yellow_scripting.xml"
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Halo1\CheApe\shader_model_extension.xml"
+					RelativePath="..\..\shared\Halo1\CheApe\project_yellow_shared.xml"
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Halo1\CheApe\shader_postprocess.xml"
+					RelativePath="..\..\shared\Halo1\CheApe\string_id_yelo.xml"
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Halo1\CheApe\shader_postprocess_globals.xml"
+					RelativePath="..\..\shared\Halo1\CheApe\text_value_pair_definition.xml"
 					>
 				</File>
+				<Filter
+					Name="shaders"
+					>
+					<File
+						RelativePath="..\..\shared\Halo1\CheApe\shader_model_extension.xml"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Halo1\CheApe\shader_postprocess.xml"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Halo1\CheApe\shader_postprocess_collection.xml"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Halo1\CheApe\shader_postprocess_globals.xml"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -4446,7 +4462,19 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\hs\hs_runtime.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\hs\hs_scenario_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\hs\hs_structures.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\hs\object_lists.hpp"
 					>
 				</File>
 			</Filter>
@@ -5433,6 +5461,10 @@
 			<Filter
 				Name="hs"
 				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\hs\hs_yelo.cpp"
+					>
+				</File>
 				<File
 					RelativePath="..\..\shared\Include\YeloLib\Halo1\hs\hs_yelo.hpp"
 					>

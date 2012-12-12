@@ -2,7 +2,7 @@
 <definitions game="Halo1">
 
 	<data>
-		<TagData name="tag_database_entry_name_data" maxSize="256" isTextData="true" isDebugData="true" />
+		<TagData name="tag_database_entry_name_data" maxSize="0x100" isTextData="true" isDebugData="true" />
 	</data>
 
 	<blocks>

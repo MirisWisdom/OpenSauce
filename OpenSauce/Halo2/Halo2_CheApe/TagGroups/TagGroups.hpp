@@ -294,30 +294,24 @@ namespace Yelo
 		void Dispose();
 	};
 
-	API_INLINE tag string_to_group_tag(cstring name)
-	{
-		const uint32 _group = *((const uint32*)name);
-		return (tag) ( (_group>>24) | ((_group>>8)& 0xFF00) | (((_group<<8)&0xFF0000) | ((_group<<24)&0xFF000000)) );
-	}
-
 	tag tag_get_group_tag(datum_index tag_index);
-	tag_block& tag_get_root_block(datum_index tag_index);
-	cstring tag_get_name(datum_index tag_index);
+	tag_block* tag_get_root_block(datum_index tag_index);
+
 	bool tag_file_exists(tag group_tag, cstring name);
-	void tag_block_clear(tag_block& block, tag_block_definition* definition);
-	void tag_reference_clear(tag_reference& reference);
+	void tag_block_clear(tag_block* block, tag_block_definition* definition);
+
 	void tag_reference_zero(tag_reference& reference);
 	void tag_reference_move(tag_reference& dst, tag_reference& src);
 	bool tag_references_compare(const tag_reference& lhs, const tag_reference& rhs);
-	bool tag_is_read_only(datum_index tag_index);
-	void tag_block_move(tag_block& to_block, tag_block& from_block);
-	void tag_reference_set(tag_reference& reference, tag group_tag, cstring name);
+
+	void tag_block_move(tag_block* to_block, tag_block* from_block);
+
 	void tag_reference_copy(const tag_reference& src, tag_reference& dst);
 	tag_group_definition* tag_group_get_next(tag_group_definition* start = NULL);
 	void* tag_data_get_pointer(tag_data& data, uint32 offset);
 	char* string_id_get_string(string_id id, string_id_value out_value);
 	cstring string_id_get_value(string_id id);
-	void tag_block_delete_all(tag_block& block);
+	void tag_block_delete_all(tag_block* block);
 	datum_index find_tag_instance(tag group_tag, cstring name, datum_index* out_index = NULL);
 
 
@@ -329,82 +323,20 @@ namespace Yelo
 		return tag_group_get(T::k_group_tag);
 	}
 	
-	// Get the tag definition's address by it's expected group tag and 
-	// it's tag handle [tag_index]
-	void* tag_get(tag group_tag, datum_index tag_index);
-	template<typename T>
-	T* tag_get(datum_index tag_index)
-	{
-		return CAST_PTR(T*, tag_get(T::k_group_tag, tag_index));
-	}
-	
-	void tag_unload(datum_index tag_index);
 	void tag_orphan(datum_index tag_index);
 	bool tag_rename(datum_index tag_index, cstring new_name);
 	datum_index tag_loaded(tag group_tag, cstring name);
 	bool tag_data_resize(tag_data& data, uint32 new_size);
 
-
-	datum_index tag_new(tag group_tag, cstring name);
-	template<typename T>
-	datum_index tag_new(cstring name)
-	{
-		return tag_new(T::k_group_tag, name);
-	}
 	
-	void* tag_block_get_element_with_size(tag_block& block, int32 element_index, size_t element_size);
-	bool tag_save(datum_index tag_index);
-	
-	// Get the address of a block element which exists at [element]
-	void* tag_block_get_element(tag_block& block, int32 element_index);
-	template<typename T>
-	T* tag_block_get_element(TagBlock<T>& block, int32 element)
-	{
-		YELO_ASSERT(_error_category_tags, sizeof(T) == block.BlockDefinition->field_set_latest->size);
+	void* tag_block_get_element_with_size(tag_block* block, int32 element_index, size_t element_size);
 
-		return CAST_PTR(T*, tag_block_get_element(*block.to_tag_block(), element));
-	}
-	
-	// Load a tag definition into memory.
-	// Returns the tag handle of the loaded tag definition
-	datum_index tag_load(tag group_tag, cstring name, long_flags flags);
-	template<typename T>
-	datum_index tag_load(cstring name, long_flags file_flags)
-	{
-		return tag_load(T::k_group_tag, name, file_flags);
-	}
-
-	// Add a new block element and return the index which 
-	// represents the newly added element
-	int32 tag_block_add_element(tag_block& block);
-	template<typename T>
-	int32 tag_block_add_element(TagBlock<T>& block)
-	{
-		return tag_block_add_element(*block.to_tag_block());
-	}
 
 	bool tag_reference_is_valid(const tag_reference& reference);
-	bool duplicate_recursive_tag_block(const tag_block& src_block, const int32 src_index, tag_block& dst_block, int32 dst_index);
+	bool duplicate_recursive_tag_block(const tag_block* src_block, const int32 src_index, tag_block* dst_block, int32 dst_index);
 	datum_index tag_reload(tag group_tag, cstring name);
 
-	// Resize the block to a new count of elements, returning the 
-	// success result of the operation
-	bool tag_block_resize(tag_block& block, int32 new_count);
-	template<typename T>
-	bool tag_block_resize(TagBlock<T>& block, int32 new_count)
-	{
-		return tag_block_resize(*block.to_tag_block(), new_count);
-	}
-
 	void tag_load_children(datum_index tag_index);
-	bool tag_block_copy(const tag_block& src_block, tag_block& dst_block);
+	bool tag_block_copy(const tag_block* src_block, tag_block* dst_block);
 	datum_index tag_copy_and_orphan(datum_index tag_index);
-
-	// Delete the block element at [element]
-	void tag_block_delete_element(tag_block& block, int32 element_index);
-	template<typename T>
-	void tag_block_delete_element(TagBlock<T>& block, int32 element)
-	{
-		tag_block_delete_element(*block.to_tag_block(), element);
-	}
 };

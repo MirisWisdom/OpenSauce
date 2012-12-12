@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="us-ascii" standalone="yes"?>
 <definitions game="Halo1">
 
-	<references>
-		<Reference name="shader_postprocess_generic_reference">
-			<field>shpg</field>
-		</Reference>
-	</references>
-
 	<enums>
 		<Enum name="shader_postprocess_pass_render_chain_enum">
 			<field>main chain</field>
@@ -77,8 +71,8 @@
 	</flags>
 
 	<data>
-		<TagData name="shader_postprocess_shader_source_code_data" maxSize="32768" isTextData="true" />
-		<TagData name="shader_postprocess_shader_compiled_data" maxSize="32768" isTextData="false" />
+		<TagData name="shader_postprocess_shader_source_code_data" maxSize="0x8000" isTextData="true" />
+		<TagData name="shader_postprocess_shader_compiled_data" maxSize="0x8000" isTextData="false" />
 	</data>
 
 	<blocks>

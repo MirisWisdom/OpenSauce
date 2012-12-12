@@ -234,28 +234,6 @@ namespace Yelo
 
 	namespace TagGroups
 	{
-		// just an endian swap
-		inline void TagSwap(tag& x)
-		{
-			x = (x>>24) | 
-				((x<<8) & 0x00FF0000) |
-				((x>>8) & 0x0000FF00) |
-				(x<<24);
-		}
-
-		// Union hack to use a group tag as a string
-		union group_tag_to_string
-		{
-			struct {
-				tag group;
-				PAD8; // null terminator
-			};
-			char str[sizeof(tag)+1];
-
-			inline void Terminate() { str[4] = '\0'; }
-			inline void TagSwap()	{ TagGroups::TagSwap(group); }
-		};
-
 		t_tag_instance_data*	TagInstances();
 
 
@@ -269,44 +247,32 @@ namespace Yelo
 		// or if the function I need doesn't exist to my knowledge
 		// I'll add an implementation or declaration here
 
-		API_INLINE bool tag_is_read_only(datum_index tag_index)
-		{
-			if( tag_index.IsNull() ) return false;
-
-			return (*TagInstances())[tag_index]->is_read_only;
-		}
-
 		// Searches [def] for a field of type [field_type] with a name which starts 
 		// with [name] characters. Optionally starts at a specific field index.
 		// Returns NONE if this fails.
 		int32 tag_block_find_field(const tag_block_definition* def, 
 			_enum field_type, cstring name, int32 start_index = NONE);
 
-		// Clear the values of a tag reference so that it references no tag
-		void tag_reference_clear(tag_reference& reference);
-
 		// Convenience function to handle deleting all of the data in tag_data field.
 		// Use [terminator_size] for tag_data which HAS to have a specific amount of 
 		// bytes no matter what. IE, text data requires 1 or 2 bytes (ascii or unicode) 
 		// for the null terminator.
-		API_INLINE void tag_data_delete(tag_data& data, size_t terminator_size = 0)
+		void tag_data_delete(tag_data& data, size_t terminator_size = 0);
+		template<typename T>
+		void tag_data_delete(TagData<T>& data, size_t terminator_size = 0)
 		{
-			data.address = YELO_REALLOC(data.address, data.size = terminator_size);
+			tag_data_delete(data, terminator_size);
+		}
+
+		bool tag_block_delete_all_elements(tag_block* block);
+		template<typename T>
+		bool tag_block_delete_all_elements(TagBlock<T>& block)
+		{
+			return tag_block_delete_all_elements(block.to_tag_block());
 		}
 	};
 
 
-
-	cstring tag_get_name(datum_index tag_index);
-
-	// Get the tag definition's address by it's expected group tag and 
-	// it's tag handle [tag_index]
-	void* tag_get(tag group_tag, datum_index tag_index);
-	template<typename T>
-	T* tag_get(datum_index tag_index)
-	{
-		return CAST_PTR(T*, tag_get(T::k_group_tag, tag_index));
-	}
 
 	// Get the group definition based on a four-character code
 	tag_group_definition* tag_group_get(tag group_tag);
@@ -327,73 +293,18 @@ namespace Yelo
 
 
 
-	int32 tag_reference_set(tag_reference* reference, tag group_tag, cstring name);
-	template<typename T>
-	int32 tag_reference_set(tag_reference* reference, cstring name)
-	{
-		return tag_reference_set(reference, T::k_group_tag, name);
-	}
-
 	// Get the size in bytes of how much memory [block] consumes with all 
 	// of its child data too
 	uint32 tag_block_size(tag_block* block);
 
-	// Get the address of a block element which exists at [element]
-	void* tag_block_get_element(tag_block* block, int32 element);
-	template<typename T>
-	T* tag_block_get_element(TagBlock<T>& block, int32 element)
-	{
-		YELO_ASSERT(sizeof(T) == block.BlockDefinition->element_size);
-
-		return CAST_PTR(T*, tag_block_get_element(block.to_tag_block(), element));
-	}
-
-	datum_index tag_new(tag group_name, cstring name);
-	template<typename T>
-	datum_index tag_new(cstring name)
-	{
-		return tag_new(T::k_group_tag, name);
-	}
-
-	bool tag_save(datum_index tag_index);
-
-	// Delete the block element at [element]
-	void tag_block_delete_element(void* block, int32 element);
-	template<typename T>
-	void tag_block_delete_element(TagBlock<T>& block, int32 element)
-	{
-		tag_block_delete_element(block.to_tag_block(), element);
-	}
-
-	// Add a new block element and return the index which 
-	// represents the newly added element
-	int32 tag_block_add_element(tag_block* block);
-	template<typename T>
-	int32 tag_block_add_element(TagBlock<T>& block)
-	{
-		return tag_block_add_element(block.to_tag_block());
-	}
-
-	// Resize the block to a new count of elements, returning the 
-	// success result of the operation
-	bool tag_block_resize(tag_block* block, int32 element_count);
-	template<typename T>
-	bool tag_block_resize(TagBlock<T>& block, int32 element_count)
-	{
-		return tag_block_resize(block.to_tag_block(), element_count);
-	}
-
-	// Insert a new block element at [index] and return the address 
+	// Insert a new block element at [index] and return the index 
 	// of the inserted element
-	void* tag_block_insert_element(tag_block* block, int32 index);
+	int32 tag_block_insert_element(tag_block* block, int32 index);
 	template<typename T>
 	T* tag_block_insert_element(TagBlock<T>& block, int32 index)
 	{
-		YELO_ASSERT(sizeof(T) == block.BlockDefinition->element_size);
-
 		return CAST_PTR(T*, tag_block_insert_element(block.to_tag_block(), index));
 	}
-
 	// Duplicate the block element at [element] and return the index which 
 	// represents the duplicated element
 	int32 tag_block_duplicate_element(tag_block* block, int32 element);
@@ -402,19 +313,6 @@ namespace Yelo
 	{
 		return tag_block_duplicate_element(block.to_tag_block(), element);
 	}
-
-	// Load a tag definition into memory.
-	// Returns the tag handle of the loaded tag definition
-	datum_index tag_load(tag group_tag, cstring name, long_flags file_flags);
-	template<typename T>
-	datum_index tag_load(cstring name, long_flags file_flags)
-	{
-		return tag_load(T::k_group_tag, name, file_flags);
-	}
-
-	// Unload a tag definition from memory.
-	// [tag_index] will resolve to an invalid index after this returns.
-	void tag_unload(datum_index tag_index);
 
 
 	// Use [NULL_HANDLE] for [group_tag_filter] to iterate all tag groups
@@ -427,4 +325,9 @@ namespace Yelo
 
 	// Returns [datum_index::null] when finished iterating
 	datum_index tag_iterator_next(TagGroups::tag_iterator& iter);
+
+	// Is the tag file read only?
+	bool tag_file_read_only(tag group_tag, cstring name);
+	// Does the tag file exist?
+	bool tag_file_exists(tag group_tag, cstring name);
 };

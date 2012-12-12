@@ -12,6 +12,22 @@ namespace BlamLib.Blam.Halo1.CheApe
 {
 	internal sealed class Import : BlamLib.CheApe.Import
 	{
+		internal const string kStringIdFieldDefinitionName = "string_id_yelo_non_resolving";
+		internal const string kStringIdGroupTag = "sidy";
+		internal const int kStringIdPadSize = StringId.kSizeOf - StringIdDesc.kSizeOf;
+
+		internal TagReference StringIdFieldDefinition;
+		internal Field StringIdFieldHandlePadding;
+
+		void StringIdFieldsInitialize(BlamLib.CheApe.ProjectState state)
+		{
+			if (StringIdFieldDefinition != null) return;
+
+			// Will add itself to the import state in the ctor
+			StringIdFieldDefinition = new TagReference(state, kStringIdFieldDefinitionName, true, kStringIdGroupTag);
+			StringIdFieldHandlePadding = new Field(state, state.kTypeIndexPad, "", kStringIdPadSize.ToString());
+		}
+
 		public sealed class FieldContainer
 		{
 			private List<Field> fields = new List<Field>();
@@ -22,10 +38,14 @@ namespace BlamLib.Blam.Halo1.CheApe
 
 			int CalculateSize(BlamLib.CheApe.ProjectState state, Field f)
 			{
+				int size = 0;
+
 				if (f.TypeIndex == state.kTypeIndexPad || f.TypeIndex == state.kTypeIndexSkip)
-					return f.ToInt();
+					size = f.ToInt();
 				else
-					return state.GetFieldSize(f.TypeIndex);
+					size = state.GetFieldSize(f.TypeIndex);
+
+				return size;
 			}
 
 			int CalculateSizeFromArrayStart(BlamLib.CheApe.ProjectState state, ref int current_index)
@@ -67,14 +87,24 @@ namespace BlamLib.Blam.Halo1.CheApe
 
 			public void Read(BlamLib.CheApe.ProjectState state, IO.XmlStream s)
 			{
+				int array_start_depth = 0;
+
 				foreach (XmlNode n in s.Cursor.ChildNodes)
 				{
 					if (n.Name != "field") continue;
 
+					Field f;
 					s.SaveCursor(n);
-					fields.Add(new Field(state, s));
+					fields.Add(f = new Field(state, s));
 					s.RestoreCursor();
+
+					if (f.TypeIndex == state.kTypeIndexArrayStart) array_start_depth++;
+					else if (f.TypeIndex == state.kTypeIndexArrayEnd) array_start_depth--;
 				}
+
+				if (array_start_depth != 0)
+					throw new Debug.ExceptionLog("Unterminated ArrayStart or extra ArrayEnd in '{0}'.{1}{2}", 
+						s.FileName, Program.NewLine, s.Cursor.OuterXml);
 			}
 		};
 
@@ -214,6 +244,9 @@ namespace BlamLib.Blam.Halo1.CheApe
 		{
 			base.Reset();
 
+			StringIdFieldDefinition = null;
+			StringIdFieldHandlePadding = null;
+
 			Structs.Clear();
 			Blocks.Clear();
 			Groups.Clear();
@@ -229,6 +262,8 @@ namespace BlamLib.Blam.Halo1.CheApe
 
 		protected override void ProcessDefinition(XmlNode node, BlamLib.CheApe.ProjectState state, BlamLib.IO.XmlStream s)
 		{
+			StringIdFieldsInitialize(state);
+
 			string name_str;
 
 			switch (node.Name)

@@ -31,6 +31,11 @@ namespace Yelo
 		}
 	};
 
+	size_t tag_block::get_element_size() const
+	{
+		return definition->field_set_latest->size;
+	}
+
 	API_FUNC_NAKED tag tag_get_group_tag(datum_index tag_index)
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_GET_GROUP_TAG);
@@ -41,7 +46,7 @@ namespace Yelo
 		API_FUNC_NAKED_END_CDECL(1);
 	}
 
-	API_FUNC_NAKED tag_block& tag_get_root_block(datum_index tag_index)
+	API_FUNC_NAKED tag_block* tag_get_root_block(datum_index tag_index)
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_GET_ROOT_BLOCK);
 
@@ -72,7 +77,7 @@ namespace Yelo
 		API_FUNC_NAKED_END_CDECL(2);
 	}
 
-	API_FUNC_NAKED void tag_block_clear(tag_block& block, tag_block_definition* definition)
+	API_FUNC_NAKED void tag_block_clear(tag_block* block, tag_block_definition* definition)
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_BLOCK_CLEAR);
 
@@ -135,7 +140,7 @@ namespace Yelo
 		API_FUNC_NAKED_END_CDECL(1);
 	}
 
-	API_FUNC_NAKED void tag_block_move(tag_block& to_block, tag_block& from_block)
+	API_FUNC_NAKED void tag_block_move(tag_block* to_block, tag_block* from_block)
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_BLOCK_MOVE);
 
@@ -211,7 +216,7 @@ namespace Yelo
 		API_FUNC_NAKED_END_CDECL(1);
 	}
 
-	API_FUNC_NAKED void tag_block_delete_all(tag_block& block)
+	API_FUNC_NAKED void tag_block_delete_all(tag_block* block)
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_BLOCK_DELETE_ALL);
 
@@ -321,7 +326,7 @@ namespace Yelo
 		API_FUNC_NAKED_END_CDECL(2);
 	}
 
-	API_FUNC_NAKED void* tag_block_get_element_with_size(tag_block& block, int32 element_index, size_t element_size)
+	API_FUNC_NAKED void* tag_block_get_element_with_size(tag_block* block, int32 element_index, size_t element_size)
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_BLOCK_GET_ELEMENT_WITH_SIZE);
 
@@ -343,7 +348,17 @@ namespace Yelo
 		API_FUNC_NAKED_END_CDECL(1);
 	}
 
-	API_FUNC_NAKED void* tag_block_get_element(tag_block& block, int32 element_index)
+	API_FUNC_NAKED void* tag_block_get_element(tag_block* block, int32 element_index)
+	{
+		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_BLOCK_GET_ELEMENT);
+
+		API_FUNC_NAKED_START()
+			push	element_index
+			push	block
+			call	FUNCTION
+		API_FUNC_NAKED_END_CDECL(2);
+	}
+	API_FUNC_NAKED const void* tag_block_get_element(const tag_block* block, int32 element_index)
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_BLOCK_GET_ELEMENT);
 
@@ -366,7 +381,7 @@ namespace Yelo
 		API_FUNC_NAKED_END_CDECL(3);
 	}
 
-	API_FUNC_NAKED int32 tag_block_add_element(tag_block& block)
+	API_FUNC_NAKED int32 tag_block_add_element(tag_block* block)
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_BLOCK_ADD_ELEMENT);
 
@@ -386,7 +401,7 @@ namespace Yelo
 		API_FUNC_NAKED_END_CDECL(1);
 	}
 
-	API_FUNC_NAKED bool duplicate_recursive_tag_block(const tag_block& src_block, const int32 src_index, tag_block& dst_block, int32 dst_index)
+	API_FUNC_NAKED bool duplicate_recursive_tag_block(const tag_block* src_block, const int32 src_index, tag_block* dst_block, int32 dst_index)
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(DUPLICATE_RECURSIVE_TAG_BLOCK);
 
@@ -410,7 +425,7 @@ namespace Yelo
 		API_FUNC_NAKED_END_CDECL(2);
 	}
 
-	API_FUNC_NAKED bool tag_block_resize(tag_block& block, int32 new_count)
+	API_FUNC_NAKED bool tag_block_resize(tag_block* block, int32 new_count)
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_BLOCK_RESIZE);
 
@@ -431,7 +446,7 @@ namespace Yelo
 		API_FUNC_NAKED_END_CDECL(1);
 	}
 
-	API_FUNC_NAKED bool tag_block_copy(const tag_block& src_block, tag_block& dst_block)
+	API_FUNC_NAKED bool tag_block_copy(const tag_block* src_block, tag_block* dst_block)
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_BLOCK_COPY);
 
@@ -452,7 +467,7 @@ namespace Yelo
 		API_FUNC_NAKED_END_CDECL(1);
 	}
 
-	API_FUNC_NAKED void tag_block_delete_element(tag_block& block, int32 element_index)
+	API_FUNC_NAKED void tag_block_delete_element(tag_block* block, int32 element_index)
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_BLOCK_DELETE_ELEMENT);
 

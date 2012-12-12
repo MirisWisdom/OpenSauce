@@ -12,6 +12,7 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
+#if FALSE
 		/* !-- Preprocessing --! */
 		struct s_yelo_preprocess_maplist_entry
 		{
@@ -33,6 +34,7 @@ namespace Yelo
 			TAG_PAD(int32, 20); // 80
 		};
 		/* !-- Preprocessing --! */
+#endif
 
 
 		/* !-- UI --! */
@@ -142,12 +144,21 @@ namespace Yelo
 			TAG_TBLOCK(infection_units, tag_reference); // 8, aka unit_infection_form_block
 			TAG_TBLOCK(infectable_units, s_unit_infection); // 64
 			TAG_PAD(int32, 6);
+
+		private:
+			int32 FindInfectableUnitIndex(int32 infection_unit_index, datum_index infectable_unit_definition_index) const;
+			int32 FindInfectionUnitIndex(datum_index unit_definition_index) const;
+		public:
+			int32 LookupUnitInfectionIndex(datum_index infection_unit_definition_index, datum_index target_unit_definition_index) const;
 		};
 
 
 		// yelo for globals
 		struct project_yellow_globals
 		{
+			// internal name of the cache's Yelo Globals when the user doesn't supply a definition
+			static cstring k_default_name;
+
 #if !PLATFORM_IS_EDITOR
 			const 
 #endif
@@ -167,17 +178,19 @@ namespace Yelo
 			TAG_FIELD(tag_reference, explicit_references, 'tagc');
 			TAG_PAD(int32, 8);
 
+#if FALSE	// TODO: once we're sure it's safe to remove this, move the padding below into the padding field above
 			/* !-- Preprocessing --! */
 			// PREPROCESSING DOESN'T EXIST AT RUNTIME. Only for the tools
 			TAG_TBLOCK(preprocess, s_yelo_preprocess_definition); // 1
 			/* !-- Preprocessing --! */
+#else
+			TAG_PAD(tag_block, 1);
+#endif
 
 
 			/* !-- UI --! */
 			struct {
-				TAG_FIELD(tag_reference, custom_sp_map_list, 'str#'); // SHOULD BE AUTOFILLED BY preprocess_maplist_block
-				TAG_FIELD(tag_reference, custom_mp_map_list, 'str#'); // SHOULD BE AUTOFILLED BY preprocess_maplist_block
-				TAG_PAD(tag_reference, 1); // 16
+				TAG_PAD(tag_reference, 3); // 48
 				PAD32;
 				TAG_TBLOCK(scripted_widgets, s_project_yellow_scripted_ui_widget); // 128
 			}ui;
@@ -203,6 +216,13 @@ namespace Yelo
 			//TAG_TBLOCK(object_damage_extensions, s_object_damage_extension); // 512
 
 			TAG_PAD(int32, 17); // 68
+
+#if PLATFORM_IS_EDITOR
+		private:
+			void CullInvalidNetworkPlayerUnits();
+		public:
+			void Cull();
+#endif
 		};
 	};
 };

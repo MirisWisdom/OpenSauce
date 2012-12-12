@@ -42,3 +42,12 @@
 #define TAG_ARRAY(type, name, count)		type name[count]
 
 #define TAG_PAD(type, count)				Yelo::byte BOOST_JOIN(pad, __COUNTER__)[sizeof(type)*(count)]
+
+
+#if PLATFORM_IS_EDITOR
+	#define TAG_BLOCK_GET_ELEMENT(block_ptr, index, type)	\
+		CAST_PTR(type *, Yelo::tag_block_get_element(block, index))
+#else
+	#define TAG_BLOCK_GET_ELEMENT(block_ptr, index, type)	\
+		&(block_ptr->Elements<type>()[index])
+#endif
