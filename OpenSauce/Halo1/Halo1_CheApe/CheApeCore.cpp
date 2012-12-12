@@ -159,12 +159,10 @@ namespace Yelo
 			}
 
 			// Build the header information of the resource buffer
-			{
-				size_t old_threshold = _CrtSetDebugFillThreshold( 0 ); // so the debug CRT doesn't fill our buffers with magic numbers
+			CRT_DEBUG_FILL_OFF_BEGIN()	// so the debug CRT doesn't fill our buffers with magic numbers
 				CheApeApi_GetPchBuildDateA(NUMBEROF(tool_info_header->pch_build_date), tool_info_header->pch_build_date);
 				CheApeApi_GetPchPathA(NUMBEROF(tool_info_header->pch_file), tool_info_header->pch_file);
-				_CrtSetDebugFillThreshold( old_threshold );
-			}
+			CRT_DEBUG_FILL_OFF_END();
 
 			compressed_size = compressBound(size);
 			Bytef* dest = new Bytef[compressed_size];

@@ -2184,11 +2184,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Halo1\CheApe\Halo1_CE.cheape_project"
+					RelativePath="..\..\shared\Halo1\CheApe\model_animations_yelo.xml"
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Halo1\CheApe\model_animations_yelo.xml"
+					RelativePath="..\..\shared\Halo1\CheApe\multilingual_unicode_string_list.xml"
 					>
 				</File>
 				<File
@@ -2204,29 +2204,45 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Halo1\CheApe\project_yellow_misc.xml"
-					>
-				</File>
-				<File
 					RelativePath="..\..\shared\Halo1\CheApe\project_yellow_scripting.xml"
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Halo1\CheApe\shader_model_extension.xml"
+					RelativePath="..\..\shared\Halo1\CheApe\project_yellow_shared.xml"
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Halo1\CheApe\shader_postprocess.xml"
+					RelativePath="..\..\shared\Halo1\CheApe\string_id_yelo.xml"
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Halo1\CheApe\shader_postprocess_collection.xml"
+					RelativePath="..\..\shared\Halo1\CheApe\tag_database.xml"
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Halo1\CheApe\shader_postprocess_globals.xml"
+					RelativePath="..\..\shared\Halo1\CheApe\text_value_pair_definition.xml"
 					>
 				</File>
+				<Filter
+					Name="shaders"
+					>
+					<File
+						RelativePath="..\..\shared\Halo1\CheApe\shader_model_extension.xml"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Halo1\CheApe\shader_postprocess.xml"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Halo1\CheApe\shader_postprocess_collection.xml"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Halo1\CheApe\shader_postprocess_globals.xml"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -2293,6 +2309,18 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\memory\datum_index.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="tag_files"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\tag_files\tag_groups_base.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\tag_files\tag_groups_base.hpp"
 					>
 				</File>
 			</Filter>
@@ -2444,6 +2472,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\YeloLib\cseries\debug_memory_yelo.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\cseries\debug_memory_yelo.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\YeloLib\cseries\pc_minidump_yelo.cpp"
 					>
 				</File>
@@ -2507,6 +2543,66 @@
 					RelativePath="..\..\shared\Include\YeloLib\Halo1\rasterizer\rasterizer_upgrades.inl"
 					>
 				</File>
+			</Filter>
+			<Filter
+				Name="tag_files"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\tag_files\string_id_yelo.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\tag_files\string_id_yelo.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\tag_files\tag_groups_markup.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\tag_files\tag_groups_yelo.hpp"
+					>
+				</File>
+				<Filter
+					Name="string_ids"
+					>
+					<File
+						RelativePath="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.components.inl"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.game_engine.inl"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.global.inl"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.gui.inl"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.gui_alert.inl"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.gui_dialog.inl"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.incident.inl"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.os_setting.inl"
+						>
+					</File>
+					<File
+						RelativePath="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.properties.inl"
+						>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<File

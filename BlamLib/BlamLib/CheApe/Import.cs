@@ -11,6 +11,7 @@ using System.Xml;
 namespace BlamLib.CheApe
 {
 	// TODO: catch un-terminated ArrayStart fields
+	// ^ Halo1 & Halo2 have this support in FieldContainer and FieldSet (respectively)
 
 	internal abstract class Import
 	{
@@ -62,6 +63,11 @@ namespace BlamLib.CheApe
 			{
 				s.ReadAttribute("name", ref nameString);
 
+				name = state.Compiler.DebugStrings.Add(nameString);
+			}
+
+			protected ObjectWithDebugName(ProjectState state, string nameString) : base()
+			{
 				name = state.Compiler.DebugStrings.Add(nameString);
 			}
 		};
@@ -316,6 +322,20 @@ namespace BlamLib.CheApe
 			/// 
 			/// </summary>
 			public int TypeIndex		{ get { return typeIndex; } }
+
+			bool TypeIndexIsExplanation(ProjectState state)
+			{
+				return state.Definition.FieldTypes[typeIndex].Name == "Explanation";
+			}
+
+			/// <summary>
+			/// HACK! DON'T USE ME UNLESS YOU KNOW WHAT YOU'RE DOING!
+			/// </summary>
+			/// <param name="value"></param>
+			internal void ChangeTypeIndex(int value)
+			{
+				typeIndex = value;
+			}
 			#endregion
 
 			#region Definition
@@ -324,6 +344,15 @@ namespace BlamLib.CheApe
 			/// 
 			/// </summary>
 			public string Definition	{ get { return definition; } }
+
+			/// <summary>
+			/// HACK! DON'T USE ME UNLESS YOU KNOW WHAT YOU'RE DOING!
+			/// </summary>
+			/// <param name="value"></param>
+			internal void ChangeDefinition(string value)
+			{
+				definition = value;
+			}
 
 			/// <summary>
 			/// Parses the [definition] to an integer (base 10)
@@ -344,6 +373,27 @@ namespace BlamLib.CheApe
 			public override string ToString() { return definition; }
 			#endregion
 
+			void ValidateDefinition(ProjectState state)
+			{
+				if (string.IsNullOrEmpty(definition) && state.Definition.FieldTypes[typeIndex].RequiresDefinition)
+					throw new Debug.ExceptionLog("\"{0}\" of type {1} has no definition", nameString, state.Definition.FieldTypes[typeIndex].Name);
+			}
+			void SyncDefinitionWithState(ProjectState state)
+			{
+				if (TypeIndexIsExplanation(state))
+				{
+					if (definition == null) // Explanation requires a definition, so we'll implicitly use an empty string
+						definition = "";
+					else
+					{
+						// since halo internally uses "|n" and "|t", we'll just use these >=D
+						definition = definition.Replace("~N", "\n").Replace("~T", "    ");
+					}
+
+					definition = state.Compiler.Strings.Add(definition).ToString("X"); // set definition to be the value of string's address in the pool
+				}
+				else ValidateDefinition(state);
+			}
 			/// <summary>
 			/// Constructs a field from an xml definition node
 			/// </summary>
@@ -367,22 +417,32 @@ namespace BlamLib.CheApe
 				#endregion
 
 				#region Definition
-				if (s.ReadAttributeOpt("definition", ref definition))
-				{						
-					if(state.Definition.FieldTypes[typeIndex].Name == "Explanation")
-					{
-						// since halo internally uses "|n" and "|t", we'll just use these >=D
-						definition = definition.Replace("~N", "\n").Replace("~T", "    ");
-
-						if (definition != string.Empty)
-							definition = state.Compiler.Strings.Add(definition).ToString("X"); // set definition to be the value of string's address in the pool
-					}
-					else if(definition == "" && state.Definition.FieldTypes[typeIndex].RequiresDefinition)
-						throw new Debug.ExceptionLog("\"{0}\" of type {1} has no definition", nameString, state.Definition.FieldTypes[typeIndex].Name);
+				if (s.ReadAttributeOpt("definition", ref definition) || TypeIndexIsExplanation(state))
+				{
+					SyncDefinitionWithState(state);
 				}
 				else if(state.Definition.FieldTypes[typeIndex].RequiresDefinition)
 					throw new Debug.ExceptionLog("\"{0}\" of type {1} has no definition", nameString, state.Definition.FieldTypes[typeIndex].Name);
 				#endregion
+			}
+
+			/// <summary>
+			/// Explicitly construct a tag field
+			/// </summary>
+			/// <param name="state"></param>
+			/// <param name="type_index"></param>
+			/// <param name="name_string"></param>
+			/// <param name="def"></param>
+			internal Field(ProjectState state, int type_index, string name_string, string def)
+			{
+				Debug.Assert.If(type_index != -1, "Invalid field type given to explicit Import.Field");
+				typeIndex = type_index;
+
+				nameString = name_string;
+				name = state.Compiler.Strings.Add(nameString);
+
+				definition = def;
+				SyncDefinitionWithState(state);
 			}
 		};
 
@@ -454,6 +514,22 @@ namespace BlamLib.CheApe
 				foreach (XmlNode node in s.Cursor.ChildNodes)
 					if (node.Name == "field")
 						this.elements.Add(node.InnerText);
+			}
+
+			/// <summary>
+			/// Explicitly construct a tag reference definition
+			/// </summary>
+			/// <param name="state"></param>
+			/// <param name="nameString"></param>
+			/// <param name="isNonResolving"></param>
+			/// <param name="tags"></param>
+			/// <remarks>Adds itself to <paramref name="state"/>'s Importer's References list</remarks>
+			internal TagReference(ProjectState state, string nameString, bool isNonResolving, params string[] tags) : base(state, nameString)
+			{
+				IsNonResolving = isNonResolving;
+				elements.AddRange(tags);
+
+				state.Importer.References.Add(nameString, this);
 			}
 		};
 

@@ -5,6 +5,9 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
+// NOTE: THE s_network_game_player_unit BLOCK IS CURRENTLY HIDDEN IN THE TAG DEFINITIONS
+// Looking at changing the struct, so consider this temporarily deprecated for now
+
 /*!
  * \brief
  * Determines the unit definition override for a player in Free For All games

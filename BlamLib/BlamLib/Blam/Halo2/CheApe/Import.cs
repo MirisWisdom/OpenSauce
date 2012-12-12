@@ -87,14 +87,24 @@ namespace BlamLib.Blam.Halo2.CheApe
 
 			public FieldSet(BlamLib.CheApe.ProjectState state, IO.XmlStream s) : base(state, s)
 			{
+				int array_start_depth = 0;
+
 				foreach (XmlNode n in s.Cursor.ChildNodes)
 				{
 					if (n.Name != "field") continue;
 
+					Field f;
 					s.SaveCursor(n);
-					fields.Add(new Field(state, s));
+					fields.Add(f = new Field(state, s));
 					s.RestoreCursor();
+
+					if (f.TypeIndex == state.kTypeIndexArrayStart) array_start_depth++;
+					else if (f.TypeIndex == state.kTypeIndexArrayEnd) array_start_depth--;
 				}
+
+				if (array_start_depth != 0)
+					throw new Debug.ExceptionLog("Unterminated ArrayStart or extra ArrayEnd in '{0}'.{1}{2}",
+						s.FileName, Program.NewLine, s.Cursor.OuterXml);
 			}
 		};
 

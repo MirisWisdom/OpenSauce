@@ -7,29 +7,6 @@
 
 namespace UnitInfections
 {
-	static int32 DefinitionFindInfectableUnitIndex(TagGroups::s_unit_infections_definition const& definition, 
-		int32 infection_unit_index, datum_index infectable_unit_definition_index)
-	{
-		for(int32 x = 0; x < definition.infectable_units.Count; x++)
-		{
-			TagGroups::s_unit_infection const& unit_infection = definition.infectable_units[x];
-
-			if(	infection_unit_index == unit_infection.infection_unit &&
-				infectable_unit_definition_index == unit_infection.unit)
-				return x;
-		}
-		return NONE;
-	}
-	static int32 DefinitionFindInfectionUnitIndex(TagGroups::s_unit_infections_definition const& definition, 
-		datum_index unit_definition_index)
-	{
-		for(int32 x = 0; x < definition.infection_units.Count; x++)
-		{
-			if(unit_definition_index == definition.infection_units[x].tag_index)
-				return x;
-		}
-		return NONE;
-	}
 	static bool AllowInfections(TagGroups::s_unit_infections_definition const& definition)
 	{
 #if PLATFORM_IS_USER
@@ -164,8 +141,8 @@ namespace UnitInfections
 		s_unit_datum* target_unit = (*Objects::ObjectHeader())[target_unit_index]->_unit;
 
 		// Find the s_unit_infection based on the infection form's unit definition and the target unit's definition indexes
-		int32 unit_infection_definition_index = DefinitionFindInfectableUnitIndex(definition,
-			DefinitionFindInfectionUnitIndex(definition, infection_unit->object.definition_index),
+		int32 unit_infection_definition_index = definition.LookupUnitInfectionIndex(
+			infection_unit->object.definition_index,
 			target_unit->object.definition_index);
 
 		// If the target unit can be infected by the infection_unit...

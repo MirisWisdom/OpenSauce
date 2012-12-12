@@ -62,6 +62,11 @@ namespace Yelo
 		void InitializeFixes()
 		{
 			InitializeFixesForWeaponGroup();
+
+			// This allows us to create tags which have child groups (eg, object, shader, unit, etc)
+			byte* child_count_assert_jmp_code = CAST_PTR(byte*, GET_FUNC_VPTR(TAG_NEW_MOD_CHILD_COUNT_ASSERT_JMP));
+			// change from jz to jmp
+			*child_count_assert_jmp_code = Enums::_x86_opcode_jmp_short;
 		}
 
 		int32 tag_block_find_field(const tag_block_definition* def, 
@@ -85,18 +90,40 @@ namespace Yelo
 			return NONE;
 		}
 
-		void tag_reference_clear(tag_reference& reference)
+		void tag_data_delete(tag_data& data, size_t terminator_size)
 		{
-			// The engine's code will free (ie, YELO_FREE) the reference's name 
-			// when tag_block_delete_element (which is called by tag_unload) is ran
-			void* ptr = YELO_MALLOC(Enums::k_max_tag_name_length+1, false);
+			data.address = YELO_REALLOC(data.address, data.size = terminator_size);
+		}
 
-			reference.name = CAST_PTR(tag_reference_name_t, ptr);
-			reference.name_length = 0;
-			reference.group_tag = NONE;
-			reference.tag_index = datum_index::null;
+		bool tag_block_delete_all_elements(tag_block* block)
+		{
+			return tag_block_resize(block, 0);
 		}
 	};
+
+	bool tag_is_read_only(datum_index tag_index)
+	{
+		if( tag_index.IsNull() ) return false;
+
+		return (*TagGroups::TagInstances())[tag_index]->is_read_only;
+	}
+
+	size_t tag_block::get_element_size() const
+	{
+		return definition->element_size;
+	}
+
+	void tag_reference_clear(tag_reference& reference)
+	{
+		// The engine's code will free (ie, YELO_FREE) the reference's name 
+		// when tag_block_delete_element (which is called by tag_unload) is ran
+		void* ptr = YELO_MALLOC(Enums::k_max_tag_name_length+1, false);
+
+		reference.name = CAST_PTR(tag_reference_name_t, ptr);
+		reference.name_length = 0;
+		reference.group_tag = NONE;
+		reference.tag_index = datum_index::null;
+	}
 
 	API_FUNC_NAKED cstring tag_get_name(datum_index tag_index)
 	{
@@ -164,7 +191,7 @@ namespace Yelo
 
 
 
-	API_FUNC_NAKED int32 tag_reference_set(tag_reference* reference, tag group_tag, cstring name)
+	API_FUNC_NAKED void tag_reference_set(tag_reference& reference, tag group_tag, cstring name)
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_REFERENCE_SET);
 
@@ -196,6 +223,16 @@ namespace Yelo
 			call	FUNCTION
 		API_FUNC_NAKED_END_CDECL(2);
 	}
+	API_FUNC_NAKED const void* tag_block_get_element(const tag_block* block, int32 element)
+	{
+		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_BLOCK_GET_ELEMENT);
+
+		API_FUNC_NAKED_START()
+			push	element
+			push	block
+			call	FUNCTION
+		API_FUNC_NAKED_END_CDECL(2);
+	}
 
 	API_FUNC_NAKED datum_index tag_new(tag group_name, cstring name)
 	{
@@ -218,7 +255,7 @@ namespace Yelo
 		API_FUNC_NAKED_END_CDECL(1);
 	}
 
-	API_FUNC_NAKED void tag_block_delete_element(void* block, int32 element)
+	API_FUNC_NAKED void tag_block_delete_element(tag_block* block, int32 element)
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_BLOCK_DELETE_ELEMENT);
 
@@ -250,7 +287,7 @@ namespace Yelo
 		API_FUNC_NAKED_END_CDECL(2);
 	}
 
-	API_FUNC_NAKED void* tag_block_insert_element(tag_block* block, int32 index)
+	API_FUNC_NAKED int32 tag_block_insert_element(tag_block* block, int32 index)
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_BLOCK_INSERT_ELEMENT);
 
@@ -331,5 +368,27 @@ fail:
 			push	iter
 			call	FUNCTION
 		API_FUNC_NAKED_END_CDECL(1);
+	}
+
+	API_FUNC_NAKED bool tag_file_read_only(tag group_tag, cstring name)
+	{
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FILE_READ_ONLY);
+
+		API_FUNC_NAKED_START()
+			push	name
+			push	group_tag
+			call	FUNCTION
+		API_FUNC_NAKED_END_CDECL(2);
+	}
+
+	API_FUNC_NAKED bool tag_file_exists(tag group_tag, cstring name)
+	{
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FILE_EXISTS);
+
+		API_FUNC_NAKED_START()
+			push	name
+			push	group_tag
+			call	FUNCTION
+		API_FUNC_NAKED_END_CDECL(2);
 	}
 };

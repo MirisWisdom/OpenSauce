@@ -102,7 +102,8 @@ namespace BlamLib.Blam.Halo1.CheApe
 			TypeIndexExplanation = -1,
 			TypeIndexCustom = -1,
 			TypeIndexTerminator = -1,
-			TypeIndexStruct = -1;
+			TypeIndexStruct = -1,
+			TypeIndexStringId = -1;
 
 		private void InitializeTypeIndicies()
 		{
@@ -123,6 +124,7 @@ namespace BlamLib.Blam.Halo1.CheApe
 			TypeIndexCustom = OwnerState.Definition.GetTypeIndex("Custom");
 			TypeIndexTerminator = OwnerState.Definition.GetTypeIndex("Terminator");
 			TypeIndexStruct = OwnerState.Definition.GetTypeIndex("Struct");
+			TypeIndexStringId = OwnerState.Definition.GetTypeIndex("StringId");
 		}
 		#endregion
 
@@ -146,7 +148,13 @@ namespace BlamLib.Blam.Halo1.CheApe
 			{
 				Compiler comp = stream.Owner as Compiler;
 
-				stream.Write(field.TypeIndex);
+				#region TypeIndex
+				if (field.TypeIndex == comp.TypeIndexStringId)
+					stream.Write(comp.TypeIndexTagReference);
+				else
+					stream.Write(field.TypeIndex);
+				#endregion
+
 				if (field.TypeIndex != comp.TypeIndexPad)
 					stream.Write(field.Name);
 				else
@@ -173,7 +181,9 @@ namespace BlamLib.Blam.Halo1.CheApe
 							field.TypeIndex == comp.TypeIndexLongBlockIndex ||
 							field.TypeIndex == comp.TypeIndexTagReference ||
 							field.TypeIndex == comp.TypeIndexData ||
-							field.TypeIndex == comp.TypeIndexBlock)
+							field.TypeIndex == comp.TypeIndexBlock || 
+					
+							field.TypeIndex == comp.TypeIndexStringId)
 				{
 					comp.AddLocationFixup(field.Definition, stream);
 
@@ -214,8 +224,22 @@ namespace BlamLib.Blam.Halo1.CheApe
 					}
 					else
 					{
+						// StringId support is a hack based on tag_reference fields
+						// We internally define the tag reference definition, so we must internally add it
+						if (f.TypeIndex == comp.TypeIndexStringId)
+							f.ChangeDefinition(Import.kStringIdFieldDefinitionName);
+
 						temp.Reset(f);
 						temp.Write(stream);
+
+						// While the initial part of the StringId hack is based on a tag_reference field,
+						// we use an additional 32 bits for the string_id handle (instead of playing with
+						// the tag_reference's tag_index member). This is seen as padding by the editor
+						if (f.TypeIndex == comp.TypeIndexStringId)
+						{
+							temp.Reset((comp.OwnerState.Importer as Halo1.CheApe.Import).StringIdFieldHandlePadding);
+							temp.Write(stream);
+						}
 					}
 				}
 			}
@@ -341,9 +365,15 @@ namespace BlamLib.Blam.Halo1.CheApe
 
 				stream.Write(tagGroup.Name);
 				stream.Write(flags);
+				if (string.IsNullOrEmpty(tagGroup.GroupTag))
+					Debug.LogFile.WriteLine("CheApe: tag_group '{0}' has a bad group-tag...check your XML?");
 				stream.WriteTag(tagGroup.GroupTag);
 				if (tagGroup.ParentTag != null)
+				{
+					if (string.IsNullOrEmpty(tagGroup.GroupTag))
+						Debug.LogFile.WriteLine("CheApe: tag_group '{0}' has a bad parent group-tag...check your XML?");
 					stream.WriteTag(tagGroup.ParentTag);
+				}
 				else
 					stream.Write((int)-1);
 				stream.Write(tagGroup.Version); stream.Write((short)0);

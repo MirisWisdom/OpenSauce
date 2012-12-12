@@ -52,10 +52,10 @@ namespace Yelo
 				char folder_name_with_levels[64];
 #endif
 			}tags;
-		}_override_paths;
+		}_override_paths; // defined in MemoryFixups.Paths.inl
 
 #if PLATFORM_ID == PLATFORM_GUERILLA
-		static char tag_import_path_buffer[0xFF];
+		static char tag_import_path_buffer[0xFF]; // defined in MemoryFixups.TagTextIO.inl
 #endif
 
 		static DWORD WINAPI GetCurrentDirectoryHack(

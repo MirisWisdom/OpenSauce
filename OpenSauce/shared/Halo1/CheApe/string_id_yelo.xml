@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+	<data>
+		<TagData name="string_id_yelo_documentation_data" maxSize="0x10000" 
+				 isNeverStreamed="true" isTextData="true" isDebugData="true" />
+	</data>
+
+	<blocks>
+	</blocks>
+
+	<groups>
+		<TagGroup name="string_id_yelo" groupTag="sidy" version="1">
+			<field type="Data" name="documentation" definition="string_id_yelo_documentation_data" />
+			<field type="Pad" definition="20" />
+		</TagGroup>
+	</groups>
+
+</definitions>

@@ -79,7 +79,7 @@ namespace Yelo
 
 			datum_index bsp_index = tag_load<TagGroups::structure_bsp>(args->bsp_name, FLAG(Flags::_tag_load_non_resolving_references_bit));
 
-			if(!bsp_index.IsNull() && !TagGroups::tag_is_read_only(bsp_index))
+			if(!bsp_index.IsNull() && !tag_is_read_only(bsp_index))
 			{
 				HRESULT hr = S_OK;
 

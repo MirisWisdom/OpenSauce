@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="us-ascii" standalone="yes"?>
 <definitions game="Halo1">
-	<!-- see: OpenSauce\shared\Include\Blam\Halo1\project_yellow_shared_definitions.hpp -->
+	<!-- see: OpenSauce\shared\YeloLib\Halo1\open_sauce\project_yellow_scenario_definitions.hpp -->
 	
 	<enums>
 		<Enum name="production_build_stage_enum">
@@ -74,7 +74,7 @@
 			<field type="ShortInteger" name="version" locked="true" />
 			<field type="Pad" definition="2" />
 
-			<field type="Explanation" name="Misc" definition="" />
+			<field type="Explanation" name="Scenario Definitions" definition="" />
 			<field type="TagReference" name="yelo globals" definition="project_yellow_globals_reference" />
 			<field type="TagReference" name="globals override" definition="globals_reference_non_resolving" tooltip="use this to override the globals tag used for the scenario" />
 			<field type="TagReference" name="scenario explicit references" definition="tag_collection_reference" />

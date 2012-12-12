@@ -44,14 +44,24 @@ namespace BlamLib.CheApe
 				int orgPos = stream.Position;
 
 				if (address != 0)
-					foreach (uint tempPos in offsets)
+				{
+					if (offsets.Count == 0)
+					{
+						string name = (stream.Owner as Compiler).GetLocationName(this);
+						Debug.LogFile.WriteLine("LocationWriteback: unused address! There are no references to '{0}'", name);
+					}
+					else foreach (uint tempPos in offsets)
 					{
 						stream.PositionUnsigned = tempPos;
 						stream.WritePointer(address);
 					}
+				}
 				else
-					Debug.LogFile.WriteLine("LocationWriteback: failed to writeback! Address was not set, {0} memory locations will be null!", 
-						offsets.Count.ToString());
+				{
+					string name = (stream.Owner as Compiler).GetLocationName(this);
+					Debug.LogFile.WriteLine("LocationWriteback: failed to writeback! '{0}'s address was not set, {1} memory locations will be null!",
+						name, offsets.Count.ToString());
+				}
 
 				stream.Position = orgPos;
 			}
@@ -639,6 +649,16 @@ namespace BlamLib.CheApe
 
 		#region Writebacks
 		Dictionary<string, LocationWriteback> Locations = new Dictionary<string, LocationWriteback>();
+
+		protected string GetLocationName(LocationWriteback lwb)
+		{
+			foreach (var kv in Locations)
+				if (object.ReferenceEquals(kv.Value, lwb))
+					return kv.Key;
+
+			throw new Debug.Exceptions.UnreachableException(string.Format("CheApe: Unknown LocationWriteback @{0} ({1})", 
+				lwb.Address.ToString("X8"), lwb.Offsets.Count.ToString()));
+		}
 
 		/// <summary>
 		/// Uses <paramref name="string_pool_entry"/> to get a string to use as a key in <see cref="Locations"/> and 

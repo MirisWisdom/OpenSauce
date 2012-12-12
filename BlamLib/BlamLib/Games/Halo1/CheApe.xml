@@ -249,9 +249,21 @@
 			<byteSwap> <code value="-101" /> </byteSwap>
 		</type>	
 		
-		<!-- THIS IS A FAKE FIELD TYPE -->
+		<!-- THESE ARE FAKE FIELD TYPES -->
 		<type opcode="0x2D" size="0x00" name="Struct" needsDefinition="true">
 			<byteSwap> <code value="0" /> </byteSwap>
+		</type>
+		<type opcode="0x2E" size="0x14" name="StringId">
+			<byteSwap>
+				<!-- tag_reference -->
+				<code value="-4" />
+				<code value="4" />
+				<code value="-4" />
+				<code value="4" />
+
+				<!-- string_id -->
+				<code value="4" /> <!--this is a Pad field added by the CheApe compiler-->
+			</byteSwap>
 		</type>
 	</fieldTypes>
 </CheApeDefinition>

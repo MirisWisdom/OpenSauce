@@ -196,8 +196,7 @@ void		ClearTagData(TagGroups::s_shader_postprocess_definition* shader_tag)
 		TagGroups::tag_data_delete(shader_tag->shader_code_binary);
 
 	// remove any existing technique blocks
-	while(shader_tag->techniques.Count)
-		tag_block_delete_element(&shader_tag->techniques, shader_tag->techniques.Count - 1);
+	tag_block_delete_all_elements(shader_tag->techniques);
 }
 
 HRESULT		CompileEffect(

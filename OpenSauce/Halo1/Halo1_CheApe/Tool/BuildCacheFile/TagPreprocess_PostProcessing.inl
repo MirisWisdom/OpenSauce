@@ -91,22 +91,22 @@ namespace PostProcessing
 
 	static void shader_postprocess_generic_remove_variables(TagGroups::s_shader_postprocess_generic* shader_tag)
 	{
-		while(shader_tag->implementation.bitmaps.Count > 0)
-			Yelo::tag_block_delete_element(&shader_tag->implementation.bitmaps, 0);
-		while(shader_tag->implementation.bools.Count > 0)
-			Yelo::tag_block_delete_element(&shader_tag->implementation.bools, 0);
-		while(shader_tag->implementation.integers.Count > 0)
-			Yelo::tag_block_delete_element(&shader_tag->implementation.integers, 0);
-		while(shader_tag->implementation.floats.Count > 0)
-			Yelo::tag_block_delete_element(&shader_tag->implementation.floats, 0);
-		while(shader_tag->implementation.float2s.Count > 0)
-			Yelo::tag_block_delete_element(&shader_tag->implementation.float2s, 0);
-		while(shader_tag->implementation.float3s.Count > 0)
-			Yelo::tag_block_delete_element(&shader_tag->implementation.float3s, 0);
-		while(shader_tag->implementation.float4s.Count > 0)
-			Yelo::tag_block_delete_element(&shader_tag->implementation.float4s, 0);
-		while(shader_tag->implementation.colors.Count > 0)
-			Yelo::tag_block_delete_element(&shader_tag->implementation.colors, 0);
+		if(shader_tag->implementation.bitmaps.Count > 0)
+			TagGroups::tag_block_delete_all_elements(shader_tag->implementation.bitmaps);
+		if(shader_tag->implementation.bools.Count > 0)
+			TagGroups::tag_block_delete_all_elements(shader_tag->implementation.bools);
+		if(shader_tag->implementation.integers.Count > 0)
+			TagGroups::tag_block_delete_all_elements(shader_tag->implementation.integers);
+		if(shader_tag->implementation.floats.Count > 0)
+			TagGroups::tag_block_delete_all_elements(shader_tag->implementation.floats);
+		if(shader_tag->implementation.float2s.Count > 0)
+			TagGroups::tag_block_delete_all_elements(shader_tag->implementation.float2s);
+		if(shader_tag->implementation.float3s.Count > 0)
+			TagGroups::tag_block_delete_all_elements(shader_tag->implementation.float3s);
+		if(shader_tag->implementation.float4s.Count > 0)
+			TagGroups::tag_block_delete_all_elements(shader_tag->implementation.float4s);
+		if(shader_tag->implementation.colors.Count > 0)
+			TagGroups::tag_block_delete_all_elements(shader_tag->implementation.colors);
 	}
 
 	static bool shader_postprocess_generic_parameter_exists(TagGroups::s_shader_postprocess_generic* shader_tag, cstring parameter_name)
@@ -287,7 +287,7 @@ namespace PostProcessing
 
 		int32 block = Yelo::tag_block_add_element(definition->shaders);
 		definition->shaders[block].tag_index = reference.tag_index;
-		Yelo::tag_reference_set(&definition->shaders[block], reference.group_tag, reference.name);
+		Yelo::tag_reference_set(definition->shaders[block], reference.group_tag, reference.name);
 	}
 
 	static bool effect_postprocess_collection_preprocess(datum_index tag_index)

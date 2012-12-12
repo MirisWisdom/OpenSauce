@@ -10,6 +10,8 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
+		cstring project_yellow::k_default_name = "i've got a lovely bunch of corncobs";
+
 		bool project_yellow::_physics::IsGravityScaleValid() const		{ return gravity_scale >= 0.0f || gravity_scale <= 2.0f; }
 		void project_yellow::_physics::ResetGravityScale()				{ gravity_scale = 1.0f; }
 

@@ -97,6 +97,9 @@ namespace Yelo
 		// yelo for scenarios
 		struct project_yellow
 		{
+			// internal name of the cache's Yelo tag when the user doesn't supply a definition
+			static cstring k_default_name;
+
 #if !PLATFORM_IS_EDITOR
 			const 
 #endif

@@ -190,7 +190,7 @@ namespace Yelo
 
 			bitmap_value.bitmap.tag_index = value_source->bitmap.tag_index;
 
-			tag_reference_set(&bitmap_value.bitmap, value_source->bitmap.group_tag, value_source->bitmap.name);
+			tag_reference_set(bitmap_value.bitmap, value_source->bitmap.group_tag, value_source->bitmap.name);
 		}
 #endif
 	};

@@ -101,7 +101,7 @@ static void build_cache_file_begin_preprocess(cstring scenario_name)
 					tag_rename(yelo->game_globals.tag_index, "globals\\globals");
 
 				// re-set the reference just for good measure
-				tag_reference_set(&yelo->game_globals, 
+				tag_reference_set(yelo->game_globals, 
 					yelo->game_globals.group_tag, "globals\\globals");
 			}
 		}

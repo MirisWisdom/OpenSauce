@@ -140,3 +140,23 @@ void _cdecl operator delete[](void* pointer)
 	free(pointer);
 }
 #endif
+
+#if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
+#include <crtdbg.h>
+
+c_crt_debug_fill_off::c_crt_debug_fill_off() :
+	m_old_threshold( _CrtSetDebugFillThreshold(0) )
+{
+}
+c_crt_debug_fill_off::~c_crt_debug_fill_off()
+{
+	_CrtSetDebugFillThreshold( m_old_threshold );
+}
+#else
+c_crt_debug_fill_off::c_crt_debug_fill_off()
+{
+}
+c_crt_debug_fill_off::~c_crt_debug_fill_off()
+{
+}
+#endif

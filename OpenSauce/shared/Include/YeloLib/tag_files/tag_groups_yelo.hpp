@@ -33,7 +33,7 @@ namespace Yelo
 		inline bool IsValid() const { return GroupTag == K_TAG; }
 
 		// Sets this reference to null
-		inline void Reset() { GroupTag = K_TAG; TagIndex.handle = datum_index.Null; }
+		inline void Reset() { GroupTag = K_TAG; TagIndex = datum_index::null; }
 
 		inline tag Tag() const { return K_TAG; }
 	};
@@ -81,7 +81,8 @@ namespace Yelo
 		// size, in bytes, the elements assume in memory
 		inline size_t SizeOf() const { return sizeof(T) * Count; }
 
-		inline tag_block* to_tag_block() { return CAST_PTR(tag_block*, &this->Count); }
+		inline tag_block* to_tag_block()				{ return CAST_PTR(tag_block*, &this->Count); }
+		inline const tag_block* to_tag_block() const	{ return CAST_PTR(const tag_block*, &this->Count); }
 
 		// Sets this object to equal that of a anonymous tag block object. 
 		API_INLINE  TagBlock<T>& Copy(const tag_block& block)
@@ -97,9 +98,29 @@ namespace Yelo
 		}
 
 		// Indexer for getting a definition reference via the definition's index in the block
-		inline T& operator [](int32 index)				{ return this->Definitions[index]; }
+		inline T& operator [](int32 index)
+		{
+#if PLATFORM_IS_EDITOR
+			return *tag_block_get_element(*this, index);
+#else
+			return this->Definitions[index];
+#endif
+		}
 		// Indexer for getting a (const) definition reference via the definition's index in the block
-		inline const T& operator [](int32 index) const	{ return this->Definitions[index]; }
+		inline const T& operator [](int32 index) const
+		{
+#if PLATFORM_IS_EDITOR
+			return *tag_block_get_element(*this, index);
+#else
+			return this->Definitions[index];
+#endif
+		}
+
+		inline T* get_element(int32 element)			{ return tag_block_get_element(*this, index); }
+		inline void delete_element(int32 element)		{ tag_block_delete_element(*this, element); }
+		inline bool delete_all_elements()				{ return tag_block_delete_all_elements(*this); }
+		inline int32 add_element()						{ return tag_block_add_element(*this); }
+		inline bool resize(int32 element_count)			{ return tag_block_resize(*this, element_count); }
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -121,6 +142,31 @@ namespace Yelo
 #else
 	BOOST_STATIC_ASSERT( sizeof(TagBlock<byte>) == 0x8 );
 #endif
+	template<typename T>
+	T* tag_block_get_element(TagBlock<T>& block, int32 element)
+	{
+		return CAST_PTR(T*, tag_block_get_element(block.to_tag_block(), element));
+	}
+	template<typename T>
+	const T* tag_block_get_element(const TagBlock<T>& block, int32 element)
+	{
+		return CAST_PTR(const T*, tag_block_get_element(block.to_tag_block(), element));
+	}
+	template<typename T>
+	int32 tag_block_add_element(TagBlock<T>& block)
+	{
+		return tag_block_add_element(block.to_tag_block());
+	}
+	template<typename T>
+	bool tag_block_resize(TagBlock<T>& block, int32 element_count)
+	{
+		return tag_block_resize(block.to_tag_block(), element_count);
+	}
+	template<typename T>
+	void tag_block_delete_element(TagBlock<T>& block, int32 element)
+	{
+		tag_block_delete_element(block.to_tag_block(), element);
+	}
 
 
 	// Template'd tag_data for more robust code dealing with known
@@ -154,6 +200,8 @@ namespace Yelo
 		inline size_t SizeOf() const { return sizeof(T); }
 
 		inline T* operator [](int32 index) { return &this->Definitions[index]; }
+
+		void clear(size_t terminator_size = 0)	{ tag_data_delete(terminator_size); }
 	};
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
 	BOOST_STATIC_ASSERT( sizeof(TagData<byte>) == 0x14 );

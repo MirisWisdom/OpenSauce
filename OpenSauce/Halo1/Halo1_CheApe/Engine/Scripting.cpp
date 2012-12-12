@@ -122,7 +122,7 @@ namespace Yelo
 		static void ScriptingBlockAddFunctionDefinitions(
 			TAG_TBLOCK(& functions, TagGroups::s_script_function_definition), bool only_internals)
 		{
-			size_t old_threshold = _CrtSetDebugFillThreshold( 0 ); // so the CRT doesn't fill our name buffer with 0xFD
+			CRT_DEBUG_FILL_OFF(); // so the CRT doesn't fill our name buffer with 0xFD
 			using namespace TagGroups;
 
 			hs_function_definition* def;
@@ -149,14 +149,12 @@ namespace Yelo
 				memcpy(element->parameters.Definitions,
 					def->params, sizeof(_enum) * def->paramc);
 			}
-
-			_CrtSetDebugFillThreshold( old_threshold );
 		}
 
 		static void ScriptingBlockAddGlobalDefinitions(
 			TAG_TBLOCK(& globals, TagGroups::s_script_global_definition), bool only_internals)
 		{
-			size_t old_threshold = _CrtSetDebugFillThreshold( 0 ); // so the CRT doesn't fill our name buffer with 0xFD
+			CRT_DEBUG_FILL_OFF(); // so the CRT doesn't fill our name buffer with 0xFD
 			using namespace TagGroups;
 
 			hs_global_definition* def;
@@ -174,8 +172,6 @@ namespace Yelo
 				element->index = CAST(int16, x)+1; // NOTE: for globals, we do +1 since in game builds there is a global which isn't present in editor builds
 				element->type = def->type;
 			}
-
-			_CrtSetDebugFillThreshold( old_threshold );
 		}
 
 		void ScriptingBlockClear(

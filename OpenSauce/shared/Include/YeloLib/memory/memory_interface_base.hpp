@@ -88,6 +88,9 @@ namespace Yelo
 			_x86_opcode_call_near = 0xE8,
 			// jmp near imm16\32
 			_x86_opcode_jmp_near = 0xE9,
+
+			// jmp short imm8
+			_x86_opcode_jmp_short = 0xEB,
 		};
 		enum x86_opcode_twobyte : uint16 {
 			// call ds:[address]
@@ -230,7 +233,7 @@ namespace Yelo
 		// Copies the original memory at [address] into [array] before returning
 		// This is useful when writing an array of opaque bytes to game memory
 		template<typename T, size_t TSizeOfArray>
-		void OverwriteMemory(void* address, T(& array)[TSizeOfArray])
+		void OverwriteMemoryArray(void* address, T(& array)[TSizeOfArray])
 		{
 			T old_memory[TSizeOfArray];
 			// Copy the old memory from the address
@@ -244,7 +247,7 @@ namespace Yelo
 		// Does NOT copy the original memory at [address] into [array] before returning
 		// This is useful when writing an array of opaque bytes to game memory, esp. during unwinding operations
 		template<typename T, size_t TSizeOfArray>
-		void OverwriteMemorySansCopy(void* address, const T(& array)[TSizeOfArray])
+		void OverwriteMemorySansCopyArray(void* address, const T(& array)[TSizeOfArray])
 		{
 			// Write the new memory to the address
 			memcpy(address, array, TSizeOfArray);

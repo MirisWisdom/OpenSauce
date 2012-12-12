@@ -25,7 +25,9 @@ namespace BuildCacheFileEx
 				switch( (*TagGroups::TagInstances())[tag_index]->group_tag )
 				{
 				case TagGroups::project_yellow_globals::k_group_tag:
-					TagGroups::YeloGlobalsDefinitionCull(tag_get<TagGroups::project_yellow_globals>(tag_iter.current_datum));
+					{
+						tag_get<TagGroups::project_yellow_globals>(tag_iter.current_datum)->Cull();
+					} break;
 				}
 			}
 
