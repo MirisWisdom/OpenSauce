@@ -158,13 +158,13 @@ namespace Yelo
 			TAG_PAD(int32, 9);
 		}; BOOST_STATIC_ASSERT( sizeof(scenario_cutscene_camera_point) == 0x68 );
 
-		struct scenario_structure_bsps
+		struct scenario_structure_bsp_reference
 		{
 			PAD32;
 			TAG_FIELD(int32, bsp_data_size);
 			TAG_PAD(int32, 2);
 			TAG_FIELD(tag_reference, structure_bsp, 'sbsp');
-		}; BOOST_STATIC_ASSERT( sizeof(scenario_structure_bsps) == 0x20 ); // max count: 32
+		}; BOOST_STATIC_ASSERT( sizeof(scenario_structure_bsp_reference) == 0x20 ); // max count: 32
 
 
 		struct scenario
@@ -280,7 +280,7 @@ namespace Yelo
 
 			TAG_PAD(int32, 27); // 108
 			TAG_PAD(tag_reference, 3);
-			TAG_TBLOCK(structure_bsps, scenario_structure_bsps);
+			TAG_TBLOCK(structure_bsps, scenario_structure_bsp_reference);
 
 			// Get the tag reference we redefined for users to reference yelo definitions
 			tag_reference& GetYeloReferenceHack()				{ return _dont_use; }

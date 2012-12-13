@@ -2200,6 +2200,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Halo1\CheApe\project_yellow_globals_cv.xml"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Halo1\CheApe\project_yellow_includes.xml"
 					>
 				</File>

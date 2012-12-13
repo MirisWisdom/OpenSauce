@@ -15,6 +15,7 @@
 #include "Memory/MemoryInterface.hpp"
 #include "Networking/Networking.hpp"
 #include "Objects/Objects.hpp"
+#include "Scenario/Scenario.hpp"
 #include "TagGroups/project_yellow_definitions.hpp"
 
 namespace Yelo

@@ -16,18 +16,12 @@
 #include <blamlib/Halo1/physics/physics.hpp>
 #include <blamlib/Halo1/physics/point_physics.hpp>
 #include <blamlib/Halo1/saved_games/game_state.hpp>
-#include <blamlib/Halo1/scenario/scenario.hpp>
 
 namespace Yelo
 {
 	namespace TagGroups
 	{
-		struct scenario;
-
 		struct s_game_globals;
-
-		struct collision_bsp;
-		struct structure_bsp;
 	};
 };
 
@@ -102,28 +96,15 @@ namespace Yelo
 		s_game_globals*				GameGlobals();
 		s_game_time_globals*		GameTimeGlobals();
 		s_game_allegiance_globals*	GameAllegianceGlobals();
-		Game::s_scenario_globals*	ScenarioGlobals();
 		s_point_physics_globals*	PointPhysics();
 		// Reference to the current platform's physics globals
 		s_physics_globals*			Physics();
 
 
 
-		// Scenario Tag data
-		TagGroups::scenario*		Scenario();
 		// Globals tag data
 		TagGroups::s_game_globals*	GlobalGameGlobals();
-		// Pointer to the current SBPS's bsp3d block
-		TagGroups::collision_bsp*	Bsp3d();
-		// Pointer to the current SBPS's collision bsp block
-		TagGroups::collision_bsp*	CollisionBsp();
-		// Pointer to the current SBSP's definition
-		TagGroups::structure_bsp*	StructureBsp();
 		
-		// Index of the Scenario definition in the tag table
-		datum_index	ScenarioIndex();
-		// Index of the current SBSP in the Scenario's structure bsps block
-		int16		StructureBspIndex();
 		byte*		DeveloperMode();
 		bool		DevmodeEnabled();
 

@@ -20,6 +20,7 @@
 
 
 {GameState::RuntimeData::InitializeForNewMap,		NULL},
+
 {ScenarioFauxZones::InitializeForNewMap,			NULL},
 #if PLATFORM_IS_USER
 

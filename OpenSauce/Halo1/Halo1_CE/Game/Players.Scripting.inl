@@ -82,7 +82,7 @@ static void* scripting_player_team_teleport_evaluate(void** arguments)
 		{
 			if(player->team_index == args->team_index)
 			{
-				TagGroups::scenario* scnr = GameState::Scenario();
+				TagGroups::scenario* scnr = Scenario::Scenario();
 				Engine::Players::Teleport(iter.Current(), scnr->cutscene_flags[args->cutscene_flag].position);
 			}
 		}

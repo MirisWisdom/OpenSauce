@@ -262,18 +262,11 @@ namespace Fov
 	ENGINE_DPTR(s_game_globals, game_globals,						0x64B9E8, 0x5BD818);
 	ENGINE_DPTR(s_game_time_globals, game_time_globals,				0x68CCA8, 0x5F5524);
 	ENGINE_DPTR(s_game_allegiance_globals, game_allegiance_globals,	0x64B9EC, 0x5BD81C);
-	ENGINE_DPTR(Game::s_scenario_globals, scenario_globals,			0x6E2194, 0x6293B4);
 
-	ENGINE_PTR(TagGroups::scenario*, global_scenario,					0x6E218C, 0x6293AC);
 	ENGINE_PTR(TagGroups::s_game_globals*, global_game_globals,			0x6E21A0, 0x6293C0);
-	ENGINE_PTR(TagGroups::collision_bsp*, global_bsp3d,					0x6E2190, 0x6293B0);
-	ENGINE_PTR(TagGroups::collision_bsp*, global_collision_bsp,			0x6E2198, 0x6293B8);
-	ENGINE_PTR(TagGroups::structure_bsp*, global_structure_bsp,			0x6E219C, 0x6293BC);
 	ENGINE_PTR(s_physics_globals, global_physics,						0x637BF4, 0x5AD5CC);
 	ENGINE_PTR(s_point_physics_globals, global_point_physics,			0x653BE4, 0x5C5B1C);
 
-	ENGINE_PTR(datum_index, global_scenario_index,						0x6397DC, 0x5AD85C);
-	ENGINE_PTR(int16, structure_bsp_index,								0x6397E0, 0x5AD860);
 	ENGINE_PTR(byte, developer_mode,									0x815CE6, 0x6E1BE6);
 	ENGINE_PTR(bool, transport_dumping,									0x621F60, 0x597918);
 	ENGINE_PTR(char, init_txt_filename,									0x60AB14, PTR_NULL);

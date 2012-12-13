@@ -20,6 +20,7 @@
 
 {Scripting::Initialize,								Scripting::Dispose},
 {GameState::RuntimeData::Initialize,				GameState::RuntimeData::Dispose},
+{Scenario::Initialize,								Scenario::Dispose},
 {ScenarioFauxZones::Initialize,						ScenarioFauxZones::Dispose,				ScenarioFauxZones::Update},
 #if PLATFORM_IS_USER
 	{Rasterizer::DeviceHooks::Initialize,			Rasterizer::DeviceHooks::Dispose},

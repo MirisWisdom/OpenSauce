@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+	<!-- see: OpenSauce\shared\YeloLib\Halo1\open_sauce\project_yellow_scenario_definitions.hpp -->
+	
+	<enums>
+	</enums>
+
+	<flags>
+	</flags>
+
+	<blocks>
+		<!-- UNUSED -->
+		<TagBlock name="dual_wield_weapon_block" maxElements="256">
+			<field type="TagReference" name="primary weapon" definition="weapon_reference" />
+			<field type="TagReference" name="secondary weapon" definition="weapon_reference" />
+			<field type="TagReference" name="dualing weapon" definition="weapon_reference" blockname="true" />
+
+			<field type="Pad" definition="32" />
+		</TagBlock>
+
+		<!-- UNUSED -->
+		<TagBlock name="object_damage_region_permutation_extension_block" maxElements="32">
+			<field type="String" name="name" blockname="true" />
+			<field type="Real" name="damage threshold" tooltip="if this region takes this amount of damage, it will be switch to this permutation" />
+
+			<field type="String" name="effect marker name" />
+			<field type="TagReference" name="transition effect" definition="effect_reference" />
+			<field type="Pad" definition="32" />
+
+			<field type="String" name="damage effect marker name" />
+			<field type="TagReference" name="transition damage effect" definition="damage_effect_reference" />
+			<field type="Pad" definition="32" />
+		</TagBlock>
+		<!-- UNUSED -->
+		<TagBlock name="object_damage_region_extension_block" maxElements="32">
+			<field type="String" name="name" blockname="true" />
+			<field type="Block" name="damage permutations" definition="object_damage_region_permutation_extension_block" />
+		</TagBlock>
+		<!-- UNUSED -->
+		<TagBlock name="object_damage_extension_block" maxElements="512">
+			<field type="TagReference" name="object" definition="object_reference" blockname="true" />
+			<field type="Block" name="damage regions" definition="object_damage_region_extension_block" />
+		</TagBlock>
+	</blocks>
+
+	<groups>
+		<TagGroup name="project_yellow_globals_cv" groupTag="gelc" version="1">
+			<field type="Explanation" name="ChokingVictim globals" definition="" />
+			<field type="ShortInteger" name="version" locked="true" />
+			<field type="Pad" definition="2" />
+
+			<!--<field type="Block" name="dual wielding" definition="dual_wield_weapon_block" />-->
+			<!--<field type="Block" name="object damage extensions" definition="object_damage_extension_block" />-->
+
+			<field type="Pad" definition="128" />
+		</TagGroup>
+	</groups>
+</definitions>
