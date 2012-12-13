@@ -40,7 +40,7 @@ uint32 CalculateCRC(void* cache_file)
 	if(bsp_count != 0)
 	{
 		// can't access the block normally as its pointer is not correct for the cache's starting point
-		TagGroups::scenario_structure_bsps* structure_bsps_block = CAST_PTR(TagGroups::scenario_structure_bsps*,
+		TagGroups::scenario_structure_bsp_reference* structure_bsps_block = CAST_PTR(TagGroups::scenario_structure_bsp_reference*,
 			TAG_ADDRESS(orig, curr, (uint32)scenario_tag->structure_bsps.Address));
 
 		// this isn't correct for non-PC maps apparently, but we ARE on a pc...AREN'T we
@@ -73,7 +73,7 @@ uint32 CalculateCRC(void* cache_file)
  * String pointer containing the maps name
  * 
  * \returns
- * The cache's CRC, if a failure occured it will return 0xFFFFFFFF
+ * The cache's CRC, if a failure occurred it will return 0xFFFFFFFF
  * 
  * Calculates a map cache's crc.
  */

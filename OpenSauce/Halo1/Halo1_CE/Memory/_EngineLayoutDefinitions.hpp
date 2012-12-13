@@ -97,7 +97,13 @@
 
 
 //////////////////////////////////////////////////////////////////////////
-// 0x60 TagGroups	__EL_TAGGROUPS_
-#define __EL_INCLUDE_TAGGROUPS	0x60
+// 0x60 Scenario	__EL_SCENARIO_
+#define __EL_INCLUDE_SCENARIO	0x60
+	#define __EL_SCENARIO_SCENARIO	(__EL_INCLUDE_SCENARIO + 0)
+
+
+//////////////////////////////////////////////////////////////////////////
+// 0x65 TagGroups	__EL_TAGGROUPS_
+#define __EL_INCLUDE_TAGGROUPS	0x65
 	#define __EL_TAGGROUPS_CACHE_FILES	(__EL_INCLUDE_TAGGROUPS + 0)
 	#define __EL_TAGGROUPS_TAG_GROUPS	(__EL_INCLUDE_TAGGROUPS + 1)

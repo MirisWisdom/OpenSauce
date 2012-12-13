@@ -47,20 +47,13 @@ namespace Yelo
 		s_game_globals* GameGlobals()									DPTR_IMP_GET(game_globals);
 		s_game_time_globals* GameTimeGlobals()							DPTR_IMP_GET(game_time_globals);
 		s_game_allegiance_globals* GameAllegianceGlobals()				DPTR_IMP_GET(game_allegiance_globals);
-		Game::s_scenario_globals* ScenarioGlobals()						DPTR_IMP_GET(scenario_globals);
 
 
-		TagGroups::scenario* Scenario()									PTR_IMP_GET(global_scenario);
 		TagGroups::s_game_globals* GlobalGameGlobals()					PTR_IMP_GET(global_game_globals);
-		TagGroups::collision_bsp* Bsp3d()								PTR_IMP_GET(global_bsp3d);
-		TagGroups::collision_bsp* CollisionBsp()						PTR_IMP_GET(global_collision_bsp);
-		TagGroups::structure_bsp* StructureBsp()						PTR_IMP_GET(global_structure_bsp);
 		s_physics_globals* Physics()									PTR_IMP_GET2(global_physics);
 		s_point_physics_globals* PointPhysics()							PTR_IMP_GET2(global_point_physics);
 
 
-		datum_index ScenarioIndex()										PTR_IMP_GET(global_scenario_index);
-		int16 StructureBspIndex()										PTR_IMP_GET(structure_bsp_index);
 		byte* DeveloperMode()											PTR_IMP_GET2(developer_mode);
 		static bool* TransportDumping()									PTR_IMP_GET2(transport_dumping);
 		bool DevmodeEnabled()											PTR_IMP_GET(devmode_enabled);

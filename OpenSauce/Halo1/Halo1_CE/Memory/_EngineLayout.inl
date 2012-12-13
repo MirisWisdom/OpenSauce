@@ -54,14 +54,19 @@
 	#include __EL_INCLUDE_FILE_MACRO(_EngineLayout.Rasterizer.ShaderDraw.inl)
 	
 //////////////////////////////////////////////////////////////////////////
-// TagGroups
-#elif BOOST_PP_ITERATION() == __EL_INCLUDE_TAGGROUPS
-	#include __EL_INCLUDE_FILE_MACRO(_EngineLayout.TagGroups.inl)
+// Scenario
+#elif BOOST_PP_ITERATION() == __EL_INCLUDE_SCENARIO
+	#include __EL_INCLUDE_FILE_MACRO(_EngineLayout.Scenario.inl)
 
 //////////////////////////////////////////////////////////////////////////
 // Simulation
 #elif BOOST_PP_ITERATION() == __EL_INCLUDE_SIMULATION
 	#include __EL_INCLUDE_FILE_MACRO(_EngineLayout.Simulation.inl)
+
+//////////////////////////////////////////////////////////////////////////
+// TagGroups
+#elif BOOST_PP_ITERATION() == __EL_INCLUDE_TAGGROUPS
+	#include __EL_INCLUDE_FILE_MACRO(_EngineLayout.TagGroups.inl)
 
 //#elif BOOST_PP_ITERATION() == 
 #else

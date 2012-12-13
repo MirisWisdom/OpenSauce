@@ -49,6 +49,7 @@
 
 	#include "Game/Scripting.hpp"
 	#include "Game/GameStateRuntimeData.hpp"
+	#include "Scenario/Scenario.hpp"
 	#include "Scenario/ScenarioFauxZones.hpp"
 	#include "Game/GameEngine.hpp"
 

@@ -3618,6 +3618,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Memory\1.08\_EngineLayout.Scenario.inl"
+					>
+				</File>
+				<File
 					RelativePath=".\Memory\1.08\_EngineLayout.TagGroups.inl"
 					>
 				</File>
@@ -3670,6 +3674,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Memory\1.09\_EngineLayout.Scenario.inl"
+					>
+				</File>
+				<File
 					RelativePath=".\Memory\1.09\_EngineLayout.TagGroups.inl"
 					>
 				</File>
@@ -3703,6 +3711,10 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Halo1\CheApe\project_yellow_globals.xml"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Halo1\CheApe\project_yellow_globals_cv.xml"
 					>
 				</File>
 				<File
@@ -5154,6 +5166,14 @@
 		<Filter
 			Name="Scenario"
 			>
+			<File
+				RelativePath=".\Scenario\Scenario.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Scenario\Scenario.hpp"
+				>
+			</File>
 			<File
 				RelativePath=".\Scenario\ScenarioFauxZones.cpp"
 				>

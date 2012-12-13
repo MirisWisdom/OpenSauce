@@ -80,6 +80,13 @@ namespace Yelo
 			// push imm16\32
 			_x86_opcode_push_imm = 0x68,
 			_x86_opcode_nop = 0x90,
+
+			// mov [e]ax, [offset]
+			_x86_opcode_mov_eax_y_offset = 0xA1,
+
+			// mov [offset], [e]ax
+			_x86_opcode_mov_offset_y_eax = 0xA3,
+
 			// return near imm16\32
 			_x86_opcode_retn = 0xC2,
 			// regular return near

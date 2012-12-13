@@ -11,7 +11,7 @@
 
 namespace Yelo
 {
-	namespace Game
+	namespace Scenario
 	{
 		struct s_scenario_player_atmospheric_fog // made up name
 		{

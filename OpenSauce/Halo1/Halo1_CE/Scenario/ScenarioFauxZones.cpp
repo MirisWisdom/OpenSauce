@@ -12,6 +12,7 @@
 
 #include "Game/GameState.hpp"
 #include "Rasterizer/Rasterizer.hpp"
+#include "Scenario/Scenario.hpp"
 #include "TagGroups/project_yellow_definitions.hpp"
 
 namespace Yelo
@@ -61,7 +62,7 @@ namespace Yelo
 				return false;
 			}
 
-			void InitializeOriginalLightmaps( const TAG_TBLOCK(& bsps, scenario_structure_bsps) )
+			void InitializeOriginalLightmaps( const TAG_TBLOCK(& bsps, scenario_structure_bsp_reference) )
 			{
 				for(int x = 0; x < bsps.Count && x < NUMBEROF(original_lightmap_bitmaps); x++)
 				{
@@ -71,7 +72,7 @@ namespace Yelo
 						original_lightmap_bitmaps[x] = bsp->lightmap_bitmaps.tag_index;
 				}
 			}
-			void RestoreOriginalLightmaps( const TAG_TBLOCK(& bsps, scenario_structure_bsps) )
+			void RestoreOriginalLightmaps( const TAG_TBLOCK(& bsps, scenario_structure_bsp_reference) )
 			{
 				for(int x = 0; x < bsps.Count && x < NUMBEROF(original_lightmap_bitmaps); x++)
 				{
@@ -136,7 +137,7 @@ namespace Yelo
 				ScenarioFauxZones::Reset();
 			}
 			else
-				scenario_faux_zone_globals->Initialize(GameState::Scenario());
+				scenario_faux_zone_globals->Initialize(Scenario::Scenario());
 		}
 
 		static bool ScenarioFauxZoneSetSwitchVariantUpdateGameStateWithZoneSky(scenario* scnr,
@@ -206,21 +207,21 @@ namespace Yelo
 		{
 			if(scenario_faux_zone_globals == NULL) return;
 
-			scenario_faux_zone_globals->RestoreOriginalSkies(GameState::Scenario()->skies);
-			scenario_faux_zone_globals->RestoreOriginalLightmaps(GameState::Scenario()->structure_bsps);
+			scenario_faux_zone_globals->RestoreOriginalSkies(Scenario::Scenario()->skies);
+			scenario_faux_zone_globals->RestoreOriginalLightmaps(Scenario::Scenario()->structure_bsps);
 		}
 		bool SwitchCurrentZoneVariant(cstring variant_name)
 		{
 			if(scenario_faux_zone_globals != NULL && _global_yelo->scenario.Count == 1)
 			{
-				structure_bsp* current_bsp = GameState::StructureBsp();
+				structure_bsp* current_bsp = Scenario::StructureBsp();
 				const TAG_TBLOCK(& zones, s_scenario_faux_zone_set) = _global_yelo->scenario[0].zones;
 
 				for(int x = 0; x < zones.Count; x++)
 				{
 					if(TagGet<structure_bsp>( zones[x].structure_bsp ) == current_bsp)
 					{
-						return ScenarioFauxZoneSetSwitchVariantByName(current_bsp, GameState::Scenario(),
+						return ScenarioFauxZoneSetSwitchVariantByName(current_bsp, Scenario::Scenario(),
 							_global_yelo->scenario[0], zones[x],
 							variant_name);
 					}
@@ -245,7 +246,7 @@ namespace Yelo
 
 					if(zone_bsp != NULL)
 					{
-						return ScenarioFauxZoneSetSwitchVariantByName(zone_bsp, GameState::Scenario(),
+						return ScenarioFauxZoneSetSwitchVariantByName(zone_bsp, Scenario::Scenario(),
 							_global_yelo->scenario[0], zones[x],
 							variant_name);
 					}
@@ -265,7 +266,7 @@ namespace Yelo
 				{
 					if(_stricmp(zone_sky_name, zone_skies[x].name) != 0) continue;
 
-					return ScenarioFauxZoneSetSwitchVariantUpdateGameStateWithZoneSky(GameState::Scenario(), 
+					return ScenarioFauxZoneSetSwitchVariantUpdateGameStateWithZoneSky(Scenario::Scenario(), 
 						_global_yelo->scenario[0], &zone_skies[x]);
 				}
 			}
