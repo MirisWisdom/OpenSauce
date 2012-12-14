@@ -40,6 +40,11 @@ namespace Yelo
 		return tag_block_resize(this, element_count);
 	}
 
+	bool tag_data::resize(size_t new_size)
+	{
+		return tag_data_resize(this, new_size);
+	}
+
 	namespace TagGroups
 	{
 		// just an endian swap

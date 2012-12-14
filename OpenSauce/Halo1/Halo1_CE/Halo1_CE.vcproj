@@ -4506,6 +4506,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\scenario\scenario_object_definitions_structures.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\scenario\sky_definitions.hpp"
 					>
 				</File>

@@ -222,7 +222,7 @@ namespace Yelo
 
 		void Initialize()
 		{
-			tag_group_definition* scnr = Yelo::tag_group_get<TagGroups::scenario>();
+			tag_group* scnr = Yelo::tag_group_get<TagGroups::scenario>();
 		}
 
 		void Dispose()

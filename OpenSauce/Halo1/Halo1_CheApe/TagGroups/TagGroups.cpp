@@ -8,6 +8,7 @@
 #include "TagGroups/TagGroups.hpp"
 
 #include <blamlib/Halo1/items/weapon_definitions.hpp>
+#include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
 
 namespace Yelo
 {
@@ -17,7 +18,7 @@ namespace Yelo
 
 	namespace TagGroups
 	{
-		t_tag_instance_data*	TagInstances()	DPTR_IMP_GET(tag_instance_data);
+		tag_instance_data_t*	TagInstances()	DPTR_IMP_GET(tag_instance_data);
 
 		API_FUNC_NAKED void Initialize()
 		{
@@ -31,13 +32,13 @@ namespace Yelo
 
 		static void InitializeFixesForWeaponGroup()
 		{
-			tag_group_definition* weapon_group = tag_group_get<s_weapon_definition>();
+			tag_group* weapon_group = tag_group_get<s_weapon_definition>();
 
 			// field the weapon's magazines field
-			int32 field_index = tag_block_find_field(weapon_group->definition, Enums::_field_block, "magazines");
+			int32 field_index = tag_block_find_field(weapon_group->header_block_definition, Enums::_field_block, "magazines");
 			if(field_index != NONE)
 			{
-				tag_block_definition* magazines_block = weapon_group->definition->fields[field_index].Definition<tag_block_definition>();
+				tag_block_definition* magazines_block = weapon_group->header_block_definition->fields[field_index].Definition<tag_block_definition>();
 
 				// find the magazine's magazine-objects field
 				field_index = tag_block_find_field(magazines_block, Enums::_field_block, "magazines");
@@ -74,30 +75,90 @@ namespace Yelo
 		{
 			YELO_ASSERT( def );
 			YELO_ASSERT( def->fields );
-			YELO_ASSERT( IN_RANGE_ENUM(field_type, Enums::_field_type) );
+			YELO_ASSERT( IN_RANGE_ENUM(field_type, Enums::k_number_of_tag_field_types) );
 			YELO_ASSERT( name );
 
 			if(start_index == NONE) start_index = 0;
 
 			size_t name_length = strlen(name);
 
-			for(const tag_field* cur = def->fields + start_index; cur->field_type != Enums::_field_terminator; cur++)
+			for(const tag_field* cur = def->fields + start_index; cur->type != Enums::_field_terminator; cur++)
 			{
-				if(cur->field_type == field_type && !strncmp(cur->name, name, name_length))
+				if(cur->type == field_type && !strncmp(cur->name, name, name_length))
 					return cur - def->fields;
 			}
 
 			return NONE;
 		}
 
-		void tag_data_delete(tag_data& data, size_t terminator_size)
+		void tag_data_delete(tag_data* data, size_t terminator_size)
 		{
-			data.address = YELO_REALLOC(data.address, data.size = terminator_size);
+			tag_data_resize(data, terminator_size);
 		}
 
 		bool tag_block_delete_all_elements(tag_block* block)
 		{
 			return tag_block_resize(block, 0);
+		}
+
+		API_FUNC_NAKED s_tag_field_scan_state& field_scan_state_new(s_tag_field_scan_state& state, const tag_field* fields, void* fields_address)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FIELD_SCAN_STATE_NEW);
+
+			API_FUNC_NAKED_START()
+				push	fields_address
+				push	fields
+				push	state
+				call	FUNCTION
+			API_FUNC_NAKED_END_CDECL(3);
+		}
+		API_FUNC_NAKED void field_scan_state_add_field_type(s_tag_field_scan_state& state, Enums::field_type field_type)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FIELD_SCAN_STATE_ADD_FIELD_TYPE);
+
+			API_FUNC_NAKED_START()
+				push	field_type
+				push	state
+				call	FUNCTION
+			API_FUNC_NAKED_END_CDECL(2);
+		}
+		API_FUNC_NAKED bool field_scan(s_tag_field_scan_state& state)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FIELD_SCAN);
+
+			API_FUNC_NAKED_START()
+				push	state
+				call	FUNCTION
+			API_FUNC_NAKED_END_CDECL(1);
+		}
+
+		c_tag_field_scanner::c_tag_field_scanner(const tag_field* fields, void* fields_address)
+		{
+			field_scan_state_new(m_state, fields, fields_address);
+		}
+
+		c_tag_field_scanner& c_tag_field_scanner::AddFieldType(Enums::field_type field_type)
+		{
+			field_scan_state_add_field_type(m_state, field_type);
+			return *this;
+		}
+
+		void c_tag_field_scanner::AddAllFieldTypes()
+		{
+			memset(m_state.field_types, -1, sizeof(m_state.field_types));
+		}
+
+		bool c_tag_field_scanner::Scan()
+		{
+			return field_scan(m_state);
+		}
+
+		bool c_tag_field_scanner::TagFieldIsStringId() const
+		{
+			const tag_field* field = GetTagField();
+
+			return	field->type == Enums::_field_tag_reference && 
+					field->Definition<tag_reference_definition>()->group_tag == s_string_id_yelo_definition::k_group_tag;
 		}
 	};
 
@@ -119,10 +180,21 @@ namespace Yelo
 		// when tag_block_delete_element (which is called by tag_unload) is ran
 		void* ptr = YELO_MALLOC(Enums::k_max_tag_name_length+1, false);
 
-		reference.name = CAST_PTR(tag_reference_name_t, ptr);
+		reference.name = CAST_PTR(tag_reference_name_reference, ptr);
 		reference.name_length = 0;
 		reference.group_tag = NONE;
 		reference.tag_index = datum_index::null;
+	}
+
+	API_FUNC_NAKED bool tag_data_resize(tag_data* data, size_t new_size)
+	{
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_DATA_RESIZE);
+
+		API_FUNC_NAKED_START()
+			push	new_size
+			push	data
+			call	FUNCTION
+		API_FUNC_NAKED_END_CDECL(1);
 	}
 
 	API_FUNC_NAKED cstring tag_get_name(datum_index tag_index)
@@ -146,7 +218,7 @@ namespace Yelo
 		API_FUNC_NAKED_END_CDECL(2);
 	}
 
-	API_FUNC_NAKED tag_group_definition* tag_group_get(tag group_tag)
+	API_FUNC_NAKED tag_group* tag_group_get(tag group_tag)
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_GROUP_GET);
 

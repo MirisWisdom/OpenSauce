@@ -119,7 +119,7 @@ namespace TagGroups
 		Memory::WriteRelativeCall(shader_pass_platform_postprocess_override,	GET_FUNC_VPTR(SHADER_PASS_PLATFORM_POSTPROCESS_CALL));
 
 		{
-			tag_group_definition* sfx_group = tag_group_get<s_sound_effect_template_collection>();
+			tag_group* sfx_group = tag_group_get<s_sound_effect_template_collection>();
 			sound_effect_template_postprocess = sfx_group->postprocess_proc;
 			sfx_group->postprocess_proc = sound_effect_template_postprocess_override;
 		}

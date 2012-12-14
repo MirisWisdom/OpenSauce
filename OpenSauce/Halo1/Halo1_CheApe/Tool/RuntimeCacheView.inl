@@ -859,8 +859,8 @@ void PrintFieldValue(void* field_data, Yelo::tag_field* field_definition)
 	// print the fields value
 	Console::ColorPrint(k_color_default, "  value:\t");
 
-	const char* format = g_field_descriptions[field_definition->field_type].m_format_string;
-	switch(field_definition->field_type)
+	const char* format = g_field_descriptions[field_definition->type].m_format_string;
+	switch(field_definition->type)
 	{
 	case Enums::_field_byte_flags:
 	case Enums::_field_char_integer:
@@ -980,6 +980,8 @@ void PrintFieldValue(void* field_data, Yelo::tag_field* field_definition)
 
 	case Enums::_field_tag_reference:
 		{
+			// TODO: add support for string_id_yelo
+
 			TagGroups::group_tag_to_string tag_group;
 			tag_group.group = value._tag_reference->group_tag;
 			tag_group.Terminate();
@@ -1057,9 +1059,9 @@ BOOL PrintFields(char*& tag_data, DWORD& address, Yelo::tag_field* start_field)
 	int count = 0;
 	Yelo::tag_field* current = start_field;
 	// enumerate through all of the blocks fields
-	while(current->field_type != Enums::_field_terminator)
+	while(current->type != Enums::_field_terminator)
 	{
-		switch(current->field_type)
+		switch(current->type)
 		{
 		case Enums::_field_array_start:
 			{
@@ -1075,7 +1077,7 @@ BOOL PrintFields(char*& tag_data, DWORD& address, Yelo::tag_field* start_field)
 						return status;
 				}
 				// move the current field pointer past the array definition
-				while(current->field_type != Enums::_field_array_end)
+				while(current->type != Enums::_field_array_end)
 					current++;
 				current++;
 				continue;
@@ -1094,8 +1096,8 @@ BOOL PrintFields(char*& tag_data, DWORD& address, Yelo::tag_field* start_field)
 		Console::ColorPrintF(k_color_address, "0x%08X", address);
 		// print the field type
 		Console::ColorPrint(k_color_default, " [");
-		Console::ColorPrintF(k_color_fieldtype, "%s", g_field_descriptions[current->field_type].m_field_type_name);
-		Console::ColorPrintF(k_color_default, "]%*s", 26 - strlen(g_field_descriptions[current->field_type].m_field_type_name), " ");
+		Console::ColorPrintF(k_color_fieldtype, "%s", g_field_descriptions[current->type].m_field_type_name);
+		Console::ColorPrintF(k_color_default, "]%*s", 26 - strlen(g_field_descriptions[current->type].m_field_type_name), " ");
 
 		// if the field has a name, print it
 		std::string field_name("");
@@ -1110,7 +1112,7 @@ BOOL PrintFields(char*& tag_data, DWORD& address, Yelo::tag_field* start_field)
 		PrintFieldValue(tag_data, current);
 
 		// if the field is a tag block, print all of its elements
-		if(current->field_type == Enums::_field_block)
+		if(current->type == Enums::_field_block)
 		{
 			tag_block* block = (tag_block*)tag_data;
 			tag_block_definition* definition = current->Definition<tag_block_definition>();
@@ -1164,7 +1166,7 @@ BOOL PrintFields(char*& tag_data, DWORD& address, Yelo::tag_field* start_field)
 		}
 
 		// increment the address'
-		switch(current->field_type)
+		switch(current->type)
 		{
 		case Enums::_field_pad:
 		case Enums::_field_skip:
@@ -1172,8 +1174,8 @@ BOOL PrintFields(char*& tag_data, DWORD& address, Yelo::tag_field* start_field)
 			tag_data +=  (DWORD)current->definition;
 			break;
 		default:
-			address += g_field_descriptions[current->field_type].m_field_size;
-			tag_data += g_field_descriptions[current->field_type].m_field_size;
+			address += g_field_descriptions[current->type].m_field_size;
+			tag_data += g_field_descriptions[current->type].m_field_size;
 		};
 
 		current++;
@@ -1261,7 +1263,7 @@ BOOL OpenTag(const char* arguments)
 	tag_group.Terminate();
 	tag_group.TagSwap();
 
-	Yelo::tag_group_definition* tag_group_def = Yelo::tag_group_get(tag_group.group);
+	Yelo::tag_group* tag_group_def = Yelo::tag_group_get(tag_group.group);
 
 	if(!tag_group_def)
 	{
@@ -1279,7 +1281,7 @@ BOOL OpenTag(const char* arguments)
 	Console::ColorPrintF(k_color_name, "\t%s\n\n", tag_name.c_str());
 
 	// get the root block definition of the tag
-	Yelo::tag_block_definition* root_definition = tag_group_def->definition;
+	Yelo::tag_block_definition* root_definition = tag_group_def->header_block_definition;
 
 	// print the tags contents
 	return PrintBlock((DWORD)g_cache_view_globals.m_cache_tag_instances[index].definition, root_definition);

@@ -193,7 +193,7 @@ void		ClearTagData(TagGroups::s_shader_postprocess_definition* shader_tag)
 {
 	// remove any existing binary data
 	if(shader_tag->shader_code_binary.address)
-		TagGroups::tag_data_delete(shader_tag->shader_code_binary);
+		TagGroups::tag_data_delete(&shader_tag->shader_code_binary);
 
 	// remove any existing technique blocks
 	tag_block_delete_all_elements(shader_tag->techniques);

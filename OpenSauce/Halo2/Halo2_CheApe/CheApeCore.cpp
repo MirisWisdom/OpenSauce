@@ -98,8 +98,8 @@ namespace Yelo
 
 				void SetupTagGroupPointers()
 				{
-					tag_group_definition** old_tag_groups = CAST_PTR(tag_group_definition**, kTagGroupDefinitionsAddress);
-					tag_group_definition** address =  CAST_PTR(tag_group_definition**, this->address);
+					tag_group** old_tag_groups = CAST_PTR(tag_group**, kTagGroupDefinitionsAddress);
+					tag_group** address =  CAST_PTR(tag_group**, this->address);
 
 					// first, copy the original tag group pointers
 					int32 count;
@@ -171,8 +171,8 @@ namespace Yelo
 		static int __cdecl tag_group_definition_compare(void *, const void* lhs, const void* rhs)
 		{
 			return strcmp(
-				(*CAST_PTR(const tag_group_definition*const*,lhs))->name, 
-				(*CAST_PTR(const tag_group_definition*const*,rhs))->name);
+				(*CAST_PTR(const tag_group*const*,lhs))->name, 
+				(*CAST_PTR(const tag_group*const*,rhs))->name);
 		}
 
 		void SetupTagGroupPointers()
@@ -182,7 +182,7 @@ namespace Yelo
 			_globals.new_tag_groups.SetupTagGroupPointers();
 
 			// ABC the tag groups list
-			qsort_s(_globals.new_tag_groups.address, _globals.new_tag_groups.count+1, sizeof(tag_group_definition*), tag_group_definition_compare, NULL);
+			qsort_s(_globals.new_tag_groups.address, _globals.new_tag_groups.count+1, sizeof(tag_group*), tag_group_definition_compare, NULL);
 		}
 
 		void SetupTagGroupCounts()

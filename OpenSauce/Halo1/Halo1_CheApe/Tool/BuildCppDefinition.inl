@@ -482,7 +482,7 @@ static void AddFlags(const tag_field* field,
 
 	flags_instance.Ctor();
 	flags_instance.SetList(field->Definition<string_list>());
-	flags_instance.SetFlagsType(CAST(Enums::field_type, field->field_type));
+	flags_instance.SetFlagsType(CAST(Enums::field_type, field->type));
 	flags_instance.AddReference(field);
 
 	flags_vector.push_back(flags_instance);
@@ -515,9 +515,9 @@ static void AddBlock(const tag_block_definition* block_definition,
 	const tag_field* field_pointer;
 	// add blocks
 	field_pointer = block_definition->fields;
-	while(field_pointer && field_pointer->field_type != Enums::_field_terminator)
+	while(field_pointer && field_pointer->type != Enums::_field_terminator)
 	{
-		if(field_pointer->field_type == Enums::_field_block)
+		if(field_pointer->type == Enums::_field_block)
 			AddBlock(field_pointer->Definition<tag_block_definition>());
 		field_pointer++;
 	}
@@ -535,18 +535,18 @@ static void AddBlock(const tag_block_definition* block_definition,
 
 	// add enums first to keep them in order
 	field_pointer = block_definition->fields;
-	while(field_pointer && field_pointer->field_type != Enums::_field_terminator)
+	while(field_pointer && field_pointer->type != Enums::_field_terminator)
 	{
-		if(field_pointer->field_type == Enums::_field_enum)
+		if(field_pointer->type == Enums::_field_enum)
 			AddEnum(field_pointer);
 		field_pointer++;
 	}
 
 	// then blocks
 	field_pointer = block_definition->fields;
-	while(field_pointer && field_pointer->field_type != Enums::_field_terminator)
+	while(field_pointer && field_pointer->type != Enums::_field_terminator)
 	{
-		switch(field_pointer->field_type)
+		switch(field_pointer->type)
 		{
 			case Enums::_field_block:
 				AddBlock(field_pointer->Definition<tag_block_definition>());
@@ -618,7 +618,7 @@ static void WriteTagReference(FILE* file,
 
 	// write the start of the tag reference entry
 	fprintf_s(file, "\t\t\tTAG_FIELD(%s, %s", 
-		m_field_type_strings[field->field_type], 
+		m_field_type_strings[field->type], 
 		name);
 
 	// union/struct hack to use a tag as a string
@@ -630,7 +630,7 @@ static void WriteTagReference(FILE* file,
 		// the field has multiple tag groups
 		// loop through the tag group list appending them to the file
 		tag* current_tag = def->group_tags;
-		fputs(", \"", file);
+		fputs(", '", file);
 		while(current_tag && ((gt.group = *current_tag) != NONE))
 		{
 			// swap the endian of the tag group and write it
@@ -640,18 +640,18 @@ static void WriteTagReference(FILE* file,
 
 			//if the next group isn't the terminator put the divider
 			if(*current_tag != NONE)
-				fputs("\", \"", file);
+				fputs("', '", file);
 		}
-		fputs("\"", file);
+		fputs("'", file);
 	}
 	else if(def->group_tag != NONE)
 	{
 		// the field only has one tag group
-		fputs(", \"", file);
+		fputs(", '", file);
 		gt.group = def->group_tag;
 		gt.TagSwap();
 		fputs(gt.str, file);
-		fputs("\"", file);	
+		fputs("'", file);	
 	}
 	fputs(");\n", file);
 }
@@ -752,7 +752,7 @@ static void WriteField(FILE* file,
 	cstring description)
 {
 	// default field output with optional units and description
-	fprintf_s(file, "\t\t\tTAG_FIELD(%s, %s", m_field_type_strings[field->field_type], name);
+	fprintf_s(file, "\t\t\tTAG_FIELD(%s, %s", m_field_type_strings[field->type], name);
 	if(units || description)
 		fprintf_s(file, ", \"%s\"", (units ? units : ""));
 	if(description)
@@ -772,10 +772,10 @@ static void WriteTagField(FILE* file,
 	cstring description = NULL;
 
 	bool use_default = (
-		(field->field_type != Enums::_field_skip) && 
-		(field->field_type != Enums::_field_pad) && 
-		(field->field_type != Enums::_field_custom));
-	bool add_to_vector = (field->field_type != Enums::_field_explanation);
+		(field->type != Enums::_field_skip) && 
+		(field->type != Enums::_field_pad) && 
+		(field->type != Enums::_field_custom));
+	bool add_to_vector = (field->type != Enums::_field_explanation);
 
 	if(GetName(field_name, field->name, parent_block.GetUsedNamesVector(), true, true, use_default, add_to_vector))
 		name = field_name.c_str();
@@ -783,10 +783,10 @@ static void WriteTagField(FILE* file,
 	if(GetUnits(field_units, field->name))
 		units = field_units.c_str();
 
-	if((field->field_type != Enums::_field_explanation) && GetDescription(field_description, field->name))
+	if((field->type != Enums::_field_explanation) && GetDescription(field_description, field->name))
 		description = field_description.c_str();
 
-	switch(field->field_type)
+	switch(field->type)
 	{
 	case Enums::_field_explanation:
 		WriteExplanation(file, field);
@@ -821,7 +821,7 @@ static void WriteTagField(FILE* file,
 	}
 
 	// extra newline prior to an explanation field
-	if(field[1].field_type == Enums::_field_explanation)
+	if(field[1].type == Enums::_field_explanation)
 		fputs("\n", file);
 }
 static void WriteEnumDefinition(FILE* file,
@@ -864,7 +864,7 @@ static void WriteEnumDefinition(FILE* file,
 	fputs(": ", stdout);
 	char input[512];
 	input[0] = '\0';
-	if(gets(input) != NULL)
+	if(gets_s(input) != NULL)
 	{
 		if(input[0] != '\0')
 		{
@@ -939,7 +939,7 @@ static void WriteFlagsDefinition(FILE* file,
 		fputs(": ", stdout);
 		char input[512];
 		input[0] = '\0';
-		if(gets(input) != NULL)
+		if(gets_s(input) != NULL)
 		{
 			//if they do not specify a name, use the first references field name
 			if(input[0] != '\0')
@@ -961,7 +961,7 @@ static void WriteFlagsDefinition(FILE* file,
 	// defines the size of the flag value
 	char* flag_type = NULL;
 	char* type = NULL;
-	switch(references[0]->field_type)
+	switch(references[0]->type)
 	{
 	case Enums::_field_byte_flags:
 		flag_type = "TAG_FLAG8";
@@ -1028,7 +1028,7 @@ static void WriteArrayDefinition(FILE* file,
 	fprintf_s(file, "\t\tstruct %s\n\t\t{\n", field_name.c_str());
 
 	const tag_field* field = instance.GetArrayStart();
-	while(field++ && (field->field_type != Enums::_field_array_end))
+	while(field++ && (field->type != Enums::_field_array_end))
 		WriteTagField(file, field, instance);
 
 	fputs("\t\t};\n", file);
@@ -1073,14 +1073,14 @@ static void WriteBlockDefinition(FILE* file,
 
 	// write all of the structs fields
 	current_field = block_definition->fields;
-	while(current_field && (current_field->field_type != Enums::_field_terminator))
+	while(current_field && (current_field->type != Enums::_field_terminator))
 	{
 		WriteTagField(file, current_field, instance);	
 
 		// skip over fields that are inside an array
 		// there are in the array structs written previously
-		if(current_field->field_type == Enums::_field_array_start)
-			while(current_field->field_type != Enums::_field_array_end)
+		if(current_field->type == Enums::_field_array_start)
+			while(current_field->type != Enums::_field_array_end)
 				current_field++;
 
 		current_field++;
@@ -1090,10 +1090,10 @@ static void WriteBlockDefinition(FILE* file,
 	// if the user want the boost assertion added...add it :)
 	if(add_boost_asserts)
 		fprintf_s(file, "\t\t}; BOOST_STATIC_ASSERT( sizeof(%s) == 0x%X ); // max count: %i\n",
-			block_name.c_str(), block_definition->element_size, block_definition->max_elements);
+			block_name.c_str(), block_definition->element_size, block_definition->maximum_element_count);
 	else
 		fprintf_s(file, "\t\t}; // size: %i bytes, max count: %i\n",
-			block_definition->element_size, block_definition->max_elements);
+			block_definition->element_size, block_definition->maximum_element_count);
 	// if this is the base definition struct, it's at the end of the file
 	// so we don't want a lines space
 	if(!instance.IsBase())

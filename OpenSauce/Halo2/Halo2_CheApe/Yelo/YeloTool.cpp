@@ -165,8 +165,8 @@ namespace Yelo
 			// Now I know my ABCs
 			qsort_s(utility_classes, NUMBEROF(utility_classes), sizeof(s_tag_utility_class), s_tag_utility_class_compare, NULL);
 
-			const tag_group_definition* _old_light_group = CAST_PTR(tag_group_definition*, 0x97A798); // lxxx
-			const tag_group_definition* _model_blank_group = CAST_PTR(tag_group_definition*, 0x97A8A0); // blah
+			const tag_group* _old_light_group = CAST_PTR(tag_group*, 0x97A798); // lxxx
+			const tag_group* _model_blank_group = CAST_PTR(tag_group*, 0x97A8A0); // blah
 		}
 
 //////////////////////////////////////////////////////////////////////////

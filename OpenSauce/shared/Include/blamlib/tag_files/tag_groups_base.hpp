@@ -11,15 +11,18 @@ namespace Yelo
 	{
 		enum {
 			k_max_tag_name_length = 255,
+
+			k_maximum_tags_per_tag_chain = 4,
+			k_maximum_children_per_tag = 16,
 		};
 	};
 
 // Halo1's editor allocates 256 characters for all tag_reference names, even if they're empty
 // Halo2's uses a managed constant pool for tag names so we don't want to allow write-access
 #if PLATFORM_IS_EDITOR && CHEAPE_PLATFORM == CHEAPE_PLATFORM_HALO1
-	typedef char* tag_reference_name_t;
+	typedef char* tag_reference_name_reference;
 #else
-	typedef const char* tag_reference_name_t;
+	typedef const char* tag_reference_name_reference;
 #endif
 
 	struct tag_reference
@@ -28,7 +31,7 @@ namespace Yelo
 		tag group_tag;
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
 		// path, without tag group extension, to the tag reference
-		tag_reference_name_t name;
+		tag_reference_name_reference name;
 		// length of the reference name
 		int32 name_length;
 #endif
@@ -132,6 +135,8 @@ namespace Yelo
 		// Returns byte pointer that is the same as [address]
 		// Just makes coding a little more cleaner
 		inline byte* Bytes() { return CAST_PTR(byte*, address); }
+
+		bool resize(size_t new_size = 0);
 	};
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
 	BOOST_STATIC_ASSERT( sizeof(tag_data) == 0x14 );
@@ -140,6 +145,7 @@ namespace Yelo
 	BOOST_STATIC_ASSERT( sizeof(tag_data) == 0x8 );
 	#define pad_tag_data PAD32 PAD32
 #endif
+	bool tag_data_resize(tag_data* data, size_t new_size);
 
 
 	cstring tag_get_name(datum_index tag_index);

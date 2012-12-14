@@ -108,7 +108,7 @@ namespace Yelo
 		};
 
 		enum tag_loading_flags {
-			_tag_loading_flag_is_new =						FLAG(0),
+			_tag_loading_flag_for_runtime =						FLAG(0),
 			//_tag_loading_flag_ = FLAG(1),
 			//_tag_loading_flag_ = FLAG(2), // print errors?
 			_tag_loading_flag_ignore_invalid_field_data =	FLAG(3),
@@ -135,7 +135,7 @@ namespace Yelo
 
 	struct tag_field
 	{
-		_enum field_type; PAD16;
+		_enum type; PAD16;
 		cstring name;
 		void* definition;
 		tag group_tag;
@@ -205,8 +205,8 @@ namespace Yelo
 		cstring			display_name;
 		cstring			name;
 		long_flags		flags;
-		int32			max_elements;
-		cstring			max_elements_string;
+		int32			maximum_element_count;
+		cstring			maximum_element_count_string;
 		tag_field_set*	field_sets;
 		int32			field_set_count;
 		tag_field_set*	field_set_latest;
@@ -232,7 +232,7 @@ namespace Yelo
 		cstring name;
 		long_flags flags;
 		uint32 alignment_bit;
-		uint32 max_size;
+		uint32 maximum_size;
 		cstring max_size_identifier;
 		void* byte_swap_proc;
 		void* copy_proc; // return_type? (? arg_0, ? arg_4, void* buffer, int buffer_size, int? arg_10)
@@ -245,10 +245,10 @@ namespace Yelo
 		tag* group_tags;
 	}; BOOST_STATIC_ASSERT( sizeof(tag_reference_definition) == 0xC );
 
-	typedef bool (PLATFORM_API* proc_tag_group_postprocess)(datum_index tag_index, bool is_new);
+	typedef bool (PLATFORM_API* proc_tag_group_postprocess)(datum_index tag_index, bool for_runtime);
 	typedef bool (PLATFORM_API* proc_tag_group_postprocess_for_sync)(datum_index tag_index, void* cache_file_writer);
 	typedef void (PLATFORM_API* proc_tag_group_save_preprocess)(datum_index tag_index); // TODO: verify return type
-	struct tag_group_definition
+	struct tag_group
 	{
 		cstring name;
 		long_flags flags;
@@ -266,7 +266,7 @@ namespace Yelo
 		tag child_group_tags[16];
 		int16 childs_count; PAD16;
 		cstring default_tag_path;
-	}; BOOST_STATIC_ASSERT( sizeof(tag_group_definition) == 0x70 );
+	}; BOOST_STATIC_ASSERT( sizeof(tag_group) == 0x70 );
 
 	struct tag_instance
 	{
@@ -307,7 +307,7 @@ namespace Yelo
 	void tag_block_move(tag_block* to_block, tag_block* from_block);
 
 	void tag_reference_copy(const tag_reference& src, tag_reference& dst);
-	tag_group_definition* tag_group_get_next(tag_group_definition* start = NULL);
+	tag_group* tag_group_get_next(tag_group* start = NULL);
 	void* tag_data_get_pointer(tag_data& data, uint32 offset);
 	char* string_id_get_string(string_id id, string_id_value out_value);
 	cstring string_id_get_value(string_id id);
@@ -316,9 +316,9 @@ namespace Yelo
 
 
 	// Get the group definition based on a four-character code
-	tag_group_definition* tag_group_get(tag group_tag);
+	tag_group* tag_group_get(tag group_tag);
 	template<typename T>
-	tag_group_definition* tag_group_get()
+	tag_group* tag_group_get()
 	{
 		return tag_group_get(T::k_group_tag);
 	}
@@ -326,7 +326,6 @@ namespace Yelo
 	void tag_orphan(datum_index tag_index);
 	bool tag_rename(datum_index tag_index, cstring new_name);
 	datum_index tag_loaded(tag group_tag, cstring name);
-	bool tag_data_resize(tag_data& data, uint32 new_size);
 
 	
 	void* tag_block_get_element_with_size(tag_block* block, int32 element_index, size_t element_size);

@@ -28,7 +28,7 @@ namespace Yelo
 			bool add_boost_asserts = Settings::ParseBoolean(args->add_boost_asserts_cstr);
 
 			// get the tag groups definition
-			Yelo::tag_group_definition* tag_group_def = Yelo::tag_group_get(*args->tag_group);
+			Yelo::tag_group* tag_group_def = Yelo::tag_group_get(*args->tag_group);
 			if(tag_group_def)
 			{
 				printf_s("creating c++ definition of %s\n", tag_group_def->name);
@@ -47,7 +47,7 @@ namespace Yelo
 					return;
 				}
 
-				WriteCppDefinition(file, tag_group_def->definition, *args->tag_group, add_boost_asserts);
+				WriteCppDefinition(file, tag_group_def->header_block_definition, *args->tag_group, add_boost_asserts);
 
 				fclose(file);
 				printf_s("definition saved as %s\n", file_name);

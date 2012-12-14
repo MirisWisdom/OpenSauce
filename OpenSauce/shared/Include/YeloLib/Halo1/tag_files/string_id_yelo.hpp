@@ -6,26 +6,39 @@
 */
 #pragma once
 
-#include <YeloLib/tag_files/tag_groups_yelo.hpp>
+#include <blamlib/tag_files/tag_groups_base.hpp>
 
 #define STRING_ID(set, value)	\
 	_string_id::_##set##_string_##value
 
 namespace Yelo
 {
-	typedef tag_reference_name_t string_id_yelo_value_t;
+	namespace Enums
+	{
+		enum {
+			k_string_id_yelo_length = k_max_tag_name_length
+		};
+	};
+	typedef char string_id_yelo_value[Yelo::Enums::k_string_id_yelo_length+1];
+
+	typedef tag_reference_name_reference string_id_yelo_value_reference;
 
 	struct string_id_yelo
 	{
 		enum { k_signature = 'sidy' };
 
 		tag signature;
-		string_id_yelo_value_t value;
+		string_id_yelo_value_reference value;
 		int32 value_length;
 		datum_index tag_index;
 
 		string_id id;
+
+		static void format_string(cstring string);
+		static char* get_string(string_id id, __out string_id_yelo_value value);
+		static cstring get_string(string_id id);
 	}; BOOST_STATIC_ASSERT( sizeof(string_id_yelo) == 0x14 );
+#define pad_string_id_yelo PAD_TYPE(tag_reference); PAD_TYPE(string_id);
 
 	namespace TagGroups
 	{
