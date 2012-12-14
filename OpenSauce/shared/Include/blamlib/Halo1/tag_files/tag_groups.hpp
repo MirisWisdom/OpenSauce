@@ -8,16 +8,15 @@
 #include <blamlib/tag_files/tag_groups_base.hpp>
 #include <YeloLib/tag_files/tag_groups_yelo.hpp>
 
+#if PLATFORM_IS_EDITOR
+	#include <blamlib/Halo1/tag_files/tag_groups_structures.hpp>
+#endif
+
 namespace Yelo
 {
 	namespace Enums
 	{
 		enum {
-			k_maximum_tags_per_tag_chain = 4,
-			k_maximum_children_per_tag = 16,
-
-			k_maximum_field_byte_swap_codes = 1024,
-
 			k_protected_group_tag = 'prot', // HEK+: this overrides the scenario's group tag in the tag index.
 		};
 	};

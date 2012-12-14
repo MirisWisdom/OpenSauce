@@ -2253,14 +2253,6 @@
 			Name="TagGroups"
 			>
 			<File
-				RelativePath=".\TagGroups\tag_database_definitions.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\TagGroups\tag_database_definitions.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\TagGroups\TagGroups.cpp"
 				>
 			</File>
@@ -2320,11 +2312,27 @@
 				Name="tag_files"
 				>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\tag_files\tag_groups_base.cpp"
 					>
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\tag_files\tag_groups_base.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups_structures.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="guerilla"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\guerilla\tags_interface.hpp"
 					>
 				</File>
 			</Filter>
@@ -2557,6 +2565,14 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\YeloLib\Halo1\tag_files\string_id_yelo.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_database_definitions.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_database_definitions.hpp"
 					>
 				</File>
 				<File

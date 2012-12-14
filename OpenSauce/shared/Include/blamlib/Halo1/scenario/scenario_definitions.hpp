@@ -10,6 +10,7 @@
 #include <blamlib/Halo1/cutscene/recorded_animation_definitions.hpp>
 #include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/hs/hs_scenario_definitions.hpp>
+#include <blamlib/Halo1/scenario/scenario_object_definitions_structures.hpp>
 
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
@@ -25,6 +26,13 @@ namespace Yelo
 			k_maximum_structure_bsps_per_scenario_upgrade = k_maximum_structure_bsps_per_scenario * 2,
 
 			k_maximum_object_names_per_scenario = 512,
+		};
+
+		enum scenario_type : _enum
+		{
+			_scenario_type_campaign,
+			_scenario_type_multiplayer,
+			_scenario_type_main_menu,
 		};
 
 		enum scenario_netgame_type
@@ -177,12 +185,13 @@ namespace Yelo
 
 			TAG_TBLOCK_(skies, tag_reference);
 
-			PAD16; // type
-			PAD16; // flags
+			TAG_ENUM(type, Enums::scenario_type);
+			TAG_FIELD(word_flags, flags);
 
 			TAG_PAD(tag_block, 1); // scenario_child_scenario_reference
-			PAD32; // local north
-			TAG_PAD(int32, 39); // tag_data + 136
+			TAG_FIELD(angle, local_north);
+			TAG_PAD(tag_data, 1);
+			TAG_PAD(int32, 34); // 136
 			TAG_PAD(tag_block,
 				1 + // predicted_resource_block
 				1); // scenario_function
@@ -191,38 +200,36 @@ namespace Yelo
 			TAG_PAD(tag_block, 1); // Halo2. scenario_environment_object
 			TAG_PAD(int32, 53); // 212
 
+			TAG_TBLOCK(object_names, scenario_object_name);
+
+			TAG_TBLOCK(scenery, s_scenario_scenery);
+			TAG_TBLOCK(scenery_palette, scenario_object_palette_entry);
+			//////////////////////////////////////////////////////////////////////////
+			// units
+			TAG_TBLOCK(bipeds, s_scenario_biped);
+			TAG_TBLOCK(bipeds_palette, scenario_object_palette_entry);
+			TAG_TBLOCK(vehicles, s_scenario_vehicle);
+			TAG_TBLOCK(vehicles_palette, scenario_object_palette_entry);
+			//////////////////////////////////////////////////////////////////////////
+			// items
+			TAG_TBLOCK(equipment, s_scenario_equipment);
+			TAG_TBLOCK(equipment_palette, scenario_object_palette_entry);
+			TAG_TBLOCK(weapon, s_scenario_weapon);
+			TAG_TBLOCK(weapon_palette, scenario_object_palette_entry);
+			//////////////////////////////////////////////////////////////////////////
+			// devices
+			TAG_TBLOCK(device_groups, scenario_device_group);
+			TAG_TBLOCK(machines, s_scenario_machine);
+			TAG_TBLOCK(machines_palette, scenario_object_palette_entry);
+			TAG_TBLOCK(controls, s_scenario_control);
+			TAG_TBLOCK(controls_palette, scenario_object_palette_entry);
+			TAG_TBLOCK(light_fixtures, s_scenario_light_fixture);
+			TAG_TBLOCK(light_fixtures_palette, scenario_object_palette_entry);
+
+			TAG_TBLOCK(sound_scenery, s_scenario_sound_scenery);
+			TAG_TBLOCK(sound_scenery_palette, scenario_object_palette_entry);
+
 			TAG_PAD(tag_block,
-				1 + // scenario_object_name
-
-				1 + // s_scenario_scenery
-				1 + // scenario_object_palette_entry
-
-				1 + // s_scenario_biped
-				1 + // scenario_object_palette_entry
-
-				1 + // s_scenario_vehicle
-				1 + // scenario_object_palette_entry
-
-				1 + // s_scenario_equipment
-				1 + // scenario_object_palette_entry
-
-				1 + // s_scenario_weapon
-				1 + // scenario_object_palette_entry
-
-				1 + // scenario_device_group
-
-				1 + // s_scenario_machine
-				1 + // scenario_object_palette_entry
-
-				1 + // s_scenario_control
-				1 + // scenario_object_palette_entry
-
-				1 + // s_scenario_light_fixture
-				1 + // scenario_object_palette_entry
-
-				1 + // s_scenario_sound_scenery
-				1 + // scenario_object_palette_entry
-
 				1 + // Halo2. s_scenario_light
 				1   // Halo2. scenario_object_palette_entry
 				);
@@ -279,7 +286,9 @@ namespace Yelo
 				);
 
 			TAG_PAD(int32, 27); // 108
-			TAG_PAD(tag_reference, 3);
+			TAG_FIELD(tag_reference, custom_object_names, 'ustr');
+			TAG_FIELD(tag_reference, ingame_help_text, 'ustr');
+			TAG_FIELD(tag_reference, hud_messages, 'hmt ');
 			TAG_TBLOCK(structure_bsps, scenario_structure_bsp_reference);
 
 			// Get the tag reference we redefined for users to reference yelo definitions

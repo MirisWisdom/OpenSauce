@@ -12,11 +12,11 @@
 
 #include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
+#include <YeloLib/Halo1/tag_files/tag_database_definitions.hpp>
 
 #include "Engine/EngineFunctions.hpp"
 #include "Engine/GrenadeTypesUpgrade.hpp"
 #include "Engine/Scripting.hpp"
-#include "TagGroups/tag_database_definitions.hpp"
 #include "TagGroups/TagGroups.hpp"
 
 namespace Yelo
@@ -103,7 +103,7 @@ namespace Yelo
 			false,
 		};
 
-		static void YeloDefinitionsInitialize(tag_group_definition* py_globals_definition, tag_group_definition* py_definition)
+		static void YeloDefinitionsInitialize(tag_group* py_globals_definition, tag_group* py_definition)
 		{
 			int32 field_index = NONE;
 
@@ -138,14 +138,14 @@ namespace Yelo
 				//////////////////////////////////////////////////////////////////////////
 				{// scripting_block
 					// NOTE: this will also affect project_yellow's script block as it's the same definition
-					field_index = TagGroups::tag_block_find_field(py_globals_definition->definition, Enums::_field_block, "yelo scripting");
+					field_index = TagGroups::tag_block_find_field(py_globals_definition->header_block_definition, Enums::_field_block, "yelo scripting");
 					if(field_index == NONE)
 					{
 						YELO_ERROR(_error_message_priority_assert, 
 							"CheApe: scripting_block not found!");
 					}
 
-					tag_block_definition* scripting_block_def = py_globals_definition->definition->fields[field_index].Definition<tag_block_definition>();
+					tag_block_definition* scripting_block_def = py_globals_definition->header_block_definition->fields[field_index].Definition<tag_block_definition>();
 
 					field_index = TagGroups::tag_block_find_field(scripting_block_def, Enums::_field_block, "new functions");
 					if(field_index == NONE)
@@ -182,8 +182,8 @@ namespace Yelo
 					NULL
 				};
 
-				tag_group_definition* scnr = Yelo::tag_group_get(TagGroups::scenario::k_group_tag);
-				tag_field* field = &scnr->definition->fields[0];
+				tag_group* scnr = Yelo::tag_group_get(TagGroups::scenario::k_group_tag);
+				tag_field* field = &scnr->header_block_definition->fields[0];
 				field->name = "project yellow definitions";
 				field->definition = &reference_definition;
 			}
@@ -192,25 +192,25 @@ namespace Yelo
 			_yelo_definition_globals.initialized = true;
 		}
 
-		static bool YeloDefinitionsValidateGlobals(tag_group_definition* py_globals_definition)
+		static bool YeloDefinitionsValidateGlobals(tag_group* py_globals_definition)
 		{
 			return py_globals_definition->version == project_yellow_globals::k_version && 
-				py_globals_definition->definition->element_size == sizeof(project_yellow_globals);
+				py_globals_definition->header_block_definition->element_size == sizeof(project_yellow_globals);
 		}
-		static bool YeloDefinitionsValidateScenario(tag_group_definition* py_definition)
+		static bool YeloDefinitionsValidateScenario(tag_group* py_definition)
 		{
 			return py_definition->version == project_yellow::k_version && 
-				py_definition->definition->element_size == sizeof(project_yellow);
+				py_definition->header_block_definition->element_size == sizeof(project_yellow);
 		}
-		static bool YeloDefinitionsValidate(tag_group_definition* py_globals_definition, tag_group_definition* py_definition)
+		static bool YeloDefinitionsValidate(tag_group* py_globals_definition, tag_group* py_definition)
 		{
 			return YeloDefinitionsValidateGlobals(py_globals_definition) && YeloDefinitionsValidateScenario(py_definition);
 		}
 
 		void YeloDefinitionsInitialize()
 		{
-			Yelo::tag_group_definition* py_globals_definition = Yelo::tag_group_get<project_yellow_globals>();
-			Yelo::tag_group_definition* py_definition = Yelo::tag_group_get<project_yellow>();
+			Yelo::tag_group* py_globals_definition = Yelo::tag_group_get<project_yellow_globals>();
+			Yelo::tag_group* py_definition = Yelo::tag_group_get<project_yellow>();
 
 			if(!py_globals_definition || !py_definition)
 			{

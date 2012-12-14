@@ -1,24 +1,27 @@
 /*
 	Yelo: Open Sauce SDK
-		Halo 1 (Editing Kit) Edition
 
-	See license\OpenSauce\Halo1_CheApe for specific license information
+	See license\OpenSauce\OpenSauce for specific license information
 */
 #include "Common/Precompile.hpp"
-#include "TagGroups/tag_database_definitions.hpp"
+#include <YeloLib/Halo1/tag_files/tag_database_definitions.hpp>
 
+#if PLATFORM_IS_EDITOR
 #include "Engine/EngineFunctions.hpp"
+#include "TagGroups/TagGroups.hpp"
+#endif
 
 namespace Yelo
 {
 	namespace TagGroups
 	{
+#if PLATFORM_IS_EDITOR
 		void s_tag_database_entry::NameToBlockNameBuffer(char formatted_buffer[Enums::k_tag_block_format_buffer_size])
 		{
 			if(this->name.Size > 0)
 			{
-				Yelo::tag_group_definition* group_definition = Yelo::tag_group_get(this->group_tag);
-				if(  group_definition != NULL )
+				Yelo::tag_group* group_definition = Yelo::tag_group_get(this->group_tag);
+				if(group_definition != NULL)
 				{
 					sprintf_s(formatted_buffer, Enums::k_tag_block_format_buffer_size, 
 						"%s.%s", this->name.Definitions, group_definition->name);
@@ -28,7 +31,7 @@ namespace Yelo
 
 		void s_tag_database::Initialize()
 		{
-			Yelo::tag_group_definition* definition = Yelo::tag_group_get<s_tag_database>();
+			Yelo::tag_group* definition = Yelo::tag_group_get<s_tag_database>();
 			if(definition == NULL)
 			{
 				YELO_ERROR(_error_message_priority_none, 
@@ -38,7 +41,7 @@ namespace Yelo
 			{
 				//////////////////////////////////////////////////////////////////////////
 				{// s_tag_database_entry block
-					tag_block_definition* tag_database_entry_block_def = definition->definition->fields[0].Definition<tag_block_definition>();
+					tag_block_definition* tag_database_entry_block_def = definition->header_block_definition->fields[0].Definition<tag_block_definition>();
 					tag_database_entry_block_def->format_proc = &TagGroups::tag_database_entry_block_format;
 
 					// child ids
@@ -94,5 +97,6 @@ namespace Yelo
 
 			return formatted_buffer;
 		}
+#endif
 	};
 };

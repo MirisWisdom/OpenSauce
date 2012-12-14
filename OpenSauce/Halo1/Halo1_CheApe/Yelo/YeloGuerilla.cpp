@@ -15,40 +15,6 @@ namespace Yelo
 	namespace Guerilla
 	{
 		//////////////////////////////////////////////////////////////////////////
-		// tags_interface
-		class field_information;
-
-		class tag_information
-		{
-		public:
-			void* owner;
-			datum_index tag_index;
-			field_information* fields;
-			tag_block* root_block;
-			tag group_tag;
-		}; BOOST_STATIC_ASSERT( sizeof(tag_information) == 0x14 );
-
-		class field_information
-		{
-			void** vftable;
-		public:
-			UNUSED_TYPE(int32);
-			tag_field* field;
-			void* address;
-			tag_information* tag_info;
-			field_information* next_field;
-			field_information* parent_field;
-		}; BOOST_STATIC_ASSERT( sizeof(field_information) == 0x1C );
-		class block_information : public field_information
-		{
-		public:
-			int32 block_index;
-			field_information* first_child_field;
-			field_information* block_name_field;
-		}; BOOST_STATIC_ASSERT( sizeof(block_information) == 0x28 );
-		//////////////////////////////////////////////////////////////////////////
-
-		//////////////////////////////////////////////////////////////////////////
 		// CBrush
 		class MFC_CBrush;
 		static API_FUNC_NAKED BOOL CBrush__Dtor(MFC_CBrush* brush)
@@ -179,7 +145,7 @@ namespace Yelo
 				jz		OnCtlColor__tag_name
 				cmp		eax, k_idc_field_dialog_name
 				jnz		the_end
-OnCtlColor__field_name:
+//OnCtlColor__field_name:
 				push	ebp
 				push	ecx
 				push	edi
@@ -197,7 +163,7 @@ OnCtlColor__tag_name:
 
 the_end:
 				jmp		THE_END
-stock_code:
+//stock_code:
 				jmp		STOCK_CODE
 			API_FUNC_NAKED_END_()
 		}

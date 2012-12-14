@@ -46,10 +46,10 @@ namespace Yelo
 		static tag_field* g_scenario_profiles_block_unused_grenade_count_fields;
 		static tag_field* scenario_profiles_block_find_unused_grenade_count_fields()
 		{
-			tag_group_definition* scnr = Yelo::tag_group_get(TagGroups::scenario::k_group_tag);
+			tag_group* scnr = Yelo::tag_group_get(TagGroups::scenario::k_group_tag);
 
 			int32 field_index = NONE;
-			field_index = TagGroups::tag_block_find_field(scnr->definition, Enums::_field_block, "player starting profile");
+			field_index = TagGroups::tag_block_find_field(scnr->header_block_definition, Enums::_field_block, "player starting profile");
 			if(field_index == NONE)
 			{
 				YELO_ERROR(_error_message_priority_warning, 
@@ -58,7 +58,7 @@ namespace Yelo
 				return NULL;
 			}
 
-			tag_block_definition* scenario_profiles_block_def = scnr->definition->fields[field_index].Definition<tag_block_definition>();
+			tag_block_definition* scenario_profiles_block_def = scnr->header_block_definition->fields[field_index].Definition<tag_block_definition>();
 			field_index = TagGroups::tag_block_find_field(scenario_profiles_block_def, Enums::_field_char_integer, k_scenario_profiles_block_unused_grenade_count_field_name);
 			if(field_index == NONE)
 			{
@@ -79,7 +79,7 @@ namespace Yelo
 
 			string_list* types_enum = GET_PTR2(global_grenade_type_enum);
 			tag_block_definition* block_definition = GET_PTR2(grenades_block);
-			assert(types_enum->count == k_unit_grenade_types_count && block_definition->max_elements == k_unit_grenade_types_count);
+			assert(types_enum->count == k_unit_grenade_types_count && block_definition->maximum_element_count == k_unit_grenade_types_count);
 
 			global_grenade_type_yelo_enum_strings[_unit_grenade_type_frag] = types_enum->strings[_unit_grenade_type_frag];
 			global_grenade_type_yelo_enum_strings[_unit_grenade_type_plasma] = types_enum->strings[_unit_grenade_type_plasma];
@@ -123,7 +123,7 @@ namespace Yelo
 			global_grenade_type_enum->count = enabled ? Enums::k_unit_grenade_types_count_yelo : Enums::k_unit_grenade_types_count;
 
 			tag_block_definition* block_definition = GET_PTR2(grenades_block);
-			block_definition->max_elements = global_grenade_type_enum->count;
+			block_definition->maximum_element_count = global_grenade_type_enum->count;
 		}
 		
 		static void GrenadeTypesUpgradeTagDefinitions(bool enabled)

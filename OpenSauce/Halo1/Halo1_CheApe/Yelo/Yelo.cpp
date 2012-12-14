@@ -12,7 +12,6 @@
 #include "Rasterizer/Rasterizer.hpp"
 #include "TagGroups/TagGroups.hpp"
 #include "TagGroups/yelo_definitions.hpp"
-#include "TagGroups/tag_database_definitions.hpp"
 
 #include "Engine/GrenadeTypesUpgrade.hpp"
 #include "Engine/Scripting.hpp"

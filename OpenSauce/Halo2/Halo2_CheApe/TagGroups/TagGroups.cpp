@@ -174,7 +174,7 @@ namespace Yelo
 		API_FUNC_NAKED_END_CDECL(2);
 	}
 
-	API_FUNC_NAKED tag_group_definition* tag_group_get_next(tag_group_definition* start)
+	API_FUNC_NAKED tag_group* tag_group_get_next(tag_group* start)
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_GROUP_GET_NEXT);
 
@@ -240,7 +240,7 @@ namespace Yelo
 	}
 
 
-	API_FUNC_NAKED tag_group_definition* tag_group_get(tag group_tag)
+	API_FUNC_NAKED tag_group* tag_group_get(tag group_tag)
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_GROUP_GET);
 
@@ -303,7 +303,7 @@ namespace Yelo
 		API_FUNC_NAKED_END_CDECL(2);
 	}
 
-	API_FUNC_NAKED bool tag_data_resize(tag_data& data, uint32 new_size)
+	API_FUNC_NAKED bool tag_data_resize(tag_data* data, size_t new_size)
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_DATA_RESIZE);
 

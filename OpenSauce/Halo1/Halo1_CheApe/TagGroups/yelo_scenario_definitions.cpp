@@ -38,7 +38,10 @@ namespace Yelo
 			// Users will need to recompile their scenario's scripts
 			tag_data& hs_syntax_data = scnr->hs_syntax_data;
 			if((size_t)hs_syntax_data.size > Scripting::GetTotalScenarioHsSyntaxData())
-				tag_data_delete(hs_syntax_data); // If hs_syntax_data.size != GetTotalScenarioHsSyntaxData, the engine will recompile the scripts
+			{
+				tag_data_delete(&hs_syntax_data); // If hs_syntax_data.size != GetTotalScenarioHsSyntaxData, the engine will recompile the scripts
+				YELO_WARN("CheApe: '%s' was cleansed but its scripts will need to be recompiled in the stock Sapien before a map can be built");
+			}
 		}
 
 		// Process a yelo scenario's globals data for the current operating mode (editing or cache building).

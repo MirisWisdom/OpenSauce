@@ -4,6 +4,17 @@
 __STRING_ID(none)
 __STRING_ID(default)
 
+__STRING_ID(unknown)
+__STRING_ID(on)
+__STRING_ID(off)
+__STRING_ID(enabled)
+__STRING_ID(disabled)
+
+__STRING_ID(easy)
+__STRING_ID(normal)
+__STRING_ID(heroic)
+__STRING_ID(legendary)
+
 //////////////////////////////////////////////////////////////////////////
 // date / time
 __STRING_ID(monday)

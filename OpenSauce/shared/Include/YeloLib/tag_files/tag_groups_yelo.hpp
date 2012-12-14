@@ -18,7 +18,7 @@ namespace Yelo
 
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
 		// path, without tag group extension, to the tag reference
-		tag_reference_name_t Name;
+		tag_reference_name_reference Name;
 		// length of the reference name
 		int32 NameLength;
 #endif
@@ -199,15 +199,23 @@ namespace Yelo
 		// Sizeof(T)
 		inline size_t SizeOf() const { return sizeof(T); }
 
+		inline tag_block* to_tag_data()				{ return CAST_PTR(tag_data*, &this->Size); }
+		inline const tag_block* to_tag_data() const	{ return CAST_PTR(const tag_data*, &this->Size); }
+
 		inline T* operator [](int32 index) { return &this->Definitions[index]; }
 
-		void clear(size_t terminator_size = 0)	{ tag_data_delete(terminator_size); }
+		void resize(size_t new_size = 0)	{ tag_data_resize(this, new_size); }
 	};
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
 	BOOST_STATIC_ASSERT( sizeof(TagData<byte>) == 0x14 );
 #else
 	BOOST_STATIC_ASSERT( sizeof(TagData<byte>) == 0x8 );
 #endif
+	template<typename T>
+	bool tag_data_resize(TagData<T>& data, size_t new_size = 0)
+	{
+		return tag_data_resize(data.to_tag_data(), new_size);
+	}
 };
 
 
