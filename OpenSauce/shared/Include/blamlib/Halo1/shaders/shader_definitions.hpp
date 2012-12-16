@@ -5,6 +5,7 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/math/periodic_functions.hpp>
 #include <blamlib/Halo1/objects/object_definitions.hpp>
 
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
@@ -15,9 +16,9 @@ namespace Yelo
 	{
 		enum shader_type
 		{
-			_shader_type_screen,
+			_shader_type_screen,// sscr
 			_shader_type_effect,
-			_shader_type_decal,
+			_shader_type_decal,	// sdec
 
 			_shader_type_environment,
 			_shader_type_model,
@@ -56,23 +57,6 @@ namespace Yelo
 			_model_extension_usage_specular_lighting	= 1 << 3,
 
 			_model_extension_usage,
-		};
-		enum animation_function : _enum
-		{
-			_animation_function_one,
-			_animation_function_zero,
-			_animation_function_cosine,
-			_animation_function_cosine_variable_period,
-			_animation_function_diagonal_wave,
-			_animation_function_diagonal_wave_variable_period,
-			_animation_function_slide,
-			_animation_function_slide_variable_period,
-			_animation_function_noise,
-			_animation_function_jitter,
-			_animation_function_wander,
-			_animation_function_spark,
-
-			_animation_function,
 		};
 		enum reflection_type : _enum
 		{
@@ -263,6 +247,15 @@ namespace Yelo
 
 			_alpha_output,
 		};
+
+		enum shader_effect_secondary_map_anchor : _enum
+		{
+			_shader_effect_secondary_map_anchor_with_primary,
+			_shader_effect_secondary_map_anchor_with_screen_space,
+			_shader_effect_secondary_map_anchor_zsprite,
+
+			_shader_effect_secondary_map_anchor,
+		};
 	};
 
 	namespace TagGroups
@@ -270,7 +263,7 @@ namespace Yelo
 		struct s_shader_animation_function
 		{
 			TAG_ENUM(u_animation_source, Enums::object_function_reference);
-			TAG_ENUM(u_animation_function, Enums::animation_function);
+			TAG_ENUM(u_animation_function, Enums::periodic_function);
 			TAG_FIELD(real, animation_period, "seconds", "0 defaults to 1");
 			TAG_FIELD(real, animation_phase);
 			TAG_FIELD(real, animation_scale, "repeats", "0 defaults to 1");
@@ -285,30 +278,11 @@ namespace Yelo
 			////////////////////////////////////////////////////////////////
 			// texture scrolling animation
 			// Scrolls all 2D maps simultaneously.
-			TAG_ENUM(animation_function, Enums::animation_function);
+			TAG_ENUM(animation_function, Enums::periodic_function);
 			PAD16;
 			TAG_FIELD(real, animation_period, "seconds");
 			TAG_FIELD(real, animation_scale, "base map repeats");
 		}; BOOST_STATIC_ASSERT( sizeof(s_shader_texture_animation_function) == 12 );
-		struct s_shader_map
-		{
-			PAD128; PAD128; PAD64;
-
-			word_flags shader_flags;
-			_enum shader_framebuffer_blend_function, shader_framebuffer_fade_mode;
-			word_flags shader_map_flags;
-
-			PAD128; PAD64; PAD32;
-
-			tag_reference map_bitmap;
-			_enum map_anchor;
-			word_flags map_flags;
-			s_shader_animation map_animation;
-
-			PAD32;
-			real z_sprite_radius_scale;
-			PAD128; PAD32;
-		}; BOOST_STATIC_ASSERT( sizeof(s_shader_map) == 180 );
 		struct s_shader_scaled_map
 		{
 			TAG_FIELD(real, scale, "", "0 defaults to 1");
@@ -318,7 +292,7 @@ namespace Yelo
 		{
 			TAG_FIELD(real_rgb_color, on_color);
 			TAG_FIELD(real_rgb_color, off_color);
-			TAG_ENUM(animation_function, Enums::animation_function);
+			TAG_ENUM(animation_function, Enums::periodic_function);
 			PAD16;
 			TAG_FIELD(real, animation_period, "seconds", "0 defaults to 1");
 			TAG_FIELD(real, animation_phase, "seconds");
@@ -393,20 +367,42 @@ namespace Yelo
 		//////////////////////////////////////////////////////////////////////////
 		struct _shader_effect_definition
 		{
-			byte_flags flags;
-			PAD8;
-			s_shader_shader_framebuffer_function shader_framebuffer_function;
-			PAD128; PAD128;
-			tag_reference bitmap;
-			_enum permutation_function;
-			PAD16;
-			s_shader_animation animation;
-		};
+			struct _flags
+			{
+				TAG_FLAG16(sort_bias);
+				TAG_FLAG16(nonlinear_tint);
+				TAG_FLAG16(dont_overdraw_fp_weapon);
+			}; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
+			struct _map_flags
+			{
+				TAG_FLAG16(unfiltered);
+			}; BOOST_STATIC_ASSERT( sizeof(_map_flags) == sizeof(word_flags) );
+
+			TAG_FIELD(_flags, flags);
+			TAG_ENUM(blend_function, Enums::shader_framebuffer_blend_function);
+			TAG_ENUM(fade_mode, Enums::shader_framebuffer_fade_mode);
+			TAG_FIELD(_map_flags, map_flags);
+			PAD128; PAD64; PAD32;
+			struct {
+				TAG_FIELD(tag_reference, bitmap, 'bitm');
+				TAG_ENUM(anchor, Enums::shader_effect_secondary_map_anchor);
+				TAG_FIELD(_map_flags, flags);
+				s_shader_animation animation;
+			}secondary_map;
+			PAD32;
+			real z_sprite_radius_scale;
+			PAD128; PAD32;
+		}; BOOST_STATIC_ASSERT( sizeof(_shader_effect_definition) == 0x8C );
 		
+		// the following tags/blocks have inline instances of this:
+		// contrail, lightning_shader_block, particle, particle_system_type_particle_states_block
+		// not all of those field sets expose all the available tag fields...
 		struct s_shader_effect : s_shader_definition
 		{
+			enum { k_group_tag = 'seff' };
+
 			_shader_effect_definition effect;
-		};
+		}; BOOST_STATIC_ASSERT( sizeof(s_shader_effect) == 0xB4 );
 		//////////////////////////////////////////////////////////////////////////
 		struct _shader_environment_definition
 		{
@@ -640,7 +636,7 @@ namespace Yelo
 				TAG_FIELD(__flags_1, flags_1);
 				PAD16;
 				TAG_ENUM(color_source, Enums::object_change_color_reference);
-				TAG_ENUM(animation_function, Enums::animation_function);
+				TAG_ENUM(animation_function, Enums::periodic_function);
 				TAG_FIELD(real, animation_period, "seconds");
 				TAG_FIELD(real_rgb_color, animation_color_lower_bound);
 				TAG_FIELD(real_rgb_color, animation_color_upper_bound);
@@ -822,7 +818,7 @@ namespace Yelo
 			// constants and animation
 			// Constant color 0 is animated in exactly the same way as the self-illumination color of the model shader, except that it has an alpha component in addition to the RGB components. Constant color 1 is just a constant.
 			TAG_ENUM(color0_source, Enums::object_change_color_reference);
-			TAG_ENUM(color0_animation_function, Enums::animation_function);
+			TAG_ENUM(color0_animation_function, Enums::periodic_function);
 			TAG_FIELD(real, color0_animation_period, "seconds", "0 defaults to 1");
 			TAG_FIELD(real_argb_color, color0_animation_lower_bound);
 			TAG_FIELD(real_argb_color, color0_animation_upper_bound);

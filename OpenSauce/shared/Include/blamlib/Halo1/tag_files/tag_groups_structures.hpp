@@ -87,9 +87,13 @@ namespace Yelo
 
 			_tag_block_dont_read_children_bit =	0,
 
-			_tag_group_initialized_bit = 0,
+			// tag_instance of the tag group will have their file_checksum CRC'd into the resulting cache tag header's crc field 
+			_tag_group_include_in_tags_checksum_bit = 0,
+			// only seen preferences_network_game use this
 			_tag_group_unknown1_bit,
+			// haven't seen this used at all
 			_tag_group_unknown2_bit,
+			// majority of tags have this set
 			_tag_group_unknown3_bit,
 
 			_tag_load_for_runtime_bit = 0,
@@ -104,7 +108,7 @@ namespace Yelo
 
 	struct tag_field
 	{
-		_enum type; PAD16;
+		Enums::field_type type; PAD16;
 		cstring name;
 		void* definition;
 
@@ -120,10 +124,10 @@ namespace Yelo
 		cstring name;
 		long_flags flags;
 		int32 maximum_element_count;
-		uint32 element_size;
-		PAD32;
+		size_t element_size;
+		void* unused0;
 		tag_field* fields;
-		void* add_proc;
+		void* unused1;
 		proc_tag_block_postprocess_element postprocess_proc;
 		proc_tag_block_format format_proc;
 		proc_tag_block_delete_element delete_proc;
@@ -134,7 +138,7 @@ namespace Yelo
 	{
 		cstring name;
 		long_flags flags;
-		uint32 maximum_size;
+		size_t maximum_size;
 		void* byte_swap_proc;
 	}; BOOST_STATIC_ASSERT( sizeof(tag_data_definition) == 0x10 );
 
@@ -211,9 +215,13 @@ namespace Yelo
 			inline size_t GetFieldSize() const			{ return CAST(size_t, m_state.field_size); }
 			inline size_t GetFieldOffset() const		{ return CAST(size_t, m_state.field_offset); }
 
-			inline const tag_field* GetTagField() const	{ return m_state.found_field; }
+			inline Enums::field_type GetTagFieldType() const{ return m_state.found_field->type; }
+			inline cstring GetTagFieldName() const			{ return m_state.found_field->name; }
 			template<typename T>
-			inline T* GetFieldAs() const				{ return CAST_PTR(T*, m_state.found_field); }
+			inline T* GetTagFieldDefinition() const			{ return m_state.found_field->Definition<T>(); }
+
+			template<typename T>
+			inline T* GetFieldAs() const				{ return CAST_PTR(T*, m_state.found_field_address); }
 
 		public:
 			c_tag_field_scanner(const tag_field* fields, void* fields_address);

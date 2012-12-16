@@ -4634,6 +4634,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\hud_messaging_definitions.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\hud_nav_points.hpp"
 					>
 				</File>

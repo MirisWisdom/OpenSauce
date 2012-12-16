@@ -25,6 +25,16 @@ namespace Yelo
 		};
 	};
 
+	namespace Flags
+	{
+		enum {
+			_alignment_16_bit = 1,
+			_alignment_32_bit,
+			_alignment_64_bit,
+			_alignment_128_bit,
+		};
+	};
+
 	#define pad_bool PAD8
 
 	// # from 0 to 255

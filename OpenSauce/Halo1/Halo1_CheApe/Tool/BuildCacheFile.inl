@@ -5,7 +5,6 @@
 	See license\OpenSauce\Halo1_CheApe for specific license information
 */
 
-#include "Tool/BuildCacheFile/DataFiles.inl"
 #include "Tool/BuildCacheFile/BuildGlobals.inl"
 #include "Tool/BuildCacheFile/CullTags.inl"
 #include "Tool/BuildCacheFile/PredictedResources.inl"
@@ -190,7 +189,7 @@ static void PLATFORM_API build_cache_file_for_scenario_extended(void** arguments
 	// setup the data files
 	bool using_mod_sets = use_memory_upgrades && mod_set_name_length > 0;
 
-	c_data_files data_files;
+	Cache::c_data_files data_files;
 
 	s_build_cache_file_for_scenario::InitializeFileSystem(data_files, args->mod_name, using_mod_sets);
 

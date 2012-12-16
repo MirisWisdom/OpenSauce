@@ -57,3 +57,16 @@ __STRING_ID(korean)
 __STRING_ID(chinese)
 __STRING_ID(portuguese)
 __STRING_ID(polish)
+
+//////////////////////////////////////////////////////////////////////////
+// campaign levels
+__STRING_ID(a10)
+__STRING_ID(a30)
+__STRING_ID(a50)
+__STRING_ID(b30)
+__STRING_ID(b40)
+__STRING_ID(c10)
+__STRING_ID(c20)
+__STRING_ID(c40)
+__STRING_ID(d20)
+__STRING_ID(d40)

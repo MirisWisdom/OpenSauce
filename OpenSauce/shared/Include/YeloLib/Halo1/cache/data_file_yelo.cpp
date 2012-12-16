@@ -175,4 +175,119 @@ namespace Yelo
 		{
 		}
 	};
+
+
+#if PLATFORM_IS_EDITOR
+	namespace Cache
+	{
+		cstring c_data_files::DataFileTypeToString(_enum df_type)
+		{
+			switch(df_type)
+			{
+			case Enums::_data_file_type_bitmaps:return "bitmaps";
+			case Enums::_data_file_type_sounds:	return "sounds";
+			case Enums::_data_file_type_locale:	return "loc";
+			default:							return "InvalidDataFileType";
+			}
+		}
+
+		void c_data_files::InitializeForCache(bool using_mod_sets, cstring mod_name, char maps_path[MAX_PATH])
+		{
+			memset(m_names, 0, sizeof(m_names));
+
+			if(using_mod_sets)
+			{
+				strcat_s(maps_path, MAX_PATH, "data_files\\");
+				_mkdir(maps_path);
+
+				// Prefix the data_file names with our data files directory and mod name
+				for(int32 x = 0; x < NUMBEROF(m_names); x++)
+				{
+					strcpy_s(m_names[x], "data_files\\");
+					strcat_s(m_names[x], mod_name);
+				}
+				strcat_s(m_names[Enums::_data_file_type_bitmaps],	"-bitmaps");
+				strcat_s(m_names[Enums::_data_file_type_sounds],	"-sounds");
+				strcat_s(m_names[Enums::_data_file_type_locale],	"-loc");
+			}
+			else	// we're using stock data files
+			{
+				strcat_s(m_names[Enums::_data_file_type_bitmaps],	"bitmaps");
+				strcat_s(m_names[Enums::_data_file_type_sounds],	"sounds");
+				strcat_s(m_names[Enums::_data_file_type_locale],	"loc");
+			}
+		}
+
+		void c_data_files::CopyStockDataFile(cstring maps_path, _enum df_type)
+		{
+			#pragma region s_progress_report
+			struct s_progress_report {
+				bool stage_completed[100/25];
+				BOOL cancel;
+
+				static DWORD CALLBACK CopyProgressRoutine(
+					LARGE_INTEGER TotalFileSize,	LARGE_INTEGER TotalBytesTransferred,
+					LARGE_INTEGER StreamSize,		LARGE_INTEGER StreamBytesTransferred,
+					DWORD dwStreamNumber,
+					DWORD dwCallbackReason,
+					HANDLE hSourceFile,	HANDLE hDestinationFile,
+					LPVOID lpData)
+				{
+					s_progress_report* report = CAST_PTR(s_progress_report*, lpData);
+
+					if(dwCallbackReason == CALLBACK_CHUNK_FINISHED)
+					{
+						LONGLONG percent = (LONGLONG)(((double)TotalBytesTransferred.QuadPart / (double)TotalFileSize.QuadPart)*100.0);
+
+						if(percent >= 25 && !report->stage_completed[0])
+						{
+							printf_s("\t25%%...\n");
+							report->stage_completed[0] = true;
+						}
+						else if(percent >= 50 && !report->stage_completed[1])
+						{
+							printf_s("\t50%%...\n");
+							report->stage_completed[1] = true;
+						}
+						else if(percent >= 75 && percent < 100 && !report->stage_completed[2])
+						{
+							printf_s("\t75%%...\n");
+							report->stage_completed[2] = true;
+						}
+					}
+
+					return PROGRESS_CONTINUE;
+				}
+			};
+			#pragma endregion
+
+			s_progress_report report;
+			memset(&report, 0, sizeof(report));
+
+			cstring data_file_name = DataFileTypeToString(df_type);
+
+			char source_file[MAX_PATH];	sprintf_s(source_file, "%s%s.map", maps_path, data_file_name);
+			char target_file[MAX_PATH];	sprintf_s(target_file, "%s%s.map", maps_path, m_names[df_type]);
+
+			printf_s("copying %s...\n", data_file_name);
+			{
+				if( !CopyFileExA(source_file,	target_file, 
+					&s_progress_report::CopyProgressRoutine, &report, &report.cancel, 0) )
+					printf_s("failed to copy! reason: %X\n", GetLastError());
+			}
+		}
+
+		void c_data_files::CopyStock()
+		{
+			char maps_path[MAX_PATH];
+			strcpy_s(maps_path, Settings::Get().GetMapsPath());
+
+			CopyStockDataFile(maps_path, Enums::_data_file_type_bitmaps);
+			CopyStockDataFile(maps_path, Enums::_data_file_type_sounds);
+			CopyStockDataFile(maps_path, Enums::_data_file_type_locale);
+
+			printf_s("done\n");
+		}
+	};
+#endif
 };

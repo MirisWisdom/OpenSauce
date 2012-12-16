@@ -6,53 +6,6 @@
 */
 
 
-struct s_build_cache_file_globals
-{
-	bool building;
-	char scenario_name[256];
-	PAD24;
-	uint32 crc;
-	HANDLE file_handle;
-	uint32 cache_stream_size;
-	s_data_file sounds_data_file;
-	s_data_file locale_data_file;
-	s_data_file bitmaps_data_file;
-
-	API_INLINE void DataFilesSave()
-	{
-		sounds_data_file.Save();
-		locale_data_file.Save();
-		bitmaps_data_file.Save();
-	}
-
-	API_INLINE void DataFilesPreprocessForSave()
-	{
-		sounds_data_file.PreprocessForSave();
-		locale_data_file.PreprocessForSave();
-		bitmaps_data_file.PreprocessForSave();
-	}
-
-	void TemporaryFileOpen(cstring filename = "temporary uncompressed cache file.bin")
-	{
-		file_handle = CreateFileA(filename, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-	}
-	void TemporaryFileClose(cstring filename = "temporary uncompressed cache file.bin")
-	{
-		if(file_handle != INVALID_HANDLE_VALUE)
-		{
-			CloseHandle(file_handle);
-			file_handle = INVALID_HANDLE_VALUE;
-		}
-
-		if(file_handle != NULL)
-			DeleteFileA(filename);
-	}
-	void TemporaryFileCopy(cstring new_filename, cstring filename = "temporary uncompressed cache file.bin")
-	{
-		CopyFileA(filename, new_filename, FALSE);
-	}
-};
-
 struct s_build_cache_file_for_scenario {
 	bool build_failed;
 	PAD24;
@@ -65,7 +18,7 @@ struct s_build_cache_file_for_scenario {
 	_data_file_open		data_file_open;
 	_data_file_close	data_file_close;
 
-	s_build_cache_file_globals* globals;
+	Cache::s_build_cache_file_globals* globals;
 
 	typedef bool (PLATFORM_API* _build_cache_file_cull_tags)();
 	typedef bool (PLATFORM_API* _build_structure_bsp_predicted_resources)();
@@ -97,10 +50,10 @@ struct s_build_cache_file_for_scenario {
 	static void Write(void* buffer, size_t buffer_size, int32* out_file_offset);
 
 	// Initialize the cache and data_file file systems
-	static void InitializeFileSystem(c_data_files& data_files, 
+	static void InitializeFileSystem(Cache::c_data_files& data_files, 
 		cstring mod_name, bool using_mod_sets);
 
-	void DataFilesOpen(const c_data_files& data_files, bool store_resources);
+	void DataFilesOpen(const Cache::c_data_files& data_files, bool store_resources);
 	void DataFilesClose(bool store_resources);
 	void BuildPostprocess(cstring mod_name, bool using_mod_sets);
 
@@ -123,7 +76,7 @@ struct s_build_cache_file_for_scenario {
 	CAST_PTR(s_build_cache_file_for_scenario::_data_file_open,					0x4B9F10),
 	CAST_PTR(s_build_cache_file_for_scenario::_data_file_close,					0x4BA100),
 
-	CAST_PTR(s_build_cache_file_globals*,										0x10A1030),
+	CAST_PTR(Cache::s_build_cache_file_globals*,								0x10A1030),
 
 	CAST_PTR(s_build_cache_file_for_scenario::_build_cache_file_cull_tags,		0x453260),
 	CAST_PTR(s_build_cache_file_for_scenario::_build_structure_bsp_predicted_resources,		0x453860),
@@ -164,7 +117,7 @@ API_FUNC_NAKED void s_build_cache_file_for_scenario::Write(void* buffer, size_t 
 	API_FUNC_NAKED_END(3);
 }
 
-void s_build_cache_file_for_scenario::InitializeFileSystem(c_data_files& data_files, 
+void s_build_cache_file_for_scenario::InitializeFileSystem(Cache::c_data_files& data_files, 
 														   cstring mod_name, bool using_mod_sets)
 {
 	cstring settings_path = Settings::Get().GetMapsPath();
@@ -179,11 +132,11 @@ void s_build_cache_file_for_scenario::InitializeFileSystem(c_data_files& data_fi
 		build_cache_file_for_scenario_internals.UseYeloDataFilePathScheme();
 }
 
-void s_build_cache_file_for_scenario::DataFilesOpen(const c_data_files& data_files, bool store_resources)
+void s_build_cache_file_for_scenario::DataFilesOpen(const Cache::c_data_files& data_files, bool store_resources)
 {
-	data_file_open(_data_file_type_bitmaps+1,	data_files.m_names[_data_file_type_bitmaps],store_resources);
-	data_file_open(_data_file_type_sounds+1,	data_files.m_names[_data_file_type_sounds], store_resources);
-	data_file_open(_data_file_type_locale+1,	data_files.m_names[_data_file_type_locale], store_resources);
+	data_file_open(Enums::_data_file_type_bitmaps+1,data_files.m_names[Enums::_data_file_type_bitmaps],store_resources);
+	data_file_open(Enums::_data_file_type_sounds+1,	data_files.m_names[Enums::_data_file_type_sounds], store_resources);
+	data_file_open(Enums::_data_file_type_locale+1,	data_files.m_names[Enums::_data_file_type_locale], store_resources);
 
 	if(store_resources)
 		globals->DataFilesPreprocessForSave();
@@ -194,9 +147,9 @@ void s_build_cache_file_for_scenario::DataFilesClose(bool store_resources)
 	if(store_resources)
 		globals->DataFilesSave();
 
-	data_file_close(_data_file_type_bitmaps+1);
-	data_file_close(_data_file_type_sounds+1);
-	data_file_close(_data_file_type_locale+1);
+	data_file_close(Enums::_data_file_type_bitmaps+1);
+	data_file_close(Enums::_data_file_type_sounds+1);
+	data_file_close(Enums::_data_file_type_locale+1);
 }
 
 void s_build_cache_file_for_scenario::BuildPostprocess(cstring mod_name, bool using_mod_sets)

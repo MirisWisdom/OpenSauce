@@ -91,7 +91,7 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 	//////////////////////////////////////////////////////////////////////////
 	// Interceptor system
 	static const uint32 BUILD_CACHE_FILE_ADD_TAGS = 0x454D40;
-	static datum_index new_tag_handles[Enums::k_maximum_tag_count_upgrade];
+	static datum_index new_tag_handles[Enums::k_maximum_simultaneous_tag_instances_upgrade];
 
 	static const uint32 INTERCEPTOR1_HOOK_ADDR = 0x455583;
 	API_FUNC_NAKED static void Interceptor1()
@@ -279,7 +279,7 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 	static void TagMemoryInitialize()
 	{
 		for(int32 x = 0; x < NUMBEROF(AddressOf::MaxTagsCheck); x++)
-			*AddressOf::MaxTagsCheck[x] = Enums::k_maximum_tag_count_upgrade;
+			*AddressOf::MaxTagsCheck[x] = Enums::k_maximum_simultaneous_tag_instances_upgrade;
 
 		*AddressOf::TagMaxAddress = Enums::k_tag_max_address_upgrade;
 
@@ -293,7 +293,7 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 	static void TagMemoryDispose()
 	{
 		for(int32 x = 0; x < NUMBEROF(AddressOf::MaxTagsCheck); x++)
-			*AddressOf::MaxTagsCheck[x] = Enums::k_maximum_tag_count;
+			*AddressOf::MaxTagsCheck[x] = Enums::k_maximum_simultaneous_tag_instances;
 
 		*AddressOf::TagMaxAddress = Enums::k_tag_max_address;
 

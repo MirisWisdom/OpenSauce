@@ -41,9 +41,9 @@ namespace Yelo
 	namespace Enums
 	{
 		enum {
-			k_maximum_tag_count =				0x00001400, // 5120
-			k_maximum_tag_count_upgrade = 
-				CAST(uint32, Yelo::Enums::k_maximum_tag_count * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
+			k_maximum_simultaneous_tag_instances =				0x00001400, // 5120
+			k_maximum_simultaneous_tag_instances_upgrade = 
+				CAST(uint32, Yelo::Enums::k_maximum_simultaneous_tag_instances * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
 
 			k_tag_base_address =				// 0x40440000
 				k_physical_memory_base_address + 

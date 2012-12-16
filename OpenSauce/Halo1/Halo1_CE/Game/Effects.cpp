@@ -7,6 +7,8 @@
 #include "Common/Precompile.hpp"
 #include "Game/Effects.hpp"
 
+#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
+
 #include "Game/GameState.hpp"
 #include "Memory/MemoryInterface.hpp"
 
@@ -54,8 +56,7 @@ namespace Yelo
 		}
 		void Initialize()
 		{
-			// TODO: before the next release, determine if a settings option is needed to turn these upgrades off (eg for crappy computers)
-			if(GameState::YeloGameStateEnabled())
+			if(!CMDLINE_GET_PARAM(no_os_gfx).ParameterSet())
 				InitializePerMapUpgrades();
 
 #if !PLATFORM_DISABLE_UNUSED_CODE
