@@ -10,13 +10,13 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
-		bool s_damage_data::UseInstantaneousAcceleration3D() const
+		bool s_damage_definition::UseInstantaneousAcceleration3D() const
 		{
 			return	instantaneous_acceleration3d.j != 0.0f && 
 					instantaneous_acceleration3d.k != 0.0f;
 		}
 
-		void s_damage_data::GetAcceleration(const real acceleration_scale,
+		void s_damage_definition::GetAcceleration(const real acceleration_scale,
 			const real_vector3d& direction, real_vector3d& acceleration, 
 			const real secs_per_tick) const
 		{

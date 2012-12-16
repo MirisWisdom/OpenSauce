@@ -11,7 +11,7 @@ namespace Yelo
 {
 	namespace Enums
 	{
-		enum material_type
+		enum material_type : _enum
 		{
 			_material_type_dirt,
 			_material_type_sand,
