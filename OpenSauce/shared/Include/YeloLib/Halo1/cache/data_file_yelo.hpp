@@ -5,6 +5,8 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/cache/data_file.hpp>
+
 namespace Yelo
 {
 	namespace DataFiles
@@ -30,4 +32,31 @@ namespace Yelo
 		void SharedInitialize();
 		void SharedDispose();
 	};
+
+#if PLATFORM_IS_EDITOR
+	namespace Cache
+	{
+		class c_data_files
+		{
+			static const size_t k_name_length = 63;
+
+			static cstring DataFileTypeToString(_enum df_type);
+		public:
+			char m_names[Enums::k_number_of_data_file_types][k_name_length+1];	// Names are all relative to the "maps\" directory (wherever it may be)
+
+		public:
+			// Initialize the data file system to either use a mod-set or the stock 
+			// data files.
+			// NOTE: [maps_path] will be modified if [using_mod_sets] is true!
+			void InitializeForCache(bool using_mod_sets, cstring mod_name, char maps_path[MAX_PATH]);
+
+		private:
+			void CopyStockDataFile(cstring maps_path, _enum df_type);
+		public:
+			// Copy the stock data files that come with the game. These copies will then be used as 
+			// the base input data files for the cache being built
+			void CopyStock();
+		};
+	};
+#endif
 };

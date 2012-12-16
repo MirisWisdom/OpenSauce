@@ -155,10 +155,8 @@ namespace Yelo
 
 		bool c_tag_field_scanner::TagFieldIsStringId() const
 		{
-			const tag_field* field = GetTagField();
-
-			return	field->type == Enums::_field_tag_reference && 
-					field->Definition<tag_reference_definition>()->group_tag == s_string_id_yelo_definition::k_group_tag;
+			return	GetTagFieldType() == Enums::_field_tag_reference && 
+					GetTagFieldDefinition<tag_reference_definition>()->group_tag == s_string_id_yelo_definition::k_group_tag;
 		}
 	};
 

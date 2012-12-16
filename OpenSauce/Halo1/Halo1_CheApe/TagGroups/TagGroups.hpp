@@ -15,54 +15,6 @@
 
 namespace Yelo
 {
-	//////////////////////////////////////////////////////////////////////////
-	// cache interface
-
-	struct s_data_file_header
-	{
-		int32 type;
-		uint32 file_table_offset;
-		uint32 file_index_table_offset;
-		int32 tag_count;
-	};
-
-	struct s_data_file_item
-	{
-		uint32 name_offset;
-		uint32 size;
-		uint32 data_offset;
-	};
-
-	struct s_data_file
-	{
-		s_data_file_header header;
-
-		struct {
-			s_data_file_item* instances;
-			int32 count;
-		}file_index;
-
-		struct {
-			uint32 total_size;
-			uint32 used_size;
-			char* buffer;
-		};
-
-		bool writable;
-		PAD24;
-
-		struct {
-			int32 count;
-			uint32 size;
-		}unreferenced_items, referenced_items;
-
-		cstring name;
-		HANDLE file_handle;
-	}; BOOST_STATIC_ASSERT( sizeof(s_data_file) == 0x40 );
-
-	//////////////////////////////////////////////////////////////////////////
-	// tag interface
-
 	namespace TagGroups
 	{
 		tag_instance_data_t*	TagInstances();
