@@ -87,7 +87,7 @@ namespace Yelo
 			}forward, outward;
 		}; BOOST_STATIC_ASSERT( sizeof(s_damage_breaking_effect) == 0xA0 );
 
-		struct s_damage_data
+		struct s_damage_definition
 		{
 			TAG_ENUM(side_effect, Enums::damage_side_effect);
 			TAG_ENUM(category, Enums::damage_category);
@@ -114,7 +114,7 @@ namespace Yelo
 			void GetAcceleration(const real acceleration_scale, 
 				const real_vector3d& direction, real_vector3d& acceleration, 
 				const real secs_per_tick = 0.033333335f) const;
-		}; BOOST_STATIC_ASSERT( sizeof(s_damage_data) == 0x3C );
+		}; BOOST_STATIC_ASSERT( sizeof(s_damage_definition) == 0x3C );
 
 		struct s_damage_modifiers
 		{
@@ -166,7 +166,7 @@ namespace Yelo
 			TAG_FIELD(tag_reference, sound, 'snd!');
 
 			s_damage_breaking_effect breaking_effect;
-			s_damage_data damage_data;
+			s_damage_definition damage;
 			s_damage_modifiers damage_modifiers;
 		}; BOOST_STATIC_ASSERT( sizeof(s_damage_effect_definition) == 0x2A0 );
 
@@ -180,7 +180,7 @@ namespace Yelo
 			TAG_FIELD(real_fraction_bounds, vibrate_frequency);
 			s_damage_camera_effect damage_camera_effect;
 			s_damage_breaking_effect breaking_effect; // not exposed
-			s_damage_data damage_data;
+			s_damage_definition damage;
 			s_damage_modifiers damage_modifiers;
 		}; BOOST_STATIC_ASSERT( sizeof(s_continuous_damage_effect_definition) == 0x200 );
 	};

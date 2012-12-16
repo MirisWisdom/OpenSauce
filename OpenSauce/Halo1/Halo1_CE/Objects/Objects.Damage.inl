@@ -7,7 +7,7 @@
 static void PLATFORM_API object_damage_object_body_hook(datum_index object_index, 
 	int32 region_index, int32 node_index, void* /*unknown*/,
 	const TagGroups::s_damage_resistance* damage_resistance, const TagGroups::collision_model_material* damage_material, 
-	const TagGroups::s_damage_data* damage_data_definition, void* damage_data,
+	const TagGroups::s_damage_definition* damage_definition, Objects::s_damage_data* damage_data,
 	void*, __out real&, __out real&, real, bool)
 {
 #if 0
