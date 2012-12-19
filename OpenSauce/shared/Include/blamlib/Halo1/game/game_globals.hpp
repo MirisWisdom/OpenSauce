@@ -213,6 +213,32 @@ namespace Yelo
 			}runtime;
 		}; BOOST_STATIC_ASSERT( sizeof(s_game_globals_falling_damage) == 0x98 );
 
+		struct material_definition
+		{
+			TAG_PAD(int32, 25);
+			TAG_PAD(int32, 12);
+			struct {
+				TAG_FIELD(real, ground_friction_scale, "fraction of original velocity parallel to the ground after one tick");
+				TAG_FIELD(real, ground_friction_normal_k1_scale, "cosine of angle at which friction falls off");
+				TAG_FIELD(real, ground_friction_normal_k0_scale, "cosine of angle at which friction is zero");
+				TAG_FIELD(real, ground_depth_scale, "depth a point mass rests in the ground");
+				TAG_FIELD(real, ground_damp_fraction_scale, "fraction of original velocity perpendicular to the ground after one tick");
+			}vehicle_terrain_params;
+			TAG_PAD(int32, 19);
+			TAG_PAD(int32, 120);
+			struct {
+				TAG_FIELD(real, maximum_vitality);
+				PAD64;
+				PAD32;
+				TAG_FIELD(tag_reference, effect, 'effe');
+				TAG_FIELD(tag_reference, sound, 'snd!');
+				TAG_PAD(int32, 6);
+				TAG_BLOCK(particle_effects, breakable_surface_particle_effect);
+			}breakable_surface_params;
+			TAG_PAD(int32, 15);
+			TAG_FIELD(tag_reference, melee_hit_sound, 'snd!');
+		}; BOOST_STATIC_ASSERT( sizeof(material_definition) == 0x374 );
+
 		struct s_game_globals
 		{
 			enum { k_group_tag = 'matg' };
@@ -238,10 +264,8 @@ namespace Yelo
 			TAG_TBLOCK(player_info, s_game_globals_player_information);
 			TAG_TBLOCK(player_representation, s_game_globals_player_representation);
 			TAG_TBLOCK(falling_damage, s_game_globals_falling_damage);
-
-			TAG_PAD(tag_block,
-				1 + // material_definition
-				1); // playlist_autogenerate_choice
+			TAG_BLOCK(materials, material_definition);
+			TAG_BLOCK(playlist_members, playlist_autogenerate_choice);
 		}; BOOST_STATIC_ASSERT( sizeof(s_game_globals) == 0x1AC );
 	};
 };

@@ -69,6 +69,11 @@ namespace BlamLib.Test
 			@"Retail\maps\wraparound.map",
 			@"Retail\maps\z05_cliffside.map",
 			@"Retail\maps\z11_valhalla.map",
+
+			// dlc_crimson
+			@"Retail\dlc_crimson\dlc_dejewel.map",
+			@"Retail\dlc_crimson\dlc_dejunkyard.map",
+			@"Retail\dlc_crimson\zd_02_grind.map",
 		};
 
 		// NOTE: Getting out of memory exceptions sometimes when running H4 cache output tests...

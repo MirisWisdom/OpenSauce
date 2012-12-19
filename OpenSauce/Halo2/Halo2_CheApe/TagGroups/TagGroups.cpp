@@ -130,7 +130,7 @@ namespace Yelo
 		API_FUNC_NAKED_END_CDECL(2);
 	}
 
-	API_FUNC_NAKED bool tag_is_read_only(datum_index tag_index)
+	API_FUNC_NAKED bool tag_read_only(datum_index tag_index)
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_IS_READ_ONLY);
 

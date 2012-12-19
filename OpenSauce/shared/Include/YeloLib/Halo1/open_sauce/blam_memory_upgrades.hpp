@@ -5,8 +5,8 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/cache/physical_memory_map.hpp>
-#include <blamlib/Halo1/hs/hs_scenario_definitions.hpp>
+#include <blamlib/Halo1/cache/cache_constants.hpp>
+#include <blamlib/Halo1/hs/hs_constants.hpp>
 #include <blamlib/Halo1/networking/network_connection.hpp> // for k_maximum_network_machine_count
 #include <blamlib/Halo1/game/players.hpp> // for k_multiplayer_maximum_players
 #include <blamlib/Halo1/saved_games/game_state.hpp>
@@ -128,24 +128,16 @@ namespace Yelo
 	namespace Enums
 	{
 		enum {
-			// Original maximum cache size
-			k_max_cache_size = 0x018000000,
 			// Our upgraded max cache size.
 			k_max_cache_size_upgrade = 
 				CAST(uint32, k_max_cache_size * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
 
-			k_max_cache_vertex_y_index_buffer_size = 0x2000000,
 			k_max_cache_vertex_y_index_buffer_size_upgrade = 
 				CAST(uint32, k_max_cache_vertex_y_index_buffer_size * K_MEMORY_UPGRADE_INCREASE_AMOUNT),
 		};
 
 		BOOST_STATIC_ASSERT( k_max_cache_size_upgrade >= k_max_cache_size );
 		BOOST_STATIC_ASSERT( k_max_cache_vertex_y_index_buffer_size_upgrade >= k_max_cache_vertex_y_index_buffer_size );
-	};
-
-
-	namespace Konstants
-	{
 	};
 };
 

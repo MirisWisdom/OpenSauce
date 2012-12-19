@@ -294,9 +294,6 @@ namespace Yelo
 		void Dispose();
 	};
 
-	tag tag_get_group_tag(datum_index tag_index);
-	tag_block* tag_get_root_block(datum_index tag_index);
-
 	bool tag_file_exists(tag group_tag, cstring name);
 	void tag_block_clear(tag_block* block, tag_block_definition* definition);
 
@@ -323,9 +320,7 @@ namespace Yelo
 		return tag_group_get(T::k_group_tag);
 	}
 	
-	void tag_orphan(datum_index tag_index);
 	bool tag_rename(datum_index tag_index, cstring new_name);
-	datum_index tag_loaded(tag group_tag, cstring name);
 
 	
 	void* tag_block_get_element_with_size(tag_block* block, int32 element_index, size_t element_size);
@@ -333,9 +328,7 @@ namespace Yelo
 
 	bool tag_reference_is_valid(const tag_reference& reference);
 	bool duplicate_recursive_tag_block(const tag_block* src_block, const int32 src_index, tag_block* dst_block, int32 dst_index);
-	datum_index tag_reload(tag group_tag, cstring name);
-
-	void tag_load_children(datum_index tag_index);
+	
 	bool tag_block_copy(const tag_block* src_block, tag_block* dst_block);
 	datum_index tag_copy_and_orphan(datum_index tag_index);
 };

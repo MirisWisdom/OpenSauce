@@ -185,7 +185,7 @@ namespace Yelo
 
 			TAG_TBLOCK_(skies, tag_reference);
 
-			TAG_ENUM(type, Enums::scenario_type);
+			Enums::scenario_type type;
 			TAG_FIELD(word_flags, flags);
 
 			TAG_PAD(tag_block, 1); // scenario_child_scenario_reference

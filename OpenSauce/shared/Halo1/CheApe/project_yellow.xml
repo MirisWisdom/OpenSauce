@@ -14,6 +14,10 @@
 	</enums>
 
 	<flags>
+		<Flag name="project_yellow_flags">
+			<field>don't fix ui game globals#when building a ui cache file, don't let tool's stock code muck with the game globals definition</field>
+		</Flag>
+		
 		<Flag name="gameplay_flags">
 			<field>prohibit multi-team vehicles</field>
 		</Flag>
@@ -72,7 +76,7 @@
 	<groups>
 		<TagGroup name="project_yellow" groupTag="yelo" version="2">
 			<field type="ShortInteger" name="version" locked="true" />
-			<field type="Pad" definition="2" />
+			<field type="WordFlags" name="flags" definition="project_yellow_flags" />
 
 			<field type="Explanation" name="Scenario Definitions" definition="" />
 			<field type="TagReference" name="yelo globals" definition="project_yellow_globals_reference" />

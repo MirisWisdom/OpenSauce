@@ -148,9 +148,17 @@ namespace Yelo
 	bool tag_data_resize(tag_data* data, size_t new_size);
 
 
+	tag tag_get_group_tag(datum_index tag_index);
+
+	tag_block* tag_get_root_block(datum_index tag_index);
+
+	void tag_orphan(datum_index tag_index);
+
+	datum_index tag_loaded(tag group_tag, cstring name);
+
 	cstring tag_get_name(datum_index tag_index);
 
-	bool tag_is_read_only(datum_index tag_index);
+	bool tag_read_only(datum_index tag_index);
 
 	// Get the tag definition's address by it's expected group tag and 
 	// it's tag handle [tag_index]
@@ -176,6 +184,15 @@ namespace Yelo
 	{
 		return tag_load(T::k_group_tag, name, file_flags);
 	}
+
+	datum_index tag_reload(tag group_tag, cstring name);
+	template<typename T>
+	datum_index tag_reload(cstring name)
+	{
+		return tag_reload(T::k_group_tag, name);
+	}
+
+	void tag_load_children(datum_index tag_index);
 
 	// Unload a tag definition from memory.
 	// [tag_index] will resolve to an invalid index after this returns.

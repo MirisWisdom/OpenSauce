@@ -105,7 +105,7 @@ namespace Yelo
 #endif
 				int16 version;	enum { k_version = 2, k_group_tag = 'yelo' };
 			struct _flags {
-				TAG_FLAG16(unused); // currently unused, so add a bit field so it pads to 2 bytes
+				TAG_FLAG16(dont_fix_ui_game_globals);
 				TAG_FLAG16(unused1);
 				TAG_FLAG16(unused2);
 				TAG_FLAG16(unused3);
