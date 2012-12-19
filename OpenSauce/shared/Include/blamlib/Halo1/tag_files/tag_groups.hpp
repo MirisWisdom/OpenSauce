@@ -23,6 +23,15 @@ namespace Yelo
 
 	namespace TagGroups
 	{
+#if PLATFORM_IS_EDITOR
+		typedef Memory::DataArray<	s_tag_instance, 
+								Enums::k_maximum_simultaneous_tag_instances,
+								Enums::k_maximum_simultaneous_tag_instances_upgrade> 
+		tag_instance_data_t;
+
+		extern s_tag_field_definition k_tag_field_definitions[];
+#endif
+
 		struct tag_iterator {
 			PAD32;
 			int16 current_index;

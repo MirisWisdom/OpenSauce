@@ -20,7 +20,7 @@ namespace PostProcessing
 
 		if(quad.x_bounds.lower > quad.x_bounds.upper || quad.y_bounds.lower > quad.y_bounds.upper)
 			YELO_ERROR(_error_message_priority_warning, 
-			"warning: quads lower bound is higher than its upper bound in '%s'", (*TagGroups::TagInstances())[tag_index]->filename);
+			"warning: quads lower bound is higher than its upper bound in '%s'", tag_get_name(tag_index));
 	}
 
 	static bool shader_postprocess_generic_group_find_parameter(tag_string& test_string, Yelo::datum_index tag_index)
@@ -237,7 +237,7 @@ namespace PostProcessing
 		if(!definition->shaders.Count)
 		{
 			YELO_ERROR(_error_message_priority_critical,
-				"error: an effect_postprocess_generic has no shaders referenced\ntag: %s", (*TagGroups::TagInstances())[tag_index]->filename);
+				"error: an effect_postprocess_generic has no shaders referenced\ntag: %s", tag_get_name(tag_index));
 			return false;
 		}
 
@@ -245,7 +245,7 @@ namespace PostProcessing
 			if(definition->shaders[i].tag_index.IsNull())
 			{
 				YELO_ERROR(_error_message_priority_critical,
-					"error: an effect_postprocess_generic has a shader block that does not reference a shader\ntag: %s", (*TagGroups::TagInstances())[tag_index]->filename);
+					"error: an effect_postprocess_generic has a shader block that does not reference a shader\ntag: %s", tag_get_name(tag_index));
 				return false;
 			}
 
@@ -254,7 +254,7 @@ namespace PostProcessing
 			if((definition->shader_indices[i] >= definition->shaders.Count) || (definition->shader_indices[i] == NONE))
 			{
 				YELO_ERROR(_error_message_priority_critical,
-					"error: an effect_postprocess_generic has a shader_index with an invalid value\ntag: %s", (*TagGroups::TagInstances())[tag_index]->filename);
+					"error: an effect_postprocess_generic has a shader_index with an invalid value\ntag: %s", tag_get_name(tag_index));
 				return false;
 			}
 
@@ -265,14 +265,14 @@ namespace PostProcessing
 			if(parameter.shader_index == NONE)
 			{
 				YELO_ERROR(_error_message_priority_critical,
-					"error: an effect_postprocess_generic has an exposed parameter with no shader referenced\ntag: %s", (*TagGroups::TagInstances())[tag_index]->filename);
+					"error: an effect_postprocess_generic has an exposed parameter with no shader referenced\ntag: %s", tag_get_name(tag_index));
 				return false;
 			}
 
 			if(!shader_postprocess_generic_group_find_parameter(parameter.parameter_name, definition->shaders[definition->shader_indices[parameter.shader_index]].tag_index))
 			{
 				YELO_ERROR(_error_message_priority_critical,
-					"error: a effect_postprocess_generic is exposing a parameter that does not exist\ntag: %s", (*TagGroups::TagInstances())[tag_index]->filename);
+					"error: a effect_postprocess_generic is exposing a parameter that does not exist\ntag: %s", tag_get_name(tag_index));
 				return false;
 			}
 		}
@@ -305,7 +305,7 @@ namespace PostProcessing
 			if(effect.effect.tag_index.IsNull())
 			{
 				YELO_ERROR(_error_message_priority_critical,
-					"error: an effect_postprocess_collection has an effect block with no effect referenced\ntag: %s", (*TagGroups::TagInstances())[tag_index]->filename);
+					"error: an effect_postprocess_collection has an effect block with no effect referenced\ntag: %s", tag_get_name(tag_index));
 				return false;
 			}
 
@@ -316,7 +316,7 @@ namespace PostProcessing
 				if(!effect_postprocess_generic_group_find_exposed_parameter(variable.exposed_parameter_name, effect.effect.tag_index))
 				{
 					YELO_ERROR(_error_message_priority_critical,
-					"error: an effect_postprocess_collection has a scripted variable without a valid exposed variable\ntag: %s", (*TagGroups::TagInstances())[tag_index]->filename);
+					"error: an effect_postprocess_collection has a scripted variable without a valid exposed variable\ntag: %s", tag_get_name(tag_index));
 					return false;
 				}
 

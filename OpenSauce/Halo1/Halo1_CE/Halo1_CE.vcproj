@@ -4474,6 +4474,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\hs\hs_constants.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\hs\hs_runtime.hpp"
 					>
 				</File>
@@ -5001,6 +5005,10 @@
 			<Filter
 				Name="cache"
 				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\cache\cache_constants.hpp"
+					>
+				</File>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\cache\cache_files.hpp"
 					>

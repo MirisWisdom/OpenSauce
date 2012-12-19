@@ -34,6 +34,8 @@ namespace Yelo
 			void TemporaryFileClose(cstring filename = k_temp_cache_file_name);
 			void TemporaryFileCopy(cstring new_filename, cstring filename = k_temp_cache_file_name);
 		};
+
+		bool ScenarioLoadForCacheBuild(cstring scenario_name, cstring globals_name);
 	};
 
 	namespace blam

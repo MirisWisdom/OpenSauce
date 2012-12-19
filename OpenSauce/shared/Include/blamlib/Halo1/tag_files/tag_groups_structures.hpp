@@ -180,12 +180,15 @@ namespace Yelo
 		uint32 file_checksum;		// 0x118
 		tag_block root_block;		// 0x11C, 0x120, 0x124
 	}; BOOST_STATIC_ASSERT( sizeof(s_tag_instance) == 0x128 );
-	// Note: the datum count below is the 'stock' count used by the engine. Yelo can override this.
-	typedef Memory::DataArray<s_tag_instance, 5120> tag_instance_data_t;
 
 
 	namespace TagGroups
 	{
+		struct s_tag_field_definition
+		{
+			size_t size;
+		};
+
 		struct s_tag_field_scan_state
 		{
 			const tag_field* fields;

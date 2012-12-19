@@ -17,6 +17,7 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
+		// Don't use me directly unless there's not an existing tag function for getting a certain property
 		tag_instance_data_t*	TagInstances();
 
 
@@ -26,9 +27,6 @@ namespace Yelo
 		// Should be called after the engine's and Yelo's TagGroups initializer are ran
 		void InitializeFixes();
 
-		// If I haven't taken the time to find the address of a tag function 
-		// or if the function I need doesn't exist to my knowledge
-		// I'll add an implementation or declaration here
 
 		// Searches [def] for a field of type [field_type] with a name which starts 
 		// with [name] characters. Optionally starts at a specific field index.
@@ -59,6 +57,22 @@ namespace Yelo
 		bool field_scan(s_tag_field_scan_state& state);
 	};
 
+	// if true, trying to load a 'mode' (.model) tag will instead result in a 'mod2' (.gbxmodel) tag with the same name being loaded
+	void tag_groups_set_model_upgrade_hack(BOOL hack_enabled);
+	bool tag_data_load(void* block_element, tag_data* data, void* address);
+	// NOTE: not available in tool builds
+	void tag_data_unload(tag_data* data, datum_index tag_index /* unused */ = datum_index::null);
+
+	// Use [NULL_HANDLE] for [group_tag_filter] to iterate all tag groups
+	void tag_iterator_new(TagGroups::tag_iterator& iter, const tag group_tag_filter = NULL_HANDLE);
+	template<typename T>
+	void tag_iterator_new(TagGroups::tag_iterator& iter)
+	{
+		tag_iterator_new(iter, T::k_group_tag);
+	}
+
+	// Returns [datum_index::null] when finished iterating
+	datum_index tag_iterator_next(TagGroups::tag_iterator& iter);
 
 	// Get the group definition based on a four-character code
 	tag_group* tag_group_get(tag group_tag);
@@ -100,17 +114,6 @@ namespace Yelo
 		return tag_block_duplicate_element(block.to_tag_block(), element);
 	}
 
-
-	// Use [NULL_HANDLE] for [group_tag_filter] to iterate all tag groups
-	void tag_iterator_new(TagGroups::tag_iterator& iter, const tag group_tag_filter = NULL_HANDLE);
-	template<typename T>
-	void tag_iterator_new(TagGroups::tag_iterator& iter)
-	{
-		tag_iterator_new(iter, T::k_group_tag);
-	}
-
-	// Returns [datum_index::null] when finished iterating
-	datum_index tag_iterator_next(TagGroups::tag_iterator& iter);
 
 	// Is the tag file read only?
 	bool tag_file_read_only(tag group_tag, cstring name);

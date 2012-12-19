@@ -2308,6 +2308,10 @@
 				Name="tag_files"
 				>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups.hpp"
 					>
 				</File>
@@ -2335,6 +2339,10 @@
 			<Filter
 				Name="cache"
 				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\cache\cache_constants.hpp"
+					>
+				</File>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\cache\cache_file_builder.cpp"
 					>
@@ -2597,6 +2605,14 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_database_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_fieldset_replacement_builder.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_fieldset_replacement_builder.hpp"
 					>
 				</File>
 				<File

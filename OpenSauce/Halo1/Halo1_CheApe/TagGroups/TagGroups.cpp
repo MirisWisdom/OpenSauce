@@ -160,13 +160,6 @@ namespace Yelo
 		}
 	};
 
-	bool tag_is_read_only(datum_index tag_index)
-	{
-		if( tag_index.IsNull() ) return false;
-
-		return (*TagGroups::TagInstances())[tag_index]->is_read_only;
-	}
-
 	size_t tag_block::get_element_size() const
 	{
 		return definition->element_size;
@@ -184,13 +177,33 @@ namespace Yelo
 		reference.tag_index = datum_index::null;
 	}
 
-	API_FUNC_NAKED bool tag_data_resize(tag_data* data, size_t new_size)
+
+	API_FUNC_NAKED void tag_groups_set_model_upgrade_hack(BOOL hack_enabled)
 	{
-		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_DATA_RESIZE);
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GROUPS_SET_MODEL_UPGRADE_HACK);
 
 		API_FUNC_NAKED_START()
-			push	new_size
-			push	data
+			push	hack_enabled
+			call	FUNCTION
+		API_FUNC_NAKED_END_CDECL(1);
+	}
+
+	API_FUNC_NAKED tag tag_get_group_tag(datum_index tag_index)
+	{
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GET_GROUP_TAG);
+
+		API_FUNC_NAKED_START()
+			push	tag_index
+			call	FUNCTION
+		API_FUNC_NAKED_END_CDECL(1);
+	}
+
+	API_FUNC_NAKED tag_block* tag_get_root_block(datum_index tag_index)
+	{
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GET_ROOT_BLOCK);
+
+		API_FUNC_NAKED_START()
+			push	tag_index
 			call	FUNCTION
 		API_FUNC_NAKED_END_CDECL(1);
 	}
@@ -204,6 +217,96 @@ namespace Yelo
 			call	FUNCTION
 		API_FUNC_NAKED_END_CDECL(1);
 	}
+
+	API_FUNC_NAKED void tag_orphan(datum_index tag_index)
+	{
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_ORPHAN);
+
+		API_FUNC_NAKED_START()
+			push	tag_index
+			call	FUNCTION
+		API_FUNC_NAKED_END_CDECL(1);
+	}
+
+	API_FUNC_NAKED datum_index tag_loaded(tag group_tag, cstring name)
+	{
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_LOADED);
+
+		API_FUNC_NAKED_START()
+			push	name
+			push	group_tag
+			call	FUNCTION
+		API_FUNC_NAKED_END_CDECL(2);
+	}
+
+	API_FUNC_NAKED bool tag_data_load(void* block_element, tag_data* data, void* address)
+	{
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_DATA_LOAD);
+
+		API_FUNC_NAKED_START()
+			push	address
+			push	data
+			push	block_element
+			call	FUNCTION
+		API_FUNC_NAKED_END_CDECL(3);
+	}
+
+	API_FUNC_NAKED void tag_data_unload(tag_data* data, datum_index tag_index)
+	{
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_DATA_UNLOAD);
+
+		API_FUNC_NAKED_START()
+#if PLATFORM_ID != PLATFORM_TOOL
+			push	data
+			push	tag_index
+			call	FUNCTION
+#endif
+		API_FUNC_NAKED_END_CDECL(2);
+	}
+
+	API_FUNC_NAKED bool tag_data_resize(tag_data* data, size_t new_size)
+	{
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_DATA_RESIZE);
+
+		API_FUNC_NAKED_START()
+			push	new_size
+			push	data
+			call	FUNCTION
+		API_FUNC_NAKED_END_CDECL(2);
+	}
+
+	API_FUNC_NAKED bool tag_read_only(datum_index tag_index)
+	{
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_READ_ONLY);
+
+		API_FUNC_NAKED_START()
+			push	tag_index
+			call	FUNCTION
+		API_FUNC_NAKED_END_CDECL(1);
+	}
+
+
+	API_FUNC_NAKED void tag_iterator_new(TagGroups::tag_iterator& iter, const tag group_tag_filter)
+	{
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_ITERATOR_NEW);
+
+		API_FUNC_NAKED_START()
+			push	group_tag_filter
+			push	iter
+			call	FUNCTION
+		API_FUNC_NAKED_END_CDECL(2);
+	}
+
+	API_FUNC_NAKED datum_index tag_iterator_next(TagGroups::tag_iterator& iter)
+	{
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_ITERATOR_NEXT);
+
+		API_FUNC_NAKED_START()
+			push	iter
+			call	FUNCTION
+		API_FUNC_NAKED_END_CDECL(1);
+	}
+
 
 	API_FUNC_NAKED void* tag_get(tag group_tag, datum_index tag_index)
 	{
@@ -408,6 +511,27 @@ fail:
 		API_FUNC_NAKED_END_CDECL(3);
 	}
 
+	API_FUNC_NAKED datum_index tag_reload(tag group_tag, cstring name)
+	{
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_RELOAD);
+
+		API_FUNC_NAKED_START()
+			push	name
+			push	group_tag
+			call	FUNCTION
+		API_FUNC_NAKED_END_CDECL(2);
+	}
+
+	API_FUNC_NAKED void tag_load_children(datum_index tag_index)
+	{
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_LOAD_CHILDREN);
+
+		API_FUNC_NAKED_START()
+			push	tag_index
+			call	FUNCTION
+		API_FUNC_NAKED_END_CDECL(1);
+	}
+
 	API_FUNC_NAKED void tag_unload(datum_index tag_index)
 	{
 		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_UNLOAD);
@@ -418,27 +542,6 @@ fail:
 		API_FUNC_NAKED_END_CDECL(1);
 	}
 
-
-	API_FUNC_NAKED void tag_iterator_new(TagGroups::tag_iterator& iter, const tag group_tag_filter)
-	{
-		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_ITERATOR_NEW);
-
-		API_FUNC_NAKED_START()
-			push	group_tag_filter
-			push	iter
-			call	FUNCTION
-		API_FUNC_NAKED_END_CDECL(2);
-	}
-
-	API_FUNC_NAKED datum_index tag_iterator_next(TagGroups::tag_iterator& iter)
-	{
-		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_ITERATOR_NEXT);
-
-		API_FUNC_NAKED_START()
-			push	iter
-			call	FUNCTION
-		API_FUNC_NAKED_END_CDECL(1);
-	}
 
 	API_FUNC_NAKED bool tag_file_read_only(tag group_tag, cstring name)
 	{

@@ -5,6 +5,7 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/cache/cache_constants.hpp>
 #if !defined(PLATFORM_IS_DEDI) || !PLATFORM_IS_DEDI
 	#include <blamlib/Halo1/cache/pc_sound_cache.hpp>
 	#include <blamlib/Halo1/cache/pc_texture_cache.hpp>
@@ -14,23 +15,13 @@
 
 namespace Yelo
 {
-	namespace Enums
-	{
-		enum {
-			k_physical_memory_base_address =		0x40000000,
-
-			// Original allocation size
-			k_physical_memory_map_allocation_size = 0x01B40000,
-		};
-	};
-
 	namespace GameState
 	{
 		// Made up structure for Halo1
-		template<typename DatumT, uint32 DatumCount>
+		template<typename DatumT, size_t MaxDatumCount, size_t MaxDatumCountUpgrade = MaxDatumCount>
 		struct s_resource_cache
 		{
-			Memory::DataArray<DatumT, DatumCount>* data;
+			Memory::DataArray<DatumT, MaxDatumCount, MaxDatumCountUpgrade>* data;
 			void* base_address;
 			Memory::s_lruv_cache* lruv_cache;
 			bool initialized;
@@ -40,9 +31,12 @@ namespace Yelo
 		struct s_physical_memory_map_globals
 		{
 #if !defined(PLATFORM_IS_DEDI) || !PLATFORM_IS_DEDI
-			s_resource_cache<Cache::s_sound_cache_datum, Enums::k_maximum_number_of_cached_sounds> 
+			s_resource_cache<	Cache::s_sound_cache_datum, 
+								Enums::k_maximum_number_of_cached_sounds> 
 				pc_sound_cache;
-			s_resource_cache<Cache::s_texture_cache_datum, Enums::k_maximum_number_of_cached_textures> 
+			s_resource_cache<
+								Cache::s_texture_cache_datum, 
+								Enums::k_maximum_number_of_cached_textures> 
 				pc_texture_cache;
 #endif
 

@@ -94,6 +94,11 @@ namespace Yelo
 	{
 		struct s_ai_globals_data : TStructImpl(2268)
 		{
+			//TStructGetPtrImpl(bool,				AiActive, 0x0);
+
+			//TStructGetPtrImpl(bool,				DialogueTriggersEnabled, 0x10);
+
+			//TStructGetPtrImpl(bool,				GrenadesEnabled, 0x3B4);
 		};
 		s_ai_globals_data*				AIGlobals();
 

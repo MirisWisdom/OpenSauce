@@ -6,6 +6,9 @@
 #include "Common/Precompile.hpp"
 #include <blamlib/Halo1/cache/cache_file_builder.hpp>
 
+#include <blamlib/Halo1/game/game_globals.hpp>
+#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+
 #include "Engine/EngineFunctions.hpp"
 
 namespace Yelo
@@ -45,6 +48,47 @@ namespace Yelo
 		void s_build_cache_file_globals::TemporaryFileCopy(cstring new_filename, cstring filename)
 		{
 			CopyFileA(filename, new_filename, FALSE);
+		}
+
+		static void FixGameGlobals(datum_index globals_index, Enums::scenario_type scenario_type)
+		{
+			TagGroups::s_game_globals* globals = tag_get<TagGroups::s_game_globals>(globals_index);
+
+			switch(scenario_type)
+			{
+			case Enums::_scenario_type_main_menu:
+				{
+					globals->player_info[0].unit.set(NONE, "");
+					globals->materials.resize(0);
+					globals->falling_damage.resize(0);
+				} // fall through
+			case Enums::_scenario_type_campaign:
+				{
+					globals->cheat_powerups.resize(0);
+					globals->weapons_list.resize(0);
+					globals->multiplayer_info.resize(0);
+				}
+			}
+
+			// not done in the stock code, but it's unused any so fuck it
+			globals->playlist_members.resize(0);
+		}
+		bool ScenarioLoadForCacheBuild(cstring scenario_name, cstring globals_name)
+		{
+			datum_index scenario_index = tag_load<TagGroups::scenario>(scenario_name, 
+				FLAG(Flags::_tag_load_verify_exist_first_bit));
+			datum_index globals_index = tag_load<TagGroups::s_game_globals>(globals_name, 
+				FLAG(Flags::_tag_load_verify_exist_first_bit) | FLAG(Flags::_tag_load_non_resolving_references_bit));
+
+			// the engine code returns true even if the tags fail to load
+			if(scenario_index.IsNull() || globals_index.IsNull())
+				return true;
+
+			TagGroups::scenario* scnr = tag_get<TagGroups::scenario>(scenario_index);
+			FixGameGlobals(globals_index, scnr->type);
+			tag_load_children(globals_index);
+
+			return true;
 		}
 	};
 

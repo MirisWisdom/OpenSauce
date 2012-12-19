@@ -22,7 +22,7 @@ namespace BuildCacheFileEx
 			datum_index tag_index;
 			while( !(tag_index = tag_iterator_next(tag_iter)).IsNull() )
 			{
-				switch( (*TagGroups::TagInstances())[tag_index]->group_tag )
+				switch( tag_get_group_tag(tag_index) )
 				{
 				case TagGroups::project_yellow_globals::k_group_tag:
 					{

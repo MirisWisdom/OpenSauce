@@ -264,7 +264,7 @@ namespace Yelo
 			datum_index tag_index;
 			while( !(tag_index = tag_iterator_next(iter)).IsNull() )
 			{
-				switch((*TagGroups::TagInstances())[tag_index.index].group_tag)
+				switch( tag_get_group_tag(tag_index) )
 				{
 				case TagGroups::s_game_globals::k_group_tag:
 					result |= GameGlobalsRequiresYeloGameStateUpgrades(tag_index); 
