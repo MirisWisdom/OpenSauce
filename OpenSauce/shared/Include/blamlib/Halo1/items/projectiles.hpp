@@ -6,6 +6,7 @@
 #pragma once
 
 #include <blamlib/Halo1/objects/object_structures.hpp>
+#include <blamlib/Halo1/items/item_structures.hpp>
 
 namespace Yelo
 {
@@ -18,7 +19,7 @@ namespace Yelo
 		}; BOOST_STATIC_ASSERT( sizeof(s_projectile_datum_network_data) == 0x18 );
 		struct s_projectile_data
 		{
-			byte unknown1F4[0x38];								// 0x1F4
+			s_item_data unused;									// 0x1F4
 			// FLAG(1) - tracer
 			long_flags flags;									// 0x22C
 			_enum action;										// 0x230

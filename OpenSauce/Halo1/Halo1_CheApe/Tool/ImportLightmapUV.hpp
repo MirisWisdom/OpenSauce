@@ -7,8 +7,6 @@
 #pragma once
 #if PLATFORM_ID == PLATFORM_TOOL
 
-#include "Tool/ToolDefinitions.hpp"
-
 namespace Yelo
 {
 	namespace Tool

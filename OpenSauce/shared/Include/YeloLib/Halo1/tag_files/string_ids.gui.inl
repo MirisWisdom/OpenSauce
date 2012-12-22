@@ -1,5 +1,6 @@
 #undef	__STRING_ID_GENERATE_SET_NAME
 #define __STRING_ID_GENERATE_SET_NAME	gui
+__STRING_ID_SET_BEGIN()
 
 //////////////////////////////////////////////////////////////////////////
 // labels
@@ -43,3 +44,6 @@ __STRING_ID(main_menu)
 			__STRING_ID(start_menu_settings_controls)
 			__STRING_ID(start_menu_settings_appearance)
 			__STRING_ID(start_menu_settings_theater)
+
+
+__STRING_ID_SET_END()

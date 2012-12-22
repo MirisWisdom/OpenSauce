@@ -957,11 +957,11 @@
 				Name="tag_files"
 				>
 				<File
-					RelativePath="..\..\shared\Include\YeloLib\tag_files\tag_groups_markup.hpp"
+					RelativePath="..\..\shared\Include\YeloLib\tag_files\tag_groups_base_yelo.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Include\YeloLib\tag_files\tag_groups_yelo.hpp"
+					RelativePath="..\..\shared\Include\YeloLib\tag_files\tag_groups_markup.hpp"
 					>
 				</File>
 			</Filter>

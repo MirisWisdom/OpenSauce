@@ -16,7 +16,7 @@ namespace Yelo
 	namespace Cache
 	{
 #if PLATFORM_IS_EDITOR
-		void s_cache_file_string_id_storage_header::Initialize()
+		void s_cache_file_resource_string_id_storage_header::Initialize()
 		{
 			memset(this, 0, sizeof(*this));
 
@@ -24,7 +24,7 @@ namespace Yelo
 			this->set_count = _string_id::k_last_valid_set;
 		}
 #endif
-		bool s_cache_file_string_id_storage_header::IsValid() const
+		bool s_cache_file_resource_string_id_storage_header::IsValid() const
 		{
 			return signature == k_signature && set_count <= _string_id::k_number_of_sets;
 		}

@@ -11,14 +11,13 @@ namespace Yelo
 {
 	namespace Tool
 	{
-		// have to define it here because build-cache-file code uses it
-		typedef void (PLATFORM_API* _import_class_proc)(void** arguments);
+		typedef void (PLATFORM_API* proc_import_class)(void** arguments);
 
 		struct s_import_class {
 			cstring				name;
 			cstring				usage;
 			int32				argument_count;
-			_import_class_proc	import_proc;
+			proc_import_class	import_proc;
 		};
 #define IMPORT_CLASS_DEFINITION(name, arg_count, arguments, proc) \
 		{name, name " " arguments, arg_count, proc}

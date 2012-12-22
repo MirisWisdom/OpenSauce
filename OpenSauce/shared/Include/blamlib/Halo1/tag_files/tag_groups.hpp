@@ -6,7 +6,7 @@
 #pragma once
 
 #include <blamlib/tag_files/tag_groups_base.hpp>
-#include <YeloLib/tag_files/tag_groups_yelo.hpp>
+#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 
 #if PLATFORM_IS_EDITOR
 	#include <blamlib/Halo1/tag_files/tag_groups_structures.hpp>
