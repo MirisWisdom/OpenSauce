@@ -117,8 +117,8 @@ namespace Yelo
 
 	typedef bool (PLATFORM_API* proc_tag_block_postprocess_element)(void* element, bool for_runtime);
 	// if [formatted_buffer] returns empty, the default block formatting is done
-	typedef cstring (PLATFORM_API* proc_tag_block_format)(datum_index tag_index, tag_block* block, int32 element, char formatted_buffer[Enums::k_tag_block_format_buffer_size]);
-	typedef void (PLATFORM_API* proc_tag_block_delete_element)(tag_block* block, int32 element_index);
+	typedef cstring (PLATFORM_API* proc_tag_block_format)(datum_index tag_index, tag_block* block, int32 element_index, char formatted_buffer[Enums::k_tag_block_format_buffer_size]);
+	typedef void (PLATFORM_API* proc_tag_block_dispose_element)(tag_block* block, int32 element_index);
 	struct tag_block_definition
 	{
 		cstring name;
@@ -130,7 +130,7 @@ namespace Yelo
 		void* unused1;
 		proc_tag_block_postprocess_element postprocess_proc;
 		proc_tag_block_format format_proc;
-		proc_tag_block_delete_element delete_proc;
+		proc_tag_block_dispose_element dispose_element_proc;
 		int32* byteswap_codes;
 	}; BOOST_STATIC_ASSERT( sizeof(tag_block_definition) == 0x2C );
 

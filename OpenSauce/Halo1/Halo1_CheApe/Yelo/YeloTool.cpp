@@ -13,6 +13,7 @@
 #include <blamlib/Halo1/objects/object_definitions.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 #include <blamlib/Halo1/shaders/shader_definitions.hpp>
+#include <blamlib/Halo1/tool/tool.hpp>
 
 #include <YeloLib/Halo1/cache/data_file_yelo.hpp>
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
@@ -27,7 +28,6 @@
 #include "TagGroups/TagGroups.hpp"
 #include "TagGroups/yelo_definitions.hpp"
 #include "TagGroups/yelo_scenario_definitions.hpp"
-#include "Tool/ToolDefinitions.hpp"
 #include "Tool/Tool_AnimationFixups.hpp"
 
 #include "Tool/ImportLightmapUV.hpp"

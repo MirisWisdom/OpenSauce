@@ -12,7 +12,7 @@ namespace Yelo
 {
 	namespace Cache
 	{
-		struct s_cache_file_strings_storage_header
+		struct s_cache_file_resource_strings_storage_header
 		{
 			int32 count;				// number of strings in the storage
 			uint32 offset;				// offset of the null-terminated strings buffer
@@ -20,11 +20,24 @@ namespace Yelo
 			uint32 index_buffer_offset;	// offset of the buffer containing the offsets to each null-terminated string
 		};
 
-		struct s_cache_file_string_id_storage_header
+		struct s_cache_file_resource_compression_parameters_header
 		{
-			enum {
-				k_signature = 'cssh',
-			};
+			enum { k_signature = 'ccph' };
+
+			tag signature;
+		};
+
+		struct s_cache_file_resource_tag_symbols_storage_header
+		{
+			enum { k_signature = 'ctsh' };
+
+			tag signature;
+		};
+
+		struct s_cache_file_resource_string_id_storage_header
+		{
+			enum { k_signature = 'cssh' };
+
 			tag signature;
 			int16 set_count;
 			PAD16;
@@ -33,7 +46,7 @@ namespace Yelo
 			uint32 compressed_length;
 			uint32 decompressed_length;
 
-			s_cache_file_strings_storage_header set_storage[_string_id::k_number_of_sets];
+			s_cache_file_resource_strings_storage_header set_storage[_string_id::k_number_of_sets];
 
 
 #if PLATFORM_IS_EDITOR
@@ -52,6 +65,7 @@ namespace Yelo
 				word_flags uses_mod_data_files : 1;	// cache relies on a set of 'mod' data files for it's resources
 				word_flags is_protected : 1;		// cache has protection applied
 				word_flags uses_game_state_upgrades : 1; // cache has tag data that either requires or needs OS-modified game state memory in order to (fully) function
+				word_flags has_compression_params : 1; // cache has compression parameters (for resources, tags, etc)
 			}flags; BOOST_STATIC_ASSERT( sizeof(s_flags) == 0x2 );
 
 			struct {
@@ -89,11 +103,11 @@ namespace Yelo
 			}build_info; // User-defined build info
 
 			struct {
-				uint32 string_id_storage_header_offset;
-				PAD32;
-				PAD64;
-				PAD128;
-			}debug;
+				uint32 compression_params_header_offset;
+				uint32 tag_symbol_storage_header_offset;
+				uint32 string_id_storage_header_offset;			// for debug only
+				uint32 tag_string_to_id_storage_header_offset;
+			}resources;
 
 #if PLATFORM_IS_EDITOR
 			void InitializeForNewMap();

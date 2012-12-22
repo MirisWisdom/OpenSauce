@@ -33,7 +33,7 @@ struct s_build_cache_file_for_scenario {
 	_build_structure_bsp_predicted_resources build_structure_bsp_predicted_resources;
 	_build_cache_file_add_tags		build_cache_file_add_tags;
 	__build_cache_file_for_scenario	_build_cache_file_for_scenario;
-	_import_class_proc				build_cache_file_for_scenario_command;
+	proc_import_class				build_cache_file_for_scenario_command;
 	_build_cache_file_begin			build_cache_file_begin;
 	_build_cache_file_end			build_cache_file_end;
 	_build_cache_file_failed		build_cache_file_failed;
@@ -82,7 +82,7 @@ struct s_build_cache_file_for_scenario {
 	CAST_PTR(s_build_cache_file_for_scenario::_build_structure_bsp_predicted_resources,		0x453860),
 	CAST_PTR(s_build_cache_file_for_scenario::_build_cache_file_add_tags,		0x454D40),
 	CAST_PTR(s_build_cache_file_for_scenario::__build_cache_file_for_scenario,	0x4553A0),
-	CAST_PTR(_import_class_proc,												0x455640),
+	CAST_PTR(proc_import_class,													0x455640),
 	CAST_PTR(s_build_cache_file_for_scenario::_build_cache_file_begin,			0x4B9250),
 	CAST_PTR(s_build_cache_file_for_scenario::_build_cache_file_end,			0x4B93B0),
 	CAST_PTR(s_build_cache_file_for_scenario::_build_cache_file_failed,			0x4B9030),

@@ -2013,10 +2013,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Tool\ToolDefinitions.hpp"
-				>
-			</File>
-			<File
 				RelativePath=".\Tool\ToolMisc.cpp"
 				>
 			</File>
@@ -2360,6 +2356,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="tool"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\tool\tool.hpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".YeloLib"
@@ -2616,11 +2620,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Include\YeloLib\tag_files\tag_groups_markup.hpp"
+					RelativePath="..\..\shared\Include\YeloLib\tag_files\tag_groups_base_yelo.hpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Include\YeloLib\tag_files\tag_groups_yelo.hpp"
+					RelativePath="..\..\shared\Include\YeloLib\tag_files\tag_groups_markup.hpp"
 					>
 				</File>
 				<Filter

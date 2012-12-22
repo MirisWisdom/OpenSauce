@@ -9,6 +9,16 @@
 
 namespace Yelo
 {
+	namespace Flags
+	{
+		enum {
+			_tag_database_entry_skipped_bit,
+			_tag_database_entry_error_missing_bit,
+			_tag_database_entry_error_invalid_version_bit,
+			_tag_database_entry_error_failure_bit,
+		};
+	};
+
 	namespace TagGroups
 	{
 		struct s_tag_database_entry // tag_database_entry_block

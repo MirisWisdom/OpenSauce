@@ -82,13 +82,12 @@ namespace Yelo
 	{
 		struct s_game_options
 		{
-			UNKNOWN_TYPE(int16);
-			UNKNOWN_TYPE(int16); // ?, not sure about this field
-			UNKNOWN_TYPE(int16); // ?, not sure about this field
+			UNKNOWN_TYPE(int32); // never see this referenced or explicitly set. due to memset, this will always be set to zero
+			UNKNOWN_TYPE(int16); // never see this referenced besides in game_options_new code where it's set to 0, even after a memset call. highly likely to be an enum field, albeit unused
 			_enum difficulty_level;
 			int32 random_seed;
-			char map_name[0x7F+1];
-			byte unknown[0x7F+1]; // pretty sure this is just an unused string
+			// not always the actual path, sometimes just the name, go figure
+			char scenario_path[Enums::k_max_tag_name_length+1];
 		}; BOOST_STATIC_ASSERT( sizeof(s_game_options) == 0x10C );
 
 		struct s_game_globals
@@ -264,7 +263,7 @@ namespace Yelo
 			TAG_TBLOCK(player_info, s_game_globals_player_information);
 			TAG_TBLOCK(player_representation, s_game_globals_player_representation);
 			TAG_TBLOCK(falling_damage, s_game_globals_falling_damage);
-			TAG_BLOCK(materials, material_definition);
+			TAG_TBLOCK(materials, material_definition);
 			TAG_BLOCK(playlist_members, playlist_autogenerate_choice);
 		}; BOOST_STATIC_ASSERT( sizeof(s_game_globals) == 0x1AC );
 	};

@@ -184,20 +184,20 @@ namespace Yelo
 	}; BOOST_STATIC_ASSERT( sizeof(tag_field_set) == 0x4C );
 
 	typedef tag_block* (PLATFORM_API* proc_block_index_custom_search_get_block)(datum_index tag_index, 
-		tag_field* block_index_field, void* block_index_address, 
+		const tag_field* block_index_field, void* block_index_address, 
 		void* block_index_owner); // definition instance which contains the block_index
-	typedef bool (PLATFORM_API* proc_block_index_custom_search_is_valid_source_block)(void* block_index_address, tag_block_definition* definition);
+	typedef bool (PLATFORM_API* proc_block_index_custom_search_is_valid_source_block)(void* block_index_address, const tag_block_definition* definition);
 	struct block_index_custom_search_definition
 	{
 		proc_block_index_custom_search_get_block				get_block_proc;
 		proc_block_index_custom_search_is_valid_source_block	is_valid_source_block_proc;
 	};
 
-	typedef bool (PLATFORM_API* proc_tag_block_postprocess)(datum_index owner_tag_index, void* block, bool is_new);
-	typedef wcstring (PLATFORM_API* proc_tag_block_format)(datum_index tag_index, tag_block* block, int32 element, 
+	typedef bool (PLATFORM_API* proc_tag_block_postprocess_element)(datum_index owner_tag_index, void* element, bool for_runtime);
+	typedef wcstring (PLATFORM_API* proc_tag_block_format)(datum_index tag_index, tag_block* block, int32 element_index, 
 		wchar_t* formatted_buffer, uint32 formatted_buffer_size);
-	typedef void (PLATFORM_API* proc_tag_bock_generate_default_block)(void* block);
-	typedef void (PLATFORM_API* proc_tag_block_dispose_element)(tag_block* block, int32 element);
+	typedef void (PLATFORM_API* proc_tag_bock_generate_default_element)(void* element);
+	typedef void (PLATFORM_API* proc_tag_block_dispose_element)(tag_block* block, int32 element_index);
 	// void? (PLATFORM_API* proc_tag_block_handle_invalid)(tag owner_group_tag, cstring owner_tag_name, long_flags flags, 
 	// tag group_tag, cstring tag_name, datum_index& out_tag_index)
 	struct tag_block_definition
@@ -212,9 +212,9 @@ namespace Yelo
 		tag_field_set*	field_set_latest;
 		PAD32;
 
-		proc_tag_block_postprocess				postprocess_proc;
+		proc_tag_block_postprocess_element		postprocess_proc;
 		proc_tag_block_format					format_proc;
-		proc_tag_bock_generate_default_block	generate_default_proc;
+		proc_tag_bock_generate_default_element	generate_default_proc;
 		proc_tag_block_dispose_element			dispose_element_proc;
 		PAD32; // proc handle invalid
 	}; BOOST_STATIC_ASSERT( sizeof(tag_block_definition) == 0x38 );

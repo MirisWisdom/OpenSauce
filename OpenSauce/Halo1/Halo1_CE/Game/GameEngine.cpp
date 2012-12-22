@@ -141,7 +141,7 @@ namespace Yelo
 		{
 			if( GameEngine::Current() )
 			{
-				GameState::WriteEvent(GameState::GameGlobals()->options.map_name);
+				GameState::WriteEvent(GameState::GameGlobals()->options.scenario_path);
  				GameState::WriteEvent("", false);
 			}
 		}
