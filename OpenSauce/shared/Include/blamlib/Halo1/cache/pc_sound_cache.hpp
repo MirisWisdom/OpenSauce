@@ -25,8 +25,8 @@ namespace Yelo
 	{
 		struct s_sound_cache_datum : Memory::s_datum_base
 		{
-			UNKNOWN_TYPE(bool);							// 0x2
-			UNKNOWN_TYPE(bool);							// 0x3
+			bool finished_loading_flag;					// 0x2
+			UNKNOWN_TYPE(bool);							// 0x3 true when the sound contains decompressed xbox adpcm samples
 			UNKNOWN_TYPE(byte);							// 0x4 haven't seen this used, don't know the exact type
 			sbyte software_reference_count;				// 0x5
 			sbyte hardware_reference_count;				// 0x6

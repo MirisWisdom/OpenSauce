@@ -68,6 +68,16 @@ namespace Yelo
 
 			k_number_of_tag_field_types,
 		};
+
+		// Note: AFAICT, the engine code doesn't actually do the postprocess setup this way.
+		// They have what is essentially a boolean parameter that could be considered as 'bool for_editor'
+		enum tag_postprocess_mode : byte_enum {
+			// In this mode, the tag is being postprocessed for runtime values (automatically fill fields, etc)
+			_tag_postprocess_mode_for_runtime = FALSE,
+			// In this mode we're opening for tag editing (eg, tool process or guerilla) and should skip the postprocessing
+			// code which prepares the tag for use in-game (Sapien and when building a cache)
+			_tag_postprocess_mode_for_editor = TRUE,
+		};
 	};
 
 	namespace Flags
@@ -96,7 +106,8 @@ namespace Yelo
 			// majority of tags have this set
 			_tag_group_unknown3_bit,
 
-			_tag_load_for_runtime_bit = 0,
+			// When this is set, implies _tag_postprocess_mode_for_editor, else _for_runtime
+			_tag_load_for_editor_bit = 0,
 			// Verify the tag file exists first
 			_tag_load_verify_exist_first_bit,
 			// If set: child references of the tag being loaded are not loaded themselves
@@ -115,7 +126,8 @@ namespace Yelo
 		template<typename T> API_INLINE T* Definition() const { return CAST_PTR(T*, definition); }
 	}; BOOST_STATIC_ASSERT( sizeof(tag_field) == 0xC );
 
-	typedef bool (PLATFORM_API* proc_tag_block_postprocess_element)(void* element, bool for_runtime);
+	// Called as each element is read from the tag stream
+	typedef bool (PLATFORM_API* proc_tag_block_postprocess_element)(void* element, Enums::tag_postprocess_mode mode);
 	// if [formatted_buffer] returns empty, the default block formatting is done
 	typedef cstring (PLATFORM_API* proc_tag_block_format)(datum_index tag_index, tag_block* block, int32 element_index, char formatted_buffer[Enums::k_tag_block_format_buffer_size]);
 	typedef void (PLATFORM_API* proc_tag_block_dispose_element)(tag_block* block, int32 element_index);
@@ -150,8 +162,8 @@ namespace Yelo
 	}; BOOST_STATIC_ASSERT( sizeof(tag_reference_definition) == 0xC );
 
 	// Postprocess a tag definition (eg, automate the creation of fields, etc)
-	// [for_runtime] - if true, prepare the tag for use in-game (Sapien and when building a cache)
-	typedef bool (PLATFORM_API* proc_tag_group_postprocess)(datum_index tag_index, bool for_runtime);
+	// Called once the tag has been fully loaded (header_block_definition's postprocess is called before this)
+	typedef bool (PLATFORM_API* proc_tag_group_postprocess)(datum_index tag_index, Enums::tag_postprocess_mode mode);
 	struct tag_group
 	{
 		cstring name;

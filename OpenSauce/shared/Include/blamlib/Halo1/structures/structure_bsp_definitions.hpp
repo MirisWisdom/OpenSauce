@@ -242,5 +242,12 @@ namespace Yelo
 			TAG_BLOCK(leaf_map_portals, leaf_connection);
 
 		}; BOOST_STATIC_ASSERT( sizeof(structure_bsp) == 0x288 );
+
+		struct structure_bsp_header
+		{
+			structure_bsp* bsp;
+			PAD128;
+			tag signature;
+		}; BOOST_STATIC_ASSERT( sizeof(structure_bsp_header) == 0x18 );
 	};
 };

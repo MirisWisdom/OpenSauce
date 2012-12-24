@@ -108,7 +108,7 @@ namespace Yelo
 		};
 
 		enum tag_loading_flags {
-			_tag_loading_flag_for_runtime =						FLAG(0),
+			_tag_loading_flag_for_editor =					FLAG(0),
 			//_tag_loading_flag_ = FLAG(1),
 			//_tag_loading_flag_ = FLAG(2), // print errors?
 			_tag_loading_flag_ignore_invalid_field_data =	FLAG(3),
@@ -193,7 +193,7 @@ namespace Yelo
 		proc_block_index_custom_search_is_valid_source_block	is_valid_source_block_proc;
 	};
 
-	typedef bool (PLATFORM_API* proc_tag_block_postprocess_element)(datum_index owner_tag_index, void* element, bool for_runtime);
+	typedef bool (PLATFORM_API* proc_tag_block_postprocess_element)(datum_index owner_tag_index, void* element, bool for_editor);
 	typedef wcstring (PLATFORM_API* proc_tag_block_format)(datum_index tag_index, tag_block* block, int32 element_index, 
 		wchar_t* formatted_buffer, uint32 formatted_buffer_size);
 	typedef void (PLATFORM_API* proc_tag_bock_generate_default_element)(void* element);
@@ -245,7 +245,7 @@ namespace Yelo
 		tag* group_tags;
 	}; BOOST_STATIC_ASSERT( sizeof(tag_reference_definition) == 0xC );
 
-	typedef bool (PLATFORM_API* proc_tag_group_postprocess)(datum_index tag_index, bool for_runtime);
+	typedef bool (PLATFORM_API* proc_tag_group_postprocess)(datum_index tag_index, bool for_editor);
 	typedef bool (PLATFORM_API* proc_tag_group_postprocess_for_sync)(datum_index tag_index, void* cache_file_writer);
 	typedef void (PLATFORM_API* proc_tag_group_save_preprocess)(datum_index tag_index); // TODO: verify return type
 	struct tag_group

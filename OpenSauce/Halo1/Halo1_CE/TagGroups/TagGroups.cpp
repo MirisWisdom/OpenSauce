@@ -69,7 +69,7 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_TAGGROUPS_TAG_GROUPS
 #include "Memory/_EngineLayout.inl"
 
-		Cache::s_cache_tag_header* Index()					{ return Cache::CacheFileGlobals()->current_cache.tag_header; }
+		Cache::s_cache_tag_header* Index()					{ return Cache::CacheFileGlobals()->tag_index; }
 		Cache::s_cache_tag_instance const* Instances()		DPTR_IMP_GET(tag_instances);
 
 

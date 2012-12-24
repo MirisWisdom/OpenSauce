@@ -16,13 +16,6 @@
 
 namespace Yelo
 {
-	namespace Enums
-	{
-		enum {
-			k_number_of_cached_map_files = 6,
-		};
-	};
-
 	namespace DataFiles
 	{
 		void Initialize();
@@ -31,49 +24,6 @@ namespace Yelo
 
 	namespace Cache
 	{
-		struct s_cache_file_globals
-		{
-			bool initialized;
-			PAD24;
-			struct {
-				s_cache_header header;
-				s_cache_tag_header* tag_header;
-				TagGroups::structure_bsp* structure_bsp;
-			}current_cache;
-			PAD32;
-
-			byte threading_data[0xAC8];
-
-			struct {
-				struct {
-					HANDLE file_handle;
-					FILETIME time;
-				}runtime;
-				s_cache_header header;
-			}map_files[Enums::k_number_of_cached_map_files];
-
-			struct {
-				bool copy_in_progress;
-				PAD8;
-				UNKNOWN_TYPE(int16);
-
-				tag_string name;
-				int16 index;		// index to cache_files
-				PAD16;
-			}current_cache_files;	// currently selected cache_files item
-
-			struct s_read_request : TStructImpl(0x30)
-			{
-			};
-			struct {
-				HANDLE event_handle;
-				HANDLE thread_handle;
-				HGLOBAL read_requests; // sizeof(s_read_request) * 512
-				PAD32;
-			}cache_read_threading;
-
-			byte data_cache_files[0x40][3]; // s_data_file. sounds, loc, bitmaps
-		}; BOOST_STATIC_ASSERT( sizeof(s_cache_file_globals) == 0x4418 );
 		s_cache_file_globals* CacheFileGlobals();
 
 		struct s_original_multipler_map

@@ -142,9 +142,11 @@ namespace Yelo
 		void SetTextureSamplerStage(Yelo::TagGroups::s_bitmap_data* bitmap, uint32 texture_stage);
 		// Setting [block_thread] to true causes the engine to immediately create the rasterizer (D3D) data for it
 		IDirect3DBaseTexture9** TextureCacheRequestTexture(TagGroups::s_bitmap_data* bitmap, 
+			// load						block
 			bool add_to_cache = true, bool block_thread = false);
 
 		bool SoundCacheRequestSound(TagGroups::s_sound_permutation* sound_perm, 
+			// load						block						reference
 			bool add_to_cache = true, bool block_thread = false, bool unknown2 = false);
 
 		void MapListAddMap(cstring map_name, cstring extension = ".map", bool skip_crc = false, int32 map_index = 0x13);
