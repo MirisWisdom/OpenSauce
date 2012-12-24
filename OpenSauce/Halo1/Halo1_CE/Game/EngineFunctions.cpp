@@ -278,4 +278,9 @@ namespace Yelo
 			}
 		};
 	};
+
+	datum_index tag_loaded(tag group_tag, cstring name)
+	{
+		return Engine::TagGroups::TagLoaded(group_tag, name);
+	}
 };

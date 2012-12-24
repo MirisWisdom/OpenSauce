@@ -26,6 +26,12 @@ namespace Yelo
 			k_tag_cache_base_address = k_game_state_base_address + k_game_state_allocation_size,
 
 			//////////////////////////////////////////////////////////////////////////
+			// resource caches
+
+			k_maximum_number_of_cached_sounds = 512,
+			k_maximum_number_of_cached_textures = 4096,
+
+			//////////////////////////////////////////////////////////////////////////
 			// cache files
 
 			// Original maximum cache size

@@ -40,6 +40,8 @@ namespace BlamLib.Test
 
 		public static void TestMethod(WaitCallback method, params ThreadedTaskArgsBase[] args)
 		{
+			Assert.IsTrue(args.Length > 0, "Why are there zero tasks?");
+
 			// Can't use WaitAll in STA
 			// See the following for a work around: http://blogs.msdn.com/b/ploeh/archive/2007/10/21/runningmstestinanmta.aspx
 			Assert.IsFalse(Thread.CurrentThread.GetApartmentState() == ApartmentState.STA);

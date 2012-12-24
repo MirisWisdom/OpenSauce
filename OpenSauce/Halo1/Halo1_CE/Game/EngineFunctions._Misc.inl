@@ -46,20 +46,20 @@ void SetTextureSamplerStage(Yelo::TagGroups::s_bitmap_data* bitmap, uint32 textu
 #endif
 }
 
-IDirect3DBaseTexture9** TextureCacheRequestTexture(Yelo::TagGroups::s_bitmap_data* bitmap, 
-												   bool add_to_cache, bool block_thread)
+IDirect3DBaseTexture9** TextureCacheBitmapGetHardwareFormat(Yelo::TagGroups::s_bitmap_data* bitmap, 
+												   bool block_thread, bool load)
 {
 #if !PLATFORM_IS_DEDI
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(TEXTURE_CACHE_TEXTURE_REQUEST);
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(TEXTURE_CACHE_BITMAP_GET_HARDWARE_FORMAT);
 
 	__asm {
 		xor		eax, eax
-		mov		al, add_to_cache
+		mov		al, load
 		push	eax
 		mov		al, block_thread
 		push	eax
 		mov		eax, bitmap
-		call	TEMP_CALL_ADDR
+		call	FUNCTION
 		add		esp, 4 * 2
 	}
 #else
@@ -68,24 +68,24 @@ IDirect3DBaseTexture9** TextureCacheRequestTexture(Yelo::TagGroups::s_bitmap_dat
 }
 
 bool SoundCacheRequestSound(Yelo::TagGroups::s_sound_permutation* sound_perm, 
-							bool add_to_cache, bool block_thread, bool unknown2)
+							bool block_thread, bool load, bool reference)
 {
 #if !PLATFORM_IS_DEDI
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(SOUND_CACHE_SOUND_REQUEST);
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(SOUND_CACHE_SOUND_REQUEST);
 
 	__asm {
 		push	edi
 		push	ebx
 
 		xor		eax, eax
-		mov		al, unknown2
+		mov		al, reference
 		push	eax
-		mov		al, add_to_cache
+		mov		al, load
 		push	eax
 		xor		ebx, ebx
 		mov		bl, block_thread
 		mov		edi, sound_perm
-		call	TEMP_CALL_ADDR
+		call	FUNCTION
 		add		esp, 4 * 2
 
 		pop		ebx
@@ -213,4 +213,29 @@ bool GetCmdLineParameter(cstring parameter, cstring* value_out)
 		add		esp, 4
 		pop		edi
 	};
+}
+
+API_FUNC_NAKED bool CacheFileReadRequest(/*datum_index tag_index,*/
+						  uint32 offset_, uint32 size_, void* buffer, const Cache::s_cache_file_request_params& params, 
+						  bool block, Enums::cache_file_request_source source)
+{
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(CACHE_FILE_READ_REQUEST);
+
+	API_FUNC_NAKED_START()
+		push	esi
+		xor		eax, eax
+
+		movzx	eax, source
+		push	eax
+		movzx	eax, block
+		push	eax
+		mov		esi, params
+		push	buffer
+		push	size_
+		push	offset_
+		call	FUNCTION
+		add		esp, 4 * 5
+
+		pop		esi
+	API_FUNC_NAKED_END(6); // not including the unused tag_index
 }

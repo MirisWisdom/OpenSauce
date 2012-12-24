@@ -6,6 +6,7 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/cache/cache_files.hpp>
 #include <blamlib/Halo1/math/periodic_functions.hpp>
 #include <blamlib/Halo1/memory/data.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
@@ -141,13 +142,13 @@ namespace Yelo
 
 		void SetTextureSamplerStage(Yelo::TagGroups::s_bitmap_data* bitmap, uint32 texture_stage);
 		// Setting [block_thread] to true causes the engine to immediately create the rasterizer (D3D) data for it
-		IDirect3DBaseTexture9** TextureCacheRequestTexture(TagGroups::s_bitmap_data* bitmap, 
-			// load						block
-			bool add_to_cache = true, bool block_thread = false);
+		IDirect3DBaseTexture9** TextureCacheBitmapGetHardwareFormat(TagGroups::s_bitmap_data* bitmap, 
+			// block
+			bool block_thread = false, bool load = true);
 
 		bool SoundCacheRequestSound(TagGroups::s_sound_permutation* sound_perm, 
-			// load						block						reference
-			bool add_to_cache = true, bool block_thread = false, bool unknown2 = false);
+			// block										increment software_reference_count
+			bool block_thread = false, bool load = true, bool reference = false);
 
 		void MapListAddMap(cstring map_name, cstring extension = ".map", bool skip_crc = false, int32 map_index = 0x13);
 
@@ -163,6 +164,10 @@ namespace Yelo
 		bool CompareMD5(cstring data, const DWORD data_length, cstring comparison_md5);
 
 		bool GetCmdLineParameter(cstring parameter, cstring* value_out = NULL);
+
+		bool CacheFileReadRequest(/*datum_index tag_index,*/ // unused, and optimized out, at runtime
+			uint32 offset, uint32 size, void* buffer, const Cache::s_cache_file_request_params& params, 
+			bool block = true, Enums::cache_file_request_source source = Enums::_cache_file_request_source_open_map);
 
 
 		namespace AI
@@ -464,9 +469,11 @@ namespace Yelo
 		{
 			void PredictResources(TagBlock<Yelo::TagGroups::predicted_resource>& resources_block);
 
+#if FALSE // use Yelo::tag_loaded instead
 			// [group_tag] - the group tag of the tag definition (eg, 'ustr')
 			// [name] - the tag definition name
 			datum_index TagLoaded(tag group_tag, cstring name);
+#endif
 
 			// [ustr] - the index of the unicode string definition
 			// [index] - the index of the string you wish to get

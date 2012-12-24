@@ -140,8 +140,8 @@ namespace Yelo
 			{
 				if(bitmap_value.runtime._internal.bitmap != NULL)
 				{
-					// Add the bitmap to the pc texture cache, and create the direct3d texture
-					Yelo::Engine::TextureCacheRequestTexture(bitmap_value.runtime._internal.bitmap, true, true);
+					// Load the bitmap into the pc texture cache, and block until the he direct3d texture is created
+					Yelo::Engine::TextureCacheBitmapGetHardwareFormat(bitmap_value.runtime._internal.bitmap, true, true);
 
 					hr = (bitmap_value.runtime._internal.bitmap->hardware_format == NULL ? E_FAIL : S_OK);
 				}
