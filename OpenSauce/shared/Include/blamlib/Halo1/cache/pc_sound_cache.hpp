@@ -14,13 +14,6 @@ namespace Yelo
 		struct s_sound_permutation;
 	};
 
-	namespace Enums
-	{
-		enum {
-			k_maximum_number_of_cached_sounds = 512,
-		};
-	};
-
 	namespace Cache
 	{
 		struct s_sound_cache_datum : Memory::s_datum_base

@@ -16,20 +16,13 @@ namespace Yelo
 		struct bitmap_data;
 	};
 
-	namespace Enums
-	{
-		enum {
-			k_maximum_number_of_cached_textures = 4096,
-		};
-	};
-
 	namespace Cache
 	{
 		struct s_texture_cache_datum : Memory::s_datum_base
 		{
 			int16 cache_read_request_index;
 			bool finished_loading_flag;
-			UNKNOWN_TYPE(bool);
+			bool valid; // set to true when finished loading and the texture request populates hardware_format
 			PAD16;
 			TagGroups::bitmap_data* bitmap;
 			IDirect3DBaseTexture9* hardware_format; // the address of this field is returned by the texture request function

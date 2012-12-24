@@ -116,9 +116,9 @@ namespace Yelo
 		{
 			typedef void(PLATFORM_API* proc_finished)(void* params);
 
-			bool* finished_flag;
-			void* finished_proc_params;
-			proc_finished finished_proc;
+			bool* finished_flag;		// NOT optional
+			void* finished_proc_params;	// optional
+			proc_finished finished_proc;// optional
 		}; BOOST_STATIC_ASSERT( sizeof(s_cache_file_request_params) == 0xC );
 
 		struct s_cache_file_request
