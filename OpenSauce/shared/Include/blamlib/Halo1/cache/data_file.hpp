@@ -56,10 +56,12 @@ namespace Yelo
 			cstring name;
 			HANDLE file_handle;
 
+#if PLATFORM_IS_EDITOR
 			static void DeleteForCopy(cstring file);
 
 			void PreprocessForSave();
 			void Save();
+#endif
 		}; BOOST_STATIC_ASSERT( sizeof(s_data_file) == 0x40 );
 	};
 };

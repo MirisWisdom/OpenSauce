@@ -166,11 +166,13 @@ namespace Yelo
 			TAG_PAD(int32, 9);
 		}; BOOST_STATIC_ASSERT( sizeof(scenario_cutscene_camera_point) == 0x68 );
 
+		struct structure_bsp_header;
 		struct scenario_structure_bsp_reference
 		{
-			PAD32;
+			uint32 cache_offset;
 			TAG_FIELD(int32, bsp_data_size);
-			TAG_PAD(int32, 2);
+			structure_bsp_header* header;
+			PAD32;
 			TAG_FIELD(tag_reference, structure_bsp, 'sbsp');
 		}; BOOST_STATIC_ASSERT( sizeof(scenario_structure_bsp_reference) == 0x20 ); // max count: 32
 

@@ -22,9 +22,15 @@ namespace Yelo
 			datum_index cache_block_index;		// 0x2C
 			void* cache_base_address;			// 0x30
 			datum_index cache_tag_index;		// 0x34
-			int32 unused0[2];					// 0x38, it's actually used! in pc anyway
+			//int32 unused0;						// 0x38, used on the pc. size of the decompressed xbox adpcm samples buffer (cache_base_address)
+			//int32 unused1;						// 0x3C, used on the pc. owner sound tag index
+			int32 decompressed_buffer_size;
+			datum_index owner_tag_index;
 
+			// samples' tag_data flags
+			enum { _samples_in_data_file_bit = 0 }; // data is in the sounds data file, not the cache file
 			TAG_FIELD(tag_data, samples);
+
 			TAG_FIELD(tag_data, mouth_data);
 			TAG_FIELD(tag_data, subtitle_data);
 		}; BOOST_STATIC_ASSERT( sizeof(s_sound_permutation) == 0x7C );

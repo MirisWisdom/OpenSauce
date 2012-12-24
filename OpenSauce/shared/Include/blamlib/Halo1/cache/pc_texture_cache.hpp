@@ -25,11 +25,10 @@ namespace Yelo
 
 	namespace Cache
 	{
-		// TODO: this structure layout needs some fixin'
 		struct s_texture_cache_datum : Memory::s_datum_base
 		{
 			int16 cache_read_request_index;
-			UNKNOWN_TYPE(bool);
+			bool finished_loading_flag;
 			UNKNOWN_TYPE(bool);
 			PAD16;
 			TagGroups::bitmap_data* bitmap;

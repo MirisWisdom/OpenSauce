@@ -7,22 +7,11 @@
 #pragma once
 
 #include <blamlib/Halo1/cache/physical_memory_map.hpp>
+#include <blamlib/Halo1/saved_games/saved_game_constants.hpp>
 #include <YeloLib/Halo1/saved_games/game_state_yelo.hpp>
 
 namespace Yelo
 {
-	namespace Enums
-	{
-		enum {
-			k_game_state_allocation_size =			0x00440000,
-
-			// Default address of the game state in memory
-			k_game_state_base_address =				k_physical_memory_base_address,
-			// Max amount of memory addressable by the game state. After this comes tag memory
-			k_game_state_cpu_size =					k_game_state_allocation_size,
-		};
-	};
-
 	namespace GameState
 	{
 		struct s_header_data
@@ -44,15 +33,27 @@ namespace Yelo
 		{
 			void* base_address;
 			uint32 cpu_allocation_size;
-			PAD32; // unused
+			uint32 gpu_allocation_size; // unused
 			uint32 crc;
 			bool locked;
 			bool saved;
 			PAD16;
 			uint32 revert_time;
 			s_header_data* header;
-
-			// etc... there are more fields to this but I could give a flying fuck less about them
-		};
+			HANDLE autosave_thread;
+			bool buffer_allocated; PAD24;
+			void* buffer;
+			uint32 buffer_size;
+			bool file_open;
+			bool file_valid_for_read;
+			PAD16;
+			HANDLE file_handle;
+			char file_path[256];
+			char core_path[256];
+			HANDLE autosave_event;
+			bool autosave_finished;
+			bool creating_autosave;
+			PAD16;
+		}; BOOST_STATIC_ASSERT( sizeof(s_game_state_globals) == 0x23C );
 	};
 };

@@ -120,7 +120,7 @@ namespace Yelo
 
 		struct s_bitmap_data
 		{
-			struct __flags
+			struct _flags
 			{
 				TAG_FLAG16(power_of_two_dimensions);
 				TAG_FLAG16(compressed);
@@ -128,7 +128,10 @@ namespace Yelo
 				TAG_FLAG16(swizzled);
 				TAG_FLAG16(linear);
 				TAG_FLAG16(v16u16);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(word_flags) );
+				TAG_FLAG16(unused6); // if it's used, it's set at runtime
+				TAG_FLAG16(cached); // _bitmap_cached_bit
+				TAG_FLAG16(in_data_file); // data is in the bitmaps data file, not the cache file
+			}; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
 
 			TAG_FIELD(tag, signature);
 			TAG_FIELD(int16, width, "pixels");
@@ -136,7 +139,7 @@ namespace Yelo
 			TAG_FIELD(int16, depth, "pixels", "depth is 1 for 2D textures and cube maps", "depth is 1 for 2D textures and cube maps");
 			TAG_ENUM(type, Enums::bitmap_type, "determines bitmap 'geometry'");
 			TAG_ENUM(format, Enums::bitmap_pixel_format, "determines how pixels are represented internally");
-			TAG_FIELD(__flags, flags);
+			TAG_FIELD(_flags, flags);
 			TAG_FIELD(point2d, registration_point);
 			TAG_FIELD(int16, mipmap_count);
 			PAD16;
@@ -149,17 +152,17 @@ namespace Yelo
 			void* base_address;
 		}; BOOST_STATIC_ASSERT( sizeof(s_bitmap_data) == 0x30 ); // max count: 2048
 
-		struct s_bitmap_definition
+		struct s_bitmap_group
 		{
 			enum { k_group_tag = 'bitm' };
 
-			struct __flags
+			struct _flags
 			{
 				TAG_FLAG16(enable_diffusion_dithering);
 				TAG_FLAG16(disable_height_map_compression);
 				TAG_FLAG16(uniform_sprite_sequences);
 				TAG_FLAG16(filthy_sprite_bug_fix);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(word_flags) );
+			}; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
 
 
 			////////////////////////////////////////////////////////////////
@@ -198,7 +201,7 @@ namespace Yelo
 			// * LIGHT MAP: Generates no mipmaps. Do not use!
 			// * VECTOR MAP: Used mostly for special effects; pixels are treated as XYZ vectors and normalized after downsampling. Alpha is passed through unmodified.
 			TAG_ENUM(usage, Enums::bitmap_usage);
-			TAG_FIELD(__flags, flags);
+			TAG_FIELD(_flags, flags);
 
 			////////////////////////////////////////////////////////////////
 			// post-processing
@@ -239,6 +242,6 @@ namespace Yelo
 			PAD16;
 			TAG_TBLOCK(sequences, s_bitmap_group_sequence);
 			TAG_TBLOCK_(bitmaps, s_bitmap_data);
-		}; BOOST_STATIC_ASSERT( sizeof(s_bitmap_definition) == 0x6C ); // max count: 1
+		}; BOOST_STATIC_ASSERT( sizeof(s_bitmap_group) == 0x6C );
 	};
 };

@@ -29,15 +29,16 @@ namespace Yelo
 
 	namespace DataFiles
 	{
-		// Unload the data files, then reload them
-		API_FUNC_NAKED static void DataFilesReInitialize()
+		// Will cause the the data files to unload, then reload
+		// Will also cause the s_cache_file_globals to be reinitialized
+		API_FUNC_NAKED static void CacheFilesReInitialize()
 		{
-			static const uint32 OPEN = GET_FUNC_PTR(DATA_FILES_OPEN);
-			static const uint32 CLOSE = GET_FUNC_PTR(DATA_FILES_CLOSE);
+			static const uintptr_t INITIALIZE = GET_FUNC_PTR(CACHE_FILES_INITIALIZE);
+			static const uintptr_t DISPOSE = GET_FUNC_PTR(CACHE_FILES_DISPOSE);
 
 			__asm {
-				call	CLOSE
-				call	OPEN
+				call	DISPOSE
+				call	INITIALIZE
 				retn
 			}
 		}
@@ -87,10 +88,10 @@ namespace Yelo
 
 				DataFilesUseNewFiles(*bitmaps, *sounds, *locale);
 
-				int16 original_index = Cache::CacheFileGlobals()->current_cache_files.index;
-				Cache::CacheFileGlobals()->current_cache_files.index = NONE;
-				DataFilesReInitialize();
-				Cache::CacheFileGlobals()->current_cache_files.index = original_index;
+				int16 original_index = Cache::CacheFileGlobals()->open_map_file_index;
+				Cache::CacheFileGlobals()->open_map_file_index = NONE;
+				CacheFilesReInitialize();
+				Cache::CacheFileGlobals()->open_map_file_index = original_index;
 
 				revert_file_names = true;
 			}

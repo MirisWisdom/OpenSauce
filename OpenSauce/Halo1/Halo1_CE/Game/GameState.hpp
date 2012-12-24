@@ -43,9 +43,6 @@ namespace Yelo
 			// memory in the game state, not anywhere else.
 			k_game_state_allocation_maximum_size_for_yelo = 0x42970
 				- k_game_state_allocation_size_object_memory_pool_upgrade,
-
-			// Default address of the tag cache in memory (comes right after the game state memory by default)
-			k_tag_cache_base_address = k_game_state_base_address + k_game_state_cpu_size,
 		};
 		BOOST_STATIC_ASSERT( k_game_state_allocation_maximum_size_for_yelo >= 0 );
 

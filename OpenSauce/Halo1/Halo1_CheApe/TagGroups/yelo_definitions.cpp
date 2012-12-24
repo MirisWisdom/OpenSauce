@@ -41,14 +41,14 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////////
 		// project_yellow_globals
-		static bool PLATFORM_API py_globals_group_postprocess(Yelo::datum_index tag_index, bool for_runtime)
+		static bool PLATFORM_API py_globals_group_postprocess(Yelo::datum_index tag_index, Enums::tag_postprocess_mode mode)
 		{
 			project_yellow_globals* def = Yelo::tag_get<project_yellow_globals>(tag_index);
 
 			def->version = project_yellow_globals::k_version;
 
 			Scripting::ScriptingBlockClear(def->yelo_scripting);
-			if(for_runtime)
+			if(mode == Enums::_tag_postprocess_mode_for_runtime)
 			{
 				Scripting::ScriptingBlockAddDefinitions(def->yelo_scripting, true);
 			}
@@ -80,14 +80,14 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////////
 		// project_yellow
-		static bool PLATFORM_API py_group_postprocess(datum_index tag_index, bool for_runtime)
+		static bool PLATFORM_API py_group_postprocess(datum_index tag_index, Enums::tag_postprocess_mode mode)
 		{
 			project_yellow* def = Yelo::tag_get<project_yellow>(tag_index);
 
 			def->version = project_yellow::k_version;
 
 			Scripting::ScriptingBlockClear(def->user_scripting);
-			if(for_runtime)
+			if(mode == Enums::_tag_postprocess_mode_for_runtime)
 			{
 				if(!def->physics.IsGravityScaleValid() || def->physics.gravity_scale == 0.0f)			def->physics.ResetGravityScale();
 				if(!def->physics.IsPlayerSpeedScaleValid() || def->physics.player_speed_scale == 0.0f)	def->physics.ResetPlayerSpeedScale();

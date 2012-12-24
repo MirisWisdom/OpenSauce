@@ -5018,6 +5018,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\cache\data_file.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\cache\pc_sound_cache.hpp"
 					>
 				</File>
@@ -5063,6 +5067,10 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\saved_games\player_profile.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\saved_games\saved_game_constants.hpp"
 					>
 				</File>
 			</Filter>

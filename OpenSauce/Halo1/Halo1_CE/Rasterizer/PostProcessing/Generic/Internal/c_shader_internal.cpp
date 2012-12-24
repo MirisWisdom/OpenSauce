@@ -20,7 +20,7 @@ namespace Yelo
 		 * Sets the generic tag definition for this shader.
 		 * 
 		 * \param definition
-		 * The generic tag defintion pointer to use.
+		 * The generic tag definition pointer to use.
 		 * 
 		 * Sets the generic tag definition for this shader.
 		 */
@@ -31,7 +31,7 @@ namespace Yelo
 
 			c_shader_generic::SetShaderDefinition(definition);
 
-			// the generic postprocess class will keep track of the generic shader defintion, but will pass the
+			// the generic postprocess class will keep track of the generic shader definition, but will pass the
 			// base shader definition to it's base class
 			TagGroups::s_shader_postprocess_generic* current_definition = m_members_generic.definition;
 			while(!current_definition->base_shader.tag_index.IsNull())
@@ -82,16 +82,16 @@ namespace Yelo
 				if(parameter.value_type.type != Enums::_shader_variable_base_type_texture)
 					continue;
 
-				datum_index bitmap_datum = parameter.bitmap_value.bitmap.tag_index;
-				if(bitmap_datum.IsNull())
+				datum_index bitmap_index = parameter.bitmap_value.bitmap.tag_index;
+				if(bitmap_index.IsNull())
 					return;
 
-				TagGroups::s_bitmap_definition* definition = TagGroups::TagGetForModify<TagGroups::s_bitmap_definition>(bitmap_datum);
+				TagGroups::s_bitmap_group* group = TagGroups::TagGetForModify<TagGroups::s_bitmap_group>(bitmap_index);
 
 				// invalid bitmap index
-				ASSERT(definition->bitmaps.Count > parameter.value.bitmap.bitmap_index, "parameter bitmap index is outside the bounds of the referenced bitmap");
+				ASSERT(group->bitmaps.Count > parameter.value.bitmap.bitmap_index, "parameter bitmap index is outside the bounds of the referenced bitmap");
 
-				parameter.bitmap_value.runtime._internal.bitmap = &definition->bitmaps[parameter.value.bitmap.bitmap_index];
+				parameter.bitmap_value.runtime._internal.bitmap = &group->bitmaps[parameter.value.bitmap.bitmap_index];
 			}
 		}
 	};};};};
