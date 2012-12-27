@@ -9,9 +9,11 @@
 #include <blamlib/Halo1/memory/data.hpp>
 #include <blamlib/Halo1/devices/devices.hpp>
 #include <blamlib/Halo1/objects/object_definitions.hpp>
+#include <blamlib/Halo1/objects/object_lights.hpp>
 #include <blamlib/Halo1/objects/object_structures.hpp>
 #include <blamlib/Halo1/objects/objects.hpp>
 #include <blamlib/Halo1/objects/widgets/widgets.hpp>
+#include <blamlib/Halo1/render/render_objects.hpp>
 #include <blamlib/Halo1/units/units.hpp>
 
 #include <blamlib/Halo1/items/projectiles.hpp>
@@ -40,14 +42,10 @@ namespace Yelo
 		s_widget_type_definition* WidgetTypeDefinitions();
 
 
-		struct s_cached_object_render_states_datum : TStructImpl(256)
-		{
-		};
-		typedef Memory::DataArray<s_cached_object_render_states_datum, 256> t_cached_object_render_states_data;
-		t_cached_object_render_states_data*				CachedObjectRenderStates();
+		Render::cached_object_render_states_data_t*		CachedObjectRenderStates();
 
 
-		s_unit_globals_data*								UnitGlobals();
+		s_unit_globals_data*							UnitGlobals();
 
 
 		typedef Memory::DataArray<s_device_groups_datum, 1024> t_device_groups_data;
@@ -57,11 +55,11 @@ namespace Yelo
 		typedef Memory::DataArray<s_object_header_datum, 2048> t_object_header_data;
 		t_object_header_data*							ObjectHeader();
 
-		s_objects_pool_data*								ObjectsPool();
+		s_objects_pool_data*							ObjectsPool();
 
 		s_object_globals_data*							ObjectGlobals();
 
-		s_object_name_list_data*							ObjectNameList();
+		s_object_name_list_data*						ObjectNameList();
 
 
 		//////////////////////////////////////////////////////////////////////////

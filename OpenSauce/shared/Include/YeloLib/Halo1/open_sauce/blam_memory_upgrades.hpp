@@ -11,9 +11,11 @@
 #include <blamlib/Halo1/game/players.hpp> // for k_multiplayer_maximum_players
 #include <blamlib/Halo1/saved_games/game_state.hpp>
 
-// for effects upgrades
 #include <blamlib/Halo1/effects/effects_constants.hpp>
 #include <YeloLib/Halo1/effects/effects_constants_yelo.hpp>
+
+#include <blamlib/Halo1/render/render_constants.hpp>
+#include <YeloLib/Halo1/render/render_constants_yelo.hpp>
 
 // How much more memory we're adding.
 // 50%
@@ -120,6 +122,17 @@ namespace Yelo
 		};
 
 		BOOST_STATIC_ASSERT( k_rastizer_maximum_dynamic_triangles_upgrade >= k_rastizer_maximum_dynamic_triangles );
+	};
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// Render
+	namespace Enums
+	{
+		enum {
+			k_maximum_rendered_objects_upgrade = 
+				k_maximum_rendered_objects + k_maximum_rendered_objects_upgrade_amount,
+		};
 	};
 
 

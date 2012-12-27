@@ -19,7 +19,7 @@
 	ENGINE_DPTR(t_light_volumes_data, light_volumes,							0x653CC0, 0x5C5BA8);
 	ENGINE_DPTR(t_lightnings_data, lightnings,									0x653CC4, 0x5C5BAC);
 
-	ENGINE_DPTR(t_cached_object_render_states_data, cached_object_render_states,0x75E0EC, 0x629728);
+	ENGINE_DPTR(Render::cached_object_render_states_data_t, cached_object_render_states,	0x75E0EC, 0x629728);
 	ENGINE_DPTR(s_unit_globals_data, unit_globals,								0x68A8F0, 0x5F30E8);
 	ENGINE_DPTR(t_device_groups_data, device_groups,							0x815DB0, 0x6E1C70);
 	ENGINE_DPTR(t_object_header_data, object_header,							0x7FB3B0, 0x6C69F0);
@@ -45,6 +45,23 @@
 	FUNC_PTR(UNIT_CAUSE_PARENT_MELEE_DAMAGE_HOOK_RETN,	0x573C71, 0x522381);
 	FUNC_PTR(BIPED_UPDATE_MOVING_HOOK,					0x561B96, 0x5105B6);
 	FUNC_PTR(BIPED_JUMP_MOD_STUN_PENALTY_FIELD_REF,		0x56283E+0x30, 0x51125E+0x30);
+
+#if PLATFORM_IS_USER
+	namespace render_objects_mods
+	{
+		static uintptr_t K_MAXIMUM_RENDERED_OBJECTS_REFS_32bit[] = {
+			0x45B60C+1 +0x10,
+			0x512755+1 +0x30,	0x512789+1+0x30,
+		};
+		static uintptr_t K_MAXIMUM_RENDERED_OBJECTS_REFS_16bit[] = {
+			0x5127BF+7+0x30,
+		};
+		static uintptr_t K_RENDER_OBJECT_GLOBALS__RENDERED_OBJECTS_REFS[] = {
+			0x512613+3+0x30,
+			0x51275A+1+0x30, 0x51279E+3+0x30,
+		};
+	};
+#endif
 
 	namespace Weapon
 	{

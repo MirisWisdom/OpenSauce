@@ -285,8 +285,8 @@ namespace Yelo
 			real outgoing_function_values[Enums::k_number_of_outgoing_object_functions];	// 0x134
 
 			s_object_attachments_datum_data attachments;									// 0x144
-			UNKNOWN_TYPE(int32);	// 0x170, idk what is here, could be part of s_object_attachments_datum_data
-			UNKNOWN_TYPE(int16);	// 0x174, idk what is here, could be part of s_object_attachments_datum_data
+			datum_index cached_render_state_index;											// 0x170
+			UNUSED_TYPE(int16);																// 0x174
 			int16 shader_permutation;														// 0x176, shader's bitmap block index
 			byte region_vitality[Enums::k_maximum_regions_per_model];						// 0x178
 			sbyte region_permutation_indices[Enums::k_maximum_regions_per_model];			// 0x180

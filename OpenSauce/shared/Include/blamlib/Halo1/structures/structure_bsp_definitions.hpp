@@ -7,6 +7,7 @@
 #pragma once
 
 #include <blamlib/Halo1/cache/predicted_resources.hpp>
+#include <blamlib/Halo1/objects/object_lights.hpp>
 #include <blamlib/Halo1/physics/collision_bsp_definitions.hpp>
 #include <blamlib/Halo1/rasterizer/rasterizer_geometry.hpp>
 
@@ -53,18 +54,7 @@ namespace Yelo
 			TAG_FIELD(int32, surfaces, structure_surface);
 			TAG_FIELD(int32, surface_count);
 			TAG_FIELD(real_point3d, centroid);
-			TAG_FIELD(real_rgb_color, ambient_color);
-			TAG_FIELD(int16, distant_light_count);
-			PAD16;
-
-			struct {
-				TAG_FIELD(real_rgb_color, color);
-				TAG_FIELD(real_vector3d, direction);
-			}distant_lights[2];
-			TAG_PAD(int32, 3);
-			TAG_FIELD(real_argb_color, reflection_tint);
-			TAG_FIELD(real_vector3d, shadow_vector);
-			TAG_FIELD(real_rgb_color, shadow_color);
+			Objects::s_object_lighting object_lighting;
 			TAG_FIELD(real_plane3d, plane);
 			TAG_FIELD(int16, breakable_surface);
 			PAD16;
@@ -173,21 +163,8 @@ namespace Yelo
 			TAG_FIELD(real_bounds, vehicle_heights, "floor", "ceiling");
 			TAG_PAD(int32, 5);
 
-			struct {
-				TAG_FIELD(real_rgb_color, ambient_color);
-				PAD32; // future power value?
-
-				struct {
-					TAG_FIELD(real_rgb_color, color);
-					TAG_FIELD(real_vector3d, color_direction);
-				}distance_light[2];
-				TAG_PAD(int32, 3);
-
-				TAG_FIELD(real_argb_color, reflection_tint);
-				TAG_FIELD(real_vector3d, shadow_vector);
-				TAG_FIELD(real_rgb_color, shadow_color);
-				PAD32; // future power value?
-			}defaults;
+			Objects::s_object_lighting default_lighting; // doesn't expose distant_light_count
+			PAD32;
 
 			TAG_TBLOCK(collision_materials, structure_collision_material);
 			TAG_TBLOCK(collision_bsp, collision_bsp);
