@@ -1035,6 +1035,7 @@ namespace Yelo
 				PAD16;
 
 				c_map_part_definition		downloader;
+				real						progress;
 			}m_map_part_definition;
 
 			struct
@@ -1149,10 +1150,11 @@ namespace Yelo
 				{
 					switch(g_map_download_globals.m_download_thread.stage)
 					{
-					default:
 					case _map_download_stage_map_part_definition:
+						g_map_download_globals.m_map_part_definition.progress = 0;
 						g_map_download_display.SetProviderTitle("");
 						g_map_download_display.SetProviderDescription("");
+						break;
 					case _map_download_stage_map_part_download:
 						g_map_download_display.SetMapExtracting(false);
 						g_map_download_display.SetReconnecting(false);
@@ -1160,6 +1162,11 @@ namespace Yelo
 						break;
 					case _map_download_stage_map_archive_extraction:
 						g_map_download_display.SetMapExtracting(true);
+						g_map_download_display.SetReconnecting(false);
+						g_map_download_display.SetFailed(false);
+						break;
+					default:
+						g_map_download_display.SetMapExtracting(false);
 						g_map_download_display.SetReconnecting(false);
 						g_map_download_display.SetFailed(false);
 						break;
@@ -1187,7 +1194,7 @@ namespace Yelo
 			}
 
 			// set the part download details
-			if(_map_download_stage_map_part_download == g_map_download_globals.m_download_thread.stage)
+			if(g_map_download_globals.m_download_thread.stage >= _map_download_stage_map_part_download)
 			{
 				LinkedListIterator<c_part_element> part_iterator(g_map_download_globals.m_map_part_definition.downloader.MapElement().m_parts);
 
@@ -1207,7 +1214,7 @@ namespace Yelo
 				progress = max(0, progress);
 				progress = min(1, progress);
 
-				g_map_download_display.SetMapProgress(progress);
+				g_map_download_globals.m_map_part_definition.progress = progress;
 			}
 
 			if((_map_download_stage_map_part_definition == g_map_download_globals.m_download_thread.stage) ||
@@ -1238,23 +1245,24 @@ namespace Yelo
 						progress = 0;
 					else
 						progress = (real)received / (real)total;
+
+					// clamp the progress between 0 and 1
+					progress = max(0, progress);
+					progress = min(1, progress);
+
+					g_map_download_display.SetPartProgress(progress);
+
+					if(g_map_download_globals.m_servers.server_iterator && g_map_download_globals.m_servers.server_iterator->Current())
+					{
+						// add the provider title
+						g_map_download_display.SetProviderTitle(g_map_download_globals.m_servers.server_iterator->Current()->Server()->m_name);
+						// add the provider description
+						g_map_download_display.SetProviderDescription(g_map_download_globals.m_servers.server_iterator->Current()->Server()->m_description);
+					}
 					break;
 				};
-
-				// clamp the progress between 0 and 1
-				progress = max(0, progress);
-				progress = min(1, progress);
-
-				g_map_download_display.SetPartProgress(progress);
-
-				if(g_map_download_globals.m_servers.server_iterator && g_map_download_globals.m_servers.server_iterator->Current())
-				{
-					// add the provider title
-					g_map_download_display.SetProviderTitle(g_map_download_globals.m_servers.server_iterator->Current()->Server()->m_name);
-					// add the provider description
-					g_map_download_display.SetProviderDescription(g_map_download_globals.m_servers.server_iterator->Current()->Server()->m_description);
-				}
 			}
+			g_map_download_display.SetMapProgress(g_map_download_globals.m_map_part_definition.progress);
 
 			g_map_download_display.Update();
 

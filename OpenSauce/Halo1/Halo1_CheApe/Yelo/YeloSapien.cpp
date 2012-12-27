@@ -97,7 +97,7 @@ namespace Yelo
 			}
 
 			for(int32 x = 0; x < NUMBEROF(AddressOf::MaxTagsCheck); x++)
-				*AddressOf::MaxTagsCheck[x] = Enums::k_maximum_tag_count_upgrade;
+				*AddressOf::MaxTagsCheck[x] = Enums::k_maximum_simultaneous_tag_instances_upgrade;
 
 			// Cause the gamespy metrics dump code to NEVER execute
 			for(int32 x = 0; x < NUMBEROF(AddressOf::GAMESPY_METRICS_DUMP_FUNCTIONS); x++)
@@ -111,7 +111,7 @@ namespace Yelo
 		void Dispose()
 		{
 			for(int32 x = 0; x < NUMBEROF(AddressOf::MaxTagsCheck); x++)
-				*AddressOf::MaxTagsCheck[x] = Enums::k_maximum_tag_count;
+				*AddressOf::MaxTagsCheck[x] = Enums::k_maximum_simultaneous_tag_instances;
 
 			TagGroups::ScenarioYeloLoadHookDispose();
 		}

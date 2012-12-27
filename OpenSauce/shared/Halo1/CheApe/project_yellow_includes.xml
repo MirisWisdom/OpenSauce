@@ -2,9 +2,6 @@
 <definitions game="Halo1">
 
 	<references>
-		<Reference name="shader_postprocess_definition_reference">
-			<field>shpd</field>
-		</Reference>
 		<Reference name="shader_postprocess_generic_reference">
 			<field>shpg</field>
 		</Reference>

@@ -5,9 +5,11 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-	require_once('hce_map_server/admin/includes/load_config.php');
-	require_once('hce_map_server/admin/includes/open_database.php');
-	require_once('hce_map_server/admin/includes/sql_interface.php');
+	set_include_path("*admin include path*");
+	
+	require_once('admin/common/config.php');
+	require_once('admin/common/sql_database.php');
+	require_once('admin/common/sql_interface.php');
 
 	class MapEntryReader extends SQLInterface
 	{
@@ -101,9 +103,8 @@
 	
 	// open the sql database
 	$database = OpenDatabase($config->map_database->data_source_name,
-		$config->map_database->username_readonly,
-		$config->map_database->password_readonly);
-		
+	$config->map_database->username_readonly, $config->map_database->password_readonly);
+	
 	$map_name_set = isset($_REQUEST['map']) && !empty($_REQUEST['map']);
 	$map_part_set = isset($_REQUEST['part']) && !empty($_REQUEST['part']);
 

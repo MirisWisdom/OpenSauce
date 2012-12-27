@@ -26,13 +26,16 @@
 		for($i = 0; $i < $part_count; $i++)
 		{
 			if(feof($handle))
-				die("Error: Reached the end of the archive before writing all of the parts</br>");
+			{
+				fclose($handle);
+				die("ERROR: Reached the end of the archive before writing all of the parts</br>");
+			}
 
 			$part_name = $output_path.'/'.$base_filename.'.'.str_pad($i + 1, 3, "0", STR_PAD_LEFT);
 
 			$write_handle = fopen($part_name, "w");
 			// open the output part file
-			if(FALSE == $write_handle)			
+			if(FALSE == $write_handle)
 				return null;
 
 			$copy_count = min($archive_size - $offset, $part_size);
@@ -54,7 +57,7 @@
 				unlink($part_name);
 
 				return null;
-			} 
+			}
 
 			$offset += $copy_count;
 

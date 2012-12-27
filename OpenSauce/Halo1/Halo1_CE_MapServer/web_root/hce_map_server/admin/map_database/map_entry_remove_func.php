@@ -5,7 +5,15 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-	require_once("sql_interface.php");
+	require_once("admin/common/sql_interface.php");
+	
+	class RemoveMapEntryResult
+	{
+		public $success;
+		public $error_message;
+		
+		public $messages;
+	}
 	
 	class RemoveMapEntryReader extends SQLInterface
 	{
@@ -27,6 +35,10 @@
 	
 	function RemoveMapEntry($database, $file_id, $map_compressed_dir)
 	{
+		$result = new RemoveMapEntryResult();
+		
+		$result->messages = array();
+		
 		// search for the map in the database
 		$map_entry = new RemoveMapEntryReader($database, "SELECT {0} FROM `map_list` WHERE file_id = ?");
 		$map_entry->ExecuteQuery(array($file_id));
@@ -44,25 +56,26 @@
 
 				if(file_exists($part_file))
 				{
-					print("Deleting ".$part_file."...");
 					if(unlink($part_file))
-						print("done.</br>");
+						$result->messages[] = "Deleting ".$part_file."...done.";
 					else
-						print("failed.</br>");
+						$result->messages[] = "Deleting ".$part_file."...failed.";
 				}
 				else
-					print("File ".$part_file." does not exist...skipped.</br>");
+					$result->messages[] = "File ".$part_file." does not exist...skipped.";
 			}
 
 			// delete the part entries in the database
-			print("Deleting part database entries for ".$map_entry->map_name."...");
-			$sql = "DELETE FROM map_part_list WHERE map_file_id = ?";
+			$sql = "DELETE FROM
+						map_part_list
+					WHERE
+						map_file_id = ?";
 
 			$part_query = $database->prepare($sql);
 			if($part_query->execute(array($file_id)))
-				print("done.</br>");
+				$result->messages[] = "Deleting part database entries for ".$map_entry->map_name."...done.";
 			else
-				print("failed.</br>");
+				$result->messages[] = "Deleting part database entries for ".$map_entry->map_name."...failed.";
 			
 			if(isset($map_entry->map_parts_path) && !empty($map_entry->map_parts_path))
 			{
@@ -71,14 +84,13 @@
 
 				if(file_exists($parts_folder))
 				{
-					print("Deleting ".$parts_folder."...");
 					if(rmdir($parts_folder))
-						print("done.</br>");
+						$result->messages[] = "Deleting ".$parts_folder."...done.";
 					else
-						print("failed.</br>");
+						$result->messages[] = "Deleting ".$parts_folder."...failed.";
 				}
 				else
-					print("Folder ".$parts_folder." does not exist...skipped.</br>");
+					$result->messages[] = "Folder ".$parts_folder." does not exist...skipped.";
 			}
 			
 			// delete the map archive
@@ -95,18 +107,15 @@
 
 			if(file_exists($archive_file))
 			{
-				print("Deleting ".$archive_file."...");
 				if(unlink($archive_file))
-					print("done.</br>");
+					$result->messages[] = "Deleting ".$archive_file."...done.";
 				else
-					print("failed.</br>");
+					$result->messages[] = "Deleting ".$archive_file."...failed.";
 			}
 			else
-				print("File ".$archive_file." does not exist...skipped.</br>");
+				$result->messages[] = "File ".$archive_file." does not exist...skipped.";
 			
 			// delete the map database entry
-			print("Deleting the map database entry for ".$map_entry->map_name."...");
-
 			$sql = "DELETE FROM
 						map_list
 					WHERE
@@ -114,14 +123,16 @@
 
 			$map_delete_query = $database->prepare($sql);
 			if($map_delete_query->execute(array($file_id)))
-				print("done.</br>");
+				$result->messages[] = "Deleting the map database entry for ".$map_entry->map_name."...done.";
 			else
-				print("failed.</br>");
+				$result->messages[] = "Deleting the map database entry for ".$map_entry->map_name."...failed.";
 		}
 		else
 		{
-			print("Map with an ID of ".$file_id." is not present in the map database");
+			$result->messages[] = "Map with an ID of ".$file_id." is not present in the map database";
 		}
-		print("</br>");
+		
+		$result->success = true;
+		return $result;
 	}
 ?>

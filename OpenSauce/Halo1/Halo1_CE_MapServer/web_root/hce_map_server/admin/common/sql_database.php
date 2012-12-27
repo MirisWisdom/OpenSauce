@@ -18,4 +18,8 @@
 		}
 		return $dbConnection;
 	}
+	
+	// open the sql database
+	$database = OpenDatabase($config->map_database->data_source_name,
+	$config->map_database->username, $config->map_database->password);
 ?>

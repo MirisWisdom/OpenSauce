@@ -71,7 +71,6 @@
 	</flags>
 
 	<data>
-		<TagData name="shader_postprocess_shader_source_code_data" maxSize="0x8000" isTextData="true" />
 		<TagData name="shader_postprocess_shader_compiled_data" maxSize="0x8000" isTextData="false" />
 	</data>
 

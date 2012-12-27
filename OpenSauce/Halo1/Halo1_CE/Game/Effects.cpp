@@ -56,8 +56,10 @@ namespace Yelo
 		}
 		void Initialize()
 		{
+#if PLATFORM_IS_USER
 			if(!CMDLINE_GET_PARAM(no_os_gfx).ParameterSet())
 				InitializePerMapUpgrades();
+#endif
 
 #if !PLATFORM_DISABLE_UNUSED_CODE
 			Memory::CreateHookRelativeCall(&Effects::Update, GET_FUNC_VPTR(EFFECTS_UPDATE_HOOK), Enums::_x86_opcode_retn);
