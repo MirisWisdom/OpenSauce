@@ -49,7 +49,7 @@ namespace Yelo
 		t_lightnings_data* Lightnings()												DPTR_IMP_GET(lightnings);
 
 
-		t_cached_object_render_states_data* CachedObjectRenderStates()				DPTR_IMP_GET(cached_object_render_states);
+		Render::cached_object_render_states_data_t* CachedObjectRenderStates()		DPTR_IMP_GET(cached_object_render_states);
 		s_unit_globals_data* UnitGlobals()											DPTR_IMP_GET(unit_globals);
 		t_device_groups_data* DeviceGroups()										DPTR_IMP_GET(device_groups);
 		t_object_header_data* ObjectHeader()										DPTR_IMP_GET(object_header);
@@ -67,6 +67,7 @@ namespace Yelo
 		t_noncollideable_object_cluster_reference_data* NoncollideableObjectClusterReference()	DPTR_IMP_GET(noncollideable_object_cluster_reference);
 
 
+#include <YeloLib/Halo1/render/render_objects_upgrades.inl>
 #include "Objects/Objects.Damage.inl"
 #include "Objects/Objects.Scripting.inl"
 #include "Objects/Objects.UnitInfections.inl"
@@ -106,6 +107,8 @@ namespace Yelo
 #if !PLATFORM_DISABLE_UNUSED_CODE
 			Memory::WriteRelativeCall(&Objects::Update, GET_FUNC_VPTR(OBJECTS_UPDATE_HOOK), false);
 #endif
+
+			render_objects_mods::Initialize();
 
 			UnitInfections::Initialize();
 			Vehicle::Initialize();

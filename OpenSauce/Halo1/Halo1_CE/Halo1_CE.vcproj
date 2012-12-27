@@ -5050,6 +5050,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\render\render_constants.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\render\render_objects.hpp"
 					>
 				</File>
@@ -5621,6 +5625,14 @@
 			<Filter
 				Name="render"
 				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\render\render_constants_yelo.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\render\render_objects_upgrades.inl"
+					>
+				</File>
 				<File
 					RelativePath="..\..\shared\Include\YeloLib\Halo1\render\render_particles_upgrades.inl"
 					>
