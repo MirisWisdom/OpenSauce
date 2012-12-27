@@ -59,6 +59,7 @@
 	class MapServerBlock extends INIBlockReader
 	{
 		public $server_address;
+		public $map_server_app_root;
 		public $map_dir;
 		public $map_compressed_dir;
 		public $map_parts_path;
@@ -78,18 +79,23 @@
 		}
 	};
 	
-	$config_path = "";
-	
-	if(empty($config_path))
-		die("ERROR: config.ini path not yet set in load_config.php</br>");
-		
-	$config_file = parse_ini_file($config_path, true);
+	function LoadConfig()
+	{
+		$config_path = "";
 
-	if($config_file == FALSE)
-		die("ERROR: failed to load config.ini from the defined path. (".$config_path.")</br>");
+		if(empty($config_path))
+			die("ERROR: config.ini path not yet set in load_config.php<br/>");
+
+		$config_file = parse_ini_file($config_path, true);
+
+		if($config_file == FALSE)
+			die("ERROR: failed to load config.ini from the defined path. (".$config_path.")<br/>");
+
+		$config = new ServerConfig();
+		$config->ReadBlock($config_file);
 		
-	$config = new ServerConfig();
-	$config->ReadBlock($config_file);
+		return $config;
+	}
 	
-	$config_file = NULL;
+	$config = LoadConfig();
 ?>

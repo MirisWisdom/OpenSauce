@@ -27,10 +27,6 @@
 			<field>player is zoomed</field>
 			<field>player using a vehicle</field>
 		</Enum>
-		<Enum name="effect_fade_enum">
-			<field>player health</field>
-			<field>player shields</field>
-		</Enum>
 		<Enum name="effect_activation_operation_enum">
 			<field>all</field>
 			<field>any</field>

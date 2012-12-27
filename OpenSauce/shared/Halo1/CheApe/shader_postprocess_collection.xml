@@ -24,8 +24,8 @@
 		<TagBlock name="shader_postprocess_effect_script_variable_block" maxElements="32">
 			<field type="String" name="name"/>
 			<field type="String" name="shader variable name"/>
-			<field type="Enum"			name="shader_variable_type.type" definition="shader_variable_base_type_enum" locked="true" />
-			<field type="ShortInteger"	name="shader_variable_type.count" locked="true" />
+			<field type="Enum" name="shader_variable_type.type" definition="shader_variable_base_type_enum" locked="true" />
+			<field type="ShortInteger" name="shader_variable_type.count" locked="true" />
 			<field type="LongBlockIndex" name="shader index" definition="shader_postprocess_effect_shader_index_block"/>
 			<field type="Pad" definition="4"/>
 			<field type="Pad" definition="4"/>
@@ -34,7 +34,7 @@
 
 		<TagBlock name="shader_postprocess_effect_shader_block" maxElements="32">
 			<field type="TagReference" name="shader" definition="shader_postprocess_generic_reference" blockname="true"/>
-			<field type="Pad" definition="4"/>		
+			<field type="Pad" definition="4"/>
 		</TagBlock>
 		
 		<TagBlock name="shader_postprocess_effect_shader_index_block" maxElements="12">
