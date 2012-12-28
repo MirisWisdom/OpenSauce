@@ -11,62 +11,6 @@ namespace Yelo
 	namespace Enums
 	{
 		enum {
-			k_maximum_buffered_keystrokes = 64, // MAXIMUM_BUFFERED_KEYSTROKES
-
-			k_maximum_gamepads = 4,
-			k_maximum_gamepad_axes = 32,
-			k_maximum_gamepad_buttons = 32,
-			k_maximum_gamepad_povs = 16,
-			k_maximum_enumerated_joysticks = 8,
-
-			k_number_of_virtual_codes = 256,
-			k_number_of_keys = 109,
-		};
-
-		enum {
-			_axis_direction_positive,
-			_axis_direction_negative,
-
-			k_number_of_axis_directions, // NUMBER_OF_AXIS_DIRECTIONS
-		};
-
-		enum {
-			_pov_direction_none = NONE,
-
-			_pov_direction_north,
-			_pov_direction_north_east,
-			_pov_direction_east,
-			_pov_direction_south_east,
-			_pov_direction_south,
-			_pov_direction_south_west,
-			_pov_direction_west,
-			_pov_direction_north_west,
-
-			k_number_of_pov_directions = 8, // NUMBER_OF_POV_DIRECTIONS
-		};
-
-		enum {
-			_mouse_button_left,
-			_mouse_button_middle,
-			_mouse_button_right,
-			_mouse_button4,
-			_mouse_button5,
-			_mouse_button6,
-			_mouse_button7,
-			_mouse_button8,
-
-			k_number_of_mouse_buttons, // NUMBER_OF_MOUSE_BUTTONS
-		};
-
-		enum {
-			_mouse_axes_horiz,
-			_mouse_axes_vert,
-			_mouse_axes_wheel,
-
-			k_number_of_mouse_axes, // NUMBER_OF_MOUSE_AXES
-		};
-
-		enum {
 			_button_none = NONE,
 
 			_button_jump,

@@ -238,6 +238,7 @@
 		ENGINE_PTR(s_gamespy_config, gamespy_config,								0x63AD04, 0x5AED34);
 		ENGINE_PTR(s_gamespy_globals, gamespy_globals,								0x6BD9A0, 0x626068);
 		ENGINE_PTR(s_gamespy_server_browser_globals, gamespy_server_browser_globals,0x6B4418, 0x61CC94);
+		ENGINE_DPTR(s_gamespy_qr2, gamespy_qr2,										0x6BDC28, 0x6262F0);
 		ENGINE_PTR(bool, g_gamespy_patch_check_for_updates,							0x62E101, PTR_NULL);
 
 		ENGINE_PTR(s_gamespy_product, gamespy_products_list,						0x6BE400, 0x6268C0); // [4]
@@ -245,6 +246,12 @@
 		DATA_PTR(compiler_null_string,			0x5F365C, 0x54F33C); // TODO: not the best place for this...
 		FUNC_PTR(GAMESPY_GET_CLIENT_KEY_HASH,	0x579CF0, 0x5283F0);
 		DATA_PTR(GAMESPY_PATCH_SPAWN_CHECK_FOR_UPDATES_THREAD_CALL,					0x4A7A30, DATA_PTR_NULL);
+
+		namespace GameSpy
+		{
+			FUNC_PTR(CREATE_GAMESPY_QR2_HOOK,	0x57B5EA, 0x529D0A);
+			FUNC_PTR(QR2_REGISTER_KEY,			0x5C0E40, 0x530B40);
+		};
 	};
 
 

@@ -17,12 +17,9 @@ namespace Yelo
 	{
 		enum unit_animation_state : sbyte
 		{
-			// TODO: remove this pragma warning off in any later migrations newer VS versions
-			// http://connect.microsoft.com/VisualStudio/feedback/details/674442/enumeration-with-negative-values-are-popping-c4341-warnings
-#pragma warning( push )
-#pragma warning( disable : 4341 ) // signed value is out of range for enum constant
+#include <cseries/msvc_warning_4341_toggle.hpp>
 			_unit_animation_state_invalid = NONE,
-#pragma warning( pop )
+#include <cseries/msvc_warning_4341_toggle.hpp>
 
 			_unit_animation_state_idle,
 			_unit_animation_state_gesture,

@@ -18,6 +18,39 @@ namespace Yelo
 
 	namespace Networking
 	{
+		bool s_gamespy_qr2_keybuffer::add(Enums::gamespy_qr_field keyid)
+		{
+			if(numkeys >= Enums::k_max_gamespy_qr_registered_keys)
+				return false;
+			if(	keyid <= Enums::_gamespy_qr_field_reserved || 
+				keyid > Enums::k_max_gamespy_qr_registered_keys)
+				return false;
+
+			keys[numkeys++] = keyid;
+			return true;
+		}
+
+		bool s_gamespy_qr2_buffer::add(cstring value)
+		{
+			int32 copylen = (int32)strlen(value)+1;
+			if(copylen > NUMBEROF(buffer))
+				copylen = NUMBEROF(buffer);
+			if(copylen <= 0)
+				return false;
+
+			memcpy_s(buffer+len, NUMBEROF(buffer)-len, value, (size_t)copylen);
+			len += copylen;
+			buffer[len-1] = '\0';
+
+			return true;
+		}
+		bool s_gamespy_qr2_buffer::add(int32 value)
+		{
+			char buffer[20];
+			sprintf_s(buffer, "%d", value);
+			return add(buffer);
+		}
+
 		s_gamespy_socket* GsSocket()										DPTR_IMP_GET(gs_Socket);
 		s_gamespy_socket* GsLoopbackSocket()								DPTR_IMP_GET(gs_LoopbackSocket);
 		s_gamespy_config* GsConfig()										PTR_IMP_GET2(gamespy_config);
@@ -26,6 +59,7 @@ namespace Yelo
 		s_gamespy_server_browser_globals* GsServerBrowserGlobals()			PTR_IMP_GET2(gamespy_server_browser_globals);
 		static bool* GsPatchCheckForUpdates()								PTR_IMP_GET2(g_gamespy_patch_check_for_updates);
 #endif
+		s_gamespy_qr2* GsQr2()												DPTR_IMP_GET(gamespy_qr2);
 
 		s_gamespy_product* GsProducts()										PTR_IMP_GET2(gamespy_products_list);
 
@@ -88,12 +122,24 @@ _return:
 				PAD24;
 			}g_gamespy_yelo_settings;
 
+			static void InitializeForNewQr2()
+			{
+				// TODO: override key callbacks
+			}
 			void Initialize()
 			{
 				// TODO: populate GetGameVer()
 
 				if(g_gamespy_yelo_settings.no_update_check)
 					TurnOffUpdateCheck();
+
+				Memory::CreateHookRelativeCall(&InitializeForNewQr2, 
+					GET_FUNC_VPTR(CREATE_GAMESPY_QR2_HOOK), Enums::_x86_opcode_ret);
+
+#if FALSE // TODO
+				qr2_register_key(Enums::_gamespy_qr_field_open_sauce_version, "os_ver");
+				qr2_register_key(Enums::_gamespy_qr_field_open_sauce_map, "os_map");
+#endif
 			}
 
 			void Dispose()
@@ -111,6 +157,17 @@ _return:
 			{
 				xml_element->SetAttribute("gsNoUpdateCheck", 
 					Settings::BooleanToString(g_gamespy_yelo_settings.no_update_check));
+			}
+
+			API_FUNC_NAKED void qr2_register_key(Enums::gamespy_qr_field keyid, cstring key)
+			{
+				static const uintptr_t FUNCTION = GET_FUNC_PTR(QR2_REGISTER_KEY);
+
+				API_FUNC_NAKED_START()
+					push	key
+					push	keyid
+					call	FUNCTION
+				API_FUNC_NAKED_END_CDECL(2)
 			}
 		};
 	};

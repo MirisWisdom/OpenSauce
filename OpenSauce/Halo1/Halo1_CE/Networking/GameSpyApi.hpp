@@ -12,7 +12,7 @@ namespace Yelo
 {
 	namespace Enums
 	{
-		enum gamespy_qr_field
+		enum gamespy_qr_field : long_enum
 		{
 			_gamespy_qr_field_reserved,
 			_gamespy_qr_field_hostname,
@@ -71,9 +71,24 @@ namespace Yelo
 			_gamespy_qr_field_game_flags,
 			_gamespy_qr_field_game_classic,
 
+			//////////////////////////////////////////////////////////////////////////
+			// OS fields
+			_gamespy_qr_field_open_sauce_version,	// string
+			// 0 - no (.map)
+			// 1 - .yelo
+			_gamespy_qr_field_open_sauce_map,		// int
+
 			_gamespy_qr_field,
-			_gamespy_qr_field_max_registered_keys = 254,
-		}; BOOST_STATIC_ASSERT( _gamespy_qr_field <= _gamespy_qr_field_max_registered_keys );
+			k_max_gamespy_qr_registered_keys = 254,
+		}; BOOST_STATIC_ASSERT( _gamespy_qr_field <= k_max_gamespy_qr_registered_keys );
+
+		enum gamespy_qr_key_type : long_enum {
+			_gamespy_qr_key_type_server,
+			_gamespy_qr_key_type_player,
+			_gamespy_qr_key_type_team,
+
+			k_number_of_gamespy_qr_key_types,
+		};
 
 		enum gamespy_connection_state : long_enum
 		{
@@ -254,6 +269,69 @@ namespace Yelo
 		struct s_gamespy_server;
 		struct s_gamespy_server_browser;
 
+		struct s_gamespy_qr2_keybuffer // qr2_keybuffer_s, qr2\qr2.c
+		{
+			byte keys[Enums::k_max_gamespy_qr_registered_keys];
+			PAD16;
+			int32 numkeys;
+
+			bool add(Enums::gamespy_qr_field keyid);
+		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_qr2_keybuffer) == 0x104 );
+		struct s_gamespy_qr2_buffer // qr2_buffer_s, qr2\qr2.c
+		{
+			enum { k_max_data_size = 2048 };
+
+			byte buffer[k_max_data_size];
+			int32 len;
+
+			bool add(cstring value);
+			bool add(int32 value);
+		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_qr2_buffer) == 0x804 );
+		struct s_gamespy_qr2 // qr2_implementation_s, qr2\qr2.h
+		{
+			enum {
+				k_request_key_length = 4,
+				k_recent_client_messages_to_track = 10,
+			};
+
+			typedef void (__cdecl* serverkeycallback_t)(int keyid, s_gamespy_qr2_buffer* outbuf, void *userdata);
+			typedef void (__cdecl* playerteamkeycallback_t)(int keyid, int index, s_gamespy_qr2_buffer outbuf, void *userdata);
+			typedef void (__cdecl* keylistcallback_t)(Enums::gamespy_qr_key_type keytype, s_gamespy_qr2_keybuffer* keybuffer, void *userdata);
+			typedef void (__cdecl* keylistcallback_t)(Enums::gamespy_qr_key_type keytype, s_gamespy_qr2_keybuffer* keybuffer, void *userdata);	
+			typedef int32(__cdecl* countcallback_t)(Enums::gamespy_qr_key_type keytype, void *userdata);
+			typedef void (__cdecl* adderrorcallback_t)(long_enum error, char *errmsg, void *userdata);
+			typedef void (__cdecl* natnegcallback_t)(int cookie, void *userdata);	
+			typedef void (__cdecl* clientmessagecallback_t)(char *data, int len, void *userdata);
+
+			typedef void (__cdecl* cdkey_process_t)(char *buf, int len, sockaddr *fromaddr);
+
+			SOCKET hbsock;
+			char gamename[64];
+			char secret_key[64];
+			char instance_key[k_request_key_length];
+ 			serverkeycallback_t server_key_callback;
+ 			playerteamkeycallback_t player_key_callback;
+ 			playerteamkeycallback_t team_key_callback;
+ 			keylistcallback_t key_list_callback;
+ 			countcallback_t playerteam_count_callback;
+ 			adderrorcallback_t adderror_callback;
+ 			natnegcallback_t nn_callback;
+ 			clientmessagecallback_t cm_callback;
+			uint32 lastheartbeat;
+			uint32 lastka;
+			int32 listed_state;
+			int32 ispublic;	
+			int32 qport;
+			int32 read_socket;
+			int32 nat_negotiate;
+			sockaddr_in hbaddr;
+			cdkey_process_t cdkeyprocess;
+			int32 client_message_keys[k_recent_client_messages_to_track];
+			int32 cur_message_key;
+			void* udata;
+		}; BOOST_STATIC_ASSERT( sizeof(s_gamespy_qr2) == 0x108 );
+
+
 		struct s_gamespy_config
 		{
 			int32 game_pid;
@@ -314,9 +392,18 @@ namespace Yelo
 			UNKNOWN_TYPE(byte); // bool
 			PAD16;
 			UNKNOWN_TYPE(int32);
-			byte unknown_shit[10]; // this isn't a buffer but I didn't want to declare each unknown byte or bool...
+			UNKNOWN_TYPE(bool);
+			byte_enum server_sort_mode;
+			UNKNOWN_TYPE(bool);
+			byte_enum dedicated_filter;
+			byte_enum game_classic_filter;
+			byte_enum custom_maps_filter; // stock is yes/no
+			byte_enum game_type_filter;
+			byte_enum team_count_filter; // stock only checks for 1 or 2
+			byte_enum ping_filter;
+			UNKNOWN_TYPE(bool);
 			PAD16; PAD32;
-			wchar_t unknown[256];
+			wchar_t unknown[256]; // ticker message?
 			UNKNOWN_TYPE(int32); // probably some kind of state value
 			UNKNOWN_TYPE(uint32); // flags
 			UNKNOWN_TYPE(int32);
@@ -347,6 +434,7 @@ namespace Yelo
 #if PLATFORM_IS_USER
 		s_gamespy_server_browser_globals* GsServerBrowserGlobals();
 #endif
+		s_gamespy_qr2* GsQr2();
 
 		// If this is a server, returns all the machines connected to this machine on a specific pid
 		s_gamespy_product* GsProducts(); // [4]
@@ -363,6 +451,13 @@ namespace Yelo
 
 			void LoadSettings(TiXmlElement* xml_element);
 			void SaveSettings(TiXmlElement* xml_element);
+
+			// Register a key with the engine's gamespy qr2 API. This tells the SDK that the application will report values for this key
+			// [keyid] - Id of the key
+			// [key] - Name of the key. Player keys should end in "_" (such as "score_") and team keys should end in "_t"
+			// Remarks: GameSpy SDK says all custom keys should be registered prior to (the engine) calling (its gamespy) qr2_init
+			// However, I don't see anything in its code that would suggest later registration could bork things up
+			void qr2_register_key(Enums::gamespy_qr_field keyid, cstring key);
 		};
 	};
 };

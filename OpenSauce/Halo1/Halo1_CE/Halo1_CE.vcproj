@@ -5181,6 +5181,10 @@
 					RelativePath="..\..\shared\Include\blamlib\Halo1\input\input_abstraction.hpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\input\input_windows.hpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="text"
