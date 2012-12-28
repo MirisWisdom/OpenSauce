@@ -19,6 +19,10 @@ namespace Yelo
 	{
 		struct s_network_game_client;
 	};
+	namespace Objects
+	{
+		struct s_weapon_datum;
+	};
 
 	namespace Enums
 	{
@@ -126,14 +130,14 @@ namespace Yelo
 			typedef void (PLATFORM_API* _player_update)(datum_index player_index);
 			_player_update player_update;							// 0x38
 
-			//typedef void (PLATFORM_API* _weapon_update)(datum_index weapon_index, weapon_datum* weapon);
-			PAD32;//_weapon_update weapon_update;							// 0x3C
+			typedef void (PLATFORM_API* _weapon_update)(datum_index weapon_index, Objects::s_weapon_datum* weapon);
+			_weapon_update weapon_update;							// 0x3C
 
 			typedef bool (PLATFORM_API* _weapon_pickup)(datum_index weapon_index, datum_index player_index);
 			_weapon_pickup weapon_pickup;							// 0x40
 
 			typedef void (PLATFORM_API* _weapon_drop)(datum_index weapon_index);
-			void* weapon_drop;										// 0x44
+			_weapon_drop weapon_drop;								// 0x44
 
 			typedef void (PLATFORM_API* _update)();
 			_update update;											// 0x48
@@ -206,19 +210,19 @@ namespace Yelo
 			_player_reset_score player_reset_score;					// 0x98
 
 			// used by gamespy api
-			typedef bool (PLATFORM_API* _get_gamespy_packet_field_string)(int32 field /*gamespy_field*/, char* buffer);
+			typedef bool (PLATFORM_API* _get_gamespy_packet_field_string)(long_enum field /*gamespy_field*/, char* buffer);
 			_get_gamespy_packet_field_string get_gamespy_packet_field_string;	// 0x9C
 
-			// 1st param must be 22 in order to return true
-			typedef bool (PLATFORM_API* _create_player_score_strings)(uint32 flags, datum_index player_index, cstring out_buffer);
+			// 1st param must be 22 (_gamespy_qr_field_score) in order to return true
+			typedef bool (PLATFORM_API* _create_player_score_strings)(long_enum field /*gamespy_field*/, datum_index player_index, cstring out_buffer);
 			_create_player_score_strings create_player_score_strings;	// 0xA0
 
-			// 1st param must be 29 in order to return true
-			typedef bool (PLATFORM_API* _create_team_score_strings)(uint32 flags, int32 team_index, cstring out_buffer);
+			// 1st param must be 29 (_gamespy_qr_field_score_t) in order to return true
+			typedef bool (PLATFORM_API* _create_team_score_strings)(long_enum field /*gamespy_field*/, int32 team_index, cstring out_buffer);
 			_create_team_score_strings create_team_score_strings;	// 0xA4
 
-			// used by gamespy api, check out sub_57BDA0
-			void* unused2;											// 0xA8
+			typedef int32 (PLATFORM_API* _get_gamespy_key_count)(long_enum keytype);
+			_get_gamespy_key_count get_gamespy_key_count;			// 0xA8
 
 			typedef void (PLATFORM_API* _initialize_for_reset_map)();
 			_initialize_for_reset_map initialize_for_reset_map;		// 0xAC

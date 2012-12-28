@@ -46,12 +46,9 @@ namespace Yelo
 		};
 
 		enum attachment_type : sbyte {
-			// TODO: remove this pragma warning off in any later migrations newer VS versions
-			// http://connect.microsoft.com/VisualStudio/feedback/details/674442/enumeration-with-negative-values-are-popping-c4341-warnings
-#pragma warning( push )
-#pragma warning( disable : 4341 ) // signed value is out of range for enum constant
+#include <cseries/msvc_warning_4341_toggle.hpp>
 			_attachment_type_invalid = NONE,
-#pragma warning( pop )
+#include <cseries/msvc_warning_4341_toggle.hpp>
 
 			_attachment_type_light = 0,
 			_attachment_type_looping_sound,

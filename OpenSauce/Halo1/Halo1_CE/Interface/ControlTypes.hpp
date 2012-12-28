@@ -6,6 +6,9 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/input/input_abstraction.hpp>
+#include <blamlib/Halo1/input/input_windows.hpp>
+
 namespace Yelo
 {
 	namespace Enums
@@ -27,7 +30,7 @@ namespace Yelo
 			_ControlType,
 		};
 
-		enum GamepadButton
+		enum GamepadButton // k_maximum_gamepad_buttons
 		{
 			_GamepadButton1,
 			_GamepadButton2,
@@ -92,7 +95,7 @@ namespace Yelo
 			_GamepadAxisDirection,
 		};
 
-		enum GamepadDpadDirection
+		enum GamepadDpadDirection // TODO: transition to pov_direction (input_windows) and remove
 		{
 			_GamepadDpadDirectionNone = -1,
 			_GamepadDpadDirectionNorth,
@@ -106,7 +109,7 @@ namespace Yelo
 			_GamepadDpadDirection,
 		};
 
-		enum MouseButton
+		enum MouseButton // TODO: transition to mouse_button (input_windows) and remove
 		{
 			// Left
 			_MouseButton1,
@@ -124,7 +127,7 @@ namespace Yelo
 			_MouseButton,
 		};
 
-		enum MouseAxis
+		enum MouseAxis // TODO: transition to mouse_axes (input_windows) and remove
 		{
 			_MouseAxisX,
 			_MouseAxisY,
@@ -142,7 +145,7 @@ namespace Yelo
 			_MouseAxisDirection,
 		};
 
-		enum PlayerControl
+		enum PlayerControl // TODO: transition to control_buttons (input_windows) and remove
 		{
 			_PlayerControlJump,
 			_PlayerControlSwitchGrenade,
@@ -189,7 +192,7 @@ namespace Yelo
 			_KeyModifier,
 		};
 
-		enum Key : _enum
+		enum Key : _enum // TODO: transition to key_code and remove
 		{
 			_KeyEsc,
 			_KeyF1,
@@ -314,25 +317,5 @@ namespace Yelo
 
 			_Key,
 		};
-	};
-
-	namespace Flags
-	{
-		enum buffered_key_flags : byte_flags
-		{
-			_buffered_key_shift_bit,	// SHIFT key pressed
-			_buffered_key_control_bit,	// CTRL key pressed
-			_buffered_key_alt_bit,		// ALT key pressed
-		};
-	};
-
-	namespace Input
-	{
-		struct s_buffered_key
-		{
-			Flags::buffered_key_flags flags;
-			byte state;			// how long its been pressed until 0xFF, 0 if not pressed
-			Enums::Key key_code;
-		}; BOOST_STATIC_ASSERT( sizeof(s_buffered_key) == 0x4 );
 	};
 };

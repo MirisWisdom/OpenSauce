@@ -12,12 +12,9 @@ namespace Yelo
 	{
 		enum game_team : _enum
 		{
-			// TODO: remove this pragma warning off in any later migrations newer VS versions
-			// http://connect.microsoft.com/VisualStudio/feedback/details/674442/enumeration-with-negative-values-are-popping-c4341-warnings
-#pragma warning( push )
-#pragma warning( disable : 4341 ) // signed value is out of range for enum constant
+#include <cseries/msvc_warning_4341_toggle.hpp>
 			_game_team_none = _enum(NONE),
-#pragma warning( pop )
+#include <cseries/msvc_warning_4341_toggle.hpp>
 
 			_game_team_default = 0,
 			_game_team_player,
