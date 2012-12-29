@@ -38,6 +38,7 @@ namespace Yelo
 			sprintf_s(technique, sizeof(technique), technique_format, mesh_type, rt_support);
 			return effect->GetTechniqueByName(technique);
 		}
+
 		static D3DXHANDLE	GetTechnique(LPD3DXEFFECT& effect,
 			const int rt_count,
 			const char* mesh_type,
@@ -496,6 +497,8 @@ skip_disable_velocity:
 
 			c_gbuffer_system::g_output_velocity = true;
 
+			D3DXMatrixIdentity(&c_gbuffer_system::g_identity_matrix);
+
 			Memory::WriteRelativeJmp(&Hook_RenderObjectList_GetObjectIndex,
 				GET_FUNC_VPTR(RENDER_OBJECT_LIST_HOOK), true);
 			Memory::WriteRelativeJmp(&Hook_RenderObjectList_ClearObjectIndex,
@@ -739,7 +742,13 @@ skip_disable_velocity:
 			if(ps_version.major_version < 3) return;
 
 			if(FAILED(LoadEffect(pDevice, &m_gbuffer_ps,		"GBuffer_PS")))		return;
-			if(FAILED(LoadEffect(pDevice, &m_gbuffer_vs,		"GBuffer_VS")))		return;
+
+			const char* gbuffer_shader_set;
+			if(Rasterizer::ShaderExtension::ExtensionsEnabled())
+				gbuffer_shader_set = "GBuffer_VS_OS";
+			else
+				gbuffer_shader_set = "GBuffer_VS";
+			if(FAILED(LoadEffect(pDevice, &m_gbuffer_vs,		gbuffer_shader_set)))		return;
 
 			if(FAILED(LoadEffect(pDevice, &GBufferClear().GetEffect(),	"GBuffer_Clear")))	return;
 			if(FAILED(LoadEffect(pDevice, &GBufferDebug().GetEffect(),	"GBuffer_Debug")))	return;
@@ -1037,6 +1046,7 @@ skip_disable_velocity:
 		BOOL					c_gbuffer_system::g_output_velocity;
 		D3DXVECTOR4				c_gbuffer_system::g_pixel_shader_input;
 
+		D3DXMATRIX				c_gbuffer_system::g_identity_matrix;
 		BOOL					c_gbuffer_system::g_wvp_stored;
 		D3DXMATRIX				c_gbuffer_system::g_stored_worldviewproj[2];
 		BOOL					c_gbuffer_system::g_stored_wvp_index;

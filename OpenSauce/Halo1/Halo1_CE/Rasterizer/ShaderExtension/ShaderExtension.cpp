@@ -63,6 +63,11 @@ namespace Yelo
 			static bool							g_extensions_enabled_user_override = true;
 			static DWORD						g_ps_version_iterator_start = 0xFFFF0101;
 
+			bool		ExtensionsEnabled()
+			{
+				return g_extensions_enabled;
+			}
+
 			void		SetTexture(IDirect3DDevice9* pDevice, uint16 sampler, datum_index bitmap_tag_index);
 
 #include "Rasterizer/ShaderExtension/ShaderExtension_Model.inl"

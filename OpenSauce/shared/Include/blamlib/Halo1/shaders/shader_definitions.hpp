@@ -557,6 +557,11 @@ namespace Yelo
 		//////////////////////////////////////////////////////////////////////////
 		struct s_shader_model_extension
 		{
+			struct __specular_color_flags
+			{
+				TAG_FLAG16(alpha_as_exponent_mask);
+			}; BOOST_STATIC_ASSERT( sizeof(__specular_color_flags) == sizeof(word_flags) );
+
 			struct s_map{
 				tag_reference  map;
 				union{
@@ -567,6 +572,7 @@ namespace Yelo
 							struct{
 								PAD32;
 								real exponent;  //only used by specular color
+								TAG_FIELD(__specular_color_flags, flags);
 							};
 							struct{
 								real scale;  //only used by detail normals

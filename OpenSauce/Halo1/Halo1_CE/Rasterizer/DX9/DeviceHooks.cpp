@@ -62,7 +62,6 @@ namespace Yelo
 			CreateD3DHook(GET_FUNC_VPTR(RASTERIZER_D3D_END_SCENE_CALL), EndScene);
 
 			CreateD3DHook(GET_FUNC_VPTR(RASTERIZER_SET_WORLD_VIEW_PROJECTION_MATRIX_VERTEX_CONSTANT_CALL), SetVertexShaderConstantF_ViewProj);
-			CreateD3DHook(GET_FUNC_VPTR(RASTERIZER_SET_MODEL_TEX_SCALE_VERTEX_CONSTANT_CALL), SetVertexShaderConstantF_ModelTexScale);
 			
 			for(int i = 0; i < NUMBEROF(K_RASTERIZER_SET_MODEL_SPEC_COLOR_VERTEX_CONSTANT_CALLS); i++)
 				CreateD3DHook(K_RASTERIZER_SET_MODEL_SPEC_COLOR_VERTEX_CONSTANT_CALLS[i], SetVertexShaderConstantF_ModelSpecColor);
@@ -153,17 +152,6 @@ namespace Yelo
 			Rasterizer::ShaderExtension::Model::SetViewProj(device, pConstantData, Vector4fCount);
 
 			return device->SetVertexShaderConstantF(StartRegister, pConstantData, Vector4fCount);
-		}
-
-		static HRESULT SetVertexShaderConstantF_ModelTexScale(IDirect3DDevice9* device, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount)
-		{
-			bool set_original = false;
-
-			set_original |= Rasterizer::ShaderExtension::Model::SetTexScale(device, pConstantData, Vector4fCount);
-
-			if(set_original)
-				return device->SetVertexShaderConstantF(StartRegister, pConstantData, Vector4fCount);
-			return S_OK;
 		}
 
 		static HRESULT SetVertexShaderConstantF_ModelSpecColor(IDirect3DDevice9* device, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount)

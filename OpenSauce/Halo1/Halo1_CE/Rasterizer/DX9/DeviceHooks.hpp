@@ -24,7 +24,6 @@ namespace Yelo
 		HRESULT EndScene(IDirect3DDevice9* device);
 
 		HRESULT SetVertexShaderConstantF_ViewProj(IDirect3DDevice9* device, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount);
-		HRESULT SetVertexShaderConstantF_ModelTexScale(IDirect3DDevice9* device, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount);
 		HRESULT SetVertexShaderConstantF_ModelSpecColor(IDirect3DDevice9* device, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount);
 		HRESULT SetVertexShaderConstantF_ModelVertexLight(IDirect3DDevice9* device, UINT StartRegister, CONST float* pConstantData, UINT Vector4fCount);
 	};};

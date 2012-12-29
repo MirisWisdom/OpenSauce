@@ -26,18 +26,16 @@ namespace Model
 	struct s_pixel_shader_variables {
 		real base_normal_map_coefficient;
 		real base_normal_map_z_coefficient;
-		real specular_color_map_exponent;
-		real specular_color_map_coefficient;
+		real c_spec_color_exponent_mask_toggle;
+		PAD32;
 
 		real detail_normal_map_1_interpolation;
 		real detail_normal_map_2_interpolation;
 		real detail_normal_map_1_coefficient;
 		real detail_normal_map_2_coefficient;
 
-		PAD32;
-		PAD32;
-		//real specular_reflection_exponent;
-		//real specular_reflection_coefficient;
+		real specular_color_map_exponent;
+		real specular_color_map_coefficient;
 		real specular_lighting_exponent;
 		real specular_lighting_coefficient;
 	};
@@ -168,6 +166,27 @@ namespace Model
 			(NUMBEROF(g_base_shader_list) / 2) * 15,
 			"SpecLighting"
 		},
+	};
+
+	// pointer map to match feature usage mask to feature mix
+	static s_shader_feature_mix* g_shader_feature_map[] =
+	{
+		&g_feature_mix_list[0],
+		&g_feature_mix_list[1],
+		&g_feature_mix_list[9],
+		&g_feature_mix_list[5],
+		&g_feature_mix_list[13],
+		&g_feature_mix_list[2],
+		&g_feature_mix_list[10],
+		&g_feature_mix_list[6],
+		&g_feature_mix_list[15],
+		&g_feature_mix_list[3],
+		&g_feature_mix_list[11],
+		&g_feature_mix_list[7],
+		&g_feature_mix_list[14],
+		&g_feature_mix_list[4],
+		&g_feature_mix_list[12],
+		&g_feature_mix_list[8]
 	};
 
 	static t_shader_usage_id g_shader_usage_id_list[NUMBEROF(g_base_shader_list) * NUMBEROF(g_feature_mix_list)];
@@ -438,8 +457,7 @@ no_extension:
 
 		g_pixel_shader_variables.base_normal_map_coefficient = 1.0f;
 		g_pixel_shader_variables.base_normal_map_z_coefficient = 1.0f;
-		g_pixel_shader_variables.specular_color_map_exponent = 1.0f;
-		g_pixel_shader_variables.specular_color_map_coefficient = 1.0f;
+		g_pixel_shader_variables.c_spec_color_exponent_mask_toggle = 0.0f;
 
 		g_pixel_shader_variables.detail_normal_map_1_interpolation = 0.0f;
 		g_pixel_shader_variables.detail_normal_map_2_interpolation = 0.0f;
@@ -448,29 +466,26 @@ no_extension:
 
 		g_pixel_shader_variables.specular_lighting_exponent = 1.0f;
 		g_pixel_shader_variables.specular_lighting_coefficient = 0.0f;
+		g_pixel_shader_variables.specular_color_map_exponent = 1.0f;
+		g_pixel_shader_variables.specular_color_map_coefficient = 1.0f;
 
 		TagGroups::s_shader_definition* shader_base = 
 			CAST_PTR(TagGroups::s_shader_definition*, shader_pointer);
 
 		DX9::c_gbuffer_system::OutputObjectTBN() = false;
 
-		_enum feature_usage = shader_base->shader.extension_usage;
-
 		// disable feature as per the users settings
-		feature_usage &= g_extension_usage_mask;
+		_enum feature_usage = shader_base->shader.extension_usage & g_extension_usage_mask;
 
 		// disable specular effects when they are disabled on the environment
 		if(!DebugOptions()->environment_specular_lights)
 			feature_usage &= Enums::_model_extension_usage_normal_map | Enums::_model_extension_usage_detail_normal;
 
-		for(int i = 0; i < NUMBEROF(g_feature_mix_list); i++)
-			if(g_feature_mix_list[i].feature_mask == feature_usage)
-				g_current_feature_mix = &g_feature_mix_list[i];
+		g_current_feature_mix = g_shader_feature_map[feature_usage];
 
 		if(shader_base->shader.shader_type == Enums::_shader_type_model)
 		{
 			TagGroups::s_shader_model_definition* shader_model = CAST_PTR(TagGroups::s_shader_model_definition*, shader_base);
-
 
 			if(shader_model->model.maps.shader_extension.Count == 1)
 			{
@@ -540,6 +555,11 @@ no_extension:
 				{
 					g_pixel_shader_variables.specular_lighting_exponent = extension.specular_lighting_exponent;
 					g_pixel_shader_variables.specular_lighting_coefficient = extension.specular_lighting_coefficient;
+
+					if(shader_model->shader.extension_usage & Enums::_model_extension_usage_specular_map)
+						if(extension.specular_color.modifiers.flags.alpha_as_exponent_mask_bit)
+							g_pixel_shader_variables.c_spec_color_exponent_mask_toggle = 1.0f;
+
 				}
 
 				// copy the specular colour values to the main colour set to override them
@@ -547,7 +567,6 @@ no_extension:
 				shader_model->model.reflection_properties.parallel_tint_color = extension.parallel_tint_color;
 				shader_model->model.reflection_properties.perpendicular_brightness = extension.perpendicular_brightness;
 				shader_model->model.reflection_properties.perpendicular_tint_color = extension.perpendicular_tint_color;
-
 			}
 		}
 		else if(shader_base->shader.shader_type == Enums::_shader_type_environment)
@@ -706,22 +725,11 @@ no_extension:
 		Memory::WriteRelativeJmp(&Hook_SelfIlluminationInversePixelShader, GET_FUNC_VPTR(RASTERIZER_MODEL_PS_INDEX_SELF_ILLUMINATION_INV_HOOK), true);
 	}
 
-	bool		SetTexScale(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount)
-	{
-		if((g_ps_support > _ps_support_2_0) && g_extensions_enabled)
-		{
-			device->SetPixelShaderConstantF(4 + k_shader_constant_offset,
-				&pConstantData[2 * 4],
-				1);
-		}
-		return true;
-	}
-
 	bool		SetViewProj(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount)
 	{
 		if((g_ps_support > _ps_support_2_0) && g_extensions_enabled)
 		{
-			device->SetPixelShaderConstantF(3 + k_shader_constant_offset,
+			device->SetPixelShaderConstantF(4 + k_shader_constant_offset,
 				&pConstantData[4 * 4],
 				1);
 		}
