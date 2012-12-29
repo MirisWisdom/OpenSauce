@@ -19,6 +19,7 @@
 
 
 DX_COMPONENT(DX9),
+DX_COMPONENT(Rasterizer::ShaderExtension),
 DX_COMPONENT(DX9::c_gbuffer_system),
 DX_COMPONENT(Rasterizer::PostProcessing),
 DX_COMPONENT(Fov),
@@ -26,7 +27,6 @@ DX_COMPONENT(Menu),
 DX_COMPONENT(Objects::Weapon),
 DX_COMPONENT(Hud),
 DX_COMPONENT(Objects::Vehicle),
-DX_COMPONENT(Rasterizer::ShaderExtension),
 DX_COMPONENT(Networking::VersionCheck),
 DX_COMPONENT(Networking::HTTP::Client::MapDownload),
 

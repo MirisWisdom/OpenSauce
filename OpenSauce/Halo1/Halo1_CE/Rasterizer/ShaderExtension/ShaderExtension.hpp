@@ -31,6 +31,8 @@ namespace Yelo
 				k_shader_constant_offset = 5
 			};
 
+			bool		ExtensionsEnabled();
+
 			void		Initialize();
 			void		Dispose();
 
@@ -49,7 +51,6 @@ namespace Yelo
 			{
 				void SetModelNormSpec(void* shader_pointer);
 
-				bool SetTexScale(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount);
 				bool SetViewProj(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount);
 				bool SetSpecColor(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount);
 				bool SetVertexLight(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount);

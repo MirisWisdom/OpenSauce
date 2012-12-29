@@ -155,6 +155,7 @@ namespace Yelo
 			static BOOL						g_output_velocity;
 			static D3DXVECTOR4				g_pixel_shader_input;
 			
+			static D3DXMATRIX				g_identity_matrix;
 			static BOOL						g_wvp_stored;
 			static D3DXMATRIX				g_stored_worldviewproj[2];
 			static BOOL						g_stored_wvp_index;
