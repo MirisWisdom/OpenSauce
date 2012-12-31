@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstallerUnitTest", "Halo1\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D6F76EA2-5524-445E-99C5-FDAF122243F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebLauncher", "Halo1\Halo1_Installer\WebLauncher\WebLauncher.csproj", "{0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = OpenSauce_Installer.vsmdi
@@ -87,6 +89,21 @@ Global
 		{D286A00D-6A1D-4B4B-A7F2-9001EC9C7CEF}.ReleaseSymbols|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D286A00D-6A1D-4B4B-A7F2-9001EC9C7CEF}.ReleaseSymbols|Mixed Platforms.Build.0 = Release|Any CPU
 		{D286A00D-6A1D-4B4B-A7F2-9001EC9C7CEF}.ReleaseSymbols|x86.ActiveCfg = Release|Any CPU
+		{0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9}.Debug|x86.ActiveCfg = Debug|x86
+		{0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9}.Debug|x86.Build.0 = Debug|x86
+		{0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9}.Release|Any CPU.ActiveCfg = Release|x86
+		{0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9}.Release|Mixed Platforms.Build.0 = Release|x86
+		{0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9}.Release|x86.ActiveCfg = Release|x86
+		{0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9}.Release|x86.Build.0 = Release|x86
+		{0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9}.ReleaseSymbols|Any CPU.ActiveCfg = Release|x86
+		{0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9}.ReleaseSymbols|Mixed Platforms.ActiveCfg = Release|x86
+		{0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9}.ReleaseSymbols|Mixed Platforms.Build.0 = Release|x86
+		{0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9}.ReleaseSymbols|x86.ActiveCfg = Release|x86
+		{0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9}.ReleaseSymbols|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

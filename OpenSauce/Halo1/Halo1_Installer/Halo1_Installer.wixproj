@@ -36,11 +36,10 @@
     <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugGuerilla;Platform=Win32;" ContinueOnError="true" />
     <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugSapien;Platform=Win32;" ContinueOnError="true" />
     <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugTool;Platform=Win32;" ContinueOnError="true" />
-
     <CreateProperty Value="$(SolutionDir)..\BlamLib\">
       <Output TaskParameter="Value" PropertyName="ImportPropsDir" />
     </CreateProperty>
-    <MSBuild Projects="$(SolutionDir)..\BlamLib\BlamLib.sln" Targets="LowLevel;BlamLib;BlamLib_Forms;OpenSauceIDE" Properties="Configuration=Debug; Platform=x86; SolutionDir=$(SolutionDir)..\BlamLib\; SolutionFileName=BlamLib.sln; SolutionName=BlamLib; SolutionPath=$(SolutionDir)..\BlamLib\BlamLib.sln"/>
+    <MSBuild Projects="$(SolutionDir)..\BlamLib\BlamLib.sln" Targets="LowLevel;BlamLib;BlamLib_Forms;OpenSauceIDE" Properties="Configuration=Debug; Platform=x86; SolutionDir=$(SolutionDir)..\BlamLib\; SolutionFileName=BlamLib.sln; SolutionName=BlamLib; SolutionPath=$(SolutionDir)..\BlamLib\BlamLib.sln" />
   </Target>
   <Target Name="BuildRelease">
     <MSBuild Projects="$(SolutionDir)OpenSauce_Pc.sln" Targets="Rebuild" Properties="Configuration=Release;Platform=Win32;" />
@@ -48,11 +47,10 @@
     <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=ReleaseGuerilla;Platform=Win32;" ContinueOnError="true" />
     <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=ReleaseSapien;Platform=Win32;" ContinueOnError="true" />
     <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=ReleaseTool;Platform=Win32;" ContinueOnError="true" />
-
     <CreateProperty Value="$(SolutionDir)..\BlamLib\">
       <Output TaskParameter="Value" PropertyName="ImportPropsDir" />
     </CreateProperty>
-    <MSBuild Projects="$(SolutionDir)..\BlamLib\BlamLib.sln" Targets="LowLevel;BlamLib;BlamLib_Forms;OpenSauceIDE" Properties="Configuration=Release; Platform=x86; SolutionDir=$(SolutionDir)..\BlamLib\; SolutionFileName=BlamLib.sln; SolutionName=BlamLib; SolutionPath=$(SolutionDir)..\BlamLib\BlamLib.sln"/>
+    <MSBuild Projects="$(SolutionDir)..\BlamLib\BlamLib.sln" Targets="LowLevel;BlamLib;BlamLib_Forms;OpenSauceIDE" Properties="Configuration=Release; Platform=x86; SolutionDir=$(SolutionDir)..\BlamLib\; SolutionFileName=BlamLib.sln; SolutionName=BlamLib; SolutionPath=$(SolutionDir)..\BlamLib\BlamLib.sln" />
   </Target>
   <!--
 	<Target Name="AfterBuild">
@@ -71,6 +69,7 @@
     <Compile Include="Dialogs\OpenSauce_CustomizeDlg.wxs" />
     <Compile Include="Dialogs\OpenSauce_ExitDialog.wxs" />
     <Compile Include="Dialogs\OpenSauce_FeatureTree.wxs" />
+    <Compile Include="Dialogs\OpenSauce_WelcomeDlg.wxs" />
     <Compile Include="Halo1_CE\Dialogs\CEMissingDlg.wxs" />
     <Compile Include="Halo1_CE\Dialogs\HEKPathsDlg.wxs" />
     <Compile Include="Halo1_CE\Dialogs\HEKPathsMissingDlg.wxs" />
