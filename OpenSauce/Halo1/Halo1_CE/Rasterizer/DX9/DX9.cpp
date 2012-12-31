@@ -63,6 +63,24 @@ namespace Yelo
 			if(index >= 8) return NULL;
 			return GET_DPTR2(DInput8DeviceJoysticks)[index];
 		}
+
+		void GetSMVersion(const DWORD sm_version, byte& major, byte& minor)
+		{
+			union{
+				DWORD version;
+				struct{
+					struct{
+						char minor_version;
+						char major_version;
+					};
+					WORD type;
+				};
+			};
+
+			version = sm_version;
+			major = major_version;
+			minor = minor_version;
+		}
 	};
 };
 #endif

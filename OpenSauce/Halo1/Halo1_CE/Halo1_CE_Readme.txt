@@ -64,6 +64,9 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
   * CHANGE		Installation now requires .NET 3.5
   * CHANGE		Increased hardcoded 'k_game_state_allocation_maximum_size_for_yelo' by 0x970 bytes
   * CHANGE		Increased hardcoded 'k_runtime_data_max_values_count' to a total of 64 (up from 32)
+  * CHANGE		Made the GBuffer require SM 3.0
+  * ADD			Added flag to use specular colour map alpha as a specular lighitng exponent mask
+  * ADD			Make screenshots get saved to unique directorys to stop them from being overwritten
   * ADD			Upgraded the max number of particles active/rendered at once
   * ADD			Added an xml setting for completely turning off game update checks
   * ADD			Added an in-game map download system to the client
@@ -81,6 +84,10 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
   * ADD			Added a mini crashdump creator for easier debugging
   * ADD			Added command line argument to disable all OS graphics
   * ADD			Added Visual C++ 9.0 runtime to the installer
+  * FIX			Fixed Halo not loading when using -use*
+  * FIX			Fixed crash in shader model settings when extension element is missing
+  * FIX [39]	Fixed GBuffer issues with stretched models and incorrect velocity when using custom models with high bone counts
+  * FIX			Fixed shader models' specular lighting being dulled by detail maps when using detail before reflection
   * FIX			Fixed an exception on load when the device doesn't support hardware rendering (Intel integrated)
   * FIX			Fixed a bug where a non-existant map (of any kind) would cause the 'missing <mapname>.yelo' exception, when the stock game already had code to handle such cases
   * FIX			project_yellow tag's "prohibit_multiteam_vehicles" flag should work as expected now
@@ -118,6 +125,4 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
 
 
 == Known Issues ==
-  * XFire crashes OS. We can't fix this, it's on XFire's end. http://code.google.com/p/open-sauce/issues/detail?id=4&can=1
   * Running Steam with Halo in general causes the Function keys to not work. We can't fix this, it's on Valve's end. http://code.google.com/p/open-sauce/issues/detail?id=6&can=1
-  * [21] It has been reported that for some users Halo will inexplicably close when opened with no exception or other error dialog appearing. If this occurs for you, completely disable the shader extension in your user settings.

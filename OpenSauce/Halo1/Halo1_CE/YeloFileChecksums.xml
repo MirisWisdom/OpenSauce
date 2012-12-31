@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="us-ascii" standalone="yes"?>
 <osYeloChecksums engine="Halo1_CE">
-	<file ID="SE_EffectCollection_PS2a" MD5="1cb8821288127f6c47c4dfa48226aa44">$(WorkingDirectory)shaders\EffectCollection_ps_2_a.enc</file>
-	<file ID="SE_EffectCollection_PS2b" MD5="a6fa3add864ad54b27cd380a437d9fcf">$(WorkingDirectory)shaders\EffectCollection_ps_2_b.enc</file>
+	<file ID="SE_EffectCollection_PS2a" MD5="c3d42ad46d86889dc7ef4b85eeae216d">$(WorkingDirectory)shaders\EffectCollection_ps_2_a.enc</file>
+	<file ID="SE_EffectCollection_PS2b" MD5="4d52b7d947661ce04a21979f6f947696">$(WorkingDirectory)shaders\EffectCollection_ps_2_b.enc</file>
 	<file ID="SE_EffectCollection_VS" MD5="f8a3f764890da2c3aba331de5bbb09f9">$(WorkingDirectory)shaders\vsh_OS.enc</file>
 	<file ID="PP_PPShaders_SHD" MD5="8a5f588f34f0d0ae96935a803fdeb8e4">$(CommonAppData)shaders\pp_shaders.shd</file>
 	<file ID="GBUF_GBuffer_Shaders_SHD" MD5="c391b5257dc577afa3e696c12a49f2ad">$(CommonAppData)shaders\gbuffer_shaders.shd</file>

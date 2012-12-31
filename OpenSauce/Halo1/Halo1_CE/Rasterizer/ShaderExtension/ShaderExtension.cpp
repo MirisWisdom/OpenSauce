@@ -169,8 +169,6 @@ namespace Yelo
 				if(!g_shader_files_present)
 					return;
 
-				// determine the maximum pixel shader profile the graphics device supports
-
 				// get the profile string id
 				const char* ps_profile = D3DXGetPixelShaderProfile(device);
 				if(!ps_profile)
@@ -224,7 +222,23 @@ namespace Yelo
 						g_ps_version_iterator_start = 0xFFFF0201;
 					else
 						g_ps_version_iterator_start = device_caps->PixelShaderVersion;
-					
+
+					// determine the maximum pixel shader profile the graphics device supports
+					struct{
+						byte minor_version;
+						byte major_version;
+					} ps_version, vs_version;
+
+					DX9::GetSMVersion(DX9::D3DCaps()->VertexShaderVersion, vs_version.major_version, vs_version.minor_version);
+					DX9::GetSMVersion(g_ps_version_iterator_start, ps_version.major_version, ps_version.minor_version);
+
+					if(vs_version.major_version < 2)
+						return;
+					if(ps_version.major_version < 2)
+						return;
+					else if((ps_version.major_version == 2) && (ps_version.minor_version == 0))
+						return;
+
 					g_extensions_enabled = true;
 					ApplyHooks();
 					Model::ApplyHooks();

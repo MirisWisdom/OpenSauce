@@ -717,26 +717,14 @@ skip_disable_velocity:
 			if(Rasterizer::RasterizerConfig()->disable_render_targets || Rasterizer::RasterizerConfig()->disable_alpha_render_targets)
 				return;
 
-			HRESULT hr;
-			D3DCAPS9 device_caps;
-			hr = pDevice->GetDeviceCaps(&device_caps);
-
-			union{
-				DWORD version;
-				struct{
-					union{
-						WORD major_minor_version;
-						struct{
-							char minor_version;
-							char major_version;
-						};
-					};
-					WORD type;
-				};
+			// determine the maximum pixel shader profile the graphics device supports
+			struct{
+				byte minor_version;
+				byte major_version;
 			} ps_version, vs_version;
 
-			vs_version.version = device_caps.VertexShaderVersion;
-			ps_version.version = device_caps.PixelShaderVersion;
+			DX9::GetSMVersion(DX9::D3DCaps()->VertexShaderVersion, vs_version.major_version, vs_version.minor_version);
+			DX9::GetSMVersion(DX9::D3DCaps()->PixelShaderVersion, ps_version.major_version, ps_version.minor_version);
 
 			if(vs_version.major_version < 3) return;
 			if(ps_version.major_version < 3) return;
@@ -760,8 +748,8 @@ skip_disable_velocity:
 			// Create the normals texture
 			m_gbuffer.m_rt_normals_index.CreateTarget(pDevice, params->BackBufferWidth, params->BackBufferHeight, D3DFMT_A8R8G8B8);
 
-			m_multi_rt.count = (device_caps.NumSimultaneousRTs > k_maximum_multi_render_target ?
-				k_maximum_multi_render_target : device_caps.NumSimultaneousRTs);
+			m_multi_rt.count = (DX9::D3DCaps()->NumSimultaneousRTs > k_maximum_multi_render_target ?
+				k_maximum_multi_render_target : DX9::D3DCaps()->NumSimultaneousRTs);
 
 			GBufferClear().m_multi_rt.count = m_multi_rt.count;
 

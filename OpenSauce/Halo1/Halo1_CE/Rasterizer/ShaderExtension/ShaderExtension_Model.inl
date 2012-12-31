@@ -743,7 +743,6 @@ no_extension:
 			device->SetPixelShaderConstantF(5 + k_shader_constant_offset,
 				pConstantData,
 				2);
-			return false;
 		}
 		return true;
 	}
@@ -755,7 +754,6 @@ no_extension:
 			device->SetPixelShaderConstantF(7 + k_shader_constant_offset,
 				pConstantData,
 				Vector4fCount);
-			return false;
 		}
 		return true;
 	}
