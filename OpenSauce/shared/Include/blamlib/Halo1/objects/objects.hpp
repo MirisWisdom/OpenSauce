@@ -34,6 +34,7 @@ namespace Yelo
 			// 4
 			_object_header_connected_to_map_bit = 5,
 			_object_header_child_bit = 6,
+			// 7
 		};
 	};
 

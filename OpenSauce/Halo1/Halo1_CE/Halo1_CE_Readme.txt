@@ -68,6 +68,8 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
   * ADD			Added flag to use specular colour map alpha as a specular lighitng exponent mask
   * ADD			Make screenshots get saved to unique directorys to stop them from being overwritten
   * ADD			Upgraded the max number of particles active/rendered at once
+  * ADD			Upgraded the max number of objects rendered at once
+  * ADD?		Ability for mainmenu maps to have animating objects
   * ADD			Added an xml setting for completely turning off game update checks
   * ADD			Added an in-game map download system to the client
   * ADD			Added a HTTP server to the OS dedi
@@ -125,4 +127,4 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
 
 
 == Known Issues ==
-  * Running Steam with Halo in general causes the Function keys to not work. We can't fix this, it's on Valve's end. http://code.google.com/p/open-sauce/issues/detail?id=6&can=1
+  * Running Steam with Halo in general sometimes causes the Function keys to not work. We can't fix this, it's on Valve's end. http://code.google.com/p/open-sauce/issues/detail?id=6&can=1

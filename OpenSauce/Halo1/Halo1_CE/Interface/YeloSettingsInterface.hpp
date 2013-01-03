@@ -22,10 +22,10 @@ namespace Yelo
 			_settings_menu_weapons,
 			_settings_menu_hud,
 			_settings_menu_vehicles,
-			_settings_menu,
+			k_number_of_settings_menus,
 
 			_settings_menu__first_catagory = _settings_menu_fov,
-			_settings_menu__last_catagory = _settings_menu-1,
+			_settings_menu__last_catagory = k_number_of_settings_menus-1,
 		};
 
 		enum settings_menu_key {

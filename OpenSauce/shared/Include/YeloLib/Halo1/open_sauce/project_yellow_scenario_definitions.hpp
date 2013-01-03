@@ -106,7 +106,7 @@ namespace Yelo
 				int16 version;	enum { k_version = 2, k_group_tag = 'yelo' };
 			struct _flags {
 				TAG_FLAG16(dont_fix_ui_game_globals);
-				TAG_FLAG16(unused1);
+				TAG_FLAG16(game_updates_ignore_player_pvs_hack);
 				TAG_FLAG16(unused2);
 				TAG_FLAG16(unused3);
 				TAG_FLAG16(unused4);
