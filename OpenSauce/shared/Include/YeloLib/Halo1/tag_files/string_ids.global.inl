@@ -6,12 +6,16 @@ __STRING_ID_EMPTY_STRING_HACK()
 __STRING_ID(none)
 __STRING_ID(default)
 
+//////////////////////////////////////////////////////////////////////////
+// generic states
 __STRING_ID(unknown)
 __STRING_ID(on)
 __STRING_ID(off)
 __STRING_ID(enabled)
 __STRING_ID(disabled)
 
+//////////////////////////////////////////////////////////////////////////
+// difficulty
 __STRING_ID(easy)
 __STRING_ID(normal)
 __STRING_ID(heroic)
@@ -72,6 +76,41 @@ __STRING_ID(c20)
 __STRING_ID(c40)
 __STRING_ID(d20)
 __STRING_ID(d40)
+
+//////////////////////////////////////////////////////////////////////////
+// damage reporting types
+__STRING_ID(guardians)
+__STRING_ID(scripting)
+__STRING_ID(falling_damage)
+__STRING_ID(collision_damage)
+__STRING_ID(explosion)
+__STRING_ID(transfer_damage)
+__STRING_ID(teleporter)
+__STRING_ID(multiplayer_flag)	// eg, ctf flag, bomb, oddball, etc
+	//////////////////////////////////////////////////////////////////////////
+	// vehicle
+	__STRING_ID(vehicle)		// eg, unoccupied vehicle
+	__STRING_ID(vehicle_driver)
+	__STRING_ID(vehicle_gunner)
+	__STRING_ID(vehicle_passenger)
+	//////////////////////////////////////////////////////////////////////////
+	// weapons
+	__STRING_ID(weapon)
+	__STRING_ID(weapon_rifle)
+		__STRING_ID(weapon_automatic_rifle)
+		__STRING_ID(weapon_sniper_rifle)
+	__STRING_ID(weapon_pistol)
+	__STRING_ID(weapon_shotgun)
+	__STRING_ID(weapon_machine_gun)
+	__STRING_ID(weapon_support)	// eg, turret, 3rd person flamethrower, etc
+	__STRING_ID(weapon_heavy)
+	__STRING_ID(weapon_melee)	// eg, gravity hammer, sword
+	//////////////////////////////////////////////////////////////////////////
+	// equipment
+	__STRING_ID(equipment)
+	__STRING_ID(equipment_grenade)
+	__STRING_ID(equipment_deployable)
+	__STRING_ID(equipment_armor_ability)
 
 
 __STRING_ID_SET_END()

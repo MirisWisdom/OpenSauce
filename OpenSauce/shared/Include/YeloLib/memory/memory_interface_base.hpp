@@ -118,10 +118,8 @@ namespace Yelo
 				uint32 Address;
 			};
 
-			struct s_call_ret
+			struct s_call_ret : s_call
 			{
-				byte Op;
-				uint32 Address;
 				byte Ret;
 				uint16 Count;
 			};
@@ -134,10 +132,8 @@ namespace Yelo
 			};
 
 			// absolute call opcode with return
-			struct s_call_abs_ret
+			struct s_call_abs_ret : s_call_abs
 			{
-				uint16 Op;
-				uint32 Address;
 				byte Ret;
 				uint16 Count;
 			};
@@ -282,6 +278,71 @@ namespace Yelo
 			// Write the new memory to the address
 			memcpy(address, &data, sizeof(T));
 		}
+
+
+		template<void* k_memory_address, size_t k_memory_address_size>
+		struct s_memory_change_data {
+		protected:
+			static volatile bool g_initialized;
+			static volatile bool g_memory_changed;
+			// the bytes found at [k_memory_address], before any changes were ever applied
+			static byte g_undo_buffer[k_memory_address_size];
+
+			static void InitializeUndoBuffer()
+			{
+				if(!g_initialized)
+				{
+					g_initialized = true;
+					memcpy(g_undo_buffer, k_memory_address, k_memory_address_size);
+				}
+			}
+		public:
+			// At [k_memory_address], write enough asm nop codes to fill [k_memory_address_size]
+			static void MemoryApplyNopCodes()
+			{
+				InitializeUndoBuffer();
+
+				memset(k_memory_address, Enums::_x86_opcode_nop, k_memory_address_size);
+				g_memory_changed = true;
+			}
+			// Revert [k_memory_address] back to the memory bytes it had when this was initialized
+			static void MemoryApplyUndo()
+			{
+				InitializeUndoBuffer();
+
+				if(g_memory_changed)
+				{
+					OverwriteMemorySansCopyArray(k_memory_address, g_undo_buffer);
+					g_memory_changed = false;
+				}
+			}
+		};
+		template<void* k_memory_address, size_t k_memory_address_size>
+			volatile bool s_memory_change_data<k_memory_address, k_memory_address_size>::g_initialized;
+		template<void* k_memory_address, size_t k_memory_address_size>
+			volatile bool s_memory_change_data<k_memory_address, k_memory_address_size>::g_memory_changed;
+		template<void* k_memory_address, size_t k_memory_address_size>
+			byte s_memory_change_data<k_memory_address, k_memory_address_size>::g_undo_buffer[k_memory_address_size];
+
+		template<void* k_memory_address, size_t k_memory_address_size>
+		struct s_memory_change_data_object : s_memory_change_data<k_memory_address,k_memory_address_size>
+		{
+			byte m_new_memory[k_memory_address_size];
+
+			// At [k_memory_address], write the contents of [m_new_memory]
+			void ApplyChanges()
+			{
+				InitializeUndoBuffer();
+
+				OverwriteMemorySansCopyArray(k_memory_address, m_new_memory);
+				g_memory_changed = true;
+			}
+			// Revert [k_memory_address] back to the memory bytes it had when this was initialized
+			void ApplyUndo()
+			{
+				MemoryApplyUndo();
+			}
+		};
 
 
 		uint32 CRC(uint32& crc_reference, const void* buffer, int32 size);

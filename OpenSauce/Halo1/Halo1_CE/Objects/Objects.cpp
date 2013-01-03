@@ -27,6 +27,7 @@
 #include "Game/ScriptLibrary.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Networking/Networking.hpp"
+#include "Scenario/Scenario.hpp"
 #include "TagGroups/TagGroups.hpp"
 
 namespace Yelo
@@ -129,6 +130,24 @@ namespace Yelo
 			UnitInfections::Dispose();
 		}
 
+		static void ObjectsUpdateIgnorePlayerPvs(bool use_fix)
+		{
+			typedef Memory::s_memory_change_data<GET_FUNC_VPTR(OBJECTS_UPDATE__OBJECT_IN_PLAYER_PVS_NOP1), 1+1+sizeof(uintptr_t)> 
+				nop1_t;
+			typedef Memory::s_memory_change_data<GET_FUNC_VPTR(OBJECTS_UPDATE__OBJECT_IN_PLAYER_PVS_NOP2), 2> 
+				nop2_t;
+
+			if(use_fix)
+			{
+				nop1_t::MemoryApplyNopCodes();
+				nop2_t::MemoryApplyNopCodes();
+			}
+			else
+			{
+				nop1_t::MemoryApplyUndo();
+				nop2_t::MemoryApplyUndo();
+			}
+		}
 		static void UseBipedJumpPenalty(bool use_fix)
 		{
 			const size_t k_game_globals_player_stun_offset = 
@@ -148,6 +167,10 @@ namespace Yelo
 		}
 		void InitializeForNewMap()
 		{
+			bool objects_update_ignore_player_pvs = Scenario::Scenario()->type == Enums::_scenario_type_main_menu && 
+				TagGroups::_global_yelo->flags.game_updates_ignore_player_pvs_hack_bit;
+			ObjectsUpdateIgnorePlayerPvs(objects_update_ignore_player_pvs);
+
 			bool mtv_disabled = TagGroups::_global_yelo->gameplay.flags.prohibit_multiteam_vehicles_bit;
 			MultiTeamVehiclesSet(!mtv_disabled);
 

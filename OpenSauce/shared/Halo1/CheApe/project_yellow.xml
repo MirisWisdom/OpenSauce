@@ -16,6 +16,7 @@
 	<flags>
 		<Flag name="project_yellow_flags">
 			<field>don't fix ui game globals#when building a ui cache file, don't let tool's stock code muck with the game globals definition</field>
+			<field>game updates ignore player pvs hack#mainmenu scenarios only; overrides various game update logic to allow game entities to update without them being within the player's supposed view</field>
 		</Flag>
 		
 		<Flag name="gameplay_flags">

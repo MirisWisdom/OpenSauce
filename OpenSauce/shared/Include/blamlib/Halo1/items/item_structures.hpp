@@ -9,6 +9,15 @@
 
 namespace Yelo
 {
+	namespace Flags
+	{
+		enum item_flags : long_flags {
+			_item_in_unit_inventory_bit,
+
+			_item_in_unit_inventory_flag = FLAG(_item_in_unit_inventory_bit),
+		};
+	};
+
 	namespace Objects
 	{
 		struct s_item_data
