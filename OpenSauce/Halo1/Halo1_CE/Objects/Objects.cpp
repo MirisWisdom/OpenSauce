@@ -132,6 +132,7 @@ namespace Yelo
 
 		static void ObjectsUpdateIgnorePlayerPvs(bool use_fix)
 		{
+#if PLATFORM_IS_USER
 			typedef Memory::s_memory_change_data<GET_FUNC_VPTR(OBJECTS_UPDATE__OBJECT_IN_PLAYER_PVS_NOP1), 1+1+sizeof(uintptr_t)> 
 				nop1_t;
 			typedef Memory::s_memory_change_data<GET_FUNC_VPTR(OBJECTS_UPDATE__OBJECT_IN_PLAYER_PVS_NOP2), 2> 
@@ -147,6 +148,7 @@ namespace Yelo
 				nop1_t::MemoryApplyUndo();
 				nop2_t::MemoryApplyUndo();
 			}
+#endif
 		}
 		static void UseBipedJumpPenalty(bool use_fix)
 		{
