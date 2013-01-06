@@ -28,7 +28,7 @@
   <Target Name="BeforeBuild">
     <CallTarget Condition="$(Configuration) == 'Debug'" Targets="BuildDebug" />
     <CallTarget Condition="$(Configuration) == 'Release'" Targets="BuildRelease" />
-    <CallTarget Condition="$(Configuration) == 'ReleaseSymbols'" Targets="BuildRelease" />
+    <CallTarget Condition="$(Configuration) == 'ReleaseSymbols'" Targets="" />
   </Target>
   <Target Name="BuildDebug">
     <MSBuild Projects="$(SolutionDir)OpenSauce_Pc.sln" Targets="Rebuild" Properties="Configuration=Debug;Platform=Win32;" />

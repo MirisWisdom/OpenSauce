@@ -55,9 +55,8 @@ namespace Yelo
 			return bRet;
 		}
 
-		void CreateMiniDump(cstring process_name, cstring reports_path)
+		void CreateMiniDump(cstring process_name, cstring reports_path, HANDLE process)
 		{
-			HANDLE process = GetCurrentProcess();
 			DWORD process_id = GetProcessId(process);
 
 			char dump_name[MAX_PATH] = "";
@@ -104,6 +103,11 @@ namespace Yelo
 			}
 
 			FileIO::CloseFile(file_info);
+		}
+
+		void OutputExceptionData(cstring process_name, cstring reports_path)
+		{
+			CreateMiniDump(process_name, reports_path, GetCurrentProcess());
 		}
 	};
 };

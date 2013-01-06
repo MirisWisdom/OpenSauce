@@ -27,7 +27,7 @@ namespace Yelo
 			static cstring k_process_name = PLATFORM_VALUE("haloce", "haloceded");
 
 			_asm pushad;
-				Debug::CreateMiniDump(k_process_name, Settings::ReportsPath());
+				Debug::OutputExceptionData(k_process_name, Settings::ReportsPath());
 			_asm {
 				pushad
 				popad
