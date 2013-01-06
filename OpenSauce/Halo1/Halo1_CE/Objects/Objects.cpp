@@ -416,6 +416,21 @@ namespace Yelo
 
 			return object_type_size + total_node_memory_size + total_headers_size;
 		}
+
+		bool ObjectIsEnemy(datum_index object_index, datum_index object_index_to_test)
+		{
+			if (!object_index.IsNull() && !object_index_to_test.IsNull())
+			{
+				Objects::s_object_data* object = (*Objects::ObjectHeader())[object_index]->_object;
+				Objects::s_object_data* object_to_test = (*Objects::ObjectHeader())[object_index_to_test]->_object;
+
+				int16 object_team = object->owner_team;
+				int16 object_to_test_team = object_to_test->owner_team;
+
+				return Engine::Game::TeamIsEnemy(object_team, object_to_test_team);
+			}
+			return false;
+		}
 	};
 };
 

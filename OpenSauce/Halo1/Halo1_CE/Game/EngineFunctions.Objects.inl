@@ -398,3 +398,73 @@ int16 API_FUNC_NAKED UnitGetCustomAnimationTime(datum_index unit_index)
 		call	TEMP_CALL_ADDR
 	API_FUNC_NAKED_END(1)
 }
+
+bool UnitCanEnterSeat(datum_index unit_index, datum_index vehicle_index, int32 vehicle_seat_index, datum_index* unit_in_seat)
+{
+	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(UNIT_CAN_ENTER_SEAT);
+
+	__asm {
+		push    unit_in_seat
+		push    vehicle_seat_index
+		mov		edx, vehicle_index
+		mov     eax, unit_index
+		call    TEMP_CALL_ADDR
+		add     esp, 4 * 2
+	}
+}
+
+bool UnitEnterSeat(datum_index unit_index, datum_index vehicle_index, int32 vehicle_seat_index)
+{
+	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(UNIT_ENTER_SEAT);
+
+	__asm {
+		push    vehicle_seat_index
+		push    vehicle_index
+		mov     eax, unit_index
+		call    TEMP_CALL_ADDR
+		add     esp, 4 * 2
+	}
+}
+
+void UnitExitVehicle(datum_index unit_index)
+{
+	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(UNIT_EXIT_VEHICLE);
+
+	__asm {
+		mov     eax, unit_index
+		call    TEMP_CALL_ADDR
+	}
+}
+
+bool API_FUNC_NAKED UnitOpen(datum_index unit_index)
+{
+	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(UNIT_OPEN);
+
+	API_FUNC_NAKED_START()
+			mov     eax, unit_index
+			call    TEMP_CALL_ADDR
+	API_FUNC_NAKED_END(1)
+}
+
+bool API_FUNC_NAKED UnitClose(datum_index unit_index)
+{
+    static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(UNIT_CLOSE);
+
+	API_FUNC_NAKED_START()
+            mov     eax, unit_index
+            call    TEMP_CALL_ADDR
+	API_FUNC_NAKED_END(1)
+}
+
+int16 UnitFindNearbySeat(datum_index unit_index, datum_index vehicle_index, int16* seat_index)
+{
+	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(UNIT_FIND_NEARBY_SEAT);
+
+	__asm {
+		push	seat_index
+		push	vehicle_index
+		push	unit_index
+		call	TEMP_CALL_ADDR
+		add		esp, 4 * 3
+	}
+}

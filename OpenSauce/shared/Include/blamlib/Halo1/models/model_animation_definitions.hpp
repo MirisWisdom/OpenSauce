@@ -122,6 +122,11 @@ namespace Yelo
 			_unit_seat_animation_opening,
 			_unit_seat_animation_closing,
 			_unit_seat_animation_hovering,
+
+			// yelo animation states
+			_unit_seat_animation_yelo_board,
+			_unit_seat_animation_yelo_ejection,
+
 			_unit_seat_animation
 		};
 
@@ -216,7 +221,7 @@ namespace Yelo
 			TAG_FIELD(int16, down_pitch_frame_count);
 			TAG_FIELD(int16, up_pitch_frame_count);
 			TAG_PAD(int32, 2);
-			TAG_BLOCK(animations, unit_seat_animation);
+			TAG_TBLOCK(animations, int16); // block index to model_animation
 			TAG_BLOCK(ik_points, animation_graph_unit_seat_ik_point);
 			TAG_TBLOCK(weapons, animation_graph_weapon);
 		}; BOOST_STATIC_ASSERT( sizeof(animation_graph_unit_seat) == 0x64 ); // max count: 32
