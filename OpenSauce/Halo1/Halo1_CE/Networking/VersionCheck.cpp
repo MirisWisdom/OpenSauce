@@ -101,7 +101,7 @@ namespace Yelo
 		//c_version_check_manager_base
 		/////////////////////////////////////////
 		cstring						c_version_check_manager_base::g_fallback_xml_location = 
-			"http://www.thefieryscythe.co.uk/Halo1_CE_Version.xml";
+			"http://os.halomods.com/Halo1/CE/Halo1_CE_Version.xml";
 
 		/////////////////////////////////////////
 		//static functions

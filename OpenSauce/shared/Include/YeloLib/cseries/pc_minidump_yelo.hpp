@@ -9,6 +9,6 @@ namespace Yelo
 {
 	namespace Debug
 	{
-		void CreateMiniDump(cstring process_name, cstring reports_path);
+		void OutputExceptionData(cstring process_name, cstring reports_path);
 	};
 };

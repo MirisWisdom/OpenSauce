@@ -28,7 +28,7 @@ namespace Yelo
 			static const exception_filter_proc k_generic_exception_filter = CAST_PTR(exception_filter_proc, GET_FUNC_VPTR(GENERIC_EXCEPTION_FILTER));
 			static cstring k_process_name = PLATFORM_VALUE("guerilla", "tool", "sapien");
 
-			Debug::CreateMiniDump(k_process_name, Settings::ReportsPath());
+			Debug::OutputExceptionData(k_process_name, Settings::ReportsPath());
 			k_generic_exception_filter(ExceptionCode, ExceptionPointers);
 		}
 
