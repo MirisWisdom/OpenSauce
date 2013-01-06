@@ -305,6 +305,39 @@ namespace Fov
 	FUNC_PTR(PLAYERS_UPDATE_BEFORE_GAME_SERVER_HOOK,	0x4773B7, 0x46EE37);
 	FUNC_PTR(PLAYERS_UPDATE_BEFORE_GAME_CLIENT_HOOK,	0x4777EB, 0x46F26B);
 	FUNC_PTR(PLAYERS_UPDATE_AFTER_GAME_HOOK,			0x477B7B, 0x46F5FB);
+	
+	//////////////////////////////////////////////////////////////////////////
+	// Players.NearbyObjects
+	ENGINE_PTR(void**, player_examine_nearby_objects_server_jmp_ptr,		0x47B248, PTR_NULL);
+	static byte* K_NUMBER_OF_PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_JMP_TABLE_ENTRIES = CAST_PTR(
+		byte*, PLATFORM_VALUE(0x47B242, PTR_NULL)
+	);
+	static const void* *PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_JMP_TABLE = CAST_PTR(
+		const void**, PLATFORM_VALUE(0x47B274, FUNC_PTR_NULL)
+	);
+
+	ENGINE_PTR(void**, player_examine_nearby_objects_client_jmp_ptr,		0x47B348, PTR_NULL);
+	static byte* K_NUMBER_OF_PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_JMP_TABLE_ENTRIES = CAST_PTR(
+		byte*, PLATFORM_VALUE(0x47B342, PTR_NULL)
+	);
+	static const void* *PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_JMP_TABLE = CAST_PTR(
+		const void**, PLATFORM_VALUE(0x47B374, FUNC_PTR_NULL)
+	);
+
+	FUNC_PTR(PLAYER_EXAMINE_NEARBY_VEHICLE_HOOK,		0x47B497, FUNC_PTR_UNKNOWN);
+	
+	//////////////////////////////////////////////////////////////////////////
+	// Players.ActionResults
+	FUNC_PTR(PLAYER_HANDLE_ACTION_JMP_TABLE_ADJUST_SIZE,	0x47C183, FUNC_PTR_UNKNOWN);
+	FUNC_PTR(PLAYER_HANDLE_ACTION_JMP_TABLE_RETN,			0x47C47B, FUNC_PTR_UNKNOWN);
+	ENGINE_PTR(void**, player_handle_action_jmp_ptr,		0x47C199, PTR_UNKNOWN);
+
+	static byte* K_NUMBER_OF_PLAYER_HANDLE_ACTION_JMP_TABLE_ENTRIES = CAST_PTR(
+		byte*, PLATFORM_VALUE(0x47C188, PTR_UNKNOWN)
+	);
+	static const void* *PLAYER_HANDLE_ACTION_JMP_TABLE = CAST_PTR(
+		const void**, PLATFORM_VALUE(0x47C488, FUNC_PTR_UNKNOWN)
+	);
 
 
 //////////////////////////////////////////////////////////////////////////

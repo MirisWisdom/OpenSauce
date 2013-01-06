@@ -151,6 +151,33 @@ namespace Yelo
 		public:
 			int32 LookupUnitInfectionIndex(datum_index infection_unit_definition_index, datum_index target_unit_definition_index) const;
 		};
+		
+		struct s_unit_boarding_seat
+		{
+			struct __flags
+			{
+				TAG_FLAG16(boarding_ejects_target_seat);
+				TAG_FLAG16(boarding_enters_target_seat);
+				TAG_FLAG16(boarding_kills_passenger);
+				TAG_FLAG16(boarding_depletes_shield);
+				TAG_FLAG16(controls_open_and_close);
+			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(word_flags) );
+
+			TAG_FIELD(__flags, flags);
+			PAD16;
+			TAG_FIELD(int16, seat_index);
+			TAG_FIELD(int16, target_seat_index);
+			TAG_FIELD(tag_string, seat_label);
+			TAG_FIELD(tag_string, target_seat_label);
+			TAG_PAD(int32, 6);
+		}; BOOST_STATIC_ASSERT( sizeof(s_unit_boarding_seat) == 0x60 ); // max count: 32
+
+		struct s_unit_external_upgrades
+		{
+			TAG_FIELD(tag_reference, unit, "obje");
+			TAG_TBLOCK(boarding_seats, s_unit_boarding_seat);
+			TAG_PAD(int32, 9);
+		}; BOOST_STATIC_ASSERT( sizeof(s_unit_external_upgrades) == 0x40 ); // max count: 64
 
 
 		// yelo for globals
@@ -211,11 +238,14 @@ namespace Yelo
 			/* !-- Scripting --! */
 
 
-			TAG_TBLOCK(unit_infections, s_unit_infections_definition); // 1
+			/* !-- Misc --! */
+			TAG_TBLOCK(unit_infections, s_unit_infections_definition);	// 1
+			TAG_TBLOCK(unit_external_upgrades, s_unit_external_upgrades); // 64
 			//TAG_TBLOCK(dual_wielding, s_dual_wield_weapon_definition); // 256
 			//TAG_TBLOCK(object_damage_extensions, s_object_damage_extension); // 512
-
-			TAG_PAD(int32, 17); // 68
+			/* !-- Misc --! */
+			
+			TAG_PAD(int32, 14);
 
 #if PLATFORM_IS_EDITOR
 		private:

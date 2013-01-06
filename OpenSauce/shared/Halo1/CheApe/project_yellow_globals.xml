@@ -15,6 +15,14 @@
 			<field>ALLOW grenade chain reactions in MP#when enabled, grenades will explode in chain reactions like they do in camapaign</field>
 			<field>force game to use stun jumping penalty#engine code uses turning penalty in the jump code for whatever reason. this will cause it to use the jump field instead</field>
 		</Flag>
+		
+		<Flag name="unit_boarding_seat_flags">
+			<field>boarding_ejects_target_seat</field>
+			<field>boarding_enters_target_seat</field>
+			<field>boarding_kills_passenger</field>
+			<field>boarding_depletes_shield</field>
+			<field>controls_open_and_close</field>
+		</Flag>
 	</flags>
 
 	<blocks>
@@ -68,6 +76,57 @@
 
 			<field type="Pad" definition="24" />
 		</TagBlock>
+		
+		<TagBlock name="unit_boarding_seat_block" maxElements="32">
+			<field type="WordFlags" name="flags" definition="unit_boarding_seat_flags" />
+			<field type="Pad" definition="2" />
+			<field type="ShortInteger" name="seat_index" />
+			<field type="ShortInteger" name="target_seat_index" />
+			<field type="String" name="seat_label" blockname="true" />
+			<field type="String" name="target_seat_label" />
+			
+			<field type="Pad" definition="24" />
+		</TagBlock>
+		<TagBlock name="unit_external_upgrades_block" maxElements="64">
+			<field type="TagReference" name="unit" definition="object_reference" blockname="true" />
+			<field type="Block" name="boarding seats" definition="unit_boarding_seat_block" />
+			
+			<field type="Pad" definition="36" />
+		</TagBlock>
+		
+		
+		<!-- UNUSED -->
+		<TagBlock name="dual_wield_weapon_block" maxElements="256">
+			<field type="TagReference" name="primary weapon" definition="weapon_reference" />
+			<field type="TagReference" name="secondary weapon" definition="weapon_reference" />
+			<field type="TagReference" name="dualing weapon" definition="weapon_reference" blockname="true" />
+
+			<field type="Pad" definition="32" />
+		</TagBlock>
+
+		<!-- UNUSED -->
+		<TagBlock name="object_damage_region_permutation_extension_block" maxElements="32">
+			<field type="String" name="name" blockname="true" />
+			<field type="Real" name="damage threshold" tooltip="if this region takes this amount of damage, it will be switch to this permutation" />
+
+			<field type="String" name="effect marker name" />
+			<field type="TagReference" name="transition effect" definition="effect_reference" />
+			<field type="Pad" definition="32" />
+
+			<field type="String" name="damage effect marker name" />
+			<field type="TagReference" name="transition damage effect" definition="damage_effect_reference" />
+			<field type="Pad" definition="32" />
+		</TagBlock>
+		<!-- UNUSED -->
+		<TagBlock name="object_damage_region_extension_block" maxElements="32">
+			<field type="String" name="name" blockname="true" />
+			<field type="Block" name="damage permutations" definition="object_damage_region_permutation_extension_block" />
+		</TagBlock>
+		<!-- UNUSED -->
+		<TagBlock name="object_damage_extension_block" maxElements="512">
+			<field type="TagReference" name="object" definition="object_reference" blockname="true" />
+			<field type="Block" name="damage regions" definition="object_damage_region_extension_block" />
+		</TagBlock>
 	</blocks>
 
 	<groups>
@@ -105,8 +164,12 @@
 
 			<field type="Explanation" name="Misc" definition="" />
 			<field type="Block" name="unit infections" definition="unit_infections_block" />
+			<field type="Block" name="unit upgrades" definition="unit_external_upgrades_block" />
 
-			<field type="Pad" definition="68" />
+			<!--<field type="Block" name="dual wielding" definition="dual_wield_weapon_block" />-->
+			<!--<field type="Block" name="object damage extensions" definition="object_damage_extension_block" />-->
+
+			<field type="Pad" definition="56" />
 		</TagGroup>
 	</groups>
 

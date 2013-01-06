@@ -151,6 +151,7 @@
 		</Configuration>
 		<Configuration
 			Name="DebugTool|Win32"
+			OutputDirectory="..\..\..\..\..\..\Program Files\Microsoft Games\Halo Custom Edition"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			CharacterSet="2"
@@ -288,6 +289,7 @@
 		</Configuration>
 		<Configuration
 			Name="DebugGuerilla|Win32"
+			OutputDirectory="..\..\..\..\..\..\Program Files\Microsoft Games\Halo Custom Edition"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			CharacterSet="2"
@@ -422,6 +424,7 @@
 		</Configuration>
 		<Configuration
 			Name="DebugSapien|Win32"
+			OutputDirectory="..\..\..\..\..\..\Program Files\Microsoft Games\Halo Custom Edition"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			CharacterSet="2"
@@ -563,6 +566,14 @@
 		<Filter
 			Name="Engine"
 			>
+			<File
+				RelativePath=".\Engine\AnimationUpgrade.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Engine\AnimationUpgrade.hpp"
+				>
+			</File>
 			<File
 				RelativePath=".\Engine\EngineFunctions.cpp"
 				>

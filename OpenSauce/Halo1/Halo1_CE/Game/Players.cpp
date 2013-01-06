@@ -15,6 +15,7 @@
 #include "Memory/MemoryInterface.hpp"
 #include "Networking/Networking.hpp"
 #include "Objects/Objects.hpp"
+#include "Objects/Units.hpp"
 #include "Scenario/Scenario.hpp"
 #include "TagGroups/project_yellow_definitions.hpp"
 
@@ -39,6 +40,7 @@ namespace Yelo
 
 #include "Game/Players.Scripting.inl"
 #include "Game/Players.ActionResults.inl"
+#include "Game/Players.NearbyObjects.inl"
 		void Initialize()
 		{
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_volume_test_player_team, 
