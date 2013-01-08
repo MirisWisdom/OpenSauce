@@ -335,6 +335,11 @@ namespace Animations
 						target_unit->object.animation.current_index = animation_index;
 						target_unit->object.animation.current_frame_index = 0;
 						*target_unit->unit.animation.GetAnimationState() = Yelo::Enums::_unit_animation_state_seat_exit;
+
+						if (boarding_seat_definition->flags.boarding_depletes_shield_bit)
+							target_unit->object.damage.shield = 0.0f;
+						if (boarding_seat_definition->flags.boarding_kills_passenger_bit)
+							Engine::Objects::DepleteBody(target_unit_index);
 					}
 				}
 			}
