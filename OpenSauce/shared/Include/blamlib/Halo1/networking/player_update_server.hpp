@@ -41,6 +41,6 @@ namespace Yelo
 			// 0x180 datum_index or int32
 			// 0x184 datum_index or int32
 			// 0x188, 0x40 byte structure
-		}; //BOOST_STATIC_ASSERT( sizeof(s_server_update_data) == 0xE0 );
+		}; //BOOST_STATIC_ASSERT( sizeof(s_player_server_update) == 0xE0 );
 	};
 };

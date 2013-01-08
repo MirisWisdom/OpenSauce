@@ -146,12 +146,9 @@ namespace Yelo
 			//TStructGetPtrImpl(sbyte,				, 0xF);					// 0x2A7
 			//TStructGetPtrImpl(sbyte,				, 0x10);				// 0x2A8
 			//PAD8?
-			//TStructGetPtrImpl(uint16,				, 0x12);				// 0x2AA animation index
-			//TStructGetPtrImpl(uint16,				, 0x14);				// 0x2AC
-			//TStructGetPtrImpl(uint16,				, 0x16);				// 0x2AE
-			// 0x18?
-			//TStructGetPtrImpl(int16,				, 0x1A);				// 0x2B2
-			// 0x1C?
+			TStructGetPtrImpl(s_animation_state,	PingState, 0x12);		// 0x2AA
+			//TStructGetPtrImpl(s_animation_state,	, 0x16);				// 0x2AE
+			TStructGetPtrImpl(s_animation_state,	FpWeaponState, 0x1A);	// 0x2B2
 			//TStructGetPtrImpl(byte?,				, 0x1E);				// 0x2B6 look related
 			//TStructGetPtrImpl(byte?,				, 0x1F);				// 0x2B7 aim related
 			TStructGetPtrImpl(real_rectangle2d,		LookingBounds, 0x20);	// 0x2B8
