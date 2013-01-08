@@ -74,6 +74,18 @@ namespace Yelo
 			_unit_animation_state_yelo,
 		};
 
+		enum unit_overlay_animation_state : sbyte
+		{
+			_unit_overlay_animation_state_fire_1 = 1,
+			_unit_overlay_animation_state_fire_2,
+			_unit_overlay_animation_state_charged_1,
+			_unit_overlay_animation_state_charged_2,
+			_unit_overlay_animation_state_chamber_1,
+			_unit_overlay_animation_state_chamber_2,
+
+			_unit_overlay_animation_state
+		};
+
 		enum unit_camo_regrowth : _enum
 		{
 			_unit_camo_regrowth_off,
@@ -155,7 +167,7 @@ namespace Yelo
             TStructGetPtrImpl(uint16,           ReplacementAnimationFrameIndex, 0x14);  // 0x2AC
             TStructGetPtrImpl(uint16,           OverlayAnimationIndex, 0x16);       // 0x2AE
             TStructGetPtrImpl(uint16,           OverlayAnimationFrameIndex, 0x18);  // 0x2B0
-			//TStructGetPtrImpl(int16,				, 0x1A);				// 0x2B2
+			TStructGetPtrImpl(int16,				WeaponIK, 0x1A);				// 0x2B2
 			// 0x1C?
 			//TStructGetPtrImpl(byte?,				, 0x1E);				// 0x2B6 look related
 			//TStructGetPtrImpl(byte?,				, 0x1F);				// 0x2B7 aim related
