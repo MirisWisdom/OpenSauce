@@ -9,6 +9,7 @@
 
 #include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+#include <blamlib/Halo1/units/unit_definitions.hpp>
 
 #include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
@@ -40,6 +41,49 @@ namespace Yelo
 		//////////////////////////////////////////////////////////////////////////
 
 		//////////////////////////////////////////////////////////////////////////
+		// unit_external_upgrades_block
+		static int UnitGetSeatIndexFromLabel(s_unit_definition* unit_def, cstring seat_label)
+		{
+			for (int i = 0; i < unit_def->unit.seats.Count; i++)
+			{
+				if (strcmp(seat_label, unit_def->unit.seats[i].label) == 0)
+					return i;
+			}
+			return NONE;
+		}
+
+		static void UnitExternalUpgradesBlockPostprocess(TAG_TBLOCK(& unit_external_upgrades_def, TagGroups::s_unit_external_upgrades), 
+			Enums::tag_postprocess_mode mode)
+		{
+			if (mode == Enums::tag_postprocess_mode::_tag_postprocess_mode_for_runtime)
+			{
+				for (int i = 0; i < unit_external_upgrades_def.Count; i++)
+				{
+					datum_index tag_index = tag_load(unit_external_upgrades_def[i].unit.group_tag, 
+						unit_external_upgrades_def[i].unit.name, 
+						FLAG(Flags::_tag_load_non_resolving_references_bit));
+
+					if (!tag_index.IsNull())
+					{
+						s_unit_definition* unit_def = Yelo::tag_get<s_unit_definition>(tag_index);
+
+						for (int j = 0; j < unit_external_upgrades_def[i].boarding_seats.Count; j++)
+						{
+							cstring seat_label = unit_external_upgrades_def[i].boarding_seats[j].seat_label;
+							cstring target_seat_label = unit_external_upgrades_def[i].boarding_seats[j].target_seat_label;
+
+							unit_external_upgrades_def[i].boarding_seats[j].seat_index = 
+								UnitGetSeatIndexFromLabel(unit_def, seat_label);
+							unit_external_upgrades_def[i].boarding_seats[j].target_seat_index = 
+								UnitGetSeatIndexFromLabel(unit_def, target_seat_label);
+						}
+					}
+				}
+			}
+		}
+		//////////////////////////////////////////////////////////////////////////
+
+		//////////////////////////////////////////////////////////////////////////
 		// project_yellow_globals
 		static bool PLATFORM_API py_globals_group_postprocess(Yelo::datum_index tag_index, Enums::tag_postprocess_mode mode)
 		{
@@ -48,6 +92,7 @@ namespace Yelo
 			def->version = project_yellow_globals::k_version;
 
 			Scripting::ScriptingBlockClear(def->yelo_scripting);
+			UnitExternalUpgradesBlockPostprocess(def->unit_external_upgrades, mode);
 			if(mode == Enums::_tag_postprocess_mode_for_runtime)
 			{
 				Scripting::ScriptingBlockAddDefinitions(def->yelo_scripting, true);

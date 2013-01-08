@@ -185,6 +185,12 @@ namespace Yelo
 
 	namespace TagGroups
 	{
+		struct animation_graph_weapon_type
+		{
+			TAG_FIELD(tag_string, label);
+			TAG_PAD(int32, 4);
+			TAG_TBLOCK(animations, int16); // block index to model_animation
+		}; BOOST_STATIC_ASSERT( sizeof(animation_graph_weapon_type) == 0x3C ); // max count: 16
 		struct animation_graph_weapon
 		{
 			TAG_FIELD(tag_string, name);
@@ -204,7 +210,7 @@ namespace Yelo
 			TAG_PAD(int32, 8);
 			TAG_TBLOCK(animations, int16); // block index to model_animation
 			TAG_BLOCK(ik_points, animation_graph_unit_seat_ik_point);
-			TAG_BLOCK(weapon_types, animation_graph_weapon_type);
+			TAG_TBLOCK(weapon_types, animation_graph_weapon_type);
 		}; BOOST_STATIC_ASSERT( sizeof(animation_graph_weapon) == 0xBC ); // max count: 16
 		struct animation_graph_unit_seat
 		{

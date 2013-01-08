@@ -70,6 +70,9 @@ namespace Yelo
 			Memory::WriteRelativeJmp(UpdateServer, GET_FUNC_VPTR(PLAYERS_UPDATE_BEFORE_GAME_SERVER_HOOK), true);
 			Memory::WriteRelativeJmp(UpdateClient, GET_FUNC_VPTR(PLAYERS_UPDATE_BEFORE_GAME_CLIENT_HOOK), true);
 			Memory::WriteRelativeJmp(Update, GET_FUNC_VPTR(PLAYERS_UPDATE_AFTER_GAME_HOOK), true);
+			
+			NearbyObjects::Initialize();
+			ActionResults::Initialize();
 		}
 
 		void Dispose()
