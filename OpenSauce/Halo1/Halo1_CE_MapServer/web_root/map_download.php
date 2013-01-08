@@ -8,8 +8,10 @@
 	set_include_path("*admin include path*");
 	
 	require_once('admin/common/config.php');
+	require_once('admin/common/transfer_file.php');
 	require_once('admin/common/sql_database.php');
 	require_once('admin/common/sql_interface.php');
+	require_once('admin/map_download/server_state.php');
 
 	class MapEntryReader extends SQLInterface
 	{
@@ -37,7 +39,25 @@
 	};
 	
 	function SendMapPartDefinition(&$map_entry, $database)
-	{		
+	{
+		global $config;
+		
+		// check there is bandwidth available for this map download, if not return not found
+		$state = LoadState();
+		$use_hard_limit = ($config->map_server->bandwidth_cap_hard > 0);
+		$use_soft_limit = ($config->map_server->bandwidth_cap_soft > 0);
+			
+		if($use_hard_limit && ($state->server_bandwidth->bandwidth_used >= $config->map_server->bandwidth_cap_hard))
+		{
+			header("HTTP/1.0 404 Not Found");
+			die();
+		}
+		if($use_soft_limit && ($state->server_bandwidth->bandwidth_used >= $config->map_server->bandwidth_cap_soft))
+		{
+			header("HTTP/1.0 404 Not Found");
+			die();
+		}
+		
 		// build the xml document
 		$xml_document = new DOMDocument("1.0", "UTF-8");
 		
@@ -89,18 +109,50 @@
 		}
 		
 		// set the xml as the response data
-		header("Content-type: text/xml");
-		print($xml_document->saveXML());
+		header("Content-type: text/xml");		
+		
+		// execution should continue until the bandwidth state has been updated
+		$user_abort_orig = ignore_user_abort();
+		ignore_user_abort(true);
+		
+		$xml_string = $xml_document->saveXML();
+		print($xml_string);
+		
+		// update web bandwidth state
+		$state = LoadState();
+		$state->server_bandwidth->bandwidth_used += strlen($xml_string);
+		SaveState($state);
+		
+		ignore_user_abort($user_abort_orig);
 	}
 
-	function SendMapPartRedirect($map_entry, $map_part_name)
+	function SendMapPart($map_entry, $map_part_name)
 	{
 		global $config;
 		
-		// send a redirect to the map part back to the client
-		header("Location: ".$config->map_server->server_address."/".$map_entry->map_parts_path."/".$map_part_name);
+		// fail the download if the hard bandwidth cap would be reached
+		$state = LoadState();
+		if(($state->server_bandwidth->bandwidth_used + 1024576) > $config->map_server->bandwidth_cap_hard)
+		{
+			header("HTTP/1.0 404 Not Found");
+			return;			
+		}
+		
+		// execution should continue until the bandwidth state has been updated
+		$user_abort_orig = ignore_user_abort();
+		ignore_user_abort(true);
+		
+		$data_sent = TransferFile($map_entry->map_parts_path."/".$map_part_name);
+		
+		// update web bandwidth state
+		$state = LoadState();
+		$state->server_bandwidth->bandwidth_used += $data_sent;
+		SaveState($state);
+		
+		ignore_user_abort($user_abort_orig);
 	}
 	
+
 	// open the sql database
 	$database = OpenDatabase($config->map_database->data_source_name,
 	$config->map_database->username_readonly, $config->map_database->password_readonly);
@@ -120,7 +172,7 @@
 		else
 		{
 			if($map_part_set)
-				SendMapPartRedirect($map_entry, $_REQUEST['part']);
+				SendMapPart($map_entry, $_REQUEST['part']);
 			else
 				SendMapPartDefinition($map_entry, $database);
 		}
