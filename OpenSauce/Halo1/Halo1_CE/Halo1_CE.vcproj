@@ -4750,6 +4750,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\models\model_animations.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\models\model_definitions.hpp"
 					>
 				</File>
@@ -5639,6 +5643,18 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\YeloLib\Halo1\render\render_particles_upgrades.inl"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="game"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\game\game_engine_yelo.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\game\game_results_yelo.hpp"
 					>
 				</File>
 			</Filter>

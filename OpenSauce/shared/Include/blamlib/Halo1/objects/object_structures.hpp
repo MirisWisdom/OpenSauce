@@ -7,6 +7,7 @@
 #pragma once
 
 #include <blamlib/Halo1/game/game_allegiance.hpp>
+#include <blamlib/Halo1/models/model_animations.hpp>
 #include <blamlib/Halo1/objects/object_definitions.hpp>
 
 namespace Yelo
@@ -197,8 +198,7 @@ namespace Yelo
 		struct s_object_animation_datum_data
 		{
 			datum_index definition_index;	// 0xCC
-			int16 current_index;			// 0xD0
-			int16 current_frame_index;		// 0xD2
+			s_animation_state state;		// 0xD0
 			UNKNOWN_TYPE(int16);			// 0xD4
 			UNKNOWN_TYPE(int16);			// 0xD6
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_animation_datum_data) == 0xC );
