@@ -7,6 +7,9 @@
 #pragma once
 
 #include <blamlib/Halo1/objects/object_structures.hpp>
+#include <blamlib/Halo1/units/unit_structures.hpp>
+#include <blamlib/Halo1/units/biped_structures.hpp>
+#include <blamlib/Halo1/units/vehicle_structures.hpp>
 
 namespace Yelo
 {
@@ -19,31 +22,40 @@ namespace Yelo
 			byte action_collection[32];
 			bool driving_vehicle;
 			PAD24;
-			datum_index parent_object_index;
-			real_point3d position;
-			real_vector3d transitional_velocity;
-			real_vector3d forward;
-			Objects::s_object_animation_datum_data animation;
-			byte unit_animation[72]; // s_unit_animation_data
-			real_vector3d unit_34C;
-			real_vector3d unit_358;
-			real_vector3d unit_364;
-			real_vector3d unit_370;
-			long_flags biped_flags;
-			BYTE biped_503;
-			BYTE biped_501;
-			BYTE biped_502;
-			BYTE biped_504;
-			int16 biped_508;
-			PAD16;
-			DWORD biped_50C;
-			real_vector3d biped_514;
-			PAD32; // unused?
-			BYTE biped_4D0;
-			BYTE biped_4D1;
-			BYTE biped_4D2;
-			PAD8;
-			DWORD biped_4D8;
+			struct {
+				datum_index parent_object_index;
+				real_point3d position;
+				real_vector3d transitional_velocity;
+				real_vector3d forward;
+				Objects::s_object_animation_datum_data animation;
+			}object;
+			struct {
+				Objects::s_unit_animation_data animation;
+				//////////////////////////////////////////////////////////////////////////
+				// seat related
+				real_vector3d unit_34C;
+				real_vector3d unit_358;
+				real_vector3d unit_364;
+				real_vector3d unit_370;
+			}unit;
+
+			struct {
+				long_flags flags;
+				sbyte biped_503;
+				sbyte airborne_ticks; // biped 0x501
+				sbyte slipping_ticks; // biped 0x502
+				sbyte biped_504;
+				int16 biped_508;
+				PAD16;
+				real biped_50C;
+				real_vector3d biped_514;
+				PAD32; // unused?
+				BYTE biped_4D0;
+				BYTE biped_4D1;
+				Enums::biped_movement_state movement_state; // biped 0x4D2
+				PAD8;
+				DWORD biped_4D8;
+			}biped;
 			struct {													// 0x124
 				real_point3d position;
 				real_vector3d transitional_velocity;
@@ -52,7 +64,7 @@ namespace Yelo
 				real driver_power;
 				real gunner_power;
 				UNKNOWN_TYPE(int32);
-				byte vehicle_data[Enums::k_object_size_vehicle - Enums::k_object_size_unit];
+				Objects::s_vehicle_data vehicle_data;
 			}vehicle;
 			s_player_update* next;
 		}; BOOST_STATIC_ASSERT( sizeof(s_player_update) == 0x418 );

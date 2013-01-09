@@ -231,6 +231,8 @@ namespace Yelo
 {
 	void Assert(cstring assertion, cstring message, cstring file, const int line, cstring function);
 };
+#elif PLATFORM_IS_EDITOR
+#define ASSERT(value, message) YELO_ASSERT(value)
 #else
 #define ASSERT(value, message) __noop;
 #endif

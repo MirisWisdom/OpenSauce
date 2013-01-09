@@ -2144,6 +2144,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Memory\_EngineLayout.Objects.inl"
+					>
+				</File>
+				<File
 					RelativePath=".\Memory\_EngineLayout.OpenSauce.inl"
 					>
 				</File>
@@ -2667,6 +2671,14 @@
 						>
 					</File>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="units"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\units\units_grenade_count_upgrade.inl"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<File
