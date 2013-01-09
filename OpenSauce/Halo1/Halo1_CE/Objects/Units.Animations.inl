@@ -14,7 +14,7 @@ namespace Animations
 		enum {
 			unit_update_animation_primary_keyframe_jmp_0,		// 30, 31, 41
 			unit_update_animation_primary_keyframe_jmp_1,		// 33
-			unit_update_animation_primary_keyframe_jmp_default,	
+			unit_update_animation_primary_keyframe_jmp_default
 		};
 		
 		enum {
@@ -23,7 +23,7 @@ namespace Animations
 			unit_update_animation_final_keyframe_jmp_2,			// 27
 			unit_update_animation_final_keyframe_jmp_3,			// 37, 38
 			unit_update_animation_final_keyframe_jmp_4,			// 39
-			unit_update_animation_final_keyframe_jmp_default,
+			unit_update_animation_final_keyframe_jmp_default
 		};
 	};
 
@@ -336,8 +336,9 @@ namespace Animations
 						target_unit->object.animation.current_frame_index = 0;
 						*target_unit->unit.animation.GetAnimationState() = Yelo::Enums::_unit_animation_state_seat_exit;
 
+						// Ask korn wtf is going on with these
 						if (boarding_seat_definition->flags.boarding_depletes_shield_bit)
-							target_unit->object.damage.shield = 0.0f;
+							Engine::Objects::DepleteShield(target_unit_index);
 						if (boarding_seat_definition->flags.boarding_kills_passenger_bit)
 							Engine::Objects::DepleteBody(target_unit_index);
 					}
