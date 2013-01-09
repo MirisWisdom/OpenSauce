@@ -316,7 +316,7 @@ namespace Yelo
 			PAD32;															// 0x4C8 unused
 			//////////////////////////////////////////////////////////////////////////
 
-		public: // see Objects/Units.cpp
+		public: // see YeloLib/Halo1/units/units_grenade_count_upgrade.inl
 			static const size_t k_offset_zoom_level;
 			static const size_t k_offset_desired_zoom_level;
 
