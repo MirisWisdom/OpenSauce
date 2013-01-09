@@ -169,6 +169,7 @@ namespace Yelo
 			_first_person_weapon_animation_fire2,
 			_first_person_weapon_animation_overcharged_jitter,
 			_first_person_weapon_animation_throw_grenade,
+			_first_person_weapon_animation_ammunition,
 			_first_person_weapon_animation_misfire1,
 			_first_person_weapon_animation_misfire2,
 			_first_person_weapon_animation_throw_overheated,
