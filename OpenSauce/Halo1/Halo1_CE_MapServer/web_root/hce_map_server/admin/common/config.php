@@ -5,67 +5,35 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-	class INIBlockReader
-	{		
-		private $class_reflection;
-		
-		public function INIBlockReader() { $this->class_reflection = new ReflectionClass($this); }
-		
-		public function ReadBlock($array)
-		{
-			foreach($this as $key => &$value)
-			{
-				// load each property from the object
-				if(!$this->class_reflection->hasProperty($key))
-					continue;
-					
-				$property = $this->class_reflection->getProperty($key);
-				if(!$property->isPublic())
-					continue;
-				
-				// if the property is an object find out if its base is INIBlockReader
-				if(is_object($value))
-				{
-					$reflection = new ReflectionClass($value);
-					do
-					{
-						if(strcmp($reflection->name, "INIBlockReader") == 0)
-							break;
-					}while($reflection = $reflection->getParentClass());
-					
-					if(!$reflection)
-						continue;
-					
-					// read the block from the ini array
-					$value->ReadBlock($array[$key]);
-				}
-				else
-				{
-					$value = $array[$key];
-				}
-			}
-		}
-	};
-		
-	class MapDatabaseBlock extends INIBlockReader
+	require_once("INIBlockIO.php");
+	
+	class MapDatabaseBlock extends INIBlockIO
 	{
 		public $username_readonly;
 		public $password_readonly;
 		public $username;
 		public $password;
 		public $data_source_name;
+		
+		function __construct() {
+			parent::INIBlockIO("map_database");
+		}
 	};
 	
-	class MapServerBlock extends INIBlockReader
+	class MapServerBlock extends INIBlockIO
 	{
-		public $server_address;
-		public $map_server_app_root;
 		public $map_dir;
 		public $map_compressed_dir;
 		public $map_parts_path;
+		public $bandwidth_cap_soft;
+		public $bandwidth_cap_hard;
+		
+		function __construct() {
+			parent::INIBlockIO("map_server");
+		}
 	};
 	
-	class ServerConfig extends INIBlockReader
+	class ServerConfig extends INIBlockIO
 	{
 		public $map_database;
 		public $map_server;
@@ -75,19 +43,18 @@
 			$this->map_database = new MapDatabaseBlock();
 			$this->map_server = new MapServerBlock();
 			
-			parent::__construct();
+			parent::INIBlockIO("");
 		}
 	};
 	
 	function LoadConfig()
 	{
-		$config_path = "";
+		$config_path = "/usr/local/opensauce/config.ini";
 
 		if(empty($config_path))
-			die("ERROR: config.ini path not yet set in load_config.php<br/>");
+			die("ERROR: config.ini path not yet set in config.php<br/>");
 
 		$config_file = parse_ini_file($config_path, true);
-
 		if($config_file == FALSE)
 			die("ERROR: failed to load config.ini from the defined path. (".$config_path.")<br/>");
 
