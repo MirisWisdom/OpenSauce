@@ -332,8 +332,8 @@ namespace Animations
 							target_unit->object.animation.definition_index, animation_index);
 
 						// set the target unit's animation to yelo_seat_ejection
-						target_unit->object.animation.current_index = animation_index;
-						target_unit->object.animation.current_frame_index = 0;
+						target_unit->object.animation.state.animation_index = animation_index;
+						target_unit->object.animation.state.frame_index = 0;
 						*target_unit->unit.animation.GetAnimationState() = Yelo::Enums::_unit_animation_state_seat_exit;
 
 						// Ask korn wtf is going on with these
@@ -406,8 +406,8 @@ namespace Animations
 
 					// set the unit's animation to yelo_board
 					Yelo::Engine::Objects::StartInterpolation(unit_index, 6);
-					unit->object.animation.current_index = animation_index;
-					unit->object.animation.current_frame_index = 0;
+					unit->object.animation.state.animation_index = animation_index;
+					unit->object.animation.state.frame_index = 0;
 					// reset  the unit's overlay animations
 					*unit->unit.animation.GetOverlayAnimationIndex() = NONE;
 					*unit->unit.animation.GetOverlayAnimationState() = NONE;
