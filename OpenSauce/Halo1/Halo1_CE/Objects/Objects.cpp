@@ -13,6 +13,8 @@
 #include <blamlib/Halo1/models/model_animation_definitions.hpp>
 #include <blamlib/Halo1/objects/damage.hpp>
 
+#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
+
 #include "TagGroups/project_yellow_definitions.hpp"
 
 #include "Objects/ObjectFieldDefinitions.hpp"
@@ -109,7 +111,10 @@ namespace Yelo
 			Memory::WriteRelativeCall(&Objects::Update, GET_FUNC_VPTR(OBJECTS_UPDATE_HOOK), false);
 #endif
 
-			render_objects_mods::Initialize();
+#if PLATFORM_IS_USER
+			if(!CMDLINE_GET_PARAM(no_os_gfx).ParameterSet())
+				render_objects_mods::Initialize();
+#endif
 
 			UnitInfections::Initialize();
 			Vehicle::Initialize();
