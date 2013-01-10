@@ -52,7 +52,7 @@
 			while($part_entry->MoveNext())
 			{
 				// delete the part file
-				$part_file = $_SERVER['DOCUMENT_ROOT']."/".$map_entry->map_parts_path."/".$part_entry->part_name;
+				$part_file = $map_entry->map_parts_path."/".$part_entry->part_name;
 
 				if(file_exists($part_file))
 				{
@@ -80,7 +80,7 @@
 			if(isset($map_entry->map_parts_path) && !empty($map_entry->map_parts_path))
 			{
 				// delete the parts folder
-				$parts_folder = $_SERVER['DOCUMENT_ROOT']."/".$map_entry->map_parts_path;
+				$parts_folder = $map_entry->map_parts_path;
 
 				if(file_exists($parts_folder))
 				{

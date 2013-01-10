@@ -74,9 +74,8 @@
 		$result->messages = array();		
 
 		// collect config variables and arguments
-		$compressed_file_dir = $config->map_server->map_compressed_dir;
-		$http_parts_path = $config->map_server->map_parts_path;
-		$http_parts_path_full = $_SERVER['DOCUMENT_ROOT']."/".$http_parts_path;
+		$map_compressed_dir = $config->map_server->map_compressed_dir;
+		$map_parts_path = $config->map_server->map_parts_path;
 		$map_file = $_POST["map_file"];
 
 		// check the arguments are valid
@@ -112,10 +111,10 @@
 		}
 
 		// create the server defined locations if they don't already exist
-		if(!file_exists($http_parts_path_full))
+		if(!file_exists($map_parts_path))
 		{
-			if(mkdir($http_parts_path_full, 0770, true))
-				$result->messages[] = "Created map parts folder <b>".$http_parts_path_full."<br/>";
+			if(mkdir($map_parts_path, 0760, true))
+				$result->messages[] = "Created map parts folder <b>".$map_parts_path."<br/>";
 			else
 			{
 				$result->success = false;
@@ -124,10 +123,10 @@
 			}
 		}
 
-		if(!file_exists($compressed_file_dir))
+		if(!file_exists($map_compressed_dir))
 		{
-			if(mkdir($compressed_file_dir, 0770, true))
-				$result->messages[] = "Created compressed map folder <b>".$compressed_file_dir."<br/>";
+			if(mkdir($map_compressed_dir, 0760, true))
+				$result->messages[] = "Created compressed map folder <b>".$map_compressed_dir."<br/>";
 			else
 			{
 				$result->success = false;
@@ -185,7 +184,7 @@
 				// the map was not added successfully so remove the entry and reprocess the map
 				$result->messages[] = "WARNING: Reprocessing a map that previously failed, map will be removed and reprocessed.";
 
-				$remove_map_entry_result = RemoveMapEntry($database, $map_entry->file_id, $compressed_file_dir);
+				$remove_map_entry_result = RemoveMapEntry($database, $map_entry->file_id, $map_compressed_dir);
 
 				if(!$remove_map_entry_result->success)
 				{
@@ -220,11 +219,11 @@
 		$file_id = $database -> lastInsertId();
 		$result->messages[] = "Map entry added to database for <i>".$map_file_name."</i>";
 
-		$parts_output_path = $http_parts_path_full."/".$map_file_name;
+		$parts_output_path = $map_parts_path."/".$map_file_name;
 		// create the parts folder
 		if(!file_exists($parts_output_path))
 		{
-			if(mkdir($parts_output_path, 0770, true))
+			if(mkdir($parts_output_path, 0760, true))
 				$result->messages[] = "Created output folder <b>".$parts_output_path."</b>";
 			else
 			{
@@ -244,7 +243,7 @@
 				// compress the map
 				$result->messages[] = "Compressing <b>".$map_file."</b>...";
 
-				$output_file = $compressed_file_dir."/".$map_file_name.".zip";
+				$output_file = $map_compressed_dir."/".$map_file_name.".zip";
 
 				if(!CompressFiles(array($map_file, $map_file_name.".".$map_file_extension), $output_file, 0))
 				{
@@ -346,7 +345,7 @@
 
 		$map_entry_update->map_compressed_size = $map_definition->compressed_size;
 		$map_entry_update->map_compression_type = $map_definition->algorithm;
-		$map_entry_update->map_parts_path = $http_parts_path."/".$map_file_name;
+		$map_entry_update->map_parts_path = $map_parts_path."/".$map_file_name;
 		$map_entry_update->map_part_count = count($map_definition->part);
 
 		$map_entry_update->ExecuteQuery(array($file_id));
