@@ -45,6 +45,8 @@
 //////////////////////////////////////////////////////////////////////////
 // 0x40 Objects		__EL_OBJECTS_
 #define __EL_INCLUDE_OBJECTS	0x40
+	#define __EL_OBJECTS_GRENADE_TYPES_UPGRADE	(__EL_INCLUDE_OBJECTS + 0)
+	#define __EL_OBJECTS_EQUIPMENT				(__EL_INCLUDE_OBJECTS + 1)
 
 
 //////////////////////////////////////////////////////////////////////////

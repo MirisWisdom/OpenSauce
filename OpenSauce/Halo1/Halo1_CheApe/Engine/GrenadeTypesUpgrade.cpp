@@ -9,20 +9,23 @@
 
 #include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+#include <blamlib/Halo1/units/unit_structures.hpp>
 
 #include "TagGroups/TagGroups.hpp"
 
 namespace Yelo
 {
+	namespace Objects
+	{
+#define __EL_INCLUDE_ID			__EL_INCLUDE_OBJECTS
+#define __EL_INCLUDE_FILE_ID	__EL_OBJECTS_GRENADE_TYPES_UPGRADE
+#include "Memory/_EngineLayout.inl"
+#if FALSE
+#include <YeloLib/Halo1/units/units_grenade_count_upgrade.inl>
+#endif
+	};
+
 	namespace Objects { namespace Items {
-
-		// cmp     dword ptr [esi+128h], 2
-		// modify the jz to be jge
-		// jz      short 48D579
-		FUNC_PTR(GAME_GLOBALS_POSTPROCESS_GRENADE_COUNT_MOD, 0x491751, 0x48D561, 0x5A7951);
-		ENGINE_PTR(string_list, global_grenade_type_enum, 0x9D1728, 0x6DE850, 0xA496A8);
-		ENGINE_PTR(tag_block_definition, grenades_block, 0x9D237C, 0x6DF4A4, 0xA4A2FC);
-
 		// How many new types OS adds
 		static const int k_unit_grenade_types_new_count = Enums::k_unit_grenade_types_count_yelo - Enums::k_unit_grenade_types_count;
 
@@ -113,6 +116,9 @@ namespace Yelo
 			//////////////////////////////////////////////////////////////////////////
 			// Make the postprocess not error out on grenade_types.count != 2
 			// TODO: Ideally, we should hook this part of the code to do our own checks with our own error, but bigger fish to fry right now
+			// cmp     dword ptr [esi+128h], 2
+			// modify the jz to be jge
+			// jz      short 48D579
 			byte* game_globals_postprocess_jmp_mod = CAST_PTR(byte*, GET_FUNC_VPTR(GAME_GLOBALS_POSTPROCESS_GRENADE_COUNT_MOD));
 			// jge : jz
 			*game_globals_postprocess_jmp_mod = enabled ? 0x7D : 0x74;
