@@ -70,8 +70,8 @@ CREATE TABLE IF NOT EXISTS `map_server_users` (
   `index` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
   `password_hash` varchar(255) NOT NULL,
-  `user_control_permissions` int(11) unsigned NOT NULL DEFAULT '0',
-  `map_database_permissions` int(11) unsigned NOT NULL DEFAULT '0',
+  `user_control_permissions` int(11) unsigned DEFAULT '0',
+  `map_database_permissions` int(11) unsigned DEFAULT '0',
   PRIMARY KEY (`index`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
