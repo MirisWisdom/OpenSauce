@@ -151,6 +151,7 @@
 		</Configuration>
 		<Configuration
 			Name="DebugTool|Win32"
+			OutputDirectory="..\..\..\..\..\..\Program Files\Microsoft Games\Halo Custom Edition"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			CharacterSet="2"
@@ -220,6 +221,7 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseTool|Win32"
+			OutputDirectory="..\..\..\..\..\..\Program Files\Microsoft Games\Halo Custom Edition"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			CharacterSet="2"
@@ -288,6 +290,7 @@
 		</Configuration>
 		<Configuration
 			Name="DebugGuerilla|Win32"
+			OutputDirectory="..\..\..\..\..\..\Program Files\Microsoft Games\Halo Custom Edition"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			CharacterSet="2"
@@ -355,6 +358,7 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseGuerilla|Win32"
+			OutputDirectory="..\..\..\..\..\..\Program Files\Microsoft Games\Halo Custom Edition"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			CharacterSet="2"
@@ -422,6 +426,7 @@
 		</Configuration>
 		<Configuration
 			Name="DebugSapien|Win32"
+			OutputDirectory="..\..\..\..\..\..\Program Files\Microsoft Games\Halo Custom Edition"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			CharacterSet="2"
@@ -490,6 +495,7 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseSapien|Win32"
+			OutputDirectory="..\..\..\..\..\..\Program Files\Microsoft Games\Halo Custom Edition"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			CharacterSet="2"
@@ -563,6 +569,14 @@
 		<Filter
 			Name="Engine"
 			>
+			<File
+				RelativePath=".\Engine\AnimationUpgrade.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Engine\AnimationUpgrade.hpp"
+				>
+			</File>
 			<File
 				RelativePath=".\Engine\EngineFunctions.cpp"
 				>
@@ -2144,10 +2158,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Memory\_EngineLayout.Objects.inl"
-					>
-				</File>
-				<File
 					RelativePath=".\Memory\_EngineLayout.OpenSauce.inl"
 					>
 				</File>
@@ -2671,14 +2681,6 @@
 						>
 					</File>
 				</Filter>
-			</Filter>
-			<Filter
-				Name="units"
-				>
-				<File
-					RelativePath="..\..\shared\Include\YeloLib\Halo1\units\units_grenade_count_upgrade.inl"
-					>
-				</File>
 			</Filter>
 		</Filter>
 		<File

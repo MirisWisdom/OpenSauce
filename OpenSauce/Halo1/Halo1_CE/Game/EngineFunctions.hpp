@@ -430,6 +430,20 @@ namespace Yelo
 
 			// Returns the number of frames remaining in an unit's custom animation
 			int16 UnitGetCustomAnimationTime(datum_index unit_index);
+			
+			bool UnitCanEnterSeat(datum_index unit_index, datum_index vehicle_index, int32 vehicle_seat_index, datum_index* unit_in_seat);
+
+			bool UnitEnterSeat(datum_index unit_index, datum_index vehicle_index, int32 vehicle_seat_index);
+			
+            void UnitExitVehicle(datum_index unit_index);
+
+			bool UnitAnimationSetState(datum_index unit_index, int32 animation_state);
+
+			bool UnitOpen(datum_index unit_index);
+
+			bool UnitClose(datum_index unit_index);
+
+			int16 UnitFindNearbySeat(datum_index unit_index, datum_index vehicle_index, int16* seat_index);
 		};
 
 		namespace Physics
@@ -454,6 +468,10 @@ namespace Yelo
 			// Get the player datum_index of the closest player relative to player
 			// represented by the [player_index] datum_index parameter
 			datum_index FindClosestPlayerIndex(datum_index player_index);
+
+			void PlayerSetActionResult(datum_index player_index, datum_index action_object_index, int32 action_result, int32 action_seat_index);
+			
+			void PlayerSetActionResultToNetwork(datum_index player_index, datum_index action_object_index, int32 unknown, int32 action_result, int32 action_seat_index, datum_index next_weapon_index);
 		};
 
 		namespace Scenario

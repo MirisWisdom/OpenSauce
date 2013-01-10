@@ -66,7 +66,24 @@ namespace Yelo
 			_unit_animation_state_unknown42,		// unused AFAICT
 			_unit_animation_state_berserk,
 
-			_unit_animation_state
+			_unit_animation_state,
+
+			// custom unit animation states
+			_unit_animation_state_yelo_seat_board,
+
+			_unit_animation_state_yelo,
+		};
+
+		enum unit_overlay_animation_state : sbyte
+		{
+			_unit_overlay_animation_state_fire_1 = 1,
+			_unit_overlay_animation_state_fire_2,
+			_unit_overlay_animation_state_charged_1,
+			_unit_overlay_animation_state_charged_2,
+			_unit_overlay_animation_state_chamber_1,
+			_unit_overlay_animation_state_chamber_2,
+
+			_unit_overlay_animation_state
 		};
 
 		enum unit_camo_regrowth : _enum
@@ -140,15 +157,18 @@ namespace Yelo
 			TStructGetPtrImpl(sbyte,				WeaponTypeIndex, 0xA);	// 0x2A2
 			//////////////////////////////////////////////////////////////////////////
 			TStructGetPtrImpl(sbyte,				AnimationState, 0xB);	// 0x2A3 [Enums::unit_animation_state]
-			//TStructGetPtrImpl(sbyte,				, 0xC);					// 0x2A4
-			//TStructGetPtrImpl(sbyte,				, 0xD);					// 0x2A5
+			TStructGetPtrImpl(sbyte,			ReplacementAnimationState, 0xC);	// 0x2A4
+			TStructGetPtrImpl(sbyte,			OverlayAnimationState, 0xD);// 0x2A5
 			TStructGetPtrImpl(byte,				DesiredAnimationState, 0xE);// 0x2A6, set from s_unit_control_data's animation_state
 			//TStructGetPtrImpl(sbyte,				, 0xF);					// 0x2A7
 			//TStructGetPtrImpl(sbyte,				, 0x10);				// 0x2A8
 			//PAD8?
-			TStructGetPtrImpl(s_animation_state,	PingState, 0x12);		// 0x2AA
-			//TStructGetPtrImpl(s_animation_state,	, 0x16);				// 0x2AE
-			TStructGetPtrImpl(s_animation_state,	FpWeaponState, 0x1A);	// 0x2B2
+			TStructGetPtrImpl(uint16,			ReplacementAnimationIndex, 0x12);	// 0x2AA animation index
+            TStructGetPtrImpl(uint16,           ReplacementAnimationFrameIndex, 0x14);  // 0x2AC
+            TStructGetPtrImpl(uint16,           OverlayAnimationIndex, 0x16);       // 0x2AE
+            TStructGetPtrImpl(uint16,           OverlayAnimationFrameIndex, 0x18);  // 0x2B0
+			TStructGetPtrImpl(int16,				WeaponIK, 0x1A);				// 0x2B2
+			// 0x1C?
 			//TStructGetPtrImpl(byte?,				, 0x1E);				// 0x2B6 look related
 			//TStructGetPtrImpl(byte?,				, 0x1F);				// 0x2B7 aim related
 			TStructGetPtrImpl(real_rectangle2d,		LookingBounds, 0x20);	// 0x2B8

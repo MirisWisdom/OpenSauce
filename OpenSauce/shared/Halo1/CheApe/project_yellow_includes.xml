@@ -154,6 +154,9 @@
 		<!--modify the unused members of the animation state definition tables to provide support for unit infections-->
 		<fixup name="_fixup_animation_graph_animation_state.unused52"			type="StringPtr"
 			guerilla="0x9D7980" tool="0x6BB668" sapien="0xA4F158" definition="infect" />
+		<!--modify the unit_seat_animation_block_name_table to name new animation states (original maxcount=0x1E)-->
+		<fixup name="_fixup_animation_graph_unit_seat_animation_block.max_count"	type="Pointer" 
+			guerilla="0x9D7140" tool="0x6BAE28" sapien="0xA4E918" definition="0x20" />
 		<!-- <fixup name="_fixup_animation_graph_animation_state.unused53"			type="StringPtr"
 			guerilla="0x9D7988" tool="0x6BB670" sapien="0xA4F160" definition="" /> -->
 
