@@ -6,6 +6,11 @@
 */
 #include "Common/Precompile.hpp"
 #include "Game/AI.hpp"
+#include "Objects/Objects.hpp"
+#include "Objects/Units.hpp"
+#include "TagGroups/TagGroups.hpp"
+
+#include "TagGroups/project_yellow_definitions.hpp"
 
 #include "Memory/MemoryInterface.hpp"
 
@@ -38,6 +43,15 @@ namespace Yelo
 #if !PLATFORM_DISABLE_UNUSED_CODE
 			Memory::CreateHookRelativeCall(&AI::Update, GET_FUNC_VPTR(AI_UPDATE_HOOK), Enums::_x86_opcode_retn);
 #endif
+            static const byte k_null_bytes[7] = {
+                    Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
+                    Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
+                    Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
+                    Enums::_x86_opcode_nop
+            };
+
+            Memory::WriteMemory(GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), k_null_bytes, sizeof(k_null_bytes));
+			Memory::WriteRelativeCall(&ActorActionHandleVehicleExitHook, GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), true);
 		}
 
 		void Dispose()
@@ -46,6 +60,36 @@ namespace Yelo
 
 		void PLATFORM_API Update()
 		{
+		}
+
+		API_FUNC_NAKED void PLATFORM_API ActorActionHandleVehicleExitHook()
+		{
+			__asm {
+				pushad
+				push	ecx		// datum_index unit_index
+				call	ActorActionHandleVehicleExitBoardingSeat
+				popad
+
+				retn
+			}
+		}
+
+		void ActorActionHandleVehicleExitBoardingSeat(datum_index unit_index)
+		{
+			Objects::s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
+
+			datum_index parent_unit_index = unit->object.parent_object_index;
+			int16 seat_index = unit->unit.vehicle_seat_index;
+
+			TagGroups::s_unit_external_upgrades const* unit_upgrades_definition = 
+				Objects::Units::DefinitionFindUnitUpgradesBlock(parent_unit_index);
+
+			// Check if a unit upgrades definition exists for the vehicle the actor is in
+			if (unit_upgrades_definition != NULL)
+				return;
+			// If a unit upgrades definition does not exist, exit the vehicle like normal
+			else
+				*unit->unit.animation.GetAnimationState() = Enums::_unit_animation_state_seat_exit;
 		}
 	};
 };

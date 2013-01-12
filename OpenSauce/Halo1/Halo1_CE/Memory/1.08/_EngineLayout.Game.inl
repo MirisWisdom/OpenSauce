@@ -21,7 +21,8 @@
 	ENGINE_DPTR(s_ai_communication_replies_data, ai_communication_replies,	0x68BB94, 0x5F43DC);
 	ENGINE_DPTR(t_ai_conversation_data, ai_conversations,					0x81B3D4, 0x6E72D4);
 
-	FUNC_PTR(AI_UPDATE_HOOK, 0x42A949, 0x42A959);
+	FUNC_PTR(AI_UPDATE_HOOK,						0x42A949, 0x42A959);
+	FUNC_PTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK,	0x40B701, 0x40B711);
 
 
 //////////////////////////////////////////////////////////////////////////
