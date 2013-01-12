@@ -43,7 +43,7 @@ namespace Yelo
 #if !PLATFORM_DISABLE_UNUSED_CODE
 			Memory::CreateHookRelativeCall(&AI::Update, GET_FUNC_VPTR(AI_UPDATE_HOOK), Enums::_x86_opcode_retn);
 #endif
-            static const byte k_null_bytes[7] = {
+			static const byte k_null_bytes[7] = {
                     Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
                     Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
                     Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
@@ -86,10 +86,26 @@ namespace Yelo
 
 			// Check if a unit upgrades definition exists for the vehicle the actor is in
 			if (unit_upgrades_definition != NULL)
-				return;
-			// If a unit upgrades definition does not exist, exit the vehicle like normal
-			else
-				*unit->unit.animation.GetAnimationState() = Enums::_unit_animation_state_seat_exit;
+			{
+				// Check if the seat the actor is in is being boarded
+				for (int i = 0; i < unit_upgrades_definition->boarding_seats.Count; i++)
+				{
+					int16 boarding_seat_index = unit_upgrades_definition->boarding_seats[i].seat_index;
+					int16 target_seat_index = unit_upgrades_definition->boarding_seats[i].target_seat_index;
+
+					if (seat_index == target_seat_index)
+					{
+						datum_index boarding_unit = Objects::Units::GetUnitInSeat(parent_unit_index, boarding_seat_index);
+
+						// If the seat is being boarded, prevent ai from exiting
+						if (boarding_unit != datum_index::null)
+							return;
+					}
+				}
+			}
+
+			// Exit the vehicle like normal if conditions haven't been met
+			*unit->unit.animation.GetAnimationState() = Enums::_unit_animation_state_seat_exit;
 		}
 	};
 };

@@ -43,7 +43,7 @@ namespace Yelo
 			// new animation block names
 			unit_seat_animation_block_name_table[k_unit_seat_animation_block_count].name = (cstring)"board";
 			unit_seat_animation_block_name_table[k_unit_seat_animation_block_count].type = 0;
-			unit_seat_animation_block_name_table[k_unit_seat_animation_block_count+1].name = (cstring)"eject";
+			unit_seat_animation_block_name_table[k_unit_seat_animation_block_count+1].name = (cstring)"ejection";
 			unit_seat_animation_block_name_table[k_unit_seat_animation_block_count+1].type = 0;
 		}
 		
