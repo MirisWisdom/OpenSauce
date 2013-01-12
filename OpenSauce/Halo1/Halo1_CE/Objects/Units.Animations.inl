@@ -298,6 +298,7 @@ namespace Animations
 		s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
 
 		datum_index parent_unit_index = unit->object.parent_object_index;
+		s_unit_datum* parent_unit = (*Objects::ObjectHeader())[parent_unit_index]->_unit;
 		int16 seat_index = unit->unit.vehicle_seat_index;
 
 		TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
@@ -336,6 +337,10 @@ namespace Animations
 						target_unit->object.animation.state.frame_index = 0;
 						*target_unit->unit.animation.GetAnimationState() = Yelo::Enums::_unit_animation_state_seat_exit;
 
+						// keep the vehicle powered on during boarding
+						parent_unit->unit.powered_seats_riders[0] = unit_index;
+						parent_unit->unit.powered_seats_power[0] = 1.0f;
+
 						// Ask korn wtf is going on with these
 						if (boarding_seat_definition->flags.boarding_depletes_shield_bit)
 							Engine::Objects::DepleteShield(target_unit_index);
@@ -362,8 +367,8 @@ namespace Animations
 		// Force the unit into the target seat
 		if (boarding_seat_definition != NULL)
 		{
-			Yelo::Engine::Objects::UnitEnterSeat
-				(unit_index, parent_unit_index, boarding_seat_definition->target_seat_index);
+			int16 target_seat_index = boarding_seat_definition->target_seat_index;
+			Yelo::Engine::Objects::UnitEnterSeat(unit_index, parent_unit_index, target_seat_index);
 			
 			// Close the vehicle if boarding controls open/close
 			if (boarding_seat_definition->flags.controls_open_and_close_bit)

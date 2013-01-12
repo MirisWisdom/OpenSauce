@@ -17,11 +17,11 @@
 		</Flag>
 		
 		<Flag name="unit_boarding_seat_flags">
-			<field>boarding_ejects_target_seat</field>
-			<field>boarding_enters_target_seat</field>
-			<field>boarding_kills_passenger</field>
-			<field>boarding_depletes_shield</field>
-			<field>controls_open_and_close</field>
+			<field>boarding ejects target seat</field>
+			<field>boarding enters target seat</field>
+			<field>boarding kills passenger</field>
+			<field>boarding depletes shield</field>
+			<field>controls open and close</field>
 		</Flag>
 	</flags>
 
@@ -80,10 +80,10 @@
 		<TagBlock name="unit_boarding_seat_block" maxElements="32">
 			<field type="WordFlags" name="flags" definition="unit_boarding_seat_flags" />
 			<field type="Pad" definition="2" />
-			<field type="Pad" definition="2" /> <!-- ShortInteger seat_index -->
-			<field type="Pad" definition="2" /> <!-- ShortInteger target_seat_index -->
-			<field type="String" name="seat_label" blockname="true" />
-			<field type="String" name="target_seat_label" />
+			<field type="Pad" definition="2" /> <!-- ShortInteger seat index -->
+			<field type="Pad" definition="2" /> <!-- ShortInteger target seat index -->
+			<field type="String" name="seat label" blockname="true" tooltip="label of the boarding seat in the unit tag" />
+			<field type="String" name="target seat label" tooltip="label of the target seat in the unit tag" />
 			
 			<field type="Pad" definition="24" />
 		</TagBlock>
@@ -164,7 +164,7 @@
 
 			<field type="Explanation" name="Misc" definition="" />
 			<field type="Block" name="unit infections" definition="unit_infections_block" />
-			<field type="Block" name="unit upgrades" definition="unit_external_upgrades_block" />
+			<field type="Block" name="unit external upgrades" definition="unit_external_upgrades_block" />
 
 			<!--<field type="Block" name="dual wielding" definition="dual_wield_weapon_block" />-->
 			<!--<field type="Block" name="object damage extensions" definition="object_damage_extension_block" />-->
