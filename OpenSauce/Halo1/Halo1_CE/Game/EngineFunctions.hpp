@@ -150,6 +150,7 @@ namespace Yelo
 			// block										increment software_reference_count
 			bool block_thread = false, bool load = true, bool reference = false);
 
+		const char* GetMapExtension();
 		void MapListAddMap(cstring map_name, cstring extension = ".map", bool skip_crc = false, int32 map_index = 0x13);
 
 		// adds a resolution definition to the resolution list
