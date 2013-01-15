@@ -102,6 +102,31 @@ uint32 CalculateCRC(const char* cache_file_path)
 	FileIO::CloseFile(map_file);
 
 	return map_crc;
+}
 
+/*!
+ * \brief
+ * Function that overrides Halos stock Map CRC function for a faster alternative.
+ * 
+ * \param map_name
+ * The name of the map to crc without its extension or directory.
+ * 
+ * \param crc_out
+ * Pointer to the crc value to set.
+ * 
+ * Function that overrides Halos stock Map CRC function for a faster alternative.
+ */
+void _cdecl CRCMapOverride(const char* map_name, int32* crc_out)
+{
+	char map_file_path[MAX_PATH] = "";
+
+	// build the map name with its extension
+	if(-1 == strcpy_s(map_file_path, MAX_PATH, map_name))
+		return;
+	// the extenaions can be either .map or .yelo, we cannot assume one or the other
+	if(-1 == strcat_s(map_file_path, MAX_PATH, Engine::GetMapExtension()))
+		return;
+	// calculate the maps CRC
+	*crc_out = CalculateCRC(map_file_path);
 }
 #undef TAG_ADDRESS
