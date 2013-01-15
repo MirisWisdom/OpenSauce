@@ -96,6 +96,11 @@ bool SoundCacheRequestSound(Yelo::TagGroups::s_sound_permutation* sound_perm,
 #endif
 }
 
+const char* GetMapExtension()
+{
+	return GET_PTR2(MAP_LIST_MAP_EXTENSION);
+}
+
 void MapListAddMap(cstring map_name, cstring extension, bool skip_crc, int32 map_index)
 {
 	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(MAP_LIST_ADD_MAP);
