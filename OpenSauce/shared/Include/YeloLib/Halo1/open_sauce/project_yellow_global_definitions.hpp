@@ -158,8 +158,6 @@ namespace Yelo
 			{
 				TAG_FLAG16(boarding_ejects_target_seat);
 				TAG_FLAG16(boarding_enters_target_seat);
-				TAG_FLAG16(boarding_kills_passenger);
-				TAG_FLAG16(boarding_depletes_shield);
 				TAG_FLAG16(controls_open_and_close);
 			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(word_flags) );
 
@@ -169,12 +167,13 @@ namespace Yelo
 			TAG_FIELD(int16, target_seat_index);
 			TAG_FIELD(tag_string, seat_label);
 			TAG_FIELD(tag_string, target_seat_label);
-			TAG_PAD(int32, 6);
-		}; BOOST_STATIC_ASSERT( sizeof(s_unit_boarding_seat) == 0x60 ); // max count: 32
+			TAG_FIELD(tag_reference, boarding_damage, "jpt!");
+			TAG_PAD(int32, 8);
+		}; BOOST_STATIC_ASSERT( sizeof(s_unit_boarding_seat) == 0x78 ); // max count: 32
 
 		struct s_unit_external_upgrades
 		{
-			TAG_FIELD(tag_reference, unit, "obje");
+			TAG_FIELD(tag_reference, unit, "unit");
 			TAG_TBLOCK(boarding_seats, s_unit_boarding_seat);
 			TAG_PAD(int32, 9);
 		}; BOOST_STATIC_ASSERT( sizeof(s_unit_external_upgrades) == 0x40 ); // max count: 64

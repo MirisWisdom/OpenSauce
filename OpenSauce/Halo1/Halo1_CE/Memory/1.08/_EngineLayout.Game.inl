@@ -325,8 +325,6 @@ namespace Fov
 		const void**, PLATFORM_VALUE(0x47B364, 0x472DE4)
 	);
 
-	FUNC_PTR(PLAYER_EXAMINE_NEARBY_VEHICLE_HOOK,		0x47B487, 0x472F07);
-
 	//////////////////////////////////////////////////////////////////////////
 	// Players.ActionResults
 	FUNC_PTR(PLAYER_HANDLE_ACTION_JMP_TABLE_ADJUST_SIZE,	0x47C173, 0x473BF3);

@@ -19,8 +19,6 @@
 		<Flag name="unit_boarding_seat_flags">
 			<field>boarding ejects target seat</field>
 			<field>boarding enters target seat</field>
-			<field>boarding kills passenger</field>
-			<field>boarding depletes shield</field>
 			<field>controls open and close</field>
 		</Flag>
 	</flags>
@@ -84,8 +82,9 @@
 			<field type="Pad" definition="2" /> <!-- ShortInteger target seat index -->
 			<field type="String" name="seat label" blockname="true" tooltip="label of the boarding seat in the unit tag" />
 			<field type="String" name="target seat label" tooltip="label of the target seat in the unit tag" />
+			<field type="TagReference" name="boarding damage" definition="damage_effect_reference" tooltip="damage effect dealt to the unit in the target seat during boarding" />
 			
-			<field type="Pad" definition="24" />
+			<field type="Pad" definition="32" />
 		</TagBlock>
 		<TagBlock name="unit_external_upgrades_block" maxElements="64">
 			<field type="TagReference" name="unit" definition="unit_reference" blockname="true" />

@@ -142,6 +142,7 @@ namespace Animations
 
 			// custom animation states
 			case Yelo::Enums::_unit_animation_state_yelo_seat_board:
+			case Yelo::Enums::_unit_animation_state_yelo_seat_ejection:
 				result = false;
 				break;
 			default:
@@ -176,6 +177,7 @@ namespace Animations
 
 			// custom animation states
 			case Yelo::Enums::_unit_animation_state_yelo_seat_board:
+			case Yelo::Enums::_unit_animation_state_yelo_seat_ejection:
 				result = true;
 				break;
 			default:
@@ -211,6 +213,7 @@ namespace Animations
 
 			// custom animation states
 			case Yelo::Enums::_unit_animation_state_yelo_seat_board:
+			case Yelo::Enums::_unit_animation_state_yelo_seat_ejection:
 				result = false;
 				break;
 			default:
@@ -254,6 +257,7 @@ namespace Animations
 
 			// custom animation states
 			case Yelo::Enums::_unit_animation_state_yelo_seat_board:
+			case Yelo::Enums::_unit_animation_state_yelo_seat_ejection:
 				result = false;
 				break;
 			default:
@@ -282,174 +286,26 @@ namespace Animations
 
 			// custom animation states
 			case Yelo::Enums::_unit_animation_state_yelo_seat_board:
+			case Yelo::Enums::_unit_animation_state_yelo_seat_ejection:
 				result = false;
 				break;
 			default:
 				return result;
 		}
-
+		
 		return result;
-	}
-
-	// Called on the primary_keyframe_index of the yelo_seat_board animation, 
-	// ejects the target unit from their seat
-	static void SeatBoardPrimaryKeyframe(datum_index unit_index)
-	{
-		s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
-
-		datum_index parent_unit_index = unit->object.parent_object_index;
-		s_unit_datum* parent_unit = (*Objects::ObjectHeader())[parent_unit_index]->_unit;
-		int16 seat_index = unit->unit.vehicle_seat_index;
-
-		TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
-			DefinitionFindUnitUpgradesBoardingSeatBlock(parent_unit_index, seat_index);
-
-		// Check if a boarding seat definition exists for the vehicle being exited
-		if (boarding_seat_definition != NULL)
-		{
-			int16 target_seat_index = boarding_seat_definition->target_seat_index;
-			datum_index target_unit_index = GetUnitInSeat(parent_unit_index, target_seat_index);
-			
-			// Check if a target_unit exists in the target_seat_index
-			if (target_unit_index != datum_index::null)
-			{
-				Yelo::Objects::s_unit_datum* target_unit = (*Objects::ObjectHeader())[target_unit_index]->_unit;
-				Yelo::TagGroups::model_animation_graph const* animation_graph = GetObjectAnimations(target_unit_index);
-				
-				// Check if an animation graph exists for the target unit
-				if (animation_graph != NULL)
-				{
-					sbyte animation_seat_block_index = *target_unit->unit.animation.GetSeatIndex();
-					int32 unit_seat_animation_count = animation_graph->units[animation_seat_block_index].animations.Count;
-
-					// Check if the target unit has an ejection animation to play
-					if (Yelo::Enums::_unit_seat_animation_yelo_ejection < unit_seat_animation_count)
-					{
-						int32 animation_index = animation_graph->units[animation_seat_block_index].
-							animations[Yelo::Enums::_unit_seat_animation_yelo_ejection];
-
-						// pick a random permutation of the ejection animation
-						animation_index = Yelo::Engine::AnimationPickRandomPermutation(true, 
-							target_unit->object.animation.definition_index, animation_index);
-
-						// set the target unit's animation to yelo_seat_ejection
-						target_unit->object.animation.state.animation_index = animation_index;
-						target_unit->object.animation.state.frame_index = 0;
-						*target_unit->unit.animation.GetAnimationState() = Yelo::Enums::_unit_animation_state_seat_exit;
-
-						// keep the vehicle powered on during boarding
-						parent_unit->unit.powered_seats_riders[0] = unit_index;
-						parent_unit->unit.powered_seats_power[0] = 1.0f;
-
-						// Ask korn wtf is going on with these
-						if (boarding_seat_definition->flags.boarding_depletes_shield_bit)
-							Engine::Objects::DepleteShield(target_unit_index);
-						if (boarding_seat_definition->flags.boarding_kills_passenger_bit)
-							Engine::Objects::DepleteBody(target_unit_index);
-					}
-				}
-			}
-		}
-	}
-
-	// Called on the final keyframe of the yelo_seat_board animation,
-	// forces the boarding unit into the target seat when the board animation is complete
-	static void SeatBoardFinalKeyframe(datum_index unit_index)
-	{
-		Yelo::Objects::s_unit_datum* unit = (*Yelo::Objects::ObjectHeader())[unit_index]->_unit;
-
-		datum_index parent_unit_index = unit->object.parent_object_index;
-		int16 seat_index = unit->unit.vehicle_seat_index;
-
-		Yelo::TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
-			Yelo::Objects::Units::DefinitionFindUnitUpgradesBoardingSeatBlock(parent_unit_index, seat_index);
-
-		// Force the unit into the target seat
-		if (boarding_seat_definition != NULL)
-		{
-			int16 target_seat_index = boarding_seat_definition->target_seat_index;
-			Yelo::Engine::Objects::UnitEnterSeat(unit_index, parent_unit_index, target_seat_index);
-			
-			// Close the vehicle if boarding controls open/close
-			if (boarding_seat_definition->flags.controls_open_and_close_bit)
-				Engine::Objects::UnitClose(parent_unit_index);
-		}
-	}
-
-	// Called on the final keyframe of the seat_enter animation, 
-	// determines if the seat is a boarding seat and whether or not to board the seat or eject the target unit
-	static void SeatEnterFinalKeyframe(datum_index unit_index, int32* next_animation_state)
-	{
-		s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
-
-		datum_index parent_unit_index = unit->object.parent_object_index;
-		int16 seat_index = unit->unit.vehicle_seat_index;
-
-		TagGroups::model_animation_graph const* animation_graph = GetObjectAnimations(unit_index);
-		TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
-			DefinitionFindUnitUpgradesBoardingSeatBlock(parent_unit_index, seat_index);
-
-		// Check if a boarding seat definition exists for the vehicle seat being entered
-		// and if an animation graph exists for the entering unit
-		if (boarding_seat_definition != NULL && animation_graph != NULL)
-		{
-			// Check if boarding ejects the target seat
-			if (boarding_seat_definition->flags.boarding_ejects_target_seat_bit)
-			{
-				sbyte seat_block_index = *unit->unit.animation.GetSeatIndex();
-				int32 unit_seat_animation_count = animation_graph->units[seat_block_index].animations.Count;
-
-				// Check if the unit has a board animation to play
-				if (Yelo::Enums::_unit_seat_animation_yelo_board < unit_seat_animation_count)
-				{
-					int32 animation_index = animation_graph->units[seat_block_index].
-						animations[Yelo::Enums::_unit_seat_animation_yelo_board];
-
-					// pick a random permutation of the boarding animation
-					animation_index = Yelo::Engine::AnimationPickRandomPermutation(true, 
-						unit->object.animation.definition_index, animation_index);
-
-					// set the unit's animation to yelo_board
-					Yelo::Engine::Objects::StartInterpolation(unit_index, 6);
-					unit->object.animation.state.animation_index = animation_index;
-					unit->object.animation.state.frame_index = 0;
-					// reset  the unit's overlay animations
-					*unit->unit.animation.GetOverlayAnimationIndex() = NONE;
-					*unit->unit.animation.GetOverlayAnimationState() = NONE;
-					*unit->unit.animation.GetReplacementAnimationIndex() = NONE;
-					*unit->unit.animation.GetReplacementAnimationState() = NONE;
-
-					// if boarding enters the target seat, use the seat_board animation state
-					if (boarding_seat_definition->flags.boarding_enters_target_seat_bit)
-					{
-						*unit->unit.animation.GetAnimationState() = Yelo::Enums::_unit_animation_state_yelo_seat_board;
-						*next_animation_state = Yelo::Enums::_unit_animation_state_yelo_seat_board;
-					}
-					// else, use the seat_exit animation state so we exit the vehicle when complete
-					else
-					{
-						*unit->unit.animation.GetAnimationState() = Yelo::Enums::_unit_animation_state_seat_exit;
-						*next_animation_state = Yelo::Enums::_unit_animation_state_seat_exit;
-					}
-				}
-
-				// Open the vehicle if boarding controls open/close
-				if (boarding_seat_definition->flags.controls_open_and_close_bit)
-					Engine::Objects::UnitOpen(parent_unit_index);
-			}
-		}
 	}
 
 	// Called on the primary_keyframe_index of the yelo_seat_board animation
 	static API_FUNC_NAKED void PLATFORM_API UnitUpdateAnimationPrimaryKeyframeSeatBoardJMP()
 	{
 		static uint32 RETN_ADDRESS = GET_FUNC_PTR(UNIT_UPDATE_ANIMATION_PRIMARY_KEYFRAME_SWITCH_RETN);
-
+		
 		__asm {
 			pushad
 
 			push	ebx		// datum_index boarding_unit_index
-			call	SeatBoardPrimaryKeyframe
+			call	Units::Boarding::SeatBoardPrimaryKeyframe
 
 			popad
 
@@ -466,7 +322,7 @@ namespace Animations
 			pushad
 
 			push	ebx		// datum_index unit_index
-			call	SeatBoardFinalKeyframe
+			call	Units::Boarding::SeatBoardFinalKeyframe
 
 			popad
 
@@ -489,7 +345,7 @@ namespace Animations
 
 			push	eax		// int32* next_animation_state
 			push	ebx		// datum_index unit_index
-			call	SeatEnterFinalKeyframe
+			call	Units::Boarding::SeatEnterFinalKeyframe
 
 			popad
 

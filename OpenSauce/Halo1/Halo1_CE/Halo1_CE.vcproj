@@ -3508,6 +3508,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Objects\Units.Boarding.inl"
+					>
+				</File>
+				<File
 					RelativePath=".\Objects\Units.GrenadeCounts.inl"
 					>
 				</File>
@@ -5269,6 +5273,14 @@
 				>
 				<File
 					RelativePath="..\..\shared\Include\YeloLib\Halo1\open_sauce\blam_memory_upgrades.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\open_sauce\project_yellow_global_cv_definitions.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\open_sauce\project_yellow_global_cv_definitions.hpp"
 					>
 				</File>
 				<File
