@@ -168,7 +168,7 @@ namespace Yelo
 		void LoadSettings(TiXmlElement* objects_element);
 		void SaveSettings(TiXmlElement* objects_element);
 
-		void MultiTeamVehiclesSet(bool enabled);
+		//void MultiTeamVehiclesSet(bool enabled);
 		void VehicleRemapperEnable(bool enabled);
 
 

@@ -308,6 +308,22 @@ void DoubleChargeShield(datum_index object_index)
 	}
 }
 
+void ObjectCauseDamage(Yelo::Objects::s_damage_data* damage_data, datum_index object_index, int32 node_index, int32 region_index, int32 damage_materials_index, int32 unknown)
+{
+	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_CAUSE_DAMAGE);
+
+	__asm {
+		push	unknown
+		push	damage_materials_index
+		push	region_index
+		push	node_index
+		push	object_index
+		push	damage_data
+		call	TEMP_CALL_ADDR
+		add		esp, 4 * 6
+	}
+}
+
 void DefinitionPredict(datum_index object_index)
 {
 	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(UNIT_GET_CAMERA_POSITION);
@@ -466,5 +482,19 @@ int16 UnitFindNearbySeat(datum_index unit_index, datum_index vehicle_index, int1
 		push	unit_index
 		call	TEMP_CALL_ADDR
 		add		esp, 4 * 3
+	}
+}
+
+void UnitExitSeatEnd(datum_index unit_index, bool unk2, bool unk3, bool unk4)
+{
+	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(UNIT_EXIT_SEAT_END);
+
+	__asm {
+		push	unk4
+		push	unk3
+		push	unk2
+		push	unit_index
+		call    TEMP_CALL_ADDR
+		add		esp, 4 * 4
 	}
 }

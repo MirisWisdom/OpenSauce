@@ -324,8 +324,6 @@ namespace Fov
 	static const void* *PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_JMP_TABLE = CAST_PTR(
 		const void**, PLATFORM_VALUE(0x47B374, 0x472DF4)
 	);
-
-	FUNC_PTR(PLAYER_EXAMINE_NEARBY_VEHICLE_HOOK,		0x47B497, 0x472F17);
 	
 	//////////////////////////////////////////////////////////////////////////
 	// Players.ActionResults

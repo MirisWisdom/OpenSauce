@@ -177,10 +177,10 @@ namespace Yelo
 			bool objects_update_ignore_player_pvs = Scenario::Scenario()->type == Enums::_scenario_type_main_menu && 
 				TagGroups::_global_yelo->flags.game_updates_ignore_player_pvs_hack_bit;
 			ObjectsUpdateIgnorePlayerPvs(objects_update_ignore_player_pvs);
-
+/*
 			bool mtv_disabled = TagGroups::_global_yelo->gameplay.flags.prohibit_multiteam_vehicles_bit;
 			MultiTeamVehiclesSet(!mtv_disabled);
-
+*/
 			bool use_jump_penalty_fix = TagGroups::_global_yelo_globals->flags.force_game_to_use_stun_jumping_penalty_bit;
 			UseBipedJumpPenalty(use_jump_penalty_fix);
 
@@ -256,7 +256,7 @@ namespace Yelo
 #endif
 		}
 
-		void MultiTeamVehiclesSet(bool enabled)
+/*		void MultiTeamVehiclesSet(bool enabled)
 		{
 			// jmp
 			static const byte k_enable_code[] = {0xEB};
@@ -265,6 +265,7 @@ namespace Yelo
 
 			Memory::WriteMemory(GET_FUNC_VPTR(UNIT_CAN_ENTER_SEAT_MOD), (enabled ? k_enable_code : k_disable_code), sizeof(k_enable_code));
 		}
+*/
 		void VehicleRemapperEnable(bool enabled)
 		{
 			// jnz eip+2+10

@@ -65,12 +65,14 @@ const size_t s_unit_data::k_offset_desired_zoom_level_yelo = FIELD_OFFSET(s_unit
 #define __EL_INCLUDE_ID			__EL_INCLUDE_OBJECTS
 #define __EL_INCLUDE_FILE_ID	__EL_OBJECTS_UNITS
 #include "Memory/_EngineLayout.inl"
+#include "Objects/Units.Boarding.inl"
 #include "Objects/Units.Animations.inl"
 #include "Objects/Units.GrenadeCounts.inl"
 
 		void Initialize()
 		{
 			Animations::Initialize();
+			Boarding::Initialize();
 		}
 
 		void Dispose()
