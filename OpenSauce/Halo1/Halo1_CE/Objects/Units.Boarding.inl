@@ -14,8 +14,8 @@ namespace Boarding
 		if (unit_index.IsNull())
 			return;
 
-		Yelo::Objects::s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
-		Yelo::TagGroups::model_animation_graph const* animation_graph = GetObjectAnimations(unit_index);
+		s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
+		TagGroups::model_animation_graph const* animation_graph = GetObjectAnimations(unit_index);
 		
 		// Check if an animation graph exists for the target unit
 		if (animation_graph != NULL)
@@ -148,13 +148,13 @@ namespace Boarding
 	// forces the boarding unit into the target seat when the board animation is complete
 	static void SeatBoardFinalKeyframe(datum_index unit_index)
 	{
-		Yelo::Objects::s_unit_datum* unit = (*Yelo::Objects::ObjectHeader())[unit_index]->_unit;
+		s_unit_datum* unit = (*Yelo::Objects::ObjectHeader())[unit_index]->_unit;
 
 		datum_index parent_unit_index = unit->object.parent_object_index;
 		int16 seat_index = unit->unit.vehicle_seat_index;
 
-		Yelo::TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
-			Yelo::Objects::Units::DefinitionFindUnitUpgradesBoardingSeatBlock(parent_unit_index, seat_index);
+		TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
+			Objects::Units::DefinitionFindUnitUpgradesBoardingSeatBlock(parent_unit_index, seat_index);
 
 		// Force the unit into the target seat
 		if (boarding_seat_definition != NULL)
@@ -167,7 +167,7 @@ namespace Boarding
 				Engine::Objects::UnitExitSeatEnd(target_unit_index, true, true, true);
 
 			// Enter the target seat
-			Yelo::Engine::Objects::UnitEnterSeat(unit_index, parent_unit_index, target_seat_index);
+			Engine::Objects::UnitEnterSeat(unit_index, parent_unit_index, target_seat_index);
 			
 			// Close the vehicle if boarding controls open/close
 			if (boarding_seat_definition->flags.controls_open_and_close_bit)
@@ -190,8 +190,6 @@ namespace Boarding
 		// Check if a boarding seat definition exists for the vehicle seat being entered
 		if (boarding_seat_definition != NULL)
 		{
-			int16 target_seat_index = boarding_seat_definition->target_seat_index;
-
 			// If boarding ejects the target seat, initiate the board sequence (plays board animation)
 			if (boarding_seat_definition->flags.boarding_ejects_target_seat_bit)
 				BoardUnitSeatIndex(boarding_seat_definition, unit_index, parent_unit_index);
@@ -209,7 +207,7 @@ namespace Boarding
 		}
 	}
 
-	// Replaces the engines unit_can_enter_seat function with our own to compensate for boarding
+	// Replaces the engines unit_can_enter_seat function with our own to compensate for boarding and multiteam vehicles
 	static bool UnitCanEnterSeat(datum_index unit_index, datum_index target_unit_index, int16 target_seat_index, datum_index* unit_in_seat)
 	{
 		bool result = true;
@@ -217,9 +215,9 @@ namespace Boarding
 		TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
 			Objects::Units::DefinitionFindUnitUpgradesBoardingSeatBlock(target_unit_index, target_seat_index);
 
-		Objects::t_object_header_data object_header = (*Objects::ObjectHeader());
-		Objects::s_unit_datum* unit = object_header[unit_index]->_unit;
-		Objects::s_unit_datum* target_unit = object_header[target_unit_index]->_unit;
+		t_object_header_data object_header = (*Objects::ObjectHeader());
+		s_unit_datum* unit = object_header[unit_index]->_unit;
+		s_unit_datum* target_unit = object_header[target_unit_index]->_unit;
 
 		datum_index first_object_index = target_unit->object.first_object_index;
 		
@@ -261,7 +259,7 @@ namespace Boarding
 		{
 			datum_index boarded_unit_index = GetUnitInSeat(target_unit_index, boarding_seat_definition->target_seat_index);
 
-			// If there is no unit to board or if they are an ally, disallow entry into the seat
+			// If there is no unit to board or if they are an ally, disallow entry into the boarding seat
 			if (boarded_unit_index == datum_index::null || !ObjectIsEnemy(unit_index, boarded_unit_index))
 				result = false;
 		}

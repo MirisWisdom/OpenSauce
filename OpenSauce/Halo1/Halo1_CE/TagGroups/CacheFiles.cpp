@@ -268,7 +268,7 @@ namespace Yelo
 
 			Memory::WriteRelativeCall(MapListInitialize, GET_FUNC_VPTR(MULTIPLAYER_MAP_LIST_INITIALIZE_CALL));
 
-			Memory::WriteRelativeCall(CRCMapOverride, GET_FUNC_VPTR(CALCULATE_MAP_CRC_CALL), true);
+			//Memory::WriteRelativeCall(CRCMapOverride, GET_FUNC_VPTR(CALCULATE_MAP_CRC_CALL), true);
 		}
 
 		void Dispose()
