@@ -186,10 +186,16 @@ is_invalid:
 			bool result = true;
 			long_enum version_id = 0;
 
-				 if( strstr(version_str, "1.00") ) version_id = _game_version_id_100;
-			else if( strstr(version_str, "1.07") ) version_id = _game_version_id_107;
-			else if( strstr(version_str, "1.08") ) version_id = _game_version_id_108;
-			else if( strstr(version_str, "1.09") ) version_id = _game_version_id_109;
+			// test for full version strings
+				 if( strcmp(version_str, k_game_build_numbers[0]) == 0) version_id = _game_version_id_100;
+			else if( strcmp(version_str, k_game_build_numbers[1]) == 0) version_id = _game_version_id_107;
+			else if( strcmp(version_str, k_game_build_numbers[2]) == 0) version_id = _game_version_id_108;
+			else if( strcmp(version_str, k_game_build_numbers[3]) == 0) version_id = _game_version_id_109;
+			// test for short version strings
+			else if( strstr(version_str, "1.00")) version_id = _game_version_id_100;
+			else if( strstr(version_str, "1.07")) version_id = _game_version_id_107;
+			else if( strstr(version_str, "1.08")) version_id = _game_version_id_108;
+			else if( strstr(version_str, "1.09")) version_id = _game_version_id_109;
 			else result = false;
 
 			if(result)

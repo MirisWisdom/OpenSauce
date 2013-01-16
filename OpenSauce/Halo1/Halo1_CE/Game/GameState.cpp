@@ -16,6 +16,7 @@
 #include "Game/ScriptLibrary.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameBuildNumber.hpp"
+#include "Networking/Networking.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 
 #include "TagGroups/TagGroups.hpp"
