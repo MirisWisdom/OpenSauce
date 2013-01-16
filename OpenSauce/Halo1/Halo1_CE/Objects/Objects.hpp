@@ -168,7 +168,7 @@ namespace Yelo
 		void LoadSettings(TiXmlElement* objects_element);
 		void SaveSettings(TiXmlElement* objects_element);
 
-		void MultiTeamVehiclesSet(bool enabled);
+		//void MultiTeamVehiclesSet(bool enabled);
 		void VehicleRemapperEnable(bool enabled);
 
 
@@ -202,6 +202,9 @@ namespace Yelo
 		void DetachChildrenByType(datum_index parent, long_flags object_type_mask);
 
 		size_t PredictMemoryPoolUsage(Enums::object_type type, int32 node_count, bool include_yelo_upgrades = false);
+		
+		// Checks to see if [unit_index_to_test] is an enemy of [unit_index]
+		bool ObjectIsEnemy(datum_index object_index, datum_index object_index_to_test);
 
 		namespace Weapon
 		{

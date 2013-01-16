@@ -399,5 +399,8 @@ namespace Yelo
 		void Initialize();
 		void Dispose();
 		void PLATFORM_API Update();
+		void PLATFORM_API ActorActionHandleVehicleExitHook();
+
+		void ActorActionHandleVehicleExitBoardingSeat(datum_index unit_index);
 	};
 };

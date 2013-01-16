@@ -28,6 +28,10 @@ namespace Yelo
 			_player_action_result_flip_vehicle,
 
 			_player_action_result,
+
+			// custom player action results
+
+			_player_action_result_yelo,
 		};
 	};
 
