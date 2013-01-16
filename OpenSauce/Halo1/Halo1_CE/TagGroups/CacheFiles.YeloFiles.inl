@@ -148,7 +148,7 @@ static void MapListInitializeYelo()
 	HANDLE h = FindFirstFileA("maps\\*.yelo", &fd);
 	if(h != INVALID_HANDLE_VALUE)
 	{
-		do Engine::MapListAddMap(fd.cFileName, ".yelo");
+		do Engine::Cache::MapListAddMap(fd.cFileName, ".yelo");
 		while(FindNextFileA(h, &fd));
 
 		FindClose(h);

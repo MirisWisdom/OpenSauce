@@ -268,7 +268,7 @@ namespace Yelo
 
 			Memory::WriteRelativeCall(MapListInitialize, GET_FUNC_VPTR(MULTIPLAYER_MAP_LIST_INITIALIZE_CALL));
 
-			Memory::WriteRelativeCall(CRCMapOverride, GET_FUNC_VPTR(CALCULATE_MAP_CRC_CALL), true);
+			*GET_PTR2(MAP_LIST_ADD_SKIP_CRC_JZ) = Enums::_x86_opcode_jmp_short;
 		}
 
 		void Dispose()
@@ -314,6 +314,18 @@ namespace Yelo
 				}
 
 				CloseHandle(f);
+
+				if(file_exists)
+				{
+					int map_entry_index = Engine::Cache::GetMapEntryIndexFromName(relative_map_name);
+					if(map_entry_index != 0xFFFFFFFF)
+					{
+						Cache::t_multiplayer_map_data* map_data = Cache::MultiplayerMaps();
+						Cache::s_multiplayer_map_entry* map_entry = (*map_data)[map_entry_index];
+						if(map_entry->crc == 0xFFFFFFFF)
+							map_entry->crc = Cache::CalculateCRC(map_path);
+					}
+				}
 			}
 
 			if(!result && exception_on_fail)

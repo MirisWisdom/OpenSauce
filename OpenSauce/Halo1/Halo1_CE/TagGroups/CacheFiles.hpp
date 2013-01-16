@@ -61,7 +61,7 @@ namespace Yelo
 		void MapListReIntialize();
 
 		uint32 CalculateCRC(void* cache_file);
-		uint32 CalculateCRC(const char* cache_file_path);
+		uint32 CalculateCRC(const char* cache_file_path, bool add_map_dir = false, bool add_extension = false);
 
 		// Reads the cache file [relative_map_name] from the maps folder, and returns true if its header is valid
 		// * If the cache file is made by OS tools, and the yelo header is invalid yelo_is_ok will be false

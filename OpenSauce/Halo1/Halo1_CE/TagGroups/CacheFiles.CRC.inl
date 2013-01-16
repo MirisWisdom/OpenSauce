@@ -77,14 +77,28 @@ uint32 CalculateCRC(void* cache_file)
  * 
  * Calculates a map cache's crc.
  */
-uint32 CalculateCRC(const char* cache_file_path)
+uint32 CalculateCRC(const char* cache_file_path, bool add_map_dir, bool add_extension)
 {
 	char map_path[MAX_PATH];
 
 	uint32 map_crc = 0xFFFFFFFF;
 
-	if(!FileIO::PathBuild(map_path, false, 2, "maps", cache_file_path))
-		return map_crc;
+	if(add_map_dir)
+	{
+		if(!FileIO::PathBuild(map_path, false, 2, "maps", cache_file_path))
+			return map_crc;
+	}
+	else
+	{
+		if(-1 == strcpy_s(map_path, MAX_PATH, cache_file_path))
+			return map_crc;
+	}
+
+	if(add_extension)
+	{
+		if(-1 == strcat_s(map_path, MAX_PATH, Engine::Cache::GetMapExtension()))
+			return map_crc;
+	}
 
 	FileIO::s_file_info map_file;
 	//do-while-false for simpler cleanup
@@ -102,31 +116,5 @@ uint32 CalculateCRC(const char* cache_file_path)
 	FileIO::CloseFile(map_file);
 
 	return map_crc;
-}
-
-/*!
- * \brief
- * Function that overrides Halos stock Map CRC function for a faster alternative.
- * 
- * \param map_name
- * The name of the map to crc without its extension or directory.
- * 
- * \param crc_out
- * Pointer to the crc value to set.
- * 
- * Function that overrides Halos stock Map CRC function for a faster alternative.
- */
-void _cdecl CRCMapOverride(const char* map_name, int32* crc_out)
-{
-	char map_file_path[MAX_PATH] = "";
-
-	// build the map name with its extension
-	if(-1 == strcpy_s(map_file_path, MAX_PATH, map_name))
-		return;
-	// the extenaions can be either .map or .yelo, we cannot assume one or the other
-	if(-1 == strcat_s(map_file_path, MAX_PATH, Engine::GetMapExtension()))
-		return;
-	// calculate the maps CRC
-	*crc_out = CalculateCRC(map_file_path);
 }
 #undef TAG_ADDRESS
