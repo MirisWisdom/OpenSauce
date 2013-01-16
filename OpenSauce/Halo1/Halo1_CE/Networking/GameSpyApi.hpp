@@ -458,6 +458,12 @@ namespace Yelo
 			// Remarks: GameSpy SDK says all custom keys should be registered prior to (the engine) calling (its gamespy) qr2_init
 			// However, I don't see anything in its code that would suggest later registration could bork things up
 			void qr2_register_key(Enums::gamespy_qr_field keyid, cstring key);
+
+			bool	SBServerGetBoolValue(s_gamespy_server* server, const char* key, bool def);
+			int		SBServerGetIntValue(s_gamespy_server* server, const char* key, int def);
+			cstring	SBServerGetStringValue(s_gamespy_server* server, const char* key, cstring def);
+
+			s_gamespy_server*	GetGSServerByIP(const char* ip, short port);
 		};
 	};
 };

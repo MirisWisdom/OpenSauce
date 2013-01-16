@@ -277,6 +277,7 @@ namespace Fov
 	FUNC_PTR(GAME_DISPOSE_FROM_OLD_MAP_HOOK,							0x45C060, 0x458A18);
 
 	FUNC_PTR(GAME_SERVER_QR2_STRING_MATCHES_GAMEVER_CALL,				0x4BA7CB, FUNC_PTR_NULL);
+	FUNC_PTR(CREATE_NETWORK_CLIENT_HOOK,								0x4DC0AB, FUNC_PTR_NULL);
 
 
 //////////////////////////////////////////////////////////////////////////

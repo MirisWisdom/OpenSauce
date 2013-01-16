@@ -169,6 +169,40 @@ _return:
 					call	FUNCTION
 				API_FUNC_NAKED_END_CDECL(2)
 			}
+
+			API_FUNC_NAKED _enum	SBServerGetBoolValue(s_gamespy_server* server, const char* key, _enum def)
+			{
+				static const uintptr_t FUNCTION = GET_FUNC_PTR(SBSERVER_GET_BOOL_VALUE);
+
+				API_FUNC_NAKED_START()
+					push	def
+					push	key
+					push	server
+					call	FUNCTION
+				API_FUNC_NAKED_END_CDECL(3)
+			}
+			API_FUNC_NAKED int		SBServerGetIntValue(s_gamespy_server* server, const char* key, int def)
+			{
+				static const uintptr_t FUNCTION = GET_FUNC_PTR(SBSERVER_GET_INT_VALUE);
+
+				API_FUNC_NAKED_START()
+					push	def
+					push	key
+					push	server
+					call	FUNCTION
+				API_FUNC_NAKED_END_CDECL(3)
+			}
+			API_FUNC_NAKED cstring	SBServerGetStringValue(s_gamespy_server* server, const char* key, cstring def)
+			{
+				static const uintptr_t FUNCTION = GET_FUNC_PTR(SBSERVER_GET_STRING_VALUE);
+
+				API_FUNC_NAKED_START()
+					push	def
+					push	key
+					push	server
+					call	FUNCTION
+				API_FUNC_NAKED_END_CDECL(3)
+			}
 		};
 	};
 };
