@@ -73,6 +73,10 @@ namespace Yelo
 		{
 			Animations::Initialize();
 			Boarding::Initialize();
+			
+			static const byte opcode_null[] = { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 };
+
+			Memory::WriteMemory(GET_FUNC_VPTR(BIPED_UPDATE_CHECK_PARENT_UNIT_TYPE), opcode_null, 6);
 		}
 
 		void Dispose()

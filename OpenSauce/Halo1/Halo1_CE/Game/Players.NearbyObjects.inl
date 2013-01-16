@@ -43,10 +43,23 @@ namespace NearbyObjects
 		// set the game's client jump table address to our's
 		GET_PTR(player_examine_nearby_objects_client_jmp_ptr) = player_examine_nearby_objects_client_jmp_table_yelo;
 	}
+	
+	// Initializes new yelo nearby object detection
+	void InitializeYeloNearbyObjects()
+	{
+		// Detect nearby biped objects server side for seat entry
+		player_examine_nearby_objects_server_jmp_table_yelo[Yelo::Enums::_object_type_biped] = 
+			(void*)PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_JMP_TABLE[1];
+		// Detect nearby biped objects client side for seat entry
+		player_examine_nearby_objects_client_jmp_table_yelo[Yelo::Enums::_object_type_biped] = 
+			(void*)PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_JMP_TABLE[1];
+	}
 
 	void Initialize()
 	{
 		InitializePlayerExamineNearbyObjectsServerJmpTable();
 		InitializePlayerExamineNearbyObjectsClientJmpTable();
+		
+		InitializeYeloNearbyObjects();
 	}
 };
