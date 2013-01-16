@@ -253,6 +253,8 @@ namespace BlamLib.Managers
 		public void Manage(TagGroup tag_group)
 		{
 			if (tagDefinition != null) tagDefinition = null;
+			if(tag_group.Definition == null)
+				Debug.Assert.If(false, "Tried to manage a tag using a group ({2}) with no definition. {0}:{1}", engine, this.Path, tag_group);
 
 			tagDefinition = tag_group.Definition.NewInstance(null);
 			tagGroupAttr = TagGroupAttribute.FromType(tagDefinition.GetType());

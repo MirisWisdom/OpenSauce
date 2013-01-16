@@ -168,28 +168,3 @@ bool GetCmdLineParameter(cstring parameter, cstring* value_out)
 		pop		edi
 	};
 }
-
-API_FUNC_NAKED bool CacheFileReadRequest(/*datum_index tag_index,*/
-						  uint32 offset_, uint32 size_, void* buffer, const Cache::s_cache_file_request_params& params, 
-						  bool block, Enums::cache_file_request_source source)
-{
-	static const uintptr_t FUNCTION = GET_FUNC_PTR(CACHE_FILE_READ_REQUEST);
-
-	API_FUNC_NAKED_START()
-		push	esi
-		xor		eax, eax
-
-		movzx	eax, source
-		push	eax
-		movzx	eax, block
-		push	eax
-		mov		esi, params
-		push	buffer
-		push	size_
-		push	offset_
-		call	FUNCTION
-		add		esp, 4 * 5
-
-		pop		esi
-	API_FUNC_NAKED_END(6); // not including the unused tag_index
-}

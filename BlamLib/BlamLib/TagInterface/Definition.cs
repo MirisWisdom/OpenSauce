@@ -890,7 +890,8 @@ namespace BlamLib.TagInterface
 			Halo3 = new Dictionary<Type, DefinitionState>(/*512*/),		//  86 - 2010-02-05
 			Stubbs = new Dictionary<Type, DefinitionState>(8),			//   3 - 2010-02-05
 			HaloOdst = new Dictionary<Type, DefinitionState>(/*512*/),
-			HaloReach = new Dictionary<Type, DefinitionState>(/*512*/)
+			HaloReach = new Dictionary<Type, DefinitionState>(/*512*/),
+			Halo4 = new Dictionary<Type, DefinitionState>(/*512*/)
 			;
 		const string kNsHalo1		= "BlamLib.Blam.Halo1";
 		const string kNsHalo2		= "BlamLib.Blam.Halo2";
@@ -898,6 +899,7 @@ namespace BlamLib.TagInterface
 		const string kNsStubbs		= "BlamLib.Blam.Stubbs";
 		const string kNsHaloOdst	= "BlamLib.Blam.HaloOdst";
 		const string kNsHaloReach	= "BlamLib.Blam.HaloReach";
+		const string kNsHalo4		= "BlamLib.Blam.Halo4";
 
 		internal static void PostProcess()
 		{
@@ -923,6 +925,9 @@ namespace BlamLib.TagInterface
 			foreach (var s in temp.Values)		s.PostProcess();
 
 			temp = new Dictionary<Type, DefinitionState>(HaloReach);
+			foreach (var s in temp.Values)		s.PostProcess();
+
+			temp = new Dictionary<Type, DefinitionState>(Halo4);
 			foreach (var s in temp.Values)		s.PostProcess();
 		}
 
@@ -969,6 +974,7 @@ namespace BlamLib.TagInterface
 			else if (t.Namespace.StartsWith(kNsStubbs))		return BlamVersion.Stubbs;
 			else if (t.Namespace.StartsWith(kNsHaloOdst))	return BlamVersion.HaloOdst;
 			else if (t.Namespace.StartsWith(kNsHaloReach))	return BlamVersion.HaloReach;
+			else if (t.Namespace.StartsWith(kNsHalo4))		return BlamVersion.Halo4;
 			else											return BlamVersion.Unknown;
 		}
 
@@ -985,6 +991,7 @@ namespace BlamLib.TagInterface
 			else if (t.Namespace.StartsWith(kNsStubbs))		return Stubbs;
 			else if (t.Namespace.StartsWith(kNsHaloOdst))	return HaloOdst;
 			else if (t.Namespace.StartsWith(kNsHaloReach))	return HaloReach;
+			else if (t.Namespace.StartsWith(kNsHalo4))		return Halo4;
 			else											return Global;
 		}
 
@@ -1002,6 +1009,7 @@ namespace BlamLib.TagInterface
 			else if (t.Namespace.StartsWith(kNsStubbs))		{ engine = BlamVersion.Stubbs;		return Stubbs; }
 			else if (t.Namespace.StartsWith(kNsHaloOdst))	{ engine = BlamVersion.HaloOdst;	return HaloOdst; }
 			else if (t.Namespace.StartsWith(kNsHaloReach))	{ engine = BlamVersion.HaloReach;	return HaloReach; }
+			else if (t.Namespace.StartsWith(kNsHalo4))		{ engine = BlamVersion.Halo4;		return Halo4; }
 			else											{ engine = BlamVersion.Unknown;		return Global; }
 		}
 
@@ -1019,6 +1027,7 @@ namespace BlamLib.TagInterface
 			else if ((engine & BlamVersion.Stubbs) != 0)	return Stubbs;
 			else if ((engine & BlamVersion.HaloOdst) != 0)	return HaloOdst;
 			else if ((engine & BlamVersion.HaloReach) != 0)	return HaloReach;
+			else if ((engine & BlamVersion.Halo4) != 0)		return Halo4;
 			else											return Global;
 		}
 		#endregion
@@ -1909,6 +1918,11 @@ namespace BlamLib.TagInterface
 		public FieldType Value;
 
 		public field_block() : base(1) { Add(Value = new FieldType()); }
+
+		public override string ToString()
+		{
+			return Value.ToString();
+		}
 	};
 
 	/// <summary>

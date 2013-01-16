@@ -16,7 +16,7 @@ namespace BlamLib.Blam
 	/// <summary>Constant identifier for a code string</summary>
 	[Interop.StructLayout(Interop.LayoutKind.Explicit, Size=StringId.kSizeOf)]
 	//[System.ComponentModel.TypeConverter(typeof(StringIdConverter))]
-	public struct StringId : IO.IStreamable,//IO.IEndianStreamable,
+	public struct StringId : //IO.IStreamable,//IO.IEndianStreamable,
 		IComparer<StringId>, IComparable<StringId>,
 		System.Collections.IComparer, IComparable,
 		IEquatable<StringId>, IEqualityComparer<StringId>
@@ -119,7 +119,12 @@ namespace BlamLib.Blam
 		#region IEndianStreamable Members
 		/// <summary>Stream an string id from a buffer</summary>
 		/// <param name="s"></param>
-		public void Read(IO.EndianReader s) { mHandle = s.ReadUInt32(); }
+		//public void Read(IO.EndianReader s)	{ mHandle = s.ReadUInt32(); }
+		public void Read(IO.EndianReader s, StringIdDesc desc)
+		{
+			mHandle = s.ReadUInt32();
+			mDesc = desc;
+		}
 		/// <summary>Stream an string id to a buffer</summary>
 		/// <param name="s"></param>
 		public void Write(IO.EndianWriter s) { s.Write(mHandle); }

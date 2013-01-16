@@ -271,7 +271,7 @@ namespace BlamLib.Blam.Halo4
 		{
 			base.ReadGroupTags(Program.Halo4.Manager, s);
 
-			Name.Read(s);
+			Name.Read(s, (s.Owner as CacheFile).StringIds.Definition.Description);
 		}
 		#endregion
 	};
@@ -372,6 +372,7 @@ namespace BlamLib.Blam.Halo4
 			switch (str)
 			{
 				case "20810.12.09.22.1647.main":
+				case "21122.12.11.21.0101.main": // dlc_crimson
 					engineVersion = BlamVersion.Halo4_Xbox;
 					break;
 

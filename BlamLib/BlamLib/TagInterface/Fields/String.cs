@@ -328,10 +328,10 @@ namespace BlamLib.TagInterface
 			{
 				var ti = Program.GetTagIndex(OwnerId);
 				// TODO: can't decrypt these yet!
-				if (ti.Engine != BlamVersion.HaloReach_Xbox)
+				//if (ti.Engine != BlamVersion.HaloReach_Xbox)
 					return ti.StringIds.GetStringIdValue(Handle);
-				else
-					return kEncryptedResult;
+				//else
+				//	return kEncryptedResult;
 			}
 
 			return "";
@@ -408,12 +408,12 @@ namespace BlamLib.TagInterface
 		/// <param name="c"></param>
 		public override void ReadHeader(BlamLib.Blam.CacheFile c)
 		{
-			OwnerId = c.CacheId;
+			OwnerId = c.TagIndexManager.IndexId;
 
 			if (c.EngineVersion == BlamVersion.Halo2_Alpha) // old string id
 				c.InputStream.Seek(28, System.IO.SeekOrigin.Current); // preview string
 
-			Handle.Read(c.InputStream);
+			Handle.Read(c.InputStream, c.StringIds.Definition.Description);
 		}
 		/// <summary>
 		/// Overridden so the code doesn't read anything (string data isn't stored in the tag data)
@@ -457,11 +457,12 @@ namespace BlamLib.TagInterface
 				if (fieldType == FieldType.OldStringId && ts.Flags.Test(IO.ITagStreamFlags.Halo2OldFormat_StringId))
 					value = s.ReadAsciiString(28); // max of 28 characters in the string id in old builds
 
-				Handle.Read(s);
+				var owner = Program.GetTagIndex(OwnerId);
+				Handle.Read(s, owner.StringIds.Definition.Description);
 
 				if (value != null /*&& Handle != Blam.StringID.Null*/)
 				{
-					Program.GetTagIndex(OwnerId).StringIds.TryAndGetStringId(value, out Handle);
+					owner.StringIds.TryAndGetStringId(value, out Handle);
 					Handle = new Blam.StringId(Handle.Description, Handle.Index, Handle.Length, 
 						-1); // HACK used to tell Read that we already read the string data (as this is an old halo 2 tag)
 				}
@@ -541,7 +542,8 @@ namespace BlamLib.TagInterface
 		public override void ReadHeader(IO.EndianReader s)
 		{
 			headerOffset = s.PositionUnsigned; // nifty for debugging
-			Handle.Read(s);
+			var owner = Program.GetTagIndex(OwnerId);
+			Handle.Read(s, owner.StringIds.Definition.Description);
 		}
 
 		/// <summary>

@@ -9,6 +9,36 @@ using TI = BlamLib.TagInterface;
 
 namespace BlamLib.Blam.Halo4
 {
+#pragma warning disable 1591 // "Missing XML comment for publicly visible type or member"
+	/// <summary>
+	/// Supported languages
+	/// </summary>
+	public enum LanguageType
+	{
+		English,
+		Japanese,
+		German,
+		French,
+		Spanish,
+		Italian,
+		Korean,
+		/// <summary>
+		/// Traditional
+		/// </summary>
+		Chinese,
+		Portuguese,
+		Polish,
+
+		Russian,
+		Danish,
+		Finnish,
+		Dutch,
+		Norwegian,
+
+		kMax
+	};
+#pragma warning restore 1591 // "Missing XML comment for publicly visible type or member"
+
 	/// <summary>
 	/// Halo 4 game definition implementation
 	/// </summary>

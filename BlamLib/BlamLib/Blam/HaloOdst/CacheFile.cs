@@ -34,7 +34,7 @@ namespace BlamLib.Blam.HaloOdst
 		{
 			base.ReadGroupTags(Program.HaloOdst.Manager, s);
 
-			Name.Read(s);
+			Name.Read(s, (s.Owner as CacheFile).StringIds.Definition.Description);
 		}
 	};
 	#endregion

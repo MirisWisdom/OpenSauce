@@ -138,6 +138,13 @@ namespace BlamLib.Managers
 				group_tag_hack = true;
 			} else
 #endif
+#if !NO_HALO4
+			if (build == BlamBuild.Halo4 && i.GroupTag == Blam.Halo4.TagGroups.snd_)
+			{
+				tm.Manage(Blam.Halo4.TagGroups.shit);
+				group_tag_hack = true;
+			} else
+#endif
 			tm.Manage(i.GroupTag);
 
 			if (!i.IsFeignItem)
