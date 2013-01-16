@@ -3,6 +3,7 @@
 
 	See license\BlamLib\BlamLib for specific license information
 */
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -38,7 +39,7 @@ namespace BlamLib.Test
 				gTestsStopwatch.Elapsed);
 		}
 
-		public static void TestMethod(WaitCallback method, params ThreadedTaskArgsBase[] args)
+		public static void TestMethodThreaded(WaitCallback method, params ThreadedTaskArgsBase[] args)
 		{
 			Assert.IsTrue(args.Length > 0, "Why are there zero tasks?");
 
@@ -52,6 +53,14 @@ namespace BlamLib.Test
 				ThreadPool.QueueUserWorkItem(method, arg);
 
 			WaitHandle.WaitAll(waiters);
+		}
+
+		public static void TestMethodSerial(WaitCallback method, params ThreadedTaskArgsBase[] args)
+		{
+			Assert.IsTrue(args.Length > 0, "Why are there zero tasks?");
+
+			foreach (var arg in args)
+				method(arg);
 		}
 	};
 
@@ -118,19 +127,34 @@ namespace BlamLib.Test
 			return true;
 		}
 
-		public static void TestThreadedMethod(TestContext tc, WaitCallback method,
+		static List<CacheFileOutputInfoArgs> TestMethodBuildArgs(TestContext tc, 
 			BlamVersion game, string dir, params string[] map_names)
 		{
-			var args = new System.Collections.Generic.List<CacheFileOutputInfoArgs>(map_names.Length);
+			var args = new List<CacheFileOutputInfoArgs>(map_names.Length);
 			for (int x = 0; x < map_names.Length; x++)
 			{
 				var arg = new CacheFileOutputInfoArgs(tc, game, dir, map_names[x]);
 
-				if(arg.ValidateReadyStatus())
+				if (arg.ValidateReadyStatus())
 					args.Add(arg);
 			}
 
-			TestLibrary.TestMethod(method, args.ToArray());
+			return args;
+		}
+		public static void TestThreadedMethod(TestContext tc, WaitCallback method,
+			BlamVersion game, string dir, params string[] map_names)
+		{
+			var args = TestMethodBuildArgs(tc, game, dir, map_names);
+
+			TestLibrary.TestMethodThreaded(method, args.ToArray());
+		}
+
+		public static void TestMethodSerial(TestContext tc, WaitCallback method,
+			BlamVersion game, string dir, params string[] map_names)
+		{
+			var args = TestMethodBuildArgs(tc, game, dir, map_names);
+
+			TestLibrary.TestMethodSerial(method, args.ToArray());
 		}
 	};
 

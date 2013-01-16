@@ -11,10 +11,10 @@
 #include <YeloLib/memory/naked_func_writer.hpp>
 
 //////////////////////////////////////////////////////////////////////////
-// Engine pointer markup system
+// Value markup system
 //
-// [ce_offset]		: (Client) Latest version's memory address
-// [cededi_offset]	: (Dedi server) Latest version's memory address
+// [ce_value/offset]		: value for use in Client builds
+// [cededi_value/offset]	: value for use in Dedi builds
 //
 //////////////////////////////////////////////////////////////////////////
 

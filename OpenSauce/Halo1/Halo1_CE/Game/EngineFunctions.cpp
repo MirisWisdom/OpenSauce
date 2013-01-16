@@ -28,33 +28,106 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_GAME_ENGINE_FUNCTIONS
 #include "Memory/_EngineLayout.inl"
 
-		#include "Game/EngineFunctions._Misc.inl"		
+		#include "Game/EngineFunctions._Misc.inl"
 
 		namespace AI
 		{
 			void API_FUNC_NAKED Delete(datum_index actor_index, bool is_dead)
 			{
-				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(ACTOR_DELETE);
+				static const uintptr_t FUNCTION = GET_FUNC_PTR(ACTOR_DELETE);
 
 				API_FUNC_NAKED_START()
 					movzx	eax, is_dead
 					push	eax
 					mov		ebx, actor_index
-					call	TEMP_CALL_ADDR
+					call	FUNCTION
 					add		esp, 4 * 1
 				API_FUNC_NAKED_END(2)
 			}
 
 			void API_FUNC_NAKED AttachFree(datum_index unit_index, datum_index actor_variant_definition)
 			{
-				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(AI_SCRIPTING_ATTACH_FREE);
+				static const uintptr_t FUNCTION = GET_FUNC_PTR(AI_SCRIPTING_ATTACH_FREE);
 
 				API_FUNC_NAKED_START()
 					mov		eax, actor_variant_definition
 					push	unit_index
-					call	TEMP_CALL_ADDR
+					call	FUNCTION
 					add		esp, 4 * 1
 				API_FUNC_NAKED_END(2)
+			}
+		};
+
+		namespace Cache
+		{
+			API_FUNC_NAKED bool FileReadRequest(/*datum_index tag_index,*/
+				uint32 offset_, uint32 size_, void* buffer, const Yelo::Cache::s_cache_file_request_params& params, 
+				bool block, Enums::cache_file_request_source source)
+			{
+				static const uintptr_t FUNCTION = GET_FUNC_PTR(CACHE_FILE_READ_REQUEST);
+
+				API_FUNC_NAKED_START()
+					push	esi
+					xor		eax, eax
+
+					movzx	eax, source
+					push	eax
+					movzx	eax, block
+					push	eax
+					mov		esi, params
+					push	buffer
+					push	size_
+					push	offset_
+					call	FUNCTION
+					add		esp, 4 * 5
+
+					pop		esi
+					API_FUNC_NAKED_END(6); // not including the unused tag_index
+			}
+
+			cstring GetMapExtension()
+			{
+				return GET_PTR2(MAP_LIST_MAP_EXTENSION);
+			}
+
+			void MapListAddMap(cstring map_name, cstring extension, int32 map_index)
+			{
+				static const uintptr_t FUNCTION = GET_FUNC_PTR(MAP_LIST_ADD_MAP);
+				static void* MAP_LIST_EXTENSION_REF = GET_PTR2(MAP_LIST_MAP_EXTENSION_REF);
+				static const char* MAP_LIST_EXTENSION_STOCK = GET_PTR2(MAP_LIST_MAP_EXTENSION);
+
+				__asm {
+					push	eax
+					push	ebx
+					mov		eax, MAP_LIST_EXTENSION_REF
+					mov		ebx, extension
+					mov		dword ptr [eax], ebx
+					pop		ebx
+					pop		eax
+
+					push	map_index
+					mov		eax, map_name
+					call	FUNCTION
+					add		esp, 4 * 1
+
+					push	eax
+					push	ebx
+					mov		eax, MAP_LIST_EXTENSION_REF
+					mov		ebx, MAP_LIST_EXTENSION_STOCK
+					mov		dword ptr [eax], ebx
+					pop		ebx
+					pop		eax
+				}
+			}
+
+			API_FUNC_NAKED int GetMapEntryIndexFromName(const char* name)
+			{
+				static const uintptr_t FUNCTION = GET_FUNC_PTR(MAP_ENTRY_INDEX_FROM_NAME);
+
+				API_FUNC_NAKED_START()
+					mov		eax, name
+					call	FUNCTION
+				API_FUNC_NAKED_END(1);
 			}
 		};
 
@@ -72,7 +145,7 @@ namespace Yelo
 		{
 			void API_FUNC_NAKED NewOnObjectMarker(datum_index effect_definition_index, datum_index object_index, cstring marker_name)
 			{
-				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(EFFECT_NEW_ON_OBJECT_MARKER);
+				static const uintptr_t FUNCTION = GET_FUNC_PTR(EFFECT_NEW_ON_OBJECT_MARKER);
 
 				API_FUNC_NAKED_START()
 					push	esi
@@ -82,7 +155,7 @@ namespace Yelo
 					push	ecx
 					mov		esi, object_index
 					mov		edi, effect_definition_index
-					call	TEMP_CALL_ADDR
+					call	FUNCTION
 					add		esp, 4 * 1
 
 					pop		edi
@@ -100,14 +173,14 @@ namespace Yelo
 		{
 			void ObjectListAdd(datum_index object_list, datum_index object_index)
 			{
-				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_LIST_ADD);
+				static const uintptr_t FUNCTION = GET_FUNC_PTR(OBJECT_LIST_ADD);
 
 				if(object_list.IsNull()) return;
 
 				__asm {
 					push	object_index
 					mov		eax, object_list
-					call	TEMP_CALL_ADDR
+					call	FUNCTION
 					add		esp, 4 * 1
 				}
 			}
@@ -118,11 +191,11 @@ namespace Yelo
 			bool KeyIsDown(int16 key)
 			{
 #if !PLATFORM_IS_DEDI
-				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(INPUT_KEY_IS_DOWN);
+				static const uintptr_t FUNCTION = GET_FUNC_PTR(INPUT_KEY_IS_DOWN);
 
 				__asm {
 					mov		cx, key
-					call	TEMP_CALL_ADDR
+					call	FUNCTION
 				}
 #else
 				return false;
@@ -139,26 +212,26 @@ namespace Yelo
 		{
 			double PeriodicFunctionEvaluate(Enums::periodic_function function_type, double input)
 			{
-				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(PERIODIC_FUNCTION_EVALUATE);
+				static const uintptr_t FUNCTION = GET_FUNC_PTR(PERIODIC_FUNCTION_EVALUATE);
 
 				__asm {
 					fld		input
 					sub		esp, 4 * 2			// allocate space for the 'input' parameter
 					fstp	qword ptr [esp]		// store the input on the stack
 					movzx	eax, function_type
-					call	TEMP_CALL_ADDR
+					call	FUNCTION
 					add		esp, 4 * 2			// deallocate. double type consumes two DWORDs of stack
 				}
 			}
 
 			float TransitionFunctionEvaluate(Enums::transition_function function_type, float input)
 			{
-				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(TRANSITION_FUNCTION_EVALUATE);
+				static const uintptr_t FUNCTION = GET_FUNC_PTR(TRANSITION_FUNCTION_EVALUATE);
 
 				__asm {
 					push	input
 					movzx	ecx, function_type
-					call	TEMP_CALL_ADDR
+					call	FUNCTION
 					add		esp, 4 * 1
 				}
 			}
@@ -199,12 +272,12 @@ namespace Yelo
 		{
 			bool TriggerVolumeTestPoint(int32 trigger_volume_index, const real_point3d& point)
 			{
-				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(SCENARIO_TRIGGER_VOLUME_TEST_POINT);
+				static const uintptr_t FUNCTION = GET_FUNC_PTR(SCENARIO_TRIGGER_VOLUME_TEST_POINT);
 
 				__asm {
 					mov		ecx, point
 					mov		eax, trigger_volume_index
-					call	TEMP_CALL_ADDR
+					call	FUNCTION
 				}
 			}
 
@@ -224,13 +297,13 @@ namespace Yelo
 			void PredictResources(TagBlock<Yelo::TagGroups::predicted_resource>& resources_block)
 			{
 #if !PLATFORM_IS_DEDI // dedi doesn't need to predict resources since it doesn't render bitmaps or play sounds
-				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(PHYSICAL_MEMORY_MAP_PREDICT_RESOURCES);
+				static const uintptr_t FUNCTION = GET_FUNC_PTR(PHYSICAL_MEMORY_MAP_PREDICT_RESOURCES);
 
 				__asm {
 					push	esi
 
 					mov		esi, resources_block
-					call	TEMP_CALL_ADDR
+					call	FUNCTION
 
 					pop		esi
 				}
@@ -239,7 +312,7 @@ namespace Yelo
 
 			datum_index TagLoaded(tag group_tag, cstring name)
 			{
-				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(TAG_LOADED);
+				static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_LOADED);
 
 #if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 				char local[256];
@@ -259,7 +332,7 @@ namespace Yelo
 #endif
 					push	eax
 					mov		edi, group_tag
-					call	TEMP_CALL_ADDR
+					call	FUNCTION
 					add		esp, 4 * 1
 
 					pop		edi
@@ -268,12 +341,12 @@ namespace Yelo
 
 			wcstring UnicodeStringListGetString(datum_index ustr, int32 index)
 			{
-				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(UNICODE_STRING_LIST_GET_STRING);
+				static const uintptr_t FUNCTION = GET_FUNC_PTR(UNICODE_STRING_LIST_GET_STRING);
 
 				__asm {
 					mov		edx, index
 					mov		ecx, ustr
-					call	TEMP_CALL_ADDR
+					call	FUNCTION
 				}
 			}
 		};

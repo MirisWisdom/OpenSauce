@@ -286,7 +286,7 @@ namespace BlamLib.TagInterface
 				relativeOffset = c.InputStream.ReadPointer();
 			}
 			else if ((c.EngineVersion & BlamVersion.Halo3) != 0 || (c.EngineVersion & BlamVersion.HaloOdst) != 0 ||
-					 (c.EngineVersion & BlamVersion.HaloReach) != 0)
+					 (c.EngineVersion & BlamVersion.HaloReach) != 0 || (c.EngineVersion & BlamVersion.Halo4) != 0)
 			{
 				size = c.InputStream.ReadInt32();
 				c.InputStream.ReadInt32();
@@ -350,7 +350,7 @@ namespace BlamLib.TagInterface
 				c.OutputStream.Write(0);
 			}
 			else if ((c.EngineVersion & BlamVersion.Halo3) != 0 || (c.EngineVersion & BlamVersion.HaloOdst) != 0 ||
-					 (c.EngineVersion & BlamVersion.HaloReach) != 0)
+					 (c.EngineVersion & BlamVersion.HaloReach) != 0 || (c.EngineVersion & BlamVersion.Halo4) != 0)
 			{
 				c.OutputStream.Write(Value != null ? Value.Length : 0);
 				c.OutputStream.Write(0);
@@ -767,7 +767,7 @@ namespace BlamLib.TagInterface
 				Datum.Read(c.InputStream);
 			}
 			else if ((c.EngineVersion & BlamVersion.Halo3) != 0 || (c.EngineVersion & BlamVersion.HaloOdst) != 0 ||
-					 (c.EngineVersion & BlamVersion.HaloReach) != 0)
+					 (c.EngineVersion & BlamVersion.HaloReach) != 0 || (c.EngineVersion & BlamVersion.Halo4) != 0)
 			{
 				GroupTagInt = c.InputStream.ReadTagUInt();
 				c.InputStream.ReadInt32(); // unused tag filename pointer
@@ -781,6 +781,9 @@ namespace BlamLib.TagInterface
 				c.InputStream.ReadInt32(); // tag filename length
 				Datum.Read(c.InputStream);
 			}
+
+			if (GroupTag == TagGroup.Null)
+				GroupTag = Blam.MiscGroups.TagGroupFrom(c.EngineVersion, GroupTagInt);
 
 			// if this reference is valid, update the referencing tag's tracking list so this field is linked to it as a referencer
 			if (Datum != Blam.DatumIndex.Null)
@@ -803,9 +806,6 @@ namespace BlamLib.TagInterface
 
 				if(!was_changed)
 					c.References.AddReferencer(ReferenceId, this);
-
-				if (GroupTag == TagGroup.Null)
-					GroupTag = Blam.MiscGroups.TagGroupFrom(c.EngineVersion, GroupTagInt);
 			}
 		}
 		/// <summary>
@@ -871,7 +871,8 @@ namespace BlamLib.TagInterface
 				c.OutputStream.WriteTag(GroupTagInt);
 				Datum.Write(c.OutputStream);
 			}
-			else if ((c.EngineVersion & BlamVersion.Halo3) != 0 || (c.EngineVersion & BlamVersion.HaloOdst) != 0)
+			else if ((c.EngineVersion & BlamVersion.Halo3) != 0 || (c.EngineVersion & BlamVersion.HaloOdst) != 0 ||
+					 (c.EngineVersion & BlamVersion.HaloReach) != 0 || (c.EngineVersion & BlamVersion.Halo4) != 0)
 			{
 				c.OutputStream.WriteTag(GroupTagInt);
 				c.OutputStream.Write(0); // unused tag filename pointer

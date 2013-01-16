@@ -1152,8 +1152,8 @@ namespace Yelo
 					{
 					case _map_download_stage_map_part_definition:
 						g_map_download_globals.m_map_part_definition.progress = 0;
-						g_map_download_display.SetProviderTitle("");
-						g_map_download_display.SetProviderDescription("");
+						g_map_download_display.SetProviderTitle("Searching");
+						g_map_download_display.SetProviderDescription("Looking for a map download provider...");
 						break;
 					case _map_download_stage_map_part_download:
 						g_map_download_display.SetMapExtracting(false);
@@ -1498,21 +1498,9 @@ namespace Yelo
 		{
 			c_map_element& map_element = g_map_download_globals.m_map_part_definition.downloader.MapElement();
 
-			// calculate the maps crc value
-			// cannot test agains the cache's internal crc value as that is not always correct
-			uint32 map_crc = Cache::CalculateCRC(map_element.m_filename);
-
-			if(map_crc == 0xFFFFFFFF)
-				return false;
-
 			cstring map_extension = (map_element.m_map_is_yelo ? ".yelo" : ".map");
 
-			// skip the checksum calculation as that would unload the ui...which is all kinds of bad
-			Engine::MapListAddMap(map_element.m_filename, map_extension, true);
-
-			// set the crc for the last map entry which is the map that was just added
-			Cache::t_multiplayer_map_data* map_data = Cache::MultiplayerMaps();
-			map_data->elements[map_data->count - 1].crc = map_crc;
+			Engine::Cache::MapListAddMap(map_element.m_filename, map_extension);
 
 			return true;
 		}
