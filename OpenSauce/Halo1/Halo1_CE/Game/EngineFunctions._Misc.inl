@@ -96,57 +96,6 @@ bool SoundCacheRequestSound(Yelo::TagGroups::s_sound_permutation* sound_perm,
 #endif
 }
 
-const char* GetMapExtension()
-{
-	return GET_PTR2(MAP_LIST_MAP_EXTENSION);
-}
-
-void MapListAddMap(cstring map_name, cstring extension, bool skip_crc, int32 map_index)
-{
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(MAP_LIST_ADD_MAP);
-	static void* SKIP_CRC_JZ_ADDRESS = GET_PTR2(MAP_LIST_ADD_SKIP_CRC_JZ);
-	static void* MAP_LIST_EXTENSION_REF = GET_PTR2(MAP_LIST_MAP_EXTENSION_REF);
-	static const char* MAP_LIST_EXTENSION_STOCK = GET_PTR2(MAP_LIST_MAP_EXTENSION);
-
-	__asm {
-		cmp		skip_crc, 0
-		jz		skip_crc_disable
-		push	eax
-		mov		eax, SKIP_CRC_JZ_ADDRESS
-		mov		byte ptr [eax], 0xEB
-		pop		eax
-skip_crc_disable:
-
-		push	eax
-		push	ebx
-		mov		eax, MAP_LIST_EXTENSION_REF
-		mov		ebx, extension
-		mov		dword ptr [eax], ebx
-		pop		ebx
-		pop		eax
-
-		push	map_index
-		mov		eax, map_name
-		call	TEMP_CALL_ADDR
-		add		esp, 4 * 1
-
-		push	eax
-		push	ebx
-		mov		eax, MAP_LIST_EXTENSION_REF
-		mov		ebx, MAP_LIST_EXTENSION_STOCK
-		mov		dword ptr [eax], ebx
-		pop		ebx
-		pop		eax
-
-		cmp		skip_crc, 0
-		jz		skip_crc_enable
-		push	eax
-		mov		eax, SKIP_CRC_JZ_ADDRESS
-		mov		byte ptr [eax], 0x74
-		pop		eax
-skip_crc_enable:
-	}
-}
 
 void RasterizerAddResolution(uint32 width, uint32 height, uint32 refresh_rate)
 {
@@ -218,29 +167,4 @@ bool GetCmdLineParameter(cstring parameter, cstring* value_out)
 		add		esp, 4
 		pop		edi
 	};
-}
-
-API_FUNC_NAKED bool CacheFileReadRequest(/*datum_index tag_index,*/
-						  uint32 offset_, uint32 size_, void* buffer, const Cache::s_cache_file_request_params& params, 
-						  bool block, Enums::cache_file_request_source source)
-{
-	static const uintptr_t FUNCTION = GET_FUNC_PTR(CACHE_FILE_READ_REQUEST);
-
-	API_FUNC_NAKED_START()
-		push	esi
-		xor		eax, eax
-
-		movzx	eax, source
-		push	eax
-		movzx	eax, block
-		push	eax
-		mov		esi, params
-		push	buffer
-		push	size_
-		push	offset_
-		call	FUNCTION
-		add		esp, 4 * 5
-
-		pop		esi
-	API_FUNC_NAKED_END(6); // not including the unused tag_index
 }

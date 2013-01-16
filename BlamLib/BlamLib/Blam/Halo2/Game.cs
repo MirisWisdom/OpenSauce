@@ -43,7 +43,7 @@ namespace BlamLib.Blam.Halo2
 		#region IStreamable Members
 		public void Read(BlamLib.IO.EndianReader s)
 		{
-			NameId.Read(s);
+			NameId.Read(s, (s.Owner as CacheFile).StringIds.Definition.Description);
 			Offset = s.ReadInt32();
 		}
 

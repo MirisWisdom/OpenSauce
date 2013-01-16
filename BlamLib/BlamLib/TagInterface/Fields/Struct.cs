@@ -416,8 +416,8 @@ namespace BlamLib.TagInterface
 		/// <param name="c">Cache file</param>
 		public override void ReadHeader(BlamLib.Blam.CacheFile c)
 		{
-			if ((c.EngineVersion & BlamVersion.Halo3) != 0 || (c.EngineVersion & BlamVersion.HaloOdst) != 0 || 
-				(c.EngineVersion & BlamVersion.HaloReach) != 0)
+			if ((c.EngineVersion & BlamVersion.Halo3) != 0 || (c.EngineVersion & BlamVersion.HaloOdst) != 0 ||
+				(c.EngineVersion & BlamVersion.HaloReach) != 0 || (c.EngineVersion & BlamVersion.Halo4) != 0)
 			{
 				relativeOffset = c.InputStream.ReadPointer();
 				c.InputStream.ReadUInt32(); // ?
@@ -435,7 +435,7 @@ namespace BlamLib.TagInterface
 			if (relativeOffset == 0) return;
 
 			if ((c.EngineVersion & BlamVersion.Halo3) != 0 || (c.EngineVersion & BlamVersion.HaloOdst) != 0 ||
-				(c.EngineVersion & BlamVersion.HaloReach) != 0)
+				(c.EngineVersion & BlamVersion.HaloReach) != 0 || (c.EngineVersion & BlamVersion.Halo4) != 0)
 			{
 				c.InputStream.Seek(relativeOffset, System.IO.SeekOrigin.Begin);
 				this.Initialize();
@@ -452,7 +452,7 @@ namespace BlamLib.TagInterface
 			if (Value == null) return;
 
 			if ((c.EngineVersion & BlamVersion.Halo3) != 0 || (c.EngineVersion & BlamVersion.HaloOdst) != 0 ||
-				(c.EngineVersion & BlamVersion.HaloReach) != 0)
+				(c.EngineVersion & BlamVersion.HaloReach) != 0 || (c.EngineVersion & BlamVersion.Halo4) != 0)
 			{
 				headerOffset = c.OutputStream.PositionUnsigned;
 				c.OutputStream.Write(0); // will remain null if we have no data
@@ -470,7 +470,7 @@ namespace BlamLib.TagInterface
 			if (Value == null) return;
 
 			if ((c.EngineVersion & BlamVersion.Halo3) != 0 || (c.EngineVersion & BlamVersion.HaloOdst) != 0 ||
-				(c.EngineVersion & BlamVersion.HaloReach) != 0)
+				(c.EngineVersion & BlamVersion.HaloReach) != 0 || (c.EngineVersion & BlamVersion.Halo4) != 0)
 			{
 				relativeOffset = c.OutputStream.PositionUnsigned; // store offset
 				c.OutputStream.Seek(headerOffset, System.IO.SeekOrigin.Begin); // go to the reflexive header

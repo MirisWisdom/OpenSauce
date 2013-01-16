@@ -2158,6 +2158,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Memory\_EngineLayout.Objects.inl"
+					>
+				</File>
+				<File
 					RelativePath=".\Memory\_EngineLayout.OpenSauce.inl"
 					>
 				</File>
@@ -2375,6 +2379,18 @@
 				>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\tool\tool.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="units"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\units\unit_structures.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\units\unit_structures.hpp"
 					>
 				</File>
 			</Filter>
@@ -2681,6 +2697,14 @@
 						>
 					</File>
 				</Filter>
+			</Filter>
+			<Filter
+				Name="units"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\units\units_grenade_count_upgrade.inl"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<File

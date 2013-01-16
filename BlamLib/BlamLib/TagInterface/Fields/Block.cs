@@ -534,8 +534,8 @@ namespace BlamLib.TagInterface
 				c.InputStream.ReadUInt32();
 			}
 			#endregion
-			else if ((c.EngineVersion & BlamVersion.Halo3) != 0 || (c.EngineVersion & BlamVersion.HaloOdst) != 0 || 
-					 (c.EngineVersion & BlamVersion.HaloReach) != 0)
+			else if ((c.EngineVersion & BlamVersion.Halo3) != 0 || (c.EngineVersion & BlamVersion.HaloOdst) != 0 ||
+					 (c.EngineVersion & BlamVersion.HaloReach) != 0 || (c.EngineVersion & BlamVersion.Halo4) != 0)
 			{
 				Resize(c.InputStream.ReadInt32()); // element count
 				relativeOffset = c.InputStream.ReadPointer();
@@ -584,7 +584,7 @@ namespace BlamLib.TagInterface
 				c.OutputStream.Write(0);
 			}
 			else if ((c.EngineVersion & BlamVersion.Halo3) != 0 || (c.EngineVersion & BlamVersion.HaloOdst) != 0 ||
-					 (c.EngineVersion & BlamVersion.HaloReach) != 0)
+					 (c.EngineVersion & BlamVersion.HaloReach) != 0 || (c.EngineVersion & BlamVersion.Halo4) != 0)
 			{
 				c.OutputStream.Write(elements.Count);
 				headerOffset = c.OutputStream.PositionUnsigned;

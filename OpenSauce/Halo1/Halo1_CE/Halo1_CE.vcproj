@@ -4764,6 +4764,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\models\model_animations.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\models\model_definitions.hpp"
 					>
 				</File>
@@ -4837,6 +4841,10 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\units\unit_dialogue.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\units\unit_structures.cpp"
 					>
 				</File>
 				<File
@@ -5661,6 +5669,26 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\YeloLib\Halo1\render\render_particles_upgrades.inl"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="game"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\game\game_engine_yelo.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\game\game_results_yelo.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="units"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\units\units_grenade_count_upgrade.inl"
 					>
 				</File>
 			</Filter>

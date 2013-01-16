@@ -57,6 +57,9 @@ namespace Yelo
 		template< void (__cdecl* k_naked_func)() >
 		class c_naked_func_writer
 		{
+			template< void (__cdecl* )(), void (__cdecl* )() >
+			friend class c_naked_func_writer_with_undo;
+
 			// NOTE: MSDN says "/INCREMENTAL is implied when /DEBUG is specified"
 			// So we have to jump on the function trampoline to get to the actual bytes address
 			static byte* GetNakedFuncBytes()
@@ -127,6 +130,46 @@ namespace Yelo
 					*addr = *bytes;
 				for(; nop_count != 0; nop_count--, addr++)
 					*addr = Enums::_x86_opcode_nop;
+			}
+		};
+
+		// [k_naked_undo_func] - original asm bytes
+		// [k_naked_func] - new asm bytes
+		template< void (__cdecl* k_naked_undo_func)(), void (__cdecl* k_naked_func)() >
+		class c_naked_func_writer_with_undo
+		{
+			typedef c_naked_func_writer<k_naked_undo_func> old_func_t;
+			typedef c_naked_func_writer<k_naked_func> new_func_t;
+
+#ifdef API_DEBUG
+			static void AssertAsmLengths(cstring asm_mismatch_msg)
+			{
+				size_t old_func_length = old_func_t::DetermineAsmLength();
+				size_t new_func_length = new_func_t::DetermineAsmLength();
+				ASSERT( old_func_length==new_func_length, asm_mismatch_msg );
+			}
+			static void Verify(const void* code_addr, cstring asm_mismatch_msg)
+			{
+				DebugRunOnce( AssertAsmLengths(asm_mismatch_msg) );
+
+				size_t old_func_length = old_func_t::DetermineAsmLength();
+				byte* old_func_bytes = old_func_t::GetNakedFuncBytes();
+				ASSERT( memcmp(code_addr, old_func_bytes, old_func_length)==0, asm_mismatch_msg );
+			}
+#endif
+		public:
+			// Write the asm code of [k_naked_func] to [address]
+			// As
+			static void Write(void* address DebugOnly(, cstring asm_mismatch_msg))
+			{
+				DebugOnly( Verify(address, asm_mismatch_msg) );
+
+				new_func_t::Write(address);
+			}
+			// Write the asm code of [k_naked_undo_func] to [address]
+			static void Undo(void* address)
+			{
+				old_func_t::Write(address);
 			}
 		};
 	};

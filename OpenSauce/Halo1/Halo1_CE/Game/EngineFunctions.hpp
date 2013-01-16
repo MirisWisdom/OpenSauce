@@ -151,9 +151,6 @@ namespace Yelo
 			// block										increment software_reference_count
 			bool block_thread = false, bool load = true, bool reference = false);
 
-		const char* GetMapExtension();
-		void MapListAddMap(cstring map_name, cstring extension = ".map", bool skip_crc = false, int32 map_index = 0x13);
-
 		// adds a resolution definition to the resolution list
 		void RasterizerAddResolution(uint32 width, uint32 height, uint32 refresh_rate);
 
@@ -167,10 +164,6 @@ namespace Yelo
 
 		bool GetCmdLineParameter(cstring parameter, cstring* value_out = NULL);
 
-		bool CacheFileReadRequest(/*datum_index tag_index,*/ // unused, and optimized out, at runtime
-			uint32 offset, uint32 size, void* buffer, const Cache::s_cache_file_request_params& params, 
-			bool block = true, Enums::cache_file_request_source source = Enums::_cache_file_request_source_open_map);
-
 
 		namespace AI
 		{
@@ -179,6 +172,19 @@ namespace Yelo
 
 			// Attaches the specified actor_variant to the unit
 			void AttachFree(datum_index unit_index, datum_index actor_variant_definition);
+		};
+
+		namespace Cache
+		{
+			bool FileReadRequest(/*datum_index tag_index,*/ // unused, and optimized out, at runtime
+				uint32 offset, uint32 size, void* buffer, const Yelo::Cache::s_cache_file_request_params& params, 
+				bool block = true, Enums::cache_file_request_source source = Enums::_cache_file_request_source_open_map);
+
+			cstring GetMapExtension();
+
+			void MapListAddMap(cstring map_name, cstring extension = ".map", int32 map_index = 0x13);
+
+			int GetMapEntryIndexFromName(cstring name);
 		};
 
 		namespace Cheats
