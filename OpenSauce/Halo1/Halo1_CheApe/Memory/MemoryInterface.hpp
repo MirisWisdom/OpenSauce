@@ -11,11 +11,11 @@
 #include <YeloLib/memory/naked_func_writer.hpp>
 
 //////////////////////////////////////////////////////////////////////////
-// Engine pointer markup system
+// Value markup system
 //
-// [g_addr]	: Guerilla memory address
-// [t_addr]	: Tool memory address
-// [s_addr]	: Sapien memory address
+// [g_value/addr]	: value for use in Guerilla builds
+// [t_valueaddr]	: value for use in Tool builds
+// [s_valueaddr]	: value for use in Sapien builds
 //
 //////////////////////////////////////////////////////////////////////////
 

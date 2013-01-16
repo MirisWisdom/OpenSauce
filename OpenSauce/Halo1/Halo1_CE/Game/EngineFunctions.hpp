@@ -175,11 +175,15 @@ namespace Yelo
 
 		namespace Cache
 		{
-			const char* GetMapExtension();
+			bool FileReadRequest(/*datum_index tag_index,*/ // unused, and optimized out, at runtime
+				uint32 offset, uint32 size, void* buffer, const Yelo::Cache::s_cache_file_request_params& params, 
+				bool block = true, Enums::cache_file_request_source source = Enums::_cache_file_request_source_open_map);
+
+			cstring GetMapExtension();
 
 			void MapListAddMap(cstring map_name, cstring extension = ".map", int32 map_index = 0x13);
 
-			int PLATFORM_API GetMapEntryIndexFromName(const char* name);
+			int GetMapEntryIndexFromName(cstring name);
 		};
 
 		namespace Cheats

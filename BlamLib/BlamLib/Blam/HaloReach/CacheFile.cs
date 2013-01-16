@@ -267,7 +267,7 @@ namespace BlamLib.Blam.HaloReach
 		{
 			base.ReadGroupTags(Program.HaloReach.Manager, s);
 
-			Name.Read(s);
+			Name.Read(s, (s.Owner as CacheFile).StringIds.Definition.Description);
 		}
 		#endregion
 	};

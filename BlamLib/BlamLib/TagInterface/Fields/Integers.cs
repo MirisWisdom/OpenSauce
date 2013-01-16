@@ -1817,6 +1817,12 @@ namespace BlamLib.TagInterface
 			get { return Value; }
 			set { Value = (int)value; }
 		}
+
+		/// <summary>
+		/// Calls <c>Value</c>'s <c>ToString</c> method
+		/// </summary>
+		/// <returns></returns>
+		public override string ToString()		{ return Value.ToString(); }
 		#endregion
 
 		#region Construction

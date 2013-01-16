@@ -2368,6 +2368,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="units"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\units\unit_structures.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\units\unit_structures.hpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".YeloLib"

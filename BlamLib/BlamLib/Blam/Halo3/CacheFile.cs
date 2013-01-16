@@ -415,7 +415,7 @@ namespace BlamLib.Blam.Halo3
 		{
 			base.ReadGroupTags(Program.Halo3.Manager, s);
 
-			Name.Read(s);
+			Name.Read(s, (s.Owner as CacheFile).StringIds.Definition.Description);
 		}
 	};
 	#endregion

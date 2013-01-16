@@ -13,128 +13,90 @@ static void InitializeGrenadeCounts_UnitGrenadeCounts(bool enabled)
 	//////////////////////////////////////////////////////////////////////////
 	// actor_died
 	{
-		// mov	word ptr [ebx+31Eh], 0
-		static const byte k_unit_grenade_count_word[] = { 0x66, 0xC7, 0x83, 0x1E, 0x03, 0x00, 0x00, 0x00, 0x00, };
-		// xor	ecx, ecx
-		// mov	dword ptr [ebx+31Eh], ecx
-		static const byte k_unit_grenade_count_dword[] = { 0x33, 0xC9, 
-			0x89, 0x8B, 0x1E, 0x03, 0x00, 0x00, Enums::_x86_opcode_nop };
-		BOOST_STATIC_ASSERT( sizeof(k_unit_grenade_count_word) == sizeof(k_unit_grenade_count_dword) );
+		typedef Memory::c_naked_func_writer_with_undo<	unit_grenade_counts_mods::actor_died__unit_grenade_count_word,
+														unit_grenade_counts_mods::actor_died__unit_grenade_count_dword>
+			code_writer;
 
-		size_t asm_code_size = sizeof(k_unit_grenade_count_word);
-		const void* asm_code = enabled ? k_unit_grenade_count_dword : k_unit_grenade_count_word;
 		void* code_addr = GET_FUNC_VPTR(ACTOR_DIED_UNIT_GRENADE_COUNT_MOD);
 
-		DebugRunOnce( ASSERT( memcmp(code_addr, k_unit_grenade_count_word, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
-		Memory::WriteMemory(code_addr, asm_code, asm_code_size);
+		if(enabled)	code_writer::Write(code_addr DebugOnly(, "GrenadeCounts asm mismatch"));
+		else		code_writer::Undo(code_addr);
 	}
 	//////////////////////////////////////////////////////////////////////////
 	// player_add_equipment
 	{
-		// mov	[ebp+31Eh], ax
-		static const byte k_unit_grenade_count_word[] = { 0x66, 0x89, 0x85, 0x1E, 0x03, 0x00, 0x00 };
-		// mov	[ebp+31Eh], eax
-		static const byte k_unit_grenade_count_dword[] = {		0x89, 0x85, 0x1E, 0x03, 0x00, 0x00, Enums::_x86_opcode_nop };
-		BOOST_STATIC_ASSERT( sizeof(k_unit_grenade_count_word) == sizeof(k_unit_grenade_count_dword) );
+		typedef Memory::c_naked_func_writer_with_undo<	unit_grenade_counts_mods::player_add_equipment__unit_grenade_count_word,
+														unit_grenade_counts_mods::player_add_equipment__unit_grenade_count_dword>
+			code_writer;
 
-		size_t asm_code_size = sizeof(k_unit_grenade_count_word);
-		const void* asm_code = enabled ? k_unit_grenade_count_dword : k_unit_grenade_count_word;
 		void* code_addr = GET_FUNC_VPTR(PLAYER_ADD_EQUIPMENT_UNIT_GRENADE_COUNT_MOD);
 
-		DebugRunOnce( ASSERT( memcmp(code_addr, k_unit_grenade_count_word, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
-		Memory::WriteMemory(code_addr, asm_code, asm_code_size);
+		if(enabled)	code_writer::Write(code_addr DebugOnly(, "GrenadeCounts asm mismatch"));
+		else		code_writer::Undo(code_addr);
 	}
 	//////////////////////////////////////////////////////////////////////////
 	// biped_new_from_network
 	{
-		// mov	dx, [eax+52Ch]
-		// mov	[eax+31Eh], dx
-		static const byte k_unit_grenade_count_word[] = {
-			0x66,	0x8B, 0x90, 0x2C, 0x05, 0x00, 0x00,
-			0x66,	0x89, 0x90, 0x1E, 0x03, 0x00, 0x00,
-		};
-		static const byte k_unit_grenade_count_dword[] = {
-					0x8B, 0x90, 0x2C, 0x05, 0x00, 0x00, Enums::_x86_opcode_nop,
-					0x89, 0x90, 0x1E, 0x03, 0x00, 0x00, Enums::_x86_opcode_nop,
-		};
-		BOOST_STATIC_ASSERT( sizeof(k_unit_grenade_count_word) == sizeof(k_unit_grenade_count_dword) );
+		typedef Memory::c_naked_func_writer_with_undo<	unit_grenade_counts_mods::biped_new_from_network__unit_grenade_count_word,
+														unit_grenade_counts_mods::biped_new_from_network__unit_grenade_count_dword>
+			code_writer;
 
-		size_t asm_code_size = sizeof(k_unit_grenade_count_word);
-		const void* asm_code = enabled ? k_unit_grenade_count_dword : k_unit_grenade_count_word;
 		void* code_addr = GET_FUNC_VPTR(BIPED_NEW_FROM_NETWORK_UNIT_GRENADE_COUNT_MOD);
 
-		DebugRunOnce( ASSERT( memcmp(code_addr, k_unit_grenade_count_word, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
-		Memory::WriteMemory(code_addr, asm_code, asm_code_size);
+		if(enabled)	code_writer::Write(code_addr DebugOnly(, "GrenadeCounts asm mismatch"));
+		else		code_writer::Undo(code_addr);
 	}
 	//////////////////////////////////////////////////////////////////////////
 	// biped_update_baseline
 	{
-		// mov	cx, [eax+31Eh]
-		static const byte k_unit_grenade_count_word1[] = { 0x66,0x8B, 0x88, 0x1E, 0x03, 0x00, 0x00 };
-		// mov	[eax+52Ch], cx
-		static const byte k_unit_grenade_count_word2[] = { 0x66,0x89, 0x88, 0x2C, 0x05, 0x00, 0x00 };
+		typedef Memory::c_naked_func_writer_with_undo<	unit_grenade_counts_mods::biped_update_baseline__unit_grenade_count_word1,
+														unit_grenade_counts_mods::biped_update_baseline__unit_grenade_count_dword1>
+			code_writer1;
+		typedef Memory::c_naked_func_writer_with_undo<	unit_grenade_counts_mods::biped_update_baseline__unit_grenade_count_word2,
+														unit_grenade_counts_mods::biped_update_baseline__unit_grenade_count_dword2>
+			code_writer2;
 
-		static const byte k_unit_grenade_count_dword1[] = {		0x8B, 0x88, 0x1E, 0x03, 0x00, 0x00, Enums::_x86_opcode_nop };
-		static const byte k_unit_grenade_count_dword2[] = {		0x89, 0x88, 0x2C, 0x05, 0x00, 0x00, Enums::_x86_opcode_nop };
-		BOOST_STATIC_ASSERT( sizeof(k_unit_grenade_count_word1) == sizeof(k_unit_grenade_count_dword1) );
-		BOOST_STATIC_ASSERT( sizeof(k_unit_grenade_count_word2) == sizeof(k_unit_grenade_count_dword2) );
-
-		size_t asm_code_size = sizeof(k_unit_grenade_count_word1);
-		const void* asm_code = enabled ? k_unit_grenade_count_dword1 : k_unit_grenade_count_word1;
 		void* code_addr = GET_FUNC_VPTR(BIPED_UPDATE_BASELINE_UNIT_GRENADE_COUNT_MOD1);
 
-		DebugRunOnce( ASSERT( memcmp(code_addr, k_unit_grenade_count_word1, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
-		Memory::WriteMemory(code_addr, asm_code, asm_code_size);
+		if(enabled)	code_writer1::Write(code_addr DebugOnly(, "GrenadeCounts asm mismatch"));
+		else		code_writer1::Undo(code_addr);
 
-		asm_code_size = sizeof(k_unit_grenade_count_word2);
-		asm_code = enabled ? k_unit_grenade_count_dword2 : k_unit_grenade_count_word2;
 		code_addr = GET_FUNC_VPTR(BIPED_UPDATE_BASELINE_UNIT_GRENADE_COUNT_MOD2);
 
-		DebugRunOnce( ASSERT( memcmp(code_addr, k_unit_grenade_count_word2, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
-		Memory::WriteMemory(code_addr, asm_code, asm_code_size);
+		if(enabled)	code_writer2::Write(code_addr DebugOnly(, "GrenadeCounts asm mismatch"));
+		else		code_writer2::Undo(code_addr);
 	}
 	//////////////////////////////////////////////////////////////////////////
 	// biped_build_update_delta
 	{
-		// mov	dx, [edi+31Eh]
-		static const byte k_unit_grenade_count_word1[] = { 0x66,0x8B, 0x97, 0x1E, 0x03, 0x00, 0x00 };
-		// mov	[esp+44h+var_10], dx
-		static const byte k_unit_grenade_count_word2[] = { 0x66,0x89, 0x54, 0x24, 0x34, };
+		typedef Memory::c_naked_func_writer_with_undo<	unit_grenade_counts_mods::biped_build_update_delta__unit_grenade_count_word1,
+														unit_grenade_counts_mods::biped_build_update_delta__unit_grenade_count_dword1>
+			code_writer1;
+		typedef Memory::c_naked_func_writer_with_undo<	unit_grenade_counts_mods::biped_build_update_delta__unit_grenade_count_word2,
+														unit_grenade_counts_mods::biped_build_update_delta__unit_grenade_count_dword2>
+			code_writer2;
 
-		static const byte k_unit_grenade_count_dword1[] = {		0x8B, 0x97, 0x1E, 0x03, 0x00, 0x00, Enums::_x86_opcode_nop };
-		static const byte k_unit_grenade_count_dword2[] = {		0x89, 0x54, 0x24, 0x34, Enums::_x86_opcode_nop };
-		BOOST_STATIC_ASSERT( sizeof(k_unit_grenade_count_word1) == sizeof(k_unit_grenade_count_dword1) );
-		BOOST_STATIC_ASSERT( sizeof(k_unit_grenade_count_word2) == sizeof(k_unit_grenade_count_dword2) );
-
-		size_t asm_code_size = sizeof(k_unit_grenade_count_word1);
-		const void* asm_code = enabled ? k_unit_grenade_count_dword1 : k_unit_grenade_count_word1;
 		void* code_addr = GET_FUNC_VPTR(BIPED_BUILD_UPDATE_DELTA_UNIT_GRENADE_COUNT_MOD1);
 
-		DebugRunOnce( ASSERT( memcmp(code_addr, k_unit_grenade_count_word1, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
-		Memory::WriteMemory(code_addr, asm_code, asm_code_size);
+		if(enabled)	code_writer1::Write(code_addr DebugOnly(, "GrenadeCounts asm mismatch"));
+		else		code_writer1::Undo(code_addr);
 
-		asm_code_size = sizeof(k_unit_grenade_count_word2);
-		asm_code = enabled ? k_unit_grenade_count_dword2 : k_unit_grenade_count_word2;
 		code_addr = GET_FUNC_VPTR(BIPED_BUILD_UPDATE_DELTA_UNIT_GRENADE_COUNT_MOD2);
 
-		DebugRunOnce( ASSERT( memcmp(code_addr, k_unit_grenade_count_word2, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
-		Memory::WriteMemory(code_addr, asm_code, asm_code_size);
+		if(enabled)	code_writer2::Write(code_addr DebugOnly(, "GrenadeCounts asm mismatch"));
+		else		code_writer2::Undo(code_addr);
 	}
 	//////////////////////////////////////////////////////////////////////////
 	// biped_process_update_delta
 	{
-		// mov	word ptr [esi+31Eh], ax
-		static const byte k_unit_grenade_count_word[] = { 0x66, 0x89, 0x86, 0x1E, 0x03, 0x00, 0x00, };
-		// mov	dword ptr [esi+31Eh], eax
-		static const byte k_unit_grenade_count_dword[] = {		0x89, 0x86, 0x1E, 0x03, 0x00, 0x00, Enums::_x86_opcode_nop };
-		BOOST_STATIC_ASSERT( sizeof(k_unit_grenade_count_word) == sizeof(k_unit_grenade_count_dword) );
+		typedef Memory::c_naked_func_writer_with_undo<	unit_grenade_counts_mods::biped_process_update_delta__unit_grenade_count_word,
+														unit_grenade_counts_mods::biped_process_update_delta__unit_grenade_count_dword>
+			code_writer;
 
-		size_t asm_code_size = sizeof(k_unit_grenade_count_word);
-		const void* asm_code = enabled ? k_unit_grenade_count_dword : k_unit_grenade_count_word;
 		void* code_addr = GET_FUNC_VPTR(BIPED_PROCESS_UPDATE_DELTA_UNIT_GRENADE_COUNT_MOD);
 
-		DebugRunOnce( ASSERT( memcmp(code_addr, k_unit_grenade_count_word, asm_code_size)==0, "GrenadeCounts asm mismtach!" ) );
-		Memory::WriteMemory(code_addr, asm_code, asm_code_size);
+		if(enabled)	code_writer::Write(code_addr DebugOnly(, "GrenadeCounts asm mismatch"));
+		else		code_writer::Undo(code_addr);
 	}
 }
 
