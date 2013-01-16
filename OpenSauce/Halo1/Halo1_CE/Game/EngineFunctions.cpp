@@ -28,7 +28,7 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_GAME_ENGINE_FUNCTIONS
 #include "Memory/_EngineLayout.inl"
 
-		#include "Game/EngineFunctions._Misc.inl"		
+		#include "Game/EngineFunctions._Misc.inl"
 
 		namespace AI
 		{
@@ -55,6 +55,55 @@ namespace Yelo
 					call	TEMP_CALL_ADDR
 					add		esp, 4 * 1
 				API_FUNC_NAKED_END(2)
+			}
+		};
+
+		namespace Cache
+		{
+			const char* GetMapExtension()
+			{
+				return GET_PTR2(MAP_LIST_MAP_EXTENSION);
+			}
+
+			void MapListAddMap(cstring map_name, cstring extension, int32 map_index)
+			{
+				static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(MAP_LIST_ADD_MAP);
+				static void* MAP_LIST_EXTENSION_REF = GET_PTR2(MAP_LIST_MAP_EXTENSION_REF);
+				static const char* MAP_LIST_EXTENSION_STOCK = GET_PTR2(MAP_LIST_MAP_EXTENSION);
+
+				__asm {
+					push	eax
+					push	ebx
+					mov		eax, MAP_LIST_EXTENSION_REF
+					mov		ebx, extension
+					mov		dword ptr [eax], ebx
+					pop		ebx
+					pop		eax
+
+					push	map_index
+					mov		eax, map_name
+					call	TEMP_CALL_ADDR
+					add		esp, 4 * 1
+
+					push	eax
+					push	ebx
+					mov		eax, MAP_LIST_EXTENSION_REF
+					mov		ebx, MAP_LIST_EXTENSION_STOCK
+					mov		dword ptr [eax], ebx
+					pop		ebx
+					pop		eax
+				}
+			}
+
+			int PLATFORM_API GetMapEntryIndexFromName(const char* name)
+			{
+				static const uintptr_t FUNCTION = GET_FUNC_PTR(MAP_ENTRY_INDEX_FROM_NAME);
+
+				_asm
+				{
+					mov		eax, name
+					call	FUNCTION
+				};
 			}
 		};
 
