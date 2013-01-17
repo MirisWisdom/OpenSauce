@@ -121,24 +121,29 @@ namespace Boarding
 				// Eject the target_unit
 				EjectUnit(target_unit_index);
 
-				// Create a new damage_data struct based on the boarding_seat_definition boarding damage field
-				Objects::s_damage_data* damage_data = new Objects::s_damage_data();
-				damage_data->effect_definition_index = boarding_seat_definition->boarding_damage.tag_index;
-				damage_data->responsible_player_index = unit->unit.controlling_player_index;
-				damage_data->responsible_unit_index = unit_index;
-				damage_data->responsible_units_team = unit->object.owner_team;
-				damage_data->location = target_unit->object.scenario_location;
-				damage_data->damage_position = target_unit->object.network.position;
-				damage_data->damage_multiplier = 1.0f;
-
-				// Damage the target_unit
-				Engine::Objects::ObjectCauseDamage(damage_data, target_unit_index, NONE, NONE, NONE, 0);
-				
-				// if the target seat is a drivers seat, make the boarding unit the driver
-				if (parent_unit_definition->unit.seats[target_seat_index].flags.driver_bit)
+				// If the target seat is a drivers seat and boarding enters the seat, make the boarding unit the driver
+				if (parent_unit_definition->unit.seats[target_seat_index].flags.driver_bit && 
+					boarding_seat_definition->flags.boarding_enters_target_seat_bit)
 				{
 					parent_unit->unit.powered_seats_riders[Enums::_powered_seat_driver] = unit_index;
 					parent_unit->unit.powered_seats_power[Enums::_powered_seat_driver] = 1.0f;
+				}
+
+				// If the boarding seat definition contains a damage effect tag, use it here
+				if (boarding_seat_definition->boarding_damage.tag_index != datum_index::null)
+				{
+					// Create a new damage_data struct based on the boarding_seat_definition boarding damage field
+					Objects::s_damage_data* damage_data = new Objects::s_damage_data();
+					damage_data->effect_definition_index = boarding_seat_definition->boarding_damage.tag_index;
+					damage_data->responsible_player_index = unit->unit.controlling_player_index;
+					damage_data->responsible_unit_index = unit_index;
+					damage_data->responsible_units_team = unit->object.owner_team;
+					damage_data->location = target_unit->object.scenario_location;
+					damage_data->damage_position = target_unit->object.network.position;
+					damage_data->damage_multiplier = 1.0f;
+
+					// Damage the target_unit
+					Engine::Objects::ObjectCauseDamage(damage_data, target_unit_index, NONE, NONE, NONE, 0);
 				}
 			}
 		}
