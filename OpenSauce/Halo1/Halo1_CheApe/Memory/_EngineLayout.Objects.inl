@@ -33,13 +33,29 @@
 			//0x6507D2+4,
 		};
 
-//		static uintptr_t K_NUMBER_OF_UNIT_GRENADE_TYPES_REFS[] = {
-//		};
-//		static uintptr_t K_MAXIMUM_UNIT_GRENADE_INDEX_REFS_32bit[] = {
-//		};
-		static uintptr_t K_MAXIMUM_UNIT_GRENADE_INDEX_REFS_8bit[] = {
-			0x588AC5+3,
+		static uintptr_t K_NUMBER_OF_UNIT_GRENADE_TYPES_REFS[] = {
+			0x5295DB+1, // 32bit
+			0x588AC5+3, // 8bit
+			0x588E53+3, // 8bit
+			0x588F79+1, // 8bit
+			0x589C78+4, // 32bit
+			0x5906D7+1, // 8bit memcpy
+			0x5928AA+2, // 16bit
+			0x593254+1, // 8bit
+			0x6507F2+1, // 8bit memcpy
+			0x65096E+1, // 8bit memcpy
+			0x650C6C+1, // 8bit memcpy
+			0x65108A+1, // 8bit memcpy
+			0x65B698+1, // 32bit
+			0x65BE70+1, // 32bit
+			0x697CBD+1, // 8bit memcpy
+			0x6CAC7D+1, // 32bit
 		};
+		static uintptr_t K_MAXIMUM_UNIT_GRENADE_INDEX_REFS[] = {
+			0x58783F+2, // 16bit
+		};
+
+		FUNC_PTR(PLAYER_ADD_EQUIPMENT_UNIT_GRENADE_COUNT_MOD,		NULL, NULL, 0x529526);
 	#endif
 
 //////////////////////////////////////////////////////////////////////////

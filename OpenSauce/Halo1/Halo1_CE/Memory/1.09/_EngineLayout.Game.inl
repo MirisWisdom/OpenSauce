@@ -21,7 +21,7 @@
 	ENGINE_DPTR(s_ai_communication_replies_data, ai_communication_replies,	0x68BC7C, 0x5F4474);
 	ENGINE_DPTR(t_ai_conversation_data, ai_conversations,					0x81B4B4, 0x6E7374);
 
-	FUNC_PTR(AI_UPDATE_HOOK,						0x42A949, 0x42A959);
+	FUNC_PTR(AI_UPDATE_HOOK,			0x42A949, 0x42A959);
 	FUNC_PTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK,	0x40B701, 0x40B711);
 
 
@@ -278,6 +278,7 @@ namespace Fov
 	FUNC_PTR(GAME_DISPOSE_FROM_OLD_MAP_HOOK,							0x45C060, 0x458A18);
 
 	FUNC_PTR(GAME_SERVER_QR2_STRING_MATCHES_GAMEVER_CALL,				0x4BA7CB, FUNC_PTR_NULL);
+	FUNC_PTR(CREATE_NETWORK_CLIENT_HOOK,								0x4DC0AB, FUNC_PTR_NULL);
 
 
 //////////////////////////////////////////////////////////////////////////

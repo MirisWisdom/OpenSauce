@@ -24,6 +24,27 @@ static BOOL PLATFORM_API ServerVersionIsValid(cstring server_version)
 	return BuildNumber::StringIsValid(server_version);
 }
 
+static void SetVersionFromServer()
+{
+	uint32		create_network_client_result;
+	_asm mov	create_network_client_result, eax;
+
+	Networking::s_gamespy_server* server = Networking::GsServerBrowserGlobals()->selected_server.server;
+	if(server)
+	{
+		const char* server_version = Networking::GameSpy::SBServerGetStringValue(server, "gamever", "");
+
+		if(server_version && BuildNumber::StringIsValid(server_version))
+			BuildNumber::ChangeAdvertisedVersion(server_version, false);
+		else
+			BuildNumber::ChangeAdvertisedVersion(BOOST_PP_STRINGIZE(PLATFORM_VERSION_VALUE), false);
+	}
+	else
+		BuildNumber::ChangeAdvertisedVersion(BOOST_PP_STRINGIZE(PLATFORM_VERSION_VALUE), false);
+
+	_asm mov	eax, create_network_client_result;
+}
+
 void ServerListInitialize()
 {
 	if(CMDLINE_GET_PARAM(mp_version).ParameterSet())
@@ -37,4 +58,5 @@ void ServerListInitialize()
 
 	// override the function call that omits servers of a different version from the server browser
 	Memory::WriteRelativeCall(ServerVersionIsValid, GET_FUNC_VPTR(GAME_SERVER_QR2_STRING_MATCHES_GAMEVER_CALL), true);
+	Memory::CreateHookRelativeCall(SetVersionFromServer, GET_FUNC_VPTR(CREATE_NETWORK_CLIENT_HOOK), Enums::_x86_opcode_ret);
 }

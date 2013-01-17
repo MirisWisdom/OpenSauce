@@ -35,26 +35,19 @@ static void InitializeGrenadeCounts_NumberOfUnitGrenadeTypes(uint32 count)
 {
 	for(int x = 0; x < NUMBEROF(K_NUMBER_OF_UNIT_GRENADE_TYPES_REFS); x++)
 	{
-		uint32* count_ref = CAST_PTR(uint32*, K_NUMBER_OF_UNIT_GRENADE_TYPES_REFS[x]);
+		byte* count_ref = CAST_PTR(byte*, K_NUMBER_OF_UNIT_GRENADE_TYPES_REFS[x]);
 
 		DebugRunOnce( ASSERT( Enums::k_unit_grenade_types_count == *count_ref, "GrenadeCounts asm mismatch!" ) );
-		*count_ref = count;
+		*count_ref = CAST(byte, count);
 	}
 
 	//////////////////////////////////////////////////////////////////////////
 	// patch the maximum unit grenade index
 	count--;
 
-	for(int x = 0; x < NUMBEROF(K_MAXIMUM_UNIT_GRENADE_INDEX_REFS_32bit); x++)
+	for(int x = 0; x < NUMBEROF(K_MAXIMUM_UNIT_GRENADE_INDEX_REFS); x++)
 	{
-		uint32* count_ref = CAST_PTR(uint32*, K_MAXIMUM_UNIT_GRENADE_INDEX_REFS_32bit[x]);
-
-		DebugRunOnce( ASSERT( Enums::k_unit_grenade_types_count-1 == *count_ref, "GrenadeCounts asm mismatch!" ) );
-		*count_ref = count;
-	}
-	for(int x = 0; x < NUMBEROF(K_MAXIMUM_UNIT_GRENADE_INDEX_REFS_8bit); x++)
-	{
-		byte* count_ref = CAST_PTR(byte*, K_MAXIMUM_UNIT_GRENADE_INDEX_REFS_8bit[x]);
+		byte* count_ref = CAST_PTR(byte*, K_MAXIMUM_UNIT_GRENADE_INDEX_REFS[x]);
 
 		DebugRunOnce( ASSERT( Enums::k_unit_grenade_types_count-1 == *count_ref, "GrenadeCounts asm mismatch!" ) );
 		*count_ref = CAST(byte, count);
@@ -63,6 +56,9 @@ static void InitializeGrenadeCounts_NumberOfUnitGrenadeTypes(uint32 count)
 
 namespace unit_grenade_counts_mods
 {
+	// TODO: game_engine_map_reset resets all the player unit's grenade counts to zero
+	// We may need to patch it up too
+
 #if !PLATFORM_IS_EDITOR
 	//////////////////////////////////////////////////////////////////////////
 	// actor_died
@@ -75,6 +71,7 @@ namespace unit_grenade_counts_mods
 #endif
 	//////////////////////////////////////////////////////////////////////////
 	// player_add_equipment
+	// NOTE: currently don't apply this in the editor...shouldn't be an issue
 	NAKED_FUNC_WRITER_ASM_BEGIN(player_add_equipment__unit_grenade_count_word)
 		mov	[PLATFORM_ENGINE_VALUE(ebp,esi)+31Eh], ax	NAKED_FUNC_WRITER_ASM_END();
 	NAKED_FUNC_WRITER_ASM_BEGIN(player_add_equipment__unit_grenade_count_dword)
