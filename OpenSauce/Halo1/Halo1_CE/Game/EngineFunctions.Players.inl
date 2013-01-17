@@ -86,6 +86,18 @@ datum_index FindClosestPlayerIndex(datum_index player_index)
 #endif
 }
 
+void PlayerExamineNearbyVehicle(datum_index player_index, datum_index vehicle_index)
+{
+	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(PLAYER_EXAMINE_NEARBY_VEHICLE);
+
+	__asm {
+		push	vehicle_index
+		push	player_index
+		call	TEMP_CALL_ADDR
+		add		esp, 4 * 2
+	}
+}
+
 void PlayerSetActionResult(datum_index player_index, datum_index action_object_index, int32 action_result, int32 action_seat_index)
 {
 	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(PLAYER_SET_ACTION_RESULT);

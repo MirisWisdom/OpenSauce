@@ -481,6 +481,8 @@ namespace Yelo
 			// represented by the [player_index] datum_index parameter
 			datum_index FindClosestPlayerIndex(datum_index player_index);
 
+			void PlayerExamineNearbyVehicle(datum_index player_index, datum_index vehicle_index);
+
 			void PlayerSetActionResult(datum_index player_index, datum_index action_object_index, int32 action_result, int32 action_seat_index);
 			
 			void PlayerSetActionResultToNetwork(datum_index player_index, datum_index action_object_index, int32 unknown, int32 action_result, int32 action_seat_index, datum_index next_weapon_index);

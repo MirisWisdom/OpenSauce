@@ -43,16 +43,63 @@ namespace NearbyObjects
 		// set the game's client jump table address to our's
 		GET_PTR(player_examine_nearby_objects_client_jmp_ptr) = player_examine_nearby_objects_client_jmp_table_yelo;
 	}
+
+	void PlayerExamineNearbyBiped(datum_index player_index, datum_index biped_index)
+	{
+		s_player_datum* player = (*Players::Players())[player_index];
+
+		// Make sure we're not detecting ourself
+		if (player->slave_unit_index != biped_index)
+		{
+			// Add check to see if biped is on our team to allow differentiation between unit seat entering and weapon swapping
+			// Problem: when you enter a biped seat, their team changes to yours
+			Engine::Players::PlayerExamineNearbyVehicle(player_index, biped_index);
+		}
+	}
+
+	API_FUNC_NAKED void PLATFORM_API PlayerExamineNearbyBipedServerJMP()
+	{
+		static uint32 RETN_ADDRESS = GET_FUNC_PTR(PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_JMP_TABLE_RETN);
+
+		__asm {
+			pushad
+
+			push	ecx		// datum_index biped_index
+			push	edi		// datum_index player_index
+			call	PlayerExamineNearbyBiped
+
+			popad
+
+			jmp		RETN_ADDRESS
+		}
+	}
+
+	API_FUNC_NAKED void PLATFORM_API PlayerExamineNearbyBipedClientJMP()
+	{
+		static uint32 RETN_ADDRESS = GET_FUNC_PTR(PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_JMP_TABLE_RETN);
+
+		__asm {
+			pushad
+
+			push	ecx		// datum_index biped_index
+			push	edi		// datum_index player_index
+			call	PlayerExamineNearbyBiped
+
+			popad
+
+			jmp		RETN_ADDRESS
+		}
+	}
 	
 	// Initializes new yelo nearby object detection
 	void InitializeYeloNearbyObjects()
 	{
 		// Detect nearby biped objects server side for seat entry
 		player_examine_nearby_objects_server_jmp_table_yelo[Yelo::Enums::_object_type_biped] = 
-			(void*)PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_JMP_TABLE[1];
+			&PlayerExamineNearbyBipedServerJMP;
 		// Detect nearby biped objects client side for seat entry
 		player_examine_nearby_objects_client_jmp_table_yelo[Yelo::Enums::_object_type_biped] = 
-			(void*)PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_JMP_TABLE[1];
+			&PlayerExamineNearbyBipedClientJMP;
 	}
 
 	void Initialize()
