@@ -101,14 +101,14 @@ namespace Yelo
 			// FFFFFFFFuck you. This enables the client to have it's own init.txt (also was causing crashes)
 			// Obviously this isn't ran in Dedi builds
 #if PLATFORM_IS_USER
-			strcpy_s(GET_PTR2(init_txt_filename), 12, "init_c.txt"); // 11 characters (including '\0')
+			strcpy_s(GET_PTR2(init_txt_filename), 12, "initc.txt"); // 10 characters (including '\0')
 #endif
 		}
 		void Initialize()
 		{
 			InitializeProcs();
 			MemoryUpgradesInitialize();
-			if(CMDLINE_GET_PARAM(use_os_gamestate).ParameterSet())
+			if(!CMDLINE_GET_PARAM(no_os_gamestate).ParameterSet())
 			{
 				InitializeForYeloGameState(g_yelo_game_state_enabled = true);
 			}
