@@ -33,6 +33,7 @@ namespace Yelo
 
 		struct s_unit_external_upgrades
 		{
+			PAD32;
 			TAG_FIELD(tag_reference, unit, "unit");
 			TAG_TBLOCK(boarding_seats, s_unit_boarding_seat);
 			TAG_PAD(int32, 9);
