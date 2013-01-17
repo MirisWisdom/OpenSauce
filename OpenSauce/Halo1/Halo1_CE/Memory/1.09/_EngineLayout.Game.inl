@@ -310,6 +310,7 @@ namespace Fov
 	
 	//////////////////////////////////////////////////////////////////////////
 	// Players.NearbyObjects
+	FUNC_PTR(PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_JMP_TABLE_RETN,			0x47B268, 0x472CE8);
 	ENGINE_PTR(void**, player_examine_nearby_objects_server_jmp_ptr,		0x47B248, 0x472CC8);
 	static byte* K_NUMBER_OF_PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_JMP_TABLE_ENTRIES = CAST_PTR(
 		byte*, PLATFORM_VALUE(0x47B242, 0x472CC2)
@@ -318,6 +319,7 @@ namespace Fov
 		const void**, PLATFORM_VALUE(0x47B274, 0x472CF4)
 	);
 
+	FUNC_PTR(PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_JMP_TABLE_RETN,			0x47B368, 0x472DE8);
 	ENGINE_PTR(void**, player_examine_nearby_objects_client_jmp_ptr,		0x47B348, 0x472DC8);
 	static byte* K_NUMBER_OF_PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_JMP_TABLE_ENTRIES = CAST_PTR(
 		byte*, PLATFORM_VALUE(0x47B342, 0x472DC2)
