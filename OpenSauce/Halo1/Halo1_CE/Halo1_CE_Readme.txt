@@ -65,11 +65,12 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
   * CHANGE		Increased hardcoded 'k_game_state_allocation_maximum_size_for_yelo' by 0x970 bytes
   * CHANGE		Increased hardcoded 'k_runtime_data_max_values_count' to a total of 64 (up from 32)
   * CHANGE		Made the GBuffer require SM 3.0
+  * CHANGE		Clients now use "initc.txt" for their init.txt file
   * ADD			Added flag to use specular colour map alpha as a specular lighitng exponent mask
   * ADD			Make screenshots get saved to unique directorys to stop them from being overwritten
   * ADD			Upgraded the max number of particles active/rendered at once
   * ADD			Upgraded the max number of objects rendered at once
-  * ADD?		Ability for mainmenu maps to have animating objects
+  * ADD			Ability for mainmenu maps to have animating objects
   * ADD			Added an xml setting for completely turning off game update checks
   * ADD			Added an in-game map download system to the client
   * ADD			Added a HTTP server to the OS dedi
@@ -81,10 +82,10 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
   * ADD			Script function for playing a .bik movie just like how the engine plays credits.bik, etc (local games only)
   * ADD			New tag/script system for displaying ui widgets to the user
   * ADD			Added system for adding custom dedicated server logging events
-  * ADD			Added a new tag/script system for changing sky/lightmaps called 'scenario faux zones'
   * ADD			Runtime vector3d values (part of the game state)
   * ADD			Added a mini crashdump creator for easier debugging
-  * ADD			Added command line argument to disable all OS graphics
+  * ADD			Added command line argument to disable all OS graphics (-no_os_gfx)
+  * ADD			Added command line argument to disable special OS game state allocations (-no_os_gamestate)
   * ADD			Added Visual C++ 9.0 runtime to the installer
   * FIX			Fixed Halo not loading when using -use*
   * FIX			Fixed crash in shader model settings when extension element is missing
