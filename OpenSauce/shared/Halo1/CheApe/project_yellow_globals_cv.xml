@@ -9,6 +9,25 @@
 	</flags>
 
 	<blocks>
+		<TagBlock name="unit_boarding_seat_block" maxElements="32">
+			<field type="WordFlags" name="flags" definition="unit_boarding_seat_flags" />
+			<field type="Pad" definition="2" />
+			<field type="Pad" definition="2" /> <!-- ShortInteger seat index -->
+			<field type="Pad" definition="2" /> <!-- ShortInteger target seat index -->
+			<field type="String" name="seat label" blockname="true" tooltip="label of the boarding seat in the unit tag" />
+			<field type="String" name="target seat label" tooltip="label of the target seat in the unit tag" />
+			<field type="TagReference" name="boarding damage" definition="damage_effect_reference" tooltip="damage effect dealt to the unit in the target seat during boarding" />
+			
+			<field type="Pad" definition="32" />
+		</TagBlock>
+		<TagBlock name="unit_external_upgrades_block" maxElements="64">
+			<field type="Pad" definition="4" />
+			<field type="TagReference" name="unit" definition="unit_reference" blockname="true" />
+			<field type="Block" name="boarding seats" definition="unit_boarding_seat_block" />
+			
+			<field type="Pad" definition="36" />
+		</TagBlock>
+		
 		<!-- UNUSED -->
 		<TagBlock name="dual_wield_weapon_block" maxElements="256">
 			<field type="TagReference" name="primary weapon" definition="weapon_reference" />
@@ -49,6 +68,7 @@
 			<field type="ShortInteger" name="version" locked="true" />
 			<field type="Pad" definition="2" />
 
+			<field type="Block" name="unit external upgrades" definition="unit_external_upgrades_block" />
 			<!--<field type="Block" name="dual wielding" definition="dual_wield_weapon_block" />-->
 			<!--<field type="Block" name="object damage extensions" definition="object_damage_extension_block" />-->
 
