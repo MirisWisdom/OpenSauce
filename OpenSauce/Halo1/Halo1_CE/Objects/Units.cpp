@@ -107,11 +107,16 @@ namespace Yelo
 
 		int32 DefinitionFindUnitUpgradeBlockIndex(datum_index unit_tag_index)
 		{
-			int32 unit_external_upgrades_count = TagGroups::_global_yelo_globals->unit_external_upgrades.Count;
+			const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
+
+			if(cv_globals == NULL)
+				return NONE;
+
+			int32 unit_external_upgrades_count = cv_globals->unit_external_upgrades.Count;
 
 			for(int32 x = 0; x < unit_external_upgrades_count; x++)
 			{
-				TagGroups::s_unit_external_upgrades const& unit_upgrade = TagGroups::_global_yelo_globals->unit_external_upgrades[x];
+				TagGroups::s_unit_external_upgrades const& unit_upgrade = cv_globals->unit_external_upgrades[x];
 
 				if(unit_tag_index == unit_upgrade.unit.tag_index)
 					return x;
@@ -137,10 +142,15 @@ namespace Yelo
 
 		TagGroups::s_unit_external_upgrades const* DefinitionFindUnitUpgradesBlock(datum_index unit_index)
 		{
+			const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
+
+			if(cv_globals == NULL)
+				return NULL;
+
 			if (unit_index != datum_index::null)
 			{
 				// Check if a unit upgrades block exists in yelo_globals
-				if (TagGroups::_global_yelo_globals->unit_external_upgrades.Count > 0)
+				if (cv_globals->unit_external_upgrades.Count > 0)
 				{
 					Objects::s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
 					datum_index unit_tag_index = unit->object.definition_index;
@@ -148,7 +158,7 @@ namespace Yelo
 
 					// Check if an upgrades block exists for this unit
 					if (unit_upgrade_index != NONE)
-						return &TagGroups::_global_yelo_globals->unit_external_upgrades[unit_upgrade_index];
+						return &cv_globals->unit_external_upgrades[unit_upgrade_index];
 				}
 			}
 			return NULL;

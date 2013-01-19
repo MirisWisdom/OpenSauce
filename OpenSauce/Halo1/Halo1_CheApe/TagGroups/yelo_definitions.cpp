@@ -26,34 +26,6 @@ namespace Yelo
 	namespace TagGroups
 	{
 		//////////////////////////////////////////////////////////////////////////
-		// project_yellow_globals_cv
-		static bool PLATFORM_API py_globals_cv_group_postprocess(Yelo::datum_index tag_index, Enums::tag_postprocess_mode mode)
-		{
-			project_yellow_globals_cv* def = Yelo::tag_get<project_yellow_globals_cv>(tag_index);
-
-			def->version = project_yellow_globals_cv::k_version;
-
-			return true;
-		}
-		//////////////////////////////////////////////////////////////////////////
-
-		//////////////////////////////////////////////////////////////////////////
-		// scripting_block
-		static cstring PLATFORM_API scripting_block_construct_format(datum_index tag_index, tag_block* block, int32 element, char formatted_buffer[Enums::k_tag_block_format_buffer_size])
-		{
-			s_script_construct_definition* elem = 
-				CAST_PTR(s_script_construct_definition*, tag_block_get_element(block, element));
-
-			if(elem->name[0][0] != '\0')
-				strncpy_s(formatted_buffer, Enums::k_tag_block_format_buffer_size, elem->name[0], Enums::k_tag_string_length);
-			if(elem->name[1][0] != '\0')
-				strncat_s(formatted_buffer, Enums::k_tag_block_format_buffer_size, elem->name[1], Enums::k_tag_string_length);
-
-			return formatted_buffer;
-		}
-		//////////////////////////////////////////////////////////////////////////
-
-		//////////////////////////////////////////////////////////////////////////
 		// unit_external_upgrades_block
 		static int UnitGetSeatIndexFromLabel(s_unit_definition* unit_def, cstring seat_label)
 		{
@@ -97,6 +69,35 @@ namespace Yelo
 		//////////////////////////////////////////////////////////////////////////
 
 		//////////////////////////////////////////////////////////////////////////
+		// project_yellow_globals_cv
+		static bool PLATFORM_API py_globals_cv_group_postprocess(Yelo::datum_index tag_index, Enums::tag_postprocess_mode mode)
+		{
+			project_yellow_globals_cv* def = Yelo::tag_get<project_yellow_globals_cv>(tag_index);
+
+			def->version = project_yellow_globals_cv::k_version;
+			UnitExternalUpgradesBlockPostprocess(def->unit_external_upgrades, mode);
+
+			return true;
+		}
+		//////////////////////////////////////////////////////////////////////////
+
+		//////////////////////////////////////////////////////////////////////////
+		// scripting_block
+		static cstring PLATFORM_API scripting_block_construct_format(datum_index tag_index, tag_block* block, int32 element, char formatted_buffer[Enums::k_tag_block_format_buffer_size])
+		{
+			s_script_construct_definition* elem = 
+				CAST_PTR(s_script_construct_definition*, tag_block_get_element(block, element));
+
+			if(elem->name[0][0] != '\0')
+				strncpy_s(formatted_buffer, Enums::k_tag_block_format_buffer_size, elem->name[0], Enums::k_tag_string_length);
+			if(elem->name[1][0] != '\0')
+				strncat_s(formatted_buffer, Enums::k_tag_block_format_buffer_size, elem->name[1], Enums::k_tag_string_length);
+
+			return formatted_buffer;
+		}
+		//////////////////////////////////////////////////////////////////////////
+
+		//////////////////////////////////////////////////////////////////////////
 		// project_yellow_globals
 		static bool PLATFORM_API py_globals_group_postprocess(Yelo::datum_index tag_index, Enums::tag_postprocess_mode mode)
 		{
@@ -105,7 +106,6 @@ namespace Yelo
 			def->version = project_yellow_globals::k_version;
 
 			Scripting::ScriptingBlockClear(def->yelo_scripting);
-			UnitExternalUpgradesBlockPostprocess(def->unit_external_upgrades, mode);
 			if(mode == Enums::_tag_postprocess_mode_for_runtime)
 			{
 				Scripting::ScriptingBlockAddDefinitions(def->yelo_scripting, true);
