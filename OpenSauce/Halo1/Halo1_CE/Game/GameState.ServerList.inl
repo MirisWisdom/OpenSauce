@@ -26,9 +26,6 @@ static BOOL PLATFORM_API ServerVersionIsValid(cstring server_version)
 
 static void SetVersionFromServer()
 {
-	uint32		create_network_client_result;
-	_asm mov	create_network_client_result, eax;
-
 	Networking::s_gamespy_server* server = Networking::GsServerBrowserGlobals()->selected_server.server;
 	if(server)
 	{
@@ -39,10 +36,31 @@ static void SetVersionFromServer()
 		else
 			BuildNumber::ChangeAdvertisedVersion(BOOST_PP_STRINGIZE(PLATFORM_VERSION_VALUE), false);
 	}
-	else
-		BuildNumber::ChangeAdvertisedVersion(BOOST_PP_STRINGIZE(PLATFORM_VERSION_VALUE), false);
+}
 
-	_asm mov	eax, create_network_client_result;
+static void SetVersionToCurrent()
+{
+	BuildNumber::ChangeAdvertisedVersion(BOOST_PP_STRINGIZE(PLATFORM_VERSION_VALUE), false);
+}
+
+static void* CreateNetworkServerHook()
+{
+	typedef void* (*create_network_game_t)();
+	create_network_game_t function = CAST_PTR(create_network_game_t, GET_FUNC_VPTR(GAME_CREATE_NETWORK_SERVER));
+
+	SetVersionToCurrent();
+
+	return (*function)();
+}
+
+static void* CreateNetworkClientHook()
+{
+	typedef void* (*create_network_game_t)();
+	create_network_game_t function = CAST_PTR(create_network_game_t, GET_FUNC_VPTR(GAME_CREATE_NETWORK_CLIENT));
+
+	SetVersionFromServer();
+
+	return (*function)();
 }
 
 void ServerListInitialize()
@@ -58,5 +76,8 @@ void ServerListInitialize()
 
 	// override the function call that omits servers of a different version from the server browser
 	Memory::WriteRelativeCall(ServerVersionIsValid, GET_FUNC_VPTR(GAME_SERVER_QR2_STRING_MATCHES_GAMEVER_CALL), true);
-	Memory::CreateHookRelativeCall(SetVersionFromServer, GET_FUNC_VPTR(CREATE_NETWORK_CLIENT_HOOK), Enums::_x86_opcode_ret);
+
+	Memory::WriteRelativeCall(CreateNetworkServerHook, GET_FUNC_VPTR(GAME_CREATE_NETWORK_SERVER_CALL), true);
+	for(int i = 0; i < NUMBEROF(K_GAME_CREATE_NETWORK_CLIENT_CALL); i++)
+		Memory::WriteRelativeCall(CreateNetworkClientHook, K_GAME_CREATE_NETWORK_CLIENT_CALL[i], true);
 }

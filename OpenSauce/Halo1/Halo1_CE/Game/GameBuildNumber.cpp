@@ -152,7 +152,7 @@ is_invalid:
 			else return NULL;
 		}
 
-		static void ChangeAdvertisedVersionId(long_enum version_id, bool and_game_build)
+		void ChangeAdvertisedVersionId(long_enum version_id, bool and_game_build)
 		{
 			using namespace Enums;
 
@@ -202,6 +202,12 @@ is_invalid:
 				ChangeAdvertisedVersionId(version_id, and_game_build);
 
 			return result;
+		}
+
+		long_enum GetAdvertisedVersion()
+		{
+			// assuming all id's match
+			return GET_PTR(game_version_id1);
 		}
 	};
 };

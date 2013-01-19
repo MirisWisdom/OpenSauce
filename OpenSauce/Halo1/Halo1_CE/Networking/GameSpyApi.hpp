@@ -462,8 +462,6 @@ namespace Yelo
 			bool	SBServerGetBoolValue(s_gamespy_server* server, const char* key, bool def);
 			int		SBServerGetIntValue(s_gamespy_server* server, const char* key, int def);
 			cstring	SBServerGetStringValue(s_gamespy_server* server, const char* key, cstring def);
-
-			s_gamespy_server*	GetGSServerByIP(const char* ip, short port);
 		};
 	};
 };
