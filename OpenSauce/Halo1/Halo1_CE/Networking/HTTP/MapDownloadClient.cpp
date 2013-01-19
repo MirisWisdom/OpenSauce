@@ -2488,7 +2488,7 @@ namespace Yelo
 			TiXmlElement* map_download_element = new TiXmlElement("map_download");
 			xml_element->LinkEndChild(map_download_element);
 
-			map_download_element->SetAttribute("enabled", Settings::BooleanToString(g_map_download_globals.m_downloads_enabled));
+			map_download_element->SetAttribute("enabled", BooleanToString(g_map_download_globals.m_downloads_enabled));
 		}
 
 		/*!

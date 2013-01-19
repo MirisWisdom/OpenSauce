@@ -9,35 +9,52 @@
 
 static void InitializeGrenadeCounts_UnitZoomLevelRefs(bool enabled)
 {
+	static bool verified;
+
 	uint32 offset = enabled ? s_unit_data::k_offset_zoom_level_yelo : s_unit_data::k_offset_zoom_level;
 
 	for(int x = 0; x < NUMBEROF(K_UNIT_ZOOM_LEVEL_OFFSET_REFS); x++)
 	{
 		uint32* offset_ref = CAST_PTR(uint32*, K_UNIT_ZOOM_LEVEL_OFFSET_REFS[x]);
 
-		DebugRunOnce( ASSERT( s_unit_data::k_offset_zoom_level == *offset_ref, "GrenadeCounts asm mismatch!" ) );
+		DebugOnly( 
+			if(!verified)
+				ASSERT( s_unit_data::k_offset_zoom_level == *offset_ref, "GrenadeCounts asm mismatch!" ) 
+		);
 		*offset_ref = offset;
 	}
+	DebugOnly( verified = true );
 }
 static void InitializeGrenadeCounts_UnitDesiredZoomLevelRefs(bool enabled)
 {
+	static bool verified;
+
 	uint32 offset = enabled ? s_unit_data::k_offset_desired_zoom_level_yelo : s_unit_data::k_offset_desired_zoom_level;
 
 	for(int x = 0; x < NUMBEROF(K_UNIT_DESIRED_ZOOM_LEVEL_OFFSET_REFS); x++)
 	{
 		uint32* offset_ref = CAST_PTR(uint32*, K_UNIT_DESIRED_ZOOM_LEVEL_OFFSET_REFS[x]);
 
-		DebugRunOnce( ASSERT( s_unit_data::k_offset_desired_zoom_level == *offset_ref, "GrenadeCounts asm mismatch!" ) );
+		DebugOnly( 
+			if(!verified)
+				ASSERT( s_unit_data::k_offset_desired_zoom_level == *offset_ref, "GrenadeCounts asm mismatch!" ) 
+		);
 		*offset_ref = offset;
 	}
+	DebugOnly( verified = true );
 }
 static void InitializeGrenadeCounts_NumberOfUnitGrenadeTypes(uint32 count)
 {
+	static bool verified;
+
 	for(int x = 0; x < NUMBEROF(K_NUMBER_OF_UNIT_GRENADE_TYPES_REFS); x++)
 	{
 		byte* count_ref = CAST_PTR(byte*, K_NUMBER_OF_UNIT_GRENADE_TYPES_REFS[x]);
 
-		DebugRunOnce( ASSERT( Enums::k_unit_grenade_types_count == *count_ref, "GrenadeCounts asm mismatch!" ) );
+		DebugOnly( 
+			if(!verified)
+				ASSERT( Enums::k_unit_grenade_types_count == *count_ref, "GrenadeCounts asm mismatch!" ) 
+		);
 		*count_ref = CAST(byte, count);
 	}
 
@@ -49,9 +66,14 @@ static void InitializeGrenadeCounts_NumberOfUnitGrenadeTypes(uint32 count)
 	{
 		byte* count_ref = CAST_PTR(byte*, K_MAXIMUM_UNIT_GRENADE_INDEX_REFS[x]);
 
-		DebugRunOnce( ASSERT( Enums::k_unit_grenade_types_count-1 == *count_ref, "GrenadeCounts asm mismatch!" ) );
+		DebugOnly( 
+			if(!verified)
+				ASSERT( Enums::k_unit_grenade_types_count-1 == *count_ref, "GrenadeCounts asm mismatch!" ) 
+		);
 		*count_ref = CAST(byte, count);
 	}
+
+	DebugOnly( verified = true );
 }
 
 namespace unit_grenade_counts_mods

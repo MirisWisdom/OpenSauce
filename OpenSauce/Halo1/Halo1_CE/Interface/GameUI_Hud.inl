@@ -260,8 +260,8 @@ namespace Yelo
 
 		void SaveSettings(TiXmlElement* hud_element)
 		{
-			hud_element->SetAttribute("show", Settings::BooleanToString(g_hud_globals.m_flags.show_hud));
-			hud_element->SetAttribute("scale", Settings::BooleanToString(g_hud_globals.m_flags.scale_hud));
+			hud_element->SetAttribute("show", BooleanToString(g_hud_globals.m_flags.show_hud));
+			hud_element->SetAttribute("scale", BooleanToString(g_hud_globals.m_flags.scale_hud));
 		}
 
 

@@ -66,6 +66,10 @@ namespace Yelo
 		return string;
 	}
 
+	cstring BooleanToString(bool value)
+	{
+		return value ? "true" : "false";
+	}
 
 #if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
 	void GetTimeStampString(_Out_ tag_string time_str)

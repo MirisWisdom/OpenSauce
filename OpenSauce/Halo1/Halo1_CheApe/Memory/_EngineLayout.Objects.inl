@@ -37,6 +37,7 @@
 			0x5295DB+1, // 32bit
 			0x588AC5+3, // 8bit
 			0x588E53+3, // 8bit
+			0x588EB0+1, // 8bit
 			0x588F79+1, // 8bit
 			0x589C78+4, // 32bit
 			0x5906D7+1, // 8bit memcpy
@@ -49,7 +50,7 @@
 			0x65B698+1, // 32bit
 			0x65BE70+1, // 32bit
 			0x697CBD+1, // 8bit memcpy
-			0x6CAC7D+1, // 32bit
+			0x6CAC7D+1, // 32bit unit_get_total_grenade_count
 		};
 		static uintptr_t K_MAXIMUM_UNIT_GRENADE_INDEX_REFS[] = {
 			0x58783F+2, // 16bit

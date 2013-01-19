@@ -219,7 +219,7 @@ namespace Yelo
 			element = new TiXmlElement("MotionBlur");
 			parent_element->LinkEndChild(element);
 
-			element->SetAttribute("enabled", Settings::BooleanToString(m_members.m_flags.is_enabled));
+			element->SetAttribute("enabled", BooleanToString(m_members.m_flags.is_enabled));
 			element->SetDoubleAttribute("amount", g_shader_instance_motionblur.BlurAmount());
 		}
 

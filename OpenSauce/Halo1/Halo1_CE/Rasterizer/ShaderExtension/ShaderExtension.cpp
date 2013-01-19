@@ -276,7 +276,7 @@ namespace Yelo
 					TiXmlElement* extension_element = new TiXmlElement("ShaderExtension");
 					parent_element->LinkEndChild(extension_element);
 
-					extension_element->SetAttribute("enabled", Settings::BooleanToString(g_extensions_enabled_user_override));
+					extension_element->SetAttribute("enabled", BooleanToString(g_extensions_enabled_user_override));
 
 					Model::SaveSettings(extension_element);
 				}

@@ -23,13 +23,22 @@ namespace Yelo
 	// to just 'HEK' ?
 	namespace PLATFORM_VALUE(Guerilla, Tool, Sapien)
 	{
+		// Called before tag_files_open
+		void IntializeBeforeTagGroupsInitalize();
+		// Called after tag_files_open and yelo defs are initialized
 		void Initialize();
 		void Dispose();
 	};
 
 
+	static void IntializeBeforeTagGroupsInitalize()
+	{
+		PLATFORM_VALUE(Guerilla, Tool, Sapien)::IntializeBeforeTagGroupsInitalize();
+	}
 	static void InitializeForTagFilesOpen()
 	{
+		IntializeBeforeTagGroupsInitalize();
+
 		// Call the *engine's* initializer
 		TagGroups::Initialize();
 
@@ -37,6 +46,8 @@ namespace Yelo
 		if(TagGroups::_yelo_definition_globals.initialized)
 			PLATFORM_VALUE(Guerilla, Tool, Sapien)::Initialize();
 
+		// TODO: we many want to move this into IntializeBeforeTagGroupsInitalize later
+		// However, we won't be able to use some tag_group related functions in the fixing code
 		TagGroups::InitializeFixes();
 	}
 	static void OverrideTagFilesOpen()

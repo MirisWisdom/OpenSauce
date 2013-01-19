@@ -156,7 +156,7 @@ _return:
 			void SaveSettings(TiXmlElement* xml_element)
 			{
 				xml_element->SetAttribute("gsNoUpdateCheck", 
-					Settings::BooleanToString(g_gamespy_yelo_settings.no_update_check));
+					BooleanToString(g_gamespy_yelo_settings.no_update_check));
 			}
 
 			API_FUNC_NAKED void qr2_register_key(Enums::gamespy_qr_field keyid, cstring key)

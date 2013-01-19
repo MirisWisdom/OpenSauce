@@ -22,6 +22,9 @@ namespace Yelo
 
 	namespace Objects
 	{
+		struct s_object_data;
+		struct s_object_iterator;
+
 		struct s_object_placement_data;
 	};
 
@@ -372,6 +375,15 @@ namespace Yelo
 		namespace Objects
 		{
 			bool HeaderBlockAllocate(datum_index object_index, size_t block_reference_offset, size_t size);
+
+			Yelo::Objects::s_object_data* IteratorNext(Yelo::Objects::s_object_iterator& iter);
+			// Don't call me. Use IteratorNext<T>
+			Yelo::Objects::s_object_data* IteratorNextAndVerifyType(Yelo::Objects::s_object_iterator& iter, long_enum object_type);
+			template<typename T>
+			T* IteratorNext(Yelo::Objects::s_object_iterator& iter)
+			{
+				return CAST_PTR(T*, IteratorNextAndVerifyType(iter, T::k_object_type));
+			}
 
 			void PlacementDataNew(Yelo::Objects::s_object_placement_data& data, datum_index object_definition_index, datum_index owner_object_index = datum_index::null);
 

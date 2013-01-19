@@ -105,7 +105,7 @@ namespace Yelo
 		struct s_object_header_datum : Memory::s_datum_base
 		{
 			Flags::object_header_flags flags;
-			byte object_type;
+			byte_enum object_type;
 			int16 cluster_index;
 			int16 data_size;
 			union {
@@ -170,6 +170,28 @@ namespace Yelo
 		struct s_object_name_list_data
 		{
 			datum_index object_name_to_datum_table[Enums::k_maximum_object_names_per_scenario];
+		};
+
+
+		struct s_object_iterator
+		{
+			enum { k_signature = 'ееее' };
+
+			long_flags type_mask;						// object types to iterate
+			Flags::object_header_flags ignore_flags;	// When any of these bits are set, the object is skipped
+			PAD8;
+			int16 absolute_index;
+			datum_index object_index;
+			tag signature;
+
+			API_INLINE static s_object_iterator& New(s_object_iterator& iter, long_flags type_mask, Flags::object_header_flags ignore_flags)
+			{
+				iter.signature = k_signature;
+				iter.type_mask = type_mask;
+				iter.ignore_flags = ignore_flags;
+				iter.absolute_index = 0;
+				iter.object_index = datum_index::null;
+			}
 		};
 	};
 };
