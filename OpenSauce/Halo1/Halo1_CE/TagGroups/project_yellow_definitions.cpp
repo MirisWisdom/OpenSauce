@@ -11,5 +11,14 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
+		const project_yellow_globals_cv* CvGlobals()
+		{
+			if(_global_yelo_globals->HasCvGlobals())
+			{
+				return TagGet<project_yellow_globals_cv>(_global_yelo_globals->cv_globals.tag_index);
+			}
+
+			return NULL;
+		}
 	};
 };

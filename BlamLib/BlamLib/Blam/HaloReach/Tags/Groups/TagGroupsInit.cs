@@ -43,11 +43,11 @@ namespace BlamLib.Blam.HaloReach
 // 			adlg.Definition = new Tags.ai_dialogue_globals_group().State;
 // 			srai.Definition = new Tags.scenario_ai_resource_group().State;
 			//aigl.Definition = new Tags.ai_globals_group().State;
-			//airs.Definition = new Tags._group().State;
+			//airs.Definition = new Tags.airstrike_group().State;
 // 			ant_.Definition = new Tags.antenna_group().State;
 			//atgf.Definition = new Tags.atmosphere_globals_group().State;
-			//avat.Definition = new Tags._group().State;
-			//bbcr.Definition = new Tags._group().State;
+			//avat.Definition = new Tags.avatar_awards_group().State;
+			//bbcr.Definition = new Tags.big_battle_creature_group().State;
 			//bdpd.Definition = new Tags.death_program_selector_group().State;
 // 			beam.Definition = new Tags.beam_system_group().State;
 // 			bink.Definition = new Tags.Bink_group().State;
@@ -69,7 +69,7 @@ namespace BlamLib.Blam.HaloReach
 			//citr.Definition = new Tags.cinematic_transition_group().State;
 // 			srclut.Definition = new Tags.scenario_cluster_data_resource_group().State;
 // 			clwd.Definition = new Tags.cloth_group().State;
-			//cmoe.Definition = new Tags._group().State;
+			//cmoe.Definition = new Tags.camo_group().State;
 // 			cntl.Definition = new Tags.contrail_system_group().State;
 // 			coll.Definition = new Tags.collision_model_group().State;
 // 			colo.Definition = new Tags.color_table_group().State;
@@ -130,7 +130,7 @@ namespace BlamLib.Blam.HaloReach
 // 			jmad.Definition = new Tags.model_animation_graph_group().State;
 // 			jmrq.Definition = new Tags.sandbox_text_value_pair_definition_group().State;
 // 			jpt_.Definition = new Tags.damage_effect_group().State;
-			//ldsc.Definition = new Tags._group().State;
+			//ldsc.Definition = new Tags.load_screen_group().State;
 // 			lens.Definition = new Tags.lens_flare_group().State;
 			//lgtd.Definition = new Tags.loadout_globals_definition_group().State;
 // 			ligh.Definition = new Tags.light_group().State;
@@ -156,7 +156,7 @@ namespace BlamLib.Blam.HaloReach
 			//pcec.Definition = new Tags.pgcr_enemy_to_category_mapping_definition_group().State;
 			//pecp.Definition = new Tags.particle_emitter_custom_points_group().State;
 // 			perf.Definition = new Tags.performance_throttles_group().State;
-			//pfmc.Definition = new Tags._group().State;
+			//pfmc.Definition = new Tags.performance_template_group().State;
 			//pfpt.Definition = new Tags.planar_fog_parameters_group().State;
 			//pggd.Definition = new Tags.player_grade_globals_definition_group().State;
 // 			phmo.Definition = new Tags.physics_model_group().State;
@@ -201,7 +201,7 @@ namespace BlamLib.Blam.HaloReach
 			//scmb.Definition = new Tags.sound_combiner_group().State;
 // 			scnr.Definition = new Tags.scenario_group().State;
 // 			sddt.Definition = new Tags.structure_design_group().State;
-			//sdzg.Definition = new Tags._group().State;
+			//sdzg.Definition = new Tags.scenario_required_resource_group().State;
 // 			sefc.Definition = new Tags.area_screen_effect_group().State;
 // 			sfx_.Definition = new Tags.sound_effect_collection_group().State;
 // 			sgp_.Definition = new Tags.sound_global_propagation_group().State;
@@ -209,7 +209,7 @@ namespace BlamLib.Blam.HaloReach
 			//sidt.Definition = new Tags.simulated_input_group().State;
 			//siin.Definition = new Tags.simulation_interpolation_group().State;
 // 			sily.Definition = new Tags.text_value_pair_definition_group().State;
-			//sirp.Definition = new Tags._group().State;
+			//sirp.Definition = new Tags.sound_incident_response_group().State;
 // 			srsky_.Definition = new Tags.scenario_sky_references_resource_group().State;
 // 			skya.Definition = new Tags.sky_atm_parameters_group().State;
 // 			smap.Definition = new Tags.shared_cache_file_layout_group().State;
@@ -238,7 +238,7 @@ namespace BlamLib.Blam.HaloReach
 			//uttt.Definition = new Tags.tag_template_unit_test_group().State;
 // 			vehi.Definition = new Tags.vehicle_group().State;
 			//vmdx.Definition = new Tags.vision_mode_group().State;
-			//vtgl.Definition = new Tags._group().State;
+			//vtgl.Definition = new Tags.variant_globals_group().State;
 // 			vtsh.Definition = new Tags.vertex_shader_group().State;
 			//wadt.Definition = new Tags.chud_widget_animation_data_template_group().State;
 			//wave.Definition = new Tags.wave_template_group().State;
@@ -279,7 +279,7 @@ namespace BlamLib.Blam.HaloReach
 			#endregion
 
 			for (int x = 1; x < Groups.Count; x++)
-				Groups[x].InitializeHandle(BlamVersion.Halo4, x, false);
+				Groups[x].InitializeHandle(BlamVersion.HaloReach, x, false);
 		}
 	};
 }

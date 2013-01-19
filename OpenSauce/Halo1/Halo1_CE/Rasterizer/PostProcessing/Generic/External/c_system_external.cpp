@@ -272,7 +272,7 @@ namespace Yelo
 			element = new TiXmlElement("External");
 			parent_element->LinkEndChild(element);
 
-			element->SetAttribute("enabled", Settings::BooleanToString(m_members.m_flags.is_enabled));
+			element->SetAttribute("enabled", BooleanToString(m_members.m_flags.is_enabled));
 		}
 
 		/*!

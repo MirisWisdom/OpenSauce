@@ -69,16 +69,22 @@ namespace Yelo
 
 		struct s_device_machine_datum : s_device_datum
 		{
+			enum { k_object_type = Enums::_object_type_machine };
+
 			s_device_machine_data machine;
 		}; BOOST_STATIC_ASSERT( sizeof(s_device_machine_datum) == Enums::k_object_size_machine );
 
 		struct s_device_control_datum : s_device_datum
 		{
+			enum { k_object_type = Enums::_object_type_control };
+
 			s_device_control_data control;
 		}; BOOST_STATIC_ASSERT( sizeof(s_device_control_datum) == Enums::k_object_size_control );
 
 		struct s_device_lightfixture_datum : s_device_datum
 		{
+			enum { k_object_type = Enums::_object_type_light_fixture };
+
 			s_device_lightfixture_data lightfixture;
 		}; BOOST_STATIC_ASSERT( sizeof(s_device_lightfixture_datum) == Enums::k_object_size_light_fixture );
 	};

@@ -5270,6 +5270,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_global_cv_definitions.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_global_definitions.cpp"
 					>
 				</File>

@@ -32,8 +32,8 @@ struct s_render_upgrades {
 		upgrades_element = new TiXmlElement("Upgrades");
 			dx9_element->LinkEndChild(upgrades_element);
 
-		upgrades_element->SetAttribute("dynamicTriangles", Settings::BooleanToString(dynamic_triangles_upgrades_enabled));
-		upgrades_element->SetAttribute("renderModelNodesPatch", Settings::BooleanToString(render_model_nodes_stretching_patch));
+		upgrades_element->SetAttribute("dynamicTriangles", BooleanToString(dynamic_triangles_upgrades_enabled));
+		upgrades_element->SetAttribute("renderModelNodesPatch", BooleanToString(render_model_nodes_stretching_patch));
 	}
 
 	// If we're not compiling with any upgrades, then don't waste space in the compiled code

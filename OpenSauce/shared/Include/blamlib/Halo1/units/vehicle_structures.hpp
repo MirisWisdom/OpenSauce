@@ -85,6 +85,8 @@ namespace Yelo
 
 		struct s_vehicle_datum : s_unit_datum
 		{
+			enum { k_object_type = Enums::_object_type_vehicle };
+
 			s_vehicle_data vehicle;
 		}; BOOST_STATIC_ASSERT( sizeof(s_vehicle_datum) == Enums::k_object_size_vehicle );
 	};

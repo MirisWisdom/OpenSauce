@@ -1,14 +1,45 @@
 <?xml version="1.0" encoding="us-ascii" standalone="yes"?>
 <definitions game="Halo1">
-	<!-- see: OpenSauce\shared\YeloLib\Halo1\open_sauce\project_yellow_scenario_definitions.hpp -->
+	<!-- see: OpenSauce\shared\YeloLib\Halo1\open_sauce\project_yellow_global_cv_definitions.hpp -->
 	
 	<enums>
 	</enums>
 
 	<flags>
+		<Flag name="project_yellow_global_cv_flags">
+			<field>ALLOW unit infections during cinematics#when enabled, units can become infected while a cutscene is active</field>
+		</Flag>
 	</flags>
 
 	<blocks>
+		<TagBlock name="unit_infection_form_block" maxElements="8">
+			<field type="TagReference" name="unit" definition="object_reference" blockname="true" />
+		</TagBlock>
+		<TagBlock name="unit_infection_block" maxElements="64">
+			<field type="Pad" definition="2" />
+			<field type="ShortBlockIndex" name="infection form" definition="unit_infection_form_block" />
+			<field type="TagReference" name="unit" definition="unit_reference" blockname="true" tooltip="the unit being infected by an infection form (e.g. elite)" />
+			<field type="RealFraction" name="health threshold" tooltip="when our health reaches this threshold after a bj from an infection form, we'll be infected" />
+
+			<field type="TagReference" name="infected unit" definition="unit_reference" tooltip="the unit we're transitioning to when we're infected (e.g. flood combat elite)" />
+			<field type="TagReference" name="infected unit actor variant" definition="actor_variant_reference" tooltip="the infected unit's actor variant after the transition" />
+			<field type="TagReference" name="transition effect" definition="effect_reference" tooltip="the effect played during our infection transition" />
+
+			<field type="TagReference" name="attachment object" definition="object_reference" tooltip="object attached to the unit during infection" />
+			<field type="String" name="attachment marker" tooltip="the marker our infection attachment object is attached to" />
+			<field type="ShortInteger" name="attachment marker count" tooltip="the number of attachment markers with this name" />
+			<field type="Pad" definition="2" />
+
+			<field type="Pad" definition="20" />
+		</TagBlock>
+		<TagBlock name="unit_infections_block" maxElements="1">
+			<field type="Pad" definition="4" />
+			<field type="Block" name="infection forms" definition="unit_infection_form_block" tooltip="units which can infect regular units" />
+			<field type="Block" name="infectable units" definition="unit_infection_block" />
+
+			<field type="Pad" definition="24" />
+		</TagBlock>
+		
 		<!-- UNUSED -->
 		<TagBlock name="dual_wield_weapon_block" maxElements="256">
 			<field type="TagReference" name="primary weapon" definition="weapon_reference" />
@@ -47,12 +78,13 @@
 		<TagGroup name="project_yellow_globals_cv" groupTag="gelc" version="1">
 			<field type="Explanation" name="ChokingVictim globals" definition="" />
 			<field type="ShortInteger" name="version" locked="true" />
-			<field type="Pad" definition="2" />
+			<field type="WordFlags" name="flags" definition="project_yellow_global_cv_flags" />
 
+			<field type="Block" name="unit infections" definition="unit_infections_block" />
 			<!--<field type="Block" name="dual wielding" definition="dual_wield_weapon_block" />-->
 			<!--<field type="Block" name="object damage extensions" definition="object_damage_extension_block" />-->
 
-			<field type="Pad" definition="128" />
+			<field type="Pad" definition="144" />
 		</TagGroup>
 	</groups>
 </definitions>

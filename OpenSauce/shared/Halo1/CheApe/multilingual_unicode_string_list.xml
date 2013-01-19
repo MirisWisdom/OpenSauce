@@ -23,6 +23,7 @@
 	<groups>
 		<TagGroup name="multilingual_unicode_string_list" groupTag="unic" version="0">
 			<field type="Block" name="string references" definition="multilingual_unicode_string_reference_block" />
+			<field type="Pad" definition="12" />
 			<field type="Data" name="string data utf8" definition="utf8_string_data" locked="true" />
 			<!--language handles, sizeof(handle)*number-of-localizations-->
 			<field type="Pad" definition="36" />

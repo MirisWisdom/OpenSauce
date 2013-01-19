@@ -232,7 +232,7 @@ namespace Yelo
 			element = new TiXmlElement("FXAA");
 			parent_element->LinkEndChild(element);
 
-			element->SetAttribute("enabled", Settings::BooleanToString(m_members.m_flags.is_enabled));
+			element->SetAttribute("enabled", BooleanToString(m_members.m_flags.is_enabled));
 		}
 
 		void c_system_fxaa::SetDefaultSettings()

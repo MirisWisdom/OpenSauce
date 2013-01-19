@@ -192,6 +192,8 @@ namespace Yelo
 		}
 	}
 
+	cstring BooleanToString(bool value);
+
 
 #if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
 	// Get the current time and format it into [time_str].

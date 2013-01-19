@@ -24,6 +24,23 @@ namespace Yelo
 
 			k_number_of_powered_seats
 		};
+
+		enum unit_base_seat {
+			_unit_base_seat_asleep,
+			_unit_base_seat_alert,
+			_unit_base_seat_stand,
+			_unit_base_seat_crouch,
+			_unit_base_seat_flee,
+			_unit_base_seat_flaming,
+
+			k_number_of_unit_base_seats,
+		};
+
+		enum unit_base_weapon {
+			_unit_base_weapon_unarmed,
+
+			k_number_of_unit_base_weapons,
+		};
 	};
 
 	namespace TagGroups

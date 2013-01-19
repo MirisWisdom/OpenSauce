@@ -206,7 +206,7 @@ namespace Yelo
 			}
 			void SaveSettings(TiXmlElement* cf_element)
 			{
-				cf_element->SetAttribute("checkForYeloFilesFirst", Settings::BooleanToString(check_for_yelo_files_first));
+				cf_element->SetAttribute("checkForYeloFilesFirst", BooleanToString(check_for_yelo_files_first));
 
 #if PLATFORM_IS_USER
 				if(UseMainmenuOverride())

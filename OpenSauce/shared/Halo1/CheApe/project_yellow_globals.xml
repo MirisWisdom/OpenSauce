@@ -11,9 +11,8 @@
 			<field>hide health when zoomed</field>
 			<field>hide shield when zoomed</field>
 			<field>hide motion sensor when zoomed</field>
-			<field>ALLOW unit infections during cinematics#when enabled, units can become infected while a cutscene is active</field>
-			<field>ALLOW grenade chain reactions in MP#when enabled, grenades will explode in chain reactions like they do in camapaign</field>
 			<field>force game to use stun jumping penalty#engine code uses turning penalty in the jump code for whatever reason. this will cause it to use the jump field instead</field>
+			<!--<field>ALLOW grenade chain reactions in MP#when enabled, grenades will explode in chain reactions like they do in camapaign</field>-->
 		</Flag>
 	</flags>
 
@@ -39,35 +38,6 @@
 			<field type="TagReference" name="definition" definition="unit_reference" tooltip="unit definition for this player's biped" />
 			<field type="Pad" definition="32" />
 		</TagBlock>
-
-
-		<TagBlock name="unit_infection_form_block" maxElements="8">
-			<field type="TagReference" name="unit" definition="object_reference" blockname="true" />
-		</TagBlock>
-		<TagBlock name="unit_infection_block" maxElements="64">
-			<field type="Pad" definition="2" />
-			<field type="ShortBlockIndex" name="infection form" definition="unit_infection_form_block" />
-			<field type="TagReference" name="unit" definition="unit_reference" blockname="true" tooltip="the unit being infected by an infection form (e.g. elite)" />
-			<field type="RealFraction" name="health threshold" tooltip="when our health reaches this threshold after a bj from an infection form, we'll be infected" />
-			
-			<field type="TagReference" name="infected unit" definition="unit_reference" tooltip="the unit we're transitioning to when we're infected (e.g. flood combat elite)" />
-			<field type="TagReference" name="infected unit actor variant" definition="actor_variant_reference" tooltip="the infected unit's actor variant after the transition" />
-			<field type="TagReference" name="transition effect" definition="effect_reference" tooltip="the effect played during our infection transition" />
-
-			<field type="TagReference" name="attachment object" definition="object_reference" tooltip="object attached to the unit during infection" />
-			<field type="String" name="attachment marker" tooltip="the marker our infection attachment object is attached to" />
-			<field type="ShortInteger" name="attachment marker count" tooltip="the number of attachment markers with this name" />
-			<field type="Pad" definition="2" />
-
-			<field type="Pad" definition="20" />
-		</TagBlock>
-		<TagBlock name="unit_infections_block" maxElements="1">
-			<field type="Pad" definition="4" />
-			<field type="Block" name="infection forms" definition="unit_infection_form_block" tooltip="units which can infect regular units" />
-			<field type="Block" name="infectable units" definition="unit_infection_block" />
-
-			<field type="Pad" definition="24" />
-		</TagBlock>
 	</blocks>
 
 	<groups>
@@ -78,7 +48,8 @@
 			<field type="String" name="mod name" tooltip="name of the engine 'mod' these globals, and inheriting scenario, are for" />
 
 			<field type="TagReference" name="global explicit references" definition="tag_collection_reference" />
-			<field type="Pad" definition="32" />
+			<field type="TagReference" name="choking victim globals" definition="project_yellow_globals_cv_reference" tooltip="choke my chicken l0dex" />
+			<field type="Pad" definition="16" />
 
 			<!-- TODO: Remove -->
 			<field type="Block" name="" definition="preprocess_block" />
@@ -103,10 +74,8 @@
 			<field type="Explanation" name="Scripting" definition="External scripting definitions (Yelo)" />
 			<field type="Block" name="yelo scripting" definition="scripting_block" />
 
-			<field type="Explanation" name="Misc" definition="" />
-			<field type="Block" name="unit infections" definition="unit_infections_block" />
-
-			<field type="Pad" definition="68" />
+			<!-- <field type="Explanation" name="Misc" definition="" /> -->
+			<field type="Pad" definition="80" />
 		</TagGroup>
 	</groups>
 
