@@ -85,3 +85,45 @@ datum_index FindClosestPlayerIndex(datum_index player_index)
 	return datum_index::null;
 #endif
 }
+
+void PlayerExamineNearbyVehicle(datum_index player_index, datum_index vehicle_index)
+{
+	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(PLAYER_EXAMINE_NEARBY_VEHICLE);
+
+	__asm {
+		push	vehicle_index
+		push	player_index
+		call	TEMP_CALL_ADDR
+		add		esp, 4 * 2
+	}
+}
+
+void PlayerSetActionResult(datum_index player_index, datum_index action_object_index, int32 action_result, int32 action_seat_index)
+{
+	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(PLAYER_SET_ACTION_RESULT);
+
+	__asm {
+		push	action_seat_index
+		push	action_result
+		mov		ebx, action_object_index
+		mov		eax, player_index
+		call	TEMP_CALL_ADDR
+		add		esp, 4 * 2
+	}
+}
+
+void PlayerSetActionResultToNetwork(datum_index player_index, datum_index action_object_index, int32 unknown, int32 action_result, int32 action_seat_index, datum_index next_weapon_index)
+{
+	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(PLAYER_SET_ACTION_RESULT_TO_NETWORK);
+
+	__asm {
+		push	next_weapon_index
+		push	action_seat_index
+		push	action_result
+		push	unknown		// doesn't even look like the function uses this
+		mov		edi, action_object_index
+		mov		ecx, player_index
+		call	TEMP_CALL_ADDR
+		add		esp, 4 * 4
+	}
+}

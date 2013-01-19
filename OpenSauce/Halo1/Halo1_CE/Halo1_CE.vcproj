@@ -18,6 +18,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
+			OutputDirectory="..\..\..\..\..\..\Program Files\Microsoft Games\Halo Custom Edition"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			CharacterSet="2"
@@ -89,6 +90,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
+			OutputDirectory="..\..\..\..\..\..\Program Files\Microsoft Games\Halo Custom Edition"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBin$(ConfigurationName).Cpp.vsprops"
 			CharacterSet="2"
@@ -3161,6 +3163,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\Game\Players.NearbyObjects.inl"
+						>
+					</File>
+					<File
 						RelativePath=".\Game\Players.NetworkPlayerUnit.inl"
 						>
 					</File>
@@ -3495,6 +3501,14 @@
 				</File>
 				<File
 					RelativePath=".\Objects\Objects.Weapon.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\Objects\Units.Animations.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\Objects\Units.Boarding.inl"
 					>
 				</File>
 				<File
