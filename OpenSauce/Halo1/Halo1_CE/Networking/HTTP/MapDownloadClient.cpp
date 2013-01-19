@@ -277,6 +277,8 @@ namespace Yelo
 			char		m_mp_address[Enums::k_max_ip_port_string_length];
 			char		m_mp_password[k_server_password_length];
 			byte		m_mp_password_key[16];
+			long_enum	m_mp_gamever;
+
 
 		protected:
 			/*!
@@ -335,6 +337,8 @@ namespace Yelo
 
 				if(success)
 					success = SetHTTPServer("Dedicated Server", server_ip_string, "This download is being provided to you by the dedicated server host");
+
+				m_mp_gamever = BuildNumber::GetAdvertisedVersion();
 
 				return success;
 			}
@@ -1513,6 +1517,7 @@ namespace Yelo
 		 */
 		void	ReconnectToServer()
 		{
+			BuildNumber::ChangeAdvertisedVersionId(g_map_download_globals.m_servers.dedicated_server.m_mp_gamever, false);
 			Engine::Networking::ConnectToServer(g_map_download_globals.m_servers.dedicated_server.m_mp_address,
 				g_map_download_globals.m_servers.dedicated_server.m_mp_password);
 		}
