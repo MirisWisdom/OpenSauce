@@ -88,36 +88,6 @@ namespace Yelo
 			_blip_type_objective,				// .5, .5, 1
 			_blip_type_none,					// 0, 0, 0
 		};
-
-		enum first_person_weapon_animation_state : _enum
-		{
-			_first_person_weapon_animation_state_idle,
-			_first_person_weapon_animation_state_overheating,
-			_first_person_weapon_animation_state_overheating_again,
-			_first_person_weapon_animation_state_overheated,
-			_first_person_weapon_animation_state_overcharged,
-			_first_person_weapon_animation_state_posing,
-			_first_person_weapon_animation_state_fire_1,
-			_first_person_weapon_animation_state_fire_2,
-			_first_person_weapon_animation_state_misfire_1,
-			_first_person_weapon_animation_state_misfire_2,
-			_first_person_weapon_animation_state_melee,
-			_first_person_weapon_animation_state_light_off,
-			_first_person_weapon_animation_state_light_on,
-			_first_person_weapon_animation_state_reload_empty,
-			_first_person_weapon_animation_state_reload_full,
-			_first_person_weapon_animation_state_enter,
-			_first_person_weapon_animation_state_exit_empty,
-			_first_person_weapon_animation_state_exit_full,
-			_first_person_weapon_animation_state_put_away,
-			_first_person_weapon_animation_state_ready,
-			_first_person_weapon_animation_state_throw_grenade,
-			_first_person_weapon_animation_state_throw_overheated,
-			_first_person_weapon_animation_state_o_h_exit,
-			_first_person_weapon_animation_state_o_h_s_enter,
-
-			_first_person_weapon_animation_state,
-		};
 	};
 
 	namespace Flags
@@ -278,18 +248,17 @@ namespace Yelo
 			TStructGetPtrImpl(bool, IsVisible, 0x0);
 			TStructGetPtrImpl(datum_index, Unit, 0x4);
 			TStructGetPtrImpl(datum_index, CurrentWeapon, 0x8);
+			// 1 = o-h-enter, 3 = overheated, 4 = charging, 5 = posing, 6 = firing1, 10 = meleeing, 
+			// 13 = reload empty, 14 = reload full, 19 = switching/ready, 22 = o-h-exit, 23 = firing2
 			TStructGetPtrImpl(int16, AnimationState, 0xC);
 			// 0xE = unknown 2 bytes
 			TStructGetPtrImpl(int16, IdleTime, 0x10);
-			TStructGetPtrImpl(int16, CurrentBaseAnimationFrameIndex, 0x12); // frame index of current base animation (idle or moving)
-			TStructGetPtrImpl(int16, CurrentOverlayAnimationIndex, 0x14);
-			TStructGetPtrImpl(int16, AnimationCurrentIndex, 0x16);
-			TStructGetPtrImpl(int16, AnimationCurrentFrameIndex, 0x18);
-			TStructGetPtrImpl(int16, CurrentMovingOverlayAnimationIndex, 0x1A);
-			TStructGetPtrImpl(int16, CurrentMovingOverlayFrameIndex, 0x1C);
-			// PAD16?
-			//TStructGetPtrImpl(int16, , 0x20); // some animation index
-			//TStructGetPtrImpl(real, , 0x28); // frame index (real) for the above anim index
+			TStructGetPtrImpl(Objects::s_animation_state, CurrentBaseAnimation, 0x12); // frame index of current base animation (idle or moving)
+			TStructGetPtrImpl(Objects::s_animation_state, CurrentAnimation, 0x16);
+			TStructGetPtrImpl(Objects::s_animation_state, CurrentMovingOverlayAnimation, 0x1A);
+			//TStructGetPtrImpl(Objects::s_animation_state, , 0x1E);
+
+			//TStructGetPtrImpl(real, , 0x28); // frame index (real) for the above anim state
 			//TStructGetPtrImpl(real, , 0x2C);
 			// 0x30?
 			//TStructGetPtrImpl(real, , 0x34);

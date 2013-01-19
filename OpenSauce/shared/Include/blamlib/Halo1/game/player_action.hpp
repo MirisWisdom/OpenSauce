@@ -28,9 +28,6 @@ namespace Yelo
 			_player_action_result_flip_vehicle,
 
 			_player_action_result,
-
-			// custom player action results
-			_player_action_result_yelo,
 		};
 	};
 
@@ -41,7 +38,7 @@ namespace Yelo
 			datum_index action_object_index;
 			int16 action_result;			// enum object_type
 			int16 action_seat_index;
-		};
+		}; BOOST_STATIC_ASSERT( sizeof(s_player_action_result) == 0x8 );
 
 		struct s_player_action
 		{
@@ -53,5 +50,13 @@ namespace Yelo
 			int16 zoom_index;
 			PAD16;
 		}; BOOST_STATIC_ASSERT( sizeof(s_player_action) == 0x20 );
+
+		struct s_player_set_action_result_network_data
+		{
+			datum_index player_index;
+			long_enum action_result_type;
+			s_player_action_result action;
+			datum_index weapon_to_drop_as_result_of_swap;
+		}; BOOST_STATIC_ASSERT( sizeof(s_player_set_action_result_network_data) == 0x14 );
 	};
 };

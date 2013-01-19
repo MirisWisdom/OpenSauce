@@ -92,9 +92,9 @@ namespace Yelo
 			}
 
 			*fp_weapon->GetAnimationState() = animation_state;
-			*fp_weapon->GetAnimationCurrentIndex() = animation_current_index;
+			fp_weapon->GetCurrentAnimation()->animation_index = animation_current_index;
 		}
-		static API_FUNC_NAKED void PLATFORM_API FirstPersonWeaponSetStateHook()
+		API_FUNC_NAKED static void PLATFORM_API FirstPersonWeaponSetStateHook()
 		{
 			API_FUNC_NAKED_START()
 				push	edi

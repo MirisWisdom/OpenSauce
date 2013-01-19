@@ -6,6 +6,8 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/models/model_animations.hpp>
+
 namespace Yelo
 {
 	namespace GameUI

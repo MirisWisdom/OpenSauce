@@ -23,6 +23,10 @@ void build_cache_file_begin_preprocess(cstring scenario_name);
  */
 static void build_cache_file_end_preprocess(Cache::s_cache_header* header, Cache::s_cache_header_yelo& ych)
 {
+	// NOTE: when build_cache_file_write_header_and_compress calls build_cache_file_end, it performs a printf
+	// without a newline, so we do one here
+	printf_s("\n");
+
 	s_build_cache_file_for_scenario& bcffs = build_cache_file_for_scenario_internals;
 
 	//////////////////////////////////////////////////////////////////////////
