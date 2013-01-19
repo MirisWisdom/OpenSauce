@@ -114,6 +114,10 @@ namespace Yelo
 
 //////////////////////////////////////////////////////////////////////////
 
+		void IntializeBeforeTagGroupsInitalize()
+		{
+		}
+
 		// patch the shader-type-names list with the shader types gbx added
 		static void FixupShaderTypeNamesList()
 		{

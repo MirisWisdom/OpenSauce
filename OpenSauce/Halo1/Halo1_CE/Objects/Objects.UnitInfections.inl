@@ -10,9 +10,12 @@ namespace UnitInfections
 	static bool AllowInfections(TagGroups::s_unit_infections_definition const& definition)
 	{
 #if PLATFORM_IS_USER
+		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
+		if(cv_globals == NULL) return false;
+
 		// Don't try to infect anything if we're in a cinematic, unless the designers say it's okay
 		return	!Camera::CinematicGlobals()->in_progress || 
-				TagGroups::_global_yelo_globals->flags.allow_unit_infections_during_cinematics_bit;
+				cv_globals->flags.allow_unit_infections_during_cinematics_bit;
 #else // dedi builds
 		return true;
 #endif
@@ -130,10 +133,12 @@ namespace UnitInfections
 	// If infection_unit can infect parent's object definition (ie, elite), this will handle the magic
 	static void TryInfection(s_unit_datum* infection_unit)
 	{
-		if(TagGroups::_global_yelo_globals->unit_infections.Count == 0)
+		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
+
+		if(cv_globals == NULL || cv_globals->unit_infections.Count == 0)
 			return;
 
-		TagGroups::s_unit_infections_definition const& definition = TagGroups::_global_yelo_globals->unit_infections[0];
+		TagGroups::s_unit_infections_definition const& definition = cv_globals->unit_infections[0];
 		if(	!AllowInfections(definition) )
 			return;
 

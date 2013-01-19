@@ -660,22 +660,22 @@ no_extension:
 
 			feature_element = new TiXmlElement("NormalMap");
 			feature_element->SetAttribute("enabled",
-				Settings::BooleanToString((g_extension_usage_mask & Enums::_model_extension_usage_normal_map) == Enums::_model_extension_usage_normal_map));
+				BooleanToString((g_extension_usage_mask & Enums::_model_extension_usage_normal_map) == Enums::_model_extension_usage_normal_map));
 			model_element->LinkEndChild(feature_element);
 
 			feature_element = new TiXmlElement("DetailNormalMaps");
 			feature_element->SetAttribute("enabled",
-				Settings::BooleanToString((g_extension_usage_mask & Enums::_model_extension_usage_detail_normal) == Enums::_model_extension_usage_detail_normal));
+				BooleanToString((g_extension_usage_mask & Enums::_model_extension_usage_detail_normal) == Enums::_model_extension_usage_detail_normal));
 			model_element->LinkEndChild(feature_element);
 
 			feature_element = new TiXmlElement("SpecularMap");
 			feature_element->SetAttribute("enabled",
-				Settings::BooleanToString((g_extension_usage_mask & Enums::_model_extension_usage_specular_map) == Enums::_model_extension_usage_specular_map));
+				BooleanToString((g_extension_usage_mask & Enums::_model_extension_usage_specular_map) == Enums::_model_extension_usage_specular_map));
 			model_element->LinkEndChild(feature_element);
 
 			feature_element = new TiXmlElement("SpecularLighting");
 			feature_element->SetAttribute("enabled",
-				Settings::BooleanToString((g_extension_usage_mask & Enums::_model_extension_usage_specular_lighting) == Enums::_model_extension_usage_specular_lighting));
+				BooleanToString((g_extension_usage_mask & Enums::_model_extension_usage_specular_lighting) == Enums::_model_extension_usage_specular_lighting));
 			model_element->LinkEndChild(feature_element);
 		}
 	}

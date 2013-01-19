@@ -74,5 +74,11 @@ namespace Yelo
 			CullInvalidNetworkPlayerUnits();
 		}
 #endif
+
+		bool project_yellow_globals::HasCvGlobals() const
+		{
+			return	cv_globals.group_tag == project_yellow_globals_cv::k_group_tag &&
+					cv_globals.tag_index.IsNull() == false;
+		}
 	};
 };

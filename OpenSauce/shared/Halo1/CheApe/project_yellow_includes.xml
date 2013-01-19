@@ -9,6 +9,9 @@
 		<Reference name="project_yellow_globals_reference">
 			<field>gelo</field>
 		</Reference>
+		<Reference name="project_yellow_globals_cv_reference">
+			<field>gelc</field>
+		</Reference>
 
 		<Reference name="text_value_pair_definition_reference">
 			<field>sily</field>

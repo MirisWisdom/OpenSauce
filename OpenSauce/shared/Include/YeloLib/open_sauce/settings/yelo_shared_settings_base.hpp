@@ -29,11 +29,6 @@ namespace Yelo
 		// False: "false", "off", "0", str == NULL
 		bool ParseBoolean(cstring str);
 
-		API_INLINE cstring BooleanToString(bool value)
-		{
-			return value ? "true" : "false";
-		}
-
 		// Parses an element for xyz or ijk attributes
 		void XmlReadReal3D(const TiXmlElement* element, real* r3d, const bool is_vector = false);
 		// Writes xyz or ijk attributes to an element

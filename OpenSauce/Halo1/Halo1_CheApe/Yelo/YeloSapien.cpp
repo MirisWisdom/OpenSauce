@@ -87,6 +87,10 @@ namespace Yelo
 		}
 		//////////////////////////////////////////////////////////////////////////
 
+		void IntializeBeforeTagGroupsInitalize()
+		{
+		}
+
 		void Initialize()
 		{
 			// Set Sapien's affinity mask if there is one specified

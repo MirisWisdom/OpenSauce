@@ -49,6 +49,8 @@ namespace Yelo
 
 		struct s_projectile_datum
 		{
+			enum { k_object_type = Enums::_object_type_projectile };
+
 			s_object_data object;
 			s_projectile_data projectile;
 		}; BOOST_STATIC_ASSERT( sizeof(s_projectile_datum) == Enums::k_object_size_projectile );

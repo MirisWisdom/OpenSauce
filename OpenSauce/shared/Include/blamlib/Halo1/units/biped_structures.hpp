@@ -83,6 +83,8 @@ namespace Yelo
 
 		struct s_biped_datum : s_unit_datum
 		{
+			enum { k_object_type = Enums::_object_type_biped };
+
 			s_biped_data biped;
 		}; BOOST_STATIC_ASSERT( sizeof(s_biped_datum) == Enums::k_object_size_biped );
 	};

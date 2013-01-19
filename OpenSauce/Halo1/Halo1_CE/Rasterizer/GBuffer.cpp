@@ -566,7 +566,7 @@ skip_disable_velocity:
 			gbuffer_element = new TiXmlElement("GBuffer");
 				dx9_element->LinkEndChild(gbuffer_element);
 
-			gbuffer_element->SetAttribute("enabled", Settings::BooleanToString(g_system_enabled));
+			gbuffer_element->SetAttribute("enabled", BooleanToString(g_system_enabled));
 		}
 
 		void		c_gbuffer_system::Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters)

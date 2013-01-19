@@ -283,7 +283,7 @@ namespace Yelo
 				TiXmlElement* camo_element = new TiXmlElement("nVidiaActiveCamouflage");
 				dx9_element->LinkEndChild(camo_element);
 
-				camo_element->SetAttribute("basic", Settings::BooleanToString(g_nvidia_use_basic_camo));
+				camo_element->SetAttribute("basic", BooleanToString(g_nvidia_use_basic_camo));
 			}
 
 			DX9::c_gbuffer_system::SaveSettings(dx9_element);

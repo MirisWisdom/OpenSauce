@@ -168,6 +168,10 @@ the_end:
 			API_FUNC_NAKED_END_()
 		}
 
+		void IntializeBeforeTagGroupsInitalize()
+		{
+		}
+
 		void Initialize()
 		{
 			static const uintptr_t TAG_REFERENCE_DIALOG__ONCTLCOLOR_HOOK = 0x40FE13;

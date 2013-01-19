@@ -239,7 +239,7 @@ namespace Yelo
 			// TODO:
 			if(false)
 				objects_element->SetAttribute("disableVehicleRemapper", 
-					Settings::BooleanToString(true));
+					BooleanToString(true));
 
 #if !PLATFORM_IS_DEDI
 			TiXmlElement* weapons_element = NULL,
