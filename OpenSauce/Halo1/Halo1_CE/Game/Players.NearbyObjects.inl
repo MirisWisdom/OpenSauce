@@ -91,7 +91,7 @@ namespace NearbyObjects
 		}
 	}
 	
-	// Initializes new yelo nearby object detection
+	// Allows us to add objects to the player_examine_nearby_objects switch tables
 	void InitializeYeloNearbyObjects()
 	{
 		// Detect nearby biped objects server side for seat entry
