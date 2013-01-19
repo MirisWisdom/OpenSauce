@@ -19,17 +19,6 @@ namespace Yelo
 
 	namespace Networking
 	{
-		struct s_player_set_action_result_network_data
-		{
-			datum_index player_index;
-			int32 action_result_type;
-			datum_index action_object_index;
-			int16 action_result;
-			int16 action_seat_index;
-			datum_index weapon_to_drop_as_result_of_swap;
-		}; BOOST_STATIC_ASSERT( sizeof(s_player_set_action_result_network_data) == 0x14 );
-
-
 		struct s_player_action_update_data
 		{
 			long_flags control_flags;
