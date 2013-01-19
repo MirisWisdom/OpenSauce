@@ -253,15 +253,12 @@ namespace Yelo
 			TStructGetPtrImpl(int16, AnimationState, 0xC);
 			// 0xE = unknown 2 bytes
 			TStructGetPtrImpl(int16, IdleTime, 0x10);
-			TStructGetPtrImpl(int16, CurrentBaseAnimationFrameIndex, 0x12); // frame index of current base animation (idle or moving)
-			TStructGetPtrImpl(int16, CurrentOverlayAnimationIndex, 0x14);
-			TStructGetPtrImpl(int16, AnimationCurrentIndex, 0x16);
-			TStructGetPtrImpl(int16, AnimationCurrentFrameIndex, 0x18);
-			TStructGetPtrImpl(int16, CurrentMovingOverlayAnimationIndex, 0x1A);
-			TStructGetPtrImpl(int16, CurrentMovingOverlayFrameIndex, 0x1C);
-			// PAD16?
-			//TStructGetPtrImpl(int16, , 0x20); // some animation index
-			//TStructGetPtrImpl(real, , 0x28); // frame index (real) for the above anim index
+			TStructGetPtrImpl(Objects::s_animation_state, CurrentBaseAnimation, 0x12); // frame index of current base animation (idle or moving)
+			TStructGetPtrImpl(Objects::s_animation_state, CurrentAnimation, 0x16);
+			TStructGetPtrImpl(Objects::s_animation_state, CurrentMovingOverlayAnimation, 0x1A);
+			//TStructGetPtrImpl(Objects::s_animation_state, , 0x1E);
+
+			//TStructGetPtrImpl(real, , 0x28); // frame index (real) for the above anim state
 			//TStructGetPtrImpl(real, , 0x2C);
 			// 0x30?
 			//TStructGetPtrImpl(real, , 0x34);
