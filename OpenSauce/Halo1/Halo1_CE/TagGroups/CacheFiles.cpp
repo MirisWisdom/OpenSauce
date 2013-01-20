@@ -287,7 +287,8 @@ namespace Yelo
 
 			return false;
 		}
-		bool ReadHeader(cstring relative_map_name, s_cache_header& out_header, bool& yelo_is_ok, bool exception_on_fail)
+		bool ReadHeader(cstring relative_map_name, s_cache_header& out_header, bool& yelo_is_ok, 
+			bool exception_on_fail, bool for_map_list_add_map)
 		{
 			bool file_exists = false;
 			bool result = false;
@@ -318,10 +319,17 @@ namespace Yelo
 
 				CloseHandle(f);
 
-				if(file_exists)
+				// Return false early on MP maps for map_list_add_map to avoid the exception logic
+				if(for_map_list_add_map && result)
+				{
+					if(out_header.cache_type != Enums::_cache_file_type_multiplayer)
+						return false;
+				}
+
+				if(file_exists && result)
 				{
 					int map_entry_index = Engine::Cache::GetMapEntryIndexFromName(relative_map_name);
-					if(map_entry_index != 0xFFFFFFFF)
+					if(map_entry_index != NONE)
 					{
 						Cache::t_multiplayer_map_data* map_data = Cache::MultiplayerMaps();
 						Cache::s_multiplayer_map_entry* map_entry = (*map_data)[map_entry_index];

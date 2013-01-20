@@ -28,6 +28,13 @@ namespace Yelo
 			_cache_file_request_source_sounds,
 			_cache_file_request_source_loc,
 		};
+
+		// needs to match Enums::scenario_type
+		enum cache_file_type : _enum {
+			_cache_file_type_campaign,
+			_cache_file_type_multiplayer,
+			_cache_file_type_main_menu,
+		};
 	};
 
 	namespace Cache
@@ -52,7 +59,7 @@ namespace Yelo
 			PAD32; // ?
 			tag_string name;
 			tag_string build_string;
-			_enum cache_type;
+			Enums::cache_file_type cache_type;
 			PAD16;
 			uint32 crc;
 			PAD32; // ?

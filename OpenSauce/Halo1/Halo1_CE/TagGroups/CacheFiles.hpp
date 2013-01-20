@@ -66,7 +66,9 @@ namespace Yelo
 		// Reads the cache file [relative_map_name] from the maps folder, and returns true if its header is valid
 		// * If the cache file is made by OS tools, and the yelo header is invalid yelo_is_ok will be false
 		// * If exception_on_fail is true, the standard game exception message for invalid maps will play
-		bool ReadHeader(cstring relative_map_name, s_cache_header& out_header, bool& yelo_is_ok, bool exception_on_fail = false);
+		// * If [for_map_list_add_map], will return false for non-mp maps (but won't exception)
+		bool ReadHeader(cstring relative_map_name, s_cache_header& out_header, bool& yelo_is_ok, 
+			bool exception_on_fail = false, bool for_map_list_add_map = false);
 
 		void LoadSettings(TiXmlElement* cf_element);
 		void SaveSettings(TiXmlElement* cf_element);

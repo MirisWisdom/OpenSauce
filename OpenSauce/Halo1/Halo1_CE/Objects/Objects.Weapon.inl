@@ -199,7 +199,8 @@ namespace Yelo
 
 			bool AdjustSettings()
 			{
-				cstring name = _weapon_globals.GetCurrentWeaponName();
+				char weapon_name[Enums::k_weapon_view_name_length+1];
+				cstring name = _weapon_globals.GetCurrentWeaponName(weapon_name);
 				if(name == NULL) return true;
 
 				weapon_globals::s_preset* preset = _weapon_globals.GetCurrentPreset();
