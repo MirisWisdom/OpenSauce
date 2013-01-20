@@ -21,7 +21,8 @@
 	ENGINE_DPTR(s_ai_communication_replies_data, ai_communication_replies,	0x68BB94, 0x5F43DC);
 	ENGINE_DPTR(t_ai_conversation_data, ai_conversations,					0x81B3D4, 0x6E72D4);
 
-	FUNC_PTR(AI_UPDATE_HOOK, 0x42A949, 0x42A959);
+	FUNC_PTR(AI_UPDATE_HOOK,			0x42A949, 0x42A959);
+	FUNC_PTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK,	0x40B701, 0x40B711);
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -316,9 +317,38 @@ namespace Fov
 	FUNC_PTR(PLAYERS_UPDATE_BEFORE_GAME_CLIENT_HOOK,	0x4777DB, 0x46F25B);
 	FUNC_PTR(PLAYERS_UPDATE_AFTER_GAME_HOOK,			0x477B6B, 0x46F5EB);
 
-	namespace ActionResults
-	{
-	};
+	//////////////////////////////////////////////////////////////////////////
+	// Players.NearbyObjects
+	FUNC_PTR(PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_JMP_TABLE_RETN,			0x47B258, 0x472CD8);
+	ENGINE_PTR(void**, player_examine_nearby_objects_server_jmp_ptr,		0x47B238, 0x472CB8);
+	static byte* K_PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_LAST_ENTRY_TYPE = CAST_PTR(
+		byte*, PLATFORM_VALUE(0x47B232, 0x472CB2)
+	);
+	static const void* *PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_JMP_TABLE = CAST_PTR(
+		const void**, PLATFORM_VALUE(0x47B264, 0x472CE4)
+	);
+
+	FUNC_PTR(PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_JMP_TABLE_RETN,			0x47B358, 0x472DD8);
+	ENGINE_PTR(void**, player_examine_nearby_objects_client_jmp_ptr,		0x47B338, 0x472DB8);
+	static byte* K_PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_LAST_ENTRY_TYPE = CAST_PTR(
+		byte*, PLATFORM_VALUE(0x47B332, 0x472DB2)
+	);
+	static const void* *PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_JMP_TABLE = CAST_PTR(
+		const void**, PLATFORM_VALUE(0x47B364, 0x472DE4)
+	);
+
+	//////////////////////////////////////////////////////////////////////////
+	// Players.ActionResults
+	FUNC_PTR(PLAYER_HANDLE_ACTION_JMP_TABLE_ADJUST_SIZE,	0x47C173, 0x473BF3);
+	FUNC_PTR(PLAYER_HANDLE_ACTION_JMP_TABLE_RETN,			0x47C46B, 0x473EEB);
+	ENGINE_PTR(void**, player_handle_action_jmp_ptr,		0x47C189, 0x473C09);
+
+	static byte* K_PLAYER_HANDLE_ACTION_LAST_ENTRY_TYPE = CAST_PTR(
+		byte*, PLATFORM_VALUE(0x47C178, 0x473BF8)
+	);
+	static const void* *PLAYER_HANDLE_ACTION_JMP_TABLE = CAST_PTR(
+		const void**, PLATFORM_VALUE(0x47C478, 0x473EF8)
+	);
 
 
 //////////////////////////////////////////////////////////////////////////
