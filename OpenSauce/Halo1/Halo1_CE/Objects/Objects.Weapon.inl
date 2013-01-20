@@ -65,8 +65,10 @@ namespace Yelo
 					return NULL;
 				}
 
-				static cstring GetWeaponName(s_item_datum* weapon, char weapon_name[Enums::k_weapon_view_name_length+1])
+				static cstring GetWeaponName(s_item_datum* weapon)
 				{
+					static char weapon_name[Enums::k_weapon_view_name_length+1];
+
 					datum_index definition_index = weapon->object.definition_index;
 					if(!definition_index.IsNull())
 					{
@@ -77,7 +79,6 @@ namespace Yelo
 
 							wcstring msg = Engine::Interface::HudGetItemMessage(msg_index);
 
-							memset(weapon_name, 0, sizeof(weapon_name));
 							wstring_to_string_lazy(weapon_name, Enums::k_weapon_view_name_length+1, msg);
 						}
 						else return NULL;
@@ -88,20 +89,19 @@ namespace Yelo
 				}
 
 			public:
-				cstring GetCurrentWeaponName(char weapon_name[Enums::k_weapon_view_name_length+1])
+				cstring GetCurrentWeaponName()
 				{
 					s_item_datum* weapon = GetCurrentWeapon();
 
 					if(weapon != NULL)
-						return GetWeaponName(weapon, weapon_name);
+						return GetWeaponName(weapon);
 
 					return NULL;
 				}
 
 				s_preset* GetCurrentPreset()
 				{
-					char weapon_name[Enums::k_weapon_view_name_length+1];
-					cstring name = GetCurrentWeaponName(weapon_name);
+					cstring name = GetCurrentWeaponName();
 
 					if(name != NULL)
 					{
@@ -199,8 +199,7 @@ namespace Yelo
 
 			bool AdjustSettings()
 			{
-				char weapon_name[Enums::k_weapon_view_name_length+1];
-				cstring name = _weapon_globals.GetCurrentWeaponName(weapon_name);
+				cstring name = _weapon_globals.GetCurrentWeaponName();
 				if(name == NULL) return true;
 
 				weapon_globals::s_preset* preset = _weapon_globals.GetCurrentPreset();
