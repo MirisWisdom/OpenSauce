@@ -8,9 +8,10 @@
 static bool CacheFileReadHeaderHackImpl(cstring relative_map_name, s_cache_header& out_header, const void* return_address)
 {
 	bool exception_on_fail = true;
+	bool read_for_map_list_add_map = false; // true if this read call is for map_list_add_map
 
 	// HACK: we assume the first entry is the precache_map call site
-	const void* k_cache_files_precache_map_ra = CAST_PTR(byte*,K_CACHE_FILE_READ_HEADER_CALLS[0])+5; // + the size of a 'call near'
+	const void* k_cache_files_precache_map_ra = CAST_PTR(byte*,K_CACHE_FILE_READ_HEADER_CALLS[0])+sizeof(Memory::Opcode::s_call);
 	if(return_address == k_cache_files_precache_map_ra)
 	{
 		const uint32* stack_mem = (&out_header.footer_signature)+1; // skip the header data on the stack
@@ -18,8 +19,12 @@ static bool CacheFileReadHeaderHackImpl(cstring relative_map_name, s_cache_heade
 		exception_on_fail = *stack_mem != FALSE; // get arg_0 of cache_files_precache_map, which determines if the game's stock code exceptions on error (we'll thus inherit this trait)
 	}
 
+	// HACK: we assume the second entry is the map_list_add_map call site
+	const void* k_map_list_add_map_ra = CAST_PTR(byte*,K_CACHE_FILE_READ_HEADER_CALLS[1])+sizeof(Memory::Opcode::s_call);
+	read_for_map_list_add_map = return_address == k_map_list_add_map_ra;
+
 	bool yelo_is_ok;
-	return ReadHeader(relative_map_name, out_header, yelo_is_ok, exception_on_fail);
+	return ReadHeader(relative_map_name, out_header, yelo_is_ok, exception_on_fail, read_for_map_list_add_map);
 }
 
 static API_FUNC_NAKED bool __cdecl CacheFileReadHeaderHack()
