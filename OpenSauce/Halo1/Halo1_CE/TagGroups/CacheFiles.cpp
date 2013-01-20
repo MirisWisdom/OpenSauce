@@ -107,19 +107,22 @@ namespace Yelo
 		// is loaded into memory.
 		API_FUNC_NAKED static void PLATFORM_API ScenarioTagsLoadHook()
 		{
+			using namespace Yelo::Cache;
+
 			__asm {
 				push	edi
 
 				call	Cache::CacheFileGlobals
-				push	eax
+				push	eax // save the globals pointer for the end
 
-				lea		ecx, [eax+4]
+				lea		ecx, [eax]s_cache_file_globals.cache_header
 				push	ecx
 				call	ScenarioTagsLoadPreprocess
 
 				pop		eax
 				pop		edi
-				mov		ecx, [eax+(4 + 0x14)]
+				mov		ecx, [eax]s_cache_file_globals.cache_header.tag_memory_size
+				mov		edx, [eax]s_cache_file_globals.cache_header.offset_to_index
 				retn
 			}
 		}

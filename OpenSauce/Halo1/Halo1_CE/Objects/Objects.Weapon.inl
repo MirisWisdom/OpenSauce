@@ -24,7 +24,7 @@ namespace Yelo
 
 				int32 presets_count;
 				struct s_preset {
-					char name[Enums::k_weapon_view_name_length];
+					char name[Enums::k_weapon_view_name_length+1];
 					real_vector3d offset;
 				}presets[Enums::k_weapon_view_max_weapon_presets];
 
@@ -65,10 +65,8 @@ namespace Yelo
 					return NULL;
 				}
 
-				static cstring GetWeaponName(s_item_datum* weapon)
+				static cstring GetWeaponName(s_item_datum* weapon, char weapon_name[Enums::k_weapon_view_name_length+1])
 				{
-					static char weapon_name[Enums::k_weapon_view_name_length];
-
 					datum_index definition_index = weapon->object.definition_index;
 					if(!definition_index.IsNull())
 					{
@@ -80,7 +78,7 @@ namespace Yelo
 							wcstring msg = Engine::Interface::HudGetItemMessage(msg_index);
 
 							memset(weapon_name, 0, sizeof(weapon_name));
-							wstring_to_string_lazy(weapon_name, NUMBEROF(weapon_name)-1, msg);
+							wstring_to_string_lazy(weapon_name, Enums::k_weapon_view_name_length+1, msg);
 						}
 						else return NULL;
 					}
@@ -90,19 +88,20 @@ namespace Yelo
 				}
 
 			public:
-				cstring GetCurrentWeaponName()
+				cstring GetCurrentWeaponName(char weapon_name[Enums::k_weapon_view_name_length+1])
 				{
 					s_item_datum* weapon = GetCurrentWeapon();
 
 					if(weapon != NULL)
-						return GetWeaponName(weapon);
+						return GetWeaponName(weapon, weapon_name);
 
 					return NULL;
 				}
 
 				s_preset* GetCurrentPreset()
 				{
-					cstring name = GetCurrentWeaponName();
+					char weapon_name[Enums::k_weapon_view_name_length+1];
+					cstring name = GetCurrentWeaponName(weapon_name);
 
 					if(name != NULL)
 					{
