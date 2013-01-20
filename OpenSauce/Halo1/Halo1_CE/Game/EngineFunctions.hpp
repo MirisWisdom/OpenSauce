@@ -9,6 +9,7 @@
 #include <blamlib/Halo1/cache/cache_files.hpp>
 #include <blamlib/Halo1/math/periodic_functions.hpp>
 #include <blamlib/Halo1/memory/data.hpp>
+#include <blamlib/Halo1/objects/damage.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 #include "Memory/MemoryInterface.hpp"
@@ -433,6 +434,8 @@ namespace Yelo
 
 			void DoubleChargeShield(datum_index object_index);
 
+			void ObjectCauseDamage(Yelo::Objects::s_damage_data &damage_data, datum_index object_index, int32 node_index, int32 region_index, int32 damage_materials_index, int32 unknown);
+
 			// Loads the predicted resources defined in [object_index]'s tag definition (if they're not already loaded)
 			void DefinitionPredict(datum_index object_index);
 
@@ -449,6 +452,20 @@ namespace Yelo
 
 			// Returns the number of frames remaining in an unit's custom animation
 			int16 UnitGetCustomAnimationTime(datum_index unit_index);
+			
+			bool UnitCanEnterSeat(datum_index unit_index, datum_index vehicle_index, int32 vehicle_seat_index, datum_index &unit_in_seat);
+
+			bool UnitEnterSeat(datum_index unit_index, datum_index vehicle_index, int32 vehicle_seat_index);
+			
+			void UnitExitVehicle(datum_index unit_index);
+
+			bool UnitOpen(datum_index unit_index);
+
+			bool UnitClose(datum_index unit_index);
+
+			int16 UnitFindNearbySeat(datum_index unit_index, datum_index vehicle_index, int16 &seat_index);
+
+			void UnitExitSeatEnd(datum_index unit_index, bool unk2, bool unk3, bool unk4);
 		};
 
 		namespace Physics
@@ -473,6 +490,12 @@ namespace Yelo
 			// Get the player datum_index of the closest player relative to player
 			// represented by the [player_index] datum_index parameter
 			datum_index FindClosestPlayerIndex(datum_index player_index);
+
+			void PlayerExamineNearbyVehicle(datum_index player_index, datum_index vehicle_index);
+
+			void PlayerSetActionResult(datum_index player_index, datum_index action_object_index, int32 action_result, int32 action_seat_index);
+			
+			void PlayerSetActionResultToNetwork(datum_index player_index, datum_index action_object_index, int32 action_result_type, int32 action_result, int32 action_seat_index, datum_index next_weapon_index);
 		};
 
 		namespace Scenario

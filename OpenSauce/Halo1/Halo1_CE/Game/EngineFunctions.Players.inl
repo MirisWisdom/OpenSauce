@@ -85,3 +85,45 @@ datum_index FindClosestPlayerIndex(datum_index player_index)
 	return datum_index::null;
 #endif
 }
+
+API_FUNC_NAKED void PlayerExamineNearbyVehicle(datum_index player_index, datum_index vehicle_index)
+{
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(PLAYER_EXAMINE_NEARBY_VEHICLE);
+
+	API_FUNC_NAKED_START()
+		push	vehicle_index
+		push	player_index
+		call	FUNCTION
+		add		esp, 4 * 2
+	API_FUNC_NAKED_END(2)
+}
+
+API_FUNC_NAKED void PlayerSetActionResult(datum_index player_index, datum_index action_object_index, int32 action_result, int32 action_seat_index)
+{
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(PLAYER_SET_ACTION_RESULT);
+
+	API_FUNC_NAKED_START()
+		push	action_seat_index
+		push	action_result
+		mov		ebx, action_object_index
+		mov		eax, player_index
+		call	FUNCTION
+		add		esp, 4 * 2
+	API_FUNC_NAKED_END(4)
+}
+
+API_FUNC_NAKED void PlayerSetActionResultToNetwork(datum_index player_index, datum_index action_object_index, int32 action_result_type, int32 action_result, int32 action_seat_index, datum_index next_weapon_index)
+{
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(PLAYER_SET_ACTION_RESULT_TO_NETWORK);
+
+	API_FUNC_NAKED_START()
+		push	next_weapon_index
+		push	action_seat_index
+		push	action_result
+		push	action_result_type
+		mov		edi, action_object_index
+		mov		ecx, player_index
+		call	FUNCTION
+		add		esp, 4 * 4
+	API_FUNC_NAKED_END(6)
+}
