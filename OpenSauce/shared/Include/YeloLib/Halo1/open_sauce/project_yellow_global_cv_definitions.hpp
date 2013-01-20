@@ -123,7 +123,7 @@ namespace Yelo
 			}flags; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
 
 			TAG_TBLOCK(unit_infections, s_unit_infections_definition); // 1
-            TAG_TBLOCK(unit_external_upgrades, s_unit_external_upgrades); // 64
+			TAG_TBLOCK(unit_external_upgrades, s_unit_external_upgrades); // 64
 			//TAG_TBLOCK(dual_wielding, s_dual_wield_weapon_definition); // 256
 			//TAG_TBLOCK(object_damage_extensions, s_object_damage_extension); // 512
 

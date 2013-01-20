@@ -236,6 +236,7 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseDedi|Win32"
+			OutputDirectory="..\..\..\..\..\..\Program Files\Microsoft Games\Halo Custom Edition"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			CharacterSet="2"

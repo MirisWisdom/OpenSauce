@@ -12,6 +12,13 @@ namespace Yelo
 {
 	namespace Enums
 	{
+		enum model_animation_type
+		{
+			_model_animation_type_base,
+			_model_animation_type_overlay,
+			_model_animation_type_replacement
+		};
+
 		enum weapon_type_animation
 		{
 			_weapon_type_animation_reload1,

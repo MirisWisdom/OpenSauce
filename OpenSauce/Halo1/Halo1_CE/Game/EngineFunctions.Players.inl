@@ -86,44 +86,44 @@ datum_index FindClosestPlayerIndex(datum_index player_index)
 #endif
 }
 
-void PlayerExamineNearbyVehicle(datum_index player_index, datum_index vehicle_index)
+API_FUNC_NAKED void PlayerExamineNearbyVehicle(datum_index player_index, datum_index vehicle_index)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(PLAYER_EXAMINE_NEARBY_VEHICLE);
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(PLAYER_EXAMINE_NEARBY_VEHICLE);
 
-	__asm {
+	API_FUNC_NAKED_START()
 		push	vehicle_index
 		push	player_index
-		call	TEMP_CALL_ADDR
+		call	FUNCTION
 		add		esp, 4 * 2
-	}
+	API_FUNC_NAKED_END(2)
 }
 
-void PlayerSetActionResult(datum_index player_index, datum_index action_object_index, int32 action_result, int32 action_seat_index)
+API_FUNC_NAKED void PlayerSetActionResult(datum_index player_index, datum_index action_object_index, int32 action_result, int32 action_seat_index)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(PLAYER_SET_ACTION_RESULT);
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(PLAYER_SET_ACTION_RESULT);
 
-	__asm {
+	API_FUNC_NAKED_START()
 		push	action_seat_index
 		push	action_result
 		mov		ebx, action_object_index
 		mov		eax, player_index
-		call	TEMP_CALL_ADDR
+		call	FUNCTION
 		add		esp, 4 * 2
-	}
+	API_FUNC_NAKED_END(4)
 }
 
-void PlayerSetActionResultToNetwork(datum_index player_index, datum_index action_object_index, int32 unknown, int32 action_result, int32 action_seat_index, datum_index next_weapon_index)
+API_FUNC_NAKED void PlayerSetActionResultToNetwork(datum_index player_index, datum_index action_object_index, int32 action_result_type, int32 action_result, int32 action_seat_index, datum_index next_weapon_index)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(PLAYER_SET_ACTION_RESULT_TO_NETWORK);
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(PLAYER_SET_ACTION_RESULT_TO_NETWORK);
 
-	__asm {
+	API_FUNC_NAKED_START()
 		push	next_weapon_index
 		push	action_seat_index
 		push	action_result
-		push	unknown		// doesn't even look like the function uses this
+		push	action_result_type
 		mov		edi, action_object_index
 		mov		ecx, player_index
-		call	TEMP_CALL_ADDR
+		call	FUNCTION
 		add		esp, 4 * 4
-	}
+	API_FUNC_NAKED_END(6)
 }

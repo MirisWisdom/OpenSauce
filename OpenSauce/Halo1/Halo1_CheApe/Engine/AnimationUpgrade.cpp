@@ -9,42 +9,42 @@
 
 #include "TagGroups/TagGroups.hpp"
 
+#include <blamlib/Halo1/models/model_animations.hpp>
+#include <blamlib/Halo1/models/model_animation_definitions.hpp>
+
 namespace Yelo
 {
 	namespace Animation
 	{
-		FUNC_PTR(UNIT_SEAT_ANIMATION_BLOCK_NAME_TABLE,					0x9D79F0, 0x6BB6D8, 0xA4F1C8);
-		ENGINE_PTR(int32, unit_seat_animation_block_name_table_count,	0x9D7AE0, 0x6BB7C8, 0xA4F2B8);
-		ENGINE_PTR(void**, unit_seat_animation_block_name_table_ptr,	0x9D7AE4, 0x6BB7CC, 0xA4F2BC);
+		ENGINE_PTR(Objects::s_animation_list, UNIT_SEAT_ANIMATION_BLOCK_NAME_TABLE,	0x9D79F0, 0x6BB6D8, 0xA4F1C8);
+		ENGINE_PTR(int32, unit_seat_animation_block_name_table_count,				0x9D7AE0, 0x6BB7C8, 0xA4F2B8);
+		ENGINE_PTR(void**, unit_seat_animation_block_name_table_ptr,				0x9D7AE4, 0x6BB7CC, 0xA4F2BC);
+		ENGINE_PTR(int32, unit_seat_animation_block_maxcount,						0x9D7140, 0x6BAE28, 0xA4E918);
 
-		static struct s_animation_list { cstring name; _enum type; PAD16; };
+		static Objects::s_animation_list unit_seat_animation_block_name_table[Enums::_unit_seat_animation];
 
-		static const int32 k_unit_seat_animation_block_count = 30;	// original unit_seat_animation_block maxcount
-		static const int32 k_unit_seat_animation_block_count_new = 2;	// number of animation states we've added
-		static s_animation_list unit_seat_animation_block_name_table[k_unit_seat_animation_block_count+k_unit_seat_animation_block_count_new];
-
-		// Note: any new animation states added will require an increase in the 
-		// unit_seat_animation_block maxcount (check project_yellow_includes.xml)
 		void AnimationUpgradeInitialize()
 		{
 			// copy the existing block name table
-			for (int x = 0; x < k_unit_seat_animation_block_count; x++)
-			{
-				unit_seat_animation_block_name_table[x].name = *(cstring*)(GET_FUNC_PTR(UNIT_SEAT_ANIMATION_BLOCK_NAME_TABLE) + (sizeof(s_animation_list) * x));
-				unit_seat_animation_block_name_table[x].type = *(int16*)(GET_FUNC_PTR(UNIT_SEAT_ANIMATION_BLOCK_NAME_TABLE + sizeof(cstring*)) + (sizeof(s_animation_list) * x));
-			}
-			
+			memcpy_s(unit_seat_animation_block_name_table, 
+				sizeof(Objects::s_animation_list) * NUMBEROF(unit_seat_animation_block_name_table), 
+				GET_PTR2(UNIT_SEAT_ANIMATION_BLOCK_NAME_TABLE), 
+				sizeof(Objects::s_animation_list) * GET_PTR(unit_seat_animation_block_name_table_count)
+			);
+
 			// set the block name table count to our's
-			GET_PTR(unit_seat_animation_block_name_table_count) = k_unit_seat_animation_block_count+k_unit_seat_animation_block_count_new;
+			GET_PTR(unit_seat_animation_block_name_table_count) = Enums::_unit_seat_animation;
+			// set the block maxcount to our's
+			GET_PTR(unit_seat_animation_block_maxcount) = Enums::_unit_seat_animation;
 			// set the block name table address to our's
 			GET_PTR(unit_seat_animation_block_name_table_ptr) = (void**)unit_seat_animation_block_name_table;
 
 			////////////////////////////////////
 			// new animation block names
-			unit_seat_animation_block_name_table[k_unit_seat_animation_block_count].name = (cstring)"board";
-			unit_seat_animation_block_name_table[k_unit_seat_animation_block_count].type = 0;
-			unit_seat_animation_block_name_table[k_unit_seat_animation_block_count+1].name = (cstring)"ejection";
-			unit_seat_animation_block_name_table[k_unit_seat_animation_block_count+1].type = 0;
+			unit_seat_animation_block_name_table[Enums::_unit_seat_animation_yelo_board].name = "board";
+			unit_seat_animation_block_name_table[Enums::_unit_seat_animation_yelo_board].type = Enums::model_animation_type::_model_animation_type_base;
+			unit_seat_animation_block_name_table[Enums::_unit_seat_animation_yelo_ejection].name = "ejection";
+			unit_seat_animation_block_name_table[Enums::_unit_seat_animation_yelo_ejection].type = Enums::model_animation_type::_model_animation_type_base;
 		}
 		
 		void AnimationUpgradeDispose()

@@ -22,7 +22,7 @@ namespace NearbyObjects
 			player_examine_nearby_objects_server_jmp_table_yelo[x] = (void*)PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_JMP_TABLE[0];
 		
 		// set the game's client jump table count to our's
-		*K_NUMBER_OF_PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_JMP_TABLE_ENTRIES = Yelo::Enums::_object_type_sound_scenery;
+		*K_PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_LAST_ENTRY_TYPE = Yelo::Enums::_object_type_sound_scenery;
 		// set the game's client jump table address to our's
 		GET_PTR(player_examine_nearby_objects_server_jmp_ptr) = player_examine_nearby_objects_server_jmp_table_yelo;
 	}
@@ -39,12 +39,12 @@ namespace NearbyObjects
 			player_examine_nearby_objects_client_jmp_table_yelo[x] = (void*)PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_JMP_TABLE[0];
 		
 		// set the game's client jump table count to our's
-		*K_NUMBER_OF_PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_JMP_TABLE_ENTRIES = Yelo::Enums::_object_type_sound_scenery;
+		*K_PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_LAST_ENTRY_TYPE = Yelo::Enums::_object_type_sound_scenery;
 		// set the game's client jump table address to our's
 		GET_PTR(player_examine_nearby_objects_client_jmp_ptr) = player_examine_nearby_objects_client_jmp_table_yelo;
 	}
 
-	void PlayerExamineNearbyBiped(datum_index player_index, datum_index biped_index)
+	static void PlayerExamineNearbyBiped(datum_index player_index, datum_index biped_index)
 	{
 		s_player_datum* player = (*Players::Players())[player_index];
 
@@ -57,42 +57,34 @@ namespace NearbyObjects
 		}
 	}
 
-	API_FUNC_NAKED void PLATFORM_API PlayerExamineNearbyBipedServerJMP()
+	static API_FUNC_NAKED void PLATFORM_API PlayerExamineNearbyBipedServerJMP()
 	{
-		static uint32 RETN_ADDRESS = GET_FUNC_PTR(PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_JMP_TABLE_RETN);
+		static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_JMP_TABLE_RETN);
 
 		__asm {
-			pushad
-
 			push	ecx		// datum_index biped_index
 			push	edi		// datum_index player_index
 			call	PlayerExamineNearbyBiped
-
-			popad
 
 			jmp		RETN_ADDRESS
 		}
 	}
 
-	API_FUNC_NAKED void PLATFORM_API PlayerExamineNearbyBipedClientJMP()
+	static API_FUNC_NAKED void PLATFORM_API PlayerExamineNearbyBipedClientJMP()
 	{
-		static uint32 RETN_ADDRESS = GET_FUNC_PTR(PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_JMP_TABLE_RETN);
+		static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_JMP_TABLE_RETN);
 
 		__asm {
-			pushad
-
 			push	ecx		// datum_index biped_index
 			push	edi		// datum_index player_index
 			call	PlayerExamineNearbyBiped
-
-			popad
 
 			jmp		RETN_ADDRESS
 		}
 	}
 	
 	// Allows us to add objects to the player_examine_nearby_objects switch tables
-	void InitializeYeloNearbyObjects()
+	static void InitializeYeloNearbyObjects()
 	{
 		// Detect nearby biped objects server side for seat entry
 		player_examine_nearby_objects_server_jmp_table_yelo[Yelo::Enums::_object_type_biped] = 

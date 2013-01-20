@@ -2394,6 +2394,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="models"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\models\model_animation_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\models\model_animations.hpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".YeloLib"
