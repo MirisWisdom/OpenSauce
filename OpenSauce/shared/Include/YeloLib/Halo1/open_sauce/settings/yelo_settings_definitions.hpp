@@ -25,7 +25,7 @@ namespace Yelo
 		enum vehicle_view {
 			k_vehicle_view_version = 1,				// Versioning state of the 'vehicle view' setting group
 
-			k_vehicle_view_name_length = 256,
+			k_vehicle_view_name_length = 255,
 			k_vehicle_view_max_seat_presets = 16,	// Per MAXIMUM_SEATS_PER_UNIT_DEFINITION in Halo 1 definitions
 			k_vehicle_view_max_vehicle_presets = 32,
 		};
@@ -33,7 +33,7 @@ namespace Yelo
 		enum weapon_view {
 			k_weapon_view_version = 1, // Versioning state of the 'weapon view' setting group
 
-			k_weapon_view_name_length = 64,
+			k_weapon_view_name_length = 63,
 			k_weapon_view_max_weapon_presets = 200,
 		};
 

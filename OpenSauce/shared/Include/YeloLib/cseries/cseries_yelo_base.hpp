@@ -115,6 +115,7 @@ namespace Yelo
 	// Returns [string] if successful
 	char* wstring_to_string(char* string, int32 string_length, wcstring wide, int32 wide_length = -1);
 
+	// [string_length] includes the null terminator
 	char* wstring_to_string_lazy(char* string, int32 string_length, wcstring wide);
 
 	// Takes [string] and converts it to an unicode string, to be held in [wide]. If [string_length] is not -1, the string
@@ -122,6 +123,7 @@ namespace Yelo
 	// Returns [wide] if successful
 	wstring string_to_wstring(wstring wide, int32 wide_length, cstring string, int32 string_length = -1);
 
+	// [string_length] includes the null terminator
 	wstring string_to_wstring_lazy(wstring string, int32 string_length, cstring ascii);
 
 	// Hacked up structure.

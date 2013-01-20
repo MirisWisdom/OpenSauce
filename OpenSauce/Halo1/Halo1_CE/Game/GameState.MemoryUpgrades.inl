@@ -25,11 +25,7 @@
 		const uint32 k_allocation_size = Enums::k_physical_memory_map_allocation_size_upgrade;
 		Memory::WriteMemory(GET_DATA_VPTR(PHYSICAL_MEMORY_ALLOCATION_SIZE), CAST_PTR(void*, k_allocation_size));
 
-		// NOTE: the default haloceded hook loads the Yelo DLL before the physical memory is initialized, 
-		// so for Dedi builds, we don't need to do this
-	#if !PLATFORM_IS_DEDI
 		PhysicalMemoryReInitialize();
-	#endif
 	}
 
 	static void MemoryUpgradesDispose()
