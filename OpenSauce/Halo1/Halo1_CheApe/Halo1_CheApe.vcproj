@@ -151,6 +151,7 @@
 		</Configuration>
 		<Configuration
 			Name="DebugTool|Win32"
+			OutputDirectory="..\..\..\..\..\..\Program Files\Microsoft Games\Halo Custom Edition"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			CharacterSet="2"
@@ -220,6 +221,7 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseTool|Win32"
+			OutputDirectory="..\..\..\..\..\..\Program Files\Microsoft Games\Halo Custom Edition"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			CharacterSet="2"
@@ -288,6 +290,7 @@
 		</Configuration>
 		<Configuration
 			Name="DebugGuerilla|Win32"
+			OutputDirectory="..\..\..\..\..\..\Program Files\Microsoft Games\Halo Custom Edition"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			CharacterSet="2"
@@ -355,6 +358,7 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseGuerilla|Win32"
+			OutputDirectory="..\..\..\..\..\..\Program Files\Microsoft Games\Halo Custom Edition"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			CharacterSet="2"
@@ -422,6 +426,7 @@
 		</Configuration>
 		<Configuration
 			Name="DebugSapien|Win32"
+			OutputDirectory="..\..\..\..\..\..\Program Files\Microsoft Games\Halo Custom Edition"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			CharacterSet="2"
@@ -490,6 +495,7 @@
 		</Configuration>
 		<Configuration
 			Name="ReleaseSapien|Win32"
+			OutputDirectory="..\..\..\..\..\..\Program Files\Microsoft Games\Halo Custom Edition"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinRelease.Cpp.vsprops"
 			CharacterSet="2"
@@ -563,6 +569,14 @@
 		<Filter
 			Name="Engine"
 			>
+			<File
+				RelativePath=".\Engine\AnimationUpgrade.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Engine\AnimationUpgrade.hpp"
+				>
+			</File>
 			<File
 				RelativePath=".\Engine\EngineFunctions.cpp"
 				>
@@ -2377,6 +2391,18 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\units\unit_structures.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="models"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\models\model_animation_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\models\model_animations.hpp"
 					>
 				</File>
 			</Filter>

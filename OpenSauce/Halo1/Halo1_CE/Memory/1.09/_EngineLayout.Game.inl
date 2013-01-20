@@ -21,7 +21,8 @@
 	ENGINE_DPTR(s_ai_communication_replies_data, ai_communication_replies,	0x68BC7C, 0x5F4474);
 	ENGINE_DPTR(t_ai_conversation_data, ai_conversations,					0x81B4B4, 0x6E7374);
 
-	FUNC_PTR(AI_UPDATE_HOOK, 0x42A949, 0x42A959);
+	FUNC_PTR(AI_UPDATE_HOOK,			0x42A949, 0x42A959);
+	FUNC_PTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK,	0x40B701, 0x40B711);
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -314,6 +315,39 @@ namespace Fov
 	FUNC_PTR(PLAYERS_UPDATE_BEFORE_GAME_SERVER_HOOK,	0x4773B7, 0x46EE37);
 	FUNC_PTR(PLAYERS_UPDATE_BEFORE_GAME_CLIENT_HOOK,	0x4777EB, 0x46F26B);
 	FUNC_PTR(PLAYERS_UPDATE_AFTER_GAME_HOOK,			0x477B7B, 0x46F5FB);
+	
+	//////////////////////////////////////////////////////////////////////////
+	// Players.NearbyObjects
+	FUNC_PTR(PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_JMP_TABLE_RETN,			0x47B268, 0x472CE8);
+	ENGINE_PTR(void**, player_examine_nearby_objects_server_jmp_ptr,		0x47B248, 0x472CC8);
+	static byte* K_PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_LAST_ENTRY_TYPE = CAST_PTR(
+		byte*, PLATFORM_VALUE(0x47B242, 0x472CC2)
+	);
+	static const void* *PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_JMP_TABLE = CAST_PTR(
+		const void**, PLATFORM_VALUE(0x47B274, 0x472CF4)
+	);
+
+	FUNC_PTR(PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_JMP_TABLE_RETN,			0x47B368, 0x472DE8);
+	ENGINE_PTR(void**, player_examine_nearby_objects_client_jmp_ptr,		0x47B348, 0x472DC8);
+	static byte* K_PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_LAST_ENTRY_TYPE = CAST_PTR(
+		byte*, PLATFORM_VALUE(0x47B342, 0x472DC2)
+	);
+	static const void* *PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_JMP_TABLE = CAST_PTR(
+		const void**, PLATFORM_VALUE(0x47B374, 0x472DF4)
+	);
+	
+	//////////////////////////////////////////////////////////////////////////
+	// Players.ActionResults
+	FUNC_PTR(PLAYER_HANDLE_ACTION_JMP_TABLE_ADJUST_SIZE,	0x47C183, 0x473C03);
+	FUNC_PTR(PLAYER_HANDLE_ACTION_JMP_TABLE_RETN,			0x47C47B, 0x473EFB);
+	ENGINE_PTR(void**, player_handle_action_jmp_ptr,		0x47C199, 0x473C19);
+
+	static byte* K_PLAYER_HANDLE_ACTION_LAST_ENTRY_TYPE = CAST_PTR(
+		byte*, PLATFORM_VALUE(0x47C188, 0x473C08)
+	);
+	static const void* *PLAYER_HANDLE_ACTION_JMP_TABLE = CAST_PTR(
+		const void**, PLATFORM_VALUE(0x47C488, 0x473F08)
+	);
 
 
 //////////////////////////////////////////////////////////////////////////
