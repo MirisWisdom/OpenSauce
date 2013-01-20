@@ -157,7 +157,10 @@ namespace Yelo
 		void		c_version_check_manager_base::Dispose()
 		{
 			for(int32 i = 0; i < NUMBEROF(m_xml_sources); i++)
+			{
+				m_xml_sources[i].Stop();
 				m_xml_sources[i].Dtor();
+			}
 		}
 
 		/*!
