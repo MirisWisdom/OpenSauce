@@ -62,5 +62,9 @@ namespace Yelo
 
 		// If [and_game_build] is true, it will also change the GameState::GameBuildStrings
 		bool ChangeAdvertisedVersion(cstring version_str, bool and_game_build);
+		void ChangeAdvertisedVersionId(long_enum version_id, bool and_game_build);
+
+		// Returns the games current advertised version
+		long_enum GetAdvertisedVersion();
 	};
 };
