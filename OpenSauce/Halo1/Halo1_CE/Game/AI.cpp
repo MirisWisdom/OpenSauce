@@ -38,43 +38,7 @@ namespace Yelo
 		t_ai_conversation_data* AIConversations()					DPTR_IMP_GET(ai_conversations);
 
 
-		void Initialize()
-		{
-#if !PLATFORM_DISABLE_UNUSED_CODE
-			Memory::CreateHookRelativeCall(&AI::Update, GET_FUNC_VPTR(AI_UPDATE_HOOK), Enums::_x86_opcode_retn);
-#endif
-			static const byte k_null_bytes[7] = {
-                    Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
-                    Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
-                    Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
-                    Enums::_x86_opcode_nop
-            };
-
-            Memory::WriteMemory(GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), k_null_bytes, sizeof(k_null_bytes));
-			Memory::WriteRelativeCall(&ActorActionHandleVehicleExitHook, GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), true);
-		}
-
-		void Dispose()
-		{
-		}
-
-		void PLATFORM_API Update()
-		{
-		}
-
-		API_FUNC_NAKED void PLATFORM_API ActorActionHandleVehicleExitHook()
-		{
-			__asm {
-				pushad
-				push	ecx		// datum_index unit_index
-				call	ActorActionHandleVehicleExitBoardingSeat
-				popad
-
-				retn
-			}
-		}
-
-		void ActorActionHandleVehicleExitBoardingSeat(datum_index unit_index)
+		static void ActorActionHandleVehicleExitBoardingSeat(datum_index unit_index)
 		{
 			Objects::s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
 
@@ -106,6 +70,48 @@ namespace Yelo
 
 			// Exit the vehicle like normal if conditions haven't been met
 			*unit->unit.animation.GetAnimationState() = Enums::_unit_animation_state_seat_exit;
+		}
+
+		static API_FUNC_NAKED void PLATFORM_API ActorActionHandleVehicleExitHook()
+		{
+			__asm {
+				push	eax
+				push	edx
+				push	ecx
+
+				push	ecx		// datum_index unit_index
+				call	AI::ActorActionHandleVehicleExitBoardingSeat
+				
+				pop		ecx
+				pop		edx
+				pop		eax
+
+				retn
+			}
+		}
+
+		void Initialize()
+		{
+#if !PLATFORM_DISABLE_UNUSED_CODE
+			Memory::CreateHookRelativeCall(&AI::Update, GET_FUNC_VPTR(AI_UPDATE_HOOK), Enums::_x86_opcode_retn);
+#endif
+			static const byte k_null_bytes[7] = {
+                    Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
+                    Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
+                    Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
+                    Enums::_x86_opcode_nop
+            };
+
+            Memory::WriteMemory(GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), k_null_bytes, sizeof(k_null_bytes));
+			Memory::WriteRelativeCall(&AI::ActorActionHandleVehicleExitHook, GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), true);
+		}
+
+		void Dispose()
+		{
+		}
+
+		void PLATFORM_API Update()
+		{
 		}
 	};
 };

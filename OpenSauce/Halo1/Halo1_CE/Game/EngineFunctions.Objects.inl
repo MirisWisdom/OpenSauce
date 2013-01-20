@@ -325,20 +325,20 @@ void DoubleChargeShield(datum_index object_index)
 	}
 }
 
-void ObjectCauseDamage(Yelo::Objects::s_damage_data* damage_data, datum_index object_index, int32 node_index, int32 region_index, int32 damage_materials_index, int32 unknown)
+API_FUNC_NAKED void ObjectCauseDamage(Yelo::Objects::s_damage_data &damage_data, datum_index object_index, int32 node_index, int32 region_index, int32 damage_materials_index, int32 unknown)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBJECT_CAUSE_DAMAGE);
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(OBJECT_CAUSE_DAMAGE);
 
-	__asm {
+	API_FUNC_NAKED_START()
 		push	unknown
 		push	damage_materials_index
 		push	region_index
 		push	node_index
 		push	object_index
 		push	damage_data
-		call	TEMP_CALL_ADDR
+		call	FUNCTION
 		add		esp, 4 * 6
-	}
+	API_FUNC_NAKED_END(6)
 }
 
 void DefinitionPredict(datum_index object_index)
@@ -432,86 +432,86 @@ API_FUNC_NAKED int16 UnitGetCustomAnimationTime(datum_index unit_index)
 	API_FUNC_NAKED_END(1)
 }
 
-bool UnitCanEnterSeat(datum_index unit_index, datum_index vehicle_index, int32 vehicle_seat_index, datum_index* unit_in_seat)
+API_FUNC_NAKED bool UnitCanEnterSeat(datum_index unit_index, datum_index vehicle_index, int32 vehicle_seat_index, datum_index &unit_in_seat)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(UNIT_CAN_ENTER_SEAT);
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(UNIT_CAN_ENTER_SEAT);
 
-	__asm {
+	API_FUNC_NAKED_START()
 		push    unit_in_seat
 		push    vehicle_seat_index
 		mov		edx, vehicle_index
 		mov     eax, unit_index
-		call    TEMP_CALL_ADDR
+		call    FUNCTION
 		add     esp, 4 * 2
-	}
+	API_FUNC_NAKED_END(4)
 }
 
-bool UnitEnterSeat(datum_index unit_index, datum_index vehicle_index, int32 vehicle_seat_index)
+API_FUNC_NAKED bool UnitEnterSeat(datum_index unit_index, datum_index vehicle_index, int32 vehicle_seat_index)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(UNIT_ENTER_SEAT);
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(UNIT_ENTER_SEAT);
 
-	__asm {
+	API_FUNC_NAKED_START()
 		push    vehicle_seat_index
 		push    vehicle_index
 		mov     eax, unit_index
-		call    TEMP_CALL_ADDR
+		call    FUNCTION
 		add     esp, 4 * 2
-	}
+	API_FUNC_NAKED_END(3)
 }
 
-void UnitExitVehicle(datum_index unit_index)
+API_FUNC_NAKED void UnitExitVehicle(datum_index unit_index)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(UNIT_EXIT_VEHICLE);
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(UNIT_EXIT_VEHICLE);
 
-	__asm {
+	API_FUNC_NAKED_START()
 		mov     eax, unit_index
-		call    TEMP_CALL_ADDR
-	}
+		call    FUNCTION
+	API_FUNC_NAKED_END(1)
 }
 
-bool API_FUNC_NAKED UnitOpen(datum_index unit_index)
+API_FUNC_NAKED bool UnitOpen(datum_index unit_index)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(UNIT_OPEN);
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(UNIT_OPEN);
 
 	API_FUNC_NAKED_START()
 			mov     eax, unit_index
-			call    TEMP_CALL_ADDR
+			call    FUNCTION
 	API_FUNC_NAKED_END(1)
 }
 
-bool API_FUNC_NAKED UnitClose(datum_index unit_index)
+API_FUNC_NAKED bool UnitClose(datum_index unit_index)
 {
-    static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(UNIT_CLOSE);
+    static const uintptr_t FUNCTION = GET_FUNC_PTR(UNIT_CLOSE);
 
 	API_FUNC_NAKED_START()
             mov     eax, unit_index
-            call    TEMP_CALL_ADDR
+            call    FUNCTION
 	API_FUNC_NAKED_END(1)
 }
 
-int16 UnitFindNearbySeat(datum_index unit_index, datum_index vehicle_index, int16* seat_index)
+API_FUNC_NAKED int16 UnitFindNearbySeat(datum_index unit_index, datum_index vehicle_index, int16 &seat_index)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(UNIT_FIND_NEARBY_SEAT);
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(UNIT_FIND_NEARBY_SEAT);
 
-	__asm {
+	API_FUNC_NAKED_START()
 		push	seat_index
 		push	vehicle_index
 		push	unit_index
-		call	TEMP_CALL_ADDR
+		call	FUNCTION
 		add		esp, 4 * 3
-	}
+	API_FUNC_NAKED_END(3)
 }
 
-void UnitExitSeatEnd(datum_index unit_index, bool unk2, bool unk3, bool unk4)
+API_FUNC_NAKED void UnitExitSeatEnd(datum_index unit_index, bool unk2, bool unk3, bool unk4)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(UNIT_EXIT_SEAT_END);
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(UNIT_EXIT_SEAT_END);
 
-	__asm {
+	API_FUNC_NAKED_START()
 		push	unk4
 		push	unk3
 		push	unk2
 		push	unit_index
-		call    TEMP_CALL_ADDR
+		call    FUNCTION
 		add		esp, 4 * 4
-	}
+	API_FUNC_NAKED_END(4)
 }

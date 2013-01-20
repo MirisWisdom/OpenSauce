@@ -7,7 +7,8 @@
 
 namespace ActionResults
 {
-	static void* player_handle_action_jmp_table_yelo[Yelo::Enums::_player_action_result_yelo];
+	/********* change to Yelo::Enums::_player_action_result_yelo to support custom action results *********/
+	static void* player_handle_action_jmp_table_yelo[Yelo::Enums::_player_action_result];
 
 	// Replaces PlayerHandleAction function's switch table with our own
 	static void InitializePlayerHandleActionJmpTable()
@@ -21,15 +22,16 @@ namespace ActionResults
 			player_handle_action_jmp_table_yelo[x] = (void*)PLAYER_HANDLE_ACTION_JMP_TABLE[1];
 
 		// copy the game's jmp table to our own and account for the offset
-		for(int32 x = offset; x <= *K_NUMBER_OF_PLAYER_HANDLE_ACTION_JMP_TABLE_ENTRIES + offset; x++)
+		for(int32 x = offset; x <= *K_PLAYER_HANDLE_ACTION_LAST_ENTRY_TYPE + offset; x++)
 			player_handle_action_jmp_table_yelo[x] = (void*)PLAYER_HANDLE_ACTION_JMP_TABLE[x - offset];
 
-		static const byte opcode_null[] = { 0x90, 0x90, 0x90 };
+		static const byte opcode_null[] = { Enums::_x86_opcode_nop, Enums::_x86_opcode_nop, Enums::_x86_opcode_nop };
 
 		// nullify jmp table size adjustment
 		Memory::WriteMemory(GET_FUNC_VPTR(PLAYER_HANDLE_ACTION_JMP_TABLE_ADJUST_SIZE), opcode_null, sizeof(opcode_null));
 		// set the game's jump table count to our's
-		*K_NUMBER_OF_PLAYER_HANDLE_ACTION_JMP_TABLE_ENTRIES = Yelo::Enums::_player_action_result_yelo - 1;
+		/********* change to Yelo::Enums::_player_action_result_yelo to support custom action results *********/
+		*K_PLAYER_HANDLE_ACTION_LAST_ENTRY_TYPE = Yelo::Enums::_player_action_result - 1;
 		// set the game's jump table address to our's
 		GET_PTR(player_handle_action_jmp_ptr) = player_handle_action_jmp_table_yelo;
 	}

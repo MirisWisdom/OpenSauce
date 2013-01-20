@@ -34,7 +34,11 @@ namespace Animations
 	// Called when an animation reaches the primary keyframe index value in the model_animations tag
 	static void InitializeUnitUpdateAnimationPrimaryKeyframeJmpTable()
 	{
-		static const byte opcode_null[] = { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 };
+		static const byte opcode_null[] = { 
+			Yelo::Enums::_x86_opcode_nop, Yelo::Enums::_x86_opcode_nop, Yelo::Enums::_x86_opcode_nop, 
+			Yelo::Enums::_x86_opcode_nop, Yelo::Enums::_x86_opcode_nop, Yelo::Enums::_x86_opcode_nop, 
+			Yelo::Enums::_x86_opcode_nop 
+		};
 		static const byte jmp_eax[] = { 0xFF, 0x24, 0x85 };
 
 		int32 jmp_default = Enums::unit_update_animation_primary_keyframe_jmp_default;
@@ -67,7 +71,11 @@ namespace Animations
 	// Called when an animation reaches it's final keyframe
 	static void InitializeUnitUpdateAnimationFinalKeyframeJmpTable()
 	{
-		static const byte opcode_null[] = { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 };
+		static const byte opcode_null[] = { 
+			Yelo::Enums::_x86_opcode_nop, Yelo::Enums::_x86_opcode_nop, Yelo::Enums::_x86_opcode_nop, 
+			Yelo::Enums::_x86_opcode_nop, Yelo::Enums::_x86_opcode_nop, Yelo::Enums::_x86_opcode_nop, 
+			Yelo::Enums::_x86_opcode_nop 
+		};
 		static const byte jmp_eax[] = { 0xFF, 0x24, 0x85 };
 
 		int32 jmp_default = Enums::unit_update_animation_final_keyframe_jmp_default;
@@ -296,49 +304,88 @@ namespace Animations
 		return result;
 	}
 
-	// Called on the primary_keyframe_index of the yelo_seat_board animation
-	static API_FUNC_NAKED void PLATFORM_API UnitUpdateAnimationPrimaryKeyframeSeatBoardJMP()
+	bool UnitAnimationStateInterruptableHook()
 	{
-		static uint32 RETN_ADDRESS = GET_FUNC_PTR(UNIT_UPDATE_ANIMATION_PRIMARY_KEYFRAME_SWITCH_RETN);
+		s_unit_animation_data* unit_animation;
+		uint32 next_animation_state;
+
+		_asm mov	next_animation_state, edx;
+		_asm mov	unit_animation, ecx;
+
+		return UnitAnimationStateInterruptable(unit_animation, next_animation_state);
+	}
+	
+	bool UnitAnimationBusyHook()
+	{
+		s_unit_animation_data* unit_animation;
+
+		_asm mov	unit_animation, ecx;
+
+		return UnitAnimationBusy(unit_animation);
+	}
+	
+	bool UnitAnimationStateLoopsHook()
+	{
+		s_unit_animation_data* unit_animation;
+
+		_asm mov	unit_animation, ecx;
+
+		return UnitAnimationStateLoops(unit_animation);
+	}
+	
+	bool UnitAnimationWeaponIKHook()
+	{
+		s_unit_animation_data* unit_animation;
+
+		_asm mov	unit_animation, ecx;
+
+		return UnitAnimationWeaponIK(unit_animation);
+	}
+	
+	bool UnitAnimationVehicleIKHook()
+	{
+		s_unit_animation_data* unit_animation;
+
+		_asm mov	unit_animation, ecx;
+
+		return UnitAnimationVehicleIK(unit_animation);
+	}
+
+	// Called on the primary_keyframe_index of the yelo_seat_board animation
+	API_FUNC_NAKED static void PLATFORM_API UnitUpdateAnimationPrimaryKeyframeSeatBoardJMP()
+	{
+		static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(UNIT_UPDATE_ANIMATION_PRIMARY_KEYFRAME_SWITCH_RETN);
 		
 		__asm {
-			pushad
-
 			push	ebx		// datum_index boarding_unit_index
 			call	Units::Boarding::SeatBoardPrimaryKeyframe
-
-			popad
 
 			jmp		RETN_ADDRESS
 		}
 	}
 
 	// Called on the final keyframe of the yelo_seat_board animation
-	static API_FUNC_NAKED void PLATFORM_API UnitUpdateAnimationFinalKeyframeSeatBoardJMP()
+	API_FUNC_NAKED static void PLATFORM_API UnitUpdateAnimationFinalKeyframeSeatBoardJMP()
 	{
-		static uint32 RETN_ADDRESS = GET_FUNC_PTR(UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_SWITCH_RETN);
+		static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_SWITCH_RETN);
 
 		__asm {
-			pushad
-
 			push	ebx		// datum_index unit_index
 			call	Units::Boarding::SeatBoardFinalKeyframe
-
-			popad
 
 			jmp		RETN_ADDRESS
 		}
 	}
 
 	// Called on the final keyframe of the seat enter animation
-	static API_FUNC_NAKED void PLATFORM_API UnitUpdateAnimationFinalKeyframeSeatEnterJMP()
+	API_FUNC_NAKED static void PLATFORM_API UnitUpdateAnimationFinalKeyframeSeatEnterJMP()
 	{
 		// use the seat_enter animation's final keyframe jmp entry as the return address
-		static uint32 RETN_ADDRESS = (uint32)UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_JMP_TABLE
+		static const uintptr_t RETN_ADDRESS = (uint32)UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_JMP_TABLE
 			[Enums::unit_update_animation_final_keyframe_jmp_1];
 
 		__asm {
-			pushad
+			push	eax
 
 			mov		eax, ebp
 			sub		eax, 16	// address of the next_animation_state variable
@@ -347,60 +394,9 @@ namespace Animations
 			push	ebx		// datum_index unit_index
 			call	Units::Boarding::SeatEnterFinalKeyframe
 
-			popad
+			pop		eax
 
 			jmp		RETN_ADDRESS
-		}
-	}
-
-	static API_FUNC_NAKED void PLATFORM_API UnitAnimationStateInterruptableHook()
-	{
-		__asm {
-			push	edx
-			push	ecx
-			call	UnitAnimationStateInterruptable
-
-			retn
-		}
-	}
-
-	static API_FUNC_NAKED void PLATFORM_API UnitAnimationBusyHook()
-	{
-		__asm {
-			push	ecx
-			call	UnitAnimationBusy
-
-			retn
-		}
-	}
-
-	static API_FUNC_NAKED void PLATFORM_API UnitAnimationStateLoopsHook()
-	{
-		__asm {
-			push	ecx
-			call	UnitAnimationStateLoops
-
-			retn
-		}
-	}
-
-	static API_FUNC_NAKED void PLATFORM_API UnitAnimationWeaponIKHook()
-	{
-		__asm {
-			push	ecx
-			call	UnitAnimationWeaponIK
-
-			retn
-		}
-	}
-
-	static API_FUNC_NAKED void PLATFORM_API UnitAnimationVehicleIKHook()
-	{
-		__asm {
-			push	ecx
-			call	UnitAnimationVehicleIK
-
-			retn
 		}
 	}
 
@@ -432,11 +428,13 @@ namespace Animations
 		Animations::InitializeUnitUpdateAnimationFinalKeyframeJmpTable();
 		Animations::InitializeYeloAnimationStates();
 		
-		Memory::CreateHookRelativeCall(&UnitAnimationStateInterruptableHook, GET_FUNC_VPTR(UNIT_ANIMATION_STATE_INTERRUPTABLE_HOOK), Yelo::Enums::_x86_opcode_ret);
-		Memory::CreateHookRelativeCall(&UnitAnimationBusyHook, GET_FUNC_VPTR(UNIT_ANIMATION_BUSY_HOOK), Yelo::Enums::_x86_opcode_ret);
-		Memory::CreateHookRelativeCall(&UnitAnimationStateLoopsHook, GET_FUNC_VPTR(UNIT_ANIMATION_STATE_LOOPS_HOOK), Yelo::Enums::_x86_opcode_ret);
-		Memory::CreateHookRelativeCall(&UnitAnimationWeaponIKHook, GET_FUNC_VPTR(UNIT_ANIMATION_WEAPON_IK_HOOK), Yelo::Enums::_x86_opcode_ret);
-		Memory::CreateHookRelativeCall(&UnitAnimationVehicleIKHook, GET_FUNC_VPTR(UNIT_ANIMATION_VEHICLE_IK_HOOK), Yelo::Enums::_x86_opcode_ret);
+		for(int i = 0; i < NUMBEROF(K_UNIT_ANIMATION_STATE_INTERRUPTABLE_CALL); i++)
+			Memory::WriteRelativeCall(&UnitAnimationStateInterruptableHook, K_UNIT_ANIMATION_STATE_INTERRUPTABLE_CALL[i], true);
+		for(int i = 0; i < NUMBEROF(K_UNIT_UNIT_ANIMATION_BUSY_CALL); i++)
+			Memory::WriteRelativeCall(&UnitAnimationBusyHook, K_UNIT_UNIT_ANIMATION_BUSY_CALL[i], true);
+		Memory::WriteRelativeCall(&UnitAnimationStateLoopsHook, GET_FUNC_VPTR(K_UNIT_ANIMATION_STATE_LOOPS_CALL), true);
+		Memory::WriteRelativeCall(&UnitAnimationWeaponIKHook, GET_FUNC_VPTR(K_UNIT_ANIMATION_WEAPON_IK_CALL), true);
+		Memory::WriteRelativeCall(&UnitAnimationVehicleIKHook, GET_FUNC_VPTR(K_UNIT_ANIMATION_VEHICLE_IK_CALL), true);
 	}
 
 	void Dispose()

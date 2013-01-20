@@ -67,7 +67,10 @@ namespace Yelo
 			Animations::Initialize();
 			Boarding::Initialize();
 			
-			static const byte opcode_null[] = { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 };
+			static const byte opcode_null[] = { 
+				Enums::_x86_opcode_nop, Enums::_x86_opcode_nop, Enums::_x86_opcode_nop, 
+				Enums::_x86_opcode_nop, Enums::_x86_opcode_nop, Enums::_x86_opcode_nop 
+			};
 
 			Memory::WriteMemory(GET_FUNC_VPTR(BIPED_UPDATE_CHECK_PARENT_UNIT_TYPE), opcode_null, 6);
 		}
@@ -188,19 +191,16 @@ namespace Yelo
 		{
 			s_unit_datum* vehicle = (*Objects::ObjectHeader())[vehicle_index]->_unit;
 			datum_index unit = datum_index::null;
-			datum_index next_object = vehicle->object.first_object_index;
 
-			for (;;)
+			for (datum_index next_object = vehicle->object.first_object_index; 
+				 next_object != datum_index::null; 
+				 next_object = (*Objects::ObjectHeader())[next_object]->_object->next_object_index)
 			{
-				if (next_object == datum_index::null) break;
-
 				int16 unit_seat_index = (*Objects::ObjectHeader())[next_object]->_unit->unit.vehicle_seat_index;
 				byte object_type = (*Objects::ObjectHeader())[next_object]->_object->type;
 
-				if (object_type == Yelo::Enums::_object_type_biped)
+				if (object_type == Enums::_object_type_biped)
 					if (unit_seat_index == seat_index) unit = next_object;
-
-				next_object = (*Objects::ObjectHeader())[next_object]->_object->next_object_index;
 			}
 
 			return unit;

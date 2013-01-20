@@ -24,13 +24,13 @@ namespace Boarding
 			int32 unit_seat_animation_count = animation_graph->units[animation_seat_block_index].animations.Count;
 
 			// Check if the target unit has an ejection animation to play
-			if (Yelo::Enums::_unit_seat_animation_yelo_ejection < unit_seat_animation_count)
+			if (Enums::_unit_seat_animation_yelo_ejection < unit_seat_animation_count)
 			{
 				int32 animation_index = animation_graph->units[animation_seat_block_index].
-					animations[Yelo::Enums::_unit_seat_animation_yelo_ejection];
+					animations[Enums::_unit_seat_animation_yelo_ejection];
 
 				// pick a random permutation of the ejection animation
-				animation_index = Yelo::Engine::AnimationPickRandomPermutation(true, 
+				animation_index = Engine::AnimationPickRandomPermutation(true, 
 					unit->object.animation.definition_index, animation_index);
 
 				// set the target unit's animation to yelo_seat_ejection
@@ -45,12 +45,12 @@ namespace Boarding
 			}
 
 			// set the target_unit's animation state to seat_exit to force them out of the vehicle
-			*unit->unit.animation.GetAnimationState() = Yelo::Enums::_unit_animation_state_seat_exit;
+			*unit->unit.animation.GetAnimationState() = Enums::_unit_animation_state_seat_exit;
 		}
 	}
 
 	// Plays the yelo_board animation
-	static void BoardUnitSeatIndex(Yelo::TagGroups::s_unit_boarding_seat const* boarding_seat_definition, 
+	static void BoardUnitSeatIndex(TagGroups::s_unit_boarding_seat const* boarding_seat_definition, 
 		datum_index unit_index, datum_index parent_unit_index)
 	{
 		s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
@@ -63,17 +63,17 @@ namespace Boarding
 			int32 unit_seat_animation_count = animation_graph->units[animation_seat_block_index].animations.Count;
 
 			// Check if the unit has a board animation to play
-			if (Yelo::Enums::_unit_seat_animation_yelo_board < unit_seat_animation_count)
+			if (Enums::_unit_seat_animation_yelo_board < unit_seat_animation_count)
 			{
 				int32 animation_index = animation_graph->units[animation_seat_block_index].
-					animations[Yelo::Enums::_unit_seat_animation_yelo_board];
+					animations[Enums::_unit_seat_animation_yelo_board];
 
 				// pick a random permutation of the boarding animation
-				animation_index = Yelo::Engine::AnimationPickRandomPermutation(true, 
+				animation_index = Engine::AnimationPickRandomPermutation(true, 
 					unit->object.animation.definition_index, animation_index);
 
 				// set the unit's animation to yelo_board
-				Yelo::Engine::Objects::StartInterpolation(unit_index, 6);
+				Engine::Objects::StartInterpolation(unit_index, 6);
 				Engine::Objects::UnitSetAnimation(unit_index, 
 					unit->object.animation.definition_index, animation_index);
 				
@@ -85,10 +85,10 @@ namespace Boarding
 
 				// if boarding enters the target seat, use the seat_board animation state
 				if (boarding_seat_definition->flags.boarding_enters_target_seat_bit)
-					*unit->unit.animation.GetAnimationState() = Yelo::Enums::_unit_animation_state_yelo_seat_board;
+					*unit->unit.animation.GetAnimationState() = Enums::_unit_animation_state_yelo_seat_board;
 				// else, use the seat_exit animation state so we exit the vehicle when complete
 				else
-					*unit->unit.animation.GetAnimationState() = Yelo::Enums::_unit_animation_state_seat_exit;
+					*unit->unit.animation.GetAnimationState() = Enums::_unit_animation_state_seat_exit;
 			}
 		}
 	}
@@ -132,15 +132,16 @@ namespace Boarding
 				// If the boarding seat definition contains a damage effect tag, use it here
 				if (boarding_seat_definition->boarding_damage.tag_index != datum_index::null)
 				{
+					Objects::s_damage_data damage_data;
+
 					// Create a new damage_data struct based on the boarding_seat_definition boarding damage field
-					Objects::s_damage_data* damage_data = new Objects::s_damage_data();
-					damage_data->effect_definition_index = boarding_seat_definition->boarding_damage.tag_index;
-					damage_data->responsible_player_index = unit->unit.controlling_player_index;
-					damage_data->responsible_unit_index = unit_index;
-					damage_data->responsible_units_team = unit->object.owner_team;
-					damage_data->location = target_unit->object.scenario_location;
-					damage_data->damage_position = target_unit->object.network.position;
-					damage_data->damage_multiplier = 1.0f;
+					damage_data.effect_definition_index = boarding_seat_definition->boarding_damage.tag_index;
+					damage_data.responsible_player_index = unit->unit.controlling_player_index;
+					damage_data.responsible_unit_index = unit_index;
+					damage_data.responsible_units_team = unit->object.owner_team;
+					damage_data.location = target_unit->object.scenario_location;
+					damage_data.damage_position = target_unit->object.network.position;
+					damage_data.damage_multiplier = 1.0f;
 
 					// Damage the target_unit
 					Engine::Objects::ObjectCauseDamage(damage_data, target_unit_index, NONE, NONE, NONE, 0);
@@ -153,7 +154,7 @@ namespace Boarding
 	// forces the boarding unit into the target seat when the board animation is complete
 	static void SeatBoardFinalKeyframe(datum_index unit_index)
 	{
-		s_unit_datum* unit = (*Yelo::Objects::ObjectHeader())[unit_index]->_unit;
+		s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
 
 		datum_index parent_unit_index = unit->object.parent_object_index;
 		int16 seat_index = unit->unit.vehicle_seat_index;
@@ -201,10 +202,10 @@ namespace Boarding
 
 			// if boarding enters the target seat, use the seat_board animation state
 			if (boarding_seat_definition->flags.boarding_enters_target_seat_bit)
-				*next_animation_state = Yelo::Enums::_unit_animation_state_yelo_seat_board;
+				*next_animation_state = Enums::_unit_animation_state_yelo_seat_board;
 			// else, use the seat_exit animation state so we exit the vehicle when complete
 			else
-				*next_animation_state = Yelo::Enums::_unit_animation_state_seat_exit;
+				*next_animation_state = Enums::_unit_animation_state_seat_exit;
 			
 			// Open the vehicle if boarding controls open/close
 			if (boarding_seat_definition->flags.controls_open_and_close_bit)
@@ -224,39 +225,33 @@ namespace Boarding
 		s_unit_datum* unit = object_header[unit_index]->_unit;
 		s_unit_datum* target_unit = object_header[target_unit_index]->_unit;
 
-		datum_index first_object_index = target_unit->object.first_object_index;
-		
 		if (unit_index == target_unit_index)
 			result = false;
 
-		if (first_object_index != datum_index::null)
+		for (datum_index first_object_index = target_unit->object.first_object_index; 
+			 first_object_index != datum_index::null; 
+			 first_object_index = object_header[first_object_index]->_object->next_object_index)
 		{
-			do
+			s_unit_datum* first_object = object_header[first_object_index]->_unit;
+
+			if (first_object->object.VerifyType(Enums::_object_type_mask_unit))
 			{
-				s_unit_datum* first_object = object_header[first_object_index]->_unit;
-
-				if (first_object->object.VerifyType(Enums::_object_type_mask_unit))
+				// Check if the first_object is in the seat_index that unit_index is trying to enter
+				if (first_object->unit.vehicle_seat_index == target_seat_index)
 				{
-					// Check if the first_object is in the seat_index that unit_index is trying to enter
-					if (first_object->unit.vehicle_seat_index == target_seat_index)
-					{
-						*unit_in_seat = first_object_index;
-						result = false;
-					}
-					// If multiteam vehicles is prohibited, test unit and target unit teams
-					else if (TagGroups::_global_yelo->gameplay.flags.prohibit_multiteam_vehicles_bit)
-					{
-						if (unit->unit.controlling_player_index == datum_index::null || 
-							!Engine::Game::TeamIsEnemy(first_object->object.owner_team, unit->object.owner_team))
-							result = true;
-						else
-							result = false;
-					}
+					*unit_in_seat = first_object_index;
+					result = false;
 				}
-
-				first_object_index = first_object->object.next_object_index;
+				// If multiteam vehicles is prohibited, test unit and target unit teams
+				else if (TagGroups::_global_yelo->gameplay.flags.prohibit_multiteam_vehicles_bit)
+				{
+					if (unit->unit.controlling_player_index == datum_index::null || 
+						!Engine::Game::TeamIsEnemy(first_object->object.owner_team, unit->object.owner_team))
+						result = true;
+					else
+						result = false;
+				}
 			}
-			while (first_object_index != datum_index::null);
 		}
 
 		// Check if the target seat is a boarding seat
@@ -272,7 +267,7 @@ namespace Boarding
 		return result;
 	}
 
-	static API_FUNC_NAKED void PLATFORM_API UnitCanEnterSeatHook()
+	API_FUNC_NAKED static void PLATFORM_API UnitCanEnterSeatHook()
 	{
 		__asm {
 			push	ecx
@@ -295,7 +290,7 @@ namespace Boarding
 
 	void Initialize()
 	{
-		Memory::CreateHookRelativeCall(&UnitCanEnterSeatHook, GET_FUNC_VPTR(UNIT_CAN_ENTER_SEAT_HOOK), Yelo::Enums::_x86_opcode_ret);
+		Memory::CreateHookRelativeCall(&UnitCanEnterSeatHook, GET_FUNC_VPTR(UNIT_CAN_ENTER_SEAT_HOOK), Enums::_x86_opcode_ret);
 	}
 
 	void Dispose()
