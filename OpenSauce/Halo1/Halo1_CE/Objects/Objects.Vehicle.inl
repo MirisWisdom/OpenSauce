@@ -27,7 +27,7 @@ namespace Yelo
 					real_vector3d offset;
 				};
 				struct s_preset {
-					char name[Enums::k_vehicle_view_name_length];
+					char name[Enums::k_vehicle_view_name_length+1];
 					uint32 seats_bitvector[BIT_VECTOR_SIZE_IN_DWORDS(Enums::k_vehicle_view_max_seat_presets)];
 					s_seat_preset seats[Enums::k_vehicle_view_max_seat_presets];
 				}presets[Enums::k_vehicle_view_max_vehicle_presets];
