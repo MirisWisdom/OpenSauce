@@ -414,7 +414,7 @@ namespace Animations
 
 			pop		edx
 			pop		ecx
-			pop		eaxp
+			pop		eax
 
 			jmp		RETN_ADDRESS
 		}
