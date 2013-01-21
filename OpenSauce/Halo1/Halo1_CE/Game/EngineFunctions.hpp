@@ -465,7 +465,7 @@ namespace Yelo
 
 			int16 UnitFindNearbySeat(datum_index unit_index, datum_index vehicle_index, int16 &seat_index);
 
-			void UnitExitSeatEnd(datum_index unit_index, bool unk2, bool unk3, bool unk4);
+			void UnitExitSeatEnd(datum_index unit_index, uint32 unk2, uint32 unk3, uint32 unk4);
 		};
 
 		namespace Physics

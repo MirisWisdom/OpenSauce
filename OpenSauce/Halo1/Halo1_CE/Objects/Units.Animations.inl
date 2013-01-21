@@ -307,9 +307,9 @@ namespace Animations
 	bool UnitAnimationStateInterruptableHook()
 	{
 		s_unit_animation_data* unit_animation;
-		uint32 next_animation_state;
+		uint16 next_animation_state;
 
-		_asm mov	next_animation_state, edx;
+		_asm mov	next_animation_state, dx;
 		_asm mov	unit_animation, ecx;
 
 		return UnitAnimationStateInterruptable(unit_animation, next_animation_state);

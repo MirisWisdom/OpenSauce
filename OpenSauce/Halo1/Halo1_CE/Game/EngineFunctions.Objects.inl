@@ -502,7 +502,7 @@ API_FUNC_NAKED int16 UnitFindNearbySeat(datum_index unit_index, datum_index vehi
 	API_FUNC_NAKED_END(3)
 }
 
-API_FUNC_NAKED void UnitExitSeatEnd(datum_index unit_index, bool unk2, bool unk3, bool unk4)
+API_FUNC_NAKED void UnitExitSeatEnd(datum_index unit_index, uint32 unk2, uint32 unk3, uint32 unk4)
 {
 	static const uintptr_t FUNCTION = GET_FUNC_PTR(UNIT_EXIT_SEAT_END);
 
