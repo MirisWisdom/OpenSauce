@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+	<data>
+		<TagData name="tag_database_entry_name_data" maxSize="0x100" isTextData="true" isDebugData="true" />
+	</data>
+
+	<blocks>
+		<TagBlock name="tag_database_entry_reference_block" maxElements="65535">
+			<field type="LongBlockIndex" name="entry reference" definition="tag_database_entry_block" locked="true" blockname="true" />
+		</TagBlock>
+
+		<TagBlock name="tag_database_entry_block" maxElements="65535">
+			<field type="Data" name="name" definition="tag_database_entry_name_data" locked="true" />
+			<field type="Tag" name="group tag" locked="true" />
+			<field type="LongInteger" name="handle data (high word)" locked="true" hidden="true" />
+			<field type="LongInteger" name="flags" locked="true" />
+			<field type="Block" name="child ids" definition="tag_database_entry_reference_block" locked="true" />
+			<field type="Block" name="referenced by" definition="tag_database_entry_reference_block" locked="true" />
+
+			<field type="Pad" definition="12" />
+		</TagBlock>
+	</blocks>
+
+	<groups>
+		<TagGroup name="tag_database" groupTag="tag+" version="1">
+			<field type="Block" name="entries" definition="tag_database_entry_block" locked="true" />
+
+			<field type="Pad" definition="24" />
+		</TagGroup>
+	</groups>
+
+</definitions>

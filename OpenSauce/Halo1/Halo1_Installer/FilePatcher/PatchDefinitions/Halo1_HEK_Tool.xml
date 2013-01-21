@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<FilePatch inputfile="Tool.exe" outputfile="OS_Tool.exe" peaddressmask="400000" md5_pre="1f18ecb6f0acdcd0b0455aa4f7e06b73" md5_post="f7474f0fbaffb217bdd9b4790d31c255">
+	<Patch id="PTCH_tool_logheader">
+		<Data id="VAL_logheader" type="string" length="13" writenull="false"><![CDATA[01.00.09.0620]]></Data>
+
+		<Address ptr="60E568" value="VAL_logheader"/>
+	</Patch>
+
+	<Patch id="PTCH_tool_disablebetamap">
+		<Data id="VAL_betamapnullcode" type="bytes"><![CDATA[90909090909090909090909090909090]]></Data>
+
+		<Address ptr="42D44B" value="VAL_betamapnullcode"/>
+	</Patch>
+
+	<Patch id="PTCH_tool_enablecheape">
+		<Data id="VAL_cheapedllstring" type="bytes"><![CDATA[00436865417065444C4C542E646C6C00]]></Data>
+		<Data id="VAL_cheapefunction1" type="bytes"><![CDATA[68B0356200FF15E8406000E91C691C00]]></Data>
+		<Data id="VAL_cheapefunction2" type="bytes"><![CDATA[E835C5E3FF]]></Data>
+
+		<Address ptr="6235AF" value="VAL_cheapedllstring"/>
+		<Address ptr="42E2B0" value="VAL_cheapefunction1"/>
+		<Address ptr="5F1D76" value="VAL_cheapefunction2"/>
+	</Patch>
+</FilePatch>

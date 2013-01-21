@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<osYeloSettings engine="Halo1_CE">
+	<client>
+		<dx9>
+			<nVidiaActiveCamouflage basic="" />
+
+			<Upgrades dynamicTriangles="" renderModelNodesPatch="" />
+
+			<GBuffer enabled="" />
+
+			<PostProcessing>
+				<Bloom enabled="" />
+
+				<MotionBlur enabled="" amount="" />
+
+				<FXAA enabled="" />
+
+				<Internal enabled="" />
+
+				<External enabled="" />
+			</PostProcessing>
+
+			<ShaderExtension enabled="">
+				<Model>
+					<NormalMap enabled="" />
+
+					<DetailNormalMaps enabled="" />
+
+					<SpecularMap enabled="" />
+
+					<SpecularLighting enabled="" />
+				</Model>
+			</ShaderExtension>
+		</dx9>
+
+		<!--value=vertifical radians-->
+		<Fov value="" />
+
+		<Hud show="" scale="" showChat="">
+			<reports showDeaths="" showMyKillDeaths="" />
+		</Hud>
+
+		<networking gsNoUpdateCheck="">
+			<map_download enabled="" />
+		</networking>
+
+		<objects disableVehicleRemapper="">
+			<weaponViews>
+				<entry name="">
+					<position x="" y="" z="" />
+				</entry>
+			</weaponViews>
+
+			<vehicleViews>
+				<entry name="">
+					<position seatName="" x="" y="" z="" />
+				</entry>
+			</vehicleViews>
+		</objects>
+
+		<version_check year="" month="" day="">
+			<server_list>
+				<Server></Server>
+			</server_list>
+		</version_check>
+
+		<cacheFiles checkForYeloFilesFirst="" mainmenuScenario="" />
+	</client>
+	
+	<server>
+
+		<version_check year="" month="" day="">
+			<server_list>
+				<Server></Server>
+			</server_list>
+		</version_check>
+		
+	</server>
+
+	<postprocessing shader_directory="" 
+			texture_directory="">
+		<shaders>
+			<shader id=""></shader>
+		</shaders>
+		<effects>
+			<effect id="">
+				<shaders>
+					<shader></shader>
+				</shaders>
+			</effect>
+		</effects>
+		<effect_instances>
+			<effect_instance name="" effect="" render_stage="" activation_operation="">
+				<quad>
+					<tessellation x="" y=""/>
+					<x_bounds lower="" upper=""/>
+					<y_bounds lower="" upper=""/>
+				</quad>
+				<activation_controls>
+					<activation_control state="" invert=""/>
+				</activation_controls>
+			</effect_instance>
+		</effect_instances>
+	</postprocessing>
+
+	<osModSetSettings>
+		<modSets>
+			<ModSet name="" />
+		</modSets>
+	</osModSetSettings>
+</osYeloSettings>

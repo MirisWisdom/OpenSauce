@@ -1,0 +1,27 @@
+XboxLib is the base library for structure and function declarations that are used in a Xbox1 module. Note: I use the term "module" now, but when I originally start this library back in '05 
+I called them DXTs since debug Xbox consoles can use special DLL files with the .DXT extension (stands for Debugger Extension).
+
+Halo2_Xbox is an example of a module written for the Xbox version of Halo2 (duh). Since that's the only game I really cared enough about to take the time to write a C++ (vs pure asm) 
+library for, the XboxLib API objects will mostly tailor to functions I know the address of in H2X. If you write a module for another game I'd suggest you use the utility functions in 
+XboxApi.hpp that check your module's defined vtables for NULL entries, at least in debug builds, in case we ever add to the vtable in the future and you don't update your code with 
+matching entries (assuming you try compiling with the latest codebase).
+
+XboxLib is also setup to try and future-proof game modules when it comes to emulation. Tier2\ModuleExports contains more technical information. All you (module programmers) should need 
+to worry about is checking that XboxLib::IsEmulatorPresent() is FALSE when you try to do something that is very Xbox-specific (eg, directly accessing the NV frame buffer). Potentially 
+the value could be changed to be a DWORD (so ALWAYS check for FALSE), eg, to represent the specific emulator's 32-bit signature (or an address).
+
+The following files have extern symbols which need to be defined in your Xbox1 module (note, search "!!! DEFINE IN YOUR DXT !!!" and you'll find all instances where XboxLib expects 
+a symbol to be defined in your module):
+	* XboxLib\XboxApi.hpp
+		- ModuleExit (function)
+		- ModuleMain (function)
+		- XboxApi (object)
+		- XboxStd (object)
+	* Tier2\ModuleExports.hpp
+		- k_module_title_id (data)
+	* Tier2\XboxInterface.hpp
+		- XboxLib::DisplayLastError (function)
+
+
+Note about license: While OpenSauce is GPLv3 (at least at the time this readme was last updated), any modules you write yourself aren't infected by this license. However, XboxLib 
+is still under that license so if you make any changes you're require to publish them with your released programs. The same goes for Halo2_Xbox

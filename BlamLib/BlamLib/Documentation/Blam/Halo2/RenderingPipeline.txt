@@ -1,0 +1,25 @@
+How does the Halo 2 Rendering pipeline work in BlamLib?
+
+Steps:
+1) Load rendered tag (could be structure bsp, render model, particle model, etc)
+	A) Reconstruct tag for editor (some optimizations and extra steps added as opposed to to reconstructing a tag for single-file ("source") use)
+	B) Load dependent material (shaders) tag
+		[1] Load dependent bitmap tags
+		[2] Add bitmaps to the bitmap manager which will construct the runtime pixel data we want from bitmap pixels
+		[3] Tell the bitmap its place in the bitmap manager
+	C) VertexBuffer reconstruction
+	D) CreateForRender the rendered tag
+2) Enter actual rendering pipeline
+	A) Tell the rendered tag to render itself
+
+3) Example: Render Model
+	A) Pick level of detail
+	B) Foreach region in render model, get 'base' permutation LOD section index
+	C) Render section
+		[1] Foreach part in section data, render the vertex buffers
+
+4) Example: structure bsp
+	A) Render Clusters
+		[1] Render cluster section data
+	B) Render Instance Geometries
+		[1] Figure out the instance geometry definition and render its section data

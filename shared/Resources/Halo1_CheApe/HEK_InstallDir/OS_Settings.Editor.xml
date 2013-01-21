@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- See documentation at: http://code.google.com/p/open-sauce/wiki/Doc_Halo1_Settings#OS_Settings.Editor.xml -->
+<osEditorSettings engine="Halo1_CE" defaultProfile="stock">
+	<profiles>
+		<Profile name="stock" ignoredByGuerilla="false" ignoredByTool="false" ignoredBySapien="false">
+			<root></root>
+			<tagsName>tags</tagsName>
+		</Profile>
+	</profiles>
+</osEditorSettings>

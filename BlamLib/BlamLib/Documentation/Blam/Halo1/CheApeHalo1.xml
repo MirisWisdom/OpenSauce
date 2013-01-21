@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<definitions game="Halo1">
+	<blocks>
+		<!--name=string, maxElements=integer, [optional]dontReadChildren=boolean-->
+		<TagBlock name="" maxElements="" dontReadChildren="">
+		</TagBlock>
+	</blocks>
+	
+	<groups>
+		<!--name=string, groupTag=fourcc, parentTag=fourcc, version=integer, [optional]isIncludedInTagGroupsChecksum=boolean-->
+		<TagGroup name="" groupTag="" parentTag="" version="" isIncludedInTagGroupsChecksum="" >
+		</TagGroup>
+	</groups>
+
+	<Field type="" name="" definition="" locked="false" hidden="false" blockname="false" deprecated="false" tooltip="" units="" />
+
+	<Field type="" name="" locked="false" hidden="false" blockname="false" tooltip="" units="" />
+
+	<Field type="" name="" locked="false" hidden="false" blockname="false" tooltip="" />
+
+	<Field type="" name="" locked="false" hidden="false" tooltip="" />
+
+	<Field type="" name="" tooltip="" />
+
+	<Field type="" name="" />
+
+	<Field type="Enum" name="" definition="" />
+
+	<Field type="LongFlags" name="" definition="" />
+	<Field type="WordFlags" name="" definition="" />
+	<Field type="ByteFlags" name="" definition="" />
+
+	<Field type="Block" name="" definition="" />
+
+	<Field type="TagReference" name="" definition="" />
+
+	<Field type="Explanation" name="" definition="" />
+
+	<Field type="Pad" definition="" />
+
+	<Field type="Skip" definition="" />
+</definitions>

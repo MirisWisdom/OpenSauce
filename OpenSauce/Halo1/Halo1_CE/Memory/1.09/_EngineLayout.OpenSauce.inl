@@ -1,0 +1,61 @@
+/*
+	Yelo: Open Sauce SDK
+		Halo 1 (CE) Edition
+
+	See license\OpenSauce\Halo1_CE for specific license information
+*/
+
+//////////////////////////////////////////////////////////////////////////
+// YeloSettings.cpp
+#if __EL_INCLUDE_FILE_ID == __EL_COMMON_YELO_SETTINGS
+	ENGINE_PTR(char, g_profile_path, 0x647850, 0x5B9630); // set by -path in haloce
+
+
+//////////////////////////////////////////////////////////////////////////
+// Memory/FunctionInterface.cpp
+#elif __EL_INCLUDE_FILE_ID == __EL_MEMORY_FUNCTION_INTERFACE
+	FUNC_PTR(RENDER_SKY,												0x5148F0, FUNC_PTR_NULL);
+	FUNC_PTR(RENDER_WINDOW_CALL_HOOK_RENDER_SKY,						0x50FD32, FUNC_PTR_NULL);
+
+	FUNC_PTR(RENDER_OBJECTS,											0x5125D0, FUNC_PTR_NULL);
+	FUNC_PTR(RENDER_WINDOW_CALL_HOOK_RENDER_OBJECTS,					0x50FD41, FUNC_PTR_NULL);
+
+	FUNC_PTR(STRUCTURE_RENDER_LIGHTMAPS,								0x556330, FUNC_PTR_NULL);
+	FUNC_PTR(RENDER_WINDOW_CALL_HOOK_STRUCTURE_RENDER_LIGHTMAPS,		0x50FD4B, FUNC_PTR_NULL);
+
+	FUNC_PTR(WEATHER_PARTICLE_SYSTEMS_RENDER,							0x459620, FUNC_PTR_NULL);
+	FUNC_PTR(RENDER_WINDOW_CALL_HOOK_WEATHER_PARTICLE_SYSTEMS_RENDER,	0x5100CC, FUNC_PTR_NULL);
+
+	FUNC_PTR(RENDER_UI_WIDGETS,											0x49B620, FUNC_PTR_NULL);
+	FUNC_PTR(RENDER_WINDOW_CALL_HOOK_RENDER_UI_WIDGETS,					0x5101FD, FUNC_PTR_NULL);
+
+	FUNC_PTR(RENDER_UI_CURSOR,											0x49A4B0, FUNC_PTR_NULL);
+	FUNC_PTR(CALL_HOOK_RENDER_UI_CURSOR,								0x49B6F0, FUNC_PTR_NULL);
+
+	FUNC_PTR(INTERFACE_DRAW_SCREEN,										0x4976C0, FUNC_PTR_NULL);
+	FUNC_PTR(RENDER_WINDOW_CALL_HOOK_INTERFACE_DRAW_SCREEN,				0x5101F1, FUNC_PTR_NULL);
+
+	FUNC_PTR(UPDATE_UI_WIDGETS,											0x49AFE0, FUNC_PTR_NULL);
+	FUNC_PTR(CALL_HOOK_UPDATE_UI_WIDGETS,								0x4CB0D7, FUNC_PTR_NULL);
+
+
+//////////////////////////////////////////////////////////////////////////
+// Common/GameSystems.cpp
+#elif __EL_INCLUDE_FILE_ID == __EL_COMMON_GAME_SYSTEMS
+	FUNC_PTR(QUERY_EXITFLAG_REG_CALL,									0x5450A1, 0x4FF3D6);
+	FUNC_PTR(QUERY_EXITFLAG_REG,										0x582560, 0x52ACF0);
+	FUNC_PTR(RELEASE_RESOURCES_ON_EXIT_CALL,							0x5452C0, 0x4FF5B7);
+	FUNC_PTR(RELEASE_RESOURCES_ON_EXIT,									0x5447C0, 0x4FF100);
+
+	DATA_PTR(PE_DATA_SIZE,												0x215000, 0x171000);
+
+
+//////////////////////////////////////////////////////////////////////////
+// Common/DebugDump.cpp
+#elif __EL_INCLUDE_FILE_ID == __EL_COMMON_DEBUG_DUMP
+	FUNC_PTR(PRE_DR_WATSON_LAUNCH_HOOK,									0x5471AC, 0x5006BC);
+	FUNC_PTR(PRE_DR_WATSON_LAUNCH_RETN,									0x5471B3, 0x5006C3);
+
+#else
+	#error Undefined engine layout include for: __EL_INCLUDE_OPEN_SAUCE
+#endif

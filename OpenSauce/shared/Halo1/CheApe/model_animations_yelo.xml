@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+	<data>
+	</data>
+
+	<blocks>
+	</blocks>
+
+	<groups>
+		<TagGroup name="model_animations_yelo" groupTag="magy" parentTag="antr" version="0">
+			<field type="TagReference" name="stock animation" definition="animation_graph_reference" />
+
+			<field type="Pad" definition="12" />
+			<field type="Pad" definition="12" />
+			<field type="Pad" definition="12" />
+			<field type="Pad" definition="12" />
+			<field type="Pad" definition="12" />
+			<field type="Pad" definition="12" />
+			<field type="Pad" definition="12" />
+			<field type="Pad" definition="12" />
+			<field type="Pad" definition="12" />
+			<field type="Pad" definition="12" />
+			<field type="Pad" definition="12" />
+			<field type="Pad" definition="12" />
+			<field type="Pad" definition="12" />
+		</TagGroup>
+	</groups>
+
+</definitions>

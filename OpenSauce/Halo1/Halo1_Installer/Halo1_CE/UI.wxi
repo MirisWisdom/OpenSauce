@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+	<DialogRef Id='HEKPathDialog' />
+	<DialogRef Id='HEKPathMissingDialog' />
+	<DialogRef Id='CEMissingDlg' />
+
+	<Publish Dialog='LicenseAgreementDlg' Control='Next' Event='NewDialog' Value='CEMissingDlg'>
+		<![CDATA[NOT HALO1_CE_HCE_VERSION_109_PROP]]>
+	</Publish>
+	<Publish Dialog='CEMissingDlg' Control='ButtonOK' Event='NewDialog' Value='OpenSauce_CustomizeDlg'>
+		<![CDATA[NOT HALO1_CE_HCE_VERSION_109_PROP]]>
+	</Publish>
+	
+	<!-- The HEK extensions are being installed and all three of the stock exes are available, so show the OS HEK creation dialog -->
+	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='NewDialog' Value='HEKPathDialog'>
+		<![CDATA[((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND
+		(HALO1_CE_HEK_GUERILLAPATH_PROP AND HALO1_CE_HEK_SAPIENPATH_PROP AND HALO1_CE_HEK_TOOLPATH_PROP)]]>
+	</Publish>
+	<Publish Dialog='VerifyReadyDlg' Control='Back' Event='NewDialog' Value='HEKPathDialog'>
+		<![CDATA[((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND
+		(HALO1_CE_HEK_GUERILLAPATH_PROP AND HALO1_CE_HEK_SAPIENPATH_PROP AND HALO1_CE_HEK_TOOLPATH_PROP)]]>
+	</Publish>
+
+	<!-- The HEK extensions are being installed but one of the stock exes is unavailable, so show the OS_IDE launch dialog -->
+	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='NewDialog' Value='HEKPathMissingDialog'>
+		<![CDATA[((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND
+		NOT (HALO1_CE_HEK_GUERILLAPATH_PROP AND HALO1_CE_HEK_SAPIENPATH_PROP AND HALO1_CE_HEK_TOOLPATH_PROP)]]>
+	</Publish>
+	<Publish Dialog='VerifyReadyDlg' Control='Back' Event='NewDialog' Value='HEKPathMissingDialog'>
+		<![CDATA[((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND
+		NOT (HALO1_CE_HEK_GUERILLAPATH_PROP AND HALO1_CE_HEK_SAPIENPATH_PROP AND HALO1_CE_HEK_TOOLPATH_PROP)]]>
+	</Publish>
+
+	<Publish Dialog='OpenSauce_ExitDialog' Control='Finish' Event='DoAction' Value='Halo1_CE_SetReadmeTarget_CACT'>
+		<![CDATA[(&Halo1_CE_ClientServer_FEAT = 3) AND NOT Installed AND HALO1_CE_README_LAUNCH_PROP]]>
+	</Publish>
+	<Publish Dialog='OpenSauce_ExitDialog' Control='Finish' Event='DoAction' Value='Halo1_CE_OpenReadme_CACT'>
+		<![CDATA[(&Halo1_CE_ClientServer_FEAT = 3) AND NOT Installed AND HALO1_CE_README_LAUNCH_PROP]]>
+	</Publish>
+	<Publish Dialog='OpenSauce_ExitDialog' Control='Finish' Event='DoAction' Value='Halo1_CE_HEK_SetReadmeTarget_CACT'>
+		<![CDATA[(&Halo1_CE_HEK_FEAT = 3) AND NOT Installed AND HALO1_CE_HEK_README_LAUNCH_PROP]]>
+	</Publish>
+	<Publish Dialog='OpenSauce_ExitDialog' Control='Finish' Event='DoAction' Value='Halo1_CE_HEK_OpenReadme_CACT'>
+		<![CDATA[(&Halo1_CE_HEK_FEAT = 3) AND NOT Installed AND HALO1_CE_HEK_README_LAUNCH_PROP]]>
+	</Publish>
+
+	<ProgressText Action='Halo1_CE_ValidateInstallHCE_CACT'>Validating Halo Custom Edition Installation</ProgressText>
+	<ProgressText Action='Halo1_CE_ValidateInstallHEK_CACT'>Validating Halo Editing Kit Installation</ProgressText>
+
+	<ProgressText Action='Halo1_CE_PatchFiles_CACT'>Applying OpenSauce EXE modifications</ProgressText>
+</Include>

@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<BlamScript version="" game="" inheritFrom="" > <!--game=Blamlib.BlamVersion, inheritFrom=xml file name-->
+	<scriptTypes version="1">
+		<!--opcode=hexidecimal, name=string, [optional]help=string-->
+		<type opcode="" name="" help="" />
+	</scriptTypes>
+
+	<valueTypes version="1">
+		<!--opcode=hexidecimal, size=integer, name=string, [optional]help=string, [optional]default=string-->
+		<type opcode="" size="" name="" help="" default="" />
+
+		<!--opcode=hexidecimal, size=integer, name=string, [optional]help=string, tag=fourcc, quoted=boolean-->
+		<type opcode="" size="" name="" help="" tag="" quoted="" />
+
+		<!--opcode=hexidecimal, size=integer, name=string, [optional]help=string-->
+		<type opcode="" size="" name="" help="" >
+			<enum></enum> <!--=string-->
+		</type>
+
+		<!--opcode=hexidecimal, name=string, quoted=boolean, size=integer-->
+		<type opcode="" name="" quoted="" size="" />
+	</valueTypes>
+
+	<!--game=string, ext=file extension string, maxNodes=integer, salt=hexidecimal-->
+	<definition version="1" game="" ext="" maxNodes="" salt="">
+		<objectTypeMasks>
+			<object type="" mask="" /> <!--type=string, mask=hexidecimal-->
+		</objectTypeMasks>
+
+		<valueTypeCasting>
+			<cast from="" to="" /> <!--from=string, to=string-->
+		</valueTypeCasting>
+	</definition>
+
+	<functions version="1">
+		<!--opcode=hexidecimal, name=string, returnType=string, [optional]argc=integer, [optional]opArgc=integer, [optional]flags=hexidecimal, [optional]group=FunctionGroup, [optional]help=string, [optional]helpArg=string, [optional]null=boolean-->
+		<function opcode="" name="" returnType="" argc="" opArgc="" flags="" group=""  help="" helpArg="" null="" >
+			<arg type="" name="" help="" /> <!--type=string, name=string, [optional]help=string-->
+		</function>
+	</functions>
+
+	<globals version="1">
+		<!--opcode=hexidecimal, name=string, type=string, [optional]help=string, [optional]null=boolean, [optional]flags=hexidecimal-->
+		<global opcode="" name="" type="" help="" null="" flags="" />
+	</globals>
+</BlamScript>

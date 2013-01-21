@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+	
+	<!-- Get the Halo CE root directory from the registry -->
+	<Property Id='HALO1_CE_HCE_INSTALLDIR_PROP' Secure='yes'>
+		<RegistrySearch Id='Halo1_CE_HCE_InstallDir_REG' Type='raw' Root='HKLM' Key='Software\Microsoft\Microsoft Games\Halo CE' Name='EXE Path' />
+	</Property>
+
+	<!-- Check whether the Halo CE directory exists -->
+	<Property Id='HALO1_CE_HCE_INSTALLDIREXIST_PROP' Secure='yes'>
+		<DirectorySearch Id='Halo1_CE_HCE_InstallDir_DIRSRCH' Path='[HALO1_CE_HCE_INSTALLDIR_PROP]' />
+	</Property>
+
+	<!-- Get the haloce.exe file version (will not be assigned if version is below 1.09) -->
+	<Property Id='HALO1_CE_HCE_VERSION_109_PROP' Secure='yes'>
+		<DirectorySearch Id='Halo1_CE_HCE_Version_109_DIRSRCH' Path='[HALO1_CE_HCE_INSTALLDIR_PROP]'>
+			<FileSearch Id='Halo1_CE_HCE_Version_109_FILESRCH' Name='haloce.exe' MinVersion='1.0.9.619' MaxVersion='1.0.9.620'/>
+		</DirectorySearch>
+	</Property>
+
+	<!-- Get the haloceded.exe file version (will not be assigned if version is below 1.09) -->
+	<Property Id='HALO1_CE_HCEDEDI_VERSION_109_PROP' Secure='yes'>
+		<DirectorySearch Id='Halo1_CE_HCEDedi_Version_109_DIRSRCH' Path='[HALO1_CE_HCE_INSTALLDIR_PROP]'>
+			<FileSearch Id='Halo1_CE_HCEDedi_Version_109_FILESRCH' Name='haloceded.exe' MinVersion='1.0.9.619' MaxVersion='1.0.9.620'/>
+		</DirectorySearch>
+	</Property>
+
+	<!-- Get the Halo CE directory in the Documents folder, searches 2 directories deep -->
+	<Property Id='HALO1_CE_HCE_USERPATH_PROP' Secure='yes'>
+		<DirectorySearch Id='Halo1_CE_HCE_UserPath_DIRSRCH' Path='[PersonalFolder]\My Games'>
+			<DirectorySearch Id='Halo1_CE_HCE_HaloCEPath_DIRSRCH' Path='Halo CE' Depth='2' />
+		</DirectorySearch>
+	</Property>
+	
+	<!-- Get the HEK installation directory from the registry -->
+	<Property Id='HALO1_CE_HEK_INSTALLDIR_PROP' Secure='yes'>
+		<RegistrySearch Id='Halo1_CE_HEK_InstallDir_REG' Type='raw' Root='HKLM' Key='Software\Microsoft\Microsoft Games\Halo HEK' Name='EXE Path' />
+	</Property>
+	<!-- Check whether the HEK installation directory exists -->
+	<Property Id='HALO1_CE_HEK_INSTALLDIREXIST_PROP' Secure='yes'>
+		<DirectorySearch Id='Halo1_CE_HEK_InstallDir_DIRSRCH' Path='[HALO1_CE_HEK_INSTALLDIR_PROP]' />
+	</Property>
+	<!-- Find guerilla.exe in the default HEK directory -->
+	<Property Id='HALO1_CE_HEK_GUERILLAPATH_PROP' Secure='yes'>
+		<DirectorySearch Id='Halo1_CE_HEK_GuerillaPath_DIRSRCH' Path='[HALO1_CE_HEK_INSTALLDIR_PROP]'>
+			<FileSearch Id='Halo1_CE_HEK_GuerillaPath_FILESRCH' Name='guerilla.exe' />
+		</DirectorySearch>
+	</Property>
+	<!-- Find sapien.exe in the default HEK directory -->
+	<Property Id='HALO1_CE_HEK_SAPIENPATH_PROP' Secure='yes'>
+		<DirectorySearch Id='Halo1_CE_HEK_SapienPath_DIRSRCH' Path='[HALO1_CE_HEK_INSTALLDIR_PROP]'>
+			<FileSearch Id='Halo1_CE_HEK_SapienPath_FILESRCH' Name='sapien.exe' />
+		</DirectorySearch>
+	</Property>
+	<!-- Find tool.exe in the default HEK directory -->
+	<Property Id='HALO1_CE_HEK_TOOLPATH_PROP' Secure='yes'>
+		<DirectorySearch Id='Halo1_CE_HEK_ToolPath_DIRSRCH' Path='[HALO1_CE_HEK_INSTALLDIR_PROP]'>
+			<FileSearch Id='Halo1_CE_HEK_ToolPath_FILESRCH' Name='tool.exe' />
+		</DirectorySearch>
+	</Property>
+	
+	<!-- Set the output path for the OS HEK EXEs to the default HEK directory -->
+	<Property Id='HALO1_CE_HEK_OUTPUTPATH_PROP' Secure='yes'>
+		<DirectorySearch Id='Halo1_CE_HEK_OutputDir_DIRSRCH' Path='[HALO1_CE_HEK_INSTALLDIR_PROP]' />
+	</Property>
+	<!-- Setting any value to this property defaults to launching OS_IDE when guerilla\sapien\tool is missing -->
+	<Property Id='HALO1_CE_HEK_SKIPCREATEOSEXES_PROP' Secure='yes'/>
+
+	<Property Id='HALO1_CE_README_LAUNCH_PROP' Secure='yes' Value='1' />
+	<Property Id='HALO1_CE_HEK_README_LAUNCH_PROP' Secure='yes' Value='1' />
+</Include>

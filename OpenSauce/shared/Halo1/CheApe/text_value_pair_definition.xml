@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+
+	<enums>
+		<Enum name="text_value_pair_type_enum">
+			<field>integer</field>
+			<field>string id</field>
+			<field>unused</field>
+			<field>real</field>
+		</Enum>
+	</enums>
+	
+	<flags>
+		<Flag name="text_value_pair_reference_flags">
+			<field>default setting</field>
+			<field>unchanged setting</field>
+		</Flag>
+	</flags>
+
+	<blocks>
+		<TagBlock name="text_value_pair_reference_block" maxElements="32">
+			<field type="ByteFlags" name="flags" definition="text_value_pair_reference_flags" />
+			<field type="Pad" definition="3" />
+			<field type="LongInteger" name="integer" />
+			<field type="Real" name="real" />
+			<field type="StringId" name="string id" />
+			<field type="StringId" name="label string id" blockname="true" />
+			<field type="StringId" name="description string id" />
+		</TagBlock>
+	</blocks>
+
+	<groups>
+		<TagGroup name="text_value_pair_definition" groupTag="sily" version="0">
+			<field type="StringId" name="parameter" />
+			<field type="StringId" name="title text" />
+			<field type="StringId" name="description text" />
+			<field type="Enum" name="type" definition="text_value_pair_type_enum" />
+			<field type="Pad" definition="2" />
+			<field type="Block" name="text value pairs" definition="text_value_pair_reference_block" />
+		</TagGroup>
+	</groups>
+
+</definitions>

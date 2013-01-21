@@ -1,0 +1,234 @@
+LIBRARY	"XLive"
+EXPORTS
+	NetDll_WSAStartup				@1
+	NetDll_WSACleanup				@2
+	NetDll_socket					@3
+	NetDll_closesocket				@4
+	NetDll_shutdown					@5
+	NetDll_ioctlsocket				@6
+	NetDll_setsockopt				@7
+	NetDll_getsockopt				@8
+	NetDll_getsockname				@9
+	NetDll_getpeername				@10
+	NetDll_bind						@11
+	NetDll_connect					@12
+	NetDll_listen					@13
+	NetDll_accept					@14
+	NetDll_select					@15
+	NetDll_WSAGetOverlappedResult	@16
+	NetDll_WSACancelOverlappedIO	@17
+	NetDll_recv						@18
+	NetDll_WSARecv					@19
+	NetDll_recvfrom					@20
+	NetDll_WSARecvFrom				@21
+	NetDll_send						@22
+	NetDll_WSASend					@23
+	NetDll_sendto					@24
+	NetDll_WSASendTo				@25
+	NetDll_inet_addr				@26
+	NetDll_WSAGetLastError			@27
+	NetDll_WSASetLastError			@28
+	NetDll_WSACreateEvent			@29
+	NetDll_WSACloseEvent			@30
+	NetDll_WSASetEvent				@31
+	NetDll_WSAResetEvent			@32
+	NetDll_WSAWaitForMultipleEvents	@33
+	NetDll___WSAFDIsSet				@34
+	NetDll_WSAEventSelect			@35
+
+	NetDll_htonl					@37
+	NetDll_ntohs					@38
+	NetDll_ntohl					@39
+	NetDll_htons					@40
+
+	NetDll_XNetStartup				@51
+	NetDll_XNetCleanup				@52
+	NetDll_XNetRandom				@53
+	NetDll_XNetCreateKey			@54
+	NetDll_XNetRegisterKey			@55
+	NetDll_XNetUnregisterKey		@56
+	NetDll_XNetXnAddrToInAddr		@57
+	NetDll_XNetServerToInAddr		@58
+	NetDll_XNetTsAddrToInAddr		@59
+	NetDll_XNetInAddrToXnAddr		@60
+	NetDll_XNetInAddrToServer		@61
+	NetDll_XNetInAddrToString		@62
+	NetDll_XNetUnregisterInAddr		@63
+	NetDll_XNetXnAddrToMachineId	@64
+	NetDll_XNetConnect				@65
+	NetDll_XNetGetConnectStatus		@66
+	NetDll_XNetDnsLookup			@67
+	NetDll_XNetDnsRelease			@68
+	NetDll_XNetQosListen			@69
+	NetDll_XNetQosLookup			@70
+	NetDll_XNetQosServiceLookup		@71
+	NetDll_XNetQosRelease			@72
+	NetDll_XNetGetTitleXnAddr		@73
+	NetDll_XNetGetDebugXnAddr		@74
+	NetDll_XNetGetEthernetLinkStatus		@75
+	NetDll_XNetGetBroadcastVersionStatus	@76
+	NetDll_XNetQosGetListenStats	@77
+	NetDll_XNetGetOpt				@78
+	NetDll_XNetSetOpt				@79
+	NetDll_XNetStartupEx			@80
+	NetDll_XNetReplaceKey			@81
+	NetDll_XNetGetXnAddrPlatform	@82
+	NetDll_XNetGetSystemLinkPort	@83
+	NetDll_XNetSetSystemLinkPort	@84
+								
+	XCustomSetAction				@472
+	XCustomGetLastActionPress		@473
+	XCustomSetDynamicActions		@474
+								
+	XCustomGetLastActionPressEx		@476
+	XCustomRegisterDynamicActions	@477
+	XCustomUnregisterDynamicActions	@478
+	XCustomGetCurrentGamercard		@479
+								
+	XNotifyGetNext					@651
+	XNotifyPositionUI				@652
+	XNotifyDelayUI					@653
+								
+	XGetOverlappedExtendedError		@1082
+	XGetOverlappedResult			@1083
+								
+	XLiveInitialize					@5000
+	XLiveInput						@5001
+	XLiveRender						@5002
+	XLiveUninitialize				@5003
+
+	XLiveOnCreateDevice				@5005
+	XLive_5006						@5006
+	XLiveOnResetDevice				@5007
+	XHV2CreateEngine				@5008
+
+;									@5010
+;									@5011
+;									@5012
+
+	XLivePBufferAllocate			@5016
+;									@5017
+	XLivePBufferGetByte				@5018
+	XLivePBufferSetByte				@5019
+	XLivePBufferGetDword			@5020
+	XLivePBufferSetDword			@5021
+	XLiveGetUpdateInformation		@5022
+;									@5023
+	XLiveUpdateSystem				@5024
+;									@5025
+;									@5026
+;									@5027
+	XLiveSecureLoadLibraryW			@5028
+;									@5029
+	XLivePreTranslateMessage		@5030
+								
+;									@5206
+								
+;									@5208
+;									@5209
+	XLive_5210						@5210
+								
+	XLive_5212						@5212
+;									@5213
+;									@5214
+	XLiveShowGuideUI				@5215
+
+;									@5230
+;									@5231
+								
+;									@5233
+;									@5234
+;									@5235
+;									@5236
+;									@5237
+;									@5238
+								
+;									@5250
+;									@5251
+;									@5252
+;									@5253
+	XLiveCancelOverlapped			@5254
+;									@5255
+	XLiveEnumerate					@5256
+;									@5257
+;									@5258
+;	XLiveSignin						@5259
+	XLiveShowSigninUI				@5260
+	XLiveUserGetXUID				@5261
+	XLiveUserGetSigninState			@5262
+	XLiveUserGetName				@5263
+;	XLiveUserAreUsersFriends		@5264
+	XLiveUserCheckPrivilege			@5265
+;									@5266
+								
+	XLiveNotifyCreateListener		@5270
+	XLiveShowPlayersUI				@5271
+;									@5272
+	XLiveUserReadGamerPictureByKey	@5273
+;									@5274
+	XLiveShowFriendsUI				@5275
+	XLiveUserSetProperty			@5276
+	XLiveUserSetContext				@5277
+	XLiveUserWriteAchievements		@5278
+;									@5279
+	XLiveUserCreateAchievementEnumerator	@5280
+	XLiveUserReadStats				@5281
+;									@5282
+;									@5283
+;	XLiveUserCreateStatsEnumeratorByRank	@5284
+;	XLiveUserCreateStatsEnumeratorByRating	@5285
+;	XLiveUserCreateStatsEnumeratorByXuid	@5286
+;									@5287
+;									@5288
+;									@5289
+;									@5290
+;									@5291
+;	XLiveUserSetContextEx			@5292
+;	XLiveUserSetPropertyEx			@5293
+								
+	XLiveSessionCreate				@5300
+								
+;									@5303
+;									@5304
+;									@5305
+;									@5306
+;									@5307
+;									@5308
+;									@5309
+;									@5310
+;									@5311
+;									@5312
+;									@5313
+;									@5314
+;									@5315
+;									@5316
+;									@5317
+;									@5318
+;									@5319
+;									@5320
+;									@5321
+;									@5322
+;									@5323
+;									@5324
+;									@5325
+;									@5326
+;									@5327
+;									@5328
+;									@5329
+;									@5330
+;									@5331
+;									@5332
+;									@5333
+;									@5334
+;									@5335
+;									@5336
+;									@5337
+;									@5338
+;									@5339
+;									@5340
+;									@5341
+;									@5342
+;									@5343
+;									@5344
+;									@5345
+;									@5346

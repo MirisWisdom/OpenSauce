@@ -1,0 +1,39 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Halo1", "Halo1", "{E3E1CBF3-A32B-4FB0-9E99-4A6B14439145}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Halo2", "Halo2", "{C6239FEE-219F-452A-9CCD-2011E5E920EE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Xbox", "Xbox", "{D3DF9D27-B72C-40C7-884A-CA6051DE2C8F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XboxLib", "..\Xbox\Xbox1\XboxLib\XboxLib.vcproj", "{815D3258-8F12-4410-BBB7-AC68B90F284D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Halo2_Xbox", "Halo2\Halo2_Xbox\Halo2_Xbox.vcproj", "{F0B00887-DE49-444A-B478-EE1C511D9D62}"
+	ProjectSection(ProjectDependencies) = postProject
+		{815D3258-8F12-4410-BBB7-AC68B90F284D} = {815D3258-8F12-4410-BBB7-AC68B90F284D}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{815D3258-8F12-4410-BBB7-AC68B90F284D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{815D3258-8F12-4410-BBB7-AC68B90F284D}.Debug|Win32.Build.0 = Debug|Win32
+		{815D3258-8F12-4410-BBB7-AC68B90F284D}.Release|Win32.ActiveCfg = Release|Win32
+		{815D3258-8F12-4410-BBB7-AC68B90F284D}.Release|Win32.Build.0 = Release|Win32
+		{F0B00887-DE49-444A-B478-EE1C511D9D62}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F0B00887-DE49-444A-B478-EE1C511D9D62}.Debug|Win32.Build.0 = Debug|Win32
+		{F0B00887-DE49-444A-B478-EE1C511D9D62}.Release|Win32.ActiveCfg = Release|Win32
+		{F0B00887-DE49-444A-B478-EE1C511D9D62}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F0B00887-DE49-444A-B478-EE1C511D9D62} = {C6239FEE-219F-452A-9CCD-2011E5E920EE}
+		{815D3258-8F12-4410-BBB7-AC68B90F284D} = {D3DF9D27-B72C-40C7-884A-CA6051DE2C8F}
+	EndGlobalSection
+EndGlobal

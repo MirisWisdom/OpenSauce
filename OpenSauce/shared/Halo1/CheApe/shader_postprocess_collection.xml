@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">
+	
+	<flags>
+		<Flag name="effect_activation_flags">
+			<field>not initially active#Is the shader active when the game starts</field>
+			<field>not active during cutscenes</field>
+			<field>disabled when zoomed</field>
+			<field>disabled when using a vehicle</field>
+		</Flag>
+	</flags>	
+	
+	<enums>
+		<Enum name="effect_render_stage_enum">
+			<field>after bsp - before blur</field>
+			<field>after blur - before alpha'd faces</field>
+			<field>after alpha'd faces - before hud</field>
+			<field>after hud - before menu</field>
+			<field>after menu</field>
+		</Enum>
+	</enums>
+
+	<blocks>
+		<TagBlock name="shader_postprocess_effect_script_variable_block" maxElements="32">
+			<field type="String" name="name"/>
+			<field type="String" name="shader variable name"/>
+			<field type="Enum" name="shader_variable_type.type" definition="shader_variable_base_type_enum" locked="true" />
+			<field type="ShortInteger" name="shader_variable_type.count" locked="true" />
+			<field type="LongBlockIndex" name="shader index" definition="shader_postprocess_effect_shader_index_block"/>
+			<field type="Pad" definition="4"/>
+			<field type="Pad" definition="4"/>
+			<field type="Pad" definition="16"/>
+		</TagBlock>
+
+		<TagBlock name="shader_postprocess_effect_shader_block" maxElements="32">
+			<field type="TagReference" name="shader" definition="shader_postprocess_generic_reference" blockname="true"/>
+			<field type="Pad" definition="4"/>
+		</TagBlock>
+		
+		<TagBlock name="shader_postprocess_effect_shader_index_block" maxElements="12">
+			<field type="LongBlockIndex" name="shader" definition="shader_postprocess_effect_shader_block" blockname="true"/>
+			<field type="Pad" definition="4" />
+		</TagBlock>
+
+		<TagBlock name="shader_postprocess_effect_block" maxElements="16">
+			<!--s_shader_postprocess_effect_definition-->
+			<field type="Explanation" name="shader post-process effect" definition=""/>
+			<field type="Pad" definition="2" />
+			<field type="Pad" definition="2" />
+
+			<field type="String" name="name" blockname="true" />
+			<field type="Point2D" name="quad tesselation"/>
+			<field type="Enum" name="render stage" definition="effect_render_stage_enum" />
+			<field type="Pad" definition="2" />
+			<field type="Pad" definition="4" />
+			<!--s_shader_postprocess_effect_render_quad-->
+			<field type="Pad" definition="28" />
+
+			<!--s_shader_postprocess_effect_generic-->
+			<field type="Explanation" name="shader post-process effect generic" definition=""/>
+			<field type="Pad" definition="2" />
+			<field type="Pad" definition="2" />
+			<field type="WordFlags" name="flags" definition="effect_activation_flags" />
+			<field type="Pad" definition="2" />
+
+			<!--s_shader_postprocess_collection_effect-->
+			<field type="Explanation" name="shader post-process collection effect" definition=""/>
+			<field type="Block" name="shader index" definition="shader_postprocess_effect_shader_index_block"/>
+			<field type="Block" name="script variables" definition="shader_postprocess_effect_script_variable_block"/>
+		</TagBlock>
+	</blocks>
+
+	<groups>
+		<TagGroup name="shader_postprocess_collection" groupTag="shpc" version="1">
+			<field type="Pad" definition="2" />
+			<field type="Pad" definition="2" />
+			<field type="Block" name="shaders" definition="shader_postprocess_effect_shader_block" />
+			<field type="Block" name="effects" definition="shader_postprocess_effect_block" />
+		</TagGroup>
+	</groups>
+
+</definitions>

@@ -1,0 +1,318 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<vertexBuffers game="HaloReach_Xbox">
+	<types>
+		<type opcode="0xFF" name="None"					declUsage="Sample" />
+
+		<type opcode="0x00" name="Position"				declUsage="Position" />
+		<type opcode="0x01" name="NodeIndices"			declUsage="BlendIndices" />
+		<type opcode="0x02" name="NodeWeights"			declUsage="BlendWeight" />
+		<type opcode="0x03" name="TexCoord"				declUsage="TextureCoordinate" />
+		<type opcode="0x04" name="Normal"				declUsage="Normal" />
+		<type opcode="0x05" name="Binormal"				declUsage="Binormal" />
+		<type opcode="0x06" name="Tangent"				declUsage="Tangent" />
+		
+		<type opcode="0x07" name="AnisoBinormal"		declUsage="Binormal"			usageIndex="1" /> <!--type used by a DeclarationUsage.TextureCoordinate, 0x04-->
+		<type opcode="0x08" name="Color"				declUsage="Color"				usageIndex="1" /> <!--Use to be IncidentRadiosity-->
+		<type opcode="0x09" name="SecondaryTexCoord"	declUsage="TextureCoordinate"	usageIndex="1" /> <!--type used by a DeclarationUsage.TextureCoordinate, 0x0E-->
+		<type opcode="0x0A" name="SecondaryPosition"	declUsage="Position"			usageIndex="1" /> <!--unused-->
+		<type opcode="0x0B" name="SecondaryNodeIndices" declUsage="BlendIndices"		usageIndex="1" /> <!--unused-->
+		<type opcode="0x0C" name="SecondaryNodeWeights" declUsage="BlendWeight"			usageIndex="1" /> <!--type used by a DeclarationUsage.Fog element, 0x07-->
+		<type opcode="0x0D" name="SecondaryIsqSelect"	declUsage="TextureCoordinate"	usageIndex="2" /> <!--unknown-->
+	</types>
+
+	<definitions>
+		<definition opcode="0x00" name="Null" />
+
+		<definition opcode="0x01" name="s_world_vertex" >
+			<element type="Position"	declType="Float4"		declUsage="Position" />
+			<element type="TexCoord"	declType="Float16Two"	declUsage="TextureCoordinate" />
+			<element type="Normal"		declType="DHen3N"		declUsage="Normal" />
+			<element type="Tangent"		declType="DHen3N"		declUsage="Tangent" />
+		</definition>
+
+		<definition opcode="0x02" name="s_rigid_vertex" >
+			<element type="Position"	declType="UShortN4_2"	declUsage="Position" />
+			<element type="TexCoord"	declType="UShortN2_2"	declUsage="TextureCoordinate" />
+			<element type="Normal"		declType="DHen3N"		declUsage="Normal" />
+			<element type="Tangent"		declType="DHen3N"		declUsage="Tangent" />
+		</definition>
+
+		<definition opcode="0x03" name="s_skinned_vertex" >
+			<element type="Position"	declType="UShortN4_2"	declUsage="Position" />
+			<element type="TexCoord"	declType="UShortN2_2"	declUsage="TextureCoordinate" />
+			<element type="Normal"		declType="DHen3N"		declUsage="Normal" />
+			<element type="Tangent"		declType="DHen3N"		declUsage="Tangent" />
+			<element type="NodeIndices"	declType="Ubyte4"		declUsage="BlendIndices" />
+			<element type="NodeWeights"	declType="UbyteN4"		declUsage="BlendWeight" />
+		</definition>
+
+		<definition opcode="0x04" name="" >
+			<element type="0x07"		declType="UShortN2_2"	declUsage="TextureCoordinate"	usageIndex="1" />
+		</definition>
+
+		<definition opcode="0x05" name="" >
+			<element type="Color"		declType="Color"		declUsage="Color" />
+		</definition>
+
+		<definition opcode="0x06" name="" >
+			<element type="0x0D"		declType="Ubyte4"		declUsage="TextureCoordinate"	usageIndex="3" />
+		</definition>
+
+		<definition opcode="0x07" name="" >
+			<element type="0x0C"		declType="Float1"		declUsage="Fog" />
+			<element type="0x0D"		declType="Float4"		declUsage="TextureCoordinate"	usageIndex="2" />
+		</definition>
+
+		<definition opcode="0x08" name="Unused8" />
+
+		<definition opcode="0x09" name="" >
+			<element type="0x0D"		declType="UbyteN4"		declUsage="BlendWeight"			usageIndex="1" />
+		</definition>
+
+		<!--group 0x02 index 0x01-->
+		<!--in 0x02 stream-->
+		<definition opcode="0x0A" name="" >
+			<element type="0x0D"		declType="UbyteN4"		declUsage="BlendWeight"			usageIndex="1" />
+		</definition>
+
+		<definition opcode="0x0B" name="" >
+			<element type="0x0D"		declType="Dec3N"		declUsage="BlendWeight"			usageIndex="1" />
+			<element type="0x0D"		declType="Dec3N"		declUsage="BlendWeight"			usageIndex="2" />
+			<element type="0x0D"		declType="Dec3N"		declUsage="BlendWeight"			usageIndex="3" />
+		</definition>
+
+		<definition opcode="0x0C" name="s_screen_vertex" >
+			<element type="Position"	declType="Float2"		declUsage="Position" />
+			<element type="TexCoord"	declType="Float2"		declUsage="TextureCoordinate" />
+			<element type="Color"		declType="Color"		declUsage="Color" />
+		</definition>
+
+		<definition opcode="0x0D" name="s_debug_vertex" >
+			<element type="Position"	declType="Float3"		declUsage="Position" />
+			<element type="Color"		declType="Color"		declUsage="Color" />
+		</definition>
+
+		<definition opcode="0x0E" name="" >
+			<element type="0x09"		declType="Float3"		declUsage="TextureCoordinate"	usageIndex="2" />
+		</definition>
+
+		<definition opcode="0x0F" name="s_transparent_vertex" >
+			<element type="Position"	declType="Float3"		declUsage="Position" />
+			<element type="TexCoord"	declType="Float2"		declUsage="TextureCoordinate" />
+			<element type="Color"		declType="Color"		declUsage="Color" />
+		</definition>
+
+		<definition opcode="0x10" name="s_particle_vertex" >			
+			<element type="Position"	declType="Float4"		declUsage="Position"			usageIndex="1" />
+			<element type="Position"	declType="Float16Four"	declUsage="Position"			usageIndex="2" />
+			<element type="Position"	declType="UShortN4"		declUsage="Position"			usageIndex="3" />
+			<element type="Position"	declType="UShortN4"		declUsage="Position"			usageIndex="4" />
+			<element type="TexCoord"	declType="UShortN4"		declUsage="TextureCoordinate"	usageIndex="2" />
+			<element type="TexCoord"	declType="Float16Four"	declUsage="TextureCoordinate"	usageIndex="3" />
+			<element type="TexCoord"	declType="Float16Four"	declUsage="TextureCoordinate"	usageIndex="4" />
+			<element type="TexCoord"	declType="UShortN2"		declUsage="TextureCoordinate"	usageIndex="5" />
+			<element type="Normal"		declType="Dec3N"		declUsage="Normal"				usageIndex="1" />
+			<element type="Color"		declType="Color"		declUsage="Color" />
+			<element type="Color"		declType="Color"		declUsage="Color"				usageIndex="1" />
+		</definition>
+
+		<definition opcode="0x11" name="s_particle_vertex::02" >			
+			<element type="TexCoord"	declType="UShort2"		declUsage="TextureCoordinate"	usageIndex="1" />
+		</definition>
+
+		<definition opcode="0x12" name="s_contrail_vertex" >			
+			<element type="Position"	declType="Float4"		declUsage="Position" />
+			<element type="Position"	declType="Float16Four"	declUsage="Position"			usageIndex="1" />
+			<element type="Position"	declType="UShortN4"		declUsage="Position"			usageIndex="2" />
+			<element type="TexCoord"	declType="Float16Four"	declUsage="TextureCoordinate" />
+			<element type="TexCoord"	declType="UShortN4"		declUsage="TextureCoordinate"	usageIndex="2" />
+			<element type="TexCoord"	declType="Float16Two"	declUsage="TextureCoordinate"	usageIndex="3" />
+			<element type="Color"		declType="Color"		declUsage="Color" />
+			<element type="Color"		declType="Color"		declUsage="Color"				usageIndex="1" />
+			<element type="Position"	declType="Float1"		declUsage="Position"			usageIndex="15" />
+		</definition>
+
+		<definition opcode="0x13" name="s_light_volume_vertex" >			
+			<element type="Position"	declType="Float4"		declUsage="Position" />
+			<element type="TexCoord"	declType="Float16Two"	declUsage="TextureCoordinate" />
+			<element type="Color"		declType="Color"		declUsage="Color" />
+			<element type="Position"	declType="Float2"		declUsage="Position"			usageIndex="15" />
+		</definition>
+
+		<definition opcode="0x14" name="s_decorator_vertex" >
+			<element type="Position"	declType="DHen3N"		declUsage="Position"			usageIndex="1" />
+			<element type="Position"	declType="Ubyte4"		declUsage="Color"				usageIndex="2" />
+			<element type="Position"	declType="Ubyte4"		declUsage="Normal"				usageIndex="1" />
+			<element type="Color"		declType="Color"		declUsage="Color"				usageIndex="1" />
+		</definition>
+
+		<definition opcode="0x15" name="s_contrail_vertex::02" >
+			<element type="Position"	declType="UShort2"		declUsage="Position"			usageIndex="2" />
+		</definition>
+
+		<definition opcode="0x16" name="s_decorator_vertex::02" >
+			<element type="Position"	declType="UShort2"		declUsage="Position"			usageIndex="2" />
+		</definition>
+
+		<definition opcode="0x17" name="" >
+			<element type="Position"	declType="UShort2"		declUsage="Position"			usageIndex="2" />
+		</definition>
+
+		<definition opcode="0x18" name="s_particle_model_vertex" >
+			<element type="Position"	declType="UShortN4_2"	declUsage="Position" />
+			<element type="TexCoord"	declType="UShortN2_2"	declUsage="TextureCoordinate" />
+			<element type="Normal"		declType="DHen3N"		declUsage="Normal" />
+		</definition>
+
+		<definition opcode="0x19" name="s_decorator_model_vertex" >
+			<element type="Position"	declType="UShortN4_2"	declUsage="Position" />
+			<element type="TexCoord"	declType="UShortN2_2"	declUsage="TextureCoordinate" />
+			<element type="Normal"		declType="DHen3N"		declUsage="Normal" />
+		</definition>
+
+
+		<!--s_water_vertex's 0x02 stream-->
+		<!--definition not exactly what the Reach's code has-->
+		<definition opcode="0x1A" name="s_water_vertex::color" >
+			<element type="Position"	declType="UShort2"		declUsage="Color" />
+			<element type="Position"	declType="UShort2"		declUsage="Color"				usageIndex="1" />
+			<element type="Position"	declType="UShort2"		declUsage="Color"				usageIndex="2" />
+		</definition>
+
+		<!--s_water_vertex's 0x03 stream-->
+		<!--definition not exactly what the Reach's code has-->
+		<definition opcode="0x1B" name="s_water_vertex::03" >
+			<element type="Position"	declType="Float16Two"	declUsage="Position"			usageIndex="1" />
+		</definition>
+
+		<!--definition not exactly what the Reach's code has-->
+		<definition opcode="0x1C" name="s_ripple_vertex" >
+			<element type="Position"	declType="Float4"		declUsage="Position" />
+			<element type="TexCoord"	declType="Float4"		declUsage="TextureCoordinate" />
+			<element type="TexCoord"	declType="Float4"		declUsage="TextureCoordinate"	usageIndex="1" />
+			<element type="TexCoord"	declType="Float4"		declUsage="TextureCoordinate"	usageIndex="2" />
+			<element type="TexCoord"	declType="Float4"		declUsage="TextureCoordinate"	usageIndex="3" />
+			<element type="TexCoord"	declType="Float4"		declUsage="TextureCoordinate"	usageIndex="4" />
+			<element type="Color"		declType="Float4"		declUsage="Color" />
+			<element type="Color"		declType="Float4"		declUsage="Color"				usageIndex="1" />
+		</definition>
+
+		<definition opcode="0x1D" name="s_beam_vertex" >			
+			<element type="Position"	declType="Float4"		declUsage="Position" />
+			<element type="TexCoord"	declType="UShortN4"		declUsage="TextureCoordinate" />
+			<element type="TexCoord"	declType="Float16Four"	declUsage="TextureCoordinate"	usageIndex="1" />
+			<element type="Color"		declType="Color"		declUsage="Color" />
+			<element type="Position"	declType="Float3"		declUsage="Position"			usageIndex="15" />
+		</definition>
+		
+		<!--New Reach definitions start here-->
+
+		<!--definition not exactly what the Reach's code has-->
+		<definition opcode="0x1E" name="s_shader_cache_vertex" >
+			<element type="Position"	declType="Float16Four"	declUsage="Position" />
+			<element type="TexCoord"	declType="Float16Four"	declUsage="TextureCoordinate" />
+			<element type="Normal"		declType="Float16Four"	declUsage="Normal" />
+			<element type="Tangent"		declType="Float16Four"	declUsage="Tangent" />
+			<element type="Binormal"	declType="Float16Four"	declUsage="Binormal" />
+			<element type="TexCoord"	declType="Float16Four"	declUsage="TextureCoordinate"	usageIndex="1" />
+		</definition>
+
+		<!--s_object_imposter_vertex's 0x02 stream-->
+		<!--definition not exactly what the Reach's code has-->
+		<definition opcode="0x1F" name="s_object_imposter_vertex::data" >
+			<element type="TexCoord"	declType="UbyteN4"	declUsage="TextureCoordinate"		usageIndex="1" />
+			<element type="TexCoord"	declType="UbyteN4"	declUsage="TextureCoordinate"		usageIndex="2" />
+			<element type="TexCoord"	declType="UbyteN4"	declUsage="TextureCoordinate"		usageIndex="3" />
+			<element type="TexCoord"	declType="UbyteN4"	declUsage="TextureCoordinate"		usageIndex="4" />
+			<element type="TexCoord"	declType="UbyteN4"	declUsage="TextureCoordinate"		usageIndex="5" />
+		</definition>
+
+		<definition opcode="0x20" name="s_instance_imposter_vertex" >
+			<element type="Position"	declType="UHenD3N"	declUsage="Position" />
+			<element type="0x09"		declType="Ubyte4"	declUsage="Color" />
+		</definition>
+
+		<definition opcode="0x21" name="" >
+			<element type="Position"	declType="Float4"	declUsage="Position" />
+			<element type="TexCoord"	declType="Float4"	declUsage="TextureCoordinate" />
+			<element type="TexCoord"	declType="Ubyte4"	declUsage="TextureCoordinate"		usageIndex="1" />
+		</definition>
+
+		<!--Updated from Beta-->
+		<definition opcode="0x22" name="" >
+			<element type="Position"	declType="UbyteN4"	declUsage="Position" />
+			<element type="Position"	declType="UHenD3N"	declUsage="Normal" />
+		</definition>
+
+		<!--Updated from Beta-->
+		<definition opcode="0x23" name="" >
+			<element type="Position"	declType="Float16Four"	declUsage="Position" />
+			<element type="TexCoord"	declType="Float4"		declUsage="TextureCoordinate" />
+			<element type="TexCoord"	declType="Float16Four"	declUsage="TextureCoordinate"	usageIndex="1" />
+			<element type="TexCoord"	declType="Float16Four"	declUsage="TextureCoordinate"	usageIndex="2" />
+		</definition>
+
+		<definition opcode="0x24" name="s_rigid_vertex::compressed" >
+			<element type="Position"	declType="UDec4N"		declUsage="Position" />
+			<element type="TexCoord"	declType="UShortN2_2"	declUsage="TextureCoordinate" />
+			<element type="Normal"		declType="DHen3N"		declUsage="Normal" />
+			<element type="Tangent"		declType="DHen3N"		declUsage="Tangent" />
+		</definition>
+
+		<definition opcode="0x25" name="s_skinned_vertex::compressed" >
+			<element type="Position"	declType="UDec4N"	declUsage="Position" />
+			<element type="TexCoord"	declType="UShortN2_2"	declUsage="TextureCoordinate" />
+			<element type="Normal"		declType="DHen3N"		declUsage="Normal" />
+			<element type="Tangent"		declType="DHen3N"		declUsage="Tangent" />
+			<element type="NodeIndices"	declType="Ubyte4"		declUsage="BlendIndices" />
+			<element type="NodeWeights"	declType="UbyteN4"		declUsage="BlendWeight" />
+		</definition>
+	</definitions>
+
+	<declarations>
+		<!--TODO: These need to be verified for Reach (they were copied and pasted from Halo 3-->
+		<!--s_light_volume_pre_vertex was added after the Beta, need to figure out how it fits in or if it's even used in tag data-->
+		
+		<declaration name="s_particle_model_vertex" >
+			<stream opcode="0x00" name="s_particle_model_vertex" />
+			<stream opcode="0x01" name="s_particle_vertex" />
+		</declaration>
+
+		<declaration name="s_particle_vertex" >
+			<stream opcode="0x01" name="s_particle_vertex" />
+			<stream opcode="0x02" name="s_particle_vertex::02" />
+		</declaration>
+
+		<declaration name="s_contrail_vertex" >
+			<stream opcode="0x01" name="s_contrail_vertex" />
+			<stream opcode="0x02" name="s_contrail_vertex::02" />
+		</declaration>
+
+		<declaration name="s_light_volume_vertex" >
+			<stream opcode="0x01" name="s_light_volume_vertex" />
+		</declaration>
+
+		<declaration name="s_decorator_vertex" >
+			<stream opcode="0x00" name="s_decorator_model_vertex" />
+			<stream opcode="0x01" name="s_decorator_vertex" />
+			<stream opcode="0x02" name="s_decorator_vertex::02" />
+		</declaration>
+
+		<declaration name="s_water_vertex" >
+			<stream opcode="0x00" name="s_world_vertex" />
+			<stream opcode="0x02" name="s_water_vertex::color" />
+			<stream opcode="0x03" name="s_water_vertex::03" />
+			<!--stream 0x04 seems to be runtime only, not resource based-->
+		</declaration>
+		
+		<declaration name="s_beam_vertex" >
+			<stream opcode="0x01" name="s_beam_vertex" />
+		</declaration>
+
+		<declaration name="s_object_imposter_vertex" >
+			<stream opcode="0x00" name="s_instance_imposter_vertex" />
+			<stream opcode="0x02" name="s_object_imposter_vertex::data" />
+		</declaration>
+	</declarations>
+	
+</vertexBuffers>

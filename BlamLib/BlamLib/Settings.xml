@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<BlamLib default="">
+	<User name="">
+		<username></username>
+		<password></password>
+
+		<bugReporting>false</bugReporting>
+		<autoUpdate>false</autoUpdate>
+		
+		<Paths>
+			<debug></debug>
+			<trace></trace>
+
+			<games></games>
+			<temp></temp>
+		</Paths>
+	</User>
+	
+	<Halo1>
+		<Xbox>
+			<GameManager>
+				<Tags>C:\Program Files\Microsoft Games\Halo Xbox\tags\</Tags>
+				<Data>C:\Program Files\Microsoft Games\Halo Xbox\data\</Data>
+				<Maps>C:\Program Files\Microsoft Games\Halo Xbox\maps\</Maps>
+				<Plugins></Plugins>
+			</GameManager>
+
+			<Paths>
+				<InstallDirTools>C:\Program Files\Microsoft Games\Halo Xbox\</InstallDirTools>
+			</Paths>
+		</Xbox>
+
+		<PC>
+			<GameManager>
+				<Tags></Tags>
+				<Data></Data>
+				<Maps></Maps>
+				<Plugins></Plugins>
+			</GameManager>
+
+			<Paths>
+				<InstallDir>C:\Program Files\Microsoft Games\Halo\</InstallDir>
+				
+				<bitmaps>C:\Mount\A\Bungie\Games\Halo1\PC\Maps\bitmaps.map</bitmaps>
+				<sounds>C:\Mount\A\Bungie\Games\Halo1\PC\Maps\sounds.map</sounds>
+			</Paths>
+		</PC>
+
+		<Mac>
+			<GameManager>
+				<Tags></Tags>
+				<Data></Data>
+				<Maps></Maps>
+				<Plugins></Plugins>
+			</GameManager>
+
+			<Paths>
+				<bitmaps>C:\Mount\A\Bungie\Games\Halo1\Mac\Maps\bitmaps.map</bitmaps>
+				<sounds>C:\Mount\A\Bungie\Games\Halo1\Mac\Maps\sounds.map</sounds>
+			</Paths>
+		</Mac>
+
+		<CE>
+			<GameManager>
+				<Tags>C:\Program Files\Microsoft Games\Halo Custom Edition\tags\</Tags>
+				<Data>C:\Program Files\Microsoft Games\Halo Custom Edition\data\</Data>
+				<Maps>C:\Program Files\Microsoft Games\Halo Custom Edition\maps\</Maps>
+				<Plugins></Plugins>
+			</GameManager>
+
+			<Paths>
+				<InstallDir>C:\Program Files\Microsoft Games\Halo Custom Edition\</InstallDir>
+				<InstallDirTools>C:\Program Files\Microsoft Games\Halo Custom Edition\</InstallDirTools>
+				
+				<bitmaps>C:\Mount\A\Bungie\Games\Halo1\CE\Maps\bitmaps.map</bitmaps>
+				<sounds>C:\Mount\A\Bungie\Games\Halo1\CE\Maps\sounds.map</sounds>
+				<loc>C:\Mount\A\Bungie\Games\Halo1\CE\Maps\loc.map</loc>
+			</Paths>
+		</CE>
+	</Halo1>
+
+	<Halo2>
+		<Xbox>
+			<GameManager>
+				<Tags></Tags>
+				<Data></Data>
+				<Maps></Maps>
+				<Plugins></Plugins>
+			</GameManager>
+
+			<Paths>
+				<mainmenu>C:\Mount\A\Bungie\Games\Halo2\Xbox\Retail\Maps\mainmenu.map</mainmenu>
+				<shared>C:\Mount\A\Bungie\Games\Halo2\Xbox\Retail\Maps\shared.map</shared>
+				<campaign>C:\Mount\A\Bungie\Games\Halo2\Xbox\Retail\Maps\single_player_shared.map</campaign>
+			</Paths>
+		</Xbox>
+
+		<PC>
+			<GameManager>
+				<Tags></Tags>
+				<Data></Data>
+				<Maps></Maps>
+				<Plugins></Plugins>
+			</GameManager>
+
+			<Paths>
+				<InstallDir>C:\Program Files (x86)\Microsoft Games\Halo 2 Map Editor\</InstallDir>
+				<InstallDirTools>C:\Program Files (x86)\Microsoft Games\Halo 2 Map Editor\</InstallDirTools>
+				
+				<mainmenu>C:\Program Files (x86)\Microsoft Games\Halo 2\maps\mainmenu.map</mainmenu>
+				<shared>C:\Program Files\Microsoft Games (x86)\Halo 2\maps\shared.map</shared>
+				<campaign>C:\Program Files (x86)\Microsoft Games\Halo 2\maps\single_player_shared.map</campaign>
+			</Paths>
+		</PC>
+
+		<Alpha>
+			<GameManager>
+				<Tags></Tags>
+				<Data></Data>
+				<Maps></Maps>
+				<Plugins></Plugins>
+			</GameManager>
+
+			<Paths>
+				<mainmenu>C:\Mount\A\Bungie\Games\Halo2\Xbox\Alpha\Maps\mainmenu.map</mainmenu>
+				<shared>C:\Mount\A\Bungie\Games\Halo2\Xbox\Alpha\Maps\shared.map</shared>
+			</Paths>
+		</Alpha>
+	</Halo2>
+	
+	<Halo3>
+		<Xbox>
+			<GameManager>
+				<Tags></Tags>
+				<Data></Data>
+				<Maps></Maps>
+				<Plugins></Plugins>
+			</GameManager>
+
+			<Paths>
+				<mainmenu>C:\Mount\A\Bungie\Games\Halo3\Retail\Maps\mainmenu.map</mainmenu>
+				<shared>C:\Mount\A\Bungie\Games\Halo3\Retail\Maps\shared.map</shared>
+				<campaign>C:\Mount\A\Bungie\Games\Halo3\Retail\Maps\campaign.map</campaign>
+			</Paths>
+		</Xbox>
+
+		<Beta>
+			<GameManager>
+				<Tags></Tags>
+				<Data></Data>
+				<Maps></Maps>
+				<Plugins></Plugins>
+			</GameManager>
+
+			<Paths>
+				<mainmenu>C:\Mount\A\Bungie\Games\Halo3\Xbox\Delta\Maps\mainmenu.map</mainmenu>
+				<shared>C:\Mount\A\Bungie\Games\Halo3\Xbox\Delta\Maps\shared.map</shared>
+			</Paths>
+		</Beta>
+
+		<Epsilon>
+			<GameManager>
+				<Tags></Tags>
+				<Data></Data>
+				<Maps></Maps>
+				<Plugins></Plugins>
+			</GameManager>
+
+			<Paths>
+				<mainmenu>C:\Mount\A\Bungie\Games\Halo3\Xbox\Epsilon_11856\Maps\mainmenu.map</mainmenu>
+				<shared>C:\Mount\A\Bungie\Games\Halo3\Xbox\Epsilon_11856\Maps\shared.map</shared>
+				<campaign>C:\Mount\A\Bungie\Games\Halo3\Xbox\Epsilon_11856\Maps\campaign.map</campaign>
+			</Paths>
+		</Epsilon>
+	</Halo3>
+
+	<HaloOdst>
+		<Xbox>
+			<GameManager>
+				<Tags></Tags>
+				<Data></Data>
+				<Maps></Maps>
+				<Plugins></Plugins>
+			</GameManager>
+
+			<Paths>
+				<mainmenu>C:\Mount\A\Bungie\Games\HaloOdst\Xbox\Maps\mainmenu.map</mainmenu>
+				<shared>C:\Mount\A\Bungie\Games\HaloOdst\Xbox\Maps\shared.map</shared>
+				<campaign>C:\Mount\A\Bungie\Games\HaloOdst\Xbox\Maps\campaign.map</campaign>
+			</Paths>
+		</Xbox>
+	</HaloOdst>
+
+	<HaloReach>
+		<Xbox>
+			<GameManager>
+				<Tags></Tags>
+				<Data></Data>
+				<Maps></Maps>
+				<Plugins></Plugins>
+			</GameManager>
+
+			<Paths>
+				<mainmenu>C:\Mount\A\Bungie\Games\HaloReach\Xbox\Retail\Maps\mainmenu.map</mainmenu>
+				<shared>C:\Mount\A\Bungie\Games\HaloReach\Xbox\Retail\Maps\shared.map</shared>
+				<campaign>C:\Mount\A\Bungie\Games\HaloReach\Xbox\Retail\Maps\campaign.map</campaign>
+			</Paths>
+		</Xbox>
+
+		<Beta>
+			<GameManager>
+				<Tags></Tags>
+				<Data></Data>
+				<Maps></Maps>
+				<Plugins></Plugins>
+			</GameManager>
+
+			<Paths>
+				<mainmenu>C:\Mount\A\Bungie\Games\HaloReach\Xbox\Delta\Maps\mainmenu.map</mainmenu>
+				<shared>C:\Mount\A\Bungie\Games\HaloReach\Xbox\Delta\Maps\shared.map</shared>
+				<campaign>C:\Mount\A\Bungie\Games\HaloReach\Xbox\Delta\Maps\campaign.map</campaign>
+			</Paths>
+		</Beta>
+	</HaloReach>
+	
+	<Stubbs>
+		<Xbox>
+			<GameManager>
+				<Tags></Tags>
+				<Data></Data>
+				<Maps></Maps>
+				<Plugins></Plugins>
+			</GameManager>
+		</Xbox>
+
+		<PC>
+			<GameManager>
+				<Tags></Tags>
+				<Data></Data>
+				<Maps></Maps>
+				<Plugins></Plugins>
+			</GameManager>
+
+			<Paths>
+				<InstallDir></InstallDir>
+			</Paths>
+		</PC>
+
+		<Mac>
+			<GameManager>
+				<Tags></Tags>
+				<Data></Data>
+				<Maps></Maps>
+				<Plugins></Plugins>
+			</GameManager>
+		</Mac>
+	</Stubbs>
+</BlamLib>

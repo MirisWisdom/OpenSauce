@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F5DB1C08-E8A7-4618-9E0E-0CC225597C75}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>YeloDebug</RootNamespace>
+    <AssemblyName>YeloDebug</AssemblyName>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)OpenSauce_Xbox1.Cs.props" />
+  <PropertyGroup>
+    <NoWarn>1591, 1573, 1572, 1570</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="XbdmPatcher.cs" />
+    <Compile Include="Xbox.Enums.cs" />
+    <Compile Include="Xbox.FileSystem.cs" />
+    <Compile Include="Xbox.Memory.cs" />
+    <Compile Include="Xbox.Structures.cs" />
+    <Compile Include="Xbox.Video.cs" />
+    <Compile Include="XboxAudio.cs" />
+    <Compile Include="Exceptions.cs" />
+    <Compile Include="Util.cs" />
+    <Compile Include="XboxDll.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="XboxFileSystem.cs" />
+    <Compile Include="XboxHistory.cs" />
+    <Compile Include="XboxMemory.cs" />
+    <Compile Include="XboxVideo.cs" />
+    <Compile Include="Xbox.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XboxGamepad.cs" />
+    <Compile Include="XboxKernel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Trolololo.txt" />
+    <Content Include="YeloDebugSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BlamLib\LowLevel\LowLevel.vcproj">
+      <Project>{5E5B9F4E-1067-4470-8AA9-B25BBBEA063A}</Project>
+      <Name>LowLevel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

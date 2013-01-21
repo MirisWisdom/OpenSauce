@@ -1,0 +1,119 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <AssemblyName>OpenSauce_Installer</AssemblyName>
+    <ProductVersion>3.5</ProductVersion>
+    <ProjectGuid>{494f320a-b5eb-4623-be2d-77d5c7be7ca5}</ProjectGuid>
+    <SchemaVersion>2.0</SchemaVersion>
+    <OutputName>OpenSauce_Halo1_CE</OutputName>
+    <OutputType>Package</OutputType>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+    <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OutputPath>$(SolutionDir)..\bin\$(Configuration)\$(Platform)\$(AssemblyName)</OutputPath>
+    <IntermediateOutputPath>$(SolutionDir)..\obj\$(AssemblyName)\$(Configuration)</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DefineConstants>Debug;Halo1_CE; DEBUG; SYMBOLS;</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DefineConstants>Halo1_CE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ReleaseSymbols|x86' ">
+    <DefineConstants>Halo1_CE; SYMBOLS</DefineConstants>
+  </PropertyGroup>
+  <Import Project="$(WixTargetsPath)" />
+  <Target Name="BeforeBuild">
+    <CallTarget Condition="$(Configuration) == 'Debug'" Targets="BuildDebug" />
+    <CallTarget Condition="$(Configuration) == 'Release'" Targets="BuildRelease" />
+    <CallTarget Condition="$(Configuration) == 'ReleaseSymbols'" Targets="" />
+  </Target>
+  <Target Name="BuildDebug">
+    <MSBuild Projects="$(SolutionDir)OpenSauce_Pc.sln" Targets="Rebuild" Properties="Configuration=Debug;Platform=Win32;" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_Pc.sln" Targets="Rebuild" Properties="Configuration=DebugDedi;Platform=Win32;" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugGuerilla;Platform=Win32;" ContinueOnError="true" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugSapien;Platform=Win32;" ContinueOnError="true" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugTool;Platform=Win32;" ContinueOnError="true" />
+    <CreateProperty Value="$(SolutionDir)..\BlamLib\">
+      <Output TaskParameter="Value" PropertyName="ImportPropsDir" />
+    </CreateProperty>
+    <MSBuild Projects="$(SolutionDir)..\BlamLib\BlamLib.sln" Targets="LowLevel;BlamLib;BlamLib_Forms;OpenSauceIDE" Properties="Configuration=Debug; Platform=x86; SolutionDir=$(SolutionDir)..\BlamLib\; SolutionFileName=BlamLib.sln; SolutionName=BlamLib; SolutionPath=$(SolutionDir)..\BlamLib\BlamLib.sln" />
+  </Target>
+  <Target Name="BuildRelease">
+    <MSBuild Projects="$(SolutionDir)OpenSauce_Pc.sln" Targets="Rebuild" Properties="Configuration=Release;Platform=Win32;" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_Pc.sln" Targets="Rebuild" Properties="Configuration=ReleaseDedi;Platform=Win32;" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=ReleaseGuerilla;Platform=Win32;" ContinueOnError="true" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=ReleaseSapien;Platform=Win32;" ContinueOnError="true" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=ReleaseTool;Platform=Win32;" ContinueOnError="true" />
+    <CreateProperty Value="$(SolutionDir)..\BlamLib\">
+      <Output TaskParameter="Value" PropertyName="ImportPropsDir" />
+    </CreateProperty>
+    <MSBuild Projects="$(SolutionDir)..\BlamLib\BlamLib.sln" Targets="LowLevel;BlamLib;BlamLib_Forms;OpenSauceIDE" Properties="Configuration=Release; Platform=x86; SolutionDir=$(SolutionDir)..\BlamLib\; SolutionFileName=BlamLib.sln; SolutionName=BlamLib; SolutionPath=$(SolutionDir)..\BlamLib\BlamLib.sln" />
+  </Target>
+  <!--
+	<Target Name="AfterBuild">
+	</Target>
+	-->
+  <ItemGroup>
+    <Content Include="Halo1_CE\CommonDataDirectories.wxi" />
+    <Content Include="Halo1_CE\CustomActions.wxi" />
+    <Content Include="Halo1_CE\DesktopDirectories.wxi" />
+    <Content Include="Halo1_CE\Directories.wxi" />
+    <Content Include="Halo1_CE\Features.wxi" />
+    <Content Include="Halo1_CE\StartMenuDirectories.wxi" />
+    <Content Include="Halo1_CE\InstallSequences.wxi" />
+    <Content Include="Halo1_CE\Properties.wxi" />
+    <Content Include="Halo1_CE\UI.wxi" />
+    <Compile Include="Dialogs\OpenSauce_CustomizeDlg.wxs" />
+    <Compile Include="Dialogs\OpenSauce_ExitDialog.wxs" />
+    <Compile Include="Dialogs\OpenSauce_FeatureTree.wxs" />
+    <Compile Include="Dialogs\OpenSauce_WelcomeDlg.wxs" />
+    <Compile Include="Halo1_CE\Dialogs\CEMissingDlg.wxs" />
+    <Compile Include="Halo1_CE\Dialogs\HEKPathsDlg.wxs" />
+    <Compile Include="Halo1_CE\Dialogs\HEKPathsMissingDlg.wxs" />
+    <Compile Include="OpenSauce_Installer.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WixExtension Include="WixNetFxExtension">
+      <HintPath>$(WixExtDir)\WixNetFxExtension.dll</HintPath>
+      <Name>WixNetFxExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixUIExtension">
+      <HintPath>$(WixExtDir)\WixUIExtension.dll</HintPath>
+      <Name>WixUIExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixUtilExtension">
+      <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
+      <Name>WixUtilExtension</Name>
+    </WixExtension>
+  </ItemGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Halo1_CE" />
+    <Folder Include="Halo1_CE\Dialogs" />
+    <Folder Include="Dialogs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="FilePatcher\FilePatcher.csproj">
+      <Name>FilePatcher</Name>
+      <Project>{226cbe41-df44-4baa-bcfa-0602d8864af4}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="InstallValidator\InstallValidator.csproj">
+      <Name>InstallValidator</Name>
+      <Project>{a7dec09c-d521-48bb-a564-e039d3e9f850}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

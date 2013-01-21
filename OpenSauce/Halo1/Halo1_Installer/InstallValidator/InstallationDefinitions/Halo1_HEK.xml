@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Installation game="Halo1_HEK">
+	<Directory id="DIR_HEKRoot" name="Halo Custom Edition">
+		<Directory id="DIR_data" name="data" onmissing="MSG_data_misserror">
+			<Message id="MSG_data_misserror" type="error">Your HEK installation does not have a data folder, Please reinstall the HEK</Message>
+		</Directory>
+		
+		<Directory id="DIR_tags" name="tags" onmissing="MSG_tags_misserror">
+			<Message id="MSG_tags_misserror" type="error">Your HEK installation does not have a tags folder, Please reinstall the HEK</Message>
+		</Directory>
+
+		<File id="FILE_sapien" name="sapien.exe" onmissing="MSG_sapien_misserror">
+			<Version md5="2a8529486e223df039ae7464d94c39ac" ondiff="MSG_sapien_differror">
+				<Message id="MSG_sapien_differror" type="error">Your HEK installation's sapien.exe does not match the original file, please reinstall the HEK</Message>
+			</Version>
+
+			<Message id="MSG_sapien_misserror" type="error">Your HEK installation does not have a sapien.exe, please reinstall the HEK</Message>
+		</File>
+
+		<File id="FILE_guerilla" name="guerilla.exe" onmissing="MSG_guerilla_misserror">
+			<Version md5="fd86057ecdc707d9659bf683db2fc8df" ondiff="MSG_guerilla_differror">
+				<Message id="MSG_guerilla_differror" type="error">Your HEK installation's guerilla.exe does not match the original file, please reinstall the HEK</Message>
+			</Version>
+
+			<Message id="MSG_guerilla_misserror" type="error">Your HEK installation does not have a guerilla.exe, please reinstall the HEK</Message>
+		</File>
+
+		<File id="FILE_tool" name="tool.exe" onmissing="MSG_tool_misserror">
+			<Version md5="1f18ecb6f0acdcd0b0455aa4f7e06b73" ondiff="MSG_tool_differror">
+				<Message id="MSG_tool_differror" type="error">Your HEK installation's tool.exe does not match the original file, please reinstall the HEK</Message>
+			</Version>
+
+			<Message id="MSG_tool_misserror" type="error">Your HEK installation does not have a tool.exe, please reinstall the HEK</Message>
+		</File>
+
+		<File id="FILE_os_sapienbeta" name="os_sapienbeta.exe" onpresent="MSG_os_sapienbeta_preserror">
+			<Message id="MSG_os_sapienbeta_preserror" type="warn">OS_sapienbeta is out of date and incompatible with current versions of OpenSauce, you should remove it</Message>
+		</File>
+		
+		<File id="FILE_os_guerillabeta" name="os_guerillabeta.exe" onpresent="MSG_os_guerillabeta_preserror">
+			<Message id="MSG_os_guerillabeta_preserror" type="warn">OS_guerillabeta is out of date and incompatible with current versions of OpenSauce, you should remove it</Message>
+		</File>
+		
+		<File id="FILE_os_toolbeta" name="os_toolbeta.exe" onpresent="MSG_os_toolbeta_preserror">
+			<Message id="MSG_os_toolbeta_preserror" type="warn">OS_toolbeta is out of date and incompatible with current versions of OpenSauce, you should remove it</Message>
+		</File>
+	</Directory>
+</Installation>

@@ -1,0 +1,4 @@
+LIBRARY	"Halo1_CE"
+
+EXPORTS
+	DirectInput8Create=Yelo_DirectInput8Create

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="us-ascii" standalone="yes"?>
+<definitions game="Halo1">	
+	<flags>
+		<Flag name="bloom_activation_flags">
+			<field>enabled</field>
+			<field>apply after hud</field>
+		</Flag>
+	</flags>
+
+	<blocks>
+		<TagBlock name="shader_postprocess_globals_bloom" maxElements="1">
+			<field type="WordFlags" name="flags" definition="bloom_activation_flags"/>
+			<field type="Pad" definition="2"/>		
+			<field type="Real" name="bloom size" tooltip="How far the bloom will extend. Best kept between 1.0 to 5.0." />
+			<field type="Real" name="bloom exposure" tooltip="How much to multiply the base bloom by." />
+			<field type="RealFraction" name="bloom mix amount" tooltip="Linearly interpolates between no bloom and full bloom" />
+			<field type="RealRgbColor" name="bloom minimum color" />
+			<field type="RealRgbColor" name="bloom maximum color" />
+		</TagBlock>
+	</blocks>
+
+	<groups>
+		<TagGroup name="shader_postprocess_globals" groupTag="sppg" version="1">
+			<field type="Pad" definition="2" />
+			<field type="Pad" definition="2" />
+			<field type="Block" name="bloom globals" definition="shader_postprocess_globals_bloom" />
+			<field type="Pad" definition="228"/>
+		</TagGroup>
+	</groups>
+
+</definitions>

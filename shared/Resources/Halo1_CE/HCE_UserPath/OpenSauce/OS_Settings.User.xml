@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- See documentation at: http://code.google.com/p/open-sauce/wiki/Doc_Halo1_Settings#OS_Settings.User.xml -->
+<osYeloSettings engine="Halo1_CE">
+    <client>
+        <dx9>
+            <nVidiaActiveCamouflage basic="false" />
+            <GBuffer enabled="true" />
+            <PostProcessing>
+                <Bloom enabled="true" />
+                <MotionBlur enabled="false" amount="1" />
+                <FXAA enabled="false" />
+                <Internal enabled="true" />
+                <External enabled="true" />
+            </PostProcessing>
+            <Upgrades dynamicTriangles="false" />
+            <ShaderExtension enabled="true">
+                <Model>
+                    <NormalMap enabled="true" />
+                    <DetailNormalMaps enabled="true" />
+                    <SpecularMap enabled="true" />
+                    <SpecularLighting enabled="true" />
+                </Model>
+            </ShaderExtension>
+        </dx9>
+        <Fov value="1.02414" />
+        <Hud show="true" scale="true" showChat="true">
+            <Reports showDeaths="false" showMyKillDeaths="false" />
+        </Hud>
+        <objects>
+            <weaponViews />
+            <vehicleViews />
+        </objects>
+    </client>
+</osYeloSettings>

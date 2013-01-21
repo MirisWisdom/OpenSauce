@@ -1,0 +1,140 @@
+﻿/*
+	Yelo: Open Sauce SDK
+		Halo 1 (CE) Edition
+
+	See license\OpenSauce\Halo1_CE for specific license information
+*/
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html, body {
+	height: 100%;
+	padding-bottom: 0;
+}
+
+body {
+	font: 14px Calibri, Arial, Helvetica, sans-serif;
+	width: 100%;
+	height: auto;
+	background-color: #35363D;
+}
+
+table {
+	text-align: left;
+	border: 2px solid #808080;
+	color: #808080;
+}
+
+th, td {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+
+.form_button {
+	height: 25px;
+	border: 1px solid #808080;
+	background-color: #242631;
+	color: #808080;
+	width: 100%;
+}
+
+.form_button:disabled {
+	background-color: #505050;
+}
+
+.form_button:hover {
+	background-color: #343641;
+}
+
+
+.form_button_100px {
+	height: 25px;
+	border: 1px solid #808080;
+	background-color: #242631;
+	color: #808080;
+	width: 100px;
+}
+
+.form_button_100px:disabled {
+	background-color: #505050;
+}
+
+.form_button_100px:hover {
+	background-color: #343641;
+}
+
+
+.form_text {
+	border: 1px solid #808080;
+	color: #808080;
+	background-color: #343641;
+	width: 250px;
+}
+
+
+#title {
+	width: 100%;
+	height: 60px;
+	background-color: #242631;
+	color: #47484D;
+}
+
+
+#main_title {
+    height: 40px;
+    left: 0;
+    width: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    float: left;
+}
+
+
+#username {
+    height: 56px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-right: 10px;
+    right: 0;
+    text-align: right;
+    float: right;
+}
+
+
+#navigation {
+	width: 150px;
+	height: 100%;
+	position: fixed;
+	left: 0;
+	background-color: #45464D;
+	float: left;
+}
+
+
+#contents {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0px;
+	margin-left: 150px;
+	margin-top: 60px;
+	padding: 0 10px 10px 10px;
+	color: #808080;
+	overflow: auto;
+	float: left;
+}
+
+
+#contents_login {
+	width: 100%;
+	height: auto;
+	padding: 10px;
+	color: #808080;
+	position: fixed;
+	left: 50px;
+}

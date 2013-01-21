@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="OpenSauce_Base"
+
+	IntermediateDirectory="$(SolutionDir)..\obj\$(ProjectName)\$(ConfigurationName)\$(PlatformName)"
+	>
+	<!-- We have precompiled headers enabled, but projects must define the header name themselves -->
+	<!-- Default calling convention is stdcall -->
+	<Tool
+		Name="VCCLCompilerTool"
+		UseUnicodeResponseFiles="false"
+		AdditionalIncludeDirectories="$(ProjectDir);$(SolutionDir)..\shared\include_cpp"
+		ExceptionHandling="0"
+		StructMemberAlignment="1"
+		DefaultCharIsUnsigned="true"
+		RuntimeTypeInfo="false"
+		UsePrecompiledHeader="2"
+		WarningLevel="3"
+		DebugInformationFormat="3"
+		CallingConvention="2"
+	/>
+	<Tool
+		Name="VCLinkerTool"
+		UseUnicodeResponseFiles="false"
+	/>
+	<Tool
+		Name="VCLibrarianTool"
+		UseUnicodeResponseFiles="false"
+		LinkLibraryDependencies="false"
+		OutputFile="$(SolutionDir)..\lib\$(ConfigurationName)\$(PlatformName)\$(ProjectName).lib"
+	/>
+</VisualStudioPropertySheet>
