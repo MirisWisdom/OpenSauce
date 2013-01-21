@@ -357,8 +357,16 @@ namespace Animations
 		static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(UNIT_UPDATE_ANIMATION_PRIMARY_KEYFRAME_SWITCH_RETN);
 		
 		__asm {
+			push	eax
+			push	ecx
+			push	edx
+
 			push	ebx		// datum_index boarding_unit_index
 			call	Units::Boarding::SeatBoardPrimaryKeyframe
+
+			pop		edx
+			pop		ecx
+			pop		eax
 
 			jmp		RETN_ADDRESS
 		}
@@ -370,8 +378,16 @@ namespace Animations
 		static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_SWITCH_RETN);
 
 		__asm {
+			push	eax
+			push	ecx
+			push	edx
+
 			push	ebx		// datum_index unit_index
 			call	Units::Boarding::SeatBoardFinalKeyframe
+
+			push	edx
+			push	ecx
+			push	eax
 
 			jmp		RETN_ADDRESS
 		}
@@ -381,11 +397,13 @@ namespace Animations
 	API_FUNC_NAKED static void PLATFORM_API UnitUpdateAnimationFinalKeyframeSeatEnterJMP()
 	{
 		// use the seat_enter animation's final keyframe jmp entry as the return address
-		static const uintptr_t RETN_ADDRESS = (uint32)UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_JMP_TABLE
+		static const uintptr_t RETN_ADDRESS = UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_JMP_TABLE
 			[Enums::unit_update_animation_final_keyframe_jmp_1];
 
 		__asm {
 			push	eax
+			push	ecx
+			push	edx
 
 			mov		eax, ebp
 			sub		eax, 16	// address of the next_animation_state variable
@@ -394,7 +412,9 @@ namespace Animations
 			push	ebx		// datum_index unit_index
 			call	Units::Boarding::SeatEnterFinalKeyframe
 
-			pop		eax
+			pop		edx
+			pop		ecx
+			pop		eaxp
 
 			jmp		RETN_ADDRESS
 		}
@@ -430,8 +450,8 @@ namespace Animations
 		
 		for(int i = 0; i < NUMBEROF(K_UNIT_ANIMATION_STATE_INTERRUPTABLE_CALL); i++)
 			Memory::WriteRelativeCall(&UnitAnimationStateInterruptableHook, K_UNIT_ANIMATION_STATE_INTERRUPTABLE_CALL[i], true);
-		for(int i = 0; i < NUMBEROF(K_UNIT_UNIT_ANIMATION_BUSY_CALL); i++)
-			Memory::WriteRelativeCall(&UnitAnimationBusyHook, K_UNIT_UNIT_ANIMATION_BUSY_CALL[i], true);
+		for(int i = 0; i < NUMBEROF(K_UNIT_ANIMATION_BUSY_CALL); i++)
+			Memory::WriteRelativeCall(&UnitAnimationBusyHook, K_UNIT_ANIMATION_BUSY_CALL[i], true);
 		Memory::WriteRelativeCall(&UnitAnimationStateLoopsHook, GET_FUNC_VPTR(K_UNIT_ANIMATION_STATE_LOOPS_CALL), true);
 		Memory::WriteRelativeCall(&UnitAnimationWeaponIKHook, GET_FUNC_VPTR(K_UNIT_ANIMATION_WEAPON_IK_CALL), true);
 		Memory::WriteRelativeCall(&UnitAnimationVehicleIKHook, GET_FUNC_VPTR(K_UNIT_ANIMATION_VEHICLE_IK_CALL), true);
