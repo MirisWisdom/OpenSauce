@@ -197,7 +197,7 @@ namespace Yelo
 				 next_object = (*Objects::ObjectHeader())[next_object]->_object->next_object_index)
 			{
 				int16 unit_seat_index = (*Objects::ObjectHeader())[next_object]->_unit->unit.vehicle_seat_index;
-				byte object_type = (*Objects::ObjectHeader())[next_object]->_object->type;
+				Enums::object_type object_type = (Enums::object_type)(*Objects::ObjectHeader())[next_object]->_object->type;
 
 				if (object_type == Enums::_object_type_biped)
 					if (unit_seat_index == seat_index) unit = next_object;

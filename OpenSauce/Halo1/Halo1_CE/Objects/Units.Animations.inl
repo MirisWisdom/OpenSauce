@@ -307,9 +307,9 @@ namespace Animations
 	bool UnitAnimationStateInterruptableHook()
 	{
 		s_unit_animation_data* unit_animation;
-		uint32 next_animation_state;
+		uint16 next_animation_state;
 
-		_asm mov	next_animation_state, edx;
+		_asm mov	next_animation_state, dx;
 		_asm mov	unit_animation, ecx;
 
 		return UnitAnimationStateInterruptable(unit_animation, next_animation_state);
@@ -397,7 +397,7 @@ namespace Animations
 	API_FUNC_NAKED static void PLATFORM_API UnitUpdateAnimationFinalKeyframeSeatEnterJMP()
 	{
 		// use the seat_enter animation's final keyframe jmp entry as the return address
-		static const uintptr_t RETN_ADDRESS = UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_JMP_TABLE
+		static const uintptr_t RETN_ADDRESS = (uint32)UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_JMP_TABLE
 			[Enums::unit_update_animation_final_keyframe_jmp_1];
 
 		__asm {

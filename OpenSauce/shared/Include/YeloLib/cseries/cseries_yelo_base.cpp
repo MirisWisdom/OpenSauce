@@ -45,8 +45,8 @@ namespace Yelo
 	}
 	char* wstring_to_string_lazy(char* string, int32 string_length, wcstring wide)
 	{
-		string[string_length--] = '\0';
-		for(int32 x = 0; wide[x] && string_length--; x++)
+		string[string_length - 1] = '\0';
+		for(int32 x = 0; wide[x] && (x < string_length); x++)
 			string[x] = CAST(char, wide[x]);
 
 		return string;
@@ -61,8 +61,8 @@ namespace Yelo
 	}
 	wstring string_to_wstring_lazy(wstring string, int32 string_length, cstring ascii)
 	{
-		string[string_length--] = L'\0';
-		for(int32 x = 0; ascii[x] && string_length--; x++)
+		string[string_length - 1] = L'\0';
+		for(int32 x = 0; ascii[x] && (x < string_length); x++)
 			string[x] = CAST(wchar_t, ascii[x]);
 
 		return string;
