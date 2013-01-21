@@ -62,9 +62,15 @@ namespace NearbyObjects
 		static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_JMP_TABLE_RETN);
 
 		__asm {
+			push	ecx
+			push	edx
+
 			push	ecx		// datum_index biped_index
 			push	edi		// datum_index player_index
 			call	PlayerExamineNearbyBiped
+			
+			pop		edx
+			pop		ecx
 
 			jmp		RETN_ADDRESS
 		}
@@ -75,9 +81,15 @@ namespace NearbyObjects
 		static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_JMP_TABLE_RETN);
 
 		__asm {
+			push	ecx
+			push	edx
+
 			push	ecx		// datum_index biped_index
 			push	edi		// datum_index player_index
 			call	PlayerExamineNearbyBiped
+
+			pop		edx
+			pop		ecx
 
 			jmp		RETN_ADDRESS
 		}

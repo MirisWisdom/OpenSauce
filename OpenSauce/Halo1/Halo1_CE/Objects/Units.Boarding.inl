@@ -270,19 +270,21 @@ namespace Boarding
 	API_FUNC_NAKED static void PLATFORM_API UnitCanEnterSeatHook()
 	{
 		__asm {
-			push	ecx
 			push	ebx
+			push	ecx
+			push	edx
 
-			mov		ecx, [esp+20]
-			mov		ebx, [esp+16]
+			mov		ecx, [esp+24]
+			mov		ebx, [esp+20]
 			push	ecx		// datum_index* unit_in_seat
 			push	ebx		// int16 target_seat_index
 			push	edx		// datum_index target_unit_index
 			push	eax		// datum_index unit_index
 			call	UnitCanEnterSeat
 
-			pop		ebx
+			pop		edx
 			pop		ecx
+			pop		ebx
 
 			retn
 		}
