@@ -132,7 +132,8 @@ namespace Boarding
 				// If the boarding seat definition contains a damage effect tag, use it here
 				if (boarding_seat_definition->boarding_damage.tag_index != datum_index::null)
 				{
-					Objects::s_damage_data damage_data;
+					Objects::s_damage_data damage_data; 
+					ZeroMemory(&damage_data, sizeof(damage_data));
 
 					// Create a new damage_data struct based on the boarding_seat_definition boarding damage field
 					damage_data.effect_definition_index = boarding_seat_definition->boarding_damage.tag_index;
