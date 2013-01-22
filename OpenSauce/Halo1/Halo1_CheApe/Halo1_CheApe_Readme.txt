@@ -54,11 +54,12 @@ It is also useful for us to know your system specifications such as your graphic
 NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how to use OS, please consult our wiki and/or create a post on Halomods to get community assistance. We are also NOT taking feature requests in any way.
 
 == Change Log ==
-=== Version 3.1 (Unreleased) ===
+=== Version 3.1 ===
   * PATCH		Weapon's magazine's magazine-objects block will no longer crash when you try to add more than 2 elements. Uses the equipment field for the block name now too.
   * PATCH		"The %s shader %s cannot be used in the environment" will now output the correct shader type in all cases
   * PATCH		project_yellow_globals tag features new flag for forcing the game to use 'stun jumping penalty' instead of 'turning penalty' in the engine's biped jump code
   * PATCH		project_yellow tag features new flag for forcing game update logic to ignore if players can see various game entities (flag only acknowledged in mainmenu scenarios)
+  * ADD			project_yellow_globals_cv tag; unit_infections data were also moved to here
   * ADD			Mini-dump support for tool and sapien builds (no guerilla support)
   * ADD			Increased the number of grenade types to 4
   * FIX			Increased the maximum buffer size for model vertex and index data. Tool crashes (buffer overflow) if you actually hit this limit (Gearbox's fault, not ours!)
