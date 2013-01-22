@@ -170,7 +170,7 @@ namespace Boarding
 
 			// Eject the target_unit from it's seat if we haven't already
 			if (!target_unit_index.IsNull())
-				Engine::Objects::UnitExitSeatEnd(target_unit_index, true, true, true);
+				Engine::Objects::UnitExitSeatEnd(target_unit_index, true, true, false);
 
 			// Enter the target seat
 			Engine::Objects::UnitEnterSeat(unit_index, parent_unit_index, target_seat_index);
