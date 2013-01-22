@@ -434,7 +434,7 @@ namespace Yelo
 
 			void DoubleChargeShield(datum_index object_index);
 
-			void ObjectCauseDamage(Yelo::Objects::s_damage_data &damage_data, datum_index object_index, int32 node_index, int32 region_index, int32 damage_materials_index, int32 unknown);
+			void ObjectCauseDamage(Yelo::Objects::s_damage_data& damage_data, datum_index object_index, int32 node_index, int32 region_index, int32 damage_materials_index, int32 unknown);
 
 			// Loads the predicted resources defined in [object_index]'s tag definition (if they're not already loaded)
 			void DefinitionPredict(datum_index object_index);

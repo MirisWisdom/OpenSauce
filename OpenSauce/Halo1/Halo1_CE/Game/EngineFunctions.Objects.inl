@@ -325,20 +325,12 @@ void DoubleChargeShield(datum_index object_index)
 	}
 }
 
-API_FUNC_NAKED void ObjectCauseDamage(Yelo::Objects::s_damage_data &damage_data, datum_index object_index, int32 node_index, int32 region_index, int32 damage_materials_index, int32 unknown)
+void ObjectCauseDamage(Yelo::Objects::s_damage_data& damage_data, datum_index object_index, int32 node_index, int32 region_index, int32 damage_materials_index, int32 unknown)
 {
-	static const uintptr_t FUNCTION = GET_FUNC_PTR(OBJECT_CAUSE_DAMAGE);
+	typedef void (PLATFORM_API *object_cause_damage_t)(Yelo::Objects::s_damage_data&, datum_index, int32, int32, int32, int32);
+	static const object_cause_damage_t FUNCTION = CAST_PTR(object_cause_damage_t, GET_FUNC_PTR(OBJECT_CAUSE_DAMAGE));
 
-	API_FUNC_NAKED_START()
-		push	unknown
-		push	damage_materials_index
-		push	region_index
-		push	node_index
-		push	object_index
-		push	damage_data
-		call	FUNCTION
-		add		esp, 4 * 6
-	API_FUNC_NAKED_END(6)
+	FUNCTION(damage_data, object_index, node_index, region_index, damage_materials_index, unknown);
 }
 
 void DefinitionPredict(datum_index object_index)
