@@ -106,8 +106,8 @@
 			<field type="Explanation" name="Scripting" definition="External scripting definitions (User)" />
 			<field type="Block" name="yelo scripting" definition="scripting_block" />
 
-			<field type="Explanation" name="Scenario Enhancements" definition="" />
-			<field type="Block" name="scenario info" definition="scenario_information_block" />
+			<field type="Explanation" name="" definition="" />
+			<field type="Block" name="" definition="scenario_information_block" />
 
 			<field type="Pad" definition="80" />
 		</TagGroup>

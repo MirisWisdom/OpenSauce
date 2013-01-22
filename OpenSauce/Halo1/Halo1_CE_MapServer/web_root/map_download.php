@@ -132,7 +132,9 @@
 		
 		// fail the download if the hard bandwidth cap would be reached
 		$state = LoadState();
-		if(($state->server_bandwidth->bandwidth_used + 1024576) > $config->map_server->bandwidth_cap_hard)
+		
+		$use_hard_limit = ($config->map_server->bandwidth_cap_hard > 0);		
+		if($use_hard_limit && (($state->server_bandwidth->bandwidth_used + 1024576) > $config->map_server->bandwidth_cap_hard))
 		{
 			header("HTTP/1.0 404 Not Found");
 			return;			
@@ -150,8 +152,7 @@
 		SaveState($state);
 		
 		ignore_user_abort($user_abort_orig);
-	}
-	
+	}	
 
 	// open the sql database
 	$database = OpenDatabase($config->map_database->data_source_name,
