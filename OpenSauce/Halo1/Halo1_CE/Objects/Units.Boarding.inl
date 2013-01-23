@@ -97,6 +97,11 @@ namespace Boarding
 	// ejects the target unit from their seat
 	static void SeatBoardPrimaryKeyframe(datum_index unit_index)
 	{
+		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
+
+		if(cv_globals == NULL)
+			return;
+
 		s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
 
 		datum_index parent_unit_index = unit->object.parent_object_index;
@@ -106,7 +111,7 @@ namespace Boarding
 		TagGroups::s_unit_definition const* parent_unit_definition = 
 			Objects::GetObjectDefinition<TagGroups::s_unit_definition>(parent_unit_index);
 		TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
-			DefinitionFindUnitUpgradesBoardingSeatBlock(parent_unit_index, seat_index);
+			cv_globals->FindUnitExternalUpgradeBoardingSeatBlock(parent_unit_index, seat_index);
 
 		// Check if a boarding seat definition exists for the vehicle being exited
 		if (boarding_seat_definition != NULL)
@@ -155,13 +160,18 @@ namespace Boarding
 	// forces the boarding unit into the target seat when the board animation is complete
 	static void SeatBoardFinalKeyframe(datum_index unit_index)
 	{
+		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
+
+		if(cv_globals == NULL)
+			return;
+
 		s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
 
 		datum_index parent_unit_index = unit->object.parent_object_index;
 		int16 seat_index = unit->unit.vehicle_seat_index;
 
 		TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
-			Objects::Units::DefinitionFindUnitUpgradesBoardingSeatBlock(parent_unit_index, seat_index);
+			cv_globals->FindUnitExternalUpgradeBoardingSeatBlock(parent_unit_index, seat_index);
 
 		// Force the unit into the target seat
 		if (boarding_seat_definition != NULL)
@@ -186,13 +196,18 @@ namespace Boarding
 	// determines if the seat is a boarding seat and whether or not to board the seat or eject the target unit
 	static void SeatEnterFinalKeyframe(datum_index unit_index, int32* next_animation_state)
 	{
+		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
+
+		if(cv_globals == NULL)
+			return;
+
 		s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
 
 		datum_index parent_unit_index = unit->object.parent_object_index;
 		int16 seat_index = unit->unit.vehicle_seat_index;
 
 		TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
-			DefinitionFindUnitUpgradesBoardingSeatBlock(parent_unit_index, seat_index);
+			cv_globals->FindUnitExternalUpgradeBoardingSeatBlock(parent_unit_index, seat_index);
 
 		// Check if a boarding seat definition exists for the vehicle seat being entered
 		if (boarding_seat_definition != NULL)
@@ -218,9 +233,6 @@ namespace Boarding
 	static bool UnitCanEnterSeat(datum_index unit_index, datum_index target_unit_index, int16 target_seat_index, datum_index* unit_in_seat)
 	{
 		bool result = true;
-
-		TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
-			Objects::Units::DefinitionFindUnitUpgradesBoardingSeatBlock(target_unit_index, target_seat_index);
 
 		t_object_header_data object_header = (*Objects::ObjectHeader());
 		s_unit_datum* unit = object_header[unit_index]->_unit;
@@ -255,14 +267,22 @@ namespace Boarding
 			}
 		}
 
-		// Check if the target seat is a boarding seat
-		if (boarding_seat_definition != NULL)
-		{
-			datum_index boarded_unit_index = GetUnitInSeat(target_unit_index, boarding_seat_definition->target_seat_index);
+		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
 
-			// If there is no unit to board or if they are an ally, disallow entry into the boarding seat
-			if (boarded_unit_index == datum_index::null || !ObjectIsEnemy(unit_index, boarded_unit_index))
-				result = false;
+		if(cv_globals != NULL)
+		{
+			TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
+				cv_globals->FindUnitExternalUpgradeBoardingSeatBlock(target_unit_index, target_seat_index);
+
+			// Check if the target seat is a boarding seat
+			if (boarding_seat_definition != NULL)
+			{
+				datum_index boarded_unit_index = GetUnitInSeat(target_unit_index, boarding_seat_definition->target_seat_index);
+
+				// If there is no unit to board or if they are an ally, disallow entry into the boarding seat
+				if (boarded_unit_index == datum_index::null || !ObjectIsEnemy(unit_index, boarded_unit_index))
+					result = false;
+			}
 		}
 
 		return result;

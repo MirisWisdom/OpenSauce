@@ -288,7 +288,6 @@
 		</Configuration>
 		<Configuration
 			Name="DebugGuerilla|Win32"
-			OutputDirectory="..\..\..\..\..\..\Program Files\Microsoft Games\Halo Custom Edition"
 			ConfigurationType="2"
 			InheritedPropertySheets="$(SolutionDir)..\shared\include\OpenSauce_BaseBinDebug.Cpp.vsprops"
 			CharacterSet="2"
@@ -2712,10 +2711,6 @@
 			<Filter
 				Name="units"
 				>
-				<File
-					RelativePath="..\..\shared\Include\YeloLib\Halo1\units\units_grenade_count_upgrade.inl"
-					>
-				</File>
 			</Filter>
 		</Filter>
 		<File
