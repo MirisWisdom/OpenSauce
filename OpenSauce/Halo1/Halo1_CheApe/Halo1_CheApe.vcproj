@@ -2708,10 +2708,6 @@
 					</File>
 				</Filter>
 			</Filter>
-			<Filter
-				Name="units"
-				>
-			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\CheApeCore.cpp"

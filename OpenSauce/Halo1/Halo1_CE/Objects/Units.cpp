@@ -8,9 +8,9 @@
 #include "Objects/Units.hpp"
 
 #include <blamlib/Halo1/game/game_globals.hpp>
-#include <blamlib/Halo1/units/unit_definitions.hpp>
 #include <blamlib/Halo1/models/model_animation_definitions.hpp>
 #include <blamlib/Halo1/objects/damage.hpp>
+#include <blamlib/Halo1/units/unit_definitions.hpp>
 
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameState.hpp"
@@ -59,8 +59,8 @@ namespace Yelo
 #define __EL_INCLUDE_ID			__EL_INCLUDE_OBJECTS
 #define __EL_INCLUDE_FILE_ID	__EL_OBJECTS_UNITS
 #include "Memory/_EngineLayout.inl"
-#include "Objects/Units.Boarding.inl"
 #include "Objects/Units.Animations.inl"
+#include "Objects/Units.Boarding.inl"
 #include "Objects/Units.GrenadeCounts.inl"
 
 		void Initialize()
