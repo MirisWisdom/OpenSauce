@@ -23,6 +23,8 @@ namespace Yelo
 
 	namespace Objects
 	{
+		struct s_damage_data;
+
 		struct s_object_data;
 		struct s_object_iterator;
 

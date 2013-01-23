@@ -130,11 +130,11 @@ namespace Yelo
 			TAG_PAD(int32, 36);
 
 		private:
-			int32 FindUnitExternalUpgradeIndex(datum_index unit_index) const;
-			int32 FindUnitExternalUpgradeBoardingSeatIndex(datum_index unit_index, int16 seat_index) const;
+			int32 FindUnitExternalUpgradeIndex(datum_index unit_tag_index) const;
+			int32 FindUnitExternalUpgradeBoardingSeatIndex(datum_index unit_tag_index, int16 seat_index) const;
 		public:
-			TagGroups::s_unit_external_upgrades const* FindUnitExternalUpgradeBlock(datum_index unit_index) const;
-			TagGroups::s_unit_boarding_seat const* FindUnitExternalUpgradeBoardingSeatBlock(datum_index unit_index, int16 seat_index) const;
+			TagGroups::s_unit_external_upgrades const* FindUnitExternalUpgradeBlock(datum_index unit_tag_index) const;
+			TagGroups::s_unit_boarding_seat const* FindUnitExternalUpgradeBoardingSeatBlock(datum_index unit_tag_index, int16 seat_index) const;
 		};
 	};
 };

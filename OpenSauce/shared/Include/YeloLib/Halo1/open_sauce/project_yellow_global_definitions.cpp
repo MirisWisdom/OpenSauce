@@ -5,7 +5,6 @@
 */
 #include "Common/Precompile.hpp"
 
-#include "Objects/Objects.hpp"
 #include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
 
 namespace Yelo
@@ -44,14 +43,8 @@ namespace Yelo
 				target_unit_definition_index);
 		}
 
-		int32 project_yellow_globals_cv::FindUnitExternalUpgradeIndex(datum_index unit_index) const
+		int32 project_yellow_globals_cv::FindUnitExternalUpgradeIndex(datum_index unit_tag_index) const
 		{
-			if (unit_index == datum_index::null)
-				return NONE;
-
-			Objects::s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
-			datum_index unit_tag_index = unit->object.definition_index;
-
 			for (int32 x = 0; x < unit_external_upgrades.Count; x++)
 			{
 				if (unit_tag_index == unit_external_upgrades[x].unit.tag_index)
@@ -60,10 +53,10 @@ namespace Yelo
 			return NONE;
 		}
 
-		int32 project_yellow_globals_cv::FindUnitExternalUpgradeBoardingSeatIndex(datum_index unit_index, int16 seat_index) const
+		int32 project_yellow_globals_cv::FindUnitExternalUpgradeBoardingSeatIndex(datum_index unit_tag_index, int16 seat_index) const
 		{
 			TagGroups::s_unit_external_upgrades const* unit_external_upgrades = 
-				FindUnitExternalUpgradeBlock(unit_index);
+				FindUnitExternalUpgradeBlock(unit_tag_index);
 
 			if (unit_external_upgrades == NULL)
 				return NONE;
@@ -76,14 +69,8 @@ namespace Yelo
 			return NONE;
 		}
 
-		TagGroups::s_unit_external_upgrades const* project_yellow_globals_cv::FindUnitExternalUpgradeBlock(datum_index unit_index) const
+		TagGroups::s_unit_external_upgrades const* project_yellow_globals_cv::FindUnitExternalUpgradeBlock(datum_index unit_tag_index) const
 		{
-			if (unit_index == datum_index::null)
-				return NULL;
-
-			Objects::s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
-			datum_index unit_tag_index = unit->object.definition_index;
-
 			for (int32 x = 0; x < unit_external_upgrades.Count; x++)
 			{
 				if (unit_tag_index == unit_external_upgrades[x].unit.tag_index)
@@ -92,10 +79,10 @@ namespace Yelo
 			return NULL;
 		}
 
-		TagGroups::s_unit_boarding_seat const* project_yellow_globals_cv::FindUnitExternalUpgradeBoardingSeatBlock(datum_index unit_index, int16 seat_index) const
+		TagGroups::s_unit_boarding_seat const* project_yellow_globals_cv::FindUnitExternalUpgradeBoardingSeatBlock(datum_index unit_tag_index, int16 seat_index) const
 		{
 			TagGroups::s_unit_external_upgrades const* unit_external_upgrades = 
-				FindUnitExternalUpgradeBlock(unit_index);
+				FindUnitExternalUpgradeBlock(unit_tag_index);
 
 			if (unit_external_upgrades == NULL)
 				return NULL;

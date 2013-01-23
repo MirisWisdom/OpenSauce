@@ -11,7 +11,6 @@
 #include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/models/collision_model_definitions.hpp>
 #include <blamlib/Halo1/models/model_animation_definitions.hpp>
-#include <blamlib/Halo1/objects/damage.hpp>
 
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
