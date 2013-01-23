@@ -40,13 +40,21 @@ namespace Yelo
 
 		static void ActorActionHandleVehicleExitBoardingSeat(datum_index unit_index)
 		{
+			const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
 			Objects::s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
+
+			// Exit the vehicle like normal if a globals tag doesn't exist
+			if(cv_globals == NULL)
+			{
+				*unit->unit.animation.GetAnimationState() = Enums::_unit_animation_state_seat_exit;
+				return;
+			}
 
 			datum_index parent_unit_index = unit->object.parent_object_index;
 			int16 seat_index = unit->unit.vehicle_seat_index;
 
 			TagGroups::s_unit_external_upgrades const* unit_upgrades_definition = 
-				Objects::Units::DefinitionFindUnitUpgradesBlock(parent_unit_index);
+				cv_globals->FindUnitExternalUpgradeBlock(parent_unit_index);
 
 			// Check if a unit upgrades definition exists for the vehicle the actor is in
 			if (unit_upgrades_definition != NULL)

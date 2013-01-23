@@ -128,6 +128,13 @@ namespace Yelo
 			//TAG_TBLOCK(object_damage_extensions, s_object_damage_extension); // 512
 
 			TAG_PAD(int32, 36);
+
+		private:
+			int32 FindUnitExternalUpgradeIndex(datum_index unit_index) const;
+			int32 FindUnitExternalUpgradeBoardingSeatIndex(datum_index unit_index, int16 seat_index) const;
+		public:
+			TagGroups::s_unit_external_upgrades const* FindUnitExternalUpgradeBlock(datum_index unit_index) const;
+			TagGroups::s_unit_boarding_seat const* FindUnitExternalUpgradeBoardingSeatBlock(datum_index unit_index, int16 seat_index) const;
 		};
 	};
 };
