@@ -45,17 +45,17 @@ namespace Animations
 		
 		// write the game's default jump case into our jump table
 		for(int32 x = 0; x < Yelo::Enums::_unit_animation_state_yelo; x++)
-			unit_update_animation_primary_keyframe_jmp_table_yelo[x] = (void*)UNIT_UPDATE_ANIMATION_PRIMARY_KEYFRAME_JMP_TABLE[jmp_default];
+			unit_update_animation_primary_keyframe_jmp_table_yelo[x] = CAST_PTR(void*, UNIT_UPDATE_ANIMATION_PRIMARY_KEYFRAME_JMP_TABLE[jmp_default]);
 		
 		// remap the existing jump entries into our jump table at the correct indices
 		unit_update_animation_primary_keyframe_jmp_table_yelo[Yelo::Enums::_unit_animation_state_melee] = 
-			(void*)UNIT_UPDATE_ANIMATION_PRIMARY_KEYFRAME_JMP_TABLE[Enums::unit_update_animation_primary_keyframe_jmp_0];
+			CAST_PTR(void*, UNIT_UPDATE_ANIMATION_PRIMARY_KEYFRAME_JMP_TABLE[Enums::unit_update_animation_primary_keyframe_jmp_0]);
 		unit_update_animation_primary_keyframe_jmp_table_yelo[Yelo::Enums::_unit_animation_state_melee_airborne] = 
-			(void*)UNIT_UPDATE_ANIMATION_PRIMARY_KEYFRAME_JMP_TABLE[Enums::unit_update_animation_primary_keyframe_jmp_0];
+			CAST_PTR(void*, UNIT_UPDATE_ANIMATION_PRIMARY_KEYFRAME_JMP_TABLE[Enums::unit_update_animation_primary_keyframe_jmp_0]);
 		unit_update_animation_primary_keyframe_jmp_table_yelo[Yelo::Enums::_unit_animation_state_leap_melee] = 
-			(void*)UNIT_UPDATE_ANIMATION_PRIMARY_KEYFRAME_JMP_TABLE[Enums::unit_update_animation_primary_keyframe_jmp_0];
+			CAST_PTR(void*, UNIT_UPDATE_ANIMATION_PRIMARY_KEYFRAME_JMP_TABLE[Enums::unit_update_animation_primary_keyframe_jmp_0]);
 		unit_update_animation_primary_keyframe_jmp_table_yelo[Yelo::Enums::_unit_animation_state_throw_grenade] = 
-			(void*)UNIT_UPDATE_ANIMATION_PRIMARY_KEYFRAME_JMP_TABLE[Enums::unit_update_animation_primary_keyframe_jmp_1];
+			CAST_PTR(void*, UNIT_UPDATE_ANIMATION_PRIMARY_KEYFRAME_JMP_TABLE[Enums::unit_update_animation_primary_keyframe_jmp_1]);
 
 		// set the game's jump table count to our's
 		GET_PTR(unit_update_animation_primary_keyframe_jmp_tbl_count) = Yelo::Enums::_unit_animation_state_yelo - 1;
@@ -82,21 +82,21 @@ namespace Animations
 
 		// write the game's default jump case into our jump table
 		for(int32 x = 0; x < Yelo::Enums::_unit_animation_state_yelo; x++)
-			unit_update_animation_final_keyframe_jmp_table_yelo[x] = (void*)UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_JMP_TABLE[jmp_default];
+			unit_update_animation_final_keyframe_jmp_table_yelo[x] = CAST_PTR(void*, UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_JMP_TABLE[jmp_default]);
 		
 		// remap the existing jump entries into our jump table at the correct indices
 		unit_update_animation_final_keyframe_jmp_table_yelo[Yelo::Enums::_unit_animation_state_landing_dead] = 
-			(void*)UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_JMP_TABLE[Enums::unit_update_animation_final_keyframe_jmp_0];
+			CAST_PTR(void*, UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_JMP_TABLE[Enums::unit_update_animation_final_keyframe_jmp_0]);
 		unit_update_animation_final_keyframe_jmp_table_yelo[Yelo::Enums::_unit_animation_state_seat_enter] = 
-			(void*)UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_JMP_TABLE[Enums::unit_update_animation_final_keyframe_jmp_1];
+			CAST_PTR(void*, UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_JMP_TABLE[Enums::unit_update_animation_final_keyframe_jmp_1]);
 		unit_update_animation_final_keyframe_jmp_table_yelo[Yelo::Enums::_unit_animation_state_seat_exit] = 
-			(void*)UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_JMP_TABLE[Enums::unit_update_animation_final_keyframe_jmp_2];
+			CAST_PTR(void*, UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_JMP_TABLE[Enums::unit_update_animation_final_keyframe_jmp_2]);
 		unit_update_animation_final_keyframe_jmp_table_yelo[Yelo::Enums::_unit_animation_state_surprise_front] = 
-			(void*)UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_JMP_TABLE[Enums::unit_update_animation_final_keyframe_jmp_3];
+			CAST_PTR(void*, UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_JMP_TABLE[Enums::unit_update_animation_final_keyframe_jmp_3]);
 		unit_update_animation_final_keyframe_jmp_table_yelo[Yelo::Enums::_unit_animation_state_surprise_back] = 
-			(void*)UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_JMP_TABLE[Enums::unit_update_animation_final_keyframe_jmp_3];
+			CAST_PTR(void*, UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_JMP_TABLE[Enums::unit_update_animation_final_keyframe_jmp_3]);
 		unit_update_animation_final_keyframe_jmp_table_yelo[Yelo::Enums::_unit_animation_state_leap_start] = 
-			(void*)UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_JMP_TABLE[Enums::unit_update_animation_final_keyframe_jmp_4];
+			CAST_PTR(void*, UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_JMP_TABLE[Enums::unit_update_animation_final_keyframe_jmp_4]);
 
 		// set the game's jump table count to our's
 		GET_PTR(unit_update_animation_final_keyframe_jmp_tbl_count) = Yelo::Enums::_unit_animation_state_yelo - 1;
@@ -448,10 +448,10 @@ namespace Animations
 		Animations::InitializeUnitUpdateAnimationFinalKeyframeJmpTable();
 		Animations::InitializeYeloAnimationStates();
 		
-		for(int i = 0; i < NUMBEROF(K_UNIT_ANIMATION_STATE_INTERRUPTABLE_CALL); i++)
-			Memory::WriteRelativeCall(&UnitAnimationStateInterruptableHook, K_UNIT_ANIMATION_STATE_INTERRUPTABLE_CALL[i], true);
-		for(int i = 0; i < NUMBEROF(K_UNIT_ANIMATION_BUSY_CALL); i++)
-			Memory::WriteRelativeCall(&UnitAnimationBusyHook, K_UNIT_ANIMATION_BUSY_CALL[i], true);
+		for(int i = 0; i < NUMBEROF(K_UNIT_ANIMATION_STATE_INTERRUPTABLE_CALLS); i++)
+			Memory::WriteRelativeCall(&UnitAnimationStateInterruptableHook, K_UNIT_ANIMATION_STATE_INTERRUPTABLE_CALLS[i], true);
+		for(int i = 0; i < NUMBEROF(K_UNIT_ANIMATION_BUSY_CALLS); i++)
+			Memory::WriteRelativeCall(&UnitAnimationBusyHook, K_UNIT_ANIMATION_BUSY_CALLS[i], true);
 		Memory::WriteRelativeCall(&UnitAnimationStateLoopsHook, GET_FUNC_VPTR(K_UNIT_ANIMATION_STATE_LOOPS_CALL), true);
 		Memory::WriteRelativeCall(&UnitAnimationWeaponIKHook, GET_FUNC_VPTR(K_UNIT_ANIMATION_WEAPON_IK_CALL), true);
 		Memory::WriteRelativeCall(&UnitAnimationVehicleIKHook, GET_FUNC_VPTR(K_UNIT_ANIMATION_VEHICLE_IK_CALL), true);

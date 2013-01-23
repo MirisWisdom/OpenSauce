@@ -111,7 +111,7 @@ namespace Boarding
 		TagGroups::s_unit_definition const* parent_unit_definition = 
 			Objects::GetObjectDefinition<TagGroups::s_unit_definition>(parent_unit_index);
 		TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
-			cv_globals->FindUnitExternalUpgradeBoardingSeatBlock(parent_unit_index, seat_index);
+			cv_globals->FindUnitExternalUpgradeBoardingSeatBlock(parent_unit->object.definition_index, seat_index);
 
 		// Check if a boarding seat definition exists for the vehicle being exited
 		if (boarding_seat_definition != NULL)
@@ -137,8 +137,7 @@ namespace Boarding
 				// If the boarding seat definition contains a damage effect tag, use it here
 				if (boarding_seat_definition->boarding_damage.tag_index != datum_index::null)
 				{
-					Objects::s_damage_data damage_data; 
-					ZeroMemory(&damage_data, sizeof(damage_data));
+					Objects::s_damage_data damage_data = Objects::s_damage_data();
 
 					// Create a new damage_data struct based on the boarding_seat_definition boarding damage field
 					damage_data.effect_definition_index = boarding_seat_definition->boarding_damage.tag_index;
@@ -168,10 +167,11 @@ namespace Boarding
 		s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
 
 		datum_index parent_unit_index = unit->object.parent_object_index;
+		s_unit_datum* parent_unit = (*Objects::ObjectHeader())[parent_unit_index]->_unit;
 		int16 seat_index = unit->unit.vehicle_seat_index;
 
 		TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
-			cv_globals->FindUnitExternalUpgradeBoardingSeatBlock(parent_unit_index, seat_index);
+			cv_globals->FindUnitExternalUpgradeBoardingSeatBlock(parent_unit->object.definition_index, seat_index);
 
 		// Force the unit into the target seat
 		if (boarding_seat_definition != NULL)
@@ -204,10 +204,11 @@ namespace Boarding
 		s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
 
 		datum_index parent_unit_index = unit->object.parent_object_index;
+		s_unit_datum* parent_unit = (*Objects::ObjectHeader())[parent_unit_index]->_unit;
 		int16 seat_index = unit->unit.vehicle_seat_index;
 
 		TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
-			cv_globals->FindUnitExternalUpgradeBoardingSeatBlock(parent_unit_index, seat_index);
+			cv_globals->FindUnitExternalUpgradeBoardingSeatBlock(parent_unit->object.definition_index, seat_index);
 
 		// Check if a boarding seat definition exists for the vehicle seat being entered
 		if (boarding_seat_definition != NULL)
@@ -272,7 +273,7 @@ namespace Boarding
 		if(cv_globals != NULL)
 		{
 			TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
-				cv_globals->FindUnitExternalUpgradeBoardingSeatBlock(target_unit_index, target_seat_index);
+				cv_globals->FindUnitExternalUpgradeBoardingSeatBlock(target_unit->object.definition_index, target_seat_index);
 
 			// Check if the target seat is a boarding seat
 			if (boarding_seat_definition != NULL)

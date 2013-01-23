@@ -51,10 +51,11 @@ namespace Yelo
 			}
 
 			datum_index parent_unit_index = unit->object.parent_object_index;
+			Objects::s_unit_datum* parent_unit = (*Objects::ObjectHeader())[parent_unit_index]->_unit;
 			int16 seat_index = unit->unit.vehicle_seat_index;
 
 			TagGroups::s_unit_external_upgrades const* unit_upgrades_definition = 
-				cv_globals->FindUnitExternalUpgradeBlock(parent_unit_index);
+				cv_globals->FindUnitExternalUpgradeBlock(parent_unit->object.definition_index);
 
 			// Check if a unit upgrades definition exists for the vehicle the actor is in
 			if (unit_upgrades_definition != NULL)
