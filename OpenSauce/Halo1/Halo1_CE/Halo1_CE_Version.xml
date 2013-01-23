@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <osVersionUpdate>
 	<server_list version="1">
-		<server>http://open-sauce.googlecode.com/hg/OpenSauce/Halo1/Halo1_CE/Halo1_CE_Version.xml</server>
+		<server>http://os.halomods.com/Halo1/CE/Halo1_CE_Version.xml</server>
 	</server_list>
-	<version major="3" minor="0" build="3" />
+	<version major="3" minor="1" build="0" />
 </osVersionUpdate>
