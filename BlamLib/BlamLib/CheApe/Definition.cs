@@ -165,6 +165,11 @@ namespace BlamLib.CheApe
 			StringBuilder value = new StringBuilder();
 			string temp = string.Empty;
 
+			// HACK: Begins the string with a null terminator, leading the tools to think the field is nameless
+			// Nameless fields are always hidden
+			if (s.ReadAttributeOpt("hiddenAlways", ref temp) && Util.ParseBooleanLazy(temp))
+				value.Append('\0');
+
 			if (s.ReadAttributeOpt("name", ref temp)) value.Append(temp);
 
 			if (s.ReadAttributeOpt("locked", ref temp) && Util.ParseBooleanLazy(temp))
