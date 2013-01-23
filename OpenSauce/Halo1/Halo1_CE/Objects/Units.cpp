@@ -59,8 +59,8 @@ namespace Yelo
 #define __EL_INCLUDE_ID			__EL_INCLUDE_OBJECTS
 #define __EL_INCLUDE_FILE_ID	__EL_OBJECTS_UNITS
 #include "Memory/_EngineLayout.inl"
-#include "Objects/Units.Animations.inl"
 #include "Objects/Units.Boarding.inl"
+#include "Objects/Units.Animations.inl"
 #include "Objects/Units.GrenadeCounts.inl"
 
 		void Initialize()
