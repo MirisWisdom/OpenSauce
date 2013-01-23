@@ -9,7 +9,6 @@
 #include <blamlib/Halo1/cache/cache_files.hpp>
 #include <blamlib/Halo1/math/periodic_functions.hpp>
 #include <blamlib/Halo1/memory/data.hpp>
-#include <blamlib/Halo1/objects/damage.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 #include "Memory/MemoryInterface.hpp"
