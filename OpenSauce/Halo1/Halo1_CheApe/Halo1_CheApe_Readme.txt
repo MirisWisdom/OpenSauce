@@ -55,6 +55,8 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
 
 == Change Log ==
 === Version 3.1.1 ===
+  * ADD			project_yellow_globals_cv tag containing both boarding and unit infection tag blocks
+  * ADD			model_animations tag features two new unit_seat_animation blocks for seat boarding and ejection
 
 === Version 3.1 ===
   * PATCH		Weapon's magazine's magazine-objects block will no longer crash when you try to add more than 2 elements. Uses the equipment field for the block name now too.
