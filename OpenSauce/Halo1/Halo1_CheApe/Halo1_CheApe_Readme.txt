@@ -54,6 +54,8 @@ It is also useful for us to know your system specifications such as your graphic
 NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how to use OS, please consult our wiki and/or create a post on Halomods to get community assistance. We are also NOT taking feature requests in any way.
 
 == Change Log ==
+=== Version 3.1.1 ===
+
 === Version 3.1 ===
   * PATCH		Weapon's magazine's magazine-objects block will no longer crash when you try to add more than 2 elements. Uses the equipment field for the block name now too.
   * PATCH		"The %s shader %s cannot be used in the environment" will now output the correct shader type in all cases

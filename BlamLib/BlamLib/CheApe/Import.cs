@@ -305,7 +305,7 @@ namespace BlamLib.CheApe
 		/// <summary>
 		/// XmlNode interface for a tag field
 		/// [enum: type]
-		/// [string: name], [bool: locked], [bool: hidden], [bool: blockname], [bool: deprecated], [string: tooltip], [string: units]
+		/// [string: name], [bool: locked], [bool: hidden], [bool: blockname], [bool: deprecated], [string: tooltip], [string: units], [bool: hiddenAlways]
 		/// [string: definition]
 		/// [string: extra]
 		/// </summary>

@@ -65,7 +65,7 @@
 			<field type="Block"			name="variants"		definition="scenario_faux_zone_set_variant_block" />
 			<field type="Pad" definition="24" />
 		</TagBlock>
-		<TagBlock name="scenario_information_block" maxElements="1">
+		<TagBlock name="scenario_information_block" maxElements="0"> <!--change this back to 1 once we've finalized the tag structure-->
 			<field type="Block" name="scenario skies"	definition="scenario_information_sky_block"					tooltip="skies used in the scenario which zone skies will replace" />
 			<field type="Pad" definition="12" />
 			<field type="Block" name="zone skies"		definition="scenario_faux_zone_sky_block" />
