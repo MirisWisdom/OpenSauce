@@ -7,6 +7,9 @@
 #pragma once
 
 #include "Objects/Objects.hpp"
+#include "TagGroups/TagGroups.hpp"
+
+#include "TagGroups/project_yellow_definitions.hpp"
 
 namespace Yelo
 {
@@ -17,5 +20,8 @@ namespace Yelo
 		void DisposeFromOldMap();
 
 		void InitializeForYeloGameState(bool enabled);
+
+		// Returns the datum_index of the unit in the specified seat_index of the given vehicle
+		datum_index GetUnitInSeat(datum_index vehicle_index, int32 seat_index);
 	}; };
 };

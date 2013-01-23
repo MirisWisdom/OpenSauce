@@ -12,6 +12,13 @@ namespace Yelo
 {
 	namespace Enums
 	{
+		enum model_animation_type
+		{
+			_model_animation_type_base,
+			_model_animation_type_overlay,
+			_model_animation_type_replacement
+		};
+
 		enum weapon_type_animation
 		{
 			_weapon_type_animation_reload1,
@@ -122,6 +129,11 @@ namespace Yelo
 			_unit_seat_animation_opening,
 			_unit_seat_animation_closing,
 			_unit_seat_animation_hovering,
+
+			// yelo animation states
+			_unit_seat_animation_yelo_board,
+			_unit_seat_animation_yelo_ejection,
+
 			_unit_seat_animation
 		};
 
@@ -164,6 +176,7 @@ namespace Yelo
 			_first_person_weapon_animation_fire2,
 			_first_person_weapon_animation_overcharged_jitter,
 			_first_person_weapon_animation_throw_grenade,
+			_first_person_weapon_animation_ammunition,
 			_first_person_weapon_animation_misfire1,
 			_first_person_weapon_animation_misfire2,
 			_first_person_weapon_animation_throw_overheated,
@@ -180,6 +193,12 @@ namespace Yelo
 
 	namespace TagGroups
 	{
+		struct animation_graph_weapon_type
+		{
+			TAG_FIELD(tag_string, label);
+			TAG_PAD(int32, 4);
+			TAG_TBLOCK(animations, int16); // block index to model_animation
+		}; BOOST_STATIC_ASSERT( sizeof(animation_graph_weapon_type) == 0x3C ); // max count: 16
 		struct animation_graph_weapon
 		{
 			TAG_FIELD(tag_string, name);
@@ -199,7 +218,7 @@ namespace Yelo
 			TAG_PAD(int32, 8);
 			TAG_TBLOCK(animations, int16); // block index to model_animation
 			TAG_BLOCK(ik_points, animation_graph_unit_seat_ik_point);
-			TAG_BLOCK(weapon_types, animation_graph_weapon_type);
+			TAG_TBLOCK(weapon_types, animation_graph_weapon_type);
 		}; BOOST_STATIC_ASSERT( sizeof(animation_graph_weapon) == 0xBC ); // max count: 16
 		struct animation_graph_unit_seat
 		{
@@ -216,7 +235,7 @@ namespace Yelo
 			TAG_FIELD(int16, down_pitch_frame_count);
 			TAG_FIELD(int16, up_pitch_frame_count);
 			TAG_PAD(int32, 2);
-			TAG_BLOCK(animations, unit_seat_animation);
+			TAG_TBLOCK(animations, int16); // block index to model_animation
 			TAG_BLOCK(ik_points, animation_graph_unit_seat_ik_point);
 			TAG_TBLOCK(weapons, animation_graph_weapon);
 		}; BOOST_STATIC_ASSERT( sizeof(animation_graph_unit_seat) == 0x64 ); // max count: 32

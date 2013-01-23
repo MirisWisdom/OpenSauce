@@ -564,6 +564,14 @@
 			Name="Engine"
 			>
 			<File
+				RelativePath=".\Engine\AnimationUpgrade.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Engine\AnimationUpgrade.hpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Engine\EngineFunctions.cpp"
 				>
 			</File>
@@ -2380,6 +2388,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="models"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\models\model_animation_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\models\model_animations.hpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".YeloLib"
@@ -2687,14 +2707,6 @@
 						>
 					</File>
 				</Filter>
-			</Filter>
-			<Filter
-				Name="units"
-				>
-				<File
-					RelativePath="..\..\shared\Include\YeloLib\Halo1\units\units_grenade_count_upgrade.inl"
-					>
-				</File>
 			</Filter>
 		</Filter>
 		<File

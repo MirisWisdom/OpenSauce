@@ -3161,6 +3161,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\Game\Players.NearbyObjects.inl"
+						>
+					</File>
+					<File
 						RelativePath=".\Game\Players.NetworkPlayerUnit.inl"
 						>
 					</File>
@@ -3495,6 +3499,14 @@
 				</File>
 				<File
 					RelativePath=".\Objects\Objects.Weapon.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\Objects\Units.Animations.inl"
+					>
+				</File>
+				<File
+					RelativePath=".\Objects\Units.Boarding.inl"
 					>
 				</File>
 				<File
@@ -5663,14 +5675,6 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\YeloLib\Halo1\game\game_results_yelo.hpp"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="units"
-				>
-				<File
-					RelativePath="..\..\shared\Include\YeloLib\Halo1\units\units_grenade_count_upgrade.inl"
 					>
 				</File>
 			</Filter>

@@ -325,6 +325,14 @@ void DoubleChargeShield(datum_index object_index)
 	}
 }
 
+void ObjectCauseDamage(Yelo::Objects::s_damage_data& damage_data, datum_index object_index, int32 node_index, int32 region_index, int32 damage_materials_index, int32 unknown)
+{
+	typedef void (PLATFORM_API *object_cause_damage_t)(Yelo::Objects::s_damage_data&, datum_index, int32, int32, int32, int32);
+	static const object_cause_damage_t FUNCTION = CAST_PTR(object_cause_damage_t, GET_FUNC_PTR(OBJECT_CAUSE_DAMAGE));
+
+	FUNCTION(damage_data, object_index, node_index, region_index, damage_materials_index, unknown);
+}
+
 void DefinitionPredict(datum_index object_index)
 {
 	static const uintptr_t FUNCTION = GET_FUNC_PTR(UNIT_GET_CAMERA_POSITION);
@@ -414,4 +422,88 @@ API_FUNC_NAKED int16 UnitGetCustomAnimationTime(datum_index unit_index)
 		mov		eax, unit_index
 		call	FUNCTION
 	API_FUNC_NAKED_END(1)
+}
+
+API_FUNC_NAKED bool UnitCanEnterSeat(datum_index unit_index, datum_index vehicle_index, int32 vehicle_seat_index, datum_index &unit_in_seat)
+{
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(UNIT_CAN_ENTER_SEAT);
+
+	API_FUNC_NAKED_START()
+		push    unit_in_seat
+		push    vehicle_seat_index
+		mov		edx, vehicle_index
+		mov     eax, unit_index
+		call    FUNCTION
+		add     esp, 4 * 2
+	API_FUNC_NAKED_END(4)
+}
+
+API_FUNC_NAKED bool UnitEnterSeat(datum_index unit_index, datum_index vehicle_index, int32 vehicle_seat_index)
+{
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(UNIT_ENTER_SEAT);
+
+	API_FUNC_NAKED_START()
+		push    vehicle_seat_index
+		push    vehicle_index
+		mov     eax, unit_index
+		call    FUNCTION
+		add     esp, 4 * 2
+	API_FUNC_NAKED_END(3)
+}
+
+API_FUNC_NAKED void UnitExitVehicle(datum_index unit_index)
+{
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(UNIT_EXIT_VEHICLE);
+
+	API_FUNC_NAKED_START()
+		mov     eax, unit_index
+		call    FUNCTION
+	API_FUNC_NAKED_END(1)
+}
+
+API_FUNC_NAKED bool UnitOpen(datum_index unit_index)
+{
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(UNIT_OPEN);
+
+	API_FUNC_NAKED_START()
+			mov     eax, unit_index
+			call    FUNCTION
+	API_FUNC_NAKED_END(1)
+}
+
+API_FUNC_NAKED bool UnitClose(datum_index unit_index)
+{
+    static const uintptr_t FUNCTION = GET_FUNC_PTR(UNIT_CLOSE);
+
+	API_FUNC_NAKED_START()
+            mov     eax, unit_index
+            call    FUNCTION
+	API_FUNC_NAKED_END(1)
+}
+
+API_FUNC_NAKED int16 UnitFindNearbySeat(datum_index unit_index, datum_index vehicle_index, int16 &seat_index)
+{
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(UNIT_FIND_NEARBY_SEAT);
+
+	API_FUNC_NAKED_START()
+		push	seat_index
+		push	vehicle_index
+		push	unit_index
+		call	FUNCTION
+		add		esp, 4 * 3
+	API_FUNC_NAKED_END(3)
+}
+
+API_FUNC_NAKED void UnitExitSeatEnd(datum_index unit_index, uint32 unk2, uint32 unk3, uint32 unk4)
+{
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(UNIT_EXIT_SEAT_END);
+
+	API_FUNC_NAKED_START()
+		push	unk4
+		push	unk3
+		push	unk2
+		push	unit_index
+		call    FUNCTION
+		add		esp, 4 * 4
+	API_FUNC_NAKED_END(4)
 }

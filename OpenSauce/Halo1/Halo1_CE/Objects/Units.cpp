@@ -8,12 +8,18 @@
 #include "Objects/Units.hpp"
 
 #include <blamlib/Halo1/game/game_globals.hpp>
+#include <blamlib/Halo1/models/model_animation_definitions.hpp>
+#include <blamlib/Halo1/objects/damage.hpp>
 #include <blamlib/Halo1/units/unit_definitions.hpp>
 
+#include "Game/EngineFunctions.hpp"
 #include "Game/GameState.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Networking/MDP.hpp"
 #include "Networking/MessageDeltas.hpp"
+#include "TagGroups/TagGroups.hpp"
+
+#include "TagGroups/project_yellow_definitions.hpp"
 
 namespace Yelo
 {
@@ -53,10 +59,21 @@ namespace Yelo
 #define __EL_INCLUDE_ID			__EL_INCLUDE_OBJECTS
 #define __EL_INCLUDE_FILE_ID	__EL_OBJECTS_UNITS
 #include "Memory/_EngineLayout.inl"
+#include "Objects/Units.Boarding.inl"
+#include "Objects/Units.Animations.inl"
 #include "Objects/Units.GrenadeCounts.inl"
 
 		void Initialize()
 		{
+			Animations::Initialize();
+			Boarding::Initialize();
+			
+			static const byte opcode_null[] = { 
+				Enums::_x86_opcode_nop, Enums::_x86_opcode_nop, Enums::_x86_opcode_nop, 
+				Enums::_x86_opcode_nop, Enums::_x86_opcode_nop, Enums::_x86_opcode_nop 
+			};
+
+			Memory::WriteMemory(GET_FUNC_VPTR(BIPED_UPDATE_CHECK_PARENT_UNIT_TYPE), opcode_null, 6);
 		}
 
 		void Dispose()
@@ -90,6 +107,25 @@ namespace Yelo
 
 		void InitializeForYeloGameState(bool enabled)
 		{
+		}
+
+		datum_index GetUnitInSeat(datum_index vehicle_index, int32 seat_index)
+		{
+			s_unit_datum* vehicle = (*Objects::ObjectHeader())[vehicle_index]->_unit;
+			datum_index unit = datum_index::null;
+
+			for (datum_index next_object = vehicle->object.first_object_index; 
+				 next_object != datum_index::null; 
+				 next_object = (*Objects::ObjectHeader())[next_object]->_object->next_object_index)
+			{
+				int16 unit_seat_index = (*Objects::ObjectHeader())[next_object]->_unit->unit.vehicle_seat_index;
+				Enums::object_type object_type = (Enums::object_type)(*Objects::ObjectHeader())[next_object]->_object->type;
+
+				if (object_type == Enums::_object_type_biped)
+					if (unit_seat_index == seat_index) unit = next_object;
+			}
+
+			return unit;
 		}
 
 	}; };

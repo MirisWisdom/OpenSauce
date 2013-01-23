@@ -11,7 +11,6 @@
 #include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/models/collision_model_definitions.hpp>
 #include <blamlib/Halo1/models/model_animation_definitions.hpp>
-#include <blamlib/Halo1/objects/damage.hpp>
 
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
@@ -177,10 +176,10 @@ namespace Yelo
 			bool objects_update_ignore_player_pvs = Scenario::Scenario()->type == Enums::_scenario_type_main_menu && 
 				TagGroups::_global_yelo->flags.game_updates_ignore_player_pvs_hack_bit;
 			ObjectsUpdateIgnorePlayerPvs(objects_update_ignore_player_pvs);
-
+/*
 			bool mtv_disabled = TagGroups::_global_yelo->gameplay.flags.prohibit_multiteam_vehicles_bit;
 			MultiTeamVehiclesSet(!mtv_disabled);
-
+*/
 			bool use_jump_penalty_fix = TagGroups::_global_yelo_globals->flags.force_game_to_use_stun_jumping_penalty_bit;
 			UseBipedJumpPenalty(use_jump_penalty_fix);
 
@@ -256,7 +255,7 @@ namespace Yelo
 #endif
 		}
 
-		void MultiTeamVehiclesSet(bool enabled)
+/*		void MultiTeamVehiclesSet(bool enabled)
 		{
 			// jmp
 			static const byte k_enable_code[] = {0xEB};
@@ -265,6 +264,7 @@ namespace Yelo
 
 			Memory::WriteMemory(GET_FUNC_VPTR(UNIT_CAN_ENTER_SEAT_MOD), (enabled ? k_enable_code : k_disable_code), sizeof(k_enable_code));
 		}
+*/
 		void VehicleRemapperEnable(bool enabled)
 		{
 			// jnz eip+2+10
@@ -420,6 +420,21 @@ namespace Yelo
 			}
 
 			return object_type_size + total_node_memory_size + total_headers_size;
+		}
+
+		bool ObjectIsEnemy(datum_index object_index, datum_index object_index_to_test)
+		{
+			if (!object_index.IsNull() && !object_index_to_test.IsNull())
+			{
+				Objects::s_object_data* object = (*Objects::ObjectHeader())[object_index]->_object;
+				Objects::s_object_data* object_to_test = (*Objects::ObjectHeader())[object_index_to_test]->_object;
+
+				int16 object_team = object->owner_team;
+				int16 object_to_test_team = object_to_test->owner_team;
+
+				return Engine::Game::TeamIsEnemy(object_team, object_to_test_team);
+			}
+			return false;
 		}
 	};
 };
