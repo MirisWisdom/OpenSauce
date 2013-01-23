@@ -2708,6 +2708,14 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="units"
+				>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\Halo1\units\units_grenade_count_upgrade.inl"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\CheApeCore.cpp"
