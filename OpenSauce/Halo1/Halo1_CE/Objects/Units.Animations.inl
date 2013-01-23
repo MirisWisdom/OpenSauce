@@ -304,7 +304,7 @@ namespace Animations
 		return result;
 	}
 
-	bool UnitAnimationStateInterruptableHook()
+	static bool UnitAnimationStateInterruptableHook()
 	{
 		s_unit_animation_data* unit_animation;
 		uint16 next_animation_state;
@@ -315,7 +315,7 @@ namespace Animations
 		return UnitAnimationStateInterruptable(unit_animation, next_animation_state);
 	}
 	
-	bool UnitAnimationBusyHook()
+	static bool UnitAnimationBusyHook()
 	{
 		s_unit_animation_data* unit_animation;
 
@@ -324,7 +324,7 @@ namespace Animations
 		return UnitAnimationBusy(unit_animation);
 	}
 	
-	bool UnitAnimationStateLoopsHook()
+	static bool UnitAnimationStateLoopsHook()
 	{
 		s_unit_animation_data* unit_animation;
 
@@ -333,7 +333,7 @@ namespace Animations
 		return UnitAnimationStateLoops(unit_animation);
 	}
 	
-	bool UnitAnimationWeaponIKHook()
+	static bool UnitAnimationWeaponIKHook()
 	{
 		s_unit_animation_data* unit_animation;
 
@@ -342,7 +342,7 @@ namespace Animations
 		return UnitAnimationWeaponIK(unit_animation);
 	}
 	
-	bool UnitAnimationVehicleIKHook()
+	static bool UnitAnimationVehicleIKHook()
 	{
 		s_unit_animation_data* unit_animation;
 
