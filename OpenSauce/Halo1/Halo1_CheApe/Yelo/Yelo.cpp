@@ -74,7 +74,7 @@ namespace Yelo
 		Debug::DumpInitialize();
 		c_memory_fixups::Initialize();
 		Objects::Items::GrenadeTypesUpgradeInitialize();
-		Animation::AnimationUpgradeInitialize();
+		Animations::AnimationUpgradesInitialize();
 		Scripting::Initialize();
 #if PLATFORM_ID != PLATFORM_TOOL
 		Scripting::InitializeCustomScriptingDefinitions();
@@ -100,7 +100,7 @@ namespace Yelo
 		TagGroups::YeloDefinitionsDispose();
 		Scripting::Dispose();
 		Objects::Items::GrenadeTypesUpgradeDispose();
-		Animation::AnimationUpgradeDispose();
+		Animations::AnimationUpgradesDispose();
 		c_memory_fixups::Dispose();
 		Debug::DumpDispose();
 	}

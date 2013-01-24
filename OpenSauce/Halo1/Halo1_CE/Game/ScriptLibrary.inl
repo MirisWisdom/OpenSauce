@@ -129,6 +129,8 @@
 		//////////////////////////////////////////////////////////////////////////
 		// everything after is runtime-only, ie not defined in the CheApe scripting definitions
 
+		_hs_function_vehicle_remapper_enabled,
+
 		_hs_function_sv_httpserver_set_thread_count,
 		_hs_function_sv_httpserver_set_root,
 		_hs_function_sv_httpserver_set_throttle,
@@ -244,6 +246,11 @@
 		HS_TYPE(string)
 	);
 
+
+	HS_FUNCTION_WITH_PARAMS(vehicle_remapper_enabled, bool, "returns the remapper state before the function call", 
+			"state_name", 1,
+		HS_TYPE(string)
+	);
 
 	// debug functions
 	#ifdef API_DEBUG
@@ -374,6 +381,8 @@
 		&GET_HS_FUNCTION(scenario_faux_zone_switch_variant),
 		&GET_HS_FUNCTION(scenario_faux_zone_switch_sky),
 
+
+		&GET_HS_FUNCTION(vehicle_remapper_enabled),
 
 		&GET_HS_FUNCTION(sv_httpserver_set_thread_count),
 		&GET_HS_FUNCTION(sv_httpserver_set_root),

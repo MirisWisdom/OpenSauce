@@ -8,7 +8,9 @@
 #include "Tool/Tool_AnimationFixups.hpp"
 
 #if PLATFORM_ID == PLATFORM_TOOL
-#include "Yelo/MemoryFixups.hpp"
+#include <blamlib/Halo1/tool/tool.hpp>
+#include <blamlib/Halo1/models/model_animation_definitions.hpp>
+
 #include "Engine/EngineFunctions.hpp"
 
 namespace Yelo
@@ -265,35 +267,25 @@ _result_is_le:
 
 		void c_animation_fixups::Initialize()
 		{
-			CheApe::s_cache_header& header = CheApe::GlobalCacheHeader();
+			max_animations = Enums::k_max_animations_per_graph_upgrade;
 
-			if(header.Fixups.Count > 0)
+			if(max_animations > Enums::k_max_animations_per_graph)
 			{
-				c_memory_fixups::s_fixup** fixups = CAST_PTR(c_memory_fixups::s_fixup**, header.Fixups.Address);
-				for(int32 x = 0; x < header.Fixups.Count; x++)
-					if(fixups[x]->address[PLATFORM_ID-1] == CAST_PTR(void*, 0x6BAAC8)) // address of animation_block.max_count
-						max_animations = CAST_PTR(int32, fixups[x]->definition[PLATFORM_ID-1]);
+				if(max_animations > Enums::k_maximum_tool_import_files)
+					YELO_WARN("CheApe: maximum animations is greater than maximum number of import files tool is able to process (%d > %d)", 
+						max_animations, Enums::k_maximum_tool_import_files);
 
-				// if the fix-up list contained an entry for the animation_block's max count 
-				// then use that value to fix-up tool, else no animation code fix-ups are performed
-				if(max_animations != NONE)
-				{
-					if(max_animations > Enums::k_maximum_tool_import_files)
-						YELO_WARN("CheApe: maximum animations is greater than maximum number of import files tool is able to process (%d > %d)", 
-							max_animations, Enums::k_maximum_tool_import_files);
+				InitializeValidAnimationsArrayFixups();
+				InitializeAnimationIndexArrayFixups();
+				InitializeAnimationRemappingIndexArrayFixups();
 
-					InitializeValidAnimationsArrayFixups();
-					InitializeAnimationIndexArrayFixups();
-					InitializeAnimationRemappingIndexArrayFixups();
-
-					InitializeIntermediateMemoryFixups();
-				}
+				InitializeIntermediateMemoryFixups();
 			}
 		}
 
 		void c_animation_fixups::Dispose()
 		{
-			if(max_animations != NONE)
+			if(max_animations > Enums::k_max_animations_per_graph)
 			{
 				DisposeValidAnimationsArrayFixups();
 				DisposeAnimationIndexArrayFixups();

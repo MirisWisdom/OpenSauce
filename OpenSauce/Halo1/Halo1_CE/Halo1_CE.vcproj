@@ -5234,6 +5234,14 @@
 				RelativePath=".\Scenario\ScenarioFauxZones.hpp"
 				>
 			</File>
+			<Filter
+				Name="Impl"
+				>
+				<File
+					RelativePath=".\Scenario\ScenarioFauxZones.Scripting.inl"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name=".YeloLib"

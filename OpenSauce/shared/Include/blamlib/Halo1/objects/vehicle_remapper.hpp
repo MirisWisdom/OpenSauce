@@ -23,9 +23,9 @@ namespace Yelo
 
 			k_number_of_vehicle_remapper_vehicles,
 
-			_vehicle_remapper_vehicle_yelo1 = k_number_of_vehicle_remapper_vehicles,
-			_vehicle_remapper_vehicle_yelo2,
-			_vehicle_remapper_vehicle_yelo3,
+			_vehicle_remapper_vehicle_custom1 = k_number_of_vehicle_remapper_vehicles,
+			_vehicle_remapper_vehicle_custom2,
+			_vehicle_remapper_vehicle_custom3,
 
 			k_number_of_vehicle_remapper_vehicles_yelo,
 		};
@@ -44,9 +44,9 @@ namespace Yelo
 
 			k_number_of_vehicle_sets,
 
-			_vehicle_set_yelo1 = k_number_of_vehicle_sets,
-			_vehicle_set_yelo2,
-			_vehicle_set_yelo3,
+			_vehicle_set_custom1 = k_number_of_vehicle_sets,
+			_vehicle_set_custom2,
+			_vehicle_set_custom3,
 
 			k_number_of_vehicle_sets_yelo,
 		};
@@ -62,9 +62,9 @@ namespace Yelo
 			unsigned rwarthogs : 3;
 			unsigned banshees : 3;
 			unsigned cg_turrets : 3;
-			unsigned yelo1 : 3;
-			unsigned yelo2 : 3;
-			unsigned yelo3 : 3;
+			unsigned custom1 : 3;
+			unsigned custom2 : 3;
+			unsigned custom3 : 3;
 			unsigned pad : 1;
 		}; BOOST_STATIC_ASSERT( sizeof(s_vehicle_set) == sizeof(int32) );
 

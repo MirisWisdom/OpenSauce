@@ -306,3 +306,18 @@ static void* scripting_unit_data_set_real_evaluate(void** arguments)
 
 	return NULL;
 }
+
+
+static void* scripting_vehicle_remapper_enabled_evaluate(void** arguments)
+{
+	struct s_arguments {
+		cstring state_name;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+
+	result.boolean = g_object_yelo_globals.vehicle_remapper_disabled;
+	if( args->state_name[0] != '\0' && strcmp(args->state_name, "get")!=0 )
+		VehicleRemapperEnable( Settings::ParseBoolean(args->state_name) );
+
+	return result.pointer;
+}

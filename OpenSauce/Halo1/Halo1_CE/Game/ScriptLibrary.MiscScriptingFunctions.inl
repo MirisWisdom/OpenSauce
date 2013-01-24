@@ -5,49 +5,6 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-static void* scripting_scenario_faux_zones_reset_evaluate()
-{
-	ScenarioFauxZones::Reset();
-
-	return NULL;
-}
-
-static void* scripting_scenario_faux_zone_current_switch_variant_evaluate(void** arguments)
-{
-	struct s_arguments {
-		cstring variant_name;
-	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
-
-	result.boolean = ScenarioFauxZones::SwitchCurrentZoneVariant(args->variant_name);
-
-	return result.pointer;
-}
-static void* scripting_scenario_faux_zone_switch_variant_evaluate(void** arguments)
-{
-	struct s_arguments {
-		cstring zone_name;
-		cstring variant_name;
-	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
-
-	result.boolean = ScenarioFauxZones::SwitchZoneVariant(args->zone_name, args->variant_name);
-
-	return result.pointer;
-}
-static void* scripting_scenario_faux_zone_switch_sky_evaluate(void** arguments)
-{
-	struct s_arguments {
-		cstring zone_sky_name;
-	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
-
-	result.boolean = ScenarioFauxZones::SwitchZoneSky(args->zone_sky_name);
-
-	return result.pointer;
-}
-
-
 void* scripting_game_change_version_id_evaluate(void** arguments)
 {
 	struct s_arguments {
@@ -385,15 +342,6 @@ static void InitializeMiscFunctions()
 		scripting_display_scripted_ui_widget_evaluate);
 	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_USER(Enums::_hs_function_play_bink_movie, 
 		scripting_play_bink_movie_evaluate);
-
-	InitializeScriptFunction(Enums::_hs_function_scenario_faux_zones_reset, 
-		scripting_scenario_faux_zones_reset_evaluate);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_scenario_faux_zone_current_switch_variant, 
-		scripting_scenario_faux_zone_current_switch_variant_evaluate);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_scenario_faux_zone_switch_variant, 
-		scripting_scenario_faux_zone_switch_variant_evaluate);
-	InitializeScriptFunctionWithParams(Enums::_hs_function_scenario_faux_zone_switch_sky, 
-		scripting_scenario_faux_zone_switch_sky_evaluate);
 
 
 	YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS_DEDI(Enums::_hs_function_sv_httpserver_set_thread_count,

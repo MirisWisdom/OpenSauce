@@ -8,9 +8,9 @@
 
 namespace Yelo
 {
-	namespace Animation
+	namespace Animations
 	{
-		void AnimationUpgradeInitialize();
-		void AnimationUpgradeDispose();
+		void AnimationUpgradesInitialize();
+		void AnimationUpgradesDispose();
 	};
 };

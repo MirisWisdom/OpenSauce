@@ -9,6 +9,15 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum {
+			k_maximum_tool_import_files = 500,
+
+			k_maximum_tool_import_files_upgrade = 2048,
+		};
+	};
+
 	namespace Tool
 	{
 		typedef void (PLATFORM_API* proc_import_class)(void** arguments);

@@ -7,6 +7,8 @@
 #include "Common/Precompile.hpp"
 #include "Yelo/MemoryFixups.hpp"
 
+#include <blamlib/Halo1/tool/tool.hpp>
+
 #include "Common/YeloSettings.hpp"
 #include "Engine/EngineFunctions.hpp"
 #include "TagGroups/TagGroups.hpp"
@@ -76,10 +78,10 @@ namespace Yelo
 
 #if PLATFORM_ID == PLATFORM_TOOL
 		uint32* k_tool_import_find_files_references_size = CAST_PTR(uint32*, 0x415099);
-		*k_tool_import_find_files_references_size = Enums::k_maximum_tool_import_files * sizeof(s_file_reference);
+		*k_tool_import_find_files_references_size = Enums::k_maximum_tool_import_files_upgrade * sizeof(s_file_reference);
 
 		uint32* k_tool_import_find_files_references_count = CAST_PTR(uint32*, 0x4150E1);
-		*k_tool_import_find_files_references_count = Enums::k_maximum_tool_import_files;
+		*k_tool_import_find_files_references_count = Enums::k_maximum_tool_import_files_upgrade;
 #endif
 
 #if 0

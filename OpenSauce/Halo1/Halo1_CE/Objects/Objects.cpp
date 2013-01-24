@@ -69,12 +69,17 @@ namespace Yelo
 		t_noncollideable_object_cluster_reference_data* NoncollideableObjectClusterReference()	DPTR_IMP_GET(noncollideable_object_cluster_reference);
 
 
+		static struct s_object_yelo_globals
+		{
+			bool vehicle_remapper_disabled;
+			PAD24;
+		}g_object_yelo_globals;
 #include <YeloLib/Halo1/render/render_objects_upgrades.inl>
 #include "Objects/Objects.Damage.inl"
 #include "Objects/Objects.Scripting.inl"
 #include "Objects/Objects.UnitInfections.inl"
 
-		void InitializeScripting()
+		static void InitializeScripting()
 		{
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_objects_distance_to_object, 
 				scripting_objects_distance_to_object_evaluate);
@@ -103,6 +108,9 @@ namespace Yelo
 				scripting_unit_data_get_real_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_data_set_real, 
 				scripting_unit_data_set_real_evaluate);
+
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_vehicle_remapper_enabled, 
+				scripting_vehicle_remapper_enabled_evaluate);
 		}
 		void Initialize()
 		{
@@ -176,10 +184,7 @@ namespace Yelo
 			bool objects_update_ignore_player_pvs = Scenario::Scenario()->type == Enums::_scenario_type_main_menu && 
 				TagGroups::_global_yelo->flags.game_updates_ignore_player_pvs_hack_bit;
 			ObjectsUpdateIgnorePlayerPvs(objects_update_ignore_player_pvs);
-/*
-			bool mtv_disabled = TagGroups::_global_yelo->gameplay.flags.prohibit_multiteam_vehicles_bit;
-			MultiTeamVehiclesSet(!mtv_disabled);
-*/
+
 			bool use_jump_penalty_fix = TagGroups::_global_yelo_globals->flags.force_game_to_use_stun_jumping_penalty_bit;
 			UseBipedJumpPenalty(use_jump_penalty_fix);
 
@@ -193,7 +198,7 @@ namespace Yelo
 
 		void PLATFORM_API Update()
 		{
-			static uint32 OBJECTS_GARBAGE_COLLECTION = GET_FUNC_PTR(OBJECTS_GARBAGE_COLLECTION);
+			static const uintptr_t OBJECTS_GARBAGE_COLLECTION = GET_FUNC_PTR(OBJECTS_GARBAGE_COLLECTION);
 			_asm {
 				call	OBJECTS_GARBAGE_COLLECTION
 			}
@@ -213,9 +218,11 @@ namespace Yelo
 
 		void LoadSettings(TiXmlElement* objects_element)
 		{
-			// TODO: store this setting somewhere!
-			if(objects_element != NULL && Settings::ParseBoolean(objects_element->Attribute("disableVehicleRemapper")))
-				VehicleRemapperEnable(false);
+			if(objects_element != NULL)
+			{
+				if(g_object_yelo_globals.vehicle_remapper_disabled = Settings::ParseBoolean(objects_element->Attribute("disableVehicleRemapper")))
+					VehicleRemapperEnable(false);
+			}
 
 #if !PLATFORM_IS_DEDI
 			TiXmlElement* weapons_element = NULL,
@@ -235,10 +242,8 @@ namespace Yelo
 
 		void SaveSettings(TiXmlElement* objects_element)
 		{
-			// TODO:
-			if(false)
-				objects_element->SetAttribute("disableVehicleRemapper", 
-					BooleanToString(true));
+			objects_element->SetAttribute("disableVehicleRemapper", 
+				BooleanToString(VehicleRemapperEnabled()==false));
 
 #if !PLATFORM_IS_DEDI
 			TiXmlElement* weapons_element = NULL,
@@ -255,22 +260,18 @@ namespace Yelo
 #endif
 		}
 
-/*		void MultiTeamVehiclesSet(bool enabled)
+		bool VehicleRemapperEnabled()
 		{
-			// jmp
-			static const byte k_enable_code[] = {0xEB};
-			// jz
-			static const byte k_disable_code[] = {0x74};
-
-			Memory::WriteMemory(GET_FUNC_VPTR(UNIT_CAN_ENTER_SEAT_MOD), (enabled ? k_enable_code : k_disable_code), sizeof(k_enable_code));
+			return g_object_yelo_globals.vehicle_remapper_disabled==false;
 		}
-*/
 		void VehicleRemapperEnable(bool enabled)
 		{
 			// jnz eip+2+10
 			static const byte k_enable_code[] = {0x75, 0x0A};
 			// nop, nop
 			static const byte k_disable_code[] = {Enums::_x86_opcode_nop, Enums::_x86_opcode_nop};
+
+			g_object_yelo_globals.vehicle_remapper_disabled = enabled==false;
 
 			Memory::WriteMemory(GET_FUNC_VPTR(OBJECT_TYPES_PLACE_ALL_MOD_VEHI_REMAP), (enabled ? k_enable_code : k_disable_code), sizeof(k_enable_code));
 		}
