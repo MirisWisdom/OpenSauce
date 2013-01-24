@@ -44,8 +44,8 @@ namespace Yelo
 			// set the unit seat block's max elements to yelo's
 			{
 				tag_block_definition* animation_graph_unit_seat_block = GET_PTR2(animation_graph_unit_seat_block);
-				assert( animation_graph_unit_seat_block->maximum_element_count==Enums::k_number_of_unit_seat_animations );
-				animation_graph_unit_seat_block->maximum_element_count = Enums::k_number_of_unit_seat_animations_yelo;
+				assert( animation_graph_unit_seat_block->maximum_element_count==Enums::k_max_unit_seat_modes_per_graph );
+				animation_graph_unit_seat_block->maximum_element_count = Enums::k_max_unit_seat_modes_per_graph_upgrade;
 			}
 
 			//////////////////////////////////////////////////////////////////////////

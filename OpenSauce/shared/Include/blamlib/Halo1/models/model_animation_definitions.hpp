@@ -16,6 +16,10 @@ namespace Yelo
 			k_max_sound_references_per_graph = 257,
 			k_max_sound_references_per_graph_upgrade = k_max_sound_references_per_graph * 2,
 
+			// Halo2's unit_seat block was refactored to animation_mode
+			k_max_unit_seat_modes_per_graph = 30,
+			k_max_unit_seat_modes_per_graph_upgrade = 512, // Halo2's amount
+
 			k_max_animations_per_graph = 256,
 			// must be <= k_maximum_tool_import_files_upgrade
 			k_max_animations_per_graph_upgrade = 2048,
