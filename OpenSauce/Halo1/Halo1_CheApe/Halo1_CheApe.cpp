@@ -40,14 +40,14 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 		Yelo::CheApe::UnProtectMemoryRegion();
 
 		Yelo::Settings::Initialize();
+		Yelo::Debug::FileInitialize();
 		Yelo::c_memory_fixups::InitializePaths();
 
 		Yelo::CheApe::PhysicalMemoryMapInitialize();
 		Yelo::CheApe::LoadCacheFile();
 		if(Yelo::CheApe::_InitError == Yelo::CheApe::k_error_LoadCacheFile)
 		{
-			YELO_ERROR(_error_message_priority_none, 
-				"CheApe: cache failure");
+			Yelo::Debug::Write("CheApe: cache failure");
 			goto dispose;
 		}
 		Yelo::CheApe::SetupTagGroupPointers();
@@ -57,7 +57,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 		if(Yelo::CheApe::_InitError == Yelo::CheApe::k_error_none)
 			Yelo::Initialize();
 		else
-			Yelo::Engine::error(Yelo::Enums::_error_message_priority_none, "CheApe: Yelo initialization failed!");
+			Yelo::Debug::Write("CheApe: Yelo initialization failed!");
 
 		g_initialized = true;
 	}
@@ -69,6 +69,7 @@ dispose:
 		Yelo::CheApe::Dispose();
 
 		Yelo::c_memory_fixups::DisposePaths();
+		Yelo::Debug::FileDispose();
 		Yelo::Settings::Dispose();
 
 		Yelo::Main::YeloModuleHandle() = NULL;

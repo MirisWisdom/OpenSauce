@@ -271,9 +271,9 @@ _result_is_le:
 
 			if(max_animations > Enums::k_max_animations_per_graph)
 			{
-				if(max_animations > Enums::k_maximum_tool_import_files)
+				if(max_animations > Enums::k_maximum_tool_import_files_upgrade)
 					YELO_WARN("CheApe: maximum animations is greater than maximum number of import files tool is able to process (%d > %d)", 
-						max_animations, Enums::k_maximum_tool_import_files);
+						max_animations, Enums::k_maximum_tool_import_files_upgrade);
 
 				InitializeValidAnimationsArrayFixups();
 				InitializeAnimationIndexArrayFixups();

@@ -2431,6 +2431,14 @@
 					RelativePath="..\..\shared\Include\YeloLib\Halo1\cache\data_file_yelo.hpp"
 					>
 				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\cseries\errors_yelo.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\YeloLib\cseries\errors_yelo.hpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="shaders"

@@ -32,12 +32,27 @@ namespace Yelo
 	};
 
 
+	static void InitializeAfterCSeries()
+	{
+		Scripting::Initialize();
+#if PLATFORM_ID != PLATFORM_TOOL
+		Scripting::InitializeCustomScriptingDefinitions();
+#endif
+
+#ifndef PLATFORM_NO_DX9
+		Rasterizer::Initialize();
+#endif
+	}
 	static void IntializeBeforeTagGroupsInitalize()
 	{
+		Objects::Items::GrenadeTypesUpgradeInitialize();
+		Animations::AnimationUpgradesInitialize();
 		PLATFORM_VALUE(Guerilla, Tool, Sapien)::IntializeBeforeTagGroupsInitalize();
 	}
 	static void InitializeForTagFilesOpen()
 	{
+		// tag_files_open is called after the engine shell initializes its cseries and errors code, so we can just do the call here
+		InitializeAfterCSeries();
 		IntializeBeforeTagGroupsInitalize();
 
 		// Call the *engine's* initializer
@@ -71,36 +86,32 @@ namespace Yelo
 
 	void Initialize()
 	{
+		// Due to how early we hook the tools, ANYTHING you call in here can't use the engine's
+		// error system. It must use the interfaces in cseries/errors_yelo.hpp instead
 		Debug::DumpInitialize();
 		c_memory_fixups::Initialize();
-		Objects::Items::GrenadeTypesUpgradeInitialize();
-		Animations::AnimationUpgradesInitialize();
-		Scripting::Initialize();
-#if PLATFORM_ID != PLATFORM_TOOL
-		Scripting::InitializeCustomScriptingDefinitions();
-#endif
 
 		OverrideTagFilesOpen();
-
-#ifndef PLATFORM_NO_DX9
-		Rasterizer::Initialize();
-#endif
 	}
 
 	void Dispose()
 	{
-#ifndef PLATFORM_NO_DX9
-		Rasterizer::Dispose();
-#endif
-
 		// Initializer called in InitializeForTagFilesOpen
 		if(TagGroups::_yelo_definition_globals.initialized)
 			PLATFORM_VALUE(Guerilla, Tool, Sapien)::Dispose();
 
+		//////////////////////////////////////////////////////////////////////////
+		// see InitializeAfterCSeries
+#ifndef PLATFORM_NO_DX9
+		Rasterizer::Dispose();
+#endif
 		TagGroups::YeloDefinitionsDispose();
 		Scripting::Dispose();
+		//////////////////////////////////////////////////////////////////////////
+		// see IntializeBeforeTagGroupsInitalize
 		Objects::Items::GrenadeTypesUpgradeDispose();
 		Animations::AnimationUpgradesDispose();
+
 		c_memory_fixups::Dispose();
 		Debug::DumpDispose();
 	}

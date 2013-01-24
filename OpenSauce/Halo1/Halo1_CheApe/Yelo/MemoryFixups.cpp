@@ -34,8 +34,7 @@ namespace Yelo
 		void* definition = fixup->definition[PLATFORM_ID-1];
 
 #if 0
- 		YELO_ERROR(_error_message_priority_warning, 
- 			"CheApe: fixup @%p @%p type=%d", address, definition, fixup->type);
+ 		YELO_DEBUG_FORMAT("CheApe: fixup @%p @%p type=%d", address, definition, fixup->type);
 #endif
 
 		if(address == NULL) return; // if address is NULL, definition should be as well...
@@ -111,7 +110,7 @@ namespace Yelo
 				p.paths.maps,
 				p.paths.tags,
 				p.paths.tags_folder_name);
-		YELO_ERROR(_error_message_priority_warning, buffer);
+		Debug::Write(buffer);
 
 		const s_override_paths& o = _override_paths;
 		sprintf_s(buffer, k_buffer_size, "\r\n"
@@ -147,7 +146,7 @@ namespace Yelo
 				
 				o.tags.folder_name_with_slash,
 				o.tags.folder_name_with_slash_relative);
-		YELO_ERROR(_error_message_priority_warning, buffer);
+		Debug::Write(buffer);
 
 		delete[] buffer;
 	}

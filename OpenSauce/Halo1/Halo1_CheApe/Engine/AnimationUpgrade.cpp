@@ -20,7 +20,7 @@ namespace Yelo
 		ENGINE_PTR(tag_block_definition, animation_block,							0x9D6DD8, 0x6BAAC0, 0xA4E5B0);
 		ENGINE_PTR(tag_block_definition, animation_graph_unit_seat_block,			0x9D7138, 0x6BAE20, 0xA4E910);
 
-		ENGINE_PTR(s_animation_list, weapon_class_animation_list,					0x9D7998, 0x6BB680, 0xA4F158);
+		ENGINE_PTR(s_animation_list, weapon_class_animation_list,					0x9D7998, 0x6BB680, 0xA4F170);
 		ENGINE_PTR(s_animation_list, unit_seat_animation_list,						0x9D7AE0, 0x6BB7C8, 0xA4F2B8);
 
 		static s_animation_list_entry g_unit_seat_animation_list_yelo_entries[Enums::k_number_of_unit_seat_animations_yelo];

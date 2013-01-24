@@ -5,9 +5,6 @@
 */
 #pragma once
 
-// Name of the memory map file with definitions for CheApe to load
-#define CHEAPE_CACHE_FILE_NAME "CheApe.map"
-
 // CheApeApi declarations
 extern "C" {
 	bool __declspec( dllexport ) CheApeApi_GetPchBuildDateA(__in DWORD nBufferLength,
@@ -39,11 +36,19 @@ namespace Yelo
 			k_cheape_cache_signature_halo2 = 'blm2',
 
 			k_max_number_of_new_tag_groups = 64,
+
+			// Address where the CheApe.map memory resources are based at
+			k_cheape_physical_memory_map_address=	0x50000000,
+			// Size of the memory allocation for the CheApe.map resources
+			k_cheape_physical_memory_map_size=		0x00600000,
 		};
 	};
 
 	namespace CheApe
 	{
+		// Name of the memory map file with definitions for CheApe to load
+		extern cstring const k_cache_file_name;
+
 		struct s_cache_header
 		{
 			tag Head;
