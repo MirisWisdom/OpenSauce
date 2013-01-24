@@ -10,6 +10,8 @@ namespace Yelo
 {
 	namespace CheApe
 	{
+		cstring const k_cache_file_name = "CheApe.map";
+
 		cstring s_cache_header::GetInvalidReasonString(tag engine_sig, void* base_address) const
 		{
 			if(!SignaturesValid())

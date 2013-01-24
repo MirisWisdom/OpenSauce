@@ -30,24 +30,26 @@ namespace Yelo
 
 				bool MemoryMapInitialize()
 				{
-					base_address = VirtualAlloc(CAST_PTR(void*, kPhysicalMemoryMapAddress), kPhysicalMemoryMapSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+					base_address = VirtualAlloc(CAST_PTR(void*, Enums::k_cheape_physical_memory_map_address), Enums::k_cheape_physical_memory_map_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 
-					if(base_address == NULL || base_address != CAST_PTR(void*, kPhysicalMemoryMapAddress))
+					if(base_address == NULL || base_address != CAST_PTR(void*, Enums::k_cheape_physical_memory_map_address))
 						return false;
 
 					return true;
 				}
-				BOOL MemoryMapDispose()
+				BOOL MemoryMapDispose(DWORD& error_code)
 				{
 					BOOL result = TRUE;
+					error_code = S_OK;
 
-#if 0
 					if(base_address != NULL)
 					{
-						result = VirtualFree(base_address, kPhysicalMemoryMapSize, MEM_RELEASE);
+						result = VirtualFree(base_address, 0, MEM_RELEASE);
+						if(result == FALSE)
+							error_code = GetLastError();
+
 						base_address = NULL;
 					}
-#endif
 
 					return result;
 				}
@@ -60,7 +62,7 @@ namespace Yelo
 					if(!file_handle)
 					{
 						YELO_ERROR(_error_message_priority_none, 
-							"CheApe: Failed to load " CHEAPE_CACHE_FILE_NAME " file!");
+							"CheApe: Failed to load file '%s'!", k_cache_file_name);
 						_InitError = k_error_LoadCacheFile;
 
 						return false;
@@ -75,7 +77,7 @@ namespace Yelo
 					if(invalid_reason_str != NULL)
 					{
 						YELO_ERROR(_error_message_priority_none, 
-							"CheApe: Bad " CHEAPE_CACHE_FILE_NAME " file (%s)", invalid_reason_str);
+							"CheApe: Bad '%s' file (%s)", k_cache_file_name, invalid_reason_str);
 						_InitError = k_error_LoadCacheFile;
 
 						fclose(file_handle);
@@ -116,7 +118,7 @@ namespace Yelo
 
 		}_globals = {
 			{},
-			{CAST_PTR(t_custom_tag_group_data*, kPhysicalMemoryMapAddress),}
+			{CAST_PTR(t_custom_tag_group_data*, Enums::k_cheape_physical_memory_map_address),}
 		};
 
 		// declared in CheApeShared.hpp
@@ -152,7 +154,7 @@ namespace Yelo
 		{
 			if(_InitError > k_error_none) return;
 
-			if(!_globals.cache.Read(CHEAPE_CACHE_FILE_NAME))
+			if(!_globals.cache.Read(k_cache_file_name))
 				return;
 
 			// use the memory following the cache file data for the tag groups address list
@@ -211,9 +213,10 @@ namespace Yelo
 		{
 			if(_InitError == k_error_PhysicalMemoryMapInitialize) return;
 
-			if(_globals.cache.MemoryMapDispose() == FALSE)
+			DWORD error_code;
+			if(_globals.cache.MemoryMapDispose(error_code) == FALSE)
 				YELO_ERROR(_error_message_priority_none, 
-					"CheApe: Couldn't free the memory map!\n");
+					"CheApe: Couldn't free the memory map! (%X)", error_code);
 		}
 	};
 };

@@ -55,6 +55,7 @@
 
 #include <blamlib/Halo1/cseries/cseries.hpp>
 #include <blamlib/scenario/scenario_location.hpp>
+#include <YeloLib/cseries/errors_yelo.hpp>
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 
 #include <YeloLib/open_sauce/che_ape/che_ape_api.hpp>

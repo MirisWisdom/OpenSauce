@@ -40,7 +40,7 @@ namespace Yelo
 		static void UnitExternalUpgradesBlockPostprocess(TAG_TBLOCK(& unit_external_upgrades_def, TagGroups::s_unit_external_upgrades), 
 			Enums::tag_postprocess_mode mode)
 		{
-			if (mode == Enums::tag_postprocess_mode::_tag_postprocess_mode_for_runtime)
+			if (mode == Enums::_tag_postprocess_mode_for_runtime)
 			{
 				for (int i = 0; i < unit_external_upgrades_def.Count; i++)
 				{

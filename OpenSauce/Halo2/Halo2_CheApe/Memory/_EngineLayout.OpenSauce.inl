@@ -31,9 +31,6 @@
 			kTagGroupDefinitionsAddress =	PLATFORM_VALUE(0x901B90, 0x98BAB0, NULL),
 			kTagGroupDefinitionsCount =		0x78,
 
-			kPhysicalMemoryMapAddress =		PLATFORM_VALUE(0x40000000, 0x40000000, NULL),
-			kPhysicalMemoryMapSize =		PLATFORM_VALUE(0x600000, 0x600000, NULL),
-
 			kExeBaseAddress =				0x400000,
 			kExeSize =						PLATFORM_VALUE(0x4FC200, 0x579800, 0x57E200),
 		};
