@@ -30,15 +30,15 @@ namespace Yelo
 			// Set the animation graph's sound references block's max elements to yelo's
 			{
 				tag_block_definition* animation_graph_sound_reference_block = GET_PTR2(animation_graph_sound_reference_block);
-				assert( animation_graph_sound_reference_block->maximum_element_count==Enums::k_max_animations_per_graph );
-				animation_graph_sound_reference_block->maximum_element_count = Enums::k_max_animations_per_graph_upgrade;
+				assert( animation_graph_sound_reference_block->maximum_element_count==Enums::k_max_sound_references_per_graph );
+				animation_graph_sound_reference_block->maximum_element_count = Enums::k_max_sound_references_per_graph_upgrade;
 			}
 
 			// Set the animation graph's animations block's max elements to yelo's
 			{
 				tag_block_definition* animation_block = GET_PTR2(animation_block);
-				assert( animation_block->maximum_element_count==Enums::k_max_sound_references_per_graph );
-				animation_block->maximum_element_count = Enums::k_max_sound_references_per_graph_upgrade;
+				assert( animation_block->maximum_element_count==Enums::k_max_animations_per_graph );
+				animation_block->maximum_element_count = Enums::k_max_animations_per_graph_upgrade;
 			}
 
 			// set the unit seat block's max elements to yelo's
