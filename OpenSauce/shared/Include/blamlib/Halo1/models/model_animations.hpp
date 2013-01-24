@@ -8,15 +8,24 @@
 
 namespace Yelo
 {
-	namespace Objects
+	namespace Animations
 	{
-		struct s_animation_list
+		struct s_animation_list_entry
 		{
 			cstring name;
 			_enum type;
 			PAD16;
+		}; BOOST_STATIC_ASSERT( sizeof(s_animation_list_entry) == 0x8 );
+		struct s_animation_list
+		{
+			int16 count;
+			PAD16;
+			s_animation_list_entry* entries;
 		}; BOOST_STATIC_ASSERT( sizeof(s_animation_list) == 0x8 );
+	};
 
+	namespace Objects
+	{
 		struct s_animation_state
 		{
 			int16 animation_index;

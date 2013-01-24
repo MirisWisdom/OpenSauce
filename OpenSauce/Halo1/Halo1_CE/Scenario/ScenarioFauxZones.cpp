@@ -11,6 +11,7 @@
 #include <blamlib/Halo1/structures/structure_bsp_definitions.hpp>
 
 #include "Game/GameState.hpp"
+#include "Game/ScriptLibrary.hpp"
 #include "Rasterizer/Rasterizer.hpp"
 #include "Scenario/Scenario.hpp"
 #include "TagGroups/project_yellow_definitions.hpp"
@@ -109,6 +110,18 @@ namespace Yelo
 		};
 		static s_scenario_faux_zone_globals* scenario_faux_zone_globals;
 
+#include "Scenario/ScenarioFauxZones.Scripting.inl"
+		static void InitializeScripting()
+		{
+			Scripting::InitializeScriptFunction(Enums::_hs_function_scenario_faux_zones_reset, 
+				scripting_scenario_faux_zones_reset_evaluate);
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_scenario_faux_zone_current_switch_variant, 
+				scripting_scenario_faux_zone_current_switch_variant_evaluate);
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_scenario_faux_zone_switch_variant, 
+				scripting_scenario_faux_zone_switch_variant_evaluate);
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_scenario_faux_zone_switch_sky, 
+				scripting_scenario_faux_zone_switch_sky_evaluate);
+		}
 		void Initialize()
 		{
 		}

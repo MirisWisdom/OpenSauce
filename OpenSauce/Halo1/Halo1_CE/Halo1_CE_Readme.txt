@@ -57,6 +57,7 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
 === Version 3.1.1 ===
   * ADD			added unit boarding
   * ADD			added entering biped unit seats
+  * ADD			disableVehicleRemapper setting, along with a vehicle_remapper_enabled script function, to turn off the PC's vehicle respawning nonsense
 
 === Version 3.1 ===
   * PATCH		project_yellow_globals tag features new flag for forcing the game to use 'stun jumping penalty' instead of 'turning penalty' in the engine's biped jump code

@@ -168,7 +168,9 @@ namespace Yelo
 		void LoadSettings(TiXmlElement* objects_element);
 		void SaveSettings(TiXmlElement* objects_element);
 
-		//void MultiTeamVehiclesSet(bool enabled);
+		// Get the current state of the engine's vehicle remapper
+		bool VehicleRemapperEnabled();
+		// Turn the engine's vehicle remapper on or off
 		void VehicleRemapperEnable(bool enabled);
 
 

@@ -12,11 +12,22 @@ namespace Yelo
 {
 	namespace Enums
 	{
+		enum {
+			k_max_sound_references_per_graph = 257,
+			k_max_sound_references_per_graph_upgrade = k_max_sound_references_per_graph * 2,
+
+			k_max_animations_per_graph = 256,
+			// must be <= k_maximum_tool_import_files_upgrade
+			k_max_animations_per_graph_upgrade = 2048,
+		};
+
 		enum model_animation_type
 		{
 			_model_animation_type_base,
 			_model_animation_type_overlay,
-			_model_animation_type_replacement
+			_model_animation_type_replacement,
+
+			k_number_of_model_animation_types
 		};
 
 		enum weapon_type_animation
@@ -31,7 +42,8 @@ namespace Yelo
 			_weapon_type_animation_chareged2,
 			_weapon_type_animation_melee,
 			_weapon_type_animation_overheat,
-			_weapon_type_animation
+
+			k_number_of_weapon_type_animations,
 		};
 		enum weapon_class_animation
 		{
@@ -90,7 +102,8 @@ namespace Yelo
 			_weapon_class_animation_unused52,
 			_weapon_class_animation_unused53,
 			_weapon_class_animation_unused54,
-			_weapon_class_animation,
+
+			k_number_of_weapon_class_animations,
 
 			// When used in a regular unit (e.g. elite) this is the 'infect-start' animation
 			// When used in an infected unit (e.g. combat form elite) this is the 'infect-end' animation
@@ -130,11 +143,13 @@ namespace Yelo
 			_unit_seat_animation_closing,
 			_unit_seat_animation_hovering,
 
+			k_number_of_unit_seat_animations,
+
 			// yelo animation states
-			_unit_seat_animation_yelo_board,
+			_unit_seat_animation_yelo_board = k_number_of_unit_seat_animations,
 			_unit_seat_animation_yelo_ejection,
 
-			_unit_seat_animation
+			k_number_of_unit_seat_animations_yelo,
 		};
 
 		enum vehicle_animation
@@ -147,14 +162,16 @@ namespace Yelo
 			_vehicle_animation_ground_speed,
 			_vehicle_animation_occupied,
 			_vehicle_animation_unoccupied,
-			_vehicle_animation,
+
+			k_number_of_vehicle_animations,
 		};
 
 		enum device_animation
 		{
 			_device_animation_position,
 			_device_animation_power,
-			_device_animation,
+
+			k_number_of_device_animations,
 		};
 
 		enum first_person_weapon_animation
@@ -187,7 +204,8 @@ namespace Yelo
 			_first_person_weapon_animation_exit_full,
 			_first_person_weapon_animation_overheating_exit, // o-h-exit
 			_first_person_weapon_animation_overheating_enter,// o-h-s-enter
-			_first_person_weapon_animation,
+
+			k_number_of_first_person_weapon_animations,
 		};
 	};
 
