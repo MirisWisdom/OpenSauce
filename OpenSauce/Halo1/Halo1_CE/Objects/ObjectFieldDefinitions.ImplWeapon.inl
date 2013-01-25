@@ -5,7 +5,7 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-static void WeaponTagDataFieldTriggerSetReal(const s_object_field_definition& field, TagGroups::weapon_trigger_definition& trigger, 
+static bool WeaponTagDataFieldTriggerSetReal(const s_object_field_definition& field, TagGroups::weapon_trigger_definition& trigger, 
 											 TypeHolder& result, cstring subdata_name)
 {
 	using namespace Enums;
@@ -22,9 +22,11 @@ static void WeaponTagDataFieldTriggerSetReal(const s_object_field_definition& fi
 
 	default: result.ptr.real = NULL;  break;
 	}
+
+	return result.ptr.real != NULL;
 }
 
-static void WeaponDataFieldGetReal(const s_object_field_definition& field, s_weapon_data& weapon, 
+static bool WeaponDataFieldGetReal(const s_object_field_definition& field, s_weapon_data& weapon, 
 								   TypeHolder& result, void*)
 {
 	using namespace Enums;
@@ -37,4 +39,6 @@ static void WeaponDataFieldGetReal(const s_object_field_definition& field, s_wea
 	
 	default: result.ptr.real = NULL;  break;
 	}
+
+	return result.ptr.real != NULL;
 }

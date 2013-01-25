@@ -93,7 +93,7 @@ namespace Yelo
 			using namespace Enums;
 
 			return 
-				(definition_index >= _object_field_vector_position && definition_index <= _object_field_vector_angular_velocity) || 
+				(definition_index >= _object_field_vector_position && definition_index <= _object_field_vector_center) || 
 				(definition_index >= _unit_field_vector_desired_facing && definition_index <= _unit_field_vector_looking_velocity);
 		}
 		static int VectorFieldNameToIndex(cstring field_name, size_t vector_size)
@@ -138,7 +138,7 @@ namespace Yelo
 			s_object_field_definition (&list)[_SizeOfArray], cstring name, TObjectDatum& obj, 
 			__inout TypeHolder& result,
 			TGetterParam getter_param,
-			void (API_FUNC* getter_proc)(const s_object_field_definition&, TObjectDatum&, __inout TypeHolder&, TGetterParam)
+			bool (API_FUNC* getter_proc)(const s_object_field_definition&, TObjectDatum&, __inout TypeHolder&, TGetterParam)
 			)
 		{
 			const s_object_field_definition* field = 
@@ -148,8 +148,8 @@ namespace Yelo
 			{
 				Enums::hs_type result_type = field->hs_type;
 
-				getter_proc(*field, obj, result, getter_param);
-				Scripting::UpdateTypeHolderFromPtrToData(result, result_type);
+				if(getter_proc(*field, obj, result, getter_param))
+					Scripting::UpdateTypeHolderFromPtrToData(result, result_type);
 			}
 		}
 		template<size_t _SizeOfArray, typename TObjectDatum, typename TGetterParam, typename TDataType>
@@ -157,7 +157,7 @@ namespace Yelo
 			s_object_field_definition (&list)[_SizeOfArray], cstring name, TObjectDatum& obj, 
 			TDataType data_value,
 			TGetterParam getter_param,
-			void (API_FUNC* getter_proc)(const s_object_field_definition&, TObjectDatum&, __inout TypeHolder&, TGetterParam)
+			bool (API_FUNC* getter_proc)(const s_object_field_definition&, TObjectDatum&, __inout TypeHolder&, TGetterParam)
 			)
 		{
 			const s_object_field_definition* field = 
@@ -170,8 +170,8 @@ namespace Yelo
 				Enums::hs_type result_type = field->hs_type;
 				TypeHolder result;
 
-				getter_proc(*field, obj, result, getter_param);
-				Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &data_value);
+				if(getter_proc(*field, obj, result, getter_param))
+					Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &data_value);
 			}
 		}
 

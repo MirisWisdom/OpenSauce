@@ -39,7 +39,7 @@ namespace Yelo
 			_weapon_tag_field_real_trigger_spew_time,
 			_weapon_tag_field_real_trigger_rounds_per_second,
 
-			_unit_field_object_index_thrown_grenade_projectile,
+			_unit_field_object_index_throwing_grenade_projectile,
 			_unit_field_object_index_weapon,
 			_unit_field_object_index_equipment,
 			_unit_field_object_index_40C, // TBD, when we verify the full extent of the  field at 0x40C

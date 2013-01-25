@@ -67,7 +67,7 @@ static real_vector3d* ObjectDataFieldGetVector(const s_object_field_definition& 
 	return NULL;
 }
 
-static void ObjectDataFieldGetReal(const s_object_field_definition& field, s_object_header_datum& obj, 
+static bool ObjectDataFieldGetReal(const s_object_field_definition& field, s_object_header_datum& obj, 
 								   TypeHolder& result, cstring subdata_name)
 {
 	// NOTE: The only 'real' fields we allow interfacing with are vectors
@@ -87,4 +87,6 @@ static void ObjectDataFieldGetReal(const s_object_field_definition& field, s_obj
 
 	if(value_ptr != NULL)
 		result.ptr.real = &value_ptr[subfield_index];
+
+	return value_ptr != NULL;
 }
