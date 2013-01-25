@@ -124,6 +124,7 @@ namespace Yelo
 		}
 		void Initialize()
 		{
+			InitializeScripting();
 		}
 		void Dispose()
 		{

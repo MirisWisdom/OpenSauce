@@ -18,8 +18,8 @@ namespace Yelo
 	{
 		ENGINE_PTR(tag_block_definition, animation_graph_sound_reference_block,		0x9D6BB0, 0x6BA898, 0xA4E388);
 		ENGINE_PTR(tag_block_definition, animation_block,							0x9D6DD8, 0x6BAAC0, 0xA4E5B0);
-		ENGINE_PTR(tag_block_definition, animation_graph_unit_seat_block,			0x9D721C, 0x6BAF04, 0xA4E9F4);
 		ENGINE_PTR(tag_block_definition, unit_seat_animation_block,					0x9D7138, 0x6BAE20, 0xA4E910);
+		ENGINE_PTR(tag_block_definition, animation_graph_unit_seat_block,			0x9D721C, 0x6BAF04, 0xA4E9F4);
 
 		ENGINE_PTR(s_animation_list, weapon_class_animation_list,					0x9D7998, 0x6BB680, 0xA4F170);
 		ENGINE_PTR(s_animation_list, unit_seat_animation_list,						0x9D7AE0, 0x6BB7C8, 0xA4F2B8);
@@ -42,18 +42,18 @@ namespace Yelo
 				animation_block->maximum_element_count = Enums::k_max_animations_per_graph_upgrade;
 			}
 
+			// set the unit seat animation block's max elements to yelo's
+			{
+				tag_block_definition* unit_seat_animation_block = GET_PTR2(unit_seat_animation_block);
+				assert( unit_seat_animation_block->maximum_element_count==Enums::k_number_of_unit_seat_animations );
+				unit_seat_animation_block->maximum_element_count = Enums::k_number_of_unit_seat_animations_yelo;
+			}
+
 			// set the unit seat block's max elements to yelo's
 			{
 				tag_block_definition* animation_graph_unit_seat_block = GET_PTR2(animation_graph_unit_seat_block);
 				assert( animation_graph_unit_seat_block->maximum_element_count==Enums::k_max_unit_seat_modes_per_graph );
 				animation_graph_unit_seat_block->maximum_element_count = Enums::k_max_unit_seat_modes_per_graph_upgrade;
-			}
-			
-			// set the unit seat animation block's max elements to yelo's
-			{
-				tag_block_definition* unit_seat_animation_block = GET_PTR2(unit_seat_animation_block);
-				assert( unit_seat_animation_block->maximum_element_count==Enums::k_max_unit_seat_animations_per_graph );
-				unit_seat_animation_block->maximum_element_count = Enums::k_max_unit_seat_animations_per_graph_upgrade;
 			}
 
 			//////////////////////////////////////////////////////////////////////////
