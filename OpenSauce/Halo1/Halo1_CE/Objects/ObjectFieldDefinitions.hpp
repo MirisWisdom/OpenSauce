@@ -47,6 +47,7 @@ namespace Yelo
 			_unit_field_object_index_recent_damage_unit,
 
 			_unit_field_integer_ticks_until_flame_to_death,
+			_unit_field_integer_throwing_grenade_state,
 			_unit_field_integer_total_grenade_count_frag,
 			_unit_field_integer_total_grenade_count_plasma,
 			_unit_field_integer_total_grenade_count_custom2,

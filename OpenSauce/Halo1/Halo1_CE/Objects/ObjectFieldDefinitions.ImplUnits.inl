@@ -38,6 +38,7 @@ static void* UnitDataFieldGetIntegerImpl(const s_object_field_definition& field,
 	switch(field.definition_index)
 	{
 	case _unit_field_integer_ticks_until_flame_to_death:	return &unit.ticks_until_flame_to_death;
+	case _unit_field_integer_throwing_grenade_state:		return &unit.throwing_grenade_state;
 
 	case _unit_field_integer_total_grenade_count_frag:		return &unit.grenade_counts[Enums::_unit_grenade_type_frag];
 	case _unit_field_integer_total_grenade_count_plasma:	return &unit.grenade_counts[Enums::_unit_grenade_type_plasma];
