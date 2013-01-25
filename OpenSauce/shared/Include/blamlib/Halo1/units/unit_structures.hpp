@@ -226,7 +226,7 @@ namespace Yelo
 			UNKNOWN_TYPE(int16);											// 0x28E
 			UNKNOWN_TYPE(int16);											// 0x290
 			PAD16;															// 0x292
-			datum_index thrown_grenade_projectile_index;					// 0x294
+			datum_index throwing_grenade_projectile_index;					// 0x294
 			s_unit_animation_data animation;								// 0x298
 			real ambient;													// 0x2E0
 			real illumination;												// 0x2E4

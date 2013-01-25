@@ -5,7 +5,7 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-static void UnitDataFieldGetObjectIndex(const s_object_field_definition& field, s_unit_data& unit, 
+static bool UnitDataFieldGetObjectIndex(const s_object_field_definition& field, s_unit_data& unit, 
 											   TypeHolder& result, cstring data_name)
 {
 	using namespace Enums;
@@ -15,7 +15,7 @@ static void UnitDataFieldGetObjectIndex(const s_object_field_definition& field, 
 
 	switch(field.definition_index)
 	{
-	case _unit_field_object_index_thrown_grenade_projectile:		result.ptr.datum = &unit.thrown_grenade_projectile_index; break;
+	case _unit_field_object_index_throwing_grenade_projectile:		result.ptr.datum = &unit.throwing_grenade_projectile_index; break;
 	case _unit_field_object_index_equipment:						result.ptr.datum = &unit.equipment_index; break;
 	//case _unit_field_object_index_40C:								result.ptr.datum = &unit.responsible_unit_index; break;
 	case _unit_field_object_index_damage_responsible_flamer_object:	result.ptr.datum = &unit.responsible_flamer_object_index; break;
@@ -27,6 +27,8 @@ static void UnitDataFieldGetObjectIndex(const s_object_field_definition& field, 
 		result.ptr.datum = &unit.recent_damage[subfield_index].responsible_unit;
 		break;
 	}
+
+	return result.ptr.datum != NULL;
 }
 
 static void* UnitDataFieldGetIntegerImpl(const s_object_field_definition& field, s_unit_data& unit)
@@ -54,14 +56,16 @@ static void* UnitDataFieldGetIntegerImpl(const s_object_field_definition& field,
 	default: return NULL;
 	}
 }
-static void UnitDataFieldGetInteger(const s_object_field_definition& field, s_unit_data& unit, 
+static bool UnitDataFieldGetInteger(const s_object_field_definition& field, s_unit_data& unit, 
 									TypeHolder& result, void*)
 {
 	result.pointer = UnitDataFieldGetIntegerImpl(field, unit);
+
+	return result.pointer != NULL;
 }
 
 
-static void UnitDataFieldGetReal(const s_object_field_definition& field, s_unit_data& unit, 
+static bool UnitDataFieldGetReal(const s_object_field_definition& field, s_unit_data& unit, 
 								 TypeHolder& result, void*)
 {
 	using namespace Enums;
@@ -78,4 +82,6 @@ static void UnitDataFieldGetReal(const s_object_field_definition& field, s_unit_
 
 	default: result.ptr.real = NULL;  break;
 	}
+
+	return result.ptr.real != NULL;
 }
