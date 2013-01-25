@@ -42,7 +42,7 @@ static s_object_field_definition g_weapon_tag_real_trigger_fields[] = {
 
 
 static s_object_field_definition g_unit_object_index_fields[] = {
-	FIELD_ENTRY( unit, object,		object_index, thrown_grenade_projectile,				false, true),
+	FIELD_ENTRY( unit, object,		object_index, throwing_grenade_projectile,				false, true),
 	FIELD_ENTRY( unit, weapon,		object_index, weapon,									true,  true, true),
 	// TODO: when we add network support for equipment, update this field entry's flags
 	FIELD_ENTRY( unit, object,		object_index, equipment,								false, true),
@@ -55,6 +55,7 @@ static s_object_field_definition g_unit_object_index_fields[] = {
 // We use bool for byte-size fields as hs_type doesn't have an 8-bit integer
 static s_object_field_definition g_unit_integer_fields[] = {
 	FIELD_ENTRY(unit, byte, integer, ticks_until_flame_to_death,	false, true),
+	FIELD_ENTRY(unit, byte, integer, throwing_grenade_state,		false, true),
 
 	FIELD_ENTRY2(unit, byte, integer, total_grenade_count_frag,		"total_grenade_count[frag]",	true),
 	FIELD_ENTRY2(unit, byte, integer, total_grenade_count_plasma,	"total_grenade_count[plasma]",	true),
