@@ -3,5 +3,5 @@
 	<server_list version="1">
 		<server>http://os.halomods.com/Halo1/CE/Halo1_CE_Version.xml</server>
 	</server_list>
-	<version major="3" minor="1" build="0" />
+	<version major="3" minor="1" build="1" />
 </osVersionUpdate>
