@@ -5,8 +5,6 @@
 */
 #pragma once
 
-#ifdef API_DEBUG
-
 namespace Yelo
 {
 	namespace Debug
@@ -19,6 +17,7 @@ namespace Yelo
 	};
 };
 
+#if PLATFORM_IS_EDITOR || defined(API_DEBUG)
 	// Writes [str] with a time stamp if 
 	// [stamp] is true, to the debug file
 	#define YELO_DEBUG(str, stamp) Yelo::Debug::Write( str, stamp );
@@ -30,7 +29,6 @@ namespace Yelo
 	// Writes a new line without a timestamp
 	// to the debug file
 	#define YELO_DEBUG_NL() Yelo::Debug::Write("\n", false);
-
 #else
 	#define YELO_DEBUG(str, stamp) __noop
 	#define YELO_DEBUG_FORMAT(...) __noop
