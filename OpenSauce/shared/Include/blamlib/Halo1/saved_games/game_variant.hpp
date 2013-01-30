@@ -78,14 +78,12 @@ namespace Yelo
 	{
 		enum game_variant_flags : long_flags
 		{
-			_game_variant_ball_indicator_bit,
-			_game_variant_friends_on_radar_bit,
-			_game_variant_use_custom_start_equipment_bit,
+			_game_variant_show_players_on_radar_bit,
+			_game_variant_show_homies_bit,
+			_game_variant_infinite_grenades_bit,
 			_game_variant_players_have_shields_bit,
 			_game_variant_invisible_players_bit,
-			_game_variant_infinite_grenades_bit,
-			_game_variant_show_homies_bit,
-			_game_variant_show_players_on_radar_bit,
+			_game_variant_use_custom_start_equipment_bit,
 		};
 	};
 
@@ -148,7 +146,7 @@ namespace Yelo
 			BOOST_STATIC_ASSERT( sizeof(s_slayer) == 0x3 );
 
 			struct s_oddball {
-				UNKNOWN_TYPE(bool);
+				bool random_start;
 				PAD24;
 				Enums::oddball_carrier_speed ball_speed;
 
@@ -160,15 +158,15 @@ namespace Yelo
 			BOOST_STATIC_ASSERT( sizeof(s_oddball) == 0x18 );
 
 			struct s_king {
-				UNKNOWN_TYPE(bool);
+				bool moving_hill;
 			}king;
-			//BOOST_STATIC_ASSERT( sizeof(s_king) == 0x0 );
+			BOOST_STATIC_ASSERT( sizeof(s_king) == 0x1 );
 
 			struct s_race {
 				Enums::race_type race_type;
-				UNKNOWN_TYPE(int32); // enum...
+				long_enum team_scoring;
 			}race;
-			//BOOST_STATIC_ASSERT( sizeof(s_race) == 0x0 );
+			BOOST_STATIC_ASSERT( sizeof(s_race) == 0x8 );
 
 		}; BOOST_STATIC_ASSERT( sizeof(s_game_engine_variant) == s_game_engine_variant::k_max_variant_size );
 

@@ -7,6 +7,7 @@
 #include "Rasterizer/Rasterizer.hpp"
 #include "Game/Camera.hpp"
 #include "Game/EngineFunctions.hpp"
+#include "Interface/GameUI.hpp"
 
 namespace Yelo
 {
@@ -21,6 +22,8 @@ namespace Yelo
 
 			struct weapon_globals {
 				TextBlock* menu;
+
+				datum_index weapon_index_from_last_update;
 
 				int32 presets_count;
 				struct s_preset {
@@ -52,15 +55,12 @@ namespace Yelo
 
 
 			private:
-				s_item_datum* GetCurrentWeapon()
+				s_item_datum* GetCurrentWeapon(datum_index& return_weapon_index)
 				{
-					datum_index player_index = Players::LocalPlayerIndex();
-					int16 curr_weapon_index ;
-					datum_index* weapons = Players::GetWeapons(player_index, &curr_weapon_index);
-
-					datum_index weapon_index;
-					if(weapons && !(weapon_index = weapons[curr_weapon_index]).IsNull())
-						return (*Objects::ObjectHeader())[weapon_index]->_item;
+					const GameUI::s_first_person_weapon& fp_weapon = GameUI::FirstPersonWeapons()->local_players[0];
+					return_weapon_index = *fp_weapon.GetWeaponIndex();
+					if(!return_weapon_index.IsNull())
+						return (*Objects::ObjectHeader())[return_weapon_index]->_item;
 
 					return NULL;
 				}
@@ -88,25 +88,27 @@ namespace Yelo
 					return weapon_name;
 				}
 
-			public:
-				cstring GetCurrentWeaponName()
+				cstring GetCurrentWeaponName(datum_index& return_weapon_index)
 				{
-					s_item_datum* weapon = GetCurrentWeapon();
+					s_item_datum* weapon = GetCurrentWeapon(return_weapon_index);
 
 					if(weapon != NULL)
 						return GetWeaponName(weapon);
 
 					return NULL;
 				}
-
-				s_preset* GetCurrentPreset()
+			public:
+				s_preset* GetCurrentPreset(datum_index& return_weapon_index, cstring& return_name)
 				{
-					cstring name = GetCurrentWeaponName();
+					return_weapon_index = datum_index::null;
+					return_name = GetCurrentWeaponName(return_weapon_index);
 
-					if(name != NULL)
+					if(this->presets_count == 0) return NULL;
+
+					if(return_name != NULL)
 					{
-						for(int32 x = 0; x < NUMBEROF(this->presets); x++)
-							if( !strcmp(name, presets[x].name) )
+						for(int32 x = 0; x < this->presets_count; x++)
+							if( !strcmp(return_name, presets[x].name) )
 								return &presets[x];
 					}
 
@@ -135,17 +137,11 @@ namespace Yelo
 
 				void SaveSettings(TiXmlElement* weapons_element)
 				{
-					bool valid_indices[NUMBEROF(presets)];
-					int32 valid_indices_count = 0;
 					for(int32 x = 0; x < presets_count; x++)
 					{
-						valid_indices[x] = !(presets[x].offset.i == 0.0f &&	presets[x].offset.j == 0.0f && presets[x].offset.k == 0.0f);
-						if(valid_indices[x]) valid_indices_count++;
-					}
+						bool valid_preset = !(presets[x].offset.i == 0.0f &&	presets[x].offset.j == 0.0f && presets[x].offset.k == 0.0f);
 
-					for(int32 x = 0; x < presets_count; x++)
-					{
-						if(!valid_indices[x]) continue;
+						if(!valid_preset) continue;
 						s_preset& p = presets[x];
 
 						TiXmlElement* entry = new TiXmlElement("entry");
@@ -158,15 +154,20 @@ namespace Yelo
 					}
 				}
 
-			}_weapon_globals;
+			}_weapon_globals = {
+				NULL,
+				datum_index::null,
+			};
 
-			void PLATFORM_API ApplyWeaponPreset()
+			static void PLATFORM_API ApplyWeaponPreset()
 			{
-				static uint32 FIRST_PERSON_WEAPON_RENDER_UPDATE = GET_FUNC_PTR(FIRST_PERSON_WEAPON_RENDER_UPDATE);
+				static const uintptr_t FIRST_PERSON_WEAPON_RENDER_UPDATE = GET_FUNC_PTR(FIRST_PERSON_WEAPON_RENDER_UPDATE);
 
-				weapon_globals::s_preset* preset = _weapon_globals.GetCurrentPreset();
+				datum_index weapon_index;
+				cstring name;
+				weapon_globals::s_preset* preset = _weapon_globals.GetCurrentPreset(weapon_index, name);
 
-				if(preset)
+				if(preset != NULL)
 				{
 					real_vector3d* position = CAST(real_vector3d*, Render::RenderGlobals()->camera.point);
 					const Camera::s_observer* obs = Camera::Observer();
@@ -197,14 +198,25 @@ namespace Yelo
 				_weapon_globals.Dispose();
 			}
 
-			bool AdjustSettings()
+			Enums::settings_adjustment_result AdjustSettings()
 			{
-				cstring name = _weapon_globals.GetCurrentWeaponName();
-				if(name == NULL) return true;
+				datum_index weapon_index;
+				cstring name;
+				weapon_globals::s_preset* preset = _weapon_globals.GetCurrentPreset(weapon_index, name);
 
-				weapon_globals::s_preset* preset = _weapon_globals.GetCurrentPreset();
+				if(	name == NULL ||
+					(!_weapon_globals.weapon_index_from_last_update.IsNull() && 
+					  _weapon_globals.weapon_index_from_last_update != weapon_index)
+					)
+				{
+					_weapon_globals.weapon_index_from_last_update = datum_index::null;
+					return Enums::_settings_adjustment_result_cancel;
+				}
+				else
+					_weapon_globals.weapon_index_from_last_update = weapon_index;
+
 				if(preset == NULL && (preset = _weapon_globals.AddPreset(name)) == NULL)
-					return true;
+					return Enums::_settings_adjustment_result_cancel;
 
 				if(Input::GetMouseButtonState(Enums::_MouseButton3) == 1)
 					preset->offset.Set(.0f,.0f,.0f);
@@ -221,7 +233,7 @@ namespace Yelo
 
 				_weapon_globals.menu->Render();
 
-				return false;
+				return Enums::_settings_adjustment_result_not_finished;
 			}
 
 			void LoadSettings(TiXmlElement* weapons_element)

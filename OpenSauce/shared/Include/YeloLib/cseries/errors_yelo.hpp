@@ -5,6 +5,8 @@
 */
 #pragma once
 
+#if PLATFORM_IS_EDITOR || defined(API_DEBUG)
+
 namespace Yelo
 {
 	namespace Debug
@@ -16,8 +18,6 @@ namespace Yelo
 		void WriteFormat(cstring format, ...);
 	};
 };
-
-#if PLATFORM_IS_EDITOR || defined(API_DEBUG)
 	// Writes [str] with a time stamp if 
 	// [stamp] is true, to the debug file
 	#define YELO_DEBUG(str, stamp) Yelo::Debug::Write( str, stamp );

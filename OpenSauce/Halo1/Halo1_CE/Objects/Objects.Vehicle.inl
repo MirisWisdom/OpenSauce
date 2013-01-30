@@ -75,11 +75,11 @@ namespace Yelo
 				_vehicle_globals.Dispose();
 			}
 
-			bool AdjustSettings()
+			Enums::settings_adjustment_result AdjustSettings()
 			{
 				_vehicle_globals.menu->Render();
 
-				return false;
+				return Enums::_settings_adjustment_result_not_finished;
 			}
 
 			void LoadSettings(TiXmlElement* vehicles_element)

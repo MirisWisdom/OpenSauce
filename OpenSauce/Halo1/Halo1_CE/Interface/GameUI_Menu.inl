@@ -52,19 +52,22 @@ namespace Yelo
 					Input::AllowMovement(true);
 			}
 
-			void WaitForReturn(bool (API_FUNC* AdjustSettings)())
+			void WaitForReturn(Enums::settings_adjustment_result (API_FUNC* AdjustSettings)())
 			{
 				Hud::ShowCrosshair() = false;
 				Input::AllowMovement(false);
 
-				bool is_done = AdjustSettings();
+				Enums::settings_adjustment_result result = AdjustSettings();
+				bool wants_to_save = Input::GetMouseButtonState(Enums::_MouseButton1) == 1;
+				bool game_menu_is_active = Input::IsInMenu() || Input::IsInChat();
 
-				// Save
-				if (is_done || 
-					Input::GetMouseButtonState(Enums::_MouseButton1) == 1 ||
-					Input::IsInMenu() || Input::IsInChat())
+				if (result != Enums::_settings_adjustment_result_not_finished || 
+					wants_to_save || 
+					game_menu_is_active)
 				{
-					Settings::SaveSettings();
+					if(result != Enums::_settings_adjustment_result_cancel && wants_to_save)
+						Settings::SaveSettings();
+
 					Hud::ShowCrosshair() = true;
 					selection = Enums::_settings_menu_on;
 					returning = true;

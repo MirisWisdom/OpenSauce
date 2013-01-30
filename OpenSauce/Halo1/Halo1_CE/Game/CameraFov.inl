@@ -11,25 +11,6 @@ namespace Yelo
 {
 	namespace Fov
 	{
-		static void PLATFORM_API OBSERVER_UPDATE_COMMAND()
-		{
-			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBSERVER_UPDATE_COMMAND);
-
-			__asm call	TEMP_CALL_ADDR
-			Fov::Update();
-		}
-
-
-		static void PLATFORM_API OBSERVER_UPDATE_POSITIONS()
-		{
-			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(OBSERVER_UPDATE_POSITIONS);
-
-			__asm call	TEMP_CALL_ADDR
-
-			GET_PTR(OBSERVER_UPDATE_POSITIONS_no_scope_blur) = Fov::RequiresZoomFix();
-		}
-
-
 #define DEF_FOV_H	1.22173047065735f
 #define DEF_FOV_V	(atanf(0.75f*tanf(DEF_FOV_H/2.f))*2.f)
 		struct {
@@ -117,6 +98,30 @@ namespace Yelo
 			NULL,
 		};
 
+		static bool RequiresZoomFix()
+		{
+			real h = Camera::Observer()->origin.fov;
+			real v = atanf(_fov_globals.screen.height/_fov_globals.screen.width * tanf(h/2.f)) * 2.f;
+
+			return Camera::Observer()->command.fov < h && v > 1.28f;
+		}
+
+		static void PLATFORM_API OBSERVER_UPDATE_COMMAND()
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(OBSERVER_UPDATE_COMMAND);
+
+			__asm call	FUNCTION
+			Fov::Update();
+		}
+
+		static void PLATFORM_API OBSERVER_UPDATE_POSITIONS()
+		{
+			static uintptr_t FUNCTION = GET_FUNC_PTR(OBSERVER_UPDATE_POSITIONS);
+
+			__asm call	FUNCTION
+
+			GET_PTR(OBSERVER_UPDATE_POSITIONS_no_scope_blur) = Fov::RequiresZoomFix();
+		}
 
 		void Initialize()
 		{
@@ -142,15 +147,7 @@ namespace Yelo
 				Camera::Observer()->command.fov = _fov_globals.fov.height * player_fov / DEF_FOV_H;
 		}
 
-		bool RequiresZoomFix()
-		{
-			real h = Camera::Observer()->origin.fov;
-			real v = atanf(_fov_globals.screen.height/_fov_globals.screen.width * tanf(h/2.f)) * 2.f;
-			
-			return Camera::Observer()->command.fov < h && v > 1.28f;
-		}
-
-		bool AdjustSettings()
+		Enums::settings_adjustment_result AdjustSettings()
 		{
 			if (Input::GetMouseButtonState(Enums::_MouseButton3) == 1)
 			{
@@ -176,7 +173,8 @@ namespace Yelo
 			_fov_globals.menu->SetText(text);
 			_fov_globals.menu->Refresh();
 			_fov_globals.menu->Render();
-			return false;
+
+			return Enums::_settings_adjustment_result_not_finished;
 		}
 
 		void LoadSettings(TiXmlElement* fov_element)

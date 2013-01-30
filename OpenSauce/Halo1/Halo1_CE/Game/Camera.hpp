@@ -7,6 +7,7 @@
 #pragma once
 
 #if PLATFORM_IS_USER
+#include "Interface/YeloSettingsInterface.hpp"
 
 namespace Yelo
 {
@@ -185,9 +186,7 @@ namespace Yelo
 		void Dispose();
 		void Update();
 
-		bool RequiresZoomFix();
-
-		bool AdjustSettings();
+		Enums::settings_adjustment_result AdjustSettings();
 		void LoadSettings(TiXmlElement* fov_element);
 		void SaveSettings(TiXmlElement* fov_element);
 

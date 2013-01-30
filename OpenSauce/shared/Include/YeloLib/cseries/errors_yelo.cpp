@@ -6,14 +6,13 @@
 #include "Common/Precompile.hpp"
 #include <YeloLib/cseries/errors_yelo.hpp>
 
+#if PLATFORM_IS_EDITOR || defined(API_DEBUG)
 #include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
 
 namespace Yelo
 {
 	namespace Debug
 	{
-#if PLATFORM_IS_EDITOR || defined(API_DEBUG)
-
 		static FILE* debug_file = NULL;
 
 		void FileInitialize()
@@ -78,12 +77,7 @@ namespace Yelo
 
 			Write(buffer, true);
 		}
-#else
-		void FileInitialize() {}
-		void FileDispose() {}
-
-		void Write(cstring str, bool write_time_stamp) {}
-		void WriteFormat(cstring format, ...) {}
-#endif
 	};
 };
+
+#endif
