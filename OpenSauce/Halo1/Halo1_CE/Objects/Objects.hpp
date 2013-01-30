@@ -25,6 +25,10 @@
 #include <blamlib/Halo1/units/biped_structures.hpp>
 #include <blamlib/Halo1/units/vehicle_structures.hpp>
 
+#if !PLATFORM_IS_DEDI
+	#include "Interface/YeloSettingsInterface.hpp"
+#endif
+
 namespace Yelo
 {
 	struct s_cache_tag_instance;
@@ -214,7 +218,7 @@ namespace Yelo
 			void Dispose();
 
 #if !PLATFORM_IS_DEDI
-			bool AdjustSettings();
+			Enums::settings_adjustment_result AdjustSettings();
 			void LoadSettings(TiXmlElement* weapons_element);
 			void SaveSettings(TiXmlElement* weapons_element);
 #endif
@@ -236,7 +240,7 @@ namespace Yelo
 			void Dispose();
 
 #if !PLATFORM_IS_DEDI
-			bool AdjustSettings();
+			Enums::settings_adjustment_result AdjustSettings();
 			void LoadSettings(TiXmlElement* vehicles_element);
 			void SaveSettings(TiXmlElement* vehicles_element);
 #endif

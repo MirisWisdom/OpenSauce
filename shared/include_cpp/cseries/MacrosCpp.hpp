@@ -214,11 +214,11 @@
 // How many total bits are in the supplied bit vector size and type container
 #define BIT_VECTOR_SIZE_IN_BITS(size, type)		( (size) * BIT_COUNT(type) )
 #define BIT_VECTOR_TEST_FLAG8(vector, bit)			TEST_BIT32(CAST_PTR(unsigned char*,vector) [bit>>3], bit&7)
-#define BIT_VECTOR_SET_FLAG8(vector, bit, value)	SET_BIT32 (CAST_PTR(unsigned char*,vector) [bit>>3], bit&7,  value)
+#define BIT_VECTOR_SET_FLAG8(vector, bit, value)	SET_BIT32( CAST_PTR(unsigned char*,vector) [bit>>3], bit&7,  value)
 #define BIT_VECTOR_TEST_FLAG16(vector, bit)			TEST_BIT32(CAST_PTR(unsigned short*,vector)[bit>>4], bit&15)
-#define BIT_VECTOR_SET_FLAG16(vector, bit, value)	SET_BIT32 (CAST_PTR(unsigned short*,vector)[bit>>4], bit&15, value)
+#define BIT_VECTOR_SET_FLAG16(vector, bit, value)	SET_BIT32( CAST_PTR(unsigned short*,vector)[bit>>4], bit&15, value)
 #define BIT_VECTOR_TEST_FLAG32(vector, bit)			TEST_BIT32(CAST_PTR(unsigned long*,vector) [bit>>5], bit&31)
-#define BIT_VECTOR_SET_FLAG32(vector, bit, value)	SET_BIT32 (CAST_PTR(unsigned long*,vector) [bit>>5], bit&31, value)
+#define BIT_VECTOR_SET_FLAG32(vector, bit, value)	SET_BIT32( CAST_PTR(unsigned long*,vector) [bit>>5], bit&31, value)
 
 // Extracts the bits at [bit_low] to [bit_hi] in [value] 
 // and returns the result value

@@ -43,6 +43,13 @@ namespace Yelo
 			k_settings_menu_key_first_catagory = k_settings_menu_base_key+1,
 			k_settings_menu_key_last_catagory = k_settings_menu_last_key-1,
 		};
+
+		enum settings_adjustment_result : long_enum
+		{
+			_settings_adjustment_result_not_finished,
+			_settings_adjustment_result_finished,
+			_settings_adjustment_result_cancel,
+		};
 	};
 };
 #endif

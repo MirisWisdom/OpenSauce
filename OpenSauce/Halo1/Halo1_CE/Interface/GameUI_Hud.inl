@@ -234,7 +234,7 @@ namespace Yelo
 #undef ADD_MENU_ITEM
 		}
 
-		bool AdjustSettings()
+		Enums::settings_adjustment_result AdjustSettings()
 		{
 			if (Input::GetKeyState(Enums::_Key1) == 1)
 				g_hud_globals.m_flags.show_hud = !g_hud_globals.m_flags.show_hud;
@@ -244,7 +244,7 @@ namespace Yelo
 
 			AdjustSettings_Render();
 
-			return false;
+			return Enums::_settings_adjustment_result_not_finished;
 		}
 
 		void LoadSettings(TiXmlElement* hud_element)

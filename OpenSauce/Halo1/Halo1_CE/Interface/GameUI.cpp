@@ -63,10 +63,10 @@ namespace Yelo
 
 		static TagGroups::s_weapon_definition const* FirstPersonWeaponGetWeaponDefinition(s_first_person_weapon* fp_weapon)
 		{
-			datum_index definition_index = *fp_weapon->GetCurrentWeapon();
+			datum_index weapon_index = *fp_weapon->GetWeaponIndex();
 
-			if(!definition_index.IsNull())
-				return Objects::GetObjectDefinition<TagGroups::s_weapon_definition>(definition_index);
+			if(!weapon_index.IsNull())
+				return Objects::GetObjectDefinition<TagGroups::s_weapon_definition>(weapon_index);
 
 			return NULL;
 		}
@@ -96,12 +96,12 @@ namespace Yelo
 		}
 		API_FUNC_NAKED static void PLATFORM_API FirstPersonWeaponSetStateHook()
 		{
-			API_FUNC_NAKED_START()
+			API_FUNC_NAKED_START_()
 				push	edi
 				push	ebx
 				push	esi
 				call	FirstPersonWeaponSetStatePermutateAnimation
-			API_FUNC_NAKED_END(0)
+			API_FUNC_NAKED_END_()
 		}
 		static void FirstPersonWeaponSetStateHookCreateHook()
 		{

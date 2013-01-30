@@ -62,7 +62,10 @@ namespace Yelo
 			_hs_type_weapon_name,
 			_hs_type_device_name,
 			_hs_type_scenery_name,
-			_hs_type,
+			
+			k_number_of_hs_types,
+
+			k_number_of_hs_types_yelo,
 
 			// faux HS type, only for the sake of OS code which exposes 8-bit integers
 			// NOTE: we treat sbyte as a byte still!

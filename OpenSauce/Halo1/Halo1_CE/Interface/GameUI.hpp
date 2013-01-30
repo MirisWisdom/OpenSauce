@@ -17,6 +17,8 @@
 #include <blamlib/Halo1/interface/interface.hpp>
 #include <blamlib/Halo1/interface/motion_sensor.hpp>
 
+#include "Interface/YeloSettingsInterface.hpp"
+
 namespace Yelo
 {
 	namespace Enums
@@ -246,8 +248,8 @@ namespace Yelo
 		struct s_first_person_weapon : TStructImpl(0x1EA0)
 		{
 			TStructGetPtrImpl(bool, IsVisible, 0x0);
-			TStructGetPtrImpl(datum_index, Unit, 0x4);
-			TStructGetPtrImpl(datum_index, CurrentWeapon, 0x8);
+			TStructGetPtrImpl(datum_index, UnitIndex, 0x4);
+			TStructGetPtrImpl(datum_index, WeaponIndex, 0x8);
 			// 1 = o-h-enter, 3 = overheated, 4 = charging, 5 = posing, 6 = firing1, 10 = meleeing, 
 			// 13 = reload empty, 14 = reload full, 19 = switching/ready, 22 = o-h-exit, 23 = firing2
 			TStructGetPtrImpl(int16, AnimationState, 0xC);
@@ -295,10 +297,10 @@ namespace Yelo
 			//TStructGetPtrImpl(int32, , 0x1E98);
 			//TStructGetPtrImpl(int16, , 0x1E9C);
 		};
-		struct s_first_person_weapons : TStructImpl(0x1EA0)
+		struct s_first_person_weapons
 		{
 			s_first_person_weapon local_players[Enums::k_maximum_number_of_local_players];
-		};
+		}; BOOST_STATIC_ASSERT( sizeof(s_first_person_weapons) == 0x1EA0 );
 		s_first_person_weapons*		FirstPersonWeapons();
 
 
@@ -346,7 +348,7 @@ namespace Yelo
 		bool& ShowCrosshair();
 		void* HudGlobals(); // get the hud_globals tag definition
 
-		bool AdjustSettings();
+		Enums::settings_adjustment_result AdjustSettings();
 		void LoadSettings(TiXmlElement* hud_element);
 		void SaveSettings(TiXmlElement* hud_element);
 
