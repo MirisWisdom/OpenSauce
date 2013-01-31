@@ -534,12 +534,6 @@ namespace Yelo
 		{
 			struct
 			{
-				struct
-				{
-					bool map_is_yelo;
-					PAD24;
-				}m_flags;
-
 				c_map_element map_element;
 			}m_map_part_definition;
 
@@ -630,16 +624,12 @@ namespace Yelo
 			{
 				c_xml_downloader::Ctor();
 
-				m_map_part_definition.m_flags.map_is_yelo = false;
-
 				m_map_part_definition.map_element.Ctor();
 			}
 
 			void Dtor()
 			{
 				c_xml_downloader::Dtor();
-
-				m_map_part_definition.m_flags.map_is_yelo = false;
 
 				m_map_part_definition.map_element.Dtor();
 			}
@@ -682,9 +672,9 @@ namespace Yelo
 						return false;
 
 					if(strcmp(extension, ".yelo") == 0)
-						m_map_part_definition.m_flags.map_is_yelo = true;
+						m_map_part_definition.map_element.m_map_is_yelo = true;
 					else if(strcmp(extension, ".map") == 0)
-						m_map_part_definition.m_flags.map_is_yelo = false;
+						m_map_part_definition.map_element.m_map_is_yelo = false;
 					else
 						return false;
 
@@ -1967,6 +1957,13 @@ namespace Yelo
 					part_downloader.SetURL(url_interface.GetURL().c_str());
 					part_downloader.SetPart(g_map_download_globals.m_part_download.part_iterator->Current());
 					part_downloader.Start();
+
+					if(g_map_download_globals.m_part_download.part_iterator->Current()->m_encrypted)
+					{
+						if(strlen(g_map_download_globals.m_servers.dedicated_server.m_mp_password) == 0)
+							return _map_download_stage_failed;
+						g_map_download_globals.m_part_download.downloader.SetDecryptionKey(&g_map_download_globals.m_servers.dedicated_server.m_mp_password_key[0]);
+					}
 
 					if(part_downloader.Status() == Enums::_http_file_download_status_failed)
 						return _map_download_stage_failed;
