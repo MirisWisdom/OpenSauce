@@ -230,6 +230,48 @@ namespace Boarding
 		}
 	}
 
+	// Checks if any other boarding seats have the same target_seat_index and if anyone else is trying to board from them
+	static bool UnitCanEnterBoardingSeat(datum_index parent_unit_index, int16 seat_index)
+	{
+		bool result = true;
+
+		t_object_header_data object_header = (*Objects::ObjectHeader());
+		s_unit_datum* parent_unit = object_header[parent_unit_index]->_unit;
+		
+		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
+
+		if(cv_globals != NULL)
+		{
+			TagGroups::s_unit_external_upgrades const* unit_upgrade_definition = 
+				cv_globals->FindUnitExternalUpgradeBlock(parent_unit->object.definition_index);
+			TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
+				cv_globals->FindUnitExternalUpgradeBoardingSeatBlock(parent_unit->object.definition_index, seat_index);
+
+			// Check if a unit_upgrade_definition and boarding_seat_definition exist
+			if (unit_upgrade_definition != NULL && boarding_seat_definition != NULL)
+			{
+				int16 target_seat_index = boarding_seat_definition->target_seat_index;
+
+				// Loop through the boarding seats
+				for (int i = 0; i < unit_upgrade_definition->boarding_seats.Count; i++)
+				{
+					// Check if the current seat has the same target seat as the seat we're trying to enter
+					if (unit_upgrade_definition->boarding_seats[i].target_seat_index == target_seat_index)
+					{
+						datum_index seated_unit_index = GetUnitInSeat(parent_unit_index, 
+							unit_upgrade_definition->boarding_seats[i].seat_index);
+
+						// If there is someone sitting in this seat, we can't enter
+						if (seated_unit_index != datum_index::null)
+							result = false;
+					}
+				}
+			}
+		}
+
+		return result;
+	}
+
 	// Replaces the engines unit_can_enter_seat function with our own to compensate for boarding and multiteam vehicles
 	static bool UnitCanEnterSeat(datum_index unit_index, datum_index target_unit_index, int16 target_seat_index, datum_index* unit_in_seat)
 	{
@@ -280,8 +322,8 @@ namespace Boarding
 			{
 				datum_index boarded_unit_index = GetUnitInSeat(target_unit_index, boarding_seat_definition->target_seat_index);
 
-				// If there is no unit to board or if they are an ally, disallow entry into the boarding seat
-				if (boarded_unit_index == datum_index::null || !ObjectIsEnemy(unit_index, boarded_unit_index))
+				// If there is no unit to board, if they are an ally, or if there is already someone boarding, disallow entry into the boarding seat
+				if (boarded_unit_index == datum_index::null || !ObjectIsEnemy(unit_index, boarded_unit_index) || !UnitCanEnterBoardingSeat(target_unit_index, target_seat_index))
 					result = false;
 			}
 		}
