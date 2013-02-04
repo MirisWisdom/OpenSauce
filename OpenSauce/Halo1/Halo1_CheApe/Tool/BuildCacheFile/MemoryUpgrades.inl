@@ -338,7 +338,7 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 		// Only allow script node upgrades when building with use-memory-upgrades on
 		if(only_using_data_file_hacks)
 		{
-			printf_s("CheApe: warning: memory upgrades are off, turning off custom script definitions support...\n");
+			printf_s("CheApe: warning: memory upgrades are off, turning off OS script definitions support...\n");
 			PrintScriptUpgradesUsage();
 
 			Scripting::DisposeScriptNodeUpgrades();
@@ -348,7 +348,6 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 			TagMemoryInitialize();
 			CacheMemoryInitialize();
 			Scripting::InitializeCustomScriptingDefinitions();
-			Objects::Items::GrenadeTypesUpgrade(true);
 		}
 
 		TagGroups::ScenarioYeloLoadHookInitialize();
@@ -364,8 +363,6 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 		{
 			TagMemoryDispose();
 			CacheMemoryDispose();
-			// TODO: Implement a DisposeCustomScriptingDefinitions to be consistent?
-			Objects::Items::GrenadeTypesUpgrade(false);
 		}
 
 		TagGroups::ScenarioYeloLoadHookDispose();

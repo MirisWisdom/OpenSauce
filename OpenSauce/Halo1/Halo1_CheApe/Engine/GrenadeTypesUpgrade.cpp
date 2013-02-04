@@ -87,9 +87,7 @@ namespace Yelo
 			global_grenade_type_yelo_enum_strings[_unit_grenade_type_frag] = types_enum->strings[_unit_grenade_type_frag];
 			global_grenade_type_yelo_enum_strings[_unit_grenade_type_plasma] = types_enum->strings[_unit_grenade_type_plasma];
 
-#if PLATFORM_ID != PLATFORM_TOOL
 			GrenadeTypesUpgrade(true);
-#endif
 		}
 		void GrenadeTypesUpgradeDispose()
 		{

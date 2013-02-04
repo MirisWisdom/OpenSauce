@@ -242,11 +242,14 @@ static void PLATFORM_API build_cache_file_for_scenario_stock_override(void** arg
 	}* args = CAST_PTR(s_arguments*, arguments);
 	//////////////////////////////////////////////////////////////////////////
 
-	printf_s("CheApe: warning: build-cache-file doesn't support custom script definitions...\n");
+	printf_s("CheApe: reminder: stock build-cache-file doesn't support\n");
+	printf_s("\t* "	"OS script definitions\n");
+	printf_s("\t* "	"additional grenade types\n");
 	BuildCacheFileEx::MemoryUpgrades::PrintScriptUpgradesUsage();
 
 	// Don't allow script node upgrades when building stock cache files
 	Scripting::DisposeScriptNodeUpgrades();
+	Objects::Items::GrenadeTypesUpgrade(false);
 
 	s_build_cache_file_for_scenario& bcffs = build_cache_file_for_scenario_internals;
 	bcffs.build_cache_file_for_scenario_command(arguments);
