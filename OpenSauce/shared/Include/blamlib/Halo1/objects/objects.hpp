@@ -115,26 +115,24 @@ namespace Yelo
 
 				// Allows us to implicitly treat 'address' as an specific object type ptr
 				// in situations where we're programming for something more specific (eg, unit types only)
-				union {
-					struct s_scenery_datum* _scenery;
-					struct s_sound_scenery_datum* _sound_scenery;
-					struct s_garbage_datum* _garbage;
-					struct s_projectile_datum* _projectile;
-					struct s_placeholder_datum* _placeholder;
+				struct s_scenery_datum* _scenery;
+				struct s_sound_scenery_datum* _sound_scenery;
+				struct s_garbage_datum* _garbage;
+				struct s_projectile_datum* _projectile;
+				struct s_placeholder_datum* _placeholder;
 
-					struct s_device_datum* _device;
-					struct s_device_machine_datum* _machine;
-					struct s_device_control_datum* _control;
-					struct s_device_lightfixture_datum* _lightfixture;
+				struct s_device_datum* _device;
+				struct s_device_machine_datum* _machine;
+				struct s_device_control_datum* _control;
+				struct s_device_lightfixture_datum* _lightfixture;
 
-					struct s_item_datum* _item;
-					struct s_weapon_datum* _weapon;
-					struct s_equipment_datum* _equipment;
+				struct s_item_datum* _item;
+				struct s_weapon_datum* _weapon;
+				struct s_equipment_datum* _equipment;
 
-					struct s_unit_datum* _unit;
-					struct s_biped_datum* _biped;
-					struct s_vehicle_datum* _vehicle;
-				};
+				struct s_unit_datum* _unit;
+				struct s_biped_datum* _biped;
+				struct s_vehicle_datum* _vehicle;
 			};
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_header_datum) == 0xC );
 
@@ -152,19 +150,21 @@ namespace Yelo
 			bool object_marker_initialized;
 			bool garbage_collect_now;
 			UNKNOWN_TYPE(bool);
-			int16 object_type_being_placed; // script value enum
+			int16 object_type_being_placed; // hs type
 			UNKNOWN_TYPE(int16);
 			UNKNOWN_TYPE(datum_index);
 			long_flags pvs[BIT_VECTOR_SIZE_IN_DWORDS(512)];
 			long_flags pvs2[BIT_VECTOR_SIZE_IN_DWORDS(512)];
-			UNKNOWN_TYPE(int32);								// 0x84
-			_enum object_pvs_set;								// 0x90
-			UNKNOWN_TYPE(int16);
+			UNUSED_TYPE(int32);									// 0x84
 			// none = 0
 			// object = 1
-			// camera = 2
-			_enum object_pvs_object;							// 0x94
+			// cluster = 2
+			_enum pvs_activator_type;							// 0x90
 			PAD16;
+			union {												// 0x94
+				datum_index pvs_activating_object_index;
+				int16 pvs_activating_cluster_index;
+			};
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_globals_data) == 0x98 );
 
 		struct s_object_name_list_data
