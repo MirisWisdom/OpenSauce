@@ -7,6 +7,7 @@
 
 CMDLINE_DEFINE_ARG(path, cstring)
 CMDLINE_DEFINE_SWITCH(no_os_gamestate)
+CMDLINE_DEFINE_SWITCH(full_dump)
 
 #if PLATFORM_IS_DEDI
 #else

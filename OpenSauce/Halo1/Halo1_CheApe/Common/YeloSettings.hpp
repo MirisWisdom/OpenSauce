@@ -32,7 +32,9 @@ namespace Yelo
 			}paths;
 
 			struct {
-				uint32 base_adddress_override; // Tag memory base address override
+				bool do_full_crashdump;
+				PAD24;
+				uint32 base_address_override; // Tag memory base address override
 			}tool;
 
 			void Parse(TiXmlElement* element);

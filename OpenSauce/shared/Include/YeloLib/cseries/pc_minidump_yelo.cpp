@@ -55,7 +55,7 @@ namespace Yelo
 			return bRet;
 		}
 
-		void CreateMiniDump(cstring process_name, cstring reports_path, HANDLE process)
+		void CreateMiniDump(cstring process_name, cstring reports_path, HANDLE process, bool do_full_dump)
 		{
 			DWORD process_id = GetProcessId(process);
 
@@ -85,10 +85,10 @@ namespace Yelo
 			BOOL success = MiniDumpWriteDump(process,
 				process_id,
 				file_info.file_handle,
-				(MINIDUMP_TYPE)(MiniDumpWithIndirectlyReferencedMemory | MiniDumpScanMemory),
+				(MINIDUMP_TYPE)(do_full_dump ? MiniDumpWithFullMemory : (MiniDumpWithIndirectlyReferencedMemory | MiniDumpScanMemory)),
 				NULL,
 				NULL,
-				&dump_callback);
+				(do_full_dump ? NULL : &dump_callback));
 
 			if(success)
 			{
@@ -99,15 +99,15 @@ namespace Yelo
 					"A crashdump for this exception has been saved to your OpenSauce Reports directory:\n%s\nAttach this file if you report this issue.",
 					dump_path);
 
-				MessageBox(NULL, message_box_text, "Minidump Saved", MB_OK);
+				MessageBox(NULL, message_box_text, "Crashdump Saved", MB_OK);
 			}
 
 			FileIO::CloseFile(file_info);
 		}
 
-		void OutputExceptionData(cstring process_name, cstring reports_path)
+		void OutputExceptionData(cstring process_name, cstring reports_path, bool do_full_dump)
 		{
-			CreateMiniDump(process_name, reports_path, GetCurrentProcess());
+			CreateMiniDump(process_name, reports_path, GetCurrentProcess(), do_full_dump);
 		}
 	};
 };

@@ -10,6 +10,7 @@
 #include <dbghelp.h>
 
 #include <YeloLib/cseries/pc_minidump_yelo.hpp>
+#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 
@@ -27,9 +28,13 @@ namespace Yelo
 			static cstring k_process_name = PLATFORM_VALUE("haloce", "haloceded");
 
 			_asm pushad;
-				Debug::OutputExceptionData(k_process_name, Settings::ReportsPath());
+
+			if(CMDLINE_GET_PARAM(full_dump).ParameterSet())
+				Debug::OutputExceptionData(k_process_name, Settings::ReportsPath(), true);
+			else
+				Debug::OutputExceptionData(k_process_name, Settings::ReportsPath(), false);
+
 			_asm {
-				pushad
 				popad
 				mov		ecx, 11h
 				xor		eax, eax

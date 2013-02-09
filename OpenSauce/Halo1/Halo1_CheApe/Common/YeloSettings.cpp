@@ -71,12 +71,15 @@ namespace Yelo
 			{ TiXmlElement* tool_element = element->FirstChildElement("tool");
 				if(tool_element != NULL)
 				{
+					cstring value = element->Attribute("doFullCrashdump");
+					tool.do_full_crashdump = Settings::ParseBoolean(value);
+
 					value = element->Attribute("baseAddressOverride");
 
 					// We expect a base 16 number
 					unsigned long addr = strtoul(value, NULL, 16);
 
-					tool.base_adddress_override = errno == ERANGE ? 0 : addr;
+					tool.base_address_override = errno == ERANGE ? 0 : addr;
 				}
 			}
 
