@@ -7,6 +7,8 @@
 #include "Common/Precompile.hpp"
 #include "CheApeInterface.hpp"
 
+#include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
+
 #include "Common/DebugDump.hpp"
 #include "Engine/EngineFunctions.hpp"
 #include "Rasterizer/Rasterizer.hpp"
@@ -65,6 +67,11 @@ namespace Yelo
 		// TODO: we many want to move this into IntializeBeforeTagGroupsInitalize later
 		// However, we won't be able to use some tag_group related functions in the fixing code
 		TagGroups::InitializeFixes();
+
+#if PLATFORM_ID != PLATFORM_TOOL
+		// cmd line args read here as they ned to happen late in Yelo's init
+		Settings::ReadCmdLineSettings();
+#endif
 	}
 	static void OverrideTagFilesOpen()
 	{

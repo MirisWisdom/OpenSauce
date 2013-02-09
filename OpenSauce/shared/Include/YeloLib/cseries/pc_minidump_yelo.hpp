@@ -9,6 +9,6 @@ namespace Yelo
 {
 	namespace Debug
 	{
-		void OutputExceptionData(cstring process_name, cstring reports_path);
+		void OutputExceptionData(cstring process_name, cstring reports_path, bool do_full_dump);
 	};
 };

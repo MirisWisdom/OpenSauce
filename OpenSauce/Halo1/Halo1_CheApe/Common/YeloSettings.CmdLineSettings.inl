@@ -4,7 +4,7 @@
 
 	See license\OpenSauce\Halo1_CheApe for specific license information
 */
-
+CMDLINE_DEFINE_SWITCH(full_dump)
 
 
 // These must come last, so including file doesn't have to undef anything
