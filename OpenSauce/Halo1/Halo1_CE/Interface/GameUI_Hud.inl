@@ -225,7 +225,7 @@ namespace Yelo
 				current_length = wcslen(text);						\
 				itr = text + current_length;
 
-			ADD_MENU_ITEM(L"\x2081. HUD				(%s)\n",	g_hud_globals.m_flags.show_hud ?		L"On" : L"Off");
+			ADD_MENU_ITEM(L"\x2081. HUD				(%s)\n",	g_hud_globals.m_flags.show_hud ?	L"On" : L"Off");
 			ADD_MENU_ITEM(L"\x2082. HUD Scaling		(%s)\n",	g_hud_globals.m_flags.scale_hud ?	L"On" : L"Off");
 			ADD_MENU_ITEM(L"\nLeft-Click to Save");
 			g_hud_globals.m_menu_text->SetText(text);

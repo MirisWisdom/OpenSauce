@@ -15,7 +15,7 @@ namespace BuildCacheFileEx
 		{
 			bool result = build_cache_file_for_scenario_internals.build_cache_file_cull_tags();
 
-			TagGroups::tag_iterator tag_iter;
+			TagGroups::s_tag_iterator tag_iter;
 			tag_iterator_new(tag_iter);
 
 			// call custom tag's data culling stuff in this loop
@@ -26,7 +26,7 @@ namespace BuildCacheFileEx
 				{
 				case TagGroups::project_yellow_globals::k_group_tag:
 					{
-						tag_get<TagGroups::project_yellow_globals>(tag_iter.current_datum)->Cull();
+						tag_get<TagGroups::project_yellow_globals>(tag_index)->Cull();
 					} break;
 				}
 			}

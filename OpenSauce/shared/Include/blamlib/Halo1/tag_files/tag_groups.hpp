@@ -31,14 +31,5 @@ namespace Yelo
 
 		extern s_tag_field_definition k_tag_field_definitions[];
 #endif
-
-		struct tag_iterator {
-			PAD32;
-			int16 current_index;
-			PAD16;
-			datum_index current_datum;
-			PAD32;
-			tag group_tag_filter;
-		}; BOOST_STATIC_ASSERT( sizeof(tag_iterator) == 0x14 );
 	};
 };

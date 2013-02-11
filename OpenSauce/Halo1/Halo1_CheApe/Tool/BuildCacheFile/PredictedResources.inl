@@ -35,7 +35,7 @@ namespace BuildCacheFileEx
 		{
 			bool result = build_cache_file_for_scenario_internals.build_structure_bsp_predicted_resources();
 
-			TagGroups::tag_iterator tag_iter;
+			TagGroups::s_tag_iterator tag_iter;
 			tag_iterator_new(tag_iter, NULL_HANDLE);
 
 			printf_s("processing custom tag instances...");

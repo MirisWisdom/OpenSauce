@@ -5,6 +5,8 @@
 */
 #pragma once
 
+#include <blamlib/memory/data_base.hpp>
+
 namespace Yelo
 {
 	namespace Enums
@@ -220,5 +222,10 @@ namespace Yelo
 			void Terminate();
 			void TagSwap();
 		};
+
+		struct s_tag_iterator {
+			Memory::s_data_iterator instances_iterator;
+			tag group_tag_filter;
+		}; BOOST_STATIC_ASSERT( sizeof(s_tag_iterator) == 0x14 );
 	};
 };

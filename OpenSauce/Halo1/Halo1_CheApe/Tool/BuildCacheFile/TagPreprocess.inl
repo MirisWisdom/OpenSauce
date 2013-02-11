@@ -14,7 +14,7 @@ namespace BuildCacheFileEx
 
 		static void PLATFORM_API preprocess_tags_for_build()
 		{
-			TagGroups::tag_iterator tag_iter;
+			TagGroups::s_tag_iterator tag_iter;
 			tag_iterator_new(tag_iter);
 
 			printf_s("pre-processing custom tag instances...\n");

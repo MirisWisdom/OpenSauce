@@ -83,7 +83,7 @@ namespace Yelo
 			_global_yelo = &null_yelo;
 			_global_yelo_globals = &null_yelo_globals;
 
-			tag_iterator iter;
+			s_tag_iterator iter;
 
 			// find the yelo scenario tag
 			tag_iterator_new(iter, project_yellow::k_group_tag);
@@ -154,15 +154,15 @@ namespace Yelo
 			}
 		}
 
-		datum_index tag_iterator_next(tag_iterator& iter)
+		datum_index tag_iterator_next(s_tag_iterator& iter)
 		{
-			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(TAG_ITERATOR_NEXT);
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_ITERATOR_NEXT);
 
 			__asm {
 				push	esi
 
 				mov		esi, iter
-				call	TEMP_CALL_ADDR
+				call	FUNCTION
 
 				pop		esi
 			}
