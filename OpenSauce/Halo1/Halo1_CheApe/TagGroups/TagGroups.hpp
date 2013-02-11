@@ -64,15 +64,15 @@ namespace Yelo
 	void tag_data_unload(tag_data* data, datum_index tag_index /* unused */ = datum_index::null);
 
 	// Use [NULL_HANDLE] for [group_tag_filter] to iterate all tag groups
-	void tag_iterator_new(TagGroups::tag_iterator& iter, const tag group_tag_filter = NULL_HANDLE);
+	void tag_iterator_new(TagGroups::s_tag_iterator& iter, const tag group_tag_filter = NULL_HANDLE);
 	template<typename T>
-	void tag_iterator_new(TagGroups::tag_iterator& iter)
+	void tag_iterator_new(TagGroups::s_tag_iterator& iter)
 	{
 		tag_iterator_new(iter, T::k_group_tag);
 	}
 
 	// Returns [datum_index::null] when finished iterating
-	datum_index tag_iterator_next(TagGroups::tag_iterator& iter);
+	datum_index tag_iterator_next(TagGroups::s_tag_iterator& iter);
 
 	// Get the group definition based on a four-character code
 	tag_group* tag_group_get(tag group_tag);

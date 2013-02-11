@@ -286,7 +286,7 @@ namespace Yelo
 	}
 
 
-	API_FUNC_NAKED void tag_iterator_new(TagGroups::tag_iterator& iter, const tag group_tag_filter)
+	API_FUNC_NAKED void tag_iterator_new(TagGroups::s_tag_iterator& iter, const tag group_tag_filter)
 	{
 		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_ITERATOR_NEW);
 
@@ -297,7 +297,7 @@ namespace Yelo
 		API_FUNC_NAKED_END_CDECL(2);
 	}
 
-	API_FUNC_NAKED datum_index tag_iterator_next(TagGroups::tag_iterator& iter)
+	API_FUNC_NAKED datum_index tag_iterator_next(TagGroups::s_tag_iterator& iter)
 	{
 		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_ITERATOR_NEXT);
 

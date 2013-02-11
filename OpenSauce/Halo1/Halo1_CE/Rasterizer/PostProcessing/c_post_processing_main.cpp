@@ -228,7 +228,7 @@ namespace Yelo
 
 		void c_post_processing_main::GetPostprocessGlobalsTag()
 		{
-			TagGroups::tag_iterator iter;
+			TagGroups::s_tag_iterator iter;
 			// look for a shader_postprocess_globals tag in the cache
 			tag_iterator_new(iter, TagGroups::s_shader_postprocess_globals::k_group_tag);
 			// get the first instance (there should only be one, others will be ignored)

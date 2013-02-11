@@ -364,7 +364,7 @@ namespace Yelo
 
 	// no tags currently need to be checked
 	#if FALSE
-			TagGroups::tag_iterator iter;
+			TagGroups::s_tag_iterator iter;
 			tag_iterator_new(iter);
 
 			datum_index tag_index;

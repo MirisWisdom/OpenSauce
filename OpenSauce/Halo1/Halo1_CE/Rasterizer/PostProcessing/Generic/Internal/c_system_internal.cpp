@@ -364,7 +364,7 @@ namespace Yelo
 		{
 			// look for a shader_postprocess_collection tag in the cache
 			// get the first instance (there can be only one </highlander>, others will be ignored)
-			TagGroups::tag_iterator iter;
+			TagGroups::s_tag_iterator iter;
 			tag_iterator_new(iter, TagGroups::s_effect_postprocess_collection::k_group_tag);
 			datum_index tag_index = tag_iterator_next(iter);
 			
