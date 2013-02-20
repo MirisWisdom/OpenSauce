@@ -8,6 +8,8 @@
 #include "Rasterizer/DX9/DX9.hpp"
 
 #if !PLATFORM_IS_DEDI
+#include <YeloLib/cseries/pc_crashreport_yelo.hpp>
+
 #include "Memory/MemoryInterface.hpp"
 
 namespace Yelo
@@ -43,6 +45,37 @@ namespace Yelo
 		{
 			d3d = GET_DPTR(D3D);
 			global_d3d_device = GET_DPTR(Device);
+
+			D3DADAPTER_IDENTIFIER9 d3d_id;
+			if(SUCCEEDED(d3d->GetAdapterIdentifier(D3DADAPTER_DEFAULT, 0, &d3d_id)))
+			{
+				char property_string[256] = "";
+
+				Debug::AddPropertyToCrashReport("D3DDriver", d3d_id.Driver);
+				Debug::AddPropertyToCrashReport("D3DDescription", d3d_id.Description);
+				Debug::AddPropertyToCrashReport("D3DDeviceName", d3d_id.DeviceName);
+
+				if(-1 != sprintf_s(property_string, sizeof(property_string), "%i.%i.%i.%i",
+					HIWORD(d3d_id.DriverVersion.HighPart),
+					LOWORD(d3d_id.DriverVersion.HighPart),
+					HIWORD(d3d_id.DriverVersion.LowPart),
+					LOWORD(d3d_id.DriverVersion.LowPart)))
+				{
+					Debug::AddPropertyToCrashReport("D3DDriverVersion", property_string);
+				}
+
+				if(-1 != sprintf_s(property_string, sizeof(property_string), "0x%X", d3d_id.VendorId))
+					Debug::AddPropertyToCrashReport("D3DVendorId", property_string);
+
+				if(-1 != sprintf_s(property_string, sizeof(property_string), "0x%X", d3d_id.DeviceId))
+					Debug::AddPropertyToCrashReport("D3DDeviceId", property_string);
+
+				if(-1 != sprintf_s(property_string, sizeof(property_string), "0x%X", d3d_id.SubSysId))
+					Debug::AddPropertyToCrashReport("D3DSubSysId", property_string);
+
+				if(-1 != sprintf_s(property_string, sizeof(property_string), "0x%X", d3d_id.Revision))
+					Debug::AddPropertyToCrashReport("D3DRevision", property_string);
+			}
 		}
 
 		void OnLostDevice()									{}
