@@ -1959,6 +1959,14 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="CrashRpt"
+					>
+					<File
+						RelativePath="..\..\shared\Include\CrashRpt\CrashRpt.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Impl"
@@ -2576,11 +2584,11 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Include\YeloLib\cseries\pc_minidump_yelo.cpp"
+					RelativePath="..\..\shared\Include\YeloLib\cseries\pc_crashreport_yelo.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\..\shared\Include\YeloLib\cseries\pc_minidump_yelo.hpp"
+					RelativePath="..\..\shared\Include\YeloLib\cseries\pc_crashreport_yelo.hpp"
 					>
 				</File>
 			</Filter>
