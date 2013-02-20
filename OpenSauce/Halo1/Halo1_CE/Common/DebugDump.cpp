@@ -10,7 +10,7 @@
 #include "ErrorRep.h"
 #pragma comment (lib, "Faultrep.lib")
 
-#include <YeloLib/cseries/pc_crashreport_yelo.hpp>
+#include <YeloLib/cseries/pc_crashreport.hpp>
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
 #include "Common/FileIO.hpp"
@@ -82,36 +82,15 @@ namespace Yelo
 #endif
 
 #if PLATFORM_IS_USER
+			Keystone::ReleaseKeystone();
+
 			// save gamma to registry
-			CAST_PTR(t_function, GET_FUNC_VPTR(SAVE_GAMMA_TO_REGISTRY))();
-			// release d3d device
-			CAST_PTR(t_function, GET_FUNC_VPTR(RELEASE_D3D_DEVICE))();
-			// kill all sounds
-			CAST_PTR(t_function, GET_FUNC_VPTR(KILL_ALL_SOUNDS))();
-
-			// release the keystone windows
-			void* keystone_mainwindow = Keystone::MainWindow();
-			if(keystone_mainwindow)
-			{
-				void* keystone_childwindow;
-				
-				keystone_childwindow = Keystone::GetWindow(keystone_mainwindow, L"KeystoneEditbox");
-				if(keystone_childwindow)
-				{
-					Keystone::WindowRelease(keystone_childwindow);
-				}
-				
-				keystone_childwindow = Keystone::GetWindow(keystone_mainwindow, L"KeystoneChatLog");
-				if(keystone_childwindow)
-				{
-					Keystone::WindowRelease(keystone_childwindow);
-				}
-
-				Keystone::WindowRelease(keystone_mainwindow);
-			}
-#else
-			CAST_PTR(t_function, GET_FUNC_VPTR(DEDI_CLEANUP))();
+			CAST_PTR(t_function, GET_FUNC_VPTR(RASTERIZER_DX9_SAVE_GAMMA))();
+			// present final frame
+			CAST_PTR(t_function, GET_FUNC_VPTR(RASTERIZER_WINDOWS_PRESENT_FRAME))();
 #endif
+			// kill all sounds
+			CAST_PTR(t_function, GET_FUNC_VPTR(SOUND_STOP_ALL))();
 
 			ShowCursor(TRUE);
 
@@ -138,25 +117,14 @@ namespace Yelo
 
 			// install the CrashRpt exception reporter
 			s_crash_report_options crashreport_options;
+			Debug::InitDefaultOptions(crashreport_options);
 
 			// save reports locally and do not show the crashrpt gui
-			int flags;
-			flags  = Enums::_crashreport_options_hide_gui;
-			flags |= Enums::_crashreport_options_save_local;
 			if(CMDLINE_GET_PARAM(full_dump).ParameterSet())
-				flags |= Enums::_crashreport_options_full_dump;
-			crashreport_options.m_flags = (Enums::crashreport_option_flags)flags;
-
+				crashreport_options.m_flags = (Enums::crashreport_option_flags)(crashreport_options.m_flags | Enums::_crashreport_options_full_dump);
 			crashreport_options.m_report_complete_callback = &ReportComplete;
-
 			crashreport_options.m_application_name = "OpenSauce Halo CE";
-			crashreport_options.m_application_version = BOOST_STRINGIZE(K_OPENSAUCE_VERSION_BUILD_MAJ) "." BOOST_STRINGIZE(K_OPENSAUCE_VERSION_BUILD_MIN) "." BOOST_STRINGIZE(K_OPENSAUCE_VERSION_BUILD);
-
 			crashreport_options.m_reports_directory = g_reports_path;
-			crashreport_options.m_dependency_path = NULL;
-
-			crashreport_options.m_report_server_url = NULL;
-			crashreport_options.m_privacy_policy_url = NULL;
 
 			if(Debug::InstallExceptionHandler(crashreport_options))
 			{

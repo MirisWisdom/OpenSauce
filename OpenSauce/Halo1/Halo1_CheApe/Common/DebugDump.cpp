@@ -9,7 +9,7 @@
 
 #include <dbghelp.h>
 
-#include <YeloLib/cseries/pc_crashreport_yelo.hpp>
+#include <YeloLib/cseries/pc_crashreport.hpp>
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 #include <YeloLib/files/files.hpp>
 
@@ -49,8 +49,8 @@ namespace Yelo
 			Debug::SEHExceptionFilter(ptrs);
 
 			// call stock filter so that debug.txt and such can be written to
-			typedef int (PLATFORM_API *t_exception_filter)(uint32, PEXCEPTION_POINTERS);
-			result = CAST_PTR(t_exception_filter, PLATFORM_VALUE(PTR_NULL, 0x437090, 0x4F81E0))(code, ptrs);
+			typedef int (PLATFORM_API *exception_filter_t)(uint32, PEXCEPTION_POINTERS);
+			result = CAST_PTR(exception_filter_t, GET_FUNC_VPTR(GENERIC_EXCEPTION_FILTER))(code, ptrs);
 #endif
 			return result;
 		}
@@ -65,7 +65,8 @@ namespace Yelo
 			_asm	pop ecx;
 
 			// call the stock CWinApp::Run()
-			CAST_PTR(void (*)(void), 0x84EBE1)();
+			typedef void (*winapp_run_t)(void);
+			CAST_PTR(winapp_run_t, GET_FUNC_VPTR(CWINAPP_RUN))();
 
 			// preserve the return value
 			int result;
@@ -89,30 +90,19 @@ namespace Yelo
 #endif
 
 			s_crash_report_options crashreport_options;
+			Debug::InitDefaultOptions(crashreport_options);
 
 			// save reports locally and do not show the crashrpt gui
-			int flags;
-			flags  = Enums::_crashreport_options_hide_gui;
-			flags |= Enums::_crashreport_options_save_local;
-			if(do_full_dump)
-				flags |= Enums::_crashreport_options_full_dump;
-			crashreport_options.m_flags = (Enums::crashreport_option_flags)flags;
-
+			if(CMDLINE_GET_PARAM(full_dump).ParameterSet())
+				crashreport_options.m_flags = (Enums::crashreport_option_flags)(crashreport_options.m_flags | Enums::_crashreport_options_full_dump);
 			crashreport_options.m_report_complete_callback = &ReportComplete;
-
 			crashreport_options.m_application_name = "OpenSauce HEK";
-			crashreport_options.m_application_version = BOOST_STRINGIZE(K_OPENSAUCE_VERSION_BUILD_MAJ) "." BOOST_STRINGIZE(K_OPENSAUCE_VERSION_BUILD_MIN) "." BOOST_STRINGIZE(K_OPENSAUCE_VERSION_BUILD);
-
 			crashreport_options.m_reports_directory = g_reports_path;
-			crashreport_options.m_dependency_path = NULL;
-
-			crashreport_options.m_report_server_url = NULL;
-			crashreport_options.m_privacy_policy_url = NULL;
 
 			if(Debug::InstallExceptionHandler(crashreport_options))
 			{
 #if PLATFORM_ID != PLATFORM_GUERILLA
-				Memory::WriteRelativeCall(&ExceptionFilter, CAST_PTR(void*, PLATFORM_VALUE(PTR_NULL, 0x415456, 0x4A8278)), true);
+				Memory::WriteRelativeCall(&ExceptionFilter, GET_FUNC_VPTR(GENERIC_EXCEPTION_FILTER_CALL), true);
 #endif
 				// add custom properties and files to the report
 				Debug::AddPropertyToCrashReport("CommandLine", GetCommandLine());
@@ -138,7 +128,7 @@ namespace Yelo
 
 #if PLATFORM_ID == PLATFORM_GUERILLA
 			// override the stock CWinApp::Run vfunction
-			*CAST_PTR(void**, 0x89AD54) = &CWinApp_Run_Hook;
+			GET_PTR(CWINAPP_RUN_HOOK) = &CWinApp_Run_Hook;
 #else
 			SetupExceptionHandler();
 #endif

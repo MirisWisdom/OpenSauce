@@ -172,47 +172,76 @@ namespace Yelo
 
 		API_FUNC_NAKED void* GetWindow(void* keystone, wcstring child)
 		{
-			static void* TEMP_CALL_ADDR = GET_PTR(KS_GETWINDOW);
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(KS_GETWINDOW);
 
 			API_FUNC_NAKED_START()
 				push	child
 				push	keystone
-				call	TEMP_CALL_ADDR
+				mov		eax, FUNCTION
+				call	[eax]
 			API_FUNC_NAKED_END_CDECL(2)
 		}
 
 		API_FUNC_NAKED void WindowRelease(void* handle)
 		{
-			static void* TEMP_CALL_ADDR = GET_PTR(KW_RELEASE);
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(KW_RELEASE);
 
 			API_FUNC_NAKED_START()
 				push	handle
-				call	TEMP_CALL_ADDR
+				mov		eax, FUNCTION
+				call	[eax]
 			API_FUNC_NAKED_END_CDECL(1)
 		}
 
 		API_FUNC_NAKED void* WindowGetControlByID(void* window, wcstring id)
 		{
-			static void* TEMP_CALL_ADDR = GET_PTR(KW_GETCONTROLBYID);
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(KW_GETCONTROLBYID);
 
 			API_FUNC_NAKED_START()
 				push	id
 				push	window
-				call	TEMP_CALL_ADDR
+				mov		eax, FUNCTION
+				call	[eax]
 			API_FUNC_NAKED_END_CDECL(2)
 		}
 
 		API_FUNC_NAKED LRESULT ControlSendMessage(void* control, uint32 msg, WPARAM wParam, LPARAM lParam)
 		{
-			static void* TEMP_CALL_ADDR = GET_PTR(KC_SENDMESSAGE);
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(KC_SENDMESSAGE);
 
 			API_FUNC_NAKED_START()
 				push	lParam
 				push	wParam
 				push	msg
 				push	control
-				call	TEMP_CALL_ADDR
+				mov		eax, FUNCTION
+				call	[eax]
 			API_FUNC_NAKED_END_CDECL(4)
+		}
+		
+		// should only be called by the unhandled exception filter
+		void ReleaseKeystone()
+		{
+			// release the keystone windows
+			void* keystone_mainwindow = MainWindow();
+			if(keystone_mainwindow)
+			{
+				void* keystone_childwindow;
+				
+				keystone_childwindow = GetWindow(keystone_mainwindow, L"KeystoneEditbox");
+				if(keystone_childwindow)
+				{
+					WindowRelease(keystone_childwindow);
+				}
+				
+				keystone_childwindow = GetWindow(keystone_mainwindow, L"KeystoneChatLog");
+				if(keystone_childwindow)
+				{
+					WindowRelease(keystone_childwindow);
+				}
+
+				WindowRelease(keystone_mainwindow);
+			}
 		}
 	};
 };

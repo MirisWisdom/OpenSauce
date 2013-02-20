@@ -8,7 +8,7 @@
 #include "Rasterizer/DX9/DX9.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/cseries/pc_crashreport_yelo.hpp>
+#include <YeloLib/cseries/pc_crashreport.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 
