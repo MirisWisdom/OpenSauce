@@ -38,6 +38,8 @@ namespace Yelo
 			cstring m_privacy_policy_url;
 		};
 
+		void InitDefaultOptions(s_crash_report_options& options);
+
 		bool InstallExceptionHandler(s_crash_report_options& crashreport_options);
 		void UninstallExceptionHandler();
 

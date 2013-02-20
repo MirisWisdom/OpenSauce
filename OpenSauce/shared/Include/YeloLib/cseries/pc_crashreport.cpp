@@ -4,7 +4,7 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #include "Common/Precompile.hpp"
-#include <YeloLib/cseries/pc_crashreport_yelo.hpp>
+#include <YeloLib/cseries/pc_crashreport.hpp>
 
 // have to set the packing value to 8 for CrashRpt as that is what the was built as
 #pragma pack(push)
@@ -31,6 +31,24 @@ namespace Yelo
 				callback(pInfo->pszErrorReportFolder);
 			}
 			return CR_CB_NOTIFY_NEXT_STAGE;
+		}
+
+		void InitDefaultOptions(s_crash_report_options& options)
+		{
+			// save reports locally and do not show the crashrpt gui
+			int flags = Enums::_crashreport_options_hide_gui | Enums::_crashreport_options_save_local;
+			options.m_flags = (Enums::crashreport_option_flags)flags;
+
+			options.m_report_complete_callback = NULL;
+
+			options.m_application_name = NULL;
+			options.m_application_version = BOOST_STRINGIZE(K_OPENSAUCE_VERSION_BUILD_MAJ) "." BOOST_STRINGIZE(K_OPENSAUCE_VERSION_BUILD_MIN) "." BOOST_STRINGIZE(K_OPENSAUCE_VERSION_BUILD);
+
+			options.m_reports_directory = NULL;
+			options.m_dependency_path = NULL;
+
+			options.m_report_server_url = NULL;
+			options.m_privacy_policy_url = NULL;
 		}
 
 		bool InstallExceptionHandler(s_crash_report_options& crashreport_options)

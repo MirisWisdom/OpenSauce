@@ -31,6 +31,9 @@ namespace Yelo
 		void* WindowGetControlByID(void* window, wcstring id);
 
 		LRESULT ControlSendMessage(void* control, uint32 msg, WPARAM wParam, LPARAM lParam);
+
+		// should only be called by the unhandled exception filter
+		void ReleaseKeystone();
 	};
 };
 #endif
