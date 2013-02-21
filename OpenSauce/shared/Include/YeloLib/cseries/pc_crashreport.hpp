@@ -7,15 +7,15 @@
 
 namespace Yelo
 {
-	namespace Enums
+	namespace Flags
 	{
 		enum crashreport_option_flags : int
 		{
-			_crashreport_options_save_local	= 1,
-			_crashreport_options_full_dump	= 2 | _crashreport_options_save_local, // don't send full dumps to the report server
-			_crashreport_options_hide_gui	= 4,
+			_crashreport_option_save_local_bit	= 1,
+			_crashreport_option_full_dump_bit	= 2 | _crashreport_option_save_local_bit, // don't send full dumps to the report server
+			_crashreport_option_hide_gui_bit	= 4,
 
-			_crashreport_options
+			k_number_of_crashreport_option_flags
 		};
 	};
 
@@ -25,7 +25,7 @@ namespace Yelo
 
 		struct s_crash_report_options
 		{
-			Enums::crashreport_option_flags m_flags;
+			Flags::crashreport_option_flags m_flags;
 			t_report_callback m_report_complete_callback;
 
 			cstring m_application_name;

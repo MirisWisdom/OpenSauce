@@ -94,7 +94,7 @@ namespace Yelo
 
 			// save reports locally and do not show the crashrpt gui
 			if(CMDLINE_GET_PARAM(full_dump).ParameterSet())
-				crashreport_options.m_flags = (Enums::crashreport_option_flags)(crashreport_options.m_flags | Enums::_crashreport_options_full_dump);
+				crashreport_options.m_flags = (Flags::crashreport_option_flags)(crashreport_options.m_flags | Flags::_crashreport_option_full_dump_bit);
 			crashreport_options.m_report_complete_callback = &ReportComplete;
 			crashreport_options.m_application_name = "OpenSauce HEK";
 			crashreport_options.m_reports_directory = g_reports_path;

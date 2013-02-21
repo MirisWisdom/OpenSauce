@@ -49,15 +49,15 @@ namespace Yelo
 			if(FileIO::PathExists(g_reports_path))
 			{
 				char dump_file[255];
-				if(FileIO::PathBuild(dump_file, false, 2, g_reports_path, "GameStateDump.bin"))
+				if(FileIO::PathBuild(dump_file, false, 2, g_reports_path, "core.bin"))
 				{
 					FileIO::s_file_info dump;
 					if(Enums::_file_io_open_error_none == FileIO::OpenFile(dump, dump_file, Enums::_file_io_open_access_type_write, Enums::_file_io_open_create_option_new))
 					{
-						FileIO::WriteToFile(dump, GameState::GameStateGlobals()->base_address, GameState::GameStateGlobals()->cpu_allocation_size);
+						FileIO::WriteToFile(dump, GameState::GameStateGlobals()->base_address, Enums::k_game_state_allocation_size);
 						FileIO::CloseFile(dump);
 
-						Debug::AddFileToCrashReport(dump_file, "GameStateDump.bin", "A dump of the games gamestate when it crashed");
+						Debug::AddFileToCrashReport(dump_file, "core.bin", "Gamestate dump");
 					}
 				}
 			}
@@ -121,7 +121,7 @@ namespace Yelo
 
 			// save reports locally and do not show the crashrpt gui
 			if(CMDLINE_GET_PARAM(full_dump).ParameterSet())
-				crashreport_options.m_flags = (Enums::crashreport_option_flags)(crashreport_options.m_flags | Enums::_crashreport_options_full_dump);
+				crashreport_options.m_flags = (Flags::crashreport_option_flags)(crashreport_options.m_flags | Flags::_crashreport_option_full_dump_bit);
 			crashreport_options.m_report_complete_callback = &ReportComplete;
 			crashreport_options.m_application_name = "OpenSauce Halo CE";
 			crashreport_options.m_reports_directory = g_reports_path;

@@ -36,8 +36,8 @@ namespace Yelo
 		void InitDefaultOptions(s_crash_report_options& options)
 		{
 			// save reports locally and do not show the crashrpt gui
-			int flags = Enums::_crashreport_options_hide_gui | Enums::_crashreport_options_save_local;
-			options.m_flags = (Enums::crashreport_option_flags)flags;
+			int flags = Flags::_crashreport_option_hide_gui_bit | Flags::_crashreport_option_save_local_bit;
+			options.m_flags = (Flags::crashreport_option_flags)flags;
 
 			options.m_report_complete_callback = NULL;
 
@@ -71,7 +71,7 @@ namespace Yelo
 			info.pszLangFilePath = crashreport_options.m_dependency_path;
 
 			bool send_to_server = false;
-			send_to_server  = (crashreport_options.m_flags & Enums::_crashreport_options_save_local) == 0;
+			send_to_server  = (crashreport_options.m_flags & Flags::_crashreport_option_save_local_bit) == 0;
 			send_to_server &= (crashreport_options.m_report_server_url != NULL);
 
 			// transfer type priorities
@@ -105,12 +105,12 @@ namespace Yelo
 				info.dwFlags |= CR_INST_DONT_SEND_REPORT;
 				info.dwFlags |= CR_INST_STORE_ZIP_ARCHIVES;
 
-				if(Enums::_crashreport_options_hide_gui == (crashreport_options.m_flags & Enums::_crashreport_options_hide_gui))
+				if(Flags::_crashreport_option_hide_gui_bit == (crashreport_options.m_flags & Flags::_crashreport_option_hide_gui_bit))
 					info.dwFlags |= CR_INST_NO_GUI;
 			}
 
 			// dump type
-			if(Enums::_crashreport_options_full_dump == (crashreport_options.m_flags & Enums::_crashreport_options_full_dump))
+			if(Flags::_crashreport_option_full_dump_bit == (crashreport_options.m_flags & Flags::_crashreport_option_full_dump_bit))
 				info.uMiniDumpType = MiniDumpWithFullMemory;
 			else
 				info.uMiniDumpType = MiniDumpNormal;
