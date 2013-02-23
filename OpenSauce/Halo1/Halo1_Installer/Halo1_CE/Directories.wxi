@@ -26,7 +26,15 @@
 		</Component>
 
 		<Component Id='Halo1_CE_dbghelp_COMP' Guid='4E8356ED-1936-4795-8287-84E6EC370915'>
-			<File Id='Halo1_CE_dbghelp_FILE' Name='dbghelp.dll' DiskId='1' Source='$(var.ResourceFolder)Halo1_CE\HCE_InstallDir\dbghelp.dll' KeyPath='yes'/>
+			<File Id='Halo1_CE_dbghelp_FILE' Name='dbghelp.dll' DiskId='1' Source='$(var.ResourceFolder)Halo1_Shared\CrashRpt\dbghelp.dll' KeyPath='yes'/>
+		</Component>
+
+		<Component Id='Halo1_CE_CrashRpt1401_COMP' Guid='1EAFBB24-0E61-40a4-A5EA-B35F04F616E5'>
+			<File Id='Halo1_CE_CrashRpt1401_FILE' Name='CrashRpt1401.dll' DiskId='1' Source='$(var.ResourceFolder)Halo1_Shared\CrashRpt\CrashRpt1401.dll' KeyPath='yes'/>
+		</Component>
+
+		<Component Id='Halo1_CE_CrashSender1401_COMP' Guid='AAE43D30-5983-415d-AAC5-E9E870EF45B3'>
+			<File Id='Halo1_CE_CrashSender1401_FILE' Name='CrashSender1401.exe' DiskId='1' Source='$(var.ResourceFolder)Halo1_Shared\CrashRpt\CrashSender1401.exe' KeyPath='yes'/>
 		</Component>
 
 		<Component Id='Halo1_CE_Readme_COMP' Guid='17B81049-EC68-41c0-803C-612BBB4869FE'>
