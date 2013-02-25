@@ -601,7 +601,7 @@ no_extension:
 			Yelo::DX9::Direct3DDevice()->SetTexture(7, NULL);
 		}
 		Yelo::DX9::Direct3DDevice()->SetPixelShaderConstantF(0 + k_shader_constant_offset, (float*)&g_pixel_shader_variables, k_vector_4_count);
-		Yelo::DX9::Direct3DDevice()->SetVertexShaderConstantF(13, (float*)&g_vertex_shader_variables, 1);
+		Yelo::DX9::Direct3DDevice()->SetVertexShaderConstantF(15, (float*)&g_vertex_shader_variables, 1);
 	}
 
 	void		BuildShaderIDs()
