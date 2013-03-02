@@ -6,11 +6,15 @@
 */
 #pragma once
 
+#if !PLATFORM_IS_DEDI
 namespace Yelo
 {
 	namespace Debug
 	{
 		void DumpInitialize();
 		void DumpDispose();
+
+		void Update(real delta);
 	};
 };
+#endif

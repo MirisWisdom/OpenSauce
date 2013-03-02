@@ -90,6 +90,32 @@ namespace Yelo
 			}
 		};
 
+		template<>
+		class c_cmd_line_argument<real> : public c_cmd_line_parameter
+		{
+			real m_value;
+
+		public:
+			real GetValue() { return m_value; }
+
+			// real specialization
+			bool c_cmd_line_argument<real>::ParseValue(cstring value)
+			{
+				if(!value) return false;
+
+				// read the value as a real
+				m_value = (real)atof(value);
+				return true;
+			}
+
+			void c_cmd_line_argument<real>::Ctor(cstring argument)
+			{
+				c_cmd_line_parameter::Ctor(argument);
+
+				m_value = 0.0f;
+			}
+		};
+
 		class c_cmd_line_switch : public c_cmd_line_parameter
 		{
 		public:

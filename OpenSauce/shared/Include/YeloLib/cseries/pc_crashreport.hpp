@@ -48,7 +48,7 @@ namespace Yelo
 		bool AddRegistryKeyToCrashReport(LPCSTR key, LPCSTR value);
 		bool AddScreenshotToCrashReport();
 
-		void ForceCrashReport();
+		void ForceCrashReport(HANDLE thread = INVALID_HANDLE_VALUE);
 
 		int WINAPI SEHExceptionFilter(PEXCEPTION_POINTERS ptrs);
 	};
