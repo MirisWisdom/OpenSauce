@@ -37,6 +37,10 @@
 			<File Id='Halo1_CE_CrashSender1401_FILE' Name='CrashSender1401.exe' DiskId='1' Source='$(var.ResourceFolder)Halo1_Shared\CrashRpt\CrashSender1401.exe' KeyPath='yes'/>
 		</Component>
 
+		<Component Id='Halo1_CE_crashrpt_lang_COMP' Guid='BB77F3E0-6719-4589-8B1E-11A96314594E'>
+			<File Id='Halo1_CE_crashrpt_lang_FILE' Name='crashrpt_lang.ini' DiskId='1' Source='$(var.ResourceFolder)Halo1_Shared\CrashRpt\crashrpt_lang.ini' KeyPath='yes'/>
+		</Component>
+
 		<Component Id='Halo1_CE_Readme_COMP' Guid='17B81049-EC68-41c0-803C-612BBB4869FE'>
 			<File Id='Halo1_CE_Readme_FILE' Name='Halo1_CE_Readme.txt' DiskId='1' Source='$(var.SourceFolder)OpenSauce\Halo1\Halo1_CE\Halo1_CE_Readme.txt' KeyPath='yes' />
 		</Component>

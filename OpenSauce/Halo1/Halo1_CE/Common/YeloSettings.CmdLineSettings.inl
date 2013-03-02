@@ -8,6 +8,8 @@
 CMDLINE_DEFINE_ARG(path, cstring)
 CMDLINE_DEFINE_SWITCH(no_os_gamestate)
 CMDLINE_DEFINE_SWITCH(full_dump)
+CMDLINE_DEFINE_ARG(freeze_dump, real)
+CMDLINE_DEFINE_ARG(freeze_dump_delay, real)
 
 #if PLATFORM_IS_DEDI
 #else

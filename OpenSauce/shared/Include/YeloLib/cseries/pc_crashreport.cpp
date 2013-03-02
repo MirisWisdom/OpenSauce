@@ -29,6 +29,8 @@ namespace Yelo
 
 				// send the error folder to the client callback
 				callback(pInfo->pszErrorReportFolder);
+
+				pInfo->bContinueExecution = false;
 			}
 			return CR_CB_NOTIFY_NEXT_STAGE;
 		}
@@ -118,6 +120,9 @@ namespace Yelo
 			int result = crInstall(&info);
 			if(result!=0)
 			{
+				if(Flags::_crashreport_option_hide_gui_bit == (crashreport_options.m_flags & Flags::_crashreport_option_hide_gui_bit))
+					return false;
+
 				TCHAR error_msg[256];
 				crGetLastErrorMsg(error_msg, 256);
 				MessageBox(NULL, error_msg, "CrashRpt Install Error", MB_OK);
@@ -159,15 +164,37 @@ namespace Yelo
 			return (0 == crAddScreenshot2(CR_AS_MAIN_WINDOW | CR_AS_USE_JPEG_FORMAT | CR_AS_ALLOW_DELETE, 95));
 		}
 
-		void ForceCrashReport()
+		void ForceCrashReport(HANDLE thread)
 		{
+			EXCEPTION_POINTERS ptrs;
+			EXCEPTION_RECORD exception;
+			CONTEXT context;
+
+			// if a thread handle is provided, gather exception data from it
+			if(thread != INVALID_HANDLE_VALUE)
+			{
+				memset(&exception, 0, sizeof(exception));
+				memset(&context, 0, sizeof(context));
+
+				// get the threads current context
+				context.ContextFlags = CONTEXT_FULL;
+				GetThreadContext(thread, &context);
+
+				exception.ExceptionCode = EXCEPTION_BREAKPOINT;
+				exception.ExceptionFlags = EXCEPTION_NONCONTINUABLE;
+				exception.ExceptionAddress = (void*)context.Eip;
+
+				ptrs.ExceptionRecord = &exception;
+				ptrs.ContextRecord = &context;
+			}
+
 			CR_EXCEPTION_INFO ei;
 			memset(&ei, 0, sizeof(CR_EXCEPTION_INFO));
 			ei.cb = sizeof(ei);
 			ei.exctype = CR_SEH_EXCEPTION;
-			ei.code = 0;
-			ei.pexcptrs = NULL;
-			ei.bManual = TRUE;
+			ei.code = EXCEPTION_BREAKPOINT;
+			ei.pexcptrs = (thread != INVALID_HANDLE_VALUE ? &ptrs : NULL);
+			ei.bManual = FALSE;
 
 			crGenerateErrorReport(&ei);
 		}

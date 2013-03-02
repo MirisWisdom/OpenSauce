@@ -40,6 +40,7 @@
 		<ComponentRef Id='Halo1_CE_dbghelp_COMP' />
 		<ComponentRef Id='Halo1_CE_CrashRpt1401_COMP' />
 		<ComponentRef Id='Halo1_CE_CrashSender1401_COMP' />
+		<ComponentRef Id='Halo1_CE_crashrpt_lang_COMP' />
 
 		<Condition Level='0'>
 			<![CDATA[NOT (HALO1_CE_HCE_VERSION_109_PROP AND HALO1_CE_HCEDEDI_VERSION_109_PROP)]]>
@@ -61,6 +62,7 @@
 		<ComponentRef Id='Halo1_CE_dbghelp_COMP' />
 		<ComponentRef Id='Halo1_CE_CrashRpt1401_COMP' />
 		<ComponentRef Id='Halo1_CE_CrashSender1401_COMP' />
+		<ComponentRef Id='Halo1_CE_crashrpt_lang_COMP' />
 
 		<ComponentRef Id='Halo1_CE_CheApe_Readme_COMP' />
 

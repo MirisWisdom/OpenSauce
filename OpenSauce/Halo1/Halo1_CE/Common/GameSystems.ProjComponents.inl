@@ -10,7 +10,9 @@
 #ifdef API_DEBUG
 	{Debug::FileInitialize,							Debug::FileDispose},
 #endif
-{Debug::DumpInitialize,								Debug::DumpDispose},
+#if PLATFORM_IS_USER
+{Debug::DumpInitialize,								Debug::DumpDispose,						Debug::Update},
+#endif
 
 {GameState::Initialize,								GameState::Dispose},
 {BuildNumber::Initialize,							BuildNumber::Dispose},
