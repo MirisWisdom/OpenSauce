@@ -11,7 +11,7 @@
 #pragma pack(8)
 #include <CrashRpt/CrashRpt.h>
 #pragma pack(pop)
-#pragma comment (lib, "CrashRpt1401.lib")
+#pragma comment (lib, "../../shared/lib/x86/CrashRpt1401.lib") // TODO: setup proper shared lib directories in vcxproj
 
 #include <YeloLib/files/files.hpp>
 
