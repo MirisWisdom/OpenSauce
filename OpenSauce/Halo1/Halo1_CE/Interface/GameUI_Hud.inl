@@ -9,157 +9,325 @@
 #include "Game/EngineFunctions.hpp"
 #include "Memory/FunctionInterface.hpp"
 
+#include <blamlib/Halo1/interface/ui_widget_group.hpp>
+#include <blamlib/Halo1/interface/hud_definitions.hpp>
+
 namespace Yelo
 {
 	namespace Hud
 	{
-		struct s_hud_globals {
-			struct {
+		struct s_hud_globals
+		{
+			struct
+			{
 				bool show_hud;
 				bool scale_hud;
 				bool show_crosshair;
-				bool enable_scaling;
+				PAD8;
 			}m_flags;
 
-			TextBlock* m_menu_text;
+			TextBlock*		m_menu_text;
 
-			D3DXMATRIX m_scale_matrix;
+			point2d			m_screen_size;
+
+			struct
+			{
+				real_point2d	scale;
+				real_point2d	projection;
+				real_point2d	translation;
+			}m_original_screen, m_hud_screen, m_widget_screen;
+
+			struct
+			{
+				real_point2d	projection;
+				real_point2d	translation;
+			}m_projection;
 		};
 		static s_hud_globals g_hud_globals;
+
+		struct s_multiplayer_icon
+		{
+			const point2d m_stock_position;
+			uint16* m_position_x;
+			uint16* m_position_y;
+		};
+		static s_multiplayer_icon g_multiplayer_icons[] =
+		{
+			// ctf
+			{
+				{ 456 - 640, 6 },
+				GET_PTR2(HUD_MULTIPLAYER_ICON_CTF_X),
+				GET_PTR2(HUD_MULTIPLAYER_ICON_CTF_Y)
+			},
+			// king
+			{
+				{ 458 - 640, 6 },
+				GET_PTR2(HUD_MULTIPLAYER_ICON_KING_X),
+				NULL
+			},
+			// oddball
+			{
+				{ 456 - 640, 7 },
+				GET_PTR2(HUD_MULTIPLAYER_ICON_ODDBALL_X),
+				GET_PTR2(HUD_MULTIPLAYER_ICON_ODDBALL_Y)
+			},
+			// race
+			{
+				{ 453 - 640, 6 },
+				GET_PTR2(HUD_MULTIPLAYER_ICON_RACE_X),
+				GET_PTR2(HUD_MULTIPLAYER_ICON_RACE_Y)
+			},
+			// slayer
+			{
+				{ 457 - 640, 6 },
+				GET_PTR2(HUD_MULTIPLAYER_ICON_SLAYER_X),
+				NULL
+			},
+			// background
+			{
+				{ 445 - 640, 6 },
+				GET_PTR2(HUD_MULTIPLAYER_ICON_BACKGROUND_X),
+				GET_PTR2(HUD_MULTIPLAYER_ICON_BACKGROUND_Y)
+			},
+		};
 
 		bool& ScaleHUD() { return g_hud_globals.m_flags.scale_hud; }
 		bool& ShowCrosshair() { return g_hud_globals.m_flags.show_crosshair; }
 
 		void* HudGlobals() DPTR_IMP_GET2(hud_globals);
 
-		// disable scaling when drawing screen space position arrows
-		API_FUNC_NAKED static void PLATFORM_API GAME_ENGINE_RENDER_NAV_POINTS_CALL_RENDER_NAV_POINT()
+		void EnableWidgetScale()
 		{
-			static uint32 CALL_ADDR = GET_FUNC_PTR(RENDER_NAV_POINT);
-			static uint32 RETN_ADDRESS = GET_FUNC_PTR(GAME_ENGINE_RENDER_NAV_POINTS_CALL_HOOK_RENDER_NAV_POINT)+5;
-
-			__asm {
-				mov		g_hud_globals.m_flags.enable_scaling, 0
-				call	CALL_ADDR
-				jmp		RETN_ADDRESS
-			}
+			g_hud_globals.m_projection.projection = g_hud_globals.m_widget_screen.projection;
+			g_hud_globals.m_projection.translation = g_hud_globals.m_widget_screen.translation;
 		}
 
-		API_FUNC_NAKED static void PLATFORM_API HUD_RENDER_NAV_POINTS_CALL_RENDER_NAV_POINT()
+		void EnableHUDScale()
 		{
-			static uint32 CALL_ADDR = GET_FUNC_PTR(RENDER_NAV_POINT);
-			static uint32 RETN_ADDRESS = GET_FUNC_PTR(HUD_RENDER_NAV_POINTS_CALL_HOOK_RENDER_NAV_POINT)+5;
-
-			__asm {
-				mov		g_hud_globals.m_flags.enable_scaling, 0
-				call	CALL_ADDR
-				jmp		RETN_ADDRESS
-			}
+			g_hud_globals.m_projection.projection = g_hud_globals.m_hud_screen.projection;
+			g_hud_globals.m_projection.translation = g_hud_globals.m_hud_screen.translation;
 		}
 
-		static void PLATFORM_API HUD_DRAW_PLAYERS_CALL_HUD_DRAW_FRIENDLY_INDICATOR()
+		void DisableScale()
 		{
-			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(HUD_DRAW_FRIENDLY_INDICATOR);
-
-			g_hud_globals.m_flags.enable_scaling = false;
-			__asm call	TEMP_CALL_ADDR
+			g_hud_globals.m_projection.projection = g_hud_globals.m_original_screen.projection;
+			g_hud_globals.m_projection.translation = g_hud_globals.m_original_screen.translation;
 		}
 
-		// disable scaling when drawing the cinematic black bars
-		static void PLATFORM_API RASTERIZER_RENDER_WIDGET_CALL_CINEMATIC_RENDER()
+		void DisableOffset()
 		{
-			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(CINEMATIC_RENDER);
-
-			g_hud_globals.m_flags.enable_scaling = false;
-			__asm call	TEMP_CALL_ADDR
+			g_hud_globals.m_projection.translation = g_hud_globals.m_original_screen.translation;
 		}
 
-		// disable scaling when drawing the loading UI
-		static void PLATFORM_API RASTERIZER_RENDER_WIDGET_CALL_DRAW_LOADING_UI()
+		static void PLATFORM_API RenderWidgetRecursiveHook(datum_index* widget_datum_index, void* arg_1, void* arg_2,void* arg_3, void* arg_4)
 		{
-			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(DRAW_LOADING_UI);
+			typedef void (PLATFORM_API *function_t)(void*, void*, void*, void*, void*);
+			static const function_t render_widget_recursive = CAST_PTR(function_t, GET_FUNC_VPTR(RENDER_WIDGET_RECURSIVE));
 
-			g_hud_globals.m_flags.enable_scaling = false;
-			__asm call	TEMP_CALL_ADDR
+			// get the widget tag
+			const TagGroups::ui_widget_definition* widget = TagGroups::TagGet<TagGroups::ui_widget_definition>(*widget_datum_index);
+
+			// do not scale the widget if it is full screen
+			bool scale_widget = ((widget->bounds.right - widget->bounds.left) != 640) && ((widget->bounds.bottom - widget->bounds.top) != 480);
+
+			// default to enable widget scaling, disable if required
+			EnableWidgetScale();
+			if(!scale_widget)
+				DisableScale();
+
+			// render the widget
+			render_widget_recursive(widget_datum_index, arg_1, arg_2, arg_3, arg_4);
 		}
 
-		// disable scaling when drawing full screen UI widgets
-		API_FUNC_NAKED static void PLATFORM_API HOOK_RASTERIZER_RENDER_WIDGET_UI_WIDGET_BOUNDS()
+		static void PLATFORM_API HudRenderPlayersHook()
 		{
-			static rectangle2d* WIDGET_BOUNDS = NULL;
-			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_RENDER_WIDGET_UI_WIDGET_BOUNDS_HOOK_RETN);
+			typedef void (PLATFORM_API *function_t)();
+			static const function_t render_players = CAST_PTR(function_t, GET_FUNC_VPTR(HUD_RENDER_PLAYERS));
 
-			_asm {
-				mov		esi, [eax+ecx+14h]
-				mov		eax, [ebp+30h]
-				mov		WIDGET_BOUNDS, esi
-				add		WIDGET_BOUNDS, 24h
-				pushad
-			};
+			// disable the hud offset when rendering player indicators, reenable afterwards
+			DisableOffset();
 
-			// doing this all on one go results in an exception
-			g_hud_globals.m_flags.enable_scaling = (WIDGET_BOUNDS->right - WIDGET_BOUNDS->left != 640);// && (WIDGET_BOUNDS->bottom - WIDGET_BOUNDS->top != 480);
-			g_hud_globals.m_flags.enable_scaling &= (WIDGET_BOUNDS->bottom - WIDGET_BOUNDS->top != 480);
+			render_players();
 
-			_asm {
-				popad
-				jmp		RETN_ADDRESS
-			};
+			EnableHUDScale();
 		}
 
-		void EnableScaling()
+		static void PLATFORM_API HudRenderNavPointsHook(void* arg0)
 		{
-			g_hud_globals.m_flags.enable_scaling = true;
+			typedef void (PLATFORM_API *function_t)(void*);
+			static const function_t render_nav_points = CAST_PTR(function_t, GET_FUNC_VPTR(HUD_RENDER_NAV_POINTS));
+
+			// disable the hud offset when rendering nav points, reenable afterwards
+			DisableOffset();
+
+			render_nav_points(arg0);
+
+			EnableHUDScale();
 		}
 
-		void DisableScaling()
+		static void PLATFORM_API HudRenderScoreboardInGameHook()
 		{
-			g_hud_globals.m_flags.enable_scaling = false;
+			typedef void (PLATFORM_API *function_t)();
+			static const function_t render_scoreboard_ingame = CAST_PTR(function_t, GET_FUNC_VPTR(HUD_RENDER_SCOREBOARD_INGAME));
+
+			// switch to the widget screen scaling when rendering the scoreboard, switch back to hud scaling afterwards
+			EnableWidgetScale();
+
+			render_scoreboard_ingame();
+
+			EnableHUDScale();
+		}
+
+		static void PLATFORM_API HudRenderScoreboardPostGameHook()
+		{
+			typedef void (PLATFORM_API *function_t)();
+			static const function_t render_scoreboard_postgame = CAST_PTR(function_t, GET_FUNC_VPTR(HUD_RENDER_SCOREBOARD_POSTGAME));
+
+			// switch to the widget screen scaling when rendering the scoreboard, switch back to hud scaling afterwards
+			EnableWidgetScale();
+
+			render_scoreboard_postgame();
+
+			EnableHUDScale();
 		}
 
 		static HRESULT SetVertexShaderConstantF_ScreenProj(IDirect3DDevice9* device, UINT StartRegister,CONST float* pConstantData,UINT Vector4fCount)
 		{
 			D3DXMATRIX* original_matrix = CAST_PTR(D3DXMATRIX*, (float*)pConstantData);
 
-			if(g_hud_globals.m_flags.scale_hud && g_hud_globals.m_flags.enable_scaling)
-			{
-				original_matrix->_11 = g_hud_globals.m_scale_matrix._11;
-				original_matrix->_14 = g_hud_globals.m_scale_matrix._14;
-				original_matrix->_22 = g_hud_globals.m_scale_matrix._22;
-				original_matrix->_24 = g_hud_globals.m_scale_matrix._24;
-			}
+			original_matrix->_11 = g_hud_globals.m_projection.projection.x;
+			original_matrix->_22 = g_hud_globals.m_projection.projection.y;
+			original_matrix->_14 = g_hud_globals.m_projection.translation.x;
+			original_matrix->_24 = g_hud_globals.m_projection.translation.y;
 
 			return device->SetVertexShaderConstantF(StartRegister, pConstantData, Vector4fCount);
 		}
 
-		void InitializeHUDSettings()
+		static void InitializeHUDSettings()
 		{
 			g_hud_globals.m_flags.show_hud = true;
 			g_hud_globals.m_flags.show_crosshair = true;
 			g_hud_globals.m_flags.scale_hud = false;
-			g_hud_globals.m_flags.enable_scaling = true;
 
-			D3DXMatrixIdentity(&g_hud_globals.m_scale_matrix);
+			g_hud_globals.m_hud_screen.scale.x = 1.0f;
+			g_hud_globals.m_hud_screen.scale.y = 1.0f;
 		}
 
-		void UpdateUIScale(const uint16 screen_width, const uint16 screen_height)
+		static void CalculateAnchor(const Enums::hud_anchor anchor, const point2d anchor_bounds, const point2d input, point2d& output)
 		{
-			real_point2d scale_amount;
-			scale_amount.x = 1;
-			scale_amount.y = 1;
+			switch(anchor)
+			{
+			case Enums::_hud_anchor_top_left:
+				output.x = input.x;
+				output.y = input.y;
+				break;
+			case Enums::_hud_anchor_top_right:
+				output.x = anchor_bounds.x + input.x;
+				output.y = input.y;
+				break;
+			case Enums::_hud_anchor_bottom_left:
+				output.x = input.x;
+				output.y = anchor_bounds.y + input.y;
+				break;
+			case Enums::_hud_anchor_bottom_right:
+				output.x = anchor_bounds.x + input.x;
+				output.y = anchor_bounds.y + input.y;
+				break;
+			case Enums::_hud_anchor_center:
+				output.x = (int16)(anchor_bounds.x / 2) + input.x;
+				output.y = (int16)(anchor_bounds.y / 2) + input.y;
+				break;
+			}
+		}
 
-			const real old_ratio = (real)4/3;
-			const real new_ratio = (real)screen_width / screen_height;
+		void UpdateScreenScale()
+		{
+			real_point2d screen_ratio;
+			screen_ratio.x = 1;
+			screen_ratio.y = 1;
 
-			if (new_ratio > old_ratio)
-				scale_amount.x = old_ratio / new_ratio;
+			if(g_hud_globals.m_flags.scale_hud)
+			{
+				const real old_ratio = (real)4/3;
+				const real new_ratio = (real)g_hud_globals.m_screen_size.x / g_hud_globals.m_screen_size.y;
+
+				if (new_ratio > old_ratio)
+					screen_ratio.x = old_ratio / new_ratio;
+				else
+					screen_ratio.y = new_ratio / old_ratio;
+			}
+
+			g_hud_globals.m_widget_screen.projection = g_hud_globals.m_original_screen.projection;
+			g_hud_globals.m_widget_screen.projection.x *= screen_ratio.x;
+			g_hud_globals.m_widget_screen.projection.y *= screen_ratio.y;
+
+			g_hud_globals.m_widget_screen.translation = screen_ratio;
+			g_hud_globals.m_widget_screen.translation.x *= -1;
+		}
+
+		void UpdateAnchorScale()
+		{
+			real_point2d anchor_scale;
+			anchor_scale.x = 1;
+			anchor_scale.y = 1;
+
+			if(g_hud_globals.m_flags.scale_hud)
+			{
+				const real old_ratio = (real)4/3;
+				const real new_ratio = (real)g_hud_globals.m_screen_size.x / g_hud_globals.m_screen_size.y;
+
+				if (new_ratio > old_ratio)
+					anchor_scale.x = new_ratio / old_ratio;
+				else
+					anchor_scale.y = old_ratio / new_ratio;
+			}
+
+			point2d anchor_scale_result;
+			// set navpoint values
+			anchor_scale_result.x = (int16)(640 * anchor_scale.x);
+			anchor_scale_result.y = (int16)(480 * anchor_scale.y);
+
+			GET_PTR(HUD_RENDER_NAV_POINT_ANCHOR_HALF_X) = anchor_scale_result.x / 2;
+			GET_PTR(HUD_RENDER_NAV_POINT_ANCHOR_HALF_Y) = anchor_scale_result.y / 2;
+			GET_PTR(HUD_ANCHOR_SCREEN_X) = anchor_scale_result.x;
+			GET_PTR(HUD_ANCHOR_SCREEN_Y) = anchor_scale_result.y;
+			GET_PTR(HUD_ANCHOR_SCREEN_HALF_X) = anchor_scale_result.x / 2.0f;
+			GET_PTR(HUD_ANCHOR_SCREEN_HALF_Y) = anchor_scale_result.y / 2.0f;
+
+			// set hud anchor values
+			real_point2d hud_scale_amount;
+			if(g_hud_globals.m_flags.scale_hud)
+			{
+				hud_scale_amount = g_hud_globals.m_hud_screen.scale;
+			}
 			else
-				scale_amount.y = new_ratio / old_ratio;
+			{
+				hud_scale_amount.x = 1;
+				hud_scale_amount.y = 1;
+			}
 
-			g_hud_globals.m_scale_matrix._11 = (2.0f / 640.0f) * scale_amount.x;	// x projection
-			g_hud_globals.m_scale_matrix._22 = (-2.0f / 480.0f) * scale_amount.y;	// y projection
-			g_hud_globals.m_scale_matrix._14 = -scale_amount.x;						// x offset
-			g_hud_globals.m_scale_matrix._24 = scale_amount.y;						// y offset
+			g_hud_globals.m_hud_screen.projection = g_hud_globals.m_widget_screen.projection;
+			g_hud_globals.m_hud_screen.translation = hud_scale_amount;
+			g_hud_globals.m_hud_screen.translation.x *= -1;
+
+			anchor_scale_result.x = (int16)(anchor_scale_result.x * hud_scale_amount.x);
+			anchor_scale_result.y = (int16)(anchor_scale_result.y * hud_scale_amount.y);
+
+			GET_PTR(HUD_POINT_ANCHOR_WIDTH) = anchor_scale_result.x - 16;
+			GET_PTR(HUD_POINT_ANCHOR_HEIGHT) = anchor_scale_result.y - 8;
+			GET_PTR(HUD_POINT_ANCHOR_HALF_WIDTH) = anchor_scale_result.x / 2;
+			GET_PTR(HUD_POINT_ANCHOR_HALF_HEIGHT) = anchor_scale_result.y / 2;
+
+			// multiplayer hud icon
+			point2d position_out;
+			for(int i = 0; i < NUMBEROF(g_multiplayer_icons); i++)
+			{
+				CalculateAnchor(Enums::_hud_anchor_top_right, anchor_scale_result, g_multiplayer_icons[i].m_stock_position, position_out);
+				if(g_multiplayer_icons[i].m_position_x)
+					*g_multiplayer_icons[i].m_position_x = position_out.x;
+				if(g_multiplayer_icons[i].m_position_y)
+					*g_multiplayer_icons[i].m_position_y = position_out.y;
+			}
 		}
 
 		void Initialize()
@@ -174,31 +342,14 @@ namespace Yelo
 				*nop_offset = Enums::_x86_opcode_nop;
 			}
 
-			// hooks for disabling scaling
-			Memory::WriteRelativeJmp(
-				GAME_ENGINE_RENDER_NAV_POINTS_CALL_RENDER_NAV_POINT,
-				GET_FUNC_VPTR(GAME_ENGINE_RENDER_NAV_POINTS_CALL_HOOK_RENDER_NAV_POINT), true);
+			Memory::WriteRelativeCall(HudRenderPlayersHook, GET_FUNC_VPTR(HUD_RENDER_PLAYERS_CALL), true);
+			Memory::WriteRelativeCall(HudRenderNavPointsHook, GET_FUNC_VPTR(HUD_RENDER_NAV_POINTS_CALL), true);
 
-			Memory::WriteRelativeJmp(
-				HUD_RENDER_NAV_POINTS_CALL_RENDER_NAV_POINT,
-				GET_FUNC_VPTR(HUD_RENDER_NAV_POINTS_CALL_HOOK_RENDER_NAV_POINT), true);
+			Memory::WriteRelativeCall(HudRenderScoreboardPostGameHook, GET_FUNC_VPTR(HUD_RENDER_SCOREBOARD_POSTGAME_CALL), true);
+			Memory::WriteRelativeCall(HudRenderScoreboardInGameHook, GET_FUNC_VPTR(HUD_RENDER_SCOREBOARD_INGAME_CALL), true);
 
-			Memory::WriteRelativeCall(
-				HUD_DRAW_PLAYERS_CALL_HUD_DRAW_FRIENDLY_INDICATOR,
-				GET_FUNC_VPTR(HUD_DRAW_PLAYERS_CALL_HOOK_HUD_DRAW_FRIENDLY_INDICATOR));
-
-			Memory::WriteRelativeCall(
-				RASTERIZER_RENDER_WIDGET_CALL_CINEMATIC_RENDER,
-				GET_FUNC_VPTR(RASTERIZER_RENDER_WIDGET_CALL_HOOK_CINEMATIC_RENDER), true);
-
-			Memory::WriteRelativeJmp(
-				HOOK_RASTERIZER_RENDER_WIDGET_UI_WIDGET_BOUNDS,
-				GET_FUNC_VPTR(RASTERIZER_RENDER_WIDGET_UI_WIDGET_BOUNDS_HOOK), true);
-
-			for(int i = 0; i < NUMBEROF(K_RASTERIZER_RENDER_WIDGET_DRAW_LOADING_UI_CALLS); i++)
-				Memory::WriteRelativeCall(
-					RASTERIZER_RENDER_WIDGET_CALL_DRAW_LOADING_UI,
-					K_RASTERIZER_RENDER_WIDGET_DRAW_LOADING_UI_CALLS[i], true);
+			for(int i = 0; i < NUMBEROF(K_RENDER_WIDGET_RECURSIVE_CALLS); i++)
+				Memory::WriteRelativeCall(RenderWidgetRecursiveHook, K_RENDER_WIDGET_RECURSIVE_CALLS[i], true);
 		}
 
 		void Dispose() {}
@@ -206,13 +357,12 @@ namespace Yelo
 		void Update()
 		{
 			if(g_hud_globals.m_flags.show_crosshair)
-				GET_PTR(render_crosshairs_jump_asm) = 0x840f;	// set to jz
+				GET_PTR(RENDER_CROSSHAIRS_DISABLE_MOD) = 0x840f;	// set to jz
 			else
-				GET_PTR(render_crosshairs_jump_asm) = 0xE990;	// set to nop, relative jmp
+				GET_PTR(RENDER_CROSSHAIRS_DISABLE_MOD) = 0xE990;	// set to nop, relative jmp
 
 			Memory::FunctionProcessRenderHudIsDisabled() = !g_hud_globals.m_flags.show_hud;
 		}
-
 
 		static void AdjustSettings_Render()
 		{
@@ -240,9 +390,46 @@ namespace Yelo
 				g_hud_globals.m_flags.show_hud = !g_hud_globals.m_flags.show_hud;
 
 			if (Input::GetKeyState(Enums::_Key2) == 1)
+			{
 				g_hud_globals.m_flags.scale_hud = !g_hud_globals.m_flags.scale_hud;
+				UpdateScreenScale();
+				UpdateAnchorScale();
+			}
 
 			AdjustSettings_Render();
+
+			return Enums::_settings_adjustment_result_not_finished;
+		}
+
+		Enums::settings_adjustment_result AdjustHUDScale()
+		{
+			if (Input::GetMouseButtonState(Enums::_MouseButton3) == 1)
+			{
+				g_hud_globals.m_hud_screen.scale.x = 1.0f;
+				g_hud_globals.m_hud_screen.scale.y = 1.0f;
+			}
+
+			g_hud_globals.m_hud_screen.scale.x += Input::GetMouseAxisState(Enums::_MouseAxisX) / 2000.0f;
+			g_hud_globals.m_hud_screen.scale.y += Input::GetMouseAxisState(Enums::_MouseAxisY) / 2000.0f;
+
+			g_hud_globals.m_hud_screen.scale.x = min(1.0f, g_hud_globals.m_hud_screen.scale.x);
+			g_hud_globals.m_hud_screen.scale.x = max(0.0f, g_hud_globals.m_hud_screen.scale.x);
+			g_hud_globals.m_hud_screen.scale.y = min(1.0f, g_hud_globals.m_hud_screen.scale.y);
+			g_hud_globals.m_hud_screen.scale.y = max(0.0f, g_hud_globals.m_hud_screen.scale.y);
+
+			wchar_t text[128];
+			swprintf_s(text, 
+				L"HUD Scale (%0.3f, %0.3f)\n"
+				L"\nLeft-Click to Save"
+				L"\nRight-Click to Reset",
+				g_hud_globals.m_hud_screen.scale.x,
+				g_hud_globals.m_hud_screen.scale.y
+				);
+			g_hud_globals.m_menu_text->SetText(text);
+			g_hud_globals.m_menu_text->Refresh();
+			g_hud_globals.m_menu_text->Render();
+
+			UpdateAnchorScale();
 
 			return Enums::_settings_adjustment_result_not_finished;
 		}
@@ -255,6 +442,12 @@ namespace Yelo
 			{
 				g_hud_globals.m_flags.show_hud = Settings::ParseBoolean( hud_element->Attribute("show") );
 				g_hud_globals.m_flags.scale_hud = Settings::ParseBoolean( hud_element->Attribute("scale") );
+
+				double scale_value = 1;
+				if(hud_element->Attribute("hudScaleX", &scale_value))
+					g_hud_globals.m_hud_screen.scale.x = (real)scale_value;
+				if(hud_element->Attribute("hudScaleY", &scale_value))
+					g_hud_globals.m_hud_screen.scale.y = (real)scale_value;
 			}
 		}
 
@@ -262,13 +455,22 @@ namespace Yelo
 		{
 			hud_element->SetAttribute("show", BooleanToString(g_hud_globals.m_flags.show_hud));
 			hud_element->SetAttribute("scale", BooleanToString(g_hud_globals.m_flags.scale_hud));
+			hud_element->SetDoubleAttribute("hudScaleX", g_hud_globals.m_hud_screen.scale.x);
+			hud_element->SetDoubleAttribute("hudScaleY", g_hud_globals.m_hud_screen.scale.y);
 		}
-
 
 #if defined(DX_WRAPPER)
 		void Initialize3D(IDirect3DDevice9 *pDevice, D3DPRESENT_PARAMETERS *pPP)
 		{
-			UpdateUIScale((uint16)pPP->BackBufferWidth, (uint16)pPP->BackBufferHeight);
+			g_hud_globals.m_original_screen.projection.x = (2.0f / 640.0f);
+			g_hud_globals.m_original_screen.projection.y = (-2.0f / 480.0f);
+			g_hud_globals.m_original_screen.translation.x = -1;
+			g_hud_globals.m_original_screen.translation.y = 1;
+
+			g_hud_globals.m_screen_size.x = (int16)pPP->BackBufferWidth;
+			g_hud_globals.m_screen_size.y = (int16)pPP->BackBufferHeight;
+			UpdateScreenScale();
+			UpdateAnchorScale();
 
 			g_hud_globals.m_menu_text = new TextBlock(pDevice, pPP);
 			g_hud_globals.m_menu_text->ApplyScheme();
@@ -287,7 +489,10 @@ namespace Yelo
 
 		void OnResetDevice(D3DPRESENT_PARAMETERS *pPP)
 		{
-			UpdateUIScale((uint16)pPP->BackBufferWidth, (uint16)pPP->BackBufferHeight);
+			g_hud_globals.m_screen_size.x = (int16)pPP->BackBufferWidth;
+			g_hud_globals.m_screen_size.y = (int16)pPP->BackBufferHeight;
+			UpdateScreenScale();
+			UpdateAnchorScale();
 
 			g_hud_globals.m_menu_text->OnResetDevice(pPP);
 			g_hud_globals.m_menu_text->Refresh();

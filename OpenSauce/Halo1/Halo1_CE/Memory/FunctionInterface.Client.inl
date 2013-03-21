@@ -44,8 +44,9 @@ DEFINE_HOOK_BLOCK_PREPROCESS(weather_particle_systems_render) = {
 	GET_HOOK_PROCESS(func_postprocessing_weather_particle_systems_render_preprocess).FunctionHook,
 };
 
-DEFINE_HOOK_PROCESS(func_gameui_hud_enable_scaling, Hud::EnableScaling);
-DEFINE_HOOK_PROCESS(func_gameui_hud_disable_scaling, Hud::DisableScaling);
+DEFINE_HOOK_PROCESS(func_gameui_enable_widget_offset, Hud::EnableWidgetScale);
+DEFINE_HOOK_PROCESS(func_gameui_enable_hud_offset, Hud::EnableHUDScale);
+DEFINE_HOOK_PROCESS(func_gameui_disable_offset, Hud::DisableScale);
 
 DEFINE_HOOK_PROCESS(func_gbuffer_render_hud_preprocess, DX9::c_gbuffer_system::render_progress::UIPreProcess);
 DEFINE_HOOK_PROCESS(func_postprocessing_render_hud_preprocess, Rasterizer::PostProcessing::RenderPreHUD);
@@ -54,30 +55,30 @@ DEFINE_HOOK_PROCESS(func_postprocessing_render_hud_postprocess, Rasterizer::Post
 DEFINE_HOOK_BLOCK_PREPROCESS(render_hud) = {
 	GET_HOOK_PROCESS(func_postprocessing_render_hud_preprocess).FunctionHook,
 	GET_HOOK_PROCESS(func_gbuffer_render_hud_preprocess).FunctionHook,
-	GET_HOOK_PROCESS(func_gameui_hud_enable_scaling).FunctionHook,
+	GET_HOOK_PROCESS(func_gameui_enable_hud_offset).FunctionHook,
 };
 DEFINE_HOOK_BLOCK_POSTPROCESS(render_hud) = {
 	GET_HOOK_PROCESS(func_postprocessing_render_hud_postprocess).FunctionHook,
-	GET_HOOK_PROCESS(func_gameui_hud_disable_scaling).FunctionHook,
+	GET_HOOK_PROCESS(func_gameui_disable_offset).FunctionHook,
 };
 
 
 DEFINE_HOOK_PROCESS(func_postprocessing_render_ui_postprocess, Rasterizer::PostProcessing::RenderPostMenu);	
 
 DEFINE_HOOK_BLOCK_PREPROCESS(render_ui) = {
-	GET_HOOK_PROCESS(func_gameui_hud_enable_scaling).FunctionHook,
+	GET_HOOK_PROCESS(func_gameui_enable_widget_offset).FunctionHook,
 };
 DEFINE_HOOK_BLOCK_POSTPROCESS(render_ui) = {
 	GET_HOOK_PROCESS(func_postprocessing_render_ui_postprocess).FunctionHook,
-	GET_HOOK_PROCESS(func_gameui_hud_disable_scaling).FunctionHook,
+	GET_HOOK_PROCESS(func_gameui_disable_offset).FunctionHook,
 };
 
 
 DEFINE_HOOK_BLOCK_PREPROCESS(render_cursor) = {
-	GET_HOOK_PROCESS(func_gameui_hud_enable_scaling).FunctionHook,
+	GET_HOOK_PROCESS(func_gameui_enable_widget_offset).FunctionHook,
 };
 DEFINE_HOOK_BLOCK_POSTPROCESS(render_cursor) = {
-	GET_HOOK_PROCESS(func_gameui_hud_disable_scaling).FunctionHook,
+	GET_HOOK_PROCESS(func_gameui_disable_offset).FunctionHook,
 };
 
 DEFINE_HOOK_BLOCK_PROCESS(render_sky, GET_FUNC_VPTR(RENDER_SKY), render_sky, render_sky);
