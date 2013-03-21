@@ -36,7 +36,7 @@
 		<!--value=vertifical radians-->
 		<Fov value="" />
 
-		<Hud show="" scale="" showChat="">
+		<Hud show="" scale="" showChat="" hudScaleX="" hudScaleY="" >
 			<reports showDeaths="" showMyKillDeaths="" />
 		</Hud>
 

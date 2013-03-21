@@ -21,6 +21,7 @@ namespace Yelo
 			_settings_menu_fov = 1,
 			_settings_menu_weapons,
 			_settings_menu_hud,
+			_settings_menu_hud_scale,
 			_settings_menu_vehicles,
 			k_number_of_settings_menus,
 
@@ -35,8 +36,9 @@ namespace Yelo
 			k_settings_menu_fov_key,		// +1
 			k_settings_menu_weapons_key,	// +2
 			k_settings_menu_hud_key,		// +3
+			k_settings_menu_hud_scale_key,	// +4
 #if YELO_HAS_VEHICLE_VIEWS == TRUE
-			k_settings_menu_vehicles_key,	// +4
+			k_settings_menu_vehicles_key,	// +5
 #endif
 			k_settings_menu_last_key,
 

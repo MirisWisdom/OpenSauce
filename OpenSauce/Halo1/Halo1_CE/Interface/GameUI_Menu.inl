@@ -84,10 +84,11 @@ namespace Yelo
 				switch (selection)
 				{
 					// Menu Functions
-				case Enums::_settings_menu_fov:		WaitForReturn(Fov::AdjustSettings);				break;
-				case Enums::_settings_menu_weapons:	WaitForReturn(Objects::Weapon::AdjustSettings);	break;
-				case Enums::_settings_menu_hud:		WaitForReturn(Hud::AdjustSettings);				break;
-				case Enums::_settings_menu_vehicles:WaitForReturn(Objects::Vehicle::AdjustSettings);break;
+				case Enums::_settings_menu_fov:			WaitForReturn(Fov::AdjustSettings);				break;
+				case Enums::_settings_menu_weapons:		WaitForReturn(Objects::Weapon::AdjustSettings);	break;
+				case Enums::_settings_menu_hud:			WaitForReturn(Hud::AdjustSettings);				break;
+				case Enums::_settings_menu_hud_scale:	WaitForReturn(Hud::AdjustHUDScale);				break;
+				case Enums::_settings_menu_vehicles:	WaitForReturn(Objects::Vehicle::AdjustSettings);break;
 					// TODO: add your menu's AdjustSettings handlers here
 				}
 
@@ -136,8 +137,9 @@ namespace Yelo
 				L"\x2081. Field of View\n"
 				L"\x2082. Weapon Views\n"
 				L"\x2083. HUD Options\n"
+				L"\x2084. HUD Scale\n"
 	#if YELO_HAS_VEHICLE_VIEWS == TRUE
-				L"\x2084. Vehicle Views"
+				L"\x2085. Vehicle Views"
 	#endif
 				);
 			_menu_globals.menu->Refresh();
