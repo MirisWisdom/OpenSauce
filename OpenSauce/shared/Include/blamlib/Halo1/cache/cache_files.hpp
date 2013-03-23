@@ -220,4 +220,11 @@ namespace Yelo
 			s_data_file data_files[Enums::k_number_of_data_file_types];
 		}; BOOST_STATIC_ASSERT( sizeof(s_cache_file_globals) == 0x4418 );
 	};
+
+	namespace blam
+	{
+		bool PLATFORM_API cache_file_read_request(/*datum_index tag_index,*/ // unused, and optimized out, at runtime
+			uint32 offset, uint32 size, void* buffer, const Cache::s_cache_file_request_params& params, 
+			bool block = true, Enums::cache_file_request_source source = Enums::_cache_file_request_source_open_map);
+	};
 };

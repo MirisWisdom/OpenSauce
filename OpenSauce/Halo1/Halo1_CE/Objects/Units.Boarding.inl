@@ -30,11 +30,11 @@ namespace Boarding
 					animations[Enums::_unit_seat_animation_yelo_ejection];
 
 				// pick a random permutation of the ejection animation
-				animation_index = Engine::AnimationPickRandomPermutation(true, 
+				animation_index = blam::animation_choose_random_permutation_internal(Enums::_animation_update_kind_affects_game_state, 
 					unit->object.animation.definition_index, animation_index);
 
 				// set the target unit's animation to yelo_seat_ejection
-				Engine::Objects::UnitSetAnimation(unit_index, 
+				blam::unit_set_animation(unit_index, 
 					unit->object.animation.definition_index, animation_index);
 				
 				// reset  the unit's overlay animations
@@ -69,12 +69,12 @@ namespace Boarding
 					animations[Enums::_unit_seat_animation_yelo_board];
 
 				// pick a random permutation of the boarding animation
-				animation_index = Engine::AnimationPickRandomPermutation(true, 
+				animation_index = blam::animation_choose_random_permutation_internal(Enums::_animation_update_kind_affects_game_state, 
 					unit->object.animation.definition_index, animation_index);
 
 				// set the unit's animation to yelo_board
-				Engine::Objects::StartInterpolation(unit_index, 6);
-				Engine::Objects::UnitSetAnimation(unit_index, 
+				blam::object_start_interpolation(unit_index, 6);
+				blam::unit_set_animation(unit_index, 
 					unit->object.animation.definition_index, animation_index);
 				
 				// reset  the unit's overlay animations
@@ -137,10 +137,10 @@ namespace Boarding
 				// If the boarding seat definition contains a damage effect tag, use it here
 				if (boarding_seat_definition->boarding_damage.tag_index != datum_index::null)
 				{
-					Objects::s_damage_data damage_data = Objects::s_damage_data();
+					Objects::s_damage_data damage_data;
 
 					// Create a new damage_data struct based on the boarding_seat_definition boarding damage field
-					damage_data.effect_definition_index = boarding_seat_definition->boarding_damage.tag_index;
+					blam::damage_data_new(damage_data, boarding_seat_definition->boarding_damage.tag_index);
 					damage_data.responsible_player_index = unit->unit.controlling_player_index;
 					damage_data.responsible_unit_index = unit_index;
 					damage_data.responsible_units_team = unit->object.owner_team;
@@ -149,7 +149,7 @@ namespace Boarding
 					damage_data.damage_multiplier = 1.0f;
 
 					// Damage the target_unit
-					Engine::Objects::ObjectCauseDamage(damage_data, target_unit_index, NONE, NONE, NONE, 0);
+					blam::object_cause_damage(damage_data, target_unit_index);
 				}
 			}
 		}
@@ -181,14 +181,14 @@ namespace Boarding
 
 			// Eject the target_unit from it's seat if we haven't already
 			if (!target_unit_index.IsNull())
-				Engine::Objects::UnitExitSeatEnd(target_unit_index, true, true, false);
+				blam::unit_exit_seat_end(target_unit_index, true, true, false);
 
 			// Enter the target seat
-			Engine::Objects::UnitEnterSeat(unit_index, parent_unit_index, target_seat_index);
+			blam::unit_enter_seat(unit_index, parent_unit_index, target_seat_index);
 			
 			// Close the vehicle if boarding controls open/close
 			if (boarding_seat_definition->flags.controls_open_and_close_bit)
-				Engine::Objects::UnitClose(parent_unit_index);
+				blam::unit_close(parent_unit_index);
 		}
 	}
 
@@ -226,7 +226,7 @@ namespace Boarding
 			
 			// Open the vehicle if boarding controls open/close
 			if (boarding_seat_definition->flags.controls_open_and_close_bit)
-				Engine::Objects::UnitOpen(parent_unit_index);
+				blam::unit_open(parent_unit_index);
 		}
 	}
 
@@ -272,7 +272,7 @@ namespace Boarding
 		return result;
 	}
 
-	// Replaces the engines unit_can_enter_seat function with our own to compensate for boarding and multiteam vehicles
+	// Replaces the engine's unit_can_enter_seat function with our own to compensate for boarding and multiteam vehicles
 	static bool UnitCanEnterSeat(datum_index unit_index, datum_index target_unit_index, int16 target_seat_index, datum_index* unit_in_seat)
 	{
 		bool result = true;
@@ -302,7 +302,7 @@ namespace Boarding
 				else if (TagGroups::_global_yelo->gameplay.flags.prohibit_multiteam_vehicles_bit)
 				{
 					if (unit->unit.controlling_player_index == datum_index::null || 
-						!Engine::Game::TeamIsEnemy(first_object->object.owner_team, unit->object.owner_team))
+						!blam::game_team_is_enemy(first_object->object.owner_team, unit->object.owner_team))
 						result = true;
 					else
 						result = false;
@@ -340,7 +340,7 @@ namespace Boarding
 
 			mov		ecx, [esp+24]
 			mov		ebx, [esp+20]
-			push	ecx		// datum_index* unit_in_seat
+			push	ecx		// datum_index* unit_in_seat_index
 			push	ebx		// int16 target_seat_index
 			push	edx		// datum_index target_unit_index
 			push	eax		// datum_index unit_index

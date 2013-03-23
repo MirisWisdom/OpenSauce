@@ -944,7 +944,7 @@ skip_disable_velocity:
 					Players::s_player_datum* player = Players::LocalPlayer();
 					Objects::s_object_data* player_object = (*Objects::ObjectHeader())[player->slave_unit_index]->_object;
 
-					if(Engine::Game::TeamIsEnemy(player_object->owner_team, g_object->owner_team))
+					if(blam::game_team_is_enemy(player_object->owner_team, g_object->owner_team))
 						TeamIndex |= 1 << 5;
 
 					if(g_object->damage.health <= 0.0f)

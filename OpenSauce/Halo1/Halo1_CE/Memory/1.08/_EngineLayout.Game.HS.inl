@@ -8,12 +8,12 @@
 //////////////////////////////////////////////////////////////////////////
 // Scripting.cpp
 #if __EL_INCLUDE_FILE_ID == __EL_GAME_SCRIPTING
-	ENGINE_DPTR(t_recorded_animations_data, recorded_animations,		0x64B878, 0x5BD6A8);
-	ENGINE_DPTR(t_hs_syntax_data, hs_syntax,							0x8154D4, 0x6E13D4);
-	ENGINE_DPTR(t_object_list_header_data, object_list_header,			0x8154C4, 0x6E13C4);
-	ENGINE_DPTR(t_list_object_reference_data, list_object_reference,	0x8154C8, 0x6E13C8);
-	ENGINE_DPTR(t_hs_globals_data, hs_globals,							0x8154CC, 0x6E13CC);
-	ENGINE_DPTR(t_hs_thread_data, hs_threads,							0x8154D0, 0x6E13D0);
+	ENGINE_DPTR(recorded_animations_data_t, recorded_animations,		0x64B878, 0x5BD6A8);
+	ENGINE_DPTR(hs_syntax_data_t, hs_syntax,							0x8154D4, 0x6E13D4);
+	ENGINE_DPTR(object_list_header_data_t, object_list_header,			0x8154C4, 0x6E13C4);
+	ENGINE_DPTR(list_object_reference_data_t, list_object_reference,	0x8154C8, 0x6E13C8);
+	ENGINE_DPTR(hs_globals_data_t, hs_globals,							0x8154CC, 0x6E13CC);
+	ENGINE_DPTR(hs_thread_data_t, hs_threads,							0x8154D0, 0x6E13D0);
 
 	FUNC_PTR(HS_UPDATE_HOOK, 0x48CF88, 0x484868);
 

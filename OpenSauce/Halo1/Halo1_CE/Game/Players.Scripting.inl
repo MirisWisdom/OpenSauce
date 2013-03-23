@@ -24,7 +24,7 @@ static void* scripting_volume_test_player_team_evaluate(void** arguments)
 		while( (player = iter.Next()) != NULL )
 		{
 			if(player->team_index == args->team_index && 
-				Engine::Scenario::TriggerVolumeTestObject(args->trigger_volume, player->slave_unit_index))
+				blam::scenario_trigger_volume_test_object(args->trigger_volume, player->slave_unit_index))
 			{
 				result.boolean = true;
 				break;
@@ -53,7 +53,7 @@ static void* scripting_volume_test_player_team_all_evaluate(void** arguments)
 		while( (player = iter.Next()) != NULL )
 		{
 			if(player->team_index == args->team_index && 
-				!Engine::Scenario::TriggerVolumeTestObject(args->trigger_volume, player->slave_unit_index))
+				!blam::scenario_trigger_volume_test_object(args->trigger_volume, player->slave_unit_index))
 			{
 				result.boolean = false;
 				break;
@@ -83,7 +83,7 @@ static void* scripting_player_team_teleport_evaluate(void** arguments)
 			if(player->team_index == args->team_index)
 			{
 				TagGroups::scenario* scnr = Scenario::Scenario();
-				Engine::Players::Teleport(iter.Current(), scnr->cutscene_flags[args->cutscene_flag].position);
+				blam::player_teleport(iter.Current(), datum_index::null, scnr->cutscene_flags[args->cutscene_flag].position);
 			}
 		}
 	}
@@ -111,9 +111,9 @@ static void* scripting_player_team_players_evaluate(void** arguments)
 			if(player->team_index == args->team_index)
 			{
 				if(object_list.IsNull())
-					object_list = Scripting::ObjectListNew();
+					object_list = blam::object_list_new();
 
-				Engine::HS::ObjectListAdd(object_list, player->slave_unit_index);
+				blam::object_list_add(object_list, player->slave_unit_index);
 			}
 		}
 

@@ -58,4 +58,10 @@ namespace Yelo
 			long_flags enemy_mapping_flags[ BIT_VECTOR_SIZE_IN_DWORDS(Enums::k_number_of_game_teams * Enums::k_number_of_game_teams) ]; // 0xA4
 		}; BOOST_STATIC_ASSERT( sizeof(s_game_allegiance_globals) == 0xB4 );
 	};
+
+	namespace blam
+	{
+		// Checks to see if [team_to_test] is an enemy of [team]
+		bool PLATFORM_API game_team_is_enemy(long_enum team, long_enum team_to_test);
+	};
 };

@@ -20,12 +20,12 @@ static void* scripting_objects_distance_to_object_evaluate(void** arguments)
 
 		// Get the destination object's origin so that we can compare it, relative to each object in the list
 		real_vector3d dest_object_origin;
-		Engine::Objects::GetOrigin(args->dest_object, CAST_PTR(real_point3d*, &dest_object_origin));
+		blam::object_get_origin(args->dest_object, dest_object_origin);
 
 		// Enumerate the object list, testing each object's origin with dest
-		for(datum_index curr_list_reference, curr_object_index = Scripting::ObjectListGetFirst(args->object_list, curr_list_reference); 
+		for(datum_index curr_list_reference, curr_object_index = blam::object_list_get_first(args->object_list, curr_list_reference); 
 			!curr_object_index.IsNull(); 
-			curr_object_index = Scripting::ObjectListGetNext(args->object_list, curr_list_reference))
+			curr_object_index = blam::object_list_get_next(args->object_list, curr_list_reference))
 		{
 			// Compare the current object from the list to the destination object
 			real dist = GetObjectDistanceFromPoint(curr_object_index, dest_object_origin);

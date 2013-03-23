@@ -178,6 +178,14 @@ namespace Yelo
 		void VehicleRemapperEnable(bool enabled);
 
 
+		// Don't call me. Use IteratorNext<T>
+		s_object_data* IteratorNextAndVerifyType(s_object_iterator& iter, long_enum object_type);
+		template<typename T>
+		T* IteratorNext(s_object_iterator& iter)
+		{
+			return CAST_PTR(T*, IteratorNextAndVerifyType(iter, T::k_object_type));
+		}
+
 		void PlacementDataNewAndCopy(s_object_placement_data& data, datum_index src_object_index, 
 			datum_index tag_index_override = datum_index::null, datum_index owner_object_index = datum_index::null);
 

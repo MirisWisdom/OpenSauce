@@ -8,7 +8,8 @@
 #include "Rasterizer/PostProcessing/c_shader_postprocess.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include "Game/EngineFunctions.hpp"
+#include <blamlib/Halo1/cache/predicted_resources.hpp>
+
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 #include "Rasterizer/PostProcessing/PostProcessingErrorReporting.hpp"
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
@@ -63,7 +64,7 @@ namespace Yelo
 				return result;
 
 			// it was thought this would load the shaders bitmaps, alas it does not...but we do it anyway
-			Yelo::Engine::TagGroups::PredictResources(m_members.definition->predicted_resources);
+			blam::predicted_resources_precache(m_members.definition->predicted_resources);
 
 			// if the shader loaded successfully get the standard variable handles and initialize their values
 			GetHandles();

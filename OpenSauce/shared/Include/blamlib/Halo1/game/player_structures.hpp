@@ -165,15 +165,14 @@ namespace Yelo
 		}; BOOST_STATIC_ASSERT( sizeof(s_player_datum) == 0x200 );
 
 
-		struct s_team_datum : TStructImpl(0x40)
+		struct s_team_datum : Memory::s_datum_base_aligned
 		{
-			// Based on the size of this, I'm *guessing* this is what the struct would contain
-			datum_index players[Enums::k_multiplayer_maximum_players];
+			byte pad[0x3C];
 
 			// nothing even uses this...this structure 
 			// could have no real fields...maybe use it 
 			// for our own evil deeds?
-		};
+		}; BOOST_STATIC_ASSERT( sizeof(s_team_datum) == 0x40 );
 
 
 		struct s_players_globals_data

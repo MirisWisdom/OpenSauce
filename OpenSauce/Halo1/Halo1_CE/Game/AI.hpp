@@ -9,87 +9,12 @@
 #include <blamlib/Halo1/ai/actions.hpp>
 #include <blamlib/Halo1/ai/actor_types.hpp>
 #include <blamlib/Halo1/ai/ai_communication.hpp>
+#include <blamlib/Halo1/ai/encounters.hpp>
+#include <blamlib/Halo1/ai/props.hpp>
 #include <blamlib/Halo1/memory/data.hpp>
 
 namespace Yelo
 {
-	namespace Enums
-	{
-		enum actor_default_state
-		{
-			_actor_default_state_none,
-			_actor_default_state_sleeping,
-			_actor_default_state_alert,
-			_actor_default_state_moving_repeat_same_position,
-			_actor_default_state_moving_loop,
-			_actor_default_state_moving_loop_back_and_forth,
-			_actor_default_state_moving_loop_randomly,
-			_actor_default_state_moving_randomly,
-			_actor_default_state_guarding,
-			_actor_default_state_guarding_at_guard_position,
-			_actor_default_state_searching,
-			_actor_default_state_fleeing,
-
-			k_number_of_actor_default_states,
-		};
-
-		enum actor_target_type : _enum
-		{
-			k_number_of_actor_target_types = 12
-		};
-
-		enum actor_danger_zone : _enum
-		{
-			_actor_danger_zone_none,
-			_actor_danger_zone_suicide,
-			_actor_danger_zone_projectile,
-			_actor_danger_zone_vehicle,
-		};
-
-		enum actor_fire_target : _enum
-		{
-			_actor_fire_target_prop = 1,
-			_actor_fire_target_manual_point = 2,
-		};
-
-		enum actor_acknowledgement : _enum
-		{
-			_actor_acknowledgement_never,
-			_actor_acknowledgement_combat,
-			_actor_acknowledgement_instant,
-			_actor_acknowledgement_searching,
-			_actor_acknowledgement_definite,
-		};
-
-		enum actor_knowledge_type : _enum
-		{
-			_actor_knowledge_type_noncombat0,
-			_actor_knowledge_type_guard1,
-			_actor_knowledge_type_guard2,
-			_actor_knowledge_type_noncombat3,
-
-			k_number_of_actor_knowledge_types,
-		};
-
-		enum actor_perception_type : _enum
-		{
-			_actor_perception_type_none,
-			_actor_perception_type_partial,
-			_actor_perception_type_full,
-			_actor_perception_type_unmistakable,
-
-			k_number_of_actor_perception_types,
-		};
-
-		enum actor_movement_state : _enum
-		{
-			_actor_movement_state_noncombat,
-			_actor_movement_state_asleep,
-			_actor_movement_state_combat,
-			_actor_movement_state_flee,
-		};
-	};
-
 	namespace AI
 	{
 		struct s_ai_globals_data : TStructImpl(2268)
@@ -106,14 +31,20 @@ namespace Yelo
 		{
 			TStructGetPtrImpl(bool,				MetaSwarm, 0x6);
 			//TStructGetPtrImpl(bool,				Meta, 0x7);
-
+			TStructGetPtrImpl(bool,				MetaActive, 0x8);
 			TStructGetPtrImpl(bool,				MetaEncounterless, 0x9);
 			//TStructGetPtrImpl(bool,				Meta, 0xA);
+
+			//TStructGetPtrImpl(int16,			Meta, 0x10); // ticks
+			//TStructGetPtrImpl(bool,				Meta, 0x12);
+			TStructGetPtrImpl(bool,				MetaDormant, 0x13);
+			//TStructGetPtrImpl(int16,			Meta, 0x14);
 
 			TStructGetPtrImpl(datum_index,		MetaUnitIndex, 0x18);
 			// 0x1C ?
 			TStructGetPtrImpl(int16,			MetaSwarmUnitCount, 0x1E); // MAXIMUM_NUMBER_OF_UNITS_PER_SWARM = 16
-
+			//TStructGetPtrImpl(int16,			MetaSwarmUnit, 0x20);
+			// 0x22 ?
 			TStructGetPtrImpl(datum_index,		MetaSwarmUnitIndex, 0x24);
 			TStructGetPtrImpl(datum_index,		MetaSwarmCacheIndex, 0x28);
 			//TStructGetPtrImpl(datum_index,		Meta, 0x2C); // an actor index
@@ -125,10 +56,10 @@ namespace Yelo
 			TStructGetPtrImpl(_enum,			MetaTeam, 0x3E); // Enums::game_team
 
 			TStructGetPtrImpl(bool,				MetaTimeslice, 0x4C);
-			// 0x50 int32
+			TStructGetPtrImpl(datum_index,		MetaFirstPropIndex, 0x50);
 			// 0x54 int32
-			TStructGetPtrImpl(datum_index,		MetaActorDefinition, 0x58);
-			TStructGetPtrImpl(datum_index,		MetaActorVariantDefinition, 0x5C);
+			TStructGetPtrImpl(datum_index,		MetaActorDefinitionIndex, 0x58);
+			TStructGetPtrImpl(datum_index,		MetaActorVariantDefinitionIndex, 0x5C);
 
 			//TStructGetPtrImpl(_enum,		, 0x6A);
 			TStructGetPtrImpl(Enums::actor_action,		StateAction, 0x6C);
@@ -309,16 +240,7 @@ namespace Yelo
 		};
 		typedef Memory::DataArray<s_actor_datum, 256> t_actor_data;
 		t_actor_data*					Actors();
-
-
-		struct s_swarm_datum : TStructImpl(152)
-		{
-			TStructGetPtrImpl(int16,				UnitCount, 0x2);
-			TStructGetPtrImpl(datum_index,			ActorIndex, 0x4);
-			TStructGetPtrImpl(datum_index,			UnitIndices, 0x18); // [16]
-		};
-		typedef Memory::DataArray<s_swarm_datum, 32> t_swarm_data;
-		t_swarm_data*					Swarms();
+		swarm_data_t*					Swarms();
 
 
 		struct s_swarm_component_datum : TStructImpl(64)
@@ -328,71 +250,16 @@ namespace Yelo
 		t_swarm_component_data*			SwarmComponents();
 
 
-		struct s_prop_datum : TStructImpl(312)
-		{
-			TStructGetPtrImpl(datum_index,		OwnerActorIndex, 0x4);
-			TStructGetPtrImpl(datum_index,		NextPropIndex, 0x4);
-			TStructGetPtrImpl(datum_index,		ParentPropIndex, 0xC); // guess these are union'd?
-			TStructGetPtrImpl(datum_index,		OrphanPropIndex, 0xC);
+		prop_data_t*					Props();
 
-			//TStructGetPtrImpl(bool,				, 0x14);
-			//TStructGetPtrImpl(datum_index,			, 0x18); // unit_index
-			//TStructGetPtrImpl(datum_index,			, 0x1C); // actor_index (swarm?)
-			TStructGetPtrImpl(_enum,			State, 0x24);
+		encounter_data_t*				Encounters();
+		squads_data_t*					Squads();
+		platoons_data_t*				Platoons();
+		ai_pursuit_data_t*				Pursuits();
 
-			TStructGetPtrImpl(Enums::actor_perception_type,			Perception, 0x30);
-
-			TStructGetPtrImpl(bool,				Enemy, 0x60);
-
-			TStructGetPtrImpl(int16,			UnopposableCasualtiesInflicted, 0xA6);
-			//TStructGetPtrImpl(int16,			, 0xA8);
-
-			TStructGetPtrImpl(bool,				Dead, 0x127);
-		};
-		typedef Memory::DataArray<s_prop_datum, 768> t_prop_data;
-		t_prop_data*					Props();
-
-
-		struct s_encounter_datum : TStructImpl(108)
-		{
-		};
-		typedef Memory::DataArray<s_encounter_datum, 128> t_encounter_data;
-		t_encounter_data*				Encounters();
-
-
-		struct s_squad_data : TStructImpl(32768)
-		{
-		};
-		s_squad_data*						Squads();
-
-		struct s_platoon_data : TStructImpl(4096)
-		{
-		};
-		s_platoon_data*					Platoons();
-
-		struct s_ai_pursuit_datum : TStructImpl(40)
-		{
-		};
-		typedef Memory::DataArray<s_ai_pursuit_datum, 256> t_ai_pursuit_data;
-		t_ai_pursuit_data*				AIPursuits();
-
-
-		struct s_ai_communication_dialogue_data : TStructImpl(1664)
-		{
-		};
-		//s_ai_communication_dialogue_data
-
-		struct s_ai_communication_replies_data : TStructImpl(720)
-		{
-		};
-		s_ai_communication_replies_data*	AICommunicationReplies();
-
-
-		struct s_ai_conversation_datum : TStructImpl(100)
-		{
-		};
-		typedef Memory::DataArray<s_ai_conversation_datum, 8> t_ai_conversation_data;
-		t_ai_conversation_data*			AIConversations();
+		//ai_communication_dialogue_events_t*	AICommunicationDialogue();
+		ai_communication_reply_events_t*	AICommunicationReplies();
+		ai_conversation_data_t*				AIConversations();
 
 
 

@@ -7,10 +7,14 @@
 #include "Common/Precompile.hpp"
 #include "Objects/Objects.hpp"
 
+#include <blamlib/Halo1/ai/actors.hpp>
+#include <blamlib/Halo1/ai/ai_script.hpp>
 #include <blamlib/Halo1/effects/damage_effect_definitions.hpp>
 #include <blamlib/Halo1/game/game_globals.hpp>
+#include <blamlib/Halo1/hs/hs_library_external.hpp>
 #include <blamlib/Halo1/models/collision_model_definitions.hpp>
 #include <blamlib/Halo1/models/model_animation_definitions.hpp>
+#include <blamlib/Halo1/objects/damage.hpp>
 
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
@@ -277,6 +281,13 @@ namespace Yelo
 		}
 
 
+		s_object_data* IteratorNextAndVerifyType(s_object_iterator& iter, long_enum object_type)
+		{
+			ASSERT( TEST_FLAG(iter.type_mask, object_type), "Wrong object_type given to IteratorNext<T>" );
+
+			return blam::object_iterator_next(iter);
+		}
+
 		void PlacementDataNewAndCopy(s_object_placement_data& data, datum_index src_object_index, 
 			datum_index tag_index_override, datum_index owner_object_index)
 		{
@@ -285,7 +296,7 @@ namespace Yelo
 			if(tag_index_override.IsNull())
 				tag_index_override = src_object->definition_index;
 
-			Engine::Objects::PlacementDataNew(data, tag_index_override, owner_object_index);
+			blam::object_placement_data_new(data, tag_index_override, owner_object_index);
 			src_object->network.CopyToPlacementData(data);
 		}
 
@@ -293,7 +304,7 @@ namespace Yelo
 		{
 			if(!object_index.IsNull())
 			{
-				s_object_header_datum* object_header_datums = *Objects::ObjectHeader();
+				s_object_header_datum* object_header_datums = Objects::ObjectHeader()->Datums();
 				s_object_data* current_obj = object_header_datums[object_index.index]._object;
 
 				datum_index parent_index;
@@ -310,7 +321,7 @@ namespace Yelo
 		{
 			if(!object_index.IsNull())
 			{
-				s_object_header_datum* object_header_datums = *Objects::ObjectHeader();
+				s_object_header_datum* object_header_datums = Objects::ObjectHeader()->Datums();
 				s_object_data* current_obj = object_header_datums[object_index.index]._object;
 
 				do
@@ -355,7 +366,7 @@ namespace Yelo
 			if(!obj.IsNull())
 			{
 				real_vector3d object_origin;
-				Engine::Objects::GetOrigin(obj, CAST_PTR(real_point3d*, &object_origin));
+				blam::object_get_origin(obj, object_origin);
 
 				real_vector3d relative_pos = object_origin - dest_point;
 				dist = relative_pos.Magnitude();
@@ -368,7 +379,7 @@ namespace Yelo
 		static void PerformActionOnChildrenByType(datum_index parent, long_flags object_type_mask,
 			proc_object_action_perfomer action_performer)
 		{
-			s_object_header_datum* object_header_datums = *Objects::ObjectHeader();
+			s_object_header_datum* object_header_datums = Objects::ObjectHeader()->Datums();
 			s_object_data* parent_object = object_header_datums[parent.index]._object;
 			s_object_data* child_object;
 
@@ -382,13 +393,22 @@ namespace Yelo
 					action_performer(child_index);
 			}
 		}
+
+		static void API_FUNC object_delete_thunk(datum_index object_index)
+		{
+			blam::object_delete(object_index);
+		}
 		void DeleteChildrenByType(datum_index parent, long_flags object_type_mask)
 		{
-			PerformActionOnChildrenByType(parent, object_type_mask, Engine::Objects::Delete);
+			PerformActionOnChildrenByType(parent, object_type_mask, object_delete_thunk);
+		}
+		static void API_FUNC object_detach_thunk(datum_index object_index)
+		{
+			blam::object_detach(object_index);
 		}
 		void DetachChildrenByType(datum_index parent, long_flags object_type_mask)
 		{
-			PerformActionOnChildrenByType(parent, object_type_mask, Engine::Objects::Detach);
+			PerformActionOnChildrenByType(parent, object_type_mask, object_delete_thunk);
 		}
 
 		size_t PredictMemoryPoolUsage(Enums::object_type type, int32 node_count, bool include_yelo_upgrades)
@@ -433,7 +453,7 @@ namespace Yelo
 				int16 object_team = object->owner_team;
 				int16 object_to_test_team = object_to_test->owner_team;
 
-				return Engine::Game::TeamIsEnemy(object_team, object_to_test_team);
+				return blam::game_team_is_enemy(object_team, object_to_test_team);
 			}
 			return false;
 		}

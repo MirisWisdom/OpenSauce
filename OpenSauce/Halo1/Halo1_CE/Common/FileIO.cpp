@@ -193,7 +193,7 @@ namespace Yelo
 
 				void* mapping_pointer = MapViewOfFile(mapped_file, FILE_MAP_READ, 0, 0, 0);
 
-				bool md5_matches = Engine::CompareMD5(CAST_PTR(const char*, mapping_pointer), info_out.file_size, file_def.m_md5);
+				bool md5_matches = Engine::CompareMD5(CAST_PTR(byte*, mapping_pointer), info_out.file_size, file_def.m_md5);
 
 				UnmapViewOfFile(mapping_pointer);
 				CloseHandle(mapped_file);

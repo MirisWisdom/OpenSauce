@@ -33,6 +33,9 @@
 		ENGINE_PTR(s_text_bounds_globals_data, text_bounds_globals,	0x67F6F4, PTR_NULL);
 		ENGINE_PTR(s_font_drawing_globals_data, font_drawing_globals,0x67F708,PTR_NULL);
 
+		ENGINE_PTR(s_hud_chat_globals, hud_chat_globals,			0x64E7A8, 0x5C0588);
+		ENGINE_PTR(int32, hud_chat_line_count,						0x6B44D4, PTR_NULL);
+
 		FUNC_PTR(HUD_UPDATE_HOOK,									0x4ACC13, FUNC_PTR_NULL);
 		FUNC_PTR(FIRST_PERSON_WEAPONS_UPDATE_HOOK,					0x4953C8, FUNC_PTR_NULL);
 

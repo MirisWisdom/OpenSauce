@@ -228,4 +228,12 @@ namespace Yelo
 			_initialize_for_reset_map initialize_for_reset_map;		// 0xAC
 		}; BOOST_STATIC_ASSERT( sizeof(game_engine_definition) == 0xB0 );
 	};
+
+	namespace blam
+	{
+		datum_index PLATFORM_API find_closest_player_index(datum_index player_index);
+
+
+		void PLATFORM_API game_engine_rasterize_message(wcstring message, real alpha);
+	};
 };

@@ -213,7 +213,7 @@ namespace Yelo
 
 			TAG_FIELD(tag_reference, melee_damage, 'jpt!');
 
-			TAG_ENUM(motion_sensor_blip_size);
+			TAG_ENUM(blip_type);
 			PAD16;
 
 			PAD_TYPE(tag_block);

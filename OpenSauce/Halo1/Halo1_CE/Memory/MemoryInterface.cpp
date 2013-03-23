@@ -13,9 +13,5 @@ namespace Yelo
 {
 	namespace Memory
 	{
-		void* s_data_array::IteratorNext(void* iter)
-		{
-			return Engine::Memory::DataIteratorNext(iter);
-		}
 	};
 };

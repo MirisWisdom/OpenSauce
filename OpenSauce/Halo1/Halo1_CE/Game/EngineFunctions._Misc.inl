@@ -28,13 +28,13 @@ void GatherException(const void* data, int32 arg_0, int32 arg_4, int32 arg_8)
 	}
 }
 
-void SetTextureSamplerStage(Yelo::TagGroups::s_bitmap_data* bitmap, uint32 texture_stage)
+bool SetTextureSamplerStage(Yelo::TagGroups::s_bitmap_data* bitmap, uint32 texture_stage)
 {
 	// use this instead of TextureCacheRequestTexture where applicable as this function
 	// tests whether the texture is already loaded and sets the texture sampler itself
 
 #if !PLATFORM_IS_DEDI
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(SET_TEXTURE_SAMPLER_STAGE);
+	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(RASTERIZER_SET_TEXTURE_BITMAP_DATA);
 
 	_asm
 	{
@@ -43,6 +43,8 @@ void SetTextureSamplerStage(Yelo::TagGroups::s_bitmap_data* bitmap, uint32 textu
 		call	TEMP_CALL_ADDR
 		add		esp, 4
 	}
+#else
+	return false;
 #endif
 }
 
@@ -114,44 +116,39 @@ void RasterizerAddResolution(uint32 width, uint32 height, uint32 refresh_rate)
 #endif
 }
 
-int16 API_FUNC_NAKED AnimationPickRandomPermutation(bool animation_update_kind_affects_game_state, datum_index animation_graph_index, int32 animation_index)
+int16 API_FUNC_NAKED AnimationPickRandomPermutation(long_enum render_or_affects_game_state, datum_index animation_graph_index, int32 animation_index)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(ANIMATION_PICK_RANDOM_PERMUTATION);
+	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(ANIMATION_CHOOSE_RANDOM_PERMUTATION_INTERNAL);
 
 	API_FUNC_NAKED_START()
-		push	ecx
-		movzx	ecx, animation_update_kind_affects_game_state
-
 		mov		edx, animation_index
 		mov		eax, animation_graph_index
-		push	ecx
+		push	render_or_affects_game_state
 		call	TEMP_CALL_ADDR
 		add		esp, 4 * 1
-
-		pop		ecx
 	API_FUNC_NAKED_END(3)
 }
 
-void API_FUNC_NAKED GenerateMD5(cstring data, const DWORD data_length, cstring output)
+void API_FUNC_NAKED GSMD5Digest(byte* input, unsigned int input_length, char output[33])
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(GENERATE_MD5);
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(GSMD5DIGEST);
 
 	API_FUNC_NAKED_START()
 		push	output
-		push	data_length
-		push	data
-		call	TEMP_CALL_ADDR
+		push	input_length
+		push	input
+		call	FUNCTION
 	API_FUNC_NAKED_END_CDECL(3);
 }
 
-bool CompareMD5(cstring data, const DWORD data_length, cstring comparison_md5)
+bool CompareMD5(byte* input, unsigned int input_length, const char comparison_md5[33])
 {
-	char data_md5[33];
+	char input_md5[33];
 
-	data_md5[0] = 0;
-	GenerateMD5(data, data_length, data_md5);
+	input_md5[0] = '\0';
+	GSMD5Digest(input, input_length, input_md5);
 
-	return _stricmp(data_md5, comparison_md5) == 0;
+	return _strnicmp(input_md5, comparison_md5, NUMBEROF(input_md5)) == 0;
 }
 
 bool GetCmdLineParameter(cstring parameter, cstring* value_out)

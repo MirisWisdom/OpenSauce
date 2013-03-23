@@ -8,6 +8,14 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum animation_update_kind : long_enum {
+			_animation_update_kind_render_only,
+			_animation_update_kind_affects_game_state,
+		};
+	};
+
 	namespace Animations
 	{
 		struct s_animation_list_entry
@@ -31,5 +39,12 @@ namespace Yelo
 			int16 animation_index;
 			int16 frame_index;
 		}; BOOST_STATIC_ASSERT( sizeof(s_animation_state) == 0x4 );
+	};
+
+	namespace blam
+	{
+		// If the animation at [animation_index] in [animation_graph_index] is permutated, this will randomly pick one of them.
+		// Returns the random [animation_index]
+		int16 PLATFORM_API animation_choose_random_permutation_internal(long_enum render_or_affects_game_state, datum_index animation_graph_index, int32 animation_index);
 	};
 };

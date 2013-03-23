@@ -10,16 +10,16 @@
 #if __EL_INCLUDE_FILE_ID == __EL_GAME_AI
 	ENGINE_DPTR(s_ai_globals_data, ai_globals,								0x81B534, 0x6E73F4);
 	ENGINE_DPTR(t_actor_data, actors,										0x81B540, 0x6E7400);
-	ENGINE_DPTR(t_swarm_data, swarms,										0x81B53C, 0x6E73FC);
+	ENGINE_DPTR(swarm_data_t, swarms,										0x81B53C, 0x6E73FC);
 	ENGINE_DPTR(t_swarm_component_data, swarm_components,					0x81B538, 0x6E73F8);
-	ENGINE_DPTR(t_prop_data, props,											0x81B4A0, 0x6E7360);
-	ENGINE_DPTR(t_encounter_data, encounters,								0x81B4A8, 0x6E7368);
-	ENGINE_DPTR(s_squad_data, squads,										0x81B4AC, 0x6E736C);
-	ENGINE_DPTR(s_platoon_data, platoons,									0x81B4A4, 0x6E7364);
-	ENGINE_DPTR(t_ai_pursuit_data, ai_pursuits,								0x81B4B0, 0x6E7370);
-	//ai_communication_dialogue_data
-	ENGINE_DPTR(s_ai_communication_replies_data, ai_communication_replies,	0x68BC7C, 0x5F4474);
-	ENGINE_DPTR(t_ai_conversation_data, ai_conversations,					0x81B4B4, 0x6E7374);
+	ENGINE_DPTR(prop_data_t, props,											0x81B4A0, 0x6E7360);
+	ENGINE_DPTR(encounter_data_t, encounters,								0x81B4A8, 0x6E7368);
+	ENGINE_DPTR(squads_data_t, squads,										0x81B4AC, 0x6E736C);
+	ENGINE_DPTR(platoons_data_t, platoons,									0x81B4A4, 0x6E7364);
+	ENGINE_DPTR(ai_pursuit_data_t, ai_pursuits,								0x81B4B0, 0x6E7370);
+	//ai_communication_dialogue_events_t
+	ENGINE_DPTR(ai_communication_reply_events_t, ai_communication_replies,	0x68BC7C, 0x5F4474);
+	ENGINE_DPTR(ai_conversation_data_t, ai_conversations,					0x81B4B4, 0x6E7374);
 
 	FUNC_PTR(AI_UPDATE_HOOK,			0x42A949, 0x42A959);
 	FUNC_PTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK,	0x40B701, 0x40B711);
@@ -134,8 +134,6 @@ namespace Fov
 #elif __EL_INCLUDE_FILE_ID == __EL_GAME_CONSOLE
 	ENGINE_DPTR(s_terminal_globals, terminal_globals,		0x64DE4C, 0x5BFC2C);
 	ENGINE_PTR(s_console_globals, console_globals,			0x651F70, 0x5C3D30);
-	ENGINE_PTR(s_hud_chat_globals_data, hud_chat_globals,	0x64E7A8, 0x5C0588);
-	ENGINE_PTR(int32, hud_chat_line_count,					0x6B44D4, PTR_NULL);
 
 	FUNC_PTR(CONSOLE_UPDATE_HOOK,		0x4C9BE3, 0x4B3637);
 	FUNC_PTR(CONSOLE_PROCESS_COMMAND,	0x4C9F40, 0x4B3990); // also in EngineFunctions.cpp

@@ -7,7 +7,6 @@
 #pragma once
 
 #include <blamlib/Halo1/cseries/errors.hpp>
-#include <blamlib/Halo1/tag_files/files.hpp>
 
 namespace Yelo
 {
@@ -72,36 +71,6 @@ namespace Yelo
 		{
 			return CAST_PTR(T*, debug_realloc(pointer, sizeof(T) * count, file, line));
 		}
-
-
-		void file_reference_create(s_file_reference& reference, long_enum location = Enums::_file_reference_location_tags);
-
-		s_file_reference& file_reference_add_directory(s_file_reference& reference, cstring directory);
-
-		s_file_reference& file_reference_set_name(s_file_reference& reference, cstring name);
-
-		cstring file_reference_get_name(const s_file_reference& reference, long_flags flags, __out char name[Enums::k_maximum_filename_length+1]);
-
-		s_file_reference& file_reference_create(s_file_reference& reference, cstring directory, cstring name, cstring ext, 
-			long_enum location = Enums::_file_reference_location_tags);
-
-		s_file_reference& file_reference_create_from_path(s_file_reference& reference, cstring path, bool is_directory = false);
-
-		int16 find_files(long_flags flags, const s_file_reference& directory, int32 maximum_count, s_file_reference references[]);
-		template<size_t _SizeOfArray>
-		int16 find_files(long_flags flags, const s_file_reference& directory, s_file_reference (&references)[_SizeOfArray])
-		{
-			return find_files(flags, directory, _SizeOfArray, references);
-		}
-
-		void file_references_sort(long_flags name_flags, size_t count, s_file_reference references[]);
-		template<size_t _SizeOfArray>
-		void file_references_sort(long_flags name_flags, s_file_reference (&references)[_SizeOfArray])
-		{
-			file_references_sort(name_flags, _SizeOfArray, references);
-		}
-
-		bool file_exists(const s_file_reference& reference);
 	};
 };
 

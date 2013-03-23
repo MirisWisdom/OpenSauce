@@ -47,12 +47,12 @@ namespace Yelo
 		{
 		}
 
-		t_recorded_animations_data* RecordedAnimations()					DPTR_IMP_GET(recorded_animations);
-		t_hs_syntax_data* HSSyntax()										DPTR_IMP_GET(hs_syntax);
-		t_object_list_header_data* ObjectListHeader()						DPTR_IMP_GET(object_list_header);
-		t_list_object_reference_data* ListObjectReference()					DPTR_IMP_GET(list_object_reference);
-		t_hs_thread_data* HSThreads()										DPTR_IMP_GET(hs_threads);
-		t_hs_globals_data* HSGlobals()										DPTR_IMP_GET(hs_globals);
+		recorded_animations_data_t* RecordedAnimations()					DPTR_IMP_GET(recorded_animations);
+		hs_syntax_data_t* HSSyntax()										DPTR_IMP_GET(hs_syntax);
+		object_list_header_data_t* ObjectListHeader()						DPTR_IMP_GET(object_list_header);
+		list_object_reference_data_t* ListObjectReference()					DPTR_IMP_GET(list_object_reference);
+		hs_thread_data_t* HSThreads()										DPTR_IMP_GET(hs_threads);
+		hs_globals_data_t* HSGlobals()										DPTR_IMP_GET(hs_globals);
 
 		void Initialize()
 		{
@@ -76,14 +76,19 @@ namespace Yelo
 		void PLATFORM_API Update()
 		{
 		}
+	};
 
-		datum_index ObjectListNew()
+	namespace blam
+	{
+		using namespace Scripting;
+
+		datum_index object_list_new()
 		{
-			datum_index object_list_index = Engine::Memory::DatumNew(&Scripting::ObjectListHeader()->Header);
+			datum_index object_list_index = blam::datum_new( *ObjectListHeader() );
 
 			if(!object_list_index.IsNull())
 			{
-				s_object_list_header_datum* object_list = (*Scripting::ObjectListHeader())[object_list_index];
+				s_object_list_header_datum* object_list = (*ObjectListHeader())[object_list_index];
 
 				object_list->count = 0;
 				object_list->first = datum_index::null;
@@ -92,24 +97,24 @@ namespace Yelo
 			return object_list_index;
 		}
 
-		datum_index ObjectListGetFirst(datum_index list_index, __out datum_index& list_reference)
+		datum_index object_list_get_first(datum_index list_index, __out datum_index& list_reference)
 		{
 			if(!list_index.IsNull())
 			{
-				s_object_list_header_datum* object_list = (*Scripting::ObjectListHeader())[list_index];
+				s_object_list_header_datum* object_list = (*ObjectListHeader())[list_index];
 				list_reference = object_list->first;
 
-				return ObjectListGetNext(list_index, list_reference);
+				return object_list_get_next(list_index, list_reference);
 			}
 
 			return datum_index::null;
 		}
 
-		datum_index ObjectListGetNext(datum_index list_index, __inout datum_index& list_reference)
+		datum_index object_list_get_next(datum_index list_index, __inout datum_index& list_reference)
 		{
 			if(!list_reference.IsNull())
 			{
-				s_list_object_reference_datum* object_reference = (*Scripting::ListObjectReference())[list_reference];
+				s_list_object_reference_datum* object_reference = (*ListObjectReference())[list_reference];
 				list_reference = object_reference->next_reference;
 
 				return object_reference->object_index;

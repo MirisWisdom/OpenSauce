@@ -17,6 +17,11 @@ namespace Yelo
 		typedef Memory::DataArray<	hs_syntax_node, 
 									Enums::k_maximum_hs_syntax_nodes_per_scenario, 
 									Enums::k_maximum_hs_syntax_nodes_per_scenario_upgrade> 
-			t_hs_syntax_data;
+			hs_syntax_data_t;
+	};
+
+	namespace blam
+	{
+		Scripting::hs_syntax_node* hs_syntax_get(datum_index expression_index);
 	};
 };

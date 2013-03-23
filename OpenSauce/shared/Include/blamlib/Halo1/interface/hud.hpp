@@ -8,7 +8,8 @@
 
 namespace Yelo
 {
-	namespace GameUI
+	namespace blam
 	{
+		wcstring PLATFORM_API hud_get_item_string(int16 reference_index);
 	};
 };

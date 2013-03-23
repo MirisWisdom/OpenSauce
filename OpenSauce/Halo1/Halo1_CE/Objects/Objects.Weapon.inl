@@ -4,6 +4,8 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
+#include <blamlib/Halo1/interface/hud.hpp>
+
 #include "Rasterizer/Rasterizer.hpp"
 #include "Game/Camera.hpp"
 #include "Game/EngineFunctions.hpp"
@@ -75,9 +77,9 @@ namespace Yelo
 						const TagGroups::s_item_definition* definition = TagGroups::TagGet<TagGroups::s_item_definition>(definition_index);
 						if(definition != NULL) // WTF! HOW? idk. also, lazy :(
 						{
-							int32 msg_index = definition->item.message_index;
+							int16 msg_index = definition->item.message_index;
 
-							wcstring msg = Engine::Interface::HudGetItemMessage(msg_index);
+							wcstring msg = blam::hud_get_item_string(msg_index);
 
 							wstring_to_string_lazy(weapon_name, Enums::k_weapon_view_name_length+1, msg);
 						}

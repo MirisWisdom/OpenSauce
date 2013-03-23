@@ -70,7 +70,7 @@ namespace Yelo
 				arguments.m_headers,
 				arguments.m_component,
 				arguments.m_component_data,
-				arguments.m_buffer,
+				CAST_PTR(char*,arguments.m_buffer),
 				arguments.m_buffer_size,
 				arguments.m_delete_buffer,
 				arguments.m_blocking,

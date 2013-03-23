@@ -34,6 +34,8 @@
 	/// Implement an operator cast from the implementing class to [Type] (by value)
 	#define OVERRIDE_OPERATOR_CAST_THIS_(Type) \
 		API_INLINE operator Type() { return *reinterpret_cast<Type*>(this); }
+	#define OVERRIDE_OPERATOR_CAST_THIS_REF(Type) \
+		API_INLINE operator Type&() { return reinterpret_cast<Type&>(*this); }
 
 	/// Implement an operator cast from the implementing class to [Type] at [Field]'s offset in the class
 	#define OVERRIDE_OPERATOR_CAST_THIS_BY_FIELD(Type, Field) \

@@ -11,48 +11,53 @@ namespace Yelo
 {
 	namespace Memory
 	{
-		template<typename DatumT, const size_t DatumCount> struct DataArray {
+		template<typename DatumT,	size_t MaxDatumCount, 
+									size_t MaxDatumCountUpgrade = MaxDatumCount>
+		struct DataArray {
 		private:
-			typedef DataArray<DatumT,DatumCount> DataArrayT;
+			typedef DataArray<DatumT,MaxDatumCount,MaxDatumCountUpgrade> DataArrayT;
 
 		public:
 			struct Iterator {
 			private:
-				DataArrayT* Array;
-				datum_index Datum;
-				int32 CurrentIndex;
+				s_data_iterator iterator;
 
 			public:
-				Iterator(DataArrayT* array)
-				{
-					Array = array;
-					Datum = datum_index::null;
-					CurrentIndex = NONE;
+				Iterator(DataArrayT* data) {
+					blam::data_iterator_new(iterator, &data->Header);
 				}
 
 				DatumT* Next() {
-					return CAST_PTR(DatumT*, s_data_array::IteratorNext(this));
+					return CAST_PTR(DatumT*, blam::data_iterator_next( *CAST_PTR(s_data_iterator*, this) ));
 				}
 
-				datum_index Current() const { return this->Datum; }
-			}; BOOST_STATIC_ASSERT( sizeof(Iterator) == sizeof(s_data_array_iterator) );
+				datum_index Current() const { return this->iterator.index; }
+			};
 
 			s_data_array Header;
 
 		public:
 
 			Iterator& IteratorNew(Iterator& iter) {
-				iter = Iterator(this);
+				return iter = Iterator(this);
 			}
 
-			API_INLINE DatumT* operator [](datum_index handle) { return &CAST_PTR(DatumT*, this->Header.data)[handle.index]; }
-
-			API_INLINE operator DatumT*()
-			{ 
+			API_INLINE DatumT* Datums() {
 				return CAST_PTR(DatumT*, this->Header.data);
 			}
 
-			API_INLINE size_t GetDatumCount() const { return DatumCount; }
+			API_INLINE operator s_data_array*() {
+				return &this->Header;
+			}
+
+			API_INLINE DatumT* operator [](datum_index handle)
+			{
+#if PLATFORM_IS_EDITOR
+				return CAST_PTR(DatumT*, blam::datum_get(&this->Header, handle));
+#else
+				return &CAST_PTR(DatumT*, this->Header.data)[handle.index];
+#endif
+			}
 		};
 	};
 };

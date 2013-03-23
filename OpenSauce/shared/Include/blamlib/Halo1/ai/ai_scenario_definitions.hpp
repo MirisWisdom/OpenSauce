@@ -9,6 +9,13 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum {
+			k_maximum_actor_starting_locations = 32,
+		};
+	};
+
 	namespace TagGroups
 	{
 	};

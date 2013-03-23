@@ -4382,6 +4382,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\memory\data.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\memory\data.hpp"
 					>
 				</File>
@@ -4414,6 +4418,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\cheats.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\game\game.hpp"
 					>
 				</File>
@@ -4431,6 +4439,10 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\game\game_engine_king.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\game\game_engine_multiplayer_sounds.hpp"
 					>
 				</File>
 				<File
@@ -4490,11 +4502,31 @@
 				Name="hs"
 				>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\hs\hs.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\hs\hs.hpp"
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\hs\hs_compile.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\hs\hs_compile.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\hs\hs_constants.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\hs\hs_library_external.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\hs\hs_runtime.cpp"
 					>
 				</File>
 				<File
@@ -4590,6 +4622,10 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\objects\object_structures.cpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\objects\object_structures.hpp"
 					>
 				</File>
@@ -4650,7 +4686,15 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\hud_chat.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\hud_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\hud_draw.hpp"
 					>
 				</File>
 				<File
@@ -4678,7 +4722,23 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\map_list.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\map_list.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\motion_sensor.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\terminal.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\interface\ui_video_screen.hpp"
 					>
 				</File>
 				<File
@@ -4714,7 +4774,15 @@
 				Name="main"
 				>
 				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\main\console.hpp"
+					>
+				</File>
+				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\main\levels.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\main\main.cpp"
 					>
 				</File>
 				<File
@@ -4748,6 +4816,10 @@
 				<Filter
 					Name="dx9"
 					>
+					<File
+						RelativePath="..\..\shared\Include\blamlib\Halo1\rasterizer\dx9\rasterizer_dx9.hpp"
+						>
+					</File>
 					<File
 						RelativePath="..\..\shared\Include\blamlib\Halo1\rasterizer\dx9\rasterizer_dx9_render_targets.cpp"
 						>
@@ -4967,6 +5039,10 @@
 				</File>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\ai\ai_scenario_definitions.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\ai\ai_script.hpp"
 					>
 				</File>
 				<File
@@ -5219,6 +5295,18 @@
 				>
 				<File
 					RelativePath="..\..\shared\Include\blamlib\Halo1\text\draw_string.hpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\text\text_group.hpp"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="camera"
+				>
+				<File
+					RelativePath="..\..\shared\Include\blamlib\Halo1\camera\director.hpp"
 					>
 				</File>
 			</Filter>
@@ -5716,7 +5804,7 @@
 			>
 		</File>
 		<File
-			RelativePath=".\Main.cpp"
+			RelativePath=".\MainYelo.cpp"
 			>
 		</File>
 		<File

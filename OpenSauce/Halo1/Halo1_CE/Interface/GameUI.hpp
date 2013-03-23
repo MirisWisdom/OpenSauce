@@ -11,6 +11,7 @@
 #include <blamlib/Halo1/game/players.hpp>
 #include <blamlib/Halo1/interface/first_person_weapons.hpp>
 #include <blamlib/Halo1/interface/hud.hpp>
+#include <blamlib/Halo1/interface/hud_chat.hpp>
 #include <blamlib/Halo1/interface/hud_messaging.hpp>
 #include <blamlib/Halo1/interface/hud_nav_points.hpp>
 #include <blamlib/Halo1/interface/hud_weapon.hpp>
@@ -21,6 +22,11 @@
 
 namespace Yelo
 {
+	namespace Players
+	{
+		struct s_player_datum;
+	};
+
 	namespace Enums
 	{
 		enum {
@@ -328,12 +334,27 @@ namespace Yelo
 		};
 		s_font_drawing_globals_data*	FontDrawingGlobals();
 
+		s_hud_chat_globals*		HudChatGlobals();
+		int32 HudChatLineCount();
+
 
 		void Initialize();
 		void Dispose();
 		void PLATFORM_API Update();
 
 		void PLATFORM_API FirstPersonWeaponsUpdate();
+
+
+		// Predicate to use for determining when to send a message to players
+		typedef bool (API_FUNC* proc_send_hud_chat_predicate)(Players::s_player_datum* player, 
+			Players::s_player_datum* src_player, datum_index src_player_vehicle_index);
+		// Predicate for always sending a message to 
+		bool SendHudChatToEveryonePredicate(Players::s_player_datum* player, 
+			Players::s_player_datum* src_player, datum_index src_player_vehicle_index);
+
+		// Send [messsage] to all valid players (machine_index != NONE) and who pass the [send_predicate]
+		void SendHudChat(Enums::hud_chat_type msg_type, wcstring message, byte player_number,
+			proc_send_hud_chat_predicate send_predicate = SendHudChatToEveryonePredicate);
 	};
 
 

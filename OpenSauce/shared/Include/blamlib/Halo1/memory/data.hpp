@@ -25,9 +25,52 @@ namespace Yelo
 			int16 last_datum;		// Last used datum index
 			datum_index next_datum;	// Next datum value to use
 			void* data;
-
-			static void* IteratorNext(void* iter);
 		};
+
+		struct s_data_iterator
+		{
+			s_data_array* data;
+			int16 absolute_index;
+			PAD16;
+			datum_index index;
+			tag signature;
+		}; BOOST_STATIC_ASSERT( sizeof(s_data_iterator) == 0x10 );
+	};
+
+	namespace blam
+	{
+		using namespace Yelo::Memory;
+
+		void PLATFORM_API data_verify(s_data_array* data);
+
+		s_data_array* PLATFORM_API data_new(cstring name, int32 maximum_count, size_t datum_size);
+
+		void PLATFORM_API data_dispose(s_data_array* data);
+
+		void PLATFORM_API data_make_valid(s_data_array* data);
+
+		void PLATFORM_API data_delete_all(s_data_array* data);
+
+		datum_index PLATFORM_API data_next_index(s_data_array* data, datum_index cursor);
+
+		void data_iterator_new(s_data_iterator& iterator, s_data_array* data);
+
+		void* PLATFORM_API data_iterator_next(s_data_iterator& iterator);
+
+		datum_index PLATFORM_API datum_new_at_index(s_data_array* data, datum_index index);
+
+		// creates a new element in [data] and returns the datum index
+		datum_index PLATFORM_API datum_new(s_data_array* data);
+
+		// Delete the data associated with the [index] handle in [data]
+		void PLATFORM_API datum_delete(s_data_array* data, datum_index index);
+
+		// Get the data associated with [index] from the [data] array
+		void* PLATFORM_API datum_get(s_data_array* data, datum_index index);
+
+		// Get the data associated with [index] from the [data] array
+		// Returns NULL if the handle is invalid
+		void* PLATFORM_API datum_try_and_get(s_data_array* data, datum_index index);
 	};
 };
 

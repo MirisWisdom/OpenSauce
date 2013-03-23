@@ -29,4 +29,11 @@ namespace Yelo
 			TagGroups::s_sound_permutation* sound;
 		}; BOOST_STATIC_ASSERT( sizeof(s_sound_cache_datum) == 0x10 );
 	};
+
+	namespace blam
+	{
+		bool PLATFORM_API sound_cache_sound_request(TagGroups::s_sound_permutation* sound_perm, 
+			// block										increment software_reference_count
+			bool block_thread = false, bool load = true, bool reference = false);
+	};
 };
