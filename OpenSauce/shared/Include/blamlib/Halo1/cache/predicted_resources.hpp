@@ -5,6 +5,8 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/tag_files/tag_groups.hpp>
+
 namespace Yelo
 {
 	namespace Enums
@@ -13,7 +15,7 @@ namespace Yelo
 			_predicted_resource_bitmap,
 			_predicted_resource_sound,
 
-			_predicted_resource
+			k_number_of_predicted_resources
 		};
 	};
 
@@ -25,5 +27,12 @@ namespace Yelo
 			int16 resource_index;
 			datum_index tag_index;
 		}; BOOST_STATIC_ASSERT( sizeof(predicted_resource) == 0x8 ); // max count: 1024
+	};
+
+	namespace blam
+	{
+		// NOTE: function is actually defined in the engine's physical_memory_map.c
+		// May be 'physical_memory_map_precache_resources' or something
+		void predicted_resources_precache(TagBlock<TagGroups::predicted_resource>& resources);
 	};
 };

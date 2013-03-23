@@ -110,7 +110,7 @@ namespace Yelo
 
 					// then, copy our new tag group addresses
 					count = 0;
-					for(s_custom_tag_group_datum* data = CAST(s_custom_tag_group_datum*, *data_array); 
+					for(s_custom_tag_group_datum* data = data_array->Datums(); 
 						count < data_array->Header.next_index; count++, address++)
 						*address = data[count].definition;
 				}

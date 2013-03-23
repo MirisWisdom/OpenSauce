@@ -7,6 +7,9 @@
 #include "Common/Precompile.hpp"
 #include "Engine/EngineFunctions.hpp"
 
+#include <blamlib/Halo1/math/periodic_functions.hpp>
+#include <blamlib/Halo1/tag_files/files.hpp>
+
 namespace Yelo
 {
 #define __EL_INCLUDE_ID			__EL_INCLUDE_GAME
@@ -32,8 +35,7 @@ namespace Yelo
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DISPLAY_ASSERT);
 
 			API_FUNC_NAKED_START()
-				xor		ecx, ecx
-				mov		cl, halt
+				movzx	ecx, halt
 				push	ecx
 				push	line
 				push	file
@@ -49,8 +51,7 @@ namespace Yelo
 			API_FUNC_NAKED_START()
 				push	line
 				push	file
-				xor		ecx, ecx
-				mov		cl, fill_with_garbage
+				movzx	ecx, fill_with_garbage
 				push	ecx
 				push	ptr_size
 				call	FUNCTION
@@ -81,9 +82,170 @@ namespace Yelo
 				call	FUNCTION
 			API_FUNC_NAKED_END_CDECL(4);
 		}
+	};
 
+	//////////////////////////////////////////////////////////////////////////
+	// math
+	namespace blam
+	{
+		//////////////////////////////////////////////////////////////////////////
+		// periodic_functions.c
+		real PLATFORM_API periodic_function_evaluate(Enums::periodic_function function_type, real input)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(PERIODIC_FUNCTION_EVALUATE);
 
-		API_FUNC_NAKED void file_reference_create(s_file_reference& reference, long_enum location)
+			__asm {
+				fld		input
+				sub		esp, 4 * 2			// allocate space for the 'input' parameter
+				fstp	qword ptr [esp]		// store the input on the stack (as a double)
+				push	function_type
+				call	FUNCTION
+				add		esp, 4 * (1+2)		// deallocate. double type consumes two DWORDs of stack
+			}
+		}
+		real PLATFORM_API transition_function_evaluate(Enums::transition_function function_type, real input)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(TRANSITION_FUNCTION_EVALUATE);
+
+			__asm {
+				push	input
+				push	function_type
+				call	FUNCTION
+				add		esp, 4 * 2
+			}
+		}
+	};
+	//////////////////////////////////////////////////////////////////////////
+	// memory
+	namespace blam
+	{
+		using namespace Yelo::Memory;
+
+		//////////////////////////////////////////////////////////////////////////
+		// data.c
+		API_FUNC_NAKED void* PLATFORM_API datum_try_and_get(s_data_array* data, datum_index index)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATUM_TRY_AND_GET);
+
+			API_FUNC_NAKED_START()
+				push	index
+				push	data
+				call	FUNCTION
+			API_FUNC_NAKED_END_CDECL(2)
+		}
+		API_FUNC_NAKED void* PLATFORM_API datum_get(s_data_array* data, datum_index index)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATUM_GET);
+
+			API_FUNC_NAKED_START()
+				push	index
+				push	data
+				call	FUNCTION
+			API_FUNC_NAKED_END_CDECL(2)
+		}
+		API_FUNC_NAKED void PLATFORM_API data_verify(s_data_array* data)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATA_VERIFY);
+
+			API_FUNC_NAKED_START()
+				push	data
+				call	FUNCTION
+			API_FUNC_NAKED_END_CDECL(1)
+		}
+		API_FUNC_NAKED s_data_array* PLATFORM_API data_new(cstring name, int32 maximum_count, size_t datum_size)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATA_NEW);
+
+			API_FUNC_NAKED_START()
+				push	datum_size
+				push	maximum_count
+				push	name
+				call	FUNCTION
+			API_FUNC_NAKED_END_CDECL(3)
+		}
+		API_FUNC_NAKED void PLATFORM_API data_dispose(s_data_array* data)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATA_DISPOSE);
+
+			API_FUNC_NAKED_START()
+				push	data
+				call	FUNCTION
+			API_FUNC_NAKED_END_CDECL(1)
+		}
+		API_FUNC_NAKED datum_index PLATFORM_API datum_new_at_index(s_data_array* data, datum_index index)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATUM_NEW_AT_INDEX);
+
+			API_FUNC_NAKED_START()
+				push	index
+				push	data
+				call	FUNCTION
+			API_FUNC_NAKED_END_CDECL(2)
+		}
+		API_FUNC_NAKED datum_index PLATFORM_API datum_new(s_data_array* data)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATUM_NEW);
+
+			API_FUNC_NAKED_START()
+				push	data
+				call	FUNCTION
+			API_FUNC_NAKED_END_CDECL(1)
+		}
+		API_FUNC_NAKED void PLATFORM_API datum_delete(s_data_array* data, datum_index index)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATUM_DELETE);
+
+			API_FUNC_NAKED_START()
+				push	index
+				push	data
+				call	FUNCTION
+			API_FUNC_NAKED_END_CDECL(2)
+		}
+		API_FUNC_NAKED void PLATFORM_API data_delete_all(s_data_array* data)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATA_DELETE_ALL);
+
+			API_FUNC_NAKED_START()
+				push	data
+				call	FUNCTION
+			API_FUNC_NAKED_END_CDECL(1)
+		}
+		API_FUNC_NAKED void* PLATFORM_API data_iterator_next(s_data_iterator& iterator)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATA_ITERATOR_NEXT);
+
+			API_FUNC_NAKED_START()
+				push	iterator
+				call	FUNCTION
+			API_FUNC_NAKED_END_CDECL(1)
+		}
+		API_FUNC_NAKED datum_index PLATFORM_API data_next_index(s_data_array* data, datum_index cursor)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATA_NEXT_INDEX);
+
+			API_FUNC_NAKED_START()
+				push	cursor
+				push	data
+				call	FUNCTION
+			API_FUNC_NAKED_END_CDECL(2)
+		}
+		API_FUNC_NAKED void PLATFORM_API data_make_valid(s_data_array* data)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATA_MAKE_VALID);
+
+			API_FUNC_NAKED_START()
+				push	data
+				call	FUNCTION
+			API_FUNC_NAKED_END_CDECL(1)
+		}
+	};
+	//////////////////////////////////////////////////////////////////////////
+	// tag_files
+	namespace blam
+	{
+		//////////////////////////////////////////////////////////////////////////
+		// files_windows.c
+		API_FUNC_NAKED void PLATFORM_API file_reference_create(s_file_reference& reference, long_enum location)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_REFERENCE_CREATE);
 
@@ -93,8 +255,7 @@ namespace Yelo
 				call	FUNCTION
 			API_FUNC_NAKED_END_CDECL(2);
 		}
-
-		API_FUNC_NAKED s_file_reference& file_reference_add_directory(s_file_reference& reference, cstring directory)
+		API_FUNC_NAKED s_file_reference& PLATFORM_API file_reference_add_directory(s_file_reference& reference, cstring directory)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_REFERENCE_ADD_DIRECTORY);
 
@@ -104,8 +265,7 @@ namespace Yelo
 				call	FUNCTION
 			API_FUNC_NAKED_END_CDECL(2);
 		}
-
-		API_FUNC_NAKED s_file_reference& file_reference_set_name(s_file_reference& reference, cstring name)
+		API_FUNC_NAKED s_file_reference& PLATFORM_API file_reference_set_name(s_file_reference& reference, cstring name)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_REFERENCE_SET_NAME);
 
@@ -115,8 +275,7 @@ namespace Yelo
 				call	FUNCTION
 			API_FUNC_NAKED_END_CDECL(2);
 		}
-
-		API_FUNC_NAKED cstring file_reference_get_name(const s_file_reference& reference, long_flags flags, __out char name[Enums::k_maximum_filename_length+1])
+		API_FUNC_NAKED cstring PLATFORM_API file_reference_get_name(const s_file_reference& reference, long_flags flags, __out char name[Enums::k_maximum_filename_length+1])
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_REFERENCE_GET_NAME);
 
@@ -128,32 +287,7 @@ namespace Yelo
 			API_FUNC_NAKED_END_CDECL(3);
 		}
 
-		s_file_reference& file_reference_create(s_file_reference& reference, cstring directory, cstring name, cstring ext, long_enum location)
-		{
-			char buffer[256];
-			_snprintf_s(buffer, NUMBEROF(buffer)-1, "%s%s%s.%s", directory, 
-				!is_null_or_empty(directory) ? "\\" : "",
-				name, ext);
-
-			file_reference_create(reference, location);
-			file_reference_set_name(reference, buffer);
-
-			return reference;
-		}
-
-		s_file_reference& file_reference_create_from_path(s_file_reference& reference, cstring path, bool is_directory)
-		{
-			file_reference_create(reference, Enums::_file_reference_location_none);
-
-			if(is_directory)
-				file_reference_add_directory(reference, path);
-			else
-				file_reference_set_name(reference, path);
-
-			return reference;
-		}
-
-		API_FUNC_NAKED int16 find_files(long_flags flags, const s_file_reference& directory, int32 maximum_count, s_file_reference references[])
+		API_FUNC_NAKED int16 PLATFORM_API find_files(long_flags flags, const s_file_reference& directory, int32 maximum_count, s_file_reference references[])
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(FIND_FILES);
 
@@ -165,28 +299,7 @@ namespace Yelo
 				call	FUNCTION
 			API_FUNC_NAKED_END_CDECL(4);
 		}
-
-		static int __cdecl file_references_sort_proc(void* ctxt, const void* _lhs, const void* _rhs)
-		{
-			long_flags name_flags = CAST_PTR(long_flags, ctxt);
-
-			const s_file_reference* lhs = CAST_PTR(const s_file_reference*, _lhs);
-			const s_file_reference* rhs = CAST_PTR(const s_file_reference*, _rhs);
-
-			char lhs_name[Enums::k_maximum_filename_length+1];
-			char rhs_name[Enums::k_maximum_filename_length+1];
-
-			file_reference_get_name(*lhs, name_flags, lhs_name);
-			file_reference_get_name(*rhs, name_flags, rhs_name);
-
-			return _stricmp(lhs_name, rhs_name);
-		}
-		void file_references_sort(long_flags name_flags, size_t count, s_file_reference references[])
-		{
-			qsort_s(references, count, sizeof(s_file_reference), file_references_sort_proc, CAST_PTR(void*, name_flags));
-		}
-
-		API_FUNC_NAKED bool file_exists(const s_file_reference& reference)
+		API_FUNC_NAKED bool PLATFORM_API file_exists(const s_file_reference& reference)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_EXISTS);
 

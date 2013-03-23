@@ -7,6 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "Yelo/MemoryFixups.hpp"
 
+#include <blamlib/Halo1/tag_files/files.hpp>
 #include <blamlib/Halo1/tool/tool.hpp>
 
 #include "Common/YeloSettings.hpp"

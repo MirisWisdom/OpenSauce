@@ -48,4 +48,10 @@ namespace Yelo
 			s_collision_bsp_test_surface_result surface;
 		}; BOOST_STATIC_ASSERT( sizeof(s_collision_result) == 0x50 );
 	};
+
+	namespace blam
+	{
+		bool PLATFORM_API collision_test_vector(long_flags flags, real_point3d& location, real_vector3d& vector, 
+			datum_index object_index, Physics::s_collision_result& collision);
+	};
 };

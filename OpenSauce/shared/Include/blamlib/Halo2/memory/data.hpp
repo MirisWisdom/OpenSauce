@@ -47,15 +47,26 @@ namespace Yelo
 			byte* active_indices_bit_vector;
 
 			inline int32 GetLength() const { return actual_count; }
-
-			static void* IteratorNext(void* iter);
-
 		}; BOOST_STATIC_ASSERT( sizeof(s_data_array) == 0x4C );
-		struct s_data_array_iterator {
-			s_data_array* array;
-			datum_index datum;
-			int32 cursor;
-		}; BOOST_STATIC_ASSERT( sizeof(s_data_array_iterator) == 0xC );
+
+		struct s_data_iterator
+		{
+			s_data_array* data;
+			datum_index index;
+			int32 absolute_index;
+			tag signature;
+		}; BOOST_STATIC_ASSERT( sizeof(s_data_iterator) == 0x10 );
+	};
+
+	namespace blam
+	{
+		using namespace Yelo::Memory;
+
+		void data_iterator_new(s_data_iterator& iterator, s_data_array* data);
+
+		void* data_iterator_next(s_data_iterator& iterator);
+
+		void* datum_get(s_data_array* data, datum_index index);
 	};
 };
 

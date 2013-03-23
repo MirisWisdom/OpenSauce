@@ -34,7 +34,7 @@ namespace Yelo
 				const char*						m_headers;
 				Enums::http_client_component	m_component;
 				void*							m_component_data;
-				char*							m_buffer;
+				byte*							m_buffer;
 				uint32							m_buffer_size;
 				bool							m_delete_buffer;
 				bool							m_blocking;

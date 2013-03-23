@@ -16,30 +16,20 @@ namespace Yelo
 {
 	namespace Scripting
 	{
-		t_recorded_animations_data*		RecordedAnimations();
+		recorded_animations_data_t*		RecordedAnimations();
 
-		t_hs_syntax_data*				HSSyntax();
+		hs_syntax_data_t*				HSSyntax();
 
-		t_object_list_header_data*		ObjectListHeader();
-		t_list_object_reference_data*	ListObjectReference();
+		object_list_header_data_t*		ObjectListHeader();
+		list_object_reference_data_t*	ListObjectReference();
 
-		t_hs_thread_data*				HSThreads();
-		t_hs_globals_data*				HSGlobals();
+		hs_thread_data_t*				HSThreads();
+		hs_globals_data_t*				HSGlobals();
 
 
 		void Initialize();
 		void Dispose();
 
 		void PLATFORM_API Update();
-
-		datum_index ObjectListNew();
-		// Get the object_index of the first object in a list of objects
-		// [list_reference] - handle to the object_list's first s_list_object_reference_datum
-		datum_index ObjectListGetFirst(datum_index list_index, __out datum_index& list_reference);
-		// Get the next object_index in a list of objects
-		// [list_reference]:
-		// __in  - handle to the current s_list_object_reference_datum in the object_list we're referencing
-		// __out - handle to the next s_list_object_reference_datum
-		datum_index ObjectListGetNext(datum_index list_index, __inout datum_index& list_reference);
 	};
 };

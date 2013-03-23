@@ -8,6 +8,7 @@
 #include "Rasterizer/Rasterizer.hpp"
 #if !PLATFORM_IS_DEDI
 
+#include <blamlib/Halo1/interface/ui_video_screen.hpp>
 #include <blamlib/Halo1/models/model_definitions.hpp>
 
 #include "Memory/MemoryInterface.hpp"
@@ -156,7 +157,7 @@ namespace Yelo
 
 				// add the resolution
 				if(add_mode)
-					Engine::RasterizerAddResolution(display_mode.Width, display_mode.Height, display_mode.RefreshRate);
+					blam::ui_video_screen_add_resolution(display_mode.Width, display_mode.Height, display_mode.RefreshRate);
 			}
 		}
 

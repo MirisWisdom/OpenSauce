@@ -8,7 +8,8 @@
 
 namespace Yelo
 {
-	namespace GameUI
+	namespace blam
 	{
+		void PLATFORM_API hud_print_message(int16 local_player_index, wcstring message);
 	};
 };

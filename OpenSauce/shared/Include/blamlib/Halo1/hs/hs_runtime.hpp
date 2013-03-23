@@ -51,7 +51,7 @@ namespace Yelo
 
 			byte stack_buffer[Enums::k_hs_thread_stack_size];
 		}; BOOST_STATIC_ASSERT( sizeof(s_hs_thread_datum) == 0x218 );
-		typedef Memory::DataArray<s_hs_thread_datum, 256> t_hs_thread_data;
+		typedef Memory::DataArray<s_hs_thread_datum, 256> hs_thread_data_t;
 
 
 		struct s_hs_globals_datum : Memory::s_datum_base_aligned
@@ -71,6 +71,11 @@ namespace Yelo
 		}; BOOST_STATIC_ASSERT( sizeof(s_hs_globals_datum) == 0x8 );
 		typedef Memory::DataArray<	s_hs_globals_datum, 
 									Enums::k_maximum_number_of_hs_globals> 
-			t_hs_globals_data;
+			hs_globals_data_t;
+	};
+
+	namespace blam
+	{
+		Scripting::s_hs_thread_datum* hs_thread_get(datum_index thread_index);
 	};
 };

@@ -24,18 +24,17 @@ namespace Yelo
 		
 		s_ai_globals_data* AIGlobals()								DPTR_IMP_GET(ai_globals);
 		t_actor_data* Actors()										DPTR_IMP_GET(actors);
-		t_swarm_data* Swarms()										DPTR_IMP_GET(swarms);
+		swarm_data_t* Swarms()										DPTR_IMP_GET(swarms);
 		t_swarm_component_data* SwarmComponents()					DPTR_IMP_GET(swarm_components);
-		t_prop_data* Props()										DPTR_IMP_GET(props);
-		t_encounter_data* Encounters()								DPTR_IMP_GET(encounters);
-		s_squad_data* Squads()										DPTR_IMP_GET(squads);
-		s_platoon_data* Platoons()									DPTR_IMP_GET(platoons);
-		t_ai_pursuit_data* AIPursuits()								DPTR_IMP_GET(ai_pursuits);
+		prop_data_t* Props()										DPTR_IMP_GET(props);
+		encounter_data_t* Encounters()								DPTR_IMP_GET(encounters);
+		squads_data_t* Squads()										DPTR_IMP_GET(squads);
+		platoons_data_t* Platoons()									DPTR_IMP_GET(platoons);
+		ai_pursuit_data_t* AIPursuits()								DPTR_IMP_GET(ai_pursuits);
 
-		//ai_communication_dialogue_data
-
-		s_ai_communication_replies_data* AICommunicationReplies()	DPTR_IMP_GET(ai_communication_replies);
-		t_ai_conversation_data* AIConversations()					DPTR_IMP_GET(ai_conversations);
+		//ai_communication_dialogue_events_t
+		ai_communication_reply_events_t* AICommunicationReplies()	DPTR_IMP_GET(ai_communication_replies);
+		ai_conversation_data_t* AIConversations()					DPTR_IMP_GET(ai_conversations);
 
 
 		static void ActorActionHandleVehicleExitBoardingSeat(datum_index unit_index)

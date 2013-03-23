@@ -48,14 +48,15 @@ namespace Yelo
 			real_point3d position;
 			real_euler_angles3d rotation;
 		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_object_datum) == 0x1C );
-		struct s_scenario_object_pad_poop
+		struct s_scenario_object_permutation
 		{
-			PAD64;	PAD128;	PAD64;	PAD64;
-		};
+			PAD128;	PAD64;	PAD64;
+		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_object_permutation) == 0x20 );
 
 		struct s_scenario_scenery_datum
 		{
-			s_scenario_object_pad_poop pad_poop;
+			PAD64;
+			s_scenario_object_permutation permutation;
 		};
 
 		struct s_scenario_sound_scenery_datum
@@ -67,7 +68,8 @@ namespace Yelo
 		// units
 		struct s_scenario_unit_datum
 		{
-			s_scenario_object_pad_poop pad_poop;
+			PAD64;
+			s_scenario_object_permutation permutation;
 			real body_vitality;
 			long_flags flags;
 			PAD64;
@@ -83,12 +85,11 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////////
 		// items
-		struct s_scenario_item_datum
-		{
-			s_scenario_object_pad_poop pad_poop;
-		};
 		struct s_scenario_weapon_datum
 		{
+			PAD64;
+			s_scenario_object_permutation permutation;
+
 			int16 rounds_left;
 			int16 rounds_total;
 			word_flags flags;
@@ -141,10 +142,6 @@ namespace Yelo
 		{
 			s_scenario_device_datum device;
 		};
-		struct s_scenario_item : public s_scenario_object
-		{
-			s_scenario_item_datum item;
-		};
 		struct s_scenario_unit : public s_scenario_object
 		{
 			s_scenario_unit_datum unit;
@@ -156,6 +153,8 @@ namespace Yelo
 			s_scenario_scenery_datum scenery;
 		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_scenery) == 0x48 );
 
+		//////////////////////////////////////////////////////////////////////////
+		// units
 		struct s_scenario_biped : public s_scenario_unit
 		{
 			s_scenario_biped_datum biped;
@@ -164,16 +163,18 @@ namespace Yelo
 		{
 			s_scenario_vehicle_datum vehicle;
 		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_vehicle) == 0x78 );
-
-		struct s_scenario_equipment : public s_scenario_object // Yes. s_scenario_object
+		//////////////////////////////////////////////////////////////////////////
+		// items
+		struct s_scenario_equipment : public s_scenario_object
 		{
 			s_scenario_equipment_datum equipment;
-		};
-		struct s_scenario_weapon : public s_scenario_item
+		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_equipment) == 0x28 );
+		struct s_scenario_weapon : public s_scenario_object
 		{
 			s_scenario_weapon_datum weapon;
-		};
-
+		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_weapon) == 0x5C );
+		//////////////////////////////////////////////////////////////////////////
+		// devices
 		struct s_scenario_machine : public s_scenario_device
 		{
 			s_scenario_machine_datum machine;

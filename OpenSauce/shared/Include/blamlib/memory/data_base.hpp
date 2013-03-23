@@ -23,16 +23,6 @@ namespace Yelo
 
 	namespace Memory
 	{
-		struct s_data_array;
-
-		struct s_data_iterator
-		{
-			s_data_array* array;
-			int32 absolute_index;
-			datum_index index;
-			uint32 signature;
-		}; BOOST_STATIC_ASSERT( sizeof(s_data_iterator) == 0x10 );
-
 		// for data structures which DO use the proceeding 16 bits after the 'salt' header
 		struct s_datum_base
 		{

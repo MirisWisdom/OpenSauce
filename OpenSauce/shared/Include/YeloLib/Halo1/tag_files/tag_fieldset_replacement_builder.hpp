@@ -21,7 +21,7 @@ namespace Yelo
 			int GetMaxFieldCount() const		{ return kMaxFieldCount; }
 
 			int GetFieldCount() const			{ return g_new_fields_count; }
-			int SetFieldCount(int count) const	{ g_new_fields_count = count; }
+			void SetFieldCount(int count) const	{ g_new_fields_count = count; }
 
 			tag_field* GetFields() const		{ return g_new_fields; }
 		};

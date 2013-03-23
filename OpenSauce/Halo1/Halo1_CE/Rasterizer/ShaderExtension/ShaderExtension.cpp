@@ -11,6 +11,7 @@
 #include <sys/stat.h>
 
 #include <blamlib/Halo1/bitmaps/bitmap_group.hpp>
+#include <blamlib/Halo1/rasterizer/dx9/rasterizer_dx9.hpp>
 #include <blamlib/Halo1/shaders/shader_definitions.hpp>
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
@@ -92,7 +93,7 @@ namespace Yelo
 				TagGroups::s_bitmap_data*	bitmap = CAST_PTR(TagGroups::s_bitmap_data*, &group->bitmaps[0]);
 
 				// set the texture to the device
-				Engine::SetTextureSamplerStage(bitmap, sampler);
+				blam::rasterizer_set_texture_bitmap_data(sampler, bitmap);
 
 				pDevice->SetSamplerState(sampler, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
 				pDevice->SetSamplerState(sampler, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);

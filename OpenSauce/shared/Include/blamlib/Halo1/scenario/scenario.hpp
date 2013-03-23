@@ -33,4 +33,16 @@ namespace Yelo
 			}sound;
 		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_globals) == 0x7C );
 	};
+
+	namespace blam
+	{
+		// Switches the bsp being used to the bsp at [index] in the scenario structure bsps block
+		bool PLATFORM_API scenario_switch_structure_bsp(int16 bsp_index);
+
+		// Tests to see if [point] exists inside [trigger_volume_index] (index to a definition in the current scenario)
+		bool PLATFORM_API scenario_trigger_volume_test_point(int32 trigger_volume_index, const real_point3d& point);
+
+		// Tests to see if [object_index] is inside [trigger_volume_index] (index to a definition in the current scenario)
+		bool PLATFORM_API scenario_trigger_volume_test_object(int32 trigger_volume_index, datum_index object_index);
+	};
 };

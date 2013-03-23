@@ -90,6 +90,20 @@ namespace Yelo
 
 	namespace AI
 	{
+		struct s_ai_communication_event : TStructImpl(16)
+		{
+		};
+		typedef s_ai_communication_event ai_communication_dialogue_events_t[105];
+		typedef s_ai_communication_event ai_communication_reply_events_t[46];
+
+
+		struct s_ai_conversation_datum : TStructImpl(100)
+		{
+		};
+		typedef Memory::DataArray<s_ai_conversation_datum, 8> 
+			ai_conversation_data_t;
+
+
 		struct s_ai_communication_packet
 		{
 			UNKNOWN_TYPE(int32);

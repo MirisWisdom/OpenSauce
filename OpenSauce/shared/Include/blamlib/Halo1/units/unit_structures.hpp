@@ -294,13 +294,12 @@ namespace Yelo
 				UNKNOWN_TYPE(int16);										// 0x3FE
 				UNKNOWN_TYPE(int32);										// 0x400
 			}speech;
-			//////////////////////////////////////////////////////////////////////////
-			// these fields are all related; damage related
-			UNKNOWN_TYPE(enum);												// 0x404
-			UNKNOWN_TYPE(int16);											// 0x406
-			UNKNOWN_TYPE(real);												// 0x408
-			datum_index responsible_unit_index;								// 0x40C
-			//////////////////////////////////////////////////////////////////////////
+			struct {
+				_enum category;												// 0x404 Enums::damage_category
+				int16 ai_handle_delay_ticks;								// 0x406 ticks remaining until the engine tells the AI code to handle the damage result
+				real amount;												// 0x408
+				datum_index responsible_unit_index;							// 0x40C
+			}damage_result;
 			datum_index responsible_flamer_object_index;					// 0x410 object which caused us to start flaming to death
 			PAD64;															// 0x414 unused
 			int32 death_time;												// 0x41C // game time when this unit died

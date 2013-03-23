@@ -43,21 +43,23 @@ namespace BuildCacheFileEx
  			datum_index tag_index;
  			while( !(tag_index = tag_iterator_next(tag_iter)).IsNull() )
  			{
-				switch((*TagGroups::TagInstances())[tag_index.index].parent_group_tags[1])
+				const s_tag_instance* instance = (*TagGroups::TagInstances())[tag_index];
+
+				switch(instance->parent_group_tags[1])
 				{
 				case TagGroups::s_object_definition::k_group_tag:
 					ShaderExtension::object_add_to_predicted_resources(tag_index);
 					break;
 				}
 
-				switch((*TagGroups::TagInstances())[tag_index.index].parent_group_tags[0])
+				switch(instance->parent_group_tags[0])
 				{
 				case TagGroups::s_object_definition::k_group_tag:
 					ShaderExtension::object_add_to_predicted_resources(tag_index);
 					break;
 				}
 
-				switch((*TagGroups::TagInstances())[tag_index.index].group_tag)
+				switch(instance->group_tag)
 				{
 				case TagGroups::s_shader_postprocess_generic::k_group_tag:
 					result &= PostProcessing::shader_postprocess_generic_add_predicted_resources(tag_index);

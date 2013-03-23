@@ -53,7 +53,7 @@ namespace NearbyObjects
 		{
 			// Add check to see if biped is on our team to allow differentiation between unit seat entering and weapon swapping
 			// Problem: when you enter a biped seat, their team changes to yours
-			Engine::Players::PlayerExamineNearbyVehicle(player_index, biped_index);
+			blam::player_examine_nearby_vehicle(player_index, biped_index);
 		}
 	}
 

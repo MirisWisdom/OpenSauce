@@ -7,11 +7,7 @@
 #include <Common/Precompile.hpp>
 #include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
 
-#if !PLATFORM_IS_EDITOR
-	#include "Game/EngineFunctions.hpp"
-#elif PLATFORM_IS_EDITOR
-	#include "TagGroups/TagGroups.hpp"
-#endif
+#include <blamlib/Halo1/cache/pc_texture_cache.hpp>
 
 namespace Yelo
 {
@@ -141,7 +137,7 @@ namespace Yelo
 				if(bitmap_value.runtime._internal.bitmap != NULL)
 				{
 					// Load the bitmap into the pc texture cache, and block until the he direct3d texture is created
-					Yelo::Engine::TextureCacheBitmapGetHardwareFormat(bitmap_value.runtime._internal.bitmap, true, true);
+					blam::texture_cache_bitmap_get_hardware_format(bitmap_value.runtime._internal.bitmap, true, true);
 
 					hr = (bitmap_value.runtime._internal.bitmap->hardware_format == NULL ? E_FAIL : S_OK);
 				}
@@ -175,7 +171,7 @@ namespace Yelo
 			return bitmap_value.flags.is_external_bit ? bitmap_value.runtime.external.texture_2d : CAST_PTR(IDirect3DTexture9*,bitmap_value.runtime._internal.bitmap->hardware_format);
 		}
 
-#elif PLATFORM_IS_EDITOR && !PLATFORM_IS_DEDI
+#elif PLATFORM_IS_EDITOR
 		void s_shader_postprocess_parameter::SetParameter(s_shader_postprocess_value_base* value_source)
 		{
 			memcpy_s(&value_name, sizeof(tag_string), &value_source->value_name, sizeof(tag_string));

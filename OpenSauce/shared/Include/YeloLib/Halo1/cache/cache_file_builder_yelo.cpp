@@ -12,3 +12,15 @@ namespace Yelo
 	{
 	};
 };
+
+/*
+memory	\resource_database
+		\constant_pool.cpp
+		\hashtable.cpp\.h
+tool\cache_file_resource_database.cpp
+tag_files\tag_import_definitions.cpp
+
+tag_group_uses_shared_tag_blocks
+
+k_tag_database_max_count
+*/

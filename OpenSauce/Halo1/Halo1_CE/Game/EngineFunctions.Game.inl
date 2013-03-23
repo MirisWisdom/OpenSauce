@@ -5,7 +5,7 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-API_FUNC_NAKED void SwitchBsp(int16 index)
+API_FUNC_NAKED bool SwitchBsp(int16 index)
 {
 	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(SCENARIO_SWITCH_STRUCTURE_BSP);
 
@@ -42,13 +42,13 @@ void PlayVideo(cstring bink)
 #endif
 }
 
-API_FUNC_NAKED void RasterizerMessage(wcstring msg, uint32 flags)
+API_FUNC_NAKED void RasterizeMessage(wcstring msg, real alpha)
 {
 #if !PLATFORM_IS_DEDI
 	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(GAME_ENGINE_RASTERIZE_MESSAGE);
 
 	API_FUNC_NAKED_START()
-		push	flags
+		push	alpha
 		push	msg
 		call	TEMP_CALL_ADDR
 	API_FUNC_NAKED_END_CDECL(2)

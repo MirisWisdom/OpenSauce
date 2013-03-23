@@ -8,6 +8,8 @@
 #include "Networking/HTTP/MapDownloadClient.hpp"
 
 #if !PLATFORM_IS_DEDI
+#include <blamlib/Halo1/main/main.hpp>
+
 #include <YeloLib/memory/linked_list.hpp>
 #include <YeloLib/memory/compression/7zip_codec.hpp>
 #include <YeloLib/memory/compression/zip_codec.hpp>
@@ -742,7 +744,7 @@ namespace Yelo
 				c_part_element*				m_part_element;
 				uint32						m_total_bytes;
 				uint32						m_received_bytes;
-				char						m_data[k_max_part_download_size];
+				byte						m_data[k_max_part_download_size];
 				byte*						m_decryption_key;
 			}m_part_downloader;
 
@@ -1396,7 +1398,7 @@ namespace Yelo
 		{
 			c_map_element& map_element = g_map_download_globals.m_map_part_definition.downloader.MapElement();
 
-			unsigned char* uncompressed_data = NULL;
+			byte* uncompressed_data = NULL;
 			size_t uncompressed_size = 0;
 			bool success = false;
 
@@ -1435,7 +1437,7 @@ namespace Yelo
 				return false;
 
 			// validate the data
-			success = Engine::CompareMD5(CAST_PTR(cstring, uncompressed_data), (DWORD)uncompressed_size, map_element.m_md5);
+			success = Engine::CompareMD5(uncompressed_data, uncompressed_size, map_element.m_md5);
 			success &= (uncompressed_size == map_element.m_uncompressed_size);
 
 			if(success)
@@ -1508,7 +1510,7 @@ namespace Yelo
 		void	ReconnectToServer()
 		{
 			BuildNumber::ChangeAdvertisedVersionId(g_map_download_globals.m_servers.dedicated_server.m_mp_gamever, false);
-			Engine::Networking::ConnectToServer(g_map_download_globals.m_servers.dedicated_server.m_mp_address,
+			blam::main_connect(g_map_download_globals.m_servers.dedicated_server.m_mp_address,
 				g_map_download_globals.m_servers.dedicated_server.m_mp_password);
 		}
 

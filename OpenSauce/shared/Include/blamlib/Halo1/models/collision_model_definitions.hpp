@@ -13,6 +13,38 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum damage_part {
+			// pelvis
+			_damage_part_spine,
+			_damage_part_spine1,
+			// neck
+			_damage_part_head,
+			// left upperarm
+			_damage_part_left_clavicle,
+			// left hand
+			_damage_part_left_forearm,
+			_damage_part_left_thigh,
+			// left horselink
+			// left calf
+			// left foot
+			_damage_part_left_thigh1,
+			// right upperarm
+			_damage_part_right_clavicle,
+			// right hand
+			_damage_part_right_forearm,
+			_damage_part_right_thigh,
+			// right horselink
+			// right calf
+			// right foot
+			// tail
+			_damage_part_right_thigh1,
+
+			k_number_of_damage_parts,
+		};
+	};
+
 	namespace Flags
 	{
 		enum damage_region_flags : long_flags

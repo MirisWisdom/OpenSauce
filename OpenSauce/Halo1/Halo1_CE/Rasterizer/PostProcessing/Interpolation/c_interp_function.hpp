@@ -6,6 +6,8 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/math/periodic_functions.hpp>
+
 #include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
 
 #include "Rasterizer/Rasterizer.hpp"
@@ -49,7 +51,7 @@ namespace Yelo
 
 			void Update(real delta_time)
 			{
-				double function_input = 0.0f;
+				real function_input = 0.0f;
 
 				// if animation_rate != 0.0f then only update the variable when the update rate has been reached.
 				bool update = false;
@@ -71,7 +73,7 @@ namespace Yelo
 				if(m_members_function.animation->animation_duration == 0.0f)
 					function_input = 0.0f;
 				else
-					function_input = Rasterizer::FrameParameters()->elapsed_time / m_members_function.animation->animation_duration;
+					function_input = CAST(real, Rasterizer::FrameParameters()->elapsed_time / m_members_function.animation->animation_duration);
 
 				for(int32 i = 0; i < C; i++)
 				{
@@ -81,7 +83,7 @@ namespace Yelo
 						(m_members_function.animation->flags.multichannel_noise_bit))
 						function_input += (7 * i) * function_input;
 
-					m_members.values[i] = (real)Engine::Math::PeriodicFunctionEvaluate(
+					m_members.values[i] = blam::periodic_function_evaluate(
 						(Enums::periodic_function)m_members_function.animation->function,
 						function_input
 					);

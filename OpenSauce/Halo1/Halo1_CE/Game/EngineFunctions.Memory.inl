@@ -60,9 +60,9 @@ void DatumDelete(Yelo::Memory::s_data_array* data, datum_index datum)
 	}
 }
 
-API_FUNC_NAKED void DataMakeValid(Yelo::Memory::s_data_array* data)
+API_FUNC_NAKED void DataDeleteAll(Yelo::Memory::s_data_array* data)
 {
-	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(DATA_MAKE_VALID);
+	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(DATA_DELETE_ALL);
 
 	API_FUNC_NAKED_START()
 		push	esi
@@ -90,9 +90,9 @@ void* DataIteratorNext(void* iterator)
 	}
 }
 
-datum_index DatumNextIndex(Yelo::Memory::s_data_array* data, datum_index cursor)
+datum_index DataNextIndex(Yelo::Memory::s_data_array* data, datum_index cursor)
 {
-	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(DATUM_NEXT_INDEX);
+	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(DATA_NEXT_INDEX);
 
 	if(data == NULL || cursor.IsNull()) return datum_index::null;
 
@@ -109,34 +109,17 @@ datum_index DatumNextIndex(Yelo::Memory::s_data_array* data, datum_index cursor)
 	}
 }
 
-void* DatumGet(Yelo::Memory::s_data_array* data, datum_index datum)
+void* DatumTryAndGet(Yelo::Memory::s_data_array* data, datum_index datum)
 {
-	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(DATUM_GET);
+	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(DATUM_TRY_AND_GET);
 
-	if(data == NULL || datum.IsNull()) return NULL;
+	if(data == NULL) return NULL;
 
 	__asm {
 		push	esi
 
 		mov		esi, data
 		mov		edx, datum
-		call	CALL_ADDR
-
-		pop		esi
-	}
-}
-
-void DatumInitialize(Yelo::Memory::s_data_array* data, void* buffer)
-{
-	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(DATUM_INITIALIZE);
-
-	if (data == NULL || buffer == NULL) return;
-
-	__asm {
-		push	esi
-
-		mov		edx, data
-		mov		esi, buffer
 		call	CALL_ADDR
 
 		pop		esi
@@ -150,7 +133,7 @@ Yelo::Memory::s_data_array* DataNewAndMakeValid(cstring name, int32 maximum_coun
 	if(data != NULL)
 	{
 		data->is_valid = true;
-		DataMakeValid(data);
+		DataDeleteAll(data);
 	}
 
 	return data;

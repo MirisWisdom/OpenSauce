@@ -7,7 +7,7 @@
 
 void EncodeObjectDeletionMessage(datum_index object_index)
 {
-	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(MDP_ENCODE_OBJECT_DELETION_MESSAGE);
+	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(OBJECT_DELETE_TO_NETWORK);
 
 	if(object_index.IsNull()) return;
 
@@ -21,9 +21,9 @@ void EncodeObjectDeletionMessage(datum_index object_index)
 	}
 }
 
-void EncodeHudChatNetworkData(int32 player_number, _enum chat_type, wcstring msg)
+void EncodeHudChatNetworkData(int32 player_number, long_enum chat_type, wcstring msg)
 {
-	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(ENCODE_HUD_CHAT_NETWORK_DATA);
+	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(HUD_CHAT_TO_NETWORK);
 
 #if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 	wchar_t local[255];
@@ -34,7 +34,7 @@ void EncodeHudChatNetworkData(int32 player_number, _enum chat_type, wcstring msg
 #endif
 
 	__asm {
-		movsx	eax, chat_type
+		mov		eax, chat_type
 #if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 		lea		edx, local
 #else
@@ -76,20 +76,23 @@ int32 TranslatePlayer(datum_index local_player_index)
 
 	return TranslateIndex(MessageDeltas::PlayerIndexParameters()->table, local_player_index);
 }
+
+int32 TranslatedIndexRegister(MessageDeltas::s_index_resolution_table& table, datum_index local_index)
+{
+	if(local_index.IsNull()) return 0;
+
+	return TranslateIndex(table, local_index);
+}
 #endif
 
 
-#if !PLATFORM_IS_DEDI
-
-API_FUNC_NAKED void ConnectToServer(cstring address, cstring password)
+API_FUNC_NAKED bool ConnectToServer(cstring address, cstring password)
 {
-	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(CONNECT_TO_MP_SERVER);
+	static const uintptr_t FUNCTION = GET_FUNC_PTR(MAIN_CONNECT);
 
 	API_FUNC_NAKED_START()
 		push	password
 		push	address
-		call	CALL_ADDR
+		call	FUNCTION
 	API_FUNC_NAKED_END_CDECL(2)
 }
-
-#endif

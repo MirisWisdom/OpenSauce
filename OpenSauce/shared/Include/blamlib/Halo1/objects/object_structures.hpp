@@ -183,24 +183,15 @@ namespace Yelo
 			real_vector3d up;						// 0x80
 			real_vector3d angular_velocity;			// 0x8C
 
-			API_INLINE void CopyToPlacementData(s_object_placement_data& data) const
-			{
-				data.player_index = owner_player_index;
-				data.owner_object_index = owner;
-				memcpy(&data.position,				&position, sizeof(position));
-				memcpy(&data.transitional_velocity,	&transitional_velocity, sizeof(transitional_velocity));
-				memcpy(&data.forward,				&forward, sizeof(forward));
-				memcpy(&data.up,					&up, sizeof(up));
-				memcpy(&data.angular_velocity,		&angular_velocity, sizeof(angular_velocity));
-			}
+			void CopyToPlacementData(s_object_placement_data& data) const;
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_network_datum_data) == 0x48 );
 
 		struct s_object_animation_datum_data
 		{
 			datum_index definition_index;	// 0xCC
 			s_animation_state state;		// 0xD0
-			UNKNOWN_TYPE(int16);			// 0xD4
-			UNKNOWN_TYPE(int16);			// 0xD6
+			int16 interpolation_frame_index;// 0xD4
+			int16 interpolation_frame_count;// 0xD6
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_animation_datum_data) == 0xC );
 
 		struct s_object_damage_datum_data
@@ -296,10 +287,7 @@ namespace Yelo
 			s_object_header_block_reference node_orientations2;								// 0x1EC real_orientation3d[node_count]
 			s_object_header_block_reference node_matrix_block;								// 0x1F0 real_matrix4x3[node_count]
 
-			API_INLINE bool VerifyType(long_flags type_mask)
-			{
-				return TEST_FLAG( type_mask, type );
-			}
+			bool VerifyType(long_flags type_mask) const;
 
 			template<typename TBlockData>
 			API_INLINE TBlockData* GetBlock(s_object_header_block_reference ref)

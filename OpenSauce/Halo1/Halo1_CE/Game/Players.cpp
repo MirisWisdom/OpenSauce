@@ -7,6 +7,8 @@
 #include "Common/Precompile.hpp"
 #include "Game/Players.hpp"
 
+#include <blamlib/Halo1/scenario/scenario.hpp>
+
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameEngine.hpp"
 #include "Game/GameState.hpp"

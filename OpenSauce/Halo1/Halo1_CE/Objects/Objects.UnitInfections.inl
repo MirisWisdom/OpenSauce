@@ -52,17 +52,17 @@ namespace UnitInfections
 		s_object_data* attachment_object;
 		{	// Create the attachment based on the target_unit's world data and the infection tag data
 			s_object_placement_data attachment_placement_data;
-			Engine::Objects::PlacementDataNew(attachment_placement_data, unit_infection.attachment_object.tag_index);
+			blam::object_placement_data_new(attachment_placement_data, unit_infection.attachment_object.tag_index);
 			attachment_placement_data.position = target_unit->object.network.position;
 
-			attachment_object_index = Engine::Objects::New(attachment_placement_data);
+			attachment_object_index = blam::object_new(attachment_placement_data);
 			attachment_object = (*Objects::ObjectHeader())[attachment_object_index]->_object;
 		}
 
 		tag_string marker_name;
 		sprintf_s(marker_name, "%s%d", unit_infection.attachment_marker, marker_index);
 		// TODO: allow a marker name field in the tag definition for the target object?
-		Engine::Objects::Attach(target_unit_index, "", attachment_object_index, marker_name);
+		blam::object_attach_to_marker(target_unit_index, "", attachment_object_index, marker_name);
 	}
 	// Attach the infection definition's attachment object to the target unit
 	static void InfectionAttachObjects(TagGroups::s_unit_infection const& unit_infection, 
@@ -82,11 +82,11 @@ namespace UnitInfections
 			datum_index actor_index = target_unit->unit.actor_index;
 			// Detach any AI from the target unit so the anim can be played without interruption
 			if(!actor_index.IsNull())
-				Engine::AI::Delete(actor_index);
+				blam::actor_delete(actor_index);
 			// Set the current animation state to that of a "custom" animation (to avoid the engine doing any weirdness)
 			*target_unit->unit.animation.GetAnimationState() = Enums::_unit_animation_state_custom_animation;
 			// Play the infect-start animation on the target unit
-			Engine::Objects::UnitSetAnimation(target_unit_index, target_unit->object.animation.definition_index, 
+			blam::unit_set_animation(target_unit_index, target_unit->object.animation.definition_index, 
 				infect_start_animation_index);
 		}
 
@@ -105,7 +105,7 @@ namespace UnitInfections
 			s_object_placement_data infected_unit_placement_data;
 			PlacementDataNewAndCopy(infected_unit_placement_data, target_unit_index, 
 				unit_infection.infected_unit.tag_index);
-			infected_unit_index = Engine::Objects::New(infected_unit_placement_data);
+			infected_unit_index = blam::object_new(infected_unit_placement_data);
 			infected_unit = (*Objects::ObjectHeader())[infected_unit_index]->_unit;
 		}
 
@@ -113,20 +113,20 @@ namespace UnitInfections
 		if(infect_end_animation_index != NONE)
 		{
 			// Play the infect-end animation on the infected unit
-			Engine::Objects::UnitSetAnimation(infected_unit_index, infected_unit->object.animation.definition_index, 
+			blam::unit_set_animation(infected_unit_index, infected_unit->object.animation.definition_index, 
 				infect_end_animation_index);
 			// Set the current animation state to that of a "custom" animation (to avoid the engine doing any weirdness)
 			*infected_unit->unit.animation.GetAnimationState() = Enums::_unit_animation_state_custom_animation;
 		}
 
 		// Kill the unit being infected
-		Engine::Objects::DepleteBody(target_unit_index);
+		blam::object_deplete_body(target_unit_index);
 		// Spawn the transition effect
-		Engine::Effects::NewOnObjectMarker(unit_infection.transition_effect.tag_index, target_unit_index);
+		blam::hs_effect_new_from_object_marker(unit_infection.transition_effect.tag_index, target_unit_index);
 		// Assign the AI definition for the infected unit
-		Engine::AI::AttachFree(infected_unit_index, unit_infection.infected_unit_actor_variant.tag_index);
-		// Delete the target unit (
-		Engine::Objects::Delete(target_unit_index);
+		blam::ai_scripting_attach_free(infected_unit_index, unit_infection.infected_unit_actor_variant.tag_index);
+		// Delete the target unit
+		blam::object_delete(target_unit_index);
 	}
 
 	// Check's infection_unit's parent for an entry in the unit_infections definitions
@@ -166,7 +166,7 @@ namespace UnitInfections
 					InfectionStart(unit_infection, target_unit, target_unit_index);
 				else // They're already infected, wait until the animation is done playing then start the transition
 				{
-					int16 frames_left = Engine::Objects::UnitGetCustomAnimationTime(target_unit_index);
+					int16 frames_left = blam::unit_get_custom_animation_time(target_unit_index);
 
 					// If the custom animation has finished playing...
 					// If an infection animation wasn't defined, the OR case will be true, since we would have started 

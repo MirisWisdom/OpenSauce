@@ -39,4 +39,11 @@ namespace Yelo
 			k_number_of_transition_functions,
 		};
 	};
+
+	namespace blam
+	{
+		real PLATFORM_API periodic_function_evaluate(Enums::periodic_function function_type, real input);
+
+		real PLATFORM_API transition_function_evaluate(Enums::transition_function function_type, real input);
+	};
 };

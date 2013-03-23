@@ -102,12 +102,15 @@ namespace Yelo
 			PAD8;
 			PAD32;
 
-			void QuitToMainMenu()
-			{
-				map.switch_to_structure_bsp = NONE;
-				map.save_map = false;
-				map.main_menu_scenario_load = true;
-			}
+			void QuitToMainMenu();
 		}; BOOST_STATIC_ASSERT( sizeof(s_main_globals) == 0x3A0 );
+	};
+
+	namespace blam
+	{
+		// Connect to a multiplayer server using it's ip:port and password
+		bool PLATFORM_API main_connect(cstring address, cstring password);
+
+		void PLATFORM_API main_menu_load();
 	};
 };

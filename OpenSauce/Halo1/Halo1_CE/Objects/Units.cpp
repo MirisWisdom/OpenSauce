@@ -9,6 +9,7 @@
 
 #include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/models/model_animation_definitions.hpp>
+#include <blamlib/Halo1/models/model_animations.hpp>
 #include <blamlib/Halo1/objects/damage.hpp>
 #include <blamlib/Halo1/units/unit_definitions.hpp>
 

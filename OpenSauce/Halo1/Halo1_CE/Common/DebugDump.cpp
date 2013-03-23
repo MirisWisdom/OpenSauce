@@ -9,7 +9,7 @@
 
 #if !PLATFORM_IS_DEDI
 
-#include "ErrorRep.h"
+#include <ErrorRep.h>
 #pragma comment (lib, "Faultrep.lib")
 
 #include <YeloLib/cseries/pc_crashreport.hpp>

@@ -208,4 +208,9 @@ namespace Yelo
 			Enums::key_code key_code;
 		}; BOOST_STATIC_ASSERT( sizeof(s_buffered_key) == 0x4 );
 	};
+
+	namespace blam
+	{
+		bool PLATFORM_API input_key_is_down(_enum key_code);
+	};
 };

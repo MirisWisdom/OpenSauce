@@ -7,6 +7,7 @@
 
 #include <blamlib/Halo1/cache/predicted_resources.hpp>
 #include <blamlib/Halo1/models/model_definitions.hpp>
+#include <blamlib/Halo1/objects/object_types.hpp>
 
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
@@ -16,39 +17,6 @@ namespace Yelo
 	{
 		enum {
 			k_maximum_number_of_attachments_per_object = 8,
-		};
-
-		enum object_type
-		{
-			_object_type_object = -4,
-			_object_type_device = -3,
-			_object_type_item = -2,
-			_object_type_unit = -1,
-
-			_object_type_biped = 0,
-			_object_type_vehicle,
-			_object_type_weapon,
-			_object_type_equipment,
-			_object_type_garbage,
-			_object_type_projectile,
-			_object_type_scenery,
-			_object_type_machine,
-			_object_type_control,
-			_object_type_light_fixture,
-			_object_type_placeholder,
-			_object_type_sound_scenery,
-
-			_object_type_mask_device = 
-				FLAG(_object_type_machine) |
-				FLAG(_object_type_control) |
-				FLAG(_object_type_light_fixture),
-			_object_type_mask_item = 
-				FLAG(_object_type_weapon) |
-				FLAG(_object_type_equipment) |
-				FLAG(_object_type_garbage),
-			_object_type_mask_unit = 
-				FLAG(_object_type_biped) |
-				FLAG(_object_type_vehicle),
 		};
 
 		enum incoming_object_function {
