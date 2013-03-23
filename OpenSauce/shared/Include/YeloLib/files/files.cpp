@@ -281,17 +281,20 @@ namespace Yelo
 			if(!PathExists(file_path) && (creation_type == Enums::_file_io_open_create_option_open_existing))
 				return Enums::_file_io_open_error_file_does_not_exist;
 
-			// create the access flags value for reading and/or writing
+			// create the access and sharing flags value for reading and/or writing
 			DWORD access_flags = 0;
+			DWORD sharing_flags = 0;
 			if(Enums::_file_io_open_access_type_read & access_type)
 			{
 				info_out.m_flags.is_readable = true;
 				access_flags |= GENERIC_READ;
+				sharing_flags |= FILE_SHARE_READ;
 			}
 			if(Enums::_file_io_open_access_type_write & access_type)
 			{
 				info_out.m_flags.is_writable = true;
 				access_flags |= GENERIC_WRITE;
+				sharing_flags |= FILE_SHARE_WRITE;
 			}
 
 			// create the creation flags for when a file does not exist
@@ -311,7 +314,7 @@ namespace Yelo
 
 			// create/open the file
 			info_out.file_handle = CreateFile(file_path, 
-				access_flags, NULL, NULL, creation_flags, FILE_ATTRIBUTE_NORMAL, NULL);
+				access_flags, sharing_flags, NULL, creation_flags, FILE_ATTRIBUTE_NORMAL, NULL);
 
 			// report errors
 			if(info_out.file_handle == INVALID_HANDLE_VALUE)
