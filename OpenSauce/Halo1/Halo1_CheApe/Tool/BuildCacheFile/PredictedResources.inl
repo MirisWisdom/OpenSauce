@@ -36,26 +36,26 @@ namespace BuildCacheFileEx
 			bool result = build_cache_file_for_scenario_internals.build_structure_bsp_predicted_resources();
 
 			TagGroups::s_tag_iterator tag_iter;
-			tag_iterator_new(tag_iter, NULL_HANDLE);
+			tag_iterator_new(tag_iter);
 
-			printf_s("processing custom tag instances...");
+			printf_s("building predicted resources for custom tag instances...");
 			// call custom tag's predicted resource stuff in this loop
  			datum_index tag_index;
- 			while( !(tag_index = tag_iterator_next(tag_iter)).IsNull() )
+ 			while( result && !(tag_index = tag_iterator_next(tag_iter)).IsNull() )
  			{
 				const s_tag_instance* instance = (*TagGroups::TagInstances())[tag_index];
 
 				switch(instance->parent_group_tags[1])
 				{
 				case TagGroups::s_object_definition::k_group_tag:
-					ShaderExtension::object_add_to_predicted_resources(tag_index);
+					result &= ShaderExtension::object_add_to_predicted_resources(tag_index);
 					break;
 				}
 
 				switch(instance->parent_group_tags[0])
 				{
 				case TagGroups::s_object_definition::k_group_tag:
-					ShaderExtension::object_add_to_predicted_resources(tag_index);
+					result &= ShaderExtension::object_add_to_predicted_resources(tag_index);
 					break;
 				}
 
@@ -65,8 +65,6 @@ namespace BuildCacheFileEx
 					result &= PostProcessing::shader_postprocess_generic_add_predicted_resources(tag_index);
 					break;
 				}
-
-				if(!result) break;
 			}
 			if(result)
 				puts("done");
