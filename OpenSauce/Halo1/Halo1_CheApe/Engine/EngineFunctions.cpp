@@ -127,116 +127,73 @@ namespace Yelo
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATUM_TRY_AND_GET);
 
-			API_FUNC_NAKED_START()
-				push	index
-				push	data
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(2)
+			__asm	jmp	FUNCTION
 		}
 		API_FUNC_NAKED void* PLATFORM_API datum_get(s_data_array* data, datum_index index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATUM_GET);
 
-			API_FUNC_NAKED_START()
-				push	index
-				push	data
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(2)
+			__asm	jmp	FUNCTION
 		}
 		API_FUNC_NAKED void PLATFORM_API data_verify(s_data_array* data)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATA_VERIFY);
 
-			API_FUNC_NAKED_START()
-				push	data
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(1)
+			__asm	jmp	FUNCTION
 		}
 		API_FUNC_NAKED s_data_array* PLATFORM_API data_new(cstring name, int32 maximum_count, size_t datum_size)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATA_NEW);
 
-			API_FUNC_NAKED_START()
-				push	datum_size
-				push	maximum_count
-				push	name
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(3)
+			__asm	jmp	FUNCTION
 		}
 		API_FUNC_NAKED void PLATFORM_API data_dispose(s_data_array* data)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATA_DISPOSE);
 
-			API_FUNC_NAKED_START()
-				push	data
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(1)
+			__asm	jmp	FUNCTION
 		}
 		API_FUNC_NAKED datum_index PLATFORM_API datum_new_at_index(s_data_array* data, datum_index index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATUM_NEW_AT_INDEX);
 
-			API_FUNC_NAKED_START()
-				push	index
-				push	data
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(2)
+			__asm	jmp	FUNCTION
 		}
 		API_FUNC_NAKED datum_index PLATFORM_API datum_new(s_data_array* data)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATUM_NEW);
 
-			API_FUNC_NAKED_START()
-				push	data
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(1)
+			__asm	jmp	FUNCTION
 		}
 		API_FUNC_NAKED void PLATFORM_API datum_delete(s_data_array* data, datum_index index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATUM_DELETE);
 
-			API_FUNC_NAKED_START()
-				push	index
-				push	data
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(2)
+			__asm	jmp	FUNCTION
 		}
 		API_FUNC_NAKED void PLATFORM_API data_delete_all(s_data_array* data)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATA_DELETE_ALL);
 
-			API_FUNC_NAKED_START()
-				push	data
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(1)
+			__asm	jmp	FUNCTION
 		}
 		API_FUNC_NAKED void* PLATFORM_API data_iterator_next(s_data_iterator& iterator)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATA_ITERATOR_NEXT);
 
-			API_FUNC_NAKED_START()
-				push	iterator
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(1)
+			__asm	jmp	FUNCTION
 		}
 		API_FUNC_NAKED datum_index PLATFORM_API data_next_index(s_data_array* data, datum_index cursor)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATA_NEXT_INDEX);
 
-			API_FUNC_NAKED_START()
-				push	cursor
-				push	data
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(2)
+			__asm	jmp	FUNCTION
 		}
 		API_FUNC_NAKED void PLATFORM_API data_make_valid(s_data_array* data)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATA_MAKE_VALID);
 
-			API_FUNC_NAKED_START()
-				push	data
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(1)
+			__asm	jmp	FUNCTION
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////
@@ -249,64 +206,38 @@ namespace Yelo
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_REFERENCE_CREATE);
 
-			API_FUNC_NAKED_START()
-				push	location
-				push	reference
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(2);
+			__asm	jmp	FUNCTION
 		}
 		API_FUNC_NAKED s_file_reference& PLATFORM_API file_reference_add_directory(s_file_reference& reference, cstring directory)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_REFERENCE_ADD_DIRECTORY);
 
-			API_FUNC_NAKED_START()
-				push	directory
-				push	reference
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(2);
+			__asm	jmp	FUNCTION
 		}
 		API_FUNC_NAKED s_file_reference& PLATFORM_API file_reference_set_name(s_file_reference& reference, cstring name)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_REFERENCE_SET_NAME);
 
-			API_FUNC_NAKED_START()
-				push	name
-				push	reference
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(2);
+			__asm	jmp	FUNCTION
 		}
 		API_FUNC_NAKED cstring PLATFORM_API file_reference_get_name(const s_file_reference& reference, long_flags flags, __out char name[Enums::k_maximum_filename_length+1])
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_REFERENCE_GET_NAME);
 
-			API_FUNC_NAKED_START()
-				push	name
-				push	flags
-				push	reference
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(3);
+			__asm	jmp	FUNCTION
 		}
 
 		API_FUNC_NAKED int16 PLATFORM_API find_files(long_flags flags, const s_file_reference& directory, int32 maximum_count, s_file_reference references[])
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(FIND_FILES);
 
-			API_FUNC_NAKED_START()
-				push	references
-				push	maximum_count
-				push	directory
-				push	flags
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(4);
+			__asm	jmp	FUNCTION
 		}
 		API_FUNC_NAKED bool PLATFORM_API file_exists(const s_file_reference& reference)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_EXISTS);
 
-			API_FUNC_NAKED_START()
-				push	reference
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(1);
+			__asm	jmp	FUNCTION
 		}
 	};
 };
