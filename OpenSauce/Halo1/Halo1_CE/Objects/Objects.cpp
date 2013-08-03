@@ -100,6 +100,10 @@ namespace Yelo
 				scripting_weapon_data_get_real_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_weapon_data_set_real, 
 				scripting_weapon_data_set_real_evaluate);
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_weapon_data_magazine_get_integer, 
+				scripting_weapon_data_magazine_get_integer_evaluate);
+			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_weapon_data_magazine_set_integer, 
+				scripting_weapon_data_magazine_set_integer_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_weapon_data_trigger_set_real, 
 				scripting_weapon_data_trigger_set_real_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_unit_data_get_object, 

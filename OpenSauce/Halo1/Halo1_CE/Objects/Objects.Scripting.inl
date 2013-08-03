@@ -180,6 +180,59 @@ static void* scripting_weapon_data_set_real_evaluate(void** arguments)
 }
 
 //////////////////////////////////////////////////////////////////////////
+// WEAPONS - MAGAZINES
+
+static void* scripting_weapon_data_magazine_get_integer_evaluate(void** arguments)
+{
+	struct s_arguments {
+		datum_index weapon_index;
+		int32 magazine_index;
+		cstring data_name;
+		cstring subdata_name;
+	}* args = CAST_PTR(s_arguments*, arguments);
+	TypeHolder result; result.pointer = NULL;
+	result.int32 = NONE;
+
+	if(Networking::IsLocal() && !args->weapon_index.IsNull())
+	{
+		s_object_header_datum* header = (*Objects::ObjectHeader())[args->weapon_index];
+
+		if(header->object_type == Enums::_object_type_weapon)
+		{
+			s_weapon_datum* weapon = header->_weapon;
+
+			WeaponDataMagazineGetIntegerByName(weapon, args->magazine_index, args->data_name, args->subdata_name, result);
+		}
+	}
+
+	return result.pointer;
+}
+static void* scripting_weapon_data_magazine_set_integer_evaluate(void** arguments)
+{
+	struct s_arguments {
+		datum_index weapon_index;
+		int32 magazine_index;
+		cstring data_name;
+		cstring subdata_name;
+		int32 data_value;
+	}* args = CAST_PTR(s_arguments*, arguments);
+
+	if(Networking::IsLocal() && !args->weapon_index.IsNull())
+	{
+		s_object_header_datum* header = (*Objects::ObjectHeader())[args->weapon_index];
+
+		if(header->object_type == Enums::_object_type_weapon)
+		{
+			s_weapon_datum* weapon = header->_weapon;
+
+			WeaponDataMagazineSetIntegerByName(weapon, args->magazine_index, args->data_name, args->subdata_name, args->data_value);
+		}
+	}
+
+	return NULL;
+}
+
+//////////////////////////////////////////////////////////////////////////
 // WEAPONS - TRIGGERS
 
 static void* scripting_weapon_data_trigger_set_real_evaluate(void** arguments)

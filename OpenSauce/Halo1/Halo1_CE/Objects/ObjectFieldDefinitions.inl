@@ -35,6 +35,12 @@ static s_object_field_definition g_weapon_real_fields[] = {
 	FIELD_ENTRY(weapon, real, real, light_power),
 };
 
+static s_object_field_definition g_weapon_integer_magazine_fields[] = {
+	FIELD_ENTRY2(weapon, short, integer, magazine_state,	"state",	false, true), // READONLY
+	FIELD_ENTRY2(weapon, short, integer, magazine_reload,	"reload"),
+	FIELD_ENTRY2(weapon, short, integer, magazine_rounds,	"rounds"),
+};
+
 static s_object_field_definition g_weapon_tag_real_trigger_fields[] = {
 	FIELD_ENTRY2(weapon_tag, real, real, trigger_spew_time,			"spew_time"),
 	FIELD_ENTRY2(weapon_tag, real, real, trigger_rounds_per_second,	"rounds_per_second"),
