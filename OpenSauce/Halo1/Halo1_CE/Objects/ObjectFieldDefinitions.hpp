@@ -36,6 +36,10 @@ namespace Yelo
 			_weapon_field_real_age,
 			_weapon_field_real_light_power,
 
+			_weapon_field_integer_magazine_state,
+			_weapon_field_integer_magazine_reload,
+			_weapon_field_integer_magazine_rounds,
+
 			_weapon_tag_field_real_trigger_spew_time,
 			_weapon_tag_field_real_trigger_rounds_per_second,
 
@@ -97,6 +101,13 @@ namespace Yelo
 		void WeaponDataSetRealByName(s_weapon_datum* weapon, 
 			cstring data_name,
 			real data_value);
+
+		void WeaponDataMagazineGetIntegerByName(s_weapon_datum* weapon, int32 magazine_index, 
+			cstring data_name, cstring subdata_name, 
+			__inout TypeHolder& result);
+		void WeaponDataMagazineSetIntegerByName(s_weapon_datum* weapon, int32 magazine_index, 
+			cstring data_name, cstring subdata_name, 
+			int32 data_value);
 
 		void WeaponTagDataTriggerSetRealByName(s_weapon_datum* weapon, int32 trigger_index, 
 			cstring data_name, cstring subdata_name, 

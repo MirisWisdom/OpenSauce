@@ -69,6 +69,19 @@
 				<arg type="string"	name="data_name" />
 				<arg type="real"	name="data_value" />
 			</function>
+			<function name="weapon_data_magazine_get_integer" returnType="long" help="returns an integer value property of a weapon's magazine. -1 if this fails" internal="true" >
+				<arg type="object"	name="weapon" />
+				<arg type="long"	name="magazine_index" />
+				<arg type="string"	name="data_name" />
+				<arg type="string"	name="subdata_name" />
+			</function>
+			<function name="weapon_data_magazine_set_integer" returnType="void" help="sets an integer value property of a weapon's magazine" internal="true" >
+				<arg type="object"	name="weapon" />
+				<arg type="long"	name="magazine_index" />
+				<arg type="string"	name="data_name" />
+				<arg type="string"	name="subdata_name" />
+				<arg type="long"	name="data_value" />
+			</function>
 			<function name="weapon_data_trigger_set_real" returnType="void" help="sets a real value property of a weapon's trigger" internal="true" >
 				<arg type="object"	name="weapon" />
 				<arg type="long"	name="trigger_index" />

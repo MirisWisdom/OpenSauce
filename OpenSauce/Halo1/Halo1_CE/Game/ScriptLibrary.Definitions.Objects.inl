@@ -48,6 +48,21 @@
 		HS_TYPE(string),
 		HS_TYPE(real)
 	);
+	HS_FUNCTION_WITH_PARAMS(weapon_data_magazine_get_integer, long, "", 
+			"<weapon> <magazine-index> <data-name> <subdata-name>", 4,
+		HS_TYPE(object),
+		HS_TYPE(long),
+		HS_TYPE(string),
+		HS_TYPE(string)
+	);
+	HS_FUNCTION_WITH_PARAMS(weapon_data_magazine_set_integer, void, "", 
+			"<weapon> <magazine-index> <data-name> <subdata-name> <data-value>", 5,
+		HS_TYPE(object),
+		HS_TYPE(long),
+		HS_TYPE(string),
+		HS_TYPE(string),
+		HS_TYPE(long)
+	);
 	HS_FUNCTION_WITH_PARAMS(weapon_data_trigger_set_real, void, "", 
 			"<weapon> <trigger-index> <data-name> <subdata-name> <data-value>", 5,
 		HS_TYPE(object),

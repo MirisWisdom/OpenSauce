@@ -247,6 +247,34 @@ namespace Yelo
 				data_value, (void*)NULL,
 				WeaponDataFieldGetReal);
 		}
+		//////////////////////////////////////////////////////////////////////////
+		// magazine - Integer
+		void WeaponDataMagazineGetIntegerByName(s_weapon_datum* weapon, int32 magazine_index, 
+			cstring data_name, cstring subdata_name, 
+			__inout TypeHolder& result)
+		{
+			if (magazine_index >= 0 && magazine_index < Enums::k_maximum_number_of_magazines_per_weapon)
+			{
+				Objects::s_weapon_data::s_magazine_state& magazine = weapon->weapon.magazines[magazine_index];
+
+				ObjectFieldGetImpl(g_weapon_integer_magazine_fields, data_name, magazine, 
+					result, subdata_name,
+					WeaponDataFieldMagazineGetInteger);
+			}
+		}
+		void WeaponDataMagazineSetIntegerByName(s_weapon_datum* weapon, int32 magazine_index, 
+			cstring data_name, cstring subdata_name, 
+			int32 data_value)
+		{
+			if (magazine_index >= 0 && magazine_index < Enums::k_maximum_number_of_magazines_per_weapon)
+			{
+				Objects::s_weapon_data::s_magazine_state& magazine = weapon->weapon.magazines[magazine_index];
+
+				ObjectFieldSetImpl(g_weapon_integer_magazine_fields, data_name, magazine, 
+					data_value, subdata_name,
+					WeaponDataFieldMagazineGetInteger);
+			}
+		}
 
 
 #include "Objects/ObjectFieldDefinitions.ImplUnits.inl"

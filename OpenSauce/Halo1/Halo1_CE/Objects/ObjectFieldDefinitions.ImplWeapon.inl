@@ -42,3 +42,34 @@ static bool WeaponDataFieldGetReal(const s_object_field_definition& field, s_wea
 
 	return result.ptr.real != NULL;
 }
+
+static void* WeaponDataFieldMagazineGetIntegerImpl(const s_object_field_definition& field, Objects::s_weapon_data::s_magazine_state& magazine, 
+											 TypeHolder& result, cstring subdata_name)
+{
+	using namespace Enums;
+
+	switch(field.definition_index)
+	{
+	case _weapon_field_integer_magazine_state:				return CAST_PTR(int16*, &magazine.state); // state is an _enum
+	case _weapon_field_integer_magazine_reload:
+			 if( !strcmp(subdata_name,"time_remaining") )	return &magazine.reload_time_remaining;
+		else if( !strcmp(subdata_name,"time") )				return &magazine.reload_time;
+		return NULL;
+	case _weapon_field_integer_magazine_rounds:
+			 if( !strcmp(subdata_name,"unloaded") )			return &magazine.rounds_unloaded;
+		else if( !strcmp(subdata_name,"loaded") )			return &magazine.rounds_loaded;
+		else if( !strcmp(subdata_name,"left_to_recharge") )	return &magazine.rounds_left_to_recharge;
+		return NULL;
+
+	default: return NULL;
+	}
+}
+
+static bool WeaponDataFieldMagazineGetInteger(const s_object_field_definition& field, Objects::s_weapon_data::s_magazine_state& magazine, 
+											 TypeHolder& result, cstring subdata_name)
+{
+	result.pointer = WeaponDataFieldMagazineGetIntegerImpl(field, magazine, 
+		result, subdata_name);
+
+	return result.pointer != NULL;
+}

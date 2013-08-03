@@ -87,11 +87,11 @@ namespace Yelo
 			struct s_magazine_state // '?' means IDK if its actually padding or there are values there. If there are, IDK their types (could be a boolean!)
 			{
 				Enums::weapon_magazine_state state;
-				int16 chamber_time;					// 0x2 in ticks
-				UNKNOWN_TYPE(int16);				// 0x4 appears to be another game tick based value (animations?)
+				int16 reload_time_remaining;		// 0x2 in ticks
+				int16 reload_time;					// 0x4 in ticks
 				int16 rounds_unloaded;				// 0x6
 				int16 rounds_loaded;				// 0x8
-				UNKNOWN_TYPE(int16);				// 0xA appears to be another game tick based value
+				int16 rounds_left_to_recharge;		// 0xA number of rounds left to apply to rounds_loaded (based on tag's rounds_recharged)
 				UNKNOWN_TYPE(int16);				// 0xC I just know a WORD is here, may be an _enum
 				PAD16; // ?
 			}; BOOST_STATIC_ASSERT( sizeof(s_magazine_state) == 0x10 );
