@@ -21,14 +21,14 @@ namespace Yelo
 			m_flags(),
 			m_error_code(ERROR_SUCCESS)
 		{
-			m_flags.valid = base_address != NULL && size > 0;
+			m_flags.valid = base_address != nullptr && size > 0;
 		}
 
 		c_physical_memory_allocation::~c_physical_memory_allocation()
 		{
 			this->Free();
 
-			m_base_address = NULL;
+			m_base_address = nullptr;
 			m_size = 0;
 			m_flags = s_flags();
 		}
@@ -37,7 +37,7 @@ namespace Yelo
 		{
 			void* address = VirtualAlloc(m_base_address, m_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 
-			if(address == NULL || address != m_base_address)
+			if(address == nullptr || address != m_base_address)
 				m_error_code = GetLastError();
 			else
 				m_error_code = ERROR_SUCCESS;

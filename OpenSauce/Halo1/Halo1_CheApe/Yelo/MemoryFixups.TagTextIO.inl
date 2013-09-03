@@ -16,7 +16,7 @@ char c_memory_fixups::tag_import_path_buffer[0xFF];
 
 void API_FUNC_NAKED c_memory_fixups::Hook_TagImportPathBuffer_Copy()
 {
-	static uint32 RETN_ADDRESS = 0x42034B;
+	static const uintptr_t RETN_ADDRESS = 0x42034B;
 
 	_asm {
 		push	0xFF
@@ -26,7 +26,7 @@ void API_FUNC_NAKED c_memory_fixups::Hook_TagImportPathBuffer_Copy()
 }
 void API_FUNC_NAKED c_memory_fixups::Hook_TagImportPathBuffer_Use()
 {
-	static uint32 RETN_ADDRESS = 0x42035D;
+	static const uintptr_t RETN_ADDRESS = 0x42035D;
 
 	_asm {
 		mov		edx, offset tag_import_path_buffer

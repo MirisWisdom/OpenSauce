@@ -14,11 +14,11 @@ struct s_render_upgrades {
 	{
 		render_model_nodes_stretching_patch = true; // ON BY DEFAULT
 
-		if(dx9_element != NULL)
+		if(dx9_element != nullptr)
 		{
 			TiXmlElement* element = dx9_element->FirstChildElement("Upgrades");
 
-			if(element != NULL)
+			if(element != nullptr)
 			{
 				dynamic_triangles_upgrades_enabled = Settings::ParseBoolean( element->Attribute("dynamicTriangles") );
 				render_model_nodes_stretching_patch = Settings::ParseBoolean( element->Attribute("renderModelNodesPatch") );
@@ -27,7 +27,7 @@ struct s_render_upgrades {
 	}
 	void SaveSettings(TiXmlElement* dx9_element)
 	{
-		TiXmlElement* upgrades_element = NULL;
+		TiXmlElement* upgrades_element = nullptr;
 
 		upgrades_element = new TiXmlElement("Upgrades");
 			dx9_element->LinkEndChild(upgrades_element);

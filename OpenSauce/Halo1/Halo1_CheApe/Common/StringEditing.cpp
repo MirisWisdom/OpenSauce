@@ -22,7 +22,7 @@ namespace Yelo
 			if(string_in.size() == 0)
 				return false;
 
-			std::string::size_type index_start = (start_control == NULL ? 0 : string_in.find_first_of(start_control));
+			std::string::size_type index_start = (start_control == nullptr ? 0 : string_in.find_first_of(start_control));
 			std::string::size_type index_end = string_in.find_first_of(end_control, index_start);
 
 			// if the start control was not found, return
@@ -48,7 +48,7 @@ namespace Yelo
 			const char* end_control,
 			const bool remove_end_char)
 		{
-			std::string::size_type index_start = (start_control == NULL ? 0 : string_in.find_first_of(start_control));
+			std::string::size_type index_start = (start_control == nullptr ? 0 : string_in.find_first_of(start_control));
 			std::string::size_type index_end = string_in.find_first_of(end_control);
 
 			if(index_start == std::string::npos)

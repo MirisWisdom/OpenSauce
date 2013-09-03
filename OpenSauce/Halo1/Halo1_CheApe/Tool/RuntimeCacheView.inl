@@ -43,11 +43,11 @@ int EnterCommand(const char* command_list, std::string* arguments_string, const 
 	{
 		std::string segment;
 		// get the next command in the list and add it to the command array
-		StringEditing::GetStringSegment(commands, segment, NULL, ";");
+		StringEditing::GetStringSegment(commands, segment, nullptr, ";");
 		command_array.push_back(segment);
 
 		// remove the command from the commands string
-		StringEditing::RemoveStringSegment(commands, NULL, ";");
+		StringEditing::RemoveStringSegment(commands, nullptr, ";");
 
 		// if the user can just press enter, we need to know to interpret that as a command
 		if(!segment.compare("\n") && !newline_command)
@@ -69,15 +69,15 @@ int EnterCommand(const char* command_list, std::string* arguments_string, const 
 
 	// if the command is just a newline no parsing is necessary
 	if(command[0] != '\n')
-		StringEditing::GetStringSegment(command_string, command_string, NULL, " \n");
+		StringEditing::GetStringSegment(command_string, command_string, nullptr, " \n");
 
 	// if arguments are requested, set the passed strings value
 	if(arguments_string)
 	{
 		// set the arguments string to the whole string, then remove the command
 		arguments_string->assign(command);
-		StringEditing::RemoveStringSegment(*arguments_string, NULL, " ");
-		StringEditing::GetStringSegment(*arguments_string, *arguments_string, NULL, "\n");
+		StringEditing::RemoveStringSegment(*arguments_string, nullptr, " ");
+		StringEditing::GetStringSegment(*arguments_string, *arguments_string, nullptr, "\n");
 	}
 
 	int index = 0;
@@ -86,9 +86,9 @@ int EnterCommand(const char* command_list, std::string* arguments_string, const 
 	std::vector<std::string>::iterator command_iter;
 
 	// iterate through the commands until a matching one is/is not found
-	for(command_iter = command_array.begin(); command_iter != command_array.end(); ++command_iter)
+	for( auto& command : command_array )
 	{
-		if(!command_string.compare(*command_iter))
+		if(!command_string.compare(command))
 		{
 			command_found = true;
 			break;
@@ -292,7 +292,7 @@ BOOL ReadHaloMemory(const void* address, void* destination, const DWORD destinat
  * The number of bytes to write.
  * 
  * \returns
- * k_status_ok if succesful, otherwise k_status_failed_to_write_runtime_memory.
+ * k_status_ok if successful, otherwise k_status_failed_to_write_runtime_memory.
  *
  * Writes a block of bytes to Halo's memory.
  */
@@ -442,7 +442,7 @@ BOOL LoadTagIndex()
 	if(status != k_status_ok)
 	{
 		delete [] g_cache_view_globals.m_cache_tag_instances;
-		g_cache_view_globals.m_cache_tag_instances = NULL;
+		g_cache_view_globals.m_cache_tag_instances = nullptr;
 		return status;
 	}
 
@@ -491,7 +491,7 @@ void UnloadTagIndex()
 		delete [] g_cache_view_globals.m_cache_tag_instances[i].name;
 	// delete the tag instances
 	delete [] g_cache_view_globals.m_cache_tag_instances;
-	g_cache_view_globals.m_cache_tag_instances = NULL;
+	g_cache_view_globals.m_cache_tag_instances = nullptr;
 
 	// reset globals
 	memset(&g_cache_view_globals.m_cache_file_globals, 0, sizeof(g_cache_view_globals.m_cache_file_globals));
@@ -506,7 +506,7 @@ void UnloadTagIndex()
  * k_status_index_changed if the cache is different otherwise k_status_index_matches.
  * If an error occurred when reading the cache globals the status id will be returned instead.
  * 
- * Creates a temporary copy of the runtimes cache globals and compares the crc with the local
+ * Creates a temporary copy of the runtime's cache globals and compares the crc with the local
  * copy.
  */
 BOOL HasCacheChanged()
@@ -556,7 +556,7 @@ BOOL ReloadCacheCheck()
 		UnloadTagIndex();
 		// load the new index
 		status = LoadTagIndex();
-		status = (status != k_status_ok)? status : k_change_index_reloaded;
+		status = (status != k_status_ok) ? status : k_change_index_reloaded;
 	}
 	return (status == k_status_index_matches ? k_status_ok : status);
 }
@@ -579,7 +579,7 @@ void DisplayEditWarning()
 	puts("");
 	Console::ColorPrint(k_color_status_warning, "manually writing to Halo's memory can cause unexpected results\nif incorrect values are entered.", true);
 
-	int answer = EnterCommand("y;n", NULL, "do you want to continue (y/n)?");
+	int answer = EnterCommand("y;n", nullptr, "do you want to continue (y/n)?");
 
 	g_cache_view_globals.m_accepted_edit_warning = (answer == 0);
 }
@@ -588,7 +588,7 @@ void DisplayEditWarning()
  * Writes new values to an address in Halos memory.
  * 
  * \param desc_index
- * The field desription index of the type at the memory address.
+ * The field description index of the type at the memory address.
  * 
  * \param address
  * The runtime memory address to write to.
@@ -603,7 +603,7 @@ void DisplayEditWarning()
  */
 BOOL WriteField(const int desc_index, const void* address, const char* value_string)
 {
-	union{
+	union {
 		byte					_byte;
 		int16					_short;
 		int32					_int;
@@ -749,7 +749,7 @@ BOOL WriteField(const int desc_index, const void* address, const char* value_str
 	if(count != g_field_descriptions[desc_index].m_scan_count)
 		return k_status_failed;
 
-	// write the new values to the runtimes memory
+	// write the new values to the runtime's memory
 	BOOL status = WriteHaloMemory((void*)address, &value, g_field_descriptions[desc_index].m_field_size);
 	return status;
 }
@@ -778,7 +778,7 @@ BOOL ChangeFieldValue(const char* arguments)
 	std::string argument;
 
 	// get the address string
-	StringEditing::GetStringSegment(arguments_string, argument, NULL, " ");
+	StringEditing::GetStringSegment(arguments_string, argument, nullptr, " ");
 
 	// parse the address
 	void* address;
@@ -787,9 +787,9 @@ BOOL ChangeFieldValue(const char* arguments)
 		return k_status_failed;
 
 	// remove the address from the arguments string
-	StringEditing::RemoveStringSegment(arguments_string, NULL, " ");
+	StringEditing::RemoveStringSegment(arguments_string, nullptr, " ");
 	// get the type id string
-	StringEditing::GetStringSegment(arguments_string, argument, NULL, " ");
+	StringEditing::GetStringSegment(arguments_string, argument, nullptr, " ");
 
 	// get the description index for the requested type
 	int index = 0;
@@ -806,7 +806,7 @@ BOOL ChangeFieldValue(const char* arguments)
 	}
 
 	// remove the type id from the arguments string
-	StringEditing::RemoveStringSegment(arguments_string, NULL, " ");
+	StringEditing::RemoveStringSegment(arguments_string, nullptr, " ");
 
 	// set the new values
 	BOOL status = WriteField(index, address, arguments_string.c_str());
@@ -830,7 +830,7 @@ BOOL ChangeFieldValue(const char* arguments)
  */
 void PrintFieldValue(void* field_data, Yelo::tag_field* field_definition)
 {
-	union{
+	union {
 		byte*					_byte;
 		int16*					_short;
 		int32*					_int;
@@ -1007,7 +1007,7 @@ void PrintFieldValue(void* field_data, Yelo::tag_field* field_definition)
 	case Enums::_field_pad:
 	case Enums::_field_skip:
 		{
-			// print each byte of a pad/skip seperately, breaking at each 4 bytes
+			// print each byte of a pad/skip separately, breaking at each 4 bytes
 			// and adding a new line after 4 quads
 			int pad_length = (int)field_definition->definition;
 			int byte_count = 0;
@@ -1104,7 +1104,7 @@ BOOL PrintFields(char*& tag_data, DWORD& address, Yelo::tag_field* start_field)
 		if(current->name)
 		{
 			field_name.assign(current->name);
-			StringEditing::GetStringSegment(field_name, field_name, NULL, "^:#*");
+			StringEditing::GetStringSegment(field_name, field_name, nullptr, "^:#*");
 		}
 		Console::ColorPrint(k_color_name, field_name.c_str(), true);
 
@@ -1114,8 +1114,8 @@ BOOL PrintFields(char*& tag_data, DWORD& address, Yelo::tag_field* start_field)
 		// if the field is a tag block, print all of its elements
 		if(current->type == Enums::_field_block)
 		{
-			tag_block* block = (tag_block*)tag_data;
-			tag_block_definition* definition = current->Definition<tag_block_definition>();
+			auto block = CAST_PTR(tag_block*, tag_data);
+			auto definition = current->Definition<tag_block_definition>();
 
 			// clearly seperate the block from the parent tag fields
 			puts("\n");
@@ -1150,7 +1150,7 @@ BOOL PrintFields(char*& tag_data, DWORD& address, Yelo::tag_field* start_field)
 				
 				Console::ColorPrint(k_color_command_line, "press enter to continue, \"s\" to skip this block type, or \"q\" to quit");
 
-				int command = EnterCommand("q;s;\n", NULL);
+				int command = EnterCommand("q;s;\n", nullptr);
 
 				if(command == 0)
 					return k_action_end_function;
@@ -1186,7 +1186,7 @@ BOOL PrintFields(char*& tag_data, DWORD& address, Yelo::tag_field* start_field)
 		{
 			puts("");
 			Console::ColorPrint(k_color_command_line, "press enter to continue or \"q\" to quit");
-			int command = EnterCommand("q;\n", NULL);
+			int command = EnterCommand("q;\n", nullptr);
 
 			if(command == 0)
 				return k_action_end_function;
@@ -1204,7 +1204,7 @@ BOOL PrintFields(char*& tag_data, DWORD& address, Yelo::tag_field* start_field)
  * The address in Halos memory where the block resides.
  * 
  * \param block_definition
- * The tag block definition thatd escribes the blocks contents.
+ * The tag block definition that describes the blocks contents.
  *
  * \returns
  * The commands end status.
@@ -1233,7 +1233,7 @@ BOOL PrintBlock(DWORD address, Yelo::tag_block_definition* block_definition)
  * Reads a tag from Halos cache and prints its fields.
  * 
  * \param argument
- * A string continung the users arguments.
+ * A string containing the user's arguments.
  * 
  * Reads a tag from Halos cache and prints its fields.
  */
@@ -1314,8 +1314,8 @@ BOOL PrintTagIndex(const char* filter)
 		tags[2].group = g_cache_view_globals.m_cache_tag_instances[i].parent_groups[1];
 		tags[2].Terminate();
 
-		// if a filter is used and this tag doesnt match, skip it
-		if(filter != NULL && strcmp(filter, tags[0].str))
+		// if a filter is used and this tag doesn't match, skip it
+		if(filter != nullptr && strcmp(filter, tags[0].str))
 			continue;
 
 		// modify the tag name to fit on the command line
@@ -1341,7 +1341,7 @@ BOOL PrintTagIndex(const char* filter)
 		{
 			puts("");
 			Console::ColorPrint(k_color_command_line, "press enter to continue, or \"q\" to quit", true);
-			int command = EnterCommand("q;\n", NULL);
+			int command = EnterCommand("q;\n", nullptr);
 			if(command == 0)
 				return k_action_end_function;
 			count = 0;

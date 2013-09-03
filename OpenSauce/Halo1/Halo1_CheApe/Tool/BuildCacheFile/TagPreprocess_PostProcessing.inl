@@ -25,9 +25,9 @@ namespace PostProcessing
 
 	static bool shader_postprocess_generic_group_find_parameter(tag_string& test_string, Yelo::datum_index tag_index)
 	{
-		TagGroups::s_shader_postprocess_generic* datum = Yelo::tag_get<TagGroups::s_shader_postprocess_generic>(tag_index);
+		auto* datum = Yelo::tag_get<TagGroups::s_shader_postprocess_generic>(tag_index);
 
-		while(datum != NULL)
+		while(datum != nullptr)
 		{
 			int32 i = 0;
 
@@ -73,7 +73,7 @@ namespace PostProcessing
 			if(!datum->base_shader.tag_index.IsNull())
 				datum = Yelo::tag_get<TagGroups::s_shader_postprocess_generic>(datum->base_shader.tag_index);
 			else
-				datum = NULL;
+				datum = nullptr;
 		}
 
 		return false;
@@ -81,7 +81,7 @@ namespace PostProcessing
 
 	static bool effect_postprocess_generic_group_find_exposed_parameter(tag_string& test_string, Yelo::datum_index tag_index)
 	{
-		TagGroups::s_effect_postprocess_generic* definition = Yelo::tag_get<TagGroups::s_effect_postprocess_generic>(tag_index);
+		auto* definition = Yelo::tag_get<TagGroups::s_effect_postprocess_generic>(tag_index);
 
 		for(int i = 0; i < definition->exposed_parameters.Count; i++)
 			if(strcmp(definition->exposed_parameters[i].exposed_name, test_string) == 0)
@@ -121,10 +121,10 @@ namespace PostProcessing
 
 	static bool shader_postprocess_generic_preprocess(datum_index tag_index)
 	{
-		TagGroups::s_shader_postprocess_generic* shader_tag = Yelo::tag_get<TagGroups::s_shader_postprocess_generic>(tag_index);
+		auto* shader_tag = Yelo::tag_get<TagGroups::s_shader_postprocess_generic>(tag_index);
 
-		TagGroups::s_shader_postprocess_generic* current = shader_tag;
-		while(current != NULL)
+		auto* current = shader_tag;
+		while(current != nullptr)
 		{
 			// add parameters from this tag
 			for(int32 i = 0; i < current->implementation.bitmaps.Count; i++)
@@ -219,7 +219,7 @@ namespace PostProcessing
 			if(!current->base_shader.tag_index.IsNull())
 				current = Yelo::tag_get<TagGroups::s_shader_postprocess_generic>(current->base_shader.tag_index);
 			else
-				current = NULL;
+				current = nullptr;
 		};
 		shader_postprocess_generic_remove_variables(shader_tag);
 		return true;
@@ -227,7 +227,7 @@ namespace PostProcessing
 
 	static bool effect_postprocess_generic_preprocess(datum_index tag_index)
 	{
-		TagGroups::s_effect_postprocess_generic* definition = Yelo::tag_get<TagGroups::s_effect_postprocess_generic>(tag_index);
+		auto* definition = Yelo::tag_get<TagGroups::s_effect_postprocess_generic>(tag_index);
 
 		int i = 0;
 		// set quad to defaults
@@ -292,7 +292,7 @@ namespace PostProcessing
 
 	static bool effect_postprocess_collection_preprocess(datum_index tag_index)
 	{
-		TagGroups::s_effect_postprocess_collection* collection = Yelo::tag_get<TagGroups::s_effect_postprocess_collection>(tag_index);
+		auto* collection = Yelo::tag_get<TagGroups::s_effect_postprocess_collection>(tag_index);
 
 		int i = 0;
 		// add used shaders to the shaders block
@@ -323,13 +323,12 @@ namespace PostProcessing
 				// the variable name is forced to lower case as Halo script is compiled that way
 				std::string name(variable.script_variable_name);
 
-				std::string::iterator iter;
-				for(iter = name.begin(); iter != name.end(); ++iter)
-					(*iter) = tolower(*iter);
+				for( auto& c : name )
+					c = tolower(c);
 				strcpy_s(variable.script_variable_name, sizeof(variable.script_variable_name), name.c_str());
 			}
 
-			TagGroups::s_effect_postprocess_generic* definition = Yelo::tag_get<TagGroups::s_effect_postprocess_generic>(effect.effect.tag_index);
+			auto* definition = Yelo::tag_get<TagGroups::s_effect_postprocess_generic>(effect.effect.tag_index);
 
 			for(j = 0; j < definition->shaders.Count; j++)
 				effect_postprocess_collection_add_shader_block(collection, definition->shaders[j]);

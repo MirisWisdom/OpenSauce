@@ -20,7 +20,7 @@ namespace Yelo
 		static void* AllocFunc(void* p, size_t size)
 		{
 			if(size == 0)
-				return NULL;
+				return nullptr;
 			return new char[size];
 		}
 
@@ -49,7 +49,7 @@ namespace Yelo
 		 * The pointer reference to set when allocating memory for the uncompressed data.
 		 * 
 		 * \param uncompressed_data_size
-		 * Reference to set the uncompressed datas size to.
+		 * Reference to set the uncompressed data's size to.
 		 * 
 		 * \returns
 		 * Returns SZ_OK if decompression was successfully, otherwise returns a non-zero value.
@@ -84,7 +84,7 @@ namespace Yelo
 			{
 				// the decompression failed, so delete the allocated data
 				IAlloc_Free(&alloc_imp, uncompressed_data);
-				uncompressed_data = NULL;
+				uncompressed_data = nullptr;
 
 				uncompressed_data_size = 0;
 			}
@@ -103,13 +103,13 @@ namespace Yelo
 		 * The fine within the archive to extract.
 		 * 
 		 * \param uncompressed_data
-		 * Reference parameter to set the uncompressed datas pointer to.
+		 * Reference parameter to set the uncompressed data's pointer to.
 		 * 
 		 * \param uncompressed_data_size
 		 * Reference parameter to set the uncompressed data size to.
 		 * 
 		 * \returns
-		 * Returns true if the decompresseion was successfull, otherwise returns false.
+		 * Returns true if the decompression was successful, otherwise returns false.
 		 * 
 		 * Decompresses a single file from a 7zip archive.
 		 */
@@ -158,7 +158,7 @@ namespace Yelo
 						continue;
 
 					// get the name of the file in the archive
-					uint32 name_length = SzArEx_GetFileNameUtf16(&archive_desc, i, NULL);
+					uint32 name_length = SzArEx_GetFileNameUtf16(&archive_desc, i, nullptr);
 					wchar_t* archive_file_name = new wchar_t[name_length];
 					SzArEx_GetFileNameUtf16(&archive_desc, i, (UInt16*)archive_file_name);
 

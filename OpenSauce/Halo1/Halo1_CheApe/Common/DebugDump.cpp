@@ -32,7 +32,7 @@ namespace Yelo
 			// writing the report was successful so tell the user
 			cstring message = "An exception has occurred.\nA crash report for this exception has been saved to your OpenSauce Reports directory (OpenSauce\\Reports\\CrashRpt).\nAttach the zip archive if you report this issue.";
 
-			MessageBox(NULL, message, "Exception!", MB_OK);
+			MessageBox(nullptr, message, "Exception!", MB_OK);
 		}
 
 		static void SetupExceptionHandler();
@@ -122,7 +122,7 @@ namespace Yelo
 			{
 				// delete the reports directory
 				FileIO::Delete_Directory(g_reports_path, true, true);
-				if(0 == CreateDirectory(g_reports_path, NULL))
+				if(0 == CreateDirectory(g_reports_path, nullptr))
 					return;
 			}
 

@@ -23,7 +23,7 @@ namespace Yelo
 
 		HMODULE& YeloModuleHandle()
 		{
-			static HMODULE g_module = NULL;
+			static HMODULE g_module = nullptr;
 
 			return g_module;
 		}
@@ -72,7 +72,7 @@ dispose:
 		Yelo::Debug::FileDispose();
 		Yelo::Settings::Dispose();
 
-		Yelo::Main::YeloModuleHandle() = NULL;
+		Yelo::Main::YeloModuleHandle() = nullptr;
 		g_initialized = false;
 	}
 

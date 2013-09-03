@@ -38,8 +38,8 @@ namespace Yelo
 
 	char* wstring_to_string(char* string, int32 string_length, wcstring wide, int32 wide_length)
 	{
-		if( !WIN32_FUNC(WideCharToMultiByte)(CP_ACP, 0, wide, wide_length, string, string_length, NULL, NULL) )
-			return NULL;
+		if( !WIN32_FUNC(WideCharToMultiByte)(CP_ACP, 0, wide, wide_length, string, string_length, nullptr, nullptr) )
+			return nullptr;
 		else
 			return string;
 	}
@@ -58,7 +58,7 @@ namespace Yelo
 	wstring string_to_wstring(wstring wide, int32 wide_length, cstring string, int32 string_length)
 	{
 		if( !WIN32_FUNC(MultiByteToWideChar)(CP_ACP, 0, string, string_length, wide, wide_length) )
-			return NULL;
+			return nullptr;
 		else
 			return wide;
 	}
@@ -113,9 +113,9 @@ namespace Yelo
 
 	void PrepareToDropError(cstring text)
 	{
-		if(text == NULL) text = "(null)";
+		if(text == nullptr) text = "(null)";
 
-		MessageBox(NULL, text, "Prepare to Drop!", MB_OK | MB_ICONEXCLAMATION);
+		MessageBox(nullptr, text, "Prepare to Drop!", MB_OK | MB_ICONEXCLAMATION);
 	}
 
 	#if defined(API_DEBUG) && defined(ASSERTS_ENABLED)
@@ -128,7 +128,7 @@ namespace Yelo
 		YELO_DEBUG_FORMAT("Function: %s", function);
 
 		// based on _ASSERT_EXPR's implementation
-		_CrtDbgReport(_CRT_ASSERT, file, line, NULL, assertion);
+		_CrtDbgReport(_CRT_ASSERT, file, line, nullptr, assertion);
 
 		throw;
 	}

@@ -34,7 +34,7 @@ namespace Yelo
 				{
 					base_address = VirtualAlloc(CAST_PTR(void*, Enums::k_cheape_physical_memory_map_address), Enums::k_cheape_physical_memory_map_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 
-					if(base_address == NULL || base_address != CAST_PTR(void*, Enums::k_cheape_physical_memory_map_address))
+					if(base_address == nullptr || base_address != CAST_PTR(void*, Enums::k_cheape_physical_memory_map_address))
 						return GetLastError();
 
 					return ERROR_SUCCESS;
@@ -44,13 +44,13 @@ namespace Yelo
 					BOOL result = TRUE;
 					error_code = S_OK;
 
-					if(base_address != NULL)
+					if(base_address != nullptr)
 					{
 						result = VirtualFree(base_address, 0, MEM_RELEASE);
 						if(result == FALSE)
 							error_code = GetLastError();
 
-						base_address = NULL;
+						base_address = nullptr;
 					}
 
 					return result;
@@ -75,7 +75,7 @@ namespace Yelo
 
 					fread_s(&header, sizeof(header), sizeof(header), 1, file_handle);
 					cstring invalid_reason_str = header.GetInvalidReasonString(Enums::k_cheape_cache_signature_halo1, this->base_address);
-					if(invalid_reason_str != NULL)
+					if(invalid_reason_str != nullptr)
 					{
 						Debug::WriteFormat("CheApe: Bad '%s' file (%s)", k_cache_file_name, invalid_reason_str);
 						_InitError = k_error_LoadCacheFile;
@@ -100,8 +100,8 @@ namespace Yelo
 
 				void SetupTagGroupPointers()
 				{
-					tag_group** old_tag_groups = CAST_PTR(tag_group**, kTagGroupDefinitionsAddress);
-					tag_group** address =  CAST_PTR(tag_group**, this->address);
+					auto** old_tag_groups = CAST_PTR(tag_group**, kTagGroupDefinitionsAddress);
+					auto** address =  CAST_PTR(tag_group**, this->address);
 
 					// first, copy the original tag group pointers
 					int32 count;
@@ -131,9 +131,9 @@ namespace Yelo
 			{
 				tag_string pch_build_date;
 				string256 pch_file;
-			}* tool_info_header = NULL;
+			}* tool_info_header = nullptr;
 
-			buffer = NULL;
+			buffer = nullptr;
 			size = compressed_size = 0;
 
 			// Read the CheApe cache into the resource buffer
@@ -231,7 +231,7 @@ namespace Yelo
 			_globals.new_tag_groups.SetupTagGroupPointers();
 
 			// ABC the tag groups list
-			qsort_s(_globals.new_tag_groups.address, _globals.new_tag_groups.count+1, sizeof(tag_group*), tag_group_definition_compare, NULL);
+			qsort_s(_globals.new_tag_groups.address, _globals.new_tag_groups.count+1, sizeof(tag_group*), tag_group_definition_compare, nullptr);
 		}
 
 		void SetupTagGroupCounts()

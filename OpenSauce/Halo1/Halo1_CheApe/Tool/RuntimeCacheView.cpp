@@ -85,18 +85,18 @@ namespace Yelo
 			{ Enums::_field_angle_bounds,			sizeof(angle_bounds),			"angle_bounds",			"%0.6f to %0.6f",						2,	true,	"%f %f" },
 			{ Enums::_field_real_bounds,			sizeof(real_bounds),			"real_bounds",			"%0.6f to %0.6f",						2,	true,	"%f %f" },
 			{ Enums::_field_real_fraction_bounds,	sizeof(real_fraction_bounds),	"real_fraction_bounds",	"%0.6f to %0.6f",						2,	true,	"%f %f" },
-			{ Enums::_field_tag_reference,			sizeof(tag_reference),			"tag_reference",		"tag: %4s\tindex: %i",					0,	false,	NULL },
-			{ Enums::_field_block,					sizeof(tag_block),				"block",				"count: %i\taddress: 0x%08X",			0,	false,	NULL },
-			{ Enums::_field_short_block_index,		sizeof(int16),					"short_block_index",	"%i",									0,	false,	NULL },
-			{ Enums::_field_long_block_index,		sizeof(int32),					"long_block_index",		"%i",									0,	false,	NULL },
-			{ Enums::_field_data,					sizeof(tag_data),				"data",					"size: %i,",							0,	false,	NULL },
-			{ Enums::_field_array_start,			0,								"array_start",			NULL,									0,	false,	NULL },
-			{ Enums::_field_array_end,				0,								"array_end",			NULL,									0,	false,	NULL },
-			{ Enums::_field_pad,					0,								"pad",					NULL,									0,	false,	NULL },
-			{ Enums::_field_skip,					0,								"skip",					NULL,									0,	false,	NULL },
-			{ Enums::_field_explanation,			0,								"explanation",			NULL,									0,	false,	NULL },
-			{ Enums::_field_custom,					0,								"custom",				NULL,									0,	false,	NULL },
-			{ Enums::_field_terminator,				0,								"terminator",			NULL,									0,	false,	NULL },
+			{ Enums::_field_tag_reference,			sizeof(tag_reference),			"tag_reference",		"tag: %4s\tindex: %i",					0,	false,	nullptr },
+			{ Enums::_field_block,					sizeof(tag_block),				"block",				"count: %i\taddress: 0x%08X",			0,	false,	nullptr },
+			{ Enums::_field_short_block_index,		sizeof(int16),					"short_block_index",	"%i",									0,	false,	nullptr },
+			{ Enums::_field_long_block_index,		sizeof(int32),					"long_block_index",		"%i",									0,	false,	nullptr },
+			{ Enums::_field_data,					sizeof(tag_data),				"data",					"size: %i,",							0,	false,	nullptr },
+			{ Enums::_field_array_start,			0,								"array_start",			nullptr,								0,	false,	nullptr },
+			{ Enums::_field_array_end,				0,								"array_end",			nullptr,								0,	false,	nullptr },
+			{ Enums::_field_pad,					0,								"pad",					nullptr,								0,	false,	nullptr },
+			{ Enums::_field_skip,					0,								"skip",					nullptr,								0,	false,	nullptr },
+			{ Enums::_field_explanation,			0,								"explanation",			nullptr,								0,	false,	nullptr },
+			{ Enums::_field_custom,					0,								"custom",				nullptr,								0,	false,	nullptr },
+			{ Enums::_field_terminator,				0,								"terminator",			nullptr,								0,	false,	nullptr },
 		};
 
 		struct s_cache_view_globals
@@ -163,7 +163,7 @@ namespace Yelo
 
 			g_cache_view_globals.m_is_loaded = false;
 
-			runtime_cache_command user_command = _runtime_cache_command_error;
+			auto user_command = _runtime_cache_command_error;
 			do
 			{
 				std::string arguments;
@@ -263,7 +263,7 @@ namespace Yelo
 							break;
 						}
 
-						status = PrintTagIndex((user_command == _runtime_cache_command_list_filtered) ? arguments.c_str() : NULL);
+						status = PrintTagIndex((user_command == _runtime_cache_command_list_filtered) ? arguments.c_str() : nullptr);
 						PrintStatus(status);
 
 						user_command = _runtime_cache_command_error;

@@ -39,8 +39,8 @@ namespace Yelo
 		{
 			long_flags name_flags = CAST_PTR(long_flags, ctxt);
 
-			const s_file_reference* lhs = CAST_PTR(const s_file_reference*, _lhs);
-			const s_file_reference* rhs = CAST_PTR(const s_file_reference*, _rhs);
+			const auto* lhs = CAST_PTR(const s_file_reference*, _lhs);
+			const auto* rhs = CAST_PTR(const s_file_reference*, _rhs);
 
 			char lhs_name[Enums::k_maximum_filename_length+1];
 			char rhs_name[Enums::k_maximum_filename_length+1];

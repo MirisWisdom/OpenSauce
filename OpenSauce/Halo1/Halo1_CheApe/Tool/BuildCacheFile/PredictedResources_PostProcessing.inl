@@ -9,7 +9,7 @@ namespace PostProcessing
 {
 	static bool shader_postprocess_generic_add_predicted_resources(datum_index tag_index)
 	{
-		TagGroups::s_shader_postprocess_generic* shader_tag = Yelo::tag_get<TagGroups::s_shader_postprocess_generic>(tag_index);
+		auto* shader_tag = Yelo::tag_get<TagGroups::s_shader_postprocess_generic>(tag_index);
 		
 		if(shader_tag->shader_code_binary.size == 0 && shader_tag->base_shader.tag_index.IsNull())
 		{

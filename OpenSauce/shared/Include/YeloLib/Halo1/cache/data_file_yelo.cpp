@@ -42,22 +42,22 @@ namespace Yelo
 
 				bool LoadSettings()
 				{
-					TiXmlElement* root = NULL;
-					TiXmlDocument xml_settings = TiXmlDocument();
+					TiXmlElement* root = nullptr;
+					auto xml_settings = TiXmlDocument();
 
 					char file_path[MAX_PATH];
 					if(!Settings::GetSettingsFilePath(K_SETTINGS_FILENAME_XML, file_path))
 						return false;
-					else if( (root = Settings::GenericSettingsParse(xml_settings, file_path, "modSets")) == NULL)
+					else if( (root = Settings::GenericSettingsParse(xml_settings, file_path, "modSets")) == nullptr)
 						return false;
 
 					for(TiXmlElement* entry = root->FirstChildElement();
-						this->Count < Enums::k_engine_mod_max_data_file_sets && entry != NULL;
+						this->Count < Enums::k_engine_mod_max_data_file_sets && entry != nullptr;
 						entry = entry->NextSiblingElement())
 					{
 						cstring name = entry->Attribute("name");
 
-						if(name != NULL)
+						if(name != nullptr)
 						{
 							strcpy_s(this->FileSet[this->Count].Name, name);
 							this->FileSet[this->Count++].Initialize();
@@ -118,7 +118,7 @@ namespace Yelo
 							return true;
 						}
 
-					bitmaps = sounds = locale = NULL;
+					bitmaps = sounds = locale = nullptr;
 					return false;
 				}
 			}Mods;

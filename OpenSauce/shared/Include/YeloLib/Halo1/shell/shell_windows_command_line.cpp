@@ -32,7 +32,7 @@ namespace Yelo
 #define CMDLINE_DEFINE_ARG(name, type)		&CMDLINE_GET_PARAM(name),
 #define CMDLINE_DEFINE_SWITCH(name)			&CMDLINE_GET_PARAM(name),
 #include "Common/YeloSettings.CmdLineSettings.inl"
-			NULL
+			nullptr
 		};
 
 		void ReadCmdLineSettings()
@@ -59,7 +59,7 @@ namespace Yelo
 
 		void c_cmd_line_parameter::GetParameter()
 		{
-			cstring value = NULL;
+			cstring value = nullptr;
 			m_parameter_set = Engine::GetCmdLineParameter(m_parameter, &value);
 
 			// if the parameter has been set, parse the parameters value

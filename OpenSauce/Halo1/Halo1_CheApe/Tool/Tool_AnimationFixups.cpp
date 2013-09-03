@@ -18,9 +18,9 @@ namespace Yelo
 	namespace Tool
 	{
 		int32 c_animation_fixups::max_animations = NONE;
-		bool* c_animation_fixups::importer_valid_animations_array = NULL;
-		int32* c_animation_fixups::importer_animation_index_array = NULL;
-		int16* c_animation_fixups::importer_animation_remapping_index_array = NULL;
+		bool* c_animation_fixups::importer_valid_animations_array = nullptr;
+		int32* c_animation_fixups::importer_animation_index_array = nullptr;
+		int16* c_animation_fixups::importer_animation_remapping_index_array = nullptr;
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -35,7 +35,7 @@ namespace Yelo
 
 		API_FUNC_NAKED static void _importer_valid_animations_initializer()
 		{
-			static const uint32 RETN_ADDRESS = 0x40449B;
+			static const uintptr_t RETN_ADDRESS = 0x40449B;
 
 			__asm {
 				push	c_animation_fixups::max_animations
@@ -48,7 +48,7 @@ namespace Yelo
 
 		API_FUNC_NAKED static void _importer_valid_animations_falsify_entry()
 		{
-			static const uint32 RETN_ADDRESS = 0x40450B;
+			static const uintptr_t RETN_ADDRESS = 0x40450B;
 
 			__asm {
 				push	ecx // we use ecx for our address register, so we have to save it
@@ -62,8 +62,8 @@ namespace Yelo
 
 		API_FUNC_NAKED static void _importer_valid_animations_test1()
 		{
-			static const uint32 JZ_ADDRESS = 0x40455B;
-			static const uint32 RETN_ADDRESS = 0x404538;
+			static const uintptr_t JZ_ADDRESS = 0x40455B;
+			static const uintptr_t RETN_ADDRESS = 0x404538;
 
 			__asm {
 				push	esi // we use esi for our address register, so we have to save it
@@ -137,7 +137,7 @@ _result_is_zero:
 
 		API_FUNC_NAKED static void _importer_animation_index_set_indice()
 		{
-			static const uint32 RETN_ADDRESS = 0x40447F;
+			static const uintptr_t RETN_ADDRESS = 0x40447F;
 
 			__asm {
 				// eax isn't used around this code, so it is safe
@@ -150,8 +150,8 @@ _result_is_zero:
 
 		API_FUNC_NAKED static void _importer_animation_index_set_indice2()
 		{
-			static uint32 JLE_ADDRESS = 0x40447F;
-			static uint32 RETN_ADDRESS = 0x404470;
+			static const uintptr_t JLE_ADDRESS = 0x40447F;
+			static const uintptr_t RETN_ADDRESS = 0x404470;
 
 			__asm {
 				// eax isn't used around this code, so it is safe
@@ -194,7 +194,7 @@ _result_is_le:
 
 		API_FUNC_NAKED static void _importer_animation_remapping_index_set_indice()
 		{
-			static const uint32 RETN_ADDRESS = 0x40332B;
+			static const uintptr_t RETN_ADDRESS = 0x40332B;
 
 			__asm {
 				// eax isn't used around this code, so it is safe
@@ -207,7 +207,7 @@ _result_is_le:
 
 		API_FUNC_NAKED static void _importer_animation_remapping_index_get_indice()
 		{
-			static const uint32 RETN_ADDRESS = 0x4033B4;
+			static const uintptr_t RETN_ADDRESS = 0x4033B4;
 
 			__asm {
 				// eax isn't used around this code, so it is safe
@@ -220,7 +220,7 @@ _result_is_le:
 
 		API_FUNC_NAKED static void _importer_animation_remapping_index_get_indice2()
 		{
-			static const uint32 RETN_ADDRESS = 0x4034A2;
+			static const uintptr_t RETN_ADDRESS = 0x4034A2;
 
 			__asm {
 				// eax isn't used around this code, so it is safe

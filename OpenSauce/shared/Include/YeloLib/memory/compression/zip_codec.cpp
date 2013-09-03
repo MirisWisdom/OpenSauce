@@ -38,11 +38,11 @@ namespace Yelo
 
 			// get the file name from the archive
 			unz_file_info64 file_info;
-			if(unzGetCurrentFileInfo64(zip_file, &file_info, output_filename, MAX_PATH, NULL, 0, NULL, 0) != UNZ_OK)
+			if(unzGetCurrentFileInfo64(zip_file, &file_info, output_filename, MAX_PATH, nullptr, 0, nullptr, 0) != UNZ_OK)
 				return false;
 
 			// open the file for reading
-			if(unzOpenCurrentFilePassword(zip_file, NULL) != UNZ_OK)
+			if(unzOpenCurrentFilePassword(zip_file, nullptr) != UNZ_OK)
 				return false;
 
 			// allocate memory to read the file in to
@@ -61,7 +61,7 @@ namespace Yelo
 			{
 				// decompression failed, delete the allocated memory
 				delete [] uncompressed_data;
-				uncompressed_data = NULL;
+				uncompressed_data = nullptr;
 
 				uncompressed_data_size = 0;
 				return false;

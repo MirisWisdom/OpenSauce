@@ -45,7 +45,7 @@ namespace Yelo
 
 				const function_process_proc* proc = &TBlockPreprocess[0];
 				for(size_t x = 0; x < TBlockPreprocessCount; proc++, x++)
-					if(proc != NULL)
+					if(proc != nullptr)
 						(*proc)();
 			}
 			static void CallPostprocesses()
@@ -54,7 +54,7 @@ namespace Yelo
 
 				const function_process_proc* proc = &TBlockPostprocess[0];
 				for(size_t x = 0; x < TBlockPostprocessCount; proc++, x++)
-					if(proc != NULL)
+					if(proc != nullptr)
 						(*proc)();
 			}
 		public:

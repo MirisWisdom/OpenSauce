@@ -14,10 +14,10 @@ namespace Yelo
 
 		void UpdateTypeHolderFromPtrToData(TypeHolder& data, const Enums::hs_type type)
 		{
-			if(data.pointer != NULL)
+			if(data.pointer != nullptr)
 			{
 				TypeHolder copy; copy.pointer = data.pointer;
-				data.pointer = NULL;
+				data.pointer = nullptr;
 				switch(type)
 				{
 				//case HS_TYPE(byte):
@@ -61,7 +61,7 @@ namespace Yelo
 			}
 			else // the pointer is null, so default to NONE
 			{
-				data.pointer = NULL;
+				data.pointer = nullptr;
 
 				switch(type)
 				{
@@ -107,7 +107,7 @@ namespace Yelo
 		}
 		void UpdateTypeHolderDataFromPtr(const TypeHolder& data, const Enums::hs_type type, void* ptr)
 		{
-			if(data.pointer != NULL && ptr != NULL)
+			if(data.pointer != nullptr && ptr != nullptr)
 			{
 				switch(type)
 				{

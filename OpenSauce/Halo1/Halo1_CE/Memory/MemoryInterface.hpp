@@ -25,10 +25,10 @@
 #endif
 
 #define ENGINE_DPTR(type, name, ce_offset, cededi_offset) \
-	static type##** const pp##name = CAST_PTR(type##**, PLATFORM_VALUE(ce_offset,cededi_offset));								BOOST_STATIC_ASSERT( PLATFORM_VALUE(ce_offset,cededi_offset) != NULL );
+	static auto** const pp##name = CAST_PTR(type##**, PLATFORM_VALUE(ce_offset,cededi_offset));									BOOST_STATIC_ASSERT( PLATFORM_VALUE(ce_offset,cededi_offset) != NULL );
 
 #define ENGINE_PTR(type, name, ce_offset, cededi_offset) \
-	static type##* const p##name = CAST_PTR(type##*, PLATFORM_VALUE(ce_offset,cededi_offset));									BOOST_STATIC_ASSERT( PLATFORM_VALUE(ce_offset,cededi_offset) != NULL );
+	static auto* const p##name = CAST_PTR(type##*, PLATFORM_VALUE(ce_offset,cededi_offset));									BOOST_STATIC_ASSERT( PLATFORM_VALUE(ce_offset,cededi_offset) != NULL );
 
 #define FUNC_PTR(name, ce_offset, cededi_offset) enum FUNC_PTR_##name { PTR_##name = PLATFORM_VALUE(ce_offset,cededi_offset) }; BOOST_STATIC_ASSERT( GET_FUNC_PTR(name) != NULL );
 #define DATA_PTR(name, ce_offset, cededi_offset) enum DATA_PTR_##name { PTR_##name = PLATFORM_VALUE(ce_offset,cededi_offset) }; BOOST_STATIC_ASSERT( GET_DATA_PTR(name) != NULL );

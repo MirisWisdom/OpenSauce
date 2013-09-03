@@ -134,17 +134,17 @@ namespace Yelo
 
 			if(!bitmap_value.flags.is_external_bit)
 			{
-				if(bitmap_value.runtime._internal.bitmap != NULL)
+				if(bitmap_value.runtime._internal.bitmap != nullptr)
 				{
 					// Load the bitmap into the pc texture cache, and block until the he direct3d texture is created
 					blam::texture_cache_bitmap_get_hardware_format(bitmap_value.runtime._internal.bitmap, true, true);
 
-					hr = (bitmap_value.runtime._internal.bitmap->hardware_format == NULL ? E_FAIL : S_OK);
+					hr = (bitmap_value.runtime._internal.bitmap->hardware_format == nullptr ? E_FAIL : S_OK);
 				}
 			}
 			else
 			{
-				if(bitmap_value.runtime.external.source != NULL)
+				if(bitmap_value.runtime.external.source != nullptr)
 					hr = D3DXCreateTextureFromFile(pDevice, bitmap_value.runtime.external.source, &bitmap_value.runtime.external.texture_2d);
 			}
 			bitmap_value.flags.is_loaded_bit = SUCCEEDED(hr);
@@ -164,10 +164,10 @@ namespace Yelo
 		IDirect3DTexture9* s_shader_postprocess_parameter::GetTexture()
 		{
 			if(value_type.type != Enums::_shader_variable_base_type_texture)
-				return NULL;
+				return nullptr;
 
 			if(!bitmap_value.flags.is_loaded_bit)
-				return NULL;
+				return nullptr;
 			return bitmap_value.flags.is_external_bit ? bitmap_value.runtime.external.texture_2d : CAST_PTR(IDirect3DTexture9*,bitmap_value.runtime._internal.bitmap->hardware_format);
 		}
 

@@ -22,7 +22,7 @@ namespace Yelo
 
 		API_FUNC_NAKED void Initialize()
 		{
-			static const uint32 FUNCTION = GET_FUNC_PTR(TAG_FILES_OPEN);
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FILES_OPEN);
 
 			__asm {
 				call	FUNCTION
@@ -38,7 +38,7 @@ namespace Yelo
 			int32 field_index = tag_block_find_field(weapon_group->header_block_definition, Enums::_field_block, "magazines");
 			if(field_index != NONE)
 			{
-				tag_block_definition* magazines_block = weapon_group->header_block_definition->fields[field_index].Definition<tag_block_definition>();
+				auto* magazines_block = weapon_group->header_block_definition->fields[field_index].Definition<tag_block_definition>();
 
 				// find the magazine's magazine-objects field
 				field_index = tag_block_find_field(magazines_block, Enums::_field_block, "magazines");
@@ -47,8 +47,8 @@ namespace Yelo
 					tag_field& magazine_objects_field = magazines_block->fields[field_index];
 					magazine_objects_field.name = "magazine objects"; // give the field a more descriptive name
 
-					tag_block_definition* magazine_objects_block = magazine_objects_field.Definition<tag_block_definition>();
-					magazine_objects_block->format_proc = NULL; // Bungie seems to have made a copy&paste error and gave the objects block the format-magazines function
+					auto* magazine_objects_block = magazine_objects_field.Definition<tag_block_definition>();
+					magazine_objects_block->format_proc = nullptr; // Bungie seems to have made a copy&paste error and gave the objects block the format-magazines function
 
 					// find the magazine-object's equipment reference field
 					field_index = tag_block_find_field(magazine_objects_block, Enums::_field_tag_reference, "equipment");
@@ -310,7 +310,7 @@ namespace Yelo
 
 	API_FUNC_NAKED void* tag_get(tag group_tag, datum_index tag_index)
 	{
-		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_GET);
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GET);
 
 		API_FUNC_NAKED_START()
 			push	tag_index
@@ -321,7 +321,7 @@ namespace Yelo
 
 	API_FUNC_NAKED tag_group* tag_group_get(tag group_tag)
 	{
-		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_GROUP_GET);
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GROUP_GET);
 
 		API_FUNC_NAKED_START()
 			push	group_tag
@@ -331,7 +331,7 @@ namespace Yelo
 
 	API_FUNC_NAKED void tag_rename(datum_index tag_index, cstring new_name)
 	{
-		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_RENAME);
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_RENAME);
 
 		API_FUNC_NAKED_START()
 			push	new_name
@@ -342,7 +342,7 @@ namespace Yelo
 
 	API_FUNC_NAKED tag_block* tag_block_index_resolve(datum_index tag_index, tag_field* block_index_field, int32 index)
 	{
-		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_BLOCK_INDEX_RESOLVE);
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_INDEX_RESOLVE);
 
 		API_FUNC_NAKED_START()
 			push	index
@@ -354,7 +354,7 @@ namespace Yelo
 
 	API_FUNC_NAKED uint32 tag_size(datum_index tag_index)
 	{
-		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_SIZE);
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_SIZE);
 
 		API_FUNC_NAKED_START()
 			push	tag_index
@@ -366,7 +366,7 @@ namespace Yelo
 
 	API_FUNC_NAKED void tag_reference_set(tag_reference& reference, tag group_tag, cstring name)
 	{
-		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_REFERENCE_SET);
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_REFERENCE_SET);
 
 		API_FUNC_NAKED_START()
 			push	name
@@ -378,7 +378,7 @@ namespace Yelo
 
 	API_FUNC_NAKED uint32 tag_block_size(tag_block* block)
 	{
-		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_BLOCK_SIZE);
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_SIZE);
 
 		API_FUNC_NAKED_START()
 			push	block
@@ -388,7 +388,7 @@ namespace Yelo
 
 	API_FUNC_NAKED void* tag_block_get_element(tag_block* block, int32 element)
 	{
-		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_BLOCK_GET_ELEMENT);
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_GET_ELEMENT);
 
 		API_FUNC_NAKED_START()
 			push	element
@@ -398,7 +398,7 @@ namespace Yelo
 	}
 	API_FUNC_NAKED const void* tag_block_get_element(const tag_block* block, int32 element)
 	{
-		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_BLOCK_GET_ELEMENT);
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_GET_ELEMENT);
 
 		API_FUNC_NAKED_START()
 			push	element
@@ -409,7 +409,7 @@ namespace Yelo
 
 	API_FUNC_NAKED datum_index tag_new(tag group_name, cstring name)
 	{
-		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_NEW);
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_NEW);
 
 		API_FUNC_NAKED_START()
 			push	name
@@ -420,7 +420,7 @@ namespace Yelo
 
 	API_FUNC_NAKED bool tag_save(datum_index tag_index)
 	{
-		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_SAVE);
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_SAVE);
 
 		API_FUNC_NAKED_START()
 			push	tag_index
@@ -430,7 +430,7 @@ namespace Yelo
 
 	API_FUNC_NAKED void tag_block_delete_element(tag_block* block, int32 element)
 	{
-		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_BLOCK_DELETE_ELEMENT);
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_DELETE_ELEMENT);
 
 		API_FUNC_NAKED_START()
 			push	element
@@ -441,7 +441,7 @@ namespace Yelo
 
 	API_FUNC_NAKED int32 tag_block_add_element(tag_block* block)
 	{
-		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_BLOCK_ADD_ELEMENT);
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_ADD_ELEMENT);
 
 		API_FUNC_NAKED_START()
 			push	block
@@ -451,7 +451,7 @@ namespace Yelo
 
 	API_FUNC_NAKED bool tag_block_resize(tag_block* block, int32 element_count)
 	{
-		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_BLOCK_RESIZE);
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_RESIZE);
 
 		API_FUNC_NAKED_START()
 			push	element_count
@@ -462,7 +462,7 @@ namespace Yelo
 
 	API_FUNC_NAKED int32 tag_block_insert_element(tag_block* block, int32 index)
 	{
-		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_BLOCK_INSERT_ELEMENT);
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_INSERT_ELEMENT);
 
 		API_FUNC_NAKED_START()
 			push	index
@@ -473,7 +473,7 @@ namespace Yelo
 
 	API_FUNC_NAKED int32 tag_block_duplicate_element(tag_block* block, int32 element)
 	{
-		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_BLOCK_DUPLICATE_ELEMENT);
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_DUPLICATE_ELEMENT);
 
 		API_FUNC_NAKED_START()
 			push	esi
@@ -501,7 +501,7 @@ fail:
 
 	API_FUNC_NAKED datum_index tag_load(tag group_tag, cstring name, long_flags file_flags)
 	{
-		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_LOAD);
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_LOAD);
 
 		API_FUNC_NAKED_START()
 			push	file_flags
@@ -534,7 +534,7 @@ fail:
 
 	API_FUNC_NAKED void tag_unload(datum_index tag_index)
 	{
-		static const uint32 FUNCTION = GET_FUNC_PTR(TAG_UNLOAD);
+		static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_UNLOAD);
 
 		API_FUNC_NAKED_START()
 			push	tag_index

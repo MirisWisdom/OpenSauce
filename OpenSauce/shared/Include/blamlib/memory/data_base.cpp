@@ -20,7 +20,7 @@ namespace Yelo
 
 	datum_index datum_index::Create(index_t index, void* header)
 	{
-		if(header == NULL) return null;
+		if(header == nullptr) return null;
 
 		return Create(index, *CAST_PTR(salt_t*, header));
 	}

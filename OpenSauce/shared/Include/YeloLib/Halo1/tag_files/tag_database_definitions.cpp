@@ -21,7 +21,7 @@ namespace Yelo
 			if(this->name.Size > 0)
 			{
 				Yelo::tag_group* group_definition = Yelo::tag_group_get(this->group_tag);
-				if(group_definition != NULL)
+				if(group_definition != nullptr)
 				{
 					sprintf_s(formatted_buffer, Enums::k_tag_block_format_buffer_size, 
 						"%s.%s", this->name.Definitions, group_definition->name);
@@ -32,7 +32,7 @@ namespace Yelo
 		void s_tag_database::Initialize()
 		{
 			Yelo::tag_group* definition = Yelo::tag_group_get<s_tag_database>();
-			if(definition == NULL)
+			if(definition == nullptr)
 			{
 				YELO_ERROR(_error_message_priority_none, 
 					"CheApe: tag_database not found!");
@@ -41,11 +41,11 @@ namespace Yelo
 			{
 				//////////////////////////////////////////////////////////////////////////
 				{// s_tag_database_entry block
-					tag_block_definition* tag_database_entry_block_def = definition->header_block_definition->fields[0].Definition<tag_block_definition>();
+					auto* tag_database_entry_block_def = definition->header_block_definition->fields[0].Definition<tag_block_definition>();
 					tag_database_entry_block_def->format_proc = &TagGroups::tag_database_entry_block_format;
 
 					// child ids
-					tag_block_definition* entry_reference_block_def = tag_database_entry_block_def->fields[4].Definition<tag_block_definition>();
+					auto* entry_reference_block_def = tag_database_entry_block_def->fields[4].Definition<tag_block_definition>();
 					entry_reference_block_def->format_proc = &TagGroups::tag_database_entry_reference_block_format;
 
 					// reference ids

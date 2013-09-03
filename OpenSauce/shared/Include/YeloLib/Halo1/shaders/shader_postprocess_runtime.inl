@@ -17,13 +17,13 @@ namespace Yelo
 		void s_shader_postprocess_shader_variable<TType, TCount>::
 			Initialize(LPD3DXEFFECT effect, const char* id, bool semantic)
 		{		
-			if(effect == NULL || id == NULL || *id == '\0')
+			if(effect == nullptr || id == nullptr || *id == '\0')
 				return;
 
 			if(semantic)
-				runtime.dx_handle = effect->GetParameterBySemantic(NULL, id);
+				runtime.dx_handle = effect->GetParameterBySemantic(nullptr, id);
 			else					
-				runtime.dx_handle = effect->GetParameterByName(NULL, id);
+				runtime.dx_handle = effect->GetParameterByName(nullptr, id);
 		}
 
 		template<Enums::shader_variable_base_type TType, size_t TCount>
@@ -73,7 +73,7 @@ namespace Yelo
 		void s_shader_postprocess_shader_variable<TType, TCount>::
 			SetVariableInterp(LPD3DXEFFECT effect, const void* data1, const void* data2, const real* interp_values)
 		{
-			if(!IsUsed() || data1 == NULL || data2 == NULL)
+			if(!IsUsed() || data1 == nullptr || data2 == nullptr)
 				return;
 
 			union {
@@ -111,7 +111,7 @@ namespace Yelo
 		void s_shader_postprocess_shader_variable<TType, TCount>::
 			SetVariable(LPD3DXEFFECT effect, void* data, const bool fixup_argb_color_hack)
 		{
-			if(!IsUsed() || data == NULL)
+			if(!IsUsed() || data == nullptr)
 				return;
 
 			switch (TType)

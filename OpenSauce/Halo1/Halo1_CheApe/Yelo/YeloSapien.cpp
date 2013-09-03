@@ -38,7 +38,7 @@ namespace Yelo
 		// the idea is that this should allow people to control units in sapien...and thus record animations
 		API_FUNC_NAKED static void player_ui_set_controls_from_profile(int32 local_player_index)
 		{
-			static const uint32 TEMP_CALL_ADDR = 0x5DD060;
+			static const uintptr_t TEMP_CALL_ADDR = 0x5DD060;
 
 			API_FUNC_NAKED_START()
 				push	local_player_index
@@ -47,7 +47,7 @@ namespace Yelo
 		}
 		API_FUNC_NAKED static void player_ui_set_current_player_profile(int32 local_player_index, int32 unknown, byte profile[Enums::k_player_profile_buffer_size])
 		{
-			static const uint32 TEMP_CALL_ADDR = 0x5DD470;
+			static const uintptr_t TEMP_CALL_ADDR = 0x5DD470;
 
 			API_FUNC_NAKED_START()
 				push	profile
@@ -77,7 +77,7 @@ namespace Yelo
 		{
 			Scripting::hs_function_definition* profile_load_def = Scripting::GetFunctionDefintion(Enums::_hs_function_profile_load);
 
-			if(profile_load_def != NULL)
+			if(profile_load_def != nullptr)
 			{
 				byte* call_addr = CAST_PTR(byte*, profile_load_def->evaluate);
 				call_addr += Enums::_hs_function_profile_load_call_offset;
