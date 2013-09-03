@@ -1,13 +1,13 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Halo1", "Halo1", "{F0CB6288-8B6C-45B8-93D7-EC703558F574}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Halo1_CheApe", "Halo1\Halo1_CheApe\Halo1_CheApe.vcproj", "{25E77EFB-B1A7-4AE6-B800-E5ACF80AB203}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Halo2", "Halo2", "{84D64AD9-C6B7-4CFD-867B-9D4058A5CFF9}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Halo2_CheApe", "Halo2\Halo2_CheApe\Halo2_CheApe.vcproj", "{FB55E3A7-8C9F-4EB4-86AD-E652C718208E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Halo1_CheApe", "Halo1\Halo1_CheApe\Halo1_CheApe.vcxproj", "{25E77EFB-B1A7-4AE6-B800-E5ACF80AB203}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Halo2_CheApe", "Halo2\Halo2_CheApe\Halo2_CheApe.vcxproj", "{FB55E3A7-8C9F-4EB4-86AD-E652C718208E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

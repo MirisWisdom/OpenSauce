@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!--<Import Project="$(SolutionDir)LocalSolution.props" />-->
+
+  <PropertyGroup>
+    <OSRootDir Condition=" '$(OSRootDir)' == '' ">$(SolutionDir)..\</OSRootDir>
+
+	<!-- Ensure user defined paths have a trailing slash, so they can be concatenated -->
+	<OSRootDir		Condition=" !HasTrailingSlash('$(OSRootDir)') ">$(OSRootDir)\</OSRootDir>
+  </PropertyGroup>
+
+  <Import           Project="$(OSRootDir)user\config\msbuild\OpenSauceUserConfig.props" 
+          Condition="Exists('$(OSRootDir)user\config\msbuild\OpenSauceUserConfig.props')" />
+  <Import           Project="$(OSRootDir)shared\config\msbuild\OpenSauceUserConfigDefaults.props" />
+  <Import           Project="$(OSRootDir)shared\config\msbuild\OpenSauceConfig.props" />
+  <Import           Project="$(OSRootDir)shared\config\msbuild\OpenSaucePlatform.props" />
+
+  <Import Condition=" '$(Language)' == 'C++' " Project="OpenSauce.Cpp.props" />
+  <Import Condition=" '$(Language)' == 'C#' "  Project="OpenSauce.Cs.props" />
+</Project>

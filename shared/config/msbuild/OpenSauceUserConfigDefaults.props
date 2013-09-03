@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <LocalDirectXDir		Condition=" '$(LocalDirectXDir)' == '' ">$(DXSDK_DIR)</LocalDirectXDir>
+    <LocalXenonLibBinVer	Condition=" '$(LocalXenonLibBinVer)' == '' ">vs2010</LocalXenonLibBinVer>
+    <LocalXenonLibDir		Condition=" '$(LocalXenonLibBinVer)' == '' ">$(XEDK)\lib\$(Platform)\$(LocalXenonLibBinVer)\</LocalXenonLibDir>
+    <LocalUserBoostVer		Condition=" '$(LocalUserBoostVer)' == '' ">boost_1_53_0</LocalUserBoostVer>
+    <LocalUserBoostDir		Condition=" '$(LocalUserBoostDir)' == '' ">$(ProgramFiles)\boost\$(LocalUserBoostVer)\</LocalUserBoostDir>
+	<LocalGameSpyOpenDir	Condition=" '$(LocalGameSpyOpenDir)' == '' ">$(OSRootDir)OpenSauce\shared\Include\GameSpyOpen</LocalGameSpyOpenDir>
+
+    <!-- Ensure user defined paths have a trailing slash, so they can be concatenated -->
+	<LocalDirectXDir		Condition=" !HasTrailingSlash('$(LocalDirectXDir)') ">$(LocalDirectXDir)\</LocalDirectXDir>
+	<LocalXenonLibDir		Condition=" !HasTrailingSlash('$(LocalXenonLibDir)') ">$(LocalXenonLibDir)\</LocalXenonLibDir>
+	<LocalUserBoostDir		Condition=" !HasTrailingSlash('$(LocalUserBoostDir)') ">$(LocalUserBoostDir)\</LocalUserBoostDir>
+	<LocalGameSpyOpenDir	Condition=" !HasTrailingSlash('$(LocalGameSpyOpenDir)') ">$(LocalGameSpyOpenDir)\</LocalGameSpyOpenDir>
+  </PropertyGroup>
+
+  <!-- DirectX -->
+  <Target Name="OSVerifyDirectX" Condition=" '$(OSRequiresDirectX)' == '' " />
+  <Target Name="OSVerifyDirectX" Condition=" '$(OSRequiresDirectX)' != '' ">
+    <Error			Condition="!Exists('$(LocalDirectXDir)')"
+		Text="Project requires DXSDK, but LocalDirectXDir wasn't found" />
+  </Target>
+
+  <!-- Xbox360 -->
+  <Target Name="OSVerifyXenonSDK" Condition=" '$(OSRequiresXenonSDK)' == '' "/>
+  <Target Name="OSVerifyXenonSDK" Condition=" '$(OSRequiresXenonSDK)' != '' ">
+    <Error					Condition="!Exists('$(XEDK)')"
+		  Text="Project requires Xbox360 SDK, but XEDK wasn't found" />
+    <Error					Condition="!Exists('$(LocalXenonLibBinVer)')"
+		  Text="Project requires Xbox360 SDK, but LocalXenonLibBinVer wasn't found" />
+  </Target>
+
+  <!-- C++ boost -->
+  <Target Name="OSVerifyCppBoost" Condition=" '$(OSRequiresCppBoost)' == '' " />
+  <Target Name="OSVerifyCppBoost" Condition=" '$(OSRequiresCppBoost)' != '' ">
+    <Error				Condition="!Exists('$(LocalUserBoostDir)')"
+		Text="Project requires C++ Boost, but LocalUserBoostDir wasn't found: $(LocalUserBoostDir)" />
+  </Target>
+
+  <!-- GameSpyOpen -->
+  <Target Name="OSVerifyGameSpyOpen" Condition=" '$(OSRequiresGameSpyOpen)' == '' " />
+  <Target Name="OSVerifyGameSpyOpen" Condition=" '$(OSRequiresGameSpyOpen)' != '' ">
+    <Error				  Condition="!Exists('$(LocalGameSpyOpenDir)')"
+		Text="Project requires GameSpyOpen, but LocalGameSpyOpenDir wasn't found" />
+  </Target>
+</Project>

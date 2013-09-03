@@ -1,0 +1,13 @@
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup
+    >
+	<Text Include="..\..\shared\Include\TinyXml\OpenSauce.Readme.txt" />
+
+	<ClInclude Include="..\..\shared\Include\TinyXml\tinystr.hpp" />
+	<ClCompile Include="..\..\shared\Include\TinyXml\tinystr.cpp" />
+	<ClInclude Include="..\..\shared\Include\TinyXml\tinyxml.hpp" />
+    <ClCompile Include="..\..\shared\Include\TinyXml\tinyxml.cpp" />
+    <ClCompile Include="..\..\shared\Include\TinyXml\tinyxmlerror.cpp" />
+    <ClCompile Include="..\..\shared\Include\TinyXml\tinyxmlparser.cpp" />
+  </ItemGroup>
+</Project>

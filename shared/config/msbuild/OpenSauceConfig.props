@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Choose>
+    <When Condition=" '$(Platform)' == 'Win32' ">
+      <PropertyGroup>
+        <PlatformType>x86</PlatformType>
+      </PropertyGroup>
+    </When>
+    <When Condition=" '$(Platform)' != 'Win32' ">
+      <PropertyGroup>
+        <PlatformType>$(Platform)</PlatformType>
+      </PropertyGroup>
+    </When>
+  </Choose>
+
+  <PropertyGroup>
+    <OSPlatformLibDir>$(OSRootDir)shared\external_libraries\_$(PlatformType)\$(Configuration)\</OSPlatformLibDir>
+    <OSPlatformCppLibDir>$(OSPlatformLibDir)vc$(PlatformToolsetVersion)\</OSPlatformCppLibDir>
+  </PropertyGroup>
+</Project>

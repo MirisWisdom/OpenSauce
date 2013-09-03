@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--<ItemGroup>
+    <Filter Include="Common\Shared\zlib">
+      <UniqueIdentifier>{b36bc52e-53ef-4d4e-8eb2-1341bb936474}</UniqueIdentifier>
+    </Filter>
+	<Filter Include="Common\Shared\zlib\contrib">
+      <UniqueIdentifier>{39f7afa4-b150-456e-84d3-de3ba05eb7bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Shared\zlib\contrib\minizip">
+      <UniqueIdentifier>{5efa4a56-48ce-4b1c-8a88-15a77d1eae40}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>-->
+
+  <ItemGroup
+    >
+	<Text Include="..\..\shared\Include\zlib\contrib\minizip\OpenSauce.Readme.txt">
+      <Filter>Common\Shared\zlib\contrib\minizip</Filter>
+    </Text>
+
+	<ClInclude Include="..\..\shared\Include\zlib\crc32.h">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\zlib\deflate.h">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\zlib\gzguts.h">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\zlib\inffast.h">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\zlib\inffixed.h">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\zlib\inflate.h">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\zlib\inftrees.h">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\zlib\trees.h">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\zlib\zconf.h">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\zlib\zlib.h">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\zlib\zutil.h">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\zlib\contrib\minizip\ioapi.h">
+      <Filter>Common\Shared\zlib\contrib\minizip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\zlib\contrib\minizip\unzip.h">
+      <Filter>Common\Shared\zlib\contrib\minizip</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\zlib\contrib\minizip\zip.h">
+      <Filter>Common\Shared\zlib\contrib\minizip</Filter>
+    </ClInclude>
+
+	<ClCompile Include="..\..\shared\Include\zlib\adler32.c">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClCompile>
+	<ClCompile Include="..\..\shared\Include\zlib\compress.c">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\crc32.c">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\deflate.c">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\gzclose.c">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\gzlib.c">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\gzread.c">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\gzwrite.c">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\infback.c">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\inffast.c">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\inflate.c">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\inftrees.c">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\trees.c">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClCompile>
+	<ClCompile Include="..\..\shared\Include\zlib\uncompr.c">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\zutil.c">
+      <Filter>Common\Shared\zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\contrib\minizip\ioapi.c">
+      <Filter>Common\Shared\zlib\contrib\minizip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\contrib\minizip\unzip.c">
+      <Filter>Common\Shared\zlib\contrib\minizip</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\contrib\minizip\zip.c">
+      <Filter>Common\Shared\zlib\contrib\minizip</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
