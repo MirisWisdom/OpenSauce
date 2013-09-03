@@ -18,7 +18,7 @@ void		WriteD3DXErrors(LPD3DXBUFFER error_buffer, int32 error_count)
 
 	// iterate through the error string, printing each line
 	int count = 0;
-	while(StringEditing::GetStringSegment(error_string, error_line, NULL, "\n")
+	while(StringEditing::GetStringSegment(error_string, error_line, nullptr, "\n")
 		&& count < error_count )
 	{
 		// if the line contains the data path, remove it
@@ -31,7 +31,7 @@ void		WriteD3DXErrors(LPD3DXBUFFER error_buffer, int32 error_count)
 			error_line.c_str());
 
 		// remove the line to move
-		StringEditing::RemoveStringSegment(error_string, NULL, "\n");
+		StringEditing::RemoveStringSegment(error_string, nullptr, "\n");
 		count++;
 	}
 }
@@ -206,7 +206,7 @@ HRESULT		CompileEffect(
 	printf_s("compiling postprocess effect...");
 
 	// compile postprocess shader into local variable
-	LPD3DXBUFFER error_buffer = NULL;
+	LPD3DXBUFFER error_buffer = nullptr;
 
 	HRESULT hr = effect_compiler->CompileEffect(
 		D3DXSHADER_OPTIMIZATION_LEVEL3,
@@ -235,7 +235,7 @@ HRESULT		SetPostprocessTag(
 {
 	HRESULT success;
 
-	LPD3DXBUFFER effect_buffer = NULL;
+	LPD3DXBUFFER effect_buffer = nullptr;
 	do
 	{
 		// compile the effect
@@ -259,12 +259,12 @@ HRESULT		CreateEffectCompiler(
 	printf_s("creating effect compiler...");
 
 	// create effect compiler
-	LPD3DXBUFFER error_buffer = NULL;
+	LPD3DXBUFFER error_buffer = nullptr;
 	
 	HRESULT hr = D3DXCreateEffectCompilerFromFile(
 		fx_file,
-		NULL,
-		NULL,
+		nullptr,
+		nullptr,
 		D3DXSHADER_OPTIMIZATION_LEVEL3,
 		&effect_compiler,
 		&error_buffer);
@@ -308,7 +308,7 @@ HRESULT		LoadShader(
 	if(tag_index.IsNull())
 	{
 		printf_s("creating tag \"%s.shader_postprocess_generic\"\n", tag_path);
-		tag_index = tag_new(TagGroups::s_shader_postprocess_generic::k_group_tag, tag_path);
+		tag_index = tag_new<TagGroups::s_shader_postprocess_generic>(tag_path);
 	}
 	else
 		printf_s("updating tag \"%s\"\n", tag_path);

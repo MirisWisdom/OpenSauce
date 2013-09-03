@@ -93,7 +93,7 @@ namespace Yelo
 			if(function_index > NONE && function_index < _upgrade_globals.functions.count)
 				return _upgrade_globals.functions.table[function_index];
 
-			return NULL;
+			return nullptr;
 		}
 
 		static void ScriptingNameCopyToTagNameData(cstring scripting_name, tag_string tag_name_data[2])

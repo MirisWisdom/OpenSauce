@@ -17,9 +17,9 @@ namespace Yelo
 
 		Enums::file_io_open_error GetOpenErrorEnum(DWORD error)
 		{
-			if((error == ERROR_FILE_NOT_FOUND) || (error == ERROR_PATH_NOT_FOUND))
+			if(error == ERROR_FILE_NOT_FOUND || error == ERROR_PATH_NOT_FOUND)
 				return Enums::_file_io_open_error_file_does_not_exist;
-			else if((error == ERROR_SHARING_VIOLATION) || (error == ERROR_LOCK_VIOLATION))
+			else if(error == ERROR_SHARING_VIOLATION || error == ERROR_LOCK_VIOLATION)
 				return Enums::_file_io_open_error_file_in_use;
 			else
 				return Enums::_file_io_open_error_unknown;
@@ -27,11 +27,11 @@ namespace Yelo
 
 		Enums::file_io_delete_error GetDeleteErrorEnum(DWORD error)
 		{
-			if((error == ERROR_FILE_NOT_FOUND) || (error == ERROR_PATH_NOT_FOUND))
+			if(error == ERROR_FILE_NOT_FOUND || error == ERROR_PATH_NOT_FOUND)
 				return Enums::_file_io_delete_error_does_not_exist;
-			else if((error == ERROR_SHARING_VIOLATION) || (error == ERROR_LOCK_VIOLATION) || (error == ERROR_CURRENT_DIRECTORY))
+			else if(error == ERROR_SHARING_VIOLATION || error == ERROR_LOCK_VIOLATION || error == ERROR_CURRENT_DIRECTORY)
 				return Enums::_file_io_delete_error_in_use;
-			else if((error == ERROR_ACCESS_DENIED))
+			else if(error == ERROR_ACCESS_DENIED)
 				return Enums::_file_io_delete_error_denied;
 			else
 				return Enums::_file_io_delete_error_unknown;
@@ -104,7 +104,7 @@ namespace Yelo
 			if(!destination || (size <= 1))
 				return false;
 
-			// find the last occurance of '\\'
+			// find the last occurrence of '\\'
 			const char* filename_offset = strrchr(path, '\\');
 			if(!filename_offset)
 				return false;
@@ -215,7 +215,7 @@ namespace Yelo
 
 		void UpdateFileSize(s_file_info& info)
 		{
-			info.file_size = GetFileSize(info.file_handle, NULL);
+			info.file_size = GetFileSize(info.file_handle, nullptr);
 		}
 
 		/*!
@@ -223,7 +223,7 @@ namespace Yelo
 		 * Closes a file that is currently open.
 		 * 
 		 * \param info
-		 * The file info struct contaning the files handles and pointers.
+		 * The file info struct containing the files handles and pointers.
 		 * 
 		 * Closes a file that is currently open. If a file has been read into memory it's memory is deleted, if the file was memory mapped it is unmapped.
 		 * In either case the file handle is closed.
@@ -243,7 +243,7 @@ namespace Yelo
 			}
 			else
 				delete [] info.data_pointer;
-			info.data_pointer = NULL;
+			info.data_pointer = nullptr;
 			info.file_size = 0;
 			info.data_length = 0;
 
@@ -263,7 +263,7 @@ namespace Yelo
 		 * The absolute location of the file to open.
 		 * 
 		 * \param access_type
-		 * The type of acces to open the file for, read and/or write.
+		 * The type of access to open the file for, read and/or write.
 		 * 
 		 * \param creation_type
 		 * How to handle when the requested file is missing.
@@ -314,13 +314,13 @@ namespace Yelo
 
 			// create/open the file
 			info_out.file_handle = CreateFile(file_path, 
-				access_flags, sharing_flags, NULL, creation_flags, FILE_ATTRIBUTE_NORMAL, NULL);
+				access_flags, sharing_flags, nullptr, creation_flags, FILE_ATTRIBUTE_NORMAL, nullptr);
 
 			// report errors
 			if(info_out.file_handle == INVALID_HANDLE_VALUE)
 				return GetOpenErrorEnum(GetLastError());
 
-			info_out.file_size = GetFileSize(info_out.file_handle, NULL);
+			info_out.file_size = GetFileSize(info_out.file_handle, nullptr);
 
 			return Enums::_file_io_open_error_none;
 		}
@@ -339,7 +339,7 @@ namespace Yelo
 		 * The amount of data to map from the file.
 		 * 
 		 * \returns
-		 * A non-zero value if an error occured.
+		 * A non-zero value if an error occurred.
 		 * 
 		 * Memory maps an opened file for read and write access. Memory mapped files cannot be write only.
 		 * 
@@ -355,7 +355,7 @@ namespace Yelo
 			else if(!info.m_flags.is_readable && info.m_flags.is_writable)
 				return Enums::_file_io_read_error_writeonly_mapping;
 
-			info.file_mapping_handle = CreateFileMapping(info.file_handle, NULL, access_flags, 0, 0, NULL);
+			info.file_mapping_handle = CreateFileMapping(info.file_handle, nullptr, access_flags, 0, 0, nullptr);
 
 			if(info.file_mapping_handle == INVALID_HANDLE_VALUE)
 				return Enums::_file_io_read_error_failed_to_memory_map_file;
@@ -395,7 +395,7 @@ namespace Yelo
 		 * The length of data to read from the file. 0 will result in the entire file being read.
 		 * 
 		 * \returns
-		 * A non-zero value if an error occured.
+		 * A non-zero value if an error occurred.
 		 * 
 		 * Reads a section of a file into memory. This function will allocate memory for the data, with the pointer stored in the s_file_info struct.
 		 * If memory is already allocated it is deleted and replaced. The memory allocated here is deleted when the file is closed. This function
@@ -407,7 +407,7 @@ namespace Yelo
 			if(info.data_pointer)
 			{
 				delete [] info.data_pointer;
-				info.data_pointer = NULL;
+				info.data_pointer = nullptr;
 			}
 
 			info.data_length = 0;
@@ -441,7 +441,7 @@ namespace Yelo
 		 * The length of data to read from the file. 0 will result in the entire file being read.
 		 * 
 		 * \returns
-		 * A non-zero value if an error occured.
+		 * A non-zero value if an error occurred.
 		 * 
 		 * Reads from an opened file into an external pointer. This function will allocate memory for the read data and store the pointer in data_out.
 		 * The memory allocated is NOT release when the file is closed so must be deleted elsewhere.
@@ -475,7 +475,7 @@ namespace Yelo
 			DWORD bytes_read = 0;
 
 			OVERLAPPED file_read_setup;
-			file_read_setup.hEvent = NULL;
+			file_read_setup.hEvent = nullptr;
 			file_read_setup.Offset = offset;
 			file_read_setup.OffsetHigh = 0;
 			BOOL success = ReadFile(info.file_handle, *data_out, length, &bytes_read, &file_read_setup);
@@ -483,7 +483,7 @@ namespace Yelo
 			if(!success || (bytes_read != length))
 			{
 				delete [] *data_out;
-				*data_out = NULL;
+				*data_out = nullptr;
 				return Enums::_file_io_read_error_failed_to_read_from_file;
 			}
 
@@ -507,7 +507,7 @@ namespace Yelo
 		 * The point in the file to start writing to. Defaults to NONE, which results in writing to the end of the file.
 		 * 
 		 * \returns
-		 * A non-zero value if an error occured.
+		 * A non-zero value if an error occurred.
 		 * 
 		 * Writes bytes to an opened file.
 		 */
@@ -528,7 +528,7 @@ namespace Yelo
 
 			DWORD bytes_written = 0;
 			OVERLAPPED file_read_setup;
-			file_read_setup.hEvent = NULL;
+			file_read_setup.hEvent = nullptr;
 			file_read_setup.Offset = offset;
 			file_read_setup.OffsetHigh = 0;
 			BOOL success = WriteFile(info.file_handle, data, length, &bytes_written, &file_read_setup);

@@ -45,10 +45,10 @@ namespace Yelo
 			m_target_fields_max_count( target_fields_size ),
 
 			m_available_pad_size( NONE ),
-			scanner(source_fields, NULL)
+			scanner(source_fields, nullptr)
 		{
-			YELO_ASSERT( source_fields != NULL );
-			YELO_ASSERT( target_fields != NULL && target_fields_size > 0 );
+			YELO_ASSERT( source_fields != nullptr );
+			YELO_ASSERT( target_fields != nullptr && target_fields_size > 0 );
 			// the target fields shouldn't be initialized yet
 			YELO_ASSERT( target_fields_count == 0 );
 

@@ -19,7 +19,7 @@ HRESULT c_obj_file::LoadFromFile(std::string obj_path)
 {
 	fputs("loading lightmaps obj file...", stdout);
 
-	FILE* file = NULL;
+	FILE* file = nullptr;
 	fopen_s(&file, obj_path.c_str(), "r+");
 	if(!file || ferror(file))
 	{
@@ -31,9 +31,9 @@ HRESULT c_obj_file::LoadFromFile(std::string obj_path)
 		return E_FAIL;
 	}
 
-	s_group* current_group = NULL;
+	s_group* current_group = nullptr;
 	char line[256];
-	while (fgets(line, NUMBEROF(line)-1, file) != NULL)
+	while (fgets(line, NUMBEROF(line)-1, file) != nullptr)
 	{
 		real floatarr[3];
 		if(sscanf_s(line, "vt %f %f %f[^\n]", &floatarr[0], &floatarr[1], &floatarr[2]))
@@ -55,7 +55,7 @@ HRESULT c_obj_file::LoadFromFile(std::string obj_path)
 				if(current_group)
 				{	
 					m_groups.push_back(current_group);
-					current_group = NULL;
+					current_group = nullptr;
 				}
 				current_group = new s_group(id);
 			}
@@ -78,7 +78,7 @@ HRESULT c_obj_file::LoadFromFile(std::string obj_path)
 	if(current_group)
 	{	
 		m_groups.push_back(current_group);
-		current_group = NULL;
+		current_group = nullptr;
 	}
 	fputs("done\n", stdout);
 

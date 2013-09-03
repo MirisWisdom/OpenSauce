@@ -41,16 +41,16 @@ namespace Yelo
 			int flags = Flags::_crashreport_option_hide_gui_bit | Flags::_crashreport_option_save_local_bit;
 			options.m_flags = (Flags::crashreport_option_flags)flags;
 
-			options.m_report_complete_callback = NULL;
+			options.m_report_complete_callback = nullptr;
 
-			options.m_application_name = NULL;
+			options.m_application_name = nullptr;
 			options.m_application_version = BOOST_STRINGIZE(K_OPENSAUCE_VERSION_BUILD_MAJ) "." BOOST_STRINGIZE(K_OPENSAUCE_VERSION_BUILD_MIN) "." BOOST_STRINGIZE(K_OPENSAUCE_VERSION_BUILD);
 
-			options.m_reports_directory = NULL;
-			options.m_dependency_path = NULL;
+			options.m_reports_directory = nullptr;
+			options.m_dependency_path = nullptr;
 
-			options.m_report_server_url = NULL;
-			options.m_privacy_policy_url = NULL;
+			options.m_report_server_url = nullptr;
+			options.m_privacy_policy_url = nullptr;
 		}
 
 		bool InstallExceptionHandler(s_crash_report_options& crashreport_options)
@@ -74,7 +74,7 @@ namespace Yelo
 
 			bool send_to_server = false;
 			send_to_server  = (crashreport_options.m_flags & Flags::_crashreport_option_save_local_bit) == 0;
-			send_to_server &= (crashreport_options.m_report_server_url != NULL);
+			send_to_server &= (crashreport_options.m_report_server_url != nullptr);
 
 			// transfer type priorities
 			if(send_to_server)
@@ -92,12 +92,12 @@ namespace Yelo
 			info.pszPrivacyPolicyURL = crashreport_options.m_privacy_policy_url;
 
 			// email details
-			info.pszEmailTo = NULL;
-			info.pszEmailSubject = NULL;
-			info.pszEmailText = NULL;
-			info.pszSmtpProxy = NULL;
-			info.pszSmtpLogin = NULL;
-			info.pszSmtpPassword = NULL;
+			info.pszEmailTo = nullptr;
+			info.pszEmailSubject = nullptr;
+			info.pszEmailText = nullptr;
+			info.pszSmtpProxy = nullptr;
+			info.pszSmtpLogin = nullptr;
+			info.pszSmtpPassword = nullptr;
 
 			// report flags
 			info.dwFlags |= CR_INST_ALL_POSSIBLE_HANDLERS;
@@ -125,7 +125,7 @@ namespace Yelo
 
 				TCHAR error_msg[256];
 				crGetLastErrorMsg(error_msg, 256);
-				MessageBox(NULL, error_msg, "CrashRpt Install Error", MB_OK);
+				MessageBox(nullptr, error_msg, "CrashRpt Install Error", MB_OK);
 				return false;
 			}
 
@@ -193,7 +193,7 @@ namespace Yelo
 			ei.cb = sizeof(ei);
 			ei.exctype = CR_SEH_EXCEPTION;
 			ei.code = EXCEPTION_BREAKPOINT;
-			ei.pexcptrs = (thread != INVALID_HANDLE_VALUE ? &ptrs : NULL);
+			ei.pexcptrs = (thread != INVALID_HANDLE_VALUE ? &ptrs : nullptr);
 			ei.bManual = FALSE;
 
 			crGenerateErrorReport(&ei);

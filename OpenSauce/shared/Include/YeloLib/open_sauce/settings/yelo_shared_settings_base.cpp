@@ -21,17 +21,17 @@ namespace Yelo
 
 		TiXmlElement* GenericSettingsParse(cstring engine_name, TiXmlDocument& doc, char file_path[MAX_PATH], cstring branch_name)
 		{
-			TiXmlElement* result = NULL;
+			TiXmlElement* result = nullptr;
 			if(doc.LoadFile(file_path))
 			{
 				TiXmlElement* root_element = doc.RootElement();
 
-				if(root_element != NULL)
+				if(root_element != nullptr)
 				{
 					cstring value = root_element->Attribute("engine");
 
-					if(value != NULL && !strcmp(value, engine_name))
-						result = branch_name != NULL ?
+					if(value != nullptr && !strcmp(value, engine_name))
+						result = branch_name != nullptr ?
 							root_element->FirstChildElement(branch_name) : root_element;
 				}
 			}
@@ -50,7 +50,7 @@ namespace Yelo
 
 			root_element->SetAttribute("engine", engine_name);
 
-			if(branch_name != NULL)
+			if(branch_name != nullptr)
 			{
 				TiXmlElement* element = new TiXmlElement(branch_name);
 					root_element->LinkEndChild(element);
@@ -66,7 +66,7 @@ namespace Yelo
 		{
 			bool result = false;
 
-			if(str != NULL)
+			if(str != nullptr)
 			{
 				if( !_stricmp(str, "false") |
 					!_stricmp(str, "off") |
@@ -85,7 +85,7 @@ namespace Yelo
 		{
 			r3d[0] = r3d[1] = r3d[2] = 0.0f;
 
-			if(element != NULL)
+			if(element != nullptr)
 			{
 				element->QueryFloatAttribute(is_vector ? "i" : "x", &r3d[0]);
 				element->QueryFloatAttribute(is_vector ? "j" : "y", &r3d[1]);

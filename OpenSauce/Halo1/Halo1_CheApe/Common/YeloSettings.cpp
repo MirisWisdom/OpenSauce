@@ -36,10 +36,10 @@ namespace Yelo
 
 			// Parse the affinity mask which the tools will use
 			value = element->Attribute("affinityMask");
-			if(has_affinity_mask = (value != NULL))
+			if(has_affinity_mask = (value != nullptr))
 			{
 				// We expect a base 16 number
-				unsigned long mask = strtoul(value, NULL, 16);
+				unsigned long mask = strtoul(value, nullptr, 16);
 
 				// If there was an overflow, don't record the value
 				if(errno == ERANGE)
@@ -49,10 +49,10 @@ namespace Yelo
 			}
 
 			TiXmlElement* path_element = element->FirstChildElement("root");
-			if(path_element != NULL)
+			if(path_element != nullptr)
 			{
 				value = path_element->GetText();
-				if(is_valid = (value != NULL))
+				if(is_valid = (value != nullptr))
 				{
 					strcpy_s(root_path, value);
 					PathAppendA(root_path, "\\");
@@ -69,7 +69,7 @@ namespace Yelo
 
 			// Parse Tool specific settings
 			{ TiXmlElement* tool_element = element->FirstChildElement("tool");
-				if(tool_element != NULL)
+				if(tool_element != nullptr)
 				{
 					cstring value = element->Attribute("doFullCrashdump");
 					tool.do_full_crashdump = Settings::ParseBoolean(value);
@@ -77,7 +77,7 @@ namespace Yelo
 					value = element->Attribute("baseAddressOverride");
 
 					// We expect a base 16 number
-					unsigned long addr = strtoul(value, NULL, 16);
+					unsigned long addr = strtoul(value, nullptr, 16);
 
 					tool.base_address_override = errno == ERANGE ? 0 : addr;
 				}
@@ -86,7 +86,7 @@ namespace Yelo
 			if(is_valid)
 			{
 				path_element = element->FirstChildElement("data");
-				if(path_element != NULL && (value = path_element->GetText()) != NULL)
+				if(path_element != nullptr && (value = path_element->GetText()) != nullptr)
 				{
 					strcpy_s(paths.data, value);
 					PathAppendA(paths.data, "\\");
@@ -96,11 +96,11 @@ namespace Yelo
 
 				path_element = element->FirstChildElement("tagsName");
 				// If no explicit name is given, assume the default of "tags" is the name
-				value = path_element != NULL ? path_element->GetText() :
+				value = path_element != nullptr ? path_element->GetText() :
 					"tags";
 
 				// Finish tags path here
-				if(is_valid = (value != NULL && value[0] != '\0'))
+				if(is_valid = (value != nullptr && value[0] != '\0'))
 				{
 					strcpy_s(paths.tags_folder_name, value);
 					PathAppendA(paths.tags_folder_name, "\\");
@@ -118,14 +118,14 @@ namespace Yelo
 
 		// Enumerate the child elements of [element]'s "Profile" looking for an element named 
 		// [profile_name].
-		// Returns NULL if one isn't found
+		// Returns nullptr if one isn't found
 		static TiXmlElement* FindProfileByName(TiXmlElement* element, cstring profile_name)
 		{
 			TiXmlElement* profile_element = element->FirstChildElement("Profile");
-			while(profile_element != NULL)
+			while(profile_element != nullptr)
 			{
 				cstring name = profile_element->Attribute("name");
-				if(name != NULL && !_stricmp(profile_name, name))
+				if(name != nullptr && !_stricmp(profile_name, name))
 					break;
 
 				profile_element = profile_element->NextSiblingElement();
@@ -135,13 +135,13 @@ namespace Yelo
 		}
 		void s_settings::Parse(TiXmlElement* element, cstring arg_profile, cstring default_profile)
 		{
-			TiXmlElement* profile_element = NULL;
+			TiXmlElement* profile_element = nullptr;
 
 			// Try to find the command line profile name or the default if nothing is specified on the command line
-			if(arg_profile != NULL)		profile_element = FindProfileByName(element, arg_profile);
-			if(profile_element == NULL)	profile_element = FindProfileByName(element, default_profile);
+			if(arg_profile != nullptr)		profile_element = FindProfileByName(element, arg_profile);
+			if(profile_element == nullptr)	profile_element = FindProfileByName(element, default_profile);
 
-			if(profile_element != NULL)
+			if(profile_element != nullptr)
 				global_settings.active_profile.Parse(profile_element);
 		}
 
@@ -173,7 +173,7 @@ namespace Yelo
 			{
 				wcstring cmd = wcsstr(cmds[x], CMDLINE_ARG_EDITOR_PROFILE);
 
-				if(cmd != NULL)
+				if(cmd != nullptr)
 				{
 					const size_t k_parameter_length = NUMBEROF(CMDLINE_ARG_EDITOR_PROFILE)-1;
 					cmd = cmd + k_parameter_length;
@@ -199,9 +199,9 @@ namespace Yelo
 			strcpy_s(file_path, K_EDITOR_FILENAME_XML);
 
 			TiXmlDocument xml_settings = TiXmlDocument();
-			TiXmlElement* root_element = GenericSettingsParse(xml_settings, file_path, NULL);
+			TiXmlElement* root_element = GenericSettingsParse(xml_settings, file_path, nullptr);
 
-			if(root_element != NULL)
+			if(root_element != nullptr)
 			{
 				string128 profile_name;
 				GetCommandLineDefaultProfile(profile_name);
@@ -211,9 +211,9 @@ namespace Yelo
 				cstring default_profile = root_element->Attribute("defaultProfile");
 
 				TiXmlElement* profiles_element = root_element->FirstChildElement("profiles");
-				if(profiles_element != NULL && default_profile != NULL)
+				if(profiles_element != nullptr && default_profile != nullptr)
 					global_settings.Parse(profiles_element, 
-						profile_name[0] != '\0' ? profile_name : NULL,
+						profile_name[0] != '\0' ? profile_name : nullptr,
 						default_profile);
 			}
 		}
@@ -226,10 +226,10 @@ namespace Yelo
 		// HACK: Simple hack so we can reuse related settings without duplicating data (dup some code, but who cares)
 		static void LoadSettingsForClientHack(TiXmlElement* client)
 		{
-			TiXmlElement* dx9_element = NULL
+			TiXmlElement* dx9_element = nullptr
 				;
 
-			if(client != NULL)
+			if(client != nullptr)
 			{
 				dx9_element = client->FirstChildElement("dx9");
 			}
@@ -238,7 +238,7 @@ namespace Yelo
 		}
 		static void LoadSettingsUserHack()
 		{
-			TiXmlElement* root = NULL;
+			TiXmlElement* root = nullptr;
 			TiXmlDocument xml_settings = TiXmlDocument();
 
 			char file_path[MAX_PATH];

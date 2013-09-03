@@ -58,7 +58,7 @@ namespace Yelo
 			TagGroups::s_unit_external_upgrades const* unit_external_upgrades = 
 				FindUnitExternalUpgradeBlock(unit_tag_index);
 
-			if (unit_external_upgrades == NULL)
+			if (unit_external_upgrades == nullptr)
 				return NONE;
 			
 			for (int32 x = 0; x < unit_external_upgrades->boarding_seats.Count; x++)
@@ -76,7 +76,7 @@ namespace Yelo
 				if (unit_tag_index == unit_external_upgrades[x].unit.tag_index)
 					return &unit_external_upgrades[x];
 			}
-			return NULL;
+			return nullptr;
 		}
 
 		TagGroups::s_unit_boarding_seat const* project_yellow_globals_cv::FindUnitExternalUpgradeBoardingSeatBlock(datum_index unit_tag_index, int16 seat_index) const
@@ -84,15 +84,15 @@ namespace Yelo
 			TagGroups::s_unit_external_upgrades const* unit_external_upgrades = 
 				FindUnitExternalUpgradeBlock(unit_tag_index);
 
-			if (unit_external_upgrades == NULL)
-				return NULL;
+			if (unit_external_upgrades == nullptr)
+				return nullptr;
 
 			for (int32 x = 0; x < unit_external_upgrades->boarding_seats.Count; x++)
 			{
 				if (seat_index == unit_external_upgrades->boarding_seats[x].seat_index)
 					return &unit_external_upgrades->boarding_seats[x];
 			}
-			return NULL;
+			return nullptr;
 		}
 
 #if PLATFORM_IS_EDITOR

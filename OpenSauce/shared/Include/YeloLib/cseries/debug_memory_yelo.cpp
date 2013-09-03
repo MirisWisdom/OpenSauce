@@ -35,7 +35,7 @@ void c_memory_tracker::AddBlock(void* pointer, size_t size)
 void c_memory_tracker::RemoveBlock(void* pointer)
 {
 	// return on a null pointer
-	if(pointer == NULL)
+	if(pointer == nullptr)
 		return;
 
 	int index = -1;
@@ -71,7 +71,7 @@ void c_memory_tracker::DumpAllocatedMemory(const char* process_name)
 {
 	// create the memdump directory if it does not exist
 	// could do with deleting the directory contents first if it does exists
-	CreateDirectory("memdump", NULL);
+	CreateDirectory("memdump", nullptr);
 
 	// create the memory allocations file
 	FILE* memory_list;
@@ -97,10 +97,10 @@ void c_memory_tracker::DumpAllocatedMemory(const char* process_name)
 		char dump_filename[MAX_PATH];
 		sprintf_s(dump_filename, MAX_PATH, "memdump\\dump_index%i_size%i.bin", m_memory_blocks[i].m_allocation_index, m_memory_blocks[i].m_size);
 		
-		HANDLE memory_dump = CreateFile(dump_filename, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+		HANDLE memory_dump = CreateFile(dump_filename, GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 		
 		DWORD bytes_written;
-		BOOL success = WriteFile(memory_dump, m_memory_blocks[i].m_pointer, m_memory_blocks[i].m_size, &bytes_written, NULL);
+		BOOL success = WriteFile(memory_dump, m_memory_blocks[i].m_pointer, m_memory_blocks[i].m_size, &bytes_written, nullptr);
 
 		// something is wrong! currently unhandled
 		if(!success || (bytes_written != m_memory_blocks[i].m_size))

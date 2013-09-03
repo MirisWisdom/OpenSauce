@@ -24,7 +24,7 @@ namespace Yelo
 			else if(BaseAddress != base_address)
 				return "Invalid base address";
 
-			return NULL;
+			return nullptr;
 		}
 	};
 };

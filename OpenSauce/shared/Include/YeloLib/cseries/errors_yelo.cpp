@@ -13,7 +13,7 @@ namespace Yelo
 {
 	namespace Debug
 	{
-		static FILE* debug_file = NULL;
+		static FILE* debug_file = nullptr;
 
 		void FileInitialize()
 		{
@@ -22,7 +22,7 @@ namespace Yelo
 
 		void FileDispose()
 		{
-			if(debug_file != NULL)
+			if(debug_file != nullptr)
 				fclose(debug_file);
 		}
 
@@ -39,7 +39,7 @@ namespace Yelo
 
 		void Write(cstring str, bool write_time_stamp)
 		{
-			if(debug_file == NULL) return;
+			if(debug_file == nullptr) return;
 
 			static char format[] = "%s%s%c";
 

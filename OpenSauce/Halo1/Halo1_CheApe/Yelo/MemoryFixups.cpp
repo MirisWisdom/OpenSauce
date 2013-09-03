@@ -38,7 +38,7 @@ namespace Yelo
  		YELO_DEBUG_FORMAT("CheApe: fixup @%p @%p type=%d", address, definition, fixup->type);
 #endif
 
-		if(address == NULL) return; // if address is NULL, definition should be as well...
+		if(address == nullptr) return; // if address is NULL, definition should be as well...
 
 		switch(fixup->type)
 		{

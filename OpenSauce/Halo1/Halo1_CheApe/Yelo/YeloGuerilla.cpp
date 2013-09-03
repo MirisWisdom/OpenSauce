@@ -97,8 +97,8 @@ namespace Yelo
 		static HBRUSH tag_reference_dialog__OnCtlColor__field_name(void* CDC_, void* CWnd_, field_information* field_info,
 			HBRUSH brush)
 		{
-			tag_reference* reference = CAST_PTR(tag_reference*, field_info->address);
-			tag_reference_definition* definition = field_info->field->Definition<tag_reference_definition>();
+			auto* reference = CAST_PTR(tag_reference*, field_info->address);
+			auto* definition = field_info->field->Definition<tag_reference_definition>();
 
 			if(definition->group_tag == TagGroups::s_string_id_yelo_definition::k_group_tag)
 			{
@@ -111,7 +111,7 @@ namespace Yelo
 		static HBRUSH tag_reference_dialog__OnCtlColor__tag_name(void* CDC_, void* CWnd_, field_information* field_info,
 			HBRUSH brush)
 		{
-			tag_reference_definition* definition = field_info->field->Definition<tag_reference_definition>();
+			auto* definition = field_info->field->Definition<tag_reference_definition>();
 			COLORREF color = 0;
 
 			if(definition->group_tag == TagGroups::s_string_id_yelo_definition::k_group_tag)
@@ -121,7 +121,7 @@ namespace Yelo
 			}
 
 			tag_reference* reference = CAST_PTR(tag_reference*, field_info->address);
-			if(reference == NULL || !tag_file_exists(reference->group_tag, reference->name))
+			if(reference == nullptr || !tag_file_exists(reference->group_tag, reference->name))
 			{
 				// Set the tag-name control text to red
 				CDC__SetBkColor(CDC_, RGB(0xFF, 0x00, 0x00) | color);

@@ -34,12 +34,12 @@ namespace Yelo
 
 		void SharedInitialize(cstring profile_path)
 		{
-			SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, 0, Internal.CommonAppDataPath);
+			SHGetFolderPath(nullptr, CSIDL_COMMON_APPDATA, nullptr, 0, Internal.CommonAppDataPath);
 			PathAppendA(Internal.CommonAppDataPath, "Kornner Studios\\Halo CE\\");
 
 			if(profile_path[0] == '\0')
 			{
-				SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, 0, Internal.UserProfilePath);
+				SHGetFolderPath(nullptr, CSIDL_PERSONAL, nullptr, 0, Internal.UserProfilePath);
 				PathAppendA(Internal.UserProfilePath, "My Games\\Halo CE\\");
 				profile_path = Internal.UserProfilePath;
 			}
@@ -96,7 +96,7 @@ namespace Yelo
 			bool result = false;
 			if(FileExists(blam_path))
 			{
-				FILE* file = NULL;
+				FILE* file = nullptr;
 				fopen_s(&file, blam_path, "rb");
 
 				result = fread_s(profile, Enums::k_player_profile_buffer_size, Enums::k_player_profile_buffer_size, 1, file) == 1;
@@ -126,7 +126,7 @@ namespace Yelo
 			if(text)mode = append ? "at" : "wt";
 			else	mode = append ? "ab" : "wb";
 
-			FILE* ret = NULL;
+			FILE* ret = nullptr;
 			if(!shared)
 				fopen_s(&ret, path, mode);
 			else
@@ -145,7 +145,7 @@ namespace Yelo
 
 			wcstring mode = append ? L"at,ccs=UNICODE" : L"wt,ccs=UNICODE";
 
-			FILE* ret = NULL;
+			FILE* ret = nullptr;
 			if(!shared)
 				_wfopen_s(&ret, path, mode);
 			else
@@ -166,7 +166,7 @@ namespace Yelo
 			if(open_for_writing)mode = text ? "wt" : "wb";
 			else				mode = text ? "rt" : "rb";
 
-			FILE* ret = NULL;
+			FILE* ret = nullptr;
 			fopen_s(&ret, path, mode);
 
 			return ret;

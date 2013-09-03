@@ -40,7 +40,7 @@
 	#include <YeloLib/Halo1/tag_files/string_ids.os_setting.inl>
 	static const string_id_yelo_kv_pair* const k_string_id_kv_pairs[] = {
 		STRING_ID_YELO_KV_PAIRS_ARRAY_NAME(global),
-		NULL, // the 'cache' set is defined in the cache file
+		nullptr, // the 'cache' set is defined in the cache file
 		STRING_ID_YELO_KV_PAIRS_ARRAY_NAME(gui),
 		STRING_ID_YELO_KV_PAIRS_ARRAY_NAME(gui_alert),
 		STRING_ID_YELO_KV_PAIRS_ARRAY_NAME(gui_dialog),
@@ -50,8 +50,8 @@
 		STRING_ID_YELO_KV_PAIRS_ARRAY_NAME(incident),
 		STRING_ID_YELO_KV_PAIRS_ARRAY_NAME(os_setting),
 
-		NULL, NULL, NULL, NULL, NULL,
-		NULL, NULL, NULL, NULL, NULL,
+		nullptr, nullptr, nullptr, nullptr, nullptr,
+		nullptr, nullptr, nullptr, nullptr, nullptr,
 	}; BOOST_STATIC_ASSERT( NUMBEROF(k_string_id_kv_pairs) == Yelo::_string_id::k_number_of_sets );
 
 	#undef __STRING_ID_GENERATE_SET_NAME

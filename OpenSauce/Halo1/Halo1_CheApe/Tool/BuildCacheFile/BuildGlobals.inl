@@ -70,7 +70,7 @@ struct s_build_cache_file_for_scenario {
 
 }build_cache_file_for_scenario_internals = {
 	false,
-	NULL,
+	nullptr,
 
 	CAST_PTR(cstring*,															0x4B9FB6),
 	CAST_PTR(s_build_cache_file_for_scenario::_data_file_open,					0x4B9F10),

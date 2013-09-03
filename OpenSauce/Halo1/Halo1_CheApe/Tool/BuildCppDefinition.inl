@@ -104,7 +104,7 @@ public:
 	{
 		c_definition_instance::Ctor();
 
-		m_string_list = NULL;
+		m_string_list = nullptr;
 		m_references.clear();
 	}
 
@@ -177,7 +177,7 @@ public:
 	{
 		c_struct_instance::Ctor();
 
-		m_definition = NULL;
+		m_definition = nullptr;
 		m_is_base_definition = false;
 	}
 };
@@ -192,7 +192,7 @@ public:
 	virtual void				Ctor()
 	{
 		c_struct_instance::Ctor();
-		m_array_start = NULL;
+		m_array_start = nullptr;
 	}
 };
 
@@ -216,11 +216,11 @@ static void FormatName(std::string& name,
 	while((index = name.find_first_of("()[],.- *'+-&#/<>%%")) != std::string::npos)
 		name.replace(index, 1, "_");
 
-	std::string::iterator iter;
-
 	// force to lower case
-	for (iter = name.begin(); iter != name.end(); ++iter )
-		*iter = tolower(*iter);
+	for( auto& c : name )
+		c = tolower(c);
+
+	std::string::iterator iter;
 
 	// remove preceding underscores
 	if(remove_pre_underscores)
@@ -249,7 +249,7 @@ static void FormatName(std::string& name,
 		{
 			if(iter + 1 == name.end())
 				break;
-			if((*iter == '_') && (*(iter + 1) == '_'))
+			if(*iter == '_' && *(iter + 1) == '_')
 				name.replace(iter, iter + 1, "");
 			++iter;
 		}
@@ -298,7 +298,6 @@ static void GetUniqueName(std::string& name,
 	t_string_vector& names_vector)
 {
 	std::string test_name(name);
-	t_string_vector::iterator iter;
 	int32 count = 0;
 	bool is_unique;
 
@@ -306,9 +305,9 @@ static void GetUniqueName(std::string& name,
 	{
 		is_unique = true;
 		// see if the name already exists in the vector
-		for(iter = names_vector.begin(); iter != names_vector.end(); ++iter)
+		for( auto& name : names_vector )
 		{
-			if(test_name.compare(*iter) == 0)
+			if(test_name.compare(name) == 0)
 			{
 				is_unique = false;
 				break;
@@ -348,7 +347,7 @@ static bool GetName(std::string& name,
 	if(raw_name)
 		name.assign(raw_name);
 
-	bool has_name = StringEditing::GetStringSegment(name, name, NULL, "^:#*");			
+	bool has_name = StringEditing::GetStringSegment(name, name, nullptr, "^:#*");			
 	
 	// the field has no name defined so assign a default one
 	if(((name.size() == 0) || !has_name) && use_default)
@@ -400,7 +399,7 @@ static bool GetDescription(std::string& description,
 static void GetStructName(std::string& name,
 	t_string_vector& names_vector,
 	cstring prepend = "s_", 
-	cstring append = NULL,
+	cstring append = nullptr,
 	cstring remove = "_block")
 {
 	std::string::size_type index = std::string::npos;
@@ -409,7 +408,7 @@ static void GetStructName(std::string& name,
 	if((index = name.find(remove)) != std::string::npos)
 		name.replace(index, name.size() - index, "");
 
-	if(!StringEditing::GetStringSegment(name, name, NULL, "^:#*"))
+	if(!StringEditing::GetStringSegment(name, name, nullptr, "^:#*"))
 		name.assign("no_name");
 
 	FormatName(name);
@@ -441,13 +440,11 @@ static c_definition_instance					g_taggroups_namespace;
 static void AddEnum(const tag_field* field)
 {
 	// look for a duplicate entry in the enums vector, if found add a reference
-	std::vector<c_string_list_instance>::iterator iter;
-
-	for(iter = g_enum_list.begin(); iter != g_enum_list.end(); ++iter)
+	for( auto& e : g_enum_list )
 	{
-		if((*iter).GetList() == field->Definition<string_list>())
+		if(e.GetList() == field->Definition<string_list>())
 		{
-			(*iter).AddReference(field);
+			e.AddReference(field);
 			return;
 		}
 	}
@@ -578,11 +575,11 @@ static void WriteExplanation(FILE* file,
 	std::string definition_string(field->Definition<char>());
 	std::string definition_line;
 
-	while(StringEditing::GetStringSegment(definition_string, definition_line, NULL, "\n"))
+	while(StringEditing::GetStringSegment(definition_string, definition_line, nullptr, "\n"))
 	{
 		fprintf_s(file, "\t\t\t// %s\n", definition_line.c_str());
 		
-		StringEditing::RemoveStringSegment(definition_string, NULL, "\n");
+		StringEditing::RemoveStringSegment(definition_string, nullptr, "\n");
 	}
 }
 static void WritePad(FILE* file, 
@@ -662,7 +659,7 @@ static void WriteFlags(FILE* file,
 	c_struct_instance& parent_struct)
 {
 	// look for the flags string_list in the blocks flags vector
-	c_flags_instance* flags_instance = NULL;
+	c_flags_instance* flags_instance = nullptr;
 	std::vector<c_flags_instance>::iterator iter;
 	std::vector<c_flags_instance>& flags_vector(parent_struct.GetFlagsVector());
 	for(iter = flags_vector.begin(); iter != flags_vector.end(); ++iter)
@@ -686,7 +683,7 @@ static void WriteEnum(FILE* file,
 	cstring description)
 {
 	// look for the enums string_list in the global enums vector
-	c_string_list_instance* enum_instance = NULL;
+	c_string_list_instance* enum_instance = nullptr;
 	std::vector<c_string_list_instance>::iterator iter;
 	for(iter = g_enum_list.begin(); iter != g_enum_list.end(); ++iter)
 	{
@@ -711,7 +708,7 @@ static void WriteArray(FILE* file,
 	c_struct_instance& parent_struct)
 {
 	// look for the arrays tag_field start in the blocks arrays vector
-	c_array_instance* array_instance = NULL;
+	c_array_instance* array_instance = nullptr;
 	std::vector<c_array_instance>& arrays_vector(parent_struct.GetArraysVector());
 	std::vector<c_array_instance>::iterator iter;
 	for(iter = arrays_vector.begin(); iter != arrays_vector.end(); ++iter)
@@ -731,7 +728,7 @@ static void WriteBlock(FILE* file,
 	cstring name)
 {
 	// look for the block definition in the global blocks vector
-	c_block_instance* block_instance = NULL;
+	c_block_instance* block_instance = nullptr;
 	std::vector<c_block_instance>::iterator  iter; 
 	for(iter = g_block_list.begin(); iter != g_block_list.end(); ++iter)
 	{
@@ -767,9 +764,9 @@ static void WriteTagField(FILE* file,
 	std::string field_units;
 	std::string field_description;
 
-	cstring name = NULL;
-	cstring units = NULL;
-	cstring description = NULL;
+	cstring name = nullptr;
+	cstring units = nullptr;
+	cstring description = nullptr;
 
 	bool use_default = (
 		(field->type != Enums::_field_skip) && 
@@ -827,7 +824,7 @@ static void WriteTagField(FILE* file,
 static void WriteEnumDefinition(FILE* file,
 	c_string_list_instance& instance)
 {
-	std::vector<const tag_field*>& references(instance.GetReferencesVector());
+	auto& references = instance.GetReferencesVector();
 
 	std::string field_name_raw;
 	std::string field_name;			
@@ -864,7 +861,7 @@ static void WriteEnumDefinition(FILE* file,
 	fputs(": ", stdout);
 	char input[512];
 	input[0] = '\0';
-	if(gets_s(input) != NULL)
+	if(gets_s(input) != nullptr)
 	{
 		if(input[0] != '\0')
 		{
@@ -905,7 +902,7 @@ static void WriteFlagsDefinition(FILE* file,
 {
 	std::string field_name;
 	// if there is only one reference, use its name
-	std::vector<const tag_field*>& references(instance.GetReferencesVector());
+	auto& references = instance.GetReferencesVector();
 	if(references.size() == 1)			
 		field_name.assign(references[0]->name);
 	else
@@ -939,7 +936,7 @@ static void WriteFlagsDefinition(FILE* file,
 		fputs(": ", stdout);
 		char input[512];
 		input[0] = '\0';
-		if(gets_s(input) != NULL)
+		if(gets_s(input) != nullptr)
 		{
 			//if they do not specify a name, use the first references field name
 			if(input[0] != '\0')
@@ -959,8 +956,8 @@ static void WriteFlagsDefinition(FILE* file,
 	fprintf_s(file, "\t\t\tstruct %s\n\t\t\t{\n", field_name.c_str());
 
 	// defines the size of the flag value
-	char* flag_type = NULL;
-	char* type = NULL;
+	char* flag_type = nullptr;
+	char* type = nullptr;
 	switch(references[0]->type)
 	{
 	case Enums::_field_byte_flags:
@@ -1037,7 +1034,7 @@ static void WriteBlockDefinition(FILE* file,
 	c_block_instance& instance,
 	const bool add_boost_asserts)
 {			
-	const tag_field* current_field = NULL;
+	const tag_field* current_field = nullptr;
 	const Yelo::tag_block_definition* block_definition = instance.GetDefinition();
 
 	// get the blocks name
@@ -1045,7 +1042,7 @@ static void WriteBlockDefinition(FILE* file,
 
 	// block structs are defined in the TagGroups namespace
 	GetStructName(block_name, g_taggroups_namespace.GetUsedNamesVector(), 
-		"s_", instance.IsBase() ? "_definition" : NULL);
+		"s_", instance.IsBase() ? "_definition" : nullptr);
 	instance.SetName(block_name);
 
 	// write the array structs before starting the block itself	

@@ -90,13 +90,13 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 	#pragma region Interceptor system
 	//////////////////////////////////////////////////////////////////////////
 	// Interceptor system
-	static const uint32 BUILD_CACHE_FILE_ADD_TAGS = 0x454D40;
+	static const uintptr_t BUILD_CACHE_FILE_ADD_TAGS = 0x454D40;
 	static datum_index new_tag_handles[Enums::k_maximum_simultaneous_tag_instances_upgrade];
 
-	static const uint32 INTERCEPTOR1_HOOK_ADDR = 0x455583;
+	static const uintptr_t INTERCEPTOR1_HOOK_ADDR = 0x455583;
 	API_FUNC_NAKED static void Interceptor1()
 	{
-		static const uint32 INTERCEPTOR_EXIT = 0x45559C;//9
+		static const uintptr_t INTERCEPTOR_EXIT = 0x45559C;//9
 
 		__asm {
 			push	0
@@ -114,12 +114,12 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 		};
 	}
 
-	static const uint32 INTERCEPTOR2_HOOK_ADDR = 0x4555A0;
+	static const uintptr_t INTERCEPTOR2_HOOK_ADDR = 0x4555A0;
 	API_FUNC_NAKED static void Interceptor2()
 	{
-		static const uint32 BUILD_CACHE_FILE_ADD_STRUCTURE_BSPS = 0x454B70;
+		static const uintptr_t BUILD_CACHE_FILE_ADD_STRUCTURE_BSPS = 0x454B70;
 
-		static const uint32 INTERCEPTOR_EXIT = 0x4555B4;//1
+		static const uintptr_t INTERCEPTOR_EXIT = 0x4555B4;//1
 
 		__asm {
 			lea		ecx, [esp+0xC]				// largest bsp size reference
@@ -136,10 +136,10 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 		};
 	}
 
-	static const uint32 INTERCEPTOR3_HOOK_ADDR = 0x4555B8;
+	static const uintptr_t INTERCEPTOR3_HOOK_ADDR = 0x4555B8;
 	API_FUNC_NAKED static void Interceptor3()
 	{
-		static const uint32 INTERCEPTOR_EXIT = 0x4555D3;//0
+		static const uintptr_t INTERCEPTOR_EXIT = 0x4555D3;//0
 
 		__asm {
 			lea		eax, [esp+0xC]				// largest bsp size reference
@@ -158,7 +158,7 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 		};
 	}
 
-	static const uint32 INTERCEPTOR_END_HOOK_ADDR = 0x453221; // build_cache_file_write_header_and_compress
+	static const uintptr_t INTERCEPTOR_END_HOOK_ADDR = 0x453221; // build_cache_file_write_header_and_compress
 	static bool PLATFORM_API InterceptorEnd(Cache::s_cache_header* header)
 	{
 		build_cache_file_end_preprocess(header, yelo_cache_header_globals);
@@ -168,14 +168,14 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 		return build_cache_file_for_scenario_internals.build_cache_file_end(header);
 	}
 
-	static const uint32 INTERCEPTOR_BUILD_CACHE_FILE_FAILED = 0x4555EE;
+	static const uintptr_t INTERCEPTOR_BUILD_CACHE_FILE_FAILED = 0x4555EE;
 	static uint32 INTERCEPTOR_BUILD_CACHE_FILE_FAILED_restore_point = 0;
 	static void PLATFORM_API InterceptorBuildCacheFileFailed()
 	{
 		build_cache_file_for_scenario_internals.build_failed = true;
 	}
 
-	static const uint32 INTERCEPTOR_BUILD_CACHE_FILE_BEGIN = 0x455531;
+	static const uintptr_t INTERCEPTOR_BUILD_CACHE_FILE_BEGIN = 0x455531;
 	static uint32 INTERCEPTOR_BUILD_CACHE_FILE_BEGIN_restore_point = 0;
 	API_FUNC_NAKED static bool PLATFORM_API InterceptorBuildCacheFileBegin(cstring scenario_name)
 	{

@@ -32,7 +32,7 @@ namespace Yelo
 
 		void s_build_cache_file_globals::TemporaryFileOpen(cstring filename)
 		{
-			file_handle = CreateFileA(filename, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+			file_handle = CreateFileA(filename, GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
 		}
 		void s_build_cache_file_globals::TemporaryFileClose(cstring filename)
 		{
@@ -42,7 +42,7 @@ namespace Yelo
 				file_handle = INVALID_HANDLE_VALUE;
 			}
 
-			if(file_handle != NULL)
+			if(file_handle != nullptr)
 				DeleteFileA(filename);
 		}
 		void s_build_cache_file_globals::TemporaryFileCopy(cstring new_filename, cstring filename)
@@ -52,7 +52,7 @@ namespace Yelo
 
 		static void FixGameGlobals(datum_index globals_index, Enums::scenario_type scenario_type)
 		{
-			TagGroups::s_game_globals* globals = tag_get<TagGroups::s_game_globals>(globals_index);
+			auto* globals = tag_get<TagGroups::s_game_globals>(globals_index);
 
 			switch(scenario_type)
 			{
@@ -84,7 +84,7 @@ namespace Yelo
 			if(scenario_index.IsNull() || globals_index.IsNull())
 				return true;
 
-			TagGroups::scenario* scnr = tag_get<TagGroups::scenario>(scenario_index);
+			auto* scnr = tag_get<TagGroups::scenario>(scenario_index);
 			FixGameGlobals(globals_index, scnr->type);
 			tag_load_children(globals_index);
 
@@ -129,27 +129,27 @@ namespace Yelo
 		static void* stream_tag_block_to_buffer_postprocess_tag_data(void*& return_stream, uintptr_t stream_base_address, uintptr_t virtual_base_address, tag_reference_name_reference* tag_names,
 			const TagGroups::c_tag_field_scanner& scanner)
 		{
-			tag_data* data = scanner.GetFieldAs<tag_data>();
+			auto* data = scanner.GetFieldAs<tag_data>();
 
-			if(data->definition == NULL)
+			if(data->definition == nullptr)
 			{	// not exactly what tool's asm does here, but should amount to the same output
-				data->address = NULL;
+				data->address = nullptr;
 			}
 			else if(!TEST_FLAG(data->definition->flags, Flags::_tag_data_not_streamed_to_cache_bit))
 			{
-				if(data->size > 0 && data->address != NULL)
+				if(data->size > 0 && data->address != nullptr)
 				{
 					// record the current stream position as runtime address for the data blob, then write the blob
 					void* data_address = rebase_pointer(return_stream, stream_base_address, virtual_base_address);
 					stream_blob_to_buffer(return_stream, data->address, data->size);
 
-					data->definition = NULL;
+					data->definition = nullptr;
 					data->address = data_address;
 				}
 				else
 				{
-					data->address = NULL;
-					data->definition = NULL;
+					data->address = nullptr;
+					data->definition = nullptr;
 				}
 			}
 
@@ -158,7 +158,7 @@ namespace Yelo
 		static void* stream_tag_block_to_buffer_postprocess_tag_block(void*& return_stream, uintptr_t stream_base_address, uintptr_t virtual_base_address, tag_reference_name_reference* tag_names,
 			const TagGroups::c_tag_field_scanner& scanner)
 		{
-			tag_block* block = scanner.GetFieldAs<tag_block>();
+			auto* block = scanner.GetFieldAs<tag_block>();
 
 			if(block->count > 0)
 			{
@@ -167,12 +167,12 @@ namespace Yelo
 				return_stream = stream_tag_block_to_buffer(block, return_stream, stream_base_address, virtual_base_address, tag_names);
 
 				block->address = elements_address;
-				block->definition = NULL;
+				block->definition = nullptr;
 			}
 			else
 			{
-				block->address = NULL;
-				block->definition = NULL;
+				block->address = nullptr;
+				block->definition = nullptr;
 			}
 
 			return return_stream;
@@ -180,7 +180,7 @@ namespace Yelo
 		static void* stream_tag_block_to_buffer_postprocess_tag_reference(void*& return_stream, uintptr_t stream_base_address, uintptr_t virtual_base_address, tag_reference_name_reference* tag_names,
 			const TagGroups::c_tag_field_scanner& scanner)
 		{
-			tag_reference* reference = scanner.GetFieldAs<tag_reference>();
+			auto* reference = scanner.GetFieldAs<tag_reference>();
 			int32 absolute_index = reference->tag_index.index;
 			YELO_ASSERT( reference->tag_index==datum_index::null || 
 						(absolute_index>=0 && 
@@ -188,7 +188,7 @@ namespace Yelo
 						) 
 				);
 
-			reference->name = reference->tag_index.IsNull() ? NULL : tag_names[absolute_index];
+			reference->name = reference->tag_index.IsNull() ? nullptr : tag_names[absolute_index];
 			reference->name_length = 0;
 
 			if(scanner.TagFieldIsStringId())
@@ -252,7 +252,7 @@ namespace Yelo
 
 		size_t stream_tag_to_buffer(datum_index tag_index, void* stream, size_t& return_stream_offset, uintptr_t virtual_base_address, tag_reference_name_reference* tag_names)
 		{
-			tag_block* block = NULL;
+			tag_block* block = nullptr;
 
 			void* return_stream = stream_tag_block_to_buffer(block, stream, CAST_PTR(uintptr_t, stream), virtual_base_address, tag_names);
 

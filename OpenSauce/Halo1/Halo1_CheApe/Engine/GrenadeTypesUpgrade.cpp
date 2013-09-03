@@ -49,7 +49,7 @@ namespace Yelo
 		static tag_field* g_scenario_profiles_block_unused_grenade_count_fields;
 		static tag_field* scenario_profiles_block_find_unused_grenade_count_fields()
 		{
-			tag_group* scnr = Yelo::tag_group_get(TagGroups::scenario::k_group_tag);
+			tag_group* scnr = Yelo::tag_group_get<TagGroups::scenario>();
 
 			int32 field_index = NONE;
 			field_index = TagGroups::tag_block_find_field(scnr->header_block_definition, Enums::_field_block, "player starting profile");
@@ -58,17 +58,17 @@ namespace Yelo
 				YELO_ERROR(_error_message_priority_warning, 
 					"CheApe: scenario_profiles_block not found!");
 
-				return NULL;
+				return nullptr;
 			}
 
-			tag_block_definition* scenario_profiles_block_def = scnr->header_block_definition->fields[field_index].Definition<tag_block_definition>();
+			auto* scenario_profiles_block_def = scnr->header_block_definition->fields[field_index].Definition<tag_block_definition>();
 			field_index = TagGroups::tag_block_find_field(scenario_profiles_block_def, Enums::_field_char_integer, k_scenario_profiles_block_unused_grenade_count_field_name);
 			if(field_index == NONE)
 			{
 				YELO_ERROR(_error_message_priority_warning, 
 					"CheApe: scenario_profiles_block unused grenade count fields not found!");
 
-				return NULL;
+				return nullptr;
 			}
 
 			return &scenario_profiles_block_def->fields[field_index];
@@ -138,13 +138,13 @@ namespace Yelo
 		
 		static void GrenadeTypesUpgradeTagDefinitions(bool enabled)
 		{
-			if(g_scenario_profiles_block_unused_grenade_count_fields == NULL) return;
+			if(g_scenario_profiles_block_unused_grenade_count_fields == nullptr) return;
 
 			//////////////////////////////////////////////////////////////////////////
 			// Fixup the editor field names for scenario_profiles_block
 			for(int x = 0; x < k_unit_grenade_types_new_count; x++)
 			{
-				cstring field_name = NULL;
+				cstring field_name = nullptr;
 				if(enabled)
 					field_name = k_scenario_profiles_block_unused_grenade_count_field_names_yelo[x];
 				else

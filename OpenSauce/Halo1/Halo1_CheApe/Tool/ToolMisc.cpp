@@ -49,7 +49,7 @@ namespace Yelo
 				return;
 			}
 
-			TagGroups::scenario* scnr = tag_get<TagGroups::scenario>(scnr_index);
+			auto scnr = tag_get<TagGroups::scenario>(scnr_index);
 			printf_s("stock'ifying scenario: %s...\n", args->scenario_name);
 			TagGroups::YeloCleanseScenario(scnr);
 			printf_s("saving...\n");

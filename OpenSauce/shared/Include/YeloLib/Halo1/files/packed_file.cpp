@@ -30,7 +30,7 @@ namespace Yelo
 
 		m_address = file_info.data_pointer;
 
-		if(m_header != NULL || m_header->IsValid())
+		if(m_header != nullptr || m_header->IsValid())
 			m_file_mapped = true;
 	}
 
@@ -38,7 +38,7 @@ namespace Yelo
 	{
 		if(m_file_mapped)
 		{
-			m_header = NULL;
+			m_header = nullptr;
 
 			FileIO::CloseFile(file_info);
 
@@ -49,7 +49,7 @@ namespace Yelo
 	void* c_packed_file::GetDataPointer(uint32 index, _Out_opt_ uint32* data_size)
 	{
 		if(!m_file_mapped || index > m_header->element_count)
-			return NULL;
+			return nullptr;
 
 		s_element* element = CAST_PTR(s_element*, m_base_address + sizeof(s_header) + 
 			(sizeof(s_element) * index));
@@ -63,7 +63,7 @@ namespace Yelo
 	void* c_packed_file::GetDataPointer(const char* data_id, _Out_opt_ uint32* data_size)
 	{
 		if(!m_file_mapped || is_null_or_empty(data_id))
-			return NULL;
+			return nullptr;
 
 		for(uint32 i = 0; i < m_header->element_count; i++)
 		{
@@ -81,7 +81,7 @@ namespace Yelo
 
 		if(data_size)
 			*data_size = 0;
-		return NULL;
+		return nullptr;
 	}
 
 #else

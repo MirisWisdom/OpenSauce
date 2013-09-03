@@ -72,12 +72,12 @@ namespace Yelo
 
 				// open the shader tag
 				datum_index shader_index = datum_index::null;
-				TagGroups::s_shader_postprocess_definition* shader_tag = NULL;
+				TagGroups::s_shader_postprocess_definition* shader_tag = nullptr;
 
 				HRESULT hr = LoadShader(tag_path.c_str(), shader_index, shader_tag);
 
 				// create effect compiler
-				LPD3DXEFFECTCOMPILER effect_compiler = NULL;
+				LPD3DXEFFECTCOMPILER effect_compiler = nullptr;
 				if(SUCCEEDED(hr)) hr = CreateEffectCompiler(
 					effect_compiler,
 					shader_tag,

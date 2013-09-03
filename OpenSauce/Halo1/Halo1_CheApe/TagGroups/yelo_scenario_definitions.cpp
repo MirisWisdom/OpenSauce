@@ -27,7 +27,7 @@ namespace Yelo
 
 		void YeloCleanseScenario(scenario* scnr)
 		{
-			YELO_ASSERT(scnr != NULL);
+			YELO_ASSERT(scnr != nullptr);
 
 			// Clear the yelo reference
 			tag_reference& yelo_reference = scnr->GetYeloReferenceHack();
@@ -83,7 +83,7 @@ namespace Yelo
 			// Just in case the tag fails to load or fails to be created
 			if(!yelo_index.IsNull())
 			{
-				project_yellow* yelo = tag_get<project_yellow>(yelo_index);
+				auto* yelo = tag_get<project_yellow>(yelo_index);
 
 				// set the scenario's yelo reference if it isn't already set-up
 				if(!yelo_isnt_new)
@@ -106,7 +106,7 @@ namespace Yelo
 
 			if(!scenario_index.IsNull())
 			{
-				TagGroups::scenario* scenario = tag_get<TagGroups::scenario>(scenario_index);
+				auto* scenario = tag_get<TagGroups::scenario>(scenario_index);
 
 				datum_index yelo = YeloPrepareDefinitionsYeloScenario(
 					scenario->GetYeloReferenceHack(), for_build_cache);
@@ -131,22 +131,22 @@ namespace Yelo
 		{
 			// References to the string "globals\globals"
 			cstring* K_GLOBALS_TAG_NAME_REFERENCES[] = {
-				CAST_PTR(cstring*, PLATFORM_VALUE(NULL, 0x4434CA, 0x51675F)),
-				CAST_PTR(cstring*, PLATFORM_VALUE(NULL, 0x443C95, 0x517525)),
+				CAST_PTR(cstring*, PLATFORM_VALUE(nullptr, 0x4434CA, 0x51675F)),
+				CAST_PTR(cstring*, PLATFORM_VALUE(nullptr, 0x443C95, 0x517525)),
 #if PLATFORM_ID == PLATFORM_TOOL
-				CAST_PTR(cstring*, PLATFORM_VALUE(NULL, 0x4541A2, NULL)),
+				CAST_PTR(cstring*, PLATFORM_VALUE(nullptr, 0x4541A2, nullptr)),
 #endif
 			};
 			// Address of the string "globals\globals"
 			cstring K_GLOBALS_TAG_NAME_ADDRESS = CAST_PTR(cstring, 
-				PLATFORM_VALUE(NULL, 0x612FA0, 0x9116CC));
+				PLATFORM_VALUE(nullptr, 0x612FA0, 0x9116CC));
 
 			// The new globals reference name which we're going to force the tool code to use.
 			// Defaults to the stock globals tag name.
 			cstring globals_tag_name = K_GLOBALS_TAG_NAME_ADDRESS;
 
 			// A little trick to reset the globals tag back to the stock reference name
-			if(scenario_name == NULL)
+			if(scenario_name == nullptr)
 				globals_tag_name = K_GLOBALS_TAG_NAME_ADDRESS;
 			else
 			{
@@ -169,24 +169,24 @@ namespace Yelo
 				}
 			}
 
-			if(globals_tag_name != NULL)
+			if(globals_tag_name != nullptr)
 				for(int32 x = 0; x < NUMBEROF(K_GLOBALS_TAG_NAME_REFERENCES); x++)
 					*K_GLOBALS_TAG_NAME_REFERENCES[x] = globals_tag_name;
 			else
 			{
 				YELO_ERROR(_error_message_priority_warning, "CheApe: scenario_yelo_load failed to do anything! %s", 
-					scenario_name != NULL ? scenario_name : "NULL");
+					scenario_name != nullptr ? scenario_name : "nullptr");
 			}
 		}
 
-		static const uint32 SCENARIO_LOAD_HOOK = 
+		static const uintptr_t SCENARIO_LOAD_HOOK = 
 			PLATFORM_VALUE(NULL, 0x45546B, // call game_globals_preprocess
 				0x6181BB); // call scenario_load
-		static uint32 SCENARIO_LOAD_HOOK_restore_point = 0;
+		static uintptr_t SCENARIO_LOAD_HOOK_restore_point = 0;
 #if PLATFORM_ID == PLATFORM_TOOL
 		API_FUNC_NAKED static void PLATFORM_API scenario_yelo_load_hook()
 		{
-			static uint32 GAME_GLOBALS_PREPROCESS = PLATFORM_VALUE(NULL, 0x454190, NULL);
+			static const uintptr_t GAME_GLOBALS_PREPROCESS = PLATFORM_VALUE(nullptr, 0x454190, nullptr);
 
 			__asm {
 				push	eax
@@ -202,7 +202,7 @@ namespace Yelo
 #elif PLATFORM_ID == PLATFORM_SAPIEN
 		API_FUNC_NAKED static void PLATFORM_API scenario_yelo_load_hook(cstring scenario_name)
 		{
-			static uint32 SCENARIO_LOAD = PLATFORM_VALUE(NULL, NULL, 0x5174E0);
+			static const uintptr_t SCENARIO_LOAD = PLATFORM_VALUE(nullptr, nullptr, 0x5174E0);
 
 			__asm {
 				push	ebp
@@ -234,7 +234,7 @@ namespace Yelo
 			Memory::WriteRelativeCall(CAST_PTR(void*, SCENARIO_LOAD_HOOK_restore_point),
 				CAST_PTR(void*, SCENARIO_LOAD_HOOK));
 
-			scenario_yelo_load(NULL);
+			scenario_yelo_load(nullptr);
 #endif
 		}
 	};

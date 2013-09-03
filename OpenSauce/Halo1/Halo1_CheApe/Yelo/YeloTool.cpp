@@ -66,7 +66,7 @@ namespace Yelo
 		void ImportClassesInitialize()
 		{
 			// Tool's original import classes
-			static const s_import_class* tool_import_classes = CAST_PTR(s_import_class*, 0x6B01B0);
+			static const auto* tool_import_classes = CAST_PTR(s_import_class*, 0x6B01B0);
 			// The new import class list which is made up of tool's
 			// and [yelo_import_classes]
 			static s_import_class import_classes[k_number_of_tool_import_classes + NUMBEROF(yelo_import_classes)];
@@ -78,7 +78,7 @@ namespace Yelo
 			memcpy_s(&import_classes[k_number_of_tool_import_classes], sizeof(yelo_import_classes),
 				&yelo_import_classes[0], sizeof(yelo_import_classes));
 			// Now I know my ABCs
-			qsort_s(import_classes, NUMBEROF(import_classes), sizeof(s_import_class), s_import_class_compare, NULL);
+			qsort_s(import_classes, NUMBEROF(import_classes), sizeof(s_import_class), s_import_class_compare, nullptr);
 
 
 			static s_import_class** import_classes_references[] = {
@@ -102,10 +102,10 @@ namespace Yelo
 
 			// Modify build-cache-file to use our own implementation
 			{
-				s_import_class* bcf_definition = CAST_PTR(s_import_class*, 
-					bsearch_s("build-cache-file", import_classes, NUMBEROF(import_classes), sizeof(s_import_class), s_import_class_search_by_name, NULL));
+				auto* bcf_definition = CAST_PTR(s_import_class*, 
+					bsearch_s("build-cache-file", import_classes, NUMBEROF(import_classes), sizeof(s_import_class), s_import_class_search_by_name, nullptr));
 
-				if(bcf_definition != NULL)
+				if(bcf_definition != nullptr)
 					bcf_definition->import_proc = build_cache_file_for_scenario_stock_override;
 				else
 					YELO_WARN("CheApe: failed to override build-cache-file :s");

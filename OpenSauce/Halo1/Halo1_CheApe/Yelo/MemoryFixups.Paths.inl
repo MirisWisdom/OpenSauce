@@ -40,7 +40,7 @@ void c_memory_fixups::tag_file_index_build_strchr_hack_initialize()
 void c_memory_fixups::FixupsInitializeDataPaths(cstring data_override)
 {
 #if PLATFORM_ID == PLATFORM_TOOL
-	if(data_override == NULL) return;
+	if(data_override == nullptr) return;
 
 
 	strcpy_s(_override_paths.data.path, data_override);
@@ -73,7 +73,7 @@ void c_memory_fixups::FixupsInitializeDataPaths(cstring data_override)
 void c_memory_fixups::FixupsInitializeMapsPaths(cstring maps_override)
 {
 #if PLATFORM_ID == PLATFORM_TOOL
-	if(maps_override == NULL) return;
+	if(maps_override == nullptr) return;
 
 	strcpy_s(_override_paths.maps.path, maps_override);
 	{
@@ -116,7 +116,7 @@ void c_memory_fixups::FixupsInitializeMapsPaths(cstring maps_override)
 
 void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring tags_name_override)
 {
-	if(tags_override == NULL) return;
+	if(tags_override == nullptr) return;
 
 	strcpy_s(_override_paths.tags.path, tags_override);
 	char local_tags_name[64];
@@ -332,7 +332,7 @@ void c_memory_fixups::FixupsInitializeFilePaths()
 #endif
 	}; BOOST_STATIC_ASSERT( NUMBEROF(k_file_path_fixup_names) == _report_type );
 
-	cstring k_reports_path = NULL;
+	cstring k_reports_path = nullptr;
 	if(Settings::Get().active_profile.IsValid() && !Settings::Get().active_profile.IsIgnored())
 	{
 		strcpy_s(_override_paths.root, Settings::Get().active_profile.root_path);
@@ -372,35 +372,35 @@ void c_memory_fixups::FixupsInitializeFilePaths()
 		cstring* address;
 	}; static report_fixup fixups[] = {
 		{_report_debug,						CAST_PTR(cstring*,PLATFORM_VALUE(0x420565,	0x42CAB1,	0x4173A1))},
-//		{_report_debug,						CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		NULL,		NULL))},
+//		{_report_debug,						CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,	nullptr,	nullptr))},
 
 #if PLATFORM_ID != PLATFORM_GUERILLA
-		{_report_network,					CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		0x42C983,	0x417223))},
-		{_report_network,					CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		NULL,		0x6F1073))},
-		{_report_tag_dump,					CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		0x433609,	0x4FA199))},
-		{_report_heap_dump,					CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		0x43E45F,	0x501CFF))},
-		{_report_heap_dump,					CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		0x43E5E6,	0x501E86))},
-		{_report_gamestate,					CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		NULL,		0x50B48F))},
-		{_report_gamestate,					CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		0x4561F6,	0x50B5A6))},
-		{_report_gamestate,					CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		NULL,		0x50B6B6))},
-		{_report_sound_cache_dump,			CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		0x4765F9,	0x51E0E9))},
-		{_report_game_time_statistics,		CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		0x47729F,	0x51EF1F))},
-		{_report_debug_bsp,					CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		0x423282,	0x521F7A))},
-		{_report_object_memory,				CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		0x4A1D24,	0x563534))},
-		{_report_hs_doc,					CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		0x4C2AF5,	0x584BC5))},
+		{_report_network,					CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		0x42C983,	0x417223))},
+		{_report_network,					CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		nullptr,	0x6F1073))},
+		{_report_tag_dump,					CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		0x433609,	0x4FA199))},
+		{_report_heap_dump,					CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		0x43E45F,	0x501CFF))},
+		{_report_heap_dump,					CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		0x43E5E6,	0x501E86))},
+		{_report_gamestate,					CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		nullptr,	0x50B48F))},
+		{_report_gamestate,					CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		0x4561F6,	0x50B5A6))},
+		{_report_gamestate,					CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		nullptr,	0x50B6B6))},
+		{_report_sound_cache_dump,			CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		0x4765F9,	0x51E0E9))},
+		{_report_game_time_statistics,		CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		0x47729F,	0x51EF1F))},
+		{_report_debug_bsp,					CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		0x423282,	0x521F7A))},
+		{_report_object_memory,				CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		0x4A1D24,	0x563534))},
+		{_report_hs_doc,					CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		0x4C2AF5,	0x584BC5))},
 
 	#if PLATFORM_ID == PLATFORM_SAPIEN
-		{_report_baggage,					CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		NULL,	0x4EF540))},
-		{_report_message_delta_message_log,	CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		NULL,	0x6EC3B8))},
+		{_report_baggage,					CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		nullptr,	0x4EF540))},
+		{_report_message_delta_message_log,	CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		nullptr,	0x6EC3B8))},
 
-		{_report_sapien_model_index,		CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		NULL,	0x4D115A))},
-		{_report_sapien_model_index,		CAST_PTR(cstring*,PLATFORM_VALUE(NULL,		NULL,	0x4D11D2))},
+		{_report_sapien_model_index,		CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		nullptr,	0x4D115A))},
+		{_report_sapien_model_index,		CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		nullptr,	0x4D11D2))},
 	#endif
 #endif
-		//{_report_,	CAST_PTR(cstring*,PLATFORM_VALUE(NULL,	,	))},
+		//{_report_,	CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,	,	))},
 	};
 
 	for(int32 x = 0; x < NUMBEROF(fixups); x++)
-		if(fixups[x].address != NULL)
+		if(fixups[x].address != nullptr)
 			*fixups[x].address = k_file_path_fixup_names[ fixups[x].type ];
 }
