@@ -1,0 +1,86 @@
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup
+    >
+	<Text Include="..\..\shared\Include\zlib\contrib\minizip\OpenSauce.Readme.txt" />
+
+	<ClCompile Include="..\..\shared\Include\zlib\adler32.c">
+      <PrecompiledHeader />
+    </ClCompile>
+
+	<ClCompile Include="..\..\shared\Include\zlib\compress.c">
+      <PrecompiledHeader />
+    </ClCompile>
+
+	<ClInclude Include="..\..\shared\Include\zlib\crc32.h" />
+    <ClCompile Include="..\..\shared\Include\zlib\crc32.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\zlib\deflate.h" />
+    <ClCompile Include="..\..\shared\Include\zlib\deflate.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\gzclose.c">
+      <PrecompiledHeader />
+    </ClCompile>
+
+	<ClInclude Include="..\..\shared\Include\zlib\gzguts.h" />
+
+    <ClCompile Include="..\..\shared\Include\zlib\gzlib.c">
+      <PrecompiledHeader />
+	  <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\gzread.c">
+      <PrecompiledHeader />
+	  <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\gzwrite.c">
+      <PrecompiledHeader />
+	  <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\infback.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\zlib\inffast.h" />
+    <ClCompile Include="..\..\shared\Include\zlib\inffast.c">
+      <PrecompiledHeader />
+    </ClCompile>
+
+	<ClInclude Include="..\..\shared\Include\zlib\inffixed.h" />
+
+	<ClInclude Include="..\..\shared\Include\zlib\inflate.h" />
+    <ClCompile Include="..\..\shared\Include\zlib\inflate.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\zlib\inftrees.h" />
+    <ClCompile Include="..\..\shared\Include\zlib\inftrees.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\zlib\trees.h" />
+    <ClCompile Include="..\..\shared\Include\zlib\trees.c">
+      <PrecompiledHeader />
+    </ClCompile>
+
+	<ClCompile Include="..\..\shared\Include\zlib\uncompr.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\zlib\zconf.h" />
+    <ClInclude Include="..\..\shared\Include\zlib\zlib.h" />
+
+    <ClInclude Include="..\..\shared\Include\zlib\zutil.h" />
+    <ClCompile Include="..\..\shared\Include\zlib\zutil.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\zlib\contrib\minizip\ioapi.h" />
+    <ClCompile Include="..\..\shared\Include\zlib\contrib\minizip\ioapi.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\zlib\contrib\minizip\unzip.h" />
+    <ClCompile Include="..\..\shared\Include\zlib\contrib\minizip\unzip.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\zlib\contrib\minizip\zip.h" />
+    <ClCompile Include="..\..\shared\Include\zlib\contrib\minizip\zip.c">
+      <PrecompiledHeader />
+    </ClCompile>
+  </ItemGroup>
+</Project>

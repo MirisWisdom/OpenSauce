@@ -168,6 +168,7 @@ namespace Yelo
 			Bytef* dest = new Bytef[compressed_size];
 			int result = compress2(dest, &compressed_size, CAST_PTR(Bytef*,buffer), size, Z_BEST_COMPRESSION);
 
+			delete buffer; // free the uncompressed data
 			buffer = dest;
 
 			return result == Z_OK;

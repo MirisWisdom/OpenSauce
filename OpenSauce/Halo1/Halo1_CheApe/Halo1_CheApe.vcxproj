@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="DebugGuerilla|Win32">
+      <Configuration>DebugGuerilla</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugSapien|Win32">
+      <Configuration>DebugSapien</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugTool|Win32">
+      <Configuration>DebugTool</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseGuerilla|Win32">
+      <Configuration>ReleaseGuerilla</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseSapien|Win32">
+      <Configuration>ReleaseSapien</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseTool|Win32">
+      <Configuration>ReleaseTool</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{25E77EFB-B1A7-4AE6-B800-E5ACF80AB203}</ProjectGuid>
+    <RootNamespace>Halo1_CheApe</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v110_xp</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration.Contains(Release))' " Label="Configuration">
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+
+  <PropertyGroup>
+    <OSRequiresDirectX>true</OSRequiresDirectX>
+    <OSRequiresCppBoost>true</OSRequiresCppBoost>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)..\shared\config\msbuild\OpenSauce.props" />
+  <Import Project="$(SolutionDir)shared\config\msbuild\CrashRpt.props" />
+  <Import Project="$(SolutionDir)shared\config\msbuild\TinyXml.props" />
+  <Import Project="$(SolutionDir)shared\config\msbuild\zlib.props" />
+  <Import Project="$(SolutionDir)shared\config\msbuild\blamlib.props" />
+  <Import Project="$(SolutionDir)shared\config\msbuild\blamlib_Halo1.props" />
+  <Import Project="$(SolutionDir)shared\config\msbuild\YeloLib.props" />
+  <Import Project="$(SolutionDir)shared\config\msbuild\YeloLib_Halo1.props" />
+  <Import Project="$(SolutionDir)shared\config\msbuild\7zip.props" />
+
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.60315.1</_ProjectFileVersion>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+	  <PreprocessorDefinitions>HALO1_CHEAPE_EXPORTS;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4311;4312;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition=" '$(Configuration.Contains(Debug))' ">
+    <ClCompile>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
+  <PropertyGroup Condition=" '$(OSPlatformType)'=='Guerilla' ">
+    <TargetName>CheApeDLLG</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(OSPlatformType)'=='Tool' ">
+    <TargetName>CheApeDLLT</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(OSPlatformType)'=='Sapien' ">
+    <TargetName>CheApeDLLS</TargetName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ClCompile Include="Engine\AnimationUpgrade.cpp" />
+    <ClCompile Include="Engine\EngineFunctions.cpp" />
+    <ClCompile Include="Engine\GrenadeTypesUpgrade.cpp" />
+    <ClCompile Include="Engine\Scripting.cpp" />
+    <ClCompile Include="Yelo\MemoryFixups.cpp" />
+    <ClCompile Include="Yelo\ScenarioResources.cpp" />
+    <ClCompile Include="Yelo\Yelo.cpp" />
+    <ClCompile Include="Yelo\YeloGuerilla.cpp" />
+    <ClCompile Include="Yelo\YeloSapien.cpp" />
+    <ClCompile Include="Yelo\YeloTool.cpp" />
+    <ClCompile Include="Common\DebugDump.cpp" />
+    <ClCompile Include="Common\StringEditing.cpp" />
+    <ClCompile Include="Common\YeloSettings.cpp" />
+    <ClCompile Include="Tool\BuildCppDefinition.cpp" />
+    <ClCompile Include="Tool\Console.cpp" />
+    <ClCompile Include="Tool\ImportLightmapUV.cpp" />
+    <ClCompile Include="Tool\RuntimeCacheView.cpp" />
+    <ClCompile Include="Tool\ShaderPostprocess.cpp" />
+    <ClCompile Include="Tool\Tool_AnimationFixups.cpp" />
+    <ClCompile Include="Tool\ToolMisc.cpp" />
+    <ClCompile Include="Rasterizer\Rasterizer.cpp" />
+    <ClCompile Include="Rasterizer\DX9\DX9.cpp" />
+    <ClCompile Include="TagGroups\TagGroups.cpp" />
+    <ClCompile Include="TagGroups\yelo_definitions.cpp" />
+    <ClCompile Include="TagGroups\yelo_scenario_definitions.cpp" />
+    <ClCompile Include="Memory\MemoryInterface.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\memory\physical_memory_allocation.cpp" />
+    <ClCompile Include="CheApeCore.cpp" />
+    <ClCompile Include="Halo1_CheApe.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Engine\AnimationUpgrade.hpp" />
+    <ClInclude Include="Engine\EngineFunctions.hpp" />
+    <ClInclude Include="Engine\GrenadeTypesUpgrade.hpp" />
+    <ClInclude Include="Engine\Scripting.hpp" />
+    <ClInclude Include="Yelo\MemoryFixups.hpp" />
+    <ClInclude Include="Yelo\ScenarioResources.hpp" />
+    <ClInclude Include="Common\DebugDump.hpp" />
+    <ClInclude Include="Common\Platform.hpp" />
+    <ClInclude Include="Common\Precompile.hpp" />
+    <ClInclude Include="Common\StringEditing.hpp" />
+    <ClInclude Include="Common\YeloSettings.hpp" />
+    <ClInclude Include="Tool\BuildCppDefinition.hpp" />
+    <ClInclude Include="Tool\Console.hpp" />
+    <ClInclude Include="Tool\ImportLightmapUV.hpp" />
+    <ClInclude Include="Tool\RuntimeCacheView.hpp" />
+    <ClInclude Include="Tool\ShaderPostprocess.hpp" />
+    <ClInclude Include="Tool\Tool_AnimationFixups.hpp" />
+    <ClInclude Include="Tool\ToolMisc.hpp" />
+    <ClInclude Include="Rasterizer\Rasterizer.hpp" />
+    <ClInclude Include="Rasterizer\DX9\DX9.hpp" />
+    <ClInclude Include="Memory\_EngineLayoutDefinitions.hpp" />
+    <ClInclude Include="TagGroups\TagGroups.hpp" />
+    <ClInclude Include="TagGroups\yelo_definitions.hpp" />
+    <ClInclude Include="TagGroups\yelo_scenario_definitions.hpp" />
+    <ClInclude Include="Memory\MemoryInterface.hpp" />    
+    <ClInclude Include="..\..\shared\Include\YeloLib\memory\physical_memory_allocation.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\non_pod_container.hpp" />
+    <ClInclude Include="CheApeCore.hpp" />
+    <ClInclude Include="CheApeInterface.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Engine\ScriptLibraryMemoryUpgrades.inl" />
+    <None Include="Yelo\MemoryFixups.Paths.inl" />
+    <None Include="Yelo\MemoryFixups.TagTextIO.inl" />
+    <None Include="Common\YeloSettings.CmdLineSettings.inl" />
+    <None Include="Tool\BuildCppDefinition.inl" />
+    <None Include="Tool\CompileShaderPostprocess.inl" />
+    <None Include="Tool\Help.inl" />
+    <None Include="Tool\ImportClassDefinitions.inl" />
+    <None Include="Tool\ImportLightmapUV_ObjFile.inl" />
+    <None Include="Tool\RuntimeCacheView.inl" />
+    <None Include="Tool\BuildCacheFile.inl" />
+    <None Include="Tool\BuildCacheFile\BuildGlobals.inl" />
+    <None Include="Tool\BuildCacheFile\CullTags.inl" />
+    <None Include="Tool\BuildCacheFile\MemoryUpgrades.inl" />
+    <None Include="Tool\BuildCacheFile\PredictedResources.inl" />
+    <None Include="Tool\BuildCacheFile\PredictedResources_PostProcessing.inl" />
+    <None Include="Tool\BuildCacheFile\PredictedResources_ShaderExtension.inl" />
+    <None Include="Tool\BuildCacheFile\TagPreprocess.inl" />
+    <None Include="Tool\BuildCacheFile\TagPreprocess_PostProcessing.inl" />
+    <None Include="Tool\BuildCacheFile\TagPreprocess_ShaderExtension.inl" />
+    <None Include="Rasterizer\DX9\DX9.Tool.inl" />
+    <None Include="Memory\_EngineLayout.inl" />
+    <None Include="Memory\_EngineLayout.Game.inl" />
+    <None Include="Memory\_EngineLayout.Objects.inl" />
+    <None Include="Memory\_EngineLayout.OpenSauce.inl" />
+    <None Include="Memory\_EngineLayout.Rasterizer.DX9.inl" />
+    <None Include="Memory\_EngineLayout.Rasterizer.inl" />
+    <None Include="Memory\_EngineLayout.TagGroups.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Halo1_CheApe_Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="EditorSettingsTemplate.xml" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Import Project="$(OSRootDir)shared\config\msbuild\OpenSauceBuild.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

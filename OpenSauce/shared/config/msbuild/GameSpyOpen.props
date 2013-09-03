@@ -1,0 +1,131 @@
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup
+    >
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\darray.h" />
+	<ClCompile Include="..\..\shared\Include\GameSpyOpen\darray.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\hashtable.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\hashtable.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\md5.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\md5c.c">
+      <PrecompiledHeader />
+    </ClCompile>
+
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\nonport.h" />
+
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsAssert.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsAssert.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsAvailable.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsAvailable.c">
+      <PrecompiledHeader />
+    </ClCompile>
+
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsCommon.h" />
+
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsCore.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsCore.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsCrypt.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsCrypt.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsDebug.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsDebug.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsLargeInt.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsLargeInt.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsMemory.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsMemory.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsPlatform.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsPlatform.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformSocket.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformSocket.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformThread.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformThread.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformUtil.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformUtil.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsRC4.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsRC4.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsResultCodes.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsResultCodes.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsSHA1.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsSHA1.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsSoap.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsSoap.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsSSL.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsSSL.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsStringUtil.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsStringUtil.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsXML.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsXML.c">
+      <PrecompiledHeader />
+    </ClCompile>
+
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttp.h" />
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpASCII.h" />
+
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpBuffer.h" />
+	<ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpBuffer.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpCallbacks.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpCallbacks.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpCommon.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpCommon.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpConnection.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpConnection.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpEncryption.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpEncryption.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpMain.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpMain.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpPost.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpPost.c">
+      <PrecompiledHeader />
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpProcess.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpProcess.c">
+      <PrecompiledHeader />
+    </ClCompile>
+  </ItemGroup>
+</Project>

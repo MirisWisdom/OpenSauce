@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Import me directly after your project's 'Microsoft.(LanguageName].targets' import (typically the last element) -->
+  <PropertyGroup>
+    <BuildDependsOn>
+      OSVerifyDirectX;
+      OSVerifyXenonSDK;
+	  OSVerifyCppBoost;
+	  OSVerifyGameSpyOpen;
+      $(BuildDependsOn)
+    </BuildDependsOn>
+  </PropertyGroup>
+</Project>

@@ -79,3 +79,21 @@
 #else
 	#define TRACE_BOX(title, msg) __noop
 #endif
+
+namespace Yelo
+{
+	namespace Engine
+	{
+		void display_assert(cstring reason, cstring file, const uint32 line, bool halt);
+#define YELO_ASSERT(expression)															\
+	if( !(expression) )																	\
+	{																					\
+		Yelo::Engine::display_assert( #expression , __FILE__, __LINE__, true);			\
+	}
+#define YELO_ASSERT_WARN(expression)													\
+	if( !(expression) )																	\
+	{																					\
+		Yelo::Engine::display_assert( #expression , __FILE__, __LINE__, false);			\
+	}
+	};
+};

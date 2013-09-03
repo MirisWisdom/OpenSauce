@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <IntDir>$(OSRootDir)obj\$(AssemblyName)\</IntDir>
+    <BaseIntermediateOutputPath>$(IntDir)</BaseIntermediateOutputPath>
+
+	<TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(OutputType)' == 'Library' ">
+    <OutDir>$(OSRootDir)lib\$(Configuration)\$(Platform)\$(AssemblyName)\</OutDir>
+    <OutputPath>$(OutDir)</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(OutputType.Contains('Exe'))' ">
+    <OutDir>$(OSRootDir)bin\$(Configuration)\$(Platform)\$(AssemblyName)\</OutDir>
+    <OutputPath>$(OutDir)</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DefineConstants>TRACE;$(DefineConstants)</DefineConstants>
+
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>False</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
+    <CodeContractsContainerAnalysis>False</CodeContractsContainerAnalysis>
+    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>False</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+
+    <CodeContractsReferenceAssembly>DoNotBuild</CodeContractsReferenceAssembly>
+    <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration.Contains(Debug))' ">
+    <Optimize>false</Optimize>
+    <DebugType>full</DebugType>
+	<DefineConstants>DEBUG;$(DefineConstants)</DefineConstants>
+	<DebugSymbols>true</DebugSymbols>
+
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration.Contains(Release))' ">
+    <Optimize>true</Optimize>
+	<DebugType>pdbonly</DebugType>
+
+    <CodeContractsRuntimeCheckingLevel>ReleaseRequires</CodeContractsRuntimeCheckingLevel>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'x64' ">
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+</Project>

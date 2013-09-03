@@ -1,0 +1,6 @@
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup
+    >
+	<ClInclude Include="..\..\shared\Include\CrashRpt\CrashRpt.h" />
+  </ItemGroup>
+</Project>
