@@ -11,7 +11,7 @@ namespace UnitInfections
 	{
 #if PLATFORM_IS_USER
 		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
-		if(cv_globals == NULL) return false;
+		if(cv_globals == nullptr) return false;
 
 		// Don't try to infect anything if we're in a cinematic, unless the designers say it's okay
 		return	!Camera::CinematicGlobals()->in_progress || 
@@ -26,7 +26,7 @@ namespace UnitInfections
 		int32 animation_index = NONE;
 		TagGroups::model_animation_graph const* animation_graph = GetObjectAnimations(unit_index);
 
-		if(animation_graph != NULL)
+		if(animation_graph != nullptr)
 		{
 			s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
 			s_unit_animation_data& unit_animation = unit->unit.animation;
@@ -135,7 +135,7 @@ namespace UnitInfections
 	{
 		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
 
-		if(cv_globals == NULL || cv_globals->unit_infections.Count == 0)
+		if(cv_globals == nullptr || cv_globals->unit_infections.Count == 0)
 			return;
 
 		TagGroups::s_unit_infections_definition const& definition = cv_globals->unit_infections[0];
@@ -194,7 +194,7 @@ namespace UnitInfections
 
 	static API_FUNC_NAKED void PLATFORM_API UnitCauseParentMeleeDamageHook()
 	{
-		static uint32 RETN_ADDRESS = GET_FUNC_PTR(UNIT_CAUSE_PARENT_MELEE_DAMAGE_HOOK_RETN);
+		static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(UNIT_CAUSE_PARENT_MELEE_DAMAGE_HOOK_RETN);
 
 		__asm {
 			dec		al

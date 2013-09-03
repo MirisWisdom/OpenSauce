@@ -8,7 +8,7 @@
 void KeystoneChatLogAddString(wcstring str)
 {
 #if !PLATFORM_IS_DEDI
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(KEYSTONE_CHAT_LOG_ADD_STRING);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(KEYSTONE_CHAT_LOG_ADD_STRING);
 
 #if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 	wchar_t local[64];
@@ -33,7 +33,7 @@ void KeystoneChatLogAddString(wcstring str)
 
 void HudPrintMessage(wcstring str)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(HUD_PRINT_MESSAGE);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(HUD_PRINT_MESSAGE);
 
 #if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 	wchar_t local[64];
@@ -58,7 +58,7 @@ void HudPrintMessage(wcstring str)
 
 wcstring HudGetItemMessage(int32 message_index)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(HUD_GET_ITEM_MESSAGE);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(HUD_GET_ITEM_MESSAGE);
 
 	__asm {
 		mov		edx, message_index
@@ -68,7 +68,7 @@ wcstring HudGetItemMessage(int32 message_index)
 
 void MainmenuLoad()
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(MAINMENU_LOAD);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(MAINMENU_LOAD);
 
 	GameState::MainGlobals()->map.main_menu_scenario_load = true;
 

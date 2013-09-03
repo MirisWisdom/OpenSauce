@@ -226,18 +226,18 @@ namespace Yelo
 
 		void LoadSettings(TiXmlElement* objects_element)
 		{
-			if(objects_element != NULL)
+			if(objects_element != nullptr)
 			{
 				if(g_object_yelo_globals.vehicle_remapper_disabled = Settings::ParseBoolean(objects_element->Attribute("disableVehicleRemapper")))
 					VehicleRemapperEnable(false);
 			}
 
 #if !PLATFORM_IS_DEDI
-			TiXmlElement* weapons_element = NULL,
-						* vehicles_element = NULL
+			TiXmlElement* weapons_element = nullptr,
+						* vehicles_element = nullptr
 				;
 
-			if(objects_element != NULL)
+			if(objects_element != nullptr)
 			{
 				weapons_element = objects_element->FirstChildElement("weaponViews");
 				vehicles_element = objects_element->FirstChildElement("vehicleViews");
@@ -254,8 +254,8 @@ namespace Yelo
 				BooleanToString(VehicleRemapperEnabled()==false));
 
 #if !PLATFORM_IS_DEDI
-			TiXmlElement* weapons_element = NULL,
-						* vehicles_element = NULL
+			TiXmlElement* weapons_element = nullptr,
+						* vehicles_element = nullptr
 				;
 
 			weapons_element = new TiXmlElement("weaponViews");
@@ -347,7 +347,7 @@ namespace Yelo
 				return TagGroups::TagGet<TagGroups::s_object_definition>(object->definition_index);
 			}
 
-			return NULL;
+			return nullptr;
 		}
 
 		TagGroups::model_animation_graph const* GetObjectAnimations(datum_index object_index)
@@ -360,7 +360,7 @@ namespace Yelo
 				return TagGroups::TagGet<TagGroups::model_animation_graph>(tag_index);
 			}
 
-			return NULL;
+			return nullptr;
 		}
 
 		real GetObjectDistanceFromPoint(datum_index obj, const real_vector3d& dest_point)

@@ -18,7 +18,7 @@ namespace Yelo
 				return TagGet<project_yellow_globals_cv>(_global_yelo_globals->cv_globals.tag_index);
 			}
 
-			return NULL;
+			return nullptr;
 		}
 	};
 };

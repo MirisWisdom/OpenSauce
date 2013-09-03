@@ -14,14 +14,14 @@ static void* scripting_volume_test_player_team_evaluate(void** arguments)
 		int16 team_index;
 		PAD16;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 	result.boolean = false;
 
 	if(args->team_index >= 0 && GameEngine::GlobalVariant()->universal_variant.teams)
 	{
 		t_players_data::Iterator iter(Players::Players());
 		s_player_datum* player;
-		while( (player = iter.Next()) != NULL )
+		while( (player = iter.Next()) != nullptr )
 		{
 			if(player->team_index == args->team_index && 
 				blam::scenario_trigger_volume_test_object(args->trigger_volume, player->slave_unit_index))
@@ -43,14 +43,14 @@ static void* scripting_volume_test_player_team_all_evaluate(void** arguments)
 		int16 team_index;
 		PAD16;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 	result.boolean = true;
 
 	if(args->team_index >= 0 && GameEngine::GlobalVariant()->universal_variant.teams)
 	{
 		t_players_data::Iterator iter(Players::Players());
 		s_player_datum* player;
-		while( (player = iter.Next()) != NULL )
+		while( (player = iter.Next()) != nullptr )
 		{
 			if(player->team_index == args->team_index && 
 				!blam::scenario_trigger_volume_test_object(args->trigger_volume, player->slave_unit_index))
@@ -78,7 +78,7 @@ static void* scripting_player_team_teleport_evaluate(void** arguments)
 	{
 		t_players_data::Iterator iter(Players::Players());
 		s_player_datum* player;
-		while( (player = iter.Next()) != NULL )
+		while( (player = iter.Next()) != nullptr )
 		{
 			if(player->team_index == args->team_index)
 			{
@@ -88,7 +88,7 @@ static void* scripting_player_team_teleport_evaluate(void** arguments)
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 static void* scripting_player_team_players_evaluate(void** arguments)
@@ -106,7 +106,7 @@ static void* scripting_player_team_players_evaluate(void** arguments)
 
 		t_players_data::Iterator iter(Players::Players());
 		s_player_datum* player;
-		while( (player = iter.Next()) != NULL )
+		while( (player = iter.Next()) != nullptr )
 		{
 			if(player->team_index == args->team_index)
 			{
@@ -155,14 +155,14 @@ static void* scripting_player_data_get_integer_evaluate(void** arguments)
 		PAD16;
 		cstring data_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 	result.int32 = NONE;
 
 	if(args->player_list_index >= 0)
 	{
 		t_players_data::Iterator iter(Players::Players());
 		s_player_datum* player;
-		while( (player = iter.Next()) != NULL )
+		while( (player = iter.Next()) != nullptr )
 		{
 			if(player->network_player.player_list_index == args->player_list_index)
 			{
@@ -181,14 +181,14 @@ static void* scripting_player_team_data_get_integer_evaluate(void** arguments)
 		PAD16;
 		cstring data_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 	result.int32 = NONE;
 
 	if(args->team_index >= 0 && GameEngine::GlobalVariant()->universal_variant.teams)
 	{
 		t_players_data::Iterator iter(Players::Players());
 		s_player_datum* player;
-		while( (player = iter.Next()) != NULL )
+		while( (player = iter.Next()) != nullptr )
 		{
 			if(player->team_index == args->team_index)
 				result.int32 += scripting_player_data_get_integer_by_name(player, args->data_name, true);
@@ -226,14 +226,14 @@ static void* scripting_player_data_get_object_evaluate(void** arguments)
 		PAD16;
 		cstring data_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 	result.datum = datum_index::null;
 
 	if(args->player_list_index >= 0)
 	{
 		t_players_data::Iterator iter(Players::Players());
 		s_player_datum* player;
-		while( (player = iter.Next()) != NULL )
+		while( (player = iter.Next()) != nullptr )
 		{
 			if(player->network_player.player_list_index == args->player_list_index)
 			{
@@ -254,7 +254,7 @@ static real* scripting_player_data_get_real_by_name(s_player_datum* player, cstr
 		 if( !strcmp(s,"speed") )	return &player->speed;
 	//else if( !strcmp(s,"") )		return &player->;
 
-	return NULL;
+	return nullptr;
 }
 static void* scripting_player_data_get_real_evaluate(void** arguments)
 {
@@ -263,14 +263,14 @@ static void* scripting_player_data_get_real_evaluate(void** arguments)
 		PAD16;
 		cstring data_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 	result.real = -1.0f;
 
 	if(args->player_list_index >= 0)
 	{
 		t_players_data::Iterator iter(Players::Players());
 		s_player_datum* player;
-		while( (player = iter.Next()) != NULL )
+		while( (player = iter.Next()) != nullptr )
 		{
 			if(player->network_player.player_list_index == args->player_list_index)
 			{
@@ -297,7 +297,7 @@ static void* scripting_player_data_set_real_evaluate(void** arguments)
 	{
 		t_players_data::Iterator iter(Players::Players());
 		s_player_datum* player;
-		while( (player = iter.Next()) != NULL )
+		while( (player = iter.Next()) != nullptr )
 		{
 			if(player->network_player.player_list_index == args->player_list_index)
 			{
@@ -310,7 +310,7 @@ static void* scripting_player_data_set_real_evaluate(void** arguments)
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 
@@ -318,12 +318,12 @@ static void* scripting_player_data_set_real_evaluate(void** arguments)
 
 static void* scripting_player_local_get_evaluate()
 {
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 	result.int32 = NONE;
 
 	t_players_data::Iterator iter(Players::Players());
 	s_player_datum* player;
-	while( (player = iter.Next()) != NULL )
+	while( (player = iter.Next()) != nullptr )
 	{
 		if(player->local_player_index != NONE)
 		{

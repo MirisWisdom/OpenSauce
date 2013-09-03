@@ -10,7 +10,7 @@
 
 static void* scripting_physics_get_gravity_evaluate()
 {
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 	result.real = GameState::Physics()->gravity;
 
@@ -25,13 +25,13 @@ static void* scripting_physics_set_gravity_evaluate(void** arguments)
 
 	GameState::Physics()->SetGravityScale(args->gravity_fraction);
 
-	return NULL;
+	return nullptr;
 }
 
 static void* scripting_physics_constants_reset_evaluate()
 {
 	GameState::Physics()->Reset();
 
-	return NULL;
+	return nullptr;
 }
 

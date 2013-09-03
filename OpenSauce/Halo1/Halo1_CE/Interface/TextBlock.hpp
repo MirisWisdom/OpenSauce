@@ -82,7 +82,7 @@ namespace Yelo
 		int32 GetHeight() const;
 
 		void Refresh();
-		void Render(wcstring text = NULL);
+		void Render(wcstring text = nullptr);
 
 		void OnResetDevice(D3DPRESENT_PARAMETERS *pPP);
 		void OnLostDevice();

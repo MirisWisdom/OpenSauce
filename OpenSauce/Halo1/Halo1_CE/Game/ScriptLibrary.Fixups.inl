@@ -94,10 +94,10 @@ HS_FUNCTION_WITH_PARAMS(oid_status, void, "", "", 1,
 	);
 #endif
 
-HS_GLOBAL(radiosity_quality, short, NULL);
-HS_GLOBAL(radiosity_step_count, short, NULL);
-HS_GLOBAL(radiosity_lines, bool, NULL);
-HS_GLOBAL(radiosity_normals, bool, NULL);
+HS_GLOBAL(radiosity_quality, short, nullptr);
+HS_GLOBAL(radiosity_step_count, short, nullptr);
+HS_GLOBAL(radiosity_lines, bool, nullptr);
+HS_GLOBAL(radiosity_normals, bool, nullptr);
 //////////////////////////////////////////////////////////////////////////
 
 struct s_fixup_globals {

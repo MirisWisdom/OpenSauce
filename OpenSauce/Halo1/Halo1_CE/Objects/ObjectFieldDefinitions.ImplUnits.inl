@@ -9,7 +9,7 @@ static bool UnitDataFieldGetObjectIndex(const s_object_field_definition& field, 
 											   TypeHolder& result, cstring data_name)
 {
 	using namespace Enums;
-	result.ptr.datum = NULL;
+	result.ptr.datum = nullptr;
 
 	int subfield_index = SubscriptStringToIndex(data_name);
 
@@ -28,7 +28,7 @@ static bool UnitDataFieldGetObjectIndex(const s_object_field_definition& field, 
 		break;
 	}
 
-	return result.ptr.datum != NULL;
+	return result.ptr.datum != nullptr;
 }
 
 static void* UnitDataFieldGetIntegerImpl(const s_object_field_definition& field, s_unit_data& unit)
@@ -54,7 +54,7 @@ static void* UnitDataFieldGetIntegerImpl(const s_object_field_definition& field,
 	case _unit_field_integer_feign_death_timer:				return &unit.feign_death_timer;
 	case _unit_field_integer_killing_spree_count:			return &unit.killing_spree_count;
 
-	default: return NULL;
+	default: return nullptr;
 	}
 }
 static bool UnitDataFieldGetInteger(const s_object_field_definition& field, s_unit_data& unit, 
@@ -62,7 +62,7 @@ static bool UnitDataFieldGetInteger(const s_object_field_definition& field, s_un
 {
 	result.pointer = UnitDataFieldGetIntegerImpl(field, unit);
 
-	return result.pointer != NULL;
+	return result.pointer != nullptr;
 }
 
 
@@ -81,8 +81,8 @@ static bool UnitDataFieldGetReal(const s_object_field_definition& field, s_unit_
 	case _unit_field_real_camo_power:							result.ptr.real = &unit.camo_power; break;
 	case _unit_field_real_full_spectrum_vision_power:			result.ptr.real = &unit.full_spectrum_vision_power; break;
 
-	default: result.ptr.real = NULL;  break;
+	default: result.ptr.real = nullptr;  break;
 	}
 
-	return result.ptr.real != NULL;
+	return result.ptr.real != nullptr;
 }

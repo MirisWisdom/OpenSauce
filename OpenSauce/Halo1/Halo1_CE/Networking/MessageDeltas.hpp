@@ -98,7 +98,7 @@ namespace Yelo
 		// ?
 		int32 MdpiEncode(long_enum mode, long_enum definition_type, 
 			const void* buffer, size_t buffer_size_in_bits, 
-			const void** headers, const void** datas, const void** baselines = NULL, 
+			const void** headers, const void** datas, const void** baselines = nullptr, 
 			int32 iterations = 1, int32 /*bool*/ unk = false);
 
 		int32 EncodeStateless(long_enum definition_type, 

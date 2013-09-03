@@ -39,7 +39,7 @@ namespace Yelo
 			HMODULE module_handle;
 		}_main_globals = {
 			false,
-			NULL
+			nullptr
 		};
 
 		bool IsYeloEnabled()
@@ -78,18 +78,18 @@ namespace Yelo
 			GetCurrentDirectory(NUMBEROF(dir), dir);
 
 			char name[64];
-			GetModuleBaseName(GetCurrentProcess(), GetModuleHandle(NULL), name, NUMBEROF(name));
+			GetModuleBaseName(GetCurrentProcess(), GetModuleHandle(nullptr), name, NUMBEROF(name));
 			_strlwr_s(name);
 
 			// Ok, the warning message will get annoying after a while for sapien (and tool) users
-			if ( strstr(name,"sapien") != NULL || strstr(name,"hobo") != NULL || 
-				 strstr(name,"tool") != NULL )
+			if ( strstr(name,"sapien") != nullptr || strstr(name,"hobo") != nullptr || 
+				 strstr(name,"tool") != nullptr )
 				return Enums::_version_result_code_dx9_app;
 
 			char warning[MAX_PATH*3]; // we print a buffer with MAX_PATH twice, so just in case...
 
 			// if the application name doesn't include the game name in it, assume the worst
-			if ( strstr(name,PLATFORM_VALUE("haloce","haloceded")) == NULL )
+			if ( strstr(name,PLATFORM_VALUE("haloce","haloceded")) == nullptr )
 			{
 #if PLATFORM_IS_USER && defined(DX_WRAPPER)
 				sprintf_s(warning,
@@ -134,7 +134,7 @@ namespace Yelo
 			}
 
 			if(result_code == Enums::_version_result_code_invalid)
-				MessageBox(NULL, warning, "Notice", MB_OK | MB_ICONWARNING);
+				MessageBox(nullptr, warning, "Notice", MB_OK | MB_ICONWARNING);
 
 			return result_code;
 		}
@@ -186,7 +186,7 @@ bool WINAPI DllMain(HMODULE hModule, DWORD dwReason, PVOID pvReserved)
 		FreeDXProxy(hModule);
 #endif
 
-		Yelo::Main::YeloModuleHandle() = NULL;
+		Yelo::Main::YeloModuleHandle() = nullptr;
 		g_initialized = false;
 	}
 

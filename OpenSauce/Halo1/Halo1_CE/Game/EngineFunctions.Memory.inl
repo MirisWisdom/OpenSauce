@@ -26,7 +26,7 @@ datum_index DatumNewAtIndex(Yelo::Memory::s_data_array* data, datum_index index)
 {
 	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(DATUM_NEW_AT_INDEX);
 
-	if(data == NULL || index.IsNull()) return datum_index::null;
+	if(data == nullptr || index.IsNull()) return datum_index::null;
 
 	__asm {
 		mov		edx, data
@@ -39,7 +39,7 @@ datum_index DatumNew(Yelo::Memory::s_data_array* data)
 {
 	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(DATUM_NEW);
 
-	if(data == NULL) return datum_index::null;
+	if(data == nullptr) return datum_index::null;
 
 	__asm {
 		mov		edx, data
@@ -51,7 +51,7 @@ void DatumDelete(Yelo::Memory::s_data_array* data, datum_index datum)
 {
 	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(DATUM_DELETE);
 
-	if(data == NULL || datum.IsNull()) return;
+	if(data == nullptr || datum.IsNull()) return;
 
 	__asm {
 		mov		edx, datum
@@ -78,7 +78,7 @@ void* DataIteratorNext(void* iterator)
 {
 	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(DATA_ITERATOR_NEXT);
 
-	if(iterator == NULL) return NULL;
+	if(iterator == nullptr) return nullptr;
 
 	__asm {
 		push	edi
@@ -94,7 +94,7 @@ datum_index DataNextIndex(Yelo::Memory::s_data_array* data, datum_index cursor)
 {
 	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(DATA_NEXT_INDEX);
 
-	if(data == NULL || cursor.IsNull()) return datum_index::null;
+	if(data == nullptr || cursor.IsNull()) return datum_index::null;
 
 	__asm {
 		push	edi
@@ -113,7 +113,7 @@ void* DatumTryAndGet(Yelo::Memory::s_data_array* data, datum_index datum)
 {
 	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(DATUM_TRY_AND_GET);
 
-	if(data == NULL) return NULL;
+	if(data == nullptr) return nullptr;
 
 	__asm {
 		push	esi
@@ -130,7 +130,7 @@ Yelo::Memory::s_data_array* DataNewAndMakeValid(cstring name, int32 maximum_coun
 {
 	Yelo::Memory::s_data_array* data = DataNew(name, maximum_count, datum_size);
 
-	if(data != NULL)
+	if(data != nullptr)
 	{
 		data->is_valid = true;
 		DataDeleteAll(data);

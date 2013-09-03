@@ -63,7 +63,7 @@ namespace Yelo
 			{
 				{ 458 - 640, 6 },
 				GET_PTR2(HUD_MULTIPLAYER_ICON_KING_X),
-				NULL
+				nullptr
 			},
 			// oddball
 			{
@@ -81,7 +81,7 @@ namespace Yelo
 			{
 				{ 457 - 640, 6 },
 				GET_PTR2(HUD_MULTIPLAYER_ICON_SLAYER_X),
-				NULL
+				nullptr
 			},
 			// background
 			{
@@ -125,7 +125,7 @@ namespace Yelo
 			static const function_t render_widget_recursive = CAST_PTR(function_t, GET_FUNC_VPTR(RENDER_WIDGET_RECURSIVE));
 
 			// get the widget tag
-			const TagGroups::ui_widget_definition* widget = TagGroups::TagGet<TagGroups::ui_widget_definition>(*widget_datum_index);
+			const auto* widget = TagGroups::TagGet<TagGroups::ui_widget_definition>(*widget_datum_index);
 
 			// do not scale the widget if it is full screen
 			bool scale_widget = ((widget->bounds.right - widget->bounds.left) != 640) && ((widget->bounds.bottom - widget->bounds.top) != 480);
@@ -193,7 +193,7 @@ namespace Yelo
 
 		static HRESULT SetVertexShaderConstantF_ScreenProj(IDirect3DDevice9* device, UINT StartRegister,CONST float* pConstantData,UINT Vector4fCount)
 		{
-			D3DXMATRIX* original_matrix = CAST_PTR(D3DXMATRIX*, (float*)pConstantData);
+			auto* original_matrix = CAST_PTR(D3DXMATRIX*, (float*)pConstantData);
 
 			original_matrix->_11 = g_hud_globals.m_projection.projection.x;
 			original_matrix->_22 = g_hud_globals.m_projection.projection.y;
@@ -438,7 +438,7 @@ namespace Yelo
 		{
 			InitializeHUDSettings();
 
-			if(hud_element != NULL)
+			if(hud_element != nullptr)
 			{
 				g_hud_globals.m_flags.show_hud = Settings::ParseBoolean( hud_element->Attribute("show") );
 				g_hud_globals.m_flags.scale_hud = Settings::ParseBoolean( hud_element->Attribute("scale") );
@@ -505,7 +505,7 @@ namespace Yelo
 			g_hud_globals.m_menu_text->Release();
 
 			delete g_hud_globals.m_menu_text;
-			g_hud_globals.m_menu_text = NULL;
+			g_hud_globals.m_menu_text = nullptr;
 		}
 #endif
 	};

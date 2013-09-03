@@ -20,7 +20,7 @@ static void EventLogInitialize()
 
 static void EventLogDispose()
 {
-	if(event_log_globals.file_handle != NULL)
+	if(event_log_globals.file_handle != nullptr)
 		fclose(event_log_globals.file_handle);
 }
 
@@ -39,7 +39,7 @@ void WriteEvent(cstring str, bool write_time_stamp)
 {
 	static const char format[] = "%s%s%c";
 
-	if(event_log_globals.file_handle == NULL) return;
+	if(event_log_globals.file_handle == nullptr) return;
 
 	static bool first_line = true;
 	if(first_line)

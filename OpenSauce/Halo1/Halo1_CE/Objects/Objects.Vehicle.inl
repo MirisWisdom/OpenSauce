@@ -35,17 +35,17 @@ namespace Yelo
 
 				void Dispose()
 				{
-					if(menu != NULL)
+					if(menu != nullptr)
 					{
 						delete menu;
-						menu = NULL;
+						menu = nullptr;
 					}
 				}
 
 				s_preset* AddPreset(cstring name)
 				{
 					if(presets_count == Enums::k_vehicle_view_max_vehicle_presets-1)
-						return NULL;
+						return nullptr;
 
 					s_preset* preset = &presets[presets_count++];
 					strcpy_s(preset->name, NUMBEROF(preset->name), name);
@@ -59,7 +59,7 @@ namespace Yelo
 					datum_index player_index = Players::LocalPlayerIndex();
 					s_unit_datum* vehicle = Players::GetVehicle(player_index, current_seat_index);
 
-					return vehicle ? vehicle : NULL;
+					return vehicle ? vehicle : nullptr;
 				}
 
 			public:

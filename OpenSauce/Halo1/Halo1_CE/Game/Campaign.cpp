@@ -92,7 +92,7 @@ namespace Yelo
 			if( strstr(scenario_name, ScenarioHelpMappings[x].name) )
 				return ScenarioHelpMappings[x].widget_definition;
 
-		return NULL;
+		return nullptr;
 	}
 
 	API_FUNC_NAKED static void PLATFORM_API DisplayScenarioHelpHack()

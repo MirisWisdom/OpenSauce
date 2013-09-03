@@ -164,7 +164,7 @@ namespace Yelo
 			{
 				static cstring k_stock_ui = "levels\\ui\\ui";
 
-				if(override_name != NULL && override_name[0] != '\0')
+				if(override_name != nullptr && override_name[0] != '\0')
 				{
 					size_t name_length = strlen(override_name);
 
@@ -196,7 +196,7 @@ namespace Yelo
 
 			void LoadSettings(TiXmlElement* cf_element)
 			{
-				if(cf_element != NULL)
+				if(cf_element != nullptr)
 				{
 					check_for_yelo_files_first = Settings::ParseBoolean(cf_element->Attribute("checkForYeloFilesFirst"));
 
@@ -297,13 +297,13 @@ namespace Yelo
 			string256 map_path;
 			c_cache_format_path_hacks::PathHack(map_path, "%s%s%s.map", RootDirectory(), "maps\\", relative_map_name);
 
-			HANDLE f = CreateFileA(map_path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+			HANDLE f = CreateFileA(map_path, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
 			if(f != INVALID_HANDLE_VALUE)
 			{
 				file_exists = true;
 
 				DWORD lpNumberOfBytesRead;
-				if(ReadFile(f, &out_header, sizeof(out_header), &lpNumberOfBytesRead, NULL) != FALSE && lpNumberOfBytesRead == sizeof(out_header))
+				if(ReadFile(f, &out_header, sizeof(out_header), &lpNumberOfBytesRead, nullptr) != FALSE && lpNumberOfBytesRead == sizeof(out_header))
 				{
 					if(out_header.ValidSignatures())
 					{

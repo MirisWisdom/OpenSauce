@@ -42,11 +42,11 @@ namespace Yelo
 			definition_xml.Parse(CAST_PTR(const char*, resource_pointer));
 
 			TiXmlElement* root = definition_xml.FirstChildElement("osYeloChecksums");
-			if(root == NULL)
+			if(root == nullptr)
 				return;
 
 			TiXmlElement* file_element = root->FirstChildElement("file");
-			if(file_element == NULL)
+			if(file_element == nullptr)
 				return;
 
 			//get the file count by enumerating all file elements
@@ -63,7 +63,7 @@ namespace Yelo
 			{
 				s_id_file_definition& file_def = g_file_io_globals.m_id_file_definitions[index];
 
-				const char* string_pointer = NULL;
+				const char* string_pointer = nullptr;
 				uint32 string_length = 0;
 
 				// read the files ID
@@ -126,7 +126,7 @@ namespace Yelo
 			}
 			// delete the file definition array
 			delete [] g_file_io_globals.m_id_file_definitions;
-			g_file_io_globals.m_id_file_definitions = NULL;
+			g_file_io_globals.m_id_file_definitions = nullptr;
 			g_file_io_globals.m_id_file_count = 0;
 		}
 
@@ -173,12 +173,12 @@ namespace Yelo
 			// open the file
 			// ID files are always read only
 			info_out.file_handle = CreateFile(file_def.m_location, 
-				GENERIC_READ, NULL, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+				GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 
 			if(info_out.file_handle == INVALID_HANDLE_VALUE)
 				return GetOpenErrorEnum(GetLastError());
 
-			info_out.file_size = GetFileSize(info_out.file_handle, NULL);
+			info_out.file_size = GetFileSize(info_out.file_handle, nullptr);
 
 			if(info_out.file_size == 0)
 				return Enums::_file_io_open_error_file_is_empty;
@@ -189,7 +189,7 @@ namespace Yelo
 			if(file_def.m_flags.do_md5_check)
 			{
 				// map the file as we don't need to read it into memory
-				HANDLE mapped_file = CreateFileMapping(info_out.file_handle, NULL, PAGE_READONLY, 0, 0, NULL);
+				HANDLE mapped_file = CreateFileMapping(info_out.file_handle, nullptr, PAGE_READONLY, 0, 0, nullptr);
 
 				void* mapping_pointer = MapViewOfFile(mapped_file, FILE_MAP_READ, 0, 0, 0);
 

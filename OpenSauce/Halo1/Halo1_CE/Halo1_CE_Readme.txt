@@ -54,6 +54,10 @@ It is also useful for us to know your system specifications such as your graphic
 NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how to use OS, please consult our wiki and/or create a post on Halomods to get community assistance. We are also NOT taking feature requests in any way.
 
 == Change Log ==
+=== Version X ===
+  * ADD			Added new script functions: weapon_data_magazine_get\set_integer
+  * CHANGE		OpenSauce is now compiled with VS2012, instead of VS2008
+
 === Version 3.1.1 ===
   * ADD			added unit boarding
   * ADD			added entering biped unit seats

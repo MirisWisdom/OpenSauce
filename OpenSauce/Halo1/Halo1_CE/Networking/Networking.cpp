@@ -168,7 +168,7 @@ namespace Yelo
 
 		void LoadSettings(TiXmlElement* xml_element)
 		{
-			if(xml_element == NULL) return;
+			if(xml_element == nullptr) return;
 
 			GameSpy::LoadSettings(xml_element);
 		}

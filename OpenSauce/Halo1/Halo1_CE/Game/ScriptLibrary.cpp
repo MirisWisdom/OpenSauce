@@ -81,7 +81,7 @@ namespace Yelo
 			// Not really constant but should be treated as such
 			static real k_opensauce_version = real(K_OPENSAUCE_VERSION);
 
-			if(global.address == NULL && global.type == HS_TYPE(real))
+			if(global.address == nullptr && global.type == HS_TYPE(real))
 				global.Value._real = &k_opensauce_version;
 		}
 #include "Game/ScriptLibrary.MemoryUpgrades.inl"
@@ -252,7 +252,7 @@ namespace Yelo
 			static uint32 hs_arguments_evaluate_address = GET_FUNC_PTR(HS_ARGUMENTS_EVALUATE);
 			static uint32 hs_function_table_address = CAST_PTR(uint32, &_upgrade_globals.functions.table[0]);
 
-			uint32* temp = NULL;
+			uint32* temp = nullptr;
 
 			// with params functions
 			{
@@ -280,11 +280,11 @@ namespace Yelo
 		// Returns: evaluate function address
 		static void* CreateScriptFunction(void* func, bool takes_params)
 		{
-			if(hs_eval_func >= NUMBEROF(hs_eval_func_ptrs)) return NULL; // we don't want to go over our set limit
+			if(hs_eval_func >= NUMBEROF(hs_eval_func_ptrs)) return nullptr; // we don't want to go over our set limit
 
-			void* evaluate = NULL;
+			void* evaluate = nullptr;
 			hs_eval_func_ptrs[hs_eval_func] = CAST_PTR(uint32, func);
-			uint32* temp = NULL;
+			uint32* temp = nullptr;
 
 			if(takes_params)
 			{

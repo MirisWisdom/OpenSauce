@@ -73,7 +73,7 @@ namespace Yelo
 			if(!weapon_index.IsNull())
 				return Objects::GetObjectDefinition<TagGroups::s_weapon_definition>(weapon_index);
 
-			return NULL;
+			return nullptr;
 		}
 		static datum_index FirstPersonWeaponGetAnimationGraphIndex(s_first_person_weapon* fp_weapon)
 		{
@@ -81,7 +81,7 @@ namespace Yelo
 
 			TagGroups::s_weapon_definition const* weapon = FirstPersonWeaponGetWeaponDefinition(fp_weapon);
 
-			if(weapon != NULL)
+			if(weapon != nullptr)
 				anim_graph_index = weapon->weapon.first_person_animations.tag_index;
 
 			return anim_graph_index;
@@ -179,11 +179,11 @@ namespace Yelo
 			{
 				Players::s_player_datum* src_player = Players::GetPlayerFromNumber(src_player_number);
 				datum_index src_player_vehicle_index = datum_index::null;
-				if(src_player != NULL) src_player_vehicle_index = src_player->GetVehicleIndex();
+				if(src_player != nullptr) src_player_vehicle_index = src_player->GetVehicleIndex();
 
 				Players::t_players_data::Iterator iter(Players::Players());
 				Players::s_player_datum* player;
-				while( (player = iter.Next()) != NULL )
+				while( (player = iter.Next()) != nullptr )
 				{
 					int32 player_machine_index = player->network_player.machine_index;
 					if(	player_machine_index == NONE ||
@@ -204,7 +204,7 @@ namespace Yelo
 		static bool SendHudChatServer(byte src_player_number, proc_send_hud_chat_predicate send_predicate,
 			int32 message_size, Enums::hud_chat_type msg_type)
 		{
-			if(send_predicate == NULL)
+			if(send_predicate == nullptr)
 			{
 				switch(msg_type)
 				{
@@ -239,7 +239,7 @@ namespace Yelo
 
 				int32 bits_encoded = MessageDeltas::EncodeStateless(
 					Enums::_message_delta_hud_chat,
-					NULL, &network_data);
+					nullptr, &network_data);
 
 				bool result = false;
 				if(bits_encoded <= 0)

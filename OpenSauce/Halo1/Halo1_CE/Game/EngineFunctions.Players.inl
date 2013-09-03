@@ -7,7 +7,7 @@
 
 datum_index IndexFromUnitIndex(datum_index unit_index)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(PLAYER_INDEX_FROM_UNIT_INDEX);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(PLAYER_INDEX_FROM_UNIT_INDEX);
 
 	if(unit_index.IsNull()) return datum_index::null;
 
@@ -20,7 +20,7 @@ datum_index IndexFromUnitIndex(datum_index unit_index)
 
 bool Teleport(datum_index player_index, const real_point3d& position, datum_index source_unit_index)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(PLAYER_TELEPORT);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(PLAYER_TELEPORT);
 
 	if(player_index.IsNull()) return false;
 

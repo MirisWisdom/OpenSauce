@@ -47,7 +47,7 @@ static void MemoryUpgradesInitialize()
 		x < K_HS_FUNCTION_TABLE_COUNT; 
 		index++)
 	{
-		if(_upgrade_globals.functions.table[index] == NULL)
+		if(_upgrade_globals.functions.table[index] == nullptr)
 		{
 			_upgrade_globals.functions.table[index] = hs_function_table[x++];
 			_upgrade_globals.functions.count++;
@@ -58,7 +58,7 @@ static void MemoryUpgradesInitialize()
 		x < K_HS_EXTERNAL_GLOBALS_COUNT; 
 		index++)
 	{
-		if(_upgrade_globals.globals.table[index] == NULL)
+		if(_upgrade_globals.globals.table[index] == nullptr)
 		{
 			hs_global_definition& glob = 
 				*(_upgrade_globals.globals.table[index] = hs_external_globals[x++]);

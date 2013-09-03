@@ -76,7 +76,7 @@ static datum_index PlayerSpawnCreateUnitMultiplayerGetDefinitionOverride(datum_i
 
 static API_FUNC_NAKED void PLATFORM_API PlayerSpawnCreateUnitMultiplayerHook()
 {
-	static uint32 RETN_ADDRESS = GET_FUNC_PTR(PLAYER_SPAWN__CREATE_UNIT_MP_HOOK_RETN);
+	static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(PLAYER_SPAWN__CREATE_UNIT_MP_HOOK_RETN);
 
 	__asm {
 		push	eax		// unit_definition_index

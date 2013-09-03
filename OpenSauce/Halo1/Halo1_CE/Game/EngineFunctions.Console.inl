@@ -7,7 +7,7 @@
 
 void ProcessCommand(cstring command)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(CONSOLE_PROCESS_COMMAND);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(CONSOLE_PROCESS_COMMAND);
 
 #if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 	char local[k_engine_function_string_buffer_size];
@@ -38,7 +38,7 @@ void ProcessRemoteCommand(int32 machine_index, cstring command)
 
 void TerminalPrint(cstring msg)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(CONSOLE_TERMINAL_PRINTF);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(CONSOLE_TERMINAL_PRINTF);
 
 #if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 	char local[k_engine_function_string_buffer_size];
@@ -63,7 +63,7 @@ void TerminalPrint(cstring msg)
 
 void TerminalPrintF(cstring format, ...)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(CONSOLE_TERMINAL_PRINTF);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(CONSOLE_TERMINAL_PRINTF);
 
 	char local[k_engine_function_string_buffer_size];
 	memset(local, 0, k_engine_function_string_buffer_size);
@@ -84,7 +84,7 @@ void TerminalPrintF(cstring format, ...)
 
 void Print(cstring msg)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(CONSOLE_PRINTF);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(CONSOLE_PRINTF);
 
 #if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 	char local[k_engine_function_string_buffer_size];
@@ -109,7 +109,7 @@ void Print(cstring msg)
 
 void Warning(cstring msg)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(CONSOLE_WARNING);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(CONSOLE_WARNING);
 
 #if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 	char local[k_engine_function_string_buffer_size];

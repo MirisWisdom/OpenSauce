@@ -19,9 +19,9 @@
 
 
 
-{GameState::RuntimeData::InitializeForNewGameState,	NULL},
+{GameState::RuntimeData::InitializeForNewGameState,	nullptr},
 
-{ScenarioFauxZones::InitializeForNewGameState,		NULL},
+{ScenarioFauxZones::InitializeForNewGameState,		nullptr},
 #if PLATFORM_IS_USER
 
 
@@ -40,7 +40,7 @@
 
 
 
-{NULL,												Objects::InitializeForYeloGameState},
+{nullptr,											Objects::InitializeForYeloGameState},
 
 #if PLATFORM_IS_USER
 

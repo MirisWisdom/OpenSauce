@@ -7,7 +7,7 @@
 
 API_FUNC_NAKED void AllWeapons()
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(CHEAT_ALL_WEAPONS);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(CHEAT_ALL_WEAPONS);
 
 	__asm {
 		call	TEMP_CALL_ADDR
@@ -17,7 +17,7 @@ API_FUNC_NAKED void AllWeapons()
 
 API_FUNC_NAKED void SpawnWarthog()
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(CHEAT_SPAWN_WARTHOG);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(CHEAT_SPAWN_WARTHOG);
 
 	__asm {
 		call	TEMP_CALL_ADDR
@@ -27,7 +27,7 @@ API_FUNC_NAKED void SpawnWarthog()
 
 API_FUNC_NAKED void TeleportToCamera()
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(CHEAT_TELEPORT_TO_CAMERA);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(CHEAT_TELEPORT_TO_CAMERA);
 
 	__asm {
 		call	TEMP_CALL_ADDR
@@ -37,7 +37,7 @@ API_FUNC_NAKED void TeleportToCamera()
 
 API_FUNC_NAKED void ActiveCamoflage()
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(CHEAT_ACTIVE_CAMOFLAGE);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(CHEAT_ACTIVE_CAMOFLAGE);
 
 	__asm {
 		call	TEMP_CALL_ADDR
@@ -47,7 +47,7 @@ API_FUNC_NAKED void ActiveCamoflage()
 
 API_FUNC_NAKED void ActiveCamoflageLocalPlayer()
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(CHEAT_ACTIVE_CAMOFLAGE_LOCAL_PLAYER);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(CHEAT_ACTIVE_CAMOFLAGE_LOCAL_PLAYER);
 
 	__asm {
 		call	TEMP_CALL_ADDR
@@ -57,7 +57,7 @@ API_FUNC_NAKED void ActiveCamoflageLocalPlayer()
 
 API_FUNC_NAKED datum_index PlayerIndex()
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(CHEAT_PLAYER_INDEX);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(CHEAT_PLAYER_INDEX);
 
 	__asm {
 		call	TEMP_CALL_ADDR
@@ -68,7 +68,7 @@ API_FUNC_NAKED datum_index PlayerIndex()
 API_FUNC_NAKED void DirectorSaveCamera()
 {
 #if !PLATFORM_IS_DEDI
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(DIRECTOR_SAVE_CAMERA);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(DIRECTOR_SAVE_CAMERA);
 
 	__asm {
 		call	TEMP_CALL_ADDR
@@ -80,7 +80,7 @@ API_FUNC_NAKED void DirectorSaveCamera()
 API_FUNC_NAKED void DirectorLoadCamera()
 {
 #if !PLATFORM_IS_DEDI
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(DIRECTOR_LOAD_CAMERA);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(DIRECTOR_LOAD_CAMERA);
 
 	__asm {
 		call	TEMP_CALL_ADDR

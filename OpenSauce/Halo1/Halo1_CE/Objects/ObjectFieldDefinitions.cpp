@@ -41,7 +41,7 @@ namespace Yelo
 			template<size_t _SizeOfArray>
 			static void qsort_list(s_object_field_definition (&list)[_SizeOfArray])
 			{
-				qsort_s(list, _SizeOfArray, sizeof(s_object_field_definition), qsort_proc, NULL);
+				qsort_s(list, _SizeOfArray, sizeof(s_object_field_definition), qsort_proc, nullptr);
 			}
 
 			static int __cdecl bsearch_proc(void* ctxt, const void* key, const void* field_definition)
@@ -55,7 +55,7 @@ namespace Yelo
 			static const s_object_field_definition* bsearch_list(const s_object_field_definition (&list)[_SizeOfArray], cstring name)
 			{
 				return CAST_PTR(s_object_field_definition*, 
-					bsearch_s(name, list, _SizeOfArray, sizeof(s_object_field_definition), bsearch_proc, NULL));
+					bsearch_s(name, list, _SizeOfArray, sizeof(s_object_field_definition), bsearch_proc, nullptr));
 			}
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_field_definition) == 0x10 );
 #define FIELD_INDEX_NAME(object_type, field_type, field_name)		\
@@ -75,7 +75,7 @@ namespace Yelo
 
 		static int ObjectFunctionNameToIndex(cstring function_name)
 		{
-			if(function_name != NULL)
+			if(function_name != nullptr)
 			{
 				switch(function_name[0])
 				{
@@ -100,7 +100,7 @@ namespace Yelo
 		{
 			int field_index = 0; // default to the first field ie: 'x', 'i', etc
 
-			if(field_name != NULL)
+			if(field_name != nullptr)
 			{
 				switch(field_name[0])
 				{
@@ -121,7 +121,7 @@ namespace Yelo
 		{
 			int index = 0;
 
-			if(subscripted_name != NULL && subscripted_name[0] != '\0')
+			if(subscripted_name != nullptr && subscripted_name[0] != '\0')
 			{
 				size_t last_char_index = strlen(subscripted_name)-1;
 				char last_char = subscripted_name[last_char_index];
@@ -141,10 +141,9 @@ namespace Yelo
 			bool (API_FUNC* getter_proc)(const s_object_field_definition&, TObjectDatum&, __inout TypeHolder&, TGetterParam)
 			)
 		{
-			const s_object_field_definition* field = 
-				s_object_field_definition::bsearch_list(list, name);
+			const auto* field = s_object_field_definition::bsearch_list(list, name);
 
-			if( field != NULL )
+			if( field != nullptr )
 			{
 				Enums::hs_type result_type = field->hs_type;
 
@@ -160,10 +159,9 @@ namespace Yelo
 			bool (API_FUNC* getter_proc)(const s_object_field_definition&, TObjectDatum&, __inout TypeHolder&, TGetterParam)
 			)
 		{
-			const s_object_field_definition* field = 
-				s_object_field_definition::bsearch_list(list, name);
+			const auto* field = s_object_field_definition::bsearch_list(list, name);
 
-			if( field != NULL && 
+			if( field != nullptr && 
 				!field->is_readonly && 
 				(Networking::IsLocal() || field->is_networked))
 			{
@@ -179,13 +177,12 @@ namespace Yelo
 		real_vector3d* ObjectDataGetVectorByName(s_object_header_datum* header, 
 			cstring data_name)
 		{
-			const s_object_field_definition* field = 
-				s_object_field_definition::bsearch_list(g_object_real_fields, data_name);
+			const auto* field = s_object_field_definition::bsearch_list(g_object_real_fields, data_name);
 
-			if( field != NULL && ObjectFieldIndexIsVector(field->definition_index) )
+			if( field != nullptr && ObjectFieldIndexIsVector(field->definition_index) )
 				return ObjectDataFieldGetVector(*field, *header);
 
-			return NULL;
+			return nullptr;
 		}
 		//////////////////////////////////////////////////////////////////////////
 		// Real
@@ -216,12 +213,12 @@ namespace Yelo
 		{
 			datum_index definition_index = weapon->object.definition_index;
 
-			const TagGroups::s_weapon_definition* definition = TagGroups::TagGet<TagGroups::s_weapon_definition>(definition_index);
+			const auto* definition = TagGroups::TagGet<TagGroups::s_weapon_definition>(definition_index);
 
 			if (trigger_index >= 0 && trigger_index < definition->weapon.triggers.Count)
 			{
 				// We're fucking with the tag definition...at runtime :|
-				TagGroups::weapon_trigger_definition& trigger = CAST_QUAL(TagGroups::weapon_trigger_definition&, 
+				auto& trigger = CAST_QUAL(TagGroups::weapon_trigger_definition&, 
 					definition->weapon.triggers[trigger_index]);
 
 				ObjectFieldSetImpl(g_weapon_tag_real_trigger_fields, data_name, trigger, 
@@ -236,7 +233,7 @@ namespace Yelo
 			__inout TypeHolder& result)
 		{
 			ObjectFieldGetImpl(g_weapon_real_fields, data_name, weapon->weapon, 
-				result, (void*)NULL,
+				result, (void*)nullptr,
 				WeaponDataFieldGetReal);
 		}
 		void WeaponDataSetRealByName(s_weapon_datum* weapon, 
@@ -244,7 +241,7 @@ namespace Yelo
 			real data_value)
 		{
 			ObjectFieldSetImpl(g_weapon_real_fields, data_name, weapon->weapon, 
-				data_value, (void*)NULL,
+				data_value, (void*)nullptr,
 				WeaponDataFieldGetReal);
 		}
 		//////////////////////////////////////////////////////////////////////////
@@ -295,7 +292,7 @@ namespace Yelo
 			__inout TypeHolder& result)
 		{
 			ObjectFieldGetImpl(g_unit_integer_fields, data_name, unit->unit, 
-				result, (void*)NULL,
+				result, (void*)nullptr,
 				UnitDataFieldGetInteger);
 		}
 		void UnitDataSetIntegerByName(s_unit_datum* unit, 
@@ -303,7 +300,7 @@ namespace Yelo
 			int32 data_value)
 		{
 			ObjectFieldSetImpl(g_unit_integer_fields, data_name, unit->unit, 
-				data_value, (void*)NULL,
+				data_value, (void*)nullptr,
 				UnitDataFieldGetInteger);
 		}
 		//////////////////////////////////////////////////////////////////////////
@@ -313,7 +310,7 @@ namespace Yelo
 			__inout TypeHolder& result)
 		{
 			ObjectFieldGetImpl(g_unit_real_fields, data_name, unit->unit, 
-				result, (void*)NULL,
+				result, (void*)nullptr,
 				UnitDataFieldGetReal);
 		}
 		void UnitDataSetRealByName(s_unit_datum* unit, 
@@ -321,7 +318,7 @@ namespace Yelo
 			real data_value)
 		{
 			ObjectFieldSetImpl(g_unit_real_fields, data_name, unit->unit, 
-				data_value, (void*)NULL,
+				data_value, (void*)nullptr,
 				UnitDataFieldGetReal);
 		}
 

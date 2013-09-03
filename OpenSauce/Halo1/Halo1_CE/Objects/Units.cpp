@@ -30,14 +30,14 @@ namespace Yelo
 			GameState::s_yelo_header_data& yelo_header = GameState::GameStateGlobals()->header->yelo;
 
 			return GameState::YeloGameStateEnabled() && yelo_header.unit_grenade_types_count >= Enums::_unit_grenade_type_yelo2+1
-				? &this->grenade_counts[Enums::_unit_grenade_type_yelo2] : NULL;
+				? &this->grenade_counts[Enums::_unit_grenade_type_yelo2] : nullptr;
 		}
 		byte* s_unit_data::GetYeloGrenade3Count()
 		{
 			GameState::s_yelo_header_data& yelo_header = GameState::GameStateGlobals()->header->yelo;
 
 			return GameState::YeloGameStateEnabled() && yelo_header.unit_grenade_types_count >= Enums::_unit_grenade_type_yelo3+1
-				? &this->grenade_counts[Enums::_unit_grenade_type_yelo3] : NULL;
+				? &this->grenade_counts[Enums::_unit_grenade_type_yelo3] : nullptr;
 		}
 
 		byte* s_unit_data::GetZoomLevel()

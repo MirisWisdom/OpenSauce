@@ -33,7 +33,7 @@ namespace Yelo
 
 		API_FUNC_NAKED void PLATFORM_API Update(uint32 access_flags)
 		{
-			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(CONSOLE_PROCESS_COMMAND);
+			static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(CONSOLE_PROCESS_COMMAND);
 
 			__asm {
 				mov		eax, access_flags
