@@ -11,7 +11,7 @@ static void* scripting_objects_distance_to_object_evaluate(void** arguments)
 		datum_index object_list;
 		datum_index dest_object;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 	result.real = -1.0f;
 
 	if(!args->dest_object.IsNull())
@@ -48,7 +48,7 @@ static void* scripting_object_data_get_real_evaluate(void** arguments)
 		cstring data_name;
 		cstring subdata_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 	result.real = -1.0f;
 
 	if(!args->object_index.IsNull())
@@ -76,7 +76,7 @@ static void* scripting_object_data_set_real_evaluate(void** arguments)
 		ObjectDataSetRealByName(object, args->data_name, args->subdata_name, args->data_value);
 	}
 
-	return NULL;
+	return nullptr;
 }
 static void* scripting_object_data_set_vector_evaluate(void** arguments)
 {
@@ -86,7 +86,7 @@ static void* scripting_object_data_set_vector_evaluate(void** arguments)
 		int16 vector_index;
 		PAD16;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 	if(!args->object_index.IsNull())
 	{
@@ -94,7 +94,7 @@ static void* scripting_object_data_set_vector_evaluate(void** arguments)
 
 		real_vector3d* obj_vector = ObjectDataGetVectorByName(object, args->data_name);
 		const real_vector3d* vector = GameState::RuntimeData::VectorValueGet(args->vector_index);
-		if(obj_vector != NULL && vector != NULL)
+		if(obj_vector != nullptr && vector != nullptr)
 		{
 			*obj_vector = *vector;
 			result.boolean = true;
@@ -111,7 +111,7 @@ static void* scripting_object_data_save_vector_evaluate(void** arguments)
 		int16 vector_index;
 		PAD16;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 	if(!args->object_index.IsNull())
 	{
@@ -119,7 +119,7 @@ static void* scripting_object_data_save_vector_evaluate(void** arguments)
 
 		real_vector3d* obj_vector = ObjectDataGetVectorByName(object, args->data_name);
 		real_vector3d* vector = GameState::RuntimeData::VectorValueGetForModify(args->vector_index);
-		if(obj_vector != NULL && vector != NULL)
+		if(obj_vector != nullptr && vector != nullptr)
 		{
 			*vector = *obj_vector;
 			result.boolean = true;
@@ -139,7 +139,7 @@ static void* scripting_weapon_data_get_real_evaluate(void** arguments)
 		datum_index weapon_index;
 		cstring data_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 	result.real = -1.0f;
 
 	if(!args->weapon_index.IsNull())
@@ -176,7 +176,7 @@ static void* scripting_weapon_data_set_real_evaluate(void** arguments)
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -190,7 +190,7 @@ static void* scripting_weapon_data_magazine_get_integer_evaluate(void** argument
 		cstring data_name;
 		cstring subdata_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 	result.int32 = NONE;
 
 	if(Networking::IsLocal() && !args->weapon_index.IsNull())
@@ -229,7 +229,7 @@ static void* scripting_weapon_data_magazine_set_integer_evaluate(void** argument
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -262,7 +262,7 @@ static void* scripting_weapon_data_trigger_set_real_evaluate(void** arguments)
 		}
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 
@@ -275,7 +275,7 @@ static void* scripting_unit_data_get_object_evaluate(void** arguments)
 		datum_index unit_index;
 		cstring data_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 	result.datum = datum_index::null;
 
 	if(!args->unit_index.IsNull())
@@ -294,7 +294,7 @@ static void* scripting_unit_data_get_integer_evaluate(void** arguments)
 		datum_index unit_index;
 		cstring data_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 	result.int32 = NONE;
 
 	if(!args->unit_index.IsNull())
@@ -321,7 +321,7 @@ static void* scripting_unit_data_set_integer_evaluate(void** arguments)
 		UnitDataSetIntegerByName(unit, args->data_name, args->data_value);
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 static void* scripting_unit_data_get_real_evaluate(void** arguments)
@@ -330,7 +330,7 @@ static void* scripting_unit_data_get_real_evaluate(void** arguments)
 		datum_index unit_index;
 		cstring data_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 	result.real = -1.0f;
 
 	if(!args->unit_index.IsNull())
@@ -357,7 +357,7 @@ static void* scripting_unit_data_set_real_evaluate(void** arguments)
 		UnitDataSetRealByName(unit, args->data_name,args->data_value);
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 
@@ -366,7 +366,7 @@ static void* scripting_vehicle_remapper_enabled_evaluate(void** arguments)
 	struct s_arguments {
 		cstring state_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 	result.boolean = g_object_yelo_globals.vehicle_remapper_disabled;
 	if( args->state_name[0] != '\0' && strcmp(args->state_name, "get")!=0 )

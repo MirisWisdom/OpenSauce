@@ -71,7 +71,7 @@ namespace Yelo
 			// do not display a message box if this is a freeze dump as the dialog is unusable
 			if(g_freeze_dump_globals.m_dump_initiated)
 				return;
-			MessageBox(NULL, message, "Crash Report Saved", MB_OK);
+			MessageBox(nullptr, message, "Crash Report Saved", MB_OK);
 #else
 			Engine::Console::TerminalPrint(message);
 #endif
@@ -164,7 +164,7 @@ namespace Yelo
 		{
 			// unlock the page for read and write
 			VirtualProtect(GET_PTR(VIRTUALPROTECT_LOCK), 1, PAGE_READWRITE, GET_PTR2(VIRTUALPROTECT_OLD_PROTECT));
-			*GET_PTR(VIRTUALPROTECT_LOCK) = NULL;
+			*GET_PTR(VIRTUALPROTECT_LOCK) = nullptr;
 
 			// add a gamestate dump to the report
 			AddGameStateDump();
@@ -285,7 +285,7 @@ namespace Yelo
 			{
 				// delete the reports directory
 				FileIO::Delete_Directory(g_reports_path, true, true);
-				if(0 == CreateDirectory(g_reports_path, NULL))
+				if(0 == CreateDirectory(g_reports_path, nullptr))
 					return;
 			}
 
@@ -303,7 +303,7 @@ namespace Yelo
 						g_freeze_dump_globals.m_delay.elapsed = true;
 
 					g_freeze_dump_globals.m_main_thread_id = GetThreadId(GetCurrentThread());
-					g_freeze_dump_globals.m_freeze_thread = CreateThread(NULL, 0, FreezeDumpCount, NULL, 0, NULL);
+					g_freeze_dump_globals.m_freeze_thread = CreateThread(nullptr, 0, FreezeDumpCount, nullptr, 0, nullptr);
 				}
 			}
 
@@ -349,7 +349,7 @@ namespace Yelo
 				while(g_freeze_dump_globals.m_thread_running);
 
 				CloseHandle(g_freeze_dump_globals.m_freeze_thread);
-				g_freeze_dump_globals.m_freeze_thread = NULL;
+				g_freeze_dump_globals.m_freeze_thread = nullptr;
 			}
 
 			// uninstall the crashrpt exception handler

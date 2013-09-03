@@ -149,7 +149,7 @@ is_invalid:
 			else if( strstr(maj_minor_str, "1.07") ) return k_game_build_numbers[_game_build_number_index_107];
 			else if( strstr(maj_minor_str, "1.08") ) return k_game_build_numbers[_game_build_number_index_108];
 			else if( strstr(maj_minor_str, "1.09") ) return k_game_build_numbers[_game_build_number_index_109];
-			else return NULL;
+			else return nullptr;
 		}
 
 		void ChangeAdvertisedVersionId(long_enum version_id, bool and_game_build)
@@ -164,14 +164,14 @@ is_invalid:
 
 				if(and_game_build)
 				{
-					cstring build_str = NULL;
+					cstring build_str = nullptr;
 
 						 if(version_id == _game_version_id_100)	build_str = k_game_build_numbers[_game_build_number_index_100];
 					else if(version_id == _game_version_id_107) build_str = k_game_build_numbers[_game_build_number_index_107];
 					else if(version_id == _game_version_id_108) build_str = k_game_build_numbers[_game_build_number_index_108];
 					else if(version_id == _game_version_id_109) build_str = k_game_build_numbers[_game_build_number_index_109];
 
-					if(build_str != NULL)
+					if(build_str != nullptr)
 					{
 						strcpy(GameBuildString(), build_str);
 						strcpy(GamespyGameBuildString(), build_str);

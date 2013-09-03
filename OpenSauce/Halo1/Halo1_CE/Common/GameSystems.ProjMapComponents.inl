@@ -13,15 +13,15 @@
 
 
 
-{BuildNumber::InitializeForNewMap,					NULL},
+{BuildNumber::InitializeForNewMap,					nullptr},
 
 
-{TagGroups::InitializeForNewMap,					NULL},
+{TagGroups::InitializeForNewMap,					nullptr},
 
 
-{GameState::RuntimeData::InitializeForNewMap,		NULL},
+{GameState::RuntimeData::InitializeForNewMap,		nullptr},
 
-{ScenarioFauxZones::InitializeForNewMap,			NULL},
+{ScenarioFauxZones::InitializeForNewMap,			nullptr},
 #if PLATFORM_IS_USER
 
 
@@ -54,4 +54,4 @@
 
 #endif
 
-{Networking::VersionCheck::InitializeForNewMap,		NULL},
+{Networking::VersionCheck::InitializeForNewMap,		nullptr},

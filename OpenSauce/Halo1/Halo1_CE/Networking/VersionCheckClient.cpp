@@ -267,10 +267,10 @@ namespace Yelo
 
 			// delete text block memory
 			delete m_textblocks.current_version;
-			m_textblocks.current_version = NULL;
+			m_textblocks.current_version = nullptr;
 
 			delete m_textblocks.available_version;
-			m_textblocks.available_version = NULL;
+			m_textblocks.available_version = nullptr;
 		}
 		/*!
 		 * \brief

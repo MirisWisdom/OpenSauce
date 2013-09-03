@@ -4,7 +4,7 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-static cstring g_forced_mp_version = NULL;
+static cstring g_forced_mp_version = nullptr;
 
 static BOOL PLATFORM_API ServerVersionIsValid(cstring server_version)
 {

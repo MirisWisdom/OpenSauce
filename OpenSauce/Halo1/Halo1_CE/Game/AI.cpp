@@ -43,7 +43,7 @@ namespace Yelo
 			Objects::s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
 
 			// Exit the vehicle like normal if a globals tag doesn't exist
-			if(cv_globals == NULL)
+			if(cv_globals == nullptr)
 			{
 				*unit->unit.animation.GetAnimationState() = Enums::_unit_animation_state_seat_exit;
 				return;
@@ -57,7 +57,7 @@ namespace Yelo
 				cv_globals->FindUnitExternalUpgradeBlock(parent_unit->object.definition_index);
 
 			// Check if a unit upgrades definition exists for the vehicle the actor is in
-			if (unit_upgrades_definition != NULL)
+			if (unit_upgrades_definition != nullptr)
 			{
 				// Check if the seat the actor is in is being boarded
 				for (int i = 0; i < unit_upgrades_definition->boarding_seats.Count; i++)

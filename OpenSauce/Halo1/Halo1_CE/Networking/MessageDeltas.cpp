@@ -45,7 +45,7 @@ namespace Yelo
 
 		void InitializeNewMessageDeltaList()
 		{
-			message_delta_definition** org_mdptrs = CAST_QUAL(message_delta_definition**, MessageDeltas::OriginalPackets());
+			auto** org_mdptrs = CAST_QUAL(message_delta_definition**, MessageDeltas::OriginalPackets());
 
 			// copy the original halopc delta definitions
 			size_t x = 0;
@@ -185,9 +185,9 @@ skip_hook:
 		// Hooks the network_game_client_handle_message_delta_message_body function to allow us to intercept our own packets
 		API_FUNC_NAKED static void PLATFORM_API NetworkGameClientHandleMessageDeltaMessageBodyEx()
 		{
-			static uint32 TEMP_ASM_ADDR = GET_DATA_PTR(DONT_SEND_OBJECT_NEW_MSG);
+			static const uintptr_t TEMP_ASM_ADDR = GET_DATA_PTR(DONT_SEND_OBJECT_NEW_MSG);
 
-			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(NETWORK_GAME_CLIENT_HANDLE_MESSAGE_DELTA_MESSAGE_BODY);
+			static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(NETWORK_GAME_CLIENT_HANDLE_MESSAGE_DELTA_MESSAGE_BODY);
 
 			// I'm not taking any chances with our network code doing some nasty stuff to the 
 			// registers so, we store them temporarily

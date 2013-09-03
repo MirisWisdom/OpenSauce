@@ -18,7 +18,7 @@ namespace Boarding
 		TagGroups::model_animation_graph const* animation_graph = GetObjectAnimations(unit_index);
 		
 		// Check if an animation graph exists for the target unit
-		if (animation_graph != NULL)
+		if (animation_graph != nullptr)
 		{
 			sbyte animation_seat_block_index = *unit->unit.animation.GetSeatIndex();
 			int32 unit_seat_animation_count = animation_graph->units[animation_seat_block_index].animations.Count;
@@ -57,7 +57,7 @@ namespace Boarding
 
 		TagGroups::model_animation_graph const* animation_graph = GetObjectAnimations(unit_index);
 
-		if (animation_graph != NULL)
+		if (animation_graph != nullptr)
 		{
 			sbyte animation_seat_block_index = *unit->unit.animation.GetSeatIndex();
 			int32 unit_seat_animation_count = animation_graph->units[animation_seat_block_index].animations.Count;
@@ -99,7 +99,7 @@ namespace Boarding
 	{
 		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
 
-		if(cv_globals == NULL)
+		if(cv_globals == nullptr)
 			return;
 
 		s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
@@ -108,13 +108,13 @@ namespace Boarding
 		s_unit_datum* parent_unit = (*Objects::ObjectHeader())[parent_unit_index]->_unit;
 		int16 seat_index = unit->unit.vehicle_seat_index;
 
-		TagGroups::s_unit_definition const* parent_unit_definition = 
+		auto const* parent_unit_definition = 
 			Objects::GetObjectDefinition<TagGroups::s_unit_definition>(parent_unit_index);
 		TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
 			cv_globals->FindUnitExternalUpgradeBoardingSeatBlock(parent_unit->object.definition_index, seat_index);
 
 		// Check if a boarding seat definition exists for the vehicle being exited
-		if (boarding_seat_definition != NULL)
+		if (boarding_seat_definition != nullptr)
 		{
 			int16 target_seat_index = boarding_seat_definition->target_seat_index;
 			datum_index target_unit_index = GetUnitInSeat(parent_unit_index, target_seat_index);
@@ -161,7 +161,7 @@ namespace Boarding
 	{
 		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
 
-		if(cv_globals == NULL)
+		if(cv_globals == nullptr)
 			return;
 
 		s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
@@ -174,7 +174,7 @@ namespace Boarding
 			cv_globals->FindUnitExternalUpgradeBoardingSeatBlock(parent_unit->object.definition_index, seat_index);
 
 		// Force the unit into the target seat
-		if (boarding_seat_definition != NULL)
+		if (boarding_seat_definition != nullptr)
 		{
 			int16 target_seat_index = boarding_seat_definition->target_seat_index;
 			datum_index target_unit_index = GetUnitInSeat(parent_unit_index, target_seat_index);
@@ -198,7 +198,7 @@ namespace Boarding
 	{
 		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
 
-		if(cv_globals == NULL)
+		if(cv_globals == nullptr)
 			return;
 
 		s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
@@ -211,7 +211,7 @@ namespace Boarding
 			cv_globals->FindUnitExternalUpgradeBoardingSeatBlock(parent_unit->object.definition_index, seat_index);
 
 		// Check if a boarding seat definition exists for the vehicle seat being entered
-		if (boarding_seat_definition != NULL)
+		if (boarding_seat_definition != nullptr)
 		{
 			// If boarding ejects the target seat, initiate the board sequence (plays board animation)
 			if (boarding_seat_definition->flags.boarding_ejects_target_seat_bit)
@@ -240,7 +240,7 @@ namespace Boarding
 		
 		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
 
-		if(cv_globals != NULL)
+		if(cv_globals != nullptr)
 		{
 			TagGroups::s_unit_external_upgrades const* unit_upgrade_definition = 
 				cv_globals->FindUnitExternalUpgradeBlock(parent_unit->object.definition_index);
@@ -248,7 +248,7 @@ namespace Boarding
 				cv_globals->FindUnitExternalUpgradeBoardingSeatBlock(parent_unit->object.definition_index, seat_index);
 
 			// Check if a unit_upgrade_definition and boarding_seat_definition exist
-			if (unit_upgrade_definition != NULL && boarding_seat_definition != NULL)
+			if (unit_upgrade_definition != nullptr && boarding_seat_definition != nullptr)
 			{
 				int16 target_seat_index = boarding_seat_definition->target_seat_index;
 
@@ -312,13 +312,13 @@ namespace Boarding
 
 		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
 
-		if(cv_globals != NULL)
+		if(cv_globals != nullptr)
 		{
 			TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
 				cv_globals->FindUnitExternalUpgradeBoardingSeatBlock(target_unit->object.definition_index, target_seat_index);
 
 			// Check if the target seat is a boarding seat
-			if (boarding_seat_definition != NULL)
+			if (boarding_seat_definition != nullptr)
 			{
 				datum_index boarded_unit_index = GetUnitInSeat(target_unit_index, boarding_seat_definition->target_seat_index);
 

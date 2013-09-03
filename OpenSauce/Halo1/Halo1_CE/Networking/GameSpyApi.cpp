@@ -148,7 +148,7 @@ _return:
 
 			void LoadSettings(TiXmlElement* xml_element)
 			{
-				if(xml_element == NULL) return;
+				if(xml_element == nullptr) return;
 
 				g_gamespy_yelo_settings.no_update_check = 
 					Settings::ParseBoolean(xml_element->Attribute("gsNoUpdateCheck"));

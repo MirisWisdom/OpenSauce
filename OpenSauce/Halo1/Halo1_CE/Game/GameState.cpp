@@ -145,7 +145,7 @@ namespace Yelo
 			const int32 component_count = Yelo::Main::GetProjectComponents(components);
 
 			for(int32 x = 0; x <= component_count; x++)
-				if( components[x].Update != NULL )
+				if( components[x].Update != nullptr )
 					components[x].Update(delta_time);
 		}
 
@@ -194,7 +194,7 @@ namespace Yelo
 			const int32 component_count = Yelo::Main::GetProjectComponents(components);
 
 			for(int32 x = 0; x <= component_count; x++)
-				if( components[x].InitializeForNewMap != NULL )
+				if( components[x].InitializeForNewMap != nullptr )
 					components[x].InitializeForNewMap();
 
 			InitializeForNewMapEpilogue();
@@ -210,7 +210,7 @@ namespace Yelo
 			const int32 component_count = Yelo::Main::GetProjectComponents(components);
 
 			for(int32 x = component_count; x >= 0; x--)
-				if( components[x].DisposeFromOldMap != NULL )
+				if( components[x].DisposeFromOldMap != nullptr )
 					components[x].DisposeFromOldMap();
 		}
 
@@ -220,7 +220,7 @@ namespace Yelo
 			const int32 component_count = Yelo::Main::GetProjectComponents(components);
 
 			for(int32 x = 0; x <= component_count; x++)
-				if( components[x].InitializeForNewGameState != NULL )
+				if( components[x].InitializeForNewGameState != nullptr )
 					components[x].InitializeForNewGameState();
 		}
 		void InitializeForYeloGameState(bool enabled)
@@ -229,7 +229,7 @@ namespace Yelo
 			const int32 component_count = Yelo::Main::GetProjectComponents(components);
 
 			for(int32 x = 0; x <= component_count; x++)
-				if( components[x].InitializeForYeloGameState != NULL )
+				if( components[x].InitializeForYeloGameState != nullptr )
 					components[x].InitializeForYeloGameState(enabled);
 		}
 		static void HandleGameStateLifeCycle(Enums::project_game_state_component_life_cycle life_cycle)
@@ -240,7 +240,7 @@ namespace Yelo
 			const int32 component_count = Yelo::Main::GetProjectComponents(components);
 
 			for(int32 x = 0; x <= component_count; x++)
-				if( components[x].HandleGameStateLifeCycle != NULL )
+				if( components[x].HandleGameStateLifeCycle != nullptr )
 					components[x].HandleGameStateLifeCycle(life_cycle);
 		}
 		void PLATFORM_API HandleBeforeSaveLifeCycle()

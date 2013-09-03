@@ -135,7 +135,7 @@ static void InitializeGrenadeCounts_MessageDeltaGrenadeCounts(bool enabled)
 	}	g_stock_grenade_counts, g_stock_fixed_width_grenade_index, 
 		g_fixed_width_weapon_index;
 
-	if(g_stock_grenade_counts.maximum_size_calculator == NULL)
+	if(g_stock_grenade_counts.maximum_size_calculator == nullptr)
 	{
 		field_type_definition& fixed_width_weapon_index_type = GlobalFieldTypeList()[Enums::_field_type_fixed_width_weapon_index];
 		field_properties_definition* fixed_width_weapon_index_props = MDP_GET_FIELD_TYPE_DEFINITION(fixed_width_weapon_index);
@@ -163,12 +163,12 @@ static void InitializeGrenadeCounts_MessageDeltaGrenadeCounts(bool enabled)
 
 			BOOST_STATIC_ASSERT( sizeof(grenade_counts) == sizeof(byte)*2 );
 
-			const grenade_counts* baseline_data_gc = CAST_PTR(const grenade_counts*, baseline_data); // should always be NULL...
-			const grenade_counts* source_data_gc = CAST_PTR(const grenade_counts*, source_data);
+			const auto* baseline_data_gc = CAST_PTR(const grenade_counts*, baseline_data); // should always be NULL...
+			const auto* source_data_gc = CAST_PTR(const grenade_counts*, source_data);
 
 			bits_written =  g_stock_grenade_counts.encoder(field_properties, baseline_data_gc, source_data_gc,   output_stream);
 
-			baseline_data_gc = baseline_data_gc != NULL ? baseline_data_gc+1 : NULL;
+			baseline_data_gc = baseline_data_gc != nullptr ? baseline_data_gc+1 : nullptr;
 			source_data_gc += 1;
 
 			bits_written += g_stock_grenade_counts.encoder(field_properties, baseline_data_gc, source_data_gc+1, output_stream);
@@ -180,13 +180,13 @@ static void InitializeGrenadeCounts_MessageDeltaGrenadeCounts(bool enabled)
 		{
 			int32 bits_read = 0;
 
-			grenade_counts* baseline_data_gc = CAST_PTR(grenade_counts*, baseline_data); // should always be NULL...
-			grenade_counts* destination_data_gc = CAST_PTR(grenade_counts*, destination_data);
+			auto* baseline_data_gc = CAST_PTR(grenade_counts*, baseline_data); // should always be NULL...
+			auto* destination_data_gc = CAST_PTR(grenade_counts*, destination_data);
 
 			// stock decoder doesn't use baseline_data when decoding
 			bits_read =  g_stock_grenade_counts.decoder(field_properties, baseline_data_gc, destination_data_gc, input_stream);
 
-			baseline_data_gc = baseline_data_gc != NULL ? baseline_data_gc+1 : NULL;
+			baseline_data_gc = baseline_data_gc != nullptr ? baseline_data_gc+1 : nullptr;
 			destination_data_gc += 1;
 
 			bits_read += g_stock_grenade_counts.decoder(field_properties, baseline_data_gc, destination_data_gc, input_stream);
@@ -205,7 +205,7 @@ static void InitializeGrenadeCounts_MessageDeltaGrenadeCounts(bool enabled)
 		// We re-use weapon_index's field type definitions as it's limited to 4 indexes as well
 		g_fixed_width_weapon_index
 			.CopyTo(fixed_width_grenade_index_type, fixed_width_grenade_index_props)
-			->maximum_size = g_fixed_width_weapon_index.maximum_size_calculator(NULL); // release builds don't use the prop parameter in this field type
+			->maximum_size = g_fixed_width_weapon_index.maximum_size_calculator(nullptr); // release builds don't use the prop parameter in this field type
 	}
 	else
 	{
@@ -214,6 +214,6 @@ static void InitializeGrenadeCounts_MessageDeltaGrenadeCounts(bool enabled)
 			->maximum_size = Enums::k_bits_in_grenade_counts_type;
 		g_stock_fixed_width_grenade_index
 			.CopyTo(fixed_width_grenade_index_type, fixed_width_grenade_index_props)
-			->maximum_size = g_stock_fixed_width_grenade_index.maximum_size_calculator(NULL); // release builds don't use the prop parameter in this field type
+			->maximum_size = g_stock_fixed_width_grenade_index.maximum_size_calculator(nullptr); // release builds don't use the prop parameter in this field type
 	}
 }

@@ -264,7 +264,7 @@ namespace Yelo
 		void LoadSettings(TiXmlElement* dx9_element)
 		{
 			g_nvidia_use_basic_camo = false;
-			if(dx9_element != NULL)
+			if(dx9_element != nullptr)
 			{
 				TiXmlElement* camo_element = dx9_element->FirstChildElement("nVidiaActiveCamouflage");
 				if(camo_element)
@@ -279,7 +279,7 @@ namespace Yelo
 
 		void SaveSettings(TiXmlElement* dx9_element)
 		{
-			if(dx9_element != NULL)
+			if(dx9_element != nullptr)
 			{
 				TiXmlElement* camo_element = new TiXmlElement("nVidiaActiveCamouflage");
 				dx9_element->LinkEndChild(camo_element);
@@ -333,7 +333,7 @@ namespace Yelo
 
 		void SetRenderStates()
 		{
-			DX9::Direct3DDevice()->SetVertexShader(NULL);
+			DX9::Direct3DDevice()->SetVertexShader(nullptr);
 			DX9::Direct3DDevice()->SetRenderState(D3DRS_LIGHTING, FALSE);
 			DX9::Direct3DDevice()->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 			DX9::Direct3DDevice()->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);

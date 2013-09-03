@@ -9,7 +9,7 @@ static void* scripting_scenario_faux_zones_reset_evaluate()
 {
 	ScenarioFauxZones::Reset();
 
-	return NULL;
+	return nullptr;
 }
 
 static void* scripting_scenario_faux_zone_current_switch_variant_evaluate(void** arguments)
@@ -17,7 +17,7 @@ static void* scripting_scenario_faux_zone_current_switch_variant_evaluate(void**
 	struct s_arguments {
 		cstring variant_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 	result.boolean = ScenarioFauxZones::SwitchCurrentZoneVariant(args->variant_name);
 
@@ -29,7 +29,7 @@ static void* scripting_scenario_faux_zone_switch_variant_evaluate(void** argumen
 		cstring zone_name;
 		cstring variant_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 	result.boolean = ScenarioFauxZones::SwitchZoneVariant(args->zone_name, args->variant_name);
 
@@ -40,7 +40,7 @@ static void* scripting_scenario_faux_zone_switch_sky_evaluate(void** arguments)
 	struct s_arguments {
 		cstring zone_sky_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 	result.boolean = ScenarioFauxZones::SwitchZoneSky(args->zone_sky_name);
 

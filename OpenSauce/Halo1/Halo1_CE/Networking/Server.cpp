@@ -144,10 +144,10 @@ namespace Yelo
 
 		void EventChatLog(wcstring mode, wcstring source, wcstring message)
 		{
-			if(message != NULL)
+			if(message != nullptr)
 			{
-				if(mode == NULL)	mode = L"NONE   ";
-				if(source == NULL)	source = L"NONE";
+				if(mode == nullptr)		mode = L"NONE   ";
+				if(source == nullptr)	source = L"NONE";
 
 				wcstring k_log_format = L"%s\t%s\t%s";
 				wcstring k_echo_format = L"[%s] %s: %s";

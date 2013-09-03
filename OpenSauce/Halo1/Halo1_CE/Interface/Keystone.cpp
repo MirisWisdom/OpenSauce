@@ -119,13 +119,13 @@ namespace Yelo
 			keystone_globals.chatlog_log = Settings::K_CHAT_LOG_FILENAME;
 			keystone_globals.log = Settings::CreateReport(keystone_globals.chatlog_log, true, true);
 
-			if(keystone_globals.log != NULL)
+			if(keystone_globals.log != nullptr)
 				SendMessageInitialize();
 		}
 
 		void Dispose()
 		{
-			if(keystone_globals.log != NULL)
+			if(keystone_globals.log != nullptr)
 				fclose(keystone_globals.log);
 		}
 

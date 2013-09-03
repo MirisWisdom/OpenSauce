@@ -31,10 +31,10 @@ namespace Yelo
 
 #pragma region New Engines functions
 		static game_engine_definition* new_definitions[Enums::_game_engine_custom + 1] = {
-// 			NULL,
-// 			NULL, NULL, NULL, NULL, NULL, NULL, // old game engines
-// 			NULL, NULL, NULL, NULL, NULL, // space for new game engines
-// 			NULL, // terminator
+// 			nullptr,
+// 			nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, // old game engines
+// 			nullptr, nullptr, nullptr, nullptr, nullptr, // space for new game engines
+// 			nullptr, // terminator
 		};
 		static int32 new_definitions_count = Enums::_game_engine;
 #define GAME_ENGINE_REAL_COUNT (Enums::_game_engine - 2)

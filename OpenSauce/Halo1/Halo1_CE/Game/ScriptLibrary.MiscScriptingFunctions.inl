@@ -12,7 +12,7 @@ void* scripting_game_change_version_id_evaluate(void** arguments)
 		PAD24;
 		cstring version_str;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 	result.boolean = BuildNumber::ChangeAdvertisedVersion(args->version_str, args->and_game_build);
 
@@ -25,9 +25,9 @@ static void* scripting_game_engine_data_get_integer_evaluate(void** arguments)
 	struct s_arguments {
 		cstring data_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
-		 if( !strcmp(args->data_name,"type") )			result.int32 = GameEngine::Current() != NULL ? GameEngine::GlobalVariant()->game_engine_index : Enums::_game_engine_none;
+		 if( !strcmp(args->data_name,"type") )			result.int32 = GameEngine::Current() != nullptr ? GameEngine::GlobalVariant()->game_engine_index : Enums::_game_engine_none;
 	else if( !strcmp(args->data_name,"is_teams") )		result.int32 = CAST(int32, GameEngine::GlobalVariant()->universal_variant.teams);
 	else if( !strcmp(args->data_name,"is_odd_man_out") )result.int32 = CAST(int32, GameEngine::GlobalVariant()->universal_variant.odd_man_out);
 	else if( !strcmp(args->data_name,"lives") )			result.int32 = GameEngine::GlobalVariant()->universal_variant.lives;
@@ -48,7 +48,7 @@ static void* scripting_game_engine_data_get_integer_evaluate(void** arguments)
 
 static void* scripting_machine_is_host()
 {
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 	result.boolean = Networking::IsServer();
 
@@ -57,10 +57,10 @@ static void* scripting_machine_is_host()
 
 static void* scripting_machine_is_dedi()
 {
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 	Networking::s_network_game_server* game_server = Networking::NetworkGameServer();
-	result.boolean = game_server != NULL && game_server->IsDedi();
+	result.boolean = game_server != nullptr && game_server->IsDedi();
 
 	return result.pointer;
 }
@@ -71,7 +71,7 @@ static void* scripting_abs_integer_evaluate(void** arguments)
 	struct s_arguments {
 		int32 value;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 	result.int32 = abs(args->value);
 
@@ -82,7 +82,7 @@ static void* scripting_abs_real_evaluate(void** arguments)
 	struct s_arguments {
 		real value;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 	result.real = abs(args->value);
 
@@ -95,7 +95,7 @@ static void* scripting_bitwise_and_evaluate(void** arguments)
 		int32 value;
 		int32 flags;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 	result.uint32 = CAST(uint32,args->value) & CAST(uint32,args->flags);
 
@@ -107,7 +107,7 @@ static void* scripting_bitwise_or_evaluate(void** arguments)
 		int32 value;
 		int32 flags;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 	result.uint32 = CAST(uint32,args->value) | CAST(uint32,args->flags);
 
@@ -119,7 +119,7 @@ static void* scripting_bitwise_xor_evaluate(void** arguments)
 		int32 value;
 		int32 flags;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 	result.uint32 = CAST(uint32,args->value) ^ CAST(uint32,args->flags);
 
@@ -131,7 +131,7 @@ static void* scripting_bitwise_lhs_evaluate(void** arguments)
 		int32 value;
 		int32 bit_count;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 	if(args->bit_count >= 0 && args->bit_count < BIT_COUNT(int32))
 		result.uint32 = CAST(uint32,args->value) << args->bit_count;
@@ -144,7 +144,7 @@ static void* scripting_bitwise_rhs_evaluate(void** arguments)
 		int32 value;
 		int32 bit_count;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 	if(args->bit_count >= 0 && args->bit_count < BIT_COUNT(int32))
 		result.uint32 = CAST(uint32,args->value) >> args->bit_count;
@@ -158,7 +158,7 @@ static void* scripting_bit_test_evaluate(void** arguments)
 		int16 bit_index;
 		PAD16;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 	if(args->bit_index >= 0 && args->bit_index < BIT_COUNT(int32))
 		result.boolean = TEST_FLAG(CAST(uint32,args->value), args->bit_index);
@@ -174,7 +174,7 @@ static void* scripting_bit_toggle_evaluate(void** arguments)
 		bool add_or_remove;
 		PAD24;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 	if(args->bit_index >= 0 && args->bit_index < BIT_COUNT(int32))
 	{
@@ -191,7 +191,7 @@ static void* scripting_bit_flags_test_evaluate(void** arguments)
 		int32 value;
 		int32 flags;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 	result.boolean = (CAST(uint32,args->value) & CAST(uint32,args->flags)) != 0;
 
@@ -205,7 +205,7 @@ static void* scripting_bit_flags_toggle_evaluate(void** arguments)
 		bool add_or_remove;
 		PAD24;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 	{
 		uint32 value = CAST(uint32,args->value);
@@ -220,7 +220,7 @@ static void* scripting_hex_string_to_long_evaluate(void** arguments)
 	struct s_arguments {
 		cstring str;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 	sscanf_s(args->str, "%x", &result.uint32);
 
@@ -233,7 +233,7 @@ static void* scripting_display_scripted_ui_widget_evaluate(void** arguments)
 	struct s_arguments {
 		cstring name;
 	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = NULL;
+	TypeHolder result; result.pointer = nullptr;
 
 #if !PLATFORM_IS_DEDI
 	result.boolean = UIWidgets::DisplayScriptedWidget(args->name);
@@ -253,7 +253,7 @@ static void* scripting_play_bink_movie_evaluate(void** arguments)
 		Engine::Game::PlayVideo(args->name);
 #endif
 
-	return NULL;
+	return nullptr;
 }
 
 

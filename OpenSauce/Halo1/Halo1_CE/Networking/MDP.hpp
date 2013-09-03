@@ -51,10 +51,10 @@
 		false											\
 	}
 
-#define MDP_DEFINITION_END()		\
-				{NULL, 0, 0, false}	\
-			}						\
-		}							\
+#define MDP_DEFINITION_END()			\
+				{nullptr, 0, 0, false}	\
+			}							\
+		}								\
 	}
 
 #define MDP_FIELD_PROPERTIES_DEFINITION_START(type, name1, name2, enc, dec)												\

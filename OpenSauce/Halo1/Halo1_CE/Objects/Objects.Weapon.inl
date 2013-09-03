@@ -36,17 +36,17 @@ namespace Yelo
 
 				void Dispose()
 				{
-					if(menu != NULL)
+					if(menu != nullptr)
 					{
 						delete menu;
-						menu = NULL;
+						menu = nullptr;
 					}
 				}
 
 				s_preset* AddPreset(cstring name)
 				{
 					if(presets_count == Enums::k_weapon_view_max_weapon_presets-1)
-						return NULL;
+						return nullptr;
 
 					s_preset* preset = &presets[presets_count++];
 					strcpy_s(preset->name, NUMBEROF(preset->name), name);
@@ -64,7 +64,7 @@ namespace Yelo
 					if(!return_weapon_index.IsNull())
 						return (*Objects::ObjectHeader())[return_weapon_index]->_item;
 
-					return NULL;
+					return nullptr;
 				}
 
 				static cstring GetWeaponName(s_item_datum* weapon)
@@ -74,8 +74,8 @@ namespace Yelo
 					datum_index definition_index = weapon->object.definition_index;
 					if(!definition_index.IsNull())
 					{
-						const TagGroups::s_item_definition* definition = TagGroups::TagGet<TagGroups::s_item_definition>(definition_index);
-						if(definition != NULL) // WTF! HOW? idk. also, lazy :(
+						const auto* definition = TagGroups::TagGet<TagGroups::s_item_definition>(definition_index);
+						if(definition != nullptr) // WTF! HOW? idk. also, lazy :(
 						{
 							int16 msg_index = definition->item.message_index;
 
@@ -83,9 +83,9 @@ namespace Yelo
 
 							wstring_to_string_lazy(weapon_name, Enums::k_weapon_view_name_length+1, msg);
 						}
-						else return NULL;
+						else return nullptr;
 					}
-					else return NULL;
+					else return nullptr;
 
 					return weapon_name;
 				}
@@ -94,10 +94,10 @@ namespace Yelo
 				{
 					s_item_datum* weapon = GetCurrentWeapon(return_weapon_index);
 
-					if(weapon != NULL)
+					if(weapon != nullptr)
 						return GetWeaponName(weapon);
 
-					return NULL;
+					return nullptr;
 				}
 			public:
 				s_preset* GetCurrentPreset(datum_index& return_weapon_index, cstring& return_name)
@@ -105,26 +105,26 @@ namespace Yelo
 					return_weapon_index = datum_index::null;
 					return_name = GetCurrentWeaponName(return_weapon_index);
 
-					if(this->presets_count == 0) return NULL;
+					if(this->presets_count == 0) return nullptr;
 
-					if(return_name != NULL)
+					if(return_name != nullptr)
 					{
 						for(int32 x = 0; x < this->presets_count; x++)
 							if( !strcmp(return_name, presets[x].name) )
 								return &presets[x];
 					}
 
-					return NULL;
+					return nullptr;
 				}
 
 				void LoadSettings(TiXmlElement* weapons_element)
 				{
 					memset(presets, 0, sizeof(presets));
 
-					if(weapons_element != NULL)
+					if(weapons_element != nullptr)
 					{
 						for(TiXmlElement* entry = weapons_element->FirstChildElement("entry");
-							entry != NULL && presets_count < NUMBEROF(presets);
+							entry != nullptr && presets_count < NUMBEROF(presets);
 							entry = entry->NextSiblingElement("entry"), presets_count++)
 						{
 							s_preset& p = presets[presets_count];
@@ -157,7 +157,7 @@ namespace Yelo
 				}
 
 			}_weapon_globals = {
-				NULL,
+				nullptr,
 				datum_index::null,
 			};
 
@@ -169,9 +169,9 @@ namespace Yelo
 				cstring name;
 				weapon_globals::s_preset* preset = _weapon_globals.GetCurrentPreset(weapon_index, name);
 
-				if(preset != NULL)
+				if(preset != nullptr)
 				{
-					real_vector3d* position = CAST(real_vector3d*, Render::RenderGlobals()->camera.point);
+					auto* position = CAST(real_vector3d*, Render::RenderGlobals()->camera.point);
 					const Camera::s_observer* obs = Camera::Observer();
 
 					real_vector3d right_vec;
@@ -206,7 +206,7 @@ namespace Yelo
 				cstring name;
 				weapon_globals::s_preset* preset = _weapon_globals.GetCurrentPreset(weapon_index, name);
 
-				if(	name == NULL ||
+				if(	name == nullptr ||
 					(!_weapon_globals.weapon_index_from_last_update.IsNull() && 
 					  _weapon_globals.weapon_index_from_last_update != weapon_index)
 					)
@@ -217,7 +217,7 @@ namespace Yelo
 				else
 					_weapon_globals.weapon_index_from_last_update = weapon_index;
 
-				if(preset == NULL && (preset = _weapon_globals.AddPreset(name)) == NULL)
+				if(preset == nullptr && (preset = _weapon_globals.AddPreset(name)) == nullptr)
 					return Enums::_settings_adjustment_result_cancel;
 
 				if(Input::GetMouseButtonState(Enums::_MouseButton3) == 1)

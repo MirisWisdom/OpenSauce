@@ -55,12 +55,12 @@ namespace Yelo
 		// Validate that an operation can be performed at [value_index]
 		static bool IntegerOperationValidate(int16 value_index)
 		{
-			return runtime_data != NULL && runtime_data->integers.OperationValidate(value_index);
+			return runtime_data != nullptr && runtime_data->integers.OperationValidate(value_index);
 		}
 		// Reset all integers back to zero
 		static void IntegersReset()
 		{
-			if(runtime_data != NULL)
+			if(runtime_data != nullptr)
 				runtime_data->integers.Clear();
 		}
 		// Get the integer value at [value_index].
@@ -153,18 +153,18 @@ namespace Yelo
 #undef __INTEGER_OP_CASE_ARG_NONZERO
 
 #define __VECTOR_OP_CASE(op_code_name)				result && !strcmp(op_name, op_code_name)
-#define __VECTOR_OP_CASE_ARG(op_code_name)			__VECTOR_OP_CASE(op_code_name) && (result = (vec_rhs != NULL))
+#define __VECTOR_OP_CASE_ARG(op_code_name)			__VECTOR_OP_CASE(op_code_name) && (result = (vec_rhs != nullptr))
 #define __VECTOR_OP_CASE_ARG_I_NONZERO(op_code_name)__VECTOR_OP_CASE_ARG(op_code_name) && (result = (vec_rhs->i != 0.0f))
 		// Validate that an operation can be performed at [value_index]
 		static bool VectorOperationValidate(int16 value_index, int16 element_index = 0)
 		{
-			return runtime_data != NULL && runtime_data->vectors.OperationValidate(value_index) &&
+			return runtime_data != nullptr && runtime_data->vectors.OperationValidate(value_index) &&
 				element_index >= 0 && element_index < 3; // NOTE: 0=x, 1=y, 2=z
 		}
 		// Reset all vectors back to zero
 		static void VectorsReset()
 		{
-			if(runtime_data != NULL)
+			if(runtime_data != nullptr)
 				runtime_data->vectors.Clear();
 		}
 		static real VectorGetElement(int16 value_index, int16 element_index)
@@ -191,7 +191,7 @@ namespace Yelo
 			if(VectorOperationValidate(value_index, element_index))
 			{
 				real_vector3d& vector = runtime_data->vectors.values[value_index];
-				real* element_ptr = NULL;
+				real* element_ptr = nullptr;
 
 				result = true;
 
@@ -246,7 +246,7 @@ namespace Yelo
 			{
 				real_vector3d& vector = runtime_data->vectors.values[value_index];
 				real_vector3d* vec_rhs = VectorOperationValidate(op_arg_vector_index) ?
-					&runtime_data->vectors.values[op_arg_vector_index] : NULL;
+					&runtime_data->vectors.values[op_arg_vector_index] : nullptr;
 
 				result = true;
 
@@ -339,14 +339,14 @@ namespace Yelo
 			if(VectorOperationValidate(value_index))
 				return &runtime_data->vectors.values[value_index];
 
-			return NULL;
+			return nullptr;
 		}
 		const real_vector3d* VectorValueGet(int16 value_index)
 		{
 			if(VectorOperationValidate(value_index))
 				return &runtime_data->vectors.values[value_index];
 
-			return NULL;
+			return nullptr;
 		}
 
 	}; };

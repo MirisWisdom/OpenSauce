@@ -30,16 +30,16 @@ namespace Yelo
 	{
 		static void LoadSettingsForClient(TiXmlElement* client)
 		{
-			TiXmlElement* dx9_element = NULL,
-						* fov_element = NULL,
-						* hud_element = NULL,
-						* objects_element = NULL,
-						* version_check_element = NULL,
-						* cf_element = NULL,
-						* networking_element = NULL
+			TiXmlElement* dx9_element = nullptr,
+						* fov_element = nullptr,
+						* hud_element = nullptr,
+						* objects_element = nullptr,
+						* version_check_element = nullptr,
+						* cf_element = nullptr,
+						* networking_element = nullptr
 				;
 
-			if(client != NULL)
+			if(client != nullptr)
 			{
 				dx9_element = client->FirstChildElement("dx9");
 				fov_element = client->FirstChildElement("Fov");
@@ -62,13 +62,13 @@ namespace Yelo
 
 		static void SaveSettingsForClient(TiXmlElement* client)
 		{
-			TiXmlElement* dx9_element = NULL,
-						* fov_element = NULL,
-						* hud_element = NULL,
-						* objects_element = NULL,
-						* version_check_element = NULL,
-						* networking_element = NULL,
-						* cf_element = NULL
+			TiXmlElement* dx9_element = nullptr,
+						* fov_element = nullptr,
+						* hud_element = nullptr,
+						* objects_element = nullptr,
+						* version_check_element = nullptr,
+						* networking_element = nullptr,
+						* cf_element = nullptr
 				;
 
 			dx9_element = new TiXmlElement("dx9");
@@ -108,12 +108,12 @@ namespace Yelo
 		{
 #if PLATFORM_IS_DEDI
 			// TODO: make the Cache and Objects settings load as readonly from the client settings
-			TiXmlElement* version_check_element = NULL,
-						* objects_element = NULL,
-						* cf_element = NULL
+			TiXmlElement* version_check_element = nullptr,
+						* objects_element = nullptr,
+						* cf_element = nullptr
 				;
 
-			if(server != NULL)
+			if(server != nullptr)
 			{
 				objects_element = server->FirstChildElement("objects");
 				version_check_element = server->FirstChildElement("version_check");
@@ -129,7 +129,7 @@ namespace Yelo
 		static void SaveSettingsForServer(TiXmlElement* server)
 		{
 #if PLATFORM_IS_DEDI
-			TiXmlElement* version_check_element = NULL
+			TiXmlElement* version_check_element = nullptr
 				;
 
 			version_check_element = new TiXmlElement("version_check");
@@ -184,7 +184,7 @@ namespace Yelo
 		static void LoadSettingsUser()
 		{
 #if PLATFORM_IS_USER
-			TiXmlElement* root = NULL;
+			TiXmlElement* root = nullptr;
 			TiXmlDocument xml_settings = TiXmlDocument();
 
 			char file_path[MAX_PATH];
@@ -197,7 +197,7 @@ namespace Yelo
 
 		static void LoadSettingsServer()
 		{
-			TiXmlElement* root = NULL;
+			TiXmlElement* root = nullptr;
 			TiXmlDocument xml_settings = TiXmlDocument();
 
 			char file_path[MAX_PATH];

@@ -265,19 +265,19 @@
 
 	//////////////////////////////////////////////////////////////////////////
 	// Globals
-	HS_GLOBAL2(rasterizer_rt_display, short, &DX9::c_gbuffer_system::g_debug_index, NULL);
-	HS_GLOBAL2(rasterizer_gbuffer_enabled, bool, &DX9::c_gbuffer_system::g_system_enabled, NULL);
+	HS_GLOBAL2(rasterizer_rt_display, short, &DX9::c_gbuffer_system::g_debug_index, nullptr);
+	HS_GLOBAL2(rasterizer_gbuffer_enabled, bool, &DX9::c_gbuffer_system::g_system_enabled, nullptr);
 
 	HS_GLOBAL2(pp_external_post_processes_enabled, bool, 
-		&Rasterizer::PostProcessing::Scripting::Globals::Enabled_External(), NULL);
+		&Rasterizer::PostProcessing::Scripting::Globals::Enabled_External(), nullptr);
 	HS_GLOBAL2(pp_internal_post_processes_enabled, bool, 
-		&Rasterizer::PostProcessing::Scripting::Globals::Enabled_Internal(), NULL);
+		&Rasterizer::PostProcessing::Scripting::Globals::Enabled_Internal(), nullptr);
 	HS_GLOBAL2(pp_fxaa_enabled, bool, 
-		&Rasterizer::PostProcessing::Scripting::Globals::Enabled_FXAA(), NULL);
+		&Rasterizer::PostProcessing::Scripting::Globals::Enabled_FXAA(), nullptr);
 	HS_GLOBAL2(pp_motion_blur_enabled, bool, 
-		&Rasterizer::PostProcessing::Scripting::Globals::Enabled_MotionBlur(), NULL);
+		&Rasterizer::PostProcessing::Scripting::Globals::Enabled_MotionBlur(), nullptr);
 	HS_GLOBAL2(pp_motion_blur_amount, real, 
-		&Rasterizer::PostProcessing::Scripting::Globals::MotionBlur_Amount(), NULL);
+		&Rasterizer::PostProcessing::Scripting::Globals::MotionBlur_Amount(), nullptr);
 
 	// debug globals
 	#ifdef API_DEBUG

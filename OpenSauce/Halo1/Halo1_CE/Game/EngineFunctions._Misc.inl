@@ -7,7 +7,7 @@
 
 void GatherException(const void* data, int32 arg_0, int32 arg_4, int32 arg_8)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(GATHER_EXCEPTION);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(GATHER_EXCEPTION);
 
 	GET_PTR(gather_exception_data) = data;
 
@@ -34,7 +34,7 @@ bool SetTextureSamplerStage(Yelo::TagGroups::s_bitmap_data* bitmap, uint32 textu
 	// tests whether the texture is already loaded and sets the texture sampler itself
 
 #if !PLATFORM_IS_DEDI
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(RASTERIZER_SET_TEXTURE_BITMAP_DATA);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(RASTERIZER_SET_TEXTURE_BITMAP_DATA);
 
 	_asm
 	{
@@ -65,7 +65,7 @@ IDirect3DBaseTexture9** TextureCacheBitmapGetHardwareFormat(Yelo::TagGroups::s_b
 		add		esp, 4 * 2
 	}
 #else
-	return NULL;
+	return nullptr;
 #endif
 }
 
@@ -102,7 +102,7 @@ bool SoundCacheRequestSound(Yelo::TagGroups::s_sound_permutation* sound_perm,
 void RasterizerAddResolution(uint32 width, uint32 height, uint32 refresh_rate)
 {
 #if !PLATFORM_IS_DEDI
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(RESOLUTION_LIST_ADD_RESOLUTION);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(RESOLUTION_LIST_ADD_RESOLUTION);
 
 	_asm{
 		mov		ecx, width
@@ -118,7 +118,7 @@ void RasterizerAddResolution(uint32 width, uint32 height, uint32 refresh_rate)
 
 int16 API_FUNC_NAKED AnimationPickRandomPermutation(long_enum render_or_affects_game_state, datum_index animation_graph_index, int32 animation_index)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(ANIMATION_CHOOSE_RANDOM_PERMUTATION_INTERNAL);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(ANIMATION_CHOOSE_RANDOM_PERMUTATION_INTERNAL);
 
 	API_FUNC_NAKED_START()
 		mov		edx, animation_index

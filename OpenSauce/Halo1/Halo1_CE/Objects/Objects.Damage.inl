@@ -25,7 +25,7 @@ static void PLATFORM_API object_damage_object_body_hook(datum_index object_index
 	// Lookup the current object's definition in the damge_extensions block
 	const datum_index* object_definition_index = object_data->GetTagDefinition();
 
-	const TagGroups::s_object_damage_extension* dmg_ext = NULL;
+	const TagGroups::s_object_damage_extension* dmg_ext = nullptr;
 	for(int32 x = 0; x < damage_extensions.Count; x++)
 	{
 		const TagGroups::s_object_damage_extension* def = &damage_extensions[x];
@@ -37,7 +37,7 @@ static void PLATFORM_API object_damage_object_body_hook(datum_index object_index
 	//////////////////////////////////////////////////////////////////////////
 	// If we found a definition, then the map has extensions defined for this object type
 	// TODO: ChokingVictim's code is...choking me up. What he provided isn't making sense, holding off on the integration for this for the time being.
-	if(false && dmg_ext != NULL)
+	if(false && dmg_ext != nullptr)
 	{
 		real max_vitality = *object_data->GetMaximumVitality();
 		int32 region_vitality = (*object_data->GetRegionVitality()) + region_index;

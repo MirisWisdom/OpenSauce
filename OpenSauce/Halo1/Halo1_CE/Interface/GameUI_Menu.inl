@@ -19,10 +19,10 @@ namespace Yelo
 
 			void Dispose()
 			{
-				if(menu != NULL)
+				if(menu != nullptr)
 				{
 					delete menu;
-					menu = NULL;
+					menu = nullptr;
 				}
 			}
 
@@ -110,7 +110,7 @@ namespace Yelo
 			}
 
 		}_menu_globals = {
-			NULL,
+			nullptr,
 			Enums::_settings_menu_off,
 			false,
 		};

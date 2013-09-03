@@ -631,7 +631,7 @@ namespace Yelo
 		}
 		void PLATFORM_API data_dispose(s_data_array* data)
 		{
-			if(data != NULL)
+			if(data != nullptr)
 			{
 				data_verify(data);
 				CAST_PTR(Yelo::Memory::s_data_array*, GlobalFree(data));

@@ -18,9 +18,9 @@ namespace Yelo
 		this->pDevice = pDevice;
 		block.screen_width = pPP->BackBufferWidth;
 		block.screen_height = pPP->BackBufferHeight;
-		pFont = NULL;
+		pFont = nullptr;
 
-		pDevice->CreateVertexBuffer(sizeof(COLOR_VERTEX) * 4, NULL,D3DFVF_XYZRHW | D3DFVF_DIFFUSE,D3DPOOL_MANAGED,&vertexBuffer,NULL);
+		pDevice->CreateVertexBuffer(sizeof(COLOR_VERTEX) * 4, 0,D3DFVF_XYZRHW | D3DFVF_DIFFUSE,D3DPOOL_MANAGED,&vertexBuffer,nullptr);
 	}
 
 	void TextBlock::SetFade(bool fade)	{ block.fade = fade; }
@@ -80,7 +80,7 @@ namespace Yelo
 	{
 		SetRect(&block.rect, block.width, 0, 0, 0);
 		if(pFont && !block.ignore_text_height)
-			block.height = pFont->DrawTextW(NULL, block.text, NONE, &block.rect, DT_CALCRECT | block.text_format, 0);
+			block.height = pFont->DrawTextW(nullptr, block.text, NONE, &block.rect, DT_CALCRECT | block.text_format, 0);
 
 		// add padding for the actual block around the text
 		block.height += block.padding*2;
@@ -162,7 +162,7 @@ namespace Yelo
 		block.rect.bottom +=CAST(LONG, block.y_percent_offset/100.0f*MAXY + block.y_pixel_offset);
 
 		// convert block to raw vertices
-		vertexBuffer->Lock(0, 0, CAST_PTR(void**, &vertices), NULL);
+		vertexBuffer->Lock(0, 0, CAST_PTR(void**, &vertices), 0);
 
 		NEW_COLOR_VERTEX(vertices[0], block.rect.left, block.rect.top, 0, 1.0f, block.back_color);
 		NEW_COLOR_VERTEX(vertices[1], block.rect.right, block.rect.top, 0, 1.0f, block.back_color);
@@ -180,14 +180,14 @@ namespace Yelo
 		if(0 != (block.back_color & 0xFF000000))
 		{
 			// set appropriate render states
-			pDevice->SetVertexShader(NULL);
+			pDevice->SetVertexShader(nullptr);
 			pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 			pDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 			pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 			pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
 
 			// draw block
-			pDevice->SetTexture(0,NULL);
+			pDevice->SetTexture(0,nullptr);
 			pDevice->SetFVF(D3DFVF_XYZRHW | D3DFVF_DIFFUSE);
 			pDevice->SetStreamSource(0, vertexBuffer, 0, sizeof(COLOR_VERTEX));
 			pDevice->DrawPrimitive(D3DPT_TRIANGLEFAN, 0, 2);
@@ -205,9 +205,9 @@ namespace Yelo
 		if(pFont)
 		{
 			if(text)
-				pFont->DrawTextW(NULL, text, NONE, &text_rect, block.text_format, block.text_color);
+				pFont->DrawTextW(nullptr, text, NONE, &text_rect, block.text_format, block.text_color);
 			else
-				pFont->DrawTextW(NULL, block.text, NONE, &text_rect, block.text_format, block.text_color);
+				pFont->DrawTextW(nullptr, block.text, NONE, &text_rect, block.text_format, block.text_color);
 		}
 	}
 

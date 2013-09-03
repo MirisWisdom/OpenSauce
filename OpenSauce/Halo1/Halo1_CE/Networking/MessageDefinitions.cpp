@@ -96,14 +96,14 @@ namespace Yelo
 
 		void* TestToNetwork()
 		{
-			if( !Networking::IsServer() ) return NULL;
+			if( !Networking::IsServer() ) return nullptr;
 
 			MDP_STRUCT_NAME(test) test;
 			test.value = GameState::Physics()->gravity;
 
 			int32 bits_encoded = MessageDeltas::EncodeStateless(
 				Enums::_message_delta_test,
-				NULL, &test);
+				nullptr, &test);
 			
 			if( bits_encoded <= 0 || !MessageDeltas::SvSendMessageToAll(bits_encoded) )
 			{
@@ -111,7 +111,7 @@ namespace Yelo
 				YELO_DEBUG_FORMAT("bits encoded: %d", bits_encoded);
 			}
 
-			return NULL;
+			return nullptr;
 		}
 	#endif
 
@@ -123,22 +123,22 @@ namespace Yelo
 
 		message_delta_definition* kYeloMessageDeltas[Enums::k_message_deltas_yelo_count+1] = {
 #if FALSE
-			NULL, // _message_delta_yelo_version
-			NULL, // _message_delta_yelo_game_state_update
+			nullptr, // _message_delta_yelo_version
+			nullptr, // _message_delta_yelo_game_state_update
 
 			&GET_NEW_MDP_DEFINITION(script_global_update),
 
-			NULL, // _message_delta_switch_bsp
+			nullptr, // _message_delta_switch_bsp
 
-			NULL, // _message_delta_device_group_update
-			NULL, // _message_delta_device_new
-			NULL, // _message_delta_device_update
+			nullptr, // _message_delta_device_group_update
+			nullptr, // _message_delta_device_new
+			nullptr, // _message_delta_device_update
 
 	#ifdef API_DEBUG
 			&GET_NEW_MDP_DEFINITION(test),
 	#endif
 #endif
-			NULL // EOL
+			nullptr // EOL
 		};
 
 		const packet_decoder kYeloMessageDeltaDecoders[Enums::k_message_deltas_yelo_count+1] = {

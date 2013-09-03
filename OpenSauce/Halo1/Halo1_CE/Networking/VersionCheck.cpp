@@ -111,7 +111,7 @@ namespace Yelo
 		{
 			ASSERT(component_data, "the component data for a http request is NULL");
 
-			c_version_downloader* source = CAST_PTR(c_version_downloader*, component_data);
+			auto* source = CAST_PTR(c_version_downloader*, component_data);
 
 			source->DownloadCompleteCallback(download_succeeded, buffer, buffer_length, component_data);
 
@@ -122,7 +122,7 @@ namespace Yelo
 		{
 			ASSERT(component_data, "the component data for a http request is NULL");
 
-			c_version_downloader* source = CAST_PTR(c_version_downloader*, component_data);
+			auto* source = CAST_PTR(c_version_downloader*, component_data);
 
 			source->DownloadCancelledCallback(component_data);
 
@@ -183,7 +183,7 @@ namespace Yelo
 
 			// if there is no settings element, we still want to set the default
 			// xml location
-			if(xml_element == NULL)
+			if(xml_element == nullptr)
 			{
 				m_version_xml.list_version = 0;
 				strcpy_s(m_version_xml.urls[0], sizeof(HTTP::t_http_url), c_version_check_manager_base::g_fallback_xml_location);
@@ -240,7 +240,7 @@ namespace Yelo
 			xml_element->SetAttribute("year", m_states.last_checked_year);
 
 			//save the current file urls to the user settings
-			TiXmlElement* server_list = new TiXmlElement("server_list");
+			auto* server_list = new TiXmlElement("server_list");
 			server_list->SetAttribute("version", m_version_xml.list_version);
 
 			for(int32 i = 0; i < NUMBEROF(m_version_xml.urls); i++)
@@ -248,8 +248,8 @@ namespace Yelo
 				if(is_null_or_empty(m_version_xml.urls[i]))
 					continue;
 
-				TiXmlElement* server = new TiXmlElement("server");
-				TiXmlText* server_address = new TiXmlText(m_version_xml.urls[i]);
+				auto* server = new TiXmlElement("server");
+				auto* server_address = new TiXmlText(m_version_xml.urls[i]);
 
 				server->LinkEndChild(server_address);
 				server_list->LinkEndChild(server);

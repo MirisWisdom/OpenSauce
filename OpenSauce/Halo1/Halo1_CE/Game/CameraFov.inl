@@ -94,8 +94,8 @@ namespace Yelo
 				0
 			}, // screen
 
-			NULL,
-			NULL,
+			nullptr,
+			nullptr,
 		};
 
 		static bool RequiresZoomFix()
@@ -116,7 +116,7 @@ namespace Yelo
 
 		static void PLATFORM_API OBSERVER_UPDATE_POSITIONS()
 		{
-			static uintptr_t FUNCTION = GET_FUNC_PTR(OBSERVER_UPDATE_POSITIONS);
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(OBSERVER_UPDATE_POSITIONS);
 
 			__asm call	FUNCTION
 
@@ -133,10 +133,10 @@ namespace Yelo
 
 		void Dispose()
 		{
-			if(_fov_globals.menu != NULL)
+			if(_fov_globals.menu != nullptr)
 			{
 				delete _fov_globals.menu;
-				_fov_globals.menu = NULL;
+				_fov_globals.menu = nullptr;
 			}
 		}
 
@@ -181,7 +181,7 @@ namespace Yelo
 		{
 			_fov_globals.InitializeToDefaultSettings();
 
-			if(fov_element != NULL)
+			if(fov_element != nullptr)
 			{
 				fov_element->QueryFloatAttribute("value", &_fov_globals.fov.vertical);
 			}

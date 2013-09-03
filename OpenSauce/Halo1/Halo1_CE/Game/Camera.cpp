@@ -81,7 +81,7 @@ namespace Yelo
 
 			FILE* f = Settings::CreateReport(name, false, false);
 
-			if(f != NULL)
+			if(f != nullptr)
 			{
 				fwrite(&Render::RenderGlobals()->camera, sizeof(Render::s_render_camera), 1, f);
 				fwrite(&Render::RenderGlobals()->frustum, sizeof(Render::s_render_frustum), 1, f);
@@ -99,7 +99,7 @@ namespace Yelo
 // 			Engine::Console::Print(args->name);
  			DumpViewState();
 
-			return NULL;
+			return nullptr;
 		}
 	};
 };

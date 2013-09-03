@@ -7,7 +7,7 @@
 
 API_FUNC_NAKED bool SwitchBsp(int16 index)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(SCENARIO_SWITCH_STRUCTURE_BSP);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(SCENARIO_SWITCH_STRUCTURE_BSP);
 
 	API_FUNC_NAKED_START()
 		xor		esi, esi
@@ -19,7 +19,7 @@ API_FUNC_NAKED bool SwitchBsp(int16 index)
 void PlayVideo(cstring bink)
 {
 #if !PLATFORM_IS_DEDI
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(BINK_PLAYBACK_START);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(BINK_PLAYBACK_START);
 
 #if defined(ENGINE_FUNCTIONS_USE_LOCAL)
 	char local[k_engine_function_string_buffer_size];
@@ -45,7 +45,7 @@ void PlayVideo(cstring bink)
 API_FUNC_NAKED void RasterizeMessage(wcstring msg, real alpha)
 {
 #if !PLATFORM_IS_DEDI
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(GAME_ENGINE_RASTERIZE_MESSAGE);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(GAME_ENGINE_RASTERIZE_MESSAGE);
 
 	API_FUNC_NAKED_START()
 		push	alpha
@@ -57,7 +57,7 @@ API_FUNC_NAKED void RasterizeMessage(wcstring msg, real alpha)
 
 bool TeamIsEnemy(long_enum team, long_enum team_to_test)
 {
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(GAME_TEAM_IS_ENEMY);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(GAME_TEAM_IS_ENEMY);
 
 	__asm {
 		mov		ecx, team_to_test
@@ -69,7 +69,7 @@ bool TeamIsEnemy(long_enum team, long_enum team_to_test)
 void PlayMultiplayerSound(_enum multiplayer_sound_index)
 {
 #if !PLATFORM_IS_DEDI
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(GAME_ENGINE_PLAY_MULTIPLAYER_SOUND);
+	static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(GAME_ENGINE_PLAY_MULTIPLAYER_SOUND);
 
 	__asm {
 		push	0

@@ -54,7 +54,7 @@ namespace Yelo
 			datum_index arg_14, 
 			int16 arg_18)
 		{
-			ASSERT( tag_index != datum_index::null || name != NULL, "ui widget: tried to load without a name or tag index" );
+			ASSERT( tag_index != datum_index::null || name != nullptr, "ui widget: tried to load without a name or tag index" );
 			return LoadByNameOrTag(name, tag_index, parent, controller_index, arg_10, arg_14, arg_18);
 		}
 
@@ -72,22 +72,22 @@ namespace Yelo
 				}
 			}
 
-			return NULL;
+			return nullptr;
 		}
 		bool DisplayScriptedWidget(cstring name)
 		{
-			const TagGroups::s_project_yellow_scripted_ui_widget* widget = NULL;
+			const TagGroups::s_project_yellow_scripted_ui_widget* widget = nullptr;
 
 			if(!TagGroups::_global_yelo->IsNull())
 				widget = FindWidget(name, TagGroups::_global_yelo->ui.scripted_widgets);
 			// If it's not found in the scenario's yelo, search the yelo globals
-			if(widget == NULL)
+			if(widget == nullptr)
 				widget = FindWidget(name, TagGroups::_global_yelo_globals->ui.scripted_widgets);
 			
-			if(widget != NULL)
+			if(widget != nullptr)
 			{
-				return LoadByNameOrTag(widget->definition.tag_index, NULL, NULL, NONE)
-					!= NULL;
+				return LoadByNameOrTag(widget->definition.tag_index, nullptr, nullptr, NONE)
+					!= nullptr;
 			}
 
 			return false;

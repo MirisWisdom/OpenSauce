@@ -89,7 +89,7 @@ namespace Yelo
 
 		int32 GetProjectComponents(s_project_component*& out_components)
 		{
-			out_components = NULL;
+			out_components = nullptr;
 			int32 components_count = NONE;
 
 #if !defined(API_YELO_NO_PROJECT_COMPONENTS)
@@ -105,7 +105,7 @@ namespace Yelo
 		}
 		int32 GetProjectComponents(s_project_map_component*& out_components)
 		{
-			out_components = NULL;
+			out_components = nullptr;
 			int32 components_count = NONE;
 
 #if !defined(API_YELO_NO_PROJECT_COMPONENTS)
@@ -121,7 +121,7 @@ namespace Yelo
 		}
 		int32 GetProjectComponents(s_project_game_state_component*& out_components)
 		{
-			out_components = NULL;
+			out_components = nullptr;
 			int32 components_count = NONE;
 
 #if !defined(API_YELO_NO_PROJECT_COMPONENTS)
@@ -140,7 +140,7 @@ namespace Yelo
 #if PLATFORM_IS_USER
 		int32 GetDXComponents(s_dx_component*& out_components)
 		{
-			out_components = NULL;
+			out_components = nullptr;
 			int32 components_count = NONE;
 
 	#if !defined(API_YELO_NO_DX_COMPONENTS)

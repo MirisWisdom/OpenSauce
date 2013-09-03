@@ -67,9 +67,9 @@ namespace Yelo
 			{
 				for(int x = 0; x < bsps.Count && x < NUMBEROF(original_lightmap_bitmaps); x++)
 				{
-					const structure_bsp* bsp = TagGet<structure_bsp>(bsps[x].structure_bsp.tag_index);
+					const auto* bsp = TagGet<structure_bsp>(bsps[x].structure_bsp.tag_index);
 
-					if(bsp != NULL) // should never happen, but just to be safe
+					if(bsp != nullptr) // should never happen, but just to be safe
 						original_lightmap_bitmaps[x] = bsp->lightmap_bitmaps.tag_index;
 				}
 			}
@@ -79,9 +79,9 @@ namespace Yelo
 				{
 					if(original_lightmap_bitmaps[x].IsNull()) continue;
 
-					structure_bsp* bsp = TagGetForModify<structure_bsp>(bsps[x].structure_bsp.tag_index);
+					auto* bsp = TagGetForModify<structure_bsp>(bsps[x].structure_bsp.tag_index);
 
-					if(bsp != NULL) // should never happen, but just to be safe
+					if(bsp != nullptr) // should never happen, but just to be safe
 						ChangeLightmap(bsp, original_lightmap_bitmaps[x]);
 				}
 			}
@@ -132,7 +132,7 @@ namespace Yelo
 
 		void Update(real delta_time)
 		{
-			if(scenario_faux_zone_globals == NULL) return;
+			if(scenario_faux_zone_globals == nullptr) return;
 
 			scenario_faux_zone_globals->Update();
 		}
@@ -144,7 +144,7 @@ namespace Yelo
 
 		void InitializeForNewMap()
 		{
-			if(scenario_faux_zone_globals == NULL) return;
+			if(scenario_faux_zone_globals == nullptr) return;
 
 			if(GameState::MainGlobals()->map.reset_map)
 			{
@@ -158,7 +158,7 @@ namespace Yelo
 			const s_project_yellow_scenario_information& info,
 			const s_scenario_faux_zone_sky* zone_sky)
 		{
-			if( zone_sky == NULL || 
+			if( zone_sky == nullptr || 
 				!zone_sky->IsValid() )
 				return false;
 
@@ -174,17 +174,17 @@ namespace Yelo
 		{
 			// it is assumed at this point that scenario_faux_zone_globals has been check for NULL
 
-			const s_scenario_faux_zone_lightmap_set* lightmap_set = NULL;
+			const s_scenario_faux_zone_lightmap_set* lightmap_set = nullptr;
 			if(variant.lightmap_index != NONE)
 				lightmap_set = &zone_set.lightmaps[variant.lightmap_index];
 
-			const s_scenario_faux_zone_sky* zone_sky = NULL;
+			const s_scenario_faux_zone_sky* zone_sky = nullptr;
 			if(variant.sky_index != NONE)
 				zone_sky = &info.zone_skies[variant.sky_index];
 
 			bool result = true;
 
-			if(result && lightmap_set != NULL)
+			if(result && lightmap_set != nullptr)
 				result &= scenario_faux_zone_globals->ReplaceBspLightmap(bsp, lightmap_set->definition.tag_index);
 
 			if(result)
@@ -219,14 +219,14 @@ namespace Yelo
 
 		void Reset()
 		{
-			if(scenario_faux_zone_globals == NULL) return;
+			if(scenario_faux_zone_globals == nullptr) return;
 
 			scenario_faux_zone_globals->RestoreOriginalSkies(Scenario::Scenario()->skies);
 			scenario_faux_zone_globals->RestoreOriginalLightmaps(Scenario::Scenario()->structure_bsps);
 		}
 		bool SwitchCurrentZoneVariant(cstring variant_name)
 		{
-			if(scenario_faux_zone_globals != NULL && _global_yelo->scenario.Count == 1)
+			if(scenario_faux_zone_globals != nullptr && _global_yelo->scenario.Count == 1)
 			{
 				structure_bsp* current_bsp = Scenario::StructureBsp();
 				const TAG_TBLOCK(& zones, s_scenario_faux_zone_set) = _global_yelo->scenario[0].zones;
@@ -246,7 +246,7 @@ namespace Yelo
 		}
 		bool SwitchZoneVariant(cstring zone_name, cstring variant_name)
 		{
-			if(scenario_faux_zone_globals != NULL && _global_yelo->scenario.Count == 1)
+			if(scenario_faux_zone_globals != nullptr && _global_yelo->scenario.Count == 1)
 			{
 				const TAG_TBLOCK(& zones, s_scenario_faux_zone_set) = _global_yelo->scenario[0].zones;
 
@@ -256,9 +256,9 @@ namespace Yelo
 
 					datum_index bsp_tag_index = zones[x].structure_bsp;
 
-					structure_bsp* zone_bsp = TagGetForModify<structure_bsp>(zones[x].structure_bsp);
+					auto* zone_bsp = TagGetForModify<structure_bsp>(zones[x].structure_bsp);
 
-					if(zone_bsp != NULL)
+					if(zone_bsp != nullptr)
 					{
 						return ScenarioFauxZoneSetSwitchVariantByName(zone_bsp, Scenario::Scenario(),
 							_global_yelo->scenario[0], zones[x],
@@ -272,7 +272,7 @@ namespace Yelo
 
 		bool SwitchZoneSky(cstring zone_sky_name)
 		{
-			if(scenario_faux_zone_globals != NULL && _global_yelo->scenario.Count == 1)
+			if(scenario_faux_zone_globals != nullptr && _global_yelo->scenario.Count == 1)
 			{
 				const TAG_TBLOCK(& zone_skies, s_scenario_faux_zone_sky) = _global_yelo->scenario[0].zone_skies;
 

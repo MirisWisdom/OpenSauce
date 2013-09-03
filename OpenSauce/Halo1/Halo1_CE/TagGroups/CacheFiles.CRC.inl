@@ -24,9 +24,9 @@ uint32 CalculateCRC(void* cache_file)
 	uint32 CRC = 0xFFFFFFFF;
 
 	// get pointers to the necessary cache data
-	s_cache_header* cache = CAST_PTR(s_cache_header*, cache_file);
-	s_cache_tag_header* tag_header = CAST_PTR(s_cache_tag_header*, (uint32)cache + cache->offset_to_index);
-	s_cache_tag_instance* tag_instances = CAST_PTR(s_cache_tag_instance*, (uint32)tag_header + sizeof(s_cache_tag_header));
+	auto* cache = CAST_PTR(s_cache_header*, cache_file);
+	auto* tag_header = CAST_PTR(s_cache_tag_header*, (uint32)cache + cache->offset_to_index);
+	auto* tag_instances = CAST_PTR(s_cache_tag_instance*, (uint32)tag_header + sizeof(s_cache_tag_header));
 
 	// the tag address needs correcting to match the datas starting point
 	uint32 orig = (uint32)tag_header->tags_address;
@@ -34,13 +34,13 @@ uint32 CalculateCRC(void* cache_file)
 
 	// get the scenario tag
 	s_cache_tag_instance& scenario_tag_instance = tag_instances[tag_header->scenario.index];
-	TagGroups::scenario* scenario_tag = CAST_PTR(TagGroups::scenario*, TAG_ADDRESS(orig, curr, (uint32)scenario_tag_instance.definition));
+	auto* scenario_tag = CAST_PTR(TagGroups::scenario*, TAG_ADDRESS(orig, curr, (uint32)scenario_tag_instance.definition));
 
 	uint32 bsp_count = scenario_tag->structure_bsps.Count;
 	if(bsp_count != 0)
 	{
 		// can't access the block normally as its pointer is not correct for the cache's starting point
-		TagGroups::scenario_structure_bsp_reference* structure_bsps_block = CAST_PTR(TagGroups::scenario_structure_bsp_reference*,
+		auto* structure_bsps_block = CAST_PTR(TagGroups::scenario_structure_bsp_reference*,
 			TAG_ADDRESS(orig, curr, (uint32)scenario_tag->structure_bsps.Address));
 
 		// this isn't correct for non-PC maps apparently, but we ARE on a pc...AREN'T we

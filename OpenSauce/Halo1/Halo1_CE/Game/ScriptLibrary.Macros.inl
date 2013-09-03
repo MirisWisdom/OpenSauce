@@ -14,9 +14,9 @@
 		HS_TYPE(ret),0,															\
 		#name,																	\
 		CAST_PTR(Yelo::Scripting::hs_parse_proc,Yelo::Scripting::GET_FUNC_PTR(HS_MACRO_FUNCTION_PARSE)), \
-		NULL,																	\
+		nullptr,																\
 		info,																	\
-		NULL,																	\
+		nullptr,																\
 		Yelo::Flags::_hs_access_flag_enabled, 0									\
 	}
 
@@ -31,7 +31,7 @@
 		HS_TYPE(ret),0,															\
 		#name,																	\
 		CAST_PTR(Yelo::Scripting::hs_parse_proc,Yelo::Scripting::GET_FUNC_PTR(HS_MACRO_FUNCTION_PARSE)), \
-		NULL,																	\
+		nullptr,																\
 		info,																	\
 		param,																	\
 		Yelo::Flags::_hs_access_flag_enabled,									\
