@@ -27,8 +27,8 @@ namespace Yelo
 			bool initialized; PAD24;
 
 			// Original tag index of the scenario skies block
-			datum_index original_skies[Enums::k_maximum_skies_per_scenario];
-			datum_index original_lightmap_bitmaps[Enums::k_maximum_structure_bsps_per_scenario_upgrade];
+			std::array<datum_index, Enums::k_maximum_skies_per_scenario>					original_skies;
+			std::array<datum_index, Enums::k_maximum_structure_bsps_per_scenario_upgrade>	original_lightmap_bitmaps;
 
 			void ChangeLightmap(structure_bsp* bsp, datum_index lightmap_bitmap_index)
 			{
@@ -38,12 +38,12 @@ namespace Yelo
 
 			void InitializeOriginalSkies( const TAG_TBLOCK_(& skies, tag_reference) )
 			{
-				for(int x = 0; x < skies.Count && x < NUMBEROF(original_skies); x++)
+				for(int x = 0; x < skies.Count && x < (int)original_skies.size(); x++)
 					original_skies[x] = skies[x].tag_index;
 			}
 			void RestoreOriginalSkies( TAG_TBLOCK_(& skies, tag_reference) )
 			{
-				for(int x = 0; x < skies.Count && x < NUMBEROF(original_skies); x++)
+				for(int x = 0; x < skies.Count && x < (int)original_skies.size(); x++)
 					if(!original_skies[x].IsNull())
 						skies[x].tag_index = original_skies[x];
 			}
@@ -51,7 +51,7 @@ namespace Yelo
 			bool ReplaceScenarioSky( TAG_TBLOCK_(& skies, tag_reference), 
 				datum_index original_sky_index, datum_index new_sky_index)
 			{
-				for(int x = 0; x < skies.Count && x < NUMBEROF(original_skies); x++)
+				for(int x = 0; x < skies.Count && x < (int)original_skies.size(); x++)
 				{
 					if(original_sky_index == original_skies[x])
 					{
@@ -65,7 +65,7 @@ namespace Yelo
 
 			void InitializeOriginalLightmaps( const TAG_TBLOCK(& bsps, scenario_structure_bsp_reference) )
 			{
-				for(int x = 0; x < bsps.Count && x < NUMBEROF(original_lightmap_bitmaps); x++)
+				for(int x = 0; x < bsps.Count && x < (int)original_lightmap_bitmaps.size(); x++)
 				{
 					const auto* bsp = TagGet<structure_bsp>(bsps[x].structure_bsp.tag_index);
 
@@ -75,7 +75,7 @@ namespace Yelo
 			}
 			void RestoreOriginalLightmaps( const TAG_TBLOCK(& bsps, scenario_structure_bsp_reference) )
 			{
-				for(int x = 0; x < bsps.Count && x < NUMBEROF(original_lightmap_bitmaps); x++)
+				for(int x = 0; x < bsps.Count && x < (int)original_lightmap_bitmaps.size(); x++)
 				{
 					if(original_lightmap_bitmaps[x].IsNull()) continue;
 
@@ -199,15 +199,13 @@ namespace Yelo
 			cstring variant_name)
 		{
 			const TAG_TBLOCK(& variants, s_scenario_faux_zone_set_variant) = zone_set.variants;
-			for(int x = 0; x < variants.Count; x++)
+			for(const auto& variant : zone_set.variants)
 			{
-				if( _stricmp(variants[x].name, variant_name)==0 )
+				if( _stricmp(variant.name, variant_name)==0 )
 				{
-					const s_scenario_faux_zone_set_variant& variant = variants[x];
-
 					if(variant.HasGameStateChanges())
 						return ScenarioFauxZoneSetSwitchVariantUpdateGameState(bsp, scnr, 
-							info, zone_set, variant);
+						info, zone_set, variant);
 
 					return false;
 				}
@@ -229,14 +227,13 @@ namespace Yelo
 			if(scenario_faux_zone_globals != nullptr && _global_yelo->scenario.Count == 1)
 			{
 				structure_bsp* current_bsp = Scenario::StructureBsp();
-				const TAG_TBLOCK(& zones, s_scenario_faux_zone_set) = _global_yelo->scenario[0].zones;
 
-				for(int x = 0; x < zones.Count; x++)
+				for(const auto& zone : _global_yelo->scenario[0].zones)
 				{
-					if(TagGet<structure_bsp>( zones[x].structure_bsp ) == current_bsp)
+					if(TagGet<structure_bsp>(zone.structure_bsp) == current_bsp)
 					{
 						return ScenarioFauxZoneSetSwitchVariantByName(current_bsp, Scenario::Scenario(),
-							_global_yelo->scenario[0], zones[x],
+							_global_yelo->scenario[0], zone,
 							variant_name);
 					}
 				}
@@ -248,20 +245,16 @@ namespace Yelo
 		{
 			if(scenario_faux_zone_globals != nullptr && _global_yelo->scenario.Count == 1)
 			{
-				const TAG_TBLOCK(& zones, s_scenario_faux_zone_set) = _global_yelo->scenario[0].zones;
-
-				for(int x = 0; x < zones.Count; x++)
+				for(const auto& zone : _global_yelo->scenario[0].zones)
 				{
-					if(_stricmp(zone_name, zones[x].name) != 0) continue;
+					if(_stricmp(zone_name, zone.name) != 0) continue;
 
-					datum_index bsp_tag_index = zones[x].structure_bsp;
-
-					auto* zone_bsp = TagGetForModify<structure_bsp>(zones[x].structure_bsp);
+					auto* zone_bsp = TagGetForModify<structure_bsp>(zone.structure_bsp);
 
 					if(zone_bsp != nullptr)
 					{
 						return ScenarioFauxZoneSetSwitchVariantByName(zone_bsp, Scenario::Scenario(),
-							_global_yelo->scenario[0], zones[x],
+							_global_yelo->scenario[0], zone,
 							variant_name);
 					}
 				}
@@ -276,12 +269,12 @@ namespace Yelo
 			{
 				const TAG_TBLOCK(& zone_skies, s_scenario_faux_zone_sky) = _global_yelo->scenario[0].zone_skies;
 
-				for(int x = 0; x < zone_skies.Count; x++)
+				for(const auto& zone_sky : _global_yelo->scenario[0].zone_skies)
 				{
-					if(_stricmp(zone_sky_name, zone_skies[x].name) != 0) continue;
+					if(_stricmp(zone_sky_name, zone_sky.name) != 0) continue;
 
 					return ScenarioFauxZoneSetSwitchVariantUpdateGameStateWithZoneSky(Scenario::Scenario(), 
-						_global_yelo->scenario[0], &zone_skies[x]);
+						_global_yelo->scenario[0], &zone_sky);
 				}
 			}
 

@@ -34,12 +34,12 @@ namespace ShaderExtension
 
 	static bool object_add_to_predicted_resources(datum_index tag_index)
 	{
-		auto* object_tag = Yelo::tag_get<TagGroups::s_object_definition>(tag_index);
+		auto* object_tag = blam::tag_get<TagGroups::s_object_definition>(tag_index);
 		
 		if(object_tag->object.references.render_model.tag_index.IsNull())
 			return true;
 
-		auto* gbxmodel_tag = Yelo::tag_get<TagGroups::gbxmodel_definition>(object_tag->object.references.render_model.tag_index);
+		auto* gbxmodel_tag = blam::tag_get<TagGroups::gbxmodel_definition>(object_tag->object.references.render_model.tag_index);
 		
 		for(int32 i = 0; i < gbxmodel_tag->shaders.Count; i++)
 		{
@@ -49,7 +49,7 @@ namespace ShaderExtension
 				shader.tag_index.IsNull())
 				continue;
 
-			auto* shader_model_tag = Yelo::tag_get<TagGroups::s_shader_model_definition>(shader.tag_index);
+			auto* shader_model_tag = blam::tag_get<TagGroups::s_shader_model_definition>(shader.tag_index);
 
 			if(shader_model_tag->model.maps.shader_extension.Count != 1)
 				continue;

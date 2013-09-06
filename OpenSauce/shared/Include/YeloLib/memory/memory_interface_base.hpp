@@ -72,6 +72,13 @@
 // Pointer implement get by-reference
 #define PTR_IMP_GET2(name)	{ return GET_PTR2(##name##); }
 
+// Double pointer implement get by-reference, with debug assert
+#define DPTR_IMP_GET_BYREF(name)	{	\
+	auto* name = GET_DPTR( name );		\
+	ASSERT( name, #name );				\
+	return *name;						\
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 // Engine value markup system
@@ -93,6 +100,12 @@ namespace Yelo
 		enum x86_opcode : byte {
 			// push imm16\32
 			_x86_opcode_push_imm = 0x68,
+
+			// jz short imm8
+			_x86_opcode_jz_short = 0x74,
+			// jge short imm8
+			_x86_opcode_jge_short = 0x7D,
+
 			_x86_opcode_nop = 0x90,
 
 			// mov [e]ax, [offset]

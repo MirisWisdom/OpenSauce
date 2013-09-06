@@ -28,7 +28,7 @@ namespace UnitInfections
 
 		if(animation_graph != nullptr)
 		{
-			s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
+			s_unit_datum* unit = Objects::ObjectHeader()[unit_index]->_unit;
 			s_unit_animation_data& unit_animation = unit->unit.animation;
 
 			sbyte	seat_block_index = *unit_animation.GetSeatIndex(),
@@ -56,7 +56,7 @@ namespace UnitInfections
 			attachment_placement_data.position = target_unit->object.network.position;
 
 			attachment_object_index = blam::object_new(attachment_placement_data);
-			attachment_object = (*Objects::ObjectHeader())[attachment_object_index]->_object;
+			attachment_object = Objects::ObjectHeader()[attachment_object_index]->_object;
 		}
 
 		tag_string marker_name;
@@ -106,7 +106,7 @@ namespace UnitInfections
 			PlacementDataNewAndCopy(infected_unit_placement_data, target_unit_index, 
 				unit_infection.infected_unit.tag_index);
 			infected_unit_index = blam::object_new(infected_unit_placement_data);
-			infected_unit = (*Objects::ObjectHeader())[infected_unit_index]->_unit;
+			infected_unit = Objects::ObjectHeader()[infected_unit_index]->_unit;
 		}
 
 		int32 infect_end_animation_index = UnitGetAnimationIndexFromWeaponClass(infected_unit_index, Enums::_weapon_class_animation_yelo_infect);
@@ -143,7 +143,7 @@ namespace UnitInfections
 			return;
 
 		datum_index target_unit_index = infection_unit->object.parent_object_index;
-		s_unit_datum* target_unit = (*Objects::ObjectHeader())[target_unit_index]->_unit;
+		s_unit_datum* target_unit = Objects::ObjectHeader()[target_unit_index]->_unit;
 
 		// Find the s_unit_infection based on the infection form's unit definition and the target unit's definition indexes
 		int32 unit_infection_definition_index = definition.LookupUnitInfectionIndex(

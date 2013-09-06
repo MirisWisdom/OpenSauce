@@ -84,7 +84,7 @@ HRESULT		AddPassBlock(LPD3DXEFFECTCOMPILER& compiler, D3DXHANDLE pass, Yelo::Tag
 		return success;
 
 	// add a new block element and get a reference to it
-	int32 index = Yelo::tag_block_add_element(block);
+	int32 index = blam::tag_block_add_element(block);
 	Yelo::TagGroups::s_pass_definition& pass_block = block[index];
 
 	// set the blocks fields
@@ -140,7 +140,7 @@ HRESULT		AddTechniqueBlock(LPD3DXEFFECTCOMPILER& compiler, D3DXHANDLE technique,
 		return success;
 
 	// add a new block element and get a reference to it
-	int32 index = Yelo::tag_block_add_element(block);
+	int32 index = blam::tag_block_add_element(block);
 	Yelo::TagGroups::s_technique_definition& technique_block = block[index];
 
 	// set the blocks fields
@@ -297,7 +297,7 @@ HRESULT		LoadShader(
 	do
 	{
 		// add any new formats based upon shpp here
-		tag_index = tag_load<TagGroups::s_shader_postprocess_generic>(
+		tag_index = blam::tag_load<TagGroups::s_shader_postprocess_generic>(
 			tag_path, FLAG(Flags::_tag_load_verify_exist_first_bit));
 		if(!tag_index.IsNull()) break;
 	}
@@ -308,7 +308,7 @@ HRESULT		LoadShader(
 	if(tag_index.IsNull())
 	{
 		printf_s("creating tag \"%s.shader_postprocess_generic\"\n", tag_path);
-		tag_index = tag_new<TagGroups::s_shader_postprocess_generic>(tag_path);
+		tag_index = blam::tag_new<TagGroups::s_shader_postprocess_generic>(tag_path);
 	}
 	else
 		printf_s("updating tag \"%s\"\n", tag_path);
@@ -317,7 +317,7 @@ HRESULT		LoadShader(
 
 	if(SUCCEEDED(hr))
 	{
-		shader_tag = tag_get<TagGroups::s_shader_postprocess_definition>(tag_index);
+		shader_tag = blam::tag_get<TagGroups::s_shader_postprocess_definition>(tag_index);
 		hr = (!shader_tag ? E_FAIL : S_OK);
 	}
 	else
@@ -333,7 +333,7 @@ HRESULT		SaveShader(
 {
 	printf_s("saving shader...");
 
-	bool save_succeeded = tag_save(tag_index);
+	bool save_succeeded = blam::tag_save(tag_index);
 	if(save_succeeded)
 		puts("done");
 	else

@@ -27,11 +27,12 @@ namespace Yelo
 
 				datum_index weapon_index_from_last_update;
 
-				int32 presets_count;
+				size_t presets_count;
 				struct s_preset {
 					char name[Enums::k_weapon_view_name_length+1];
 					real_vector3d offset;
-				}presets[Enums::k_weapon_view_max_weapon_presets];
+				};
+				std::array<s_preset, Enums::k_weapon_view_max_weapon_presets> presets;
 
 
 				void Dispose()
@@ -45,7 +46,7 @@ namespace Yelo
 
 				s_preset* AddPreset(cstring name)
 				{
-					if(presets_count == Enums::k_weapon_view_max_weapon_presets-1)
+					if(presets_count == presets.size())
 						return nullptr;
 
 					s_preset* preset = &presets[presets_count++];
@@ -62,7 +63,7 @@ namespace Yelo
 					const GameUI::s_first_person_weapon& fp_weapon = GameUI::FirstPersonWeapons()->local_players[0];
 					return_weapon_index = *fp_weapon.GetWeaponIndex();
 					if(!return_weapon_index.IsNull())
-						return (*Objects::ObjectHeader())[return_weapon_index]->_item;
+						return Objects::ObjectHeader()[return_weapon_index]->_item;
 
 					return nullptr;
 				}
@@ -109,7 +110,7 @@ namespace Yelo
 
 					if(return_name != nullptr)
 					{
-						for(int32 x = 0; x < this->presets_count; x++)
+						for(size_t x = 0; x < this->presets_count; x++)
 							if( !strcmp(return_name, presets[x].name) )
 								return &presets[x];
 					}
@@ -119,12 +120,12 @@ namespace Yelo
 
 				void LoadSettings(TiXmlElement* weapons_element)
 				{
-					memset(presets, 0, sizeof(presets));
+					presets.fill(s_preset());
 
 					if(weapons_element != nullptr)
 					{
 						for(TiXmlElement* entry = weapons_element->FirstChildElement("entry");
-							entry != nullptr && presets_count < NUMBEROF(presets);
+							entry != nullptr && presets_count < presets.size();
 							entry = entry->NextSiblingElement("entry"), presets_count++)
 						{
 							s_preset& p = presets[presets_count];
@@ -139,7 +140,7 @@ namespace Yelo
 
 				void SaveSettings(TiXmlElement* weapons_element)
 				{
-					for(int32 x = 0; x < presets_count; x++)
+					for(size_t x = 0; x < presets_count; x++)
 					{
 						bool valid_preset = !(presets[x].offset.i == 0.0f &&	presets[x].offset.j == 0.0f && presets[x].offset.k == 0.0f);
 

@@ -39,6 +39,7 @@
 
 
 // C++ STL
+#include <utility>
 #include <vector>
 
 #include <boost/preprocessor.hpp>
@@ -69,13 +70,13 @@
 #include "Memory/MemoryInterface.hpp"
 
 #ifdef _DEBUG
-	#define MSG_BOX(title, msg) MessageBoxA(NULL, msg, title, MB_OK)
+	#define MSG_BOX(title, msg) MessageBoxA(nullptr, msg, title, MB_OK)
 #else
 	#define MSG_BOX(title, msg) __noop
 #endif
 
 #if defined(_DEBUG) || defined(_TRACE)
-	#define TRACE_BOX(title, msg) MessageBoxA(NULL, msg, title, MB_OK)
+	#define TRACE_BOX(title, msg) MessageBoxA(nullptr, msg, title, MB_OK)
 #else
 	#define TRACE_BOX(title, msg) __noop
 #endif
@@ -85,6 +86,9 @@ namespace Yelo
 	namespace Engine
 	{
 		void display_assert(cstring reason, cstring file, const uint32 line, bool halt);
+	};
+};
+
 #define YELO_ASSERT(expression)															\
 	if( !(expression) )																	\
 	{																					\
@@ -95,5 +99,3 @@ namespace Yelo
 	{																					\
 		Yelo::Engine::display_assert( #expression , __FILE__, __LINE__, false);			\
 	}
-	};
-};

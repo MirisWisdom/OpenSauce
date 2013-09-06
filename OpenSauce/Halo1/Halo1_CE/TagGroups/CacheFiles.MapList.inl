@@ -10,7 +10,7 @@ cstring* MapListIgnoredMapNames()				PTR_IMP_GET2(map_list_ignored_map_names);
 
 static void MapListInitialize()
 {
-	static const uint32 INITIALIZE = GET_FUNC_PTR(MULTIPLAYER_MAP_LIST_INITIALIZE);
+	static const uintptr_t INITIALIZE = GET_FUNC_PTR(MULTIPLAYER_MAP_LIST_INITIALIZE);
 
 	__asm	call	INITIALIZE
 	MapListInitializeYelo();
@@ -18,7 +18,7 @@ static void MapListInitialize()
 
 API_FUNC_NAKED void MapListReIntialize()
 {
-	static const uint32 DISPOSE = GET_FUNC_PTR(MULTIPLAYER_MAP_LIST_DISPOSE);
+	static const uintptr_t DISPOSE = GET_FUNC_PTR(MULTIPLAYER_MAP_LIST_DISPOSE);
 
 	__asm {
 		call	DISPOSE

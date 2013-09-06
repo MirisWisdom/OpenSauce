@@ -162,6 +162,12 @@
       <Filter>.blamlib\memory</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
+    > <!--memory EDITOR-->
+	<ClInclude Include="..\..\shared\Include\blamlib\memory\byte_swapping_base.hpp">
+      <Filter>.blamlib\memory</Filter>
+    </ClInclude>
+  </ItemGroup>
 
   <ItemGroup
     > <!--scenario-->

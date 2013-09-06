@@ -51,9 +51,9 @@ namespace Yelo
 		{
 			int32 x;
 
-			for(x = 0; x < NUMBEROF(K_DATA_FILE_BITMAPS_NAME_REFERENCES); x++)	*K_DATA_FILE_BITMAPS_NAME_REFERENCES[x] = bitmaps;
-			for(x = 0; x < NUMBEROF(K_DATA_FILE_SOUNDS_NAME_REFERENCES);  x++)	*K_DATA_FILE_SOUNDS_NAME_REFERENCES[x] = sounds;
-			for(x = 0; x < NUMBEROF(K_DATA_FILE_LOCALE_NAME_REFERENCES);  x++)	*K_DATA_FILE_LOCALE_NAME_REFERENCES[x] = locale;
+			for(auto ptr : K_DATA_FILE_BITMAPS_NAME_REFERENCES)	*ptr = bitmaps;
+			for(auto ptr : K_DATA_FILE_SOUNDS_NAME_REFERENCES)	*ptr = sounds;
+			for(auto ptr : K_DATA_FILE_LOCALE_NAME_REFERENCES)	*ptr = locale;
 		}
 
 		static void ScenarioTagsLoadPreprocess(Cache::s_cache_header* cache_header)
@@ -188,8 +188,8 @@ namespace Yelo
 #if PLATFORM_IS_USER
 				if(UseMainmenuOverride())
 				{
-					for(int32 x = 0; x < NUMBEROF(K_UI_SCENARIO_NAME_REFERENCES); x++)
-						*K_UI_SCENARIO_NAME_REFERENCES[x] = mainmenu_scenario_name;
+					for(auto ptr : K_UI_SCENARIO_NAME_REFERENCES)
+						*ptr = mainmenu_scenario_name;
 				}
 #endif
 			}
@@ -223,8 +223,8 @@ namespace Yelo
 
 		static void MemoryUpgradesInitialize()
 		{
-			for(int32 x = 0; x < NUMBEROF(K_MAX_CACHE_SIZE_UPGRADE_ADDRESS_LIST); x++)
-				*K_MAX_CACHE_SIZE_UPGRADE_ADDRESS_LIST[x] = Enums::k_max_cache_size_upgrade;
+			for(auto ptr : K_MAX_CACHE_SIZE_UPGRADE_ADDRESS_LIST)
+				*ptr = Enums::k_max_cache_size_upgrade;
 		}
 
 		static void MemoryUpgradesDispose()
@@ -281,8 +281,8 @@ namespace Yelo
 
 		static bool MapIsOriginal(cstring map_name)
 		{
-			for(int x = 0; x < NUMBEROF(k_original_multiplayer_maps); x++)
-				if( !strcmp(map_name, k_original_multiplayer_maps[x].name) )
+			for(auto mp_map : k_original_multiplayer_maps)
+				if( !strcmp(map_name, mp_map.name) )
 					return true;
 
 			return false;

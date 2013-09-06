@@ -8,8 +8,10 @@
 #include "Tool/BuildCppDefinition.hpp"
 #if PLATFORM_ID == PLATFORM_TOOL
 #include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
-#include "TagGroups/TagGroups.hpp"
+
 #include "Common/StringEditing.hpp"
+#include "Engine/EngineFunctions.hpp"
+#include "TagGroups/TagGroups.hpp"
 
 namespace Yelo
 {
@@ -28,7 +30,7 @@ namespace Yelo
 			bool add_boost_asserts = Settings::ParseBoolean(args->add_boost_asserts_cstr);
 
 			// get the tag groups definition
-			Yelo::tag_group* tag_group_def = Yelo::tag_group_get(*args->tag_group);
+			Yelo::tag_group* tag_group_def = blam::tag_group_get(*args->tag_group);
 			if(tag_group_def)
 			{
 				printf_s("creating c++ definition of %s\n", tag_group_def->name);

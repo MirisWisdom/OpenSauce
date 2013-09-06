@@ -59,15 +59,14 @@ namespace Yelo
 		// Initialize the engine's code to reference our NewMessageDeltaList
 		void InitializeEngineWithNewMessageDeltaList()
 		{
-			size_t x = 0;
-			for(x = 0; x < NUMBEROF(MessageDeltaPointerReferences); x++)
-				*MessageDeltaPointerReferences[x] = NewMessageDeltaList;
+			for(auto ptr : MessageDeltaPointerReferences)
+				*ptr = NewMessageDeltaList;
 
-			for(x = 0; x < NUMBEROF(MessageDeltaPointerEndChecks); x++)
-				*MessageDeltaPointerEndChecks[x] = &NewMessageDeltaList[Enums::k_message_deltas_new_count];
+			for(auto ptr : MessageDeltaPointerEndChecks)
+				*ptr = &NewMessageDeltaList[Enums::k_message_deltas_new_count];
 
-			for(x = 0; x < NUMBEROF(MessageDeltaTypeCountChecks8bit); x++)
-				*MessageDeltaTypeCountChecks8bit[x] = Enums::k_message_deltas_new_count;
+			for(auto ptr : MessageDeltaTypeCountChecks8bit)
+				*ptr = Enums::k_message_deltas_new_count;
 		}
 		void InitializeYeloMessageDeltaDefinitions()
 		{
@@ -187,7 +186,7 @@ skip_hook:
 		{
 			static const uintptr_t TEMP_ASM_ADDR = GET_DATA_PTR(DONT_SEND_OBJECT_NEW_MSG);
 
-			static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(NETWORK_GAME_CLIENT_HANDLE_MESSAGE_DELTA_MESSAGE_BODY);
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(NETWORK_GAME_CLIENT_HANDLE_MESSAGE_DELTA_MESSAGE_BODY);
 
 			// I'm not taking any chances with our network code doing some nasty stuff to the 
 			// registers so, we store them temporarily
@@ -219,7 +218,7 @@ skip_hook:
 
 				mov		ecx, local_store_client
 				mov		eax, local_store_header
-				call	TEMP_CALL_ADDR
+				call	FUNCTION
 
 the_end:
 				retn
@@ -234,7 +233,7 @@ the_end:
 			const void** headers, const void** datas, const void** baselines, 
 			int32 iterations, int32 unk)
 		{
-			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(MDPI_ENCODE);
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(MDPI_ENCODE);
 
 			API_FUNC_NAKED_START()
 				mov		edx, buffer_size_in_bits
@@ -246,7 +245,7 @@ the_end:
 				push	headers
 				push	definition_type
 				push	mode
-				call	CALL_ADDR
+				call	FUNCTION
 				add		esp, 4 * 7
 			API_FUNC_NAKED_END(9)
 		}
@@ -271,12 +270,12 @@ the_end:
 #pragma region DecodeStatelessIterated
 		API_FUNC_NAKED bool DecodeStatelessIterated(message_dependant_header* header, void* destination_data)
 		{
-			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(MDP_DECODE_STATELESS_ITERATED);
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(MDP_DECODE_STATELESS_ITERATED);
 
 			API_FUNC_NAKED_START()
 				mov		eax, header
 				mov		ecx, destination_data
-				call	CALL_ADDR
+				call	FUNCTION
 			API_FUNC_NAKED_END(2)
 		}
 #pragma endregion
@@ -284,7 +283,7 @@ the_end:
 		API_FUNC_NAKED bool DecodeIncrementalIterated(message_dependant_header* header, void* destination_data, 
 			void* baseline_data, bool has_no_iteration_body)
 		{
-			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(MDP_DECODE_INCREMENTAL_ITERATED);
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(MDP_DECODE_INCREMENTAL_ITERATED);
 
 			API_FUNC_NAKED_START()
 				movzx	edx, has_no_iteration_body
@@ -292,7 +291,7 @@ the_end:
 				mov		edx, baseline_data
 				mov		eax, header
 				mov		ecx, destination_data
-				call	CALL_ADDR
+				call	FUNCTION
 				add		esp, 4 * 1
 			API_FUNC_NAKED_END(4)
 		}
@@ -300,11 +299,11 @@ the_end:
 #pragma region DiscardIterationBody
 		API_FUNC_NAKED void DiscardIterationBody(message_dependant_header* header)
 		{
-			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(MDP_DISCARD_ITERATION_BODY);
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(MDP_DISCARD_ITERATION_BODY);
 
 			API_FUNC_NAKED_START()
 				mov		eax, header
-				call	CALL_ADDR
+				call	FUNCTION
 			API_FUNC_NAKED_END(1)
 		}
 #pragma endregion

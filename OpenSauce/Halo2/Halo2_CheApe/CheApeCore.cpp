@@ -100,8 +100,8 @@ namespace Yelo
 
 				void SetupTagGroupPointers()
 				{
-					tag_group** old_tag_groups = CAST_PTR(tag_group**, kTagGroupDefinitionsAddress);
-					tag_group** address =  CAST_PTR(tag_group**, this->address);
+					auto** old_tag_groups = CAST_PTR(tag_group**, kTagGroupDefinitionsAddress);
+					auto** address =  CAST_PTR(tag_group**, this->address);
 
 					// first, copy the original tag group pointers
 					int32 count;
@@ -110,7 +110,7 @@ namespace Yelo
 
 					// then, copy our new tag group addresses
 					count = 0;
-					for(s_custom_tag_group_datum* data = CAST(s_custom_tag_group_datum*, *data_array); 
+					for(s_custom_tag_group_datum* data = data_array->Datums();
 						count < data_array->Header.next_datum.index; count++, address++)
 						*address = data[count].definition;
 				}

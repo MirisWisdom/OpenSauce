@@ -16,15 +16,15 @@ namespace Yelo
 {
 	namespace Scripting
 	{
-		recorded_animations_data_t*		RecordedAnimations();
+		recorded_animations_data_t&		RecordedAnimations();
 
-		hs_syntax_data_t*				HSSyntax();
+		hs_syntax_data_t&				HSSyntax();
 
-		object_list_header_data_t*		ObjectListHeader();
-		list_object_reference_data_t*	ListObjectReference();
+		object_list_header_data_t&		ObjectListHeader();
+		list_object_reference_data_t&	ListObjectReference();
 
-		hs_thread_data_t*				HSThreads();
-		hs_globals_data_t*				HSGlobals();
+		hs_thread_data_t&				HSThreads();
+		hs_globals_data_t&				HSGlobals();
 
 
 		void Initialize();

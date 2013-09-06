@@ -142,18 +142,18 @@ namespace Fov
 //////////////////////////////////////////////////////////////////////////
 // Effects.cpp
 #elif __EL_INCLUDE_FILE_ID == __EL_GAME_EFFECTS
-	ENGINE_DPTR(t_contrail_data, contrails,									0x815CCC, 0x6E1BCC);
-	ENGINE_DPTR(t_contrail_point_data, contrail_points,						0x815CC8, 0x6E1BC8);
-	ENGINE_DPTR(t_particle_data, particles,									0x815CB0, 0x6E1BB0);
-	ENGINE_DPTR(t_effect_data, effects,										0x815CBC, 0x6E1BBC);
-	ENGINE_DPTR(t_effect_location_data, effect_locations,					0x815CC0, 0x6E1BC0);
-	ENGINE_DPTR(t_particle_systems_data, particle_systems,					0x815CB8, 0x6E1BB4);
-	ENGINE_DPTR(t_particle_system_particles_data, particle_system_particles,0x815CB4, 0x6E1BB8);
+	ENGINE_DPTR(contrail_data_t, contrails,									0x815CCC, 0x6E1BCC);
+	ENGINE_DPTR(contrail_point_data_t, contrail_points,						0x815CC8, 0x6E1BC8);
+	ENGINE_DPTR(particle_data_t, particles,									0x815CB0, 0x6E1BB0);
+	ENGINE_DPTR(effect_data_t, effects,										0x815CBC, 0x6E1BBC);
+	ENGINE_DPTR(effect_location_data_t, effect_locations,					0x815CC0, 0x6E1BC0);
+	ENGINE_DPTR(particle_systems_data_t, particle_systems,					0x815CB8, 0x6E1BB4);
+	ENGINE_DPTR(particle_system_particles_data_t, particle_system_particles,0x815CB4, 0x6E1BB8);
 
 	ENGINE_DPTR(s_structure_detail_objects_data, structure_detail_objects,	0x6BD984, 0x62604C);
 	ENGINE_DPTR(s_structure_decals_data, structure_decals,					0x6BD994, 0x62605C);
 	ENGINE_DPTR(s_breakable_surface_globals_data, breakable_surface_globals,0x653BE0, 0x5C5B18);
-	ENGINE_DPTR(t_decals_data, decals,										0x815CC4, 0x6E1BC4);
+	ENGINE_DPTR(decals_data_t, decals,										0x815CC4, 0x6E1BC4);
 	ENGINE_DPTR(s_decal_globals_data, decal_globals,						0x64B940, 0x5BD770);
 	ENGINE_DPTR(s_decal_vertex_cache_data, decal_vertex_cache,				0x6B8390, PTR_NULL);
 
@@ -291,18 +291,18 @@ namespace Fov
 //////////////////////////////////////////////////////////////////////////
 // Lights.cpp
 #elif __EL_INCLUDE_FILE_ID == __EL_GAME_LIGHTS
-	ENGINE_DPTR(t_lights_data, lights,									0x7FBA34, 0x6C70B0);
+	ENGINE_DPTR(lights_data_t, lights,									0x7FBA34, 0x6C70B0);
 	ENGINE_DPTR(s_lights_globals_data, light_game_globals,				0x6B8188, 0x6209A8);
 	ENGINE_DPTR(s_light_cluster_data, light_cluster,					0x7FBA40, 0x6C70C0);
-	ENGINE_DPTR(t_cluster_light_reference_data, cluster_light_reference,0x7FBA44, 0x6C70C4);
-	ENGINE_DPTR(t_light_cluster_reference_data, light_cluster_reference,0x7FBA48, 0x6C70C8);
+	ENGINE_DPTR(cluster_light_reference_data_t, cluster_light_reference,0x7FBA44, 0x6C70C4);
+	ENGINE_DPTR(light_cluster_reference_data_t, light_cluster_reference,0x7FBA48, 0x6C70C8);
 
 
 //////////////////////////////////////////////////////////////////////////
 // Players.cpp
 #elif __EL_INCLUDE_FILE_ID == __EL_GAME_PLAYERS
-	ENGINE_DPTR(t_players_data, players,								0x8154E0, 0x6E13E0);
-	ENGINE_DPTR(t_teams_data, teams,									0x8154DC, 0x6E13DC);
+	ENGINE_DPTR(players_data_t, players,								0x8154E0, 0x6E13E0);
+	ENGINE_DPTR(teams_data_t, teams,									0x8154DC, 0x6E13DC);
 	ENGINE_DPTR(s_players_globals_data, players_globals,				0x8154D8, 0x6E13D8);
 	ENGINE_DPTR(s_player_control_globals_data, player_control_globals,	0x64C2C4, 0x5BE0F4);
 	ENGINE_DPTR(s_player_effects_data, player_effects,					0x68C77C, 0x5F4FFC);

@@ -135,14 +135,14 @@ private:
 public:
 	static void Initialize()
 	{
-		for(int32 x = 0; x < NUMBEROF(K_CACHE_PATH_SPRINTF_CALLS); x++)
-			Memory::WriteRelativeCall(PathHack, K_CACHE_PATH_SPRINTF_CALLS[x]);
+		for(auto ptr : K_CACHE_PATH_SPRINTF_CALLS)
+			Memory::WriteRelativeCall(PathHack, ptr);
 		for(int32 x = 0; x < NUMBEROF(K_CACHE_PATH_SNPRINTF_CALLS)-1; x++)
 			Memory::WriteRelativeCall(PathHackN, K_CACHE_PATH_SNPRINTF_CALLS[x]);
 
 		// Redirect all game calls to cache_file_read_header to our implementation which supports .yelo validation
-		for(int32 x = 0; x < NUMBEROF(K_CACHE_FILE_READ_HEADER_CALLS); x++)
-			Memory::WriteRelativeCall(CacheFileReadHeaderHack, K_CACHE_FILE_READ_HEADER_CALLS[x]);
+		for(auto ptr : K_CACHE_FILE_READ_HEADER_CALLS)
+			Memory::WriteRelativeCall(CacheFileReadHeaderHack, ptr);
 	}
 };
 

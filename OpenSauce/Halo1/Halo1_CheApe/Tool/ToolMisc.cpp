@@ -10,6 +10,7 @@
 
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 
+#include "Engine/EngineFunctions.hpp"
 #include "TagGroups/TagGroups.hpp"
 #include "TagGroups/yelo_scenario_definitions.hpp"
 
@@ -41,7 +42,7 @@ namespace Yelo
 				cstring scenario_name;
 			}* args = CAST_PTR(s_arguments*, arguments);
 
-			datum_index scnr_index = tag_load<TagGroups::scenario>(args->scenario_name, FLAG(Flags::_tag_load_non_resolving_references_bit));
+			datum_index scnr_index = blam::tag_load<TagGroups::scenario>(args->scenario_name, FLAG(Flags::_tag_load_non_resolving_references_bit));
 
 			if(scnr_index.IsNull())
 			{
@@ -49,13 +50,13 @@ namespace Yelo
 				return;
 			}
 
-			auto scnr = tag_get<TagGroups::scenario>(scnr_index);
+			auto scnr = blam::tag_get<TagGroups::scenario>(scnr_index);
 			printf_s("stock'ifying scenario: %s...\n", args->scenario_name);
 			TagGroups::YeloCleanseScenario(scnr);
 			printf_s("saving...\n");
-			tag_save(scnr_index);
+			blam::tag_save(scnr_index);
 			printf_s("done.\n");
-			tag_unload(scnr_index);
+			blam::tag_unload(scnr_index);
 		}
 	};
 };

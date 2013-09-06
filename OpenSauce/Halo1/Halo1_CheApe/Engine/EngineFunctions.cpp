@@ -8,7 +8,9 @@
 #include "Engine/EngineFunctions.hpp"
 
 #include <blamlib/Halo1/math/periodic_functions.hpp>
+#include <blamlib/Halo1/memory/byte_swapping.hpp>
 #include <blamlib/Halo1/tag_files/files.hpp>
+#include <blamlib/Halo1/tag_files/tag_files.hpp>
 
 namespace Yelo
 {
@@ -18,7 +20,7 @@ namespace Yelo
 
 	namespace Engine
 	{
-		API_FUNC_NAKED bool GetCmdLineParameter(cstring parameter, cstring* value_out)
+		API_FUNC_NAKED bool GetCmdLineParameter(cstring parameter, __out_opt cstring* value_out)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(GET_CMD_LINE_PARAMETER);
 
@@ -30,6 +32,7 @@ namespace Yelo
 		}
 
 
+		char g_display_assert_buffer[512];
 		API_FUNC_NAKED void display_assert(cstring reason, cstring file, const uint32 line, bool halt)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DISPLAY_ASSERT);
@@ -120,6 +123,16 @@ namespace Yelo
 	namespace blam
 	{
 		using namespace Yelo::Memory;
+
+		//////////////////////////////////////////////////////////////////////////
+		// byte_swapping.c
+		API_FUNC_NAKED void PLATFORM_API byte_swap_data_explicit(cstring name, int32 size, 
+			byte_swap_code_t* codes, int data_count, void *address)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(BYTE_SWAP_DATA_EXPLICIT);
+
+			__asm	jmp	FUNCTION
+		}
 
 		//////////////////////////////////////////////////////////////////////////
 		// data.c

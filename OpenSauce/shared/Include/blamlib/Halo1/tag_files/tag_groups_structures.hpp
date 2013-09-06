@@ -5,6 +5,7 @@
 */
 #pragma once
 
+#include <blamlib/memory/byte_swapping_base.hpp>
 #include <blamlib/tag_files/tag_groups_base.hpp>
 
 namespace Yelo
@@ -83,7 +84,7 @@ namespace Yelo
 	namespace Flags
 	{
 		enum {
-			// Never streamed, unless the tag is loaded with _tag_load_verify_bit
+			// Never streamed, unless the tag is loaded with _tag_load_for_editor_bit
 			_tag_data_never_streamed_bit = 0,
 			_tag_data_is_text_data_bit,
 			// ie, 'debug data'
@@ -143,15 +144,23 @@ namespace Yelo
 		proc_tag_block_postprocess_element postprocess_proc;
 		proc_tag_block_format format_proc;
 		proc_tag_block_dispose_element dispose_element_proc;
-		int32* byteswap_codes;
+		byte_swap_code_t* byte_swap_codes;
+
+#if PLATFORM_IS_EDITOR
+		// Searches the definition for a field of type [field_type] with a name which starts 
+		// with [name] characters. Optionally starts at a specific field index.
+		// Returns NONE if this fails.
+		int32 find_field_index(_enum field_type, cstring name, int32 start_index = NONE) const;
+#endif
 	}; BOOST_STATIC_ASSERT( sizeof(tag_block_definition) == 0x2C );
 
+	typedef void (PLATFORM_API* proc_tag_data_byte_swap)(void* block_element, void* address, int32 size);
 	struct tag_data_definition
 	{
 		cstring name;
 		long_flags flags;
-		size_t maximum_size;
-		void* byte_swap_proc;
+		int32 maximum_size;
+		proc_tag_data_byte_swap byte_swap_proc;
 	}; BOOST_STATIC_ASSERT( sizeof(tag_data_definition) == 0x10 );
 
 	struct tag_reference_definition
@@ -226,6 +235,8 @@ namespace Yelo
 			s_tag_field_scan_state m_state;
 
 		public:
+			inline void* GetAddress() const				{ return m_state.fields_address; }
+
 			inline int32 GetFieldIndex() const			{ return m_state.field_index; }
 			inline size_t GetFieldSize() const			{ return CAST(size_t, m_state.field_size); }
 			inline size_t GetFieldOffset() const		{ return CAST(size_t, m_state.field_offset); }
@@ -235,6 +246,7 @@ namespace Yelo
 			template<typename T>
 			inline T* GetTagFieldDefinition() const			{ return m_state.found_field->Definition<T>(); }
 
+			inline void* GetFieldAddress() const		{ return m_state.found_field_address; }
 			template<typename T>
 			inline T* GetFieldAs() const				{ return CAST_PTR(T*, m_state.found_field_address); }
 

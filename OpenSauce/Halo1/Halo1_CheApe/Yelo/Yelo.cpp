@@ -87,8 +87,8 @@ namespace Yelo
 #endif
 		};
 
-		for(int32 x = 0; x < NUMBEROF(TAG_FILES_OPEN_CALLS); x++)
-			Yelo::Memory::WriteRelativeCall(InitializeForTagFilesOpen, CAST_PTR(void*,TAG_FILES_OPEN_CALLS[x]));
+		for(auto ptr : TAG_FILES_OPEN_CALLS)
+			Yelo::Memory::WriteRelativeCall(InitializeForTagFilesOpen, CAST_PTR(void*,ptr));
 	}
 
 	void Initialize()

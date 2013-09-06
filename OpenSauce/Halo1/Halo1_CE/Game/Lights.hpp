@@ -15,8 +15,8 @@ namespace Yelo
 		struct s_lights_datum : TStructImpl(124)
 		{
 		};
-		typedef Memory::DataArray<s_lights_datum, 896> t_lights_data;
-		t_lights_data*					Lights();
+		typedef Memory::DataArray<s_lights_datum, 896> lights_data_t;
+		lights_data_t&					Lights();
 
 
 		struct s_lights_globals_data
@@ -35,14 +35,14 @@ namespace Yelo
 		struct s_cluster_light_reference_datum : TStructImpl(12)
 		{
 		};
-		typedef Memory::DataArray<s_cluster_light_reference_datum, 2048> t_cluster_light_reference_data;
-		t_cluster_light_reference_data*	ClusterLightReference();
+		typedef Memory::DataArray<s_cluster_light_reference_datum, 2048> cluster_light_reference_data_t;
+		cluster_light_reference_data_t&	ClusterLightReference();
 
 
 		struct s_light_cluster_reference_datum : TStructImpl(12)
 		{
 		};
-		typedef Memory::DataArray<s_light_cluster_reference_datum, 2048> t_light_cluster_reference_data;
-		t_light_cluster_reference_data*	LightClusterReference();
+		typedef Memory::DataArray<s_light_cluster_reference_datum, 2048> light_cluster_reference_data_t;
+		light_cluster_reference_data_t&	LightClusterReference();
 	};
 };

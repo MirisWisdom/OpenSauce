@@ -86,8 +86,6 @@
 #elif __EL_INCLUDE_FILE_ID == __EL_TAGGROUPS_TAG_GROUPS
 	ENGINE_DPTR(Cache::s_cache_tag_instance, tag_instances,	0x816D04, 0x6E2C04);
 
-	FUNC_PTR(TAG_ITERATOR_NEXT,	0x442A10, 0x4435A0);
-
 
 #else
 	#error Undefined engine layout include for: __EL_INCLUDE_TAGGROUPS

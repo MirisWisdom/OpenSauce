@@ -17,10 +17,10 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_GAME_LIGHTS
 #include "Memory/_EngineLayout.inl"
 
-		t_lights_data* Lights()									DPTR_IMP_GET(lights);
+		lights_data_t& Lights()									DPTR_IMP_GET_BYREF(lights);
 		s_lights_globals_data* LightsGlobals()					DPTR_IMP_GET(light_game_globals);
 		s_light_cluster_data* LightCluster()					DPTR_IMP_GET(light_cluster);
-		t_cluster_light_reference_data* ClusterLightReference()	DPTR_IMP_GET(cluster_light_reference);
-		t_light_cluster_reference_data* LightClusterReference()	DPTR_IMP_GET(light_cluster_reference);
+		cluster_light_reference_data_t& ClusterLightReference()	DPTR_IMP_GET_BYREF(cluster_light_reference);
+		light_cluster_reference_data_t& LightClusterReference()	DPTR_IMP_GET_BYREF(light_cluster_reference);
 	};
 };

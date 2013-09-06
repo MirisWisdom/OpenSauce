@@ -59,7 +59,7 @@ namespace Yelo
 		typedef Memory::DataArray<	s_effect_datum, 
 									Enums::k_maximum_number_of_effects_per_map,
 									Enums::k_maximum_number_of_effects_per_map_upgrade> 
-			t_effect_data;
+			effect_data_t;
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -74,6 +74,6 @@ namespace Yelo
 		typedef Memory::DataArray<	s_effect_location_datum, 
 									Enums::k_maximum_number_of_effect_locations_per_map,
 									Enums::k_maximum_number_of_effect_locations_per_map_upgrade> 
-			t_effect_location_data;
+			effect_location_data_t;
 	};
 };

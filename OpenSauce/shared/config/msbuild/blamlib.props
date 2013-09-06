@@ -21,6 +21,10 @@
 	<ClCompile Include="..\..\shared\Include\blamlib\memory\data_base.cpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\memory\datum_index.hpp" />
   </ItemGroup>
+  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
+    > <!--memory EDITOR-->
+	<ClInclude Include="..\..\shared\Include\blamlib\memory\byte_swapping_base.hpp" />
+  </ItemGroup>
   <ItemGroup
     > <!--scenario-->
 	<ClInclude Include="..\..\shared\Include\blamlib\scenario\scenario_location.hpp" />

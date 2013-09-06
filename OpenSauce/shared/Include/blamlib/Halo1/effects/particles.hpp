@@ -23,6 +23,6 @@ namespace Yelo
 		typedef Memory::DataArray<	s_particle_datum, 
 									Enums::k_maximum_number_of_particles_per_map,
 									Enums::k_maximum_number_of_particles_per_map_upgrade> 
-			t_particle_data;
+			particle_data_t;
 	};
 };

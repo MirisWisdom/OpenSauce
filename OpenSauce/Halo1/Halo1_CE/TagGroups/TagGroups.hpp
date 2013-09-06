@@ -20,14 +20,6 @@ namespace Yelo
 		void Dispose();
 		void InitializeForNewMap();
 
-		API_INLINE void tag_iterator_new(s_tag_iterator& iter, const tag group_tag_filter)
-		{
-			memset(&iter, 0, sizeof(iter));
-			iter.group_tag_filter = group_tag_filter;
-		}
-
-		datum_index tag_iterator_next(s_tag_iterator& iter);
-
 		template<typename T>
 		const T* TagGet(datum_index tag_index)
 		{

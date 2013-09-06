@@ -46,7 +46,7 @@ namespace NearbyObjects
 
 	static void PlayerExamineNearbyBiped(datum_index player_index, datum_index biped_index)
 	{
-		s_player_datum* player = (*Players::Players())[player_index];
+		s_player_datum* player = Players::Players()[player_index];
 
 		// Make sure we're not detecting ourself
 		if (player->slave_unit_index != biped_index)

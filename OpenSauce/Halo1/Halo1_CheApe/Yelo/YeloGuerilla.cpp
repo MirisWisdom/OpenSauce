@@ -121,7 +121,7 @@ namespace Yelo
 			}
 
 			tag_reference* reference = CAST_PTR(tag_reference*, field_info->address);
-			if(reference == nullptr || !tag_file_exists(reference->group_tag, reference->name))
+			if(reference == nullptr || !blam::tag_file_exists(reference->group_tag, reference->name))
 			{
 				// Set the tag-name control text to red
 				CDC__SetBkColor(CDC_, RGB(0xFF, 0x00, 0x00) | color);

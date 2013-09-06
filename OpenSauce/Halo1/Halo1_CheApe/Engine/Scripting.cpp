@@ -134,13 +134,13 @@ namespace Yelo
 				if( only_internals != TEST_FLAG(def->flags, Flags::_hs_yelo_definition_internal_bit) )
 					continue;
 
-				s_script_function_definition* element = tag_block_get_element(functions, tag_block_add_element(functions));
+				s_script_function_definition* element = functions.add_and_get_element();
 
 				ScriptingNameCopyToTagNameData(def->name, element->name);
 				element->index = CAST(int16, x);
 				element->return_type = def->return_type;
 
-				if( !tag_block_resize(element->parameters.to_tag_block(), def->paramc) )
+				if( !element->parameters.resize(def->paramc) )
 				{
 					YELO_ERROR(_error_message_priority_critical, 
 						"CheApe: failed to add function parameters for %s", def->name);
@@ -166,7 +166,7 @@ namespace Yelo
 				if( only_internals != TEST_FLAG(def->flags, Flags::_hs_yelo_definition_internal_bit) )
 					continue;
 
-				s_script_global_definition* element = tag_block_get_element(globals, tag_block_add_element(globals));
+				s_script_global_definition* element = globals.add_and_get_element();
 
 				ScriptingNameCopyToTagNameData(def->name, element->name);
 				element->index = CAST(int16, x)+1; // NOTE: for globals, we do +1 since in game builds there is a global which isn't present in editor builds
@@ -177,7 +177,7 @@ namespace Yelo
 		void ScriptingBlockClear(
 			TAG_TBLOCK(& script_block, TagGroups::s_scripting_definitions))
 		{
-			tag_block_resize(script_block, 0);
+			blam::tag_block_resize(script_block, 0);
 		}
 		void ScriptingBlockAddDefinitions(
 			TAG_TBLOCK(& script_block, TagGroups::s_scripting_definitions), bool only_internals)
@@ -186,7 +186,7 @@ namespace Yelo
 
 			ScriptingBlockClear(script_block);
 
-			s_scripting_definitions* element = tag_block_get_element(script_block, tag_block_add_element(script_block));
+			s_scripting_definitions* element = script_block.add_and_get_element();
 
 			ScriptingBlockAddFunctionDefinitions(element->new_functions, only_internals);
 			ScriptingBlockAddGlobalDefinitions(element->new_globals, only_internals);

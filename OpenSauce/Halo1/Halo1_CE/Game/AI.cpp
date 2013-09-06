@@ -23,24 +23,24 @@ namespace Yelo
 #include "Memory/_EngineLayout.inl"
 		
 		s_ai_globals_data* AIGlobals()								DPTR_IMP_GET(ai_globals);
-		t_actor_data* Actors()										DPTR_IMP_GET(actors);
-		swarm_data_t* Swarms()										DPTR_IMP_GET(swarms);
-		t_swarm_component_data* SwarmComponents()					DPTR_IMP_GET(swarm_components);
-		prop_data_t* Props()										DPTR_IMP_GET(props);
-		encounter_data_t* Encounters()								DPTR_IMP_GET(encounters);
-		squads_data_t* Squads()										DPTR_IMP_GET(squads);
-		platoons_data_t* Platoons()									DPTR_IMP_GET(platoons);
-		ai_pursuit_data_t* AIPursuits()								DPTR_IMP_GET(ai_pursuits);
+		t_actor_data& Actors()										DPTR_IMP_GET_BYREF(actors);
+		swarm_data_t& Swarms()										DPTR_IMP_GET_BYREF(swarms);
+		t_swarm_component_data& SwarmComponents()					DPTR_IMP_GET_BYREF(swarm_components);
+		prop_data_t& Props()										DPTR_IMP_GET_BYREF(props);
+		encounter_data_t& Encounters()								DPTR_IMP_GET_BYREF(encounters);
+		squads_data_t& Squads()										DPTR_IMP_GET_BYREF(squads);
+		platoons_data_t& Platoons()									DPTR_IMP_GET_BYREF(platoons);
+		ai_pursuit_data_t& AIPursuits()								DPTR_IMP_GET_BYREF(ai_pursuits);
 
 		//ai_communication_dialogue_events_t
-		ai_communication_reply_events_t* AICommunicationReplies()	DPTR_IMP_GET(ai_communication_replies);
-		ai_conversation_data_t* AIConversations()					DPTR_IMP_GET(ai_conversations);
+		ai_communication_reply_events_t& AICommunicationReplies()	DPTR_IMP_GET_BYREF(ai_communication_replies);
+		ai_conversation_data_t& AIConversations()					DPTR_IMP_GET_BYREF(ai_conversations);
 
 
 		static void ActorActionHandleVehicleExitBoardingSeat(datum_index unit_index)
 		{
 			const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
-			Objects::s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
+			Objects::s_unit_datum* unit = Objects::ObjectHeader()[unit_index]->_unit;
 
 			// Exit the vehicle like normal if a globals tag doesn't exist
 			if(cv_globals == nullptr)
@@ -50,7 +50,7 @@ namespace Yelo
 			}
 
 			datum_index parent_unit_index = unit->object.parent_object_index;
-			Objects::s_unit_datum* parent_unit = (*Objects::ObjectHeader())[parent_unit_index]->_unit;
+			Objects::s_unit_datum* parent_unit = Objects::ObjectHeader()[parent_unit_index]->_unit;
 			int16 seat_index = unit->unit.vehicle_seat_index;
 
 			TagGroups::s_unit_external_upgrades const* unit_upgrades_definition = 
@@ -60,10 +60,10 @@ namespace Yelo
 			if (unit_upgrades_definition != nullptr)
 			{
 				// Check if the seat the actor is in is being boarded
-				for (int i = 0; i < unit_upgrades_definition->boarding_seats.Count; i++)
+				for(const auto& boarding_seat : unit_upgrades_definition->boarding_seats)
 				{
-					int16 boarding_seat_index = unit_upgrades_definition->boarding_seats[i].seat_index;
-					int16 target_seat_index = unit_upgrades_definition->boarding_seats[i].target_seat_index;
+					int16 boarding_seat_index = boarding_seat.seat_index;
+					int16 target_seat_index = boarding_seat.target_seat_index;
 
 					if (seat_index == target_seat_index)
 					{

@@ -65,13 +65,13 @@ namespace Yelo
 
 		API_FUNC_NAKED s_gamespy_client* GsGetClient(int32 client_id)
 		{
-			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(GAMESPY_GET_CLIENT_KEY_HASH);
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(GAMESPY_GET_CLIENT_KEY_HASH);
 
 			API_FUNC_NAKED_START()
 				push	ecx
 
 				mov		eax, client_id
-				call	TEMP_CALL_ADDR
+				call	FUNCTION
 				cmp		eax, GET_DATA_PTR(compiler_null_string)
 				jnz		_return
 				mov		eax, 4 // will cause us to return NULL. Yes, I r a hacka

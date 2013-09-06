@@ -46,31 +46,31 @@ namespace Yelo
 		s_object_type_definition** ObjectTypeDefinitions()							PTR_IMP_GET(object_type_definitions);
 		s_widget_type_definition*  WidgetTypeDefinitions()							PTR_IMP_GET(widget_type_definitions);
 
-		t_widget_data* Widgets()													DPTR_IMP_GET(widgets);
-		t_flag_data* Flags()														DPTR_IMP_GET(flags);
-		t_antenna_data* Antennas()													DPTR_IMP_GET(antennas);
-		t_glow_data* Glow()															DPTR_IMP_GET(glow);
-		t_glow_particles_data* GlowParticles()										DPTR_IMP_GET(glow_particles);
-		t_light_volumes_data* LightVolumes()										DPTR_IMP_GET(light_volumes);
-		t_lightnings_data* Lightnings()												DPTR_IMP_GET(lightnings);
+		widget_data_t& Widgets()													DPTR_IMP_GET_BYREF(widgets);
+		flag_data_t& Flags()														DPTR_IMP_GET_BYREF(flags);
+		antenna_data_t& Antennas()													DPTR_IMP_GET_BYREF(antennas);
+		glow_data_t& Glow()															DPTR_IMP_GET_BYREF(glow);
+		glow_particles_data_t& GlowParticles()										DPTR_IMP_GET_BYREF(glow_particles);
+		light_volumes_data_t& LightVolumes()										DPTR_IMP_GET_BYREF(light_volumes);
+		lightnings_data_t& Lightnings()												DPTR_IMP_GET_BYREF(lightnings);
 
 
 		Render::cached_object_render_states_data_t* CachedObjectRenderStates()		DPTR_IMP_GET(cached_object_render_states);
 		s_unit_globals_data* UnitGlobals()											DPTR_IMP_GET(unit_globals);
-		t_device_groups_data* DeviceGroups()										DPTR_IMP_GET(device_groups);
-		t_object_header_data* ObjectHeader()										DPTR_IMP_GET(object_header);
+		device_groups_data_t& DeviceGroups()										DPTR_IMP_GET_BYREF(device_groups);
+		object_header_data_t& ObjectHeader()										DPTR_IMP_GET_BYREF(object_header);
 		s_objects_pool_data* ObjectsPool()											DPTR_IMP_GET(objects_pool);
 		s_object_globals_data* ObjectGlobals()										DPTR_IMP_GET(object_globals);
 		s_object_name_list_data* ObjectNameList()									DPTR_IMP_GET(object_name_list);
 
 
 		collideable_object_data* CollideableObject()								DPTR_IMP_GET(collideable_object);
-		t_cluster_collideable_object_reference_data* ClusterCollideableObjectReference()		DPTR_IMP_GET(cluster_collideable_object_reference);
-		t_collideable_object_cluster_reference_data* CollideableObjectClusterReference()		DPTR_IMP_GET(collideable_object_cluster_reference);
+		cluster_collideable_object_reference_data_t& ClusterCollideableObjectReference()		DPTR_IMP_GET_BYREF(cluster_collideable_object_reference);
+		collideable_object_cluster_reference_data_t& CollideableObjectClusterReference()		DPTR_IMP_GET_BYREF(collideable_object_cluster_reference);
 
 		noncollideable_object_data* NoncollideableObject()							DPTR_IMP_GET(noncollideable_object);
-		t_cluster_noncollideable_object_reference_data* ClusterNoncollideableObjectReference()	DPTR_IMP_GET(cluster_noncollideable_object_reference);
-		t_noncollideable_object_cluster_reference_data* NoncollideableObjectClusterReference()	DPTR_IMP_GET(noncollideable_object_cluster_reference);
+		cluster_noncollideable_object_reference_data_t& ClusterNoncollideableObjectReference()	DPTR_IMP_GET_BYREF(cluster_noncollideable_object_reference);
+		noncollideable_object_cluster_reference_data_t& NoncollideableObjectClusterReference()	DPTR_IMP_GET_BYREF(noncollideable_object_cluster_reference);
 
 
 		static struct s_object_yelo_globals
@@ -295,7 +295,7 @@ namespace Yelo
 		void PlacementDataNewAndCopy(s_object_placement_data& data, datum_index src_object_index, 
 			datum_index tag_index_override, datum_index owner_object_index)
 		{
-			s_object_data* src_object = (*Objects::ObjectHeader())[src_object_index]->_object;
+			s_object_data* src_object = Objects::ObjectHeader()[src_object_index]->_object;
 
 			if(tag_index_override.IsNull())
 				tag_index_override = src_object->definition_index;
@@ -308,7 +308,7 @@ namespace Yelo
 		{
 			if(!object_index.IsNull())
 			{
-				s_object_header_datum* object_header_datums = Objects::ObjectHeader()->Datums();
+				s_object_header_datum* object_header_datums = Objects::ObjectHeader().Datums();
 				s_object_data* current_obj = object_header_datums[object_index.index]._object;
 
 				datum_index parent_index;
@@ -325,24 +325,23 @@ namespace Yelo
 		{
 			if(!object_index.IsNull())
 			{
-				s_object_header_datum* object_header_datums = Objects::ObjectHeader()->Datums();
+				s_object_header_datum* object_header_datums = Objects::ObjectHeader().Datums();
 				s_object_data* current_obj = object_header_datums[object_index.index]._object;
 
-				do
-				{
-					object_index = current_obj->next_object_index;
+				for(object_index = current_obj->next_object_index;
+					!object_index.IsNull() && n > 0;
+					object_index = current_obj->next_object_index, --n)
 					current_obj = object_header_datums[object_index.index]._object;
-				}while(n--);
 			}
 
-			return object_index;
+			return n == 0 ? object_index : datum_index::null;
 		}
 
 		TagGroups::s_object_definition const* GetObjectDefinition(datum_index object_index)
 		{
 			if(!object_index.IsNull())
 			{
-				s_object_data* object = (*Objects::ObjectHeader())[object_index]->_object;
+				s_object_data* object = Objects::ObjectHeader()[object_index]->_object;
 
 				return TagGroups::TagGet<TagGroups::s_object_definition>(object->definition_index);
 			}
@@ -354,7 +353,7 @@ namespace Yelo
 		{
 			if(!object_index.IsNull())
 			{
-				s_object_data* object = (*Objects::ObjectHeader())[object_index]->_object;
+				s_object_data* object = Objects::ObjectHeader()[object_index]->_object;
 				datum_index tag_index = object->animation.definition_index;
 
 				return TagGroups::TagGet<TagGroups::model_animation_graph>(tag_index);
@@ -383,7 +382,7 @@ namespace Yelo
 		static void PerformActionOnChildrenByType(datum_index parent, long_flags object_type_mask,
 			proc_object_action_perfomer action_performer)
 		{
-			s_object_header_datum* object_header_datums = Objects::ObjectHeader()->Datums();
+			s_object_header_datum* object_header_datums = Objects::ObjectHeader().Datums();
 			s_object_data* parent_object = object_header_datums[parent.index]._object;
 			s_object_data* child_object;
 
@@ -451,8 +450,8 @@ namespace Yelo
 		{
 			if (!object_index.IsNull() && !object_index_to_test.IsNull())
 			{
-				Objects::s_object_data* object = (*Objects::ObjectHeader())[object_index]->_object;
-				Objects::s_object_data* object_to_test = (*Objects::ObjectHeader())[object_index_to_test]->_object;
+				Objects::s_object_data* object = Objects::ObjectHeader()[object_index]->_object;
+				Objects::s_object_data* object_to_test = Objects::ObjectHeader()[object_index_to_test]->_object;
 
 				int16 object_team = object->owner_team;
 				int16 object_to_test_team = object_to_test->owner_team;

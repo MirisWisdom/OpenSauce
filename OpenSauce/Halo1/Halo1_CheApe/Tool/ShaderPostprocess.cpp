@@ -12,6 +12,7 @@
 
 #include "Common/YeloSettings.hpp"
 #include "Common/StringEditing.hpp"
+#include "Engine/EngineFunctions.hpp"
 #include "TagGroups/TagGroups.hpp"
 
 namespace Yelo
@@ -92,7 +93,7 @@ namespace Yelo
 				puts("");
 
 				if(!shader_index.IsNull())
-					tag_unload(shader_index);
+					blam::tag_unload(shader_index);
 
 				safe_release(effect_compiler);
 			}

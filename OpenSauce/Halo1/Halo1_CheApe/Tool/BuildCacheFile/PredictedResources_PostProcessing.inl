@@ -9,14 +9,14 @@ namespace PostProcessing
 {
 	static bool shader_postprocess_generic_add_predicted_resources(datum_index tag_index)
 	{
-		auto* shader_tag = Yelo::tag_get<TagGroups::s_shader_postprocess_generic>(tag_index);
+		auto* shader_tag = blam::tag_get<TagGroups::s_shader_postprocess_generic>(tag_index);
 		
 		if(shader_tag->shader_code_binary.size == 0 && shader_tag->base_shader.tag_index.IsNull())
 		{
 			YELO_ERROR(_error_message_priority_warning,
 				"\nCheApe: shader_postprocess_generic validity failed on '%s'\n"
 				"error: postprocess shader with no binary data also has no base shader defined",
-				tag_get_name(tag_index));
+				blam::tag_get_name(tag_index));
 			return false;
 		}
 

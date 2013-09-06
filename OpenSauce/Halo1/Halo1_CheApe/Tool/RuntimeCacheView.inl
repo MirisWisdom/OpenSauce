@@ -1263,7 +1263,7 @@ BOOL OpenTag(const char* arguments)
 	tag_group.Terminate();
 	tag_group.TagSwap();
 
-	Yelo::tag_group* tag_group_def = Yelo::tag_group_get(tag_group.group);
+	Yelo::tag_group* tag_group_def = blam::tag_group_get(tag_group.group);
 
 	if(!tag_group_def)
 	{

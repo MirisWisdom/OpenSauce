@@ -20,7 +20,7 @@ namespace Yelo
 		{
 		};
 		typedef Memory::DataArray<s_contrail_datum, Enums::k_maximum_number_of_contrails_per_map> 
-			t_contrail_data;
+			contrail_data_t;
 
 		//////////////////////////////////////////////////////////////////////////
 		// game-state: contrail points
@@ -28,6 +28,6 @@ namespace Yelo
 		{
 		};
 		typedef Memory::DataArray<s_contrail_point_datum, Enums::k_maximum_number_of_contrail_points_per_map> 
-			t_contrail_point_data;
+			contrail_point_data_t;
 	};
 };

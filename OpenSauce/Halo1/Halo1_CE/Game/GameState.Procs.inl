@@ -39,13 +39,13 @@ static game_state_proc game_state_after_load_procs_new[k_number_of_game_state_af
 // impl
 static void PLATFORM_API game_state_call_before_save_procs_new()
 {
-	for(int x = 0; x < NUMBEROF(game_state_before_save_procs_new); x++)
-		game_state_before_save_procs_new[x]();
+	for(auto proc : game_state_before_save_procs_new)
+		proc();
 }
 static void PLATFORM_API game_state_call_before_load_procs_new()
 {
-	for(int x = 0; x < NUMBEROF(game_state_before_load_procs_new); x++)
-		game_state_before_load_procs_new[x]();
+	for(auto proc : game_state_before_load_procs_new)
+		proc();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -104,16 +104,16 @@ static void InitializeProcs()
 	//////////////////////////////////////////////////////////////////////////
 	// before save
 	{
-		for(int x = 0; x < NUMBEROF(K_GAME_STATE_BEFORE_SAVE_PROCS_CALLS); x++)
+		for(auto ptr : K_GAME_STATE_BEFORE_SAVE_PROCS_CALLS)
 			Memory::CreateHookRelativeCall(&game_state_call_before_save_procs_new, 
-				CAST_PTR(void*,K_GAME_STATE_BEFORE_SAVE_PROCS_CALLS[x]), Enums::_x86_opcode_nop);
+				CAST_PTR(void*,ptr), Enums::_x86_opcode_nop);
 	}
 	//////////////////////////////////////////////////////////////////////////
 	// before load
 	{
-		for(int x = 0; x < NUMBEROF(K_GAME_STATE_BEFORE_LOAD_PROCS_CALLS); x++)
+		for(auto ptr : K_GAME_STATE_BEFORE_LOAD_PROCS_CALLS)
 			Memory::CreateHookRelativeCall(&game_state_call_before_load_procs_new, 
-				CAST_PTR(void*,K_GAME_STATE_BEFORE_LOAD_PROCS_CALLS[x]), Enums::_x86_opcode_nop);
+				CAST_PTR(void*,ptr), Enums::_x86_opcode_nop);
 	}
 	//////////////////////////////////////////////////////////////////////////
 	// after load

@@ -11,28 +11,28 @@
 	ENGINE_PTR(s_object_type_definition**, object_type_definitions,				0x6376A4, 0x5AD07C);
 	ENGINE_PTR(s_widget_type_definition*,  widget_type_definitions,				0x6376D8, 0x5AD0B0);
 
-	ENGINE_DPTR(t_widget_data, widgets,											0x7FB398, 0x6C69D8);
-	ENGINE_DPTR(t_flag_data, flags,												0x7FB3A8, 0x6C69E8);
-	ENGINE_DPTR(t_antenna_data, antennas,										0x7FB3AC, 0x6C69EC);
-	ENGINE_DPTR(t_glow_data, glow,												0x7FB3A0, 0x6C69E0);
-	ENGINE_DPTR(t_glow_particles_data, glow_particles,							0x7FB3A4, 0x6C69E4);
-	ENGINE_DPTR(t_light_volumes_data, light_volumes,							0x653CC0, 0x5C5BA8);
-	ENGINE_DPTR(t_lightnings_data, lightnings,									0x653CC4, 0x5C5BAC);
+	ENGINE_DPTR(widget_data_t, widgets,											0x7FB398, 0x6C69D8);
+	ENGINE_DPTR(flag_data_t, flags,												0x7FB3A8, 0x6C69E8);
+	ENGINE_DPTR(antenna_data_t, antennas,										0x7FB3AC, 0x6C69EC);
+	ENGINE_DPTR(glow_data_t, glow,												0x7FB3A0, 0x6C69E0);
+	ENGINE_DPTR(glow_particles_data_t, glow_particles,							0x7FB3A4, 0x6C69E4);
+	ENGINE_DPTR(light_volumes_data_t, light_volumes,							0x653CC0, 0x5C5BA8);
+	ENGINE_DPTR(lightnings_data_t, lightnings,									0x653CC4, 0x5C5BAC);
 
 	ENGINE_DPTR(Render::cached_object_render_states_data_t, cached_object_render_states,	0x75E0EC, 0x629728);
 	ENGINE_DPTR(s_unit_globals_data, unit_globals,								0x68A8F0, 0x5F30E8);
-	ENGINE_DPTR(t_device_groups_data, device_groups,							0x815DB0, 0x6E1C70);
-	ENGINE_DPTR(t_object_header_data, object_header,							0x7FB3B0, 0x6C69F0);
+	ENGINE_DPTR(device_groups_data_t, device_groups,							0x815DB0, 0x6E1C70);
+	ENGINE_DPTR(object_header_data_t, object_header,							0x7FB3B0, 0x6C69F0);
 	ENGINE_DPTR(s_objects_pool_data, objects_pool,								0x653C04, 0x5C5AEC);
 	ENGINE_DPTR(s_object_globals_data, object_globals,							0x653C0C, 0x5C5AF4);
 	ENGINE_DPTR(s_object_name_list_data, object_name_list,						0x653C08, 0x5C5AF0);
 
 	ENGINE_DPTR(collideable_object_data, collideable_object,					0x7FB3D0, 0x6C6A10);
-	ENGINE_DPTR(t_cluster_collideable_object_reference_data, cluster_collideable_object_reference,	0x7FB3D4, 0x6C6A14);
-	ENGINE_DPTR(t_collideable_object_cluster_reference_data, collideable_object_cluster_reference,	0x7FB3D8, 0x6C6A18);
+	ENGINE_DPTR(cluster_collideable_object_reference_data_t, cluster_collideable_object_reference,	0x7FB3D4, 0x6C6A14);
+	ENGINE_DPTR(collideable_object_cluster_reference_data_t, collideable_object_cluster_reference,	0x7FB3D8, 0x6C6A18);
 	ENGINE_DPTR(noncollideable_object_data, noncollideable_object,				0x7FB3C0, 0x6C6A00);
-	ENGINE_DPTR(t_cluster_noncollideable_object_reference_data, cluster_noncollideable_object_reference,0x7FB3C4, 0x6C6A04);
-	ENGINE_DPTR(t_noncollideable_object_cluster_reference_data, noncollideable_object_cluster_reference,0x7FB3C8, 0x6C6A08);
+	ENGINE_DPTR(cluster_noncollideable_object_reference_data_t, cluster_noncollideable_object_reference,0x7FB3C4, 0x6C6A04);
+	ENGINE_DPTR(noncollideable_object_cluster_reference_data_t, noncollideable_object_cluster_reference,0x7FB3C8, 0x6C6A08);
 
 	ENGINE_PTR(size_t, object_memory_pool_allocation_size,						0x4F875D+0x30, 0x4DF74D+0x30);
 

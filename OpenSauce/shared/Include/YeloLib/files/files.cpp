@@ -8,6 +8,7 @@
 
 #include <string>
 #include <direct.h>
+#include <Shlwapi.h> // PathCombine
 
 namespace Yelo
 {

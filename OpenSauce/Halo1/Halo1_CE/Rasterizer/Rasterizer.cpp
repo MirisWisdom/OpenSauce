@@ -119,7 +119,7 @@ namespace Yelo
 		};
 #pragma endregion
 
-		s_rasterizer_frame_parameters* FrameParameters()PTR_IMP_GET2(rasterizer_frame_params);
+		s_rasterizer_frame_parameters* FrameParameters()	PTR_IMP_GET2(rasterizer_frame_params);
 
 		static bool g_nvidia_use_basic_camo = false;
 		static char g_screenshot_folder[MAX_PATH] = "screenshots\\";
@@ -189,16 +189,14 @@ namespace Yelo
 			Memory::WriteRelativeCall(&RasterizerDisposeHook, GET_FUNC_VPTR(RASTERIZER_DISPOSE_CALL_FROM_SHELL));
 
 			size_t address = CAST_PTR(size_t, Rasterizer::DebugOptions());
-			for(size_t x = 0; x < NUMBEROF(k_rasterizer_debug_table); x++)
+			for(const auto& rdt : k_rasterizer_debug_table)
 			{
-				const rasterizer_debug_table* rdt = &k_rasterizer_debug_table[x];
-
 				// this is the only time we should be modifying the hs definitions
 				// outside of the ScriptLibrary code, so do some cast magic
 				Scripting::hs_global_definition* global_def = CAST_QUAL(Scripting::hs_global_definition*, 
-					&(Scripting::HSExternalGlobals()[rdt->index]) );	// get the hs global definition we're about to fix up
+					&(Scripting::HSExternalGlobals()[rdt.index]) );	// get the hs global definition we're about to fix up
 
-				global_def->address = CAST_PTR(void*, address + rdt->field);// fix the global definition's address to point to the correct memory
+				global_def->address = CAST_PTR(void*, address + rdt.field);// fix the global definition's address to point to the correct memory
 			}
 
 			
@@ -207,20 +205,19 @@ namespace Yelo
 			GET_PTR(RESOLUTION_LIST_COUNT) = NUMBEROF(g_resolution_list);
 
 			// redirect all resolution definition pointers to the new array
-			int i = 0;
-			for(i = 0; i < NUMBEROF(K_RESOLUTION_LIST_X_REFERENCES); i++)
-				*K_RESOLUTION_LIST_X_REFERENCES[i] = &g_resolution_list[0].width;
-			for(i = 0; i < NUMBEROF(K_RESOLUTION_LIST_Y_REFERENCES); i++)
-				*K_RESOLUTION_LIST_Y_REFERENCES[i] = &g_resolution_list[0].height;
-			for(i = 0; i < NUMBEROF(K_RESOLUTION_LIST_STRING_REFERENCES); i++)
-				*K_RESOLUTION_LIST_STRING_REFERENCES[i] = &g_resolution_list[0].resolution_string;
+			for(auto ptr : K_RESOLUTION_LIST_X_REFERENCES)
+				*ptr = &g_resolution_list[0].width;
+			for(auto ptr : K_RESOLUTION_LIST_Y_REFERENCES)
+				*ptr = &g_resolution_list[0].height;
+			for(auto ptr : K_RESOLUTION_LIST_STRING_REFERENCES)
+				*ptr = &g_resolution_list[0].resolution_string;
 
 			*GET_PTR(RESOLUTION_LIST_STRING_NULL_REFERENCE) = &(g_resolution_list[0].resolution_string[15]);
 
-			for(i = 0; i < NUMBEROF(K_RESOLUTION_LIST_REFRESH_COUNT_REFERENCES); i++)
-				*K_RESOLUTION_LIST_REFRESH_COUNT_REFERENCES[i] = &g_resolution_list[0].refresh_rate_count;
-			for(i = 0; i < NUMBEROF(K_RESOLUTION_LIST_REFRESH_RATE_REFERENCES); i++)
-				*K_RESOLUTION_LIST_REFRESH_RATE_REFERENCES[i] = &g_resolution_list[0].refresh_rates;
+			for(auto ptr : K_RESOLUTION_LIST_REFRESH_COUNT_REFERENCES)
+				*ptr = &g_resolution_list[0].refresh_rate_count;
+			for(auto ptr : K_RESOLUTION_LIST_REFRESH_RATE_REFERENCES)
+				*ptr = &g_resolution_list[0].refresh_rates;
 
 			// replace the original resolution populator with the new one
 			Memory::WriteRelativeCall(&SetupResolutions, GET_FUNC_VPTR(RESOLUTION_LIST_SETUP_RESOLUTIONS_CALL), true);
@@ -233,8 +230,8 @@ namespace Yelo
 			tag_string screenshots_folder;
 			GetTimeStampStringForFile(screenshots_folder);
 			strcat_s(g_screenshot_folder, sizeof(g_screenshot_folder), screenshots_folder);
-			for(i = 0; i < NUMBEROF(K_SCREENSHOT_FOLDER_REFERENCES); i++)
-				*K_SCREENSHOT_FOLDER_REFERENCES[i] = &g_screenshot_folder[0];
+			for(auto ptr : K_SCREENSHOT_FOLDER_REFERENCES)
+				*ptr = &g_screenshot_folder[0];
 		}
 #pragma warning( pop )
 

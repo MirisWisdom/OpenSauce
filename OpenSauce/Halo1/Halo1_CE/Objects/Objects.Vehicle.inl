@@ -20,7 +20,7 @@ namespace Yelo
 			struct vehicle_globals {
 				TextBlock* menu;
 
-				int32 presets_count;
+				size_t presets_count;
 				struct s_seat_preset
 				{
 					int32 index;
@@ -28,9 +28,12 @@ namespace Yelo
 				};
 				struct s_preset {
 					char name[Enums::k_vehicle_view_name_length+1];
-					uint32 seats_bitvector[BIT_VECTOR_SIZE_IN_DWORDS(Enums::k_vehicle_view_max_seat_presets)];
-					s_seat_preset seats[Enums::k_vehicle_view_max_seat_presets];
-				}presets[Enums::k_vehicle_view_max_vehicle_presets];
+					std::array<uint32, BIT_VECTOR_SIZE_IN_DWORDS(Enums::k_vehicle_view_max_seat_presets)> 
+						seats_bitvector;
+					std::array<s_seat_preset, Enums::k_vehicle_view_max_seat_presets> 
+						seats;
+				};
+				std::array<s_preset, Enums::k_vehicle_view_max_vehicle_presets> presets;
 
 
 				void Dispose()
@@ -44,7 +47,7 @@ namespace Yelo
 
 				s_preset* AddPreset(cstring name)
 				{
-					if(presets_count == Enums::k_vehicle_view_max_vehicle_presets-1)
+					if(presets_count == presets.size())
 						return nullptr;
 
 					s_preset* preset = &presets[presets_count++];

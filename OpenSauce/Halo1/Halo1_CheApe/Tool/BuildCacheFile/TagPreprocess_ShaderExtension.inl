@@ -9,7 +9,7 @@ namespace ShaderExtension
 {
 	static bool shader_model_extension_process(datum_index tag_index)
 	{
-		auto* shader_tag = Yelo::tag_get<TagGroups::s_shader_model_definition>(tag_index);
+		auto* shader_tag = blam::tag_get<TagGroups::s_shader_model_definition>(tag_index);
 
 		if(shader_tag->model.maps.shader_extension.Count != 1)
 			return true;
@@ -52,7 +52,7 @@ namespace ShaderExtension
 
 	static bool shader_environment_extension_process(datum_index tag_index)
 	{
-		auto* shader_tag = Yelo::tag_get<TagGroups::s_shader_environment_definition>(tag_index);
+		auto* shader_tag = blam::tag_get<TagGroups::s_shader_environment_definition>(tag_index);
 
 		shader_tag->shader.extension_usage = Enums::_model_extension_usage_none;
 

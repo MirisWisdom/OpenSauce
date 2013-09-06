@@ -52,7 +52,7 @@ namespace Yelo
 
 		static void FixGameGlobals(datum_index globals_index, Enums::scenario_type scenario_type)
 		{
-			auto* globals = tag_get<TagGroups::s_game_globals>(globals_index);
+			auto* globals = blam::tag_get<TagGroups::s_game_globals>(globals_index);
 
 			switch(scenario_type)
 			{
@@ -70,23 +70,23 @@ namespace Yelo
 				}
 			}
 
-			// not done in the stock code, but it's unused any so fuck it
+			// not done in the stock code, but it's unused anyway so fuck it
 			globals->playlist_members.resize(0);
 		}
 		bool ScenarioLoadForCacheBuild(cstring scenario_name, cstring globals_name)
 		{
-			datum_index scenario_index = tag_load<TagGroups::scenario>(scenario_name, 
+			datum_index scenario_index = blam::tag_load<TagGroups::scenario>(scenario_name, 
 				FLAG(Flags::_tag_load_verify_exist_first_bit));
-			datum_index globals_index = tag_load<TagGroups::s_game_globals>(globals_name, 
+			datum_index globals_index = blam::tag_load<TagGroups::s_game_globals>(globals_name, 
 				FLAG(Flags::_tag_load_verify_exist_first_bit) | FLAG(Flags::_tag_load_non_resolving_references_bit));
 
 			// the engine code returns true even if the tags fail to load
 			if(scenario_index.IsNull() || globals_index.IsNull())
 				return true;
 
-			auto* scnr = tag_get<TagGroups::scenario>(scenario_index);
+			auto* scnr = blam::tag_get<TagGroups::scenario>(scenario_index);
 			FixGameGlobals(globals_index, scnr->type);
-			tag_load_children(globals_index);
+			blam::tag_load_children(globals_index);
 
 			return true;
 		}

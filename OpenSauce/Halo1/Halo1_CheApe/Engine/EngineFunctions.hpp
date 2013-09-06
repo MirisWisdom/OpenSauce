@@ -14,7 +14,7 @@ namespace Yelo
 	{
 		// NOTE: command line parameters are not populated in guerilla nor tool.exe
 		// So basically only use this in sapien builds
-		bool GetCmdLineParameter(cstring parameter, cstring* value_out = NULL);
+		bool GetCmdLineParameter(cstring parameter, __out_opt cstring* value_out = NULL);
 
 
 		typedef void (PLATFORM_API* proc_error)(Enums::error_message_priority priority, cstring format, ...);
@@ -31,8 +31,20 @@ namespace Yelo
 #define YELO_WARN(format, ...) \
 	Yelo::Engine::error(Yelo::Enums::_error_message_priority_warning, format, __VA_ARGS__)
 
+		extern char g_display_assert_buffer[512];
 		// warn = halt == false
 		void display_assert(cstring reason, cstring file, const uint32 line, bool halt);
+
+#define YELO_ASSERT_DISPLAY(expression, format, ...)													\
+	if( !(expression) )																					\
+	{																									\
+		sprintf_s(Yelo::Engine::g_display_assert_buffer, format, __VA_ARGS__);							\
+		Yelo::Engine::display_assert(Yelo::Engine::g_display_assert_buffer, __FILE__, __LINE__, true);	\
+	}
+
+#define YELO_ASSERT_CASE_UNREACHABLE()												\
+		default: Yelo::Engine::display_assert(nullptr, __FILE__, __LINE__, true);	\
+			break;
 
 
 		void* debug_malloc(const size_t size, const bool fill_with_garbage, cstring file, const uint32 line);

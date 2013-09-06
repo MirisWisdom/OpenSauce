@@ -112,15 +112,15 @@ namespace Yelo
 
 		datum_index GetUnitInSeat(datum_index vehicle_index, int32 seat_index)
 		{
-			s_unit_datum* vehicle = (*Objects::ObjectHeader())[vehicle_index]->_unit;
+			s_unit_datum* vehicle = Objects::ObjectHeader()[vehicle_index]->_unit;
 			datum_index unit = datum_index::null;
 
 			for (datum_index next_object = vehicle->object.first_object_index; 
 				 next_object != datum_index::null; 
-				 next_object = (*Objects::ObjectHeader())[next_object]->_object->next_object_index)
+				 next_object = Objects::ObjectHeader()[next_object]->_object->next_object_index)
 			{
-				int16 unit_seat_index = (*Objects::ObjectHeader())[next_object]->_unit->unit.vehicle_seat_index;
-				Enums::object_type object_type = (Enums::object_type)(*Objects::ObjectHeader())[next_object]->_object->type;
+				int16 unit_seat_index = Objects::ObjectHeader()[next_object]->_unit->unit.vehicle_seat_index;
+				auto object_type = (Enums::object_type)Objects::ObjectHeader()[next_object]->_object->type;
 
 				if (object_type == Enums::_object_type_biped)
 					if (unit_seat_index == seat_index) unit = next_object;

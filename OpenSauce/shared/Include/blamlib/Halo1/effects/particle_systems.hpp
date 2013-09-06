@@ -22,7 +22,7 @@ namespace Yelo
 		};
 		typedef Memory::DataArray<	s_particle_systems_datum, 
 									Enums::k_maximum_number_of_particle_systems_per_map> 
-			t_particle_systems_data;
+			particle_systems_data_t;
 
 		//////////////////////////////////////////////////////////////////////////
 		// game-state: particle-system particles
@@ -32,6 +32,6 @@ namespace Yelo
 		typedef Memory::DataArray<	s_particle_system_particles_datum, 
 									Enums::k_maximum_number_of_particle_system_particles_per_map,
 									Enums::k_maximum_number_of_particle_system_particles_per_map_upgrade> 
-			t_particle_system_particles_data;
+			particle_system_particles_data_t;
 	};
 };

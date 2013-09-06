@@ -181,13 +181,11 @@ namespace Yelo
 				datum_index src_player_vehicle_index = datum_index::null;
 				if(src_player != nullptr) src_player_vehicle_index = src_player->GetVehicleIndex();
 
-				Players::t_players_data::Iterator iter(Players::Players());
-				Players::s_player_datum* player;
-				while( (player = iter.Next()) != nullptr )
+				for(auto player : Players::Players())
 				{
 					int32 player_machine_index = player->network_player.machine_index;
 					if(	player_machine_index == NONE ||
-						!send_predicate(player, src_player, src_player_vehicle_index))
+						!send_predicate(player.datum, src_player, src_player_vehicle_index))
 						continue;
 
 					if(!MessageDeltas::SvSendMessageToMachine(player_machine_index, message_size,

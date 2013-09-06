@@ -48,13 +48,13 @@ static void MemoryUpgradesSyntaxInitialize(bool use_upgrades = true)
 	//////////////////////////////////////////////////////////////////////////
 
 
-	for(int32 x = 0; x < NUMBEROF(K_MAX_HS_SYNTAX_NODES_PER_SCENARIO_UPGRADE_ADDRESS_LIST); x++)
-		*K_MAX_HS_SYNTAX_NODES_PER_SCENARIO_UPGRADE_ADDRESS_LIST[x] = use_upgrades ? 
+	for(auto ptr : K_MAX_HS_SYNTAX_NODES_PER_SCENARIO_UPGRADE_ADDRESS_LIST)
+		*ptr = use_upgrades ? 
 			Enums::k_maximum_hs_syntax_nodes_per_scenario_upgrade : Enums::k_maximum_hs_syntax_nodes_per_scenario;
 	
-	for(int32 x = 0; x < NUMBEROF(K_TOTAL_SCENARIO_HS_SYNTAX_DATA_UPGRADE_ADDRESS_LIST); x++)
-		*K_TOTAL_SCENARIO_HS_SYNTAX_DATA_UPGRADE_ADDRESS_LIST[x] = use_upgrades ? 
-		Enums::k_total_scenario_hs_syntax_data_upgrade : Enums::k_total_scenario_hs_syntax_data;
+	for(auto ptr : K_TOTAL_SCENARIO_HS_SYNTAX_DATA_UPGRADE_ADDRESS_LIST)
+		*ptr = use_upgrades ? 
+			Enums::k_total_scenario_hs_syntax_data_upgrade : Enums::k_total_scenario_hs_syntax_data;
 	// We ALWAYS want this set to the upgraded memory size
 	*K_HS_SYNTAX_DATA_DEFINITION_MAX_SIZE = Enums::k_total_scenario_hs_syntax_data_upgrade;
 }
@@ -68,8 +68,8 @@ static void MemoryUpgradesSyntaxStringDataInitialize()
 	};
 	//////////////////////////////////////////////////////////////////////////
 
-	for(int32 x = 0; x < NUMBEROF(K_TOTAL_SCENARIO_HS_STRING_DATA_UPGRADE_ADDRESS_LIST); x++)
-		*K_TOTAL_SCENARIO_HS_STRING_DATA_UPGRADE_ADDRESS_LIST[x] = Enums::k_maximum_hs_string_data_per_scenario_upgrade;
+	for(auto ptr : K_TOTAL_SCENARIO_HS_STRING_DATA_UPGRADE_ADDRESS_LIST)
+		*ptr = Enums::k_maximum_hs_string_data_per_scenario_upgrade;
 }
 static void MemoryUpgradesExternalGlobalsInitialize()
 {
@@ -221,14 +221,14 @@ static void MemoryUpgradesCustomScriptingDefinitions()
 	};
 
 	{
-		int32 count = _upgrade_globals.functions.count;
-		for(int32 x = 0; x < NUMBEROF(K_HS_FUNCTION_TABLE_COUNT_REFERENCES_16bit); x++)
-			*K_HS_FUNCTION_TABLE_COUNT_REFERENCES_16bit[x] = CAST(int16, count);
+		int16 count = CAST(int16, _upgrade_globals.functions.count);
+		for(auto ptr : K_HS_FUNCTION_TABLE_COUNT_REFERENCES_16bit)
+			*ptr = count;
 
 
-		count = _upgrade_globals.globals.count;
-		for(int32 x = 0; x < NUMBEROF(K_HS_EXTERNAL_GLOBALS_COUNT_REFERENCES_16bit); x++)
-			*K_HS_EXTERNAL_GLOBALS_COUNT_REFERENCES_16bit[x] = CAST(int16, count);
+		count = CAST(int16, _upgrade_globals.globals.count);
+		for(auto ptr : K_HS_EXTERNAL_GLOBALS_COUNT_REFERENCES_16bit)
+			*ptr = count;
 	}
 	//////////////////////////////////////////////////////////////////////////
 }

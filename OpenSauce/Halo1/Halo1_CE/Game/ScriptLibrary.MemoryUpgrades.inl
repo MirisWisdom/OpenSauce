@@ -112,17 +112,16 @@ static void MemoryUpgradesInitialize()
 	// Update the game code to use OUR function/global definition table's counts
 	{
 		int32 count = _upgrade_globals.functions.count;
-		for(int32 x = 0; x < NUMBEROF(K_HS_FUNCTION_TABLE_COUNT_REFERENCES_16bit); x++)
-			*K_HS_FUNCTION_TABLE_COUNT_REFERENCES_16bit[x] = CAST(int16, count);
-		for(int32 x = 0; x < NUMBEROF(K_HS_FUNCTION_TABLE_COUNT_REFERENCES_32bit); x++)
-			*K_HS_FUNCTION_TABLE_COUNT_REFERENCES_32bit[x] = count;
-
+		for(auto ptr : K_HS_FUNCTION_TABLE_COUNT_REFERENCES_16bit)
+			*ptr = CAST(int16, count);
+		for(auto ptr : K_HS_FUNCTION_TABLE_COUNT_REFERENCES_32bit)
+			*ptr = count;
 
 		count = _upgrade_globals.globals.count;
-		for(int32 x = 0; x < NUMBEROF(K_HS_EXTERNAL_GLOBALS_COUNT_REFERENCES_16bit); x++)
-			*K_HS_EXTERNAL_GLOBALS_COUNT_REFERENCES_16bit[x] = CAST(int16, count);
-		for(int32 x = 0; x < NUMBEROF(K_HS_EXTERNAL_GLOBALS_COUNT_REFERENCES_32bit); x++)
-			*K_HS_EXTERNAL_GLOBALS_COUNT_REFERENCES_32bit[x] = count;
+		for(auto ptr : K_HS_EXTERNAL_GLOBALS_COUNT_REFERENCES_16bit)
+			*ptr = CAST(int16, count);
+		for(auto ptr : K_HS_EXTERNAL_GLOBALS_COUNT_REFERENCES_32bit)
+			*ptr = count;
 	}
 	//////////////////////////////////////////////////////////////////////////
 }
