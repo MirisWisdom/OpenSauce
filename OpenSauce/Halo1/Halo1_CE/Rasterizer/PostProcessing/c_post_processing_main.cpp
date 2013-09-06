@@ -230,9 +230,9 @@ namespace Yelo
 		{
 			TagGroups::s_tag_iterator iter;
 			// look for a shader_postprocess_globals tag in the cache
-			tag_iterator_new(iter, TagGroups::s_shader_postprocess_globals::k_group_tag);
+			blam::tag_iterator_new(iter, TagGroups::s_shader_postprocess_globals::k_group_tag);
 			// get the first instance (there should only be one, others will be ignored)
-			datum_index tag_index = tag_iterator_next(iter);
+			datum_index tag_index = blam::tag_iterator_next(iter);
 			if(!tag_index.IsNull())
 			{
 				// set the current shader globals tag reference to the tag found

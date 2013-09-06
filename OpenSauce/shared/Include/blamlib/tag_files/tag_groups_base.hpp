@@ -58,15 +58,18 @@ namespace Yelo
 	BOOST_STATIC_ASSERT( sizeof(tag_reference) == 0x8 );
 	#define pad_tag_reference PAD32 PAD32
 #endif
-	// Clear the values of a tag reference so that it references no tag
-	void tag_reference_clear(tag_reference& reference);
-
-	void tag_reference_set(tag_reference& reference, tag group_tag, cstring name);
-	template<typename T>
-	void tag_reference_set(tag_reference& reference, cstring name)
+	namespace blam
 	{
-		return tag_reference_set(reference, T::k_group_tag, name);
-	}
+		// Clear the values of a tag reference so that it references no tag
+		void PLATFORM_API tag_reference_clear(tag_reference& reference);
+
+		void PLATFORM_API tag_reference_set(tag_reference& reference, tag group_tag, cstring name);
+		template<typename T>
+		void tag_reference_set(tag_reference& reference, cstring name)
+		{
+			return tag_reference_set(reference, T::k_group_tag, name);
+		}
+	};
 
 
 	struct tag_block
@@ -84,10 +87,12 @@ namespace Yelo
 		// Just makes coding a little more cleaner
 		template<typename T> inline T* Elements() { return CAST_PTR(T*, address); }
 
-		void* get_element(int32 element);
-		void delete_element(int32 element);
+		void* get_element(int32 element_index);
+		void delete_element(int32 element_index);
 		int32 add_element();
 		bool resize(int32 element_count);
+
+		void* add_and_get_element();
 
 #if PLATFORM_IS_EDITOR
 		size_t get_element_size() const;
@@ -100,17 +105,22 @@ namespace Yelo
 	BOOST_STATIC_ASSERT( sizeof(tag_block) == 0x8 );
 	#define pad_tag_block PAD32 PAD32
 #endif
-	// Get the address of a block element which exists at [element]
-	void* tag_block_get_element(tag_block* block, int32 element);
-	const void* tag_block_get_element(const tag_block* block, int32 element);
-	// Add a new block element and return the index which 
-	// represents the newly added element
-	int32 tag_block_add_element(tag_block* block);
-	// Resize the block to a new count of elements, returning the 
-	// success result of the operation
-	bool tag_block_resize(tag_block* block, int32 element_count);
-	// Delete the block element at [element]
-	void tag_block_delete_element(tag_block* block, int32 element);
+	namespace blam
+	{
+		// Get the address of a block element which exists at [element_index]
+		void* PLATFORM_API tag_block_get_element(tag_block* block, int32 element_index);
+		const void* PLATFORM_API tag_block_get_element(const tag_block* block, int32 element_index);
+		// Add a new block element and return the index which 
+		// represents the newly added element
+		int32 PLATFORM_API tag_block_add_element(tag_block* block);
+		// Resize the block to a new count of elements, returning the 
+		// success result of the operation
+		bool PLATFORM_API tag_block_resize(tag_block* block, int32 element_count);
+		// Delete the block element at [element_index]
+		void PLATFORM_API tag_block_delete_element(tag_block* block, int32 element_index);
+
+		void* tag_block_add_and_get_element(tag_block* block);
+	};
 
 
 	struct tag_data
@@ -120,8 +130,8 @@ namespace Yelo
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
 		// unknown
 		long_flags flags;
-		// offset relative to the start of owner tag group?
-		int32 data_offset;
+		// offset in the source tag file (relative to the start of the definition bytes)
+		int32 stream_position;
 #endif
 		// data blob bytes pointer
 		void* address;
@@ -147,60 +157,71 @@ namespace Yelo
 	BOOST_STATIC_ASSERT( sizeof(tag_data) == 0x8 );
 	#define pad_tag_data PAD32 PAD32
 #endif
-	bool tag_data_resize(tag_data* data, size_t new_size);
-
-
-	tag tag_get_group_tag(datum_index tag_index);
-
-	tag_block* tag_get_root_block(datum_index tag_index);
-
-	void tag_orphan(datum_index tag_index);
-
-	datum_index tag_loaded(tag group_tag, cstring name);
-
-	cstring tag_get_name(datum_index tag_index);
-
-	bool tag_read_only(datum_index tag_index);
-
-	// Get the tag definition's address by it's expected group tag and 
-	// it's tag handle [tag_index]
-	void* tag_get(tag group_tag, datum_index tag_index);
-	template<typename T>
-	T* tag_get(datum_index tag_index)
+	namespace blam
 	{
-		return CAST_PTR(T*, tag_get(T::k_group_tag, tag_index));
+		bool PLATFORM_API tag_data_resize(tag_data* data, size_t new_size);
 	}
 
-	datum_index tag_new(tag group_name, cstring name);
-	template<typename T>
-	datum_index tag_new(cstring name)
+
+	namespace blam
 	{
-		return tag_new(T::k_group_tag, name);
-	}
+		tag PLATFORM_API tag_get_group_tag(datum_index tag_index);
 
-	// Load a tag definition into memory.
-	// Returns the tag handle of the loaded tag definition
-	datum_index tag_load(tag group_tag, cstring name, long_flags file_flags);
-	template<typename T>
-	datum_index tag_load(cstring name, long_flags file_flags)
-	{
-		return tag_load(T::k_group_tag, name, file_flags);
-	}
+		tag_block* PLATFORM_API tag_get_root_block(datum_index tag_index);
 
-	datum_index tag_reload(tag group_tag, cstring name);
-	template<typename T>
-	datum_index tag_reload(cstring name)
-	{
-		return tag_reload(T::k_group_tag, name);
-	}
+		void PLATFORM_API tag_orphan(datum_index tag_index);
 
-	void tag_load_children(datum_index tag_index);
+		datum_index PLATFORM_API tag_loaded(tag group_tag, cstring name);
+		template<typename T>
+		datum_index tag_loaded(cstring name)
+		{
+			return tag_loaded(T::k_group_tag, name);
+		}
 
-	// Unload a tag definition from memory.
-	// [tag_index] will resolve to an invalid index after this returns.
-	void tag_unload(datum_index tag_index);
+		cstring PLATFORM_API tag_get_name(datum_index tag_index);
 
-	bool tag_save(datum_index tag_index);
+		bool PLATFORM_API tag_read_only(datum_index tag_index);
+
+		// Get the tag definition's address by it's expected group tag and 
+		// it's tag handle [tag_index]
+		void* PLATFORM_API tag_get(tag group_tag, datum_index tag_index);
+		template<typename T>
+		T* tag_get(datum_index tag_index)
+		{
+			return CAST_PTR(T*, tag_get(T::k_group_tag, tag_index));
+		}
+
+		datum_index PLATFORM_API tag_new(tag group_name, cstring name);
+		template<typename T>
+		datum_index tag_new(cstring name)
+		{
+			return tag_new(T::k_group_tag, name);
+		}
+
+		// Load a tag definition into memory.
+		// Returns the tag handle of the loaded tag definition
+		datum_index PLATFORM_API tag_load(tag group_tag, cstring name, long_flags file_flags);
+		template<typename T>
+		datum_index tag_load(cstring name, long_flags file_flags)
+		{
+			return tag_load(T::k_group_tag, name, file_flags);
+		}
+
+		datum_index PLATFORM_API tag_reload(tag group_tag, cstring name);
+		template<typename T>
+		datum_index tag_reload(cstring name)
+		{
+			return tag_reload(T::k_group_tag, name);
+		}
+
+		void PLATFORM_API tag_load_children(datum_index tag_index);
+
+		// Unload a tag definition from memory.
+		// [tag_index] will resolve to an invalid index after this returns.
+		void PLATFORM_API tag_unload(datum_index tag_index);
+
+		bool PLATFORM_API tag_save(datum_index tag_index);
+	};
 
 
 	namespace TagGroups

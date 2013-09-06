@@ -9,6 +9,10 @@
 #ifndef API_NO_ZIP_CODEC
 #include <zlib/contrib/minizip/unzip.h>
 
+#if PLATFORM_IS_EDITOR
+	#include "Engine/EngineFunctions.hpp" // ASSERT invokes YELO_ASSERT in editor builds
+#endif
+
 namespace Yelo
 {
 	namespace Compression { namespace Zip

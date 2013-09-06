@@ -45,8 +45,8 @@ static void SetVersionToCurrent()
 
 static void* CreateNetworkServerHook()
 {
-	typedef void* (*create_network_game_t)();
-	create_network_game_t function = CAST_PTR(create_network_game_t, GET_FUNC_VPTR(GAME_CREATE_NETWORK_SERVER));
+	typedef void* (PLATFORM_API* create_network_game_t)();
+	static create_network_game_t function = CAST_PTR(create_network_game_t, GET_FUNC_VPTR(GAME_CREATE_NETWORK_SERVER));
 
 	SetVersionToCurrent();
 
@@ -55,8 +55,8 @@ static void* CreateNetworkServerHook()
 
 static void* CreateNetworkClientHook()
 {
-	typedef void* (*create_network_game_t)();
-	create_network_game_t function = CAST_PTR(create_network_game_t, GET_FUNC_VPTR(GAME_CREATE_NETWORK_CLIENT));
+	typedef void* (PLATFORM_API* create_network_game_t)();
+	static create_network_game_t function = CAST_PTR(create_network_game_t, GET_FUNC_VPTR(GAME_CREATE_NETWORK_CLIENT));
 
 	SetVersionFromServer();
 
@@ -78,6 +78,6 @@ void ServerListInitialize()
 	Memory::WriteRelativeCall(ServerVersionIsValid, GET_FUNC_VPTR(GAME_SERVER_QR2_STRING_MATCHES_GAMEVER_CALL), true);
 
 	Memory::WriteRelativeCall(CreateNetworkServerHook, GET_FUNC_VPTR(GAME_CREATE_NETWORK_SERVER_CALL), true);
-	for(int i = 0; i < NUMBEROF(K_GAME_CREATE_NETWORK_CLIENT_CALL); i++)
-		Memory::WriteRelativeCall(CreateNetworkClientHook, K_GAME_CREATE_NETWORK_CLIENT_CALL[i], true);
+	for(auto ptr : K_GAME_CREATE_NETWORK_CLIENT_CALL)
+		Memory::WriteRelativeCall(CreateNetworkClientHook, ptr, true);
 }

@@ -239,27 +239,27 @@ namespace Yelo
 			TStructGetPtrImpl(real,				ControlDataPrimaryTrigger, 0x720);
 		};
 		typedef Memory::DataArray<s_actor_datum, 256> t_actor_data;
-		t_actor_data*					Actors();
-		swarm_data_t*					Swarms();
+		t_actor_data&					Actors();
+		swarm_data_t&					Swarms();
 
 
 		struct s_swarm_component_datum : TStructImpl(64)
 		{
 		};
 		typedef Memory::DataArray<s_swarm_component_datum, 256> t_swarm_component_data;
-		t_swarm_component_data*			SwarmComponents();
+		t_swarm_component_data&			SwarmComponents();
 
 
-		prop_data_t*					Props();
+		prop_data_t&					Props();
 
-		encounter_data_t*				Encounters();
-		squads_data_t*					Squads();
-		platoons_data_t*				Platoons();
-		ai_pursuit_data_t*				Pursuits();
+		encounter_data_t&				Encounters();
+		squads_data_t&					Squads();
+		platoons_data_t&				Platoons();
+		ai_pursuit_data_t&				Pursuits();
 
 		//ai_communication_dialogue_events_t*	AICommunicationDialogue();
-		ai_communication_reply_events_t*	AICommunicationReplies();
-		ai_conversation_data_t*				AIConversations();
+		ai_communication_reply_events_t&	AICommunicationReplies();
+		ai_conversation_data_t&				AIConversations();
 
 
 

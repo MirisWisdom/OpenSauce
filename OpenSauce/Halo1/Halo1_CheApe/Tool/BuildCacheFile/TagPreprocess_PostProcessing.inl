@@ -20,12 +20,12 @@ namespace PostProcessing
 
 		if(quad.x_bounds.lower > quad.x_bounds.upper || quad.y_bounds.lower > quad.y_bounds.upper)
 			YELO_ERROR(_error_message_priority_warning, 
-			"warning: quads lower bound is higher than its upper bound in '%s'", tag_get_name(tag_index));
+			"warning: quads lower bound is higher than its upper bound in '%s'", blam::tag_get_name(tag_index));
 	}
 
 	static bool shader_postprocess_generic_group_find_parameter(tag_string& test_string, Yelo::datum_index tag_index)
 	{
-		auto* datum = Yelo::tag_get<TagGroups::s_shader_postprocess_generic>(tag_index);
+		auto* datum = blam::tag_get<TagGroups::s_shader_postprocess_generic>(tag_index);
 
 		while(datum != nullptr)
 		{
@@ -71,7 +71,7 @@ namespace PostProcessing
 					return true;
 
 			if(!datum->base_shader.tag_index.IsNull())
-				datum = Yelo::tag_get<TagGroups::s_shader_postprocess_generic>(datum->base_shader.tag_index);
+				datum = blam::tag_get<TagGroups::s_shader_postprocess_generic>(datum->base_shader.tag_index);
 			else
 				datum = nullptr;
 		}
@@ -81,7 +81,7 @@ namespace PostProcessing
 
 	static bool effect_postprocess_generic_group_find_exposed_parameter(tag_string& test_string, Yelo::datum_index tag_index)
 	{
-		auto* definition = Yelo::tag_get<TagGroups::s_effect_postprocess_generic>(tag_index);
+		auto* definition = blam::tag_get<TagGroups::s_effect_postprocess_generic>(tag_index);
 
 		for(int i = 0; i < definition->exposed_parameters.Count; i++)
 			if(strcmp(definition->exposed_parameters[i].exposed_name, test_string) == 0)
@@ -121,7 +121,7 @@ namespace PostProcessing
 
 	static bool shader_postprocess_generic_preprocess(datum_index tag_index)
 	{
-		auto* shader_tag = Yelo::tag_get<TagGroups::s_shader_postprocess_generic>(tag_index);
+		auto* shader_tag = blam::tag_get<TagGroups::s_shader_postprocess_generic>(tag_index);
 
 		auto* current = shader_tag;
 		while(current != nullptr)
@@ -132,7 +132,7 @@ namespace PostProcessing
 				if(shader_postprocess_generic_parameter_exists(shader_tag, current->implementation.bitmaps[i].value_name))
 					continue;
 
-				int32 index = Yelo::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
+				int32 index = blam::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
 				shader_tag->parameters[index].SetParameter(&current->implementation.bitmaps[i]);
 
 				shader_tag->parameters[index].value_type.type = Enums::_shader_variable_base_type_texture;
@@ -143,7 +143,7 @@ namespace PostProcessing
 				if(shader_postprocess_generic_parameter_exists(shader_tag, current->implementation.bools[i].value_name))
 					continue;
 
-				int32 index = Yelo::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
+				int32 index = blam::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
 				shader_tag->parameters[index].SetParameter(&current->implementation.bools[i]);
 
 				shader_tag->parameters[index].value_type.type = Enums::_shader_variable_base_type_boolean;
@@ -154,7 +154,7 @@ namespace PostProcessing
 				if(shader_postprocess_generic_parameter_exists(shader_tag, current->implementation.integers[i].value_name))
 					continue;
 
-				int32 index = Yelo::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
+				int32 index = blam::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
 				shader_tag->parameters[index].SetParameter(&current->implementation.integers[i]);
 
 				shader_tag->parameters[index].value_type.type = Enums::_shader_variable_base_type_integer;
@@ -165,7 +165,7 @@ namespace PostProcessing
 				if(shader_postprocess_generic_parameter_exists(shader_tag, current->implementation.floats[i].value_name))
 					continue;
 
-				int32 index = Yelo::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
+				int32 index = blam::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
 				shader_tag->parameters[index].SetParameter(&current->implementation.floats[i]);
 
 				shader_tag->parameters[index].value_type.type = Enums::_shader_variable_base_type_float;
@@ -176,7 +176,7 @@ namespace PostProcessing
 				if(shader_postprocess_generic_parameter_exists(shader_tag, current->implementation.float2s[i].value_name))
 					continue;
 
-				int32 index = Yelo::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
+				int32 index = blam::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
 				shader_tag->parameters[index].SetParameter(&current->implementation.float2s[i]);
 
 				shader_tag->parameters[index].value_type.type = Enums::_shader_variable_base_type_float;
@@ -187,7 +187,7 @@ namespace PostProcessing
 				if(shader_postprocess_generic_parameter_exists(shader_tag, current->implementation.float3s[i].value_name))
 					continue;
 
-				int32 index = Yelo::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
+				int32 index = blam::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
 				shader_tag->parameters[index].SetParameter(&current->implementation.float3s[i]);
 
 				shader_tag->parameters[index].value_type.type = Enums::_shader_variable_base_type_float;
@@ -198,7 +198,7 @@ namespace PostProcessing
 				if(shader_postprocess_generic_parameter_exists(shader_tag, current->implementation.float4s[i].value_name))
 					continue;
 
-				int32 index = Yelo::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
+				int32 index = blam::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
 				shader_tag->parameters[index].SetParameter(&current->implementation.float4s[i]);
 
 				shader_tag->parameters[index].value_type.type = Enums::_shader_variable_base_type_float;
@@ -209,7 +209,7 @@ namespace PostProcessing
 				if(shader_postprocess_generic_parameter_exists(shader_tag, current->implementation.colors[i].value_name))
 					continue;
 
-				int32 index = Yelo::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
+				int32 index = blam::tag_block_add_element<TagGroups::s_shader_postprocess_parameter>(shader_tag->parameters);
 				shader_tag->parameters[index].SetParameter(&current->implementation.colors[i]);
 
 				shader_tag->parameters[index].value_type.type = Enums::_shader_variable_base_type_argb_color;
@@ -217,7 +217,7 @@ namespace PostProcessing
 			}
 
 			if(!current->base_shader.tag_index.IsNull())
-				current = Yelo::tag_get<TagGroups::s_shader_postprocess_generic>(current->base_shader.tag_index);
+				current = blam::tag_get<TagGroups::s_shader_postprocess_generic>(current->base_shader.tag_index);
 			else
 				current = nullptr;
 		};
@@ -227,7 +227,7 @@ namespace PostProcessing
 
 	static bool effect_postprocess_generic_preprocess(datum_index tag_index)
 	{
-		auto* definition = Yelo::tag_get<TagGroups::s_effect_postprocess_generic>(tag_index);
+		auto* definition = blam::tag_get<TagGroups::s_effect_postprocess_generic>(tag_index);
 
 		int i = 0;
 		// set quad to defaults
@@ -237,7 +237,7 @@ namespace PostProcessing
 		if(!definition->shaders.Count)
 		{
 			YELO_ERROR(_error_message_priority_critical,
-				"error: an effect_postprocess_generic has no shaders referenced\ntag: %s", tag_get_name(tag_index));
+				"error: an effect_postprocess_generic has no shaders referenced\ntag: %s", blam::tag_get_name(tag_index));
 			return false;
 		}
 
@@ -245,7 +245,7 @@ namespace PostProcessing
 			if(definition->shaders[i].tag_index.IsNull())
 			{
 				YELO_ERROR(_error_message_priority_critical,
-					"error: an effect_postprocess_generic has a shader block that does not reference a shader\ntag: %s", tag_get_name(tag_index));
+					"error: an effect_postprocess_generic has a shader block that does not reference a shader\ntag: %s", blam::tag_get_name(tag_index));
 				return false;
 			}
 
@@ -254,7 +254,7 @@ namespace PostProcessing
 			if((definition->shader_indices[i] >= definition->shaders.Count) || (definition->shader_indices[i] == NONE))
 			{
 				YELO_ERROR(_error_message_priority_critical,
-					"error: an effect_postprocess_generic has a shader_index with an invalid value\ntag: %s", tag_get_name(tag_index));
+					"error: an effect_postprocess_generic has a shader_index with an invalid value\ntag: %s", blam::tag_get_name(tag_index));
 				return false;
 			}
 
@@ -265,14 +265,14 @@ namespace PostProcessing
 			if(parameter.shader_index == NONE)
 			{
 				YELO_ERROR(_error_message_priority_critical,
-					"error: an effect_postprocess_generic has an exposed parameter with no shader referenced\ntag: %s", tag_get_name(tag_index));
+					"error: an effect_postprocess_generic has an exposed parameter with no shader referenced\ntag: %s", blam::tag_get_name(tag_index));
 				return false;
 			}
 
 			if(!shader_postprocess_generic_group_find_parameter(parameter.parameter_name, definition->shaders[definition->shader_indices[parameter.shader_index]].tag_index))
 			{
 				YELO_ERROR(_error_message_priority_critical,
-					"error: a effect_postprocess_generic is exposing a parameter that does not exist\ntag: %s", tag_get_name(tag_index));
+					"error: a effect_postprocess_generic is exposing a parameter that does not exist\ntag: %s", blam::tag_get_name(tag_index));
 				return false;
 			}
 		}
@@ -285,14 +285,14 @@ namespace PostProcessing
 			if(definition->shaders[i].tag_index == reference.tag_index)
 				return;
 
-		int32 block = Yelo::tag_block_add_element(definition->shaders);
+		int32 block = blam::tag_block_add_element(definition->shaders);
 		definition->shaders[block].tag_index = reference.tag_index;
-		Yelo::tag_reference_set(definition->shaders[block], reference.group_tag, reference.name);
+		blam::tag_reference_set(definition->shaders[block], reference.group_tag, reference.name);
 	}
 
 	static bool effect_postprocess_collection_preprocess(datum_index tag_index)
 	{
-		auto* collection = Yelo::tag_get<TagGroups::s_effect_postprocess_collection>(tag_index);
+		auto* collection = blam::tag_get<TagGroups::s_effect_postprocess_collection>(tag_index);
 
 		int i = 0;
 		// add used shaders to the shaders block
@@ -305,7 +305,7 @@ namespace PostProcessing
 			if(effect.effect.tag_index.IsNull())
 			{
 				YELO_ERROR(_error_message_priority_critical,
-					"error: an effect_postprocess_collection has an effect block with no effect referenced\ntag: %s", tag_get_name(tag_index));
+					"error: an effect_postprocess_collection has an effect block with no effect referenced\ntag: %s", blam::tag_get_name(tag_index));
 				return false;
 			}
 
@@ -316,7 +316,7 @@ namespace PostProcessing
 				if(!effect_postprocess_generic_group_find_exposed_parameter(variable.exposed_parameter_name, effect.effect.tag_index))
 				{
 					YELO_ERROR(_error_message_priority_critical,
-					"error: an effect_postprocess_collection has a scripted variable without a valid exposed variable\ntag: %s", tag_get_name(tag_index));
+					"error: an effect_postprocess_collection has a scripted variable without a valid exposed variable\ntag: %s", blam::tag_get_name(tag_index));
 					return false;
 				}
 
@@ -328,7 +328,7 @@ namespace PostProcessing
 				strcpy_s(variable.script_variable_name, sizeof(variable.script_variable_name), name.c_str());
 			}
 
-			auto* definition = Yelo::tag_get<TagGroups::s_effect_postprocess_generic>(effect.effect.tag_index);
+			auto* definition = blam::tag_get<TagGroups::s_effect_postprocess_generic>(effect.effect.tag_index);
 
 			for(j = 0; j < definition->shaders.Count; j++)
 				effect_postprocess_collection_add_shader_block(collection, definition->shaders[j]);

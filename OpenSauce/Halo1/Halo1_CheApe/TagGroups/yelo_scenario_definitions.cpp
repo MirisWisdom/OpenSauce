@@ -32,7 +32,7 @@ namespace Yelo
 			// Clear the yelo reference
 			tag_reference& yelo_reference = scnr->GetYeloReferenceHack();
 			if(yelo_reference.group_tag == project_yellow::k_group_tag)
-				tag_reference_clear(yelo_reference);
+				blam::tag_reference_clear(yelo_reference);
 
 			// If the scenario is using upgraded script node sizes, clear it
 			// Users will need to recompile their scenario's scripts
@@ -52,13 +52,13 @@ namespace Yelo
 
 			// check if the Yelo definition has a Yelo Globals tag reference and load it
 			if(yelo.yelo_globals.name_length > 0 && yelo.yelo_globals.group_tag == project_yellow_globals::k_group_tag)
-				yelo_globals_index = tag_load<project_yellow_globals>(yelo.yelo_globals.name, 0);
+				yelo_globals_index = blam::tag_load<project_yellow_globals>(yelo.yelo_globals.name, 0);
 			else if(for_build_cache) // Only use the internal tag for cache-building only, not for editing
 			{
-				yelo_globals_index = tag_new<project_yellow_globals>(project_yellow_globals::k_default_name);
+				yelo_globals_index = blam::tag_new<project_yellow_globals>(project_yellow_globals::k_default_name);
 
 				if(!yelo_globals_index.IsNull())
-					tag_reference_set<project_yellow_globals>(yelo.yelo_globals, project_yellow_globals::k_default_name);
+					blam::tag_reference_set<project_yellow_globals>(yelo.yelo_globals, project_yellow_globals::k_default_name);
 			}
 
 			return yelo_globals_index;
@@ -74,20 +74,20 @@ namespace Yelo
 			bool yelo_isnt_new = false;
 			if(yelo_reference.name_length > 0 && yelo_reference.group_tag == project_yellow::k_group_tag)
 			{
-				yelo_index = tag_load<project_yellow>(yelo_reference.name, 0);
+				yelo_index = blam::tag_load<project_yellow>(yelo_reference.name, 0);
 				yelo_isnt_new = true;
 			}
 			else if(for_build_cache) // Only use the internal tag for cache-building only, not for editing
-				yelo_index = tag_new<project_yellow>(project_yellow::k_default_name);
+				yelo_index = blam::tag_new<project_yellow>(project_yellow::k_default_name);
 
 			// Just in case the tag fails to load or fails to be created
 			if(!yelo_index.IsNull())
 			{
-				auto* yelo = tag_get<project_yellow>(yelo_index);
+				auto* yelo = blam::tag_get<project_yellow>(yelo_index);
 
 				// set the scenario's yelo reference if it isn't already set-up
 				if(!yelo_isnt_new)
-					tag_reference_set<project_yellow>(yelo_reference, project_yellow::k_default_name);
+					blam::tag_reference_set<project_yellow>(yelo_reference, project_yellow::k_default_name);
 
 				YeloPrepareDefinitionsYeloGlobals(*yelo, for_build_cache);
 			}
@@ -100,13 +100,13 @@ namespace Yelo
 		Yelo::datum_index YeloPrepareDefinitions(cstring scenario_name, const bool for_build_cache)
 		{
 			// If we're not building a cache file, just load the scenario into memory without any of its references
-			datum_index scenario_index = tag_load<TagGroups::scenario>(scenario_name, for_build_cache ? 
+			datum_index scenario_index = blam::tag_load<TagGroups::scenario>(scenario_name, for_build_cache ? 
 				FLAG(Flags::_tag_load_verify_exist_first_bit) : 
 				FLAG(Flags::_tag_load_non_resolving_references_bit));
 
 			if(!scenario_index.IsNull())
 			{
-				auto* scenario = tag_get<TagGroups::scenario>(scenario_index);
+				auto* scenario = blam::tag_get<TagGroups::scenario>(scenario_index);
 
 				datum_index yelo = YeloPrepareDefinitionsYeloScenario(
 					scenario->GetYeloReferenceHack(), for_build_cache);
@@ -114,7 +114,7 @@ namespace Yelo
 				// if we're not building a cache, then this is sapien and we want it to load 
 				// the scenario and all of it's dependencies after we return the code flow 
 				// back to it
-				if(!for_build_cache) tag_unload(scenario_index);
+				if(!for_build_cache) blam::tag_unload(scenario_index);
 
 				return yelo;
 			}
@@ -162,7 +162,7 @@ namespace Yelo
 				datum_index yelo_index = YeloPrepareDefinitions(scenario_name, k_for_cache_build);
 				if(!yelo_index.IsNull())
 				{
-					project_yellow* yelo = tag_get<project_yellow>(yelo_index);
+					auto* yelo = blam::tag_get<project_yellow>(yelo_index);
 
 					if(yelo->game_globals.name_length > 0)
 						globals_tag_name = yelo->game_globals.name;
@@ -170,8 +170,8 @@ namespace Yelo
 			}
 
 			if(globals_tag_name != nullptr)
-				for(int32 x = 0; x < NUMBEROF(K_GLOBALS_TAG_NAME_REFERENCES); x++)
-					*K_GLOBALS_TAG_NAME_REFERENCES[x] = globals_tag_name;
+				for(auto ptr : K_GLOBALS_TAG_NAME_REFERENCES)
+					*ptr = globals_tag_name;
 			else
 			{
 				YELO_ERROR(_error_message_priority_warning, "CheApe: scenario_yelo_load failed to do anything! %s", 

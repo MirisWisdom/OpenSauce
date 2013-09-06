@@ -71,11 +71,10 @@ namespace Yelo
 
 		TagGroups::s_unit_external_upgrades const* project_yellow_globals_cv::FindUnitExternalUpgradeBlock(datum_index unit_tag_index) const
 		{
-			for (int32 x = 0; x < unit_external_upgrades.Count; x++)
-			{
-				if (unit_tag_index == unit_external_upgrades[x].unit.tag_index)
-					return &unit_external_upgrades[x];
-			}
+			for(const auto& upgrade : unit_external_upgrades)
+				if (unit_tag_index == upgrade.unit.tag_index)
+					return &upgrade;
+
 			return nullptr;
 		}
 
@@ -87,11 +86,10 @@ namespace Yelo
 			if (unit_external_upgrades == nullptr)
 				return nullptr;
 
-			for (int32 x = 0; x < unit_external_upgrades->boarding_seats.Count; x++)
-			{
-				if (seat_index == unit_external_upgrades->boarding_seats[x].seat_index)
-					return &unit_external_upgrades->boarding_seats[x];
-			}
+			for(const auto& boarding_seat : unit_external_upgrades->boarding_seats)
+				if (seat_index == boarding_seat.seat_index)
+					return &boarding_seat;
+
 			return nullptr;
 		}
 
@@ -111,7 +109,7 @@ namespace Yelo
 					printf_s("CheApe: Culling invalid network_game_player_unit element #%n (%s)\n", x, player_unit.name);
 				else remove_element = false;
 
-				if(remove_element) tag_block_delete_element(networking.player_units, x);
+				if(remove_element) blam::tag_block_delete_element(networking.player_units, x);
 			}
 		}
 		/*!

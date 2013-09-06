@@ -353,11 +353,8 @@ namespace Yelo
 
 			bool is_valid = false;
 
-			for(int32 x = 0; x < data.new_functions.Count; x++)
+			for(const auto& def : data.new_functions)
 			{
-				const TagGroups::s_script_function_definition& def = 
-					data.new_functions[x];
-
 				is_valid = false;
 				// continue checking each EXPORTED function with the yelo script definitions
 				for(int32 f = 0; f < K_HS_YELO_FUNCTION_COUNT && !is_valid; f++)
@@ -387,11 +384,8 @@ namespace Yelo
 					return false;
 			}
 
-			for(int32 x = 0; x < data.new_globals.Count; x++)
+			for(const auto& def : data.new_globals)
 			{
-				const TagGroups::s_script_global_definition& def = 
-					data.new_globals[x];
-
 				is_valid = false;
 				for(int32 g = 0; g < K_HS_YELO_GLOBALS_COUNT && !is_valid; g++)
 				{

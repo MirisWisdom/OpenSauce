@@ -38,19 +38,23 @@
 
 #include <blamlib/cseries/cseries_base.hpp>
 #include <YeloLib/cseries/cseries_yelo_base.hpp>
+#undef ASSERT // TODO: H2's YELO_ASSERT isn't compatible with H1's
+#define ASSERT(value, message) YELO_ASSERT(_error_category_debug, value)
 
 #include <YeloLib/open_sauce/che_ape/che_ape_api.hpp>
+
+#include <blamlib/Halo2/memory/data.hpp> // gotta do this here b/c tag_groups_base references s_data_iterator
 
 #include "Memory/MemoryInterface.hpp"
 
 #ifdef _DEBUG
-	#define MSG_BOX(title, msg) MessageBoxW(NULL, msg, title, MB_OK)
+	#define MSG_BOX(title, msg) MessageBoxW(nullptr, msg, title, MB_OK)
 #else
 	#define MSG_BOX(title, msg) __noop
 #endif
 
 #if defined(_DEBUG) || defined(_TRACE)
-	#define TRACE_BOX(title, msg) MessageBoxW(NULL, msg, title, MB_OK)
+	#define TRACE_BOX(title, msg) MessageBoxW(nullptr, msg, title, MB_OK)
 #else
 	#define TRACE_BOX(title, msg) __noop
 #endif

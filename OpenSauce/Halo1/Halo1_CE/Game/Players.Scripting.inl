@@ -19,9 +19,7 @@ static void* scripting_volume_test_player_team_evaluate(void** arguments)
 
 	if(args->team_index >= 0 && GameEngine::GlobalVariant()->universal_variant.teams)
 	{
-		t_players_data::Iterator iter(Players::Players());
-		s_player_datum* player;
-		while( (player = iter.Next()) != nullptr )
+		for(auto player : Players::Players())
 		{
 			if(player->team_index == args->team_index && 
 				blam::scenario_trigger_volume_test_object(args->trigger_volume, player->slave_unit_index))
@@ -48,9 +46,7 @@ static void* scripting_volume_test_player_team_all_evaluate(void** arguments)
 
 	if(args->team_index >= 0 && GameEngine::GlobalVariant()->universal_variant.teams)
 	{
-		t_players_data::Iterator iter(Players::Players());
-		s_player_datum* player;
-		while( (player = iter.Next()) != nullptr )
+		for(auto player : Players::Players())
 		{
 			if(player->team_index == args->team_index && 
 				!blam::scenario_trigger_volume_test_object(args->trigger_volume, player->slave_unit_index))
@@ -76,14 +72,12 @@ static void* scripting_player_team_teleport_evaluate(void** arguments)
 
 	if(args->team_index >= 0 && GameEngine::GlobalVariant()->universal_variant.teams)
 	{
-		t_players_data::Iterator iter(Players::Players());
-		s_player_datum* player;
-		while( (player = iter.Next()) != nullptr )
+		for(auto player : Players::Players())
 		{
 			if(player->team_index == args->team_index)
 			{
 				TagGroups::scenario* scnr = Scenario::Scenario();
-				blam::player_teleport(iter.Current(), datum_index::null, scnr->cutscene_flags[args->cutscene_flag].position);
+				blam::player_teleport(player.index, datum_index::null, scnr->cutscene_flags[args->cutscene_flag].position);
 			}
 		}
 	}
@@ -104,9 +98,7 @@ static void* scripting_player_team_players_evaluate(void** arguments)
 		// An object list will only be created if there is 1 or more players on the specified team
 		datum_index object_list = datum_index::null;
 
-		t_players_data::Iterator iter(Players::Players());
-		s_player_datum* player;
-		while( (player = iter.Next()) != nullptr )
+		for(auto player : Players::Players())
 		{
 			if(player->team_index == args->team_index)
 			{
@@ -160,13 +152,11 @@ static void* scripting_player_data_get_integer_evaluate(void** arguments)
 
 	if(args->player_list_index >= 0)
 	{
-		t_players_data::Iterator iter(Players::Players());
-		s_player_datum* player;
-		while( (player = iter.Next()) != nullptr )
+		for(auto player : Players::Players())
 		{
 			if(player->network_player.player_list_index == args->player_list_index)
 			{
-				result.int32 = scripting_player_data_get_integer_by_name(player, args->data_name);
+				result.int32 = scripting_player_data_get_integer_by_name(player.datum, args->data_name);
 				break;
 			}
 		}
@@ -186,12 +176,10 @@ static void* scripting_player_team_data_get_integer_evaluate(void** arguments)
 
 	if(args->team_index >= 0 && GameEngine::GlobalVariant()->universal_variant.teams)
 	{
-		t_players_data::Iterator iter(Players::Players());
-		s_player_datum* player;
-		while( (player = iter.Next()) != nullptr )
+		for(auto player : Players::Players())
 		{
 			if(player->team_index == args->team_index)
-				result.int32 += scripting_player_data_get_integer_by_name(player, args->data_name, true);
+				result.int32 += scripting_player_data_get_integer_by_name(player.datum, args->data_name, true);
 		}
 	}
 
@@ -213,7 +201,7 @@ static datum_index scripting_player_data_get_object_by_name(s_player_datum* play
 		{
 			datum_index target_player = player->target_player_index;
 			if(!target_player.IsNull())
-				return (*Players::Players())[target_player]->slave_unit_index;
+				return Players::Players()[target_player]->slave_unit_index;
 		}
 	}
 	
@@ -231,13 +219,11 @@ static void* scripting_player_data_get_object_evaluate(void** arguments)
 
 	if(args->player_list_index >= 0)
 	{
-		t_players_data::Iterator iter(Players::Players());
-		s_player_datum* player;
-		while( (player = iter.Next()) != nullptr )
+		for(auto player : Players::Players())
 		{
 			if(player->network_player.player_list_index == args->player_list_index)
 			{
-				result.datum = scripting_player_data_get_object_by_name(player, args->data_name);
+				result.datum = scripting_player_data_get_object_by_name(player.datum, args->data_name);
 				break;
 			}
 		}
@@ -268,14 +254,12 @@ static void* scripting_player_data_get_real_evaluate(void** arguments)
 
 	if(args->player_list_index >= 0)
 	{
-		t_players_data::Iterator iter(Players::Players());
-		s_player_datum* player;
-		while( (player = iter.Next()) != nullptr )
+		for(auto player : Players::Players())
 		{
 			if(player->network_player.player_list_index == args->player_list_index)
 			{
 				Enums::hs_type result_type;
-				result.ptr.real = scripting_player_data_get_real_by_name(player, args->data_name, result_type);
+				result.ptr.real = scripting_player_data_get_real_by_name(player.datum, args->data_name, result_type);
 				Scripting::UpdateTypeHolderFromPtrToData(result, result_type);
 				break;
 			}
@@ -295,15 +279,13 @@ static void* scripting_player_data_set_real_evaluate(void** arguments)
 
 	if(args->player_list_index >= 0)
 	{
-		t_players_data::Iterator iter(Players::Players());
-		s_player_datum* player;
-		while( (player = iter.Next()) != nullptr )
+		for(auto player : Players::Players())
 		{
 			if(player->network_player.player_list_index == args->player_list_index)
 			{
 				TypeHolder result;
 				Enums::hs_type result_type;
-				result.ptr.real = scripting_player_data_get_real_by_name(player, args->data_name, result_type);
+				result.ptr.real = scripting_player_data_get_real_by_name(player.datum, args->data_name, result_type);
 				Scripting::UpdateTypeHolderDataFromPtr(result, result_type, &args->data_value);
 				break;
 			}
@@ -321,16 +303,9 @@ static void* scripting_player_local_get_evaluate()
 	TypeHolder result; result.pointer = nullptr;
 	result.int32 = NONE;
 
-	t_players_data::Iterator iter(Players::Players());
-	s_player_datum* player;
-	while( (player = iter.Next()) != nullptr )
-	{
-		if(player->local_player_index != NONE)
-		{
-			result.int32 = player->network_player.player_list_index;
-			break;
-		}
-	}
+	auto* local_player = Players::LocalPlayer();
+	if(local_player != nullptr)
+		result.int32 = local_player->network_player.player_list_index;
 
 	return result.pointer;
 }

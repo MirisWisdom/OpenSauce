@@ -118,12 +118,12 @@ HRESULT c_obj_file::CheckBspCompatibility(TagGroups::structure_bsp* bsp)
 	}
 	for(int32 i = 0; i < lightmaps_count; i++)
 	{
-		TagGroups::structure_bsp_lightmap* bsp_lightmap = tag_block_get_element(bsp->lightmaps, i);
+		TagGroups::structure_bsp_lightmap* bsp_lightmap = blam::tag_block_get_element(bsp->lightmaps, i);
 
 		int32 surface_count = 0;
 		for(int32 j = 0; j < bsp_lightmap->materials.Count; j++)
 		{
-			TagGroups::structure_bsp_material* bsp_material = tag_block_get_element(bsp_lightmap->materials, j);
+			TagGroups::structure_bsp_material* bsp_material = blam::tag_block_get_element(bsp_lightmap->materials, j);
 
 			surface_count += bsp_material->surface_count;
 		}
@@ -147,7 +147,7 @@ HRESULT c_obj_file::ReplaceVertexUVs(TagGroups::structure_bsp* bsp)
 
 	for(int32 i = 0; i < bsp->lightmaps.Count; i++)
 	{
-		TagGroups::structure_bsp_lightmap* bsp_lightmap = tag_block_get_element(bsp->lightmaps, i);
+		TagGroups::structure_bsp_lightmap* bsp_lightmap = blam::tag_block_get_element(bsp->lightmaps, i);
 
 		if(bsp_lightmap->bitmap == NONE)
 			continue;
@@ -155,7 +155,7 @@ HRESULT c_obj_file::ReplaceVertexUVs(TagGroups::structure_bsp* bsp)
 		int32 surface_offset = 0;
 		for(int32 j = 0; j < bsp_lightmap->materials.Count; j++)
 		{
-			TagGroups::structure_bsp_material* bsp_material = tag_block_get_element(bsp_lightmap->materials, j);
+			TagGroups::structure_bsp_material* bsp_material = blam::tag_block_get_element(bsp_lightmap->materials, j);
 
 			// Get the lightmap vertices by skipping over the bsp's vertices
 			size_t lightmap_verticies_offset = 
@@ -167,7 +167,7 @@ HRESULT c_obj_file::ReplaceVertexUVs(TagGroups::structure_bsp* bsp)
 
 			for(int32 k = 0; k < bsp_material->surface_count; k++)
 			{
-				TagGroups::structure_surface* surface = tag_block_get_element(bsp->surfaces, bsp_material->surfaces + k);
+				TagGroups::structure_surface* surface = blam::tag_block_get_element(bsp->surfaces, bsp_material->surfaces + k);
 
 				s_face face = m_groups.at(i)->faces.at(surface_offset + k);
 

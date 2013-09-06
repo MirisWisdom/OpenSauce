@@ -52,12 +52,12 @@ namespace Yelo
 		s_unit_globals_data*							UnitGlobals();
 
 
-		typedef Memory::DataArray<s_device_groups_datum, 1024> t_device_groups_data;
-		t_device_groups_data*							DeviceGroups();
+		typedef Memory::DataArray<s_device_groups_datum, 1024> device_groups_data_t;
+		device_groups_data_t&							DeviceGroups();
 
 
-		typedef Memory::DataArray<s_object_header_datum, 2048> t_object_header_data;
-		t_object_header_data*							ObjectHeader();
+		typedef Memory::DataArray<s_object_header_datum, 2048> object_header_data_t;
+		object_header_data_t&							ObjectHeader();
 
 		s_objects_pool_data*							ObjectsPool();
 
@@ -77,15 +77,15 @@ namespace Yelo
 		struct cluster_collideable_object_reference_datum : TStructImpl(12)
 		{
 		};
-		typedef Memory::DataArray<cluster_collideable_object_reference_datum, 2048> t_cluster_collideable_object_reference_data;
-		t_cluster_collideable_object_reference_data*	ClusterCollideableObjectReference();
+		typedef Memory::DataArray<cluster_collideable_object_reference_datum, 2048> cluster_collideable_object_reference_data_t;
+		cluster_collideable_object_reference_data_t&	ClusterCollideableObjectReference();
 
 
 		struct collideable_object_cluster_reference_datum : TStructImpl(12)
 		{
 		};
-		typedef Memory::DataArray<collideable_object_cluster_reference_datum, 2048> t_collideable_object_cluster_reference_data;
-		t_collideable_object_cluster_reference_data*	CollideableObjectClusterReference();
+		typedef Memory::DataArray<collideable_object_cluster_reference_datum, 2048> collideable_object_cluster_reference_data_t;
+		collideable_object_cluster_reference_data_t&	CollideableObjectClusterReference();
 		//////////////////////////////////////////////////////////////////////////
 
 
@@ -99,64 +99,64 @@ namespace Yelo
 		struct cluster_noncollideable_object_reference_datum : TStructImpl(12)
 		{
 		};
-		typedef Memory::DataArray<cluster_noncollideable_object_reference_datum, 2048> t_cluster_noncollideable_object_reference_data;
-		t_cluster_noncollideable_object_reference_data*	ClusterNoncollideableObjectReference();
+		typedef Memory::DataArray<cluster_noncollideable_object_reference_datum, 2048> cluster_noncollideable_object_reference_data_t;
+		cluster_noncollideable_object_reference_data_t&	ClusterNoncollideableObjectReference();
 
 
 		struct noncollideable_object_cluster_reference_datum : TStructImpl(12)
 		{
 		};
-		typedef Memory::DataArray<noncollideable_object_cluster_reference_datum, 2048> t_noncollideable_object_cluster_reference_data;
-		t_noncollideable_object_cluster_reference_data*	NoncollideableObjectClusterReference();
+		typedef Memory::DataArray<noncollideable_object_cluster_reference_datum, 2048> noncollideable_object_cluster_reference_data_t;
+		noncollideable_object_cluster_reference_data_t&	NoncollideableObjectClusterReference();
 		//////////////////////////////////////////////////////////////////////////
 
 
 		//////////////////////////////////////////////////////////////////////////
 		// Object widgets
-		typedef Memory::DataArray<s_widget_datum, 64> t_widget_data;
-		t_widget_data*			Widgets();
+		typedef Memory::DataArray<s_widget_datum, 64> widget_data_t;
+		widget_data_t&			Widgets();
 
 
 		struct s_flag_datum : TStructImpl(5820)
 		{
 		};
-		typedef Memory::DataArray<s_flag_datum, 2> t_flag_data;
-		t_flag_data*			Flags();
+		typedef Memory::DataArray<s_flag_datum, 2> flag_data_t;
+		flag_data_t&			Flags();
 
 
 		struct s_antenna_datum : TStructImpl(700)
 		{
 		};
-		typedef Memory::DataArray<s_antenna_datum, 12> t_antenna_data;
-		t_antenna_data*			Antennas();
+		typedef Memory::DataArray<s_antenna_datum, 12> antenna_data_t;
+		antenna_data_t&			Antennas();
 
 
 		struct s_glow_datum : TStructImpl(604)
 		{
 		};
-		typedef Memory::DataArray<s_glow_datum, 8> t_glow_data;
-		t_glow_data*			Glow();
+		typedef Memory::DataArray<s_glow_datum, 8> glow_data_t;
+		glow_data_t&			Glow();
 
 
 		struct s_glow_particles_datum : TStructImpl(100)
 		{
 		};
-		typedef Memory::DataArray<s_glow_particles_datum, 512> t_glow_particles_data;
-		t_glow_particles_data*	GlowParticles();
+		typedef Memory::DataArray<s_glow_particles_datum, 512> glow_particles_data_t;
+		glow_particles_data_t&	GlowParticles();
 
 
 		struct s_light_volumes_datum : TStructImpl(2048)
 		{
 		};
-		typedef Memory::DataArray<s_light_volumes_datum, 8> t_light_volumes_data;
-		t_light_volumes_data*	LightVolumes();
+		typedef Memory::DataArray<s_light_volumes_datum, 8> light_volumes_data_t;
+		light_volumes_data_t&	LightVolumes();
 
 
 		struct s_lightnings_datum : TStructImpl(2048)
 		{
 		};
-		typedef Memory::DataArray<s_lightnings_datum, 256> t_lightnings_data;
-		t_lightnings_data*		Lightnings();
+		typedef Memory::DataArray<s_lightnings_datum, 256> lightnings_data_t;
+		lightnings_data_t&		Lightnings();
 		//////////////////////////////////////////////////////////////////////////
 
 

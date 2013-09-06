@@ -72,15 +72,15 @@ static void build_cache_file_end_preprocess(Cache::s_cache_header* header, Cache
  */
 static void build_cache_file_begin_preprocess(cstring scenario_name)
 {
-	datum_index scenario_index = tag_load<TagGroups::scenario>(build_cache_file_for_scenario_internals.scenario_path, 0);
+	datum_index scenario_index = blam::tag_load<TagGroups::scenario>(build_cache_file_for_scenario_internals.scenario_path, 0);
 	if(!scenario_index.IsNull())
 	{
-		TagGroups::scenario* scenario = tag_get<TagGroups::scenario>(scenario_index);
+		auto* scenario = blam::tag_get<TagGroups::scenario>(scenario_index);
 		const tag_reference& yelo_reference = scenario->GetYeloReferenceHack();
 
 		if(!yelo_reference.tag_index.IsNull())
 		{
-			TagGroups::project_yellow* yelo = tag_get<TagGroups::project_yellow>(yelo_reference.tag_index);
+			auto* yelo = blam::tag_get<TagGroups::project_yellow>(yelo_reference.tag_index);
 
 			// If the scenario's yelo specifies build info, update the yelo header with that info, else use the defaults
 			if(yelo->build_info.Count > 0)
@@ -98,13 +98,13 @@ static void build_cache_file_begin_preprocess(cstring scenario_name)
 			if(yelo->game_globals.name_length > 0)
 			{
 				yelo->game_globals.tag_index = 
-					tag_load(yelo->game_globals.group_tag, yelo->game_globals.name, 0);
+					blam::tag_load(yelo->game_globals.group_tag, yelo->game_globals.name, 0);
 
 				if(!yelo->game_globals.tag_index.IsNull())
-					tag_rename(yelo->game_globals.tag_index, "globals\\globals");
+					blam::tag_rename(yelo->game_globals.tag_index, "globals\\globals");
 
 				// re-set the reference just for good measure
-				tag_reference_set(yelo->game_globals, 
+				blam::tag_reference_set(yelo->game_globals, 
 					yelo->game_globals.group_tag, "globals\\globals");
 			}
 		}

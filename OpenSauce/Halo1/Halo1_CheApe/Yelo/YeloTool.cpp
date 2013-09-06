@@ -94,11 +94,11 @@ namespace Yelo
 			};
 
 			// update references to the import class definitions
-			for(int32 x = 0; x < NUMBEROF(import_classes_references); x++)			*import_classes_references[x] = &import_classes[0];
+			for(auto ptr : import_classes_references)			*ptr = &import_classes[0];
 			// update references to the import class definition usages
-			for(int32 x = 0; x < NUMBEROF(import_classes_references_to_usage); x++)	*import_classes_references_to_usage[x] = &import_classes[0].usage;
+			for(auto ptr : import_classes_references_to_usage)	*ptr = &import_classes[0].usage;
 			// update code which contain the import class definitions count
-			for(int32 x = 0; x < NUMBEROF(import_classes_count); x++)				*import_classes_count[x] = NUMBEROF(import_classes);
+			for(auto ptr : import_classes_count)				*ptr = NUMBEROF(import_classes);
 
 			// Modify build-cache-file to use our own implementation
 			{

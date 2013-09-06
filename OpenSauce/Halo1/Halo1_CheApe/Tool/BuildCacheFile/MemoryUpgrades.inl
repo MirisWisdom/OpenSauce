@@ -278,37 +278,37 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 	#pragma region Tag Memory Upgrades
 	static void TagMemoryInitialize()
 	{
-		for(int32 x = 0; x < NUMBEROF(AddressOf::MaxTagsCheck); x++)
-			*AddressOf::MaxTagsCheck[x] = Enums::k_maximum_simultaneous_tag_instances_upgrade;
+		for(auto ptr : AddressOf::MaxTagsCheck)
+			*ptr = Enums::k_maximum_simultaneous_tag_instances_upgrade;
 
 		*AddressOf::TagMaxAddress = Enums::k_tag_max_address_upgrade;
 
-		for(int32 x = 0; x < NUMBEROF(AddressOf::TagAllocationSize); x++)
-			*AddressOf::TagAllocationSize[x] = Enums::k_tag_allocation_size_upgrade;
+		for(auto ptr : AddressOf::TagAllocationSize)
+			*ptr = Enums::k_tag_allocation_size_upgrade;
 
-		for(int32 x = 0; x < NUMBEROF(AddressOf::TagAllocationSizeNegitive); x++)
-			*AddressOf::TagAllocationSizeNegitive[x] = -Enums::k_tag_allocation_size_upgrade;
+		for(auto ptr : AddressOf::TagAllocationSizeNegitive)
+			*ptr = -Enums::k_tag_allocation_size_upgrade;
 	}
 
 	static void TagMemoryDispose()
 	{
-		for(int32 x = 0; x < NUMBEROF(AddressOf::MaxTagsCheck); x++)
-			*AddressOf::MaxTagsCheck[x] = Enums::k_maximum_simultaneous_tag_instances;
+		for(auto ptr : AddressOf::MaxTagsCheck)
+			*ptr = Enums::k_maximum_simultaneous_tag_instances;
 
 		*AddressOf::TagMaxAddress = Enums::k_tag_max_address;
 
-		for(int32 x = 0; x < NUMBEROF(AddressOf::TagAllocationSize); x++)
-			*AddressOf::TagAllocationSize[x] = Enums::k_tag_allocation_size;
+		for(auto ptr : AddressOf::TagAllocationSize)
+			*ptr = Enums::k_tag_allocation_size;
 
-		for(int32 x = 0; x < NUMBEROF(AddressOf::TagAllocationSizeNegitive); x++)
-			*AddressOf::TagAllocationSizeNegitive[x] = -Enums::k_tag_allocation_size;
+		for(auto ptr : AddressOf::TagAllocationSizeNegitive)
+			*ptr = -Enums::k_tag_allocation_size;
 	}
 	#pragma endregion
 
 	#pragma region Cache Memory Upgrades
 	static void CacheMemoryInitialize()
 	{
-		*AddressOf::CacheSizeJmpAddress = 0xEB;
+		*AddressOf::CacheSizeJmpAddress = Enums::_x86_opcode_jmp_short;
 
 		*AddressOf::CacheSizeMax = Yelo::Enums::k_max_cache_size_upgrade;
 
@@ -317,7 +317,7 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 
 	static void CacheMemoryDispose()
 	{
-		*AddressOf::CacheSizeJmpAddress = 0x74;
+		*AddressOf::CacheSizeJmpAddress = Enums::_x86_opcode_jz_short;
 
 		*AddressOf::CacheSizeMax = Yelo::Enums::k_max_cache_size;
 

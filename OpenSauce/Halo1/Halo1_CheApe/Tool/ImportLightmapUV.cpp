@@ -77,13 +77,13 @@ namespace Yelo
 				cstring obj_file;
 			}* args = CAST_PTR(s_arguments*, arguments);
 
-			datum_index bsp_index = tag_load<TagGroups::structure_bsp>(args->bsp_name, FLAG(Flags::_tag_load_non_resolving_references_bit));
+			datum_index bsp_index = blam::tag_load<TagGroups::structure_bsp>(args->bsp_name, FLAG(Flags::_tag_load_non_resolving_references_bit));
 
-			if(!bsp_index.IsNull() && !tag_read_only(bsp_index))
+			if(!bsp_index.IsNull() && !blam::tag_read_only(bsp_index))
 			{
 				HRESULT hr = S_OK;
 
-				TagGroups::structure_bsp* bsp = tag_get<TagGroups::structure_bsp>(bsp_index);
+				TagGroups::structure_bsp* bsp = blam::tag_get<TagGroups::structure_bsp>(bsp_index);
 
 				std::string obj_file_path(Yelo::Settings::Get().GetDataPath());
 				StringEditing::AppendCharIfAbsent(obj_file_path, '\\');
@@ -105,7 +105,7 @@ namespace Yelo
 				if(SUCCEEDED(hr)) hr = obj_file.LoadFromFile(obj_file_path);
 				if(SUCCEEDED(hr)) hr = obj_file.CheckBspCompatibility(bsp);
 				if(SUCCEEDED(hr)) hr = obj_file.ReplaceVertexUVs(bsp);
-				if(SUCCEEDED(hr)) hr = tag_save(bsp_index) ? S_OK : E_FAIL;
+				if(SUCCEEDED(hr)) hr = blam::tag_save(bsp_index) ? S_OK : E_FAIL;
 				if(FAILED(hr))
 					YELO_ERROR(_error_message_priority_warning, "OS_tool: failed to replace lightmap-uvs for structure_bsp: %s", args->bsp_name);
 			}

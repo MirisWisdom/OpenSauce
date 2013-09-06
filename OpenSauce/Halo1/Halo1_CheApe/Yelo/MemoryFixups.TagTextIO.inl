@@ -10,16 +10,17 @@
 //
 // The stock guerilla code reads the tag path from the txt file into a tag_string, so paths longer
 // than 31 characters get truncated. This hack redirects a local variable pointer to a static
-// char buffer 255 in length, and changes the desination buffer size to 255 to match.
+// char buffer 255 in length, and changes the destination buffer size to 255 to match.
 
-char c_memory_fixups::tag_import_path_buffer[0xFF];
+char c_memory_fixups::tag_import_path_buffer[Enums::k_max_tag_name_length+1];
 
 void API_FUNC_NAKED c_memory_fixups::Hook_TagImportPathBuffer_Copy()
 {
 	static const uintptr_t RETN_ADDRESS = 0x42034B;
 
+	using namespace Yelo::Enums;
 	_asm {
-		push	0xFF
+		push	k_max_tag_name_length
 		mov		ecx, offset tag_import_path_buffer
 		jmp		RETN_ADDRESS
 	};
@@ -47,8 +48,8 @@ void PLATFORM_API c_memory_fixups::tag_import_fix_real_plane_2d_jmp_indices()
 		CAST_PTR(byte*, 0x41EFA7), CAST_PTR(byte*, 0x41EB4F),
 	};
 
-	for(byte i = 0; i < NUMBEROF(K_REAL_PLANE2D_JMP_INDEX_PTRS); i++)
-		*K_REAL_PLANE2D_JMP_INDEX_PTRS[i] = 0x0A;
+	for(auto ptr : K_REAL_PLANE2D_JMP_INDEX_PTRS)
+		*ptr = 0x0A;
 }
 #endif
 

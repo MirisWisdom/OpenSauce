@@ -201,6 +201,11 @@
 	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\memory\lruv_cache.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\memory\memory_pool.hpp" />
   </ItemGroup>
+  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
+    > <!--memory EDITOR-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\memory\byte_swapping.hpp" />
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\memory\byte_swapping.cpp" />
+  </ItemGroup>
   <ItemGroup
     > <!--models-->
 	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\models\collision_model_definitions.hpp" />
@@ -307,6 +312,10 @@
   <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
     > <!--tag_files EDITOR-->
 	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\files_windows.cpp" />
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_files.hpp" />
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_files.cpp" />
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_loading.hpp" />
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_loading.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups.cpp" />
 	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups_structures.hpp" />
   </ItemGroup>

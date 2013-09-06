@@ -14,7 +14,7 @@ namespace Boarding
 		if (unit_index.IsNull())
 			return;
 
-		s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
+		s_unit_datum* unit = Objects::ObjectHeader()[unit_index]->_unit;
 		TagGroups::model_animation_graph const* animation_graph = GetObjectAnimations(unit_index);
 		
 		// Check if an animation graph exists for the target unit
@@ -53,7 +53,7 @@ namespace Boarding
 	static void BoardUnitSeatIndex(TagGroups::s_unit_boarding_seat const* boarding_seat_definition, 
 		datum_index unit_index, datum_index parent_unit_index)
 	{
-		s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
+		s_unit_datum* unit = Objects::ObjectHeader()[unit_index]->_unit;
 
 		TagGroups::model_animation_graph const* animation_graph = GetObjectAnimations(unit_index);
 
@@ -102,10 +102,10 @@ namespace Boarding
 		if(cv_globals == nullptr)
 			return;
 
-		s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
+		s_unit_datum* unit = Objects::ObjectHeader()[unit_index]->_unit;
 
 		datum_index parent_unit_index = unit->object.parent_object_index;
-		s_unit_datum* parent_unit = (*Objects::ObjectHeader())[parent_unit_index]->_unit;
+		s_unit_datum* parent_unit = Objects::ObjectHeader()[parent_unit_index]->_unit;
 		int16 seat_index = unit->unit.vehicle_seat_index;
 
 		auto const* parent_unit_definition = 
@@ -121,7 +121,7 @@ namespace Boarding
 
 			if (target_unit_index != datum_index::null)
 			{
-				s_unit_datum* target_unit = (*Objects::ObjectHeader())[target_unit_index]->_unit;
+				s_unit_datum* target_unit = Objects::ObjectHeader()[target_unit_index]->_unit;
 
 				// Eject the target_unit
 				EjectUnit(target_unit_index);
@@ -164,10 +164,10 @@ namespace Boarding
 		if(cv_globals == nullptr)
 			return;
 
-		s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
+		s_unit_datum* unit = Objects::ObjectHeader()[unit_index]->_unit;
 
 		datum_index parent_unit_index = unit->object.parent_object_index;
-		s_unit_datum* parent_unit = (*Objects::ObjectHeader())[parent_unit_index]->_unit;
+		s_unit_datum* parent_unit = Objects::ObjectHeader()[parent_unit_index]->_unit;
 		int16 seat_index = unit->unit.vehicle_seat_index;
 
 		TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
@@ -201,10 +201,10 @@ namespace Boarding
 		if(cv_globals == nullptr)
 			return;
 
-		s_unit_datum* unit = (*Objects::ObjectHeader())[unit_index]->_unit;
+		s_unit_datum* unit = Objects::ObjectHeader()[unit_index]->_unit;
 
 		datum_index parent_unit_index = unit->object.parent_object_index;
-		s_unit_datum* parent_unit = (*Objects::ObjectHeader())[parent_unit_index]->_unit;
+		s_unit_datum* parent_unit = Objects::ObjectHeader()[parent_unit_index]->_unit;
 		int16 seat_index = unit->unit.vehicle_seat_index;
 
 		TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
@@ -235,7 +235,7 @@ namespace Boarding
 	{
 		bool result = true;
 
-		t_object_header_data object_header = (*Objects::ObjectHeader());
+		object_header_data_t object_header = Objects::ObjectHeader();
 		s_unit_datum* parent_unit = object_header[parent_unit_index]->_unit;
 		
 		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
@@ -253,13 +253,13 @@ namespace Boarding
 				int16 target_seat_index = boarding_seat_definition->target_seat_index;
 
 				// Loop through the boarding seats
-				for (int i = 0; i < unit_upgrade_definition->boarding_seats.Count; i++)
+				for(const auto& boarding_seat : unit_upgrade_definition->boarding_seats)
 				{
 					// Check if the current seat has the same target seat as the seat we're trying to enter
-					if (unit_upgrade_definition->boarding_seats[i].target_seat_index == target_seat_index)
+					if (boarding_seat.target_seat_index == target_seat_index)
 					{
 						datum_index seated_unit_index = GetUnitInSeat(parent_unit_index, 
-							unit_upgrade_definition->boarding_seats[i].seat_index);
+							boarding_seat.seat_index);
 
 						// If there is someone sitting in this seat, we can't enter
 						if (seated_unit_index != datum_index::null)
@@ -277,32 +277,32 @@ namespace Boarding
 	{
 		bool result = true;
 
-		t_object_header_data object_header = (*Objects::ObjectHeader());
+		object_header_data_t object_header = Objects::ObjectHeader();
 		s_unit_datum* unit = object_header[unit_index]->_unit;
 		s_unit_datum* target_unit = object_header[target_unit_index]->_unit;
 
 		if (unit_index == target_unit_index)
 			result = false;
 
-		for (datum_index first_object_index = target_unit->object.first_object_index; 
-			 first_object_index != datum_index::null; 
-			 first_object_index = object_header[first_object_index]->_object->next_object_index)
+		for (datum_index child_object_index = target_unit->object.first_object_index; 
+			 child_object_index != datum_index::null; 
+			 child_object_index = object_header[child_object_index]->_object->next_object_index)
 		{
-			s_unit_datum* first_object = object_header[first_object_index]->_unit;
+			s_unit_datum* child_object = object_header[child_object_index]->_unit;
 
-			if (first_object->object.VerifyType(Enums::_object_type_mask_unit))
+			if (child_object->object.VerifyType(Enums::_object_type_mask_unit))
 			{
-				// Check if the first_object is in the seat_index that unit_index is trying to enter
-				if (first_object->unit.vehicle_seat_index == target_seat_index)
+				// Check if the child_object is in the seat_index that unit_index is trying to enter
+				if (child_object->unit.vehicle_seat_index == target_seat_index)
 				{
-					*unit_in_seat = first_object_index;
+					*unit_in_seat = child_object_index;
 					result = false;
 				}
 				// If multiteam vehicles is prohibited, test unit and target unit teams
 				else if (TagGroups::_global_yelo->gameplay.flags.prohibit_multiteam_vehicles_bit)
 				{
 					if (unit->unit.controlling_player_index == datum_index::null || 
-						!blam::game_team_is_enemy(first_object->object.owner_team, unit->object.owner_team))
+						!blam::game_team_is_enemy(child_object->object.owner_team, unit->object.owner_team))
 						result = true;
 					else
 						result = false;

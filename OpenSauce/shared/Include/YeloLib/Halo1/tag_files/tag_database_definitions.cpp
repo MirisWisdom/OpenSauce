@@ -20,7 +20,7 @@ namespace Yelo
 		{
 			if(this->name.Size > 0)
 			{
-				Yelo::tag_group* group_definition = Yelo::tag_group_get(this->group_tag);
+				Yelo::tag_group* group_definition = blam::tag_group_get(this->group_tag);
 				if(group_definition != nullptr)
 				{
 					sprintf_s(formatted_buffer, Enums::k_tag_block_format_buffer_size, 
@@ -31,7 +31,7 @@ namespace Yelo
 
 		void s_tag_database::Initialize()
 		{
-			Yelo::tag_group* definition = Yelo::tag_group_get<s_tag_database>();
+			Yelo::tag_group* definition = blam::tag_group_get<s_tag_database>();
 			if(definition == nullptr)
 			{
 				YELO_ERROR(_error_message_priority_none, 
@@ -67,13 +67,13 @@ namespace Yelo
 			char formatted_buffer[Enums::k_tag_block_format_buffer_size])
 		{
 			int32 entry = 
-				*CAST_PTR(int32*, tag_block_get_element(block, element));
+				*CAST_PTR(int32*, blam::tag_block_get_element(block, element));
 
 			formatted_buffer[0] = '\0';
 
 			if(entry != NONE)
 			{
-				s_tag_database* db = tag_get<s_tag_database>(tag_index);
+				auto* db = blam::tag_get<s_tag_database>(tag_index);
 
 				db->entries[ entry ].NameToBlockNameBuffer(formatted_buffer);
 			}
@@ -88,8 +88,7 @@ namespace Yelo
 			int32 element, 
 			char formatted_buffer[Enums::k_tag_block_format_buffer_size])
 		{
-			s_tag_database_entry* elem = 
-				CAST_PTR(s_tag_database_entry*, tag_block_get_element(block, element));
+			auto* elem = CAST_PTR(s_tag_database_entry*, blam::tag_block_get_element(block, element));
 
 			formatted_buffer[0] = '\0';
 

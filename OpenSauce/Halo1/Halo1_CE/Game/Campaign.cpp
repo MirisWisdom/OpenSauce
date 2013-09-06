@@ -64,11 +64,11 @@ namespace Yelo
 
 		static void ScenarioPathsInitialize()
 		{
-			for(int32 x = 0; x < NUMBEROF(ScenarioPathsReferences); x++)
-				*ScenarioPathsReferences[x] = ScenarioPaths;
+			for(auto ptr : ScenarioPathsReferences)
+				*ptr = ScenarioPaths;
 
-			for(int32 x = 0; x < NUMBEROF(ScenarioPathsReferences2); x++)
-				*ScenarioPathsReferences2[x] = ScenarioPaths;
+			for(auto ptr : ScenarioPathsReferences2)
+				*ptr = ScenarioPaths;
 		}
 #pragma endregion
 
@@ -88,18 +88,18 @@ namespace Yelo
 
 	static cstring ScenarioHelpMappingGetWidgetName(char* scenario_name)
 	{
-		for(int32 x = 0; x < NUMBEROF(ScenarioHelpMappings); x++)
-			if( strstr(scenario_name, ScenarioHelpMappings[x].name) )
-				return ScenarioHelpMappings[x].widget_definition;
+		for(auto& mapping : ScenarioHelpMappings)
+			if( strstr(scenario_name, mapping.name) )
+				return mapping.widget_definition;
 
 		return nullptr;
 	}
 
 	API_FUNC_NAKED static void PLATFORM_API DisplayScenarioHelpHack()
 	{
-		static uint32 SUCCESS_CALL_ADDR = GET_FUNC_PTR(DISPLAY_SCENARIO_HELP_SUCCESS);
+		static const uintptr_t SUCCESS_CALL_ADDR = GET_FUNC_PTR(DISPLAY_SCENARIO_HELP_SUCCESS);
 
-		static uint32 FAIL_CALL_ADDR = GET_FUNC_PTR(DISPLAY_SCENARIO_HELP_FAIL);
+		static const uintptr_t FAIL_CALL_ADDR = GET_FUNC_PTR(DISPLAY_SCENARIO_HELP_FAIL);
 
 		__asm {
 			// edx = char scenario_name[256]
@@ -139,11 +139,11 @@ mapping_not_found:
 
 		static void CampaignLevelDataInitialize()
 		{
-			for(int32 x = 0; x < NUMBEROF(CampaignLevelDataReferences); x++)
-				*CampaignLevelDataReferences[x] = CampaignLevelData;
+			for(auto ptr : CampaignLevelDataReferences)
+				*ptr = CampaignLevelData;
 
-			for(int32 x = 0; x < NUMBEROF(CampaignLevelDataSizeReferences); x++)
-				*CampaignLevelDataSizeReferences[x] = sizeof(CampaignLevelData) / 4;
+			for(auto ptr : CampaignLevelDataSizeReferences)
+				*ptr = sizeof(CampaignLevelData) / 4;
 		}
 #pragma endregion
 
@@ -152,17 +152,17 @@ mapping_not_found:
 
 		static void CampaignLevelCountInitialize()
 		{
-			for(int32 x = 0; x < NUMBEROF(CampaignLevelCountReferences_8bit); x++)
-				*CampaignLevelCountReferences_8bit[x] = Enums::_campaign_level-1;
-			for(int32 x = 0; x < NUMBEROF(CampaignLevelCountReferences_16bit); x++)
-				*CampaignLevelCountReferences_16bit[x] = Enums::_campaign_level-1;
-			for(int32 x = 0; x < NUMBEROF(CampaignLevelCountReferences_32bit); x++)
-				*CampaignLevelCountReferences_32bit[x] = Enums::_campaign_level-1;
+			for(auto ptr : CampaignLevelCountReferences_8bit)
+				*ptr = Enums::_campaign_level-1;
+			for(auto ptr : CampaignLevelCountReferences_16bit)
+				*ptr = Enums::_campaign_level-1;
+			for(auto ptr : CampaignLevelCountReferences_32bit)
+				*ptr = Enums::_campaign_level-1;
 
-			for(int32 x = 0; x < NUMBEROF(CampaignLevelCountReferences2_8bit); x++)
-				*CampaignLevelCountReferences2_8bit[x] = Enums::_campaign_level;
-			for(int32 x = 0; x < NUMBEROF(CampaignLevelCountReferences2_16bit); x++)
-				*CampaignLevelCountReferences2_16bit[x] = Enums::_campaign_level;
+			for(auto ptr : CampaignLevelCountReferences2_8bit)
+				*ptr = Enums::_campaign_level;
+			for(auto ptr : CampaignLevelCountReferences2_16bit)
+				*ptr = Enums::_campaign_level;
 		}
 #pragma endregion
 

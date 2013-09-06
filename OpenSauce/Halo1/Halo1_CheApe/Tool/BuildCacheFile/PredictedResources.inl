@@ -36,14 +36,14 @@ namespace BuildCacheFileEx
 			bool result = build_cache_file_for_scenario_internals.build_structure_bsp_predicted_resources();
 
 			TagGroups::s_tag_iterator tag_iter;
-			tag_iterator_new(tag_iter);
+			blam::tag_iterator_new(tag_iter);
 
 			printf_s("building predicted resources for custom tag instances...");
 			// call custom tag's predicted resource stuff in this loop
  			datum_index tag_index;
- 			while( result && !(tag_index = tag_iterator_next(tag_iter)).IsNull() )
+ 			while( result && !(tag_index = blam::tag_iterator_next(tag_iter)).IsNull() )
  			{
-				const s_tag_instance* instance = (*TagGroups::TagInstances())[tag_index];
+				const s_tag_instance* instance = TagGroups::TagInstances()[tag_index];
 
 				switch(instance->parent_group_tags[1])
 				{

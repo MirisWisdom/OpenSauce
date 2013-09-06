@@ -61,15 +61,10 @@ namespace Yelo
 		static const TagGroups::s_project_yellow_scripted_ui_widget* FindWidget(cstring widget_name,
 			const TAG_TBLOCK(& widgets, TagGroups::s_project_yellow_scripted_ui_widget))
 		{
-			for(int x = 0; x < widgets.Count; x++)
+			for(const auto& widget : widgets)
 			{
-				if(strcmp(widgets[x].name, widget_name) == 0)
-				{
-					const TagGroups::s_project_yellow_scripted_ui_widget* suw = &widgets[x];
-
-					if(!suw->definition.tag_index.IsNull())
-						return suw;
-				}
+				if(strcmp(widget.name, widget_name) == 0 && !widget.definition.tag_index.IsNull())
+					return &widget;
 			}
 
 			return nullptr;

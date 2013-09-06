@@ -74,11 +74,11 @@ namespace Yelo
 
 
 		void* debug_malloc(const size_t size, cstring file, const uint32 line, const uint32 alignment_bit = 0,
-			cstring type_name = NULL, cstring subtype_name = NULL, cstring memory_name = NULL);
+			cstring type_name = nullptr, cstring subtype_name = nullptr, cstring memory_name = nullptr);
 
 		template<typename T>
 		T* debug_new(const size_t count, cstring file, const uint32 line, const uint32 alignment_bit = 0, 
-			cstring type_name = NULL, cstring subtype_name = NULL, cstring memory_name = NULL)
+			cstring type_name = nullptr, cstring subtype_name = nullptr, cstring memory_name = nullptr)
 		{
 			return CAST_PTR(T*, debug_malloc(sizeof(T) * count, file, line, alignment_bit,
 				type_name, subtype_name, memory_name));
@@ -94,12 +94,12 @@ namespace Yelo
 
 		void* debug_realloc(void* pointer, const size_t new_size, cstring file, const uint32 line, 
 			const uint32 alignment_bit = 0,
-			cstring type_name = NULL, cstring subtype_name = NULL, cstring memory_name = NULL);
+			cstring type_name = nullptr, cstring subtype_name = nullptr, cstring memory_name = nullptr);
 
 		template<typename T>
 		void* debug_renew(T* pointer, const size_t count, cstring file, const uint32 line, 
 			const uint32 alignment_bit = 0,
-			cstring type_name = NULL, cstring subtype_name = NULL, cstring memory_name = NULL)
+			cstring type_name = nullptr, cstring subtype_name = nullptr, cstring memory_name = nullptr)
 		{
 			return CAST_PTR(T*, debug_realloc(pointer, sizeof(T) * count, file, line,
 				alignment_bit, type_name, subtype_name, memory_name));

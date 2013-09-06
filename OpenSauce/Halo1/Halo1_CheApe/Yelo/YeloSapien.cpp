@@ -11,6 +11,7 @@
 
 #include "CheApeInterface.hpp" // for Memory functions
 #include "Common/YeloSettings.hpp"
+#include "Engine/EngineFunctions.hpp"
 #include "Engine/Scripting.hpp"
 #include "TagGroups/yelo_definitions.hpp"
 #include "TagGroups/yelo_scenario_definitions.hpp"
@@ -26,7 +27,7 @@ namespace Yelo
 				CAST_PTR(uint16*, 0x4FC9AB),
 			};
 
-			static uint32 GAMESPY_METRICS_DUMP_FUNCTIONS[] = {
+			static uintptr_t GAMESPY_METRICS_DUMP_FUNCTIONS[] = {
 				0x5D6CE0, 0x5D7390
 			};
 
@@ -38,22 +39,22 @@ namespace Yelo
 		// the idea is that this should allow people to control units in sapien...and thus record animations
 		API_FUNC_NAKED static void player_ui_set_controls_from_profile(int32 local_player_index)
 		{
-			static const uintptr_t TEMP_CALL_ADDR = 0x5DD060;
+			static const uintptr_t FUNCTION = 0x5DD060;
 
 			API_FUNC_NAKED_START()
 				push	local_player_index
-				call	TEMP_CALL_ADDR
+				call	FUNCTION
 			API_FUNC_NAKED_END_CDECL(1)
 		}
 		API_FUNC_NAKED static void player_ui_set_current_player_profile(int32 local_player_index, int32 unknown, byte profile[Enums::k_player_profile_buffer_size])
 		{
-			static const uintptr_t TEMP_CALL_ADDR = 0x5DD470;
+			static const uintptr_t FUNCTION = 0x5DD470;
 
 			API_FUNC_NAKED_START()
 				push	profile
 				push	unknown
 				push	local_player_index
-				call	TEMP_CALL_ADDR
+				call	FUNCTION
 			API_FUNC_NAKED_END_CDECL(3)
 		}
 
@@ -100,12 +101,12 @@ namespace Yelo
 				SetProcessAffinityMask(GetCurrentProcess(), k_profile.affinity_mask);
 			}
 
-			for(int32 x = 0; x < NUMBEROF(AddressOf::MaxTagsCheck); x++)
-				*AddressOf::MaxTagsCheck[x] = Enums::k_maximum_simultaneous_tag_instances_upgrade;
+			for(auto ptr : AddressOf::MaxTagsCheck)
+				*ptr = Enums::k_maximum_simultaneous_tag_instances_upgrade;
 
 			// Cause the gamespy metrics dump code to NEVER execute
-			for(int32 x = 0; x < NUMBEROF(AddressOf::GAMESPY_METRICS_DUMP_FUNCTIONS); x++)
-				*CAST_PTR(byte*, AddressOf::GAMESPY_METRICS_DUMP_FUNCTIONS[x]) = 0xC3;
+			for(auto ptr : AddressOf::GAMESPY_METRICS_DUMP_FUNCTIONS)
+				*CAST_PTR(byte*,ptr) = Enums::_x86_opcode_ret;
 
 			TagGroups::ScenarioYeloLoadHookInitialize();
 
@@ -114,8 +115,8 @@ namespace Yelo
 
 		void Dispose()
 		{
-			for(int32 x = 0; x < NUMBEROF(AddressOf::MaxTagsCheck); x++)
-				*AddressOf::MaxTagsCheck[x] = Enums::k_maximum_simultaneous_tag_instances;
+			for(auto ptr : AddressOf::MaxTagsCheck)
+				*ptr = Enums::k_maximum_simultaneous_tag_instances;
 
 			TagGroups::ScenarioYeloLoadHookDispose();
 		}

@@ -101,7 +101,7 @@ namespace Yelo
 		inline T& operator [](int32 index)
 		{
 #if PLATFORM_IS_EDITOR
-			return *tag_block_get_element(*this, index);
+			return *blam::tag_block_get_element(*this, index);
 #else
 			return this->Definitions[index];
 #endif
@@ -110,17 +110,18 @@ namespace Yelo
 		inline const T& operator [](int32 index) const
 		{
 #if PLATFORM_IS_EDITOR
-			return *tag_block_get_element(*this, index);
+			return *blam::tag_block_get_element(*this, index);
 #else
 			return this->Definitions[index];
 #endif
 		}
 
-		inline T* get_element(int32 element)			{ return tag_block_get_element(*this, index); }
-		inline void delete_element(int32 element)		{ tag_block_delete_element(*this, element); }
-		inline bool delete_all_elements()				{ return tag_block_delete_all_elements(*this); }
-		inline int32 add_element()						{ return tag_block_add_element(*this); }
-		inline bool resize(int32 element_count)			{ return tag_block_resize(*this, element_count); }
+		inline T* get_element(int32 element)			{ return blam::tag_block_get_element(*this, index); }
+		inline void delete_element(int32 element)		{ blam::tag_block_delete_element(*this, element); }
+		inline bool delete_all_elements()				{ return blam::tag_block_delete_all_elements(*this); }
+		inline int32 add_element()						{ return blam::tag_block_add_element(*this); }
+		inline bool resize(int32 element_count)			{ return blam::tag_block_resize(*this, element_count); }
+		inline T* add_and_get_element()					{ return blam::tag_block_add_and_get_element(*this); }
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -142,31 +143,40 @@ namespace Yelo
 #else
 	BOOST_STATIC_ASSERT( sizeof(TagBlock<byte>) == 0x8 );
 #endif
-	template<typename T>
-	T* tag_block_get_element(TagBlock<T>& block, int32 element)
+	namespace blam
 	{
-		return CAST_PTR(T*, tag_block_get_element(block.to_tag_block(), element));
-	}
-	template<typename T>
-	const T* tag_block_get_element(const TagBlock<T>& block, int32 element)
-	{
-		return CAST_PTR(const T*, tag_block_get_element(block.to_tag_block(), element));
-	}
-	template<typename T>
-	int32 tag_block_add_element(TagBlock<T>& block)
-	{
-		return tag_block_add_element(block.to_tag_block());
-	}
-	template<typename T>
-	bool tag_block_resize(TagBlock<T>& block, int32 element_count)
-	{
-		return tag_block_resize(block.to_tag_block(), element_count);
-	}
-	template<typename T>
-	void tag_block_delete_element(TagBlock<T>& block, int32 element)
-	{
-		tag_block_delete_element(block.to_tag_block(), element);
-	}
+		template<typename T>
+		T* tag_block_get_element(TagBlock<T>& block, int32 element)
+		{
+			return CAST_PTR(T*, tag_block_get_element(block.to_tag_block(), element));
+		}
+		template<typename T>
+		const T* tag_block_get_element(const TagBlock<T>& block, int32 element)
+		{
+			return CAST_PTR(const T*, tag_block_get_element(block.to_tag_block(), element));
+		}
+		template<typename T>
+		int32 tag_block_add_element(TagBlock<T>& block)
+		{
+			return tag_block_add_element(block.to_tag_block());
+		}
+		template<typename T>
+		bool tag_block_resize(TagBlock<T>& block, int32 element_count)
+		{
+			return tag_block_resize(block.to_tag_block(), element_count);
+		}
+		template<typename T>
+		void tag_block_delete_element(TagBlock<T>& block, int32 element)
+		{
+			tag_block_delete_element(block.to_tag_block(), element);
+		}
+
+		template<typename T>
+		T* tag_block_add_and_get_element(TagBlock<T>& block)
+		{
+			return CAST_PTR(T*, tag_block_add_and_get_element(block.to_tag_block()));
+		}
+	};
 
 
 	// Template'd tag_data for more robust code dealing with known
@@ -204,18 +214,21 @@ namespace Yelo
 
 		inline T* operator [](int32 index) { return &this->Definitions[index]; }
 
-		void resize(size_t new_size = 0)	{ tag_data_resize(this, new_size); }
+		void resize(size_t new_size = 0)	{ blam::tag_data_resize(this, new_size); }
 	};
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
 	BOOST_STATIC_ASSERT( sizeof(TagData<byte>) == 0x14 );
 #else
 	BOOST_STATIC_ASSERT( sizeof(TagData<byte>) == 0x8 );
 #endif
-	template<typename T>
-	bool tag_data_resize(TagData<T>& data, size_t new_size = 0)
+	namespace blam
 	{
-		return tag_data_resize(data.to_tag_data(), new_size);
-	}
+		template<typename T>
+		bool tag_data_resize(TagData<T>& data, size_t new_size = 0)
+		{
+			return tag_data_resize(data.to_tag_data(), new_size);
+		}
+	};
 };
 
 

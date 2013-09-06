@@ -19,13 +19,13 @@ namespace Yelo
 {
 	namespace Effects
 	{
-		t_contrail_data*					Contrails();
-		t_contrail_point_data*				ContrailPoints();
-		t_particle_data*					Particles();
-		t_effect_data*						Effects();
-		t_effect_location_data*				EffectLocations();
-		t_particle_systems_data*			ParticleSystems();
-		t_particle_system_particles_data*	ParticleSystemParticles();
+		contrail_data_t&					Contrails();
+		contrail_point_data_t&				ContrailPoints();
+		particle_data_t&					Particles();
+		effect_data_t&						Effects();
+		effect_location_data_t&				EffectLocations();
+		particle_systems_data_t&			ParticleSystems();
+		particle_system_particles_data_t&	ParticleSystemParticles();
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -58,8 +58,8 @@ namespace Yelo
 		struct s_decals_datum : TStructImpl(56)
 		{
 		};
-		typedef Memory::DataArray<s_decals_datum, 2048> t_decals_data;
-		t_decals_data*						Decals();
+		typedef Memory::DataArray<s_decals_datum, 2048> decals_data_t;
+		decals_data_t*						Decals();
 		//////////////////////////////////////////////////////////////////////////
 
 

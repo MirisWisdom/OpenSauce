@@ -931,7 +931,7 @@ skip_disable_velocity:
 				MeshIndex = 1;
 			else if(!g_object_index.IsNull())
 			{
-				Objects::s_object_data* g_object = (*Objects::ObjectHeader())[g_object_index]->_object;
+				Objects::s_object_data* g_object = Objects::ObjectHeader()[g_object_index]->_object;
 
 				TeamIndex = g_object->owner_team + 1; // add one to account for '_game_team_none'
 				MeshIndex = g_object->type + 3;
@@ -942,7 +942,7 @@ skip_disable_velocity:
 				if(g_object->VerifyType(Enums::_object_type_mask_unit))
 				{
 					Players::s_player_datum* player = Players::LocalPlayer();
-					Objects::s_object_data* player_object = (*Objects::ObjectHeader())[player->slave_unit_index]->_object;
+					Objects::s_object_data* player_object = Objects::ObjectHeader()[player->slave_unit_index]->_object;
 
 					if(blam::game_team_is_enemy(player_object->owner_team, g_object->owner_team))
 						TeamIndex |= 1 << 5;

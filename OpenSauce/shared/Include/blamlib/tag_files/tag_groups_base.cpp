@@ -12,37 +12,42 @@ namespace Yelo
 {
 	void tag_reference::clear()
 	{
-		tag_reference_clear(*this);
+		blam::tag_reference_clear(*this);
 	}
 
 	void tag_reference::set(tag group_tag, cstring name)
 	{
-		tag_reference_set(*this, group_tag, name);
+		blam::tag_reference_set(*this, group_tag, name);
 	}
 
 	void* tag_block::get_element(int32 element)
 	{
-		return tag_block_get_element(this, element);
+		return blam::tag_block_get_element(this, element);
 	}
 
 	void tag_block::delete_element(int32 element)
 	{
-		tag_block_delete_element(this, element);
+		blam::tag_block_delete_element(this, element);
 	}
 
 	int32 tag_block::add_element()
 	{
-		return tag_block_add_element(this);
+		return blam::tag_block_add_element(this);
 	}
 
 	bool tag_block::resize(int32 element_count)
 	{
-		return tag_block_resize(this, element_count);
+		return blam::tag_block_resize(this, element_count);
+	}
+
+	void* tag_block::add_and_get_element()
+	{
+		return blam::tag_block_add_and_get_element(this);
 	}
 
 	bool tag_data::resize(size_t new_size)
 	{
-		return tag_data_resize(this, new_size);
+		return blam::tag_data_resize(this, new_size);
 	}
 
 	namespace TagGroups
@@ -64,5 +69,14 @@ namespace Yelo
 
 		void group_tag_to_string::Terminate()	{ str[4] = '\0'; }
 		void group_tag_to_string::TagSwap()		{ TagGroups::TagSwap(group); }
+	};
+
+	namespace blam
+	{
+		void* tag_block_add_and_get_element(tag_block* block)
+		{
+			int32 index = tag_block_add_element(block);
+			return tag_block_get_element(block, index);
+		}
 	};
 };

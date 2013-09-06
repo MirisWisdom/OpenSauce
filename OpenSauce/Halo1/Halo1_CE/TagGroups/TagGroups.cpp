@@ -86,8 +86,8 @@ namespace Yelo
 			s_tag_iterator iter;
 
 			// find the yelo scenario tag
-			tag_iterator_new(iter, project_yellow::k_group_tag);
-			datum_index tag_index = tag_iterator_next(iter); // there should only be one yelo tag so we only need to call this once
+			blam::tag_iterator_new(iter, project_yellow::k_group_tag);
+			datum_index tag_index = blam::tag_iterator_next(iter); // there should only be one yelo tag so we only need to call this once
 			if(!tag_index.IsNull())
 			{
 				_global_yelo = TagGetUnsafe<project_yellow>(tag_index);
@@ -97,8 +97,8 @@ namespace Yelo
 			}
 
 			// find the yelo globals tag
-			tag_iterator_new(iter, project_yellow_globals::k_group_tag);
-			tag_index = tag_iterator_next(iter);
+			blam::tag_iterator_new(iter, project_yellow_globals::k_group_tag);
+			tag_index = blam::tag_iterator_next(iter);
 			if(!tag_index.IsNull())
 			{
 				_global_yelo_globals = TagGetUnsafe<project_yellow_globals>(tag_index);
@@ -151,20 +151,6 @@ namespace Yelo
 			if(!VerifyYeloScriptDefinitions())
 			{
 				PrepareToDropError("This map's yelo script definitions appear to differ from this build of OS. We're probably about to crash...");
-			}
-		}
-
-		datum_index tag_iterator_next(s_tag_iterator& iter)
-		{
-			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_ITERATOR_NEXT);
-
-			__asm {
-				push	esi
-
-				mov		esi, iter
-				call	FUNCTION
-
-				pop		esi
 			}
 		}
 	};

@@ -40,28 +40,25 @@ namespace Yelo
 		static void UnitExternalUpgradesBlockPostprocess(TAG_TBLOCK(& unit_external_upgrades_def, TagGroups::s_unit_external_upgrades), 
 			Enums::tag_postprocess_mode mode)
 		{
-			if (mode == Enums::_tag_postprocess_mode_for_runtime)
+			if (mode != Enums::_tag_postprocess_mode_for_runtime)
+				return;
+
+			for(auto& upgrade : unit_external_upgrades_def)
 			{
-				for (int i = 0; i < unit_external_upgrades_def.Count; i++)
+				datum_index tag_index = blam::tag_load(upgrade.unit.group_tag, upgrade.unit.name, 
+					FLAG(Flags::_tag_load_non_resolving_references_bit));
+
+				if (!tag_index.IsNull())
 				{
-					datum_index tag_index = tag_load(unit_external_upgrades_def[i].unit.group_tag, 
-						unit_external_upgrades_def[i].unit.name, 
-						FLAG(Flags::_tag_load_non_resolving_references_bit));
+					auto* unit_def = blam::tag_get<s_unit_definition>(tag_index);
 
-					if (!tag_index.IsNull())
+					for(auto& seat : upgrade.boarding_seats)
 					{
-						auto* unit_def = Yelo::tag_get<s_unit_definition>(tag_index);
+						cstring seat_label = seat.seat_label;
+						cstring target_seat_label = seat.target_seat_label;
 
-						for (int j = 0; j < unit_external_upgrades_def[i].boarding_seats.Count; j++)
-						{
-							cstring seat_label = unit_external_upgrades_def[i].boarding_seats[j].seat_label;
-							cstring target_seat_label = unit_external_upgrades_def[i].boarding_seats[j].target_seat_label;
-
-							unit_external_upgrades_def[i].boarding_seats[j].seat_index = 
-								UnitGetSeatIndexFromLabel(unit_def, seat_label);
-							unit_external_upgrades_def[i].boarding_seats[j].target_seat_index = 
-								UnitGetSeatIndexFromLabel(unit_def, target_seat_label);
-						}
+						seat.seat_index = UnitGetSeatIndexFromLabel(unit_def, seat_label);
+						seat.target_seat_index = UnitGetSeatIndexFromLabel(unit_def, target_seat_label);
 					}
 				}
 			}
@@ -72,7 +69,7 @@ namespace Yelo
 		// project_yellow_globals_cv
 		static bool PLATFORM_API py_globals_cv_group_postprocess(Yelo::datum_index tag_index, Enums::tag_postprocess_mode mode)
 		{
-			auto* def = Yelo::tag_get<project_yellow_globals_cv>(tag_index);
+			auto* def = blam::tag_get<project_yellow_globals_cv>(tag_index);
 
 			def->version = project_yellow_globals_cv::k_version;
 			UnitExternalUpgradesBlockPostprocess(def->unit_external_upgrades, mode);
@@ -85,7 +82,7 @@ namespace Yelo
 		// scripting_block
 		static cstring PLATFORM_API scripting_block_construct_format(datum_index tag_index, tag_block* block, int32 element, char formatted_buffer[Enums::k_tag_block_format_buffer_size])
 		{
-			auto* elem = CAST_PTR(s_script_construct_definition*, tag_block_get_element(block, element));
+			auto* elem = CAST_PTR(s_script_construct_definition*, blam::tag_block_get_element(block, element));
 
 			if(elem->name[0][0] != '\0')
 				strncpy_s(formatted_buffer, Enums::k_tag_block_format_buffer_size, elem->name[0], Enums::k_tag_string_length);
@@ -100,7 +97,7 @@ namespace Yelo
 		// project_yellow_globals
 		static bool PLATFORM_API py_globals_group_postprocess(Yelo::datum_index tag_index, Enums::tag_postprocess_mode mode)
 		{
-			auto* def = Yelo::tag_get<project_yellow_globals>(tag_index);
+			auto* def = blam::tag_get<project_yellow_globals>(tag_index);
 
 			def->version = project_yellow_globals::k_version;
 
@@ -116,7 +113,7 @@ namespace Yelo
 #if FALSE
 		static cstring PLATFORM_API py_globals_preprocess_maplist_format(datum_index tag_index, tag_block* block, int32 element, char formatted_buffer[Enums::k_tag_block_format_buffer_size])
 		{
-			auto* elem =  CAST_PTR(s_yelo_preprocess_maplist_entry*, tag_block_get_element(block, element));
+			auto* elem =  CAST_PTR(s_yelo_preprocess_maplist_entry*, blam::tag_block_get_element(block, element));
 
 			cstring value = elem->name;
 			if( !strcmp(value, "") )
@@ -138,7 +135,7 @@ namespace Yelo
 		// project_yellow
 		static bool PLATFORM_API py_group_postprocess(datum_index tag_index, Enums::tag_postprocess_mode mode)
 		{
-			auto* def = Yelo::tag_get<project_yellow>(tag_index);
+			auto* def = blam::tag_get<project_yellow>(tag_index);
 
 			def->version = project_yellow::k_version;
 
@@ -250,7 +247,7 @@ namespace Yelo
 				//////////////////////////////////////////////////////////////////////////
 				{// scripting_block
 					// NOTE: this will also affect project_yellow's script block as it's the same definition
-					field_index = TagGroups::tag_block_find_field(py_globals_definition->header_block_definition, Enums::_field_block, "yelo scripting");
+					field_index = py_globals_definition->header_block_definition->find_field_index(Enums::_field_block, "yelo scripting");
 					if(field_index == NONE)
 					{
 						YELO_ERROR(_error_message_priority_assert, 
@@ -259,7 +256,7 @@ namespace Yelo
 
 					auto* scripting_block_def = py_globals_definition->header_block_definition->fields[field_index].Definition<tag_block_definition>();
 
-					field_index = TagGroups::tag_block_find_field(scripting_block_def, Enums::_field_block, "new functions");
+					field_index = scripting_block_def->find_field_index(Enums::_field_block, "new functions");
 					if(field_index == NONE)
 					{
 						YELO_ERROR(_error_message_priority_assert, 
@@ -268,7 +265,7 @@ namespace Yelo
 					auto* script_function_block_def = scripting_block_def->fields[field_index].Definition<tag_block_definition>();
 					script_function_block_def->format_proc = &TagGroups::scripting_block_construct_format;
 
-					field_index = TagGroups::tag_block_find_field(scripting_block_def, Enums::_field_block, "new globals");
+					field_index = scripting_block_def->find_field_index(Enums::_field_block, "new globals");
 					if(field_index == NONE)
 					{
 						YELO_ERROR(_error_message_priority_assert, 
@@ -294,7 +291,7 @@ namespace Yelo
 					nullptr
 				};
 
-				tag_group* scnr = Yelo::tag_group_get(TagGroups::scenario::k_group_tag);
+				tag_group* scnr = blam::tag_group_get(TagGroups::scenario::k_group_tag);
 				tag_field* field = &scnr->header_block_definition->fields[0];
 				field->name = "project yellow definitions";
 				field->definition = &reference_definition;
@@ -304,9 +301,9 @@ namespace Yelo
 
 		void s_yelo_definition_globals::InitializeGroupReferences()
 		{
-			py_globals_cv_definition = Yelo::tag_group_get<project_yellow_globals_cv>();
-			py_globals_definition = Yelo::tag_group_get<project_yellow_globals>();
-			py_definition = Yelo::tag_group_get<project_yellow>();
+			py_globals_cv_definition = blam::tag_group_get<project_yellow_globals_cv>();
+			py_globals_definition = blam::tag_group_get<project_yellow_globals>();
+			py_definition = blam::tag_group_get<project_yellow>();
 		}
 
 		void s_yelo_definition_globals::Initialize()
@@ -351,7 +348,7 @@ namespace Yelo
 #if PLATFORM_ID == PLATFORM_TOOL
 		static bool GameGlobalsRequiresYeloGameStateUpgrades(datum_index game_globals_index)
 		{
-			auto* game_globals = tag_get<TagGroups::s_game_globals>(game_globals_index);
+			auto* game_globals = blam::tag_get<TagGroups::s_game_globals>(game_globals_index);
 
 			return false;
 		}
@@ -363,12 +360,12 @@ namespace Yelo
 	// no tags currently need to be checked
 	#if FALSE
 			TagGroups::s_tag_iterator iter;
-			tag_iterator_new(iter);
+			blam::tag_iterator_new(iter);
 
 			datum_index tag_index;
-			while( !(tag_index = tag_iterator_next(iter)).IsNull() )
+			while( !(tag_index = blam::tag_iterator_next(iter)).IsNull() )
 			{
-				switch( tag_get_group_tag(tag_index) )
+				switch( blam::tag_get_group_tag(tag_index) )
 				{
 				case TagGroups::s_game_globals::k_group_tag:
 					result |= GameGlobalsRequiresYeloGameStateUpgrades(tag_index); 

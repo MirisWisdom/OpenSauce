@@ -34,13 +34,11 @@ static datum_index PlayerFindTeamUnitDefinitionOverride(const s_player_datum* pl
 	{
 		cstring player_team_name = k_team_names[player_team_index];
 
-		for(int32 x = 0; x < player_units.Count; x++)
+		for(const auto& player_unit : player_units)
 		{
-			const TagGroups::s_network_game_player_unit& game_player_unit = player_units[x];
-
 			// Null definitions are removed by CheApe extensions, so tag_index should never be null (unless modified by non-OS tools)
-			if( !strcmp(game_player_unit.name, player_team_name) )
-				unit_definition_index = game_player_unit.definition.tag_index;
+			if( !strcmp(player_unit.name, player_team_name) )
+				unit_definition_index = player_unit.definition.tag_index;
 		}
 	}
 
@@ -65,7 +63,7 @@ static datum_index PlayerSpawnCreateUnitMultiplayerGetDefinitionOverride(datum_i
 	const TAG_TBLOCK(& player_units, TagGroups::s_network_game_player_unit) = TagGroups::_global_yelo_globals->networking.player_units;
 	if(player_units.Count == 0) return unit_definition_index;
 
-	const s_player_datum* player = (*Players::Players())[player_index];
+	const s_player_datum* player = Players::Players()[player_index];
 
 	unit_definition_index = GameEngine::GlobalVariant()->universal_variant.teams ?
 		PlayerFindTeamUnitDefinitionOverride(player, unit_definition_index, player_units) :

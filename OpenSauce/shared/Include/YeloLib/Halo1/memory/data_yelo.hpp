@@ -18,20 +18,60 @@ namespace Yelo
 			typedef DataArray<DatumT,MaxDatumCount,MaxDatumCountUpgrade> DataArrayT;
 
 		public:
+			struct IteratorResult {
+				datum_index index;
+				DatumT* datum;
+
+				IteratorResult(datum_index i, DatumT* d) : index(i), datum(d) {}
+
+				DatumT* operator->() const { return datum; }
+				DatumT& operator*() const { return *datum; }
+			};
+
 			struct Iterator {
 			private:
-				s_data_iterator iterator;
+				enum { k_end_hack_signature = 'hack', };
+
+				s_data_iterator m_iterator;
+				DatumT* m_current_instance;
 
 			public:
-				Iterator(DataArrayT* data) {
-					blam::data_iterator_new(iterator, &data->Header);
+				Iterator(DataArrayT& data) {
+					blam::data_iterator_new(m_iterator, &data.Header);
+					m_current_instance = nullptr;
 				}
 
 				DatumT* Next() {
-					return CAST_PTR(DatumT*, blam::data_iterator_next( *CAST_PTR(s_data_iterator*, this) ));
+					return m_current_instance = 
+						CAST_PTR(DatumT*, blam::data_iterator_next( *CAST_PTR(s_data_iterator*, this) ));
 				}
 
-				datum_index Current() const { return this->iterator.index; }
+				datum_index Current() const { return this->m_iterator.index; }
+
+				static Iterator GetEndHack(DataArrayT& data)
+				{
+					auto hack = Iterator(data);
+					hack.m_iterator.signature = k_end_hack_signature;
+					return hack;
+				}
+				bool operator!=(const Iterator& other) const
+				{
+					if(other.m_iterator.signature == k_end_hack_signature)
+						return !m_iterator.index.IsNull();
+					else if(m_iterator.signature == k_end_hack_signature)
+						return !other.m_iterator.index.IsNull();
+
+					return m_iterator.index != other.m_iterator.index;
+				}
+				Iterator& operator++()
+				{
+					Next();
+					return *this;
+				}
+				IteratorResult operator*() const
+				{
+					return IteratorResult(m_iterator.index, m_current_instance);
+				}
 			};
 
 			s_data_array Header;
@@ -57,6 +97,17 @@ namespace Yelo
 #else
 				return &CAST_PTR(DatumT*, this->Header.data)[handle.index];
 #endif
+			}
+
+			Iterator begin () /*const*/
+			{
+				auto iter = Iterator(*this);
+				iter.Next();
+				return iter;
+			}
+			Iterator end () /*const*/
+			{
+				return Iterator::GetEndHack(*this);
 			}
 		};
 	};

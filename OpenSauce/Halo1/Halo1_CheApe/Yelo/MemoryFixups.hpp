@@ -48,7 +48,7 @@ namespace Yelo
 		}_override_paths; // defined in MemoryFixups.Paths.inl
 
 #if PLATFORM_ID == PLATFORM_GUERILLA
-		static char tag_import_path_buffer[0xFF]; // defined in MemoryFixups.TagTextIO.inl
+		static char tag_import_path_buffer[/*Enums::k_max_tag_name_length+1*/]; // defined in MemoryFixups.TagTextIO.inl
 #endif
 
 		static DWORD WINAPI GetCurrentDirectoryHack(

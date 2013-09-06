@@ -33,8 +33,8 @@ namespace Yelo
 		{
 			wcstring m_log_titles[Enums::_server_event_type];
 
-			byte m_event_enable_logging[Enums::_server_event_type];
-			byte m_event_enable_echoing[Enums::_server_event_type];
+			std::array<byte, Enums::_server_event_type> m_event_enable_logging;
+			std::array<byte, Enums::_server_event_type> m_event_enable_echoing;
 		};
 		static s_network_sv_logging_extension g_network_sv_logging_extension;
 
@@ -74,16 +74,16 @@ namespace Yelo
 			// no need to copy the logging/echoing arrays as they haven't been set yet
 
 			// redirect all references to the enable logging/echoing toggle lists
-			for(uint32 i = 0; i < NUMBEROF(K_EVENT_ENABLE_LOGGING_0_REFS); i++)
-				*K_EVENT_ENABLE_LOGGING_0_REFS[i] = &g_network_sv_logging_extension.m_event_enable_logging[0];
+			for(auto ptr : K_EVENT_ENABLE_LOGGING_0_REFS)
+				*ptr = &g_network_sv_logging_extension.m_event_enable_logging[0];
 
 			*GET_PTR(event_enable_logging_4_ref) = &g_network_sv_logging_extension.m_event_enable_logging[4];
 			*GET_PTR(event_enable_logging_8_ref) = &g_network_sv_logging_extension.m_event_enable_logging[8];
 			*GET_PTR(event_enable_logging_12_ref) = &g_network_sv_logging_extension.m_event_enable_logging[12];
 
 
-			for(uint32 i = 0; i < NUMBEROF(K_EVENT_ENABLE_ECHOING_0_REFS); i++)
-				*K_EVENT_ENABLE_ECHOING_0_REFS[i] = &g_network_sv_logging_extension.m_event_enable_echoing[0];
+			for(auto ptr : K_EVENT_ENABLE_ECHOING_0_REFS)
+				*ptr = &g_network_sv_logging_extension.m_event_enable_echoing[0];
 
 			*GET_PTR(event_enable_echoing_2_ref) = &g_network_sv_logging_extension.m_event_enable_echoing[2];
 			*GET_PTR(event_enable_echoing_3_ref) = &g_network_sv_logging_extension.m_event_enable_echoing[3];

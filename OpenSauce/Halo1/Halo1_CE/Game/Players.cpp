@@ -29,8 +29,8 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_GAME_PLAYERS
 #include "Memory/_EngineLayout.inl"
 
-		t_players_data* Players()										DPTR_IMP_GET(players);
-		t_teams_data* Teams()											DPTR_IMP_GET(teams);
+		players_data_t& Players()										DPTR_IMP_GET_BYREF(players);
+		teams_data_t& Teams()											DPTR_IMP_GET_BYREF(teams);
 		s_players_globals_data* PlayersGlobals()						DPTR_IMP_GET(players_globals);
 		s_player_control_globals_data* PlayerControlGlobals()			DPTR_IMP_GET(player_control_globals);
 		s_player_effects_data* PlayerEffects()							DPTR_IMP_GET(player_effects);
@@ -98,7 +98,7 @@ namespace Yelo
 			datum_index object_index = this->slave_unit_index;
 			if(object_index.IsNull()) return nullptr;
 
-			return (*Objects::ObjectHeader())[object_index]->_unit;
+			return Objects::ObjectHeader()[object_index]->_unit;
 		}
 
 		datum_index s_player_datum::GetVehicleIndex()
@@ -118,12 +118,10 @@ namespace Yelo
 
 		datum_index LocalPlayerIndex()
 		{
-			t_players_data::Iterator iter(Players::Players());
-			s_player_datum* player;
-			while( (player = iter.Next()) != nullptr )
+			for(auto player : Players())
 			{
 				if(player->local_player_index != NONE)
-					return iter.Current();
+					return player.index;
 			}
 
 			return datum_index::null;
@@ -131,12 +129,10 @@ namespace Yelo
 
 		s_player_datum* LocalPlayer()
 		{
-			t_players_data::Iterator iter(Players::Players());
-			s_player_datum* player;
-			while( (player = iter.Next()) != nullptr )
+			for(auto player : Players())
 			{
 				if(player->local_player_index != NONE)
-					return player;
+					return player.datum;
 			}
 
 			return nullptr;
@@ -147,14 +143,12 @@ namespace Yelo
 			if(player_index_reference != nullptr) *player_index_reference = datum_index::null;
 			if(player_number == NONE) return nullptr;
 
-			t_players_data::Iterator iter(Players::Players());
-			s_player_datum* player;
-			while( (player = iter.Next()) != nullptr )
+			for(auto player : Players())
 			{
 				if(player->network_player.player_list_index == player_number)
 				{
-					if(player_index_reference != nullptr) *player_index_reference = iter.Current();
-					return player;
+					if(player_index_reference != nullptr) *player_index_reference = player.index;
+					return player.datum;
 				}
 			}
 
@@ -166,7 +160,7 @@ namespace Yelo
 		{
 			if(player_index.IsNull()) return nullptr;
 			
-			return (*Players::Players())[player_index]->GetPlayerUnit();
+			return Players::Players()[player_index]->GetPlayerUnit();
 		}
 
 		datum_index* GetWeapons(datum_index player_index, int16* current_weapon_index)
@@ -194,7 +188,7 @@ namespace Yelo
 			if(parent_index.IsNull())
 				return nullptr;
 
-			return (*Objects::ObjectHeader())[parent_index]->_unit;
+			return Objects::ObjectHeader()[parent_index]->_unit;
 		}
 	};
 };

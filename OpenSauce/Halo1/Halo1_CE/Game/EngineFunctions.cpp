@@ -12,6 +12,7 @@
 #include <blamlib/Halo1/memory/data.hpp>
 #include <blamlib/Halo1/objects/damage.hpp>
 #include <blamlib/Halo1/objects/objects.hpp>
+#include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 #include "Game/Console.hpp"
 #include "Game/GameState.hpp"
@@ -292,7 +293,7 @@ namespace Yelo
 				if(object.IsNull())
 					return false;
 
-				Yelo::Objects::s_object_data* obj = (*Yelo::Objects::ObjectHeader())[object]->_object;
+				Yelo::Objects::s_object_data* obj = Yelo::Objects::ObjectHeader()[object]->_object;
 
 				return TriggerVolumeTestPoint(trigger_volume_index, obj->center);
 			}
@@ -865,6 +866,59 @@ namespace Yelo
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////
+	// tag_files
+	namespace blam
+	{
+		//////////////////////////////////////////////////////////////////////////
+		// tag_groups.c
+		datum_index PLATFORM_API tag_loaded(tag group_tag, cstring name)
+		{
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(TAG_LOADED);
+
+#if defined(ENGINE_FUNCTIONS_USE_LOCAL)
+			char local[256];
+			memset(local, 0, sizeof(local));
+			strcpy_s(local, name);
+#else
+			cstring local = name;
+#endif
+
+			__asm {
+				push	edi
+
+#if defined(ENGINE_FUNCTIONS_USE_LOCAL)
+				lea		eax, local
+#else
+				mov		eax, local
+#endif
+				push	eax
+				mov		edi, group_tag
+				call	FUNCTION
+				add		esp, 4 * 1
+
+				pop		edi
+			}
+		}
+		void PLATFORM_API tag_iterator_new(TagGroups::s_tag_iterator& iter, const tag group_tag_filter)
+		{
+			memset(&iter, 0, sizeof(iter));
+			iter.group_tag_filter = group_tag_filter;
+		}
+		datum_index PLATFORM_API tag_iterator_next(TagGroups::s_tag_iterator& iter)
+		{
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(TAG_ITERATOR_NEXT);
+
+			__asm {
+				push	esi
+
+				mov		esi, iter
+				call	FUNCTION
+
+				pop		esi
+			}
+		}
+	};
+	//////////////////////////////////////////////////////////////////////////
 	// text
 	namespace blam
 	{
@@ -926,9 +980,4 @@ namespace Yelo
 			return Engine::Objects::UnitGetCustomAnimationTime(unit_index);
 		}
 	};
-
-	datum_index tag_loaded(tag group_tag, cstring name)
-	{
-		return Engine::TagGroups::TagLoaded(group_tag, name);
-	}
 };

@@ -66,8 +66,8 @@ void c_memory_fixups::FixupsInitializeDataPaths(cstring data_override)
 	static cstring* K_DATA_PATH_REFERENCE_FIXUPS_WITH_SLASH[] = { // "data\"
 		CAST_PTR(cstring*, 0x414CEC),
 	};
-	for(int32 x = 0; x < NUMBEROF(K_DATA_PATH_REFERENCE_FIXUPS_WITH_SLASH); x++)
-		*K_DATA_PATH_REFERENCE_FIXUPS_WITH_SLASH[x] = _override_paths.data.path_with_slash;
+	for(auto ptr : K_DATA_PATH_REFERENCE_FIXUPS_WITH_SLASH)
+		*ptr = _override_paths.data.path_with_slash;
 #endif
 }
 void c_memory_fixups::FixupsInitializeMapsPaths(cstring maps_override)
@@ -98,8 +98,8 @@ void c_memory_fixups::FixupsInitializeMapsPaths(cstring maps_override)
 	static cstring* K_MAPS_PATH_REFERENCE_FIXUPS2[] = { // "maps\"
 		CAST_PTR(cstring*, 0x569851),
 	};
-	for(int32 x = 0; x < NUMBEROF(K_MAPS_PATH_REFERENCE_FIXUPS2); x++)
-		*K_MAPS_PATH_REFERENCE_FIXUPS2[x] = _override_paths.maps.path_with_slash;
+	for(auto ptr : K_MAPS_PATH_REFERENCE_FIXUPS2)
+		*ptr = _override_paths.maps.path_with_slash;
 
 
 	strcpy_s(_override_paths.maps.temp_uncompressed_cache_file, _override_paths.maps.path);
@@ -109,8 +109,8 @@ void c_memory_fixups::FixupsInitializeMapsPaths(cstring maps_override)
 		CAST_PTR(cstring*, 0x4B9046), CAST_PTR(cstring*, 0x4B929E), 
 		CAST_PTR(cstring*, 0x4B945C), CAST_PTR(cstring*, 0x4B9467),
 	};
-	for(int32 x = 0; x < NUMBEROF(K_TEMP_CACHE_FILE_PATH_REFERENCE_FIXUPS); x++)
-		*K_TEMP_CACHE_FILE_PATH_REFERENCE_FIXUPS[x] = _override_paths.maps.temp_uncompressed_cache_file;
+	for(auto ptr : K_TEMP_CACHE_FILE_PATH_REFERENCE_FIXUPS)
+		*ptr = _override_paths.maps.temp_uncompressed_cache_file;
 #endif
 }
 
@@ -157,8 +157,8 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 
 #endif
 	};
-	for(int32 x = 0; x < NUMBEROF(K_TAGS_PATH_REFERENCE_FIXUPS); x++)
-		*K_TAGS_PATH_REFERENCE_FIXUPS[x] = _override_paths.tags.path;
+	for(auto ptr : K_TAGS_PATH_REFERENCE_FIXUPS)
+		*ptr = _override_paths.tags.path;
 
 
 #if PLATFORM_ID != PLATFORM_TOOL
@@ -171,9 +171,9 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 		CAST_PTR(void*, 0x485034), CAST_PTR(void*, 0x485248), 
 	#endif
 	};
-	for(int32 x = 0; x < NUMBEROF(K_GET_WORKING_DIR_CALLS); x++)
+	for(auto ptr : K_GET_WORKING_DIR_CALLS)
 		Memory::CreateHookRelativeCall(GetCurrentDirectoryHack, 
-			K_GET_WORKING_DIR_CALLS[x], 0x90);
+			ptr, 0x90);
 
 
 	// "tags\"
@@ -198,8 +198,8 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 		CAST_PTR(cstring*, 0x48526A), CAST_PTR(cstring*, 0x48526F), 
 	#endif
 	};
-	for(int32 x = 0; x < NUMBEROF(K_TAGS_NAME_REFERENCE_FIXUPS); x++)
-		*K_TAGS_NAME_REFERENCE_FIXUPS[x] = _override_paths.tags.folder_name_with_slash;
+	for(auto ptr : K_TAGS_NAME_REFERENCE_FIXUPS)
+		*ptr = _override_paths.tags.folder_name_with_slash;
 #endif
 
 #if PLATFORM_ID != PLATFORM_GUERILLA
@@ -211,8 +211,8 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 	static cstring* K_TAGS_PATH_REFERENCE_FIXUPS2[] = { // "tags\"
 		CAST_PTR(cstring*, 0x41B112), CAST_PTR(cstring*, 0x415FB4), CAST_PTR(cstring*, 0x41601F), 
 	};
-	for(int32 x = 0; x < NUMBEROF(K_TAGS_PATH_REFERENCE_FIXUPS2); x++)
-		*K_TAGS_PATH_REFERENCE_FIXUPS2[x] = _override_paths.tags.folder_name_with_slash_single;
+	for(auto ptr : K_TAGS_PATH_REFERENCE_FIXUPS2)
+		*ptr = _override_paths.tags.folder_name_with_slash_single;
 
 
 #if 0 // this code no longer applies since we hook all the tools before their entry points even execute
@@ -230,15 +230,15 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 		CAST_PTR(byte*, 0x415B58), CAST_PTR(byte*, 0x415E39), 
 	};
 	name_length = CAST(byte, strlen(_override_paths.tags.folder_name_with_slash));
-	for(int32 x = 0; x < NUMBEROF(K_TAGS_NAME_LENGTH_FIXUPS); x++)
-		*K_TAGS_NAME_LENGTH_FIXUPS[x] = name_length;
+	for(auto ptr : K_TAGS_NAME_LENGTH_FIXUPS)
+		*ptr = name_length;
 
 	static byte* K_TAGS_PATH_REFERENCE_LENGTH_FIXUPS2[] = { // "tags\"
 		CAST_PTR(byte*, 0x41601D), 
 	};
 	name_length = CAST(byte, strlen(_override_paths.tags.folder_name_with_slash_single));
-	for(int32 x = 0; x < NUMBEROF(K_TAGS_PATH_REFERENCE_LENGTH_FIXUPS2); x++)
-		*K_TAGS_PATH_REFERENCE_LENGTH_FIXUPS2[x] = name_length;
+	for(auto ptr : K_TAGS_PATH_REFERENCE_LENGTH_FIXUPS2)
+		*ptr = name_length;
 #endif
 
 
@@ -250,8 +250,8 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 	static char* K_WORKING_DIR_DIRECT_FIXUPS[] = {
 		CAST_PTR(char*, 0xB17F20),	
 	};
-	for(int32 x = 0; x < NUMBEROF(K_WORKING_DIR_DIRECT_FIXUPS); x++)
-		strcpy_s(K_WORKING_DIR_DIRECT_FIXUPS[x], MAX_PATH, _override_paths.root);
+	for(auto ptr : K_WORKING_DIR_DIRECT_FIXUPS)
+		strcpy_s(ptr, MAX_PATH, _override_paths.root);
 
 
 	static cstring* K_TAGS_PATH_REFERENCE_FIXUPS_SLASH_RELATIVE[] = { // ".\tags\"
@@ -259,22 +259,22 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 		CAST_PTR(cstring*, 0x4E12AB), CAST_PTR(cstring*, 0x4E1320), CAST_PTR(cstring*, 0x4E7215), 
 		CAST_PTR(cstring*, 0x4E728A), CAST_PTR(cstring*, 0x4E8239), CAST_PTR(cstring*, 0x4E82A2), 
 	};
-	for(int32 x = 0; x < NUMBEROF(K_TAGS_PATH_REFERENCE_FIXUPS_SLASH_RELATIVE); x++)
-		*K_TAGS_PATH_REFERENCE_FIXUPS_SLASH_RELATIVE[x] = _override_paths.tags.folder_name_with_slash_relative;
+	for(auto ptr : K_TAGS_PATH_REFERENCE_FIXUPS_SLASH_RELATIVE)
+		*ptr = _override_paths.tags.folder_name_with_slash_relative;
 
 
 	static cstring* K_TAGS_PATH_REFERENCE_FIXUPS_SLASH_SINGLE_RELATIVE[] = { // ".\tags"
 		CAST_PTR(cstring*, 0x4890A7),
 	};
-	for(int32 x = 0; x < NUMBEROF(K_TAGS_PATH_REFERENCE_FIXUPS_SLASH_SINGLE_RELATIVE); x++)
-		*K_TAGS_PATH_REFERENCE_FIXUPS_SLASH_SINGLE_RELATIVE[x] = _override_paths.tags.folder_name_with_slash_single_relative;
+	for(auto ptr : K_TAGS_PATH_REFERENCE_FIXUPS_SLASH_SINGLE_RELATIVE)
+		*ptr = _override_paths.tags.folder_name_with_slash_single_relative;
 
 
 	static cstring* K_TAGS_PATH_REFERENCE_FIXUPS_WITH_LEVELS[] = { // "tags\levels"
 		CAST_PTR(cstring*, 0x4E0EF7), CAST_PTR(cstring*, 0x4E1233),
 	};
-	for(int32 x = 0; x < NUMBEROF(K_TAGS_PATH_REFERENCE_FIXUPS_WITH_LEVELS); x++)
-		*K_TAGS_PATH_REFERENCE_FIXUPS_WITH_LEVELS[x] = _override_paths.tags.folder_name_with_levels;
+	for(auto ptr : K_TAGS_PATH_REFERENCE_FIXUPS_WITH_LEVELS)
+		*ptr = _override_paths.tags.folder_name_with_levels;
 
 	char* registry_scnr_path = CAST_PTR(char*, 0xA25F98);
 	strcpy_s(registry_scnr_path, MAX_PATH, _override_paths.tags.folder_name_with_levels);
@@ -355,7 +355,8 @@ void c_memory_fixups::FixupsInitializeFilePaths()
 
 	k_reports_path = Settings::ReportsPath();
 
-	for(int32 x = 0; x < NUMBEROF(k_file_path_fixup_names); x++)
+	// don't use a range-based for loop here because auto deduces to just char*, so we lose the implicit length info needed for the secure string functions
+	for(int x = 0; x < NUMBEROF(k_file_path_fixup_names); x++)
 	{
 		// Temporarily store the original relative path
 		char path[MAX_PATH];
@@ -400,7 +401,7 @@ void c_memory_fixups::FixupsInitializeFilePaths()
 		//{_report_,	CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,	,	))},
 	};
 
-	for(int32 x = 0; x < NUMBEROF(fixups); x++)
-		if(fixups[x].address != nullptr)
-			*fixups[x].address = k_file_path_fixup_names[ fixups[x].type ];
+	for(auto fixup : fixups)
+		if(fixup.address != nullptr)
+			*fixup.address = k_file_path_fixup_names[ fixup.type ];
 }

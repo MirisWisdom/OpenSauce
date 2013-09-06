@@ -11,6 +11,7 @@
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 #include <blamlib/Halo1/units/unit_structures.hpp>
 
+#include "Engine/EngineFunctions.hpp"
 #include "TagGroups/TagGroups.hpp"
 
 namespace Yelo
@@ -49,10 +50,10 @@ namespace Yelo
 		static tag_field* g_scenario_profiles_block_unused_grenade_count_fields;
 		static tag_field* scenario_profiles_block_find_unused_grenade_count_fields()
 		{
-			tag_group* scnr = Yelo::tag_group_get<TagGroups::scenario>();
+			tag_group* scnr = blam::tag_group_get<TagGroups::scenario>();
 
 			int32 field_index = NONE;
-			field_index = TagGroups::tag_block_find_field(scnr->header_block_definition, Enums::_field_block, "player starting profile");
+			field_index = scnr->header_block_definition->find_field_index(Enums::_field_block, "player starting profile");
 			if(field_index == NONE)
 			{
 				YELO_ERROR(_error_message_priority_warning, 
@@ -62,7 +63,7 @@ namespace Yelo
 			}
 
 			auto* scenario_profiles_block_def = scnr->header_block_definition->fields[field_index].Definition<tag_block_definition>();
-			field_index = TagGroups::tag_block_find_field(scenario_profiles_block_def, Enums::_field_char_integer, k_scenario_profiles_block_unused_grenade_count_field_name);
+			field_index = scenario_profiles_block_def->find_field_index(Enums::_field_char_integer, k_scenario_profiles_block_unused_grenade_count_field_name);
 			if(field_index == NONE)
 			{
 				YELO_ERROR(_error_message_priority_warning, 

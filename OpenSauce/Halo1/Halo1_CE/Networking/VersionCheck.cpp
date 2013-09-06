@@ -156,10 +156,10 @@ namespace Yelo
 		 */
 		void		c_version_check_manager_base::Dispose()
 		{
-			for(int32 i = 0; i < NUMBEROF(m_xml_sources); i++)
+			for(auto& xml_source : m_xml_sources)
 			{
-				m_xml_sources[i].Stop();
-				m_xml_sources[i].Dtor();
+				xml_source.Stop();
+				xml_source.Dtor();
 			}
 		}
 
@@ -178,8 +178,8 @@ namespace Yelo
 			m_states.last_checked_month = 0;
 			m_states.last_checked_year = 0;
 
-			for(int i = 0; i < NUMBEROF(m_version_xml.urls); i++)
-				m_version_xml.urls[i][0] = 0;
+			for(auto url : m_version_xml.urls)
+				url[0] = '\0';
 
 			// if there is no settings element, we still want to set the default
 			// xml location
@@ -194,9 +194,9 @@ namespace Yelo
 			do
 			{
 				//get the last date the version was checked
-				if(!xml_element->Attribute("day", &m_states.last_checked_day)) { m_states.last_checked_day = 0; break; }
+				if(!xml_element->Attribute("day",   &m_states.last_checked_day))   { m_states.last_checked_day = 0; break; }
 				if(!xml_element->Attribute("month", &m_states.last_checked_month)) { m_states.last_checked_month = 0; break; }
-				if(!xml_element->Attribute("year", &m_states.last_checked_year)) { m_states.last_checked_year = 0; break; }
+				if(!xml_element->Attribute("year",  &m_states.last_checked_year))  { m_states.last_checked_year = 0; break; }
 			}while(false);
 
 			UpdateDateState();
@@ -272,10 +272,10 @@ namespace Yelo
 				return;
 
 			m_states.is_request_in_progress = false;
-			for(int32 i = 0; i < NUMBEROF(m_xml_sources); i++)
+			for(auto& xml_source : m_xml_sources)
 			{
-				m_xml_sources[i].Update(delta_time);
-				m_states.is_request_in_progress |= (m_xml_sources[i].Status() == Enums::_http_file_download_status_in_progress);
+				xml_source.Update(delta_time);
+				m_states.is_request_in_progress |= (xml_source.Status() == Enums::_http_file_download_status_in_progress);
 			}
 
 			// if all of the requests are complete, update the clients xml sources
@@ -320,7 +320,7 @@ namespace Yelo
 			time(&time_today);
 			tm* local_time = localtime(&time_today);
 
-			if((m_states.last_checked_day == local_time->tm_mday) &&
+			if( (m_states.last_checked_day == local_time->tm_mday) &&
 				(m_states.last_checked_month == local_time->tm_mon) &&
 				(m_states.last_checked_year == 1900 + local_time->tm_year))
 				m_states.checked_today = true;
@@ -343,10 +343,8 @@ namespace Yelo
 			m_states.last_checked_month = local_time->tm_mon;
 			m_states.last_checked_year = 1900 + local_time->tm_year;
 
-			for(int i = 0; i < NUMBEROF(m_xml_sources); i++)
+			for(auto& downloader : m_xml_sources)
 			{
-				c_version_downloader& downloader = m_xml_sources[i];
-
 				// clean up the download request
 				if(downloader.Status() != Enums::_http_file_download_status_idle)
 					downloader.Stop();
