@@ -6,7 +6,6 @@
 	  <!--<ExceptionHandling />-->
       <ExceptionHandling>Sync</ExceptionHandling>
 	  <StructMemberAlignment>1Byte</StructMemberAlignment>
-	  <AdditionalOptions> /Zc:trigraphs %(AdditionalOptions)</AdditionalOptions>
 	  <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
 	  <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>

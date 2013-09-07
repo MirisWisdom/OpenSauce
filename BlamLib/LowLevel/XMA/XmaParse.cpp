@@ -856,10 +856,10 @@ namespace XMA
 
 		if(out_stream_valid())
 		{
-			stringstream& s = *dynamic_cast<stringstream*>(m_out_stream);
+			auto& s = *dynamic_cast<stringstream*>(m_out_stream);
 			stringstream::pos_type pos = s.tellp();
 
-			out_buffer_size = pos;
+			out_buffer_size = CAST(stringstream::pos_type,pos);
 			out_buffer = cpp_new char[out_buffer_size];
 			s.seekg(0, ios::beg);
 			s.read(out_buffer, out_buffer_size);
