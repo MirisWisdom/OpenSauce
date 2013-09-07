@@ -1,7 +1,8 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D9931E1A-1A8A-4707-A27C-9AFEFD60D25B}</ProjectGuid>
@@ -9,17 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BlamLib</RootNamespace>
     <AssemblyName>BlamLib</AssemblyName>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>2.0</OldToolsVersion>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
-  <PropertyGroup>
-    <ImportPropsDir Condition=" '$(ImportPropsDir)' == '' ">$(SolutionDir)</ImportPropsDir>
-  </PropertyGroup>
-  <Import Project="$(ImportPropsDir)BlamLib.Cs.props" />
+  <Import Project="$(SolutionDir)..\shared\config\msbuild\BlamLib.props" />
   <ItemGroup>
     <Reference Include="SlimDX" />
     <Reference Include="System" />
@@ -363,12 +356,12 @@
     <Compile Include="Blam\Halo2\Tags\Resources.cs" />
     <Compile Include="Blam\Halo2\Tags\Scenario.cs" />
     <Compile Include="Blam\Halo2\Tags\Sound.cs" />
-	<Compile Include="Blam\Halo2\Tags\Code\Bsp.cs" />
+    <Compile Include="Blam\Halo2\Tags\Code\Bsp.cs" />
     <Compile Include="Blam\Halo2\Tags\Code\Effects.cs" />
     <Compile Include="Blam\Halo2\Tags\Code\Globals.cs" />
     <Compile Include="Blam\Halo2\Tags\Code\Misc.cs" />
     <Compile Include="Blam\Halo2\Tags\Code\Models.cs" />
-	<Compile Include="Blam\Halo2\Tags\Code\Resources.cs" />
+    <Compile Include="Blam\Halo2\Tags\Code\Resources.cs" />
     <Compile Include="Blam\Halo2\Tags\Code\Scenario.cs" />
     <Compile Include="Blam\Halo2\Tags\Code\Shaders.cs" />
     <Compile Include="Blam\Halo2\Tags\Code\Sound.cs" />
@@ -381,7 +374,7 @@
     <Compile Include="Blam\Halo2\Tags\Groups\TagGroupsCode.cs" />
     <Compile Include="Blam\Halo2\Tags\Groups\TagGroupsInit.cs" />
     <Compile Include="Blam\Halo2\Tags\Layout\AI.cs" />
-	<Compile Include="Blam\Halo2\Tags\Layout\Shaders.cs" />
+    <Compile Include="Blam\Halo2\Tags\Layout\Shaders.cs" />
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
     <Compile Include="Blam\Halo3\BLF.cs" />
@@ -555,7 +548,7 @@
     <EmbeddedResource Include="Games\Halo4\Xbox\Definitions\Halo4_Xbox_StringId.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LowLevel\LowLevel.vcproj">
+    <ProjectReference Include="..\LowLevel\LowLevel.vcxproj">
       <Project>{5E5B9F4E-1067-4470-8AA9-B25BBBEA063A}</Project>
       <Name>LowLevel</Name>
     </ProjectReference>

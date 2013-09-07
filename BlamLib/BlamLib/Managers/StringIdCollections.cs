@@ -476,9 +476,9 @@ namespace BlamLib.Managers
 	sealed class StringIdDynamicCollection : IStringIdContainer, IEnumerable<KeyValuePair<StringId, string>>
 	{
 		#region HandleMethod
-		GenerateIdMethod m_handleMethod;
-		/// <summary>Method used which to create new handles</summary>
-		public GenerateIdMethod HandleMethod { get { return m_handleMethod; } }
+// 		GenerateIdMethod m_handleMethod;
+// 		/// <summary>Method used which to create new handles</summary>
+// 		public GenerateIdMethod HandleMethod { get { return m_handleMethod; } }
 		#endregion
 
 		StringIdManager mOwner;

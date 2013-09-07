@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
-  <Import Project="$(SolutionDir)BlamLib.Cs.props" />
+  <Import Project="$(SolutionDir)..\shared\config\msbuild\BlamLib.props" />
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -50,7 +50,7 @@
       <Project>{D9931E1A-1A8A-4707-A27C-9AFEFD60D25B}</Project>
       <Name>BlamLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LowLevel\LowLevel.vcproj">
+    <ProjectReference Include="..\LowLevel\LowLevel.vcxproj">
       <Project>{5E5B9F4E-1067-4470-8AA9-B25BBBEA063A}</Project>
       <Name>LowLevel</Name>
     </ProjectReference>

@@ -49,8 +49,6 @@ namespace Yelo
 			cstring sounds = "sounds",
 			cstring locale = "loc")
 		{
-			int32 x;
-
 			for(auto ptr : K_DATA_FILE_BITMAPS_NAME_REFERENCES)	*ptr = bitmaps;
 			for(auto ptr : K_DATA_FILE_SOUNDS_NAME_REFERENCES)	*ptr = sounds;
 			for(auto ptr : K_DATA_FILE_LOCALE_NAME_REFERENCES)	*ptr = locale;
