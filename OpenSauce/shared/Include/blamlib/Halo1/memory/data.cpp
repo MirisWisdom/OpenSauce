@@ -8,6 +8,19 @@
 
 namespace Yelo
 {
+	namespace Memory
+	{
+		bool s_data_iterator::operator!=(const s_data_iterator& other) const
+		{
+			if(other.IsEndHack())
+				return !index.IsNull();
+			else if(this->IsEndHack())
+				return !other.index.IsNull();
+
+			return this->index != other.index;
+		}
+	};
+
 	namespace blam
 	{
 		using namespace Yelo::Memory;

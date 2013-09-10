@@ -209,8 +209,8 @@ namespace Yelo
 		// Sizeof(T)
 		inline size_t SizeOf() const { return sizeof(T); }
 
-		inline tag_block* to_tag_data()				{ return CAST_PTR(tag_data*, &this->Size); }
-		inline const tag_block* to_tag_data() const	{ return CAST_PTR(const tag_data*, &this->Size); }
+		inline tag_data* to_tag_data()				{ return CAST_PTR(tag_data*, &this->Size); }
+		inline const tag_data* to_tag_data() const	{ return CAST_PTR(const tag_data*, &this->Size); }
 
 		inline T* operator [](int32 index) { return &this->Definitions[index]; }
 

@@ -7,29 +7,15 @@
 #include "Common/Precompile.hpp"
 
 #if PLATFORM_ID == PLATFORM_TOOL
-#include <blamlib/Halo1/cache/cache_file_builder.hpp>
-#include <blamlib/Halo1/cache/cache_files.hpp>
-#include <blamlib/Halo1/models/model_definitions.hpp>
-#include <blamlib/Halo1/objects/object_definitions.hpp>
-#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
-#include <blamlib/Halo1/shaders/shader_definitions.hpp>
 #include <blamlib/Halo1/tool/tool.hpp>
 
 #include <YeloLib/Halo1/cache/data_file_yelo.hpp>
-#include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
-#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
 
 #include "Common/YeloSettings.hpp"
 #include "Engine/EngineFunctions.hpp"
-#include "Engine/GrenadeTypesUpgrade.hpp"
-#include "Engine/Scripting.hpp"
-#include "TagGroups/TagGroups.hpp"
-#include "TagGroups/yelo_definitions.hpp"
-#include "TagGroups/yelo_scenario_definitions.hpp"
 #include "Tool/Tool_AnimationFixups.hpp"
 
+#include "Tool/BuildCacheFile.hpp"
 #include "Tool/ImportLightmapUV.hpp"
 #include "Tool/ShaderPostprocess.hpp"
 #include "Tool/BuildCppDefinition.hpp"
@@ -44,7 +30,6 @@ namespace Yelo
 			k_number_of_tool_import_classes = 0x15,
 		};
 
-		#include "Tool/BuildCacheFile.inl"
 		#include "Tool/Help.inl"
 
 

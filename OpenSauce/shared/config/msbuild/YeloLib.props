@@ -7,8 +7,7 @@
       <ExceptionHandling>Sync</ExceptionHandling>
 	  <StructMemberAlignment>1Byte</StructMemberAlignment>
 	  <RuntimeTypeInfo>false</RuntimeTypeInfo>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-	  <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
+	  <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <PrecompiledHeaderFile>Common\Precompile.hpp</PrecompiledHeaderFile>
 	  <CallingConvention>StdCall</CallingConvention>
     </ClCompile>
@@ -19,6 +18,7 @@
 	  <MinimalRebuild>true</MinimalRebuild>
 	  <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
 	  <!--<IntrinsicFunctions>true</IntrinsicFunctions>-->
+	  <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition=" '$(Configuration.Contains(Release))' ">
@@ -26,6 +26,7 @@
 	  <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
 	  <IntrinsicFunctions>true</IntrinsicFunctions>
 	  <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+	  <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
 	<Link>
       <OptimizeReferences>true</OptimizeReferences>

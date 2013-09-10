@@ -5,14 +5,6 @@
 	See license\OpenSauce\Halo1_CheApe for specific license information
 */
 
-#include "Tool/BuildCacheFile/BuildGlobals.inl"
-#include "Tool/BuildCacheFile/CullTags.inl"
-#include "Tool/BuildCacheFile/PredictedResources.inl"
-#include "Tool/BuildCacheFile/TagPreprocess.inl"
-
-void build_cache_file_end_preprocess(Cache::s_cache_header* header, Cache::s_cache_header_yelo& ych);
-void build_cache_file_begin_preprocess(cstring scenario_name);
-#include "Tool/BuildCacheFile/MemoryUpgrades.inl"
 /*!
  * \brief
  * Code to execute before we commit the yelo header and the tool's code finishes building the cache.
@@ -130,7 +122,7 @@ namespace BuildCacheFileEx
 	}
 };
 
-static void PLATFORM_API build_cache_file_for_scenario_extended(void** arguments)
+void PLATFORM_API build_cache_file_for_scenario_extended(void** arguments)
 {
 	//////////////////////////////////////////////////////////////////////////
 	// Initialize arguments
@@ -233,7 +225,7 @@ static void PLATFORM_API build_cache_file_for_scenario_extended(void** arguments
  * \brief
  * We replace the stock build_cache_file_for_scenario implementation with out own to turn off non-stock-compliant things like custom script definitions
  */
-static void PLATFORM_API build_cache_file_for_scenario_stock_override(void** arguments)
+void PLATFORM_API build_cache_file_for_scenario_stock_override(void** arguments)
 {
 	//////////////////////////////////////////////////////////////////////////
 	// Initialize arguments

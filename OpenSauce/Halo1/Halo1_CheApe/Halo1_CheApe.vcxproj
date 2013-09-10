@@ -51,7 +51,6 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-
   <PropertyGroup>
     <OSRequiresDirectX>true</OSRequiresDirectX>
     <OSRequiresCppBoost>true</OSRequiresCppBoost>
@@ -65,15 +64,13 @@
   <Import Project="$(SolutionDir)shared\config\msbuild\YeloLib.props" />
   <Import Project="$(SolutionDir)shared\config\msbuild\YeloLib_Halo1.props" />
   <Import Project="$(SolutionDir)shared\config\msbuild\7zip.props" />
-
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>11.0.60315.1</_ProjectFileVersion>
   </PropertyGroup>
-
   <ItemDefinitionGroup>
     <ClCompile>
-	  <PreprocessorDefinitions>HALO1_CHEAPE_EXPORTS;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HALO1_CHEAPE_EXPORTS;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4311;4312;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -85,7 +82,6 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
     </ClCompile>
   </ItemDefinitionGroup>
-
   <PropertyGroup Condition=" '$(OSPlatformType)'=='Guerilla' ">
     <TargetName>CheApeDLLG</TargetName>
   </PropertyGroup>
@@ -95,12 +91,12 @@
   <PropertyGroup Condition=" '$(OSPlatformType)'=='Sapien' ">
     <TargetName>CheApeDLLS</TargetName>
   </PropertyGroup>
-
   <ItemGroup>
     <ClCompile Include="Engine\AnimationUpgrade.cpp" />
     <ClCompile Include="Engine\EngineFunctions.cpp" />
     <ClCompile Include="Engine\GrenadeTypesUpgrade.cpp" />
     <ClCompile Include="Engine\Scripting.cpp" />
+    <ClCompile Include="Tool\BuildCacheFile.cpp" />
     <ClCompile Include="Yelo\MemoryFixups.cpp" />
     <ClCompile Include="Yelo\ScenarioResources.cpp" />
     <ClCompile Include="Yelo\Yelo.cpp" />
@@ -132,6 +128,7 @@
     <ClInclude Include="Engine\EngineFunctions.hpp" />
     <ClInclude Include="Engine\GrenadeTypesUpgrade.hpp" />
     <ClInclude Include="Engine\Scripting.hpp" />
+    <ClInclude Include="Tool\BuildCacheFile.hpp" />
     <ClInclude Include="Yelo\MemoryFixups.hpp" />
     <ClInclude Include="Yelo\ScenarioResources.hpp" />
     <ClInclude Include="Common\DebugDump.hpp" />
@@ -152,7 +149,7 @@
     <ClInclude Include="TagGroups\TagGroups.hpp" />
     <ClInclude Include="TagGroups\yelo_definitions.hpp" />
     <ClInclude Include="TagGroups\yelo_scenario_definitions.hpp" />
-    <ClInclude Include="Memory\MemoryInterface.hpp" />    
+    <ClInclude Include="Memory\MemoryInterface.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\memory\physical_memory_allocation.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\cseries\non_pod_container.hpp" />
     <ClInclude Include="CheApeCore.hpp" />

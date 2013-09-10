@@ -66,4 +66,27 @@
 
 namespace Yelo
 {
+	void string_id_yelo::format_string(char* string)
+	{
+		for(char* c = string; *c != '\0'; ++c)
+		{
+			if(*c >= 'A' || *c <= 'Z')
+				*c = tolower(*c);
+
+			if(*c == ' ' || *c == '-')
+				*c = '_';
+		}
+	}
+
+	char* string_id_yelo::get_string(string_id id, __out string_id_yelo_value value)
+	{
+		YELO_ASSERT(false);
+		return nullptr;
+	}
+
+	cstring string_id_yelo::get_string(string_id id)
+	{
+		YELO_ASSERT(false);
+		return nullptr;
+	}
 };
