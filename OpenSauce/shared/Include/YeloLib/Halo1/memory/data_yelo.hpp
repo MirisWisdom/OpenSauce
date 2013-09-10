@@ -48,27 +48,22 @@ namespace Yelo
 
 				datum_index Current() const { return this->m_iterator.index; }
 
-				static Iterator GetEndHack(DataArrayT& data)
+				static const Iterator GetEndHack(DataArrayT& data)
 				{
 					auto hack = Iterator(data);
-					hack.m_iterator.signature = k_end_hack_signature;
+					hack.m_iterator.SetEndHack();
 					return hack;
 				}
-				bool operator!=(const Iterator& other) const
+				inline bool operator!=(const Iterator& other) const
 				{
-					if(other.m_iterator.signature == k_end_hack_signature)
-						return !m_iterator.index.IsNull();
-					else if(m_iterator.signature == k_end_hack_signature)
-						return !other.m_iterator.index.IsNull();
-
-					return m_iterator.index != other.m_iterator.index;
+					return m_iterator != other.m_iterator;
 				}
-				Iterator& operator++()
+				inline Iterator& operator++()
 				{
 					Next();
 					return *this;
 				}
-				IteratorResult operator*() const
+				inline IteratorResult operator*() const
 				{
 					return IteratorResult(m_iterator.index, m_current_instance);
 				}
@@ -99,13 +94,13 @@ namespace Yelo
 #endif
 			}
 
-			Iterator begin () /*const*/
+			inline Iterator begin() /*const*/
 			{
 				auto iter = Iterator(*this);
 				iter.Next();
 				return iter;
 			}
-			Iterator end () /*const*/
+			inline const Iterator end() /*const*/
 			{
 				return Iterator::GetEndHack(*this);
 			}

@@ -15,16 +15,18 @@ namespace Yelo
 			k_byte_swap_signature = 'bysw',
 		};
 
+		// positive numbers are runs (of bytes) to leave untouched
+		// zero is invalid
 		enum /*e_bs_code*/ : byte_swap_code_t
 		{
-			_bs_code_array_end = -101,
-			_bs_code_array_start = -100,
+			_bs_code_array_end = -101, // _end_bs_array
+			_bs_code_array_start = -100, // _begin_bs_array
 
-			_bs_code_8byte = 0 - (byte_swap_code_t)sizeof(uint64),
-			_bs_code_4byte = 0 - (byte_swap_code_t)sizeof(uint32),
-			_bs_code_2byte = 0 - (byte_swap_code_t)sizeof(uint16),
+			_bs_code_8byte = 0 - (byte_swap_code_t)sizeof(uint64), // _8byte
+			_bs_code_4byte = 0 - (byte_swap_code_t)sizeof(uint32), // _4byte
+			_bs_code_2byte = 0 - (byte_swap_code_t)sizeof(uint16), // _2byte
 
-			_bs_code_1byte = sizeof(byte),
+			_bs_code_1byte = sizeof(byte), // _byte
 		};
 	};
 
@@ -34,6 +36,10 @@ namespace Yelo
 		{
 			cstring name;
 			size_t size;
+			// _bs_code_array_start,
+			// <count>,
+			// ...codes...
+			// _bs_code_array_end
 			byte_swap_code_t* codes;
 			tag signature;
 			bool initialized;

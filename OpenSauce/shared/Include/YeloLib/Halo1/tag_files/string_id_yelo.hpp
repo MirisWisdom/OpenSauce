@@ -34,7 +34,7 @@ namespace Yelo
 
 		string_id id;
 
-		static void format_string(cstring string);
+		static void format_string(char* string);
 		static char* get_string(string_id id, __out string_id_yelo_value value);
 		static cstring get_string(string_id id);
 	}; BOOST_STATIC_ASSERT( sizeof(string_id_yelo) == 0x14 );

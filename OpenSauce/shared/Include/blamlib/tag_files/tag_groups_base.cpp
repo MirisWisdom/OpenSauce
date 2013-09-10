@@ -67,8 +67,8 @@ namespace Yelo
 			return (tag) ( (_group>>24) | ((_group>>8)& 0xFF00) | (((_group<<8)&0xFF0000) | ((_group<<24)&0xFF000000)) );
 		}
 
-		void group_tag_to_string::Terminate()	{ str[4] = '\0'; }
-		void group_tag_to_string::TagSwap()		{ TagGroups::TagSwap(group); }
+		group_tag_to_string& group_tag_to_string::Terminate()	{ str[4] = '\0';			return *this; }
+		group_tag_to_string& group_tag_to_string::TagSwap()		{ TagGroups::TagSwap(group);return *this; }
 	};
 
 	namespace blam

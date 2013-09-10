@@ -34,6 +34,13 @@ namespace Yelo
 			PAD16;
 			datum_index index;
 			tag signature;
+
+			//////////////////////////////////////////////////////////////////////////
+			// stl end() hacks
+			enum { k_end_hack_signature = 'hack' };
+			inline void SetEndHack()		{ signature = k_end_hack_signature; }
+			inline bool IsEndHack() const	{ return signature == k_end_hack_signature; }
+			bool operator!=(const s_data_iterator& other) const;
 		}; BOOST_STATIC_ASSERT( sizeof(s_data_iterator) == 0x10 );
 	};
 

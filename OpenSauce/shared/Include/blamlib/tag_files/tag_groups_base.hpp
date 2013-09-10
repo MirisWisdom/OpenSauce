@@ -96,6 +96,34 @@ namespace Yelo
 
 #if PLATFORM_IS_EDITOR
 		size_t get_element_size() const;
+
+		// NOTE: Design assumes there's no concurrent element changing (adding or removing)
+		struct s_iterator
+		{
+			byte* m_address;
+			size_t m_element_size;
+		public:
+			inline s_iterator(tag_block& block, int32 element_index = 0) :
+				m_address(CAST_PTR(byte*,block.address)),
+				m_element_size(block.get_element_size())
+			{
+			}
+			inline bool operator!=(const s_iterator& other) const
+			{
+				return m_address != other.m_address;
+			}
+			inline s_iterator& operator++()
+			{
+				m_address += m_element_size;
+				return *this;
+			}
+			inline void* operator*() const
+			{
+				return m_address;
+			}
+		};
+		inline s_iterator	begin()	{ return s_iterator(*this); }
+		inline s_iterator	end()	{ return s_iterator(*this, this->count); }
 #endif
 	};
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
@@ -240,8 +268,8 @@ namespace Yelo
 			};
 			char str[sizeof(tag)+1];
 
-			void Terminate();
-			void TagSwap();
+			group_tag_to_string& Terminate();
+			group_tag_to_string& TagSwap();
 		};
 
 		struct s_tag_iterator {

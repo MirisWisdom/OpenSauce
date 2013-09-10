@@ -360,7 +360,8 @@ namespace BlamLib.Blam.Halo1.CheApe
 				comp.MarkLocationFixup(tagGroup.Name, stream, false);
 
 				flags = (
-						(tagGroup.IsIncludedInTagGroupsChecksum ? 1 << 0 : 0)
+						(tagGroup.IsIncludedInTagGroupsChecksum ? 1 << 0 : 0) |
+						(tagGroup.Reloadable ? 1 << 3 : 0)
 					);
 
 				stream.Write(tagGroup.Name);

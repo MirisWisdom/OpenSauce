@@ -80,7 +80,29 @@ namespace Yelo
 			return blam::tag_block_resize(block, 0);
 		}
 
+		//////////////////////////////////////////////////////////////////////////
+		// c_tag_iterator
+		c_tag_iterator::c_tag_iterator(const void* endHackDummy) //:
+			//m_tag_index(datum_index::null)
+		{
+			//memset(&m_state, 0, sizeof(m_state));
+			m_state.instances_iterator.SetEndHack();
+		}
 
+		c_tag_iterator::c_tag_iterator(const tag group_tag_filter) :
+			m_tag_index(datum_index::null)
+		{
+			blam::tag_iterator_new(m_state, group_tag_filter);
+		}
+
+		datum_index c_tag_iterator::Next()
+		{
+			return m_tag_index = blam::tag_iterator_next(m_state);
+		}
+
+
+		//////////////////////////////////////////////////////////////////////////
+		// c_tag_field_scanner
 		c_tag_field_scanner::c_tag_field_scanner(const tag_field* fields, void* fields_address)
 		{
 			blam::tag_field_scan_state_new(m_state, fields, fields_address);
@@ -92,9 +114,10 @@ namespace Yelo
 			return *this;
 		}
 
-		void c_tag_field_scanner::AddAllFieldTypes()
+		c_tag_field_scanner& c_tag_field_scanner::AddAllFieldTypes()
 		{
 			memset(m_state.field_types, -1, sizeof(m_state.field_types));
+			return *this;
 		}
 
 		bool c_tag_field_scanner::Scan()
@@ -104,8 +127,20 @@ namespace Yelo
 
 		bool c_tag_field_scanner::TagFieldIsStringId() const
 		{
+			// NOTE: feign string_id fields should have the _tag_reference_non_resolving_bit set
+			// in their tag_reference_definition
 			return	GetTagFieldType() == Enums::_field_tag_reference && 
 					GetTagFieldDefinition<tag_reference_definition>()->group_tag == s_string_id_yelo_definition::k_group_tag;
+		}
+
+		bool c_tag_field_scanner::s_iterator::operator!=(const c_tag_field_scanner::s_iterator& other) const
+		{
+			if(other.IsEndHack())
+				return !m_scanner->IsDone();
+			else if(this->IsEndHack())
+				return !other.m_scanner->IsDone();
+
+			return m_scanner != other.m_scanner;
 		}
 	};
 
@@ -136,38 +171,49 @@ namespace Yelo
 
 	namespace blam
 	{
-		static void tag_group_postprocess_instance(datum_index tag_index, Enums::tag_postprocess_mode mode)
-		{
-			for(const tag_group* group = tag_group_get(tag_get_group_tag(tag_index));
-				group != nullptr;
-				group = tag_group_get(group->parent_group_tag))
-			{
-				if(group->child_count > 0 && group->header_block_definition->postprocess_proc != nullptr)
-				{
-					group->header_block_definition->postprocess_proc(tag_get(NONE, tag_index), mode);
-				}
-
-				auto proc = group->postprocess_proc;
-				if(proc != nullptr)
-					proc(tag_index, mode);
-			}
-		}
-		static datum_index find_tag_instance(tag group_tag, cstring name)
+		datum_index PLATFORM_API find_tag_instance(tag group_tag, cstring name)
 		{
 			for(auto instance : TagGroups::TagInstances())
 			{
+				if(instance->is_orphan || instance->is_reload || instance->group_tag != group_tag)
+					continue;
 
+				if(strcmp(instance->filename, name)==0)
+					return instance.index;
 			}
 			return datum_index::null;
+		}
+
+		/*static*/ void PLATFORM_API tag_block_generate_default_element(const tag_block_definition *definition, void *address)
+		{
+			memset(address, 0, definition->element_size);
+
+			for(auto field : TagGroups::c_tag_field_scanner(definition->fields, address)
+				.AddFieldType(Enums::_field_short_block_index)
+				.AddFieldType(Enums::_field_long_block_index) )
+			{
+				switch(field.GetType())
+				{
+				case Enums::_field_short_block_index:
+					*field.As<int16>() = NONE;
+					break;
+
+				case Enums::_field_long_block_index:
+					*field.As<int32>() = NONE;
+					break;
+				}
+			}
 		}
 
 		void PLATFORM_API tag_reference_clear(tag_reference& reference)
 		{
 			// The engine's code will free (ie, YELO_FREE) the reference's name 
 			// when tag_block_delete_element (which is called by tag_unload) is ran
-			void* ptr = YELO_MALLOC(Enums::k_max_tag_name_length+1, false); // TODO: check if NULL or memset instead?
+//			void* ptr = YELO_MALLOC(Enums::k_max_tag_name_length+1, false); // TODO: check if NULL or memset instead?
 
-			reference.name = CAST_PTR(tag_reference_name_reference, ptr);
+//			reference.name = CAST_PTR(tag_reference_name_reference, ptr);
+			YELO_ASSERT(reference.name);
+			memset(reference.name, 0, Enums::k_max_tag_name_length+1);
 			reference.name_length = 0;
 			reference.group_tag = NONE;
 			reference.tag_index = datum_index::null;
@@ -183,29 +229,24 @@ namespace Yelo
 		if(definition->dispose_element_proc != nullptr)
 			definition->dispose_element_proc(block, element_index);
 
-		TagGroups::c_tag_field_scanner scanner(block->definition->fields, 
-			blam::tag_block_get_element(block, element_index));
-
-		scanner	.AddFieldType(Enums::_field_block)
-				.AddFieldType(Enums::_field_data)
-				.AddFieldType(Enums::_field_tag_reference)
-			;
-
-		while(scanner.Scan())
+		for(auto field : TagGroups::c_tag_field_scanner(definition->fields, blam::tag_block_get_element(block, element_index))
+			.AddFieldType(Enums::_field_block)
+			.AddFieldType(Enums::_field_data)
+			.AddFieldType(Enums::_field_tag_reference) )
 		{
-			switch(scanner.GetTagFieldType())
+			switch(field.GetType())
 			{
 			case Enums::_field_data:
-				YELO_FREE( scanner.GetFieldAs<tag_data>()->address );
+				YELO_FREE( field.As<tag_data>()->address );
 				break;
 
 			case Enums::_field_block:
 				// engine actually does a while loop here, calling delete_element
-				blam::tag_block_resize(scanner.GetFieldAs<tag_block>(), 0);
+				blam::tag_block_resize(field.As<tag_block>(), 0);
 				break;
 
 			case Enums::_field_tag_reference:
-				YELO_FREE( scanner.GetFieldAs<tag_reference>()->name );
+				YELO_FREE( field.As<tag_reference>()->name );
 				break;
 
 			YELO_ASSERT_CASE_UNREACHABLE();
@@ -243,31 +284,6 @@ namespace Yelo
 		}
 	}
 
-	static void tag_block_generate_default_element(const tag_block_definition *definition, void *address)
-	{
-		memset(address, 0, definition->element_size);
-
-		TagGroups::c_tag_field_scanner scanner(definition->fields, 
-			address);
-
-		scanner	.AddFieldType(Enums::_field_short_block_index)
-				.AddFieldType(Enums::_field_long_block_index)
-			;
-
-		while(scanner.Scan())
-		{
-			switch(scanner.GetTagFieldType())
-			{
-			case Enums::_field_short_block_index:
-				*scanner.GetFieldAs<int16>() = NONE;
-				break;
-
-			case Enums::_field_long_block_index:
-				*scanner.GetFieldAs<int32>() = NONE;
-				break;
-			}
-		}
-	}
 	static int32 PLATFORM_API tag_block_add_element_impl(tag_block* block)
 	{
 		YELO_ASSERT( block && block->definition );
@@ -283,7 +299,7 @@ namespace Yelo
 		int add_index = block->count++;
 		block->address = new_address;
 		void* new_element = blam::tag_block_get_element(block, add_index);
-		tag_block_generate_default_element(definition, new_element);
+		blam::tag_block_generate_default_element(definition, new_element);
 
 		int32 dummy_position;
 		bool success = blam::tag_block_read_children_recursive(definition, new_element, 1, &dummy_position,

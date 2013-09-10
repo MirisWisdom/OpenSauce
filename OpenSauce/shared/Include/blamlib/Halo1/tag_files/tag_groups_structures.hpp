@@ -105,11 +105,12 @@ namespace Yelo
 			// haven't seen this used at all
 			_tag_group_unknown2_bit,
 			// majority of tags have this set
-			_tag_group_unknown3_bit,
+			_tag_group_reloadable_bit,
 
 			// When this is set, implies _tag_postprocess_mode_for_editor, else _for_runtime
 			_tag_load_for_editor_bit = 0,
 			// Verify the tag file exists first
+			// TODO: pretty sure this is 'is_new', so refactor to _tag_load_is_new_bit
 			_tag_load_verify_exist_first_bit,
 			// If set: child references of the tag being loaded are not loaded themselves
 			// Else, child references are loaded from disk
@@ -187,17 +188,16 @@ namespace Yelo
 	}; BOOST_STATIC_ASSERT( sizeof(tag_group) == 0x60 );
 
 
-	struct s_tag_instance
+	struct s_tag_instance : Memory::s_datum_base_aligned
 	{
-		datum_index header;			// 0x0
 		char filename[Enums::k_max_tag_name_length+1];			// 0x4
 		tag group_tag;				// 0x104
 		tag parent_group_tags[2];	// 0x108 0x10C
-		bool is_verified;			// 0x110 was loaded with Flags::_tag_load_verify_bit
+		bool is_verified;			// 0x110 was loaded with Flags::_tag_load_for_editor_bit
 		bool is_read_only;			// 0x111
 		bool is_orphan;				// 0x112
-		bool null_definition;		// 0x113
-		PAD32;						// 0x114
+		bool is_reload;				// 0x113 true if this instance is the one used for another tag during tag_reload
+		datum_index reload_index;	// 0x114 index of the instance used to reload -this- tag's definition
 		uint32 file_checksum;		// 0x118
 		tag_block root_block;		// 0x11C, 0x120, 0x124
 	}; BOOST_STATIC_ASSERT( sizeof(s_tag_instance) == 0x128 );
@@ -235,6 +235,8 @@ namespace Yelo
 			s_tag_field_scan_state m_state;
 
 		public:
+			inline bool IsDone() const					{ return m_state.done; }
+
 			inline void* GetAddress() const				{ return m_state.fields_address; }
 
 			inline int32 GetFieldIndex() const			{ return m_state.field_index; }
@@ -255,11 +257,79 @@ namespace Yelo
 
 			c_tag_field_scanner& AddFieldType(Enums::field_type field_type);
 
-			void AddAllFieldTypes();
+			c_tag_field_scanner& AddAllFieldTypes();
 
 			bool Scan();
 
 			bool TagFieldIsStringId() const;
+
+
+			// an interface to a found tag field and its definition
+			struct s_iterator_result
+			{
+			private:
+				const c_tag_field_scanner& m_scanner;
+
+			public:
+				s_iterator_result(const c_tag_field_scanner& scanner) : m_scanner(scanner) {}
+
+				// Field's index, relative to the parent block's fields list
+				inline int32 GetIndex() const			{ return m_scanner.GetFieldIndex(); }
+				// Field's individual size
+				inline size_t GetSize() const			{ return m_scanner.GetFieldSize(); }
+				// Field's offset, relative to the parent block
+				inline size_t GetOffset() const			{ return m_scanner.GetFieldOffset(); }
+
+				// Field's type
+				inline Enums::field_type GetType() const{ return m_scanner.GetTagFieldType(); }
+				// Field's name
+				inline cstring GetName() const			{ return m_scanner.GetTagFieldName(); }
+				// Treat the field's definition as a T*
+				template<typename T>
+				inline T* DefinitionAs() const			{ return m_scanner.GetTagFieldDefinition<T>(); }
+
+				// Instance's address
+				inline void* GetAddress() const			{ return m_scanner.GetFieldAddress(); }
+				// Treat the instance's address as a T*
+				template<typename T>
+				inline T* As() const					{ return m_scanner.GetFieldAs<T>(); }
+
+				bool IsStringId() const					{ return m_scanner.TagFieldIsStringId(); }
+			};
+
+			struct s_iterator
+			{
+			private:
+				c_tag_field_scanner* m_scanner;
+
+				inline bool IsEndHack() const			{ return m_scanner == nullptr; }
+
+			public:
+				s_iterator(c_tag_field_scanner* scanner) : m_scanner(scanner) {}
+
+				bool operator!=(const s_iterator& other) const;
+
+				inline s_iterator& operator++()
+				{
+					m_scanner->Scan();
+					return *this;
+				}
+				inline s_iterator_result operator*() const
+				{
+					return s_iterator_result(*m_scanner);
+				}
+			};
+
+			inline s_iterator begin() /*const*/
+			{
+				auto iter = s_iterator(this);
+				this->Scan();
+				return iter;
+			}
+			inline static const s_iterator end() /*const*/
+			{
+				return s_iterator(nullptr);
+			}
 		};
 	};
 };

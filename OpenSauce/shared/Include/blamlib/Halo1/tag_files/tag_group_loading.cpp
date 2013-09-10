@@ -7,6 +7,7 @@
 #include <blamlib/Halo1/tag_files/tag_group_loading.hpp>
 
 #include <blamlib/Halo1/memory/byte_swapping.hpp>
+#include <blamlib/Halo1/memory/data.hpp>
 #include <blamlib/Halo1/tag_files/tag_files.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
@@ -16,6 +17,11 @@ namespace Yelo
 {
 	namespace blam
 	{
+		static void tag_group_loading_add_non_loaded_tag(tag group_tag, cstring name)
+		{
+			// TODO
+		}
+
 		bool PLATFORM_API tag_data_load(void* block_element, tag_data* data, void* address)
 		{
 			YELO_ASSERT( block_element );
@@ -161,35 +167,31 @@ namespace Yelo
 
 			for(int x = 0; x < count; x++)
 			{
-				TagGroups::c_tag_field_scanner scanner(definition->fields, 
-					CAST_PTR(byte*,address) + (definition->element_size * x) );
-
-				scanner	.AddFieldType(Enums::_field_block)
-						.AddFieldType(Enums::_field_data)
-						.AddFieldType(Enums::_field_tag_reference)
-					;
-
-				while(scanner.Scan())
+				void* block_element = CAST_PTR(byte*,address) + (definition->element_size * x);
+				for(auto field : TagGroups::c_tag_field_scanner(definition->fields, block_element)
+					.AddFieldType(Enums::_field_block)
+					.AddFieldType(Enums::_field_data)
+					.AddFieldType(Enums::_field_tag_reference) )
 				{
 					bool read_result;
 
-					switch(scanner.GetTagFieldType())
+					switch(field.GetType())
 					{
 					case Enums::_field_data: read_result = 
-						tag_data_read_recursive(scanner.GetTagFieldDefinition<tag_data_definition>(), scanner.GetAddress(),
-							scanner.GetFieldAs<tag_data>(), 
+						tag_data_read_recursive(field.DefinitionAs<tag_data_definition>(), block_element,
+							field.As<tag_data>(), 
 							position_reference, read_flags);
 						break;
 
 					case Enums::_field_block: read_result = 
-						tag_block_read_recursive(scanner.GetTagFieldDefinition<tag_block_definition>(),
-							scanner.GetFieldAs<tag_block>(), 
+						tag_block_read_recursive(field.DefinitionAs<tag_block_definition>(),
+							field.As<tag_block>(), 
 							position_reference, read_flags);
 						break;
 
 					case Enums::_field_tag_reference: read_result = 
-						tag_reference_read_recursive(scanner.GetTagFieldDefinition<tag_reference_definition>(),
-							scanner.GetFieldAs<tag_reference>(), 
+						tag_reference_read_recursive(field.DefinitionAs<tag_reference_definition>(),
+							field.As<tag_reference>(), 
 							position_reference, read_flags);
 						break;
 
@@ -279,6 +281,426 @@ namespace Yelo
 				return false; // postprocess warns about failures, so we don't YELO_ERROR here
 
 			return true;
+		}
+
+		static bool tag_reference_resolve_recursive(tag_reference_definition* definition, tag_reference* reference, long_flags read_flags)
+		{
+			datum_index tag_index = datum_index::null;
+			bool success = true;
+
+			if( reference->group_tag != NULL_HANDLE &&
+				TEST_FLAG(read_flags, Flags::_tag_load_non_resolving_references_bit)==0 &&
+				TEST_FLAG(definition->flags, Flags::_tag_reference_non_resolving_bit)==0
+				)
+			{
+				if( strlen(reference->name) != 0 ||
+					(TEST_FLAG(read_flags, Flags::_tag_load_for_editor_bit)==0 &&
+					 TEST_FLAG(definition->flags, Flags::_tag_reference_unknown0_bit))
+					)
+				{
+					tag_index = tag_load(reference->group_tag, reference->name, 0);
+					success = !tag_index.IsNull();
+				}
+			}
+
+			reference->tag_index = tag_index;
+			return success;
+		}
+		static bool tag_references_resolve_recursive(tag_block_definition* definition, tag_block* block, long_flags read_flags)
+		{
+			bool success = true;
+
+			for(void* block_element : *block)
+			{
+				for(auto field : TagGroups::c_tag_field_scanner(definition->fields, block_element)
+					.AddFieldType(Enums::_field_block)
+					.AddFieldType(Enums::_field_tag_reference) )
+				{
+					bool read_result;
+
+					switch(field.GetType())
+					{
+					case Enums::_field_block: read_result = 
+						tag_references_resolve_recursive(field.DefinitionAs<tag_block_definition>(),
+							  field.As<tag_block>(), 
+							  read_flags);
+						break;
+
+					case Enums::_field_tag_reference: read_result = 
+						tag_reference_resolve_recursive(field.DefinitionAs<tag_reference_definition>(),
+							field.As<tag_reference>(), 
+							read_flags);
+						break;
+
+					YELO_ASSERT_CASE_UNREACHABLE();
+					}
+
+					if(!read_result)
+						success = read_result;
+				}
+			}
+			return success;
+		}
+
+		static bool verify_tag_string_field(TagGroups::c_tag_field_scanner::s_iterator_result field,
+			tag_block_definition* block_definition)
+		{
+			auto& string = *field.As<tag_string>();
+			if( strnlen_s(string, Enums::k_tag_string_length) == Enums::k_tag_string_length && 
+				string[Enums::k_tag_string_length] != '\0' )
+			{
+				YELO_ERROR(_error_message_priority_warning, "fixed corrupt tag string field (%s).",
+					field.GetName());
+
+				string[Enums::k_tag_string_length] = '\0';
+				return false;
+			}
+
+			// engine turns non-printable characters into underscores and nulls trailing spaces
+			// TODO: shouldn't we note when we correct non-printable characters?
+			for(size_t non_space_character_found = 0,
+				x = strlen(string)-1; x >= 0; --x)
+			{
+				char& c = string[x];
+
+				if(!isprint(c))
+					c = '_';
+
+				if(isspace(c))
+				{
+					if(!non_space_character_found)
+						c = '\0';
+				}
+				else
+					non_space_character_found = TRUE;
+			}
+
+			return true;
+		}
+		template<typename TEnum>
+		static bool verify_enum_field(TagGroups::c_tag_field_scanner::s_iterator_result field,
+			tag_block_definition* block_definition)
+		{
+			auto& value = *field.As<TEnum>();
+			int32 count = field.DefinitionAs<string_list>()->count;
+			if(value >= 0 && value < count)
+				return true;
+
+			YELO_ERROR(_error_message_priority_warning, "fixed corrupt tag enum field (%s) in %s.",
+				field.GetName(), block_definition->name); // NOTE: added owner block name to info
+
+			value = 0;
+			return false;
+		}
+		template<typename TFlags>
+		static bool verify_flags_field(TagGroups::c_tag_field_scanner::s_iterator_result field,
+			tag_block_definition* block_definition)
+		{
+			auto& flags = *field.As<TFlags>();
+			int32 bit_count = field.DefinitionAs<string_list>()->count;
+			if(bit_count >= BIT_COUNT(TFlags) || (flags >> bit_count) == 0)
+				return true;
+
+			YELO_ERROR(_error_message_priority_warning, "fixed corrupt tag flags field (%s) in %s.",
+				field.GetName(), block_definition->name); // NOTE: added owner block name to info
+
+			flags &= MASK(bit_count);
+			return false;
+		}
+		template<typename TIndex>
+		static bool verify_block_index_field(TagGroups::c_tag_field_scanner::s_iterator_result field,
+			tag_block_definition* block_definition)
+		{
+			auto& index = *field.As<TIndex>();
+			auto* indexed_block_definition = field.DefinitionAs<tag_block_definition>();
+			if(index >= NONE && index < indexed_block_definition->maximum_element_count)
+				return true;
+
+			YELO_ERROR(_error_message_priority_warning, "fixed corrupt tag block index field (%s) in %s (reset to NONE).",
+				field.GetName(), block_definition->name); // NOTE: added owner block name to info
+
+			index = NONE;
+			return false;
+		}
+		static bool tag_block_verify_recursive(tag_block_definition* definition, tag_block* block)
+		{
+			bool valid = true;
+
+			for(int x = 0; x < block->count; x++)
+			{
+				void* element = CAST_PTR(byte*,block->address) +
+					(definition->element_size * x); // NOTE: engine doesn't use tag_block_get_element here
+
+				for(auto field : TagGroups::c_tag_field_scanner(definition->fields, element)
+					.AddAllFieldTypes() )
+				{
+					switch(field.GetType())
+					{
+					case Enums::_field_string: if(!verify_tag_string_field(field, definition)) valid = false;
+						break;
+
+					// NOTE: technically the engine treats enum fields as signed
+					case Enums::_field_enum: if(!verify_enum_field<int16>(field, definition)) valid = false;
+						break;
+
+					// NOTE: engine only verified long_flags, we added support for the others
+					case Enums::_field_long_flags: if(!verify_flags_field<long_flags>(field, definition)) valid = false;
+						break;
+					case Enums::_field_word_flags: if(!verify_flags_field<word_flags>(field, definition)) valid = false;
+						break;
+					case Enums::_field_byte_flags: if(!verify_flags_field<byte_flags>(field, definition)) valid = false;
+						break;
+
+					case Enums::_field_pad:
+						memset(field.GetAddress(), 0, field.GetSize());
+						break;
+
+					case Enums::_field_block:
+						if( !tag_block_verify_recursive(field.DefinitionAs<tag_block_definition>(), field.As<tag_block>()) )
+							valid = false;
+						break;
+
+					// NOTE: engine doesn't verify block indices, we added support for them
+					// TODO: should we enable this as an option via XML setting instead?
+					case Enums::_field_short_block_index:	if(!verify_block_index_field<int16>(field, definition)) valid = false;
+						break;
+					case Enums::_field_long_block_index:	if(!verify_block_index_field<int32>(field, definition)) valid = false;
+						break;
+					}
+				}
+			}
+
+			return valid;
+		}
+
+		static void tag_group_postprocess_instance(datum_index tag_index, Enums::tag_postprocess_mode mode)
+		{
+			for(const tag_group* group = tag_group_get(tag_get_group_tag(tag_index));
+				group != nullptr;
+				group = tag_group_get(group->parent_group_tag))
+			{
+				if(group->child_count > 0 && group->header_block_definition->postprocess_proc != nullptr)
+				{
+					group->header_block_definition->postprocess_proc(tag_get(NONE, tag_index), mode);
+				}
+
+				auto proc = group->postprocess_proc;
+				if(proc != nullptr)
+					proc(tag_index, mode);
+			}
+		}
+
+		static void tag_instance_setup_groups_and_name(s_tag_instance* instance, const tag_group* group, cstring name)
+		{
+			strncpy_s(instance->filename, name, Enums::k_max_tag_name_length);
+			instance->filename[Enums::k_max_tag_name_length] = '\0';
+			instance->group_tag = group->group_tag;
+
+			if((instance->parent_group_tags[0] = group->parent_group_tag) != NULL_HANDLE)
+				instance->parent_group_tags[1] = tag_group_get(group->parent_group_tag)->parent_group_tag;
+			else
+				instance->parent_group_tags[1] = NULL_HANDLE;
+		}
+
+		datum_index PLATFORM_API tag_new_impl(tag group_tag, cstring name)
+		{
+			YELO_ASSERT(name);
+
+			tag_group* group = tag_group_get(group_tag);
+			// engine just asserts here: YELO_ASSERT(group);
+			if(group == nullptr)
+			{
+				TagGroups::group_tag_to_string group_string = {group_tag};
+				YELO_ERROR(_error_message_priority_assert, "the group tag '%s' does not exist (can't create '%s')",
+					group_string.Terminate().str, name);
+				return datum_index::null;
+			}
+			YELO_ASSERT( group->child_count==0 ); // TODO: don't we disable this assert in CheApe?
+
+			datum_index tag_index = find_tag_instance(group_tag, name);
+			if(!tag_index.IsNull())
+			{
+				YELO_ERROR(_error_message_priority_warning, "there is already a %s tag named '%s' loaded",
+					group->name, name);
+				return datum_index::null;
+			}
+
+			tag_index = datum_new(CAST(s_data_array*, TagGroups::TagInstances()));
+			if(tag_index.IsNull())
+			{
+				YELO_ERROR(_error_message_priority_warning, "there are no more free tag slots for new %s tag file '%s'.",
+					group->name, name);
+				return datum_index::null;
+			}
+
+			tag_block_definition* root_definition = group->header_block_definition;
+			void* root_element = YELO_MALLOC(root_definition->element_size, false);
+			do { // 'break' on error
+
+				if(root_element == nullptr)
+				{
+					YELO_ERROR(_error_message_priority_warning, "couldn't allocate memory for new %s tag '%s'.",
+						group->name, name);
+
+					break;
+				}
+
+				auto* instance = TagGroups::TagInstances()[tag_index];
+				tag_instance_setup_groups_and_name(instance, group, name);
+				instance->is_read_only = tag_file_read_only(group_tag, name);
+				instance->reload_index = datum_index::null;
+				instance->root_block.count = 1;
+				instance->root_block.address = root_element;
+				instance->root_block.definition = root_definition;
+				tag_block_generate_default_element(root_definition, root_element);
+
+				int32 position = root_definition->element_size;
+				if( !tag_block_read_children_recursive(root_definition, root_element, 1, 
+						&position, FLAG(Flags::_tag_load_for_editor_bit)) )
+				{
+					YELO_ERROR(_error_message_priority_warning, "couldn't create new %s tag '%s'.",
+						group->name, name); // NOTE: included group name
+
+					break;
+				}
+
+				tag_group_postprocess_instance(tag_index, Enums::_tag_postprocess_mode_for_editor);
+				return tag_index;
+
+			} while(false);
+
+			datum_delete(CAST(s_data_array*, TagGroups::TagInstances()), tag_index);
+
+			if(root_element != nullptr)
+				YELO_FREE( root_element );
+
+			return datum_index::null;
+		}
+
+		datum_index PLATFORM_API tag_load_impl(tag group_tag, cstring name, long_flags flags)
+		{
+			YELO_ASSERT(name);
+
+			tag_group* group = tag_group_get(group_tag);
+			if(group == nullptr)
+			{
+				TagGroups::group_tag_to_string group_string = {group_tag};
+				YELO_ERROR(_error_message_priority_warning, "the group tag '%s' does not exist (can't load '%s')",
+					group_string.Terminate().str, name);
+				return datum_index::null;
+			}
+
+			datum_index tag_index = find_tag_instance(group_tag, name);
+			do {
+				if(!tag_index.IsNull())
+					break;
+
+				bool is_readonly; uint32 checksum;
+				if( !tag_file_open(group_tag, name, &is_readonly, &checksum, TEST_FLAG(flags, Flags::_tag_load_verify_exist_first_bit)) )
+				{
+					tag_group_loading_add_non_loaded_tag(group_tag, name);
+
+					break;
+				}
+
+				tag_index = datum_new(CAST(s_data_array*, TagGroups::TagInstances()));
+				if(tag_index.IsNull())
+				{
+					YELO_ERROR(_error_message_priority_warning, "there are no more free tag slots.");
+
+					break;
+				}
+
+				auto* instance = TagGroups::TagInstances()[tag_index];
+				tag_instance_setup_groups_and_name(instance, group, name);
+
+				instance->is_verified = TEST_FLAG(flags, Flags::_tag_load_for_editor_bit);
+				// engine doesn't do this logic, but they also don't use an enum for 'postprocess_mode'
+				auto postprocess_mode = TEST_FLAG(flags, Flags::_tag_load_for_editor_bit) 
+					? Enums::_tag_postprocess_mode_for_editor
+					: Enums::_tag_postprocess_mode_for_runtime;
+				instance->reload_index = datum_index::null;
+				instance->is_read_only = is_readonly;
+				instance->file_checksum = checksum;
+				instance->root_block.count = 1;
+				instance->root_block.address = nullptr;
+				instance->root_block.definition = group->header_block_definition;
+
+				if( !tag_block_read_recursive(group->header_block_definition, &instance->root_block, 0, flags) &&
+					!tag_references_resolve_recursive(group->header_block_definition, &instance->root_block, flags) )
+				{
+					YELO_ERROR(_error_message_priority_warning, "failed to load %s tag '%s'",
+						group->name, name);
+
+					datum_delete(CAST(s_data_array*, TagGroups::TagInstances()), tag_index);
+
+					tag_index = datum_index::null;
+					break;
+				}
+
+				if(	TEST_FLAG(flags, Flags::_tag_load_for_editor_bit) &&
+					!tag_block_verify_recursive(group->header_block_definition, &instance->root_block) )
+				{
+					YELO_ERROR(_error_message_priority_warning, "the %s tag '%s' may be corrupt.",
+						group->name, name);
+				}
+
+				tag_group_postprocess_instance(tag_index, postprocess_mode);
+			}
+			while(false);
+
+			tag_files_flush();
+			return tag_index;
+		}
+
+		datum_index PLATFORM_API tag_reload_impl(tag group_tag, cstring name)
+		{
+			tag_group* group = tag_group_get(group_tag);
+			datum_index tag_index = datum_index::null;
+
+			if( !TEST_FLAG(group->flags, Flags::_tag_group_reloadable_bit) )
+				return tag_index;
+
+			tag_index = find_tag_instance(group_tag, name);
+			if(tag_index.IsNull())
+				return tag_load(group_tag, name, 0);
+
+			auto* instance = TagGroups::TagInstances()[tag_index];
+			instance->is_orphan = true;
+
+			// this instance was already reloaded once before, clear its old reloaded instance
+			if(!instance->reload_index.IsNull())
+				tag_unload(instance->reload_index);
+			instance->reload_index = datum_index::null;
+
+			datum_index reload_tag_index = tag_load(group_tag, name, 
+				instance->is_verified ? FLAG(Flags::_tag_load_for_editor_bit) : 0);
+			if(reload_tag_index.IsNull())
+			{
+				// TODO: shouldn't we log here?
+
+				instance->is_orphan = false;
+				return datum_index::null;
+			}
+
+			auto* reloaded_instance = TagGroups::TagInstances()[reload_tag_index];
+			tag_block_delete_element(&instance->root_block, 0);
+			memcpy(&instance->root_block, &reloaded_instance->root_block, sizeof(instance->root_block));
+			reloaded_instance->is_reload = true;
+			instance->is_orphan = false;
+			instance->reload_index = reload_tag_index;
+
+			return tag_index;
+		}
+
+		void PLATFORM_API tag_unload_impl(datum_index tag_index)
+		{
+			auto* instance = TagGroups::TagInstances()[tag_index];
+
+			if(instance->root_block.count > 0 && !instance->is_reload)
+				tag_block_delete_element(&instance->root_block, 0);
+
+			datum_delete(CAST(s_data_array*, TagGroups::TagInstances()), tag_index);
 		}
 	};
 };

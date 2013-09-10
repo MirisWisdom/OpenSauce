@@ -85,6 +85,19 @@ namespace Yelo
 	{
 		//////////////////////////////////////////////////////////////////////////
 		// tag_files/tag_files
+		API_FUNC_NAKED void PLATFORM_API tag_files_flush()
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FILES_FLUSH);
+
+			__asm	jmp	FUNCTION
+		}
+		API_FUNC_NAKED bool PLATFORM_API tag_file_open(tag group_tag, cstring filename, 
+			bool* out_is_readonly, uint32* out_crc, bool verify_exist_first)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FILE_OPEN);
+
+			__asm	jmp	FUNCTION
+		}
 		API_FUNC_NAKED bool PLATFORM_API tag_file_read(int32 file_position, size_t buffer_size, void *buffer)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FILE_READ);

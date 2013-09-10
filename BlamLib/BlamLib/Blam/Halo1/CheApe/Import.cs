@@ -195,6 +195,7 @@ namespace BlamLib.Blam.Halo1.CheApe
 		/// [string: parentTag]
 		/// [int: version]
 		/// [boolean: isIncludedInTagGroupsChecksum]
+		/// [boolean: reloadable]
 		/// [list: fields]
 		/// </summary>
 		new public sealed class TagGroup : BlamLib.CheApe.Import.TagGroup
@@ -205,6 +206,7 @@ namespace BlamLib.Blam.Halo1.CheApe
 			public const int XmlNodeComplexity = TagBlock.XmlNodeComplexity;
 
 			public readonly bool IsIncludedInTagGroupsChecksum;
+			public readonly bool Reloadable;
 
 			/// <summary>
 			/// Constructs a tag group definition from an xml definition node
@@ -214,6 +216,7 @@ namespace BlamLib.Blam.Halo1.CheApe
 			public TagGroup(BlamLib.CheApe.ProjectState state, IO.XmlStream s) : base(state, s)
 			{
 				s.ReadAttributeOpt("isIncludedInTagGroupsChecksum", ref IsIncludedInTagGroupsChecksum);
+				s.ReadAttributeOpt("reloadable", ref Reloadable);
 
 				block = new TagBlock();
 				block.DisplayName = name;

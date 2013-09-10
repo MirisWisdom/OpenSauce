@@ -49,6 +49,54 @@ namespace Yelo
 		{
 			return tag_block_delete_all_elements(block.to_tag_block());
 		}
+
+		// Note: when used in range based for loops this will create an unnecessary copy operation, but with SSE2 it shouldn't be that bad
+		class c_tag_iterator {
+			s_tag_iterator m_state;
+			datum_index m_tag_index;
+
+			c_tag_iterator(const void* endHackDummy);
+		public:
+			c_tag_iterator(const tag group_tag_filter);
+			template<typename T> inline
+			c_tag_iterator() :
+				m_tag_index(datum_index::null)
+			{
+				blam::tag_iterator_new<T>(m_state);
+			}
+			// Get an iterator that doesn't have any specific group_tag filter
+			static inline c_tag_iterator all()
+			{
+				return c_tag_iterator(NULL_HANDLE);
+			}
+
+			datum_index Next();
+
+			inline bool operator!=(const c_tag_iterator& other) const
+			{
+				// NOTE: we intentionally don't compare the group_tag filter
+				return m_state.instances_iterator != other.m_state.instances_iterator;
+			}
+			inline c_tag_iterator& operator++()
+			{
+				Next();
+				return *this;
+			}
+			inline datum_index operator*() const
+			{
+				return m_tag_index;
+			}
+
+			inline c_tag_iterator& begin() /*const*/
+			{
+				this->Next();
+				return *this;
+			}
+			inline static const c_tag_iterator end() /*const*/
+			{
+				return c_tag_iterator(nullptr);
+			}
+		};
 #endif
 	};
 
@@ -61,6 +109,8 @@ namespace Yelo
 			Enums::field_type field_type);
 		bool PLATFORM_API tag_field_scan(TagGroups::s_tag_field_scan_state& state);
 #endif
+
+		datum_index PLATFORM_API find_tag_instance(tag group_tag, cstring name);
 
 		// Use [NULL_HANDLE] for [group_tag_filter] to iterate all tag groups
 		void PLATFORM_API tag_iterator_new(TagGroups::s_tag_iterator& iter, const tag group_tag_filter = NULL_HANDLE);
@@ -112,6 +162,8 @@ namespace Yelo
 		{
 			return tag_block_duplicate_element(block.to_tag_block(), element_index);
 		}
+
+		void PLATFORM_API tag_block_generate_default_element(const tag_block_definition *definition, void *address);
 #endif
 	};
 };
