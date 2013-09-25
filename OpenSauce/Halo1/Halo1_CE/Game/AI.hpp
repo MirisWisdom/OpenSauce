@@ -130,14 +130,19 @@ namespace Yelo
 			TStructGetPtrImpl(datum_index,		StimuliCombatTransitionPropIndex, 0x340);
 
 			//////////////////////////////////////////////////////////////////////////
-
+			// emotions @ 350, sizeof(0x68)
 			//TStructGetPtrImpl(real,				, 0x354);
 			//TStructGetPtrImpl(bool,				, 0x358);
 			//PAD8;
 			//TStructGetPtrImpl(int16,				, 0x35A);
 
-			// 0x350, 0x68 byte structure
+			//TStructGetPtrImpl(bool,					, 0x363);
+			TStructGetPtrImpl(int16,				EmotionsCrouchSwitchingChangeTimer, 0x364);
+
+			//////////////////////////////////////////////////////////////////////////
+			// firing_positions @ 0x3B8, sizeof( ? )
 			TStructGetPtrImpl(int16,			FiringPositionsCurrentPositionIndex, 0x3B8);
+			//TStructGetPtrImpl(bool,					, 0x3BA);
 
 			//TStructGetPtrImpl(int16,			FiringPositions, 0x3C6); // a count of sorts
 			// 0x3C8, array of [4] elements, struct made of 2 int16

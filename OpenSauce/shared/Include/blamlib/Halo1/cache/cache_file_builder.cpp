@@ -116,7 +116,7 @@ namespace Yelo
 			return CAST_PTR(T*, aligned_ptr);
 		}
 		template<typename T>
-		static T* stream_blob_to_buffer(T*& stream, void* blob, size_t blob_size, unsigned alignment_bit = k_cache_file_tag_memory_alignment_bit)
+		static T* stream_blob_to_buffer(T*& stream, const void* blob, size_t blob_size, unsigned alignment_bit = k_cache_file_tag_memory_alignment_bit)
 		{
 			memcpy(stream, blob, blob_size);
 			stream = CAST_PTR(byte*, stream) + blob_size;

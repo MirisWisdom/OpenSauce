@@ -46,6 +46,30 @@ namespace Yelo
 			k_number_of_object_function_references,
 		};
 
+		enum object_function_scalar {
+			_object_function_scalar_none,
+
+			_object_function_scalar_a_in,
+			_object_function_scalar_b_in,
+			_object_function_scalar_c_in,
+			_object_function_scalar_d_in,
+
+			_object_function_scalar_a_out,
+			_object_function_scalar_b_out,
+			_object_function_scalar_c_out,
+			_object_function_scalar_d_out,
+
+			k_number_of_object_function_scalars,
+		};
+
+		enum object_function_bounds_mode {
+			_object_function_bounds_mode_clip,
+			_object_function_bounds_mode_clip_and_normalize,
+			_object_function_bounds_mode_scale_to_fit,
+
+			k_number_of_object_function_bounds_modes,
+		};
+
 		enum object_change_color : _enum
 		{
 			_object_change_color_a,
@@ -87,6 +111,49 @@ namespace Yelo
 			tag_reference reference;
 			TAG_PAD(int32, 4);
 		};
+
+		struct s_object_function_definition
+		{
+			struct _object_function_flags {
+				TAG_FLAG(invert);
+				TAG_FLAG(additive);
+				TAG_FLAG(always_active);
+			}flags; BOOST_STATIC_ASSERT( sizeof(_object_function_flags) == sizeof(long_flags) );
+
+			TAG_FIELD(real, period);
+			TAG_ENUM(period_scale, Enums::object_function_scalar);
+
+			TAG_ENUM(function, Enums::periodic_function);
+			TAG_ENUM(function_scale, Enums::object_function_scalar);
+
+			TAG_ENUM(wobble_function, Enums::periodic_function);
+			TAG_FIELD(real, wobble_period);
+			TAG_FIELD(real, wobble_magnitude);
+
+			TAG_FIELD(real, square_wave_threshold);
+			TAG_FIELD(int16, step_count);
+			TAG_ENUM(map_to, Enums::transition_function);
+			TAG_FIELD(int16, sawtooth_count);
+
+			TAG_ENUM(add, Enums::object_function_scalar);
+			TAG_ENUM(result_scale, Enums::object_function_scalar);
+
+			TAG_ENUM(bounds_mode, Enums::object_function_bounds_mode);
+			TAG_FIELD(real_fraction_bounds, bounds);
+			PAD32;
+			PAD16;
+			TAG_FIELD(int16, turn_off_with, s_object_function_definition);
+			TAG_FIELD(real, scale_by);
+			TAG_PAD(byte, 252); // useless padding
+
+			// postprocessed fields; labeled as PAD(16) in group definitions
+			real_fraction bounds_normal;		// 1f / (max - min)
+			real_fraction step_count_normal;	// 1f / (--step_count)
+			real_fraction sawtooth_count_normal;// 1f / (--sawtooth_count)
+			real_fraction period_normal;		// 1f / period
+
+			TAG_FIELD(tag_string, usage);
+		}; BOOST_STATIC_ASSERT( sizeof(s_object_function_definition) == 0x168 );
 
 		struct _object_definition
 		{

@@ -233,7 +233,7 @@ namespace Yelo
 			const bool WriteOpcode;
 			bool IsInitialized;
 			PAD16;
-			byte UndoData[5];	// internal buffer to store
+			std::array<byte, 5> UndoData; // internal buffer to store
 			PAD24;
 
 			// At [MemoryAddress], modify the assembly code to execute the code stored 
@@ -250,7 +250,7 @@ namespace Yelo
 
 		private:
 			void Initialize();
-		};
+		}; BOOST_STATIC_ASSERT( sizeof(s_memory_exec_change_data) == 0x14 );
 #define DEFINE_MEMORY_EXEC_CHANGE(name, to_address, call_address, ...)	\
 	static Yelo::Memory::s_memory_exec_change_data name = {				\
 			CAST_PTR(void*, (to_address) ),								\

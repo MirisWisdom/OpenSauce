@@ -119,7 +119,7 @@ namespace Yelo
 		class c_cmd_line_switch : public c_cmd_line_parameter
 		{
 		public:
-			// switch's shouldn't have a value set so it is ignored
+			// switches shouldn't have a value set so it is ignored
 			inline bool ParseValue(cstring) { return true; }
 		};
 

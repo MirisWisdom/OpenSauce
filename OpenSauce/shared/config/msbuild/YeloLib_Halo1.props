@@ -6,13 +6,15 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\data_file_yelo.hpp" />
 	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\data_file_yelo.cpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\shared_cache_file_definitions.hpp" />
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\shared_cache_files.cpp" />
   </ItemGroup>
   <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
     > <!--cache EDITOR-->
 	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_builder_yelo.hpp" />
 	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_builder_yelo.cpp" />
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_memory.hpp" />
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_memory.cpp" />
 	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\shared_cache_files.hpp" />
-	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\shared_cache_files.cpp" />
   </ItemGroup>
   <ItemGroup
     > <!--cseries-->
@@ -115,10 +117,13 @@
   </ItemGroup>
   <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
     > <!--tag_files EDITOR-->
+	<None      Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_id_from_tag_string_list.inl" />
 	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_database_definitions.hpp" />
 	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_database_definitions.cpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_fieldset_replacement_builder.hpp" />
 	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_fieldset_replacement_builder.cpp" />
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory.hpp" />
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory.cpp" />
   </ItemGroup>
   <ItemGroup
     > <!--units-->

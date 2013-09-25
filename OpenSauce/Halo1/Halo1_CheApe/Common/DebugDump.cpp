@@ -57,6 +57,8 @@ namespace Yelo
 
 #else
 
+		// TODO: shouldn't we specify winapp_run_t's return type as int instead?
+		// Also, we should be able to define it as __thiscall*, first param should be the 'this', copy ecx to a local var, then pass it instead
 		static int CWinApp_Run_Hook()
 		{
 			// install the exception handler

@@ -238,30 +238,27 @@ namespace Yelo
 		{
 			if(_InitError > k_error_none) return;
 
-			int32 count = NUMBEROF(TagGroupDefinitionsCountRefs16bit);
 			uint16 group_count = CAST(uint16, _globals.new_tag_groups.count);
 
-			while(count--)
-				*CAST_PTR(uint16*, TagGroupDefinitionsCountRefs16bit[count]) = group_count;
+			for(auto ptr : TagGroupDefinitionsCountRefs16bit)
+				*CAST_PTR(uint16*, ptr) = group_count;
 
-			count = NUMBEROF(TagGroupDefinitionsCountRefs8bit);
-			while(count--)
-				*CAST_PTR(byte*, TagGroupDefinitionsCountRefs8bit[count]) = CAST(byte, group_count);
+			for(auto ptr : TagGroupDefinitionsCountRefs8bit)
+				*CAST_PTR(byte*, ptr) = CAST(byte, group_count);
 		}
 
 		void UpdateTagGroupReferences()
 		{
 			if(_InitError > k_error_none) return;
 
-			uint32 address = CAST_PTR(uint32, _globals.new_tag_groups.address);
+			uintptr_t address = CAST_PTR(uintptr_t, _globals.new_tag_groups.address);
 
-			int32 count = NUMBEROF(TagGroupDefinitionsRefs0);
-			while(count--)
-				*CAST_PTR(uint32*, TagGroupDefinitionsRefs0[count]) = address;
+			for(auto ptr : TagGroupDefinitionsRefs0)
+				*CAST_PTR(uintptr_t*, ptr) = address;
 
-			count = NUMBEROF(TagGroupDefinitionsRefs1);
-			while(count--)
-				*CAST_PTR(uint32*, TagGroupDefinitionsRefs1[count]) = address+4;
+			address += sizeof(uintptr_t);
+			for(auto ptr : TagGroupDefinitionsRefs1)
+				*CAST_PTR(uintptr_t*, ptr) = address;
 		}
 
 		void Dispose()

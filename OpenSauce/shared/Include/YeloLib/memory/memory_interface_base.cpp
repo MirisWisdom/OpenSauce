@@ -181,25 +181,25 @@ namespace Yelo
 		{
 			if(this->IsInitialized)
 				this->IsInitialized = 
-				!(memcpy_s(MemoryAddress, NUMBEROF(UndoData), UndoData, NUMBEROF(UndoData)) == k_errnone);
+				!(memcpy_s(MemoryAddress, UndoData.size(), UndoData.data(), UndoData.size()) == k_errnone);
 		}
 
 		__declspec(noinline) void s_memory_exec_change_data::Initialize()
 		{
 			if(!this->IsInitialized)
 				this->IsInitialized = 
-				memcpy_s(UndoData, NUMBEROF(UndoData), MemoryAddress, NUMBEROF(UndoData)) == k_errnone;
+				memcpy_s(UndoData.data(), UndoData.size(), MemoryAddress, UndoData.size()) == k_errnone;
 		}
 
 
 #define CRC_TABLE_SIZE 256
 #define CRC32_POLYNOMIAL 0xEDB88320L
-		static uint32 crc_table[CRC_TABLE_SIZE];
+		static std::array<uint32, CRC_TABLE_SIZE> crc_table;
 		static bool crc_table_initialized = false;
 
 		static void BuildCrcTable()
 		{
-			for(int16 index = 0; index < CRC_TABLE_SIZE; ++index)
+			for(size_t index = 0; index < crc_table.size(); ++index)
 			{
 				uint32 crc = index;
 				for(int16 j = 0; j < 8; j++)

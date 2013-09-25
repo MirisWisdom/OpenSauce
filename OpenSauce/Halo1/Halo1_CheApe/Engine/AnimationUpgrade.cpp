@@ -24,7 +24,8 @@ namespace Yelo
 		ENGINE_PTR(s_animation_list, weapon_class_animation_list,					0x9D7998, 0x6BB680, 0xA4F170);
 		ENGINE_PTR(s_animation_list, unit_seat_animation_list,						0x9D7AE0, 0x6BB7C8, 0xA4F2B8);
 
-		static s_animation_list_entry g_unit_seat_animation_list_yelo_entries[Enums::k_number_of_unit_seat_animations_yelo];
+		static std::array<s_animation_list_entry, Enums::k_number_of_unit_seat_animations_yelo> 
+			g_unit_seat_animation_list_yelo_entries;
 
 		void AnimationUpgradesInitialize()
 		{
@@ -62,15 +63,12 @@ namespace Yelo
 			assert( unit_seat_animation_list->count==Enums::k_number_of_unit_seat_animations );
 
 			// copy the existing animation entries
-			memcpy_s(g_unit_seat_animation_list_yelo_entries, 
-				sizeof(s_animation_list_entry) * NUMBEROF(g_unit_seat_animation_list_yelo_entries), 
-				unit_seat_animation_list->entries, 
-				sizeof(s_animation_list_entry) * unit_seat_animation_list->count
-			);
+			std::copy_n(unit_seat_animation_list->entries, unit_seat_animation_list->count,
+				g_unit_seat_animation_list_yelo_entries.data());
 			// set the seat animation list count to yelo's
 			unit_seat_animation_list->count = Enums::k_number_of_unit_seat_animations_yelo;
 			// set the seat animation list entries to yelo's
-			unit_seat_animation_list->entries = g_unit_seat_animation_list_yelo_entries;
+			unit_seat_animation_list->entries = g_unit_seat_animation_list_yelo_entries.data();
 
 			//////////////////////////////////////////////////////////////////////////
 			// populate yelo's new unit seat animation definitions

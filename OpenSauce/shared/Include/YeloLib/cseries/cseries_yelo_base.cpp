@@ -74,6 +74,24 @@ namespace Yelo
 		return string;
 	}
 
+	void winapi_handle_closer::operator()(HANDLE h)
+	{
+		ASSERT( h != INVALID_HANDLE_VALUE, "tried to close an INVALID handle" );
+		if(h != nullptr)
+			WIN32_FUNC(CloseHandle)(h);
+	}
+
+#if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
+	void crt_file_closer::operator()(FILE* h)
+	{
+		if(h != nullptr)
+		{
+			int result = fclose(h);
+			ASSERT( result==0, "failed to fclose" );
+		}
+	}
+#endif
+
 	cstring BooleanToString(bool value)
 	{
 		return value ? "true" : "false";

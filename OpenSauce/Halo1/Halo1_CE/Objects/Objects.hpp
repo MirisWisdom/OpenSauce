@@ -145,16 +145,18 @@ namespace Yelo
 		glow_particles_data_t&	GlowParticles();
 
 
-		struct s_light_volumes_datum : TStructImpl(2048)
+		struct s_light_volumes_datum : Memory::s_datum_base_aligned
 		{
-		};
-		typedef Memory::DataArray<s_light_volumes_datum, 8> light_volumes_data_t;
+			datum_index definition_index; // msg2
+		}; BOOST_STATIC_ASSERT( sizeof(s_light_volumes_datum) == 0x8 );
+		typedef Memory::DataArray<s_light_volumes_datum, 256> light_volumes_data_t;
 		light_volumes_data_t&	LightVolumes();
 
 
-		struct s_lightnings_datum : TStructImpl(2048)
+		struct s_lightnings_datum : Memory::s_datum_base_aligned
 		{
-		};
+			datum_index definition_index; // elec
+		}; BOOST_STATIC_ASSERT( sizeof(s_lightnings_datum) == 0x8 );
 		typedef Memory::DataArray<s_lightnings_datum, 256> lightnings_data_t;
 		lightnings_data_t&		Lightnings();
 		//////////////////////////////////////////////////////////////////////////

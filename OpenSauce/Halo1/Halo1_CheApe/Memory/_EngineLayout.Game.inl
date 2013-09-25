@@ -7,22 +7,26 @@
 
 
 //////////////////////////////////////////////////////////////////////////
-// .cpp
+// EngineFunctions.cpp
 #if __EL_INCLUDE_FILE_ID == __EL_GAME_ENGINE_FUNCTIONS
 	namespace Engine
 	{
 		FUNC_PTR(GET_CMD_LINE_PARAMETER,			0x421ED0, 0x42DC70, 0x492E60);
-
-		proc_error error = CAST_PTR(proc_error, PLATFORM_VALUE(0x4206B0, 0x42CB90, 0x417500));
-
-		FUNC_PTR(DISPLAY_ASSERT,	0x42C840, 0x435F10, 0x4F7000);
-		FUNC_PTR(DEBUG_MALLOC,		0x446970, 0x43E6B0, 0x501F50);
-		FUNC_PTR(DEBUG_FREE,		0x446A80, 0x43E7C0, 0x502060);
-		FUNC_PTR(DEBUG_REALLOC,		0x446B50, 0x43E890, 0x502130);
 	};
 
 	namespace blam
 	{
+		//////////////////////////////////////////////////////////////////////////
+		// cseries/cseries
+		FUNC_PTR(DISPLAY_ASSERT,	0x42C840, 0x435F10, 0x4F7000);
+		//////////////////////////////////////////////////////////////////////////
+		// cseries/debug_memory
+		FUNC_PTR(DEBUG_MALLOC,		0x446970, 0x43E6B0, 0x501F50);
+		FUNC_PTR(DEBUG_FREE,		0x446A80, 0x43E7C0, 0x502060);
+		FUNC_PTR(DEBUG_REALLOC,		0x446B50, 0x43E890, 0x502130);
+		//////////////////////////////////////////////////////////////////////////
+		// cseries/errors
+		proc_error error = CAST_PTR(proc_error, PLATFORM_VALUE(0x4206B0, 0x42CB90, 0x417500));
 		//////////////////////////////////////////////////////////////////////////
 		// math/periodic_functions
 		FUNC_PTR(PERIODIC_FUNCTION_EVALUATE,	0x4DC780, 0x490250, 0x61A620);

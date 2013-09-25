@@ -70,6 +70,8 @@ namespace Yelo
 			UNKNOWN_TYPE(real_plane3d);						// 0x514 physics related
 			UNKNOWN_TYPE(byte);								// 0x524 sbyte
 			UNKNOWN_TYPE(byte);								// 0x525 sbyte
+			//////////////////////////////////////////////////////////////////////////
+			// Added in HaloPC
 			bool baseline_valid;							// 0x526
 			sbyte baseline_index;							// 0x527
 			sbyte message_index;							// 0x528

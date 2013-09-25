@@ -17,7 +17,8 @@ namespace Yelo
 
 	namespace TagGroups
 	{
-		tag_instance_data_t&	TagInstances()	DPTR_IMP_GET_BYREF(tag_instance_data);
+		tag_instance_data_t**	TagInstanceData()	DPTR_IMP_GET2(tag_instance_data);
+		tag_instance_data_t&	TagInstances()		DPTR_IMP_GET_BYREF(tag_instance_data);
 
 		API_FUNC_NAKED void Initialize()
 		{
@@ -92,7 +93,7 @@ namespace Yelo
 			__asm	jmp	FUNCTION
 		}
 		API_FUNC_NAKED bool PLATFORM_API tag_file_open(tag group_tag, cstring filename, 
-			bool* out_is_readonly, uint32* out_crc, bool verify_exist_first)
+			bool* is_readonly, uint32* crc, bool verify_exist_first)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FILE_OPEN);
 
@@ -196,15 +197,21 @@ namespace Yelo
 		}
 
 
-		API_FUNC_NAKED void* PLATFORM_API tag_get(tag group_tag, datum_index tag_index)
+		API_FUNC_NAKED tag_group* PLATFORM_API tag_group_get_next(const tag_group* group)
 		{
-			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GET);
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GROUP_GET_NEXT);
 
 			__asm	jmp	FUNCTION
 		}
 		API_FUNC_NAKED tag_group* PLATFORM_API tag_group_get(tag group_tag)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GROUP_GET);
+
+			__asm	jmp	FUNCTION
+		}
+		API_FUNC_NAKED void* PLATFORM_API tag_get(tag group_tag, datum_index tag_index)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GET);
 
 			__asm	jmp	FUNCTION
 		}

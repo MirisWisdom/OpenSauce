@@ -144,7 +144,7 @@ namespace Boarding
 					damage_data.responsible_player_index = unit->unit.controlling_player_index;
 					damage_data.responsible_unit_index = unit_index;
 					damage_data.responsible_units_team = unit->object.owner_team;
-					damage_data.location = target_unit->object.scenario_location;
+					damage_data.location = target_unit->object.location;
 					damage_data.damage_position = target_unit->object.network.position;
 					damage_data.damage_multiplier = 1.0f;
 

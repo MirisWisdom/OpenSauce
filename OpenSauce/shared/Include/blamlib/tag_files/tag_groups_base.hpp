@@ -64,7 +64,7 @@ namespace Yelo
 		void PLATFORM_API tag_reference_clear(tag_reference& reference);
 
 		void PLATFORM_API tag_reference_set(tag_reference& reference, tag group_tag, cstring name);
-		template<typename T>
+		template<typename T> inline
 		void tag_reference_set(tag_reference& reference, cstring name)
 		{
 			return tag_reference_set(reference, T::k_group_tag, name);
@@ -188,7 +188,7 @@ namespace Yelo
 	namespace blam
 	{
 		bool PLATFORM_API tag_data_resize(tag_data* data, size_t new_size);
-	}
+	};
 
 
 	namespace blam
@@ -200,7 +200,7 @@ namespace Yelo
 		void PLATFORM_API tag_orphan(datum_index tag_index);
 
 		datum_index PLATFORM_API tag_loaded(tag group_tag, cstring name);
-		template<typename T>
+		template<typename T> inline
 		datum_index tag_loaded(cstring name)
 		{
 			return tag_loaded(T::k_group_tag, name);
@@ -213,14 +213,14 @@ namespace Yelo
 		// Get the tag definition's address by it's expected group tag and 
 		// it's tag handle [tag_index]
 		void* PLATFORM_API tag_get(tag group_tag, datum_index tag_index);
-		template<typename T>
+		template<typename T> inline
 		T* tag_get(datum_index tag_index)
 		{
 			return CAST_PTR(T*, tag_get(T::k_group_tag, tag_index));
 		}
 
 		datum_index PLATFORM_API tag_new(tag group_name, cstring name);
-		template<typename T>
+		template<typename T> inline
 		datum_index tag_new(cstring name)
 		{
 			return tag_new(T::k_group_tag, name);
@@ -229,14 +229,14 @@ namespace Yelo
 		// Load a tag definition into memory.
 		// Returns the tag handle of the loaded tag definition
 		datum_index PLATFORM_API tag_load(tag group_tag, cstring name, long_flags file_flags);
-		template<typename T>
+		template<typename T> inline
 		datum_index tag_load(cstring name, long_flags file_flags)
 		{
 			return tag_load(T::k_group_tag, name, file_flags);
 		}
 
 		datum_index PLATFORM_API tag_reload(tag group_tag, cstring name);
-		template<typename T>
+		template<typename T> inline
 		datum_index tag_reload(cstring name)
 		{
 			return tag_reload(T::k_group_tag, name);

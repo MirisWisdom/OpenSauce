@@ -30,21 +30,24 @@ namespace Yelo
 			tag_instance_data_t;
 		tag_instance_data_t& TagInstances();
 
-		extern s_tag_field_definition k_tag_field_definitions[];
+		extern const s_tag_field_definition k_tag_field_definitions[];
+
+		// Get the size, in characters, of a string field, inclusive of the null character
+		int32 StringFieldGetSize(const tag_field* field);
 
 		// Convenience function to handle deleting all of the data in tag_data field.
 		// Use [terminator_size] for tag_data which HAS to have a specific amount of 
 		// bytes no matter what. IE, text data requires 1 or 2 bytes (ascii or unicode) 
 		// for the null terminator.
 		void tag_data_delete(tag_data* data, size_t terminator_size = 0);
-		template<typename T>
+		template<typename T> inline
 		void tag_data_delete(TagData<T>& data, size_t terminator_size = 0)
 		{
 			tag_data_delete(data.to_tag_data(), terminator_size);
 		}
 
 		bool tag_block_delete_all_elements(tag_block* block);
-		template<typename T>
+		template<typename T> inline
 		bool tag_block_delete_all_elements(TagBlock<T>& block)
 		{
 			return tag_block_delete_all_elements(block.to_tag_block());
@@ -102,6 +105,9 @@ namespace Yelo
 
 	namespace blam
 	{
+		void PLATFORM_API tag_groups_initialize();
+		void PLATFORM_API tag_groups_dispose();
+
 #if PLATFORM_IS_EDITOR
 		TagGroups::s_tag_field_scan_state& PLATFORM_API tag_field_scan_state_new(TagGroups::s_tag_field_scan_state& state, 
 			const tag_field* fields, void* fields_address);
@@ -114,7 +120,7 @@ namespace Yelo
 
 		// Use [NULL_HANDLE] for [group_tag_filter] to iterate all tag groups
 		void PLATFORM_API tag_iterator_new(TagGroups::s_tag_iterator& iter, const tag group_tag_filter = NULL_HANDLE);
-		template<typename T>
+		template<typename T> inline
 		void tag_iterator_new(TagGroups::s_tag_iterator& iter)
 		{
 			tag_iterator_new(iter, T::k_group_tag);
@@ -124,9 +130,12 @@ namespace Yelo
 		datum_index PLATFORM_API tag_iterator_next(TagGroups::s_tag_iterator& iter);
 
 #if PLATFORM_IS_EDITOR
+		// Get the group definition that follows [group], or the first group if it is NULL
+		tag_group* PLATFORM_API tag_group_get_next(const tag_group* group = nullptr);
+
 		// Get the group definition based on a four-character code
 		tag_group* PLATFORM_API tag_group_get(tag group_tag);
-		template<typename T>
+		template<typename T> inline
 		tag_group* tag_group_get()
 		{
 			return tag_group_get(T::k_group_tag);
@@ -148,7 +157,7 @@ namespace Yelo
 		// Insert a new block element at [index] and return the index 
 		// of the inserted element
 		int32 PLATFORM_API tag_block_insert_element(tag_block* block, int32 index);
-		template<typename T>
+		template<typename T> inline
 		T* tag_block_insert_element(TagBlock<T>& block, int32 index)
 		{
 			return CAST_PTR(T*, tag_block_insert_element(block.to_tag_block(), index));
@@ -157,7 +166,7 @@ namespace Yelo
 		// Duplicate the block element at [element_index] and return the index which 
 		// represents the duplicated element
 		int32 PLATFORM_API tag_block_duplicate_element(tag_block* block, int32 element_index);
-		template<typename T>
+		template<typename T> inline
 		int32 tag_block_duplicate_element(TagBlock<T>& block, int32 element_index)
 		{
 			return tag_block_duplicate_element(block.to_tag_block(), element_index);

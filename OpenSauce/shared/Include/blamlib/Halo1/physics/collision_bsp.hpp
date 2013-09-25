@@ -52,7 +52,7 @@ namespace Yelo
 
 	namespace Physics
 	{
-		struct s_collision_bsp_test_surface_result
+		struct s_collision_surface_result
 		{
 			int32 index;
 			int32 plane_index;
@@ -64,7 +64,7 @@ namespace Yelo
 		{
 			UNKNOWN_TYPE(real); // set to FLT_MAX most of the time
 			real_plane3d* plane; // collision_bsp->planes
-			s_collision_bsp_test_surface_result surface;
+			s_collision_surface_result surface;
 			int32 stack_depth;
 			int32 stack[256]; // leaves indices
 		}; BOOST_STATIC_ASSERT( sizeof(s_collision_bsp_test_vector_result) == 0x418 );

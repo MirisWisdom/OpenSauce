@@ -30,63 +30,44 @@ namespace Yelo
 				call	FUNCTION
 			API_FUNC_NAKED_END_CDECL(2);
 		}
+	};
 
-
+	//////////////////////////////////////////////////////////////////////////
+	// cseries
+	namespace blam
+	{
+		//////////////////////////////////////////////////////////////////////////
+		// cseries.c
 		char g_display_assert_buffer[512];
-		API_FUNC_NAKED void display_assert(cstring reason, cstring file, const uint32 line, bool halt)
+		API_FUNC_NAKED void PLATFORM_API display_assert(cstring reason, cstring file, const uint32 line, bool halt)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DISPLAY_ASSERT);
 
-			API_FUNC_NAKED_START()
-				movzx	ecx, halt
-				push	ecx
-				push	line
-				push	file
-				push	reason
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(4);
+			__asm	jmp	FUNCTION
 		}
-
-		API_FUNC_NAKED void* debug_malloc(const size_t ptr_size, const bool fill_with_garbage, cstring file, const uint32 line)
+		//////////////////////////////////////////////////////////////////////////
+		// debug_memory.c
+		API_FUNC_NAKED void* PLATFORM_API debug_malloc(const size_t ptr_size, const bool fill_with_garbage, cstring file, const uint32 line)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DEBUG_MALLOC);
 
-			API_FUNC_NAKED_START()
-				push	line
-				push	file
-				movzx	ecx, fill_with_garbage
-				push	ecx
-				push	ptr_size
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(4);
+			__asm	jmp	FUNCTION
 		}
 
-		API_FUNC_NAKED void debug_free(void* pointer, cstring file, const uint32 line)
+		API_FUNC_NAKED void PLATFORM_API debug_free(void* pointer, cstring file, const uint32 line)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DEBUG_FREE);
 
-			API_FUNC_NAKED_START()
-				push	line
-				push	file
-				push	pointer
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(3);
+			__asm	jmp	FUNCTION
 		}
 
-		API_FUNC_NAKED void* debug_realloc(void* pointer, const size_t new_size, cstring file, const uint32 line)
+		API_FUNC_NAKED void* PLATFORM_API debug_realloc(void* pointer, const size_t new_size, cstring file, const uint32 line)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DEBUG_REALLOC);
 
-			API_FUNC_NAKED_START()
-				push	line
-				push	file
-				push	new_size
-				push	pointer
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(4);
+			__asm	jmp	FUNCTION
 		}
 	};
-
 	//////////////////////////////////////////////////////////////////////////
 	// math
 	namespace blam

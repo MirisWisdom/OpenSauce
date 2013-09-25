@@ -66,6 +66,8 @@ namespace Yelo
 			// 0x518, DWORD
 			// 0x51C, DWORD
 			// 0x520, DWORD
+			//////////////////////////////////////////////////////////////////////////
+			// Added in HaloPC
 			TStructSubGetPtrImpl(bool,							NetworkTimeValid, 0x524);
 			TStructSubGetPtrImpl(bool,							BaselineValid, 0x525);
 			TStructSubGetPtrImpl(byte,							BaselineIndex, 0x526);
