@@ -10,5 +10,9 @@ namespace Yelo
 {
 	namespace blam
 	{
+		bool tag_file_requires_byte_swap()
+		{
+			return true; // TODO: reference tag_file_globals
+		}
 	};
 };

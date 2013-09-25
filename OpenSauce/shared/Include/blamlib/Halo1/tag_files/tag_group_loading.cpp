@@ -266,7 +266,7 @@ namespace Yelo
 
 			*position_reference += elements_size;
 
-			if( TEST_FLAG(definition->flags, Flags::_tag_block_dont_read_children_bit)==0 )
+			if( TEST_FLAG(definition->flags, Flags::_tag_block_has_children_bit) )
 			{
 				if(!tag_block_read_children_recursive(definition, block->address, block->count, 
 					position_reference, read_flags))
@@ -496,10 +496,10 @@ namespace Yelo
 			instance->filename[Enums::k_max_tag_name_length] = '\0';
 			instance->group_tag = group->group_tag;
 
-			if((instance->parent_group_tags[0] = group->parent_group_tag) != NULL_HANDLE)
+			if((instance->parent_group_tags[0] = group->parent_group_tag) != NONE)
 				instance->parent_group_tags[1] = tag_group_get(group->parent_group_tag)->parent_group_tag;
 			else
-				instance->parent_group_tags[1] = NULL_HANDLE;
+				instance->parent_group_tags[1] = NONE;
 		}
 
 		datum_index PLATFORM_API tag_new_impl(tag group_tag, cstring name)
@@ -512,7 +512,7 @@ namespace Yelo
 			{
 				TagGroups::group_tag_to_string group_string = {group_tag};
 				YELO_ERROR(_error_message_priority_assert, "the group tag '%s' does not exist (can't create '%s')",
-					group_string.Terminate().str, name);
+					group_string.Terminate().TagSwap().str, name);
 				return datum_index::null;
 			}
 			YELO_ASSERT( group->child_count==0 ); // TODO: don't we disable this assert in CheApe?
@@ -586,7 +586,7 @@ namespace Yelo
 			{
 				TagGroups::group_tag_to_string group_string = {group_tag};
 				YELO_ERROR(_error_message_priority_warning, "the group tag '%s' does not exist (can't load '%s')",
-					group_string.Terminate().str, name);
+					group_string.Terminate().TagSwap().str, name);
 				return datum_index::null;
 			}
 

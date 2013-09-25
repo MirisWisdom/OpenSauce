@@ -37,17 +37,36 @@ namespace Yelo
 
 	namespace blam
 	{
+		bool tag_file_requires_byte_swap(); // non-standard
+
 		void PLATFORM_API tag_files_flush();
 
 
 		bool PLATFORM_API tag_file_open(tag group_tag, cstring filename, 
-			bool* out_is_readonly, uint32* out_crc, bool verify_exist_first);
+			__out_opt bool* is_readonly, __out_opt uint32* crc, bool verify_exist_first);
+		template<typename T> inline
+		bool tag_file_open(cstring filename, 
+			__out_opt bool* is_readonly, __out_opt uint32* crc, bool verify_exist_first)
+		{
+			return tag_file_open(T::k_group_tag, filename, is_readonly, crc, verify_exist_first);
+		}
 
 		bool PLATFORM_API tag_file_read(int32 file_position, size_t buffer_size, void* buffer);
 
 		// Is the tag file read only?
 		bool PLATFORM_API tag_file_read_only(tag group_tag, cstring name);
+		template<typename T> inline
+		bool tag_file_read_only(cstring name)
+		{
+			return tag_file_read_only(T::k_group_tag, name);
+		}
+
 		// Does the tag file exist?
 		bool PLATFORM_API tag_file_exists(tag group_tag, cstring name);
+		template<typename T> inline
+		bool tag_file_exists(cstring name)
+		{
+			return tag_file_exists(T::k_group_tag, name);
+		}
 	};
 };

@@ -102,7 +102,7 @@ namespace Yelo
 			UNKNOWN_TYPE(datum_index);
 			long_flags pvs[BIT_VECTOR_SIZE_IN_DWORDS(512)];
 			long_flags pvs2[BIT_VECTOR_SIZE_IN_DWORDS(512)];
-			UNUSED_TYPE(int32);									// 0x84
+			int32 last_garbage_collection_tick;					// 0x8C
 			// none = 0
 			// object = 1
 			// cluster = 2

@@ -51,10 +51,17 @@ namespace Yelo
 		void PLATFORM_API data_verify(s_data_array* data);
 
 		s_data_array* PLATFORM_API data_new(cstring name, int32 maximum_count, size_t datum_size);
+		template<typename T, const int k_maximum_count>
+		s_data_array* data_new(cstring name)
+		{
+			return data_new(name, k_maximum_count, sizeof(T));
+		}
 
 		void PLATFORM_API data_dispose(s_data_array* data);
 
 		void PLATFORM_API data_make_valid(s_data_array* data);
+
+		void PLATFORM_API data_make_invalid(s_data_array* data);
 
 		void PLATFORM_API data_delete_all(s_data_array* data);
 

@@ -15,7 +15,7 @@
 #elif __EL_INCLUDE_FILE_ID == __EL_MEMORY_CHE_APE_INTERFACE
 	namespace CheApe
 	{
-		static const uint32 TagGroupDefinitionsRefs[] = { // &tag_groups[x]
+		static const uintptr_t TagGroupDefinitionsRefs[] = { // &tag_groups[x]
 			PLATFORM_VALUE(0x482E06, 0x52D416, NULL),	PLATFORM_VALUE(0x482E29, 0x52D439, NULL),	PLATFORM_VALUE(0x482E52, 0x52D462, NULL),
 			PLATFORM_VALUE(0x483B62, 0x52E1C2, NULL),	PLATFORM_VALUE(0x483C07, 0x52E267, NULL),	PLATFORM_VALUE(0x484029, 0x52E689, NULL),
 			PLATFORM_VALUE(0x484051, 0x52E6B1, NULL),	PLATFORM_VALUE(0x486622, 0x530F52, NULL),	PLATFORM_VALUE(0x486684, 0x530FB4, NULL),
@@ -23,7 +23,7 @@
 			PLATFORM_VALUE(0x489B61, 0x5346C1, NULL),
 		};
 
-		static const uint32 TagGroupDefinitionsCountRefs8bit[] = { // CMP si, 77h
+		static const uintptr_t TagGroupDefinitionsCountRefs8bit[] = { // CMP si, 77h
 			PLATFORM_VALUE(0x482E12, 0x52D422, NULL),
 		};
 

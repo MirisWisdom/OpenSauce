@@ -86,6 +86,7 @@ namespace BlamLib.Blam.Halo1.CheApe
 		#region Tag Interface
 		#region Type Indicies
 		internal int
+			TypeIndexString = -1,
 			TypeIndexEnum = -1,
 			TypeIndexLongFlags = -1,
 			TypeIndexWordFlags = -1,
@@ -103,10 +104,12 @@ namespace BlamLib.Blam.Halo1.CheApe
 			TypeIndexCustom = -1,
 			TypeIndexTerminator = -1,
 			TypeIndexStruct = -1,
-			TypeIndexStringId = -1;
+			TypeIndexStringId = -1,
+			TypeIndexOldStringId = -1;
 
 		private void InitializeTypeIndicies()
 		{
+			TypeIndexString = OwnerState.Definition.GetTypeIndex("String");
 			TypeIndexEnum = OwnerState.Definition.GetTypeIndex("Enum");
 			TypeIndexLongFlags = OwnerState.Definition.GetTypeIndex("LongFlags");
 			TypeIndexWordFlags = OwnerState.Definition.GetTypeIndex("WordFlags");
@@ -125,6 +128,7 @@ namespace BlamLib.Blam.Halo1.CheApe
 			TypeIndexTerminator = OwnerState.Definition.GetTypeIndex("Terminator");
 			TypeIndexStruct = OwnerState.Definition.GetTypeIndex("Struct");
 			TypeIndexStringId = OwnerState.Definition.GetTypeIndex("StringId");
+			TypeIndexOldStringId = OwnerState.Definition.GetTypeIndex("OldStringId");
 		}
 		#endregion
 
@@ -151,6 +155,8 @@ namespace BlamLib.Blam.Halo1.CheApe
 				#region TypeIndex
 				if (field.TypeIndex == comp.TypeIndexStringId)
 					stream.Write(comp.TypeIndexTagReference);
+				else if (field.TypeIndex == comp.TypeIndexOldStringId)
+					stream.Write(comp.TypeIndexString);
 				else
 					stream.Write(field.TypeIndex);
 				#endregion
@@ -173,7 +179,7 @@ namespace BlamLib.Blam.Halo1.CheApe
 					else
 						stream.Write(comp.Strings.GetNull());
 				}
-				else if (	field.TypeIndex == comp.TypeIndexByteFlags ||
+				else if (field.TypeIndex == comp.TypeIndexByteFlags ||
 							field.TypeIndex == comp.TypeIndexEnum ||
 							field.TypeIndex == comp.TypeIndexWordFlags ||
 							field.TypeIndex == comp.TypeIndexShortBlockIndex ||
@@ -181,14 +187,16 @@ namespace BlamLib.Blam.Halo1.CheApe
 							field.TypeIndex == comp.TypeIndexLongBlockIndex ||
 							field.TypeIndex == comp.TypeIndexTagReference ||
 							field.TypeIndex == comp.TypeIndexData ||
-							field.TypeIndex == comp.TypeIndexBlock || 
-					
+							field.TypeIndex == comp.TypeIndexBlock ||
+
 							field.TypeIndex == comp.TypeIndexStringId)
 				{
 					comp.AddLocationFixup(field.Definition, stream);
 
 					stream.Write((int)0); // should come back later and write the address
 				}
+				else if (field.TypeIndex == comp.TypeIndexOldStringId)
+					stream.WriteTag(Import.kStringIdGroupTag);
 				else
 					stream.Write((int)0);
 			}

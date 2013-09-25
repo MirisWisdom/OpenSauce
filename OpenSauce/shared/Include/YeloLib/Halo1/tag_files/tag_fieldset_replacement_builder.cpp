@@ -21,7 +21,7 @@ namespace Yelo
 				YELO_ASSERT(m_target_fields_cursor < m_target_fields_max_count);
 				tag_field* dst=			&m_target_fields[m_target_fields_cursor++];
 				const tag_field* src=	&m_source_fields[m_source_fields_cursor];
-				memcpy_s(dst, sizeof(*dst), src, sizeof(*src));
+				std::memcpy(dst, src, sizeof(*src));
 			}
 
 			scanner.Scan();
@@ -35,7 +35,7 @@ namespace Yelo
 
 		c_tag_fieldset_replacement_builder::c_tag_fieldset_replacement_builder(
 			const tag_field* source_fields,
-			tag_field* target_fields, int target_fields_size, int target_fields_count)
+			tag_field* target_fields, size_t target_fields_size, size_t target_fields_count)
 			:
 			m_source_fields( source_fields ),
 			m_source_fields_cursor( 0 ),
@@ -55,13 +55,13 @@ namespace Yelo
 			scanner.AddAllFieldTypes();
 		}
 
-		void c_tag_fieldset_replacement_builder::CopyFieldsFromSource(int field_count)
+		void c_tag_fieldset_replacement_builder::CopyFieldsFromSource(size_t field_count)
 		{
-			for(int x = 0; x < field_count && !CurrentSourceFieldIsTerminator(); x++)
+			for(size_t x = 0; x < field_count && !CurrentSourceFieldIsTerminator(); x++)
 				;
 		}
 
-		void c_tag_fieldset_replacement_builder::SkipFieldsFromSource(int field_count)
+		void c_tag_fieldset_replacement_builder::SkipFieldsFromSource(size_t field_count)
 		{
 		}
 	};

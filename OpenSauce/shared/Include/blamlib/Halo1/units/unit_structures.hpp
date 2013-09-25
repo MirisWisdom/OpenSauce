@@ -164,8 +164,10 @@ namespace Yelo
 			//TStructGetPtrImpl(sbyte,				, 0xF);					// 0x2A7
 			//TStructGetPtrImpl(sbyte,				, 0x10);				// 0x2A8
 			//PAD8?
+			// TODO: s_animation_state
 			TStructGetPtrImpl(uint16,			ReplacementAnimationIndex, 0x12);	// 0x2AA animation index
             TStructGetPtrImpl(uint16,           ReplacementAnimationFrameIndex, 0x14);  // 0x2AC
+			// TODO: s_animation_state
             TStructGetPtrImpl(uint16,           OverlayAnimationIndex, 0x16);       // 0x2AE
             TStructGetPtrImpl(uint16,           OverlayAnimationFrameIndex, 0x18);  // 0x2B0
 			TStructGetPtrImpl(int16,				WeaponIK, 0x1A);				// 0x2B2
@@ -301,7 +303,8 @@ namespace Yelo
 				datum_index responsible_unit_index;							// 0x40C
 			}damage_result;
 			datum_index responsible_flamer_object_index;					// 0x410 object which caused us to start flaming to death
-			PAD64;															// 0x414 unused
+			UNKNOWN_TYPE(real);												// 0x414
+			PAD32;
 			int32 death_time;												// 0x41C // game time when this unit died
 			int16 feign_death_timer;										// 0x420
 			Enums::unit_camo_regrowth camo_regrowth;						// 0x422

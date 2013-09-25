@@ -423,22 +423,22 @@ namespace Yelo
 			size_t object_type_size = 0;
 			switch(type)
 			{
-			case Enums::_object_type_biped: object_type_size = Enums::k_object_size_biped;
-			case Enums::_object_type_vehicle: object_type_size = Enums::k_object_size_vehicle;
+			case Enums::_object_type_biped:			object_type_size = Enums::k_object_size_biped; break;
+			case Enums::_object_type_vehicle:		object_type_size = Enums::k_object_size_vehicle; break;
 
-			case Enums::_object_type_weapon: object_type_size = Enums::k_object_size_weapon;
-			case Enums::_object_type_equipment: object_type_size = Enums::k_object_size_equipment;
-			case Enums::_object_type_garbage: object_type_size = Enums::k_object_size_garbage;
+			case Enums::_object_type_weapon:		object_type_size = Enums::k_object_size_weapon; break;
+			case Enums::_object_type_equipment:		object_type_size = Enums::k_object_size_equipment; break;
+			case Enums::_object_type_garbage:		object_type_size = Enums::k_object_size_garbage; break;
 
-			case Enums::_object_type_projectile: object_type_size = Enums::k_object_size_projectile;
-			case Enums::_object_type_scenery: object_type_size = Enums::k_object_size_scenery;
+			case Enums::_object_type_projectile:	object_type_size = Enums::k_object_size_projectile; break;
+			case Enums::_object_type_scenery:		object_type_size = Enums::k_object_size_scenery; break;
 
-			case Enums::_object_type_machine: object_type_size = Enums::k_object_size_machine;
-			case Enums::_object_type_control: object_type_size = Enums::k_object_size_control;
-			case Enums::_object_type_light_fixture: object_type_size = Enums::k_object_size_light_fixture;
+			case Enums::_object_type_machine:		object_type_size = Enums::k_object_size_machine; break;
+			case Enums::_object_type_control:		object_type_size = Enums::k_object_size_control; break;
+			case Enums::_object_type_light_fixture:	object_type_size = Enums::k_object_size_light_fixture; break;
 
-			case Enums::_object_type_placeholder: object_type_size = Enums::k_object_size_placeholder;
-			case Enums::_object_type_sound_scenery: object_type_size = Enums::k_object_size_sound_scenery;
+			case Enums::_object_type_placeholder:	object_type_size = Enums::k_object_size_placeholder; break;
+			case Enums::_object_type_sound_scenery:	object_type_size = Enums::k_object_size_sound_scenery; break;
 
 			default: return 0;
 			}

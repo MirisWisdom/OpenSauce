@@ -38,6 +38,12 @@ namespace Yelo
 		}
 #endif
 
+		void PLATFORM_API data_make_invalid(s_data_array* data)
+		{
+			data_verify(data);
+			data->is_valid = false;
+		}
+
 		void data_iterator_new(s_data_iterator& iterator, s_data_array* data)
 		{
 			data_verify(data);

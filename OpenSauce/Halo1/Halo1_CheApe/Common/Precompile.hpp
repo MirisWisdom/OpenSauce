@@ -39,11 +39,16 @@
 
 
 // C++ STL
+#include <array>
+#include <memory> // std::unique_ptr
 #include <utility>
 #include <vector>
 
 #include <boost/preprocessor.hpp>
 #include <boost/static_assert.hpp>
+
+#include <boost/integer/static_log2.hpp>
+#include <boost/optional.hpp>
 
 
 #include <TinyXml/tinyxml.hpp>
@@ -80,22 +85,3 @@
 #else
 	#define TRACE_BOX(title, msg) __noop
 #endif
-
-namespace Yelo
-{
-	namespace Engine
-	{
-		void display_assert(cstring reason, cstring file, const uint32 line, bool halt);
-	};
-};
-
-#define YELO_ASSERT(expression)															\
-	if( !(expression) )																	\
-	{																					\
-		Yelo::Engine::display_assert( #expression , __FILE__, __LINE__, true);			\
-	}
-#define YELO_ASSERT_WARN(expression)													\
-	if( !(expression) )																	\
-	{																					\
-		Yelo::Engine::display_assert( #expression , __FILE__, __LINE__, false);			\
-	}

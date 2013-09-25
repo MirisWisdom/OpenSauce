@@ -174,11 +174,11 @@ namespace Yelo
 #elif PLATFORM_IS_EDITOR
 		void s_shader_postprocess_parameter::SetParameter(s_shader_postprocess_value_base* value_source)
 		{
-			memcpy_s(&value_name, sizeof(tag_string), &value_source->value_name, sizeof(tag_string));
-			memcpy_s(&value_type, sizeof(value_type), &value_source->value_type, sizeof(value_type));
-			memcpy_s(&value, sizeof(value), &value_source->value, sizeof(value));
-			memcpy_s(&runtime_value, sizeof(runtime_value), &value_source->runtime_value, sizeof(runtime_value));
-			memcpy_s(&animation_function, sizeof(animation_function), &value_source->animation_function, sizeof(animation_function));
+			std::memcpy( value_name,		 value_source->value_name,			sizeof(tag_string));
+			std::memcpy(&value_type,		&value_source->value_type,			sizeof(value_type));
+			std::memcpy(&value,				&value_source->value,				sizeof(value));
+			std::memcpy(&runtime_value,		&value_source->runtime_value,		sizeof(runtime_value));
+			std::memcpy(&animation_function,&value_source->animation_function,	sizeof(animation_function));
 		}
 		void s_shader_postprocess_parameter::SetParameter(s_shader_postprocess_bitmap* value_source)
 		{

@@ -41,9 +41,12 @@
 	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_builder_yelo.cpp">
       <Filter>.YeloLib\cache</Filter>
     </ClCompile>
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\shared_cache_file_definitions.hpp">
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_memory.hpp">
       <Filter>.YeloLib\cache</Filter>
     </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_memory.cpp">
+      <Filter>.YeloLib\cache</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\shared_cache_files.cpp">
       <Filter>.YeloLib\cache</Filter>
     </ClCompile>
@@ -268,6 +271,9 @@
   </ItemGroup>
   <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
     > <!--tag_files EDITOR-->
+	<None      Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_id_from_tag_string_list.inl">
+      <Filter>.YeloLib\tag_files\string_ids</Filter>
+    </None>
 	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_database_definitions.hpp">
       <Filter>.YeloLib\tag_files</Filter>
     </ClInclude>
@@ -278,6 +284,12 @@
       <Filter>.YeloLib\tag_files</Filter>
     </ClInclude>
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_fieldset_replacement_builder.cpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory.hpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory.cpp">
       <Filter>.YeloLib\tag_files</Filter>
     </ClCompile>
   </ItemGroup>

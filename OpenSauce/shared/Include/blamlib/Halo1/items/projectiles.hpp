@@ -36,6 +36,8 @@ namespace Yelo
 			UNKNOWN_TYPE(real);									// 0x260, set to water_damage_range's upper bound
 			real_vector3d angular_velocity;						// 0x264
 			UNKNOWN_TYPE(real_euler_angles2d);					// 0x270
+			//////////////////////////////////////////////////////////////////////////
+			// Added in HaloPC
 			UNKNOWN_TYPE(bool);									// 0x278
 			bool baseline_valid;								// 0x279
 			sbyte baseline_index;								// 0x27A

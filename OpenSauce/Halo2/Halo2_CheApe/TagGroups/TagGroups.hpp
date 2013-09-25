@@ -6,6 +6,8 @@
 */
 #pragma once
 
+#include <blamlib/memory/byte_swapping_base.hpp>
+#include <blamlib/memory/data_base.hpp>
 #include <blamlib/Halo2/tag_files/tag_groups.hpp>
 
 namespace Yelo
@@ -96,10 +98,13 @@ namespace Yelo
 
 			_tag_block_flag_1 =	FLAG(0),
 
-			_tag_group_flag_initialized =	FLAG(0),
-			_tag_group_flag_2 =				FLAG(1),
-			_tag_group_flag_3 =				FLAG(2),
-			_tag_group_flag_4 =				FLAG(3),
+			// tag_instance of the tag group will have their file_checksum CRC'd into the resulting cache tag header's crc field 
+			_tag_group_include_in_tags_checksum_bit = 0,
+			_tag_group_unknown1_bit,
+			_tag_group_unknown2_bit,
+			_tag_group_reloadable_bit,
+			_tag_group_unknown4_bit, // globals, scenario_structure_lightmap, scenario_structure_bsp, scenario, dialogue
+			_tag_group_unknown5_bit, // sound, cellular_automata, cellular_automata2d, scenario_*_resource, scenario_hs_source_file
 		};
 
 		enum tag_instance_flags {
@@ -122,16 +127,6 @@ namespace Yelo
 
 	//////////////////////////////////////////////////////////////////////////
 	// tag interface
-
-	struct s_byteswap_definition
-	{
-		cstring name;
-		uint32 size;
-		int32* codes;
-		tag signature;
-		bool initialized;
-		PAD24;
-	};
 
 	struct tag_field
 	{
@@ -178,14 +173,14 @@ namespace Yelo
 		tag_field* fields;				// 0x20
 		cstring size_string;			// 0x24
 
-		s_byteswap_definition byteswap;	// 0x28
+		Memory::s_byte_swap_definition byteswap;	// 0x28
 
 		s_tag_field_set_runtime_data runtime_info;
 	}; BOOST_STATIC_ASSERT( sizeof(tag_field_set) == 0x4C );
 
 	typedef tag_block* (PLATFORM_API* proc_block_index_custom_search_get_block)(datum_index tag_index, 
 		const tag_field* block_index_field, void* block_index_address, 
-		void* block_index_owner); // definition instance which contains the block_index
+		void* block_element); // definition instance which contains the block_index
 	typedef bool (PLATFORM_API* proc_block_index_custom_search_is_valid_source_block)(void* block_index_address, const tag_block_definition* definition);
 	struct block_index_custom_search_definition
 	{
@@ -268,9 +263,8 @@ namespace Yelo
 		cstring default_tag_path;
 	}; BOOST_STATIC_ASSERT( sizeof(tag_group) == 0x70 );
 
-	struct tag_instance
+	struct tag_instance : Memory::s_datum_base
 	{
-		int16 header;				// 0x0
 		word_flags flags;			// 0x2
 		char* filename;				// 0x4
 		tag group_tag;				// 0x8

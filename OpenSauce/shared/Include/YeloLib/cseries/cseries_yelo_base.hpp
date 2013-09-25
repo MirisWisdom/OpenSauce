@@ -185,14 +185,35 @@ namespace Yelo
 	BOOST_STATIC_ASSERT( sizeof(TypeHolder) == 0x4 );
 
 	// If the COM interface reference isn't null, releases it and nulls it
-	template<typename t_interface> void safe_release(t_interface*& obj)
+	template<typename TInterface> inline
+	void safe_release(TInterface*& obj)
 	{
-		if(obj != NULL)
+		if(obj != nullptr)
 		{
 			obj->Release();
-			obj = NULL;
+			obj = nullptr;
 		}
 	}
+
+	// Returns INVALID_HANDLE_VALUE as nullptr, else returns [h]
+	// Should be used in conjunction with std::unique_ptr and winapi_handle_closer
+	inline HANDLE safe_handle(HANDLE h)
+	{
+		return h == INVALID_HANDLE_VALUE ? nullptr : h;
+	}
+	// Primarily a deleter for std::unique_ptr
+	struct winapi_handle_closer
+	{
+		void operator()(HANDLE h);
+	};
+
+#if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
+	// Primarily a deleter for std::unique_ptr
+	struct crt_file_closer
+	{
+		void operator()(FILE* h);
+	};
+#endif
 
 	cstring BooleanToString(bool value);
 

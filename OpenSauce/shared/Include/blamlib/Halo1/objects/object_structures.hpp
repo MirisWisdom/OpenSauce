@@ -174,9 +174,12 @@ namespace Yelo
 
 		struct s_object_network_datum_data
 		{
+			//////////////////////////////////////////////////////////////////////////
+			// Added in HaloPC
 			datum_index owner_player_index;			// 0x50
 			datum_index owner;						// 0x54
 			int32 timestamp;						// 0x58
+			//////////////////////////////////////////////////////////////////////////
 			real_point3d position;					// 0x5C
 			real_vector3d transitional_velocity;	// 0x68
 			real_vector3d forward;					// 0x74
@@ -241,7 +244,7 @@ namespace Yelo
 			byte unknown1C[0x34];															// 0x1C
 			//////////////////////////////////////////////////////////////////////////
 			s_object_network_datum_data network;											// 0x50
-			s_scenario_location scenario_location;											// 0x98
+			s_scenario_location location;													// 0x98
 			real_point3d center;															// 0xA0
 			real radius;																	// 0xBC
 			real scale;																		// 0xB0
@@ -274,7 +277,7 @@ namespace Yelo
 
 			s_object_attachments_datum_data attachments;									// 0x144
 			datum_index cached_render_state_index;											// 0x170
-			UNUSED_TYPE(int16);																// 0x174
+			word_flags regions_destroyed_flags;												// 0x174 once a region is destroyed, its bit index is set
 			int16 shader_permutation;														// 0x176, shader's bitmap block index
 			byte region_vitality[Enums::k_maximum_regions_per_model];						// 0x178
 			sbyte region_permutation_indices[Enums::k_maximum_regions_per_model];			// 0x180
@@ -294,7 +297,7 @@ namespace Yelo
 			{
 				byte* obj = CAST_PTR(byte*, this);
 
-				return ref->offset == 0 ? NULL : CAST_PTR(TBlockData*, &obj[ref->offset]);
+				return ref->offset == 0 ? nullptr : CAST_PTR(TBlockData*, &obj[ref->offset]);
 			}
 			template<typename TBlockData, size_t block_reference_offset>
 			API_INLINE TBlockData* GetBlock()

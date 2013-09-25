@@ -10,6 +10,11 @@
 
 namespace Yelo
 {
+	namespace TagGroups
+	{
+		struct s_tag_field_set_runtime_data; // yelo-based hacks, not blam
+	};
+
 	namespace Enums
 	{
 		enum {
@@ -89,14 +94,20 @@ namespace Yelo
 			_tag_data_is_text_data_bit,
 			// ie, 'debug data'
 			_tag_data_not_streamed_to_cache_bit,
+			k_number_of_tag_data_definition_flags,
 
 			// checked in the tag reference solving code.
 			// last condition checked after an assortment of conditionals
 			// and if this is TRUE, it won't resolve
+			// NOTE: I think this actually only applied to tags builds of the game. 
+			// Flag isn't checked in H2EK's code (might have been deprecated if the above is wrong)
 			_tag_reference_unknown0_bit = 0,
 			_tag_reference_non_resolving_bit,
+			k_number_of_tag_group_tag_reference_flags,
 
-			_tag_block_dont_read_children_bit =	0,
+			// set when block/data/reference fields are found during initialization
+			_tag_block_has_children_bit = 0,
+			k_number_of_tag_block_definition_flags,
 
 			// tag_instance of the tag group will have their file_checksum CRC'd into the resulting cache tag header's crc field 
 			_tag_group_include_in_tags_checksum_bit = 0,
@@ -152,6 +163,43 @@ namespace Yelo
 		// with [name] characters. Optionally starts at a specific field index.
 		// Returns NONE if this fails.
 		int32 find_field_index(_enum field_type, cstring name, int32 start_index = NONE) const;
+
+		size_t get_alignment_bit() const;
+		TagGroups::s_tag_field_set_runtime_data* get_runtime_info() const;
+
+		struct s_field_iterator
+		{
+		private:
+			tag_field* m_fields;
+
+			inline bool IsEndHack() const			{ return m_fields == nullptr; }
+
+		public:
+			s_field_iterator() : m_fields(nullptr) {} // for EndHack
+			s_field_iterator(const tag_block_definition* definition) : m_fields(definition->fields) {}
+
+			bool operator!=(const s_field_iterator& other) const;
+
+			inline s_field_iterator& operator++()
+			{
+				++m_fields;
+				return *this;
+			}
+			inline tag_field& operator*() const
+			{
+				return *m_fields;
+			}
+		};
+
+		inline s_field_iterator begin() /*const*/
+		{
+			auto iter = s_field_iterator(this);
+			return iter;
+		}
+		inline static const s_field_iterator end() /*const*/
+		{
+			return s_field_iterator();
+		}
 #endif
 	}; BOOST_STATIC_ASSERT( sizeof(tag_block_definition) == 0x2C );
 
@@ -169,6 +217,42 @@ namespace Yelo
 		long_flags flags;
 		tag group_tag;
 		tag* group_tags;
+
+#if PLATFORM_IS_EDITOR
+		struct s_group_tag_iterator
+		{
+		private:
+			tag* m_group_tags;
+
+			inline bool IsEndHack() const			{ return m_group_tags == nullptr; }
+
+		public:
+			s_group_tag_iterator() : m_group_tags(nullptr) {} // for EndHack
+			s_group_tag_iterator(const tag_reference_definition* definition) : m_group_tags(definition->group_tags) {}
+
+			bool operator!=(const s_group_tag_iterator& other) const;
+
+			inline s_group_tag_iterator& operator++()
+			{
+				++m_group_tags;
+				return *this;
+			}
+			inline tag& operator*() const
+			{
+				return *m_group_tags;
+			}
+		};
+
+		inline s_group_tag_iterator begin() /*const*/
+		{
+			auto iter = s_group_tag_iterator(this);
+			return iter;
+		}
+		inline static const s_group_tag_iterator end() /*const*/
+		{
+			return s_group_tag_iterator();
+		}
+#endif
 	}; BOOST_STATIC_ASSERT( sizeof(tag_reference_definition) == 0xC );
 
 	// Postprocess a tag definition (eg, automate the creation of fields, etc)
@@ -208,17 +292,21 @@ namespace Yelo
 		struct s_tag_field_definition
 		{
 			size_t size;
+			byte_swap_code_t* byte_swap_codes;
 		};
 
 		struct s_tag_field_scan_state
 		{
+			friend class c_tag_field_scanner;
+
 			const tag_field* fields;
 			void* fields_address;
 			long_flags field_types[BIT_VECTOR_SIZE_IN_DWORDS(Enums::k_number_of_tag_field_types)];
 			int16 field_index;
 			int16 field_size;
 			int32 field_offset;
-			bool done; PAD8;
+			bool done;
+			byte pad;
 			int16 stack_index;
 			struct {
 				int16 field_index;
@@ -227,6 +315,12 @@ namespace Yelo
 
 			const tag_field* found_field;
 			void* found_field_address;
+
+			// true if this scan state is allocated in engine code
+			inline bool IsEngineScanState()	{ return pad == FALSE; }
+		private:
+			// DON'T TOUCH ME UNLESS YOUR NAME IS c_tag_field_scanner
+			inline void SetYeloScanState()	{ pad = TRUE; }
 		}; BOOST_STATIC_ASSERT( sizeof(s_tag_field_scan_state) == 0x64 );
 
 
@@ -260,8 +354,10 @@ namespace Yelo
 			c_tag_field_scanner& AddAllFieldTypes();
 
 			bool Scan();
+			c_tag_field_scanner& ScanToEnd();
 
 			bool TagFieldIsStringId() const;
+			bool TagFieldIsOldStringId() const;
 
 
 			// an interface to a found tag field and its definition
@@ -295,6 +391,7 @@ namespace Yelo
 				inline T* As() const					{ return m_scanner.GetFieldAs<T>(); }
 
 				bool IsStringId() const					{ return m_scanner.TagFieldIsStringId(); }
+				bool IsOldStringId() const				{ return m_scanner.TagFieldIsOldStringId(); }
 			};
 
 			struct s_iterator

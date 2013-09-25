@@ -13,6 +13,8 @@
 
 namespace Yelo
 {
+	struct tag_field;
+
 	namespace Enums
 	{
 		enum {
@@ -23,22 +25,40 @@ namespace Yelo
 
 	typedef tag_reference_name_reference string_id_yelo_value_reference;
 
+	// TODO: actually, we should just postprocess cache-bound data so the runtime value doesn't contain the tag_reference fields
+	// just like in H2 where they don't include the debug data (eg, definition) pointers in things like tag_block, etc
 	struct string_id_yelo
 	{
-		enum { k_signature = 'sidy' };
+		enum {
+			k_signature = 'sidy',
+			// how many bytes of string_id_yelo are debug data (ie, for tags builds) only
+			k_debug_data_size = sizeof(tag_reference),
+		};
 
+#if TRUE//PLATFORM_IS_EDITOR // TODO: uncomment this when we finish 'runtime field size' support in the tag system
 		tag signature;
 		string_id_yelo_value_reference value;
 		int32 value_length;
 		datum_index tag_index;
+#endif
 
 		string_id id;
 
 		static void format_string(char* string);
+#if PLATFORM_IS_EDITOR
+		// Get the start of a string_id value that is pretending to be a tag name
+		static char* get_string_start(tag_reference_name_reference name);
+#endif
 		static char* get_string(string_id id, __out string_id_yelo_value value);
 		static cstring get_string(string_id id);
-	}; BOOST_STATIC_ASSERT( sizeof(string_id_yelo) == 0x14 );
-#define pad_string_id_yelo PAD_TYPE(tag_reference); PAD_TYPE(string_id);
+	};
+#if TRUE//PLATFORM_IS_EDITOR // TODO: uncomment this when we finish 'runtime field size' support in the tag system
+	BOOST_STATIC_ASSERT( sizeof(string_id_yelo) == 0x14 );
+	#define pad_string_id_yelo PAD_TYPE(tag_reference); PAD_TYPE(string_id);
+#else
+	BOOST_STATIC_ASSERT( sizeof(string_id_yelo) == 0x4 );
+	#define pad_string_id_yelo PAD_TYPE(string_id);
+#endif
 
 	namespace TagGroups
 	{
@@ -49,6 +69,11 @@ namespace Yelo
 			tag_data documentation;
 			PAD_TYPE(tag_data);
 		};
+
+		bool TagFieldIsStringId(const tag_field* field);
+		// Is the field a tag_string field to be treated as a string_id?
+		// TODO: when we encounter tag_strings which contain invalid string_id characters, we'll need to warn the user
+		bool TagFieldIsOldStringId(const tag_field* field);
 	};
 
 	namespace _string_id

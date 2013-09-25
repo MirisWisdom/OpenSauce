@@ -7,6 +7,8 @@
 #include "Common/Precompile.hpp"
 #include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
 
+#include <blamlib/Halo1/tag_files/tag_groups_structures.hpp>
+
 #if PLATFORM_IS_EDITOR || defined(API_DEBUG)
 	struct string_id_yelo_kv_pair
 	{
@@ -78,15 +80,42 @@ namespace Yelo
 		}
 	}
 
+#if PLATFORM_IS_EDITOR
+	char* string_id_yelo::get_string_start(tag_reference_name_reference name)
+	{
+		// we only consider the characters after the last directory separator 
+		char* last_slash = strrchr(name, '\\');
+
+		return last_slash != nullptr ? last_slash+1 : name;
+	}
+#endif
+
 	char* string_id_yelo::get_string(string_id id, __out string_id_yelo_value value)
 	{
-		YELO_ASSERT(false);
+		assert(false); // TODO
 		return nullptr;
 	}
 
 	cstring string_id_yelo::get_string(string_id id)
 	{
-		YELO_ASSERT(false);
+		assert(false); // TODO
 		return nullptr;
+	}
+
+	namespace TagGroups
+	{
+		bool TagFieldIsStringId(const tag_field* field)
+		{
+			// NOTE: feign string_id fields should have the _tag_reference_non_resolving_bit set
+			// in their tag_reference_definition
+			return	field->type == Enums::_field_tag_reference && 
+					field->Definition<tag_reference_definition>()->group_tag == s_string_id_yelo_definition::k_group_tag;
+		}
+
+		bool TagFieldIsOldStringId(const tag_field* field)
+		{
+			return	field->type == Enums::_field_string &&
+					CAST_PTR(tag, field->definition) == s_string_id_yelo_definition::k_group_tag;
+		}
 	}
 };

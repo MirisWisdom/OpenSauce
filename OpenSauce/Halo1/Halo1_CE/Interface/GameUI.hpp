@@ -296,7 +296,7 @@ namespace Yelo
 			// PAD8;
 			// 0x1E10 int16 node_remappings[64]
 			//////////////////////////////////////////////////////////////////////////
-			// 0x1E90 ?
+			// 0x1E90 bool
 			// 0x1E94 _enum shotgun_reload_type;
 			//		_shotgun_reload_type_last_round = 1
 			//		_shotgun_reload_type_first_and_last_round = 2

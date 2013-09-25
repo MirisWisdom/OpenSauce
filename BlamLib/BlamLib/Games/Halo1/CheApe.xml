@@ -265,5 +265,8 @@
 				<code value="4" /> <!--this is a Pad field added by the CheApe compiler-->
 			</byteSwap>
 		</type>
+		<type opcode="0x2F" size="0x20" name="OldStringId">
+			<byteSwap> <code value="32" /> </byteSwap>
+		</type>
 	</fieldTypes>
 </CheApeDefinition>

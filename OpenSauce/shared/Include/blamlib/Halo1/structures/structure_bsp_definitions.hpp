@@ -155,16 +155,24 @@ namespace Yelo
 			TAG_PAD(tag_string, 1);
 		};
 
+		// TODO: move to structures\leaf_map.hpp
+		struct s_leaf_map
+		{
+			TagGroups::collision_bsp* collision; // initialized by postprocess proc, only valid in tags builds
+			TAG_BLOCK(leaves, map_leaf);
+			TAG_BLOCK(portals, leaf_connection);
+		}; BOOST_STATIC_ASSERT( sizeof(s_leaf_map) == 0x1C );
+
 		struct structure_bsp
 		{
 			enum { k_group_tag = 'sbsp' };
 
 			TAG_FIELD(tag_reference, lightmap_bitmaps, 'bitm');
 			TAG_FIELD(real_bounds, vehicle_heights, "floor", "ceiling");
-			TAG_PAD(int32, 5);
+			TAG_PAD(int32, 5); // Useless? Removed in H2
 
 			Objects::s_object_lighting default_lighting; // doesn't expose distant_light_count
-			PAD32;
+			PAD32; // Useless? Wasn't removed in H2, but can't find any code references in H1
 
 			TAG_TBLOCK(collision_materials, structure_collision_material);
 			TAG_TBLOCK(collision_bsp, collision_bsp);
@@ -179,7 +187,7 @@ namespace Yelo
 			TAG_TBLOCK(surfaces, structure_surface);
 
 			TAG_TBLOCK(lightmaps, structure_bsp_lightmap);
-			PAD_TYPE(tag_block);
+			PAD_TYPE(tag_block); // Useless? Removed in H2
 
 			TAG_BLOCK(lens_flares, structure_bsp_lens_flare_block);
 			TAG_BLOCK(lens_flare_markers, structure_bsp_lens_flare_marker_block);
@@ -187,19 +195,19 @@ namespace Yelo
 			TAG_TBLOCK_(clusters, structure_cluster);
 			TAG_FIELD(tag_data, cluster_data);
 			TAG_BLOCK(cluster_portals, cluster_portal);
-			PAD_TYPE(tag_block);
+			PAD_TYPE(tag_block); // Useless? Removed in H2
 
 			TAG_BLOCK(breakable_surfaces, structure_breakable_surface);
 			TAG_BLOCK(fog_planes, s_structure_fog_plane);
 			TAG_TBLOCK(fog_regions, s_structure_fog_region);
 			TAG_TBLOCK(fog_palette, s_structure_fog_palette);
-			PAD_TYPE(tag_block);
-			PAD_TYPE(tag_block);
+			PAD_TYPE(tag_block); // Useless? Removed in H2
+			PAD_TYPE(tag_block); // Useless? Removed in H2
 
 			TAG_TBLOCK(weather_palette, structure_weather_palette_entry);
 			TAG_BLOCK(weather_polyhedra, structure_weather_polyhedron);
-			PAD_TYPE(tag_block);
-			PAD_TYPE(tag_block);
+			PAD_TYPE(tag_block); // Useless? Removed in H2 (new block was added)
+			PAD_TYPE(tag_block); // Useless? Removed in H2 (new block was added)
 
 			TAG_TBLOCK(pathfinding_surfaces, byte);
 			TAG_TBLOCK(pathfinding_edges, byte);
@@ -207,23 +215,27 @@ namespace Yelo
 			TAG_TBLOCK(background_sound_palette, structure_background_sound_palette_entry);
 			TAG_TBLOCK(sound_environment_palette, structure_sound_environment_palette_entry);
 			TAG_FIELD(tag_data, sound_pas_data);
-			PAD_TYPE(tag_block);
-			PAD_TYPE(tag_block);
+			PAD_TYPE(tag_block); // Useless? Removed in H2
+			PAD_TYPE(tag_block); // Useless? Removed in H2
 
 			TAG_BLOCK(markers, structure_marker);
-			TAG_BLOCK(detail_objects, detail_object_data);
+			TAG_BLOCK(detail_objects, structure_detail_object_data);
 			TAG_BLOCK(runtime_decals, structure_runtime_decal);
-			PAD64;
-			PAD32;
-			TAG_BLOCK(leaf_map_leaves, map_leaf);
-			TAG_BLOCK(leaf_map_portals, leaf_connection);
+			PAD64; // Useless? Removed in H2
+			s_leaf_map leaf_map;
 
 		}; BOOST_STATIC_ASSERT( sizeof(structure_bsp) == 0x288 );
 
 		struct structure_bsp_header
 		{
 			structure_bsp* bsp;
-			PAD128;
+			//////////////////////////////////////////////////////////////////////////
+			// only used\initialized for Xbox targets
+			struct {
+				int32 count;
+				void* address;
+			}vertex_buffer, lightmap_vertex_buffer;
+
 			tag signature;
 		}; BOOST_STATIC_ASSERT( sizeof(structure_bsp_header) == 0x18 );
 	};
