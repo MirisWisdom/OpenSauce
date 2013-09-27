@@ -115,7 +115,7 @@ namespace Yelo
 		bool TagFieldIsOldStringId(const tag_field* field)
 		{
 			return	field->type == Enums::_field_string &&
-					CAST_PTR(tag, field->definition) == s_string_id_yelo_definition::k_group_tag;
+					field->DefinitionCast<tag>() == s_string_id_yelo_definition::k_group_tag;
 		}
 	}
 };

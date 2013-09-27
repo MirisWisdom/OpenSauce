@@ -129,7 +129,7 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
-		API_FUNC_NAKED void PLATFORM_API data_verify(s_data_array* data)
+		API_FUNC_NAKED void PLATFORM_API data_verify(const s_data_array* data)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATA_VERIFY);
 
@@ -177,7 +177,7 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
-		API_FUNC_NAKED datum_index PLATFORM_API data_next_index(s_data_array* data, datum_index cursor)
+		API_FUNC_NAKED datum_index PLATFORM_API data_next_index(const s_data_array* data, datum_index cursor)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATA_NEXT_INDEX);
 

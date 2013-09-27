@@ -104,6 +104,18 @@ namespace Yelo
 			{
 				return Iterator::GetEndHack(*this);
 			}
+
+			inline void Verify() const	{ blam::data_verify(&Header); }
+
+			inline void Dispose()		{ blam::data_dispose(&Header); }
+			inline void MakeValid()		{ blam::data_make_valid(&Header); }
+			inline void MakeInvalid()	{ blam::data_make_invalid(&Header); }
+			inline void DeleteAll()		{ blam::data_delete_all(&Header); }
+
+			inline datum_index NextIndex(datum_index cursor)	{ return blam::data_next_index(&Header, cursor); }
+			inline datum_index NewAtIndex(datum_index index)	{ return blam::datum_new_at_index(&Header, index); }
+			inline datum_index New()							{ return blam::datum_new(&Header); }
+			inline void Delete(datum_index index)				{ return blam::datum_delete(&Header, index); }
 		};
 	};
 };

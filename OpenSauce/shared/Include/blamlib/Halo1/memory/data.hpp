@@ -48,7 +48,7 @@ namespace Yelo
 	{
 		using namespace Yelo::Memory;
 
-		void PLATFORM_API data_verify(s_data_array* data);
+		void PLATFORM_API data_verify(const s_data_array* data);
 
 		s_data_array* PLATFORM_API data_new(cstring name, int32 maximum_count, size_t datum_size);
 		template<typename T, const int k_maximum_count>
@@ -65,7 +65,7 @@ namespace Yelo
 
 		void PLATFORM_API data_delete_all(s_data_array* data);
 
-		datum_index PLATFORM_API data_next_index(s_data_array* data, datum_index cursor);
+		datum_index PLATFORM_API data_next_index(const s_data_array* data, datum_index cursor);
 
 		void data_iterator_new(s_data_iterator& iterator, s_data_array* data);
 

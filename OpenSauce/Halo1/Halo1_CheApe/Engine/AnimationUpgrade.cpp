@@ -27,32 +27,39 @@ namespace Yelo
 		static std::array<s_animation_list_entry, Enums::k_number_of_unit_seat_animations_yelo> 
 			g_unit_seat_animation_list_yelo_entries;
 
+		template<_enum k_state, _enum k_type>
+		static void unit_seat_animation_list_yelo_set_entry(cstring name)
+		{
+			g_unit_seat_animation_list_yelo_entries[k_state].name = name;
+			g_unit_seat_animation_list_yelo_entries[k_state].type = k_type;
+		}
+
 		void AnimationUpgradesInitialize()
 		{
 			// Set the animation graph's sound references block's max elements to yelo's
 			{
-				tag_block_definition* animation_graph_sound_reference_block = GET_PTR2(animation_graph_sound_reference_block);
+				auto animation_graph_sound_reference_block = GET_PTR2(animation_graph_sound_reference_block);
 				assert( animation_graph_sound_reference_block->maximum_element_count==Enums::k_max_sound_references_per_graph );
 				animation_graph_sound_reference_block->maximum_element_count = Enums::k_max_sound_references_per_graph_upgrade;
 			}
 
 			// Set the animation graph's animations block's max elements to yelo's
 			{
-				tag_block_definition* animation_block = GET_PTR2(animation_block);
+				auto animation_block = GET_PTR2(animation_block);
 				assert( animation_block->maximum_element_count==Enums::k_max_animations_per_graph );
 				animation_block->maximum_element_count = Enums::k_max_animations_per_graph_upgrade;
 			}
 
 			// set the unit seat animation block's max elements to yelo's
 			{
-				tag_block_definition* unit_seat_animation_block = GET_PTR2(unit_seat_animation_block);
+				auto unit_seat_animation_block = GET_PTR2(unit_seat_animation_block);
 				assert( unit_seat_animation_block->maximum_element_count==Enums::k_number_of_unit_seat_animations );
 				unit_seat_animation_block->maximum_element_count = Enums::k_number_of_unit_seat_animations_yelo;
 			}
 
 			// set the unit seat block's max elements to yelo's
 			{
-				tag_block_definition* animation_graph_unit_seat_block = GET_PTR2(animation_graph_unit_seat_block);
+				auto animation_graph_unit_seat_block = GET_PTR2(animation_graph_unit_seat_block);
 				assert( animation_graph_unit_seat_block->maximum_element_count==Enums::k_max_unit_seat_modes_per_graph );
 				animation_graph_unit_seat_block->maximum_element_count = Enums::k_max_unit_seat_modes_per_graph_upgrade;
 			}
@@ -63,6 +70,7 @@ namespace Yelo
 			assert( unit_seat_animation_list->count==Enums::k_number_of_unit_seat_animations );
 
 			// copy the existing animation entries
+			// NOTE: ignore the warning C4996
 			std::copy_n(unit_seat_animation_list->entries, unit_seat_animation_list->count,
 				g_unit_seat_animation_list_yelo_entries.data());
 			// set the seat animation list count to yelo's
@@ -72,10 +80,10 @@ namespace Yelo
 
 			//////////////////////////////////////////////////////////////////////////
 			// populate yelo's new unit seat animation definitions
-			g_unit_seat_animation_list_yelo_entries[Enums::_unit_seat_animation_yelo_board].name = "board";
-			g_unit_seat_animation_list_yelo_entries[Enums::_unit_seat_animation_yelo_board].type = Enums::_model_animation_type_base;
-			g_unit_seat_animation_list_yelo_entries[Enums::_unit_seat_animation_yelo_ejection].name = "ejection";
-			g_unit_seat_animation_list_yelo_entries[Enums::_unit_seat_animation_yelo_ejection].type = Enums::_model_animation_type_base;
+			unit_seat_animation_list_yelo_set_entry<Enums::_unit_seat_animation_yelo_board, Enums::_model_animation_type_base>(
+				"board");
+			unit_seat_animation_list_yelo_set_entry<Enums::_unit_seat_animation_yelo_ejection, Enums::_model_animation_type_base>(
+				"ejection");
 
 
 			//////////////////////////////////////////////////////////////////////////

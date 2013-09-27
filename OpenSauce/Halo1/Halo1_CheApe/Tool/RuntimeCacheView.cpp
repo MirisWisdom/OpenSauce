@@ -16,6 +16,9 @@
 #include "TagGroups/TagGroups.hpp"
 #include "Tool/Console.hpp"
 
+// TODO: I would like to change all instances of DWORD to either size_t or uintptr_t
+// TODO: also, we should now be able to use c_tag_field_scanner, instead of the manual code we have
+
 namespace Yelo
 {
 	namespace Tool

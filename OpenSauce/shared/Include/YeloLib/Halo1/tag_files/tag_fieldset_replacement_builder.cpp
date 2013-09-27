@@ -44,8 +44,8 @@ namespace Yelo
 			m_target_fields_cursor( 0 ),
 			m_target_fields_max_count( target_fields_size ),
 
-			m_available_pad_size( NONE ),
-			scanner(source_fields, nullptr)
+			m_available_pad_size( 0 ),
+			scanner( source_fields )
 		{
 			YELO_ASSERT( source_fields != nullptr );
 			YELO_ASSERT( target_fields != nullptr && target_fields_size > 0 );

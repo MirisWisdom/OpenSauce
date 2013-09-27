@@ -1009,7 +1009,7 @@ void PrintFieldValue(void* field_data, Yelo::tag_field* field_definition)
 		{
 			// print each byte of a pad/skip separately, breaking at each 4 bytes
 			// and adding a new line after 4 quads
-			int pad_length = (int)field_definition->definition;
+			int pad_length = field_definition->DefinitionCast<int32>();
 			int byte_count = 0;
 			int quad_count = 0;
 
@@ -1065,7 +1065,7 @@ BOOL PrintFields(char*& tag_data, DWORD& address, Yelo::tag_field* start_field)
 		{
 		case Enums::_field_array_start:
 			{
-				int array_count = (int)current->definition;
+				int array_count = current->DefinitionCast<int32>();
 
 				// store the first field in the array list
 				tag_field* first_array_field = current + 1;
@@ -1170,8 +1170,8 @@ BOOL PrintFields(char*& tag_data, DWORD& address, Yelo::tag_field* start_field)
 		{
 		case Enums::_field_pad:
 		case Enums::_field_skip:
-			address += (DWORD)current->definition;
-			tag_data +=  (DWORD)current->definition;
+			address += current->DefinitionCast<DWORD>();
+			tag_data +=  current->DefinitionCast<DWORD>();
 			break;
 		default:
 			address += g_field_descriptions[current->type].m_field_size;

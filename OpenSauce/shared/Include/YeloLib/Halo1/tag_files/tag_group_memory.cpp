@@ -184,7 +184,7 @@ namespace Yelo
 				}
 			}state;
 
-			for(auto field : TagGroups::c_tag_field_scanner(definition->fields, nullptr)
+			for(auto field : TagGroups::c_tag_field_scanner(definition->fields)
 				.AddAllFieldTypes() )
 			{
 				assert( state.count < state.codes.size() );

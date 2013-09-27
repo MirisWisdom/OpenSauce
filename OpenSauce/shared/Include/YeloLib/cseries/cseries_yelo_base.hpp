@@ -204,14 +204,14 @@ namespace Yelo
 	// Primarily a deleter for std::unique_ptr
 	struct winapi_handle_closer
 	{
-		void operator()(HANDLE h);
+		void operator()(HANDLE h) const;
 	};
 
 #if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
 	// Primarily a deleter for std::unique_ptr
 	struct crt_file_closer
 	{
-		void operator()(FILE* h);
+		void operator()(FILE* h) const;
 	};
 #endif
 

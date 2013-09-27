@@ -74,7 +74,7 @@ namespace Yelo
 		return string;
 	}
 
-	void winapi_handle_closer::operator()(HANDLE h)
+	void winapi_handle_closer::operator()(HANDLE h) const
 	{
 		ASSERT( h != INVALID_HANDLE_VALUE, "tried to close an INVALID handle" );
 		if(h != nullptr)
@@ -82,7 +82,7 @@ namespace Yelo
 	}
 
 #if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
-	void crt_file_closer::operator()(FILE* h)
+	void crt_file_closer::operator()(FILE* h) const
 	{
 		if(h != nullptr)
 		{

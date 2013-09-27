@@ -22,6 +22,7 @@ namespace Yelo
 	if( !(expression) )																	\
 	{																					\
 		Yelo::blam::display_assert( #expression , __FILE__, __LINE__, true);			\
+		ExitProcess(NONE);																\
 	}
 #define YELO_ASSERT_WARN(expression)													\
 	if( !(expression) )																	\
@@ -34,8 +35,10 @@ namespace Yelo
 	{																									\
 		sprintf_s(Yelo::blam::g_display_assert_buffer, format, __VA_ARGS__);							\
 		Yelo::blam::display_assert(Yelo::blam::g_display_assert_buffer, __FILE__, __LINE__, true);		\
+		ExitProcess(NONE);																				\
 	}
 
 #define YELO_ASSERT_CASE_UNREACHABLE()										\
 	default: Yelo::blam::display_assert(nullptr, __FILE__, __LINE__, true);	\
+		ExitProcess(NONE);													\
 		break;

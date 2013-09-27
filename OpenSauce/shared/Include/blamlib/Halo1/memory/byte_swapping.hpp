@@ -10,7 +10,7 @@ namespace Yelo
 {
 	namespace blam
 	{
-		void PLATFORM_API byte_swap_data_explicit(cstring name, int32 size, 
-			byte_swap_code_t* codes, int data_count, void *address);
+		void PLATFORM_API byte_swap_data_explicit(cstring name, int32 size, byte_swap_code_t* codes,
+			int data_count = 1, void *address = nullptr);
 	};
 };
