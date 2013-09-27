@@ -32,6 +32,8 @@ namespace Yelo
 
 		extern const s_tag_field_definition k_tag_field_definitions[];
 
+		// Get the length, in characters, of a string field, excluding the null character
+		int32 StringFieldGetLength(const tag_field* field);
 		// Get the size, in characters, of a string field, inclusive of the null character
 		int32 StringFieldGetSize(const tag_field* field);
 
@@ -110,7 +112,7 @@ namespace Yelo
 
 #if PLATFORM_IS_EDITOR
 		TagGroups::s_tag_field_scan_state& PLATFORM_API tag_field_scan_state_new(TagGroups::s_tag_field_scan_state& state, 
-			const tag_field* fields, void* fields_address);
+			const tag_field* fields, void* block_element);
 		void PLATFORM_API tag_field_scan_state_add_field_type(TagGroups::s_tag_field_scan_state& state, 
 			Enums::field_type field_type);
 		bool PLATFORM_API tag_field_scan(TagGroups::s_tag_field_scan_state& state);

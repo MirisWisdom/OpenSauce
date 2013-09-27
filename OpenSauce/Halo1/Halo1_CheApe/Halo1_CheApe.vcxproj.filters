@@ -897,9 +897,15 @@
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups.cpp">
       <Filter>.blamlib\tag_files</Filter>
     </ClCompile>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups_field_scan.cpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClCompile>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups_structures.hpp">
       <Filter>.blamlib\tag_files</Filter>
     </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups_system.cpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <!--text-->

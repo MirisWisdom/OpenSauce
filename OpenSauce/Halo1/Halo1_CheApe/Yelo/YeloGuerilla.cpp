@@ -7,6 +7,7 @@
 #include "Common/Precompile.hpp"
 
 #if PLATFORM_ID == PLATFORM_GUERILLA
+#include <blamlib/Halo1/tag_files/tag_groups.hpp>
 #include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
 #include "Engine/EngineFunctions.hpp"
 #include "TagGroups/TagGroups.hpp"
@@ -195,9 +196,10 @@ namespace Yelo
 				/*CDataExchange* */void* pDX, 
 				/*CString const& */void* value, 
 				int nChars,
-				field_information* field_info)
+				const field_information* field_info)
 			{
-				// TODO: use field_info to determine if the string field defines a non-standard length
+				// this is causing tag windows to not load...wtf
+				//nChars = TagGroups::StringFieldGetLength(field_info->field);
 
 				DDV_MaxChars(pDX, value, nChars);
 			}
@@ -210,6 +212,7 @@ namespace Yelo
 
 			static void Initialize()
 			{
+				// NOTE: ignore the warning C4996
 				std::copy_n(messageEntries, 1, messageEntries_replacement);
 				messageMap->lpEntries = messageEntries_replacement;
 			}

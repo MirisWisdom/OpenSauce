@@ -109,7 +109,7 @@ namespace Yelo
 		{
 			// NOTE: engine doesn't ASSERT anything
 
-			if(reference->group_tag == 0)
+			if(reference->group_tag == 0) // handles cases were tag_reference fields were added to old useless padding
 				reference->group_tag = definition->group_tag;
 
 			reference->tag_index = datum_index::null;
@@ -452,7 +452,7 @@ namespace Yelo
 						break;
 
 					case Enums::_field_pad:
-						memset(field.GetAddress(), 0, field.GetSize());
+						std::memset(field.GetAddress(), 0, field.GetSize());
 						break;
 
 					case Enums::_field_block:
@@ -525,7 +525,7 @@ namespace Yelo
 				return datum_index::null;
 			}
 
-			tag_index = datum_new(CAST(s_data_array*, TagGroups::TagInstances()));
+			tag_index = TagGroups::TagInstances().New();
 			if(tag_index.IsNull())
 			{
 				YELO_ERROR(_error_message_priority_warning, "there are no more free tag slots for new %s tag file '%s'.",
@@ -569,7 +569,7 @@ namespace Yelo
 
 			} while(false);
 
-			datum_delete(CAST(s_data_array*, TagGroups::TagInstances()), tag_index);
+			TagGroups::TagInstances().Delete(tag_index);
 
 			if(root_element != nullptr)
 				YELO_FREE( root_element );
@@ -603,7 +603,7 @@ namespace Yelo
 					break;
 				}
 
-				tag_index = datum_new(CAST(s_data_array*, TagGroups::TagInstances()));
+				tag_index = TagGroups::TagInstances().New();
 				if(tag_index.IsNull())
 				{
 					YELO_ERROR(_error_message_priority_warning, "there are no more free tag slots.");
@@ -632,7 +632,7 @@ namespace Yelo
 					YELO_ERROR(_error_message_priority_warning, "failed to load %s tag '%s'",
 						group->name, name);
 
-					datum_delete(CAST(s_data_array*, TagGroups::TagInstances()), tag_index);
+					TagGroups::TagInstances().Delete(tag_index);
 
 					tag_index = datum_index::null;
 					break;
@@ -685,7 +685,7 @@ namespace Yelo
 
 			auto* reloaded_instance = TagGroups::TagInstances()[reload_tag_index];
 			tag_block_delete_element(&instance->root_block, 0);
-			memcpy(&instance->root_block, &reloaded_instance->root_block, sizeof(instance->root_block));
+			std::memcpy(&instance->root_block, &reloaded_instance->root_block, sizeof(instance->root_block));
 			reloaded_instance->is_reload = true;
 			instance->is_orphan = false;
 			instance->reload_index = reload_tag_index;
@@ -700,7 +700,7 @@ namespace Yelo
 			if(instance->root_block.count > 0 && !instance->is_reload)
 				tag_block_delete_element(&instance->root_block, 0);
 
-			datum_delete(CAST(s_data_array*, TagGroups::TagInstances()), tag_index);
+			TagGroups::TagInstances().Delete(tag_index);
 		}
 	};
 };

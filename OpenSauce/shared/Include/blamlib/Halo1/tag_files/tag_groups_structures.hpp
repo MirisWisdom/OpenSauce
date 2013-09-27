@@ -136,7 +136,12 @@ namespace Yelo
 		cstring name;
 		void* definition;
 
-		template<typename T> API_INLINE T* Definition() const { return CAST_PTR(T*, definition); }
+		// cast the [definition] pointer to a T*
+		template<typename T> inline
+		T* Definition() const { return CAST_PTR(T*, definition); }
+		// cast the data of [definition] to T
+		template<typename T> inline
+		T DefinitionCast() const { return CAST_PTR(T, definition); }
 	}; BOOST_STATIC_ASSERT( sizeof(tag_field) == 0xC );
 
 	// Called as each element is read from the tag stream
@@ -276,14 +281,14 @@ namespace Yelo
 	{
 		char filename[Enums::k_max_tag_name_length+1];			// 0x4
 		tag group_tag;				// 0x104
-		tag parent_group_tags[2];	// 0x108 0x10C
+		tag parent_group_tags[2];	// 0x108
 		bool is_verified;			// 0x110 was loaded with Flags::_tag_load_for_editor_bit
 		bool is_read_only;			// 0x111
 		bool is_orphan;				// 0x112
 		bool is_reload;				// 0x113 true if this instance is the one used for another tag during tag_reload
 		datum_index reload_index;	// 0x114 index of the instance used to reload -this- tag's definition
 		uint32 file_checksum;		// 0x118
-		tag_block root_block;		// 0x11C, 0x120, 0x124
+		tag_block root_block;		// 0x11C
 	}; BOOST_STATIC_ASSERT( sizeof(s_tag_instance) == 0x128 );
 
 
@@ -300,11 +305,11 @@ namespace Yelo
 			friend class c_tag_field_scanner;
 
 			const tag_field* fields;
-			void* fields_address;
+			void* block_element;
 			long_flags field_types[BIT_VECTOR_SIZE_IN_DWORDS(Enums::k_number_of_tag_field_types)];
 			int16 field_index;
 			int16 field_size;
-			int32 field_offset;
+			int32 field_end_offset;
 			bool done;
 			byte pad;
 			int16 stack_index;
@@ -313,8 +318,8 @@ namespace Yelo
 				int16 count;
 			}stack[Enums::k_tag_field_scan_stack_size];
 
-			const tag_field* found_field;
-			void* found_field_address;
+			const tag_field* field;
+			void* field_address;
 
 			// true if this scan state is allocated in engine code
 			inline bool IsEngineScanState()	{ return pad == FALSE; }
@@ -331,23 +336,23 @@ namespace Yelo
 		public:
 			inline bool IsDone() const					{ return m_state.done; }
 
-			inline void* GetAddress() const				{ return m_state.fields_address; }
+			inline void* GetBlockElement() const		{ return m_state.block_element; }
 
 			inline int32 GetFieldIndex() const			{ return m_state.field_index; }
 			inline size_t GetFieldSize() const			{ return CAST(size_t, m_state.field_size); }
-			inline size_t GetFieldOffset() const		{ return CAST(size_t, m_state.field_offset); }
+			inline size_t GetFieldOffset() const		{ return CAST(size_t, m_state.field_end_offset) - GetFieldSize(); }
 
-			inline Enums::field_type GetTagFieldType() const{ return m_state.found_field->type; }
-			inline cstring GetTagFieldName() const			{ return m_state.found_field->name; }
+			inline Enums::field_type GetTagFieldType() const{ return m_state.field->type; }
+			inline cstring GetTagFieldName() const			{ return m_state.field->name; }
 			template<typename T>
-			inline T* GetTagFieldDefinition() const			{ return m_state.found_field->Definition<T>(); }
+			inline T* GetTagFieldDefinition() const			{ return m_state.field->Definition<T>(); }
 
-			inline void* GetFieldAddress() const		{ return m_state.found_field_address; }
+			inline void* GetFieldAddress() const		{ return m_state.field_address; }
 			template<typename T>
-			inline T* GetFieldAs() const				{ return CAST_PTR(T*, m_state.found_field_address); }
+			inline T* GetFieldAs() const				{ return CAST_PTR(T*, m_state.field_address); }
 
 		public:
-			c_tag_field_scanner(const tag_field* fields, void* fields_address);
+			c_tag_field_scanner(const tag_field* fields, void* block_element = nullptr);
 
 			c_tag_field_scanner& AddFieldType(Enums::field_type field_type);
 

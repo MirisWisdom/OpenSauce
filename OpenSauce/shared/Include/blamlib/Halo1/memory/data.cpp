@@ -26,7 +26,7 @@ namespace Yelo
 		using namespace Yelo::Memory;
 
 #if !PLATFORM_IS_EDITOR
-		void PLATFORM_API data_verify(s_data_array* data)
+		void PLATFORM_API data_verify(const s_data_array* data)
 		{
 		}
 

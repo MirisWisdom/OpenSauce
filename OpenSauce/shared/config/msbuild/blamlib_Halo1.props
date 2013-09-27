@@ -317,7 +317,9 @@
 	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_loading.hpp" />
 	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_loading.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups.cpp" />
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups_field_scan.cpp" />
 	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups_structures.hpp" />
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups_system.cpp" />
   </ItemGroup>
   <ItemGroup
     > <!--text-->

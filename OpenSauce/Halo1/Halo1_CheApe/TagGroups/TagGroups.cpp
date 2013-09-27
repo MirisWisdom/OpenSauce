@@ -20,11 +20,19 @@ namespace Yelo
 		tag_instance_data_t**	TagInstanceData()	DPTR_IMP_GET2(tag_instance_data);
 		tag_instance_data_t&	TagInstances()		DPTR_IMP_GET_BYREF(tag_instance_data);
 
+		// Patches engine code to call our hooks or our implementations of various functions
+		static void InitializeHooks()
+		{
+			//Memory::WriteRelativeJmp(blam::tag_groups_initialize, GET_FUNC_VPTR(TAG_GROUPS_INITIALIZE), true);
+			//Memory::WriteRelativeJmp(blam::tag_groups_dispose, GET_FUNC_VPTR(TAG_GROUPS_DISPOSE), true);
+			Memory::WriteRelativeJmp(blam::tag_field_scan, GET_FUNC_VPTR(TAG_FIELD_SCAN), true);
+		}
 		API_FUNC_NAKED void Initialize()
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FILES_OPEN);
 
 			__asm {
+				call	InitializeHooks
 				call	FUNCTION
 				retn
 			}
@@ -170,12 +178,12 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
-		API_FUNC_NAKED bool PLATFORM_API tag_field_scan(TagGroups::s_tag_field_scan_state& state)
-		{
-			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FIELD_SCAN);
-
-			__asm	jmp	FUNCTION
-		}
+// 		API_FUNC_NAKED bool PLATFORM_API tag_field_scan(TagGroups::s_tag_field_scan_state& state)
+// 		{
+// 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FIELD_SCAN);
+// 
+// 			__asm	jmp	FUNCTION
+// 		}
 		API_FUNC_NAKED bool PLATFORM_API tag_read_only(datum_index tag_index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_READ_ONLY);
