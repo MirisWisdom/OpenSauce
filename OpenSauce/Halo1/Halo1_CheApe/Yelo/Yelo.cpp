@@ -64,10 +64,6 @@ namespace Yelo
 		if(TagGroups::_yelo_definition_globals.initialized)
 			PLATFORM_VALUE(Guerilla, Tool, Sapien)::Initialize();
 
-		// TODO: we many want to move this into IntializeBeforeTagGroupsInitalize later
-		// However, we won't be able to use some tag_group related functions in the fixing code
-		TagGroups::InitializeFixes();
-
 #if PLATFORM_ID != PLATFORM_TOOL
 		// cmd line args read here as they ned to happen late in Yelo's init
 		Settings::ReadCmdLineSettings();

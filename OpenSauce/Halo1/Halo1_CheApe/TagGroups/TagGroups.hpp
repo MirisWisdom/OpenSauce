@@ -22,10 +22,6 @@ namespace Yelo
 
 		void Initialize();
 
-		// Patches stock tag groups for various *fixes* (eg, to correct behavior), not additions or the like
-		// Should be called after the engine's and Yelo's TagGroups initializer are ran
-		void InitializeFixes();
-
 
 		// if true, trying to load a 'mode' (.model) tag will instead result in a 'mod2' (.gbxmodel) tag with the same name being loaded
 		void tag_groups_set_model_upgrade_hack(BOOL hack_enabled);

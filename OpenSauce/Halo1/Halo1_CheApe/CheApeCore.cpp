@@ -93,7 +93,7 @@ namespace Yelo
 			}cache;
 
 			struct {
-				t_custom_tag_group_data* data_array;
+				custom_tag_group_data_t* data_array;
 
 				void** address;
 				uint32 count;
@@ -118,7 +118,7 @@ namespace Yelo
 
 		}_globals = {
 			{},
-			{CAST_PTR(t_custom_tag_group_data*, Enums::k_cheape_physical_memory_map_address),}
+			{CAST_PTR(custom_tag_group_data_t*, Enums::k_cheape_physical_memory_map_address),}
 		};
 
 		// declared in CheApeShared.hpp

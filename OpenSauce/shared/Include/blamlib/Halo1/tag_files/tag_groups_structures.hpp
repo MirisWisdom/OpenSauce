@@ -8,6 +8,8 @@
 #include <blamlib/memory/byte_swapping_base.hpp>
 #include <blamlib/tag_files/tag_groups_base.hpp>
 
+//#define __TAG_FIELD_SCAN_USE_BLAM_DATA
+
 namespace Yelo
 {
 	namespace TagGroups
@@ -23,6 +25,12 @@ namespace Yelo
 			k_tag_field_scan_stack_size = 16,
 
 			k_tag_block_format_buffer_size = 512,
+
+			k_tag_field_markup_character_advanced =		'!',
+			k_tag_field_markup_character_help_prefix =	'#',
+			k_tag_field_markup_character_read_only =	'*',
+			k_tag_field_markup_character_units_prefix =	':',
+			k_tag_field_markup_character_block_name =	'^',
 		};
 		enum field_type : _enum
 		{
@@ -142,6 +150,12 @@ namespace Yelo
 		// cast the data of [definition] to T
 		template<typename T> inline
 		T DefinitionCast() const { return CAST_PTR(T, definition); }
+
+		size_t GetSize(_Out_opt_ size_t* runtime_size) const;
+		bool IsReadOnly() const;
+		bool IsAdvanced() const;
+		bool IsBlockName() const;
+		bool IsInvisible() const;
 	}; BOOST_STATIC_ASSERT( sizeof(tag_field) == 0xC );
 
 	// Called as each element is read from the tag stream
@@ -167,10 +181,51 @@ namespace Yelo
 		// Searches the definition for a field of type [field_type] with a name which starts 
 		// with [name] characters. Optionally starts at a specific field index.
 		// Returns NONE if this fails.
-		int32 find_field_index(_enum field_type, cstring name, int32 start_index = NONE) const;
+		int32 FindFieldIndex(_enum field_type, cstring name, int32 start_index = NONE) const;
 
-		size_t get_alignment_bit() const;
-		TagGroups::s_tag_field_set_runtime_data* get_runtime_info() const;
+		size_t GetAlignmentBit() const;
+		TagGroups::s_tag_field_set_runtime_data* GetRuntimeInfo() const;
+		void SetRuntimeInfo(TagGroups::s_tag_field_set_runtime_data* info);
+
+		// TAction: void operator()([const] tag_block_definition* block, [const] tag_field& field)
+		template<class TAction, bool k_assert_field_type>
+		void FieldsDoAction(TAction& action = TAction())
+		{
+			for(auto& field : *this)
+			{
+				if(k_assert_field_type)
+				{
+					YELO_ASSERT( field.type>=0 && field.type<Enums::k_number_of_tag_field_types );
+				}
+
+				action(this, field);
+			}
+		}
+
+		// Mainly a visitor for startup/shutdown processes, performs an action (via a functor) on a root block definition
+		// then repeats the action for all child blocks (etc)
+		// Uses CRT assert()'s since it is assumed this is used after the group definitions have been verified
+		// TAction: void operator()([const] tag_block_definition* block_definition)
+		template<class TAction>
+		void DoRecursiveAction(TAction& action = TAction())
+		{
+			action(this); // perform the action on the root first
+
+			size_t field_index = 0;
+
+			do {
+				const tag_field& field = fields[field_index];
+				assert( field.type>=0 && field.type<Enums::k_number_of_tag_field_types );
+
+				if(field.type == Enums::_field_block)
+				{
+					assert(field.definition != this);
+
+					action(field.Definition<tag_block_definition>());
+				}
+
+			} while(fields[field_index++].type != Enums::_field_terminator);
+		}
 
 		struct s_field_iterator
 		{
@@ -309,7 +364,13 @@ namespace Yelo
 			long_flags field_types[BIT_VECTOR_SIZE_IN_DWORDS(Enums::k_number_of_tag_field_types)];
 			int16 field_index;
 			int16 field_size;
-			int32 field_end_offset;
+			// offset in the block_element where this field ends at
+#ifdef __TAG_FIELD_SCAN_USE_BLAM_DATA
+			int32 field_end_offset;		// not touched or used outside of tag_field_scan
+#else // yelo-data
+			uint16 field_end_offset;	
+			uint16 fields_debug_bytes;	// Total number of tags-build only bytes
+#endif
 			bool done;
 			byte pad;
 			int16 stack_index;
@@ -341,6 +402,9 @@ namespace Yelo
 			inline int32 GetFieldIndex() const			{ return m_state.field_index; }
 			inline size_t GetFieldSize() const			{ return CAST(size_t, m_state.field_size); }
 			inline size_t GetFieldOffset() const		{ return CAST(size_t, m_state.field_end_offset) - GetFieldSize(); }
+#ifndef __TAG_FIELD_SCAN_USE_BLAM_DATA
+			inline size_t GetFieldRuntimeOffset() const	{ return GetFieldOffset() - m_state.fields_debug_bytes; }
+#endif
 
 			inline Enums::field_type GetTagFieldType() const{ return m_state.field->type; }
 			inline cstring GetTagFieldName() const			{ return m_state.field->name; }
@@ -380,6 +444,10 @@ namespace Yelo
 				inline size_t GetSize() const			{ return m_scanner.GetFieldSize(); }
 				// Field's offset, relative to the parent block
 				inline size_t GetOffset() const			{ return m_scanner.GetFieldOffset(); }
+#ifndef __TAG_FIELD_SCAN_USE_BLAM_DATA
+				// Field's cache-build offset, relative to the parent block
+				inline size_t GetRuntimeOffset() const	{ return m_scanner.GetFieldRuntimeOffset(); }
+#endif
 
 				// Field's type
 				inline Enums::field_type GetType() const{ return m_scanner.GetTagFieldType(); }
@@ -395,6 +463,10 @@ namespace Yelo
 				template<typename T>
 				inline T* As() const					{ return m_scanner.GetFieldAs<T>(); }
 
+				bool IsReadOnly() const					{ return m_scanner.m_state.field->IsReadOnly(); }
+				bool IsAdvanced() const					{ return m_scanner.m_state.field->IsAdvanced(); }
+				bool IsBlockName() const				{ return m_scanner.m_state.field->IsBlockName(); }
+				bool IsInvisible() const				{ return m_scanner.m_state.field->IsInvisible(); }
 				bool IsStringId() const					{ return m_scanner.TagFieldIsStringId(); }
 				bool IsOldStringId() const				{ return m_scanner.TagFieldIsOldStringId(); }
 			};

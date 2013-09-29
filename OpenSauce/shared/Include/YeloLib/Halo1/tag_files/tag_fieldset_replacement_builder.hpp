@@ -12,21 +12,22 @@ namespace Yelo
 	namespace TagGroups
 	{
 		template<typename TFieldSetType, size_t kMaxFieldCount>
-		class c_tag_fieldset_replacement_memory
+		class c_tag_field_set_replacement_memory
 		{
-			static int g_new_fields_count;
-			static tag_field g_new_fields[kMaxFieldCount];
+			static size_t g_new_fields_count;
+			static std::array<tag_field, kMaxFieldCount> g_new_fields;
 
 		public:
-			int GetMaxFieldCount() const		{ return kMaxFieldCount; }
+			size_t GetMaxFieldCount() const				{ return kMaxFieldCount; }
 
-			int GetFieldCount() const			{ return g_new_fields_count; }
-			void SetFieldCount(int count) const	{ g_new_fields_count = count; }
+			size_t GetFieldCount() const				{ return g_new_fields_count; }
+			void SetFieldCount(size_t count) const		{ g_new_fields_count = count; }
 
-			tag_field* GetFields() const		{ return g_new_fields; }
+			tag_field* GetFields() const				{ return g_new_fields.data(); }
+			tag_field& operator[](size_t index) const	{ return g_new_fields[index]; }
 		};
 
-		class c_tag_fieldset_replacement_builder
+		class c_tag_field_set_replacement_builder
 		{
 			const tag_field* m_source_fields;
 			size_t m_source_fields_cursor;
@@ -43,16 +44,16 @@ namespace Yelo
 			void NextSourceField(bool copy_current_field_first);
 			bool CurrentSourceFieldIsTerminator() const;
 
-			c_tag_fieldset_replacement_builder(
+			c_tag_field_set_replacement_builder(
 				const tag_field* source_fields,
 				tag_field* target_fields, size_t target_fields_size, size_t target_fields_count);
 		public:
 			template<typename TFieldSetType, size_t kMaxFieldCount>
-			c_tag_fieldset_replacement_builder(const tag_field* source_fields,
-				c_tag_fieldset_replacement_memory<TFieldSetType, kMaxFieldCount> memory)
+			c_tag_field_set_replacement_builder(const tag_field* source_fields,
+				c_tag_field_set_replacement_memory<TFieldSetType, kMaxFieldCount> memory)
 			{
 				// TODO: have to wait until VS2013 for delegating constructors (this is creating a temp object, not ctoring this)
-				c_tag_fieldset_replacement_builder(source_fields, 
+				c_tag_field_set_replacement_builder(source_fields, 
 					memory.GetFields(), memory.GetMaxFieldCount(), memory.GetFieldCount())
 			}
 

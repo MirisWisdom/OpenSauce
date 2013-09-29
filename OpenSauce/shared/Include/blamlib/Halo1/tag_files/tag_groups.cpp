@@ -68,7 +68,54 @@ namespace Yelo
 		return definition->element_size;
 	}
 
-	int32 tag_block_definition::find_field_index(_enum field_type, cstring name, int32 start_index) const
+	size_t tag_field::GetSize(_Out_opt_ size_t* runtime_size) const
+	{
+		size_t field_size;
+
+		switch(type)
+		{
+		case Enums::_field_string:
+			field_size = TagGroups::StringFieldGetSize(this);
+			break;
+
+		case Enums::_field_tag_reference:
+			field_size = CAST(int, TagGroups::k_tag_field_definitions[Enums::_field_tag_reference].size);
+
+			if(runtime_size && TagGroups::TagFieldIsStringId(this))
+				*runtime_size = field_size - string_id_yelo::k_debug_data_size;
+			break;
+
+		case Enums::_field_pad:
+		case Enums::_field_skip:
+			field_size = DefinitionCast<int32>();
+			break;
+
+		default:
+			field_size = TagGroups::k_tag_field_definitions[type].size;
+			break;
+		}
+
+		return field_size;
+	}
+
+	bool tag_field::IsReadOnly() const
+	{
+		return name && strchr(name, Enums::k_tag_field_markup_character_read_only); // NOTE: engine uses strrchr
+	}
+	bool tag_field::IsAdvanced() const
+	{
+		return name && strchr(name, Enums::k_tag_field_markup_character_advanced); // NOTE: engine uses strrchr
+	}
+	bool tag_field::IsBlockName() const
+	{
+		return name && strchr(name, Enums::k_tag_field_markup_character_block_name); // NOTE: engine uses strrchr
+	}
+	bool tag_field::IsInvisible() const
+	{
+		return name && strlen(name) == 0; // yes, a field with no name wouldn't be considered 'invisible', according to engine code
+	}
+
+	int32 tag_block_definition::FindFieldIndex(_enum field_type, cstring name, int32 start_index) const
 	{
 		YELO_ASSERT( this );
 		YELO_ASSERT( this->fields );
@@ -274,7 +321,7 @@ namespace Yelo
 
 	static int32 PLATFORM_API tag_block_insert_element_impl(tag_block* block, int32 index)
 	{
-		YELO_ASSERT( block && block->definition ); // engine actually does asserts these after the allocation
+		YELO_ASSERT( block && block->definition ); // engine actually does the asserts these after the allocation
 		YELO_ASSERT( index>=0 && index<=block->count );
 
 		auto* definition = block->definition;

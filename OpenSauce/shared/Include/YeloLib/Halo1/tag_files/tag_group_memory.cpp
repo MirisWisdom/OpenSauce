@@ -19,13 +19,19 @@ namespace Yelo
 			bool field_set_runtime_info_enabled;
 			bool allocation_headers_enabled;
 			bool string_id_yelo_runtime_is_condensed;	// string_id_yelo's runtime value doesn't contain tag_reference data
-		}g_tag_group_memory;
+		}g_tag_group_memory_globals = {
+			true,
+			false,
+			true
+		};
 
 		//////////////////////////////////////////////////////////////////////////
 		// s_tag_field_set_runtime_data
-		void s_tag_field_set_runtime_data::Initialize(const tag_block_definition* definition, bool is_group_header)
+		s_tag_field_set_runtime_data* build_runtime_info_for_block_definition(tag_block_definition* block_definition);
+
+		void s_tag_field_set_runtime_data::Initialize(const tag_block_definition* definition)
 		{
-			SET_FLAG(flags, Flags::_tag_field_set_runtime_is_group_header_bit, is_group_header);
+			std::memset(this, 0, sizeof(*this)); // I like to act like I know what I'm doing. Ctors? Never heard of 'em!
 
 			BuildInfo(definition);
 			BuildByteComparisonCodes(definition);
@@ -35,6 +41,10 @@ namespace Yelo
 			DestroyByteComparisonCodes();
 		}
 
+		void s_tag_field_set_runtime_data::SetIsGroupHeader()
+		{
+			SET_FLAG(flags, Flags::_tag_field_set_runtime_is_group_header_bit, true);
+		}
 		void s_tag_field_set_runtime_data::DecrementRuntimeSize(size_t amount)
 		{
 			SET_FLAG(flags, Flags::_tag_field_set_runtime_has_runtime_size_bit, true);
@@ -44,7 +54,7 @@ namespace Yelo
 		}
 		void s_tag_field_set_runtime_data::IncrementDirectReferenceCount()
 		{
-			assert(counts.references < k_max_direct_references);
+			assert(counts.references <= k_max_direct_references);
 			counts.references++;
 		}
 		void s_tag_field_set_runtime_data::IncrementReferenceCountFromBlockField()
@@ -61,41 +71,41 @@ namespace Yelo
 		{
 			SET_FLAG(flags, Flags::_tag_field_set_runtime_has_tag_reference_bit, true);
 
-			assert(counts.tag_reference_fields < k_max_tag_reference_fields);
+			assert(counts.tag_reference_fields <= k_max_tag_reference_fields);
 			counts.tag_reference_fields++;
 		}
 		void s_tag_field_set_runtime_data::IncrementBlockFieldCount()
 		{
 			SET_FLAG(flags, Flags::_tag_field_set_runtime_has_tag_block_bit, true);
 
-			assert(counts.block_fields < k_max_block_fields);
+			assert(counts.block_fields <= k_max_block_fields);
 			counts.block_fields++;
 		}
 		void s_tag_field_set_runtime_data::IncrementBlockIndexFieldCount()
 		{
 			SET_FLAG(flags, Flags::_tag_field_set_runtime_has_block_index_bit, true);
 
-			assert(counts.block_index_fields < k_max_block_index_fields);
+			assert(counts.block_index_fields <= k_max_block_index_fields);
 			counts.block_index_fields++;
 		}
 		void s_tag_field_set_runtime_data::IncrementDataFieldCount()
 		{
 			SET_FLAG(flags, Flags::_tag_field_set_runtime_has_tag_data_bit, true);
 
-			assert(counts.data_fields < k_max_data_fields);
+			assert(counts.data_fields <= k_max_data_fields);
 			counts.data_fields++;
 		}
 		void s_tag_field_set_runtime_data::IncrementTotalPaddingSize(size_t size)
 		{
+			assert((counts.padding_amount+size) <= k_max_padding_amount);
 			counts.padding_amount += size;
-			assert(counts.padding_amount <= k_max_padding_amount);
 		}
 
 		void s_tag_field_set_runtime_data::BuildInfo(const tag_block_definition* definition)
 		{
 			runtime_size = definition->element_size;
 
-			for(auto field : TagGroups::c_tag_field_scanner(definition->fields, nullptr)
+			for(auto field : TagGroups::c_tag_field_scanner(definition->fields)
 				.AddFieldType(Enums::_field_string)
 				.AddFieldType(Enums::_field_tag_reference)
 				.AddFieldType(Enums::_field_block)
@@ -116,24 +126,26 @@ namespace Yelo
 					{
 						SET_FLAG(flags, Flags::_tag_field_set_runtime_has_string_id_bit, true);
 
-						if(g_tag_group_memory.string_id_yelo_runtime_is_condensed)
+						if(g_tag_group_memory_globals.string_id_yelo_runtime_is_condensed)
 							DecrementRuntimeSize(string_id_yelo::k_debug_data_size);
 					}
 					else // NOTE: we don't currently count the string_id_yelo tag_reference field
-						IncrementDirectReferenceCount();
+						IncrementTagReferenceFieldCount();
 					break;
 
 				case Enums::_field_block:
 					IncrementBlockFieldCount();
 
-					// TODO: IncrementReferenceCountFromBlockField on the field's definition
+					build_runtime_info_for_block_definition( field.DefinitionAs<tag_block_definition>() )
+						->IncrementReferenceCountFromBlockField();
 					break;
 
 				case Enums::_field_short_block_index:
 				case Enums::_field_long_block_index:
 					IncrementBlockIndexFieldCount();
 
-					// TODO: IncrementReferenceCountFromBlockIndexField on the field's definition
+					build_runtime_info_for_block_definition( field.DefinitionAs<tag_block_definition>() )
+						->IncrementReferenceCountFromBlockIndexField();
 					break;
 
 				case Enums::_field_data:
@@ -153,28 +165,35 @@ namespace Yelo
 		{
 			struct s_build_state
 			{
-				std::array<int16, 512> codes;
-				size_t count;
 				bool last_field_was_positive;
 				PAD24;
+				size_t count;
+				std::array<comparison_code_t, Enums::k_maximum_field_byte_swap_codes / 2> codes;
 
 				inline void PrepareCodesForNewPositive()
 				{
 					if(!last_field_was_positive)
 						codes[++count] = 0;
 				}
+				inline void PrepareCodesForNewNegative()
+				{
+					if( last_field_was_positive)
+						codes[++count] = 0;
+				}
 				inline void Finish()
 				{
-					count++;
+					assert( count < codes.size() );
+
+					codes[++count] = Enums::_bs_code_array_end;
 				}
 				// Return a reference to the current code (for incrementing)
-				inline int16& IncCode()
+				inline comparison_code_t& IncCode()
 				{
 					return codes[count  ];
 				}
 				// Return a reference to the current code (for incrementing) and move the cursor to the next code
 				// Proceeding IncCode() method should be an '=', NOT '+='
-				inline int16& IncCodeWithAnew()
+				inline comparison_code_t& IncCodeWithAnew()
 				{
 					return codes[count++];
 				}
@@ -182,18 +201,27 @@ namespace Yelo
 				{
 					last_field_was_positive = answer;
 				}
-			}state;
+			}state = {false, 0};
 
 			for(auto field : TagGroups::c_tag_field_scanner(definition->fields)
 				.AddAllFieldTypes() )
 			{
 				assert( state.count < state.codes.size() );
 
+				// since we're iterating over -all- fields, might as well do this here
+				if(field.IsBlockName())
+					block_name_field = &definition->fields[field.GetIndex()];
+
 				switch(field.GetType())
 				{
 				case Enums::_field_tag_reference:
-					if(g_tag_group_memory.string_id_yelo_runtime_is_condensed && field.IsStringId())
+					if(g_tag_group_memory_globals.string_id_yelo_runtime_is_condensed && field.IsStringId())
+					{
+						state.PrepareCodesForNewNegative();
+						state.IncCode() =		-string_id_yelo::k_debug_data_size; // tag_reference
+						state.SetLastFieldWasPositive(true);
 						break;
+					}
 
 					state.PrepareCodesForNewPositive();
 
@@ -234,10 +262,9 @@ namespace Yelo
 			}
 			state.Finish();
 
-			comparison_codes = YELO_NEW_ARRAY(int16, state.count);
-			// NOTE: ignore the warning C4996
-			std::copy(state.codes.cbegin(), state.codes.cend(),
-				comparison_codes);
+			comparison_codes = YELO_NEW_ARRAY(comparison_code_t, state.count);
+			std::copy_n(state.codes.cbegin(), state.count,
+				stdext::checked_array_iterator<comparison_code_t*>(comparison_codes, state.count));
 		}
 
 		void s_tag_field_set_runtime_data::DestroyByteComparisonCodes()
@@ -249,6 +276,69 @@ namespace Yelo
 			}
 		}
 
+		static s_tag_field_set_runtime_data* build_runtime_info_for_block_definition(tag_block_definition* block_definition)
+		{
+			s_tag_field_set_runtime_data* info = block_definition->GetRuntimeInfo();
+			if(info != nullptr)
+				return info;
+
+			info = YELO_NEW(s_tag_field_set_runtime_data);
+			block_definition->SetRuntimeInfo(info);
+
+			info->Initialize(block_definition);
+
+// 			YELO_WARN( 
+// 				"% 56s % 4X % 4X "
+// 				"% 4d % 4d % 4d "
+// 				"% 4d % 4d % 8X ",
+// 				block_definition->name, info->flags, info->runtime_size,
+// 				info->counts.references, info->counts.tag_reference_fields, info->counts.block_fields, 
+// 				info->counts.block_index_fields, info->counts.data_fields, info->counts.padding_amount);
+
+			return info;
+		}
+		void build_group_runtime_info()
+		{
+			if(!g_tag_group_memory_globals.field_set_runtime_info_enabled)
+				return;
+
+			struct build_runtime_data_info_action
+			{ void operator()(tag_block_definition* block_definition) const
+			{
+				build_runtime_info_for_block_definition(block_definition);
+			} void operator()(tag_group* group) const
+			{
+				group->header_block_definition->DoRecursiveAction(*this);
+				group->header_block_definition->GetRuntimeInfo()->SetIsGroupHeader();
+			} };
+
+			tag_groups_do_action<build_runtime_data_info_action>();
+		}
+
+		void destroy_group_runtime_info()
+		{
+			if(!g_tag_group_memory_globals.field_set_runtime_info_enabled)
+				return;
+
+			struct destroy_runtime_data_info_action
+			{ void operator()(tag_block_definition* block_definition) const
+			{
+				auto* info = block_definition->GetRuntimeInfo();
+				if(info == nullptr)
+					return;
+
+				block_definition->SetRuntimeInfo(nullptr);
+
+				info->Dispose();
+				YELO_DELETE(info);
+			} void operator()(tag_group* group) const
+			{
+				group->header_block_definition->DoRecursiveAction(*this);
+			} };
+
+			tag_groups_do_action<destroy_runtime_data_info_action>();
+		}
+
 
 		//////////////////////////////////////////////////////////////////////////
 		// s_tag_allocation_header
@@ -256,7 +346,7 @@ namespace Yelo
 		{
 			s_tag_allocation_header* header = nullptr;
 
-			if(g_tag_group_memory.allocation_headers_enabled && instance->address != nullptr)
+			if(g_tag_group_memory_globals.allocation_headers_enabled && instance->address != nullptr)
 			{
 				header = CAST_PTR(s_tag_allocation_header*, instance->address) - 1;
 				if(header->signature != k_signature)
@@ -269,7 +359,7 @@ namespace Yelo
 		{
 			s_tag_allocation_header* header = nullptr;
 
-			if(g_tag_group_memory.allocation_headers_enabled && instance->address != nullptr)
+			if(g_tag_group_memory_globals.allocation_headers_enabled && instance->address != nullptr)
 			{
 				header = CAST_PTR(s_tag_allocation_header*, instance->address) - 1;
 				if(header->signature != k_signature)
@@ -302,9 +392,9 @@ namespace Yelo
 			block.count++;
 			block.elements += instance->count;
 
-			if(g_tag_group_memory.field_set_runtime_info_enabled)
+			if(g_tag_group_memory_globals.field_set_runtime_info_enabled)
 			{
-				const auto* info = block_definition->get_runtime_info();
+				const auto* info = block_definition->GetRuntimeInfo();
 
 				block.size += info->runtime_size * instance->count;
 				block.padding = info->counts.padding_amount;
@@ -324,19 +414,23 @@ namespace Yelo
 		}
 	};
 
-	size_t tag_block_definition::get_alignment_bit() const
+	size_t tag_block_definition::GetAlignmentBit() const
 	{
 		assert( this );
-		return TagGroups::g_tag_group_memory.field_set_runtime_info_enabled
+		return TagGroups::g_tag_group_memory_globals.field_set_runtime_info_enabled
 			? CAST_PTR(size_t, this->unused0)
 			: Flags::_alignment_32_bit; // TODO: or should we just stick with 8bit?
 	}
 
-	TagGroups::s_tag_field_set_runtime_data* tag_block_definition::get_runtime_info() const
+	TagGroups::s_tag_field_set_runtime_data* tag_block_definition::GetRuntimeInfo() const
 	{
 		assert( this );
-		return TagGroups::g_tag_group_memory.field_set_runtime_info_enabled
+		return TagGroups::g_tag_group_memory_globals.field_set_runtime_info_enabled
 			? CAST_PTR(TagGroups::s_tag_field_set_runtime_data*, this->unused1)
 			: nullptr;
+	}
+	void tag_block_definition::SetRuntimeInfo(TagGroups::s_tag_field_set_runtime_data* info)
+	{
+		this->unused1 = info;
 	}
 };

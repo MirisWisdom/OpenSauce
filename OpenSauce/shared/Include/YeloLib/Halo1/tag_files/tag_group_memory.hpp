@@ -9,6 +9,8 @@
 
 namespace Yelo
 {
+	struct tag_field;
+
 	namespace Flags
 	{
 		enum tag_field_set_runtime_flags : long_flags {
@@ -31,6 +33,8 @@ namespace Yelo
 
 	namespace TagGroups
 	{
+		typedef int16 comparison_code_t;
+
 		struct s_tag_field_set_runtime_data
 		{
 			// these are, of course, not actual limits (tag system doesn't have any), but assumed.
@@ -42,6 +46,7 @@ namespace Yelo
 				k_max_data_fields = 15,
 
 				k_max_padding_amount = 2048,
+				k_max_comparison_codes = 511,
 			};
 
 			long_flags flags;
@@ -57,11 +62,13 @@ namespace Yelo
 			}counts;
 			// codes used to compare tag data. negative numbers mean bytes to skip, positive numbers are to compare
 			// generally, only pointer-like data is skipped
-			int16* comparison_codes;
+			comparison_code_t* comparison_codes;
+			const tag_field* block_name_field;
 
-			void Initialize(const tag_block_definition* definition, bool is_group_header = false);
+			void Initialize(const tag_block_definition* definition);
 			void Dispose();
 
+			void SetIsGroupHeader();
 		private:
 			void DecrementRuntimeSize(size_t amount);
 			void IncrementDirectReferenceCount();
@@ -76,7 +83,7 @@ namespace Yelo
 			void BuildInfo(const tag_block_definition* definition);
 			void BuildByteComparisonCodes(const tag_block_definition* definition);
 			void DestroyByteComparisonCodes();
-		}; BOOST_STATIC_ASSERT( sizeof(s_tag_field_set_runtime_data) == 0x14 );
+		}; BOOST_STATIC_ASSERT( sizeof(s_tag_field_set_runtime_data) == 0x18 );
 
 		struct s_tag_allocation_header // keep aligned to 16bytes
 		{

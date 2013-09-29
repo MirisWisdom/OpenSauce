@@ -70,8 +70,8 @@ namespace Yelo
 			assert( unit_seat_animation_list->count==Enums::k_number_of_unit_seat_animations );
 
 			// copy the existing animation entries
-			// NOTE: ignore the warning C4996
-			std::copy_n(unit_seat_animation_list->entries, unit_seat_animation_list->count,
+			std::copy_n(stdext::checked_array_iterator<s_animation_list_entry*>(unit_seat_animation_list->entries, unit_seat_animation_list->count), 
+				unit_seat_animation_list->count,
 				g_unit_seat_animation_list_yelo_entries.data());
 			// set the seat animation list count to yelo's
 			unit_seat_animation_list->count = Enums::k_number_of_unit_seat_animations_yelo;
