@@ -30,6 +30,16 @@ namespace Yelo
 			tag_instance_data_t;
 		tag_instance_data_t& TagInstances();
 
+		// Patches stock tag_groups with new fields where they once had useless padding
+		// Called before group definitions have been verified (but after group tags have) and group parents are built
+		// We do this to ensure we don't fuck anything up, but also because a parent group may get modified
+		// Defined in CheApe's TagGroups.cpp
+		void InitializeFieldSetReplacements();
+		// Patches stock tag groups for various *fixes* (eg, to correct behavior), not additions or the like
+		// Called after the group definitions have been verified
+		// Defined in CheApe's TagGroups.cpp
+		void InitializeFixes();
+
 		extern const s_tag_field_definition k_tag_field_definitions[];
 
 		// Get the length, in characters, of a string field, excluding the null character
@@ -176,5 +186,25 @@ namespace Yelo
 
 		void PLATFORM_API tag_block_generate_default_element(const tag_block_definition *definition, void *address);
 #endif
+	};
+
+	namespace TagGroups
+	{
+		// Visit all the registered tag_groups and perform an action on them
+		// TAction: void operator()([const] tag_group* group)
+		template<class TAction>
+		void tag_groups_do_action(TAction& action = TAction())
+		{
+			for(tag_group* group = blam::tag_group_get_next(); group; group = blam::tag_group_get_next(group))
+				action(group);
+		}
+		// Visit all the registered tag_groups and perform an action on their header_block_definition
+		// TAction: void operator()(tag_block_definition* header_block_definition)
+		template<class TAction>
+		void tag_groups_do_header_block_definition_action(TAction& action = TAction())
+		{
+			for(tag_group* group = blam::tag_group_get_next(); group; group = blam::tag_group_get_next(group))
+				action(group->header_block_definition);
+		}
 	};
 };

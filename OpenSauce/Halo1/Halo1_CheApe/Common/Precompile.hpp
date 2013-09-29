@@ -40,6 +40,7 @@
 
 // C++ STL
 #include <array>
+#include <iterator>
 #include <memory> // std::unique_ptr
 #include <utility>
 #include <vector>

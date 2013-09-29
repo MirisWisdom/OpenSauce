@@ -23,8 +23,8 @@ namespace Yelo
 		// Patches engine code to call our hooks or our implementations of various functions
 		static void InitializeHooks()
 		{
-			//Memory::WriteRelativeJmp(blam::tag_groups_initialize, GET_FUNC_VPTR(TAG_GROUPS_INITIALIZE), true);
-			//Memory::WriteRelativeJmp(blam::tag_groups_dispose, GET_FUNC_VPTR(TAG_GROUPS_DISPOSE), true);
+			Memory::WriteRelativeJmp(blam::tag_groups_initialize, GET_FUNC_VPTR(TAG_GROUPS_INITIALIZE), true);
+			Memory::WriteRelativeJmp(blam::tag_groups_dispose, GET_FUNC_VPTR(TAG_GROUPS_DISPOSE), true);
 			Memory::WriteRelativeJmp(blam::tag_field_scan, GET_FUNC_VPTR(TAG_FIELD_SCAN), true);
 		}
 		API_FUNC_NAKED void Initialize()
@@ -38,18 +38,25 @@ namespace Yelo
 			}
 		}
 
+		void InitializeFieldSetReplacements()
+		{
+			// NOTE: call tag_field_set_replacement_builder's here
+		}
+
+		// weapon->magazines->objects errornously references the weapon->magazines format element proc (objects block can have more elements than magazines, which cases an assert in format)
+		// This fixes the supposed typo and instead uses the equipment field to be the block's name
 		static void InitializeFixesForWeaponGroup()
 		{
 			tag_group* weapon_group = blam::tag_group_get<s_weapon_definition>();
 
 			// field the weapon's magazines field
-			int32 field_index = weapon_group->header_block_definition->find_field_index(Enums::_field_block, "magazines");
+			int32 field_index = weapon_group->header_block_definition->FindFieldIndex(Enums::_field_block, "magazines");
 			if(field_index != NONE)
 			{
 				auto* magazines_block = weapon_group->header_block_definition->fields[field_index].Definition<tag_block_definition>();
 
 				// find the magazine's magazine-objects field
-				field_index = magazines_block->find_field_index(Enums::_field_block, "magazines");
+				field_index = magazines_block->FindFieldIndex(Enums::_field_block, "magazines");
 				if(field_index != NONE)
 				{
 					tag_field& magazine_objects_field = magazines_block->fields[field_index];
@@ -59,7 +66,7 @@ namespace Yelo
 					magazine_objects_block->format_proc = nullptr; // Bungie seems to have made a copy&paste error and gave the objects block the format-magazines function
 
 					// find the magazine-object's equipment reference field
-					field_index = magazine_objects_block->find_field_index(Enums::_field_tag_reference, "equipment");
+					field_index = magazine_objects_block->FindFieldIndex(Enums::_field_tag_reference, "equipment");
 					if(field_index != NONE)
 					{
 						tag_field& equipment_reference_field = magazine_objects_block->fields[field_index];
@@ -68,9 +75,37 @@ namespace Yelo
 				}
 			}
 		}
+		// unicode_string_list_string_reference_block's [unused1] references the unicode byteswap proc (which doesn't actually byteswap anything, code appears to be conditionally compiled out)
+		// However, the string tag_data_definition doesn't define a byteswap proc
+		// I'm going to assume this is a typo in the group definitions
+		// Or it could be that [unused1] used to be a byteswap proc for blocks, back before bs codes were auto generated (the unicode_string_list group probably dates back to the start of the project)
+		// Either way, this fixes the 'problem' (since OS uses the unused fields)
+		static void InitializeFixesForUnicodeStringListGroup()
+		{
+			tag_group* group = blam::tag_group_get('ustr');
+
+			int32 field_index = group->header_block_definition->FindFieldIndex(Enums::_field_block, "string reference");
+			if(field_index != NONE)
+			{
+				auto* reference_block = group->header_block_definition->fields[field_index].Definition<tag_block_definition>();
+
+				field_index = reference_block->FindFieldIndex(Enums::_field_data, "string");
+				if(field_index != NONE)
+				{
+					tag_field& string_field = reference_block->fields[field_index];
+					auto* definition = string_field.Definition<tag_data_definition>();
+
+					definition->byte_swap_proc = CAST_PTR(proc_tag_data_byte_swap, reference_block->unused1);
+				}
+
+				reference_block->unused1 = nullptr; // (erroneously?) references the unicode byte swap procedure
+			}
+		}
+		// NOTE: this is called from our implementation of tag_groups_initialize
 		void InitializeFixes()
 		{
 			InitializeFixesForWeaponGroup();
+			InitializeFixesForUnicodeStringListGroup();
 
 			// This allows us to create tags which have child groups (eg, object, shader, unit, etc)
 			byte* child_count_assert_jmp_code = CAST_PTR(byte*, GET_FUNC_VPTR(TAG_NEW_MOD_CHILD_COUNT_ASSERT_JMP));

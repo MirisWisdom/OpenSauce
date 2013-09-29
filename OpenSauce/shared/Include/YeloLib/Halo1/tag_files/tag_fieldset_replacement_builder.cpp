@@ -12,7 +12,7 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
-		void c_tag_fieldset_replacement_builder::NextSourceField(bool copy_current_field_first)
+		void c_tag_field_set_replacement_builder::NextSourceField(bool copy_current_field_first)
 		{
 			YELO_ASSERT( !CurrentSourceFieldIsTerminator() );
 
@@ -28,12 +28,12 @@ namespace Yelo
 			++m_source_fields_cursor;
 		}
 
-		bool c_tag_fieldset_replacement_builder::CurrentSourceFieldIsTerminator() const
+		bool c_tag_field_set_replacement_builder::CurrentSourceFieldIsTerminator() const
 		{
 			return m_source_fields[m_source_fields_cursor].type == Enums::_field_terminator;
 		}
 
-		c_tag_fieldset_replacement_builder::c_tag_fieldset_replacement_builder(
+		c_tag_field_set_replacement_builder::c_tag_field_set_replacement_builder(
 			const tag_field* source_fields,
 			tag_field* target_fields, size_t target_fields_size, size_t target_fields_count)
 			:
@@ -55,13 +55,13 @@ namespace Yelo
 			scanner.AddAllFieldTypes();
 		}
 
-		void c_tag_fieldset_replacement_builder::CopyFieldsFromSource(size_t field_count)
+		void c_tag_field_set_replacement_builder::CopyFieldsFromSource(size_t field_count)
 		{
 			for(size_t x = 0; x < field_count && !CurrentSourceFieldIsTerminator(); x++)
 				;
 		}
 
-		void c_tag_fieldset_replacement_builder::SkipFieldsFromSource(size_t field_count)
+		void c_tag_field_set_replacement_builder::SkipFieldsFromSource(size_t field_count)
 		{
 		}
 	};

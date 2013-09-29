@@ -212,8 +212,7 @@ namespace Yelo
 
 			static void Initialize()
 			{
-				// NOTE: ignore the warning C4996
-				std::copy_n(messageEntries, 1, messageEntries_replacement);
+				std::memcpy(messageEntries_replacement, messageEntries, sizeof(*messageEntries) * 1);
 				messageMap->lpEntries = messageEntries_replacement;
 			}
 		};

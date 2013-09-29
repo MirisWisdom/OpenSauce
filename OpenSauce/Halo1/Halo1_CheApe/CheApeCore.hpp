@@ -17,6 +17,7 @@ namespace Yelo
 			uint16 flags;
 			tag_group* definition;
 		}; BOOST_STATIC_ASSERT( sizeof(s_custom_tag_group_datum) == 0x8 );
-		typedef Memory::DataArray<s_custom_tag_group_datum, Enums::k_max_number_of_new_tag_groups> t_custom_tag_group_data;
+		typedef Memory::DataArray<s_custom_tag_group_datum, Enums::k_max_number_of_new_tag_groups>
+			custom_tag_group_data_t;
 	};
 };

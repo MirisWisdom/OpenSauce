@@ -67,6 +67,28 @@ namespace Yelo
 
 	namespace blam
 	{
+#ifdef __TAG_FIELD_SCAN_USE_BLAM_DATA
+		static void tag_field_scan_set_field_address(TagGroups::s_tag_field_scan_state& state)
+		{
+			state.field_address = state.block_element == nullptr ?
+				nullptr :
+				state.field_address = CAST_PTR(byte*,state.block_element) + state.field_end_offset;
+		}
+#else
+		static void tag_field_scan_set_field_address_for_yelo(TagGroups::s_tag_field_scan_state& state,
+			size_t field_size, size_t field_debug_bytes)
+		{
+			assert( field_debug_bytes>=0 );
+
+			state.field_address = state.block_element == nullptr ?
+				nullptr :
+			state.field_address = CAST_PTR(byte*,state.block_element) + state.field_end_offset;
+
+			state.field_size = CAST(int16, field_size);
+			state.field_end_offset += CAST(uint16, field_size);
+			state.fields_debug_bytes += CAST(uint16, field_debug_bytes);
+		}
+#endif
 		bool PLATFORM_API tag_field_scan(TagGroups::s_tag_field_scan_state& state)
 		{
 			YELO_ASSERT( !state.done );
@@ -99,28 +121,19 @@ namespace Yelo
 				}
 
 				state.field = field;
-				state.field_address = state.block_element == nullptr ?
-					nullptr :
-					state.field_address = CAST_PTR(byte*,state.block_element) + state.field_end_offset;
+#ifdef __TAG_FIELD_SCAN_USE_BLAM_DATA
+				tag_field_scan_set_field_address(state);
+#endif
 
-				int field_size;
-				switch(field->type)
-				{
-				case Enums::_field_string:
-					field_size = TagGroups::StringFieldGetSize(field);
-					break;
-
-				case Enums::_field_pad:
-				case Enums::_field_skip:
-					field_size = field->DefinitionCast<int32>();
-					break;
-
-				default:
-					field_size = CAST(int, TagGroups::k_tag_field_definitions[field->type].size);
-					break;
-				}
+				size_t field_size;
+				size_t field_runtime_size = 0;
+				field_size = field->GetSize(&field_runtime_size);
+#ifdef __TAG_FIELD_SCAN_USE_BLAM_DATA
 				state.field_size = CAST(int16, field_size);
-				state.field_end_offset += field_size;
+				state.field_end_offset += CAST(int32, field_size);
+#else
+				tag_field_scan_set_field_address_for_yelo(state, field_size, field_size - field_runtime_size);
+#endif
 
 				if(field->type == Enums::_field_terminator)
 				{

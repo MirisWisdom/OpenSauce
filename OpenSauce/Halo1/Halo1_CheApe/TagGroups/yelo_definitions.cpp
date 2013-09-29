@@ -223,7 +223,7 @@ namespace Yelo
 #if FALSE
 				//////////////////////////////////////////////////////////////////////////
 				{// preprocess_block
-					field_index = TagGroups::tag_block_find_field(py_globals_definition->definition, Enums::_field_block, "preprocess");
+					field_index = py_globals_definition->header_block_definition->FindFieldIndex(Enums::_field_block, "preprocess");
 					if(field_index == NONE)
 					{
 						YELO_ERROR(_error_message_priority_assert, 
@@ -231,7 +231,7 @@ namespace Yelo
 					}
 
 					auto* preprocess_block_def = py_globals_definition->definition->fields[field_index].Definition<tag_block_definition>();
-					field_index = TagGroups::tag_block_find_field(preprocess_block_def, Enums::_field_block, "campaign");
+					field_index = preprocess_block_def->FindFieldIndex(Enums::_field_block, "campaign");
 					if(field_index == NONE)
 					{
 						YELO_ERROR(_error_message_priority_assert, 
@@ -247,7 +247,7 @@ namespace Yelo
 				//////////////////////////////////////////////////////////////////////////
 				{// scripting_block
 					// NOTE: this will also affect project_yellow's script block as it's the same definition
-					field_index = py_globals_definition->header_block_definition->find_field_index(Enums::_field_block, "yelo scripting");
+					field_index = py_globals_definition->header_block_definition->FindFieldIndex(Enums::_field_block, "yelo scripting");
 					if(field_index == NONE)
 					{
 						YELO_ERROR(_error_message_priority_assert, 
@@ -256,7 +256,7 @@ namespace Yelo
 
 					auto* scripting_block_def = py_globals_definition->header_block_definition->fields[field_index].Definition<tag_block_definition>();
 
-					field_index = scripting_block_def->find_field_index(Enums::_field_block, "new functions");
+					field_index = scripting_block_def->FindFieldIndex(Enums::_field_block, "new functions");
 					if(field_index == NONE)
 					{
 						YELO_ERROR(_error_message_priority_assert, 
@@ -265,7 +265,7 @@ namespace Yelo
 					auto* script_function_block_def = scripting_block_def->fields[field_index].Definition<tag_block_definition>();
 					script_function_block_def->format_proc = &TagGroups::scripting_block_construct_format;
 
-					field_index = scripting_block_def->find_field_index(Enums::_field_block, "new globals");
+					field_index = scripting_block_def->FindFieldIndex(Enums::_field_block, "new globals");
 					if(field_index == NONE)
 					{
 						YELO_ERROR(_error_message_priority_assert, 

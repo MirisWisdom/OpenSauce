@@ -53,6 +53,14 @@ namespace Yelo
 
 			pointer = nullptr;
 		}
+		template<typename T>
+		void debug_delete_array(T*& pointer, cstring file, const uint32 line)
+		{
+			if(pointer != nullptr)
+				debug_free(pointer, file, line);
+
+			pointer = nullptr;
+		}
 
 		void* PLATFORM_API debug_realloc(void* pointer, const size_t new_size, cstring file, const uint32 line);
 
@@ -79,7 +87,7 @@ namespace Yelo
 
 #define YELO_FREE(ptr)							Yelo::blam::debug_free( (ptr), __FILE__, __LINE__)
 #define YELO_DELETE(ptr)						Yelo::blam::debug_delete( (ptr), __FILE__, __LINE__ )
-#define YELO_DELETE_ARRAY(ptr)					YELO_DELETE(ptr)
+#define YELO_DELETE_ARRAY(ptr)					Yelo::blam::debug_delete_array( (ptr), __FILE__, __LINE__ )
 
 #define YELO_REALLOC(ptr, new_size)				Yelo::blam::debug_realloc( (ptr), (new_size), __FILE__, __LINE__)
 #define YELO_RENEW_ARRAY(type, ptr, count)		Yelo::blam::debug_renew<type>( (ptr), (count), __FILE__, __LINE__)
