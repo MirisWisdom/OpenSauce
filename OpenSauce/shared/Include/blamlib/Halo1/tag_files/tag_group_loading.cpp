@@ -15,12 +15,36 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum {
+			k_tag_group_loading_error_string_length = k_max_tag_name_length * 10,
+		};
+	};
+
 	namespace blam
 	{
+		// To be defined in TagGroups.cpp
+		extern char* tag_group_loading_error_string;
+		extern char** tag_group_loading_error_string_cursor;
+
 		static void tag_group_loading_add_non_loaded_tag(tag group_tag, cstring name)
 		{
-			// TODO
+			char* cursor = *tag_group_loading_error_string_cursor;
+
+			if( (cursor - tag_group_loading_error_string) >= Enums::k_tag_group_loading_error_string_length )
+				return;
+
+			int chars = _snprintf_s(tag_group_loading_error_string, Enums::k_tag_group_loading_error_string_length+1,
+				&tag_group_loading_error_string[Enums::k_tag_group_loading_error_string_length] - cursor,
+				"\t%s.%s\n", name, tag_group_get(group_tag)->name);
+
+			*tag_group_loading_error_string_cursor += chars;
 		}
+
+		bool PLATFORM_API tag_block_read_recursive(const tag_block_definition* definition, tag_block* block,
+			int32* position_reference, long_flags read_flags);
+
 
 		bool PLATFORM_API tag_data_load(void* block_element, tag_data* data, void* address)
 		{
@@ -35,7 +59,7 @@ namespace Yelo
 
 				if(address == nullptr)
 				{
-					YELO_ERROR(_error_message_priority_warning, "couldn't allocate memory for #%d bytes %s data (load)",
+					YELO_WARN("couldn't allocate memory for #%d bytes %s data (load)",
 						data->size, data_definition->name); // NOTE: added this warning
 
 					return false;
@@ -46,7 +70,7 @@ namespace Yelo
 
 			if( !tag_file_read(data->stream_position, data->size, data->address) )
 			{
-				YELO_ERROR(_error_message_priority_warning, "couldn't read #%d bytes for %s data",
+				YELO_WARN("couldn't read #%d bytes for %s data",
 					data->size, data_definition->name); // NOTE: added this warning
 
 				return false;
@@ -67,11 +91,13 @@ namespace Yelo
 		}
 
 		static bool PLATFORM_API tag_data_read_recursive(tag_data_definition* data_definition, void* block_element, tag_data* data, 
-			int32 *position_reference, long_flags read_flags)
+			int32* position_reference, long_flags read_flags)
 		{
 			YELO_ASSERT( data_definition );
 			void* data_address = nullptr;
 			bool success = false;
+			data->stream_position = *position_reference;
+			data->definition = data_definition;
 
 			if( TEST_FLAG(data_definition->flags, Flags::_tag_data_never_streamed_bit)==0 ||
 				TEST_FLAG(read_flags, Flags::_tag_load_for_editor_bit))
@@ -79,12 +105,12 @@ namespace Yelo
 				int size = data->size;
 				if(size < 0 || size > data_definition->maximum_size)
 				{
-					YELO_ERROR(_error_message_priority_warning, "tag data '%s' too large. #%d not in [0,#%d]",
+					YELO_WARN("tag data '%s' too large. #%d not in [0,#%d]",
 						data_definition->name, data->size, data_definition->maximum_size); // NOTE: added bounds info to warning
 				}
 				else if( !(data_address = YELO_MALLOC(size, false)) )
 				{
-					YELO_ERROR(_error_message_priority_warning, "couldn't allocate #%d tag data for '%s'",
+					YELO_WARN("couldn't allocate #%d tag data for '%s'",
 						size, data_definition->name); // NOTE: added size info to warning
 				}
 				else if( !tag_data_load(block_element, data, data->address = data_address) )
@@ -105,7 +131,7 @@ namespace Yelo
 		}
 
 		static bool PLATFORM_API tag_reference_read_recursive(tag_reference_definition* definition, tag_reference* reference,
-			int32 *position_reference, long_flags read_flags)
+			int32* position_reference, long_flags read_flags)
 		{
 			// NOTE: engine doesn't ASSERT anything
 
@@ -116,7 +142,7 @@ namespace Yelo
 
 			if( !(reference->name = CAST_PTR(char*,YELO_MALLOC(Enums::k_max_tag_name_length+1, false))) )
 			{
-				YELO_ERROR(_error_message_priority_warning, "couldn't allocate name memory for tag_reference @%p",
+				YELO_WARN("couldn't allocate name memory for tag_reference @%p",
 					definition); // NOTE: added this warning
 
 				return false;
@@ -130,14 +156,14 @@ namespace Yelo
 			}
 			else if(name_length < 0 || name_length > Enums::k_max_tag_name_length)
 			{
-				YELO_ERROR(_error_message_priority_warning, "tag reference name too large #%d (this tag is corrupted).",
+				YELO_WARN("tag reference name too large #%d (this tag is corrupted).",
 					name_length); // NOTE: added length info to warning
 
 				return false;
 			}
 			else if( !tag_file_read(*position_reference, name_length+1, reference->name) )
 			{
-				YELO_ERROR(_error_message_priority_warning, "couldn't read #%d characters for @%p tag reference name",
+				YELO_WARN("couldn't read #%d characters for @%p tag reference name",
 					name_length+1, definition); // NOTE: added this warning
 
 				return false;
@@ -145,7 +171,7 @@ namespace Yelo
 			else if(strlen(reference->name) != name_length)
 			{
 				// NOTE: engine uses the 'too large' warning for this case
-				YELO_ERROR(_error_message_priority_warning, "tag reference name @%X doesn't match length #%d (this tag is corrupted).",
+				YELO_WARN("tag reference name @%X doesn't match length #%d (this tag is corrupted).",
 					*position_reference, name_length); // NOTE: added length info to warning
 
 				return false;
@@ -156,10 +182,8 @@ namespace Yelo
 			return true;
 		}
 
-		bool PLATFORM_API tag_block_read_recursive(const tag_block_definition* definition, tag_block* block,
-			int32 *position_reference, long_flags read_flags);
 		bool PLATFORM_API tag_block_read_children_recursive(const tag_block_definition *definition, void *address, int32 count, 
-			int32 *position_reference, long_flags read_flags)
+			int32* position_reference, long_flags read_flags)
 		{
 			bool success = true;
 			if(count == 0)
@@ -219,7 +243,7 @@ namespace Yelo
 					void* element = tag_block_get_element(block, x);
 					if(!proc(element, mode))
 					{
-						YELO_ERROR(_error_message_priority_warning, "failed to postprocess element #%d element for %s block",
+						YELO_WARN("failed to postprocess element #%d element for %s block",
 							x, definition->name); // NOTE: added this warning message
 
 						success = false;
@@ -230,12 +254,14 @@ namespace Yelo
 			return success;
 		}
 		static bool PLATFORM_API tag_block_read_recursive(const tag_block_definition* definition, tag_block* block,
-			int32 *position_reference, long_flags read_flags)
+			int32* position_reference, long_flags read_flags)
 		{
 			int count = block->count;
+			block->address = nullptr;
+			block->definition = definition;
 			if(count < 0 || count > definition->maximum_element_count)
 			{
-				YELO_ERROR(_error_message_priority_warning, "%s block has invalid element count: #%d not in [0,#%d]",
+				YELO_WARN("%s block has invalid element count: #%d not in [0,#%d]",
 					definition->name, count, definition->maximum_element_count);
 
 				block->count = 0;
@@ -247,7 +273,7 @@ namespace Yelo
 			size_t elements_size = definition->element_size * count;
 			if( !(block->address = YELO_MALLOC(elements_size, false)) )
 			{
-				YELO_ERROR(_error_message_priority_warning, "couldn't allocate memory for #%d element %s block",
+				YELO_WARN("couldn't allocate memory for #%d element %s block",
 					block->count, definition->name);
 
 				return false;
@@ -255,7 +281,7 @@ namespace Yelo
 
 			if(!tag_file_read(*position_reference, elements_size, block->address))
 			{
-				YELO_ERROR(_error_message_priority_warning, "couldn't read #%d elements for %s block",
+				YELO_WARN("couldn't read #%d elements for %s block",
 					block->count, definition->name); // NOTE: added count info to error
 
 				return false;
@@ -278,7 +304,7 @@ namespace Yelo
 				? Enums::_tag_postprocess_mode_for_editor
 				: Enums::_tag_postprocess_mode_for_runtime;
 			if( !tag_block_postprocess(definition, block, postprocess_mode) )
-				return false; // postprocess warns about failures, so we don't YELO_ERROR here
+				return false; // postprocess warns about failures, so we don't YELO_WARN here
 
 			return true;
 		}
@@ -339,6 +365,7 @@ namespace Yelo
 						success = read_result;
 				}
 			}
+
 			return success;
 		}
 
@@ -346,20 +373,22 @@ namespace Yelo
 			tag_block_definition* block_definition)
 		{
 			auto& string = *field.As<tag_string>();
-			if( strnlen_s(string, Enums::k_tag_string_length) == Enums::k_tag_string_length && 
-				string[Enums::k_tag_string_length] != '\0' )
+			int32 string_length = field.GetStringFieldLength(); // For supporting non-standard tag_string lengths
+
+			if( strnlen_s(string, string_length) == string_length && 
+				string[string_length] != '\0' )
 			{
-				YELO_ERROR(_error_message_priority_warning, "fixed corrupt tag string field (%s).",
+				YELO_WARN("fixed corrupt tag string field (%s).",
 					field.GetName());
 
-				string[Enums::k_tag_string_length] = '\0';
+				string[string_length] = '\0';
 				return false;
 			}
 
 			// engine turns non-printable characters into underscores and nulls trailing spaces
 			// TODO: shouldn't we note when we correct non-printable characters?
-			for(size_t non_space_character_found = 0,
-				x = strlen(string)-1; x >= 0; --x)
+			bool non_space_character_found;
+			for(int x = CAST(int, strlen(string))-1; x >= 0; x--)
 			{
 				char& c = string[x];
 
@@ -372,7 +401,7 @@ namespace Yelo
 						c = '\0';
 				}
 				else
-					non_space_character_found = TRUE;
+					non_space_character_found = true;
 			}
 
 			return true;
@@ -386,7 +415,7 @@ namespace Yelo
 			if(value >= 0 && value < count)
 				return true;
 
-			YELO_ERROR(_error_message_priority_warning, "fixed corrupt tag enum field (%s) in %s.",
+			YELO_WARN("fixed corrupt tag enum field (%s) in %s.",
 				field.GetName(), block_definition->name); // NOTE: added owner block name to info
 
 			value = 0;
@@ -401,7 +430,7 @@ namespace Yelo
 			if(bit_count >= BIT_COUNT(TFlags) || (flags >> bit_count) == 0)
 				return true;
 
-			YELO_ERROR(_error_message_priority_warning, "fixed corrupt tag flags field (%s) in %s.",
+			YELO_WARN("fixed corrupt tag flags field (%s) in %s.",
 				field.GetName(), block_definition->name); // NOTE: added owner block name to info
 
 			flags &= MASK(bit_count);
@@ -416,7 +445,7 @@ namespace Yelo
 			if(index >= NONE && index < indexed_block_definition->maximum_element_count)
 				return true;
 
-			YELO_ERROR(_error_message_priority_warning, "fixed corrupt tag block index field (%s) in %s (reset to NONE).",
+			YELO_WARN("fixed corrupt tag block index field (%s) in %s (reset to NONE).",
 				field.GetName(), block_definition->name); // NOTE: added owner block name to info
 
 			index = NONE;
@@ -502,7 +531,7 @@ namespace Yelo
 				instance->parent_group_tags[1] = NONE;
 		}
 
-		datum_index PLATFORM_API tag_new_impl(tag group_tag, cstring name)
+		datum_index PLATFORM_API tag_new(tag group_tag, cstring name)
 		{
 			YELO_ASSERT(name);
 
@@ -520,7 +549,7 @@ namespace Yelo
 			datum_index tag_index = find_tag_instance(group_tag, name);
 			if(!tag_index.IsNull())
 			{
-				YELO_ERROR(_error_message_priority_warning, "there is already a %s tag named '%s' loaded",
+				YELO_WARN("there is already a %s tag named '%s' loaded",
 					group->name, name);
 				return datum_index::null;
 			}
@@ -528,7 +557,7 @@ namespace Yelo
 			tag_index = TagGroups::TagInstances().New();
 			if(tag_index.IsNull())
 			{
-				YELO_ERROR(_error_message_priority_warning, "there are no more free tag slots for new %s tag file '%s'.",
+				YELO_WARN("there are no more free tag slots for new %s tag file '%s'.",
 					group->name, name);
 				return datum_index::null;
 			}
@@ -539,7 +568,7 @@ namespace Yelo
 
 				if(root_element == nullptr)
 				{
-					YELO_ERROR(_error_message_priority_warning, "couldn't allocate memory for new %s tag '%s'.",
+					YELO_WARN("couldn't allocate memory for new %s tag '%s'.",
 						group->name, name);
 
 					break;
@@ -558,7 +587,7 @@ namespace Yelo
 				if( !tag_block_read_children_recursive(root_definition, root_element, 1, 
 						&position, FLAG(Flags::_tag_load_for_editor_bit)) )
 				{
-					YELO_ERROR(_error_message_priority_warning, "couldn't create new %s tag '%s'.",
+					YELO_WARN("couldn't create new %s tag '%s'.",
 						group->name, name); // NOTE: included group name
 
 					break;
@@ -577,7 +606,7 @@ namespace Yelo
 			return datum_index::null;
 		}
 
-		datum_index PLATFORM_API tag_load_impl(tag group_tag, cstring name, long_flags flags)
+		datum_index PLATFORM_API tag_load(tag group_tag, cstring name, long_flags flags)
 		{
 			YELO_ASSERT(name);
 
@@ -585,7 +614,7 @@ namespace Yelo
 			if(group == nullptr)
 			{
 				TagGroups::group_tag_to_string group_string = {group_tag};
-				YELO_ERROR(_error_message_priority_warning, "the group tag '%s' does not exist (can't load '%s')",
+				YELO_WARN("the group tag '%s' does not exist (can't load '%s')",
 					group_string.Terminate().TagSwap().str, name);
 				return datum_index::null;
 			}
@@ -606,7 +635,8 @@ namespace Yelo
 				tag_index = TagGroups::TagInstances().New();
 				if(tag_index.IsNull())
 				{
-					YELO_ERROR(_error_message_priority_warning, "there are no more free tag slots.");
+					YELO_WARN("there are no more free tag slots to load %s tag file '%s'.",
+						group->name, name); // NOTE: added tag info to message
 
 					break;
 				}
@@ -626,10 +656,11 @@ namespace Yelo
 				instance->root_block.address = nullptr;
 				instance->root_block.definition = group->header_block_definition;
 
-				if( !tag_block_read_recursive(group->header_block_definition, &instance->root_block, 0, flags) &&
+				int32 position = 0;
+				if( !tag_block_read_recursive(group->header_block_definition, &instance->root_block, &position, flags) &&
 					!tag_references_resolve_recursive(group->header_block_definition, &instance->root_block, flags) )
 				{
-					YELO_ERROR(_error_message_priority_warning, "failed to load %s tag '%s'",
+					YELO_WARN("failed to load %s tag '%s'",
 						group->name, name);
 
 					TagGroups::TagInstances().Delete(tag_index);
@@ -641,7 +672,7 @@ namespace Yelo
 				if(	TEST_FLAG(flags, Flags::_tag_load_for_editor_bit) &&
 					!tag_block_verify_recursive(group->header_block_definition, &instance->root_block) )
 				{
-					YELO_ERROR(_error_message_priority_warning, "the %s tag '%s' may be corrupt.",
+					YELO_WARN("the %s tag '%s' may be corrupt.",
 						group->name, name);
 				}
 

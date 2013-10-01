@@ -276,6 +276,10 @@ namespace Yelo
 			}
 		}
 
+
+		//////////////////////////////////////////////////////////////////////////
+		// system definitions
+
 		static s_tag_field_set_runtime_data* build_runtime_info_for_block_definition(tag_block_definition* block_definition)
 		{
 			s_tag_field_set_runtime_data* info = block_definition->GetRuntimeInfo();
