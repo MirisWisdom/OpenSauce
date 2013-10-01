@@ -427,6 +427,7 @@ namespace Yelo
 
 			bool TagFieldIsStringId() const;
 			bool TagFieldIsOldStringId() const;
+			int32 StringFieldGetLength() const;
 
 
 			// an interface to a found tag field and its definition
@@ -469,6 +470,7 @@ namespace Yelo
 				bool IsInvisible() const				{ return m_scanner.m_state.field->IsInvisible(); }
 				bool IsStringId() const					{ return m_scanner.TagFieldIsStringId(); }
 				bool IsOldStringId() const				{ return m_scanner.TagFieldIsOldStringId(); }
+				int32 GetStringFieldLength() const		{ return m_scanner.StringFieldGetLength(); }
 			};
 
 			struct s_iterator

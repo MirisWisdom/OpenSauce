@@ -8,6 +8,7 @@
 #include "TagGroups/TagGroups.hpp"
 
 #include <blamlib/Halo1/items/weapon_definitions.hpp>
+#include <blamlib/Halo1/tag_files/tag_group_loading.hpp>
 
 namespace Yelo
 {
@@ -23,9 +24,22 @@ namespace Yelo
 		// Patches engine code to call our hooks or our implementations of various functions
 		static void InitializeHooks()
 		{
+			datum_index (PLATFORM_API* blam__tag_new)(tag, cstring) = 
+				blam::tag_new;
+			datum_index (PLATFORM_API* blam__tag_load)(tag, cstring, long_flags) = 
+				blam::tag_load;
+
 			Memory::WriteRelativeJmp(blam::tag_groups_initialize, GET_FUNC_VPTR(TAG_GROUPS_INITIALIZE), true);
 			Memory::WriteRelativeJmp(blam::tag_groups_dispose, GET_FUNC_VPTR(TAG_GROUPS_DISPOSE), true);
 			Memory::WriteRelativeJmp(blam::tag_field_scan, GET_FUNC_VPTR(TAG_FIELD_SCAN), true);
+
+			Memory::WriteRelativeJmp(blam::tag_data_load, GET_FUNC_VPTR(TAG_DATA_LOAD), true);
+#if PLATFORM_ID != PLATFORM_TOOL
+			Memory::WriteRelativeJmp(blam::tag_data_unload, GET_FUNC_VPTR(TAG_DATA_UNLOAD), true);
+#endif
+
+			Memory::WriteRelativeJmp(blam__tag_new, GET_FUNC_VPTR(TAG_NEW), true);
+			Memory::WriteRelativeJmp(blam__tag_load, GET_FUNC_VPTR(TAG_LOAD), true);
 		}
 		API_FUNC_NAKED void Initialize()
 		{
@@ -162,6 +176,9 @@ namespace Yelo
 		}
 		//////////////////////////////////////////////////////////////////////////
 		// tag_files/tag_groups
+		char* tag_group_loading_error_string =			CAST_PTR(char*,  GET_DATA_PTR(TAG_LOAD_ERROR_STRING));
+		char** tag_group_loading_error_string_cursor =	CAST_PTR(char**, GET_DATA_PTR(TAG_LOAD_ERROR_STRING_CURSOR));
+
 		API_FUNC_NAKED tag PLATFORM_API tag_get_group_tag(datum_index tag_index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GET_GROUP_TAG);
@@ -301,12 +318,12 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
-		API_FUNC_NAKED datum_index PLATFORM_API tag_new(tag group_name, cstring name)
-		{
-			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_NEW);
-
-			__asm	jmp	FUNCTION
-		}
+// 		API_FUNC_NAKED datum_index PLATFORM_API tag_new(tag group_name, cstring name)
+// 		{
+// 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_NEW);
+// 
+// 			__asm	jmp	FUNCTION
+// 		}
 		API_FUNC_NAKED bool PLATFORM_API tag_save(datum_index tag_index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_SAVE);
@@ -371,12 +388,12 @@ namespace Yelo
 			API_FUNC_NAKED_END_()//(2);
 		}
 
-		API_FUNC_NAKED datum_index PLATFORM_API tag_load(tag group_tag, cstring name, long_flags file_flags)
-		{
-			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_LOAD);
-
-			__asm	jmp	FUNCTION
-		}
+// 		API_FUNC_NAKED datum_index PLATFORM_API tag_load(tag group_tag, cstring name, long_flags file_flags)
+// 		{
+// 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_LOAD);
+// 
+// 			__asm	jmp	FUNCTION
+// 		}
 		API_FUNC_NAKED datum_index PLATFORM_API tag_reload(tag group_tag, cstring name)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_RELOAD);

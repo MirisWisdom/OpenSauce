@@ -53,6 +53,12 @@ namespace Yelo
 		{
 			return TagGroups::TagFieldIsOldStringId(m_state.field);
 		}
+		int32 c_tag_field_scanner::StringFieldGetLength() const
+		{
+			YELO_ASSERT(m_state.field->type == Enums::_field_string);
+
+			return TagGroups::StringFieldGetLength(m_state.field);
+		}
 
 		bool c_tag_field_scanner::s_iterator::operator!=(const c_tag_field_scanner::s_iterator& other) const
 		{
