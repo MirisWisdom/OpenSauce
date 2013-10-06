@@ -125,6 +125,11 @@ namespace Yelo
 			_tag_group_unknown2_bit,
 			// majority of tags have this set
 			_tag_group_reloadable_bit,
+			// YELO ONLY! tag_group is non-standard (ie, official). This is applied to those defined in CheApe.map
+			_tag_group_non_standard_yelo_bit,
+			// YELO ONLY! tag_group is referenced in other groups via a tag_reference or as a parent group
+			// doesn't consider tag_references which can reference ANYTHING (eg, tag_collection's field)
+			_tag_group_referenced_yelo_bit,
 
 			// When this is set, implies _tag_postprocess_mode_for_editor, else _for_runtime
 			_tag_load_for_editor_bit = 0,
@@ -144,6 +149,7 @@ namespace Yelo
 		cstring name;
 		void* definition;
 
+#if PLATFORM_IS_EDITOR
 		// cast the [definition] pointer to a T*
 		template<typename T> inline
 		T* Definition() const { return CAST_PTR(T*, definition); }
@@ -156,13 +162,15 @@ namespace Yelo
 		bool IsAdvanced() const;
 		bool IsBlockName() const;
 		bool IsInvisible() const;
+#endif
 	}; BOOST_STATIC_ASSERT( sizeof(tag_field) == 0xC );
 
 	// Called as each element is read from the tag stream
 	typedef bool (PLATFORM_API* proc_tag_block_postprocess_element)(void* element, Enums::tag_postprocess_mode mode);
 	// if [formatted_buffer] returns empty, the default block formatting is done
 	typedef cstring (PLATFORM_API* proc_tag_block_format)(datum_index tag_index, tag_block* block, int32 element_index, char formatted_buffer[Enums::k_tag_block_format_buffer_size]);
-	typedef void (PLATFORM_API* proc_tag_block_dispose_element)(tag_block* block, int32 element_index);
+	// Procedure called during tag_block_delete_element, but before all the child data is freed
+	typedef void (PLATFORM_API* proc_tag_block_delete_element)(tag_block* block, int32 element_index);
 	struct tag_block_definition
 	{
 		cstring name;
@@ -174,7 +182,7 @@ namespace Yelo
 		void* unused1;
 		proc_tag_block_postprocess_element postprocess_proc;
 		proc_tag_block_format format_proc;
-		proc_tag_block_dispose_element dispose_element_proc;
+		proc_tag_block_delete_element delete_proc;
 		byte_swap_code_t* byte_swap_codes;
 
 #if PLATFORM_IS_EDITOR
@@ -329,6 +337,14 @@ namespace Yelo
 		tag_block_definition* header_block_definition;
 		tag child_group_tags[Enums::k_maximum_children_per_tag];
 		int16 child_count; PAD16;
+
+#if PLATFORM_IS_EDITOR
+		inline TagGroups::s_tag_field_set_runtime_data* GetHeaderRuntimeInfo() const { return header_block_definition->GetRuntimeInfo(); }
+
+		// tag_group* [] (ie, tag_group**) qsort procs
+		static int __cdecl QsortCompareByName(void*, const void* lhs, const void* rhs);
+		static int __cdecl QsortCompareByGroupTag(void*, const void* lhs, const void* rhs);
+#endif
 	}; BOOST_STATIC_ASSERT( sizeof(tag_group) == 0x60 );
 
 
@@ -390,6 +406,7 @@ namespace Yelo
 		}; BOOST_STATIC_ASSERT( sizeof(s_tag_field_scan_state) == 0x64 );
 
 
+#if PLATFORM_IS_EDITOR
 		class c_tag_field_scanner
 		{
 			s_tag_field_scan_state m_state;
@@ -507,5 +524,6 @@ namespace Yelo
 				return s_iterator(nullptr);
 			}
 		};
+#endif
 	};
 };

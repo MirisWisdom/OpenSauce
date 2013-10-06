@@ -23,6 +23,15 @@ namespace Yelo
 	{
 		long_enum _InitError = k_error_none;
 
+		enum {
+			_deprecated_tag_group_spheroid,
+			_deprecated_tag_group_multiplayer_scenario_description,
+			_deprecated_tag_group_preferences_network_game,
+			k_number_of_deprecated_tag_groups,
+
+			k_number_of_non_deprecated_tag_groups = kTagGroupDefinitionsCount - k_number_of_deprecated_tag_groups,
+		};
+
 
 		static struct {
 			struct {
@@ -101,18 +110,36 @@ namespace Yelo
 				void SetupTagGroupPointers()
 				{
 					auto** old_tag_groups = CAST_PTR(tag_group**, kTagGroupDefinitionsAddress);
-					auto** address =  CAST_PTR(tag_group**, this->address);
+					auto** copy_to_address =  CAST_PTR(tag_group**, this->address);
+					size_t old_count = 0; // number of stock tag groups we've copied to our new list
 
 					// first, copy the original tag group pointers
-					int32 count;
-					for(count = kTagGroupDefinitionsCount; count > 0; count--, address++, old_tag_groups++)
-						*address = *old_tag_groups;
+					for(int group_count = kTagGroupDefinitionsCount; group_count > 0; group_count--, old_tag_groups++)
+					{
+						// Skip groups which are useless or unused
+						switch( (*old_tag_groups)->group_tag )
+						{
+						case 'boom': // spheroid
+						case 'mply': // multiplayer_scenario_description
+						case 'ngpr': // preferences_network_game
+							continue;
+						}
+
+						old_count++;
+						*(copy_to_address++) = *old_tag_groups;
+					}
+					assert(old_count == k_number_of_non_deprecated_tag_groups);
 
 					// then, copy our new tag group addresses
-					count = 0;
+					int index = 0;
 					for(s_custom_tag_group_datum* data = data_array->Datums(); 
-						count < data_array->Header.next_index; count++, address++)
-						*address = data[count].definition;
+						index < data_array->Header.next_index; index++, copy_to_address++)
+					{
+						*copy_to_address = data[index].definition;
+
+						// also mark the group as being an unofficial group
+						SET_FLAG(data[index].definition->flags, Flags::_tag_group_non_standard_yelo_bit, true);
+					}
 				}
 			}new_tag_groups;
 
@@ -206,22 +233,22 @@ namespace Yelo
 				return;
 
 			// use the memory following the cache file data for the tag groups address list
-			_globals.new_tag_groups.address = CAST_PTR(void**, CAST_PTR(uint32,_globals.cache.base_address) + _globals.cache.data_size );
-			_globals.new_tag_groups.count = (kTagGroupDefinitionsCount-1)+_globals.new_tag_groups.data_array->Header.next_index;
+			_globals.new_tag_groups.address = CAST_PTR(void**, CAST_PTR(uintptr_t,_globals.cache.base_address) + _globals.cache.data_size );
+			_globals.new_tag_groups.count = 
+				k_number_of_non_deprecated_tag_groups +
+				_globals.new_tag_groups.data_array->Header.next_index;
+
+			size_t list_end_offset = 
+				_globals.cache.data_size + 
+				(sizeof(tag_group**) * _globals.new_tag_groups.count);
+			assert(list_end_offset <= Enums::k_cheape_physical_memory_map_size);
 			
 			// HACK to make it unload the map and not use it since there are no extra tags
-			if(_globals.new_tag_groups.count == (kTagGroupDefinitionsCount-1))
+			if(_globals.new_tag_groups.count == k_number_of_non_deprecated_tag_groups)
 			{
 				Debug::Write("CheApe: No new tags");
 				_InitError = k_error_LoadCacheFile;
 			}
-		}
-
-		static int __cdecl tag_group_definition_compare(void *, const void* lhs, const void* rhs)
-		{
-			return strcmp(
-				(*CAST_PTR(const tag_group*const*,lhs))->name, 
-				(*CAST_PTR(const tag_group*const*,rhs))->name);
 		}
 
 		void SetupTagGroupPointers()
@@ -231,7 +258,7 @@ namespace Yelo
 			_globals.new_tag_groups.SetupTagGroupPointers();
 
 			// ABC the tag groups list
-			qsort_s(_globals.new_tag_groups.address, _globals.new_tag_groups.count+1, sizeof(tag_group*), tag_group_definition_compare, nullptr);
+			qsort_s(_globals.new_tag_groups.address, _globals.new_tag_groups.count, sizeof(tag_group*), tag_group::QsortCompareByName, nullptr);
 		}
 
 		void SetupTagGroupCounts()
@@ -240,10 +267,15 @@ namespace Yelo
 
 			uint16 group_count = CAST(uint16, _globals.new_tag_groups.count);
 
-			for(auto ptr : TagGroupDefinitionsCountRefs16bit)
+			for(auto ptr : TagGroupDefinitionsCountRefs8bit)
+				*CAST_PTR(byte*, ptr) = CAST(byte, group_count);
+
+			group_count--;
+
+			for(auto ptr : TagGroupDefinitionsCountRefs16bitMinus1)
 				*CAST_PTR(uint16*, ptr) = group_count;
 
-			for(auto ptr : TagGroupDefinitionsCountRefs8bit)
+			for(auto ptr : TagGroupDefinitionsCountRefs8bitMinus1)
 				*CAST_PTR(byte*, ptr) = CAST(byte, group_count);
 		}
 

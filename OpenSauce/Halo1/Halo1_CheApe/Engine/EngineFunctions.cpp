@@ -32,6 +32,17 @@ namespace Yelo
 		}
 	};
 
+	namespace blam
+	{
+		void debug_free_with_null(void*& pointer, cstring file, const uint32 line)
+		{
+			if(pointer != nullptr)
+				debug_free(pointer, file, line);
+
+			pointer = nullptr;
+		}
+	};
+
 	//////////////////////////////////////////////////////////////////////////
 	// cseries
 	namespace blam

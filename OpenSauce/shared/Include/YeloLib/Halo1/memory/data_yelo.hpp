@@ -43,7 +43,7 @@ namespace Yelo
 
 				DatumT* Next() {
 					return m_current_instance = 
-						CAST_PTR(DatumT*, blam::data_iterator_next( *CAST_PTR(s_data_iterator*, this) ));
+						CAST_PTR(DatumT*, blam::data_iterator_next(m_iterator));
 				}
 
 				datum_index Current() const { return this->m_iterator.index; }

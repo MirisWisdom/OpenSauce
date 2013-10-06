@@ -11,6 +11,9 @@
 #include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
 #include "Engine/EngineFunctions.hpp"
 
+typedef std::unordered_map<Yelo::tag, Yelo::TagGroups::c_tag_group_allocation_statistics> 
+	tag_group_allocation_statistics_map_t;
+
 namespace Yelo
 {
 	namespace TagGroups
@@ -19,11 +22,19 @@ namespace Yelo
 			bool field_set_runtime_info_enabled;
 			bool allocation_headers_enabled;
 			bool string_id_yelo_runtime_is_condensed;	// string_id_yelo's runtime value doesn't contain tag_reference data
+
+			tag_group_allocation_statistics_map_t* group_statistics;
 		}g_tag_group_memory_globals = {
 			true,
 			false,
 			true
 		};
+
+		//////////////////////////////////////////////////////////////////////////
+		// CheApe hooks
+		bool BlockHasCustomAlignment(const tag_block_definition* definition, _Out_ size_t& alignment_bit);
+		bool BlockHasVolatileFields(const tag_block_definition* definition);
+		bool BlockHasCustomComparisonCodes(const tag_block_definition* definition, _Out_ comparison_code_t*& codes_reference);
 
 		//////////////////////////////////////////////////////////////////////////
 		// s_tag_field_set_runtime_data
@@ -34,6 +45,7 @@ namespace Yelo
 			std::memset(this, 0, sizeof(*this)); // I like to act like I know what I'm doing. Ctors? Never heard of 'em!
 
 			BuildInfo(definition);
+			CallCheApeHooks(definition);
 			BuildByteComparisonCodes(definition);
 		}
 		void s_tag_field_set_runtime_data::Dispose()
@@ -95,6 +107,18 @@ namespace Yelo
 			assert(counts.data_fields <= k_max_data_fields);
 			counts.data_fields++;
 		}
+		void s_tag_field_set_runtime_data::IncrementStringFieldCount()
+		{
+			assert(counts.string_fields <= k_max_string_fields);
+			counts.string_fields++;
+		}
+		void s_tag_field_set_runtime_data::IncrementStringIdFieldCount()
+		{
+			SET_FLAG(flags, Flags::_tag_field_set_runtime_has_string_id_bit, true);
+
+			assert(counts.string_id_fields <= k_max_string_id_fields);
+			counts.string_id_fields++;
+		}
 		void s_tag_field_set_runtime_data::IncrementTotalPaddingSize(size_t size)
 		{
 			assert((counts.padding_amount+size) <= k_max_padding_amount);
@@ -119,12 +143,14 @@ namespace Yelo
 				case Enums::_field_string:
 					if(field.IsOldStringId())
 						SET_FLAG(flags, Flags::_tag_field_set_runtime_has_old_string_id_bit, true);
+
+					IncrementStringFieldCount();
 					break;
 
 				case Enums::_field_tag_reference:
 					if(field.IsStringId())
 					{
-						SET_FLAG(flags, Flags::_tag_field_set_runtime_has_string_id_bit, true);
+						IncrementStringIdFieldCount();
 
 						if(g_tag_group_memory_globals.string_id_yelo_runtime_is_condensed)
 							DecrementRuntimeSize(string_id_yelo::k_debug_data_size);
@@ -161,6 +187,13 @@ namespace Yelo
 			}
 		}
 
+		void s_tag_field_set_runtime_data::CallCheApeHooks(const tag_block_definition* definition)
+		{
+			// TODO: check for custom alignment bit
+			// TODO: check for volatile memory
+			// TODO: check for custom comparison codes
+		}
+
 		void s_tag_field_set_runtime_data::BuildByteComparisonCodes(const tag_block_definition* definition)
 		{
 			struct s_build_state
@@ -184,7 +217,7 @@ namespace Yelo
 				{
 					assert( count < codes.size() );
 
-					codes[++count] = Enums::_bs_code_array_end;
+					codes[++count] = 0;
 				}
 				// Return a reference to the current code (for incrementing)
 				inline comparison_code_t& IncCode()
@@ -203,6 +236,12 @@ namespace Yelo
 				}
 			}state = {false, 0};
 
+			if(TEST_FLAG(flags, Flags::_tag_field_set_runtime_custom_comparison_bit))
+			{
+				assert(comparison_codes);
+				return;
+			}
+
 			for(auto field : TagGroups::c_tag_field_scanner(definition->fields)
 				.AddAllFieldTypes() )
 			{
@@ -217,6 +256,8 @@ namespace Yelo
 				case Enums::_field_tag_reference:
 					if(g_tag_group_memory_globals.string_id_yelo_runtime_is_condensed && field.IsStringId())
 					{
+						runtime_size -= string_id_yelo::k_debug_data_size;
+
 						state.PrepareCodesForNewNegative();
 						state.IncCode() =		-string_id_yelo::k_debug_data_size; // tag_reference
 						state.SetLastFieldWasPositive(true);
@@ -269,7 +310,7 @@ namespace Yelo
 
 		void s_tag_field_set_runtime_data::DestroyByteComparisonCodes()
 		{
-			if(comparison_codes != nullptr)
+			if(comparison_codes != nullptr && !TEST_FLAG(flags, Flags::_tag_field_set_runtime_custom_comparison_bit))
 			{
 				YELO_DELETE_ARRAY(comparison_codes);
 				comparison_codes = nullptr;
@@ -279,6 +320,10 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////////
 		// system definitions
+		bool s_tag_field_set_runtime_data::Enabled()
+		{
+			return g_tag_group_memory_globals.field_set_runtime_info_enabled;
+		}
 
 		static s_tag_field_set_runtime_data* build_runtime_info_for_block_definition(tag_block_definition* block_definition)
 		{
@@ -291,13 +336,15 @@ namespace Yelo
 
 			info->Initialize(block_definition);
 
-// 			YELO_WARN( 
-// 				"% 56s % 4X % 4X "
-// 				"% 4d % 4d % 4d "
-// 				"% 4d % 4d % 8X ",
-// 				block_definition->name, info->flags, info->runtime_size,
-// 				info->counts.references, info->counts.tag_reference_fields, info->counts.block_fields, 
-// 				info->counts.block_index_fields, info->counts.data_fields, info->counts.padding_amount);
+#if FALSE
+			YELO_WARN( 
+				"% 56s % 4X % 4X "
+				"% 4d % 4d % 4d "
+				"% 4d % 4d % 8X ",
+				block_definition->name, info->flags, info->runtime_size,
+				info->counts.references, info->counts.tag_reference_fields, info->counts.block_fields, 
+				info->counts.block_index_fields, info->counts.data_fields, info->counts.padding_amount);
+#endif
 
 			return info;
 		}
@@ -376,17 +423,21 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////////
 		// s_tag_allocation_statistics
-		void s_tag_allocation_statistics::Initialize(const tag_block_definition* definition)
+		s_tag_allocation_statistics& s_tag_allocation_statistics::Initialize(const tag_block_definition* definition)
 		{
 			block_definition = definition;
 
 			block.count = block.elements = block.size = block.padding = 0;
+
+			return *this;
 		}
-		void s_tag_allocation_statistics::Initialize(const tag_data_definition* definition)
+		s_tag_allocation_statistics& s_tag_allocation_statistics::Initialize(const tag_data_definition* definition)
 		{
 			data_definition = definition;
 
 			data.count = data.size = 0;
+
+			return *this;
 		}
 
 		void s_tag_allocation_statistics::Update(const tag_block* instance)
@@ -415,6 +466,108 @@ namespace Yelo
 
 			data.count++;
 			data.size += instance->size;
+		}
+
+
+		//////////////////////////////////////////////////////////////////////////
+		// c_tag_group_allocation_statistics
+		s_tag_allocation_statistics* c_tag_group_allocation_statistics::GetChildStats(const tag_block* instance)
+		{
+			s_tag_allocation_statistics* stats = nullptr;
+
+			auto* definition = instance->definition;
+			auto predicate = [definition](const s_tag_allocation_statistics& stats) { return stats.block_definition == definition; };
+			auto iter = std::find_if(m_children.begin(), m_children.end(),
+				predicate);
+
+			if(iter == m_children.end())
+			{
+				m_children.push_back( s_tag_allocation_statistics().Initialize(instance->definition) );
+				stats = &m_children[m_children.size()-1];
+			}
+
+			return stats;
+		}
+		s_tag_allocation_statistics* c_tag_group_allocation_statistics::GetChildStats(const tag_data* instance)
+		{
+			s_tag_allocation_statistics* stats = nullptr;
+
+			auto* definition = instance->definition;
+			auto predicate = [definition](const s_tag_allocation_statistics& stats) { return stats.data_definition == definition; };
+			auto iter = std::find_if(m_children.begin(), m_children.end(),
+				predicate);
+
+			if(iter == m_children.end())
+			{
+				m_children.push_back( s_tag_allocation_statistics().Initialize(instance->definition) );
+				stats = &m_children[m_children.size()-1];
+			}
+
+			return stats;
+		}
+
+		c_tag_group_allocation_statistics::c_tag_group_allocation_statistics(tag group_tag, const s_tag_field_set_runtime_data& header_info) :
+			m_group_tag(group_tag),
+			// doesn't take into account the child of the immediate child blocks
+			m_children(header_info.counts.block_fields + header_info.counts.data_fields)
+		{
+		}
+		//////////////////////////////////////////////////////////////////////////
+		// system definitions
+		bool c_tag_group_allocation_statistics::Enabled()
+		{
+			return g_tag_group_memory_globals.group_statistics != nullptr;
+		}
+
+		void c_tag_group_allocation_statistics::Initialize()
+		{
+			assert( s_tag_field_set_runtime_data::Enabled() );
+			assert( !Enabled() );
+
+			g_tag_group_memory_globals.group_statistics = YELO_NEW_CTOR(tag_group_allocation_statistics_map_t);
+		}
+		void c_tag_group_allocation_statistics::Dispose()
+		{
+			assert( Enabled() );
+
+			YELO_DELETE( g_tag_group_memory_globals.group_statistics );
+		}
+
+		c_tag_group_allocation_statistics* c_tag_group_allocation_statistics::GetStats(tag group_tag)
+		{
+			assert( Enabled() );
+			c_tag_group_allocation_statistics* group_stats = nullptr;
+
+			auto& group_stats_map = *g_tag_group_memory_globals.group_statistics;
+			auto group_entry = group_stats_map.find(group_tag);
+
+			if(group_entry == group_stats_map.cend())
+			{
+				tag_group* group = blam::tag_group_get(group_tag);
+				assert( group!=nullptr );
+
+				group_stats_map.insert( std::make_pair(group_tag, c_tag_group_allocation_statistics(group_tag, 
+					*group->GetHeaderRuntimeInfo()) ));
+			}
+			else
+				group_stats = &(*group_entry).second;
+
+			return group_stats;
+		}
+
+		s_tag_allocation_statistics* c_tag_group_allocation_statistics::GetBlockStats(datum_index tag_index, const tag_block* instance)
+		{
+			tag group_tag = blam::tag_get_group_tag(tag_index);
+			auto* group_stats = GetStats(group_tag);
+
+			return group_stats->GetChildStats(instance);
+		}
+		s_tag_allocation_statistics* c_tag_group_allocation_statistics::GetDataStats(datum_index tag_index, const tag_data* instance)
+		{
+			tag group_tag = blam::tag_get_group_tag(tag_index);
+			auto* group_stats = GetStats(group_tag);
+
+			return group_stats->GetChildStats(instance);
 		}
 	};
 
