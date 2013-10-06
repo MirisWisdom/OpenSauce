@@ -12,12 +12,14 @@ namespace Yelo
 	{
 		bool s_data_iterator::operator!=(const s_data_iterator& other) const
 		{
-			if(other.IsEndHack())
-				return !index.IsNull();
-			else if(this->IsEndHack())
-				return !other.index.IsNull();
+			auto last_datum = this->data->last_datum;
 
-			return this->index != other.index;
+			if(other.IsEndHack())
+				return absolute_index != last_datum;
+			else if(this->IsEndHack())
+				return !other.absolute_index != last_datum;
+
+			return this->absolute_index != other.absolute_index;
 		}
 	};
 
@@ -47,6 +49,7 @@ namespace Yelo
 		void data_iterator_new(s_data_iterator& iterator, s_data_array* data)
 		{
 			data_verify(data);
+			ASSERT(data->is_valid, "invalid data array passed to " __FUNCTION__);
 
 			iterator.data = data;
 			iterator.signature = CAST_PTR(uintptr_t, data) ^ Enums::k_data_iterator_signature;

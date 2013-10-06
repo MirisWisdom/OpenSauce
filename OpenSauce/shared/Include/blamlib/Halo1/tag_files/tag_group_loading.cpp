@@ -76,7 +76,8 @@ namespace Yelo
 				return false;
 			}
 
-			data_definition->byte_swap_proc(block_element, data->address, data->size);
+			if( data_definition->byte_swap_proc != nullptr )
+				data_definition->byte_swap_proc(block_element, data->address, data->size);
 
 			return true;
 		}

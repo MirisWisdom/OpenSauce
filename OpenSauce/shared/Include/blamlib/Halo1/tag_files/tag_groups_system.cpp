@@ -22,6 +22,49 @@ namespace Yelo
 		// tag group memory
 		void build_group_runtime_info();
 		void destroy_group_runtime_info();
+
+		// called in the 'verify group fields' initialize step on tag_reference_definitions
+		static void TagGroupMarkAsReferenced(tag group_tag)
+		{
+			SET_FLAG(blam::tag_group_get(group_tag)->flags, Flags::_tag_group_referenced_yelo_bit, true);
+		}
+
+		static void CheckForUnreferencedGroups()
+		{
+#if FALSE
+			struct mark_parent_group_children_as_referenced_action
+			{ void operator()(tag_group* group) const
+			{
+				// also mark the parents as referenced
+				if(group->child_count > 0)
+					TagGroups::TagGroupMarkAsReferenced(group->group_tag);
+
+				for(int x = 0; x < group->child_count; x++)
+				{
+					TagGroupMarkAsReferenced(group->child_group_tags[x]);
+				}
+			} };
+
+			struct dump_non_referenced_tag_groups_action
+			{ void operator()(tag_group* group) const
+			{
+				if( !TEST_FLAG(group->flags, Flags::_tag_group_referenced_yelo_bit) )
+				{
+					YELO_WARN("unreferenced tag group: %s", group->name);
+				}
+			} };
+
+			// special cases
+			TagGroupMarkAsReferenced('vcky'); // virtual_keyboard
+			TagGroupMarkAsReferenced('Soul'); // ui_widget_collection
+			TagGroupMarkAsReferenced('mode'); // non-pc 'model' tag
+			TagGroupMarkAsReferenced('tagc'); // tag_collection
+			TagGroupMarkAsReferenced('devc'); // input_device_defaults
+
+			TagGroups::tag_groups_do_action<mark_parent_group_children_as_referenced_action>();
+			TagGroups::tag_groups_do_action<dump_non_referenced_tag_groups_action>();
+#endif
+		}
 	};
 
 	namespace blam
@@ -42,8 +85,9 @@ namespace Yelo
 				void operator()(tag_group* group)
 				{
 					m_group_string.group = group->group_tag;
+					m_group_string.TagSwap();
 					YELO_ASSERT_DISPLAY(group==tag_group_get(group->group_tag), "there are two groups using the tag '%s'.",
-						m_group_string.TagSwap().str);
+						m_group_string.str);
 				}
 			};
 
@@ -90,16 +134,28 @@ namespace Yelo
 				block_definition->name); // NOTE: added owner block name to info
 			YELO_ASSERT( VALID_FLAGS(definition->flags, Flags::k_number_of_tag_group_tag_reference_flags) );
 
+			TagGroups::group_tag_to_string gt_string; gt_string.Terminate();
+
 			if(definition->group_tag != NONE)
 			{
-				YELO_ASSERT( tag_group_get(definition->group_tag) );
+				gt_string.group = definition->group_tag;
+				YELO_ASSERT_DISPLAY( tag_group_get(definition->group_tag), 
+					"invalid group tag '%s' for tag reference field '%s' in block %s",
+					gt_string.TagSwap().str, field.name, block_definition->name);
 				YELO_ASSERT( definition->group_tags==nullptr );
+
+				TagGroups::TagGroupMarkAsReferenced(definition->group_tag);
 			}
 			else if(definition->group_tags != nullptr)
 			{
 				for(auto group_tag : *definition)
 				{
-					YELO_ASSERT( tag_group_get(group_tag) );
+					gt_string.group = group_tag;
+					YELO_ASSERT_DISPLAY( tag_group_get(group_tag),
+						"invalid group tag '%s' for variable tag reference field '%s' in block %s",
+						gt_string.TagSwap().str, field.name, block_definition->name);
+
+					TagGroups::TagGroupMarkAsReferenced(group_tag);
 				}
 			}
 		}
@@ -414,11 +470,15 @@ namespace Yelo
 		void PLATFORM_API tag_groups_initialize()
 		{
 			verify_tag_group_tags();
+
 			TagGroups::InitializeFieldSetReplacements();
-			verify_group_field_definitions();
 			TagGroups::InitializeFixes();
+
+			verify_group_field_definitions();
 			build_group_parents();
 			build_group_byte_swap_codes();
+
+			TagGroups::CheckForUnreferencedGroups();
 			TagGroups::build_group_runtime_info();
 
 			auto instance_data = CAST_PTR(Memory::s_data_array**, TagGroups::TagInstanceData());

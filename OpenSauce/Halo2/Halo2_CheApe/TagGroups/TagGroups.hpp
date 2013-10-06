@@ -192,9 +192,9 @@ namespace Yelo
 	typedef wcstring (PLATFORM_API* proc_tag_block_format)(datum_index tag_index, tag_block* block, int32 element_index, 
 		wchar_t* formatted_buffer, uint32 formatted_buffer_size);
 	typedef void (PLATFORM_API* proc_tag_bock_generate_default_element)(void* element);
-	typedef void (PLATFORM_API* proc_tag_block_dispose_element)(tag_block* block, int32 element_index);
-	// void? (PLATFORM_API* proc_tag_block_handle_invalid)(tag owner_group_tag, cstring owner_tag_name, long_flags flags, 
-	// tag group_tag, cstring tag_name, datum_index& out_tag_index)
+	typedef void (PLATFORM_API* proc_tag_block_delete_element)(tag_block* block, int32 element_index);
+	typedef void (PLATFORM_API* proc_tag_block_handle_invalid)(tag owner_group_tag, cstring owner_tag_name, long_flags flags, 
+		tag group_tag, cstring tag_name, datum_index& out_tag_index);
 	struct tag_block_definition
 	{
 		cstring			display_name;
@@ -210,8 +210,8 @@ namespace Yelo
 		proc_tag_block_postprocess_element		postprocess_proc;
 		proc_tag_block_format					format_proc;
 		proc_tag_bock_generate_default_element	generate_default_proc;
-		proc_tag_block_dispose_element			dispose_element_proc;
-		PAD32; // proc handle invalid
+		proc_tag_block_delete_element			delete_proc;
+		proc_tag_block_handle_invalid			handle_invalid_tag_proc;
 	}; BOOST_STATIC_ASSERT( sizeof(tag_block_definition) == 0x38 );
 
 	struct tag_struct_definition

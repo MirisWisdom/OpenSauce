@@ -45,17 +45,17 @@
 			PLATFORM_VALUE(0x4378CB, 0x435C6B, 0x4FC98B),
 		};
 
-		static const uintptr_t TagGroupDefinitionsCountRefs8bitPlus1[] = { // CMP esi, 53h
+		static const uintptr_t TagGroupDefinitionsCountRefs8bit[] = { // CMP esi, 53h
 			PLATFORM_VALUE(0x434EF2, 0x433482, 0x4F9FB2),
 		};
 
-		static const uintptr_t TagGroupDefinitionsCountRefs16bit[] = { // CMP ax, 52h
+		static const uintptr_t TagGroupDefinitionsCountRefs16bitMinus1[] = { // CMP ax, 52h
 			PLATFORM_VALUE(0x4351FF, 0x43372F, 0x4FA2BF),	PLATFORM_VALUE(0x4359CF, 0x433EFF, 0x4FAA8F),	PLATFORM_VALUE(0x435A82, 0x433FB2, 0x4FAB42),
 			PLATFORM_VALUE(0x435CBF, 0x4341EF, 0x4FAD7F),	PLATFORM_VALUE(0x435D23, 0x434253, 0x4FADE3),	PLATFORM_VALUE(0x435D73, 0x4342A3, 0x4FAE33),
 			PLATFORM_VALUE(0x4362F3, 0x434823, 0x4FB3B3),	PLATFORM_VALUE(0x4378BF, 0x435C5F, 0x4FC97F),
 		};
 
-		static const uintptr_t TagGroupDefinitionsCountRefs8bit[] = { // CMP cx, 52h
+		static const uintptr_t TagGroupDefinitionsCountRefs8bitMinus1[] = { // CMP cx, 52h
 			PLATFORM_VALUE(0x434B10, 0x433120, 0x4F9BD0),	PLATFORM_VALUE(0x434B61, 0x433171, 0x4F9C21),
 		};
 

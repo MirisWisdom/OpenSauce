@@ -16,6 +16,11 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
+		static struct {
+			std::set<tag_block_definition*>* block_definitions;
+			std::set<tag_data_definition*>* data_definitions;
+		}g_tag_group_yelo_globals;
+
 		int32 StringFieldGetLength(const tag_field* field)
 		{
 			assert(field->type == Enums::_field_string);
@@ -155,6 +160,19 @@ namespace Yelo
 		return m_fields != other.m_fields;
 	}
 
+	int __cdecl tag_group::QsortCompareByName(void*, const void* lhs, const void* rhs)
+	{
+		return strcmp(
+			(*CAST_PTR(const tag_group*const*,lhs))->name, 
+			(*CAST_PTR(const tag_group*const*,rhs))->name);
+	}
+	int __cdecl tag_group::QsortCompareByGroupTag(void*, const void* lhs, const void* rhs)
+	{
+		return
+			(*CAST_PTR(const tag_group*const*,lhs))->group_tag - 
+			(*CAST_PTR(const tag_group*const*,rhs))->group_tag;
+	}
+
 	namespace blam
 	{
 		datum_index PLATFORM_API find_tag_instance(tag group_tag, cstring name)
@@ -204,16 +222,32 @@ namespace Yelo
 			reference.group_tag = NONE;
 			reference.tag_index = datum_index::null;
 		}
+
+		void PLATFORM_API tag_reference_set_impl(tag_reference& reference, tag group_tag, cstring name)
+		{
+			YELO_ASSERT( group_tag==NONE || tag_group_get(group_tag) );
+			reference.group_tag = group_tag;
+
+			size_t name_length = strlen(name);
+			YELO_ASSERT( name_length<=Enums::k_max_tag_name_length ); // NOTE: engine does '<', but I'm pretty sure we want '<='
+
+			YELO_ASSERT( reference.name );
+			if(reference.name != name)
+				strcpy(reference.name, name);
+
+			reference.name_length = name_length;
+		}
 	};
 
 	// Frees the pointers used in more complex fields (tag_data, etc)
-	// NOTE: currently doesn't clear the pointers as this is only used by tag_block_delete_element
 	static void tag_block_delete_element_pointer_data(tag_block* block, int32 element_index)
 	{
 		auto* definition = block->definition;
 
-		if(definition->dispose_element_proc != nullptr)
-			definition->dispose_element_proc(block, element_index);
+		if( definition->delete_proc != nullptr )
+			definition->delete_proc(block, element_index);
+
+		// NOTE: YELO_FREE/DELETE take the pointers by reference, so that it can NULL them in the process
 
 		for(auto field : TagGroups::c_tag_field_scanner(definition->fields, blam::tag_block_get_element(block, element_index))
 			.AddFieldType(Enums::_field_block)
@@ -232,7 +266,7 @@ namespace Yelo
 				break;
 
 			case Enums::_field_tag_reference:
-				YELO_FREE( field.As<tag_reference>()->name );
+				YELO_DELETE( field.As<tag_reference>()->name );
 				break;
 
 			YELO_ASSERT_CASE_UNREACHABLE();
