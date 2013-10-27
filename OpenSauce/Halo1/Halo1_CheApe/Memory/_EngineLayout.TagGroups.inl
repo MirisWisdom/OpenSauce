@@ -12,6 +12,8 @@
 	{
 		ENGINE_DPTR(tag_instance_data_t, tag_instance_data,		0xAA57C0, 0xEB8A80, 0xBD5118);
 
+		ENGINE_PTR(string_list, shader_type_names_list,			0x9C9A5C, 0x6D7D24, 0xA3BB24);
+
 		FUNC_PTR(TAG_FILES_OPEN,			0x439BB0, 0x444A60, 0x4FCB20);
 
 		FUNC_PTR(TAG_NEW_MOD_CHILD_COUNT_ASSERT_JMP,	0x4363B8, 0x4348E8, 0x4FB478);

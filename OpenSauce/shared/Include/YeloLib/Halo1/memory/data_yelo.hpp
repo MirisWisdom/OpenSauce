@@ -24,8 +24,10 @@ namespace Yelo
 
 				IteratorResult(datum_index i, DatumT* d) : index(i), datum(d) {}
 
-				DatumT* operator->() const { return datum; }
-				DatumT& operator*() const { return *datum; }
+				inline DatumT* operator->() const { return datum; }
+				inline DatumT& operator*() const { return *datum; }
+
+				inline datum_index::index_t GetAbsoluteIndex() const { return index.index; }
 			};
 
 			struct Iterator {

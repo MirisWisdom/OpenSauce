@@ -8,9 +8,9 @@
 
 namespace Yelo
 {
-	namespace blam
+	namespace TagGroups
 	{
-		bool tag_file_requires_byte_swap()
+		bool TagFileRequiresByteSwap()
 		{
 			return true; // TODO: reference tag_file_globals
 		}

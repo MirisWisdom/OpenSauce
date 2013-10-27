@@ -26,6 +26,8 @@
 // [arg3] = documentation
 #define TAG_ENUM32(name, ...)				Yelo::long_enum name
 
+#define TAG_BLOCK_INDEX(block_type, name)	block_type::block_index_t name
+
 #define TAG_BLOCK(name, block_type)			Yelo::tag_block name
 // Used for blocks which need to allow non-const access
 #define TAG_TBLOCK_(name, block_type)		Yelo::TagBlock<block_type> name

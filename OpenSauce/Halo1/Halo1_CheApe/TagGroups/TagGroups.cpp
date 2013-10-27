@@ -8,6 +8,7 @@
 #include "TagGroups/TagGroups.hpp"
 
 #include <blamlib/Halo1/items/weapon_definitions.hpp>
+#include <blamlib/Halo1/shaders/shader_definitions.hpp>
 #include <blamlib/Halo1/tag_files/tag_group_loading.hpp>
 
 namespace Yelo
@@ -57,6 +58,23 @@ namespace Yelo
 			// NOTE: call tag_field_set_replacement_builder's here
 		}
 
+		// The shader type names list wasn't maintained at some point someone forgot to add the transparent chicago types 
+		static void InitializeFixesForShaderGroups()
+		{
+			string_list* type_names_list = GET_PTR2(shader_type_names_list);
+			cstring* type_names = type_names_list->strings;
+
+			// If this fails, something was fixed, or an address is wrong
+			YELO_ASSERT(type_names_list->count == Enums::k_number_of_shader_types && 
+				type_names[Enums::k_number_of_shader_types-1]==nullptr && type_names[Enums::k_number_of_shader_types-2]==nullptr );
+
+			// chicago types were inserted after the 'generic' type, so we have to move everything up by two
+			for(_enum x = Enums::k_number_of_shader_types-1; x > Enums::_shader_type_transparent_chicago_extended; x--)
+				type_names[x] = type_names[x-2];
+
+			type_names[Enums::_shader_type_transparent_chicago] = "transparent chicago";
+			type_names[Enums::_shader_type_transparent_chicago_extended] = "transparent chicago extended";
+		}
 		// weapon->magazines->objects errornously references the weapon->magazines format element proc (objects block can have more elements than magazines, which cases an assert in format)
 		// This fixes the supposed typo and instead uses the equipment field to be the block's name
 		static void InitializeFixesForWeaponGroup()
@@ -118,8 +136,9 @@ namespace Yelo
 		// NOTE: this is called from our implementation of tag_groups_initialize
 		void InitializeFixes()
 		{
-			InitializeFixesForWeaponGroup();
+			InitializeFixesForShaderGroups();
 			InitializeFixesForUnicodeStringListGroup();
+			InitializeFixesForWeaponGroup();
 
 			// This allows us to create tags which have child groups (eg, object, shader, unit, etc)
 			byte* child_count_assert_jmp_code = CAST_PTR(byte*, GET_FUNC_VPTR(TAG_NEW_MOD_CHILD_COUNT_ASSERT_JMP));

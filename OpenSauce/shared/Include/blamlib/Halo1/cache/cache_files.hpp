@@ -55,8 +55,7 @@ namespace Yelo
 
 			uint32 offset_to_index;
 			uint32 tag_memory_size;
-			PAD32; // ?
-			PAD32; // ?
+			PAD64; // ?
 			tag_string name;
 			tag_string build_string;
 			Enums::cache_file_type cache_type;
@@ -79,13 +78,16 @@ namespace Yelo
 		{
 			tag group_tag;			// 0x0
 			tag parent_groups[2];	// 0x4
-			datum_index datum;		// 0xC
+			datum_index handle;		// 0xC
 			cstring name;			// 0x10
-			void* definition;		// 0x14
+			void* base_address;		// 0x14
 			BOOL bool_in_data_file;	// 0x18
 			UNUSED_TYPE(int32);		// 0x1C
 
-			template<typename T> API_INLINE T* Definition() const { return CAST_PTR(T*, definition); }
+			template<typename T> inline
+			T* Definition() const { return CAST_PTR(T*, base_address); }
+
+			inline int32 GetAbsoluteIndex() { return handle.index; }
 
 			// Is this an instance of a certain tag group?
 			// If this instance a child of a certain tag group?
@@ -100,16 +102,16 @@ namespace Yelo
 
 		struct s_cache_tag_header
 		{
-			void* tags_address;		// 0x0
-			datum_index scenario;	// 0x4
-			UNKNOWN_TYPE(int32);	// 0x8
-			int32 count;			// 0xC
+			void* tags_address;			// 0x0
+			datum_index scenario_index;	// 0x4
+			uint32 checksum;			// 0x8
+			int32 count;				// 0xC
 			struct {
 				int32 count;
 				int32 offset;
-			}vertices, indices;		// 0x10, 0x18
-			uint32 model_data_size;	// 0x20
-			tag signature;			// 0x24
+			}vertices, indices;			// 0x10, 0x18
+			uint32 model_data_size;		// 0x20
+			tag signature;				// 0x24
 
 			// nasty hack assumption
 #pragma warning(push)

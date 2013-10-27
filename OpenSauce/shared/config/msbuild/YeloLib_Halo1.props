@@ -1,12 +1,12 @@
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup
     > <!--cache-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_memory_layout_table_definitions.hpp" />
 	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_files_yelo.hpp" />
 	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_files_yelo.cpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\data_file_yelo.hpp" />
 	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\data_file_yelo.cpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\shared_cache_file_definitions.hpp" />
-	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\shared_cache_files.cpp" />
   </ItemGroup>
   <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
     > <!--cache EDITOR-->
@@ -14,7 +14,9 @@
 	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_builder_yelo.cpp" />
 	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_memory.hpp" />
 	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_memory.cpp" />
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_memory_gestalt_definitions.hpp" />
 	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\shared_cache_files.hpp" />
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\shared_cache_files.cpp" />
   </ItemGroup>
   <ItemGroup
     > <!--cseries-->

@@ -372,6 +372,27 @@ namespace Yelo
 		};
 
 
+		template<typename T>
+		static T* RebasePointer(T* pointer, uintptr_t base_address, uintptr_t virtual_base_address)
+		{
+			T* result = CAST_PTR(T*,
+				(CAST_PTR(byte*,pointer) - base_address) + virtual_base_address);
+
+			return result;
+		}
+		template<typename T>
+		static T* AlignPointer(T* pointer, unsigned alignment_bit)
+		{
+			uintptr_t aligned_ptr = CAST_PTR(uintptr_t, pointer);
+			const uintptr_t alignment_mask = (1<<alignment_bit) - 1;
+
+			if(aligned_ptr & alignment_mask)
+				aligned_ptr = (aligned_ptr | alignment_mask) + 1;
+
+			return CAST_PTR(T*, aligned_ptr);
+		}
+
+
 		uint32 CRC(uint32& crc_reference, const void* buffer, int32 size);
 	};
 };

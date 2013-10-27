@@ -37,6 +37,7 @@ namespace Yelo
 	{
 		typedef int16 comparison_code_t;
 
+		// Data generated at startup, not strictly related to 'runtime' (ie, game) builds
 		struct s_tag_field_set_runtime_data
 		{
 			// these are, of course, not actual limits (tag system doesn't have any), but assumed.
@@ -76,6 +77,11 @@ namespace Yelo
 			void Initialize(const tag_block_definition* definition);
 			void Dispose();
 
+			// Returns true if the fieldset contains any fields which required optimized transformations for runtime builds
+			// This would be the case for string_id fields
+			bool ContainsRuntimeOptimizedFields() const;
+
+			// Enable the is_group_header bit
 			void SetIsGroupHeader();
 		private:
 			void DecrementRuntimeSize(size_t amount);
