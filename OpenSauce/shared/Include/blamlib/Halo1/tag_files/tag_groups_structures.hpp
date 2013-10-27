@@ -125,10 +125,15 @@ namespace Yelo
 			_tag_group_unknown2_bit,
 			// majority of tags have this set
 			_tag_group_reloadable_bit,
+
+			// YELO ONLY! tag_group is not meant for use in runtime builds
+			_tag_group_debug_only_yelo_bit,
 			// YELO ONLY! tag_group is non-standard (ie, official). This is applied to those defined in CheApe.map
+			// Set at startup.
 			_tag_group_non_standard_yelo_bit,
 			// YELO ONLY! tag_group is referenced in other groups via a tag_reference or as a parent group
-			// doesn't consider tag_references which can reference ANYTHING (eg, tag_collection's field)
+			// doesn't consider tag_references which can reference ANYTHING (eg, tag_collection's field).
+			// Set at startup.
 			_tag_group_referenced_yelo_bit,
 
 			// When this is set, implies _tag_postprocess_mode_for_editor, else _for_runtime
@@ -340,6 +345,8 @@ namespace Yelo
 
 #if PLATFORM_IS_EDITOR
 		inline TagGroups::s_tag_field_set_runtime_data* GetHeaderRuntimeInfo() const { return header_block_definition->GetRuntimeInfo(); }
+
+		inline bool IsDebugOnly() const { return TEST_FLAG(flags, Flags::_tag_group_debug_only_yelo_bit); }
 
 		// tag_group* [] (ie, tag_group**) qsort procs
 		static int __cdecl QsortCompareByName(void*, const void* lhs, const void* rhs);

@@ -20,8 +20,8 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////////
 		// tag group memory
-		void build_group_runtime_info();
-		void destroy_group_runtime_info();
+		void BuildGroupRuntimeInfo();
+		void DestroyGroupRuntimeInfo();
 
 		// called in the 'verify group fields' initialize step on tag_reference_definitions
 		static void TagGroupMarkAsReferenced(tag group_tag)
@@ -479,7 +479,7 @@ namespace Yelo
 			build_group_byte_swap_codes();
 
 			TagGroups::CheckForUnreferencedGroups();
-			TagGroups::build_group_runtime_info();
+			TagGroups::BuildGroupRuntimeInfo();
 
 			auto instance_data = CAST_PTR(Memory::s_data_array**, TagGroups::TagInstanceData());
 			*instance_data = data_new<s_tag_instance, Enums::k_maximum_simultaneous_tag_instances_upgrade>("tag instance");
@@ -506,7 +506,7 @@ namespace Yelo
 				*TagGroups::TagInstanceData() = nullptr;
 			}
 
-			TagGroups::destroy_group_runtime_info();
+			TagGroups::DestroyGroupRuntimeInfo();
 			destroy_group_byte_swap_codes();
 			destroy_group_parents();
 		}

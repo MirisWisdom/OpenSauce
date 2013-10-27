@@ -25,6 +25,9 @@ namespace Yelo
 			int16 last_datum;		// Last used datum index
 			datum_index next_datum;	// Next datum value to use
 			void* data;
+
+			datum_index::salt_t GetInitialSalt() const;
+			datum_index::salt_t GetNextSalt(datum_index::salt_t cursor) const;
 		};
 
 		struct s_data_iterator

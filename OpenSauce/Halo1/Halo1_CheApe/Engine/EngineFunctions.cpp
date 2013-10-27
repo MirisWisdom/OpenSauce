@@ -9,6 +9,7 @@
 
 #include <blamlib/Halo1/math/periodic_functions.hpp>
 #include <blamlib/Halo1/memory/byte_swapping.hpp>
+#include <blamlib/Halo1/memory/memory_pool.hpp>
 #include <blamlib/Halo1/tag_files/files.hpp>
 #include <blamlib/Halo1/tag_files/tag_files.hpp>
 
@@ -29,17 +30,6 @@ namespace Yelo
 				push	parameter
 				call	FUNCTION
 			API_FUNC_NAKED_END_CDECL(2);
-		}
-	};
-
-	namespace blam
-	{
-		void debug_free_with_null(void*& pointer, cstring file, const uint32 line)
-		{
-			if(pointer != nullptr)
-				debug_free(pointer, file, line);
-
-			pointer = nullptr;
 		}
 	};
 
@@ -197,6 +187,63 @@ namespace Yelo
 		API_FUNC_NAKED void PLATFORM_API data_make_valid(s_data_array* data)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATA_MAKE_VALID);
+
+			__asm	jmp	FUNCTION
+		}
+
+		//////////////////////////////////////////////////////////////////////////
+		// memory_pool.c
+		API_FUNC_NAKED void PLATFORM_API memory_pool_initialize(Memory::s_memory_pool* pool, cstring name, int32 pool_size)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(MEMORY_POOL_INITIALIZE);
+
+			__asm	jmp	FUNCTION
+		}
+		API_FUNC_NAKED void PLATFORM_API memory_pool_verify(const Memory::s_memory_pool* pool)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(MEMORY_POOL_VERIFY);
+
+			__asm	jmp	FUNCTION
+		}
+		API_FUNC_NAKED Memory::s_memory_pool* PLATFORM_API memory_pool_new(cstring name, int32 pool_size)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(MEMORY_POOL_NEW);
+
+			__asm	jmp	FUNCTION
+		}
+		PLATFORM_VALUE(API_FUNC_NAKED, , API_FUNC_NAKED) void PLATFORM_API memory_pool_delete(Memory::s_memory_pool* pool)
+		{
+#if PLATFORM_ID == PLATFORM_TOOL
+			memory_pool_verify(pool);
+			memset(pool, 0, sizeof(*pool));
+			YELO_FREE(pool); // FREE is preferred here over DELETE since the type is a POD engine type
+#else
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(MEMORY_POOL_DELETE);
+
+			__asm	jmp	FUNCTION
+#endif
+		}
+		API_FUNC_NAKED bool PLATFORM_API memory_pool_block_allocate(Memory::s_memory_pool* pool, _Inout_ s_memory_pool_block::reference_t reference, int32 size)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(MEMORY_POOL_BLOCK_ALLOCATE);
+
+			__asm	jmp	FUNCTION
+		}
+		API_FUNC_NAKED void PLATFORM_API memory_pool_block_free(Memory::s_memory_pool* pool, _Inout_ s_memory_pool_block::reference_t reference)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(MEMORY_POOL_BLOCK_FREE);
+
+			__asm	jmp	FUNCTION
+		}
+		API_FUNC_NAKED void PLATFORM_API memory_pool_defragment(Memory::s_memory_pool* pool)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(MEMORY_POOL_DEFRAGMENT);
+
+			__asm	jmp	FUNCTION
+		}
+		API_FUNC_NAKED bool PLATFORM_API memory_pool_block_reallocate(Memory::s_memory_pool* pool, _Inout_ s_memory_pool_block::reference_t reference, int32 new_size)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(MEMORY_POOL_BLOCK_REALLOCATE);
 
 			__asm	jmp	FUNCTION
 		}

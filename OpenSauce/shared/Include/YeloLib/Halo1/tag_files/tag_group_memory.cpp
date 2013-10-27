@@ -38,7 +38,7 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////////
 		// s_tag_field_set_runtime_data
-		s_tag_field_set_runtime_data* build_runtime_info_for_block_definition(tag_block_definition* block_definition);
+		s_tag_field_set_runtime_data* BuildRuntimeInfoForBlockDefinition(tag_block_definition* block_definition);
 
 		void s_tag_field_set_runtime_data::Initialize(const tag_block_definition* definition)
 		{
@@ -53,6 +53,11 @@ namespace Yelo
 			DestroyByteComparisonCodes();
 		}
 
+		bool s_tag_field_set_runtime_data::ContainsRuntimeOptimizedFields() const
+		{
+			return	g_tag_group_memory_globals.string_id_yelo_runtime_is_condensed &&
+					TEST_FLAG(flags, Flags::_tag_field_set_runtime_has_string_id_bit);
+		}
 		void s_tag_field_set_runtime_data::SetIsGroupHeader()
 		{
 			SET_FLAG(flags, Flags::_tag_field_set_runtime_is_group_header_bit, true);
@@ -162,7 +167,7 @@ namespace Yelo
 				case Enums::_field_block:
 					IncrementBlockFieldCount();
 
-					build_runtime_info_for_block_definition( field.DefinitionAs<tag_block_definition>() )
+					BuildRuntimeInfoForBlockDefinition( field.DefinitionAs<tag_block_definition>() )
 						->IncrementReferenceCountFromBlockField();
 					break;
 
@@ -170,7 +175,7 @@ namespace Yelo
 				case Enums::_field_long_block_index:
 					IncrementBlockIndexFieldCount();
 
-					build_runtime_info_for_block_definition( field.DefinitionAs<tag_block_definition>() )
+					BuildRuntimeInfoForBlockDefinition( field.DefinitionAs<tag_block_definition>() )
 						->IncrementReferenceCountFromBlockIndexField();
 					break;
 
@@ -325,7 +330,7 @@ namespace Yelo
 			return g_tag_group_memory_globals.field_set_runtime_info_enabled;
 		}
 
-		static s_tag_field_set_runtime_data* build_runtime_info_for_block_definition(tag_block_definition* block_definition)
+		static s_tag_field_set_runtime_data* BuildRuntimeInfoForBlockDefinition(tag_block_definition* block_definition)
 		{
 			s_tag_field_set_runtime_data* info = block_definition->GetRuntimeInfo();
 			if(info != nullptr)
@@ -348,7 +353,7 @@ namespace Yelo
 
 			return info;
 		}
-		void build_group_runtime_info()
+		void BuildGroupRuntimeInfo()
 		{
 			if(!g_tag_group_memory_globals.field_set_runtime_info_enabled)
 				return;
@@ -356,7 +361,7 @@ namespace Yelo
 			struct build_runtime_data_info_action
 			{ void operator()(tag_block_definition* block_definition) const
 			{
-				build_runtime_info_for_block_definition(block_definition);
+				BuildRuntimeInfoForBlockDefinition(block_definition);
 			} void operator()(tag_group* group) const
 			{
 				group->header_block_definition->DoRecursiveAction(*this);
@@ -366,7 +371,7 @@ namespace Yelo
 			tag_groups_do_action<build_runtime_data_info_action>();
 		}
 
-		void destroy_group_runtime_info()
+		void DestroyGroupRuntimeInfo()
 		{
 			if(!g_tag_group_memory_globals.field_set_runtime_info_enabled)
 				return;

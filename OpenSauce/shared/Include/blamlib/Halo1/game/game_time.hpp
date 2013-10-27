@@ -21,7 +21,8 @@ namespace Yelo
 			UNKNOWN_TYPE(int16);	// 0x8
 			PAD16;
 			int32 game_time;		// 0xC
-			int32 elapsed_time;		// 0x10
+			int16 elapsed_time;		// 0x10
+			PAD16;
 			int32 server_time;		// 0x14
 			real game_speed;		// 0x18
 			real leftover_time_sec;	// 0x1C

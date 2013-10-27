@@ -93,18 +93,6 @@
       <Filter>.blamlib\cache</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
-    > <!--cache EDITOR-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\cache_file_builder.hpp">
-      <Filter>.blamlib\cache</Filter>
-    </ClInclude>
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\cache_file_builder.cpp">
-      <Filter>.blamlib\cache</Filter>
-    </ClCompile>
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\data_file.cpp">
-      <Filter>.blamlib\cache</Filter>
-    </ClCompile>
-  </ItemGroup>
 
   <ItemGroup
     > <!--camera-->
@@ -194,12 +182,6 @@
       <Filter>.blamlib\effects</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'false' "
-    > <!--effects GAME-->
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\effects\damage_effect_definitions.cpp">
-      <Filter>.blamlib\effects</Filter>
-    </ClCompile>
-  </ItemGroup>
 
   <ItemGroup
     > <!--game-->
@@ -268,13 +250,6 @@
     </ClInclude>
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
-    > <!--guerilla EDITOR-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\guerilla\tags_interface.hpp">
-      <Filter>.blamlib\guerilla</Filter>
-    </ClInclude>
-  </ItemGroup>
-
   <ItemGroup
     > <!--hs-->
 	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs.hpp">
@@ -310,12 +285,6 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\object_lists.hpp">
       <Filter>.blamlib\hs</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
-    > <!--hs EDITOR-->
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs_scenario_definitions.cpp">
-      <Filter>.blamlib\hs</Filter>
-    </ClCompile>
   </ItemGroup>
 
   <ItemGroup
@@ -397,12 +366,6 @@
       <Filter>.blamlib\interface</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'false' "
-    > <!--interface GAME-->
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\interface\map_list.cpp">
-      <Filter>.blamlib\interface</Filter>
-    </ClCompile>
-  </ItemGroup>
 
   <ItemGroup
     > <!--items-->
@@ -447,12 +410,6 @@
       <Filter>.blamlib\main</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'false' "
-    > <!--main GAME-->
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\main\main.cpp">
-      <Filter>.blamlib\main</Filter>
-    </ClCompile>
-  </ItemGroup>
 
   <ItemGroup
     > <!--math-->
@@ -484,15 +441,6 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\memory\memory_pool.hpp">
       <Filter>.blamlib\memory</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
-    > <!--memory EDITOR-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\memory\byte_swapping.hpp">
-      <Filter>.blamlib\memory</Filter>
-    </ClInclude>
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\memory\byte_swapping.cpp">
-      <Filter>.blamlib\memory</Filter>
-    </ClCompile>
   </ItemGroup>
 
   <ItemGroup
@@ -594,12 +542,6 @@
       <Filter>.blamlib\objects\widgets</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'false' "
-    > <!--objects GAME-->
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\objects\object_structures.cpp">
-      <Filter>.blamlib\objects</Filter>
-    </ClCompile>
-  </ItemGroup>
 
   <ItemGroup
     > <!--physics-->
@@ -641,12 +583,6 @@
 	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\rasterizer\dx9\rasterizer_dx9_render_targets.hpp">
       <Filter>.blamlib\rasterizer\dx9</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'false' "
-    > <!--rasterizer GAME-->
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\rasterizer\dx9\rasterizer_dx9_render_targets.cpp">
-      <Filter>.blamlib\rasterizer\dx9</Filter>
-    </ClCompile>
   </ItemGroup>
 
   <ItemGroup
@@ -733,36 +669,6 @@
       <Filter>.blamlib\tag_files</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
-    > <!--tag_files EDITOR-->
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\files_windows.cpp">
-      <Filter>.blamlib\tag_files</Filter>
-    </ClCompile>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_files.hpp">
-      <Filter>.blamlib\tag_files</Filter>
-    </ClInclude>
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_files.cpp">
-      <Filter>.blamlib\tag_files</Filter>
-    </ClCompile>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_loading.hpp">
-      <Filter>.blamlib\tag_files</Filter>
-    </ClInclude>
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_loading.cpp">
-      <Filter>.blamlib\tag_files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups.cpp">
-      <Filter>.blamlib\tag_files</Filter>
-    </ClCompile>
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups_field_scan.cpp">
-      <Filter>.blamlib\tag_files</Filter>
-    </ClCompile>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups_structures.hpp">
-      <Filter>.blamlib\tag_files</Filter>
-    </ClInclude>
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups_system.cpp">
-      <Filter>.blamlib\tag_files</Filter>
-    </ClCompile>
-  </ItemGroup>
 
   <ItemGroup
     > <!--text-->
@@ -771,13 +677,6 @@
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\text\text_group.hpp">
       <Filter>.blamlib\text</Filter>
-    </ClInclude>
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
-    > <!--tool EDITOR-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tool\tool.hpp">
-      <Filter>.blamlib\tool</Filter>
     </ClInclude>
   </ItemGroup>
 

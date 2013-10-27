@@ -6,10 +6,30 @@
 #include "Common/Precompile.hpp"
 #include <blamlib/Halo1/memory/data.hpp>
 
+static const Yelo::datum_index::salt_t k_datum_index_salt_msb = 
+	1U << 
+	(BIT_COUNT(Yelo::datum_index::salt_t) - 1);
+
 namespace Yelo
 {
 	namespace Memory
 	{
+		datum_index::salt_t s_data_array::GetInitialSalt() const
+		{
+			datum_index::salt_t result = 0;
+			std::strncpy(CAST_PTR(char*, &result), this->name, sizeof(result));
+
+			result |= k_datum_index_salt_msb;
+
+			return result;
+		}
+		datum_index::salt_t s_data_array::GetNextSalt(datum_index::salt_t cursor) const
+		{
+			return ++cursor != 0 
+				? cursor
+				: k_datum_index_salt_msb;
+		}
+
 		bool s_data_iterator::operator!=(const s_data_iterator& other) const
 		{
 			auto last_datum = this->data->last_datum;

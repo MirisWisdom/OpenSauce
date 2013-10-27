@@ -25,23 +25,23 @@ uint32 CalculateCRC(void* cache_file)
 
 	// get pointers to the necessary cache data
 	auto* cache = CAST_PTR(s_cache_header*, cache_file);
-	auto* tag_header = CAST_PTR(s_cache_tag_header*, (uint32)cache + cache->offset_to_index);
-	auto* tag_instances = CAST_PTR(s_cache_tag_instance*, (uint32)tag_header + sizeof(s_cache_tag_header));
+	auto* tag_header = CAST_PTR(s_cache_tag_header*, (uintptr_t)cache + cache->offset_to_index);
+	auto* tag_instances = CAST_PTR(s_cache_tag_instance*, (uintptr_t)tag_header + sizeof(s_cache_tag_header));
 
 	// the tag address needs correcting to match the datas starting point
-	uint32 orig = (uint32)tag_header->tags_address;
-	uint32 curr = (uint32)tag_instances;
+	uintptr_t orig = (uintptr_t)tag_header->tags_address;
+	uintptr_t curr = (uintptr_t)tag_instances;
 
 	// get the scenario tag
 	s_cache_tag_instance& scenario_tag_instance = tag_instances[tag_header->scenario.index];
-	auto* scenario_tag = CAST_PTR(TagGroups::scenario*, TAG_ADDRESS(orig, curr, (uint32)scenario_tag_instance.definition));
+	auto* scenario_tag = CAST_PTR(TagGroups::scenario*, TAG_ADDRESS(orig, curr, (uint32)scenario_tag_instance.base_address));
 
 	uint32 bsp_count = scenario_tag->structure_bsps.Count;
 	if(bsp_count != 0)
 	{
 		// can't access the block normally as its pointer is not correct for the cache's starting point
 		auto* structure_bsps_block = CAST_PTR(TagGroups::scenario_structure_bsp_reference*,
-			TAG_ADDRESS(orig, curr, (uint32)scenario_tag->structure_bsps.Address));
+			TAG_ADDRESS(orig, curr, (uintptr_t)scenario_tag->structure_bsps.Address));
 
 		// this isn't correct for non-PC maps apparently, but we ARE on a pc...AREN'T we
 		uint32 bsp_data_start = (uint32)cache + sizeof(s_cache_header);
@@ -57,7 +57,7 @@ uint32 CalculateCRC(void* cache_file)
 	}
 
 	// crc raw data
-	Memory::CRC(CRC, CAST_PTR(void*, (uint32)cache + tag_header->vertices.offset), tag_header->model_data_size);
+	Memory::CRC(CRC, CAST_PTR(void*, (uintptr_t)cache + tag_header->vertices.offset), tag_header->model_data_size);
 
 	// crc tag data
 	Memory::CRC(CRC, CAST_PTR(void*, tag_header), cache->tag_memory_size);

@@ -33,12 +33,12 @@ namespace Yelo
 
 			tag signature;
 		}; BOOST_STATIC_ASSERT( sizeof(s_tag_header) == 0x40 );
+
+		bool TagFileRequiresByteSwap();
 	};
 
 	namespace blam
 	{
-		bool tag_file_requires_byte_swap(); // non-standard
-
 		void PLATFORM_API tag_files_flush();
 
 

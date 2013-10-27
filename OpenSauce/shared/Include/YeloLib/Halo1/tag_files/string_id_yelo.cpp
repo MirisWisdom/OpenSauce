@@ -104,6 +104,7 @@ namespace Yelo
 
 	namespace TagGroups
 	{
+#if PLATFORM_IS_EDITOR
 		bool TagFieldIsStringId(const tag_field* field)
 		{
 			// NOTE: feign string_id fields should have the _tag_reference_non_resolving_bit set
@@ -117,5 +118,6 @@ namespace Yelo
 			return	field->type == Enums::_field_string &&
 					field->DefinitionCast<tag>() == s_string_id_yelo_definition::k_group_tag;
 		}
-	}
+#endif
+	};
 };

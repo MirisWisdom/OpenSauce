@@ -7,6 +7,7 @@
 #include "Common/Precompile.hpp"
 
 #if PLATFORM_ID == PLATFORM_GUERILLA
+#include <blamlib/Halo1/guerilla/field_dialog_structures.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 #include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
 #include "Engine/EngineFunctions.hpp"
@@ -99,29 +100,8 @@ namespace Yelo
 		//////////////////////////////////////////////////////////////////////////
 
 
-		// NOTE: Bungie defines their own controls for the roles of CEdit,
-		// which derive from CWnd. So you can't just treat the edit control of a field as as CEdit
-		enum {
-			// string_dialog's value (field_dialog_named) control
-			k_idc_tag_string_value = 0x65,
-
-			// tag_reference_dialog's tag-name control
-			k_idc_tag_reference_name = 0x140,
-			// tag_reference_dialog's group-tag control
-			k_idc_tag_reference_group = 0x141,
-
-			// field_dialog_named's 'name' control
-			k_idc_field_dialog_name = 0x154,
-
-			// field_dialog_named_with_units's 'units' control
-			k_idc_field_dialog_units = 0x17F,
-		};
 		struct field_dialog_extensions
 		{
-			enum {
-				k_field_info_offset = 0x5C,
-			};
-
 			static inline void OnCtlColor__string_id_field_name(void* CDC_)
 			{
 				// Set the field-name control text to blue
@@ -294,12 +274,10 @@ the_end:
 				/*CString const& */void* value, 
 				int nChars)
 			{
-				enum { field_info_offset = field_dialog_extensions::k_field_info_offset };
-
 				API_FUNC_NAKED_START()
 					push	esi		// string_dialog* this
 
-					mov		esi, [esi+field_info_offset]
+					mov		esi, [esi+k_field_dialog_field_information_offset]
 					push	esi
 					push	nChars
 					push	value

@@ -1284,7 +1284,7 @@ BOOL OpenTag(const char* arguments)
 	Yelo::tag_block_definition* root_definition = tag_group_def->header_block_definition;
 
 	// print the tags contents
-	return PrintBlock((DWORD)g_cache_view_globals.m_cache_tag_instances[index].definition, root_definition);
+	return PrintBlock((DWORD)g_cache_view_globals.m_cache_tag_instances[index].base_address, root_definition);
 }
 ///////////////////////////////////////////////////////////
 
@@ -1323,7 +1323,7 @@ BOOL PrintTagIndex(const char* filter)
 		StringEditing::StringTruncate(tag_name, 70, 10);
 
 		// print the tag instance information
-		Console::ColorPrintF(k_color_index, "%i", g_cache_view_globals.m_cache_tag_instances[i].datum.index);
+		Console::ColorPrintF(k_color_index, "%i", g_cache_view_globals.m_cache_tag_instances[i].GetAbsoluteIndex());
 		Console::ColorPrint(k_color_default, ":\t[");
 		Console::ColorPrintF(k_color_tag, "%s", tags[0].str);
 		Console::ColorPrint(k_color_default, ":");
@@ -1331,7 +1331,7 @@ BOOL PrintTagIndex(const char* filter)
 		Console::ColorPrint(k_color_default, ":");
 		Console::ColorPrintF(k_color_tag, "%s", tags[2].str);
 		Console::ColorPrint(k_color_default, "] : ");
-		Console::ColorPrintF(k_color_address, "0x%08X\n", g_cache_view_globals.m_cache_tag_instances[i].definition);
+		Console::ColorPrintF(k_color_address, "0x%08X\n", g_cache_view_globals.m_cache_tag_instances[i].base_address);
 		Console::ColorPrintF(k_color_name, "\t%s\n", tag_name.c_str());
 
 		count++;

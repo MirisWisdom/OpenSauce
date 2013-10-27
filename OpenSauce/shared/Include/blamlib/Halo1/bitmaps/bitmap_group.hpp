@@ -128,7 +128,7 @@ namespace Yelo
 				TAG_FLAG16(swizzled);
 				TAG_FLAG16(linear);
 				TAG_FLAG16(v16u16);
-				TAG_FLAG16(unused6); // if it's used, it's set at runtime
+				TAG_FLAG16(orphan); // this bitmap and its pixel data are allocated outside of the tag system
 				TAG_FLAG16(cached); // _bitmap_cached_bit
 				TAG_FLAG16(in_data_file); // data is in the bitmaps data file, not the cache file
 			}; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );

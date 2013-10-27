@@ -52,6 +52,11 @@
 	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\cseries\cseries.hpp" />
 	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\cseries\errors.hpp" />
   </ItemGroup>
+  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
+    > <!--cseries EDITOR-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\cseries\debug_memory.hpp" />
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\cseries\debug_memory.cpp" />
+  </ItemGroup>
   <ItemGroup
     > <!--cutscene-->
 	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\cutscene\recorded_animation_definitions.hpp" />
@@ -111,6 +116,7 @@
   </ItemGroup>
   <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
     > <!--guerilla EDITOR-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\guerilla\field_dialog_structures.hpp" />
 	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\guerilla\tags_interface.hpp" />
   </ItemGroup>
   <ItemGroup

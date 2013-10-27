@@ -8,6 +8,7 @@
 
 #include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+#include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 #include "Engine/EngineFunctions.hpp"
 
@@ -58,7 +59,7 @@ namespace Yelo
 			{
 			case Enums::_scenario_type_main_menu:
 				{
-					globals->player_info[0].unit.set(NONE, "");
+					globals->player_info[0].unit.clear();
 					globals->materials.resize(0);
 					globals->falling_damage.resize(0);
 				} // fall through
@@ -97,30 +98,11 @@ namespace Yelo
 		static const unsigned k_cache_file_tag_memory_alignment_bit = Flags::_alignment_32_bit;
 
 		template<typename T>
-		static T* rebase_pointer(T* pointer, uintptr_t base_address, uintptr_t virtual_base_address)
-		{
-			T* result = CAST_PTR(T*,
-				(CAST_PTR(byte*,pointer) - base_address) + virtual_base_address);
-
-			return result;
-		}
-		template<typename T>
-		static T* align_pointer(T* pointer, unsigned alignment_bit = k_cache_file_tag_memory_alignment_bit)
-		{
-			uintptr_t aligned_ptr = CAST_PTR(uintptr_t, pointer);
-			const uintptr_t alignment_mask = (1<<alignment_bit) - 1;
-
-			if(aligned_ptr & alignment_mask)
-				aligned_ptr = (aligned_ptr | alignment_mask) + 1;
-
-			return CAST_PTR(T*, aligned_ptr);
-		}
-		template<typename T>
 		static T* stream_blob_to_buffer(T*& stream, const void* blob, size_t blob_size, unsigned alignment_bit = k_cache_file_tag_memory_alignment_bit)
 		{
 			std::memcpy(stream, blob, blob_size);
 			stream = CAST_PTR(byte*, stream) + blob_size;
-			stream = align_pointer(stream);
+			stream = Memory::AlignPointer(stream, alignment_bit);
 			return stream;
 		}
 
@@ -140,7 +122,7 @@ namespace Yelo
 				if(data->size > 0 && data->address != nullptr)
 				{
 					// record the current stream position as runtime address for the data blob, then write the blob
-					void* data_address = rebase_pointer(return_stream, stream_base_address, virtual_base_address);
+					void* data_address = Memory::RebasePointer(return_stream, stream_base_address, virtual_base_address);
 					stream_blob_to_buffer(return_stream, data->address, data->size);
 
 					data->definition = nullptr;
@@ -163,7 +145,7 @@ namespace Yelo
 			if(block->count > 0)
 			{
 				// record the current stream position as runtime address for the block elements, then write the elements
-				void* elements_address = rebase_pointer(return_stream, stream_base_address, virtual_base_address);
+				void* elements_address = Memory::RebasePointer(return_stream, stream_base_address, virtual_base_address);
 				return_stream = stream_tag_block_to_buffer(block, return_stream, stream_base_address, virtual_base_address, tag_names);
 
 				block->address = elements_address;
@@ -252,7 +234,7 @@ namespace Yelo
 
 		size_t stream_tag_to_buffer(datum_index tag_index, void* stream, size_t& return_stream_offset, uintptr_t virtual_base_address, tag_reference_name_reference* tag_names)
 		{
-			tag_block* block = nullptr;
+			const tag_block* block = &TagGroups::TagInstances()[tag_index]->root_block;
 
 			void* return_stream = stream_tag_block_to_buffer(block, stream, CAST_PTR(uintptr_t, stream), virtual_base_address, tag_names);
 
