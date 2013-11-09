@@ -45,6 +45,8 @@ namespace Yelo
 	}
 	char* wstring_to_string_lazy(char* string, int32 string_length, wcstring wide)
 	{
+		assert(string_length > 0);
+
 		string[--string_length] = '\0';
 		for(int32 x = 0; string_length--; x++)
 		{
@@ -64,6 +66,8 @@ namespace Yelo
 	}
 	wstring string_to_wstring_lazy(wstring string, int32 string_length, cstring ascii)
 	{
+		assert(string_length > 0);
+
 		string[--string_length] = L'\0';
 		for(int32 x = 0; string_length--; x++)
 		{

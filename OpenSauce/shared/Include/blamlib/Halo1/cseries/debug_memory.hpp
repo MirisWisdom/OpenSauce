@@ -14,6 +14,9 @@ namespace Yelo
 
 	namespace blam
 	{
+		// The engine's debug memory manager on win32 boils down to GlobalAlloc family of memory functions,
+		// which is guaranteed to be aligned on an 8-byte boundary (http://msdn.microsoft.com/en-us/library/aa366574%28v=vs.12%29.ASPX)
+
 		// returns NULL when out of memory
 		void* PLATFORM_API debug_malloc(const size_t size, const bool fill_with_garbage, cstring file, const uint32 line);
 

@@ -404,42 +404,22 @@ namespace Yelo
 			_shader_effect_definition effect;
 		}; BOOST_STATIC_ASSERT( sizeof(s_shader_effect) == 0xB4 );
 		//////////////////////////////////////////////////////////////////////////
+		struct s_shader_environment_extension // TODO: FireScythe needs to do me
+		{
+		};
 		struct _shader_environment_definition
 		{
-			struct __flags
+			struct _flags
 			{
 				TAG_FLAG16(alpha_tested);
 				TAG_FLAG16(bump_map_is_specular_mask);
 				TAG_FLAG16(true_atmospheric_fog);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(word_flags) );
-
-			struct __flags_1
-			{
-				TAG_FLAG16(rescale_detail_maps);
-				TAG_FLAG16(rescale_bump_map);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags_1) == sizeof(word_flags) );
-
-			struct __flags_2
-			{
-				TAG_FLAG16(unfiltered);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags_2) == sizeof(word_flags) );
-
-			struct __flags_3
-			{
-				TAG_FLAG16(overbright);
-				TAG_FLAG16(extra_shiny);
-				TAG_FLAG16(lightmap_is_specular);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags_3) == sizeof(word_flags) );
-
-			struct __flags_4
-			{
-				TAG_FLAG16(dynamic_mirror);
-			}; BOOST_STATIC_ASSERT( sizeof(__flags_4) == sizeof(word_flags) );
+			}; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
 
 			////////////////////////////////////////////////////////////////
 			// environment shader
 			// Setting <true atmospheric fog> enables per-pixel atmospheric fog (for models) but disables point/spot lights, planar fog, and the ability to control the atmospheric fog density for this shader.
-			TAG_FIELD(__flags, flags);
+			TAG_FIELD(_flags, flags);
 
 			////////////////////////////////////////////////////////////////
 			// environment shader type
@@ -457,34 +437,49 @@ namespace Yelo
 
 			////////////////////////////////////////////////////////////////
 			// lens flares
-			TAG_FIELD(real, lens_flare_spacing, "world units", "0 places a single lens flare");
-			TAG_FIELD(tag_reference, lens_flare, 'lens');
-			TAG_PAD(int32, 11);
+			struct {
+				TAG_FIELD(real, spacing, "world units", "0 places a single lens flare");
+				TAG_FIELD(tag_reference, reference, 'lens');
+			}lens_flare;
+
+			TAG_TBLOCK(shader_extension, s_shader_environment_extension);
+			TAG_PAD(byte, 44 - sizeof(tag_block));
 
 			////////////////////////////////////////////////////////////////
 			// diffuse properties
-			TAG_FIELD(__flags_1, flags_1);
-			PAD16;
-			TAG_PAD(int32, 6);
-			TAG_FIELD(tag_reference, base_map, 'bitm');
-			TAG_PAD(int32, 6);
-			TAG_ENUM(detail_map_function, Enums::detail_map_function, "affects primary and secondary detail maps");
-			PAD16;
-			s_shader_scaled_map primary_detail_map;
-			s_shader_scaled_map secondary_detail_map;
-			TAG_PAD(int32, 6);
-			TAG_ENUM(micro_detail_map_function, Enums::detail_map_function);
-			PAD16;
-			s_shader_scaled_map micro_detail_map;
-			TAG_FIELD(real_rgb_color, material_color, "", "modulates incoming diffuse light, including lightmaps, but excluding self-illumination and specular effects");
-			TAG_PAD(int32, 3);
+			struct {
+				struct _flags
+				{
+					TAG_FLAG16(rescale_detail_maps);
+					TAG_FLAG16(rescale_bump_map);
+				}; BOOST_STATIC_ASSERT(sizeof(_flags) == sizeof(word_flags));
+
+				TAG_FIELD(_flags, flags);
+				PAD16;
+				TAG_PAD(int32, 6);
+				TAG_FIELD(tag_reference, base_map, 'bitm');
+				TAG_PAD(int32, 6);
+				TAG_ENUM(detail_map_function, Enums::detail_map_function, "affects primary and secondary detail maps");
+				PAD16;
+				s_shader_scaled_map primary_detail_map;
+				s_shader_scaled_map secondary_detail_map;
+				TAG_PAD(int32, 6);
+				TAG_ENUM(micro_detail_map_function, Enums::detail_map_function);
+				PAD16;
+				s_shader_scaled_map micro_detail_map;
+				TAG_FIELD(real_rgb_color, material_color, "", "modulates incoming diffuse light, including lightmaps, but excluding self-illumination and specular effects");
+				TAG_PAD(int32, 3);
+			}diffuse;
 
 			////////////////////////////////////////////////////////////////
 			// bump properties
 			// Perforated (alpha-tested) shaders use alpha in bump map.
-			s_shader_scaled_map bump_map;
-			TAG_PAD(int32, 2);
-			TAG_PAD(int32, 4);
+			struct {
+				s_shader_scaled_map bump_map;
+				UNKNOWN_TYPE(real); // postprocessed
+				UNKNOWN_TYPE(real); // postprocessed
+				TAG_PAD(int32, 4);
+			}bump;
 
 			////////////////////////////////////////////////////////////////
 			// texture scrolling animation
@@ -503,26 +498,42 @@ namespace Yelo
 			// Each effect also has an animation <function>, <period> and <phase>, used when the shader is active. The primary and secondary effects simply modulate the <on color> by the animation value to produce an animation color, and then blend between the animation color and the <off color> based on the shader's activation level, and finally modulate by the mask.
 			// 
 			// The plasma shader compares the animation value with the alpha channel of the map (the plasma animation reference) and produces a high value when they are similar and a dark value when they are different. This value modulates the <plasma on color> to produce a plasma animation color, and the rest proceeds just like the primary and secondary effects.
-			TAG_FIELD(__flags_2, flags_2);
-			PAD16;
-			TAG_PAD(int32, 6);
-			s_shader_color_function color_functions[3];
-			s_shader_scaled_map self_illumination_map;
-			TAG_PAD(int32, 6);
+			struct {
+				struct _flags
+				{
+					TAG_FLAG16(unfiltered);
+				}; BOOST_STATIC_ASSERT(sizeof(_flags) == sizeof(word_flags));
+
+				TAG_FIELD(_flags, flags);
+				PAD16;
+				TAG_PAD(int32, 6);
+				s_shader_color_function color_functions[3];
+				s_shader_scaled_map map;
+				TAG_PAD(int32, 6);
+			}self_illumination;
 
 			////////////////////////////////////////////////////////////////
 			// specular properties
 			// Controls dynamic specular highlights. The highlight is modulated by <brightness> as well as a blend between <perpendicular color> and <parallel color>.
 			// 
 			// Set <brightness> to zero to disable.
-			TAG_FIELD(__flags_3, flags_3);
-			PAD16;
-			TAG_PAD(int32, 4);
-			TAG_FIELD(real_fraction, brightness, "[0,1]", "0 is no specular hilights");
-			TAG_PAD(int32, 5);
-			TAG_FIELD(real_rgb_color, perpendicular_color, "", "hilight color when viewed perpendicularly");
-			TAG_FIELD(real_rgb_color, parallel_color, "", "hilight color when viewed at a glancing angle");
-			TAG_PAD(int32, 4);
+			struct {
+				struct _flags
+				{
+					TAG_FLAG16(overbright);
+					TAG_FLAG16(extra_shiny);
+					TAG_FLAG16(lightmap_is_specular);
+				}; BOOST_STATIC_ASSERT(sizeof(_flags) == sizeof(word_flags));
+
+				TAG_FIELD(_flags, flags);
+				PAD16;
+				TAG_PAD(int32, 4);
+				TAG_FIELD(real_fraction, brightness, "[0,1]", "0 is no specular hilights");
+				TAG_PAD(int32, 5);
+				TAG_FIELD(real_rgb_color, perpendicular_color, "", "hilight color when viewed perpendicularly");
+				TAG_FIELD(real_rgb_color, parallel_color, "", "hilight color when viewed at a glancing angle");
+				TAG_PAD(int32, 4);
+			}specular;
 
 			////////////////////////////////////////////////////////////////
 			// reflection properties
@@ -535,17 +546,24 @@ namespace Yelo
 			// This is the fastest type of reflection. The bump map is used to attenuate the fresnel effect, but the reflection image itself is not bumped.
 			// 
 			// Clear <reflection cube map> or set both <perpendicular brightness> and <parallel brightness> to zero to disable.
-			TAG_FIELD(__flags_4, flags_4);
-			TAG_ENUM(reflection_type, Enums::reflection_type);
-			TAG_FIELD(real_fraction, lightmap_brightness_scale, "[0,1]", "reflection brightness when lightmap brightness is 1");
-			TAG_PAD(int32, 7);
-			TAG_FIELD(real_fraction, perpendicular_brightness, "[0,1]", "brightness when viewed perpendicularly");
-			TAG_FIELD(real_fraction, parallel_brightness, "[0,1]", "brightness when viewed at a glancing angle");
-			TAG_PAD(int32, 4);
-			TAG_PAD(int32, 2);
-			TAG_PAD(int32, 4);
-			TAG_FIELD(tag_reference, reflection_cube_map, "bitm");
-			TAG_PAD(int32, 4);
+			struct {
+				struct _flags
+				{
+					TAG_FLAG16(dynamic_mirror);
+				}; BOOST_STATIC_ASSERT(sizeof(_flags) == sizeof(word_flags));
+
+				TAG_FIELD(_flags, flags);
+				TAG_ENUM(type, Enums::reflection_type);
+				TAG_FIELD(real_fraction, lightmap_brightness_scale, "[0,1]", "reflection brightness when lightmap brightness is 1");
+				TAG_PAD(int32, 7);
+				TAG_FIELD(real_fraction, perpendicular_brightness, "[0,1]", "brightness when viewed perpendicularly");
+				TAG_FIELD(real_fraction, parallel_brightness, "[0,1]", "brightness when viewed at a glancing angle");
+				TAG_PAD(int32, 4);
+				TAG_PAD(int32, 2);
+				TAG_PAD(int32, 4);
+				TAG_FIELD(tag_reference, cube_map, "bitm");
+				TAG_PAD(int32, 4);
+			}reflection;
 		}; BOOST_STATIC_ASSERT( sizeof(_shader_environment_definition) == 0x31C );
 		
 		struct s_shader_environment_definition : s_shader_definition

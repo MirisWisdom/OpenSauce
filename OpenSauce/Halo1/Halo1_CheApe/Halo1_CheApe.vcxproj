@@ -42,7 +42,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <PlatformToolset>v110_xp</PlatformToolset>
+    <PlatformToolset>v120_xp</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration.Contains(Release))' " Label="Configuration">
@@ -115,6 +115,7 @@
     <ClCompile Include="Tool\ToolMisc.cpp" />
     <ClCompile Include="Rasterizer\Rasterizer.cpp" />
     <ClCompile Include="Rasterizer\DX9\DX9.cpp" />
+	<ClCompile Include="TagGroups\TagFieldSetReplacements.cpp" />
     <ClCompile Include="TagGroups\TagGroups.cpp" />
     <ClCompile Include="TagGroups\yelo_definitions.cpp" />
     <ClCompile Include="TagGroups\yelo_scenario_definitions.cpp" />

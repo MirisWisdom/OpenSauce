@@ -7,6 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "Engine/EngineFunctions.hpp"
 
+#include <blamlib/Halo1/cseries/profile.hpp>
 #include <blamlib/Halo1/math/periodic_functions.hpp>
 #include <blamlib/Halo1/memory/byte_swapping.hpp>
 #include <blamlib/Halo1/memory/memory_pool.hpp>
@@ -65,6 +66,21 @@ namespace Yelo
 		API_FUNC_NAKED void* PLATFORM_API debug_realloc(void* pointer, const size_t new_size, cstring file, const uint32 line)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DEBUG_REALLOC);
+
+			__asm	jmp	FUNCTION
+		}
+		//////////////////////////////////////////////////////////////////////////
+		// cseries/profile
+		bool profiling_enabled()	PTR_IMP_GET(g_profiling_enabled);
+		API_FUNC_NAKED void PLATFORM_API profile_enter_private(Debug::s_profile_section& section)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(DEBUG_FREE);
+
+			__asm	jmp	FUNCTION
+		}
+		API_FUNC_NAKED void PLATFORM_API profile_exit_private(Debug::s_profile_section& section)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(DEBUG_FREE);
 
 			__asm	jmp	FUNCTION
 		}

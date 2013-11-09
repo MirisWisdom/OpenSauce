@@ -14,6 +14,7 @@
 namespace Yelo
 {
 	struct tag_field;
+	struct tag_reference_definition;
 
 	namespace Enums
 	{
@@ -51,6 +52,10 @@ namespace Yelo
 #endif
 		static char* get_string(string_id id, __out string_id_yelo_value value);
 		static cstring get_string(string_id id);
+
+#if PLATFORM_IS_EDITOR
+		static tag_reference_definition* global_reference_definition;
+#endif
 	};
 #if TRUE//PLATFORM_IS_EDITOR // TODO: uncomment this when we finish 'runtime field size' support in the tag system
 	BOOST_STATIC_ASSERT( sizeof(string_id_yelo) == 0x14 );
@@ -70,10 +75,12 @@ namespace Yelo
 			PAD_TYPE(tag_data);
 		};
 
+#if PLATFORM_IS_EDITOR
 		bool TagFieldIsStringId(const tag_field* field);
 		// Is the field a tag_string field to be treated as a string_id?
 		// TODO: when we encounter tag_strings which contain invalid string_id characters, we'll need to warn the user
 		bool TagFieldIsOldStringId(const tag_field* field);
+#endif
 	};
 
 	namespace _string_id

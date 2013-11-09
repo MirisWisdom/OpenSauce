@@ -102,6 +102,10 @@ namespace Yelo
 		return nullptr;
 	}
 
+#if PLATFORM_IS_EDITOR
+	tag_reference_definition* string_id_yelo::global_reference_definition;
+#endif
+
 	namespace TagGroups
 	{
 #if PLATFORM_IS_EDITOR

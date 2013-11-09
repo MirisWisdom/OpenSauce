@@ -17,7 +17,8 @@ namespace Yelo
 		datum_index::salt_t s_data_array::GetInitialSalt() const
 		{
 			datum_index::salt_t result = 0;
-			std::strncpy(CAST_PTR(char*, &result), this->name, sizeof(result));
+			// NOTE: engine uses strncpy
+			std::memcpy(&result, this->name, sizeof(result));
 
 			result |= k_datum_index_salt_msb;
 

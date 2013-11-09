@@ -205,10 +205,8 @@
       <Filter>.blamlib\tag_files</Filter>
     </ClCompile>
   </ItemGroup>
-
   <Import Project="..\..\shared\config\msbuild\blamlib_Halo1.vcxproj.filters" />
   <Import Project="..\..\shared\config\msbuild\blamlib_Halo1_Editor.vcxproj.filters" />
-
   <ItemGroup>
     <Filter Include=".YeloLib">
       <UniqueIdentifier>{f5274ea2-3518-4778-aa74-7466cce92d4b}</UniqueIdentifier>
@@ -439,10 +437,8 @@
       <Filter>.YeloLib\tag_files</Filter>
     </ClInclude>
   </ItemGroup>
-
   <Import Project="..\..\shared\config\msbuild\YeloLib_Halo1.vcxproj.filters" />
   <Import Project="..\..\shared\config\msbuild\YeloLib_Halo1_Editor.vcxproj.filters" />
-
   <ItemGroup>
     <Filter Include="Common\Shared\7zip">
       <UniqueIdentifier>{6c76af21-8dcb-4a37-ab87-5606dcc65ba3}</UniqueIdentifier>
@@ -647,6 +643,9 @@
     </ClCompile>
     <ClCompile Include="Rasterizer\DX9\DX9.cpp">
       <Filter>Rasterizer\DX9</Filter>
+    </ClCompile>
+	<ClCompile Include="TagGroups\TagFieldSetReplacements.cpp">
+      <Filter>TagGroups</Filter>
     </ClCompile>
     <ClCompile Include="TagGroups\TagGroups.cpp">
       <Filter>TagGroups</Filter>

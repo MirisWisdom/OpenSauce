@@ -88,7 +88,7 @@ HRESULT		AddPassBlock(LPD3DXEFFECTCOMPILER& compiler, D3DXHANDLE pass, Yelo::Tag
 	Yelo::TagGroups::s_pass_definition& pass_block = block[index];
 
 	// set the blocks fields
-	strncpy(pass_block.name, pass_desc.Name, Yelo::Enums::k_tag_string_length);
+	strncpy_s(pass_block.name, pass_desc.Name, Yelo::Enums::k_tag_string_length);
 
 	D3DXHANDLE handle;
 	// should the target be cleared prior to this pass
@@ -144,7 +144,7 @@ HRESULT		AddTechniqueBlock(LPD3DXEFFECTCOMPILER& compiler, D3DXHANDLE technique,
 	Yelo::TagGroups::s_technique_definition& technique_block = block[index];
 
 	// set the blocks fields
-	strncpy(technique_block.name, technique_desc.Name, Yelo::Enums::k_tag_string_length);
+	strncpy_s(technique_block.name, technique_desc.Name, Yelo::Enums::k_tag_string_length);
 
 	D3DXHANDLE handle;
 

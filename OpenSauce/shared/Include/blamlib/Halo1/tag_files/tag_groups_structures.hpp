@@ -375,6 +375,7 @@ namespace Yelo
 		struct s_tag_field_definition
 		{
 			size_t size;
+			cstring name;
 			byte_swap_code_t* byte_swap_codes;
 		};
 
@@ -385,8 +386,8 @@ namespace Yelo
 			const tag_field* fields;
 			void* block_element;
 			long_flags field_types[BIT_VECTOR_SIZE_IN_DWORDS(Enums::k_number_of_tag_field_types)];
-			int16 field_index;
-			int16 field_size;
+			int16 field_count;
+			int16 field_size;			// NOTE: tag_field_scan_state_new doesn't initialize this or the next field
 			// offset in the block_element where this field ends at
 #ifdef __TAG_FIELD_SCAN_USE_BLAM_DATA
 			int32 field_end_offset;		// not touched or used outside of tag_field_scan
@@ -394,9 +395,14 @@ namespace Yelo
 			uint16 field_end_offset;	
 			uint16 fields_debug_bytes;	// Total number of tags-build only bytes
 #endif
+			// when the scanner finishes (ie, this is true), the field info will rest on the _field_terminator instance
 			bool done;
+			// NOTE: tag_field_scan_state_new doesn't initialize this (it's compiler-added padding)
+			// In debug builds of CheApe , this will most likely equal 0xCC
+			// In release builds this will be whatever was on the stack before. If it's magically 0x01, it could spell disaster for IsEngineScanState()
 			byte pad;
 			int16 stack_index;
+			// NOTE: tag_field_scan_state_new doesn't initialize anything below
 			struct {
 				int16 field_index;
 				int16 count;
@@ -406,8 +412,10 @@ namespace Yelo
 			void* field_address;
 
 			// true if this scan state is allocated in engine code
-			inline bool IsEngineScanState()	{ return pad == FALSE; }
+			inline bool IsEngineScanState()	{ return pad != TRUE; }
 		private:
+			// initialize anything important which tag_field_scan_state_new doesn't
+			void InitializeWhatNewDoesnt();
 			// DON'T TOUCH ME UNLESS YOUR NAME IS c_tag_field_scanner
 			inline void SetYeloScanState()	{ pad = TRUE; }
 		}; BOOST_STATIC_ASSERT( sizeof(s_tag_field_scan_state) == 0x64 );
@@ -421,9 +429,13 @@ namespace Yelo
 		public:
 			inline bool IsDone() const					{ return m_state.done; }
 
+			inline const tag_field* GetFields() const	{ return m_state.fields; }
 			inline void* GetBlockElement() const		{ return m_state.block_element; }
+			inline int32 GetFieldCount() const			{ return m_state.field_count; }
 
-			inline int32 GetFieldIndex() const			{ return m_state.field_index; }
+			inline int32 GetFieldIndex() const			{ assert(m_state.field_count > 0); // if this fails, scanning hasn't started yet, no one should be requesting an index yet
+				return m_state.field_count - 1;
+			}
 			inline size_t GetFieldSize() const			{ return CAST(size_t, m_state.field_size); }
 			inline size_t GetFieldOffset() const		{ return CAST(size_t, m_state.field_end_offset) - GetFieldSize(); }
 #ifndef __TAG_FIELD_SCAN_USE_BLAM_DATA
@@ -464,37 +476,37 @@ namespace Yelo
 				s_iterator_result(const c_tag_field_scanner& scanner) : m_scanner(scanner) {}
 
 				// Field's index, relative to the parent block's fields list
-				inline int32 GetIndex() const			{ return m_scanner.GetFieldIndex(); }
+				inline int32 GetIndex() const				{ return m_scanner.GetFieldIndex(); }
 				// Field's individual size
-				inline size_t GetSize() const			{ return m_scanner.GetFieldSize(); }
+				inline size_t GetSize() const				{ return m_scanner.GetFieldSize(); }
 				// Field's offset, relative to the parent block
-				inline size_t GetOffset() const			{ return m_scanner.GetFieldOffset(); }
+				inline size_t GetOffset() const				{ return m_scanner.GetFieldOffset(); }
 #ifndef __TAG_FIELD_SCAN_USE_BLAM_DATA
 				// Field's cache-build offset, relative to the parent block
-				inline size_t GetRuntimeOffset() const	{ return m_scanner.GetFieldRuntimeOffset(); }
+				inline size_t GetRuntimeOffset() const		{ return m_scanner.GetFieldRuntimeOffset(); }
 #endif
 
 				// Field's type
-				inline Enums::field_type GetType() const{ return m_scanner.GetTagFieldType(); }
+				inline Enums::field_type GetType() const	{ return m_scanner.GetTagFieldType(); }
 				// Field's name
-				inline cstring GetName() const			{ return m_scanner.GetTagFieldName(); }
+				inline cstring GetName() const				{ return m_scanner.GetTagFieldName(); }
 				// Treat the field's definition as a T*
 				template<typename T>
-				inline T* DefinitionAs() const			{ return m_scanner.GetTagFieldDefinition<T>(); }
+				inline T* DefinitionAs() const				{ return m_scanner.GetTagFieldDefinition<T>(); }
 
 				// Instance's address
-				inline void* GetAddress() const			{ return m_scanner.GetFieldAddress(); }
+				inline void* GetAddress() const				{ return m_scanner.GetFieldAddress(); }
 				// Treat the instance's address as a T*
 				template<typename T>
-				inline T* As() const					{ return m_scanner.GetFieldAs<T>(); }
+				inline T* As() const						{ return m_scanner.GetFieldAs<T>(); }
 
-				bool IsReadOnly() const					{ return m_scanner.m_state.field->IsReadOnly(); }
-				bool IsAdvanced() const					{ return m_scanner.m_state.field->IsAdvanced(); }
-				bool IsBlockName() const				{ return m_scanner.m_state.field->IsBlockName(); }
-				bool IsInvisible() const				{ return m_scanner.m_state.field->IsInvisible(); }
-				bool IsStringId() const					{ return m_scanner.TagFieldIsStringId(); }
-				bool IsOldStringId() const				{ return m_scanner.TagFieldIsOldStringId(); }
-				int32 GetStringFieldLength() const		{ return m_scanner.StringFieldGetLength(); }
+				inline bool IsReadOnly() const				{ return m_scanner.m_state.field->IsReadOnly(); }
+				inline bool IsAdvanced() const				{ return m_scanner.m_state.field->IsAdvanced(); }
+				inline bool IsBlockName() const				{ return m_scanner.m_state.field->IsBlockName(); }
+				inline bool IsInvisible() const				{ return m_scanner.m_state.field->IsInvisible(); }
+				inline bool IsStringId() const				{ return m_scanner.TagFieldIsStringId(); }
+				inline bool IsOldStringId() const			{ return m_scanner.TagFieldIsOldStringId(); }
+				inline int32 GetStringFieldLength() const	{ return m_scanner.StringFieldGetLength(); }
 			};
 
 			struct s_iterator

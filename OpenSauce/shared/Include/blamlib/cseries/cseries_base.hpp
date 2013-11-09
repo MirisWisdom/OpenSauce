@@ -60,7 +60,7 @@ namespace Yelo
 	typedef unsigned __int64 uint64;
 	// # from -9,223,372,036,854,775,808 to 9,223,372,036,854,775,807
 	typedef signed __int64 int64;
-#define pad_int64 PAD32
+#define pad_int64 PAD32 PAD32
 
 	// a floating-point # from 1.175494351e-38F to 3.402823466e+38F
 	typedef float real;

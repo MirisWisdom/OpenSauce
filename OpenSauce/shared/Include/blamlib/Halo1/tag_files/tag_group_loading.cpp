@@ -13,6 +13,13 @@
 
 #include "Engine/EngineFunctions.hpp"
 
+/* TODO:
+ * use a class to wrap all loading operations, storing all state information as members instead of globals
+ * use a producer & consumer model to do asyncronous tag loading
+ * tag_get and tag_loaded will need to be modified to block until async loading completes
+ * possibly use a new tag_load flag to tell the loader to use syncronous loading, for cases in stock editor code where async loading introduces bugs
+*/
+
 namespace Yelo
 {
 	namespace Enums
@@ -25,7 +32,7 @@ namespace Yelo
 	namespace blam
 	{
 		// To be defined in TagGroups.cpp
-		extern char* tag_group_loading_error_string;
+		extern char* tag_group_loading_error_string; // [k_tag_group_loading_error_string_length+1]
 		extern char** tag_group_loading_error_string_cursor;
 
 		static void tag_group_loading_add_non_loaded_tag(tag group_tag, cstring name)
