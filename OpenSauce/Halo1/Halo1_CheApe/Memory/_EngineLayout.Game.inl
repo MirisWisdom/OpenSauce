@@ -28,6 +28,11 @@
 		// cseries/errors
 		proc_error error = CAST_PTR(proc_error, PLATFORM_VALUE(0x4206B0, 0x42CB90, 0x417500));
 		//////////////////////////////////////////////////////////////////////////
+		// cseries/profile
+		ENGINE_PTR(bool, g_profiling_enabled,	0xC81CB1, 0xFC9009, 0xDB2D21);
+		FUNC_PTR(PROFILE_ENTER_PRIVATE,			0x475F30, 0x452970, 0x535490);
+		FUNC_PTR(PROFILE_EXIT_PRIVATE,			0x475FB0, 0x4529F0, 0x535510);
+		//////////////////////////////////////////////////////////////////////////
 		// math/periodic_functions
 		FUNC_PTR(PERIODIC_FUNCTION_EVALUATE,	0x4DC780, 0x490250, 0x61A620);
 		FUNC_PTR(TRANSITION_FUNCTION_EVALUATE,	0x4DC8C0, 0x490390, 0x61A760);

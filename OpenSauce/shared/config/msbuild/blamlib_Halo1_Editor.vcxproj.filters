@@ -21,6 +21,12 @@
 	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\cseries\debug_memory.cpp">
       <Filter>.blamlib\cseries</Filter>
     </ClCompile>
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\cseries\profile.hpp">
+      <Filter>.blamlib\cseries</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\cseries\profile.cpp">
+      <Filter>.blamlib\cseries</Filter>
+    </ClCompile>
   </ItemGroup>
 
   <ItemGroup
@@ -65,6 +71,12 @@
       <Filter>.blamlib\tag_files</Filter>
     </ClInclude>
 	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_loading.cpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_verification.hpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_verification.cpp">
       <Filter>.blamlib\tag_files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups.cpp">

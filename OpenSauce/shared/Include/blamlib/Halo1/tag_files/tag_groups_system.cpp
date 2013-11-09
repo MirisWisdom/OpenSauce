@@ -8,6 +8,7 @@
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 #include <blamlib/Halo1/memory/byte_swapping.hpp>
+#include <blamlib/Halo1/tag_files/tag_group_verification.hpp>
 #include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
 
 #include "Engine/EngineFunctions.hpp"
@@ -22,253 +23,10 @@ namespace Yelo
 		// tag group memory
 		void BuildGroupRuntimeInfo();
 		void DestroyGroupRuntimeInfo();
-
-		// called in the 'verify group fields' initialize step on tag_reference_definitions
-		static void TagGroupMarkAsReferenced(tag group_tag)
-		{
-			SET_FLAG(blam::tag_group_get(group_tag)->flags, Flags::_tag_group_referenced_yelo_bit, true);
-		}
-
-		static void CheckForUnreferencedGroups()
-		{
-#if FALSE
-			struct mark_parent_group_children_as_referenced_action
-			{ void operator()(tag_group* group) const
-			{
-				// also mark the parents as referenced
-				if(group->child_count > 0)
-					TagGroups::TagGroupMarkAsReferenced(group->group_tag);
-
-				for(int x = 0; x < group->child_count; x++)
-				{
-					TagGroupMarkAsReferenced(group->child_group_tags[x]);
-				}
-			} };
-
-			struct dump_non_referenced_tag_groups_action
-			{ void operator()(tag_group* group) const
-			{
-				if( !TEST_FLAG(group->flags, Flags::_tag_group_referenced_yelo_bit) )
-				{
-					YELO_WARN("unreferenced tag group: %s", group->name);
-				}
-			} };
-
-			// special cases
-			TagGroupMarkAsReferenced('vcky'); // virtual_keyboard
-			TagGroupMarkAsReferenced('Soul'); // ui_widget_collection
-			TagGroupMarkAsReferenced('mode'); // non-pc 'model' tag
-			TagGroupMarkAsReferenced('tagc'); // tag_collection
-			TagGroupMarkAsReferenced('devc'); // input_device_defaults
-
-			TagGroups::tag_groups_do_action<mark_parent_group_children_as_referenced_action>();
-			TagGroups::tag_groups_do_action<dump_non_referenced_tag_groups_action>();
-#endif
-		}
 	};
 
 	namespace blam
 	{
-		//////////////////////////////////////////////////////////////////////////
-		// verify definitions
-		static void verify_tag_group_tags()
-		{
-			struct verify_no_duplicate_group_tags_action
-			{
-				TagGroups::group_tag_to_string m_group_string;
-
-				verify_no_duplicate_group_tags_action()
-				{
-					m_group_string.Terminate();
-				}
-
-				void operator()(tag_group* group)
-				{
-					m_group_string.group = group->group_tag;
-					m_group_string.TagSwap();
-					YELO_ASSERT_DISPLAY(group==tag_group_get(group->group_tag), "there are two groups using the tag '%s'.",
-						m_group_string.str);
-				}
-			};
-
-			TagGroups::tag_groups_do_action<verify_no_duplicate_group_tags_action>();
-		}
-
-		static void verify_string_list_definition(const string_list* definition,
-			const tag_block_definition* block_definition, cstring field_type_name)
-		{
-			YELO_ASSERT_DISPLAY(definition, "no definition specified for %s field in block %s.",
-				field_type_name, block_definition->name); // NOTE: added owner block name to info
-			YELO_ASSERT( definition->count>=0 );
-
-			for(int x = 0; x < definition->count; x++)
-			{
-				if(definition->strings[x] == nullptr)
-				{
-					YELO_ERROR(_error_message_priority_assert, "%s field in block %s doesn't have enough strings",
-						field_type_name, block_definition->name);
-				}
-			}
-		}
-		template<typename TEnum>
-		static void verify_enum_field_definition(const tag_field& field,
-			const tag_block_definition* block_definition)
-		{
-			auto* definition = field.Definition<string_list>();
-			verify_string_list_definition(definition, block_definition, "enum");
-		}
-		template<typename TFlags>
-		static void verify_flags_field_definition(const tag_field& field,
-			const tag_block_definition* block_definition)
-		{
-			auto* definition = field.Definition<string_list>();
-			verify_string_list_definition(definition, block_definition, "flags");
-
-			YELO_ASSERT( definition->count<=BIT_COUNT(TFlags) );
-		}
-		static void verify_tag_reference_field_definition(const tag_field& field,
-			const tag_block_definition* block_definition)
-		{
-			auto* definition = field.Definition<tag_reference_definition>();
-			YELO_ASSERT_DISPLAY(definition, "no definition specified for tag reference field in block %s.",
-				block_definition->name); // NOTE: added owner block name to info
-			YELO_ASSERT( VALID_FLAGS(definition->flags, Flags::k_number_of_tag_group_tag_reference_flags) );
-
-			TagGroups::group_tag_to_string gt_string; gt_string.Terminate();
-
-			if(definition->group_tag != NONE)
-			{
-				gt_string.group = definition->group_tag;
-				YELO_ASSERT_DISPLAY( tag_group_get(definition->group_tag), 
-					"invalid group tag '%s' for tag reference field '%s' in block %s",
-					gt_string.TagSwap().str, field.name, block_definition->name);
-				YELO_ASSERT( definition->group_tags==nullptr );
-
-				TagGroups::TagGroupMarkAsReferenced(definition->group_tag);
-			}
-			else if(definition->group_tags != nullptr)
-			{
-				for(auto group_tag : *definition)
-				{
-					gt_string.group = group_tag;
-					YELO_ASSERT_DISPLAY( tag_group_get(group_tag),
-						"invalid group tag '%s' for variable tag reference field '%s' in block %s",
-						gt_string.TagSwap().str, field.name, block_definition->name);
-
-					TagGroups::TagGroupMarkAsReferenced(group_tag);
-				}
-			}
-		}
-		static void verify_data_field_definition(const tag_field& field,
-			const tag_block_definition* block_definition)
-		{
-			auto* definition = field.Definition<tag_data_definition>();
-			YELO_ASSERT_DISPLAY(definition, "no definition specified for tag_data field in block %s.",
-				block_definition->name); // NOTE: added owner block name to info
-			YELO_ASSERT( definition->name );
-			YELO_ASSERT( VALID_FLAGS(definition->flags, Flags::k_number_of_tag_data_definition_flags) );
-			YELO_ASSERT( definition->maximum_size>0 );
-		}
-		static void verify_block_field_definitions(tag_block_definition* block)
-		{
-			YELO_ASSERT( block );
-			YELO_ASSERT( block->name );
-			YELO_ASSERT( VALID_FLAGS(block->flags, Flags::k_number_of_tag_block_definition_flags) );
-			YELO_ASSERT( block->maximum_element_count>=0 );
-			YELO_ASSERT( CAST(int,block->element_size)>=0 );
-			YELO_ASSERT( block->fields );
-
-			struct verify_tag_field_action
-			{ void operator()(const tag_block_definition* block, const tag_field& field) const
-			{
-				switch(field.type)
-				{
-				case Enums::_field_string:
-					{
-						uintptr_t definition = CAST_PTR(uintptr_t, field.definition);
-
-						YELO_ASSERT( definition==0 || definition <= Enums::k_long_string_length || 
-							TagGroups::TagFieldIsOldStringId(&field) );
-					}
-					break;
-
-				case Enums::_field_enum:
-					verify_enum_field_definition<int16>(field, block);
-					break;
-
-				case Enums::_field_long_flags:	verify_flags_field_definition<long_flags>(field, block); break;
-				case Enums::_field_word_flags:	verify_flags_field_definition<word_flags>(field, block); break;
-				case Enums::_field_byte_flags:	verify_flags_field_definition<byte_flags>(field, block); break;
-
-				case Enums::_field_tag_reference:
-					verify_tag_reference_field_definition(field, block);
-					break;
-
-				case Enums::_field_block:
-					{
-						auto* definition = field.Definition<tag_block_definition>();
-						YELO_ASSERT_DISPLAY(definition, "no definition specified for block field in block %s.",
-							block->name); // NOTE: added owner block name to info
-
-						verify_block_field_definitions(definition);
-					}
-					break;
-
-				case Enums::_field_short_block_index:
-				case Enums::_field_long_block_index:
-					{
-						auto* definition = field.Definition<tag_block_definition>();
-						YELO_ASSERT_DISPLAY(definition, "no definition specified for block index field in block %s.",
-							block->name); // NOTE: added owner block name to info
-					}
-					break;
-
-				case Enums::_field_array_start:
-					YELO_ASSERT( CAST_PTR(int32,field.definition)>0 );
-					break;
-
-				case Enums::_field_explanation:
-					{
-						cstring definition = field.Definition<const char>();
-						YELO_ASSERT_DISPLAY(definition, "no definition specified for explanation field in block %s.",
-							block->name); // NOTE: added owner block name to info
-					}
-					break;
-				}
-			} };
-
-			block->FieldsDoAction<verify_tag_field_action, true>();
-		}
-		static void verify_group_field_definitions()
-		{
-			struct verify_group_field_definitions_action
-			{
-				bool m_found_group_missing_header_definition;
-
-				verify_group_field_definitions_action() : m_found_group_missing_header_definition(false) { }
-
-				void operator()(const tag_group* group)
-				{
-					if(group->header_block_definition != nullptr)
-						verify_block_field_definitions(group->header_block_definition);
-					else
-					{	// NOTE: added this warning
-						YELO_WARN("tag group '%s' doesn't have a definition", group->name);
-						m_found_group_missing_header_definition = true;
-					}
-				}
-			};
-
-			auto action = verify_group_field_definitions_action();
-			TagGroups::tag_groups_do_action(action);
-
-			if(action.m_found_group_missing_header_definition)
-			{
-				YELO_ASSERT( !"fix your goddamn tag groups" );
-			}
-		}
-
-
 		//////////////////////////////////////////////////////////////////////////
 		// build group parents
 		static void build_group_parents()
@@ -308,7 +66,7 @@ namespace Yelo
 						.ScanToEnd();
 
 					total_field_count += 
-						tag_chain[tag_chain_size].field_count = scanner.GetFieldIndex() - 1; // don't count the terminator
+						tag_chain[tag_chain_size].field_count = scanner.GetFieldCount() - 1; // don't count the terminator
 					total_header_size += 
 						parent_group->header_block_definition->element_size;
 					tag_chain[tag_chain_size].group = parent_group;
@@ -469,12 +227,12 @@ namespace Yelo
 
 		void PLATFORM_API tag_groups_initialize()
 		{
-			verify_tag_group_tags();
+			TagGroups::VerifyTagGroupTags();
 
 			TagGroups::InitializeFieldSetReplacements();
 			TagGroups::InitializeFixes();
 
-			verify_group_field_definitions();
+			TagGroups::VerifyGroupFieldDefinitions();
 			build_group_parents();
 			build_group_byte_swap_codes();
 

@@ -8,7 +8,7 @@
     <!--<IncludePath>;$(IncludePath)</IncludePath>-->
     <LibraryPath>$(OSPlatformCppLibDir);$(LibraryPath)</LibraryPath>
     <RunCodeAnalysis Condition=" '$(Configuration)'=='DebugCodeAnalysis' ">true</RunCodeAnalysis>
-	<PlatformToolset>v110_xp</PlatformToolset>
+	<PlatformToolset>v120_xp</PlatformToolset>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(OSRequiresDirectX)' != '' " Label="Configuration">
@@ -70,12 +70,17 @@
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
+	<Link>
+      <AdditionalOptions> /verbose:incr %(AdditionalOptions)</AdditionalOptions>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition=" '$(Configuration.Contains(Release))' ">
     <ClCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+	  <AdditionalOptions> /d2Zi+ %(AdditionalOptions)</AdditionalOptions> <!-- http://randomascii.wordpress.com/2013/09/11/debugging-optimized-codenew-in-visual-studio-2012/ -->
+	  <MultiProcessorCompilation>true</MultiProcessorCompilation> <!--release only, not compat with minimal rebuild (enabled in debug)-->
     </ClCompile>
   </ItemDefinitionGroup>
 

@@ -61,7 +61,7 @@ namespace Yelo
 		TagGroups::Initialize();
 
 		TagGroups::YeloDefinitionsInitialize();
-		if(TagGroups::_yelo_definition_globals.initialized)
+		if (TagGroups::YeloDefinitionsInitialized())
 			PLATFORM_VALUE(Guerilla, Tool, Sapien)::Initialize();
 
 #if PLATFORM_ID != PLATFORM_TOOL
@@ -71,7 +71,7 @@ namespace Yelo
 	}
 	static void OverrideTagFilesOpen()
 	{
-		static uint32 TAG_FILES_OPEN_CALLS[] = {
+		static uintptr_t TAG_FILES_OPEN_CALLS[] = {
 #if PLATFORM_ID == PLATFORM_TOOL
 			0x42DC10
 #elif PLATFORM_ID == PLATFORM_GUERILLA
@@ -100,7 +100,7 @@ namespace Yelo
 	void Dispose()
 	{
 		// Initializer called in InitializeForTagFilesOpen
-		if(TagGroups::_yelo_definition_globals.initialized)
+		if (TagGroups::YeloDefinitionsInitialized())
 			PLATFORM_VALUE(Guerilla, Tool, Sapien)::Dispose();
 
 		//////////////////////////////////////////////////////////////////////////

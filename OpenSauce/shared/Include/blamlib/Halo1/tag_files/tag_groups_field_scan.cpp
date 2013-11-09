@@ -13,11 +13,27 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
+		void s_tag_field_scan_state::InitializeWhatNewDoesnt()
+		{
+			field_size = 0;
+			field_end_offset = 0;
+#ifndef __TAG_FIELD_SCAN_USE_BLAM_DATA
+			fields_debug_bytes = 0;
+#endif
+			pad = FALSE;
+
+			// we intentionally don't initialize [stack]
+
+			field = nullptr;
+			field_address = nullptr;
+		}
+
 		//////////////////////////////////////////////////////////////////////////
 		// c_tag_field_scanner
 		c_tag_field_scanner::c_tag_field_scanner(const tag_field* fields, void* block_element)
 		{
 			blam::tag_field_scan_state_new(m_state, fields, block_element);
+			m_state.InitializeWhatNewDoesnt();
 			m_state.SetYeloScanState();
 		}
 
@@ -101,13 +117,13 @@ namespace Yelo
 
 			const tag_field* field;
 			do {
-				field = &state.fields[state.field_index++];
+				field = &state.fields[state.field_count++];
 
 				switch(field->type)
 				{
 				case Enums::_field_array_start:
 					YELO_ASSERT( state.stack_index<Enums::k_tag_field_scan_stack_size );
-					state.stack[state.stack_index].field_index = state.field_index;
+					state.stack[state.stack_index].field_index = state.field_count;
 					state.stack[state.stack_index].count = field->DefinitionCast<int16>(); // TODO: asm has this as int16, but all other array_start code treats the def as int32. is this cast really safe?
 					YELO_ASSERT( state.stack[state.stack_index].count>0 );
 					state.stack_index++;
@@ -119,7 +135,7 @@ namespace Yelo
 						auto& stack = state.stack[state.stack_index-1];
 
 						if( --stack.count > 0 )
-							state.field_index = stack.field_index;
+							state.field_count = stack.field_index;
 						else
 							--state.stack_index;
 					}

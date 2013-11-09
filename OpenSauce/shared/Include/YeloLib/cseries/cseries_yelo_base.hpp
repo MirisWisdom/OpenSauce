@@ -37,29 +37,34 @@ namespace Yelo
 
 	/// Template class for defining an interface for blocks of data whose memory layout is not entirely mapped out
 	template<const size_t K_SIZE> struct TStruct {
-		static const size_t k_size = K_SIZE;
+		enum { k_size = K_SIZE };
 
 	protected:
-		unsigned char m_data[K_SIZE];
+		// NOTE: I would use std::array here, but I have yet to tested how well it plays with xbox modules (ie, Halo2_Xbox)
+		byte m_data[K_SIZE];
 		
-		template<typename T, const size_t k_offset> API_INLINE T GetData()					{ return *( CAST_PTR(T*,		&m_data[k_offset]) ); }
-		template<typename T, const size_t k_offset> API_INLINE T GetData() const			{ return *( CAST_PTR(const T*,	&m_data[k_offset]) ); }
-		template<typename T, const size_t k_offset> API_INLINE T* GetDataPtr()				{ return	CAST_PTR(T*,		&m_data[k_offset]); }
-		template<typename T, const size_t k_offset> API_INLINE const T* GetDataPtr() const	{ return	CAST_PTR(const T*,	&m_data[k_offset]); }
+		template<typename T, const size_t k_offset> inline
+		T GetData()					{ return *(	CAST_PTR(T*,		&m_data[k_offset]) ); }
+		template<typename T, const size_t k_offset> inline
+		T GetData() const			{ return *(	CAST_PTR(const T*,	&m_data[k_offset]) ); }
+		template<typename T, const size_t k_offset> inline
+		T* GetDataPtr()				{ return	CAST_PTR(T*,		&m_data[k_offset]); }
+		template<typename T, const size_t k_offset> inline
+		const T* GetDataPtr() const	{ return	CAST_PTR(const T*,	&m_data[k_offset]); }
 
-		// Usage - "struct some_object : TStructImpl(0x40) {};"
+		// Usage - "struct s_some_object : TStructImpl(0x40) {};"
 		#define TStructImpl(size) public TStruct< size >
 
 		// Implement a by-value getter
-		#define TStructGetImpl(type, name, offset)															\
-			API_INLINE type Get##name()					{ return GetData<type, offset>(); }					\
-			API_INLINE type Get##name() const			{ return GetData<type, offset>(); }					\
+		#define TStructGetImpl(type, name, offset)												\
+			inline type Get##name()					{ return GetData<type, offset>(); }			\
+			inline type Get##name() const			{ return GetData<type, offset>(); }			\
 			BOOST_STATIC_ASSERT( ( offset + sizeof( type )) <= k_size );
 		// Implement a by-address getter
-		#define TStructGetPtrImpl(type, name, offset)														\
-			API_INLINE type* Get##name()				{ return GetDataPtr<type, offset>(); }				\
-			API_INLINE type const* Get##name() const	{ return GetDataPtr<type, offset>(); }				\
-			/*              ^ use const here, instead of before the type, in case [type] is defined as something like "int32*" */	\
+		#define TStructGetPtrImpl(type, name, offset)											\
+			inline type* Get##name()				{ return GetDataPtr<type, offset>(); }		\
+			inline type const* Get##name() const	{ return GetDataPtr<type, offset>(); }		\
+			/*          ^ use const here, instead of before the type, in case [type] is defined as something like "int32*" */	\
 			BOOST_STATIC_ASSERT( ( offset + sizeof( type )) <= k_size );
 
 		// Implement a by-value getter for fake TStruct sub-classes
@@ -107,12 +112,13 @@ namespace Yelo
 	extern const real K_REAL_MAX;
 
 
-	inline bool is_null_or_empty(cstring const str) { return str == NULL || str[0] == '\0'; }
-	inline bool is_null_or_empty(wcstring const str) { return str == NULL || str[0] == L'\0'; }
+	inline bool is_null_or_empty( cstring const str) { return str == nullptr || str[0] ==  '\0'; }
+	inline bool is_null_or_empty(wcstring const str) { return str == nullptr || str[0] == L'\0'; }
 
 	// Takes [wide] and converts it to an ascii string, to be held in [string]. If [wide_length] is not -1, the string
 	// is assumed to be null terminated
 	// Returns [string] if successful
+	// If NULL is returned, you can use GetLastError() for error information
 	char* wstring_to_string(char* string, int32 string_length, wcstring wide, int32 wide_length = -1);
 
 	// [string_length] includes the null terminator
@@ -121,6 +127,7 @@ namespace Yelo
 	// Takes [string] and converts it to an unicode string, to be held in [wide]. If [string_length] is not -1, the string
 	// is assumed to be null terminated
 	// Returns [wide] if successful
+	// If NULL is returned, you can use GetLastError() for error information
 	wstring string_to_wstring(wstring wide, int32 wide_length, cstring string, int32 string_length = -1);
 
 	// [string_length] includes the null terminator

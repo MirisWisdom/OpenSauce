@@ -33,7 +33,9 @@ namespace Yelo
 		// Patches stock tag_groups with new fields where they once had useless padding
 		// Called before group definitions have been verified (but after group tags have) and group parents are built
 		// We do this to ensure we don't fuck anything up, but also because a parent group may get modified
-		// Defined in CheApe's TagGroups.cpp
+		// Defined in CheApe's TagFieldSetReplacements.cpp
+		// TODO: perhaps instead we should run this -after- initial verification, then in true debug builds
+		// run group verification again after this executes. Or we could perform verification in the fieldset replacement code
 		void InitializeFieldSetReplacements();
 		// Patches stock tag groups for various *fixes* (eg, to correct behavior), not additions or the like
 		// Called after the group definitions have been verified

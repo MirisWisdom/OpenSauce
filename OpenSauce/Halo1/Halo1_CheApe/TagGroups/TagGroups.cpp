@@ -53,11 +53,6 @@ namespace Yelo
 			}
 		}
 
-		void InitializeFieldSetReplacements()
-		{
-			// NOTE: call tag_field_set_replacement_builder's here
-		}
-
 		// The shader type names list wasn't maintained at some point someone forgot to add the transparent chicago types 
 		static void InitializeFixesForShaderGroups()
 		{

@@ -23,16 +23,16 @@ namespace ShaderExtension
 		if(	extension.base_normal.modifiers.coefficient == 0.0f)
 			extension.base_normal.modifiers.coefficient =  1.0f;
 
-		for(int32 x = 0; x < NUMBEROF(extension.detail_normals); x++)
+		for (auto& detail_normal : extension.detail_normals)
 		{
-			if(!extension.detail_normals[x].map.tag_index.IsNull())
+			if(!detail_normal.map.tag_index.IsNull())
 				shader_tag->shader.extension_usage |= Enums::_model_extension_usage_detail_normal;
-			if(	extension.detail_normals[x].modifiers.coefficient == 0.0f)
-				extension.detail_normals[x].modifiers.coefficient =  1.0f;
-			if(	extension.detail_normals[x].modifiers.scale == 0.0f)
-				extension.detail_normals[x].modifiers.scale =  1.0f;
-			if(	extension.detail_normals[x].modifiers.v_scale == 0.0f)
-				extension.detail_normals[x].modifiers.v_scale =  1.0f;
+			if(	detail_normal.modifiers.coefficient == 0.0f)
+				detail_normal.modifiers.coefficient =  1.0f;
+			if(	detail_normal.modifiers.scale == 0.0f)
+				detail_normal.modifiers.scale =  1.0f;
+			if(	detail_normal.modifiers.v_scale == 0.0f)
+				detail_normal.modifiers.v_scale =  1.0f;
 		}
 
 		if(!extension.specular_color.map.tag_index.IsNull())
@@ -56,7 +56,7 @@ namespace ShaderExtension
 
 		shader_tag->shader.extension_usage = Enums::_model_extension_usage_none;
 
-		if(!shader_tag->environment.bump_map.map.tag_index.IsNull())
+		if(!shader_tag->environment.bump.bump_map.map.tag_index.IsNull())
 			shader_tag->shader.extension_usage |= Enums::_model_extension_usage_normal_map;
 
 		return true;

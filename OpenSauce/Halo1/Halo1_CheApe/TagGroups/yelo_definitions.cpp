@@ -154,54 +154,73 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////////
 		// s_yelo_definition_globals
-		bool s_yelo_definition_globals::VerifyYeloGlobalsCvGroup() const
+		static struct s_yelo_definition_globals {
+			bool initialized;
+			PAD24;
+			tag_group* py_globals_cv_definition;
+			tag_group* py_globals_definition;
+			tag_group* py_definition;
+
+		private:
+			bool VerifyYeloGlobalsCvGroup() const
+			{
+				return	py_globals_cv_definition->version == project_yellow_globals_cv::k_version &&
+						py_globals_cv_definition->header_block_definition->element_size == sizeof(project_yellow_globals_cv);
+			}
+			bool VerifyYeloGlobalsGroup() const
+			{
+				return	py_globals_definition->version == project_yellow_globals::k_version &&
+						py_globals_definition->header_block_definition->element_size == sizeof(project_yellow_globals);
+			}
+			bool VerifyYeloScenarioGroup() const
+			{
+				return	py_definition->version == project_yellow::k_version &&
+						py_definition->header_block_definition->element_size == sizeof(project_yellow);
+			}
+			bool VerifyGroupDefinitions() const;
+
+			// Populate the group references with their function pointers, etc
+			void InitializeGroupDefinitions();
+			void InitializeGroupReferences();
+		public:
+			void Initialize();
+			void Dispose();
+		}_yelo_definition_globals = {
+			false,
+			nullptr, nullptr, nullptr,
+		};
+
+		static void VerifyGroupDefinitionHandler(bool& valid_definitions,
+			const tag_group* group,
+			bool (s_yelo_definition_globals::* verify_group_proc)() const, // pointer to member function grossness
+			cstring group_name)
 		{
-			return	py_globals_cv_definition->version == project_yellow_globals_cv::k_version && 
-					py_globals_cv_definition->header_block_definition->element_size == sizeof(project_yellow_globals_cv);
-		}
-		bool s_yelo_definition_globals::VerifyYeloGlobalsGroup() const
-		{
-			return	py_globals_definition->version == project_yellow_globals::k_version && 
-					py_globals_definition->header_block_definition->element_size == sizeof(project_yellow_globals);
-		}
-		bool s_yelo_definition_globals::VerifyYeloScenarioGroup() const
-		{
-			return	py_definition->version == project_yellow::k_version && 
-					py_definition->header_block_definition->element_size == sizeof(project_yellow);
+			if( valid_definitions=(group != nullptr) )
+			{
+				valid_definitions = (_yelo_definition_globals.*verify_group_proc)();
+
+				if (!valid_definitions)
+					YELO_ERROR(_error_message_priority_none, 
+						"CheApe: %s group definition doesn't match code!", group_name);
+			}
+			else YELO_ERROR(_error_message_priority_none, 
+					"CheApe: %s group not found!", group_name);
 		}
 		bool s_yelo_definition_globals::VerifyGroupDefinitions() const
 		{
 			bool valid_definitions = true;
-			//////////////////////////////////////////////////////////////////////////
-			// project_yellow_globals_cv
-			if( valid_definitions=(py_globals_cv_definition != nullptr) )
-			{
-				if( !(valid_definitions=VerifyYeloGlobalsCvGroup()) )
-					YELO_ERROR(_error_message_priority_none, 
-						"CheApe: %s group definition doesn't match code!", "project_yellow_globals_cv");
-			}
-			else YELO_ERROR(_error_message_priority_none, 
-					"CheApe: %s group not found!", "project_yellow_globals_cv");
-			//////////////////////////////////////////////////////////////////////////
-			// project_yellow_globals
-			if( valid_definitions=(py_globals_definition != nullptr) )
-			{
-				if( !(valid_definitions=VerifyYeloGlobalsGroup()) )
-					YELO_ERROR(_error_message_priority_none, 
-					"CheApe: %s group definition doesn't match code!", "project_yellow_globals");
-			}
-			else YELO_ERROR(_error_message_priority_none, 
-				"CheApe: %s group not found!", "project_yellow_globals");
-			//////////////////////////////////////////////////////////////////////////
-			// project_yellow
-			if( valid_definitions=(py_definition != nullptr) )
-			{
-				if( !(valid_definitions=VerifyYeloScenarioGroup()) )
-					YELO_ERROR(_error_message_priority_none, 
-					"CheApe: %s group definition doesn't match code!", "project_yellow");
-			}
-			else YELO_ERROR(_error_message_priority_none, 
-				"CheApe: %s group not found!", "project_yellow");
+
+			VerifyGroupDefinitionHandler(valid_definitions,
+				py_globals_cv_definition, &s_yelo_definition_globals::VerifyYeloGlobalsCvGroup,
+				"project_yellow_globals_cv");
+
+			VerifyGroupDefinitionHandler(valid_definitions,
+				py_globals_definition, &s_yelo_definition_globals::VerifyYeloGlobalsGroup,
+				"project_yellow_globals");
+
+			VerifyGroupDefinitionHandler(valid_definitions,
+				py_definition, &s_yelo_definition_globals::VerifyYeloScenarioGroup,
+				"project_yellow");
 
 			return valid_definitions;
 		}
@@ -325,10 +344,11 @@ namespace Yelo
 			initialized = false;
 		}
 		//////////////////////////////////////////////////////////////////////////
-		s_yelo_definition_globals _yelo_definition_globals = {
-			false,
-			nullptr, nullptr, nullptr,
-		};
+
+		bool YeloDefinitionsInitialized()
+		{
+			return _yelo_definition_globals.initialized;
+		}
 
 		void YeloDefinitionsInitialize()
 		{
