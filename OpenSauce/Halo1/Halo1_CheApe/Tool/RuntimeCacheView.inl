@@ -83,8 +83,6 @@ int EnterCommand(const char* command_list, std::string* arguments_string, const 
 	int index = 0;
 	bool command_found = false;
 
-	std::vector<std::string>::iterator command_iter;
-
 	// iterate through the commands until a matching one is/is not found
 	for( auto& command : command_array )
 	{

@@ -12,27 +12,6 @@ namespace Yelo
 	struct tag_field;
 	struct tag_group;
 
-	namespace Flags
-	{
-		enum tag_field_set_runtime_flags : long_flags {
-			_tag_field_set_runtime_has_tag_block_bit,		// fieldset contains 1+ tag_block fields
-			_tag_field_set_runtime_has_tag_data_bit,		// fieldset contains 1+ tag_data fields
-			_tag_field_set_runtime_has_tag_reference_bit,	// fieldset contains 1+ tag_reference fields
-															// if the tag_reference field is actually a proxy for a string_id_yelo field, should we still count it?
-			_tag_field_set_runtime_has_block_index_bit,		// fieldset contains 1+ block_index fields
-			_tag_field_set_runtime_has_string_id_bit,		// fieldset contains 1+ string_id_yelo fields
-			_tag_field_set_runtime_has_old_string_id_bit,	// fieldset contains 1+ tag_string fields annotated for string_id
-			_tag_field_set_runtime_has_runtime_size_bit,	// fieldset's size for cache build is not the same as in tags build
-			_tag_field_set_runtime_has_alignment_bit,		// fieldset has an explicit alignment_bit set
-			_tag_field_set_runtime_no_shared_memory_bit,	// fieldset should not share memory with other bitwise matching data (eg, it is volatile memory)
-			_tag_field_set_runtime_is_group_header_bit,		// fieldset represents the header_block_definition of a group
-			_tag_field_set_runtime_is_block_indexed_bit,	// fieldset can be referenced by a block_index (eg, the scenario_object_name block would have this set)
-			_tag_field_set_runtime_custom_comparison_bit,	// fieldset's comparison codes are custom, and should be assumed to be statically allocated or managed elsewhere
-
-			k_number_of_tag_field_set_runtime_flags,
-		};
-	};
-
 	namespace TagGroups
 	{
 		typedef int16 comparison_code_t;
@@ -54,7 +33,29 @@ namespace Yelo
 				k_max_comparison_codes = 511,
 			};
 
-			long_flags flags;
+			struct {
+				unsigned has_tag_block : 1;			// fieldset contains 1+ tag_block fields
+				unsigned has_tag_data : 1;			// fieldset contains 1+ tag_data fields
+				unsigned has_tag_reference : 1;		// fieldset contains 1+ tag_reference fields
+													// if the tag_reference field is actually a proxy for a string_id_yelo field, should we still count it?
+				unsigned has_block_index : 1;		// fieldset contains 1+ block_index fields
+				unsigned has_string_id : 1;			// fieldset contains 1+ string_id_yelo fields
+				unsigned has_old_string_id : 1;		// fieldset contains 1+ tag_string fields annotated for string_id
+				unsigned has_runtime_size : 1;		// fieldset's size for cache build is not the same as in tags build
+				unsigned has_alignment : 1;			// fieldset has an explicit alignment_bit set
+				unsigned no_shared_memory : 1;		// fieldset should not share memory with other bitwise matching data (eg, it is volatile memory)
+				unsigned is_group_header : 1;		// fieldset represents the header_block_definition of a group
+				unsigned is_block_indexed : 1;		// fieldset can be referenced by a block_index (eg, the scenario_object_name block would have this set)
+				unsigned custom_comparison : 1;		// fieldset's comparison codes are custom, and should be assumed to be statically allocated or managed elsewhere
+
+				// For group headers only
+				unsigned group_has_tag_block : 1;
+				unsigned group_has_tag_data : 1;
+				unsigned group_has_tag_reference : 1;
+				unsigned group_has_block_index : 1;
+				unsigned group_has_string_id : 1;
+				unsigned group_has_old_string_id : 1;
+			}flags;
 			size_t runtime_size;			// should be set to element_size, even if there's no actual size difference at runtime
 			struct {
 				// number of references to this fieldset (via block or block_index fields)
@@ -74,7 +75,8 @@ namespace Yelo
 			comparison_code_t* comparison_codes;
 			const tag_field* block_name_field;
 
-			void Initialize(const tag_block_definition* definition);
+			void Initialize(const tag_block_definition* group_header_definition, 
+				const tag_block_definition* definition);
 			void Dispose();
 
 			// Returns true if the fieldset contains any fields which required optimized transformations for runtime builds
@@ -96,7 +98,8 @@ namespace Yelo
 			void IncrementStringIdFieldCount();
 			void IncrementTotalPaddingSize(size_t size);
 
-			void BuildInfo(const tag_block_definition* definition);
+			void BuildInfo(const tag_block_definition* group_header_definition, 
+				const tag_block_definition* definition);
 			void CallCheApeHooks(const tag_block_definition* definition);
 			void BuildByteComparisonCodes(const tag_block_definition* definition);
 			void DestroyByteComparisonCodes();

@@ -97,6 +97,7 @@
     <ClCompile Include="Engine\GrenadeTypesUpgrade.cpp" />
     <ClCompile Include="Engine\Scripting.cpp" />
     <ClCompile Include="Tool\BuildCacheFile.cpp" />
+    <ClCompile Include="Tool\TagMaintenance.cpp" />
     <ClCompile Include="Yelo\MemoryFixups.cpp" />
     <ClCompile Include="Yelo\ScenarioResources.cpp" />
     <ClCompile Include="Yelo\Yelo.cpp" />
@@ -115,7 +116,7 @@
     <ClCompile Include="Tool\ToolMisc.cpp" />
     <ClCompile Include="Rasterizer\Rasterizer.cpp" />
     <ClCompile Include="Rasterizer\DX9\DX9.cpp" />
-	<ClCompile Include="TagGroups\TagFieldSetReplacements.cpp" />
+    <ClCompile Include="TagGroups\TagFieldSetReplacements.cpp" />
     <ClCompile Include="TagGroups\TagGroups.cpp" />
     <ClCompile Include="TagGroups\yelo_definitions.cpp" />
     <ClCompile Include="TagGroups\yelo_scenario_definitions.cpp" />
@@ -130,6 +131,7 @@
     <ClInclude Include="Engine\GrenadeTypesUpgrade.hpp" />
     <ClInclude Include="Engine\Scripting.hpp" />
     <ClInclude Include="Tool\BuildCacheFile.hpp" />
+    <ClInclude Include="Tool\TagMaintenance.hpp" />
     <ClInclude Include="Yelo\MemoryFixups.hpp" />
     <ClInclude Include="Yelo\ScenarioResources.hpp" />
     <ClInclude Include="Common\DebugDump.hpp" />

@@ -35,10 +35,12 @@ namespace Yelo
 	};
 	namespace Tool { namespace Console
 	{
+		void PrintNewLine();
+
 		void ColorPrintF(const WORD color,
 			const char* format, ...);
 		void ColorPrint(const WORD color,
 			const char* string, bool new_line = false);
-	};};
+	}; };
 };
 #endif

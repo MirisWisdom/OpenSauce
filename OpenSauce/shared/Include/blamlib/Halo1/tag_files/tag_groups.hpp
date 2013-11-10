@@ -49,6 +49,8 @@ namespace Yelo
 		// Get the size, in characters, of a string field, inclusive of the null character
 		int32 StringFieldGetSize(const tag_field* field);
 
+		tag_group* FindTagGroupByName(cstring name);
+
 		// Convenience function to handle deleting all of the data in tag_data field.
 		// Use [terminator_size] for tag_data which HAS to have a specific amount of 
 		// bytes no matter what. IE, text data requires 1 or 2 bytes (ascii or unicode) 
@@ -207,6 +209,24 @@ namespace Yelo
 		{
 			for(tag_group* group = blam::tag_group_get_next(); group; group = blam::tag_group_get_next(group))
 				action(group->header_block_definition);
+		}
+
+		// TAction: bool operator()([const] tag_block* block, int32 element_index, [const] void* element)
+		template<class TAction>
+		bool tag_block_elements_do_action_sans_safe_get(tag_block* block, TAction& action = TAction())
+		{
+			auto* definition = block->definition;
+			bool result = true;
+
+			for (int x = 0; x < block->count; x++)
+			{
+				void* element = CAST_PTR(byte*, block->address) +
+					(definition->element_size * x);
+
+				result &= action(block, x, element);
+			}
+
+			return result;
 		}
 	};
 };

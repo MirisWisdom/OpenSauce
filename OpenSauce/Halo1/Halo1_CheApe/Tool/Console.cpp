@@ -12,6 +12,11 @@ namespace Yelo
 {
 	namespace Tool { namespace Console
 	{
+		void PrintNewLine()
+		{
+			puts("");
+		}
+
 		/*!
 		 * \brief
 		 * Prints a formatted string to the console in a specified color.
@@ -70,7 +75,7 @@ namespace Yelo
 			// set the console color
 			SetConsoleTextAttribute(console_handle, color);
 
-			// if new_line is true, print the string usint puts to add a newline character
+			// if new_line is true, print the string using puts to add a newline character
 			// otherwise use fputs
 			if(new_line)
 				puts(string);
@@ -80,6 +85,6 @@ namespace Yelo
 			// reset the console color back to the default
 			SetConsoleTextAttribute(console_handle, 0x07);
 		}
-	};};
+	}; };
 };
 #endif

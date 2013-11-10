@@ -632,6 +632,9 @@
     <ClCompile Include="Tool\ShaderPostprocess.cpp">
       <Filter>Tool</Filter>
     </ClCompile>
+	<ClCompile Include="Tool\TagMaintenance.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
     <ClCompile Include="Tool\Tool_AnimationFixups.cpp">
       <Filter>Tool</Filter>
     </ClCompile>
@@ -644,7 +647,7 @@
     <ClCompile Include="Rasterizer\DX9\DX9.cpp">
       <Filter>Rasterizer\DX9</Filter>
     </ClCompile>
-	<ClCompile Include="TagGroups\TagFieldSetReplacements.cpp">
+    <ClCompile Include="TagGroups\TagFieldSetReplacements.cpp">
       <Filter>TagGroups</Filter>
     </ClCompile>
     <ClCompile Include="TagGroups\TagGroups.cpp">
@@ -715,6 +718,9 @@
       <Filter>Tool</Filter>
     </ClInclude>
     <ClInclude Include="Tool\ShaderPostprocess.hpp">
+      <Filter>Tool</Filter>
+    </ClInclude>
+	<ClInclude Include="Tool\TagMaintenance.hpp">
       <Filter>Tool</Filter>
     </ClInclude>
     <ClInclude Include="Tool\Tool_AnimationFixups.hpp">

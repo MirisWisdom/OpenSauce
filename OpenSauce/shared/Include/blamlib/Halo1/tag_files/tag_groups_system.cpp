@@ -60,7 +60,7 @@ namespace Yelo
 
 				const tag_group* parent_group = group;
 				do {
-					//YELO_ASSERT( parent_group->header_block_definition ); // don't assert here as this is checked
+					//YELO_ASSERT( parent_group->header_block_definition ); // don't assert here as this is checked in VerifyGroupFieldDefinitions
 
 					auto scanner = TagGroups::c_tag_field_scanner(parent_group->header_block_definition->fields)
 						.ScanToEnd();

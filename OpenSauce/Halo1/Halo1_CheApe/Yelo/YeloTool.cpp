@@ -20,6 +20,7 @@
 #include "Tool/ShaderPostprocess.hpp"
 #include "Tool/BuildCppDefinition.hpp"
 #include "Tool/RuntimeCacheView.hpp"
+#include "Tool/TagMaintenance.hpp"
 #include "Tool/ToolMisc.hpp"
 
 namespace Yelo

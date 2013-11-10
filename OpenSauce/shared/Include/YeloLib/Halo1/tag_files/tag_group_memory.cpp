@@ -38,13 +38,15 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////////
 		// s_tag_field_set_runtime_data
-		s_tag_field_set_runtime_data* BuildRuntimeInfoForBlockDefinition(tag_block_definition* block_definition);
+		s_tag_field_set_runtime_data* BuildRuntimeInfoForBlockDefinition(const tag_block_definition* group_header_definition, 
+			tag_block_definition* block_definition);
 
-		void s_tag_field_set_runtime_data::Initialize(const tag_block_definition* definition)
+		void s_tag_field_set_runtime_data::Initialize(const tag_block_definition* group_header_definition, 
+			const tag_block_definition* definition)
 		{
 			std::memset(this, 0, sizeof(*this)); // I like to act like I know what I'm doing. Ctors? Never heard of 'em!
 
-			BuildInfo(definition);
+			BuildInfo(group_header_definition, definition);
 			CallCheApeHooks(definition);
 			BuildByteComparisonCodes(definition);
 		}
@@ -56,15 +58,15 @@ namespace Yelo
 		bool s_tag_field_set_runtime_data::ContainsRuntimeOptimizedFields() const
 		{
 			return	g_tag_group_memory_globals.string_id_yelo_runtime_is_condensed &&
-					TEST_FLAG(flags, Flags::_tag_field_set_runtime_has_string_id_bit);
+					flags.has_string_id;
 		}
 		void s_tag_field_set_runtime_data::SetIsGroupHeader()
 		{
-			SET_FLAG(flags, Flags::_tag_field_set_runtime_is_group_header_bit, true);
+			flags.is_group_header = true;
 		}
 		void s_tag_field_set_runtime_data::DecrementRuntimeSize(size_t amount)
 		{
-			SET_FLAG(flags, Flags::_tag_field_set_runtime_has_runtime_size_bit, true);
+			flags.has_runtime_size = true;
 
 			assert(amount < runtime_size ); // validate it wouldn't cause an overflow
 			runtime_size += amount;
@@ -80,34 +82,34 @@ namespace Yelo
 		}
 		void s_tag_field_set_runtime_data::IncrementReferenceCountFromBlockIndexField()
 		{
-			SET_FLAG(flags, Flags::_tag_field_set_runtime_is_block_indexed_bit, true);
+			flags.is_block_indexed = true;
 
 			IncrementDirectReferenceCount();
 		}
 		void s_tag_field_set_runtime_data::IncrementTagReferenceFieldCount()
 		{
-			SET_FLAG(flags, Flags::_tag_field_set_runtime_has_tag_reference_bit, true);
+			flags.has_tag_reference = true;
 
 			assert(counts.tag_reference_fields <= k_max_tag_reference_fields);
 			counts.tag_reference_fields++;
 		}
 		void s_tag_field_set_runtime_data::IncrementBlockFieldCount()
 		{
-			SET_FLAG(flags, Flags::_tag_field_set_runtime_has_tag_block_bit, true);
+			flags.has_tag_block = true;
 
 			assert(counts.block_fields <= k_max_block_fields);
 			counts.block_fields++;
 		}
 		void s_tag_field_set_runtime_data::IncrementBlockIndexFieldCount()
 		{
-			SET_FLAG(flags, Flags::_tag_field_set_runtime_has_block_index_bit, true);
+			flags.has_block_index = true;
 
 			assert(counts.block_index_fields <= k_max_block_index_fields);
 			counts.block_index_fields++;
 		}
 		void s_tag_field_set_runtime_data::IncrementDataFieldCount()
 		{
-			SET_FLAG(flags, Flags::_tag_field_set_runtime_has_tag_data_bit, true);
+			flags.has_tag_data = true;
 
 			assert(counts.data_fields <= k_max_data_fields);
 			counts.data_fields++;
@@ -119,7 +121,7 @@ namespace Yelo
 		}
 		void s_tag_field_set_runtime_data::IncrementStringIdFieldCount()
 		{
-			SET_FLAG(flags, Flags::_tag_field_set_runtime_has_string_id_bit, true);
+			flags.has_string_id = true;
 
 			assert(counts.string_id_fields <= k_max_string_id_fields);
 			counts.string_id_fields++;
@@ -130,9 +132,14 @@ namespace Yelo
 			counts.padding_amount += size;
 		}
 
-		void s_tag_field_set_runtime_data::BuildInfo(const tag_block_definition* definition)
+		void s_tag_field_set_runtime_data::BuildInfo(const tag_block_definition* group_header_definition, 
+			const tag_block_definition* definition)
 		{
 			runtime_size = definition->element_size;
+
+			s_tag_field_set_runtime_data* group_header_info = nullptr;
+			if (group_header_definition && group_header_definition != definition)
+				group_header_info = group_header_definition->GetRuntimeInfo();
 
 			for(auto field : TagGroups::c_tag_field_scanner(definition->fields)
 				.AddFieldType(Enums::_field_string)
@@ -146,8 +153,13 @@ namespace Yelo
 				switch(field.GetType())
 				{
 				case Enums::_field_string:
-					if(field.IsOldStringId())
-						SET_FLAG(flags, Flags::_tag_field_set_runtime_has_old_string_id_bit, true);
+					if (field.IsOldStringId())
+					{
+						flags.has_old_string_id = true;
+
+						if (group_header_info)
+							group_header_info->flags.group_has_old_string_id = true;
+					}
 
 					IncrementStringFieldCount();
 					break;
@@ -161,26 +173,36 @@ namespace Yelo
 							DecrementRuntimeSize(string_id_yelo::k_debug_data_size);
 					}
 					else // NOTE: we don't currently count the string_id_yelo tag_reference field
+					{
 						IncrementTagReferenceFieldCount();
+						if (group_header_info)
+							group_header_info->flags.group_has_tag_reference = true;
+					}
 					break;
 
 				case Enums::_field_block:
 					IncrementBlockFieldCount();
+					if (group_header_info)
+						group_header_info->flags.group_has_tag_block = true;
 
-					BuildRuntimeInfoForBlockDefinition( field.DefinitionAs<tag_block_definition>() )
+					BuildRuntimeInfoForBlockDefinition( group_header_definition, field.DefinitionAs<tag_block_definition>() )
 						->IncrementReferenceCountFromBlockField();
 					break;
 
 				case Enums::_field_short_block_index:
 				case Enums::_field_long_block_index:
 					IncrementBlockIndexFieldCount();
+					if (group_header_info)
+						group_header_info->flags.group_has_block_index = true;
 
-					BuildRuntimeInfoForBlockDefinition( field.DefinitionAs<tag_block_definition>() )
+					BuildRuntimeInfoForBlockDefinition( group_header_definition, field.DefinitionAs<tag_block_definition>() )
 						->IncrementReferenceCountFromBlockIndexField();
 					break;
 
 				case Enums::_field_data:
 					IncrementDataFieldCount();
+					if (group_header_info)
+						group_header_info->flags.group_has_tag_data = true;
 					break;
 
 				case Enums::_field_pad:
@@ -241,7 +263,7 @@ namespace Yelo
 				}
 			}state = {false, 0};
 
-			if(TEST_FLAG(flags, Flags::_tag_field_set_runtime_custom_comparison_bit))
+			if(flags.custom_comparison)
 			{
 				assert(comparison_codes);
 				return;
@@ -315,7 +337,7 @@ namespace Yelo
 
 		void s_tag_field_set_runtime_data::DestroyByteComparisonCodes()
 		{
-			if(comparison_codes != nullptr && !TEST_FLAG(flags, Flags::_tag_field_set_runtime_custom_comparison_bit))
+			if(comparison_codes != nullptr && !flags.custom_comparison)
 			{
 				YELO_DELETE_ARRAY(comparison_codes);
 				comparison_codes = nullptr;
@@ -330,7 +352,8 @@ namespace Yelo
 			return g_tag_group_memory_globals.field_set_runtime_info_enabled;
 		}
 
-		static s_tag_field_set_runtime_data* BuildRuntimeInfoForBlockDefinition(tag_block_definition* block_definition)
+		static s_tag_field_set_runtime_data* BuildRuntimeInfoForBlockDefinition(const tag_block_definition* group_header_definition, 
+			tag_block_definition* block_definition)
 		{
 			s_tag_field_set_runtime_data* info = block_definition->GetRuntimeInfo();
 			if(info != nullptr)
@@ -339,7 +362,7 @@ namespace Yelo
 			info = YELO_NEW(s_tag_field_set_runtime_data);
 			block_definition->SetRuntimeInfo(info);
 
-			info->Initialize(block_definition);
+			info->Initialize(group_header_definition, block_definition);
 
 #if FALSE
 			YELO_WARN( 
@@ -361,7 +384,7 @@ namespace Yelo
 			struct build_runtime_data_info_action
 			{ void operator()(tag_block_definition* block_definition) const
 			{
-				BuildRuntimeInfoForBlockDefinition(block_definition);
+				BuildRuntimeInfoForBlockDefinition(block_definition, block_definition);
 			} void operator()(tag_group* group) const
 			{
 				group->header_block_definition->DoRecursiveAction(*this);
