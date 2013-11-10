@@ -37,6 +37,17 @@ namespace Yelo
 		// [header] should be a pointer to the start of a datum instance in a data array
 		static datum_index Create(index_t index, void* header);
 
+#if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
+		struct std_hash : public std::unary_function<datum_index, size_t>
+		{
+			// logic copied and pasted from xstddef's _Bitwise_hash
+			inline size_t operator()(const datum_index& _Keyval) const
+			{	// hash _Keyval to size_t value by pseudorandomizing transform
+				return std::_Hash_seq((const unsigned char *)&_Keyval, sizeof(datum_index));
+			}
+		};
+#endif
+
 		OVERRIDE_OPERATOR_CAST_THIS(uint32);
 		OVERRIDE_OPERATOR(=, datum_index&, uint32 arg) { this->handle = arg; return *this; }
 		OVERRIDE_OPERATOR_MATH_BOOL(datum_index, handle, ==);

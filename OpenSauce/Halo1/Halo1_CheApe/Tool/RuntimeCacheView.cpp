@@ -18,6 +18,7 @@
 
 // TODO: I would like to change all instances of DWORD to either size_t or uintptr_t
 // TODO: also, we should now be able to use c_tag_field_scanner, instead of the manual code we have
+// TODO: also, start using k_tag_field_definitions and remove the duplicated data from g_field_descriptions
 
 namespace Yelo
 {

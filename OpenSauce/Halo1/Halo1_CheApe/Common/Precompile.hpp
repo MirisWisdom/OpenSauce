@@ -43,6 +43,7 @@
 #include <iterator>
 #include <memory> // std::unique_ptr
 #include <set>
+#include <unordered_set>
 #include <unordered_map>
 #include <utility>
 #include <vector>

@@ -37,4 +37,8 @@
 			1, "<scenario-name>", 
 		&scenario_cleanse_of_yelo_data),
 
+	IMPORT_CLASS_DEFINITION("tag-load-test", 
+			6, "<tag-name> <group> <prompt-to-continue> <prompt-to-fix-unresolved> <load-non-resolving-refs> <verbose>", 
+			&tag_load_maintenance),
+
 	// TODO: add new import classes here

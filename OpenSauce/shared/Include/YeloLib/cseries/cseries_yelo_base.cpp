@@ -112,6 +112,7 @@ namespace Yelo
 		time_t aclock;	time( &aclock ); // Get time in seconds
 		localtime_s( &newtime, &aclock ); // Convert time to struct tm form
 		asctime_s( time_str, k_time_str_sizeof, &newtime );
+		time_str[25] = '\0'; // remove the \n character that asctime adds (http://msdn.microsoft.com/en-us/library/b6htak9c.aspx)
 	}
 
 	void GetTimeStampStringForFile(_Out_ tag_string time_str)

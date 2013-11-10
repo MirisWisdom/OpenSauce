@@ -302,4 +302,23 @@ namespace Yelo
 				Debug::WriteFormat("CheApe: Couldn't free the memory map! (%X)", error_code);
 		}
 	};
+
+	namespace TagGroups
+	{
+		tag_group* FindTagGroupByName(cstring name)
+		{
+			if (CheApe::_InitError > CheApe::k_error_none) return nullptr;
+
+			tag_group group_hack = {
+				name,
+			};
+			tag_group* group_hack_ptr = &group_hack;
+
+			void* result = bsearch_s(&group_hack_ptr,
+				CheApe::_globals.new_tag_groups.address, CheApe::_globals.new_tag_groups.count, 
+				sizeof(tag_group*), tag_group::QsortCompareByName, nullptr);
+
+			return result != nullptr ? *CAST_PTR(tag_group**, result) : nullptr;
+		}
+	};
 };
