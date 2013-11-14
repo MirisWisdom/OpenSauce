@@ -35,11 +35,10 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-
   <PropertyGroup>
     <OSRequiresDirectX>true</OSRequiresDirectX>
     <OSRequiresCppBoost>true</OSRequiresCppBoost>
-	<OSRequiresGameSpyOpen>true</OSRequiresGameSpyOpen>
+    <OSRequiresGameSpyOpen>true</OSRequiresGameSpyOpen>
   </PropertyGroup>
   <Import Project="$(SolutionDir)..\shared\config\msbuild\OpenSauce.props" />
   <Import Project="$(SolutionDir)shared\config\msbuild\CrashRpt.props" />
@@ -52,42 +51,37 @@
   <Import Project="$(SolutionDir)shared\config\msbuild\7zip.props" />
   <Import Project="$(SolutionDir)shared\config\msbuild\GameSpyOpen.props" />
   <Import Project="$(SolutionDir)shared\config\msbuild\mongoose.props" />
-
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>11.0.60315.1</_ProjectFileVersion>
   </PropertyGroup>
-
   <ItemDefinitionGroup>
     <ClCompile>
-	  <PreprocessorDefinitions>GSI_NO_THREADS;HALO1_CE_EXPORTS;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GSI_NO_THREADS;HALO1_CE_EXPORTS;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>ws2_32.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
-	  <IgnoreSpecificDefaultLibraries>LIBC;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>LIBC;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ModuleDefinitionFile>Halo1_CE.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition=" '$(Configuration.Contains(Debug))' ">
     <ClCompile>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
-	  <BufferSecurityCheck>false</BufferSecurityCheck>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
     </ClCompile>
   </ItemDefinitionGroup>
-
   <ItemDefinitionGroup Condition=" '$(OSPlatformType)'=='Client' ">
-	<ClCompile>
-	  <PreprocessorDefinitions>DX_WRAPPER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    <ClCompile>
+      <PreprocessorDefinitions>DX_WRAPPER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
-
   <PropertyGroup Condition=" '$(OSPlatformType)'=='Client' ">
     <TargetName>dinput8</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(OSPlatformType)'=='Dedi' ">
     <TargetName>OpenSauceDedi</TargetName>
   </PropertyGroup>
-
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp" />
     <ClCompile Include="Common\FileIO.cpp" />
@@ -313,10 +307,19 @@
     <Text Include="Halo1_CE_Readme.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Common\GameSystems.DxComponents.inl" />
-    <None Include="Common\GameSystems.ProjComponents.inl" />
-    <None Include="Common\GameSystems.ProjGameStateComponents.inl" />
-    <None Include="Common\GameSystems.ProjMapComponents.inl" />
+    <None Include="Common\GameSystemComponent.Definitions.inl" />
+    <None Include="Common\GameSystemComponent.IterationRoundBegin.inl" />
+    <None Include="Common\GameSystemComponent.IterationRoundEnd.inl" />
+    <None Include="Common\GameSystemComponents.Game.inl" />
+    <None Include="Common\GameSystemComponents.GameState.inl" />
+    <None Include="Common\GameSystemComponents.GameStateYelo.inl" />
+    <None Include="Common\GameSystemComponents.Interface.inl" />
+    <None Include="Common\GameSystemComponents.Misc.inl" />
+    <None Include="Common\GameSystemComponents.Networking.inl" />
+    <None Include="Common\GameSystemComponents.Render.inl" />
+    <None Include="Common\GameSystemComponents.Scripting.inl" />
+    <None Include="Common\GameSystemComponents.Startup.inl" />
+    <None Include="Common\GameSystemComponents.Tags.inl" />
     <None Include="Common\YeloSettings.CmdLineSettings.inl" />
     <None Include="Game\CameraFov.inl" />
     <None Include="Game\Campaign.inl" />

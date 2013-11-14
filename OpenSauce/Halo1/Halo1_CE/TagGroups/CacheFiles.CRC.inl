@@ -33,7 +33,7 @@ uint32 CalculateCRC(void* cache_file)
 	uintptr_t curr = (uintptr_t)tag_instances;
 
 	// get the scenario tag
-	s_cache_tag_instance& scenario_tag_instance = tag_instances[tag_header->scenario.index];
+	s_cache_tag_instance& scenario_tag_instance = tag_instances[tag_header->scenario_index.index];
 	auto* scenario_tag = CAST_PTR(TagGroups::scenario*, TAG_ADDRESS(orig, curr, (uint32)scenario_tag_instance.base_address));
 
 	uint32 bsp_count = scenario_tag->structure_bsps.Count;
