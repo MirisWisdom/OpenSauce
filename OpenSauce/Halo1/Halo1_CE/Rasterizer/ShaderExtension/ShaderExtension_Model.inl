@@ -206,7 +206,7 @@ namespace Model
 	// hooks to correctly skip past inverse shaders in the usage id list
 	API_FUNC_NAKED static void Hook_EnvironmentNoPixelShaderIDOffset()
 	{
-		static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_ENVIRONMENT_NO_USAGE_ID_OFFSET_RETN);
+		static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_ENVIRONMENT_NO_USAGE_ID_OFFSET_RETN);
 
 		_asm{
 			// preserve ecx and edx
@@ -232,7 +232,7 @@ namespace Model
 	}
 	API_FUNC_NAKED static void Hook_NoPixelShaderIDOffset()
 	{
-		static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_NO_USAGE_ID_OFFSET_RETN);
+		static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_NO_USAGE_ID_OFFSET_RETN);
 
 		_asm{
 			// preserve ecx and edx
@@ -259,7 +259,7 @@ namespace Model
 	// hooks to return the new pixel shaders when applicable by offseting the shader index
 	API_FUNC_NAKED static void Hook_EnvironmentNoPixelShader()
 	{
-		static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_PS_INDEX_ENVIRONMENT_NO_RETN);
+		static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_PS_INDEX_ENVIRONMENT_NO_RETN);
 
 		_asm {
 			push	ebx
@@ -275,7 +275,7 @@ no_extension:
 	}
 	API_FUNC_NAKED static void Hook_EnvironmentNoInversePixelShader()
 	{
-		static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_PS_INDEX_ENVIRONMENT_NO_INV_RETN);
+		static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_PS_INDEX_ENVIRONMENT_NO_INV_RETN);
 
 		_asm {
 			push	ebx
@@ -291,7 +291,7 @@ no_extension:
 	}
 	API_FUNC_NAKED static void Hook_ChangeColorPixelShader()
 	{
-		static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_PS_INDEX_CHANGE_COLOR_RETN);
+		static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_PS_INDEX_CHANGE_COLOR_RETN);
 
 		_asm {
 			push	ebx
@@ -307,7 +307,7 @@ no_extension:
 	}	
 	API_FUNC_NAKED static void Hook_ChangeColorInversePixelShader()
 	{
-		static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_PS_INDEX_CHANGE_COLOR_INV_RETN);
+		static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_PS_INDEX_CHANGE_COLOR_INV_RETN);
 
 		_asm {
 			push	ebx
@@ -323,7 +323,7 @@ no_extension:
 	}	
 	API_FUNC_NAKED static void Hook_MultipurposePixelShader()
 	{
-		static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_PS_INDEX_MULTIPURPOSE_RETN);
+		static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_PS_INDEX_MULTIPURPOSE_RETN);
 
 		_asm {
 			push	ebx
@@ -339,7 +339,7 @@ no_extension:
 	}	
 	API_FUNC_NAKED static void Hook_MultipurposeInversePixelShader()
 	{
-		static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_PS_INDEX_MULTIPURPOSE_INV_RETN);
+		static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_PS_INDEX_MULTIPURPOSE_INV_RETN);
 
 		_asm {
 			push	ebx
@@ -355,7 +355,7 @@ no_extension:
 	}
 	API_FUNC_NAKED static void Hook_NoPixelShader()
 	{
-		static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_PS_INDEX_NO_RETN);
+		static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_PS_INDEX_NO_RETN);
 
 		_asm {
 			push	ebx
@@ -371,7 +371,7 @@ no_extension:
 	}	
 	API_FUNC_NAKED static void Hook_ReflectionPixelShader()
 	{
-		static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_PS_INDEX_REFLECTION_RETN);
+		static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_PS_INDEX_REFLECTION_RETN);
 
 		_asm {
 			push	ebx
@@ -387,7 +387,7 @@ no_extension:
 	}
 	API_FUNC_NAKED static void Hook_ReflectionInversePixelShader()
 	{
-		static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_PS_INDEX_REFLECTION_INV_RETN);
+		static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_PS_INDEX_REFLECTION_INV_RETN);
 
 		_asm {
 			push	ebx
@@ -403,7 +403,7 @@ no_extension:
 	}
 	API_FUNC_NAKED static void Hook_SelfIlluminationPixelShader()
 	{
-		static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_PS_INDEX_SELF_ILLUMINATION_RETN);
+		static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_PS_INDEX_SELF_ILLUMINATION_RETN);
 
 		_asm {
 			push	ebx
@@ -419,7 +419,7 @@ no_extension:
 	}	
 	API_FUNC_NAKED static void Hook_SelfIlluminationInversePixelShader()
 	{
-		static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_PS_INDEX_SELF_ILLUMINATION_INV_RETN);
+		static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_PS_INDEX_SELF_ILLUMINATION_INV_RETN);
 
 		_asm {
 			push	ebx
@@ -435,7 +435,7 @@ no_extension:
 	}	
 	API_FUNC_NAKED static void Hook_RenderObject_ForceInvertBackfaceNormals()
 	{
-		static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_DRAW_INVERT_BACKFACE_NORMALS_CHECK_RETN);
+		static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_DRAW_INVERT_BACKFACE_NORMALS_CHECK_RETN);
 
 		_asm{
 			mov     al, 1
@@ -451,7 +451,7 @@ no_extension:
 			return;
 
 		// reset to defaults
-		g_current_feature_mix = NULL;
+		g_current_feature_mix = nullptr;
 
 		memset(&g_vertex_shader_variables, 0, sizeof(g_vertex_shader_variables));
 
@@ -469,8 +469,7 @@ no_extension:
 		g_pixel_shader_variables.specular_color_map_exponent = 1.0f;
 		g_pixel_shader_variables.specular_color_map_coefficient = 1.0f;
 
-		TagGroups::s_shader_definition* shader_base = 
-			CAST_PTR(TagGroups::s_shader_definition*, shader_pointer);
+		auto* shader_base = CAST_PTR(TagGroups::s_shader_definition*, shader_pointer);
 
 		DX9::c_gbuffer_system::OutputObjectTBN() = false;
 
@@ -485,7 +484,7 @@ no_extension:
 
 		if(shader_base->shader.shader_type == Enums::_shader_type_model)
 		{
-			TagGroups::s_shader_model_definition* shader_model = CAST_PTR(TagGroups::s_shader_model_definition*, shader_base);
+			auto* shader_model = CAST_PTR(TagGroups::s_shader_model_definition*, shader_base);
 
 			if(shader_model->model.maps.shader_extension.Count == 1)
 			{
@@ -571,34 +570,33 @@ no_extension:
 		}
 		else if(shader_base->shader.shader_type == Enums::_shader_type_environment)
 		{
-			TagGroups::s_shader_environment_definition* shader_environment = 
-				CAST_PTR(TagGroups::s_shader_environment_definition*, shader_base);
+			auto* shader_environment = CAST_PTR(TagGroups::s_shader_environment_definition*, shader_base);
 
-			g_current_feature_mix = NULL;
+			g_current_feature_mix = nullptr;
 
 			// setup base normal map
-			if(!shader_environment->environment.bump_map.map.tag_index.IsNull())
+			if(!shader_environment->environment.bump.bump_map.map.tag_index.IsNull())
 			{
 				g_current_feature_mix = &g_feature_mix_list[1];
 
 				DX9::c_gbuffer_system::OutputObjectTBN() = true;
 
-				SetTexture(Yelo::DX9::Direct3DDevice(), 4, shader_environment->environment.bump_map.map.tag_index);
+				SetTexture(Yelo::DX9::Direct3DDevice(), 4, shader_environment->environment.bump.bump_map.map.tag_index);
 
-				g_pixel_shader_variables.base_normal_map_coefficient = shader_environment->environment.bump_map.scale;
+				g_pixel_shader_variables.base_normal_map_coefficient = shader_environment->environment.bump.bump_map.scale;
 
-				real z_multiplier = max(1.0f / shader_environment->environment.bump_map.scale, 0.0f);
+				real z_multiplier = max(1.0f / shader_environment->environment.bump.bump_map.scale, 0.0f);
 				g_pixel_shader_variables.base_normal_map_z_coefficient = min(z_multiplier, 1.0f);
 			}
 			else
-				Yelo::DX9::Direct3DDevice()->SetTexture(4, NULL);
+				Yelo::DX9::Direct3DDevice()->SetTexture(4, nullptr);
 		}
 		else
 		{
-			Yelo::DX9::Direct3DDevice()->SetTexture(4, NULL);
-			Yelo::DX9::Direct3DDevice()->SetTexture(5, NULL);
-			Yelo::DX9::Direct3DDevice()->SetTexture(6, NULL);
-			Yelo::DX9::Direct3DDevice()->SetTexture(7, NULL);
+			Yelo::DX9::Direct3DDevice()->SetTexture(4, nullptr);
+			Yelo::DX9::Direct3DDevice()->SetTexture(5, nullptr);
+			Yelo::DX9::Direct3DDevice()->SetTexture(6, nullptr);
+			Yelo::DX9::Direct3DDevice()->SetTexture(7, nullptr);
 		}
 		Yelo::DX9::Direct3DDevice()->SetPixelShaderConstantF(0 + k_shader_constant_offset, (float*)&g_pixel_shader_variables, k_vector_4_count);
 		Yelo::DX9::Direct3DDevice()->SetVertexShaderConstantF(15, (float*)&g_vertex_shader_variables, 1);
@@ -622,15 +620,15 @@ no_extension:
 		g_extension_usage_mask = Enums::_model_extension_usage_normal_map | Enums::_model_extension_usage_detail_normal |
 			Enums::_model_extension_usage_specular_map | Enums::_model_extension_usage_specular_lighting;
 
-		if(parent_element != NULL)
+		if (parent_element != nullptr)
 		{
 			int32 usage_mask = Enums::_model_extension_usage_none;
 			TiXmlElement* model_element = parent_element->FirstChildElement("Model");
 
-			if(model_element != NULL)
+			if(model_element != nullptr)
 			{
-				TiXmlElement* feature_element = NULL;
-				char* feature_attribute = NULL;
+				TiXmlElement* feature_element = nullptr;
+				char* feature_attribute = nullptr;
 
 				if(feature_element = model_element->FirstChildElement("NormalMap"))
 					usage_mask |= (Settings::ParseBoolean(feature_element->Attribute("enabled")) ? Enums::_model_extension_usage_normal_map : Enums::_model_extension_usage_none);
@@ -651,12 +649,12 @@ no_extension:
 
 	void		SaveSettings(TiXmlElement* parent_element)
 	{
-		if(parent_element != NULL)
+		if (parent_element != nullptr)
 		{
 			TiXmlElement* model_element = new TiXmlElement("Model");
 			parent_element->LinkEndChild(model_element);
 
-			TiXmlElement* feature_element = NULL;
+			TiXmlElement* feature_element = nullptr;
 
 			feature_element = new TiXmlElement("NormalMap");
 			feature_element->SetAttribute("enabled",
@@ -688,28 +686,21 @@ no_extension:
 		Memory::WriteRelativeJmp(&Hook_EnvironmentNoPixelShaderIDOffset,	GET_FUNC_VPTR(RASTERIZER_MODEL_ENVIRONMENT_NO_USAGE_ID_OFFSET_HOOK), true);
 		Memory::WriteRelativeJmp(&Hook_NoPixelShaderIDOffset,				GET_FUNC_VPTR(RASTERIZER_MODEL_NO_USAGE_ID_OFFSET_HOOK), true);
 		
-		int32 i;
 		// change shader usage id pointers to the extended array
-		for(i = 0; i < NUMBEROF(K_SHADER_USAGE_ID_ARRAY_REFERENCES); i++)
-			*K_SHADER_USAGE_ID_ARRAY_REFERENCES[i] = CAST_PTR(void*, &g_shader_usage_id_list[0][0]);
+		for (auto ptr : K_SHADER_USAGE_ID_ARRAY_REFERENCES)
+			*ptr = CAST_PTR(void*, &g_shader_usage_id_list[0][0]);
 
 		// update with the extended shader count
 		GET_PTR(RASTERIZER_MODEL_SHADER_LOAD_COUNT) = NUMBEROF(g_shader_usage_id_list);
 		GET_PTR(RASTERIZER_MODEL_SHADER_LOAD_NO_INVERSE_COUNT) = NUMBEROF(g_shader_usage_id_list) / 2;
 
 		// redirect references to the original pixel shader arrays to the custom arrays
-		for(i = 0; i < NUMBEROF(K_PIXEL_SHADER_REFERENCES_ENVIRONMENT_NO); i++)
-			*K_PIXEL_SHADER_REFERENCES_ENVIRONMENT_NO[i] = &g_environment_no_pixel_shaders;
-		for(i = 0; i < NUMBEROF(K_PIXEL_SHADER_REFERENCES_CHANGE_COLOR); i++)
-			*K_PIXEL_SHADER_REFERENCES_CHANGE_COLOR[i] = &g_change_color_pixel_shaders;
-		for(i = 0; i < NUMBEROF(K_PIXEL_SHADER_REFERENCES_MULTIPURPOSE); i++)
-			*K_PIXEL_SHADER_REFERENCES_MULTIPURPOSE[i] = &g_multipurpose_pixel_shaders;
-		for(i = 0; i < NUMBEROF(K_PIXEL_SHADER_REFERENCES_NO); i++)
-			*K_PIXEL_SHADER_REFERENCES_NO[i] = &g_no_pixel_shaders;
-		for(i = 0; i < NUMBEROF(K_PIXEL_SHADER_REFERENCES_REFLECTION); i++)
-			*K_PIXEL_SHADER_REFERENCES_REFLECTION[i] = &g_reflection_pixel_shaders;
-		for(i = 0; i < NUMBEROF(K_PIXEL_SHADER_REFERENCES_SELF_ILLUMINATION); i++)
-			*K_PIXEL_SHADER_REFERENCES_SELF_ILLUMINATION[i] = &g_self_illumination_pixel_shaders;
+		for (auto ptr : K_PIXEL_SHADER_REFERENCES_ENVIRONMENT_NO)		*ptr = &g_environment_no_pixel_shaders;
+		for (auto ptr : K_PIXEL_SHADER_REFERENCES_CHANGE_COLOR)			*ptr = &g_change_color_pixel_shaders;
+		for (auto ptr : K_PIXEL_SHADER_REFERENCES_MULTIPURPOSE)			*ptr = &g_multipurpose_pixel_shaders;
+		for (auto ptr : K_PIXEL_SHADER_REFERENCES_NO)					*ptr = &g_no_pixel_shaders;
+		for (auto ptr : K_PIXEL_SHADER_REFERENCES_REFLECTION)			*ptr = &g_reflection_pixel_shaders;
+		for (auto ptr : K_PIXEL_SHADER_REFERENCES_SELF_ILLUMINATION)	*ptr = &g_self_illumination_pixel_shaders;
 
 		// change the pixel shader index to return the normal map shaders when appropriate
 		Memory::WriteRelativeJmp(&Hook_EnvironmentNoPixelShader, GET_FUNC_VPTR(RASTERIZER_MODEL_PS_INDEX_ENVIRONMENT_NO_HOOK), true);

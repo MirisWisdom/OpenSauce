@@ -4,7 +4,7 @@
     <LocalDirectXDir		Condition=" '$(LocalDirectXDir)' == '' ">$(DXSDK_DIR)</LocalDirectXDir>
     <LocalXenonLibBinVer	Condition=" '$(LocalXenonLibBinVer)' == '' ">vs2010</LocalXenonLibBinVer>
     <LocalXenonLibDir		Condition=" '$(LocalXenonLibBinVer)' == '' ">$(XEDK)\lib\$(Platform)\$(LocalXenonLibBinVer)\</LocalXenonLibDir>
-    <LocalUserBoostVer		Condition=" '$(LocalUserBoostVer)' == '' ">boost_1_53_0</LocalUserBoostVer>
+    <LocalUserBoostVer		Condition=" '$(LocalUserBoostVer)' == '' ">boost_1_55_0</LocalUserBoostVer>
     <LocalUserBoostDir		Condition=" '$(LocalUserBoostDir)' == '' ">$(ProgramFiles)\boost\$(LocalUserBoostVer)\</LocalUserBoostDir>
 	<LocalGameSpyOpenDir	Condition=" '$(LocalGameSpyOpenDir)' == '' ">$(OSRootDir)OpenSauce\shared\Include\GameSpyOpen</LocalGameSpyOpenDir>
 

@@ -30,12 +30,12 @@
 #pragma region operator macros
 	/// Implement an operator cast from the implementing class to [Type]
 	#define OVERRIDE_OPERATOR_CAST_THIS(Type) \
-		API_INLINE operator Type*() { return reinterpret_cast<Type*>(this); }
+		inline operator Type*() { return reinterpret_cast<Type*>(this); }
 	/// Implement an operator cast from the implementing class to [Type] (by value)
 	#define OVERRIDE_OPERATOR_CAST_THIS_(Type) \
-		API_INLINE operator Type() { return *reinterpret_cast<Type*>(this); }
+		inline operator Type() { return *reinterpret_cast<Type*>(this); }
 	#define OVERRIDE_OPERATOR_CAST_THIS_REF(Type) \
-		API_INLINE operator Type&() { return reinterpret_cast<Type&>(*this); }
+		inline operator Type&() { return reinterpret_cast<Type&>(*this); }
 
 	/// Implement an operator cast from the implementing class to [Type] at [Field]'s offset in the class
 	#define OVERRIDE_OPERATOR_CAST_THIS_BY_FIELD(Type, Field) \
@@ -43,15 +43,15 @@
 
 	/// Implement a operator override for [Sign] based on the parent type's [Field] member that results in a boolean operation
 	#define OVERRIDE_OPERATOR_MATH_BOOL(Type, Field, Sign) \
-		API_INLINE bool operator Sign(const Type& rhs) const { return this->Field Sign rhs.Field ; }
+		inline bool operator Sign(const Type& rhs) const { return this->Field Sign rhs.Field ; }
 	#define OVERRIDE_OPERATOR_MATH_BOOL_TYPE(Type, Field, Sign) \
-		API_INLINE bool operator Sign(const Type& rhs) const { return this->Field Sign rhs ; }
+		inline bool operator Sign(const Type& rhs) const { return this->Field Sign rhs ; }
 
 	/// Implement a operator override for [Sign] based on the parent type's [Field] member
 	#define OVERRIDE_OPERATOR_MATH(ReturnType, Type, Field, Sign) \
-		API_INLINE ReturnType operator Sign(const Type& rhs) { return this->Field Sign rhs.Field ; }
+		inline ReturnType operator Sign(const Type& rhs) { return this->Field Sign rhs.Field ; }
 	#define OVERRIDE_OPERATOR_MATH_TYPE(ReturnType, Type, Field, Sign) \
-		API_INLINE ReturnType operator Sign(const Type& rhs) { return this->Field Sign rhs ; }
+		inline ReturnType operator Sign(const Type& rhs) { return this->Field Sign rhs ; }
 
 	/// Implement an operator override for the parent type, allowing the user to specify some arguments and define its code following the macro block
 	#define OVERRIDE_OPERATOR(Sign, ReturnType, ...) \
@@ -230,30 +230,11 @@
 #define BIT_FIELD_EXTRACT_VALUE(value, bit_offset, bit_count)	BIT_FIELD_EXTRACT_RANGE(value, bit_offset, bit_offset + (bit_count-1))
 
 
-
-#ifndef NULL
-	// null object value
-	#define	NULL 0
-#endif
 // null handle value
 #define	NULL_HANDLE 0xFFFFFFFF
 // sentinel value for indexers and other stuff
 #define NONE -1
 
-
-#if defined(_DEBUG)
-	#define MACRO_ML_START	do{
-	#define MACRO_ML_END	}while(false)
-#else	// for release, use a more compiler friendly statement
-	#define MACRO_ML_START	if(true){
-	#define MACRO_ML_END	} else
-#endif
-
-// Use 'BOOST_JOIN' instead
-//#define MACRO_JOIN_TOKEN3(a, b) a##b
-//#define MACRO_JOIN_TOKEN2(a, b) MACRO_JOIN_TOKEN3(a, b)
-//// Join two macro arguments, even if the argument is a macro as well
-//#define MACRO_JOIN_TOKEN(a, b) MACRO_JOIN_TOKEN2(a, b)
 
 #define API_BREAKPOINT() ( (*CAST_PTR(int*, 0)) = 0 )
 
@@ -262,10 +243,9 @@
 #define VARG_FROM_ARG(arg) ((char*)(&arg+1))
 
 
-// a la Nocturnal Initiative
-#define __DOC_TODO_STRING2(x) #x
-#define __DOC_TODO_STRING(x) __DOC_TODO_STRING2(x)
-#define DOC_TODO(msg) __pragma( message(__FILE__ "(" __DOC_TODO_STRING(__LINE__) "): TODO: " msg) )
+// Tells the compiler to log [msg]. Includes the filename and line number in the message
+#define DOC_TODO(msg) __pragma( message(__FILE__ "(" BOOST_PP_STRINGIZE(__LINE__) "): TODO: " msg) )
+// DOC_TODO variant that only evaluates in debug builds
 #if _DEBUG
 	#define DOC_TODO_DEBUG(msg) DOC_TODO(msg)
 #else

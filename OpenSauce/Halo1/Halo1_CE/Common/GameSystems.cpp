@@ -76,7 +76,11 @@
 
 //#define API_YELO_NO_PROJECT_COMPONENTS
 //#define API_YELO_NO_DX_COMPONENTS
-//#define API_YELO_NO_DX_PP_SUBSYSTEM_COMPONENTS
+
+#define __GS_COMPONENT_LIFECYCLE 1
+#define __GS_COMPONENT_MAP_LIFECYCLE 2
+#define __GS_COMPONENT_GAMESTATE_LIFECYCLE 3
+#define __GS_COMPONENT_DX9_LIFECYCLE 4
 
 
 namespace Yelo
@@ -94,7 +98,8 @@ namespace Yelo
 
 #if !defined(API_YELO_NO_PROJECT_COMPONENTS)
 			static s_project_component k_components[] = {
-				#include "Common/GameSystems.ProjComponents.inl"
+				#define __GS_COMPONENT __GS_COMPONENT_LIFECYCLE
+				#include "Common/GameSystemComponent.Definitions.inl"
 			};
 
 			out_components = k_components;
@@ -110,7 +115,8 @@ namespace Yelo
 
 #if !defined(API_YELO_NO_PROJECT_COMPONENTS)
 			static s_project_map_component k_components[] = {
-				#include "Common/GameSystems.ProjMapComponents.inl"
+				#define __GS_COMPONENT __GS_COMPONENT_MAP_LIFECYCLE
+				#include "Common/GameSystemComponent.Definitions.inl"
 			};
 
 			out_components = k_components;
@@ -126,7 +132,8 @@ namespace Yelo
 
 #if !defined(API_YELO_NO_PROJECT_COMPONENTS)
 			static s_project_game_state_component k_components[] = {
-				#include "Common/GameSystems.ProjGameStateComponents.inl"
+				#define __GS_COMPONENT __GS_COMPONENT_GAMESTATE_LIFECYCLE
+				#include "Common/GameSystemComponent.Definitions.inl"
 			};
 
 			out_components = k_components;
@@ -145,7 +152,8 @@ namespace Yelo
 
 	#if !defined(API_YELO_NO_DX_COMPONENTS)
 			static s_dx_component k_components[] = {
-				#include "Common/GameSystems.DxComponents.inl"
+				#define __GS_COMPONENT __GS_COMPONENT_DX9_LIFECYCLE
+				#include "Common/GameSystemComponent.Definitions.inl"
 			};
 
 			out_components = k_components;
@@ -156,7 +164,7 @@ namespace Yelo
 		}
 #endif
 
-		void PLATFORM_API InitializeOnStartup()
+		static void PLATFORM_API InitializeOnStartup()
 		{
 			s_project_component* components;
 			const int32 component_count = GetProjectComponents(components);
@@ -165,7 +173,7 @@ namespace Yelo
 				components[x].Initialize();
 		}
 
-		void PLATFORM_API DisposeOnExit()
+		static void PLATFORM_API DisposeOnExit()
 		{
 			s_project_component* components;
 			const int32 component_count = GetProjectComponents(components);
@@ -177,7 +185,7 @@ namespace Yelo
 		// hooks the call that starts the main game loop to init OS beforehand
 		static void PLATFORM_API InitializeOnStartupHook()
 		{
-			static uint32 TEMP_ADDRESS = GET_FUNC_PTR(QUERY_EXITFLAG_REG);
+			static uintptr_t TEMP_ADDRESS = GET_FUNC_PTR(QUERY_EXITFLAG_REG);
 
 			_asm push ebx
 
@@ -192,7 +200,7 @@ namespace Yelo
 		// hooks the call that release resources to dispose of OS systems afterwards
 		static void PLATFORM_API DisposeOnExitHook()
 		{
-			static uint32 TEMP_ADDRESS = GET_FUNC_PTR(RELEASE_RESOURCES_ON_EXIT);
+			static uintptr_t TEMP_ADDRESS = GET_FUNC_PTR(RELEASE_RESOURCES_ON_EXIT);
 
 			_asm call TEMP_ADDRESS;
 
@@ -216,4 +224,8 @@ namespace Yelo
 
 #undef API_YELO_NO_PROJECT_COMPONENTS
 #undef API_YELO_NO_DX_COMPONENTS
-#undef API_YELO_NO_DX_PP_SUBSYSTEM_COMPONENTS
+
+#undef __GS_COMPONENT_LIFECYCLE
+#undef __GS_COMPONENT_MAP_LIFECYCLE
+#undef __GS_COMPONENT_GAMESTATE_LIFECYCLE
+#undef __GS_COMPONENT_DX9_LIFECYCLE
