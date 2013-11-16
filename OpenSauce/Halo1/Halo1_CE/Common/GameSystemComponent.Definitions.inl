@@ -9,6 +9,11 @@
 	#error __GS_COMPONENT needs to be defined before including this file
 #endif
 
+// Reminder: BOOST_PP_ITERATION_LIMITS (min, max)
+// Remember, there's a space between the name and the '('.
+// min - the inclusive starting value of BOOST_PP_ITERATION()
+// max - the inclusive ending value of BOOST_PP_ITERATION()
+
 // Settings and FileIO must come first, many systems use the Report filing system
 // ...like debugging for example uses the report filing system
 #define BOOST_PP_ITERATION_LIMITS (1, 4)
@@ -55,6 +60,7 @@
 #define BOOST_PP_FILENAME_1 "Common/GameSystemComponents.Misc.inl"
 ??=include BOOST_PP_ITERATE()
 
+// Reset __GS_COMPONENT so 'callers' of this include don't have to
 #undef __GS_COMPONENT
 
 /*

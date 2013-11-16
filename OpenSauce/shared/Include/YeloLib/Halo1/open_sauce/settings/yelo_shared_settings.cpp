@@ -86,25 +86,25 @@ namespace Yelo
 
 		bool PlayerProfileRead(cstring profile_name, __out byte profile[Enums::k_player_profile_buffer_size])
 		{
+			bool success = false;
 			memset(profile, 0, Enums::k_player_profile_buffer_size);
 
 			char blam_path[MAX_PATH];
-			strcpy_s(blam_path, Internal.UserSavedProfilesPath);
-			strcat_s(blam_path, profile_name);
-			strcat_s(blam_path, "\\blam.sav");
+			success =			k_errnone == strcpy_s(blam_path, Internal.UserSavedProfilesPath);
+			success = success&& k_errnone == strcat_s(blam_path, profile_name);
+			success = success&& k_errnone == strcat_s(blam_path, "\\blam.sav");
 
-			bool result = false;
-			if(FileExists(blam_path))
+			if (success && FileExists(blam_path))
 			{
 				FILE* file = nullptr;
 				fopen_s(&file, blam_path, "rb");
 
-				result = fread_s(profile, Enums::k_player_profile_buffer_size, Enums::k_player_profile_buffer_size, 1, file) == 1;
+				success = fread_s(profile, Enums::k_player_profile_buffer_size, Enums::k_player_profile_buffer_size, 1, file) == 1;
 
 				fclose(file);
 			}
 
-			return result;
+			return success;
 		}
 
 		bool GetSettingsFilePath(cstring filename, __out char file_path[MAX_PATH])
@@ -116,60 +116,72 @@ namespace Yelo
 
 		FILE* CreateReport(cstring filename, bool append, bool text, bool shared)
 		{
+			FILE* file = nullptr;
+			bool success = false;
+
 			char path[MAX_PATH];
 			memset(path, 0, sizeof(path));
 
-			strcpy_s(path, ReportsPath());
-			strcat_s(path, filename);
+			success =			k_errnone == strcpy_s(path, ReportsPath());
+			success = success&& k_errnone == strcat_s(path, filename);
 
 			cstring mode;
 			if(text)mode = append ? "at" : "wt";
 			else	mode = append ? "ab" : "wb";
 
-			FILE* ret = nullptr;
-			if(!shared)
-				fopen_s(&ret, path, mode);
-			else
-				return _fsopen(filename, mode, _SH_DENYNO);
+			if (success)
+			{
+				if (!shared)
+					success = k_errnone == fopen_s(&file, path, mode);
+				else
+					file = _fsopen(filename, mode, _SH_DENYNO);
+			}
 
-			return ret;
+			return file;
 		}
 
 		FILE* CreateUnicodeReport(wcstring filename, bool append, bool shared)
 		{
+			FILE* file = nullptr;
+			bool success = false;
+
 			wchar_t path[MAX_PATH];
 			memset(path, 0, sizeof(path));
 
-			string_to_wstring(path, NUMBEROF(path), ReportsPath());
-			wcscat_s(path, filename);
+			success =			nullptr != string_to_wstring(path, NUMBEROF(path), ReportsPath());
+			success = success&& k_errnone == wcscat_s(path, filename);
 
 			wcstring mode = append ? L"at,ccs=UNICODE" : L"wt,ccs=UNICODE";
 
-			FILE* ret = nullptr;
-			if(!shared)
-				_wfopen_s(&ret, path, mode);
-			else
-				return _wfsopen(path, mode, _SH_DENYNO);
+			if (success)
+			{
+				if (!shared)
+					success = k_errnone == _wfopen_s(&file, path, mode);
+				else
+					file = _wfsopen(path, mode, _SH_DENYNO);
+			}
 
-			return ret;
+			return file;
 		}
 
 		FILE* OpenSettings(cstring filename, bool text, bool open_for_writing)
 		{
+			FILE* file = nullptr;
+			bool success = false;
+
 			char path[MAX_PATH];
 			memset(path, 0, sizeof(path));
 
-			strcpy_s(path, Internal.OpenSauceProfilePath);
-			strcat_s(path, filename);
+			success =			k_errnone == strcpy_s(path, Internal.OpenSauceProfilePath);
+			success = success&& k_errnone == strcat_s(path, filename);
 
 			cstring mode;
 			if(open_for_writing)mode = text ? "wt" : "wb";
 			else				mode = text ? "rt" : "rb";
 
-			FILE* ret = nullptr;
-			fopen_s(&ret, path, mode);
+			success = success&& k_errnone == fopen_s(&file, path, mode);
 
-			return ret;
+			return file;
 		}
 
 

@@ -51,26 +51,26 @@
 #define GET_FUNC_PTR(name) BOOST_PP_CAT(PTR_,name)
 #define GET_DATA_PTR(name) BOOST_PP_CAT(PTR_,name)
 // Type casts [name] to a void*, since FUNC_PTRs are really enums
-#define GET_FUNC_VPTR(name) (CAST_PTR(void*, GET_FUNC_PTR(##name##) ))
-#define GET_DATA_VPTR(name) (CAST_PTR(void*, GET_FUNC_PTR(##name##) ))
+#define GET_FUNC_VPTR(name) (CAST_PTR(void*, GET_FUNC_PTR(name) ))
+#define GET_DATA_VPTR(name) (CAST_PTR(void*, GET_FUNC_PTR(name) ))
 
 // Double pointer inline get
 #define GET_DPTR2(name)		BOOST_PP_CAT(pp,name)
 // Pointer inline get
 #define GET_PTR2(name)		BOOST_PP_CAT(p,name)
 // Double pointer inline dereference-get
-#define GET_DPTR(name)		( *GET_DPTR2(##name##) )
+#define GET_DPTR(name)		( *GET_DPTR2(name) )
 // Pointer inline dereference-get
-#define GET_PTR(name)		( *GET_PTR2(##name##) )
+#define GET_PTR(name)		( *GET_PTR2(name) )
 
 // Double pointer implement get by-value
-#define DPTR_IMP_GET(name)	{ return GET_DPTR(##name##); }
+#define DPTR_IMP_GET(name)	{ return GET_DPTR(name); }
 // Double pointer implement get by-reference
-#define DPTR_IMP_GET2(name)	{ return GET_DPTR2(##name##); }
+#define DPTR_IMP_GET2(name)	{ return GET_DPTR2(name); }
 // Pointer implement get by-value
-#define PTR_IMP_GET(name)	{ return GET_PTR(##name##); }
+#define PTR_IMP_GET(name)	{ return GET_PTR(name); }
 // Pointer implement get by-reference
-#define PTR_IMP_GET2(name)	{ return GET_PTR2(##name##); }
+#define PTR_IMP_GET2(name)	{ return GET_PTR2(name); }
 
 // Double pointer implement get by-reference, with debug assert
 #define DPTR_IMP_GET_BYREF(name)	{	\
@@ -103,6 +103,8 @@ namespace Yelo
 
 			// jz short imm8
 			_x86_opcode_jz_short = 0x74,
+			// jnz short imm8
+			_x86_opcode_jnz_short = 0x75,
 			// jge short imm8
 			_x86_opcode_jge_short = 0x7D,
 

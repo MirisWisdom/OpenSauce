@@ -38,17 +38,23 @@ namespace Yelo
 			if(copylen <= 0)
 				return false;
 
-			memcpy_s(buffer+len, NUMBEROF(buffer)-len, value, (size_t)copylen);
-			len += copylen;
-			buffer[len-1] = '\0';
+			bool result = true;
 
-			return true;
+			if (k_errnone == memcpy_s(buffer + len, NUMBEROF(buffer) - len, value, (size_t)copylen))
+			{
+				len += copylen;
+				buffer[len - 1] = '\0';
+			}
+			else
+				result = false;
+
+			return result;
 		}
 		bool s_gamespy_qr2_buffer::add(int32 value)
 		{
 			char buffer[20];
-			sprintf_s(buffer, "%d", value);
-			return add(buffer);
+			bool result = sprintf_s(buffer, "%d", value) != -1;
+			return result && add(buffer);
 		}
 
 		s_gamespy_socket* GsSocket()										DPTR_IMP_GET(gs_Socket);
@@ -93,9 +99,9 @@ _return:
 				return g_game_ver;
 			}
 
-			static void Qr2GetGameVer(char* buffer)
+			static bool Qr2GetGameVer(char* buffer)
 			{
-				strcpy_s(buffer, 0x100, GetGameVer());
+				return k_errnone == strcpy_s(buffer, 0x100, GetGameVer());
 			}
 
 			static int PLATFORM_API Qr2StringMatchesGameVer(const char* buffer)

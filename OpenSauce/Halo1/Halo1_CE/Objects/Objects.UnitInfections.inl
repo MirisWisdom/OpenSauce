@@ -216,8 +216,8 @@ namespace UnitInfections
 			Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
 			Enums::_x86_opcode_nop, Enums::_x86_opcode_nop };
 
-			Memory::WriteMemory(GET_FUNC_VPTR(UNIT_CAUSE_PARENT_MELEE_DAMAGE_HOOK), k_null_bytes, sizeof(k_null_bytes));
-			Memory::WriteRelativeJmp(UnitCauseParentMeleeDamageHook, GET_FUNC_VPTR(UNIT_CAUSE_PARENT_MELEE_DAMAGE_HOOK), true);
+		Memory::WriteMemory(GET_FUNC_VPTR(UNIT_CAUSE_PARENT_MELEE_DAMAGE_HOOK), k_null_bytes, sizeof(k_null_bytes));
+		Memory::WriteRelativeJmp(UnitCauseParentMeleeDamageHook, GET_FUNC_VPTR(UNIT_CAUSE_PARENT_MELEE_DAMAGE_HOOK), true);
 	}
 
 	void Dispose()

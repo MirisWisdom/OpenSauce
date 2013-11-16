@@ -14,7 +14,7 @@ namespace Yelo
 {
 	namespace FileIO
 	{
-		static s_file_io_globals_base g_file_io_globals_base;
+		static s_file_io_globals_base g_file_io_globals_base; // TODO: no references. remove?
 
 		Enums::file_io_open_error GetOpenErrorEnum(DWORD error)
 		{
@@ -92,12 +92,12 @@ namespace Yelo
 			char separator[2] = { 0, 0 };
 			separator[0] = separator_char;
 
-			errno_t result = 0;
+			errno_t result = k_errnone;
 			final_char--;
 			if(*final_char != separator_char)
 				result = strcat_s(path, length, separator);
 
-			return (result == 0);
+			return (result == k_errnone);
 		}
 
 		bool GetDirectoryPath(char* destination, uint32 size, cstring path)
@@ -118,9 +118,7 @@ namespace Yelo
 			// copy the directory path to the destination
 			errno_t error = strncpy_s(destination, size, path, index);
 
-			if(error)
-				return false;
-			return true;
+			return error == k_errnone;
 		}
 
 		bool GetFileExtension(char* destination, uint32 size, cstring path)
@@ -134,7 +132,7 @@ namespace Yelo
 			if((string_end - 1) == extension_start)
 				return true;
 
-			if(0 != strcpy_s(destination, size, extension_start))
+			if (k_errnone != strcpy_s(destination, size, extension_start))
 				return false;
 
 			return true;

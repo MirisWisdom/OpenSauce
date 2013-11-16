@@ -81,7 +81,7 @@ namespace Yelo
 				bool is_readable;
 				bool is_writable;
 				bool is_memory_mapped;
-				PAD8
+				PAD8;
 			}m_flags;
 
 			HANDLE file_handle;
@@ -95,16 +95,17 @@ namespace Yelo
 				file_handle(INVALID_HANDLE_VALUE),
 				file_mapping_handle(INVALID_HANDLE_VALUE),
 				file_size(0),
-				data_pointer(NULL),
+				data_pointer(nullptr),
 				data_length(0)
 			{ m_flags.is_readable = false; m_flags.is_writable = false; m_flags.is_memory_mapped = false;}
 		};
 
-		struct s_file_io_globals_base
+		struct s_file_io_globals_base  // TODO: no references. remove?
 		{
 			uint32 m_id_file_count;
 		};
 
+		// TODO: shouldn't these be private functions?
 		Enums::file_io_open_error GetOpenErrorEnum(DWORD error);
 		Enums::file_io_delete_error GetDeleteErrorEnum(DWORD error);
 
@@ -115,6 +116,8 @@ namespace Yelo
 		bool GetDirectoryPath(char* destination, uint32 size, cstring path);
 		bool GetFileExtension(char* destination, uint32 size, cstring path);
 
+		// TODO: any reason for the underscore, when the rest of the files API is PascalCased?
+		// TODO: shouldn't the parameters be 'path' instead of 'directory'?
 		Enums::file_io_delete_error Delete_File(cstring directory);
 		Enums::file_io_delete_error Delete_Directory(cstring directory, const bool delete_contents, const bool recursive);
 

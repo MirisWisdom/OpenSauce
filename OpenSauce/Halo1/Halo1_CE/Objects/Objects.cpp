@@ -275,7 +275,7 @@ namespace Yelo
 		void VehicleRemapperEnable(bool enabled)
 		{
 			// jnz eip+2+10
-			static const byte k_enable_code[] = {0x75, 0x0A};
+			static const byte k_enable_code[] = { Enums::_x86_opcode_jnz_short, 0x0A };
 			// nop, nop
 			static const byte k_disable_code[] = {Enums::_x86_opcode_nop, Enums::_x86_opcode_nop};
 

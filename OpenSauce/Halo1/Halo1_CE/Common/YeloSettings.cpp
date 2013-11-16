@@ -148,15 +148,6 @@ namespace Yelo
 	{
 		cstring K_CHAT_LOG_FILENAME = "Game.ChatLog.txt";
 
-#define __EL_INCLUDE_ID			__EL_INCLUDE_OPEN_SAUCE
-#define __EL_INCLUDE_FILE_ID	__EL_COMMON_YELO_SETTINGS
-#include "Memory/_EngineLayout.inl"
-
-		static struct {
-			static cstring ProfilePath() PTR_IMP_GET2(g_profile_path);
-
-		}Internal;
-
 	//////////////////////////////////////////////////////////////////////////
 		void Initialize()
 		{

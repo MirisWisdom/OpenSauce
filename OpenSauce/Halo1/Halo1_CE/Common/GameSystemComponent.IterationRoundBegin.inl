@@ -5,6 +5,12 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
+#ifndef __GS_COMPONENT_INCLUDE_ITERATION_ROUND
+#	define __GS_COMPONENT_INCLUDE_ITERATION_ROUND
+#else
+#	error Mismatching IterationRoundBegin.inl include
+#endif
+
 // Undefine all the macros which the component definitions could specify this round
 #if	__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
 #	undef __GS_COMPONENT_INITIALIZE

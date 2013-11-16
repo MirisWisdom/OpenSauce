@@ -5,6 +5,12 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
+#ifdef __GS_COMPONENT_INCLUDE_ITERATION_ROUND
+#	undef __GS_COMPONENT_INCLUDE_ITERATION_ROUND
+#else
+#	error Mismatching IterationRoundEnd.inl include
+#endif
+
 // Define all undefined component procs as NULL
 #if	__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
 #	ifndef		__GS_COMPONENT_INITIALIZE

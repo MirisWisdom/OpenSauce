@@ -6,6 +6,8 @@
 */
 #pragma once
 
+// TODO: move this into YeloLib, start using in CheApe
+
 namespace Yelo
 {
 	namespace Enums
