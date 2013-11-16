@@ -16,11 +16,6 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
-		static struct {
-			std::set<tag_block_definition*>* block_definitions;
-			std::set<tag_data_definition*>* data_definitions;
-		}g_tag_group_yelo_globals;
-
 		int32 StringFieldGetLength(const tag_field* field)
 		{
 			assert(field->type == Enums::_field_string);

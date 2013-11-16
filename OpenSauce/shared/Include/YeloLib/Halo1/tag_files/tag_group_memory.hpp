@@ -16,6 +16,9 @@ namespace Yelo
 	{
 		typedef int16 comparison_code_t;
 
+		const std::unordered_set<tag_block_definition*>& GetBlockDefinitionsSet();
+		const std::unordered_set<tag_data_definition*>& GetDataDefinitionsSet();
+
 		// Data generated at startup, not strictly related to 'runtime' (ie, game) builds
 		struct s_tag_field_set_runtime_data
 		{
@@ -126,28 +129,32 @@ namespace Yelo
 			const tag_block_definition* block_definition;
 			const tag_data_definition* data_definition;
 
+			struct s_block_totals {
+				size_t count;	// number of instances
+				size_t elements;// number of elements
+				size_t size;	// total size
+				size_t padding;	// total amount of padding, NONE when runtime_data isn't generated
+			};
+			struct s_data_totals {
+				size_t count;	// number of instances
+				size_t size;	// total size
+			};
 			union { // totals
-				struct {
-					int32 count;	// number of instances
-					int32 elements;	// number of elements
-					int32 size;		// total size
-					int32 padding;	// total amount of padding, NONE when runtime_data isn't generated
-				}block;
-
-				struct {
-					int32 count;	// number of instances
-					int32 size;		// total size
-				}data;
+				s_block_totals block;
+				s_data_totals data;
 			};
 
-			bool IsBlock() const	{ return block_definition != nullptr; }
-			bool IsData() const		{ return data_definition != nullptr; }
+			inline bool IsBlock() const	{ return block_definition != nullptr; }
+			inline bool IsData() const	{ return data_definition != nullptr; }
 
 			s_tag_allocation_statistics& Initialize(const tag_block_definition* definition);
 			s_tag_allocation_statistics& Initialize(const tag_data_definition* definition);
 
 			void Update(const tag_block* instance);
 			void Update(const tag_data* instance);
+
+			void DumpBlockInfoToFile(FILE* file, s_block_totals& running_totals) const;
+			void DumpDataInfoToFile(FILE* file, s_block_totals& running_totals) const;
 		};
 		class c_tag_group_allocation_statistics
 		{
@@ -158,8 +165,8 @@ namespace Yelo
 
 			c_tag_group_allocation_statistics(tag group_tag, const s_tag_field_set_runtime_data& header_info);
 		public:
-			s_tag_allocation_statistics* GetChildStats(const tag_block* instance);
-			s_tag_allocation_statistics* GetChildStats(const tag_data* instance);
+			s_tag_allocation_statistics& GetChildStats(const tag_block* instance);
+			s_tag_allocation_statistics& GetChildStats(const tag_data* instance);
 
 			inline children_array_t::const_iterator begin() const	{ return m_children.cbegin(); }
 			inline children_array_t::const_iterator end() const		{ return m_children.cend(); }
@@ -167,10 +174,19 @@ namespace Yelo
 			static bool Enabled();
 			static void Initialize();
 			static void Dispose();
+			static void Reset();
 
-			static c_tag_group_allocation_statistics* GetStats(tag group_tag);
-			static s_tag_allocation_statistics* GetBlockStats(datum_index tag_index, const tag_block* instance);
-			static s_tag_allocation_statistics* GetDataStats(datum_index tag_index, const tag_data* instance);
+			static c_tag_group_allocation_statistics& GetStats(tag group_tag);
+			static s_tag_allocation_statistics& GetBlockStats(datum_index tag_index, const tag_block* instance);
+			static s_tag_allocation_statistics& GetDataStats(datum_index tag_index, const tag_data* instance);
+
+			static void DumpToFile();
+
+		private:
+			static size_t BuildStatsForTagChildBlockRecursive(c_tag_group_allocation_statistics& group_stats,
+				tag_block* instance);
+		public:
+			static size_t BuildStatsForTag(datum_index tag_index);
 		};
 	};
 };

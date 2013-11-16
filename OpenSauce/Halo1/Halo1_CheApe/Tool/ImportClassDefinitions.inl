@@ -38,7 +38,7 @@
 		&scenario_cleanse_of_yelo_data),
 
 	IMPORT_CLASS_DEFINITION("tag-load-test", 
-			6, "<tag-name> <group> <prompt-to-continue> <prompt-to-fix-unresolved> <load-non-resolving-refs> <verbose>", 
+			7, "<tag-name> <group> <prompt-to-continue> <prompt-to-fix-unresolved> <load-non-resolving-refs> <print-size> <verbose>", 
 			&tag_load_maintenance),
 
 	// TODO: add new import classes here

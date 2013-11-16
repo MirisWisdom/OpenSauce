@@ -28,7 +28,7 @@ namespace Yelo
 			_version_result_code_valid,		// A supported version of Halo is trying to run it
 			_version_result_code_dx9_app,	// A known DX9 application, ie sapien, is trying to run this
 
-			_version_result_code
+			k_number_of_version_result_codes
 		};
 	};
 
@@ -36,6 +36,7 @@ namespace Yelo
 	{
 		static struct {
 			bool enabled;
+			PAD24;
 			HMODULE module_handle;
 		}_main_globals = {
 			false,
