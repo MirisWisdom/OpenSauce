@@ -408,6 +408,7 @@ namespace Yelo
 				cstring prompt_to_continue;
 				cstring prompt_to_fix_unresolved;
 				cstring load_non_resolving;
+				cstring print_size;
 				cstring verbose;
 			}*args = CAST_PTR(s_arguments*, arguments);
 
@@ -429,16 +430,20 @@ namespace Yelo
 			bool prompt_to_continue = Settings::ParseBoolean(args->prompt_to_continue);
 			bool prompt_to_fix_unresolved = Settings::ParseBoolean(args->prompt_to_fix_unresolved);
 			bool load_non_resolving = Settings::ParseBoolean(args->load_non_resolving);
+			bool print_size = Settings::ParseBoolean(args->print_size);
 			bool verbose = Settings::ParseBoolean(args->verbose);
 			_enum mode = prompt_to_fix_unresolved
 				? c_tag_maintenance_children_controller::_mode_fix_unresolving
 				: c_tag_maintenance_children_controller::_mode_print_unresolving;
 
 			maintenance_globals.Initialize();
+			if (print_size)
+				TagGroups::c_tag_group_allocation_statistics::Initialize();
 
 			int debug_count = 0;
 			bool is_root_tag = true;
 			datum_index tag_index = datum_index::null;
+			size_t tag_hierarchy_size = 0;
 			do {
 				if (verbose)
 					Console::ColorPrintF(k_color_default, "%d\n", debug_count++);
@@ -451,7 +456,7 @@ namespace Yelo
 
 					if (tag_index.IsNull())
 					{
-						Console::ColorPrint(k_color_default, "failed to load root: ");
+						Console::ColorPrint (k_color_default, "failed to load root: ");
 						Console::ColorPrintF(k_color_bad_name, "%s.%s", args->tag_name, args->group_name);
 						break;
 					}
@@ -464,6 +469,12 @@ namespace Yelo
 						break;
 				}
 
+				if (print_size)
+				{
+					tag_hierarchy_size +=
+						TagGroups::c_tag_group_allocation_statistics::BuildStatsForTag(tag_index);
+				}
+
 				c_tag_maintenance_children_controller controller(tag_index, load_non_resolving, mode);
 				controller.QueueReferences();
 				controller.ResolveQueue();
@@ -471,8 +482,16 @@ namespace Yelo
 				maintenance_globals.MarkAsResolved(tag_index);
 			} while (maintenance_globals.ChildrenNeedResolving());
 
-			Console::ColorPrint(k_color_default, "\nfinished\n");
+			Console::ColorPrint(k_color_default, "\nfinished");
+			if (print_size)
+			{
+				TagGroups::c_tag_group_allocation_statistics::DumpToFile();
+				Console::ColorPrintF(k_color_default, ". total size: %d bytes", tag_hierarchy_size);
+			}
+			Console::PrintNewLine();
 
+			if (print_size)
+				TagGroups::c_tag_group_allocation_statistics::Dispose();
 			maintenance_globals.Dispose();
 		}
 	};

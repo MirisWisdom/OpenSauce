@@ -103,9 +103,9 @@ namespace Yelo
 			byte* m_address;
 			size_t m_element_size;
 		public:
-			inline s_iterator(tag_block& block, int32 element_index = 0) :
-				m_address(CAST_PTR(byte*,block.address)),
-				m_element_size(block.get_element_size())
+			inline s_iterator(tag_block& block, size_t element_size, size_t element_index = 0)
+				: m_address(CAST_PTR(byte*, block.address) + (element_size * element_index))
+				, m_element_size(element_size)
 			{
 			}
 			inline bool operator!=(const s_iterator& other) const
@@ -122,8 +122,8 @@ namespace Yelo
 				return m_address;
 			}
 		};
-		inline s_iterator	begin()	{ return s_iterator(*this); }
-		inline s_iterator	end()	{ return s_iterator(*this, this->count); }
+		inline s_iterator	begin()	{ return s_iterator(*this, this->get_element_size()); }
+		inline s_iterator	end()	{ return s_iterator(*this, this->get_element_size(), CAST(size_t, this->count)); }
 #endif
 	};
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
