@@ -6,14 +6,8 @@
 */
 
 //////////////////////////////////////////////////////////////////////////
-// YeloSettings.cpp
-#if __EL_INCLUDE_FILE_ID == __EL_COMMON_YELO_SETTINGS
-	ENGINE_PTR(char, g_profile_path, 0x647850, 0x5B9630); // set by -path in haloce
-
-
-//////////////////////////////////////////////////////////////////////////
 // Memory/FunctionInterface.cpp
-#elif __EL_INCLUDE_FILE_ID == __EL_MEMORY_FUNCTION_INTERFACE
+#if __EL_INCLUDE_FILE_ID == __EL_MEMORY_FUNCTION_INTERFACE
 	FUNC_PTR(RENDER_SKY,												0x5148F0, FUNC_PTR_NULL);
 	FUNC_PTR(RENDER_WINDOW_CALL_HOOK_RENDER_SKY,						0x50FD32, FUNC_PTR_NULL);
 

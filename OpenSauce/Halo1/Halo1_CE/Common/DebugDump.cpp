@@ -32,7 +32,7 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_COMMON_DEBUG_DUMP
 #include "Memory/_EngineLayout.inl"
 
-		static char g_reports_path[255];
+		static char g_reports_path[255]; // TODO: Shouldn't we use _MAX_PATH? or do 255+1 at least?
 		struct s_freeze_dump_globals
 		{
 			HANDLE m_freeze_thread;

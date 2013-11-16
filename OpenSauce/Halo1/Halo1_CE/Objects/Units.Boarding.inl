@@ -7,6 +7,14 @@
 
 namespace Boarding
 {
+	static void UnitResetOverlayAnimations(s_unit_datum* unit)
+	{
+		*unit->unit.animation.GetOverlayAnimationIndex() = NONE;
+		*unit->unit.animation.GetOverlayAnimationState() = NONE;
+		*unit->unit.animation.GetReplacementAnimationIndex() = NONE;
+		*unit->unit.animation.GetReplacementAnimationState() = NONE;
+	}
+
 	// Plays the yelo_ejection animation and ejects the unit from it's seat
 	static void EjectUnit(datum_index unit_index)
 	{
@@ -37,11 +45,7 @@ namespace Boarding
 				blam::unit_set_animation(unit_index, 
 					unit->object.animation.definition_index, animation_index);
 				
-				// reset  the unit's overlay animations
-				*unit->unit.animation.GetOverlayAnimationIndex() = NONE;
-				*unit->unit.animation.GetOverlayAnimationState() = NONE;
-				*unit->unit.animation.GetReplacementAnimationIndex() = NONE;
-				*unit->unit.animation.GetReplacementAnimationState() = NONE;
+				UnitResetOverlayAnimations(unit);
 			}
 
 			// set the target_unit's animation state to seat_exit to force them out of the vehicle
@@ -77,11 +81,7 @@ namespace Boarding
 				blam::unit_set_animation(unit_index, 
 					unit->object.animation.definition_index, animation_index);
 				
-				// reset  the unit's overlay animations
-				*unit->unit.animation.GetOverlayAnimationIndex() = NONE;
-				*unit->unit.animation.GetOverlayAnimationState() = NONE;
-				*unit->unit.animation.GetReplacementAnimationIndex() = NONE;
-				*unit->unit.animation.GetReplacementAnimationState() = NONE;
+				UnitResetOverlayAnimations(unit);
 
 				// if boarding enters the target seat, use the seat_board animation state
 				if (boarding_seat_definition->flags.boarding_enters_target_seat_bit)

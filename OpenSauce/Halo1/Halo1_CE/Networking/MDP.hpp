@@ -62,8 +62,8 @@
 	static Yelo::MessageDeltas::field_properties_definition pmessage_delta_field_##name1##_properties = {				\
 		Yelo::Enums::_field_type_##type ,																	\
 		name2 ,																								\
-		(mdp_field_encode) enc ,																			\
-		(mdp_field_decode) dec ,																			\
+		CAST(mdp_field_encode, enc),																		\
+		CAST(mdp_field_decode, dec),																		\
 		&pmessage_delta_field_##name1##_properties_parameters,												\
 		NONE,																								\
 		0,																									\
@@ -111,11 +111,11 @@ namespace Yelo
 		*/
 
 #ifndef YELO_NO_NETWORK
-		API_INLINE field_type_translated_index_parameters* ObjectIndexParameters()
+		inline field_type_translated_index_parameters* ObjectIndexParameters()
 		{
 			return &MDP_GET_FIELD_TYPE_DEFINITION(object_index)->parameters->translated_index;
 		}
-		API_INLINE field_type_translated_index_parameters* PlayerIndexParameters()
+		inline field_type_translated_index_parameters* PlayerIndexParameters()
 		{
 			return &MDP_GET_FIELD_TYPE_DEFINITION(player_index)->parameters->translated_index;
 		}

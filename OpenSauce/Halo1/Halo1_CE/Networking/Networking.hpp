@@ -167,7 +167,7 @@ namespace Yelo
 		}
 
 
-		API_INLINE Enums::network_game_generic_state GetNetworkGameState()
+		inline Enums::network_game_generic_state GetNetworkGameState()
 		{
 			if(IsClient())		return CAST(Enums::network_game_generic_state, 
 				NetworkGameClient()->state-Enums::_network_game_client_state_pregame);

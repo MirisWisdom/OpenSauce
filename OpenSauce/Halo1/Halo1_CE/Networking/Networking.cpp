@@ -95,7 +95,7 @@ namespace Yelo
 		#pragma region OnPlayerJoinDelegate
 		API_FUNC_NAKED static void PLATFORM_API OnPlayerJoinDelegate(s_network_game* network_game_data)
 		{
-			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(NETWORK_GAME_ADD_PLAYER);
+			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(NETWORK_GAME_ADD_PLAYER);
 
 			__asm {
 				// eax = struct s_network_player
@@ -111,7 +111,7 @@ namespace Yelo
 				mov		eax, esi
 				mov		esi, network_game_data
 				push	esi
-				call	TEMP_CALL_ADDR
+				call	CALL_ADDR
 				add		esp, 4
 
 				pop		esi
@@ -125,7 +125,7 @@ namespace Yelo
 		#pragma region OnPlayerExitDelegate
 		API_FUNC_NAKED static void PLATFORM_API OnPlayerExitDelegate()
 		{
-			static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(NETWORK_GAME_REMOVE_PLAYER);
+			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(NETWORK_GAME_REMOVE_PLAYER);
 
 			__asm {
 				// esi = s_network_game
@@ -137,7 +137,7 @@ namespace Yelo
 				pop		edi
 				pop		esi
 
-				call	TEMP_CALL_ADDR
+				call	CALL_ADDR
 
 				retn
 			}
@@ -219,8 +219,6 @@ namespace Yelo
 			Enums::network_messsage_type message_type, 
 			bool unbuffered, bool flush_queue, int32 buffer_priority)
 		{
-			using namespace Networking;
-
 			s_network_game_client* client = NetworkGameClient();
 			const s_network_connection& client_connection = *client->connection;
 			long_flags flags = client_connection.flags;
