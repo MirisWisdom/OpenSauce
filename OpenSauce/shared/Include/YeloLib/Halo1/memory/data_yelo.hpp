@@ -32,8 +32,6 @@ namespace Yelo
 
 			struct Iterator {
 			private:
-				enum { k_end_hack_signature = 'hack', };
-
 				s_data_iterator m_iterator;
 				DatumT* m_current_instance;
 
@@ -79,18 +77,18 @@ namespace Yelo
 				return iter = Iterator(this);
 			}
 
-			API_INLINE DatumT* Datums() {
+			inline DatumT* Datums() {
 				return CAST_PTR(DatumT*, this->Header.data);
 			}
 
-			API_INLINE operator s_data_array*() {
+			inline operator s_data_array*() {
 				return &this->Header;
 			}
 
-			API_INLINE DatumT* operator [](datum_index handle)
+			inline DatumT* operator [](datum_index handle)
 			{
 #if PLATFORM_IS_EDITOR
-				return CAST_PTR(DatumT*, blam::datum_get(&this->Header, handle));
+				return  CAST_PTR(DatumT*, blam::datum_get(&this->Header, handle));
 #else
 				return &CAST_PTR(DatumT*, this->Header.data)[handle.index];
 #endif

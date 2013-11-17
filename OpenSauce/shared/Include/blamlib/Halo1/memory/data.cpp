@@ -31,14 +31,27 @@ namespace Yelo
 				: k_datum_index_salt_msb;
 		}
 
+		static bool DataIteratorIsNotEndHack(const s_data_iterator& iter, int16 last_datum)
+		{
+			// we treat 'pad' as our "have we already seen the last datum" sentinel
+			if (iter.pad == FALSE)
+			{
+				auto& _iter = CAST_QUAL(s_data_iterator&, iter);
+				_iter.pad = _iter.absolute_index == last_datum;
+				return true;
+			}
+
+			// the last operator!= call matched last_datum, so in this call we're saying we've reached the end
+			return false;
+		}
 		bool s_data_iterator::operator!=(const s_data_iterator& other) const
 		{
 			auto last_datum = this->data->last_datum;
 
 			if(other.IsEndHack())
-				return absolute_index != last_datum;
+				return DataIteratorIsNotEndHack(*this, last_datum);//absolute_index != last_datum;
 			else if(this->IsEndHack())
-				return !other.absolute_index != last_datum;
+				return DataIteratorIsNotEndHack(other, last_datum);//other.absolute_index != last_datum;
 
 			return this->absolute_index != other.absolute_index;
 		}
@@ -73,9 +86,10 @@ namespace Yelo
 			ASSERT(data->is_valid, "invalid data array passed to " __FUNCTION__);
 
 			iterator.data = data;
-			iterator.signature = CAST_PTR(uintptr_t, data) ^ Enums::k_data_iterator_signature;
 			iterator.absolute_index = 0;
+			iterator.pad = FALSE;
 			iterator.index = datum_index::null;
+			iterator.signature = CAST_PTR(uintptr_t, data) ^ Enums::k_data_iterator_signature;
 		}
 	};
 };
