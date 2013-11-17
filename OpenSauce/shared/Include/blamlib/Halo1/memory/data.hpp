@@ -28,13 +28,13 @@ namespace Yelo
 
 			datum_index::salt_t GetInitialSalt() const;
 			datum_index::salt_t GetNextSalt(datum_index::salt_t cursor) const;
-		};
+		}; BOOST_STATIC_ASSERT(sizeof(s_data_array) == 0x38);
 
 		struct s_data_iterator
 		{
 			s_data_array* data;
 			int16 absolute_index;
-			PAD16;
+			int16 pad; // alignment, unused by the engine
 			datum_index index;
 			tag signature;
 
@@ -43,6 +43,8 @@ namespace Yelo
 			enum { k_end_hack_signature = 'hack' };
 			inline void SetEndHack()		{ signature = k_end_hack_signature; }
 			inline bool IsEndHack() const	{ return signature == k_end_hack_signature; }
+			// HACK: don't use this unless the s_data_iterator was created in the OS codebase!
+			// engine's iterator_new doesn't initialize 'pad' and we use it for end() hacks
 			bool operator!=(const s_data_iterator& other) const;
 		}; BOOST_STATIC_ASSERT( sizeof(s_data_iterator) == 0x10 );
 	};
