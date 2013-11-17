@@ -1639,7 +1639,7 @@ namespace Yelo
 
 			// delete the download directory and all its contents
 			// no need to check the return value as if the deletion failed there isn't anything we can do about it
-			FileIO::Delete_Directory(g_map_download_globals.m_paths.user_download_directory, true, true);
+			FileIO::DirectoryDelete(g_map_download_globals.m_paths.user_download_directory, true, true);
 		}
 
 		/*!

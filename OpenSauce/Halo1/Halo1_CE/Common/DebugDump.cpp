@@ -32,7 +32,7 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_COMMON_DEBUG_DUMP
 #include "Memory/_EngineLayout.inl"
 
-		static char g_reports_path[255]; // TODO: Shouldn't we use _MAX_PATH? or do 255+1 at least?
+		static char g_reports_path[MAX_PATH];
 		struct s_freeze_dump_globals
 		{
 			HANDLE m_freeze_thread;
@@ -61,22 +61,30 @@ namespace Yelo
 		};
 		static s_freeze_dump_globals g_freeze_dump_globals;
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Reports to the user that a crash report has been created. </summary>
+		/// <param name="report_directory">	Pathname of the report directory. </param>
+		///-------------------------------------------------------------------------------------------------
 		static void ReportComplete(const char* report_directory)
 		{
-
 			// writing the report was successful so tell the user
 			cstring message = "An exception has occurred.\nA crash report for this exception has been saved to your OpenSauce Reports directory (OpenSauce\\Reports\\CrashRpt).\nAttach the zip archive if you report this issue.";
 
 #if PLATFORM_IS_USER
 			// do not display a message box if this is a freeze dump as the dialog is unusable
 			if(g_freeze_dump_globals.m_dump_initiated)
+			{
 				return;
+			}
 			MessageBox(nullptr, message, "Crash Report Saved", MB_OK);
 #else
 			Engine::Console::TerminalPrint(message);
 #endif
 		}
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds a copy of the game state to the crash report archive. </summary>
+		///-------------------------------------------------------------------------------------------------
 		static void AddGameStateDump()
 		{
 			if(FileIO::PathExists(g_reports_path))
@@ -121,6 +129,9 @@ namespace Yelo
 			{ PF_CHANNELS_ENABLED,					"CHANNELS" },
 		};
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds details about the users CPU to the crash report. </summary>
+		///-------------------------------------------------------------------------------------------------
 		static void AddCPUInfo()
 		{
 			// get system information
@@ -160,6 +171,11 @@ namespace Yelo
 			}
 		}
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// 	Adds data to the crash report that should be done before the dump itself is taken.
+		/// </summary>
+		///-------------------------------------------------------------------------------------------------
 		static void PreDump()
 		{
 			// unlock the page for read and write
@@ -173,6 +189,13 @@ namespace Yelo
 			AddCPUInfo();
 		}
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// 	Exception filter used to override the stock handling and create a crash report.
+		/// </summary>
+		/// <param name="ptrs">	The exception ptrs. </param>
+		/// <returns>	Whether the exception was handled by this filter or not. </returns>
+		///-------------------------------------------------------------------------------------------------
 		static int WINAPI ExceptionFilter(PEXCEPTION_POINTERS ptrs)
 		{
 			typedef void (*t_function)(void);
@@ -205,6 +228,14 @@ namespace Yelo
 			return result;
 		}
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// 	Runs on a seperate thread and creates a crash report if the main thread becomes
+		/// 	unresponsive.
+		/// </summary>
+		/// <param name="parameter1">	[in,out] Unused. </param>
+		/// <returns>	Returns 0. </returns>
+		///-------------------------------------------------------------------------------------------------
 		static DWORD WINAPI FreezeDumpCount(void*)
 		{
 			g_freeze_dump_globals.m_thread_running = true;
@@ -265,15 +296,24 @@ namespace Yelo
 			return 0;
 		}
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Updates the crash handler to reset the freeze dump timer if needed. </summary>
+		/// <param name="delta">	The time that has passed since the last update. </param>
+		///-------------------------------------------------------------------------------------------------
 		void Update(real delta)
 		{
 			if(!g_freeze_dump_globals.m_freeze_thread)
+			{
 				return;
+			}
 
 			// reset the freeze dump counter
 			g_freeze_dump_globals.m_wait.current = 0.0f;
 		}
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Initializes the crash handler. </summary>
+		///-------------------------------------------------------------------------------------------------
 		void DumpInitialize()
 		{
 			// output path
@@ -284,9 +324,11 @@ namespace Yelo
 			else
 			{
 				// delete the reports directory
-				FileIO::Delete_Directory(g_reports_path, true, true);
+				FileIO::DirectoryDelete(g_reports_path, true, true);
 				if(0 == CreateDirectory(g_reports_path, nullptr))
+				{
 					return;
+				}
 			}
 
 			// set up the freeze detection thread if requested
@@ -300,7 +342,9 @@ namespace Yelo
 					// if a delay has not been set, set the delay to elapsed
 					g_freeze_dump_globals.m_delay.time = CMDLINE_GET_PARAM(freeze_dump_delay).GetValue();
 					if(!(g_freeze_dump_globals.m_delay.time > 0.0f))
+					{
 						g_freeze_dump_globals.m_delay.elapsed = true;
+					}
 
 					g_freeze_dump_globals.m_main_thread_id = GetThreadId(GetCurrentThread());
 					g_freeze_dump_globals.m_freeze_thread = CreateThread(nullptr, 0, FreezeDumpCount, nullptr, 0, nullptr);
@@ -313,7 +357,9 @@ namespace Yelo
 
 			// save reports locally and do not show the crashrpt gui
 			if(CMDLINE_GET_PARAM(full_dump).ParameterSet())
+			{
 				crashreport_options.m_flags = (Flags::crashreport_option_flags)(crashreport_options.m_flags | Flags::_crashreport_option_full_dump_bit);
+			}
 			crashreport_options.m_report_complete_callback = &ReportComplete;
 			crashreport_options.m_application_name = "OpenSauce Halo CE";
 			crashreport_options.m_reports_directory = g_reports_path;
@@ -334,12 +380,19 @@ namespace Yelo
 				// add settings files to the report
 				char file_path[MAX_PATH];
 				if(Settings::GetSettingsFilePath(Settings::K_USER_FILENAME_XML, file_path))
+				{
 					Debug::AddFileToCrashReport(file_path, Settings::K_USER_FILENAME_XML, "User settings file");
+				}
 				if(Settings::GetSettingsFilePath(Settings::K_SERVER_FILENAME_XML, file_path))
+				{
 					Debug::AddFileToCrashReport(file_path, Settings::K_SERVER_FILENAME_XML, "Server settings file");
+				}
 			}
 		}
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Clean up the crash handler and uninstall crasrpt. </summary>
+		///-------------------------------------------------------------------------------------------------
 		void DumpDispose()
 		{
 			if(g_freeze_dump_globals.m_freeze_thread)

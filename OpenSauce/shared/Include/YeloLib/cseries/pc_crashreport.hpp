@@ -38,18 +38,70 @@ namespace Yelo
 			cstring m_privacy_policy_url;
 		};
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Initialises the default crash report options. </summary>
+		/// <param name="options">	[in,out] Options for controlling the crash report. </param>
+		///-------------------------------------------------------------------------------------------------
 		void InitDefaultOptions(s_crash_report_options& options);
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// 	Installs the crashrpt exception handler using the supplied crash report options.
+		/// </summary>
+		/// <param name="crashreport_options">	[in] Options for controlling the crash report. </param>
+		/// <returns>	true if it succeeds, false if it fails. </returns>
+		///-------------------------------------------------------------------------------------------------
 		bool InstallExceptionHandler(s_crash_report_options& crashreport_options);
+		
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Uninstalls the crashrpt exception handler. </summary>
+		///-------------------------------------------------------------------------------------------------
 		void UninstallExceptionHandler();
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds a file to the crash report. </summary>
+		/// <param name="path">		  	Full pathname of the file. </param>
+		/// <param name="name">		  	The name for the file. </param>
+		/// <param name="description">	The description of the file. </param>
+		/// <returns>	true if it succeeds, false if it fails. </returns>
+		///-------------------------------------------------------------------------------------------------
 		bool AddFileToCrashReport(LPCSTR path, LPCSTR name, LPCSTR description);
+		
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds a property to the crash report. </summary>
+		/// <param name="name"> 	The name for the property. </param>
+		/// <param name="value">	The property's value. </param>
+		/// <returns>	true if it succeeds, false if it fails. </returns>
+		///-------------------------------------------------------------------------------------------------
 		bool AddPropertyToCrashReport(LPCSTR name, LPCSTR value);
-		bool AddRegistryKeyToCrashReport(LPCSTR key, LPCSTR value);
+		
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds a registry key to the crash report. </summary>
+		/// <param name="key">  	The registry key to add. </param>
+		/// <returns>	true if it succeeds, false if it fails. </returns>
+		///-------------------------------------------------------------------------------------------------
+		bool AddRegistryKeyToCrashReport(LPCSTR key);
+		
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds screenshot to the crash report. </summary>
+		/// <returns>	true if it succeeds, false if it fails. </returns>
+		///-------------------------------------------------------------------------------------------------
 		bool AddScreenshotToCrashReport();
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Forces a crash report to be generated for the supplied thread. </summary>
+		/// <param name="thread">	Handle of the thread. </param>
+		///-------------------------------------------------------------------------------------------------
 		void ForceCrashReport(HANDLE thread = INVALID_HANDLE_VALUE);
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	An exception filter that generates a crash report. </summary>
+		/// <param name="ptrs">	The exception ptrs. </param>
+		/// <returns>
+		/// 	Returns EXCEPTION_CONTINUE_SEARCH if the exception was not handled, otherwise
+		/// 	EXCEPTION_EXECUTE_HANDLER.
+		/// </returns>
+		///-------------------------------------------------------------------------------------------------
 		int WINAPI SEHExceptionFilter(PEXCEPTION_POINTERS ptrs);
 	};
 };

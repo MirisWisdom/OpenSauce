@@ -360,31 +360,122 @@ namespace Yelo
 
 	namespace Hud
 	{
+#pragma region Component Interface
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Hooks the games HUD functions and values. </summary>
+		///-------------------------------------------------------------------------------------------------
 		void Initialize();
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Unused. </summary>
+		///-------------------------------------------------------------------------------------------------
 		void Dispose();
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Updates the HUD scaling controls. </summary>
+		///-------------------------------------------------------------------------------------------------
 		void Update();
+#pragma endregion
 
+#pragma region Properties
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets or sets whether to scale the HUD. </summary>
+		/// <returns>	A bool reference. </returns>
+		///-------------------------------------------------------------------------------------------------
 		bool& ScaleHUD();
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets or sets whether to show the crosshair. </summary>
+		/// <returns>	A bool reference. </returns>
+		///-------------------------------------------------------------------------------------------------
 		bool& ShowCrosshair();
-		void* HudGlobals(); // get the hud_globals tag definition
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets a pointer to the games HUD globals. </summary>
+		/// <returns>	void* to the games HUD globals. </returns>
+		///-------------------------------------------------------------------------------------------------
+		void* HudGlobals();
+#pragma endregion
 
+#pragma region Component Settings
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Updates the UI scaling globals according to user input. </summary>
+		/// <returns>	An Enums::settings_adjustment_result. </returns>
+		///-------------------------------------------------------------------------------------------------
 		Enums::settings_adjustment_result AdjustSettings();
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Loads the scaling settings from the settings XML. </summary>
+		/// <param name="hud_element">	[in,out] If non-null, the HUD XML settings element. </param>
+		///-------------------------------------------------------------------------------------------------
 		void LoadSettings(TiXmlElement* hud_element);
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Saves the settings to the users settings XML. </summary>
+		/// <param name="hud_element">	[in] The HUD settings XML element. </param>
+		///-------------------------------------------------------------------------------------------------
 		void SaveSettings(TiXmlElement* hud_element);
+#pragma endregion
 
+#pragma region Enable/Disable Scaling
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// 	Replaces the HUD projection and translation values with those that scale the UI widgets.
+		/// </summary>
+		///-------------------------------------------------------------------------------------------------
 		void EnableWidgetScale();
-		void EnableHUDScale();
-		void DisableScale();
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// 	Replaces the HUD projection and translation values with those that scale the players HUD.
+		/// </summary>
+		///-------------------------------------------------------------------------------------------------
+		void EnableHUDScale();
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// 	Restores the original projection and translation values to disable any UI scaling.
+		/// </summary>
+		///-------------------------------------------------------------------------------------------------
+		void DisableScale();
+#pragma endregion
+
+#pragma region Component DirectX Interface
 #if defined(DX_WRAPPER) // TODO: Need fallback initialization for when we're not using the DX_WRAPPER
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// 	Sets the scale values for the initial screen resolution and allocates resources for
+		/// 	drawing the menu.
+		/// </summary>
+		/// <param name="pDevice">	[in] The render device. </param>
+		/// <param name="pPP">	  	[in] The presentation parameters. </param>
+		///-------------------------------------------------------------------------------------------------
 		void Initialize3D(IDirect3DDevice9 *pDevice, D3DPRESENT_PARAMETERS *pPP);
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Informs the menu text block that the device was lost. </summary>
+		///-------------------------------------------------------------------------------------------------
 		void OnLostDevice();
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// 	Resets the scale values for the current screen resolution and informs the menu text block
+		/// 	that the device was reset.
+		/// </summary>
+		/// <param name="pPP">	[in] The presentation parameters. </param>
+		///-------------------------------------------------------------------------------------------------
 		void OnResetDevice(D3DPRESENT_PARAMETERS *pPP);
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Unused. </summary>
+		///-------------------------------------------------------------------------------------------------
 		void Render();
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Releases the menu text block. </summary>
+		///-------------------------------------------------------------------------------------------------
 		void Release();
 #endif
-
+#pragma endregion
 	};
 
 

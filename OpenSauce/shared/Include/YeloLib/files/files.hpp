@@ -73,6 +73,7 @@ namespace Yelo
 			_file_io_delete_error
 		};
 	};
+
 	namespace FileIO
 	{
 		struct s_file_info
@@ -100,40 +101,159 @@ namespace Yelo
 			{ m_flags.is_readable = false; m_flags.is_writable = false; m_flags.is_memory_mapped = false;}
 		};
 
-		struct s_file_io_globals_base  // TODO: no references. remove?
-		{
-			uint32 m_id_file_count;
-		};
-
-		// TODO: shouldn't these be private functions?
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Converts a windows file open error number to a file io enum. </summary>
+		/// <param name="error">	The error number. </param>
+		/// <returns>	The file io enum value. </returns>
+		///-------------------------------------------------------------------------------------------------
 		Enums::file_io_open_error GetOpenErrorEnum(DWORD error);
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Converts a windows file delete error number to a file io enum. </summary>
+		/// <param name="error">	The error number. </param>
+		/// <returns>	The file io enum value. </returns>
+		///-------------------------------------------------------------------------------------------------
 		Enums::file_io_delete_error GetDeleteErrorEnum(DWORD error);
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Builds a directory tree. </summary>
+		/// <param name="directory_tree">	The directory tree to create. </param>
+		///-------------------------------------------------------------------------------------------------
 		void BuildDirectoryTree(cstring directory_tree);
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Queries if a given path exists. </summary>
+		/// <param name="path">	Path to test. </param>
+		/// <returns>	true if it exists, false if it doesn't. </returns>
+		///-------------------------------------------------------------------------------------------------
 		bool PathExists(cstring path);
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Combines a set of directories into a single path string. </summary>
+		/// <param name="destination"> 	[out] The destination buffer for the path. </param>
+		/// <param name="append_slash">	true to append a slash to the end. </param>
+		/// <param name="path_count">  	The number of paths being combined. </param>
+		/// <returns>	true if it succeeds, false if it fails. </returns>
+		///-------------------------------------------------------------------------------------------------
 		bool PathBuild(char* destination, bool append_slash, uint32 path_count, ...);
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Appends a directory slash to a path string. </summary>
+		/// <param name="path">			 	[in,out] The character buffer containing the path. </param>
+		/// <param name="length">		 	The length of the buffer. </param>
+		/// <param name="separator_char">	(Optional) The separator character to append. </param>
+		/// <returns>	true if it succeeds, false if it fails. </returns>
+		///-------------------------------------------------------------------------------------------------
 		bool AppendDirectorySlash(char* path, uint32 length, const char separator_char = '\\');
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets the directory path from a path with a file name. </summary>
+		/// <param name="destination">	[out] The destination buffer for the path. </param>
+		/// <param name="size">		  	The size of the destination buffer. </param>
+		/// <param name="path">		  	Full pathname of the file. </param>
+		/// <returns>	true if it succeeds, false if it fails. </returns>
+		///-------------------------------------------------------------------------------------------------
 		bool GetDirectoryPath(char* destination, uint32 size, cstring path);
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets a file extension from a path. </summary>
+		/// <param name="destination">	[out] The destination buffer for the extension. </param>
+		/// <param name="size">		  	The size of the destination buffer. </param>
+		/// <param name="path">		  	Full pathname of the file. </param>
+		/// <returns>	true if it succeeds, false if it fails. </returns>
+		///-------------------------------------------------------------------------------------------------
 		bool GetFileExtension(char* destination, uint32 size, cstring path);
 
-		// TODO: any reason for the underscore, when the rest of the files API is PascalCased?
-		// TODO: shouldn't the parameters be 'path' instead of 'directory'?
-		Enums::file_io_delete_error Delete_File(cstring directory);
-		Enums::file_io_delete_error Delete_Directory(cstring directory, const bool delete_contents, const bool recursive);
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Deletes a file from the disc. </summary>
+		/// <param name="path">	Full pathname of the file. </param>
+		/// <returns>	An Enums::file_io_delete_error describing the result. </returns>
+		///-------------------------------------------------------------------------------------------------
+		Enums::file_io_delete_error FileDelete(cstring path);
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Deletes a directory from the disc. </summary>
+		/// <param name="path">			  	Full path of the directory. </param>
+		/// <param name="delete_contents">
+		/// 	True to delete the contents before deleting the directory.
+		/// </param>
+		/// <param name="recursive">
+		/// 	True to delete all files and directories within the directory.
+		/// </param>
+		/// <returns>	An Enums::file_io_delete_error describing the result. </returns>
+		///-------------------------------------------------------------------------------------------------
+		Enums::file_io_delete_error DirectoryDelete(cstring path, const bool delete_contents, const bool recursive);
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Updates the file size of the file described by info. </summary>
+		/// <param name="info">	[in,out] The file info to update. </param>
+		///-------------------------------------------------------------------------------------------------
 		void UpdateFileSize(s_file_info& info);
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Closes a file. </summary>
+		/// <param name="info_out">	[in,out] The file info containing the file handle to close. </param>
+		///-------------------------------------------------------------------------------------------------
 		void CloseFile(s_file_info& info_out);
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Opens a file. </summary>
+		/// <param name="info_out">			[out] The file info struct to fill. </param>
+		/// <param name="file_path">		Full pathname of the file. </param>
+		/// <param name="access_type">  	(Optional) Type of file access to open the file with. </param>
+		/// <param name="creation_type">
+		/// 	(Optional) The behaviour to take with missing/existing files.
+		/// </param>
+		/// <returns>	An Enums::file_io_open_error describing the result. </returns>
+		///-------------------------------------------------------------------------------------------------
 		Enums::file_io_open_error OpenFile(s_file_info& info_out,
 			cstring file_path,
 			const DWORD access_type = (DWORD)Enums::_file_io_open_access_type_read,
 			const Enums::file_io_open_create_option creation_type = Enums::_file_io_open_create_option_open_existing);
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Memory maps a file on disc. </summary>
+		/// <param name="info_out">		[out] The file info struct to fill. </param>
+		/// <param name="offset">	   	(Optional) The offset in the file to start the map at. </param>
+		/// <param name="mapping_size">	(Optional) The size of the mapping. </param>
+		/// <returns>	An Enums::file_io_read_error describing the result. </returns>
+		///-------------------------------------------------------------------------------------------------
 		Enums::file_io_read_error MemoryMapFile(s_file_info& info_out, DWORD offset = 0, DWORD mapping_size = 0);
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Reads a file to memory stored in the info struct. </summary>
+		/// <remarks>
+		/// 	Reads a section of a file into memory. This function will allocate memory for the data,
+		/// 	with the pointer stored in the s_file_info struct. If memory is already allocated it is
+		/// 	deleted and replaced.The memory allocated here is deleted when the file is closed. This
+		/// 	function is meant for reading a single block from a file that rarely changes if
+		/// 	ever.< / remarks>
+		/// </remarks>
+		/// <param name="info">  	[in,out] The file info struct to read. </param>
+		/// <param name="offset">	The offset in the file to read from. </param>
+		/// <param name="length">	The length of data to read. </param>
+		/// <returns>	An Enums::file_io_read_error describing the result. </returns>
+		///-------------------------------------------------------------------------------------------------
 		Enums::file_io_read_error ReadFileToInfoMemory(s_file_info& info, DWORD offset = 0, DWORD length = 0);
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Reads a file to memory handled outside of the file io system. </summary>
+		/// <param name="info">	   	[in,out] The file info to read from. </param>
+		/// <param name="data_out">	[out] Pointer to the pointer to read the data to. </param>
+		/// <param name="offset">	(Optional) The offset in the file to read from. </param>
+		/// <param name="length">	(Optional) The length of data to read. </param>
+		/// <returns>	An Enums::file_io_read_error describing the result. </returns>
+		///-------------------------------------------------------------------------------------------------
 		Enums::file_io_read_error ReadFileToMemory(s_file_info& info, void** data_out, DWORD offset = 0, DWORD length = 0);
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Writes to a file. </summary>
+		/// <param name="info">  	[in,out] The file info to write with. </param>
+		/// <param name="data">  	The data to write. </param>
+		/// <param name="length">	The length of data to write. </param>
+		/// <param name="offset">	(Optional) The offset in the file to start writing from. </param>
+		/// <returns>	An Enums::file_io_write_error describing the result. </returns>
+		///-------------------------------------------------------------------------------------------------
 		Enums::file_io_write_error WriteToFile(s_file_info& info, const void* data, DWORD length, DWORD offset = NONE);
 	};
 };
