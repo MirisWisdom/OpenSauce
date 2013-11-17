@@ -6,7 +6,7 @@
 #include "Common/Precompile.hpp"
 #include <YeloLib/cseries/pc_crashreport.hpp>
 
-// have to set the packing value to 8 for CrashRpt as that is what the was built as
+// have to set the packing value to 8 for CrashRpt as that is what the binary was built as
 #pragma pack(push)
 #pragma pack(8)
 #include <CrashRpt/CrashRpt.h>
@@ -21,8 +21,14 @@ namespace Yelo
 {
 	namespace Debug
 	{
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Callback that's called when the crash reporter progresses a stage. </summary>
+		/// <param name="pInfo">	[in] Pointer to information about the crash report state. </param>
+		/// <returns>	Returns CR_CB_NOTIFY_NEXT_STAGE. </returns>
+		///-------------------------------------------------------------------------------------------------
 		static int CrashCallback(CR_CRASH_CALLBACK_INFO* pInfo)
 		{
+			// if the report has been completed, call the custom callback to display a message to the user
 			if((pInfo->nStage == CR_CB_STAGE_FINISH) && pInfo->pUserParam)
 			{
 				t_report_callback callback = CAST_PTR(t_report_callback, pInfo->pUserParam);
@@ -35,6 +41,10 @@ namespace Yelo
 			return CR_CB_NOTIFY_NEXT_STAGE;
 		}
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Initialises the default crash report options. </summary>
+		/// <param name="options">	[in,out] Options for controlling the crash report. </param>
+		///-------------------------------------------------------------------------------------------------
 		void InitDefaultOptions(s_crash_report_options& options)
 		{
 			// save reports locally and do not show the crashrpt gui
@@ -53,9 +63,16 @@ namespace Yelo
 			options.m_privacy_policy_url = nullptr;
 		}
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// 	Installs the crashrpt exception handler using the supplied crash report options.
+		/// </summary>
+		/// <param name="crashreport_options">	[in] Options for controlling the crash report. </param>
+		/// <returns>	true if it succeeds, false if it fails. </returns>
+		///-------------------------------------------------------------------------------------------------
 		bool InstallExceptionHandler(s_crash_report_options& crashreport_options)
 		{
-			// install crash reporting
+			// clear the installation info
 			CR_INSTALL_INFO info;
 			memset(&info, 0, sizeof(CR_INSTALL_INFO));
 
@@ -101,6 +118,9 @@ namespace Yelo
 
 			// report flags
 			info.dwFlags |= CR_INST_ALL_POSSIBLE_HANDLERS;
+
+			// stop crashrpt from catching Ctrl+C
+			info.dwFlags ^= CR_INST_SIGINT_HANDLER;
 			
 			if(!send_to_server)
 			{
@@ -117,9 +137,11 @@ namespace Yelo
 			else
 				info.uMiniDumpType = MiniDumpNormal;
 
+			// install the crashrpt handler with the generated info
 			int result = crInstall(&info);
 			if(result!=0)
 			{
+				// if the installation failed, and the gui is enabled, show an error message otherwise just return false
 				if(Flags::_crashreport_option_hide_gui_bit == (crashreport_options.m_flags & Flags::_crashreport_option_hide_gui_bit))
 					return false;
 
@@ -139,31 +161,60 @@ namespace Yelo
 			return true;
 		}
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Uninstalls the crashrpt exception handler. </summary>
+		///-------------------------------------------------------------------------------------------------
 		void UninstallExceptionHandler()
 		{
 			crUninstall();
 		}
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds a file to the crash report. </summary>
+		/// <param name="path">		  	Full pathname of the file. </param>
+		/// <param name="name">		  	The name for the file. </param>
+		/// <param name="description">	The description of the file. </param>
+		/// <returns>	true if it succeeds, false if it fails. </returns>
+		///-------------------------------------------------------------------------------------------------
 		bool AddFileToCrashReport(LPCSTR path, LPCSTR name, LPCSTR description)
 		{
 			return (0 == crAddFile2(path, name, description, CR_AF_MISSING_FILE_OK | CR_AF_MAKE_FILE_COPY | CR_AF_ALLOW_DELETE));
 		}
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds a property to the crash report. </summary>
+		/// <param name="name"> 	The name for the property. </param>
+		/// <param name="value">	The property's value. </param>
+		/// <returns>	true if it succeeds, false if it fails. </returns>
+		///-------------------------------------------------------------------------------------------------
 		bool AddPropertyToCrashReport(LPCSTR name, LPCSTR value)
 		{
 			return (0 == crAddProperty(name, value));
 		}
 
-		bool AddRegistryKeyToCrashReport(LPCSTR key, LPCSTR value)
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds a registry key to the crash report. </summary>
+		/// <param name="key">  	The registry key to add. </param>
+		/// <returns>	true if it succeeds, false if it fails. </returns>
+		///-------------------------------------------------------------------------------------------------
+		bool AddRegistryKeyToCrashReport(LPCSTR key)
 		{
 			return (0 == crAddRegKey(key, "registry.xml", 0));
 		}
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds screenshot to the crash report. </summary>
+		/// <returns>	true if it succeeds, false if it fails. </returns>
+		///-------------------------------------------------------------------------------------------------
 		bool AddScreenshotToCrashReport()
 		{
 			return (0 == crAddScreenshot2(CR_AS_MAIN_WINDOW | CR_AS_USE_JPEG_FORMAT | CR_AS_ALLOW_DELETE, 95));
 		}
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Forces a crash report to be generated for the supplied thread. </summary>
+		/// <param name="thread">	Handle of the thread. </param>
+		///-------------------------------------------------------------------------------------------------
 		void ForceCrashReport(HANDLE thread)
 		{
 			EXCEPTION_POINTERS ptrs;
@@ -188,6 +239,7 @@ namespace Yelo
 				ptrs.ContextRecord = &context;
 			}
 
+			// set up the crashrpt exception info then generate a report
 			CR_EXCEPTION_INFO ei;
 			memset(&ei, 0, sizeof(CR_EXCEPTION_INFO));
 			ei.cb = sizeof(ei);
@@ -199,6 +251,14 @@ namespace Yelo
 			crGenerateErrorReport(&ei);
 		}
 
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	An exception filter that generates a crash report. </summary>
+		/// <param name="ptrs">	The exception ptrs. </param>
+		/// <returns>
+		/// 	Returns EXCEPTION_CONTINUE_SEARCH if the exception was not handled, otherwise
+		/// 	EXCEPTION_EXECUTE_HANDLER.
+		/// </returns>
+		///-------------------------------------------------------------------------------------------------
 		int WINAPI SEHExceptionFilter(PEXCEPTION_POINTERS ptrs)
 		{
 			CR_EXCEPTION_INFO ei;
@@ -211,7 +271,9 @@ namespace Yelo
 
 			int result = crGenerateErrorReport(&ei);
 			if(result != 0)
+			{
 				return EXCEPTION_CONTINUE_SEARCH;
+			}
 
 			return EXCEPTION_EXECUTE_HANDLER;
 		}

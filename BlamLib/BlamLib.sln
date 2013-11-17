@@ -1,7 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlamLib", "BlamLib\BlamLib.csproj", "{D9931E1A-1A8A-4707-A27C-9AFEFD60D25B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlamLib.Test", "BlamLib.Test\BlamLib.Test.csproj", "{2BB37B4C-D7E0-451F-A8C8-997890B98B9F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenSauceIDE", "OpenSauceIDE\OpenSauceIDE.csproj", "{0AE03410-5E9B-4B8B-81B2-E1C6E30C8E70}"
 EndProject
@@ -46,6 +50,22 @@ Global
 		{D9931E1A-1A8A-4707-A27C-9AFEFD60D25B}.Release|x64.Build.0 = Release|x64
 		{D9931E1A-1A8A-4707-A27C-9AFEFD60D25B}.Release|x86.ActiveCfg = Release|x86
 		{D9931E1A-1A8A-4707-A27C-9AFEFD60D25B}.Release|x86.Build.0 = Release|x86
+		{2BB37B4C-D7E0-451F-A8C8-997890B98B9F}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{2BB37B4C-D7E0-451F-A8C8-997890B98B9F}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{2BB37B4C-D7E0-451F-A8C8-997890B98B9F}.Debug|Win32.ActiveCfg = Release|Win32
+		{2BB37B4C-D7E0-451F-A8C8-997890B98B9F}.Debug|Win32.Build.0 = Release|Win32
+		{2BB37B4C-D7E0-451F-A8C8-997890B98B9F}.Debug|x64.ActiveCfg = Release|x64
+		{2BB37B4C-D7E0-451F-A8C8-997890B98B9F}.Debug|x64.Build.0 = Release|x64
+		{2BB37B4C-D7E0-451F-A8C8-997890B98B9F}.Debug|x86.ActiveCfg = Debug|x86
+		{2BB37B4C-D7E0-451F-A8C8-997890B98B9F}.Debug|x86.Build.0 = Debug|x86
+		{2BB37B4C-D7E0-451F-A8C8-997890B98B9F}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{2BB37B4C-D7E0-451F-A8C8-997890B98B9F}.Release|Mixed Platforms.Build.0 = Release|x86
+		{2BB37B4C-D7E0-451F-A8C8-997890B98B9F}.Release|Win32.ActiveCfg = Release|Win32
+		{2BB37B4C-D7E0-451F-A8C8-997890B98B9F}.Release|Win32.Build.0 = Release|Win32
+		{2BB37B4C-D7E0-451F-A8C8-997890B98B9F}.Release|x64.ActiveCfg = Release|x64
+		{2BB37B4C-D7E0-451F-A8C8-997890B98B9F}.Release|x64.Build.0 = Release|x64
+		{2BB37B4C-D7E0-451F-A8C8-997890B98B9F}.Release|x86.ActiveCfg = Release|x86
+		{2BB37B4C-D7E0-451F-A8C8-997890B98B9F}.Release|x86.Build.0 = Release|x86
 		{0AE03410-5E9B-4B8B-81B2-E1C6E30C8E70}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{0AE03410-5E9B-4B8B-81B2-E1C6E30C8E70}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{0AE03410-5E9B-4B8B-81B2-E1C6E30C8E70}.Debug|Win32.ActiveCfg = Debug|x86
