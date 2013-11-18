@@ -86,7 +86,7 @@ namespace Yelo
 			// Get an iterator that doesn't have any specific group_tag filter
 			static inline c_tag_iterator all()
 			{
-				return c_tag_iterator(NULL_HANDLE);
+				return c_tag_iterator(NONE);
 			}
 
 			datum_index Next();
@@ -134,15 +134,31 @@ namespace Yelo
 
 		datum_index PLATFORM_API find_tag_instance(tag group_tag, cstring name);
 
-		// Use [NULL_HANDLE] for [group_tag_filter] to iterate all tag groups
-		void PLATFORM_API tag_iterator_new(TagGroups::s_tag_iterator& iter, const tag group_tag_filter = NULL_HANDLE);
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Initialize a tag instance iterator for the given group tag </summary>
+		///
+		/// <param name="iter">			   	[out] The iterator to initialize </param>
+		/// <param name="group_tag_filter">
+		/// 	(Optional) the group tag to filter results by. Use [NONE] for [group_tag_filter] to
+		/// 	iterate all tag groups.
+		/// </param>
+		void PLATFORM_API tag_iterator_new(TagGroups::s_tag_iterator& iter, const tag group_tag_filter = NONE);
 		template<typename T> inline
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Initialize a tag instance iterator for the given group tag </summary>
+		///
+		/// <param name="iter">	[out] The iterator to initialize </param>
 		void tag_iterator_new(TagGroups::s_tag_iterator& iter)
 		{
 			tag_iterator_new(iter, T::k_group_tag);
 		}
 
-		// Returns [datum_index::null] when finished iterating
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Increment a tags instance iterator to the next instance </summary>
+		///
+		/// <param name="iter">	[in,out] The iterator to increment </param>
+		///
+		/// <returns>	Returns the next datum's index or [datum_index::null] when finished iterating </returns>
 		datum_index PLATFORM_API tag_iterator_next(TagGroups::s_tag_iterator& iter);
 
 #if PLATFORM_IS_EDITOR

@@ -16,10 +16,18 @@ namespace Yelo
 	{
 		typedef int16 comparison_code_t;
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets the set of all registered block definitions </summary>
 		const std::unordered_set<tag_block_definition*>& GetBlockDefinitionsSet();
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets the set of all registered data definitions </summary>
 		const std::unordered_set<tag_data_definition*>& GetDataDefinitionsSet();
 
-		// Data generated at startup, not strictly related to 'runtime' (ie, game) builds
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		/// 	Data generated at startup (like how byte swap codes are), not strictly related to
+		/// 	'runtime' (ie, game) builds.
+		/// </summary>
 		struct s_tag_field_set_runtime_data
 		{
 			// these are, of course, not actual limits (tag system doesn't have any), but assumed.
@@ -82,11 +90,14 @@ namespace Yelo
 				const tag_block_definition* definition);
 			void Dispose();
 
-			// Returns true if the fieldset contains any fields which required optimized transformations for runtime builds
-			// This would be the case for string_id fields
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>
+			/// 	Returns true if the fieldset contains any fields which required optimized transformations
+			/// 	for runtime builds This would be the case for string_id fields.
+			/// </summary>
 			bool ContainsRuntimeOptimizedFields() const;
 
-			// Enable the is_group_header bit
+			/// <summary>	Enable the is_group_header bit. </summary>
 			void SetIsGroupHeader();
 		private:
 			void DecrementRuntimeSize(size_t amount);
@@ -116,46 +127,90 @@ namespace Yelo
 			enum { k_signature = 'tahd' };
 
 			tag signature;
-			uint32 hash;		// hash of just the allocation
-			uint32 total_hash;	// hash of the allocation and then any child data
+			uint32 hash;		/// <summary>	hash of just the allocation. </summary>
+			uint32 total_hash;	/// <summary>	hash of the allocation and then any child data. </summary>
 			PAD32;
 
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Get the allocation header for the given block instance </summary>
+			///
+			/// <param name="instance">	The block whose allocation header we want </param>
+			///
+			/// <returns>	null if allocation headers are disabled, an invalid header is encountered, or the instance is has no elements </returns>
 			static const s_tag_allocation_header* Get(const tag_block* instance);
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Get the allocation header for the given tag data instance </summary>
+			///
+			/// <param name="instance">	The tag data whose allocation header we want </param>
+			///
+			/// <returns>	null if allocation headers are disabled, an invalid header is encountered, or the instance is has no data </returns>
 			static const s_tag_allocation_header* Get(const tag_data* instance);
 		}; BOOST_STATIC_ASSERT( sizeof(s_tag_allocation_header) == 0x10 );
 
+		/// <summary>	Represents the allocation statistics for tag group child data (ie, blocks and tag data) </summary>
 		struct s_tag_allocation_statistics
 		{
 			const tag_block_definition* block_definition;
 			const tag_data_definition* data_definition;
 
 			struct s_block_totals {
-				size_t count;	// number of instances
-				size_t elements;// number of elements
-				size_t size;	// total size
-				size_t padding;	// total amount of padding, NONE when runtime_data isn't generated
+				size_t count;	/// <summary>	number of instances. </summary>
+				size_t elements;/// <summary>	number of elements. </summary>
+				size_t size;	/// <summary>	total size. </summary>
+				size_t padding;	/// <summary>	total amount of padding, 0 when runtime_data isn't generated. </summary>
 			};
 			struct s_data_totals {
-				size_t count;	// number of instances
-				size_t size;	// total size
+				size_t count;	/// <summary>	number of instances. </summary>
+				size_t size;	/// <summary>	total size. </summary>
 			};
 			union { // totals
 				s_block_totals block;
 				s_data_totals data;
 			};
 
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Are these stats for a block definition? </summary>
 			inline bool IsBlock() const	{ return block_definition != nullptr; }
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Are these stats for a data definition? </summary>
 			inline bool IsData() const	{ return data_definition != nullptr; }
 
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Initializes this object for a given block definition </summary>
+			///
+			/// <param name="definition">	Block definition these stats are for </param>
+			///
+			/// <returns>	This instance </returns>
 			s_tag_allocation_statistics& Initialize(const tag_block_definition* definition);
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Initializes this object for a given data definition </summary>
+			///
+			/// <param name="definition">	Data definition these stats are for </param>
+			///
+			/// <returns>	This instance </returns>
 			s_tag_allocation_statistics& Initialize(const tag_data_definition* definition);
 
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Updates stats based on an instance of the block definition we're tracking </summary>
 			void Update(const tag_block* instance);
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Updates stats based on an instance of the data definition we're tracking </summary>
 			void Update(const tag_data* instance);
 
-			void DumpBlockInfoToFile(FILE* file, s_block_totals& running_totals) const;
-			void DumpDataInfoToFile(FILE* file, s_block_totals& running_totals) const;
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Dumps block definition stats to a file. </summary>
+			///
+			/// <param name="file">			[in] If non-null, the file to print to. </param>
+			/// <param name="group_totals">	[in,out] The owner group's stats totals to update </param>
+			void DumpBlockInfoToFile(FILE* file, s_block_totals& group_totals) const;
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Dumps data definition stats to a file. </summary>
+			///
+			/// <param name="file">			[in] If non-null, the file to print to. </param>
+			/// <param name="group_totals">	[in,out] The owner group's stats totals to update </param>
+			void DumpDataInfoToFile(FILE* file, s_block_totals& group_totals) const;
 		};
+		/// <summary>	Represents the allocation statistics for a tag group and its child data </summary>
 		class c_tag_group_allocation_statistics
 		{
 			typedef std::vector<s_tag_allocation_statistics> children_array_t;
@@ -165,21 +220,58 @@ namespace Yelo
 
 			c_tag_group_allocation_statistics(tag group_tag, const s_tag_field_set_runtime_data& header_info);
 		public:
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Gets the allocation stats for a given block definition in this tag group </summary>
+			///
+			/// <param name="instance">	Block instance to use for definition lookup </param>
+			///
+			/// <returns>	The child stats. </returns>
 			s_tag_allocation_statistics& GetChildStats(const tag_block* instance);
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Gets the allocation stats for a given data definition in this tag group </summary>
+			///
+			/// <param name="instance">	Data instance to use for definition lookup </param>
+			///
+			/// <returns>	The child stats. </returns>
 			s_tag_allocation_statistics& GetChildStats(const tag_data* instance);
 
 			inline children_array_t::const_iterator begin() const	{ return m_children.cbegin(); }
 			inline children_array_t::const_iterator end() const		{ return m_children.cend(); }
 
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Are group allocation statistics enabled? </summary>
 			static bool Enabled();
+			/// <summary>	Initializes the group allocation stats system for use </summary>
 			static void Initialize();
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Shuts down the group allocation stats system (frees allocated memory, etc) </summary>
 			static void Dispose();
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Resets the state for all group stats as if nothing has been recorded yet </summary>
 			static void Reset();
 
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Get the allocation stats for a given tag group </summary>
+			///
+			/// <param name="group_tag">	The tag of the group to lookup </param>
 			static c_tag_group_allocation_statistics& GetStats(tag group_tag);
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Gets block stats. </summary>
+			///
+			/// <param name="tag_index">	Index of the tag which ultimately owns the block </param>
+			/// <param name="instance"> 	Block instance to use for definition lookup </param>
 			static s_tag_allocation_statistics& GetBlockStats(datum_index tag_index, const tag_block* instance);
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Gets data stats. </summary>
+			///
+			/// <param name="tag_index">	Index of the tag which ultimately owns the data field </param>
+			/// <param name="instance"> 	Data instance to use for definition lookup </param>
 			static s_tag_allocation_statistics& GetDataStats(datum_index tag_index, const tag_data* instance);
 
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>
+			/// 	Dumps all tag group statistics to group_memory.txt in the OS Reports folder.
+			/// </summary>
 			static void DumpToFile();
 
 		private:
