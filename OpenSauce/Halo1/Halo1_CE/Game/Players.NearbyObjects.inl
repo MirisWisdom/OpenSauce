@@ -15,14 +15,14 @@ namespace NearbyObjects
 	{
 		// copy the game's jmp table to our own
 		for(int32 x = 0; x <= Yelo::Enums::_object_type_control; x++)
-			player_examine_nearby_objects_server_jmp_table_yelo[x] = (void*)PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_JMP_TABLE[x];
+			player_examine_nearby_objects_server_jmp_table_yelo[x] = GET_PTR2(PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_JMP_TABLE)[x];
 
 		// write the game's default jump case into our jump table for cases 9-11
 		for(int32 x = Yelo::Enums::_object_type_light_fixture; x <= Yelo::Enums::_object_type_sound_scenery; x++)
-			player_examine_nearby_objects_server_jmp_table_yelo[x] = (void*)PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_JMP_TABLE[0];
+			player_examine_nearby_objects_server_jmp_table_yelo[x] = GET_PTR2(PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_JMP_TABLE)[0];
 		
 		// set the game's client jump table count to our's
-		*K_PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_LAST_ENTRY_TYPE = Yelo::Enums::_object_type_sound_scenery;
+		GET_PTR(K_PLAYER_EXAMINE_NEARBY_OBJECTS_SERVER_LAST_ENTRY_TYPE) = Yelo::Enums::_object_type_sound_scenery;
 		// set the game's client jump table address to our's
 		GET_PTR(player_examine_nearby_objects_server_jmp_ptr) = player_examine_nearby_objects_server_jmp_table_yelo;
 	}
@@ -32,14 +32,14 @@ namespace NearbyObjects
 	{
 		// copy the game's jmp table to our own
 		for(int32 x = 0; x <= Yelo::Enums::_object_type_control; x++)
-			player_examine_nearby_objects_client_jmp_table_yelo[x] = (void*)PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_JMP_TABLE[x];
+			player_examine_nearby_objects_client_jmp_table_yelo[x] = GET_PTR2(PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_JMP_TABLE)[x];
 
 		// write the game's default jump case into our jump table for cases 9-11
 		for(int32 x = Yelo::Enums::_object_type_light_fixture; x <= Yelo::Enums::_object_type_sound_scenery; x++)
-			player_examine_nearby_objects_client_jmp_table_yelo[x] = (void*)PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_JMP_TABLE[0];
+			player_examine_nearby_objects_client_jmp_table_yelo[x] = GET_PTR2(PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_JMP_TABLE)[0];
 		
 		// set the game's client jump table count to our's
-		*K_PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_LAST_ENTRY_TYPE = Yelo::Enums::_object_type_sound_scenery;
+		GET_PTR(K_PLAYER_EXAMINE_NEARBY_OBJECTS_CLIENT_LAST_ENTRY_TYPE) = Yelo::Enums::_object_type_sound_scenery;
 		// set the game's client jump table address to our's
 		GET_PTR(player_examine_nearby_objects_client_jmp_ptr) = player_examine_nearby_objects_client_jmp_table_yelo;
 	}

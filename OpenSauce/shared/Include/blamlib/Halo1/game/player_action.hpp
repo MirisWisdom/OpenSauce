@@ -27,7 +27,9 @@ namespace Yelo
 			_player_action_result_touch_device,
 			_player_action_result_flip_vehicle,
 
-			_player_action_result,
+			k_number_of_player_action_results,
+
+			k_number_of_player_action_results_yelo = k_number_of_player_action_results,
 		};
 	};
 
