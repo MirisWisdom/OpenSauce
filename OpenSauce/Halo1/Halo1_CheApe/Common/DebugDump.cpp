@@ -123,7 +123,7 @@ namespace Yelo
 			else
 			{
 				// delete the reports directory
-				FileIO::Delete_Directory(g_reports_path, true, true);
+				FileIO::DirectoryDelete(g_reports_path, true, true);
 				if(0 == CreateDirectory(g_reports_path, nullptr))
 					return;
 			}
