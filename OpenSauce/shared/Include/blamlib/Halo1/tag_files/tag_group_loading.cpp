@@ -322,7 +322,7 @@ namespace Yelo
 			datum_index tag_index = datum_index::null;
 			bool success = true;
 
-			if( reference->group_tag != NULL_HANDLE &&
+			if( reference->group_tag != NONE &&
 				TEST_FLAG(read_flags, Flags::_tag_load_non_resolving_references_bit)==0 &&
 				TEST_FLAG(definition->flags, Flags::_tag_reference_non_resolving_bit)==0
 				)
@@ -344,9 +344,9 @@ namespace Yelo
 		{
 			bool success = true;
 
-			for(void* block_element : *block)
+			for(auto element : *block)
 			{
-				for(auto field : TagGroups::c_tag_field_scanner(definition->fields, block_element)
+				for(auto field : TagGroups::c_tag_field_scanner(definition->fields, element.address)
 					.AddFieldType(Enums::_field_block)
 					.AddFieldType(Enums::_field_tag_reference) )
 				{
@@ -378,7 +378,7 @@ namespace Yelo
 		}
 
 		static bool verify_tag_string_field(TagGroups::c_tag_field_scanner::s_iterator_result field,
-			tag_block_definition* block_definition)
+			tag_block_definition* block_definition, int32 element_index)
 		{
 			auto& string = *field.As<tag_string>();
 			int32 string_length = field.GetStringFieldLength(); // For supporting non-standard tag_string lengths
@@ -386,8 +386,8 @@ namespace Yelo
 			if( strnlen_s(string, string_length) == string_length && 
 				string[string_length] != '\0' )
 			{
-				YELO_WARN("fixed corrupt tag string field (%s).",
-					field.GetName());
+				YELO_WARN("fixed corrupt tag string field (%s) in %s #%d.",
+					field.GetName(), block_definition->name, element_index); // NOTE: added block info
 
 				string[string_length] = '\0';
 				return false;
@@ -416,45 +416,45 @@ namespace Yelo
 		}
 		template<typename TEnum>
 		static bool verify_enum_field(TagGroups::c_tag_field_scanner::s_iterator_result field,
-			tag_block_definition* block_definition)
+			tag_block_definition* block_definition, int32 element_index)
 		{
 			auto& value = *field.As<TEnum>();
 			int32 count = field.DefinitionAs<string_list>()->count;
 			if(value >= 0 && value < count)
 				return true;
 
-			YELO_WARN("fixed corrupt tag enum field (%s) in %s.",
-				field.GetName(), block_definition->name); // NOTE: added owner block name to info
+			YELO_WARN("fixed corrupt tag enum field (%s) in %s #%d.",
+				field.GetName(), block_definition->name, element_index); // NOTE: added block info
 
 			value = 0;
 			return false;
 		}
 		template<typename TFlags>
 		static bool verify_flags_field(TagGroups::c_tag_field_scanner::s_iterator_result field,
-			tag_block_definition* block_definition)
+			tag_block_definition* block_definition, int32 element_index)
 		{
 			auto& flags = *field.As<TFlags>();
 			int32 bit_count = field.DefinitionAs<string_list>()->count;
 			if(bit_count >= BIT_COUNT(TFlags) || (flags >> bit_count) == 0)
 				return true;
 
-			YELO_WARN("fixed corrupt tag flags field (%s) in %s.",
-				field.GetName(), block_definition->name); // NOTE: added owner block name to info
+			YELO_WARN("fixed corrupt tag flags field (%s) in %s #%d.",
+				field.GetName(), block_definition->name, element_index); // NOTE: added block info
 
 			flags &= MASK(bit_count);
 			return false;
 		}
 		template<typename TIndex>
 		static bool verify_block_index_field(TagGroups::c_tag_field_scanner::s_iterator_result field,
-			tag_block_definition* block_definition)
+			tag_block_definition* block_definition, int32 element_index)
 		{
 			auto& index = *field.As<TIndex>();
 			auto* indexed_block_definition = field.DefinitionAs<tag_block_definition>();
 			if(index >= NONE && index < indexed_block_definition->maximum_element_count)
 				return true;
 
-			YELO_WARN("fixed corrupt tag block index field (%s) in %s (reset to NONE).",
-				field.GetName(), block_definition->name); // NOTE: added owner block name to info
+			YELO_WARN("fixed corrupt tag block index field (%s) in %s #%d (reset to NONE).",
+				field.GetName(), block_definition->name, element_index); // NOTE: added block info
 
 			index = NONE;
 			return false;
@@ -473,19 +473,19 @@ namespace Yelo
 				{
 					switch(field.GetType())
 					{
-					case Enums::_field_string: if(!verify_tag_string_field(field, definition)) valid = false;
+					case Enums::_field_string: if(!verify_tag_string_field(field, definition, x)) valid = false;
 						break;
 
 					// NOTE: technically the engine treats enum fields as signed
-					case Enums::_field_enum: if(!verify_enum_field<int16>(field, definition)) valid = false;
+					case Enums::_field_enum: if(!verify_enum_field<int16>(field, definition, x)) valid = false;
 						break;
 
 					// NOTE: engine only verified long_flags, we added support for the others
-					case Enums::_field_long_flags: if(!verify_flags_field<long_flags>(field, definition)) valid = false;
+					case Enums::_field_long_flags: if(!verify_flags_field<long_flags>(field, definition, x)) valid = false;
 						break;
-					case Enums::_field_word_flags: if(!verify_flags_field<word_flags>(field, definition)) valid = false;
+					case Enums::_field_word_flags: if(!verify_flags_field<word_flags>(field, definition, x)) valid = false;
 						break;
-					case Enums::_field_byte_flags: if(!verify_flags_field<byte_flags>(field, definition)) valid = false;
+					case Enums::_field_byte_flags: if(!verify_flags_field<byte_flags>(field, definition, x)) valid = false;
 						break;
 
 					case Enums::_field_pad:
@@ -499,9 +499,9 @@ namespace Yelo
 
 					// NOTE: engine doesn't verify block indices, we added support for them
 					// TODO: should we enable this as an option via XML setting instead?
-					case Enums::_field_short_block_index:	if(!verify_block_index_field<int16>(field, definition)) valid = false;
+					case Enums::_field_short_block_index:	if(!verify_block_index_field<int16>(field, definition, x)) valid = false;
 						break;
-					case Enums::_field_long_block_index:	if(!verify_block_index_field<int32>(field, definition)) valid = false;
+					case Enums::_field_long_block_index:	if(!verify_block_index_field<int32>(field, definition, x)) valid = false;
 						break;
 					}
 				}
@@ -552,7 +552,14 @@ namespace Yelo
 					group_string.Terminate().TagSwap().str, name);
 				return datum_index::null;
 			}
-			YELO_ASSERT( group->child_count==0 ); // TODO: don't we disable this assert in CheApe?
+			// NOTE: engine asserts child_count, but this will force guerilla to crash
+			// Originally, we NOP'd the assert in CheApe
+			if (group->child_count != 0)
+			{
+				YELO_WARN("can't create the parent tag %s, not creating %s",
+					group->name, name);
+				return datum_index::null;
+			}
 
 			datum_index tag_index = find_tag_instance(group_tag, name);
 			if(!tag_index.IsNull())

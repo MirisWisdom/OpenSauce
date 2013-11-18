@@ -524,7 +524,7 @@ namespace Yelo
 			else
 			{
 				block.size += block_definition->element_size * instance->count;
-				block.padding = NONE;
+				block.padding = 0;
 			}
 		}
 		void s_tag_allocation_statistics::Update(const tag_data* instance)
@@ -539,22 +539,22 @@ namespace Yelo
 			"% 100s % 9d % 9d % 9d % 9d\r\n";
 		static cstring k_tag_allocation_statistics_dump_header_format = 
 			"%-100s % 9s % 9s % 9s % 9s\r\n";
-		void s_tag_allocation_statistics::DumpBlockInfoToFile(FILE* file, s_block_totals& running_totals) const
+		void s_tag_allocation_statistics::DumpBlockInfoToFile(FILE* file, s_block_totals& group_totals) const
 		{
-			running_totals.count += block.count;
-			running_totals.elements += block.elements;
-			running_totals.size += block.size;
-			running_totals.padding += block.padding;
+			group_totals.count += block.count;
+			group_totals.elements += block.elements;
+			group_totals.size += block.size;
+			group_totals.padding += block.padding;
 
 			if (file != nullptr)
 				fprintf_s(file, k_tag_allocation_statistics_dump_format,
 					block_definition->name,
 					block.count, block.elements, block.size, block.padding);
 		}
-		void s_tag_allocation_statistics::DumpDataInfoToFile(FILE* file, s_block_totals& running_totals) const
+		void s_tag_allocation_statistics::DumpDataInfoToFile(FILE* file, s_block_totals& group_totals) const
 		{
-			running_totals.count += data.count;
-			running_totals.size += data.size;
+			group_totals.count += data.count;
+			group_totals.size += data.size;
 
 			if (file != nullptr)
 				fprintf_s(file, k_tag_allocation_statistics_dump_format,
@@ -670,7 +670,7 @@ namespace Yelo
 			auto file = std::unique_ptr<FILE, crt_file_closer>(
 				Settings::CreateReport("group_memory.txt", false, true));
 
-			size_t total_padding = 0;
+			size_t total_padding = 0, total_size = 0;
 
 			for (auto pair : *g_tag_group_memory_globals.group_statistics)
 			{
@@ -694,20 +694,25 @@ namespace Yelo
 				fprintf_s(file.get(), "\r\n");
 
 				total_padding += totals.padding;
+				total_size += totals.size;
 			}
 
-			fprintf_s(file.get(), "\r\ntotal padding: %d\r\n", total_padding);
+			fprintf_s(file.get(), "\r\ntotal padding: %d", total_padding);
+			fprintf_s(file.get(), "\r\ntotal size: %d", total_size);
 		}
 
 		size_t c_tag_group_allocation_statistics::BuildStatsForTagChildBlockRecursive(c_tag_group_allocation_statistics& group_stats,
 			tag_block* instance)
 		{
+			if (instance->count == 0)
+				return 0;
+
 			size_t block_size = CAST(size_t, instance->count) * instance->get_element_size();
 			group_stats.GetChildStats(instance).Update(instance);
 
-			for (void* element : *instance)
+			for (auto element : *instance)
 			{
-				for (auto field : TagGroups::c_tag_field_scanner(instance->definition->fields, element)
+				for (auto field : TagGroups::c_tag_field_scanner(instance->definition->fields, element.address)
 					.AddFieldType(Enums::_field_block)
 					.AddFieldType(Enums::_field_data))
 				{
@@ -721,7 +726,8 @@ namespace Yelo
 					case Enums::_field_data:
 					{
 						auto* data_instance = field.As<const tag_data>();
-						group_stats.GetChildStats(data_instance).Update(data_instance);
+						if (data_instance->size > 0)
+							group_stats.GetChildStats(data_instance).Update(data_instance);
 
 						block_size += CAST(size_t, data_instance->size);
 					} break;
