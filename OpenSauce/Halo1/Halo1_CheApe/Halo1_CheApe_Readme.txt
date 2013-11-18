@@ -54,6 +54,9 @@ It is also useful for us to know your system specifications such as your graphic
 NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how to use OS, please consult our wiki and/or create a post on Halomods to get community assistance. We are also NOT taking feature requests in any way.
 
 == Change Log ==
+=== Version 2014 ===
+  * UPGRADE		We now use Visual Studio 2013 instead of 2008 for development
+
 === Version 3.1.1 ===
   * ADD			project_yellow_globals_cv tag containing both boarding and unit infection tag blocks
   * ADD			model_animations tag features two new unit_seat_animation types for seat boarding and ejection
