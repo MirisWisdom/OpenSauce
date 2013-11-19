@@ -234,7 +234,7 @@ namespace Yelo
 
 		size_t stream_tag_to_buffer(datum_index tag_index, void* stream, size_t& return_stream_offset, uintptr_t virtual_base_address, tag_reference_name_reference* tag_names)
 		{
-			const tag_block* block = &TagGroups::TagInstances()[tag_index]->root_block;
+			const tag_block* block = tag_get_root_block(tag_index);
 
 			void* return_stream = stream_tag_block_to_buffer(block, stream, CAST_PTR(uintptr_t, stream), virtual_base_address, tag_names);
 

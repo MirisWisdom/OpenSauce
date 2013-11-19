@@ -188,12 +188,12 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
-		API_FUNC_NAKED void* PLATFORM_API data_iterator_next(s_data_iterator& iterator)
+/*		API_FUNC_NAKED void* PLATFORM_API data_iterator_next(s_data_iterator& iterator)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATA_ITERATOR_NEXT);
 
 			__asm	jmp	FUNCTION
-		}
+		}*/
 		API_FUNC_NAKED datum_index PLATFORM_API data_next_index(const s_data_array* data, datum_index cursor)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATA_NEXT_INDEX);

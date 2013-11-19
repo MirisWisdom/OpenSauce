@@ -24,7 +24,8 @@ namespace Yelo
 			int16 next_index;		// Next index to use when creating a new datum
 			int16 last_datum;		// Last used datum index
 			datum_index next_datum;	// Next datum value to use
-			void* data;
+			/// <summary>	Base address of the array's datum. </summary>
+			void* base_address;
 
 			datum_index::salt_t GetInitialSalt() const;
 			datum_index::salt_t GetNextSalt(datum_index::salt_t cursor) const;
@@ -33,8 +34,8 @@ namespace Yelo
 		struct s_data_iterator
 		{
 			s_data_array* data;
-			int16 absolute_index;
-			int16 pad; // alignment, unused by the engine
+			int16 next_index;
+			int16 finished_flag; // actually alignment, unused by the engine
 			datum_index index;
 			tag signature;
 
@@ -44,7 +45,7 @@ namespace Yelo
 			inline void SetEndHack()		{ signature = k_end_hack_signature; }
 			inline bool IsEndHack() const	{ return signature == k_end_hack_signature; }
 			// HACK: don't use this unless the s_data_iterator was created in the OS codebase!
-			// engine's iterator_new doesn't initialize 'pad' and we use it for end() hacks
+			// engine's iterator_new doesn't initialize 'finished_flag' and we use it for end() hacks
 			bool operator!=(const s_data_iterator& other) const;
 		}; BOOST_STATIC_ASSERT( sizeof(s_data_iterator) == 0x10 );
 	};
@@ -72,7 +73,7 @@ namespace Yelo
 
 		datum_index PLATFORM_API data_next_index(const s_data_array* data, datum_index cursor);
 
-		void data_iterator_new(s_data_iterator& iterator, s_data_array* data);
+		void PLATFORM_API data_iterator_new(s_data_iterator& iterator, s_data_array* data);
 
 		void* PLATFORM_API data_iterator_next(s_data_iterator& iterator);
 

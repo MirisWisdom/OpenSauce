@@ -69,8 +69,8 @@ namespace Yelo
 
 
 			Memory::WriteRelativeJmp(PlayerSpawnCreateUnitMultiplayerHook, GET_FUNC_VPTR(PLAYER_SPAWN__CREATE_UNIT_MP_HOOK));
-			Memory::WriteRelativeJmp(UpdateServer, GET_FUNC_VPTR(PLAYERS_UPDATE_BEFORE_GAME_SERVER_HOOK), true);
-			Memory::WriteRelativeJmp(UpdateClient, GET_FUNC_VPTR(PLAYERS_UPDATE_BEFORE_GAME_CLIENT_HOOK), true);
+			Memory::WriteRelativeJmp(UpdateForServer, GET_FUNC_VPTR(PLAYERS_UPDATE_BEFORE_GAME_SERVER_HOOK), true);
+			Memory::WriteRelativeJmp(UpdateForClient, GET_FUNC_VPTR(PLAYERS_UPDATE_BEFORE_GAME_CLIENT_HOOK), true);
 			Memory::WriteRelativeJmp(Update, GET_FUNC_VPTR(PLAYERS_UPDATE_AFTER_GAME_HOOK), true);
 			
 			NearbyObjects::Initialize();
@@ -81,11 +81,11 @@ namespace Yelo
 		{
 		}
 
-		void PLATFORM_API UpdateServer()
+		void PLATFORM_API UpdateForServer()
 		{
 		}
 
-		void PLATFORM_API UpdateClient()
+		void PLATFORM_API UpdateForClient()
 		{
 		}
 

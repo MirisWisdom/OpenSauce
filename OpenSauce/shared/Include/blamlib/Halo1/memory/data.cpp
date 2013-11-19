@@ -6,6 +6,10 @@
 #include "Common/Precompile.hpp"
 #include <blamlib/Halo1/memory/data.hpp>
 
+#if PLATFORM_IS_EDITOR
+	#include "Engine/EngineFunctions.hpp"
+#endif
+
 static const Yelo::datum_index::salt_t k_datum_index_salt_msb = 
 	1U << 
 	(BIT_COUNT(Yelo::datum_index::salt_t) - 1);
@@ -31,29 +35,16 @@ namespace Yelo
 				: k_datum_index_salt_msb;
 		}
 
-		static bool DataIteratorIsNotEndHack(const s_data_iterator& iter, int16 last_datum)
-		{
-			// we treat 'pad' as our "have we already seen the last datum" sentinel
-			if (iter.pad == FALSE)
-			{
-				auto& _iter = CAST_QUAL(s_data_iterator&, iter);
-				_iter.pad = _iter.absolute_index == last_datum;
-				return true;
-			}
-
-			// the last operator!= call matched last_datum, so in this call we're saying we've reached the end
-			return false;
-		}
 		bool s_data_iterator::operator!=(const s_data_iterator& other) const
 		{
 			auto last_datum = this->data->last_datum;
 
-			if(other.IsEndHack())
-				return DataIteratorIsNotEndHack(*this, last_datum);//absolute_index != last_datum;
-			else if(this->IsEndHack())
-				return DataIteratorIsNotEndHack(other, last_datum);//other.absolute_index != last_datum;
+			if (other.IsEndHack())
+				return !this->finished_flag;
+			else if (this->IsEndHack())
+				return !other.finished_flag;
 
-			return this->absolute_index != other.absolute_index;
+			return this->index != other.index;
 		}
 	};
 
@@ -80,16 +71,55 @@ namespace Yelo
 			data->is_valid = false;
 		}
 
-		void data_iterator_new(s_data_iterator& iterator, s_data_array* data)
+		void PLATFORM_API data_iterator_new(s_data_iterator& iterator, s_data_array* data)
 		{
 			data_verify(data);
 			ASSERT(data->is_valid, "invalid data array passed to " __FUNCTION__);
 
 			iterator.data = data;
-			iterator.absolute_index = 0;
-			iterator.pad = FALSE;
+			iterator.next_index = 0;
+			iterator.finished_flag = FALSE;
 			iterator.index = datum_index::null;
 			iterator.signature = CAST_PTR(uintptr_t, data) ^ Enums::k_data_iterator_signature;
+		}
+
+		void* PLATFORM_API data_iterator_next(s_data_iterator& iterator)
+		{
+#if PLATFORM_IS_EDITOR
+			YELO_ASSERT_DISPLAY(iterator.signature == (CAST_PTR(uintptr_t, iterator.data) ^ Enums::k_data_iterator_signature),
+				"uninitialized iterator passed to " __FUNCTION__);
+#endif
+
+			const s_data_array* data = iterator.data;
+			data_verify(data);
+
+#if PLATFORM_IS_EDITOR
+			YELO_ASSERT_DISPLAY(data->is_valid, "tried to iterate %s when it was in an invalid state",
+				data->name);
+#endif
+
+			datum_index::index_t absolute_index = iterator.next_index;
+			int32 datum_size = data->datum_size;
+			byte* pointer = CAST_PTR(byte*, data->base_address) + (datum_size * absolute_index);
+
+			for (int16 last_datum = data->last_datum; absolute_index < last_datum; pointer += datum_size)
+			{
+				auto datum = CAST_PTR(const s_datum_base*, pointer);
+				absolute_index++;
+
+				if (!datum->IsNull())
+				{
+					iterator.next_index = absolute_index;
+					iterator.index = datum_index::Create(absolute_index, datum->GetHeader());
+					return pointer;
+				}
+				assert(absolute_index < data->max_datum);
+			}
+			assert(absolute_index == data->last_datum);
+			iterator.next_index = absolute_index; // will equal last_datum at this point
+			iterator.finished_flag = TRUE;
+			iterator.index = datum_index::null;
+			return nullptr;
 		}
 	};
 };
