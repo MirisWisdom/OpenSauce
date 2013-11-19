@@ -23,17 +23,24 @@ namespace Yelo
 
 	namespace Memory
 	{
-		// for data structures which DO use the proceeding 16 bits after the 'salt' header
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		/// 	for data structures which DO use the proceeding 16 bits after the 'salt' header.
+		/// </summary>
 		struct s_datum_base
 		{
 		private:
-			int16 header; // salt for this datum
+			datum_index::salt_t header; // salt for this datum
 		public:
-			inline int16 GetHeader() const { return header; }
-			inline bool IsNull() { return header == NONE; }
+			inline datum_index::salt_t GetHeader() const	{ return header; }
+			inline bool IsNull() const						{ return header == 0; }
 		}; BOOST_STATIC_ASSERT( sizeof(s_datum_base) == 2 );
 
-		// for data structures which DON'T make use of the proceeding 16 bits after the 'salt' header
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		/// 	for data structures which DON'T make use of the proceeding 16 bits after the 'salt'
+		/// 	header.
+		/// </summary>
 		struct s_datum_base_aligned : s_datum_base
 		{
 		private:

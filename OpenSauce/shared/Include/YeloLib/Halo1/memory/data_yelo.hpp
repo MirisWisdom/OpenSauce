@@ -78,7 +78,7 @@ namespace Yelo
 			}
 
 			inline DatumT* Datums() {
-				return CAST_PTR(DatumT*, this->Header.data);
+				return CAST_PTR(DatumT*, this->Header.base_address);
 			}
 
 			inline operator s_data_array*() {
@@ -90,7 +90,7 @@ namespace Yelo
 #if PLATFORM_IS_EDITOR
 				return  CAST_PTR(DatumT*, blam::datum_get(&this->Header, handle));
 #else
-				return &CAST_PTR(DatumT*, this->Header.data)[handle.index];
+				return &CAST_PTR(DatumT*, this->Header.base_address)[handle.index];
 #endif
 			}
 

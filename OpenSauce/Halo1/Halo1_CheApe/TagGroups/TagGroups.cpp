@@ -25,6 +25,8 @@ namespace Yelo
 		// Patches engine code to call our hooks or our implementations of various functions
 		static void InitializeHooks()
 		{
+			void (PLATFORM_API* blam__tag_iterator_new)(s_tag_iterator&, tag) =
+				blam::tag_iterator_new;
 			datum_index (PLATFORM_API* blam__tag_new)(tag, cstring) = 
 				blam::tag_new;
 			datum_index (PLATFORM_API* blam__tag_load)(tag, cstring, long_flags) = 
@@ -33,6 +35,9 @@ namespace Yelo
 			Memory::WriteRelativeJmp(blam::tag_groups_initialize, GET_FUNC_VPTR(TAG_GROUPS_INITIALIZE), true);
 			Memory::WriteRelativeJmp(blam::tag_groups_dispose, GET_FUNC_VPTR(TAG_GROUPS_DISPOSE), true);
 			Memory::WriteRelativeJmp(blam::tag_field_scan, GET_FUNC_VPTR(TAG_FIELD_SCAN), true);
+
+			Memory::WriteRelativeJmp(blam__tag_iterator_new, GET_FUNC_VPTR(TAG_ITERATOR_NEW), true);
+			Memory::WriteRelativeJmp(blam::tag_iterator_next, GET_FUNC_VPTR(TAG_ITERATOR_NEXT), true);
 
 			Memory::WriteRelativeJmp(blam::tag_data_load, GET_FUNC_VPTR(TAG_DATA_LOAD), true);
 #if PLATFORM_ID != PLATFORM_TOOL
@@ -257,7 +262,7 @@ namespace Yelo
 			__asm	jmp	FUNCTION
 		}
 
-		API_FUNC_NAKED void PLATFORM_API tag_iterator_new(TagGroups::s_tag_iterator& iter, const tag group_tag_filter)
+/*		API_FUNC_NAKED void PLATFORM_API tag_iterator_new(TagGroups::s_tag_iterator& iter, const tag group_tag_filter)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_ITERATOR_NEW);
 
@@ -268,7 +273,7 @@ namespace Yelo
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_ITERATOR_NEXT);
 
 			__asm	jmp	FUNCTION
-		}
+		}*/
 
 
 		API_FUNC_NAKED tag_group* PLATFORM_API tag_group_get_next(const tag_group* group)

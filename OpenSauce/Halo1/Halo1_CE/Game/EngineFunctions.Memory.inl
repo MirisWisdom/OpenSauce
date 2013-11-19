@@ -74,7 +74,7 @@ API_FUNC_NAKED void DataDeleteAll(Yelo::Memory::s_data_array* data)
 	API_FUNC_NAKED_END(1)
 }
 
-void* DataIteratorNext(void* iterator)
+/*void* DataIteratorNext(void* iterator)
 {
 	static const uintptr_t CALL_ADDR = GET_FUNC_PTR(DATA_ITERATOR_NEXT);
 
@@ -88,7 +88,7 @@ void* DataIteratorNext(void* iterator)
 
 		pop		edi
 	}
-}
+}*/
 
 datum_index DataNextIndex(Yelo::Memory::s_data_array* data, datum_index cursor)
 {

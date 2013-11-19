@@ -11,6 +11,7 @@
 #include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
 #include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
 #include "Engine/EngineFunctions.hpp"
+#include "Memory/MemoryInterface.hpp"
 
 typedef std::unordered_map<Yelo::tag, Yelo::TagGroups::c_tag_group_allocation_statistics> 
 	tag_group_allocation_statistics_map_t;
@@ -42,7 +43,7 @@ namespace Yelo
 			}
 		}g_tag_group_memory_globals = {
 			true,
-			false,
+			PLATFORM_VALUE(false, false, false),
 			true
 		};
 

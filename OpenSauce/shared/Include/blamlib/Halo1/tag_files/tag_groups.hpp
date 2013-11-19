@@ -91,11 +91,8 @@ namespace Yelo
 
 			datum_index Next();
 
-			inline bool operator!=(const c_tag_iterator& other) const
-			{
-				// NOTE: we intentionally don't compare the group_tag filter
-				return m_state.instances_iterator != other.m_state.instances_iterator;
-			}
+			bool operator!=(const c_tag_iterator& other) const;
+
 			inline c_tag_iterator& operator++()
 			{
 				Next();

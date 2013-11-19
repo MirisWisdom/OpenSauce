@@ -61,6 +61,12 @@ namespace Yelo
 		{
 			return m_tag_index = blam::tag_iterator_next(m_state);
 		}
+
+		bool c_tag_iterator::operator!=(const c_tag_iterator& other) const
+		{
+			// NOTE: we intentionally don't compare the group_tag filter
+			return m_state.instances_iterator != other.m_state.instances_iterator;
+		}
 	};
 
 	size_t tag_block::get_element_size() const
@@ -203,6 +209,33 @@ namespace Yelo
 				}
 			}
 		}
+
+		void PLATFORM_API tag_iterator_new(TagGroups::s_tag_iterator& iter, const tag group_tag_filter)
+		{
+			data_iterator_new(iter.instances_iterator, &TagGroups::TagInstances().Header);
+			iter.group_tag_filter = group_tag_filter;
+		}
+
+		datum_index PLATFORM_API tag_iterator_next(TagGroups::s_tag_iterator& iter)
+		{
+			tag group_tag_filter = iter.group_tag_filter;
+
+			while (const void* datum = data_iterator_next(iter.instances_iterator))
+			{
+				auto instance = CAST_PTR(const s_tag_instance*, datum);
+
+				if (group_tag_filter == NONE ||
+					instance->group_tag == group_tag_filter ||
+					instance->parent_group_tags[0] == group_tag_filter ||
+					instance->parent_group_tags[1] == group_tag_filter)
+				{
+					return iter.instances_iterator.index;
+				}
+			}
+
+			return datum_index::null;
+		}
+
 
 		void PLATFORM_API tag_reference_clear(tag_reference& reference)
 		{

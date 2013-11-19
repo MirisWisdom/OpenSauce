@@ -646,10 +646,10 @@ namespace Yelo
 		{
 			return Engine::Memory::DataNextIndex(data, cursor);
 		}
-		void* PLATFORM_API data_iterator_next(s_data_iterator& iterator)
+/*		void* PLATFORM_API data_iterator_next(s_data_iterator& iterator)
 		{
 			return Engine::Memory::DataIteratorNext(&iterator);
-		}
+		}*/
 		datum_index PLATFORM_API datum_new_at_index(s_data_array* data, datum_index index)
 		{
 			return Engine::Memory::DatumNewAtIndex(data, index);

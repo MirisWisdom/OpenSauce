@@ -121,7 +121,7 @@ namespace Yelo
 					YELO_WARN("couldn't allocate #%d tag data for '%s'",
 						size, data_definition->name); // NOTE: added size info to warning
 				}
-				else if( !tag_data_load(block_element, data, data->address = data_address) )
+				else if( size > 0 && !tag_data_load(block_element, data, data->address = data_address) )
 				{
 					// tag_data_load provides warnings, so we don't provide any here
 					YELO_FREE( data->address );

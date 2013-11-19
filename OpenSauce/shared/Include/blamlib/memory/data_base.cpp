@@ -12,16 +12,10 @@ namespace Yelo
 {
 	const datum_index datum_index::null = { CAST(uint32, NONE) };
 
-	datum_index datum_index::Create(index_t index, salt_t salt)
-	{
-		datum_index result; result.handle = (CAST(uint32,salt) << 16) | index;
-		return result;
-	}
-
-	datum_index datum_index::Create(index_t index, void* header)
+	datum_index datum_index::Create(index_t index, const void* header)
 	{
 		if(header == nullptr) return null;
 
-		return Create(index, *CAST_PTR(salt_t*, header));
+		return Create(index, *CAST_PTR(const salt_t*, header));
 	}
 };
