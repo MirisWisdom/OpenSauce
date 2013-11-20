@@ -190,14 +190,29 @@ namespace BlamLib.Render.COLLADA
 			PropertyInfo property = typeof(T).GetProperty("ID");
 
 			if (property == null)
-				throw new ColladaException("COLLADA EXCEPTION: attempted to format an ID for an element that doesn not have an ID property");
+				throw new ColladaException("COLLADA EXCEPTION: attempted to format an ID for an element that doesn't have an ID property");
 
-			var id_attributes = property.GetCustomAttributes(typeof(ColladaIDAttribute), false) as ColladaIDAttribute[];
+			var id_attribute = property.GetCustomAttribute<ColladaIDAttribute>();
 
-			if (id_attributes == null || id_attributes.Length == 0)
+			if (id_attribute == null)
 				throw new ColladaException("COLLADA EXCEPTION: an ID property has no formatting string defined");
 
-			return id_attributes[0].FormatID(id);
+			return id_attribute.FormatID(id);
+		}
+
+		public static bool TestFormat<T>(string id)
+		{
+			PropertyInfo property = typeof(T).GetProperty("ID");
+
+			if (property == null)
+				throw new ColladaException("COLLADA EXCEPTION: attempted to unformat an ID for an element that doesn't have an ID property");
+
+			var id_attribute = property.GetCustomAttribute<ColladaIDAttribute>();
+
+			if (id_attribute == null)
+				throw new ColladaException("COLLADA EXCEPTION: an ID property has no formatting string defined");
+
+			return id_attribute.TestFormatted(id);
 		}
 
 		#region Validation

@@ -17,10 +17,10 @@ namespace BlamLib.Render.COLLADA.Core
 	public partial class ColladaAnimationClip : ColladaElement
 	{
 		#region Fields
-		ColladaObjectAttribute<string> _id;
+		ColladaObjectAttribute<ColladaID<ColladaAnimationClip>> _id;
 		ColladaObjectAttribute<double> _start;
 		ColladaObjectAttribute<double> _end;
-		ColladaObjectAttribute<string> _name;
+		ColladaObjectAttribute<ColladaNCName> _name;
 
 		ColladaObjectElement<ColladaAsset> _asset;
 		ColladaObjectElementList<ColladaInstanceAnimation> _instanceAnimation;
@@ -61,10 +61,10 @@ namespace BlamLib.Render.COLLADA.Core
 
 		public ColladaAnimationClip() : base(Enums.ColladaElementType.Core_AnimationClip)
 		{
-			Fields.Add(_id = new ColladaObjectAttribute<string>(""));
+			Fields.Add(_id = new ColladaObjectAttribute<ColladaID<ColladaAnimationClip>>(""));
 			Fields.Add(_start = new ColladaObjectAttribute<double>(0.0));
 			Fields.Add(_end = new ColladaObjectAttribute<double>(0.0));
-			Fields.Add(_name = new ColladaObjectAttribute<string>(""));
+			Fields.Add(_name = new ColladaObjectAttribute<ColladaNCName>(""));
 
 			Fields.Add(_asset = new ColladaObjectElement<ColladaAsset>());
 			Fields.Add(_instanceAnimation = new ColladaObjectElementList<ColladaInstanceAnimation>());
