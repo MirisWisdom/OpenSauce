@@ -211,15 +211,14 @@ namespace BlamLib.Managers
 		/// <param name="dir">Base directory for the tags</param>
 		/// <param name="tag_dir">Name of the tags folder</param>
 		/// <param name="create">Create the directory if it doesn't exist on disk</param>
-		/// <remarks>"<paramref name="tag_dir"/>\" gets appended to <paramref name="dir"/>'s path.
 		/// 
 		/// If <paramref name="create"/> is false and full tags path doesn't exist on disk, this will create it
 		/// </remarks>
-		public TagIndex(BlamVersion version, string dir, string tag_dir, bool create) : base()
+		public TagIndex(BlamVersion version, string dir, bool create) : base()
 		{
 			engine = version;
-			directory = System.IO.Path.Combine(dir, tag_dir);
-			if (!directory.EndsWith("\\"))	directory = directory + "\\";
+
+            directory = (!dir.EndsWith("\\") ? dir : dir + "\\");
 
 			if (!System.IO.Directory.Exists(directory))
 			{
@@ -233,19 +232,6 @@ namespace BlamLib.Managers
 
 			if (engine.UsesStringIds())
 				StringTableInitialize();
-		}
-		/// <summary>
-		/// Create a new tag index
-		/// </summary>
-		/// <param name="version">Engine version for the tags</param>
-		/// <param name="dir">Base directory for the tags</param>
-		/// <param name="create">Create the directory if it doesn't exist on disk</param>
-		/// <remarks>"tags\" gets appended to <paramref name="dir"/>'s path.
-		/// 
-		/// If <paramref name="create"/> is false and <paramref name="dir"/> doesn't exist on disk, this will create it
-		/// </remarks>
-		public TagIndex(BlamVersion version, string dir, bool create) : this(version, dir, "tags", create)
-		{
 		}
 
 		public override void Dispose()

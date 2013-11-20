@@ -70,6 +70,8 @@ namespace BlamLib.Blam
 		/// <remarks>Checks this value against <see cref="DatumIndex.Null"/></remarks>
 		public bool IsNull { get { return this == DatumIndex.Null; } }
 
+		public bool IsValid { get { return (!IsNull && !Managers.TagIndex.IsSentinel(this)); } }
+
 		/// <summary>
 		/// Returns a Skip field which can be used in a tag definition for a datum index
 		/// </summary>
