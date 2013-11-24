@@ -930,7 +930,106 @@
     </ClInclude>
   </ItemGroup>
 
-  <Import Project="..\..\shared\config\msbuild\blamlib_Halo1_Editor.vcxproj.filters" />
+  <!--<Import Project="..\..\shared\config\msbuild\blamlib_Halo1_Editor.vcxproj.filters" />-->
+  <ItemGroup
+    > <!--cache EDITOR-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\cache_file_builder.hpp">
+      <Filter>.blamlib\cache</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\cache_file_builder.cpp">
+      <Filter>.blamlib\cache</Filter>
+    </ClCompile>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\data_file.cpp">
+      <Filter>.blamlib\cache</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--cseries EDITOR-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\cseries\debug_memory.hpp">
+      <Filter>.blamlib\cseries</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\cseries\debug_memory.cpp">
+      <Filter>.blamlib\cseries</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\cseries\profile.hpp">
+      <Filter>.blamlib\cseries</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\cseries\profile.cpp">
+      <Filter>.blamlib\cseries</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--guerilla EDITOR-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\guerilla\field_dialog_structures.hpp">
+      <Filter>.blamlib\guerilla</Filter>
+    </ClInclude>
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\guerilla\tags_interface.hpp">
+      <Filter>.blamlib\guerilla</Filter>
+    </ClInclude>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--hs EDITOR-->
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs_scenario_definitions.cpp">
+      <Filter>.blamlib\hs</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--memory EDITOR-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\memory\byte_swapping.hpp">
+      <Filter>.blamlib\memory</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\memory\byte_swapping.cpp">
+      <Filter>.blamlib\memory</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--tag_files EDITOR-->
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\files_windows.cpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_files.hpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_files.cpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_loading.hpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_loading.cpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_verification.hpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_verification.cpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups.cpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClCompile>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups_field_scan.cpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups_structures.hpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups_system.cpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--tool EDITOR-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tool\tool.hpp">
+      <Filter>.blamlib\tool</Filter>
+    </ClInclude>
+  </ItemGroup>
 
   <ItemGroup>
     <Filter Include=".YeloLib">
@@ -1472,7 +1571,53 @@
     </Xml>
   </ItemGroup>
 
-  <Import Project="..\..\shared\config\msbuild\YeloLib_Halo1_Editor.vcxproj.filters" />
+  <!--<Import Project="..\..\shared\config\msbuild\YeloLib_Halo1_Editor.vcxproj.filters" />-->
+  <ItemGroup
+    > <!--cache EDITOR-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_builder_yelo.hpp">
+      <Filter>.YeloLib\cache</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_builder_yelo.cpp">
+      <Filter>.YeloLib\cache</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_memory.hpp">
+      <Filter>.YeloLib\cache</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_memory.cpp">
+      <Filter>.YeloLib\cache</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_memory_gestalt_definitions.hpp">
+      <Filter>.YeloLib\cache</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\shared_cache_files.cpp">
+      <Filter>.YeloLib\cache</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
+    > <!--tag_files EDITOR-->
+	<None      Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_id_from_tag_string_list.inl">
+      <Filter>.YeloLib\tag_files\string_ids</Filter>
+    </None>
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_database_definitions.hpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_database_definitions.cpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_fieldset_replacement_builder.hpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_fieldset_replacement_builder.cpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClCompile>
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory.hpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory.cpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClCompile>
+  </ItemGroup>
 
   <ItemGroup>
     <Filter Include="Common\Shared\7zip">
