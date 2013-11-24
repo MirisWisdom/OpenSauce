@@ -180,5 +180,10 @@ namespace Yelo
 			TAG_TBLOCK(geometries, gbxmodel_geometry);
 			TAG_TBLOCK(shaders, model_shader_reference);
 		}; BOOST_STATIC_ASSERT( sizeof(gbxmodel_definition) == 0xE8 ); // max count: 1
+
+		struct model_definition
+		{
+			enum { k_group_tag = 'mode' };
+		};
 	};
 };

@@ -7,6 +7,7 @@
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 #if PLATFORM_IS_EDITOR
+	#include <blamlib/Halo1/models/model_definitions.hpp>
 	#include <blamlib/Halo1/tag_files/tag_group_loading.hpp>
 	#include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
 
@@ -16,6 +17,8 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
+		bool g_gbxmodel_group_enabled = true;
+
 		int32 StringFieldGetLength(const tag_field* field)
 		{
 			assert(field->type == Enums::_field_string);
@@ -30,6 +33,20 @@ namespace Yelo
 		int32 StringFieldGetSize(const tag_field* field)
 		{
 			return StringFieldGetLength(field)+1;
+		}
+
+		char* TryAndGetGroupName(tag group_tag, _Out_ long_string name)
+		{
+			const tag_group* group = blam::tag_group_get(group_tag);
+			if (group != nullptr)
+				strcpy(name, group->name);
+			else
+			{
+				TagGroups::group_tag_to_string group_string = { group_tag };
+				strcpy(name, group_string.Terminate().TagSwap().str);
+			}
+
+			return name;
 		}
 
 		void tag_data_delete(tag_data* data, size_t terminator_size)
@@ -187,6 +204,43 @@ namespace Yelo
 					return instance.index;
 			}
 			return datum_index::null;
+		}
+
+		void* PLATFORM_API tag_get(tag group_tag, datum_index tag_index)
+		{
+			s_tag_instance* instance = TagGroups::TagInstances()[tag_index];
+			void* instance_address = instance->root_block.address;
+			tag instance_group_tag = instance->group_tag;
+
+			if (instance_group_tag == group_tag ||
+				instance->parent_group_tags[0] == group_tag ||
+				instance->parent_group_tags[1] == group_tag ||
+				group_tag == NONE)
+				return instance_address;
+
+			if (TagGroups::g_gbxmodel_group_enabled &&
+				TagGroups::model_definition::k_group_tag == instance_group_tag ||
+				TagGroups::gbxmodel_definition::k_group_tag == instance_group_tag)
+			{
+				if (group_tag == TagGroups::model_definition::k_group_tag &&
+					group_tag == TagGroups::gbxmodel_definition::k_group_tag)
+					return instance_address;
+			}
+
+			long_string group_name; TagGroups::TryAndGetGroupName(group_tag, group_name);
+			long_string instance_group_name; TagGroups::TryAndGetGroupName(instance_group_tag, instance_group_name);
+
+			YELO_ASSERT_DISPLAY(false, "tag_get(0x%x) expected group '%s' but got group '%s'",
+				tag_index, group_name, instance_group_name);
+		}
+
+		void PLATFORM_API tag_unload(datum_index tag_index)
+		{
+			s_tag_instance* instance = TagGroups::TagInstances()[tag_index];
+			if (instance->root_block.count > 0 && !instance->is_reload)
+				tag_block_delete_element(&instance->root_block, 0);
+
+			TagGroups::TagInstances().Delete(tag_index);
 		}
 
 		/*static*/ void PLATFORM_API tag_block_generate_default_element(const tag_block_definition *definition, void *address)

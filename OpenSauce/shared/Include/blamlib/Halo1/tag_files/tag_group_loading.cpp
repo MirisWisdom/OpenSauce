@@ -8,6 +8,7 @@
 
 #include <blamlib/Halo1/memory/byte_swapping.hpp>
 #include <blamlib/Halo1/memory/data.hpp>
+#include <blamlib/Halo1/models/model_definitions.hpp>
 #include <blamlib/Halo1/tag_files/tag_files.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
@@ -322,6 +323,9 @@ namespace Yelo
 			datum_index tag_index = datum_index::null;
 			bool success = true;
 
+			if (TagGroups::g_gbxmodel_group_enabled && reference->group_tag == TagGroups::model_definition::k_group_tag)
+				reference->group_tag = TagGroups::gbxmodel_definition::k_group_tag;
+
 			if( reference->group_tag != NONE &&
 				TEST_FLAG(read_flags, Flags::_tag_load_non_resolving_references_bit)==0 &&
 				TEST_FLAG(definition->flags, Flags::_tag_reference_non_resolving_bit)==0
@@ -634,6 +638,10 @@ namespace Yelo
 				return datum_index::null;
 			}
 
+			// NOTE: where tool does the zoners model upgrade check
+			if (TagGroups::g_gbxmodel_group_enabled && group_tag == TagGroups::model_definition::k_group_tag)
+				group_tag = TagGroups::gbxmodel_definition::k_group_tag;
+
 			datum_index tag_index = find_tag_instance(group_tag, name);
 			do {
 				if(!tag_index.IsNull())
@@ -671,12 +679,17 @@ namespace Yelo
 				instance->root_block.address = nullptr;
 				instance->root_block.definition = group->header_block_definition;
 
+				cstring failed_to_load_reason = nullptr;
 				int32 position = 0;
-				if( !tag_block_read_recursive(group->header_block_definition, &instance->root_block, &position, flags) &&
-					!tag_references_resolve_recursive(group->header_block_definition, &instance->root_block, flags) )
+				if (!tag_block_read_recursive(group->header_block_definition, &instance->root_block, &position, flags))
+					failed_to_load_reason = "read error";
+				else if (!tag_references_resolve_recursive(group->header_block_definition, &instance->root_block, flags))
+					failed_to_load_reason = "resolve children error";
+
+				if (failed_to_load_reason != nullptr)
 				{
-					YELO_WARN("failed to load %s tag '%s'",
-						group->name, name);
+					YELO_WARN("failed to load %s tag '%s' (%s)",
+						group->name, name, failed_to_load_reason);
 
 					TagGroups::TagInstances().Delete(tag_index);
 
