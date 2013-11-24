@@ -118,11 +118,29 @@ namespace BlamLib.TagInterface
 		public IO.ByteSwap.ByteSwapDelegate bysw;
 
 		#region Value
-		public byte[] Value = null;
+		private byte[] mValue = null;
+
+		/// <summary>
+		/// Data byte array
+		/// </summary>
+		public byte[] Value
+		{
+			get { return mValue; }
+			set
+			{
+				mValue = value;
+				OnPropertyChanged("Value");
+			}
+		}
+
 		public byte this[int index]
 		{
 			get { return Value[index]; }
-			set { Value[index] = value; }
+			set
+			{
+				Value[index] = value;
+				OnPropertyChanged("Value");
+			}
 		}
 
 		public void Delete()
@@ -573,20 +591,35 @@ namespace BlamLib.TagInterface
 		internal Blam.DatumIndex ReferenceId = Blam.DatumIndex.Null;
 
 		#region tag_reference fields
+		private Blam.DatumIndex mDatum = Blam.DatumIndex.Null;
+		private TagGroup mGroupTag = null;
+
 		/// <summary>
 		/// Group tag definition of the tag instance this references
 		/// </summary>
-		public TagGroup GroupTag = null;
+		public TagGroup GroupTag
+		{
+			get { return mGroupTag; }
+			set
+			{
+				mGroupTag = value;
+				OnPropertyChanged("GroupTag");
+			}
+		}
 		/// <summary>
 		/// Group tag of the tag instance this references
 		/// </summary>
 		internal uint GroupTagInt;
+
 		/// <summary>
 		/// datum_index of the tag instance this references
 		/// </summary>
 		// TODO: probably expose this as a read-only property later and use 
 		// a method for changing
-		public Blam.DatumIndex Datum = Blam.DatumIndex.Null;
+		public Blam.DatumIndex Datum
+		{
+			get { return mDatum; }
+		}
 		#endregion
 
 		public string GetTagPath()
@@ -595,6 +628,12 @@ namespace BlamLib.TagInterface
 				return Program.GetTagIndex(OwnerId).References[ReferenceId];
 
 			return "";
+		}
+
+		public void SetDatum(Blam.DatumIndex datumIndex)
+		{
+			mDatum = datumIndex;
+			OnPropertyChanged("Datum");
 		}
 
 		/// <summary>
@@ -628,7 +667,7 @@ namespace BlamLib.TagInterface
 				ReferenceId = (Blam.DatumIndex)val[1];
 				GroupTag = val[2] as TagGroup;
 				GroupTagInt = (uint)val[3];
-				Datum = (Blam.DatumIndex)val[4];
+				SetDatum((Blam.DatumIndex)val[4]);
 			}
 		}
 
@@ -690,7 +729,7 @@ namespace BlamLib.TagInterface
 		/// Create a tag reference field from another tag reference
 		/// </summary>
 		/// <param name="value">reference to base this one off of</param>
-		public TagReference(TagReference value) : this(value.GroupTag) { OwnerId = value.OwnerId; ReferenceId = value.ReferenceId; Datum = value.Datum; }
+		public TagReference(TagReference value) : this(value.GroupTag) { OwnerId = value.OwnerId; ReferenceId = value.ReferenceId; SetDatum(value.Datum); }
 		/// <summary>
 		/// Create a tag reference field from another tag reference
 		/// </summary>
@@ -907,7 +946,7 @@ namespace BlamLib.TagInterface
 				// then load the dependents after the referencing tag is done being read
 				// instead of actually loading it right here, but then we can't exactly
 				// tell if its a bad reference (ie to an old tag).
-				Datum = tag_index.Open(tag_name, tg, IO.ITagStreamFlags.LoadDependents);
+				SetDatum(tag_index.Open(tag_name, tg, IO.ITagStreamFlags.LoadDependents));
 				if (Datum == Blam.DatumIndex.Null || Managers.TagIndex.IsSentinel(Datum))
 				{
 //					Debug.LogFile.WriteLine(
@@ -938,7 +977,7 @@ namespace BlamLib.TagInterface
 			headerOffset = s.PositionUnsigned; // nifty for debugging
 			GroupTagInt = s.ReadTagUInt();
 			s.ReadInt32(); // tag filename pointer
-			Datum.Index = (ushort)s.ReadInt32(); // little HACK for reusing values which aren't needed yet, used for storing the tag filename length
+			SetDatum(new BlamLib.Blam.DatumIndex((ushort)s.ReadInt32(), Datum.Salt)); // little HACK for reusing values which aren't needed yet, used for storing the tag filename length
 
 			// if we're not wanting to stream string data, chances are
 			// our datum value is of use (ie from a cache file, who'd thunk it!)
@@ -958,7 +997,7 @@ namespace BlamLib.TagInterface
 			if (!ts.Flags.Test(IO.ITagStreamFlags.DontStreamStringData) && Datum.Index > 0) // little HACK for reusing values which aren't needed yet, used for storing the tag filename length
 			{
 				int filename_length = Datum.Index;
-				Datum = Blam.DatumIndex.Null; // overwrite our little HACK
+				SetDatum(Blam.DatumIndex.Null); // overwrite our little HACK
 
 				OwnerId = ts.OwnerId; // copy the ITagIndex handle
 				ParentReferenceId = ts.ReferenceName;
@@ -990,7 +1029,7 @@ namespace BlamLib.TagInterface
 			else if (!ts.Flags.Test(IO.ITagStreamFlags.DontStreamStringData))
 			{
 				ReferenceId = Blam.DatumIndex.Null;
-				Datum = Blam.DatumIndex.Null;
+				SetDatum(Blam.DatumIndex.Null);
 			}
 			else ReferenceId = Blam.DatumIndex.Null;
 		}
