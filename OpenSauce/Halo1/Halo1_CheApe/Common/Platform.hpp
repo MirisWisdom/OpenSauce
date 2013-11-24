@@ -9,6 +9,7 @@
 #include <YeloLib/shell/platform_yelo.hpp>
 #define PLATFORM_TARGET		PLATFORM_TARGET_PC
 #define PLATFORM_IS_EDITOR	TRUE
+#define PLATFORM_IS_STUBBS	FALSE
 #define CHEAPE_PLATFORM		CHEAPE_PLATFORM_HALO1
 
 // PLATFORM_TYPE is defined in the vcproj build configurations

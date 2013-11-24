@@ -28,6 +28,20 @@ namespace BlamLib.Blam.Halo1.Tags
 
 		public shader_map_struct() : base(13)
 		{
+			// Stubb's code has byte swapping for this padding:
+			// word
+			// word
+			// dword
+			// dword
+			// dword
+			// dword
+			// dword
+			// dword
+			// dword
+			// word
+			// word
+			// word
+			// word
 			Add(new TI.Pad(40));
 			Add(ShaderFlags = TI.Flags.Word);
 			Add(FramebufferBlendFunction = new TI.Enum());

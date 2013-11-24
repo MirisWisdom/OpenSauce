@@ -205,6 +205,29 @@ namespace Yelo
 			return m_flags.insertion_failed;
 		}
 
+		c_tag_field_set_replacement_builder& c_tag_field_set_replacement_builder::AddExplanation(cstring name, cstring description)
+		{
+			if (name == nullptr)
+			{
+				YELO_WARN("tried to add an explanation field to %s with no name",
+					m_source_definition->name);
+			}
+			else if (description == nullptr)
+			{
+				YELO_WARN("tried to add an explanation field %s to %s with no description",
+					name, m_source_definition->name);
+			}
+			else
+			{
+				tag_field new_field = { Enums::_field_explanation, name,
+					CAST_QUAL(char*, description) }; // definition is void*, cast to char* to play nice with initializer
+
+				CopyFieldToTargetFields(&new_field);
+			}
+
+			return *this; // for operation chaining
+		}
+
 		c_tag_field_set_replacement_builder& c_tag_field_set_replacement_builder::InsertField(size_t expected_offset, 
 			Enums::field_type type, cstring name, void* definition)
 		{

@@ -9,6 +9,7 @@
 #include <YeloLib/shell/platform_yelo.hpp>
 #define PLATFORM_TARGET		PLATFORM_TARGET_PC
 #define PLATFORM_IS_EDITOR	FALSE
+#define PLATFORM_IS_STUBBS	FALSE
 
 //////////////////////////////////////////////////////////////////////////
 //#define PLATFORM_TYPE 0x00??

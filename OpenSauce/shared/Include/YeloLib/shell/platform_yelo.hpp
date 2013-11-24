@@ -22,6 +22,7 @@
 
 // Define the following in specific game codebases
 //#define PLATFORM_IS_EDITOR FALSE
+//#define PLATFORM_IS_STUBBS FALSE
 
 
 //////////////////////////////////////////////////////////////////////////

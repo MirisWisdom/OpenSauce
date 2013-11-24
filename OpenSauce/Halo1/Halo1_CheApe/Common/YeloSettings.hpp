@@ -16,9 +16,10 @@ namespace Yelo
 		{
 			bool is_valid;
 			bool has_affinity_mask;
-			PAD16;
 			bool is_ignored;	// is this profile ignored by any tools?
+			PAD8;
 			bool ignored_by[3]; // index with PLATFORM_ID
+			PAD8;
 
 			uint32 affinity_mask;
 
@@ -33,7 +34,8 @@ namespace Yelo
 
 			struct {
 				bool do_full_crashdump;
-				PAD24;
+				bool disable_exception_handling;
+				PAD16;
 				uint32 base_address_override; // Tag memory base address override
 			}tool;
 
@@ -41,16 +43,16 @@ namespace Yelo
 
 			// The profile will be valid if all elements of the XML settings 
 			// were properly parsed
-			API_INLINE bool IsValid() const		{ return is_valid; }
+			inline bool IsValid() const		{ return is_valid; }
 
 			// The profile will be ignored if the XML settings have an ignore setting for this platform 
 			// or the profile wasn't properly parsed
-			API_INLINE bool IsIgnored() const	{ return is_ignored && ignored_by[PLATFORM_ID-1]; }
+			inline bool IsIgnored() const	{ return is_ignored && ignored_by[PLATFORM_ID - 1]; }
 
-			API_INLINE cstring GetRootPath() const			{ return root_path[0]  == '\0' ? NULL : root_path; }
-			API_INLINE cstring GetDataOverridePath() const	{ return paths.data[0] == '\0' ? NULL : paths.data; }
-			API_INLINE cstring GetMapsOverridePath() const	{ return paths.maps[0] == '\0' ? NULL : paths.maps; }
-			API_INLINE cstring GetTagsOverridePath() const	{ return paths.tags[0] == '\0' ? NULL : paths.tags; }
+			inline cstring GetRootPath() const			{ return root_path [0] == '\0' ? nullptr : root_path; }
+			inline cstring GetDataOverridePath() const	{ return paths.data[0] == '\0' ? nullptr : paths.data; }
+			inline cstring GetMapsOverridePath() const	{ return paths.maps[0] == '\0' ? nullptr : paths.maps; }
+			inline cstring GetTagsOverridePath() const	{ return paths.tags[0] == '\0' ? nullptr : paths.tags; }
 		};
 		struct s_settings
 		{
@@ -58,35 +60,35 @@ namespace Yelo
 
 			void Parse(TiXmlElement* element, cstring arg_profile, cstring default_profile);
 
-			API_INLINE cstring GetRootPath() const
+			inline cstring GetRootPath() const
 			{
 				cstring result = active_profile.GetRootPath();
 
-				return !active_profile.IsIgnored() && result != NULL ? result 
+				return !active_profile.IsIgnored() && result != nullptr ? result 
 					: "";
 			}
 
-			API_INLINE cstring GetDataPath() const
+			inline cstring GetDataPath() const
 			{
 				cstring result = active_profile.GetDataOverridePath();
 
-				return !active_profile.IsIgnored() && result != NULL ? result 
+				return !active_profile.IsIgnored() && result != nullptr ? result
 					: "data\\";
 			}
 
-			API_INLINE cstring GetTagsPath() const
+			inline cstring GetTagsPath() const
 			{
 				cstring result = active_profile.GetTagsOverridePath();
 
-				return !active_profile.IsIgnored() && result != NULL ? result 
+				return !active_profile.IsIgnored() && result != nullptr ? result
 					: "tags\\";
 			}
 
-			API_INLINE cstring GetMapsPath() const
+			inline cstring GetMapsPath() const
 			{
 				cstring result = active_profile.GetMapsOverridePath();
 
-				return !active_profile.IsIgnored() && result != NULL ? result 
+				return !active_profile.IsIgnored() && result != nullptr ? result
 					: "maps\\";
 			}
 		};

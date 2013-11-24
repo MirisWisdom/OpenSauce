@@ -64,7 +64,8 @@ namespace BlamLib.Blam.Halo1
 				name = s.ReadTagString();
 
 			build = s.ReadTagString();
-			cacheType = (CacheType)s.ReadInt32();
+			cacheType = (CacheType)s.ReadInt16();
+			s.ReadInt16();
 			s.ReadInt32(); // CRC
 
 			s.ReadInt32();
