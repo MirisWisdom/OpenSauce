@@ -17,8 +17,8 @@ namespace BlamLib.Render.COLLADA.Core
 	public partial class ColladaController : ColladaElement
 	{
 		#region Fields
-		ColladaObjectAttribute<string> _id;
-		ColladaObjectAttribute<string> _name;
+		ColladaObjectAttribute<ColladaID<ColladaController>> _id;
+		ColladaObjectAttribute<ColladaNCName> _name;
 
 		ColladaObjectElement<ColladaAsset> _asset;
 		ColladaObjectElement<ColladaSkin> _skin;
@@ -56,8 +56,8 @@ namespace BlamLib.Render.COLLADA.Core
 
 		public ColladaController() : base(Enums.ColladaElementType.Core_Controller)
 		{
-			Fields.Add(_id = new ColladaObjectAttribute<string>(""));
-			Fields.Add(_name = new ColladaObjectAttribute<string>(""));
+			Fields.Add(_id = new ColladaObjectAttribute<ColladaID<ColladaController>>(""));
+			Fields.Add(_name = new ColladaObjectAttribute<ColladaNCName>(""));
 			Fields.Add(_asset = new ColladaObjectElement<ColladaAsset>());
 			Fields.Add(_skin = new ColladaObjectElement<ColladaSkin>());
 			Fields.Add(_morph = new ColladaObjectElement<ColladaMorph>());

@@ -133,6 +133,28 @@ namespace OpenSauceIDE
 			ToolsMenu.DropDownItems.Add(ServerTool);
 			command_dic.Add("ServerTool", ServerTool_handler);
 		}
+		void BuildCheApeMenusAetherOS(Dictionary<string, EventHandler> command_dic)
+		{
+			EventHandler AetherOS_handler;
+			var AetherOS = BlamLib.Forms.Util.CreateMenuItem("AetherOS", AetherOS_handler = (sender, e) =>
+			{
+				var sed = new SelectEngineDialog(OpenSauceIDE.CheApe.kTargetPlatforms, BlamLib.BlamVersion.Halo1_PC,
+					BlamLib.BlamVersion.Halo2_PC); // NOTE: H2PC still needs some work, so don't display it
+				BlamLib.BlamVersion version;
+				sed.ShowDialogWithResult(this, out version);
+
+				if (version != BlamLib.BlamVersion.Unknown)
+				{
+					Aether.Aether.Instance.SetBlamVersion(version);
+					AddMdiChild(Aether.Aether.Instance.MainForm);
+				}
+			});
+			AetherOS.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			AetherOS.ForeColor = System.Drawing.Color.LightGreen;
+
+			ToolsMenu.DropDownItems.Add(AetherOS);
+			command_dic.Add("AetherOS", AetherOS_handler);
+		}
 		void BuildCheApeMenus(Dictionary<string, EventHandler> command_dic)
 		{
 			BuildMenuSeparator(ToolsMenu);
@@ -140,6 +162,7 @@ namespace OpenSauceIDE
 			BuildCheApeMenusCheApe(command_dic);
 			BuildCheApeMenusXnaPatcher(command_dic);
 			BuildCheApeMenusServerTool(command_dic);
+			BuildCheApeMenusAetherOS(command_dic);
 		}
 		#endregion
 

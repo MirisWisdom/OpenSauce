@@ -17,8 +17,8 @@ namespace BlamLib.Render.COLLADA.Core
 	public partial class ColladaCamera : ColladaElement
 	{
 		#region Fields
-		ColladaObjectAttribute<string> _id;
-		ColladaObjectAttribute<string> _name;
+		ColladaObjectAttribute<ColladaID<ColladaCamera>> _id;
+		ColladaObjectAttribute<ColladaNCName> _name;
 
 		ColladaObjectElement<ColladaAsset> _asset;
 		ColladaObjectElement<ColladaOptics> _optics;
@@ -56,8 +56,8 @@ namespace BlamLib.Render.COLLADA.Core
 
 		public ColladaCamera() : base(Enums.ColladaElementType.Core_Camera)
 		{
-			Fields.Add(_id = new ColladaObjectAttribute<string>(""));
-			Fields.Add(_name = new ColladaObjectAttribute<string>(""));
+			Fields.Add(_id = new ColladaObjectAttribute<ColladaID<ColladaCamera>>(""));
+			Fields.Add(_name = new ColladaObjectAttribute<ColladaNCName>(""));
 			Fields.Add(_asset = new ColladaObjectElement<ColladaAsset>());
 			Fields.Add(_optics = new ColladaObjectElement<ColladaOptics>());
 			Fields.Add(_imager = new ColladaObjectElement<ColladaImager>());
