@@ -27,6 +27,8 @@ namespace Yelo
 		{
 			void (PLATFORM_API* blam__tag_iterator_new)(s_tag_iterator&, tag) =
 				blam::tag_iterator_new;
+			void* (PLATFORM_API* blam__tag_get)(tag, datum_index) =
+				blam::tag_get;
 			datum_index (PLATFORM_API* blam__tag_new)(tag, cstring) = 
 				blam::tag_new;
 			datum_index (PLATFORM_API* blam__tag_load)(tag, cstring, long_flags) = 
@@ -44,7 +46,9 @@ namespace Yelo
 			Memory::WriteRelativeJmp(blam::tag_data_unload, GET_FUNC_VPTR(TAG_DATA_UNLOAD), true);
 #endif
 
+			Memory::WriteRelativeJmp(blam__tag_get, GET_FUNC_VPTR(TAG_GET), true);
 			Memory::WriteRelativeJmp(blam__tag_new, GET_FUNC_VPTR(TAG_NEW), true);
+			Memory::WriteRelativeJmp(blam::tag_unload, GET_FUNC_VPTR(TAG_UNLOAD), true);
 			Memory::WriteRelativeJmp(blam__tag_load, GET_FUNC_VPTR(TAG_LOAD), true);
 		}
 		API_FUNC_NAKED void Initialize()
@@ -288,12 +292,12 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
-		API_FUNC_NAKED void* PLATFORM_API tag_get(tag group_tag, datum_index tag_index)
-		{
-			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GET);
-
-			__asm	jmp	FUNCTION
-		}
+// 		API_FUNC_NAKED void* PLATFORM_API tag_get(tag group_tag, datum_index tag_index)
+// 		{
+// 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GET);
+// 
+// 			__asm	jmp	FUNCTION
+// 		}
 		API_FUNC_NAKED void PLATFORM_API tag_rename(datum_index tag_index, cstring new_name)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_RENAME);
@@ -361,12 +365,12 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
-		API_FUNC_NAKED void PLATFORM_API tag_unload(datum_index tag_index)
-		{
-			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_UNLOAD);
-
-			__asm	jmp	FUNCTION
-		}
+// 		API_FUNC_NAKED void PLATFORM_API tag_unload(datum_index tag_index)
+// 		{
+// 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_UNLOAD);
+// 
+// 			__asm	jmp	FUNCTION
+// 		}
 		API_FUNC_NAKED bool PLATFORM_API tag_block_resize(tag_block* block, int32 element_count)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_RESIZE);
