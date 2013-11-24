@@ -102,20 +102,17 @@ namespace Yelo
 			int32 datum_size = data->datum_size;
 			byte* pointer = CAST_PTR(byte*, data->base_address) + (datum_size * absolute_index);
 
-			for (int16 last_datum = data->last_datum; absolute_index < last_datum; pointer += datum_size)
+			for (int16 last_datum = data->last_datum; absolute_index < last_datum; pointer += datum_size, absolute_index++)
 			{
 				auto datum = CAST_PTR(const s_datum_base*, pointer);
-				absolute_index++;
 
 				if (!datum->IsNull())
 				{
-					iterator.next_index = absolute_index;
+					iterator.next_index = absolute_index+1;
 					iterator.index = datum_index::Create(absolute_index, datum->GetHeader());
 					return pointer;
 				}
-				assert(absolute_index < data->max_datum);
 			}
-			assert(absolute_index == data->last_datum);
 			iterator.next_index = absolute_index; // will equal last_datum at this point
 			iterator.finished_flag = TRUE;
 			iterator.index = datum_index::null;
