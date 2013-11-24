@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--
+  If you update this file you need to update
+  Halo1_CE.vcxproj.filters
+  as well. Look for the commented out Import (of this file) element
+  -->
   <ItemGroup
     > <!--effects GAME-->
 	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\effects\damage_effect_definitions.cpp">
