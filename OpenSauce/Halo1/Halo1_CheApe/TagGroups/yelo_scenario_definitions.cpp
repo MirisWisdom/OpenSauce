@@ -43,9 +43,15 @@ namespace Yelo
 				YELO_WARN("CheApe: '%s' was cleansed but its scripts will need to be recompiled in the stock Sapien before a map can be built");
 			}
 		}
-
-		// Process a yelo scenario's globals data for the current operating mode (editing or cache building).
-		// Returns the loaded yelo global's handle or datum_index::null
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		/// 	Process a yelo scenario's globals data for the current operating mode (editing or cache building).
+		/// </summary>
+		///
+		/// <param name="yelo">			  	project_yellow definition. </param>
+		/// <param name="for_build_cache">	True if we're building a cache file, false if we're editing. </param>
+		///
+		/// <returns>	Returns the loaded yelo global's handle or datum_index::null. </returns>
 		static datum_index YeloPrepareDefinitionsYeloGlobals(project_yellow& yelo, const bool for_build_cache)
 		{
 			datum_index yelo_globals_index = datum_index::null;
@@ -63,9 +69,15 @@ namespace Yelo
 
 			return yelo_globals_index;
 		}
-
-		// Process a tag reference to a yelo scenario for the current operating mode (editing or cache building).
-		// Returns the loaded yelo scenario's handle or datum_index::null
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		/// 	Process a tag reference to a yelo scenario for the current operating mode (editing or cache building).
+		/// </summary>
+		///
+		/// <param name="yelo_reference"> 	Scenario's yelo reference. </param>
+		/// <param name="for_build_cache">	True if we're building a cache file, false if we're editing. </param>
+		///
+		/// <returns>	Returns the loaded yelo scenario's handle or datum_index::null </returns>
 		static datum_index YeloPrepareDefinitionsYeloScenario(tag_reference& yelo_reference, const bool for_build_cache)
 		{
 			datum_index yelo_index = datum_index::null;
@@ -94,29 +106,36 @@ namespace Yelo
 
 			return yelo_index;
 		}
-
-		// Process a blam scenario for the current operating mode (editing or cache building).
-		// Returns the blam scenario's handle or datum_index::null
-		Yelo::datum_index YeloPrepareDefinitions(cstring scenario_name, const bool for_build_cache)
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Process a blam scenario for the current operating mode (editing or cache building). </summary>
+		///
+		/// <param name="scenario_name">  	Name of the scenario tag. </param>
+		/// <param name="for_build_cache">	True if we're building a cache file, false if we're editing. </param>
+		///
+		/// <returns>
+		/// 	Returns the blam scenario's [project_yellow] index or datum_index::null if there isn't one or it fails to load.
+		/// </returns>
+		static Yelo::datum_index YeloPrepareDefinitions(cstring scenario_name, const bool for_build_cache)
 		{
 			// If we're not building a cache file, just load the scenario into memory without any of its references
-			datum_index scenario_index = blam::tag_load<TagGroups::scenario>(scenario_name, for_build_cache ? 
-				FLAG(Flags::_tag_load_verify_exist_first_bit) : 
-				FLAG(Flags::_tag_load_non_resolving_references_bit));
+			datum_index scenario_index = blam::tag_load<TagGroups::scenario>(scenario_name, for_build_cache
+				? FLAG(Flags::_tag_load_verify_exist_first_bit)
+				: FLAG(Flags::_tag_load_non_resolving_references_bit));
 
 			if(!scenario_index.IsNull())
 			{
 				auto* scenario = blam::tag_get<TagGroups::scenario>(scenario_index);
 
-				datum_index yelo = YeloPrepareDefinitionsYeloScenario(
+				datum_index yelo_index = YeloPrepareDefinitionsYeloScenario(
 					scenario->GetYeloReferenceHack(), for_build_cache);
 
 				// if we're not building a cache, then this is sapien and we want it to load 
-				// the scenario and all of it's dependencies after we return the code flow 
+				// the scenario and all of its dependencies after we return the code flow 
 				// back to it
-				if(!for_build_cache) blam::tag_unload(scenario_index);
+				if(!for_build_cache)
+					blam::tag_unload(scenario_index);
 
-				return yelo;
+				return yelo_index;
 			}
 
 			return datum_index::null;
@@ -130,7 +149,7 @@ namespace Yelo
 		static void scenario_yelo_load(cstring scenario_name)
 		{
 			// References to the string "globals\globals"
-			cstring* K_GLOBALS_TAG_NAME_REFERENCES[] = {
+			static cstring* K_GLOBALS_TAG_NAME_REFERENCES[] = {
 				CAST_PTR(cstring*, PLATFORM_VALUE(nullptr, 0x4434CA, 0x51675F)),
 				CAST_PTR(cstring*, PLATFORM_VALUE(nullptr, 0x443C95, 0x517525)),
 #if PLATFORM_ID == PLATFORM_TOOL
@@ -138,25 +157,24 @@ namespace Yelo
 #endif
 			};
 			// Address of the string "globals\globals"
-			cstring K_GLOBALS_TAG_NAME_ADDRESS = CAST_PTR(cstring, 
+			static cstring const K_GLOBALS_TAG_NAME_ADDRESS = CAST_PTR(cstring, 
 				PLATFORM_VALUE(nullptr, 0x612FA0, 0x9116CC));
+
+			static char local_globals_tag_name[Enums::k_max_tag_name_length + 1];
 
 			// The new globals reference name which we're going to force the tool code to use.
 			// Defaults to the stock globals tag name.
 			cstring globals_tag_name = K_GLOBALS_TAG_NAME_ADDRESS;
 
 			// A little trick to reset the globals tag back to the stock reference name
-			if(scenario_name == nullptr)
+			if (scenario_name == nullptr)
+			{
 				globals_tag_name = K_GLOBALS_TAG_NAME_ADDRESS;
+				local_globals_tag_name[0] = '\0';
+			}
 			else
 			{
-				const bool k_for_cache_build = 
-#if PLATFORM_ID == PLATFORM_TOOL
-					true
-#elif PLATFORM_ID == PLATFORM_SAPIEN || PLATFORM_ID == PLATFORM_GUERILLA
-					false
-#endif
-					;
+				const bool k_for_cache_build = PLATFORM_VALUE(false, true, false);
 				// Load the Yelo definitions then check to see if there is a globals override 
 				// reference and update all tool code to then use its name
 				datum_index yelo_index = YeloPrepareDefinitions(scenario_name, k_for_cache_build);
@@ -164,8 +182,11 @@ namespace Yelo
 				{
 					auto* yelo = blam::tag_get<project_yellow>(yelo_index);
 
-					if(yelo->game_globals.name_length > 0)
-						globals_tag_name = yelo->game_globals.name;
+					if (yelo->game_globals.name_length > 0)
+					{
+						strcpy_s(local_globals_tag_name, yelo->game_globals.name);
+						globals_tag_name = local_globals_tag_name;
+					}
 				}
 			}
 
@@ -174,7 +195,7 @@ namespace Yelo
 					*ptr = globals_tag_name;
 			else
 			{
-				YELO_ERROR(_error_message_priority_warning, "CheApe: scenario_yelo_load failed to do anything! %s", 
+				YELO_WARN("CheApe: scenario_yelo_load failed to do anything! %s", 
 					scenario_name != nullptr ? scenario_name : "nullptr");
 			}
 		}
@@ -182,7 +203,7 @@ namespace Yelo
 		static const uintptr_t SCENARIO_LOAD_HOOK = 
 			PLATFORM_VALUE(NULL, 0x45546B, // call game_globals_preprocess
 				0x6181BB); // call scenario_load
-		static uintptr_t SCENARIO_LOAD_HOOK_restore_point = 0;
+		static uintptr_t SCENARIO_LOAD_HOOK_restore_point = NULL;
 #if PLATFORM_ID == PLATFORM_TOOL
 		API_FUNC_NAKED static void PLATFORM_API scenario_yelo_load_hook()
 		{

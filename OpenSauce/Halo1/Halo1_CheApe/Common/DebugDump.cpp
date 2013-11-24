@@ -30,7 +30,9 @@ namespace Yelo
 		static void ReportComplete(const char* report_directory)
 		{
 			// writing the report was successful so tell the user
-			cstring message = "An exception has occurred.\nA crash report for this exception has been saved to your OpenSauce Reports directory (OpenSauce\\Reports\\CrashRpt).\nAttach the zip archive if you report this issue.";
+			cstring message = "An exception has occurred.\n"
+				"A crash report for this exception has been saved to your OpenSauce Reports directory (OpenSauce\\Reports\\CrashRpt).\n"
+				"Attach the zip archive if you report this issue.";
 
 			MessageBox(nullptr, message, "Exception!", MB_OK);
 		}
@@ -42,23 +44,37 @@ namespace Yelo
 		static int PLATFORM_API ExceptionFilter(uint32 code, PEXCEPTION_POINTERS ptrs)
 		{
 			int result;
+			bool disable_exception_handling;
 
-#ifdef DISABLE_EXCEPTION_HANDLING
-			result = EXCEPTION_CONTINUE_SEARCH;
+#if PLATFORM_ID == PLATFORM_TOOL
+			disable_exception_handling = Yelo::Settings::Get().active_profile.tool.disable_exception_handling;
 #else
-			Debug::SEHExceptionFilter(ptrs);
-
-			// call stock filter so that debug.txt and such can be written to
-			typedef int (PLATFORM_API *exception_filter_t)(uint32, PEXCEPTION_POINTERS);
-			result = CAST_PTR(exception_filter_t, GET_FUNC_VPTR(GENERIC_EXCEPTION_FILTER))(code, ptrs);
+			disable_exception_handling = CMDLINE_GET_PARAM(disable_exception_handling).ParameterSet();
 #endif
+
+			if (
+#ifdef API_DEBUG
+				IsDebuggerPresent() ||
+#endif
+				disable_exception_handling
+				)
+			{
+				result = EXCEPTION_CONTINUE_SEARCH;
+			}
+			else
+			{
+				Debug::SEHExceptionFilter(ptrs);
+
+				// call stock filter so that debug.txt and such can be written to
+				typedef int (PLATFORM_API *exception_filter_t)(uint32, PEXCEPTION_POINTERS);
+				result = CAST_PTR(exception_filter_t, GET_FUNC_VPTR(GENERIC_EXCEPTION_FILTER))(code, ptrs);
+			}
+
 			return result;
 		}
 
 #else
 
-		// TODO: shouldn't we specify winapp_run_t's return type as int instead?
-		// Also, we should be able to define it as __thiscall*, first param should be the 'this', copy ecx to a local var, then pass it instead
 		static int CWinApp_Run_Hook()
 		{
 			// install the exception handler
@@ -67,12 +83,11 @@ namespace Yelo
 			_asm	pop ecx;
 
 			// call the stock CWinApp::Run()
-			typedef void (*winapp_run_t)(void);
-			CAST_PTR(winapp_run_t, GET_FUNC_VPTR(CWINAPP_RUN))();
-
+			// not actually __stdcall, but __thiscall (first param is 'this'!)
+			// stdcall gives us the desired stack behavior, without having to explicitly pass a 'this' pointer (ecx)
+			typedef int (__stdcall* winapp_run_t)(void);
 			// preserve the return value
-			int result;
-			_asm	mov result, eax;
+			int result = CAST_PTR(winapp_run_t, GET_FUNC_VPTR(CWINAPP_RUN))();
 
 			// uninstall the exception handler
 			Debug::UninstallExceptionHandler();
@@ -96,7 +111,7 @@ namespace Yelo
 
 			// save reports locally and do not show the crashrpt gui
 			if(CMDLINE_GET_PARAM(full_dump).ParameterSet())
-				crashreport_options.m_flags = (Flags::crashreport_option_flags)(crashreport_options.m_flags | Flags::_crashreport_option_full_dump_bit);
+				crashreport_options.m_flags = (Flags::crashreport_option_flags)(crashreport_options.m_flags | Flags::_crashreport_option_full_dump_flag);
 			crashreport_options.m_report_complete_callback = &ReportComplete;
 			crashreport_options.m_application_name = "OpenSauce HEK";
 			crashreport_options.m_reports_directory = g_reports_path;
@@ -113,6 +128,15 @@ namespace Yelo
 			}
 		}
 
+#ifdef API_DEBUG
+		static void PLATFORM_API BlamErrorHook(void* /*error_return_address*/,
+			Enums::error_message_priority priority, cstring format, /*...*/
+			cstring assert_kind, cstring file, int32 line, cstring reason)
+		{
+			if (priority != Enums::_error_message_priority_warning && format != nullptr && strstr(format, "EXCEPTION") != nullptr)
+				DebugBreak();
+		}
+#endif
 		void DumpInitialize()
 		{
 			// output path
@@ -133,6 +157,15 @@ namespace Yelo
 			GET_PTR(CWINAPP_RUN_HOOK) = &CWinApp_Run_Hook;
 #else
 			SetupExceptionHandler();
+#endif
+
+#ifdef API_DEBUG
+			if (IsDebuggerPresent())
+			{
+				// put a hook at the end of error(). hook will not handle priority==0 cases
+				byte* error_proc_eof = CAST_PTR(byte*, blam::error) + PLATFORM_VALUE(0x296, 0x2AE, 0x2A0);
+				Memory::CreateHookRelativeCall(&BlamErrorHook, error_proc_eof, Enums::_x86_opcode_ret);
+			}
 #endif
 		}
 

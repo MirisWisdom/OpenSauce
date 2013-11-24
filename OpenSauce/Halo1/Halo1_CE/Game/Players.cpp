@@ -116,6 +116,13 @@ namespace Yelo
 			return vehicle_index;
 		}
 
+		s_player_yelo_server_data& s_player_datum::GetYeloServerData()
+		{
+			assert(Networking::IsServer());
+
+			return server.yelo_data;
+		}
+
 		datum_index LocalPlayerIndex()
 		{
 			for(auto player : Players())

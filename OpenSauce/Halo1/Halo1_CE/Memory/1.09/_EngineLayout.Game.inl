@@ -9,9 +9,9 @@
 // AI.cpp
 #if __EL_INCLUDE_FILE_ID == __EL_GAME_AI
 	ENGINE_DPTR(s_ai_globals_data, ai_globals,								0x81B534, 0x6E73F4);
-	ENGINE_DPTR(t_actor_data, actors,										0x81B540, 0x6E7400);
+	ENGINE_DPTR(actor_data_t, actors,										0x81B540, 0x6E7400);
 	ENGINE_DPTR(swarm_data_t, swarms,										0x81B53C, 0x6E73FC);
-	ENGINE_DPTR(t_swarm_component_data, swarm_components,					0x81B538, 0x6E73F8);
+	ENGINE_DPTR(swarm_component_data_t, swarm_components,					0x81B538, 0x6E73F8);
 	ENGINE_DPTR(prop_data_t, props,											0x81B4A0, 0x6E7360);
 	ENGINE_DPTR(encounter_data_t, encounters,								0x81B4A8, 0x6E7368);
 	ENGINE_DPTR(squads_data_t, squads,										0x81B4AC, 0x6E736C);

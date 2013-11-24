@@ -40,6 +40,10 @@ namespace Yelo
 			const tag_group* group = blam::tag_group_get(group_tag);
 			if (group != nullptr)
 				strcpy(name, group->name);
+			else if (group_tag == NONE)
+				strcpy(name, "NONE");
+			else if (group_tag == 0)
+				strcpy(name, "ZERO");
 			else
 			{
 				TagGroups::group_tag_to_string group_string = { group_tag };

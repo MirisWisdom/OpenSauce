@@ -74,6 +74,9 @@ namespace Yelo
 					cstring value = element->Attribute("doFullCrashdump");
 					tool.do_full_crashdump = Settings::ParseBoolean(value);
 
+					value = element->Attribute("disableExceptionHandling");
+					tool.disable_exception_handling = Settings::ParseBoolean(value);
+
 					value = element->Attribute("baseAddressOverride");
 
 					// We expect a base 16 number

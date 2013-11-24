@@ -21,6 +21,8 @@ namespace Yelo
 {
 	namespace Debug
 	{
+		// TODO: remove duplicated XML docs that already appear in the .hpp
+
 		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Callback that's called when the crash reporter progresses a stage. </summary>
 		/// <param name="pInfo">	[in] Pointer to information about the crash report state. </param>
@@ -31,7 +33,7 @@ namespace Yelo
 			// if the report has been completed, call the custom callback to display a message to the user
 			if((pInfo->nStage == CR_CB_STAGE_FINISH) && pInfo->pUserParam)
 			{
-				t_report_callback callback = CAST_PTR(t_report_callback, pInfo->pUserParam);
+				auto callback = CAST_PTR(proc_report_callback, pInfo->pUserParam);
 
 				// send the error folder to the client callback
 				callback(pInfo->pszErrorReportFolder);
@@ -48,7 +50,7 @@ namespace Yelo
 		void InitDefaultOptions(s_crash_report_options& options)
 		{
 			// save reports locally and do not show the crashrpt gui
-			int flags = Flags::_crashreport_option_hide_gui_bit | Flags::_crashreport_option_save_local_bit;
+			int flags = Flags::_crashreport_option_hide_gui_flag | Flags::_crashreport_option_save_local_flag;
 			options.m_flags = (Flags::crashreport_option_flags)flags;
 
 			options.m_report_complete_callback = nullptr;
@@ -90,7 +92,7 @@ namespace Yelo
 			info.pszLangFilePath = crashreport_options.m_dependency_path;
 
 			bool send_to_server = false;
-			send_to_server  = (crashreport_options.m_flags & Flags::_crashreport_option_save_local_bit) == 0;
+			send_to_server  = (crashreport_options.m_flags & Flags::_crashreport_option_save_local_flag) == 0;
 			send_to_server &= (crashreport_options.m_report_server_url != nullptr);
 
 			// transfer type priorities
@@ -127,12 +129,12 @@ namespace Yelo
 				info.dwFlags |= CR_INST_DONT_SEND_REPORT;
 				info.dwFlags |= CR_INST_STORE_ZIP_ARCHIVES;
 
-				if(Flags::_crashreport_option_hide_gui_bit == (crashreport_options.m_flags & Flags::_crashreport_option_hide_gui_bit))
+				if (Flags::_crashreport_option_hide_gui_flag == (crashreport_options.m_flags & Flags::_crashreport_option_hide_gui_flag))
 					info.dwFlags |= CR_INST_NO_GUI;
 			}
 
 			// dump type
-			if(Flags::_crashreport_option_full_dump_bit == (crashreport_options.m_flags & Flags::_crashreport_option_full_dump_bit))
+			if (Flags::_crashreport_option_full_dump_flag == (crashreport_options.m_flags & Flags::_crashreport_option_full_dump_flag))
 				info.uMiniDumpType = MiniDumpWithFullMemory;
 			else
 				info.uMiniDumpType = MiniDumpNormal;
@@ -142,11 +144,11 @@ namespace Yelo
 			if(result!=0)
 			{
 				// if the installation failed, and the gui is enabled, show an error message otherwise just return false
-				if(Flags::_crashreport_option_hide_gui_bit == (crashreport_options.m_flags & Flags::_crashreport_option_hide_gui_bit))
+				if (Flags::_crashreport_option_hide_gui_flag == (crashreport_options.m_flags & Flags::_crashreport_option_hide_gui_flag))
 					return false;
 
 				TCHAR error_msg[256];
-				crGetLastErrorMsg(error_msg, 256);
+				crGetLastErrorMsg(error_msg, NUMBEROF(error_msg));
 				MessageBox(nullptr, error_msg, "CrashRpt Install Error", MB_OK);
 				return false;
 			}

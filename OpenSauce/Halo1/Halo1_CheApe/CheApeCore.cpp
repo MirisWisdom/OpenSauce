@@ -8,6 +8,7 @@
 #include "CheApeCore.hpp"
 
 #include <zlib/zlib.h>
+#include <Psapi.h>
 
 #include "Engine/EngineFunctions.hpp"
 #include "CheApeInterface.hpp"
@@ -220,7 +221,9 @@ namespace Yelo
 			DWORD result = _globals.cache.MemoryMapInitialize();
 			if(result != ERROR_SUCCESS)
 			{
-				Debug::WriteFormat("CheApe: Couldn't allocate the memory map! (%X)", result);
+				char file_name[_MAX_PATH] = { '\0' };
+				DWORD name_length = GetMappedFileName(GetCurrentProcess(), CAST_PTR(void*, Enums::k_cheape_physical_memory_map_address), file_name, NUMBEROF(file_name));
+				Debug::WriteFormat("CheApe: Couldn't allocate the memory map! (%X) %s", result, name_length != 0 ? file_name : "UNKNOWN MAPPING PROCESS");
 				_InitError = k_error_PhysicalMemoryMapInitialize;
 			}
 		}

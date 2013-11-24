@@ -38,6 +38,7 @@
   <PropertyGroup>
     <OSRequiresDirectX>true</OSRequiresDirectX>
     <OSRequiresCppBoost>true</OSRequiresCppBoost>
+	<OSRequiresHaloCustomEd>true</OSRequiresHaloCustomEd>
     <OSRequiresGameSpyOpen>true</OSRequiresGameSpyOpen>
   </PropertyGroup>
   <Import Project="$(SolutionDir)..\shared\config\msbuild\OpenSauce.props" />
@@ -78,9 +79,11 @@
   </ItemDefinitionGroup>
   <PropertyGroup Condition=" '$(OSPlatformType)'=='Client' ">
     <TargetName>dinput8</TargetName>
+	<OSDebugExecutableName>haloce.exe</OSDebugExecutableName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(OSPlatformType)'=='Dedi' ">
     <TargetName>OpenSauceDedi</TargetName>
+	<OSDebugExecutableName>OS_haloceded.exe</OSDebugExecutableName>
   </PropertyGroup>
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp" />

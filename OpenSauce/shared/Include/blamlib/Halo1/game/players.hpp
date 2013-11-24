@@ -15,7 +15,7 @@ namespace Yelo
 		enum {
 			k_maximum_number_of_local_players = 1,
 
-			k_multiplayer_maximum_players = 16,
+			k_multiplayer_maximum_players = 16, // 1 in Stubbs
 
 			k_player_name_length = 11,
 		};
@@ -27,16 +27,9 @@ namespace Yelo
 
 			k_number_of_multiplayer_teams,
 
-			// for team_data (which has a maximum of 16 datums) and such
+			// for team_data (which has a maximum of 16 datums) and such. This is 1 in Stubbs, I'm positive team_data uses
+			// k_multiplayer_maximum_players. 
 			k_multiplayer_maximum_teams = k_multiplayer_maximum_players,
-		};
-
-		enum player_powerup
-		{
-			_player_powerup_active_camo,
-			_player_powerup_full_spectrum_vision,
-			
-			k_number_of_player_powerups,
 		};
 	};
 
