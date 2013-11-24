@@ -23,9 +23,9 @@ namespace Yelo
 #include "Memory/_EngineLayout.inl"
 		
 		s_ai_globals_data* AIGlobals()								DPTR_IMP_GET(ai_globals);
-		t_actor_data& Actors()										DPTR_IMP_GET_BYREF(actors);
+		actor_data_t& Actors()										DPTR_IMP_GET_BYREF(actors);
 		swarm_data_t& Swarms()										DPTR_IMP_GET_BYREF(swarms);
-		t_swarm_component_data& SwarmComponents()					DPTR_IMP_GET_BYREF(swarm_components);
+		swarm_component_data_t& SwarmComponents()					DPTR_IMP_GET_BYREF(swarm_components);
 		prop_data_t& Props()										DPTR_IMP_GET_BYREF(props);
 		encounter_data_t& Encounters()								DPTR_IMP_GET_BYREF(encounters);
 		squads_data_t& Squads()										DPTR_IMP_GET_BYREF(squads);

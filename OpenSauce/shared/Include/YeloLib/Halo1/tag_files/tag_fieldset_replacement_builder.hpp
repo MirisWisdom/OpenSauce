@@ -45,7 +45,7 @@ namespace Yelo
 
 		// The builder currently only supports inserting fields where 'useless padding' exists in block data
 		// Contrary to the class name, replacing existing fields is not supported currently (such operations can be done via a fixup in CheApe.map).
-		// Field arrarys (_field_array_start, _field_array_end) are NOT supported.
+		// Field arrays (_field_array_start, _field_array_end) are NOT supported.
 		class c_tag_field_set_replacement_builder
 		{
 			const tag_block_definition* m_source_definition;	// only used for verification information
@@ -126,6 +126,16 @@ namespace Yelo
 			// Returns true if all insertion operations since the initial UselessPaddingBegin() call were successful
 			// [ending_pad_size] is the amount of assumed useless padding left over after any fields have been inserted after the initial UselessPaddingBegin
 			bool UselessPaddingEnd(_Out_opt_ size_t* ending_pad_size = nullptr);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Adds an explanation to 'description'. </summary>
+			///
+			/// <param name="name">		  	Explanation name (the bold text). </param>
+			/// <param name="description">	Explanation details. Use empty string for nothing, not NULL </param>
+			///
+			/// <returns>	this </returns>
+			/// <remarks>	If any of the parameters are bad, this will log a warning but won't invalidate the builder </remarks>
+			c_tag_field_set_replacement_builder& AddExplanation(cstring name, cstring description = "");
 
 			c_tag_field_set_replacement_builder& InsertField(size_t expected_offset, 
 				Enums::field_type type, cstring name, void* definition = nullptr);
@@ -209,6 +219,8 @@ namespace Yelo
 
 #define FIELDSET_SEEK_AFTER_WITH_COPY(name) fsr_builder.CopyFieldsFromSourceUpTo(name);
 #define FIELDSET_SEEK_AFTER_WITH_SKIP(name) fsr_builder.SkipFieldsFromSourceUpTo(name);
+
+#define FIELDSET_ADD_EXPLANATION(name, ...) fsr_builder.AddExplanation(name, __VA_ARGS__);
 
 #define FIELDSET_INSERT_BEGIN(...) fsr_builder.UselessPaddingBegin(__VA_ARGS__);
 #define FIELDSET_INSERT_END(...) fsr_builder.UselessPaddingEnd(__VA_ARGS__);

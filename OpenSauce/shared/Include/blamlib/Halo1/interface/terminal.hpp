@@ -51,6 +51,7 @@ namespace Yelo
 
 		struct s_terminal_globals
 		{
+#if !PLATFORM_IS_STUBBS
 			// I really don't think the following is really part 
 			// of the actual terminal globals, but this data appears 
 			// conveniently in the same place in both client and 
@@ -64,6 +65,7 @@ namespace Yelo
 				char token_buffer[256];
 				int32 token_buffer_length;
 			}platform;
+#endif
 
 			bool initialized;
 			PAD24;
@@ -75,9 +77,11 @@ namespace Yelo
 			PAD24;
 			uint32 receiving_input_start_tick; // local time, when input began to be inputed
 
+#if !PLATFORM_IS_STUBBS
 			bool is_active;
 			PAD24;
 			int32 rcon_machine_index; // machine that is executing the current rcon command, or NONE
+#endif
 		};
 	};
 };

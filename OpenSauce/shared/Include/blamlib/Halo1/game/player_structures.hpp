@@ -7,10 +7,10 @@
 #pragma once
 
 #include <blamlib/Halo1/game/player_action.hpp>
-#include <blamlib/Halo1/game/players.hpp>
 #include <blamlib/Halo1/networking/network_game_manager.hpp>
 #include <blamlib/Halo1/networking/player_update_client.hpp>
 #include <blamlib/Halo1/networking/player_update_server.hpp>
+#include <blamlib/Halo1/game/players.hpp>
 
 namespace Yelo
 {
@@ -22,6 +22,17 @@ namespace Yelo
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum player_powerup
+		{
+			_player_powerup_active_camo,
+			_player_powerup_full_spectrum_vision,
+
+			k_number_of_player_powerups,
+		};
+	};
+
 	namespace Players
 	{
 		union u_player_multiplayer_stats
@@ -161,8 +172,9 @@ namespace Yelo
 #if !PLATFORM_IS_EDITOR
 			Objects::s_unit_datum* GetPlayerUnit();
 			datum_index GetVehicleIndex();
+			s_player_yelo_server_data& GetYeloServerData();
 #endif
-		}; BOOST_STATIC_ASSERT( sizeof(s_player_datum) == 0x200 );
+		}; BOOST_STATIC_ASSERT( sizeof(s_player_datum) == 0x200 ); // 0x160 in Stubbs
 
 
 		struct s_team_datum : Memory::s_datum_base_aligned
@@ -172,7 +184,7 @@ namespace Yelo
 			// nothing even uses this...this structure 
 			// could have no real fields...maybe use it 
 			// for our own evil deeds?
-		}; BOOST_STATIC_ASSERT( sizeof(s_team_datum) == 0x40 );
+		}; BOOST_STATIC_ASSERT( sizeof(s_team_datum) == 0x40 ); // same size in Stubbs
 
 
 		struct s_players_globals_data
@@ -190,7 +202,7 @@ namespace Yelo
 			_enum respawn_failure;															// 0x14
 			bool was_teleported;															// 0x16, or respawned
 			PAD8;
-			long_flags pvs[BIT_VECTOR_SIZE_IN_DWORDS(512)];								// 0x18
+			long_flags pvs[BIT_VECTOR_SIZE_IN_DWORDS(512)];									// 0x18
 			long_flags pvs2[BIT_VECTOR_SIZE_IN_DWORDS(512)];								// 0x58
 		}; BOOST_STATIC_ASSERT( sizeof(s_players_globals_data) == 0x98 );
 	};

@@ -54,6 +54,7 @@
   <PropertyGroup>
     <OSRequiresDirectX>true</OSRequiresDirectX>
     <OSRequiresCppBoost>true</OSRequiresCppBoost>
+	<OSRequiresHaloCustomEd>true</OSRequiresHaloCustomEd>
   </PropertyGroup>
   <Import Project="$(SolutionDir)..\shared\config\msbuild\OpenSauce.props" />
   <Import Project="$(SolutionDir)shared\config\msbuild\CrashRpt.props" />
@@ -84,13 +85,17 @@
   </ItemDefinitionGroup>
   <PropertyGroup Condition=" '$(OSPlatformType)'=='Guerilla' ">
     <TargetName>CheApeDLLG</TargetName>
+	<OSDebugExecutableName>OS_Guerilla.exe</OSDebugExecutableName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(OSPlatformType)'=='Tool' ">
     <TargetName>CheApeDLLT</TargetName>
+	<OSDebugExecutableName>OS_Tool.exe</OSDebugExecutableName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(OSPlatformType)'=='Sapien' ">
     <TargetName>CheApeDLLS</TargetName>
+	<OSDebugExecutableName>OS_Sapien.exe</OSDebugExecutableName>
   </PropertyGroup>
+  <Import Project="$(OSRootDir)shared\config\msbuild\OpenSauceDebuggerDefaults.props" />
   <ItemGroup>
     <ClCompile Include="Engine\AnimationUpgrade.cpp" />
     <ClCompile Include="Engine\EngineFunctions.cpp" />

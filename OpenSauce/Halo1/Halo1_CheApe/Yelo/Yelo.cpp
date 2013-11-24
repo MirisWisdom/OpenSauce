@@ -37,9 +37,6 @@ namespace Yelo
 	static void InitializeAfterCSeries()
 	{
 		Scripting::Initialize();
-#if PLATFORM_ID != PLATFORM_TOOL
-		Scripting::InitializeCustomScriptingDefinitions();
-#endif
 
 #ifndef PLATFORM_NO_DX9
 		Rasterizer::Initialize();

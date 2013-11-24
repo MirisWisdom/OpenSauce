@@ -66,8 +66,12 @@ namespace Yelo
 			hs_function_table = GET_DPTR2(hs_function_table);
 			hs_external_globals = GET_DPTR2(hs_external_globals);
 
-			// We enable tag definition upgrades by default on all platforms, but custom scripting must be explicitly setup
+			// We enable tag definition upgrades by default on all platforms...
 			MemoryUpdatesInitializeTagDefinitions();
+			// but custom scripting must be explicitly setup in Tool builds
+#if PLATFORM_ID != PLATFORM_TOOL
+			Scripting::InitializeCustomScriptingDefinitions();
+#endif
 		}
 
 		void Dispose()

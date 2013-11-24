@@ -65,9 +65,9 @@ namespace Yelo
 			static byte* GetNakedFuncBytes()
 			{
 #if _DEBUG && !defined(NAKED_FUNC_WRITER_NO_INCREMETNAL_BUILD_WORKAROUND)
-				static byte* g_bytes = NULL;
+				static byte* g_bytes = nullptr;
 
-				if(g_bytes == NULL)
+				if (g_bytes == nullptr)
 				{
 					byte* bytes = CAST_PTR(byte*, k_naked_func);
 
@@ -159,7 +159,6 @@ namespace Yelo
 #endif
 		public:
 			// Write the asm code of [k_naked_func] to [address]
-			// As
 			static void Write(void* address DebugOnly(, cstring asm_mismatch_msg))
 			{
 				DebugOnly( Verify(address, asm_mismatch_msg) );

@@ -20,7 +20,8 @@ namespace BlamLib.Blam.Stubbs
 			Blam.CacheFile.ValidateHeader(s, 0x800);
 			
 			s.Seek(4);
-			s.ReadInt32(); // version, should be 5
+			version = s.ReadInt32();
+			if (version != 5) throw new InvalidCacheFileException(s.FileName);
 
 			fileLength = s.ReadInt32();
 
@@ -34,15 +35,18 @@ namespace BlamLib.Blam.Stubbs
 			name = s.ReadTagString();
 
 			build = s.ReadTagString(); // Xbox only field. Always '400'
-			cacheType = (CacheType)s.ReadInt32();
+			cacheType = (CacheType)s.ReadInt16();
+			s.ReadInt16();
 			s.ReadInt32(); // CRC
 
 			s.Seek((485 * sizeof(int)) + sizeof(uint), System.IO.SeekOrigin.Current);
 
 
 			CacheFile cf = s.Owner as CacheFile;
-			if (xbox != 0) cf.EngineVersion = BlamVersion.Stubbs_Xbox;
-			else cf.EngineVersion = BlamVersion.Stubbs_PC; // no way to tell when its mac...
+			if (xbox != 0)
+				cf.EngineVersion = BlamVersion.Stubbs_Xbox;
+			else // no way to tell when it's mac, which just seems to use PC maps anyway (byte swaps everything when map is loaded)
+				cf.EngineVersion = BlamVersion.Stubbs_PC;
 		}
 	};
 	#endregion
