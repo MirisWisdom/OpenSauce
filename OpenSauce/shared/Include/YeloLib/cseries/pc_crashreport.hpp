@@ -11,22 +11,20 @@ namespace Yelo
 	{
 		enum crashreport_option_flags : int
 		{
-			_crashreport_option_save_local_bit	= 1,
-			_crashreport_option_full_dump_bit	= 2 | _crashreport_option_save_local_bit, // don't send full dumps to the report server
-			_crashreport_option_hide_gui_bit	= 4,
-
-			k_number_of_crashreport_option_flags
+			_crashreport_option_save_local_flag	= 1,
+			_crashreport_option_full_dump_flag	= 2 | _crashreport_option_save_local_flag, // don't send full dumps to the report server
+			_crashreport_option_hide_gui_flag	= 4,
 		};
 	};
 
 	namespace Debug
 	{
-		typedef void (*t_report_callback)(const char* /*report_directory*/);
+		typedef void (*proc_report_callback)(const char* /*report_directory*/);
 
 		struct s_crash_report_options
 		{
 			Flags::crashreport_option_flags m_flags;
-			t_report_callback m_report_complete_callback;
+			proc_report_callback m_report_complete_callback;
 
 			cstring m_application_name;
 			cstring m_application_version;

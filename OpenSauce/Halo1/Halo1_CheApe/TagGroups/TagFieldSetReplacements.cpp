@@ -31,7 +31,7 @@ namespace Yelo
 			FIELDSET_REPLACEMENT_BEGIN(_shader_environment_definition, 92+2, senv->header_block_definition)
 				FIELDSET_SEEK_AFTER_WITH_COPY("lens flare")
 				FIELDSET_INSERT_BEGIN()
-					FIELDSET_INSERT(shader_extension, Enums::_field_explanation, "replacement test", "")
+					FIELDSET_ADD_EXPLANATION("replacement test", "")
 					FIELDSET_INSERT_BLOCK(shader_extension, "yelo extension" "*", // TODO: readonly until the block actually has fields
 						&shader_environment_extension_block)
 				FIELDSET_INSERT_END()

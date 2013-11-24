@@ -212,6 +212,14 @@ namespace Yelo
 
 	namespace TagGroups
 	{
+#if PLATFORM_IS_EDITOR
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Get the tag_group for a specific tag definition </summary>
+		inline tag_group* TagGetGroup(datum_index tag_index)
+		{
+			return blam::tag_group_get(blam::tag_get_group_tag(tag_index));
+		}
+
 		// Visit all the registered tag_groups and perform an action on them
 		// TAction: void operator()([const] tag_group* group)
 		template<class TAction>
@@ -246,5 +254,6 @@ namespace Yelo
 
 			return result;
 		}
+#endif
 	};
 };

@@ -13,14 +13,13 @@ namespace BlamLib.Blam.Stubbs
 	public class TagGroups
 	{
 		#region Tag Groups
-		/// <summary>
-		/// image_effect
-		/// </summary>
+		/// <summary>image_effect</summary>
 		public static TagGroup imef = new TagGroup("imef", "image_effect");
 
-		/// <summary>
-		/// vegetation
-		/// </summary>
+		/// <summary>I DON'T FUCKING KNOW</summary>
+		public static TagGroup terr = new TagGroup("terr", "UNKNOWN_terr");
+
+		/// <summary>vegetation</summary>
 		public static TagGroup vege = new TagGroup("vege", "vegetation");
 		#endregion
 
@@ -116,6 +115,7 @@ namespace BlamLib.Blam.Stubbs
 				Halo1.TagGroups.tag_,
 
 				imef,
+				terr,
 				vege
 			);
 		}
@@ -298,6 +298,8 @@ namespace BlamLib.Blam.Stubbs
 
 			/// <summary>image_effect</summary>
 			imef,
+			/// <summary>I DON'T FUCKING KNOW</summary>
+			terr,
 			/// <summary>vegetation</summary>
 			vege,
 		};
@@ -308,6 +310,7 @@ namespace BlamLib.Blam.Stubbs
 		{
 			GroupsInitialize();
 			imef.Definition = new Tags.image_effect_group().State;
+			terr.Definition = new Tags.terr_group().State;
 			vege.Definition = new Tags.vegetation_group().State;
 
 			for (int x = Halo1.TagGroups.Groups.Count; x < Groups.Count; x++)
@@ -328,14 +331,29 @@ namespace BlamLib.Blam.Stubbs.Tags
 		public class effects_block : TI.Definition
 		{
 			#region Fields
+			public TI.Struct<Halo1.Tags.shader_animation_struct> Animation;
 			#endregion
 
 			#region Ctor
-			public effects_block() : base(3)
+			public effects_block() : base(14)
 			{
-				Add(new TI.Skip(60));
+				//////////////////////////////////////////////////////////////////////////
+				// array of 8 dwords. padding?
+				Add(new TI.Skip(32));
+				//////////////////////////////////////////////////////////////////////////
+				Add(new TI.ShortInteger()); // unknown 16 bits 20
+				Add(new TI.ShortInteger()); // unknown 16 bits 22
+				Add(new TI.ShortInteger()); // unknown 16 bits 24
+				Add(new TI.ShortInteger()); // unknown 16 bits 26
+				Add(new TI.LongInteger()); // unknown 32 bits 28
+				Add(new TI.LongInteger()); // unknown 32 bits 2C
+				Add(new TI.LongInteger()); // unknown 32 bits 30
+				Add(new TI.LongInteger()); // unknown 32 bits 34
+				Add(new TI.LongInteger()); // unknown 32 bits 38
 				Add(new TI.TagReference(this, Halo1.TagGroups.bitm));
-				Add(new TI.Skip(88));
+				Add(new TI.LongInteger()); // unknown 32 bits 4C
+				Add(new TI.Pad(28));
+				Add(Animation = new TI.Struct<Halo1.Tags.shader_animation_struct>(this));
 			}
 			#endregion
 		}
@@ -345,10 +363,118 @@ namespace BlamLib.Blam.Stubbs.Tags
 		#endregion
 
 		#region Ctor
-		public image_effect_group() : base(2)
+		public image_effect_group() : base(48)
 		{
-			Add(new TI.Skip(416));
+			Add(new TI.LongInteger()); // unknown 32 bits
+			Add(new TI.LongInteger()); // unknown 32 bits
+			Add(new TI.LongInteger()); // unknown 32 bits
+			//////////////////////////////////////////////////////////////////////////
+			// array of 4 dwords. padding?
+			Add(new TI.Skip(16));
+			//////////////////////////////////////////////////////////////////////////
+			Add(new TI.ShortInteger()); // unknown 16 bits 1C
+			Add(new TI.ShortInteger()); // unknown 16 bits 1E
+			Add(new TI.LongInteger()); // unknown 32 bits 20
+			Add(new TI.LongInteger()); // unknown 32 bits 24
+			Add(new TI.LongInteger()); // unknown 32 bits 28
+			Add(new TI.LongInteger()); // unknown 32 bits 2C
+			Add(new TI.LongInteger()); // unknown 32 bits 30
+			Add(new TI.LongInteger()); // unknown 32 bits 34
+			Add(new TI.LongInteger()); // unknown 32 bits 38
+			Add(new TI.ShortInteger()); // unknown 16 bits 3C
+			Add(new TI.ShortInteger()); // unknown 16 bits 3E
+			Add(new TI.LongInteger()); // unknown 32 bits 40
+			//////////////////////////////////////////////////////////////////////////
+			// array of 3 dwords. padding?
+			Add(new TI.Skip(12));
+			//////////////////////////////////////////////////////////////////////////
+			Add(new TI.LongInteger()); // unknown 32 bits 50
+			Add(new TI.LongInteger()); // unknown 32 bits 54
+			Add(new TI.LongInteger()); // unknown 32 bits 58
+			Add(new TI.LongInteger()); // unknown 32 bits 5C
+			Add(new TI.LongInteger()); // unknown 32 bits 60
+			//////////////////////////////////////////////////////////////////////////
+			// array of 8 dwords. padding?
+			Add(new TI.Skip(32));
+			//////////////////////////////////////////////////////////////////////////
+			Add(new TI.ShortInteger()); // unknown 16 bits 84
+			Add(new TI.ShortInteger()); // unknown 16 bits 86
+			Add(new TI.LongInteger()); // unknown 32 bits 88
+			Add(new TI.LongInteger()); // unknown 32 bits 8C
+			Add(new TI.LongInteger()); // unknown 32 bits 90
+			Add(new TI.LongInteger()); // unknown 32 bits 94
+			Add(new TI.LongInteger()); // unknown 32 bits 9C
+			Add(new TI.LongInteger()); // unknown 32 bits A0
+			Add(new TI.LongInteger()); // unknown 32 bits A4
+			//////////////////////////////////////////////////////////////////////////
+			// array of 7 dwords. padding?
+			Add(new TI.Skip(28));
+			//////////////////////////////////////////////////////////////////////////
+			Add(new TI.ShortInteger()); // unknown 16 bits C4
+			Add(new TI.ShortInteger()); // unknown 16 bits C6
+			Add(new TI.ShortInteger()); // unknown 16 bits C8
+			Add(new TI.ShortInteger()); // unknown 16 bits CA
+			Add(new TI.LongInteger()); // unknown 32 bits CC
+			Add(new TI.LongInteger()); // unknown 32 bits D0
+			//////////////////////////////////////////////////////////////////////////
+			// array of 8 dwords. padding?
+			Add(new TI.Skip(32));
+			//////////////////////////////////////////////////////////////////////////
+			Add(new TI.ShortInteger()); // unknown 16 bits F4
+			Add(new TI.ShortInteger()); // unknown 16 bits F6
+			Add(new TI.ShortInteger()); // unknown 16 bits F8
+			Add(new TI.ShortInteger()); // unknown 16 bits FA
+			Add(new TI.LongInteger()); // unknown 32 bits FC
+			//////////////////////////////////////////////////////////////////////////
+			// array of 8 dwords. padding?
+			Add(new TI.Skip(32));
+			//////////////////////////////////////////////////////////////////////////
+			// array of 32 dwords. padding?
+			Add(new TI.Skip(128));
+			//////////////////////////////////////////////////////////////////////////
 			Add(new TI.Block<effects_block>(this, 0));
+		}
+		#endregion
+	};
+	#endregion
+
+	#region terr_group
+	[TI.TagGroup((int)TagGroups.Enumerated.terr, 1, 32)]
+	public class terr_group : TI.Definition
+	{
+		#region terr_14_block
+		[TI.Definition(1, 84)]
+		public class terr_14_block : TI.Definition
+		{
+			#region Fields
+			#endregion
+
+			#region Ctor
+			public terr_14_block() : base(9)
+			{
+				Add(new TI.LongInteger()); // unknown 32 bits
+				Add(new TI.LongInteger()); // unknown 32 bits
+				Add(new TI.LongInteger()); // unknown 32 bits
+				Add(new TI.LongInteger()); // unknown 32 bits
+				Add(new TI.LongInteger()); // unknown 32 bits
+				Add(new TI.LongInteger()); // unknown 32 bits
+				Add(new TI.Pad(28));
+				Add(new TI.TagReference(this)); // 34
+				Add(new TI.TagReference(this)); // 44
+			}
+			#endregion
+		}
+		#endregion
+
+		#region Fields
+		#endregion
+
+		#region Ctor
+		public terr_group() : base(3)
+		{
+			Add(new TI.LongInteger()); // unknown 32 bits
+			Add(new TI.TagReference(this));
+			Add(new TI.Block<terr_14_block>(this, 0));
 		}
 		#endregion
 	};
@@ -363,9 +489,10 @@ namespace BlamLib.Blam.Stubbs.Tags
 		#endregion
 
 		#region Ctor
-		public vegetation_group() : base(17)
+		public vegetation_group() : base(28)
 		{
-			Add(new TI.Flags());
+			Add(new TI.Flags(TI.FieldType.WordFlags));
+			Add(new TI.ShortInteger()); // unknown 16bits
 			Add(new TI.RealVector3D()); // looks like it may be a vector, three reals at least
 			Add(new TI.TagReference(this, Halo1.TagGroups.shdr)); // front view
 			Add(new TI.TagReference(this, Halo1.TagGroups.shdr)); // side view
@@ -376,11 +503,33 @@ namespace BlamLib.Blam.Stubbs.Tags
 			Add(new TI.TagReference(this, Halo1.TagGroups.mode)); // model
 			Add(new TI.Real());
 			Add(new TI.Real());
-			Add(new TI.Skip(12)); // weren't used in corn
+			//////////////////////////////////////////////////////////////////////////
+			// wasn't used in corn
+			// pretty sure this is a vector3d
+			Add(new TI.LongInteger()); // unknown 32 bits
+			Add(new TI.LongInteger()); // unknown 32 bits
+			Add(new TI.LongInteger()); // unknown 32 bits
+			//////////////////////////////////////////////////////////////////////////
+			// i believe this may be an angles2d
 			Add(new TI.Real(TI.FieldType.Angle));
 			Add(new TI.Real(TI.FieldType.Angle));
-			Add(new TI.Skip(32)); // weren't used in corn
-			Add(new TI.LongInteger());
+			//////////////////////////////////////////////////////////////////////////
+			// wasn't used in corn
+			// i believe this may be a vector3d
+			Add(new TI.LongInteger()); // unknown 32 bits
+			Add(new TI.LongInteger()); // unknown 32 bits
+			Add(new TI.LongInteger()); // unknown 32 bits
+			//////////////////////////////////////////////////////////////////////////
+			// wasn't used in corn
+			// i believe this may be a vector3d
+			Add(new TI.LongInteger()); // unknown 32 bits
+			Add(new TI.LongInteger()); // unknown 32 bits
+			Add(new TI.LongInteger()); // unknown 32 bits
+			//////////////////////////////////////////////////////////////////////////
+			Add(new TI.LongInteger()); // unknown 32 bits. wasn't used in corn
+			Add(new TI.LongInteger()); // unknown 32 bits. wasn't used in corn
+			Add(new TI.ShortInteger()); // unknown 16bits
+			Add(new TI.ShortInteger()); // unknown 16bits
 			Add(new TI.Real());
 		}
 		#endregion

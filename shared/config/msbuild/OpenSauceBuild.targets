@@ -10,4 +10,11 @@
       $(BuildDependsOn)
     </BuildDependsOn>
   </PropertyGroup>
+
+  <PropertyGroup>
+    <PrepareForRunDependsOn>
+	  OSCopyExeToHaloCustomEd;
+      $(PrepareForRunDependsOn)
+    </PrepareForRunDependsOn>
+  </PropertyGroup>
 </Project>

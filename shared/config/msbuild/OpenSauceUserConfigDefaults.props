@@ -8,23 +8,26 @@
     <LocalUserBoostDir		Condition=" '$(LocalUserBoostDir)' == '' ">$(ProgramFiles)\boost\$(LocalUserBoostVer)\</LocalUserBoostDir>
 	<LocalGameSpyOpenDir	Condition=" '$(LocalGameSpyOpenDir)' == '' ">$(OSRootDir)OpenSauce\shared\Include\GameSpyOpen</LocalGameSpyOpenDir>
 
+	<LocalHaloCustomEdDir	Condition=" '$(LocalHaloCustomEdDir)' == '' ">$(ProgramFiles)\Microsoft Games\Halo Custom Edition\</LocalHaloCustomEdDir>
+
     <!-- Ensure user defined paths have a trailing slash, so they can be concatenated -->
 	<LocalDirectXDir		Condition=" !HasTrailingSlash('$(LocalDirectXDir)') ">$(LocalDirectXDir)\</LocalDirectXDir>
 	<LocalXenonLibDir		Condition=" !HasTrailingSlash('$(LocalXenonLibDir)') ">$(LocalXenonLibDir)\</LocalXenonLibDir>
 	<LocalUserBoostDir		Condition=" !HasTrailingSlash('$(LocalUserBoostDir)') ">$(LocalUserBoostDir)\</LocalUserBoostDir>
 	<LocalGameSpyOpenDir	Condition=" !HasTrailingSlash('$(LocalGameSpyOpenDir)') ">$(LocalGameSpyOpenDir)\</LocalGameSpyOpenDir>
+	<LocalHaloCustomEdDir	Condition=" !HasTrailingSlash('$(LocalHaloCustomEdDir)') ">$(LocalHaloCustomEdDir)\</LocalHaloCustomEdDir>
   </PropertyGroup>
 
   <!-- DirectX -->
   <Target Name="OSVerifyDirectX" Condition=" '$(OSRequiresDirectX)' == '' " />
-  <Target Name="OSVerifyDirectX" Condition=" '$(OSRequiresDirectX)' != '' ">
+  <Target Name="OSVerifyDirectX" Condition=" '$(OSRequiresDirectX)' == 'true' ">
     <Error			Condition="!Exists('$(LocalDirectXDir)')"
 		Text="Project requires DXSDK, but LocalDirectXDir wasn't found" />
   </Target>
 
   <!-- Xbox360 -->
   <Target Name="OSVerifyXenonSDK" Condition=" '$(OSRequiresXenonSDK)' == '' "/>
-  <Target Name="OSVerifyXenonSDK" Condition=" '$(OSRequiresXenonSDK)' != '' ">
+  <Target Name="OSVerifyXenonSDK" Condition=" '$(OSRequiresXenonSDK)' == 'true' ">
     <Error					Condition="!Exists('$(XEDK)')"
 		  Text="Project requires Xbox360 SDK, but XEDK wasn't found" />
     <Error					Condition="!Exists('$(LocalXenonLibBinVer)')"
@@ -33,15 +36,29 @@
 
   <!-- C++ boost -->
   <Target Name="OSVerifyCppBoost" Condition=" '$(OSRequiresCppBoost)' == '' " />
-  <Target Name="OSVerifyCppBoost" Condition=" '$(OSRequiresCppBoost)' != '' ">
+  <Target Name="OSVerifyCppBoost" Condition=" '$(OSRequiresCppBoost)' == 'true' ">
     <Error				Condition="!Exists('$(LocalUserBoostDir)')"
 		Text="Project requires C++ Boost, but LocalUserBoostDir wasn't found: $(LocalUserBoostDir)" />
   </Target>
 
   <!-- GameSpyOpen -->
   <Target Name="OSVerifyGameSpyOpen" Condition=" '$(OSRequiresGameSpyOpen)' == '' " />
-  <Target Name="OSVerifyGameSpyOpen" Condition=" '$(OSRequiresGameSpyOpen)' != '' ">
+  <Target Name="OSVerifyGameSpyOpen" Condition=" '$(OSRequiresGameSpyOpen)' == 'true' ">
     <Error				  Condition="!Exists('$(LocalGameSpyOpenDir)')"
 		Text="Project requires GameSpyOpen, but LocalGameSpyOpenDir wasn't found" />
+  </Target>
+
+  <!-- Halo Custom Edition -->
+  <Target Name="OSVerifyHaloCustomEd" Condition=" '$(OSRequiresHaloCustomEd)' == '' " />
+  <Target Name="OSVerifyHaloCustomEd" Condition=" '$(OSRequiresHaloCustomEd)' == 'true' ">
+    <Error				  Condition="!Exists('$(LocalHaloCustomEdDir)')"
+		Text="Project wants Custom Edition, but LocalHaloCustomEdDir wasn't found" />
+  </Target>
+  <Target Name="OSCopyExeToHaloCustomEd" Condition=" '$(OSRequiresHaloCustomEd)' == '' " />
+  <Target Name="OSCopyExeToHaloCustomEd" Condition=" '$(OSRequiresHaloCustomEd)' == 'true' and '$(BuildingInsideVisualStudio)'=='true'">
+    <Copy				  Condition="Exists('$(TargetPath)')"
+		SourceFiles="$(TargetPath)"
+		DestinationFolder="$(LocalHaloCustomEdDir)"
+		SkipUnchangedFiles="true" />
   </Target>
 </Project>

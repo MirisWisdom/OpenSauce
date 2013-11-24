@@ -243,16 +243,18 @@ namespace Yelo
 			TStructGetPtrImpl(real_vector3d,	ControlDataLookingVector, 0x714);
 			TStructGetPtrImpl(real,				ControlDataPrimaryTrigger, 0x720);
 		};
-		typedef Memory::DataArray<s_actor_datum, 256> t_actor_data;
-		t_actor_data&					Actors();
+		typedef Memory::DataArray<s_actor_datum, 256>
+			actor_data_t;
+		actor_data_t&					Actors();
 		swarm_data_t&					Swarms();
 
 
 		struct s_swarm_component_datum : TStructImpl(64)
 		{
 		};
-		typedef Memory::DataArray<s_swarm_component_datum, 256> t_swarm_component_data;
-		t_swarm_component_data&			SwarmComponents();
+		typedef Memory::DataArray<s_swarm_component_datum, 256>
+			swarm_component_data_t;
+		swarm_component_data_t&			SwarmComponents();
 
 
 		prop_data_t&					Props();

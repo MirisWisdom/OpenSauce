@@ -16,9 +16,12 @@ namespace Yelo
 {
 	namespace Players
 	{
-		typedef Memory::DataArray<s_player_datum, Enums::k_multiplayer_maximum_players_upgrade> players_data_t;
+		typedef Memory::DataArray<s_player_datum, Enums::k_multiplayer_maximum_players_upgrade> 
+			players_data_t;
+		typedef Memory::DataArray<s_team_datum, Enums::k_multiplayer_maximum_teams>
+			teams_data_t;
+
 		players_data_t&					Players();
-		typedef Memory::DataArray<s_team_datum, Enums::k_multiplayer_maximum_teams> teams_data_t;
 		teams_data_t&					Teams();
 		s_players_globals_data*			PlayersGlobals();
 		s_player_control_globals_data*	PlayerControlGlobals();

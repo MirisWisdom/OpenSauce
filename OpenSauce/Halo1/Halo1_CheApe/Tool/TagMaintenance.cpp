@@ -31,7 +31,6 @@ namespace Yelo
 			datum_index_set_t* resolved_tag_indexes;
 			datum_index_set_t* to_resolve_tag_indexes;
 
-			tag_group* model_group, * gbxmodel_group;
 			FILE* output_file;
 
 			void OpenOutputFile()
@@ -51,9 +50,6 @@ namespace Yelo
 
 				resolved_tag_indexes = YELO_NEW_CTOR(datum_index_set_t);
 				to_resolve_tag_indexes = YELO_NEW_CTOR(datum_index_set_t);
-
-				model_group = blam::tag_group_get('mode');
-				gbxmodel_group = blam::tag_group_get('mod2');
 			}
 			void Dispose()
 			{
@@ -100,21 +96,6 @@ namespace Yelo
 						}
 					}
 				}
-			}
-
-			tag_group* TagGroupGet(tag group_tag)
-			{
-				tag_group* group = blam::tag_group_get(group_tag);
-
-				return group == model_group 
-					? gbxmodel_group 
-					: group;
-			}
-			tag TagReferenceGetGroupTag(const tag_reference* reference)
-			{
-				return reference->group_tag == model_group->group_tag 
-					? gbxmodel_group->group_tag 
-					: reference->group_tag;
 			}
 
 			template<bool k_flush = true>
@@ -286,7 +267,7 @@ namespace Yelo
 			{
 				bool resolved = false;
 				entry.m_reference->tag_index = datum_index::null;
-				tag entry_group_tag = maintenance_globals.TagReferenceGetGroupTag(entry.m_reference);
+				tag entry_group_tag = entry.m_reference->group_tag;
 
 				if (blam::tag_file_exists(entry_group_tag, entry.m_reference->name))
 				{
@@ -314,7 +295,7 @@ namespace Yelo
 			}
 			void UnresolvedReferencePrint(s_queued_reference& entry)
 			{
-				auto* group = maintenance_globals.TagGroupGet(entry.m_reference->group_tag);
+				auto* group = blam::tag_group_get(entry.m_reference->group_tag);
 				cstring name = entry.m_reference->name;
 				cstring problem_desc = ProblemToString(entry.m_problem_type);
 
@@ -349,7 +330,7 @@ namespace Yelo
 
 			void PrintUnresolvingHeader()
 			{
-				auto* group = maintenance_globals.TagGroupGet(blam::tag_get_group_tag(m_tag_index));
+				auto* group = TagGroups::TagGetGroup(m_tag_index);
 				cstring name = blam::tag_get_name(m_tag_index);
 
 				if (m_mode == _mode_print_unresolving)
@@ -391,7 +372,7 @@ namespace Yelo
 
 		static bool UserWantsToContinue(datum_index tag_index)
 		{
-			auto* group = maintenance_globals.TagGroupGet(blam::tag_get_group_tag(tag_index));
+			auto* group = TagGroups::TagGetGroup(tag_index);
 			cstring tag_name = blam::tag_get_name(tag_index);
 
 			Console::ColorPrint(k_color_default, "press enter to continue, anything else to stop\n\t");
