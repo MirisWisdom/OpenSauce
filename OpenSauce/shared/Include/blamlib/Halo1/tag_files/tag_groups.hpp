@@ -44,12 +44,17 @@ namespace Yelo
 
 		extern const s_tag_field_definition k_tag_field_definitions[];
 
+		/// <summary>	when true, all 'model' references are loaded or get as gbxmodels </summary>
+		extern bool g_gbxmodel_group_enabled;
+
 		// Get the length, in characters, of a string field, excluding the null character
 		int32 StringFieldGetLength(const tag_field* field);
 		// Get the size, in characters, of a string field, inclusive of the null character
 		int32 StringFieldGetSize(const tag_field* field);
 
 		tag_group* FindTagGroupByName(cstring name);
+
+		char* TryAndGetGroupName(tag group_tag, _Out_ long_string name);
 
 		// Convenience function to handle deleting all of the data in tag_data field.
 		// Use [terminator_size] for tag_data which HAS to have a specific amount of 
