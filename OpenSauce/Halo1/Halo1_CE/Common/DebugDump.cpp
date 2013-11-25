@@ -89,7 +89,7 @@ namespace Yelo
 		{
 			if(FileIO::PathExists(g_reports_path))
 			{
-				char dump_file[255];
+				char dump_file[_MAX_PATH];
 				if(FileIO::PathBuild(dump_file, false, 2, g_reports_path, "core.bin"))
 				{
 					FileIO::s_file_info dump;

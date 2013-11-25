@@ -181,11 +181,11 @@
 	<ClInclude Include="..\..\shared\Include\blamlib\tag_files\tag_groups_base.hpp">
       <Filter>.blamlib\tag_files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
-    > <!--tag_files EDITOR-->
 	<ClCompile Include="..\..\shared\Include\blamlib\tag_files\tag_groups_base.cpp">
       <Filter>.blamlib\tag_files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
+    > <!--tag_files EDITOR-->
   </ItemGroup>
 </Project>
