@@ -184,6 +184,9 @@
     <ClInclude Include="..\..\shared\Include\blamlib\tag_files\tag_groups_base.hpp">
       <Filter>.blamlib\tag_files</Filter>
     </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\tag_files\tag_groups_base.cpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClCompile>
   </ItemGroup>
 
   <!--<Import Project="..\..\shared\config\msbuild\blamlib_Halo1.vcxproj.filters" />-->

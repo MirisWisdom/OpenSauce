@@ -32,9 +32,9 @@
   <ItemGroup
     > <!--tag_files-->
 	<ClInclude Include="..\..\shared\Include\blamlib\tag_files\tag_groups_base.hpp" />
+	<ClCompile Include="..\..\shared\Include\blamlib\tag_files\tag_groups_base.cpp" />
   </ItemGroup>
   <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
     > <!--tag_files EDITOR-->
-	<ClCompile Include="..\..\shared\Include\blamlib\tag_files\tag_groups_base.cpp" />
   </ItemGroup>
 </Project>

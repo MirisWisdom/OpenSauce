@@ -10,6 +10,7 @@
 
 namespace Yelo
 {
+#if PLATFORM_IS_EDITOR
 	void tag_reference::clear()
 	{
 		blam::tag_reference_clear(*this);
@@ -49,6 +50,7 @@ namespace Yelo
 	{
 		return blam::tag_data_resize(this, new_size);
 	}
+#endif
 
 	namespace TagGroups
 	{
@@ -73,10 +75,12 @@ namespace Yelo
 
 	namespace blam
 	{
+#if PLATFORM_IS_EDITOR
 		void* tag_block_add_and_get_element(tag_block* block)
 		{
 			int32 index = tag_block_add_element(block);
 			return tag_block_get_element(block, index);
 		}
+#endif
 	};
 };
