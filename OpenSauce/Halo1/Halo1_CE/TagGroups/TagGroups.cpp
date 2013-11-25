@@ -154,4 +154,28 @@ namespace Yelo
 			}
 		}
 	};
+
+	namespace blam
+	{
+		tag PLATFORM_API tag_get_group_tag(datum_index tag_index)
+		{
+			if (tag_index.IsNull() || tag_index.index >= TagGroups::Index()->count)
+				return NONE;
+			else
+				return TagGroups::Instances()[tag_index.index].group_tag;
+		}
+
+		cstring PLATFORM_API tag_get_name(datum_index tag_index)
+		{
+			if (TagGroups::_global_yelo->flags.cache_is_protected_bit)
+				return "PROTECTED";
+
+			if (tag_index.IsNull())
+				return "NONE";
+			else if (tag_index.index >= TagGroups::Index()->count)
+				return "INVALID";
+			else
+				return TagGroups::Instances()[tag_index.index].name;
+		}
+	};
 };

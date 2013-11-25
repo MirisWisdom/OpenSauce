@@ -7,6 +7,10 @@
       OSVerifyXenonSDK;
 	  OSVerifyCppBoost;
 	  OSVerifyGameSpyOpen;
+	  OSVerifyRakNet;
+	  OSVerifyHaloCustomEd;
+	  OSVerifyStubbsPc;
+	  OSVerifyHalo2Pc;
       $(BuildDependsOn)
     </BuildDependsOn>
   </PropertyGroup>
@@ -14,6 +18,8 @@
   <PropertyGroup>
     <PrepareForRunDependsOn>
 	  OSCopyExeToHaloCustomEd;
+	  OSCopyExeToStubbsPc;
+	  OSCopyExeToHalo2Pc;
       $(PrepareForRunDependsOn)
     </PrepareForRunDependsOn>
   </PropertyGroup>

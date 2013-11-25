@@ -11,6 +11,19 @@ namespace Yelo
 {
 	namespace Memory
 	{
+		template<typename DatumT>
+		struct DataArrayIteratorResult {
+			datum_index index;
+			DatumT* datum;
+
+			DataArrayIteratorResult(datum_index i, DatumT* d) : index(i), datum(d) {}
+
+			inline DatumT* operator->() const { return datum; }
+			inline DatumT& operator*() const { return *datum; }
+
+			inline datum_index::index_t GetAbsoluteIndex() const { return index.index; }
+		};
+
 		template<typename DatumT,	size_t MaxDatumCount, 
 									size_t MaxDatumCountUpgrade = MaxDatumCount>
 		struct DataArray {
@@ -18,18 +31,6 @@ namespace Yelo
 			typedef DataArray<DatumT,MaxDatumCount,MaxDatumCountUpgrade> DataArrayT;
 
 		public:
-			struct IteratorResult {
-				datum_index index;
-				DatumT* datum;
-
-				IteratorResult(datum_index i, DatumT* d) : index(i), datum(d) {}
-
-				inline DatumT* operator->() const { return datum; }
-				inline DatumT& operator*() const { return *datum; }
-
-				inline datum_index::index_t GetAbsoluteIndex() const { return index.index; }
-			};
-
 			struct Iterator {
 			private:
 				s_data_iterator m_iterator;
@@ -63,9 +64,9 @@ namespace Yelo
 					Next();
 					return *this;
 				}
-				inline IteratorResult operator*() const
+				inline DataArrayIteratorResult<DatumT> operator*() const
 				{
-					return IteratorResult(m_iterator.index, m_current_instance);
+					return DataArrayIteratorResult<DatumT>(m_iterator.index, m_current_instance);
 				}
 			};
 
