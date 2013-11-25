@@ -50,6 +50,15 @@ namespace Yelo
 			_object_type_mask_unit = 
 				FLAG(_object_type_biped) |
 				FLAG(_object_type_vehicle),
+
+			_object_type_mask_all =
+				FLAG(_object_type_projectile) |
+				FLAG(_object_type_scenery) |
+				FLAG(_object_type_placeholder) |
+				FLAG(_object_type_sound_scenery) |
+				_object_type_mask_device |
+				_object_type_mask_item | 
+				_object_type_mask_unit,
 		};
 	};
 

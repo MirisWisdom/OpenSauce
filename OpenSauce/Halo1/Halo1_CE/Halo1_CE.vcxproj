@@ -85,6 +85,7 @@
     <TargetName>OpenSauceDedi</TargetName>
 	<OSDebugExecutableName>OS_haloceded.exe</OSDebugExecutableName>
   </PropertyGroup>
+  <Import Project="$(OSRootDir)shared\config\msbuild\OpenSauceDebuggerDefaults.props" />
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp" />
     <ClCompile Include="Common\FileIO.cpp" />

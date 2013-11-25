@@ -25,7 +25,7 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_COMMON_DEBUG_DUMP
 #include "Memory/_EngineLayout.inl"
 
-		static char g_reports_path[255];
+		static char g_reports_path[_MAX_PATH];
 
 		static void ReportComplete(const char* report_directory)
 		{

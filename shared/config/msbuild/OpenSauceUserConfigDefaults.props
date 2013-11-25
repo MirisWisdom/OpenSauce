@@ -7,6 +7,7 @@
     <LocalUserBoostVer		Condition=" '$(LocalUserBoostVer)' == '' ">boost_1_55_0</LocalUserBoostVer>
     <LocalUserBoostDir		Condition=" '$(LocalUserBoostDir)' == '' ">$(ProgramFiles)\boost\$(LocalUserBoostVer)\</LocalUserBoostDir>
 	<LocalGameSpyOpenDir	Condition=" '$(LocalGameSpyOpenDir)' == '' ">$(OSRootDir)OpenSauce\shared\Include\GameSpyOpen</LocalGameSpyOpenDir>
+	<LocalRakNetDir			Condition=" '$(LocalRakNetDir)' == '' ">$(OSRootDir)OpenSauce\shared\Include\RakNet</LocalRakNetDir>
 
 	<!-- Halo Custom Edition -->
 	<!--Get the installation path of Halo1, depending on the build-->
@@ -38,6 +39,7 @@
 	<LocalXenonLibDir		Condition=" !HasTrailingSlash('$(LocalXenonLibDir)') ">$(LocalXenonLibDir)\</LocalXenonLibDir>
 	<LocalUserBoostDir		Condition=" !HasTrailingSlash('$(LocalUserBoostDir)') ">$(LocalUserBoostDir)\</LocalUserBoostDir>
 	<LocalGameSpyOpenDir	Condition=" !HasTrailingSlash('$(LocalGameSpyOpenDir)') ">$(LocalGameSpyOpenDir)\</LocalGameSpyOpenDir>
+	<LocalRakNetDir			Condition=" !HasTrailingSlash('$(LocalRakNetDir)') ">$(LocalRakNetDir)\</LocalRakNetDir>
 	<LocalHaloCustomEdDir	Condition=" !HasTrailingSlash('$(LocalHaloCustomEdDir)') ">$(LocalHaloCustomEdDir)\</LocalHaloCustomEdDir>
 	<LocalStubbsPcDir		Condition=" !HasTrailingSlash('$(LocalStubbsPcDir)') ">$(LocalStubbsPcDir)\</LocalStubbsPcDir>
 	<LocalHalo2PcDir		Condition=" !HasTrailingSlash('$(LocalHalo2PcDir)') ">$(LocalHalo2PcDir)\</LocalHalo2PcDir>
@@ -73,6 +75,13 @@
 		Text="Project requires GameSpyOpen, but LocalGameSpyOpenDir wasn't found" />
   </Target>
 
+  <!-- RakNet -->
+  <Target Name="OSVerifyRakNet" Condition=" '$(OSRequiresRakNet)' != 'true' " />
+  <Target Name="OSVerifyRakNet" Condition=" '$(OSRequiresRakNet)' == 'true' ">
+    <Error			 Condition="!Exists('$(LocalRakNetDir)')"
+		Text="Project requires RakNet, but LocalRakNetDir wasn't found" />
+  </Target>
+
   <!-- Halo Custom Edition -->
   <Target Name="OSVerifyHaloCustomEd" Condition=" '$(OSRequiresHaloCustomEd)' != 'true' or '$(BuildingInsideVisualStudio)'!='true' " />
   <Target Name="OSVerifyHaloCustomEd" Condition=" '$(OSRequiresHaloCustomEd)' == 'true' ">
@@ -90,8 +99,8 @@
   <!-- Stubbs PC -->
   <Target Name="OSVerifyStubbsPc" Condition=" '$(OSRequiresStubbsPc)' != 'true' or '$(BuildingInsideVisualStudio)'!='true' " />
   <Target Name="OSVerifyStubbsPc" Condition=" '$(OSRequiresStubbsPc)' == 'true' ">
-    <Error				  Condition="!Exists('$(LocalStubbsPcDir)')"
-		Text="Project requires Stubbs (PC), but LocalStubbsPcDir wasn't found" />
+    <Error			   Condition="!Exists('$(LocalStubbsPcDir)')"
+		Text="Project wants Stubbs (PC), but LocalStubbsPcDir wasn't found" />
   </Target>
   <Target Name="OSCopyExeToStubbsPc" Condition=" '$(OSRequiresStubbsPc)' != 'true' or '$(BuildingInsideVisualStudio)'!='true' " />
   <Target Name="OSCopyExeToStubbsPc" Condition=" '$(OSRequiresStubbsPc)' == 'true' ">
@@ -104,8 +113,8 @@
   <!-- Halo 2 PC -->
   <Target Name="OSVerifyHalo2Pc" Condition=" '$(OSRequiresHalo2Pc)' != 'true' or '$(BuildingInsideVisualStudio)'!='true' " />
   <Target Name="OSVerifyHalo2Pc" Condition=" '$(OSRequiresHalo2Pc)' == 'true' ">
-    <Error				  Condition="!Exists('$(LocalHalo2PcDir)')"
-		Text="Project requires Halo 2 (PC), but LocalHalo2PcDir wasn't found" />
+    <Error			   Condition="!Exists('$(LocalHalo2PcDir)')"
+		Text="Project wants Halo 2 (PC), but LocalHalo2PcDir wasn't found" />
   </Target>
   <Target Name="OSCopyExeToHalo2Pc" Condition=" '$(OSRequiresHalo2Pc)' != 'true' or '$(BuildingInsideVisualStudio)'!='true' " />
   <Target Name="OSCopyExeToHalo2Pc" Condition=" '$(OSRequiresHalo2Pc)' == 'true' ">
