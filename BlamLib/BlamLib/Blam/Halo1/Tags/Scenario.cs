@@ -1567,6 +1567,7 @@ namespace BlamLib.Blam.Halo1.Tags
 		public TI.Block<field_block<TI.TagReference>> Skies;
 		public TI.Enum Type;
 		public TI.Flags Flags;
+		public TI.Block<scenario_child_scenario_block> ChildScenarios;
 		public TI.Real LocalNorth;
 		public TI.Block<predicted_resource_block> PredictedResources;
 		public TI.Block<scenario_function_block> Functions;
@@ -1639,7 +1640,7 @@ namespace BlamLib.Blam.Halo1.Tags
 			Add(Skies = new TI.Block<field_block<TI.TagReference>>(this, 8));
 			Add(Type = new TI.Enum());
 			Add(Flags = new TI.Flags(BlamLib.TagInterface.FieldType.WordFlags));
-			Add(TI.Pad.BlockHalo1); // child scenarios, tag block data wasn't removed in stubbs for some reason
+			Add(ChildScenarios = new TI.Block<scenario_child_scenario_block>(this, 32)); // child scenarios, tag block data wasn't removed in stubbs for some reason
 			Add(LocalNorth = new TI.Real(BlamLib.TagInterface.FieldType.Angle));
 			Add(new TI.Pad(20 + 136));
 			Add(PredictedResources = new TI.Block<predicted_resource_block>(this, 1024));

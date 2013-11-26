@@ -17,8 +17,8 @@ namespace BlamLib.Render.COLLADA.Core
 	public partial class ColladaVertices : ColladaElement
 	{
 		#region Fields
-		ColladaObjectAttribute<string> _id;
-		ColladaObjectAttribute<string> _name;
+		ColladaObjectAttribute<ColladaID<ColladaVertices>> _id;
+		ColladaObjectAttribute<ColladaNCName> _name;
 
 		ColladaObjectElementList<ColladaInputUnshared> _input;
 		ColladaObjectElementList<ColladaExtra> _extra;
@@ -46,8 +46,8 @@ namespace BlamLib.Render.COLLADA.Core
 
 		public ColladaVertices() : base(Enums.ColladaElementType.Core_Vertices)
 		{
-			Fields.Add(_id = new ColladaObjectAttribute<string>(""));
-			Fields.Add(_name = new ColladaObjectAttribute<string>(""));
+			Fields.Add(_id = new ColladaObjectAttribute<ColladaID<ColladaVertices>>(""));
+			Fields.Add(_name = new ColladaObjectAttribute<ColladaNCName>(""));
 			Fields.Add(_input = new ColladaObjectElementList<ColladaInputUnshared>());
 			Fields.Add(_extra = new ColladaObjectElementList<ColladaExtra>());
 

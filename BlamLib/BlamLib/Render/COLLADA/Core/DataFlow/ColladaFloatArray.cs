@@ -15,8 +15,8 @@ namespace BlamLib.Render.COLLADA.Core
 	public partial class ColladaFloatArray : ColladaValueArray<float>
 	{
 		#region Fields
-		ColladaObjectAttribute<string> _id;
-		ColladaObjectAttribute<string> _name;
+		ColladaObjectAttribute<ColladaID<ColladaFloatArray>> _id;
+		ColladaObjectAttribute<ColladaNCName> _name;
 		ColladaObjectAttribute<short> _digits;
 		ColladaObjectAttribute<short> _magnitude;
 		#endregion
@@ -54,8 +54,8 @@ namespace BlamLib.Render.COLLADA.Core
 
 		public ColladaFloatArray() : base(Enums.ColladaElementType.Core_FloatArray)
 		{
-			Fields.Add(_id = new ColladaObjectAttribute<string>(""));
-			Fields.Add(_name = new ColladaObjectAttribute<string>(""));
+			Fields.Add(_id = new ColladaObjectAttribute<ColladaID<ColladaFloatArray>>(""));
+			Fields.Add(_name = new ColladaObjectAttribute<ColladaNCName>(""));
 			Fields.Add(_digits = new ColladaObjectAttribute<short>(6));
 			Fields.Add(_magnitude = new ColladaObjectAttribute<short>(38));
 		}
