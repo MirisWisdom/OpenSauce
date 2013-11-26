@@ -110,13 +110,13 @@ namespace Yelo
 			Debug::InitDefaultOptions(crashreport_options);
 
 			// save reports locally and do not show the crashrpt gui
-			if(CMDLINE_GET_PARAM(full_dump).ParameterSet())
+			if (CMDLINE_GET_PARAM(full_dump).ParameterSet())
 				crashreport_options.m_flags = (Flags::crashreport_option_flags)(crashreport_options.m_flags | Flags::_crashreport_option_full_dump_flag);
 			crashreport_options.m_report_complete_callback = &ReportComplete;
 			crashreport_options.m_application_name = "OpenSauce HEK";
 			crashreport_options.m_reports_directory = g_reports_path;
 
-			if(Debug::InstallExceptionHandler(crashreport_options))
+			if (Debug::InstallExceptionHandler(crashreport_options))
 			{
 #if PLATFORM_ID != PLATFORM_GUERILLA
 				Memory::WriteRelativeCall(&ExceptionFilter, GET_FUNC_VPTR(GENERIC_EXCEPTION_FILTER_CALL), true);
@@ -129,12 +129,20 @@ namespace Yelo
 		}
 
 #ifdef API_DEBUG
-		static void PLATFORM_API BlamErrorHook(void* /*error_return_address*/,
+		static void PLATFORM_API BlamError(void* /*error_return_address*/,
 			Enums::error_message_priority priority, cstring format, /*...*/
 			cstring assert_kind, cstring file, int32 line, cstring reason)
 		{
 			if (priority != Enums::_error_message_priority_warning && format != nullptr && strstr(format, "EXCEPTION") != nullptr)
 				DebugBreak();
+		}
+
+		static API_FUNC_NAKED void BlamErrorHook_Hook()
+		{
+			API_FUNC_NAKED_START_()
+				add		esp, 408h
+				call	BlamError
+			API_FUNC_NAKED_END_()
 		}
 #endif
 		void DumpInitialize()
@@ -163,8 +171,8 @@ namespace Yelo
 			if (IsDebuggerPresent())
 			{
 				// put a hook at the end of error(). hook will not handle priority==0 cases
-				byte* error_proc_eof = CAST_PTR(byte*, blam::error) + PLATFORM_VALUE(0x296, 0x2AE, 0x2A0);
-				Memory::CreateHookRelativeCall(&BlamErrorHook, error_proc_eof, Enums::_x86_opcode_ret);
+				byte* error_proc_eof = CAST_PTR(byte*, blam::error) + PLATFORM_VALUE(0x290, 0x2A8, 0x29A);
+				Memory::WriteRelativeJmp(BlamErrorHook_Hook, error_proc_eof, true);
 			}
 #endif
 		}
