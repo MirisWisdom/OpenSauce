@@ -269,7 +269,7 @@ namespace BlamLib.Blam.Halo1.CheApe
 		/// long element_size;
 		/// long pad;
 		/// void* fields;
-		/// void* proc_add;
+		/// long pad;
 		/// void* proc_postprocess;
 		/// void* format;
 		/// void* delete;
@@ -292,9 +292,7 @@ namespace BlamLib.Blam.Halo1.CheApe
 				uint fieldsAddress = new FieldsWriter(tagBlock.Fields).WriteFields(stream, comp);
 				comp.MarkLocationFixup(tagBlock.Name, stream, false);
 
-				int flags = (
-						(tagBlock.DontReadChildren ? 1 << 0 : 0)
-					);
+				int flags = 0;
 
 				stream.Write(tagBlock.Name);
 				stream.Write(flags);
@@ -323,12 +321,11 @@ namespace BlamLib.Blam.Halo1.CheApe
 		/// tag child_group_tags[16]; 
 		/// short child_count;
 		/// pad16;
-		/// pad32;
 		/// </summary>
 		internal sealed class TagGroup : Object
 		{
 			public const int Size = (4 * 4) + (2 + 2) + (4 * 2) +
-				((4 * 16) + 2 + 2) + 4;
+				((4 * 16) + 2 + 2);
 
 			Import.TagGroup tagGroup = null;
 			public void Reset(Import.TagGroup def) { tagGroup = def; }
@@ -369,14 +366,20 @@ namespace BlamLib.Blam.Halo1.CheApe
 
 				flags = (
 						(tagGroup.IsIncludedInTagGroupsChecksum ? 1 << 0 : 0) |
-						(tagGroup.Reloadable ? 1 << 3 : 0)
+						// 1 ?
+						// 2 ?
+						(tagGroup.Reloadable ? 1 << 3 : 0) |
+						(tagGroup.DebugOnly ? 1 << 4 : 0)
 					);
 
 				stream.Write(tagGroup.Name);
 				stream.Write(flags);
+				#region GroupTag
 				if (string.IsNullOrEmpty(tagGroup.GroupTag))
 					Debug.LogFile.WriteLine("CheApe: tag_group '{0}' has a bad group-tag...check your XML?");
 				stream.WriteTag(tagGroup.GroupTag);
+				#endregion
+				#region ParentTag
 				if (tagGroup.ParentTag != null)
 				{
 					if (string.IsNullOrEmpty(tagGroup.GroupTag))
@@ -385,12 +388,14 @@ namespace BlamLib.Blam.Halo1.CheApe
 				}
 				else
 					stream.Write((int)-1);
+				#endregion
 				stream.Write(tagGroup.Version); stream.Write((short)0);
 				stream.Write((int)0); // post process proc
 				stream.WritePointer(blockAddress);
-				for (int x = 0; x < 17; x++) stream.Write((int)0); // child group tags
-				stream.Write((int)0); // we don't support that shit, gtfo
+				#region Child group tags
+				for (int x = 0; x < 16; x++) stream.Write((int)0);
 				stream.Write((int)0);
+				#endregion
 			}
 			#endregion
 		};

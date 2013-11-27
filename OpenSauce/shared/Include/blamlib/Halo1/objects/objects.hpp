@@ -127,9 +127,12 @@ namespace Yelo
 			long_flags type_mask;						// object types to iterate
 			Flags::object_header_flags ignore_flags;	// When any of these bits are set, the object is skipped
 			PAD8;
-			int16 absolute_index;
+			int16 next_index;
 			datum_index object_index;
 			tag signature;
+
+			inline void SetEndHack()		{ signature = Memory::s_data_iterator::k_end_hack_signature; }
+			inline bool IsEndHack() const	{ return signature == Memory::s_data_iterator::k_end_hack_signature; }
 		};
 	};
 
@@ -142,13 +145,13 @@ namespace Yelo
 		// precondition: [object_index] is a valid object index, everything else can be null
 		// Recomputes the node matrices and reconnects the object to the map after updating the position data
 		void PLATFORM_API object_set_position(datum_index object_index, 
-			__in_opt real_point3d* new_position = NULL, __in_opt real_vector3d* new_forward = NULL, __in_opt real_vector3d* new_up = NULL);
+			__in_opt real_point3d* new_position = nullptr, __in_opt real_vector3d* new_forward = nullptr, __in_opt real_vector3d* new_up = nullptr);
 
 		void PLATFORM_API object_set_position_network(datum_index object_index, 
 			real_point3d* new_position);
 
 		void PLATFORM_API object_translate(datum_index object_index, 
-			const real_point3d& new_position, __in_opt const s_scenario_location* new_location = NULL);
+			const real_point3d& new_position, __in_opt const s_scenario_location* new_location = nullptr);
 
 		void PLATFORM_API object_placement_data_new(s_object_placement_data& data, datum_index object_definition_index, datum_index owner_object_index = datum_index::null);
 
@@ -161,7 +164,7 @@ namespace Yelo
 
 		void PLATFORM_API object_delete(datum_index object_index);
 
-		void PLATFORM_API object_reconnect_to_map(datum_index object_index, __in_opt s_scenario_location* location_reference = NULL);
+		void PLATFORM_API object_reconnect_to_map(datum_index object_index, __in_opt s_scenario_location* location_reference = nullptr);
 
 		void PLATFORM_API object_disconnect_from_map(datum_index object_index);
 
@@ -191,12 +194,12 @@ namespace Yelo
 		}
 
 		// TODO: move into objects.cpp
-		API_INLINE s_object_iterator& object_iterator_new(s_object_iterator& iter, long_flags type_mask, Flags::object_header_flags ignore_flags)
+		inline s_object_iterator& object_iterator_new(s_object_iterator& iter, long_flags type_mask, Flags::object_header_flags ignore_flags)
 		{
 			iter.signature = s_object_iterator::k_signature;
 			iter.type_mask = type_mask;
 			iter.ignore_flags = ignore_flags;
-			iter.absolute_index = 0;
+			iter.next_index = 0;
 			iter.object_index = datum_index::null;
 		}
 
@@ -216,5 +219,66 @@ namespace Yelo
 
 
 		s_object_data* object_get(datum_index object_index);
+	};
+
+	namespace Objects
+	{
+		// TODO: move some of these inlines into an objects.cpp
+		class c_object_iterator {
+			s_object_iterator m_state;
+			s_object_data* m_object;
+
+			inline c_object_iterator(const void* endHackDummy)
+				: m_object(nullptr)
+			{
+				m_state.SetEndHack();
+			}
+		public:
+			inline c_object_iterator(long_flags type_mask, Flags::object_header_flags ignore_flags = (Flags::object_header_flags)0)
+				: m_object(nullptr)
+			{
+				blam::object_iterator_new(m_state, type_mask, ignore_flags);
+			}
+
+			static inline c_object_iterator all()
+			{
+				return c_object_iterator(Enums::_object_type_mask_all);
+			}
+
+			inline s_object_data* Next()
+			{
+				return m_object = blam::object_iterator_next(m_state);
+			}
+
+			inline bool operator!=(const c_object_iterator& other) const
+			{
+				if (other.m_state.IsEndHack())
+					return this->m_object != nullptr;
+				else if (this->m_state.IsEndHack())
+					return other.m_object != nullptr;
+
+				return this->m_object != other.m_object;
+			}
+
+			inline c_object_iterator& operator++()
+			{
+				Next();
+				return *this;
+			}
+			inline Memory::DataArrayIteratorResult<s_object_data> operator*() const
+			{
+				return Memory::DataArrayIteratorResult<s_object_data>(m_state.object_index, m_object);
+			}
+
+			inline c_object_iterator& begin() /*const*/
+			{
+				this->Next();
+				return *this;
+			}
+			inline static const c_object_iterator end() /*const*/
+			{
+				return c_object_iterator(nullptr);
+			}
+		};
 	};
 };

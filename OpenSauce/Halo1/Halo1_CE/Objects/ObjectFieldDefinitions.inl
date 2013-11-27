@@ -6,11 +6,11 @@
 */
 
 static s_object_field_definition g_object_real_fields[] = {
-	FIELD_ENTRY(object, real, real, function_out, false, true),
-	FIELD_ENTRY(object, real, real, radius, false, true),
-	FIELD_ENTRY(object, real, real, scale, false, true),
-	FIELD_ENTRY(object, real, real, maximum_vitality, false),
-	FIELD_ENTRY(object, real, real, current_vitality, false),
+	FIELD_ENTRY(object, real, real, function_out,				false, true),
+	FIELD_ENTRY(object, real, real, radius,						false, true),
+	FIELD_ENTRY(object, real, real, scale,						false, true),
+	FIELD_ENTRY(object, real, real, maximum_vitality,			false),
+	FIELD_ENTRY(object, real, real, current_vitality,			false),
 
 	FIELD_ENTRY(object, real, vector, position,					true),
 	FIELD_ENTRY(object, real, vector, transitional_velocity,	true),
@@ -53,7 +53,7 @@ static s_object_field_definition g_unit_object_index_fields[] = {
 	// TODO: when we add network support for equipment, update this field entry's flags
 	FIELD_ENTRY( unit, object,		object_index, equipment,								false, true),
 	//FIELD_ENTRY( unit, unit,		object_index, 40C,										false, true),
-	FIELD_ENTRY( unit, object,		object_index, damage_responsible_flamer_object,				false, true),
+	FIELD_ENTRY( unit, object,		object_index, damage_responsible_flamer_object,			false, true),
 	FIELD_ENTRY2(unit, unit,		object_index, recent_damage_unit, "recent_damage.unit",	false, true, true),
 };
 

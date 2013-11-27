@@ -5,9 +5,77 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/cache/cache_files.hpp>
+
 namespace Yelo
 {
+	struct s_tag_instance;
+
+	namespace TagGroups
+	{
+		class c_cache_file_memory_gestalt;
+	};
+
+	namespace Enums
+	{
+		enum target_game_platform {
+			_target_game_platform_pc,	// PC
+			_target_game_platform_xbox,	// Xbox
+
+			k_number_of_target_game_platforms,
+		};
+
+		enum target_game {
+			_target_game_ce,			// Halo Custom Edition
+			_target_game_stubbs,		// Stubbs the Zombie
+
+			k_number_of_target_games,
+		};
+	};
+
 	namespace Cache
 	{
+		class c_cache_file_builder_base
+		{
+		protected:
+			virtual bool TagInstanceSuitableForCache(const s_tag_instance& instance);
+		};
+
+		class c_cache_file_builder
+		{
+			static const unsigned k_cache_file_tag_memory_alignment_bit = Flags::_alignment_32_bit;
+
+			datum_index* m_tag_index_to_cache_tag_index_table;
+			datum_index m_current_tag_index; // index of the tag currently being processed (streamed, etc)
+
+			struct s_cache_info {
+				TagGroups::c_cache_file_memory_gestalt* memory_gestalt;
+
+				uintptr_t virtual_base_address;
+				byte* memory_buffer;
+				size_t memory_buffer_size;
+				byte* memory_buffer_cursor;
+
+				s_cache_tag_header* tag_header;			// pointer into [memory_buffer]
+				s_cache_tag_instance* tag_instances;	// pointer into [memory_buffer]
+				char* tag_names_buffer;					// pointer into [memory_buffer]
+				size_t tag_names_buffer_size;
+
+				size_t largest_bsp_size;
+				s_cache_header header;
+
+				s_cache_info();
+				~s_cache_info();
+			}m_cache;
+
+			size_t BuildCacheTagIndexTable(_Out_ size_t& predicted_tag_names_buffer_size);
+			void IdentifyCacheBoundTags();
+
+			void StreamTagBlockToBuffer(const tag_block* block);
+			void StreamTagToBuffer(datum_index tag_index);
+		public:
+			c_cache_file_builder();
+			~c_cache_file_builder();
+		};
 	};
 };

@@ -15,7 +15,7 @@ namespace Yelo
 		struct s_console_globals
 		{
 			bool active;
-			bool unk1;
+			bool enabled; // HaloPC only, for -console
 			PAD16;
 
 			s_terminal_state terminal_state;

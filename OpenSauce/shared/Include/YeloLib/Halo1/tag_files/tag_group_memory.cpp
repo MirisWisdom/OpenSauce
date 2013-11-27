@@ -376,6 +376,51 @@ namespace Yelo
 			}
 		}
 
+		void s_tag_field_set_runtime_data::DumpThisToFile(FILE* file, const tag_block_definition* definition) const
+		{
+			fprintf_s(file, "0x%X ", definition->element_size);
+			if (flags.has_runtime_size)
+				fprintf_s(file, "0x%X ", runtime_size);
+			fprintf_s(file, "%s%s\n", definition->name, flags.is_group_header
+				? " (group)"
+				: "");
+
+			if (flags.no_shared_memory)
+				fprintf_s(file, "%s\n", "NO memory sharing");
+			if (flags.is_block_indexed)
+				fprintf_s(file, "%s\n", "IS indexed");
+
+			if (counts.references)
+				fprintf_s(file, "\t%u %s\n", counts.references, "references");
+			if (counts.padding_amount)
+				fprintf_s(file, "\t%u %s\n", counts.padding_amount, "padding");
+			if (counts.tag_reference_fields)
+				fprintf_s(file, "\t%u %s\n", counts.tag_reference_fields, "tag reference fields");
+			if (counts.block_fields)
+				fprintf_s(file, "\t%u %s\n", counts.block_fields, "block fields");
+			if (counts.block_index_fields)
+				fprintf_s(file, "\t%u %s\n", counts.block_index_fields, "block index fields");
+			if (counts.data_fields)
+				fprintf_s(file, "\t%u %s\n", counts.data_fields, "data fields");
+			if (counts.string_fields)
+				fprintf_s(file, "\t%u %s\n", counts.string_fields, "string fields");
+			if (counts.string_id_fields)
+				fprintf_s(file, "\t%u %s\n", counts.string_id_fields, "string_id fields");
+		}
+		void s_tag_field_set_runtime_data::DumpToFile()
+		{
+			if (!Enabled())
+				return;
+
+			auto file = std::unique_ptr<FILE, crt_file_closer>(
+				Settings::CreateReport("group_field_set_info.txt", false, true));
+
+			for (auto definition : GetBlockDefinitionsSet())
+			{
+				definition->GetRuntimeInfo()->DumpThisToFile(file.get(), definition);
+			}
+		}
+
 
 		//////////////////////////////////////////////////////////////////////////
 		// system definitions
@@ -397,16 +442,6 @@ namespace Yelo
 			block_definition->SetRuntimeInfo(info);
 
 			info->Initialize(group_header_definition, block_definition);
-
-#if FALSE
-			YELO_WARN( 
-				"% 56s % 4X % 4X "
-				"% 4d % 4d % 4d "
-				"% 4d % 4d % 8X ",
-				block_definition->name, info->flags, info->runtime_size,
-				info->counts.references, info->counts.tag_reference_fields, info->counts.block_fields, 
-				info->counts.block_index_fields, info->counts.data_fields, info->counts.padding_amount);
-#endif
 
 			return info;
 		}

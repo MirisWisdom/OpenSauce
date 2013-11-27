@@ -12,7 +12,7 @@
 #include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
 #include "Engine/EngineFunctions.hpp"
 #include "TagGroups/TagGroups.hpp"
-
+#include <afxwin.h>
 namespace Yelo
 {
 	namespace Guerilla
@@ -30,8 +30,8 @@ namespace Yelo
 		};
 		struct AFX_MSGMAP
 		{
-			const AFX_MSGMAP_ENTRY* lpEntries;
 			const AFX_MSGMAP* pBaseMap;
+			const AFX_MSGMAP_ENTRY* lpEntries;
 		};
 
 		//////////////////////////////////////////////////////////////////////////
@@ -77,7 +77,7 @@ namespace Yelo
 				mov		ecx, CDC_
 				push	mode
 				call	FUNCTION
-				API_FUNC_NAKED_END(2)
+			API_FUNC_NAKED_END(2)
 		}
 		static API_FUNC_NAKED COLORREF /*__thiscall*/ CDC__SetBkColor(void* CDC_, COLORREF color)
 		{
@@ -97,6 +97,36 @@ namespace Yelo
 				call	[eax+0x34]
 			API_FUNC_NAKED_END(2)
 		}
+		//////////////////////////////////////////////////////////////////////////
+		
+		//////////////////////////////////////////////////////////////////////////
+		// CCmdUI
+		class MFC_CCmdUI
+		{
+		public:
+			virtual void Enable(BOOL bOn);
+			virtual void SetCheck(int nCheck = 1);   // 0, 1 or 2 (indeterminate)
+			virtual void SetRadio(BOOL bOn);
+			virtual void SetText(LPCTSTR lpszText);
+
+			UINT m_nID;
+			UINT m_nIndex;			// menu item or other index
+
+			// if a menu item
+			class CMenu* m_pMenu;   // NULL if not a menu
+			class CMenu* m_pSubMenu;// sub containing menu item
+									// if a popup sub menu - ID is for first in popup
+
+			// if from some other window
+			class CWnd* m_pOther;	// NULL if a menu or not a CWnd
+
+			BOOL m_bEnableChanged;
+			BOOL m_bContinueRouting;
+			UINT m_nIndexMax;		// last + 1 for iterating m_nIndex
+
+			class CMenu* m_pParentMenu;	// NULL if parent menu not easily determined
+										//  (probably a secondary popup menu)
+		};
 		//////////////////////////////////////////////////////////////////////////
 
 
@@ -178,8 +208,7 @@ namespace Yelo
 				int nChars,
 				const field_information* field_info)
 			{
-				// this is causing tag windows to not load...wtf
-				//nChars = TagGroups::StringFieldGetLength(field_info->field);
+				nChars = TagGroups::StringFieldGetLength(field_info->field);
 
 				DDV_MaxChars(pDX, value, nChars);
 			}
@@ -240,7 +269,7 @@ namespace Yelo
 				// ebx = CDC*
 				// edi = CWnd*
 				API_FUNC_NAKED_START_()
-					mov		ecx, [esi+0x70] // field_info
+					mov		ecx, [esi+k_field_dialog_field_information_offset]
 
 					cmp		eax, k_idc_tag_reference_name
 					jz		OnCtlColor__tag_name
@@ -265,7 +294,7 @@ OnCtlColor__tag_name:
 the_end:
 					jmp		THE_END
 //stock_code:
-					jmp		STOCK_CODE
+//					jmp		STOCK_CODE
 				API_FUNC_NAKED_END_()
 			}
 
@@ -297,18 +326,68 @@ the_end:
 			}
 		};
 
+		struct application_extensions
+		{
+			enum {
+				_msgmap_entry_file_open,
+				_msgmap_entry_file_import,							// Ctrl+I
+				_msgmap_entry_file_xsync,							// Ctrl+Shift+S
+				_msgmap_entry_about,
+				_msgmap_entry_source_control_checkout,				// Ctrl+K
+				_msgmap_entry_source_control_checkin,				// Ctrl+U
+				_msgmap_entry_source_control_checkout_undo,
+				_msgmap_entry_source_control_get_latest,			// Ctrl+G
+				_msgmap_entry_file_refresh,
+				_msgmap_entry_source_control_checkin_update,		// update the menu options enablement
+				_msgmap_entry_source_control_checkout_update,
+				_msgmap_entry_source_control_get_latest_update,
+				_msgmap_entry_source_contrl_checkout_undo_update,
+				_msgmap_entry_file_new,
+			};
+
+			static const uintptr_t MESSAGE_ENTRIES = 0x89AB50;
+
+			static void /*__thiscall*/ OnFileXsyncOverride()
+			{
+			}
+			static void /*__thiscall*/ OnUpdateSourceControlCheckinOverride(MFC_CCmdUI* pCmdUI)
+			{
+				pCmdUI->Enable(false);
+			}
+			static void /*__thiscall*/ OnUpdateSourceControlCheckoutOverride(MFC_CCmdUI* pCmdUI)
+			{
+				pCmdUI->Enable(false);
+			}
+			static void /*__thiscall*/ OnUpdateSourceControlGetLatestOverride(MFC_CCmdUI* pCmdUI)
+			{
+				pCmdUI->Enable(false);
+			}
+			static void /*__thiscall*/ OnUpdateSourceControlCheckoutUndoOverride(MFC_CCmdUI* pCmdUI)
+			{
+				pCmdUI->Enable(false);
+			}
+			static void Initialize()
+			{
+				auto entries = CAST_PTR(AFX_MSGMAP_ENTRY*, MESSAGE_ENTRIES);
+				//entries[_msgmap_entry_file_xsync].pfn = OnFileXsyncOverride;
+				entries[_msgmap_entry_source_control_checkin_update].pfn = OnUpdateSourceControlCheckinOverride;
+				entries[_msgmap_entry_source_control_checkout_update].pfn = OnUpdateSourceControlCheckoutOverride;
+				entries[_msgmap_entry_source_control_get_latest_update].pfn = OnUpdateSourceControlGetLatestOverride;
+				entries[_msgmap_entry_source_contrl_checkout_undo_update].pfn = OnUpdateSourceControlCheckoutUndoOverride;
+			}
+		};
+
 		void IntializeBeforeTagGroupsInitalize()
 		{
 		}
 
 		void Initialize()
 		{
-			// TODO: currently getting an 0xC000041D error when the string_dialog is setup to pipe to
-			// tag_reference_dialog's OnCtlColor function...not really sure why
-			// If the message map entry for CtlColor is removed, everything is fine
-			//string_dialog_extensions::Initialize();
+			string_dialog_extensions::Initialize();
 
 			field_dialog_string_id_extensions::Initialize();
+
+			application_extensions::Initialize();
 		}
 
 		void Dispose()

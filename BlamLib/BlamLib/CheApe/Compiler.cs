@@ -94,7 +94,7 @@ namespace BlamLib.CheApe
 
 				4 + // FixupCount
 				4 + // FixupAddress
-				4 + // pad32;
+				4 + // ExportsAddress
 				4 + // pad32;
 
 				4; // tail
@@ -230,6 +230,8 @@ namespace BlamLib.CheApe
 			}
 			#endregion
 
+			public uint ExportsAddress { get; set; }
+
 			internal CacheFileHeader(CacheFileHeader old_state)
 			{
 				if (old_state == null) throw new ArgumentNullException("old_state");
@@ -266,7 +268,7 @@ namespace BlamLib.CheApe
 
 				stream.Write(fixupCount);
 				stream.Write(fixupAddress);
-				stream.Write(uint.MinValue);
+				stream.Write(ExportsAddress);
 				stream.Write(uint.MinValue);
 
 				stream.Write(Padding);
@@ -279,11 +281,12 @@ namespace BlamLib.CheApe
 		public abstract class Object : IO.IStreamable
 		{
 			#region IStreamable Members
-			public virtual void Read(IO.EndianReader stream) { throw new Exception("The method or operation is not implemented."); }
+			public virtual void Read(IO.EndianReader stream) { throw new NotImplementedException(); }
 			public abstract void Write(IO.EndianWriter stream);
 			#endregion
 		};
 
+		#region Fixups
 		/// <summary>
 		/// _enum type;
 		/// int16 type_data;
@@ -434,6 +437,14 @@ namespace BlamLib.CheApe
 			}
 			#endregion
 		};
+		#endregion
+
+		#region Exports
+		internal bool AddExport(Import.Object obj)
+		{
+			return false;
+		}
+		#endregion
 
 		// Fixup utilities for Field fixups
 		internal interface IField : IO.IStreamable

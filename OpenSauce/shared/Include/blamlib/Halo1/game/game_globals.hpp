@@ -181,7 +181,7 @@ namespace Yelo
 			TAG_PAD(int32, 11);
 		}; BOOST_STATIC_ASSERT( sizeof(s_game_globals_player_information) == 0xF4 );
 
-		struct s_game_globals_player_representation
+		struct s_game_globals_player_representation // game_globals_first_person_interface
 		{
 			TAG_FIELD(tag_reference, fp_hands, 'mod2');
 			TAG_FIELD(tag_reference, base_bitmap, 'bitm');
@@ -246,7 +246,9 @@ namespace Yelo
 		{
 			enum { k_group_tag = 'matg' };
 
-			TAG_PAD(byte, 248);
+			long_enum language;
+
+			TAG_PAD(byte, 244);
 
 			TAG_TBLOCK(sounds, tag_reference);
 			TAG_TBLOCK(camera, tag_reference);

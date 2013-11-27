@@ -75,7 +75,7 @@ BEGIN
             VALUE "FileDescription", "OpenSauce - Yelo Module (Halo1_CE)"
             VALUE "FileVersion", BOOST_PP_STRINGIZE(K_OPENSAUCE_VERSION_BUILD_MAJ) "." BOOST_PP_STRINGIZE(K_OPENSAUCE_VERSION_BUILD_MIN) "." BOOST_PP_STRINGIZE(K_OPENSAUCE_VERSION_BUILD)
             VALUE "InternalName", "Halo1_CE"
-            VALUE "LegalCopyright", "Copyright (C) 2013"
+            VALUE "LegalCopyright", "Copyright (C) 2014"
             VALUE "OriginalFilename", "Halo1_CE.dll"
             VALUE "ProductName", "OpenSauce - Yelo Module (Halo1_CE)"
             VALUE "ProductVersion", BOOST_PP_STRINGIZE(K_OPENSAUCE_VERSION_BUILD_MAJ) "." BOOST_PP_STRINGIZE(K_OPENSAUCE_VERSION_BUILD_MIN) "." BOOST_PP_STRINGIZE(K_OPENSAUCE_VERSION_BUILD)

@@ -28,7 +28,7 @@ namespace Yelo
 			k_idc_field_dialog_name = 0x154,	// field_dialog_named's 'name' IDC
 			k_idc_field_dialog_units = 0x17F,	// field_dialog_named_with_units's 'units' IDC
 
-			k_field_dialog_field_information_offset = 0x5C,	// field_information*
+			k_field_dialog_field_information_offset = 0x70,	// field_information*
 		};
 
 		enum /*tag_reference_dialog*/ { // sizeof(0x510)
