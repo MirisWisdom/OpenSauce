@@ -54,7 +54,7 @@
   <PropertyGroup>
     <OSRequiresDirectX>true</OSRequiresDirectX>
     <OSRequiresCppBoost>true</OSRequiresCppBoost>
-	<OSRequiresHaloCustomEd>true</OSRequiresHaloCustomEd>
+    <OSRequiresHaloCustomEd>true</OSRequiresHaloCustomEd>
   </PropertyGroup>
   <Import Project="$(SolutionDir)..\shared\config\msbuild\OpenSauce.props" />
   <Import Project="$(SolutionDir)shared\config\msbuild\CrashRpt.props" />
@@ -85,15 +85,15 @@
   </ItemDefinitionGroup>
   <PropertyGroup Condition=" '$(OSPlatformType)'=='Guerilla' ">
     <TargetName>CheApeDLLG</TargetName>
-	<OSDebugExecutableName>OS_Guerilla.exe</OSDebugExecutableName>
+    <OSDebugExecutableName>OS_Guerilla.exe</OSDebugExecutableName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(OSPlatformType)'=='Tool' ">
     <TargetName>CheApeDLLT</TargetName>
-	<OSDebugExecutableName>OS_Tool.exe</OSDebugExecutableName>
+    <OSDebugExecutableName>OS_Tool.exe</OSDebugExecutableName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(OSPlatformType)'=='Sapien' ">
     <TargetName>CheApeDLLS</TargetName>
-	<OSDebugExecutableName>OS_Sapien.exe</OSDebugExecutableName>
+    <OSDebugExecutableName>OS_Sapien.exe</OSDebugExecutableName>
   </PropertyGroup>
   <Import Project="$(OSRootDir)shared\config\msbuild\OpenSauceDebuggerDefaults.props" />
   <ItemGroup>
@@ -101,6 +101,10 @@
     <ClCompile Include="Engine\EngineFunctions.cpp" />
     <ClCompile Include="Engine\GrenadeTypesUpgrade.cpp" />
     <ClCompile Include="Engine\Scripting.cpp" />
+    <ClCompile Include="Guerilla\field_dialog_extensions.cpp" />
+    <ClCompile Include="Guerilla\guerilla_application_extensions.cpp" />
+    <ClCompile Include="Guerilla\string_dialog_extensions.cpp" />
+    <ClCompile Include="Guerilla\tag_reference_dialog_extensions.cpp" />
     <ClCompile Include="Tool\BuildCacheFile.cpp" />
     <ClCompile Include="Tool\TagMaintenance.cpp" />
     <ClCompile Include="Yelo\MemoryFixups.cpp" />
@@ -135,6 +139,10 @@
     <ClInclude Include="Engine\EngineFunctions.hpp" />
     <ClInclude Include="Engine\GrenadeTypesUpgrade.hpp" />
     <ClInclude Include="Engine\Scripting.hpp" />
+    <ClInclude Include="Guerilla\field_dialog_extensions.hpp" />
+    <ClInclude Include="Guerilla\guerilla_application_extensions.hpp" />
+    <ClInclude Include="Guerilla\string_dialog_extensions.hpp" />
+    <ClInclude Include="Guerilla\tag_reference_dialog_extensions.hpp" />
     <ClInclude Include="Tool\BuildCacheFile.hpp" />
     <ClInclude Include="Tool\TagMaintenance.hpp" />
     <ClInclude Include="Yelo\MemoryFixups.hpp" />

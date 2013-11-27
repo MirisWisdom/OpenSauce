@@ -37,6 +37,11 @@
 	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\game\game_engine_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\game\game_results_yelo.hpp" />
   </ItemGroup>
+  <ItemGroup  Condition=" '$(OSPlatformIsEditor)' == 'true' "
+    > <!--guerilla EDITOR-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\guerilla\mfc_interfaces.hpp" />
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\guerilla\mfc_interfaces.cpp" />
+  </ItemGroup>
   <ItemGroup
     > <!--hs-->
 	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_yelo.hpp" />

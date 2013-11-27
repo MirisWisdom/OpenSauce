@@ -77,15 +77,15 @@ namespace BlamLib.CheApe
 
 			internal void ExplicitlyExport(ProjectState state)
 			{
-				mIsExported = true;
-				state.Compiler.AddExport(this);
+//				mIsExported = true;
+//				state.Compiler.AddExport(this);
 			}
 			protected void InitializeForExport(ProjectState state, IO.XmlStream s)
 			{
 				s.ReadAttributeOpt("export", ref mIsExported);
 
-				if (IsExported)
-					state.Compiler.AddExport(this);
+//				if (IsExported)
+//					state.Compiler.AddExport(this);
 			}
 			#endregion
 
