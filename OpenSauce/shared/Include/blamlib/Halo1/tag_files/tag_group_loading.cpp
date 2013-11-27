@@ -76,7 +76,7 @@ namespace Yelo
 
 			//YELO_ASSERT( data_definition ); // engine does this, but I don't see why
 
-			if( !tag_file_read(data->stream_position, data->size, data->address) )
+			if( !tag_file_read(data->stream_position, data->size, address) )
 			{
 				YELO_WARN("couldn't read #%d bytes for %s data",
 					data->size, data_definition->name); // NOTE: added this warning
@@ -85,7 +85,7 @@ namespace Yelo
 			}
 
 			if( data_definition->byte_swap_proc != nullptr )
-				data_definition->byte_swap_proc(block_element, data->address, data->size);
+				data_definition->byte_swap_proc(block_element, address, data->size);
 
 			return true;
 		}
