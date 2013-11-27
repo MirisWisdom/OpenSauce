@@ -25,6 +25,7 @@ namespace BlamLib.Blam.Halo1.CheApe
 
 			// Will add itself to the import state in the ctor
 			StringIdFieldDefinition = new TagReference(state, kStringIdFieldDefinitionName, true, kStringIdGroupTag);
+			StringIdFieldDefinition.ExplicitlyExport(state);
 			StringIdFieldHandlePadding = new Field(state, state.kTypeIndexPad, "", kStringIdPadSize.ToString());
 		}
 
@@ -133,7 +134,6 @@ namespace BlamLib.Blam.Halo1.CheApe
 		/// XmlNode interface for a tag block definition
 		/// [string: name]
 		/// [int: maxElements]
-		/// [boolean: dontReadChildren]
 		/// [list: fields]
 		/// </summary>
 		public sealed class TagBlock : BlamLib.CheApe.Import.Block
@@ -151,8 +151,6 @@ namespace BlamLib.Blam.Halo1.CheApe
 			/// </summary>
 			public int MaxElements	{ get { return maxElements; } }
 			#endregion
-
-			public readonly bool DontReadChildren;
 
 			#region Fields
 			FieldContainer mFields = new FieldContainer();
@@ -175,7 +173,6 @@ namespace BlamLib.Blam.Halo1.CheApe
 			public TagBlock(BlamLib.CheApe.ProjectState state, IO.XmlStream s) : base(state, s)
 			{
 				s.ReadAttribute("maxElements", 10, ref maxElements);
-				s.ReadAttributeOpt("dontReadChildren", ref DontReadChildren);
 
 				mFields.Read(state, s);
 			}
@@ -196,6 +193,7 @@ namespace BlamLib.Blam.Halo1.CheApe
 		/// [int: version]
 		/// [boolean: isIncludedInTagGroupsChecksum]
 		/// [boolean: reloadable]
+		/// [boolean: debugOnly]
 		/// [list: fields]
 		/// </summary>
 		new public sealed class TagGroup : BlamLib.CheApe.Import.TagGroup
@@ -207,6 +205,7 @@ namespace BlamLib.Blam.Halo1.CheApe
 
 			public readonly bool IsIncludedInTagGroupsChecksum;
 			public readonly bool Reloadable;
+			public readonly bool DebugOnly;
 
 			/// <summary>
 			/// Constructs a tag group definition from an xml definition node
@@ -217,6 +216,7 @@ namespace BlamLib.Blam.Halo1.CheApe
 			{
 				s.ReadAttributeOpt("isIncludedInTagGroupsChecksum", ref IsIncludedInTagGroupsChecksum);
 				s.ReadAttributeOpt("reloadable", ref Reloadable);
+				s.ReadAttributeOpt("debugOnly", ref DebugOnly);
 
 				block = new TagBlock();
 				block.DisplayName = name;

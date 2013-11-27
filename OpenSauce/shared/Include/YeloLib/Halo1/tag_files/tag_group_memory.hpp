@@ -118,7 +118,11 @@ namespace Yelo
 			void BuildByteComparisonCodes(const tag_block_definition* definition);
 			void DestroyByteComparisonCodes();
 
+			void DumpThisToFile(FILE* file, const tag_block_definition* definition) const;
 		public:
+			/// <summary>	Dumps all interesting field set data to group_field_set_info.txt in the OS Reports folder. </summary>
+			static void DumpToFile();
+
 			static bool Enabled();
 		}; BOOST_STATIC_ASSERT( sizeof(s_tag_field_set_runtime_data) == 0x18 );
 

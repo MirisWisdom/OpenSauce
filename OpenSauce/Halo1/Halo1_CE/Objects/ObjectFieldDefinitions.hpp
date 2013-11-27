@@ -46,7 +46,7 @@ namespace Yelo
 			_unit_field_object_index_throwing_grenade_projectile,
 			_unit_field_object_index_weapon,
 			_unit_field_object_index_equipment,
-			_unit_field_object_index_40C, // TBD, when we verify the full extent of the  field at 0x40C
+			_unit_field_object_index_40C, // TBD, when we verify the full extent of the field at 0x40C
 			_unit_field_object_index_damage_responsible_flamer_object,
 			_unit_field_object_index_recent_damage_unit,
 
@@ -89,7 +89,7 @@ namespace Yelo
 
 		void ObjectDataGetRealByName(s_object_header_datum* header, 
 			cstring data_name, cstring subdata_name,
-			__inout TypeHolder& result);
+			_Inout_ TypeHolder& result);
 		void ObjectDataSetRealByName(s_object_header_datum* header, 
 			cstring data_name, cstring subdata_name,
 			real data_value);
@@ -97,14 +97,14 @@ namespace Yelo
 		
 		void WeaponDataGetRealByName(s_weapon_datum* weapon, 
 			cstring data_name,
-			__inout TypeHolder& result);
+			_Inout_ TypeHolder& result);
 		void WeaponDataSetRealByName(s_weapon_datum* weapon, 
 			cstring data_name,
 			real data_value);
 
 		void WeaponDataMagazineGetIntegerByName(s_weapon_datum* weapon, int32 magazine_index, 
 			cstring data_name, cstring subdata_name, 
-			__inout TypeHolder& result);
+			_Inout_ TypeHolder& result);
 		void WeaponDataMagazineSetIntegerByName(s_weapon_datum* weapon, int32 magazine_index, 
 			cstring data_name, cstring subdata_name, 
 			int32 data_value);
@@ -116,17 +116,17 @@ namespace Yelo
 
 		void UnitDataGetObjectIndexByName(s_unit_datum* unit, 
 			cstring data_name,
-			__inout TypeHolder& result);
+			_Inout_ TypeHolder& result);
 
 		void UnitDataGetIntegerByName(s_unit_datum* unit, 
 			cstring data_name,
-			__inout TypeHolder& result);
+			_Inout_ TypeHolder& result);
 		void UnitDataSetIntegerByName(s_unit_datum* unit, 
 			cstring data_name,
 			int32 data_value);
 		void UnitDataGetRealByName(s_unit_datum* unit, 
 			cstring data_name,
-			__inout TypeHolder& result);
+			_Inout_ TypeHolder& result);
 		void UnitDataSetRealByName(s_unit_datum* unit, 
 			cstring data_name,
 			real data_value);

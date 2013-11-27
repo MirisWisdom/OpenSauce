@@ -37,54 +37,64 @@ namespace Yelo
 #pragma warning( disable : 4312 ) // bitching about typecast
 		__declspec(noinline) BOOL WriteMemory(void* address, void* value)
 		{
-			*CAST_PTR(uint32*, address) = CAST_PTR(uint32, value);
+			*CAST_PTR(uint32*, address) = CAST_PTR(uintptr_t, value);
 			return true;
 		}
 
 		__declspec(noinline) void CreateHookRelativeCall(void* hook, void* hook_address, byte end)
 		{
-			static byte CreateHookRelativeJmp_asm_code[] =
+			struct relative_call_bytes : Opcode::s_call
 			{
-				Enums::_x86_opcode_call_near, 0x00, 0x00, 0x00, 0x00, // call near
-				0x00 // retn\nop
-			};
+				byte End;
+			}; BOOST_STATIC_ASSERT(sizeof(relative_call_bytes) == 6);
+			// call near ....
+			// retn\nop
+			relative_call_bytes asm_bytes;
 
-			byte* asm_code = &CreateHookRelativeJmp_asm_code[0];
-
-			uint32* temp = CAST_PTR(uint32*, &asm_code[1]);
+			asm_bytes.Op = Enums::_x86_opcode_call_near;
 
 			// relative call to [hook]
-			*temp = CAST_PTR(uint32, hook) - CAST_PTR(uint32, hook_address) - 5;
+			asm_bytes.Address =  CAST_PTR(intptr_t, hook) -
+								(CAST_PTR(intptr_t, hook_address) + 
+								 sizeof(Opcode::s_call));
 
-			asm_code[5] = end;
+			asm_bytes.End = end;
 
-			WriteMemory(hook_address, asm_code, sizeof(CreateHookRelativeJmp_asm_code));
+			WriteMemory(hook_address, &asm_bytes, sizeof(asm_bytes));
 		}
 
-		__declspec(noinline) uint32 WriteRelativeJmp(void* to_address, void* jmp_address, bool write_opcode)
+		__declspec(noinline) uintptr_t WriteRelativeJmp(void* to_address, void* jmp_address, bool write_opcode)
 		{
-			static byte real_opcode = Enums::_x86_opcode_jmp_near; // jmp [function]
+			byte real_opcode = Enums::_x86_opcode_jmp_near; // jmp [function]
+			if (write_opcode)
+				WriteMemory(jmp_address, &real_opcode, sizeof(real_opcode));
 
-			if(write_opcode) WriteMemory(jmp_address, &real_opcode, sizeof(real_opcode));
+			uintptr_t original = CAST_PTR(intptr_t, jmp_address) + 
+								*CAST_PTR(intptr_t*, CAST_PTR(uint32, jmp_address)+1) + 
+								sizeof(Opcode::s_call);
 
-			uint32 original = CAST_PTR(uint32, jmp_address) + *CAST_PTR(uint32*, CAST_PTR(uint32, jmp_address)+1) + 5;
-
-			uint32 relative = CAST_PTR(uint32, to_address) - (CAST_PTR(uint32, jmp_address) + 5);
-			WriteMemory(CAST_PTR(void*, CAST_PTR(uint32, jmp_address)+1 ), CAST_PTR(void*, relative));
+			uintptr_t relative = CAST_PTR(intptr_t, to_address) - 
+								(CAST_PTR(intptr_t, jmp_address) + 
+								 sizeof(Opcode::s_call));
+			WriteMemory(CAST_PTR(void*, CAST_PTR(uintptr_t, jmp_address) + 1), CAST_PTR(void*, relative));
 
 			return original;
 		}
 
-		__declspec(noinline) uint32 WriteRelativeCall(void* to_address, void* call_address, bool write_opcode)
+		__declspec(noinline) uintptr_t WriteRelativeCall(void* to_address, void* call_address, bool write_opcode)
 		{
-			static byte real_opcode = Enums::_x86_opcode_call_near; // call [function]
+			byte real_opcode = Enums::_x86_opcode_call_near; // call [function]
+			if (write_opcode)
+				WriteMemory(call_address, &real_opcode, sizeof(real_opcode));
 
-			if(write_opcode) WriteMemory(call_address, &real_opcode, sizeof(real_opcode));
+			uintptr_t original = CAST_PTR(intptr_t, call_address) + 
+								*CAST_PTR(intptr_t*, CAST_PTR(uint32, call_address)+1) + 
+								sizeof(Opcode::s_call);
 
-			uint32 original = CAST_PTR(uint32, call_address) + *CAST_PTR(uint32*, CAST_PTR(uint32, call_address)+1) + 5;
-
-			uint32 relative = CAST_PTR(uint32, to_address) - (CAST_PTR(uint32, call_address) + 5);
-			WriteMemory(CAST_PTR(void*, CAST_PTR(uint32, call_address)+1 ), CAST_PTR(void*, relative));
+			uintptr_t relative = CAST_PTR(intptr_t, to_address) - 
+								(CAST_PTR(intptr_t, call_address) + 
+								 sizeof(Opcode::s_call));
+			WriteMemory(CAST_PTR(void*, CAST_PTR(uintptr_t, call_address)+1 ), CAST_PTR(void*, relative));
 
 			return original;
 		}
@@ -103,9 +113,9 @@ namespace Yelo
 			call_address->Op = Enums::_x86_opcode_call_near;// set the new
 			call->Address = call_address->Address;			// copy the old
 			call_address->Address =							// set the new
-				CAST_PTR(uint32, target) -		// cast the pointer to a number to perform math on
+				CAST_PTR(intptr_t, target) -				// cast the pointer to a number to perform math on
 				(
-					CAST_PTR(uint32, address) + sizeof(Opcode::s_call)
+					CAST_PTR(intptr_t, address) + sizeof(Opcode::s_call)
 				);
 		}
 
@@ -145,9 +155,9 @@ namespace Yelo
 			jmp_address->Op = Enums::_x86_opcode_jmp_near;	// set the new
 			jmp->Address = jmp_address->Address;			// copy the old
 			jmp_address->Address =							// set the new
-				CAST_PTR(uint32, target) -		// cast the pointer to a number to perform math on
+				CAST_PTR(intptr_t, target) -				// cast the pointer to a number to perform math on
 				(
-					CAST_PTR(uint32, address) + sizeof(Opcode::s_call)
+					CAST_PTR(intptr_t, address) + sizeof(Opcode::s_call)
 				);
 		}
 
@@ -157,9 +167,9 @@ namespace Yelo
 
 			CAST_PTR(Opcode::s_call*, jmp_buffer)->Address = jmp_address->Address; // copy the old
 			jmp_address->Address =				// set the new
-				CAST_PTR(uint32, target) -		// cast the pointer to a number to perform math on
+				CAST_PTR(intptr_t, target) -	// cast the pointer to a number to perform math on
 				(
-					CAST_PTR(uint32, address) + sizeof(Opcode::s_call)
+					CAST_PTR(intptr_t, address) + sizeof(Opcode::s_call)
 				);
 		}
 #pragma warning( pop )
@@ -190,40 +200,82 @@ namespace Yelo
 				this->IsInitialized = 
 				memcpy_s(UndoData.data(), UndoData.size(), MemoryAddress, UndoData.size()) == k_errnone;
 		}
+	};
+};
 
+//////////////////////////////////////////////////////////////////////////
+// CRC32 hacks
+// http://stackoverflow.com/questions/2587766/how-is-a-crc32-checksum-calculated
+
+template<size_t k_polynomial, size_t k_value>
+struct crc_table_generator_round_piecemeal
+{
+	enum {
+		value=(k_value  & 1)
+			? (k_value >> 1) ^ k_polynomial
+			:  k_value >> 1
+	};
+};
+template<size_t k_polynomial, size_t k_round_index>
+struct crc_table_generator_round
+{
+	enum {
+		value = crc_table_generator_round_piecemeal<k_polynomial,
+					crc_table_generator_round_piecemeal<k_polynomial,
+						crc_table_generator_round_piecemeal<k_polynomial,
+							crc_table_generator_round_piecemeal<k_polynomial,
+								crc_table_generator_round_piecemeal<k_polynomial,
+									crc_table_generator_round_piecemeal<k_polynomial,
+										crc_table_generator_round_piecemeal<k_polynomial,
+											crc_table_generator_round_piecemeal<k_polynomial,k_round_index>::value
+										>::value
+									>::value
+								>::value
+							>::value
+						>::value
+					>::value
+				>::value,
+	};
+};
+
+// TODO: my mind is a blank right now on how to use variadics to expand something like:
+// crc_table_generator<CRC32_POLYNOMIAL, CRC_TABLE_SIZE>::value
+// where [value] is an std::array<uint, CRC_TABLE_SIZE>. so, we have the hack seen below
+
+#define CRC_TABLE_DEFINE_ROUND(z, n, polynomial)	\
+	crc_table_generator_round<polynomial, n##0+0>::value, crc_table_generator_round<polynomial, n##0+1>::value, \
+	crc_table_generator_round<polynomial, n##0+2>::value, crc_table_generator_round<polynomial, n##0+3>::value, \
+	crc_table_generator_round<polynomial, n##0+4>::value, crc_table_generator_round<polynomial, n##0+5>::value, \
+	crc_table_generator_round<polynomial, n##0+6>::value, crc_table_generator_round<polynomial, n##0+7>::value, \
+	crc_table_generator_round<polynomial, n##0+8>::value, crc_table_generator_round<polynomial, n##0+9>::value
+#define CRC32_TABLE_DEFINE_END_ROUNDS(polynomial)	\
+	crc_table_generator_round<polynomial, 250+0>::value, crc_table_generator_round<polynomial, 250+1>::value,	\
+	crc_table_generator_round<polynomial, 250+2>::value, crc_table_generator_round<polynomial, 250+3>::value,	\
+	crc_table_generator_round<polynomial, 250+4>::value, crc_table_generator_round<polynomial, 250+5>::value,
 
 #define CRC_TABLE_SIZE 256
 #define CRC32_POLYNOMIAL 0xEDB88320L
-		static std::array<uint32, CRC_TABLE_SIZE> crc_table;
-		static bool crc_table_initialized = false;
+static std::array<Yelo::uint32, CRC_TABLE_SIZE> g_crc32_table = {
+	// 000 to 250
+	BOOST_PP_ENUM(25, CRC_TABLE_DEFINE_ROUND, CRC32_POLYNOMIAL),
+	// 250 to 255
+	CRC32_TABLE_DEFINE_END_ROUNDS(CRC32_POLYNOMIAL)
+};
+#undef CRC_TABLE_DEFINE_ROUND
+#undef CRC32_TABLE_DEFINE_END_ROUNDS
 
-		static void BuildCrcTable()
-		{
-			for(size_t index = 0; index < crc_table.size(); ++index)
-			{
-				uint32 crc = index;
-				for(int16 j = 0; j < 8; j++)
-				{
-					if(crc & 1) crc = (crc>>1) ^ CRC32_POLYNOMIAL;
-					else crc >>= 1;
-				}
-				crc_table[index] = crc;
-			}
-		}
-
+namespace Yelo
+{
+	namespace Memory
+	{
 		uint32 CRC(uint32& crc_reference, const void* buffer, int32 size)
 		{
-			if( !crc_table_initialized ) BuildCrcTable();
+			auto p = CAST_PTR(const byte*, buffer);
 
-			const byte* p;
-			uint32 a;
-			uint32 b;
-
-			p = CAST_PTR(const byte*, buffer);
 			while (size--) 
 			{
-				a = (crc_reference >> 8) & 0x00FFFFFFL;
-				b = crc_table[( (int32) crc_reference ^ *p++) & 0xFF];
+				uint32 a = (crc_reference >> 8) & 0x00FFFFFFL;
+				uint32 b = g_crc32_table[( (int32) crc_reference ^ *p++) & 0xFF];
 				crc_reference = a^b;
 			}
 

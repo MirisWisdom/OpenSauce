@@ -129,7 +129,7 @@ namespace Yelo
 		}
 
 #ifdef API_DEBUG
-		static void PLATFORM_API BlamError(void* /*error_return_address*/,
+		static void PLATFORM_API BlamErrorHook(void* /*error_return_address*/,
 			Enums::error_message_priority priority, cstring format, /*...*/
 			cstring assert_kind, cstring file, int32 line, cstring reason)
 		{
@@ -137,11 +137,11 @@ namespace Yelo
 				DebugBreak();
 		}
 
-		static API_FUNC_NAKED void BlamErrorHook_Hook()
+		static API_FUNC_NAKED void BlamErrorHook_Trampoline()
 		{
 			API_FUNC_NAKED_START_()
 				add		esp, 408h
-				call	BlamError
+				call	BlamErrorHook
 			API_FUNC_NAKED_END_()
 		}
 #endif
@@ -172,7 +172,7 @@ namespace Yelo
 			{
 				// put a hook at the end of error(). hook will not handle priority==0 cases
 				byte* error_proc_eof = CAST_PTR(byte*, blam::error) + PLATFORM_VALUE(0x290, 0x2A8, 0x29A);
-				Memory::WriteRelativeJmp(BlamErrorHook_Hook, error_proc_eof, true);
+				Memory::WriteRelativeJmp(BlamErrorHook_Trampoline, error_proc_eof, true);
 			}
 #endif
 		}
