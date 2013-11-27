@@ -204,6 +204,30 @@ namespace Yelo
 			Units::DisposeFromOldMap();
 		}
 
+#ifdef API_DEBUG
+		static void DumpObjectWithNonZeropadding(s_object_data* object, cstring prefix)
+		{
+			TagGroups::group_tag_to_string gt_string = { blam::tag_get_group_tag(object->definition_index) };
+
+			Engine::Console::TerminalPrintF("%s %s %s\n",
+				prefix, gt_string.TagSwap().Terminate().str, blam::tag_get_name(object->definition_index));
+		}
+		static void DumpObjectsWithNonZeroPadding()
+		{
+			if (TagGroups::_global_yelo->flags.cache_is_protected_bit)
+				return;
+
+			byte zero_buffer[FIELD_SIZEOF(s_object_data, unknown1C)];
+			for (auto iter : c_object_iterator::all())
+			{
+				if (std::memcmp(zero_buffer, iter->unknown1C, NUMBEROF(iter->unknown1C)) != 0)
+					DumpObjectWithNonZeropadding(iter.datum, "non-zero");
+
+				if (iter->type == Enums::_object_type_biped)
+					DumpObjectWithNonZeropadding(iter.datum, "test");
+			}
+		}
+#endif
 		void PLATFORM_API Update()
 		{
 			static const uintptr_t OBJECTS_GARBAGE_COLLECTION = GET_FUNC_PTR(OBJECTS_GARBAGE_COLLECTION);
@@ -212,6 +236,7 @@ namespace Yelo
 			}
 
 			// Do custom code here:
+			DebugOnly( DumpObjectsWithNonZeroPadding() );
 		}
 
 		void InitializeForYeloGameState(bool enabled)

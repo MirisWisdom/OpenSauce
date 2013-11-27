@@ -111,15 +111,15 @@ namespace Yelo
 	typedef unsigned long tag;
 
 	// an enumerated value in a 1 byte range
-	typedef unsigned char byte_enum;
+	typedef signed char byte_enum;
 #define pad_byte_enum PAD8
 
 	// an enumerated value in a 2 byte range
-	typedef unsigned short _enum;
+	typedef signed short _enum;
 #define pad_enum PAD16
 
 	// an enumerated value in a 4 byte range (not an officially used type in halo 1 tags, at least not up front anyway)
-	typedef unsigned long long_enum;
+	typedef signed long long_enum;
 #define pad_long_enum PAD32
 
 	// bit flags in a 1 byte range

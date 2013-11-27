@@ -33,8 +33,8 @@ namespace Yelo
 
 			static int __cdecl qsort_proc(void* ctxt, const void* _lhs, const void* _rhs)
 			{
-				const s_object_field_definition* lhs = CAST_PTR(const s_object_field_definition*, _lhs);
-				const s_object_field_definition* rhs = CAST_PTR(const s_object_field_definition*, _rhs);
+				auto lhs = CAST_PTR(const s_object_field_definition*, _lhs);
+				auto rhs = CAST_PTR(const s_object_field_definition*, _rhs);
 
 				return _stricmp(lhs->name, rhs->name);
 			}
@@ -46,8 +46,8 @@ namespace Yelo
 
 			static int __cdecl bsearch_proc(void* ctxt, const void* key, const void* field_definition)
 			{
-				const char* lhs = CAST_PTR(const char*, key);
-				const s_object_field_definition* rhs = CAST_PTR(const s_object_field_definition*, field_definition);
+				auto lhs = CAST_PTR(const char*, key);
+				auto rhs = CAST_PTR(const s_object_field_definition*, field_definition);
 
 				return rhs->is_subscripted ? _strnicmp(lhs, rhs->name, rhs->name_length) : _stricmp(lhs, rhs->name);
 			}
@@ -75,14 +75,16 @@ namespace Yelo
 
 		static int ObjectFunctionNameToIndex(cstring function_name)
 		{
+			using namespace Enums;
+
 			if(function_name != nullptr)
 			{
 				switch(function_name[0])
 				{
-				case 'a': return Enums::_outgoing_object_function_a;
-				case 'b': return Enums::_outgoing_object_function_b;
-				case 'c': return Enums::_outgoing_object_function_c;
-				case 'd': return Enums::_outgoing_object_function_d;
+				case 'a': return _outgoing_object_function_a;
+				case 'b': return _outgoing_object_function_b;
+				case 'c': return _outgoing_object_function_c;
+				case 'd': return _outgoing_object_function_d;
 				}
 			}
 
@@ -135,10 +137,10 @@ namespace Yelo
 
 		template<size_t _SizeOfArray, typename TObjectDatum, typename TGetterParam>
 		static void ObjectFieldGetImpl(
-			s_object_field_definition (&list)[_SizeOfArray], cstring name, TObjectDatum& obj, 
-			__inout TypeHolder& result,
+			const s_object_field_definition (&list)[_SizeOfArray], cstring name, TObjectDatum& obj, 
+			_Inout_ TypeHolder& result,
 			TGetterParam getter_param,
-			bool (API_FUNC* getter_proc)(const s_object_field_definition&, TObjectDatum&, __inout TypeHolder&, TGetterParam)
+			bool (API_FUNC* getter_proc)(const s_object_field_definition&, TObjectDatum&, _Inout_ TypeHolder&, TGetterParam)
 			)
 		{
 			const auto* field = s_object_field_definition::bsearch_list(list, name);
@@ -153,10 +155,10 @@ namespace Yelo
 		}
 		template<size_t _SizeOfArray, typename TObjectDatum, typename TGetterParam, typename TDataType>
 		static void ObjectFieldSetImpl(
-			s_object_field_definition (&list)[_SizeOfArray], cstring name, TObjectDatum& obj, 
+			const s_object_field_definition (&list)[_SizeOfArray], cstring name, TObjectDatum& obj, 
 			TDataType data_value,
 			TGetterParam getter_param,
-			bool (API_FUNC* getter_proc)(const s_object_field_definition&, TObjectDatum&, __inout TypeHolder&, TGetterParam)
+			bool (API_FUNC* getter_proc)(const s_object_field_definition&, TObjectDatum&, _Inout_ TypeHolder&, TGetterParam)
 			)
 		{
 			const auto* field = s_object_field_definition::bsearch_list(list, name);
@@ -188,7 +190,7 @@ namespace Yelo
 		// Real
 		void ObjectDataGetRealByName(s_object_header_datum* header, 
 			cstring data_name, cstring subdata_name,
-			__inout TypeHolder& result)
+			_Inout_ TypeHolder& result)
 		{
 			ObjectFieldGetImpl(g_object_real_fields, data_name, *header, 
 				result, subdata_name,
@@ -230,7 +232,7 @@ namespace Yelo
 		// Real
 		void WeaponDataGetRealByName(s_weapon_datum* weapon, 
 			cstring data_name,
-			__inout TypeHolder& result)
+			_Inout_ TypeHolder& result)
 		{
 			ObjectFieldGetImpl(g_weapon_real_fields, data_name, weapon->weapon, 
 				result, (void*)nullptr,
@@ -248,7 +250,7 @@ namespace Yelo
 		// magazine - Integer
 		void WeaponDataMagazineGetIntegerByName(s_weapon_datum* weapon, int32 magazine_index, 
 			cstring data_name, cstring subdata_name, 
-			__inout TypeHolder& result)
+			_Inout_ TypeHolder& result)
 		{
 			if (magazine_index >= 0 && magazine_index < Enums::k_maximum_number_of_magazines_per_weapon)
 			{
@@ -279,7 +281,7 @@ namespace Yelo
 		// object_index
 		void UnitDataGetObjectIndexByName(s_unit_datum* unit, 
 			cstring data_name,
-			__inout TypeHolder& result)
+			_Inout_ TypeHolder& result)
 		{
 			ObjectFieldGetImpl(g_unit_object_index_fields, data_name, unit->unit, 
 				result, data_name, // getter processes data_name for the subscript
@@ -289,7 +291,7 @@ namespace Yelo
 		// Integer
 		void UnitDataGetIntegerByName(s_unit_datum* unit, 
 			cstring data_name,
-			__inout TypeHolder& result)
+			_Inout_ TypeHolder& result)
 		{
 			ObjectFieldGetImpl(g_unit_integer_fields, data_name, unit->unit, 
 				result, (void*)nullptr,
@@ -307,7 +309,7 @@ namespace Yelo
 		// Real
 		void UnitDataGetRealByName(s_unit_datum* unit, 
 			cstring data_name,
-			__inout TypeHolder& result)
+			_Inout_ TypeHolder& result)
 		{
 			ObjectFieldGetImpl(g_unit_real_fields, data_name, unit->unit, 
 				result, (void*)nullptr,

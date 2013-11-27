@@ -23,13 +23,34 @@ namespace BlamLib.CheApe
 		public static void WriteBlankDocument(string file, BlamVersion engine)
 		{
 			// maybe I should use XmlTextWriter, but I rly don't care right now...
-			System.IO.StreamWriter io = new System.IO.StreamWriter(file);
-			io.WriteLine("<?xml version=\"1.0\" encoding=\"us-ascii\" standalone=\"yes\"?>");
-			io.WriteLine("<definitions game=\"{0}\">", engine);
-			io.Write("</definitions>");
-			io.Flush();
-			io.Close();
+			using (var io = new System.IO.StreamWriter(file))
+			{
+				io.WriteLine("<?xml version=\"1.0\" encoding=\"us-ascii\" standalone=\"yes\"?>");
+				io.WriteLine("<definitions game=\"{0}\">", engine);
+				io.Write("</definitions>");
+			}
 		}
+
+		#region Export tags
+		internal static readonly TagInterface.TagGroup ExportStringListTag = new TagInterface.TagGroup(
+			"estr", "exported_string_list");
+
+		internal static readonly TagInterface.TagGroup ExportFieldSetTag = new TagInterface.TagGroup(
+			"etfd", "exported_field_set");
+		internal static readonly TagInterface.TagGroup ExportTagReferenceTag = new TagInterface.TagGroup(
+			"etrf", "exported_tag_reference");
+		internal static readonly TagInterface.TagGroup ExportTagDataTag = new TagInterface.TagGroup(
+			"etda", "exported_tag_data");
+		internal static readonly TagInterface.TagGroup ExportTagBlockTag = new TagInterface.TagGroup(
+			"etbk", "exported_tag_block");
+		internal static readonly TagInterface.TagGroup ExportTagStructTag = new TagInterface.TagGroup(
+			"etst", "exported_tag_struct");
+
+		internal static readonly TagInterface.TagGroup ExportScriptFunctionTag = new TagInterface.TagGroup(
+			"ehsf", "exported_script_function");
+		internal static readonly TagInterface.TagGroup ExportScriptGlobalTag = new TagInterface.TagGroup(
+			"ehsg", "exported_script_global");
+		#endregion
 
 		public abstract class Object
 		{
@@ -48,10 +69,31 @@ namespace BlamLib.CheApe
 			public override string ToString() { return nameString; }
 			#endregion
 
+			#region Export APIs
+			bool mIsExported;
+			public bool IsExported { get { return mIsExported; } }
+
+			internal virtual TagInterface.TagGroup ExportTag { get { return TagInterface.TagGroup.Null; } }
+
+			internal void ExplicitlyExport(ProjectState state)
+			{
+				mIsExported = true;
+				state.Compiler.AddExport(this);
+			}
+			protected void InitializeForExport(ProjectState state, IO.XmlStream s)
+			{
+				s.ReadAttributeOpt("export", ref mIsExported);
+
+				if (IsExported)
+					state.Compiler.AddExport(this);
+			}
+			#endregion
+
 			protected Object() { }
 			protected Object(ProjectState state, IO.XmlStream s)
 			{
 				s.ReadAttribute("name", ref nameString);
+				InitializeForExport(state, s);
 
 				name = state.Compiler.Strings.Add(nameString);
 			}
@@ -62,6 +104,7 @@ namespace BlamLib.CheApe
 			protected ObjectWithDebugName(ProjectState state, IO.XmlStream s) : base()
 			{
 				s.ReadAttribute("name", ref nameString);
+				InitializeForExport(state, s);
 
 				name = state.Compiler.DebugStrings.Add(nameString);
 			}

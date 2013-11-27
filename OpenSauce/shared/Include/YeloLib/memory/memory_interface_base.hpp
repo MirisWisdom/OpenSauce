@@ -182,12 +182,12 @@ namespace Yelo
 		// At [jmp_address]+1, write the relative address of [to_address] (total: 5 bytes)
 		// Writes '0xE9' if [write_opcode]
 		// returns the original jmp address (absolute)
-		uint32 WriteRelativeJmp(void* to_address, void* jmp_address, bool write_opcode = false);
+		uintptr_t WriteRelativeJmp(void* to_address, void* jmp_address, bool write_opcode = false);
 
 		// At [call_address]+1, write the relative address of [to_address] (total: 5 bytes)
 		// Writes '0xE8' if [write_opcode]
 		// returns the original call address (absolute)
-		uint32 WriteRelativeCall(void* to_address, void* call_address, bool write_opcode = false);
+		uintptr_t WriteRelativeCall(void* to_address, void* call_address, bool write_opcode = false);
 
 
 		// [call] buffer containing the data we wish to write
@@ -229,25 +229,31 @@ namespace Yelo
 
 
 		struct s_memory_exec_change_data {
-			void* const ExecAddress;	// 'to_address', address to be executed (jmp or call)
-			void* const MemoryAddress;	// 'call_address', memory address to apply the execution modification
+			void* const ExecAddress;	/// <summary>	'to_address', address to be executed (jmp or call) </summary>
+			void* const MemoryAddress;	/// <summary>	'call_address', memory address to apply the execution modification. </summary>
 
 			const bool WriteOpcode;
 			bool IsInitialized;
 			PAD16;
-			std::array<byte, 5> UndoData; // internal buffer to store
+			std::array<byte,5> UndoData;/// <summary>	internal buffer to store. </summary>
 			PAD24;
 
-			// At [MemoryAddress], modify the assembly code to execute the code stored 
-			// at address [ExecAddress] (total: 5 bytes)
-			// See: WriteRelativeJmp
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>
+			/// 	At [MemoryAddress], modify the assembly code to jump to the code stored at address [ExecAddress].
+			/// </summary>
+			///
+			/// <remarks>	Total: 5 bytes. See: [WriteRelativeJmp]. </remarks>
 			void ApplyAsRelativeJmp();
-			// At [MemoryAddress], modify the assembly code to execute the code stored 
-			// at address [ExecAddress] (total: 5 bytes)
-			// See: WriteRelativeCall
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>
+			/// 	At [MemoryAddress], modify the assembly code to execute the code stored at address [ExecAddress].
+			/// </summary>
+			///
+			/// <remarks>	Total: 5 bytes. See: [WriteRelativeCall]. </remarks>
 			void ApplyAsRelativeCall();
 
-			// Restore the memory back to it's original data
+			/// <summary>	Restore the memory back to it's original data. </summary>
 			void Undo();
 
 		private:
@@ -393,6 +399,38 @@ namespace Yelo
 
 			return CAST_PTR(T*, aligned_ptr);
 		}
+
+#if 0
+		template<typename TWord>
+		bool IsZeroMemoryImpl(const TWord* words, size_t word_count)
+		{
+			TWord i_am_zero = 0;
+			for (const TWord* words_end = words+word_count; words != words_end; words++)
+				i_am_zero |= *words;
+
+			return i_am_zero == 0;
+		}
+
+		bool IsZeroMemory(const byte* buffer, size_t element_count)		{ return IsZeroMemoryImpl<byte>  (buffer, element_count); }
+		bool IsZeroMemory(const uint16* buffer, size_t element_count)	{ return IsZeroMemoryImpl<uint16>(buffer, element_count); }
+		bool IsZeroMemory(const uint32* buffer, size_t element_count)	{ return IsZeroMemoryImpl<uint32>(buffer, element_count); }
+
+		template<typename T>
+		bool IsZeroMemory(const T& obj)
+		{
+
+		}
+		template<typename T, size_t TSizeOfArray>
+		bool IsZeroMemory(const T(& array)[TSizeOfArray])
+		{
+		}
+		template<size_t TSizeOfArray>
+		bool IsZeroMemory(const byte(& array)[TSizeOfArray])	{ return IsZeroMemory(&array[0], TSizeOfArray); }
+		template<size_t TSizeOfArray>
+		bool IsZeroMemory(const uint16(& array)[TSizeOfArray])	{ return IsZeroMemory(&array[0], TSizeOfArray); }
+		template<size_t TSizeOfArray>
+		bool IsZeroMemory(const uint32(& array)[TSizeOfArray])	{ return IsZeroMemory(&array[0], TSizeOfArray); }
+#endif
 
 
 		uint32 CRC(uint32& crc_reference, const void* buffer, int32 size);
