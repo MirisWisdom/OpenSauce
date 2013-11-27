@@ -377,7 +377,6 @@
     <Compile Include="Blam\Halo2\Tags\Layout\Shaders.cs" />
   </ItemGroup>
   <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
-    <Compile Include="Blam\Halo3\BLF.cs" />
     <Compile Include="Blam\Halo3\Builder.cs" />
     <Compile Include="Blam\Halo3\CacheFile.cs" />
     <Compile Include="Blam\Halo3\Game.cs" />

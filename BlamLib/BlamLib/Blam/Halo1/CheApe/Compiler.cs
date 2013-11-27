@@ -344,9 +344,7 @@ namespace BlamLib.Blam.Halo1.CheApe
 				uint fieldsAddress = new FieldsWriter(tag_block.Fields).WriteFields(stream, comp);
 				//comp.MarkLocationFixup(tag_block.Name, stream, false);
 
-				flags = (
-						(tag_block.DontReadChildren ? 1 << 0 : 0)
-					);
+				flags = 0;
 
 				uint blockAddress = stream.PositionUnsigned;
 				stream.Write(tagGroup.BlockName);

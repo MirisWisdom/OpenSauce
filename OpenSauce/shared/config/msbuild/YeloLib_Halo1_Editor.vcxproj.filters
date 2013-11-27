@@ -28,6 +28,16 @@
   </ItemGroup>
 
   <ItemGroup
+    > <!--guerilla EDITOR-->
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\guerilla\mfc_interfaces.hpp">
+      <Filter>.YeloLib\guerilla</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\guerilla\mfc_interfaces.cpp">
+      <Filter>.YeloLib\guerilla</Filter>
+    </ClCompile>
+  </ItemGroup>
+
+  <ItemGroup
     > <!--tag_files EDITOR-->
 	<None      Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_id_from_tag_string_list.inl">
       <Filter>.YeloLib\tag_files\string_ids</Filter>
