@@ -15,8 +15,8 @@ namespace BlamLib.Render.COLLADA.Core
 	public partial class ColladaIDREFArray : ColladaValueArray<string>
 	{
 		#region Fields
-		ColladaObjectAttribute<string> _id;
-		ColladaObjectAttribute<string> _name;
+		ColladaObjectAttribute<ColladaID<ColladaIDREFArray>> _id;
+		ColladaObjectAttribute<ColladaNCName> _name;
 		#endregion
 
 		#region Attributes
@@ -44,8 +44,8 @@ namespace BlamLib.Render.COLLADA.Core
 
 		public ColladaIDREFArray() : base(Enums.ColladaElementType.Core_IDREFArray)
 		{
-			Fields.Add(_id = new ColladaObjectAttribute<string>(""));
-			Fields.Add(_name = new ColladaObjectAttribute<string>(""));
+			Fields.Add(_id = new ColladaObjectAttribute<ColladaID<ColladaIDREFArray>>(""));
+			Fields.Add(_name = new ColladaObjectAttribute<ColladaNCName>(""));
 		}
 	}
 }

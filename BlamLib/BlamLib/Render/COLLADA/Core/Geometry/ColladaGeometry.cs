@@ -18,8 +18,8 @@ namespace BlamLib.Render.COLLADA.Core
 	public partial class ColladaGeometry : ColladaElement
 	{
 		#region Fields
-		ColladaObjectAttribute<string> _id;
-		ColladaObjectAttribute<string> _name;
+		ColladaObjectAttribute<ColladaID<ColladaGeometry>> _id;
+		ColladaObjectAttribute<ColladaNCName> _name;
 
 		ColladaObjectElement<ColladaAsset> _asset;
 		ColladaObjectElement<ColladaMesh> _mesh;
@@ -57,8 +57,8 @@ namespace BlamLib.Render.COLLADA.Core
 
 		public ColladaGeometry() : base(Enums.ColladaElementType.Core_Geometry)
 		{
-			Fields.Add(_id = new ColladaObjectAttribute<string>(""));
-			Fields.Add(_name = new ColladaObjectAttribute<string>(""));
+			Fields.Add(_id = new ColladaObjectAttribute<ColladaID<ColladaGeometry>>(""));
+			Fields.Add(_name = new ColladaObjectAttribute<ColladaNCName>(""));
 			Fields.Add(_asset = new ColladaObjectElement<ColladaAsset>());
 			Fields.Add(_mesh = new ColladaObjectElement<ColladaMesh>());
 			Fields.Add(_spline = new ColladaObjectElement<ColladaSpline>());
