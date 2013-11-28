@@ -72,7 +72,7 @@
 		<Property Id='WEBLAUNCHER_URL' Secure='yes' Value='http://code.google.com/p/open-sauce'/>
 
 		<Directory Id='TARGETDIR' Name='SourceDir'>
-			<Merge Id="VCRedist_MERGE" SourceFile="$(var.ResourceFolder)Installer\vs_runtime\Microsoft_VC90_CRT_x86.msm" DiskId="1" Language="0"/>
+			<Merge Id="VCRedist_MERGE" SourceFile="$(var.ResourceFolder)Installer\vs_runtime\Microsoft_VC120_CRT_x86.msm" DiskId="1" Language="0"/>
 			<!-- Files and folders that belong in the common application data folder-->
 			<Directory Id='CommonAppDataFolder'>
 				<Directory Id='OpenSauce_KornnerStudios_DIR' Name='Kornner Studios'>
