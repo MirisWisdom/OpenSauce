@@ -226,7 +226,7 @@ namespace Yelo
 				TagGroups::model_definition::k_group_tag == instance_group_tag ||
 				TagGroups::gbxmodel_definition::k_group_tag == instance_group_tag)
 			{
-				if (group_tag == TagGroups::model_definition::k_group_tag &&
+				if (group_tag == TagGroups::model_definition::k_group_tag ||
 					group_tag == TagGroups::gbxmodel_definition::k_group_tag)
 					return instance_address;
 			}

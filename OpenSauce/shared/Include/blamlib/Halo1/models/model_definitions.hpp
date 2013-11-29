@@ -51,11 +51,12 @@ namespace Yelo
 			TAG_FIELD(int16, first_child_node_index);
 			TAG_FIELD(int16, parent_node_index);
 			PAD16;
-			TAG_FIELD(real_point3d, default_translation);
-			TAG_FIELD(real_quaternion, default_rotation);
-			TAG_FIELD(real, node_distance_from_parent);
+			//TAG_FIELD(real_point3d, default_translation);
+			//TAG_FIELD(real_quaternion, default_rotation);
+			//TAG_FIELD(real, node_distance_from_parent);
+			real_orientation3d orientation;
 			TAG_PAD(int32, 8);
-			TAG_PAD(int32, 13);
+			real_matrix4x3 inverse_matrix;
 		}; BOOST_STATIC_ASSERT( sizeof(model_node) == 0x9C ); // max count: 64
 
 		struct model_region_permutation_marker
@@ -77,11 +78,7 @@ namespace Yelo
 			TAG_FIELD(tag_string, name);
 			TAG_FIELD(__flags, flags);
 			TAG_PAD(int32, 7);
-			TAG_FIELD(int16, super_low);
-			TAG_FIELD(int16, low);
-			TAG_FIELD(int16, medium);
-			TAG_FIELD(int16, high);
-			TAG_FIELD(int16, super_high);
+			TAG_FIELD(int16, detail_geometry_index[Enums::k_number_of_geometry_detail_levels]);
 			PAD16;
 			TAG_TBLOCK(markers, model_region_permutation_marker);
 		}; BOOST_STATIC_ASSERT( sizeof(gbxmodel_region_permutation) == 0x58 ); // max count: 32
@@ -159,16 +156,8 @@ namespace Yelo
 
 			TAG_FIELD(__flags, flags);
 			TAG_FIELD(int32, node_list_checksum);
-			TAG_FIELD(real, super_high_detail_cutoff, "pixels");
-			TAG_FIELD(real, high_detail_cutoff, "pixels");
-			TAG_FIELD(real, medium_detail_cutoff, "pixels");
-			TAG_FIELD(real, low_detail_cutoff, "pixels");
-			TAG_FIELD(real, super_low_cutoff, "pixels");
-			TAG_FIELD(int16, super_high_detail_node_count, "nodes");
-			TAG_FIELD(int16, high_detail_node_count, "nodes");
-			TAG_FIELD(int16, medium_detail_node_count, "nodes");
-			TAG_FIELD(int16, low_detail_node_count, "nodes");
-			TAG_FIELD(int16, super_low_detail_node_count, "nodes");
+			TAG_FIELD(real, detail_level_cutoffs[Enums::k_number_of_geometry_detail_levels], "pixels");
+			TAG_FIELD(int16, detail_level_node_counts[Enums::k_number_of_geometry_detail_levels], "nodes");
 			PAD16;
 			TAG_PAD(int32, 2);
 			TAG_FIELD(real, base_map_u_scale, "", "0 defaults to 1");
