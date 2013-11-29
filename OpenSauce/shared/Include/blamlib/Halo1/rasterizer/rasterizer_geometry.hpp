@@ -10,6 +10,16 @@ namespace Yelo
 {
 	namespace Enums
 	{
+		enum {
+			_geometry_detail_level_super_low,
+			_geometry_detail_level_low,
+			_geometry_detail_level_medium,
+			_geometry_detail_level_high,
+			_geometry_detail_level_super_high,
+
+			k_number_of_geometry_detail_levels
+		};
+
 		enum triangle_buffer_type : _enum
 		{
 			_triangle_buffer_type_0,

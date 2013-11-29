@@ -516,7 +516,7 @@ namespace Yelo
 
 		static void tag_group_postprocess_instance(datum_index tag_index, Enums::tag_postprocess_mode mode)
 		{
-			for(const tag_group* group = tag_group_get(tag_get_group_tag(tag_index));
+			for (const tag_group* group = TagGroups::TagGetGroup(tag_index);
 				group != nullptr;
 				group = tag_group_get(group->parent_group_tag))
 			{
