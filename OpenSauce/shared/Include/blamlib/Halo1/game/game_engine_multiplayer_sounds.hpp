@@ -83,7 +83,13 @@ namespace Yelo
 
 	namespace blam
 	{
+		// Overload should only be used in network_server connections
+		void PLATFORM_API game_engine_play_multiplayer_sound(datum_index player_index, _enum multiplayer_sound_index, bool should_replicate);
+
 		// Locally play [multiplayer_sound_index]
-		void PLATFORM_API game_engine_play_multiplayer_sound(_enum multiplayer_sound_index);
+		inline void game_engine_play_multiplayer_sound(_enum multiplayer_sound_index)
+		{
+			game_engine_play_multiplayer_sound(datum_index::null, multiplayer_sound_index, false);
+		}
 	};
 };

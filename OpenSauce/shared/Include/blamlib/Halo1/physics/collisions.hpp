@@ -20,9 +20,7 @@ namespace Yelo
 			_collision_result_bsp,
 			_collision_result_object,
 
-#include <cseries/msvc_warning_4341_toggle.hpp>
-			_collision_result_none = _enum(NONE),
-#include <cseries/msvc_warning_4341_toggle.hpp>
+			_collision_result_none = NONE,
 		};
 	};
 

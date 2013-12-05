@@ -31,18 +31,16 @@ namespace Yelo
 		{
 		}
 
-		API_FUNC_NAKED void PLATFORM_API Update(uint32 access_flags)
+		API_FUNC_NAKED void PLATFORM_API Update(long_flags access_flags)
 		{
-			static const uintptr_t TEMP_CALL_ADDR = GET_FUNC_PTR(CONSOLE_PROCESS_COMMAND);
-
-			__asm {
-				mov		eax, access_flags
-				push	eax
-				//mov		edi, edi // the command string buffer is given to us in edi
-				call	TEMP_CALL_ADDR
-				add		esp, 4
-				retn
-			}
+			// our hook is placed where the update function calls console_process_command, so we have to call it
+			API_FUNC_NAKED_START()
+				push	edi // the command string buffer is given to us in edi
+				push	access_flags
+				call	blam::console_process_command
+				add		esp, 4 * 2
+				// do any custom stuff after here
+			API_FUNC_NAKED_END(0)
 		}
 	};
 };

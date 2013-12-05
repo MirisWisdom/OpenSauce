@@ -13,9 +13,7 @@ namespace Yelo
 	{
 		enum material_type : _enum
 		{
-#include <cseries/msvc_warning_4341_toggle.hpp>
-			_material_type_none = _enum(NONE),
-#include <cseries/msvc_warning_4341_toggle.hpp>
+			_material_type_none = NONE,
 
 			_material_type_dirt = 0,
 			_material_type_sand,

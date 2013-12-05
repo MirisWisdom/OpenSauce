@@ -47,9 +47,7 @@ namespace Yelo
 		};
 
 		enum attachment_type : sbyte {
-#include <cseries/msvc_warning_4341_toggle.hpp>
 			_attachment_type_invalid = NONE,
-#include <cseries/msvc_warning_4341_toggle.hpp>
 
 			_attachment_type_light = 0,
 			_attachment_type_looping_sound,
@@ -172,22 +170,25 @@ namespace Yelo
 			real_rgb_color change_colors[4];
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_placement_data) == 0x88 );
 
-		struct s_object_network_datum_data
+		struct s_object_network_datum_delta_data // should be populated during the object type's process_update_delta
 		{
-			//////////////////////////////////////////////////////////////////////////
-			// Added in HaloPC
-			datum_index owner_player_index;			// 0x50
-			datum_index owner;						// 0x54
-			int32 timestamp;						// 0x58
-			//////////////////////////////////////////////////////////////////////////
-			real_point3d position;					// 0x5C
-			real_vector3d transitional_velocity;	// 0x68
-			real_vector3d forward;					// 0x74
-			real_vector3d up;						// 0x80
-			real_vector3d angular_velocity;			// 0x8C
+			bool valid_position;					// 0x18
+			PAD24;
+			real_point3d position;					// 0x1C
 
-			void CopyToPlacementData(s_object_placement_data& data) const;
-		}; BOOST_STATIC_ASSERT( sizeof(s_object_network_datum_data) == 0x48 );
+			bool valid_forward_and_up;				// 0x28
+			PAD24;
+			real_vector3d forward;					// 0x2C
+			real_vector3d up;						// 0x38
+
+			bool valid_transitional_velocity;		// 0x44
+			PAD24;
+			real_vector3d transitional_velocity;	// 0x48
+
+			bool valid_timestamp;					// 0x54
+			PAD24;
+			int32 timestamp;						// 0x58
+		}; BOOST_STATIC_ASSERT( sizeof(s_object_network_datum_delta_data) == 0x44 );
 
 		struct s_object_animation_datum_data
 		{
@@ -239,11 +240,13 @@ namespace Yelo
 			int32 object_marker_id;															// 0x14
 			//////////////////////////////////////////////////////////////////////////
 			// Added in HaloPC
-			UNKNOWN_TYPE(bool);																// 0x18
-			PAD24;
-			byte unknown1C[0x34];															// 0x1C
+			s_object_network_datum_delta_data network_delta;								// 0x18
 			//////////////////////////////////////////////////////////////////////////
-			s_object_network_datum_data network;											// 0x50
+			real_point3d position;															// 0x5C
+			real_vector3d transitional_velocity;											// 0x68
+			real_vector3d forward;															// 0x74
+			real_vector3d up;																// 0x80
+			real_vector3d angular_velocity;													// 0x8C
 			s_scenario_location location;													// 0x98
 			real_point3d center;															// 0xA0
 			real radius;																	// 0xBC
@@ -269,7 +272,7 @@ namespace Yelo
 			datum_index first_object_index;													// 0x118
 			datum_index parent_object_index;												// 0x11C
 			sbyte parent_node_index;														// 0x120
-			UNKNOWN_TYPE(byte);																// 0x121 idk if this is an sbyte or bool here
+			UNUSED_TYPE(byte);																// 0x121 idk if this is an sbyte or bool here
 			bool force_shield_update;														// 0x122
 			byte_flags valid_outgoing_functions;											// 0x123, 1<<function_index
 			real incoming_function_values[Enums::k_number_of_incoming_object_functions];	// 0x124
@@ -289,6 +292,8 @@ namespace Yelo
 			s_object_header_block_reference node_orientations;								// 0x1E8 real_orientation3d[node_count]
 			s_object_header_block_reference node_orientations2;								// 0x1EC real_orientation3d[node_count]
 			s_object_header_block_reference node_matrix_block;								// 0x1F0 real_matrix4x3[node_count]
+
+			void CopyToPlacementData(s_object_placement_data& data) const;
 
 			bool VerifyType(long_flags type_mask) const;
 

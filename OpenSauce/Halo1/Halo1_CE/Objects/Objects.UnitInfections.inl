@@ -53,7 +53,7 @@ namespace UnitInfections
 		{	// Create the attachment based on the target_unit's world data and the infection tag data
 			s_object_placement_data attachment_placement_data;
 			blam::object_placement_data_new(attachment_placement_data, unit_infection.attachment_object.tag_index);
-			attachment_placement_data.position = target_unit->object.network.position;
+			attachment_placement_data.position = target_unit->object.position;
 
 			attachment_object_index = blam::object_new(attachment_placement_data);
 			attachment_object = Objects::ObjectHeader()[attachment_object_index]->_object;
