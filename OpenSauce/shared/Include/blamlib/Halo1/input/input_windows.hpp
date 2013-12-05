@@ -67,9 +67,7 @@ namespace Yelo
 
 		enum key_code : _enum
 		{
-#include <cseries/msvc_warning_4341_toggle.hpp>
-			_key_code_invalid = _enum(NONE),
-#include <cseries/msvc_warning_4341_toggle.hpp>
+			_key_code_invalid = NONE,
 
 			_key_code_escape = 0x0,
 			_key_code_f1 = 0x1,

@@ -46,6 +46,19 @@ namespace Yelo
 
 			return this->index != other.index;
 		}
+
+		s_data_array* DataNewAndMakeValid(cstring name, int32 maximum_count, size_t datum_size)
+		{
+			s_data_array* data = blam::data_new(name, maximum_count, datum_size);
+
+			if (data != nullptr)
+			{
+				data->is_valid = true;
+				blam::data_delete_all(data);
+			}
+
+			return data;
+		}
 	};
 
 	namespace blam

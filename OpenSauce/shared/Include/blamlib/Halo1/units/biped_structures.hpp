@@ -25,6 +25,10 @@ namespace Yelo
 		{
 			_biped_airborne_bit,
 			_biped_slipping_bit,
+			_biped_unk2_bit,
+			_biped_unk3_bit,
+			_biped_unk4_bit,
+			_biped_limping_bit,
 		};
 	};
 

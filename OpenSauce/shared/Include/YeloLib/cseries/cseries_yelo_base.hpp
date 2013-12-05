@@ -11,6 +11,8 @@
 #include <YeloLib/cseries/debug_memory_yelo.hpp>
 #include <YeloLib/cseries/errors_yelo.hpp>
 
+#include <boost/integer/static_log2.hpp>
+
 //#include <errno.h>
 extern const errno_t k_errnone;
 
@@ -35,8 +37,14 @@ namespace Yelo
 	typedef void (API_FUNC* proc_update_no_args)();
 
 
-	/// Template class for defining an interface for blocks of data whose memory layout is not entirely mapped out
-	template<const size_t K_SIZE> struct TStruct {
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>
+	/// 	Class for defining an interface for blocks of data whose memory layout is not entirely mapped out.
+	/// </summary>
+	///
+	/// <typeparam name="K_SIZE">	Size of the memory block. </typeparam>
+	template<const size_t K_SIZE>
+	struct TStruct {
 		enum { k_size = K_SIZE };
 
 	protected:
@@ -55,64 +63,96 @@ namespace Yelo
 		// Usage - "struct s_some_object : TStructImpl(0x40) {};"
 		#define TStructImpl(size) public TStruct< size >
 
-		// Implement a by-value getter
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Implement a by-value getter. </summary>
+		///
+		/// <param name="type">  	Getter's return type. </param>
+		/// <param name="name">  	Getter's method name. </param>
+		/// <param name="offset">	Field offset within the struct to treat as the get result. </param>
 		#define TStructGetImpl(type, name, offset)												\
 			inline type Get##name()					{ return GetData<type, offset>(); }			\
 			inline type Get##name() const			{ return GetData<type, offset>(); }			\
 			BOOST_STATIC_ASSERT( ( offset + sizeof( type )) <= k_size );
-		// Implement a by-address getter
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Implement a by-address getter. </summary>
+		///
+		/// <param name="type">  	Getter's return type. </param>
+		/// <param name="name">  	Getter's method name. </param>
+		/// <param name="offset">	Field offset within the struct to treat as the get result. </param>
 		#define TStructGetPtrImpl(type, name, offset)											\
 			inline type* Get##name()				{ return GetDataPtr<type, offset>(); }		\
 			inline type const* Get##name() const	{ return GetDataPtr<type, offset>(); }		\
 			/*          ^ use const here, instead of before the type, in case [type] is defined as something like "int32*" */	\
 			BOOST_STATIC_ASSERT( ( offset + sizeof( type )) <= k_size );
 
-		// Implement a by-value getter for fake TStruct sub-classes
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Implement a by-value getter for fake TStruct sub-classes. </summary>
+		///
+		/// <remarks>
+		/// 	Requires an 'DATA_OFFSET' constant to be defined, representing the start of the fake sub-class.
+		/// </remarks>
+		/// 
+		/// <param name="type">  	Getter's return type. </param>
+		/// <param name="name">  	Getter's method name. </param>
+		/// <param name="offset">	Field offset within the fake sub-class to treat as the get result. </param>
 		#define TStructSubGetImpl(type, name, offset)		TStructGetImpl(type, name, offset - DATA_OFFSET)
-		// Implement a by-address getter for fake TStruct sub-classes
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Implement a by-address getter for fake TStruct sub-classes. </summary>
+		///
+		/// <remarks>
+		/// 	Requires an 'DATA_OFFSET' constant to be defined, representing the start of the fake sub-class.
+		/// </remarks>
+		///
+		/// <param name="type">  	Getter's return type. </param>
+		/// <param name="name">  	Getter's method name. </param>
+		/// <param name="offset">	Field offset within the fake sub-class to treat as the get result. </param>
 		#define TStructSubGetPtrImpl(type, name, offset)	TStructGetPtrImpl(type, name, offset - DATA_OFFSET)
 	};
 
 
-	// min value for a [sbyte]
-	extern const sbyte K_SBYTE_MIN;
-	// max value for a [sbyte]
-	extern const sbyte K_SBYTE_MAX;
-	// min value for a [byte]
-	extern const byte K_BYTE_MIN;
-	// max value for a [byte]
-	extern const byte K_BYTE_MAX;
-	// min value for a [int16]
-	extern const int16 K_INT16_MIN;
-	// max value for a [int16]
-	extern const int16 K_INT16_MAX;
-	// min value for a [uint16]
-	extern const uint16 K_UINT16_MIN;
-	// max value for a [uint16]
-	extern const uint16 K_UINT16_MAX;
-	// min value for a [int32]
-	extern const int32 K_INT32_MIN;
-	// max value for a [int32]
-	extern const int32 K_INT32_MAX;
-	// min value for a [uint32]
-	extern const uint32 K_UINT32_MIN;
-	// max value for a [uint32]
-	extern const uint32 K_UINT32_MAX;
-	// min value for a [int64]
-	extern const int64 K_INT64_MIN;
-	// max value for a [int64]
-	extern const int64 K_INT64_MAX;
-	// min value for a [uint64]
-	extern const uint64 K_UINT64_MIN;
-	// max value for a [uint64]
-	extern const uint64 K_UINT64_MAX;
-	// min value for a [real]
-	extern const real K_REAL_MIN;
-	// max value for a [real]
-	extern const real K_REAL_MAX;
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Describes the number of bits needed in a bitfield for a whole number. </summary>
+	///
+	/// <typeparam name="max_value">	The inclusive max value of the bit field. </typeparam>
+	template<boost::static_log2_argument_type max_value>
+	struct bitfield_size { enum { 
+		value = boost::static_log2<max_value>::value + 1
+	}; };
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Describes the number of bits needed in a bitfield for an enum value. </summary>
+	///
+	/// <typeparam name="number_of_members">	The number of members in the enum represented by this bitfield. </typeparam>
+	template<boost::static_log2_argument_type number_of_members>
+	struct bitfield_enum_size { enum { 
+		value = boost::static_log2<number_of_members>::value
+	}; };
 
 
+	extern const sbyte K_SBYTE_MIN;		/// <summary>	min value for a [sbyte]. </summary>
+	extern const sbyte K_SBYTE_MAX;		/// <summary>	max value for a [sbyte]. </summary>
+	extern const byte K_BYTE_MIN;		/// <summary>	min value for a [byte]. </summary>
+	extern const byte K_BYTE_MAX;		/// <summary>	max value for a [byte]. </summary>
+	extern const int16 K_INT16_MIN;		/// <summary>	min value for a [int16]. </summary>
+	extern const int16 K_INT16_MAX;		/// <summary>	max value for a [int16]. </summary>
+	extern const uint16 K_UINT16_MIN;	/// <summary>	min value for a [uint16]. </summary>
+	extern const uint16 K_UINT16_MAX;	/// <summary>	max value for a [uint16]. </summary>
+	extern const int32 K_INT32_MIN;		/// <summary>	min value for a [int32]. </summary>
+	extern const int32 K_INT32_MAX;		/// <summary>	max value for a [int32]. </summary>
+	extern const uint32 K_UINT32_MIN;	/// <summary>	min value for a [uint32]. </summary>
+	extern const uint32 K_UINT32_MAX;	/// <summary>	max value for a [uint32]. </summary>
+	extern const int64 K_INT64_MIN;		/// <summary>	min value for a [int64]. </summary>
+	extern const int64 K_INT64_MAX;		/// <summary>	max value for a [int64]. </summary>
+	extern const uint64 K_UINT64_MIN;	/// <summary>	min value for a [uint64]. </summary>
+	extern const uint64 K_UINT64_MAX;	/// <summary>	max value for a [uint64]. </summary>
+	extern const real K_REAL_MIN;		/// <summary>	min value for a [real]. </summary>
+	extern const real K_REAL_MAX;		/// <summary>	max value for a [real]. </summary>
+
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Tests whether a wide string is NULL or contains no characters </summary>
 	inline bool is_null_or_empty( cstring const str) { return str == nullptr || str[0] ==  '\0'; }
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Tests whether a wide string is NULL or contains no characters </summary>
 	inline bool is_null_or_empty(wcstring const str) { return str == nullptr || str[0] == L'\0'; }
 
 	// Takes [wide] and converts it to an ascii string, to be held in [string]. If [wide_length] is not -1, the string
@@ -133,11 +173,15 @@ namespace Yelo
 	// [string_length] includes the null terminator
 	wstring string_to_wstring_lazy(wstring string, int32 string_length, cstring ascii);
 
-	// Hacked up structure.
-	// Allows us to treat a machine word (in this case, 32-bits) as various sorts 
-	// of types. Either as a pointer, a value-array or just vanilla values.
-	template<typename T> struct TTypeHolder
-	{
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>
+	/// 	Allows us to interpret a machine word (in this case, 32-bits) as various sorts of types. Either as a pointer,
+	/// 	a value-array, or just vanilla values.
+	/// </summary>
+	///
+	/// <typeparam name="T">	. </typeparam>
+	template<typename T>
+	struct TTypeHolder {
 		union { // t_type_interface_union
 			T* pointer;
 
@@ -191,7 +235,11 @@ namespace Yelo
 	typedef TTypeHolder<void> TypeHolder;
 	BOOST_STATIC_ASSERT( sizeof(TypeHolder) == 0x4 );
 
-	// If the COM interface reference isn't null, releases it and nulls it
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	If the COM interface reference isn't NULL, releases it and NULL it. </summary>
+	///
+	/// <typeparam name="typename TInterface">	COM interface type. </typeparam>
+	/// <param name="obj">	[in,out] If non-null, the COM object. </param>
 	template<typename TInterface> inline
 	void safe_release(TInterface*& obj)
 	{
@@ -208,14 +256,14 @@ namespace Yelo
 	{
 		return h == INVALID_HANDLE_VALUE ? nullptr : h;
 	}
-	// Primarily a deleter for std::unique_ptr
+	/// <summary>	Primarily a deleter for std::unique_ptr for use with WinAPI handles. </summary>
 	struct winapi_handle_closer
 	{
 		void operator()(HANDLE h) const;
 	};
 
 #if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
-	// Primarily a deleter for std::unique_ptr
+	/// <summary>	Primarily a deleter for std::unique_ptr for use CRT's FILE. </summary>
 	struct crt_file_closer
 	{
 		void operator()(FILE* h) const;
@@ -226,10 +274,17 @@ namespace Yelo
 
 
 #if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
-	// Get the current time and format it into [time_str].
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Get the current time and format it into [time_str]. </summary>
+	///
+	/// <param name="time_str">	The resulting time string. </param>
 	void GetTimeStampString(_Out_ tag_string time_str);
-	// Get the current time and format it into [time_str] using a file name friendly format.
-	// The formatting output by this function is YYYY_MM_DD_hh_mm_ss.
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Get the current time and format it into [time_str] using a file name friendly format. </summary>
+	///
+	/// <remarks>	The formatting output by this function is YYYY_MM_DD_hh_mm_ss. </remarks>
+	///
+	/// <param name="time_str">	The resulting time string. </param>
 	void GetTimeStampStringForFile(_Out_ tag_string time_str);
 
 	// Displays a message to the user using the WinAPI

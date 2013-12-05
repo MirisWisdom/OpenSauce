@@ -8,6 +8,7 @@
 #include "Game/EngineFunctions.hpp"
 
 #include <blamlib/Halo1/cache/cache_files.hpp>
+#include <blamlib/Halo1/main/console.hpp>
 #include <blamlib/Halo1/math/periodic_functions.hpp>
 #include <blamlib/Halo1/memory/data.hpp>
 #include <blamlib/Halo1/objects/damage.hpp>
@@ -26,6 +27,11 @@
 // buffers instead...
 #define ENGINE_FUNCTIONS_USE_LOCAL
 enum { k_engine_function_string_buffer_size = 512, };
+
+#define API_FUNC_NAKED_END_NO_STACK_POP()	\
+		__asm pop	ebp						\
+		__asm retn							\
+	}
 
 namespace Yelo
 {
@@ -138,16 +144,6 @@ namespace Yelo
 			}
 		};
 
-		namespace Cheats
-		{
-			#include "Game/EngineFunctions.Cheats.inl"
-		};
-
-		namespace Console
-		{
-			#include "Game/EngineFunctions.Console.inl"
-		};
-
 		namespace Effects
 		{
 			void API_FUNC_NAKED NewOnObjectMarker(datum_index effect_definition_index, datum_index object_index, cstring marker_name)
@@ -171,11 +167,6 @@ namespace Yelo
 			}
 		};
 
-		namespace Game
-		{
-			#include "Game/EngineFunctions.Game.inl"
-		};
-
 		namespace HS
 		{
 			void ObjectListAdd(datum_index object_list, datum_index object_index)
@@ -191,62 +182,6 @@ namespace Yelo
 					add		esp, 4 * 1
 				}
 			}
-		};
-
-		namespace Input
-		{
-			bool KeyIsDown(_enum key)
-			{
-#if !PLATFORM_IS_DEDI
-				static const uintptr_t FUNCTION = GET_FUNC_PTR(INPUT_KEY_IS_DOWN);
-
-				__asm {
-					mov		cx, key
-					call	FUNCTION
-				}
-#else
-				return false;
-#endif
-			}
-		};
-
-		namespace Interface
-		{
-			#include "Game/EngineFunctions.Interface.inl"
-		};
-
-		namespace Math
-		{
-			float PeriodicFunctionEvaluate(Enums::periodic_function function_type, double input)
-			{
-				static const uintptr_t FUNCTION = GET_FUNC_PTR(PERIODIC_FUNCTION_EVALUATE);
-
-				__asm {
-					fld		input
-					sub		esp, 4 * 2			// allocate space for the 'input' parameter
-					fstp	qword ptr [esp]		// store the input on the stack
-					movzx	eax, function_type
-					call	FUNCTION
-					add		esp, 4 * 2			// deallocate. double type consumes two DWORDs of stack
-				}
-			}
-
-			float TransitionFunctionEvaluate(Enums::transition_function function_type, float input)
-			{
-				static const uintptr_t FUNCTION = GET_FUNC_PTR(TRANSITION_FUNCTION_EVALUATE);
-
-				__asm {
-					push	input
-					movzx	ecx, function_type
-					call	FUNCTION
-					add		esp, 4 * 1
-				}
-			}
-		};
-
-		namespace Memory
-		{
-			#include "Game/EngineFunctions.Memory.inl"
 		};
 
 		namespace Networking
@@ -377,6 +312,27 @@ namespace Yelo
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////
+	// bink
+	namespace blam
+	{
+		//////////////////////////////////////////////////////////////////////////
+		// bink_playback.c
+		API_FUNC_NAKED void PLATFORM_API bink_playback_start(cstring bik_path)
+		{
+#if !PLATFORM_IS_DEDI
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(BINK_PLAYBACK_START);
+
+			API_FUNC_NAKED_START()
+				push	bik_path
+				call	FUNCTION
+				add		esp, 4 * 1
+			API_FUNC_NAKED_END_NO_STACK_POP()
+#else
+			return;
+#endif
+		}
+	};
+	//////////////////////////////////////////////////////////////////////////
 	// cache
 	namespace blam
 	{
@@ -416,13 +372,23 @@ namespace Yelo
 	{
 		//////////////////////////////////////////////////////////////////////////
 		// director.c
-		void PLATFORM_API director_save_camera()
+		API_FUNC_NAKED void PLATFORM_API director_save_camera()
 		{
-			Engine::Cheats::DirectorSaveCamera();
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(DIRECTOR_SAVE_CAMERA);
+
+			__asm {
+				call	FUNCTION
+				retn
+			}
 		}
-		void PLATFORM_API director_load_camera()
+		API_FUNC_NAKED void PLATFORM_API director_load_camera()
 		{
-			Engine::Cheats::DirectorLoadCamera();
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(DIRECTOR_LOAD_CAMERA);
+
+			__asm {
+				call	FUNCTION
+				retn
+			}
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////
@@ -431,35 +397,71 @@ namespace Yelo
 	{
 		//////////////////////////////////////////////////////////////////////////
 		// cheats.c
-		void PLATFORM_API cheat_all_weapons()
+		API_FUNC_NAKED void PLATFORM_API cheat_all_weapons()
 		{
-			Engine::Cheats::AllWeapons();
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(CHEAT_ALL_WEAPONS);
+
+			__asm {
+				call	FUNCTION
+				retn
+			}
 		}
-		void PLATFORM_API cheat_spawn_warthog()
+		API_FUNC_NAKED void PLATFORM_API cheat_spawn_warthog()
 		{
-			Engine::Cheats::SpawnWarthog();
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(CHEAT_SPAWN_WARTHOG);
+
+			__asm {
+				call	FUNCTION
+				retn
+			}
 		}
-		void PLATFORM_API cheat_teleport_to_camera()
+		API_FUNC_NAKED void PLATFORM_API cheat_teleport_to_camera()
 		{
-			Engine::Cheats::TeleportToCamera();
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(CHEAT_TELEPORT_TO_CAMERA);
+
+			__asm {
+				call	FUNCTION
+				retn
+			}
 		}
-		void PLATFORM_API cheat_active_camouflage()
+		API_FUNC_NAKED void PLATFORM_API cheat_active_camouflage()
 		{
-			Engine::Cheats::ActiveCamoflage();
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(CHEAT_ACTIVE_CAMOFLAGE);
+
+			__asm {
+				call	FUNCTION
+				retn
+			}
 		}
-		void PLATFORM_API cheat_active_camouflage_local_player()
+		API_FUNC_NAKED void PLATFORM_API cheat_active_camouflage_local_player()
 		{
-			Engine::Cheats::ActiveCamoflageLocalPlayer();
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(CHEAT_ACTIVE_CAMOFLAGE_LOCAL_PLAYER);
+
+			__asm {
+				call	FUNCTION
+				retn
+			}
 		}
-		datum_index PLATFORM_API cheat_local_player()
+		API_FUNC_NAKED datum_index PLATFORM_API cheat_local_player()
 		{
-			return Engine::Cheats::PlayerIndex();
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(CHEAT_PLAYER_INDEX);
+
+			__asm {
+				call	FUNCTION
+				retn
+			}
 		}
 		//////////////////////////////////////////////////////////////////////////
 		// game_allegiance.c
 		bool PLATFORM_API game_team_is_enemy(long_enum team, long_enum team_to_test)
 		{
-			return Engine::Game::TeamIsEnemy(team, team_to_test);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(GAME_TEAM_IS_ENEMY);
+
+			__asm {
+				mov		ecx, team_to_test
+				mov		edx, team
+				call	FUNCTION
+			}
 		}
 		//////////////////////////////////////////////////////////////////////////
 		// game_engine.c
@@ -469,16 +471,41 @@ namespace Yelo
 		}
 
 
-		void PLATFORM_API game_engine_rasterize_message(wcstring message, real alpha)
+		API_FUNC_NAKED void PLATFORM_API game_engine_rasterize_message(wcstring message, real alpha)
 		{
-			Engine::Game::RasterizeMessage(message, alpha);
+#if !PLATFORM_IS_DEDI
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(GAME_ENGINE_RASTERIZE_MESSAGE);
+
+			API_FUNC_NAKED_START()
+				push	alpha
+				push	message
+				call	FUNCTION
+				add		esp, 4 * 2
+			API_FUNC_NAKED_END_NO_STACK_POP()
+#else
+			return;
+#endif
 		}
 		//////////////////////////////////////////////////////////////////////////
 		// game_engine_multiplayer_sounds.c
-		void PLATFORM_API game_engine_play_multiplayer_sound(_enum multiplayer_sound_index)
+		API_FUNC_NAKED void PLATFORM_API game_engine_play_multiplayer_sound(datum_index player_index, _enum multiplayer_sound_index, bool should_replicate)
 		{
-			// TODO
-			//Engine::Game::PlayMultiplayerSound(multiplayer_sound_index);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(GAME_ENGINE_PLAY_MULTIPLAYER_SOUND);
+
+			API_FUNC_NAKED_START()
+				push	esi
+				push	edi
+
+				movzx	esi, should_replicate
+				push	esi
+				movsx	esi, multiplayer_sound_index
+				mov		edi, player_index
+				call	FUNCTION
+				add		esp, 4 * 1
+
+				pop		edi
+				pop		esi
+			API_FUNC_NAKED_END_NO_STACK_POP()
 		}
 		//////////////////////////////////////////////////////////////////////////
 		// players.c
@@ -546,9 +573,22 @@ namespace Yelo
 	{
 		//////////////////////////////////////////////////////////////////////////
 		// input_windows.c
-		bool PLATFORM_API input_key_is_down(_enum key_code)
+		API_FUNC_NAKED bool PLATFORM_API input_key_is_down(_enum key_code)
 		{
-			return Engine::Input::KeyIsDown(key_code);
+#if !PLATFORM_IS_DEDI
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(INPUT_KEY_IS_DOWN);
+
+			API_FUNC_NAKED_START()
+				push	ecx
+
+				mov		cx, key_code
+				call	FUNCTION
+
+				pop		ecx
+			API_FUNC_NAKED_END_NO_STACK_POP()
+#else
+			return false;
+#endif
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////
@@ -557,9 +597,14 @@ namespace Yelo
 	{
 		//////////////////////////////////////////////////////////////////////////
 		// hud.c
-		wcstring PLATFORM_API hud_get_item_string(int16 reference_index)
+		API_FUNC_NAKED wcstring PLATFORM_API hud_get_item_string(int16 reference_index)
 		{
-			return Engine::Interface::HudGetItemMessage(reference_index);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(HUD_GET_ITEM_MESSAGE);
+
+			API_FUNC_NAKED_START()
+				movsx	edx, reference_index
+				call	FUNCTION
+			API_FUNC_NAKED_END_NO_STACK_POP()
 		}
 		//////////////////////////////////////////////////////////////////////////
 		// hud_chat.c
@@ -567,18 +612,30 @@ namespace Yelo
 		{
 			Engine::Networking::EncodeHudChatNetworkData(player_number, chat_type, text);
 		}
-		void PLATFORM_API hud_chat_display_message(wcstring message)
+		API_FUNC_NAKED void PLATFORM_API hud_chat_display_message(wcstring message)
 		{
-			Engine::Interface::KeystoneChatLogAddString(message);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(KEYSTONE_CHAT_LOG_ADD_STRING);
+
+			API_FUNC_NAKED_START()
+				push	message
+				call	FUNCTION
+				add		esp, 4 * 1
+			API_FUNC_NAKED_END_NO_STACK_POP()
 		}
 		//////////////////////////////////////////////////////////////////////////
 		// hud_draw.c
 		//////////////////////////////////////////////////////////////////////////
 		// hud_messaging.c
-		void PLATFORM_API hud_print_message(int16 local_player_index, wcstring message)
+		API_FUNC_NAKED void PLATFORM_API hud_print_message(int16 local_player_index, wcstring message)
 		{
-			// TODO local player index
-			Engine::Interface::HudPrintMessage(message);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(HUD_PRINT_MESSAGE);
+
+			API_FUNC_NAKED_START()
+				push	message
+				movsx	eax, local_player_index
+				call	FUNCTION
+				add		esp, 4 * 1
+			API_FUNC_NAKED_END_NO_STACK_POP()
 		}
 		//////////////////////////////////////////////////////////////////////////
 		// ui_video_screen.c
@@ -592,15 +649,118 @@ namespace Yelo
 	namespace blam
 	{
 		//////////////////////////////////////////////////////////////////////////
-		// main.c
-		bool PLATFORM_API main_connect(cstring address, cstring password)
+		// console.c
+		API_FUNC_NAKED bool PLATFORM_API console_process_command(long_flags access_flags, cstring command)
 		{
-			return Engine::Networking::ConnectToServer(address, password);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(CONSOLE_PROCESS_COMMAND);
+
+			API_FUNC_NAKED_START()
+				push	edi
+
+				mov		edi, command
+				push	access_flags
+				call	FUNCTION
+				add		esp, 4 * 1
+
+				pop		edi
+			API_FUNC_NAKED_END_NO_STACK_POP()
+		}
+		static API_FUNC_NAKED void PLATFORM_API console_printf_impl(bool clear_screen, cstring format)
+		{
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(CONSOLE_PRINTF);
+
+			API_FUNC_NAKED_START()
+				push	format
+				mov		al, clear_screen
+				call	FUNCTION
+				add		esp, 4 * 1
+			API_FUNC_NAKED_END_NO_STACK_POP()
+		}
+		void PLATFORM_API console_printf(bool clear_screen, cstring format, ...)
+		{
+			char local[k_engine_function_string_buffer_size];
+			memset(local, 0, k_engine_function_string_buffer_size);
+
+			va_list args;
+			va_start(args, format);
+			vsprintf_s(local, format, args);
+			va_end(args);
+
+			console_printf_impl(clear_screen, local);
+		}
+		static API_FUNC_NAKED void PLATFORM_API console_response_printf_impl(BOOL clear_screen, cstring format)
+		{
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(CONSOLE_RESPONSE_PRINTF);
+
+			API_FUNC_NAKED_START()
+				push	format
+				push	clear_screen
+				call	FUNCTION
+				add		esp, 4 * 2
+			API_FUNC_NAKED_END_NO_STACK_POP()
+		}
+		void PLATFORM_API console_response_printf(bool clear_screen, cstring format, ...)
+		{
+			char local[k_engine_function_string_buffer_size];
+			memset(local, 0, k_engine_function_string_buffer_size);
+
+			va_list args;
+			va_start(args, format);
+			vsprintf_s(local, format, args);
+			va_end(args);
+
+			console_response_printf_impl(clear_screen, local);
+		}
+		static API_FUNC_NAKED void PLATFORM_API console_warning_impl(cstring format)
+		{
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(CONSOLE_WARNING);
+
+			API_FUNC_NAKED_START()
+				push	format
+				call	FUNCTION
+				add		esp, 4 * 1
+			API_FUNC_NAKED_END_NO_STACK_POP()
+		}
+		void PLATFORM_API console_warning(cstring format, ...)
+		{
+			char local[k_engine_function_string_buffer_size];
+			memset(local, 0, k_engine_function_string_buffer_size);
+
+			va_list args;
+			va_start(args, format);
+			vsprintf_s(local, format, args);
+			va_end(args);
+
+			console_warning_impl(local);
+		}
+		bool PLATFORM_API console_process_remote_command(cstring command, int32 machine_index)
+		{
+			Console::TerminalGlobals()->rcon_machine_index = machine_index;
+			bool result = console_process_command(0, command);
+			Console::TerminalGlobals()->rcon_machine_index = NONE;
+
+			return result;
+		}
+		//////////////////////////////////////////////////////////////////////////
+		// main.c
+		API_FUNC_NAKED bool PLATFORM_API main_connect(cstring address, cstring password)
+		{
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(MAIN_CONNECT);
+
+			API_FUNC_NAKED_START()
+				push	password
+				push	address
+				call	FUNCTION
+				add		esp, 4 * 2
+			API_FUNC_NAKED_END_NO_STACK_POP()
 		}
 		void PLATFORM_API main_menu_load()
 		{
-			// TODO: refactor this
-			Engine::Interface::MainmenuLoad();
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(MAINMENU_LOAD);
+
+			GameState::MainGlobals()->map.main_menu_scenario_load = true;
+
+			__asm call	FUNCTION
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////
@@ -611,11 +771,27 @@ namespace Yelo
 		// periodic_functions.c
 		real PLATFORM_API periodic_function_evaluate(Enums::periodic_function function_type, real input)
 		{
-			return Engine::Math::PeriodicFunctionEvaluate(function_type, input);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(PERIODIC_FUNCTION_EVALUATE);
+
+			__asm {
+				fld		input
+				sub		esp, 4 * 2			// allocate space for the 'input' parameter
+				fstp	qword ptr [esp]		// store the input on the stack
+				movzx	eax, function_type
+				call	FUNCTION
+				add		esp, 4 * 2			// deallocate. double type consumes two DWORDs of stack
+			}
 		}
 		real PLATFORM_API transition_function_evaluate(Enums::transition_function function_type, real input)
 		{
-			return Engine::Math::TransitionFunctionEvaluate(function_type, input);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(TRANSITION_FUNCTION_EVALUATE);
+
+			__asm {
+				push	input
+				movzx	ecx, function_type
+				call	FUNCTION
+				add		esp, 4 * 1
+			}
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////
@@ -626,9 +802,21 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////////
 		// data.c
-		s_data_array* PLATFORM_API data_new(cstring name, int32 maximum_count, size_t datum_size)
+		API_FUNC_NAKED s_data_array* PLATFORM_API data_new(cstring name, int32 maximum_count, size_t datum_size)
 		{
-			return Engine::Memory::DataNew(name, maximum_count, datum_size);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(DATA_NEW);
+
+			API_FUNC_NAKED_START()
+				push	ebx
+
+				mov		ebx, datum_size
+				push	maximum_count
+				push	name
+				call	FUNCTION
+				add		esp, 4 * 2
+
+				pop		ebx
+			API_FUNC_NAKED_END_NO_STACK_POP()
 		}
 		void PLATFORM_API data_dispose(s_data_array* data)
 		{
@@ -638,33 +826,102 @@ namespace Yelo
 				CAST_PTR(Yelo::Memory::s_data_array*, GlobalFree(data));
 			}
 		}
-		void PLATFORM_API data_delete_all(s_data_array* data)
+		API_FUNC_NAKED void PLATFORM_API data_delete_all(s_data_array* data)
 		{
-			Engine::Memory::DataDeleteAll(data);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(DATA_DELETE_ALL);
+
+			API_FUNC_NAKED_START()
+				push	esi
+
+				mov		esi, data
+				call	FUNCTION
+
+				pop		esi
+			API_FUNC_NAKED_END_NO_STACK_POP()
 		}
 		datum_index PLATFORM_API data_next_index(s_data_array* data, datum_index cursor)
 		{
-			return Engine::Memory::DataNextIndex(data, cursor);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(DATA_NEXT_INDEX);
+
+			if (data == nullptr || cursor.IsNull()) return datum_index::null;
+
+			__asm {
+				push	esi
+				push	edi
+
+				mov		esi, cursor
+				mov		edi, data
+				call	FUNCTION
+
+				pop		edi
+				pop		esi
+			}
 		}
 /*		void* PLATFORM_API data_iterator_next(s_data_iterator& iterator)
 		{
-			return Engine::Memory::DataIteratorNext(&iterator);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(DATA_ITERATOR_NEXT);
+
+			API_FUNC_NAKED_START()
+				push	edi
+
+				mov		edi, iterator
+				call	FUNCTION
+
+				pop		edi
+			API_FUNC_NAKED_END_NO_STACK_POP()
 		}*/
 		datum_index PLATFORM_API datum_new_at_index(s_data_array* data, datum_index index)
 		{
-			return Engine::Memory::DatumNewAtIndex(data, index);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(DATUM_NEW_AT_INDEX);
+
+			if (data == nullptr || index.IsNull()) return datum_index::null;
+
+			__asm {
+				mov		eax, index
+				mov		edx, data
+				call	FUNCTION
+			}
 		}
 		datum_index PLATFORM_API datum_new(s_data_array* data)
 		{
-			return Engine::Memory::DatumNew(data);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(DATUM_NEW);
+
+			if (data == nullptr) return datum_index::null;
+
+			__asm {
+				mov		edx, data
+				call	FUNCTION
+			}
 		}
 		void PLATFORM_API datum_delete(s_data_array* data, datum_index index)
 		{
-			return Engine::Memory::DatumDelete(data, index);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(DATUM_DELETE);
+
+			if (data == nullptr || index.IsNull()) return;
+
+			__asm {
+				mov		edx, index
+				mov		eax, data
+				call	FUNCTION
+			}
 		}
 		void* PLATFORM_API datum_try_and_get(s_data_array* data, datum_index index)
 		{
-			return Engine::Memory::DatumTryAndGet(data, index);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(DATUM_TRY_AND_GET);
+
+			if (data == nullptr) return nullptr;
+
+			__asm {
+				push	edx
+				push	esi
+
+				mov		edx, index
+				mov		esi, data
+				call	FUNCTION
+
+				pop		esi
+				pop		edx
+			}
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////
@@ -852,9 +1109,18 @@ namespace Yelo
 	{
 		//////////////////////////////////////////////////////////////////////////
 		// scenario.c
-		bool PLATFORM_API scenario_switch_structure_bsp(int16 bsp_index)
+		API_FUNC_NAKED bool PLATFORM_API scenario_switch_structure_bsp(int16 bsp_index)
 		{
-			return Engine::Game::SwitchBsp(bsp_index);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(SCENARIO_SWITCH_STRUCTURE_BSP);
+
+			API_FUNC_NAKED_START()
+				push	esi
+
+				movsx	esi, bsp_index
+				call	FUNCTION
+
+				pop		esi
+			API_FUNC_NAKED_END_NO_STACK_POP()
 		}
 		bool PLATFORM_API scenario_trigger_volume_test_point(int32 trigger_volume_index, const real_point3d& point)
 		{

@@ -250,7 +250,7 @@ static void* scripting_play_bink_movie_evaluate(void** arguments)
 
 #if !PLATFORM_IS_DEDI
 	if(Networking::IsLocal())
-		Engine::Game::PlayVideo(args->name);
+		blam::bink_playback_start(args->name);
 #endif
 
 	return nullptr;

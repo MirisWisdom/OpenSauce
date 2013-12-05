@@ -12,9 +12,7 @@ namespace Yelo
 	{
 		enum game_team : _enum
 		{
-#include <cseries/msvc_warning_4341_toggle.hpp>
-			_game_team_none = _enum(NONE),
-#include <cseries/msvc_warning_4341_toggle.hpp>
+			_game_team_none = NONE,
 
 			_game_team_default = 0,
 			_game_team_player,

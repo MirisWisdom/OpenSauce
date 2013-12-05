@@ -12,6 +12,7 @@
 #include <blamlib/Halo1/effects/damage_effect_definitions.hpp>
 #include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/hs/hs_library_external.hpp>
+#include <blamlib/Halo1/main/console.hpp>
 #include <blamlib/Halo1/models/collision_model_definitions.hpp>
 #include <blamlib/Halo1/models/model_animation_definitions.hpp>
 #include <blamlib/Halo1/objects/damage.hpp>
@@ -25,7 +26,6 @@
 #include "Objects/Units.hpp"
 
 #include "Game/Camera.hpp"
-#include "Game/EngineFunctions.hpp"
 #include "Game/GameState.hpp"
 #include "Game/GameStateRuntimeData.hpp"
 #include "Game/Scripting.hpp"
@@ -122,9 +122,7 @@ namespace Yelo
 		}
 		void Initialize()
 		{
-#if !PLATFORM_DISABLE_UNUSED_CODE
-			Memory::WriteRelativeCall(&Objects::Update, GET_FUNC_VPTR(OBJECTS_UPDATE_HOOK), false);
-#endif
+			Memory::WriteRelativeJmp(&Objects::Update, GET_FUNC_VPTR(OBJECTS_UPDATE_HOOK), false);
 
 #if PLATFORM_IS_USER
 			if(!CMDLINE_GET_PARAM(no_os_gfx).ParameterSet())
@@ -204,30 +202,6 @@ namespace Yelo
 			Units::DisposeFromOldMap();
 		}
 
-#ifdef API_DEBUG
-		static void DumpObjectWithNonZeropadding(s_object_data* object, cstring prefix)
-		{
-			TagGroups::group_tag_to_string gt_string = { blam::tag_get_group_tag(object->definition_index) };
-
-			Engine::Console::TerminalPrintF("%s %s %s\n",
-				prefix, gt_string.TagSwap().Terminate().str, blam::tag_get_name(object->definition_index));
-		}
-		static void DumpObjectsWithNonZeroPadding()
-		{
-			if (TagGroups::_global_yelo->flags.cache_is_protected_bit)
-				return;
-
-			byte zero_buffer[FIELD_SIZEOF(s_object_data, unknown1C)];
-			for (auto iter : c_object_iterator::all())
-			{
-				if (std::memcmp(zero_buffer, iter->unknown1C, NUMBEROF(iter->unknown1C)) != 0)
-					DumpObjectWithNonZeropadding(iter.datum, "non-zero");
-
-				if (iter->type == Enums::_object_type_biped)
-					DumpObjectWithNonZeropadding(iter.datum, "test");
-			}
-		}
-#endif
 		void PLATFORM_API Update()
 		{
 			static const uintptr_t OBJECTS_GARBAGE_COLLECTION = GET_FUNC_PTR(OBJECTS_GARBAGE_COLLECTION);
@@ -236,7 +210,6 @@ namespace Yelo
 			}
 
 			// Do custom code here:
-			DebugOnly( DumpObjectsWithNonZeroPadding() );
 		}
 
 		void InitializeForYeloGameState(bool enabled)
@@ -326,7 +299,7 @@ namespace Yelo
 				tag_index_override = src_object->definition_index;
 
 			blam::object_placement_data_new(data, tag_index_override, owner_object_index);
-			src_object->network.CopyToPlacementData(data);
+			src_object->CopyToPlacementData(data);
 		}
 
 		datum_index GetUltimateObject(datum_index object_index)

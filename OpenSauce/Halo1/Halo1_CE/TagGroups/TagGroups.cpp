@@ -7,9 +7,10 @@
 #include "Common/Precompile.hpp"
 #include "TagGroups/TagGroups.hpp"
 
+#include <blamlib/Halo1/main/console.hpp>
+
 #include "Memory/MemoryInterface.hpp"
 #include "Game/ScriptLibrary.hpp"
-#include "Game/EngineFunctions.hpp"
 
 #include "TagGroups/CacheFiles.hpp"
 #include "TagGroups/project_yellow_definitions.hpp"
@@ -118,7 +119,7 @@ namespace Yelo
 				!Scripting::DefinitionsMatch( user_script_block[0] ))
 			{
 				mismatch = true;
-				Engine::Console::Warning("Map's project_yellow's script definitions don't match this build of Yelo!");
+				blam::console_warning("Map's project_yellow's script definitions don't match this build of Yelo!");
 			}
 
 			// Verify that the map's project_yellow_globals's script definitions are included in this 
@@ -128,7 +129,7 @@ namespace Yelo
 				!Scripting::DefinitionsMatch( global_script_block[0] ))
 			{
 				mismatch = true;
-				Engine::Console::Warning("Map's project_yellow_globals's script definitions don't match this build of Yelo!");
+				blam::console_warning("Map's project_yellow_globals's script definitions don't match this build of Yelo!");
 			}
 
 			return !mismatch;

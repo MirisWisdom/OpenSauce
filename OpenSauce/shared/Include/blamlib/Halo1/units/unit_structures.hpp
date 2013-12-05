@@ -17,9 +17,7 @@ namespace Yelo
 	{
 		enum unit_animation_state : sbyte
 		{
-#include <cseries/msvc_warning_4341_toggle.hpp>
 			_unit_animation_state_invalid = NONE,
-#include <cseries/msvc_warning_4341_toggle.hpp>
 
 			_unit_animation_state_idle,
 			_unit_animation_state_gesture,
