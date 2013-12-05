@@ -79,7 +79,9 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-	  <AdditionalOptions> /d2Zi+ %(AdditionalOptions)</AdditionalOptions> <!-- http://randomascii.wordpress.com/2013/09/11/debugging-optimized-codenew-in-visual-studio-2012/ -->
+	  <!-- http://randomascii.wordpress.com/2013/09/11/debugging-optimized-codenew-in-visual-studio-2012/ -->
+	  <!-- http://visualstudiogallery.msdn.microsoft.com/2f679f81-5154-4bd7-9907-adafde05a428 -->
+	  <AdditionalOptions> /d2Zi+ /Qvec-report:2 %(AdditionalOptions)</AdditionalOptions>
 	  <MultiProcessorCompilation>true</MultiProcessorCompilation> <!--release only, not compat with minimal rebuild (enabled in debug)-->
     </ClCompile>
   </ItemDefinitionGroup>
