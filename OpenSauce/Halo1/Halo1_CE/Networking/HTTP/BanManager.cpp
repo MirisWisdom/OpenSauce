@@ -8,11 +8,11 @@
 #include "Networking/HTTP/BanManager.hpp"
 
 #if PLATFORM_IS_DEDI
+#include <blamlib/Halo1/main/console.hpp>
 #include <YeloLib/memory/linked_list.hpp>
 #include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
 
 #include "Common/FileIO.hpp"
-#include "Game/EngineFunctions.hpp"
 #include "Networking/HTTP/HTTP.hpp"
 
 namespace Yelo
@@ -412,7 +412,7 @@ namespace Yelo
 
 			if(-1 == sprintf_s(filename, MAX_PATH, "httpserver_banlist%s.txt", suffix))
 			{
-				Engine::Console::TerminalPrint("Failed to set the httpserver banlist file suffix");
+				blam::console_printf(false, "Failed to set the httpserver banlist file suffix");
 
 				g_ban_manager_globals.m_ban_list_file[0] = 0;
 				return false;
@@ -420,7 +420,7 @@ namespace Yelo
 
 			if(!FileIO::PathBuild(g_ban_manager_globals.m_ban_list_file, false, 2, Settings::OpenSauceProfilePath(), filename))
 			{
-				Engine::Console::TerminalPrint("Failed to set the httpserver banlist file suffix");
+				blam::console_printf(false, "Failed to set the httpserver banlist file suffix");
 
 				g_ban_manager_globals. m_ban_list_file[0] = 0;
 				return false;
@@ -441,13 +441,13 @@ namespace Yelo
 			// open the ban list if it exists, otherwise return
 			if(FileIO::PathExists(g_ban_manager_globals.m_ban_list_file))
 			{
-				Engine::Console::TerminalPrintF("Reading http server ban list file (%s).", g_ban_manager_globals.m_ban_list_file);
+				blam::console_printf(false, "Reading http server ban list file (%s).", g_ban_manager_globals.m_ban_list_file);
 
 				if(Enums::_file_io_open_error_none != FileIO::OpenFile(banlist,
 					g_ban_manager_globals.m_ban_list_file,
 					Enums::_file_io_open_access_type_read))
 				{
-					Engine::Console::TerminalPrint("Failed to open the existing httpserver banlist");
+					blam::console_printf(false, "Failed to open the existing httpserver banlist");
 					return;
 				}
 
@@ -461,7 +461,7 @@ namespace Yelo
 				// memory map the file for reading
 				if(Enums::_file_io_read_error_none != FileIO::MemoryMapFile(banlist))
 				{
-					Engine::Console::TerminalPrint("Failed to open the existing httpserver banlist");
+					blam::console_printf(false, "Failed to open the existing httpserver banlist");
 					FileIO::CloseFile(banlist);
 					return;
 				}
@@ -500,7 +500,7 @@ namespace Yelo
 				char ip_type[5] = "";
 				char ip[Enums::k_max_ip_string_length] = "";
 
-				// get the ip type and ip in seperate strings
+				// get the ip type and ip in separate strings
 				int count = sscanf_s(&file_offset[line_offset], "%s %s\r\n", ip_type, 5, ip, Enums::k_max_ip_string_length);
 
 				if(count != 2)
@@ -525,7 +525,7 @@ namespace Yelo
 				byte a8 = 0, b8 = 0, c8 = 0, d8 = 0;
 				short a16 = 0, b16 = 0, c16 = 0, d16 = 0, e16 = 0, f16 = 0, g16 = 0, h16 = 0;
 
-				// seperate the ip address
+				// separate the ip address
 				success = true;
 				switch(ip_version)
 				{
@@ -546,7 +546,7 @@ namespace Yelo
 				if(!success)
 					break;
 
-				c_http_ip_ban_permanent* permanent_ban = NULL;
+				c_http_ip_ban_permanent* permanent_ban = nullptr;
 				if(ip_version == Enums::_http_ip_ban_ip_version_ipv4)
 					permanent_ban = new c_http_ip_ban_permanent(a8, b8, c8, d8);
 				else
@@ -558,7 +558,7 @@ namespace Yelo
 
 			if(!success)
 			{
-				Engine::Console::TerminalPrint("Failed to read the httpserver banlist");
+				blam::console_printf(false, "Failed to read the httpserver banlist");
 				if(g_permanent_ban_list)
 					DeleteLinkedList(g_permanent_ban_list);
 			}
@@ -584,7 +584,7 @@ namespace Yelo
 				Enums::_file_io_open_access_type_write,
 				Enums::_file_io_open_create_option_new))
 			{
-				Engine::Console::TerminalPrint("Failed to write the httpserver banlist");
+				blam::console_printf(false, "Failed to write the httpserver banlist");
 				return;
 			}
 
@@ -593,7 +593,7 @@ namespace Yelo
 			// write the header comment
 			if(Enums::_file_io_write_error_none != FileIO::WriteToFile(banlist, buffer, strlen(buffer)))
 			{
-				Engine::Console::TerminalPrint("Failed to write the httpserver banlist");
+				blam::console_printf(false, "Failed to write the httpserver banlist");
 				FileIO::CloseFile(banlist);
 				return;
 			}
@@ -607,7 +607,7 @@ namespace Yelo
 				switch(ban_element->m_ip_version)
 				{
 				case Enums::_http_ip_ban_ip_version_ipv4:
-					if(-1 == sprintf_s(buffer, sizeof(buffer), "IPv4 %i.%i.%i.%i\r\n",
+					if(-1 == sprintf_s(buffer, "IPv4 %i.%i.%i.%i\r\n",
 						ban_element->m_ip.v4.a, ban_element->m_ip.v4.b,
 						ban_element->m_ip.v4.c, ban_element->m_ip.v4.d))
 					{
@@ -616,7 +616,7 @@ namespace Yelo
 					}
 					break;
 				case Enums::_http_ip_ban_ip_version_ipv6:
-					if(-1 == sprintf_s(buffer, sizeof(buffer), "IPv6 [%04X:%04X:%04X:%04X:%04X:%04X:%04X:%04X]\r\n",
+					if(-1 == sprintf_s(buffer, "IPv6 [%04X:%04X:%04X:%04X:%04X:%04X:%04X:%04X]\r\n",
 						ban_element->m_ip.v6.a, ban_element->m_ip.v6.b,
 						ban_element->m_ip.v6.c, ban_element->m_ip.v6.d,
 						ban_element->m_ip.v6.e, ban_element->m_ip.v6.f,
@@ -636,7 +636,7 @@ namespace Yelo
 			};
 
 			if(!success)
-				Engine::Console::TerminalPrint("Failed to write the httpserver banlist");
+				blam::console_printf(false, "Failed to write the httpserver banlist");
 
 			FileIO::CloseFile(banlist);
 		}
@@ -652,7 +652,7 @@ namespace Yelo
 			WaitForSingleObject(g_ban_list_mutex, INFINITE);
 
 			// print the table column names
-			Engine::Console::TerminalPrint("[Index\tIP]");
+			blam::console_printf(false, "[Index\tIP]");
 
 			c_http_ip_ban_base* permanent_ban = g_permanent_ban_list;
 
@@ -663,7 +663,7 @@ namespace Yelo
 				switch(permanent_ban->m_ip_version)
 				{
 				case Enums::_http_ip_ban_ip_version_ipv4:
-					Engine::Console::TerminalPrintF("%i\t%i.%i.%i.%i",
+					blam::console_printf(false, "%i\t%i.%i.%i.%i",
 						index,
 						permanent_ban->m_ip.v4.a,
 						permanent_ban->m_ip.v4.b,
@@ -671,7 +671,7 @@ namespace Yelo
 						permanent_ban->m_ip.v4.d);
 					break;
 				case Enums::_http_ip_ban_ip_version_ipv6:
-					Engine::Console::TerminalPrintF("%i\t[%04X:%04X:%04X:%04X:%04X:%04X:%04X:%04X]",
+					blam::console_printf(false, "%i\t[%04X:%04X:%04X:%04X:%04X:%04X:%04X:%04X]",
 						index,
 						permanent_ban->m_ip.v6.a,
 						permanent_ban->m_ip.v6.b,
@@ -780,7 +780,7 @@ namespace Yelo
 					g_ban_manager_globals.m_forget_connection_time);
 
 				// if the connection can be forgotten hold on to the connection ban object
-				c_http_ip_ban_connection* forget_connection = NULL;
+				c_http_ip_ban_connection* forget_connection = nullptr;
 				if(connection_ban->Forget())
 					forget_connection = connection_ban;
 
@@ -834,20 +834,20 @@ namespace Yelo
 		{
 			if(g_ban_manager_globals.m_ban_list_file[0] == 0)
 			{
-				Engine::Console::TerminalPrint("Http server banlist file not set");
+				blam::console_printf(false, "Http server banlist file not set");
 				return;
 			}
 
 			WaitForSingleObject(g_ban_list_mutex, INFINITE);
 
-			c_http_ip_ban_permanent* permanent_ban = NULL;
+			c_http_ip_ban_permanent* permanent_ban = nullptr;
 			switch(version)
 			{
 			case Enums::_http_ip_ban_ip_version_ipv4:
 				// check the address values are less than 256
 				if((a > UCHAR_MAX) || (b > UCHAR_MAX) || (c > UCHAR_MAX) || (d > UCHAR_MAX))
 				{
-					Engine::Console::TerminalPrint("IP address values out of range for IPv4");
+					blam::console_printf(false, "IP address values out of range for IPv4");
 					ReleaseMutex(g_ban_list_mutex);
 					return;
 				}
@@ -859,11 +859,11 @@ namespace Yelo
 				}
 				break;
 			default:
-				Engine::Console::TerminalPrint("IPv6 not currently supported by the http server.");
+				blam::console_printf(false, "IPv6 not currently supported by the http server.");
 			};
 
 			if(!permanent_ban)
-				Engine::Console::TerminalPrint("That IP is already banned");
+				blam::console_printf(false, "That IP is already banned");
 			else
 			{
 				AppendLinkedListNode(g_permanent_ban_list, permanent_ban);
@@ -890,7 +890,7 @@ namespace Yelo
 			uint32 banlist_count = GetListLength(g_permanent_ban_list);
 			if(!banlist_count || (ban_index >= banlist_count))
 			{
-				Engine::Console::TerminalPrint("IP ban index out of bounds.");
+				blam::console_printf(false, "IP ban index out of bounds.");
 				ReleaseMutex(g_ban_list_mutex);
 				return;
 			}
@@ -898,7 +898,7 @@ namespace Yelo
 			// get the node
 			c_http_ip_ban_permanent* ban_element = GetNodeByIndex(g_permanent_ban_list, ban_index);
 
-			ASSERT(ban_element != NULL, "permanent ban not found when the index is within bounds");
+			ASSERT(ban_element != nullptr, "permanent ban not found when the index is within bounds");
 
 			// remove it from the permanent ban list
 			RemoveLinkedListNode(g_permanent_ban_list, ban_element);
@@ -924,7 +924,7 @@ namespace Yelo
 
 			SetBanlistFileSuffix("");
 
-			g_ban_list_mutex = CreateMutex(NULL, false, NULL);
+			g_ban_list_mutex = CreateMutex(nullptr, false, nullptr);
 		}
 
 		/*!
@@ -936,7 +936,7 @@ namespace Yelo
 		void Dispose()
 		{
 			CloseHandle(g_ban_list_mutex);
-			g_ban_list_mutex = (HANDLE)NULL_HANDLE;
+			g_ban_list_mutex = INVALID_HANDLE_VALUE;
 		}
 
 		/*!
@@ -961,7 +961,7 @@ namespace Yelo
 
 			BanManager::SetConnectionBan(args->max_connections_per_ip, args->connection_cooldown_time, args->forget_connection_time);
 
-			return NULL;
+			return nullptr;
 		}
 
 		/*!
@@ -977,7 +977,7 @@ namespace Yelo
 		{
 			PrintBanList();
 
-			return NULL;
+			return nullptr;
 		}
 
 		/*!
@@ -1000,7 +1000,7 @@ namespace Yelo
 
 			LoadBanList();
 
-			return NULL;
+			return nullptr;
 		}
 
 		/*!
@@ -1042,7 +1042,7 @@ namespace Yelo
 				args->a, args->b, args->c, args->d,
 				args->e, args->f, args->g, args->h);
 
-			return NULL;
+			return nullptr;
 		}
 
 		/*!
@@ -1060,13 +1060,13 @@ namespace Yelo
 		void* HTTPServerUnbanIP(void** arguments)
 		{
 			struct s_arguments {
-				uint16 index;
+				uint16 index; // TODO: HS doesn't have anything but signed integers
 				PAD16;
 			}* args = CAST_PTR(s_arguments*, arguments);
 
 			RemovePermanentBan(args->index);
 
-			return NULL;
+			return nullptr;
 		}
 	};};};};
 };

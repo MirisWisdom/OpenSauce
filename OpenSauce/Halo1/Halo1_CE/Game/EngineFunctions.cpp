@@ -328,7 +328,8 @@ namespace Yelo
 				add		esp, 4 * 1
 			API_FUNC_NAKED_END_NO_STACK_POP()
 #else
-			return;
+			API_FUNC_NAKED_START_()
+			API_FUNC_NAKED_END_()
 #endif
 		}
 	};
@@ -483,7 +484,8 @@ namespace Yelo
 				add		esp, 4 * 2
 			API_FUNC_NAKED_END_NO_STACK_POP()
 #else
-			return;
+			API_FUNC_NAKED_START_()
+			API_FUNC_NAKED_END_()
 #endif
 		}
 		//////////////////////////////////////////////////////////////////////////
@@ -587,7 +589,9 @@ namespace Yelo
 				pop		ecx
 			API_FUNC_NAKED_END_NO_STACK_POP()
 #else
-			return false;
+			API_FUNC_NAKED_START_()
+				xor		eax, eax
+			API_FUNC_NAKED_END_()
 #endif
 		}
 	};
