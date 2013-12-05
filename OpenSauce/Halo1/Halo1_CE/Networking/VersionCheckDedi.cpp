@@ -8,7 +8,7 @@
 #include "Networking/VersionCheckDedi.hpp"
 
 #if PLATFORM_IS_DEDI && defined(YELO_VERSION_CHECK_ENABLE)
-#include "Game/EngineFunctions.hpp"
+#include <blamlib/Halo1/main/console.hpp>
 
 namespace Yelo
 {
@@ -27,7 +27,7 @@ namespace Yelo
 			// check for updates using blocking
 			if(!m_states.checked_today)
 			{
-				Engine::Console::TerminalPrint("Checking for updates...");
+				blam::console_printf(false, "Checking for updates...");
 				CheckForUpdates();
 			}
 		}
@@ -82,7 +82,7 @@ namespace Yelo
 		*/
 		void		c_version_check_manager_dedi::DisplayVersions(bool is_new_version)
 		{
-			Engine::Console::TerminalPrint("");
+			blam::console_printf(false, "");
 
 			// if a new version is available display the versions
 			if(is_new_version)
@@ -90,18 +90,18 @@ namespace Yelo
 				// print the current and available versions to the console
 				// need to see how the console looks though to make sure we dont
 				// mess up anything, could make it colourful too
-				Engine::Console::TerminalPrint("New version of OpenSauce available!");
-				Engine::Console::TerminalPrintF("Current version:\t\t%i.%i.%i", 
+				blam::console_printf(false, "New version of OpenSauce available!");
+				blam::console_printf(false, "Current version:\t\t%i.%i.%i",
 					m_current_version.m_major, m_current_version.m_minor, m_current_version.m_build);
-				Engine::Console::TerminalPrintF("Available version:\t\t%i.%i.%i", 
+				blam::console_printf(false, "Available version:\t\t%i.%i.%i",
 					m_available_version.m_major, m_available_version.m_minor, m_available_version.m_build);
 			}
 			else
 			{
-				Engine::Console::TerminalPrint("No updates available");
+				blam::console_printf(false, "No updates available");
 			}
 
-			Engine::Console::TerminalPrint("");
+			blam::console_printf(false, "");
 		}
 	}; };
 };

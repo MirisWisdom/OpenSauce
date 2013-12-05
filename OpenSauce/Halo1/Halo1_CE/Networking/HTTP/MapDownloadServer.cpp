@@ -8,6 +8,7 @@
 #include "Networking/HTTP/MapDownloadServer.hpp"
 
 #if PLATFORM_IS_DEDI
+#include <blamlib/Halo1/main/console.hpp>
 #include <YeloLib/memory/linked_list.hpp>
 
 #include "Common/FileIO.hpp"
@@ -15,7 +16,6 @@
 #include "Networking/HTTP/HTTP.hpp"
 #include "Networking/HTTP/HTTPServer.hpp"
 #include "Networking/Server.hpp"
-#include "Game/EngineFunctions.hpp"
 
 namespace Yelo
 {
@@ -55,26 +55,26 @@ namespace Yelo
 
 			void Ctor()
 			{
-				m_access_mutex = CreateMutex(NULL, false, NULL);
-				ASSERT(m_access_mutex != NULL, "failed to create map element mutex");
+				m_access_mutex = CreateMutex(nullptr, false, nullptr);
+				ASSERT(m_access_mutex != nullptr, "failed to create map element mutex");
 				m_lock_count = 0;
 
 				ClearNodeData();
 
 				m_name.assign("");
-				m_part_definition = NULL;
-				m_parts = NULL;
+				m_part_definition = nullptr;
+				m_parts = nullptr;
 			}
 
 			void Dtor()
 			{
 				CloseHandle(m_access_mutex);
-				m_access_mutex = (HANDLE)NULL_HANDLE;
+				m_access_mutex = INVALID_HANDLE_VALUE;
 
 				m_name.assign("");
 				delete m_part_definition;
-				m_part_definition = NULL;
-				m_parts = NULL;
+				m_part_definition = nullptr;
+				m_parts = nullptr;
 			}
 
 			uint32	LockCount()
@@ -108,16 +108,16 @@ namespace Yelo
 		public:
 			void Ctor()
 			{
-				m_access_mutex = CreateMutex(NULL, false, NULL);
-				ASSERT(m_access_mutex != NULL, "failed to create map list mutex");
+				m_access_mutex = CreateMutex(nullptr, false, nullptr);
+				ASSERT(m_access_mutex != nullptr, "failed to create map list mutex");
 
-				m_map_part_definitions = NULL;
+				m_map_part_definitions = nullptr;
 			}
 
 			void Dtor()
 			{
 				CloseHandle(m_access_mutex);
-				m_access_mutex = (HANDLE)NULL_HANDLE;
+				m_access_mutex = INVALID_HANDLE_VALUE;
 			}
 
 			bool Lock()
@@ -132,12 +132,12 @@ namespace Yelo
 
 			bool HasEntries()
 			{
-				return m_map_part_definitions != NULL;
+				return m_map_part_definitions != nullptr;
 			}
 
 			c_map_element* FindDefinition(const char* map_name)
 			{
-				c_map_element* matched_definition = NULL;
+				c_map_element* matched_definition = nullptr;
 
 				if(!m_map_part_definitions)
 					return matched_definition;
@@ -208,7 +208,7 @@ namespace Yelo
 
 				uint32 map_count = GetListLength(m_map_part_definitions);
 
-				c_map_element* map_element = NULL;
+				c_map_element* map_element = nullptr;
 
 				if(index < map_count)
 					map_element = GetNodeByIndex(m_map_part_definitions, index);
@@ -253,7 +253,7 @@ namespace Yelo
 		{
 			if(g_map_download_globals.m_flags.system_active)
 			{
-				Engine::Console::TerminalPrint("Cannot change the map part definitions path whilst the system is active");
+				blam::console_printf(false, "Cannot change the map part definitions path whilst the system is active");
 				return;
 			}
 
@@ -263,7 +263,7 @@ namespace Yelo
 			// check the path exists
 			if(!FileIO::PathExists(path))
 			{
-				Engine::Console::TerminalPrintF("The path \"%s\" does not exist", path);
+				blam::console_printf(false, "The path \"%s\" does not exist", path);
 				return;
 			}
 
@@ -271,12 +271,12 @@ namespace Yelo
 			errno_t result = strcpy_s(g_map_download_globals.m_map_part_definitions_path, MAX_PATH, path);
 			if(result == ERANGE)
 			{
-				Engine::Console::TerminalPrint("The map part definition path is too long");
+				blam::console_printf(false, "The map part definition path is too long");
 				return;
 			}
 			else if(result)
 			{
-				Engine::Console::TerminalPrint("Failed to copy the map part definition path");
+				blam::console_printf(false, "Failed to copy the map part definition path");
 				return;
 			}
 
@@ -296,7 +296,7 @@ namespace Yelo
 		{
 			if(g_map_download_globals.m_flags.system_active)
 			{
-				Engine::Console::TerminalPrint("Cannot change the URL redirect root whilst the system is active");
+				blam::console_printf(false, "Cannot change the URL redirect root whilst the system is active");
 				return;
 			}
 
@@ -313,18 +313,18 @@ namespace Yelo
 				errno_t result = strcpy_s(g_map_download_globals.m_host_address, k_max_host_url_length, root);
 				if(result == ERANGE)
 				{
-					Engine::Console::TerminalPrint("The host root url is too long (MAX 2000 characters)");
+					blam::console_printf(false, "The host root url is too long (MAX 2000 characters)");
 					return;
 				}
 				else if(result || !FileIO::AppendDirectorySlash(g_map_download_globals.m_host_address, k_max_host_url_length, '/'))
 				{
-					Engine::Console::TerminalPrint("Failed to copy the host root url");
+					blam::console_printf(false, "Failed to copy the host root url");
 					return;
 				}
 			}
 			else
 			{
-				Engine::Console::TerminalPrint("The provided URL does not have a scheme or address section");
+				blam::console_printf(false, "The provided URL does not have a scheme or address section");
 				return;
 			}
 
@@ -339,7 +339,7 @@ namespace Yelo
 		 * The first character of the map name.
 		 * 
 		 * \returns
-		 * Returns the defintiion list index for the specified character.
+		 * Returns the definition list index for the specified character.
 		 * 
 		 * Gets the definition list index for a specific map name.
 		 */
@@ -352,8 +352,8 @@ namespace Yelo
 
 			// get the list index from the alphanumeric index of the first character in the map name
 			int32 list_index = 0;
-			char list_char = NULL;
-			while((list_char = char_index_string[list_index]) != NULL)
+			char list_char = '\0';
+			while((list_char = char_index_string[list_index]) != '\0')
 			{
 				if(list_char == lower_character)
 					break;
@@ -383,7 +383,7 @@ namespace Yelo
 			int32 list_index = GetListIndex(map_name[0]);
 
 			if(!g_map_part_definition_lists[list_index].HasEntries())
-				return NULL;
+				return nullptr;
 
 			return g_map_part_definition_lists[list_index].FindDefinition(map_name);
 		}
@@ -401,7 +401,7 @@ namespace Yelo
 		 * \returns
 		 * Returns a pointer to the part element in a matching entry is found, otherwise returns NULL.
 		 * 
-		 * Seraches a map definition entry for a specific part.
+		 * Searches a map definition entry for a specific part.
 		 */
 		static const c_part_element* FindPart(c_map_element* map_element, const char* part_name)
 		{
@@ -414,7 +414,7 @@ namespace Yelo
 					return part_iterator.Current();
 			}
 
-			return NULL;
+			return nullptr;
 		}
 
 		/*!
@@ -434,7 +434,7 @@ namespace Yelo
 			int32 list_index = GetListIndex(map_element->m_name[0]);
 			if(!g_map_part_definition_lists[list_index].AddDefinition(map_element))
 			{
-				Engine::Console::TerminalPrint("failed to add a map definition to the definition list");
+				blam::console_printf(false, "failed to add a map definition to the definition list");
 				return false;
 			}
 			return true;
@@ -471,7 +471,7 @@ namespace Yelo
 		{
 			if(!map_list.RemoveDefinition(map_element))
 			{
-				Engine::Console::TerminalPrint("failed to remove map from a map list");
+				blam::console_printf(false, "failed to remove map from a map list");
 				return;
 			}
 
@@ -507,7 +507,7 @@ namespace Yelo
 			const TiXmlElement* current_part = map_definition->FirstChildElement("part");
 			if(!current_part)
 			{
-				Engine::Console::TerminalPrintF("No part nodes present for %s", map_element->m_name.c_str());
+				blam::console_printf(false, "No part nodes present for %s", map_element->m_name.c_str());
 				return false;
 			}
 
@@ -561,17 +561,17 @@ namespace Yelo
 				else
 				{
 					if(!name)
-						Engine::Console::TerminalPrint("A part node is missing its name");
+						blam::console_printf(false, "A part node is missing its name");
 					if(!md5)
-						Engine::Console::TerminalPrint("A part node is missing its md5 checksum");
+						blam::console_printf(false, "A part node is missing its md5 checksum");
 					else if(!md5_valid)
-						Engine::Console::TerminalPrint("A part nodes md5 checksum is too long/short");
+						blam::console_printf(false, "A part nodes md5 checksum is too long/short");
 					if(encrypted_value && !unencryptedmd5)
-						Engine::Console::TerminalPrint("A part node is encrypted but has no unencrypted_md5 attribute");
+						blam::console_printf(false, "A part node is encrypted but has no unencrypted_md5 attribute");
 					else if(!encrypted_value && unencryptedmd5)
-						Engine::Console::TerminalPrint("A part node is not encrypted but has an unencrypted_md5 attribute");
+						blam::console_printf(false, "A part node is not encrypted but has an unencrypted_md5 attribute");
 					else if(encrypted_value && !unencrypted_md5_valid)
-						Engine::Console::TerminalPrint("An encrypted part nodes unencrypted md5 checksum is too long/short");
+						blam::console_printf(false, "An encrypted part nodes unencrypted md5 checksum is too long/short");
 
 					// delete the part list to leave the map element unchanged
 					DeleteLinkedList(map_element->m_parts);
@@ -604,7 +604,7 @@ namespace Yelo
 			// check the xml loaded correctly
 			if(definition.Error())
 			{
-				Engine::Console::TerminalPrintF("Failed to load and parse the map part definition\nError: %s", definition.ErrorDesc());
+				blam::console_printf("Failed to load and parse the map part definition\nError: %s", definition.ErrorDesc());
 				return false;
 			}
 
@@ -612,7 +612,7 @@ namespace Yelo
 			TiXmlElement* root_node = definition.FirstChildElement("osHTTPServer");
 			if(!root_node)
 			{
-				Engine::Console::TerminalPrint("The map part definition has no osHTTPServer root node");
+				blam::console_printf(false, "The map part definition has no osHTTPServer root node");
 				return false;
 			}
 
@@ -620,7 +620,7 @@ namespace Yelo
 			const TiXmlElement* map_node = root_node->FirstChildElement("map_download");
 			if(!map_node)
 			{
-				Engine::Console::TerminalPrint("The map part definition has no map_download node");
+				blam::console_printf(false, "The map part definition has no map_download node");
 				return false;
 			}
 
@@ -648,7 +648,7 @@ namespace Yelo
 
 				if(FindMap(map_name.c_str()))
 				{
-					Engine::Console::TerminalPrintF("Map definition for %s already exists", map_name.c_str());
+					blam::console_printf(false, "Map definition for %s already exists", map_name.c_str());
 					return false;
 				}
 
@@ -666,7 +666,7 @@ namespace Yelo
 				// add the parts to the map element, host_directory can be null
 				if(!AddMapParts(map_element, map_node, host_directory))
 				{
-					// a problem occured when adding the maps part elements so delete the map element and return
+					// a problem occurred when adding the maps part elements so delete the map element and return
 					delete map_element;
 					return false;
 				}
@@ -683,15 +683,15 @@ namespace Yelo
 			else
 			{
 				if(!name)
-					Engine::Console::TerminalPrint("A map node is missing its name");
+					blam::console_printf(false, "A map node is missing its name");
 				if(!md5)
-					Engine::Console::TerminalPrint("A map node is missing its md5 checksum");
+					blam::console_printf(false, "A map node is missing its md5 checksum");
 				else if(!md5_valid)
-					Engine::Console::TerminalPrint("A map nodes md5 checksum is too long/short");
+					blam::console_printf(false, "A map nodes md5 checksum is too long/short");
 				if(!algorithm)
-					Engine::Console::TerminalPrint("A map node does not state its compression algorithm");
+					blam::console_printf(false, "A map node does not state its compression algorithm");
 				if(!host_directory)
-					Engine::Console::TerminalPrint("A map node is missing its host_directory");
+					blam::console_printf(false, "A map node is missing its host_directory");
 
 				return false;
 			}
@@ -707,13 +707,13 @@ namespace Yelo
 		 */
 		static void UnloadMapPartDefinitions()
 		{
-			// lopo through all of the map part definition lists
+			// loop through all of the map part definition lists
 			for(int i = 0; i < k_definition_list_count; i++)
 			{
 				c_map_part_definition_list& list = g_map_part_definition_lists[i];
 
 				// delete the first element in the lists until they are empty
-				c_map_element* current_element = NULL;
+				c_map_element* current_element = nullptr;
 				while(current_element = list.GetDefinitionByIndex(0))
 					RemoveMapDefinition(list, current_element);
 			}
@@ -743,7 +743,7 @@ namespace Yelo
 			file_search = FindFirstFile(path_string, &file_description);
 			if(file_search == INVALID_HANDLE_VALUE)
 			{
-				Engine::Console::TerminalPrint("No part definitions in the part definition directory");
+				blam::console_printf(false, "No part definitions in the part definition directory");
 				return false;
 			}
 
@@ -753,11 +753,11 @@ namespace Yelo
 				// create the relative path of the definition file
 				FileIO::PathBuild(path_string, false, 2, g_map_download_globals.m_map_part_definitions_path, file_description.cFileName);
 
-				// attempt to add the defnition to the definition lists
+				// attempt to add the definition to the definition lists
 				if(AddMapDefinition(path_string))
-					Engine::Console::TerminalPrintF("Added %s to map server", file_description.cFileName);
+					blam::console_printf(false, "Added %s to map server", file_description.cFileName);
 				else
-					Engine::Console::TerminalPrintF("Failed to add %s to map server", file_description.cFileName);
+					blam::console_printf(false, "Failed to add %s to map server", file_description.cFileName);
 
 			}while(FindNextFile(file_search, &file_description));
 
@@ -809,7 +809,7 @@ namespace Yelo
 			TiXmlDocument map_part_definition;
 
 			// add the xml declaration
-			TiXmlDeclaration* declaration = new TiXmlDeclaration("1.0", "utf-8", NULL);
+			TiXmlDeclaration* declaration = new TiXmlDeclaration("1.0", "utf-8", nullptr);
 			if(!declaration)
 			{
 				SendResponse(connection, Enums::_http_status_code_server_error_internal_server_error);
@@ -859,8 +859,8 @@ namespace Yelo
 
 			// get the final length of the xml document as a string
 			// max int size is 2147483647, so 10 chars plus the NULL
-			char length_string[11];
-			if(-1 == sprintf_s(length_string, sizeof(length_string), "%i", xml_printer.Size()))
+			char length_string[NUMBEROF("2147483647")];
+			if(-1 == sprintf_s(length_string, "%i", xml_printer.Size()))
 			{
 				SendResponse(connection, Enums::_http_status_code_server_error_internal_server_error);
 				return;
@@ -1077,43 +1077,43 @@ namespace Yelo
 			// check the server startup conditions are met
 			if(!HTTP::Server::ServerStarted())
 			{
-				Engine::Console::TerminalPrint("The HTTP server is not running");
+				blam::console_printf(false, "The HTTP server is not running");
 				return;
 			}
 
 			if(Yelo::Server::NetworkSvGlobals()->initialized)
 			{
-				Engine::Console::TerminalPrint("Cannot start the map download server whilst the mp server is running");
+				blam::console_printf(false, "Cannot start the map download server whilst the mp server is running");
 				return;
 			}
 
 			if(!g_map_download_globals.m_flags.definitions_path_set)
 			{
-				Engine::Console::TerminalPrint("The map part definitions path has not yet been set");
+				blam::console_printf(false, "The map part definitions path has not yet been set");
 				return;
 			}
 
 			if(!g_map_download_globals.m_flags.host_set)
 			{
-				Engine::Console::TerminalPrint("The file host root url has not yet been set");
+				blam::console_printf(false, "The file host root url has not yet been set");
 				return;
 			}
 
 			if(g_map_download_globals.m_flags.system_active)
 			{
-				Engine::Console::TerminalPrint("The map download server is already running");
+				blam::console_printf(false, "The map download server is already running");
 				return;
 			}
 
 			if(!LoadMapPartDefinitions())
 			{
-				Engine::Console::TerminalPrint("Failed to start the map download server");
+				blam::console_printf(false, "Failed to start the map download server");
 				return;
 			}
 
 			g_map_download_globals.m_flags.system_active = true;
 
-			Engine::Console::TerminalPrint("Map download server started successfully");
+			blam::console_printf(false, "Map download server started successfully");
 		}
 
 		/*!
@@ -1127,13 +1127,13 @@ namespace Yelo
 			// check the server shutdown conditions are met
 			if(Yelo::Server::NetworkSvGlobals()->initialized)
 			{
-				Engine::Console::TerminalPrint("Cannot stop the map download server whilst the multiplayer server is running");
+				blam::console_printf(false, "Cannot stop the map download server whilst the multiplayer server is running");
 				return;
 			}
 
 			if(!g_map_download_globals.m_flags.system_active)
 			{
-				Engine::Console::TerminalPrint("The map download server is not running");
+				blam::console_printf(false, "The map download server is not running");
 				return;
 			}
 
@@ -1146,7 +1146,7 @@ namespace Yelo
 
 			UnloadMapPartDefinitions();
 
-			Engine::Console::TerminalPrint("The map download server has been stopped");
+			blam::console_printf(false, "The map download server has been stopped");
 		}
 
 		/*!
@@ -1191,7 +1191,7 @@ namespace Yelo
 		{
 			StartMapServer();
 
-			return NULL;
+			return nullptr;
 		}
 
 		/*!
@@ -1207,7 +1207,7 @@ namespace Yelo
 		{
 			StopMapServer();
 
-			return NULL;
+			return nullptr;
 		}
 
 		/*!
@@ -1230,7 +1230,7 @@ namespace Yelo
 
 			SetRedirectRoot(args->host);
 
-			return NULL;
+			return nullptr;
 		}
 
 		/*!
@@ -1253,7 +1253,7 @@ namespace Yelo
 
 			SetMapPartDefinitionsPath(args->map_part_definitions);
 
-			return NULL;
+			return nullptr;
 		}
 
 		/*!
@@ -1269,7 +1269,7 @@ namespace Yelo
 		{
 			LoadMapPartDefinitions();
 
-			return NULL;
+			return nullptr;
 		}
 	};};};};
 };

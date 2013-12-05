@@ -10,11 +10,11 @@
 #if PLATFORM_IS_DEDI
 #include <mongoose/mongoose.h>
 
+#include <blamlib/Halo1/main/console.hpp>
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
 #include "Common/YeloSettings.hpp"
 #include "Common/FileIO.hpp"
-#include "Game/EngineFunctions.hpp"
 #include "Networking/HTTP/HTTP.hpp"
 #include "Networking/HTTP/BanManager.hpp"
 #include "Networking/HTTP/MapDownloadServer.hpp"
@@ -69,12 +69,12 @@ namespace Yelo
 
 		const char* g_http_server_options[] = 
 		{
-			"listening_ports", NULL,
-			"num_threads", NULL,
-			"document_root", NULL,
-			"throttle", NULL,
+			"listening_ports", nullptr,
+			"num_threads", nullptr,
+			"document_root", nullptr,
+			"throttle", nullptr,
 			"enable_directory_listing", "no",
-			NULL
+			nullptr
 		};
 
 		struct s_http_server_globals
@@ -97,7 +97,7 @@ namespace Yelo
 		};
 		static s_http_server_globals g_http_server_globals;
 
-		bool ServerStarted() { return (g_http_server_globals.m_context != NULL); }
+		bool ServerStarted() { return (g_http_server_globals.m_context != nullptr); }
 
 		int FindHeader(const mg_request_info* request_info, const char* name)
 		{
@@ -112,6 +112,7 @@ namespace Yelo
 			return -1;
 		}
 
+		// TODO: condense these two functions
 		static void LogRequest(const long ip,
 			const long port,
 			const char* uri,
@@ -181,7 +182,7 @@ namespace Yelo
 			const mg_request_info* request_info = mg_get_request_info(connection);
 
 			// if the return value is NULL, mongoose will attempt to serve the files itself
-			void* return_value = (g_http_server_globals.m_flags.serve_files ? NULL : "");
+			void* return_value = (g_http_server_globals.m_flags.serve_files ? nullptr : "");
 
 			switch(callback_event)
 			{
@@ -202,7 +203,7 @@ namespace Yelo
 			case MG_WEBSOCKET_CLOSE:
 				ASSERT(false, "mongoose is attepting to use websockets, this cannot be happening!");
 			case MG_OPEN_FILE:
-				return NULL;
+				return nullptr;
 			default:
 				ASSERT(false, "invalid mongoose event received");
 			};
@@ -221,11 +222,11 @@ namespace Yelo
 			c_url_interface url_interface;
 			url_interface.ParsePath(request_info->uri);
 
-			int index = -1;
+			int index = NONE;
 			// search for a matching service by comparing its root "directory"
 			if(url_interface.m_path.size() >= 1)
 			{
-				for(int i = 0; (-1 == index) && (i < NUMBEROF(g_http_services)); i++)
+				for(int i = 0; (NONE == index) && (i < NUMBEROF(g_http_services)); i++)
 				{
 					if((url_interface.m_path[0].compare(g_http_services[i].m_uri_root) == 0))
 						index = i;
@@ -282,15 +283,15 @@ namespace Yelo
 		{
 			// check the thread count bounds
 			if(count > 64)
-				Engine::Console::TerminalPrint("Max thread count is 64");
+				blam::console_printf(false, "Max thread count is 64");
 			else if(count <= 0)
-				Engine::Console::TerminalPrint("Must have at least 1 or more threads");
+				blam::console_printf(false, "Must have at least 1 or more threads");
 			else
 			{
 				// create the thread count string
 				char threads_string[4];
 				if(-1 == sprintf_s(threads_string, 4, "%i", count))
-					Engine::Console::TerminalPrint("Failed to set HTTP thread count");
+					blam::console_printf(false, "Failed to set HTTP thread count");
 				else
 					g_http_server_globals.m_config.threads.assign(threads_string);
 			}
@@ -318,7 +319,7 @@ namespace Yelo
 					g_http_server_globals.m_flags.serve_files = true;
 				}
 				else
-					Engine::Console::TerminalPrint("Supplied HTTP root path does not exist, root path reset");
+					blam::console_printf(false, "Supplied HTTP root path does not exist, root path reset");
 			}
 			g_http_server_globals.m_config.root.assign(root_string);
 		}
@@ -351,6 +352,7 @@ namespace Yelo
 		 */
 		void StartServer()
 		{
+			// TODO: should probably use an enum for indexing options
 			g_http_server_options[1] = g_http_server_globals.m_config.ports.c_str();
 			g_http_server_options[3] = g_http_server_globals.m_config.threads.c_str();
 			g_http_server_options[5] = g_http_server_globals.m_config.root.c_str();
@@ -359,13 +361,13 @@ namespace Yelo
 			// start the http server daemon
 			g_http_server_globals.m_context = mg_start(
 					ServerCallback,
-					NULL,
+					nullptr,
 					g_http_server_options);
 
 			if(!g_http_server_globals.m_context)
-				Engine::Console::TerminalPrint("HTTP server failed to start");
+				blam::console_printf(false, "HTTP server failed to start");
 			else
-				Engine::Console::TerminalPrint("HTTP server started successfully");
+				blam::console_printf(false, "HTTP server started successfully");
 		}
 
 		/*!
@@ -381,15 +383,15 @@ namespace Yelo
 			{
 				if(g_http_services[i].ServiceStarted())
 				{
-					Engine::Console::TerminalPrint("All HTTP services must be stopped before stopping the HTTP server");
+					blam::console_printf(false, "All HTTP services must be stopped before stopping the HTTP server");
 					return;
 				}
 			}
 
 			mg_stop(g_http_server_globals.m_context);
-			g_http_server_globals.m_context = NULL;
+			g_http_server_globals.m_context = nullptr;
 
-			Engine::Console::TerminalPrint("HTTP server stopped");
+			blam::console_printf(false, "HTTP server stopped");
 		}
 
 		/*!
@@ -402,10 +404,10 @@ namespace Yelo
 		{
 			BanManager::Initialize();
 
-			SetPorts(NULL);
+			SetPorts(nullptr);
 			SetThreads(4);
-			SetRoot(NULL);
-			SetThrottle(NULL);
+			SetRoot(nullptr);
+			SetThrottle(nullptr);
 		}
 
 		/*!
@@ -420,7 +422,7 @@ namespace Yelo
 			{
 				// stop the http server daemon
 				mg_stop(g_http_server_globals.m_context);
-				g_http_server_globals.m_context = NULL;
+				g_http_server_globals.m_context = nullptr;
 			}
 
 			BanManager::Dispose();
@@ -509,18 +511,15 @@ namespace Yelo
 		{
 			struct s_arguments {
 				const short thread_count;
-				PAD24;
+				PAD16;
 			}* args = CAST_PTR(s_arguments*, arguments);
 
 			if(ServerStarted())
-			{
-				Engine::Console::TerminalPrint("Cannot modify HTTP config whilst the server is running");
-				return NULL;
-			}
+				blam::console_printf(false, "Cannot modify HTTP config whilst the server is running");
+			else
+				SetThreads(args->thread_count);
 
-			SetThreads(args->thread_count);
-
-			return NULL;
+			return nullptr;
 		}
 
 		/*!
@@ -539,18 +538,14 @@ namespace Yelo
 		{
 			struct s_arguments {
 				cstring root;
-				PAD24;
 			}* args = CAST_PTR(s_arguments*, arguments);
 
 			if(ServerStarted())
-			{
-				Engine::Console::TerminalPrint("Cannot modify HTTP config whilst the server is running");
-				return NULL;
-			}
+				blam::console_printf(false, "Cannot modify HTTP config whilst the server is running");
+			else
+				SetRoot(args->root);
 
-			SetRoot(args->root);
-
-			return NULL;
+			return nullptr;
 		}
 
 		/*!
@@ -572,14 +567,11 @@ namespace Yelo
 			}* args = CAST_PTR(s_arguments*, arguments);
 
 			if(ServerStarted())
-			{
-				Engine::Console::TerminalPrint("Cannot modify HTTP config whilst the server is running");
-				return NULL;
-			}
+				blam::console_printf(false, "Cannot modify HTTP config whilst the server is running");
+			else
+				SetThrottle(args->throttle);
 
-			SetThrottle(args->throttle);
-
-			return NULL;
+			return nullptr;
 		}
 
 		/*!
@@ -601,14 +593,11 @@ namespace Yelo
 			}* args = CAST_PTR(s_arguments*, arguments);
 
 			if(ServerStarted())
-			{
-				Engine::Console::TerminalPrint("Cannot modify HTTP config whilst the server is running");
-				return NULL;
-			}
+				blam::console_printf(false, "Cannot modify HTTP config whilst the server is running");
+			else
+				SetPorts(args->ports);
 
-			SetPorts(args->ports);
-
-			return NULL;
+			return nullptr;
 		}
 
 		/*!
@@ -622,12 +611,12 @@ namespace Yelo
 		 */
 		void* HTTPServerShowConfig()
 		{
-			Engine::Console::TerminalPrintF("HTTP Root: %s", g_http_server_globals.m_config.root.c_str());
-			Engine::Console::TerminalPrintF("HTTP Ports: %s", g_http_server_globals.m_config.ports.c_str());
-			Engine::Console::TerminalPrintF("HTTP Threads: %s", g_http_server_globals.m_config.threads.c_str());
-			Engine::Console::TerminalPrintF("HTTP Throttle: %s", g_http_server_globals.m_config.throttle.c_str());
+			blam::console_printf(false, "HTTP Root: %s", g_http_server_globals.m_config.root.c_str());
+			blam::console_printf(false, "HTTP Ports: %s", g_http_server_globals.m_config.ports.c_str());
+			blam::console_printf(false, "HTTP Threads: %s", g_http_server_globals.m_config.threads.c_str());
+			blam::console_printf(false, "HTTP Throttle: %s", g_http_server_globals.m_config.throttle.c_str());
 
-			return NULL;
+			return nullptr;
 		}
 
 		/*!
@@ -642,14 +631,11 @@ namespace Yelo
 		void* HTTPServerStart()
 		{
 			if(ServerStarted())
-			{
-				Engine::Console::TerminalPrint("HTTP server is already running");
-				return NULL;
-			}
+				blam::console_printf(false, "HTTP server is already running");
+			else
+				StartServer();
 
-			StartServer();
-
-			return NULL;
+			return nullptr;
 		}
 
 		/*!
@@ -664,14 +650,11 @@ namespace Yelo
 		void* HTTPServerStop()
 		{
 			if(!ServerStarted())
-			{
-				Engine::Console::TerminalPrint("HTTP server is not running");
-				return NULL;
-			}
+				blam::console_printf(false, "HTTP server is not running");
+			else
+				StopServer();
 
-			StopServer();
-
-			return NULL;
+			return nullptr;
 		}
 
 		/*!
@@ -695,7 +678,7 @@ namespace Yelo
 
 			Yelo::Server::EnableEventLogging(Enums::_server_event_type_http_server) = args->enable;
 
-			return NULL;
+			return nullptr;
 		}
 #endif
 	};};};
