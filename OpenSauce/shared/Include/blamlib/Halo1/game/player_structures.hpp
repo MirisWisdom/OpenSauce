@@ -6,6 +6,7 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/game/game_configuration.hpp>
 #include <blamlib/Halo1/game/player_action.hpp>
 #include <blamlib/Halo1/networking/network_game_manager.hpp>
 #include <blamlib/Halo1/networking/player_update_client.hpp>

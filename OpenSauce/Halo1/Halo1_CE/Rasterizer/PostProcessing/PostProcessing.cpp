@@ -34,6 +34,8 @@
 #define RENDER_STATE(state) state
 #endif
 
+// TODO: Finish replacing all for( NUMBEROF() ) loops with range for (auto& subsystem : g_postprocess_subsystems)
+
 namespace Yelo
 {
 	namespace Rasterizer { namespace PostProcessing
@@ -94,8 +96,8 @@ namespace Yelo
 			c_post_processing_main::Instance().Initialize();
 
 			// initialise all of the subsystems
-			for(int i = 0; i < NUMBEROF(g_postprocess_subsystems); i++)
-				g_postprocess_subsystems[i].m_component->Initialize();
+			for (auto& subsystem : g_postprocess_subsystems)
+				subsystem.m_component->Initialize();
 
 			// initialize the quad manager
 			c_quad_manager::Instance().Initialize();
@@ -110,8 +112,8 @@ namespace Yelo
 		void		Dispose()
 		{
 			// dispose of all the subsystems
-			for(int i = 0; i < NUMBEROF(g_postprocess_subsystems); i++)
-				g_postprocess_subsystems[i].m_component->Dispose();
+			for (auto& subsystem : g_postprocess_subsystems)
+				subsystem.m_component->Dispose();
 			
 			// dispose of the main post processing component and quad manager
 			c_post_processing_main::Instance().Dispose();
@@ -146,16 +148,16 @@ namespace Yelo
 			// if this fails, return
 			c_post_processing_main::Instance().InitializeResources_Base(pDevice, pParameters);
 
-			ASSERT(c_post_processing_main::Instance().IsReady(), "The main post processing component failed to initialise it's resources");
+			YELO_ASSERT_DISPLAY(c_post_processing_main::Instance().IsReady(), "The main post processing component failed to initialise it's resources");
 
 			if(!c_post_processing_main::Instance().IsReady())
 				return;
 
 			// initialise the subsystems
-			for(int i = 0; i < NUMBEROF(g_postprocess_subsystems); i++)
+			for (auto& subsystem : g_postprocess_subsystems)
 			{
-				g_postprocess_subsystems[i].m_component->InitializeResources_Base(pDevice, pParameters);
-				g_postprocess_subsystems[i].is_ready = g_postprocess_subsystems[i].m_component->IsReady();
+				subsystem.m_component->InitializeResources_Base(pDevice, pParameters);
+				subsystem.is_ready = subsystem.m_component->IsReady();
 			}
 
 			// create the quad buffers
@@ -171,15 +173,15 @@ namespace Yelo
 		void		OnLostDevice()
 		{
 			// run device lost logic for all components
-			for(int i = 0; i < NUMBEROF(g_postprocess_subsystems); i++)
+			for (auto& subsystem : g_postprocess_subsystems)
 			{
-				g_postprocess_subsystems[i].m_component->OnLostDevice_Base();
-				g_postprocess_subsystems[i].is_ready = g_postprocess_subsystems[i].m_component->IsReady();
+				subsystem.m_component->OnLostDevice_Base();
+				subsystem.is_ready = subsystem.m_component->IsReady();
 			}
 
 			// update the ready states of cache components
-			for(int i = 0; i < NUMBEROF(g_postprocess_cache_subsystems); i++)
-				g_postprocess_subsystems[g_postprocess_cache_subsystems[i].component_index].is_ready = g_postprocess_cache_subsystems[i].m_component->IsReady();
+			for (auto& cache_subsystem : g_postprocess_cache_subsystems)
+				g_postprocess_subsystems[cache_subsystem.component_index].is_ready = cache_subsystem.m_component->IsReady();
 
 			// run device lost logic for the main system resources
 			c_post_processing_main::Instance().OnLostDevice_Base();
@@ -205,21 +207,21 @@ namespace Yelo
 			if(c_post_processing_main::Instance().IsUnloaded())
 				return;
 
-			ASSERT(c_post_processing_main::Instance().IsReady(), "The main post processing component failed to be reset");
+			YELO_ASSERT_DISPLAY(c_post_processing_main::Instance().IsReady(), "The main post processing component failed to be reset");
 
 			if(!c_post_processing_main::Instance().IsReady())
 				return;
 
 			// run device reset logic for normal components
-			for(int i = 0; i < NUMBEROF(g_postprocess_subsystems); i++)
+			for (auto& subsystem : g_postprocess_subsystems)
 			{
-				g_postprocess_subsystems[i].m_component->OnResetDevice_Base(pParameters);
-				g_postprocess_subsystems[i].is_ready = g_postprocess_subsystems[i].m_component->IsReady();
+				subsystem.m_component->OnResetDevice_Base(pParameters);
+				subsystem.is_ready = subsystem.m_component->IsReady();
 			}
 
 			// update the ready states of cache components
-			for(int i = 0; i < NUMBEROF(g_postprocess_cache_subsystems); i++)
-				g_postprocess_subsystems[g_postprocess_cache_subsystems[i].component_index].is_ready = g_postprocess_cache_subsystems[i].m_component->IsReady();
+			for (auto& cache_subsystem : g_postprocess_cache_subsystems)
+				g_postprocess_subsystems[cache_subsystem.component_index].is_ready = cache_subsystem.m_component->IsReady();
 
 			// create the quad buffers
 			c_quad_manager::Instance().OnResetDevice_Base(pParameters);
@@ -236,8 +238,8 @@ namespace Yelo
 		void		Release()
 		{
 			// release normal component resources
-			for(int i = 0; i < NUMBEROF(g_postprocess_subsystems); i++)
-				g_postprocess_subsystems[i].m_component->ReleaseResources_Base();
+			for (auto& subsystem : g_postprocess_subsystems)
+				subsystem.m_component->ReleaseResources_Base();
 
 			// release the main system resources
 			c_post_processing_main::Instance().ReleaseResources_Base();
@@ -321,7 +323,7 @@ namespace Yelo
 			for(int i = 0; i < NUMBEROF(g_postprocess_cache_subsystems); i++)
 				g_postprocess_cache_subsystems[i].m_component->Initialize_Cache();
 
-			ASSERT(c_post_processing_main::Instance().IsReady(), "The main post processing component failed to be initialised for a new map");
+			YELO_ASSERT_DISPLAY(c_post_processing_main::Instance().IsReady(), "The main post processing component failed to be initialised for a new map");
 			if(!c_post_processing_main::Instance().IsReady())
 				return;
 
@@ -381,7 +383,7 @@ namespace Yelo
 			// update global values
 			c_post_processing_main::Instance().Update(delta_time);
 
-			// update subsytems
+			// update subsystems
 			for(int i = 0; i < NUMBEROF(g_postprocess_updatable_subsystems); i++)
 				g_postprocess_updatable_subsystems[i].m_component->Update(delta_time);
 		}
@@ -428,7 +430,7 @@ namespace Yelo
 			// load the main post processing component
 			c_post_processing_main::Instance().Load();
 
-			ASSERT(c_post_processing_main::Instance().IsReady(), "The main post processing component failed to be loaded");
+			YELO_ASSERT_DISPLAY(c_post_processing_main::Instance().IsReady(), "The main post processing component failed to be loaded");
 
 			if(!c_post_processing_main::Instance().IsReady())
 				return;
@@ -518,9 +520,9 @@ namespace Yelo
 								c_post_processing_main::Instance().Globals().scene_buffer_chain.GetSceneSurface()))
 							render_device->StretchRect(
 								c_post_processing_main::Instance().Globals().scene_buffer_chain.GetSceneSurface(), 
-								NULL, 
+								nullptr, 
 								Render::GlobalRenderTargets()[Enums::_rasterizer_target_render_primary].surface,
-								NULL, 
+								nullptr, 
 								D3DTEXF_NONE);
 					}
 				}

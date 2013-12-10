@@ -53,10 +53,10 @@ namespace Yelo
 		{
 			m_globals.status = Enums::pp_component_status_uninitialised;
 
-			m_globals.m_quad_list = NULL;
+			m_globals.m_quad_list = nullptr;
 
-			m_globals.m_buffers.index = NULL;
-			m_globals.m_buffers.vertex = NULL;
+			m_globals.m_buffers.index = nullptr;
+			m_globals.m_buffers.vertex = nullptr;
 		}
 		/*!
 		 * \brief
@@ -69,10 +69,10 @@ namespace Yelo
 			CullUnusedQuads();
 
 			delete m_globals.m_quad_list;
-			m_globals.m_quad_list = NULL;
+			m_globals.m_quad_list = nullptr;
 
-			m_globals.m_buffers.index = NULL;
-			m_globals.m_buffers.vertex = NULL;
+			m_globals.m_buffers.index = nullptr;
+			m_globals.m_buffers.vertex = nullptr;
 		}
 
 		/*!
@@ -238,7 +238,7 @@ namespace Yelo
 		 */
 		bool c_quad_manager::CreateBuffersImpl()
 		{
-			bool success = true;
+			bool success = true; // TODO: it'd probably be better code-smell-wise to initialize this to false, then set to true in the loop instead
 			do
 			{
 				IDirect3DDevice9* device = c_post_processing_main::Instance().Globals().render_device;
@@ -260,9 +260,9 @@ namespace Yelo
 					kVertexFormat, 
 					D3DPOOL_DEFAULT, 
 					&m_globals.m_buffers.vertex,
-					NULL);
+					nullptr);
 
-				ASSERT(SUCCEEDED(result), "failed to create the post processing vertex buffer");
+				YELO_ASSERT_DISPLAY(SUCCEEDED(result), "failed to create the post processing vertex buffer");
 				if(FAILED(result)) { success = false; break; }
 
 				// create the index buffer
@@ -272,20 +272,20 @@ namespace Yelo
 					D3DFMT_INDEX16, 
 					D3DPOOL_DEFAULT, 
 					&m_globals.m_buffers.index, 
-					NULL);
+					nullptr);
 
-				ASSERT(SUCCEEDED(result), "failed to create the post processing index buffer");
+				YELO_ASSERT_DISPLAY(SUCCEEDED(result), "failed to create the post processing index buffer");
 				if(FAILED(result)) { success = false; break; }
 
 				// lock the vertex buffer
 				s_postprocess_vertex* vertices;
-				result = m_globals.m_buffers.vertex->Lock( 0, 0, CAST_PTR(void**, &vertices), NULL );
+				result = m_globals.m_buffers.vertex->Lock( 0, 0, CAST_PTR(void**, &vertices), 0 );
 
 				if(FAILED(result)) { success = false; break; }
 
 				// lock the index buffer
 				s_face* indicies;
-				result = m_globals.m_buffers.index->Lock( 0, 0, CAST_PTR(void**, &indicies), NULL );
+				result = m_globals.m_buffers.index->Lock( 0, 0, CAST_PTR(void**, &indicies), 0 );
 
 				if(FAILED(result)) { success = false; break; }
 
@@ -342,8 +342,8 @@ namespace Yelo
 		 */
 		c_quad_instance*	c_quad_manager::CreateQuad(const TagGroups::s_effect_postprocess_quad_definition& quad_definition)
 		{
-			// lock the axis tesselation to the miniumum and maximum tessellation if necessary
-			c_quad_instance* quad = NULL;
+			// lock the axis tesselation to the minimum and maximum tessellation if necessary
+			c_quad_instance* quad = nullptr;
 
 			point2d tess_final;
 			tess_final.x = max(quad_definition.tessellation.x, 1);
@@ -369,7 +369,7 @@ namespace Yelo
 			// if not, add a quad instance to the list and return that
 			if(!quad)
 			{
-				quad = new c_quad_instance();
+				quad = new c_quad_instance(); // TODO: non-trivial type? just use an actual ctor instead of a method
 				quad->Ctor(tess_final, quad_definition.x_bounds, quad_definition.y_bounds);
 
 				AppendLinkedListNode(m_globals.m_quad_list, quad);
@@ -457,7 +457,7 @@ namespace Yelo
 		 */
 		c_quad_instance*	c_quad_manager::GetExistingQuad(const point2d tesselation, const real_bounds& x_bounds, const real_bounds& y_bounds)
 		{
-			c_quad_instance* quad_out = NULL;
+			c_quad_instance* quad_out = nullptr;
 			// loop through quad list
 			c_quad_instance* quad_instance = m_globals.m_quad_list;
 			while(quad_instance)
@@ -569,7 +569,7 @@ namespace Yelo
 				{
 					// set the 3D position
 					// y is negative because screen position is from the top left (0,0) to bottom right (1,-1)
-					// z is an arbitrary number as its irrelevent in an orthographic projection
+					// z is an arbitrary number as its irrelevant in an orthographic projection
 					buffer_pointer->m_position.x = (x_pos_offset + (x * x_pos_increment)) - 0.5f;
 					buffer_pointer->m_position.y = -((y_pos_offset + (y * y_pos_increment)) - 0.5f);
 					buffer_pointer->m_position.z = 10.0f;
@@ -609,7 +609,7 @@ namespace Yelo
 		 */
 		void				c_quad_manager::AddIndices(s_face*& buffer_pointer, c_quad_instance* quad)
 		{
-			// creates a two dimentional array containing the indices of each vertex point
+			// creates a two dimensional array containing the indices of each vertex point
 			int counter = 0;
 			int16** index_array = new int16*[quad->Quad().tessellation.y + 1];
 			for(int y = 0; y < quad->Quad().tessellation.y + 1; y++)

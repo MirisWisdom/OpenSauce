@@ -56,7 +56,7 @@ namespace Yelo
 			void Ctor()
 			{
 				m_access_mutex = CreateMutex(nullptr, false, nullptr);
-				ASSERT(m_access_mutex != nullptr, "failed to create map element mutex");
+				YELO_ASSERT_DISPLAY(m_access_mutex, "failed to create map element mutex");
 				m_lock_count = 0;
 
 				ClearNodeData();
@@ -109,7 +109,7 @@ namespace Yelo
 			void Ctor()
 			{
 				m_access_mutex = CreateMutex(nullptr, false, nullptr);
-				ASSERT(m_access_mutex != nullptr, "failed to create map list mutex");
+				YELO_ASSERT_DISPLAY(m_access_mutex, "failed to create map list mutex");
 
 				m_map_part_definitions = nullptr;
 			}
@@ -150,7 +150,7 @@ namespace Yelo
 					{
 						if(!map_iterator.Current()->Lock())
 						{
-							ASSERT(false, "failed to lock a map element when searching a part definition list");
+							YELO_ASSERT_DISPLAY(false, "failed to lock a map element when searching a part definition list");
 							continue;
 						}
 
@@ -184,7 +184,7 @@ namespace Yelo
 			{
 				if(!Lock())
 				{
-					ASSERT(false, "failed to lock a definition list for map removal");
+					YELO_ASSERT_DISPLAY(false, "failed to lock a definition list for map removal");
 					return false;
 				}
 
@@ -202,7 +202,7 @@ namespace Yelo
 			{
 				if(!Lock())
 				{
-					ASSERT(false, "failed to lock a definition list");
+					YELO_ASSERT_DISPLAY(false, "failed to lock a definition list");
 					return false;
 				}
 
@@ -233,7 +233,7 @@ namespace Yelo
 			char					m_map_part_definitions_path[MAX_PATH];
 			char					m_host_address[k_max_host_url_length];
 
-			volatile uint32			m_requests_in_progress;
+			volatile uint32			m_requests_in_progress; // TODO: why not move this to after m_flags and get rid of the PAD8?
 		};
 		static c_map_download_globals		g_map_download_globals;
 		static c_map_part_definition_list	g_map_part_definition_lists[k_definition_list_count];
@@ -268,7 +268,7 @@ namespace Yelo
 			}
 
 			// copy the path
-			errno_t result = strcpy_s(g_map_download_globals.m_map_part_definitions_path, MAX_PATH, path);
+			errno_t result = strcpy_s(g_map_download_globals.m_map_part_definitions_path, path);
 			if(result == ERANGE)
 			{
 				blam::console_printf(false, "The map part definition path is too long");
@@ -310,13 +310,13 @@ namespace Yelo
 			if(url_interface.m_scheme.length() && url_interface.m_address.length())
 			{
 				// copy the url
-				errno_t result = strcpy_s(g_map_download_globals.m_host_address, k_max_host_url_length, root);
+				errno_t result = strcpy_s(g_map_download_globals.m_host_address, root);
 				if(result == ERANGE)
 				{
 					blam::console_printf(false, "The host root url is too long (MAX 2000 characters)");
 					return;
 				}
-				else if(result || !FileIO::AppendDirectorySlash(g_map_download_globals.m_host_address, k_max_host_url_length, '/'))
+				else if(result || !FileIO::AppendDirectorySlash(g_map_download_globals.m_host_address, '/'))
 				{
 					blam::console_printf(false, "Failed to copy the host root url");
 					return;
@@ -1054,7 +1054,7 @@ namespace Yelo
 				}
 
 				// request complete, reduce the requests in progress count
-				ASSERT(g_map_download_globals.m_requests_in_progress != 0, "requests in progress is already 0");
+				YELO_ASSERT_DISPLAY(g_map_download_globals.m_requests_in_progress != 0, "requests in progress is already 0");
 				g_map_download_globals.m_requests_in_progress--;
 			}
 			else

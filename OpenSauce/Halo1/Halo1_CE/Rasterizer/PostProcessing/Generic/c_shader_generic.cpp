@@ -37,14 +37,14 @@ namespace Yelo
 		 * The current render device
 		 * 
 		 * \returns
-		 * S_OK if successfull.
+		 * S_OK if successful.
 		 * 
 		 * Loads the shaders bitmaps.
 		 */
 		HRESULT	c_shader_generic::LoadBitmaps(IDirect3DDevice9* render_device)
 		{
 			HRESULT success = S_OK;
-			// checks for whether the parameter is infact a texture happen in LoadBitmap so just call LoadBitmap on every parameter
+			// checks for whether the parameter is in fact a texture happen in LoadBitmap so just call LoadBitmap on every parameter
 			for(int i = 0; i < m_members_generic.definition->parameters.Count; i++)
 				success &= m_members_generic.definition->parameters[i].LoadBitmap(render_device);
 			return success;
@@ -59,7 +59,7 @@ namespace Yelo
 		void c_shader_generic::SetupShader()
 		{
 			// if the source data is null this function is being called directly
-			ASSERT(m_members.source_data != NULL, "c_shader_generic setup function does not create the source data, it must be created in a derived class");
+			YELO_ASSERT_DISPLAY(m_members.source_data != nullptr, "c_shader_generic setup function does not create the source data, it must be created in a derived class");
 
 			c_shader_postprocess::SetupShader();
 		}
@@ -132,6 +132,7 @@ namespace Yelo
 
 		void	c_shader_generic::SetParameterVariable(LPD3DXEFFECT effect, TagGroups::s_shader_postprocess_parameter& parameter)
 		{
+			// TODO: grab a (const?) reference to parameter.value and use it instead of parameter.value. directly
 			switch(parameter.value_type.type)
 			{
 			case Enums::_shader_variable_base_type_boolean:
@@ -180,6 +181,7 @@ namespace Yelo
 		{
 			c_shader_postprocess::SetVariables();
 
+			// TODO: should be able to use a ranged for loop here on ->parameters
 			for(int i = 0; i < m_members_generic.definition->parameters.Count; i++)
 				SetParameterVariable(m_members.definition->runtime.dx_effect, m_members_generic.definition->parameters[i]);
 		}

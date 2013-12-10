@@ -131,6 +131,8 @@
 	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_fieldset_replacement_builder.cpp" />
 	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory.hpp" />
 	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory.cpp" />
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory_allocations.cpp" />
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory_stats.cpp" />
   </ItemGroup>
   <ItemGroup
     > <!--units-->

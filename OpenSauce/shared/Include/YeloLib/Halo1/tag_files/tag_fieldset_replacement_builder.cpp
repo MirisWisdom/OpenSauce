@@ -343,7 +343,7 @@ namespace Yelo
 				 InsertTagReference(expected_offset, 
 					name, string_id_yelo::global_reference_definition)
 				.InsertPostprocessedData(expected_offset+sizeof(tag_reference), 
-					sizeof(string_id));
+					sizeof(string_id), "string_id");
 		}
 
 		c_tag_field_set_replacement_builder& c_tag_field_set_replacement_builder::InsertBlock(size_t expected_offset,
@@ -374,28 +374,28 @@ namespace Yelo
 		}
 
 		c_tag_field_set_replacement_builder& c_tag_field_set_replacement_builder::InsertPadData(size_t expected_offset,
-			int32 padding_size)
+			int32 padding_size, cstring name)
 		{
 			assert(padding_size > 0);
 
 			return InsertField(expected_offset,
-				Enums::_field_pad, nullptr, CAST_PTR(void*, padding_size));
+				Enums::_field_pad, name, CAST_PTR(void*, padding_size));
 		}
 		c_tag_field_set_replacement_builder& c_tag_field_set_replacement_builder::InsertPostprocessedData(size_t expected_offset,
-			int32 postprocessed_data_size)
+			int32 postprocessed_data_size, cstring name)
 		{
 			assert(postprocessed_data_size > 0);
 
 			return InsertPadData(expected_offset,
-				postprocessed_data_size);
+				postprocessed_data_size, name);
 		}
 		c_tag_field_set_replacement_builder& c_tag_field_set_replacement_builder::InsertSkipData(size_t expected_offset,
-			int32 skip_size)
+			int32 skip_size, cstring name)
 		{
 			assert(skip_size > 0);
 
 			return InsertField(expected_offset,
-				Enums::_field_skip, nullptr, CAST_PTR(void*, skip_size));
+				Enums::_field_skip, name, CAST_PTR(void*, skip_size));
 		}
 	};
 };

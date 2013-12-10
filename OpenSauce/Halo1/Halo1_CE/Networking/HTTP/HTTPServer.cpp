@@ -57,7 +57,7 @@ namespace Yelo
 		 */
 		const char* GetServiceURIRoot(Enums::http_service_enumeration service)
 		{
-			ASSERT(service < Enums::_http_service_enumeration, "Invalid HTTP service root requested");
+			YELO_ASSERT_DISPLAY(service < Enums::_http_service_enumeration, "Invalid HTTP service root requested");
 
 			return g_http_services[service].m_uri_root;
 		}
@@ -109,7 +109,7 @@ namespace Yelo
 				if(strcmp(request_info->http_headers[i].name, name) == 0)
 					return i;
 			}
-			return -1;
+			return NONE;
 		}
 
 		// TODO: condense these two functions
@@ -194,18 +194,18 @@ namespace Yelo
 				Yelo::Server::EventLog(Enums::_server_event_type_http_server, L"MONGOOSE\t%S", request_info->ev_data);
 				return "";
 			case MG_INIT_SSL:
-				ASSERT(callback_event != MG_INIT_SSL, "mongoose is attepting to use SSL, this cannot be happening!");
+				YELO_ASSERT_DISPLAY(callback_event != MG_INIT_SSL, "mongoose is attepting to use SSL, this cannot be happening!");
 			case MG_HTTP_ERROR:
 				return "";
 			case MG_WEBSOCKET_CONNECT:
 			case MG_WEBSOCKET_READY:
 			case MG_WEBSOCKET_MESSAGE:
 			case MG_WEBSOCKET_CLOSE:
-				ASSERT(false, "mongoose is attepting to use websockets, this cannot be happening!");
+				YELO_ASSERT_DISPLAY(false, "mongoose is attepting to use websockets, this cannot be happening!");
 			case MG_OPEN_FILE:
 				return nullptr;
-			default:
-				ASSERT(false, "invalid mongoose event received");
+			
+			YELO_ASSERT_CASE_UNREACHABLE();
 			};
 
 			LogRequest(request_info->remote_ip, request_info->remote_port, request_info->uri, request_info->query_string);
@@ -226,6 +226,7 @@ namespace Yelo
 			// search for a matching service by comparing its root "directory"
 			if(url_interface.m_path.size() >= 1)
 			{
+				// TODO: ranged for, break on if()
 				for(int i = 0; (NONE == index) && (i < NUMBEROF(g_http_services)); i++)
 				{
 					if((url_interface.m_path[0].compare(g_http_services[i].m_uri_root) == 0))
@@ -234,7 +235,7 @@ namespace Yelo
 			}
 
 			// process the request
-			if(-1 != index)
+			if(NONE != index)
 			{
 				g_http_services[index].Callback(callback_event, connection);
 				return "";
@@ -258,7 +259,7 @@ namespace Yelo
 		{
 			// force the server to always listen on MP port  + 1
 			char port[6];
-			sprintf_s(port, 6, "%i", Networking::ConnectionPort() + 1);
+			sprintf_s(port, "%i", Networking::ConnectionPort() + 1);
 
 			g_http_server_globals.m_config.ports.assign(port);
 
@@ -282,7 +283,7 @@ namespace Yelo
 		void SetThreads(uint16 count)
 		{
 			// check the thread count bounds
-			if(count > 64)
+			if(count > 64) // TODO: named constant?
 				blam::console_printf(false, "Max thread count is 64");
 			else if(count <= 0)
 				blam::console_printf(false, "Must have at least 1 or more threads");
@@ -290,7 +291,7 @@ namespace Yelo
 			{
 				// create the thread count string
 				char threads_string[4];
-				if(-1 == sprintf_s(threads_string, 4, "%i", count))
+				if(-1 == sprintf_s(threads_string, "%i", count))
 					blam::console_printf(false, "Failed to set HTTP thread count");
 				else
 					g_http_server_globals.m_config.threads.assign(threads_string);
@@ -379,9 +380,9 @@ namespace Yelo
 		void StopServer()
 		{
 			// check that all services are not running, return if they are
-			for(int i = 0; i < NUMBEROF(g_http_services); i++)
+			for (auto& service : g_http_services)
 			{
-				if(g_http_services[i].ServiceStarted())
+				if(service.ServiceStarted())
 				{
 					blam::console_printf(false, "All HTTP services must be stopped before stopping the HTTP server");
 					return;

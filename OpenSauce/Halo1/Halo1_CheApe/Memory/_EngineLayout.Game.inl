@@ -14,6 +14,12 @@
 		FUNC_PTR(GET_CMD_LINE_PARAMETER,			0x421ED0, 0x42DC70, 0x492E60);
 	};
 
+	namespace GameUI
+	{
+		ENGINE_DPTR(s_first_person_weapons, first_person_weapons, PTR_NULL, PTR_NULL, 0xE00D44);
+		s_first_person_weapons* FirstPersonWeapons()		DPTR_IMP_GET(first_person_weapons);
+	};
+
 	namespace blam
 	{
 		//////////////////////////////////////////////////////////////////////////

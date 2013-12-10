@@ -11,14 +11,15 @@
 #include <blamlib/Halo1/models/model_definitions.hpp>
 #include <blamlib/Halo1/tag_files/tag_files.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
+#include <YeloLib/Halo1/tag_files/tag_group_memory.hpp>
 
 #include "Engine/EngineFunctions.hpp"
 
 /* TODO:
  * use a class to wrap all loading operations, storing all state information as members instead of globals
- * use a producer & consumer model to do asyncronous tag loading
+ * use a producer & consumer model to do asynchronous tag loading
  * tag_get and tag_loaded will need to be modified to block until async loading completes
- * possibly use a new tag_load flag to tell the loader to use syncronous loading, for cases in stock editor code where async loading introduces bugs
+ * possibly use a new tag_load flag to tell the loader to use synchronous loading, for cases in stock editor code where async loading introduces bugs
 */
 
 namespace Yelo
@@ -63,7 +64,7 @@ namespace Yelo
 			if(address == nullptr)
 			{
 				YELO_ASSERT( data->address==nullptr );
-				address = data->address = YELO_MALLOC(data->size, false);
+				address = data->address = TAG_DATA_NEW(data->definition, data->size);
 
 				if(address == nullptr)
 				{
@@ -95,8 +96,7 @@ namespace Yelo
 			YELO_ASSERT( data && data->definition );
 			YELO_ASSERT( data->address );
 
-			YELO_FREE( data->address );
-			data->address = nullptr;
+			TAG_DATA_DELETE(*data);
 		}
 
 		static bool PLATFORM_API tag_data_read_recursive(tag_data_definition* data_definition, void* block_element, tag_data* data, 
@@ -117,7 +117,7 @@ namespace Yelo
 					YELO_WARN("tag data '%s' too large. #%d not in [0,#%d]",
 						data_definition->name, data->size, data_definition->maximum_size); // NOTE: added bounds info to warning
 				}
-				else if( !(data_address = YELO_MALLOC(size, false)) )
+				else if( !(data_address = TAG_DATA_NEW(data_definition, size)) )
 				{
 					YELO_WARN("couldn't allocate #%d tag data for '%s'",
 						size, data_definition->name); // NOTE: added size info to warning
@@ -125,7 +125,7 @@ namespace Yelo
 				else if( size > 0 && !tag_data_load(block_element, data, data->address = data_address) )
 				{
 					// tag_data_load provides warnings, so we don't provide any here
-					YELO_FREE( data->address );
+					TAG_DATA_DELETE( *data );
 					data_address = nullptr;
 				}
 				else
@@ -280,7 +280,7 @@ namespace Yelo
 				return true;
 
 			size_t elements_size = definition->element_size * count;
-			if( !(block->address = YELO_MALLOC(elements_size, false)) )
+			if( !(block->address = TAG_BLOCK_NEW(definition, count)) )
 			{
 				YELO_WARN("couldn't allocate memory for #%d element %s block",
 					block->count, definition->name);
@@ -582,7 +582,7 @@ namespace Yelo
 			}
 
 			tag_block_definition* root_definition = group->header_block_definition;
-			void* root_element = YELO_MALLOC(root_definition->element_size, false);
+			void* root_element = TAG_BLOCK_NEW(root_definition, 1);
 			do { // 'break' on error
 
 				if(root_element == nullptr)
@@ -620,7 +620,7 @@ namespace Yelo
 			TagGroups::TagInstances().Delete(tag_index);
 
 			if(root_element != nullptr)
-				YELO_FREE( root_element );
+				TAG_BLOCK_DELETE_ELEMENTS(root_definition, root_element);
 
 			return datum_index::null;
 		}

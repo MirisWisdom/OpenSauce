@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/game/players.hpp>
+#include <blamlib/Halo1/game/game_configuration.hpp>
 
 namespace Yelo
 {

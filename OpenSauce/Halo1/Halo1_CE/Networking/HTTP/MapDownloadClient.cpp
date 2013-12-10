@@ -212,7 +212,7 @@ namespace Yelo
 				m_format = _map_compression_format;
 				m_map_is_yelo = false;
 
-				m_parts = NULL;
+				m_parts = nullptr;
 			}
 
 			void Dtor()
@@ -226,7 +226,7 @@ namespace Yelo
 				if(m_parts)
 				{
 					DeleteLinkedList(m_parts);
-					m_parts = NULL;
+					m_parts = nullptr;
 				}
 			}
 		};
@@ -260,13 +260,13 @@ namespace Yelo
 				m_address[0] = 0;
 				m_description[0] = 0;
 
-				if(-1 == strcpy_s(m_name, k_server_name_length_max, name))
+				if(-1 == strcpy_s(m_name, name))
 					return false;
 
-				if(-1 == strcpy_s(m_address, Enums::k_max_url_length, address))
+				if(-1 == strcpy_s(m_address, address))
 					return false;
 
-				if(-1 == strcpy_s(m_description, k_server_description_length_max, description))
+				if(-1 == strcpy_s(m_description, description))
 					return false;
 
 				return true;
@@ -304,7 +304,7 @@ namespace Yelo
 				// generate the ip string for either ipv4 or ipv6
 				if(server_transport.address_length == Enums::k_ipv4_address_length)
 				{
-					if(-1 == sprintf_s(server_ip_string, Enums::k_max_ip_string_length,
+					if(-1 == sprintf_s(server_ip_string,
 						"%i.%i.%i.%i",
 						server_transport.ipv4.class_d,
 						server_transport.ipv4.class_c,
@@ -314,7 +314,7 @@ namespace Yelo
 				}
 				else
 				{
-					if(-1 == sprintf_s(server_ip_string, Enums::k_max_ip_string_length,
+					if(-1 == sprintf_s(server_ip_string,
 						"[%04X:%04X:%04X:%04X:%04X:%04X:%04X:%04X]",
 						server_transport.ipv6.class_h,
 						server_transport.ipv6.class_g,
@@ -328,10 +328,10 @@ namespace Yelo
 				}
 
 				// build a string with the ip and port, for reconnecting to the server
-				if(-1 == sprintf_s(m_mp_address, Enums::k_max_ip_port_string_length, "%s:%i", server_ip_string, server_transport.port))
+				if(-1 == sprintf_s(m_mp_address, "%s:%i", server_ip_string, server_transport.port))
 					success = false;
 
-				if(-1 == sprintf_s(server_ip_string, Enums::k_max_ip_port_string_length, "%s:%i/%s",
+				if(-1 == sprintf_s(server_ip_string, "%s:%i/%s",
 					server_ip_string,
 					server_transport.port + 1,
 					Server::GetServiceURIRoot(Enums::_http_service_enumeration_map_download)))
@@ -421,7 +421,7 @@ namespace Yelo
 			 */
 			bool	ProcessMasterServerList()
 			{
-				ASSERT(m_master_server_list.server_list, "master server list downloader list pointer not set");
+				YELO_ASSERT_DISPLAY(m_master_server_list.server_list, "master server list downloader list pointer not set");
 
 				// get the root element
 				TiXmlElement* root = Document().FirstChildElement("osHTTPServer");
@@ -454,7 +454,7 @@ namespace Yelo
 							description = "";
 
 						// create a new master server entry
-						c_http_server* download_server = new c_http_server();
+						auto download_server = new c_http_server();
 						download_server->Ctor();
 						download_server->SetHTTPServer(name, address.GetURL().c_str(), description);
 
@@ -472,7 +472,7 @@ namespace Yelo
 			{
 				c_xml_downloader::GetArguments(request_args);
 
-				s_request_data* request_data = new s_request_data();
+				auto request_data = new s_request_data();
 				request_data->m_request_type = _request_type_master_server_list;
 				
 				request_args.m_component = Enums::_http_client_component_map_download;
@@ -489,20 +489,20 @@ namespace Yelo
 			{
 				c_xml_downloader::Ctor();
 
-				m_master_server_list.server_list = NULL;
+				m_master_server_list.server_list = nullptr;
 			}
 
 			void Dtor()
 			{
 				c_xml_downloader::Dtor();
-				m_master_server_list.server_list = NULL;
+				m_master_server_list.server_list = nullptr;
 			}
 
 			void* DownloadCompleteCallback(const bool download_succeeded, const char* buffer, const GHTTPByteCount buffer_length, void* component_data)
 			{
 				c_xml_downloader::DownloadCompleteCallback(download_succeeded, buffer, buffer_length, component_data);
 
-				s_request_data* request_data = CAST_PTR(s_request_data*, component_data);
+				auto request_data = CAST_PTR(s_request_data*, component_data);
 				delete request_data;
 
 				if(Status() != Enums::_http_file_download_status_failed)
@@ -516,19 +516,19 @@ namespace Yelo
 				if((Status() == Enums::_http_file_download_status_failed) && Retry())
 					Status() = Enums::_http_file_download_status_retry;
 
-				return NULL;
+				return nullptr;
 			}
 
 			void* DownloadCancelledCallback(void* component_data)
 			{
 				c_xml_downloader::DownloadCancelledCallback(component_data);
 
-				s_request_data* request_data = CAST_PTR(s_request_data*, component_data);
+				auto request_data = CAST_PTR(s_request_data*, component_data);
 				delete request_data;
 
 				Status() = Enums::_http_file_download_status_cancelled;
 
-				return NULL;
+				return nullptr;
 			}
 		};
 
@@ -680,8 +680,8 @@ namespace Yelo
 					else
 						return false;
 
-					strcpy_s(m_map_part_definition.map_element.m_filename, MAX_PATH, name);
-					strcpy_s(m_map_part_definition.map_element.m_md5, k_md5_string_length_max, md5);
+					strcpy_s(m_map_part_definition.map_element.m_filename, name);
+					strcpy_s(m_map_part_definition.map_element.m_md5, md5);
 
 					if(1 != sscanf_s(uncompressed_size, "%i", &m_map_part_definition.map_element.m_uncompressed_size))
 						uncompressed_size = 0;
@@ -1288,7 +1288,7 @@ namespace Yelo
 			{
 				// all parts downloaded, delete the iterator
 				delete part_iterator;
-				part_iterator = NULL;
+				part_iterator = nullptr;
 
 				return true;
 			}
@@ -1398,7 +1398,7 @@ namespace Yelo
 		{
 			c_map_element& map_element = g_map_download_globals.m_map_part_definition.downloader.MapElement();
 
-			byte* uncompressed_data = NULL;
+			byte* uncompressed_data = nullptr;
 			size_t uncompressed_size = 0;
 			bool success = false;
 
@@ -1428,8 +1428,8 @@ namespace Yelo
 						uncompressed_size);
 				}
 				break;
-			default:
-				ASSERT(false, "invalid compression format");
+
+			YELO_ASSERT_CASE_UNREACHABLE();
 			};
 
 			// if the decompression failed, delete the data
@@ -1557,14 +1557,14 @@ namespace Yelo
 		bool	BuildServerInstanceList()
 		{
 			// add the dedicated server as the first to download from
-			c_http_server_instance* instance = new c_http_server_instance(&g_map_download_globals.m_servers.dedicated_server);
+			auto instance = new c_http_server_instance(&g_map_download_globals.m_servers.dedicated_server);
 
 			AppendLinkedListNode(g_map_download_globals.m_servers.server_list_head, instance);
 
 			// TODO: move this to a global shuffle namespace
 			//shuffle loop
 			int list_length = GetListLength(g_map_download_globals.m_master_server_list.server_list);
-			ASSERT(list_length <= 256, "max server list count reached");
+			YELO_ASSERT_DISPLAY(list_length <= 256, "max server list count reached");
 
 			if(list_length > 0)
 			{
@@ -1621,7 +1621,7 @@ namespace Yelo
 			g_map_download_globals.m_servers.dedicated_server.Dtor();
 
 			delete g_map_download_globals.m_servers.server_iterator;
-			g_map_download_globals.m_servers.server_iterator = NULL;
+			g_map_download_globals.m_servers.server_iterator = nullptr;
 
 			if(g_map_download_globals.m_servers.server_list_head)
 				DeleteLinkedList(g_map_download_globals.m_servers.server_list_head);
@@ -1632,7 +1632,7 @@ namespace Yelo
 
 			// delete the part download resources
 			delete g_map_download_globals.m_part_download.part_iterator;
-			g_map_download_globals.m_part_download.part_iterator = NULL;
+			g_map_download_globals.m_part_download.part_iterator = nullptr;
 
 			g_map_download_globals.m_part_download.downloader.Stop();
 			g_map_download_globals.m_part_download.downloader.Dtor();
@@ -1656,7 +1656,7 @@ namespace Yelo
 
 			if(g_map_download_globals.m_master_server_list.server_list)
 				DeleteLinkedList(g_map_download_globals.m_master_server_list.server_list);
-			g_map_download_globals.m_master_server_list.server_list = NULL;
+			g_map_download_globals.m_master_server_list.server_list = nullptr;
 		}
 
 		/*!
@@ -1669,12 +1669,12 @@ namespace Yelo
 		{
 			// reset globals for new map download
 			g_map_download_globals.m_servers.dedicated_server.Ctor();
-			g_map_download_globals.m_servers.server_iterator = NULL;
-			g_map_download_globals.m_servers.server_list_head = NULL;
+			g_map_download_globals.m_servers.server_iterator = nullptr;
+			g_map_download_globals.m_servers.server_list_head = nullptr;
 
 			g_map_download_globals.m_download_thread.stop_download = false;
 			g_map_download_globals.m_download_thread.in_progress = false;
-			g_map_download_globals.m_download_thread.thread_handle = (HANDLE)NULL_HANDLE;
+			g_map_download_globals.m_download_thread.thread_handle = INVALID_HANDLE_VALUE;
 			g_map_download_globals.m_download_thread.stage = _map_download_stage_build_server_list;
 
 			// reset map part definition stage
@@ -1707,7 +1707,7 @@ namespace Yelo
 			g_map_download_globals.m_master_server_list.state = _master_server_list_state_begin;
 			g_map_download_globals.m_master_server_list.completed = false;
 			g_map_download_globals.m_master_server_list.succeeded = false;
-			g_map_download_globals.m_master_server_list.server_list = NULL;
+			g_map_download_globals.m_master_server_list.server_list = nullptr;
 			g_map_download_globals.m_master_server_list.downloader.Ctor();
 			g_map_download_globals.m_master_server_list.downloader.SetServerList(&g_map_download_globals.m_master_server_list.server_list);
 		}
@@ -1769,8 +1769,8 @@ namespace Yelo
 					case Enums::_http_file_download_status_retry:
 					case Enums::_http_file_download_status_in_progress:
 						break;
-					default:
-						ASSERT(false, "invalid file download status");
+
+					YELO_ASSERT_CASE_UNREACHABLE();
 					};
 				}
 				break;
@@ -1792,8 +1792,8 @@ namespace Yelo
 					g_map_download_globals.m_master_server_list.succeeded = true;
 				}
 				break;
-			default:
-				ASSERT(false, "invalid master server list state");
+
+			YELO_ASSERT_CASE_UNREACHABLE();
 			}
 
 			// if this stage is complete, move on to the next stage
@@ -1828,7 +1828,7 @@ namespace Yelo
 			{
 			case _map_part_definition_state_begin:
 				{
-					ASSERT(g_map_download_globals.m_servers.server_iterator->Current(), "server list iterators current instance is null");
+					YELO_ASSERT_DISPLAY(g_map_download_globals.m_servers.server_iterator->Current(), "server list iterators current instance is null");
 
 					c_http_server* current_server = g_map_download_globals.m_servers.server_iterator->Current()->Server();
 
@@ -1863,8 +1863,8 @@ namespace Yelo
 					case Enums::_http_file_download_status_retry:
 					case Enums::_http_file_download_status_in_progress:
 						break;
-					default:
-						ASSERT(false, "invalid file download status");
+
+					YELO_ASSERT_CASE_UNREACHABLE();
 					};
 				}
 				break;
@@ -1884,8 +1884,8 @@ namespace Yelo
 					g_map_download_globals.m_map_part_definition.state = _map_part_definition_state_stage_complete;
 				}
 				break;
-			default:
-				ASSERT(false, "invalid map part definition state");
+
+			YELO_ASSERT_CASE_UNREACHABLE();
 			}
 
 			// if this stage is complete, move on to the next stage
@@ -1943,7 +1943,7 @@ namespace Yelo
 				}
 			case _part_download_state_ready_to_download:
 				{
-					ASSERT(g_map_download_globals.m_servers.server_iterator->Current(), "server list iterators current instance is null");
+					YELO_ASSERT_DISPLAY(g_map_download_globals.m_servers.server_iterator->Current(), "server list iterators current instance is null");
 
 					c_http_server* current_server = g_map_download_globals.m_servers.server_iterator->Current()->Server();
 
@@ -1988,8 +1988,8 @@ namespace Yelo
 					case Enums::_http_file_download_status_retry:
 					case Enums::_http_file_download_status_in_progress:
 						break;
-					default:
-						ASSERT(false, "invalid file download status");
+					
+					YELO_ASSERT_CASE_UNREACHABLE();
 					};
 				}
 				break;
@@ -2028,8 +2028,8 @@ namespace Yelo
 						return _map_download_stage_failed;
 				}
 				break;
-			default:
-				ASSERT(false, "invalid part download state");
+			
+			YELO_ASSERT_CASE_UNREACHABLE();
 			}
 
 			// if this stage is complete, move on to the next stage
@@ -2080,7 +2080,7 @@ namespace Yelo
 			// flag used by the main thread to see if the thread is running
 			g_map_download_globals.m_download_thread.in_progress = true;
 
-			int32 return_value = -1;
+			DWORD return_value = NONE;
 			do
 			{
 				// if the main thread sets the stop flag, cancel the download
@@ -2142,8 +2142,8 @@ namespace Yelo
 					g_map_download_globals.m_download_thread.in_progress = false;
 					return_value = 2;
 					break;
-				default:
-					ASSERT(false, "invalid map download stage");
+				
+				YELO_ASSERT_CASE_UNREACHABLE();
 				};
 
 				ReleaseMutex(g_globals_access_mutex);
@@ -2168,7 +2168,7 @@ namespace Yelo
 		bool	StartDownloadThread()
 		{
 			// start the download thread
-			g_map_download_globals.m_download_thread.thread_handle = CreateThread(NULL, 0, DownloadMap, NULL, 0, NULL);
+			g_map_download_globals.m_download_thread.thread_handle = CreateThread(nullptr, 0, DownloadMap, nullptr, 0, nullptr);
 			return g_map_download_globals.m_download_thread.thread_handle != 0;
 		}
 
@@ -2211,10 +2211,10 @@ namespace Yelo
 
 					if(!CloseHandle(g_map_download_globals.m_download_thread.thread_handle))
 					{
-						g_map_download_globals.m_download_thread.thread_handle = (HANDLE)NULL_HANDLE;
+						g_map_download_globals.m_download_thread.thread_handle = INVALID_HANDLE_VALUE;
 						return _map_download_update_stage_failed;
 					}
-					g_map_download_globals.m_download_thread.thread_handle = (HANDLE)NULL_HANDLE;
+					g_map_download_globals.m_download_thread.thread_handle = INVALID_HANDLE_VALUE;
 
 					switch(return_code)
 					{
@@ -2224,8 +2224,8 @@ namespace Yelo
 						return _map_download_update_stage_cancelled;
 					case 2:
 						return _map_download_update_stage_map_download_completion;
-					default:
-						ASSERT(false, "map download thread returned an invalid code");
+
+					YELO_ASSERT_CASE_UNREACHABLE();
 					}
 				}
 				break;
@@ -2233,11 +2233,13 @@ namespace Yelo
 				// the thread is still running
 				break;
 			case WAIT_FAILED:
-				ASSERT(false, "WAIT_FAILED value in c_map_download_manager::Update");
+				YELO_ASSERT_DISPLAY(false, "WAIT_FAILED value in c_map_download_manager::Update");
+				break;
 			case WAIT_ABANDONED:
-				ASSERT(false, "WAIT_ABANDONED value in c_map_download_manager::Update");
-			default:
-				ASSERT(false, "invalid wait return value in c_map_download_manager::Update");
+				YELO_ASSERT_DISPLAY(false, "WAIT_ABANDONED value in c_map_download_manager::Update");
+				break;
+			
+			YELO_ASSERT_CASE_UNREACHABLE();
 			};
 
 			return _map_download_update_stage_downloading_map;
@@ -2365,11 +2367,11 @@ namespace Yelo
 				g_map_download_display.ResetDisplay();
 				g_map_download_globals.m_map_download_update_stage = _map_download_update_stage_idle;
 
-				// the download is complete/cancelled so re-enable the ui widget update function
+				// the download is complete/canceled so re-enable the ui widget update function
 				Memory::FunctionProcessUpdateUIWidgetsDisabled() = false;
 				break;
-			default:
-				ASSERT(false, "invalid map download stage");
+
+			YELO_ASSERT_CASE_UNREACHABLE();
 			};
 
 			// update the display strings
@@ -2402,7 +2404,7 @@ namespace Yelo
 
 			bool success = true;
 			// copy the map name for later use
-			if(-1 == strcpy_s(g_map_download_globals.m_map_part_definition.downloader.MapElement().m_name, MAX_PATH, map_name))
+			if(-1 == strcpy_s(g_map_download_globals.m_map_part_definition.downloader.MapElement().m_name, map_name))
 				success = false;
 
 			if(!g_map_download_globals.m_servers.dedicated_server.SetCurrentDedicatedServer())
@@ -2431,7 +2433,7 @@ namespace Yelo
 			ResetMasterServerDownload();
 			ResetMapDownload();
 
-			g_globals_access_mutex = CreateMutex(NULL, FALSE, NULL);
+			g_globals_access_mutex = CreateMutex(nullptr, FALSE, nullptr);
 		}
 
 		/*!
@@ -2518,9 +2520,9 @@ namespace Yelo
 		 */
 		void*	RequestCompleted_Callback(const bool download_succeeded, const char* buffer, const GHTTPByteCount buffer_length, void* component_data)
 		{
-			ASSERT(component_data, "the component data for a http request is NULL");
+			YELO_ASSERT_DISPLAY(component_data, "the component data for a http request is NULL");
 
-			s_request_data* request_data = CAST_PTR(s_request_data*, component_data);
+			auto request_data = CAST_PTR(s_request_data*, component_data);
 
 			switch(request_data->m_request_type)
 			{
@@ -2579,7 +2581,7 @@ namespace Yelo
 				};
 			}
 
-			return NULL;
+			return nullptr;
 		}
 
 		/*!
@@ -2596,7 +2598,7 @@ namespace Yelo
 		 */
 		void*	RequestCancelled_Callback(void* component_data)
 		{
-			s_request_data* request_data = CAST_PTR(s_request_data*, component_data);
+			auto request_data = CAST_PTR(s_request_data*, component_data);
 
 			switch(request_data->m_request_type)
 			{
@@ -2611,7 +2613,7 @@ namespace Yelo
 				break;
 			}
 
-			return NULL;
+			return nullptr;
 		}
 	};};};};
 };

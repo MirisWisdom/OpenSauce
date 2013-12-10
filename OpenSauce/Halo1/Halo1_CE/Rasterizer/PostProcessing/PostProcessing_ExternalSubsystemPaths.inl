@@ -4,6 +4,7 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
+// TODO: why are these not relative?
 #if		defined(SUBSYSTEM_BLOOM)
 	static const char* g_external_subsystem_shader_path = "D:\\Program Files (x86)\\Microsoft Games\\Halo Custom Edition\\data\\postprocess\\dev_shaders\\PP_Bloom.fx";
 	static const char* g_external_subsystem_include_path = "D:\\Program Files (x86)\\Microsoft Games\\Halo Custom Edition\\data\\postprocess\\dev_shaders\\";

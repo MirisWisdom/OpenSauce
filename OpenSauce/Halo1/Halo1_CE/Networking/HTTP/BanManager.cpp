@@ -898,7 +898,7 @@ namespace Yelo
 			// get the node
 			c_http_ip_ban_permanent* ban_element = GetNodeByIndex(g_permanent_ban_list, ban_index);
 
-			ASSERT(ban_element != nullptr, "permanent ban not found when the index is within bounds");
+			YELO_ASSERT_DISPLAY(ban_element, "permanent ban not found when the index is within bounds");
 
 			// remove it from the permanent ban list
 			RemoveLinkedListNode(g_permanent_ban_list, ban_element);

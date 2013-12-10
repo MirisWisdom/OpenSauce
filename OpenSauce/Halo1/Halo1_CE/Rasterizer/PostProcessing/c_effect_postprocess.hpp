@@ -45,7 +45,7 @@ namespace Yelo
 			template<class T>
 			T*						GetShaderInstance(int index)
 			{
-				ASSERT(index < m_members.m_shaders.count, "shader instance index outside the bounds of the array");
+				YELO_ASSERT_DISPLAY(index < m_members.m_shaders.count, "shader instance index outside the bounds of the array");
 
 				return CAST_PTR(T*, GetNodeByIndex(m_members.m_shaders.list, index));
 			}
@@ -55,15 +55,15 @@ namespace Yelo
 		public:
 			virtual void Ctor()
 			{
-				m_members.effect_definition = NULL;
-				m_members.m_shaders.list = NULL;
+				m_members.effect_definition = nullptr;
+				m_members.m_shaders.list = nullptr;
 				m_members.m_shaders.count = 0;
 			}
 
 			virtual void Dtor()
 			{
-				m_members.effect_definition = NULL;
-				m_members.m_shaders.list = NULL;
+				m_members.effect_definition = nullptr;
+				m_members.m_shaders.list = nullptr;
 				m_members.m_shaders.count = 0;
 			}
 
