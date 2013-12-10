@@ -140,7 +140,7 @@ namespace Yelo
 		void c_shader_postprocess::GetHandles()
 		{
 			m_members.definition->runtime.postprocess_handle = GetTechniqueHandle();
-			ASSERT(m_members.definition->runtime.postprocess_handle != NULL, "Unabled to find the active technique in the effect");
+			YELO_ASSERT_DISPLAY(m_members.definition->runtime.postprocess_handle != nullptr, "Unabled to find the active technique in the effect");
 
 			m_members.definition->ortho_wvp_matrix.Initialize(m_members.definition->runtime.dx_effect,
 				"ORTHOWORLDVIEWPROJECTION", true);
@@ -234,24 +234,24 @@ namespace Yelo
 		HRESULT c_shader_postprocess::LoadShaderImpl(IDirect3DDevice9* render_device)
 		{
 			HRESULT hr = S_OK;
-			LPD3DXBUFFER error_buffer = NULL;
+			LPD3DXBUFFER error_buffer = nullptr;
 
 			// if the shader does not have the required data something is horrifically wrong
-			ASSERT(m_members.definition, "c_shader_postprocess has no shader assigned to it");
-			ASSERT(m_members.source_data, "c_shader_postprocess has no source data object assigned to it");
+			YELO_ASSERT_DISPLAY(m_members.definition, "c_shader_postprocess has no shader assigned to it");
+			YELO_ASSERT_DISPLAY(m_members.source_data, "c_shader_postprocess has no source data object assigned to it");
 			if(!m_members.definition || !m_members.source_data)
 				return E_FAIL;
 
 			// if the effect has already been created (derived shaders) do not recreate it
-			if(m_members.definition->runtime.dx_effect == NULL)
+			if(m_members.definition->runtime.dx_effect == nullptr)
 			{
 				// get the shader data and its size
 				DWORD data_size = 0;
 				const void* data = m_members.source_data->GetData(data_size);
 
 				// if the data is not available, return E_FAIL
-				ASSERT(data != NULL, "source data object has no data to use");
-				ASSERT(data_size != 0, "source data object has no data to use");
+				YELO_ASSERT_DISPLAY(data != nullptr, "source data object has no data to use");
+				YELO_ASSERT_DISPLAY(data_size != 0, "source data object has no data to use");
 
 				// for ascii files loaded from external sources, their includes are handled manually
 				c_shader_include_manager include_manager(m_members.source_data->GetIncludePath());
@@ -264,7 +264,7 @@ namespace Yelo
 						m_members.source_data->GetMacros(),
 						&include_manager,
 						D3DXSHADER_OPTIMIZATION_LEVEL3,
-						NULL,
+						nullptr,
 						&m_members.definition->runtime.dx_effect,
 						&error_buffer);
 
@@ -280,7 +280,7 @@ namespace Yelo
 			}
 
 			m_members.definition->runtime.active_technique = GetActiveTechnique();
-			ASSERT(m_members.definition->runtime.active_technique != NULL, "a c_shader_postprocess does not have an active technique");
+			YELO_ASSERT_DISPLAY(m_members.definition->runtime.active_technique != nullptr, "a c_shader_postprocess does not have an active technique");
 
 			return hr;
 		}
@@ -543,15 +543,15 @@ namespace Yelo
 		{
 			LPD3DXEFFECT effect = m_members.definition->runtime.dx_effect;
 
-			ASSERT(effect, "a c_shader_postprocess is trying to be rendered when its effect is NULL");
+			YELO_ASSERT_DISPLAY(effect, "a c_shader_postprocess is trying to be rendered when its effect is NULL");
 
 			// start the effect
 			UINT pass_count;
 			HRESULT_ERETURN(effect->Begin( &pass_count, 0 ));
 
 			// if there is no active technique, or the techniques pass count does not match that from the effect
-			ASSERT(m_members.definition->runtime.active_technique, "a c_shader_postprocess is tring to be rendered when it has no active technique");
-			ASSERT(m_members.definition->runtime.active_technique->passes.Count == pass_count, "a c_shader_postprocess' active technique pass count does not match the effect technique");
+			YELO_ASSERT_DISPLAY(m_members.definition->runtime.active_technique, "a c_shader_postprocess is tring to be rendered when it has no active technique");
+			YELO_ASSERT_DISPLAY(m_members.definition->runtime.active_technique->passes.Count == pass_count, "a c_shader_postprocess' active technique pass count does not match the effect technique");
 
 			DX9::s_render_target_chain_scene& main_chain = c_post_processing_main::Instance().Globals().scene_buffer_chain;
 			DX9::s_render_target_chain& secondary_chain = c_post_processing_main::Instance().Globals().secondary_buffer_chain;
@@ -597,14 +597,14 @@ namespace Yelo
 				// when copy_scene_to_target is true the scene texture is stretchrect'd to the target texture
 				// this is so that the shader can draw onto, and sample, the current scene texture
 				if(pass_element.flags.copy_scene_to_target_bit)
-					render_device->StretchRect(main_chain.GetSceneSurface(), NULL, render_chain->GetCurrentSurface(), NULL, D3DTEXF_POINT);
+					render_device->StretchRect(main_chain.GetSceneSurface(), nullptr, render_chain->GetCurrentSurface(), nullptr, D3DTEXF_POINT);
 
 				// clear the buffer texture if necessary
 				// this should be avoided where possible as it is very expensive
 				if(pass_element.flags.clear_buffer_texture_bit)
 				{
 					render_device->SetRenderTarget(0, secondary_chain.GetNextSurface());
-					render_device->Clear( 0L, NULL, D3DCLEAR_TARGET, 0x00000000, 1.0f, 0L );
+					render_device->Clear( 0L, nullptr, D3DCLEAR_TARGET, 0x00000000, 1.0f, 0L );
 				}
 
 				// set the render target to the render chains target surface
@@ -613,7 +613,7 @@ namespace Yelo
 				// if the pass needs a clear target, clear it
 				// this should be avoided where possible as it is very expensive
 				if(pass_element.flags.clear_target_bit)
-					render_device->Clear( 0L, NULL, D3DCLEAR_TARGET, 0x00000000, 1.0f, 0L );
+					render_device->Clear( 0L, nullptr, D3DCLEAR_TARGET, 0x00000000, 1.0f, 0L );
 
 				// render the pass
 				effect->BeginPass(pass);

@@ -4,7 +4,7 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #include "Common/Precompile.hpp"
-#include "YeloLib/Halo1/tag_files/tag_group_memory.hpp"
+#include <YeloLib/Halo1/tag_files/tag_group_memory.hpp>
 
 #include <blamlib/memory/byte_swapping_base.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
@@ -13,22 +13,23 @@
 #include "Engine/EngineFunctions.hpp"
 #include "Memory/MemoryInterface.hpp"
 
-typedef std::unordered_map<Yelo::tag, Yelo::TagGroups::c_tag_group_allocation_statistics> 
-	tag_group_allocation_statistics_map_t;
-
 namespace Yelo
 {
 	namespace TagGroups
 	{
 		static struct {
 			bool field_set_runtime_info_enabled;
-			bool allocation_headers_enabled;
+#if PLATFORM_ID != PLATFORM_TOOL // currently only tool builds can toggle on allocation headers
+			const
+#endif
+				bool allocation_headers_enabled;
 			bool string_id_yelo_runtime_is_condensed;	// string_id_yelo's runtime value doesn't contain tag_reference data
+			PAD8;
 
 			std::unordered_set<tag_block_definition*>* block_definitions;
 			std::unordered_set<tag_data_definition*>* data_definitions;
 
-			tag_group_allocation_statistics_map_t* group_statistics;
+			c_tag_group_allocation_statistics::group_tag_to_stats_map_t* group_statistics;
 
 			void Initialize()
 			{
@@ -60,11 +61,104 @@ namespace Yelo
 			return *g_tag_group_memory_globals.data_definitions;
 		}
 
+
+		//////////////////////////////////////////////////////////////////////////
+		// field_comparison_code builder util
+		class c_field_comparison_codes_builder
+		{
+			field_comparison_code*& m_final_codes_reference;
+			size_t m_index;
+			std::array<field_comparison_code, s_tag_field_set_runtime_data::k_max_comparison_codes> m_codes;
+
+			field_comparison_code& NewCode()
+			{
+				if (m_index != 0)
+					m_index += 1;
+
+				return m_codes[m_index];
+			}
+
+			void AllocateFinalCodes()
+			{
+				NewCode() = { 0, Enums::_field_comparison_code_end, NONE };
+
+				size_t count = m_index + 1;
+				m_final_codes_reference = YELO_NEW_ARRAY(field_comparison_code, count);
+
+				std::memcpy(m_final_codes_reference, m_codes.data(), sizeof(m_codes[0]) * count);
+			}
+		public:
+			c_field_comparison_codes_builder(field_comparison_code*& final_codes_reference)
+				: m_final_codes_reference(final_codes_reference)
+				, m_index(0)
+			{
+				m_final_codes_reference = nullptr;
+				m_codes[0] = {};
+			}
+			~c_field_comparison_codes_builder()
+			{
+				AllocateFinalCodes();
+			}
+
+			field_comparison_code& NewBitwiseCode()
+			{
+				field_comparison_code& code = m_codes[m_index];
+
+				if (code.type == Enums::_field_comparison_code_bitwise)
+					return code;
+				else
+				{
+					code = NewCode();
+					code = { 0, Enums::_field_comparison_code_bitwise, NONE };
+					return code;
+				}
+			}
+
+			field_comparison_code& NewSkipCode()
+			{
+				field_comparison_code& code = m_codes[m_index];
+
+				if (code.type == Enums::_field_comparison_code_skip)
+					return code;
+				else
+				{
+					code = NewCode();
+					code = { 0, Enums::_field_comparison_code_skip, NONE };
+					return code;
+				}
+			}
+
+			void NewPointerCode(int32 field_index)
+			{
+				NewCode() = { 0, Enums::_field_comparison_code_pointer, field_index };
+			}
+
+			void NewTagReferenceCode(int32 field_index)
+			{
+				NewCode() = { 0, Enums::_field_comparison_code_tag_reference, field_index };
+			}
+
+			void NewTagDataCode(int32 field_index)
+			{
+				NewCode() = { 0, Enums::_field_comparison_code_tag_data, field_index };
+			}
+
+			void NewBlockCode(int32 field_index)
+			{
+				NewCode() = { 0, Enums::_field_comparison_code_block, field_index };
+			}
+
+			void NewBlockIndexCode(int32 field_index, size_t field_size)
+			{
+				NewCode() = { field_size, Enums::_field_comparison_code_block_index, field_index };
+			}
+		};
+
 		//////////////////////////////////////////////////////////////////////////
 		// CheApe hooks
 		bool BlockHasCustomAlignment(const tag_block_definition* definition, _Out_ size_t& alignment_bit);
 		bool BlockHasVolatileFields(const tag_block_definition* definition);
-		bool BlockHasCustomComparisonCodes(const tag_block_definition* definition, _Out_ comparison_code_t*& codes_reference);
+		bool BlockHasCustomComparisonCodes(const tag_block_definition* definition, _Out_ field_comparison_code*& codes_reference);
 
 		//////////////////////////////////////////////////////////////////////////
 		// s_tag_field_set_runtime_data
@@ -99,11 +193,11 @@ namespace Yelo
 			flags.has_runtime_size = true;
 
 			assert(amount < runtime_size ); // validate it wouldn't cause an overflow
-			runtime_size += amount;
+			runtime_size -= amount;
 		}
 		void s_tag_field_set_runtime_data::IncrementDirectReferenceCount()
 		{
-			assert(counts.references <= k_max_direct_references);
+			assert(counts.references < k_max_direct_references);
 			counts.references++;
 		}
 		void s_tag_field_set_runtime_data::IncrementReferenceCountFromBlockField()
@@ -120,40 +214,40 @@ namespace Yelo
 		{
 			flags.has_tag_reference = true;
 
-			assert(counts.tag_reference_fields <= k_max_tag_reference_fields);
+			assert(counts.tag_reference_fields < k_max_tag_reference_fields);
 			counts.tag_reference_fields++;
 		}
 		void s_tag_field_set_runtime_data::IncrementBlockFieldCount()
 		{
 			flags.has_tag_block = true;
 
-			assert(counts.block_fields <= k_max_block_fields);
+			assert(counts.block_fields < k_max_block_fields);
 			counts.block_fields++;
 		}
 		void s_tag_field_set_runtime_data::IncrementBlockIndexFieldCount()
 		{
 			flags.has_block_index = true;
 
-			assert(counts.block_index_fields <= k_max_block_index_fields);
+			assert(counts.block_index_fields < k_max_block_index_fields);
 			counts.block_index_fields++;
 		}
 		void s_tag_field_set_runtime_data::IncrementDataFieldCount()
 		{
 			flags.has_tag_data = true;
 
-			assert(counts.data_fields <= k_max_data_fields);
+			assert(counts.data_fields < k_max_data_fields);
 			counts.data_fields++;
 		}
 		void s_tag_field_set_runtime_data::IncrementStringFieldCount()
 		{
-			assert(counts.string_fields <= k_max_string_fields);
+			assert(counts.string_fields < k_max_string_fields);
 			counts.string_fields++;
 		}
 		void s_tag_field_set_runtime_data::IncrementStringIdFieldCount()
 		{
 			flags.has_string_id = true;
 
-			assert(counts.string_id_fields <= k_max_string_id_fields);
+			assert(counts.string_id_fields < k_max_string_id_fields);
 			counts.string_id_fields++;
 		}
 		void s_tag_field_set_runtime_data::IncrementTotalPaddingSize(size_t size)
@@ -255,57 +349,16 @@ namespace Yelo
 
 		void s_tag_field_set_runtime_data::BuildByteComparisonCodes(const tag_block_definition* definition)
 		{
-			struct s_build_state
-			{
-				bool last_field_was_positive;
-				PAD24;
-				size_t count;
-				std::array<comparison_code_t, Enums::k_maximum_field_byte_swap_codes / 2> codes;
-
-				inline void PrepareCodesForNewPositive()
-				{
-					if(!last_field_was_positive)
-						codes[++count] = 0;
-				}
-				inline void PrepareCodesForNewNegative()
-				{
-					if( last_field_was_positive)
-						codes[++count] = 0;
-				}
-				inline void Finish()
-				{
-					assert( count < codes.size() );
-
-					codes[++count] = 0;
-				}
-				// Return a reference to the current code (for incrementing)
-				inline comparison_code_t& IncCode()
-				{
-					return codes[count  ];
-				}
-				// Return a reference to the current code (for incrementing) and move the cursor to the next code
-				// Proceeding IncCode() method should be an '=', NOT '+='
-				inline comparison_code_t& IncCodeWithAnew()
-				{
-					return codes[count++];
-				}
-				inline void SetLastFieldWasPositive(bool answer)
-				{
-					last_field_was_positive = answer;
-				}
-			}state = {false, 0};
-
 			if(flags.custom_comparison)
 			{
 				assert(comparison_codes);
 				return;
 			}
 
+			auto codes_builder = c_field_comparison_codes_builder(comparison_codes);
 			for(auto field : TagGroups::c_tag_field_scanner(definition->fields)
 				.AddAllFieldTypes() )
 			{
-				assert( state.count < state.codes.size() );
-
 				// since we're iterating over -all- fields, might as well do this here
 				if(field.IsBlockName())
 					block_name_field = &definition->fields[field.GetIndex()];
@@ -317,54 +370,43 @@ namespace Yelo
 					{
 						runtime_size -= string_id_yelo::k_debug_data_size;
 
-						state.PrepareCodesForNewNegative();
-						state.IncCode() =		-string_id_yelo::k_debug_data_size; // tag_reference
-						state.SetLastFieldWasPositive(true);
-						break;
+						codes_builder.NewSkipCode().size += string_id_yelo::k_debug_data_size; // tag_reference
 					}
-
-					state.PrepareCodesForNewPositive();
-
-					state.IncCodeWithAnew() +=	sizeof(tag);			// group_tag
-					state.IncCode() =			Enums::_bs_code_4byte;	// name reference
-					state.IncCodeWithAnew() +=	Enums::_bs_code_4byte;	// name length
-					state.IncCode() =			sizeof(datum_index);	// tag_index
-					state.SetLastFieldWasPositive(true);
+					else
+						codes_builder.NewTagReferenceCode(field.GetIndex());
 					break;
 
 				case Enums::_field_block:
-					state.PrepareCodesForNewPositive();
+					codes_builder.NewBlockCode(field.GetIndex());
+					break;
 
-					state.IncCodeWithAnew() +=	sizeof(int32);			// count
-					state.IncCode()  =			Enums::_bs_code_4byte;	// address
-					state.IncCode() +=			Enums::_bs_code_4byte;	// definition
-					state.SetLastFieldWasPositive(false);
+				case Enums::_field_short_block_index:
+					codes_builder.NewBlockIndexCode(field.GetIndex(), 
+						k_tag_field_definitions[Enums::_field_short_block_index].size);
+					break;
+				case Enums::_field_long_block_index:
+					codes_builder.NewBlockIndexCode(field.GetIndex(),
+						k_tag_field_definitions[Enums::_field_long_block_index].size);
 					break;
 
 				case Enums::_field_data:
-					state.PrepareCodesForNewPositive();
-
-					state.IncCodeWithAnew() +=	sizeof(int32);			// size
-					state.IncCode()  =			Enums::_bs_code_4byte;	// flags
-					state.IncCode() +=			Enums::_bs_code_4byte;	// stream_position
-					state.IncCode() +=			Enums::_bs_code_4byte;	// address
-					state.IncCode() +=			Enums::_bs_code_4byte;	// definition
-					state.SetLastFieldWasPositive(false);
+					codes_builder.NewTagDataCode(field.GetIndex());
 					break;
 
+				case Enums::_field_pad:
+					// the padding that comes after a string_id tag reference is named "string_id"
+					// other pad fields which are actually postprocessed fields should be named as well
+					if (field.GetName() == nullptr)
+					{
+						codes_builder.NewSkipCode().size += field.GetSize();
+						break;
+					}
+					// fall through: pad field has name, assume not actually padding
 				default:
-					state.PrepareCodesForNewPositive();
-
-					state.IncCode() =			CAST(int16, field.GetSize());
-					state.SetLastFieldWasPositive(true);
+					codes_builder.NewBitwiseCode().size += field.GetSize();
 					break;
 				}
 			}
-			state.Finish();
-
-			comparison_codes = YELO_NEW_ARRAY(comparison_code_t, state.count);
-			std::copy_n(state.codes.cbegin(), state.count,
-				stdext::checked_array_iterator<comparison_code_t*>(comparison_codes, state.count));
 		}
 
 		void s_tag_field_set_runtime_data::DestroyByteComparisonCodes()
@@ -372,7 +414,6 @@ namespace Yelo
 			if(comparison_codes != nullptr && !flags.custom_comparison)
 			{
 				YELO_DELETE_ARRAY(comparison_codes);
-				comparison_codes = nullptr;
 			}
 		}
 
@@ -491,155 +532,14 @@ namespace Yelo
 			g_tag_group_memory_globals.Dispose();
 		}
 
-
-		//////////////////////////////////////////////////////////////////////////
-		// s_tag_allocation_header
-		const s_tag_allocation_header* s_tag_allocation_header::Get(const tag_block* instance)
+		bool s_tag_allocation_header::Enabled()
 		{
-			s_tag_allocation_header* header = nullptr;
-
-			if(g_tag_group_memory_globals.allocation_headers_enabled && instance->address != nullptr)
-			{
-				header = CAST_PTR(s_tag_allocation_header*, instance->address) - 1;
-				if(header->signature != k_signature)
-					header = nullptr;
-			}
-
-			return header;
-		}
-		const s_tag_allocation_header* s_tag_allocation_header::Get(const tag_data* instance)
-		{
-			s_tag_allocation_header* header = nullptr;
-
-			if(g_tag_group_memory_globals.allocation_headers_enabled && instance->address != nullptr)
-			{
-				header = CAST_PTR(s_tag_allocation_header*, instance->address) - 1;
-				if(header->signature != k_signature)
-					header = nullptr;
-			}
-
-			return header;
+			return g_tag_group_memory_globals.allocation_headers_enabled;
 		}
 
 
 		//////////////////////////////////////////////////////////////////////////
-		// s_tag_allocation_statistics
-		s_tag_allocation_statistics& s_tag_allocation_statistics::Initialize(const tag_block_definition* definition)
-		{
-			block_definition = definition;
-			data_definition = nullptr;
-
-			std::memset(&block, 0, sizeof(block));
-
-			return *this;
-		}
-		s_tag_allocation_statistics& s_tag_allocation_statistics::Initialize(const tag_data_definition* definition)
-		{
-			block_definition = nullptr;
-			data_definition = definition;
-
-			std::memset(&block, 0, sizeof(block));
-
-			return *this;
-		}
-
-		void s_tag_allocation_statistics::Update(const tag_block* instance)
-		{
-			assert(instance->definition == block_definition);
-
-			block.count++;
-			block.elements += CAST(size_t, instance->count);
-
-			if(g_tag_group_memory_globals.field_set_runtime_info_enabled)
-			{
-				const auto* info = block_definition->GetRuntimeInfo();
-
-				block.size += info->runtime_size * instance->count;
-				block.padding = info->counts.padding_amount;
-			}
-			else
-			{
-				block.size += block_definition->element_size * instance->count;
-				block.padding = 0;
-			}
-		}
-		void s_tag_allocation_statistics::Update(const tag_data* instance)
-		{
-			assert(instance->definition == data_definition);
-
-			data.count++;
-			data.size += CAST(size_t, instance->size);
-		}
-
-		static cstring k_tag_allocation_statistics_dump_format = 
-			"% 100s % 9d % 9d % 9d % 9d\r\n";
-		static cstring k_tag_allocation_statistics_dump_header_format = 
-			"%-100s % 9s % 9s % 9s % 9s\r\n";
-		void s_tag_allocation_statistics::DumpBlockInfoToFile(FILE* file, s_block_totals& group_totals) const
-		{
-			group_totals.count += block.count;
-			group_totals.elements += block.elements;
-			group_totals.size += block.size;
-			group_totals.padding += block.padding;
-
-			if (file != nullptr)
-				fprintf_s(file, k_tag_allocation_statistics_dump_format,
-					block_definition->name,
-					block.count, block.elements, block.size, block.padding);
-		}
-		void s_tag_allocation_statistics::DumpDataInfoToFile(FILE* file, s_block_totals& group_totals) const
-		{
-			group_totals.count += data.count;
-			group_totals.size += data.size;
-
-			if (file != nullptr)
-				fprintf_s(file, k_tag_allocation_statistics_dump_format,
-					data_definition->name,
-					data.count, NONE, data.size, NONE);
-		}
-
-
-		//////////////////////////////////////////////////////////////////////////
-		// c_tag_group_allocation_statistics
-		s_tag_allocation_statistics& c_tag_group_allocation_statistics::GetChildStats(const tag_block* instance)
-		{
-			auto* definition = instance->definition;
-			auto predicate = [definition](const s_tag_allocation_statistics& stats) { return stats.block_definition == definition; };
-			auto iter = std::find_if(m_children.begin(), m_children.end(),
-				predicate);
-
-			if(iter == m_children.end())
-			{
-				m_children.push_back( s_tag_allocation_statistics().Initialize(instance->definition) );
-				return m_children[m_children.size()-1];
-			}
-
-			return *iter;
-		}
-		s_tag_allocation_statistics& c_tag_group_allocation_statistics::GetChildStats(const tag_data* instance)
-		{
-			auto* definition = instance->definition;
-			auto predicate = [definition](const s_tag_allocation_statistics& stats) { return stats.data_definition == definition; };
-			auto iter = std::find_if(m_children.begin(), m_children.end(),
-				predicate);
-
-			if(iter == m_children.end())
-			{
-				m_children.push_back( s_tag_allocation_statistics().Initialize(instance->definition) );
-				return m_children[m_children.size()-1];
-			}
-
-			return *iter;
-		}
-
-		c_tag_group_allocation_statistics::c_tag_group_allocation_statistics(tag group_tag, const s_tag_field_set_runtime_data& header_info) :
-			m_group_tag(group_tag),
-			// doesn't take into account the child of the immediate child blocks
-			m_children(header_info.counts.block_fields + header_info.counts.data_fields)
-		{
-		}
-		//////////////////////////////////////////////////////////////////////////
-		// system definitions
+		// c_tag_group_allocation_statistics system definitions
 		bool c_tag_group_allocation_statistics::Enabled()
 		{
 			return g_tag_group_memory_globals.group_statistics != nullptr;
@@ -650,7 +550,7 @@ namespace Yelo
 			assert( s_tag_field_set_runtime_data::Enabled() );
 			assert( !Enabled() );
 
-			g_tag_group_memory_globals.group_statistics = YELO_NEW_CTOR(tag_group_allocation_statistics_map_t);
+			g_tag_group_memory_globals.group_statistics = YELO_NEW_CTOR(c_tag_group_allocation_statistics::group_tag_to_stats_map_t);
 		}
 		void c_tag_group_allocation_statistics::Dispose()
 		{
@@ -686,102 +586,9 @@ namespace Yelo
 			return (*group_entry).second;
 		}
 
-		s_tag_allocation_statistics& c_tag_group_allocation_statistics::GetBlockStats(datum_index tag_index, const tag_block* instance)
+		const c_tag_group_allocation_statistics::group_tag_to_stats_map_t& c_tag_group_allocation_statistics::GroupStatistics()
 		{
-			tag group_tag = blam::tag_get_group_tag(tag_index);
-			auto& group_stats = GetStats(group_tag);
-
-			return group_stats.GetChildStats(instance);
-		}
-		s_tag_allocation_statistics& c_tag_group_allocation_statistics::GetDataStats(datum_index tag_index, const tag_data* instance)
-		{
-			tag group_tag = blam::tag_get_group_tag(tag_index);
-			auto& group_stats = GetStats(group_tag);
-
-			return group_stats.GetChildStats(instance);
-		}
-
-		void c_tag_group_allocation_statistics::DumpToFile()
-		{
-			auto file = std::unique_ptr<FILE, crt_file_closer>(
-				Settings::CreateReport("group_memory.txt", false, true));
-
-			size_t total_padding = 0, total_size = 0;
-
-			for (auto pair : *g_tag_group_memory_globals.group_statistics)
-			{
-				fprintf_s(file.get(), k_tag_allocation_statistics_dump_header_format,
-					blam::tag_group_get(pair.first)->name,
-					"count", "elements", "size", "padding");
-
-				s_tag_allocation_statistics::s_block_totals totals;
-				std::memset(&totals, 0, sizeof(totals));
-
-				auto& stats = pair.second;
-				for (auto& child_stats : stats.m_children)
-				{
-						 if (child_stats.IsBlock())	child_stats.DumpBlockInfoToFile(file.get(), totals);
-					else if (child_stats.IsData())	child_stats.DumpDataInfoToFile(file.get(), totals);
-				}
-
-				fprintf_s(file.get(), k_tag_allocation_statistics_dump_format,
-					"totals:",
-					totals.count, totals.elements, totals.size, totals.padding);
-				fprintf_s(file.get(), "\r\n");
-
-				total_padding += totals.padding;
-				total_size += totals.size;
-			}
-
-			fprintf_s(file.get(), "\r\ntotal padding: %d", total_padding);
-			fprintf_s(file.get(), "\r\ntotal size: %d", total_size);
-		}
-
-		size_t c_tag_group_allocation_statistics::BuildStatsForTagChildBlockRecursive(c_tag_group_allocation_statistics& group_stats,
-			tag_block* instance)
-		{
-			if (instance->count == 0)
-				return 0;
-
-			size_t block_size = CAST(size_t, instance->count) * instance->get_element_size();
-			group_stats.GetChildStats(instance).Update(instance);
-
-			for (auto element : *instance)
-			{
-				for (auto field : TagGroups::c_tag_field_scanner(instance->definition->fields, element.address)
-					.AddFieldType(Enums::_field_block)
-					.AddFieldType(Enums::_field_data))
-				{
-					switch(field.GetType())
-					{
-					case Enums::_field_block: 
-						block_size +=
-							BuildStatsForTagChildBlockRecursive(group_stats, field.As<tag_block>());
-						break;
-
-					case Enums::_field_data:
-					{
-						auto* data_instance = field.As<const tag_data>();
-						if (data_instance->size > 0)
-							group_stats.GetChildStats(data_instance).Update(data_instance);
-
-						block_size += CAST(size_t, data_instance->size);
-					} break;
-
-					YELO_ASSERT_CASE_UNREACHABLE();
-					}
-				}
-			}
-
-			return block_size;
-		}
-		size_t c_tag_group_allocation_statistics::BuildStatsForTag(datum_index tag_index)
-		{
-			tag group_tag = blam::tag_get_group_tag(tag_index);
-			tag_block* root_block = blam::tag_get_root_block(tag_index);
-
-			auto& group_stats = GetStats(group_tag);
-			return BuildStatsForTagChildBlockRecursive(group_stats, root_block);
+			return *g_tag_group_memory_globals.group_statistics;
 		}
 	};
 

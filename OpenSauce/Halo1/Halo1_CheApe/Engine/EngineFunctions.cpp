@@ -16,6 +16,10 @@
 
 namespace Yelo
 {
+	namespace GameUI
+	{
+		struct s_first_person_weapons;
+	};
 #define __EL_INCLUDE_ID			__EL_INCLUDE_GAME
 #define __EL_INCLUDE_FILE_ID	__EL_GAME_ENGINE_FUNCTIONS
 #include "Memory/_EngineLayout.inl"
@@ -40,7 +44,6 @@ namespace Yelo
 	{
 		//////////////////////////////////////////////////////////////////////////
 		// cseries.c
-		char g_display_assert_buffer[512];
 		API_FUNC_NAKED void PLATFORM_API display_assert(cstring reason, cstring file, const uint32 line, bool halt)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DISPLAY_ASSERT);

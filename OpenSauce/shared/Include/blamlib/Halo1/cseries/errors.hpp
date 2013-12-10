@@ -25,18 +25,16 @@ namespace Yelo
 		typedef void (PLATFORM_API* proc_error)(Enums::error_message_priority priority, cstring format, ...);
 
 		extern proc_error error;
+	};
+};
+
 #ifndef YELO_NO_ERROR_MACRO
 	#define YELO_ERROR(priority, format, ...) \
 		Yelo::blam::error(Yelo::Enums::priority, format, __VA_ARGS__)
-#else
-	#define YELO_ERROR(priority, format, ...) __noop
-#endif
 
-#ifndef YELO_NO_WARN_MACRO
 	#define YELO_WARN(format, ...) \
 		Yelo::blam::error(Yelo::Enums::_error_message_priority_warning, format, __VA_ARGS__)
 #else
+	#define YELO_ERROR(priority, format, ...) __noop
 	#define YELO_WARN(format, ...) __noop
 #endif
-	};
-};

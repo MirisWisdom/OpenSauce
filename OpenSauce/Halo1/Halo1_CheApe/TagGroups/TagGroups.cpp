@@ -41,6 +41,7 @@ namespace Yelo
 			Memory::WriteRelativeJmp(blam__tag_iterator_new, GET_FUNC_VPTR(TAG_ITERATOR_NEW), true);
 			Memory::WriteRelativeJmp(blam::tag_iterator_next, GET_FUNC_VPTR(TAG_ITERATOR_NEXT), true);
 
+//			Memory::WriteRelativeJmp(blam::tag_data_resize, GET_FUNC_VPTR(TAG_DATA_LOAD), true);
 			Memory::WriteRelativeJmp(blam::tag_data_load, GET_FUNC_VPTR(TAG_DATA_LOAD), true);
 #if PLATFORM_ID != PLATFORM_TOOL
 			Memory::WriteRelativeJmp(blam::tag_data_unload, GET_FUNC_VPTR(TAG_DATA_UNLOAD), true);
@@ -232,7 +233,7 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
-		API_FUNC_NAKED bool PLATFORM_API tag_data_resize(tag_data* data, size_t new_size)
+		API_FUNC_NAKED bool PLATFORM_API tag_data_resize(tag_data* data, int32 new_size)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_DATA_RESIZE);
 

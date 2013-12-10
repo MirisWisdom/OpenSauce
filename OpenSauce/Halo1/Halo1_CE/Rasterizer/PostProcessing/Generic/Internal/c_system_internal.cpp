@@ -199,7 +199,7 @@ namespace Yelo
 
 		void c_system_internal::SaveSettings(TiXmlElement* parent_element)
 		{
-			TiXmlElement* element = NULL;
+			TiXmlElement* element = nullptr;
 
 			element = new TiXmlElement("Internal");
 			parent_element->LinkEndChild(element);
@@ -364,6 +364,7 @@ namespace Yelo
 		{
 			// look for a shader_postprocess_collection tag in the cache
 			// get the first instance (there can be only one </highlander>, others will be ignored)
+			// TODO: use new s_tag_iterator wrapper
 			TagGroups::s_tag_iterator iter;
 			blam::tag_iterator_new(iter, TagGroups::s_effect_postprocess_collection::k_group_tag);
 			datum_index tag_index = blam::tag_iterator_next(iter);
@@ -382,7 +383,7 @@ namespace Yelo
 		void c_system_internal::ClearShaderCollection()
 		{
 			// null the shader collection pointer
-			m_members_internal.cache_shader_collection = NULL;
+			m_members_internal.cache_shader_collection = nullptr;
 		}
 
 		/*!
@@ -412,7 +413,7 @@ namespace Yelo
 				datum_index shader_index = m_members_internal.cache_shader_collection->shaders[i].tag_index;
 				if(TagGroups::Instances()[shader_index.index].MatchesGroup(TagGroups::s_shader_postprocess_generic::k_group_tag))
 				{
-					TagGroups::s_shader_postprocess_generic* shpg = TagGroups::TagGetForModify<TagGroups::s_shader_postprocess_generic>(shader_index);
+					auto shpg = TagGroups::TagGetForModify<TagGroups::s_shader_postprocess_generic>(shader_index);
 
 					m_members_internal.m_shaders.shader_list[i].SetShaderDefinition(shpg);
 					m_members_internal.m_shaders.shader_list[i].SetDatumIndex(shader_index);
@@ -420,7 +421,7 @@ namespace Yelo
 					m_members_internal.m_shaders.shader_list[i].SetupShader();
 				}
 				else
-					ASSERT(false, "internal shader reference is not a shader_postprocess_generic");
+					YELO_ASSERT_DISPLAY(false, "internal shader reference is not a shader_postprocess_generic");
 			}
 		}
 
@@ -432,7 +433,7 @@ namespace Yelo
 
 			// delete the shader list
 			delete [] m_members_internal.m_shaders.shader_list;
-			m_members_internal.m_shaders.shader_list = NULL;
+			m_members_internal.m_shaders.shader_list = nullptr;
 			m_members_internal.m_shaders.count = 0;
 		}
 
@@ -521,9 +522,9 @@ namespace Yelo
 
 		void c_system_internal::SetupEffect(s_effect_set& effect_set, TagGroups::s_effect_postprocess_collection_effect* definition)
 		{
-			TagGroups::s_effect_postprocess_generic* effect_definition = TagGroups::TagGetForModify<TagGroups::s_effect_postprocess_generic>(definition->effect.tag_index);
+			auto effect_definition = TagGroups::TagGetForModify<TagGroups::s_effect_postprocess_generic>(definition->effect.tag_index);
 
-			ASSERT(effect_definition != NULL, "effect collection block has no effect referenced");
+			YELO_ASSERT_DISPLAY(effect_definition != nullptr, "effect collection block has no effect referenced");
 
 			// create the internal effect class and initialize it
 			effect_set.effect = new c_effect_internal();
@@ -533,7 +534,7 @@ namespace Yelo
 			effect_set.effect->SetEffectReferenceDefinition(definition);
 
 			effect_set.shader_instance_count = 0;
-			effect_set.shader_instances = NULL;
+			effect_set.shader_instances = nullptr;
 
 			if(effect_definition->shader_indices.Count == 0)
 				return;
@@ -564,13 +565,13 @@ namespace Yelo
 
 			// delete the effects shader instance list
 			delete [] effect_set.shader_instances;
-			effect_set.shader_instances = NULL;
+			effect_set.shader_instances = nullptr;
 			effect_set.shader_instance_count = 0;
 
 			// destroy the effect and delete it
 			effect_set.effect->Dtor();
 			delete effect_set.effect;
-			effect_set.effect = NULL;
+			effect_set.effect = nullptr;
 		}
 
 		void c_system_internal::SetupEffectInstance(c_effect_instance_generic* instance, TagGroups::s_effect_postprocess_generic_effect_instance* definition)
@@ -593,7 +594,7 @@ namespace Yelo
 			for(int i = 0; i < m_members_internal.m_shaders.count; i++)
 				if(m_members_internal.m_shaders.shader_list[i].GetDatumIndex() == index)
 					return &m_members_internal.m_shaders.shader_list[i];
-			return NULL;
+			return nullptr;
 		}
 
 		void c_system_internal::SetupRenderSets()
@@ -609,8 +610,8 @@ namespace Yelo
 		void c_system_internal::ClearRenderSets()
 		{
 			// reset the render sets to empty
-			for(int i = 0; i < NUMBEROF(m_members_internal.m_render_sets); i++)
-				m_members_internal.m_render_sets[i].Dtor();
+			for (auto& render_set : m_members_internal.m_render_sets)
+				render_set.Dtor();
 		}
 
 		void c_system_internal::SetRenderSet(c_effect_render_set& set, Enums::postprocess_render_stage render_stage)

@@ -193,11 +193,11 @@ namespace Yelo
 				cstring name, tag_reference_definition* reference_definition);
 
 			c_tag_field_set_replacement_builder& InsertPadData(size_t expected_offset,
-				int32 padding_size);
+				int32 padding_size, cstring name = nullptr);
 			c_tag_field_set_replacement_builder& InsertPostprocessedData(size_t expected_offset,
-				int32 postprocessed_data_size);
+				int32 postprocessed_data_size, cstring name);
 			c_tag_field_set_replacement_builder& InsertSkipData(size_t expected_offset,
-				int32 skip_size);
+				int32 skip_size, cstring name = nullptr);
 		};
 	};
 };
@@ -264,9 +264,10 @@ namespace Yelo
 		offsetof(field_set_type_t, field_cname), size);
 
 // Document [field_cname] as being a postprocessed (ie, runtime-only) field
-#define FIELDSET_INSERT_POSTPROCESSED(field_cname) fsr_builder.					\
+// Requires a non-NULL [name] (could use an empty string, I don't care)
+#define FIELDSET_INSERT_POSTPROCESSED(field_cname, name) fsr_builder.			\
 	InsertPostprocessedData(													\
-		offsetof(field_set_type_t, field_cname), sizeof( decltype(field_set_type_t::field_cname) ));
+		offsetof(field_set_type_t, field_cname), sizeof( decltype(field_set_type_t::field_cname), name ));
 
 // Insert a skip field for the field named [field_cname]
 #define FIELDSET_INSERT_SKIP(field_cname) fsr_builder.							\

@@ -19,7 +19,7 @@ static void InitializeGrenadeCounts_UnitZoomLevelRefs(bool enabled)
 
 		DebugOnly( 
 			if(!verified)
-				ASSERT( s_unit_data::k_offset_zoom_level == *offset_ref, "GrenadeCounts asm mismatch!" ) 
+				YELO_ASSERT_DISPLAY( s_unit_data::k_offset_zoom_level == *offset_ref, "GrenadeCounts asm mismatch!" ) 
 		);
 		*offset_ref = offset;
 	}
@@ -37,7 +37,7 @@ static void InitializeGrenadeCounts_UnitDesiredZoomLevelRefs(bool enabled)
 
 		DebugOnly( 
 			if(!verified)
-				ASSERT( s_unit_data::k_offset_desired_zoom_level == *offset_ref, "GrenadeCounts asm mismatch!" ) 
+				YELO_ASSERT_DISPLAY( s_unit_data::k_offset_desired_zoom_level == *offset_ref, "GrenadeCounts asm mismatch!" ) 
 		);
 		*offset_ref = offset;
 	}
@@ -53,7 +53,7 @@ static void InitializeGrenadeCounts_NumberOfUnitGrenadeTypes(uint32 count)
 
 		DebugOnly( 
 			if(!verified)
-				ASSERT( Enums::k_unit_grenade_types_count == *count_ref, "GrenadeCounts asm mismatch!" ) 
+				YELO_ASSERT_DISPLAY( Enums::k_unit_grenade_types_count == *count_ref, "GrenadeCounts asm mismatch!" ) 
 		);
 		*count_ref = CAST(byte, count);
 	}
@@ -68,7 +68,7 @@ static void InitializeGrenadeCounts_NumberOfUnitGrenadeTypes(uint32 count)
 
 		DebugOnly( 
 			if(!verified)
-				ASSERT( Enums::k_unit_grenade_types_count-1 == *count_ref, "GrenadeCounts asm mismatch!" ) 
+				YELO_ASSERT_DISPLAY( Enums::k_unit_grenade_types_count-1 == *count_ref, "GrenadeCounts asm mismatch!" ) 
 		);
 		*count_ref = CAST(byte, count);
 	}

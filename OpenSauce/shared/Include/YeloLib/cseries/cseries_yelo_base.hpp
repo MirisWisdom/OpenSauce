@@ -307,19 +307,3 @@ namespace Yelo
 #endif
 
 #define HRESULT_ERETURN(p) if(FAILED(p)) return E_FAIL
-
-
-#if defined(API_DEBUG) && defined(ASSERTS_ENABLED)
-
-// Assert the condition is true. Run assertion logic when it's false
-#define ASSERT(value, message) if(!(value)) Yelo::Assert(#value, message, __FILE__, __LINE__, __FUNCTION__)
-
-namespace Yelo
-{
-	void Assert(cstring assertion, cstring message, cstring file, const int line, cstring function);
-};
-#elif PLATFORM_IS_EDITOR
-#define ASSERT(value, message) YELO_ASSERT(value)
-#else
-#define ASSERT(value, message) __noop;
-#endif

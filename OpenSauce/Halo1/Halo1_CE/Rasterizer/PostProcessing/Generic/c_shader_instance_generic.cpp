@@ -39,14 +39,14 @@ namespace Yelo
 
 		c_parameter_instance* c_shader_instance_generic::GetParameterInstance(const char* name)
 		{
-			c_parameter_instance* instance = NULL;
+			c_parameter_instance* instance = nullptr;
 
 			uint32 index = 0;
 			while((index < m_members_generic.parameter_count) && !instance)
 			{
 				TagGroups::s_shader_postprocess_parameter* parameter = m_members_generic.parameters[index].GetParameter();
 
-				ASSERT(parameter != NULL, "parameter instance has no assigned parameter");
+				YELO_ASSERT_DISPLAY(parameter != nullptr, "parameter instance has no assigned parameter");
 
 				// compare the parameter instances name with the requested name
 				if(strcmp(parameter->value_name, name) == 0)
@@ -71,7 +71,7 @@ namespace Yelo
 			if(definition->parameters.Count == 0)
 				return;
 
-			// create the paramater instances
+			// create the parameter instances
 			m_members_generic.parameter_count = definition->parameters.Count;
 			m_members_generic.parameters = new c_parameter_instance[m_members_generic.parameter_count];
 
@@ -102,7 +102,7 @@ namespace Yelo
 
 			// delete the parameter instance array
 			delete [] m_members_generic.parameters;
-			m_members_generic.parameters = NULL;
+			m_members_generic.parameters = nullptr;
 
 			m_members_generic.parameter_count = 0;
 		}

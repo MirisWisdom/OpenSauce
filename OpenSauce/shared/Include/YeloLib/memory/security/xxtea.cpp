@@ -109,7 +109,8 @@ namespace Yelo
 			uint32 data_length,
 			byte* key)
 		{
-			ASSERT(block_size < Enums::k_number_of_cryptography_xxtea_block_sizes, "invalid xxtea block size");
+			YELO_ASSERT_DISPLAY(block_size < Enums::k_number_of_cryptography_xxtea_block_sizes, 
+				"invalid xxtea block size");
 
 			// if there is not enough data to fill at least one encryption block then it cannot be encrypted
 			if(data_length < (uint32)block_size)
@@ -168,7 +169,8 @@ namespace Yelo
 			uint32 data_length,
 			byte* key)
 		{
-			ASSERT(block_size < Enums::k_number_of_cryptography_xxtea_block_sizes, "invalid xxtea block size");
+			YELO_ASSERT_DISPLAY(block_size < Enums::k_number_of_cryptography_xxtea_block_sizes, 
+				"invalid xxtea block size");
 
 			// if there is not enough data to fill at least one decryption block then it cannot be decrypted
 			if(data_length < (uint32)block_size)

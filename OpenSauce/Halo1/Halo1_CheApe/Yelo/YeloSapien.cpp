@@ -7,6 +7,7 @@
 #include "Common/Precompile.hpp"
 
 #if PLATFORM_ID == PLATFORM_SAPIEN
+#include <blamlib/Halo1/interface/first_person_weapons.hpp>
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 
 #include "CheApeInterface.hpp" // for Memory functions
@@ -107,6 +108,10 @@ namespace Yelo
 			// Cause the gamespy metrics dump code to NEVER execute
 			for(auto ptr : AddressOf::GAMESPY_METRICS_DUMP_FUNCTIONS)
 				*CAST_PTR(byte*,ptr) = Enums::_x86_opcode_ret;
+
+			// replace sapien's call to first_person_weapons_initialize_for_new_map to our implementation
+			Memory::WriteRelativeCall(blam::first_person_weapons_initialize_for_new_map,
+				CAST_PTR(void*, 0x5E704A));
 
 			TagGroups::ScenarioYeloLoadHookInitialize();
 

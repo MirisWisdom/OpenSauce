@@ -10,6 +10,7 @@
 	#include <blamlib/Halo1/models/model_definitions.hpp>
 	#include <blamlib/Halo1/tag_files/tag_group_loading.hpp>
 	#include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
+	#include <YeloLib/Halo1/tag_files/tag_group_memory.hpp>
 
 	#include "Engine/EngineFunctions.hpp"
 
@@ -323,6 +324,29 @@ namespace Yelo
 
 			reference.name_length = name_length;
 		}
+
+		bool PLATFORM_API tag_data_resize_impl(tag_data* data, int32 new_size)
+		{
+			YELO_ASSERT(data && data->definition);
+			YELO_ASSERT(data->address);
+
+			if (new_size < 0)
+			{
+				YELO_WARN("tried to resize a %s @%p to a negative size %d",
+					data->definition->name, data, new_size);
+				return false;
+			}
+
+			if (new_size >= data->definition->maximum_size)
+			{
+				YELO_WARN("tried to resize a %s @%p to %d which is larger than the max allowed %d",
+					data->definition->name, data, new_size, data->definition->maximum_size);
+				return false;
+			}
+
+			TAG_DATA_REALLOC(*data, new_size);
+			return true;
+		}
 	};
 
 	// Frees the pointers used in more complex fields (tag_data, etc)
@@ -343,7 +367,7 @@ namespace Yelo
 			switch(field.GetType())
 			{
 			case Enums::_field_data:
-				YELO_FREE( field.As<tag_data>()->address );
+				TAG_DATA_DELETE( *field.As<tag_data>() );
 				break;
 
 			case Enums::_field_block:
@@ -385,8 +409,7 @@ namespace Yelo
 
 		if(--block->count == 0) // free the elements and clear the pointer if that was the last element
 		{
-			YELO_FREE( block->address );
-			block->address = nullptr;
+			TAG_BLOCK_DELETE( *block );
 		}
 	}
 
@@ -395,15 +418,22 @@ namespace Yelo
 		YELO_ASSERT( block && block->definition );
 
 		auto* definition = block->definition;
-		if(block->count >= definition->maximum_element_count)
+		if (block->count >= definition->maximum_element_count)
+		{
+			YELO_WARN("tried to add more elements for a %s @%p #%d than allowed",
+				definition->name, block, block->count);
 			return NONE;
-
-		void* new_address = YELO_REALLOC(block->address, (block->count+1) * definition->element_size);
-		if(new_address == nullptr)
-			return NONE;
+		}
 
 		int add_index = block->count++;
-		block->address = new_address;
+		void* new_address = TAG_BLOCK_REALLOC(*block, block->count);
+		if (new_address == nullptr)
+		{
+			YELO_WARN("failed to allocate new elements for a %s @%p #%d",
+				definition->name, block, block->count);
+			return NONE;
+		}
+
 		void* new_element = blam::tag_block_get_element(block, add_index);
 		blam::tag_block_generate_default_element(definition, new_element);
 

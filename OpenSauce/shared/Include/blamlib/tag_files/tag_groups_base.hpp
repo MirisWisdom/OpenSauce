@@ -186,7 +186,7 @@ namespace Yelo
 		// Just makes coding a little more cleaner
 		inline byte* Bytes() { return CAST_PTR(byte*, address); }
 
-		bool resize(size_t new_size = 0);
+		bool resize(int32 new_size = 0);
 	};
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
 	BOOST_STATIC_ASSERT( sizeof(tag_data) == 0x14 );
@@ -197,7 +197,7 @@ namespace Yelo
 #endif
 	namespace blam
 	{
-		bool PLATFORM_API tag_data_resize(tag_data* data, size_t new_size);
+		bool PLATFORM_API tag_data_resize(tag_data* data, int32 new_size);
 	};
 
 

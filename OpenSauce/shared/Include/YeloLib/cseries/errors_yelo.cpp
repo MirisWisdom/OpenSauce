@@ -79,5 +79,23 @@ namespace Yelo
 		}
 	};
 };
+#endif
 
+#if !PLATFORM_IS_EDITOR
+#include <blamlib/Halo1/cseries/errors.hpp>
+
+namespace Yelo
+{
+	namespace Debug
+	{
+		static void PLATFORM_API Error(Enums::error_message_priority priority, cstring format, ...)
+		{
+		}
+	};
+
+	namespace blam
+	{
+		proc_error error = Yelo::Debug::Error;
+	};
+};
 #endif

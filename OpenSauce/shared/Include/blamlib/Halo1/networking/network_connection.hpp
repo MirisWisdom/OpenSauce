@@ -9,6 +9,7 @@
 #include <blamlib/Halo1/bungie_net/network/transport_address.hpp>
 #include <blamlib/Halo1/bungie_net/network/transport_endpoint_winsock.hpp>
 #include <blamlib/Halo1/bungie_net/network/transport_endpoint_set_winsock.hpp>
+#include <blamlib/Halo1/game/game_configuration.hpp>
 #include <blamlib/Halo1/memory/bitstream.hpp>
 #include <blamlib/Halo1/memory/circular_queue.hpp>
 
@@ -17,7 +18,7 @@ namespace Yelo
 	namespace Enums
 	{
 		enum {
-			k_maximum_network_machine_count = 16,
+			k_maximum_network_machine_count = k_multiplayer_maximum_players / k_maximum_number_of_local_players,
 		};
 
 		enum network_connection_class : long_enum

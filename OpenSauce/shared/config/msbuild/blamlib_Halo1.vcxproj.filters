@@ -203,6 +203,9 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_allegiance.hpp">
       <Filter>.blamlib\game</Filter>
     </ClInclude>
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_configuration.hpp">
+      <Filter>.blamlib\game</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_engine.hpp">
       <Filter>.blamlib\game</Filter>
     </ClInclude>
@@ -308,6 +311,9 @@
 	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\first_person_weapons.hpp">
       <Filter>.blamlib\interface</Filter>
     </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\interface\first_person_weapons.cpp">
+      <Filter>.blamlib\interface</Filter>
+    </ClCompile>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud.hpp">
       <Filter>.blamlib\interface</Filter>
     </ClInclude>

@@ -5,8 +5,11 @@
 */
 #include "Common/Precompile.hpp"
 
+#include <blamlib/Halo1/cseries/cseries.hpp>
+
 #if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
 	#include <crtdbg.h>
+	#include <YeloLib/cseries/errors_yelo.hpp>
 
 	#define WIN32_FUNC(func) func
 #else
@@ -80,7 +83,7 @@ namespace Yelo
 
 	void winapi_handle_closer::operator()(HANDLE h) const
 	{
-		ASSERT( h != INVALID_HANDLE_VALUE, "tried to close an INVALID handle" );
+		YELO_ASSERT_DISPLAY(h != INVALID_HANDLE_VALUE, "tried to close an INVALID handle");
 		if(h != nullptr)
 			WIN32_FUNC(CloseHandle)(h);
 	}
@@ -91,7 +94,7 @@ namespace Yelo
 		if(h != nullptr)
 		{
 			int result = fclose(h);
-			ASSERT( result==0, "failed to fclose" );
+			YELO_ASSERT_DISPLAY(result == 0, "failed to fclose");
 		}
 	}
 #endif
@@ -141,20 +144,26 @@ namespace Yelo
 		MessageBox(nullptr, text, "Prepare to Drop!", MB_OK | MB_ICONEXCLAMATION);
 	}
 
-	#if defined(API_DEBUG) && defined(ASSERTS_ENABLED)
-	void Assert(cstring assertion, cstring message, cstring file, const int line, cstring function)
+	#if YELO_ASSERT_ENABLED
+	void Assert(cstring assertion, cstring message, cstring file, const int line, cstring function, bool halt)
 	{
 		YELO_DEBUG_FORMAT("Assertion: %s", assertion);
-		YELO_DEBUG_FORMAT("Message: %s", message);
-		YELO_DEBUG_FORMAT("File: %s", file);
-		YELO_DEBUG_FORMAT("Line: %i", line);
-		YELO_DEBUG_FORMAT("Function: %s", function);
+		if (message != nullptr)
+			YELO_DEBUG_FORMAT("Message: %s", message);
+		YELO_DEBUG_FORMAT("%s,#%d in %s", file, line, function);
 
 		// based on _ASSERT_EXPR's implementation
-		_CrtDbgReport(_CRT_ASSERT, file, line, nullptr, assertion);
+		_CrtDbgReport(halt ? _CRT_ASSERT : _CRT_WARN,
+			file, line, nullptr, assertion);
 
-		throw;
+		if (halt)
+			throw;
 	}
+
+	namespace blam
+	{
+		char g_display_assert_buffer[512];
+	};
 	#endif
 #endif
 };

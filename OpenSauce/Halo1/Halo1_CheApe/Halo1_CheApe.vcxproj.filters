@@ -391,6 +391,9 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game.hpp">
       <Filter>.blamlib\game</Filter>
     </ClInclude>
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_configuration.hpp">
+      <Filter>.blamlib\game</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_allegiance.hpp">
       <Filter>.blamlib\game</Filter>
     </ClInclude>
@@ -496,6 +499,9 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\first_person_weapons.hpp">
       <Filter>.blamlib\interface</Filter>
     </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\interface\first_person_weapons.cpp">
+      <Filter>.blamlib\interface</Filter>
+    </ClCompile>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud.hpp">
       <Filter>.blamlib\interface</Filter>
     </ClInclude>
@@ -1564,6 +1570,12 @@
       <Filter>.YeloLib\tag_files</Filter>
     </ClInclude>
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory.cpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClCompile>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory_allocations.cpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClCompile>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory_stats.cpp">
       <Filter>.YeloLib\tag_files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -285,7 +285,7 @@ namespace Yelo
 
 		s_object_data* IteratorNextAndVerifyType(s_object_iterator& iter, long_enum object_type)
 		{
-			ASSERT( TEST_FLAG(iter.type_mask, object_type), "Wrong object_type given to IteratorNext<T>" );
+			YELO_ASSERT_DISPLAY( TEST_FLAG(iter.type_mask, object_type), "Wrong object_type given to IteratorNext<T>" );
 
 			return blam::object_iterator_next(iter);
 		}
