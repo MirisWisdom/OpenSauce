@@ -207,7 +207,7 @@ namespace Yelo
 // CRC32 hacks
 // http://stackoverflow.com/questions/2587766/how-is-a-crc32-checksum-calculated
 
-template<size_t k_polynomial, size_t k_value>
+template<uint32_t k_polynomial, uint32_t k_value>
 struct crc_table_generator_round_piecemeal
 {
 	enum {
@@ -216,7 +216,7 @@ struct crc_table_generator_round_piecemeal
 			:  k_value >> 1
 	};
 };
-template<size_t k_polynomial, size_t k_round_index>
+template<uint32_t k_polynomial, uint32_t k_round_index>
 struct crc_table_generator_round
 {
 	enum {
@@ -254,8 +254,8 @@ struct crc_table_generator_round
 	crc_table_generator_round<polynomial, 250+4>::value, crc_table_generator_round<polynomial, 250+5>::value,
 
 #define CRC_TABLE_SIZE 256
-#define CRC32_POLYNOMIAL 0xEDB88320L
-static std::array<Yelo::uint32, CRC_TABLE_SIZE> g_crc32_table = {
+#define CRC32_POLYNOMIAL 0xEDB88320UL
+static std::array<uint32_t, CRC_TABLE_SIZE> g_crc32_table = {
 	// 000 to 250
 	BOOST_PP_ENUM(25, CRC_TABLE_DEFINE_ROUND, CRC32_POLYNOMIAL),
 	// 250 to 255

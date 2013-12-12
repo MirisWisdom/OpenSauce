@@ -374,9 +374,12 @@ namespace Yelo
 	{
 		struct s_tag_field_definition
 		{
-			size_t size;
-			cstring name;
-			byte_swap_code_t* byte_swap_codes;
+			size_t size;						/// <summary>	The size of a single instance of this field. </summary>
+			cstring name;						/// <summary>	The user-friendly name of this field. </summary>
+			byte_swap_code_t* byte_swap_codes;	/// <summary>	The needed for byte swapping an instance of this field. </summary>
+
+			/// <summary>	The C name of this field. Null if it can't be defined in code (eg, _field_custom) </summary>
+			cstring code_name;
 		};
 
 		struct s_tag_field_scan_state

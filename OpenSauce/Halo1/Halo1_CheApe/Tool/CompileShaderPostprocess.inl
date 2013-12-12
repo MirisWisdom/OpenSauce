@@ -9,8 +9,7 @@ void		WriteD3DXErrors(LPD3DXBUFFER error_buffer, int32 error_count)
 {
 	if(!error_buffer)
 	{
-		YELO_ERROR(_error_message_priority_warning,
-			"\tNO D3DX ERRORS?");
+		YELO_WARN("\tNO D3DX ERRORS?");
 		return;
 	}
 	std::string error_string(CAST_PTR(char*, error_buffer->GetBufferPointer()));
@@ -26,8 +25,7 @@ void		WriteD3DXErrors(LPD3DXBUFFER error_buffer, int32 error_count)
 		if((data_string_start = error_line.find(Settings::Get().active_profile.GetDataOverridePath())) != std::string::npos)
 			error_line.replace(0, strlen(Settings::Get().active_profile.GetDataOverridePath()), "");	
 
-		YELO_ERROR(_error_message_priority_warning, 
-			"\t%s",
+		YELO_WARN("\t%s",
 			error_line.c_str());
 
 		// remove the line to move
@@ -48,8 +46,7 @@ HRESULT		SetShaderData(
 
 	if(!shader_tag->shader_code_binary.address) 
 	{				
-		YELO_ERROR(_error_message_priority_warning, 
-			"OS_tool: failed to allocate memory for binary data");
+		YELO_WARN("OS_tool: failed to allocate memory for binary data");
 		hr = E_FAIL;
 	}
 	else
@@ -64,8 +61,7 @@ HRESULT		SetShaderData(
 			effect_buffer->GetBufferSize());
 		if(error_num != 0)
 		{
-			YELO_ERROR(_error_message_priority_warning, 
-				"OS_tool: failed to copy shader data to tag binary data field");
+			YELO_WARN("OS_tool: failed to copy shader data to tag binary data field");
 			hr = E_FAIL;
 		}		
 	}
@@ -220,8 +216,7 @@ HRESULT		CompileEffect(
 	{
 		puts("failed");
 		// inform the user that an error occurred and print the first two D3DX errors
-		YELO_ERROR(_error_message_priority_warning, 
-			"OS_tool: failed to compile effect (%X)", hr);
+		YELO_WARN("OS_tool: failed to compile effect (%X)", hr);
 		WriteD3DXErrors(error_buffer, 3);
 		safe_release(effect_buffer);
 	}
@@ -276,10 +271,8 @@ HRESULT		CreateEffectCompiler(
 	{
 		puts("failed");
 		// inform the user that an error occurred and print the first three D3DX errors
-		YELO_ERROR(_error_message_priority_warning, 
-			"OS_tool: failed to create effect compiler (%X)", hr);
-		YELO_ERROR(_error_message_priority_warning, 
-			"OS_tool: %s", fx_file);
+		YELO_WARN("OS_tool: failed to create effect compiler (%X)", hr);
+		YELO_WARN("OS_tool: %s", fx_file);
 		WriteD3DXErrors(error_buffer, 3);
 		safe_release(effect_compiler);
 	}
@@ -322,8 +315,7 @@ HRESULT		LoadShader(
 	}
 	else
 	{		
-		YELO_ERROR(_error_message_priority_warning, 
-			"OS_tool: failed to open/create postprocess tag (%X)", hr);
+		YELO_WARN("OS_tool: failed to open/create postprocess tag (%X)", hr);
 	}
 	return hr;
 }
@@ -339,8 +331,7 @@ HRESULT		SaveShader(
 	else
 	{
 		puts("failed");
-		YELO_ERROR(_error_message_priority_warning, 
-			"OS_tool: failed to save postprocess tag");
+		YELO_WARN("OS_tool: failed to save postprocess tag");
 	}
 	return (save_succeeded ? S_OK : E_FAIL);
 }

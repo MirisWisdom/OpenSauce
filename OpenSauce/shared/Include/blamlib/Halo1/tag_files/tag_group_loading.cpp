@@ -549,13 +549,9 @@ namespace Yelo
 
 			tag_group* group = tag_group_get(group_tag);
 			// engine just asserts here: YELO_ASSERT(group);
-			if(group == nullptr)
-			{
-				TagGroups::group_tag_to_string group_string = {group_tag};
-				YELO_ERROR(_error_message_priority_assert, "the group tag '%s' does not exist (can't create '%s')",
-					group_string.Terminate().TagSwap().str, name);
-				return datum_index::null;
-			}
+			YELO_ASSERT_DISPLAY(group != nullptr, "the group tag '%s' does not exist (can't create '%s')",
+				TagGroups::group_tag_to_string{ group_tag }.ToString(), name);
+
 			// NOTE: engine asserts child_count, but this will force guerilla to crash
 			// Originally, we NOP'd the assert in CheApe
 			if (group->child_count != 0)
@@ -632,9 +628,8 @@ namespace Yelo
 			tag_group* group = tag_group_get(group_tag);
 			if(group == nullptr)
 			{
-				TagGroups::group_tag_to_string group_string = {group_tag};
 				YELO_WARN("the group tag '%s' does not exist (can't load '%s')",
-					group_string.Terminate().TagSwap().str, name);
+					TagGroups::group_tag_to_string{ group_tag }.ToString(), name);
 				return datum_index::null;
 			}
 

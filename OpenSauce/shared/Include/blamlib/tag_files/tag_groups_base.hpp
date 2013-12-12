@@ -280,6 +280,11 @@ namespace Yelo
 
 			group_tag_to_string& Terminate();
 			group_tag_to_string& TagSwap();
+
+			inline cstring ToString()
+			{
+				return Terminate().TagSwap().str;
+			}
 		};
 
 		struct s_tag_iterator {
