@@ -4,56 +4,7 @@
 
 	See license\OpenSauce\Halo1_CheApe for specific license information
 */
-typedef std::vector<std::string> t_string_vector;
-
-static cstring m_field_type_strings[] =
-{	
-	"tag_string",
-	"byte",
-	"int16",
-	"int32",
-	"angle",
-	"tag",
-	"_enum",
-	"long_flags",
-	"word_flags",
-	"byte_flags",
-	"point2d",
-	"rectangle2d",
-	"rgb_color",
-	"argb_color",
-	"real",
-	"real_fraction",
-	"real_point2d",
-	"real_point3d",
-	"real_vector2d",
-	"real_vector3d",
-	"real_quaternion",
-	"real_euler_angles2d",
-	"real_euler_angles3d",
-	"real_plane2d",
-	"real_plane3d",
-	"real_rgb_color",
-	"real_argb_color",
-	"real_hsv_color",
-	"real_ahsv_color",
-	"short_bounds",
-	"angle_bounds",
-	"real_bounds",
-	"real_fraction_bounds",
-	"tag_reference",
-	"tag_block",
-	"int16",
-	"int32",
-	"tag_data",
-	"array_start",
-	"array_end",
-	"pad",
-	"skip",
-	"explanation",
-	"custom",
-	"terminator",
-};
+typedef std::vector<std::string> string_vector_t;
 
 class c_array_instance;
 // base definition object that provides a name and a
@@ -61,7 +12,7 @@ class c_array_instance;
 class c_definition_instance
 {
 	std::string					m_name; 
-	t_string_vector				m_used_names;
+	string_vector_t				m_used_names;
 public:
 	void						SetName(std::string& name) 
 	{ 
@@ -69,7 +20,7 @@ public:
 		m_name.assign(name); 
 	}
 	std::string&				GetName()				{ return m_name; }
-	t_string_vector&			GetUsedNamesVector()	{ return m_used_names; }
+	string_vector_t&			GetUsedNamesVector()	{ return m_used_names; }
 
 	virtual void				Ctor()
 	{
@@ -270,10 +221,10 @@ static void FormatName(std::string& name,
 // formats a string to replace invalid characters
 static void FormatString(std::string& string)
 {
-	struct {
+	static struct {
 		cstring m_find;
 		cstring m_replace;
-	}s_replacements[] = {
+	}k_replacements[] = {
 		{ "\\", "\\\\" },
 		{ "\"", "\\\"" },
 		{ "\n", "\\n" },
@@ -282,12 +233,12 @@ static void FormatString(std::string& string)
 	std::string::size_type index;
 	bool string_edited = false;
 
-	for(int32 i = 0; i < NUMBEROF(s_replacements); i++)
+	for (auto& replacement : k_replacements)
 	{
 		index = 0;
-		while((index = string.find(s_replacements[i].m_find, index)) != std::string::npos)
+		while ((index = string.find(replacement.m_find, index)) != std::string::npos)
 		{
-			string.replace(index, 1, s_replacements[i].m_replace);
+			string.replace(index, 1, replacement.m_replace);
 			index += 2;
 			string_edited = true;
 		}
@@ -295,7 +246,7 @@ static void FormatString(std::string& string)
 }
 // iterates through a string vector ensuring the uniqueness of name
 static void GetUniqueName(std::string& name,
-	t_string_vector& names_vector)
+	string_vector_t& names_vector)
 {
 	std::string test_name(name);
 	int32 count = 0;
@@ -319,7 +270,7 @@ static void GetUniqueName(std::string& name,
 		{
 			char number_str[8];
 			number_str[0] = 0;
-			sprintf_s(number_str, 8, "_%i", count + 1);
+			sprintf_s(number_str, "_%i", count + 1);
 			test_name.assign(name);
 			test_name.append(number_str);
 			count++;
@@ -336,7 +287,7 @@ static void GetUniqueName(std::string& name,
 // gets a unique field name, returns true if the field had its own name, false if no_name was used
 static bool GetName(std::string& name,
 	cstring raw_name,
-	t_string_vector& names_vector,
+	string_vector_t& names_vector,
 	const bool remove_bracket_description = true,
 	const bool remove_pre_underscores = true,
 	const bool use_default = true,
@@ -397,7 +348,7 @@ static bool GetDescription(std::string& description,
 }
 // creates a struct name from a name variable, optionally removing "_block" from block names
 static void GetStructName(std::string& name,
-	t_string_vector& names_vector,
+	string_vector_t& names_vector,
 	cstring prepend = "s_", 
 	cstring append = nullptr,
 	cstring remove = "_block")
@@ -615,7 +566,7 @@ static void WriteTagReference(FILE* file,
 
 	// write the start of the tag reference entry
 	fprintf_s(file, "\t\t\tTAG_FIELD(%s, %s", 
-		m_field_type_strings[field->type], 
+		TagGroups::k_tag_field_definitions[field->type].code_name,
 		name);
 
 	// union/struct hack to use a tag as a string
@@ -749,7 +700,8 @@ static void WriteField(FILE* file,
 	cstring description)
 {
 	// default field output with optional units and description
-	fprintf_s(file, "\t\t\tTAG_FIELD(%s, %s", m_field_type_strings[field->type], name);
+	// NOTE: code_name is NULL for non-codeable fields. printf will thus print "(null)"
+	fprintf_s(file, "\t\t\tTAG_FIELD(%s, %s", TagGroups::k_tag_field_definitions[field->type].code_name, name);
 	if(units || description)
 		fprintf_s(file, ", \"%s\"", (units ? units : ""));
 	if(description)
@@ -1056,13 +1008,10 @@ static void WriteBlockDefinition(FILE* file,
 
 	if(instance.IsBase())		
 	{
-		TagGroups::group_tag_to_string gt; gt.Terminate();
-		gt.group = instance.GetTag();
-		gt.TagSwap();
-
-		fprintf_s(file, "\t\t\tenum { k_group_tag = '%s' };\n\n", gt.str);
+		fprintf_s(file, "\t\t\tenum { k_group_tag = '%s' };\n\n",
+			TagGroups::group_tag_to_string{ instance.GetTag() }.ToString());
 	}
-	// write the flag structs		
+	// write the flag structs
 	std::vector<c_flags_instance>& flags_vector(instance.GetFlagsVector());
 	std::vector<c_flags_instance>::iterator flags_iter;
 	for(flags_iter = flags_vector.begin(); flags_iter != flags_vector.end(); ++flags_iter)
@@ -1133,7 +1082,7 @@ static void WriteBlockList(FILE* file,
 }
 static void WriteCppDefinition(
 	FILE* file,
-	tag_block_definition* base_block,
+	const tag_block_definition* base_block,
 	tag definition_tag,
 	const bool add_boost_asserts)
 {

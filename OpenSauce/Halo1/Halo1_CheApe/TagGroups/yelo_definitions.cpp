@@ -243,19 +243,13 @@ namespace Yelo
 				//////////////////////////////////////////////////////////////////////////
 				{// preprocess_block
 					field_index = py_globals_definition->header_block_definition->FindFieldIndex(Enums::_field_block, "preprocess");
-					if(field_index == NONE)
-					{
-						YELO_ERROR(_error_message_priority_assert, 
-							"CheApe: preprocess_block not found!");
-					}
+					YELO_ASSERT_DISPLAY(field_index != NONE, 
+						"CheApe: preprocess_block not found!");
 
 					auto* preprocess_block_def = py_globals_definition->definition->fields[field_index].Definition<tag_block_definition>();
 					field_index = preprocess_block_def->FindFieldIndex(Enums::_field_block, "campaign");
-					if(field_index == NONE)
-					{
-						YELO_ERROR(_error_message_priority_assert, 
-							"CheApe: preprocess_maplist_block not found!");
-					}
+					YELO_ASSERT_DISPLAY(field_index != NONE, 
+						"CheApe: preprocess_maplist_block not found!");
 
 					auto* preprocess_map_block_def = preprocess_block_def->fields[field_index].Definition<tag_block_definition>();
 					preprocess_map_block_def->format_proc = &TagGroups::py_globals_preprocess_maplist_format;
@@ -267,29 +261,22 @@ namespace Yelo
 				{// scripting_block
 					// NOTE: this will also affect project_yellow's script block as it's the same definition
 					field_index = py_globals_definition->header_block_definition->FindFieldIndex(Enums::_field_block, "yelo scripting");
-					if(field_index == NONE)
-					{
-						YELO_ERROR(_error_message_priority_assert, 
-							"CheApe: scripting_block not found!");
-					}
+					YELO_ASSERT_DISPLAY(field_index != NONE,
+						"CheApe: scripting_block not found!");
 
 					auto* scripting_block_def = py_globals_definition->header_block_definition->fields[field_index].Definition<tag_block_definition>();
 
 					field_index = scripting_block_def->FindFieldIndex(Enums::_field_block, "new functions");
-					if(field_index == NONE)
-					{
-						YELO_ERROR(_error_message_priority_assert, 
-							"CheApe: script_function_block not found!");
-					}
+					YELO_ASSERT_DISPLAY(field_index != NONE,
+						"CheApe: script_function_block not found!");
+
 					auto* script_function_block_def = scripting_block_def->fields[field_index].Definition<tag_block_definition>();
 					script_function_block_def->format_proc = &TagGroups::scripting_block_construct_format;
 
 					field_index = scripting_block_def->FindFieldIndex(Enums::_field_block, "new globals");
-					if(field_index == NONE)
-					{
-						YELO_ERROR(_error_message_priority_assert, 
-							"CheApe: script_global_block not found!");
-					}
+					YELO_ASSERT_DISPLAY(field_index != NONE,
+						"CheApe: script_global_block not found!");
+
 					auto* script_global_block_def = scripting_block_def->fields[field_index].Definition<tag_block_definition>();
 					script_global_block_def->format_proc = &TagGroups::scripting_block_construct_format;
 				}

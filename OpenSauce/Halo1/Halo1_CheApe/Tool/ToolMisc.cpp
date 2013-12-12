@@ -46,7 +46,7 @@ namespace Yelo
 
 			if(scnr_index.IsNull())
 			{
-				YELO_ERROR(_error_message_priority_warning, "OS_tool: failed to open scenario for editing: %s", args->scenario_name);
+				YELO_WARN("OS_tool: failed to open scenario for editing: %s", args->scenario_name);
 				return;
 			}
 

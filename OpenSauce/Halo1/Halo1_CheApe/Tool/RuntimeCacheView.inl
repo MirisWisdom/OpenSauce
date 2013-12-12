@@ -7,7 +7,7 @@
 
 ///////////////////////////////////////////////////////////
 // Forward declarations
-BOOL PrintBlock(DWORD address, Yelo::tag_block_definition* block_definition);
+BOOL PrintBlock(DWORD address, const Yelo::tag_block_definition* block_definition);
 ///////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////
@@ -31,7 +31,7 @@ BOOL PrintBlock(DWORD address, Yelo::tag_block_definition* block_definition);
  * Requests a command from the user and returns the command index if the user enters a matching command.
  * Otherwise -1 is returned if no matches are found.
  */
-int EnterCommand(const char* command_list, std::string* arguments_string, const char* line_start = "command")
+int EnterCommand(const char* command_list, _Out_opt_ std::string* arguments_string, const char* line_start = "command")
 {
 	std::vector<std::string> command_array;
 	std::string commands(command_list);
@@ -274,7 +274,7 @@ BOOL ReadHaloMemory(const void* address, void* destination, const DWORD destinat
 
 	if(!success || (bytes_read != destination_size))
 		return k_status_failed_to_read_runtime_memory;
-	return k_status_ok;
+	return k_status_ok; // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
 }
 /*!
  * \brief
@@ -305,7 +305,7 @@ BOOL WriteHaloMemory(void* destination, void* source, const DWORD size)
 
 	if(!success || (bytes_written != size))
 		return k_status_failed_to_write_runtime_memory;
-	return k_status_ok;
+	return k_status_ok; // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
 }
 
 /*!
@@ -386,7 +386,7 @@ BOOL ReadHaloString(const cstring address, cstring& destination)
 	// delete the temporary buffer
 	free(buffer);
 
-	return status;
+	return status; // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
 }
 ///////////////////////////////////////////////////////////
 
@@ -401,7 +401,7 @@ BOOL ReadHaloString(const cstring address, cstring& destination)
  * 
  * Creates a local copy of Halos tag index and tag instance array.
  */
-BOOL LoadTagIndex()
+BOOL LoadTagIndex() // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
 {
 	void* cache_tag_header_ptr;
 
@@ -507,7 +507,7 @@ void UnloadTagIndex()
  * Creates a temporary copy of the runtime's cache globals and compares the crc with the local
  * copy.
  */
-BOOL HasCacheChanged()
+BOOL HasCacheChanged() // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
 {
 	Console::ColorPrint(k_color_default, "seeing if the cache has changed", true);
 
@@ -543,7 +543,7 @@ BOOL HasCacheChanged()
  * 
  * Finds out if the cache has changed and reloads the index if it has.
  */
-BOOL ReloadCacheCheck()
+BOOL ReloadCacheCheck() // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
 {
 	// has the cache changed
 	BOOL status = HasCacheChanged();
@@ -736,9 +736,7 @@ BOOL WriteField(const int desc_index, const void* address, const char* value_str
 			count = sscanf_s(value_string, scan_format,
 				&tag_group.str, 4);
 
-			tag_group.Terminate();
-			tag_group.TagSwap();
-			value._tag = tag_group.group;
+			value._tag = tag_group.Terminate().TagSwap().group;
 		}
 		break;
 	}
@@ -764,7 +762,7 @@ BOOL WriteField(const int desc_index, const void* address, const char* value_str
  * Warns the user of possible problems when messing with memory before breaking
  * the users arguments into an address and values to be passed to WriteField.
  */
-BOOL ChangeFieldValue(const char* arguments)
+BOOL ChangeFieldValue(const char* arguments) // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
 {
 	// warn of unexpected consequences
 	DisplayEditWarning();
@@ -826,7 +824,7 @@ BOOL ChangeFieldValue(const char* arguments)
  * 
  * Prints the value of a field in memory to the console.
  */
-void PrintFieldValue(void* field_data, Yelo::tag_field* field_definition)
+void PrintFieldValue(void* field_data, const Yelo::tag_field* field_definition)
 {
 	union {
 		byte*					_byte;
@@ -980,13 +978,8 @@ void PrintFieldValue(void* field_data, Yelo::tag_field* field_definition)
 		{
 			// TODO: add support for string_id_yelo
 
-			TagGroups::group_tag_to_string tag_group;
-			tag_group.group = value._tag_reference->group_tag;
-			tag_group.Terminate();
-			tag_group.TagSwap();
-
 			Console::ColorPrintF(k_color_fieldvalue, format,
-				tag_group.str,
+				TagGroups::group_tag_to_string{ value._tag_reference->group_tag }.ToString(),
 				value._tag_reference->tag_index.index);
 		}
 		break;
@@ -1052,10 +1045,10 @@ void PrintFieldValue(void* field_data, Yelo::tag_field* field_definition)
  * 
  * Prints the fields of a tag block to the console
  */
-BOOL PrintFields(char*& tag_data, DWORD& address, Yelo::tag_field* start_field)
+BOOL PrintFields(char*& tag_data, DWORD& address, const Yelo::tag_field* start_field) // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
 {
 	int count = 0;
-	Yelo::tag_field* current = start_field;
+	const Yelo::tag_field* current = start_field;
 	// enumerate through all of the blocks fields
 	while(current->type != Enums::_field_terminator)
 	{
@@ -1066,7 +1059,7 @@ BOOL PrintFields(char*& tag_data, DWORD& address, Yelo::tag_field* start_field)
 				int array_count = current->DefinitionCast<int32>();
 
 				// store the first field in the array list
-				tag_field* first_array_field = current + 1;
+				const tag_field* first_array_field = current + 1;
 				// print the array
 				for(int i = 0; i < array_count; i++)
 				{
@@ -1210,7 +1203,7 @@ BOOL PrintFields(char*& tag_data, DWORD& address, Yelo::tag_field* start_field)
  * Copies a tag block element from Halo into local memory, then
  * prints its fields to the console.
  */
-BOOL PrintBlock(DWORD address, Yelo::tag_block_definition* block_definition)
+BOOL PrintBlock(DWORD address, const Yelo::tag_block_definition* block_definition) // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
 {
 	// copy the block into local memory
 	char* block_data = new char[block_definition->element_size];
@@ -1235,7 +1228,7 @@ BOOL PrintBlock(DWORD address, Yelo::tag_block_definition* block_definition)
  * 
  * Reads a tag from Halos cache and prints its fields.
  */
-BOOL OpenTag(const char* arguments)
+BOOL OpenTag(const char* arguments) // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
 {
 	// read the index from the arguments string
 	int32 index;
@@ -1256,10 +1249,9 @@ BOOL OpenTag(const char* arguments)
 	}
 
 	// get the tag group definition for the tag type
-	TagGroups::group_tag_to_string tag_group;
-	tag_group.group = g_cache_view_globals.m_cache_tag_instances[index].group_tag;
-	tag_group.Terminate();
-	tag_group.TagSwap();
+	TagGroups::group_tag_to_string tag_group = {
+		g_cache_view_globals.m_cache_tag_instances[index].group_tag };
+	tag_group.Terminate().TagSwap();
 
 	Yelo::tag_group* tag_group_def = blam::tag_group_get(tag_group.group);
 
@@ -1297,7 +1289,7 @@ BOOL OpenTag(const char* arguments)
  * 
  * Prints the tag instance index to the command line. Can optionally filter a specific tag group type.
  */
-BOOL PrintTagIndex(const char* filter)
+BOOL PrintTagIndex(const char* filter) // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
 {
 	puts("");
 	// loop through all of the tag instances

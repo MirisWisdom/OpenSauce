@@ -137,14 +137,14 @@ namespace Yelo
 
 		if(m_header.element_count == 0)
 		{
-			YELO_ERROR(_error_message_priority_warning, "c_packed_file: no elements to pack for %s", save_location);
+			YELO_WARN("c_packed_file: no elements to pack for %s", save_location);
 			return E_FAIL;
 		}
 
 		std::ofstream file(save_location, std::ios::out | std::ios::binary);				
 		if(file.fail())	
 		{
-			YELO_ERROR(_error_message_priority_warning, "c_packed_file: failed to open file for writing (%s) %s", 
+			YELO_WARN("c_packed_file: failed to open file for writing (%s) %s",
 				"file may be in use?", save_location);
 
 			return E_FAIL;

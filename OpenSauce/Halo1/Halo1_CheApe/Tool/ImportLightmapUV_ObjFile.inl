@@ -27,7 +27,7 @@ HRESULT c_obj_file::LoadFromFile(std::string obj_path)
 			fclose(file);
 
 		fputs("failed\n", stdout);
-		YELO_ERROR(_error_message_priority_warning, "OS_tool:import: failed to open obj file");
+		YELO_WARN("OS_tool:import: failed to open obj file");
 		return E_FAIL;
 	}
 
@@ -85,12 +85,12 @@ HRESULT c_obj_file::LoadFromFile(std::string obj_path)
 	fclose(file);
 	if(m_groups.size() == 0)
 	{
-		YELO_ERROR(_error_message_priority_warning, "OS_tool:import: obj file contains no groups");
+		YELO_WARN("OS_tool:import: obj file contains no groups");
 		return E_FAIL;
 	}
 	if(m_texcoords.size() == 0)
 	{
-		YELO_ERROR(_error_message_priority_warning, "OS_tool:import: obj file contains no texture coordinates");
+		YELO_WARN("OS_tool:import: obj file contains no texture coordinates");
 		return E_FAIL;
 	}
 
@@ -112,7 +112,7 @@ HRESULT c_obj_file::CheckBspCompatibility(TagGroups::structure_bsp* bsp)
 	if(lightmaps_count != m_groups.size() )
 	{
 		fputs("failed\n", stdout);
-		YELO_ERROR(_error_message_priority_warning, "obj group count (%i) does not match bsp lightmap count (%i)\n", 
+		YELO_WARN("obj group count (%i) does not match bsp lightmap count (%i)\n",
 			m_groups.size(), lightmaps_count);
 		return E_FAIL;
 	}
@@ -131,7 +131,7 @@ HRESULT c_obj_file::CheckBspCompatibility(TagGroups::structure_bsp* bsp)
 		if(surface_count != m_groups[i]->faces.size())
 		{
 			printf_s("\nfailed\n");
-			YELO_ERROR(_error_message_priority_warning, "lightmap %i surface count (%i) does not match obj group %i face count (%i)",
+			YELO_WARN("lightmap %i surface count (%i) does not match obj group %i face count (%i)",
 				i, surface_count, i, m_groups[i]->faces.size());
 			return E_FAIL;					
 		}
@@ -161,7 +161,7 @@ HRESULT c_obj_file::ReplaceVertexUVs(TagGroups::structure_bsp* bsp)
 			size_t lightmap_verticies_offset = 
 				bsp_material->vertices.vertex_start_index * sizeof(Rasterizer::environment_vertex_uncompressed);
 
-			Rasterizer::environment_lightmap_vertex_uncompressed* lightmap_verticies = 
+			auto lightmap_verticies = 
 				CAST_PTR(Rasterizer::environment_lightmap_vertex_uncompressed*, 
 					bsp_material->uncompressed_vertices.Bytes() + lightmap_verticies_offset);
 

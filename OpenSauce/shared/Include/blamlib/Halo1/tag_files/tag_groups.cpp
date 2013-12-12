@@ -46,10 +46,7 @@ namespace Yelo
 			else if (group_tag == 0)
 				strcpy(name, "ZERO");
 			else
-			{
-				TagGroups::group_tag_to_string group_string = { group_tag };
-				strcpy(name, group_string.Terminate().TagSwap().str);
-			}
+				strcpy(name, group_tag_to_string{ group_tag }.ToString());
 
 			return name;
 		}
@@ -61,7 +58,9 @@ namespace Yelo
 
 		bool tag_block_delete_all_elements(tag_block* block)
 		{
-			return blam::tag_block_resize(block, 0);
+			return block->count > 0
+				? blam::tag_block_resize(block, 0)
+				: true;
 		}
 
 		//////////////////////////////////////////////////////////////////////////

@@ -204,8 +204,8 @@ namespace Yelo
 			IDirect3DTexture9*	GetTexture();
 
 #if PLATFORM_IS_EDITOR && !PLATFORM_IS_DEDI
-			void SetParameter(s_shader_postprocess_value_base* value);
-			void SetParameter(s_shader_postprocess_bitmap* value);
+			void SetParameter(const s_shader_postprocess_value_base* value);
+			void SetParameter(const s_shader_postprocess_bitmap* value);
 #endif
 		};
 

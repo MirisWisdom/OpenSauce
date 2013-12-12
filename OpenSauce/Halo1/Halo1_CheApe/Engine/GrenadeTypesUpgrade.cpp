@@ -56,8 +56,7 @@ namespace Yelo
 			field_index = scnr->header_block_definition->FindFieldIndex(Enums::_field_block, "player starting profile");
 			if(field_index == NONE)
 			{
-				YELO_ERROR(_error_message_priority_warning, 
-					"CheApe: scenario_profiles_block not found!");
+				YELO_WARN("CheApe: scenario_profiles_block not found!");
 
 				return nullptr;
 			}
@@ -66,8 +65,7 @@ namespace Yelo
 			field_index = scenario_profiles_block_def->FindFieldIndex(Enums::_field_char_integer, k_scenario_profiles_block_unused_grenade_count_field_name);
 			if(field_index == NONE)
 			{
-				YELO_ERROR(_error_message_priority_warning, 
-					"CheApe: scenario_profiles_block unused grenade count fields not found!");
+				YELO_WARN("CheApe: scenario_profiles_block unused grenade count fields not found!");
 
 				return nullptr;
 			}
