@@ -25,32 +25,53 @@ namespace Yelo
 		// Patches engine code to call our hooks or our implementations of various functions
 		static void InitializeHooks()
 		{
-			void (PLATFORM_API* blam__tag_iterator_new)(s_tag_iterator&, tag) =
-				blam::tag_iterator_new;
-			void* (PLATFORM_API* blam__tag_get)(tag, datum_index) =
-				blam::tag_get;
-			datum_index (PLATFORM_API* blam__tag_new)(tag, cstring) = 
-				blam::tag_new;
-			datum_index (PLATFORM_API* blam__tag_load)(tag, cstring, long_flags) = 
-				blam::tag_load;
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Glue for hooking an overloaded function. </summary>
+///
+/// <param name="blam_name">	Name of the function as it appears in the blam namespace. </param>
+/// <param name="func_name">	Name of the FUNC_PTR. </param>
+/// <param name="ret_type"> 	blam function's return type. </param>
+#define INIT_HOOK_BY_EXPLICIT_TYPE(blam_name, func_name, ret_type, ...) \
+	ret_type (PLATFORM_API* blam__##blam_name)(__VA_ARGS__) =			\
+		blam::blam_name;												\
+		Memory::WriteRelativeJmp(blam__##blam_name, GET_FUNC_VPTR(func_name), true);
 
 			Memory::WriteRelativeJmp(blam::tag_groups_initialize, GET_FUNC_VPTR(TAG_GROUPS_INITIALIZE), true);
 			Memory::WriteRelativeJmp(blam::tag_groups_dispose, GET_FUNC_VPTR(TAG_GROUPS_DISPOSE), true);
 			Memory::WriteRelativeJmp(blam::tag_field_scan, GET_FUNC_VPTR(TAG_FIELD_SCAN), true);
 
-			Memory::WriteRelativeJmp(blam__tag_iterator_new, GET_FUNC_VPTR(TAG_ITERATOR_NEW), true);
+			INIT_HOOK_BY_EXPLICIT_TYPE(tag_iterator_new, TAG_ITERATOR_NEW,
+				void, s_tag_iterator&, tag);
 			Memory::WriteRelativeJmp(blam::tag_iterator_next, GET_FUNC_VPTR(TAG_ITERATOR_NEXT), true);
 
-//			Memory::WriteRelativeJmp(blam::tag_data_resize, GET_FUNC_VPTR(TAG_DATA_LOAD), true);
+			INIT_HOOK_BY_EXPLICIT_TYPE(tag_reference_set, TAG_REFERENCE_SET,
+				void, tag_reference&, tag, cstring);
+
 			Memory::WriteRelativeJmp(blam::tag_data_load, GET_FUNC_VPTR(TAG_DATA_LOAD), true);
 #if PLATFORM_ID != PLATFORM_TOOL
 			Memory::WriteRelativeJmp(blam::tag_data_unload, GET_FUNC_VPTR(TAG_DATA_UNLOAD), true);
 #endif
+			INIT_HOOK_BY_EXPLICIT_TYPE(tag_data_resize, TAG_DATA_RESIZE,
+				bool, tag_data*, int32);
 
-			Memory::WriteRelativeJmp(blam__tag_get, GET_FUNC_VPTR(TAG_GET), true);
-			Memory::WriteRelativeJmp(blam__tag_new, GET_FUNC_VPTR(TAG_NEW), true);
+			INIT_HOOK_BY_EXPLICIT_TYPE(tag_block_delete_element, TAG_BLOCK_DELETE_ELEMENT,
+				void, tag_block*, int32);
+			INIT_HOOK_BY_EXPLICIT_TYPE(tag_block_resize, TAG_BLOCK_RESIZE, 
+				bool, tag_block*, int32);
+			INIT_HOOK_BY_EXPLICIT_TYPE(tag_block_add_element, TAG_BLOCK_ADD_ELEMENT,
+				int32, tag_block*);
+
+			INIT_HOOK_BY_EXPLICIT_TYPE(tag_get, TAG_GET,
+				void*, tag, datum_index);
+			INIT_HOOK_BY_EXPLICIT_TYPE(tag_new, TAG_NEW,
+				datum_index, tag, cstring);
 			Memory::WriteRelativeJmp(blam::tag_unload, GET_FUNC_VPTR(TAG_UNLOAD), true);
-			Memory::WriteRelativeJmp(blam__tag_load, GET_FUNC_VPTR(TAG_LOAD), true);
+			INIT_HOOK_BY_EXPLICIT_TYPE(tag_load, TAG_LOAD,
+				datum_index, tag, cstring, long_flags);
+			INIT_HOOK_BY_EXPLICIT_TYPE(tag_reload, TAG_RELOAD,
+				datum_index, tag, cstring);
+
+#undef INIT_HOOK_BY_EXPLICIT_TYPE
 		}
 		API_FUNC_NAKED void Initialize()
 		{
@@ -233,12 +254,12 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
-		API_FUNC_NAKED bool PLATFORM_API tag_data_resize(tag_data* data, int32 new_size)
-		{
-			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_DATA_RESIZE);
-
-			__asm	jmp	FUNCTION
-		}
+// 		API_FUNC_NAKED bool PLATFORM_API tag_data_resize(tag_data* data, int32 new_size)
+// 		{
+// 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_DATA_RESIZE);
+// 
+// 			__asm	jmp	FUNCTION
+// 		}
 
 		API_FUNC_NAKED TagGroups::s_tag_field_scan_state& PLATFORM_API tag_field_scan_state_new(TagGroups::s_tag_field_scan_state& state, 
 			const tag_field* fields, void* fields_address)
@@ -254,31 +275,12 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
-// 		API_FUNC_NAKED bool PLATFORM_API tag_field_scan(TagGroups::s_tag_field_scan_state& state)
-// 		{
-// 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FIELD_SCAN);
-// 
-// 			__asm	jmp	FUNCTION
-// 		}
 		API_FUNC_NAKED bool PLATFORM_API tag_read_only(datum_index tag_index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_READ_ONLY);
 
 			__asm	jmp	FUNCTION
 		}
-
-/*		API_FUNC_NAKED void PLATFORM_API tag_iterator_new(TagGroups::s_tag_iterator& iter, const tag group_tag_filter)
-		{
-			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_ITERATOR_NEW);
-
-			__asm	jmp	FUNCTION
-		}
-		API_FUNC_NAKED datum_index PLATFORM_API tag_iterator_next(TagGroups::s_tag_iterator& iter)
-		{
-			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_ITERATOR_NEXT);
-
-			__asm	jmp	FUNCTION
-		}*/
 
 
 		API_FUNC_NAKED tag_group* PLATFORM_API tag_group_get_next(const tag_group* group)
@@ -318,12 +320,12 @@ namespace Yelo
 			__asm	jmp	FUNCTION
 		}
 
-		API_FUNC_NAKED void PLATFORM_API tag_reference_set(tag_reference& reference, tag group_tag, cstring name)
-		{
-			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_REFERENCE_SET);
-
-			__asm	jmp	FUNCTION
-		}
+// 		API_FUNC_NAKED void PLATFORM_API tag_reference_set(tag_reference& reference, tag group_tag, cstring name)
+// 		{
+// 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_REFERENCE_SET);
+// 
+// 			__asm	jmp	FUNCTION
+// 		}
 		API_FUNC_NAKED uint32 PLATFORM_API tag_block_size(tag_block* block)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_SIZE);
@@ -342,42 +344,30 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
-// 		API_FUNC_NAKED datum_index PLATFORM_API tag_new(tag group_name, cstring name)
-// 		{
-// 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_NEW);
-// 
-// 			__asm	jmp	FUNCTION
-// 		}
 		API_FUNC_NAKED bool PLATFORM_API tag_save(datum_index tag_index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_SAVE);
 
 			__asm	jmp	FUNCTION
 		}
-		API_FUNC_NAKED void PLATFORM_API tag_block_delete_element(tag_block* block, int32 element_index)
-		{
-			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_DELETE_ELEMENT);
-
-			__asm	jmp	FUNCTION
-		}
-		API_FUNC_NAKED int32 PLATFORM_API tag_block_add_element(tag_block* block)
-		{
-			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_ADD_ELEMENT);
-
-			__asm	jmp	FUNCTION
-		}
-// 		API_FUNC_NAKED void PLATFORM_API tag_unload(datum_index tag_index)
+// 		API_FUNC_NAKED void PLATFORM_API tag_block_delete_element(tag_block* block, int32 element_index)
 // 		{
-// 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_UNLOAD);
+// 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_DELETE_ELEMENT);
 // 
 // 			__asm	jmp	FUNCTION
 // 		}
-		API_FUNC_NAKED bool PLATFORM_API tag_block_resize(tag_block* block, int32 element_count)
-		{
-			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_RESIZE);
-
-			__asm	jmp	FUNCTION
-		}
+// 		API_FUNC_NAKED int32 PLATFORM_API tag_block_add_element(tag_block* block)
+// 		{
+// 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_ADD_ELEMENT);
+// 
+// 			__asm	jmp	FUNCTION
+// 		}
+// 		API_FUNC_NAKED bool PLATFORM_API tag_block_resize(tag_block* block, int32 element_count)
+// 		{
+// 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_RESIZE);
+// 
+// 			__asm	jmp	FUNCTION
+// 		}
 		API_FUNC_NAKED int32 PLATFORM_API tag_block_insert_element(tag_block* block, int32 index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_INSERT_ELEMENT);
@@ -412,18 +402,12 @@ namespace Yelo
 			API_FUNC_NAKED_END_()//(2);
 		}
 
-// 		API_FUNC_NAKED datum_index PLATFORM_API tag_load(tag group_tag, cstring name, long_flags file_flags)
+// 		API_FUNC_NAKED datum_index PLATFORM_API tag_reload(tag group_tag, cstring name)
 // 		{
-// 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_LOAD);
+// 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_RELOAD);
 // 
 // 			__asm	jmp	FUNCTION
 // 		}
-		API_FUNC_NAKED datum_index PLATFORM_API tag_reload(tag group_tag, cstring name)
-		{
-			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_RELOAD);
-
-			__asm	jmp	FUNCTION
-		}
 		API_FUNC_NAKED void PLATFORM_API tag_load_children(datum_index tag_index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_LOAD_CHILDREN);

@@ -129,18 +129,23 @@ namespace Yelo
 		}
 
 #ifdef API_DEBUG
-		static void PLATFORM_API BlamErrorHook(void* /*error_return_address*/,
+		static void PLATFORM_API BlamErrorHook(
+			void* error_return_address, // the return address after blam::error() finishes
+
 			Enums::error_message_priority priority, cstring format, /*...*/
+			// these are only valid when error() was called in display_assert()
 			cstring assert_kind, cstring file, int32 line, cstring reason)
 		{
 			if (priority != Enums::_error_message_priority_warning && format != nullptr && strstr(format, "EXCEPTION") != nullptr)
 				DebugBreak();
 		}
 
-		static API_FUNC_NAKED void BlamErrorHook_Trampoline()
+		static API_FUNC_NAKED void BlamErrorHook_Trampoline(Enums::error_message_priority priority, cstring format, ...)
 		{
 			API_FUNC_NAKED_START_()
 				add		esp, 408h
+				// NOTE: we don't push error()'s arguments to the stack for BlamErrorHook
+				// so _ReturnAddress() will actually be its 'first' parameter
 				call	BlamErrorHook
 			API_FUNC_NAKED_END_()
 		}
