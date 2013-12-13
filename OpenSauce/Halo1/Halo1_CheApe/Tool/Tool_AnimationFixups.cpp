@@ -81,8 +81,8 @@ _result_is_zero:
 
 		API_FUNC_NAKED static void _importer_valid_animations_test2()
 		{
-			static uint32 JZ_ADDRESS = 0x404666;
-			static uint32 RETN_ADDRESS = 0x404651;
+			static const uintptr_t JZ_ADDRESS = 0x404666;
+			static const uintptr_t RETN_ADDRESS = 0x404651;
 
 			__asm {
 				add		esp, 0xC
@@ -267,14 +267,13 @@ _result_is_le:
 
 		void c_animation_fixups::Initialize()
 		{
+			static_assert(Enums::k_max_animations_per_graph_upgrade <= Enums::k_maximum_tool_import_files_upgrade,
+				"maximum animations is greater than maximum number of import files tool is able to process");
+
 			max_animations = Enums::k_max_animations_per_graph_upgrade;
 
 			if(max_animations > Enums::k_max_animations_per_graph)
 			{
-				if(max_animations > Enums::k_maximum_tool_import_files_upgrade)
-					YELO_WARN("CheApe: maximum animations is greater than maximum number of import files tool is able to process (%d > %d)", 
-						max_animations, Enums::k_maximum_tool_import_files_upgrade);
-
 				InitializeValidAnimationsArrayFixups();
 				InitializeAnimationIndexArrayFixups();
 				InitializeAnimationRemappingIndexArrayFixups();

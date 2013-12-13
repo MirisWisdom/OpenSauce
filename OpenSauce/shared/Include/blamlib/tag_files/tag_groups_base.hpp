@@ -69,6 +69,8 @@ namespace Yelo
 		{
 			return tag_reference_set(reference, T::k_group_tag, name);
 		}
+
+		datum_index PLATFORM_API tag_reference_try_and_get(const tag_reference* reference);
 	};
 
 
@@ -198,6 +200,15 @@ namespace Yelo
 	namespace blam
 	{
 		bool PLATFORM_API tag_data_resize(tag_data* data, int32 new_size);
+
+		void* PLATFORM_API tag_data_get_pointer(tag_data& data, int32 offset, int32 size);
+		template<typename T> inline
+		T* tag_data_get_pointer(tag_data& data, int32 offset, int32 index = 0)
+		{
+			return CAST_PTR(T*, tag_data_get_pointer(data, 
+				offset + (sizeof(T) * index), 
+				sizeof(T)) );
+		}
 	};
 
 

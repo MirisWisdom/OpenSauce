@@ -746,7 +746,7 @@ BOOL WriteField(const int desc_index, const void* address, const char* value_str
 		return k_status_failed;
 
 	// write the new values to the runtime's memory
-	BOOL status = WriteHaloMemory((void*)address, &value, g_field_descriptions[desc_index].m_field_size);
+	BOOL status = WriteHaloMemory((void*)address, &value, g_field_descriptions[desc_index].Definition().size);
 	return status;
 }
 /*!
@@ -794,7 +794,7 @@ BOOL ChangeFieldValue(const char* arguments) // TODO: k_status_ok is '0'...yet t
 			break;
 
 	// if no matching type was found or the type is not valid, return
-	if(index == NUMBEROF(g_field_descriptions) || !g_field_descriptions[index].m_valid_edit)
+	if(index == NUMBEROF(g_field_descriptions) || !g_field_descriptions[index].Editable())
 	{
 		puts("");
 		Console::ColorPrint(k_color_status_error, "invalid field type");
@@ -1045,7 +1045,7 @@ void PrintFieldValue(void* field_data, const Yelo::tag_field* field_definition)
  * 
  * Prints the fields of a tag block to the console
  */
-BOOL PrintFields(char*& tag_data, DWORD& address, const Yelo::tag_field* start_field) // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
+BOOL PrintFields(byte*& tag_data, DWORD& address, const Yelo::tag_field* start_field) // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
 {
 	int count = 0;
 	const Yelo::tag_field* current = start_field;
@@ -1107,8 +1107,9 @@ BOOL PrintFields(char*& tag_data, DWORD& address, const Yelo::tag_field* start_f
 		{
 			auto block = CAST_PTR(tag_block*, tag_data);
 			auto definition = current->Definition<tag_block_definition>();
+			block->definition = definition; // set the block view's definition so we can use our tag APIs on it
 
-			// clearly seperate the block from the parent tag fields
+			// clearly separate the block from the parent tag fields
 			puts("\n");
 
 			// print the block fields name and type
@@ -1117,23 +1118,20 @@ BOOL PrintFields(char*& tag_data, DWORD& address, const Yelo::tag_field* start_f
 			Console::ColorPrint(k_color_block, "block definition:\t");
 			Console::ColorPrintF(k_color_block, definition->name, true);
 
-			DWORD block_address = (DWORD)block->address;
 			// print the block elements
-			for(int i =0; i <  block->count; i++)
+			for(auto element : *block)
 			{
 				puts("");
 				Console::ColorPrint(k_color_name, field_name.c_str());
-				Console::ColorPrintF(k_color_block, " element %i:\n", i);
+				Console::ColorPrintF(k_color_block, " element %i:\n", element.index);
 
-				BOOL status = PrintBlock((DWORD)block_address, definition);
+				BOOL status = PrintBlock(CAST_PTR(DWORD,element.address), definition);
 				if(status != k_status_ok)
 					return status;
 
-				block_address += definition->element_size;
-
 				puts("");
 				Console::ColorPrint(k_color_name, field_name.c_str());
-				Console::ColorPrintF(k_color_block, " element %i end\n", i);
+				Console::ColorPrintF(k_color_block, " element %i end\n", element.index);
 
 				// if the user enters s, skip past the rest of the blocks
 				// if the user enters q, close the tag
@@ -1165,8 +1163,8 @@ BOOL PrintFields(char*& tag_data, DWORD& address, const Yelo::tag_field* start_f
 			tag_data +=  current->DefinitionCast<DWORD>();
 			break;
 		default:
-			address += g_field_descriptions[current->type].m_field_size;
-			tag_data += g_field_descriptions[current->type].m_field_size;
+			address += g_field_descriptions[current->type].Definition().size;
+			tag_data += g_field_descriptions[current->type].Definition().size;
 		};
 
 		current++;
@@ -1206,16 +1204,14 @@ BOOL PrintFields(char*& tag_data, DWORD& address, const Yelo::tag_field* start_f
 BOOL PrintBlock(DWORD address, const Yelo::tag_block_definition* block_definition) // TODO: k_status_ok is '0'...yet this function returns 'BOOL'?
 {
 	// copy the block into local memory
-	char* block_data = new char[block_definition->element_size];
-	BOOL status = ReadHaloMemory((void*)address, block_data, block_definition->element_size);
+	auto block_data = YELO_NEW_ARRAY_UNIQUE(byte, block_definition->element_size);
+	byte* data_pointer = block_data.get();
 
-	char* data_pointer = block_data;
+	BOOL status = ReadHaloMemory((void*)address, data_pointer, block_definition->element_size);
+
 	// print the blocks fields to the console
 	if(status == k_status_ok)
 		status = PrintFields(data_pointer, address, block_definition->fields);
-
-	// delete the allocated memory
-	delete [] block_data;
 
 	return status;
 }

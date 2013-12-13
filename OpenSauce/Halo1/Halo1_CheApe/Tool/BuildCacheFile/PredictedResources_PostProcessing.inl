@@ -20,10 +20,8 @@ namespace PostProcessing
 			return false;
 		}
 
-		for(int32 i = 0; i < shader_tag->parameters.Count; i++)
+		for (auto& parameter : shader_tag->parameters)
 		{
-			const TagGroups::s_shader_postprocess_parameter& parameter = shader_tag->parameters[i];
-
 			if(parameter.value_type.type != Enums::_shader_variable_base_type_texture)
 				continue;
 

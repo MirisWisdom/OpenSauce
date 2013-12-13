@@ -324,6 +324,18 @@ namespace Yelo
 			reference.name_length = name_length;
 		}
 
+		datum_index PLATFORM_API tag_reference_try_and_get(const tag_reference* reference)
+		{
+			YELO_ASSERT(reference);
+
+			datum_index loaded_tag_index = tag_loaded(reference->group_tag, reference->name);
+			YELO_ASSERT_DISPLAY(reference->tag_index == loaded_tag_index,
+				"tag reference \"%s\" and actual index do not match: is %08lX but should be %08lX",
+				reference->name, reference->tag_index, loaded_tag_index);
+
+			return loaded_tag_index;
+		}
+
 		bool PLATFORM_API tag_data_resize_impl(tag_data* data, int32 new_size)
 		{
 			YELO_ASSERT(data && data->definition);
@@ -345,6 +357,14 @@ namespace Yelo
 
 			TAG_DATA_REALLOC(*data, new_size);
 			return true;
+		}
+
+		void* PLATFORM_API tag_data_get_pointer(tag_data& data, int32 offset, int32 size)
+		{
+			YELO_ASSERT(size >= 0);
+			YELO_ASSERT(offset >= 0 && offset+size <= data.size);
+
+			return data.Bytes() + offset;
 		}
 	};
 

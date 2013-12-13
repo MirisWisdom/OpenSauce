@@ -95,6 +95,7 @@ namespace Yelo
 				obj_file_path.append(obj_argument);
 
 				bool has_extension = false;
+				// TODO: why minus 4?
 				if(obj_file_path.find(".obj", obj_file_path.length() - 4) != std::string::npos)
 					has_extension = true;
 
