@@ -38,19 +38,15 @@ HRESULT		SetShaderData(
 	const LPD3DXBUFFER& effect_buffer,
 	TagGroups::s_shader_postprocess_definition* shader_tag)
 {
-	// allocate memory for the new binary data
-	shader_tag->shader_code_binary.address = 
-		YELO_MALLOC(effect_buffer->GetBufferSize(), false);
-
 	HRESULT hr = S_OK;
 
-	if(!shader_tag->shader_code_binary.address) 
+	// allocate memory for the new binary data
+	int32 shader_code_binary_size = CAST(int32, effect_buffer->GetBufferSize());
+	if (!blam::tag_data_resize(&shader_tag->shader_code_binary, shader_code_binary_size))
 	{				
 		YELO_WARN("OS_tool: failed to allocate memory for binary data");
 		hr = E_FAIL;
 	}
-	else
-		shader_tag->shader_code_binary.size = effect_buffer->GetBufferSize();
 
 	if(SUCCEEDED(hr))
 	{
@@ -70,7 +66,8 @@ HRESULT		SetShaderData(
 	return hr;
 }
 
-HRESULT		AddPassBlock(LPD3DXEFFECTCOMPILER& compiler, D3DXHANDLE pass, Yelo::TagBlock<Yelo::TagGroups::s_pass_definition>& block)
+HRESULT		AddPassBlock(LPD3DXEFFECTCOMPILER& compiler, D3DXHANDLE pass, 
+	TagBlock<TagGroups::s_pass_definition>& block)
 {
 	HRESULT success = S_OK;
 
@@ -79,12 +76,10 @@ HRESULT		AddPassBlock(LPD3DXEFFECTCOMPILER& compiler, D3DXHANDLE pass, Yelo::Tag
 	if(FAILED(success = compiler->GetPassDesc(pass, &pass_desc)))
 		return success;
 
-	// add a new block element and get a reference to it
-	int32 index = blam::tag_block_add_element(block);
-	Yelo::TagGroups::s_pass_definition& pass_block = block[index];
+	TagGroups::s_pass_definition& pass_block = *blam::tag_block_add_and_get_element(block);
 
 	// set the blocks fields
-	strncpy_s(pass_block.name, pass_desc.Name, Yelo::Enums::k_tag_string_length);
+	strncpy_s(pass_block.name, pass_desc.Name, Enums::k_tag_string_length);
 
 	D3DXHANDLE handle;
 	// should the target be cleared prior to this pass
@@ -126,7 +121,8 @@ HRESULT		AddPassBlock(LPD3DXEFFECTCOMPILER& compiler, D3DXHANDLE pass, Yelo::Tag
 	return success;
 }
 
-HRESULT		AddTechniqueBlock(LPD3DXEFFECTCOMPILER& compiler, D3DXHANDLE technique, Yelo::TagBlock<Yelo::TagGroups::s_technique_definition>& block)
+HRESULT		AddTechniqueBlock(LPD3DXEFFECTCOMPILER& compiler, D3DXHANDLE technique, 
+	TagBlock<TagGroups::s_technique_definition>& block)
 {
 	HRESULT success = S_OK;
 
@@ -135,9 +131,7 @@ HRESULT		AddTechniqueBlock(LPD3DXEFFECTCOMPILER& compiler, D3DXHANDLE technique,
 	if(FAILED(success = compiler->GetTechniqueDesc(technique, &technique_desc)))
 		return success;
 
-	// add a new block element and get a reference to it
-	int32 index = blam::tag_block_add_element(block);
-	Yelo::TagGroups::s_technique_definition& technique_block = block[index];
+	TagGroups::s_technique_definition& technique_block = *blam::tag_block_add_and_get_element(block);
 
 	// set the blocks fields
 	strncpy_s(technique_block.name, technique_desc.Name, Yelo::Enums::k_tag_string_length);
@@ -148,14 +142,14 @@ HRESULT		AddTechniqueBlock(LPD3DXEFFECTCOMPILER& compiler, D3DXHANDLE technique,
 	if(handle = compiler->GetAnnotationByName(technique, "shader_model_mask"))
 		compiler->GetInt(handle, &shader_model_mask);
 	else
-		shader_model_mask = Yelo::Enums::_shader_model_mask_1_0 | Yelo::Enums::_shader_model_mask_2_0 | Yelo::Enums::_shader_model_mask_3_0;
+		shader_model_mask = Flags::_shader_model_mask_1_0 | Flags::_shader_model_mask_2_0 | Flags::_shader_model_mask_3_0;
 
-	technique_block.shader_model.sm_1_0_bit = (shader_model_mask & Yelo::Enums::_shader_model_mask_1_0) == Yelo::Enums::_shader_model_mask_1_0;
-	technique_block.shader_model.sm_2_0_bit = (shader_model_mask & Yelo::Enums::_shader_model_mask_2_0) == Yelo::Enums::_shader_model_mask_2_0;
-	technique_block.shader_model.sm_3_0_bit = (shader_model_mask & Yelo::Enums::_shader_model_mask_3_0) == Yelo::Enums::_shader_model_mask_3_0;
+	technique_block.shader_model.sm_1_0_bit = (shader_model_mask & Flags::_shader_model_mask_1_0) == Flags::_shader_model_mask_1_0;
+	technique_block.shader_model.sm_2_0_bit = (shader_model_mask & Flags::_shader_model_mask_2_0) == Flags::_shader_model_mask_2_0;
+	technique_block.shader_model.sm_3_0_bit = (shader_model_mask & Flags::_shader_model_mask_3_0) == Flags::_shader_model_mask_3_0;
 
 	// add passes to the technique block
-	for(uint32 i = 0; i < technique_desc.Passes; i++)
+	for(UINT i = 0; i < technique_desc.Passes; i++)
 	{
 		D3DXHANDLE pass = compiler->GetPass(technique, i);
 
@@ -188,8 +182,7 @@ HRESULT		SetTechniqueBlocks(
 void		ClearTagData(TagGroups::s_shader_postprocess_definition* shader_tag)
 {
 	// remove any existing binary data
-	if(shader_tag->shader_code_binary.address)
-		TagGroups::tag_data_delete(&shader_tag->shader_code_binary);
+	TagGroups::tag_data_delete(&shader_tag->shader_code_binary);
 
 	// remove any existing technique blocks
 	tag_block_delete_all_elements(shader_tag->techniques);

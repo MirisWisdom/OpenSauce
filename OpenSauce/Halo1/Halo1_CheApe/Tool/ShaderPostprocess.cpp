@@ -17,15 +17,13 @@
 
 namespace Yelo
 {
-	namespace Enums
+	namespace Flags
 	{
 		enum shader_model_mask
 		{
 			_shader_model_mask_1_0 = 1 << 0,
 			_shader_model_mask_2_0 = 1 << 1,
 			_shader_model_mask_3_0 = 1 << 2,
-
-			_shader_model_mask
 		};
 	};
 	namespace Tool

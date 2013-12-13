@@ -231,12 +231,9 @@ namespace Yelo
 			{
 				auto* definition = block->definition;
 
-				for (int x = 0; x < block->count; x++)
+				for (auto element : *block)
 				{
-					void* element = CAST_PTR(byte*, block->address) +
-						(definition->element_size * x);
-
-					for (auto field : TagGroups::c_tag_field_scanner(block->definition->fields, element)
+					for (auto field : TagGroups::c_tag_field_scanner(block->definition->fields, element.address)
 						.AddFieldType(Enums::_field_block)
 						.AddFieldType(Enums::_field_tag_reference) )
 					{
@@ -253,7 +250,7 @@ namespace Yelo
 
 							if (ShouldQueueReference(field_def, reference))
 								m_queued_references.push_back(s_queued_reference(
-									definition, field_def, x, reference));
+									definition, field_def, element.index, reference));
 
 						} break;
 
