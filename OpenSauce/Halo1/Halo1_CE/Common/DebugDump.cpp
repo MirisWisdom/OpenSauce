@@ -158,14 +158,14 @@ namespace Yelo
 				break;
 			}
 
-			sprintf_s(buffer, sizeof(buffer), "%i", system_info.dwNumberOfProcessors);
+			sprintf_s(buffer, "%i", system_info.dwNumberOfProcessors);
 			Debug::AddPropertyToCrashReport("CPUNumberOfProcessors", buffer);
 
 			// add processor features to the report
 			for(int i = 0; i < NUMBEROF(g_cpu_extensions); i++)
 			{
 				BOOL supported = IsProcessorFeaturePresent(g_cpu_extensions[i].value);
-				sprintf_s(buffer, sizeof(buffer), "CPUFeat_%s", g_cpu_extensions[i].string);
+				sprintf_s(buffer, "CPUFeat_%s", g_cpu_extensions[i].string);
 
 				Debug::AddPropertyToCrashReport(buffer, (supported ? "true" : "false"));
 			}
@@ -198,27 +198,37 @@ namespace Yelo
 		///-------------------------------------------------------------------------------------------------
 		static int WINAPI ExceptionFilter(PEXCEPTION_POINTERS ptrs)
 		{
-			typedef void (*t_function)(void);
+			typedef void (PLATFORM_API* proc_simple_function)(void);
 
 			PreDump();
 
 			int result;
-#ifdef DISABLE_EXCEPTION_HANDLING
-			result = EXCEPTION_CONTINUE_SEARCH;
-#else
-			result = Debug::SEHExceptionFilter(ptrs);
+			bool disable_exception_handling = CMDLINE_GET_PARAM(disable_exception_handling).ParameterSet();
+
+			if (
+#ifdef API_DEBUG
+				IsDebuggerPresent() ||
 #endif
+				disable_exception_handling
+				)
+			{
+				result = EXCEPTION_CONTINUE_SEARCH;
+			}
+			else
+			{
+				result = Debug::SEHExceptionFilter(ptrs);
+			}
 
 #if PLATFORM_IS_USER
 			Keystone::ReleaseKeystone();
 
 			// save gamma to registry
-			CAST_PTR(t_function, GET_FUNC_VPTR(RASTERIZER_DX9_SAVE_GAMMA))();
+			CAST_PTR(proc_simple_function, GET_FUNC_VPTR(RASTERIZER_DX9_SAVE_GAMMA))();
 			// present final frame
-			CAST_PTR(t_function, GET_FUNC_VPTR(RASTERIZER_WINDOWS_PRESENT_FRAME))();
+			CAST_PTR(proc_simple_function, GET_FUNC_VPTR(RASTERIZER_WINDOWS_PRESENT_FRAME))();
 #endif
 			// kill all sounds
-			CAST_PTR(t_function, GET_FUNC_VPTR(SOUND_STOP_ALL))();
+			CAST_PTR(proc_simple_function, GET_FUNC_VPTR(SOUND_STOP_ALL))();
 
 			ShowCursor(TRUE);
 
@@ -230,7 +240,7 @@ namespace Yelo
 
 		///-------------------------------------------------------------------------------------------------
 		/// <summary>
-		/// 	Runs on a seperate thread and creates a crash report if the main thread becomes
+		/// 	Runs on a separate thread and creates a crash report if the main thread becomes
 		/// 	unresponsive.
 		/// </summary>
 		/// <param name="parameter1">	[in,out] Unused. </param>

@@ -13,17 +13,15 @@ namespace PostProcessing
 		
 		if(shader_tag->shader_code_binary.size == 0 && shader_tag->base_shader.tag_index.IsNull())
 		{
-			YELO_ERROR(_error_message_priority_warning,
+			YELO_WARN(
 				"\nCheApe: shader_postprocess_generic validity failed on '%s'\n"
 				"error: postprocess shader with no binary data also has no base shader defined",
 				blam::tag_get_name(tag_index));
 			return false;
 		}
 
-		for(int32 i = 0; i < shader_tag->parameters.Count; i++)
+		for (auto& parameter : shader_tag->parameters)
 		{
-			const TagGroups::s_shader_postprocess_parameter& parameter = shader_tag->parameters[i];
-
 			if(parameter.value_type.type != Enums::_shader_variable_base_type_texture)
 				continue;
 

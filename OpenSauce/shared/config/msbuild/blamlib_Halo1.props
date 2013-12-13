@@ -98,6 +98,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\cheats.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_allegiance.hpp" />
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_configuration.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_engine.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_engine_ctf.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_engine_king.hpp" />
@@ -147,6 +148,7 @@
   <ItemGroup
     > <!--interface-->
 	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\first_person_weapons.hpp" />
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\interface\first_person_weapons.cpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_chat.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_definitions.hpp" />

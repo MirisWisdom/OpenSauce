@@ -60,5 +60,11 @@
 	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory.cpp">
       <Filter>.YeloLib\tag_files</Filter>
     </ClCompile>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory_allocations.cpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClCompile>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory_stats.cpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

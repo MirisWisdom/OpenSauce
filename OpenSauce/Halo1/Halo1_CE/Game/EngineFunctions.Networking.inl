@@ -84,15 +84,3 @@ int32 TranslatedIndexRegister(MessageDeltas::s_index_resolution_table& table, da
 	return TranslateIndex(table, local_index);
 }
 #endif
-
-
-API_FUNC_NAKED bool ConnectToServer(cstring address, cstring password)
-{
-	static const uintptr_t FUNCTION = GET_FUNC_PTR(MAIN_CONNECT);
-
-	API_FUNC_NAKED_START()
-		push	password
-		push	address
-		call	FUNCTION
-	API_FUNC_NAKED_END_CDECL(2)
-}

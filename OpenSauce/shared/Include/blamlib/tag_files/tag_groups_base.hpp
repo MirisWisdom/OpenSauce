@@ -69,6 +69,8 @@ namespace Yelo
 		{
 			return tag_reference_set(reference, T::k_group_tag, name);
 		}
+
+		datum_index PLATFORM_API tag_reference_try_and_get(const tag_reference* reference);
 	};
 
 
@@ -186,7 +188,7 @@ namespace Yelo
 		// Just makes coding a little more cleaner
 		inline byte* Bytes() { return CAST_PTR(byte*, address); }
 
-		bool resize(size_t new_size = 0);
+		bool resize(int32 new_size = 0);
 	};
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
 	BOOST_STATIC_ASSERT( sizeof(tag_data) == 0x14 );
@@ -197,7 +199,16 @@ namespace Yelo
 #endif
 	namespace blam
 	{
-		bool PLATFORM_API tag_data_resize(tag_data* data, size_t new_size);
+		bool PLATFORM_API tag_data_resize(tag_data* data, int32 new_size);
+
+		void* PLATFORM_API tag_data_get_pointer(tag_data& data, int32 offset, int32 size);
+		template<typename T> inline
+		T* tag_data_get_pointer(tag_data& data, int32 offset, int32 index = 0)
+		{
+			return CAST_PTR(T*, tag_data_get_pointer(data, 
+				offset + (sizeof(T) * index), 
+				sizeof(T)) );
+		}
 	};
 
 
@@ -280,6 +291,11 @@ namespace Yelo
 
 			group_tag_to_string& Terminate();
 			group_tag_to_string& TagSwap();
+
+			inline cstring ToString()
+			{
+				return Terminate().TagSwap().str;
+			}
 		};
 
 		struct s_tag_iterator {

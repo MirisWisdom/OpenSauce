@@ -46,7 +46,7 @@ namespace Yelo
 		return blam::tag_block_add_and_get_element(this);
 	}
 
-	bool tag_data::resize(size_t new_size)
+	bool tag_data::resize(int32 new_size)
 	{
 		return blam::tag_data_resize(this, new_size);
 	}

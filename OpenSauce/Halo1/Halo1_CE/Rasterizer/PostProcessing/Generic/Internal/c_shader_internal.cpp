@@ -27,7 +27,7 @@ namespace Yelo
 		void	c_shader_internal::SetShaderDefinition(TagGroups::s_shader_postprocess_definition* definition)
 		{
 			// if the definition is not null this shader has not been Dtor'd, which is bad
-			ASSERT(m_members_generic.definition == NULL, "Generic shader tag definition being set before it has been nulled");
+			YELO_ASSERT_DISPLAY(m_members_generic.definition == nullptr, "Generic shader tag definition being set before it has been nulled");
 
 			c_shader_generic::SetShaderDefinition(definition);
 
@@ -58,7 +58,7 @@ namespace Yelo
 		void c_shader_internal::SetupShader()
 		{
 			// if the source data is not null this shader has not been Dtor'd, which is bad
-			ASSERT(m_members_internal.shader_source_data == NULL, "source data pointer being set before it has been deleted and nulled");
+			YELO_ASSERT_DISPLAY(m_members_internal.shader_source_data == nullptr, "source data pointer being set before it has been deleted and nulled");
 
 			// create a source data class for the base class to compile the shader from
 			m_members_internal.shader_source_data = new c_shader_data_postprocess_definition();
@@ -89,7 +89,7 @@ namespace Yelo
 				TagGroups::s_bitmap_group* group = TagGroups::TagGetForModify<TagGroups::s_bitmap_group>(bitmap_index);
 
 				// invalid bitmap index
-				ASSERT(group->bitmaps.Count > parameter.value.bitmap.bitmap_index, "parameter bitmap index is outside the bounds of the referenced bitmap");
+				YELO_ASSERT_DISPLAY(group->bitmaps.Count > parameter.value.bitmap.bitmap_index, "parameter bitmap index is outside the bounds of the referenced bitmap");
 
 				parameter.bitmap_value.runtime._internal.bitmap = &group->bitmaps[parameter.value.bitmap.bitmap_index];
 			}

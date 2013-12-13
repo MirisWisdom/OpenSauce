@@ -24,7 +24,8 @@ namespace Yelo
 			_weapon_hud_state_secondary_weapon_loaded_ammo,
 			_weapon_hud_state_dist_to_target,
 			_weapon_hud_state_elevation_to_target,
-			_weapon_hud_state,
+
+			k_number_of_weapon_hud_states,
 		};
 
 		enum weapon_crosshair_type
@@ -48,7 +49,8 @@ namespace Yelo
 			_weapon_crosshair_type_primary_trigger_ready,
 			_weapon_crosshair_type_secondary_trigger_ready,
 			_weapon_crosshair_type_flash_when_firing_with_depleted_battery,
-			_weapon_crosshair_type,
+
+			k_number_of_weapon_crosshair_types,
 		};
 	};
 

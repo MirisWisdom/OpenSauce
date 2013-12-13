@@ -48,6 +48,8 @@ namespace Yelo
 			// engine's iterator_new doesn't initialize 'finished_flag' and we use it for end() hacks
 			bool operator!=(const s_data_iterator& other) const;
 		}; BOOST_STATIC_ASSERT( sizeof(s_data_iterator) == 0x10 );
+
+		s_data_array* DataNewAndMakeValid(cstring name, int32 maximum_count, size_t datum_size);
 	};
 
 	namespace blam

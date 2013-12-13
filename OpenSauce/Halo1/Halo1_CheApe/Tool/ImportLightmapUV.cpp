@@ -95,6 +95,7 @@ namespace Yelo
 				obj_file_path.append(obj_argument);
 
 				bool has_extension = false;
+				// TODO: why minus 4?
 				if(obj_file_path.find(".obj", obj_file_path.length() - 4) != std::string::npos)
 					has_extension = true;
 
@@ -107,10 +108,10 @@ namespace Yelo
 				if(SUCCEEDED(hr)) hr = obj_file.ReplaceVertexUVs(bsp);
 				if(SUCCEEDED(hr)) hr = blam::tag_save(bsp_index) ? S_OK : E_FAIL;
 				if(FAILED(hr))
-					YELO_ERROR(_error_message_priority_warning, "OS_tool: failed to replace lightmap-uvs for structure_bsp: %s", args->bsp_name);
+					YELO_WARN("OS_tool: failed to replace lightmap-uvs for structure_bsp: %s", args->bsp_name);
 			}
 			else
-				YELO_ERROR(_error_message_priority_warning, "OS_tool: failed to open structure_bsp for editing: %s", args->bsp_name);
+				YELO_WARN("OS_tool: failed to open structure_bsp for editing: %s", args->bsp_name);
 		}
 	};
 };

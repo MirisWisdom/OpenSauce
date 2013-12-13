@@ -75,7 +75,7 @@
 // Double pointer implement get by-reference, with debug assert
 #define DPTR_IMP_GET_BYREF(name)	{	\
 	auto* name = GET_DPTR( name );		\
-	ASSERT( name, #name );				\
+	YELO_ASSERT( name );				\
 	return *name;						\
 }
 

@@ -36,7 +36,7 @@ namespace Yelo
 				printf_s("creating c++ definition of %s\n", tag_group_def->name);
 
 				char file_name[MAX_PATH];
-				sprintf_s(file_name, MAX_PATH, "%s.hpp", tag_group_def->name);
+				sprintf_s(file_name, "%s.hpp", tag_group_def->name);
 				FILE* file;
 				fopen_s(&file, file_name, "w+");
 
@@ -44,8 +44,8 @@ namespace Yelo
 				{
 					if(file)
 						fclose(file);
-					YELO_ERROR(_error_message_priority_warning, 
-						"OS_tool: failed to create file %s\n", file_name);
+					YELO_WARN("OS_tool: failed to create file %s\n", 
+						file_name);
 					return;
 				}
 
@@ -56,11 +56,8 @@ namespace Yelo
 			}
 			else
 			{
-				TagGroups::group_tag_to_string gt; gt.Terminate();
-				gt.group = *args->tag_group;
-				gt.TagSwap();
-
-				YELO_ERROR(_error_message_priority_warning, "OS_tool: failed to get tag definition for %s\n", gt.str);
+				YELO_WARN("OS_tool: failed to get tag definition for %s\n",
+					TagGroups::group_tag_to_string{*args->tag_group}.ToString());
 			}
 		}
 	};

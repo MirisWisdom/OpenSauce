@@ -53,11 +53,11 @@ static real_vector3d* ObjectDataFieldGetVector(const s_object_field_definition& 
 	s_object_data* object = obj._object;
 	switch(field.definition_index)
 	{
-	case _object_field_vector_position:				return CAST_PTR(real_vector3d*, &object->network.position);
-	case _object_field_vector_transitional_velocity:return &object->network.transitional_velocity;
-	case _object_field_vector_forward:				return &object->network.forward;
-	case _object_field_vector_up:					return &object->network.up;
-	case _object_field_vector_angular_velocity:		return &object->network.angular_velocity;
+	case _object_field_vector_position:				return CAST_PTR(real_vector3d*, &object->position);
+	case _object_field_vector_transitional_velocity:return &object->transitional_velocity;
+	case _object_field_vector_forward:				return &object->forward;
+	case _object_field_vector_up:					return &object->up;
+	case _object_field_vector_angular_velocity:		return &object->angular_velocity;
 	case _object_field_vector_center:				return CAST_PTR(real_vector3d*, &object->center);
 	}
 

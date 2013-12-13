@@ -21,6 +21,8 @@
 	#include "Networking/VersionCheckDedi.hpp"
 #endif
 
+// TODO: finish reimplementing for loops as ranged for, where applicable
+
 namespace Yelo
 {
 	namespace Networking { namespace VersionCheck
@@ -109,7 +111,7 @@ namespace Yelo
 
 		void*	c_version_check_manager_base::RequestCompleted_Callback(const bool download_succeeded, const char* buffer, const GHTTPByteCount buffer_length, void* component_data)
 		{
-			ASSERT(component_data, "the component data for a http request is NULL");
+			YELO_ASSERT_DISPLAY(component_data, "the component data for a http request is NULL");
 
 			auto* source = CAST_PTR(c_version_downloader*, component_data);
 
@@ -120,7 +122,7 @@ namespace Yelo
 
 		void*	c_version_check_manager_base::RequestCancelled_Callback(void* component_data)
 		{
-			ASSERT(component_data, "the component data for a http request is NULL");
+			YELO_ASSERT_DISPLAY(component_data, "the component data for a http request is NULL");
 
 			auto* source = CAST_PTR(c_version_downloader*, component_data);
 
@@ -143,9 +145,9 @@ namespace Yelo
 			m_available_version.SetBuild(K_OPENSAUCE_VERSION_BUILD_MAJ, K_OPENSAUCE_VERSION_BUILD_MIN, K_OPENSAUCE_VERSION_BUILD);
 
 			// when no requests are made and a new map is loaded GS asserts as 0 is a valid connection id
-			// -1 is not so we check against this later to avoid trying to close a non existant request
-			for(int32 i = 0; i < NUMBEROF(m_xml_sources); i++)
-				m_xml_sources[i].Ctor();
+			// -1 is not so we check against this later to avoid trying to close a non existent request
+			for (auto& xml_source : m_xml_sources)
+				xml_source.Ctor();
 		}
 
 		/*!
@@ -243,13 +245,13 @@ namespace Yelo
 			auto* server_list = new TiXmlElement("server_list");
 			server_list->SetAttribute("version", m_version_xml.list_version);
 
-			for(int32 i = 0; i < NUMBEROF(m_version_xml.urls); i++)
+			for (auto url : m_version_xml.urls)
 			{
-				if(is_null_or_empty(m_version_xml.urls[i]))
+				if(is_null_or_empty(url))
 					continue;
 
 				auto* server = new TiXmlElement("server");
-				auto* server_address = new TiXmlText(m_version_xml.urls[i]);
+				auto* server_address = new TiXmlText(url);
 
 				server->LinkEndChild(server_address);
 				server_list->LinkEndChild(server);
@@ -368,7 +370,7 @@ namespace Yelo
 
 					for(int j = 0; j < NUMBEROF(m_version_xml.urls); j++)
 					{
-						m_version_xml.urls[j][0] = 0;
+						m_version_xml.urls[j][0] = '\0';
 
 						if(url_iterator.MoveNext())
 							strcpy_s(m_version_xml.urls[j], sizeof(HTTP::t_http_url), url_iterator.Current()->m_version_xml_url);

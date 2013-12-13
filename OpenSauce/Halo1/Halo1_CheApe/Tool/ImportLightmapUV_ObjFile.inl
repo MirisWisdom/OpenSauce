@@ -27,7 +27,7 @@ HRESULT c_obj_file::LoadFromFile(std::string obj_path)
 			fclose(file);
 
 		fputs("failed\n", stdout);
-		YELO_ERROR(_error_message_priority_warning, "OS_tool:import: failed to open obj file");
+		YELO_WARN("OS_tool:import: failed to open obj file");
 		return E_FAIL;
 	}
 
@@ -85,12 +85,12 @@ HRESULT c_obj_file::LoadFromFile(std::string obj_path)
 	fclose(file);
 	if(m_groups.size() == 0)
 	{
-		YELO_ERROR(_error_message_priority_warning, "OS_tool:import: obj file contains no groups");
+		YELO_WARN("OS_tool:import: obj file contains no groups");
 		return E_FAIL;
 	}
 	if(m_texcoords.size() == 0)
 	{
-		YELO_ERROR(_error_message_priority_warning, "OS_tool:import: obj file contains no texture coordinates");
+		YELO_WARN("OS_tool:import: obj file contains no texture coordinates");
 		return E_FAIL;
 	}
 
@@ -112,7 +112,7 @@ HRESULT c_obj_file::CheckBspCompatibility(TagGroups::structure_bsp* bsp)
 	if(lightmaps_count != m_groups.size() )
 	{
 		fputs("failed\n", stdout);
-		YELO_ERROR(_error_message_priority_warning, "obj group count (%i) does not match bsp lightmap count (%i)\n", 
+		YELO_WARN("obj group count (%i) does not match bsp lightmap count (%i)\n",
 			m_groups.size(), lightmaps_count);
 		return E_FAIL;
 	}
@@ -121,17 +121,15 @@ HRESULT c_obj_file::CheckBspCompatibility(TagGroups::structure_bsp* bsp)
 		TagGroups::structure_bsp_lightmap* bsp_lightmap = blam::tag_block_get_element(bsp->lightmaps, i);
 
 		int32 surface_count = 0;
-		for(int32 j = 0; j < bsp_lightmap->materials.Count; j++)
+		for (const auto& bsp_material : bsp_lightmap->materials)
 		{
-			TagGroups::structure_bsp_material* bsp_material = blam::tag_block_get_element(bsp_lightmap->materials, j);
-
-			surface_count += bsp_material->surface_count;
+			surface_count += bsp_material.surface_count;
 		}
 
 		if(surface_count != m_groups[i]->faces.size())
 		{
 			printf_s("\nfailed\n");
-			YELO_ERROR(_error_message_priority_warning, "lightmap %i surface count (%i) does not match obj group %i face count (%i)",
+			YELO_WARN("lightmap %i surface count (%i) does not match obj group %i face count (%i)",
 				i, surface_count, i, m_groups[i]->faces.size());
 			return E_FAIL;					
 		}
@@ -145,42 +143,42 @@ HRESULT c_obj_file::ReplaceVertexUVs(TagGroups::structure_bsp* bsp)
 {
 	fputs("replacing lightmap texture coordinates...", stdout);
 
-	for(int32 i = 0; i < bsp->lightmaps.Count; i++)
+	size_t group_index = 0;
+	for (auto& bsp_lightmap : bsp->lightmaps)
 	{
-		TagGroups::structure_bsp_lightmap* bsp_lightmap = blam::tag_block_get_element(bsp->lightmaps, i);
+		const auto group = m_groups.at(group_index++);
 
-		if(bsp_lightmap->bitmap == NONE)
+		if(bsp_lightmap.bitmap == NONE)
 			continue;
 
 		int32 surface_offset = 0;
-		for(int32 j = 0; j < bsp_lightmap->materials.Count; j++)
+		for (auto& bsp_material : bsp_lightmap.materials)
 		{
-			TagGroups::structure_bsp_material* bsp_material = blam::tag_block_get_element(bsp_lightmap->materials, j);
-
 			// Get the lightmap vertices by skipping over the bsp's vertices
 			size_t lightmap_verticies_offset = 
-				bsp_material->vertices.vertex_start_index * sizeof(Rasterizer::environment_vertex_uncompressed);
+				bsp_material.vertices.vertex_start_index * sizeof(Rasterizer::environment_vertex_uncompressed);
 
-			Rasterizer::environment_lightmap_vertex_uncompressed* lightmap_verticies = 
-				CAST_PTR(Rasterizer::environment_lightmap_vertex_uncompressed*, 
-					bsp_material->uncompressed_vertices.Bytes() + lightmap_verticies_offset);
-
-			for(int32 k = 0; k < bsp_material->surface_count; k++)
+			size_t face_index = surface_offset;
+			for (int32 k = 0; k < bsp_material.surface_count; k++, face_index++)
 			{
-				TagGroups::structure_surface* surface = blam::tag_block_get_element(bsp->surfaces, bsp_material->surfaces + k);
+				TagGroups::structure_surface* surface = blam::tag_block_get_element(bsp->surfaces, bsp_material.surfaces + k);
 
-				s_face face = m_groups.at(i)->faces.at(surface_offset + k);
+				const s_face& face = group->faces.at(face_index);
 
-				for(int32 x = 0; x < NUMBEROF(surface->a); x++)
+				for (int32 x = 0; x < NUMBEROF(surface->a); x++)
 				{
-					lightmap_verticies[surface->a[x]].texcoord.x = 
+					auto lightmap_vertex = 
+						blam::tag_data_get_pointer<Rasterizer::environment_lightmap_vertex_uncompressed>(
+							bsp_material.uncompressed_vertices, lightmap_verticies_offset, surface->a[x]);
+
+					lightmap_vertex->texcoord.x =
 						m_texcoords[face.vertex_indicies[x].texcoord_index - 1].x;
-					lightmap_verticies[surface->a[x]].texcoord.y = 
+					lightmap_vertex->texcoord.y =
 						(m_texcoords[face.vertex_indicies[x].texcoord_index - 1].y - 1) * -1;
 				}
 			}
 
-			surface_offset += bsp_material->surface_count;
+			surface_offset += bsp_material.surface_count;
 		}				
 	}
 

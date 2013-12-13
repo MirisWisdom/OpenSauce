@@ -53,7 +53,7 @@ HRESULT CreateDevice(D3DPRESENT_PARAMETERS* pPresentationParameters)
 	global_d3d = Direct3DCreate9(D3D_SDK_VERSION);
 	if (!global_d3d)
 	{
-		YELO_ERROR(_error_message_priority_warning, "rasterizer: failed to create Direct3D object");
+		YELO_WARN("rasterizer: failed to create Direct3D object");
 
 		return E_FAIL;
 	}			
@@ -63,7 +63,7 @@ HRESULT CreateDevice(D3DPRESENT_PARAMETERS* pPresentationParameters)
 
 	if(FAILED(hr))
 	{
-		YELO_ERROR(_error_message_priority_warning, "rasterizer: failed to create Direct3D device");
+		YELO_WARN("rasterizer: failed to create Direct3D device");
 
 		return E_FAIL;
 	}

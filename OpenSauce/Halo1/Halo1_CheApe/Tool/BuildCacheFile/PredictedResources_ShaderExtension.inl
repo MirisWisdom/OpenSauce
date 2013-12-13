@@ -23,11 +23,11 @@ namespace ShaderExtension
 				extension.base_normal.map.tag_index,
 				0);
 
-		for(int32 x = 0; x < NUMBEROF(extension.detail_normals); x++)
-			if(!extension.detail_normals[x].map.tag_index.IsNull())
+		for (const auto& detail_normal : extension.detail_normals)
+			if(!detail_normal.map.tag_index.IsNull())
 				predicted_resources_add_resource(predicted_resources, 
 					Enums::_predicted_resource_bitmap,
-					extension.detail_normals[x].map.tag_index,
+					detail_normal.map.tag_index,
 					0);
 
 	}
@@ -41,15 +41,13 @@ namespace ShaderExtension
 
 		auto* gbxmodel_tag = blam::tag_get<TagGroups::gbxmodel_definition>(object_tag->object.references.render_model.tag_index);
 		
-		for(int32 i = 0; i < gbxmodel_tag->shaders.Count; i++)
+		for (const auto& model_shader : gbxmodel_tag->shaders)
 		{
-			const tag_reference& shader = gbxmodel_tag->shaders[i].shader;
-
-			if(	shader.group_tag != TagGroups::s_shader_model_definition::k_group_tag ||
-				shader.tag_index.IsNull())
+			if (model_shader.shader.group_tag != TagGroups::s_shader_model_definition::k_group_tag ||
+				model_shader.shader.tag_index.IsNull())
 				continue;
 
-			auto* shader_model_tag = blam::tag_get<TagGroups::s_shader_model_definition>(shader.tag_index);
+			auto* shader_model_tag = blam::tag_get<TagGroups::s_shader_model_definition>(model_shader.shader.tag_index);
 
 			if(shader_model_tag->model.maps.shader_extension.Count != 1)
 				continue;

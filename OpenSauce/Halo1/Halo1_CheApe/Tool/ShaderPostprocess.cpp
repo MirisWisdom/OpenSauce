@@ -17,15 +17,13 @@
 
 namespace Yelo
 {
-	namespace Enums
+	namespace Flags
 	{
 		enum shader_model_mask
 		{
 			_shader_model_mask_1_0 = 1 << 0,
 			_shader_model_mask_2_0 = 1 << 1,
 			_shader_model_mask_3_0 = 1 << 2,
-
-			_shader_model_mask
 		};
 	};
 	namespace Tool
@@ -106,13 +104,11 @@ namespace Yelo
 				switch(error)
 				{
 				case ERROR_FILE_NOT_FOUND:
-					YELO_ERROR(_error_message_priority_warning, 
-						"OS_Tool: no fx files found in directory \"%s\"\n",
+					YELO_WARN("OS_Tool: no fx files found in directory \"%s\"\n",
 						args->data_path);
 					break;
 				case ERROR_PATH_NOT_FOUND:
-					YELO_ERROR(_error_message_priority_warning, 
-						"OS_Tool: directory does not exist\"%s\"\n",
+					YELO_WARN("OS_Tool: directory does not exist\"%s\"\n",
 						args->data_path);
 					break;
 				case ERROR_NO_MORE_FILES:

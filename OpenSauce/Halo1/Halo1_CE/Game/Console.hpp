@@ -20,6 +20,6 @@ namespace Yelo
 
 		void Initialize();
 		void Dispose();
-		void PLATFORM_API Update(uint32 access_flags);
+		void PLATFORM_API Update(long_flags access_flags);
 	};
 };

@@ -9,8 +9,7 @@ void		WriteD3DXErrors(LPD3DXBUFFER error_buffer, int32 error_count)
 {
 	if(!error_buffer)
 	{
-		YELO_ERROR(_error_message_priority_warning,
-			"\tNO D3DX ERRORS?");
+		YELO_WARN("\tNO D3DX ERRORS?");
 		return;
 	}
 	std::string error_string(CAST_PTR(char*, error_buffer->GetBufferPointer()));
@@ -26,8 +25,7 @@ void		WriteD3DXErrors(LPD3DXBUFFER error_buffer, int32 error_count)
 		if((data_string_start = error_line.find(Settings::Get().active_profile.GetDataOverridePath())) != std::string::npos)
 			error_line.replace(0, strlen(Settings::Get().active_profile.GetDataOverridePath()), "");	
 
-		YELO_ERROR(_error_message_priority_warning, 
-			"\t%s",
+		YELO_WARN("\t%s",
 			error_line.c_str());
 
 		// remove the line to move
@@ -40,20 +38,15 @@ HRESULT		SetShaderData(
 	const LPD3DXBUFFER& effect_buffer,
 	TagGroups::s_shader_postprocess_definition* shader_tag)
 {
-	// allocate memory for the new binary data
-	shader_tag->shader_code_binary.address = 
-		YELO_MALLOC(effect_buffer->GetBufferSize(), false);
-
 	HRESULT hr = S_OK;
 
-	if(!shader_tag->shader_code_binary.address) 
+	// allocate memory for the new binary data
+	int32 shader_code_binary_size = CAST(int32, effect_buffer->GetBufferSize());
+	if (!blam::tag_data_resize(&shader_tag->shader_code_binary, shader_code_binary_size))
 	{				
-		YELO_ERROR(_error_message_priority_warning, 
-			"OS_tool: failed to allocate memory for binary data");
+		YELO_WARN("OS_tool: failed to allocate memory for binary data");
 		hr = E_FAIL;
 	}
-	else
-		shader_tag->shader_code_binary.size = effect_buffer->GetBufferSize();
 
 	if(SUCCEEDED(hr))
 	{
@@ -64,8 +57,7 @@ HRESULT		SetShaderData(
 			effect_buffer->GetBufferSize());
 		if(error_num != 0)
 		{
-			YELO_ERROR(_error_message_priority_warning, 
-				"OS_tool: failed to copy shader data to tag binary data field");
+			YELO_WARN("OS_tool: failed to copy shader data to tag binary data field");
 			hr = E_FAIL;
 		}		
 	}
@@ -74,7 +66,8 @@ HRESULT		SetShaderData(
 	return hr;
 }
 
-HRESULT		AddPassBlock(LPD3DXEFFECTCOMPILER& compiler, D3DXHANDLE pass, Yelo::TagBlock<Yelo::TagGroups::s_pass_definition>& block)
+HRESULT		AddPassBlock(LPD3DXEFFECTCOMPILER& compiler, D3DXHANDLE pass, 
+	TagBlock<TagGroups::s_pass_definition>& block)
 {
 	HRESULT success = S_OK;
 
@@ -83,12 +76,10 @@ HRESULT		AddPassBlock(LPD3DXEFFECTCOMPILER& compiler, D3DXHANDLE pass, Yelo::Tag
 	if(FAILED(success = compiler->GetPassDesc(pass, &pass_desc)))
 		return success;
 
-	// add a new block element and get a reference to it
-	int32 index = blam::tag_block_add_element(block);
-	Yelo::TagGroups::s_pass_definition& pass_block = block[index];
+	TagGroups::s_pass_definition& pass_block = *blam::tag_block_add_and_get_element(block);
 
 	// set the blocks fields
-	strncpy_s(pass_block.name, pass_desc.Name, Yelo::Enums::k_tag_string_length);
+	strncpy_s(pass_block.name, pass_desc.Name, Enums::k_tag_string_length);
 
 	D3DXHANDLE handle;
 	// should the target be cleared prior to this pass
@@ -130,7 +121,8 @@ HRESULT		AddPassBlock(LPD3DXEFFECTCOMPILER& compiler, D3DXHANDLE pass, Yelo::Tag
 	return success;
 }
 
-HRESULT		AddTechniqueBlock(LPD3DXEFFECTCOMPILER& compiler, D3DXHANDLE technique, Yelo::TagBlock<Yelo::TagGroups::s_technique_definition>& block)
+HRESULT		AddTechniqueBlock(LPD3DXEFFECTCOMPILER& compiler, D3DXHANDLE technique, 
+	TagBlock<TagGroups::s_technique_definition>& block)
 {
 	HRESULT success = S_OK;
 
@@ -139,9 +131,7 @@ HRESULT		AddTechniqueBlock(LPD3DXEFFECTCOMPILER& compiler, D3DXHANDLE technique,
 	if(FAILED(success = compiler->GetTechniqueDesc(technique, &technique_desc)))
 		return success;
 
-	// add a new block element and get a reference to it
-	int32 index = blam::tag_block_add_element(block);
-	Yelo::TagGroups::s_technique_definition& technique_block = block[index];
+	TagGroups::s_technique_definition& technique_block = *blam::tag_block_add_and_get_element(block);
 
 	// set the blocks fields
 	strncpy_s(technique_block.name, technique_desc.Name, Yelo::Enums::k_tag_string_length);
@@ -152,14 +142,14 @@ HRESULT		AddTechniqueBlock(LPD3DXEFFECTCOMPILER& compiler, D3DXHANDLE technique,
 	if(handle = compiler->GetAnnotationByName(technique, "shader_model_mask"))
 		compiler->GetInt(handle, &shader_model_mask);
 	else
-		shader_model_mask = Yelo::Enums::_shader_model_mask_1_0 | Yelo::Enums::_shader_model_mask_2_0 | Yelo::Enums::_shader_model_mask_3_0;
+		shader_model_mask = Flags::_shader_model_mask_1_0 | Flags::_shader_model_mask_2_0 | Flags::_shader_model_mask_3_0;
 
-	technique_block.shader_model.sm_1_0_bit = (shader_model_mask & Yelo::Enums::_shader_model_mask_1_0) == Yelo::Enums::_shader_model_mask_1_0;
-	technique_block.shader_model.sm_2_0_bit = (shader_model_mask & Yelo::Enums::_shader_model_mask_2_0) == Yelo::Enums::_shader_model_mask_2_0;
-	technique_block.shader_model.sm_3_0_bit = (shader_model_mask & Yelo::Enums::_shader_model_mask_3_0) == Yelo::Enums::_shader_model_mask_3_0;
+	technique_block.shader_model.sm_1_0_bit = (shader_model_mask & Flags::_shader_model_mask_1_0) == Flags::_shader_model_mask_1_0;
+	technique_block.shader_model.sm_2_0_bit = (shader_model_mask & Flags::_shader_model_mask_2_0) == Flags::_shader_model_mask_2_0;
+	technique_block.shader_model.sm_3_0_bit = (shader_model_mask & Flags::_shader_model_mask_3_0) == Flags::_shader_model_mask_3_0;
 
 	// add passes to the technique block
-	for(uint32 i = 0; i < technique_desc.Passes; i++)
+	for(UINT i = 0; i < technique_desc.Passes; i++)
 	{
 		D3DXHANDLE pass = compiler->GetPass(technique, i);
 
@@ -192,8 +182,7 @@ HRESULT		SetTechniqueBlocks(
 void		ClearTagData(TagGroups::s_shader_postprocess_definition* shader_tag)
 {
 	// remove any existing binary data
-	if(shader_tag->shader_code_binary.address)
-		TagGroups::tag_data_delete(&shader_tag->shader_code_binary);
+	TagGroups::tag_data_delete(&shader_tag->shader_code_binary);
 
 	// remove any existing technique blocks
 	tag_block_delete_all_elements(shader_tag->techniques);
@@ -220,8 +209,7 @@ HRESULT		CompileEffect(
 	{
 		puts("failed");
 		// inform the user that an error occurred and print the first two D3DX errors
-		YELO_ERROR(_error_message_priority_warning, 
-			"OS_tool: failed to compile effect (%X)", hr);
+		YELO_WARN("OS_tool: failed to compile effect (%X)", hr);
 		WriteD3DXErrors(error_buffer, 3);
 		safe_release(effect_buffer);
 	}
@@ -276,10 +264,8 @@ HRESULT		CreateEffectCompiler(
 	{
 		puts("failed");
 		// inform the user that an error occurred and print the first three D3DX errors
-		YELO_ERROR(_error_message_priority_warning, 
-			"OS_tool: failed to create effect compiler (%X)", hr);
-		YELO_ERROR(_error_message_priority_warning, 
-			"OS_tool: %s", fx_file);
+		YELO_WARN("OS_tool: failed to create effect compiler (%X)", hr);
+		YELO_WARN("OS_tool: %s", fx_file);
 		WriteD3DXErrors(error_buffer, 3);
 		safe_release(effect_compiler);
 	}
@@ -322,8 +308,7 @@ HRESULT		LoadShader(
 	}
 	else
 	{		
-		YELO_ERROR(_error_message_priority_warning, 
-			"OS_tool: failed to open/create postprocess tag (%X)", hr);
+		YELO_WARN("OS_tool: failed to open/create postprocess tag (%X)", hr);
 	}
 	return hr;
 }
@@ -339,8 +324,7 @@ HRESULT		SaveShader(
 	else
 	{
 		puts("failed");
-		YELO_ERROR(_error_message_priority_warning, 
-			"OS_tool: failed to save postprocess tag");
+		YELO_WARN("OS_tool: failed to save postprocess tag");
 	}
 	return (save_succeeded ? S_OK : E_FAIL);
 }

@@ -136,7 +136,6 @@ namespace Fov
 	ENGINE_PTR(s_console_globals, console_globals,			0x651E88, 0x5C3C98);
 
 	FUNC_PTR(CONSOLE_UPDATE_HOOK,		0x4C9BB3, 0x4B3607);
-	FUNC_PTR(CONSOLE_PROCESS_COMMAND,	0x4C9F10, 0x4B3960); // also in EngineFunctions.cpp
 
 
 //////////////////////////////////////////////////////////////////////////

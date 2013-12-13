@@ -6,9 +6,54 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/game/game_configuration.hpp>
+
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum {
+			k_maximum_number_of_hud_sounds = 12, // MAXIMUM_NUMBER_OF_HUD_SOUNDS
+		};
+	};
+
+	namespace Flags
+	{
+		enum unit_interface_flags : long_flags
+		{
+			_unit_interface_show_health_bit,
+			_unit_interface_blink_health_bit,
+			_unit_interface_show_shield_bit,
+			_unit_interface_blink_shield_bit,
+			_unit_interface_show_motion_sensor_bit,
+			_unit_interface_blink_motion_sensor_bit,
+		};
+	};
+
 	namespace GameUI
 	{
+		struct s_hud_unit_interface_unit
+		{
+			real shields, health;
+			UNKNOWN_TYPE(real);
+			game_ticks_t last_update_time;
+			struct {
+				game_ticks_t hud_background_element;
+				game_ticks_t health_panel_background_element;
+				game_ticks_t motion_sensor_elements;
+			}last_render_time;
+			datum_index unit_index;
+			int16 integrated_light_power; // 0 = off 1 = on
+			game_time_t integrated_light_time;
+			word_flags active_sound_elements;
+			PAD16;
+			datum_index sound_elements[Enums::k_maximum_number_of_hud_sounds]; // sound cache index
+		}; BOOST_STATIC_ASSERT( sizeof(s_hud_unit_interface_unit) == 0x58 );
+		struct s_hud_unit_interface
+		{
+			s_hud_unit_interface_unit units[Enums::k_maximum_number_of_local_players]; // 0x0
+			long_flags flags; // 0x58, unit_interface_flags
+		}; BOOST_STATIC_ASSERT( sizeof(s_hud_unit_interface) == 0x5C );
+		s_hud_unit_interface*		HudUnitInterface();
 	};
 };

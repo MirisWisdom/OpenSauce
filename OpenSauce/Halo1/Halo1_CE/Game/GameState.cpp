@@ -234,7 +234,7 @@ namespace Yelo
 		}
 		static void HandleGameStateLifeCycle(Enums::project_game_state_component_life_cycle life_cycle)
 		{
-			ASSERT( IN_RANGE_ENUM(life_cycle, Enums::k_number_of_project_game_state_component_life_cycles), "What fucking life cycle is this shit?");
+			YELO_ASSERT_DISPLAY( IN_RANGE_ENUM(life_cycle, Enums::k_number_of_project_game_state_component_life_cycles), "What fucking life cycle is this shit?");
 
 			Yelo::Main::s_project_game_state_component* components;
 			const int32 component_count = Yelo::Main::GetProjectComponents(components);

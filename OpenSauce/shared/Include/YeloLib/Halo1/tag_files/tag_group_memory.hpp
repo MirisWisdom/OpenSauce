@@ -12,16 +12,45 @@ namespace Yelo
 	struct tag_field;
 	struct tag_group;
 
+	namespace Enums
+	{
+		enum {
+			/// <summary>	Signals the end of a field comparison code list </summary>
+			_field_comparison_code_end,
+			/// <summary>	Signals that a block of bytes should be included from comparison (memcmp) </summary>
+			_field_comparison_code_bitwise,
+			/// <summary>	Signals that a block of bytes should be excluded from comparison </summary>
+			_field_comparison_code_skip,
+			/// <summary>	Signals that a uintptr_t comparison should be performed </summary>
+			_field_comparison_code_pointer,
+			/// <summary>	Signals that a tag_reference comparison should be performed </summary>
+			_field_comparison_code_tag_reference,
+			/// <summary>	Signals that a tag_data comparison should be performed </summary>
+			_field_comparison_code_tag_data,
+			/// <summary>	Signals that a tag_block comparison should be performed </summary>
+			_field_comparison_code_block,
+			/// <summary>	Signals that a block index comparison should be performed </summary>
+			/// <remarks>	field_index is the block_index field's index. code size is the byte size of the field. </remarks>
+			_field_comparison_code_block_index,
+			_field_comparison_code_vertex_buffer,
+
+			k_number_of_tag_field_comparison_code_types,
+
+			/// <remarks>	number of types field_comparison_code's [type] bitfield can support </remarks>
+			k_max_tag_field_comparison_code_types = 16,
+		};
+	};
+
 	namespace TagGroups
 	{
-		typedef int16 comparison_code_t;
-
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets the set of all registered block definitions </summary>
 		const std::unordered_set<tag_block_definition*>& GetBlockDefinitionsSet();
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets the set of all registered data definitions </summary>
 		const std::unordered_set<tag_data_definition*>& GetDataDefinitionsSet();
+
+		struct field_comparison_code;
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>
@@ -33,15 +62,17 @@ namespace Yelo
 			// these are, of course, not actual limits (tag system doesn't have any), but assumed.
 			enum {
 				k_max_direct_references = 31,
-				k_max_tag_reference_fields = 31, // doesn't include string_id_yelo fields
-				k_max_block_fields = 31,
-				k_max_block_index_fields = 31,
-				k_max_data_fields = 15,
-				k_max_string_fields = 15,
-				k_max_string_id_fields = 15, // doesn't include old string id fields (implemented as tag_string)
+				/// <remarks>	doesn't include string_id_yelo fields. </remarks>
+				k_max_tag_reference_fields = 255,	// dialogue has over 200
+				k_max_block_fields = 63,			// scenario has over 50
+				k_max_block_index_fields = 7,
+				k_max_data_fields = 7,
+				k_max_string_fields = 7,
+				/// <remarks>	doesn't include old string id fields (implemented as tag_string). </remarks>
+				k_max_string_id_fields = 15,
 
 				k_max_padding_amount = 2048,
-				k_max_comparison_codes = 511,
+				k_max_comparison_codes = 256,
 			};
 
 			struct {
@@ -70,20 +101,18 @@ namespace Yelo
 			size_t runtime_size;			// should be set to element_size, even if there's no actual size difference at runtime
 			struct {
 				// number of references to this fieldset (via block or block_index fields)
-				unsigned references				: boost::static_log2<k_max_direct_references>::value;
-				unsigned tag_reference_fields	: boost::static_log2<k_max_tag_reference_fields>::value;
-				unsigned block_fields			: boost::static_log2<k_max_block_fields>::value;
-				unsigned block_index_fields		: boost::static_log2<k_max_block_index_fields>::value;
-				unsigned data_fields			: boost::static_log2<k_max_data_fields>::value;
-				unsigned string_fields			: boost::static_log2<k_max_string_fields>::value;
-				unsigned string_id_fields		: boost::static_log2<k_max_string_id_fields>::value;
-				// 4 bits left before we break into another word
+				unsigned references				: bitfield_size<k_max_direct_references>::value;
+				unsigned tag_reference_fields	: bitfield_size<k_max_tag_reference_fields>::value;
+				unsigned block_fields			: bitfield_size<k_max_block_fields>::value;
+				unsigned block_index_fields		: bitfield_size<k_max_block_index_fields>::value;
+				unsigned data_fields			: bitfield_size<k_max_data_fields>::value;
+				unsigned string_fields			: bitfield_size<k_max_string_fields>::value;
+				unsigned string_id_fields		: bitfield_size<k_max_string_id_fields>::value;
+				// any more bitfields and we'll enter a new word boundary
 
 				size_t padding_amount;		// total amount of 'pad' annotated in this field set
 			}counts;
-			// codes used to compare tag data. negative numbers mean bytes to skip, positive numbers are to compare
-			// generally, only pointer-like data is skipped
-			comparison_code_t* comparison_codes;
+			field_comparison_code* comparison_codes;
 			const tag_field* block_name_field;
 
 			void Initialize(const tag_block_definition* group_header_definition, 
@@ -126,6 +155,22 @@ namespace Yelo
 			static bool Enabled();
 		}; BOOST_STATIC_ASSERT( sizeof(s_tag_field_set_runtime_data) == 0x18 );
 
+		struct field_comparison_code
+		{
+			BOOST_STATIC_ASSERT(Enums::k_number_of_tag_field_comparison_code_types <= Enums::k_max_tag_field_comparison_code_types);
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	The number of bytes involved in bitwise comparisons, else 0 </summary>
+			unsigned size : bitfield_size<s_tag_field_set_runtime_data::k_max_padding_amount>::value;	// 12
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	The kind of comparison code </summary>
+			unsigned type : bitfield_enum_size<Enums::k_max_tag_field_comparison_code_types>::value;	// 4
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	The field index in the fieldset for non-bitwise comparisons </summary>
+			signed field_index : 16;
+		}; BOOST_STATIC_ASSERT(sizeof(field_comparison_code) == 0x4);
+
+
 		struct s_tag_allocation_header // keep aligned to 16bytes
 		{
 			enum { k_signature = 'tahd' };
@@ -136,20 +181,106 @@ namespace Yelo
 			PAD32;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Gets the body data of this allocation. </summary>
+			///
+			/// <returns>	. </returns>
+			inline void* GetBody()
+			{
+				return this + 1;
+			}
+
+		private:
+			void Initialize();
+		public:
+			void Initialize(const tag_block_definition* definition);
+			void Initialize(const tag_data_definition* definition);
+
+		private:
+			friend class c_tag_block_allocations;
+			friend class c_tag_data_allocations;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Gets header pointer from body address. </summary>
+			///
+			/// <param name="body_address">	If non-null, the body address. </param>
+			///
+			/// <returns>	The header pointer if body isn't NULL, else NULL. </returns>
+			static inline s_tag_allocation_header* GetHeaderFromBody(void* body_address)
+			{
+				return body_address 
+					? CAST_PTR(s_tag_allocation_header*, body_address) - 1
+					: nullptr;
+			}
+			static s_tag_allocation_header* GetHeader(void* body_address, cstring body_definition_name);
+		public:
+			static bool Enabled();
+			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Get the allocation header for the given block instance </summary>
 			///
 			/// <param name="instance">	The block whose allocation header we want </param>
 			///
 			/// <returns>	null if allocation headers are disabled, an invalid header is encountered, or the instance is has no elements </returns>
-			static const s_tag_allocation_header* Get(const tag_block* instance);
+			static s_tag_allocation_header* Get(tag_block& instance);
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Get the allocation header for the given tag data instance </summary>
 			///
 			/// <param name="instance">	The tag data whose allocation header we want </param>
 			///
 			/// <returns>	null if allocation headers are disabled, an invalid header is encountered, or the instance is has no data </returns>
-			static const s_tag_allocation_header* Get(const tag_data* instance);
+			static s_tag_allocation_header* Get(tag_data& instance);
 		}; BOOST_STATIC_ASSERT( sizeof(s_tag_allocation_header) == 0x10 );
+
+		class c_tag_block_allocations
+		{
+			static size_t CalculateSize(const tag_block_definition* definition, int32 element_count);
+		public:
+			static void* New(const tag_block_definition* definition, int32 element_count, cstring file, uint32 line);
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Reallocates the block field's memory, updating its count and address in the process. </summary>
+			///
+			/// <param name="instance"> 	[in,out] The tag_block instance. </param>
+			/// <param name="new_count">	New element count. </param>
+			/// <param name="file">	   		The caller's file. </param>
+			/// <param name="line">	   		The caller's line. </param>
+			///
+			/// <returns>	reallocated elements address. </returns>
+			static void* Realloc(tag_block& instance, int32 new_count, cstring file, uint32 line);
+			static void Delete(void* elements, const tag_block_definition* definition, cstring file, uint32 line);
+			static void Delete(tag_block& instance, cstring file, uint32 line);
+		};
+#define TAG_BLOCK_NEW(definition, element_count) \
+	TagGroups::c_tag_block_allocations::New(definition, element_count, __FILE__, __LINE__)
+#define TAG_BLOCK_REALLOC(block, new_count) \
+	TagGroups::c_tag_block_allocations::Realloc(block, new_count, __FILE__, __LINE__)
+#define TAG_BLOCK_DELETE(block) \
+	TagGroups::c_tag_block_allocations::Delete(block, __FILE__, __LINE__)
+#define TAG_BLOCK_DELETE_ELEMENTS(definition, elements) \
+	TagGroups::c_tag_block_allocations::Delete(elements, definition, __FILE__, __LINE__)
+
+		class c_tag_data_allocations
+		{
+			static int32 CalculateSize(const tag_data_definition* definition, int32 size);
+		public:
+			static void* New(const tag_data_definition* definition, int32 size, cstring file, uint32 line);
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Reallocates the data field's memory, updating its size and address in the process. </summary>
+			///
+			/// <param name="instance">	[in,out] The tag_data instance. </param>
+			/// <param name="new_size">	New size of the data. </param>
+			/// <param name="file">	   	The caller's file. </param>
+			/// <param name="line">	   	The caller's line. </param>
+			///
+			/// <returns>	reallocated data address. </returns>
+			static void* Realloc(tag_data& instance, int32 new_size, cstring file, uint32 line);
+			static void Delete(tag_data& instance, cstring file, uint32 line);
+		};
+#define TAG_DATA_NEW(definition, size) \
+	TagGroups::c_tag_data_allocations::New(definition, size, __FILE__, __LINE__)
+#define TAG_DATA_REALLOC(data, new_size) \
+	TagGroups::c_tag_data_allocations::Realloc(data, new_size, __FILE__, __LINE__)
+#define TAG_DATA_DELETE(data) \
+	TagGroups::c_tag_data_allocations::Delete(data, __FILE__, __LINE__)
+
 
 		/// <summary>	Represents the allocation statistics for tag group child data (ie, blocks and tag data) </summary>
 		struct s_tag_allocation_statistics
@@ -217,7 +348,8 @@ namespace Yelo
 		/// <summary>	Represents the allocation statistics for a tag group and its child data </summary>
 		class c_tag_group_allocation_statistics
 		{
-			typedef std::vector<s_tag_allocation_statistics> children_array_t;
+			typedef std::vector<s_tag_allocation_statistics>
+				children_array_t;
 
 			tag m_group_tag;
 			children_array_t m_children;
@@ -242,6 +374,8 @@ namespace Yelo
 			inline children_array_t::const_iterator begin() const	{ return m_children.cbegin(); }
 			inline children_array_t::const_iterator end() const		{ return m_children.cend(); }
 
+			typedef std::unordered_map<Yelo::tag, Yelo::TagGroups::c_tag_group_allocation_statistics>
+				group_tag_to_stats_map_t;
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Are group allocation statistics enabled? </summary>
 			static bool Enabled();
@@ -279,6 +413,8 @@ namespace Yelo
 			static void DumpToFile();
 
 		private:
+			static const group_tag_to_stats_map_t& GroupStatistics();
+
 			static size_t BuildStatsForTagChildBlockRecursive(c_tag_group_allocation_statistics& group_stats,
 				tag_block* instance);
 		public:

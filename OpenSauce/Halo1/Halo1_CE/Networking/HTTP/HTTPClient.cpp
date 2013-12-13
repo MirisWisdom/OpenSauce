@@ -86,8 +86,9 @@ namespace Yelo
 			}
 		};
 
-		HANDLE							g_request_index_mutex = (HANDLE)NULL_HANDLE;
-		s_http_client_request_data		g_request_index[k_max_simultaneous_requests];
+		HANDLE							g_request_index_mutex = INVALID_HANDLE_VALUE;
+		std::array<s_http_client_request_data, k_max_simultaneous_requests>
+										g_request_index;
 
 		// success, buffer, buffer length, component data, returns new value for the component data
 		typedef void* (*proc_http_complete_callback)(const bool, const char*, const GHTTPByteCount, void*);
@@ -116,7 +117,7 @@ namespace Yelo
 #if !PLATFORM_IS_DEDI
 			HTTP_COMPONENT_CLIENT("MapDownloadClient", MapDownload::Initialize, MapDownload::Dispose, MapDownload::Update, MapDownload::RequestCompleted_Callback, MapDownload::RequestCancelled_Callback),
 #endif
-			HTTP_COMPONENT_CLIENT("VersionChecker", NULL, NULL, NULL, Networking::VersionCheck::RequestCompleted_Callback, Networking::VersionCheck::RequestCancelled_Callback),
+			HTTP_COMPONENT_CLIENT("VersionChecker", nullptr, nullptr, nullptr, Networking::VersionCheck::RequestCompleted_Callback, Networking::VersionCheck::RequestCancelled_Callback),
 		};BOOST_STATIC_ASSERT(NUMBEROF(g_http_components) == Enums::_http_client_component);
 
 #define K_HTTP_CLIENT_HEADER K_HTTP_CLIENT_ID "/" BOOST_STRINGIZE(K_OPENSAUCE_VERSION_BUILD_MAJ) "." BOOST_STRINGIZE(K_OPENSAUCE_VERSION_BUILD_MIN) "." BOOST_STRINGIZE(K_OPENSAUCE_VERSION_BUILD)
@@ -180,16 +181,16 @@ namespace Yelo
 		 */
 		void		Initialize()
 		{
-			g_request_index_mutex = CreateMutex(NULL, false, NULL);
+			g_request_index_mutex = CreateMutex(nullptr, false, nullptr);
 
-			for(int i = 0; i < NUMBEROF(g_request_index); i++)
-				g_request_index[i].Ctor();
+			for (auto& request : g_request_index)
+				request.Ctor();
 
 			ghttpStartup();
 
-			for(int i = 0; i < NUMBEROF(g_http_components); i++)
-				if(g_http_components[i].Initialize)
-					g_http_components[i].Initialize();
+			for (auto& component : g_http_components)
+				if (component.Initialize)
+					component.Initialize();
 		}
 
 		/*!
@@ -226,9 +227,10 @@ namespace Yelo
 
 			// only update requests that don't have the manual_think flag set, as they are probably being updated in a seperate thread
 			WaitForSingleObject(g_request_index_mutex, INFINITE);
-			for(int i = 0; i < NUMBEROF(g_request_index); i++)
-				if(g_request_index[i].m_flags.m_in_use && !g_request_index[i].m_flags.m_manual_think)
-					ghttpRequestThink(g_request_index[i].m_request_id);
+			for (auto& request : g_request_index)
+				if (request.m_flags.m_in_use && !request.m_flags.m_manual_think)
+					ghttpRequestThink(request.m_request_id);
+
 			ReleaseMutex(g_request_index_mutex);
 		}
 
@@ -246,10 +248,11 @@ namespace Yelo
 		 */
 		bool		SetupRequest(int32& index)
 		{
-			index = -1;
+			index = NONE;
 
+			// TODO: just range for g_request_index and use break when the if() is true
 			// find a slot that is not in use
-			for(int32 i = 0; (i < k_max_simultaneous_requests) && (index == -1); i++)
+			for(int32 i = 0; (i < k_max_simultaneous_requests) && (index == NONE); i++)
 				if(g_request_index[i].m_flags.m_in_use == false)
 					index = i;
 
@@ -300,14 +303,14 @@ namespace Yelo
 				void* param)
 		{
 			WaitForSingleObject(g_request_index_mutex, INFINITE);
-			s_http_client_request_data* request_user_data = CAST_PTR(s_http_client_request_data*, param);
+			auto request_user_data = CAST_PTR(s_http_client_request_data*, param);
 
-			ASSERT(g_http_components[request_user_data->m_component_index].CompletedCallback != NULL, "a http component has no completed callback assigned");
-			ASSERT(g_http_components[request_user_data->m_component_index].CancelledCallback != NULL, "a http component has no cancelled callback assigned");
+			YELO_ASSERT_DISPLAY(g_http_components[request_user_data->m_component_index].CompletedCallback, "a http component has no completed callback assigned");
+			YELO_ASSERT_DISPLAY(g_http_components[request_user_data->m_component_index].CancelledCallback, "a http component has no cancelled callback assigned");
 
 			if(result == GHTTPRequestCancelled)
 			{
-				// call the components cancelled callback, which returns the new component data value
+				// call the components canceled callback, which returns the new component data value
 				request_user_data->m_component_data = 
 					g_http_components[request_user_data->m_component_index].CancelledCallback(request_user_data->m_component_data);
 			}
@@ -337,8 +340,8 @@ namespace Yelo
 					return GHTTPTrue;
 				else
 					return GHTTPFalse;
-			default:
-				ASSERT(false, "unsupported ghttp request completed");
+			
+			YELO_ASSERT_CASE_UNREACHABLE();
 			}
 
 			return GHTTPTrue;
@@ -381,12 +384,12 @@ namespace Yelo
 			void * param)
 		{
 			WaitForSingleObject(g_request_index_mutex, INFINITE);
-			s_http_client_request_data* request_user_data = CAST_PTR(s_http_client_request_data*, param);
+			auto request_user_data = CAST_PTR(s_http_client_request_data*, param);
 
 			// update the progress variables for the current request
 			request_user_data->m_progress.m_state = state;
 
-			// the bytes recieved and total size can be use to get the download percentage
+			// the bytes received and total size can be use to get the download percentage
 			request_user_data->m_progress.m_bytes_received = bytesReceived;
 			request_user_data->m_progress.m_bytes_total = totalSize;
 
@@ -397,7 +400,7 @@ namespace Yelo
 			{
 				// copy the url string to the request data
 				// have to store a copy as due to multithreading the url pointer when used elsewhere could have a garbage string
-				if(0 != strcpy_s(request_user_data->m_progress.m_url, Enums::k_max_url_length, ghttpGetURL(request)))
+				if(0 != strcpy_s(request_user_data->m_progress.m_url, ghttpGetURL(request)))
 					request_user_data->m_progress.m_url[0] = 0;
 			}
 
@@ -423,10 +426,10 @@ namespace Yelo
 		{
 			WaitForSingleObject(g_request_index_mutex, INFINITE);
 
-			ASSERT((index >= 0) && (index < k_max_simultaneous_requests), "http request index outside of the arrays bounds");
+			YELO_ASSERT_DISPLAY(index >= 0 && index < k_max_simultaneous_requests, "http request index outside of the arrays bounds");
 
 			// cancel the http request
-			ASSERT(g_request_index[index].m_request_id >= 0, "attempting to abort an invalid request");
+			YELO_ASSERT_DISPLAY(g_request_index[index].m_request_id >= 0, "attempting to abort an invalid request");
 			if(g_request_index[index].m_request_id >= 0)
 			{
 				ghttpCancelRequest(g_request_index[index].m_request_id);
@@ -454,7 +457,7 @@ namespace Yelo
 		 */
 		void		HTTPRequestThink(int32 index)
 		{
-			ASSERT((index >= 0) && (index < k_max_simultaneous_requests), "http request index outside of the arrays bounds");
+			YELO_ASSERT_DISPLAY(index >= 0 && index < k_max_simultaneous_requests, "http request index outside of the arrays bounds");
 			ghttpRequestThink(g_request_index[index].m_request_id);
 		}
 
@@ -475,7 +478,7 @@ namespace Yelo
 		 * Optional data that the component needs to be attached to the request.
 		 * 
 		 * \param buffer
-		 * An optional data buffer to copy the recieved data in to. If NULL, GHTTP allocates memory for the data itself.
+		 * An optional data buffer to copy the received data in to. If NULL, GHTTP allocates memory for the data itself.
 		 * 
 		 * \param buffer_size
 		 * The size of the data pointed to by "buffer".
@@ -536,7 +539,7 @@ namespace Yelo
 				header_string.c_str(),
 				buffer,
 				buffer_size,
-				NULL,
+				nullptr,
 				GHTTPFalse,
 				(blocking ? GHTTPTrue : GHTTPFalse),
 				RequestProgress,
@@ -551,7 +554,7 @@ namespace Yelo
 			if(request_id < 0)
 			{
 				HTTPRequestAbort(request_index);
-				return -1;
+				return NONE;
 			}
 
 			return request_index;
@@ -571,8 +574,8 @@ namespace Yelo
 		 */
 		int QueryBytesTotal(int32 request_index)
 		{
-			if(request_index <= -1 || !g_request_index[request_index].m_flags.m_in_use)
-				return -1;
+			if(request_index <= NONE || !g_request_index[request_index].m_flags.m_in_use)
+				return NONE;
 
 			return (int)g_request_index[request_index].m_progress.m_bytes_total;
 		}
@@ -591,8 +594,8 @@ namespace Yelo
 		 */
 		int QueryBytesReceived(int32 request_index)
 		{
-			if(request_index <= -1 || !g_request_index[request_index].m_flags.m_in_use)
-				return -1;
+			if(request_index <= NONE || !g_request_index[request_index].m_flags.m_in_use)
+				return NONE;
 
 			return (int)g_request_index[request_index].m_progress.m_bytes_received;
 		}
@@ -633,7 +636,7 @@ namespace Yelo
 		 */
 		GHTTPState QueryDownloadState(int32 request_index)
 		{
-			if(request_index <= -1 || !g_request_index[request_index].m_flags.m_in_use)
+			if(request_index <= NONE || !g_request_index[request_index].m_flags.m_in_use)
 				return GHTTPSocketInit;
 
 			return g_request_index[request_index].m_progress.m_state;
@@ -653,7 +656,7 @@ namespace Yelo
 		 */
 		int QueryResponseStatus(int32 request_index)
 		{
-			if(request_index <= -1 || !g_request_index[request_index].m_flags.m_in_use)
+			if(request_index <= NONE || !g_request_index[request_index].m_flags.m_in_use)
 				return 0;
 
 			return g_request_index[request_index].m_progress.m_status_code;

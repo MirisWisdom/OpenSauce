@@ -184,15 +184,14 @@
     <ClInclude Include="..\..\shared\Include\blamlib\tag_files\tag_groups_base.hpp">
       <Filter>.blamlib\tag_files</Filter>
     </ClInclude>
-	<ClCompile Include="..\..\shared\Include\blamlib\tag_files\tag_groups_base.cpp">
+    <ClCompile Include="..\..\shared\Include\blamlib\tag_files\tag_groups_base.cpp">
       <Filter>.blamlib\tag_files</Filter>
     </ClCompile>
   </ItemGroup>
-
   <!--<Import Project="..\..\shared\config\msbuild\blamlib_Halo1.vcxproj.filters" />-->
-  <ItemGroup
-    > <!--ai-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\actions.hpp">
+  <ItemGroup>
+    <!--ai-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\actions.hpp">
       <Filter>.blamlib\ai</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\actor_combat.hpp">
@@ -238,17 +237,15 @@
       <Filter>.blamlib\ai</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--bitmaps-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\bitmaps\bitmap_group.hpp">
+  <ItemGroup>
+    <!--bitmaps-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\bitmaps\bitmap_group.hpp">
       <Filter>.blamlib\bitmaps</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--bungie_net-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\bungie_net\network\transport_address.hpp">
+  <ItemGroup>
+    <!--bungie_net-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\bungie_net\network\transport_address.hpp">
       <Filter>.blamlib\bungie_net\network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\bungie_net\network\transport_endpoint_set_winsock.hpp">
@@ -258,10 +255,9 @@
       <Filter>.blamlib\bungie_net\network</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--cache-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\cache_constants.hpp">
+  <ItemGroup>
+    <!--cache-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\cache_constants.hpp">
       <Filter>.blamlib\cache</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files.hpp">
@@ -283,27 +279,24 @@
       <Filter>.blamlib\cache</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--camera-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\director.hpp">
+  <ItemGroup>
+    <!--camera-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\director.hpp">
       <Filter>.blamlib\camera</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--cseries-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\cseries\cseries.hpp">
+  <ItemGroup>
+    <!--cseries-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cseries\cseries.hpp">
       <Filter>.blamlib\cseries</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cseries\errors.hpp">
       <Filter>.blamlib\cseries</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--cutscene-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\cutscene\recorded_animation_definitions.hpp">
+  <ItemGroup>
+    <!--cutscene-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cutscene\recorded_animation_definitions.hpp">
       <Filter>.blamlib\cutscene</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cutscene\recorded_animation_playback.hpp">
@@ -316,10 +309,9 @@
       <Filter>.blamlib\cutscene</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--devices-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\devices\device_controls.hpp">
+  <ItemGroup>
+    <!--devices-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\devices\device_controls.hpp">
       <Filter>.blamlib\devices</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\devices\device_definitions.hpp">
@@ -338,10 +330,9 @@
       <Filter>.blamlib\devices</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--effects-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\effects\contrails.hpp">
+  <ItemGroup>
+    <!--effects-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\effects\contrails.hpp">
       <Filter>.blamlib\effects</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\effects\damage_effect_definitions.hpp">
@@ -372,16 +363,18 @@
       <Filter>.blamlib\effects</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--game-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\action_queue.hpp">
+  <ItemGroup>
+    <!--game-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\action_queue.hpp">
       <Filter>.blamlib\game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\cheats.hpp">
       <Filter>.blamlib\game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game.hpp">
+      <Filter>.blamlib\game</Filter>
+    </ClInclude>
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_configuration.hpp">
       <Filter>.blamlib\game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_allegiance.hpp">
@@ -439,19 +432,18 @@
       <Filter>.blamlib\game</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--hs-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs.hpp">
+  <ItemGroup>
+    <!--hs-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs.hpp">
       <Filter>.blamlib\hs</Filter>
     </ClInclude>
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs.cpp">
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs.cpp">
       <Filter>.blamlib\hs</Filter>
     </ClCompile>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_compile.hpp">
       <Filter>.blamlib\hs</Filter>
     </ClInclude>
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs_compile.cpp">
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs_compile.cpp">
       <Filter>.blamlib\hs</Filter>
     </ClCompile>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_constants.hpp">
@@ -463,7 +455,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_runtime.hpp">
       <Filter>.blamlib\hs</Filter>
     </ClInclude>
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs_runtime.cpp">
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs_runtime.cpp">
       <Filter>.blamlib\hs</Filter>
     </ClCompile>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_scenario_definitions.hpp">
@@ -476,22 +468,23 @@
       <Filter>.blamlib\hs</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--input-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\input\input_abstraction.hpp">
+  <ItemGroup>
+    <!--input-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\input\input_abstraction.hpp">
       <Filter>.blamlib\input</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\input\input_windows.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\input\input_windows.hpp">
       <Filter>.blamlib\input</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--interface-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\first_person_weapons.hpp">
+  <ItemGroup>
+    <!--interface-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\first_person_weapons.hpp">
       <Filter>.blamlib\interface</Filter>
     </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\interface\first_person_weapons.cpp">
+      <Filter>.blamlib\interface</Filter>
+    </ClCompile>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud.hpp">
       <Filter>.blamlib\interface</Filter>
     </ClInclude>
@@ -556,10 +549,9 @@
       <Filter>.blamlib\interface</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--items-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\items\equipment_definitions.hpp">
+  <ItemGroup>
+    <!--items-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\items\equipment_definitions.hpp">
       <Filter>.blamlib\items</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\items\equipment_structures.hpp">
@@ -587,10 +579,9 @@
       <Filter>.blamlib\items</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--main-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\main\console.hpp">
+  <ItemGroup>
+    <!--main-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\main\console.hpp">
       <Filter>.blamlib\main</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\main\levels.hpp">
@@ -600,17 +591,15 @@
       <Filter>.blamlib\main</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--math-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\math\periodic_functions.hpp">
+  <ItemGroup>
+    <!--math-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\math\periodic_functions.hpp">
       <Filter>.blamlib\math</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--memory-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\memory\array.hpp">
+  <ItemGroup>
+    <!--memory-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\memory\array.hpp">
       <Filter>.blamlib\memory</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\memory\bitstream.hpp">
@@ -622,20 +611,19 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\memory\data.hpp">
       <Filter>.blamlib\memory</Filter>
     </ClInclude>
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\memory\data.cpp">
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\memory\data.cpp">
       <Filter>.blamlib\memory</Filter>
     </ClCompile>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\memory\lruv_cache.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\memory\lruv_cache.hpp">
       <Filter>.blamlib\memory</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\memory\memory_pool.hpp">
       <Filter>.blamlib\memory</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--models-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\models\collision_model_definitions.hpp">
+  <ItemGroup>
+    <!--models-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\models\collision_model_definitions.hpp">
       <Filter>.blamlib\models</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\models\model_animation_definitions.hpp">
@@ -648,10 +636,9 @@
       <Filter>.blamlib\models</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--networking-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\message_delta_definitions.hpp">
+  <ItemGroup>
+    <!--networking-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\message_delta_definitions.hpp">
       <Filter>.blamlib\networking</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\message_delta_parameters_protocol.hpp">
@@ -691,10 +678,9 @@
       <Filter>.blamlib\networking</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--objects-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\objects\damage.hpp">
+  <ItemGroup>
+    <!--objects-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\objects\damage.hpp">
       <Filter>.blamlib\objects</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\objects\index_resolution.hpp">
@@ -724,18 +710,16 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\objects\sound_scenery_definitions.hpp">
       <Filter>.blamlib\objects</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\objects\vehicle_remapper.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\objects\vehicle_remapper.hpp">
       <Filter>.blamlib\objects</Filter>
     </ClInclude>
-
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\objects\widgets\widgets.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\objects\widgets\widgets.hpp">
       <Filter>.blamlib\objects\widgets</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--physics-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\physics\collision_bsp.hpp">
+  <ItemGroup>
+    <!--physics-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\physics\collision_bsp.hpp">
       <Filter>.blamlib\physics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\physics\collision_bsp_definitions.hpp">
@@ -757,27 +741,24 @@
       <Filter>.blamlib\physics</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--rasterizer-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\rasterizer\rasterizer.hpp">
+  <ItemGroup>
+    <!--rasterizer-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\rasterizer\rasterizer.hpp">
       <Filter>.blamlib\rasterizer</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\rasterizer\rasterizer_geometry.hpp">
       <Filter>.blamlib\rasterizer</Filter>
     </ClInclude>
-
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\rasterizer\dx9\rasterizer_dx9.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\rasterizer\dx9\rasterizer_dx9.hpp">
       <Filter>.blamlib\rasterizer\dx9</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\rasterizer\dx9\rasterizer_dx9_render_targets.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\rasterizer\dx9\rasterizer_dx9_render_targets.hpp">
       <Filter>.blamlib\rasterizer\dx9</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--render-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\render\render.hpp">
+  <ItemGroup>
+    <!--render-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\render\render.hpp">
       <Filter>.blamlib\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\render\render_cameras.hpp">
@@ -790,10 +771,9 @@
       <Filter>.blamlib\render</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--saved_games-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\saved_games\game_state.hpp">
+  <ItemGroup>
+    <!--saved_games-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\saved_games\game_state.hpp">
       <Filter>.blamlib\saved_games</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\saved_games\game_variant.hpp">
@@ -806,73 +786,66 @@
       <Filter>.blamlib\saved_games</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--scenario-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\scenario\scenario.hpp">
+  <ItemGroup>
+    <!--scenario-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\scenario\scenario.hpp">
       <Filter>.blamlib\scenario</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\scenario\scenario_definitions.hpp">
       <Filter>.blamlib\scenario</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\scenario\scenario_object_definitions_structures.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\scenario\scenario_object_definitions_structures.hpp">
       <Filter>.blamlib\scenario</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\scenario\sky_definitions.hpp">
       <Filter>.blamlib\scenario</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--shaders-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\shaders\shader_definitions.hpp">
+  <ItemGroup>
+    <!--shaders-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\shaders\shader_definitions.hpp">
       <Filter>.blamlib\shaders</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--sound-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\sound\sound_definitions.hpp">
+  <ItemGroup>
+    <!--sound-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\sound\sound_definitions.hpp">
       <Filter>.blamlib\sound</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\sound\sound_environment_definitions.hpp">
       <Filter>.blamlib\sound</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--structures-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\structures\cluster_partitions.hpp">
+  <ItemGroup>
+    <!--structures-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\structures\cluster_partitions.hpp">
       <Filter>.blamlib\structures</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\structures\structure_bsp_definitions.hpp">
       <Filter>.blamlib\structures</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--tag_files-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\files.hpp">
+  <ItemGroup>
+    <!--tag_files-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\files.hpp">
       <Filter>.blamlib\tag_files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups.hpp">
       <Filter>.blamlib\tag_files</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--text-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\text\draw_string.hpp">
+  <ItemGroup>
+    <!--text-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\text\draw_string.hpp">
       <Filter>.blamlib\text</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\text\text_group.hpp">
       <Filter>.blamlib\text</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--units-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\biped_definitions.hpp">
+  <ItemGroup>
+    <!--units-->
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\biped_definitions.hpp">
       <Filter>.blamlib\units</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\biped_structures.hpp">
@@ -896,7 +869,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\unit_structures.hpp">
       <Filter>.blamlib\units</Filter>
     </ClInclude>
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\units\unit_structures.cpp">
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\units\unit_structures.cpp">
       <Filter>.blamlib\units</Filter>
     </ClCompile>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\units\units.hpp">
@@ -912,43 +885,37 @@
       <Filter>.blamlib\units</Filter>
     </ClInclude>
   </ItemGroup>
-
   <!--<Import Project="..\..\shared\config\msbuild\blamlib_Halo1_Game.vcxproj.filters" />-->
-  <ItemGroup
-    > <!--effects GAME-->
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\effects\damage_effect_definitions.cpp">
+  <ItemGroup>
+    <!--effects GAME-->
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\effects\damage_effect_definitions.cpp">
       <Filter>.blamlib\effects</Filter>
     </ClCompile>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--interface GAME-->
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\interface\map_list.cpp">
+  <ItemGroup>
+    <!--interface GAME-->
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\interface\map_list.cpp">
       <Filter>.blamlib\interface</Filter>
     </ClCompile>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--main GAME-->
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\main\main.cpp">
+  <ItemGroup>
+    <!--main GAME-->
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\main\main.cpp">
       <Filter>.blamlib\main</Filter>
     </ClCompile>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--objects GAME-->
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\objects\object_structures.cpp">
+  <ItemGroup>
+    <!--objects GAME-->
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\objects\object_structures.cpp">
       <Filter>.blamlib\objects</Filter>
     </ClCompile>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--rasterizer GAME-->
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\rasterizer\dx9\rasterizer_dx9_render_targets.cpp">
+  <ItemGroup>
+    <!--rasterizer GAME-->
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\rasterizer\dx9\rasterizer_dx9_render_targets.cpp">
       <Filter>.blamlib\rasterizer\dx9</Filter>
     </ClCompile>
   </ItemGroup>
-
   <ItemGroup>
     <Filter Include=".YeloLib">
       <UniqueIdentifier>{f5274ea1-3518-4778-aa74-7466cce92d4b}</UniqueIdentifier>
@@ -1157,117 +1124,103 @@
       <Filter>.YeloLib\tag_files</Filter>
     </ClInclude>
   </ItemGroup>
-
   <!--<Import Project="..\..\shared\config\msbuild\YeloLib_Halo1.vcxproj.filters" />-->
-  <ItemGroup
-    > <!--cache-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_files_yelo.hpp">
+  <ItemGroup>
+    <!--cache-->
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_files_yelo.hpp">
       <Filter>.YeloLib\cache</Filter>
     </ClInclude>
-	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_files_yelo.cpp">
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_files_yelo.cpp">
       <Filter>.YeloLib\cache</Filter>
     </ClCompile>
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_memory_layout_table_definitions.hpp">
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_memory_layout_table_definitions.hpp">
       <Filter>.YeloLib\cache</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\data_file_yelo.hpp">
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\data_file_yelo.hpp">
       <Filter>.YeloLib\cache</Filter>
     </ClInclude>
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\data_file_yelo.cpp">
       <Filter>.YeloLib\cache</Filter>
     </ClCompile>
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\shared_cache_file_definitions.hpp">
-      <Filter>.YeloLib\cache</Filter>
-    </ClInclude>
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\shared_cache_files.hpp">
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\shared_cache_file_definitions.hpp">
       <Filter>.YeloLib\cache</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--cseries-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cseries\cseries_yelo.hpp">
+  <ItemGroup>
+    <!--cseries-->
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cseries\cseries_yelo.hpp">
       <Filter>.YeloLib\cseries</Filter>
     </ClInclude>
-	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cseries\cseries_yelo.cpp">
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cseries\cseries_yelo.cpp">
       <Filter>.YeloLib\cseries</Filter>
     </ClCompile>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--effects-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\effects\effects_constants_yelo.hpp">
+  <ItemGroup>
+    <!--effects-->
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\effects\effects_constants_yelo.hpp">
       <Filter>.YeloLib\effects</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--files-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\files\packed_file.hpp">
+  <ItemGroup>
+    <!--files-->
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\files\packed_file.hpp">
       <Filter>.YeloLib\files</Filter>
     </ClInclude>
-	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\files\packed_file.cpp">
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\files\packed_file.cpp">
       <Filter>.YeloLib\files</Filter>
     </ClCompile>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--game-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\game\game_engine_yelo.hpp">
+  <ItemGroup>
+    <!--game-->
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\game\game_engine_yelo.hpp">
       <Filter>.YeloLib\game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\game\game_results_yelo.hpp">
       <Filter>.YeloLib\game</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--hs-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_yelo.hpp">
+  <ItemGroup>
+    <!--hs-->
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_yelo.hpp">
       <Filter>.YeloLib\hs</Filter>
     </ClInclude>
-	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_yelo.cpp">
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_yelo.cpp">
       <Filter>.YeloLib\hs</Filter>
     </ClCompile>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--interface-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\interface\equipment_hud_interface_definition.hpp">
+  <ItemGroup>
+    <!--interface-->
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\interface\equipment_hud_interface_definition.hpp">
       <Filter>.YeloLib\interface</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--items-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\items\equipment_definitions_yelo.hpp">
+  <ItemGroup>
+    <!--items-->
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\items\equipment_definitions_yelo.hpp">
       <Filter>.YeloLib\items</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\items\equipment_structures_yelo.hpp">
       <Filter>.YeloLib\items</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--memory-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\memory\data_yelo.hpp">
+  <ItemGroup>
+    <!--memory-->
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\memory\data_yelo.hpp">
       <Filter>.YeloLib\memory</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--models-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\models\model_animation_definitions_yelo.hpp">
+  <ItemGroup>
+    <!--models-->
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\models\model_animation_definitions_yelo.hpp">
       <Filter>.YeloLib\models</Filter>
     </ClInclude>
-	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\models\model_animation_definitions_yelo.cpp">
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\models\model_animation_definitions_yelo.cpp">
       <Filter>.YeloLib\models</Filter>
     </ClCompile>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--open_sauce-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\blam_memory_upgrades.hpp">
+  <ItemGroup>
+    <!--open_sauce-->
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\blam_memory_upgrades.hpp">
       <Filter>.YeloLib\open_sauce</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_global_cv_definitions.hpp">
@@ -1276,63 +1229,58 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_global_definitions.hpp">
       <Filter>.YeloLib\open_sauce</Filter>
     </ClInclude>
-	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_global_definitions.cpp">
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_global_definitions.cpp">
       <Filter>.YeloLib\open_sauce</Filter>
     </ClCompile>
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_scenario_definitions.hpp">
       <Filter>.YeloLib\open_sauce</Filter>
     </ClInclude>
-	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_scenario_definitions.cpp">
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_scenario_definitions.cpp">
       <Filter>.YeloLib\open_sauce</Filter>
     </ClCompile>
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\yelo_version.hpp">
       <Filter>.YeloLib\open_sauce</Filter>
     </ClInclude>
-
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\yelo_settings_definitions.hpp">
       <Filter>.YeloLib\open_sauce\settings</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\yelo_shared_settings.hpp">
       <Filter>.YeloLib\open_sauce\settings</Filter>
     </ClInclude>
-	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\yelo_shared_settings.cpp">
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\yelo_shared_settings.cpp">
       <Filter>.YeloLib\open_sauce\settings</Filter>
     </ClCompile>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--rasterizer-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\rasterizer\rasterizer.hpp">
+  <ItemGroup>
+    <!--rasterizer-->
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\rasterizer\rasterizer.hpp">
       <Filter>.YeloLib\rasterizer</Filter>
     </ClInclude>
-	<None Include="..\..\shared\Include\YeloLib\Halo1\rasterizer\rasterizer_upgrades.inl">
+    <None Include="..\..\shared\Include\YeloLib\Halo1\rasterizer\rasterizer_upgrades.inl">
       <Filter>.YeloLib\rasterizer</Filter>
     </None>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--render-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\render_constants_yelo.hpp">
+  <ItemGroup>
+    <!--render-->
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\render_constants_yelo.hpp">
       <Filter>.YeloLib\render</Filter>
     </ClInclude>
-	<None Include="..\..\shared\Include\YeloLib\Halo1\render\render_objects_upgrades.inl">
+    <None Include="..\..\shared\Include\YeloLib\Halo1\render\render_objects_upgrades.inl">
       <Filter>.YeloLib\render</Filter>
     </None>
     <None Include="..\..\shared\Include\YeloLib\Halo1\render\render_particles_upgrades.inl">
       <Filter>.YeloLib\render</Filter>
     </None>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--saved_games-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\saved_games\game_state_yelo.hpp">
+  <ItemGroup>
+    <!--saved_games-->
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\saved_games\game_state_yelo.hpp">
       <Filter>.YeloLib\saved_games</Filter>
     </ClInclude>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--shaders-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\shaders\effect_postprocess_collection_definitions.hpp">
+  <ItemGroup>
+    <!--shaders-->
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\shaders\effect_postprocess_collection_definitions.hpp">
       <Filter>.YeloLib\shaders</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\shaders\effect_postprocess_generic_definitions.hpp">
@@ -1341,7 +1289,7 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\shaders\shader_postprocess_definitions.hpp">
       <Filter>.YeloLib\shaders</Filter>
     </ClInclude>
-	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\shaders\shader_postprocess_definitions.cpp">
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\shaders\shader_postprocess_definitions.cpp">
       <Filter>.YeloLib\shaders</Filter>
     </ClCompile>
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\shaders\shader_postprocess_generic_definitions.hpp">
@@ -1350,30 +1298,28 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\shaders\shader_postprocess_globals_definitions.hpp">
       <Filter>.YeloLib\shaders</Filter>
     </ClInclude>
-	<None Include="..\..\shared\Include\YeloLib\Halo1\shaders\shader_postprocess_runtime.inl">
+    <None Include="..\..\shared\Include\YeloLib\Halo1\shaders\shader_postprocess_runtime.inl">
       <Filter>.YeloLib\shaders</Filter>
     </None>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--shell-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\shell\shell_windows_command_line.hpp">
+  <ItemGroup>
+    <!--shell-->
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\shell\shell_windows_command_line.hpp">
       <Filter>.YeloLib\shell</Filter>
     </ClInclude>
-	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\shell\shell_windows_command_line.cpp">
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\shell\shell_windows_command_line.cpp">
       <Filter>.YeloLib\shell</Filter>
     </ClCompile>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--tag_files-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_id_yelo.hpp">
+  <ItemGroup>
+    <!--tag_files-->
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_id_yelo.hpp">
       <Filter>.YeloLib\tag_files</Filter>
     </ClInclude>
-	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_id_yelo.cpp">
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_id_yelo.cpp">
       <Filter>.YeloLib\tag_files</Filter>
     </ClCompile>
-	<None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.components.inl">
+    <None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.components.inl">
       <Filter>.YeloLib\tag_files\string_ids</Filter>
     </None>
     <None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.game_engine.inl">
@@ -1401,17 +1347,15 @@
       <Filter>.YeloLib\tag_files\string_ids</Filter>
     </None>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--units-->
-	<None Include="..\..\shared\Include\YeloLib\Halo1\units\units_grenade_count_upgrade.inl">
+  <ItemGroup>
+    <!--units-->
+    <None Include="..\..\shared\Include\YeloLib\Halo1\units\units_grenade_count_upgrade.inl">
       <Filter>.YeloLib\units</Filter>
     </None>
   </ItemGroup>
-
-  <ItemGroup
-    > <!--CheApe-->
-	<Xml Include="..\..\shared\Halo1\CheApe\effect_postprocess.xml">
+  <ItemGroup>
+    <!--CheApe-->
+    <Xml Include="..\..\shared\Halo1\CheApe\effect_postprocess.xml">
       <Filter>_Resources\OpenSauceIDE</Filter>
     </Xml>
     <Xml Include="..\..\shared\Halo1\CheApe\effect_postprocess_collection.xml">
@@ -1447,7 +1391,7 @@
     <Xml Include="..\..\shared\Halo1\CheApe\string_id_yelo.xml">
       <Filter>_Resources\OpenSauceIDE</Filter>
     </Xml>
-	<Xml Include="..\..\shared\Halo1\CheApe\tag_database.xml">
+    <Xml Include="..\..\shared\Halo1\CheApe\tag_database.xml">
       <Filter>_Resources\OpenSauceIDE</Filter>
     </Xml>
     <Xml Include="..\..\shared\Halo1\CheApe\text_value_pair_definition.xml">
@@ -1466,9 +1410,7 @@
       <Filter>_Resources\OpenSauceIDE\shaders</Filter>
     </Xml>
   </ItemGroup>
-
   <Import Project="..\..\shared\config\msbuild\YeloLib_Halo1_Game.vcxproj.filters" />
-
   <ItemGroup>
     <Filter Include="Common\Shared\7zip">
       <UniqueIdentifier>{6c76af11-8dcb-4a37-ab87-5606dcc65ba3}</UniqueIdentifier>
@@ -1566,7 +1508,7 @@
     <Filter Include="Common\Impl">
       <UniqueIdentifier>{ccc0d907-07eb-4c01-ac35-761d1b164e16}</UniqueIdentifier>
     </Filter>
-	<Filter Include="Common\GameSystems">
+    <Filter Include="Common\GameSystems">
       <UniqueIdentifier>{2ce60aad-7d0a-4044-8266-e26deb2f67a3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game">
@@ -2350,7 +2292,7 @@
     <None Include="Common\YeloSettings.CmdLineSettings.inl">
       <Filter>Common\Impl</Filter>
     </None>
-	 <None Include="Common\GameSystemComponents.Startup.inl">
+    <None Include="Common\GameSystemComponents.Startup.inl">
       <Filter>Common\GameSystems</Filter>
     </None>
     <None Include="Common\GameSystemComponents.GameState.inl">

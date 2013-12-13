@@ -8,9 +8,10 @@
 #include "Rasterizer/PostProcessing/PostProcessingErrorReporting.hpp"
 
 #if !PLATFORM_IS_DEDI
+#include <blamlib/Halo1/main/console.hpp>
+
 #include "Common/YeloSettings.hpp"
 #include "Game/GameState.hpp"
-#include "Game/EngineFunctions.hpp"
 
 namespace Yelo
 {
@@ -23,10 +24,10 @@ namespace Yelo
 
 			// console messages are only displayed when developer mode is 4 or above
 			byte previous_dev_mode = *GameState::DeveloperMode();
-			*GameState::DeveloperMode() = 4;
+			*GameState::DeveloperMode() = Enums::k_developer_mode_level_debug_output;
 
 			// print the string to the console
-			Engine::Console::TerminalPrint(string);
+			blam::console_printf(false, string);
 
 			*GameState::DeveloperMode() = previous_dev_mode;
 		}

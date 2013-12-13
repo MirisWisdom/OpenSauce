@@ -122,7 +122,7 @@ namespace Yelo
 		 */
 		void c_query_pair::Set(const char* field, const char* value)
 		{
-			ASSERT(field && (strlen(field) > 0), "attempting to set a query pair with a null or zero-length string");
+			YELO_ASSERT_DISPLAY(field && strlen(field) > 0, "attempting to set a query pair with a null or zero-length string");
 
 			m_field.assign(field);
 
@@ -171,11 +171,11 @@ namespace Yelo
 		{
 			std::string header_string("");
 
-			for(std::vector<s_header>::iterator iter = m_headers.begin(); iter != m_headers.end(); iter++)
+			for (auto& header : m_headers)
 			{
-				header_string.append((*iter).m_header);
+				header_string.append(header.m_header);
 				header_string.append(":");
-				header_string.append((*iter).m_value);
+				header_string.append(header.m_value);
 				header_string.append("\r\n");
 			}
 			return header_string;
@@ -192,13 +192,13 @@ namespace Yelo
 		 * The string that was found.
 		 * 
 		 * \param delimiter
-		 * Pointer to a character srting containing either a single string to use as a delimiter, or a string of characters to use.
+		 * Pointer to a character string containing either a single string to use as a delimiter, or a string of characters to use.
 		 * 
 		 * \param forward
 		 * Sets whether to search for the delimiter from left to right (true) or right to left (false).
 		 * 
 		 * \param any_char
-		 * Sets whether the entier string must be used as the delimiter (false) of in any character in the string can be used (true).
+		 * Sets whether the entire string must be used as the delimiter (false) of in any character in the string can be used (true).
 		 * 
 		 * Splits a string in to two parts either side of a single or set of delimiter(s).
 		 * 
@@ -345,8 +345,8 @@ namespace Yelo
 		void c_url_interface::ClearQueries()
 		{
 			// clear the query list
-			for(int i = 0; i < Enums::k_max_url_query_count; i++)
-				m_queries[i].Clear();
+			for (auto& query : m_queries)
+				query.Clear();
 
 			m_query_count = 0;
 		}
@@ -369,11 +369,11 @@ namespace Yelo
 		bool c_url_interface::AddQuery(const char* field, const char* value)
 		{
 			// set the values to the first query with no field
-			for(int i = 0; i < Enums::k_max_url_query_count; i++)
+			for (auto& query : m_queries)
 			{
-				if(!m_queries[i].HasField())
+				if(!query.HasField())
 				{
-					m_queries[i].Set(field, value);
+					query.Set(field, value);
 					m_query_count++;
 					return true;
 				}

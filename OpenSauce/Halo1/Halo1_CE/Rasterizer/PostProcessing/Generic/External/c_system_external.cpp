@@ -15,6 +15,8 @@
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
 #include "Rasterizer/PostProcessing/c_shader_include_manager.hpp"
 
+// TODO: finish reimplementing for loops with ranged for loops, where applicable
+
 namespace Yelo
 {
 	namespace Rasterizer { namespace PostProcessing { namespace Generic { namespace External
@@ -463,7 +465,7 @@ namespace Yelo
 
 			if(!FileIO::PathExists(m_members_external.m_paths.shaders_path) || !FileIO::PathExists(m_members_external.m_paths.textures_path))
 			{
-				ASSERT(false, "external postprocessing shaders path or textures path does not exist");
+				YELO_ASSERT_DISPLAY(false, "external postprocessing shaders path or textures path does not exist");
 				return false;
 			}
 			return true;
@@ -553,17 +555,17 @@ namespace Yelo
 
 				// delete the definition
 				delete set.definition;
-				set.definition = NULL;
+				set.definition = nullptr;
 
 				// destruct the shader class and delete it
 				set.shader->Dtor();
 				delete set.shader;
-				set.shader = NULL;
+				set.shader = nullptr;
 			}
 
 			// delete the shader set list
 			delete [] m_members_external.m_shaders.shader_sets;
-			m_members_external.m_shaders.shader_sets = NULL;
+			m_members_external.m_shaders.shader_sets = nullptr;
 			m_members_external.m_shaders.count = 0;
 		}
 
@@ -589,7 +591,7 @@ namespace Yelo
 
 				set.definition = new s_effect_postprocess_external();
 				set.effect = new c_effect_external();
-				set.shader_instances = NULL;
+				set.shader_instances = nullptr;
 				set.shader_instance_count = 0;
 
 				// reset the definition and class to default values
@@ -634,7 +636,7 @@ namespace Yelo
 					tag_string& id = set.definition->shader_ids[i];
 
 					// find a shader set with a matching id
-					s_shader_set* shader_set = NULL;
+					s_shader_set* shader_set = nullptr;
 					for(uint32 j = 0; (j < m_members_external.m_shaders.count) && !shader_set; j++)
 						if(strcmp(m_members_external.m_shaders.shader_sets[j].shader->GetShaderID(), id) == 0)
 							shader_set = &m_members_external.m_shaders.shader_sets[j];
@@ -664,22 +666,22 @@ namespace Yelo
 
 				// delete the shader instances
 				delete [] set.shader_instances;
-				set.shader_instances = NULL;
+				set.shader_instances = nullptr;
 
 				// delete memory allocated in the effect definition then delete it
 				DestroyEffectDefinition(set.definition);
 				delete set.definition;
-				set.definition = NULL;
+				set.definition = nullptr;
 
 				//destruct the effect class then delete it
 				set.effect->Dtor();
 				delete set.effect;
-				set.effect = NULL;
+				set.effect = nullptr;
 			}
 
 			// delete the effect set list
 			delete [] m_members_external.m_effects.effect_sets;
-			m_members_external.m_effects.effect_sets = NULL;
+			m_members_external.m_effects.effect_sets = nullptr;
 			m_members_external.m_effects.count = 0;
 		}
 
@@ -748,17 +750,17 @@ namespace Yelo
 				// delete memory allocate in the effect instance definition then delete it
 				DestroyEffectInstanceDefinition(set.definition);
 				delete set.definition;
-				set.definition = NULL;
+				set.definition = nullptr;
 
 				// destroy the instance class then delete it
 				set.instance->Dtor();
 				delete set.instance;
-				set.instance = NULL;
+				set.instance = nullptr;
 			}
 
 			// delete the effect instance sets
 			delete [] m_members_external.m_effect_instances.effect_instance_sets;
-			m_members_external.m_effect_instances.effect_instance_sets = NULL;
+			m_members_external.m_effect_instances.effect_instance_sets = nullptr;
 			m_members_external.m_effect_instances.count = 0;
 		}
 
@@ -778,8 +780,8 @@ namespace Yelo
 
 			c_shader_include_manager include_manager(include_path);
 
-			LPD3DXEFFECTCOMPILER compiler = NULL;
-			LPD3DXBUFFER error_buffer = NULL;
+			LPD3DXEFFECTCOMPILER compiler = nullptr;
+			LPD3DXBUFFER error_buffer = nullptr;
 			do
 			{
 				// read the shader into memory
@@ -820,7 +822,7 @@ namespace Yelo
 				for(int32 i = 0; i < definition->techniques.Count; i++)
 				{
 					D3DXHANDLE handle = compiler->GetTechnique(i);
-					if(handle == NULL)
+					if(handle == nullptr)
 						continue;
 
 					BuildTechnique(compiler, handle, definition->techniques[i]);
@@ -842,7 +844,7 @@ namespace Yelo
 			D3DXTECHNIQUE_DESC technique_desc;
 			HRESULT success = compiler->GetTechniqueDesc(handle, &technique_desc);
 			
-			ASSERT(SUCCEEDED(success), "failed to get a techniques description");
+			YELO_ASSERT_DISPLAY(SUCCEEDED(success), "failed to get a techniques description");
 
 			// reset to defaults
 			ZeroMemory(&technique, sizeof(technique));
@@ -868,7 +870,7 @@ namespace Yelo
 			for(int32 i = 0; i < technique.passes.Count; i++)
 			{
 				D3DXHANDLE pass = compiler->GetPass(handle, i);
-				if(pass == NULL)
+				if(pass == nullptr)
 					continue;
 
 				BuildPass(compiler, pass, technique.passes[i]);
@@ -880,7 +882,7 @@ namespace Yelo
 			D3DXPASS_DESC pass_desc;
 			HRESULT success = compiler->GetPassDesc(handle, &pass_desc);
 			
-			ASSERT(SUCCEEDED(success), "failed to get a pass' description");
+			YELO_ASSERT_DISPLAY(SUCCEEDED(success), "failed to get a pass' description");
 
 			// reset to zeros
 			ZeroMemory(&pass, sizeof(pass));
@@ -912,7 +914,7 @@ namespace Yelo
 		void c_system_external::BuildParameters(LPD3DXEFFECTCOMPILER compiler, TagGroups::s_shader_postprocess_generic* definition)
 		{
 			uint32 parameter_count = 0;
-			s_parameter_handle* parameter_list = NULL;
+			s_parameter_handle* parameter_list = nullptr;
 			//textures
 			parameter_count += GetParameterHandles(compiler, parameter_list, "VARTEXTURE_%i", 4, Enums::_shader_variable_base_type_texture, 1);
 			//booleans
@@ -952,14 +954,14 @@ namespace Yelo
 			for(int32 i = 0; i < definition->parameters.Count; i++)
 				DestroyParameter(definition->parameters[i]);
 			delete [] definition->parameters.Address;
-			definition->parameters.Address = NULL;
+			definition->parameters.Address = nullptr;
 			definition->parameters.Count = 0;
 
 			// delete allocated block memory
 			for(int32 i = 0; i < definition->techniques.Count; i++)
 				DestroyTechnique(definition->techniques[i]);
 			delete [] definition->techniques.Address;
-			definition->techniques.Address = NULL;
+			definition->techniques.Address = nullptr;
 			definition->techniques.Count = 0;
 
 			ZeroMemory(definition, sizeof(TagGroups::s_shader_postprocess_generic));
@@ -968,7 +970,7 @@ namespace Yelo
 		void c_system_external::DestroyTechnique(TagGroups::s_technique_definition& technique)
 		{
 			delete [] technique.passes.Address;
-			technique.passes.Address = NULL;
+			technique.passes.Address = nullptr;
 			technique.passes.Count = 0;
 
 			ZeroMemory(&technique, sizeof(TagGroups::s_technique_definition));
@@ -977,7 +979,7 @@ namespace Yelo
 		void c_system_external::DestroyParameter(TagGroups::s_shader_postprocess_parameter& parameter)
 		{
 			delete [] parameter.bitmap_value.runtime.external.source;
-			parameter.bitmap_value.runtime.external.source = NULL;
+			parameter.bitmap_value.runtime.external.source = nullptr;
 
 			ZeroMemory(&parameter.bitmap_value, sizeof(parameter.bitmap_value));
 			ZeroMemory(&parameter.animation_function, sizeof(parameter.animation_function));
@@ -1019,7 +1021,7 @@ namespace Yelo
 		void c_system_external::DestroyEffectDefinition(s_effect_postprocess_external* definition)
 		{
 			delete [] definition->shader_ids.Address;
-			definition->shader_ids.Address = NULL;
+			definition->shader_ids.Address = nullptr;
 			definition->shader_ids.Count = 0;
 		}
 
@@ -1041,7 +1043,7 @@ namespace Yelo
 				activation_operation = 0;
 			definition->activation_operation = activation_operation;
 
-			TiXmlElement* element = NULL;
+			TiXmlElement* element = nullptr;
 
 			//set quad to defaults
 			definition->quad_definition.tessellation.x = 4;
@@ -1126,7 +1128,7 @@ namespace Yelo
 		void c_system_external::DestroyEffectInstanceDefinition(TagGroups::s_effect_postprocess_generic_effect_instance* definition)
 		{
 			delete [] definition->activation_controls.Address;
-			definition->activation_controls.Address = NULL;
+			definition->activation_controls.Address = nullptr;
 			definition->activation_controls.Count = 0;
 		}
 
@@ -1146,12 +1148,12 @@ namespace Yelo
 			for(uint32 i = 0; i < count; i++)
 			{
 				sprintf_s(semantic, sizeof(semantic), semantic_format, i + 1);
-				D3DXHANDLE handle = compiler->GetParameterBySemantic(NULL, semantic);
+				D3DXHANDLE handle = compiler->GetParameterBySemantic(nullptr, semantic);
 				if(!handle) continue;
 
 				s_parameter_handle* parameter = new s_parameter_handle();
-				parameter->SetNext(NULL);
-				parameter->SetPrevious(NULL);
+				parameter->SetNext(nullptr);
+				parameter->SetPrevious(nullptr);
 				parameter->handle = handle;
 				parameter->type.type = parameter_type;
 				parameter->type.count = parameter_type_count;
@@ -1384,7 +1386,7 @@ namespace Yelo
 			texture_location =			compiler->GetAnnotationByName(handle.handle, "texture_location");
 
 			// get the texture string
-			ASSERT(parameter.bitmap_value.runtime.external.source == NULL, "allocating string memory before the previous value is deleted");
+			YELO_ASSERT_DISPLAY(parameter.bitmap_value.runtime.external.source == nullptr, "allocating string memory before the previous value is deleted");
 			const char* location;
 			HRESULT success = compiler->GetString(texture_location, &location);
 			if(SUCCEEDED(success) && location)
@@ -1407,7 +1409,7 @@ namespace Yelo
 			// should the buffer be clear on this pass
 			D3DXHANDLE annotation_handle = compiler->GetAnnotationByName(variable, annotation);
 
-			if(annotation_handle == NULL)
+			if(annotation_handle == nullptr)
 				output = default_value;
 			else
 				compiler->GetInt(annotation_handle, &output);

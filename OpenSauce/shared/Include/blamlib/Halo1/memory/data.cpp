@@ -46,6 +46,19 @@ namespace Yelo
 
 			return this->index != other.index;
 		}
+
+		s_data_array* DataNewAndMakeValid(cstring name, int32 maximum_count, size_t datum_size)
+		{
+			s_data_array* data = blam::data_new(name, maximum_count, datum_size);
+
+			if (data != nullptr)
+			{
+				data->is_valid = true;
+				blam::data_delete_all(data);
+			}
+
+			return data;
+		}
 	};
 
 	namespace blam
@@ -74,7 +87,7 @@ namespace Yelo
 		void PLATFORM_API data_iterator_new(s_data_iterator& iterator, s_data_array* data)
 		{
 			data_verify(data);
-			ASSERT(data->is_valid, "invalid data array passed to " __FUNCTION__);
+			YELO_ASSERT_DISPLAY(data->is_valid, "invalid data array passed to " __FUNCTION__);
 
 			iterator.data = data;
 			iterator.next_index = 0;
@@ -85,18 +98,14 @@ namespace Yelo
 
 		void* PLATFORM_API data_iterator_next(s_data_iterator& iterator)
 		{
-#if PLATFORM_IS_EDITOR
 			YELO_ASSERT_DISPLAY(iterator.signature == (CAST_PTR(uintptr_t, iterator.data) ^ Enums::k_data_iterator_signature),
 				"uninitialized iterator passed to " __FUNCTION__);
-#endif
 
 			const s_data_array* data = iterator.data;
 			data_verify(data);
 
-#if PLATFORM_IS_EDITOR
 			YELO_ASSERT_DISPLAY(data->is_valid, "tried to iterate %s when it was in an invalid state",
 				data->name);
-#endif
 
 			datum_index::index_t absolute_index = iterator.next_index;
 			int32 datum_size = data->datum_size;

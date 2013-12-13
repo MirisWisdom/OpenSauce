@@ -44,10 +44,10 @@ namespace Yelo
 
 				void Ctor()
 				{
-					m_headers = NULL;
+					m_headers = nullptr;
 					m_component = Enums::_http_client_component;
-					m_component_data = NULL;
-					m_buffer = NULL;
+					m_component_data = nullptr;
+					m_buffer = nullptr;
 					m_buffer_size = 0;
 					m_delete_buffer = true;
 					m_blocking = false;
@@ -100,7 +100,7 @@ namespace Yelo
 				m_file_downloader.m_flags.is_downloading = false;
 				m_file_downloader.m_flags.manual_think = false;
 
-				m_file_downloader.m_http.request_index = -1;
+				m_file_downloader.m_http.request_index = NONE;
 				m_file_downloader.m_http.timeout = 0.0f;
 				m_file_downloader.m_http.elapsed = 0.0f;
 
@@ -116,12 +116,12 @@ namespace Yelo
 
 			virtual void	Dtor()
 			{
-				ASSERT(m_file_downloader.m_http.request_index == -1, "a http request has not been cleaned up before being destroyed");
+				YELO_ASSERT_DISPLAY(m_file_downloader.m_http.request_index == NONE, "a http request has not been cleaned up before being destroyed");
 
 				m_file_downloader.m_flags.is_downloading = false;
 				m_file_downloader.m_flags.manual_think = false;
 
-				m_file_downloader.m_http.request_index = -1;
+				m_file_downloader.m_http.request_index = NONE;
 				m_file_downloader.m_http.timeout = 0.0f;
 				m_file_downloader.m_http.elapsed = 0.0f;
 
@@ -132,7 +132,7 @@ namespace Yelo
 
 				m_file_downloader.m_download_status = Enums::_http_file_download_status_idle;
 
-				m_file_downloader.m_url[0] = 0;
+				m_file_downloader.m_url[0] = '\0';
 			}
 
 			int32			HTTPRequestIndex();

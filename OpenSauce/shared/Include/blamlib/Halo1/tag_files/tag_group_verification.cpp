@@ -71,11 +71,8 @@ namespace Yelo
 
 			for(int x = 0; x < definition->count; x++)
 			{
-				if(definition->strings[x] == nullptr)
-				{
-					YELO_ERROR(_error_message_priority_assert, "%s field in block %s doesn't have enough strings",
-						field_type_name, block_definition->name);
-				}
+				YELO_ASSERT_DISPLAY(definition->strings[x] != nullptr, "%s field in block %s doesn't have enough strings",
+					field_type_name, block_definition->name);
 			}
 		}
 		template<typename TEnum>
