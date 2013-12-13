@@ -111,7 +111,8 @@ namespace Yelo
 				elements = header;
 			}
 
-			blam::debug_free(elements, file, line);
+			if (elements != nullptr)
+				blam::debug_free(elements, file, line);
 		}
 		void c_tag_block_allocations::Delete(tag_block& instance, cstring file, uint32 line)
 		{
@@ -176,8 +177,11 @@ namespace Yelo
 				address = header;
 			}
 
-			blam::debug_free(address, file, line);
-			instance.address = nullptr;
+			if (address != nullptr)
+			{
+				blam::debug_free(address, file, line);
+				instance.address = nullptr;
+			}
 		}
 	};
 };

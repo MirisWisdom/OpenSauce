@@ -114,7 +114,7 @@ namespace Yelo
 				int size = data->size;
 				if(size < 0 || size > data_definition->maximum_size)
 				{
-					YELO_WARN("tag data '%s' too large. #%d not in [0,#%d]",
+					YELO_WARN("tag data '%s' size out of range. #%d not in [0,#%d]",
 						data_definition->name, data->size, data_definition->maximum_size); // NOTE: added bounds info to warning
 				}
 				else if( !(data_address = TAG_DATA_NEW(data_definition, size)) )
@@ -707,7 +707,7 @@ namespace Yelo
 			return tag_index;
 		}
 
-		datum_index PLATFORM_API tag_reload_impl(tag group_tag, cstring name)
+		datum_index PLATFORM_API tag_reload(tag group_tag, cstring name)
 		{
 			tag_group* group = tag_group_get(group_tag);
 			datum_index tag_index = datum_index::null;
@@ -747,7 +747,7 @@ namespace Yelo
 			return tag_index;
 		}
 
-		void PLATFORM_API tag_unload_impl(datum_index tag_index)
+		void PLATFORM_API tag_unload(datum_index tag_index)
 		{
 			auto* instance = TagGroups::TagInstances()[tag_index];
 

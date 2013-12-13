@@ -238,15 +238,6 @@ namespace Yelo
 				tag_index, group_name, instance_group_name);
 		}
 
-		void PLATFORM_API tag_unload(datum_index tag_index)
-		{
-			s_tag_instance* instance = TagGroups::TagInstances()[tag_index];
-			if (instance->root_block.count > 0 && !instance->is_reload)
-				tag_block_delete_element(&instance->root_block, 0);
-
-			TagGroups::TagInstances().Delete(tag_index);
-		}
-
 		/*static*/ void PLATFORM_API tag_block_generate_default_element(const tag_block_definition *definition, void *address)
 		{
 			memset(address, 0, definition->element_size);
@@ -299,9 +290,7 @@ namespace Yelo
 		{
 			// The engine's code will free (ie, YELO_FREE) the reference's name 
 			// when tag_block_delete_element (which is called by tag_unload) is ran
-//			void* ptr = YELO_MALLOC(Enums::k_max_tag_name_length+1, false); // TODO: check if NULL or memset instead?
 
-//			reference.name = CAST_PTR(tag_reference_name_reference, ptr);
 			YELO_ASSERT(reference.name);
 			std::memset(reference.name, 0, Enums::k_max_tag_name_length+1);
 			reference.name_length = 0;
@@ -309,7 +298,7 @@ namespace Yelo
 			reference.tag_index = datum_index::null;
 		}
 
-		void PLATFORM_API tag_reference_set_impl(tag_reference& reference, tag group_tag, cstring name)
+		void PLATFORM_API tag_reference_set(tag_reference& reference, tag group_tag, cstring name)
 		{
 			YELO_ASSERT( group_tag==NONE || tag_group_get(group_tag) );
 			reference.group_tag = group_tag;
@@ -336,27 +325,34 @@ namespace Yelo
 			return loaded_tag_index;
 		}
 
-		bool PLATFORM_API tag_data_resize_impl(tag_data* data, int32 new_size)
+		bool PLATFORM_API tag_data_resize(tag_data* data, int32 new_size)
 		{
 			YELO_ASSERT(data && data->definition);
 			YELO_ASSERT(data->address);
 
+			bool result = false;
 			if (new_size < 0)
 			{
 				YELO_WARN("tried to resize a %s @%p to a negative size %d",
 					data->definition->name, data, new_size);
-				return false;
 			}
-
-			if (new_size >= data->definition->maximum_size)
+			else if (new_size > data->definition->maximum_size)
 			{
 				YELO_WARN("tried to resize a %s @%p to %d which is larger than the max allowed %d",
 					data->definition->name, data, new_size, data->definition->maximum_size);
-				return false;
+			}
+			else if (new_size == 0)
+			{
+				data->size = 0;
+				result = true;
+			}
+			else
+			{
+				TAG_DATA_REALLOC(*data, new_size);
+				result = data->address != nullptr;
 			}
 
-			TAG_DATA_REALLOC(*data, new_size);
-			return true;
+			return result;
 		}
 
 		void* PLATFORM_API tag_data_get_pointer(tag_data& data, int32 offset, int32 size)
@@ -366,127 +362,127 @@ namespace Yelo
 
 			return data.Bytes() + offset;
 		}
-	};
 
-	// Frees the pointers used in more complex fields (tag_data, etc)
-	static void tag_block_delete_element_pointer_data(tag_block* block, int32 element_index)
-	{
-		auto* definition = block->definition;
-
-		if( definition->delete_proc != nullptr )
-			definition->delete_proc(block, element_index);
-
-		// NOTE: YELO_FREE/DELETE take the pointers by reference, so that it can NULL them in the process
-
-		for(auto field : TagGroups::c_tag_field_scanner(definition->fields, blam::tag_block_get_element(block, element_index))
-			.AddFieldType(Enums::_field_block)
-			.AddFieldType(Enums::_field_data)
-			.AddFieldType(Enums::_field_tag_reference) )
+		// Frees the pointers used in more complex fields (tag_data, etc)
+		static void tag_block_delete_element_pointer_data(tag_block* block, int32 element_index)
 		{
-			switch(field.GetType())
+			auto* definition = block->definition;
+
+			if( definition->delete_proc != nullptr )
+				definition->delete_proc(block, element_index);
+
+			// NOTE: YELO_FREE/DELETE take the pointers by reference, so that it can NULL them in the process
+
+			for(auto field : TagGroups::c_tag_field_scanner(definition->fields, blam::tag_block_get_element(block, element_index))
+				.AddFieldType(Enums::_field_block)
+				.AddFieldType(Enums::_field_data)
+				.AddFieldType(Enums::_field_tag_reference) )
 			{
-			case Enums::_field_data:
-				TAG_DATA_DELETE( *field.As<tag_data>() );
-				break;
+				switch(field.GetType())
+				{
+				case Enums::_field_data:
+					TAG_DATA_DELETE( *field.As<tag_data>() );
+					break;
 
-			case Enums::_field_block:
-				// engine actually does a while loop here, calling delete_element
-				blam::tag_block_resize(field.As<tag_block>(), 0);
-				break;
+				case Enums::_field_block:
+					// engine actually does a while loop here, calling delete_element
+					blam::tag_block_resize(field.As<tag_block>(), 0);
+					break;
 
-			case Enums::_field_tag_reference:
-				YELO_DELETE( field.As<tag_reference>()->name );
-				break;
+				case Enums::_field_tag_reference:
+					YELO_DELETE( field.As<tag_reference>()->name );
+					break;
 
-			YELO_ASSERT_CASE_UNREACHABLE();
+				YELO_ASSERT_CASE_UNREACHABLE();
+				}
 			}
 		}
-	}
-	static void PLATFORM_API tag_block_delete_element_impl(tag_block* block, int32 element_index)
-	{
-		YELO_ASSERT( block && block->definition );
-		YELO_ASSERT( block->count>=0 );
-
-		auto* definition = block->definition;
-		YELO_ASSERT_DISPLAY(definition->fields != nullptr,
-			"'%s' block has NULL fields", definition->name);
-
-		tag_block_delete_element_pointer_data(block, element_index);
-
-		// move up the elements that follow the deleted element
-		int next_element_index = element_index + 1;
-		if(next_element_index < block->count) // engine doesn't actually check if the deleted element is the last
+		void PLATFORM_API tag_block_delete_element(tag_block* block, int32 element_index)
 		{
-			size_t element_size = definition->element_size;
-			size_t following_elements_offset = element_size * next_element_index;
-			size_t following_elements_size = element_size * ((block->count - element_index) - 1);
+			YELO_ASSERT( block && block->definition );
+			YELO_ASSERT( block->count>=0 );
 
-			memmove(blam::tag_block_get_element(block, element_index), // elements will start consuming the memory at the deleted element
-				CAST_PTR(byte*, block->address) + following_elements_offset,
-				following_elements_size);
+			auto* definition = block->definition;
+			YELO_ASSERT_DISPLAY(definition->fields != nullptr,
+				"'%s' block has NULL fields", definition->name);
+
+			tag_block_delete_element_pointer_data(block, element_index);
+
+			// move up the elements that follow the deleted element
+			int next_element_index = element_index + 1;
+			if(next_element_index < block->count) // engine doesn't actually check if the deleted element is the last
+			{
+				size_t element_size = definition->element_size;
+				size_t following_elements_offset = element_size * next_element_index;
+				size_t following_elements_size = element_size * ((block->count - element_index) - 1);
+
+				memmove(blam::tag_block_get_element(block, element_index), // elements will start consuming the memory at the deleted element
+					CAST_PTR(byte*, block->address) + following_elements_offset,
+					following_elements_size);
+			}
+
+			if(--block->count == 0) // free the elements and clear the pointer if that was the last element
+			{
+				TAG_BLOCK_DELETE( *block );
+			}
 		}
 
-		if(--block->count == 0) // free the elements and clear the pointer if that was the last element
+		int32 PLATFORM_API tag_block_add_element(tag_block* block)
 		{
-			TAG_BLOCK_DELETE( *block );
-		}
-	}
+			YELO_ASSERT( block && block->definition );
 
-	static int32 PLATFORM_API tag_block_add_element_impl(tag_block* block)
-	{
-		YELO_ASSERT( block && block->definition );
+			auto* definition = block->definition;
+			if (block->count >= definition->maximum_element_count)
+			{
+				YELO_WARN("tried to add more elements for a %s @%p #%d than allowed",
+					definition->name, block, block->count);
+				return NONE;
+			}
 
-		auto* definition = block->definition;
-		if (block->count >= definition->maximum_element_count)
-		{
-			YELO_WARN("tried to add more elements for a %s @%p #%d than allowed",
-				definition->name, block, block->count);
-			return NONE;
-		}
+			int add_index = block->count++;
+			void* new_address = TAG_BLOCK_REALLOC(*block, block->count);
+			if (new_address == nullptr)
+			{
+				YELO_WARN("failed to allocate new elements for a %s @%p #%d",
+					definition->name, block, block->count);
+				return NONE;
+			}
 
-		int add_index = block->count++;
-		void* new_address = TAG_BLOCK_REALLOC(*block, block->count);
-		if (new_address == nullptr)
-		{
-			YELO_WARN("failed to allocate new elements for a %s @%p #%d",
-				definition->name, block, block->count);
-			return NONE;
-		}
+			void* new_element = blam::tag_block_get_element(block, add_index);
+			blam::tag_block_generate_default_element(definition, new_element);
 
-		void* new_element = blam::tag_block_get_element(block, add_index);
-		blam::tag_block_generate_default_element(definition, new_element);
+			int32 dummy_position;
+			bool success = blam::tag_block_read_children_recursive(definition, new_element, 1, &dummy_position,
+				FLAG(Flags::_tag_load_for_editor_bit));
 
-		int32 dummy_position;
-		bool success = blam::tag_block_read_children_recursive(definition, new_element, 1, &dummy_position,
-			FLAG(Flags::_tag_load_for_editor_bit));
+			if(!success)
+			{
+				--block->count;
+				add_index = NONE;
+			}
 
-		if(!success)
-		{
-			--block->count;
-			add_index = NONE;
+			return add_index;
 		}
 
-		return add_index;
-	}
+		bool PLATFORM_API tag_block_resize(tag_block* block, int32 element_count)
+		{
+			YELO_ASSERT( block && block->definition );
+			YELO_ASSERT( block->count>=0 );
 
-	static bool PLATFORM_API tag_block_resize_impl(tag_block* block, int32 element_count)
-	{
-		YELO_ASSERT( block && block->definition );
-		YELO_ASSERT( block->count>=0 );
+			YELO_ASSERT( element_count>=0 );
 
-		YELO_ASSERT( element_count>=0 );
+			// this is how resize is implemented in the engine. Hey, it handles both cases
 
-		// this is how resize is implemented in the engine. Hey, it handles both cases
+			while(block->count > element_count)
+				blam::tag_block_delete_element(block, block->count-1);
 
-		while(block->count > element_count)
-			blam::tag_block_delete_element(block, block->count-1);
+			while(block->count < element_count)
+				if(blam::tag_block_add_element(block) == NONE)
+					return false;
 
-		while(block->count < element_count)
-			if(blam::tag_block_add_element(block) == NONE)
-				return false;
-
-		return true;
-	}
+			return true;
+		}
+	};
 
 	static int32 PLATFORM_API tag_block_insert_element_impl(tag_block* block, int32 index)
 	{
