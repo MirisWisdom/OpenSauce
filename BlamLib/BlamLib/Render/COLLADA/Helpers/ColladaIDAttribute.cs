@@ -4,6 +4,7 @@
 	See license\BlamLib\BlamLib for specific license information
 */
 using System;
+using System.Text.RegularExpressions;
 
 namespace BlamLib.Render.COLLADA
 {
@@ -20,6 +21,13 @@ namespace BlamLib.Render.COLLADA
 		public string FormatID(string id)
 		{
 			return String.Format(formatString, id);
+		}
+
+		public bool TestFormatted(string id)
+		{
+			Regex regex = new Regex(String.Format(formatString, "(.+)"));
+
+			return regex.IsMatch(id);
 		}
 	}
 }

@@ -15,8 +15,8 @@ namespace BlamLib.Render.COLLADA.Core
 	public partial class ColladaIntArray : ColladaValueArray<int>
 	{
 		#region Fields
-		ColladaObjectAttribute<string> _id;
-		ColladaObjectAttribute<string> _name;
+		ColladaObjectAttribute<ColladaID<ColladaIntArray>> _id;
+		ColladaObjectAttribute<ColladaNCName> _name;
 		ColladaObjectAttribute<int> _minInclusive;
 		ColladaObjectAttribute<int> _maxInclusive;
 		#endregion
@@ -54,8 +54,8 @@ namespace BlamLib.Render.COLLADA.Core
 
 		public ColladaIntArray() : base(Enums.ColladaElementType.Core_IntArray)
 		{
-			Fields.Add(_id = new ColladaObjectAttribute<string>(""));
-			Fields.Add(_name = new ColladaObjectAttribute<string>(""));
+			Fields.Add(_id = new ColladaObjectAttribute<ColladaID<ColladaIntArray>>(""));
+			Fields.Add(_name = new ColladaObjectAttribute<ColladaNCName>(""));
 			Fields.Add(_minInclusive = new ColladaObjectAttribute<int>(-2147483648));
 			Fields.Add(_maxInclusive = new ColladaObjectAttribute<int>(2147483647));
 		}
