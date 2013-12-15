@@ -63,21 +63,32 @@
 // Pointer inline dereference-get
 #define GET_PTR(name)		( *GET_PTR2(name) )
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Macro glue for getting a pointer to game engine data, with various levels of pointer asserts. </summary>
+/// <remarks>	va_args allow the callee to specify a de-reference operator. </remarks>
+/// <param name="get_ptr_macro">	Macro for getting the PTR object. </param>
+/// <param name="get_macro">		Macro for getting PTR_IMPL's value. </param>
+/// <param name="name">				The name of the PTR object. </param>
+#define PTR_IMPL_GET_GUTS(get_ptr_macro, get_macro, name, ...)							\
+	/* validate pointer is available for this platform */								\
+{	auto name = get_ptr_macro(name);													\
+	assert(CAST_PTR(void*,PTR_UNKNOWN) != name && CAST_PTR(void*,PTR_NULL) != name); }	\
+	/* validate pointer is initialized */												\
+	auto name = get_macro(name);														\
+	YELO_ASSERT(name);																	\
+	return __VA_ARGS__ name;
+
 // Double pointer implement get by-value
-#define DPTR_IMP_GET(name)	{ return GET_DPTR(name); }
+#define DPTR_IMP_GET(name)		{ PTR_IMPL_GET_GUTS(GET_DPTR2, GET_DPTR , name) }
 // Double pointer implement get by-reference
-#define DPTR_IMP_GET2(name)	{ return GET_DPTR2(name); }
+#define DPTR_IMP_GET2(name)		{ PTR_IMPL_GET_GUTS(GET_DPTR2, GET_DPTR2, name) }
 // Pointer implement get by-value
-#define PTR_IMP_GET(name)	{ return GET_PTR(name); }
+#define PTR_IMP_GET(name)		{ PTR_IMPL_GET_GUTS(GET_PTR2 , GET_PTR  , name) }
 // Pointer implement get by-reference
-#define PTR_IMP_GET2(name)	{ return GET_PTR2(name); }
+#define PTR_IMP_GET2(name)		{ PTR_IMPL_GET_GUTS(GET_PTR2 , GET_PTR2 , name) }
 
 // Double pointer implement get by-reference, with debug assert
-#define DPTR_IMP_GET_BYREF(name)	{	\
-	auto* name = GET_DPTR( name );		\
-	YELO_ASSERT( name );				\
-	return *name;						\
-}
+#define DPTR_IMP_GET_BYREF(name){ PTR_IMPL_GET_GUTS(GET_DPTR2, GET_DPTR, name, *) }
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -24,19 +24,21 @@ namespace Yelo
 				case HS_TYPE(bool):	data.byte = *copy.ptr.byte;		break;
 				//////////////////////////////////////////////////////////////////////////
 				// block index based types
+				case HS_TYPE(script):
 				case HS_TYPE(trigger_volume):
 				case HS_TYPE(cutscene_flag):
 				case HS_TYPE(cutscene_camera_point):
 				case HS_TYPE(cutscene_title):
 				case HS_TYPE(cutscene_recording):
 				case HS_TYPE(device_group):
-				//case HS_TYPE(ai):
 				case HS_TYPE(ai_command_list):
 				case HS_TYPE(starting_profile):
 				case HS_TYPE(conversation):
 				//////////////////////////////////////////////////////////////////////////
+				case HS_TYPE(object_name):
 				case HS_TYPE(short):data.uint16 = *copy.ptr.uint16;	break;
 				case HS_TYPE(real):
+				case HS_TYPE(ai):
 				//////////////////////////////////////////////////////////////////////////
 				// datum_index based types
 				case HS_TYPE(object_list):
@@ -56,7 +58,9 @@ namespace Yelo
 				case HS_TYPE(scenery):
 				//////////////////////////////////////////////////////////////////////////
 				case HS_TYPE(long):	data.uint32 = *copy.ptr.uint32;	break;
-					break;
+
+				//////////////////////////////////////////////////////////////////////////
+//				case HS_TYPE(string): data.ptr.ascii = copy.ptr.ascii; break;
 				}
 			}
 			else // the pointer is null, so default to NONE
@@ -69,19 +73,21 @@ namespace Yelo
 				case HS_TYPE(bool):	data.byte = NONE;	break;
 				//////////////////////////////////////////////////////////////////////////
 				// block index based types
+				case HS_TYPE(script):
 				case HS_TYPE(trigger_volume):
 				case HS_TYPE(cutscene_flag):
 				case HS_TYPE(cutscene_camera_point):
 				case HS_TYPE(cutscene_title):
 				case HS_TYPE(cutscene_recording):
 				case HS_TYPE(device_group):
-				//case HS_TYPE(ai):
 				case HS_TYPE(ai_command_list):
 				case HS_TYPE(starting_profile):
 				case HS_TYPE(conversation):
 				//////////////////////////////////////////////////////////////////////////
+				case HS_TYPE(object_name):
 				case HS_TYPE(short):data.int16 = NONE;	break;
 				case HS_TYPE(real): data.real = -1.0f;	break;
+				case HS_TYPE(ai):
 				//////////////////////////////////////////////////////////////////////////
 				// datum_index based types
 				case HS_TYPE(object_list):
@@ -101,7 +107,9 @@ namespace Yelo
 				case HS_TYPE(scenery):
 				//////////////////////////////////////////////////////////////////////////
 				case HS_TYPE(long):	data.int32 = NONE;	break;
-					break;
+
+				//////////////////////////////////////////////////////////////////////////
+//				case HS_TYPE(string): data.ptr.ascii = nullptr; break;
 				}
 			}
 		}
@@ -115,19 +123,21 @@ namespace Yelo
 				case HS_TYPE(bool):	*data.ptr.byte = *CAST_PTR(byte*, ptr);		break;
 				//////////////////////////////////////////////////////////////////////////
 				// block index based types
+				case HS_TYPE(script):
 				case HS_TYPE(trigger_volume):
 				case HS_TYPE(cutscene_flag):
 				case HS_TYPE(cutscene_camera_point):
 				case HS_TYPE(cutscene_title):
 				case HS_TYPE(cutscene_recording):
 				case HS_TYPE(device_group):
-				//case HS_TYPE(ai):
 				case HS_TYPE(ai_command_list):
 				case HS_TYPE(starting_profile):
 				case HS_TYPE(conversation):
 				//////////////////////////////////////////////////////////////////////////
+				case HS_TYPE(object_name):
 				case HS_TYPE(short):*data.ptr.uint16 = *CAST_PTR(uint16*, ptr);	break;
 				case HS_TYPE(real):
+				case HS_TYPE(ai):
 				//////////////////////////////////////////////////////////////////////////
 				// datum_index based types
 				case HS_TYPE(object_list):
@@ -147,7 +157,9 @@ namespace Yelo
 				case HS_TYPE(scenery):
 				//////////////////////////////////////////////////////////////////////////
 				case HS_TYPE(long):	*data.ptr.uint32 = *CAST_PTR(uint32*, ptr);	break;
-					break;
+
+				//////////////////////////////////////////////////////////////////////////
+//				case HS_TYPE(string): *data.ptr.ascii = CAST_PTR(cstring, ptr); break;
 				}
 			}
 		}

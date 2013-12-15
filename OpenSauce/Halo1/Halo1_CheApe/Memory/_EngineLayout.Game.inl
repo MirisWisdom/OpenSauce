@@ -16,8 +16,32 @@
 
 	namespace GameUI
 	{
-		ENGINE_DPTR(s_first_person_weapons, first_person_weapons, PTR_NULL, PTR_NULL, 0xE00D44);
+		ENGINE_DPTR(s_first_person_weapons, first_person_weapons, PTR_NULL, 0x10C8EAC, 0xE00D44);
 		s_first_person_weapons* FirstPersonWeapons()		DPTR_IMP_GET(first_person_weapons);
+	};
+
+	namespace Scenario
+	{
+		ENGINE_DPTR(s_scenario_globals, scenario_globals,				PTR_NULL, 0x12E576C, 0x107EDB8);
+
+		ENGINE_PTR(TagGroups::scenario*, global_scenario,				PTR_NULL, 0x12E5764, 0x107EDA0);
+		ENGINE_PTR(TagGroups::collision_bsp*, global_bsp3d,				PTR_NULL, 0x12E5768, 0x107EDB4);
+		ENGINE_PTR(TagGroups::collision_bsp*, global_collision_bsp,		PTR_NULL, 0x12E5770, 0x107EDBC);
+		ENGINE_PTR(TagGroups::structure_bsp*, global_structure_bsp,		PTR_NULL, 0x12E5778, 0x107EDC4);
+
+		ENGINE_PTR(datum_index, global_scenario_index,					PTR_NULL, 0x6B9430, 0xA2A900);
+		ENGINE_PTR(int16, structure_bsp_index,							PTR_NULL, 0x6B9434, 0xA2A904);
+
+
+		s_scenario_globals* ScenarioGlobals()						DPTR_IMP_GET(scenario_globals);
+
+		TagGroups::scenario* Scenario()								PTR_IMP_GET(global_scenario);
+		TagGroups::collision_bsp* Bsp3d()							PTR_IMP_GET(global_bsp3d);
+		TagGroups::collision_bsp* CollisionBsp()					PTR_IMP_GET(global_collision_bsp);
+		TagGroups::structure_bsp* StructureBsp()					PTR_IMP_GET(global_structure_bsp);
+
+		datum_index ScenarioIndex()									PTR_IMP_GET(global_scenario_index);
+		int16 StructureBspIndex()									PTR_IMP_GET(structure_bsp_index);
 	};
 
 	namespace blam

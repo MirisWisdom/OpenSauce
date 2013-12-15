@@ -38,12 +38,12 @@ namespace Yelo
 		inline tag Tag() const { return K_TAG; }
 	};
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
-	BOOST_STATIC_ASSERT( sizeof(TagReference<NULL_HANDLE>) == 0x10 );
+	BOOST_STATIC_ASSERT( sizeof(TagReference<NONE>) == 0x10 );
 #else
-	BOOST_STATIC_ASSERT( sizeof(TagReference<NULL_HANDLE>) == 0x8 );
+	BOOST_STATIC_ASSERT( sizeof(TagReference<NONE>) == 0x8 );
 #endif
 	template<>
-	inline bool TagReference<NULL_HANDLE>::IsValid() const { return true; }
+	inline bool TagReference<NONE>::IsValid() const { return true; }
 
 
 	// Template'd tag block for allowing more robust code.
@@ -85,7 +85,7 @@ namespace Yelo
 		inline const tag_block* to_tag_block() const	{ return CAST_PTR(const tag_block*, &this->Count); }
 
 		// Sets this object to equal that of a anonymous tag block object. 
-		API_INLINE  TagBlock<T>& Copy(const tag_block& block)
+		inline  TagBlock<T>& Copy(const tag_block& block)
 		{
 			this->Count = block.count;
 			this->Address = block.address;
@@ -98,7 +98,7 @@ namespace Yelo
 		}
 
 		// Indexer for getting a definition reference via the definition's index in the block
-		inline T& operator [](int32 index)
+		inline T& operator[](int32 index)
 		{
 #if PLATFORM_IS_EDITOR
 			return *blam::tag_block_get_element(*this, index);
@@ -107,7 +107,7 @@ namespace Yelo
 #endif
 		}
 		// Indexer for getting a (const) definition reference via the definition's index in the block
-		inline const T& operator [](int32 index) const
+		inline const T& operator[](int32 index) const
 		{
 #if PLATFORM_IS_EDITOR
 			return *blam::tag_block_get_element(*this, index);
@@ -116,12 +116,14 @@ namespace Yelo
 #endif
 		}
 
+#if PLATFORM_IS_EDITOR
 		inline T* get_element(int32 element)			{ return blam::tag_block_get_element(*this, index); }
 		inline void delete_element(int32 element)		{ blam::tag_block_delete_element(*this, element); }
 		inline bool delete_all_elements()				{ return blam::tag_block_delete_all_elements(*this); }
 		inline int32 add_element()						{ return blam::tag_block_add_element(*this); }
 		inline bool resize(int32 element_count)			{ return blam::tag_block_resize(*this, element_count); }
 		inline T* add_and_get_element()					{ return blam::tag_block_add_and_get_element(*this); }
+#endif
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -145,6 +147,7 @@ namespace Yelo
 #endif
 	namespace blam
 	{
+#if PLATFORM_IS_EDITOR
 		template<typename T>
 		T* tag_block_get_element(TagBlock<T>& block, int32 element)
 		{
@@ -176,6 +179,7 @@ namespace Yelo
 		{
 			return CAST_PTR(T*, tag_block_add_and_get_element(block.to_tag_block()));
 		}
+#endif
 	};
 
 
@@ -184,12 +188,20 @@ namespace Yelo
 	template<typename T> class TagData
 	{
 	public:
+		typedef T*			iterator;
+		typedef const T*	const_iterator;
+		typedef T			value_type;
+		typedef T&			reference;
+		typedef const T&	const_reference;
+		typedef T*			pointer;
+		typedef const T*	const_pointer;
+
 		// Size, in bytes, of the data blob
 		int32 Size;
 
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
-		PAD32;
-		PAD32;
+		long_flags Flags;
+		int32 StreamPosition;
 #endif
 
 	public: union {
@@ -212,9 +224,26 @@ namespace Yelo
 		inline tag_data* to_tag_data()				{ return CAST_PTR(tag_data*, &this->Size); }
 		inline const tag_data* to_tag_data() const	{ return CAST_PTR(const tag_data*, &this->Size); }
 
-		inline T* operator [](int32 index) { return &this->Definitions[index]; }
+		inline T* operator[](int32 index) { return &this->Definitions[index]; }
 
+		//////////////////////////////////////////////////////////////////////////
+		// STL-like APIs
+		inline const_iterator	begin() const		{ return Definitions; }
+		inline iterator			begin()				{ return Definitions; }
+		inline const_iterator	const_begin() const	{ return Definitions; }
+		inline const_iterator	const_begin()		{ return Definitions; }
+		inline const_iterator	end() const			{ return Definitions + Count(); }
+		inline iterator			end()				{ return Definitions + Count(); }
+		inline const_iterator	const_end() const	{ return Definitions + Count(); }
+		inline const_iterator	const_end()			{ return Definitions + Count(); }
+
+		inline bool empty() const { return Size == 0; }
+		inline size_t size() const { return CAST(size_t, Count()); }
+
+
+#if PLATFORM_IS_EDITOR
 		void resize(size_t new_size = 0)	{ blam::tag_data_resize(this, new_size); }
+#endif
 	};
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
 	BOOST_STATIC_ASSERT( sizeof(TagData<byte>) == 0x14 );
@@ -223,11 +252,13 @@ namespace Yelo
 #endif
 	namespace blam
 	{
+#if PLATFORM_IS_EDITOR
 		template<typename T>
 		bool tag_data_resize(TagData<T>& data, size_t new_size = 0)
 		{
 			return tag_data_resize(data.to_tag_data(), new_size);
 		}
+#endif
 	};
 };
 
