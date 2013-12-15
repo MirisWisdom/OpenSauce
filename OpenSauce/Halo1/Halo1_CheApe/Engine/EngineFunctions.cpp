@@ -20,6 +20,17 @@ namespace Yelo
 	{
 		struct s_first_person_weapons;
 	};
+	namespace Scenario
+	{
+		struct s_scenario_globals;
+	};
+	namespace TagGroups
+	{
+		struct scenario;
+
+		struct collision_bsp;
+		struct structure_bsp;
+	};
 #define __EL_INCLUDE_ID			__EL_INCLUDE_GAME
 #define __EL_INCLUDE_FILE_ID	__EL_GAME_ENGINE_FUNCTIONS
 #include "Memory/_EngineLayout.inl"

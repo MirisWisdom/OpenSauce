@@ -11,6 +11,14 @@
 
 namespace Yelo
 {
+	namespace TagGroups
+	{
+		struct scenario;
+
+		struct collision_bsp;
+		struct structure_bsp;
+	};
+
 	namespace Scenario
 	{
 		struct s_scenario_player_atmospheric_fog // made up name
@@ -32,6 +40,29 @@ namespace Yelo
 				TagGroups::sound_environment environment;
 			}sound;
 		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_globals) == 0x7C );
+
+
+		s_scenario_globals*	ScenarioGlobals();
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets the currently loaded scenario. </summary>
+		TagGroups::scenario*		Scenario();
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Get the currently loaded SBPS's bsp3d block. </summary>
+		TagGroups::collision_bsp*	Bsp3d();
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Get the currently loaded SBPS's collision bsp block. </summary>
+		TagGroups::collision_bsp*	CollisionBsp();
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Get the currently loaded SBPS's. </summary>
+		TagGroups::structure_bsp*	StructureBsp();
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Tag index of the currently loaded scenario. </summary>
+		datum_index	ScenarioIndex();
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Scenario structure bsp reference index of the currently loaded SBSP. </summary>
+		int16		StructureBspIndex();
 	};
 
 	namespace blam
