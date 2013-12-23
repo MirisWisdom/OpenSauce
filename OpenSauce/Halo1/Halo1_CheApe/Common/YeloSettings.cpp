@@ -170,7 +170,8 @@ namespace Yelo
 			profile_name[0] = '\0';
 
 			int cmds_count = 0;
-			LPWSTR* cmds = CommandLineToArgvW(GetCommandLineW(), &cmds_count);
+			auto cmds = std::unique_ptr<LPWSTR[], winapi_local_deleter>(
+				CommandLineToArgvW(GetCommandLineW(), &cmds_count));
 
 			for(int x = 0; x < cmds_count; x++)
 			{
@@ -188,7 +189,6 @@ namespace Yelo
 				}
 			}
 
-			LocalFree(cmds);
 #undef CMDLINE_ARG_EDITOR_PROFILE
 		}
 

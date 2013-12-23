@@ -11,7 +11,7 @@ namespace Yelo
 {
 	namespace Tool
 	{
-		void PLATFORM_API compile_shader_postprocess(void** arguments);
+		void PLATFORM_API compile_shader_postprocess(char* arguments[]);
 	};
 };
 #endif

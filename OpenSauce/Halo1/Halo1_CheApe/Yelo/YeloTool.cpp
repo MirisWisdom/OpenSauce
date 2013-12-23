@@ -27,6 +27,15 @@ namespace Yelo
 {
 	namespace Tool
 	{
+		int __cdecl s_import_class::CompareProc(void*, const s_import_class* lhs, const s_import_class* rhs)
+		{
+			return strcmp(lhs->name, rhs->name);
+		}
+		int __cdecl s_import_class::SearchByNameProc(void*, cstring key, const s_import_class* element)
+		{
+			return strcmp(key, element->name);
+		}
+
 		enum {
 			k_number_of_tool_import_classes = 0x15,
 		};
@@ -40,33 +49,25 @@ namespace Yelo
 		static const s_import_class yelo_import_classes[] = {
 			#include "Tool/ImportClassDefinitions.inl"
 		};
+		// The new import class list which is made up of tool's and [yelo_import_classes]
+		static s_import_class g_import_classes[k_number_of_tool_import_classes + NUMBEROF(yelo_import_classes)];
 
-		int __cdecl s_import_class_compare(void*, const void* lhs, const void* rhs)
-		{
-			return strcmp(CAST_PTR(const s_import_class*,lhs)->name, CAST_PTR(const s_import_class*,rhs)->name);
-		}
-		int __cdecl s_import_class_search_by_name(void*, const void* key, const void* element)
-		{
-			return strcmp(CAST_PTR(const char*,key), CAST_PTR(const s_import_class*,element)->name);
-		}
 		void ImportClassesInitialize()
 		{
 			// Tool's original import classes
 			static const auto* tool_import_classes = CAST_PTR(s_import_class*, 0x6B01B0);
-			// The new import class list which is made up of tool's
-			// and [yelo_import_classes]
-			static s_import_class import_classes[k_number_of_tool_import_classes + NUMBEROF(yelo_import_classes)];
 
 			// copy official import classes
-			memcpy_s(&import_classes[0], sizeof(import_classes),
+			memcpy_s(&g_import_classes[0], sizeof(g_import_classes),
 				tool_import_classes, sizeof(s_import_class) * k_number_of_tool_import_classes);
 			// copy yelo import classes
-			memcpy_s(&import_classes[k_number_of_tool_import_classes], sizeof(yelo_import_classes),
+			memcpy_s(&g_import_classes[k_number_of_tool_import_classes], sizeof(yelo_import_classes),
 				&yelo_import_classes[0], sizeof(yelo_import_classes));
 			// Now I know my ABCs
-			qsort_s(import_classes, NUMBEROF(import_classes), sizeof(s_import_class), s_import_class_compare, nullptr);
+			//qsort_s(import_classes, NUMBEROF(import_classes), sizeof(s_import_class), s_import_class::compare_proc, nullptr);
+			Qsort(g_import_classes, s_import_class::CompareProc);
 
-
+/*
 			static s_import_class** import_classes_references[] = {
 				CAST_PTR(s_import_class**, 0x414E6C),
 				CAST_PTR(s_import_class**, 0x414EAB),
@@ -80,16 +81,16 @@ namespace Yelo
 			};
 
 			// update references to the import class definitions
-			for(auto ptr : import_classes_references)			*ptr = &import_classes[0];
+			for (auto ptr : import_classes_references)			*ptr = &g_import_classes[0];
 			// update references to the import class definition usages
-			for(auto ptr : import_classes_references_to_usage)	*ptr = &import_classes[0].usage;
+			for (auto ptr : import_classes_references_to_usage)	*ptr = &g_import_classes[0].usage;
 			// update code which contain the import class definitions count
-			for(auto ptr : import_classes_count)				*ptr = NUMBEROF(import_classes);
-
+			for (auto ptr : import_classes_count)				*ptr = NUMBEROF(g_import_classes);
+*/
 			// Modify build-cache-file to use our own implementation
 			{
-				auto* bcf_definition = CAST_PTR(s_import_class*, 
-					bsearch_s("build-cache-file", import_classes, NUMBEROF(import_classes), sizeof(s_import_class), s_import_class_search_by_name, nullptr));
+				auto* bcf_definition = Bsearch("build-cache-file",
+					g_import_classes, s_import_class::SearchByNameProc);
 
 				if(bcf_definition != nullptr)
 					bcf_definition->import_proc = build_cache_file_for_scenario_stock_override;
@@ -97,6 +98,92 @@ namespace Yelo
 					YELO_WARN("CheApe: failed to override build-cache-file :s");
 			}
 		}
+
+		class c_tool_main
+		{
+			static const s_import_class* FindImportClass(cstring verb)
+			{
+				char lowercase_verb[64]; // engine uses a 512 buffer...but why would a name be longer than 64 characters?
+				strcpy_s(lowercase_verb, verb);
+				_strlwr_s(lowercase_verb);
+
+				return Bsearch(lowercase_verb, g_import_classes, s_import_class::SearchByNameProc);
+			}
+
+			static void PrintImportClasses()
+			{
+				for (const auto& clazz : g_import_classes)
+					printf_s("  %s\n", clazz.usage);
+			}
+			static void PrintUsage(cstring exe_name, const s_import_class* clazz = nullptr)
+			{
+				cstring useage = clazz != nullptr
+					? clazz->usage
+					: "<options..>";
+
+				printf_s("usage: %s %s\n", exe_name, useage);
+
+				if (clazz == nullptr)
+					PrintImportClasses();
+			}
+		public:
+			static const uintptr_t HOOK_TRAMPOLINE_START =	0x415366;
+			static const uintptr_t HOOK_TRAMPOLINE_END =	0x415432;
+
+			static void MainHook(int argc, char* argv[], char* /*envp*/[])
+			{
+				char* exe_name = argv[0];
+				// try and get the exe name without the parent directory
+				if (char* proper_name = strrchr(exe_name, '\\'))
+					exe_name = proper_name+1;
+				// null terminate at the start of the file extension
+				if (char* extension = strrchr(exe_name, '.'))
+					*extension = '\0';
+
+				const s_import_class* clazz = nullptr;
+
+				bool success = false;
+				do {
+					if (argc < 2)
+						break;
+
+					// find the first argument not prefixed with a dash. should be an import verb
+					int arg_start = 1;
+					for (; arg_start < argc; arg_start++)
+					{
+						if (*argv[arg_start] != '-')
+							break;
+					}
+
+					// reach the end of the arg list without finding a non-dash arg
+					if (arg_start == argc)
+						break;
+
+					cstring verb = argv[arg_start++];
+					clazz = FindImportClass(verb);
+
+					int verb_argc = argc - arg_start;
+					// the verb given wasn't found or the number of arguments left are not exact, break
+					if (clazz == nullptr || verb_argc != clazz->argument_count)
+						break;
+
+					clazz->import_proc(&argv[arg_start]);
+
+					success = true;
+				} while (false);
+
+				if (!success)
+					PrintUsage(exe_name, clazz);
+			}
+		};
+		NAKED_FUNC_WRITER_ASM_BEGIN(main__hook_trampoline)
+			push	[ebp+0x10] // envp
+			push	[ebp+0x0C] // argv
+			push	[ebp+0x08] // argc
+			mov		eax, c_tool_main::MainHook // can't call directly, as it doesn't assemble into an absolute call
+			call	eax
+			jmp		c_tool_main::HOOK_TRAMPOLINE_END
+			NAKED_FUNC_WRITER_ASM_END();
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -110,6 +197,10 @@ namespace Yelo
 
 			Yelo::DataFiles::SharedInitialize();
 			ImportClassesInitialize();
+
+			size_t tramp_byte_count = Memory::c_naked_func_writer<main__hook_trampoline>::
+				Write(CAST_PTR(void*, c_tool_main::HOOK_TRAMPOLINE_START));
+			assert(tramp_byte_count <= c_tool_main::HOOK_TRAMPOLINE_END-c_tool_main::HOOK_TRAMPOLINE_START);
 		}
 
 		void Dispose()

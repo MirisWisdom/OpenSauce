@@ -7,6 +7,8 @@
 #pragma once
 
 #if PLATFORM_IS_USER
+#include <blamlib/Halo1/camera/director.hpp>
+
 #include "Interface/YeloSettingsInterface.hpp"
 
 namespace Yelo
@@ -52,9 +54,9 @@ namespace Yelo
 			real_vector3d vector;
 			real time; // 0 when ever not in transition into 3rdperson
 
-			byte_flags command_flags[5]; // [0] = 3 in fp, 0 default, [4] = 3 in fp, 0 default
+			byte_flags command_flags[Enums::k_number_of_director_game_modes]; // 3 in fp, 0 default
 			PAD24;
-			real commands[5]; // all the same during transitions, 0.0f = command finished
+			real commands[Enums::k_number_of_director_game_modes]; // all the same during transitions, 0.0f = command finished
 		}; BOOST_STATIC_ASSERT( sizeof(s_camera_command) == 0x68 );
 
 		struct s_observer

@@ -12,7 +12,7 @@ namespace Yelo
 {
 	namespace Tool
 	{
-		void PLATFORM_API runtime_cache_view(void** arguments);
+		void PLATFORM_API runtime_cache_view(char* arguments[]);
 	};
 };
 #endif

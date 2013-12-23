@@ -163,7 +163,7 @@ namespace Yelo
 		 *
 		 * Processes user input and initiates the various commands available
 		 */
-		void PLATFORM_API runtime_cache_view(void** arguments)
+		void PLATFORM_API runtime_cache_view(char* /*arguments*/[])
 		{
 			// print disclaimer
 			Console::ColorPrint(k_color_status_warning,

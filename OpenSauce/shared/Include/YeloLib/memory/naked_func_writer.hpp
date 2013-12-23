@@ -75,7 +75,7 @@ namespace Yelo
 					// Add the 'jmp' offset (can be negative) plus the size of a 'jmp' instruction
 					// (since the offset is relative to the instruction -after- the 'jmp')
 					if( bytes[0] == Enums::_x86_opcode_jmp_near )
-						bytes += *CAST_PTR(int32*, bytes+1) + sizeof(Opcode::s_call);
+						bytes += *CAST_PTR(intptr_t*, bytes+1) + sizeof(Opcode::s_call);
 
 					g_bytes = bytes;
 				}
@@ -93,7 +93,7 @@ namespace Yelo
 				{
 					const byte* bytes = GetNakedFuncBytes();
 					for(size_t x = 0; x < Enums::k_naked_func_writer_max_asm_length; x++)
-						if( *CAST_PTR(const int32*, bytes+x) == NAKED_FUNC_WRITER_EMIT_EOF_WORD )
+						if( *CAST_PTR(const uint32*, bytes+x) == NAKED_FUNC_WRITER_EMIT_EOF_WORD )
 						{
 							g_length = x;
 							break;
@@ -104,32 +104,33 @@ namespace Yelo
 			}
 		public:
 			// Write the asm code of [k_naked_func] to [address]
-			static void Write(void* address)
+			static size_t Write(void* address)
 			{
 				size_t asm_length = DetermineAsmLength();
 
 				byte* bytes = GetNakedFuncBytes();
 				byte* addr = CAST_PTR(byte*, address);
 
-				for(; asm_length != 0; asm_length--, addr++, bytes++)
-					*addr = *bytes;
+				WriteMemory(addr, bytes, asm_length);
+
+				return asm_length;
 			}
 
 			// Write the asm code of [k_naked_func] to [address]
 			// Then write a no-op code [nop_count] times
 			// Only use this if k_naked_func is written multiple times and needs filler bytes in one or more places
 			// Otherwise add the 'nop' instructions to the k_naked_func's asm directly
-			static void Write(void* address, size_t nop_count)
+			static size_t Write(void* address, size_t nop_count)
 			{
 				size_t asm_length = DetermineAsmLength();
 
 				byte* bytes = GetNakedFuncBytes();
 				byte* addr = CAST_PTR(byte*, address);
 
-				for(; asm_length != 0; asm_length--, addr++, bytes++)
-					*addr = *bytes;
-				for(; nop_count != 0; nop_count--, addr++)
-					*addr = Enums::_x86_opcode_nop;
+				WriteMemory(addr, bytes, asm_length);
+				WriteMemory(addr+asm_length, Enums::_x86_opcode_nop, nop_count);
+
+				return asm_length + nop_count;
 			}
 		};
 
@@ -159,16 +160,16 @@ namespace Yelo
 #endif
 		public:
 			// Write the asm code of [k_naked_func] to [address]
-			static void Write(void* address DebugOnly(, cstring asm_mismatch_msg))
+			static size_t Write(void* address DebugOnly(, cstring asm_mismatch_msg))
 			{
 				DebugOnly( Verify(address, asm_mismatch_msg) );
 
-				new_func_t::Write(address);
+				return new_func_t::Write(address);
 			}
 			// Write the asm code of [k_naked_undo_func] to [address]
-			static void Undo(void* address)
+			static size_t Undo(void* address)
 			{
-				old_func_t::Write(address);
+				return old_func_t::Write(address);
 			}
 		};
 	};

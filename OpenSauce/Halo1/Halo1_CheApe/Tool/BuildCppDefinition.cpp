@@ -19,18 +19,20 @@ namespace Yelo
 	{
 #include "Tool/BuildCppDefinition.inl"
 
-		void PLATFORM_API build_cpp_definition(void** arguments)
+		void PLATFORM_API build_cpp_definition(char* arguments[])
 		{
 			struct s_arguments {
-				tag* tag_group;
+				const tag* group_tag;
 				cstring add_boost_asserts_cstr;
 			}* args = CAST_PTR(s_arguments*, arguments);
 			
-			TagGroups::TagSwap(*args->tag_group);
+			tag group_tag = *args->group_tag;
+			TagGroups::TagSwap(group_tag);
+
 			bool add_boost_asserts = Settings::ParseBoolean(args->add_boost_asserts_cstr);
 
 			// get the tag groups definition
-			Yelo::tag_group* tag_group_def = blam::tag_group_get(*args->tag_group);
+			tag_group* tag_group_def = blam::tag_group_get(group_tag);
 			if(tag_group_def)
 			{
 				printf_s("creating c++ definition of %s\n", tag_group_def->name);
@@ -49,7 +51,7 @@ namespace Yelo
 					return;
 				}
 
-				WriteCppDefinition(file, tag_group_def->header_block_definition, *args->tag_group, add_boost_asserts);
+				WriteCppDefinition(file, tag_group_def->header_block_definition, group_tag, add_boost_asserts);
 
 				fclose(file);
 				printf_s("definition saved as %s\n", file_name);
@@ -57,7 +59,7 @@ namespace Yelo
 			else
 			{
 				YELO_WARN("OS_tool: failed to get tag definition for %s\n",
-					TagGroups::group_tag_to_string{*args->tag_group}.ToString());
+					TagGroups::group_tag_to_string{group_tag}.ToString());
 			}
 		}
 	};

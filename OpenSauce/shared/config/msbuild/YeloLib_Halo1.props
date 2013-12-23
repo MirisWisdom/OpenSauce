@@ -112,6 +112,8 @@
     > <!--tag_files-->
 	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_id_yelo.hpp" />
 	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_id_yelo.cpp" />
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids_yelo.hpp" />
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids_yelo.cpp" />
 	<None      Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.components.inl" />
     <None      Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.game_engine.inl" />
     <None      Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.global.inl" />

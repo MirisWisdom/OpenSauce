@@ -11,7 +11,7 @@ namespace Yelo
 {
 	namespace Tool
 	{
-		void PLATFORM_API tag_load_maintenance(void** arguments);
+		void PLATFORM_API tag_load_maintenance(char* arguments[]);
 	};
 };
 #endif

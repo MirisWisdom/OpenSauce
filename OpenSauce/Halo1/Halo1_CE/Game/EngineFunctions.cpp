@@ -1136,6 +1136,28 @@ namespace Yelo
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////
+	// shell
+	namespace blam
+	{
+		//////////////////////////////////////////////////////////////////////////
+		// shell_windows.c
+		API_FUNC_NAKED bool PLATFORM_API shell_get_command_line_argument(cstring param, _Out_opt_ cstring* value)
+		{
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(SHELL_GET_COMMAND_LINE_ARGUMENT);
+
+			API_FUNC_NAKED_START()
+				push	edi
+
+				mov		edi, value
+				push	param
+				call	FUNCTION
+				add		esp, 4 * 1
+
+				pop		edi
+			API_FUNC_NAKED_END_NO_STACK_POP()
+		}
+	};
+	//////////////////////////////////////////////////////////////////////////
 	// tag_files
 	namespace blam
 	{

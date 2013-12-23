@@ -30,7 +30,7 @@ namespace Yelo
 	{
 #include "Tool/CompileShaderPostprocess.inl"
 
-		void PLATFORM_API compile_shader_postprocess(void** arguments)
+		void PLATFORM_API compile_shader_postprocess(char* arguments[])
 		{
 			struct s_arguments {
 				cstring data_path;

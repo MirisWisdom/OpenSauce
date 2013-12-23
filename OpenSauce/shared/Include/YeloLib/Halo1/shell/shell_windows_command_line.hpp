@@ -17,38 +17,43 @@ namespace Yelo
 	{
 		class c_cmd_line_parameter
 		{
-		protected:
-			bool m_parameter_set;
-			PAD24;
-			cstring m_parameter;
-
-		public:
-			virtual void Ctor(cstring parameter);
-
-			bool ParameterSet() const;
-
-			virtual bool ParseValue(cstring) = 0;
+			friend struct s_cmd_line_initializer;
 
 			void GetParameter();
+		protected:
+			cstring m_name;
+			bool m_parameter_set;
+			PAD24;
+
+			virtual void Initialize(cstring parameter);
+
+			virtual bool ParseValue(cstring) PURE;
+		public:
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Returns true if the parameter was set on the command line, false if it wasn't. </summary>
+			inline bool ParameterSet() const { return m_parameter_set; }
 		};
 
 		template<typename T>
 		class c_cmd_line_argument : public c_cmd_line_parameter
 		{
 		public:
-			virtual T GetValue() = 0;
+			T GetValue();
 		};
 
 		template<>
 		class c_cmd_line_argument<cstring> : public c_cmd_line_parameter
 		{
+			friend struct s_cmd_line_initializer;
+
 			cstring m_value;
 
 		public:
 			cstring GetValue() { return m_value; }
 
+		protected:
 			// string specialization
-			bool c_cmd_line_argument<cstring>::ParseValue(cstring value)
+			bool ParseValue(cstring value) override
 			{
 				if(!value) return false;
 
@@ -56,9 +61,9 @@ namespace Yelo
 				return true;
 			}
 
-			void c_cmd_line_argument<cstring>::Ctor(cstring argument)
+			void Initialize(cstring argument) override
 			{
-				c_cmd_line_parameter::Ctor(argument);
+				c_cmd_line_parameter::Initialize(argument);
 
 				m_value = "";
 			}
@@ -67,13 +72,16 @@ namespace Yelo
 		template<>
 		class c_cmd_line_argument<int32> : public c_cmd_line_parameter
 		{
+			friend struct s_cmd_line_initializer;
+
 			int32 m_value;
 
 		public:
 			int32 GetValue() { return m_value; }
 
+		protected:
 			// int32 specialization
-			bool c_cmd_line_argument<int32>::ParseValue(cstring value)
+			bool ParseValue(cstring value) override
 			{
 				if(!value) return false;
 
@@ -82,9 +90,9 @@ namespace Yelo
 				return true;
 			}
 
-			void c_cmd_line_argument<int32>::Ctor(cstring argument)
+			void Initialize(cstring argument) override
 			{
-				c_cmd_line_parameter::Ctor(argument);
+				c_cmd_line_parameter::Initialize(argument);
 
 				m_value = 0;
 			}
@@ -93,13 +101,16 @@ namespace Yelo
 		template<>
 		class c_cmd_line_argument<real> : public c_cmd_line_parameter
 		{
+			friend struct s_cmd_line_initializer;
+
 			real m_value;
 
 		public:
 			real GetValue() { return m_value; }
 
+		protected:
 			// real specialization
-			bool c_cmd_line_argument<real>::ParseValue(cstring value)
+			bool ParseValue(cstring value) override
 			{
 				if(!value) return false;
 
@@ -108,9 +119,9 @@ namespace Yelo
 				return true;
 			}
 
-			void c_cmd_line_argument<real>::Ctor(cstring argument)
+			void Initialize(cstring argument) override
 			{
-				c_cmd_line_parameter::Ctor(argument);
+				c_cmd_line_parameter::Initialize(argument);
 
 				m_value = 0.0f;
 			}
@@ -118,9 +129,11 @@ namespace Yelo
 
 		class c_cmd_line_switch : public c_cmd_line_parameter
 		{
-		public:
+			friend struct s_cmd_line_initializer;
+
+		protected:
 			// switches shouldn't have a value set so it is ignored
-			inline bool ParseValue(cstring) { return true; }
+			inline bool ParseValue(cstring) override { return true; }
 		};
 
 		//////////////////////////////////////////////////////////////////////////

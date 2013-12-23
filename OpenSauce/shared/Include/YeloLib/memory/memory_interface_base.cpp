@@ -27,9 +27,14 @@ namespace Yelo
 {
 	namespace Memory
 	{
-		__declspec(noinline) BOOL WriteMemory(void* address, const void* src, int32 size)
+		__declspec(noinline) BOOL WriteMemory(void* address, const void* src, size_t size)
 		{
 			return address == memcpy(address, src, size);
+		}
+
+		void WriteMemory(void* address, int value, size_t count)
+		{
+			memset(address, value, count);
 		}
 
 #pragma warning( push )
@@ -200,6 +205,17 @@ namespace Yelo
 				this->IsInitialized = 
 				memcpy_s(UndoData.data(), UndoData.size(), MemoryAddress, UndoData.size()) == k_errnone;
 		}
+
+
+		uintptr_t AlignValue(uintptr_t value, unsigned alignment_bit)
+		{
+			const uintptr_t alignment_mask = MASK(alignment_bit);
+
+			if (value & alignment_mask)
+				value = (value | alignment_mask) + 1;
+
+			return value;
+		}
 	};
 };
 
@@ -272,7 +288,7 @@ namespace Yelo
 		{
 			auto p = CAST_PTR(const byte*, buffer);
 
-			while (size--) 
+			while (size--)
 			{
 				uint32 a = (crc_reference >> 8) & 0x00FFFFFFL;
 				uint32 b = g_crc32_table[( (int32) crc_reference ^ *p++) & 0xFF];

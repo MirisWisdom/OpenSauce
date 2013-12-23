@@ -150,18 +150,3 @@ bool CompareMD5(byte* input, unsigned int input_length, const char comparison_md
 
 	return _strnicmp(input_md5, comparison_md5, NUMBEROF(input_md5)) == 0;
 }
-
-bool GetCmdLineParameter(cstring parameter, cstring* value_out)
-{
-	static uint32 TEMP_CALL_ADDR = GET_FUNC_PTR(GET_CMD_LINE_PARAMETER);
-
-	_asm
-	{
-		push	edi
-		push	parameter
-		mov		edi, value_out
-		call	TEMP_CALL_ADDR
-		add		esp, 4
-		pop		edi
-	};
-}

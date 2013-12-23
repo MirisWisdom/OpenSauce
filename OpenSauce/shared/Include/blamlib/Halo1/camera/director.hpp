@@ -8,6 +8,19 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum {
+			_director_game_mode_following,
+			_director_game_mode_orbiting,
+			_director_game_mode_flying,
+			_director_game_mode_editor,
+			_director_game_mode_first_person,
+
+			k_number_of_director_game_modes
+		};
+	};
+
 	namespace blam
 	{
 		// Saves the current camera location to "camera.txt"

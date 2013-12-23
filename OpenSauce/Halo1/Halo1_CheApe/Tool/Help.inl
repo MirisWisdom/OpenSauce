@@ -7,7 +7,7 @@
 
 
 // Please. GET HELP SOMEWHERE
-static void PLATFORM_API tool_if_you_dont_get_help_at_charter(void** arguments)
+static void PLATFORM_API tool_if_you_dont_get_help_at_charter(char* arguments[])
 {
 	struct s_arguments {
 		cstring tool_command;

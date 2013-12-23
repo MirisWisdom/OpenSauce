@@ -349,8 +349,10 @@ namespace Yelo
 		inline bool IsDebugOnly() const { return TEST_FLAG(flags, Flags::_tag_group_debug_only_yelo_bit); }
 
 		// tag_group* [] (ie, tag_group**) qsort procs
-		static int __cdecl QsortCompareByName(void*, const void* lhs, const void* rhs);
-		static int __cdecl QsortCompareByGroupTag(void*, const void* lhs, const void* rhs);
+		static int __cdecl CompareByNameProc(void*, const tag_group*const* lhs, const tag_group*const* rhs);
+		static int __cdecl CompareByGroupTagProc(void*, const tag_group*const* lhs, const tag_group*const* rhs);
+
+		static int __cdecl SearchByNameProc(void*, cstring key, const tag_group*const* group);
 #endif
 	}; BOOST_STATIC_ASSERT( sizeof(tag_group) == 0x60 );
 

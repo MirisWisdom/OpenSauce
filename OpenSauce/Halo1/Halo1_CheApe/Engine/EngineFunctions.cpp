@@ -35,20 +35,6 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_GAME_ENGINE_FUNCTIONS
 #include "Memory/_EngineLayout.inl"
 
-	namespace Engine
-	{
-		API_FUNC_NAKED bool GetCmdLineParameter(cstring parameter, __out_opt cstring* value_out)
-		{
-			static const uintptr_t FUNCTION = GET_FUNC_PTR(GET_CMD_LINE_PARAMETER);
-
-			API_FUNC_NAKED_START()
-				push	value_out
-				push	parameter
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(2);
-		}
-	};
-
 	//////////////////////////////////////////////////////////////////////////
 	// cseries
 	namespace blam
@@ -202,12 +188,6 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
-/*		API_FUNC_NAKED void* PLATFORM_API data_iterator_next(s_data_iterator& iterator)
-		{
-			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATA_ITERATOR_NEXT);
-
-			__asm	jmp	FUNCTION
-		}*/
 		API_FUNC_NAKED datum_index PLATFORM_API data_next_index(const s_data_array* data, datum_index cursor)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DATA_NEXT_INDEX);
@@ -274,6 +254,19 @@ namespace Yelo
 		API_FUNC_NAKED bool PLATFORM_API memory_pool_block_reallocate(Memory::s_memory_pool* pool, _Inout_ s_memory_pool_block::reference_t reference, int32 new_size)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(MEMORY_POOL_BLOCK_REALLOCATE);
+
+			__asm	jmp	FUNCTION
+		}
+	};
+	//////////////////////////////////////////////////////////////////////////
+	// shell
+	namespace blam
+	{
+		//////////////////////////////////////////////////////////////////////////
+		// shell_windows.c
+		API_FUNC_NAKED bool PLATFORM_API shell_get_command_line_argument(cstring param, _Out_opt_ cstring* value = nullptr)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(SHELL_GET_COMMAND_LINE_ARGUMENT);
 
 			__asm	jmp	FUNCTION
 		}
