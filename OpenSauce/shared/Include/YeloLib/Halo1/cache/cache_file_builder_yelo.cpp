@@ -16,6 +16,60 @@ namespace Yelo
 {
 	namespace Cache
 	{
+		c_cache_file_builder_base::c_cache_file_builder_base()
+			: m_tag_index_to_cache_tag_index_table( YELO_NEW_ARRAY(datum_index, Enums::k_maximum_simultaneous_tag_instances_upgrade) )
+			, m_current_tag_index( datum_index::null )
+		{
+			YELO_ASSERT_DISPLAY(m_tag_index_to_cache_tag_index_table, "ran out of memory allocating tag index translation table");
+
+			for(size_t x = 0; x < Enums::k_maximum_simultaneous_tag_instances_upgrade; x++)
+				m_tag_index_to_cache_tag_index_table[x] = datum_index::null;
+		}
+		c_cache_file_builder_base::~c_cache_file_builder_base()
+		{
+			YELO_DELETE_ARRAY(m_tag_index_to_cache_tag_index_table);
+		}
+
+		size_t c_cache_file_builder_base::BuildCacheTagIndexTable(_Out_ size_t& predicted_tag_names_buffer_size)
+		{
+			predicted_tag_names_buffer_size = 0;
+			size_t cache_tag_count = 0;
+			auto* instances_data = CAST(Memory::s_data_array*, TagGroups::TagInstances());
+
+			datum_index::salt_t salt = instances_data->GetInitialSalt();
+			for (auto instance : TagGroups::TagInstances())
+			{
+				if (TagInstanceNotSuitableForCache(*instance))
+					continue;
+
+				predicted_tag_names_buffer_size += strlen(instance->filename) + 1;
+
+				m_tag_index_to_cache_tag_index_table[cache_tag_count++] =
+					datum_index::Create(instance.GetAbsoluteIndex(), salt);
+
+				salt = instances_data->GetNextSalt(salt);
+			}
+
+			return cache_tag_count;
+		}
+		bool c_cache_file_builder_base::TagInstanceNotSuitableForCache(const s_tag_instance& instance)
+		{
+			return instance.is_orphan || instance.is_reload ||
+				blam::tag_group_get(instance.group_tag)->IsDebugOnly();
+		}
+		void c_cache_file_builder_base::IdentifyCacheBoundTags()
+		{
+			size_t predicted_tag_names_buffer_size;
+			size_t cache_tag_count = BuildCacheTagIndexTable(predicted_tag_names_buffer_size);
+
+			size_t tag_header_size = sizeof(s_cache_tag_header);
+			tag_header_size += cache_tag_count * sizeof(s_cache_tag_instance);
+			tag_header_size += predicted_tag_names_buffer_size;
+
+			auto tag_header_bytes = std::vector<byte>(tag_header_size);
+		}
+
+
 		c_cache_file_builder::s_cache_info::s_cache_info()
 			: memory_buffer( YELO_NEW_ARRAY(byte, Enums::k_tag_allocation_size_upgrade) )
 		{
@@ -27,59 +81,12 @@ namespace Yelo
 		}
 
 		c_cache_file_builder::c_cache_file_builder()
-			: m_tag_index_to_cache_tag_index_table( YELO_NEW_ARRAY(datum_index, Enums::k_maximum_simultaneous_tag_instances_upgrade) )
-			, m_current_tag_index( datum_index::null )
+			: c_cache_file_builder_base()
 			, m_cache()
 		{
-			YELO_ASSERT_DISPLAY(m_tag_index_to_cache_tag_index_table, "ran out of memory allocating tag index translation table");
-
-			for(size_t x = 0; x < Enums::k_maximum_simultaneous_tag_instances_upgrade; x++)
-				m_tag_index_to_cache_tag_index_table[x] = datum_index::null;
 		}
-
 		c_cache_file_builder::~c_cache_file_builder()
 		{
-			YELO_DELETE_ARRAY(m_tag_index_to_cache_tag_index_table);
-		}
-
-		static bool TagInstanceInvalidForCache(const s_tag_instance& instance)
-		{
-			return instance.is_orphan || instance.is_reload ||
-				blam::tag_group_get(instance.group_tag)->IsDebugOnly();
-		}
-		size_t c_cache_file_builder::BuildCacheTagIndexTable(_Out_ size_t& predicted_tag_names_buffer_size)
-		{
-			predicted_tag_names_buffer_size = 0;
-			size_t cache_tag_count = 0;
-			auto* instances_data = CAST(Memory::s_data_array*, TagGroups::TagInstances());
-
-			datum_index::salt_t salt = instances_data->GetInitialSalt();
-			for(auto instance : TagGroups::TagInstances())
-			{
-				if(TagInstanceInvalidForCache(*instance))
-					continue;
-
-				predicted_tag_names_buffer_size += strlen(instance->filename) + 1;
-
-				m_tag_index_to_cache_tag_index_table[cache_tag_count] = 
-					datum_index::Create(instance.GetAbsoluteIndex(), salt);
-
-				salt = instances_data->GetNextSalt(salt);
-				cache_tag_count++;
-			}
-
-			return cache_tag_count;
-		}
-		void c_cache_file_builder::IdentifyCacheBoundTags()
-		{
-			size_t predicted_tag_names_buffer_size;
-			size_t cache_tag_count = BuildCacheTagIndexTable(predicted_tag_names_buffer_size);
-
-			size_t tag_header_size = sizeof(s_cache_tag_header);
-			tag_header_size += cache_tag_count * sizeof(s_cache_tag_instance);
-			tag_header_size += predicted_tag_names_buffer_size;
-
-			auto tag_header_bytes = std::vector<byte>(tag_header_size);
 		}
 
 		void c_cache_file_builder::StreamTagBlockToBuffer(const tag_block* block)

@@ -643,7 +643,7 @@ namespace Yelo
 					break;
 
 				bool is_readonly; uint32 checksum;
-				if( !tag_file_open(group_tag, name, &is_readonly, &checksum, TEST_FLAG(flags, Flags::_tag_load_verify_exist_first_bit)) )
+				if (!tag_file_open(group_tag, name, &is_readonly, &checksum, TEST_FLAG(flags, Flags::_tag_load_from_file_system_bit)))
 				{
 					tag_group_loading_add_non_loaded_tag(group_tag, name);
 

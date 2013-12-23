@@ -106,9 +106,11 @@ namespace Yelo
 
 			// checked in the tag reference solving code.
 			// last condition checked after an assortment of conditionals
-			// and if this is TRUE, it won't resolve
-			// NOTE: I think this actually only applied to tags builds of the game. 
-			// Flag isn't checked in H2EK's code (might have been deprecated if the above is wrong)
+			// and if this is FALSE, it won't resolve
+			// NOTE: I think this a deprecated flag for loading the 'default' definition of a group.
+			// This flag would cause a call of tag_load(group_tag, NULL, 0) to occur. However,
+			// tag_load asserts name != NULL.
+			// Flag isn't checked in H2EK's code (so more than likely deprecated)
 			_tag_reference_unknown0_bit = 0,
 			_tag_reference_non_resolving_bit,
 			k_number_of_tag_group_tag_reference_flags,
@@ -138,9 +140,8 @@ namespace Yelo
 
 			// When this is set, implies _tag_postprocess_mode_for_editor, else _for_runtime
 			_tag_load_for_editor_bit = 0,
-			// Verify the tag file exists first
-			// TODO: pretty sure this is 'is_new', so refactor to _tag_load_is_new_bit
-			_tag_load_verify_exist_first_bit,
+			// Load the tag from the file system, not from a cache/index
+			_tag_load_from_file_system_bit,
 			// If set: child references of the tag being loaded are not loaded themselves
 			// Else, child references are loaded from disk
 			_tag_load_non_resolving_references_bit,
