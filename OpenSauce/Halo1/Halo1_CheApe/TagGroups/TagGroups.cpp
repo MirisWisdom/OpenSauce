@@ -195,7 +195,7 @@ namespace Yelo
 			__asm	jmp	FUNCTION
 		}
 		API_FUNC_NAKED bool PLATFORM_API tag_file_open(tag group_tag, cstring filename, 
-			bool* is_readonly, uint32* crc, bool verify_exist_first)
+			bool* is_readonly, uint32* crc, bool from_file_system)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FILE_OPEN);
 

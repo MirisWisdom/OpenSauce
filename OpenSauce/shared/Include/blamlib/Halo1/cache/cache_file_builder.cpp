@@ -68,7 +68,7 @@ namespace Yelo
 					globals->cheat_powerups.resize(0);
 					globals->weapons_list.resize(0);
 					globals->multiplayer_info.resize(0);
-				}
+				} break;
 			}
 
 			// not done in the stock code, but it's unused anyway so fuck it
@@ -77,9 +77,9 @@ namespace Yelo
 		bool ScenarioLoadForCacheBuild(cstring scenario_name, cstring globals_name)
 		{
 			datum_index scenario_index = blam::tag_load<TagGroups::scenario>(scenario_name, 
-				FLAG(Flags::_tag_load_verify_exist_first_bit));
+				FLAG(Flags::_tag_load_from_file_system_bit));
 			datum_index globals_index = blam::tag_load<TagGroups::s_game_globals>(globals_name, 
-				FLAG(Flags::_tag_load_verify_exist_first_bit) | FLAG(Flags::_tag_load_non_resolving_references_bit));
+				FLAG(Flags::_tag_load_from_file_system_bit) | FLAG(Flags::_tag_load_non_resolving_references_bit));
 
 			// the engine code returns true even if the tags fail to load
 			if(scenario_index.IsNull() || globals_index.IsNull())

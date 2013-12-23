@@ -43,12 +43,12 @@ namespace Yelo
 
 
 		bool PLATFORM_API tag_file_open(tag group_tag, cstring filename, 
-			__out_opt bool* is_readonly, __out_opt uint32* crc, bool verify_exist_first);
+			__out_opt bool* is_readonly, __out_opt uint32* crc, bool from_file_system);
 		template<typename T> inline
 		bool tag_file_open(cstring filename, 
-			__out_opt bool* is_readonly, __out_opt uint32* crc, bool verify_exist_first)
+			__out_opt bool* is_readonly, __out_opt uint32* crc, bool from_file_system)
 		{
-			return tag_file_open(T::k_group_tag, filename, is_readonly, crc, verify_exist_first);
+			return tag_file_open(T::k_group_tag, filename, is_readonly, crc, from_file_system);
 		}
 
 		bool PLATFORM_API tag_file_read(int32 file_position, size_t buffer_size, void* buffer);

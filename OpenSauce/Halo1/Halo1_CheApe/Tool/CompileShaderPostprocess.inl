@@ -284,7 +284,7 @@ HRESULT		LoadShader(
 	{
 		// add any new formats based upon shpp here
 		tag_index = blam::tag_load<TagGroups::s_shader_postprocess_generic>(
-			tag_path, FLAG(Flags::_tag_load_verify_exist_first_bit));
+			tag_path, FLAG(Flags::_tag_load_from_file_system_bit));
 		if(!tag_index.IsNull()) break;
 	}
 	while(false);

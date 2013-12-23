@@ -244,7 +244,7 @@ namespace Yelo
 			if( *instance_data == nullptr )
 			{
 				tag_groups_dispose();
-				YELO_ERROR(_error_message_priority_none, "couldn't allocate tag group globals");
+				YELO_ERROR_OUT_OF_MEMORY("couldn't allocate tag group globals");
 				return;
 			}
 

@@ -37,17 +37,27 @@ namespace Yelo
 	{
 		class c_cache_file_builder_base
 		{
-		protected:
-			virtual bool TagInstanceSuitableForCache(const s_tag_instance& instance);
-		};
+			size_t BuildCacheTagIndexTable(_Out_ size_t& predicted_tag_names_buffer_size);
 
-		class c_cache_file_builder
-		{
-			static const unsigned k_cache_file_tag_memory_alignment_bit = Flags::_alignment_32_bit;
+		protected:
+			static const unsigned k_tag_memory_alignment_bit = Flags::_alignment_32_bit;
 
 			datum_index* m_tag_index_to_cache_tag_index_table;
 			datum_index m_current_tag_index; // index of the tag currently being processed (streamed, etc)
 
+			c_cache_file_builder_base();
+
+		public:
+			virtual ~c_cache_file_builder_base();
+
+		protected:
+			virtual bool TagInstanceNotSuitableForCache(const s_tag_instance& instance);
+			void IdentifyCacheBoundTags();
+
+		};
+
+		class c_cache_file_builder : public c_cache_file_builder_base
+		{
 			struct s_cache_info {
 				TagGroups::c_cache_file_memory_gestalt* memory_gestalt;
 
@@ -68,14 +78,12 @@ namespace Yelo
 				~s_cache_info();
 			}m_cache;
 
-			size_t BuildCacheTagIndexTable(_Out_ size_t& predicted_tag_names_buffer_size);
-			void IdentifyCacheBoundTags();
-
 			void StreamTagBlockToBuffer(const tag_block* block);
 			void StreamTagToBuffer(datum_index tag_index);
+
 		public:
 			c_cache_file_builder();
-			~c_cache_file_builder();
+			virtual ~c_cache_file_builder() override;
 		};
 	};
 };

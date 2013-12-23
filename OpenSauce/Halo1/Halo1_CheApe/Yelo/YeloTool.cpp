@@ -63,30 +63,9 @@ namespace Yelo
 			// copy yelo import classes
 			memcpy_s(&g_import_classes[k_number_of_tool_import_classes], sizeof(yelo_import_classes),
 				&yelo_import_classes[0], sizeof(yelo_import_classes));
-			// Now I know my ABCs
-			//qsort_s(import_classes, NUMBEROF(import_classes), sizeof(s_import_class), s_import_class::compare_proc, nullptr);
+			// sort all the import classes by name from a to z
 			Qsort(g_import_classes, s_import_class::CompareProc);
 
-/*
-			static s_import_class** import_classes_references[] = {
-				CAST_PTR(s_import_class**, 0x414E6C),
-				CAST_PTR(s_import_class**, 0x414EAB),
-			};
-			static void** import_classes_references_to_usage[] = {
-				CAST_PTR(void**, 0x41541D),
-			};
-			static byte* import_classes_count[] = {
-				CAST_PTR(byte*, 0x414E82),
-				CAST_PTR(byte*, 0x415412),
-			};
-
-			// update references to the import class definitions
-			for (auto ptr : import_classes_references)			*ptr = &g_import_classes[0];
-			// update references to the import class definition usages
-			for (auto ptr : import_classes_references_to_usage)	*ptr = &g_import_classes[0].usage;
-			// update code which contain the import class definitions count
-			for (auto ptr : import_classes_count)				*ptr = NUMBEROF(g_import_classes);
-*/
 			// Modify build-cache-file to use our own implementation
 			{
 				auto* bcf_definition = Bsearch("build-cache-file",
@@ -132,10 +111,16 @@ namespace Yelo
 
 			static void MainHook(int argc, char* argv[], char* /*envp*/[])
 			{
-				char* exe_name = argv[0];
+				char* exe_path = argv[0];
 				// try and get the exe name without the parent directory
-				if (char* proper_name = strrchr(exe_name, '\\'))
-					exe_name = proper_name+1;
+				if (char* proper_name = strrchr(exe_path, '\\'))
+					exe_path = proper_name+1;
+
+				char exe_name[64];
+				if (strcpy_s(exe_name, exe_path) != k_errnone)
+					YELO_ERROR(_error_message_priority_assert, "Who the hell names their tool exe longer than %d characters? %s",
+						NUMBEROF(exe_name), exe_path);
+
 				// null terminate at the start of the file extension
 				if (char* extension = strrchr(exe_name, '.'))
 					*extension = '\0';
