@@ -11,8 +11,8 @@ namespace Yelo
 {
 	namespace Tool
 	{
-		void PLATFORM_API build_cache_file_for_scenario_extended(void** arguments);
-		void PLATFORM_API build_cache_file_for_scenario_stock_override(void** arguments);
+		void PLATFORM_API build_cache_file_for_scenario_extended(char* arguments[]);
+		void PLATFORM_API build_cache_file_for_scenario_stock_override(char* arguments[]);
 	};
 };
 #endif

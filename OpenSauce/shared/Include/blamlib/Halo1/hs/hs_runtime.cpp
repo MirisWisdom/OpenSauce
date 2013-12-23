@@ -9,10 +9,20 @@
 #include <blamlib/Halo1/scenario/scenario.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 
+#define YELO_HS_RUNTIME_ASSERT(expression, thread, explanation)										\
+	YELO_ASSERT_DISPLAY(expression, "a problem occurred while executing the script %s: %s (%s)",	\
+		thread->GetDescriptionString(), explanation, expression)
+
 namespace Yelo
 {
 	namespace Scripting
 	{
+		bool s_hs_thread_datum::stack_frame::AllocationWouldOverflow(const byte* stack_base_address, size_t size, size_t alignment) const
+		{
+			return	(this->data + this->size + alignment + size) >
+					(stack_base_address + Enums::k_hs_thread_stack_size);
+		}
+
 		bool s_hs_thread_datum::ValidThread(const Memory::s_data_array& threads) const
 		{
 			const byte* base_address = CAST_PTR(const byte*, threads.base_address);
@@ -30,7 +40,7 @@ namespace Yelo
 				return false;
 
 			// validate the stack hasn't overflowed
-			else if (&stack_buffer[stack_data->offset+stack_data->size] > CAST(const void*, this+1))
+			else if (stack_data->data+stack_data->size > CAST(const void*, this+1))
 				return false;
 
 			return true;
@@ -53,5 +63,30 @@ namespace Yelo
 				return "[unknown thread type]";
 			}
 		}
+
+		void* s_hs_thread_datum::StackAllocate(const Memory::s_data_array& threads,
+			size_t size, long_flags alignment_bit, _Out_opt_ int16* stack_offset)
+		{
+			YELO_HS_RUNTIME_ASSERT(ValidThread(threads), this,
+				"corrupted stack.");
+			YELO_HS_RUNTIME_ASSERT(size, this,
+				"attempt to allocate zero space from the stack.");
+
+			// TODO: calc alignment of stack
+			size_t alignment = 0;
+
+			YELO_HS_RUNTIME_ASSERT(stack_data->AllocationWouldOverflow(stack_buffer, size, alignment), this,
+				"stack overflow.");
+
+			// TODO: ZeroMemory alignment bytes
+
+			// TODO: populate the start offset
+			if (stack_offset)
+				*stack_offset = NONE;
+
+			return nullptr;
+		}
 	};
 };
+
+#undef YELO_HS_RUNTIME_ASSERT

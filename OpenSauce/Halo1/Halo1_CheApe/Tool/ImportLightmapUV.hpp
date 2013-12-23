@@ -11,7 +11,7 @@ namespace Yelo
 {
 	namespace Tool
 	{
-		void PLATFORM_API import_structure_lightmap_uvs(void** arguments);
+		void PLATFORM_API import_structure_lightmap_uvs(char* arguments[]);
 	};
 };
 #endif

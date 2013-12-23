@@ -1319,6 +1319,12 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_id_yelo.cpp">
       <Filter>.YeloLib\tag_files</Filter>
     </ClCompile>
+	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids_yelo.hpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClInclude>
+	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_id_yelo.cpp">
+      <Filter>.YeloLib\tag_files</Filter>
+    </ClCompile>
     <None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.components.inl">
       <Filter>.YeloLib\tag_files\string_ids</Filter>
     </None>

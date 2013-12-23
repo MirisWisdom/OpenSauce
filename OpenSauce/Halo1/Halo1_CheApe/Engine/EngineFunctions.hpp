@@ -13,9 +13,6 @@ namespace Yelo
 {
 	namespace Engine
 	{
-		// NOTE: command line parameters are not populated in guerilla nor tool.exe
-		// So basically only use this in sapien builds
-		bool GetCmdLineParameter(cstring parameter, __out_opt cstring* value_out = nullptr);
 	};
 };
 

@@ -11,7 +11,7 @@ namespace Yelo
 {
 	namespace Tool
 	{
-		void PLATFORM_API build_cpp_definition(void** arguments);
+		void PLATFORM_API build_cpp_definition(char* arguments[]);
 	};
 };
 #endif

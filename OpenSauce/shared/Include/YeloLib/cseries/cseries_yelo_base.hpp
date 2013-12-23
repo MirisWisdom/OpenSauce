@@ -263,6 +263,12 @@ namespace Yelo
 	};
 
 #if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
+	/// <summary>	Primarily a deleter for std::unique_ptr for objects allocated by LocalAlloc. </summary>
+	struct winapi_local_deleter
+	{
+		void operator()(HLOCAL h) const;
+	};
+
 	/// <summary>	Primarily a deleter for std::unique_ptr for use CRT's FILE. </summary>
 	struct crt_file_closer
 	{
@@ -274,6 +280,37 @@ namespace Yelo
 
 
 #if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
+	typedef int (__cdecl* proc_stdlib_compare)(void*, const void*, const void*);
+
+	template<typename T, size_t k_array_size, typename TContext = void> inline
+	void Qsort(T (&_Base)[k_array_size],
+		int (__cdecl* _PtFuncCompare)(TContext*, const T*, const T*), TContext* _Context = nullptr)
+	{
+		::qsort_s(_Base, k_array_size, sizeof(T), CAST_PTR(proc_stdlib_compare,_PtFuncCompare), _Context);
+	}
+	template<typename T, typename TContext = void, typename TCompareParam = const T*> inline
+	void Qsort(T* _Base, rsize_t _NumOfElements,
+		int (__cdecl* _PtFuncCompare)(TContext*, TCompareParam, TCompareParam),
+		TContext* _Context = nullptr)
+	{
+		::qsort_s(_Base, _NumOfElements, sizeof(T), CAST_PTR(proc_stdlib_compare,_PtFuncCompare), _Context);
+	}
+
+	template<typename TKey, typename T, size_t k_array_size, typename TContext = void> inline
+	T* Bsearch(const TKey* _Key, T (&_Base)[k_array_size],
+		int (__cdecl* _PtFuncCompare)(TContext*, const TKey*, const T*), TContext* _Context = nullptr)
+	{
+		return CAST_PTR(T*,
+			::bsearch_s(_Key, _Base, k_array_size, sizeof(T), CAST_PTR(proc_stdlib_compare, _PtFuncCompare), _Context));
+	}
+	template<typename TKey, typename T, typename TContext = void, typename TCompareParam = const T*> inline
+	T* Bsearch(const TKey* _Key, T* _Base, rsize_t _NumOfElements,
+		int (__cdecl* _PtFuncCompare)(TContext*, const TKey*, TCompareParam), TContext* _Context = nullptr)
+	{
+		return CAST_PTR(T*,
+			::bsearch_s(_Key, _Base, _NumOfElements, sizeof(T), CAST_PTR(proc_stdlib_compare, _PtFuncCompare), _Context));
+	}
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/// <summary>	Get the current time and format it into [time_str]. </summary>
 	///

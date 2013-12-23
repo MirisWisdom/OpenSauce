@@ -8,9 +8,6 @@
 
 #include <blamlib/tag_files/tag_groups_base.hpp>
 
-#define STRING_ID(set, value)	\
-	_string_id::_##set##_string_##value
-
 namespace Yelo
 {
 	struct tag_field;
@@ -45,15 +42,14 @@ namespace Yelo
 
 		string_id id;
 
-		static void format_string(char* string);
+		static char* GetString(string_id id, __out string_id_yelo_value value);
+		static cstring GetString(string_id id);
+
+		static void FormatString(char* string);
 #if PLATFORM_IS_EDITOR
 		// Get the start of a string_id value that is pretending to be a tag name
-		static char* get_string_start(tag_reference_name_reference name);
-#endif
-		static char* get_string(string_id id, __out string_id_yelo_value value);
-		static cstring get_string(string_id id);
+		static char* GetStringStart(tag_reference_name_reference name);
 
-#if PLATFORM_IS_EDITOR
 		static tag_reference_definition* global_reference_definition;
 #endif
 	};
@@ -89,8 +85,8 @@ namespace Yelo
 			k_index_bit_count = 19,
 			k_id_set_bit_count = 6,
 
-			k_index_bit_mask = (1<<k_index_bit_count) - 1,
-			k_id_bit_mask = (1<<k_id_set_bit_count) - 1,
+			k_index_bit_mask = MASK(k_index_bit_count),
+			k_id_bit_mask = MASK(k_id_set_bit_count),
 
 			k_index_bit_shift = 0,
 			k_id_bit_shift = k_index_bit_count,
@@ -128,61 +124,5 @@ namespace Yelo
 
 			k_last_valid_set = _set_unused10 - 1,
 		};
-//////////////////////////////////////////////////////////////////////////
-// generator macros
-// Returns the current generated set's (enum) member name by value name
-#define __STRING_ID_GENERATE_VALUE_NAME(value)			\
-	BOOST_JOIN(											\
-		BOOST_JOIN(_,__STRING_ID_GENERATE_SET_NAME) ,	\
-		BOOST_JOIN(_string_, value )					\
-		)
-
-// Returns the name of the current generated set's base counter
-#define __STRING_ID_GENERATE_COUNTER_NAME		BOOST_JOIN(__, BOOST_JOIN(__STRING_ID_GENERATE_SET_NAME, __ENUM_COUNTER__ ))
-// Returns the next counter value, ie index, for the generated set
-#define __STRING_ID_GENERATE_COUNTER_NEXT		(__COUNTER__ - __STRING_ID_GENERATE_COUNTER_NAME - 1)
-// Generate a string_id by value name
-#define __STRING_ID_GENERATE(value)													\
-	(																							\
-		(BOOST_JOIN(_set_,__STRING_ID_GENERATE_SET_NAME)&	k_id_bit_mask)		<< k_id_bit_shift		|	\
-		(__STRING_ID_GENERATE_COUNTER_NEXT				&	k_index_bit_mask)	<< k_index_bit_shift		\
-	)
-// Generate a string_id definition by value name
-#define __STRING_ID(value)								\
-	__STRING_ID_GENERATE_VALUE_NAME( value ) = __STRING_ID_GENERATE( value ),
-// Start a string_id set definition, declaring/defining any needed boilerplate code
-#define __STRING_ID_SET_BEGIN()							\
-	enum { __STRING_ID_GENERATE_COUNTER_NAME = __COUNTER__,
-// End a string_id set definition, declaring/defining any needed boilerplate code
-#define __STRING_ID_SET_END()																		\
-		BOOST_JOIN(BOOST_JOIN(k_number_of_,__STRING_ID_GENERATE_SET_NAME),_strings) = __STRING_ID_GENERATE_COUNTER_NEXT,	\
-	};
-// _string_id_empty_string definition hack for the 'global' set
-#define __STRING_ID_EMPTY_STRING_HACK()	_string_id_empty_string = __STRING_ID_GENERATE_COUNTER_NEXT,
-//////////////////////////////////////////////////////////////////////////
-
-
-#include <YeloLib/Halo1/tag_files/string_ids.global.inl>
-		BOOST_STATIC_ASSERT( _string_id_empty_string == 0 );
-// NO CACHE STRINGS DEFINED IN CODE!
-#include <YeloLib/Halo1/tag_files/string_ids.gui.inl>
-#include <YeloLib/Halo1/tag_files/string_ids.gui_alert.inl>
-#include <YeloLib/Halo1/tag_files/string_ids.gui_dialog.inl>
-#include <YeloLib/Halo1/tag_files/string_ids.properties.inl>
-#include <YeloLib/Halo1/tag_files/string_ids.components.inl>
-#include <YeloLib/Halo1/tag_files/string_ids.game_engine.inl>
-#include <YeloLib/Halo1/tag_files/string_ids.incident.inl>
-#include <YeloLib/Halo1/tag_files/string_ids.os_setting.inl>
-
-#undef __STRING_ID_GENERATE_SET_NAME
-
-#undef __STRING_ID_GENERATE_COUNTER_NAME
-#undef __STRING_ID_GENERATE_COUNTER_NEXT
-#undef __STRING_ID_GENERATE
-#undef __STRING_ID
-
-#undef __STRING_ID_SET_BEGIN
-#undef __STRING_ID_SET_END
-#undef __STRING_ID_EMPTY_STRING_HACK
 	};
 };

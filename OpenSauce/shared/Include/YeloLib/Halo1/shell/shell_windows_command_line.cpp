@@ -7,15 +7,11 @@
 #include "Common/Precompile.hpp"
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
-#if PLATFORM_IS_EDITOR
-	#include "Engine/EngineFunctions.hpp"
-#else
-	#include "Game/EngineFunctions.hpp"
-#endif
+#include <blamlib/Halo1/main/main.hpp> // needs to be shell.hpp if/when we add it
 
-#define CMDLINE_ARG(name, type)				c_cmd_line_argument<##type##> CMDLINE_PARAM_NAME(name)
-#define CMDLINE_SWITCH(name)				c_cmd_line_switch CMDLINE_PARAM_NAME(name)
-#define CMDLINE_INIT_PARAM(name, parameter) CMDLINE_GET_PARAM( name ).Ctor( parameter )
+#define CMDLINE_ARG(name, type)				c_cmd_line_argument<type>	CMDLINE_PARAM_NAME(name)
+#define CMDLINE_SWITCH(name)				c_cmd_line_switch			CMDLINE_PARAM_NAME(name)
+#define CMDLINE_INIT_PARAM(name, parameter) CMDLINE_GET_PARAM( name ).Initialize( parameter )
 
 namespace Yelo
 {
@@ -35,32 +31,35 @@ namespace Yelo
 			nullptr
 		};
 
-		void ReadCmdLineSettings()
+		struct s_cmd_line_initializer
 		{
+			static void Run()
+			{
 #define CMDLINE_DEFINE_ARG(name, type)		CMDLINE_INIT_PARAM(name, BOOST_PP_CAT("-", #name));
 #define CMDLINE_DEFINE_SWITCH(name)			CMDLINE_INIT_PARAM(name, BOOST_PP_CAT("-", #name));
 #include "Common/YeloSettings.CmdLineSettings.inl"
 
-			for(int i = 0; i < NUMBEROF(g_cmd_line_params)-1; i++)
-				g_cmd_line_params[i]->GetParameter();
+				// we don't use ranged for here because the last entry is NULL and we'd then have to check for null
+				for(size_t i = 0; i < NUMBEROF(g_cmd_line_params)-1; i++)
+					g_cmd_line_params[i]->GetParameter();
+			}
+		};
+		void ReadCmdLineSettings()
+		{
+			s_cmd_line_initializer::Run();
 		}
 
 
-		void c_cmd_line_parameter::Ctor(cstring parameter)
+		void c_cmd_line_parameter::Initialize(cstring parameter)
 		{
 			m_parameter_set = false;
-			m_parameter = parameter;
-		}
-
-		bool c_cmd_line_parameter::ParameterSet() const
-		{
-			return m_parameter_set;
+			m_name = parameter;
 		}
 
 		void c_cmd_line_parameter::GetParameter()
 		{
 			cstring value = nullptr;
-			m_parameter_set = Engine::GetCmdLineParameter(m_parameter, &value);
+			m_parameter_set = blam::shell_get_command_line_argument(m_name, &value);
 
 			// if the parameter has been set, parse the parameters value
 			if(m_parameter_set && value)
@@ -68,3 +67,7 @@ namespace Yelo
 		}
 	};
 };
+
+#undef CMDLINE_ARG
+#undef CMDLINE_SWITCH
+#undef CMDLINE_INIT_PARAM

@@ -378,7 +378,7 @@ namespace Yelo
 
 			return getc(stdin) != '\n';
 		}
-		void PLATFORM_API tag_load_maintenance(void** arguments)
+		void PLATFORM_API tag_load_maintenance(char* arguments[])
 		{
 			struct s_arguments {
 				cstring tag_name;

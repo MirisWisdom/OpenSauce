@@ -97,10 +97,10 @@ namespace Yelo
 	{
 		static const size_t k_buffer_size = MAX_PATH*11;
 
-		char* buffer = new char[k_buffer_size];
+		auto buffer = std::unique_ptr<char>(new char[k_buffer_size]);
 
 		const Settings::s_profile& p = Settings::Get().active_profile;
-		sprintf_s(buffer, k_buffer_size, "\r\n"
+		sprintf_s(buffer.get(), k_buffer_size, "\r\n"
 			"root: %s\r\n"
 				"\tdata: %s\r\n"
 				"\tmaps: %s\r\n"
@@ -111,10 +111,10 @@ namespace Yelo
 				p.paths.maps,
 				p.paths.tags,
 				p.paths.tags_folder_name);
-		Debug::Write(buffer);
+		Debug::Write(buffer.get());
 
 		const s_override_paths& o = _override_paths;
-		sprintf_s(buffer, k_buffer_size, "\r\n"
+		sprintf_s(buffer.get(), k_buffer_size, "\r\n"
 			"root: %s\r\n"
 
 			"data: %s\r\n"
@@ -147,8 +147,6 @@ namespace Yelo
 				
 				o.tags.folder_name_with_slash,
 				o.tags.folder_name_with_slash_relative);
-		Debug::Write(buffer);
-
-		delete[] buffer;
+		Debug::Write(buffer.get());
 	}
 };

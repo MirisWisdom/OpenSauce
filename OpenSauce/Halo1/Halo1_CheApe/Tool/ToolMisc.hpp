@@ -11,9 +11,9 @@ namespace Yelo
 {
 	namespace Tool
 	{
-		void PLATFORM_API scenario_compile_scripts(void** arguments);
+		void PLATFORM_API scenario_compile_scripts(char* arguments[]);
 
-		void PLATFORM_API scenario_cleanse_of_yelo_data(void** arguments);
+		void PLATFORM_API scenario_cleanse_of_yelo_data(char* arguments[]);
 	};
 };
 #endif

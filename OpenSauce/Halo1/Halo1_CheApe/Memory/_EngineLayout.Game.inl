@@ -9,11 +9,6 @@
 //////////////////////////////////////////////////////////////////////////
 // EngineFunctions.cpp
 #if __EL_INCLUDE_FILE_ID == __EL_GAME_ENGINE_FUNCTIONS
-	namespace Engine
-	{
-		FUNC_PTR(GET_CMD_LINE_PARAMETER,			0x421ED0, 0x42DC70, 0x492E60);
-	};
-
 	namespace GameUI
 	{
 		ENGINE_DPTR(s_first_person_weapons, first_person_weapons, PTR_NULL, 0x10C8EAC, 0xE00D44);
@@ -93,6 +88,9 @@
 		FUNC_PTR(MEMORY_POOL_BLOCK_FREE,		0x5E3F30, 0x4EBE40, 0x618850);
 		FUNC_PTR(MEMORY_POOL_DEFRAGMENT,		0x5E3FD0, 0x4EBEE0, 0x6188F0);
 		FUNC_PTR(MEMORY_POOL_BLOCK_REALLOCATE,	0x5E4030, 0x4EBF40, 0x618950);
+		//////////////////////////////////////////////////////////////////////////
+		// shell/shell_windows.c
+		FUNC_PTR(SHELL_GET_COMMAND_LINE_ARGUMENT, 0x421ED0, 0x42DC70, 0x492E60);
 		//////////////////////////////////////////////////////////////////////////
 		// tag_files/files
 		FUNC_PTR(FILE_REFERENCE_CREATE,			0x443D10, 0x4366C0, 0x4FF300);

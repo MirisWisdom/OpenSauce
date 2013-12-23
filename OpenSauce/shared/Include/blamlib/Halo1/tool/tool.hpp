@@ -20,13 +20,16 @@ namespace Yelo
 
 	namespace Tool
 	{
-		typedef void (PLATFORM_API* proc_import_class)(void** arguments);
+		typedef void (PLATFORM_API* proc_import_class)(char* arguments[]);
 
 		struct s_import_class {
 			cstring				name;
 			cstring				usage;
 			int32				argument_count;
 			proc_import_class	import_proc;
+
+			static int __cdecl CompareProc(void*, const s_import_class* lhs, const s_import_class* rhs);
+			static int __cdecl SearchByNameProc(void*, cstring key, const s_import_class* element);
 		};
 #define IMPORT_CLASS_DEFINITION(name, arg_count, arguments, proc) \
 		{name, name " " arguments, arg_count, proc}

@@ -105,8 +105,8 @@ namespace Yelo
 			struct {
 				custom_tag_group_data_t* data_array;
 
-				void** address;
-				uint32 count;
+				tag_group** address;
+				size_t count;
 
 				void SetupTagGroupPointers()
 				{
@@ -236,7 +236,7 @@ namespace Yelo
 				return;
 
 			// use the memory following the cache file data for the tag groups address list
-			_globals.new_tag_groups.address = CAST_PTR(void**, CAST_PTR(uintptr_t,_globals.cache.base_address) + _globals.cache.data_size );
+			_globals.new_tag_groups.address = CAST_PTR(tag_group**, CAST_PTR(uintptr_t,_globals.cache.base_address) + _globals.cache.data_size );
 			_globals.new_tag_groups.count = 
 				k_number_of_non_deprecated_tag_groups +
 				_globals.new_tag_groups.data_array->Header.next_index;
@@ -261,7 +261,7 @@ namespace Yelo
 			_globals.new_tag_groups.SetupTagGroupPointers();
 
 			// ABC the tag groups list
-			qsort_s(_globals.new_tag_groups.address, _globals.new_tag_groups.count, sizeof(tag_group*), tag_group::QsortCompareByName, nullptr);
+			Qsort(_globals.new_tag_groups.address, _globals.new_tag_groups.count, tag_group::CompareByNameProc);
 		}
 
 		void SetupTagGroupCounts()
@@ -312,16 +312,12 @@ namespace Yelo
 		{
 			if (CheApe::_InitError > CheApe::k_error_none) return nullptr;
 
-			tag_group group_hack = {
-				name,
-			};
-			tag_group* group_hack_ptr = &group_hack;
+			auto result = Bsearch(name, CheApe::_globals.new_tag_groups.address, CheApe::_globals.new_tag_groups.count,
+				tag_group::SearchByNameProc);
 
-			void* result = bsearch_s(&group_hack_ptr,
-				CheApe::_globals.new_tag_groups.address, CheApe::_globals.new_tag_groups.count, 
-				sizeof(tag_group*), tag_group::QsortCompareByName, nullptr);
-
-			return result != nullptr ? *CAST_PTR(tag_group**, result) : nullptr;
+			return result != nullptr 
+				? *result 
+				: nullptr;
 		}
 	};
 };
