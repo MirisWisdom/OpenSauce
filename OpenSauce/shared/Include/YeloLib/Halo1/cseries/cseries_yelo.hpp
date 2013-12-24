@@ -12,4 +12,6 @@ namespace Yelo
 	// The epsilon value I've seen Halo1 use
 	// TODO: See if we need to throw this into the base module
 	extern const real K_REAL_EPSILON;
+
+	extern const real K_SECONDS_PER_TICK;
 };

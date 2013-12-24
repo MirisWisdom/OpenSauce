@@ -5,7 +5,9 @@
 */
 #include "Common/Precompile.hpp"
 #include <YeloLib/Halo1/cache/cache_file_builder_yelo.hpp>
+#if PLATFORM_ID == PLATFORM_TOOL
 
+#include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 #include <YeloLib/memory/memory_interface_base.hpp>
 #include <YeloLib/Halo1/cache/cache_file_memory_gestalt_definitions.hpp>
@@ -109,7 +111,7 @@ namespace Yelo
 		}
 	};
 };
-
+#endif
 /*
 memory	\resource_database
 		\constant_pool.cpp

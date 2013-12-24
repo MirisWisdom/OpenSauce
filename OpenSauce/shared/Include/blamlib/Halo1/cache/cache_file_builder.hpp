@@ -4,6 +4,7 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #pragma once
+#if PLATFORM_ID == PLATFORM_TOOL
 
 #include <blamlib/Halo1/cache/cache_files.hpp>
 #include <blamlib/Halo1/cache/data_file.hpp>
@@ -91,3 +92,4 @@ namespace Yelo
 		size_t stream_tag_to_buffer(datum_index tag_index, void* stream, size_t& return_stream_offset, uintptr_t virtual_base_address, tag_reference_name_reference* tag_names);
 	};
 };
+#endif

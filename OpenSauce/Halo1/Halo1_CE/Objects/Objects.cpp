@@ -42,7 +42,15 @@ namespace Yelo
 #define __EL_INCLUDE_ID			__EL_INCLUDE_OBJECTS
 #define __EL_INCLUDE_FILE_ID	__EL_OBJECTS_OBJECTS
 #include "Memory/_EngineLayout.inl"
+	};
+};
 
+#include <YeloLib/Halo1/objects/object_damage_upgrades.inl>
+
+namespace Yelo
+{
+	namespace Objects
+	{
 		s_object_type_definition** ObjectTypeDefinitions()							PTR_IMP_GET(object_type_definitions);
 		s_widget_type_definition*  WidgetTypeDefinitions()							PTR_IMP_GET(widget_type_definitions);
 
@@ -137,6 +145,7 @@ namespace Yelo
 
 			InitializeScripting();
 			InitializeObjectFieldDefinitions();
+			ObjectDamageAftermath_UpgradesInitialize();
 		}
 
 		void Dispose()

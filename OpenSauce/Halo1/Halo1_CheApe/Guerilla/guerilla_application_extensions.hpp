@@ -5,7 +5,7 @@
 	See license\OpenSauce\Halo1_CheApe for specific license information
 */
 #pragma once
-
+#if PLATFORM_ID == PLATFORM_GUERILLA
 #include <YeloLib/Halo1/guerilla/mfc_interfaces.hpp>
 
 namespace Yelo
@@ -42,3 +42,4 @@ namespace Yelo
 		};
 	};
 };
+#endif

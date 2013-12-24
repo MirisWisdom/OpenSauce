@@ -7,6 +7,7 @@
 #include <YeloLib/Halo1/tag_files/tag_group_memory.hpp>
 
 #include <blamlib/memory/byte_swapping_base.hpp>
+#include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 #include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
 #include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>

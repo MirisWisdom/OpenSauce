@@ -5,9 +5,11 @@
 */
 #include "Common/Precompile.hpp"
 #include <blamlib/Halo1/cache/cache_file_builder.hpp>
+#if PLATFORM_ID == PLATFORM_TOOL
 
 #include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+#include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 #include "Engine/EngineFunctions.hpp"
@@ -106,7 +108,7 @@ namespace Yelo
 			return stream;
 		}
 
-		void* stream_tag_block_to_buffer(const tag_block* block, void* stream, uintptr_t stream_base_address, uintptr_t virtual_base_address, tag_reference_name_reference* tag_names);
+		void* stream_tag_block_to_buffer(tag_block* block, void* stream, uintptr_t stream_base_address, uintptr_t virtual_base_address, tag_reference_name_reference* tag_names);
 
 		static void* stream_tag_block_to_buffer_postprocess_tag_data(void*& return_stream, uintptr_t stream_base_address, uintptr_t virtual_base_address, tag_reference_name_reference* tag_names,
 			const TagGroups::c_tag_field_scanner& scanner)
@@ -180,7 +182,7 @@ namespace Yelo
 
 			return return_stream;
 		}
-		static void* stream_tag_block_to_buffer(const tag_block* block, void* stream, uintptr_t stream_base_address, uintptr_t virtual_base_address, tag_reference_name_reference* tag_names)
+		static void* stream_tag_block_to_buffer(tag_block* block, void* stream, uintptr_t stream_base_address, uintptr_t virtual_base_address, tag_reference_name_reference* tag_names)
 		{
 			YELO_ASSERT( stream && stream_base_address );
 			YELO_ASSERT( virtual_base_address );
@@ -190,11 +192,11 @@ namespace Yelo
 			// copy the tag memory, loaded by the tools, verbatim into the cache tag memory stream
 			stream_blob_to_buffer(return_stream, block->address, block->count * block->get_element_size());
 
-			for(int x = 0; x < block->count; x++)
+			for (auto element : *block)
 			{
 				TagGroups::c_tag_field_scanner scanner(block->definition->fields, 
 					// get the the element address in the cache tag memory stream
-					CAST_PTR(byte*, stream) + (block->get_element_size() * x)
+					CAST_PTR(byte*, stream) + (block->get_element_size() * element.index)
 					);
 
 				scanner	.AddFieldType(Enums::_field_data)
@@ -234,7 +236,7 @@ namespace Yelo
 
 		size_t stream_tag_to_buffer(datum_index tag_index, void* stream, size_t& return_stream_offset, uintptr_t virtual_base_address, tag_reference_name_reference* tag_names)
 		{
-			const tag_block* block = tag_get_root_block(tag_index);
+			tag_block* block = tag_get_root_block(tag_index);
 
 			void* return_stream = stream_tag_block_to_buffer(block, stream, CAST_PTR(uintptr_t, stream), virtual_base_address, tag_names);
 
@@ -242,3 +244,4 @@ namespace Yelo
 		}
 	};
 };
+#endif

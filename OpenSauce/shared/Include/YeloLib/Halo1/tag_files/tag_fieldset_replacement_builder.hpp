@@ -6,6 +6,7 @@
 #pragma once
 // DON'T INCLUDE ME UNLESS YOUR NAME IS TagFieldSetReplacements.cpp
 
+#include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 namespace Yelo

@@ -88,7 +88,7 @@ namespace Yelo
 				TAG_FLAG(use_error_when_unzoomed);
 				TAG_FLAG(projectile_vector_cannot_be_adjusted);
 				TAG_FLAG(projectiles_have_identical_error);
-				TAG_FLAG(projectile_is_client_side_only);
+				TAG_FLAG(projectile_is_client_side_only); // added in HaloPC
 			}flags; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(long_flags) );
 
 			//firing

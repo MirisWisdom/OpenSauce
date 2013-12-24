@@ -322,6 +322,7 @@
   <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
     > <!--tag_files EDITOR-->
 	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\files_windows.cpp" />
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_field_scanner.hpp" />
 	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_files.hpp" />
 	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_files.cpp" />
 	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_loading.hpp" />
