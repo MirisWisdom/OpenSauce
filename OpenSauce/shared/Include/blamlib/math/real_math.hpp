@@ -76,88 +76,81 @@ namespace Yelo
 
 		real Magnitude() const;
 
-		API_INLINE void Normalize()
+		inline void Normalize()
 		{
 			real len = this->Magnitude();
 			this->i /= len;
 			this->j /= len;
 		}
 
-		API_INLINE void Inverse()
+		inline void Inverse()
 		{ this->i = -this->i; this->j = -this->j; }
 
-		API_INLINE void Set(real _i, real _j)
+		inline void Set(real _i, real _j)
 		{ this->i = _i; this->j = _j; }
 
-		API_INLINE real_vector2d& operator += (const real_vector2d& v)
+		inline real_vector2d& operator += (const real_vector2d& v)
 		{
 			this->i += v.i;		this->j += v.j;		return *this;
 		}
 
-		API_INLINE real_vector2d& operator -= (const real_vector2d& v)
+		inline real_vector2d& operator -= (const real_vector2d& v)
 		{
 			this->i -= v.i;		this->j -= v.j;		return *this;
 		}
 
-		API_INLINE real_vector2d& operator *= (real scalar)
+		inline real_vector2d& operator *= (real scalar)
 		{
 			this->i *= scalar;		this->j *= scalar;		return *this;
 		}
 
-		API_INLINE real_vector2d& operator /= (real scalar)
+		inline real_vector2d& operator /= (real scalar)
 		{
 			this->i /= scalar;		this->j /= scalar;		return *this;
 		}
 
-		API_INLINE real_vector2d operator - () const ///< Conjugate
+		inline real_vector2d operator - () const ///< Conjugate
 		{
-			real_vector2d value; value.Set(-this->i, -this->j);
-			return value;
+			return real_vector2d { -this->i, -this->j };
 		}
 
-		API_INLINE real_vector2d operator + (const real_vector2d& rh) const ///< Addition
+		inline real_vector2d operator + (const real_vector2d& rh) const ///< Addition
 		{
-			real_vector2d value; value.Set(this->i+rh.i, this->j+rh.j);
-			return value;
+			return real_vector2d { this->i+rh.i, this->j+rh.j };
 		}
 
-		API_INLINE real_vector2d operator + (const real_point2d& rh) const ///< Addition
+		inline real_vector2d operator + (const real_point2d& rh) const ///< Addition
 		{
-			real_vector2d value; value.Set(this->i+rh.x, this->j+rh.y);
-			return value;
+			return real_vector2d { this->i+rh.x, this->j+rh.y };
 		}
 
 
-		API_INLINE real_vector2d operator - (const real_vector2d& rh) const ///< Subtraction
+		inline real_vector2d operator - (const real_vector2d& rh) const ///< Subtraction
 		{
-			real_vector2d value; value.Set(this->i-rh.i, this->j-rh.j);
-			return value;
+			return real_vector2d { this->i-rh.i, this->j-rh.j };
 		}
 
-		API_INLINE real_vector2d operator - (const real_point2d& rh) const ///< Subtraction
+		inline real_vector2d operator - (const real_point2d& rh) const ///< Subtraction
 		{
-			real_vector2d value; value.Set(this->i-rh.x, this->j-rh.y);
-			return value;
+			return real_vector2d { this->i-rh.x, this->j-rh.y };
 		}
 
 
-		API_INLINE real operator * (const real_vector2d& rh) const ///< Dot Product
+		inline real operator * (const real_vector2d& rh) const ///< Dot Product
 		{ return this->i*rh.i + this->j*rh.j; }
 
-		API_INLINE real operator * (const real_point2d& rh) const ///< Dot Product
+		inline real operator * (const real_point2d& rh) const ///< Dot Product
 		{ return this->i*rh.x + this->j*rh.y; }
 
 
-		API_INLINE real_vector2d operator * (real rh) const ///< Scalar Multiplication
+		inline real_vector2d operator * (real rh) const ///< Scalar Multiplication
 		{
-			real_vector2d value; value.Set(this->i*rh, this->j*rh);
-			return value;
+			return real_vector2d { this->i*rh, this->j*rh };
 		}
 
-		API_INLINE real_vector2d operator / (real rh) const ///< Scalar Division
+		inline real_vector2d operator / (real rh) const ///< Scalar Division
 		{
-			real_vector2d value; value.Set(this->i/rh, this->j/rh);
-			return value;
+			return real_vector2d { this->i/rh, this->j/rh };
 		}
 
 		static void DotProduct2D(real_vector2d* a, real_vector2d* b, real& out_value);
@@ -185,7 +178,7 @@ namespace Yelo
 
 		real Magnitude() const;
 
-		API_INLINE void Normalize()
+		inline void Normalize()
 		{
 			real len = this->Magnitude();
 			this->i /= len;
@@ -193,17 +186,17 @@ namespace Yelo
 			this->k /= len;
 		}
 
-		API_INLINE void Inverse()
+		inline void Inverse()
 		{
 			this->i = -this->i;
 			this->j = -this->j;
 			this->k = -this->k;
 		}
 
-		API_INLINE void Set(real _i, real _j, real _k)
+		inline void Set(real _i, real _j, real _k)
 		{ this->i = _i; this->j = _j; this->k = _k; }
 
-		API_INLINE real_vector3d& operator += (const real_vector3d& v)
+		inline real_vector3d& operator += (const real_vector3d& v)
 		{
 			this->i += v.i;
 			this->j += v.j;
@@ -211,7 +204,7 @@ namespace Yelo
 			return *this;
 		}
 
-		API_INLINE real_vector3d& operator -= (const real_vector3d& v)
+		inline real_vector3d& operator -= (const real_vector3d& v)
 		{
 			this->i -= v.i;
 			this->j -= v.j;
@@ -219,7 +212,7 @@ namespace Yelo
 			return *this;
 		}
 
-		API_INLINE real_vector3d& operator *= (real scalar)
+		inline real_vector3d& operator *= (real scalar)
 		{
 			this->i *= scalar;
 			this->j *= scalar;
@@ -227,7 +220,7 @@ namespace Yelo
 			return *this;
 		}
 
-		API_INLINE real_vector3d& operator /= (real scalar)
+		inline real_vector3d& operator /= (real scalar)
 		{
 			this->i /= scalar;
 			this->j /= scalar;
@@ -235,77 +228,67 @@ namespace Yelo
 			return *this;
 		}
 
-		API_INLINE real_vector3d operator - () const ///< Conjugate
+		inline real_vector3d operator - () const ///< Conjugate
 		{
-			real_vector3d value; 
-			value.Set(-this->i, -this->j, -this->k);
-			return value;
+			return real_vector3d { -this->i, -this->j, -this->k };
 		}
 
-		API_INLINE real_vector3d operator + (const real_vector3d& rh) const ///< Addition
+		inline real_vector3d operator + (const real_vector3d& rh) const ///< Addition
 		{
-			real_vector3d value; value.Set(this->i+rh.i, this->j+rh.j, this->k+rh.k);
-			return value;
+			return real_vector3d { this->i+rh.i, this->j+rh.j, this->k+rh.k };
 		}
 
-		API_INLINE real_vector3d operator + (const real_point3d& rh) const ///< Addition
+		inline real_vector3d operator + (const real_point3d& rh) const ///< Addition
 		{
-			real_vector3d value; value.Set(this->i+rh.x, this->j+rh.y, this->k+rh.z);
-			return value;
+			return real_vector3d { this->i+rh.x, this->j+rh.y, this->k+rh.z };
 		}
 
 
-		API_INLINE real_vector3d operator - (const real_vector3d& rh) const ///< Subtraction
+		inline real_vector3d operator - (const real_vector3d& rh) const ///< Subtraction
 		{
-			real_vector3d value; value.Set(this->i-rh.i, this->j-rh.j, this->k-rh.k);
-			return value;
+			return real_vector3d { this->i-rh.i, this->j-rh.j, this->k-rh.k };
 		}
 
-		API_INLINE real_vector3d operator - (const real_point3d& rh) const ///< Subtraction
+		inline real_vector3d operator - (const real_point3d& rh) const ///< Subtraction
 		{
-			real_vector3d value; value.Set(this->i-rh.x, this->j-rh.y, this->k-rh.z);
-			return value;
+			return real_vector3d{ this->i-rh.x, this->j-rh.y, this->k-rh.z };
 		}
 
 
-		API_INLINE real_vector3d operator ^ (const real_vector3d& rh) const ///< Cross Product
+		inline real_vector3d operator ^ (const real_vector3d& rh) const ///< Cross Product
 		{
-			real_vector3d value; value.Set(
+			return real_vector3d {
 				this->j*rh.k - this->k*rh.j,
 				-this->i*rh.k + this->k*rh.i,
 				this->i*rh.j - this->j*rh.i
-				);
-			return value;
+			};
 		}
 
-		API_INLINE real_vector3d operator ^ (const real_point3d& rh) const ///< Cross Product
+		inline real_vector3d operator ^ (const real_point3d& rh) const ///< Cross Product
 		{
-			real_vector3d value; value.Set(
+			return real_vector3d {
 				this->j*rh.z - this->k*rh.y,
 				-this->i*rh.z + this->k*rh.x,
 				this->i*rh.y - this->j*rh.x
-				);
-			return value;
+			};
 		}
 
 
-		API_INLINE real operator * (const real_vector3d& rh) const ///< Dot Product
+		inline real operator * (const real_vector3d& rh) const ///< Dot Product
 		{ return this->i*rh.i + this->j*rh.j + this->k*rh.k; }
 
-		API_INLINE real operator * (const real_point3d& rh) const ///< Dot Product
+		inline real operator * (const real_point3d& rh) const ///< Dot Product
 		{ return this->i*rh.x + this->j*rh.y + this->k*rh.z; }
 
 
-		API_INLINE real_vector3d operator * (real rh) const ///< Scalar Multiplication
+		inline real_vector3d operator * (real rh) const ///< Scalar Multiplication
 		{
-			real_vector3d value; value.Set(this->i*rh, this->j*rh, this->k*rh);
-			return value;
+			return real_vector3d { this->i*rh, this->j*rh, this->k*rh };
 		}
 
-		API_INLINE real_vector3d operator / (real rh) const ///< Scalar Division
+		inline real_vector3d operator / (real rh) const ///< Scalar Division
 		{
-			real_vector3d value; value.Set(this->i/rh, this->j/rh, this->k/rh);
-			return value;
+			return real_vector3d { this->i/rh, this->j/rh, this->k/rh };
 		}
 	};
 	#define pad_real_vector3d PAD32 PAD32 PAD32
@@ -334,7 +317,7 @@ namespace Yelo
 		void Compress64bit(uint16 out[4]) const;
 		void Decompress64bit(int16 in[4]);
 
-		API_INLINE void Inverse()
+		inline void Inverse()
 		{
 			this->i = -this->i;
 			this->j = -this->j;
@@ -342,7 +325,7 @@ namespace Yelo
 			this->w = -this->w;
 		}
 
-		API_INLINE void Conjugate()
+		inline void Conjugate()
 		{
 			this->i = -this->i;
 			this->j = -this->j;

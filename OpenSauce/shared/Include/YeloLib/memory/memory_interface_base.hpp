@@ -75,7 +75,7 @@
 	assert(CAST_PTR(void*,PTR_UNKNOWN) != name && CAST_PTR(void*,PTR_NULL) != name); }	\
 	/* validate pointer is initialized */												\
 	auto name = get_macro(name);														\
-	YELO_ASSERT(name);																	\
+/*	YELO_ASSERT(name);																*/	\
 	return __VA_ARGS__ name;
 
 // Double pointer implement get by-value

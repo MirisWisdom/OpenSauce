@@ -19,6 +19,20 @@
 
 namespace Yelo
 {
+	namespace Objects
+	{
+		static const uintptr_t OBJECT_DAMAGE_AFTERMATH__CALC_ACCEL_HOOK = 0x649EE6;
+		static const uintptr_t OBJECT_DAMAGE_AFTERMATH__CALC_ACCEL_HOOK_RETURN = 0x649F17;
+
+		static const uintptr_t OBJECT_DAMAGE_AFTERMATH__UNIT_VALIDATE_INST_ACCEL_HOOK = 0x649FFF;
+		static const uintptr_t OBJECT_DAMAGE_AFTERMATH__UNIT_VALIDATE_INST_ACCEL_HOOK_RETURN = 0x64A010;
+		static const uintptr_t OBJECT_DAMAGE_AFTERMATH__UNIT_VALIDATE_INST_ACCEL_HOOK_RETURN_INVALID = 0x64A07E;
+	};
+};
+#include <YeloLib/Halo1/objects/object_damage_upgrades.inl>
+
+namespace Yelo
+{
 	namespace Sapien
 	{
 		namespace AddressOf
@@ -116,6 +130,8 @@ namespace Yelo
 			TagGroups::ScenarioYeloLoadHookInitialize();
 
 			InitializeProfileLoadOverride();
+
+			Objects::ObjectDamageAftermath_UpgradesInitialize();
 		}
 
 		void Dispose()

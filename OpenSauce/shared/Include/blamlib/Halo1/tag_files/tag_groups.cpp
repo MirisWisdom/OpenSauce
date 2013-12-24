@@ -8,6 +8,7 @@
 
 #if PLATFORM_IS_EDITOR
 	#include <blamlib/Halo1/models/model_definitions.hpp>
+	#include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
 	#include <blamlib/Halo1/tag_files/tag_group_loading.hpp>
 	#include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
 	#include <YeloLib/Halo1/tag_files/tag_group_memory.hpp>

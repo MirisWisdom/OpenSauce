@@ -959,6 +959,9 @@
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\files_windows.cpp">
       <Filter>.blamlib\tag_files</Filter>
     </ClCompile>
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_field_scanner.hpp">
+      <Filter>.blamlib\tag_files</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_files.hpp">
       <Filter>.blamlib\tag_files</Filter>
     </ClInclude>

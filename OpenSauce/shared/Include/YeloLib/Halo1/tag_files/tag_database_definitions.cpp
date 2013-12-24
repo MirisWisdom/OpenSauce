@@ -34,7 +34,7 @@ namespace Yelo
 			Yelo::tag_group* definition = blam::tag_group_get<s_tag_database>();
 			if(definition == nullptr)
 			{
-				YELO_ERROR(_error_message_priority_none, 
+				YELO_ERROR(_error_message_priority_critical, 
 					"CheApe: tag_database not found!");
 			}
 			else if(definition->version == k_version)

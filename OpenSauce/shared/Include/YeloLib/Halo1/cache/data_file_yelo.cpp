@@ -67,7 +67,7 @@ namespace Yelo
 					return true;
 				}
 
-#if PLATFORM_IS_EDITOR
+#if PLATFORM_IS_EDITOR && PLATFORM_ID == PLATFORM_TOOL
 				void SaveSettings()
 				{
 					char file_path[MAX_PATH];
@@ -154,7 +154,7 @@ namespace Yelo
 			return true;
 		}
 
-#if PLATFORM_IS_EDITOR
+#if PLATFORM_IS_EDITOR && PLATFORM_ID == PLATFORM_TOOL
 		void SaveSettings()
 		{
 			Globals.Mods.SaveSettings();
@@ -177,7 +177,7 @@ namespace Yelo
 	};
 
 
-#if PLATFORM_IS_EDITOR
+#if PLATFORM_IS_EDITOR && PLATFORM_ID == PLATFORM_TOOL
 	namespace Cache
 	{
 		cstring c_data_files::DataFileTypeToString(_enum df_type)

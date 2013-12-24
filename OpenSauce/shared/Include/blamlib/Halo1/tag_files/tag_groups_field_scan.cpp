@@ -7,6 +7,7 @@
 #include "Common/Precompile.hpp"
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
+#include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
 #include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
 
 namespace Yelo

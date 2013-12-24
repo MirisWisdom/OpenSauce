@@ -43,6 +43,31 @@ namespace Yelo
 		};
 	};
 
+	namespace Flags
+	{
+		enum {
+			_damage_does_not_hurt_owner_bit,
+			_damage_can_cause_headshots_bit,
+			_damage_pings_resistant_units_bit,
+			_damage_does_not_hurt_friends_bit,
+			_damage_does_not_ping_units_bit,
+			_damage_detonates_explosives_bit,
+			_damage_only_hurts_shields_bit,
+			_damage_causes_flaming_death_bit,
+			_damage_direction_indicators_always_point_down_bit,
+			_damage_skips_shields_bit,
+			_damage_only_hurts_one_infection_form_bit,
+			_damage_can_cause_multiplayer_headshots_bit,
+			_damage_infection_form_pop_bit,
+
+			k_number_of_damage_flags,
+
+			_damage_use_3d_acceleration_yelo_bit = k_number_of_damage_flags,
+
+			k_number_of_damage_flags_yelo,
+		};
+	};
+
 	namespace TagGroups
 	{
 		struct s_damage_effect
@@ -110,10 +135,10 @@ namespace Yelo
 				TAG_FIELD(real_vector3d, instantaneous_acceleration3d);
 			};
 
-			bool UseInstantaneousAcceleration3D() const;
-			void GetAcceleration(const real acceleration_scale, 
-				const real_vector3d& direction, real_vector3d& acceleration, 
-				const real secs_per_tick = 0.033333335f) const;
+			inline bool UseInstantaneousAcceleration3D() const
+			{
+				return TEST_FLAG(flags, Flags::_damage_use_3d_acceleration_yelo_bit);
+			}
 		}; BOOST_STATIC_ASSERT( sizeof(s_damage_definition) == 0x3C );
 
 		struct s_damage_modifiers
