@@ -354,6 +354,8 @@ namespace Yelo
 
 		struct s_unit_datum
 		{
+			enum { k_object_types_mask = Enums::_object_type_mask_unit };
+
 			s_object_data object;
 			s_unit_data unit;
 		}; BOOST_STATIC_ASSERT( sizeof(s_unit_datum) == Enums::k_object_size_unit );

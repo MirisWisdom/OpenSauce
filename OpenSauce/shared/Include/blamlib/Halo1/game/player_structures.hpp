@@ -105,7 +105,7 @@ namespace Yelo
 				argb_color color;
 			};
 			s_player_action_result nearest_object_action_result;// 0x24
-			int32 respawn_time;									// 0x2C
+			game_ticks_t respawn_time;							// 0x2C
 			UNKNOWN_TYPE(int32);								// 0x30 respawn time growth related
 			datum_index slave_unit_index;						// 0x34
 			datum_index last_slave_unit_index;					// 0x38
@@ -113,13 +113,13 @@ namespace Yelo
 			bool weapon_swap_result;							// 0x3E
 			PAD8;
 			datum_index auto_aim_target;						// 0x40 biped_index
-			int32 auto_aim_update_time;							// 0x44
+			game_ticks_t auto_aim_update_time;					// 0x44
 			Networking::s_network_game_player network_player;	// 0x48
-			int16 powerup_times[Enums::k_number_of_player_powerups];	// 0x68
+			game_time_t powerup_times[Enums::k_number_of_player_powerups];	// 0x68
 			real speed;											// 0x6C
 			int32 source_teleporter_netgame_index;				// 0x70 index to a netgame flag in the scenario, or NONE
 			s_game_engine_state_message engine_state_messsage;	// 0x74
-			int32 last_death_time;								// 0x84 game tick of the last time this player was killed
+			game_ticks_t last_death_time;						// 0x84 game tick of the last time this player was killed
 			datum_index target_player_index;					// 0x88 player index of the slayer target for this player
 			bool odd_man_out;									// 0x8C
 			PAD24;
@@ -146,7 +146,7 @@ namespace Yelo
 			PAD16;
 			u_player_multiplayer_stats multiplayer_stats;		// 0xC4
 			int32 telefrag_counter;								// 0xCC # of ticks spent blocking teleporter
-			int32 quit_game_tick;								// 0xD0 game tick the player quick at
+			game_ticks_t quit_game_tick;						// 0xD0 game tick the player quick at
 			bool telefrag_enabled;								// 0xD4 if we're blocking a teleporter, this will be true
 			bool quit_out_of_game;								// 0xD5
 			PAD16;

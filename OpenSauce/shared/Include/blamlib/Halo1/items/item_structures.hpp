@@ -47,13 +47,15 @@ namespace Yelo
 
 		struct s_item_datum
 		{
+			enum { k_object_types_mask = Enums::_object_type_mask_item };
+
 			s_object_data object;
 			s_item_data item;
 		}; BOOST_STATIC_ASSERT( sizeof(s_item_datum) == Enums::k_object_size_item );
 
 		struct s_garbage_datum : s_item_datum
 		{
-			enum { k_object_type = Enums::_object_type_garbage };
+			enum { k_object_types_mask = FLAG(Enums::_object_type_garbage) };
 
 			s_garbage_data garbage;
 		}; BOOST_STATIC_ASSERT( sizeof(s_garbage_datum) == Enums::k_object_size_garbage );

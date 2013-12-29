@@ -66,6 +66,10 @@
 	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\models\model_animation_definitions_yelo.cpp" />
   </ItemGroup>
   <ItemGroup
+    > <!--objects-->
+	<None      Include="..\..\shared\Include\YeloLib\Halo1\objects\object_damage_upgrades.inl" />
+  </ItemGroup>
+  <ItemGroup
     > <!--open_sauce-->
 	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\blam_memory_upgrades.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_global_cv_definitions.hpp" />

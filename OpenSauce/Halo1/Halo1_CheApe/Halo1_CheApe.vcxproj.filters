@@ -37,6 +37,9 @@
     <Filter Include=".blamlib\bungie_net">
       <UniqueIdentifier>{b3581c3b-6d35-46ec-ac27-a61316ab7c9e}</UniqueIdentifier>
     </Filter>
+	<Filter Include=".blamlib\bungie_net\common">
+      <UniqueIdentifier>{E58D604D-B623-494F-911C-1A613B56EDA1}</UniqueIdentifier>
+    </Filter>
     <Filter Include=".blamlib\bungie_net\network">
       <UniqueIdentifier>{d1467caf-1043-42ce-a7e7-922d5493e3ca}</UniqueIdentifier>
     </Filter>
@@ -262,6 +265,10 @@
   </ItemGroup>
   <ItemGroup>
     <!--bungie_net-->
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\bungie_net\common\message_header.hpp">
+      <Filter>.blamlib\bungie_net\common</Filter>
+    </ClInclude>
+
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\bungie_net\network\transport_address.hpp">
       <Filter>.blamlib\bungie_net\network</Filter>
     </ClInclude>
@@ -718,6 +725,9 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\objects\objects.hpp">
       <Filter>.blamlib\objects</Filter>
     </ClInclude>
+	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\objects\objects.cpp">
+      <Filter>.blamlib\objects</Filter>
+    </ClCompile>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\objects\placeholder_definitions.hpp">
       <Filter>.blamlib\objects</Filter>
     </ClInclude>
@@ -1045,6 +1055,9 @@
     <Filter Include=".YeloLib\models">
       <UniqueIdentifier>{a24833db-9edb-4f20-bc35-3c82d71ddd24}</UniqueIdentifier>
     </Filter>
+	<Filter Include=".YeloLib\objects">
+      <UniqueIdentifier>{A47CE32E-B095-476A-980B-5F0CBABEC63F}</UniqueIdentifier>
+    </Filter>
     <Filter Include=".YeloLib\open_sauce">
       <UniqueIdentifier>{a367fad3-71c6-4b18-8aec-96d3c83b1179}</UniqueIdentifier>
     </Filter>
@@ -1328,6 +1341,12 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\models\model_animation_definitions_yelo.cpp">
       <Filter>.YeloLib\models</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+	<!--objects-->
+	<None      Include="..\..\shared\Include\YeloLib\Halo1\objects\object_damage_upgrades.inl">
+      <Filter>.YeloLib\objects</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <!--open_sauce-->

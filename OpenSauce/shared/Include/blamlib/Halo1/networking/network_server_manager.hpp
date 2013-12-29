@@ -38,8 +38,13 @@ namespace Yelo
 
 		struct s_network_client_machine_dedi
 		{
-			enum { 
-				k_sizeof = PLATFORM_VALUE(0, 0x8C), // TODO: macro is specific to Halo1_CE!
+			enum {
+				k_sizeof = 
+#if PLATFORM_IS_DEDI
+					0x8C,
+#else
+					0,
+#endif
 				k_network_game_server_client_machines_offset_amount = 
 					Enums::k_maximum_network_machine_count * s_network_client_machine_dedi::k_sizeof,
 			};
@@ -69,13 +74,19 @@ namespace Yelo
 			s_network_client_machine_message_header message_header;		// 0x1C
 			bool has_players;											// 0x50
 			bool is_cleaned_up;											// 0x51 true if touched by client_machine_cleanup
-			char challenge[7+1]; PAD16;									// 0x52 gamespy challenge string
+			char challenge[Enums::k_network_game_challenge_length+1];	// 0x52 gamespy challenge string
+			PAD16;
 			int32 machine_key;											// 0x5C same value as gs_machine_data->unknown1
 
 #if PLATFORM_IS_DEDI
 			s_network_client_machine_dedi dedi;
 #endif
-		}; BOOST_STATIC_ASSERT( sizeof(s_network_client_machine) == PLATFORM_VALUE(0x60, 0xEC) );
+		};
+#if PLATFORM_IS_DEDI
+		BOOST_STATIC_ASSERT( sizeof(s_network_client_machine) == 0xEC );
+#else
+		BOOST_STATIC_ASSERT( sizeof(s_network_client_machine) == 0x60 );
+#endif
 
 		struct s_countdown_timer
 		{
@@ -123,16 +134,14 @@ namespace Yelo
 
 			s_network_client_machine* GetClient(int machine_index)
 			{
-				if(machine_index >= 0 && machine_index < Enums::k_maximum_network_machine_count)
+				if (machine_index >= 0 && machine_index < NUMBEROF(client_machines))
 				{
-					s_network_client_machine* machines = client_machines;
-
-					for(int x = 0; x < Enums::k_maximum_network_machine_count; x++)
-						if(machine_index == machines[x].machine_index)
-							return &machines[x];
+					for (auto& machine : client_machines)
+						if (machine_index == machine.machine_index)
+							return &machine;
 				}
 
-				return NULL;
+				return nullptr;
 			}
 		}; BOOST_STATIC_ASSERT( sizeof(s_network_game_server) == (0xA50 + s_network_client_machine_dedi::k_network_game_server_client_machines_offset_amount) );
 
@@ -145,16 +154,14 @@ namespace Yelo
 
 			s_network_client_machine* GetClientYelo(int machine_index)
 			{
-				if(machine_index >= 0 && machine_index < Enums::k_maximum_network_machine_count_upgrade)
+				if (machine_index >= 0 && machine_index < NUMBEROF(client_machines_yelo))
 				{
-					s_network_client_machine* machines = client_machines_yelo;
-
-					for(int x = 0; x < Enums::k_maximum_network_machine_count_upgrade; x++)
-						if(machine_index == machines[x].machine_index)
-							return &machines[x];
+					for (auto& machine : client_machines_yelo)
+						if (machine_index == machine.machine_index)
+							return &machine;
 				}
 
-				return NULL;
+				return nullptr;
 			}
 		};
 	};
