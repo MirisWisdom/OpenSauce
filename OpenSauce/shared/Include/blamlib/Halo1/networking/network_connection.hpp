@@ -21,19 +21,32 @@ namespace Yelo
 			k_maximum_network_machine_count = k_multiplayer_maximum_players / k_maximum_number_of_local_players,
 		};
 
-		enum network_connection_class : long_enum
-		{
-			_network_connection_class_0,
-			_network_connection_class_1,
-			_network_connection_class_2,
-			_network_connection_class_3,
-			_network_connection_class_4,
-			_network_connection_class_5,
-			_network_connection_class_6,
-			_network_connection_class_7,
-			_network_connection_class_8,
+		// profile offset: 0xFC0
+		enum network_connection_type : byte_enum {
+			_network_connection_type_56k,
+			_network_connection_type_low,		// DSL/Cable
+			_network_connection_type_average,	// DSL/Cable
+			_network_connection_type_high,		// DSL/Cable
+			_network_connection_type_lan,
 
-			_network_connection_class,
+			k_number_of_network_connection_types
+		};
+
+		// engine fails to properly convert 'connection type' enum (which matches the UI setting list)
+		// to this class enum, which maps to a
+		enum network_connection_class : long_enum
+		{								//  gBitRatesPerConnectionClass
+			_network_connection_class_0, // 35,000
+			_network_connection_class_1, // 70,000
+			_network_connection_class_2, // 140,000
+			_network_connection_class_3, // 280,000
+			_network_connection_class_4, // 560,000
+			_network_connection_class_5, // 1,120,000
+			_network_connection_class_6, // 2,240,000
+			_network_connection_class_7, // 4,480,000
+			_network_connection_class_8, // 8,960,000
+
+			k_number_of_network_connection_classes,
 		};
 	};
 
@@ -57,7 +70,7 @@ namespace Yelo
 
 			Memory::s_bitstream bitstream;
 			bool empty;
-			byte buffer[k_protocol_bits / (sizeof(byte)*8)]; // 0x1D
+			byte buffer[k_protocol_bits / BIT_COUNT(byte)]; // 0x1D
 			PAD24;
 			PAD32;
 		}; BOOST_STATIC_ASSERT( sizeof(s_message_stream) == 0x534 );
@@ -77,8 +90,8 @@ namespace Yelo
 		{
 			int32 numMessages;				// 0xA78
 			s_connection_message* messages;	// 0xA7C
-			UNKNOWN_TYPE(uint32);			// 0xA80
-			UNKNOWN_TYPE(uint32);			// 0xA84, initialize by GetTickCount
+			UNKNOWN_TYPE(uint32);			// 0xA80, I've only seen this as 0xE0
+			DWORD time_of_last_flush;		// 0xA84, initialize by GetTickCount
 		}; BOOST_STATIC_ASSERT( sizeof(s_connection_prioritization_buffer) == 0x10 );
 
 
@@ -93,7 +106,7 @@ namespace Yelo
 			s_message_stream reliable_outgoing_sled;					// 0x10
 			s_message_stream unreliable_outgoing_sled;					// 0x544
 			s_connection_prioritization_buffer prioritization_buffer;	// 0xA78
-			long_enum connection_class;
+			Enums::network_connection_class connection_class;			// 0xA88
 			long_flags flags; // Flags::network_connection_flags
 			UNUSED_TYPE(int32);
 			s_network_server_connection* server_connection;

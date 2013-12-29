@@ -302,7 +302,7 @@ namespace Yelo
 		void PlacementDataNewAndCopy(s_object_placement_data& data, datum_index src_object_index, 
 			datum_index tag_index_override, datum_index owner_object_index)
 		{
-			s_object_data* src_object = Objects::ObjectHeader()[src_object_index]->_object;
+			s_object_data* src_object = blam::object_get(src_object_index);
 
 			if(tag_index_override.IsNull())
 				tag_index_override = src_object->definition_index;
@@ -348,7 +348,7 @@ namespace Yelo
 		{
 			if(!object_index.IsNull())
 			{
-				s_object_data* object = Objects::ObjectHeader()[object_index]->_object;
+				s_object_data* object = blam::object_get(object_index);
 
 				return TagGroups::TagGet<TagGroups::s_object_definition>(object->definition_index);
 			}
@@ -360,7 +360,7 @@ namespace Yelo
 		{
 			if(!object_index.IsNull())
 			{
-				s_object_data* object = Objects::ObjectHeader()[object_index]->_object;
+				s_object_data* object = blam::object_get(object_index);
 				datum_index tag_index = object->animation.definition_index;
 
 				return TagGroups::TagGet<TagGroups::model_animation_graph>(tag_index);
@@ -457,8 +457,8 @@ namespace Yelo
 		{
 			if (!object_index.IsNull() && !object_index_to_test.IsNull())
 			{
-				Objects::s_object_data* object = Objects::ObjectHeader()[object_index]->_object;
-				Objects::s_object_data* object_to_test = Objects::ObjectHeader()[object_index_to_test]->_object;
+				s_object_data* object = blam::object_get(object_index);
+				s_object_data* object_to_test = blam::object_get(object_index_to_test);
 
 				int16 object_team = object->owner_team;
 				int16 object_to_test_team = object_to_test->owner_team;
@@ -466,6 +466,14 @@ namespace Yelo
 				return blam::game_team_is_enemy(object_team, object_to_test_team);
 			}
 			return false;
+		}
+	};
+
+	namespace blam
+	{
+		s_object_data* object_get(datum_index object_index)
+		{
+			return Objects::ObjectHeader()[object_index]->_object;
 		}
 	};
 };

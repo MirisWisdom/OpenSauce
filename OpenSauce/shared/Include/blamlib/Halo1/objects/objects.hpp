@@ -8,8 +8,6 @@
 
 #include <blamlib/Halo1/memory/data.hpp>
 #include <blamlib/Halo1/memory/memory_pool.hpp>
-#include <blamlib/Halo1/networking/message_delta_definitions.hpp>
-#include <blamlib/Halo1/networking/network_client_manager.hpp>
 #include <blamlib/Halo1/objects/object_types.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 
@@ -17,6 +15,8 @@ namespace Yelo
 {
 	namespace Enums
 	{
+		enum networked_datum : long_enum;
+
 		enum {
 			// Stock game state allocation size for the object memory pool
 			// When running in editor tools, this and the max number of objects is increased by 5x
@@ -47,6 +47,7 @@ namespace Yelo
 
 	namespace Objects
 	{
+		struct s_object_placement_data;
 		struct s_object_data;
 
 		struct s_object_header_datum : Memory::s_datum_base
@@ -190,18 +191,10 @@ namespace Yelo
 		template<typename T>
 		T* object_try_and_get_and_verify_type(datum_index object_index)
 		{
-			return CAST_PTR(T*, object_try_and_get_and_verify_type(object_index, FLAG(T::k_object_type)));
+			return CAST_PTR(T*, object_try_and_get_and_verify_type(object_index, T::k_object_types_mask));
 		}
 
-		// TODO: move into objects.cpp
-		inline s_object_iterator& object_iterator_new(s_object_iterator& iter, long_flags type_mask, Flags::object_header_flags ignore_flags)
-		{
-			iter.signature = s_object_iterator::k_signature;
-			iter.type_mask = type_mask;
-			iter.ignore_flags = ignore_flags;
-			iter.next_index = 0;
-			iter.object_index = datum_index::null;
-		}
+		s_object_iterator& object_iterator_new(s_object_iterator& iter, long_flags type_mask, Flags::object_header_flags ignore_flags);
 
 		s_object_data* PLATFORM_API object_iterator_next(s_object_iterator& iter);
 
@@ -219,11 +212,16 @@ namespace Yelo
 
 
 		s_object_data* object_get(datum_index object_index);
+		s_object_data* object_get_and_verify_type(datum_index object_index, long_flags expected_types);
+		template<typename T> inline
+		T* object_get_and_verify_type(datum_index object_index)
+		{
+			return CAST_PTR(T*, object_get_and_verify_type(object_index, T::k_object_types_mask));
+		}
 	};
 
 	namespace Objects
 	{
-		// TODO: move some of these inlines into an objects.cpp
 		class c_object_iterator {
 			s_object_iterator m_state;
 			s_object_data* m_object;
@@ -250,15 +248,7 @@ namespace Yelo
 				return m_object = blam::object_iterator_next(m_state);
 			}
 
-			inline bool operator!=(const c_object_iterator& other) const
-			{
-				if (other.m_state.IsEndHack())
-					return this->m_object != nullptr;
-				else if (this->m_state.IsEndHack())
-					return other.m_object != nullptr;
-
-				return this->m_object != other.m_object;
-			}
+			bool operator!=(const c_object_iterator& other) const;
 
 			inline c_object_iterator& operator++()
 			{

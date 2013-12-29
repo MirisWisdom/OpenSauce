@@ -13,8 +13,8 @@ namespace Yelo
 		enum player_action_result
 		{
 			_player_action_result_none,
-			_player_action_result_pickup1,
-			_player_action_result_pickup2,
+			_player_action_result_pickup_powerup,
+			_player_action_result_swap_powerup,
 			_player_action_result_exit_seat,
 			_player_action_result_4, // game engine related
 
@@ -44,12 +44,12 @@ namespace Yelo
 
 		struct s_player_action
 		{
-			int32 update_id;
+			long_flags control_flags;
 			real_euler_angles2d desired_facing;
 			real_vector2d throttle;
 			real primary_trigger;
-			int16 weapon_index, grenade_index;
-			int16 zoom_index;
+			int16 desired_weapon_index, desired_grenade_index;
+			int16 desired_zoom_index;
 			PAD16;
 		}; BOOST_STATIC_ASSERT( sizeof(s_player_action) == 0x20 );
 

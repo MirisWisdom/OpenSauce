@@ -93,6 +93,16 @@ namespace Yelo
 			TAG_PAD(int32, 4); // 20
 		};
 
+		struct unit_seat_boarding
+		{
+			word_flags flags;
+			int16 boarding_seat_index;
+			TAG_FIELD(tag_reference, boarding_damage, "jpt!");
+		};
+		struct unit_seat_yelo_extensions
+		{
+
+		};
 		struct unit_seat
 		{
 			struct _Flags {

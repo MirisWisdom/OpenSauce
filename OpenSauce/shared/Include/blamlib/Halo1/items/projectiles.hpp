@@ -19,11 +19,10 @@ namespace Yelo
 		}; BOOST_STATIC_ASSERT( sizeof(s_projectile_datum_network_data) == 0x18 );
 		struct s_projectile_data
 		{
-			s_item_data unused;									// 0x1F4
 			// FLAG(1) - tracer
 			long_flags flags;									// 0x22C
 			_enum action;										// 0x230
-			UNKNOWN_TYPE(int16);								// 0x232, looks like maybe some kind of index
+			UNKNOWN_TYPE(int16);								// 0x232, material index
 			datum_index source_unit_index;						// 0x234
 			datum_index target_object_index;					// 0x238
 			int32 contrail_attachment_index;					// 0x23C, index for the proj's definition's object_attachment_block, index is relative to object.attachments.attachment_indices or NONE
@@ -46,14 +45,15 @@ namespace Yelo
 			UNKNOWN_TYPE(bool);									// 0x294, delta_valid?
 			PAD24;
 			s_projectile_datum_network_data update_delta;		// 0x298
-		}; BOOST_STATIC_ASSERT( sizeof(s_projectile_data) == (Enums::k_object_size_projectile - Enums::k_object_size_object) );
+		}; BOOST_STATIC_ASSERT( sizeof(s_projectile_data) == (Enums::k_object_size_projectile - Enums::k_object_size_item) );
 
 
 		struct s_projectile_datum
 		{
-			enum { k_object_type = Enums::_object_type_projectile };
+			enum { k_object_types_mask = FLAG(Enums::_object_type_projectile) };
 
 			s_object_data object;
+			s_item_data unused;									// 0x1F4
 			s_projectile_data projectile;
 		}; BOOST_STATIC_ASSERT( sizeof(s_projectile_datum) == Enums::k_object_size_projectile );
 	};

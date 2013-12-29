@@ -7,7 +7,7 @@
 #pragma once
 
 #include <blamlib/Halo1/game/simple_circular_queue.hpp>
-#include <blamlib/Halo1/game/players.hpp>
+#include <blamlib/Halo1/game/player_action.hpp>
 
 namespace Yelo
 {

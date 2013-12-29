@@ -136,7 +136,7 @@ namespace Yelo
 
 		struct s_weapon_datum : s_item_datum
 		{
-			enum { k_object_type = Enums::_object_type_weapon };
+			enum { k_object_types_mask = FLAG(Enums::_object_type_weapon) };
 
 			s_weapon_data weapon;
 		}; BOOST_STATIC_ASSERT( sizeof(s_weapon_datum) == Enums::k_object_size_weapon );

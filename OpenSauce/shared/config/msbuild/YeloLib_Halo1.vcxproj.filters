@@ -125,6 +125,13 @@
   </ItemGroup>
 
   <ItemGroup
+    > <!--objects-->
+	<None      Include="..\..\shared\Include\YeloLib\Halo1\objects\object_damage_upgrades.inl">
+      <Filter>.YeloLib\objects</Filter>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup
     > <!--open_sauce-->
 	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\blam_memory_upgrades.hpp">
       <Filter>.YeloLib\open_sauce</Filter>
