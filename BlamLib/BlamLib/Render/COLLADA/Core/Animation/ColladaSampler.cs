@@ -17,7 +17,7 @@ namespace BlamLib.Render.COLLADA.Core
 	public partial class ColladaSampler : ColladaElement
 	{
 		#region Fields
-		ColladaObjectAttribute<string> _id;
+		ColladaObjectAttribute<ColladaID<ColladaSampler>> _id;
 
 		ColladaObjectElementList<ColladaInputUnshared> _input;
 		#endregion
@@ -36,7 +36,7 @@ namespace BlamLib.Render.COLLADA.Core
 
 		public ColladaSampler() : base(Enums.ColladaElementType.Core_Sampler)
 		{
-			Fields.Add(_id = new ColladaObjectAttribute<string>(""));
+			Fields.Add(_id = new ColladaObjectAttribute<ColladaID<ColladaSampler>>(""));
 			Fields.Add(_input = new ColladaObjectElementList<ColladaInputUnshared>());
 
 			ValidationTests.Add(new ColladaIsNull(Enums.ColladaElementType.All, _input));

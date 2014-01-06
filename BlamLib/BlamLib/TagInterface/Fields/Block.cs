@@ -185,7 +185,11 @@ namespace BlamLib.TagInterface
 		public ElementArray<T> Elements
 		{
 			get { return elements; }
-			set { elements = value; }
+			set
+			{
+				elements = value;
+				OnPropertyChanged("Elements");
+			}
 		}
 		/// <summary>
 		/// Gets the IElementArray interface object for this block
@@ -264,23 +268,43 @@ namespace BlamLib.TagInterface
 		/// <summary>
 		/// Adds a new element definition to the Block
 		/// </summary>
-		public void Add()									{ AddPreprocess(); elements.Add( kState.NewInstance(this) as T ); }
-		void AddInternal()									{ elements.Add( kState.NewInstance(this) as T ); }
+		public void Add()
+		{
+			AddPreprocess(); elements.Add(kState.NewInstance(this) as T);
+			OnPropertyChanged("Elements");
+		}
+		void AddInternal()
+		{
+			elements.Add(kState.NewInstance(this) as T);
+			OnPropertyChanged("Elements");
+		}
 
 		/// <summary>
 		/// Adds a new element definition to the Block, using explicit versioning
 		/// </summary>
 		/// <param name="major">major version</param>
 		/// <param name="minor">minor version</param>
-		public void Add(int major, int minor)				{ AddPreprocess(); elements.Add( kState.NewInstance(this, major, minor) as T ); }
-		void AddInternal(int major, int minor)				{ elements.Add( kState.NewInstance(this, major, minor) as T ); }
+		public void Add(int major, int minor)
+		{
+			AddPreprocess(); elements.Add(kState.NewInstance(this, major, minor) as T);
+			OnPropertyChanged("Elements");
+		}
+		void AddInternal(int major, int minor)
+		{
+			elements.Add(kState.NewInstance(this, major, minor) as T);
+			OnPropertyChanged("Elements");
+		}
 
 		/// <summary>
 		/// Adds a new element definition to the Block, returning
 		/// the reference to <paramref name="value"/>
 		/// </summary>
 		/// <param name="value">Value to receive the added definition reference</param>
-		public void Add(out T value)						{ AddPreprocess(); elements.Add( value = kState.NewInstance(this) as T ); }
+		public void Add(out T value)
+		{
+			AddPreprocess(); elements.Add(value = kState.NewInstance(this) as T);
+			OnPropertyChanged("Elements");
+		}
 
 		/// <summary>
 		/// Adds a new element definition to the Block, using explicit versioning, 
@@ -289,37 +313,61 @@ namespace BlamLib.TagInterface
 		/// <param name="major">major version</param>
 		/// <param name="minor">minor version</param>
 		/// <param name="value">Value to receive the added definition reference</param>
-		public void Add(int major, int minor, out T value)	{ AddPreprocess(); elements.Add( value = kState.NewInstance(this, major, minor) as T ); }
+		public void Add(int major, int minor, out T value)
+		{
+			AddPreprocess(); elements.Add(value = kState.NewInstance(this, major, minor) as T);
+			OnPropertyChanged("Elements");
+		}
 
 		/// <summary>
 		/// Inserts a new element definition at index
 		/// </summary>
 		/// <param name="index">Index at which the new definition will be inserted at</param>
-		public void Insert(int index)						{ AddPreprocess(); elements.Insert(index, kState.NewInstance(this) as T); }
+		public void Insert(int index)
+		{
+			AddPreprocess(); elements.Insert(index, kState.NewInstance(this) as T);
+			OnPropertyChanged("Elements");
+		}
 
 		/// <summary>
 		/// Inserts <paramref name="data"/> definition at index
 		/// </summary>
 		/// <param name="index">Index at which the data will be inserted at</param>
 		/// <param name="data">Definition to insert into this</param>
-		public void Insert(int index, T data)				{ AddPreprocess(); elements.Insert(index, data); }
+		public void Insert(int index, T data)
+		{
+			AddPreprocess(); elements.Insert(index, data);
+			OnPropertyChanged("Elements");
+		}
 
 		/// <summary>
 		/// Copies the element at index and adds it to the end of the element list
 		/// </summary>
 		/// <param name="index">Index of the element to duplicate</param>
-		public void Duplicate(int index)					{ AddPreprocess(); elements.Add(elements[index].Clone() as T); }
+		public void Duplicate(int index)
+		{
+			AddPreprocess(); elements.Add(elements[index].Clone() as T);
+			OnPropertyChanged("Elements");
+		}
 
 		/// <summary>
 		/// Removes a certain element definition from the Block
 		/// </summary>
 		/// <param name="index">Index of the element to delete</param>
-		public void Delete(int index)						{ DeletePreprocess(); elements.RemoveAt(index); }
+		public void Delete(int index)
+		{
+			DeletePreprocess(); elements.RemoveAt(index);
+			OnPropertyChanged("Elements");
+		}
 
 		/// <summary>
 		/// Removes all the element definitions from the Block
 		/// </summary>
-		public void DeleteAll()								{ elements.Clear(); }
+		public void DeleteAll()
+		{
+			elements.Clear();
+			OnPropertyChanged("Elements");
+		}
 
 		/// <summary>
 		/// Adds an existing element definition to the Block
@@ -333,6 +381,7 @@ namespace BlamLib.TagInterface
 
 			AddPreprocess();
 			elements.Add(value);
+			OnPropertyChanged("Elements");
 		}
 
 		/// <summary>
@@ -406,7 +455,7 @@ namespace BlamLib.TagInterface
 		#endregion
 
 		#region Creation
-		private Block() :										base(FieldType.Block)	{ elements = new ElementArray<T>(); }
+		private Block() :										base(FieldType.Block)	{ Elements = new ElementArray<T>(); }
 		/// <summary>
 		/// Create a new Block with a specified owner
 		/// </summary>
@@ -419,7 +468,7 @@ namespace BlamLib.TagInterface
 		private Block(int max) : base(FieldType.Block)
 		{
 			maxElements = max;
-			elements = /*max > 0 ? new ElementArray<T>(max) :*/ new ElementArray<T>();
+			Elements = /*max > 0 ? new ElementArray<T>(max) :*/ new ElementArray<T>();
 		}
 		/// <summary>
 		/// Create a new Block definition with a specified owner
@@ -432,7 +481,7 @@ namespace BlamLib.TagInterface
 		/// Create a new Block definition that is a clone of <paramref name="value"/>
 		/// </summary>
 		/// <param name="value">Block to clone</param>
-		public Block(Block<T> value) :							this(value.maxElements)	{ this.elements = (ElementArray<T>)value.elements.Clone(); }
+		public Block(Block<T> value) :							this(value.maxElements)	{ this.Elements = (ElementArray<T>)value.elements.Clone(); }
 		/// <summary>
 		/// Create a new Block definition that is a clone of <paramref name="value"/>
 		/// </summary>

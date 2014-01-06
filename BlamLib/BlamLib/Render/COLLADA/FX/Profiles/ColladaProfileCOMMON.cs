@@ -17,7 +17,7 @@ namespace BlamLib.Render.COLLADA.Fx
 	public partial class ColladaProfileCOMMON : ColladaElement
 	{
 		#region Fields
-		ColladaObjectAttribute<string> _id;
+		ColladaObjectAttribute<ColladaID<ColladaProfileCOMMON>> _id;
 		ColladaObjectElement<Core.ColladaAsset> _asset;
 		ColladaObjectElementList<ColladaImage> _image;
 		ColladaObjectElementList<ColladaNewparam> _newparam;
@@ -55,7 +55,7 @@ namespace BlamLib.Render.COLLADA.Fx
 
 		public ColladaProfileCOMMON() : base(Enums.ColladaElementType.Fx_ProfileCOMMON)
 		{
-			Fields.Add(_id = new ColladaObjectAttribute<string>(""));
+			Fields.Add(_id = new ColladaObjectAttribute<ColladaID<ColladaProfileCOMMON>>(""));
 			Fields.Add(_asset = new ColladaObjectElement<Core.ColladaAsset>());
 			Fields.Add(_image = new ColladaObjectElementList<ColladaImage>());
 			Fields.Add(_newparam = new ColladaObjectElementList<ColladaNewparam>());

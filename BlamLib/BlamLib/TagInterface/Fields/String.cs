@@ -47,8 +47,8 @@ namespace BlamLib.TagInterface
 	};
 
 	/// <summary>
-	/// Blame String definition class
-	/// </summary>
+	/// Blam String definition class
+	/// </summary> [
 	public sealed class String : Field
 	{
 		/// <summary>
@@ -61,10 +61,22 @@ namespace BlamLib.TagInterface
 		public short Length = 0;
 
 		#region Value
+		private string mValue = "";
+
 		/// <summary>
 		/// The string
 		/// </summary>
-		public string Value = "";
+		public string Value
+		{
+			get { return mValue; }
+			set
+			{
+				mValue = value;
+
+				OnPropertyChanged("Value");
+			}
+		}
+
 		/// <summary>
 		/// Interfaces with the string value
 		/// </summary>
@@ -319,6 +331,8 @@ namespace BlamLib.TagInterface
 				object[] val = value as object[];
 				Handle = (Blam.StringId)val[0];
 				OwnerId = (Blam.DatumIndex)val[1];
+
+				OnPropertyChanged("FieldValue");
 			}
 		}
 

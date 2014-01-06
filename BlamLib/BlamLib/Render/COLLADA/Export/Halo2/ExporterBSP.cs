@@ -24,8 +24,8 @@ namespace BlamLib.Render.COLLADA.Halo2
 		/// <param name="lightmap_info">An object implementing IHalo2LightmapInterface to define what meshes are to be included in the collada file</param>
 		/// <param name="tag_index">The tag index that contains the tag being exported</param>
 		/// <param name="tag_manager">The tag manager of the tag being exported</param>
-		public ColladaBSPExporter(ColladaExportArgs arguments, IHalo2BSPInterface info, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager)
-			: base(arguments, info, tag_index, tag_manager)
+		public ColladaBSPExporter(IColladaSettings settings, IHalo2BSPInterface info, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager)
+			: base(settings, info, tag_index, tag_manager)
 		{
 			bspInfo = info;
 		}
@@ -37,7 +37,7 @@ namespace BlamLib.Render.COLLADA.Halo2
 		/// Creates a semitransparent, green effect for portals
 		/// </summary>
 		/// <returns></returns>
-		static Fx.ColladaEffect CreatePortalsEffect()
+		Fx.ColladaEffect CreatePortalsEffect()
 		{
 			Fx.ColladaEffect effect = CreateDefaultEffect("portals");
 			effect.ProfileCOMMON[0].Technique.Phong.Emission.Color.SetColor(0, 1, 0, 1);
@@ -49,7 +49,7 @@ namespace BlamLib.Render.COLLADA.Halo2
 		/// Creates a semitransparent, yellow effect for fogplanes
 		/// </summary>
 		/// <returns></returns>
-		static Fx.ColladaEffect CreateFogPlanesEffect()
+		Fx.ColladaEffect CreateFogPlanesEffect()
 		{
 			Fx.ColladaEffect effect = CreateDefaultEffect("fogplanes");
 			effect.ProfileCOMMON[0].Technique.Phong.Emission.Color.SetColor(1, 1, 0, 1);
@@ -98,56 +98,56 @@ namespace BlamLib.Render.COLLADA.Halo2
 		/// <returns></returns>
 		void CreatePortalsGeometry(int index)
 		{
-			H2.Tags.scenario_structure_bsp_group definition = tagManager.TagDefinition as H2.Tags.scenario_structure_bsp_group;
+			//H2.Tags.scenario_structure_bsp_group definition = tagManager.TagDefinition as H2.Tags.scenario_structure_bsp_group;
 
-			List<Vertex> common_vertices = new List<Vertex>();
-			// add the vertex position information to the position source
-			foreach(var vertex in definition.ClusterPortals[index].Vertices)
-				common_vertices.Add(new Vertex(vertex.Point.ToPoint3D(100)));
+			//List<Vertex> common_vertices = new List<Vertex>();
+			//// add the vertex position information to the position source
+			//foreach(var vertex in definition.ClusterPortals[index].Vertices)
+			//    common_vertices.Add(new Vertex(vertex.Point.ToPoint3D(100)));
 
-			List<Part> common_parts = new List<Part>();
+			//List<Part> common_parts = new List<Part>();
 
-			// only one part is needed since one one material is used
-			Part common_part = new Part("portals");
-			common_part.AddIndices(BuildFaceIndices(definition.ClusterPortals[index].Vertices.Count));
-			common_parts.Add(common_part);
+			//// only one part is needed since one one material is used
+			//Part common_part = new Part("portals");
+			//common_part.AddIndices(BuildFaceIndices(definition.ClusterPortals[index].Vertices.Count));
+			//common_parts.Add(common_part);
 
-			// create the geometry element
-			CreateGeometry("portal-" + index.ToString(), 0, VertexComponent.POSITION,
-				common_vertices, common_parts);
+			//// create the geometry element
+			//CreateGeometry("portal-" + index.ToString(), 0, VertexComponent.POSITION,
+			//    common_vertices, common_parts);
 		}
 		/// <summary>
 		/// Creates geometries for the relevant lightmap meshes that are to be included in the collada file
 		/// </summary>
 		void CreateGeometryList()
 		{
-			H2.Tags.scenario_structure_bsp_group definition = tagManager.TagDefinition as H2.Tags.scenario_structure_bsp_group;
+			//H2.Tags.scenario_structure_bsp_group definition = tagManager.TagDefinition as H2.Tags.scenario_structure_bsp_group;
 
-			if (bspInfo.IncludeRenderMesh())
-			{
-				// create a list of all the shaders used
-				List<string> shader_list = new List<string>();
-				foreach (var material in definition.Materials)
-					shader_list.Add(Path.GetFileNameWithoutExtension(material.Shader.ToString()));
+			//if (bspInfo.IncludeRenderMesh())
+			//{
+			//    // create a list of all the shaders used
+			//    List<string> shader_list = new List<string>();
+			//    foreach (var material in definition.Materials)
+			//        shader_list.Add(Path.GetFileNameWithoutExtension(material.Shader.ToString()));
 
-				// create a geometry element for each cluster
-				for (int i = 0; i < definition.Clusters.Count; i++)
-				{
-					string name = String.Format("{0}-{1}", ColladaUtilities.FormatName(tagName, " ", "_"), i);
+			//    // create a geometry element for each cluster
+			//    for (int i = 0; i < definition.Clusters.Count; i++)
+			//    {
+			//        string name = String.Format("{0}-{1}", ColladaUtilities.FormatName(tagName, " ", "_"), i);
 
-					// create the geometry element
-					CreateGeometryHalo2(name, false,
-						definition.Clusters[i].SectionInfo,
-						definition.Clusters[i].ClusterData[0].Section.Value,
-						shader_list);
-				}
-			}
-			if (bspInfo.IncludePortalsMesh())
-			{
-				// create a geometry element for each cluster portal
-				for (int i = 0; i < definition.ClusterPortals.Count; i++)
-					CreatePortalsGeometry(i);
-			}
+			//        // create the geometry element
+			//        CreateGeometryHalo2(name, false,
+			//            definition.Clusters[i].SectionInfo,
+			//            definition.Clusters[i].ClusterData[0].Section.Value,
+			//            shader_list);
+			//    }
+			//}
+			//if (bspInfo.IncludePortalsMesh())
+			//{
+			//    // create a geometry element for each cluster portal
+			//    for (int i = 0; i < definition.ClusterPortals.Count; i++)
+			//        CreatePortalsGeometry(i);
+			//}
 		}
 		#endregion
 		#region Create Nodes
@@ -156,54 +156,54 @@ namespace BlamLib.Render.COLLADA.Halo2
 		/// </summary>
 		void CreateNodeList()
 		{
-			H2.Tags.scenario_structure_bsp_group definition = tagManager.TagDefinition as H2.Tags.scenario_structure_bsp_group;
+			//H2.Tags.scenario_structure_bsp_group definition = tagManager.TagDefinition as H2.Tags.scenario_structure_bsp_group;
 
 			// create a list of all the shaders used
-			List<string> shader_list = new List<string>();
-			for (int shader_index = 0; shader_index < shaderInfo.GetShaderCount(); shader_index++)
-				shader_list.Add(ColladaUtilities.FormatName(Path.GetFileNameWithoutExtension(shaderInfo.GetShaderName(shader_index)), " ", "_"));
+			//List<string> shader_list = new List<string>();
+			//for (int shader_index = 0; shader_index < shaderInfo.GetShaderCount(); shader_index++)
+			//    shader_list.Add(ColladaUtilities.FormatName(Path.GetFileNameWithoutExtension(shaderInfo.GetShaderName(shader_index)), " ", "_"));
 
 			// if portals are included and the portals material to the list
-			if (bspInfo.IncludePortalsMesh())
-				shader_list.Add("portals");
+			//if (bspInfo.IncludePortalsMesh())
+			//    shader_list.Add("portals");
 
-			// create a geometry instances for the render geometry
-			int geometry_offset = 0;
-			if (bspInfo.IncludeRenderMesh())
-			{
-				for (int i = 0; i < definition.Clusters.Count; i++)
-					CreateNodeInstanceGeometry(listGeometry[geometry_offset + i].Name, geometry_offset + i, shader_list);
-				geometry_offset += definition.Clusters.Count;
-			}
+			//// create a geometry instances for the render geometry
+			//int geometry_offset = 0;
+			//if (bspInfo.IncludeRenderMesh())
+			//{
+			//    for (int i = 0; i < definition.Clusters.Count; i++)
+			//        CreateNodeInstanceGeometry(listGeometry[geometry_offset + i].Name, geometry_offset + i, null);
+			//    geometry_offset += definition.Clusters.Count;
+			//}
 
-			// create a geometry instances for the portal geometry
-			if (bspInfo.IncludePortalsMesh())
-			{
-				for (int i = 0; i < definition.ClusterPortals.Count; i++)
-					CreateNodeInstanceGeometry(listGeometry[geometry_offset + i].Name, geometry_offset + i, shader_list);
-				geometry_offset += definition.ClusterPortals.Count;
-			}
+			//// create a geometry instances for the portal geometry
+			//if (bspInfo.IncludePortalsMesh())
+			//{
+			//    for (int i = 0; i < definition.ClusterPortals.Count; i++)
+			//        CreateNodeInstanceGeometry(listGeometry[geometry_offset + i].Name, geometry_offset + i, null);
+			//    geometry_offset += definition.ClusterPortals.Count;
+			//}
 		}
 		#endregion
 		#region Create Markers
 		void CreateMarkerList()
 		{
-			H2.Tags.scenario_structure_bsp_group definition = tagManager.TagDefinition as H2.Tags.scenario_structure_bsp_group;
+			//H2.Tags.scenario_structure_bsp_group definition = tagManager.TagDefinition as H2.Tags.scenario_structure_bsp_group;
 
-			List<Marker> marker_list = new List<Marker>();
-			// create a list of generic marker definitions
-			foreach (var marker in definition.Markers)
-			{
-				Marker common_marker = new Marker(marker.Name.ToString(),
-					marker.Position.ToPoint3D(100),
-					marker.Rotation.ToQuaternion(),
-					-1);
+			//List<Marker> marker_list = new List<Marker>();
+			//// create a list of generic marker definitions
+			//foreach (var marker in definition.Markers)
+			//{
+			//    Marker common_marker = new Marker(marker.Name.ToString(),
+			//        marker.Position.ToPoint3D(100),
+			//        marker.Rotation.ToQuaternion(),
+			//        -1);
 
-				marker_list.Add(common_marker);
-			}
+			//    marker_list.Add(common_marker);
+			//}
 
-			// create the marker node elements
-			CreateMarkers(marker_list, RotationVectorY, RotationVectorP, RotationVectorR);
+			//// create the marker node elements
+			//CreateMarkers(marker_list, RotationVectorY, RotationVectorP, RotationVectorR);
 		}
 		#endregion
 		#endregion
@@ -219,7 +219,7 @@ namespace BlamLib.Render.COLLADA.Halo2
 			COLLADAFile.LibraryVisualScenes = new Core.ColladaLibraryVisualScenes();
 			COLLADAFile.LibraryVisualScenes.VisualScene = new List<Core.ColladaVisualScene>();
 			COLLADAFile.LibraryVisualScenes.VisualScene.Add(new Core.ColladaVisualScene());
-			COLLADAFile.LibraryVisualScenes.VisualScene[0].ID = ColladaElement.FormatID<Core.ColladaVisualScene>("main");
+			COLLADAFile.LibraryVisualScenes.VisualScene[0].ID = "main";
 			COLLADAFile.LibraryVisualScenes.VisualScene[0].Node = new List<Core.ColladaNode>();
 
 			Core.ColladaNode frame = new BlamLib.Render.COLLADA.Core.ColladaNode();
@@ -242,8 +242,6 @@ namespace BlamLib.Render.COLLADA.Halo2
 
 			if (bspInfo.IncludeRenderMesh())
 			{
-				CollectBitmaps();
-
 				CreateImageList();
 				CreateEffectList();
 				CreateMaterialList();
