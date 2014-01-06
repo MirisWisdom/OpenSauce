@@ -168,7 +168,9 @@ namespace Yelo
 			real bounding_radius;
 			real_point3d bounding_offset, origin_offset;
 			real acceleration_scale;
-			TAG_PAD(int32, 1);
+			struct {
+				TAG_FLAG(change_colors_scaled_by_function); // toggled when there is 1+ change colors that have their scale-by set to something other than NONE
+			}runtime_flags;
 
 			struct {
 				TAG_FIELD(tag_reference, render_model,		'mod2');

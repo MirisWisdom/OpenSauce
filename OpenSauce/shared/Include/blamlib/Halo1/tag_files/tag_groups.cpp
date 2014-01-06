@@ -8,6 +8,7 @@
 
 #if PLATFORM_IS_EDITOR
 	#include <blamlib/Halo1/models/model_definitions.hpp>
+	#include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
 	#include <blamlib/Halo1/tag_files/tag_group_loading.hpp>
 	#include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
 	#include <YeloLib/Halo1/tag_files/tag_group_memory.hpp>
@@ -182,17 +183,21 @@ namespace Yelo
 		return m_fields != other.m_fields;
 	}
 
-	int __cdecl tag_group::QsortCompareByName(void*, const void* lhs, const void* rhs)
+	int __cdecl tag_group::CompareByNameProc(void*, const tag_group*const* lhs, const tag_group*const* rhs)
 	{
 		return strcmp(
-			(*CAST_PTR(const tag_group*const*,lhs))->name, 
-			(*CAST_PTR(const tag_group*const*,rhs))->name);
+			(*lhs)->name, 
+			(*rhs)->name);
 	}
-	int __cdecl tag_group::QsortCompareByGroupTag(void*, const void* lhs, const void* rhs)
+	int __cdecl tag_group::CompareByGroupTagProc(void*, const tag_group*const* lhs, const tag_group*const* rhs)
 	{
 		return
-			(*CAST_PTR(const tag_group*const*,lhs))->group_tag - 
-			(*CAST_PTR(const tag_group*const*,rhs))->group_tag;
+			(*lhs)->group_tag - 
+			(*rhs)->group_tag;
+	}
+	int __cdecl tag_group::SearchByNameProc(void*, cstring key, const tag_group*const* group)
+	{
+		return strcmp(key, (*group)->name);
 	}
 
 	namespace blam

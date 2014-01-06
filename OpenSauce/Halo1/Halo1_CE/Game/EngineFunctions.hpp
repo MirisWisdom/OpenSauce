@@ -30,8 +30,6 @@ namespace Yelo
 		void GSMD5Digest(byte* input, unsigned int input_length, char output[33]);
 		bool CompareMD5(byte* input, unsigned int input_length, const char* comparison_md5);
 
-		bool GetCmdLineParameter(cstring parameter, cstring* value_out = nullptr);
-
 		namespace Cache
 		{
 			cstring GetMapExtension();

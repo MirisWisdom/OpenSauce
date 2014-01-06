@@ -6,6 +6,7 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/game/game_configuration.hpp>
 #include <blamlib/Halo1/networking/player_update.hpp>
 
 namespace Yelo
@@ -27,16 +28,18 @@ namespace Yelo
 			// 0x114 uint32
 			// 0x118 uint32
 			// 0x11C uint32
-			// 0x120 int32
-			// 0x124 int32
+			// 0x120 game_ticks_t
+			// 0x124 game_ticks_t
 			// 0x128 int32
 			// 0x12C int32 action_baseline_id, NUMBER_OF_REMOTE_PLAYER_ACTION_UPDATE_BASELINE_IDS = 2
 			// 0x130, s_remote_player_action_update_network_data
 			// 0x160 uint32
-			// 0x164 datum_index or int32
-			// 0x168 datum_index or int32
-			// 0x16C datum_index or int32
+
+			// 0x164 game_ticks_t
+			// 0x168 game_ticks_t
+			// 0x16C int32 update_id
 			// 0x170 real_point3d predict_position
+
 			// 0x17C datum_index or int32
 			// 0x180 datum_index or int32
 			// 0x184 datum_index or int32

@@ -200,10 +200,10 @@ namespace Yelo
 				valid_definitions = (_yelo_definition_globals.*verify_group_proc)();
 
 				if (!valid_definitions)
-					YELO_ERROR(_error_message_priority_none, 
+					YELO_ERROR(_error_message_priority_critical, 
 						"CheApe: %s group definition doesn't match code!", group_name);
 			}
-			else YELO_ERROR(_error_message_priority_none, 
+			else YELO_ERROR(_error_message_priority_critical,
 					"CheApe: %s group not found!", group_name);
 		}
 		bool s_yelo_definition_globals::VerifyGroupDefinitions() const

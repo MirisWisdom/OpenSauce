@@ -5,6 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 #include <blamlib/Halo1/cache/data_file.hpp>
+#if PLATFORM_ID == PLATFORM_TOOL
 
 namespace Yelo
 {
@@ -53,3 +54,4 @@ namespace Yelo
 		}
 	};
 };
+#endif

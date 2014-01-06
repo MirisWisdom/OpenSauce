@@ -18,7 +18,7 @@ namespace Yelo
 {
 	namespace Tool
 	{
-		void PLATFORM_API scenario_compile_scripts(void** arguments)
+		void PLATFORM_API scenario_compile_scripts(char* arguments[])
 		{
 			struct s_arguments {
 				cstring scenario_name;
@@ -36,7 +36,7 @@ namespace Yelo
 			printf_s("If you can see this, it means this feature hasn't been implemented.\n");
 		}
 
-		void PLATFORM_API scenario_cleanse_of_yelo_data(void** arguments)
+		void PLATFORM_API scenario_cleanse_of_yelo_data(char* arguments[])
 		{
 			struct s_arguments {
 				cstring scenario_name;

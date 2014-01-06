@@ -435,21 +435,22 @@ namespace Animations
 	// which allows us to change the behavior of each animation state (keyframe events, ending behavior, etc.)
 	static void InitializeYeloAnimationStates()
 	{
-		/* UnitUpdateAnimationPrimaryKeyframe */
-		//// Called when an animation reaches the primary keyframe index value in the model_animations tag
+		//////////////////////////////////////////////////////////////////////////
+		// UnitUpdateAnimationPrimaryKeyframe
+		// Called when an animation reaches the primary keyframe index value in the model_animations tag
 		unit_update_animation_primary_keyframe_jmp_table_yelo[Yelo::Enums::_unit_animation_state_seat_exit] = 
 			&UnitUpdateAnimationPrimaryKeyframeSeatBoardJMP;
 		unit_update_animation_primary_keyframe_jmp_table_yelo[Yelo::Enums::_unit_animation_state_yelo_seat_board] = 
 			&UnitUpdateAnimationPrimaryKeyframeSeatBoardJMP;
 		/* UnitUpdateAnimationPrimaryKeyframe switch table additions*/
 
-		/* UnitUpdateAnimationFinalKeyframe */
-		//// Called on the final keyframe of our animation
+		//////////////////////////////////////////////////////////////////////////
+		// UnitUpdateAnimationFinalKeyframe
+		// Called on the final keyframe of our animation
 		unit_update_animation_final_keyframe_jmp_table_yelo[Yelo::Enums::_unit_animation_state_yelo_seat_board] = 
 			&UnitUpdateAnimationFinalKeyframeSeatBoardJMP;
 		unit_update_animation_final_keyframe_jmp_table_yelo[Yelo::Enums::_unit_animation_state_seat_enter] = 
 			&UnitUpdateAnimationFinalKeyframeSeatEnterJMP;
-		/* UnitUpdateAnimationFinalKeyframe */
 	}
 
 	void Initialize()

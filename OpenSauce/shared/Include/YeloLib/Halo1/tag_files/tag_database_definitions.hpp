@@ -23,6 +23,8 @@ namespace Yelo
 	{
 		struct s_tag_database_entry // tag_database_entry_block
 		{
+			typedef int32 block_index_t;
+
 			TagData<char> name;
 			union {
 				ULARGE_INTEGER handle_data;
@@ -31,9 +33,9 @@ namespace Yelo
 			};
 			uint32 flags;
 			// Indexes to entries which this entry references
-			TAG_TBLOCK(child_ids, int32);		// tag_database_entry_reference_block - long_block_index
+			TAG_TBLOCK(child_ids, s_tag_database_entry::block_index_t);
 			// Entries which reference this entry
-			TAG_TBLOCK(reference_ids, int32);	// tag_database_entry_reference_block - long_block_index
+			TAG_TBLOCK(reference_ids, s_tag_database_entry::block_index_t);
 
 			TAG_PAD(int32, 3); // 12
 

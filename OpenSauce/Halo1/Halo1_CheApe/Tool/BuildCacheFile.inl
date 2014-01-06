@@ -122,16 +122,16 @@ namespace BuildCacheFileEx
 	}
 };
 
-void PLATFORM_API build_cache_file_for_scenario_extended(void** arguments)
+void PLATFORM_API build_cache_file_for_scenario_extended(char* arguments[])
 {
 	//////////////////////////////////////////////////////////////////////////
 	// Initialize arguments
 	struct s_arguments {
-		char* mod_name;
+		char* mod_name; // NOTE: we only modify this argument to null-terminate at a smaller length
 		cstring copy_data_files_first_str;
 		cstring store_resources_str;
 		cstring use_memory_upgrades_str;
-		char* scenario_name;
+		cstring scenario_name;
 	}* args = CAST_PTR(s_arguments*, arguments);
 
 	bool copy_data_files_first, store_resources, use_memory_upgrades;
@@ -225,7 +225,7 @@ void PLATFORM_API build_cache_file_for_scenario_extended(void** arguments)
  * \brief
  * We replace the stock build_cache_file_for_scenario implementation with out own to turn off non-stock-compliant things like custom script definitions
  */
-void PLATFORM_API build_cache_file_for_scenario_stock_override(void** arguments)
+void PLATFORM_API build_cache_file_for_scenario_stock_override(char* arguments[])
 {
 	//////////////////////////////////////////////////////////////////////////
 	// Initialize arguments

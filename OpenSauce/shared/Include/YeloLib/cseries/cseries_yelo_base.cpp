@@ -10,6 +10,7 @@
 #if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
 	#include <crtdbg.h>
 	#include <YeloLib/cseries/errors_yelo.hpp>
+	#include <YeloLib/cseries/pc_crashreport.hpp>
 
 	#define WIN32_FUNC(func) func
 #else
@@ -89,6 +90,13 @@ namespace Yelo
 	}
 
 #if PLATFORM_TARGET != PLATFORM_TARGET_XBOX
+	void winapi_local_deleter::operator()(HLOCAL h) const
+	{
+		YELO_ASSERT_DISPLAY(h != INVALID_HANDLE_VALUE, "tried to close an INVALID handle");
+		if (h != nullptr)
+			LocalFree(h);
+	}
+
 	void crt_file_closer::operator()(FILE* h) const
 	{
 		if(h != nullptr)
@@ -148,13 +156,34 @@ namespace Yelo
 	void Assert(cstring assertion, cstring message, cstring file, const int line, cstring function, bool halt)
 	{
 		YELO_DEBUG_FORMAT("Assertion: %s", assertion);
-		if (message != nullptr)
+		// Yes, we want pointer equality as some assert calls just use the assertion as the message
+		if (message != nullptr && message != assertion)
 			YELO_DEBUG_FORMAT("Message: %s", message);
 		YELO_DEBUG_FORMAT("%s,#%d in %s", file, line, function);
 
+#ifdef _DEBUG
 		// based on _ASSERT_EXPR's implementation
 		_CrtDbgReport(halt ? _CRT_ASSERT : _CRT_WARN,
 			file, line, nullptr, assertion);
+#else // TODO: figure out a better alternative
+		if (halt)
+		{
+			// TODO: AddPropertyToCrashReport returns true on success. do we -really- need to check it at this point?
+
+			Debug::AddPropertyToCrashReport("Assert", assertion);
+
+			if (message != assertion)
+				Debug::AddPropertyToCrashReport("Assert-Msg", message);
+
+			Debug::AddPropertyToCrashReport("Assert-File", file);
+
+			tag_string line_string = { 0 };
+			_itoa_s(line, line_string, 10);
+			Debug::AddPropertyToCrashReport("Assert-Line", line_string);
+
+			Debug::AddPropertyToCrashReport("Assert-Func", function);
+		}
+#endif
 
 		if (halt)
 			throw;

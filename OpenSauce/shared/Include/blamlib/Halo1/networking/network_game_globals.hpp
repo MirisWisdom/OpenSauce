@@ -12,6 +12,9 @@ namespace Yelo
 	{
 		enum {
 			k_network_server_password_length = 8,
+
+			k_network_game_join_token_size = 16,
+			k_network_game_challenge_length = 7,
 		};
 	};
 

@@ -6,6 +6,7 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/game/game_configuration.hpp>
 #include <blamlib/Halo1/networking/network_client_time.hpp>
 #include <blamlib/Halo1/networking/network_game_globals.hpp>
 #include <blamlib/Halo1/networking/network_game_manager.hpp>
@@ -37,8 +38,8 @@ namespace Yelo
 			struct s_join_parameters
 			{
 				UNKNOWN_TYPE(int16);						// 0xAEE
-				wchar_t password[Enums::k_network_server_password_length+1]; // 0xAF0
-				char token[16];								// 0xB04
+				wchar_t password[Enums::k_network_server_password_length+1];// 0xAF0
+				char token[Enums::k_network_game_join_token_size];			// 0xB02
 			}; BOOST_STATIC_ASSERT( sizeof(s_join_parameters) == 0x24 );
 			struct s_join_data
 			{
@@ -88,11 +89,12 @@ namespace Yelo
 				//////////////////////////////////////////////////////////////////////////
 				// 0x18 byte data structure
 					PAD128; PAD64;							// 0xF38
-				UNKNOWN_TYPE(int32);						// 0xF50
+				int32 team_index;							// 0xF50
 			PAD128; PAD128; PAD128; PAD32;					// 0xF54, 0x34 byte data structure
 			s_player_update_history* update_history;		// 0xF88
-			PAD32;											// 0xF8C, can't find any references to this offset so assuming alignment
-		}; BOOST_STATIC_ASSERT( sizeof(s_network_game_client) <= 0xF90 );
+			byte_enum connection_class;						// 0xF8C Enums::network_connection_class
+			PAD24;
+		}; BOOST_STATIC_ASSERT( sizeof(s_network_game_client) == 0xF90 );
 
 		// For increased player counts game states
 		struct s_network_game_client_yelo : s_network_game_client

@@ -43,7 +43,7 @@ namespace Yelo
 
 		struct s_equipment_datum : s_item_datum
 		{
-			enum { k_object_type = Enums::_object_type_equipment };
+			enum { k_object_types_mask = FLAG(Enums::_object_type_equipment) };
 
 			s_equipment_data equipment;
 		}; BOOST_STATIC_ASSERT( sizeof(s_equipment_datum) == Enums::k_object_size_equipment );

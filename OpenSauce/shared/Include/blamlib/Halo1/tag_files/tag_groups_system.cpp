@@ -8,6 +8,7 @@
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 #include <blamlib/Halo1/memory/byte_swapping.hpp>
+#include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
 #include <blamlib/Halo1/tag_files/tag_group_verification.hpp>
 #include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
 
@@ -244,7 +245,7 @@ namespace Yelo
 			if( *instance_data == nullptr )
 			{
 				tag_groups_dispose();
-				YELO_ERROR(_error_message_priority_none, "couldn't allocate tag group globals");
+				YELO_ERROR_OUT_OF_MEMORY("couldn't allocate tag group globals");
 				return;
 			}
 

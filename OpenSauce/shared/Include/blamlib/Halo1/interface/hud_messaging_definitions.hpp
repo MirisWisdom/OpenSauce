@@ -16,13 +16,17 @@ namespace Yelo
 			k_max_state_messages = 1024,
 			k_max_state_text_panels = 8,
 		};
+
+		enum e_hud_message_type : byte_enum {
+			_hud_message_type_text,
+		};
 	};
 
 	namespace TagGroups
 	{
 		struct hud_state_message_element
 		{
-			sbyte type;
+			byte_enum type;
 			sbyte data;
 		}; BOOST_STATIC_ASSERT( sizeof(hud_state_message_element) == 0x2 );
 

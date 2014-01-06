@@ -102,8 +102,16 @@ namespace Yelo
 
 	struct string_list
 	{
+		typedef cstring*		iterator;
+		typedef const cstring*	const_iterator;
+
 		int32 count;
 		cstring* strings;
+
+		inline const_iterator	begin() const		{ return strings; }
+		inline iterator			begin()				{ return strings; }
+		inline const_iterator	end() const			{ return strings + count; }
+		inline iterator			end()				{ return strings + count; }
 	}; BOOST_STATIC_ASSERT( sizeof(string_list) == 0x8 );
 
 

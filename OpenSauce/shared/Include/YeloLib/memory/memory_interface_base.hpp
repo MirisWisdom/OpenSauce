@@ -63,21 +63,32 @@
 // Pointer inline dereference-get
 #define GET_PTR(name)		( *GET_PTR2(name) )
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+/// <summary>	Macro glue for getting a pointer to game engine data, with various levels of pointer asserts. </summary>
+/// <remarks>	va_args allow the callee to specify a de-reference operator. </remarks>
+/// <param name="get_ptr_macro">	Macro for getting the PTR object. </param>
+/// <param name="get_macro">		Macro for getting PTR_IMPL's value. </param>
+/// <param name="name">				The name of the PTR object. </param>
+#define PTR_IMPL_GET_GUTS(get_ptr_macro, get_macro, name, ...)							\
+	/* validate pointer is available for this platform */								\
+{	auto name = get_ptr_macro(name);													\
+	assert(CAST_PTR(void*,PTR_UNKNOWN) != name && CAST_PTR(void*,PTR_NULL) != name); }	\
+	/* validate pointer is initialized */												\
+	auto name = get_macro(name);														\
+/*	YELO_ASSERT(name);																*/	\
+	return __VA_ARGS__ name;
+
 // Double pointer implement get by-value
-#define DPTR_IMP_GET(name)	{ return GET_DPTR(name); }
+#define DPTR_IMP_GET(name)		{ PTR_IMPL_GET_GUTS(GET_DPTR2, GET_DPTR , name) }
 // Double pointer implement get by-reference
-#define DPTR_IMP_GET2(name)	{ return GET_DPTR2(name); }
+#define DPTR_IMP_GET2(name)		{ PTR_IMPL_GET_GUTS(GET_DPTR2, GET_DPTR2, name) }
 // Pointer implement get by-value
-#define PTR_IMP_GET(name)	{ return GET_PTR(name); }
+#define PTR_IMP_GET(name)		{ PTR_IMPL_GET_GUTS(GET_PTR2 , GET_PTR  , name) }
 // Pointer implement get by-reference
-#define PTR_IMP_GET2(name)	{ return GET_PTR2(name); }
+#define PTR_IMP_GET2(name)		{ PTR_IMPL_GET_GUTS(GET_PTR2 , GET_PTR2 , name) }
 
 // Double pointer implement get by-reference, with debug assert
-#define DPTR_IMP_GET_BYREF(name)	{	\
-	auto* name = GET_DPTR( name );		\
-	YELO_ASSERT( name );				\
-	return *name;						\
-}
+#define DPTR_IMP_GET_BYREF(name){ PTR_IMPL_GET_GUTS(GET_DPTR2, GET_DPTR, name, *) }
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -168,10 +179,36 @@ namespace Yelo
 			};
 		};
 
-		// Copies [size] bytes of [src] to [address]
-		// Changes the protection of [address] while its coping [src]
-		// Then changes the protection of [address] back
-		BOOL WriteMemory(void* address, const void* src, int32 size);
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Copies the bytes of a buffer to a foriegn memory space. </summary>
+		/// 
+		/// <remarks>	Changes the protection of the foreign memory while copying, then reverts it back. </remarks>
+		///
+		/// <param name="address">	Start of the foreign memory space. </param>
+		/// <param name="src">	  	Buffer to copy from. </param>
+		/// <param name="size">   	The size of the buffer. </param>
+		///
+		/// <returns>	not FALSE if it succeeds, FALSE if it fails. </returns>
+		BOOL WriteMemory(void* address, const void* src, size_t size);
+		template<typename T, size_t size> inline
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Copies the bytes of a buffer to a foriegn memory space. </summary>
+		///
+		/// <param name="address">	Start of the foreign memory space. </param>
+		/// <param name="src">   	Buffer to copy from. </param>
+		///
+		/// <returns>	not FALSE if it succeeds, FALSE if it fails. </returns>
+		BOOL WriteMemory(void* address, const T (&src)[size])
+		{
+			return WriteMemory(address, src, sizeof(T) * size);
+		}
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Overwrites a range of foreign memory with a specific byte. </summary>
+		///
+		/// <param name="address">	Start address of the foreign memory to overwrite. </param>
+		/// <param name="value">  	The byte value to use when overwriting. </param>
+		/// <param name="count">  	Number of times to write the byte. </param>
+		void WriteMemory(void* address, int value, size_t count);
 		// makes the 32 bits at [address] equal [value]
 		BOOL WriteMemory(void* address, void* value);
 
@@ -380,7 +417,9 @@ namespace Yelo
 		};
 
 
-		template<typename T>
+		uintptr_t AlignValue(uintptr_t value, unsigned alignment_bit);
+
+		template<typename T> inline
 		static T* RebasePointer(T* pointer, uintptr_t base_address, uintptr_t virtual_base_address)
 		{
 			T* result = CAST_PTR(T*,
@@ -388,49 +427,14 @@ namespace Yelo
 
 			return result;
 		}
-		template<typename T>
+		template<typename T> inline
 		static T* AlignPointer(T* pointer, unsigned alignment_bit)
 		{
 			uintptr_t aligned_ptr = CAST_PTR(uintptr_t, pointer);
-			const uintptr_t alignment_mask = (1<<alignment_bit) - 1;
-
-			if(aligned_ptr & alignment_mask)
-				aligned_ptr = (aligned_ptr | alignment_mask) + 1;
+			aligned_ptr = AlignValue(aligned_ptr, alignment_bit);
 
 			return CAST_PTR(T*, aligned_ptr);
 		}
-
-#if 0
-		template<typename TWord>
-		bool IsZeroMemoryImpl(const TWord* words, size_t word_count)
-		{
-			TWord i_am_zero = 0;
-			for (const TWord* words_end = words+word_count; words != words_end; words++)
-				i_am_zero |= *words;
-
-			return i_am_zero == 0;
-		}
-
-		bool IsZeroMemory(const byte* buffer, size_t element_count)		{ return IsZeroMemoryImpl<byte>  (buffer, element_count); }
-		bool IsZeroMemory(const uint16* buffer, size_t element_count)	{ return IsZeroMemoryImpl<uint16>(buffer, element_count); }
-		bool IsZeroMemory(const uint32* buffer, size_t element_count)	{ return IsZeroMemoryImpl<uint32>(buffer, element_count); }
-
-		template<typename T>
-		bool IsZeroMemory(const T& obj)
-		{
-
-		}
-		template<typename T, size_t TSizeOfArray>
-		bool IsZeroMemory(const T(& array)[TSizeOfArray])
-		{
-		}
-		template<size_t TSizeOfArray>
-		bool IsZeroMemory(const byte(& array)[TSizeOfArray])	{ return IsZeroMemory(&array[0], TSizeOfArray); }
-		template<size_t TSizeOfArray>
-		bool IsZeroMemory(const uint16(& array)[TSizeOfArray])	{ return IsZeroMemory(&array[0], TSizeOfArray); }
-		template<size_t TSizeOfArray>
-		bool IsZeroMemory(const uint32(& array)[TSizeOfArray])	{ return IsZeroMemory(&array[0], TSizeOfArray); }
-#endif
 
 
 		uint32 CRC(uint32& crc_reference, const void* buffer, int32 size);

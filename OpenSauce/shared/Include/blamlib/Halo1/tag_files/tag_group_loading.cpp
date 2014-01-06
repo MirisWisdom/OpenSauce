@@ -9,6 +9,7 @@
 #include <blamlib/Halo1/memory/byte_swapping.hpp>
 #include <blamlib/Halo1/memory/data.hpp>
 #include <blamlib/Halo1/models/model_definitions.hpp>
+#include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
 #include <blamlib/Halo1/tag_files/tag_files.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 #include <YeloLib/Halo1/tag_files/tag_group_memory.hpp>
@@ -643,7 +644,7 @@ namespace Yelo
 					break;
 
 				bool is_readonly; uint32 checksum;
-				if( !tag_file_open(group_tag, name, &is_readonly, &checksum, TEST_FLAG(flags, Flags::_tag_load_verify_exist_first_bit)) )
+				if (!tag_file_open(group_tag, name, &is_readonly, &checksum, TEST_FLAG(flags, Flags::_tag_load_from_file_system_bit)))
 				{
 					tag_group_loading_add_non_loaded_tag(group_tag, name);
 

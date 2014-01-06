@@ -19,6 +19,20 @@
 
 namespace Yelo
 {
+	namespace Objects
+	{
+		static const uintptr_t OBJECT_DAMAGE_AFTERMATH__CALC_ACCEL_HOOK = 0x649EE6;
+		static const uintptr_t OBJECT_DAMAGE_AFTERMATH__CALC_ACCEL_HOOK_RETURN = 0x649F17;
+
+		static const uintptr_t OBJECT_DAMAGE_AFTERMATH__UNIT_VALIDATE_INST_ACCEL_HOOK = 0x649FFF;
+		static const uintptr_t OBJECT_DAMAGE_AFTERMATH__UNIT_VALIDATE_INST_ACCEL_HOOK_RETURN = 0x64A010;
+		static const uintptr_t OBJECT_DAMAGE_AFTERMATH__UNIT_VALIDATE_INST_ACCEL_HOOK_RETURN_INVALID = 0x64A07E;
+	};
+};
+#include <YeloLib/Halo1/objects/object_damage_upgrades.inl>
+
+namespace Yelo
+{
 	namespace Sapien
 	{
 		namespace AddressOf
@@ -38,25 +52,17 @@ namespace Yelo
 		//////////////////////////////////////////////////////////////////////////
 		// sapien modifications for loading player profiles
 		// the idea is that this should allow people to control units in sapien...and thus record animations
-		API_FUNC_NAKED static void player_ui_set_controls_from_profile(int32 local_player_index)
+		API_FUNC_NAKED static void PLATFORM_API player_ui_set_controls_from_profile(int32 local_player_index)
 		{
 			static const uintptr_t FUNCTION = 0x5DD060;
 
-			API_FUNC_NAKED_START()
-				push	local_player_index
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(1)
+			__asm	jmp	FUNCTION
 		}
-		API_FUNC_NAKED static void player_ui_set_current_player_profile(int32 local_player_index, int32 unknown, byte profile[Enums::k_player_profile_buffer_size])
+		API_FUNC_NAKED static void PLATFORM_API player_ui_set_current_player_profile(int32 local_player_index, int32 unknown, byte profile[Enums::k_player_profile_buffer_size])
 		{
 			static const uintptr_t FUNCTION = 0x5DD470;
 
-			API_FUNC_NAKED_START()
-				push	profile
-				push	unknown
-				push	local_player_index
-				call	FUNCTION
-			API_FUNC_NAKED_END_CDECL(3)
+			__asm	jmp	FUNCTION
 		}
 
 		static void PLATFORM_API profile_load_override(cstring profile_name)
@@ -116,6 +122,8 @@ namespace Yelo
 			TagGroups::ScenarioYeloLoadHookInitialize();
 
 			InitializeProfileLoadOverride();
+
+			Objects::ObjectDamageAftermath_UpgradesInitialize();
 		}
 
 		void Dispose()

@@ -8,6 +8,7 @@
 #include "Tool/TagMaintenance.hpp"
 #if PLATFORM_ID == PLATFORM_TOOL
 
+#include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
 #include <blamlib/Halo1/tag_files/tag_files.hpp>
 #include <blamlib/Halo1/tag_files/tag_group_loading.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
@@ -378,7 +379,7 @@ namespace Yelo
 
 			return getc(stdin) != '\n';
 		}
-		void PLATFORM_API tag_load_maintenance(void** arguments)
+		void PLATFORM_API tag_load_maintenance(char* arguments[])
 		{
 			struct s_arguments {
 				cstring tag_name;

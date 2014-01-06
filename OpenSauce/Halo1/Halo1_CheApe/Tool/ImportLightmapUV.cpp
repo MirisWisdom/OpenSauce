@@ -68,7 +68,7 @@ namespace Yelo
 		};
 #include "Tool/ImportLightmapUV_ObjFile.inl"
 
-		void PLATFORM_API import_structure_lightmap_uvs(void** arguments)
+		void PLATFORM_API import_structure_lightmap_uvs(char* arguments[])
 		{
 			printf_s("\n");
 

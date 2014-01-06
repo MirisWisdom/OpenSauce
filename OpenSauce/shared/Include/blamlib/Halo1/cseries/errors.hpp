@@ -11,7 +11,7 @@ namespace Yelo
 	{
 		enum error_message_priority : long_enum
 		{
-			_error_message_priority_none, // ?
+			_error_message_priority_out_of_memory, // used when allocations fail in the engine
 			_error_message_priority_warning,
 			_error_message_priority_assert,
 			_error_message_priority_critical,
@@ -32,9 +32,13 @@ namespace Yelo
 	#define YELO_ERROR(priority, format, ...) \
 		Yelo::blam::error(Yelo::Enums::priority, format, __VA_ARGS__)
 
+	#define YELO_ERROR_OUT_OF_MEMORY(format, ...) \
+		Yelo::blam::error(Yelo::Enums::_error_message_priority_out_of_memory, format, __VA_ARGS__)
+
 	#define YELO_WARN(format, ...) \
 		Yelo::blam::error(Yelo::Enums::_error_message_priority_warning, format, __VA_ARGS__)
 #else
 	#define YELO_ERROR(priority, format, ...) __noop
+	#define YELO_ERROR_OUT_OF_MEMORY(format, ...) __noop
 	#define YELO_WARN(format, ...) __noop
 #endif

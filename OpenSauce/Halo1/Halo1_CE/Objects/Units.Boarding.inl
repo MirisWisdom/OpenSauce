@@ -22,7 +22,7 @@ namespace Boarding
 		if (unit_index.IsNull())
 			return;
 
-		s_unit_datum* unit = Objects::ObjectHeader()[unit_index]->_unit;
+		auto unit = blam::object_get_and_verify_type<s_unit_datum>(unit_index);
 		TagGroups::model_animation_graph const* animation_graph = GetObjectAnimations(unit_index);
 		
 		// Check if an animation graph exists for the target unit
@@ -57,7 +57,7 @@ namespace Boarding
 	static void BoardUnitSeatIndex(TagGroups::s_unit_boarding_seat const* boarding_seat_definition, 
 		datum_index unit_index, datum_index parent_unit_index)
 	{
-		s_unit_datum* unit = Objects::ObjectHeader()[unit_index]->_unit;
+		auto unit = blam::object_get_and_verify_type<s_unit_datum>(unit_index);
 
 		TagGroups::model_animation_graph const* animation_graph = GetObjectAnimations(unit_index);
 
@@ -102,10 +102,10 @@ namespace Boarding
 		if(cv_globals == nullptr)
 			return;
 
-		s_unit_datum* unit = Objects::ObjectHeader()[unit_index]->_unit;
+		auto unit = blam::object_get_and_verify_type<s_unit_datum>(unit_index);
 
 		datum_index parent_unit_index = unit->object.parent_object_index;
-		s_unit_datum* parent_unit = Objects::ObjectHeader()[parent_unit_index]->_unit;
+		auto parent_unit = blam::object_get_and_verify_type<s_unit_datum>(parent_unit_index);
 		int16 seat_index = unit->unit.vehicle_seat_index;
 
 		auto const* parent_unit_definition = 
@@ -121,7 +121,7 @@ namespace Boarding
 
 			if (target_unit_index != datum_index::null)
 			{
-				s_unit_datum* target_unit = Objects::ObjectHeader()[target_unit_index]->_unit;
+				auto target_unit = blam::object_get_and_verify_type<s_unit_datum>(target_unit_index);
 
 				// Eject the target_unit
 				EjectUnit(target_unit_index);
@@ -164,10 +164,10 @@ namespace Boarding
 		if(cv_globals == nullptr)
 			return;
 
-		s_unit_datum* unit = Objects::ObjectHeader()[unit_index]->_unit;
+		auto unit = blam::object_get_and_verify_type<s_unit_datum>(unit_index);
 
 		datum_index parent_unit_index = unit->object.parent_object_index;
-		s_unit_datum* parent_unit = Objects::ObjectHeader()[parent_unit_index]->_unit;
+		auto parent_unit = blam::object_get_and_verify_type<s_unit_datum>(parent_unit_index);
 		int16 seat_index = unit->unit.vehicle_seat_index;
 
 		TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
@@ -201,10 +201,10 @@ namespace Boarding
 		if(cv_globals == nullptr)
 			return;
 
-		s_unit_datum* unit = Objects::ObjectHeader()[unit_index]->_unit;
+		auto unit = blam::object_get_and_verify_type<s_unit_datum>(unit_index);
 
 		datum_index parent_unit_index = unit->object.parent_object_index;
-		s_unit_datum* parent_unit = Objects::ObjectHeader()[parent_unit_index]->_unit;
+		auto parent_unit = blam::object_get_and_verify_type<s_unit_datum>(parent_unit_index);
 		int16 seat_index = unit->unit.vehicle_seat_index;
 
 		TagGroups::s_unit_boarding_seat const* boarding_seat_definition = 
@@ -235,8 +235,7 @@ namespace Boarding
 	{
 		bool result = true;
 
-		object_header_data_t object_header = Objects::ObjectHeader();
-		s_unit_datum* parent_unit = object_header[parent_unit_index]->_unit;
+		auto parent_unit = blam::object_get_and_verify_type<s_unit_datum>(parent_unit_index);
 		
 		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
 
@@ -278,19 +277,19 @@ namespace Boarding
 		bool result = true;
 
 		object_header_data_t object_header = Objects::ObjectHeader();
-		s_unit_datum* unit = object_header[unit_index]->_unit;
-		s_unit_datum* target_unit = object_header[target_unit_index]->_unit;
+		auto unit = blam::object_get_and_verify_type<s_unit_datum>(unit_index);
+		auto target_unit = blam::object_get_and_verify_type<s_unit_datum>(target_unit_index);
 
 		if (unit_index == target_unit_index)
 			result = false;
 
 		for (datum_index child_object_index = target_unit->object.first_object_index; 
 			 child_object_index != datum_index::null; 
-			 child_object_index = object_header[child_object_index]->_object->next_object_index)
+			 child_object_index = blam::object_get(child_object_index)->next_object_index)
 		{
-			s_unit_datum* child_object = object_header[child_object_index]->_unit;
+			auto child_object = blam::object_try_and_get_and_verify_type<s_unit_datum>(child_object_index);
 
-			if (child_object->object.VerifyType(Enums::_object_type_mask_unit))
+			if (child_object)
 			{
 				// Check if the child_object is in the seat_index that unit_index is trying to enter
 				if (child_object->unit.vehicle_seat_index == target_seat_index)
@@ -333,7 +332,7 @@ namespace Boarding
 
 	API_FUNC_NAKED static void PLATFORM_API UnitCanEnterSeatHook()
 	{
-		__asm {
+		API_FUNC_NAKED_START_()
 			push	ebx
 			push	ecx
 			push	edx
@@ -349,9 +348,7 @@ namespace Boarding
 			pop		edx
 			pop		ecx
 			pop		ebx
-
-			retn
-		}
+		API_FUNC_NAKED_END_()
 	}
 
 	void Initialize()

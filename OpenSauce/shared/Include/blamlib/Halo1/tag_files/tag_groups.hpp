@@ -126,13 +126,6 @@ namespace Yelo
 		void PLATFORM_API tag_groups_initialize();
 		void PLATFORM_API tag_groups_dispose();
 
-#if PLATFORM_IS_EDITOR
-		TagGroups::s_tag_field_scan_state& PLATFORM_API tag_field_scan_state_new(TagGroups::s_tag_field_scan_state& state, 
-			const tag_field* fields, void* block_element);
-		void PLATFORM_API tag_field_scan_state_add_field_type(TagGroups::s_tag_field_scan_state& state, 
-			Enums::field_type field_type);
-		bool PLATFORM_API tag_field_scan(TagGroups::s_tag_field_scan_state& state);
-#endif
 
 		datum_index PLATFORM_API find_tag_instance(tag group_tag, cstring name);
 

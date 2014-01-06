@@ -56,7 +56,7 @@ namespace Yelo
 			cstring name;
 			HANDLE file_handle;
 
-#if PLATFORM_IS_EDITOR
+#if PLATFORM_IS_EDITOR && PLATFORM_ID == PLATFORM_TOOL
 			static void DeleteForCopy(cstring file);
 
 			void PreprocessForSave();

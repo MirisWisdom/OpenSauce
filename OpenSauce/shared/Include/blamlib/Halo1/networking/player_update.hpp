@@ -6,6 +6,8 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/game/player_action.hpp>
+
 namespace Yelo
 {
 	namespace Enums
@@ -19,18 +21,6 @@ namespace Yelo
 
 	namespace Networking
 	{
-		struct s_player_action_update_data
-		{
-			long_flags control_flags;
-			PAD64;
-			struct {
-				real r0, r1;
-			}throttle;
-			real primary_trigger;
-			int16 desired_weapon_index;
-			int16 desired_grenade_index;
-		}; BOOST_STATIC_ASSERT( sizeof(s_player_action_update_data) == 0x1C );
-
 		struct s_remote_player_action_update_header
 		{
 			datum_index player_index;
@@ -41,8 +31,8 @@ namespace Yelo
 		struct s_remote_player_action_update_network_data
 		{
 			int32 ticks_to_apply_update_to;
-			s_player_action_update_data action;
-			PAD32;
+			// desired_facing angles and zoom_index not synced
+			Players::s_player_action action;
 			real_vector3d facing_vector;
 		}; BOOST_STATIC_ASSERT( sizeof(s_remote_player_action_update_network_data) == 0x30 );
 

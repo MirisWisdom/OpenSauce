@@ -9,6 +9,7 @@
 
 #include <blamlib/Halo1/items/weapon_definitions.hpp>
 #include <blamlib/Halo1/shaders/shader_definitions.hpp>
+#include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
 #include <blamlib/Halo1/tag_files/tag_group_loading.hpp>
 
 namespace Yelo
@@ -195,7 +196,7 @@ namespace Yelo
 			__asm	jmp	FUNCTION
 		}
 		API_FUNC_NAKED bool PLATFORM_API tag_file_open(tag group_tag, cstring filename, 
-			bool* is_readonly, uint32* crc, bool verify_exist_first)
+			bool* is_readonly, uint32* crc, bool from_file_system)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FILE_OPEN);
 
