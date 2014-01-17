@@ -7,13 +7,30 @@
 #pragma once
 
 #include <blamlib/Halo1/interface/hud_definitions.hpp>
+#include <blamlib/Halo1/interface/hud_unit.hpp>
 
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
+#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {
 	namespace Flags
 	{
+		enum auxilary_overlay_type : _enum
+		{
+			_auxilary_overlay_type_team_icon,
+
+			_auxilary_overlay_type,
+		};
+
+		enum hud_use_on_map_type : _enum
+		{
+			_hud_use_on_map_type_any,
+			_hud_use_on_map_type_solo,
+			_hud_use_on_map_type_multiplayer,
+
+			_hud_use_on_map_type,
+		};
+
 		enum unit_hud_sound_flags : long_flags
 		{
 			_unit_hud_sound_shield_recharging_bit,

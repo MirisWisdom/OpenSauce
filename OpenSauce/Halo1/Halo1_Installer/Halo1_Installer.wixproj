@@ -33,9 +33,9 @@
   <Target Name="BuildDebug">
     <MSBuild Projects="$(SolutionDir)OpenSauce_Pc.sln" Targets="Rebuild" Properties="Configuration=Debug;Platform=Win32;" />
     <MSBuild Projects="$(SolutionDir)OpenSauce_Pc.sln" Targets="Rebuild" Properties="Configuration=DebugDedi;Platform=Win32;" />
-    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugGuerilla;Platform=Win32;" ContinueOnError="true" />
-    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugSapien;Platform=Win32;" ContinueOnError="true" />
-    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugTool;Platform=Win32;" ContinueOnError="true" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugGuerilla;Platform=Win32;" ContinueOnError="false" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugSapien;Platform=Win32;" ContinueOnError="false" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugTool;Platform=Win32;" ContinueOnError="false" />
     <CreateProperty Value="$(SolutionDir)..\BlamLib\">
       <Output TaskParameter="Value" PropertyName="ImportPropsDir" />
     </CreateProperty>
@@ -44,9 +44,9 @@
   <Target Name="BuildRelease">
     <MSBuild Projects="$(SolutionDir)OpenSauce_Pc.sln" Targets="Rebuild" Properties="Configuration=Release;Platform=Win32;" />
     <MSBuild Projects="$(SolutionDir)OpenSauce_Pc.sln" Targets="Rebuild" Properties="Configuration=ReleaseDedi;Platform=Win32;" />
-    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=ReleaseGuerilla;Platform=Win32;" ContinueOnError="true" />
-    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=ReleaseSapien;Platform=Win32;" ContinueOnError="true" />
-    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=ReleaseTool;Platform=Win32;" ContinueOnError="true" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=ReleaseGuerilla;Platform=Win32;" ContinueOnError="false" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=ReleaseSapien;Platform=Win32;" ContinueOnError="false" />
+    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=ReleaseTool;Platform=Win32;" ContinueOnError="false" />
     <CreateProperty Value="$(SolutionDir)..\BlamLib\">
       <Output TaskParameter="Value" PropertyName="ImportPropsDir" />
     </CreateProperty>

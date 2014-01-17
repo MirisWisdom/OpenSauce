@@ -11,7 +11,7 @@
 #include <blamlib/Halo1/physics/collision_bsp_definitions.hpp>
 #include <blamlib/Halo1/rasterizer/rasterizer_geometry.hpp>
 
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
+#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {

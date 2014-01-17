@@ -7,7 +7,7 @@
 
 #include <blamlib/Halo1/objects/object_definitions.hpp>
 
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
+#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {
@@ -84,7 +84,7 @@ namespace Yelo
 			TAG_FIELD(short, elevator_node);
 			TAG_PAD(int32, 13); // 52
 
-			real runtime_door_open_time; // door_open_time * 30.0f
+			int32 runtime_door_open_time; // door_open_time * 30.0f
 		}; BOOST_STATIC_ASSERT( sizeof(_machine_definition) == 0x94 );
 
 		//////////////////////////////////////////////////////////////////////////

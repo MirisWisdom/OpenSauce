@@ -6,10 +6,13 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/memory/bitstream.hpp>
-
 namespace Yelo
 {
+	namespace Memory
+	{
+		struct s_bitstream;
+	};
+
 	namespace Enums
 	{
 #pragma region field_type
@@ -126,73 +129,6 @@ namespace Yelo
 		{
 			_message_delta_encoding_class_lan,
 			_message_delta_encoding_class_internet,
-		};
-
-		enum message_delta
-		{
-			_message_delta_object_deletion,
-			_message_delta_projectile_update,
-			_message_delta_equipment_update,
-			_message_delta_weapon_update,
-			_message_delta_biped_update,
-			_message_delta_vehicle_update,
-			// always written to local connection
-			_message_delta_hud_add_item,
-			_message_delta_player_create,
-			// always written to local connection
-			_message_delta_player_spawn,
-			_message_delta_player_exit_vehicle,
-			_message_delta_player_set_action_result,
-			// always written to local connection
-			_message_delta_player_effect_start,
-			_message_delta_unit_kill,
-			_message_delta_client_game_update,
-			_message_delta_player_handle_powerup,
-			// always written to local connection
-			_message_delta_hud_chat,
-			_message_delta_slayer_update,
-			_message_delta_ctf_update,
-			_message_delta_oddball_update,
-			_message_delta_king_update,
-			_message_delta_race_update,
-			_message_delta_player_score_update,
-			_message_delta_game_engine_change_mode,
-			_message_delta_game_engine_map_reset,
-			_message_delta_multiplayer_hud_message,
-			_message_delta_multiplayer_sound,
-			_message_delta_team_change,
-			_message_delta_unit_drop_current_weapon,
-			_message_delta_vehicle_new,
-			_message_delta_biped_new,
-			_message_delta_projectile_new,
-			_message_delta_equipment_new,
-			_message_delta_weapon_new,
-			_message_delta_game_settings_update,
-			_message_delta_parameters_protocol,
-			_message_delta_local_player_update,
-			_message_delta_local_player_vehicle_update,
-			_message_delta_remote_player_action_update,
-			_message_delta_super_remote_players_action_update,
-			_message_delta_remote_player_position_update,
-			_message_delta_remote_player_vehicle_update,
-			_message_delta_remote_player_total_update_biped,
-			_message_delta_remote_player_total_update_vehicle,
-			_message_delta_weapon_start_reload,
-			_message_delta_weapon_ammo_pickup_mid_reload,
-			_message_delta_weapon_finish_reload,
-			_message_delta_weapon_cancel_reload,
-			_message_delta_netgame_equipment_new,
-			_message_delta_projectile_detonate,
-			_message_delta_item_accelerate,
-			_message_delta_damage_dealt,
-			_message_delta_projectile_attach,
-			_message_delta_client_to_server_pong,
-			_message_delta_super_ping_update,
-			_message_delta_sv_motd,
-			_message_delta_rcon_request,
-			_message_delta_rcon_response,
-
-			k_message_deltas_count
 		};
 
 		enum {

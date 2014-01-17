@@ -7,6 +7,7 @@
 #pragma once
 
 #include <blamlib/Halo1/game/game_configuration.hpp>
+#include <blamlib/Halo1/game/simple_circular_queue.hpp>
 #include <blamlib/Halo1/networking/player_update.hpp>
 
 namespace Yelo
@@ -45,5 +46,24 @@ namespace Yelo
 			// 0x184 datum_index or int32
 			// 0x188, 0x40 byte structure
 		}; //BOOST_STATIC_ASSERT( sizeof(s_player_server_update) == 0xE0 );
+
+		struct update_server_queues_datum : TStructImpl(100)
+		{
+			//s_action_update current_action
+
+			TStructGetPtrImpl(Memory::s_simple_circular_queue, ActionQueue, 0x28);
+		};
+		typedef Memory::DataArray<update_server_queues_datum, Enums::k_multiplayer_maximum_players>
+			update_server_queues_data_t;
+
+		struct s_update_server_globals
+		{
+			bool initialized;
+			PAD24;
+			uint32 current_update_id;
+			update_server_queues_data_t* queue_data;
+			byte queue_data_buffer[0x308][32];
+		}; BOOST_STATIC_ASSERT( sizeof(s_update_server_globals) == 0x610C );
+		s_update_server_globals* UpdateServerGlobals();
 	};
 };

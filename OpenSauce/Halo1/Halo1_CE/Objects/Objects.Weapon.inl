@@ -4,6 +4,7 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
+#include <blamlib/Halo1/interface/first_person_weapons.hpp>
 #include <blamlib/Halo1/interface/hud.hpp>
 
 #include "Rasterizer/Rasterizer.hpp"

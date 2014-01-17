@@ -7,9 +7,11 @@
 #include "Common/Precompile.hpp"
 #include "Scenario/Scenario.hpp"
 
+#include <blamlib/Halo1/scenario/scenario.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+#include <blamlib/Halo1/scenario/scenario_structures.hpp>
 // There are places which use a bit-vector for the structure-bsps
-// In ths stock code, the bit-vector is a 16-bit word
+// In the stock code, the bit-vector is a 16-bit word
 // We can only, reasonably, upgrade the code to a 32-bit word
 BOOST_STATIC_ASSERT( Yelo::Enums::k_maximum_structure_bsps_per_scenario_upgrade <= 32 );
 

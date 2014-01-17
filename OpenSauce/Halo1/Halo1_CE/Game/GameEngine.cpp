@@ -7,6 +7,13 @@
 #include "Common/Precompile.hpp"
 #include "Game/GameEngine.hpp"
 
+#include <blamlib/Halo1/game/game_engine_ctf.hpp>
+#include <blamlib/Halo1/game/game_engine_king.hpp>
+#include <blamlib/Halo1/game/game_engine_oddball.hpp>
+#include <blamlib/Halo1/game/game_engine_race.hpp>
+#include <blamlib/Halo1/game/game_engine_slayer.hpp>
+#include <blamlib/Halo1/game/game_globals_structures.hpp>
+
 #include "Memory/MemoryInterface.hpp"
 #include "Game/GameState.hpp"
 
@@ -36,8 +43,8 @@ namespace Yelo
 // 			nullptr, nullptr, nullptr, nullptr, nullptr, // space for new game engines
 // 			nullptr, // terminator
 		};
-		static int32 new_definitions_count = Enums::_game_engine;
-#define GAME_ENGINE_REAL_COUNT (Enums::_game_engine - 2)
+		static int32 new_definitions_count = Enums::k_number_of_game_engines;
+#define GAME_ENGINE_REAL_COUNT (Enums::k_number_of_game_engines - 2)
 
 		const game_engine_definition* const* NewDefinitions() { return new_definitions; }
 
@@ -58,11 +65,11 @@ namespace Yelo
 			// TODO: need to modify pre-jump table code before this works the way we want it to
 
 			// copy the game's jump table into our jmp table
-			for(int32 x = 0; x < Enums::_game_engine - GAME_ENGINE_REAL_COUNT; x++)
+			for (int32 x = 0; x < Enums::k_number_of_game_engines - GAME_ENGINE_REAL_COUNT; x++)
 				jmp_table[x] = *(void**)(GET_FUNC_PTR(HUD_RENDER_UNIT_INTERFACE_JMP_TABLE) + (sizeof(void*) * x));
 
 			// just use the slayer variant of the code, it doesn't matter to us.
-			for(int32 x = Enums::_game_engine-GAME_ENGINE_REAL_COUNT; x < NUMBEROF(jmp_table); x++)
+			for (int32 x = Enums::k_number_of_game_engines-GAME_ENGINE_REAL_COUNT; x < NUMBEROF(jmp_table); x++)
 				jmp_table[x] = *(void**)(GET_FUNC_PTR(HUD_RENDER_UNIT_INTERFACE_JMP_TABLE) + (sizeof(void*) * (Enums::_game_engine_slayer - 1)));
 
 			// set the game's jump table address to our's
@@ -77,11 +84,11 @@ namespace Yelo
 			// TODO: reference jump table code for the changes to make this work the way we want it to
 
 			// copy the game's jump table into our jmp table
-			for(int32 x = 0; x < Enums::_game_engine - GAME_ENGINE_REAL_COUNT; x++)
+			for (int32 x = 0; x < Enums::k_number_of_game_engines - GAME_ENGINE_REAL_COUNT; x++)
 				jmp_table[x] = *(void**)(GET_FUNC_PTR(Func4F7440JmpTable) + (sizeof(void*) * x));
 
 			// just use the slayer variant of the code, it doesn't matter to us.
-			for(int32 x = Enums::_game_engine-GAME_ENGINE_REAL_COUNT; x < NUMBEROF(jmp_table); x++)
+			for (int32 x = Enums::k_number_of_game_engines-GAME_ENGINE_REAL_COUNT; x < NUMBEROF(jmp_table); x++)
 				jmp_table[x] = *(void**)(GET_FUNC_PTR(Func4F7440JmpTable) + (sizeof(void*) * (Enums::_game_engine_slayer - 1)));
 
 			// set the game's jump table address to our's
@@ -95,11 +102,11 @@ namespace Yelo
 			// TODO: reference jump table code for the changes to make this work the way we want it to
 
 			// copy the game's jump table into our jmp table
-			for(int32 x = 0; x < Enums::_game_engine - GAME_ENGINE_REAL_COUNT; x++)
+			for (int32 x = 0; x < Enums::k_number_of_game_engines - GAME_ENGINE_REAL_COUNT; x++)
 				jmp_table[x] = *(void**)(GET_FUNC_PTR(Func4F7580JmpTable) + (sizeof(void*) * x));
 
 			// just use the slayer variant of the code, it doesn't matter to us.
-			for(int32 x = Enums::_game_engine-GAME_ENGINE_REAL_COUNT; x < NUMBEROF(jmp_table); x++)
+			for (int32 x = Enums::k_number_of_game_engines-GAME_ENGINE_REAL_COUNT; x < NUMBEROF(jmp_table); x++)
 				jmp_table[x] = *(void**)(GET_FUNC_PTR(Func4F7580JmpTable) + (sizeof(void*) * (Enums::_game_engine_slayer - 1)));
 
 			// set the game's jump table address to our's
@@ -151,9 +158,9 @@ namespace Yelo
 			const real k_update_normal = 1.6666668e-2f; // 0.016666668
 			const real k_update_double_speed = 3.3333335e-2f; // 0.033333335
 
-			real delta_time = !GameState::GameGlobals()->players_are_double_speed ? 
-				k_update_normal :
-				k_update_double_speed;
+			real delta_time = !GameState::GameGlobals()->players_are_double_speed
+				? k_update_normal
+				: k_update_double_speed;
 
 			GameState::Update(delta_time);
 

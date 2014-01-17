@@ -55,4 +55,10 @@ namespace Yelo
 		}; BOOST_STATIC_ASSERT( sizeof(s_hud_nav_points) == 0x30 );
 		s_hud_nav_points*			HudNavPoints();
 	};
+
+	namespace blam
+	{
+		void PLATFORM_API render_nav_point(int16 local_player_index, const real_point3d& point,
+			int32 waypoint_arrow_index, long_enum waypoint_type);
+	};
 };

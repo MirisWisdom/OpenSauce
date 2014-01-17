@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
+#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 #include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
 
 namespace Yelo

@@ -5,31 +5,19 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
+#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 
 #include <blamlib/Halo1/cutscene/recorded_animation_playback_v1.hpp>
 #include <blamlib/Halo1/cutscene/recorded_animation_playback.hpp>
 
 namespace Yelo
 {
-	namespace Enums
-	{
-		enum e_recorded_animation_version : byte_enum {
-			_recorded_animation_version_v1, // see recorded_animation_playback_v1.hpp
-			_recorded_animation_version_v2, // see recorded_animation_playback_v1.hpp
-			_recorded_animation_version_v3, // see recorded_animation_playback_v1.hpp
-			_recorded_animation_version_v4,
-
-			k_recorded_animation_version, // RECORDED_ANIMATION_VERSION
-		};
-	};
-
 	namespace TagGroups
 	{
 		struct recorded_animation_definition
 		{
 			TAG_FIELD(tag_string, name);
-			TAG_FIELD(sbyte, version); // see Enums::e_recorded_animation_version.
+			TAG_FIELD(byte, version); // a Enums::e_recorded_animation_version, with +1  (to support NONE)
 			TAG_FIELD(sbyte, raw_animation_data);
 			TAG_FIELD(sbyte, unit_control_data_version);
 			PAD8;

@@ -9,6 +9,7 @@
 
 #if !PLATFORM_IS_DEDI
 #include <blamlib/Halo1/main/main.hpp>
+#include <blamlib/Halo1/networking/network_client_manager_structures.hpp>
 
 #include <YeloLib/memory/linked_list.hpp>
 #include <YeloLib/memory/compression/7zip_codec.hpp>
