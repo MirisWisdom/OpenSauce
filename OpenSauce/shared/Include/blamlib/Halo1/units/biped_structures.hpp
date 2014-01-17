@@ -25,9 +25,9 @@ namespace Yelo
 		{
 			_biped_airborne_bit,
 			_biped_slipping_bit,
-			_biped_unk2_bit,
-			_biped_unk3_bit,
-			_biped_unk4_bit,
+			_biped_absolute_movement_bit,	// physics related. set by ai_command:animate code (when modifier has "absolute movement")
+			_biped_no_collision_bit,		// physics related. set by ai_command:animate code (when modifier has "no collision")
+			_biped_passes_through_other_bipeds_bit,
 			_biped_limping_bit,
 		};
 	};

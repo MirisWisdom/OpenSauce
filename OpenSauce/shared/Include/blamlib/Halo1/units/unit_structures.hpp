@@ -94,7 +94,7 @@ namespace Yelo
 
 	namespace Flags
 	{
-		enum unit_flags
+		enum
 		{
 			_unit_unk0_bit,
 			_unit_unk1_bit,
@@ -103,7 +103,7 @@ namespace Yelo
 			_unit_powerup_on_bit,
 			_unit_powerup_additional_bit,
 			_unit_controllable_bit,
-			_unit_unk7_bit,
+			_unit_berserking_bit,
 			_unit_unk8_bit,
 			_unit_unk9_bit,
 			_unit_unk10_bit,
@@ -115,29 +115,19 @@ namespace Yelo
 			_unit_unk16_bit,
 			_unit_unk17_bit,
 			_unit_unk18_bit,
-			_unit_unk19_bit,
+			_unit_unk19_bit, // integrated light related
 			_unit_doesnt_drop_items_bit,
 			_unit_unk21_bit,
 			_unit_can_blink_bit,
-			_unit_unk23_bit,
+			_unit_impervious_bit, // prevents unit from being knocked around or playing ping animations
 			_unit_suspended_bit,
-			_unit_unk25_bit,
-			_unit_unk26_bit,
+			_unit_blind_bit,
+			_unit_unk26_bit, // when this is on, the integrated NV power increases. rate is 2x the speed it leaks when on
 			_unit_possessed_bit,
 			_unit_desires_flashlight_on_bit,
 			_unit_desires_flashlight_off_bit,
-			_unit_unk30_bit,
-			_unit_unk31_bit,
-
-			_unit_powerup_on_flag = FLAG(_unit_powerup_on_bit),
-			_unit_powerup_additional_flag = FLAG(_unit_powerup_additional_bit),
-			_unit_controllable_flag = FLAG(_unit_controllable_bit),
-			_unit_doesnt_drop_items_flag = FLAG(_unit_doesnt_drop_items_bit),
-			_unit_can_blink_flag = FLAG(_unit_can_blink_bit),
-			_unit_suspended_flag = FLAG(_unit_suspended_bit),
-			_unit_possessed_flag = FLAG(_unit_possessed_bit),
-			_unit_desires_flashlight_on_flag = FLAG(_unit_desires_flashlight_on_bit),
-			_unit_desires_flashlight_off_flag = FLAG(_unit_desires_flashlight_off_bit),
+//			_unit_30_bit,
+//			_unit_31_bit,
 		};
 	};
 
@@ -191,7 +181,7 @@ namespace Yelo
 
 			datum_index actor_index;										// 0x1F4
 			datum_index swarm_actor_index;									// 0x1F8
-			UNKNOWN_TYPE(datum_index);										// 0x1FC swarm_next_unit_index?
+			datum_index swarm_next_unit_index;								// 0x1FC
 			datum_index swarm_prev_unit_index;								// 0x200
 			long_flags flags;												// 0x204
 			long_flags control_flags;										// 0x208

@@ -7,6 +7,12 @@
 #include "Common/Precompile.hpp"
 #include "Game/GameState.hpp"
 
+#include <blamlib/Halo1/game/game_allegiance_structures.hpp>
+#include <blamlib/Halo1/game/game_globals_definitions.hpp>
+#include <blamlib/Halo1/game/game_globals_structures.hpp>
+#include <blamlib/Halo1/game/game_time_structures.hpp>
+#include <blamlib/Halo1/main/main_structures.hpp>
+
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 

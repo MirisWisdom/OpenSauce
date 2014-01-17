@@ -10,7 +10,6 @@
 #include <blamlib/Halo1/hs/hs.hpp>
 #include <blamlib/Halo1/hs/hs_runtime.hpp>
 #include <blamlib/Halo1/hs/object_lists.hpp>
-#include <blamlib/Halo1/memory/data.hpp>
 
 namespace Yelo
 {

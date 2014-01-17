@@ -35,6 +35,9 @@ namespace Yelo
 
 			uint32 line_timers[8];
 		}; BOOST_STATIC_ASSERT( sizeof(s_hud_chat_globals) == 0x1E8 );
+
+		s_hud_chat_globals*		HudChatGlobals();
+		int32 HudChatLineCount();
 	};
 
 	namespace blam

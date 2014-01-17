@@ -50,7 +50,7 @@ static void* scripting_machine_is_host()
 {
 	TypeHolder result; result.pointer = nullptr;
 
-	result.boolean = Networking::IsServer();
+	result.boolean = GameState::IsServer();
 
 	return result.pointer;
 }
@@ -249,7 +249,7 @@ static void* scripting_play_bink_movie_evaluate(void** arguments)
 	}* args = CAST_PTR(s_arguments*, arguments);
 
 #if !PLATFORM_IS_DEDI
-	if(Networking::IsLocal())
+	if(GameState::IsLocal())
 		blam::bink_playback_start(args->name);
 #endif
 

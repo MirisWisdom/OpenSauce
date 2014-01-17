@@ -12,6 +12,8 @@ namespace Yelo
 		enum {
 			k_max_tag_name_length = 255,
 
+			k_tag_block_format_buffer_size = 512,
+
 			k_maximum_tags_per_tag_chain = 4,
 			k_maximum_children_per_tag = 16,
 		};
@@ -38,7 +40,7 @@ namespace Yelo
 		// datum index of this reference in the tag index
 		datum_index tag_index;
 
-		API_INLINE operator datum_index() const { return tag_index; }
+		inline operator datum_index() const { return tag_index; }
 
 		void clear();
 

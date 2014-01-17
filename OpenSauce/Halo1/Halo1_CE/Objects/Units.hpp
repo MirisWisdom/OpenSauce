@@ -6,11 +6,6 @@
 */
 #pragma once
 
-#include "Objects/Objects.hpp"
-#include "TagGroups/TagGroups.hpp"
-
-#include "TagGroups/project_yellow_definitions.hpp"
-
 namespace Yelo
 {
 	namespace Objects { namespace Units {

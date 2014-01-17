@@ -6,6 +6,7 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/game/game_allegiance.hpp> // for game teams
 #include <blamlib/Halo1/game/game_configuration.hpp>
 
 namespace Yelo

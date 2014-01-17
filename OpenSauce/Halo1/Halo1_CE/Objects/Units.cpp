@@ -7,17 +7,26 @@
 #include "Common/Precompile.hpp"
 #include "Objects/Units.hpp"
 
+#include <blamlib/Halo1/ai/actors.hpp>
+#include <blamlib/Halo1/ai/ai_script.hpp>
 #include <blamlib/Halo1/game/game_globals.hpp>
+#include <blamlib/Halo1/hs/hs_library_external.hpp>
 #include <blamlib/Halo1/models/model_animation_definitions.hpp>
 #include <blamlib/Halo1/models/model_animations.hpp>
 #include <blamlib/Halo1/objects/damage.hpp>
 #include <blamlib/Halo1/units/unit_definitions.hpp>
 
+#include <blamlib/Halo1/units/biped_structures.hpp>
+#include <blamlib/Halo1/units/vehicle_structures.hpp>
+#include <blamlib/Halo1/units/unit_structures.hpp>
+
+#include "Game/Camera.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameState.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Networking/MDP.hpp"
 #include "Networking/MessageDeltas.hpp"
+#include "Objects/Objects.hpp"
 #include "TagGroups/TagGroups.hpp"
 
 #include "TagGroups/project_yellow_definitions.hpp"
@@ -62,11 +71,13 @@ namespace Yelo
 #include "Memory/_EngineLayout.inl"
 #include "Objects/Units.Boarding.inl"
 #include "Objects/Units.Animations.inl"
+#include "Objects/Objects.UnitInfections.inl"
 #include "Objects/Units.GrenadeCounts.inl"
 
 		void Initialize()
 		{
 			Animations::Initialize();
+			Infections::Initialize();
 			Boarding::Initialize();
 			
 			static const byte opcode_null[] = { 
@@ -79,6 +90,7 @@ namespace Yelo
 
 		void Dispose()
 		{
+			Infections::Dispose();
 		}
 
 		void InitializeForNewMap()

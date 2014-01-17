@@ -6,8 +6,6 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/game/players.hpp>
-
 namespace Yelo
 {
 	namespace Players

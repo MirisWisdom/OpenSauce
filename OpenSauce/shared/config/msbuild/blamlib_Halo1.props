@@ -67,6 +67,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cutscene\recorded_animation_playback.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cutscene\recorded_animation_playback_v1.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cutscene\recorded_animations.hpp" />
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\cutscene\recorded_animations_structures.hpp" />
   </ItemGroup>
   <ItemGroup
     > <!--devices-->
@@ -100,6 +101,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\cheats.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_allegiance.hpp" />
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_allegiance_structures.hpp" />
 	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_configuration.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_engine.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_engine_ctf.hpp" />
@@ -110,7 +112,10 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_engine_slayer.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_engine_stub.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_globals.hpp" />
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_globals_definitions.hpp" />
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_globals_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_time.hpp" />
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_time_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\player_action.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\player_control.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\player_structures.hpp" />
@@ -134,6 +139,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_library_external.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_runtime.hpp" />
 	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs_runtime.cpp" />
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_runtime_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_scenario_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\object_lists.hpp" />
@@ -151,15 +157,19 @@
     > <!--interface-->
 	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\first_person_weapons.hpp" />
 	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\interface\first_person_weapons.cpp" />
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\first_person_weapons_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_chat.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_draw.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_messaging.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_messaging_definitions.hpp" />
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_messaging_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_nav_points.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_unit.hpp" />
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_unit_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_weapon.hpp" />
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_weapon_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\interface.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\map_list.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\motion_sensor.hpp" />
@@ -194,6 +204,7 @@
 	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\main\console.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\main\levels.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\main\main.hpp" />
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\main\main_structures.hpp" />
   </ItemGroup>
   <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'false' "
     > <!--main GAME-->
@@ -230,12 +241,16 @@
 	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\message_delta_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\message_delta_parameters_protocol.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_client_manager.hpp" />
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_client_manager_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_client_time.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_connection.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_game_globals.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_game_manager.hpp" />
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_game_manager_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_messages.hpp" />
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_messages_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_server_manager.hpp" />
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_server_manager_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\player_update.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\player_update_client.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\player_update_history.hpp" />
@@ -301,6 +316,7 @@
 	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\scenario\scenario.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\scenario\scenario_definitions.hpp" />
 	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\scenario\scenario_object_definitions_structures.hpp" />
+	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\scenario\scenario_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\scenario\sky_definitions.hpp" />
   </ItemGroup>
   <ItemGroup

@@ -35,7 +35,8 @@ namespace Yelo
 			_game_engine_king,
 			_game_engine_race,
 			_game_engine_stub,
-			_game_engine,
+
+			k_number_of_game_engines
 		};
 	};
 
@@ -51,44 +52,11 @@ namespace Yelo
 
 	namespace GameEngine
 	{
-		struct s_ctf_globals
-		{
-			real_point3d* team_flag_positions[Enums::k_number_of_multiplayer_teams];
-			datum_index team_flag_object_indexes[Enums::k_number_of_multiplayer_teams]; // weapon objects
-			int32 team_score[Enums::k_number_of_multiplayer_teams];
-			int32 score_limit;
-			bool team_flag_is_taken[Enums::k_number_of_multiplayer_teams];
-			PAD16;
-			uint32 team_flag_is_taken_sound_timer[Enums::k_number_of_multiplayer_teams];
-			uint32 flag_swap_timer;
-			uint32 flag_failure_sound_timer;
-			byte team_with_flag;
-			PAD24;
-		}; BOOST_STATIC_ASSERT( sizeof(s_ctf_globals) == 0x34 );
-
-		struct s_slayer_globals
-		{
-		}; //BOOST_STATIC_ASSERT( sizeof(s_slayer_globals) == 0x );
-
-		struct s_oddball_globals
-		{
-			int32 score_to_win;
-			int32 team_score[Enums::k_multiplayer_maximum_players];
-			int32 individual_score[Enums::k_multiplayer_maximum_players];
-			int32 undocumented1[Enums::k_multiplayer_maximum_players];
-			datum_index current_ball_owners[Enums::k_multiplayer_maximum_players]; // player_index
-			uint32 current_ball_held_times[Enums::k_multiplayer_maximum_players]; // game-ticks
-		}; //BOOST_STATIC_ASSERT( sizeof(s_slayer_globals) == 0x );
-
-		struct s_king_globals
-		{
-		}; //BOOST_STATIC_ASSERT( sizeof(s_king_globals) == 0x1B0 );
-
-		struct s_race_globals
-		{
-		}; //BOOST_STATIC_ASSERT( sizeof(s_race_globals) == 0x );
-
-
+		struct s_ctf_globals;
+		struct s_slayer_globals;
+		struct s_oddball_globals;
+		struct s_king_globals;
+		struct s_race_globals;
 
 		struct game_engine_definition
 		{

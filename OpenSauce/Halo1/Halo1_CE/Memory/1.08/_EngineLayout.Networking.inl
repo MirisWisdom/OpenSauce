@@ -159,7 +159,6 @@
 	ENGINE_PTR(s_update_client_globals, update_client_globals,		0x692DD0, 0x5FB650);
 	ENGINE_PTR(s_update_server_globals, update_server_globals,		0x68CCC0, 0x5F5540);
 	ENGINE_PTR(network_update_globals, network_update_globals,		0x624A68, 0x59A408);
-	ENGINE_PTR(Enums::game_connection, global_game_connection,		0x6B46E8, 0x61CF60);
 	ENGINE_DPTR(s_network_game_server, global_network_game_server,	0x6B729C, 0x61FAB4);
 	ENGINE_DPTR(s_network_game_client, global_network_game_client,	0x6B72A0, 0x61FAB8);
 

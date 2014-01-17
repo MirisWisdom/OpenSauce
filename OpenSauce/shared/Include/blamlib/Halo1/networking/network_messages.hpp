@@ -6,13 +6,6 @@
 */
 #pragma once
 
-//#include <blamlib/Halo1/bungie_net/common/message_header.hpp>
-#include <blamlib/Halo1/game/game_configuration.hpp>
-#include <blamlib/Halo1/game/player_action.hpp>
-#include <blamlib/Halo1/game/players.hpp>
-#include <blamlib/Halo1/networking/network_game_globals.hpp>
-#include <blamlib/Halo1/networking/network_game_manager.hpp>
-
 namespace Yelo
 {
 	namespace Enums
@@ -89,49 +82,73 @@ namespace Yelo
 			
 			k_number_of_message_packet_types,
 		};
-	};
 
-	namespace Networking
-	{
-		struct message_server_new_client_challenge
+
+		enum message_delta
 		{
-			char challenge[Enums::k_network_game_challenge_length+1];
-			bool sv_public;
-			PAD24;
-			int16 machine_index;
-			PAD16;
-			s_network_game_map map;
-		}; BOOST_STATIC_ASSERT( sizeof(message_server_new_client_challenge) == 0x94 );
+			_message_delta_object_deletion,
+			_message_delta_projectile_update,
+			_message_delta_equipment_update,
+			_message_delta_weapon_update,
+			_message_delta_biped_update,
+			_message_delta_vehicle_update,
+			// always written to local connection
+			_message_delta_hud_add_item,
+			_message_delta_player_create,
+			// always written to local connection
+			_message_delta_player_spawn,
+			_message_delta_player_exit_vehicle,
+			_message_delta_player_set_action_result,
+			// always written to local connection
+			_message_delta_player_effect_start,
+			_message_delta_unit_kill,
+			_message_delta_client_game_update,
+			_message_delta_player_handle_powerup,
+			// always written to local connection
+			_message_delta_hud_chat,
+			_message_delta_slayer_update,
+			_message_delta_ctf_update,
+			_message_delta_oddball_update,
+			_message_delta_king_update,
+			_message_delta_race_update,
+			_message_delta_player_score_update,
+			_message_delta_game_engine_change_mode,
+			_message_delta_game_engine_map_reset,
+			_message_delta_multiplayer_hud_message,
+			_message_delta_multiplayer_sound,
+			_message_delta_team_change,
+			_message_delta_unit_drop_current_weapon,
+			_message_delta_vehicle_new,
+			_message_delta_biped_new,
+			_message_delta_projectile_new,
+			_message_delta_equipment_new,
+			_message_delta_weapon_new,
+			_message_delta_game_settings_update,
+			_message_delta_parameters_protocol,
+			_message_delta_local_player_update,
+			_message_delta_local_player_vehicle_update,
+			_message_delta_remote_player_action_update,
+			_message_delta_super_remote_players_action_update,
+			_message_delta_remote_player_position_update,
+			_message_delta_remote_player_vehicle_update,
+			_message_delta_remote_player_total_update_biped,
+			_message_delta_remote_player_total_update_vehicle,
+			_message_delta_weapon_start_reload,
+			_message_delta_weapon_ammo_pickup_mid_reload,
+			_message_delta_weapon_finish_reload,
+			_message_delta_weapon_cancel_reload,
+			_message_delta_netgame_equipment_new,
+			_message_delta_projectile_detonate,
+			_message_delta_item_accelerate,
+			_message_delta_damage_dealt,
+			_message_delta_projectile_attach,
+			_message_delta_client_to_server_pong,
+			_message_delta_super_ping_update,
+			_message_delta_sv_motd,
+			_message_delta_rcon_request,
+			_message_delta_rcon_response,
 
-		struct message_client_join_game_request
-		{
-			char token[Enums::k_network_game_join_token_size];
-			wchar_t password[Enums::k_network_server_password_length+1];
-			char unused[73];
-			byte_enum connection_class;										// 0x6B Enums::network_connection_class
-			PAD16;
-			s_network_game_player player;									// 0x6E
-			PAD16;
-			uint32 map_crc_xor_challenge;									// 0x90
-		}; BOOST_STATIC_ASSERT( sizeof(message_client_join_game_request) == 0x94 );
-
-		struct message_server_game_update
-		{
-			int32 update_id;
-			int32 random_seed;
-
-			game_ticks_t ticks_to_apply_update_to;
-			UNKNOWN_TYPE(int16); // unused?
-			int16 action_count;
-			Players::s_player_action actions[Enums::k_multiplayer_maximum_players];
-		}; BOOST_STATIC_ASSERT( sizeof(message_server_game_update) == 0x210 );
-
-		struct message_client_game_update
-		{
-			game_ticks_t ticks_to_apply_update_to;
-			UNKNOWN_TYPE(int16); // unused?
-			int16 action_count; // should be equal to local_player_count
-			Players::s_player_action actions[Enums::k_maximum_number_of_local_players];
-		}; BOOST_STATIC_ASSERT( sizeof(message_client_game_update) == 0x28 );
+			k_message_deltas_count
+		};
 	};
 };

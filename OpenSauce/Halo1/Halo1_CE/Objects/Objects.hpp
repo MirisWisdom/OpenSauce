@@ -16,19 +16,6 @@
 #include <blamlib/Halo1/render/render_objects.hpp>
 #include <blamlib/Halo1/units/units.hpp>
 
-#include <blamlib/Halo1/items/projectiles.hpp>
-#include <blamlib/Halo1/devices/device_structures.hpp>
-#include <blamlib/Halo1/items/item_structures.hpp>
-#include <blamlib/Halo1/items/equipment_structures.hpp>
-#include <blamlib/Halo1/items/weapon_structures.hpp>
-#include <blamlib/Halo1/units/unit_structures.hpp>
-#include <blamlib/Halo1/units/biped_structures.hpp>
-#include <blamlib/Halo1/units/vehicle_structures.hpp>
-
-#if !PLATFORM_IS_DEDI
-	#include "Interface/YeloSettingsInterface.hpp"
-#endif
-
 namespace Yelo
 {
 	struct s_cache_tag_instance;
@@ -39,6 +26,11 @@ namespace Yelo
 
 		struct s_object_definition;
 	};
+
+	namespace Enums
+	{
+		enum settings_adjustment_result : long_enum;
+	}
 
 	namespace Objects
 	{

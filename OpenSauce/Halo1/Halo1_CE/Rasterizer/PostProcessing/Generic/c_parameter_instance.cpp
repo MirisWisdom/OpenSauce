@@ -9,6 +9,8 @@
 #include "Rasterizer/PostProcessing/Generic/c_parameter_instance.hpp"
 
 #if !PLATFORM_IS_DEDI
+#include <blamlib/Halo1/units/unit_structures.hpp>
+
 #include "Rasterizer/PostProcessing/Interpolation/c_interp_function.hpp"
 #include "Rasterizer/PostProcessing/Interpolation/c_interp_linear.hpp"
 #include "Rasterizer/PostProcessing/Interpolation/Interpolation.hpp"

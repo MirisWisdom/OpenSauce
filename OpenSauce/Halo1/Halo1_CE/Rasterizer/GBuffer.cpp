@@ -8,6 +8,10 @@
 #include "Rasterizer/GBuffer.hpp"
 
 #if !PLATFORM_IS_DEDI
+#include <blamlib/Halo1/game/game_time_structures.hpp>
+#include <blamlib/Halo1/game/player_structures.hpp>
+#include <blamlib/Halo1/main/main_structures.hpp>
+
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
 #include "Common/YeloSettings.hpp"
