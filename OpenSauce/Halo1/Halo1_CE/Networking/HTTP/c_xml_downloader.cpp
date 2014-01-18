@@ -13,10 +13,10 @@ namespace Yelo
 	{
 		void c_xml_downloader::GetArguments(s_request_args& request_args)
 		{
-			request_args.m_headers = NULL;
+			request_args.m_headers = nullptr;
 			request_args.m_component = Enums::_http_client_component;
-			request_args.m_component_data = NULL;
-			request_args.m_buffer = NULL;
+			request_args.m_component_data = nullptr;
+			request_args.m_buffer = nullptr;
 			request_args.m_buffer_size = 0;
 			request_args.m_delete_buffer = true;
 			request_args.m_blocking = false;

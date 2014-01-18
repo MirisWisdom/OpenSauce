@@ -14,6 +14,7 @@
 
 #include "Common/FileIO.hpp"
 #include "Networking/HTTP/HTTP.hpp"
+#include "Networking/HTTP/HTTPServer.hpp"
 
 namespace Yelo
 {
@@ -247,9 +248,9 @@ namespace Yelo
 		};
 		static s_ban_manager_globals		g_ban_manager_globals;
 
-		HANDLE								g_ban_list_mutex = (HANDLE)NULL_HANDLE;
-		static c_http_ip_ban_connection*	g_connect_ban_list = NULL;
-		static c_http_ip_ban_permanent*		g_permanent_ban_list = NULL;
+		HANDLE								g_ban_list_mutex = INVALID_HANDLE_VALUE;
+		static c_http_ip_ban_connection*	g_connect_ban_list = nullptr;
+		static c_http_ip_ban_permanent*		g_permanent_ban_list = nullptr;
 
 		/*!
 		 * \brief
@@ -410,7 +411,7 @@ namespace Yelo
 
 			char filename[MAX_PATH] = "";
 
-			if(-1 == sprintf_s(filename, MAX_PATH, "httpserver_banlist%s.txt", suffix))
+			if(-1 == sprintf_s(filename, "httpserver_banlist%s.txt", suffix))
 			{
 				blam::console_printf(false, "Failed to set the httpserver banlist file suffix");
 
@@ -501,7 +502,9 @@ namespace Yelo
 				char ip[Enums::k_max_ip_string_length] = "";
 
 				// get the ip type and ip in separate strings
-				int count = sscanf_s(&file_offset[line_offset], "%s %s\r\n", ip_type, 5, ip, Enums::k_max_ip_string_length);
+				int count = sscanf_s(&file_offset[line_offset], "%s %s\r\n", 
+					ip_type, NUMBEROF(ip_type), 
+					ip, NUMBEROF(ip));
 
 				if(count != 2)
 				{
