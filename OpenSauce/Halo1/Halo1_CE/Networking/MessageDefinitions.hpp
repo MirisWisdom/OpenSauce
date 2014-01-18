@@ -6,11 +6,15 @@
 */
 #pragma once
 
-#include "Networking/Networking.hpp"
 #include "Networking/MessageDeltas.hpp"
 
 namespace Yelo
 {
+	namespace Networking
+	{
+		struct s_network_game_client;
+	};
+
 	namespace Enums
 	{
 		enum message_deltas_new

@@ -949,7 +949,6 @@
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\effects\damage_effect_definitions.cpp">
       <Filter>.blamlib\effects</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids_yelo.cpp" />
     <ClCompile Include="Objects\ObjectsYelo.cpp">
       <Filter>Objects</Filter>
     </ClCompile>

@@ -82,7 +82,7 @@ namespace Yelo
 				m_request_type = _ghttp_request_type;
 
 				m_component_index = Enums::_http_client_component;
-				m_component_data = NULL;
+				m_component_data = nullptr;
 			}
 		};
 
@@ -330,7 +330,7 @@ namespace Yelo
 
 			ReleaseMutex(g_request_index_mutex);
 
-			// different processes need to take place for each reguest type
+			// different processes need to take place for each request type
 			switch(request_type)
 			{
 			case _ghttp_request_type_get:
@@ -358,13 +358,13 @@ namespace Yelo
 		 * The current connection state of the request.
 		 * 
 		 * \param buffer
-		 * The data that has been recieved as part of the request so far.
+		 * The data that has been received as part of the request so far.
 		 * 
 		 * \param bufferLen
 		 * The length of the data pointed to by "buffer".
 		 * 
 		 * \param bytesReceived
-		 * The amount of data recieved as part of the request.
+		 * The amount of data received as part of the request.
 		 * 
 		 * \param totalSize
 		 * The total amount of data that will be received for the request.
@@ -509,11 +509,11 @@ namespace Yelo
 		{
 			WaitForSingleObject(g_request_index_mutex, INFINITE);
 
-			int32 request_index = -1;
+			int32 request_index = NONE;
 			// allocate a request slot and reset its values
 			// if no request slots are available, return -1
 			if(!SetupRequest(request_index))
-				return -1;
+				return NONE;
 
 			s_http_client_request_data& request_data = g_request_index[request_index];
 
@@ -615,8 +615,8 @@ namespace Yelo
 		 */
 		const char* QueryDownloadURL(int32 request_index)
 		{
-			if(request_index <= -1 || !g_request_index[request_index].m_flags.m_in_use)
-				return NULL;
+			if(request_index <= NONE || !g_request_index[request_index].m_flags.m_in_use)
+				return nullptr;
 
 			return &g_request_index[request_index].m_progress.m_url[0];
 		}

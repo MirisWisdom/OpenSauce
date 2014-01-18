@@ -320,11 +320,11 @@ namespace Yelo
 			// determine whether the version has already been checked today
 			time_t time_today;
 			time(&time_today);
-			tm* local_time = localtime(&time_today);
+			tm local_time; localtime_s(&local_time, &time_today);
 
-			if( (m_states.last_checked_day == local_time->tm_mday) &&
-				(m_states.last_checked_month == local_time->tm_mon) &&
-				(m_states.last_checked_year == 1900 + local_time->tm_year))
+			if( (m_states.last_checked_day == local_time.tm_mday) &&
+				(m_states.last_checked_month == local_time.tm_mon) &&
+				(m_states.last_checked_year == 1900 + local_time.tm_year))
 				m_states.checked_today = true;
 		}
 
@@ -339,11 +339,11 @@ namespace Yelo
 			// set the last date checked to todays date
 			time_t time_today;
 			time(&time_today);
-			tm* local_time = localtime(&time_today);
+			tm local_time; localtime_s(&local_time, &time_today);
 
-			m_states.last_checked_day = local_time->tm_mday;
-			m_states.last_checked_month = local_time->tm_mon;
-			m_states.last_checked_year = 1900 + local_time->tm_year;
+			m_states.last_checked_day = local_time.tm_mday;
+			m_states.last_checked_month = local_time.tm_mon;
+			m_states.last_checked_year = 1900 + local_time.tm_year;
 
 			for(auto& downloader : m_xml_sources)
 			{

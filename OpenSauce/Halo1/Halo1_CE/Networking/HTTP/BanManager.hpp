@@ -8,8 +8,6 @@
 
 #if PLATFORM_IS_DEDI
 
-#include "Networking/HTTP/HTTPServer.hpp"
-
 namespace Yelo
 {
 	namespace Enums

@@ -64,7 +64,7 @@ namespace Yelo
 			c_version_display_manager::g_instance.Initialize3D(pDevice, pParameters);
 
 			wchar_t current_string[32];
-			swprintf_s(current_string, 32, L"v%i.%i.%i", m_current_version.m_major, m_current_version.m_minor, m_current_version.m_build);
+			swprintf_s(current_string, L"v%i.%i.%i", m_current_version.m_major, m_current_version.m_minor, m_current_version.m_build);
 			c_version_display_manager::g_instance.SetCurrentVersionString(current_string);
 
 			c_version_display_manager::g_instance.SetAvailableVersionString(L"");
@@ -158,7 +158,7 @@ namespace Yelo
 			if(!m_states.is_new_version_available) return;
 
 			wchar_t available_string[32];
-			swprintf_s(available_string, 32, L"v%i.%i.%i available!", m_available_version.m_major, m_available_version.m_minor, m_available_version.m_build);
+			swprintf_s(available_string, L"v%i.%i.%i available!", m_available_version.m_major, m_available_version.m_minor, m_available_version.m_build);
 			c_version_display_manager::g_instance.SetAvailableVersionString(available_string);
 
 			c_version_display_manager::g_instance.StartUpdateDisplay(20);
