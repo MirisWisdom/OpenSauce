@@ -6,13 +6,15 @@
 */
 #include "Common/Precompile.hpp"
 #include "Game/AI.hpp"
+
+#include <blamlib/Halo1/units/unit_structures.hpp>
+
+#include "Memory/MemoryInterface.hpp"
 #include "Objects/Objects.hpp"
 #include "Objects/Units.hpp"
 #include "TagGroups/TagGroups.hpp"
 
 #include "TagGroups/project_yellow_definitions.hpp"
-
-#include "Memory/MemoryInterface.hpp"
 
 namespace Yelo
 {

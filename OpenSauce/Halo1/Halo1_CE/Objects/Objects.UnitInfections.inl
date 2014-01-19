@@ -5,7 +5,7 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-namespace UnitInfections
+namespace Infections
 {
 	static bool AllowInfections(TagGroups::s_unit_infections_definition const& definition)
 	{
@@ -97,6 +97,7 @@ namespace UnitInfections
 
 	// Ends an infection sequence on the target unit
 	static void InfectionEnd(TagGroups::s_unit_infection const& unit_infection, 
+		const s_unit_datum* infection_unit,
 		s_unit_datum* target_unit, datum_index target_unit_index)
 	{
 		datum_index infected_unit_index;
@@ -105,6 +106,9 @@ namespace UnitInfections
 			s_object_placement_data infected_unit_placement_data;
 			PlacementDataNewAndCopy(infected_unit_placement_data, target_unit_index, 
 				unit_infection.infected_unit.tag_index);
+			// set the to-be-created unit's team to that of the infection form's
+			// TODO: allow the unit infection definitions to specify a team override?
+			infected_unit_placement_data.owner_team = infection_unit->object.owner_team;
 			infected_unit_index = blam::object_new(infected_unit_placement_data);
 			infected_unit = Objects::ObjectHeader()[infected_unit_index]->_unit;
 		}
@@ -175,7 +179,7 @@ namespace UnitInfections
 					{
 						// Set the target unit's health to 0 so we don't execute this code again
 						*target_unit_health = 0.0f;
-						InfectionEnd(unit_infection, target_unit, target_unit_index);
+						InfectionEnd(unit_infection, infection_unit, target_unit, target_unit_index);
 					}
 					else if(frames_left > 0)
 					{

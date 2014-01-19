@@ -169,6 +169,16 @@ namespace Animations
 
 		return result;
 	}
+	static bool UnitAnimationStateInterruptableHook()
+	{
+		s_unit_animation_data* unit_animation;
+		uint16 next_animation_state;
+
+		_asm mov	next_animation_state, dx;
+		_asm mov	unit_animation, ecx;
+
+		return UnitAnimationStateInterruptable(unit_animation, next_animation_state);
+	}
 
 	static bool UnitAnimationBusy(s_unit_animation_data* unit_animation)
 	{
@@ -203,6 +213,14 @@ namespace Animations
 		}
 
 		return result;
+	}
+	static bool UnitAnimationBusyHook()
+	{
+		s_unit_animation_data* unit_animation;
+
+		_asm mov	unit_animation, ecx;
+
+		return UnitAnimationBusy(unit_animation);
 	}
 
 	static bool UnitAnimationStateLoops(s_unit_animation_data* unit_animation)
@@ -239,6 +257,14 @@ namespace Animations
 		}
 
 		return result;
+	}
+	static bool UnitAnimationStateLoopsHook()
+	{
+		s_unit_animation_data* unit_animation;
+
+		_asm mov	unit_animation, ecx;
+
+		return UnitAnimationStateLoops(unit_animation);
 	}
 
 	static bool UnitAnimationWeaponIK(s_unit_animation_data* unit_animation)
@@ -284,6 +310,14 @@ namespace Animations
 
 		return result;
 	}
+	static bool UnitAnimationWeaponIKHook()
+	{
+		s_unit_animation_data* unit_animation;
+
+		_asm mov	unit_animation, ecx;
+
+		return UnitAnimationWeaponIK(unit_animation);
+	}
 
 	static bool UnitAnimationVehicleIK(s_unit_animation_data* unit_animation)
 	{
@@ -313,45 +347,6 @@ namespace Animations
 		
 		return result;
 	}
-
-	static bool UnitAnimationStateInterruptableHook()
-	{
-		s_unit_animation_data* unit_animation;
-		uint16 next_animation_state;
-
-		_asm mov	next_animation_state, dx;
-		_asm mov	unit_animation, ecx;
-
-		return UnitAnimationStateInterruptable(unit_animation, next_animation_state);
-	}
-	
-	static bool UnitAnimationBusyHook()
-	{
-		s_unit_animation_data* unit_animation;
-
-		_asm mov	unit_animation, ecx;
-
-		return UnitAnimationBusy(unit_animation);
-	}
-	
-	static bool UnitAnimationStateLoopsHook()
-	{
-		s_unit_animation_data* unit_animation;
-
-		_asm mov	unit_animation, ecx;
-
-		return UnitAnimationStateLoops(unit_animation);
-	}
-	
-	static bool UnitAnimationWeaponIKHook()
-	{
-		s_unit_animation_data* unit_animation;
-
-		_asm mov	unit_animation, ecx;
-
-		return UnitAnimationWeaponIK(unit_animation);
-	}
-	
 	static bool UnitAnimationVehicleIKHook()
 	{
 		s_unit_animation_data* unit_animation;
@@ -442,7 +437,6 @@ namespace Animations
 			&UnitUpdateAnimationPrimaryKeyframeSeatBoardJMP;
 		unit_update_animation_primary_keyframe_jmp_table_yelo[Yelo::Enums::_unit_animation_state_yelo_seat_board] = 
 			&UnitUpdateAnimationPrimaryKeyframeSeatBoardJMP;
-		/* UnitUpdateAnimationPrimaryKeyframe switch table additions*/
 
 		//////////////////////////////////////////////////////////////////////////
 		// UnitUpdateAnimationFinalKeyframe

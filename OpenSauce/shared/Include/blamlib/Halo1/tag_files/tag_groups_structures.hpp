@@ -20,8 +20,6 @@ namespace Yelo
 		enum {
 			k_maximum_field_byte_swap_codes = 1024,
 
-			k_tag_block_format_buffer_size = 512,
-
 			k_tag_field_markup_character_advanced =		'!',
 			k_tag_field_markup_character_help_prefix =	'#',
 			k_tag_field_markup_character_read_only =	'*',

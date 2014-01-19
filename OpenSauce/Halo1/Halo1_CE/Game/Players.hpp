@@ -8,19 +8,18 @@
 
 #include <blamlib/Halo1/effects/player_effects.hpp>
 #include <blamlib/Halo1/game/player_control.hpp>
-#include <blamlib/Halo1/game/player_structures.hpp>
 #include <blamlib/Halo1/game/players.hpp>
 #include <blamlib/Halo1/memory/data.hpp>
 
 namespace Yelo
 {
+	namespace Objects
+	{
+		struct s_unit_datum;
+	};
+
 	namespace Players
 	{
-		typedef Memory::DataArray<s_player_datum, Enums::k_multiplayer_maximum_players_upgrade> 
-			players_data_t;
-		typedef Memory::DataArray<s_team_datum, Enums::k_multiplayer_maximum_teams>
-			teams_data_t;
-
 		players_data_t&					Players();
 		teams_data_t&					Teams();
 		s_players_globals_data*			PlayersGlobals();

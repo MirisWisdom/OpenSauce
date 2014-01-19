@@ -98,6 +98,8 @@ static void InitializeGrenadeCounts_UnitGrenadeCounts(bool enabled)
 		if(enabled)	code_writer::Write(code_addr DebugOnly(, "GrenadeCounts asm mismatch"));
 		else		code_writer::Undo(code_addr);
 	}
+
+	// TODO: crosshairs_draw
 }
 
 

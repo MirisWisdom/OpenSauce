@@ -9,7 +9,7 @@
 #include <blamlib/Halo1/hs/hs_constants.hpp>
 #include <blamlib/Halo1/networking/network_connection.hpp> // for k_maximum_network_machine_count
 #include <blamlib/Halo1/game/game_configuration.hpp>
-#include <blamlib/Halo1/saved_games/game_state.hpp>
+#include <blamlib/Halo1/saved_games/saved_game_constants.hpp>
 
 #include <blamlib/Halo1/effects/effects_constants.hpp>
 #include <YeloLib/Halo1/effects/effects_constants_yelo.hpp>

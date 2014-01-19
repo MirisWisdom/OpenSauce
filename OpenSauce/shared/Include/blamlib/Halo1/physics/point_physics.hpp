@@ -22,7 +22,7 @@ namespace Yelo
 			void SetWaterMass(real density)	{ water_mass = DensityToMass(density); }
 			void SetAirMass(real density)	{ air_mass = DensityToMass(density); }
 		};
-		// It's dirty declaring this here since we only define it in Halo1_CE, but our s_physics_globals util code needs it
+
 		s_point_physics_globals*	PointPhysics();
 	};
 };

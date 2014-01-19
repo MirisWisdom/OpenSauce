@@ -16,10 +16,7 @@ namespace Yelo
 	{
 		struct s_scripting_definitions;
 	};
-};
 
-namespace Yelo
-{
 	namespace Enums
 	{
 #define __SCRIPTLIBRARY_INCLUDE_ID __SCRIPTLIBRARY_ENUMERATIONS

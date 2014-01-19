@@ -9,12 +9,12 @@
 #if PLATFORM_IS_USER
 #include <blamlib/Halo1/camera/director.hpp>
 
-#include "Interface/YeloSettingsInterface.hpp"
-
 namespace Yelo
 {
 	namespace Enums
 	{
+		enum settings_adjustment_result : long_enum;
+
 		enum camera_script_mode : _enum
 		{
 			_camera_script_mode_none = _enum(NONE),

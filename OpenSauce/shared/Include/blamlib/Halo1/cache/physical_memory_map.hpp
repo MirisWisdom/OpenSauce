@@ -6,15 +6,24 @@
 #pragma once
 
 #include <blamlib/Halo1/cache/cache_constants.hpp>
-#if !defined(PLATFORM_IS_DEDI) || !PLATFORM_IS_DEDI
-	#include <blamlib/Halo1/cache/pc_sound_cache.hpp>
-	#include <blamlib/Halo1/cache/pc_texture_cache.hpp>
-#endif
+// #if !defined(PLATFORM_IS_DEDI) || !PLATFORM_IS_DEDI
+// 	#include <blamlib/Halo1/cache/pc_sound_cache.hpp>
+// 	#include <blamlib/Halo1/cache/pc_texture_cache.hpp>
+// #endif
 #include <blamlib/Halo1/memory/data.hpp>
-#include <blamlib/Halo1/memory/lruv_cache.hpp>
 
 namespace Yelo
 {
+	namespace Cache
+	{
+		struct s_sound_cache_datum;
+		struct s_texture_cache_datum;
+	};
+	namespace Memory
+	{
+		struct s_lruv_cache;
+	};
+
 	namespace GameState
 	{
 		// Made up structure for Halo1
@@ -45,5 +54,7 @@ namespace Yelo
 			void* texture_cache_base_address;
 			void* sound_cache_base_address;
 		};
+
+		s_physical_memory_map_globals* PhysicalMemoryMapGlobals();
 	};
 };

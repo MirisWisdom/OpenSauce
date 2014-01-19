@@ -7,6 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "Scenario/ScenarioFauxZones.hpp"
 
+#include <blamlib/Halo1/main/main_structures.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 #include <blamlib/Halo1/structures/structure_bsp_definitions.hpp>
 

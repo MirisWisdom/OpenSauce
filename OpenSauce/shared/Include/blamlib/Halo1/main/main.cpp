@@ -7,6 +7,8 @@
 #include "Common/Precompile.hpp"
 #include <blamlib/Halo1/main/main.hpp>
 
+#include <blamlib/Halo1/main/main_structures.hpp>
+
 namespace Yelo
 {
 	namespace GameState
@@ -17,5 +19,14 @@ namespace Yelo
 			map.save_map = false;
 			map.main_menu_scenario_load = true;
 		}
+
+		bool IsLocal()	{ return MainGlobals()->game_connection == Enums::_game_connection_local; }
+		bool IsServer() { return MainGlobals()->game_connection == Enums::_game_connection_network_server; }
+		bool IsClient() { return MainGlobals()->game_connection == Enums::_game_connection_network_client; }
+	};
+
+	namespace blam
+	{
+		Enums::game_connection game_connection()	{ return GameState::MainGlobals()->game_connection; }
 	};
 };

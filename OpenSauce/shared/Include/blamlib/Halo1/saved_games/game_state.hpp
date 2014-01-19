@@ -6,7 +6,6 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/cache/physical_memory_map.hpp>
 #include <blamlib/Halo1/saved_games/saved_game_constants.hpp>
 #include <YeloLib/Halo1/saved_games/game_state_yelo.hpp>
 
@@ -55,5 +54,7 @@ namespace Yelo
 			bool creating_autosave;
 			PAD16;
 		}; BOOST_STATIC_ASSERT( sizeof(s_game_state_globals) == 0x23C );
+
+		s_game_state_globals* GameStateGlobals();
 	};
 };

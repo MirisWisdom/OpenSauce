@@ -6,6 +6,7 @@
 #include "Common/Precompile.hpp"
 #include <blamlib/Halo1/hs/hs_runtime.hpp>
 
+#include <blamlib/Halo1/hs/hs_runtime_structures.hpp>
 #include <blamlib/Halo1/scenario/scenario.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 

@@ -8,8 +8,6 @@
 
 #include <blamlib/Halo1/objects/object_definitions.hpp>
 
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
-
 namespace Yelo
 {
 	namespace Enums
@@ -28,10 +26,16 @@ namespace Yelo
 		enum unit_base_seat {
 			_unit_base_seat_asleep,
 			_unit_base_seat_alert,
+#if PLATFORM_IS_STUBBS
+			_unit_base_seat_aware,
+#endif
 			_unit_base_seat_stand,
 			_unit_base_seat_crouch,
 			_unit_base_seat_flee,
 			_unit_base_seat_flaming,
+#if PLATFORM_IS_STUBBS
+			_unit_base_seat_maimed,
+#endif
 
 			k_number_of_unit_base_seats,
 		};

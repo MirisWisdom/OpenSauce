@@ -6,8 +6,6 @@
 */
 #pragma once
 
-#include "Objects/Objects.hpp"
-
 namespace Yelo
 {
 	namespace Objects { namespace Equipment {

@@ -555,12 +555,14 @@ namespace Yelo
 
 			// NOTE: engine asserts child_count, but this will force guerilla to crash
 			// Originally, we NOP'd the assert in CheApe
+#if FALSE
 			if (group->child_count != 0)
 			{
 				YELO_WARN("can't create the parent tag %s, not creating %s",
 					group->name, name);
 				return datum_index::null;
 			}
+#endif
 
 			datum_index tag_index = find_tag_instance(group_tag, name);
 			if(!tag_index.IsNull())

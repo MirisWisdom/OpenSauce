@@ -7,21 +7,6 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <blamlib/Halo1/game/game_allegiance.hpp> // for game teams
-#include <blamlib/Halo1/game/game_configuration.hpp>
-#include <blamlib/Halo1/interface/first_person_weapons.hpp>
-#include <blamlib/Halo1/interface/hud.hpp>
-#include <blamlib/Halo1/interface/hud_chat.hpp>
-#include <blamlib/Halo1/interface/hud_messaging.hpp>
-#include <blamlib/Halo1/interface/hud_nav_points.hpp>
-#include <blamlib/Halo1/interface/hud_unit.hpp>
-#include <blamlib/Halo1/interface/hud_weapon.hpp>
-#include <blamlib/Halo1/interface/interface.hpp>
-#include <blamlib/Halo1/interface/motion_sensor.hpp>
-#include <blamlib/Halo1/text/draw_string.hpp>
-
-#include "Interface/YeloSettingsInterface.hpp"
-
 namespace Yelo
 {
 	namespace Players
@@ -31,6 +16,9 @@ namespace Yelo
 
 	namespace Enums
 	{
+		enum hud_chat_type : long_enum;
+		enum settings_adjustment_result : long_enum;
+
 		enum rasterize_score : long_enum
 		{
 			_rasterize_score_welcome,
@@ -68,10 +56,6 @@ namespace Yelo
 
 	namespace GameUI
 	{
-		s_hud_chat_globals*		HudChatGlobals();
-		int32 HudChatLineCount();
-
-
 		void Initialize();
 		void Dispose();
 		void PLATFORM_API Update();

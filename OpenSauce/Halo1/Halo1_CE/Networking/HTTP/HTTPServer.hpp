@@ -50,8 +50,8 @@ namespace Yelo
 
 		void SendResponse(mg_connection* connection,
 			const Enums::http_status_code status,
-			c_http_header* header = NULL,
-			const char* body = NULL,
+			c_http_header* header = nullptr,
+			const char* body = nullptr,
 			const uint32 body_length = 0);
 
 		void* HTTPServerSetThreadCount(void** arguments);

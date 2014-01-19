@@ -6,6 +6,7 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/game/game_configuration.hpp>
 #include <blamlib/Halo1/game/player_action.hpp>
 
 namespace Yelo
@@ -23,6 +24,19 @@ namespace Yelo
 
 			k_number_of_multiplayer_teams,
 		};
+	};
+
+	namespace Players
+	{
+		struct s_player_datum;
+		struct s_team_datum;
+
+		struct s_players_globals_data;
+
+		typedef Memory::DataArray<s_player_datum, Enums::k_multiplayer_maximum_players_upgrade>
+			players_data_t;
+		typedef Memory::DataArray<s_team_datum, Enums::k_multiplayer_maximum_teams>
+			teams_data_t;
 	};
 
 	namespace blam

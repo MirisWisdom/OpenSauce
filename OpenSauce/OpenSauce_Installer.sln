@@ -1,9 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D6F76EA2-5524-445E-99C5-FDAF122243F4}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Halo1_Installer", "Halo1\Halo1_Installer\Halo1_Installer.wixproj", "{494F320A-B5EB-4623-BE2D-77D5C7BE7CA5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9} = {0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilePatcher", "Halo1\Halo1_Installer\FilePatcher\FilePatcher.csproj", "{226CBE41-DF44-4BAA-BCFA-0602D8864AF4}"
 EndProject
@@ -14,9 +19,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebLauncher", "Halo1\Halo1_Installer\WebLauncher\WebLauncher.csproj", "{0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9}"
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = OpenSauce_Installer.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -107,5 +109,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = OpenSauce_Installer.vsmdi
 	EndGlobalSection
 EndGlobal

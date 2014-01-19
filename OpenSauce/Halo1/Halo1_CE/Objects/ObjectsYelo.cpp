@@ -7,15 +7,20 @@
 #include "Common/Precompile.hpp"
 #include "Objects/Objects.hpp"
 
-#include <blamlib/Halo1/ai/actors.hpp>
-#include <blamlib/Halo1/ai/ai_script.hpp>
 #include <blamlib/Halo1/effects/damage_effect_definitions.hpp>
 #include <blamlib/Halo1/game/game_globals.hpp>
-#include <blamlib/Halo1/hs/hs_library_external.hpp>
+#include <blamlib/Halo1/game/game_globals_definitions.hpp>
+
 #include <blamlib/Halo1/main/console.hpp>
 #include <blamlib/Halo1/models/collision_model_definitions.hpp>
 #include <blamlib/Halo1/models/model_animation_definitions.hpp>
 #include <blamlib/Halo1/objects/damage.hpp>
+#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+
+#include <blamlib/Halo1/items/projectiles.hpp>
+#include <blamlib/Halo1/devices/device_structures.hpp>
+#include <blamlib/Halo1/items/item_structures.hpp>
+#include <blamlib/Halo1/items/weapon_structures.hpp>
 
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
@@ -25,7 +30,6 @@
 #include "Objects/Equipment.hpp"
 #include "Objects/Units.hpp"
 
-#include "Game/Camera.hpp"
 #include "Game/GameState.hpp"
 #include "Game/GameStateRuntimeData.hpp"
 #include "Game/Scripting.hpp"
@@ -34,6 +38,10 @@
 #include "Networking/Networking.hpp"
 #include "Scenario/Scenario.hpp"
 #include "TagGroups/TagGroups.hpp"
+
+#if !PLATFORM_IS_DEDI
+	#include "Interface/YeloSettingsInterface.hpp"
+#endif
 
 namespace Yelo
 {
@@ -89,7 +97,6 @@ namespace Yelo
 #include <YeloLib/Halo1/render/render_objects_upgrades.inl>
 #include "Objects/Objects.Damage.inl"
 #include "Objects/Objects.Scripting.inl"
-#include "Objects/Objects.UnitInfections.inl"
 
 		static void InitializeScripting()
 		{
@@ -137,7 +144,6 @@ namespace Yelo
 				render_objects_mods::Initialize();
 #endif
 
-			UnitInfections::Initialize();
 			Vehicle::Initialize();
 			Weapon::Initialize();
 			Equipment::Initialize();
@@ -154,7 +160,6 @@ namespace Yelo
 
 			Weapon::Dispose();
 			Vehicle::Dispose();
-			UnitInfections::Dispose();
 		}
 
 		static void ObjectsUpdateIgnorePlayerPvs(bool use_fix)

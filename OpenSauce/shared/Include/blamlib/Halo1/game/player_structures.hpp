@@ -164,7 +164,7 @@ namespace Yelo
 				}client;
 				struct {
 					Networking::s_player_server_update update_data;
-					// !!! Only use this when the local machine is the host (ie, Networking::IsServer() == true) !!!
+					// !!! Only use this when the local machine is the host (ie, GameState::IsServer() == true) !!!
 					s_player_yelo_server_data yelo_data;		// 0x1C8
 				}server;
 			};
@@ -203,8 +203,8 @@ namespace Yelo
 			_enum respawn_failure;															// 0x14
 			bool was_teleported;															// 0x16, or respawned
 			PAD8;
-			long_flags pvs[BIT_VECTOR_SIZE_IN_DWORDS(512)];									// 0x18
-			long_flags pvs2[BIT_VECTOR_SIZE_IN_DWORDS(512)];								// 0x58
+			long_flags combined_pvs[BIT_VECTOR_SIZE_IN_DWORDS(512)];						// 0x18 combined pvs of all players in the game
+			long_flags combined_pvs_local[BIT_VECTOR_SIZE_IN_DWORDS(512)];					// 0x58 combined pvs of all local players
 		}; BOOST_STATIC_ASSERT( sizeof(s_players_globals_data) == 0x98 );
 	};
 };

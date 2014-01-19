@@ -7,7 +7,10 @@
 #include "Common/Precompile.hpp"
 #include "Game/Players.hpp"
 
+#include <blamlib/Halo1/game/player_structures.hpp>
 #include <blamlib/Halo1/scenario/scenario.hpp>
+#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+#include <blamlib/Halo1/units/unit_structures.hpp>
 
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameEngine.hpp"
@@ -118,7 +121,7 @@ namespace Yelo
 
 		s_player_yelo_server_data& s_player_datum::GetYeloServerData()
 		{
-			assert(Networking::IsServer());
+			assert(GameState::IsServer());
 
 			return server.yelo_data;
 		}

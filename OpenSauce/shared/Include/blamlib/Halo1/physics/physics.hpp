@@ -45,5 +45,8 @@ namespace Yelo
 				SetAirDensity(AirDensityConstant());
 			}
 		}; BOOST_STATIC_ASSERT( sizeof(s_physics_globals) == 0xC );
+
+		// Reference to the current platform's physics globals
+		s_physics_globals*			Physics();
 	};
 };

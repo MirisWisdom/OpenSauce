@@ -7,7 +7,7 @@
 #pragma once
 
 #include <blamlib/Halo1/game/game_engine.hpp>
-#include <blamlib/Halo1/objects/object_types.hpp> // s_vehicle_remapper
+#include <blamlib/Halo1/objects/vehicle_remapper.hpp>
 #include <blamlib/Halo1/saved_games/game_variant.hpp>
 
 namespace Yelo
@@ -16,7 +16,7 @@ namespace Yelo
 	{
 		enum game_engine_custom : long_enum
 		{
-			_game_engine_custom1 = _game_engine,
+			_game_engine_custom1 = k_number_of_game_engines,
 			_game_engine_custom2,
 			_game_engine_custom3,
 			_game_engine_custom4,

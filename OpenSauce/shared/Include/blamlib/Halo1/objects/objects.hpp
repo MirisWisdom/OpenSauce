@@ -9,7 +9,7 @@
 #include <blamlib/Halo1/memory/data.hpp>
 #include <blamlib/Halo1/memory/memory_pool.hpp>
 #include <blamlib/Halo1/objects/object_types.hpp>
-#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+#include <blamlib/Halo1/scenario/scenario.hpp> // for object names
 
 namespace Yelo
 {
@@ -28,14 +28,14 @@ namespace Yelo
 	{
 		enum object_header_flags : byte_flags
 		{
-			_object_header_active_bit = 0,
-			_object_header_requires_motion_bit = 1,
-			// 2
-			_object_header_being_deleted_bit = 3,
-			// 4
-			_object_header_connected_to_map_bit = 5,
-			_object_header_child_bit = 6,
-			// 7
+			_object_header_active_bit,
+			_object_header_visible_bit,
+			_object_header_newly_created_bit, // true until after the first call to the 
+			_object_header_being_deleted_bit,
+			_object_header_child_bit, // attached to another object (at a marker/node)
+			_object_header_connected_to_map_bit,
+			_object_header_automatic_deactivation_bit,
+			_object_header_unk7_bit,
 		};
 
 		enum objects_find_flags : long_flags

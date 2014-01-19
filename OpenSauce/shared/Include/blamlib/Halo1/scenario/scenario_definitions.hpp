@@ -10,9 +10,10 @@
 #include <blamlib/Halo1/cutscene/recorded_animation_definitions.hpp>
 #include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/hs/hs_scenario_definitions.hpp>
+#include <blamlib/Halo1/scenario/scenario.hpp>
 #include <blamlib/Halo1/scenario/scenario_object_definitions_structures.hpp>
 
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
+#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {
@@ -24,15 +25,6 @@ namespace Yelo
 
 			// How much OS-upgrades [k_maximum_structure_bsps_per_scenario]
 			k_maximum_structure_bsps_per_scenario_upgrade = k_maximum_structure_bsps_per_scenario * 2,
-
-			k_maximum_object_names_per_scenario = 512,
-		};
-
-		enum scenario_type : _enum
-		{
-			_scenario_type_campaign,
-			_scenario_type_multiplayer,
-			_scenario_type_main_menu,
 		};
 
 		enum scenario_netgame_type
