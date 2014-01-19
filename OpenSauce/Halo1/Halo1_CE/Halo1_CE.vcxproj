@@ -417,7 +417,9 @@
     <None Include="Scenario\ScenarioFauxZones.Scripting.inl" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="..\..\..\Doc\Blam\Halo1\Halo1_CE.message_delta_definitions.xml" />
+    <Xml Include="..\..\..\Doc\Blam\Halo1\Halo1_CE.message_delta_definitions.xml">
+      <SubType>Designer</SubType>
+    </Xml>
     <Xml Include="Halo1_CE_Version.xml" />
     <Xml Include="YeloFileChecksums.xml" />
     <Xml Include="YeloSettingsTemplate.xml" />

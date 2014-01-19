@@ -9,6 +9,7 @@
 
 #if !PLATFORM_IS_DEDI
 #include <blamlib/Halo1/main/main.hpp>
+#include <blamlib/Halo1/networking/network_client_manager_structures.hpp>
 
 #include <YeloLib/memory/linked_list.hpp>
 #include <YeloLib/memory/compression/7zip_codec.hpp>
@@ -18,12 +19,13 @@
 #include "Common/FileIO.hpp"
 #include "Common/YeloSettings.hpp"
 
-#include "Networking/Networking.hpp"
-#include "Networking/Server.hpp"
+#include "Game/EngineFunctions.hpp"
+#include "Game/GameBuildNumber.hpp"
 #include "Interface/TextBlock.hpp"
 #include "Interface/Controls.hpp"
+#include "Networking/Networking.hpp"
+#include "Networking/Server.hpp"
 #include "Memory/FunctionInterface.hpp"
-#include "Game/EngineFunctions.hpp"
 #include "TagGroups/CacheFiles.hpp"
 
 #include "Networking/HTTP/HTTP.hpp"
@@ -84,7 +86,7 @@ namespace Yelo
 			_map_compression_format
 		};
 
-		enum map_download_update_stage
+		enum map_download_update_stage : byte_enum
 		{
 			_map_download_update_stage_idle,					// no map downloads in progress
 			_map_download_update_stage_start_download,			// map download requested, start the map download thread
@@ -97,7 +99,7 @@ namespace Yelo
 			_map_download_update_stage
 		};
 
-		enum download_completion_state
+		enum download_completion_state : _enum
 		{
 			_download_completion_state_begin,
 			_download_completion_state_reconnect_delay,
@@ -107,7 +109,7 @@ namespace Yelo
 			_download_completion_state
 		};
 
-		enum map_download_stage
+		enum map_download_stage : long_enum
 		{
 			_map_download_stage_build_server_list,
 			_map_download_stage_map_part_definition, // download the part definition
@@ -120,7 +122,7 @@ namespace Yelo
 			_map_download_stage
 		};
 
-		enum master_server_list_state
+		enum master_server_list_state : _enum
 		{
 			_master_server_list_state_begin,
 			_master_server_list_state_downloading,
@@ -131,7 +133,7 @@ namespace Yelo
 			_master_server_list_state
 		};
 
-		enum map_part_definition_state
+		enum map_part_definition_state : _enum
 		{
 			_map_part_definition_state_begin,
 			_map_part_definition_state_start_download,
@@ -143,7 +145,7 @@ namespace Yelo
 			_map_part_definition_state
 		};
 
-		enum part_download_state
+		enum part_download_state : _enum
 		{
 			_part_download_state_begin,
 			_part_download_state_prepare_download,
@@ -157,7 +159,7 @@ namespace Yelo
 			_part_download_state
 		};
 
-		enum archive_extraction_state
+		enum archive_extraction_state : _enum
 		{
 			_archive_extraction_state_begin,
 			_archive_extraction_state_archive_ready,
@@ -277,7 +279,9 @@ namespace Yelo
 		{
 		public:
 			char		m_mp_address[Enums::k_max_ip_port_string_length];
+			PAD16;
 			char		m_mp_password[k_server_password_length];
+			PAD24;
 			byte		m_mp_password_key[16];
 			long_enum	m_mp_gamever;
 
@@ -584,13 +588,13 @@ namespace Yelo
 
 						part_element->Ctor();
 
-						strcpy_s(part_element->m_name, MAX_PATH, name);
-						strcpy_s(part_element->m_md5, k_md5_string_length_max, md5);
+						strcpy_s(part_element->m_name, name);
+						strcpy_s(part_element->m_md5, md5);
 						if(1 != sscanf_s(size, "%i", &part_element->m_size))
 							part_element->m_size = 0;
 						part_element->m_encrypted = encrypted_value;
 						if(encrypted && unencrypted_md5)
-							strcpy_s(part_element->m_unencrypted_md5, k_md5_string_length_max, unencrypted_md5);
+							strcpy_s(part_element->m_unencrypted_md5, unencrypted_md5);
 
 						AppendLinkedListNode(map.m_parts, part_element);
 					}
@@ -744,8 +748,17 @@ namespace Yelo
 				c_part_element*				m_part_element;
 				uint32						m_total_bytes;
 				uint32						m_received_bytes;
-				byte						m_data[k_max_part_download_size];
 				byte*						m_decryption_key;
+				byte						m_data[k_max_part_download_size];
+
+				void Clear()
+				{
+					m_part_element = nullptr;
+					m_total_bytes = 0;
+					m_received_bytes = 0;
+					ZeroMemory(m_data, sizeof(m_data));
+					m_decryption_key = nullptr;
+				}
 			}m_part_downloader;
 
 		protected:
@@ -773,11 +786,7 @@ namespace Yelo
 				m_file_downloader.m_attempts.max_attempts = k_max_download_attempts;
 				m_file_downloader.m_attempts.retry_delay = k_retry_delay_time;
 
-				m_part_downloader.m_part_element = NULL;
-				m_part_downloader.m_total_bytes = 0;
-				m_part_downloader.m_received_bytes = 0;
-				ZeroMemory(&m_part_downloader.m_data[0], sizeof(m_part_downloader.m_data));
-				m_part_downloader.m_decryption_key = NULL;
+				m_part_downloader.Clear();
 			}
 
 			void Dtor()
@@ -787,11 +796,7 @@ namespace Yelo
 				m_file_downloader.m_attempts.max_attempts = k_max_download_attempts;
 				m_file_downloader.m_attempts.retry_delay = k_retry_delay_time;
 
-				m_part_downloader.m_part_element = NULL;
-				m_part_downloader.m_total_bytes = 0;
-				m_part_downloader.m_received_bytes = 0;
-				ZeroMemory(&m_part_downloader.m_data[0], sizeof(m_part_downloader.m_data));
-				m_part_downloader.m_decryption_key = NULL;
+				m_part_downloader.Clear();
 			}
 
 			void SetPart(c_part_element* part)
@@ -948,7 +953,7 @@ namespace Yelo
 				if(buffer_length != m_part_downloader.m_part_element->m_size)
 				{
 					Status() = Enums::_http_file_download_status_failed;
-					return NULL;
+					return nullptr;
 				}
 
 				// download size can be less than 1MB
@@ -965,14 +970,14 @@ namespace Yelo
 				if((Status() == Enums::_http_file_download_status_failed) && Retry())
 					Status() = Enums::_http_file_download_status_retry;
 
-				return NULL;
+				return nullptr;
 			}
 
 			void*	DownloadCancelledCallback(void* component_data)
 			{
 				c_file_downloader::DownloadCancelledCallback(component_data);
 
-				s_request_data* request_data = CAST_PTR(s_request_data*, component_data);
+				auto request_data = CAST_PTR(s_request_data*, component_data);
 				delete request_data;
 
 				m_part_downloader.m_total_bytes = 0;
@@ -980,7 +985,7 @@ namespace Yelo
 
 				Status() = Enums::_http_file_download_status_cancelled;
 
-				return NULL;
+				return nullptr;
 			}
 		};
 
@@ -1406,7 +1411,7 @@ namespace Yelo
 			{
 			case _map_compression_format_zip:
 				{
-					unzFile zip_file = NULL;
+					unzFile zip_file = nullptr;
 					if(!Compression::Zip::OpenZipFile(g_map_download_globals.m_paths.archive_save_location, &zip_file))
 						break;
 
@@ -1476,7 +1481,7 @@ namespace Yelo
 			}
 
 			delete [] uncompressed_data;
-			uncompressed_data = NULL;
+			uncompressed_data = nullptr;
 
 			return success;
 		}
@@ -1535,11 +1540,11 @@ namespace Yelo
 				return false;
 
 			if(!FileIO::PathExists(g_map_download_globals.m_paths.user_download_directory))
-				if(!CreateDirectory(g_map_download_globals.m_paths.user_download_directory, NULL))
+				if(!CreateDirectory(g_map_download_globals.m_paths.user_download_directory, nullptr))
 					return false;
 
 			if(!FileIO::PathExists(g_map_download_globals.m_paths.parts_save_directory))
-				if(!CreateDirectory(g_map_download_globals.m_paths.parts_save_directory, NULL))
+				if(!CreateDirectory(g_map_download_globals.m_paths.parts_save_directory, nullptr))
 					return false;
 
 			return true;
@@ -1564,7 +1569,7 @@ namespace Yelo
 			// TODO: move this to a global shuffle namespace
 			//shuffle loop
 			int list_length = GetListLength(g_map_download_globals.m_master_server_list.server_list);
-			YELO_ASSERT_DISPLAY(list_length <= 256, "max server list count reached");
+			YELO_ASSERT_DISPLAY(list_length <= 256, "max server list count reached"); // TODO: named constant
 
 			if(list_length > 0)
 			{
@@ -2133,7 +2138,7 @@ namespace Yelo
 					return_value = 0;
 					break;
 				case _map_download_stage_cancelled:
-					// download cancelled, break out
+					// download canceled, break out
 					g_map_download_globals.m_download_thread.in_progress = false;
 					return_value = 1;
 					break;
@@ -2422,9 +2427,9 @@ namespace Yelo
 
 		/*!
 		 * \brief
-		 * Sets the map download systems variables to their deafult values.
+		 * Sets the map download systems variables to their default values.
 		 * 
-		 * Sets the map download systems variables to their deafult values.
+		 * Sets the map download systems variables to their default values.
 		 */
 		void	Initialize()
 		{
@@ -2586,7 +2591,7 @@ namespace Yelo
 
 		/*!
 		 * \brief
-		 *. The callback which is called when a map download HTTP download request is cancelled.
+		 *. The callback which is called when a map download HTTP download request is canceled.
 		 * 
 		 * \param component_data
 		 * Pointer to memory passed to the HTTP request function.
@@ -2594,7 +2599,7 @@ namespace Yelo
 		 * \returns
 		 * Returns NULL to clear the component data pointer in the HTTP request.
 		 * 
-		 *. The callback which is called when a map download HTTP download request is cancelled.
+		 *. The callback which is called when a map download HTTP download request is canceled.
 		 */
 		void*	RequestCancelled_Callback(void* component_data)
 		{

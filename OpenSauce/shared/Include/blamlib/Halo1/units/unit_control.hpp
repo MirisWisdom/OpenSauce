@@ -10,7 +10,17 @@ namespace Yelo
 {
 	namespace Enums
 	{
+		//_unit_animation_state_asleep
+		//_unit_animation_state_alert
+		//_unit_animation_state_alert2
+		//_unit_animation_state_stand
+		//_unit_animation_state_stand2
+		//_unit_animation_state_flee
+		//_unit_animation_state_flaming
 		//NUMBER_OF_UNIT_ANIMATION_STATES = 7
+
+		// _unit_aiming_speed_normal?
+		// _unit_aiming_speed_infection_form?
 		//NUMBER_OF_UNIT_AIMING_SPEEDS = 2
 	};
 
@@ -25,7 +35,7 @@ namespace Yelo
 			_unit_control_light_bit,
 			_unit_control_exact_facing_bit,
 			_unit_control_action_bit,
-			_unit_control_equipment_bit,
+			_unit_control_melee_bit,//_unit_control_equipment_bit, // debug strings still list this as 'equipment', but usage is melee
 
 			_unit_control_look_dont_turn_bit,
 			_unit_control_force_alert_bit,

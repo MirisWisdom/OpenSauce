@@ -164,7 +164,7 @@ static void* scripting_weapon_data_set_real_evaluate(void** arguments)
 		real data_value;
 	}* args = CAST_PTR(s_arguments*, arguments);
 
-	if(Networking::IsLocal() && !args->weapon_index.IsNull())
+	if(GameState::IsLocal() && !args->weapon_index.IsNull())
 	{
 		s_object_header_datum* header = Objects::ObjectHeader()[args->weapon_index];
 
@@ -193,7 +193,7 @@ static void* scripting_weapon_data_magazine_get_integer_evaluate(void** argument
 	TypeHolder result; result.pointer = nullptr;
 	result.int32 = NONE;
 
-	if(Networking::IsLocal() && !args->weapon_index.IsNull())
+	if(GameState::IsLocal() && !args->weapon_index.IsNull())
 	{
 		s_object_header_datum* header = Objects::ObjectHeader()[args->weapon_index];
 
@@ -217,7 +217,7 @@ static void* scripting_weapon_data_magazine_set_integer_evaluate(void** argument
 		int32 data_value;
 	}* args = CAST_PTR(s_arguments*, arguments);
 
-	if(Networking::IsLocal() && !args->weapon_index.IsNull())
+	if(GameState::IsLocal() && !args->weapon_index.IsNull())
 	{
 		s_object_header_datum* header = Objects::ObjectHeader()[args->weapon_index];
 
@@ -250,7 +250,7 @@ static void* scripting_weapon_data_trigger_set_real_evaluate(void** arguments)
 	// SRSLY.
 
 	// We don't support modifying trigger data in anything but local games because it writes to tag memory
-	if(Networking::IsLocal() && !args->weapon_index.IsNull())
+	if(GameState::IsLocal() && !args->weapon_index.IsNull())
 	{
 		s_object_header_datum* header = Objects::ObjectHeader()[args->weapon_index];
 
@@ -350,7 +350,7 @@ static void* scripting_unit_data_set_real_evaluate(void** arguments)
 		real data_value;
 	}* args = CAST_PTR(s_arguments*, arguments);
 
-	if(Networking::IsLocal() && !args->unit_index.IsNull())
+	if(GameState::IsLocal() && !args->unit_index.IsNull())
 	{
 		s_unit_datum* unit = Objects::ObjectHeader()[args->unit_index]->_unit;
 

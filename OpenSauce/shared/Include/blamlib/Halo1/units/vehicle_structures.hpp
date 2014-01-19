@@ -18,11 +18,11 @@ namespace Yelo
 	{
 		enum vehicle_flags
 		{
-			_vehicle_unk0_bit,
-			_vehicle_unk1_bit,
+			_vehicle_unk0_bit, // ~blur related
+			_vehicle_hovering_bit,
 			_vehicle_crouched_bit,
 			_vehicle_jumping_bit,
-			_vehicle_unk4_bit,
+			_vehicle_unk4_bit, // flip related
 		};
 	};
 
@@ -59,12 +59,8 @@ namespace Yelo
 			TStructSubGetPtrImpl(real,							Thrust, 0x4F0);
 			// 0x4F4, sbyte suspension states[Enums::k_max_vehicle_suspensions]?
 			TStructSubGetPtrImpl(real_point3d,					HoveringPosition, 0x4FC);
-			// 0x508, DWORD
-			// 0x50C, DWORD
-			// 0x510, DWORD
-			// 0x514, DWORD
-			// 0x518, DWORD
-			// 0x51C, DWORD
+			// 0x508, real_vector3d
+			// 0x514, real_vector3d
 			// 0x520, DWORD
 			//////////////////////////////////////////////////////////////////////////
 			// Added in HaloPC

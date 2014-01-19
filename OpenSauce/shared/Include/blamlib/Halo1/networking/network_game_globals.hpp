@@ -38,5 +38,9 @@ namespace Yelo
 			bool use_super_remote_players_action_update;// true
 			bool use_new_vehicle_update_scheme;			// true
 		};
+
+
+		// Network settings dealing with the rate of updating certain data
+		network_update_globals* UpdateSettings();
 	};
 };

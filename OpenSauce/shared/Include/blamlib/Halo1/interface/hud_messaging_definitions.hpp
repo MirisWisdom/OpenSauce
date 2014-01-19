@@ -6,7 +6,7 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
+#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {
@@ -19,6 +19,9 @@ namespace Yelo
 
 		enum e_hud_message_type : byte_enum {
 			_hud_message_type_text,
+			_hud_message_type_icon,
+
+			k_number_of_hud_message_types
 		};
 	};
 

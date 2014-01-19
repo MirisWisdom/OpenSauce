@@ -7,7 +7,7 @@
 
 #include <blamlib/Halo1/effects/material_effect_definitions.hpp>
 
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
+#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {

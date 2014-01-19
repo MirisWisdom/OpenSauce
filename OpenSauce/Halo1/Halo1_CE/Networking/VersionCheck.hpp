@@ -61,7 +61,7 @@ namespace Yelo
 
 			int CompareTo(const s_version& other) const
 			{
-				// -1 if less than, plaus 1 if more than 0 if equal
+				// -1 if less than, plus 1 if more than 0 if equal
 				if(m_major > other.m_major)
 					return -1;
 				else if(m_major < other.m_major)
@@ -131,7 +131,7 @@ namespace Yelo
 				m_version_downloader.m_version.m_minor = 0;
 				m_version_downloader.m_version.m_build = 0;
 
-				m_version_downloader.m_servers.version_url_list = NULL;
+				m_version_downloader.m_servers.version_url_list = nullptr;
 				m_version_downloader.m_servers.list_version = 0;
 			}
 
@@ -145,7 +145,7 @@ namespace Yelo
 
 				if(m_version_downloader.m_servers.version_url_list)
 					DeleteLinkedList(m_version_downloader.m_servers.version_url_list);
-				m_version_downloader.m_servers.version_url_list = NULL;
+				m_version_downloader.m_servers.version_url_list = nullptr;
 				m_version_downloader.m_servers.list_version = 0;
 			}
 
@@ -153,10 +153,10 @@ namespace Yelo
 			{
 				bool success = false;
 
-				TiXmlElement* root = NULL;
-				TiXmlElement* version = NULL;
-				TiXmlElement* server_list = NULL;
-				TiXmlElement* server = NULL;
+				TiXmlElement* root = nullptr;
+				TiXmlElement* version = nullptr;
+				TiXmlElement* server_list = nullptr;
+				TiXmlElement* server = nullptr;
 
 				//do-while-false for easy fall-through
 				do

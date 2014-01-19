@@ -7,6 +7,20 @@
 #include "Common/Precompile.hpp"
 #include "Networking/Networking.hpp"
 
+#include <blamlib/Halo1/bungie_net/network/transport_address.hpp> // for Enums::transport_rejection_code
+#include <blamlib/Halo1/main/console.hpp>
+#include <blamlib/Halo1/main/main.hpp>
+#include <blamlib/Halo1/networking/network_client_manager.hpp>
+#include <blamlib/Halo1/networking/network_client_manager_structures.hpp>
+#include <blamlib/Halo1/networking/network_game_globals.hpp>
+#include <blamlib/Halo1/networking/network_game_manager.hpp>
+#include <blamlib/Halo1/networking/network_game_manager_structures.hpp>
+#include <blamlib/Halo1/networking/network_messages_structures.hpp>
+#include <blamlib/Halo1/networking/network_server_manager.hpp>
+#include <blamlib/Halo1/networking/network_server_manager_structures.hpp>
+#include <blamlib/Halo1/networking/player_update_client.hpp>
+#include <blamlib/Halo1/networking/player_update_server.hpp>
+
 #include "Memory/MemoryInterface.hpp"
 #include "Networking/GameSpyApi.hpp"
 #include "Networking/MessageDeltas.hpp"
@@ -72,11 +86,6 @@ namespace Yelo
 
 		network_update_globals* UpdateSettings()							PTR_IMP_GET2(network_update_globals);
 
-		Enums::game_connection GameConnection()								PTR_IMP_GET(global_game_connection);
-		bool IsLocal()	{ return GET_PTR(global_game_connection) == Enums::_game_connection_local; }
-		bool IsServer() { return GET_PTR(global_game_connection) == Enums::_game_connection_network_server; }
-		bool IsClient() { return GET_PTR(global_game_connection) == Enums::_game_connection_network_client; }
-
 		// Points to a static structure, 'network_game_server_memory_do_not_use_directly'
 		s_network_game_server* NetworkGameServer()							DPTR_IMP_GET(global_network_game_server);
 		// Points to a static structure, 'network_game_client_memory_do_not_use_directly'
@@ -97,13 +106,9 @@ namespace Yelo
 		{
 			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(NETWORK_GAME_ADD_PLAYER);
 
-			__asm {
-				// eax = struct s_network_player
-
-				push	ebp
-				mov		ebp, esp
+			API_FUNC_NAKED_START()
 				push	esi
-				mov		esi, eax
+				mov		esi, eax // eax = struct s_network_player
 
 				push	eax		// s_network_player.player_list_index
 				call	OnPlayerJoin
@@ -112,13 +117,10 @@ namespace Yelo
 				mov		esi, network_game_data
 				push	esi
 				call	CALL_ADDR
-				add		esp, 4
+				add		esp, 4 * 1
 
 				pop		esi
-				mov		esp, ebp
-				pop		ebp
-				retn
-			}
+			API_FUNC_NAKED_END(0)
 		}
 		#pragma endregion
 
@@ -127,28 +129,56 @@ namespace Yelo
 		{
 			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(NETWORK_GAME_REMOVE_PLAYER);
 
-			__asm {
-				// esi = s_network_game
-
-				push	esi
+			API_FUNC_NAKED_START_()
+				push	esi		// esi = s_network_game
 				push	edi		// save edi just in case the compiler does some nasty stuff
+
 				push	edi		// s_network_player
 				call	OnPlayerExit
+
 				pop		edi
 				pop		esi
 
 				call	CALL_ADDR
-
-				retn
-			}
+			API_FUNC_NAKED_END_()
 		}
 		#pragma endregion
 		//////////////////////////////////////////////////////////////////////////
 
+		static void DebugNetworkConnectionFlushMessages(
+//			const byte* connection, 
+			uint32 _eax)
+		{
+			if (_eax > 0)
+				blam::console_printf(false, "eax %08X",//   %08X   %08X",
+					_eax//,
+//					*CAST_PTR(const uint32*, connection+0xA80),
+//					*CAST_PTR(const uint32*, connection+0xA84)
+					);
+		}
+		API_FUNC_NAKED static void PLATFORM_API DebugNetworkConnectionFlushMessagesTrampoline()
+		{
+			API_FUNC_NAKED_START_()
+				push	eax
+//				push	ebp
+
+				push	eax
+//				push	ebp
+				call	DebugNetworkConnectionFlushMessages
+
+//				pop		ebp
+				pop		eax
+			API_FUNC_NAKED_END_()
+		}
 		void Initialize()
 		{
 			MessageDeltas::Initialize();
 			GameSpy::Initialize();
+
+			void* NETWORK_CONNECTION_FLUSH_MESSAGES_HOOK = CAST_PTR(void*, 0x4E0FF2+0x30);
+//			Memory::WriteMemory(NETWORK_CONNECTION_FLUSH_MESSAGES_HOOK, Enums::_x86_opcode_nop, 9);
+//			Memory::WriteRelativeCall(DebugNetworkConnectionFlushMessagesTrampoline, 
+//				NETWORK_CONNECTION_FLUSH_MESSAGES_HOOK, true);
 
 			// NOTE: Uncomment these if you wish to detect
 			// when players enter and leave
@@ -242,7 +272,7 @@ namespace Yelo
 			API_FUNC_NAKED_START()
 				push	esi
 
-				call	IsServer
+				call	GameState::IsServer
 				test	al, al
 				jz		not_a_server // al will be our return value, which would be 0 if this jmp is hit
 
@@ -269,7 +299,7 @@ not_a_server:
 			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(NETWORK_GAME_SERVER_SEND_REJECTION_MESSAGE);
 
 			API_FUNC_NAKED_START()
-				call	IsServer
+				call	GameState::IsServer
 				test	al, al
 				jz		not_a_server
 
@@ -320,7 +350,7 @@ not_a_server:
 			static const uintptr_t CALL_ALL_MACHINES_INGAME = GET_FUNC_PTR(NETWORK_GAME_SERVER_SEND_MESSAGE_TO_ALL_MACHINES_INGAME);
 
 			API_FUNC_NAKED_START()
-				push	ebp
+				push	edi
 
 				push	buffer_priority
 				push	write_to_local_connection
@@ -332,8 +362,8 @@ not_a_server:
 				mov		ecx, eax
 				mov		eax, data_size_in_bits
 
-				mov		ebp, ingame_only
-				test	ebp, ebp
+				mov		edi, ingame_only
+				test	edi, edi
 				jnz		all_machines_ingame
 				call	CALL_ALL_MACHINES
 				jmp		cleanup
@@ -342,8 +372,18 @@ all_machines_ingame:
 cleanup:
 				add		esp, 4 * 6
 
-				pop		ebp
+				pop		edi
 			API_FUNC_NAKED_END(8)
+		}
+
+		Enums::network_game_generic_state GetNetworkGameState()
+		{
+			if (GameState::IsClient())		return CAST(Enums::network_game_generic_state,
+				NetworkGameClient()->state - Enums::_network_game_client_state_pregame);
+			else if (GameState::IsServer()) return CAST(Enums::network_game_generic_state,
+				NetworkGameServer()->state - Enums::_network_game_server_state_pregame);
+
+			return Enums::_network_game_generic_state_unknown;
 		}
 	};
 };

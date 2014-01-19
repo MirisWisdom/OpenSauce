@@ -60,7 +60,7 @@ namespace Yelo
 
 	namespace Flags
 	{
-		enum object_bits
+		enum
 		{
 			// --- 0x10
 
@@ -74,39 +74,28 @@ namespace Yelo
 			_object_unk7_bit,
 			_object_unk8_bit,
 			_object_unk9_bit,
-			_object_unk10_bit,
+			_object_unk10_bit, // set when the object has a looping sound attachment
 			_object_connected_to_map_bit,
-			_object_unk12_bit,
-			_object_unk13_bit,
-			_object_unk14_bit,
-			_object_unk15_bit,
+			_object_not_placed_automatically_bit,
+			_object_unk13_bit, // set in device_machine's 'new' function, always
+			_object_unk14_bit, // set in device_machine's 'new' function, if _machine_is_elevator_bit is true
+			_object_unk15_bit, // set in device_machine's 'new' function, if _machine_is_elevator_bit is true
 			_object_garbage_bit,
-			_object_unk17_bit,
+			_object_unk17_bit, // unit and weapon 'place' functions set this, but I don't see any code which tests for it
 			_object_does_not_cast_shadow_bit,
-			_object_unk19_bit,
-			_object_unk20_bit,
+			_object_deactivation_is_deletion_bit, // instead of deactivating (and persisting), the object is deleted
+			_object_unk20_bit, // prohibits the object from ever being activated again
 			_object_outside_map_bit,
 			_object_beautify_bit,
-			_object_unk23_bit,
+			_object_limping_bit, // used with _biped_limping_bit; node matrices won't be updated
 			_object_collideable_bit,
-			_object_unk25_bit,
-			_object_unk26_bit,
-			_object_unk27_bit,
-			_object_unk28_bit,
-			_object_unk29_bit,
-			_object_unk30_bit,
-			_object_unk31_bit,
-
-			_object_yelo_is_being_infected_bit = _object_unk31_bit, // apparently this bit isn't used
-
-			_object_is_on_the_ground_flag = FLAG(_object_is_on_the_ground_bit),
-			_object_is_in_water_flag = FLAG(_object_is_in_water_bit),
-			_object_at_reset_flag = FLAG(_object_at_reset_bit),
-			_object_connected_to_map_flag = FLAG(_object_connected_to_map_bit),
-			_object_garbage_flag = FLAG(_object_garbage_bit),
-			_object_does_not_cast_shadow_flag = FLAG(_object_does_not_cast_shadow_bit),
-			_object_beautify_flag = FLAG(_object_beautify_bit),
-			_object_collideable_flag = FLAG(_object_collideable_bit),
+			_object_has_collision_model_bit,
+			_object_unk26_bit, // HaloPC, message delta related. see object_type_should_force_baseline_update
+			_object_unk27_bit, // HaloPC, message delta related. see *_process_update_delta
+			_object_yelo_is_being_infected_bit,
+			//_object_29_bit,
+			//_object_30_bit,
+			//_object_31_bit,
 
 			// --- 0x106
 
@@ -115,26 +104,18 @@ namespace Yelo
 			_object_body_damage_effect_applied_bit = 0,
 			_object_shield_damage_effect_applied_bit,
 			// test this bit if you want to see if the unit is_dead
-			_object_body_depleted_bit, // if this is et, _hud_draw_element_1_bit will be set when the unit interface is rendered
+			_object_body_depleted_bit, // if this is set, _hud_draw_element_1_bit will be set when the unit interface is rendered
 			_object_shield_depleted_bit, // if this is set, _hud_draw_element_0_bit will be set when the unit interface is rendered
 			_object_damage_unk4_bit, // shield related
 			_object_killed_bit,
 			_object_killed_silent_bit,
-			_object_damage_unk7_bit, // actor berserk related
+			_object_melee_attack_inhibited_bit,
 			_object_damage_unk8_bit, // unused?
 			_object_damage_unk9_bit, // unused?
 			_object_damage_unk10_bit, // unused?
 			_object_cannot_take_damage_bit,
 			_object_shield_recharging_bit,
 			_object_killed_no_statistics_bit,
-
-			_object_body_depleted_flag = FLAG(_object_body_depleted_bit),
-			_object_shield_depleted_flag = FLAG(_object_shield_depleted_bit),
-			_object_killed_flag = FLAG(_object_killed_bit),
-			_object_killed_silent_flag = FLAG(_object_killed_silent_bit),
-			_object_cannot_take_damage_flag = FLAG(_object_cannot_take_damage_bit),
-			_object_shield_recharging_flag = FLAG(_object_shield_recharging_bit),
-			_object_killed_no_statistics_flag = FLAG(_object_killed_no_statistics_bit),
 		};
 	};
 
@@ -167,7 +148,7 @@ namespace Yelo
 			real_vector3d forward;
 			real_vector3d up;
 			real_vector3d angular_velocity;
-			real_rgb_color change_colors[4];
+			real_rgb_color change_colors[Enums::k_number_of_object_change_colors];
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_placement_data) == 0x88 );
 
 		struct s_object_network_datum_delta_data // should be populated during the object type's process_update_delta

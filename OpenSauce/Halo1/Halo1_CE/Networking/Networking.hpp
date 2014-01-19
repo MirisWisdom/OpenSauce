@@ -6,29 +6,15 @@
 */
 #pragma once
 
-#include "Memory/MemoryInterface.hpp"
-#include "Game/GameEngine.hpp"
-#include "Networking/GameSpyApi.hpp"
-
-#include <blamlib/Halo1/bungie_net/network/transport_address.hpp>
-#include <blamlib/Halo1/bungie_net/network/transport_endpoint_winsock.hpp>
-#include <blamlib/Halo1/bungie_net/network/transport_endpoint_set_winsock.hpp>
-#include <blamlib/Halo1/game/players.hpp>
-#include <blamlib/Halo1/game/simple_circular_queue.hpp>
 #include <blamlib/Halo1/main/main.hpp>
-#include <blamlib/Halo1/memory/bitstream.hpp>
-#include <blamlib/Halo1/memory/data.hpp>
-#include <blamlib/Halo1/networking/network_connection.hpp>
-#include <blamlib/Halo1/networking/network_client_manager.hpp>
-#include <blamlib/Halo1/networking/network_game_globals.hpp>
-#include <blamlib/Halo1/networking/network_game_manager.hpp>
 #include <blamlib/Halo1/networking/network_messages.hpp>
-#include <blamlib/Halo1/networking/network_server_manager.hpp>
 
 namespace Yelo
 {
 	namespace Enums
 	{
+		enum transport_rejection_code : long_enum;
+
 		enum {
 			k_message_highest_priority = 0,
 			k_message_lowest_priority = 9,
@@ -47,51 +33,8 @@ namespace Yelo
 
 	namespace Networking
 	{
-		struct s_action_update : TStructImpl(40)
-		{
-		};
-		typedef Memory::DataArray<s_action_update, 16> t_update_client_queues_data;
-
-		struct s_update_client_globals
-		{
-			bool initialized;
-			PAD24;
-			uint32 current_update_id;
-			PAD32;
-			struct {
-				Players::s_player_action actions[Enums::k_maximum_number_of_local_players];
-			}saved_action_collection;
-			uint32 ticks_to_apply_action_to;
-			PAD32;
-			int32 current_local_player;
-
-			t_update_client_queues_data* queue_data;
-			byte queue_data_buffer[0x308][128];
-		}; BOOST_STATIC_ASSERT( sizeof(s_update_client_globals) == 0x1843C );
-		s_update_client_globals* UpdateClientGlobals();
-
-		struct update_server_queues_datum : TStructImpl(100)
-		{
-			//s_action_update current_action
-
-			TStructGetPtrImpl(Memory::s_simple_circular_queue, ActionQueue, 0x28);
-		};
-		typedef Memory::DataArray<update_server_queues_datum, 16> t_update_server_queues_data;
-
-		struct s_update_server_globals
-		{
-			bool initialized;
-			PAD24;
-			uint32 current_update_id;
-			t_update_server_queues_data* queue_data;
-			byte queue_data_buffer[0x308][32];
-		}; BOOST_STATIC_ASSERT( sizeof(s_update_server_globals) == 0x610C );
-		s_update_server_globals* UpdateServerGlobals();
-
-
-		// Network settings dealing with the rate of updating certain data
-		network_update_globals* UpdateSettings();
-
+		struct s_network_game_player;
+		struct s_network_client_machine;
 
 #ifdef API_DEBUG
 		extern cstring message_packet_to_string_table[];
@@ -103,22 +46,6 @@ namespace Yelo
 
 		void LoadSettings(TiXmlElement* xml_element);
 		void SaveSettings(TiXmlElement* xml_element);
-
-		// Gets the current connection, returning a [game_connection]
-		Enums::game_connection GameConnection();
-		// Is the game *only* running the simulation locally? (ie, campaign or splitscreen)
-		bool IsLocal();
-		// Is this machine a server?
-		bool IsServer();
-		// Is this machine a client?
-		bool IsClient();
-
-
-		// Gets the network game server pointer
-		s_network_game_server* NetworkGameServer();
-
-		// Gets the network game client pointer
-		s_network_game_client* NetworkGameClient();
 
 
 		// Writes [data_size_in_bits] of the packet buffer to the connection
@@ -167,14 +94,6 @@ namespace Yelo
 		}
 
 
-		inline Enums::network_game_generic_state GetNetworkGameState()
-		{
-			if(IsClient())		return CAST(Enums::network_game_generic_state, 
-				NetworkGameClient()->state-Enums::_network_game_client_state_pregame);
-			else if(IsServer()) return CAST(Enums::network_game_generic_state, 
-				NetworkGameServer()->state-Enums::_network_game_server_state_pregame);
-
-			return Enums::_network_game_generic_state_unknown;
-		}
+		Enums::network_game_generic_state GetNetworkGameState();
 	};
 };

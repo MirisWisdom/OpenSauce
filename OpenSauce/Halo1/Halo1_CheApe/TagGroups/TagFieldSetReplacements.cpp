@@ -38,7 +38,7 @@ namespace Yelo
 				FIELDSET_INSERT_END()
 			FIELDSET_REPLACEMENT_END();
 		}
-		static void DamageEffectGroupChangeInstantaneousccelerationTo3d(tag_block_definition* damage_header_block)
+		static void DamageEffectGroupChangeInstantaneouAccelerationTo3d(tag_block_definition* damage_header_block)
 		{
 			tag_field* fields = damage_header_block->fields;
 			int field_index = damage_header_block->FindFieldIndex(Enums::_field_real, "instantaneous acceleration");
@@ -60,8 +60,8 @@ namespace Yelo
 			tag_group* cdmg = blam::tag_group_get<s_continuous_damage_effect_definition>();
 			assert(jpt_ && cdmg);
 
-			DamageEffectGroupChangeInstantaneousccelerationTo3d(jpt_->header_block_definition);
-			DamageEffectGroupChangeInstantaneousccelerationTo3d(cdmg->header_block_definition);
+			DamageEffectGroupChangeInstantaneouAccelerationTo3d(jpt_->header_block_definition);
+			DamageEffectGroupChangeInstantaneouAccelerationTo3d(cdmg->header_block_definition);
 
 			// find the damage effect flags, then the actual damage flags (both have the same name)
 			int flags_field_index = jpt_->header_block_definition->FindFieldIndex(Enums::_field_long_flags, "flags");
@@ -77,7 +77,7 @@ namespace Yelo
 				damage_flags_yelo_strings[x] = flags_list->strings[x];
 
 			damage_flags_yelo_strings[Flags::_damage_use_3d_acceleration_yelo_bit] = 
-				"YELO: 3D inst. accel."
+				"YELO; 3D inst. accel."
 				"#factor in the J and K components instead of only I";
 
 			flags_list->strings = damage_flags_yelo_strings;

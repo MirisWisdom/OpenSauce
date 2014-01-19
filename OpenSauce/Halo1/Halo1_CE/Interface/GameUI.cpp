@@ -8,7 +8,19 @@
 #include "Interface/GameUI.hpp"
 
 #if !PLATFORM_IS_DEDI
+#include <blamlib/Halo1/game/player_structures.hpp>
+#include <blamlib/Halo1/interface/first_person_weapons.hpp>
+#include <blamlib/Halo1/interface/hud.hpp>
+#include <blamlib/Halo1/interface/hud_chat.hpp>
+#include <blamlib/Halo1/interface/hud_messaging.hpp>
+#include <blamlib/Halo1/interface/hud_unit.hpp>
+#include <blamlib/Halo1/interface/hud_nav_points.hpp>
+#include <blamlib/Halo1/interface/hud_weapon.hpp>
+#include <blamlib/Halo1/interface/interface.hpp>
+#include <blamlib/Halo1/interface/motion_sensor.hpp>
+#include <blamlib/Halo1/items/weapon_definitions.hpp>
 #include <blamlib/Halo1/models/model_animations.hpp>
+#include <blamlib/Halo1/text/draw_string.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Common/YeloSettings.hpp"
@@ -33,20 +45,20 @@ namespace Yelo
 			if (*Players::PlayerControlGlobals()->local_players[0].GetZoomLevel() >= 0)
 			{
 				if (TagGroups::_global_yelo_globals->flags.hide_health_when_zoomed_bit)
-					SET_FLAG(HudUnitInterface()->flags, 0, true);
+					SET_FLAG(HudUnitInterface()->flags, Flags::_unit_interface_show_health_bit, true);
 				if (TagGroups::_global_yelo_globals->flags.hide_shield_when_zoomed_bit)
-					SET_FLAG(HudUnitInterface()->flags, 2, true);
+					SET_FLAG(HudUnitInterface()->flags, Flags::_unit_interface_show_shield_bit, true);
 				if (TagGroups::_global_yelo_globals->flags.hide_motion_sensor_when_zoomed_bit)
-					SET_FLAG(HudUnitInterface()->flags, 4, true);
+					SET_FLAG(HudUnitInterface()->flags, Flags::_unit_interface_show_motion_sensor_bit, true);
 			}
 			else
 			{
 				if (TagGroups::_global_yelo_globals->flags.hide_health_when_zoomed_bit)
-					SET_FLAG(HudUnitInterface()->flags, 0, false);
+					SET_FLAG(HudUnitInterface()->flags, Flags::_unit_interface_show_health_bit, false);
 				if (TagGroups::_global_yelo_globals->flags.hide_shield_when_zoomed_bit)
-					SET_FLAG(HudUnitInterface()->flags, 2, false);
+					SET_FLAG(HudUnitInterface()->flags, Flags::_unit_interface_show_shield_bit, false);
 				if (TagGroups::_global_yelo_globals->flags.hide_motion_sensor_when_zoomed_bit)
-					SET_FLAG(HudUnitInterface()->flags, 4, false);
+					SET_FLAG(HudUnitInterface()->flags, Flags::_unit_interface_show_motion_sensor_bit, false);
 			}
 		}
 
@@ -240,10 +252,10 @@ namespace Yelo
 					nullptr, &network_data);
 
 				bool result = false;
-				if(bits_encoded <= 0)
+				if(bits_encoded > 0)
 				{
-						 if(Networking::IsServer()) result = SendHudChatServer(src_player_number, send_predicate, bits_encoded, msg_type);
-					else if(Networking::IsClient()) result = SendHudChatClient(bits_encoded);
+						 if(GameState::IsServer()) result = SendHudChatServer(src_player_number, send_predicate, bits_encoded, msg_type);
+					else if(GameState::IsClient()) result = SendHudChatClient(bits_encoded);
 				}
 
 				if(!result)

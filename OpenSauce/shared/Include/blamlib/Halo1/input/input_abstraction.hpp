@@ -51,5 +51,32 @@ namespace Yelo
 			k_first_new_control_button =		// FIRST_NEW_CONTROL_BUTTON
 				_new_control_button_show_rules, 
 		};
+
+		enum {
+			_gamepad_a_button,
+			_gamepad_b_button,
+			_gamepad_x_button,
+			_gamepad_y_button,
+			_gamepad_black_button,
+			_gamepad_white_button,
+			_gamepad_left_trigger,
+			_gamepad_right_trigger,
+			_gamepad_dpad_up,
+			_gamepad_dpad_down,
+			_gamepad_dpad_left,
+			_gamepad_dpad_right,
+			_gamepad_start_button,
+			_gamepad_back_button,
+			_gamepad_left_thumb,
+			_gamepad_right_thumb,
+
+			k_number_of_gamepad_buttons // NUMBER_OF_GAMEPAD_BUTTONS
+		};
+		enum {
+			_gamepad_left_stick,
+			_gamepad_right_stick,
+
+			k_number_of_gamepad_sticks // NUMBER_OF_GAMEPAD_STICKS
+		};
 	};
 };

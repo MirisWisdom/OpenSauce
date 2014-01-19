@@ -43,8 +43,6 @@
 	FUNC_PTR(OBJECTS_GARBAGE_COLLECTION,				0x4FD8C0, 0x4E47B0);
 	FUNC_PTR(OBJECT_DAMAGE_OBJECT_BODY_HOOK,			0x4F347A, 0x4DC6DA);
 	//FUNC_PTR(UNIT_CAN_ENTER_SEAT_MOD,					0x56A3B3, 0x518D43);
-	FUNC_PTR(UNIT_CAUSE_PARENT_MELEE_DAMAGE_HOOK,		0x573C39, 0x522349);
-	FUNC_PTR(UNIT_CAUSE_PARENT_MELEE_DAMAGE_HOOK_RETN,	0x573C41, 0x522351);
 	FUNC_PTR(BIPED_UPDATE_MOVING_HOOK,					0x561B66, 0x510586);
 	FUNC_PTR(BIPED_JUMP_MOD_STUN_PENALTY_FIELD_REF,		0x56283E, 0x51125E);
 
@@ -127,6 +125,11 @@
 	//////////////////////////////////////////////////////////////////////////
 	// Units.Boarding
 	FUNC_PTR(UNIT_CAN_ENTER_SEAT_HOOK,							0x56A310, 0x518CA0);
+
+	//////////////////////////////////////////////////////////////////////////
+	// Units.Infections
+	FUNC_PTR(UNIT_CAUSE_PARENT_MELEE_DAMAGE_HOOK,		0x573C39, 0x522349);
+	FUNC_PTR(UNIT_CAUSE_PARENT_MELEE_DAMAGE_HOOK_RETN,	0x573C41, 0x522351);
 	
 	//////////////////////////////////////////////////////////////////////////
 	// Units.Animations

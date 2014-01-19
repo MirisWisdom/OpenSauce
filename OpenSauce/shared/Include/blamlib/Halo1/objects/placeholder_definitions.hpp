@@ -7,8 +7,6 @@
 
 #include <blamlib/Halo1/objects/object_definitions.hpp>
 
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
-
 namespace Yelo
 {
 	namespace TagGroups

@@ -8,6 +8,9 @@
 #include "Objects/Equipment.hpp"
 
 #include <blamlib/Halo1/items/equipment_definitions.hpp>
+#include <blamlib/Halo1/items/equipment_structures.hpp>
+
+#include "Objects/Objects.hpp"
 
 namespace Yelo
 {

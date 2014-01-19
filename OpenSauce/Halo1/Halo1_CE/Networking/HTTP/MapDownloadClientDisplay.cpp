@@ -181,14 +181,14 @@ namespace Yelo
 			{
 				string_length = k_display_map_name_string_length - 4;
 				wchar_t map_name_wide[MAX_PATH];
-				swprintf_s(&map_name_wide[0], MAX_PATH, L"%S", map_name);
+				swprintf_s(map_name_wide, L"%S", map_name);
 
-				wcsncpy_s(&m_map_name_string[0], k_display_map_name_string_length, map_name_wide, string_length);
-				wcscat_s(&m_map_name_string[0], k_display_map_name_string_length, L"...");
+				wcsncpy_s(m_map_name_string, map_name_wide, string_length);
+				wcscat_s(m_map_name_string, L"...");
 			}
 			else
 			{
-				swprintf_s(&m_map_name_string[0], k_display_map_name_string_length, L"%S", map_name);
+				swprintf_s(m_map_name_string, L"%S", map_name);
 			}
 		}
 
@@ -199,11 +199,11 @@ namespace Yelo
 
 			if(string_length >= k_display_provider_title_string_length)
 			{
-				wcscat_s(&m_provider_title_string[0], k_display_provider_title_string_length, L"ERROR:PROVIDER TITLE STRING TOO LONG");
+				wcscat_s(m_provider_title_string, L"ERROR:PROVIDER TITLE STRING TOO LONG");
 			}
 			else
 			{
-				swprintf_s(&m_provider_title_string[0], k_display_provider_title_string_length, L"%S", provider_title);
+				swprintf_s(m_provider_title_string, L"%S", provider_title);
 			}
 		}
 
@@ -214,11 +214,11 @@ namespace Yelo
 
 			if(string_length >= k_display_provider_description_string_length)
 			{
-				wcscat_s(&m_provider_description_string[0], k_display_provider_description_string_length, L"ERROR:PROVIDER DESCRIPTION STRING TOO LONG");
+				wcscat_s(m_provider_description_string, L"ERROR:PROVIDER DESCRIPTION STRING TOO LONG");
 			}
 			else
 			{
-				swprintf_s(&m_provider_description_string[0], k_display_provider_description_string_length, L"%S", provider_description);
+				swprintf_s(m_provider_description_string, L"%S", provider_description);
 			}
 		}
 
@@ -252,35 +252,20 @@ namespace Yelo
 
 		void c_map_download_display::Dispose()
 		{
-			m_background_tint->Release();
-			m_base_container->Release();
-			m_inner_container->Release();
-			m_title->Release();
-			m_map_name->Release();
-			m_part_progress_back->Release();
-			m_part_progress_front->Release();
-			m_part_progress_text->Release();
-			m_map_progress_back->Release();
-			m_map_progress_front->Release();
-			m_map_progress_text->Release();
-			m_cancel->Release();
-			m_provider_title->Release();
-			m_provider_description->Release();
-
-			delete m_background_tint; m_background_tint = NULL;
-			delete m_base_container; m_base_container = NULL;
-			delete m_inner_container; m_inner_container = NULL;
-			delete m_title; m_title = NULL;
-			delete m_map_name; m_map_name = NULL;
-			delete m_part_progress_back; m_part_progress_back = NULL;
-			delete m_part_progress_front; m_part_progress_front = NULL;
-			delete m_part_progress_text; m_part_progress_text = NULL;
-			delete m_map_progress_back; m_map_progress_back = NULL;
-			delete m_map_progress_front; m_map_progress_front = NULL;
-			delete m_map_progress_text; m_map_progress_text = NULL;
-			delete m_cancel; m_cancel = NULL;
-			delete m_provider_title; m_provider_title = NULL;
-			delete m_provider_description; m_provider_description = NULL;
+			safe_release(m_background_tint);
+			safe_release(m_base_container);
+			safe_release(m_inner_container);
+			safe_release(m_title);
+			safe_release(m_map_name);
+			safe_release(m_part_progress_back);
+			safe_release(m_part_progress_front);
+			safe_release(m_part_progress_text);
+			safe_release(m_map_progress_back);
+			safe_release(m_map_progress_front);
+			safe_release(m_map_progress_text);
+			safe_release(m_cancel);
+			safe_release(m_provider_title);
+			safe_release(m_provider_description);
 		}
 
 		void c_map_download_display::DeviceLost()
@@ -326,28 +311,28 @@ namespace Yelo
 			m_part_progress_string[0] = 0;
 			if(m_map_extracting)
 			{
-				wcscpy_s(&m_part_progress_string[0], k_display_progress_string_length, L"Extracting map...");
+				wcscpy_s(m_part_progress_string, L"Extracting map...");
 				m_part_progress_front->SetDimensions(512, 26);
 			}
 			else if(m_reconnecting)
 			{
-				swprintf_s(m_part_progress_string, k_display_progress_string_length, L"Connecting to server (%1.f)", m_reconnect_time + 1);
+				swprintf_s(m_part_progress_string, L"Connecting to server (%1.f)", m_reconnect_time + 1);
 				m_part_progress_front->SetDimensions(512, 26);
 			}
 			else if(m_failed)
 			{
 				m_part_progress_string[0] = 0;
-				wcscpy_s(&m_part_progress_string[0], k_display_progress_string_length, L"Download failed");
+				wcscpy_s(m_part_progress_string, L"Download failed");
 				m_part_progress_front->SetDimensions(0, 26);
 			}
 			else
 			{
-				swprintf_s(m_part_progress_string, k_display_progress_string_length, L"%3.f%%", m_part_progress * 100);
+				swprintf_s(m_part_progress_string, L"%3.f%%", m_part_progress * 100);
 				m_part_progress_front->SetDimensions((uint32)(m_part_progress * 512), 26);
 			}
 			m_part_progress_front->Refresh();
 
-			swprintf_s(m_map_progress_string, k_display_progress_string_length, L"%3.f%%", m_map_progress * 100);
+			swprintf_s(m_map_progress_string, L"%3.f%%", m_map_progress * 100);
 			m_map_progress_front->SetDimensions((uint32)(m_map_progress * 512), 26);
 			m_map_progress_front->Refresh();
 		}

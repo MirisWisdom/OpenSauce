@@ -7,6 +7,12 @@
 #include "Common/Precompile.hpp"
 #include "Networking/MessageDeltas.hpp"
 
+#include <blamlib/Halo1/networking/network_client_manager.hpp>
+#include <blamlib/Halo1/networking/network_client_manager_structures.hpp>
+#include <blamlib/Halo1/networking/network_game_globals.hpp>
+#include <blamlib/Halo1/networking/network_game_manager_structures.hpp>
+#include <blamlib/Halo1/networking/network_server_manager.hpp>
+
 #include "Game/EngineFunctions.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Networking/MessageDefinitions.hpp"
@@ -171,8 +177,8 @@ skip_hook:
 				const MessageDeltas::packet_decoder& decoder = kYeloMessageDeltaDecoders[msg_type - Enums::k_message_deltas_count];
 
 				// Validate that the packet can be decoded in our current network state
-				if( TEST_FLAG(decoder.Flags, Enums::_message_deltas_new_client_bit) == Networking::IsClient() || 
-					TEST_FLAG(decoder.Flags, Enums::_message_deltas_new_server_bit) == Networking::IsServer() )
+				if( TEST_FLAG(decoder.Flags, Enums::_message_deltas_new_client_bit) == GameState::IsClient() || 
+					TEST_FLAG(decoder.Flags, Enums::_message_deltas_new_server_bit) == GameState::IsServer() )
 					decoder.Proc(client, header);
 
 				return true;

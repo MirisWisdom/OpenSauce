@@ -8,7 +8,7 @@
 
 #include <blamlib/Halo1/interface/hud_definitions.hpp>
 
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
+#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {
@@ -56,6 +56,25 @@ namespace Yelo
 
 	namespace Flags
 	{
+		enum
+		{
+			_weapon_hud_element_runtime_invalid_bit, // set by postprocessing code
+		};
+
+		enum
+		{
+			_weapon_hud_overlay_type_show_on_flashing_bit,
+			_weapon_hud_overlay_type_show_on_empty_bit,
+			_weapon_hud_overlay_type_show_on_reload_bit, // or overheating
+			_weapon_hud_overlay_type_show_on_default_bit,
+			_weapon_hud_overlay_type_show_always_bit,
+		};
+		enum
+		{
+			_weapon_hud_overlay_flashes_when_active_bit,
+			_weapon_hud_overlay_invalid_bit, // not exposed. set during postprocess, when overlay references invalid sequence
+		};
+
 		enum grenade_hud_sound_flags : long_flags
 		{
 			_grenade_hud_sound_low_grenade_count_bit,
@@ -71,8 +90,9 @@ namespace Yelo
 		struct weapon_hud_element
 		{
 			TAG_ENUM(state_attached_to, Enums::weapon_hud_state);
-			PAD16;
-			TAG_ENUM(can_use_on_map_type, Enums::hud_use_on_map_type);
+			byte_flags runtime_flags;
+			PAD8;
+			TAG_ENUM(can_use_on_map_type, Enums::hud_use_on_map_type); // actually treated as byte_flags
 			PAD16;
 			TAG_PAD(int32, 7);
 		}; BOOST_STATIC_ASSERT( sizeof(weapon_hud_element) == 0x24 );
@@ -109,8 +129,9 @@ namespace Yelo
 		struct weapon_hud_crosshairs_element
 		{
 			TAG_ENUM(crosshair_type, Enums::weapon_crosshair_type);
-			PAD16;
-			TAG_ENUM(can_use_on_map_type, Enums::hud_use_on_map_type);
+			byte_flags runtime_flags;
+			PAD8;
+			TAG_ENUM(can_use_on_map_type, Enums::hud_use_on_map_type); // actually byte_enum
 			PAD16;
 			TAG_PAD(int32, 7);
 			TAG_FIELD(tag_reference, crosshair_bitmap, 'bitm');
@@ -130,10 +151,14 @@ namespace Yelo
 			TAG_PAD(tag_reference, 1);
 			TAG_PAD(int32, 10);
 		}; BOOST_STATIC_ASSERT( sizeof(weapon_hud_overlay_item) == 0x88 );
-		struct weapon_hud_overlays_element : public weapon_hud_element
+		struct weapon_hud_overaly
 		{
 			TAG_FIELD(tag_reference, overlay_bitmap, 'bitm');
 			TAG_TBLOCK(overlays, weapon_hud_overlay_item);
+		};
+		struct weapon_hud_overlays_element : public weapon_hud_element
+		{
+			weapon_hud_overaly overlay;
 			TAG_PAD(int32, 10);
 		}; BOOST_STATIC_ASSERT( sizeof(weapon_hud_overlays_element) == 0x68 );
 
@@ -171,7 +196,7 @@ namespace Yelo
 			TAG_TBLOCK(number_elements, weapon_hud_number_element);
 			TAG_TBLOCK(crosshairs, weapon_hud_crosshairs_element);
 			TAG_TBLOCK(overlay_elements, weapon_hud_overlays_element);
-			PAD32;
+			long_flags runtime_used_crosshairs[BIT_VECTOR_SIZE_IN_DWORDS(Enums::k_number_of_weapon_crosshair_types)];
 			TAG_PAD(tag_block, 1);
 			TAG_TBLOCK(screen_effect, hud_screen_effect_definition);
 			TAG_PAD(tag_block, 11);
@@ -193,10 +218,7 @@ namespace Yelo
 				TAG_FIELD(int16, flash_cutoff);
 				PAD16;
 			}total_grenades_numbers;
-			struct {
-				TAG_FIELD(tag_reference, overlay_bitmap, 'bitm');
-				TAG_TBLOCK(overlays, weapon_hud_overlay_item);
-			}total_grenade_overlays;
+			weapon_hud_overaly total_grenade_overlays;
 			TAG_TBLOCK(warning_sounds, sound_hud_element_definition);
 			TAG_PAD(int32, 17);
 			weapon_hud_messaging_information messaging_information;

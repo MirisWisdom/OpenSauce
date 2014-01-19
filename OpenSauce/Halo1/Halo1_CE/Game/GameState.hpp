@@ -19,14 +19,6 @@
 
 namespace Yelo
 {
-	namespace TagGroups
-	{
-		struct s_game_globals;
-	};
-};
-
-namespace Yelo
-{
 	namespace Enums
 	{
 		enum {
@@ -62,11 +54,6 @@ namespace Yelo
 		void WriteEvent(cstring str = "", bool write_time_stamp = true);
 
 
-		s_main_globals* MainGlobals();
-		s_physical_memory_map_globals* PhysicalMemoryMapGlobals();
-
-
-		s_game_state_globals* GameStateGlobals();
 		// Allocate an object of type [T] inside the game state memory and return its address.
 		// Note: Also updates the game state's cpu allocation size by adding 'sizeof([T])'
 		template<typename T>
@@ -89,18 +76,6 @@ namespace Yelo
 			return CAST_PTR(T*, base_addr);
 		}
 
-
-		s_game_globals*				GameGlobals();
-		s_game_time_globals*		GameTimeGlobals();
-		s_game_allegiance_globals*	GameAllegianceGlobals();
-		s_point_physics_globals*	PointPhysics();
-		// Reference to the current platform's physics globals
-		s_physics_globals*			Physics();
-
-
-
-		// Globals tag data
-		TagGroups::s_game_globals*	GlobalGameGlobals();
 		
 		byte*		DeveloperMode();
 		bool		DevmodeEnabled();

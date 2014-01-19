@@ -8,7 +8,9 @@
 #include "Game/EngineFunctions.hpp"
 
 #include <blamlib/Halo1/cache/cache_files.hpp>
+#include <blamlib/Halo1/interface/hud_draw.hpp>
 #include <blamlib/Halo1/main/console.hpp>
+#include <blamlib/Halo1/main/main_structures.hpp>
 #include <blamlib/Halo1/math/periodic_functions.hpp>
 #include <blamlib/Halo1/memory/data.hpp>
 #include <blamlib/Halo1/objects/damage.hpp>
@@ -628,6 +630,73 @@ namespace Yelo
 		}
 		//////////////////////////////////////////////////////////////////////////
 		// hud_draw.c
+		API_FUNC_NAKED void PLATFORM_API hud_draw_meter(int16 /*local_player_index*/, TagGroups::s_hud_absolute_placement* placement, TagGroups::s_hud_element_meter* element,
+			byte arg_C, byte arg_10, long_flags flags, real arg_18, real arg_1C)
+		{
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(HUD_DRAW_METER);
+
+			API_FUNC_NAKED_START()
+				push	esi
+
+				push	arg_1C
+				push	arg_18
+				push	flags
+				movzx	esi, arg_10
+				push	esi
+				movzx	esi, arg_C
+				push	esi
+				mov		esi, element
+				push	placement
+				call	FUNCTION
+				add		esp, 4 * 6
+
+				pop		esi
+			API_FUNC_NAKED_END_NO_STACK_POP()
+		}
+		API_FUNC_NAKED void PLATFORM_API hud_draw_numbers(int16 local_player_index, TagGroups::s_hud_absolute_placement* placement, TagGroups::s_hud_element_number* element,
+			int32 number, int16 arg_10, long_flags flags, game_ticks_t first_render_time, real arg_1C)
+		{
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(HUD_DRAW_NUMBERS);
+
+			API_FUNC_NAKED_START()
+				push	esi
+
+				push	arg_1C
+				push	first_render_time
+				push	flags
+				movsx	esi, arg_10
+				push	esi
+				push	number
+				push	element
+				push	placement
+				movsx	esi, local_player_index
+				push	esi
+				call	FUNCTION
+				add		esp, 4 * 8
+
+				pop		esi
+			API_FUNC_NAKED_END_NO_STACK_POP()
+		}
+		API_FUNC_NAKED void PLATFORM_API hud_draw_static_element(int16 local_player_index, TagGroups::s_hud_absolute_placement* placement, TagGroups::s_hud_element_static* element,
+			long_flags flags, game_ticks_t first_render_time)
+		{
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(HUD_DRAW_STATIC_ELEMENT);
+
+			API_FUNC_NAKED_START()
+				push	esi
+
+				push	first_render_time
+				push	flags
+				push	element
+				push	placement
+				movsx	esi, local_player_index
+				push	esi
+				call	FUNCTION
+				add		esp, 4 * 5
+
+				pop		esi
+			API_FUNC_NAKED_END_NO_STACK_POP()
+		}
 		//////////////////////////////////////////////////////////////////////////
 		// hud_messaging.c
 		API_FUNC_NAKED void PLATFORM_API hud_print_message(int16 local_player_index, wcstring message)

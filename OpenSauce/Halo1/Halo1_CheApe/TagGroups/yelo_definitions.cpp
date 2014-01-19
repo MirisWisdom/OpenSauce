@@ -8,6 +8,7 @@
 #include "TagGroups/yelo_definitions.hpp"
 
 #include <blamlib/Halo1/game/game_globals.hpp>
+#include <blamlib/Halo1/game/game_globals_definitions.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 #include <blamlib/Halo1/units/unit_definitions.hpp>
 
