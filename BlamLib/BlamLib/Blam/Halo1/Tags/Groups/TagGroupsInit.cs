@@ -123,9 +123,8 @@ namespace BlamLib.Blam.Halo1
 			srai.Definition = new Tags.scenario_ai_resource_group().State;
 			srcmmt.Definition = new Tags.scenario_comments_resource_group().State;
 
-			// TODO: include these definitions?
-			//gelo.Definition = new Tags.project_yellow_globals_group().State;
-			//yelo.Definition = new Tags.project_yellow_group().State;
+			gelo.Definition = new Tags.project_yellow_globals_group().State;
+			yelo.Definition = new Tags.project_yellow_group().State;
 
 			for (int x = 1; x < Groups.Count; x++)
 				Groups[x].InitializeHandle(BlamVersion.Halo1, x, false);

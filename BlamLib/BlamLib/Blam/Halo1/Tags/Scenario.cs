@@ -978,7 +978,21 @@ namespace BlamLib.Blam.Halo1.Tags
 
 		// scenario_decal_palette_block, field_block<TI.TagReference>
 
-		// scenario_detail_object_collection_palette_block, 
+		#region scenario_detail_object_collection_palette_block
+		[TI.Definition(-1, 48)]
+		public class scenario_detail_object_collection_palette_block : TI.Definition
+		{
+			#region Fields
+			public TI.TagReference Name;
+			#endregion
+
+			public scenario_detail_object_collection_palette_block() : base(2)
+			{
+				Add(Name = new TI.TagReference());
+				Add(new TI.Pad(32));
+			}
+		}
+		#endregion
 
 		// actor_palette_block, field_block<TI.TagReference>
 
@@ -1605,7 +1619,7 @@ namespace BlamLib.Blam.Halo1.Tags
 		public TI.Block<scenario_bsp_switch_trigger_volume_block> BspSwitchTriggerVolumes;
 		public TI.Block<scenario_decals_block> Decals;
 		public TI.Block<field_block<TI.TagReference>> DecalPalette;
-		public TI.Block<field_block<TI.TagReference>> DetailObjectCollectionPalette;
+		public TI.Block<scenario_detail_object_collection_palette_block> DetailObjectCollectionPalette;
 
 		public TI.Block<field_block<TI.TagReference>> ActorPalette;
 		public TI.Block<encounter_block> Encounters;
@@ -1634,7 +1648,7 @@ namespace BlamLib.Blam.Halo1.Tags
 
 		public scenario_group() : base(69)
 		{
-			Add(DontUse = new TI.TagReference(this, TagGroups.sbsp));
+			Add(DontUse = new TI.TagReference(this, TagGroups.yelo));
 			Add(WontUse = new TI.TagReference(this, TagGroups.sbsp));
 			Add(CantUse = new TI.TagReference(this, TagGroups.sky_));
 			Add(Skies = new TI.Block<field_block<TI.TagReference>>(this, 8));
@@ -1681,7 +1695,7 @@ namespace BlamLib.Blam.Halo1.Tags
 			Add(BspSwitchTriggerVolumes = new TI.Block<scenario_bsp_switch_trigger_volume_block>(this, 256));
 			Add(Decals = new TI.Block<scenario_decals_block>(this, 65536));
 			Add(DecalPalette = new TI.Block<field_block<TI.TagReference>>(this, 128));
-			Add(DetailObjectCollectionPalette = new TI.Block<field_block<TI.TagReference>>(this, 32));
+			Add(DetailObjectCollectionPalette = new TI.Block<scenario_detail_object_collection_palette_block>(this, 32));
 			Add(new TI.Pad(84));
 
 			Add(ActorPalette = new TI.Block<field_block<TI.TagReference>>(this, 64));

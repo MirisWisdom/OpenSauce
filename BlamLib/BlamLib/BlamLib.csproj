@@ -33,6 +33,7 @@
     <Compile Include="Blam\DataHandles\MapId.cs" />
     <Compile Include="Blam\DataHandles\ResourcePtr.cs" />
     <Compile Include="Blam\DataHandles\StringId.cs" />
+    <Compile Include="Blam\Halo1\Tags\Definitions\Yelo.cs" />
     <Compile Include="Blam\Halo1\TypeEnums.cs" />
     <Compile Include="Compression\LZMA.cs" />
     <Compile Include="Cryptography\MD5.cs" />
@@ -74,7 +75,7 @@
     <Compile Include="Blam\Halo1\CheApe\Compiler.cs" />
     <Compile Include="Blam\Halo1\CheApe\Import.cs" />
     <Compile Include="Blam\Halo1\CheApe\Project.cs" />
-    <Compile Include="Blam\Halo1\DelimitorFile.cs" />
+    <Compile Include="Blam\Halo3\DelimitorFile.cs" />
     <Compile Include="Blam\Halo1\Game.cs" />
     <Compile Include="Blam\Halo1\Program.Halo1.cs" />
     <Compile Include="Blam\Halo1\Tags\Code\Resources.cs" />
