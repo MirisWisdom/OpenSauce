@@ -10,18 +10,16 @@ using OpenSauceIDE.Aether.AutoUI.TypeDescriptor;
 
 namespace OpenSauceIDE.Aether.AutoUI
 {
-	///-------------------------------------------------------------------------------------------------
 	/// <summary>	Singleton UI factory class. </summary>
-	///-------------------------------------------------------------------------------------------------
 	public class AutoUIFactory
 	{
 		#region Singleton
 		private static AutoUIFactory mInstance = new AutoUIFactory();
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets the factory instance. </summary>
+		///
 		/// <value>	The factory instance. </value>
-		///-------------------------------------------------------------------------------------------------
 		public static AutoUIFactory Instance
 		{
 			get
@@ -31,14 +29,14 @@ namespace OpenSauceIDE.Aether.AutoUI
 		}
 		#endregion Singleton
 
-		///-------------------------------------------------------------------------------------------------
+		#region Constructor
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>
-		/// 	Constructor that prevents a default instance of this class from being created.
-		/// 	Initialises the factory with known control types.
+		/// 	Constructor that prevents a default instance of this class from being created. Initialises the factory with
+		/// 	known control types.
 		/// </summary>
-		///-------------------------------------------------------------------------------------------------
 		private AutoUIFactory()
-		{			
+		{
 			mUITypeControlPairs.Add(new TypeControlPair { MemberType = typeof(bool), ControlType = typeof(AutoUIBoolean) });
 			mUITypeControlPairs.Add(new TypeControlPair { MemberType = typeof(byte), ControlType = typeof(AutoUIByte) });
 			mUITypeControlPairs.Add(new TypeControlPair { MemberType = typeof(sbyte), ControlType = typeof(AutoUISByte) });
@@ -75,11 +73,10 @@ namespace OpenSauceIDE.Aether.AutoUI
 			mUITypeControlPairs.Add(new TypeControlPair { MemberType = typeof(BlamLib.TagInterface.Rectangle2D), ControlType = typeof(AutoUIBlamRectangle2D) });
 			mUITypeControlPairs.Add(new TypeControlPair { MemberType = typeof(BlamLib.TagInterface.BlockIndex), ControlType = typeof(AutoUIBlamBlockIndex) });
 		}
+		#endregion Constructor
 
 		#region Prototype
-		///-------------------------------------------------------------------------------------------------
 		/// <summary>	A struct containing the type of control to use for a types member. </summary>
-		///-------------------------------------------------------------------------------------------------
 		public struct TypeMember
 		{
 			#region Fields
@@ -87,18 +84,21 @@ namespace OpenSauceIDE.Aether.AutoUI
 			public IAutoUIMemberInfo MemberInfo;
 			#endregion
 
+			#region Constructor
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Initializes a new instance of the TypeMember struct. </summary>
+			///
+			/// <param name="controlType">	Type of the control to use for the member. </param>
+			/// <param name="memberInfo"> 	Information describing the member to bind to. </param>
 			public TypeMember(Type controlType, IAutoUIMemberInfo memberInfo)
 			{
 				ControlType = controlType;
 				MemberInfo = memberInfo;
 			}
+			#endregion Constructor
 		}
 
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>
-		/// 	Prototype UI definition for an object type, used to generate a UI control when needed.
-		/// </summary>
-		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Prototype UI definition for an object type, used to generate a UI control when needed. </summary>
 		public struct UIPrototype
 		{
 			#region Fields
@@ -106,13 +106,20 @@ namespace OpenSauceIDE.Aether.AutoUI
 			public List<TypeMember> ControlTypes;
 			#endregion
 
+			#region Constructor
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Initializes a new instance of the UIPrototype struct. </summary>
+			///
+			/// <param name="objectType">	Type of the object the prototype is for. </param>
 			public UIPrototype(Type objectType)
 			{
 				ObjectType = objectType;
 				ControlTypes = new List<TypeMember>();
 			}
+			#endregion Constructor
 		}
 
+		/// <summary>	Struct defining what control type to use for a particular object type. </summary>
 		public struct TypeControlPair
 		{
 			public Type MemberType;
@@ -123,44 +130,30 @@ namespace OpenSauceIDE.Aether.AutoUI
 		private List<TypeControlPair> mUITypeControlPairs = new List<TypeControlPair>();
 		#endregion Prototype
 
-		#region Control Design
-		public static void SetControlBounds(System.Windows.Forms.Control control, int x, int y, int w, int h)
-		{
-			if (control.GetType().IsDefined(typeof(AutoUISizeAttribute), true))
-			{
-				AutoUISizeAttribute sizeAttribute = control.GetType().GetCustomAttributes(typeof(AutoUISizeAttribute), true)[0] as AutoUISizeAttribute;
-
-				int setW = w, setH = h;
-				setW = (sizeAttribute.MinWidth == 0 ? setW : Math.Max(setW, sizeAttribute.MinWidth));
-				setW = (sizeAttribute.MaxWidth == 0 ? setW : Math.Min(setW, sizeAttribute.MaxWidth));
-				setH = (sizeAttribute.MinHeight == 0 ? setH : Math.Max(setH, sizeAttribute.MinHeight));
-				setH = (sizeAttribute.MaxHeight == 0 ? setH : Math.Min(setH, sizeAttribute.MaxHeight));
-
-				control.SetBounds(x, y, setW, setH);
-			}
-			else
-			{
-				control.SetBounds(x, y, w, h);
-			}
-		}
-		#endregion Control Design
-
 		#region UI Construction
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets the control type for the specified object member. </summary>
+		///
 		/// <param name="memberInfo">	Information describing the member. </param>
+		///
 		/// <returns>	The control type. </returns>
-		///-------------------------------------------------------------------------------------------------
 		private Type GetControlType(IAutoUIMemberInfo memberInfo)
 		{
 			// Find a matching control for the member type
+			if (memberInfo.MemberInfo.IsDefined(typeof(AutoUIControlTypeAttribute), false))
+			{
+				AutoUIControlTypeAttribute typeAttribute = memberInfo.MemberInfo.GetCustomAttributes(typeof(AutoUIControlTypeAttribute), false)[0] as AutoUIControlTypeAttribute;
+
+				return typeAttribute.ControlType;
+			}
+			
 			var controlPairIndex = mUITypeControlPairs.FindIndex(pair => pair.MemberType == memberInfo.MemberValueType);
 
 			Type controlType = null;
 
 			if (controlPairIndex == -1)
 			{
-				// No matching control was found, so determine the base control type to use
+				// No matching control was found, so determine the base control type to use				
 				if (memberInfo.MemberValueType.IsEnum && memberInfo.MemberValueType.IsDefined(typeof(FlagsAttribute), false))
 				{
 					controlType = typeof(AutoUIFlags);
@@ -181,12 +174,13 @@ namespace OpenSauceIDE.Aether.AutoUI
 
 			return controlType;
 		}
-		
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Builds a user interface prototype. </summary>
-		/// <exception cref="Exception">	Thrown when an exception error condition occurs. </exception>
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Builds a user interface prototype for an object type. </summary>
+		///
+		/// <exception cref="Exception">	Thrown when a suitable control type for a member was not found. </exception>
+		///
 		/// <param name="classType">	Type of the class to prototype for. </param>
-		///-------------------------------------------------------------------------------------------------
 		public void BuildUIPrototype(Type classType)
 		{
 			// Get a type descriptor for the class
@@ -218,12 +212,14 @@ namespace OpenSauceIDE.Aether.AutoUI
 			mUIPrototypes.Add(uiPrototype);
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Builds a control set for the specified object. </summary>
+		///
 		/// <exception cref="Exception">	Thrown when an exception error condition occurs. </exception>
+		///
 		/// <param name="objectInstance">	The object instance to create controls for. </param>
+		///
 		/// <returns>	A list of controls, bound to the object instance. </returns>
-		///-------------------------------------------------------------------------------------------------
 		public List<System.Windows.Forms.Control> BuildAutoUI(object objectInstance)
 		{
 			Type objectType = objectInstance.GetType();
@@ -246,7 +242,7 @@ namespace OpenSauceIDE.Aether.AutoUI
 
 				if (!(newControl is System.Windows.Forms.Control) || !(newControl is IAutoUIControl))
 				{
-					throw new Exception("A ui prototype control type is either not a control or does not implement IAutoUIControl");
+					throw new Exception(String.Format("The ui prototype control type {0} is either not a control or does not implement IAutoUIControl", newControl.GetType().Name));
 				}
 
 				// Bind the control to the object instance
@@ -261,11 +257,12 @@ namespace OpenSauceIDE.Aether.AutoUI
 			return controls;
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Wraps a list of AutoUI controls in field containers. </summary>
+		///
 		/// <param name="controlList">	List of controls. </param>
+		///
 		/// <returns>	A list of AutoUIFieldContainers. </returns>
-		///-------------------------------------------------------------------------------------------------
 		public List<AutoUIFieldContainer> BuildAutoUIFieldContainers(List<System.Windows.Forms.Control> controlList)
 		{
 			List<AutoUIFieldContainer> fieldContainers = new List<AutoUIFieldContainer>();
@@ -273,12 +270,15 @@ namespace OpenSauceIDE.Aether.AutoUI
 			controlList.ForEach(
 				control =>
 				{
+					// Create a new field container
 					AutoUIFieldContainer fieldContainer = new AutoUIFieldContainer();
 					IAutoUIControl autoUIControl = control as IAutoUIControl;
 
+					// Set the containers name
 					var name = AutoUIFactory.GetAutoUIName(autoUIControl.MemberInfo);
 					name = name == null ? autoUIControl.MemberInfo.Name : name;
 
+					// Add the control to the container and add the container to the returned list
 					fieldContainer.SetTitle(name);
 					fieldContainer.AddControl(control);
 
@@ -291,11 +291,12 @@ namespace OpenSauceIDE.Aether.AutoUI
 		#endregion UI Construction
 
 		#region AutoUI Member Functions
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets whether the member is AutoUI enabled. </summary>
+		///
 		/// <param name="memberInfo">	Information describing the member. </param>
+		///
 		/// <returns>	true if enabled, otherwise false. </returns>
-		///-------------------------------------------------------------------------------------------------
 		public static bool GetAutoUIEnabled(MemberInfo memberInfo)
 		{
 			var parentDescriptor = AutoUITypeDescriptionManager.Instance.GetDescriptor(memberInfo.DeclaringType);
@@ -304,27 +305,31 @@ namespace OpenSauceIDE.Aether.AutoUI
 			return attributes.Exists(info => info is AutoUIAttribute);
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets whether the member is AutoUI enabled. </summary>
+		///
 		/// <param name="memberInfo">	Information describing the member. </param>
+		///
 		/// <returns>	true if enabled, otherwise false. </returns>
-		///-------------------------------------------------------------------------------------------------
 		public static bool GetAutoUIEnabled(IAutoUIMemberInfo memberInfo)
 		{
 			return GetAutoUIEnabled(memberInfo.MemberInfo);
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets the AutoUI name of the specified member. </summary>
+		///
 		/// <param name="memberInfo">	Information describing the member. </param>
+		///
 		/// <returns>	The name of the member if it has an AutoUIName attribute, otherwise null. </returns>
-		///-------------------------------------------------------------------------------------------------
 		public static string GetAutoUIName(MemberInfo memberInfo)
 		{
+			// Get information about the member from the type descriptor of its declaring type
 			var parentDescriptor = AutoUITypeDescriptionManager.Instance.GetDescriptor(memberInfo.DeclaringType);
 
 			var attributes = parentDescriptor.GetMemberAttributes(memberInfo.Name);
 
+			// Return the AutoUI name if it has the attribute defined
 			if (attributes.Exists(info => info is AutoUINameAttribute))
 			{
 				AutoUINameAttribute memberName = attributes.Find(info => info is AutoUINameAttribute) as AutoUINameAttribute;
@@ -337,27 +342,32 @@ namespace OpenSauceIDE.Aether.AutoUI
 			}
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets the AutoUI name of the specified member. </summary>
+		///
 		/// <param name="memberInfo">	Information describing the member. </param>
+		///
 		/// <returns>	The name of the member if it has an AutoUIName attribute, otherwise null. </returns>
-		///-------------------------------------------------------------------------------------------------
 		public static string GetAutoUIName(IAutoUIMemberInfo memberInfo)
 		{
 			return GetAutoUIName(memberInfo.MemberInfo);
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets the AutoUI name of the specified object. </summary>
+		///
+		/// <exception cref="Exception">
+		/// 	Thrown if the source member in an AutoUINameFormattedAttribute does not exist.
+		/// </exception>
+		///
 		/// <param name="sourceObject">	The object to get the name from. </param>
+		///
 		/// <returns>
-		/// 	The name of the member if it has an AutoUIName or AutoUIFormatted attribute, otherwise
-		/// 	the object types name.
+		/// 	The name of the member if it has an AutoUIName or AutoUIFormatted attribute, otherwise the object types name.
 		/// </returns>
-		///-------------------------------------------------------------------------------------------------
 		public static string GetAutoUIName(object sourceObject)
 		{
-			// Get the objects type
+			// Get the objects type descriptor
 			var typeDescriptor = AutoUITypeDescriptionManager.Instance.GetDescriptor(sourceObject.GetType());
 
 			var typeAttributes = typeDescriptor.GetAttributes();
@@ -375,6 +385,11 @@ namespace OpenSauceIDE.Aether.AutoUI
 
 				var autoUIMemberInfo = typeDescriptor.GetMemberInfos().Find(info => info.Name.Equals(memberName.Source));
 
+				if(autoUIMemberInfo == null)
+				{
+					throw new Exception(String.Format("There is no member called {0} in {1}", memberName.Source, typeDescriptor.DescribedType.Name));
+				}
+
 				object memberValue = autoUIMemberInfo.GetValue(sourceObject);
 
 				return String.Format(memberName.Format, memberValue.ToString());
@@ -385,12 +400,13 @@ namespace OpenSauceIDE.Aether.AutoUI
 				return sourceObject.GetType().Name;
 			}
 		}
-		
-		///-------------------------------------------------------------------------------------------------
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets whether the specified member should be ignored. </summary>
+		///
 		/// <param name="memberInfo">	Information describing the member. </param>
+		///
 		/// <returns>	true if it should be ignored, otherwise false. </returns>
-		///-------------------------------------------------------------------------------------------------
 		public static bool GetAutoUIIgnored(MemberInfo memberInfo)
 		{
 			var parentDescriptor = AutoUITypeDescriptionManager.Instance.GetDescriptor(memberInfo.DeclaringType);
@@ -403,24 +419,25 @@ namespace OpenSauceIDE.Aether.AutoUI
 			);
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets whether the specified member should be ignored. </summary>
+		///
 		/// <param name="memberInfo">	Information describing the member. </param>
+		///
 		/// <returns>	true if it should be ignored, otherwise false. </returns>
-		///-------------------------------------------------------------------------------------------------
 		public static bool GetAutoUIIgnored(IAutoUIMemberInfo memberInfo)
 		{
 			return GetAutoUIIgnored(memberInfo.MemberInfo);
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Creates an interface class for a member that is a field or property. </summary>
+		///
 		/// <param name="memberInfo">	Information describing the member. </param>
+		///
 		/// <returns>
-		/// 	A field or property interface class for the member. Null if the member isn't a field or
-		/// 	property.
+		/// 	A field or property interface class for the member. Null if the member isn't a field or property.
 		/// </returns>
-		///-------------------------------------------------------------------------------------------------
 		public static IAutoUIMemberInfo GetAutoUIMemberInfo(MemberInfo memberInfo)
 		{
 			IAutoUIMemberInfo autoUIMemberInfo;
@@ -439,16 +456,17 @@ namespace OpenSauceIDE.Aether.AutoUI
 			return autoUIMemberInfo;
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets an AutoUI member info interface for the specified member. </summary>
+		///
 		/// <exception cref="Exception">	Thrown if the specified member is not valid. </exception>
+		///
 		/// <param name="objectType">	Type of the object that the member resides in. </param>
 		/// <param name="memberName">	Name of the member to get. </param>
+		///
 		/// <returns>
-		/// 	A field or property interface class for the member. Null if the member isn't a field or
-		/// 	property.
+		/// 	A field or property interface class for the member. Null if the member isn't a field or property.
 		/// </returns>
-		///-------------------------------------------------------------------------------------------------
 		public static IAutoUIMemberInfo GetAutoUIMemberInfo(Type objectType, string memberName)
 		{
 			// Get a type descriptor for the class

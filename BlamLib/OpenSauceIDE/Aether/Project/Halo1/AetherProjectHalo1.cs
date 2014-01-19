@@ -19,9 +19,7 @@ using OpenSauceIDE.Aether.AutoUI.Attributes;
 
 namespace OpenSauceIDE.Aether.Project.Halo1
 {
-	///-------------------------------------------------------------------------------------------------
 	/// <summary>	Project class used for the Halo 1 version of Aether. </summary>
-	///-------------------------------------------------------------------------------------------------
 	public class AetherProjectHalo1 : AetherBaseProject
 	{
 		#region Fields
@@ -29,10 +27,10 @@ namespace OpenSauceIDE.Aether.Project.Halo1
 		#endregion Fields
 
 		#region Constructor
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Constructor. </summary>
+		///
 		/// <param name="blamVersion">	The halo 1 blam version. </param>
-		///-------------------------------------------------------------------------------------------------
 		public AetherProjectHalo1(BlamLib.BlamVersion blamVersion)
 		{
 			Settings = AetherSettingsHandler.Instance.GetSettings(blamVersion);
@@ -41,36 +39,36 @@ namespace OpenSauceIDE.Aether.Project.Halo1
 		#endregion Constructor
 
 		#region Project Setup
-		///-------------------------------------------------------------------------------------------------
+		private BlamLib.TagInterface.TagGroup[] kIgnoredTagGroups =
+		{
+			H1.TagGroups.actr, H1.TagGroups.actv, H1.TagGroups.ant_, H1.TagGroups.antr,
+			H1.TagGroups.bipd, H1.TagGroups.boom, H1.TagGroups.cdmg, H1.TagGroups.coll,
+			H1.TagGroups.colo, H1.TagGroups.cont, H1.TagGroups.deca, H1.TagGroups.DeLa,
+			H1.TagGroups.devc, H1.TagGroups.dobc, H1.TagGroups.effe, H1.TagGroups.elec,
+			H1.TagGroups.eqip, H1.TagGroups.flag, H1.TagGroups.fog_, H1.TagGroups.font,
+			H1.TagGroups.foot, H1.TagGroups.garb, H1.TagGroups.gelo, H1.TagGroups.glw_,
+			H1.TagGroups.grhi, H1.TagGroups.hmt_, H1.TagGroups.hud_, H1.TagGroups.hudg,
+			H1.TagGroups.item, H1.TagGroups.itmc, H1.TagGroups.jpt_, H1.TagGroups.lens,
+			H1.TagGroups.lsnd, H1.TagGroups.matg, H1.TagGroups.metr, H1.TagGroups.mgs2,
+			H1.TagGroups.mply, H1.TagGroups.ngpr, H1.TagGroups.part, H1.TagGroups.pctl,
+			H1.TagGroups.phys, H1.TagGroups.plac, H1.TagGroups.pphy,
+			H1.TagGroups.proj, H1.TagGroups.rain, H1.TagGroups.seff, H1.TagGroups.sky_,
+			H1.TagGroups.snd_, H1.TagGroups.snde, H1.TagGroups.Soul, H1.TagGroups.str_,
+			H1.TagGroups.tag_, H1.TagGroups.tagc, H1.TagGroups.trak, H1.TagGroups.udlg,
+			H1.TagGroups.unhi, H1.TagGroups.unit, H1.TagGroups.ustr, H1.TagGroups.vcky,
+			H1.TagGroups.vehi, H1.TagGroups.weap, H1.TagGroups.wind, H1.TagGroups.wphi,
+			H1.TagGroups.yelo
+		};
+
 		/// <summary>	Creates a tag manager. </summary>
-		///-------------------------------------------------------------------------------------------------
 		public override void CreateTagManager()
 		{
 			mTagIndexManager = new AetherTagIndexHandler<BlamLib.Managers.TagIndex>(BlamVersion.Halo1_CE, Settings.TagsPath);
 
-			mTagIndexManager.IndexInterface.SetupIgnoreList(
-				H1.TagGroups.actr, H1.TagGroups.actv, H1.TagGroups.ant_, H1.TagGroups.antr,
-				H1.TagGroups.bipd, H1.TagGroups.boom, H1.TagGroups.cdmg, H1.TagGroups.coll,
-				H1.TagGroups.colo, H1.TagGroups.cont, H1.TagGroups.deca, H1.TagGroups.DeLa,
-				H1.TagGroups.devc, H1.TagGroups.dobc, H1.TagGroups.effe, H1.TagGroups.elec,
-				H1.TagGroups.eqip, H1.TagGroups.flag, H1.TagGroups.fog_, H1.TagGroups.font,
-				H1.TagGroups.foot, H1.TagGroups.garb, H1.TagGroups.gelo, H1.TagGroups.glw_,
-				H1.TagGroups.grhi, H1.TagGroups.hmt_, H1.TagGroups.hud_, H1.TagGroups.hudg,
-				H1.TagGroups.item, H1.TagGroups.itmc, H1.TagGroups.jpt_, H1.TagGroups.lens,
-				H1.TagGroups.lsnd, H1.TagGroups.matg, H1.TagGroups.metr, H1.TagGroups.mgs2,
-				H1.TagGroups.mply, H1.TagGroups.ngpr, H1.TagGroups.part, H1.TagGroups.pctl,
-				H1.TagGroups.phys, H1.TagGroups.plac, H1.TagGroups.pphy,
-				H1.TagGroups.proj, H1.TagGroups.rain, H1.TagGroups.seff, H1.TagGroups.sky_,
-				H1.TagGroups.snd_, H1.TagGroups.snde, H1.TagGroups.Soul, H1.TagGroups.str_,
-				H1.TagGroups.tag_, H1.TagGroups.tagc, H1.TagGroups.trak, H1.TagGroups.udlg,
-				H1.TagGroups.unhi, H1.TagGroups.unit, H1.TagGroups.ustr, H1.TagGroups.vcky,
-				H1.TagGroups.vehi, H1.TagGroups.weap, H1.TagGroups.wind, H1.TagGroups.wphi,
-				H1.TagGroups.yelo);
+			mTagIndexManager.IndexInterface.SetupIgnoreList(kIgnoredTagGroups);
 		}
 
-		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Disposes of the tag manager. </summary>
-		///-------------------------------------------------------------------------------------------------
 		public override void DisposeTagManager()
 		{
 			if (mTagIndexManager != null)
@@ -83,12 +81,12 @@ namespace OpenSauceIDE.Aether.Project.Halo1
 		#endregion Project Setup
 
 		#region Tag Processing
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Process the Halo1 light tag. </summary>
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Process a Halo1 light tag. </summary>
+		///
 		/// <param name="parent">	 	The parent scene object. </param>
 		/// <param name="tagIndex">  	The tag index for the tag. </param>
 		/// <param name="tagManager">	The tags manager object. </param>
-		///-------------------------------------------------------------------------------------------------
 		private void ProcessLight(SceneObjectBase parent
 			, TagIndex tagIndex
 			, BlamLib.Managers.TagManager tagManager)
@@ -108,13 +106,13 @@ namespace OpenSauceIDE.Aether.Project.Halo1
 			AddSceneObject(sceneObject);
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Process a Halo1 object. </summary>
+		///
 		/// <param name="parent">	 	The parent scene object. </param>
 		/// <param name="objectType">	Type of Halo1 object. </param>
 		/// <param name="tagIndex">  	The tag index for the tag. </param>
 		/// <param name="tagManager">	The tags manager object. </param>
-		///-------------------------------------------------------------------------------------------------
 		private void ProcessObject(SceneObjectBase parent
 			, BlamLib.Blam.Halo1.TypeEnums.ObjectType objectType
 			, TagIndex tagIndex
@@ -123,6 +121,11 @@ namespace OpenSauceIDE.Aether.Project.Halo1
 			// Create a new generic object data source
 			ObjectData objectData = new ObjectData();
 			objectData.CollectData(tagIndex, tagManager);
+
+			if(!objectData.Model.IsValid)
+			{
+				return;
+			}
 
 			// Create a type specific scene object
 			SceneObjectBase sceneObject = null;
@@ -164,12 +167,12 @@ namespace OpenSauceIDE.Aether.Project.Halo1
 			);
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Process a structure bsp tag. </summary>
+		///
 		/// <param name="parent">	 	The parent scene object. </param>
 		/// <param name="tagIndex">  	The tag index for the tag. </param>
 		/// <param name="tagManager">	The tags manager object. </param>
-		///-------------------------------------------------------------------------------------------------
 		private void ProcessBSP(SceneObjectBase parent
 			, TagIndex tagIndex
 			, BlamLib.Managers.TagManager tagManager)
@@ -178,7 +181,7 @@ namespace OpenSauceIDE.Aether.Project.Halo1
 			StructureBSPData bspData = new StructureBSPData();
 			bspData.CollectData(tagIndex, tagManager);
 
-			// Create a bsp scene obejct
+			// Create a bsp scene object
 			var sceneObjectStructureBSP = new SceneObjectStructureBSP(parent, bspData, tagIndex, tagManager);
 			
 			// Set the scene objects parent and add it to the list
@@ -190,12 +193,12 @@ namespace OpenSauceIDE.Aether.Project.Halo1
 			AddSceneObject(sceneObjectStructureBSP);
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Process a scenario tag. </summary>
+		///
 		/// <param name="parent">	 	The parent scene object. </param>
 		/// <param name="tagIndex">  	The tag index for the tag. </param>
 		/// <param name="tagManager">	The tags manager object. </param>
-		///-------------------------------------------------------------------------------------------------
 		private void ProcessScenario(SceneObjectBase parent
 			, TagIndex tagIndex
 			, BlamLib.Managers.TagManager tagManager)
@@ -207,7 +210,7 @@ namespace OpenSauceIDE.Aether.Project.Halo1
 			// Create a scenario scene object
 			var sceneObjectScenario = new SceneObjectScenario(scenarioData, tagIndex, tagManager);
 
-			// Se the scene obejcts parent and add it to the list
+			// Set the scene objects parent and add it to the list
 			if (parent != null)
 			{
 				sceneObjectScenario.SetParent(parent);
@@ -244,21 +247,80 @@ namespace OpenSauceIDE.Aether.Project.Halo1
 		#endregion Tag Processing
 
 		#region Scenario Open/Close
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Opens a scenario tag from the specified location. </summary>
+		///
 		/// <param name="location">	The scenario tag to be loaded. </param>
-		///-------------------------------------------------------------------------------------------------
-		public override void OpenScenario(string location)
+		public override bool OpenScenario(string location)
 		{
 			BlamLib.Managers.TagIndex tagIndex = mTagIndexManager.IndexInterface;
+
+			// Record errors that occur when opening the scenario, to display at the end
+			List<string> errorList = new List<string>();
+			tagIndex.EventOpen +=
+				(sender, args) =>
+				{
+					// Output every tag that is opened
+					Aether.Instance.Output.WriteLine(Output.OutputManager.OutputTypeEnum.Normal, "Tag Opened : " + args.TagManager.GroupTag.ToString() + " " + args.TagManager.Name);
+
+					if(args.TagManager.ContainsBadReferences)
+					{
+						foreach(var reference in args.TagManager.BadReferences)
+						{
+							// If a bad reference is not an ignored tag type, add an error to the list
+							BlamLib.TagInterface.TagGroup testGroup = reference.GroupTag;
+							uint groupTagInt = (uint)(reference.FieldValue as object[])[3];
+							if (groupTagInt != 0)
+							{
+								testGroup = BlamLib.Blam.MiscGroups.TagGroupFrom(BlamVersion.Halo1_CE, groupTagInt);
+							}
+
+							if (kIgnoredTagGroups.Contains(testGroup))
+							{
+								continue;
+							}
+
+							errorList.Add("Bad Reference : " + testGroup.ToString() + " " + reference.ToString());
+						}
+					}
+				};
+
+			tagIndex.ErrorOccurred +=
+				(sender, args) =>
+				{
+					// If an error or exception occurs, add errors to the list for it
+					errorList.Add(args.Message);
+
+					var exception = args.ThrownException;
+					while(exception != null)
+					{
+						errorList.Add(exception.Message);
+						exception = exception.InnerException;
+					}
+				};
+
+			// Open the scenario tag and it's dependents
 			DatumIndex scenarioDatumIndex = tagIndex.Open(location, BlamLib.Blam.Halo1.TagGroups.scnr, ITagStreamFlags.LoadDependents);
 
+			// Write all of the errors that were encountered to the message output
+			errorList.ForEach(error => Aether.Instance.Output.WriteLine(Output.OutputManager.OutputTypeEnum.Error, error));
+			
+			if (!scenarioDatumIndex.IsValid)
+			{
+				// If the scenario failed to load, close the tag index and write an error to the output
+				CloseScenario();
+
+				Aether.Instance.Output.WriteLine(Output.OutputManager.OutputTypeEnum.Error, "Load Failed : Failed to load the scenario " + location);
+
+				return false;
+			}
+
+			// Process the scenario's objects and such
 			ProcessScenario(null, tagIndex, tagIndex[scenarioDatumIndex]);
+			return true;
 		}
 
-		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Unloads the current scenario and its dependents from memory. </summary>
-		///-------------------------------------------------------------------------------------------------
 		public override void CloseScenario()
 		{
 			ClearSceneObjects();
@@ -266,14 +328,14 @@ namespace OpenSauceIDE.Aether.Project.Halo1
 		#endregion Scenario Open/Close
 
 		#region Project Variables
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets the tag extension for the specfied tag type. </summary>
-		/// <exception cref="Exception">
-		/// 	Thrown when a missing tag type extension is requested.
-		/// </exception>
+		///
+		/// <exception cref="Exception">	Thrown when a missing tag type extension is requested. </exception>
+		///
 		/// <param name="tagTypeID">	Identifier for the tag type. </param>
+		///
 		/// <returns>	The tag extension. </returns>
-		///-------------------------------------------------------------------------------------------------
 		public override string GetTagExtension(string tagTypeID)
 		{
 			if (!mTagExtensions.ContainsKey(tagTypeID))

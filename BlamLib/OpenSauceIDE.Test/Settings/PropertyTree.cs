@@ -215,7 +215,7 @@ namespace OpenSauceIDE.Test
 				propertyTree.GetValueEnumerator<bool>("OpenSauceTest.SubList1.SubList2.TestBoolList");
 				Assert.Fail("Did not exception when an requested path node was missing.");
 			}
-			catch { };            
+			catch { };
 		}
 
 		[TestMethod]

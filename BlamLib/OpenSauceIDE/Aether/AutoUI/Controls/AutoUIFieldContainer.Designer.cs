@@ -55,9 +55,10 @@
 			this.ControlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.ControlPanel.Location = new System.Drawing.Point(0, 0);
 			this.ControlPanel.Margin = new System.Windows.Forms.Padding(0);
-			this.ControlPanel.MinimumSize = new System.Drawing.Size(2, 20);
+			this.ControlPanel.MinimumSize = new System.Drawing.Size(2, 22);
 			this.ControlPanel.Name = "ControlPanel";
-			this.ControlPanel.Size = new System.Drawing.Size(479, 20);
+			this.ControlPanel.Padding = new System.Windows.Forms.Padding(1);
+			this.ControlPanel.Size = new System.Drawing.Size(479, 22);
 			this.ControlPanel.TabIndex = 1;
 			// 
 			// FieldContainerSplit
@@ -76,7 +77,7 @@
 			// FieldContainerSplit.Panel2
 			// 
 			this.FieldContainerSplit.Panel2.Controls.Add(this.ControlPanel);
-			this.FieldContainerSplit.Size = new System.Drawing.Size(600, 20);
+			this.FieldContainerSplit.Size = new System.Drawing.Size(600, 22);
 			this.FieldContainerSplit.SplitterDistance = 120;
 			this.FieldContainerSplit.SplitterWidth = 1;
 			this.FieldContainerSplit.TabIndex = 2;
@@ -89,9 +90,9 @@
 			this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
 			this.Controls.Add(this.FieldContainerSplit);
 			this.Margin = new System.Windows.Forms.Padding(0);
-			this.MinimumSize = new System.Drawing.Size(600, 20);
+			this.MinimumSize = new System.Drawing.Size(600, 22);
 			this.Name = "AutoUIFieldContainer";
-			this.Size = new System.Drawing.Size(600, 20);
+			this.Size = new System.Drawing.Size(600, 22);
 			this.FieldContainerSplit.Panel1.ResumeLayout(false);
 			this.FieldContainerSplit.Panel2.ResumeLayout(false);
 			this.FieldContainerSplit.Panel2.PerformLayout();

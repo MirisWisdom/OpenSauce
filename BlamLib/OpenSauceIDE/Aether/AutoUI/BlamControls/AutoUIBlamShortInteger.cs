@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Windows.Forms;
-using System.Reflection;
 
 namespace OpenSauceIDE.Aether.AutoUI.BlamControls
 {
+	/// <summary>	An automatic user interface blam short integer control. </summary>
 	public class AutoUIBlamShortInteger : Controls.AutoUIInt16
 	{
 		public AutoUIBlamShortInteger()

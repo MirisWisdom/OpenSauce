@@ -1,6 +1,7 @@
 ﻿using BlamLib.Managers;
 using BlamLib.Render.COLLADA.Halo1;
 using OpenSauceIDE.Aether.AutoUI.Attributes;
+using OpenSauceIDE.Aether.Extraction;
 using OpenSauceIDE.Aether.SceneObject;
 using OpenSauceIDE.Aether.Settings;
 using System;
@@ -8,11 +9,9 @@ using System.IO;
 
 namespace OpenSauceIDE.Aether.Project.Halo1
 {
-	///-------------------------------------------------------------------------------------------------
 	/// <summary>	Scene object for Halo1 scenario structure bsp. </summary>
-	///-------------------------------------------------------------------------------------------------
 	[SceneObject(SceneObjectClassEnum.Object, "STRUCTURE_BSP"), AutoUINameFormatted("Structure BSP: {0}", "ObjectName")]
-	public class SceneObjectStructureBSP : SceneObjectBase, ISceneObjectExtractable
+	public class SceneObjectStructureBSP : SceneObjectBase, IObjectExtractable
 	{
 		#region Fields
 		private StructureBSPData mBSPData = null;
@@ -21,13 +20,13 @@ namespace OpenSauceIDE.Aether.Project.Halo1
 		#endregion Fields
 
 		#region Constructor
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Constructor. </summary>
+		///
 		/// <param name="parent">	 	The parent. </param>
 		/// <param name="bspData">   	Information describing the bsp. </param>
 		/// <param name="tagIndex">  	Tag index containing the tag. </param>
 		/// <param name="tagManager">	The tags manager object. </param>
-		///-------------------------------------------------------------------------------------------------
 		public SceneObjectStructureBSP(SceneObjectBase parent
 			, StructureBSPData bspData
 			, TagIndexBase tagIndex
@@ -127,16 +126,9 @@ namespace OpenSauceIDE.Aether.Project.Halo1
 		}
 		#endregion Properties
 
-		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Extracts this object. </summary>
-		///-------------------------------------------------------------------------------------------------
-		public void Extract()
+		public bool Extract()
 		{
-			if (!EnableExtraction)
-			{
-				return;
-			}
-
 			string outputBSPPath = Path.Combine(Aether.Instance.CurrentProject.Settings.DataPath, mTagManager.Name);
 
 			StructureBSPShaderData bspShaderData = new StructureBSPShaderData();
@@ -146,20 +138,27 @@ namespace OpenSauceIDE.Aether.Project.Halo1
 				mTagIndex,
 				mTagManager);
 
+			extractor.ErrorOccured +=
+				(sender, args) =>
+				{
+					Aether.Instance.Output.WriteLine(Output.OutputManager.OutputTypeEnum.Error, args.ErrorMessage);
+				};
+
 			extractor.AddDataProvider(mBSPData);
 			extractor.AddDataProvider(bspShaderData);
 			if (extractor.BuildColladaInstance())
 			{
 				extractor.SaveDAE(outputBSPPath + ".dae");
+				return true;
 			}
-			// TODO: error here
+			return false;
 		}
 		#endregion Extraction
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets the name of the object. </summary>
+		///
 		/// <value>	The name of the object. </value>
-		///-------------------------------------------------------------------------------------------------
 		public override string ObjectName
 		{
 			get { return Path.GetFileNameWithoutExtension(mBSPData.TagPath); }

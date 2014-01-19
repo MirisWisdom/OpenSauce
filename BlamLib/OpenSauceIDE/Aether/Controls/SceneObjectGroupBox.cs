@@ -9,11 +9,10 @@ using System.Windows.Forms;
 
 namespace OpenSauceIDE.Aether.Controls
 {
+	/// <summary>	A collapsible group box type that allows extraction of a scene object and it's children. </summary>
 	public partial class SceneObjectGroupBox : SceneObjectExtractableGroupBox, ISceneObjectListUI
 	{
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>   Scene object proxy for sorting a scene object and it's name. </summary>
-		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Scene object proxy for sorting a scene object and it's name. </summary>
 		private struct SceneObjectProxy
 		{
 			public SceneObject.SceneObjectBase SceneObject { get; set; }
@@ -26,9 +25,7 @@ namespace OpenSauceIDE.Aether.Controls
 		#endregion Fields
 		
 		#region Constructor
-		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Default constructor. </summary>
-		///-------------------------------------------------------------------------------------------------
 		public SceneObjectGroupBox()
 		{
 			InitializeComponent();
@@ -43,10 +40,11 @@ namespace OpenSauceIDE.Aether.Controls
 		}
 		#endregion Constructor
 
-		///-------------------------------------------------------------------------------------------------
+		#region Scene Object Display
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Adds a scene object to the list. </summary>
+		///
 		/// <param name="sceneObject">	The scene object. </param>
-		///-------------------------------------------------------------------------------------------------
 		public void AddSceneObject(SceneObject.SceneObjectBase sceneObject)
 		{
 			mSceneObjects.Add(new SceneObjectProxy { SceneObject = sceneObject, Name = AutoUI.AutoUIFactory.GetAutoUIName(sceneObject) });
@@ -57,12 +55,21 @@ namespace OpenSauceIDE.Aether.Controls
 			}
 		}
 
+		/// <summary>	Clears the scene objects list. </summary>
 		public void ClearSceneObjects()
 		{
 			SetSceneObject(null);
 			mSceneObjects.Clear();
 		}
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Sets the scene object to display. </summary>
+		///
+		/// <exception cref="Exception">
+		/// 	Thrown if a scene object type does not have a scene object attribute defined.
+		/// </exception>
+		///
+		/// <param name="sceneObject">	The scene object. </param>
 		public override void SetSceneObject(SceneObject.SceneObjectBase sceneObject)
 		{
 			// Set the base values for the control and the container name
@@ -86,14 +93,17 @@ namespace OpenSauceIDE.Aether.Controls
 			}
 
 			MembersPanel.SuspendLayout();
+
 			//  Build the UI members for the scene objects properties
 			var controls = AutoUI.AutoUIFactory.Instance.BuildAutoUI(sceneObject);
 			var fieldContainerControls = AutoUI.AutoUIFactory.Instance.BuildAutoUIFieldContainers(controls);
 
 			fieldContainerControls.ForEach(control => MembersPanel.Controls.Add(control));
+
 			MembersPanel.ResumeLayout();
 
 			ChildrenPanel.SuspendLayout();
+
 			// Add the scene objects children
 			var children = sceneObject.GetChildren();
 			foreach(var child in children)
@@ -126,16 +136,17 @@ namespace OpenSauceIDE.Aether.Controls
 			}
 			ChildrenPanel.ResumeLayout();
 		}
+		#endregion Scene Object Display
 
 		#region Events
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>
-		///     Event handler. Called by the ObjectSelectionCombo when the selected value is changed,
-		///     to update the contents panel.
+		/// 	Event handler. Called by the ObjectSelectionCombo when the selected value is changed, to
+		/// 	update the content panel.
 		/// </summary>
-		/// <param name="sender">   Source of the event. </param>
-		/// <param name="e">        Event information. </param>
-		///-------------------------------------------------------------------------------------------------
+		///
+		/// <param name="sender">	Source of the event. </param>
+		/// <param name="e">	 	Event information. </param>
 		private void ObjectSelectionCombo_SelectedValueChanged(object sender, EventArgs e)
 		{
 			// Change the contents panel to display the selected item
@@ -153,26 +164,41 @@ namespace OpenSauceIDE.Aether.Controls
 			}
 		}
 
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>   Event handler. Called by ExtractAllButton when clicked. </summary>
-		/// <param name="sender">   Source of the event. </param>
-		/// <param name="e">        Event information. </param>
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Event handler. Called by ExtractAllButton when clicked. </summary>
+		///
+		/// <param name="sender">	Source of the event. </param>
+		/// <param name="e">	 	Event information. </param>
 		private void ExtractAllButton_Click(object sender, EventArgs e)
 		{
-			// Extract the scenario itself
-			if ((ObjectSelectionCombo.SelectedItem != null) && (ObjectSelectionCombo.SelectedItem is SceneObject.ISceneObjectExtractable))
+			if ((ObjectSelectionCombo.SelectedItem != null) && (ObjectSelectionCombo.SelectedItem is SceneObjectProxy))
 			{
-				(ObjectSelectionCombo.SelectedItem as SceneObject.ISceneObjectExtractable).Extract();
-			}
+				// Extract the selected object
+				var sceneObjectProxy = (SceneObjectProxy)ObjectSelectionCombo.SelectedItem;
 
-			// Extract the scenario's children
-			foreach(var sceneObject in mSceneObjects)
-			{
-				if (sceneObject.SceneObject is SceneObject.ISceneObjectExtractable)
+				if (sceneObjectProxy.SceneObject is OpenSauceIDE.Aether.Extraction.IObjectExtractable)
 				{
-					(sceneObject.SceneObject as SceneObject.ISceneObjectExtractable).Extract();
+					var sceneObject = sceneObjectProxy.SceneObject as Extraction.IObjectExtractable;
+					string name = AutoUI.AutoUIFactory.GetAutoUIName(sceneObject);
+
+					Aether.Instance.Extraction.RegisterExtractionJob(sceneObject, name);
 				}
+
+				// Extract the selected objects children
+				sceneObjectProxy.SceneObject.GetChildren().ForEach(
+					childObject =>
+					{
+						if (childObject is OpenSauceIDE.Aether.Extraction.IObjectExtractable)
+						{
+							var sceneObject = childObject as Extraction.IObjectExtractable;
+							string name = AutoUI.AutoUIFactory.GetAutoUIName(sceneObject);
+
+							Aether.Instance.Extraction.RegisterExtractionJob(sceneObject, name);
+						}
+					}
+				);
+
+				Aether.Instance.Extraction.RunCurrentJobs();
 			}
 		}
 		#endregion Events

@@ -6,10 +6,7 @@ using System.Reflection;
 
 namespace OpenSauceIDE.Aether.AutoUI.Controls
 {
-	///-------------------------------------------------------------------------------------------------
 	/// <summary>	An automatic user interface checked list box for a flagged enum. </summary>
-	///-------------------------------------------------------------------------------------------------
-	[Attributes.AutoUISize(0, 23, 0, 0)]
 	public class AutoUIFlags : CheckedListBox, IAutoUIControl
 	{
 		#region Fields
@@ -19,10 +16,10 @@ namespace OpenSauceIDE.Aether.AutoUI.Controls
 		#endregion Fields
 
 		#region Methods
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Sets the controls checkboxes from a value. </summary>
+		///
 		/// <param name="value">	The value. </param>
-		///-------------------------------------------------------------------------------------------------
 		private void SetFlagsFromValue(ulong value)
 		{
 			// Bitwise and the values in the values list, setting the check box states at each index
@@ -32,12 +29,13 @@ namespace OpenSauceIDE.Aether.AutoUI.Controls
 			}
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets the value defined by the check box values. </summary>
-		/// <param name="indexOverride">	The index to override the value of. </param>
-		/// <param name="overrideValue">	The value to use instead of the value at indexOverride. </param>
+		///
+		/// <param name="indexOverride">	(Optional) The index to override the value of. </param>
+		/// <param name="overrideValue">	(Optional) The value to use instead of the value at indexOverride. </param>
+		///
 		/// <returns>	The value defined by the check box values. </returns>
-		///-------------------------------------------------------------------------------------------------
 		private ulong GetValueFromFlags(int indexOverride = -1, bool overrideValue = false)
 		{
 			ulong value = 0;
@@ -66,11 +64,11 @@ namespace OpenSauceIDE.Aether.AutoUI.Controls
 		#endregion Methods
 
 		#region Events
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Raises the selected index changed event. </summary>
+		///
 		/// <param name="sender">	Source of the event. </param>
 		/// <param name="e">	 	Event information to send to registered event handlers. </param>
-		///-------------------------------------------------------------------------------------------------
 		void OnItemCheck(object sender, ItemCheckEventArgs e)
 		{
 			if (mIgnoreFlagsChanged)
@@ -83,11 +81,11 @@ namespace OpenSauceIDE.Aether.AutoUI.Controls
 			MemberInfo.SetValue(mSourceObject, newValue);
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Raised when the objects value is changed. </summary>
+		///
 		/// <param name="sender">	Source of the event. </param>
 		/// <param name="e">	 	Event information. </param>
-		///-------------------------------------------------------------------------------------------------
 		void OnValueChanged(object sender, PropertyChangedEventArgs e)
 		{
 			mIgnoreFlagsChanged = true;
@@ -99,12 +97,10 @@ namespace OpenSauceIDE.Aether.AutoUI.Controls
 			mIgnoreFlagsChanged = false;
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Registers the events that bind the control to the data. </summary>
-		/// <exception cref="Exception">
-		/// 	Thrown if the source object does not implement INotifyPropertyChanged.
-		/// </exception>
-		///-------------------------------------------------------------------------------------------------
+		///
+		/// <exception cref="Exception">	Thrown if the source object does not implement INotifyPropertyChanged. </exception>
 		private void RegisterEvents()
 		{
 			if (mSourceObject != null)
@@ -121,9 +117,7 @@ namespace OpenSauceIDE.Aether.AutoUI.Controls
 			}
 		}
 
-		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Unregisters the events that bind the control to the data. </summary>
-		///-------------------------------------------------------------------------------------------------
 		private void UnregisterEvents()
 		{
 			if (mSourceObject != null)
@@ -137,26 +131,27 @@ namespace OpenSauceIDE.Aether.AutoUI.Controls
 		#endregion Events
 
 		#region IAutoUIControl Members
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Gets or sets information describing the target member. </summary>
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets information describing the target member. </summary>
+		///
 		/// <value>	Information describing the target member. </value>
-		///-------------------------------------------------------------------------------------------------
 		public IAutoUIMemberInfo MemberInfo { get; private set; }
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Sets the target member info for the control. </summary>
+		///
 		/// <param name="memberInfo">	Information describing the target member. </param>
-		///-------------------------------------------------------------------------------------------------
 		public void SetMemberInfo(IAutoUIMemberInfo memberInfo)
 		{
 			MemberInfo = memberInfo;
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Sets the source object to bind the control to. </summary>
+		///
 		/// <exception cref="Exception">	Thrown if the enum type is not a flag type. </exception>
+		///
 		/// <param name="sourceObject">	The source object to bind to. </param>
-		///-------------------------------------------------------------------------------------------------
 		public void SetSource(object sourceObject)
 		{
 			SuspendLayout();
