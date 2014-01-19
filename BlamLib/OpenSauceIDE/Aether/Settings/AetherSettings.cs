@@ -6,14 +6,10 @@ using System.IO;
 
 namespace OpenSauceIDE.Aether.Settings
 {
-	///-------------------------------------------------------------------------------------------------
 	/// <summary>	Defines the global operating parameters for a single instance of Aether. </summary>
-	///-------------------------------------------------------------------------------------------------
 	public class AetherSettings : OpenSauceIDE.Settings.SettingsObjectBase, IColladaSettings
 	{
-		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Enum for defining a bitmap type. </summary>
-		///-------------------------------------------------------------------------------------------------
 		public enum BitmapExportFormatEnum
 		{
 			[AutoUI, AutoUIName("Direct3D Surface (*.dds)")]
@@ -30,9 +26,7 @@ namespace OpenSauceIDE.Aether.Settings
 			JPG = 5
 		};
 
-		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Enum for defining what bitmaps to extract. </summary>
-		///-------------------------------------------------------------------------------------------------
 		public enum BitmapExportFilterEnum
 		{
 			[AutoUI, AutoUIName("None")]
@@ -43,10 +37,10 @@ namespace OpenSauceIDE.Aether.Settings
 			DiffuseOnly
 		};
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets or sets a value indicating whether overwriting files is enabled. </summary>
+		///
 		/// <value>	true if overwrite is enabled, false if not. </value>
-		///-------------------------------------------------------------------------------------------------
 		[AutoUI, AutoUIName("Overwrite Enabled")]
 		public bool OverwriteEnabled
 		{
@@ -54,10 +48,10 @@ namespace OpenSauceIDE.Aether.Settings
 			set { SetValue<bool>("OverwriteEnabled", value); }
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets or sets the bitmap export format. </summary>
+		///
 		/// <value>	The bitmap export format. </value>
-		///-------------------------------------------------------------------------------------------------
 		[AutoUI, AutoUIName("Bitmap Export Format")]
 		public BitmapExportFormatEnum BitmapExportFormat
 		{
@@ -65,35 +59,32 @@ namespace OpenSauceIDE.Aether.Settings
 			set { SetValue<BitmapExportFormatEnum>("BitmapExportFormat", value); }
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets or sets the bitmap export filter. </summary>
+		///
 		/// <value>	The bitmap export filter. </value>
-		///-------------------------------------------------------------------------------------------------
 		[AutoUI, AutoUIName("Bitmap Export Filter")]
 		public BitmapExportFilterEnum BitmapExportFilter
 		{
 			get { return GetValue<BitmapExportFilterEnum>("BitmapExportFilter"); }
 			set { SetValue<BitmapExportFilterEnum>("BitmapExportFilter", value); }
 		}
-		
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>
-		/// 	Gets or sets a value indicating whether the lightmaps should be exported.
-		/// </summary>
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets or sets a value indicating whether the lightmaps should be exported. </summary>
+		///
 		/// <value>	true if export lightmaps, false if not. </value>
-		///-------------------------------------------------------------------------------------------------
 		[AutoUI, AutoUIName("Export Lightmaps")]
 		public bool ExportLightmaps
 		{
 			get { return GetValue<bool>("ExportLightmaps"); }
 			set { SetValue<bool>("ExportLightmaps", value); }
 		}
-		
-		///-------------------------------------------------------------------------------------------------
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets the bitmap export extension. </summary>
+		///
 		/// <value>	The bitmap export extension. </value>
-		///-------------------------------------------------------------------------------------------------
-		[AutoUIIgnore]
 		public string BitmapExportExtension
 		{
 			get
@@ -112,43 +103,46 @@ namespace OpenSauceIDE.Aether.Settings
 			}
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets or sets the pathname of the installation directory. </summary>
+		///
 		/// <value>	The pathname of the installation directory. </value>
-		///-------------------------------------------------------------------------------------------------
-		[AutoUI, AutoUIName("Installation Directory")]
+		[AutoUI, AutoUIName("Installation Directory"), AutoUIControlType(typeof(AutoUI.Controls.AutoUIPathString))]
 		public string InstallationDirectory
 		{
-			get { return GetValue<string>("InstallationDirectory"); }
-			set { SetValue<string>("InstallationDirectory", value); }
+			get
+			{
+				return GetValue<string>("InstallationDirectory");
+			}
+			set
+			{
+				SetValue<string>("InstallationDirectory", value);
+			}
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets the full pathname of the tags path. </summary>
+		///
 		/// <value>	The full pathname of the tags path. </value>
-		///-------------------------------------------------------------------------------------------------
-		[AutoUIIgnore]
 		public string TagsPath
 		{
 			get { return Path.Combine(InstallationDirectory, "tags"); }
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets the full pathname of the data path. </summary>
+		///
 		/// <value>	The full pathname of the data path. </value>
-		///-------------------------------------------------------------------------------------------------
-		[AutoUIIgnore]
 		public string DataPath
 		{
 			get { return Path.Combine(InstallationDirectory, "data"); }
 		}
 
 		#region IColladaSettings Members
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets a value indicating whether COLLADA esports can overwrite files. </summary>
+		///
 		/// <value>	true if overwrite is enabled, false if not. </value>
-		///-------------------------------------------------------------------------------------------------
-		[AutoUIIgnore]
 		public bool Overwrite
 		{
 			get
@@ -157,11 +151,10 @@ namespace OpenSauceIDE.Aether.Settings
 			}
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets the pathname of the root directory COLLADA exports will use. </summary>
+		///
 		/// <value>	The pathname of the root directory. </value>
-		///-------------------------------------------------------------------------------------------------
-		[AutoUIIgnore]
 		public string RootDirectory
 		{
 			get
@@ -170,11 +163,10 @@ namespace OpenSauceIDE.Aether.Settings
 			}
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets the bitmap extension COLLADA exports will use. </summary>
+		///
 		/// <value>	The bitmap extension. </value>
-		///-------------------------------------------------------------------------------------------------
-		[AutoUIIgnore]
 		public string BitmapExtension
 		{
 			get
@@ -184,10 +176,11 @@ namespace OpenSauceIDE.Aether.Settings
 		}
 		#endregion
 
-		///-------------------------------------------------------------------------------------------------
+		#region Constructor
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Constructor. </summary>
+		///
 		/// <param name="parentNode">	The parent property node. </param>
-		///-------------------------------------------------------------------------------------------------
 		public AetherSettings(OpenSauceIDE.Settings.PropertyNode parentNode)
 			: base(parentNode)
 		{
@@ -212,20 +205,19 @@ namespace OpenSauceIDE.Aether.Settings
 				parentNode.Put("InstallationDirectory", "");
 			}
 		}
+		#endregion Constructor
 	}
 
-	///-------------------------------------------------------------------------------------------------
-	/// <summary>	Handler for getting the aether settings for each engine type. </summary>
-	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Handler for getting the Aether settings for each engine type. </summary>
 	public class AetherSettingsHandler
 	{
 		#region Singleton
 		private static AetherSettingsHandler mInstance = new AetherSettingsHandler();
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets the handler instance. </summary>
+		///
 		/// <value>	The handler instance. </value>
-		///-------------------------------------------------------------------------------------------------
 		public static AetherSettingsHandler Instance
 		{
 			get
@@ -234,11 +226,7 @@ namespace OpenSauceIDE.Aether.Settings
 			}
 		}
 
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>
-		/// 	Constructor that prevents a default instance of this class from being created.
-		/// </summary>
-		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Constructor that prevents a default instance of this class from being created. </summary>
 		private AetherSettingsHandler()
 		{ }
 		#endregion Singleton
@@ -270,12 +258,14 @@ namespace OpenSauceIDE.Aether.Settings
 		private Dictionary<BlamLib.BlamVersion, AetherSettings> mSettings = new Dictionary<BlamLib.BlamVersion, AetherSettings>();
 		#endregion Fields
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets the settings object for the specified engine type. </summary>
+		///
 		/// <exception cref="Exception">	Thrown if an unsupported engine is supplied. </exception>
+		///
 		/// <param name="blamVersion">	The blam engine version. </param>
+		///
 		/// <returns>	The settings object. </returns>
-		///-------------------------------------------------------------------------------------------------
 		public AetherSettings GetSettings(BlamLib.BlamVersion blamVersion)
 		{
 			if (!kPermittedVersions.ContainsKey(blamVersion))
@@ -286,6 +276,7 @@ namespace OpenSauceIDE.Aether.Settings
 			if (!mSettings.ContainsKey(blamVersion))
 			{
 				AetherSettings aetherSettings = (AetherSettings)OpenSauceIDE.Settings.SettingsManager.GetSettings("OpenSauceIDE.Aether." + kPermittedVersions[blamVersion], typeof(AetherSettings));
+
 				mSettings.Add(blamVersion, aetherSettings);
 			}
 

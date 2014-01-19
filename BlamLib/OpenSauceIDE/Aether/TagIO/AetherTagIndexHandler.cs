@@ -8,10 +8,10 @@ using BlamLib;
 
 namespace OpenSauceIDE.Aether.TagIO
 {
-	///-------------------------------------------------------------------------------------------------
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/// <summary>	Aether tag index handler. </summary>
+	///
 	/// <typeparam name="T">	The type of tag index. </typeparam>
-	///-------------------------------------------------------------------------------------------------
 	public class AetherTagIndexHandler<T> : System.IDisposable
 		where T : TagIndexBase
 	{
@@ -21,10 +21,10 @@ namespace OpenSauceIDE.Aether.TagIO
 		#endregion Fields
 
 		#region Properties
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets the tag index interface. </summary>
+		///
 		/// <value>	The tag index interface. </value>
-		///-------------------------------------------------------------------------------------------------
 		public T IndexInterface
 		{
 			get { return mIndexInterface; }
@@ -33,11 +33,11 @@ namespace OpenSauceIDE.Aether.TagIO
 		#endregion Properties
 
 		#region Constructor
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Constructor. </summary>
+		///
 		/// <param name="game">	The game engine version. </param>
 		/// <param name="path">	Full pathname of the tags directory. </param>
-		///-------------------------------------------------------------------------------------------------
 		public AetherTagIndexHandler(BlamVersion game, string path)
 		{
 			mIndexHandle = BlamLib.Program.GetManager(game).OpenTagIndex(game, path);
@@ -46,12 +46,10 @@ namespace OpenSauceIDE.Aether.TagIO
 		#endregion Constructor
 
 		#region IDisposable Members
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>
-		/// 	Performs application-defined tasks associated with freeing, releasing, or resetting
-		/// 	unmanaged resources.
+		/// 	Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
 		/// </summary>
-		///-------------------------------------------------------------------------------------------------
 		public void Dispose()
 		{
 			if (mIndexHandle != DatumIndex.Null)
@@ -63,6 +61,10 @@ namespace OpenSauceIDE.Aether.TagIO
 		#endregion
 
 		#region Operators
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	TagIndex casting operator. </summary>
+		///
+		/// <param name="handler">	The tag index handler. </param>
 		public static implicit operator T(AetherTagIndexHandler<T> handler)
 		{
 			return handler.IndexInterface;

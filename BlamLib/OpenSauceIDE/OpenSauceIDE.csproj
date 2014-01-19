@@ -127,10 +127,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Aether\AutoUI\BlamLibFieldDecorators.cs" />
-    <Compile Include="Aether\AutoUI\Controls\AutoUIContainer.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Aether\AutoUI\ControlOrganiser.cs" />
     <Compile Include="Aether\AutoUI\Controls\AutoUIChar.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -140,9 +136,11 @@
     <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamReal.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Aether\AutoUI\Controls\AutoUIArray.cs" />
-    <Compile Include="Aether\AutoUI\Controls\AutoUIArray.Designer.cs">
-      <DependentUpon>AutoUIArray.cs</DependentUpon>
+    <Compile Include="Aether\AutoUI\Controls\AutoUIPathString.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\Controls\AutoUIPathString.Designer.cs">
+      <DependentUpon>AutoUIPathString.cs</DependentUpon>
     </Compile>
     <Compile Include="Aether\AutoUI\TypeDescriptor\AutoUITypeDecorator.cs" />
     <Compile Include="Aether\AutoUI\TypeDescriptor\AutoUITypeDescriptionManager.cs" />
@@ -201,12 +199,6 @@
       <DependentUpon>CollapsibleGroupBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Aether\Controls\ISceneObjectListUI.cs" />
-    <Compile Include="Aether\Controls\ExportPane.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Aether\Controls\ExportPane.Designer.cs">
-      <DependentUpon>ExportPane.cs</DependentUpon>
-    </Compile>
     <Compile Include="Aether\AutoUI\Controls\AutoUIString.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -230,7 +222,9 @@
     <Compile Include="Aether\Controls\SceneObjectGroupBox.Designer.cs">
       <DependentUpon>SceneObjectGroupBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Aether\Extraction\ExtractionManager.cs" />
     <Compile Include="Aether\FileIO\DDS.cs" />
+    <Compile Include="Aether\Output\OutputManager.cs" />
     <Compile Include="Aether\Project\AetherProject.cs">
     </Compile>
     <Compile Include="Aether\Project\Halo1\AetherProjectHalo1.cs">
@@ -241,7 +235,6 @@
     <Compile Include="Aether\Project\Halo1\SceneObjectStructureBSP.cs" />
     <Compile Include="Aether\SceneObject\SceneObject.cs" />
     <Compile Include="Aether\Settings\AetherSettings.cs" />
-    <Compile Include="Aether\TagIO\AetherTag.cs" />
     <Compile Include="Aether\TagIO\AetherTagIndexHandler.cs" />
     <Compile Include="Cache\CachePacker.cs">
       <SubType>Form</SubType>
@@ -326,17 +319,14 @@
     <EmbeddedResource Include="Aether\AutoUI\BlamControls\AutoUIBlamShortIntegerBounds.resx">
       <DependentUpon>AutoUIBlamShortIntegerBounds.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Aether\AutoUI\Controls\AutoUIArray.resx">
-      <DependentUpon>AutoUIArray.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Aether\AutoUI\Controls\AutoUIFieldContainer.resx">
       <DependentUpon>AutoUIFieldContainer.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Aether\AutoUI\Controls\AutoUIPathString.resx">
+      <DependentUpon>AutoUIPathString.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Aether\Controls\CollapsibleGroupBox.resx">
       <DependentUpon>CollapsibleGroupBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Aether\Controls\ExportPane.resx">
-      <DependentUpon>ExportPane.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Aether\Controls\SceneObjectExtractableGroupBox.resx">
       <DependentUpon>SceneObjectExtractableGroupBox.cs</DependentUpon>

@@ -1,19 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
+using OpenSauceIDE.Aether.AutoUI.Controls;
+using System.Windows.Forms;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using OpenSauceIDE.Aether.AutoUI.Controls;
 
 namespace OpenSauceIDE.Aether.AutoUI.BlamControls
 {
+	/// <summary>	An automatic user interface blam real color control. </summary>
 	public partial class AutoUIBlamRealColor : UserControl, IAutoUIControl, INotifyPropertyChanged
 	{
 		private BlamLib.TagInterface.RealColor mSourceColor = null;
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets or sets the current color. </summary>
+		///
+		/// <value>	The color of the current. </value>
 		public Color CurrentColor
 		{
 			get
@@ -40,6 +41,7 @@ namespace OpenSauceIDE.Aether.AutoUI.BlamControls
 			}
 		}
 
+		/// <summary>	Initializes a new instance of the AutoUIBlamRealColor class. </summary>
 		public AutoUIBlamRealColor()
 		{
 			InitializeComponent();
@@ -50,16 +52,18 @@ namespace OpenSauceIDE.Aether.AutoUI.BlamControls
 		}
 
 		#region IAutoUIControl Members
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Gets or sets information describing the target member. </summary>
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets information describing the target member. </summary>
+		///
 		/// <value>	Information describing the target member. </value>
-		///-------------------------------------------------------------------------------------------------
 		public IAutoUIMemberInfo MemberInfo { get; private set; }
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Sets the target member info for the control. </summary>
+		///
+		/// <exception cref="Exception">	Thrown when an exception error condition occurs. </exception>
+		///
 		/// <param name="memberInfo">	Information describing the target member. </param>
-		///-------------------------------------------------------------------------------------------------
 		public void SetMemberInfo(IAutoUIMemberInfo memberInfo)
 		{
 			if (memberInfo.MemberValueType != typeof(BlamLib.TagInterface.RealColor))
@@ -70,13 +74,15 @@ namespace OpenSauceIDE.Aether.AutoUI.BlamControls
 			MemberInfo = memberInfo;
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Sets the source object to bind the control to. </summary>
+		///
 		/// <exception cref="Exception">	Thrown if the expected field value is invalid. </exception>
+		///
 		/// <param name="sourceObject">	The source object to bind to. </param>
-		///-------------------------------------------------------------------------------------------------
 		public void SetSource(object sourceObject)
 		{
+			// Get the color values
 			var value = MemberInfo.GetValue(sourceObject);
 
 			if (mSourceColor != null)
@@ -102,9 +108,11 @@ namespace OpenSauceIDE.Aether.AutoUI.BlamControls
 				throw new Exception("The value returned by a AutoUIBlamRealColor member was not a BlamLib.TagInterface.RealColor");
 			}
 			
+			// Attatch to the colour field changed event
 			mSourceColor = value as BlamLib.TagInterface.RealColor;
 			mSourceColor.PropertyChanged += OnSourceColorChanged;
 
+			// Add a different control set depending on what type of colour the field is
 			switch (mSourceColor.FieldType)
 			{
 				case BlamLib.TagInterface.FieldType.RealArgbColor:
@@ -122,6 +130,11 @@ namespace OpenSauceIDE.Aether.AutoUI.BlamControls
 			OnPropertyChanged("CurrentColor");
 		}
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Raises the property changed event for CurrentColor. </summary>
+		///
+		/// <param name="sender">	Source of the event. </param>
+		/// <param name="e">	 	Event information to send to registered event handlers. </param>
 		void OnSourceColorChanged(object sender, PropertyChangedEventArgs e)
 		{
 			if ((e.PropertyName == "Alpha") ||
@@ -132,9 +145,13 @@ namespace OpenSauceIDE.Aether.AutoUI.BlamControls
 				OnPropertyChanged("CurrentColor");
 			}
 		}
-
 		#endregion
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Event handler. Called by ColorButton for click events. </summary>
+		///
+		/// <param name="sender">	Source of the event. </param>
+		/// <param name="e">	 	Event information. </param>
 		private void ColorButton_Click(object sender, EventArgs e)
 		{
 			System.Windows.Forms.ColorDialog dialog = new ColorDialog();
@@ -153,6 +170,10 @@ namespace OpenSauceIDE.Aether.AutoUI.BlamControls
 		#region INotifyPropertyChanged Members
 		public event PropertyChangedEventHandler PropertyChanged;
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Executes the property changed action. </summary>
+		///
+		/// <param name="name">	The name of the changed property. </param>
 		private void OnPropertyChanged(string name)
 		{
 			var eventHandler = PropertyChanged;

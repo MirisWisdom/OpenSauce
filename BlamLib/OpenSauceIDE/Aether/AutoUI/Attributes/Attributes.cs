@@ -1,27 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using OpenSauceIDE.Aether.AutoUI.Controls;
+using System;
 
 namespace OpenSauceIDE.Aether.AutoUI.Attributes
 {
-	///-------------------------------------------------------------------------------------------------
 	/// <summary>	Attribute to indicate that the auto ui system should use the member. </summary>
-	///-------------------------------------------------------------------------------------------------
 	[AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
 	public class AutoUIAttribute : Attribute { }
 
-	///-------------------------------------------------------------------------------------------------
 	/// <summary>	Attribute to indicate that the auto ui system should ignore a member. </summary>
-	///-------------------------------------------------------------------------------------------------
 	[AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
 	public class AutoUIIgnoreAttribute : Attribute { }
 
-	///-------------------------------------------------------------------------------------------------
-	/// <summary>
-	/// 	Attribute for classes to define the member to use as the ui name, with formatting.
-	/// </summary>
-	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Attribute for classes to define the member to use as the ui name, with formatting. </summary>
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
 	public class AutoUINameFormattedAttribute : Attribute
 	{
@@ -35,9 +25,7 @@ namespace OpenSauceIDE.Aether.AutoUI.Attributes
 		}
 	}
 
-	///-------------------------------------------------------------------------------------------------
-	/// <summary>	Attribute for classes to define the name to use. </summary>
-	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Attribute for defining the name to use. </summary>
 	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Struct, AllowMultiple = false)]
 	public class AutoUINameAttribute : Attribute
 	{
@@ -49,23 +37,19 @@ namespace OpenSauceIDE.Aether.AutoUI.Attributes
 		}
 	}
 
-	///-------------------------------------------------------------------------------------------------
-	/// <summary>	Attribute for limiting the size of controls. </summary>
-	///-------------------------------------------------------------------------------------------------
-	[AttributeUsage(AttributeTargets.Class)]
-	public class AutoUISizeAttribute : Attribute
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Struct, AllowMultiple = false)]
+	public class AutoUIControlTypeAttribute : Attribute
 	{
-		public int MinWidth { get; private set; }
-		public int MinHeight { get; private set; }
-		public int MaxWidth { get; private set; }
-		public int MaxHeight { get; private set; }
+		public Type ControlType { get; private set; }
 
-		public AutoUISizeAttribute(int minWidth, int minHeight, int maxWidth, int maxHeight)
+		public AutoUIControlTypeAttribute(Type controlType)
 		{
-			MinWidth = minWidth;
-			MinHeight = minHeight;
-			MaxWidth = maxWidth;
-			MaxHeight = maxHeight;
+			if(!typeof(IAutoUIControl).IsAssignableFrom(controlType))
+			{
+				throw new Exception("An AutoUIControlType attribute was defined with an object type that does not implement IAutoUIControl");
+			}
+
+			ControlType = controlType;
 		}
 	}
 }

@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Windows.Forms;
-using System.Reflection;
 
 namespace OpenSauceIDE.Aether.AutoUI.Controls
 {
-	public class AutoUIBlamString : AutoUIString, IAutoUIControl
+	/// <summary>	An automatic user interface blam string control. </summary>
+	public class AutoUIBlamString : AutoUIString
 	{
 		public AutoUIBlamString()
 			: base(31)

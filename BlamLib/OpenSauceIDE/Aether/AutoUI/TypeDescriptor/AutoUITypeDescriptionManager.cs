@@ -3,18 +3,16 @@ using System.Collections.Generic;
 
 namespace OpenSauceIDE.Aether.AutoUI.TypeDescriptor
 {
-	///-------------------------------------------------------------------------------------------------
 	/// <summary>	Manager for automatic user interface type descriptions. </summary>
-	///-------------------------------------------------------------------------------------------------
 	public class AutoUITypeDescriptionManager
 	{
 		#region Singleton
 		public static AutoUITypeDescriptionManager mInstance = new AutoUITypeDescriptionManager();
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets the manager instance. </summary>
+		///
 		/// <value>	The manager instance. </value>
-		///-------------------------------------------------------------------------------------------------
 		public static AutoUITypeDescriptionManager Instance
 		{
 			get
@@ -28,11 +26,8 @@ namespace OpenSauceIDE.Aether.AutoUI.TypeDescriptor
 		private Dictionary<Type, IAutoUITypeDescriptor> mTypeDescriptors;
 		#endregion Fields
 
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>
-		/// 	Constructor that prevents a default instance of this class from being created.
-		/// </summary>
-		///-------------------------------------------------------------------------------------------------
+		#region Constructor
+		/// <summary>	Constructor that prevents a default instance of this class from being created. </summary>
 		private AutoUITypeDescriptionManager()
 		{
 			mTypeDescriptors = new Dictionary<Type, IAutoUITypeDescriptor>();
@@ -62,13 +57,15 @@ namespace OpenSauceIDE.Aether.AutoUI.TypeDescriptor
 			AddDescriptor(typeof(BlamLib.TagInterface.ShortIntegerBounds), new AutoUITypeDescriptorBlamShortIntegerBounds());
 			AddDescriptor(typeof(BlamLib.TagInterface.BlockIndex), new AutoUITypeDescriptorBlamBlockIndex());
 		}
+		#endregion Constructor
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Adds a type descriptor to the manager. </summary>
+		///
 		/// <exception cref="Exception">	Thrown if a type is described more than once. </exception>
+		///
 		/// <param name="objectType">	Type of the object. </param>
 		/// <param name="descriptor">	The type descriptor. </param>
-		///-------------------------------------------------------------------------------------------------
 		public void AddDescriptor(Type objectType, IAutoUITypeDescriptor descriptor)
 		{
 			if(mTypeDescriptors.ContainsKey(objectType))
@@ -79,17 +76,19 @@ namespace OpenSauceIDE.Aether.AutoUI.TypeDescriptor
 			mTypeDescriptors.Add(objectType, descriptor);
 		}
 
-		///-------------------------------------------------------------------------------------------------
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets a type descriptor. </summary>
+		///
 		/// <remarks>	A new descriptor is made if a matching one is not found. </remarks>
+		///
 		/// <param name="objectType">	Type of the object. </param>
+		///
 		/// <returns>	The descriptor. </returns>
-		///-------------------------------------------------------------------------------------------------
 		public IAutoUITypeDescriptor GetDescriptor(Type objectType)
 		{
 			if (!mTypeDescriptors.ContainsKey(objectType))
 			{
-				mTypeDescriptors.Add(objectType, new AutoUITypeDescriptor(objectType));
+				AddDescriptor(objectType, new AutoUITypeDescriptor(objectType));
 			}
 
 			return mTypeDescriptors[objectType];
