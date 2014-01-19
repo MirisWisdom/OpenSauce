@@ -247,6 +247,10 @@ namespace BlamLib.Render.COLLADA.Halo1
 				{
 					objectType = ScenarioObjectLists[type][instance.Type.Value];
 				}
+				else
+				{
+					continue;
+				}
 
 				ScenarioObjectInstanceLists[type].Add(new ScenarioObjectInstance(instance, objectName, objectType));
 			}
@@ -1160,6 +1164,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		#region Data
 		private ColladaExporter.ImageList mImages = new ColladaExporter.ImageList();
 		private ColladaExporter.EffectList mEffects = new ColladaExporter.EffectList();
+		private ColladaExporter.EffectList mEffectsMap = new ColladaExporter.EffectList();
 		private ColladaExporter.MaterialList mMaterials = new ColladaExporter.MaterialList();
 		protected ShaderTypeList mShaderTypeList = new ShaderTypeList();
 		#endregion Data
@@ -1385,10 +1390,33 @@ namespace BlamLib.Render.COLLADA.Halo1
 		{
 			foreach (var shader in mShaderTypeList)
 			{
-				/// Create a new collada effect definition
-				string shaderName = Path.GetFileNameWithoutExtension(tagIndex[shader.ShaderDatum].Name);
+				string shaderName = "";
+				if(shader.ShaderDatum.IsValid)
+				{
+					shaderName = Path.GetFileNameWithoutExtension(tagIndex[shader.ShaderDatum].Name);
+				}
 
-				ColladaExporter.Effect effectDefinition = new ColladaExporter.Effect(shaderName);
+				ColladaExporter.Effect effectDefinition = mEffects.Find(effect => effect.Name == shaderName);
+				if (effectDefinition != null)
+				{
+					mEffectsMap.Add(effectDefinition);
+					continue;
+				}
+				else
+				{
+					/// Create a new collada effect definition
+					effectDefinition = new ColladaExporter.Effect(shaderName);
+
+					// Add the effect definition and create a material for it
+					mEffects.Add(effectDefinition);
+					mEffectsMap.Add(effectDefinition);
+					mMaterials.Add(new ColladaExporter.Material(shaderName, shaderName));
+				}
+				
+				if(!shader.ShaderDatum.IsValid)
+				{
+					continue;
+				}
 
 				// Set the effects emission and shininess from the base shader group data
 				Blam.Halo1.Tags.shader_group shaderTag = tagIndex[shader.ShaderDatum].TagDefinition as Blam.Halo1.Tags.shader_group;
@@ -1436,10 +1464,6 @@ namespace BlamLib.Render.COLLADA.Halo1
 				{
 					throw new Exception("Unsupported shader definition type");
 				}
-
-				// Add the effect definition and create a material for it
-				mEffects.Add(effectDefinition);
-				mMaterials.Add(new ColladaExporter.Material(shaderName, shaderName));
 			}
 		}
 
@@ -1491,6 +1515,15 @@ namespace BlamLib.Render.COLLADA.Halo1
 		}
 
 		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets the effects map. </summary>
+		/// <returns>	The effects list. </returns>
+		///-------------------------------------------------------------------------------------------------
+		public ColladaExporter.EffectList GetEffectsMap()
+		{
+			return mEffectsMap;
+		}
+
+		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Gets the materials list. </summary>
 		/// <returns>	The materials list. </returns>
 		///-------------------------------------------------------------------------------------------------
@@ -1519,11 +1552,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			{
 				foreach (var material in lightmap.Materials)
 				{
-					// Only add a shader if it has not yet been added
-					if (!mShaderTypeList.Exists(shader => shader.ShaderDatum == material.Shader.Datum))
-					{
 						mShaderTypeList.Add(new ShaderType(material.Shader.Datum));
-					}
 				}
 			}
 		}
@@ -1545,11 +1574,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			// Add all of the shaders listed in the shaders block
 			foreach (var modelShader in modelTag.Shaders)
 			{
-				// Only add a shader if it has not yet been added
-				if (!mShaderTypeList.Exists(shader => shader.ShaderDatum == modelShader.Shader.Datum))
-				{
-					mShaderTypeList.Add(new ShaderType(modelShader.Shader.Datum));
-				}
+				mShaderTypeList.Add(new ShaderType(modelShader.Shader.Datum));
 			}
 		}
 	}

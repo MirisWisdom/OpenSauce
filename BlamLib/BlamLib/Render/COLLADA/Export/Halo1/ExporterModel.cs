@@ -106,7 +106,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			if (mShaderDataProvider != null)
 			{
 				// Create a list of every shader used
-				foreach (var effect in mShaderDataProvider.GetEffects())
+				foreach (var effect in mShaderDataProvider.GetEffectsMap())
 				{
 					shaderList.Add(ColladaUtilities.FormatName(Path.GetFileNameWithoutExtension(effect.Name), " ", "_"));
 				}
@@ -118,7 +118,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 			foreach(var geometrySet in geometrySetList)
 			{
-				string name = ColladaUtilities.FormatName(geometrySet.Name, " ", "_");					
+				string name = ColladaUtilities.FormatName(geometrySet.Name, " ", "_");
 
 				Geometry geometryData = new Geometry(name
 					, 1

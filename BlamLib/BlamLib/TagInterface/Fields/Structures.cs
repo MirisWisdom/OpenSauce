@@ -599,7 +599,10 @@ namespace BlamLib.TagInterface
 		/// </summary>
 		public TagGroup GroupTag
 		{
-			get { return mGroupTag; }
+			get
+			{
+				return mGroupTag;
+			}
 			set
 			{
 				mGroupTag = value;

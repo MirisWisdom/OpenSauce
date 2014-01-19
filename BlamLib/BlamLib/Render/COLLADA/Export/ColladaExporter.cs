@@ -21,6 +21,7 @@ namespace BlamLib.Render.COLLADA
 
 		#region Effects
 		ColladaExporter.EffectList GetEffects();
+		ColladaExporter.EffectList GetEffectsMap();
 		#endregion Effects
 
 		#region Materials
