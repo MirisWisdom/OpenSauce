@@ -44,6 +44,9 @@ namespace Yelo
 		void PLATFORM_API unit_exit_seat_end(datum_index unit_index, 
 			bool no_network_message, bool can_run_on_client_side, bool );
 
+		void PLATFORM_API unit_can_see_point(datum_index unit_index,
+			const real_point3d* point, real view_radians);
+
 		// Returns the number of frames remaining in an unit's custom animation
 		int16 unit_get_custom_animation_time(datum_index unit_index);
 	};

@@ -9,10 +9,10 @@ namespace Boarding
 {
 	static void UnitResetOverlayAnimations(s_unit_datum* unit)
 	{
-		*unit->unit.animation.GetOverlayAnimationIndex() = NONE;
-		*unit->unit.animation.GetOverlayAnimationState() = NONE;
-		*unit->unit.animation.GetReplacementAnimationIndex() = NONE;
-		*unit->unit.animation.GetReplacementAnimationState() = NONE;
+		unit->unit.animation.replacement_animation = { NONE };
+		unit->unit.animation.replacement_animation_state = NONE;			// TODO: pretty sure we need to use _unit_replacement_animation_state_none here
+		unit->unit.animation.overlay_animation = { NONE };
+		unit->unit.animation.overlay_animation_state = NONE;				// TODO: pretty sure we need to use _unit_overlay_animation_state_none here
 	}
 
 	// Plays the yelo_ejection animation and ejects the unit from it's seat
@@ -28,7 +28,7 @@ namespace Boarding
 		// Check if an animation graph exists for the target unit
 		if (animation_graph != nullptr)
 		{
-			sbyte animation_seat_block_index = *unit->unit.animation.GetSeatIndex();
+			sbyte animation_seat_block_index = unit->unit.animation.seat_index;
 			int32 unit_seat_animation_count = animation_graph->units[animation_seat_block_index].animations.Count;
 
 			// Check if the target unit has an ejection animation to play
@@ -49,7 +49,7 @@ namespace Boarding
 			}
 
 			// set the target_unit's animation state to seat_exit to force them out of the vehicle
-			*unit->unit.animation.GetAnimationState() = Enums::_unit_animation_state_seat_exit;
+			unit->unit.animation.state = Enums::_unit_animation_state_seat_exit;
 		}
 	}
 
@@ -63,7 +63,7 @@ namespace Boarding
 
 		if (animation_graph != nullptr)
 		{
-			sbyte animation_seat_block_index = *unit->unit.animation.GetSeatIndex();
+			sbyte animation_seat_block_index = unit->unit.animation.seat_index;
 			int32 unit_seat_animation_count = animation_graph->units[animation_seat_block_index].animations.Count;
 
 			// Check if the unit has a board animation to play
@@ -85,10 +85,10 @@ namespace Boarding
 
 				// if boarding enters the target seat, use the seat_board animation state
 				if (boarding_seat_definition->flags.boarding_enters_target_seat_bit)
-					*unit->unit.animation.GetAnimationState() = Enums::_unit_animation_state_yelo_seat_board;
+					unit->unit.animation.state = Enums::_unit_animation_state_yelo_seat_board;
 				// else, use the seat_exit animation state so we exit the vehicle when complete
 				else
-					*unit->unit.animation.GetAnimationState() = Enums::_unit_animation_state_seat_exit;
+					unit->unit.animation.state = Enums::_unit_animation_state_seat_exit;
 			}
 		}
 	}

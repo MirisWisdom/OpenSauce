@@ -12,15 +12,24 @@ namespace Yelo
 {
 	namespace Enums
 	{
+		enum // dialogue_vocalization sub-types
+		{
+			_dialogue_vocalization_event,
+			_dialogue_vocalization_response, // response/comment
+		};
+
 		enum dialogue_vocalization
 		{
+			//////////////////////////////////////////////////////////////////////////
+			// idle
 			_dialogue_vocalization_idle_noncombat,
 			_dialogue_vocalization_idle_combat,
 			_dialogue_vocalization_idle_flee,
 			_dialogue_vocalization_unused3,
 			_dialogue_vocalization_unused4,
 			_dialogue_vocalization_unused5,
-
+			//////////////////////////////////////////////////////////////////////////
+			// involuntary
 			_dialogue_vocalization_pain_body_minor,
 			_dialogue_vocalization_pain_body_major,
 			_dialogue_vocalization_pain_shield,
@@ -36,7 +45,8 @@ namespace Yelo
 			_dialogue_vocalization_death_instant,
 			_dialogue_vocalization_death_flying,
 			_dialogue_vocalization_unused20,
-
+			//////////////////////////////////////////////////////////////////////////
+			// hurting people
 			_dialogue_vocalization_damaged_friend,
 			_dialogue_vocalization_damaged_friend_player,
 			_dialogue_vocalization_damaged_enemy,
@@ -45,7 +55,8 @@ namespace Yelo
 			_dialogue_vocalization_unused26,
 			_dialogue_vocalization_unused27,
 			_dialogue_vocalization_unused28,
-
+			//////////////////////////////////////////////////////////////////////////
+			// being hurt
 			_dialogue_vocalization_hurt_friend,
 			_dialogue_vocalization_hurt_friend_response,
 			_dialogue_vocalization_hurt_friend_player,
@@ -66,7 +77,8 @@ namespace Yelo
 			_dialogue_vocalization_unused46,
 			_dialogue_vocalization_unused47,
 			_dialogue_vocalization_unused48,
-
+			//////////////////////////////////////////////////////////////////////////
+			// killing people
 			_dialogue_vocalization_killed_friend,
 			_dialogue_vocalization_killed_friend_comment,
 			_dialogue_vocalization_killed_friend_player,
@@ -98,7 +110,8 @@ namespace Yelo
 			_dialogue_vocalization_unused77,
 			_dialogue_vocalization_unused78,
 			_dialogue_vocalization_unused79,
-
+			//////////////////////////////////////////////////////////////////////////
+			// player kill comments
 			_dialogue_vocalization_player_kill_comment,
 			_dialogue_vocalization_player_kill_bullet_comment,
 			_dialogue_vocalization_player_kill_needler_comment,
@@ -115,7 +128,8 @@ namespace Yelo
 			_dialogue_vocalization_unused93,
 			_dialogue_vocalization_unused94,
 			_dialogue_vocalization_unused95,
-
+			//////////////////////////////////////////////////////////////////////////
+			// friends dying
 			_dialogue_vocalization_friend_died,
 			_dialogue_vocalization_friend_player_died,
 			_dialogue_vocalization_friend_killed_by_friend,
@@ -128,7 +142,8 @@ namespace Yelo
 			_dialogue_vocalization_friend_betrayed,
 			_dialogue_vocalization_unused106,
 			_dialogue_vocalization_unused107,
-
+			//////////////////////////////////////////////////////////////////////////
+			// shouting
 			_dialogue_vocalization_new_combat_alone,
 			_dialogue_vocalization_new_enemy_recent_combat,
 			_dialogue_vocalization_old_enemy_sighted,
@@ -144,7 +159,8 @@ namespace Yelo
 			_dialogue_vocalization_grenade_danger_friend,
 			_dialogue_vocalization_unused121,
 			_dialogue_vocalization_unused122,
-
+			//////////////////////////////////////////////////////////////////////////
+			// group communication
 			_dialogue_vocalization_new_combat_group_response,
 			_dialogue_vocalization_new_combat_nearby_response,
 			_dialogue_vocalization_alert_friend,
@@ -170,7 +186,8 @@ namespace Yelo
 			_dialogue_vocalization_unused145,
 			_dialogue_vocalization_unused146,
 			_dialogue_vocalization_unused147,
-
+			//////////////////////////////////////////////////////////////////////////
+			// actions
 			_dialogue_vocalization_sighted_friend_player,
 			_dialogue_vocalization_shooting,
 			_dialogue_vocalization_shooting_vehicle,
@@ -200,7 +217,8 @@ namespace Yelo
 			_dialogue_vocalization_unused174,
 			_dialogue_vocalization_unused175,
 			_dialogue_vocalization_unused176,
-
+			//////////////////////////////////////////////////////////////////////////
+			// exclamations
 			_dialogue_vocalization_surprise,
 			_dialogue_vocalization_berserk,
 			_dialogue_vocalization_melee_attack,
@@ -212,7 +230,8 @@ namespace Yelo
 			_dialogue_vocalization_unused185,
 			_dialogue_vocalization_unused186,
 			_dialogue_vocalization_unused187,
-
+			//////////////////////////////////////////////////////////////////////////
+			// post-combat actions
 			_dialogue_vocalization_celebration,
 			_dialogue_vocalization_check_body_enemy,
 			_dialogue_vocalization_check_body_friend,
@@ -222,7 +241,8 @@ namespace Yelo
 			_dialogue_vocalization_unused194,
 			_dialogue_vocalization_unused195,
 			_dialogue_vocalization_unused196,
-
+			//////////////////////////////////////////////////////////////////////////
+			// post-combat chatter
 			_dialogue_vocalization_alone,
 			_dialogue_vocalization_unscathed,
 			_dialogue_vocalization_seriously_wounded,
@@ -237,6 +257,7 @@ namespace Yelo
 			_dialogue_vocalization_unused208,
 
 			k_number_of_dialogue_vocalizations, // NUMBER_OF_VOCALIZATION_TYPES
+			k_maximum_dialogue_vocalizations = 256,
 
 			// Halo2:
 			// player_look
@@ -257,7 +278,8 @@ namespace Yelo
 			PAD16;
 			TAG_PAD(tag_block, 1);
 			TAG_FIELD(tag_reference, vocalizations, 'snd!')[Enums::k_number_of_dialogue_vocalizations];
-			TAG_PAD(tag_reference, 256 - Enums::k_number_of_dialogue_vocalizations);
+			TAG_PAD(tag_reference, 
+				Enums::k_maximum_dialogue_vocalizations - Enums::k_number_of_dialogue_vocalizations);
 		}; BOOST_STATIC_ASSERT( sizeof(s_dialogue_definition) == 0x1010 );
 	};
 };

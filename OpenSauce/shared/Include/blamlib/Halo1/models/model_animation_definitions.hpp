@@ -27,7 +27,7 @@ namespace Yelo
 
 		enum model_animation_type
 		{
-			_model_animation_type_base,
+			_model_animation_type_base,			// _animation_base
 			_model_animation_type_overlay,
 			_model_animation_type_replacement,
 

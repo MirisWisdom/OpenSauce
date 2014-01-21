@@ -13,6 +13,11 @@
 		ENGINE_DPTR(tag_instance_data_t, tag_instance_data,		0xAA57C0, 0xEB8A80, 0xBD5118);
 
 		ENGINE_PTR(string_list, shader_type_names_list,			0x9C9A5C, 0x6D7D24, 0xA3BB24);
+		
+		ENGINE_PTR(s_tag_file_globals, tag_file_globals,		0xAA6420, 0xEBA3A0, 0xBD5D78);
+
+		ENGINE_PTR(Memory::s_byte_swap_definition, tag_header_bs_definition,
+																0x9B98FC, 0x6B94C8, 0xA29A64);
 
 		FUNC_PTR(TAG_FILES_OPEN,			0x439BB0, 0x444A60, 0x4FCB20);
 
@@ -21,6 +26,7 @@
 
 	//////////////////////////////////////////////////////////////////////////
 	// tag_files/tag_files
+	FUNC_PTR(TAG_FILE_GET_FILE_REFERENCE,	0x43A070, 0x444F10, 0x4FCFE0);
 	FUNC_PTR(TAG_FILE_READ,					0x43A920, 0x445290, 0x4FD890);
 	FUNC_PTR(TAG_FILE_READ_ONLY,			0x43A980, 0x4452F0, 0x4FD8F0);
 	FUNC_PTR(TAG_FILE_EXISTS,				0x43A9E0, 0x445350, 0x4FD950);
