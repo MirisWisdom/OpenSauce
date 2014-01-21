@@ -34,16 +34,29 @@ namespace Yelo
 			_name_file_bit,
 			_name_extension_bit,
 
-			k_number_of_name_flags,
+			k_number_of_name_flags, // NUMBER_OF_REFERENCE_INFO_FLAGS
+		};
+
+		enum file_permission_flags : long_flags
+		{
+			_permission_read_bit,
+			_permission_write_bit,
+			_permission_append_bit,
 		};
 	};
 
 	struct s_file_reference {
+		enum { k_signature = 'filo' };
+
 		tag			signature;
 		Flags::file_reference_flags		flags;
 		Enums::file_reference_location	location;
 		char		file_name[Enums::k_maximum_filename_length+1];
 		HANDLE		handle;
+
+		void Verify() const;
+
+		static int __cdecl CompareProc(long_flags name_flags, const s_file_reference* lhs, const s_file_reference* rhs);
 	}; BOOST_STATIC_ASSERT( sizeof(s_file_reference) == 0x10C );
 
 	namespace blam
@@ -54,7 +67,7 @@ namespace Yelo
 
 		s_file_reference& PLATFORM_API file_reference_set_name(s_file_reference& reference, cstring name);
 
-		cstring PLATFORM_API file_reference_get_name(const s_file_reference& reference, long_flags flags, __out char name[Enums::k_maximum_filename_length+1]);
+		char* PLATFORM_API file_reference_get_name(const s_file_reference& reference, long_flags flags, __out char name[Enums::k_maximum_filename_length+1]);
 
 		s_file_reference& file_reference_create(s_file_reference& reference, cstring directory, cstring name, cstring ext, 
 			long_enum location = Enums::_file_reference_location_tags);
@@ -75,6 +88,39 @@ namespace Yelo
 			file_references_sort(name_flags, _SizeOfArray, references);
 		}
 
+		void file_printf(s_file_reference& reference, cstring format, ...);
+
+
+		void PLATFORM_API file_error(cstring operation, const s_file_reference& reference);
+
+		bool PLATFORM_API file_create(const s_file_reference& reference);
+
+		bool PLATFORM_API file_delete(const s_file_reference& reference);
+
 		bool PLATFORM_API file_exists(const s_file_reference& reference);
+
+		bool PLATFORM_API file_open(s_file_reference& reference, long_flags flags);
+
+		bool PLATFORM_API file_close(s_file_reference& reference);
+
+		uint32 PLATFORM_API file_get_position(const s_file_reference& reference);
+
+		bool PLATFORM_API file_set_position(s_file_reference& reference, uint32 position);
+
+		uint32 PLATFORM_API file_get_eof(const s_file_reference& reference);
+
+		bool PLATFORM_API file_set_eof(s_file_reference& reference, uint32 position);
+
+		bool PLATFORM_API file_read(s_file_reference& reference, size_t buffer_size, void* buffer);
+
+		bool PLATFORM_API file_write(s_file_reference& reference, size_t buffer_size, const void* buffer);
+
+		bool PLATFORM_API file_read_from_position(s_file_reference& reference, uint32 position,
+			size_t buffer_size, void* buffer);
+
+		bool PLATFORM_API file_write_to_position(const s_file_reference& reference, uint32 position,
+			size_t buffer_size, const void* buffer);
+
+		bool PLATFORM_API file_read_only(const s_file_reference& reference);
 	};
 };

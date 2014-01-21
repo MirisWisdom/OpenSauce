@@ -6,6 +6,7 @@
 #pragma once
 
 #include <blamlib/Halo1/game/game_globals.hpp>
+#include <blamlib/Halo1/models/model_animations.hpp>
 #include <blamlib/Halo1/objects/object_structures.hpp>
 #include <blamlib/Halo1/units/unit_control.hpp>
 #include <blamlib/Halo1/units/unit_definitions.hpp>
@@ -56,8 +57,8 @@ namespace Yelo
 			_unit_animation_state_resurrect_front,
 			_unit_animation_state_resurrect_back,
 			_unit_animation_state_feeding,
-			_unit_animation_state_surprise_front,
-			_unit_animation_state_surprise_back,
+			_unit_animation_state_surprise_front,	// TODO: open
+			_unit_animation_state_surprise_back,	// TODO: close
 			_unit_animation_state_leap_start,
 			_unit_animation_state_leap_airborne,
 			_unit_animation_state_leap_melee,
@@ -73,16 +74,32 @@ namespace Yelo
 			_unit_animation_state_yelo,
 		};
 
+		enum unit_replacement_animation_state : sbyte
+		{
+			_unit_replacement_animation_state_none,
+			_unit_replacement_animation_state_disarm,
+			_unit_replacement_animation_state_weapon_drop,
+			_unit_replacement_animation_state_weapon_ready,
+			_unit_replacement_animation_state_weapon_put_away,
+			_unit_replacement_animation_state_weapon_reload1,
+			_unit_replacement_animation_state_weapon_reload2,
+			_unit_replacement_animation_state_melee,
+			_unit_replacement_animation_state_throw_grenade,
+			
+			k_number_of_unit_replacement_animation_states
+		};
+
 		enum unit_overlay_animation_state : sbyte
 		{
-			_unit_overlay_animation_state_fire_1 = 1,
+			_unit_overlay_animation_state_none,
+			_unit_overlay_animation_state_fire_1,
 			_unit_overlay_animation_state_fire_2,
 			_unit_overlay_animation_state_charged_1,
 			_unit_overlay_animation_state_charged_2,
 			_unit_overlay_animation_state_chamber_1,
 			_unit_overlay_animation_state_chamber_2,
 
-			_unit_overlay_animation_state
+			k_number_of_unit_overlay_animation_states
 		};
 
 		enum unit_camo_regrowth : _enum
@@ -94,6 +111,14 @@ namespace Yelo
 
 	namespace Flags
 	{
+		enum
+		{
+			_unit_animation_unk0_bit,
+			_unit_animation_unk1_bit,
+			_unit_animation_unk2_bit,
+			_unit_animation_unk3_bit,
+		};
+
 		enum
 		{
 			_unit_unk0_bit,
@@ -133,39 +158,34 @@ namespace Yelo
 
 	namespace Objects
 	{
-		struct s_unit_animation_data : TStructImpl(0x40 + 0x8)
+		struct s_unit_animation_data
 		{
-			TStructGetPtrImpl(word_flags,			Flags, 0x0);			// 0x298
-			//TStructGetPtrImpl(int16,				, 0x2);					// 0x29A animation index, weapon type
-			//TStructGetPtrImpl(int16,				, 0x4);					// 0x29C animation index
-			//TStructGetPtrImpl(int16,				, 0x6);					// 0x29E, appears unused except for getting initialized in unit_new
+			word_flags flags;							// 0x298
+			UNKNOWN_TYPE(int16);						// 0x29A animation index, weapon type
+			UNKNOWN_TYPE(int16);						// 0x29C animation index
+			UNKNOWN_TYPE(int16);						// 0x29E, appears unused except for getting initialized in unit_new
 			//////////////////////////////////////////////////////////////////////////
 			// animation graph unit indexes
-			TStructGetPtrImpl(sbyte,				SeatIndex, 0x8);		// 0x2A0
-			TStructGetPtrImpl(sbyte,				SeatWeaponIndex, 0x9);	// 0x2A1
-			TStructGetPtrImpl(sbyte,				WeaponTypeIndex, 0xA);	// 0x2A2
+			sbyte seat_index;							// 0x2A0
+			sbyte seat_weapon_index;					// 0x2A1
+			sbyte weapon_type_index;					// 0x2A2
 			//////////////////////////////////////////////////////////////////////////
-			TStructGetPtrImpl(sbyte,				AnimationState, 0xB);	// 0x2A3 [Enums::unit_animation_state]
-			TStructGetPtrImpl(sbyte,			ReplacementAnimationState, 0xC);	// 0x2A4
-			TStructGetPtrImpl(sbyte,			OverlayAnimationState, 0xD);// 0x2A5
-			TStructGetPtrImpl(byte,				DesiredAnimationState, 0xE);// 0x2A6, set from s_unit_control_data's animation_state
-			//TStructGetPtrImpl(sbyte,				, 0xF);					// 0x2A7
-			//TStructGetPtrImpl(sbyte,				, 0x10);				// 0x2A8
-			//PAD8?
-			// TODO: s_animation_state
-			TStructGetPtrImpl(uint16,			ReplacementAnimationIndex, 0x12);	// 0x2AA animation index
-            TStructGetPtrImpl(uint16,           ReplacementAnimationFrameIndex, 0x14);  // 0x2AC
-			// TODO: s_animation_state
-            TStructGetPtrImpl(uint16,           OverlayAnimationIndex, 0x16);       // 0x2AE
-            TStructGetPtrImpl(uint16,           OverlayAnimationFrameIndex, 0x18);  // 0x2B0
-			TStructGetPtrImpl(int16,				WeaponIK, 0x1A);				// 0x2B2
-			// 0x1C?
-			//TStructGetPtrImpl(byte?,				, 0x1E);				// 0x2B6 look related
-			//TStructGetPtrImpl(byte?,				, 0x1F);				// 0x2B7 aim related
-			TStructGetPtrImpl(real_rectangle2d,		LookingBounds, 0x20);	// 0x2B8
-			TStructGetPtrImpl(real_rectangle2d,		AimingBounds, 0x30);	// 0x2C8
-			// PAD64 (or unused)											// 0x2D8
-		};
+			byte_enum state;							// 0x2A3 [Enums::unit_animation_state]
+			byte_enum replacement_animation_state;		// 0x2A4 [Enums::unit_replacement_animation_state]
+			byte_enum overlay_animation_state;			// 0x2A5 [Enums::unit_overlay_animation_state]
+			byte_enum desired_animation_state;			// 0x2A6, set from s_unit_control_data's animation_state
+			byte_enum base_seat;						// 0x2A7 [Enums::unit_base_seat]
+			sbyte emotion;								// 0x2A8
+			PAD8;
+			s_animation_state replacement_animation;	// 0x2AA
+			s_animation_state overlay_animation;		// 0x2AE
+			s_animation_state weapon_ik;				// 0x2B2
+			bool update_look_euler;						// 0x2B6 these are set to true when the bounds below change
+			bool update_aim_euler;						// 0x2B7
+			real_rectangle2d looking_bounds;			// 0x2B8
+			real_rectangle2d aiming_bounds;				// 0x2C8
+			PAD64;										// 0x2D8
+		}; BOOST_STATIC_ASSERT( sizeof(s_unit_animation_data) == 0x48 );
 
 		struct s_unit_data
 		{
@@ -349,5 +369,19 @@ namespace Yelo
 			s_object_data object;
 			s_unit_data unit;
 		}; BOOST_STATIC_ASSERT( sizeof(s_unit_datum) == Enums::k_object_size_unit );
+	};
+
+	namespace blam
+	{
+		bool PLATFORM_API unit_animation_state_interruptable(const Objects::s_unit_animation_data& animation,
+			_enum next_animation_state);
+
+		bool PLATFORM_API unit_animation_busy(const Objects::s_unit_animation_data& animation);
+
+		bool PLATFORM_API unit_animation_state_loops(const Objects::s_unit_animation_data& animation);
+
+		bool PLATFORM_API unit_animation_weapon_ik(const Objects::s_unit_animation_data& animation);
+
+		bool PLATFORM_API unit_animation_vehicle_ik(const Objects::s_unit_animation_data& animation);
 	};
 };

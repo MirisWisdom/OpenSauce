@@ -29,10 +29,10 @@ namespace Infections
 		if(animation_graph != nullptr)
 		{
 			s_unit_datum* unit = Objects::ObjectHeader()[unit_index]->_unit;
-			s_unit_animation_data& unit_animation = unit->unit.animation;
+			const s_unit_animation_data& unit_animation = unit->unit.animation;
 
-			sbyte	seat_block_index = *unit_animation.GetSeatIndex(),
-					weapon_block_index = *unit_animation.GetSeatWeaponIndex();
+			sbyte	seat_block_index = unit_animation.seat_index,
+					weapon_block_index = unit_animation.seat_weapon_index;
 
 			TagGroups::animation_graph_weapon const& weapon = animation_graph->units[seat_block_index].weapons[weapon_block_index];
 
@@ -84,7 +84,7 @@ namespace Infections
 			if(!actor_index.IsNull())
 				blam::actor_delete(actor_index);
 			// Set the current animation state to that of a "custom" animation (to avoid the engine doing any weirdness)
-			*target_unit->unit.animation.GetAnimationState() = Enums::_unit_animation_state_custom_animation;
+			target_unit->unit.animation.state = Enums::_unit_animation_state_custom_animation;
 			// Play the infect-start animation on the target unit
 			blam::unit_set_animation(target_unit_index, target_unit->object.animation.definition_index, 
 				infect_start_animation_index);
@@ -120,7 +120,7 @@ namespace Infections
 			blam::unit_set_animation(infected_unit_index, infected_unit->object.animation.definition_index, 
 				infect_end_animation_index);
 			// Set the current animation state to that of a "custom" animation (to avoid the engine doing any weirdness)
-			*infected_unit->unit.animation.GetAnimationState() = Enums::_unit_animation_state_custom_animation;
+			infected_unit->unit.animation.state = Enums::_unit_animation_state_custom_animation;
 		}
 
 		// Kill the unit being infected
@@ -159,11 +159,11 @@ namespace Infections
 		{
 			TagGroups::s_unit_infection const& unit_infection = definition.infectable_units[unit_infection_definition_index];
 
-			real* target_unit_health = &target_unit->object.damage.health;
-			sbyte* target_unit_animation_state = target_unit->unit.animation.GetAnimationState();
+			real& target_unit_health = target_unit->object.damage.health;
+			sbyte& target_unit_animation_state = target_unit->unit.animation.state;
 
 			// If the target unit's health is below the threshold and hasn't died yet...
-			if(*target_unit_health <= unit_infection.health_threshold && *target_unit_health > 0.0f)
+			if(target_unit_health <= unit_infection.health_threshold && target_unit_health > 0.0f)
 			{
 				// If the target unit isn't already infected...
 				if( !TEST_FLAG(target_unit->object.flags, Flags::_object_yelo_is_being_infected_bit) )
@@ -175,10 +175,10 @@ namespace Infections
 					// If the custom animation has finished playing...
 					// If an infection animation wasn't defined, the OR case will be true, since we would have started 
 					// the infection but would not have set the animation state to custom
-					if(frames_left == 0 || *target_unit_animation_state != Enums::_unit_animation_state_custom_animation)
+					if(frames_left == 0 || target_unit_animation_state != Enums::_unit_animation_state_custom_animation)
 					{
 						// Set the target unit's health to 0 so we don't execute this code again
-						*target_unit_health = 0.0f;
+						target_unit_health = 0.0f;
 						InfectionEnd(unit_infection, infection_unit, target_unit, target_unit_index);
 					}
 					else if(frames_left > 0)

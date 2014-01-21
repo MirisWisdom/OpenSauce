@@ -10,6 +10,7 @@
 #include <blamlib/Halo1/items/weapon_definitions.hpp>
 #include <blamlib/Halo1/shaders/shader_definitions.hpp>
 #include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
+#include <blamlib/Halo1/tag_files/tag_files.hpp>
 #include <blamlib/Halo1/tag_files/tag_group_loading.hpp>
 
 namespace Yelo
@@ -22,6 +23,11 @@ namespace Yelo
 	{
 		tag_instance_data_t**	TagInstanceData()	DPTR_IMP_GET2(tag_instance_data);
 		tag_instance_data_t&	TagInstances()		DPTR_IMP_GET_BYREF(tag_instance_data);
+
+		s_tag_file_globals* TagFileGlobalsThreaded()			{ return TagFileGlobals() - 1; } // threaded globals actually appears in memory right before regular
+		s_tag_file_globals* TagFileGlobals()					PTR_IMP_GET2(tag_file_globals);
+
+		Memory::s_byte_swap_definition* TagHeaderBsDefinition()	PTR_IMP_GET2(tag_header_bs_definition);
 
 		// Patches engine code to call our hooks or our implementations of various functions
 		static void InitializeHooks()
@@ -220,6 +226,23 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
+		API_FUNC_NAKED bool PLATFORM_API tag_file_get_file_reference(s_file_reference& reference,
+			tag group_tag, cstring name)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_FILE_EXISTS);
+
+			API_FUNC_NAKED_START()
+				push	esi
+
+				mov		esi, name
+				push	group_tag
+				push	reference
+				call	FUNCTION
+				add		esp, 4 * 2
+
+				pop		esi
+			API_FUNC_NAKED_END(0)
+		}
 		//////////////////////////////////////////////////////////////////////////
 		// tag_files/tag_groups
 		char* tag_group_loading_error_string =			CAST_PTR(char*,  GET_DATA_PTR(TAG_LOAD_ERROR_STRING));
@@ -255,12 +278,6 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
-// 		API_FUNC_NAKED bool PLATFORM_API tag_data_resize(tag_data* data, int32 new_size)
-// 		{
-// 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_DATA_RESIZE);
-// 
-// 			__asm	jmp	FUNCTION
-// 		}
 
 		API_FUNC_NAKED TagGroups::s_tag_field_scan_state& PLATFORM_API tag_field_scan_state_new(TagGroups::s_tag_field_scan_state& state, 
 			const tag_field* fields, void* fields_address)
@@ -296,12 +313,6 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
-// 		API_FUNC_NAKED void* PLATFORM_API tag_get(tag group_tag, datum_index tag_index)
-// 		{
-// 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_GET);
-// 
-// 			__asm	jmp	FUNCTION
-// 		}
 		API_FUNC_NAKED void PLATFORM_API tag_rename(datum_index tag_index, cstring new_name)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_RENAME);
@@ -321,12 +332,6 @@ namespace Yelo
 			__asm	jmp	FUNCTION
 		}
 
-// 		API_FUNC_NAKED void PLATFORM_API tag_reference_set(tag_reference& reference, tag group_tag, cstring name)
-// 		{
-// 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_REFERENCE_SET);
-// 
-// 			__asm	jmp	FUNCTION
-// 		}
 		API_FUNC_NAKED uint32 PLATFORM_API tag_block_size(tag_block* block)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_SIZE);
@@ -351,24 +356,6 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
-// 		API_FUNC_NAKED void PLATFORM_API tag_block_delete_element(tag_block* block, int32 element_index)
-// 		{
-// 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_DELETE_ELEMENT);
-// 
-// 			__asm	jmp	FUNCTION
-// 		}
-// 		API_FUNC_NAKED int32 PLATFORM_API tag_block_add_element(tag_block* block)
-// 		{
-// 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_ADD_ELEMENT);
-// 
-// 			__asm	jmp	FUNCTION
-// 		}
-// 		API_FUNC_NAKED bool PLATFORM_API tag_block_resize(tag_block* block, int32 element_count)
-// 		{
-// 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_RESIZE);
-// 
-// 			__asm	jmp	FUNCTION
-// 		}
 		API_FUNC_NAKED int32 PLATFORM_API tag_block_insert_element(tag_block* block, int32 index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_BLOCK_INSERT_ELEMENT);
@@ -403,12 +390,6 @@ namespace Yelo
 			API_FUNC_NAKED_END_()//(2);
 		}
 
-// 		API_FUNC_NAKED datum_index PLATFORM_API tag_reload(tag group_tag, cstring name)
-// 		{
-// 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_RELOAD);
-// 
-// 			__asm	jmp	FUNCTION
-// 		}
 		API_FUNC_NAKED void PLATFORM_API tag_load_children(datum_index tag_index)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(TAG_LOAD_CHILDREN);
