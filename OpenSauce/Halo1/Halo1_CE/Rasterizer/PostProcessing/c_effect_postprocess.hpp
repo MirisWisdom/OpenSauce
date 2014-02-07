@@ -14,7 +14,7 @@
 #include "Rasterizer/PostProcessing/c_shader_postprocess.hpp"
 #include "Rasterizer/PostProcessing/c_shader_instance.hpp"
 #include "Rasterizer/PostProcessing/c_quad_manager.hpp"
-#include "Rasterizer/PostProcessing/Interpolation/c_interp_linear.hpp"
+#include <YeloLib/Halo1/time/interpolation/c_interp_linear.hpp>
 
 namespace Yelo
 {

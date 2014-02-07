@@ -6,11 +6,9 @@
 */
 #pragma once
 
-#if !PLATFORM_IS_DEDI
-
 namespace Yelo
 {
-	namespace Rasterizer { namespace PostProcessing { namespace Interpolation
+	namespace Time { namespace Interpolation
 	{
 		template<size_t count>
 		static void InterpolateValues(bool* lower, bool* upper, real* interp, bool* output)
@@ -66,6 +64,5 @@ namespace Yelo
 			// copy the temporary buffer to the output
 			memcpy(output, &values, sizeof(real) * count);
 		}
-	};};};
+	};};
 };
-#endif

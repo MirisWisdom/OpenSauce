@@ -4,6 +4,21 @@
     <Filter Include="Common\Shared\CrashRpt">
       <UniqueIdentifier>{810826da-002e-4bb2-a5d1-92b2c9dcacde}</UniqueIdentifier>
     </Filter>
+    <Filter Include=".YeloLib\render\lightmaps">
+      <UniqueIdentifier>{08ad3406-577d-4a90-b6c5-5f70a69e7d17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".YeloLib\render\sky">
+      <UniqueIdentifier>{2c8da1df-780e-4d1d-bb68-7c3209b3592b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".YeloLib\time">
+      <UniqueIdentifier>{71b4d2db-9504-4166-b88b-c55577fc21ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".YeloLib\time\interpolation">
+      <UniqueIdentifier>{ae62865a-cc50-4192-bd20-3305a31d38d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include=".YeloLib\time\sequence">
+      <UniqueIdentifier>{d57d4a5e-4ad9-471a-8338-d8868b7f860c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <Import Project="..\..\shared\config\msbuild\CrashRpt.vcxproj.filters" />
   <ItemGroup>
@@ -139,6 +154,48 @@
     <ClInclude Include="..\..\shared\Include\blamlib\cache\cache_files_base.hpp">
       <Filter>.blamlib\cache</Filter>
     </ClInclude>
+    <ClInclude Include="Rasterizer\Lightmaps.hpp">
+      <Filter>Rasterizer</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\Sky.hpp">
+      <Filter>Rasterizer</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_function_pp_anim.hpp">
+      <Filter>Rasterizer\PostProcessing\Interpolation</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenario\ScenarioInfo.hpp">
+      <Filter>Scenario</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.hpp">
+      <Filter>.YeloLib\render\lightmaps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_sequence_controller.hpp">
+      <Filter>.YeloLib\render\lightmaps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.hpp">
+      <Filter>.YeloLib\render\sky</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\c_interp_base.hpp">
+      <Filter>.YeloLib\time\interpolation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\c_interp_function.hpp">
+      <Filter>.YeloLib\time\interpolation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\c_interp_linear.hpp">
+      <Filter>.YeloLib\time\interpolation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\interpolation.hpp">
+      <Filter>.YeloLib\time\interpolation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\IInterpolator.hpp">
+      <Filter>.YeloLib\time\interpolation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\sequence\c_transition_sequence_controller.cpp">
+      <Filter>.YeloLib\time\sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\sequence\c_transition_sequence_controller.hpp">
+      <Filter>.YeloLib\time\sequence</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <!--cseries-->
@@ -251,7 +308,6 @@
 	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\bungie_net\common\message_header.hpp">
       <Filter>.blamlib\bungie_net\common</Filter>
     </ClInclude>
-
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\bungie_net\network\transport_address.hpp">
       <Filter>.blamlib\bungie_net\network</Filter>
     </ClInclude>
@@ -949,8 +1005,26 @@
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\effects\damage_effect_definitions.cpp">
       <Filter>.blamlib\effects</Filter>
     </ClCompile>
+    <ClCompile Include="Rasterizer\Lightmaps.cpp">
+      <Filter>Rasterizer</Filter>
+    </ClCompile>
     <ClCompile Include="Objects\ObjectsYelo.cpp">
       <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\Sky.cpp">
+      <Filter>Rasterizer</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenario\ScenarioInfo.cpp">
+      <Filter>Scenario</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.cpp">
+      <Filter>.YeloLib\render\lightmaps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_sequence_controller.cpp">
+      <Filter>.YeloLib\render\lightmaps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.cpp">
+      <Filter>.YeloLib\render\sky</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2228,9 +2302,6 @@
     <ClInclude Include="Rasterizer\PostProcessing\PostProcessingScripting.hpp">
       <Filter>Rasterizer\PostProcessing</Filter>
     </ClInclude>
-    <ClInclude Include="Rasterizer\PostProcessing\Interfaces\IInterpolator.hpp">
-      <Filter>Rasterizer\PostProcessing\Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="Rasterizer\PostProcessing\Interfaces\IPostProcessingCacheComponent.hpp">
       <Filter>Rasterizer\PostProcessing\Interfaces</Filter>
     </ClInclude>
@@ -2317,18 +2388,6 @@
     </ClInclude>
     <ClInclude Include="Rasterizer\PostProcessing\Generic\External\s_effect_postprocess_external.hpp">
       <Filter>Rasterizer\PostProcessing\Generic\External</Filter>
-    </ClInclude>
-    <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_base.hpp">
-      <Filter>Rasterizer\PostProcessing\Interpolation</Filter>
-    </ClInclude>
-    <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_function.hpp">
-      <Filter>Rasterizer\PostProcessing\Interpolation</Filter>
-    </ClInclude>
-    <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_linear.hpp">
-      <Filter>Rasterizer\PostProcessing\Interpolation</Filter>
-    </ClInclude>
-    <ClInclude Include="Rasterizer\PostProcessing\Interpolation\Interpolation.hpp">
-      <Filter>Rasterizer\PostProcessing\Interpolation</Filter>
     </ClInclude>
     <ClInclude Include="Rasterizer\PostProcessing\Fade\c_shader_fade.hpp">
       <Filter>Rasterizer\PostProcessing\Fade</Filter>

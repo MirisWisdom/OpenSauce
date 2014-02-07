@@ -91,6 +91,8 @@ namespace Yelo
 
 		void PLATFORM_API InitializeForNewMap();
 		void PLATFORM_API DisposeFromOldMap();
+		void PLATFORM_API InitializeForNewBSP();
+		void PLATFORM_API DisposeFromOldBSP();
 		
 		// Called only once: after all other game systems have been initialized at game startup.
 		void PLATFORM_API InitializeForNewGameState();

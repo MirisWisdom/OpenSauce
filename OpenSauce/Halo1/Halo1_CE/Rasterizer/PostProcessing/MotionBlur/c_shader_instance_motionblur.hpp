@@ -7,9 +7,9 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
+#include <YeloLib/Halo1/time/interpolation/c_interp_linear.hpp>
 #include "Rasterizer/PostProcessing/c_effect_postprocess.hpp"
 #include "Rasterizer/PostProcessing/MotionBlur/c_shader_motionblur.hpp"
-#include "Rasterizer/PostProcessing/Interpolation/c_interp_linear.hpp"
 
 namespace Yelo
 {
@@ -35,7 +35,7 @@ namespace Yelo
 
 				real start_vignette;
 				real target_vignette;
-				c_interp_linear<1> vignette_interp;
+				Time::Interpolation::c_interp_linear<1> vignette_interp;
 			}m_members_motionblur;
 
 			/////////////////////////////////////////////////

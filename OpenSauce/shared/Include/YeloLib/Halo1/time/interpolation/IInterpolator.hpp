@@ -6,11 +6,9 @@
 */
 #pragma once
 
-#if !PLATFORM_IS_DEDI
-
 namespace Yelo
 {
-	namespace Rasterizer { namespace PostProcessing
+	namespace Time { namespace Interpolation
 	{
 		interface IInterpolator
 			abstract
@@ -23,4 +21,3 @@ namespace Yelo
 		};
 	};};
 };
-#endif

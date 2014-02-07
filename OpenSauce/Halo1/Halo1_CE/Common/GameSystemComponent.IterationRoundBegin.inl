@@ -29,6 +29,9 @@
 #	undef __GS_COMPONENT_DX9_ON_RESET_DEVICE
 #	undef __GS_COMPONENT_DX9_RENDER
 #	undef __GS_COMPONENT_DX9_RELEASE
+#elif __GS_COMPONENT == __GS_COMPONENT_BSP_LIFECYCLE
+#	undef __GS_COMPONENT_INITIALIZE_FOR_NEW_BSP
+#	undef __GS_COMPONENT_DISPOSE_FROM_OLD_BSP
 #endif
 
 // The round will automatically be ignored, unless one of the component functions above are defined

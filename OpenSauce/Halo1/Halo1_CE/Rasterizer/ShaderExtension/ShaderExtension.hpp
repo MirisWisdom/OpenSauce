@@ -55,6 +55,11 @@ namespace Yelo
 				bool SetSpecColor(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount);
 				bool SetVertexLight(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount);
 			};
+
+			namespace Environment
+			{
+				void SetEnvironmentLightmapVariables(void* shader_pointer);
+			}
 		};
 	};
 };

@@ -12,15 +12,15 @@ namespace Yelo
 	{
 		void Initialize();
 		void Dispose();
-		void Update(real delta_time);
 
 		void InitializeForNewGameState();
-
 		void InitializeForNewMap();
+		void InitializeForNewBSP();
+
+		void HandleGameStateLifeCycle(_enum life_state);
 
 		void Reset();
 		bool SwitchCurrentZoneVariant(cstring variant_name);
 		bool SwitchZoneVariant(cstring zone_name, cstring variant_name);
-		bool SwitchZoneSky(cstring zone_sky_name);
 	};
 };

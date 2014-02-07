@@ -35,14 +35,3 @@ static void* scripting_scenario_faux_zone_switch_variant_evaluate(void** argumen
 
 	return result.pointer;
 }
-static void* scripting_scenario_faux_zone_switch_sky_evaluate(void** arguments)
-{
-	struct s_arguments {
-		cstring zone_sky_name;
-	}* args = CAST_PTR(s_arguments*, arguments);
-	TypeHolder result; result.pointer = nullptr;
-
-	result.boolean = ScenarioFauxZones::SwitchZoneSky(args->zone_sky_name);
-
-	return result.pointer;
-}

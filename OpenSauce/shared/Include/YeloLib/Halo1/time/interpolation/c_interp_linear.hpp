@@ -6,12 +6,11 @@
 */
 #pragma once
 
-#if !PLATFORM_IS_DEDI
-#include "Rasterizer/PostProcessing/Interpolation/c_interp_base.hpp"
+#include <YeloLib/Halo1/time/interpolation/c_interp_base.hpp>
 
 namespace Yelo
 {
-	namespace Rasterizer { namespace PostProcessing
+	namespace Time { namespace Interpolation
 	{
 		template<int C>
 		class c_interp_linear : public c_interp_base<C>
@@ -69,6 +68,14 @@ namespace Yelo
 				SetValues(m_members_linear.current_value);
 			}
 
+			void Set(real change_time, real current_value)
+			{
+				m_members_linear.current_value = current_value;
+				m_members_linear.change_time = change_time;
+
+				Update(0.0f);
+			}
+
 		private:
 			void SetValues(real interp)
 			{
@@ -79,4 +86,3 @@ namespace Yelo
 		};
 	};};
 };
-#endif

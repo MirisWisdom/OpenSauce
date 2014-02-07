@@ -9,15 +9,17 @@
 #include "Rasterizer/PostProcessing/Generic/c_parameter_instance.hpp"
 
 #if !PLATFORM_IS_DEDI
+#include <YeloLib/Halo1/time/interpolation/interpolation.hpp>
+#include <YeloLib/Halo1/time/interpolation/c_interp_linear.hpp>
 #include <blamlib/Halo1/units/unit_structures.hpp>
 
-#include "Rasterizer/PostProcessing/Interpolation/c_interp_function.hpp"
-#include "Rasterizer/PostProcessing/Interpolation/c_interp_linear.hpp"
-#include "Rasterizer/PostProcessing/Interpolation/Interpolation.hpp"
+#include "Rasterizer/PostProcessing/Interpolation/c_interp_function_pp_anim.hpp"
 
 // runtime value includes
 #include "Game/Players.hpp"
 #include "Objects/Objects.hpp"
+
+using namespace Yelo::Time::Interpolation;
 
 namespace Yelo
 {
@@ -170,14 +172,14 @@ namespace Yelo
 			default:
 				{
 					if(m_members.parameter->value_type.type == Enums::_shader_variable_base_type_argb_color)
-						m_members.interpolator = new c_interp_function<4>(&m_members.parameter->animation_function);
+						m_members.interpolator = new c_interp_function_pp_anim<4>(&m_members.parameter->animation_function);
 					else
-						m_members.interpolator = new c_interp_function<1>(&m_members.parameter->animation_function);
+						m_members.interpolator = new c_interp_function_pp_anim<1>(&m_members.parameter->animation_function);
 					break;
 				}
-			case 2: m_members.interpolator = new c_interp_function<2>(&m_members.parameter->animation_function); break;
-			case 3: m_members.interpolator = new c_interp_function<3>(&m_members.parameter->animation_function); break;
-			case 4: m_members.interpolator = new c_interp_function<4>(&m_members.parameter->animation_function); break;
+			case 2: m_members.interpolator = new c_interp_function_pp_anim<2>(&m_members.parameter->animation_function); break;
+			case 3: m_members.interpolator = new c_interp_function_pp_anim<3>(&m_members.parameter->animation_function); break;
+			case 4: m_members.interpolator = new c_interp_function_pp_anim<4>(&m_members.parameter->animation_function); break;
 			}
 
 			m_members.interpolator->Ctor();
@@ -314,8 +316,8 @@ namespace Yelo
 			*m_members.m_values[1].boolean = value;
 
 			// reset the interpolator to the current time frame
-			auto inter_linear = CAST_PTR(c_interp_linear<1>*, m_members.interpolator);
-			inter_linear->Begin(change_time);
+			auto interp_linear = CAST_PTR(c_interp_linear<1>*, m_members.interpolator);
+			interp_linear->Begin(change_time);
 		}
 
 		void c_parameter_instance::SetOverrideInterp(int32 value, real change_time)
@@ -330,8 +332,8 @@ namespace Yelo
 			*m_members.m_values[1].integer32 = value;
 
 			// reset the interpolator to the current time frame
-			auto inter_linear = CAST_PTR(c_interp_linear<1>*, m_members.interpolator);
-			inter_linear->Begin(change_time);
+			auto interp_linear = CAST_PTR(c_interp_linear<1>*, m_members.interpolator);
+			interp_linear->Begin(change_time);
 		}
 
 		void c_parameter_instance::SetOverrideInterp(real value, real change_time)
@@ -346,8 +348,8 @@ namespace Yelo
 			*m_members.m_values[1].real32 = value;
 
 			// reset the interpolator to the current time frame
-			auto inter_linear = CAST_PTR(c_interp_linear<1>*, m_members.interpolator);
-			inter_linear->Begin(change_time);
+			auto interp_linear = CAST_PTR(c_interp_linear<1>*, m_members.interpolator);
+			interp_linear->Begin(change_time);
 		}
 
 		void c_parameter_instance::SetOverrideInterp(real_vector2d value, real change_time)
@@ -362,8 +364,8 @@ namespace Yelo
 			*m_members.m_values[1].vector2d = value;
 
 			// reset the interpolator to the current time frame
-			auto inter_linear = CAST_PTR(c_interp_linear<2>*, m_members.interpolator);
-			inter_linear->Begin(change_time);
+			auto interp_linear = CAST_PTR(c_interp_linear<2>*, m_members.interpolator);
+			interp_linear->Begin(change_time);
 		}
 
 		void c_parameter_instance::SetOverrideInterp(real_vector3d value, real change_time)
@@ -378,8 +380,8 @@ namespace Yelo
 			*m_members.m_values[1].vector3d = value;
 
 			// reset the interpolator to the current time frame
-			auto inter_linear = CAST_PTR(c_interp_linear<3>*, m_members.interpolator);
-			inter_linear->Begin(change_time);
+			auto interp_linear = CAST_PTR(c_interp_linear<3>*, m_members.interpolator);
+			interp_linear->Begin(change_time);
 		}
 
 		void c_parameter_instance::SetOverrideInterp(real_quaternion value, real change_time)
@@ -394,8 +396,8 @@ namespace Yelo
 			*m_members.m_values[1].quaternion = value;
 
 			// reset the interpolator to the current time frame
-			auto inter_linear = CAST_PTR(c_interp_linear<4>*, m_members.interpolator);
-			inter_linear->Begin(change_time);
+			auto interp_linear = CAST_PTR(c_interp_linear<4>*, m_members.interpolator);
+			interp_linear->Begin(change_time);
 		}
 
 		void c_parameter_instance::SetOverrideInterp(real_argb_color value, real change_time)
@@ -410,8 +412,8 @@ namespace Yelo
 			*m_members.m_values[1].color = value;
 
 			// reset the interpolator to the current time frame
-			auto inter_linear = CAST_PTR(c_interp_linear<4>*, m_members.interpolator);
-			inter_linear->Begin(change_time);
+			auto interp_linear = CAST_PTR(c_interp_linear<4>*, m_members.interpolator);
+			interp_linear->Begin(change_time);
 		}
 
 		void c_parameter_instance::SetStartValueToCurrent()
@@ -421,13 +423,13 @@ namespace Yelo
 			default:
 				return;
 			case Enums::_shader_variable_base_type_boolean:
-				Interpolation::InterpolateValues<1>(m_members.m_values[0].boolean,
+				InterpolateValues<1>(m_members.m_values[0].boolean,
 					m_members.m_values[1].boolean,
 					m_members.interpolator->GetValues(),
 					m_members.m_values[0].boolean);
 				break;
 			case Enums::_shader_variable_base_type_integer:
-				Interpolation::InterpolateValues<1>(m_members.m_values[0].integer32,
+				InterpolateValues<1>(m_members.m_values[0].integer32,
 					m_members.m_values[1].integer32,
 					m_members.interpolator->GetValues(),
 					m_members.m_values[0].integer32);
@@ -436,25 +438,25 @@ namespace Yelo
 				switch(m_members.parameter->value_type.count)
 				{
 				case 1:
-					Interpolation::InterpolateValues<1>(m_members.m_values[0].real32,
+					InterpolateValues<1>(m_members.m_values[0].real32,
 						m_members.m_values[1].real32,
 						m_members.interpolator->GetValues(),
 						m_members.m_values[0].real32);
 					break;
 				case 2:
-					Interpolation::InterpolateValues<2>(m_members.m_values[0].real32,
+					InterpolateValues<2>(m_members.m_values[0].real32,
 						m_members.m_values[1].real32,
 						m_members.interpolator->GetValues(),
 						m_members.m_values[0].real32);
 					break;
 				case 3:
-					Interpolation::InterpolateValues<3>(m_members.m_values[0].real32,
+					InterpolateValues<3>(m_members.m_values[0].real32,
 						m_members.m_values[1].real32,
 						m_members.interpolator->GetValues(),
 						m_members.m_values[0].real32);
 					break;
 				case 4:
-					Interpolation::InterpolateValues<4>(m_members.m_values[0].real32,
+					InterpolateValues<4>(m_members.m_values[0].real32,
 						m_members.m_values[1].real32,
 						m_members.interpolator->GetValues(),
 						m_members.m_values[0].real32);
@@ -464,7 +466,7 @@ namespace Yelo
 					break;
 				};
 			case Enums::_shader_variable_base_type_argb_color:
-				Interpolation::InterpolateValues<4>(m_members.m_values[0].real32,
+				InterpolateValues<4>(m_members.m_values[0].real32,
 					m_members.m_values[1].real32,
 					m_members.interpolator->GetValues(),
 					m_members.m_values[0].real32);

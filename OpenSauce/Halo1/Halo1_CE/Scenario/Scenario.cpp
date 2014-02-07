@@ -35,6 +35,11 @@ namespace Yelo
 		datum_index ScenarioIndex()									PTR_IMP_GET(global_scenario_index);
 		int16 StructureBspIndex()									PTR_IMP_GET(structure_bsp_index);
 
+#if !PLATFORM_IS_DEDI
+		bool RenderSky()											PTR_IMP_GET(render_sky_flag);
+		int16 SkyIndex()											PTR_IMP_GET(sky_index);
+#endif
+
 		static void InitializeMaximumStructureBspsPerScenarioUpgrade()
 		{
 			void* asm_bytes;
