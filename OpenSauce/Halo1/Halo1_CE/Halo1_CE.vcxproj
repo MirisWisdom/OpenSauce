@@ -87,6 +87,9 @@
   </PropertyGroup>
   <Import Project="$(OSRootDir)shared\config\msbuild\OpenSauceDebuggerDefaults.props" />
   <ItemGroup>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_sequence_controller.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.cpp" />
     <ClCompile Include="Common\DebugDump.cpp" />
     <ClCompile Include="Common\FileIO.cpp" />
     <ClCompile Include="Common\GameSystems.cpp" />
@@ -133,6 +136,9 @@
     <ClCompile Include="Objects\ObjectFieldDefinitions.cpp" />
     <ClCompile Include="Objects\ObjectsYelo.cpp" />
     <ClCompile Include="Objects\Units.cpp" />
+    <ClCompile Include="Rasterizer\Lightmaps.cpp" />
+    <ClCompile Include="Rasterizer\Sky.cpp" />
+    <ClCompile Include="Scenario\ScenarioInfo.cpp" />
     <ClCompile Include="TagGroups\CacheFiles.cpp" />
     <ClCompile Include="TagGroups\project_yellow_definitions.cpp" />
     <ClCompile Include="TagGroups\TagGroups.cpp" />
@@ -186,6 +192,9 @@
     <ClCompile Include="MainYelo.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_sequence_controller.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.hpp" />
     <ClInclude Include="Common\DebugDump.hpp" />
     <ClInclude Include="Common\FileIO.hpp" />
     <ClInclude Include="Common\GameSystemDefinitions.hpp" />
@@ -239,6 +248,10 @@
     <ClInclude Include="Objects\ObjectFieldDefinitions.hpp" />
     <ClInclude Include="Objects\Objects.hpp" />
     <ClInclude Include="Objects\Units.hpp" />
+    <ClInclude Include="Rasterizer\Lightmaps.hpp" />
+    <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_function_pp_anim.hpp" />
+    <ClInclude Include="Rasterizer\Sky.hpp" />
+    <ClInclude Include="Scenario\ScenarioInfo.hpp" />
     <ClInclude Include="TagGroups\CacheFiles.hpp" />
     <ClInclude Include="TagGroups\project_yellow_definitions.hpp" />
     <ClInclude Include="TagGroups\TagGroups.hpp" />
@@ -263,7 +276,6 @@
     <ClInclude Include="Rasterizer\PostProcessing\PostProcessing.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\PostProcessingErrorReporting.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\PostProcessingScripting.hpp" />
-    <ClInclude Include="Rasterizer\PostProcessing\Interfaces\IInterpolator.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Interfaces\IPostProcessingCacheComponent.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Interfaces\IPostProcessingComponent.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Interfaces\IPostProcessingRenderable.hpp" />
@@ -293,10 +305,6 @@
     <ClInclude Include="Rasterizer\PostProcessing\Generic\External\c_shader_external.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Generic\External\c_system_external.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Generic\External\s_effect_postprocess_external.hpp" />
-    <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_base.hpp" />
-    <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_function.hpp" />
-    <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_linear.hpp" />
-    <ClInclude Include="Rasterizer\PostProcessing\Interpolation\Interpolation.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Fade\c_shader_fade.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Fade\c_shader_instance_fade.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Fade\c_system_fade.hpp" />

@@ -6,7 +6,9 @@
 */
 #include "Common/Precompile.hpp"
 #include "Rasterizer/PostProcessing/c_effect_instance.hpp"
-#include "Rasterizer/PostProcessing/Interpolation/Interpolation.hpp"
+
+#include <YeloLib/Halo1/time/interpolation/interpolation.hpp>
+#include <YeloLib/Halo1/time/interpolation/IInterpolator.hpp>
 
 #if !PLATFORM_IS_DEDI
 
@@ -121,7 +123,7 @@ namespace Yelo
 		{
 			m_members.m_fade.interpolator.Update(delta_time);
 
-			Interpolation::InterpolateValues<1>(&m_members.m_fade.start, &m_members.m_fade.end, m_members.m_fade.interpolator.GetValues(), &m_members.m_fade.current);
+			Time::Interpolation::InterpolateValues<1>(&m_members.m_fade.start, &m_members.m_fade.end, m_members.m_fade.interpolator.GetValues(), &m_members.m_fade.current);
 		}
 
 		void c_effect_instance::SetEffectFade(real start, real end, real change_time)

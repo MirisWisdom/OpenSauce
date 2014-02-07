@@ -7,8 +7,8 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
+#include <YeloLib/Halo1/time/interpolation/IInterpolator.hpp>
 #include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
-#include "Rasterizer/PostProcessing/Interfaces/IInterpolator.hpp"
 
 namespace Yelo
 {
@@ -45,7 +45,7 @@ namespace Yelo
 
 				TagGroups::s_shader_postprocess_parameter* parameter;
 
-				IInterpolator* interpolator;
+				Time::Interpolation::IInterpolator* interpolator;
 
 				t_evaluate_runtime_value evaluate_runtime_value;
 

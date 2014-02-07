@@ -21,6 +21,7 @@
 #include "Game/GameState.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Rasterizer/GBuffer.hpp"
+#include "Rasterizer/Lightmaps.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
 #include "TagGroups/TagGroups.hpp"
 
@@ -266,6 +267,7 @@ namespace Yelo
 						if(enabled)
 							g_extensions_enabled_user_override = Settings::ParseBoolean(enabled);
 						Model::LoadSettings(extension_element);
+						Environment::LoadSettings(extension_element);
 					}
 				}
 			}
@@ -280,6 +282,7 @@ namespace Yelo
 					extension_element->SetAttribute("enabled", BooleanToString(g_extensions_enabled_user_override));
 
 					Model::SaveSettings(extension_element);
+					Environment::SaveSettings(extension_element);
 				}
 			}
 		};

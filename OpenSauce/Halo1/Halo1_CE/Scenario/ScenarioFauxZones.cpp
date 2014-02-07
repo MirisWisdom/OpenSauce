@@ -7,14 +7,18 @@
 #include "Common/Precompile.hpp"
 #include "Scenario/ScenarioFauxZones.hpp"
 
-#include <blamlib/Halo1/main/main_structures.hpp>
+#if !PLATFORM_IS_DEDI
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 #include <blamlib/Halo1/structures/structure_bsp_definitions.hpp>
 
 #include "Game/GameState.hpp"
+#include "Common/GameSystemDefinitions.hpp"
 #include "Game/ScriptLibrary.hpp"
 #include "Rasterizer/Rasterizer.hpp"
+#include "Rasterizer/Lightmaps.hpp"
+#include "Rasterizer/Sky.hpp"
 #include "Scenario/Scenario.hpp"
+#include "Scenario/ScenarioInfo.hpp"
 #include "TagGroups/project_yellow_definitions.hpp"
 
 namespace Yelo
@@ -23,263 +27,315 @@ namespace Yelo
 	{
 		using namespace TagGroups;
 
-		struct s_scenario_faux_zone_globals
+		struct s_faux_zone_globals
 		{
-			bool initialized; PAD24;
-
-			// Original tag index of the scenario skies block
-			std::array<datum_index, Enums::k_maximum_skies_per_scenario>					original_skies;
-			std::array<datum_index, Enums::k_maximum_structure_bsps_per_scenario_upgrade>	original_lightmap_bitmaps;
-
-			void ChangeLightmap(structure_bsp* bsp, datum_index lightmap_bitmap_index)
+			struct
 			{
-				bsp->lightmap_bitmaps.tag_index = lightmap_bitmap_index;
-				// TODO: force the object lighting to update
-			}
+				/// <summary>	Flag for whether faux faux zones are set up in the scenario. </summary>
+				bool m_system_enabled;
+				PAD24;
+			}m_flags;
 
-			void InitializeOriginalSkies( const TAG_TBLOCK_(& skies, tag_reference) )
-			{
-				for(int x = 0; x < skies.Count && x < (int)original_skies.size(); x++)
-					original_skies[x] = skies[x].tag_index;
-			}
-			void RestoreOriginalSkies( TAG_TBLOCK_(& skies, tag_reference) )
-			{
-				for(int x = 0; x < skies.Count && x < (int)original_skies.size(); x++)
-					if(!original_skies[x].IsNull())
-						skies[x].tag_index = original_skies[x];
-			}
-			// [skies] should be the scenario's skies block
-			bool ReplaceScenarioSky( TAG_TBLOCK_(& skies, tag_reference), 
-				datum_index original_sky_index, datum_index new_sky_index)
-			{
-				for(int x = 0; x < skies.Count && x < (int)original_skies.size(); x++)
-				{
-					if(original_sky_index == original_skies[x])
-					{
-						skies[x].tag_index = new_sky_index;
-						return true;
-					}
-				}
+			byte m_active_faux_zone;
+			PAD24;
 
-				return false;
-			}
-
-			void InitializeOriginalLightmaps( const TAG_TBLOCK(& bsps, scenario_structure_bsp_reference) )
-			{
-				for(int x = 0; x < bsps.Count && x < (int)original_lightmap_bitmaps.size(); x++)
-				{
-					const auto* bsp = TagGet<structure_bsp>(bsps[x].structure_bsp.tag_index);
-
-					if(bsp != nullptr) // should never happen, but just to be safe
-						original_lightmap_bitmaps[x] = bsp->lightmap_bitmaps.tag_index;
-				}
-			}
-			void RestoreOriginalLightmaps( const TAG_TBLOCK(& bsps, scenario_structure_bsp_reference) )
-			{
-				for(int x = 0; x < bsps.Count && x < (int)original_lightmap_bitmaps.size(); x++)
-				{
-					if(original_lightmap_bitmaps[x].IsNull()) continue;
-
-					auto* bsp = TagGetForModify<structure_bsp>(bsps[x].structure_bsp.tag_index);
-
-					if(bsp != nullptr) // should never happen, but just to be safe
-						ChangeLightmap(bsp, original_lightmap_bitmaps[x]);
-				}
-			}
-			bool ReplaceBspLightmap(structure_bsp* bsp, datum_index new_lightmap_bitmap_index)
-			{
-				if(!new_lightmap_bitmap_index.IsNull())
-				{
-					ChangeLightmap(bsp, new_lightmap_bitmap_index);
-					return true;
-				}
-
-				return false;
-			}
-
-			void Initialize(scenario* scnr)
-			{
-				initialized = true;
-
-				InitializeOriginalSkies(scnr->skies);
-				InitializeOriginalLightmaps(scnr->structure_bsps);
-			}
-
-			void Update()
-			{
-			}
+			/// <summary>	Mapping array to associate the BSP info index with the zone index. </summary>
+			byte m_bsp_zone_map[Enums::k_maximum_structure_bsps_per_scenario_upgrade];
+			/// <summary>	Gamestate memory for storing the current variant index of each zone. </summary>
+			byte* m_zone_variant_gamestate;
 		};
-		static s_scenario_faux_zone_globals* scenario_faux_zone_globals;
+		/// <summary>	Contains all globals variables for the faux zone system. </summary>
+		static s_faux_zone_globals g_faux_zone_globals;
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Checks whether the map has faux zones defined. </summary>
+		///
+		/// <remarks>
+		/// 	Validation checks here are not exhaustive, checks should be done on map build to ensure data in the map is
+		/// 	correct.
+		/// </remarks>
+		///
+		/// <returns>	Returns true if the scenario has faux zones set up. </returns>
+		static bool VerifyFauxZoneSetup()
+		{
+			// TODO: use build time flags
+			// Test for yellow tag and scenario info block
+			if (!Scenario::ScenarioInfo::ScenarioInfo())
+			{
+				return false;
+			}
+
+			// Test whether the scenario info has any faux zones defined
+			if (!Scenario::ScenarioInfo::ScenarioInfo()->faux_zones.Count)
+			{
+				return false;
+			}
+
+			return true;
+		}
 
 #include "Scenario/ScenarioFauxZones.Scripting.inl"
+
+		/// <summary>	Sets up all scripting functions associated with scenario faux zones. </summary>
 		static void InitializeScripting()
 		{
 			Scripting::InitializeScriptFunction(Enums::_hs_function_scenario_faux_zones_reset, 
 				scripting_scenario_faux_zones_reset_evaluate);
+
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_scenario_faux_zone_current_switch_variant, 
 				scripting_scenario_faux_zone_current_switch_variant_evaluate);
 			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_scenario_faux_zone_switch_variant, 
 				scripting_scenario_faux_zone_switch_variant_evaluate);
-			Scripting::InitializeScriptFunctionWithParams(Enums::_hs_function_scenario_faux_zone_switch_sky, 
-				scripting_scenario_faux_zone_switch_sky_evaluate);
+
+			// Depreceated
+			Scripting::NullifyScriptFunctionWithParams(Enums::_hs_function_scenario_faux_zone_switch_sky);
 		}
+
+		/// <summary>	Resets the faux zone gamestate. </summary>
+		static void ResetGamestate()
+		{
+			// TODO: check result
+			memset(g_faux_zone_globals.m_zone_variant_gamestate, 0, Enums::k_maximum_structure_bsps_per_scenario_upgrade);
+		}
+
+		/// <summary>	Allocate gamestate memory for storing the zone variant index data. </summary>
+		void InitializeForNewGameState()
+		{
+			byte* gamestate = GameState::GameStateMalloc<byte>(true, Enums::k_maximum_structure_bsps_per_scenario_upgrade);
+
+			YELO_ASSERT_DISPLAY(gamestate, "Failed to allocate zone variant index gamestate memory");
+			g_faux_zone_globals.m_zone_variant_gamestate = gamestate;
+
+			// Reset the gamestate so all zones use variant 0
+			// TODO: check result
+			memset(g_faux_zone_globals.m_zone_variant_gamestate, 0, Enums::k_maximum_structure_bsps_per_scenario_upgrade);
+		}
+
+		/// <summary>	Called on map load to create a mapping between bsp info's and their associated faux zones. </summary>
+		static void BuildZoneMap()
+		{
+			// TODO: could this be done at compile time and stored in the map?
+			// TODO: check result
+			// Reset the zone map
+			memset(&g_faux_zone_globals.m_bsp_zone_map, 0xFF, sizeof(g_faux_zone_globals.m_bsp_zone_map));
+
+			// Map the bsp zone indices to the bsp info indices
+			for(int i = 0; i < Scenario::ScenarioInfo::ScenarioInfo()->faux_zones.Count; i++)
+			{
+				const s_scenario_faux_zone& zone = Scenario::ScenarioInfo::ScenarioInfo()->faux_zones[i];
+				g_faux_zone_globals.m_bsp_zone_map[zone.bsp_info_index] = i;
+			}
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Changes the specified zones variant. </summary>
+		///
+		/// <param name="zone_index">   	Zone to change. </param>
+		/// <param name="variant_index">	Zero-Variant to switch to. </param>
+		static void SetFauxZoneVariant(byte zone_index, byte variant_index)
+		{
+			// If the zone is not valid reset the lightmap sequence index and sky overrides
+			if(zone_index == 0xFF)
+			{
+				Render::Lightmaps::SetLightmapSequence(0);
+				Render::Sky::ResetSkyOverrides();
+				return;
+			}
+
+			// Get the zones variant
+			const s_scenario_faux_zone& zone = Scenario::ScenarioInfo::ScenarioInfo()->faux_zones[zone_index];
+			const s_scenario_faux_zone_variant& variant = zone.variants[variant_index];
+
+			// If the edited zone is the current zone, set the lightmaps and skies for the variant
+			byte active_zone_index = g_faux_zone_globals.m_bsp_zone_map[Scenario::ScenarioInfo::BSPInfoIndex()];
+			if(active_zone_index == zone_index)
+			{
+				Render::Lightmaps::SetLightmapSequence((byte)variant.lightmap_sequence_index);
+
+				Render::Sky::ResetSkyOverrides();
+
+				for (int i = 0; i < variant.sky_overrides.Count; i++)
+				{
+					Render::Sky::SetSkyOverride((byte)variant.sky_overrides[i].sky_index, (byte)variant.sky_overrides[i].sky_reference);
+				}
+			}
+
+			// Store the zones current variant
+			g_faux_zone_globals.m_zone_variant_gamestate[zone_index] = variant_index;
+		}
+
+		/// <summary>	Initializes the Faux zone script functions. </summary>
 		void Initialize()
 		{
 			InitializeScripting();
 		}
+
+		/// <summary>	Unused. </summary>
 		void Dispose()
 		{
 		}
 
-		void Update(real delta_time)
-		{
-			if(scenario_faux_zone_globals == nullptr) return;
-
-			scenario_faux_zone_globals->Update();
-		}
-
-		void InitializeForNewGameState()
-		{
-			scenario_faux_zone_globals = GameState::GameStateMalloc<s_scenario_faux_zone_globals>();
-		}
-
+		/// <summary>	Sets up the faux zone system for a new map. </summary>
 		void InitializeForNewMap()
 		{
-			if(scenario_faux_zone_globals == nullptr) return;
+			g_faux_zone_globals.m_flags.m_system_enabled = VerifyFauxZoneSetup();
 
-			if(GameState::MainGlobals()->map.reset_map)
+			if(g_faux_zone_globals.m_flags.m_system_enabled)
 			{
-				ScenarioFauxZones::Reset();
+				ResetGamestate();
+				BuildZoneMap();
+
+				// InitializeForNewMap is called after the first InitializeForBSPLoad so re-call here to set up for the first BSP
+				InitializeForNewBSP();
 			}
-			else
-				scenario_faux_zone_globals->Initialize(Scenario::Scenario());
 		}
 
-		static bool ScenarioFauxZoneSetSwitchVariantUpdateGameStateWithZoneSky(scenario* scnr,
-			const s_project_yellow_scenario_information& info,
-			const s_scenario_faux_zone_sky* zone_sky)
+		/// <summary>	Initialize for faux zone associated with the current BSP. </summary>
+		void InitializeForNewBSP()
 		{
-			if( zone_sky == nullptr || 
-				!zone_sky->IsValid() )
-				return false;
-
-			return scenario_faux_zone_globals->ReplaceScenarioSky(scnr->skies, 
-				info.skies[zone_sky->scenario_sky_to_replace].tag_index,
-				zone_sky->sky.tag_index);
-		}
-
-		static bool ScenarioFauxZoneSetSwitchVariantUpdateGameState(structure_bsp* bsp, scenario* scnr,
-			const s_project_yellow_scenario_information& info,
-			const s_scenario_faux_zone_set& zone_set,
-			const s_scenario_faux_zone_set_variant& variant)
-		{
-			// it is assumed at this point that scenario_faux_zone_globals has been check for NULL
-
-			const s_scenario_faux_zone_lightmap_set* lightmap_set = nullptr;
-			if(variant.lightmap_index != NONE)
-				lightmap_set = &zone_set.lightmaps[variant.lightmap_index];
-
-			const s_scenario_faux_zone_sky* zone_sky = nullptr;
-			if(variant.sky_index != NONE)
-				zone_sky = &info.zone_skies[variant.sky_index];
-
-			bool result = true;
-
-			if(result && lightmap_set != nullptr)
-				result &= scenario_faux_zone_globals->ReplaceBspLightmap(bsp, lightmap_set->definition.tag_index);
-
-			if(result)
-				result &= ScenarioFauxZoneSetSwitchVariantUpdateGameStateWithZoneSky(scnr, info, zone_sky);
-
-			return result;
-		}
-
-		static bool ScenarioFauxZoneSetSwitchVariantByName(structure_bsp* bsp, scenario* scnr,
-			const s_project_yellow_scenario_information& info,
-			const s_scenario_faux_zone_set& zone_set,
-			cstring variant_name)
-		{
-			const TAG_TBLOCK(& variants, s_scenario_faux_zone_set_variant) = zone_set.variants;
-			for(const auto& variant : zone_set.variants)
+			if (!g_faux_zone_globals.m_flags.m_system_enabled || (Scenario::ScenarioInfo::BSPInfoIndex() == NONE))
 			{
-				if( _stricmp(variant.name, variant_name)==0 )
-				{
-					if(variant.HasGameStateChanges())
-						return ScenarioFauxZoneSetSwitchVariantUpdateGameState(bsp, scnr, 
-						info, zone_set, variant);
-
-					return false;
-				}
+				return;
 			}
 
-			return false;
+			g_faux_zone_globals.m_active_faux_zone = g_faux_zone_globals.m_bsp_zone_map[Scenario::ScenarioInfo::BSPInfoIndex()];
+
+			// Set the zones variant to that which is stored in the gamestate
+			SetFauxZoneVariant(g_faux_zone_globals.m_active_faux_zone, g_faux_zone_globals.m_zone_variant_gamestate[g_faux_zone_globals.m_active_faux_zone]);
 		}
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Handles the game state life cycle described by life_state. </summary>
+		///
+		/// <param name="life_state">	State of the gamestate. </param>
+		void HandleGameStateLifeCycle(_enum life_state)
+		{
+			//TODO: is this even needed?
+			switch(life_state)
+			{
+			case Enums::_project_game_state_component_life_cycle_before_save:
+				break;
+			case Enums::_project_game_state_component_life_cycle_before_load:
+				// reset the gamestate to default values
+				Reset();
+				break;
+			case Enums::_project_game_state_component_life_cycle_after_load:
+				break;
+			}
+		}
 
+		/// <summary>	Resets the gamestate so that all zones use variant 0 and reinitializes for the current BSP. </summary>
 		void Reset()
 		{
-			if(scenario_faux_zone_globals == nullptr) return;
-
-			scenario_faux_zone_globals->RestoreOriginalSkies(Scenario::Scenario()->skies);
-			scenario_faux_zone_globals->RestoreOriginalLightmaps(Scenario::Scenario()->structure_bsps);
+			ResetGamestate();
+			InitializeForNewBSP();
 		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets a faux zone by name. </summary>
+		///
+		/// <param name="name">	The zone name to search for. </param>
+		///
+		/// <returns>	The zone index if found, otherwise -1. </returns>
+		static byte GetZone(cstring name)
+		{
+			const TAG_TBLOCK(& zones, s_scenario_faux_zone) = _global_yelo->scenario[0].faux_zones;
+
+			for(int x = 0; x < zones.Count; x++)
+			{
+				if (_stricmp(name, zones[x].name) != 0)
+				{
+					continue;
+				}
+				return x;
+			}
+			return NONE;
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets a zone variant by name. </summary>
+		///
+		/// <param name="zone">	The zone to search in. </param>
+		/// <param name="name">	The zone variant name to search for. </param>
+		///
+		/// <returns>	The zone variant index if found, otherwise -1. </returns>
+		static byte GetZoneVariant(const s_scenario_faux_zone& zone, cstring name)
+		{
+			for(int x = 0; x < zone.variants.Count; x++)
+			{
+				if (_stricmp(name, zone.variants[x].name) != 0)
+				{
+					continue;
+				}
+				return x;
+			}
+			return NONE;
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Changes the variant of the current sky zone. </summary>
+		///
+		/// <param name="variant_name">	Variant to change the current sky zone to. </param>
+		///
+		/// <returns>	Returns true of the variant was set successfully. </returns>
 		bool SwitchCurrentZoneVariant(cstring variant_name)
 		{
-			if(scenario_faux_zone_globals != nullptr && _global_yelo->scenario.Count == 1)
+			if (!g_faux_zone_globals.m_flags.m_system_enabled)
 			{
-				structure_bsp* current_bsp = Scenario::StructureBsp();
-
-				for(const auto& zone : _global_yelo->scenario[0].zones)
-				{
-					if(TagGet<structure_bsp>(zone.structure_bsp) == current_bsp)
-					{
-						return ScenarioFauxZoneSetSwitchVariantByName(current_bsp, Scenario::Scenario(),
-							_global_yelo->scenario[0], zone,
-							variant_name);
-					}
-				}
+				return false;
 			}
 
-			return false;
+			// Get the current sky zone
+			const byte zone_index = g_faux_zone_globals.m_bsp_zone_map[Scenario::ScenarioInfo::BSPInfoIndex()];
+			if (zone_index == 0xFF)
+			{
+				return false;
+			}
+			const s_scenario_faux_zone& zone = Scenario::ScenarioInfo::ScenarioInfo()->faux_zones[zone_index];
+
+			// Find a matching variant
+			const byte variant_index = GetZoneVariant(zone, variant_name);
+			if (variant_index == 0xFF)
+			{
+				return false;
+			}
+
+			SetFauxZoneVariant(zone_index, variant_index);
+			return true;
 		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Changes the variant of a specific BSP zone. </summary>
+		///
+		/// <param name="zone_name">   	Zone to change the variant of. </param>
+		/// <param name="variant_name">	Variant to change the zone to. </param>
+		///
+		/// <returns>	Returns true of the variant was set successfully. </returns>
 		bool SwitchZoneVariant(cstring zone_name, cstring variant_name)
 		{
-			if(scenario_faux_zone_globals != nullptr && _global_yelo->scenario.Count == 1)
+			if (!g_faux_zone_globals.m_flags.m_system_enabled)
 			{
-				for(const auto& zone : _global_yelo->scenario[0].zones)
-				{
-					if(_stricmp(zone_name, zone.name) != 0) continue;
-
-					auto* zone_bsp = TagGetForModify<structure_bsp>(zone.structure_bsp);
-
-					if(zone_bsp != nullptr)
-					{
-						return ScenarioFauxZoneSetSwitchVariantByName(zone_bsp, Scenario::Scenario(),
-							_global_yelo->scenario[0], zone,
-							variant_name);
-					}
-				}
+				return false;
 			}
 
-			return false;
-		}
-
-		bool SwitchZoneSky(cstring zone_sky_name)
-		{
-			if(scenario_faux_zone_globals != nullptr && _global_yelo->scenario.Count == 1)
+			// Find a matching bsp zone
+			const byte zone_index = GetZone(zone_name);
+			if (zone_index == 0xFF)
 			{
-				const TAG_TBLOCK(& zone_skies, s_scenario_faux_zone_sky) = _global_yelo->scenario[0].zone_skies;
+				return false;
+			}
+			const s_scenario_faux_zone& zone = Scenario::ScenarioInfo::ScenarioInfo()->faux_zones[zone_index];
 
-				for(const auto& zone_sky : _global_yelo->scenario[0].zone_skies)
-				{
-					if(_stricmp(zone_sky_name, zone_sky.name) != 0) continue;
-
-					return ScenarioFauxZoneSetSwitchVariantUpdateGameStateWithZoneSky(Scenario::Scenario(), 
-						_global_yelo->scenario[0], &zone_sky);
-				}
+			// Find a matching variant
+			const byte variant_index = GetZoneVariant(zone, variant_name);
+			if (variant_index == 0xFF)
+			{
+				return false;
 			}
 
-			return false;
+			SetFauxZoneVariant(zone_index, variant_index);
+			return true;
 		}
 	};
 };
+#endif

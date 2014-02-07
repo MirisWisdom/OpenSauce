@@ -21,6 +21,8 @@
 		#include "Rasterizer/GBuffer.hpp"
 		#include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
 		#include "Rasterizer/PostProcessing/PostProcessing.hpp"
+		#include "Rasterizer/Lightmaps.hpp"
+		#include "Rasterizer/Sky.hpp"
 		#include "Game/Camera.hpp"
 
 		#include "Interface/GameUI.hpp"
@@ -50,6 +52,7 @@
 	#include "Game/Scripting.hpp"
 	#include "Game/GameStateRuntimeData.hpp"
 	#include "Scenario/Scenario.hpp"
+	#include "Scenario/ScenarioInfo.hpp"
 	#include "Scenario/ScenarioFauxZones.hpp"
 	#include "Game/GameEngine.hpp"
 
@@ -81,6 +84,7 @@
 #define __GS_COMPONENT_MAP_LIFECYCLE 2
 #define __GS_COMPONENT_GAMESTATE_LIFECYCLE 3
 #define __GS_COMPONENT_DX9_LIFECYCLE 4
+#define __GS_COMPONENT_BSP_LIFECYCLE 5
 
 
 namespace Yelo
@@ -116,6 +120,23 @@ namespace Yelo
 #if !defined(API_YELO_NO_PROJECT_COMPONENTS)
 			static s_project_map_component k_components[] = {
 				#define __GS_COMPONENT __GS_COMPONENT_MAP_LIFECYCLE
+				#include "Common/GameSystemComponent.Definitions.inl"
+			};
+
+			out_components = k_components;
+			components_count = NUMBEROF(k_components)-1;
+#endif
+
+			return components_count;
+		}
+		int32 GetProjectComponents(s_project_bsp_component*& out_components)
+		{
+			out_components = nullptr;
+			int32 components_count = NONE;
+
+#if !defined(API_YELO_NO_PROJECT_COMPONENTS)
+			static s_project_bsp_component k_components[] = {
+				#define __GS_COMPONENT __GS_COMPONENT_BSP_LIFECYCLE
 				#include "Common/GameSystemComponent.Definitions.inl"
 			};
 
@@ -229,3 +250,4 @@ namespace Yelo
 #undef __GS_COMPONENT_MAP_LIFECYCLE
 #undef __GS_COMPONENT_GAMESTATE_LIFECYCLE
 #undef __GS_COMPONENT_DX9_LIFECYCLE
+#undef __GS_COMPONENT_BSP_LIFECYCLE

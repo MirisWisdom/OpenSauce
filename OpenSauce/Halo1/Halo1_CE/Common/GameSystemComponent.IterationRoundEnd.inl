@@ -94,6 +94,18 @@
 #		undef	__GS_COMPONENT_INCLUDE_IGNORE_CURRENT_ROUND
 #	endif
 #
+#elif __GS_COMPONENT == __GS_COMPONENT_BSP_LIFECYCLE
+#	ifndef		__GS_COMPONENT_INITIALIZE_FOR_NEW_BSP
+#		define	__GS_COMPONENT_INITIALIZE_FOR_NEW_BSP nullptr
+#	else // a component function was defined, this round is valid
+#		undef	__GS_COMPONENT_INCLUDE_IGNORE_CURRENT_ROUND
+#	endif
+#
+#	ifndef		__GS_COMPONENT_DISPOSE_FROM_OLD_BSP
+#		define	__GS_COMPONENT_DISPOSE_FROM_OLD_BSP nullptr
+#	else // a component function was defined, this round is valid
+#		undef	__GS_COMPONENT_INCLUDE_IGNORE_CURRENT_ROUND
+#	endif
 #endif
 
 
@@ -122,6 +134,11 @@
 		__GS_COMPONENT_DX9_ON_RESET_DEVICE,
 		__GS_COMPONENT_DX9_RENDER,
 		__GS_COMPONENT_DX9_RELEASE,
+	},
+#	elif __GS_COMPONENT == __GS_COMPONENT_BSP_LIFECYCLE
+	{
+		__GS_COMPONENT_INITIALIZE_FOR_NEW_BSP,
+		__GS_COMPONENT_DISPOSE_FROM_OLD_BSP,
 	},
 #	endif
 #else // reset the ignore current round state

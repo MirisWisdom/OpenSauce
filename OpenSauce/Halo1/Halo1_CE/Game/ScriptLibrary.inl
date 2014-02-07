@@ -125,7 +125,7 @@
 		_hs_function_scenario_faux_zones_reset,
 		_hs_function_scenario_faux_zone_current_switch_variant,
 		_hs_function_scenario_faux_zone_switch_variant,
-		_hs_function_scenario_faux_zone_switch_sky,
+		_hs_function_scenario_faux_zone_switch_sky,					// depreceated
 
 		
 		//////////////////////////////////////////////////////////////////////////
@@ -238,13 +238,32 @@
 			"<variant-name>", 1,
 		HS_TYPE(string)
 	);
-	HS_FUNCTION_WITH_PARAMS(scenario_faux_zone_switch_variant, bool, "returns whether the change was successful or not", 
+	HS_FUNCTION_WITH_PARAMS(scenario_faux_zone_switch_variant, bool, "depreceated, do not use", 
 			"<zone-name> <variant-name>", 2,
 		HS_TYPE(string),
 		HS_TYPE(string)
 	);
-	HS_FUNCTION_WITH_PARAMS(scenario_faux_zone_switch_sky, bool, "returns whether the change was successful or not", 
+	HS_FUNCTION_WITH_PARAMS(scenario_faux_zone_switch_sky, bool, "depreceated, do not use", 
 			"<zone-sky-name>", 1,
+		HS_TYPE(string)
+	);
+
+	HS_FUNCTION_WITH_PARAMS(scenario_faux_zone_bsp_current_switch_variant, bool, "returns whether the change was successful or not", 
+			"<variant-name>", 1,
+		HS_TYPE(string)
+	);
+	HS_FUNCTION_WITH_PARAMS(scenario_faux_zone_bsp_switch_variant, bool, "returns whether the change was successful or not", 
+			"<zone-name> <variant-name>", 2,
+		HS_TYPE(string),
+		HS_TYPE(string)
+	);
+	HS_FUNCTION_WITH_PARAMS(scenario_faux_zone_sky_current_switch_variant, bool, "returns whether the change was successful or not", 
+			"<variant-name>", 1,
+		HS_TYPE(string)
+	);
+	HS_FUNCTION_WITH_PARAMS(scenario_faux_zone_sky_switch_variant, bool, "returns whether the change was successful or not", 
+			"<zone-name> <variant-name>", 2,
+		HS_TYPE(string),
 		HS_TYPE(string)
 	);
 
@@ -384,7 +403,6 @@
 		&GET_HS_FUNCTION(scenario_faux_zone_current_switch_variant),
 		&GET_HS_FUNCTION(scenario_faux_zone_switch_variant),
 		&GET_HS_FUNCTION(scenario_faux_zone_switch_sky),
-
 
 		&GET_HS_FUNCTION(vehicle_remapper_enabled),
 

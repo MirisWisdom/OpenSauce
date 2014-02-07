@@ -58,6 +58,14 @@ namespace Yelo
 
 			_model_extension_usage,
 		};
+		enum environment_extension_usage : _enum
+		{
+			_environment_extension_usage_none					= 0,
+			_environment_extension_usage_diffuse_dlm_lighting	= 1 << 0,
+			_environment_extension_usage_specular_dlm_lighting	= 1 << 1,
+
+			_environment_extension_usage,
+		};
 		enum reflection_type : _enum
 		{
 			_reflection_type_bumped_cube_map,
@@ -404,8 +412,12 @@ namespace Yelo
 			_shader_effect_definition effect;
 		}; BOOST_STATIC_ASSERT( sizeof(s_shader_effect) == 0xB4 );
 		//////////////////////////////////////////////////////////////////////////
-		struct s_shader_environment_extension // TODO: FireScythe needs to do me
+		struct s_shader_environment_extension
 		{
+			TAG_PAD(byte, 8);
+
+			TAG_FIELD(real, bump_amount);
+			TAG_PAD(byte, 4);
 		};
 		struct _shader_environment_definition
 		{

@@ -20,16 +20,6 @@
 #		define __GS_COMPONENT_INITIALIZE	Scenario::Initialize
 #		define __GS_COMPONENT_DISPOSE		Scenario::Dispose
 #	endif
-#elif	BOOST_PP_ITERATION() == 3
-#	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
-#		define __GS_COMPONENT_INITIALIZE					ScenarioFauxZones::Initialize
-#		define __GS_COMPONENT_DISPOSE						ScenarioFauxZones::Dispose
-#		define __GS_COMPONENT_UPDATE						ScenarioFauxZones::Update
-#	elif	__GS_COMPONENT == __GS_COMPONENT_MAP_LIFECYCLE
-#		define __GS_COMPONENT_INITIALIZE_FOR_NEW_MAP		ScenarioFauxZones::InitializeForNewMap
-#	elif	__GS_COMPONENT == __GS_COMPONENT_GAMESTATE_LIFECYCLE
-#		define __GS_COMPONENT_INITIALIZE_FOR_NEW_GAME_STATE	ScenarioFauxZones::InitializeForNewGameState
-#	endif
 #endif
 
 #include "Common/GameSystemComponent.IterationRoundEnd.inl"
