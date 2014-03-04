@@ -101,8 +101,8 @@ namespace Yelo
 				for(int i = 0; i < instance_count; i++)
 				{
 					// get the instance and instance state
-					s_sequence_instance& sequence_instance = m_sequence_instances[i];
-					s_sequence_instance_state& sequence_instance_state = m_gamestate.sequence_instance_states[i];
+					auto& sequence_instance = m_sequence_instances[i];
+					auto& sequence_instance_state = m_gamestate.sequence_instance_states[i];
 
 					// get the instances current sequence block and determine whether it is animating
 					sequence_instance.m_current_sequence_block = GetSequenceBlock(i, sequence_instance_state.m_index);
@@ -129,7 +129,7 @@ namespace Yelo
 			{
 				for(int i = 0; i < m_gamestate.sequence_instance_count; i++)
 				{
-					s_sequence_instance& instance = m_sequence_instances[i];
+					auto& instance = m_sequence_instances[i];
 
 					if(!instance.m_do_animation)
 						continue;
@@ -139,7 +139,7 @@ namespace Yelo
 					real* interp_value = instance.m_interpolator.GetValues();
 
 					// encode the progress real value into the gamestate
-					s_sequence_instance_state& sequence_instance_state = m_gamestate.sequence_instance_states[i];
+					auto& sequence_instance_state = m_gamestate.sequence_instance_states[i];
 					sequence_instance_state.m_progress = (byte)(256 * (*interp_value));
 
 					// get the transition function result and update using the result
@@ -168,8 +168,8 @@ namespace Yelo
 			 */
 			virtual void SetSequenceIndex(const int16 instance, const byte index)
 			{
-				s_sequence_instance& sequence_instance = m_sequence_instances[instance];
-				s_sequence_instance_state& sequence_instance_state = m_gamestate.sequence_instance_states[instance];
+				auto& sequence_instance = m_sequence_instances[instance];
+				auto& sequence_instance_state = m_gamestate.sequence_instance_states[instance];
 
 				// update the gamestate to the new sequence
 				sequence_instance_state.m_index = index;

@@ -24,12 +24,6 @@ namespace Yelo
 		datum_index ScenarioIndex();
 		int16 StructureBspIndex();
 
-#if !PLATFORM_IS_DEDI
-		// Sky should be rendered flag
-		bool		RenderSky();
-		// Index of the current render sky in the scenarios skies block
-		int16		SkyIndex();
-#endif
 		void Initialize();
 		void Dispose();
 	};

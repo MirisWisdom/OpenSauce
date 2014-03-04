@@ -88,8 +88,8 @@
   <Import Project="$(OSRootDir)shared\config\msbuild\OpenSauceDebuggerDefaults.props" />
   <ItemGroup>
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.cpp" />
-    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_sequence_controller.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\time\sequence\c_transition_sequence_controller.cpp" />
     <ClCompile Include="Common\DebugDump.cpp" />
     <ClCompile Include="Common\FileIO.cpp" />
     <ClCompile Include="Common\GameSystems.cpp" />
@@ -188,13 +188,18 @@
     <ClCompile Include="Rasterizer\PostProcessing\FXAA\c_system_fxaa.cpp" />
     <ClCompile Include="Rasterizer\ShaderExtension\ShaderExtension.cpp" />
     <ClCompile Include="Scenario\Scenario.cpp" />
-    <ClCompile Include="Scenario\ScenarioFauxZones.cpp" />
+    <ClCompile Include="Scenario\StructureBSP.cpp" />
     <ClCompile Include="MainYelo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.hpp" />
-    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_sequence_controller.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\c_interp_base.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\c_interp_function.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\c_interp_linear.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\i_interpolator.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\interpolation.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\sequence\c_transition_sequence_controller.hpp" />
     <ClInclude Include="Common\DebugDump.hpp" />
     <ClInclude Include="Common\FileIO.hpp" />
     <ClInclude Include="Common\GameSystemDefinitions.hpp" />
@@ -313,7 +318,7 @@
     <ClInclude Include="Rasterizer\PostProcessing\FXAA\c_system_fxaa.hpp" />
     <ClInclude Include="Rasterizer\ShaderExtension\ShaderExtension.hpp" />
     <ClInclude Include="Scenario\Scenario.hpp" />
-    <ClInclude Include="Scenario\ScenarioFauxZones.hpp" />
+    <ClInclude Include="Scenario\StructureBSP.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Halo1_CE_Readme.txt" />
@@ -422,7 +427,6 @@
     <None Include="Rasterizer\PostProcessing\FXAA\FXAADefinitions.inl" />
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Environment.inl" />
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Model.inl" />
-    <None Include="Scenario\ScenarioFauxZones.Scripting.inl" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\..\..\Doc\Blam\Halo1\Halo1_CE.message_delta_definitions.xml">

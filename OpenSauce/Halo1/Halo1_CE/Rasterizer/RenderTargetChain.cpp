@@ -48,7 +48,7 @@ namespace Yelo
 
 		void		s_render_target_chain::Flip()
 		{
-			std::swap<Render::s_render_target*>(m_target_setup.current, m_target_setup.next);
+			std::swap(m_target_setup.current, m_target_setup.next);
 		}
 
 		//////////////////////////////////////////////////////////////////////////
@@ -72,7 +72,7 @@ namespace Yelo
 
 		void		s_render_target_chain_scene::SetSceneToLast()
 		{
-			std::swap<Render::s_render_target*>(m_target_setup.next, m_target_setup_scene.scene);
+			std::swap(m_target_setup.next, m_target_setup_scene.scene);
 		}
 	};
 };

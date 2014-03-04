@@ -24,10 +24,7 @@
 #		define __GS_COMPONENT_INITIALIZE_FOR_NEW_MAP	TagGroups::InitializeForNewMap
 #	endif
 #elif	BOOST_PP_ITERATION() == 4
-#	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
-#		define __GS_COMPONENT_INITIALIZE				Scenario::ScenarioInfo::Initialize
-#		define __GS_COMPONENT_DISPOSE					Scenario::ScenarioInfo::Dispose
-#	elif	__GS_COMPONENT == __GS_COMPONENT_MAP_LIFECYCLE
+#	if		__GS_COMPONENT == __GS_COMPONENT_MAP_LIFECYCLE
 #		define __GS_COMPONENT_INITIALIZE_FOR_NEW_MAP	Scenario::ScenarioInfo::InitializeForNewMap
 #		define __GS_COMPONENT_DISPOSE_FROM_OLD_MAP		Scenario::ScenarioInfo::DisposeFromOldMap
 #	elif	__GS_COMPONENT == __GS_COMPONENT_BSP_LIFECYCLE

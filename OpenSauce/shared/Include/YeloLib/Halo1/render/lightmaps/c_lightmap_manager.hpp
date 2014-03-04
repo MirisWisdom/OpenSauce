@@ -6,8 +6,7 @@
 */
 #pragma once
 
-#include <YeloLib/Halo1/open_sauce/settings/yelo_settings_definitions.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
+#include <blamlib/Halo1/bitmaps/bitmap_group.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 
 namespace Yelo
@@ -21,12 +20,14 @@ namespace Yelo
 			_render_lightmaps_flags_directional = 2,
 		};
 	};
+
 	namespace Render { namespace Lightmaps
 	{
 		class c_lightmap_manager
 		{
-			Flags::render_lightmaps_flags m_flags;
-			PAD24;
+			Flags::render_lightmaps_flags m_available_lightmaps;
+			Flags::render_lightmaps_flags m_used_lightmaps;
+			PAD16;
 
 			struct s_lightmap_datums
 			{
@@ -35,13 +36,18 @@ namespace Yelo
 			}m_current_lightmaps;
 
 		public:
-			void SetLightmapSet(const TagGroups::s_scenario_information_bsp_lightmap_set* lightmap_set);
+			typedef TagGroups::s_bitmap_data* (*t_get_bitmap_data_func)(datum_index, int32);
 
 			bool HasLightmaps(const Flags::render_lightmaps_flags flag);
+			bool UsingLightmaps(const Flags::render_lightmaps_flags flag);
 
-			void GetCurrentLightmapDatums(datum_index& standard);
-			void GetCurrentLightmapDatums(datum_index& directional_1, datum_index& directional_2, datum_index& directional_3);
-			void ClearLightmapDatums();
+			void SetLightmapDatums(datum_index standard
+				, datum_index directional_1
+				, datum_index directional_2
+				, datum_index directional_3);
+			void SetLightmapSamplers(LPDIRECT3DDEVICE9 device
+				, int32 lightmap_index
+				, t_get_bitmap_data_func get_bitmap_data);
 		};
 	};};
 };

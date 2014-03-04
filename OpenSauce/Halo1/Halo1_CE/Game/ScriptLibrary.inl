@@ -122,10 +122,13 @@
 		_hs_function_display_scripted_ui_widget,
 		_hs_function_play_bink_movie,
 
-		_hs_function_scenario_faux_zones_reset,
-		_hs_function_scenario_faux_zone_current_switch_variant,
-		_hs_function_scenario_faux_zone_switch_variant,
-		_hs_function_scenario_faux_zone_switch_sky,					// depreceated
+		_hs_function_scenario_faux_zones_reset,					// depreceated
+		_hs_function_scenario_faux_zone_current_switch_variant,	// depreceated
+		_hs_function_scenario_faux_zone_switch_variant,			// depreceated
+		_hs_function_scenario_faux_zone_switch_sky,				// depreceated
+		
+		_hs_function_structure_bsp_set_lightmap_set,
+		_hs_function_structure_bsp_set_sky_set,
 
 		
 		//////////////////////////////////////////////////////////////////////////
@@ -233,8 +236,8 @@
 		HS_TYPE(string)
 	);
 
-	HS_FUNCTION(scenario_faux_zones_reset, void, "resets the zones in the scenario back to their starting states");
-	HS_FUNCTION_WITH_PARAMS(scenario_faux_zone_current_switch_variant, bool, "returns whether the change was successful or not", 
+	HS_FUNCTION(scenario_faux_zones_reset, void, "depreceated, do not use");
+	HS_FUNCTION_WITH_PARAMS(scenario_faux_zone_current_switch_variant, bool, "depreceated, do not use", 
 			"<variant-name>", 1,
 		HS_TYPE(string)
 	);
@@ -247,26 +250,18 @@
 			"<zone-sky-name>", 1,
 		HS_TYPE(string)
 	);
-
-	HS_FUNCTION_WITH_PARAMS(scenario_faux_zone_bsp_current_switch_variant, bool, "returns whether the change was successful or not", 
-			"<variant-name>", 1,
-		HS_TYPE(string)
-	);
-	HS_FUNCTION_WITH_PARAMS(scenario_faux_zone_bsp_switch_variant, bool, "returns whether the change was successful or not", 
-			"<zone-name> <variant-name>", 2,
-		HS_TYPE(string),
-		HS_TYPE(string)
-	);
-	HS_FUNCTION_WITH_PARAMS(scenario_faux_zone_sky_current_switch_variant, bool, "returns whether the change was successful or not", 
-			"<variant-name>", 1,
-		HS_TYPE(string)
-	);
-	HS_FUNCTION_WITH_PARAMS(scenario_faux_zone_sky_switch_variant, bool, "returns whether the change was successful or not", 
-			"<zone-name> <variant-name>", 2,
-		HS_TYPE(string),
-		HS_TYPE(string)
+	
+	HS_FUNCTION_WITH_PARAMS(structure_bsp_set_lightmap_set, bool, "Sets a bsp's lightmap set", 
+			"<bsp-index> <set-index>", 2,
+		HS_TYPE(short),
+		HS_TYPE(short)
 	);
 
+	HS_FUNCTION_WITH_PARAMS(structure_bsp_set_sky_set, bool, "Sets a bsp's sky set", 
+			"<bsp-index> <set-index>", 2,
+		HS_TYPE(short),
+		HS_TYPE(short)
+	);
 
 	HS_FUNCTION_WITH_PARAMS(vehicle_remapper_enabled, bool, "returns the remapper state before the function call", 
 			"state_name", 1,
@@ -403,6 +398,9 @@
 		&GET_HS_FUNCTION(scenario_faux_zone_current_switch_variant),
 		&GET_HS_FUNCTION(scenario_faux_zone_switch_variant),
 		&GET_HS_FUNCTION(scenario_faux_zone_switch_sky),
+
+		&GET_HS_FUNCTION(structure_bsp_set_lightmap_set),
+		&GET_HS_FUNCTION(structure_bsp_set_sky_set),
 
 		&GET_HS_FUNCTION(vehicle_remapper_enabled),
 

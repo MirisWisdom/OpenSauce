@@ -11,6 +11,7 @@ namespace BuildCacheFileEx
 	{
 #include "Tool/BuildCacheFile/TagPreprocess_PostProcessing.inl"
 #include "Tool/BuildCacheFile/TagPreprocess_ShaderExtension.inl"
+#include "Tool/BuildCacheFile/TagPreprocess_ProjectYellow.inl"
 
 		static void PLATFORM_API preprocess_tags_for_build()
 		{
@@ -38,6 +39,9 @@ namespace BuildCacheFileEx
 					break;
 				case TagGroups::s_shader_environment_definition::k_group_tag:
 					ShaderExtension::shader_environment_extension_process(tag_index);
+					break;
+				case TagGroups::project_yellow::k_group_tag:
+					ProjectYellow::project_yellow_preprocess(tag_index);
 					break;
 				}
 			}

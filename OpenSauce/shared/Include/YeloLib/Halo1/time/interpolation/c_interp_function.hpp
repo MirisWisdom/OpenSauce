@@ -14,8 +14,8 @@ namespace Yelo
 {
 	namespace Time { namespace Interpolation
 	{
-		template<int C>
-		class c_interp_function : public c_interp_base<C>
+		template<int ValueCount>
+		class c_interp_function : public c_interp_base<ValueCount>
 		{
 		protected:
 			struct

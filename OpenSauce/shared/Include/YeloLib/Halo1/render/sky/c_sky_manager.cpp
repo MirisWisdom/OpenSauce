@@ -11,110 +11,134 @@ namespace Yelo
 {
 	namespace Render { namespace Sky
 	{
-		/// <summary>	Resets the sky manager. </summary>
-		void c_sky_manager::Ctor()
-		{
-			// reset to initial values
-			m_sky_datum = datum_index::null;
-
-			m_scenario_sky_refs = nullptr;
-			m_sky_override_refs = nullptr;
-		}
-
-		/// <summary>	Resets the sky manager. </summary>
-		void c_sky_manager::Dtor()
-		{
-			// reset to initial values
-			m_sky_datum = datum_index::null;
-
-			m_scenario_sky_refs = nullptr;
-			m_sky_override_refs = nullptr;
-		}
-
+#pragma region s_sky_entry
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Sets the sky managers gamestate memory pointer. </summary>
+		/// <summary>	Initializes a new instance of the s_sky_entry class. </summary>
 		///
-		/// <param name="gamestate">	[in] Pointer to the sky managers gamestate memory. </param>
-		void c_sky_manager::SetGamestate(byte* gamestate)
-		{
-			m_sky_index_gamestate = gamestate;
-		}
+		/// <param name="sky_index">	Datum index of the sky tag. </param>
+		c_sky_manager::s_sky_entry::s_sky_entry(datum_index sky_index)
+			: m_is_override(false)
+			, m_sky_index(sky_index)
+			, m_original_sky_entry(nullptr)
+		{ }
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Sets the sky managers scenario and override tag reference block pointers. </summary>
+		/// <summary>	Initializes a new instance of the s_sky_entry class that overrides another sky entry. </summary>
 		///
-		/// <param name="scenario"> 	[in] Pointer to the scenarios sky tag references block. </param>
-		/// <param name="overrides">	Pointer to sky override tag reference blocks. </param>
-		void c_sky_manager::SetSkyBlocks(TagBlock<tag_reference>* scenario, const TagBlock<TagGroups::s_scenario_information_sky>* overrides)
+		/// <param name="sky_index">	Datum index of the sky tag. </param>
+		/// <param name="sky_entry">	The sky entry being overriden. </param>
+		c_sky_manager::s_sky_entry::s_sky_entry(datum_index sky_index, c_sky_manager::t_sky_entry_ptr sky_entry)
+			: c_sky_manager::s_sky_entry::s_sky_entry(sky_index)
 		{
-			m_scenario_sky_refs = scenario;
-			m_sky_override_refs = overrides;
+			m_original_sky_entry = sky_entry;
+			m_is_override = true;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Sets sky index. </summary>
+		/// <summary>	Query if this object is a sky override. </summary>
+		///
+		/// <returns>	true if overriding another sky, false if not. </returns>
+		bool c_sky_manager::s_sky_entry::IsOverride()
+		{
+			return m_is_override;
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets the sky datum index. </summary>
+		///
+		/// <returns>	A datum_index. </returns>
+		datum_index c_sky_manager::s_sky_entry::Get()
+		{
+			return m_sky_index;
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets the original sky pointer if set. </summary>
+		///
+		/// <returns>	A c_sky_manager::t_sky_entry_ptr. </returns>
+		c_sky_manager::t_sky_entry_ptr c_sky_manager::s_sky_entry::OriginalSky()
+		{
+			return m_original_sky_entry;
+		}
+#pragma endregion s_sky_entry
+
+#pragma region c_sky_manager
+		/// <summary>	Resets the sky list, reverting all overrides. </summary>
+		void c_sky_manager::Reset()
+		{
+			for(t_sky_entry_list::size_type i = 0; i < m_sky_list.size(); i++)
+			{
+				// If the sky entry is an override, replace it with the sky stored within
+				if(m_sky_list[i]->IsOverride())
+				{
+					m_sky_list[i] = m_sky_list[i]->OriginalSky();
+				}
+			}
+		}
+
+		/// <summary>	Clears the sky list. </summary>
+		void c_sky_manager::Clear()
+		{
+			m_sky_list.clear();
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Add's entries to the sky list for the skies listed in the scenario tag. </summary>
+		///
+		/// <param name="skies">	The scenario's skies block. </param>
+		void c_sky_manager::SetScenarioSkies(const TagBlock<tag_reference>& skies)
+		{
+			for(auto sky : skies)
+			{
+				t_sky_entry_ptr sky_entry(new s_sky_entry(sky.tag_index));
+				m_sky_list.push_back(sky_entry);
+			}
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Sets a sky index to a different sky tag. </summary>
 		///
 		/// <param name="sky_index">	Zero-based index of the sky. </param>
-		void c_sky_manager::SetSkyIndex(byte sky_index)
+		/// <param name="sky_datum">	The sky tag datum index. </param>
+		void c_sky_manager::SetSkyIndex(byte sky_index, datum_index sky_datum)
 		{
-			if (sky_index == 0xFF)
+			if (sky_index == NONE)
 			{
 				return;
 			}
 
-			YELO_ASSERT_DISPLAY(m_sky_index_gamestate, "sky manager gamestate pointer not set");
-
-			m_sky_index = sky_index;
-
-			if(m_sky_index_gamestate[sky_index] != 0xFF)
+			// If the chosen sky is an override, get the original sky entry
+			// Otherwise use the sky entry in the list
+			t_sky_entry_ptr original_sky;
+			if(m_sky_list[sky_index]->IsOverride())
 			{
-				YELO_ASSERT_DISPLAY(m_sky_override_refs, "sky override block pointer not set in sky manager");
-				YELO_ASSERT_DISPLAY(m_sky_index_gamestate[sky_index] < (*m_sky_override_refs).Count, "invalid sky override index in sky manager");
-
-				// If the override index in the gamestate is not 0xFF use the override sky
-				const tag_reference& sky_ref = (*m_sky_override_refs)[m_sky_index_gamestate[sky_index]].sky;
-				m_sky_datum = sky_ref.tag_index;
+				original_sky = m_sky_list[sky_index]->OriginalSky();
 			}
 			else
 			{
-				YELO_ASSERT_DISPLAY(m_scenario_sky_refs, "scenario sky block pointer not set in sky manager");
-
-				// Ignore invalid sky index as this can occur on map change
-				if (sky_index >= (*m_scenario_sky_refs).Count)
-				{
-					return;
-				}
-
-				// If the override index in the gamestate is 0xFF use the stock sky
-				tag_reference& sky_ref = (*m_scenario_sky_refs)[sky_index];
-				m_sky_datum = sky_ref.tag_index;
+				original_sky = m_sky_list[sky_index];
 			}
+
+			// Create a new sky entry to override the stock one
+			t_sky_entry_ptr new_sky(new s_sky_entry(sky_datum, original_sky));
+
+			m_sky_list[sky_index] = new_sky;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Sets a sky index to be overriden with another sky index. </summary>
+		/// <summary>	Gets a sky's datum index. </summary>
 		///
-		/// <param name="scenario_sky_index">	Zero-based index of the scenario sky. </param>
-		/// <param name="override_sky_index">	Zero-based index of the override sky. </param>
-		void c_sky_manager::SetSkyOverride(byte scenario_sky_index, byte override_sky_index)
+		/// <param name="sky_index">	Zero-based index of the sky. </param>
+		///
+		/// <returns>	The sky tag's datum index. </returns>
+		datum_index c_sky_manager::GetSkyDatum(byte sky_index)
 		{
-			// change the override index in the gamestate
-			m_sky_index_gamestate[scenario_sky_index] = override_sky_index;
-
-			// update the current sky datum if the current sky index was changed
-			if ((byte)m_sky_index == scenario_sky_index)
+			if(sky_index == (byte)NONE)
 			{
-				SetSkyIndex(m_sky_index);
+				return datum_index::null;
 			}
+			return m_sky_list[sky_index]->Get();
 		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Returns the current sky to use by reference. </summary>
-		///
-		/// <param name="sky">	[out] Datum index reference the sky datum is set to. </param>
-		void c_sky_manager::GetCurrentSkyDatum(datum_index& sky)
-		{
-			sky = m_sky_datum;
-		}
+#pragma endregion c_sky_manager
 	};};
 };

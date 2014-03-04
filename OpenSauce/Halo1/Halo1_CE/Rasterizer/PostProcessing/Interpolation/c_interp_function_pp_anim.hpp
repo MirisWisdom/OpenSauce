@@ -16,8 +16,8 @@ namespace Yelo
 {
 	namespace Rasterizer { namespace PostProcessing
 	{
-		template<int C>
-		class c_interp_function_pp_anim : public Time::Interpolation::c_interp_function<C>
+		template<int ValueCount>
+		class c_interp_function_pp_anim : public Time::Interpolation::c_interp_function<ValueCount>
 		{
 		protected:
 			struct
@@ -37,7 +37,7 @@ namespace Yelo
 			{
 				c_interp_function::Dtor();
 
-				m_members_pp_anim.animation = NULL;
+				m_members_pp_anim.animation = nullptr;
 			}
 
 			void Update(real delta_time)
@@ -66,7 +66,7 @@ namespace Yelo
 				else
 					function_input = CAST(real, Rasterizer::FrameParameters()->elapsed_time / m_members_pp_anim.animation->animation_duration);
 
-				for(int32 i = 0; i < C; i++)
+				for (int32 i = 0; i < ValueCount; i++)
 				{
 					// if the function is noise and we want multichannel noise, get a different value for each channel
 					// the use of a 7 here is arbitrary

@@ -7,83 +7,106 @@
 #include "Common/Precompile.hpp"
 #include <YeloLib/Halo1/render/lightmaps/c_lightmap_manager.hpp>
 
+#include <blamlib/Halo1/rasterizer/dx9/rasterizer_dx9.hpp>
+
 namespace Yelo
 {
 	namespace Render { namespace Lightmaps
 	{
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Changes the active lightmap set. </summary>
-		///
-		/// <param name="lightmap_set">	Pointer to the lightmap set to change to. </param>
-		void c_lightmap_manager::SetLightmapSet(const TagGroups::s_scenario_information_bsp_lightmap_set* lightmap_set)
-		{
-			m_flags = Flags::_render_lightmaps_flags_none;
-
-			if (!lightmap_set)
-			{
-				return;
-			}
-
-			// Update the current lightmap bitmap datums
-			m_current_lightmaps.standard = lightmap_set->standard_lightmap.tag_index;
-
-			m_current_lightmaps.directional[0] = lightmap_set->directional_lightmap_1.tag_index;
-			m_current_lightmaps.directional[1] = lightmap_set->directional_lightmap_2.tag_index;
-			m_current_lightmaps.directional[2] = lightmap_set->directional_lightmap_3.tag_index;
-
-			// We shouldn't have a case where only the first DLM is present, map should not compile without all 3
-			if (m_current_lightmaps.standard != datum_index::null)
-			{
-				m_flags = (Flags::render_lightmaps_flags)(m_flags | Flags::_render_lightmaps_flags_standard);
-			}
-			if (m_current_lightmaps.directional[0] != datum_index::null)
-			{
-				m_flags = (Flags::render_lightmaps_flags)(m_flags | Flags::_render_lightmaps_flags_directional);
-			}
-		}
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Returns true if the lightmap set has certain lightmap types. </summary>
 		///
 		/// <param name="flag">	The lightmap type. </param>
 		///
-		/// <returns>	true if if has the requested type, false if not. </returns>
+		/// <returns>	true if the requested type is available, false if not. </returns>
 		bool c_lightmap_manager::HasLightmaps(const Flags::render_lightmaps_flags flag)
 		{
-			return (m_flags & flag) == flag;
+			return (m_available_lightmaps & flag) == flag;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Returns the standard lightmap datum by reference. </summary>
+		/// <summary>	Returns true if the manager has set certain lightmaps on the render device. </summary>
 		///
-		/// <param name="standard">	[out] Datum index reference the standard lightmap datum is set to. </param>
-		void c_lightmap_manager::GetCurrentLightmapDatums(datum_index& standard)
+		/// <param name="flag">	The lightmap type. </param>
+		///
+		/// <returns>	true if the lightmap type was sent to the device, false if not. </returns>
+		bool c_lightmap_manager::UsingLightmaps(const Flags::render_lightmaps_flags flag)
 		{
-			standard = m_current_lightmaps.standard;
+			return (m_used_lightmaps & flag) == flag;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Returns the directonal lightmap datums by reference. </summary>
+		/// <summary>	Changes the active lightmap datums. </summary>
 		///
-		/// <param name="directional_1">	[in,out] Datum index reference the directional lightmap 1 datum is set to. </param>
-		/// <param name="directional_2">	[in,out] Datum index reference the directional lightmap 2 datum is set to. </param>
-		/// <param name="directional_3">	[in,out] Datum index reference the directional lightmap 3 datum is set to. </param>
-		void c_lightmap_manager::GetCurrentLightmapDatums(datum_index& directional_1, datum_index& directional_2, datum_index& directional_3)
+		/// <param name="standard">			Teh standard lightmaps datum. </param>
+		/// <param name="directional_1">	The first directional lightmaps datum. </param>
+		/// <param name="directional_2">	The second directional lightmaps datum. </param>
+		/// <param name="directional_3">	The third directional lightmaps datum. </param>
+		void c_lightmap_manager::SetLightmapDatums(datum_index standard
+			, datum_index directional_1
+			, datum_index directional_2
+			, datum_index directional_3)
 		{
-			directional_1 = m_current_lightmaps.directional[0];
-			directional_2 = m_current_lightmaps.directional[1];
-			directional_3 = m_current_lightmaps.directional[2];
+			m_available_lightmaps = Flags::_render_lightmaps_flags_none;
+
+			// Update the current lightmap bitmap datums
+			m_current_lightmaps.standard = standard;
+
+			m_current_lightmaps.directional[0] = directional_1;
+			m_current_lightmaps.directional[1] = directional_2;
+			m_current_lightmaps.directional[2] = directional_3;
+
+			if (m_current_lightmaps.standard != datum_index::null)
+			{
+				m_available_lightmaps = (Flags::render_lightmaps_flags)(m_available_lightmaps | Flags::_render_lightmaps_flags_standard);
+			}
+			
+			// We shouldn't have a case where only the first DLM is present, map should not compile without all 3
+			if (m_current_lightmaps.directional[0] != datum_index::null)
+			{
+				m_available_lightmaps = (Flags::render_lightmaps_flags)(m_available_lightmaps | Flags::_render_lightmaps_flags_directional);
+			}
 		}
 
-		void c_lightmap_manager::ClearLightmapDatums()
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Sets the lightmap samplers. </summary>
+		///
+		/// <param name="device">		  	The current render device. </param>
+		/// <param name="lightmap_index"> 	Index of the lightmap. </param>
+		/// <param name="get_bitmap_data">	Function for getting a bitmap data block. </param>
+		void c_lightmap_manager::SetLightmapSamplers(LPDIRECT3DDEVICE9 device
+			, int32 lightmap_index
+			, t_get_bitmap_data_func get_bitmap_data)
 		{
-			// Reset to initial values
-			m_flags = Flags::_render_lightmaps_flags_none;
+			m_used_lightmaps = Flags::_render_lightmaps_flags_none;
 
-			m_current_lightmaps.standard = datum_index::null;
-			m_current_lightmaps.directional[0] = datum_index::null;
-			m_current_lightmaps.directional[1] = datum_index::null;
-			m_current_lightmaps.directional[2] = datum_index::null;
+			auto set_sampler = 
+				[&](datum_index bitmap_datum, int32 sampler)
+				{
+					auto bitmap_data = get_bitmap_data(bitmap_datum, lightmap_index);
+					blam::rasterizer_set_texture_bitmap_data((_enum)sampler, bitmap_data);
+					
+					device->SetSamplerState(sampler, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
+					device->SetSamplerState(sampler, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
+					device->SetSamplerState(sampler, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
+				};
+
+			if(HasLightmaps(Flags::_render_lightmaps_flags_directional))
+			{
+				// The map does have directional lightmaps so use those
+				set_sampler(m_current_lightmaps.directional[0], 2);
+				set_sampler(m_current_lightmaps.directional[1], 4);
+				set_sampler(m_current_lightmaps.directional[2], 5);
+
+				m_used_lightmaps = Flags::_render_lightmaps_flags_directional;
+			}
+			else if(HasLightmaps(Flags::_render_lightmaps_flags_standard))
+			{
+				// The map does not have directional lightmaps, so use the standard lightmaps
+				set_sampler(m_current_lightmaps.standard, 2);
+						
+				m_used_lightmaps = Flags::_render_lightmaps_flags_standard;
+			}
 		}
 	};};
 };
