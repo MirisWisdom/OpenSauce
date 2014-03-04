@@ -10,13 +10,14 @@ namespace Yelo
 {
 	namespace Time { namespace Interpolation
 	{
-		interface IInterpolator
+		class i_interpolator
 			abstract
 		{
+		public:
 			virtual void Ctor() {}
 			virtual void Dtor() {}
 
-			virtual real* GetValues() { return NULL; }
+			virtual real* GetValues() { return nullptr; }
 			virtual void Update(real delta_time) {}
 		};
 	};};

@@ -12,8 +12,8 @@ namespace Yelo
 {
 	namespace Time { namespace Interpolation
 	{
-		template<int C>
-		class c_interp_linear : public c_interp_base<C>
+		template<int ValueCount>
+		class c_interp_linear : public c_interp_base<ValueCount>
 		{
 			struct{
 				real current_value;
@@ -80,7 +80,7 @@ namespace Yelo
 			void SetValues(real interp)
 			{
 				// in the linear interpolator, all channels have the same value
-				for(int i = 0; i < C; i++)
+				for (int i = 0; i < ValueCount; i++)
 					m_members.values[i] = m_members_linear.current_value;
 			}
 		};

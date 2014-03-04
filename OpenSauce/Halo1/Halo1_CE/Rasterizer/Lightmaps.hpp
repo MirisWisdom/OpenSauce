@@ -13,20 +13,9 @@ namespace Yelo
 		void Initialize();
 		void Dispose();
 
-		void Update(real delta);
-
-		void InitializeForNewGameState();
-		void HandleGameStateLifeCycle(_enum life_state);
-
-		void InitializeForNewMap();
-		void DisposeFromOldMap();
-
-		void InitializeForNewBSP();
-		void DisposeFromOldBSP();
-
-		void SetLightmapSequence(byte seq_index);
-		void SetLightmapSequence(int16 bsp_index, byte seq_index);
-
 		bool UsingDirectionalLightmaps();
+		
+		void SetLightmaps(datum_index standard);
+		void SetLightmaps(datum_index standard, datum_index directional_1, datum_index directional_2, datum_index directional_3);
 	};};
 };

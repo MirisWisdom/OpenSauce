@@ -53,7 +53,7 @@
 	#include "Game/GameStateRuntimeData.hpp"
 	#include "Scenario/Scenario.hpp"
 	#include "Scenario/ScenarioInfo.hpp"
-	#include "Scenario/ScenarioFauxZones.hpp"
+	#include "Scenario/StructureBSP.hpp"
 	#include "Game/GameEngine.hpp"
 
 	#include "Networking/Networking.hpp"

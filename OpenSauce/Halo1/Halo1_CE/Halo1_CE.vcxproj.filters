@@ -52,7 +52,7 @@
     <Filter Include=".blamlib\bungie_net">
       <UniqueIdentifier>{b3581c3b-6d35-46ec-ac17-a61316ab7c9e}</UniqueIdentifier>
     </Filter>
-	<Filter Include=".blamlib\bungie_net\common">
+    <Filter Include=".blamlib\bungie_net\common">
       <UniqueIdentifier>{C6BD0331-5CA0-4323-BB7B-D44BCCAD219E}</UniqueIdentifier>
     </Filter>
     <Filter Include=".blamlib\bungie_net\network">
@@ -169,9 +169,6 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.hpp">
       <Filter>.YeloLib\render\lightmaps</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_sequence_controller.hpp">
-      <Filter>.YeloLib\render\lightmaps</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.hpp">
       <Filter>.YeloLib\render\sky</Filter>
     </ClInclude>
@@ -187,14 +184,14 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\interpolation.hpp">
       <Filter>.YeloLib\time\interpolation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\IInterpolator.hpp">
-      <Filter>.YeloLib\time\interpolation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\sequence\c_transition_sequence_controller.cpp">
-      <Filter>.YeloLib\time\sequence</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\sequence\c_transition_sequence_controller.hpp">
       <Filter>.YeloLib\time\sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\i_interpolator.hpp">
+      <Filter>.YeloLib\time\interpolation</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenario\StructureBSP.hpp">
+      <Filter>Scenario</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -305,7 +302,7 @@
   </ItemGroup>
   <ItemGroup>
     <!--bungie_net-->
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\bungie_net\common\message_header.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\bungie_net\common\message_header.hpp">
       <Filter>.blamlib\bungie_net\common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\bungie_net\network\transport_address.hpp">
@@ -371,7 +368,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cutscene\recorded_animations.hpp">
       <Filter>.blamlib\cutscene</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\cutscene\recorded_animations_structures.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cutscene\recorded_animations_structures.hpp">
       <Filter>.blamlib\cutscene</Filter>
     </ClInclude>
   </ItemGroup>
@@ -443,10 +440,10 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_allegiance.hpp">
       <Filter>.blamlib\game</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_allegiance_structures.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_allegiance_structures.hpp">
       <Filter>.blamlib\game</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_configuration.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_configuration.hpp">
       <Filter>.blamlib\game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_engine.hpp">
@@ -476,16 +473,16 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_globals.hpp">
       <Filter>.blamlib\game</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_globals_definitions.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_globals_definitions.hpp">
       <Filter>.blamlib\game</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_globals_structures.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_globals_structures.hpp">
       <Filter>.blamlib\game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_time.hpp">
       <Filter>.blamlib\game</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_time_structures.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\game_time_structures.hpp">
       <Filter>.blamlib\game</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\game\player_action.hpp">
@@ -536,7 +533,7 @@
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs_runtime.cpp">
       <Filter>.blamlib\hs</Filter>
     </ClCompile>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_runtime_structures.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_runtime_structures.hpp">
       <Filter>.blamlib\hs</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_scenario_definitions.hpp">
@@ -563,10 +560,10 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\first_person_weapons.hpp">
       <Filter>.blamlib\interface</Filter>
     </ClInclude>
-	<ClCompile Include="..\..\shared\Include\blamlib\Halo1\interface\first_person_weapons.cpp">
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\interface\first_person_weapons.cpp">
       <Filter>.blamlib\interface</Filter>
     </ClCompile>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\first_person_weapons_structures.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\first_person_weapons_structures.hpp">
       <Filter>.blamlib\interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud.hpp">
@@ -587,7 +584,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_messaging_definitions.hpp">
       <Filter>.blamlib\interface</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_messaging_structures.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_messaging_structures.hpp">
       <Filter>.blamlib\interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_nav_points.hpp">
@@ -596,13 +593,13 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_unit.hpp">
       <Filter>.blamlib\interface</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_unit_structures.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_unit_structures.hpp">
       <Filter>.blamlib\interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_weapon.hpp">
       <Filter>.blamlib\interface</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_weapon_structures.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\hud_weapon_structures.hpp">
       <Filter>.blamlib\interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\interface.hpp">
@@ -683,7 +680,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\main\main.hpp">
       <Filter>.blamlib\main</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\main\main_structures.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\main\main_structures.hpp">
       <Filter>.blamlib\main</Filter>
     </ClInclude>
   </ItemGroup>
@@ -743,7 +740,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_client_manager.hpp">
       <Filter>.blamlib\networking</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_client_manager_structures.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_client_manager_structures.hpp">
       <Filter>.blamlib\networking</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_client_time.hpp">
@@ -758,19 +755,19 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_game_manager.hpp">
       <Filter>.blamlib\networking</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_game_manager_structures.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_game_manager_structures.hpp">
       <Filter>.blamlib\networking</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_messages.hpp">
       <Filter>.blamlib\networking</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_messages_structures.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_messages_structures.hpp">
       <Filter>.blamlib\networking</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_server_manager.hpp">
       <Filter>.blamlib\networking</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_server_manager_structures.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\network_server_manager_structures.hpp">
       <Filter>.blamlib\networking</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\networking\player_update.hpp">
@@ -908,7 +905,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\scenario\scenario_object_definitions_structures.hpp">
       <Filter>.blamlib\scenario</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\shared\Include\blamlib\Halo1\scenario\scenario_structures.hpp">
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\scenario\scenario_structures.hpp">
       <Filter>.blamlib\scenario</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\scenario\sky_definitions.hpp">
@@ -1020,11 +1017,14 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.cpp">
       <Filter>.YeloLib\render\lightmaps</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_sequence_controller.cpp">
-      <Filter>.YeloLib\render\lightmaps</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.cpp">
       <Filter>.YeloLib\render\sky</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\time\sequence\c_transition_sequence_controller.cpp">
+      <Filter>.YeloLib\time\sequence</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenario\StructureBSP.cpp">
+      <Filter>Scenario</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1094,7 +1094,7 @@
     <Filter Include=".YeloLib\models">
       <UniqueIdentifier>{a14833db-9edb-4f20-bc35-3c82d71ddd24}</UniqueIdentifier>
     </Filter>
-	<Filter Include=".YeloLib\objects">
+    <Filter Include=".YeloLib\objects">
       <UniqueIdentifier>{C83D2D4E-056F-47A5-BE11-74CDD0CCCD0A}</UniqueIdentifier>
     </Filter>
     <Filter Include=".YeloLib\open_sauce">
@@ -1357,8 +1357,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-	<!--objects-->
-	<None      Include="..\..\shared\Include\YeloLib\Halo1\objects\object_damage_upgrades.inl">
+    <!--objects-->
+    <None Include="..\..\shared\Include\YeloLib\Halo1\objects\object_damage_upgrades.inl">
       <Filter>.YeloLib\objects</Filter>
     </None>
   </ItemGroup>
@@ -1772,9 +1772,6 @@
     <Filter Include="Scenario">
       <UniqueIdentifier>{bcb7d432-3ee3-4ffb-a8c6-275c83b15dcb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Scenario\Impl">
-      <UniqueIdentifier>{fbae11d1-b912-48f5-b05a-1fd9ec289f00}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp">
@@ -2060,9 +2057,6 @@
       <Filter>Rasterizer\ShaderExtension</Filter>
     </ClCompile>
     <ClCompile Include="Scenario\Scenario.cpp">
-      <Filter>Scenario</Filter>
-    </ClCompile>
-    <ClCompile Include="Scenario\ScenarioFauxZones.cpp">
       <Filter>Scenario</Filter>
     </ClCompile>
     <ClCompile Include="MainYelo.cpp" />
@@ -2413,9 +2407,6 @@
     <ClInclude Include="Scenario\Scenario.hpp">
       <Filter>Scenario</Filter>
     </ClInclude>
-    <ClInclude Include="Scenario\ScenarioFauxZones.hpp">
-      <Filter>Scenario</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Halo1_CE_Readme.txt" />
@@ -2729,9 +2720,6 @@
     </None>
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Model.inl">
       <Filter>Rasterizer\ShaderExtension\Impl</Filter>
-    </None>
-    <None Include="Scenario\ScenarioFauxZones.Scripting.inl">
-      <Filter>Scenario\Impl</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

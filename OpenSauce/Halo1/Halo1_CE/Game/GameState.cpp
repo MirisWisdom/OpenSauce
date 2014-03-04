@@ -247,7 +247,7 @@ namespace Yelo
 			const int32 component_count = Yelo::Main::GetProjectComponents(components);
 
 			for(int32 x = 0; x <= component_count; x++)
-				if( components[x].InitializeForNewBSP != NULL )
+				if (components[x].InitializeForNewBSP != nullptr)
 					components[x].InitializeForNewBSP();
 		}
 		void PLATFORM_API DisposeFromOldBSP()
@@ -256,7 +256,7 @@ namespace Yelo
 			const int32 component_count = Yelo::Main::GetProjectComponents(components);
 
 			for(int32 x = component_count; x >= 0; x--)
-				if( components[x].DisposeFromOldBSP != NULL )
+				if (components[x].DisposeFromOldBSP != nullptr)
 					components[x].DisposeFromOldBSP();
 		}
 

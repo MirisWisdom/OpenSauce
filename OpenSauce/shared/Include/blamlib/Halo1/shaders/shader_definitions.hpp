@@ -48,23 +48,15 @@ namespace Yelo
 
 			_detail_map_function,
 		};
-		enum model_extension_usage : _enum
+		enum shader_extension_usage : _enum
 		{
-			_model_extension_usage_none					= 0,
-			_model_extension_usage_normal_map			= 1 << 0,
-			_model_extension_usage_detail_normal		= 1 << 1,
-			_model_extension_usage_specular_map			= 1 << 2,
-			_model_extension_usage_specular_lighting	= 1 << 3,
+			_shader_extension_usage_none					= 0,
+			_shader_extension_usage_normal_map				= 1 << 0,
+			_shader_extension_usage_detail_normal			= 1 << 1,
+			_shader_extension_usage_specular_map			= 1 << 2,
+			_shader_extension_usage_specular_lighting		= 1 << 3,
 
-			_model_extension_usage,
-		};
-		enum environment_extension_usage : _enum
-		{
-			_environment_extension_usage_none					= 0,
-			_environment_extension_usage_diffuse_dlm_lighting	= 1 << 0,
-			_environment_extension_usage_specular_dlm_lighting	= 1 << 1,
-
-			_environment_extension_usage,
+			_shader_extension_usage,
 		};
 		enum reflection_type : _enum
 		{

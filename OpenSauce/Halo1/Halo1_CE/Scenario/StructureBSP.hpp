@@ -8,7 +8,7 @@
 
 namespace Yelo
 {
-	namespace ScenarioFauxZones
+	namespace StructureBSP
 	{
 		void Initialize();
 		void Dispose();
@@ -18,9 +18,5 @@ namespace Yelo
 		void InitializeForNewBSP();
 
 		void HandleGameStateLifeCycle(_enum life_state);
-
-		void Reset();
-		bool SwitchCurrentZoneVariant(cstring variant_name);
-		bool SwitchZoneVariant(cstring zone_name, cstring variant_name);
 	};
 };

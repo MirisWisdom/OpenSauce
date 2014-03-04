@@ -32,11 +32,17 @@ namespace Yelo
 	#define YELO_ERROR(priority, format, ...) \
 		Yelo::blam::error(Yelo::Enums::priority, format, __VA_ARGS__)
 
+	#define YELO_ERROR_IF(condition, priority, format, ...) \
+		if(condition) { Yelo::blam::error(Yelo::Enums::priority, format, __VA_ARGS__); }
+
 	#define YELO_ERROR_OUT_OF_MEMORY(format, ...) \
 		Yelo::blam::error(Yelo::Enums::_error_message_priority_out_of_memory, format, __VA_ARGS__)
 
 	#define YELO_WARN(format, ...) \
 		Yelo::blam::error(Yelo::Enums::_error_message_priority_warning, format, __VA_ARGS__)
+
+	#define YELO_WARN_IF(condition, format, ...) \
+		if(condition) { Yelo::blam::error(Yelo::Enums::_error_message_priority_warning, format, __VA_ARGS__); }
 #else
 	#define YELO_ERROR(priority, format, ...) __noop
 	#define YELO_ERROR_OUT_OF_MEMORY(format, ...) __noop

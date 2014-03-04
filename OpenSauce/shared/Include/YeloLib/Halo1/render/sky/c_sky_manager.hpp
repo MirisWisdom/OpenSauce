@@ -8,33 +8,40 @@
 
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 
-#include <YeloLib/Halo1/open_sauce/settings/yelo_settings_definitions.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
-#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
-
 namespace Yelo
 {
 	namespace Render { namespace Sky
 	{
 		class c_sky_manager
 		{
-			int16													m_sky_index;
-			datum_index												m_sky_datum;
+			class s_sky_entry
+			{
+				datum_index m_sky_index;
+				bool m_is_override;
+				std::shared_ptr<s_sky_entry> m_original_sky_entry;
 
-			TagBlock<tag_reference>*								m_scenario_sky_refs;
-			const TagBlock<TagGroups::s_scenario_information_sky>*	m_sky_override_refs;
-			byte*													m_sky_index_gamestate;
+			public:
+				s_sky_entry(datum_index sky_index);
+				s_sky_entry(datum_index sky_index, std::shared_ptr<s_sky_entry> sky_entry);
+
+				bool IsOverride();
+
+				datum_index Get();
+
+				std::shared_ptr<s_sky_entry> OriginalSky();
+			};
+			typedef std::shared_ptr<s_sky_entry> t_sky_entry_ptr;
+			typedef std::vector<t_sky_entry_ptr> t_sky_entry_list;
+
+			t_sky_entry_list m_sky_list;
 
 		public:
-			void Ctor();
-			void Dtor();
+			void Reset();
+			void Clear();
 
-			void SetGamestate(byte* gamestate);
-			void SetSkyBlocks(TagBlock<tag_reference>* scenario, const TagBlock<TagGroups::s_scenario_information_sky>* overrides);
-
-			void SetSkyIndex(byte sky_index);
-			void SetSkyOverride(byte scenario_sky_index, byte override_sky_index);
-			void GetCurrentSkyDatum(datum_index& sky);
+			void SetScenarioSkies(const TagBlock<tag_reference>& skies);
+			void SetSkyIndex(byte sky_index, datum_index sky_datum);
+			datum_index GetSkyDatum(byte sky_index);
 		};
 	};};
 };

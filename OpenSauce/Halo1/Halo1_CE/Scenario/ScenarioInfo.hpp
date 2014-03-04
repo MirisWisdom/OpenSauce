@@ -14,7 +14,7 @@ namespace Yelo
 		const TagGroups::s_project_yellow_scenario_information*		ScenarioInfo();
 
 		const bool													HasBSPInfo();
-		const int16													BSPInfoIndex();
+		const byte													BSPInfoIndex();
 		const TagGroups::s_scenario_information_bsp*				BSPInfo();
 
 		void InitializeForNewMap();
@@ -22,8 +22,5 @@ namespace Yelo
 
 		void InitializeForNewBSP();
 		void DisposeFromOldBSP();
-
-		void Initialize();
-		void Dispose();
 	};};
 };

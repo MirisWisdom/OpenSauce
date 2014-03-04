@@ -5,19 +5,19 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 #pragma once
-#include <YeloLib/Halo1/time/interpolation/IInterpolator.hpp>
+#include <YeloLib/Halo1/time/interpolation/i_interpolator.hpp>
 
 namespace Yelo
 {
 	namespace Time { namespace Interpolation
 	{
-		template<int C>
-		class c_interp_base : public IInterpolator
+		template<int ValueCount>
+		class c_interp_base : public i_interpolator
 		{
 		protected:
 			struct
 			{
-				real values[C];
+				real values[ValueCount];
 			}m_members;
 
 		public:

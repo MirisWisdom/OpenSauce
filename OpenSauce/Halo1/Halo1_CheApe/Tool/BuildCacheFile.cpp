@@ -7,12 +7,15 @@
 #include "Common/Precompile.hpp"
 #include "Tool/BuildCacheFile.hpp"
 #if PLATFORM_ID == PLATFORM_TOOL
+#include <blamlib/Halo1/cseries/errors.hpp>
 #include <blamlib/Halo1/cache/cache_file_builder.hpp>
 #include <blamlib/Halo1/cache/cache_files.hpp>
 #include <blamlib/Halo1/models/model_definitions.hpp>
 #include <blamlib/Halo1/objects/object_definitions.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 #include <blamlib/Halo1/shaders/shader_definitions.hpp>
+#include <blamlib/Halo1/bitmaps/bitmap_group.hpp>
+#include <blamlib/Halo1/structures/structure_bsp_definitions.hpp>
 #include <blamlib/Halo1/tool/tool.hpp>
 
 #include <YeloLib/Halo1/cache/data_file_yelo.hpp>

@@ -46,6 +46,8 @@
 // STL includes
 #include <array>
 #include <utility>
+#include <memory>
+#include <vector>
 //////////////////////////////////////////////////////////////////////////
 
 

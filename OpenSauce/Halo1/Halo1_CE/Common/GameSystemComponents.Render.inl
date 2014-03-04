@@ -133,16 +133,6 @@
 #	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
 #		define __GS_COMPONENT_INITIALIZE					Render::Lightmaps::Initialize
 #		define __GS_COMPONENT_DISPOSE						Render::Lightmaps::Dispose
-#		define __GS_COMPONENT_UPDATE						Render::Lightmaps::Update
-#	elif	__GS_COMPONENT == __GS_COMPONENT_MAP_LIFECYCLE
-#		define __GS_COMPONENT_INITIALIZE_FOR_NEW_MAP		Render::Lightmaps::InitializeForNewMap
-#		define __GS_COMPONENT_DISPOSE_FROM_OLD_MAP			Render::Lightmaps::DisposeFromOldMap
-#	elif	__GS_COMPONENT == __GS_COMPONENT_GAMESTATE_LIFECYCLE
-#		define __GS_COMPONENT_INITIALIZE_FOR_NEW_GAME_STATE	Render::Lightmaps::InitializeForNewGameState
-#		define __GS_COMPONENT_HANDLE_GAME_STATE_LIFECYCLE	Render::Lightmaps::HandleGameStateLifeCycle
-#	elif	__GS_COMPONENT == __GS_COMPONENT_BSP_LIFECYCLE
-#		define __GS_COMPONENT_INITIALIZE_FOR_NEW_BSP		Render::Lightmaps::InitializeForNewBSP
-#		define __GS_COMPONENT_DISPOSE_FROM_OLD_BSP			Render::Lightmaps::DisposeFromOldBSP
 #	endif
 #elif	BOOST_PP_ITERATION() == 16
 #	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
@@ -151,21 +141,18 @@
 #	elif	__GS_COMPONENT == __GS_COMPONENT_MAP_LIFECYCLE
 #		define __GS_COMPONENT_INITIALIZE_FOR_NEW_MAP		Render::Sky::InitializeForNewMap
 #		define __GS_COMPONENT_DISPOSE_FROM_OLD_MAP			Render::Sky::DisposeFromOldMap
-#	elif	__GS_COMPONENT == __GS_COMPONENT_GAMESTATE_LIFECYCLE
-#		define __GS_COMPONENT_INITIALIZE_FOR_NEW_GAME_STATE	Render::Sky::InitializeForNewGameState
-#		define __GS_COMPONENT_HANDLE_GAME_STATE_LIFECYCLE	Render::Sky::HandleGameStateLifeCycle
 #	endif
 #elif	BOOST_PP_ITERATION() == 17
 #	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
-#		define __GS_COMPONENT_INITIALIZE					ScenarioFauxZones::Initialize
-#		define __GS_COMPONENT_DISPOSE						ScenarioFauxZones::Dispose
+#		define __GS_COMPONENT_INITIALIZE					StructureBSP::Initialize
+#		define __GS_COMPONENT_DISPOSE						StructureBSP::Dispose
 #	elif	__GS_COMPONENT == __GS_COMPONENT_MAP_LIFECYCLE
-#		define __GS_COMPONENT_INITIALIZE_FOR_NEW_MAP		ScenarioFauxZones::InitializeForNewMap
+#		define __GS_COMPONENT_INITIALIZE_FOR_NEW_MAP		StructureBSP::InitializeForNewMap
 #	elif	__GS_COMPONENT == __GS_COMPONENT_GAMESTATE_LIFECYCLE
-#		define __GS_COMPONENT_INITIALIZE_FOR_NEW_GAME_STATE	ScenarioFauxZones::InitializeForNewGameState
-#		define __GS_COMPONENT_HANDLE_GAME_STATE_LIFECYCLE	ScenarioFauxZones::HandleGameStateLifeCycle
+#		define __GS_COMPONENT_INITIALIZE_FOR_NEW_GAME_STATE	StructureBSP::InitializeForNewGameState
+#		define __GS_COMPONENT_HANDLE_GAME_STATE_LIFECYCLE	StructureBSP::HandleGameStateLifeCycle
 #	elif	__GS_COMPONENT == __GS_COMPONENT_BSP_LIFECYCLE
-#		define __GS_COMPONENT_INITIALIZE_FOR_NEW_BSP		ScenarioFauxZones::InitializeForNewBSP
+#		define __GS_COMPONENT_INITIALIZE_FOR_NEW_BSP		StructureBSP::InitializeForNewBSP
 #	endif
 #endif
 

@@ -21,7 +21,8 @@ namespace Environment
 	/// <summary>	Defines an environment shader feature mix. </summary>
 	struct s_shader_feature_mix {
 		const _enum		feature_mask;
-		PAD16;
+		bool			directional_lightmaps;
+		PAD8;
 		const uint32	shader_pointer_offset;
 		const char*		extension_id;
 	};
@@ -29,17 +30,20 @@ namespace Environment
 	/// <summary>	The list of feature combinations available. </summary>
 	s_shader_feature_mix g_feature_mix_list[] = {
 		{
-			Enums::_environment_extension_usage_none,
+			Enums::_shader_extension_usage_none,
+			false,
 			sizeof(DX9::s_rasterizer_dx9_pixel_shader) * 0,
 			""
 		},
 		{
-			Enums::_environment_extension_usage_diffuse_dlm_lighting,
+			Enums::_shader_extension_usage_none,
+			true,
 			sizeof(DX9::s_rasterizer_dx9_pixel_shader) * 1,
 			"Dir"
 		},
 		{
-			Enums::_environment_extension_usage_diffuse_dlm_lighting,
+			Enums::_shader_extension_usage_normal_map,
+			true,
 			sizeof(DX9::s_rasterizer_dx9_pixel_shader) * 1,
 			"DirBaseNorm"
 		},
@@ -48,11 +52,12 @@ namespace Environment
 	static s_shader_feature_mix*		g_current_feature_mix = &g_feature_mix_list[0];
 	static _enum						g_extension_usage_mask;
 	static s_pixel_shader_variables		g_pixel_shader_variables;
+	static bool							g_directional_lightmaps_enabled;
 
 	/// <summary>	Hook to change the used pixel shader to a custom one. </summary>
 	API_FUNC_NAKED void Hook_ShaderEnvironmentLightmapPS()
 	{
-		static const uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_ENVIRONMENT_PS_INDEX_ENVIRONMENT_LIGHTMAP_RETN);
+		static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_ENVIRONMENT_PS_INDEX_ENVIRONMENT_LIGHTMAP_RETN);
 
 		_asm
 		{
@@ -80,6 +85,11 @@ no_extension:
 	{
 		int shader_index = 1;
 
+		if(!g_directional_lightmaps_enabled)
+		{
+			return 0;
+		}
+
 		// Set the default bump multiplier
 		g_pixel_shader_variables.base_normal_map_coefficient = 1.0f;
 		g_pixel_shader_variables.base_normal_map_z_coefficient = 1.0f;
@@ -88,7 +98,6 @@ no_extension:
 			&& (shader->environment.shader_extension.Count == 1))
 		{
 			// If the shader has a shader extension block and a normal map set the multiplier from the extension block
-			//TODO: put the coefficients in the tag and calculate it at compile time, or do we leave it like this for RTE?
 			auto shader_extension = shader->environment.shader_extension[0];
 
 			g_pixel_shader_variables.base_normal_map_coefficient = shader_extension.bump_amount;
@@ -161,7 +170,7 @@ no_extension:
 		if (shader_pointer && Render::Lightmaps::UsingDirectionalLightmaps())
 		{
 			// If directional lightmaps should be used, set the custom shader variables
-			const TagGroups::s_shader_definition* shader_base = CAST_PTR(const TagGroups::s_shader_definition*, shader_pointer);
+			auto shader_base = CAST_PTR(const TagGroups::s_shader_definition*, shader_pointer);
 
 			switch(shader_base->shader.shader_type)
 			{
@@ -171,8 +180,7 @@ no_extension:
 			case Enums::_shader_type_model:
 				shader_index = SetupShaderModel(CAST_PTR(const TagGroups::s_shader_model_definition*, shader_pointer));
 				break;
-			default:
-				YELO_ASSERT_DISPLAY(false, "Unexpected shader type for directional lightmap setup");
+			YELO_ASSERT_CASE_UNREACHABLE();
 			};
 		}
 
@@ -187,20 +195,20 @@ no_extension:
 	/// <param name="parent_element">	[in,out] If non-null, the parent xml element. </param>
 	void		LoadSettings(TiXmlElement* parent_element)
 	{
-		g_extension_usage_mask = Enums::_environment_extension_usage_diffuse_dlm_lighting;
+		g_extension_usage_mask = Enums::_shader_extension_usage_normal_map;
 
-		if(parent_element != NULL)
+		if(parent_element != nullptr)
 		{
-			int32 usage_mask = Enums::_environment_extension_usage_none;
+			int32 usage_mask = Enums::_shader_extension_usage_none;
 			TiXmlElement* environment_element = parent_element->FirstChildElement("Environment");
 
-			if(environment_element != NULL)
+			if (environment_element != nullptr)
 			{
-				TiXmlElement* feature_element = NULL;
-				char* feature_attribute = NULL;
+				TiXmlElement* feature_element = nullptr;
+				char* feature_attribute = nullptr;
 
-				if(feature_element = environment_element->FirstChildElement("DiffuseDLMLighting"))
-					usage_mask |= (Settings::ParseBoolean(feature_element->Attribute("enabled")) ? Enums::_environment_extension_usage_diffuse_dlm_lighting : Enums::_environment_extension_usage_none);
+				if(feature_element = environment_element->FirstChildElement("DiffuseDirectionalLightmaps"))
+					g_directional_lightmaps_enabled = Settings::ParseBoolean(feature_element->Attribute("enabled"));
 
 				g_extension_usage_mask &= usage_mask;
 			}
@@ -213,16 +221,15 @@ no_extension:
 	/// <param name="parent_element">	[in,out] If non-null, the parent xml element. </param>
 	void		SaveSettings(TiXmlElement* parent_element)
 	{
-		if(parent_element != NULL)
+		if (parent_element != nullptr)
 		{
 			TiXmlElement* environment_element = new TiXmlElement("Environment");
 			parent_element->LinkEndChild(environment_element);
 
-			TiXmlElement* feature_element = NULL;
+			TiXmlElement* feature_element = nullptr;
 
-			feature_element = new TiXmlElement("DiffuseDLMLighting");
-			feature_element->SetAttribute("enabled",
-				BooleanToString((g_extension_usage_mask & Enums::_environment_extension_usage_diffuse_dlm_lighting) == Enums::_environment_extension_usage_diffuse_dlm_lighting));
+			feature_element = new TiXmlElement("DiffuseDirectionalLightmaps");
+			feature_element->SetAttribute("enabled", BooleanToString(g_directional_lightmaps_enabled));
 			environment_element->LinkEndChild(feature_element);
 		}
 	}

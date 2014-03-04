@@ -14,16 +14,11 @@ namespace Yelo
 		void Initialize();
 		void Dispose();
 
-		void InitializeForNewGameState();
-		void HandleGameStateLifeCycle(_enum life_state);
-
-		void InitializeForRenderSky();
-
 		void InitializeForNewMap();
 		void DisposeFromOldMap();
 
-		void ResetSkyOverrides(bool update_sky = true);
-		void SetSkyOverride(byte sky_index, byte override_index);
+		void Reset();
+		void SetSkyIndex(byte sky_index, datum_index override_index);
 	};};
 };
 #endif
