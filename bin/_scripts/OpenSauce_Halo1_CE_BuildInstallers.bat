@@ -22,9 +22,9 @@ SET "ProgFilesDir=%PROGRAMFILES%"
 SET "ProgFilesDir86=%PROGRAMFILES%"
 :SET_PROGFILES_END
 
-REM We're currently using VS2008
+REM We're currently using VS2013
 REM We have to use this as I've seen VS install using different (default) paths. Plus, someone may have overrided their shit...
-SET VS_COMMON_IDE="%VS90COMNTOOLS%"
+SET VS_COMMON_IDE="%VS120COMNTOOLS%"
 IF %VS_COMMON_IDE%=="" GOTO INVALID_VS
 SET VS_COMMON_IDE="%VS_COMMON_IDE%..\IDE\"
 

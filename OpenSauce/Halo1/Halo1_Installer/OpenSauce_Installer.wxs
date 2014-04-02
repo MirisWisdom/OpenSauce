@@ -35,7 +35,7 @@
 			Description='$(var.ProductName) Installer'
 			Comments='Extensions for $(var.GameTarget) that add new features and capabilities'
 			Manufacturer='Kornner Studios'
-			InstallerVersion='300'
+			InstallerVersion='405'
 			Languages='1033'
 			Compressed='yes'
 			SummaryCodepage='1252' />
@@ -72,7 +72,9 @@
 		<Property Id='WEBLAUNCHER_URL' Secure='yes' Value='http://code.google.com/p/open-sauce'/>
 
 		<Directory Id='TARGETDIR' Name='SourceDir'>
-			<Merge Id="VCRedist_MERGE" SourceFile="$(var.ResourceFolder)Installer\vs_runtime\Microsoft_VC120_CRT_x86.msm" DiskId="1" Language="0"/>
+			<Merge Id="VCRedist100_MERGE" SourceFile="$(var.ResourceFolder)Installer\vs_runtime\Microsoft_VC100_CRT_x86.msm" DiskId="1" Language="0"/>
+			<Merge Id="VCRedist120_MERGE" SourceFile="$(var.ResourceFolder)Installer\vs_runtime\Microsoft_VC120_CRT_x86.msm" DiskId="1" Language="0"/>
+			<Merge Id="SlimDXRedist_MERGE" SourceFile="$(var.ResourceFolder)Installer\slimdxredist\SlimDXMergeModule.msm" DiskId="1" Language="0"/>
 			<!-- Files and folders that belong in the common application data folder-->
 			<Directory Id='CommonAppDataFolder'>
 				<Directory Id='OpenSauce_KornnerStudios_DIR' Name='Kornner Studios'>
@@ -313,14 +315,20 @@
 
 			</Feature>
 
-			<Feature Id='VS_Runtime_FEAT'
-							 Title='Visual C++ 9.0 Redist'
+			<Feature Id='VS_Runtime_100_FEAT'
+							 Title='Visual C++ 10.0 Redist'
 							 AllowAdvertise='no'
 							 Display='hidden'
 							 Level='1'>
+				<MergeRef Id='VCRedist100_MERGE'/>
+			</Feature>
 
-				<MergeRef Id='VCRedist_MERGE'/>
-
+			<Feature Id='VS_Runtime_120_FEAT'
+							 Title='Visual C++ 12.0 Redist'
+							 AllowAdvertise='no'
+							 Display='hidden'
+							 Level='1'>
+				<MergeRef Id='VCRedist120_MERGE'/>
 			</Feature>
 			
 			<!-- Game specific features are included here-->
@@ -334,6 +342,9 @@
 				Display='expand'
 				Level='100'
 				AllowAdvertise='no'>
+				
+				<MergeRef Id='SlimDXRedist_MERGE'/>
+				
 				<ComponentRef Id='OpenSauce_OpenSauceIDE_COMP' />
 				<ComponentRef Id='OpenSauce_BlamLib_COMP' />
 				<ComponentRef Id='OpenSauce_BlamLib_Forms_COMP' />
