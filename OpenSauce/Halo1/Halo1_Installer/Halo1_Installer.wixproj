@@ -25,33 +25,32 @@
     <DefineConstants>Halo1_CE; SYMBOLS</DefineConstants>
   </PropertyGroup>
   <Import Project="$(WixTargetsPath)" />
-  <Target Name="BeforeBuild">
-    <CallTarget Condition="$(Configuration) == 'Debug'" Targets="BuildDebug" />
-    <CallTarget Condition="$(Configuration) == 'Release'" Targets="BuildRelease" />
-    <CallTarget Condition="$(Configuration) == 'ReleaseSymbols'" Targets="" />
-  </Target>
-  <Target Name="BuildDebug">
-    <MSBuild Projects="$(SolutionDir)OpenSauce_Pc.sln" Targets="Rebuild" Properties="Configuration=Debug;Platform=Win32;" />
-    <MSBuild Projects="$(SolutionDir)OpenSauce_Pc.sln" Targets="Rebuild" Properties="Configuration=DebugDedi;Platform=Win32;" />
-    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugGuerilla;Platform=Win32;" ContinueOnError="false" />
-    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugSapien;Platform=Win32;" ContinueOnError="false" />
-    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=DebugTool;Platform=Win32;" ContinueOnError="false" />
-    <CreateProperty Value="$(SolutionDir)..\BlamLib\">
-      <Output TaskParameter="Value" PropertyName="ImportPropsDir" />
-    </CreateProperty>
-    <MSBuild Projects="$(SolutionDir)..\BlamLib\BlamLib.sln" Targets="LowLevel;BlamLib;BlamLib_Forms;OpenSauceIDE" Properties="Configuration=Debug; Platform=x86; SolutionDir=$(SolutionDir)..\BlamLib\; SolutionFileName=BlamLib.sln; SolutionName=BlamLib; SolutionPath=$(SolutionDir)..\BlamLib\BlamLib.sln" />
-  </Target>
-  <Target Name="BuildRelease">
-    <MSBuild Projects="$(SolutionDir)OpenSauce_Pc.sln" Targets="Rebuild" Properties="Configuration=Release;Platform=Win32;" />
-    <MSBuild Projects="$(SolutionDir)OpenSauce_Pc.sln" Targets="Rebuild" Properties="Configuration=ReleaseDedi;Platform=Win32;" />
-    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=ReleaseGuerilla;Platform=Win32;" ContinueOnError="false" />
-    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=ReleaseSapien;Platform=Win32;" ContinueOnError="false" />
-    <MSBuild Projects="$(SolutionDir)OpenSauce_HEK.sln" Targets="Rebuild" Properties="Configuration=ReleaseTool;Platform=Win32;" ContinueOnError="false" />
-    <CreateProperty Value="$(SolutionDir)..\BlamLib\">
-      <Output TaskParameter="Value" PropertyName="ImportPropsDir" />
-    </CreateProperty>
-    <MSBuild Projects="$(SolutionDir)..\BlamLib\BlamLib.sln" Targets="LowLevel;BlamLib;BlamLib_Forms;OpenSauceIDE" Properties="Configuration=Release; Platform=x86; SolutionDir=$(SolutionDir)..\BlamLib\; SolutionFileName=BlamLib.sln; SolutionName=BlamLib; SolutionPath=$(SolutionDir)..\BlamLib\BlamLib.sln" />
-  </Target>
+
+	<PropertyGroup>
+		<DevEnvPath>&quot;$(VS120COMNTOOLS)..\IDE\devenv.exe&quot;</DevEnvPath>
+		<ExecConfig Condition="$(Configuration) == 'Debug'" >Debug</ExecConfig>
+		<ExecConfig Condition="$(Configuration) == 'Release'" >Release</ExecConfig>
+		<ExecConfig Condition="$(Configuration) == 'ReleaseSymbols'" >Release</ExecConfig>
+	</PropertyGroup>
+	<Target Condition="$(Configuration) != 'ReleaseSymbols'" Name="BeforeBuild">
+		<CreateProperty Value="build">
+			<Output TaskParameter="Value" PropertyName="BuildType" />
+		</CreateProperty>
+	</Target>
+	<Target Condition="$(Configuration) != 'ReleaseSymbols'" Name="BeforeRebuild">
+		<CreateProperty Value="rebuild">
+			<Output TaskParameter="Value" PropertyName="BuildType" />
+		</CreateProperty>
+	</Target>	
+	<Target Condition="$(Configuration) != 'ReleaseSymbols'" Name="BuildDependencies" AfterTargets="BeforeBuild;BeforeRebuild">
+		<Exec Command="$(DevEnvPath) /$(BuildType) $(ExecConfig) $(SolutionDir)OpenSauce_Pc.sln" />
+		<Exec Command="$(DevEnvPath) /$(BuildType) $(ExecConfig)Dedi $(SolutionDir)OpenSauce_Pc.sln" />
+		<Exec Command="$(DevEnvPath) /$(BuildType) $(ExecConfig)Guerilla $(SolutionDir)OpenSauce_HEK.sln" />
+		<Exec Command="$(DevEnvPath) /$(BuildType) $(ExecConfig)Sapien $(SolutionDir)OpenSauce_HEK.sln" />
+		<Exec Command="$(DevEnvPath) /$(BuildType) $(ExecConfig)Tool $(SolutionDir)OpenSauce_HEK.sln" />
+		<Exec Command="$(DevEnvPath) /$(BuildType) $(ExecConfig) $(SolutionDir)..\BlamLib\BlamLib.sln" />
+	</Target>
+	
   <!--
 	<Target Name="AfterBuild">
 	</Target>
