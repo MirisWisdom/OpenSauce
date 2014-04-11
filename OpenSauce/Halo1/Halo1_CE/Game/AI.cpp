@@ -47,7 +47,7 @@ namespace Yelo
 			// Exit the vehicle like normal if a globals tag doesn't exist
 			if(cv_globals == nullptr)
 			{
-				*unit->unit.animation.GetAnimationState() = Enums::_unit_animation_state_seat_exit;
+				unit->unit.animation.state = Enums::_unit_animation_state_seat_exit;
 				return;
 			}
 
@@ -79,7 +79,7 @@ namespace Yelo
 			}
 
 			// Exit the vehicle like normal if conditions haven't been met
-			*unit->unit.animation.GetAnimationState() = Enums::_unit_animation_state_seat_exit;
+			unit->unit.animation.state = Enums::_unit_animation_state_seat_exit;
 		}
 
 		static API_FUNC_NAKED void PLATFORM_API ActorActionHandleVehicleExitHook()

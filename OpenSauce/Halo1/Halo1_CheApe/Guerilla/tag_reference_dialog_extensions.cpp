@@ -8,6 +8,7 @@
 #include "Guerilla/tag_reference_dialog_extensions.hpp"
 
 #if PLATFORM_ID == PLATFORM_GUERILLA
+#include <BlamLib/Halo1/tag_files/tag_files.hpp>
 #include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
 #include "TagGroups/TagGroups.hpp"
 

@@ -23,17 +23,6 @@ namespace Yelo
 
 namespace Yelo
 {
-	namespace Enums
-	{
-		enum player_powerup
-		{
-			_player_powerup_active_camo,
-			_player_powerup_full_spectrum_vision,
-
-			k_number_of_player_powerups,
-		};
-	};
-
 	namespace Players
 	{
 		union u_player_multiplayer_stats
