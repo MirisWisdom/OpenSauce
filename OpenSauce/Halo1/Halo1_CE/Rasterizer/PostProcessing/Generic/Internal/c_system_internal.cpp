@@ -45,6 +45,20 @@ namespace Yelo
 			return m_members.m_flags.is_unloaded;
 		}
 
+		void c_system_internal::ClearMembers()
+		{
+			// initialize the systems variables to defaults
+			m_members.status = Enums::pp_component_status_uninitialised;
+
+			m_members.m_flags.is_ready = false;
+			m_members.m_flags.is_unloaded = false;
+
+			// delete allocated memory and/or initialize values to defaults
+			ClearShaderCollection();
+			ClearInternalShaders();
+			ClearInternalEffects();
+		}
+
 		/////////////////////////////////////////////////
 		// IPostProcessingComponent
 		/*!
@@ -55,16 +69,7 @@ namespace Yelo
 		 */
 		void c_system_internal::Initialize()
 		{
-			// initialize the systems variables to defaults
-			m_members.status = Enums::pp_component_status_uninitialised;
-
-			m_members.m_flags.is_ready = false;
-			m_members.m_flags.is_unloaded = false;
-
-			// initialize values to defaults
-			ClearShaderCollection();
-			ClearInternalShaders();
-			ClearInternalEffects();
+			ClearMembers();
 		}
 
 		/*!
@@ -75,16 +80,7 @@ namespace Yelo
 		 */
 		void c_system_internal::Dispose()
 		{
-			// initialize the systems variables to defaults
-			m_members.status = Enums::pp_component_status_uninitialised;
-
-			m_members.m_flags.is_ready = false;
-			m_members.m_flags.is_unloaded = false;
-
-			// delete allocated memory and set to defaults
-			ClearShaderCollection();
-			ClearInternalShaders();
-			ClearInternalEffects();
+			ClearMembers();
 		}
 
 		/*!

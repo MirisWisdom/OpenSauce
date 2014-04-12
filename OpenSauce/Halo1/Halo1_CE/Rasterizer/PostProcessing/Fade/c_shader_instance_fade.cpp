@@ -82,7 +82,7 @@ namespace Yelo
 			SetShaderInstanceVariables();
 
 			// set the render state to enable alpha blending
-			render_device->SetRenderState(D3DRS_ALPHABLENDENABLE, true);
+			render_device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 			render_device->SetRenderState(D3DRS_COLORWRITEENABLE, D3DCOLORWRITEENABLE_RED | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_BLUE | D3DCOLORWRITEENABLE_ALPHA);
 			render_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 			render_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
@@ -91,7 +91,7 @@ namespace Yelo
 			HRESULT hr = GetShader()->Render(render_device, quad_instance);
 
 			// reset the render state to disable alpha blending
-			render_device->SetRenderState(D3DRS_ALPHABLENDENABLE, false);
+			render_device->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 			render_device->SetRenderState(D3DRS_COLORWRITEENABLE, D3DCOLORWRITEENABLE_RED | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_BLUE);
 			render_device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
 			render_device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ZERO);

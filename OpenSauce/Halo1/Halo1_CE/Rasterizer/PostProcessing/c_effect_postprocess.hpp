@@ -36,6 +36,14 @@ namespace Yelo
 				}m_shaders;
 			}m_members;
 
+		private:
+			void ClearMembers()
+			{
+				m_members.effect_definition = nullptr;
+				m_members.m_shaders.list = nullptr;
+				m_members.m_shaders.count = 0;
+			}
+
 			/////////////////////////////////////////////////
 			// member accessors
 		public:
@@ -55,16 +63,12 @@ namespace Yelo
 		public:
 			virtual void Ctor()
 			{
-				m_members.effect_definition = nullptr;
-				m_members.m_shaders.list = nullptr;
-				m_members.m_shaders.count = 0;
+				ClearMembers();
 			}
 
 			virtual void Dtor()
 			{
-				m_members.effect_definition = nullptr;
-				m_members.m_shaders.list = nullptr;
-				m_members.m_shaders.count = 0;
+				ClearMembers();
 			}
 
 			/////////////////////////////////////////////////

@@ -54,7 +54,7 @@ namespace Yelo
 			real k;
 		};
 //		typedef float			angle;
-		typedef unsigned long	time_t;
+//		typedef unsigned long	time_t;
 		struct					grenade_counts
 		{
 			integer_small plasma;

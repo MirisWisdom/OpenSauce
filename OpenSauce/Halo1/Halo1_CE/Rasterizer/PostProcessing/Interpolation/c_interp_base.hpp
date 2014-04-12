@@ -17,19 +17,25 @@ namespace Yelo
 		protected:
 			struct
 			{
-				real values[C];
+				std::array<real, C> values;
 			}m_members;
 
+		private:
+			void ClearMembers()
+			{
+				m_members.values.fill(0.0f);
+			}
+
 		public:
-			real* GetValues() { return &m_members.values[0]; }
+			real* GetValues() { return m_members.values.data(); }
 
 			virtual void Ctor()
 			{
-				memset(&m_members.values, 0, sizeof(m_members.values));
+				ClearMembers();
 			}
 			virtual void Dtor()
 			{
-				memset(&m_members.values, 0, sizeof(m_members.values));
+				ClearMembers();
 			}
 
 			void Update(real delta_time) {}

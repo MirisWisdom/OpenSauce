@@ -21,16 +21,20 @@ namespace Yelo
 				real change_time;
 			} m_members_linear;
 
-		public:
-			void Ctor()
+			void ClearMembers()
 			{
 				m_members_linear.current_value = 0.0f;
 				m_members_linear.change_time = 0.0f;
 			}
+
+		public:
+			void Ctor()
+			{
+				ClearMembers();
+			}
 			void Dtor()
 			{
-				m_members_linear.current_value = 0.0f;
-				m_members_linear.change_time = 0.0f;
+				ClearMembers();
 			}
 
 			void Update(real delta_time)

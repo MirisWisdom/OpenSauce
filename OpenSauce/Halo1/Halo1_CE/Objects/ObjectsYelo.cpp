@@ -423,7 +423,7 @@ namespace Yelo
 		}
 		void DetachChildrenByType(datum_index parent, long_flags object_type_mask)
 		{
-			PerformActionOnChildrenByType(parent, object_type_mask, object_delete_thunk);
+			PerformActionOnChildrenByType(parent, object_type_mask, object_detach_thunk);
 		}
 
 		size_t PredictMemoryPoolUsage(Enums::object_type type, int32 node_count, bool include_yelo_upgrades)

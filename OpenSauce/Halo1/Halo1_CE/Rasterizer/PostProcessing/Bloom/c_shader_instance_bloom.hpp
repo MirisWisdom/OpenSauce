@@ -87,8 +87,8 @@ namespace Yelo
 			void SetBloomSize(real size, real change_time);
 			void SetBloomExposure(real exposure, real change_time);
 			void SetBloomMixAmount(real mix_amount, real change_time);
-			void SetBloomMinimumColor(real_rgb_color minimum_color, real change_time);
-			void SetBloomMaximumColor(real_rgb_color maximum_color, real change_time);
+			void SetBloomMinimumColor(const real_rgb_color& minimum_color, real change_time);
+			void SetBloomMaximumColor(const real_rgb_color& maximum_color, real change_time);
 		};
 	}; }; };
 };

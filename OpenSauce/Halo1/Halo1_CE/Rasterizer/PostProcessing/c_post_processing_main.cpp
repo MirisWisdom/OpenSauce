@@ -114,6 +114,8 @@ namespace Yelo
 
 		void c_post_processing_main::ReleaseResources_Base()
 		{
+			// TODO: this function is fully equivlent to OnLostDevice_Base...
+
 			DestroyScreenBufferChain();
 			DestroySecondaryBufferChain();
 

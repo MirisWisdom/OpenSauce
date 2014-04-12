@@ -29,6 +29,13 @@ namespace Yelo
 				c_shader_data_base* source_data;
 			}m_members;
 
+		private:
+			void ClearMembers()
+			{
+				m_members.definition = nullptr;
+				m_members.source_data = nullptr;
+			}
+
 			/////////////////////////////////////////////////
 			// member accessors
 		public:
@@ -45,13 +52,11 @@ namespace Yelo
 		public:
 			virtual void	Ctor()
 			{
-				m_members.definition = NULL;
-				m_members.source_data = NULL;
+				ClearMembers();
 			}
 			virtual void	Dtor()
 			{
-				m_members.definition = NULL;
-				m_members.source_data = NULL;
+				ClearMembers();
 			}
 
 			/////////////////////////////////////////////////

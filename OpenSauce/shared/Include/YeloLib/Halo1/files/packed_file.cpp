@@ -35,7 +35,7 @@ namespace Yelo
 
 		m_address = file_info.data_pointer;
 
-		if(m_header != nullptr || m_header->IsValid())
+		if(m_header != nullptr && m_header->IsValid())
 			m_file_mapped = true;
 	}
 

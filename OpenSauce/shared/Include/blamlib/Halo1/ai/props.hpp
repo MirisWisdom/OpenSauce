@@ -15,7 +15,7 @@ namespace Yelo
 		struct s_prop_datum : TStructImpl(312)
 		{
 			TStructGetPtrImpl(datum_index,		OwnerActorIndex, 0x4);
-			TStructGetPtrImpl(datum_index,		NextPropIndex, 0x4);
+			TStructGetPtrImpl(datum_index,		NextPropIndex, 0x8);
 			TStructGetPtrImpl(datum_index,		ParentPropIndex, 0xC); // guess these are union'd?
 			TStructGetPtrImpl(datum_index,		OrphanPropIndex, 0xC);
 

@@ -17,24 +17,29 @@ namespace Yelo
 		{
 			char m_shader_id[MAX_PATH];
 
+			void ClearMembers()
+			{
+				m_shader_id[0] = '\0';
+			}
+
 		public:
 			void SetShaderID(const char* id) { strcpy_s(m_shader_id, MAX_PATH, id); }
 
 			void Ctor()
 			{
-				m_shader_id[0] = 0;
+				ClearMembers();
 			}
 			void Dtor()
 			{
-				m_shader_id[0] = 0;
+				ClearMembers();
 			}
 
 			const char* DataSourceID();
 			const void* GetData(uint32& data_size);
 			void Dispose() {}
 			const bool IsBinary() { return true; }
-			const char* GetIncludePath() { return NULL; }
-			const D3DXMACRO* GetMacros() { return NULL; }
+			const char* GetIncludePath() { return nullptr; }
+			const D3DXMACRO* GetMacros() { return nullptr; }
 		};
 	};};
 };

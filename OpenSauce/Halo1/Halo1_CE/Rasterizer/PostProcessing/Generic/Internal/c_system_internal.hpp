@@ -92,6 +92,8 @@ namespace Yelo
 				}m_effect_instances;
 			}m_members_internal;
 
+			void ClearMembers();
+
 			/////////////////////////////////////////////////
 			// member accessors
 		public:

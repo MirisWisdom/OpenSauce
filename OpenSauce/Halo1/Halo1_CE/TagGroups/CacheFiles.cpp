@@ -292,7 +292,7 @@ namespace Yelo
 			bool result = false;
 			yelo_is_ok = true;
 
-			string256 map_path;
+			static string256 map_path;
 			c_cache_format_path_hacks::PathHack(map_path, "%s%s%s.map", RootDirectory(), "maps\\", relative_map_name);
 
 			HANDLE f = CreateFileA(map_path, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);

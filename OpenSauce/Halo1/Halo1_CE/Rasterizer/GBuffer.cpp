@@ -249,9 +249,9 @@ namespace Yelo
 			device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 			device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
 			device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ZERO);
-			device->SetRenderState(D3DRS_ZENABLE, false);
-			device->SetRenderState(D3DRS_ZWRITEENABLE, false);
-			device->SetRenderState(D3DRS_STENCILENABLE, false);
+			device->SetRenderState(D3DRS_ZENABLE, FALSE);
+			device->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+			device->SetRenderState(D3DRS_STENCILENABLE, FALSE);
 
 			// draw the render target debug effect
 			UINT cPasses, p;
@@ -326,7 +326,7 @@ namespace Yelo
 			device->GetRenderState(D3DRS_DESTBLEND, &old_destblend);
 
 			device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-			device->SetRenderState(D3DRS_ZWRITEENABLE, false);
+			device->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 			device->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 			device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
 			device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ZERO);
@@ -631,7 +631,7 @@ skip_disable_velocity:
 			// We don't want to write to the Z-Buffer as it's already been done
 			DWORD ZWriteEnable;
 			pDevice->GetRenderState(D3DRS_ZWRITEENABLE, &ZWriteEnable);
-			pDevice->SetRenderState(D3DRS_ZWRITEENABLE, false);
+			pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 
 			hr = g_default_system.DrawIndexedPrimitive_Impl(pDevice, Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
 
