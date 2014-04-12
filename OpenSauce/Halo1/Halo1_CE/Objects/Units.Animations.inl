@@ -44,7 +44,8 @@ namespace Animations
 			Enums::_x86_opcode_nop, Enums::_x86_opcode_nop, Enums::_x86_opcode_nop, 
 			Enums::_x86_opcode_nop 
 		};
-		static const byte jmp_eax[] = { 0xFF, 0x24, 0x85 };
+		// TODO: was there a point to this?
+//		static const byte jmp_eax[] = { 0xFF, 0x24, 0x85 };
 
 		int32 jmp_default = unit_update_animation_primary_keyframe_jmp_default;
 		

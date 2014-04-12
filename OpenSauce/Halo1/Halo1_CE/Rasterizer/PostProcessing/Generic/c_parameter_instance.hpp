@@ -126,10 +126,10 @@ namespace Yelo
 			void SetOverrideInterp(bool value, real change_time);
 			void SetOverrideInterp(int32 value, real change_time);
 			void SetOverrideInterp(real value, real change_time);
-			void SetOverrideInterp(real_vector2d value, real change_time);
-			void SetOverrideInterp(real_vector3d value, real change_time);
-			void SetOverrideInterp(real_quaternion value, real change_time);
-			void SetOverrideInterp(real_argb_color value, real change_time);
+			void SetOverrideInterp(const real_vector2d& value, real change_time);
+			void SetOverrideInterp(const real_vector3d& value, real change_time);
+			void SetOverrideInterp(const real_quaternion& value, real change_time);
+			void SetOverrideInterp(const real_argb_color& value, real change_time);
 		private:
 			void SetStartValueToCurrent();
 		};

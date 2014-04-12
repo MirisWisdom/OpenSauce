@@ -143,10 +143,14 @@ namespace Yelo
 				{
 					for(size_t x = 0; x < presets_count; x++)
 					{
-						bool valid_preset = !(presets[x].offset.i == 0.0f &&	presets[x].offset.j == 0.0f && presets[x].offset.k == 0.0f);
-
-						if(!valid_preset) continue;
 						s_preset& p = presets[x];
+
+						bool valid_preset = !(	p.offset.i == 0.0f &&
+												p.offset.j == 0.0f &&
+												p.offset.k == 0.0f);
+
+						if(!valid_preset)
+							continue;
 
 						TiXmlElement* entry = new TiXmlElement("entry");
 							weapons_element->LinkEndChild(entry);

@@ -204,7 +204,7 @@ namespace Yelo
 		 * 
 		 * Sets the bloom minimum color value.
 		 */
-		void c_shader_instance_bloom::SetBloomMinimumColor(real_rgb_color minimum_color, real change_time)
+		void c_shader_instance_bloom::SetBloomMinimumColor(const real_rgb_color& minimum_color, real change_time)
 		{
 			real_rgb_color current;
 			Interpolation::InterpolateValues<3>(
@@ -230,7 +230,7 @@ namespace Yelo
 		 * 
 		 * Sets the bloom maximum color value.
 		 */
-		void c_shader_instance_bloom::SetBloomMaximumColor(real_rgb_color maximum_color, real change_time)
+		void c_shader_instance_bloom::SetBloomMaximumColor(const real_rgb_color& maximum_color, real change_time)
 		{
 			real_rgb_color current;
 			Interpolation::InterpolateValues<3>(

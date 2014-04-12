@@ -132,7 +132,7 @@ namespace Yelo
 					call	FUNCTION
 					add		esp, 4 * 1
 				}
-				*MAP_LIST_EXTENSION_REF = MAP_LIST_EXTENSION_STOCK;
+				*MAP_LIST_EXTENSION_REF = MAP_LIST_EXTENSION_STOCK; //-V519
 			}
 
 			API_FUNC_NAKED int GetMapEntryIndexFromName(const char* name)

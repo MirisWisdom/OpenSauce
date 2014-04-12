@@ -357,6 +357,7 @@ namespace Yelo
 					}
 
 					g_freeze_dump_globals.m_main_thread_id = GetThreadId(GetCurrentThread());
+					// TODO: http://www.viva64.com/en/d/0102/print/
 					g_freeze_dump_globals.m_freeze_thread = CreateThread(nullptr, 0, FreezeDumpCount, nullptr, 0, nullptr);
 				}
 			}

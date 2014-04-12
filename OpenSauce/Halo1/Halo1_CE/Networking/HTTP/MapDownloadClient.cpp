@@ -287,6 +287,13 @@ namespace Yelo
 
 
 		protected:
+			void ClearBuffers()
+			{
+				m_mp_address[0] = '\0';
+				m_mp_password[0] = '\0';
+				ZeroMemory(m_mp_password_key, k_server_password_length+1);
+			}
+
 			/*!
 			 * \brief
 			 * Copies the servers IP and port for downloading the map and reconnecting later.
@@ -354,18 +361,14 @@ namespace Yelo
 			{
 				c_http_server::Ctor();
 
-				m_mp_address[0] = 0;
-				m_mp_password[0] = 0;
-				ZeroMemory(m_mp_password_key, k_server_password_length);
+				ClearBuffers();
 			}
 
 			void Dtor()
 			{
 				c_http_server::Dtor();
 
-				m_mp_address[0] = 0;
-				m_mp_password[0] = 0;
-				ZeroMemory(m_mp_password_key, k_server_password_length);
+				ClearBuffers();
 			}
 
 			/*!
@@ -716,7 +719,7 @@ namespace Yelo
 				delete request_data;
 
 				// process the part definition
-				if((Status() = Enums::_http_file_download_status_succeeded) && !ProcessMapPartDefinition())
+				if((Status() == Enums::_http_file_download_status_succeeded) && !ProcessMapPartDefinition())
 					Status() = Enums::_http_file_download_status_failed;
 				else
 					Status() = Enums::_http_file_download_status_succeeded;
@@ -1967,7 +1970,7 @@ namespace Yelo
 
 					if(g_map_download_globals.m_part_download.part_iterator->Current()->m_encrypted)
 					{
-						if(strlen(g_map_download_globals.m_servers.dedicated_server.m_mp_password) == 0)
+						if(*g_map_download_globals.m_servers.dedicated_server.m_mp_password == '\0')
 							return _map_download_stage_failed;
 						g_map_download_globals.m_part_download.downloader.SetDecryptionKey(&g_map_download_globals.m_servers.dedicated_server.m_mp_password_key[0]);
 					}
@@ -2173,8 +2176,9 @@ namespace Yelo
 		bool	StartDownloadThread()
 		{
 			// start the download thread
+			// TODO: http://www.viva64.com/en/d/0102/print/
 			g_map_download_globals.m_download_thread.thread_handle = CreateThread(nullptr, 0, DownloadMap, nullptr, 0, nullptr);
-			return g_map_download_globals.m_download_thread.thread_handle != 0;
+			return g_map_download_globals.m_download_thread.thread_handle != nullptr;
 		}
 
 		/*!
@@ -2405,7 +2409,7 @@ namespace Yelo
 				return;
 
 			// make sure the map name is valid
-			if(!map_name || (strlen(map_name) == 0)) return;
+			if(is_null_or_empty(map_name)) return;
 
 			bool success = true;
 			// copy the map name for later use

@@ -364,7 +364,7 @@ namespace Yelo
 
 					if( DefinitionsNameMatch(yelo_def.name, def.name) &&			// check if names match...
 						def.parameters.Count == yelo_def.paramc &&					// check if we have the same amount of parameters
-						(is_valid = def.return_type == yelo_def.return_type)		// check if we have the same return type
+						(is_valid = (def.return_type == yelo_def.return_type))		// check if we have the same return type
 						)
 					{
 						const _enum* params = def.parameters.Definitions;			// check if the parameter types are the same

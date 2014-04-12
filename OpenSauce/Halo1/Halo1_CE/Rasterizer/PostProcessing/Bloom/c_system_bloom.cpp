@@ -384,12 +384,12 @@ namespace Yelo
 			g_shader_instance_bloom.SetBloomMixAmount(mix_amount, change_time);
 		}
 
-		void c_system_bloom::SetBloomMinimumColor(real_rgb_color minimum_color, real change_time)
+		void c_system_bloom::SetBloomMinimumColor(const real_rgb_color& minimum_color, real change_time)
 		{
 			g_shader_instance_bloom.SetBloomMinimumColor(minimum_color, change_time);
 		}
 
-		void c_system_bloom::SetBloomMaximumColor(real_rgb_color maximum_color, real change_time)
+		void c_system_bloom::SetBloomMaximumColor(const real_rgb_color& maximum_color, real change_time)
 		{
 			g_shader_instance_bloom.SetBloomMaximumColor(maximum_color, change_time);
 		}

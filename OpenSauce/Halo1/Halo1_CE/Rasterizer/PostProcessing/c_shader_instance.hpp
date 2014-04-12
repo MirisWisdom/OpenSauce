@@ -32,6 +32,16 @@ namespace Yelo
 				c_shader_postprocess* definition;
 			}m_members;
 
+		private:
+			void ClearMembers()
+			{
+				ClearNodeData();
+
+				m_members.m_flags.is_valid = false;
+				m_members.m_flags.is_active = true;
+				m_members.definition = nullptr;
+			}
+
 			/////////////////////////////////////////////////
 			// member accessors
 		public:
@@ -46,20 +56,12 @@ namespace Yelo
 		public:
 			virtual void Ctor()
 			{
-				ClearNodeData();
-
-				m_members.m_flags.is_valid = false;
-				m_members.m_flags.is_active = true;
-				m_members.definition = NULL;
+				ClearMembers();
 			}
 
 			virtual void Dtor()
 			{
-				ClearNodeData();
-
-				m_members.m_flags.is_valid = false;
-				m_members.m_flags.is_active = true;
-				m_members.definition = NULL;
+				ClearMembers();
 			}
 
 			/////////////////////////////////////////////////

@@ -1213,7 +1213,7 @@ namespace Yelo
 				success = compiler->GetBool(value_upper_bound, &boolean);
 				if(SUCCEEDED(success))
 				{
-					parameter.value.boolean.enabled = (boolean == TRUE);
+					parameter.value.boolean.enabled = (boolean != FALSE);
 					parameter.value.boolean.inverse = !parameter.value.boolean.enabled;
 				}
 				break;
@@ -1312,7 +1312,7 @@ namespace Yelo
 			BOOL invert;
 			success = compiler->GetBool(runtime_value_invert, &invert);
 			if(SUCCEEDED(success))
-				parameter.runtime_value.flags.invert_bit = (invert == TRUE);
+				parameter.runtime_value.flags.invert_bit = (invert != FALSE);
 		}
 
 		void c_system_external::SetupParameterAnimation(LPD3DXEFFECTCOMPILER compiler,
