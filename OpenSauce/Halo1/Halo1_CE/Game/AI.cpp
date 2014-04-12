@@ -7,6 +7,11 @@
 #include "Common/Precompile.hpp"
 #include "Game/AI.hpp"
 
+#include <blamlib/Halo1/ai/actor_structures.hpp>
+#include <blamlib/Halo1/ai/ai_structures.hpp>
+
+#include <blamlib/Halo1/ai/prop_structures.hpp>
+
 #include <blamlib/Halo1/units/unit_structures.hpp>
 
 #include "Memory/MemoryInterface.hpp"

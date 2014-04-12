@@ -115,6 +115,18 @@
     <Filter Include=".Common">
       <UniqueIdentifier>{a4e32dfc-b924-472e-a332-b5b12b80550f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shell">
+      <UniqueIdentifier>{ca521927-cf72-4a5b-ac41-796ab210add0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ai\actions">
+      <UniqueIdentifier>{dd8c83c7-7103-467e-b1a3-ccb23fec9f1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ai\actor_types">
+      <UniqueIdentifier>{03b9a439-27e9-4ff6-a54e-e310420392e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ai\actors">
+      <UniqueIdentifier>{a60c224a-e9a1-42a2-b3c5-7da1430921bb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\targetver.h">
@@ -125,30 +137,6 @@
     </ClInclude>
     <ClInclude Include="Common\Precompile.hpp">
       <Filter>.Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\actions.hpp">
-      <Filter>ai</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\actor_combat.hpp">
-      <Filter>ai</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\actor_definitions.hpp">
-      <Filter>ai</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\actor_moving.hpp">
-      <Filter>ai</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\actor_perception.hpp">
-      <Filter>ai</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\actor_stimulus.hpp">
-      <Filter>ai</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\actor_types.hpp">
-      <Filter>ai</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\actors.hpp">
-      <Filter>ai</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\ai.hpp">
       <Filter>ai</Filter>
@@ -851,6 +839,87 @@
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_saving.hpp">
       <Filter>tag_files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\shell\shell.hpp">
+      <Filter>shell</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\ai_structures.hpp">
+      <Filter>ai</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\prop_structures.hpp">
+      <Filter>ai</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\actions.hpp">
+      <Filter>ai\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\action_fight.hpp">
+      <Filter>ai\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\action_flee.hpp">
+      <Filter>ai\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\action_alert.hpp">
+      <Filter>ai\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\action_avoid.hpp">
+      <Filter>ai\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\action_charge.hpp">
+      <Filter>ai\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\action_converse.hpp">
+      <Filter>ai\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\action_guard.hpp">
+      <Filter>ai\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\action_obey.hpp">
+      <Filter>ai\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\action_search.hpp">
+      <Filter>ai\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\action_sleep.hpp">
+      <Filter>ai\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\action_uncover.hpp">
+      <Filter>ai\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\action_vehicle.hpp">
+      <Filter>ai\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\action_wait.hpp">
+      <Filter>ai\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\actor_types.hpp">
+      <Filter>ai\actor_types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\actors.hpp">
+      <Filter>ai\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\actor_combat.hpp">
+      <Filter>ai\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\actor_definitions.hpp">
+      <Filter>ai\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\actor_looking.hpp">
+      <Filter>ai\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\actor_moving.hpp">
+      <Filter>ai\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\actor_perception.hpp">
+      <Filter>ai\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\actor_stimulus.hpp">
+      <Filter>ai\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\ai\actor_structures.hpp">
+      <Filter>ai\actors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\models\models.hpp">
+      <Filter>models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

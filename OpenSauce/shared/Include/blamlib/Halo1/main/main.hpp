@@ -42,13 +42,5 @@ namespace Yelo
 		bool PLATFORM_API main_connect(cstring address, cstring password);
 
 		void PLATFORM_API main_menu_load();
-	};
-
-	// actually belongs in shell.hpp (shell_windows.c)
-	namespace blam
-	{
-		// NOTE: command line arguments are not populated in guerilla nor tool.exe by default
-		// So basically only use this in sapien builds, unless we've fixed this limitation
-		bool PLATFORM_API shell_get_command_line_argument(cstring param, _Out_opt_ cstring* value = nullptr);
-	};
+	};	
 };
