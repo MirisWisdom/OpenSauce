@@ -1,5 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <OSRootDir>$(ProjectDir)..\..\..\</OSRootDir>
+    <OSRequiresDirectX>true</OSRequiresDirectX>
+    <OSRequiresCppBoost>true</OSRequiresCppBoost>
+    <OSRequiresHaloCustomEd>true</OSRequiresHaloCustomEd>
+  </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="DebugGuerilla|Win32">
       <Configuration>DebugGuerilla</Configuration>
@@ -51,20 +57,8 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <PropertyGroup>
-    <OSRequiresDirectX>true</OSRequiresDirectX>
-    <OSRequiresCppBoost>true</OSRequiresCppBoost>
-    <OSRequiresHaloCustomEd>true</OSRequiresHaloCustomEd>
-  </PropertyGroup>
-  <Import Project="$(SolutionDir)..\shared\config\msbuild\OpenSauce.props" />
-  <Import Project="$(SolutionDir)shared\config\msbuild\CrashRpt.props" />
-  <Import Project="$(SolutionDir)shared\config\msbuild\TinyXml.props" />
-  <Import Project="$(SolutionDir)shared\config\msbuild\zlib.props" />
-  <Import Project="$(SolutionDir)shared\config\msbuild\blamlib.props" />
-  <Import Project="$(SolutionDir)shared\config\msbuild\blamlib_Halo1.props" />
-  <Import Project="$(SolutionDir)shared\config\msbuild\YeloLib.props" />
-  <Import Project="$(SolutionDir)shared\config\msbuild\YeloLib_Halo1.props" />
-  <Import Project="$(SolutionDir)shared\config\msbuild\7zip.props" />
+  <Import Project="$(OSRootDir)shared\config\msbuild\OpenSauce.props" />
+  <Import Project="$(OSRootDir)OpenSauce\shared\config\msbuild\YeloLib.props" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>11.0.60315.1</_ProjectFileVersion>
@@ -75,7 +69,7 @@
       <DisableSpecificWarnings>4311;4312;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>psapi.lib;Halo1_YeloLib.lib;Halo1_BlamLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition=" '$(Configuration.Contains(Debug))' ">
@@ -130,7 +124,6 @@
     <ClCompile Include="TagGroups\yelo_definitions.cpp" />
     <ClCompile Include="TagGroups\yelo_scenario_definitions.cpp" />
     <ClCompile Include="Memory\MemoryInterface.cpp" />
-    <ClCompile Include="..\..\shared\Include\YeloLib\memory\physical_memory_allocation.cpp" />
     <ClCompile Include="CheApeCore.cpp" />
     <ClCompile Include="Halo1_CheApe.cpp" />
   </ItemGroup>
@@ -166,8 +159,6 @@
     <ClInclude Include="TagGroups\yelo_definitions.hpp" />
     <ClInclude Include="TagGroups\yelo_scenario_definitions.hpp" />
     <ClInclude Include="Memory\MemoryInterface.hpp" />
-    <ClInclude Include="..\..\shared\Include\YeloLib\memory\physical_memory_allocation.hpp" />
-    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\non_pod_container.hpp" />
     <ClInclude Include="CheApeCore.hpp" />
     <ClInclude Include="CheApeInterface.hpp" />
   </ItemGroup>
@@ -175,7 +166,6 @@
     <None Include="Engine\ScriptLibraryMemoryUpgrades.inl" />
     <None Include="Yelo\MemoryFixups.Paths.inl" />
     <None Include="Yelo\MemoryFixups.TagTextIO.inl" />
-    <None Include="Common\YeloSettings.CmdLineSettings.inl" />
     <None Include="Tool\BuildCppDefinition.inl" />
     <None Include="Tool\CompileShaderPostprocess.inl" />
     <None Include="Tool\Help.inl" />

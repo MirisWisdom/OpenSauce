@@ -15,7 +15,7 @@ namespace Yelo
 {
 	namespace Cache
 	{
-#if PLATFORM_IS_EDITOR && PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_IS_EDITOR && PLATFORM_TYPE == PLATFORM_TOOL
 		void s_cache_file_resource_string_id_storage_header::Initialize()
 		{
 			memset(this, 0, sizeof(*this));
@@ -30,7 +30,7 @@ namespace Yelo
 		}
 
 
-#if PLATFORM_IS_EDITOR && PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_IS_EDITOR && PLATFORM_TYPE == PLATFORM_TOOL
 		void s_cache_header_yelo::InitializeForNewMap()
 		{
 			memset(this, 0, sizeof(*this));

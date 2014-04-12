@@ -39,14 +39,14 @@ namespace Yelo
 
 		static void SetupExceptionHandler();
 
-#if PLATFORM_ID != PLATFORM_GUERILLA
+#if PLATFORM_TYPE != PLATFORM_GUERILLA
 
 		static int PLATFORM_API ExceptionFilter(uint32 code, PEXCEPTION_POINTERS ptrs)
 		{
 			int result;
 			bool disable_exception_handling;
 
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 			disable_exception_handling = Yelo::Settings::Get().active_profile.tool.disable_exception_handling;
 #else
 			disable_exception_handling = CMDLINE_GET_PARAM(disable_exception_handling).ParameterSet();
@@ -100,7 +100,7 @@ namespace Yelo
 		static void SetupExceptionHandler()
 		{
 			bool do_full_dump = false;
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 			do_full_dump = Yelo::Settings::Get().active_profile.tool.do_full_crashdump;
 #else
 			do_full_dump = CMDLINE_GET_PARAM(full_dump).ParameterSet();
@@ -118,7 +118,7 @@ namespace Yelo
 
 			if (Debug::InstallExceptionHandler(crashreport_options))
 			{
-#if PLATFORM_ID != PLATFORM_GUERILLA
+#if PLATFORM_TYPE != PLATFORM_GUERILLA
 				Memory::WriteRelativeCall(&ExceptionFilter, GET_FUNC_VPTR(GENERIC_EXCEPTION_FILTER_CALL), true);
 #endif
 				// add custom properties and files to the report
@@ -165,7 +165,7 @@ namespace Yelo
 					return;
 			}
 
-#if PLATFORM_ID == PLATFORM_GUERILLA
+#if PLATFORM_TYPE == PLATFORM_GUERILLA
 			// override the stock CWinApp::Run vfunction
 			GET_PTR(CWINAPP_RUN_HOOK) = &CWinApp_Run_Hook;
 #else
@@ -184,7 +184,7 @@ namespace Yelo
 
 		void DumpDispose()
 		{
-#if PLATFORM_ID != PLATFORM_GUERILLA
+#if PLATFORM_TYPE != PLATFORM_GUERILLA
 			Debug::UninstallExceptionHandler();
 #endif
 		}

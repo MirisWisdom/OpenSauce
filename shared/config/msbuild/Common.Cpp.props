@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup Label="Configuration">
     <IntDir>$(OSRootDir)obj\$(ProjectName)\$(Configuration)\$(Platform)\</IntDir>
@@ -33,6 +33,9 @@
   <PropertyGroup Condition=" '$(ConfigurationType)' == 'Application' ">
     <OutDir>$(OSRootDir)bin\$(Configuration)\$(Platform)\$(ProjectName)\</OutDir>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(ConfigurationType)' == 'StaticLibrary' ">
+    <OutDir>$(OSRootDir)lib\$(Configuration)\$(Platform)\</OutDir>
+  </PropertyGroup>
 
   <ItemDefinitionGroup>
     <ClCompile>
@@ -46,11 +49,16 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>user32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OSRootDir)lib\$(Configuration)\$(Platform)\</AdditionalLibraryDirectories>
+	  <AdditionalDependencies>user32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
     </Link>
+
+	<Lib>
+      <AdditionalLibraryDirectories>$(OSRootDir)lib\$(Configuration)\$(Platform)\</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
 
   <ItemDefinitionGroup Condition="Exists('$(ProjectDir)Precompile.hpp')">
@@ -106,6 +114,12 @@
 	<Midl>
       <TargetEnvironment>X64</TargetEnvironment>
     </Midl>
+  </ItemDefinitionGroup>
+
+  <ItemDefinitionGroup Condition=" '$(ConfigurationType)' == 'StaticLibrary' ">
+    <ClCompile>
+      <PreprocessorDefinitions>_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
   </ItemDefinitionGroup>
 
   <ItemDefinitionGroup Condition=" '$(Configuration)' == 'DebugCodeAnalysis' ">

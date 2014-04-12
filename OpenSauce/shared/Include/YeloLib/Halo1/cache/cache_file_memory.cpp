@@ -5,7 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 #include "YeloLib/Halo1/cache/cache_file_memory.hpp"
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 
 #include <YeloLib/Halo1/cache/cache_file_memory_gestalt_definitions.hpp>
 #include <YeloLib/Halo1/cache/cache_file_memory_layout_table_definitions.hpp>

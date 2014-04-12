@@ -6,7 +6,7 @@
 */
 #include "Common/Precompile.hpp"
 #include "Tool/BuildCacheFile.hpp"
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 #include <blamlib/Halo1/cache/cache_file_builder.hpp>
 #include <blamlib/Halo1/cache/cache_files.hpp>
 #include <blamlib/Halo1/models/model_definitions.hpp>

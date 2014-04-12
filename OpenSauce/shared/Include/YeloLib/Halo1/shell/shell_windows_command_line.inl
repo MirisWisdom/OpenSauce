@@ -5,17 +5,21 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-CMDLINE_DEFINE_ARG(path, cstring)
-CMDLINE_DEFINE_SWITCH(no_os_gamestate)
 CMDLINE_DEFINE_SWITCH(full_dump)
 CMDLINE_DEFINE_SWITCH(disable_exception_handling)
-CMDLINE_DEFINE_ARG(freeze_dump, real)
-CMDLINE_DEFINE_ARG(freeze_dump_delay, real)
 
-#if PLATFORM_IS_DEDI
-#else
-	CMDLINE_DEFINE_ARG(mp_version, cstring)
-	CMDLINE_DEFINE_SWITCH(no_os_gfx)
+#if !PLATFORM_IS_EDITOR
+	CMDLINE_DEFINE_ARG(path, cstring)
+	CMDLINE_DEFINE_SWITCH(no_os_gamestate)
+
+	CMDLINE_DEFINE_ARG(freeze_dump, real)
+	CMDLINE_DEFINE_ARG(freeze_dump_delay, real)
+
+	#if PLATFORM_IS_DEDI
+	#else
+		CMDLINE_DEFINE_ARG(mp_version, cstring)
+		CMDLINE_DEFINE_SWITCH(no_os_gfx)
+	#endif
 #endif
 
 // These must come last, so including file doesn't have to undef anything

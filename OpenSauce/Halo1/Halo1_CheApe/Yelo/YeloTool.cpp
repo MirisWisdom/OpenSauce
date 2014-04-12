@@ -6,7 +6,7 @@
 */
 #include "Common/Precompile.hpp"
 
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 #include <blamlib/Halo1/tool/tool.hpp>
 
 #include <YeloLib/Halo1/cache/data_file_yelo.hpp>
@@ -118,7 +118,7 @@ namespace Yelo
 
 				char exe_name[64];
 				if (strcpy_s(exe_name, exe_path) != k_errnone)
-					YELO_ERROR(_error_message_priority_assert, "Who the hell names their tool exe longer than %d characters? %s",
+					YELO_ERROR_FAILURE("Who the hell names their tool exe longer than %d characters? %s",
 						NUMBEROF(exe_name), exe_path);
 
 				// null terminate at the start of the file extension

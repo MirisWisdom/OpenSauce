@@ -4,27 +4,76 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #include "Common/Precompile.hpp"
+#if PLATFORM_IS_EDITOR
 #include <blamlib/Halo1/tag_files/tag_files.hpp>
 
 #include <blamlib/Halo1/memory/byte_swapping.hpp>
+#include <blamlib/Halo1/tag_files/files.hpp>
+#include <blamlib/Halo1/tag_files/tag_files_structures.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
-#include "Engine/EngineFunctions.hpp"
+#include <YeloLib/Halo1/open_sauce/settings/che_ape_settings.hpp>
 
 namespace Yelo
 {
 	namespace TagGroups
 	{
-		bool TagFileRequiresByteSwap()
+		void s_tag_header::Initialize(int16 tag_version)
 		{
-			return true; // TODO: reference tag_file_globals
+			ZeroMemory(this, sizeof(*this));
+
+			crc = NONE;
+			version = tag_version;
+			owner_index = NONE;
+			offset = sizeof(*this);
+		}
+		void s_tag_header::InitializeForBungieFormat(int16 tag_version)
+		{
+			Initialize(tag_version);
+
+			signature = k_signature;
+		}
+		void s_tag_header::InitializeForYeloFormat(int16 tag_version)
+		{
+			Initialize(tag_version);
+
+			signature = k_signature_yelo;
 		}
 
 		char* s_tag_file_globals::GetSingleFilePath(char buffer[Enums::k_maximum_filename_length+1]) const
 		{
 			return blam::file_reference_get_name(single_file_reference,
-				FLAG(Flags::_name_directory_bit) | FLAG(Flags::_name_file_bit) | FLAG(Flags::_name_extension_bit),
-				buffer);
+				Flags::_name_full_path_flags, buffer);
+		}
+
+		bool s_tag_file_globals::SingleFileCreate(tag group_tag, cstring name)
+		{
+			char debug_filename[Enums::k_maximum_filename_length+1];
+
+			SingleFileClose();
+
+			s_file_reference file_reference;
+			blam::tag_file_get_file_reference(file_reference, group_tag, name);
+
+			if (blam::tag_file_read_only(group_tag, name))
+			{
+				YELO_ERROR_FAILURE("couldn't overwrite read-only tag file '%s'", 
+					blam::file_reference_get_name(single_file_reference,
+					Flags::_name_full_path_flags, debug_filename));
+
+				return false;
+			}
+
+			if (!blam::file_create(file_reference))
+			{
+				YELO_ERROR_FAILURE("couldn't create tag file '%s'", 
+					blam::file_reference_get_name(single_file_reference,
+					Flags::_name_full_path_flags, debug_filename));
+
+				return false;
+			}
+
+			return true;
 		}
 
 		void s_tag_file_globals::SingleFileClose()
@@ -43,16 +92,14 @@ namespace Yelo
 		{
 			char debug_filename[Enums::k_maximum_filename_length+1];
 
-			YELO_ERROR(_error_message_priority_assert, 
-				"couldn't read header from the %s tag '%s' (%s)", 
+			YELO_ERROR_FAILURE("couldn't read header from the %s tag '%s' (%s)", 
 				expected_group->name, single_file_name, GetSingleFilePath(debug_filename));
 		}
 		void s_tag_file_globals::ReadHeaderInvalidFormat(const tag_group* expected_group, cstring format_type) const
 		{
 			char debug_filename[Enums::k_maximum_filename_length+1];
 
-			YELO_ERROR(_error_message_priority_assert, 
-				"the %s tag '%s' (%s) had an invalid header (%s)", 
+			YELO_ERROR_FAILURE("the %s tag '%s' (%s) had an invalid header (%s)", 
 				expected_group->name, single_file_name, GetSingleFilePath(debug_filename),
 				format_type);
 		}
@@ -62,16 +109,14 @@ namespace Yelo
 				? "UNKNOWN GROUP"
 				: found_group->name;
 
-			YELO_ERROR(_error_message_priority_assert, 
-				"the %s tag '%s' was the wrong group type (%s)", 
+			YELO_ERROR_FAILURE("the %s tag '%s' was the wrong group type (%s)", 
 				expected_group->name, single_file_name, found_name);
 		}
 		void s_tag_file_globals::ReadHeaderVersionMistmatch(const tag_group* expected_group, cstring reason) const
 		{
 			char debug_filename[Enums::k_maximum_filename_length+1];
 
-			YELO_ERROR(_error_message_priority_assert, 
-				"the %s tag '%s' has an invalid (%s) version", 
+			YELO_ERROR_FAILURE("the %s tag '%s' has an invalid (%s) version", 
 				expected_group->name, GetSingleFilePath(debug_filename), reason);
 		}
 		bool s_tag_file_globals::ReadHeader(tag group_tag)
@@ -155,16 +200,15 @@ namespace Yelo
 
 			if (*name == '\\')
 			{
-				YELO_ERROR(_error_message_priority_assert,
-					"the %s tag '%s' starts with a directory character",
+				YELO_ERROR_FAILURE("the %s tag '%s' starts with a directory character",
 					group->name, name);
 				return false;
 			}
 
+			// TODO: need to rewrote these conditions for tag_file_index support
 			if (!blam::tag_file_get_file_reference(single_file_reference, group_tag, name) && !from_file_system)
 			{
-				YELO_ERROR(_error_message_priority_assert,
-					"the %s tag '%s' was not found in the index file",
+				YELO_ERROR_FAILURE("the %s tag '%s' was not found in the index file",
 					group->name, name);
 
 				return false;
@@ -178,8 +222,7 @@ namespace Yelo
 
 			if (for_writing && blam::file_read_only(single_file_reference))
 			{
-				YELO_ERROR(_error_message_priority_assert, 
-					"the %s tag '%s' cannot be opened for writing", 
+				YELO_ERROR_FAILURE("the %s tag '%s' cannot be opened for writing", 
 					group->name, GetSingleFilePath(debug_filename));
 				return false;
 			}
@@ -189,8 +232,7 @@ namespace Yelo
 				: FLAG(Flags::_permission_read_bit);
 			if (!blam::file_open(single_file_reference, permissions))
 			{
-				YELO_ERROR(_error_message_priority_assert, 
-					"the %s tag '%s' could not be opened", 
+				YELO_ERROR_FAILURE("the %s tag '%s' could not be opened", 
 					group->name, GetSingleFilePath(debug_filename));
 				return false;
 			}
@@ -203,9 +245,103 @@ namespace Yelo
 
 			return result;
 		}
+
+		bool s_tag_file_globals::New(tag group_tag, cstring name)
+		{
+			const tag_group* group = blam::tag_group_get(group_tag);
+
+			YELO_ASSERT(open);
+			YELO_ASSERT(group);
+
+			// NOTE: engine actually does this after the directories have been created
+			if (*name == '\0')
+				return false;
+
+			// populate the new file reference with the path to the tags directory
+			s_file_reference new_file_reference;
+			blam::file_reference_create(new_file_reference, Enums::_file_reference_location_tags);
+			blam::file_reference_add_directory(new_file_reference,
+				Settings::Get().GetTagsPath());
+			// will create the tags directory if it doesn't exist
+			if (!blam::file_exists(new_file_reference))
+				blam::file_create(new_file_reference);
+
+			// create a local copy of the tag name for use in strtok() operations
+			char tag_path[Enums::k_maximum_filename_length+1];
+			strncpy_s(tag_path, name, Enums::k_maximum_filename_length);
+			tag_path[Enums::k_maximum_filename_length] = '\0';
+
+			// create any directories between the tags folder and file name
+			if (char* last_slash = strrchr(tag_path, '\\'))
+			{
+				*last_slash = '\0'; // terminate the last separator so we don't include the filename
+
+				for (char* next_dir_token, *directory = strtok_s(tag_path, "\\", &next_dir_token);
+					directory != nullptr;
+					directory = strtok_s(nullptr, "\\", &next_dir_token))
+				{
+					blam::file_reference_add_directory(new_file_reference, directory);
+
+					if (!blam::file_exists(new_file_reference))
+						blam::file_create(new_file_reference);
+				}
+			}
+
+			if (!SingleFileCreate(group_tag, name))
+				return false;
+
+			if (!SingleFileOpen(group_tag, name, true, false))
+				return false;
+
+			// NOTE: engine actually initializes this before the Open() call
+			s_tag_header header;
+			header.InitializeForBungieFormat(group->version);
+
+			if (!WriteHeader(header))
+				return false;
+
+			return true;
+		}
+
+		bool TagFileRequiresByteSwap()
+		{
+			return true; // TODO: reference tag_file_globals
+		}
 	};
 
 	namespace blam
 	{
+		bool PLATFORM_API tag_file_open_impl(tag group_tag, cstring filename,
+			_Out_opt_ bool* is_readonly, _Out_opt_ uint32* crc, bool from_file_system)
+		{
+			auto& globals = *TagGroups::TagFileGlobals();
+
+			if (!globals.SingleFileOpen(group_tag, filename, false, from_file_system) ||
+				!globals.ReadHeader(group_tag))
+			{
+				return false;
+			}
+
+			if (is_readonly)
+				*is_readonly = file_read_only(globals.single_file_reference);
+
+			if (crc)
+				*crc = globals.single_file_header.crc;
+
+			return true;
+		}
+
+		cstring tag_name_strip_name(cstring name)
+		{
+			YELO_ASSERT(name);
+
+			cstring sans_path = strrchr(name, '\\');
+
+			return sans_path != nullptr
+				? sans_path + 1
+				: name;
+		}
 	};
 };
+
+#endif

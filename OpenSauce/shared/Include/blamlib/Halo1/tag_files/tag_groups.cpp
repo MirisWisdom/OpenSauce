@@ -13,8 +13,6 @@
 	#include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
 	#include <YeloLib/Halo1/tag_files/tag_group_memory.hpp>
 
-	#include "Engine/EngineFunctions.hpp"
-
 namespace Yelo
 {
 	namespace TagGroups
@@ -140,7 +138,7 @@ namespace Yelo
 	}
 	bool tag_field::IsInvisible() const
 	{
-		return name && strlen(name) == 0; // yes, a field with no name wouldn't be considered 'invisible', according to engine code
+		return name && *name == '\0'; // yes, a field with no name wouldn't be considered 'invisible', according to engine code
 	}
 
 	int32 tag_block_definition::FindFieldIndex(_enum field_type, cstring name, int32 start_index) const

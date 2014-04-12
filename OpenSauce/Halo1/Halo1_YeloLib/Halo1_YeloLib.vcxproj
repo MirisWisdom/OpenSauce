@@ -1,0 +1,416 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <OSRootDir>$(ProjectDir)..\..\..\</OSRootDir>
+    <OSRequiresDirectX>true</OSRequiresDirectX>
+    <OSRequiresCppBoost>true</OSRequiresCppBoost>
+    <OSRequiresHaloCustomEd>true</OSRequiresHaloCustomEd>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugDedi|Win32">
+      <Configuration>DebugDedi</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseDedi|Win32">
+      <Configuration>ReleaseDedi</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugGuerilla|Win32">
+      <Configuration>DebugGuerilla</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseGuerilla|Win32">
+      <Configuration>ReleaseGuerilla</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugSapien|Win32">
+      <Configuration>DebugSapien</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseSapien|Win32">
+      <Configuration>ReleaseSapien</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugTool|Win32">
+      <Configuration>DebugTool</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseTool|Win32">
+      <Configuration>ReleaseTool</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Halo1_YeloLib</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v120_xp</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration.Contains(Release))' " Label="Configuration">
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <Import Project="$(OSRootDir)shared\config\msbuild\OpenSauce.props" />
+  <Import Project="$(OSRootDir)OpenSauce\shared\config\msbuild\YeloLib.props" />
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <!--<DisableSpecificWarnings>4311;4312;%(DisableSpecificWarnings)</DisableSpecificWarnings>-->
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition=" '$(Configuration.Contains(Debug))' ">
+    <ClCompile>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cseries\memory_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\memory\constant_pool.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\che_ape_settings.hpp" />
+    <ClInclude Include="Common\Platform.hpp" />
+    <ClInclude Include="Common\Precompile.hpp" />
+    <ClInclude Include="Common\targetver.h" />
+    <ClInclude Include="..\..\..\shared\include_cpp\cseries\MacrosCpp.hpp" />
+    <ClInclude Include="..\..\shared\Include\7zip\7z.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\7zAlloc.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\7zBuf.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\7zCrc.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\7zFile.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\7zVersion.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\Bcj2.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\Bra.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\CpuArch.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\Lzma2Dec.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\LzmaDec.h" />
+    <ClInclude Include="..\..\shared\Include\7zip\Types.h" />
+    <ClInclude Include="..\..\shared\Include\CrashRpt\CrashRpt.h" />
+    <ClInclude Include="..\..\shared\Include\TinyXml\tinystr.hpp" />
+    <ClInclude Include="..\..\shared\Include\TinyXml\tinyxml.hpp" />
+    <ClInclude Include="..\..\shared\Include\zlib\contrib\minizip\ioapi.h" />
+    <ClInclude Include="..\..\shared\Include\zlib\contrib\minizip\unzip.h" />
+    <ClInclude Include="..\..\shared\Include\zlib\contrib\minizip\zip.h" />
+    <ClInclude Include="..\..\shared\Include\zlib\crc32.h" />
+    <ClInclude Include="..\..\shared\Include\zlib\deflate.h" />
+    <ClInclude Include="..\..\shared\Include\zlib\gzguts.h" />
+    <ClInclude Include="..\..\shared\Include\zlib\inffast.h" />
+    <ClInclude Include="..\..\shared\Include\zlib\inffixed.h" />
+    <ClInclude Include="..\..\shared\Include\zlib\inflate.h" />
+    <ClInclude Include="..\..\shared\Include\zlib\inftrees.h" />
+    <ClInclude Include="..\..\shared\Include\zlib\trees.h" />
+    <ClInclude Include="..\..\shared\Include\zlib\zconf.h" />
+    <ClInclude Include="..\..\shared\Include\zlib\zlib.h" />
+    <ClInclude Include="..\..\shared\Include\zlib\zutil.h" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\cache\cache_files_yelo_base.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\cseries_yelo_base.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\debug_memory_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\errors_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\non_pod_container.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\pc_crashreport.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\files\files.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_files_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_builder_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_memory.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_memory_gestalt_definitions.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_memory_layout_table_definitions.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\data_file_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\shared_cache_files.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\shared_cache_file_definitions.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cseries\cseries_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\effects\effects_constants_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\files\packed_file.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\game\game_engine_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\game\game_results_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\guerilla\mfc_interfaces.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\interface\equipment_hud_interface_definition.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\items\equipment_definitions_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\items\equipment_structures_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\memory\data_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\models\model_animation_definitions_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\blam_memory_upgrades.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_global_cv_definitions.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_global_definitions.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_scenario_definitions.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\yelo_settings_definitions.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\yelo_shared_settings.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\yelo_version.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\rasterizer\rasterizer.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\render_constants_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\saved_games\game_state_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\shaders\effect_postprocess_collection_definitions.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\shaders\effect_postprocess_generic_definitions.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\shaders\shader_postprocess_definitions.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\shaders\shader_postprocess_generic_definitions.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\shaders\shader_postprocess_globals_definitions.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\shell\shell_windows_command_line.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_id_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_database_definitions.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_fieldset_replacement_builder.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\main\main_yelo_base.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\memory\array_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\memory\compression\7zip_codec.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\memory\compression\zip_codec.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\memory\function_interface.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\memory\linked_list.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\memory\memory_interface_base.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\memory\naked_func_writer.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\memory\physical_memory_allocation.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\memory\security\xxtea.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\che_ape\che_ape_api.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\settings\yelo_shared_settings_base.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\shell\platform_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\tag_files\tag_groups_base_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\tag_files\tag_groups_markup.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\shared\Include\7zip\7zAlloc.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\7zBuf.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\7zCrc.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\7zCrcOpt.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\7zDec.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\7zFile.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\7zIn.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\7zStream.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\Bcj2.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\Bra.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\Bra86.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\CpuArch.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\Lzma2Dec.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\7zip\LzmaDec.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\TinyXml\tinystr.cpp" />
+    <ClCompile Include="..\..\shared\Include\TinyXml\tinyxml.cpp" />
+    <ClCompile Include="..\..\shared\Include\TinyXml\tinyxmlerror.cpp" />
+    <ClCompile Include="..\..\shared\Include\TinyXml\tinyxmlparser.cpp" />
+    <ClCompile Include="..\..\shared\Include\zlib\adler32.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\compress.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\contrib\minizip\ioapi.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\contrib\minizip\unzip.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\contrib\minizip\zip.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\crc32.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\deflate.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\gzclose.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\gzlib.c">
+      <PrecompiledHeader />
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\gzread.c">
+      <PrecompiledHeader />
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\gzwrite.c">
+      <PrecompiledHeader />
+      <PreprocessorDefinitions>_CRT_NONSTDC_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\infback.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\inffast.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\inflate.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\inftrees.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\trees.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\uncompr.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\zlib\zutil.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\cseries\cseries_yelo_base.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\cseries\debug_memory_yelo.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\cseries\errors_yelo.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\cseries\pc_crashreport.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\files\files.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_files_yelo.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_builder_yelo.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_file_memory.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\data_file_yelo.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cache\shared_cache_files.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\cseries\cseries_yelo.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\files\packed_file.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\guerilla\mfc_interfaces.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_yelo.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\models\model_animation_definitions_yelo.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_global_definitions.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_scenario_definitions.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\yelo_shared_settings.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\shaders\shader_postprocess_definitions.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\shell\shell_windows_command_line.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids_yelo.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_id_yelo.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_database_definitions.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_fieldset_replacement_builder.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory_allocations.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\tag_files\tag_group_memory_stats.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\memory\compression\7zip_codec.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\memory\compression\zip_codec.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\memory\function_interface.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\memory\linked_list.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\memory\memory_interface_base.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\memory\physical_memory_allocation.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\memory\security\xxtea.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\open_sauce\che_ape\che_ape_api.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\open_sauce\settings\yelo_shared_settings_base.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\objects\object_damage_upgrades.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\rasterizer\rasterizer_upgrades.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\render\render_objects_upgrades.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\render\render_particles_upgrades.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\shaders\shader_postprocess_runtime.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\shell\shell_windows_command_line.inl" />
+    <None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.components.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.game_engine.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.global.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.gui.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.gui_alert.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.gui_dialog.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.incident.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.os_setting.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_ids.properties.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\tag_files\string_id_from_tag_string_list.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\Halo1\units\units_grenade_count_upgrade.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\memory\function_interface.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\memory\function_interface_macros.inl">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="..\..\shared\Include\YeloLib\open_sauce\che_ape\che_ape_api.inl">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\shared\Include\TinyXml\OpenSauce.Readme.txt" />
+    <Text Include="..\..\shared\Include\zlib\contrib\minizip\OpenSauce.Readme.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\..\shared\Halo1\CheApe\effect_postprocess.xml" />
+    <Xml Include="..\..\shared\Halo1\CheApe\effect_postprocess_collection.xml" />
+    <Xml Include="..\..\shared\Halo1\CheApe\equipment_hud_interface_definition.xml" />
+    <Xml Include="..\..\shared\Halo1\CheApe\model_animations_yelo.xml" />
+    <Xml Include="..\..\shared\Halo1\CheApe\multilingual_unicode_string_list.xml" />
+    <Xml Include="..\..\shared\Halo1\CheApe\project_yellow.xml" />
+    <Xml Include="..\..\shared\Halo1\CheApe\project_yellow_globals.xml" />
+    <Xml Include="..\..\shared\Halo1\CheApe\project_yellow_globals_cv.xml" />
+    <Xml Include="..\..\shared\Halo1\CheApe\project_yellow_includes.xml" />
+    <Xml Include="..\..\shared\Halo1\CheApe\project_yellow_scripting.xml" />
+    <Xml Include="..\..\shared\Halo1\CheApe\project_yellow_shared.xml" />
+    <Xml Include="..\..\shared\Halo1\CheApe\shader_model_extension.xml" />
+    <Xml Include="..\..\shared\Halo1\CheApe\shader_postprocess.xml" />
+    <Xml Include="..\..\shared\Halo1\CheApe\shader_postprocess_collection.xml" />
+    <Xml Include="..\..\shared\Halo1\CheApe\shader_postprocess_globals.xml" />
+    <Xml Include="..\..\shared\Halo1\CheApe\string_id_yelo.xml" />
+    <Xml Include="..\..\shared\Halo1\CheApe\tag_database.xml" />
+    <Xml Include="..\..\shared\Halo1\CheApe\text_value_pair_definition.xml" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Import Project="$(OSRootDir)shared\config\msbuild\OpenSauceBuild.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

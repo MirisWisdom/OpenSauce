@@ -21,7 +21,7 @@ namespace Yelo
 		// The data held in [details_buffer] when this returns true is undefined, be careful
 		bool VerifySetFilesExist(cstring bitmaps, cstring sounds, cstring locale, char details_buffer[MAX_PATH]);
 
-#if PLATFORM_IS_EDITOR && PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_IS_EDITOR && PLATFORM_TYPE == PLATFORM_TOOL
 		void SaveSettings();
 
 		// EEXIST - file set exists, thus wasn't re-added
@@ -33,7 +33,7 @@ namespace Yelo
 		void SharedDispose();
 	};
 
-#if PLATFORM_IS_EDITOR && PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_IS_EDITOR && PLATFORM_TYPE == PLATFORM_TOOL
 	namespace Cache
 	{
 		class c_data_files

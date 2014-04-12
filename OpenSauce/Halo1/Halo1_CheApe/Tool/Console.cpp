@@ -6,7 +6,7 @@
 */
 #include "Common/Precompile.hpp"
 #include "Tool/Console.hpp"
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 
 namespace Yelo
 {

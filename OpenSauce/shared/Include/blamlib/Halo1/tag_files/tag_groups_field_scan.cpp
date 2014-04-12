@@ -5,6 +5,7 @@
 */
 // NOTE: NON-STANDARD ENGINE SOURCE FILE
 #include "Common/Precompile.hpp"
+#if PLATFORM_IS_EDITOR
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 #include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
@@ -101,7 +102,7 @@ namespace Yelo
 		static void tag_field_scan_set_field_address_for_yelo(TagGroups::s_tag_field_scan_state& state,
 			size_t field_size, size_t field_debug_bytes)
 		{
-			assert( field_debug_bytes>=0 );
+//			assert( field_debug_bytes>=0 );
 
 			state.field_address = state.block_element == nullptr ?
 				nullptr :
@@ -170,3 +171,5 @@ namespace Yelo
 		}
 	};
 };
+
+#endif

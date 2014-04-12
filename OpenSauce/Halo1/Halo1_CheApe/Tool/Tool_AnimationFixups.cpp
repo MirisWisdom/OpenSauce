@@ -7,7 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "Tool/Tool_AnimationFixups.hpp"
 
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 #include <blamlib/Halo1/tool/tool.hpp>
 #include <blamlib/Halo1/models/model_animation_definitions.hpp>
 

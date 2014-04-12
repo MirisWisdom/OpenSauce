@@ -49,7 +49,7 @@ namespace Yelo
 			s_cache_file_resource_strings_storage_header set_storage[_string_id::k_number_of_sets];
 
 
-#if PLATFORM_IS_EDITOR && PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_IS_EDITOR && PLATFORM_TYPE == PLATFORM_TOOL
 			void Initialize();
 #endif
 			bool IsValid() const;
@@ -109,7 +109,7 @@ namespace Yelo
 				uint32 tag_string_to_id_storage_header_offset;
 			}resources;
 
-#if PLATFORM_IS_EDITOR && PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_IS_EDITOR && PLATFORM_TYPE == PLATFORM_TOOL
 			void InitializeForNewMap();
 			void InitializeBuildInfo(_enum stage, uint32 revision);
 #endif

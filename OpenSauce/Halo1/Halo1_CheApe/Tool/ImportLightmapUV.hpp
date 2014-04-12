@@ -5,7 +5,7 @@
 	See license\OpenSauce\Halo1_CheApe for specific license information
 */
 #pragma once
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 
 namespace Yelo
 {

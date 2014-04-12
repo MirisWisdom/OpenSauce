@@ -15,7 +15,7 @@ namespace Yelo
 		void YeloDefinitionsInitialize();
 		void YeloDefinitionsDispose();
 
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 		bool YeloToolCheckTagsForGameStateUpgradeRequirements();
 #endif
 	};

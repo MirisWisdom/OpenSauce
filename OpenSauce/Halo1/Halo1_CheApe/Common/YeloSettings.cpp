@@ -16,6 +16,8 @@ namespace Yelo
 {
 	namespace Settings
 	{
+		bool s_profile::IsIgnored() const	{ return is_ignored && ignored_by[PLATFORM_TYPE - PLATFORM_EDITOR_START_ID]; }
+
 		static s_settings global_settings;
 		const s_settings& Get()	{ return global_settings; }
 

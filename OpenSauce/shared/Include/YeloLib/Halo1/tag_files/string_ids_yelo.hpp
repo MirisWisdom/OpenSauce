@@ -29,8 +29,8 @@ namespace Yelo
 // Returns the next counter value, ie index, for the generated set
 #define __STRING_ID_GENERATE_COUNTER_NEXT		(__COUNTER__ - __STRING_ID_GENERATE_COUNTER_NAME - 1)
 // Generate a string_id by value name
-#define __STRING_ID_GENERATE(value)													\
-	(																							\
+#define __STRING_ID_GENERATE(value)																			\
+	(																										\
 		(BOOST_JOIN(_set_,__STRING_ID_GENERATE_SET_NAME)&	k_id_bit_mask)		<< k_id_bit_shift		|	\
 		(__STRING_ID_GENERATE_COUNTER_NEXT				&	k_index_bit_mask)	<< k_index_bit_shift		\
 	)
@@ -41,7 +41,7 @@ namespace Yelo
 #define __STRING_ID_SET_BEGIN()							\
 	enum { __STRING_ID_GENERATE_COUNTER_NAME = __COUNTER__,
 // End a string_id set definition, declaring/defining any needed boilerplate code
-#define __STRING_ID_SET_END()																		\
+#define __STRING_ID_SET_END()																								\
 		BOOST_JOIN(BOOST_JOIN(k_number_of_,__STRING_ID_GENERATE_SET_NAME),_strings) = __STRING_ID_GENERATE_COUNTER_NEXT,	\
 	};
 // _string_id_empty_string definition hack for the 'global' set

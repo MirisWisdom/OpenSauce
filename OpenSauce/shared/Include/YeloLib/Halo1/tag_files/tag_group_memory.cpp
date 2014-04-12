@@ -4,6 +4,7 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #include "Common/Precompile.hpp"
+#if PLATFORM_IS_EDITOR
 #include <YeloLib/Halo1/tag_files/tag_group_memory.hpp>
 
 #include <blamlib/memory/byte_swapping_base.hpp>
@@ -11,8 +12,6 @@
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 #include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
 #include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
-#include "Engine/EngineFunctions.hpp"
-#include "Memory/MemoryInterface.hpp"
 
 namespace Yelo
 {
@@ -20,7 +19,7 @@ namespace Yelo
 	{
 		static struct {
 			bool field_set_runtime_info_enabled;
-#if PLATFORM_ID != PLATFORM_TOOL // currently only tool builds can toggle on allocation headers
+#if PLATFORM_TYPE != PLATFORM_TOOL // currently only tool builds can toggle on allocation headers
 			const
 #endif
 				bool allocation_headers_enabled;
@@ -45,7 +44,11 @@ namespace Yelo
 			}
 		}g_tag_group_memory_globals = {
 			true,
-			PLATFORM_VALUE(false, false, false),
+#if PLATFORM_TYPE != PLATFORM_TOOL // allocation_headers_enabled
+			false,
+#else
+			false,
+#endif
 			true
 		};
 
@@ -110,7 +113,9 @@ namespace Yelo
 				else
 				{
 					code = NewCode();
-					code = { 0, Enums::_field_comparison_code_bitwise, NONE };
+					code.size = 0;
+					code.type = Enums::_field_comparison_code_bitwise;
+					code.field_index = NONE;
 					return code;
 				}
 			}
@@ -124,7 +129,9 @@ namespace Yelo
 				else
 				{
 					code = NewCode();
-					code = { 0, Enums::_field_comparison_code_skip, NONE };
+					code.size = 0;
+					code.type = Enums::_field_comparison_code_skip;
+					code.field_index = NONE;
 					return code;
 				}
 			}
@@ -613,3 +620,5 @@ namespace Yelo
 		this->unused1 = info;
 	}
 };
+
+#endif

@@ -59,7 +59,7 @@
 
 
 #include "Common/Platform.hpp"
-#if PLATFORM_ID == PLATFORM_GUERILLA
+#if PLATFORM_TYPE == PLATFORM_GUERILLA
 	#define PLATFORM_NO_DX9
 #endif
 

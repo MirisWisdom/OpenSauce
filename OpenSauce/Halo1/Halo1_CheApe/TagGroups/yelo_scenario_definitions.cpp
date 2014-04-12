@@ -152,7 +152,7 @@ namespace Yelo
 			static cstring* K_GLOBALS_TAG_NAME_REFERENCES[] = {
 				CAST_PTR(cstring*, PLATFORM_VALUE(nullptr, 0x4434CA, 0x51675F)),
 				CAST_PTR(cstring*, PLATFORM_VALUE(nullptr, 0x443C95, 0x517525)),
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 				CAST_PTR(cstring*, PLATFORM_VALUE(nullptr, 0x4541A2, nullptr)),
 #endif
 			};
@@ -204,7 +204,7 @@ namespace Yelo
 			PLATFORM_VALUE(NULL, 0x45546B, // call game_globals_preprocess
 				0x6181BB); // call scenario_load
 		static uintptr_t SCENARIO_LOAD_HOOK_restore_point = NULL;
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 		API_FUNC_NAKED static void PLATFORM_API scenario_yelo_load_hook()
 		{
 			static const uintptr_t GAME_GLOBALS_PREPROCESS = PLATFORM_VALUE(nullptr, 0x454190, nullptr);
@@ -220,7 +220,7 @@ namespace Yelo
 				retn
 			}
 		}
-#elif PLATFORM_ID == PLATFORM_SAPIEN
+#elif PLATFORM_TYPE == PLATFORM_SAPIEN
 		API_FUNC_NAKED static void PLATFORM_API scenario_yelo_load_hook(cstring scenario_name)
 		{
 			static const uintptr_t SCENARIO_LOAD = PLATFORM_VALUE(nullptr, nullptr, 0x5174E0);
@@ -243,7 +243,7 @@ namespace Yelo
 
 		void ScenarioYeloLoadHookInitialize()
 		{
-#if PLATFORM_ID != PLATFORM_GUERILLA
+#if PLATFORM_TYPE != PLATFORM_GUERILLA
 			SCENARIO_LOAD_HOOK_restore_point = 
 				Memory::WriteRelativeCall(&scenario_yelo_load_hook, CAST_PTR(void*, SCENARIO_LOAD_HOOK));
 #endif
@@ -251,7 +251,7 @@ namespace Yelo
 
 		void ScenarioYeloLoadHookDispose()
 		{
-#if PLATFORM_ID != PLATFORM_GUERILLA
+#if PLATFORM_TYPE != PLATFORM_GUERILLA
 			Memory::WriteRelativeCall(CAST_PTR(void*, SCENARIO_LOAD_HOOK_restore_point),
 				CAST_PTR(void*, SCENARIO_LOAD_HOOK));
 

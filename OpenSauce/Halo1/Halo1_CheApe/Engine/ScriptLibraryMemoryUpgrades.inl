@@ -104,7 +104,7 @@ static void MemoryUpgradesCustomScriptingDefinitions()
 		x < Enums::k_hs_functions_count; 
 		index++)
 	{
-		if(_upgrade_globals.functions.table[index] == NULL)
+		if(_upgrade_globals.functions.table[index] == nullptr)
 		{
 			_upgrade_globals.functions.table[index] = hs_function_table[x++];
 			_upgrade_globals.functions.count++;
@@ -115,7 +115,7 @@ static void MemoryUpgradesCustomScriptingDefinitions()
 		x < Enums::k_hs_external_globals_count; 
 		index++)
 	{
-		if(_upgrade_globals.globals.table[index] == NULL)
+		if(_upgrade_globals.globals.table[index] == nullptr)
 		{
 			_upgrade_globals.globals.table[index] = hs_external_globals[x++];
 			_upgrade_globals.globals.count++;
@@ -168,8 +168,8 @@ static void MemoryUpgradesCustomScriptingDefinitions()
 		CAST_PTR(void*, PLATFORM_VALUE(0x4F1898, 0x4C1EA8, 0x583A78)),
 		CAST_PTR(void*, PLATFORM_VALUE(0x4F1B26, 0x4C20A6, 0x583D06)),
 		CAST_PTR(void*, PLATFORM_VALUE(0x4F2496, 0x4C25F6, 0x584676)),
-#if PLATFORM_ID != PLATFORM_TOOL
-		CAST_PTR(void*, PLATFORM_VALUE(0x4F2572, NULL, 0x584752)), // hs function get name
+#if PLATFORM_TYPE != PLATFORM_TOOL
+		CAST_PTR(void*, PLATFORM_VALUE(0x4F2572, nullptr, 0x584752)), // hs function get name
 #endif
 		CAST_PTR(void*, PLATFORM_VALUE(0x4F2948, 0x4C2A58, 0x584B28)), // help
 		CAST_PTR(void*, PLATFORM_VALUE(0x4F29FD, 0x4C2B0D, 0x584BDD)), // hs doc
@@ -207,8 +207,8 @@ static void MemoryUpgradesCustomScriptingDefinitions()
 		CAST_PTR(int16*, PLATFORM_VALUE(0x4F1B64, 0x4C20E4, 0x583D44)),
 		CAST_PTR(int16*, PLATFORM_VALUE(0x4F1B99, 0x4C2119, 0x583D79)),
 		CAST_PTR(int16*, PLATFORM_VALUE(0x4F246C, 0x4C25CC, 0x58464C)),
-#if PLATFORM_ID != PLATFORM_TOOL
-		CAST_PTR(int16*, PLATFORM_VALUE(0x4F2548, NULL, 0x584728)), // hs function get name
+#if PLATFORM_TYPE != PLATFORM_TOOL
+		CAST_PTR(int16*, PLATFORM_VALUE(0x4F2548, nullptr, 0x584728)), // hs function get name
 #endif
 		CAST_PTR(int16*, PLATFORM_VALUE(0x4F291E, 0x4C2A2E, 0x584AFE)),
 		CAST_PTR(int16*, PLATFORM_VALUE(0x4F2A09, 0x4C2B19, 0x584BE9)),

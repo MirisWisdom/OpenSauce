@@ -4,4 +4,7 @@
   <Import Condition="'$(OSPlatformsDefined)' == ''"
     Project="OpenSaucePlatformImpl.props" />
 
+  <Import Condition=" '$(OSSourceLanguage)' == 'VC++' "
+    Project="$(OSRootDir)shared\config\msbuild\OpenSaucePlatform.Cpp.props" />
+
 </Project>

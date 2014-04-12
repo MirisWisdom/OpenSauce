@@ -10,7 +10,7 @@
 #if __EL_INCLUDE_FILE_ID == __EL_RASTERIZER_RASTERIZER
 	namespace Rasterizer
 	{
-	#if PLATFORM_ID == PLATFORM_SAPIEN
+	#if PLATFORM_TYPE == PLATFORM_SAPIEN
 		static real_matrix3x4** K_VSH_CONSTANTS__NODEMATRICES_REFERENCES[] = {
 			CAST_PTR(real_matrix3x4**, 0x5E8B02), CAST_PTR(real_matrix3x4**, 0x5F47DC), CAST_PTR(real_matrix3x4**, 0x5F4833), 
 			CAST_PTR(real_matrix3x4**, 0x5F488B), CAST_PTR(real_matrix3x4**, 0x5F48E9), CAST_PTR(real_matrix3x4**, 0x5F4981)
@@ -42,7 +42,7 @@
 	};
 	namespace Render
 	{
-	#if PLATFORM_ID == PLATFORM_SAPIEN
+	#if PLATFORM_TYPE == PLATFORM_SAPIEN
 		ENGINE_PTR(s_render_globals, render_globals,					PTR_NULL, PTR_NULL, 0xF9A4C0);
 
 		FUNC_PTR(PARTICLES_INITIALIZE_MOD_PER_MAP_UPGRADE_PARTICLES,	PTR_NULL, PTR_NULL, 0x638FF2+1);

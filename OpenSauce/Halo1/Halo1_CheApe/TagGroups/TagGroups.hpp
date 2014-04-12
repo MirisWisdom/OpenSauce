@@ -7,7 +7,7 @@
 #pragma once
 
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
-#if PLATFORM_ID != PLATFORM_TOOL
+#if PLATFORM_TYPE != PLATFORM_TOOL
 #include <blamlib/Halo1/guerilla/tags_interface.hpp>
 #endif
 

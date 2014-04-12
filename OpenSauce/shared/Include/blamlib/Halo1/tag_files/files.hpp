@@ -11,7 +11,7 @@ namespace Yelo
 	namespace Enums
 	{
 		enum {
-			k_maximum_filename_length = 255,
+			k_maximum_filename_length = 255, // MAXIMUM_FILENAME_LENGTH
 		};
 
 		enum file_reference_location : _enum
@@ -35,6 +35,8 @@ namespace Yelo
 			_name_extension_bit,
 
 			k_number_of_name_flags, // NUMBER_OF_REFERENCE_INFO_FLAGS
+
+			_name_full_path_flags = FLAG(_name_directory_bit) | FLAG(_name_file_bit) | FLAG(_name_extension_bit)
 		};
 
 		enum file_permission_flags : long_flags

@@ -29,16 +29,13 @@ namespace Yelo
 };
 
 #ifndef YELO_NO_ERROR_MACRO
-	#define YELO_ERROR(priority, format, ...) \
+	#define YELO_ERROR_IMPL(priority, format, ...) \
 		Yelo::blam::error(Yelo::Enums::priority, format, __VA_ARGS__)
-
-	#define YELO_ERROR_OUT_OF_MEMORY(format, ...) \
-		Yelo::blam::error(Yelo::Enums::_error_message_priority_out_of_memory, format, __VA_ARGS__)
-
-	#define YELO_WARN(format, ...) \
-		Yelo::blam::error(Yelo::Enums::_error_message_priority_warning, format, __VA_ARGS__)
 #else
-	#define YELO_ERROR(priority, format, ...) __noop
-	#define YELO_ERROR_OUT_OF_MEMORY(format, ...) __noop
-	#define YELO_WARN(format, ...) __noop
+	#define YELO_ERROR_IMPL(priority, format, ...) __noop
 #endif
+
+#define YELO_ERROR_OUT_OF_MEMORY(format, ...)	YELO_ERROR_IMPL(_error_message_priority_out_of_memory, format, __VA_ARGS__)
+#define YELO_WARN(format, ...)					YELO_ERROR_IMPL(_error_message_priority_warning, format, __VA_ARGS__)
+#define YELO_ERROR_FAILURE(format, ...)			YELO_ERROR_IMPL(_error_message_priority_assert, format, __VA_ARGS__)
+#define YELO_ERROR_CRITICAL(format, ...)		YELO_ERROR_IMPL(_error_message_priority_critical, format, __VA_ARGS__)

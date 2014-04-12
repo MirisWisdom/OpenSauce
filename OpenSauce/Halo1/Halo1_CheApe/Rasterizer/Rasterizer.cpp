@@ -20,7 +20,7 @@ namespace Yelo
 
 	namespace Render
 	{
-#if PLATFORM_ID == PLATFORM_SAPIEN
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
 		#include <YeloLib/Halo1/render/render_particles_upgrades.inl>
 
 		s_render_globals* RenderGlobals()			PTR_IMP_GET2(render_globals);
@@ -29,7 +29,7 @@ namespace Yelo
 
 	namespace Rasterizer
 	{
-#if PLATFORM_ID == PLATFORM_SAPIEN
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
 	#include <YeloLib/Halo1/rasterizer/rasterizer_upgrades.inl>
 
 		s_rasterizer_config* RasterizerConfig()		PTR_IMP_GET2(rasterizer_config);
