@@ -8,4 +8,7 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+	};
 };

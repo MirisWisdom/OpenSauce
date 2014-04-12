@@ -6,8 +6,6 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/memory/data.hpp>
-
 namespace Yelo
 {
 	namespace Enums
@@ -36,19 +34,6 @@ namespace Yelo
 			k_number_of_actor_default_states,
 		};
 
-		enum actor_target_type : _enum
-		{
-			k_number_of_actor_target_types = 12
-		};
-
-		enum actor_danger_zone : _enum
-		{
-			_actor_danger_zone_none,
-			_actor_danger_zone_suicide,
-			_actor_danger_zone_projectile,
-			_actor_danger_zone_vehicle,
-		};
-
 		enum actor_fire_target : _enum
 		{
 			_actor_fire_target_prop = 1,
@@ -73,61 +58,10 @@ namespace Yelo
 
 			k_number_of_actor_knowledge_types,
 		};
-
-		enum actor_perception_type : _enum
-		{
-			_actor_perception_type_none,
-			_actor_perception_type_partial,
-			_actor_perception_type_full,
-			_actor_perception_type_unmistakable,
-
-			k_number_of_actor_perception_types,
-		};
-
-		enum actor_movement_state : _enum
-		{
-			_actor_movement_state_noncombat,
-			_actor_movement_state_asleep,
-			_actor_movement_state_combat,
-			_actor_movement_state_flee,
-		};
-
-		// Move to actor_looking.hpp
-		enum secondary_look_type {
-			_secondary_look_type_none,
-			_secondary_look_type_environment,
-			_secondary_look_type_moving_prop,
-			_secondary_look_type_impact,
-			_secondary_look_type_new_prop,
-			_secondary_look_type_bumped,
-			_secondary_look_type_detonation,
-			_secondary_look_type_shooting_prop,
-			_secondary_look_type_comm_prop,
-			_secondary_look_type_comm_direction,
-			_secondary_look_type_combat_prop,
-			_secondary_look_type_damage,
-			_secondary_look_type_danger,
-			_secondary_look_type_scripted,
-
-			k_number_of_secondary_look_types
-		};
 	};
 
 	namespace AI
 	{
-		struct s_swarm_datum : Memory::s_datum_base
-		{
-			int16 unit_count;			// 0x2
-			datum_index actor_index;	// 0x4
-			UNKNOWN_TYPE(int16);		// 0x8
-			PAD16;
-			UNKNOWN_TYPE(real_vector3d);// 0xC
-			datum_index unit_indices[Enums::k_maximum_number_of_units_per_swarm];
-			datum_index component_indices[Enums::k_maximum_number_of_units_per_swarm];
-		}; BOOST_STATIC_ASSERT( sizeof(s_swarm_datum) == 0x98 );
-		typedef Memory::DataArray<	s_swarm_datum, 
-									Enums::k_maximum_number_of_active_swarms> 
-			swarm_data_t;
 	};
 
 	namespace blam

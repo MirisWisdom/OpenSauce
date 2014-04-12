@@ -7,7 +7,7 @@
 #include "Common/Precompile.hpp"
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
-#include <blamlib/Halo1/main/main.hpp> // needs to be shell.hpp if/when we add it
+#include <blamlib/Halo1/shell/shell.hpp>
 
 #define CMDLINE_ARG(name, type)				c_cmd_line_argument<type>	CMDLINE_PARAM_NAME(name)
 #define CMDLINE_SWITCH(name)				c_cmd_line_switch			CMDLINE_PARAM_NAME(name)

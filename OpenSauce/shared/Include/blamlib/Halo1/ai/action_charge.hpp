@@ -8,7 +8,4 @@
 
 namespace Yelo
 {
-	namespace AI
-	{
-	};
 };
