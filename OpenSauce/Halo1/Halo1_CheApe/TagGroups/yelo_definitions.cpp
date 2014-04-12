@@ -201,11 +201,10 @@ namespace Yelo
 				valid_definitions = (_yelo_definition_globals.*verify_group_proc)();
 
 				if (!valid_definitions)
-					YELO_ERROR(_error_message_priority_critical, 
-						"CheApe: %s group definition doesn't match code!", group_name);
+					YELO_ERROR_CRITICAL("CheApe: %s group definition doesn't match code!", group_name);
 			}
-			else YELO_ERROR(_error_message_priority_critical,
-					"CheApe: %s group not found!", group_name);
+			else
+				YELO_ERROR_CRITICAL("CheApe: %s group not found!", group_name);
 		}
 		bool s_yelo_definition_globals::VerifyGroupDefinitions() const
 		{
@@ -353,7 +352,7 @@ namespace Yelo
 		}
 		//////////////////////////////////////////////////////////////////////////
 
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 		static bool GameGlobalsRequiresYeloGameStateUpgrades(datum_index game_globals_index)
 		{
 			auto* game_globals = blam::tag_get<TagGroups::s_game_globals>(game_globals_index);

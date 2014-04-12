@@ -7,15 +7,20 @@
 #include <YeloLib/Halo1/files/packed_file.hpp>
 
 #if !PLATFORM_IS_EDITOR
-	#include "Common/FileIO.hpp" // for OpenFileByID
+	#include <YeloLib/files/files.hpp> // for OpenFileByID forward declaration
 #else
 	#include <fstream>
-	#include "Engine/EngineFunctions.hpp" // for YELO_ERROR
+	#include <blamlib/Halo1/cseries/errors.hpp>
 #endif
 
 namespace Yelo
 {
 #if !PLATFORM_IS_EDITOR
+	namespace FileIO
+	{
+		Enums::file_io_open_error OpenFileByID(s_file_info& info_out, cstring file_id);
+	};
+
 	void c_packed_file::OpenFile(cstring packed_file, bool is_file_id)
 	{
 		Enums::file_io_open_error open_success;

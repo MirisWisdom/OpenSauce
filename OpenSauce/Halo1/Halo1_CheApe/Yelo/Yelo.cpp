@@ -61,7 +61,7 @@ namespace Yelo
 		if (TagGroups::YeloDefinitionsInitialized())
 			PLATFORM_VALUE(Guerilla, Tool, Sapien)::Initialize();
 
-#if PLATFORM_ID != PLATFORM_TOOL
+#if PLATFORM_TYPE != PLATFORM_TOOL
 		// cmd line args read here as they ned to happen late in Yelo's init
 		Settings::ReadCmdLineSettings();
 #endif
@@ -69,12 +69,12 @@ namespace Yelo
 	static void OverrideTagFilesOpen()
 	{
 		static uintptr_t TAG_FILES_OPEN_CALLS[] = {
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 			0x42DC10
-#elif PLATFORM_ID == PLATFORM_GUERILLA
+#elif PLATFORM_TYPE == PLATFORM_GUERILLA
 			0x421C30,
 			0x41D4F5
-#elif PLATFORM_ID == PLATFORM_SAPIEN
+#elif PLATFORM_TYPE == PLATFORM_SAPIEN
 			0x418A50,
 			0x4141E5	// for no render cases
 #endif

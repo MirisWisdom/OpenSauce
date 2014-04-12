@@ -40,109 +40,22 @@
     </ClCompile>
   </ItemDefinitionGroup>
 
-  <ItemDefinitionGroup Condition=" '$(OSPlatformType)'=='Guerilla' ">
-    <ClCompile>
-      <PreprocessorDefinitions>PLATFORM_TYPE_GUERILLA;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition=" '$(OSPlatformType)'=='Tool' ">
-    <ClCompile>
-      <PreprocessorDefinitions>PLATFORM_TYPE_TOOL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
+  <ItemDefinitionGroup Condition=" '$(OSPlatformType)'=='Tool' or '$(OSPlatformType)'=='Sapien' or '$(OSPlatformType)'=='Client' ">
 	<Link>
       <AdditionalDependencies>d3dxof.lib;dxguid.lib;d3dx9.lib;d3d9.lib;dinput8.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition=" '$(OSPlatformType)'=='Sapien' ">
+
+  <!--define PLATFORM_IS_STUBBS-->
+<!--  <ItemDefinitionGroup Condition=" '$(ProjectName.Contains(Stubbs))' ">
     <ClCompile>
-      <PreprocessorDefinitions>PLATFORM_TYPE_SAPIEN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>PLATFORM_IS_STUBBS=$(ProjectName.Contains(Stubbs).ToUpper());%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-	<Link>
-      <AdditionalDependencies>d3dxof.lib;dxguid.lib;d3dx9.lib;d3d9.lib;dinput8.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition=" '$(OSPlatformType)'=='Client' ">
-    <ClCompile>
-      <PreprocessorDefinitions>PLATFORM_TYPE_CLIENT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
-	<Link>
-      <AdditionalDependencies>d3dxof.lib;dxguid.lib;d3dx9.lib;d3d9.lib;dinput8.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition=" '$(OSPlatformType)'=='Dedi' ">
-    <ClCompile>
-      <PreprocessorDefinitions>PLATFORM_TYPE_DEDI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ClCompile>
-  </ItemDefinitionGroup>
+  </ItemDefinitionGroup>-->
 
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
-  </ItemGroup>
-
-  <ItemGroup
-    > <!--cache-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\cache\cache_files_yelo_base.hpp" />
-  </ItemGroup>
-  <ItemGroup
-    > <!--cseries-->
-	<ClInclude Include="..\..\..\shared\include_cpp\cseries\MacrosCpp.hpp" />
-	<ClInclude Include="..\..\shared\Include\YeloLib\cseries\cseries_yelo_base.hpp" />
-	<ClCompile Include="..\..\shared\Include\YeloLib\cseries\cseries_yelo_base.cpp" />
-    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\debug_memory_yelo.hpp" />
-	<ClCompile Include="..\..\shared\Include\YeloLib\cseries\debug_memory_yelo.cpp" />
-    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\errors_yelo.hpp" />
-	<ClCompile Include="..\..\shared\Include\YeloLib\cseries\errors_yelo.cpp" />
-    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\pc_crashreport.hpp" />
-	<ClCompile Include="..\..\shared\Include\YeloLib\cseries\pc_crashreport.cpp" />
-  </ItemGroup>
-  <ItemGroup
-    > <!--files-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\files\files.hpp" />
-	<ClCompile Include="..\..\shared\Include\YeloLib\files\files.cpp" />
-  </ItemGroup>
-  <ItemGroup
-    > <!--main-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\main\main_yelo_base.hpp" />
-  </ItemGroup>
-  <ItemGroup
-    > <!--memory-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\memory\array_yelo.hpp" />
-	<ClInclude Include="..\..\shared\Include\YeloLib\memory\function_interface.hpp" />
-	<ClCompile Include="..\..\shared\Include\YeloLib\memory\function_interface.cpp" />
-	<None      Include="..\..\shared\Include\YeloLib\memory\function_interface.inl" />
-    <None      Include="..\..\shared\Include\YeloLib\memory\function_interface_macros.inl" />
-    <ClInclude Include="..\..\shared\Include\YeloLib\memory\linked_list.hpp" />
-	<ClCompile Include="..\..\shared\Include\YeloLib\memory\linked_list.cpp" />
-    <ClInclude Include="..\..\shared\Include\YeloLib\memory\memory_interface_base.hpp" />
-	<ClCompile Include="..\..\shared\Include\YeloLib\memory\memory_interface_base.cpp" />
-    <ClInclude Include="..\..\shared\Include\YeloLib\memory\naked_func_writer.hpp" />
-    <ClInclude Include="..\..\shared\Include\YeloLib\memory\compression\7zip_codec.hpp" />
-	<ClCompile Include="..\..\shared\Include\YeloLib\memory\compression\7zip_codec.cpp" />
-    <ClInclude Include="..\..\shared\Include\YeloLib\memory\compression\zip_codec.hpp" />
-	<ClCompile Include="..\..\shared\Include\YeloLib\memory\compression\zip_codec.cpp" />
-    <ClInclude Include="..\..\shared\Include\YeloLib\memory\security\xxtea.hpp" />
-	<ClCompile Include="..\..\shared\Include\YeloLib\memory\security\xxtea.cpp" />
-  </ItemGroup>
-  <ItemGroup
-    > <!--open_sauce-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\settings\yelo_shared_settings_base.hpp" />
-	<ClCompile Include="..\..\shared\Include\YeloLib\open_sauce\settings\yelo_shared_settings_base.cpp" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(OSPlatformIsEditor)' == 'true' "
-    > <!--open_sauce EDITOR-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\che_ape\che_ape_api.hpp" />
-	<ClCompile Include="..\..\shared\Include\YeloLib\open_sauce\che_ape\che_ape_api.cpp" />
-	<None      Include="..\..\shared\Include\YeloLib\open_sauce\che_ape\che_ape_api.inl" />
-  </ItemGroup>
-  <ItemGroup
-    > <!--shell-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\shell\platform_yelo.hpp" />
-  </ItemGroup>
-  <ItemGroup
-    > <!--tag_files-->
-	<ClInclude Include="..\..\shared\Include\YeloLib\tag_files\tag_groups_base_yelo.hpp" />
-    <ClInclude Include="..\..\shared\Include\YeloLib\tag_files\tag_groups_markup.hpp" />
   </ItemGroup>
 </Project>

@@ -7,7 +7,7 @@
 #pragma once
 #include "Common/Precompile.hpp"
 #include "Tool/RuntimeCacheView.hpp"
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 #include <psapi.h>
 
 #include <blamlib/Halo1/cache/cache_files.hpp>

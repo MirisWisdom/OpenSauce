@@ -4,6 +4,7 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #pragma once
+#if PLATFORM_IS_EDITOR
 // DON'T INCLUDE ME UNLESS YOUR NAME IS TagFieldSetReplacements.cpp
 
 #include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
@@ -274,3 +275,5 @@ namespace Yelo
 #define FIELDSET_INSERT_SKIP(field_cname) fsr_builder.							\
 	InsertSkipData(																\
 		offsetof(field_set_type_t, field_cname), sizeof( decltype(field_set_type_t::field_cname) ));
+
+#endif

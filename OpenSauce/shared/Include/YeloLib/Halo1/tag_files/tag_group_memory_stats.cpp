@@ -4,10 +4,12 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #include "Common/Precompile.hpp"
+#if PLATFORM_IS_EDITOR
 #include <YeloLib/Halo1/tag_files/tag_group_memory.hpp>
 
 #include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
+#include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
 
 namespace Yelo
 {
@@ -177,8 +179,8 @@ namespace Yelo
 				total_size += totals.size;
 			}
 
-			fprintf_s(file.get(), "\r\ntotal padding: %d", total_padding);
-			fprintf_s(file.get(), "\r\ntotal size: %d", total_size);
+			fprintf_s(file.get(), "\r\ntotal padding: %u", total_padding);
+			fprintf_s(file.get(), "\r\ntotal size: %u", total_size);
 		}
 
 		size_t c_tag_group_allocation_statistics::BuildStatsForTagChildBlockRecursive(c_tag_group_allocation_statistics& group_stats,
@@ -229,3 +231,5 @@ namespace Yelo
 		}
 	};
 };
+
+#endif

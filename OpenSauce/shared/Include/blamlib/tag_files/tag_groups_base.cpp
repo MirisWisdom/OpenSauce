@@ -6,8 +6,6 @@
 #include "Common/Precompile.hpp"
 #include <blamlib/tag_files/tag_groups_base.hpp>
 
-#include "TagGroups/TagGroups.hpp" // defined in the project implementation
-
 namespace Yelo
 {
 #if PLATFORM_IS_EDITOR

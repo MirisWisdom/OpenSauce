@@ -19,17 +19,25 @@
 
 //////////////////////////////////////////////////////////////////////////
 // For game codebases
+#define PLATFORM_GAME_CLIENT	0x00000000
+#define PLATFORM_GAME_DEDI		0x00000001
 
 // Define the following in specific game codebases
 //#define PLATFORM_IS_EDITOR FALSE
 //#define PLATFORM_IS_STUBBS FALSE
 
+// Is the target platform user based? (aka, haloce.exe)
+#define PLATFORM_IS_USER ( PLATFORM_TYPE == PLATFORM_GAME_CLIENT )
+// Is the target platform dedicated based? (aka, haloceded.exe)
+#define PLATFORM_IS_DEDI ( PLATFORM_TYPE == PLATFORM_GAME_DEDI )
+
 
 //////////////////////////////////////////////////////////////////////////
 // For editor codebases
-#define PLATFORM_GUERILLA	0x00000001
-#define PLATFORM_TOOL		0x00000002
-#define PLATFORM_SAPIEN		0x00000003
+#define PLATFORM_EDITOR_START_ID	0x00000002
+#define PLATFORM_GUERILLA	(PLATFORM_EDITOR_START_ID+0)
+#define PLATFORM_TOOL		(PLATFORM_EDITOR_START_ID+1)
+#define PLATFORM_SAPIEN		(PLATFORM_EDITOR_START_ID+2)
 
 #define CHEAPE_PLATFORM_HALO1 1
 #define CHEAPE_PLATFORM_HALO2 2
@@ -40,3 +48,23 @@
 
 // Set to zero to enable code blocks which are unused (eg, engine hooks which have no special code, yet, in OS)
 #define PLATFORM_DISABLE_UNUSED_CODE 1
+
+
+#if !defined(PLATFORM_TYPE)
+	#if defined(PLATFORM_TYPE_CLIENT)
+		#define PLATFORM_TYPE PLATFORM_GAME_CLIENT
+	#elif defined(PLATFORM_TYPE_DEDI)
+		#define PLATFORM_TYPE PLATFORM_GAME_DEDI
+	#elif defined(PLATFORM_TYPE_GUERILLA)
+		#define PLATFORM_TYPE PLATFORM_GUERILLA
+	#elif defined(PLATFORM_TYPE_TOOL)
+		#define PLATFORM_TYPE PLATFORM_TOOL
+	#elif defined(PLATFORM_TYPE_SAPIEN)
+		#define PLATFORM_TYPE PLATFORM_SAPIEN
+	#else
+		#error PLATFORM_TYPE not defined. Step 1: Bash head on keyboard. Step 2: Repeat. Are you selecting a build config that is just vanilla Debug or Release?
+	#endif
+#endif
+
+// TODO: this needs to be relocated. Had to put it here when we migrated to static libs, since the static libs and DLL code all reference it
+#define ASSERTS_ENABLED

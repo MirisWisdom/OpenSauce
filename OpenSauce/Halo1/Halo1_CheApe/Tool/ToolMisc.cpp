@@ -5,7 +5,7 @@
 	See license\OpenSauce\Halo1_CheApe for specific license information
 */
 #include "Common/Precompile.hpp"
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 #include "Tool/ToolMisc.hpp"
 
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>

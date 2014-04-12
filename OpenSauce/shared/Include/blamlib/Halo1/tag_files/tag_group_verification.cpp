@@ -5,10 +5,10 @@
 */
 // NOTE: NON-STANDARD ENGINE SOURCE FILE
 #include "Common/Precompile.hpp"
+#if PLATFORM_IS_EDITOR
 #include <blamlib/Halo1/tag_files/tag_group_verification.hpp>
 
 #include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
-#include "Engine/EngineFunctions.hpp"
 
 namespace Yelo
 {
@@ -274,3 +274,5 @@ namespace Yelo
 		}
 	};
 };
+
+#endif

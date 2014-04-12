@@ -11,6 +11,7 @@
 #include <blamlib/Halo1/shaders/shader_definitions.hpp>
 #include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
 #include <blamlib/Halo1/tag_files/tag_files.hpp>
+#include <blamlib/Halo1/tag_files/tag_files_structures.hpp> // need structs in order to do pointer math on TagFileGlobals
 #include <blamlib/Halo1/tag_files/tag_group_loading.hpp>
 
 namespace Yelo
@@ -55,7 +56,7 @@ namespace Yelo
 				void, tag_reference&, tag, cstring);
 
 			Memory::WriteRelativeJmp(blam::tag_data_load, GET_FUNC_VPTR(TAG_DATA_LOAD), true);
-#if PLATFORM_ID != PLATFORM_TOOL
+#if PLATFORM_TYPE != PLATFORM_TOOL
 			Memory::WriteRelativeJmp(blam::tag_data_unload, GET_FUNC_VPTR(TAG_DATA_UNLOAD), true);
 #endif
 			INIT_HOOK_BY_EXPLICIT_TYPE(tag_data_resize, TAG_DATA_RESIZE,

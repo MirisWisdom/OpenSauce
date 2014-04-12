@@ -6,10 +6,6 @@
 #include "Common/Precompile.hpp"
 #include <blamlib/Halo1/memory/data.hpp>
 
-#if PLATFORM_IS_EDITOR
-	#include "Engine/EngineFunctions.hpp"
-#endif
-
 static const Yelo::datum_index::salt_t k_datum_index_salt_msb = 
 	1U << 
 	(BIT_COUNT(Yelo::datum_index::salt_t) - 1);

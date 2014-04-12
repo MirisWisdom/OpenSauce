@@ -17,7 +17,7 @@ DWORD WINAPI c_memory_fixups::GetCurrentDirectoryHack(
 	return S_OK;
 }
 
-#if PLATFORM_ID != PLATFORM_GUERILLA
+#if PLATFORM_TYPE != PLATFORM_GUERILLA
 // The following is a hack which fixes a problem with tag_file_index_build.
 //
 // Basically, the code for that function assumes that all tag names begin 
@@ -39,7 +39,7 @@ void c_memory_fixups::tag_file_index_build_strchr_hack_initialize()
 
 void c_memory_fixups::FixupsInitializeDataPaths(cstring data_override)
 {
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 	if(data_override == nullptr) return;
 
 
@@ -72,7 +72,7 @@ void c_memory_fixups::FixupsInitializeDataPaths(cstring data_override)
 }
 void c_memory_fixups::FixupsInitializeMapsPaths(cstring maps_override)
 {
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 	if(maps_override == nullptr) return;
 
 	strcpy_s(_override_paths.maps.path, maps_override);
@@ -127,14 +127,14 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 		size_t length = strlen(_override_paths.tags.path);
 		char& last_char = _override_paths.tags.path[length-1];
 
-		if(last_char == '\\' || last_char == '//')
+		if(last_char == '\\' || last_char == '/')
 			last_char = '\0';
 
 		_strlwr(local_tags_name);
 		length = strlen(local_tags_name);
 		last_char = local_tags_name[length-1];
 
-		if(last_char == '\\' || last_char == '//')
+		if(last_char == '\\' || last_char == '/')
 			last_char = '\0';
 	}
 	strcpy_s(_override_paths.tags.path_with_slash, _override_paths.tags.path);
@@ -142,16 +142,16 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 
 
 	static cstring* K_TAGS_PATH_REFERENCE_FIXUPS[] = { // "tags"
-#if PLATFORM_ID == PLATFORM_GUERILLA
+#if PLATFORM_TYPE == PLATFORM_GUERILLA
 		// The first reference is in a start-up thunk. If we didn't initialize before those thunks were ran, 
 		// we'd need to handled it with a 'strcpy'.
 		CAST_PTR(cstring*, 0x41453B), CAST_PTR(cstring*, 0x439C61), CAST_PTR(cstring*, 0x43A096),
 		CAST_PTR(cstring*, 0x43BAEE), CAST_PTR(cstring*, 0x43BEB8), CAST_PTR(cstring*, 0x43C0F8),
 
-#elif PLATFORM_ID == PLATFORM_TOOL
+#elif PLATFORM_TYPE == PLATFORM_TOOL
 		CAST_PTR(cstring*, 0x444F36), CAST_PTR(cstring*, 0x445C2E), CAST_PTR(cstring*, 0x445FF8), 
 
-#elif PLATFORM_ID == PLATFORM_SAPIEN
+#elif PLATFORM_TYPE == PLATFORM_SAPIEN
 		CAST_PTR(cstring*, 0x4FCBD1), CAST_PTR(cstring*, 0x4FD006), CAST_PTR(cstring*, 0x4FEA5E), 
 		CAST_PTR(cstring*, 0x4FEE28), CAST_PTR(cstring*, 0x4FF068), 
 
@@ -161,13 +161,13 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 		*ptr = _override_paths.tags.path;
 
 
-#if PLATFORM_ID != PLATFORM_TOOL
+#if PLATFORM_TYPE != PLATFORM_TOOL
 	// Replace the a few key GetWorkingDir calls with our own so it uses 
 	// the user's defined root path
 	static void* K_GET_WORKING_DIR_CALLS[] = {
-	#if PLATFORM_ID == PLATFORM_GUERILLA
+	#if PLATFORM_TYPE == PLATFORM_GUERILLA
 		CAST_PTR(void*, 0x415ABB), CAST_PTR(void*, 0x415DF8), 
-	#elif PLATFORM_ID == PLATFORM_SAPIEN
+	#elif PLATFORM_TYPE == PLATFORM_SAPIEN
 		CAST_PTR(void*, 0x485034), CAST_PTR(void*, 0x485248), 
 	#endif
 	};
@@ -191,9 +191,9 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 	strcat_s(_override_paths.tags.folder_name_with_slash_relative, _override_paths.tags.folder_name_with_slash);
 
 	static cstring* K_TAGS_NAME_REFERENCE_FIXUPS[] = { // "\tags\"
-	#if PLATFORM_ID == PLATFORM_GUERILLA
+	#if PLATFORM_TYPE == PLATFORM_GUERILLA
 		CAST_PTR(cstring*, 0x415B5A), CAST_PTR(cstring*, 0x415E3B), 
-	#elif PLATFORM_ID == PLATFORM_SAPIEN
+	#elif PLATFORM_TYPE == PLATFORM_SAPIEN
 		CAST_PTR(cstring*, 0x485060), CAST_PTR(cstring*, 0x485065), 
 		CAST_PTR(cstring*, 0x48526A), CAST_PTR(cstring*, 0x48526F), 
 	#endif
@@ -202,12 +202,12 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 		*ptr = _override_paths.tags.folder_name_with_slash;
 #endif
 
-#if PLATFORM_ID != PLATFORM_GUERILLA
+#if PLATFORM_TYPE != PLATFORM_GUERILLA
 	tag_file_index_build_strchr_hack_initialize();
 #endif
 
 
-#if PLATFORM_ID == PLATFORM_GUERILLA
+#if PLATFORM_TYPE == PLATFORM_GUERILLA
 	static cstring* K_TAGS_PATH_REFERENCE_FIXUPS2[] = { // "tags\"
 		CAST_PTR(cstring*, 0x41B112), CAST_PTR(cstring*, 0x415FB4), CAST_PTR(cstring*, 0x41601F), 
 	};
@@ -242,7 +242,7 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 #endif
 
 
-#if PLATFORM_ID == PLATFORM_SAPIEN
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
 	strcpy_s(_override_paths.tags.folder_name_with_levels, _override_paths.tags.folder_name_with_slash_single);
 	strcat_s(_override_paths.tags.folder_name_with_levels, "levels");
 
@@ -291,7 +291,7 @@ void c_memory_fixups::FixupsInitializeFilePaths()
 {
 	enum report_type : long_enum {
 		_report_debug,
-#if PLATFORM_ID != PLATFORM_GUERILLA
+#if PLATFORM_TYPE != PLATFORM_GUERILLA
 		_report_network,
 		_report_tag_dump,
 		_report_heap_dump,
@@ -302,7 +302,7 @@ void c_memory_fixups::FixupsInitializeFilePaths()
 		_report_object_memory,
 		_report_hs_doc,
 
-	#if PLATFORM_ID == PLATFORM_SAPIEN
+	#if PLATFORM_TYPE == PLATFORM_SAPIEN
 		_report_baggage,
 		_report_message_delta_message_log,
 		_report_sapien_model_index,
@@ -313,7 +313,7 @@ void c_memory_fixups::FixupsInitializeFilePaths()
 	static char k_file_path_fixup_names[][MAX_PATH] = {
 		"debug.txt",
 
-#if PLATFORM_ID != PLATFORM_GUERILLA
+#if PLATFORM_TYPE != PLATFORM_GUERILLA
 		"network.log",
 		"tag_dump.txt",
 		"heap_dump.txt",
@@ -324,7 +324,7 @@ void c_memory_fixups::FixupsInitializeFilePaths()
 		"object_memory.txt",
 		"hs_doc.txt",
 
-	#if PLATFORM_ID == PLATFORM_SAPIEN
+	#if PLATFORM_TYPE == PLATFORM_SAPIEN
 		"baggage.txt",
 		"message_delta_message_log.txt",
 		"sapien_model_index.dat",
@@ -343,7 +343,7 @@ void c_memory_fixups::FixupsInitializeFilePaths()
 			size_t length = strlen(_override_paths.root);
 			char& last_char = _override_paths.root[length-1];
 
-			if(last_char == '\\' || last_char == '//')
+			if(last_char == '\\' || last_char == '/')
 				last_char = '\0';
 		}
 
@@ -375,7 +375,7 @@ void c_memory_fixups::FixupsInitializeFilePaths()
 		{_report_debug,						CAST_PTR(cstring*,PLATFORM_VALUE(0x420565,	0x42CAB1,	0x4173A1))},
 //		{_report_debug,						CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,	nullptr,	nullptr))},
 
-#if PLATFORM_ID != PLATFORM_GUERILLA
+#if PLATFORM_TYPE != PLATFORM_GUERILLA
 		{_report_network,					CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		0x42C983,	0x417223))},
 		{_report_network,					CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		nullptr,	0x6F1073))},
 		{_report_tag_dump,					CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		0x433609,	0x4FA199))},
@@ -390,7 +390,7 @@ void c_memory_fixups::FixupsInitializeFilePaths()
 		{_report_object_memory,				CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		0x4A1D24,	0x563534))},
 		{_report_hs_doc,					CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		0x4C2AF5,	0x584BC5))},
 
-	#if PLATFORM_ID == PLATFORM_SAPIEN
+	#if PLATFORM_TYPE == PLATFORM_SAPIEN
 		{_report_baggage,					CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		nullptr,	0x4EF540))},
 		{_report_message_delta_message_log,	CAST_PTR(cstring*,PLATFORM_VALUE(nullptr,		nullptr,	0x6EC3B8))},
 

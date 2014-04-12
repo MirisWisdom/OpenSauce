@@ -4,7 +4,7 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #pragma once
-
+#if PLATFORM_IS_EDITOR
 #include <blamlib/tag_files/tag_groups_base.hpp>
 
 namespace Yelo
@@ -422,3 +422,5 @@ namespace Yelo
 		};
 	};
 };
+
+#endif

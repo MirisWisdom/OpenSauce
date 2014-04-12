@@ -13,7 +13,7 @@
 	ENGINE_PTR(string_list, global_grenade_type_enum, 0x9D1728, 0x6DE850, 0xA496A8);
 	ENGINE_PTR(tag_block_definition, grenades_block, 0x9D237C, 0x6DF4A4, 0xA4A2FC);
 
-	#if PLATFORM_ID == PLATFORM_SAPIEN
+	#if PLATFORM_TYPE == PLATFORM_SAPIEN
 		static uintptr_t K_UNIT_ZOOM_LEVEL_OFFSET_REFS[] = {
 			0x5861BC+4,
 			0x58F2CC+2, 0x58F327+2,

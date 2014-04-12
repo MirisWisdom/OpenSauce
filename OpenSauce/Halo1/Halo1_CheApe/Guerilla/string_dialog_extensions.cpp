@@ -7,7 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "Guerilla/string_dialog_extensions.hpp"
 
-#if PLATFORM_ID == PLATFORM_GUERILLA
+#if PLATFORM_TYPE == PLATFORM_GUERILLA
 #include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
 #include "Guerilla/tag_reference_dialog_extensions.hpp"
 #include "TagGroups/TagGroups.hpp"

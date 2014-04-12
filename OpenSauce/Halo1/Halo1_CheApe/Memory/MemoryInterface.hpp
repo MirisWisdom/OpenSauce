@@ -19,11 +19,11 @@
 //
 //////////////////////////////////////////////////////////////////////////
 
-#if PLATFORM_ID == PLATFORM_GUERILLA
+#if PLATFORM_TYPE == PLATFORM_GUERILLA
 	#define PLATFORM_VALUE(g_value, t_value, s_value) g_value
-#elif PLATFORM_ID == PLATFORM_TOOL
+#elif PLATFORM_TYPE == PLATFORM_TOOL
 	#define PLATFORM_VALUE(g_value, t_value, s_value) t_value
-#elif PLATFORM_ID == PLATFORM_SAPIEN
+#elif PLATFORM_TYPE == PLATFORM_SAPIEN
 	#define PLATFORM_VALUE(g_value, t_value, s_value) s_value
 #endif
 

@@ -230,7 +230,7 @@ namespace Yelo
 		}
 		PLATFORM_VALUE(API_FUNC_NAKED, , API_FUNC_NAKED) void PLATFORM_API memory_pool_delete(Memory::s_memory_pool* pool)
 		{
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 			memory_pool_verify(pool);
 			memset(pool, 0, sizeof(*pool));
 			YELO_FREE(pool); // FREE is preferred here over DELETE since the type is a POD engine type

@@ -21,7 +21,7 @@ namespace Yelo
 #define __EL_INCLUDE_ID			__EL_INCLUDE_OBJECTS
 #define __EL_INCLUDE_FILE_ID	__EL_OBJECTS_GRENADE_TYPES_UPGRADE
 #include "Memory/_EngineLayout.inl"
-#if PLATFORM_ID == PLATFORM_SAPIEN
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
 	#include <YeloLib/Halo1/units/units_grenade_count_upgrade.inl>
 #endif
 	};
@@ -128,7 +128,7 @@ namespace Yelo
 			tag_block_definition* block_definition = GET_PTR2(grenades_block);
 			block_definition->maximum_element_count = global_grenade_type_enum->count;
 
-#if PLATFORM_ID == PLATFORM_SAPIEN
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
 			InitializeGrenadeCounts_UnitZoomLevelRefs(enabled);
 			InitializeGrenadeCounts_UnitDesiredZoomLevelRefs(enabled);
 			InitializeGrenadeCounts_NumberOfUnitGrenadeTypes(global_grenade_type_enum->count);

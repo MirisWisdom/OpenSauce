@@ -69,7 +69,7 @@ namespace Yelo
 			// We enable tag definition upgrades by default on all platforms...
 			MemoryUpdatesInitializeTagDefinitions();
 			// but custom scripting must be explicitly setup in Tool builds
-#if PLATFORM_ID != PLATFORM_TOOL
+#if PLATFORM_TYPE != PLATFORM_TOOL
 			Scripting::InitializeCustomScriptingDefinitions();
 #endif
 		}
@@ -146,8 +146,8 @@ namespace Yelo
 
 				if( !element->parameters.resize(def->paramc) )
 				{
-					YELO_ERROR(_error_message_priority_critical, 
-						"CheApe: failed to add function parameters for %s", def->name);
+					YELO_ERROR_CRITICAL("CheApe: failed to add function parameters for %s", 
+						def->name);
 				}
 
 				memcpy(element->parameters.Definitions,

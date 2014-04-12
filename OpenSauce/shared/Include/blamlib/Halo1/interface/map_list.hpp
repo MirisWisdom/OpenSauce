@@ -37,7 +37,9 @@ namespace Yelo
 
 	namespace blam
 	{
+#if !PLATFORM_IS_EDITOR
 		extern cstring map_list_ignored_map_names[];
+#endif
 
 		cstring map_list_map_name(int32 index);
 		int32 map_list_map_index(int32 index);

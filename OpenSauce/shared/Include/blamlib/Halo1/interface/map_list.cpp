@@ -14,6 +14,7 @@ namespace Yelo
 
 	namespace blam
 	{
+#if !PLATFORM_IS_EDITOR
 		cstring map_list_ignored_map_names[] = {
 			"a10", "a30", "a50",
 			"b30", "b40",
@@ -24,5 +25,6 @@ namespace Yelo
 			"sounds",
 			"loc",
 		};
+#endif
 	};
 };

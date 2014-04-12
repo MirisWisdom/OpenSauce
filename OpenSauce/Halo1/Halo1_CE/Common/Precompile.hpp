@@ -104,18 +104,21 @@
 	#define YELO_NO_NETWORK
 #endif
 
-#define ASSERTS_ENABLED
 //#define API_DEBUG_MEMORY
+
+#include "Common/Platform.hpp"
+
 #if PLATFORM_IS_DEDI
 	#define API_NO_7ZIP_CODEC
 	#define API_NO_ZIP_CODEC
 #endif
-
-#include "Common/Platform.hpp"
 
 #include <blamlib/Halo1/cseries/cseries.hpp>
 #include <blamlib/scenario/scenario_location.hpp>
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 
 #include <YeloLib/cseries/errors_yelo.hpp>
+#include <blamlib/Halo1/cseries/errors.hpp>
+#include <YeloLib/Halo1/cseries/memory_yelo.hpp>
+
 #include "Common/YeloSettings.hpp"

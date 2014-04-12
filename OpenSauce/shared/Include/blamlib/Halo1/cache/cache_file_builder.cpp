@@ -5,7 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 #include <blamlib/Halo1/cache/cache_file_builder.hpp>
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 
 #include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/game/game_globals_definitions.hpp>
@@ -13,7 +13,7 @@
 #include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
-#include "Engine/EngineFunctions.hpp"
+#include <YeloLib/memory/memory_interface_base.hpp>
 
 namespace Yelo
 {

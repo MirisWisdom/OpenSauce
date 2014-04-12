@@ -147,7 +147,7 @@ namespace Yelo
 			{
 				size_t old_func_length = old_func_t::DetermineAsmLength();
 				size_t new_func_length = new_func_t::DetermineAsmLength();
-				YELO_ASSERT_DISPLAY( old_func_length==new_func_length, asm_mismatch_msg );
+				YELO_ASSERT_DISPLAY( old_func_length==new_func_length, "%s", asm_mismatch_msg );
 			}
 			static void Verify(const void* code_addr, cstring asm_mismatch_msg)
 			{
@@ -155,7 +155,7 @@ namespace Yelo
 
 				size_t old_func_length = old_func_t::DetermineAsmLength();
 				byte* old_func_bytes = old_func_t::GetNakedFuncBytes();
-				YELO_ASSERT_DISPLAY( memcmp(code_addr, old_func_bytes, old_func_length)==0, asm_mismatch_msg );
+				YELO_ASSERT_DISPLAY( memcmp(code_addr, old_func_bytes, old_func_length)==0, "%s", asm_mismatch_msg );
 			}
 #endif
 		public:

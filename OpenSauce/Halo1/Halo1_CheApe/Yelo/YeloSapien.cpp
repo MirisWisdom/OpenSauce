@@ -6,7 +6,7 @@
 */
 #include "Common/Precompile.hpp"
 
-#if PLATFORM_ID == PLATFORM_SAPIEN
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
 #include <blamlib/Halo1/interface/first_person_weapons.hpp>
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 

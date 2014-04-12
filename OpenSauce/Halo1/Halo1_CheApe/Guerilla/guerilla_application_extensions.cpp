@@ -7,7 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "Guerilla/guerilla_application_extensions.hpp"
 
-#if PLATFORM_ID == PLATFORM_GUERILLA
+#if PLATFORM_TYPE == PLATFORM_GUERILLA
 namespace Yelo
 {
 	namespace Guerilla
