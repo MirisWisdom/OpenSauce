@@ -5,6 +5,11 @@
 	See license\OpenSauce\Halo1_CheApe for specific license information
 */
 
+#include <blamlib/Halo1/tag_files/tag_groups.hpp>
+#include <blamlib/Halo1/shaders/shader_definitions.hpp>
+
+namespace Yelo { namespace Tool { namespace BuildCacheFileEx { namespace TagPreprocess {
+
 namespace ShaderExtension
 {
 	static bool shader_model_extension_process(datum_index tag_index)
@@ -62,3 +67,6 @@ namespace ShaderExtension
 		return true;
 	}
 };
+
+
+}; }; }; };

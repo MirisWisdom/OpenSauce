@@ -8,7 +8,8 @@
 
 #include <direct.h> // _mkdir
 
-#include <TinyXml/tinyxml.hpp>
+#include <blamlib/Halo1/cache/cache_files.hpp>
+#include <YeloLib/files/files.hpp>
 #include <YeloLib/Halo1/open_sauce/settings/che_ape_settings.hpp>
 #include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
 
@@ -16,213 +17,128 @@ namespace Yelo
 {
 	namespace DataFiles
 	{
-		static cstring K_SETTINGS_FILENAME_XML = "OS_Settings.ModSets.xml";
+		static cstring K_DATA_FILE_SUBDIRECTORY = "data_files\\";
+	};
 
-		struct s_globals {
+	namespace Cache
+	{
+		void c_data_files_name_utils::BuildName(cstring mod_name, Enums::data_file_type type,
+			char name[k_name_length+1])
+		{
+			if (!is_null_or_empty(mod_name))
+			{
+				strcpy_s(name, k_name_length+1, DataFiles::K_DATA_FILE_SUBDIRECTORY);
+				strcat_s(name, k_name_length+1,	"-");
+			}
 
-			struct s_mod {
-				int32 Count;
-				struct {
-					char Name[MAX_PATH];
-					char Bitmaps[MAX_PATH];
-					char Sounds[MAX_PATH];
-					char Locale[MAX_PATH];
-
-					void Initialize()
-					{
-						strcpy_s(Bitmaps,	"data_files\\");
-						strcpy_s(Sounds,	"data_files\\");
-						strcpy_s(Locale,	"data_files\\");
-
-						strcat_s(Bitmaps,	Name);
-						strcat_s(Sounds,	Name);
-						strcat_s(Locale,	Name);
-
-						strcat_s(Bitmaps,	"-bitmaps");
-						strcat_s(Sounds,	"-sounds");
-						strcat_s(Locale,	"-loc");
-					}
-				}FileSet[Enums::k_engine_mod_max_data_file_sets];
-
-				bool LoadSettings()
-				{
-					TiXmlElement* root = nullptr;
-					auto xml_settings = TiXmlDocument();
-
-					char file_path[MAX_PATH];
-					if(!Settings::GetSettingsFilePath(K_SETTINGS_FILENAME_XML, file_path))
-						return false;
-					else if( (root = Settings::GenericSettingsParse(xml_settings, file_path, "modSets")) == nullptr)
-						return false;
-
-					for(TiXmlElement* entry = root->FirstChildElement();
-						this->Count < Enums::k_engine_mod_max_data_file_sets && entry != nullptr;
-						entry = entry->NextSiblingElement())
-					{
-						cstring name = entry->Attribute("name");
-
-						if(name != nullptr)
-						{
-							strcpy_s(this->FileSet[this->Count].Name, name);
-							this->FileSet[this->Count++].Initialize();
-						}
-					}
-
-					return true;
-				}
-
-#if PLATFORM_IS_EDITOR && PLATFORM_TYPE == PLATFORM_TOOL
-				void SaveSettings()
-				{
-					char file_path[MAX_PATH];
-					Settings::GetSettingsFilePath(K_SETTINGS_FILENAME_XML, file_path);
-					TiXmlDocument xml_settings(file_path);
-					TiXmlElement* root = Settings::GenericSettingsWrite(xml_settings, "osModSetSettings", "modSets");
-
-					for(int32 x = 0; x < this->Count; x++)
-					{
-						TiXmlElement* entry = new TiXmlElement("ModSet");
-							root->LinkEndChild(entry);
-
-						entry->SetAttribute("name", this->FileSet[x].Name);
-					}
-
-					xml_settings.SaveFile(file_path);
-				}
-
-				errno_t AddFileSet(cstring name)
-				{
-					bool fs_exists = false;
-					for(int32 x = 0; x < this->Count && !fs_exists; x++)
-						fs_exists = !strcmp(name, this->FileSet[x].Name);
-
-					if(fs_exists) return EEXIST;
-
-					if(this->Count == Enums::k_engine_mod_max_data_file_sets)
-						return ENOSPC;
-
-					strcpy_s(this->FileSet[this->Count++].Name, name);
-
-					return k_errnone;
-				}
-#endif
-
-				bool FindSet(cstring name, 
-					const char (*&bitmaps)[MAX_PATH],
-					const char (*&sounds)[MAX_PATH],
-					const char (*&locale)[MAX_PATH]
-					)
-				{
-					for(int32 x = 0; x < this->Count; x++)
-						if( !strcmp(name, this->FileSet[x].Name) )
-						{
-							bitmaps = &FileSet[x].Bitmaps;
-							sounds = &FileSet[x].Sounds;
-							locale = &FileSet[x].Locale;
-							return true;
-						}
-
-					bitmaps = sounds = locale = nullptr;
-					return false;
-				}
-			}Mods;
-
-		}Globals;
-
-
-		bool FindSet(cstring name, 
-			const char (*&bitmaps)[MAX_PATH],
-			const char (*&sounds)[MAX_PATH],
-			const char (*&locale)[MAX_PATH]
-			)
-		{			
-			return Globals.Mods.FindSet(name, bitmaps, sounds, locale);
+			strcat_s(name, k_name_length+1, Cache::DataFileTypeToString(type));
+		}
+		void c_data_files_name_utils::BuildNames(cstring mod_name)
+		{
+			memset(m_names, 0, sizeof(m_names));
+			BuildName(mod_name, Enums::_data_file_type_bitmaps,m_names[Enums::_data_file_type_bitmaps]);
+			BuildName(mod_name, Enums::_data_file_type_sounds, m_names[Enums::_data_file_type_sounds]);
+			BuildName(mod_name, Enums::_data_file_type_locale, m_names[Enums::_data_file_type_locale]);
 		}
 
-		bool VerifySetFilesExist(cstring bitmaps, cstring sounds, cstring locale,
-			char details_buffer[MAX_PATH])
-		{			
-			// The names given to use are raw data-set names that don't include the extension or maps folder path
-			cstring set_files[3] = {
-				bitmaps, sounds, locale
-			};
-			for(int x = 0; x < NUMBEROF(set_files); x++)
-			{
-				// TODO: We assume the data files are stored within the maps directory
-				sprintf_s(details_buffer, MAX_PATH, "maps\\%s.map", set_files[x]);
+		bool c_data_files_finder::SearchPath(cstring maps_path)
+		{
+			char data_file_path[MAX_PATH] = "";
+			strcpy_s(data_file_path, maps_path);
+			// pointer into data_file_path that starts after the maps_path string
+			char* data_file_name = data_file_path + strlen(maps_path);
 
-				int access = _access_s(details_buffer, 0);
-				if(access == ENOENT) return false;
-			}
+			*data_file_name = '\0';
+			strcat(data_file_name, m_names[Enums::_data_file_type_bitmaps]);
+			strcat(data_file_name, K_DATA_FILE_EXTENSION);
+			if (!FileIO::PathExists(data_file_path))
+				return false;
+
+			*data_file_name = '\0';
+			strcat(data_file_name, m_names[Enums::_data_file_type_sounds]);
+			strcat(data_file_name, K_DATA_FILE_EXTENSION);
+			if (!FileIO::PathExists(data_file_path))
+				return false;
+
+			*data_file_name = '\0';
+			strcat(data_file_name, m_names[Enums::_data_file_type_locale]);
+			strcat(data_file_name, K_DATA_FILE_EXTENSION);
+			if (!FileIO::PathExists(data_file_path))
+				return false;
 
 			return true;
 		}
-
-#if PLATFORM_IS_EDITOR && PLATFORM_TYPE == PLATFORM_TOOL
-		void SaveSettings()
+		bool c_data_files_finder::SearchEnvironment()
 		{
-			Globals.Mods.SaveSettings();
+			if (SearchPath(m_maps_path.environment))
+				m_maps_path.final = m_maps_path.environment;
+
+			return m_maps_path.final == m_maps_path.environment;
 		}
-
-		errno_t AddFileSet(cstring name)
+		bool c_data_files_finder::SearchUserProfile()
 		{
-			return Globals.Mods.AddFileSet(name);
+			if (SearchPath(m_maps_path.user_profile))
+				m_maps_path.final = m_maps_path.user_profile;
+
+			return m_maps_path.final == m_maps_path.user_profile;
 		}
-#endif
-
-		void SharedInitialize()
+		c_data_files_finder::c_data_files_finder(cstring mod_name)
 		{
-			Globals.Mods.LoadSettings();
+			BuildNames(mod_name);
+
+			m_maps_path.environment = Cache::MapsDirectory();
+			m_maps_path.user_profile = Settings::PlatformUserMapsPath();
+			m_maps_path.final = nullptr;
 		}
-
-		void SharedDispose()
+		bool c_data_files_finder::TryAndFind(std::string& bitmaps_path, std::string& sounds_path, std::string& locale_path)
 		{
-		}
-	};
-
-
-#if PLATFORM_IS_EDITOR && PLATFORM_TYPE == PLATFORM_TOOL
-	namespace Cache
-	{
-		cstring c_data_files::DataFileTypeToString(_enum df_type)
-		{
-			switch(df_type)
+			if (SearchEnvironment() || SearchUserProfile())
 			{
-			case Enums::_data_file_type_bitmaps:return "bitmaps";
-			case Enums::_data_file_type_sounds:	return "sounds";
-			case Enums::_data_file_type_locale:	return "loc";
-			default:							return "InvalidDataFileType";
+				bitmaps_path.reserve(MAX_PATH);
+				sounds_path.reserve(MAX_PATH);
+				locale_path.reserve(MAX_PATH);
+
+				bitmaps_path.append(m_maps_path.final);
+				sounds_path.append(m_maps_path.final);
+				locale_path.append(m_maps_path.final);
+
+				bitmaps_path.append(m_names[Enums::_data_file_type_bitmaps]);
+				sounds_path.append(m_names[Enums::_data_file_type_sounds]);
+				locale_path.append(m_names[Enums::_data_file_type_locale]);
+
+				bitmaps_path.append(K_DATA_FILE_EXTENSION);
+				sounds_path.append(K_DATA_FILE_EXTENSION);
+				locale_path.append(K_DATA_FILE_EXTENSION);
+
+				bitmaps_path.shrink_to_fit();
+				sounds_path.shrink_to_fit();
+				locale_path.shrink_to_fit();
+
+				return true;
 			}
+
+			bitmaps_path.clear();
+			sounds_path.clear();
+			locale_path.clear();
+
+			return false;
 		}
 
+#if PLATFORM_IS_EDITOR && PLATFORM_TYPE == PLATFORM_TOOL
 		void c_data_files::InitializeForCache(bool using_mod_sets, cstring mod_name, char maps_path[MAX_PATH])
 		{
 			memset(m_names, 0, sizeof(m_names));
 
+			BuildNames(using_mod_sets ? mod_name : nullptr);
+
 			if(using_mod_sets)
 			{
-				strcat_s(maps_path, MAX_PATH, "data_files\\");
+				strcat_s(maps_path, MAX_PATH, DataFiles::K_DATA_FILE_SUBDIRECTORY);
 				_mkdir(maps_path);
-
-				// Prefix the data_file names with our data files directory and mod name
-				for(int32 x = 0; x < NUMBEROF(m_names); x++)
-				{
-					strcpy_s(m_names[x], "data_files\\");
-					strcat_s(m_names[x], mod_name);
-				}
-				strcat_s(m_names[Enums::_data_file_type_bitmaps],	"-bitmaps");
-				strcat_s(m_names[Enums::_data_file_type_sounds],	"-sounds");
-				strcat_s(m_names[Enums::_data_file_type_locale],	"-loc");
-			}
-			else	// we're using stock data files
-			{
-				strcat_s(m_names[Enums::_data_file_type_bitmaps],	"bitmaps");
-				strcat_s(m_names[Enums::_data_file_type_sounds],	"sounds");
-				strcat_s(m_names[Enums::_data_file_type_locale],	"loc");
 			}
 		}
 
-		void c_data_files::CopyStockDataFile(cstring maps_path, _enum df_type)
+		void c_data_files::CopyStockDataFile(cstring maps_path, Enums::data_file_type df_type)
 		{
 			#pragma region s_progress_report
 			struct s_progress_report {
@@ -268,7 +184,7 @@ namespace Yelo
 			s_progress_report report;
 			memset(&report, 0, sizeof(report));
 
-			cstring data_file_name = DataFileTypeToString(df_type);
+			cstring data_file_name = Cache::DataFileTypeToString(df_type);
 
 			char source_file[MAX_PATH];	sprintf_s(source_file, "%s%s.map", maps_path, data_file_name);
 			char target_file[MAX_PATH];	sprintf_s(target_file, "%s%s.map", maps_path, m_names[df_type]);
@@ -292,6 +208,6 @@ namespace Yelo
 
 			printf_s("done\n");
 		}
-	};
 #endif
+	};
 };

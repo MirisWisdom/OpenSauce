@@ -180,7 +180,6 @@ namespace Yelo
 		{
 			c_animation_fixups::Initialize();
 
-			Yelo::DataFiles::SharedInitialize();
 			ImportClassesInitialize();
 
 			size_t tramp_byte_count = Memory::c_naked_func_writer<main__hook_trampoline>::
@@ -190,8 +189,6 @@ namespace Yelo
 
 		void Dispose()
 		{
-			Yelo::DataFiles::SharedDispose();
-
 			c_animation_fixups::Dispose();
 		}
 	};

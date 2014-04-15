@@ -16,52 +16,34 @@ namespace Yelo
 
 			k_number_of_data_file_types,
 		};
+
+		enum data_file_reference_type : _enum {
+			_data_file_reference_none,
+			_data_file_reference_bitmaps,
+			_data_file_reference_sounds,
+			_data_file_reference_locale,
+		};
 	};
 
 	namespace Cache
 	{
-		struct s_data_file_header
-		{
-			int32 type;
-			int32 file_names_offset;
-			int32 file_index_table_offset;
-			int32 tag_count;
-		}; BOOST_STATIC_ASSERT( sizeof(s_data_file_header) == 0x10 );
+		struct s_data_file;
 
-		struct s_data_file_item
-		{
-			int32 name_offset;
-			int32 size;
-			int32 data_offset;
-		}; BOOST_STATIC_ASSERT( sizeof(s_data_file_item) == 0xC );
+		extern cstring K_DATA_FILE_EXTENSION;
 
-		struct s_data_file
-		{
-			s_data_file_header header;
-			struct {
-				s_data_file_item* address;
-				int32 count;
-			}file_index_table;
-			struct {
-				int32 total_size;
-				int32 used_size;
-				char* address;
-			}file_names;
-			bool writable;
-			PAD24;
-			struct {
-				int32 count;
-				int32 size;
-			}unreferenced_items, referenced_items;
-			cstring name;
-			HANDLE file_handle;
+		cstring DataFileTypeToString(Enums::data_file_type type);
+		cstring DataFileTypeToString(Enums::data_file_reference_type type);
 
-#if PLATFORM_IS_EDITOR && PLATFORM_TYPE == PLATFORM_TOOL
-			static void DeleteForCopy(cstring file);
+		s_data_file& DataFileGet(Enums::data_file_reference_type data_file);
 
-			void PreprocessForSave();
-			void Save();
-#endif
-		}; BOOST_STATIC_ASSERT( sizeof(s_data_file) == 0x40 );
+		bool DataFilesOpen(cstring bitmaps_path, cstring sounds_path, cstring locale_path,
+			bool store_resources = false);
+	};
+
+	namespace blam
+	{
+		bool data_files_close();
+
+		bool data_file_close(Enums::data_file_reference_type data_file);
 	};
 };

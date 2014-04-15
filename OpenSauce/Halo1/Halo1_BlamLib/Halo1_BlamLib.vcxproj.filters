@@ -921,6 +921,18 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\models\models.hpp">
       <Filter>models</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files_globals.hpp">
+      <Filter>cache</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\data_file_structures.hpp">
+      <Filter>cache</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\saved_games\game_state_structures.hpp">
+      <Filter>saved_games</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files_windows.cpp">
+      <Filter>cache</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -1012,6 +1024,9 @@
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_saving.cpp">
       <Filter>tag_files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files.cpp">
+      <Filter>cache</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

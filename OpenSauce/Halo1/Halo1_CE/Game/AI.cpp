@@ -117,7 +117,7 @@ namespace Yelo
                     Enums::_x86_opcode_nop
             };
 
-            Memory::WriteMemory(GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), k_null_bytes, sizeof(k_null_bytes));
+            Memory::WriteMemory(GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), k_null_bytes);
 			Memory::WriteRelativeCall(&AI::ActorActionHandleVehicleExitHook, GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), true);
 		}
 

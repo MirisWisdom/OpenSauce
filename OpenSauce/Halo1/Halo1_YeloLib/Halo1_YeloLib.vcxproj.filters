@@ -405,6 +405,9 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\memory\constant_pool.hpp">
       <Filter>memory</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_files_structures_yelo.hpp">
+      <Filter>cache</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">

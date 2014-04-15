@@ -5,6 +5,8 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
+#include "Game/Players.hpp"
+#include "Interface/TextBlock.hpp"
 
 namespace Yelo
 {

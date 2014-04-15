@@ -251,7 +251,7 @@ namespace Yelo
 			datum_index equipment_index;									// 0x218
 			sbyte current_grenade_index;									// 0x31C
 			sbyte next_grenade_index;										// 0x31D
-			byte grenade_counts[Enums::k_unit_grenade_types_count];			// 0x21E
+			byte grenade_counts[Enums::k_unit_grenade_types_count];			// 0x31E
 		private:
 			union {
 				struct {

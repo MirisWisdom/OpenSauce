@@ -355,6 +355,8 @@
     <ClInclude Include="Objects\Equipment.hpp" />
     <ClInclude Include="Objects\ObjectFieldDefinitions.hpp" />
     <ClInclude Include="Objects\Objects.hpp" />
+    <ClInclude Include="Objects\Objects.VehicleSettings.hpp" />
+    <ClInclude Include="Objects\Objects.WeaponSettings.hpp" />
     <ClInclude Include="Objects\Units.hpp" />
     <ClInclude Include="TagGroups\CacheFiles.hpp" />
     <ClInclude Include="TagGroups\project_yellow_definitions.hpp" />
@@ -483,13 +485,14 @@
     <None Include="Objects\ObjectFieldDefinitions.inl" />
     <None Include="Objects\Objects.Damage.inl" />
     <None Include="Objects\Objects.Scripting.inl" />
-    <None Include="Objects\Objects.UnitInfections.inl" />
-    <None Include="Objects\Objects.Vehicle.inl" />
-    <None Include="Objects\Objects.Weapon.inl" />
+    <None Include="Objects\Units.UnitInfections.inl" />
+    <None Include="Objects\Objects.VehicleSettings.inl" />
+    <None Include="Objects\Objects.WeaponSettings.inl" />
     <None Include="Objects\Units.Animations.inl" />
     <None Include="Objects\Units.Boarding.inl" />
     <None Include="Objects\Units.GrenadeCounts.inl" />
     <None Include="TagGroups\CacheFiles.CRC.inl" />
+    <None Include="TagGroups\CacheFiles.DataFiles.inl" />
     <None Include="TagGroups\CacheFiles.MapList.inl" />
     <None Include="TagGroups\CacheFiles.YeloFiles.inl" />
     <None Include="Memory\_EngineLayout.inl" />

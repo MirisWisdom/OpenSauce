@@ -5,6 +5,14 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
+#include "Game/GameStateRuntimeData.hpp"
+#include "Objects/Objects.hpp"
+
+namespace Yelo
+{
+	namespace Objects
+	{
+
 static void* scripting_objects_distance_to_object_evaluate(void** arguments)
 {
 	struct s_arguments {
@@ -374,3 +382,6 @@ static void* scripting_vehicle_remapper_enabled_evaluate(void** arguments)
 
 	return result.pointer;
 }
+
+	};
+};

@@ -20,33 +20,28 @@ namespace Yelo
 		void Dispose();
 		void InitializeForNewMap();
 
+		bool TagIsInstanceOf(datum_index tag_index, tag group_tag);
+		template<typename T>
+		bool TagIsInstanceOf(datum_index tag_index)
+		{
+			return TagIsInstanceOf(tag_index, T::k_group_tag);
+		}
+
 		template<typename T>
 		const T* TagGet(datum_index tag_index)
 		{
-			if(!tag_index.IsNull() && tag_index.index < Index()->count)
-			{
-				Cache::s_cache_tag_instance const& instance = Instances()[tag_index.index];
+			extern void* TagGetImpl(datum_index tag_index, tag group_tag);
 
-				if(instance.MatchesGroup(T::k_group_tag))
-					return instance.Definition<T>();
-			}
-
-			return NULL;
+			return CAST_PTR(T*, TagGetImpl(tag_index, T::k_group_tag));
 		}
 
 		// Returns the tag as non-const. Are you sure you want to be writing to tags at runtime?
 		template<typename T>
 		T* TagGetForModify(datum_index tag_index)
 		{
-			if(!tag_index.IsNull() && tag_index.index < Index()->count)
-			{
-				Cache::s_cache_tag_instance const& instance = Instances()[tag_index.index];
+			extern void* TagGetImpl(datum_index tag_index, tag group_tag);
 
-				if(instance.MatchesGroup(T::k_group_tag))
-					return instance.Definition<T>();
-			}
-
-			return NULL;
+			return CAST_PTR(T*, TagGetImpl(tag_index, T::k_group_tag));
 		}
 
 		// 'Unsafe' in that it returns the tag as non-const and doesn't do any bounds checking
@@ -54,9 +49,9 @@ namespace Yelo
 		template<typename T>
 		T* TagGetUnsafe(datum_index tag_index)
 		{
-			Cache::s_cache_tag_instance const& instance = Instances()[tag_index.index];
+			extern void* TagGroups::TagGetUnsafeImpl(datum_index tag_index);
 
-			return instance.Definition<T>();
+			return CAST_PTR(T*, TagGetUnsafeImpl(tag_index));
 		}
 	};
 };

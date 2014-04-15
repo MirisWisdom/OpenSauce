@@ -4,34 +4,43 @@
 
 	See license\OpenSauce\Halo1_CheApe for specific license information
 */
+#include "Common/Precompile.hpp"
+#include "Tool/BuildCacheFile/BuildCacheFileMemoryUpgrades.hpp"
+#if PLATFORM_TYPE == PLATFORM_TOOL
 
+#include <blamlib/Halo1/cache/cache_files_structures.hpp>
+#include <YeloLib/Halo1/cache/cache_files_structures_yelo.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 
-//////////////////////////////////////////////////////////////////////////
-// Memory upgrade hacks
-namespace BuildCacheFileEx { namespace MemoryUpgrades {
+#include "Engine/Scripting.hpp"
+#include "TagGroups/yelo_scenario_definitions.hpp"
+#include "Tool/BuildCacheFile.hpp"
+#include "Tool/BuildCacheFile/BuildCacheFileGlobals.hpp"
 
-	static Cache::s_cache_header_yelo yelo_cache_header_globals;
+namespace Yelo { namespace Tool { namespace BuildCacheFileEx { namespace MemoryUpgrades {
 
-	static void InitializeHeaderGlobals(bool using_mod_sets, cstring mod_name, bool use_memory_upgrades)
+	Cache::s_cache_header_yelo yelo_cache_header_globals;
+
+	void InitializeHeaderGlobals(bool using_mod_sets, cstring mod_name, bool use_memory_upgrades)
 	{
 		Cache::s_cache_header_yelo& header = yelo_cache_header_globals;
 
-		if(header.flags.uses_mod_data_files = using_mod_sets)
+		if (header.flags.uses_mod_data_files = using_mod_sets)
 			strcpy_s(header.mod_name, mod_name);
 
-		if(header.flags.uses_memory_upgrades = use_memory_upgrades)
+		if (header.flags.uses_memory_upgrades = use_memory_upgrades)
 			header.k_memory_upgrade_increase_amount = K_MEMORY_UPGRADE_INCREASE_AMOUNT;
 	}
 
 	// Initializes the yelo header with the default build info settings
-	static void InitializeHeaderGlobalsBuildInfo()
+	void InitializeHeaderGlobalsBuildInfo()
 	{
 		Cache::s_cache_header_yelo& header = yelo_cache_header_globals;
 
 		header.InitializeBuildInfo(Enums::_production_build_stage_ship, 0);
 	}
 	// Initializes the yelo header with a scenario's yelo build info
-	static void InitializeHeaderGlobalsBuildInfo(const TagGroups::s_project_yellow_scenario_build_info& build_info)
+	void InitializeHeaderGlobalsBuildInfo(const TagGroups::s_project_yellow_scenario_build_info& build_info)
 	{
 		Cache::s_cache_header_yelo& header = yelo_cache_header_globals;
 
@@ -325,13 +334,13 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 	}
 	#pragma endregion
 
-	static void PrintScriptUpgradesUsage()
+	void PrintScriptUpgradesUsage()
 	{
 		printf_s(	"> Script compiling will fail on scripts with OS-functions and globals\n"
 					"> Use build-cache-file-ex with memory upgrades enabled if you use any\n\n");
 	}
 
-	static void Initialize(bool only_using_data_file_hacks)
+	void Initialize(bool only_using_data_file_hacks)
 	{
 		InterceptorsInitialize(only_using_data_file_hacks);
 
@@ -353,7 +362,7 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 		TagGroups::ScenarioYeloLoadHookInitialize();
 	}
 
-	static void Dispose(bool only_using_data_file_hacks)
+	void Dispose(bool only_using_data_file_hacks)
 	{
 		InterceptorsDispose(only_using_data_file_hacks);
 
@@ -367,5 +376,6 @@ namespace BuildCacheFileEx { namespace MemoryUpgrades {
 
 		TagGroups::ScenarioYeloLoadHookDispose();
 	}
-}; };
-//////////////////////////////////////////////////////////////////////////
+
+}; }; }; };
+#endif

@@ -4,6 +4,13 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
+
+#include <blamlib/Halo1/units/unit_structures.hpp>
+
+#include "Memory/MemoryInterface.hpp"
+
+namespace Yelo { namespace Objects { namespace Units {
+
 namespace Animations
 {
 	namespace
@@ -55,13 +62,13 @@ namespace Animations
 		
 		// remap the existing jump entries into our jump table at the correct indices
 		unit_update_animation_primary_keyframe_jmp_table_yelo_remapping(
-			Enums::_unit_animation_state_melee,			unit_update_animation_primary_keyframe_jmp_0);
+			Enums::_unit_animation_state_melee,				unit_update_animation_primary_keyframe_jmp_0);
 		unit_update_animation_primary_keyframe_jmp_table_yelo_remapping(
 			Enums::_unit_animation_state_melee_airborne,	unit_update_animation_primary_keyframe_jmp_0);
 		unit_update_animation_primary_keyframe_jmp_table_yelo_remapping(
 			Enums::_unit_animation_state_leap_melee,		unit_update_animation_primary_keyframe_jmp_0);
 		unit_update_animation_primary_keyframe_jmp_table_yelo_remapping(
-			Enums::_unit_animation_state_throw_grenade,	unit_update_animation_primary_keyframe_jmp_1);
+			Enums::_unit_animation_state_throw_grenade,		unit_update_animation_primary_keyframe_jmp_1);
 
 		// set the game's jump table count to ours
 		GET_PTR(unit_update_animation_primary_keyframe_jmp_tbl_count) = Enums::_unit_animation_state_yelo - 1;
@@ -70,7 +77,7 @@ namespace Animations
 		// nullify jmp table size adjustment
 		Memory::WriteMemory(GET_FUNC_VPTR(UNIT_UPDATE_ANIMATION_PRIMARY_KEYFRAME_JMP_TABLE_ADJUST_SIZE), opcode_null, 3);
 		// nullify indirect table references
-		Memory::WriteMemory(GET_FUNC_VPTR(UNIT_UPDATE_ANIMATION_PRIMARY_KEYFRAME_INDIRECT_TABLE_PTR), opcode_null, sizeof(opcode_null));
+		Memory::WriteMemory(GET_FUNC_VPTR(UNIT_UPDATE_ANIMATION_PRIMARY_KEYFRAME_INDIRECT_TABLE_PTR), opcode_null);
 	}
 
 	static void unit_update_animation_final_keyframe_jmp_table_yelo_remapping(_enum state, _enum to)
@@ -116,7 +123,7 @@ namespace Animations
 		// nullify jmp table size adjustment
 		Memory::WriteMemory(GET_FUNC_VPTR(UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_JMP_TABLE_ADJUST_SIZE), opcode_null, 3);
 		// nullify indirect table references
-		Memory::WriteMemory(GET_FUNC_VPTR(UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_INDIRECT_TABLE_PTR), opcode_null, sizeof(opcode_null));
+		Memory::WriteMemory(GET_FUNC_VPTR(UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_INDIRECT_TABLE_PTR), opcode_null);
 		// fix jmp table index value
 		Memory::WriteMemory(GET_FUNC_VPTR(UNIT_UPDATE_ANIMATION_FINAL_KEYFRAME_INDIRECT_TABLE_PTR + sizeof(opcode_null)), jmp_eax, sizeof(jmp_eax));
 	}
@@ -274,3 +281,5 @@ namespace Animations
 	{
 	}
 };
+
+}; }; };

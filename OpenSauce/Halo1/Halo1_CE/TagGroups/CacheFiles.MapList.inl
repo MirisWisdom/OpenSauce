@@ -5,7 +5,7 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-t_multiplayer_map_data* MultiplayerMaps()		PTR_IMP_GET2(multiplayer_maps);
+multiplayer_map_data_t* MultiplayerMaps()		PTR_IMP_GET2(multiplayer_maps);
 cstring* MapListIgnoredMapNames()				PTR_IMP_GET2(map_list_ignored_map_names);
 
 static void MapListInitialize()

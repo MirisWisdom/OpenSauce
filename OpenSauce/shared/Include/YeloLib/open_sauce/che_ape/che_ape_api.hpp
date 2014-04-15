@@ -7,18 +7,52 @@
 
 // CheApeApi declarations
 extern "C" {
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Get the __TIMESTAMP__ value of CheApe's precompiled header. </summary>
+	///
+	/// <param name="nBufferLength">	Length of the buffer in characters. </param>
+	/// <param name="lpBuffer">			The (ASCII) character buffer to store the result. </param>
+	///
+	/// <returns>	true if it succeeds, false if it fails. </returns>
 	bool __declspec( dllexport ) CheApeApi_GetPchBuildDateA(__in DWORD nBufferLength,
 		__out_ecount_part_opt(nBufferLength, return + 1) LPSTR lpBuffer);
-
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Get the __TIMESTAMP__ value of CheApe's precompiled header. </summary>
+	///
+	/// <param name="nBufferLength">	Length of the buffer in characters. </param>
+	/// <param name="lpBuffer">			The (UNICODE) character buffer to store the result. </param>
+	///
+	/// <returns>	true if it succeeds, false if it fails. </returns>
 	bool __declspec( dllexport ) CheApeApi_GetPchBuildDateW(__in DWORD nBufferLength,
 		__out_ecount_part_opt(nBufferLength, return + 1) LPWSTR lpBuffer);
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Get the __FILE__ value of CheApe's precompiled header. </summary>
+	///
+	/// <param name="nBufferLength">	Length of the buffer in characters. </param>
+	/// <param name="lpBuffer">			The (ASCII) character buffer to store the result. </param>
+	///
+	/// <returns>	true if it succeeds, false if it fails. </returns>
 	bool __declspec( dllexport ) CheApeApi_GetPchPathA(__in DWORD nBufferLength,
 		__out_ecount_part_opt(nBufferLength, return + 1) LPSTR lpBuffer);
-
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Get the __FILE__ value of CheApe's precompiled header. </summary>
+	///
+	/// <param name="nBufferLength">	Length of the buffer in characters. </param>
+	/// <param name="lpBuffer">			The (UNICODE) character buffer to store the result. </param>
+	///
+	/// <returns>	true if it succeeds, false if it fails. </returns>
 	bool __declspec( dllexport ) CheApeApi_GetPchPathW(__in DWORD nBufferLength,
 		__out_ecount_part_opt(nBufferLength, return + 1) LPWSTR lpBuffer);
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Get the tool name this build of CheApe is for. </summary>
+	///
+	/// <param name="nBufferLength">	Length of the buffer in characters. </param>
+	/// <param name="lpBuffer">			The (UNICODE) character buffer to store the result. </param>
+	///
+	/// <returns>	true if it succeeds, false if it fails. </returns>
+	/// <remarks>	Either, "Guerilla", "Tool", or "Sapien". </remarks>
 	bool __declspec( dllexport ) CheApeApi_GetTargetToolNameW(__in DWORD nBufferLength,
 		__out_ecount_part_opt(nBufferLength, return + 1) LPWSTR lpBuffer);
 };

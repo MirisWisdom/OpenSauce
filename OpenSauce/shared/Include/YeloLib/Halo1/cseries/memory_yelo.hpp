@@ -14,9 +14,8 @@
 	#define YELO_MALLOC(size, fill_with_garbage)	Yelo::blam::debug_malloc( (size), fill_with_garbage, __FILE__, __LINE__)
 	#define YELO_NEW_ARRAY(type, count)				Yelo::blam::debug_new_array<type>( (count), false, __FILE__, __LINE__)
 	#define YELO_NEW(type)							Yelo::blam::debug_new<type>(false, __FILE__, __LINE__)
-	#define YELO_NEW_CTOR(type, ...)				new ( YELO_NEW(type) ) type(__VA_ARGS__)
 
-	// Nulls [pointer] before returning
+	// Nulls [ptr] before returning
 	#define YELO_FREE(ptr)							Yelo::blam::debug_free_with_null( (ptr), __FILE__, __LINE__)
 	// Nulls [ptr] before returning
 	#define YELO_DELETE(ptr)						Yelo::blam::debug_delete( (ptr), __FILE__, __LINE__ )
@@ -27,10 +26,22 @@
 	#define YELO_RENEW_ARRAY(type, ptr, count)		Yelo::blam::debug_renew_array<type>( (ptr), (count), __FILE__, __LINE__)
 	#define YELO_RENEW(type, ptr)					Yelo::blam::debug_renew<type>( (ptr), __FILE__, __LINE__)
 #else
-	//#error TODO
+	#define YELO_MALLOC(size, fill_with_garbage)	malloc( size )
+	#define YELO_NEW_ARRAY(type, count)				new type[count]
+	#define YELO_NEW(type)							new type
+
+	#define YELO_FREE(ptr)							Yelo::Memory::FreeWithNull(ptr)
+	#define YELO_DELETE(ptr)						Yelo::Memory::DeleteWithNull(ptr)
+	#define YELO_DELETE_ARRAY(ptr)					Yelo::Memory::DeleteArrayWithNull(ptr)
+
+	#define YELO_REALLOC(ptr, new_size)				realloc(ptr, new_size)
+	//#define YELO_RENEW_ARRAY(type, ptr, count)
+	//#define YELO_RENEW(type, ptr)
 #endif
 
 #if defined(YELO_MALLOC)
+	#define YELO_NEW_CTOR(type, ...)				new ( YELO_NEW(type) ) type(__VA_ARGS__)
+
 	#define YELO_MALLOC_UNIQUE(size, fill_with_garbage)			\
 		std::unique_ptr<void,	Yelo::Memory::memory_deleter<void>>			( YELO_MALLOC(size, fill_with_garbage) )
 	#define YELO_NEW_ARRAY_UNIQUE(type, count)					\
@@ -45,6 +56,37 @@ namespace Yelo
 {
 	namespace Memory
 	{
+		// Nulls [pointer] before returning
+		template<typename T>
+		void FreeWithNull(T*& pointer)
+		{
+			if (pointer != nullptr)
+				free(pointer, file, line);
+
+			pointer = nullptr;
+		}
+		// Nulls [pointer] before returning
+		template<typename T>
+		void DeleteWithNull(T*& pointer)
+		{
+			if (pointer != nullptr)
+			{
+				pointer->~T();
+				delete pointer;
+			}
+
+			pointer = nullptr;
+		}
+		// Nulls [pointer] before returning
+		template<typename T>
+		void DeleteArrayWithNull(T*& pointer)
+		{
+			if (pointer != nullptr)
+				delete[] pointer;
+
+			pointer = nullptr;
+		}
+
 #if defined(YELO_MALLOC_UNIQUE)
 		// Primarily a deleter for std::unique_ptr
 		template<typename T>

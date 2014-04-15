@@ -20,8 +20,10 @@
 
 #if PLATFORM_IS_DEDI
 	#define PLATFORM_VALUE(ce_value, cededi_value) cededi_value
+	#define PLATFORM_PTR(type, ce_value, cededi_value) CAST_PTR(type, cededi_value)
 #elif PLATFORM_IS_USER
 	#define PLATFORM_VALUE(ce_value, cededi_value) ce_value
+	#define PLATFORM_PTR(type, ce_value, cededi_value) CAST_PTR(type, ce_value)
 #endif
 
 #define ENGINE_DPTR(type, name, ce_offset, cededi_offset) \

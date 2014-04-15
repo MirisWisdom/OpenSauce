@@ -30,12 +30,17 @@ namespace Yelo
 		cstring UserProfilePath();
 		// 'savegames' path
 		cstring UserSavedProfilesPath();
+		// maps folder under the user's profile
+		cstring UserProfileMapsPath();
 		// The OpenSauce path to use that is under the User's game profile
 		cstring OpenSauceProfilePath();
 		// Path which we store our reports in
 		cstring ReportsPath();
 		// The current working directory
 		cstring WorkingDirectoryPath();
+
+		// user's maps\ path for the defined PLATFORM_TYPE
+		cstring PlatformUserMapsPath();
 
 		void SharedInitialize(cstring profile_path);
 		void SharedDispose();

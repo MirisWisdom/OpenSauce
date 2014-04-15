@@ -93,19 +93,6 @@
 #define DPTR_IMP_GET_BYREF(name){ PTR_IMPL_GET_GUTS(GET_DPTR2, GET_DPTR, name, *) }
 
 
-//////////////////////////////////////////////////////////////////////////
-// Engine value markup system
-//
-// [game_value]		: value for use in Runtime (ie, Client or Dedi) builds
-// [editor_value]	: value for use in Editor (ie, HEK) builds
-//
-//////////////////////////////////////////////////////////////////////////
-#if PLATFORM_IS_EDITOR
-	#define PLATFORM_ENGINE_VALUE(game_value, editor_value) editor_value
-#else
-	#define PLATFORM_ENGINE_VALUE(game_value, editor_value) game_value
-#endif
-
 namespace Yelo
 {
 	namespace Enums

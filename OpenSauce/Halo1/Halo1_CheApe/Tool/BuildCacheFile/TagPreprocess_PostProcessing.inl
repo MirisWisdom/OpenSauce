@@ -5,6 +5,11 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
+#include <blamlib/Halo1/tag_files/tag_groups.hpp>
+#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
+
+namespace Yelo { namespace Tool { namespace BuildCacheFileEx { namespace TagPreprocess {
+
 namespace PostProcessing
 {
 	static void SetQuadToDefaults(datum_index tag_index, TagGroups::s_effect_postprocess_quad_definition& quad)
@@ -32,7 +37,7 @@ namespace PostProcessing
 
 		return false;
 	}
-	static bool shader_postprocess_generic_group_find_parameter(tag_string& test_string, Yelo::datum_index tag_index)
+	static bool shader_postprocess_generic_group_find_parameter(tag_string& test_string, datum_index tag_index)
 	{
 		auto* datum = blam::tag_get<TagGroups::s_shader_postprocess_generic>(tag_index);
 
@@ -61,7 +66,7 @@ namespace PostProcessing
 		return false;
 	}
 
-	static bool effect_postprocess_generic_group_find_exposed_parameter(tag_string& test_string, Yelo::datum_index tag_index)
+	static bool effect_postprocess_generic_group_find_exposed_parameter(tag_string& test_string, datum_index tag_index)
 	{
 		auto* definition = blam::tag_get<TagGroups::s_effect_postprocess_generic>(tag_index);
 
@@ -272,3 +277,5 @@ namespace PostProcessing
 		return true;
 	}
 };
+
+}; }; }; };

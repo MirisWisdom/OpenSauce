@@ -12,9 +12,7 @@
 #include <blamlib/Halo1/game/game_globals_definitions.hpp>
 
 #include <blamlib/Halo1/main/console.hpp>
-#include <blamlib/Halo1/models/collision_model_definitions.hpp>
 #include <blamlib/Halo1/models/model_animation_definitions.hpp>
-#include <blamlib/Halo1/objects/damage.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 
 #include <blamlib/Halo1/items/projectiles.hpp>
@@ -31,7 +29,6 @@
 #include "Objects/Units.hpp"
 
 #include "Game/GameState.hpp"
-#include "Game/GameStateRuntimeData.hpp"
 #include "Game/Scripting.hpp"
 #include "Game/ScriptLibrary.hpp"
 #include "Memory/MemoryInterface.hpp"
@@ -50,10 +47,18 @@ namespace Yelo
 #define __EL_INCLUDE_ID			__EL_INCLUDE_OBJECTS
 #define __EL_INCLUDE_FILE_ID	__EL_OBJECTS_OBJECTS
 #include "Memory/_EngineLayout.inl"
+
+		static struct s_object_yelo_globals
+		{
+			bool vehicle_remapper_disabled;
+			PAD24;
+		}g_object_yelo_globals;
 	};
 };
 
 #include <YeloLib/Halo1/objects/object_damage_upgrades.inl>
+#include "Objects/Objects.Damage.inl"
+#include "Objects/Objects.Scripting.inl"
 
 namespace Yelo
 {
@@ -88,15 +93,7 @@ namespace Yelo
 		cluster_noncollideable_object_reference_data_t& ClusterNoncollideableObjectReference()	DPTR_IMP_GET_BYREF(cluster_noncollideable_object_reference);
 		noncollideable_object_cluster_reference_data_t& NoncollideableObjectClusterReference()	DPTR_IMP_GET_BYREF(noncollideable_object_cluster_reference);
 
-
-		static struct s_object_yelo_globals
-		{
-			bool vehicle_remapper_disabled;
-			PAD24;
-		}g_object_yelo_globals;
 #include <YeloLib/Halo1/render/render_objects_upgrades.inl>
-#include "Objects/Objects.Damage.inl"
-#include "Objects/Objects.Scripting.inl"
 
 		static void InitializeScripting()
 		{
@@ -483,11 +480,5 @@ namespace Yelo
 	};
 };
 
-#include "Common/YeloSettings.hpp"
-#include "Game/Players.hpp"
-#include "Interface/Controls.hpp"
-#include "Interface/GameUI.hpp"
-#include "Interface/TextBlock.hpp"
-
-#include "Objects/Objects.Weapon.inl"
-#include "Objects/Objects.Vehicle.inl"
+#include "Objects/Objects.WeaponSettings.inl"
+#include "Objects/Objects.VehicleSettings.inl"

@@ -30,7 +30,7 @@ namespace Yelo
 	namespace Enums
 	{
 		enum settings_adjustment_result : long_enum;
-	}
+	};
 
 	namespace Objects
 	{
@@ -46,16 +46,6 @@ namespace Yelo
 
 		typedef Memory::DataArray<s_device_groups_datum, 1024> device_groups_data_t;
 		device_groups_data_t&							DeviceGroups();
-
-
-		typedef Memory::DataArray<s_object_header_datum, 2048> object_header_data_t;
-		object_header_data_t&							ObjectHeader();
-
-		s_objects_pool_data*							ObjectsPool();
-
-		s_object_globals_data*							ObjectGlobals();
-
-		s_object_name_list_data*						ObjectNameList();
 
 
 		//////////////////////////////////////////////////////////////////////////
@@ -213,49 +203,8 @@ namespace Yelo
 		
 		// Checks to see if [unit_index_to_test] is an enemy of [unit_index]
 		bool ObjectIsEnemy(datum_index object_index, datum_index object_index_to_test);
-
-		namespace Weapon
-		{
-			void Initialize();
-			void Dispose();
-
-#if !PLATFORM_IS_DEDI
-			Enums::settings_adjustment_result AdjustSettings();
-			void LoadSettings(TiXmlElement* weapons_element);
-			void SaveSettings(TiXmlElement* weapons_element);
-#endif
-
-#if defined(DX_WRAPPER)
-			void Initialize3D(IDirect3DDevice9 *pDevice, D3DPRESENT_PARAMETERS *pPP);
-			void OnLostDevice();
-			void OnResetDevice(D3DPRESENT_PARAMETERS *pPP);
-			void Render();
-			void Release();
-#elif PLATFORM_IS_USER
-			DOC_TODO("Need fallback initialization for when we're not using the DX_WRAPPER")
-#endif
-		};
-
-		namespace Vehicle
-		{
-			void Initialize();
-			void Dispose();
-
-#if !PLATFORM_IS_DEDI
-			Enums::settings_adjustment_result AdjustSettings();
-			void LoadSettings(TiXmlElement* vehicles_element);
-			void SaveSettings(TiXmlElement* vehicles_element);
-#endif
-
-#if defined(DX_WRAPPER)
-			void Initialize3D(IDirect3DDevice9 *pDevice, D3DPRESENT_PARAMETERS *pPP);
-			void OnLostDevice();
-			void OnResetDevice(D3DPRESENT_PARAMETERS *pPP);
-			void Render();
-			void Release();
-#elif PLATFORM_IS_USER
-			DOC_TODO("Need fallback initialization for when we're not using the DX_WRAPPER")
-#endif
-		};
 	};
 };
+
+#include "Objects/Objects.WeaponSettings.hpp"
+#include "Objects/Objects.VehicleSettings.hpp"
