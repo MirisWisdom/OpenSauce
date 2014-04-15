@@ -125,9 +125,12 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\bungie_net\network\transport_endpoint_winsock.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\cache_constants.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files_globals.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files_structures.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files_windows.cpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\cache_file_builder.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\data_file.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\data_file_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\pc_sound_cache.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\pc_texture_cache.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\physical_memory_map.hpp" />
@@ -298,6 +301,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\render\render_constants.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\render\render_objects.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\saved_games\game_state.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\saved_games\game_state_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\saved_games\game_variant.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\saved_games\player_profile.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\saved_games\saved_game_constants.hpp" />
@@ -350,6 +354,7 @@
     <ClInclude Include="Common\targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\cache_file_builder.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\data_file.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cseries\debug_memory.cpp" />

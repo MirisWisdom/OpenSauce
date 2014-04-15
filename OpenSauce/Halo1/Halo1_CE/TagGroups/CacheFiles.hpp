@@ -24,8 +24,6 @@ namespace Yelo
 
 	namespace Cache
 	{
-		s_cache_file_globals* CacheFileGlobals();
-
 		struct s_original_multipler_map
 		{
 			int32 index; // index used for things like the UI map list
@@ -46,9 +44,9 @@ namespace Yelo
 			PAD16;
 			uint32 crc;
 		};
-		typedef Memory::GbxArray<s_multiplayer_map_entry> t_multiplayer_map_data;
+		typedef Memory::GbxArray<s_multiplayer_map_entry> multiplayer_map_data_t;
 
-		t_multiplayer_map_data* MultiplayerMaps();
+		multiplayer_map_data_t* MultiplayerMaps();
 
 		cstring* MapListIgnoredMapNames();
 

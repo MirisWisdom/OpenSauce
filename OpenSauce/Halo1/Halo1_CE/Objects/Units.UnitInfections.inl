@@ -5,6 +5,19 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
+#include <blamlib/Halo1/ai/actors.hpp>
+#include <blamlib/Halo1/ai/ai_script.hpp>
+#include <blamlib/Halo1/hs/hs_library_external.hpp>
+#include <blamlib/Halo1/models/model_animation_definitions.hpp>
+#include <blamlib/Halo1/models/model_animations.hpp>
+#include <blamlib/Halo1/units/unit_definitions.hpp>
+#include <blamlib/Halo1/units/unit_structures.hpp>
+
+#include "Objects/Objects.hpp"
+#include "TagGroups/project_yellow_definitions.hpp"
+
+namespace Yelo { namespace Objects { namespace Units {
+
 namespace Infections
 {
 	static bool AllowInfections(TagGroups::s_unit_infections_definition const& definition)
@@ -220,7 +233,7 @@ namespace Infections
 			Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
 			Enums::_x86_opcode_nop, Enums::_x86_opcode_nop };
 
-		Memory::WriteMemory(GET_FUNC_VPTR(UNIT_CAUSE_PARENT_MELEE_DAMAGE_HOOK), k_null_bytes, sizeof(k_null_bytes));
+		Memory::WriteMemory(GET_FUNC_VPTR(UNIT_CAUSE_PARENT_MELEE_DAMAGE_HOOK), k_null_bytes);
 		Memory::WriteRelativeJmp(UnitCauseParentMeleeDamageHook, GET_FUNC_VPTR(UNIT_CAUSE_PARENT_MELEE_DAMAGE_HOOK), true);
 	}
 
@@ -228,3 +241,5 @@ namespace Infections
 	{
 	}
 };
+
+}; }; };

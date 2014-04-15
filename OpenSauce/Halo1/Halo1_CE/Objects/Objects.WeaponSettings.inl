@@ -10,7 +10,9 @@
 #include "Rasterizer/Rasterizer.hpp"
 #include "Game/Camera.hpp"
 #include "Game/EngineFunctions.hpp"
+#include "Interface/Controls.hpp"
 #include "Interface/GameUI.hpp"
+#include "Interface/TextBlock.hpp"
 
 namespace Yelo
 {

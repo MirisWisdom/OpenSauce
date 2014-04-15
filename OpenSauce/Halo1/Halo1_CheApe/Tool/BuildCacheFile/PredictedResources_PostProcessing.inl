@@ -5,6 +5,14 @@
 	See license\OpenSauce\Halo1_CheApe for specific license information
 */
 
+#include <blamlib/Halo1/cache/predicted_resources.hpp>
+#include <blamlib/Halo1/cseries/errors.hpp>
+#include <blamlib/Halo1/tag_files/tag_groups.hpp>
+
+#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
+
+namespace Yelo { namespace Tool { namespace BuildCacheFileEx {
+
 namespace PostProcessing
 {
 	static bool shader_postprocess_generic_add_predicted_resources(datum_index tag_index)
@@ -25,7 +33,7 @@ namespace PostProcessing
 			if(parameter.value_type.type != Enums::_shader_variable_base_type_texture)
 				continue;
 
-			predicted_resources_add_resource(shader_tag->predicted_resources, 
+			blam::predicted_resources_add_resource(shader_tag->predicted_resources, 
 				Enums::_predicted_resource_bitmap,
 				parameter.bitmap_value.bitmap.tag_index,
 				parameter.value.bitmap.bitmap_index);
@@ -33,3 +41,5 @@ namespace PostProcessing
 		return true;
 	}
 };
+
+}; }; };

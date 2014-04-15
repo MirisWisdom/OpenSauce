@@ -5,13 +5,19 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
+#include <blamlib/Halo1/tag_files/tag_groups.hpp>
+#include <blamlib/Halo1/shaders/shader_definitions.hpp>
+#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
+
+#include "Tool/BuildCacheFile/TagPreprocess_PostProcessing.inl"
+#include "Tool/BuildCacheFile/TagPreprocess_ShaderExtension.inl"
+
+namespace Yelo { namespace Tool {
+
 namespace BuildCacheFileEx
 {
 	namespace TagPreprocess
 	{
-#include "Tool/BuildCacheFile/TagPreprocess_PostProcessing.inl"
-#include "Tool/BuildCacheFile/TagPreprocess_ShaderExtension.inl"
-
 		static void PLATFORM_API preprocess_tags_for_build()
 		{
 			TagGroups::s_tag_iterator tag_iter;
@@ -45,3 +51,5 @@ namespace BuildCacheFileEx
 		}
 	};
 };
+
+}; };

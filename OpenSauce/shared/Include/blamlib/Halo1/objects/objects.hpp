@@ -83,6 +83,9 @@ namespace Yelo
 				struct s_vehicle_datum* _vehicle;
 			};
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_header_datum) == 0xC );
+		typedef Memory::DataArray<	s_object_header_datum, 
+									2048>
+			object_header_data_t;
 
 
 		struct s_objects_pool_data
@@ -135,6 +138,12 @@ namespace Yelo
 			inline void SetEndHack()		{ signature = Memory::s_data_iterator::k_end_hack_signature; }
 			inline bool IsEndHack() const	{ return signature == Memory::s_data_iterator::k_end_hack_signature; }
 		};
+
+
+		object_header_data_t&							ObjectHeader();
+		s_objects_pool_data*							ObjectsPool();
+		s_object_globals_data*							ObjectGlobals();
+		s_object_name_list_data*						ObjectNameList();
 	};
 
 	namespace blam

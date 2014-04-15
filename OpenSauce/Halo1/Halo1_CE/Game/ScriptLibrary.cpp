@@ -291,8 +291,7 @@ namespace Yelo
 			{
 				Memory::WriteMemory(
 					hs_func_pool[hs_eval_func], 
-					hs_eval_func_has_param, 
-					sizeof(hs_eval_func_has_param));
+					hs_eval_func_has_param);
 
 				temp = CAST_PTR(uint32*, &(hs_func_pool[hs_eval_func][HS_EVAL_INDEX_FUNC_WITH_PARAM]) );
 				*temp = CAST_PTR(uint32, &(hs_eval_func_ptrs[hs_eval_func]) );
@@ -301,8 +300,7 @@ namespace Yelo
 			{
 				Memory::WriteMemory(
 					hs_func_pool[hs_eval_func], 
-					hs_eval_func_no_param, 
-					sizeof(hs_eval_func_no_param));
+					hs_eval_func_no_param);
 
 				temp = CAST_PTR(uint32*, &(hs_func_pool[hs_eval_func][HS_EVAL_INDEX_FUNC_NO_PARAM]) );
 				*temp = CAST_PTR(uint32, &(hs_eval_func_ptrs[hs_eval_func]) );

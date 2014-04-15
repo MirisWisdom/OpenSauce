@@ -5,6 +5,18 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
+#include <blamlib/Halo1/models/model_animation_definitions.hpp>
+#include <blamlib/Halo1/models/model_animations.hpp>
+#include <blamlib/Halo1/objects/damage.hpp>
+#include <blamlib/Halo1/units/unit_definitions.hpp>
+#include <blamlib/Halo1/units/unit_structures.hpp>
+
+#include "Objects/Objects.hpp"
+#include "Objects/Units.hpp"
+#include "TagGroups/project_yellow_definitions.hpp"
+
+namespace Yelo { namespace Objects { namespace Units {
+
 namespace Boarding
 {
 	static void UnitResetOverlayAnimations(s_unit_datum* unit)
@@ -360,3 +372,5 @@ namespace Boarding
 	{
 	}
 };
+
+}; }; };

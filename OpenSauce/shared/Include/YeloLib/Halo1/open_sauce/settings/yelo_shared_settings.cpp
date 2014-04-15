@@ -7,6 +7,8 @@
 #include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
 
 #include <direct.h>
+#include <YeloLib/files/files.hpp>
+#include <YeloLib/Halo1/open_sauce/settings/che_ape_settings.hpp>
 
 namespace Yelo
 {
@@ -20,6 +22,7 @@ namespace Yelo
 			char CommonAppDataPath[MAX_PATH];
 			char UserProfilePath[MAX_PATH];
 			char UserSavedProfilesPath[MAX_PATH];
+			char UserProfileMapsPath[MAX_PATH];
 			char OpenSauceProfilePath[MAX_PATH];
 			char ReportsPath[MAX_PATH];
 			char WorkingDirectoryPath[MAX_PATH];
@@ -28,9 +31,19 @@ namespace Yelo
 		cstring CommonAppDataPath()		{ return Internal.CommonAppDataPath; }
 		cstring UserProfilePath()		{ return Internal.UserProfilePath; }
 		cstring UserSavedProfilesPath()	{ return Internal.UserSavedProfilesPath; }
+		cstring UserProfileMapsPath()	{ return Internal.UserProfileMapsPath; }
 		cstring OpenSauceProfilePath()	{ return Internal.OpenSauceProfilePath; }
 		cstring ReportsPath()			{ return Internal.ReportsPath; }
 		cstring WorkingDirectoryPath()	{ return Internal.WorkingDirectoryPath; }
+
+		cstring PlatformUserMapsPath()
+		{
+#if PLATFORM_IS_EDITOR
+			return Settings::Get().GetMapsPath();
+#else
+			return UserProfileMapsPath();
+#endif
+		}
 
 		void SharedInitialize(cstring profile_path)
 		{
@@ -47,6 +60,13 @@ namespace Yelo
 
 			strcpy_s(Internal.UserSavedProfilesPath, Internal.UserProfilePath);
 			PathAppendA(Internal.UserSavedProfilesPath, "savegames\\");
+
+			strcpy_s(Internal.UserProfileMapsPath, Internal.UserProfilePath);
+			PathAppendA(Internal.UserProfileMapsPath, "maps\\");
+
+			// if there's no maps folder in the user profile, empty the path string
+			if (!FileIO::PathExists(Internal.UserProfileMapsPath))
+				Internal.UserProfileMapsPath[0] = '\0';
 
 			strcpy_s(Internal.OpenSauceProfilePath, profile_path);
 			PathAppendA(Internal.OpenSauceProfilePath, "OpenSauce\\");
@@ -70,20 +90,6 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////////
 
-		static bool FileExists(cstring path)
-		{
-			if(GetFileAttributes(path) != CAST(DWORD, NONE))
-				return true;
-
-			DWORD error = GetLastError();
-
-			if(error == ERROR_FILE_NOT_FOUND || error == ERROR_PATH_NOT_FOUND)
-				return false;
-
-			// This should actually be unreachable...
-			return false;
-		}
-
 		bool PlayerProfileRead(cstring profile_name, __out byte profile[Enums::k_player_profile_buffer_size])
 		{
 			bool success = false;
@@ -94,7 +100,7 @@ namespace Yelo
 			success = success&& k_errnone == strcat_s(blam_path, profile_name);
 			success = success&& k_errnone == strcat_s(blam_path, "\\blam.sav");
 
-			if (success && FileExists(blam_path))
+			if (success && FileIO::PathExists(blam_path))
 			{
 				FILE* file = nullptr;
 				fopen_s(&file, blam_path, "rb");

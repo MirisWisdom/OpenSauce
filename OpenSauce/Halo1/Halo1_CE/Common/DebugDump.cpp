@@ -12,6 +12,7 @@
 #include <ErrorRep.h>
 #pragma comment (lib, "Faultrep.lib")
 
+#include <blamlib/Halo1/saved_games/game_state_structures.hpp>
 #include <YeloLib/cseries/pc_crashreport.hpp>
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
@@ -19,7 +20,6 @@
 #include "Common/YeloSettings.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Game/EngineFunctions.hpp"
-#include "Game/Gamestate.hpp"
 #include "Interface/Keystone.hpp"
 
 //#define DISABLE_EXCEPTION_HANDLING

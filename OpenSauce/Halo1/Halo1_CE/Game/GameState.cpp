@@ -12,6 +12,7 @@
 #include <blamlib/Halo1/game/game_globals_structures.hpp>
 #include <blamlib/Halo1/game/game_time_structures.hpp>
 #include <blamlib/Halo1/main/main_structures.hpp>
+#include <blamlib/Halo1/saved_games/game_state_structures.hpp>
 
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
@@ -23,6 +24,7 @@
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameBuildNumber.hpp"
 #include "Networking/GameSpyApi.hpp"
+#include "Objects/Units.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 
 #include "TagGroups/TagGroups.hpp"
@@ -145,6 +147,24 @@ namespace Yelo
 			MemoryUpgradesDispose();
 		}
 
+		void* GameStateMalloc(const bool k_update_allocation_crc, const size_t size_of)
+		{
+			s_game_state_globals* gsg = GameStateGlobals();
+
+			byte* base_addr = CAST_PTR(byte*, gsg->base_address) + gsg->cpu_allocation_size;
+
+			// Debug check that we don't allocate more memory than the game state has available
+			YELO_ASSERT_DISPLAY((base_addr + size_of) <= PhysicalMemoryMapGlobals()->tag_cache_base_address,
+				"Bit off more game-state than the game could chew!");
+
+			gsg->cpu_allocation_size += size_of;
+			// If the allocation crc is updated, game states won't be loadable by stock games
+			if (k_update_allocation_crc)
+				Memory::CRC(gsg->header->allocation_crc, &size_of, sizeof(size_of));
+
+			return base_addr;
+		}
+
 		void Update(real delta_time)
 		{
 			Yelo::Main::s_project_component* components;
@@ -169,18 +189,7 @@ namespace Yelo
 
 			yelo_header.flags.game_state_upgrades_on = YeloGameStateEnabled();
 
-			// check this map's grenade count vs the previous map's
-			if(game_globals->grenades.Count != yelo_header.unit_grenade_types_count)
-			{
-				// inform the unit grenade counts code to run an assembly update
-				yelo_header.flags.update_unit_grenade_types_count = true;
-				// figure out the new grenade count
-				// defaulting to the stock count if there is suspicious number
-				if(game_globals->grenades.Count <= Enums::k_unit_grenade_types_count_yelo)
-					yelo_header.unit_grenade_types_count = CAST(byte, game_globals->grenades.Count);
-				else
-					yelo_header.unit_grenade_types_count = Enums::k_unit_grenade_types_count;
-			}
+			Objects::Units::InitializeForNewMapPrologue();
 		}
 		static void InitializeForNewMapEpilogue()
 		{

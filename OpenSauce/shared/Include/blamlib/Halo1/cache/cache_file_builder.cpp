@@ -14,6 +14,7 @@
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 #include <YeloLib/memory/memory_interface_base.hpp>
+#include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
 
 namespace Yelo
 {

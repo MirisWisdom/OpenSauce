@@ -71,9 +71,17 @@ namespace Yelo
 		///-------------------------------------------------------------------------------------------------
 		bool PathExists(const char* path)
 		{
-			if(GetFileAttributes(path) == INVALID_FILE_ATTRIBUTES)
+			if(GetFileAttributes(path) != INVALID_FILE_ATTRIBUTES)
+				return true;
+
+			DWORD error = GetLastError();
+
+			if (error == ERROR_FILE_NOT_FOUND || error == ERROR_PATH_NOT_FOUND)
 				return false;
-			return true;
+
+			// there are other cases we may wish to explicitly check for...
+
+			return false;
 		}
 
 		///-------------------------------------------------------------------------------------------------

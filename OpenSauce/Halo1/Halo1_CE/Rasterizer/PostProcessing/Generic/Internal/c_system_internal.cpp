@@ -407,13 +407,13 @@ namespace Yelo
 				m_members_internal.m_shaders.shader_list[i].Ctor();
 
 				datum_index shader_index = m_members_internal.cache_shader_collection->shaders[i].tag_index;
-				if(TagGroups::Instances()[shader_index.index].MatchesGroup(TagGroups::s_shader_postprocess_generic::k_group_tag))
+				if (TagGroups::TagIsInstanceOf<TagGroups::s_shader_postprocess_generic>(shader_index))
 				{
 					auto shpg = TagGroups::TagGetForModify<TagGroups::s_shader_postprocess_generic>(shader_index);
 
 					m_members_internal.m_shaders.shader_list[i].SetShaderDefinition(shpg);
 					m_members_internal.m_shaders.shader_list[i].SetDatumIndex(shader_index);
-					m_members_internal.m_shaders.shader_list[i].SetShaderName(TagGroups::Instances()[shader_index.index].name);
+					m_members_internal.m_shaders.shader_list[i].SetShaderName(blam::tag_get_name(shader_index));
 					m_members_internal.m_shaders.shader_list[i].SetupShader();
 				}
 				else

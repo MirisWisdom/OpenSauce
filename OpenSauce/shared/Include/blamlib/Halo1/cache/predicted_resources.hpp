@@ -31,6 +31,11 @@ namespace Yelo
 
 	namespace blam
 	{
+#if PLATFORM_TYPE == PLATFORM_TOOL
+		void predicted_resources_add_resource(TagBlock<TagGroups::predicted_resource>& predicted_resources,
+			long_enum resource_type, datum_index tag_index, int32 resource_index = NONE);
+#endif
+
 		// NOTE: function is actually defined in the engine's physical_memory_map.c
 		// May be 'physical_memory_map_precache_resources' or something
 		void predicted_resources_precache(TagBlock<TagGroups::predicted_resource>& resources);

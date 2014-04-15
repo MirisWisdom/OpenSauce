@@ -66,5 +66,20 @@
 	#endif
 #endif
 
+
+//////////////////////////////////////////////////////////////////////////
+// Engine value markup system
+//
+// [game_value]		: value for use in Runtime (ie, Client or Dedi) builds
+// [editor_value]	: value for use in Editor (ie, HEK) builds
+//
+//////////////////////////////////////////////////////////////////////////
+#if PLATFORM_IS_EDITOR
+	#define PLATFORM_ENGINE_VALUE(game_value, editor_value) editor_value
+#else
+	#define PLATFORM_ENGINE_VALUE(game_value, editor_value) game_value
+#endif
+
+
 // TODO: this needs to be relocated. Had to put it here when we migrated to static libs, since the static libs and DLL code all reference it
 #define ASSERTS_ENABLED

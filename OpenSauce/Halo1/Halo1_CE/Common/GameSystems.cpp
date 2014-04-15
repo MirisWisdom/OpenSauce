@@ -100,10 +100,11 @@ namespace Yelo
 			static s_project_component k_components[] = {
 				#define __GS_COMPONENT __GS_COMPONENT_LIFECYCLE
 				#include "Common/GameSystemComponent.Definitions.inl"
+				{}
 			};
 
 			out_components = k_components;
-			components_count = NUMBEROF(k_components)-1;
+			components_count = NUMBEROF(k_components)-1 - 1;
 #endif
 
 			return components_count;
@@ -117,10 +118,11 @@ namespace Yelo
 			static s_project_map_component k_components[] = {
 				#define __GS_COMPONENT __GS_COMPONENT_MAP_LIFECYCLE
 				#include "Common/GameSystemComponent.Definitions.inl"
+				{}
 			};
 
 			out_components = k_components;
-			components_count = NUMBEROF(k_components)-1;
+			components_count = NUMBEROF(k_components)-1 - 1;
 #endif
 
 			return components_count;
@@ -134,10 +136,11 @@ namespace Yelo
 			static s_project_game_state_component k_components[] = {
 				#define __GS_COMPONENT __GS_COMPONENT_GAMESTATE_LIFECYCLE
 				#include "Common/GameSystemComponent.Definitions.inl"
+				{}
 			};
 
 			out_components = k_components;
-			components_count = NUMBEROF(k_components)-1;
+			components_count = NUMBEROF(k_components)-1 - 1;
 #endif
 
 			return components_count;
@@ -154,10 +157,11 @@ namespace Yelo
 			static s_dx_component k_components[] = {
 				#define __GS_COMPONENT __GS_COMPONENT_DX9_LIFECYCLE
 				#include "Common/GameSystemComponent.Definitions.inl"
+				{}
 			};
 
 			out_components = k_components;
-			components_count = NUMBEROF(k_components)-1;
+			components_count = NUMBEROF(k_components)-1 - 1;
 	#endif
 
 			return components_count;

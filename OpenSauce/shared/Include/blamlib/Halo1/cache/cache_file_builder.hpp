@@ -6,8 +6,9 @@
 #pragma once
 #if PLATFORM_TYPE == PLATFORM_TOOL
 
-#include <blamlib/Halo1/cache/cache_files.hpp>
+#include <blamlib/Halo1/cache/cache_files_structures.hpp>
 #include <blamlib/Halo1/cache/data_file.hpp>
+#include <blamlib/Halo1/cache/data_file_structures.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 namespace Yelo
@@ -83,6 +84,8 @@ namespace Yelo
 			tag signature;				// 0x20
 		}; BOOST_STATIC_ASSERT( sizeof(s_cache_tag_header_xbox) == 0x24 );
 		//////////////////////////////////////////////////////////////////////////
+
+		s_build_cache_file_globals* BuildCacheFileGlobals();
 
 		bool ScenarioLoadForCacheBuild(cstring scenario_name, cstring globals_name);
 	};

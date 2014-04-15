@@ -46,6 +46,9 @@
     <Filter Include="Memory">
       <UniqueIdentifier>{76969aab-4c97-46f4-860a-0b1ed7f2c231}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Yelo\Impl">
+      <UniqueIdentifier>{1a6b5547-60bc-4875-8971-31d3a2bf4674}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\AnimationUpgrade.cpp">
@@ -61,9 +64,6 @@
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="Yelo\MemoryFixups.cpp">
-      <Filter>Yelo</Filter>
-    </ClCompile>
-    <ClCompile Include="Yelo\ScenarioResources.cpp">
       <Filter>Yelo</Filter>
     </ClCompile>
     <ClCompile Include="Yelo\Yelo.cpp">
@@ -152,6 +152,15 @@
     </ClCompile>
     <ClCompile Include="CheApeCore.cpp" />
     <ClCompile Include="Halo1_CheApe.cpp" />
+    <ClCompile Include="Tool\BuildCacheFile\BuildCacheFileGlobals.cpp">
+      <Filter>Tool\BuildCacheFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\BuildCacheFile\BuildCacheFileMemoryUpgrades.cpp">
+      <Filter>Tool\BuildCacheFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\BuildCacheFile\BuildCacheFileEx.cpp">
+      <Filter>Tool\BuildCacheFile</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\AnimationUpgrade.hpp">
@@ -167,9 +176,6 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Yelo\MemoryFixups.hpp">
-      <Filter>Yelo</Filter>
-    </ClInclude>
-    <ClInclude Include="Yelo\ScenarioResources.hpp">
       <Filter>Yelo</Filter>
     </ClInclude>
     <ClInclude Include="Common\DebugDump.hpp">
@@ -249,16 +255,19 @@
     </ClInclude>
     <ClInclude Include="CheApeCore.hpp" />
     <ClInclude Include="CheApeInterface.hpp" />
+    <ClInclude Include="Tool\BuildCacheFile\BuildCacheFileGlobals.hpp">
+      <Filter>Tool\BuildCacheFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\BuildCacheFile\BuildCacheFileMemoryUpgrades.hpp">
+      <Filter>Tool\BuildCacheFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\BuildCacheFile\BuildCacheFileEx.hpp">
+      <Filter>Tool\BuildCacheFile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\ScriptLibraryMemoryUpgrades.inl">
       <Filter>Engine\Impl</Filter>
-    </None>
-    <None Include="Yelo\MemoryFixups.Paths.inl">
-      <Filter>Yelo</Filter>
-    </None>
-    <None Include="Yelo\MemoryFixups.TagTextIO.inl">
-      <Filter>Yelo</Filter>
     </None>
     <None Include="Tool\BuildCppDefinition.inl">
       <Filter>Tool\Impl</Filter>
@@ -278,16 +287,7 @@
     <None Include="Tool\RuntimeCacheView.inl">
       <Filter>Tool\Impl</Filter>
     </None>
-    <None Include="Tool\BuildCacheFile.inl">
-      <Filter>Tool\BuildCacheFile</Filter>
-    </None>
-    <None Include="Tool\BuildCacheFile\BuildGlobals.inl">
-      <Filter>Tool\BuildCacheFile</Filter>
-    </None>
     <None Include="Tool\BuildCacheFile\CullTags.inl">
-      <Filter>Tool\BuildCacheFile</Filter>
-    </None>
-    <None Include="Tool\BuildCacheFile\MemoryUpgrades.inl">
       <Filter>Tool\BuildCacheFile</Filter>
     </None>
     <None Include="Tool\BuildCacheFile\PredictedResources.inl">
@@ -331,6 +331,12 @@
     </None>
     <None Include="Memory\_EngineLayout.TagGroups.inl">
       <Filter>_Resources\Impl</Filter>
+    </None>
+    <None Include="Yelo\MemoryFixups.TagTextIO.inl">
+      <Filter>Yelo\Impl</Filter>
+    </None>
+    <None Include="Yelo\MemoryFixups.Paths.inl">
+      <Filter>Yelo\Impl</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

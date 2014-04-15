@@ -13,6 +13,7 @@
 #include <blamlib/Halo1/memory/memory_pool.hpp>
 #include <blamlib/Halo1/tag_files/files.hpp>
 #include <blamlib/Halo1/tag_files/tag_files.hpp>
+#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {
@@ -26,6 +27,8 @@ namespace Yelo
 	};
 	namespace TagGroups
 	{
+		struct predicted_resource;
+
 		struct scenario;
 
 		struct collision_bsp;
@@ -84,6 +87,25 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
+	};
+	//////////////////////////////////////////////////////////////////////////
+	// cache
+	namespace blam
+	{
+		//////////////////////////////////////////////////////////////////////////
+		// predicted_resources.c
+#if PLATFORM_TYPE == PLATFORM_TOOL
+		void predicted_resources_add_resource(TagBlock<TagGroups::predicted_resource>& predicted_resources,
+			long_enum resource_type, datum_index tag_index, int32 resource_index = NONE)
+		{
+			static void* PREDICTED_RESOURCES_ADD_RESOURCE = CAST_PTR(void*, 0x4B94E0);
+
+			typedef void (PLATFORM_API* call_proc)(TagBlock<TagGroups::predicted_resource>&, long_enum, datum_index, int32);
+			static call_proc add_predicted_resource = CAST_PTR(call_proc, PREDICTED_RESOURCES_ADD_RESOURCE);
+
+			add_predicted_resource(predicted_resources, resource_type, tag_index, resource_index);
+		}
+#endif
 	};
 	//////////////////////////////////////////////////////////////////////////
 	// math

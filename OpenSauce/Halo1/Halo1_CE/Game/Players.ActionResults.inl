@@ -27,7 +27,7 @@ namespace ActionResults
 		static const byte k_null_opcode[] = { Enums::_x86_opcode_nop, Enums::_x86_opcode_nop, Enums::_x86_opcode_nop };
 
 		// nullify jmp table size adjustment
-		Memory::WriteMemory(GET_FUNC_VPTR(PLAYER_HANDLE_ACTION_JMP_TABLE_ADJUST_SIZE), k_null_opcode, sizeof(k_null_opcode));
+		Memory::WriteMemory(GET_FUNC_VPTR(PLAYER_HANDLE_ACTION_JMP_TABLE_ADJUST_SIZE), k_null_opcode);
 		// set the game's jump table count to our's
 		GET_PTR(K_PLAYER_HANDLE_ACTION_LAST_ENTRY_TYPE) = Enums::k_number_of_player_action_results_yelo - 1;
 		// set the game's jump table address to our's

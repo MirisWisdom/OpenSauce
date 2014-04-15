@@ -4,6 +4,18 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
+
+#include <blamlib/Halo1/models/collision_model_definitions.hpp>
+#include <blamlib/Halo1/objects/damage.hpp>
+#include <blamlib/Halo1/objects/object_structures.hpp>
+
+#include "Memory/MemoryInterface.hpp"
+
+namespace Yelo
+{
+	namespace Objects
+	{
+
 static void PLATFORM_API object_damage_object_body_hook(datum_index object_index, 
 	int32 region_index, int32 node_index, void* /*unknown*/,
 	const TagGroups::s_damage_resistance* damage_resistance, const TagGroups::collision_model_material* damage_material, 
@@ -75,3 +87,6 @@ static void DamageInitialize()
 static void DamageDispose()
 {
 }
+
+	};
+};

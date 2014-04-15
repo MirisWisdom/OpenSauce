@@ -45,7 +45,13 @@
 //////////////////////////////////////////////////////////////////////////
 // STL includes
 #include <array>
+#include <iterator>
+#include <memory> // std::unique_ptr
+#include <set>
+#include <unordered_set>
+#include <unordered_map>
 #include <utility>
+#include <vector>
 //////////////////////////////////////////////////////////////////////////
 
 
@@ -53,6 +59,8 @@
 // Boost includes
 #include <boost/preprocessor.hpp>
 #include <boost/static_assert.hpp>
+
+#include <boost/integer/static_log2.hpp>
 //////////////////////////////////////////////////////////////////////////
 
 

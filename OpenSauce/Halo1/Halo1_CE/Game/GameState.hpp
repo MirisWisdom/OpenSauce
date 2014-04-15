@@ -54,26 +54,14 @@ namespace Yelo
 		void WriteEvent(cstring str = "", bool write_time_stamp = true);
 
 
-		// Allocate an object of type [T] inside the game state memory and return its address.
-		// Note: Also updates the game state's cpu allocation size by adding 'sizeof([T])'
+		// Allocate an object of type [T] [count] times inside the game state memory and return its address.
+		// Note: Also updates the game state's cpu allocation size by adding 'sizeof([T]) * count'
 		template<typename T>
 		T* GameStateMalloc(const bool k_update_allocation_crc = true, const size_t count = 1)
 		{
-			s_game_state_globals* gsg = GameStateGlobals();
+			extern void* GameStateMalloc(const bool k_update_allocation_crc, const size_t size_of);
 
-			byte* base_addr = CAST_PTR(byte*, gsg->base_address) + gsg->cpu_allocation_size;
-			const size_t size_of = sizeof(T) * count;
-
-			// Debug check that we don't allocate more memory than the game state has available
-			YELO_ASSERT_DISPLAY((base_addr + size_of) <= PhysicalMemoryMapGlobals()->tag_cache_base_address, 
-				"Bit off more game-state than the game could chew!");
-
-			gsg->cpu_allocation_size += size_of;
-			// If the allocation crc is updated, game states won't be loadable by stock games
-			if(k_update_allocation_crc)
-				Memory::CRC(gsg->header->allocation_crc, &size_of, sizeof(size_of));
-
-			return CAST_PTR(T*, base_addr);
+			return CAST_PTR(T*, GameStateMalloc(k_update_allocation_crc, sizeof(T) * count));
 		}
 
 		

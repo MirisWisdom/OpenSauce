@@ -987,6 +987,12 @@
     <ClInclude Include="Scenario\ScenarioFauxZones.hpp">
       <Filter>Scenario</Filter>
     </ClInclude>
+    <ClInclude Include="Objects\Objects.WeaponSettings.hpp">
+      <Filter>Objects\Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="Objects\Objects.VehicleSettings.hpp">
+      <Filter>Objects\Impl</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Halo1_CE_Readme.txt" />
@@ -1157,15 +1163,6 @@
     <None Include="Objects\Objects.Scripting.inl">
       <Filter>Objects\Impl</Filter>
     </None>
-    <None Include="Objects\Objects.UnitInfections.inl">
-      <Filter>Objects\Impl</Filter>
-    </None>
-    <None Include="Objects\Objects.Vehicle.inl">
-      <Filter>Objects\Impl</Filter>
-    </None>
-    <None Include="Objects\Objects.Weapon.inl">
-      <Filter>Objects\Impl</Filter>
-    </None>
     <None Include="Objects\Units.Animations.inl">
       <Filter>Objects\Impl</Filter>
     </None>
@@ -1300,6 +1297,18 @@
     </None>
     <None Include="Scenario\ScenarioFauxZones.Scripting.inl">
       <Filter>Scenario\Impl</Filter>
+    </None>
+    <None Include="Objects\Objects.VehicleSettings.inl">
+      <Filter>Objects\Impl</Filter>
+    </None>
+    <None Include="Objects\Objects.WeaponSettings.inl">
+      <Filter>Objects\Impl</Filter>
+    </None>
+    <None Include="Objects\Units.UnitInfections.inl">
+      <Filter>Objects\Impl</Filter>
+    </None>
+    <None Include="TagGroups\CacheFiles.DataFiles.inl">
+      <Filter>TagGroups\Impl</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

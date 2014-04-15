@@ -5,6 +5,15 @@
 	See license\OpenSauce\Halo1_CheApe for specific license information
 */
 
+#include <blamlib/Halo1/cache/predicted_resources.hpp>
+#include <blamlib/Halo1/tag_files/tag_groups.hpp>
+
+#include <blamlib/Halo1/models/model_definitions.hpp>
+#include <blamlib/Halo1/objects/object_definitions.hpp>
+#include <blamlib/Halo1/shaders/shader_definitions.hpp>
+
+namespace Yelo { namespace Tool { namespace BuildCacheFileEx {
+
 namespace ShaderExtension
 {
 	static void shader_model_extension_add_to_predicted_resources(
@@ -12,29 +21,29 @@ namespace ShaderExtension
 		TagBlock<TagGroups::predicted_resource>& predicted_resources)
 	{
 		if(!extension.specular_color.map.tag_index.IsNull())
-			predicted_resources_add_resource(predicted_resources,
+			blam::predicted_resources_add_resource(predicted_resources,
 				Enums::_predicted_resource_bitmap,
 				extension.specular_color.map.tag_index,
 				0);
 
 		if(!extension.base_normal.map.tag_index.IsNull())
-			predicted_resources_add_resource(predicted_resources, 
+			blam::predicted_resources_add_resource(predicted_resources,
 				Enums::_predicted_resource_bitmap,
 				extension.base_normal.map.tag_index,
 				0);
 
 		for (const auto& detail_normal : extension.detail_normals)
 			if(!detail_normal.map.tag_index.IsNull())
-				predicted_resources_add_resource(predicted_resources, 
+				blam::predicted_resources_add_resource(predicted_resources,
 					Enums::_predicted_resource_bitmap,
 					detail_normal.map.tag_index,
 					0);
 
 	}
 
-	static bool object_add_to_predicted_resources(datum_index tag_index)
+	static bool object_add_to_predicted_resources(datum_index object_definition_index)
 	{
-		auto* object_tag = blam::tag_get<TagGroups::s_object_definition>(tag_index);
+		auto* object_tag = blam::tag_get<TagGroups::s_object_definition>(object_definition_index);
 		
 		if(object_tag->object.references.render_model.tag_index.IsNull())
 			return true;
@@ -58,3 +67,5 @@ namespace ShaderExtension
 		return true;
 	}
 };
+
+}; }; };
