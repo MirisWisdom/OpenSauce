@@ -36,21 +36,27 @@ namespace Yelo
 			return DataFileTypeToString(CAST(Enums::data_file_type, type - Enums::_data_file_reference_bitmaps));
 		}
 
-		s_data_file& DataFileGet(Enums::data_file_reference_type data_file)
+		s_data_file& s_data_file_globals::Get(Enums::data_file_reference_type data_file)
 		{
-#if PLATFORM_TYPE == PLATFORM_TOOL
-			auto* globals = BuildCacheFileGlobals();
-
 			switch (data_file)
 			{
-			case Enums::_data_file_reference_bitmaps:return globals->bitmaps_data_file;
-			case Enums::_data_file_reference_sounds: return globals->sounds_data_file;
-			case Enums::_data_file_reference_locale: return globals->locale_data_file;
+			case Enums::_data_file_reference_bitmaps:return this->bitmaps;
+			case Enums::_data_file_reference_sounds: return this->sounds;
+			case Enums::_data_file_reference_locale: return this->locale;
 
 			YELO_ASSERT_CASE_UNREACHABLE();
 			}
+		}
+		s_data_file& DataFileGet(Enums::data_file_reference_type data_file)
+		{
+#if PLATFORM_TYPE == PLATFORM_TOOL
+			auto& globals = BuildCacheFileGlobals()->data_files;
+
+			return globals.Get(data_file);
 #elif !PLATFORM_IS_EDITOR
-			return CacheFileGlobals()->data_files[data_file - Enums::_data_file_reference_bitmaps];
+			auto& globals = CacheFileGlobals()->data_files;
+
+			return globals.Get(data_file);
 #else
 			YELO_ASSERT(!"unsupported platform");
 #endif
@@ -239,6 +245,7 @@ namespace Yelo
 #endif
 
 			memset(this, 0, sizeof(*this));
+			file_handle = INVALID_HANDLE_VALUE; // engine doesn't do this
 			return true;
 		}
 

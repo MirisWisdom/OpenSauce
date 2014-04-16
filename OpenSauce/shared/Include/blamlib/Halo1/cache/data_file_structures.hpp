@@ -67,5 +67,20 @@ namespace Yelo
 			void Save();
 #endif
 		}; BOOST_STATIC_ASSERT( sizeof(s_data_file) == 0x40 );
+
+		// build_cache_file_globals (tools) and cache_file_globals (runtime) share the same ordering of the s_data_file instances, so I wrap them in this fake struct
+		struct s_data_file_globals
+		{
+			Cache::s_data_file sounds;
+			Cache::s_data_file locale;
+			Cache::s_data_file bitmaps;
+
+			s_data_file& Get(Enums::data_file_reference_type data_file);
+
+#if PLATFORM_TYPE == PLATFORM_TOOL
+			void Save();
+			void PreprocessForSave();
+#endif
+		}; BOOST_STATIC_ASSERT( sizeof(s_data_file_globals) == 0xC0 );
 	};
 };
