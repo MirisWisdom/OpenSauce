@@ -110,7 +110,7 @@ namespace Yelo
 			HGLOBAL requests; // pointer to s_cache_file_request[k_maximum_simultaneous_cache_requests]
 			PAD32;
 
-			s_data_file data_files[Enums::k_number_of_data_file_types];
+			s_data_file_globals data_files;
 
 			inline s_cache_file_request* Requests()
 			{

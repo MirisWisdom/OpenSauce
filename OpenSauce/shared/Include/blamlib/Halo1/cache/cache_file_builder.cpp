@@ -22,17 +22,17 @@ namespace Yelo
 	{
 		cstring s_build_cache_file_globals::k_temp_cache_file_name = "temporary uncompressed cache file.bin";
 
-		void s_build_cache_file_globals::DataFilesSave()
+		void s_data_file_globals::Save()
 		{
-			sounds_data_file.Save();
-			locale_data_file.Save();
-			bitmaps_data_file.Save();
+			sounds.Save();
+			locale.Save();
+			bitmaps.Save();
 		}
-		void s_build_cache_file_globals::DataFilesPreprocessForSave()
+		void s_data_file_globals::PreprocessForSave()
 		{
-			sounds_data_file.PreprocessForSave();
-			locale_data_file.PreprocessForSave();
-			bitmaps_data_file.PreprocessForSave();
+			sounds.PreprocessForSave();
+			locale.PreprocessForSave();
+			bitmaps.PreprocessForSave();
 		}
 
 		void s_build_cache_file_globals::TemporaryFileOpen(cstring filename)

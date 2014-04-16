@@ -25,12 +25,7 @@ namespace Yelo
 			uint32 crc;
 			HANDLE file_handle;
 			uint32 cache_stream_size;
-			Cache::s_data_file sounds_data_file;
-			Cache::s_data_file locale_data_file;
-			Cache::s_data_file bitmaps_data_file;
-
-			void DataFilesSave();
-			void DataFilesPreprocessForSave();
+			s_data_file_globals data_files;
 
 			void TemporaryFileOpen(cstring filename = k_temp_cache_file_name);
 			void TemporaryFileClose(cstring filename = k_temp_cache_file_name);

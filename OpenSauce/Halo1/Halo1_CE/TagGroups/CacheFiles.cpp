@@ -90,7 +90,6 @@ namespace Yelo
 
 		void Initialize()
 		{
-#if FALSE
 			Memory::WriteRelativeJmp(CacheFilesInitialize_DataFilesOpenHook,
 				CAST_PTR(void*, GET_FUNC_PTR(CACHE_FILES_INITIALIZE)+0xB), true);
 			Memory::WriteRelativeJmp(CacheFilesDispose_DataFilesCloseHook,
@@ -101,7 +100,6 @@ namespace Yelo
 			Memory::CreateHookRelativeCall(&ScenarioTagsLoadHook,
 				GET_FUNC_VPTR(SCENARIO_TAGS_LOAD_HOOK),
 				Enums::_x86_opcode_nop);
-#endif
 		}
 
 		void Dispose()
