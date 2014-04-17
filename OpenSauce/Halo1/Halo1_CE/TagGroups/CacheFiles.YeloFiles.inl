@@ -145,18 +145,3 @@ public:
 			Memory::WriteRelativeCall(CacheFileReadHeaderHack, ptr);
 	}
 };
-
-
-static void MapListInitializeYelo()
-{
-	WIN32_FIND_DATAA fd;
-	// TODO: need an implementation which also checks the user profile's maps folder
-	HANDLE h = FindFirstFileA("maps\\*.yelo", &fd);
-	if(h != INVALID_HANDLE_VALUE)
-	{
-		do Engine::Cache::MapListAddMap(fd.cFileName, K_MAP_FILE_EXTENSION_YELO);
-		while(FindNextFileA(h, &fd));
-
-		FindClose(h);
-	}
-}

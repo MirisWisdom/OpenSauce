@@ -66,13 +66,11 @@ namespace Yelo
 			char* source_id;
 			char* source_data;
 
-			s_element_editor() : source_id(NULL), source_data(NULL) {}
+			s_element_editor() : source_id(nullptr), source_data(nullptr) {}
 			void Delete()
 			{
-				delete [] source_id;
-				delete [] source_data;
-				source_id = NULL;
-				source_data = NULL;
+				SafeDeleteArray(source_id);
+				SafeDeleteArray(source_data);
 			}
 		};
 	private:
@@ -94,7 +92,7 @@ namespace Yelo
 		// The data block size is put into data_size if not null.
 		void* GetDataPointer(cstring data_id, _Out_opt_ uint32* data_size);
 		// Returns whether the file has been successfully mapped
-		API_INLINE bool IsFileMapped() const { return m_file_mapped; }
+		inline bool IsFileMapped() const { return m_file_mapped; }
 
 #else
 		c_packed_file();

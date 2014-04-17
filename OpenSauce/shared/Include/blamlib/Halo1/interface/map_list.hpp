@@ -33,12 +33,15 @@ namespace Yelo
 			uint32 crc;
 		}; BOOST_STATIC_ASSERT( sizeof(s_map_list_map) == 0x10 );
 		typedef Memory::GbxArray<s_map_list_map> map_list_data_t;
+
+		map_list_data_t* MultiplayerMaps();
 	};
 
 	namespace blam
 	{
 #if !PLATFORM_IS_EDITOR
-		extern cstring map_list_ignored_map_names[];
+		extern cstring map_list_ignored_map_names[10+1+3];
+		extern const Interface::s_map_list_map_info k_original_multiplayer_maps[19];
 #endif
 
 		cstring map_list_map_name(int32 index);
