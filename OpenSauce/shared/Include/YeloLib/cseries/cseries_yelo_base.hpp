@@ -241,7 +241,7 @@ namespace Yelo
 	/// <typeparam name="typename TInterface">	COM interface type. </typeparam>
 	/// <param name="obj">	[in,out] If non-null, the COM object. </param>
 	template<typename TInterface> inline
-	void safe_release(TInterface*& obj)
+	void safe_release(TInterface*& obj) // TODO: refactor to SafeRelease
 	{
 		if(obj != nullptr)
 		{
@@ -250,9 +250,36 @@ namespace Yelo
 		}
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	If the object pointer reference isn't NULL, deletes it and NULL it. </summary>
+	///
+	/// <param name="obj">	[in,out] The object to delete. NULL on return </param>
+	template<typename T> inline
+	void SafeDelete(T*& obj)
+	{
+		if(obj != nullptr)
+		{
+			delete obj;
+			obj = nullptr;
+		}
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	If the object pointer reference isn't NULL, deletes it and NULL it. </summary>
+	///
+	/// <param name="obj">	[in,out] The object to delete. NULL on return </param>
+	template<typename T> inline
+	void SafeDeleteArray(T*& obj)
+	{
+		if(obj != nullptr)
+		{
+			delete[] obj;
+			obj = nullptr;
+		}
+	}
+
 	// Returns INVALID_HANDLE_VALUE as nullptr, else returns [h]
 	// Should be used in conjunction with std::unique_ptr and winapi_handle_closer
-	inline HANDLE safe_handle(HANDLE h)
+	inline HANDLE ToSafeHandle(HANDLE h)
 	{
 		return h == INVALID_HANDLE_VALUE ? nullptr : h;
 	}
@@ -321,6 +348,65 @@ namespace Yelo
 		return CAST_PTR(T*,
 			::bsearch_s(_Key, _Base, _NumOfElements, sizeof(T), CAST_PTR(proc_stdlib_compare, _PtFuncCompare), 
 				CAST_PTR(void*, _Context)));
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Copy a range of elements from one array to another. </summary>
+	///
+	/// <param name="dst">			Destination array.</param>
+	/// <param name="dst_index">	Element index in dst to start the copy at. </param>
+	/// <param name="src">			Source array. </param>
+	/// <param name="src_index">	Element index in src to start the copy from. </param>
+	/// <param name="count">		The number of elements to copy from src to dst. </param>
+	///
+	/// <returns>	true if it succeeds, false if it fails. </returns>
+	template<typename T, size_t kDstLength, size_t kSrcLength> inline
+	bool ArrayCopy   (T (&dst)[kDstLength], size_t dst_index, const T (&src)[kSrcLength], size_t src_index, size_t count = kSrcLength)
+	{
+		return memcpy_s(&dst[dst_index], sizeof(T) * kDstLength,
+						&src[src_index], sizeof(T) * count) == k_errnone;
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Copy a range of elements from one array to another. </summary>
+	///
+	/// <param name="dst"> 		Destination array. </param>
+	/// <param name="src"> 		Source array </param>
+	/// <param name="count">	The number of elements to copy from src to dst. </param>
+	///
+	/// <returns>	true if it succeeds, false if it fails. </returns>
+	template<typename T, size_t kDstLength, size_t kSrcLength> inline
+	bool ArrayCopy   (T (&dst)[kDstLength], const T (&src)[kSrcLength], size_t count = kSrcLength)
+	{
+		return ArrayCopy(dst, src, count);
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Copy a range of elements from one array to another. </summary>
+	///
+	/// <param name="dst">			Destination array.</param>
+	/// <param name="dst_index">	Element index in dst to start the copy at. </param>
+	/// <param name="src">			Pointer to the first source element.  </param>
+	/// <param name="src_index">	Element index in src to start the copy from. </param>
+	/// <param name="count">		The number of elements to copy from src to dst. </param>
+	///
+	/// <returns>	true if it succeeds, false if it fails. </returns>
+	template<typename T, size_t kDstLength> inline
+	bool ArrayCopyPtr(T (&dst)[kDstLength], size_t dst_index, const T* src, size_t src_index, size_t count)
+	{
+		return memcpy_s(&dst[dst_index], sizeof(T) * kDstLength,
+						&src[src_index], sizeof(T) * count) == k_errnone;
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Copy a range of elements from one array to another. </summary>
+	///
+	/// <param name="dst">			Destination array.</param>
+	/// <param name="src">			Pointer to the first source element.  </param>
+	/// <param name="count">		The number of elements to copy from src to dst. </param>
+	///
+	/// <returns>	true if it succeeds, false if it fails. </returns>
+	template<typename T, size_t kDstLength> inline
+	bool ArrayCopyPtr(T (&dst)[kDstLength], const T* src, size_t count)
+	{
+		return ArrayCopyPtr(dst, 0, src, 0, count);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////

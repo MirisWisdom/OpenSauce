@@ -7,12 +7,9 @@
 #pragma once
 
 #include <blamlib/Halo1/cache/cache_files.hpp>
-#include <blamlib/Halo1/memory/array.hpp>
 #include <blamlib/Halo1/structures/structure_bsp_definitions.hpp>
 
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
-
-#include "Common/FileIO.hpp"
 
 namespace Yelo
 {
@@ -24,32 +21,6 @@ namespace Yelo
 
 	namespace Cache
 	{
-		struct s_original_multipler_map
-		{
-			int32 index; // index used for things like the UI map list
-			cstring name;
-			bool is_original; // ie, bungie made it
-			PAD24;
-		};
-
-		struct s_multiplayer_map_entry
-		{
-			char* name;
-			int32 index;
-			bool initialized;
-			// HACK: YELO ONLY FIELD
-			// This field is for yelo's use only, the game doesn't use it. Enables us to later go thru and set which maps are built for 
-			// yelo and which aren't. Just for useful house keeping. However, we currently don't set this...
-			bool is_yelo_based_map;
-			PAD16;
-			uint32 crc;
-		};
-		typedef Memory::GbxArray<s_multiplayer_map_entry> multiplayer_map_data_t;
-
-		multiplayer_map_data_t* MultiplayerMaps();
-
-		cstring* MapListIgnoredMapNames();
-
 		// Root directory of the "maps\" folder, or a null string if relative to the EXE
 		char* RootDirectory(); // [256]
 

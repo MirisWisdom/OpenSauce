@@ -9,6 +9,7 @@
 
 #include <blamlib/Halo1/cache/cache_files.hpp>
 #include <blamlib/Halo1/cache/cache_files_globals.hpp>
+#include <blamlib/Halo1/interface/map_list.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 
 #include <YeloLib/Halo1/cache/cache_files_yelo.hpp>
@@ -16,6 +17,7 @@
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 
 #include "Memory/MemoryInterface.hpp"
+#include "Common/FileIO.hpp"
 #include "Common/YeloSettings.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameState.hpp"
@@ -29,6 +31,11 @@ namespace Yelo
 #define __EL_INCLUDE_ID			__EL_INCLUDE_TAGGROUPS
 #define __EL_INCLUDE_FILE_ID	__EL_TAGGROUPS_CACHE_FILES
 #include "Memory/_EngineLayout.inl"
+
+	namespace Interface
+	{
+#include "TagGroups/CacheFiles.MapList.inl"
+	};
 };
 
 #include "TagGroups/CacheFiles.DataFiles.inl"
@@ -193,34 +200,10 @@ namespace Yelo
 
 //////////////////////////////////////////////////////////////////////////
 
-		static const s_original_multipler_map k_original_multiplayer_maps[] = {
-			{0,  "beavercreek", true},
-			{1,  "sidewinder", true},
-			{2,  "damnation", true},
-			{3,  "ratrace", true},
-			{4,  "prisoner", true},
-			{5,  "hangemhigh", true},
-			{6,  "chillout", true},
-			{7,  "carousel", true},
-			{8,  "boardingaction", true},
-			{9,  "bloodgulch", true},
-			{10, "wizard", true},
-			{11, "putput", true},
-			{12, "longest", true},
-
-			{13, "icefields"},
-			{14, "deathisland"},
-			{15, "dangercanyon"},
-			{16, "infinity"},
-			{17, "timberland"},
-			{18, "gephyrophobia"},
-		};
-
 		s_cache_file_globals* CacheFileGlobals()		PTR_IMP_GET2(cache_file_globals);
 		char* RootDirectory()							PTR_IMP_GET2(maps_folder_parent_dir);
 
 #include "TagGroups/CacheFiles.YeloFiles.inl"
-#include "TagGroups/CacheFiles.MapList.inl"
 #include "TagGroups/CacheFiles.CRC.inl"
 
 		void Initialize()
@@ -229,9 +212,7 @@ namespace Yelo
 			c_cache_format_path_hacks::Initialize();
 			g_yelo_settings.InitializeMemoryOverrides();
 
-			Memory::WriteRelativeCall(MapListInitialize, GET_FUNC_VPTR(MULTIPLAYER_MAP_LIST_INITIALIZE_CALL));
-
-			*GET_PTR2(MAP_LIST_ADD_SKIP_CRC_JZ) = Enums::_x86_opcode_jmp_short;
+			Interface::MapListInitializeHooks();
 		}
 
 		void Dispose()
@@ -241,7 +222,7 @@ namespace Yelo
 
 		static bool MapIsOriginal(cstring map_name)
 		{
-			for(auto mp_map : k_original_multiplayer_maps)
+			for (auto mp_map : blam::k_original_multiplayer_maps)
 				if( !strcmp(map_name, mp_map.name) )
 					return true;
 
@@ -291,8 +272,8 @@ namespace Yelo
 					int map_entry_index = Engine::Cache::GetMapEntryIndexFromName(relative_map_name);
 					if(map_entry_index != NONE)
 					{
-						Cache::multiplayer_map_data_t* map_data = Cache::MultiplayerMaps();
-						Cache::s_multiplayer_map_entry* map_entry = (*map_data)[map_entry_index];
+						auto* map_data = Interface::MultiplayerMaps();
+						auto* map_entry = (*map_data)[map_entry_index];
 						if(map_entry->crc == 0xFFFFFFFF)
 							map_entry->crc = Cache::CalculateCRC(map_path);
 					}

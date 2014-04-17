@@ -54,15 +54,15 @@
 		ENGINE_PTR(s_cache_file_globals, cache_file_globals,0x642F78, 0x5B4DB8);
 		ENGINE_PTR(char, maps_folder_parent_dir,			0x68C5D0, 0x5F4E50);
 
-		ENGINE_PTR(multiplayer_map_data_t, multiplayer_maps,0x6ADD4C, 0x61654C);
-		ENGINE_PTR(cstring, map_list_ignored_map_names,	0x629B3C, 0x59F4DC);
-		FUNC_PTR(MULTIPLAYER_MAP_LIST_INITIALIZE_CALL,	0x4CABB2, 0x4B3F1A);
+		FUNC_PTR(CALCULATE_MAP_CRC_CALL,				0x4981D5, 0x48DBC7);
+	};
+	namespace Interface
+	{
+		ENGINE_PTR(map_list_data_t, multiplayer_maps,	0x6ADD4C, 0x61654C);
+		ENGINE_PTR(byte, MAP_LIST_ADD_SKIP_CRC_JZ,		0x4981CC, 0x48DBBE);
 		FUNC_PTR(MULTIPLAYER_MAP_LIST_INITIALIZE,		0x498280, 0x48DC70);
 		FUNC_PTR(MULTIPLAYER_MAP_LIST_DISPOSE,			0x498300, 0x48DCF0);
-
-		ENGINE_PTR(byte, MAP_LIST_ADD_SKIP_CRC_JZ,		0x4981CC, 0x48DBBE);
-
-		FUNC_PTR(CALCULATE_MAP_CRC_CALL,				0x4981D5, 0x48DBC7);
+		FUNC_PTR(MULTIPLAYER_MAP_LIST_INITIALIZE_CALL,	0x4CABB2, 0x4B3F1A);
 	};
 
 //////////////////////////////////////////////////////////////////////////

@@ -58,11 +58,12 @@ namespace Yelo
 			static const auto* tool_import_classes = CAST_PTR(s_import_class*, 0x6B01B0);
 
 			// copy official import classes
-			memcpy_s(&g_import_classes[0], sizeof(g_import_classes),
-				tool_import_classes, sizeof(s_import_class) * k_number_of_tool_import_classes);
+			ArrayCopyPtr(	g_import_classes, 
+							tool_import_classes, 
+							k_number_of_tool_import_classes);
 			// copy yelo import classes
-			memcpy_s(&g_import_classes[k_number_of_tool_import_classes], sizeof(yelo_import_classes),
-				&yelo_import_classes[0], sizeof(yelo_import_classes));
+			ArrayCopy(		g_import_classes, k_number_of_tool_import_classes, 
+							yelo_import_classes, 0);
 			// sort all the import classes by name from a to z
 			Qsort(g_import_classes, s_import_class::CompareProc);
 

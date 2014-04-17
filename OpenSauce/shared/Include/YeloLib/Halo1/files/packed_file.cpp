@@ -100,9 +100,8 @@ namespace Yelo
 
 	c_packed_file::~c_packed_file()
 	{
-		std::vector<s_element_editor>::iterator iter;
-		for(iter = m_elements.begin(); iter != m_elements.end(); ++iter)
-			(*iter).Delete();
+		for(auto iter = m_elements.begin(); iter != m_elements.end(); ++iter)
+			iter->Delete();
 		m_elements.clear();
 
 		m_header.element_count = 0;
@@ -114,21 +113,19 @@ namespace Yelo
 		uint32 id_base_offset = sizeof(s_header) + (sizeof(s_element) * m_elements.size());
 		uint32 id_offset = 0;
 
-		std::vector<s_element_editor>::iterator iter;
-
-		for(iter = m_elements.begin(); iter != m_elements.end(); ++iter)
+		for(auto iter = m_elements.begin(); iter != m_elements.end(); ++iter)
 		{
-			(*iter).element_id_offset = id_base_offset + id_offset;
-			id_offset += strlen((*iter).source_id) + 1;
+			iter->element_id_offset = id_base_offset + id_offset;
+			id_offset += strlen(iter->source_id) + 1;
 		}
 
 		uint32 data_base_offset = id_base_offset + id_offset;
 		uint32 data_offset = 0;
 
-		for(iter = m_elements.begin(); iter != m_elements.end(); ++iter)
+		for(auto iter = m_elements.begin(); iter != m_elements.end(); ++iter)
 		{
-			(*iter).element_offset = data_base_offset + data_offset;
-			data_offset += (*iter).element_size;
+			iter->element_offset = data_base_offset + data_offset;
+			data_offset += iter->element_size;
 		}
 
 		m_header.file_size = data_base_offset + data_offset;
@@ -157,20 +154,18 @@ namespace Yelo
 
 		file.write(CAST_PTR(char*, &m_header), sizeof(m_header));
 
-		std::vector<s_element_editor>::iterator iter;
-
-		for(iter = m_elements.begin(); iter != m_elements.end(); ++iter)
-			file.write(CAST_PTR(char*, &(*iter)), sizeof(s_element));
+		for(auto iter = m_elements.cbegin(); iter != m_elements.cend(); ++iter)
+			file.write(CAST_PTR(const char*, &(*iter)), sizeof(s_element));
 
 		char null_char = 0;
-		for(iter = m_elements.begin(); iter != m_elements.end(); ++iter)
+		for(auto iter = m_elements.cbegin(); iter != m_elements.cend(); ++iter)
 		{
-			file.write((*iter).source_id, strlen((*iter).source_id));
+			file.write(iter->source_id, strlen(iter->source_id));
 			file.write(&null_char, sizeof(null_char));
 		}
 
-		for(iter = m_elements.begin(); iter != m_elements.end(); ++iter)
-			file.write(CAST_PTR(char*, (*iter).source_data), (*iter).element_size);
+		for(auto iter = m_elements.cbegin(); iter != m_elements.cend(); ++iter)
+			file.write(CAST_PTR(char*, iter->source_data), iter->element_size);
 
 		file.flush();
 		file.close();

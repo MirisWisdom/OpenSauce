@@ -21,12 +21,19 @@ namespace Yelo
 		///-------------------------------------------------------------------------------------------------
 		Enums::file_io_open_error GetOpenErrorEnum(DWORD error)
 		{
-			if(error == ERROR_FILE_NOT_FOUND || error == ERROR_PATH_NOT_FOUND)
+			switch (error)
+			{
+			case ERROR_FILE_NOT_FOUND:
+			case ERROR_PATH_NOT_FOUND:
 				return Enums::_file_io_open_error_file_does_not_exist;
-			else if(error == ERROR_SHARING_VIOLATION || error == ERROR_LOCK_VIOLATION)
+
+			case ERROR_SHARING_VIOLATION:
+			case ERROR_LOCK_VIOLATION:
 				return Enums::_file_io_open_error_file_in_use;
-			else
+
+			default:
 				return Enums::_file_io_open_error_unknown;
+			}
 		}
 
 		///-------------------------------------------------------------------------------------------------
@@ -36,14 +43,23 @@ namespace Yelo
 		///-------------------------------------------------------------------------------------------------
 		Enums::file_io_delete_error GetDeleteErrorEnum(DWORD error)
 		{
-			if(error == ERROR_FILE_NOT_FOUND || error == ERROR_PATH_NOT_FOUND)
+			switch (error)
+			{
+			case ERROR_FILE_NOT_FOUND:
+			case ERROR_PATH_NOT_FOUND:
 				return Enums::_file_io_delete_error_does_not_exist;
-			else if(error == ERROR_SHARING_VIOLATION || error == ERROR_LOCK_VIOLATION || error == ERROR_CURRENT_DIRECTORY)
+
+			case ERROR_SHARING_VIOLATION:
+			case ERROR_LOCK_VIOLATION:
+			case ERROR_CURRENT_DIRECTORY:
 				return Enums::_file_io_delete_error_in_use;
-			else if(error == ERROR_ACCESS_DENIED)
+
+			case ERROR_ACCESS_DENIED:
 				return Enums::_file_io_delete_error_denied;
-			else
+
+			default:
 				return Enums::_file_io_delete_error_unknown;
+			}
 		}
 
 		///-------------------------------------------------------------------------------------------------
@@ -58,6 +74,8 @@ namespace Yelo
 			// look for all instances of \ and /, and create the directory tree for each one
 			while((offset = directory.find_first_of("\\/", offset)) != std::string::npos)
 			{
+				// TODO: a memory optimization trick we could probably do would be to std::swap the character 
+				// at [offset] with '\0' before and after the mkdir call, thus avoiding the need to substring
 				std::string path = directory.substr(0, offset);
 				_mkdir(path.c_str());
 				offset++;
@@ -177,10 +195,13 @@ namespace Yelo
 		///-------------------------------------------------------------------------------------------------
 		bool GetFileExtension(char* destination, uint32 size, cstring path)
 		{
-			const char* string_end = strrchr(path, '\0');
 			const char* extension_start = strrchr(path, '.');
+			if (!extension_start)
+				return false;
 
-			if(!string_end || !extension_start)
+			const char* string_end = strrchr(extension_start, '\0');
+			// I'd like to see this ever happen...
+			if (!string_end)
 				return false;
 
 			if((string_end - 1) == extension_start)
@@ -246,20 +267,20 @@ namespace Yelo
 
 					char deletion_path[MAX_PATH] = "";
 					// returns the first actual file/directory
-					while(FindNextFile(search_handle, &file_search))
+					while (FindNextFile(search_handle, &file_search))
 					{
 						PathCombine(deletion_path, path, file_search.cFileName);
 
 						if(recursive && ((file_search.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == FILE_ATTRIBUTE_DIRECTORY))
 						{
-							Enums::file_io_delete_error recursive_error = DirectoryDelete(deletion_path, delete_contents, recursive);
+							auto recursive_error = DirectoryDelete(deletion_path, delete_contents, recursive);
 
 							if(Enums::_file_io_delete_error_none != recursive_error)
 								return recursive_error;
 						}
 						else
 						{
-							Enums::file_io_delete_error file_delete_error = FileDelete(deletion_path);
+							auto file_delete_error = FileDelete(deletion_path);
 
 							if(Enums::_file_io_delete_error_none != file_delete_error)
 								return file_delete_error;
@@ -309,8 +330,7 @@ namespace Yelo
 				info.file_mapping_handle = INVALID_HANDLE_VALUE;
 			}
 			else
-				delete [] info.data_pointer;
-			info.data_pointer = nullptr;
+				SafeDeleteArray(info.data_pointer);
 			info.file_size = 0;
 			info.data_length = 0;
 
@@ -442,11 +462,7 @@ namespace Yelo
 		Enums::file_io_read_error ReadFileToInfoMemory(s_file_info& info, DWORD offset, DWORD length)
 		{
 			// delete the existing section
-			if(info.data_pointer)
-			{
-				delete [] info.data_pointer;
-				info.data_pointer = nullptr;
-			}
+			SafeDeleteArray(info.data_pointer);
 
 			info.data_length = 0;
 			Enums::file_io_read_error success = ReadFileToMemory(info, &info.data_pointer, offset, length);
