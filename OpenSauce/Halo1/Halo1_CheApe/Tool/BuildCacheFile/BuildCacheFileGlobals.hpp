@@ -5,7 +5,7 @@
 	See license\OpenSauce\Halo1_CheApe for specific license information
 */
 #pragma once
-
+#if PLATFORM_TYPE == PLATFORM_TOOL
 #include <blamlib/Halo1/cache/data_file.hpp>
 #include <blamlib/Halo1/tool/tool.hpp>
 
@@ -89,3 +89,5 @@ extern s_build_cache_file_for_scenario build_cache_file_for_scenario_internals;
 
 	};
 };
+
+#endif

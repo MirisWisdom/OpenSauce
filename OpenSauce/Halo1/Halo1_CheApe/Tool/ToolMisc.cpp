@@ -9,10 +9,10 @@
 #include "Tool/ToolMisc.hpp"
 
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #include "Engine/EngineFunctions.hpp"
 #include "TagGroups/TagGroups.hpp"
-#include "TagGroups/yelo_scenario_definitions.hpp"
 
 namespace Yelo
 {

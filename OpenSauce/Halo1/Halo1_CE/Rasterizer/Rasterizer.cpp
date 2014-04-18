@@ -8,6 +8,7 @@
 #include "Rasterizer/Rasterizer.hpp"
 #if !PLATFORM_IS_DEDI
 
+#include <blamlib/Halo1/hs/hs_structures.hpp>
 #include <blamlib/Halo1/interface/ui_video_screen.hpp>
 #include <blamlib/Halo1/models/model_definitions.hpp>
 

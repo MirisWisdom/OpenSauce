@@ -7,6 +7,9 @@
 #include "Common/Precompile.hpp"
 #include "Common/YeloSettings.hpp"
 
+#include <blamlib/Halo1/cache/cache_files.hpp>
+#include <blamlib/Halo1/tag_files/tag_files.hpp>
+
 #include <Shellapi.h>
 
 #include "Engine/EngineFunctions.hpp"
@@ -63,8 +66,8 @@ namespace Yelo
 					strcpy_s(paths.maps, root_path);
 					strcpy_s(paths.tags, root_path);
 
-					PathAppendA(paths.data, "data\\");
-					PathAppendA(paths.maps, "maps\\");
+					PathAppendA(paths.data, TagGroups::K_DATA_FILES_DIRECTORY);
+					PathAppendA(paths.maps, Cache::K_MAP_FILES_DIRECTORY);
 					// Finish tags path in the code below...
 				}
 			}
@@ -102,10 +105,10 @@ namespace Yelo
 				path_element = element->FirstChildElement("tagsName");
 				// If no explicit name is given, assume the default of "tags" is the name
 				value = path_element != nullptr ? path_element->GetText() :
-					"tags";
+					TagGroups::K_TAG_FILES_DIRECTORY;
 
 				// Finish tags path here
-				if(is_valid = (value != nullptr && value[0] != '\0'))
+				if(is_valid = !is_null_or_empty(value))
 				{
 					strcpy_s(paths.tags_folder_name, value);
 					PathAppendA(paths.tags_folder_name, "\\");
@@ -148,6 +151,29 @@ namespace Yelo
 
 			if(profile_element != nullptr)
 				global_settings.active_profile.Parse(profile_element);
+		}
+
+		cstring s_settings::GetDataPath() const
+		{
+			cstring result = active_profile.GetDataOverridePath();
+
+			return !active_profile.IsIgnored() && result != nullptr ? result
+				: TagGroups::K_DATA_FILES_DIRECTORY;
+		}
+		cstring s_settings::GetTagsPath() const
+		{
+			cstring result = active_profile.GetTagsOverridePath();
+
+			return !active_profile.IsIgnored() && result != nullptr ? result
+				: TagGroups::K_TAG_FILES_DIRECTORY;
+		}
+
+		cstring s_settings::GetMapsPath() const
+		{
+			cstring result = active_profile.GetMapsOverridePath();
+
+			return !active_profile.IsIgnored() && result != nullptr ? result
+				: Cache::K_MAP_FILES_DIRECTORY;
 		}
 
 

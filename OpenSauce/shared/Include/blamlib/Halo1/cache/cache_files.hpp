@@ -41,7 +41,8 @@ namespace Yelo
 			proc_finished finished_proc;// optional
 		}; BOOST_STATIC_ASSERT( sizeof(s_cache_file_request_params) == 0xC );
 
-		extern cstring K_MAP_FILE_EXTENSION;
+		extern cstring K_MAP_FILE_EXTENSION; /// ".maps"
+		extern cstring K_MAP_FILES_DIRECTORY;/// "maps\"
 
 
 		s_cache_file_globals* CacheFileGlobals();

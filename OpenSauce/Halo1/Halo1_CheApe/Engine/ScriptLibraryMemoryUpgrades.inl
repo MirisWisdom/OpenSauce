@@ -54,9 +54,9 @@ static void MemoryUpgradesSyntaxInitialize(bool use_upgrades = true)
 	
 	for(auto ptr : K_TOTAL_SCENARIO_HS_SYNTAX_DATA_UPGRADE_ADDRESS_LIST)
 		*ptr = use_upgrades ? 
-			Enums::k_total_scenario_hs_syntax_data_upgrade : Enums::k_total_scenario_hs_syntax_data;
+			GetTotalScenarioHsSyntaxDataUpgrade() : GetTotalScenarioHsSyntaxData();
 	// We ALWAYS want this set to the upgraded memory size
-	*K_HS_SYNTAX_DATA_DEFINITION_MAX_SIZE = Enums::k_total_scenario_hs_syntax_data_upgrade;
+	*K_HS_SYNTAX_DATA_DEFINITION_MAX_SIZE = GetTotalScenarioHsSyntaxDataUpgrade();
 }
 // Increasing the max size of the HS string data doesn't conflict with the stock runtime
 static void MemoryUpgradesSyntaxStringDataInitialize()

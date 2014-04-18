@@ -9,6 +9,7 @@
 
 #include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+#include <blamlib/Halo1/units/biped_structures.hpp>
 #include <blamlib/Halo1/units/unit_structures.hpp>
 
 #include "Engine/EngineFunctions.hpp"

@@ -10,6 +10,11 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum tag_postprocess_mode : byte_enum;
+	};
+
 	namespace TagGroups
 	{
 		struct s_unit_infection
@@ -135,6 +140,8 @@ namespace Yelo
 		public:
 			TagGroups::s_unit_external_upgrades const* FindUnitExternalUpgradeBlock(datum_index unit_tag_index) const;
 			TagGroups::s_unit_boarding_seat const* FindUnitExternalUpgradeBoardingSeatBlock(datum_index unit_tag_index, int16 seat_index) const;
+
+			static bool PLATFORM_API GroupPostprocess(datum_index tag_index, Enums::tag_postprocess_mode mode);
 		};
 	};
 };

@@ -32,6 +32,7 @@ namespace Yelo
 				char tags_folder_name[64];
 			}paths;
 
+			// TODO: deprecate these fields, as -cmdline args should work in tool now
 			struct {
 				bool do_full_crashdump;
 				bool disable_exception_handling;
@@ -68,29 +69,9 @@ namespace Yelo
 					: "";
 			}
 
-			inline cstring GetDataPath() const
-			{
-				cstring result = active_profile.GetDataOverridePath();
-
-				return !active_profile.IsIgnored() && result != nullptr ? result
-					: "data\\";
-			}
-
-			inline cstring GetTagsPath() const
-			{
-				cstring result = active_profile.GetTagsOverridePath();
-
-				return !active_profile.IsIgnored() && result != nullptr ? result
-					: "tags\\";
-			}
-
-			inline cstring GetMapsPath() const
-			{
-				cstring result = active_profile.GetMapsOverridePath();
-
-				return !active_profile.IsIgnored() && result != nullptr ? result
-					: "maps\\";
-			}
+			cstring GetDataPath() const;
+			cstring GetTagsPath() const;
+			cstring GetMapsPath() const;
 		};
 		const s_settings& Get();
 	};

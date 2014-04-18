@@ -239,6 +239,7 @@ namespace Yelo
 
 			for (int x = 0; x < block->count; x++)
 			{
+				// TODO: need to account for alignment, if we ever fully implement it
 				void* element = CAST_PTR(byte*, block->address) +
 					(definition->element_size * x);
 

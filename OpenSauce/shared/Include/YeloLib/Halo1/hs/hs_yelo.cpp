@@ -6,11 +6,29 @@
 #include "Common/Precompile.hpp"
 #include <YeloLib/Halo1/hs/hs_yelo.hpp>
 
+#include <blamlib/Halo1/hs/hs_structures.hpp>
+#include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
+
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum {
+			// stock size
+			k_total_scenario_hs_syntax_data = sizeof(Memory::s_data_array)  + 
+				(sizeof(Scripting::hs_syntax_node) * Enums::k_maximum_hs_syntax_nodes_per_scenario),
+
+			k_total_scenario_hs_syntax_data_upgrade = sizeof(Memory::s_data_array)  + 
+				(sizeof(Scripting::hs_syntax_node) * Enums::k_maximum_hs_syntax_nodes_per_scenario_upgrade),
+		};
+	};
+
 	namespace Scripting
 	{
 		const cstring k_external_global_opensauce_override_name = "ai_debug_path_maximum_radius";
+
+		size_t GetTotalScenarioHsSyntaxData()		{ return Enums::k_total_scenario_hs_syntax_data; }
+		size_t GetTotalScenarioHsSyntaxDataUpgrade(){ return Enums::k_total_scenario_hs_syntax_data_upgrade; }
 
 		void UpdateTypeHolderFromPtrToData(TypeHolder& data, const Enums::hs_type type)
 		{

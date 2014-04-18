@@ -46,11 +46,11 @@ namespace Yelo
 		void SharedDispose();
 
 
-		bool PlayerProfileRead(cstring profile_name, __out byte profile[Enums::k_player_profile_buffer_size]);
+		bool PlayerProfileRead(cstring profile_name, _Out_ byte profile[Enums::k_player_profile_buffer_size]);
 
 		// Format the settings path & [filename] into [file_path].
 		// Returns: true if [file_path] exists on disk
-		bool GetSettingsFilePath(cstring filename, __out char file_path[MAX_PATH]);
+		bool GetSettingsFilePath(cstring filename, _Out_ char file_path[MAX_PATH]);
 
 		// Open a report file for writing
 		// [append] - keep existing report data
