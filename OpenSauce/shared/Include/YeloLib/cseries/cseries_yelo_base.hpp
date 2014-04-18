@@ -351,6 +351,16 @@ namespace Yelo
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Clear an array to be bitwise zero. </summary>
+	///
+	/// <param name="array">	Array to zero. </param>
+	/// <param name="index"> 	Element index in array to start zeroing at. </param>
+	template<typename T, size_t kLength> inline
+	void ArrayZero   (T (&array)[kLength], size_t index = 0)
+	{
+		memset(&array[index], 0, sizeof(T) * (kLength - index));
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/// <summary>	Copy a range of elements from one array to another. </summary>
 	///
 	/// <param name="dst">			Destination array.</param>
@@ -363,8 +373,8 @@ namespace Yelo
 	template<typename T, size_t kDstLength, size_t kSrcLength> inline
 	bool ArrayCopy   (T (&dst)[kDstLength], size_t dst_index, const T (&src)[kSrcLength], size_t src_index, size_t count = kSrcLength)
 	{
-		return memcpy_s(&dst[dst_index], sizeof(T) * kDstLength,
-						&src[src_index], sizeof(T) * count) == k_errnone;
+		return memcpy_s(&dst[dst_index], sizeof(T) * (kDstLength - dst_index),
+						&src[src_index], sizeof(T) * (count - src_index)) == k_errnone;
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/// <summary>	Copy a range of elements from one array to another. </summary>
@@ -392,8 +402,8 @@ namespace Yelo
 	template<typename T, size_t kDstLength> inline
 	bool ArrayCopyPtr(T (&dst)[kDstLength], size_t dst_index, const T* src, size_t src_index, size_t count)
 	{
-		return memcpy_s(&dst[dst_index], sizeof(T) * kDstLength,
-						&src[src_index], sizeof(T) * count) == k_errnone;
+		return memcpy_s(&dst[dst_index], sizeof(T) * (kDstLength - dst_index),
+						&src[src_index], sizeof(T) *  count) == k_errnone;
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/// <summary>	Copy a range of elements from one array to another. </summary>

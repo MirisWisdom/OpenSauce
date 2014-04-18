@@ -10,7 +10,6 @@
 #include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/game/game_globals_definitions.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
-#include <blamlib/Halo1/units/unit_definitions.hpp>
 
 #include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_global_cv_definitions.hpp>
@@ -19,140 +18,12 @@
 
 #include "Engine/EngineFunctions.hpp"
 #include "Engine/GrenadeTypesUpgrade.hpp"
-#include "Engine/Scripting.hpp"
 #include "TagGroups/TagGroups.hpp"
 
 namespace Yelo
 {
 	namespace TagGroups
 	{
-		//////////////////////////////////////////////////////////////////////////
-		// unit_external_upgrades_block
-		static int UnitGetSeatIndexFromLabel(s_unit_definition* unit_def, cstring seat_label)
-		{
-			for (int i = 0; i < unit_def->unit.seats.Count; i++)
-			{
-				if (strcmp(seat_label, unit_def->unit.seats[i].label) == 0)
-					return i;
-			}
-			return NONE;
-		}
-
-		static void UnitExternalUpgradesBlockPostprocess(TAG_TBLOCK(& unit_external_upgrades_def, TagGroups::s_unit_external_upgrades), 
-			Enums::tag_postprocess_mode mode)
-		{
-			if (mode != Enums::_tag_postprocess_mode_for_runtime)
-				return;
-
-			for(auto& upgrade : unit_external_upgrades_def)
-			{
-				datum_index tag_index = blam::tag_load(upgrade.unit.group_tag, upgrade.unit.name, 
-					FLAG(Flags::_tag_load_non_resolving_references_bit));
-
-				if (!tag_index.IsNull())
-				{
-					auto* unit_def = blam::tag_get<s_unit_definition>(tag_index);
-
-					for(auto& seat : upgrade.boarding_seats)
-					{
-						cstring seat_label = seat.seat_label;
-						cstring target_seat_label = seat.target_seat_label;
-
-						seat.seat_index = UnitGetSeatIndexFromLabel(unit_def, seat_label);
-						seat.target_seat_index = UnitGetSeatIndexFromLabel(unit_def, target_seat_label);
-					}
-				}
-			}
-		}
-		//////////////////////////////////////////////////////////////////////////
-
-		//////////////////////////////////////////////////////////////////////////
-		// project_yellow_globals_cv
-		static bool PLATFORM_API py_globals_cv_group_postprocess(Yelo::datum_index tag_index, Enums::tag_postprocess_mode mode)
-		{
-			auto* def = blam::tag_get<project_yellow_globals_cv>(tag_index);
-
-			def->version = project_yellow_globals_cv::k_version;
-			UnitExternalUpgradesBlockPostprocess(def->unit_external_upgrades, mode);
-
-			return true;
-		}
-		//////////////////////////////////////////////////////////////////////////
-
-		//////////////////////////////////////////////////////////////////////////
-		// scripting_block
-		static cstring PLATFORM_API scripting_block_construct_format(datum_index tag_index, tag_block* block, int32 element, char formatted_buffer[Enums::k_tag_block_format_buffer_size])
-		{
-			auto* elem = CAST_PTR(s_script_construct_definition*, blam::tag_block_get_element(block, element));
-
-			if(elem->name[0][0] != '\0')
-				strncpy_s(formatted_buffer, Enums::k_tag_block_format_buffer_size, elem->name[0], Enums::k_tag_string_length);
-			if(elem->name[1][0] != '\0')
-				strncat_s(formatted_buffer, Enums::k_tag_block_format_buffer_size, elem->name[1], Enums::k_tag_string_length);
-
-			return formatted_buffer;
-		}
-		//////////////////////////////////////////////////////////////////////////
-
-		//////////////////////////////////////////////////////////////////////////
-		// project_yellow_globals
-		static bool PLATFORM_API py_globals_group_postprocess(Yelo::datum_index tag_index, Enums::tag_postprocess_mode mode)
-		{
-			auto* def = blam::tag_get<project_yellow_globals>(tag_index);
-
-			def->version = project_yellow_globals::k_version;
-
-			Scripting::ScriptingBlockClear(def->yelo_scripting);
-			if(mode == Enums::_tag_postprocess_mode_for_runtime)
-			{
-				Scripting::ScriptingBlockAddDefinitions(def->yelo_scripting, true);
-			}
-
-			return true;
-		}
-
-#if FALSE
-		static cstring PLATFORM_API py_globals_preprocess_maplist_format(datum_index tag_index, tag_block* block, int32 element, char formatted_buffer[Enums::k_tag_block_format_buffer_size])
-		{
-			auto* elem =  CAST_PTR(s_yelo_preprocess_maplist_entry*, blam::tag_block_get_element(block, element));
-
-			cstring value = elem->name;
-			if( !strcmp(value, "") )
-			{
-				if( elem->scenario.name_length > 0 && elem->scenario.name != nullptr)
-					value = elem->scenario.name;
-				else
-					return formatted_buffer; // if name is empty and there is no scenario reference, no formatting is done
-			}
-
-			strncpy_s(formatted_buffer, Enums::k_tag_block_format_buffer_size, value, Enums::k_tag_string_length);
-
-			return formatted_buffer;
-		}
-#endif
-		//////////////////////////////////////////////////////////////////////////
-
-		//////////////////////////////////////////////////////////////////////////
-		// project_yellow
-		static bool PLATFORM_API py_group_postprocess(datum_index tag_index, Enums::tag_postprocess_mode mode)
-		{
-			auto* def = blam::tag_get<project_yellow>(tag_index);
-
-			def->version = project_yellow::k_version;
-
-			Scripting::ScriptingBlockClear(def->user_scripting);
-			if(mode == Enums::_tag_postprocess_mode_for_runtime)
-			{
-				if(!def->physics.IsGravityScaleValid() || def->physics.gravity_scale == 0.0f)			def->physics.ResetGravityScale();
-				if(!def->physics.IsPlayerSpeedScaleValid() || def->physics.player_speed_scale == 0.0f)	def->physics.ResetPlayerSpeedScale();
-
-				Scripting::ScriptingBlockAddDefinitions(def->user_scripting, false);
-			}
-
-			return true;
-		}
-		//////////////////////////////////////////////////////////////////////////
-
 		//////////////////////////////////////////////////////////////////////////
 		// s_yelo_definition_globals
 		static struct s_yelo_definition_globals {
@@ -231,13 +102,13 @@ namespace Yelo
 
 			//////////////////////////////////////////////////////////////////////////
 			{// project_yellow_globals_cv
-				py_globals_cv_definition->postprocess_proc = &TagGroups::py_globals_cv_group_postprocess;
+				py_globals_cv_definition->postprocess_proc = &TagGroups::project_yellow_globals_cv::GroupPostprocess;
 			}
 			//////////////////////////////////////////////////////////////////////////
 
 			//////////////////////////////////////////////////////////////////////////
 			{// project_yellow_globals
-				py_globals_definition->postprocess_proc = &TagGroups::py_globals_group_postprocess;
+				py_globals_definition->postprocess_proc = &TagGroups::project_yellow_globals::GroupPostprocess;
 
 #if FALSE
 				//////////////////////////////////////////////////////////////////////////
@@ -252,7 +123,7 @@ namespace Yelo
 						"CheApe: preprocess_maplist_block not found!");
 
 					auto* preprocess_map_block_def = preprocess_block_def->fields[field_index].Definition<tag_block_definition>();
-					preprocess_map_block_def->format_proc = &TagGroups::py_globals_preprocess_maplist_format;
+					preprocess_map_block_def->format_proc = &TagGroups::s_yelo_preprocess_maplist_entry::FormatBlockName;
 				}
 #endif
 
@@ -271,21 +142,21 @@ namespace Yelo
 						"CheApe: script_function_block not found!");
 
 					auto* script_function_block_def = scripting_block_def->fields[field_index].Definition<tag_block_definition>();
-					script_function_block_def->format_proc = &TagGroups::scripting_block_construct_format;
+					script_function_block_def->format_proc = &TagGroups::s_script_construct_definition::FormatBlockName;
 
 					field_index = scripting_block_def->FindFieldIndex(Enums::_field_block, "new globals");
 					YELO_ASSERT_DISPLAY(field_index != NONE,
 						"CheApe: script_global_block not found!");
 
 					auto* script_global_block_def = scripting_block_def->fields[field_index].Definition<tag_block_definition>();
-					script_global_block_def->format_proc = &TagGroups::scripting_block_construct_format;
+					script_global_block_def->format_proc = &TagGroups::s_script_construct_definition::FormatBlockName;
 				}
 			}
 			//////////////////////////////////////////////////////////////////////////
 
 			//////////////////////////////////////////////////////////////////////////
 			{// project_yellow
-				py_definition->postprocess_proc = &TagGroups::py_group_postprocess;
+				py_definition->postprocess_proc = &TagGroups::project_yellow::GroupPostprocess;
 			}
 			//////////////////////////////////////////////////////////////////////////
 

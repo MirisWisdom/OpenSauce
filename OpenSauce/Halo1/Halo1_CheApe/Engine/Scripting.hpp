@@ -65,18 +65,5 @@ namespace Yelo
 		void DisposeScriptNodeUpgrades();
 
 		hs_function_definition* GetFunctionDefintion(int16 function_index);
-
-		void ScriptingBlockClear(
-			TAG_TBLOCK(& script_block, TagGroups::s_scripting_definitions));
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Copy the scripting definitions CheApe loaded into the tool code from the memory map. </summary>
-		///
-		/// <param name="script_block"></param>
-		/// <param name="only_internals">
-		/// 	Copy definitions that are part of the stock OpenSauce source code definitions that are part of the stock
-		/// 	OpenSauce source code only, else copy only the user's definitions.
-		/// </param>
-		void ScriptingBlockAddDefinitions(
-			TAG_TBLOCK(& script_block, TagGroups::s_scripting_definitions), bool only_internals);
 	};
 };

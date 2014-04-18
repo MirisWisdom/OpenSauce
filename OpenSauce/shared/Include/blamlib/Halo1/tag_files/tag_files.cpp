@@ -18,6 +18,9 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
+		cstring K_TAG_FILES_DIRECTORY = "tags\\";
+		cstring K_DATA_FILES_DIRECTORY = "data\\";
+
 		void s_tag_header::Initialize(int16 tag_version)
 		{
 			ZeroMemory(this, sizeof(*this));

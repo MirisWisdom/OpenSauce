@@ -27,6 +27,9 @@ namespace Yelo
 	{
 		struct s_tag_file_globals;
 
+		extern cstring K_TAG_FILES_DIRECTORY; /// "tags\"
+		extern cstring K_DATA_FILES_DIRECTORY;/// "data\"
+
 		s_tag_file_globals* TagFileGlobalsThreaded();
 		s_tag_file_globals* TagFileGlobals();
 

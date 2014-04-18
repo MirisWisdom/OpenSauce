@@ -7,6 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "Game/ScriptLibrary.hpp"
 
+#include <blamlib/Halo1/hs/hs_structures.hpp>
 #include <blamlib/Halo1/networking/network_server_manager_structures.hpp>
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 

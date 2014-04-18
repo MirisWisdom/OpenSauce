@@ -11,6 +11,8 @@ namespace Yelo
 {
 	namespace Enums
 	{
+		enum tag_postprocess_mode : byte_enum;
+
 		enum production_build_stage
 		{
 			_production_build_stage_ship,
@@ -26,6 +28,7 @@ namespace Yelo
 	{
 		struct s_scripting_definitions;
 		struct s_project_yellow_scripted_ui_widget;
+		struct scenario;
 
 
 		struct s_project_yellow_scenario_build_info
@@ -198,6 +201,16 @@ namespace Yelo
 
 			bool IsNull() const;
 			bool IsCacheProtected() const;
+
+			static bool PLATFORM_API GroupPostprocess(datum_index tag_index, Enums::tag_postprocess_mode mode);
 		};
+
+#if PLATFORM_IS_EDITOR
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		/// 	Removes Yelo-related data so that the scenario may be opened with no conflicts in the stock HEK.
+		/// </summary>
+		void YeloCleanseScenario(scenario* scnr);
+#endif
 	};
 };

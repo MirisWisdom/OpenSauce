@@ -16,13 +16,14 @@ namespace Yelo
 	namespace Cache
 	{
 		cstring K_MAP_FILE_EXTENSION = ".map";
+		cstring K_MAP_FILES_DIRECTORY = "maps\\";
 
 		cstring MapsDirectory()
 		{
 #if PLATFORM_IS_EDITOR
 			return Settings::Get().GetMapsPath();
 #else
-			return "maps\\";
+			return K_MAP_FILES_DIRECTORY;
 #endif
 		}
 
