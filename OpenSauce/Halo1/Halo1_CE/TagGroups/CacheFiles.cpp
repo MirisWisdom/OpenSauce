@@ -236,7 +236,7 @@ namespace Yelo
 			yelo_is_ok = true;
 
 			static string256 map_path;
-			c_cache_format_path_hacks::PathHack(map_path, "%s%s%s.map", RootDirectory(), "maps\\", relative_map_name);
+			c_cache_format_path_hacks::PathHack(map_path, "%s%s%s.map", RootDirectory(), K_MAP_FILES_DIRECTORY, relative_map_name);
 
 			HANDLE f = CreateFileA(map_path, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
 			if(f != INVALID_HANDLE_VALUE)

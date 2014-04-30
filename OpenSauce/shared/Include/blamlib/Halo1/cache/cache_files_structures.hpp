@@ -45,9 +45,9 @@ namespace Yelo
 
 			tag footer_signature;
 
-			inline bool ValidSignatures() const			{ return header_signature == k_header_signature && footer_signature == k_footer_signature; }
-			inline bool ValidFileSize(int32 max) const	{ return size >= 0 && size <= max; }
-			inline bool ValidName() const				{ return strnlen_s(name, Enums::k_tag_string_length) <= Enums::k_tag_string_length; }
+			bool ValidSignatures() const;
+			bool ValidFileSize(int32 max) const;
+			bool ValidName() const;
 		}; BOOST_STATIC_ASSERT( sizeof(s_cache_header) == 0x800 );
 
 		struct s_cache_tag_instance
@@ -58,22 +58,16 @@ namespace Yelo
 			cstring name;			// 0x10
 			void* base_address;		// 0x14
 			BOOL bool_in_data_file;	// 0x18
-			UNUSED_TYPE(int32);		// 0x1C
+			uint32 _unused;			// 0x1C
 
 			template<typename T> inline
 			T* Definition() const { return CAST_PTR(T*, base_address); }
 
-			inline int32 GetAbsoluteIndex() { return handle.index; }
+			inline int32 GetAbsoluteIndex() const { return handle.index; }
 
 			// Is this an instance of a certain tag group?
 			// If this instance a child of a certain tag group?
-			inline bool MatchesGroup(tag group_tag) const
-			{
-				return this->group_tag == group_tag ||
-					// test the hierarchy graph
-					parent_groups[0] == group_tag ||
-					parent_groups[1] == group_tag;
-			}
+			bool MatchesGroup(tag group_tag) const;
 		}; BOOST_STATIC_ASSERT( sizeof(s_cache_tag_instance) == 0x20 );
 
 		struct s_cache_tag_header

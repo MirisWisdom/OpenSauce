@@ -27,6 +27,30 @@ namespace Yelo
 #endif
 		}
 
+		bool s_cache_header::ValidSignatures() const
+		{
+			return	header_signature == k_header_signature && 
+					footer_signature == k_footer_signature;
+		}
+
+		bool s_cache_header::ValidFileSize(int32 max) const
+		{
+			return size >= 0 && size <= max;
+		}
+
+		bool s_cache_header::ValidName() const
+		{
+			return strnlen_s(name, Enums::k_tag_string_length+1) <= Enums::k_tag_string_length;
+		}
+
+		bool s_cache_tag_instance::MatchesGroup(tag group_tag) const
+		{
+			return this->group_tag == group_tag ||
+				// test the hierarchy graph
+				parent_groups[0] == group_tag ||
+				parent_groups[1] == group_tag;
+		}
+
 #if !PLATFORM_IS_EDITOR
 #endif
 	};
