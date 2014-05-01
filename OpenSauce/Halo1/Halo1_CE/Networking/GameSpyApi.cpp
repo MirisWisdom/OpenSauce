@@ -7,6 +7,9 @@
 #include "Common/Precompile.hpp"
 #include "Networking/GameSpyApi.hpp"
 
+#include <YeloLib/configuration/c_configuration_container.hpp>
+#include <YeloLib/configuration/c_configuration_value.hpp>
+
 #include "Memory/MemoryInterface.hpp"
 #include "Game/GameState.hpp"
 
@@ -123,10 +126,29 @@ _return:
 #endif
 			}
 
-			struct s_gamespy_yelo_settings {
-				bool no_update_check;
-				PAD24;
-			}g_gamespy_yelo_settings;
+			class c_gamespy_settings
+				: public Configuration::c_configuration_container
+			{
+			public:
+				Configuration::c_configuration_value<bool> m_no_update_check;
+
+				c_gamespy_settings()
+					: Configuration::c_configuration_container("Networking.GameSpy")
+					, m_no_update_check("NoUpdateCheck", true)
+				{ }
+				
+			protected:
+				const std::vector<i_configuration_value* const> GetMembers()
+				{
+					std::vector<i_configuration_value* const> values =
+					{
+						&m_no_update_check
+					};
+
+					return values;
+				}
+			};
+			std::unique_ptr<c_gamespy_settings> g_settings;
 
 			static void InitializeForNewQr2()
 			{
@@ -135,9 +157,16 @@ _return:
 			void Initialize()
 			{
 				// TODO: populate GetGameVer()
-
-				if(g_gamespy_yelo_settings.no_update_check)
-					TurnOffUpdateCheck();
+				g_settings = std::make_unique<c_gamespy_settings>();
+				Settings::RegisterConfigurationContainer(g_settings.get(), nullptr,
+					[]()
+					{
+						if(g_settings->m_no_update_check)
+						{
+							TurnOffUpdateCheck();
+						}
+					}
+				);
 
 				Memory::CreateHookRelativeCall(&InitializeForNewQr2, 
 					GET_FUNC_VPTR(CREATE_GAMESPY_QR2_HOOK), Enums::_x86_opcode_ret);
@@ -150,19 +179,7 @@ _return:
 
 			void Dispose()
 			{
-			}
-
-			void LoadSettings(TiXmlElement* xml_element)
-			{
-				if(xml_element == nullptr) return;
-
-				g_gamespy_yelo_settings.no_update_check = 
-					Settings::ParseBoolean(xml_element->Attribute("gsNoUpdateCheck"));
-			}
-			void SaveSettings(TiXmlElement* xml_element)
-			{
-				xml_element->SetAttribute("gsNoUpdateCheck", 
-					BooleanToString(g_gamespy_yelo_settings.no_update_check));
+				Settings::UnregisterConfigurationContainer(g_settings.get());
 			}
 
 			API_FUNC_NAKED void qr2_register_key(Enums::gamespy_qr_field keyid, cstring key)

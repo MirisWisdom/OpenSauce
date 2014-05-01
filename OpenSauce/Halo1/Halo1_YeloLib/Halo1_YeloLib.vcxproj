@@ -84,6 +84,24 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_container.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_container_list.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_file_factory.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_list.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_value.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_value_list.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\i_configuration_container.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\i_configuration_file.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\i_configuration_leaf.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\i_configuration_leaf_iterator.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\i_configuration_value.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_file.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_file_json.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_file_xml.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_leaf.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_leaf_iterator.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_vector3d_container.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_type_container.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_files_structures_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cseries\memory_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\memory\constant_pool.hpp" />
@@ -232,6 +250,14 @@
     <ClCompile Include="..\..\shared\Include\TinyXml\tinyxml.cpp" />
     <ClCompile Include="..\..\shared\Include\TinyXml\tinyxmlerror.cpp" />
     <ClCompile Include="..\..\shared\Include\TinyXml\tinyxmlparser.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\c_configuration_container.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\c_configuration_file_factory.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_file.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_file_json.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_file_xml.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_leaf.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_leaf_iterator.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_vector3d_container.cpp" />
     <ClCompile Include="..\..\shared\Include\zlib\adler32.c">
       <PrecompiledHeader />
     </ClCompile>

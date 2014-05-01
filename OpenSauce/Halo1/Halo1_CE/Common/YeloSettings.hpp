@@ -6,6 +6,7 @@
 */
 #pragma once
 
+#include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
 
 namespace Yelo
@@ -13,11 +14,19 @@ namespace Yelo
 	namespace Settings
 	{
 		extern cstring K_CHAT_LOG_FILENAME;
+		
+		void InitializeSettings();
+		void DisposeSettings();
 
-		void Initialize();
-		void Dispose();
+		void Load();
+		void Save();
+		void Clear();
 
-		void LoadSettings();
-		void SaveSettings();
+		void RegisterConfigurationContainer(Configuration::c_configuration_container* container
+			, std::function<void()> pre_load_callback = nullptr
+			, std::function<void()> post_load_callback = nullptr
+			, std::function<void()> pre_save_callback = nullptr
+			, std::function<void()> post_save_callback = nullptr);
+		void UnregisterConfigurationContainer(Configuration::c_configuration_container* container);
 	};
 };

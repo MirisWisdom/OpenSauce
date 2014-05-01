@@ -38,15 +38,6 @@ namespace Yelo
 			c_version_check_manager_base::VersionChecker().Dispose();
 		}
 
-		void		LoadSettings(TiXmlElement* vc_element)
-		{
-			c_version_check_manager_base::VersionChecker().LoadSettings(vc_element);
-		}
-		void		SaveSettings(TiXmlElement* vc_element)
-		{
-			c_version_check_manager_base::VersionChecker().SaveSettings(vc_element);
-		}
-
 		void		InitializeForNewMap()
 		{
 			c_version_check_manager_base::VersionChecker().InitializeForNewMap();
@@ -102,7 +93,7 @@ namespace Yelo
 		/////////////////////////////////////////
 		//c_version_check_manager_base
 		/////////////////////////////////////////
-		cstring						c_version_check_manager_base::g_fallback_xml_location = 
+		std::string						c_version_check_manager_base::g_fallback_xml_location = 
 			"http://os.halomods.com/Halo1/CE/Halo1_CE_Version.xml";
 
 		/////////////////////////////////////////
@@ -141,6 +132,9 @@ namespace Yelo
 		 */
 		void		c_version_check_manager_base::Initialize()
 		{
+			m_settings = std::make_unique<c_version_check_settings>();
+			Settings::RegisterConfigurationContainer(m_settings.get(), nullptr, [this](){ this->TestForUpdate(); });
+
 			m_current_version.SetBuild(K_OPENSAUCE_VERSION_BUILD_MAJ, K_OPENSAUCE_VERSION_BUILD_MIN, K_OPENSAUCE_VERSION_BUILD);
 			m_available_version.SetBuild(K_OPENSAUCE_VERSION_BUILD_MAJ, K_OPENSAUCE_VERSION_BUILD_MIN, K_OPENSAUCE_VERSION_BUILD);
 
@@ -163,100 +157,8 @@ namespace Yelo
 				xml_source.Stop();
 				xml_source.Dtor();
 			}
-		}
 
-		/*!
-		 * \brief
-		 * Loads the server list from the user settings.
-		 * 
-		 * \param xml_element
-		 * Pointer to an xml element that parents the version checkers settings.
-		 * 
-		 * Loads the server list and the date the available version was last checked on, from the users settings.
-		 */
-		void		c_version_check_manager_base::LoadSettings(TiXmlElement* xml_element)
-		{
-			m_states.last_checked_day = 0;
-			m_states.last_checked_month = 0;
-			m_states.last_checked_year = 0;
-
-			for(auto url : m_version_xml.urls)
-				url[0] = '\0';
-
-			// if there is no settings element, we still want to set the default
-			// xml location
-			if(xml_element == nullptr)
-			{
-				m_version_xml.list_version = 0;
-				strcpy_s(m_version_xml.urls[0], sizeof(HTTP::t_http_url), c_version_check_manager_base::g_fallback_xml_location);
-				return;
-			}
-
-			//do-while-false for easy fall-through
-			do
-			{
-				//get the last date the version was checked
-				if(!xml_element->Attribute("day",   &m_states.last_checked_day))   { m_states.last_checked_day = 0; break; }
-				if(!xml_element->Attribute("month", &m_states.last_checked_month)) { m_states.last_checked_month = 0; break; }
-				if(!xml_element->Attribute("year",  &m_states.last_checked_year))  { m_states.last_checked_year = 0; break; }
-			}while(false);
-
-			UpdateDateState();
-
-			//get the xml locations from the user settings
-			TiXmlElement* server_list = xml_element->FirstChildElement("server_list");
-			if(!server_list)
-				return;
-
-			if(!server_list->Attribute("version", &m_version_xml.list_version))
-				return;
-
-			TiXmlElement* server = server_list->FirstChildElement("server");
-			if(!server)
-				return;
-
-			for(int i = 0; server && (i < NUMBEROF(m_version_xml.urls)); i++)
-			{
-				const char* url = server->GetText();
-				if(!is_null_or_empty(url))
-					strcpy_s(m_version_xml.urls[i], sizeof(HTTP::t_http_url), url);
-
-				server = server->NextSiblingElement("server");
-			}
-		}
-
-		/*!
-		 * \brief
-		 * Saves the current server list to the users settings.
-		 * 
-		 * \param xml_element
-		 * Pointer to an xml element that parents the version checkers settings.
-		 * 
-		 * Saves the current server list and current date to the users settings.
-		 */
-		void		c_version_check_manager_base::SaveSettings(TiXmlElement* xml_element)
-		{
-			//set the attributes for the last date the version was checked
-			xml_element->SetAttribute("day", m_states.last_checked_day);
-			xml_element->SetAttribute("month", m_states.last_checked_month);
-			xml_element->SetAttribute("year", m_states.last_checked_year);
-
-			//save the current file urls to the user settings
-			auto* server_list = new TiXmlElement("server_list");
-			server_list->SetAttribute("version", m_version_xml.list_version);
-
-			for (auto url : m_version_xml.urls)
-			{
-				if(is_null_or_empty(url))
-					continue;
-
-				auto* server = new TiXmlElement("server");
-				auto* server_address = new TiXmlText(url);
-
-				server->LinkEndChild(server_address);
-				server_list->LinkEndChild(server);
-			}
-			xml_element->LinkEndChild(server_list);
+			Settings::UnregisterConfigurationContainer(m_settings.get());
 		}
 
 		/*!
@@ -285,6 +187,11 @@ namespace Yelo
 				UpdateVersion();
 		}
 
+		void		c_version_check_manager_base::TestForUpdate()
+		{
+			UpdateDateState();
+		}
+
 		/*!
 		 * \brief
 		 * Starts the update checking process.
@@ -294,18 +201,37 @@ namespace Yelo
 		void		c_version_check_manager_base::CheckForUpdates()
 		{
 			m_states.is_request_in_progress = false;
+			
+			bool has_url = false;
+			for(auto url : m_settings->m_server_list.m_servers)
+			{
+				if(!url.Get().empty())
+				{
+					has_url = true;
+				}
+			}
+
+			if(!has_url)
+			{
+				m_settings->m_server_list.m_servers.Clear();
+				m_settings->m_server_list.m_servers.AddEntry() = g_fallback_xml_location;
+			}
 
 			// start the xml downloaders
-			for(int i = 0; i < NUMBEROF(m_xml_sources); i++)
+			int downloader_index = 0;
+			for(auto url : m_settings->m_server_list.m_servers)
 			{
-				// if the xml source is empty, don't start the download
-				if(is_null_or_empty(m_version_xml.urls[i]))
-					continue;
+				if(downloader_index >= NUMBEROF(m_xml_sources))
+				{
+					break;
+				}
 
-				m_xml_sources[i].SetURL(m_version_xml.urls[i]);
-				m_xml_sources[i].Start();
+				m_xml_sources[downloader_index].SetURL(url.Get().c_str());
+				m_xml_sources[downloader_index].Start();
 
-				m_states.is_request_in_progress |= (m_xml_sources[i].Status() == Enums::_http_file_download_status_in_progress);
+				m_states.is_request_in_progress |= (m_xml_sources[downloader_index].Status() == Enums::_http_file_download_status_in_progress);
+
+				downloader_index++;
 			}
 		}
 
@@ -322,9 +248,9 @@ namespace Yelo
 			time(&time_today);
 			tm local_time; localtime_s(&local_time, &time_today);
 
-			if( (m_states.last_checked_day == local_time.tm_mday) &&
-				(m_states.last_checked_month == local_time.tm_mon) &&
-				(m_states.last_checked_year == 1900 + local_time.tm_year))
+			if( (m_settings->m_last_checked.m_day == local_time.tm_mday) &&
+				(m_settings->m_last_checked.m_month == local_time.tm_mon + 1) &&
+				(m_settings->m_last_checked.m_year == 1900 + local_time.tm_year))
 				m_states.checked_today = true;
 		}
 
@@ -341,9 +267,9 @@ namespace Yelo
 			time(&time_today);
 			tm local_time; localtime_s(&local_time, &time_today);
 
-			m_states.last_checked_day = local_time.tm_mday;
-			m_states.last_checked_month = local_time.tm_mon;
-			m_states.last_checked_year = 1900 + local_time.tm_year;
+			m_settings->m_last_checked.m_day = local_time.tm_mday;
+			m_settings->m_last_checked.m_month = local_time.tm_mon + 1;
+			m_settings->m_last_checked.m_year = 1900 + local_time.tm_year;
 
 			for(auto& downloader : m_xml_sources)
 			{
@@ -362,18 +288,17 @@ namespace Yelo
 				}
 
 				// if the server list version is newer, copy the new list
-				if(m_version_xml.list_version < downloader.URLListVersion())
+				if(m_settings->m_server_list.m_version < downloader.URLListVersion())
 				{
-					m_version_xml.list_version = downloader.URLListVersion();
+					m_settings->m_server_list.m_servers.Clear();
+					m_settings->m_server_list.m_version = downloader.URLListVersion();
 
 					LinkedListIterator<c_version_server> url_iterator(downloader.VersionURLList());
 
-					for(int j = 0; j < NUMBEROF(m_version_xml.urls); j++)
+					if(url_iterator.MoveNext())
 					{
-						m_version_xml.urls[j][0] = '\0';
-
-						if(url_iterator.MoveNext())
-							strcpy_s(m_version_xml.urls[j], sizeof(HTTP::t_http_url), url_iterator.Current()->m_version_xml_url);
+						std::string url_string(url_iterator.Current()->m_version_xml_url);
+						m_settings->m_server_list.m_servers.AddEntry() = url_string;
 					}
 				}
 			}
@@ -397,9 +322,6 @@ namespace Yelo
 		void		Render() {}
 		void		Release() {}
 #endif
-
-		void		LoadSettings(TiXmlElement* dx9_element) {}
-		void		SaveSettings(TiXmlElement* dx9_element) {}
 
 		void		InitializeForNewMap() {}
 		void		Update(real delta_time) {}

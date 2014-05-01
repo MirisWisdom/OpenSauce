@@ -16,6 +16,39 @@ namespace Yelo
 {
 	namespace Hud
 	{
+		class c_hud_settings
+			: public Yelo::Configuration::c_configuration_container
+		{
+		public:
+			Yelo::Configuration::c_configuration_value<bool> m_show_hud;
+			Yelo::Configuration::c_configuration_value<bool> m_scale_hud;
+			Yelo::Configuration::c_configuration_value<real> m_hud_scale_x;
+			Yelo::Configuration::c_configuration_value<real> m_hud_scale_y;
+
+			c_hud_settings()
+				: Yelo::Configuration::c_configuration_container("HUD")
+				, m_show_hud("ShowHUD", true)
+				, m_scale_hud("ScaleHUD", true)
+				, m_hud_scale_x("HUDScaleX", 1.0f)
+				, m_hud_scale_y("HUDScaleY", 1.0f)
+			{ }
+			
+		protected:
+			const std::vector<i_configuration_value* const> GetMembers()
+			{
+				std::vector<i_configuration_value* const> values =
+				{
+					&m_show_hud,
+					&m_scale_hud,
+					&m_hud_scale_x,
+					&m_hud_scale_y
+				};
+
+				return values;
+			}
+		};
+		std::unique_ptr<c_hud_settings> g_settings;
+
 #pragma region Globals
 		struct s_hud_globals
 		{
@@ -457,12 +490,33 @@ namespace Yelo
 			{
 				*K_HUD_POINT_DAMAGE_ANCHOR_HALF_WIDTH_PTRS[i] = &g_hud_globals.m_damage_anchor.half_width;
 			}
+
+			g_hud_globals.m_flags.show_crosshair = true;
+			
+			g_settings = std::make_unique<c_hud_settings>();
+			Settings::RegisterConfigurationContainer(g_settings.get(),
+				nullptr,
+				[]()
+				{
+					g_hud_globals.m_flags.scale_hud = g_settings->m_scale_hud;
+					g_hud_globals.m_flags.show_hud = g_settings->m_show_hud;
+					g_hud_globals.m_hud_screen.scale.x = g_settings->m_hud_scale_x;
+					g_hud_globals.m_hud_screen.scale.y = g_settings->m_hud_scale_y;
+				},
+				[]()
+				{
+					g_settings->m_scale_hud = g_hud_globals.m_flags.scale_hud;
+					g_settings->m_show_hud = g_hud_globals.m_flags.show_hud;
+					g_settings->m_hud_scale_x = g_hud_globals.m_hud_screen.scale.x;
+					g_settings->m_hud_scale_y = g_hud_globals.m_hud_screen.scale.y;
+				}
+			);
 		}
 
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Unused. </summary>
-		///-------------------------------------------------------------------------------------------------
-		void Dispose() {}
+		void Dispose()
+		{
+			Settings::UnregisterConfigurationContainer(g_settings.get());
+		}
 
 		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Updates the HUD scaling controls. </summary>
@@ -485,19 +539,6 @@ namespace Yelo
 #pragma endregion
 
 #pragma region Component Settings
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Initializes the HUD settings to their default values. </summary>
-		///-------------------------------------------------------------------------------------------------
-		static void InitializeHUDSettings()
-		{
-			g_hud_globals.m_flags.show_hud = true;
-			g_hud_globals.m_flags.show_crosshair = true;
-			g_hud_globals.m_flags.scale_hud = false;
-
-			g_hud_globals.m_hud_screen.scale.x = 1.0f;
-			g_hud_globals.m_hud_screen.scale.y = 1.0f;
-		}
-
 		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Renders the HUD settings menu. </summary>
 		///-------------------------------------------------------------------------------------------------
@@ -583,40 +624,6 @@ namespace Yelo
 			UpdateAnchorScale();
 
 			return Enums::_settings_adjustment_result_not_finished;
-		}
-
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Loads the scaling settings from the settings XML. </summary>
-		/// <param name="hud_element">	[in,out] If non-null, the HUD XML settings element. </param>
-		///-------------------------------------------------------------------------------------------------
-		void LoadSettings(TiXmlElement* hud_element)
-		{
-			// initialise the settings to their default values
-			InitializeHUDSettings();
-
-			if(hud_element != nullptr)
-			{
-				g_hud_globals.m_flags.show_hud = Settings::ParseBoolean( hud_element->Attribute("show") );
-				g_hud_globals.m_flags.scale_hud = Settings::ParseBoolean( hud_element->Attribute("scale") );
-
-				double scale_value = 1;
-				if(hud_element->Attribute("hudScaleX", &scale_value))
-					g_hud_globals.m_hud_screen.scale.x = (real)scale_value;
-				if(hud_element->Attribute("hudScaleY", &scale_value))
-					g_hud_globals.m_hud_screen.scale.y = (real)scale_value;
-			}
-		}
-
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Saves the settings to the users settings XML. </summary>
-		/// <param name="hud_element">	[in] The HUD settings XML element. </param>
-		///-------------------------------------------------------------------------------------------------
-		void SaveSettings(TiXmlElement* hud_element)
-		{
-			hud_element->SetAttribute("show", BooleanToString(g_hud_globals.m_flags.show_hud));
-			hud_element->SetAttribute("scale", BooleanToString(g_hud_globals.m_flags.scale_hud));
-			hud_element->SetDoubleAttribute("hudScaleX", g_hud_globals.m_hud_screen.scale.x);
-			hud_element->SetDoubleAttribute("hudScaleY", g_hud_globals.m_hud_screen.scale.y);
 		}
 #pragma endregion
 

@@ -69,6 +69,9 @@ namespace Yelo
 		 */
 		void c_system_internal::Initialize()
 		{
+			m_settings = std::make_unique<c_system_settings>();
+			Settings::RegisterConfigurationContainer(m_settings.get());
+
 			ClearMembers();
 		}
 
@@ -81,6 +84,8 @@ namespace Yelo
 		void c_system_internal::Dispose()
 		{
 			ClearMembers();
+			
+			Settings::UnregisterConfigurationContainer(m_settings.get());
 		}
 
 		/*!
@@ -180,32 +185,6 @@ namespace Yelo
 			}
 
 			UpdateStatus();
-		}
-
-		/////////////////////////////////////////////////
-		// IPostProcessingUserSettings
-		void c_system_internal::LoadSettings(TiXmlElement* parent_element)
-		{
-			TiXmlElement* element = parent_element->FirstChildElement("Internal");
-
-			if(!element) return;
-
-			m_members.m_flags.is_enabled = Settings::ParseBoolean( element->Attribute("enabled") );
-		}
-
-		void c_system_internal::SaveSettings(TiXmlElement* parent_element)
-		{
-			TiXmlElement* element = nullptr;
-
-			element = new TiXmlElement("Internal");
-			parent_element->LinkEndChild(element);
-
-			element->SetAttribute("enabled", BooleanToString(m_members.m_flags.is_enabled));
-		}
-
-		void c_system_internal::SetDefaultSettings()
-		{
-			m_members.m_flags.is_enabled = true;
 		}
 
 		/////////////////////////////////////////////////

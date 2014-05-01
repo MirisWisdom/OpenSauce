@@ -7,12 +7,40 @@
 #include "Interface/Controls.hpp"
 #include "Interface/TextBlock.hpp"
 
+#include <YeloLib/configuration/c_configuration_container.hpp>
+#include <YeloLib/configuration/c_configuration_value.hpp>
+
 namespace Yelo
 {
 	namespace Fov
 	{
 #define DEF_FOV_H	1.22173047065735f
 #define DEF_FOV_V	(atanf(0.75f*tanf(DEF_FOV_H/2.f))*2.f)
+
+		class c_camera_fov_settings
+			: public Configuration::c_configuration_container
+		{
+		public:
+			Configuration::c_configuration_value<real> m_field_of_view;
+
+			c_camera_fov_settings()
+				: Configuration::c_configuration_container("Camera")
+				, m_field_of_view("FieldOfView", DEF_FOV_V)
+			{ }
+			
+		protected:
+			const std::vector<i_configuration_value* const> GetMembers()
+			{
+				std::vector<i_configuration_value* const> values =
+				{
+					&m_field_of_view,
+				};
+
+				return values;
+			}
+		};
+		std::unique_ptr<c_camera_fov_settings> g_settings;
+
 		struct {
 			struct {
 				real height;
@@ -129,6 +157,24 @@ namespace Yelo
 			Memory::WriteRelativeCall(OBSERVER_UPDATE_POSITIONS, GET_FUNC_VPTR(OBSERVER_TICK_CALL_HOOK_OBSERVER_UPDATE_POSITIONS));
 
 			GET_PTR(MAX) = &_fov_globals.fov.height_max;
+			
+			_fov_globals.InitializeToDefaultSettings();
+			
+			g_settings = std::make_unique<c_camera_fov_settings>();
+			Settings::RegisterConfigurationContainer(g_settings.get(),
+				nullptr,
+				[]()
+				{
+					_fov_globals.fov.vertical = g_settings->m_field_of_view;
+ 					_fov_globals.weapon.distance = _fov_globals.weapon.height / tanf( DEF_FOV_V / 2.f );
+ 					_fov_globals.Scale();
+				},
+				[]()
+				{
+					g_settings->m_field_of_view = _fov_globals.fov.vertical;
+				},
+				nullptr
+			);
 		}
 
 		void Dispose()
@@ -138,6 +184,8 @@ namespace Yelo
 				delete _fov_globals.menu;
 				_fov_globals.menu = nullptr;
 			}
+			
+			Settings::UnregisterConfigurationContainer(g_settings.get());
 		}
 
 		void Update()
@@ -176,25 +224,6 @@ namespace Yelo
 
 			return Enums::_settings_adjustment_result_not_finished;
 		}
-
-		void LoadSettings(TiXmlElement* fov_element)
-		{
-			_fov_globals.InitializeToDefaultSettings();
-
-			if(fov_element != nullptr)
-			{
-				fov_element->QueryFloatAttribute("value", &_fov_globals.fov.vertical);
-			}
-
- 			_fov_globals.weapon.distance = _fov_globals.weapon.height / tanf( DEF_FOV_V / 2.f );
- 			_fov_globals.Scale();
-		}
-
-		void SaveSettings(TiXmlElement* fov_element)
-		{
-			fov_element->SetDoubleAttribute("value", _fov_globals.fov.vertical);
-		}
-
 
 #if defined(DX_WRAPPER)
 		void Initialize3D(IDirect3DDevice9 *pDevice, D3DPRESENT_PARAMETERS *pPP)

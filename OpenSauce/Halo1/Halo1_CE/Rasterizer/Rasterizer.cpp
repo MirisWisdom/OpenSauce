@@ -12,6 +12,9 @@
 #include <blamlib/Halo1/interface/ui_video_screen.hpp>
 #include <blamlib/Halo1/models/model_definitions.hpp>
 
+#include <YeloLib/configuration/c_configuration_container.hpp>
+#include <YeloLib/configuration/c_configuration_value.hpp>
+
 #include "Memory/MemoryInterface.hpp"
 #include "Game/ScriptLibrary.hpp"
 #include "Game/EngineFunctions.hpp"
@@ -122,9 +125,32 @@ namespace Yelo
 
 		s_rasterizer_frame_parameters* FrameParameters()	PTR_IMP_GET2(rasterizer_frame_params);
 
-		static bool g_nvidia_use_basic_camo = false;
 		static char g_screenshot_folder[MAX_PATH] = "screenshots\\";
 		static s_rasterizer_resolution g_resolution_list[64];
+
+		class c_rasterizer_settings
+			: public Configuration::c_configuration_container
+		{
+		public:
+			Configuration::c_configuration_value<bool> m_use_nvidia_camo;
+
+			c_rasterizer_settings()
+				: Configuration::c_configuration_container("Rasterizer")
+				, m_use_nvidia_camo("UseNvidiaCamo", false)
+			{ }
+			
+		protected:
+			const std::vector<i_configuration_value* const> GetMembers()
+			{
+				std::vector<i_configuration_value* const> values =
+				{
+					&m_use_nvidia_camo
+				};
+
+				return values;
+			}
+		};
+		std::unique_ptr<c_rasterizer_settings> g_settings;
 
 		void SetupResolutions()
 		{
@@ -181,6 +207,16 @@ namespace Yelo
 #pragma warning( disable : 4312 ) // conversion from 'unsigned long' to 'void *' of greater size
 		void Rasterizer::Initialize()
 		{
+			g_settings = std::make_unique<c_rasterizer_settings>();
+			Settings::RegisterConfigurationContainer(g_settings.get(), nullptr,
+				[]()
+				{
+					// when 0x637D50 (1.09) is 1, the basic active camouflage is used; at 0x51ABB2 (1.09) it is forced to 1 when an nVidia card is detected
+					// if the user changes this in their settings they need to restart the game for it to take effect
+					GET_PTR(NVIDIA_USE_BASIC_CAMO_TOGGLE) = g_settings->m_use_nvidia_camo;
+				}
+			);
+
 			Render::Initialize();
 
 			g_render_upgrades.Initialize();
@@ -199,7 +235,6 @@ namespace Yelo
 
 				global_def->address = CAST_PTR(void*, address + rdt.field);// fix the global definition's address to point to the correct memory
 			}
-
 			
 			// update the resolution definition array length
 			// definition count has been increased to 64 so that ridiculous amounts of resolutions in the future are accommodated
@@ -223,10 +258,6 @@ namespace Yelo
 			// replace the original resolution populator with the new one
 			Memory::WriteRelativeCall(&SetupResolutions, GET_FUNC_VPTR(RESOLUTION_LIST_SETUP_RESOLUTIONS_CALL), true);
 
-			// when 0x637D50 (1.09) is 1, the basic active camouflage is used; at 0x51ABB2 (1.09) it is forced to 1 when an nVidia card is detected
-			// if the user changes this in their settings they need to restart the game for it to take effect
-			GET_PTR(NVIDIA_USE_BASIC_CAMO_TOGGLE) = g_nvidia_use_basic_camo;
-
 			// make the screenshot function use a unique subfolder
 			tag_string screenshots_folder;
 			GetTimeStampStringForFile(screenshots_folder);
@@ -241,6 +272,8 @@ namespace Yelo
 			g_render_upgrades.Dispose();
 
 			Render::Dispose();
+
+			Settings::UnregisterConfigurationContainer(g_settings.get());
 		}
 
 		void Update()
@@ -257,38 +290,6 @@ namespace Yelo
 				mov edx, [eax]
 			}
 #endif
-		}
-
-		void LoadSettings(TiXmlElement* dx9_element)
-		{
-			g_nvidia_use_basic_camo = false;
-			if(dx9_element != nullptr)
-			{
-				TiXmlElement* camo_element = dx9_element->FirstChildElement("nVidiaActiveCamouflage");
-				if(camo_element)
-					g_nvidia_use_basic_camo = Settings::ParseBoolean(camo_element->Attribute("basic"));
-			}
-
-			g_render_upgrades.LoadSettings(dx9_element);
-			DX9::c_gbuffer_system::LoadSettings(dx9_element);
-			PostProcessing::LoadSettings(dx9_element);
-			ShaderExtension::LoadSettings(dx9_element);
-		}
-
-		void SaveSettings(TiXmlElement* dx9_element)
-		{
-			if(dx9_element != nullptr)
-			{
-				TiXmlElement* camo_element = new TiXmlElement("nVidiaActiveCamouflage");
-				dx9_element->LinkEndChild(camo_element);
-
-				camo_element->SetAttribute("basic", BooleanToString(g_nvidia_use_basic_camo));
-			}
-
-			DX9::c_gbuffer_system::SaveSettings(dx9_element);
-			PostProcessing::SaveSettings(dx9_element);
-			g_render_upgrades.SaveSettings(dx9_element);
-			ShaderExtension::SaveSettings(dx9_element);
 		}
 	};
 

@@ -173,17 +173,25 @@ namespace Yelo
 			s_project_component* components;
 			const int32 component_count = GetProjectComponents(components);
 
+			Settings::InitializeSettings();
+
 			for(Yelo::int32 x = 0; x <= component_count; x++)
 				components[x].Initialize();
+			
+			Settings::Load();
 		}
 
 		static void PLATFORM_API DisposeOnExit()
 		{
 			s_project_component* components;
 			const int32 component_count = GetProjectComponents(components);
+			
+			Settings::Save();
 
 			for(int32 x = component_count; x >= 0; x--)
 				components[x].Dispose();
+
+			Settings::DisposeSettings();
 		}
 
 		// hooks the call that starts the main game loop to init OS beforehand

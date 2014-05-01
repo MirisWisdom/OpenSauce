@@ -48,8 +48,7 @@ namespace Yelo
 		device_groups_data_t&							DeviceGroups();
 
 
-		//////////////////////////////////////////////////////////////////////////
-		//
+		/////////////////////////////////////////////////////////////////////////
 
 		struct collideable_object_data : TStructImpl(2048) // pad?
 		{
@@ -152,9 +151,6 @@ namespace Yelo
 		void PLATFORM_API Update();
 
 		void InitializeForYeloGameState(bool enabled);
-
-		void LoadSettings(TiXmlElement* objects_element);
-		void SaveSettings(TiXmlElement* objects_element);
 
 		// Get the current state of the engine's vehicle remapper
 		bool VehicleRemapperEnabled();

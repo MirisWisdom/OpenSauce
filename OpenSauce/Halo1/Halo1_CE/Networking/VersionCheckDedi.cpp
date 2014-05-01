@@ -16,23 +16,6 @@ namespace Yelo
 	{
 		/*!
 		* \brief
-		* Runs the update check process when the server is run.
-		*
-		* Runs the update check process when the server is run.
-		*/
-		void		c_version_check_manager_dedi::Initialize()
-		{
-			c_version_check_manager_base::Initialize();
-
-			// check for updates using blocking
-			if(!m_states.checked_today)
-			{
-				blam::console_printf(false, "Checking for updates...");
-				CheckForUpdates();
-			}
-		}
-		/*!
-		* \brief
 		* Runs the update check if needed.
 		*
 		* Updates the date condition to see if a check has been performed today.
@@ -61,6 +44,19 @@ namespace Yelo
 			else
 				DisplayVersions(m_states.is_new_version_available);
 		}
+
+		void		c_version_check_manager_dedi::TestForUpdate()
+		{
+			c_version_check_manager_base::TestForUpdate();
+
+			// check for updates using blocking
+			if(!m_states.checked_today)
+			{
+				blam::console_printf(false, "Checking for updates...");
+				CheckForUpdates();
+			}
+		}
+
 		/*!
 		* \brief
 		* Prints the available version if a new version is available.

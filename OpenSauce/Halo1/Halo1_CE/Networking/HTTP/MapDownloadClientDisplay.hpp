@@ -26,33 +26,33 @@ namespace Yelo
 		class c_map_download_display
 		{
 			// background
-			TextBlock* m_background_tint;
+			std::unique_ptr<TextBlock> m_background_tint;
 			// container
-			TextBlock* m_base_container;
+			std::unique_ptr<TextBlock> m_base_container;
 			// inner container
-			TextBlock* m_inner_container;
+			std::unique_ptr<TextBlock> m_inner_container;
 			// title
-			TextBlock* m_title;
+			std::unique_ptr<TextBlock> m_title;
 			// map name
-			TextBlock* m_map_name;
+			std::unique_ptr<TextBlock> m_map_name;
 			// part progress bar back
-			TextBlock* m_part_progress_back;
+			std::unique_ptr<TextBlock> m_part_progress_back;
 			// part progress bar front
-			TextBlock* m_part_progress_front;
+			std::unique_ptr<TextBlock> m_part_progress_front;
 			// part progress bar text
-			TextBlock* m_part_progress_text;
+			std::unique_ptr<TextBlock> m_part_progress_text;
 			// map progress bar back
-			TextBlock* m_map_progress_back;
+			std::unique_ptr<TextBlock> m_map_progress_back;
 			// map progress bar front
-			TextBlock* m_map_progress_front;
+			std::unique_ptr<TextBlock> m_map_progress_front;
 			// map progress bar text
-			TextBlock* m_map_progress_text;
+			std::unique_ptr<TextBlock> m_map_progress_text;
 			// cancel text
-			TextBlock* m_cancel;
+			std::unique_ptr<TextBlock> m_cancel;
 			// provider title
-			TextBlock* m_provider_title;
+			std::unique_ptr<TextBlock> m_provider_title;
 			// provider text
-			TextBlock* m_provider_description;
+			std::unique_ptr<TextBlock> m_provider_description;
 
 			bool m_map_extracting;
 			bool m_reconnecting;
