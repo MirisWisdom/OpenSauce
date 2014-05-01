@@ -81,6 +81,13 @@
     <Error			 Condition="!Exists('$(LocalRakNetDir)')"
 		Text="Project requires RakNet, but LocalRakNetDir wasn't found" />
   </Target>
+  
+  <!-- Visual Leak Detector -->
+  <Target Name="OSVerifyVLD" Condition=" '$(OSRequiresVLD)' != 'true' " />
+  <Target Name="OSVerifyVLD" Condition=" '$(OSRequiresVLD)' == 'true' ">
+    <Error			Condition="!Exists('$(ProgramFiles)\Visual Leak Detector')"
+		Text="Project requires Visual Leak Detector, but it's installation directory wasn't found" />
+  </Target>
 
   <!-- Halo Custom Edition -->
   <Target Name="OSVerifyHaloCustomEd" Condition=" '$(OSRequiresHaloCustomEd)' != 'true' or '$(BuildingInsideVisualStudio)'!='true' " />

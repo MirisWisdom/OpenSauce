@@ -449,9 +449,6 @@ namespace Yelo
 			void Initialize();
 			void Dispose();
 
-			void LoadSettings(TiXmlElement* xml_element);
-			void SaveSettings(TiXmlElement* xml_element);
-
 			// Register a key with the engine's gamespy qr2 API. This tells the SDK that the application will report values for this key
 			// [keyid] - Id of the key
 			// [key] - Name of the key. Player keys should end in "_" (such as "score_") and team keys should end in "_t"

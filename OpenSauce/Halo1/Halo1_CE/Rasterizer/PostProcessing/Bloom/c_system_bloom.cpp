@@ -57,6 +57,12 @@ namespace Yelo
 		// IPostProcessingComponent
 		void c_system_bloom::Initialize()
 		{
+			m_settings = std::make_unique<c_system_settings>();
+			Settings::RegisterConfigurationContainer(m_settings.get(), nullptr, 
+				[this](){ m_members.m_flags.is_enabled = m_settings->m_enabled; },
+				[this](){ m_settings->m_enabled = m_members.m_flags.is_enabled; }
+			);
+
 			m_members.status = Enums::pp_component_status_uninitialised;
 
 			m_members.m_flags.is_ready = false;
@@ -112,6 +118,8 @@ namespace Yelo
 			g_effect_bloom.Dtor();
 			g_shader_instance_bloom.Dtor();
 			g_shader_bloom.Dtor();
+
+			Settings::UnregisterConfigurationContainer(m_settings.get());
 		}
 
 		void c_system_bloom::InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters)
@@ -254,32 +262,6 @@ namespace Yelo
 		{
 			// set the shaders variables to the defaults
 			SetBloomShaderVariables();
-		}
-
-		/////////////////////////////////////////////////
-		// IPostProcessingUserSettings
-		void c_system_bloom::LoadSettings(TiXmlElement* parent_element)
-		{
-			TiXmlElement* element = parent_element->FirstChildElement("Bloom");
-
-			if(!element) return;
-
-			m_members.m_flags.is_enabled = Settings::ParseBoolean( element->Attribute("enabled") );
-		}
-
-		void c_system_bloom::SaveSettings(TiXmlElement* parent_element)
-		{
-			TiXmlElement* element = NULL;
-
-			element = new TiXmlElement("Bloom");
-			parent_element->LinkEndChild(element);
-
-			element->SetAttribute("enabled", BooleanToString(m_members.m_flags.is_enabled));
-		}
-
-		void c_system_bloom::SetDefaultSettings()
-		{
-			m_members.m_flags.is_enabled = true;
 		}
 
 		/////////////////////////////////////////////////

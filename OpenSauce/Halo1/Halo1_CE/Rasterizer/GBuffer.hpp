@@ -9,6 +9,9 @@
 #if !PLATFORM_IS_DEDI
 #include <YeloLib/Halo1/files/packed_file.hpp>
 
+#include <YeloLib/configuration/c_configuration_container.hpp>
+#include <YeloLib/configuration/c_configuration_value.hpp>
+
 #include "Rasterizer/Rasterizer.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
 #include "Rasterizer/DX9/rasterizer_dx9_shaders_vshader9.hpp"
@@ -139,6 +142,30 @@ namespace Yelo
 		};
 		static c_gbuffer_rtclear_effect& GBufferClear();
 		
+		class c_gbuffer_settings
+			: public Configuration::c_configuration_container
+		{
+		public:
+			Configuration::c_configuration_value<bool> m_enabled;
+
+			c_gbuffer_settings()
+				: Configuration::c_configuration_container("GBuffer")
+				, m_enabled("Enabled", true)
+			{ }
+			
+		protected:
+			const std::vector<i_configuration_value* const> GetMembers()
+			{
+				std::vector<i_configuration_value* const> values =
+				{
+					&m_enabled
+				};
+
+				return values;
+			}
+		};
+		static std::unique_ptr<c_gbuffer_settings> g_settings;
+
 		class c_gbuffer_system
 		{
 		public:
@@ -226,10 +253,6 @@ namespace Yelo
 			static void	Dispose();
 			// Swap the stored WVP's
 			static void Update(real delta_time);
-			// Load any user settings for the gbuffer
-			static void LoadSettings(TiXmlElement* dx9_element);
-			// Save any user settings for the gbuffer
-			static void SaveSettings(TiXmlElement* dx9_element);
 					
 			// Calls AllocateResources
 			static void	Initialize3D(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* params);
@@ -245,6 +268,7 @@ namespace Yelo
 			static BOOL& OutputObjectTBN();
 
 			static bool& RenderGBuffer();
+
 		public:
 			// Called for each mesh drawn to render to the GBuffer
 			static HRESULT	 	DrawIndexedPrimitive(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type,INT BaseVertexIndex,UINT MinVertexIndex,UINT NumVertices,UINT startIndex,UINT primCount);

@@ -25,9 +25,6 @@ namespace Yelo
 		void	Dispose();
 
 		void	Update(real delta);
-
-		void	LoadSettings(TiXmlElement* xml_element);
-		void	SaveSettings(TiXmlElement* xml_element);
 	};};};};
 };
 #endif

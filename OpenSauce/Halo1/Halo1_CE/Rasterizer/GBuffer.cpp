@@ -495,6 +495,12 @@ skip_disable_velocity:
 
 			g_default_system.Ctor();
 
+			g_settings = std::make_unique<c_gbuffer_settings>();
+			Settings::RegisterConfigurationContainer(g_settings.get(), nullptr,
+				[]() { g_system_enabled = g_settings->m_enabled; },
+				[]() { g_settings->m_enabled = g_system_enabled; }
+			);
+
 			c_gbuffer_system::g_output_object_tbn = false;
 			// leave as false, not enough vertex shader registers available to do object velocity with bones
 			c_gbuffer_system::g_output_object_velocity = false;
@@ -537,6 +543,8 @@ skip_disable_velocity:
 		}
 		void		c_gbuffer_system::Dispose()
 		{
+			Settings::UnregisterConfigurationContainer(g_settings.get());
+
 			g_default_system.Dtor();
 		}
 
@@ -549,31 +557,14 @@ skip_disable_velocity:
 			g_wvp_stored = false;
 		}
 
-		void		c_gbuffer_system::LoadSettings(TiXmlElement* dx9_element)
-		{
-			// setup default values
-			g_system_enabled = true;
-
-			if(dx9_element != NULL)
-			{
-				TiXmlElement* element = dx9_element->FirstChildElement("GBuffer");
-
-				if(element != NULL)
-					g_system_enabled = Settings::ParseBoolean( element->Attribute("enabled") );
-			}
-		}
-
-		void		c_gbuffer_system::SaveSettings(TiXmlElement* dx9_element)
-		{
-			TiXmlElement* gbuffer_element = NULL;
-
-			gbuffer_element = new TiXmlElement("GBuffer");
-				dx9_element->LinkEndChild(gbuffer_element);
-
-			gbuffer_element->SetAttribute("enabled", BooleanToString(g_system_enabled));
-		}
-
-		void		c_gbuffer_system::Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters)
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Initializes the GBuffers Direct3D resources. </summary>
+		/// <param name="pDevice">	  	[in] The current render device. </param>
+		/// <param name="pParameters">
+		/// 	[in] The current presentation parameters.
+		/// </param>
+		///-------------------------------------------------------------------------------------------------
+		void c_gbuffer_system::Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters)
 		{
 			if(CMDLINE_GET_PARAM(no_os_gfx).ParameterSet())
 				return;

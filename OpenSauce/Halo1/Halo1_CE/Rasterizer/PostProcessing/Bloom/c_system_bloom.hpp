@@ -7,19 +7,23 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
+#include <YeloLib/configuration/c_configuration_container.hpp>
+#include <YeloLib/configuration/c_configuration_value.hpp>
 #include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
 
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingCacheComponent.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUpdatable.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingRenderable.hpp"
-#include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUserSettings.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 
 namespace Yelo
 {
 	namespace Rasterizer { namespace PostProcessing { namespace Bloom
 	{
-		class c_system_bloom : public IPostProcessingCacheComponent, public IPostProcessingUpdatable, public IPostProcessingRenderable, public IPostProcessingUserSettings
+		class c_system_bloom
+			: public IPostProcessingCacheComponent
+			, public IPostProcessingUpdatable
+			, public IPostProcessingRenderable
 		{
 			/////////////////////////////////////////////////
 			// static members
@@ -34,6 +38,30 @@ namespace Yelo
 			/////////////////////////////////////////////////
 			// members
 		private:
+			class c_system_settings
+				: public Configuration::c_configuration_container
+			{
+			public:
+				Configuration::c_configuration_value<bool> m_enabled;
+
+				c_system_settings()
+					: Configuration::c_configuration_container("Rasterizer.PostProcessing.Bloom")
+					, m_enabled("Enabled", true)
+				{ }
+				
+			protected:
+				const std::vector<i_configuration_value* const> GetMembers()
+				{
+					std::vector<i_configuration_value* const> values =
+					{
+						&m_enabled
+					};
+
+					return values;
+				}
+			};
+			std::unique_ptr<c_system_settings> m_settings;
+
 			struct
 			{
 				struct
@@ -83,13 +111,6 @@ namespace Yelo
 		public:
 			void Initialize_Cache();
 			void Dispose_Cache();
-
-			/////////////////////////////////////////////////
-			// IPostProcessingUserSettings
-		public:
-			void LoadSettings(TiXmlElement* parent_element);
-			void SaveSettings(TiXmlElement* parent_element);
-			void SetDefaultSettings();
 
 			/////////////////////////////////////////////////
 			// system setup

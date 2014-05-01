@@ -376,7 +376,7 @@ static void* scripting_vehicle_remapper_enabled_evaluate(void** arguments)
 	}* args = CAST_PTR(s_arguments*, arguments);
 	TypeHolder result; result.pointer = nullptr;
 
-	result.boolean = g_object_yelo_globals.vehicle_remapper_disabled;
+	result.boolean = !g_settings->m_vehicle_remapper_enabled;
 	if( args->state_name[0] != '\0' && strcmp(args->state_name, "get")!=0 )
 		VehicleRemapperEnable( Settings::ParseBoolean(args->state_name) );
 

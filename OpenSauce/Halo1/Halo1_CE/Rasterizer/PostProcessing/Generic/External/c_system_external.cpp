@@ -61,6 +61,12 @@ namespace Yelo
 		 */
 		void c_system_external::Initialize()
 		{
+			m_settings = std::make_unique<c_system_settings>();
+			Settings::RegisterConfigurationContainer(m_settings.get(), nullptr, 
+				[this](){ m_members.m_flags.is_enabled = m_settings->m_enabled; },
+				[this](){ m_settings->m_enabled = m_members.m_flags.is_enabled; }
+			);
+
 			// initialize the systems variables to defaults
 			m_members.status = Enums::pp_component_status_uninitialised;
 
@@ -86,6 +92,8 @@ namespace Yelo
 
 			// delete allocated memory
 			UnloadExternal();
+
+			Settings::UnregisterConfigurationContainer(m_settings.get());
 		}
 
 		/*!
@@ -236,56 +244,6 @@ namespace Yelo
 			}
 
 			UpdateStatus();
-		}
-
-		/////////////////////////////////////////////////
-		// IPostProcessingUserSettings
-		/*!
-		 * \brief
-		 * Loads whether the system is enabled from the users settings.
-		 * 
-		 * \param parent_element
-		 * The parent element to get the systems settings element from.
-		 * 
-		 * Loads whether the system is enabled from the users settings.
-		 */
-		void c_system_external::LoadSettings(TiXmlElement* parent_element)
-		{
-			TiXmlElement* element = parent_element->FirstChildElement("External");
-
-			if(!element) return;
-
-			m_members.m_flags.is_enabled = Settings::ParseBoolean( element->Attribute("enabled") );
-		}
-
-		/*!
-		 * \brief
-		 * Saves whether the system is enabled to the users settings.
-		 * 
-		 * \param parent_element
-		 * The parent element to add the systems settgins element to.
-		 * 
-		 * Saves whether the system is enabled to the users settings.
-		 */
-		void c_system_external::SaveSettings(TiXmlElement* parent_element)
-		{
-			TiXmlElement* element = NULL;
-
-			element = new TiXmlElement("External");
-			parent_element->LinkEndChild(element);
-
-			element->SetAttribute("enabled", BooleanToString(m_members.m_flags.is_enabled));
-		}
-
-		/*!
-		 * \brief
-		 * Sets the systems default settings.
-		 * 
-		 * Sets the systems default settings.
-		 */
-		void c_system_external::SetDefaultSettings()
-		{
-			m_members.m_flags.is_enabled = true;
 		}
 
 		/////////////////////////////////////////////////

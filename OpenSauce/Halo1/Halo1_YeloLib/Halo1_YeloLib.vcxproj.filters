@@ -106,6 +106,15 @@
     <Filter Include="_Resources\OpenSauceIDE">
       <UniqueIdentifier>{54ab6590-d1e6-4e02-908f-1f365dc3a105}</UniqueIdentifier>
     </Filter>
+    <Filter Include="configuration">
+      <UniqueIdentifier>{e3893432-9f00-43e9-8fc7-c62a694f1968}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="configuration\property_tree">
+      <UniqueIdentifier>{a4be0888-c2ad-49ee-af2e-5ae55c09aa75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="configuration\type_containers">
+      <UniqueIdentifier>{7eca856f-6ae9-4b09-b0e4-98b45f6ec8cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\targetver.h">
@@ -408,6 +417,60 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_files_structures_yelo.hpp">
       <Filter>cache</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_container.hpp">
+      <Filter>configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_container_list.hpp">
+      <Filter>configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_file_factory.hpp">
+      <Filter>configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_list.hpp">
+      <Filter>configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_value.hpp">
+      <Filter>configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_value_list.hpp">
+      <Filter>configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\i_configuration_container.hpp">
+      <Filter>configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\i_configuration_file.hpp">
+      <Filter>configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\i_configuration_leaf.hpp">
+      <Filter>configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\i_configuration_leaf_iterator.hpp">
+      <Filter>configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\i_configuration_value.hpp">
+      <Filter>configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_file.hpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_file_json.hpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_file_xml.hpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_leaf.hpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_leaf_iterator.hpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_vector3d_container.hpp">
+      <Filter>configuration\type_containers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_type_container.hpp">
+      <Filter>configuration\type_containers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -628,6 +691,30 @@
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\zlib\zutil.c">
       <Filter>.zlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\c_configuration_container.cpp">
+      <Filter>configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\c_configuration_file_factory.cpp">
+      <Filter>configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_file.cpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_file_json.cpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_file_xml.cpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_leaf.cpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_leaf_iterator.cpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_vector3d_container.cpp">
+      <Filter>configuration\type_containers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

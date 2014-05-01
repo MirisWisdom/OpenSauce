@@ -59,6 +59,12 @@ namespace Yelo
 		// IPostProcessingComponent
 		void c_system_fxaa::Initialize()
 		{
+			m_settings = std::make_unique<c_system_settings>();
+			Settings::RegisterConfigurationContainer(m_settings.get(), nullptr, 
+				[this](){ m_members.m_flags.is_enabled = m_settings->m_enabled; },
+				[this](){ m_settings->m_enabled = m_members.m_flags.is_enabled; }
+			);
+
 			m_members.status = Enums::pp_component_status_uninitialised;
 
 			m_members.m_flags.is_ready = false;
@@ -112,6 +118,8 @@ namespace Yelo
 			g_effect_fxaa.Dtor();
 			g_shader_instance_fxaa.Dtor();
 			g_shader_fxaa.Dtor();
+			
+			Settings::UnregisterConfigurationContainer(m_settings.get());
 		}
 
 		void c_system_fxaa::InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters)
@@ -212,33 +220,6 @@ namespace Yelo
 				return false;
 
 			return Render(c_post_processing_main::Instance().Globals().render_device);
-		}
-
-		/////////////////////////////////////////////////
-		// IPostProcessingUserSettings
-		void c_system_fxaa::LoadSettings(TiXmlElement* parent_element)
-		{
-			TiXmlElement* element = parent_element->FirstChildElement("FXAA");
-
-			if(!element) return;
-
-			m_members.m_flags.is_enabled = Settings::ParseBoolean( element->Attribute("enabled") );
-		}
-
-		void c_system_fxaa::SaveSettings(TiXmlElement* parent_element)
-		{
-			TiXmlElement* element = NULL;
-
-			element = new TiXmlElement("FXAA");
-			parent_element->LinkEndChild(element);
-
-			element->SetAttribute("enabled", BooleanToString(m_members.m_flags.is_enabled));
-		}
-
-		void c_system_fxaa::SetDefaultSettings()
-		{
-			// default to false as FXAA is a performance hog
-			m_members.m_flags.is_enabled = false;
 		}
 
 		/////////////////////////////////////////////////

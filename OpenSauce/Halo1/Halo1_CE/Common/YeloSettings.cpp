@@ -8,148 +8,39 @@
 #include "Common/YeloSettings.hpp"
 
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
-
-#include "Game/EngineFunctions.hpp"
-#include "Memory/MemoryInterface.hpp"
-
-#include "Game/Camera.hpp"
-#include "Interface/GameUI.hpp"
-#include "Networking/Networking.hpp"
-#include "Networking/VersionCheck.hpp"
-#include "Networking/HTTP/MapDownloadClient.hpp"
-#include "Objects/Objects.hpp"
-#include "Rasterizer/Rasterizer.hpp"
-#include "TagGroups/CacheFiles.hpp"
+#include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
+#include <YeloLib/configuration/i_configuration_file.hpp>
+#include <YeloLib/configuration/i_configuration_leaf.hpp>
+#include <YeloLib/configuration/c_configuration_file_factory.hpp>
+#include <YeloLib/configuration/c_configuration_container.hpp>
 
 namespace Yelo
 {
-//////////////////////////////////////////////////////////////////////////
-// Client settings
-#if PLATFORM_IS_USER
-	namespace Settings
-	{
-		static void LoadSettingsForClient(TiXmlElement* client)
-		{
-			TiXmlElement* dx9_element = nullptr,
-						* fov_element = nullptr,
-						* hud_element = nullptr,
-						* objects_element = nullptr,
-						* version_check_element = nullptr,
-						* cf_element = nullptr,
-						* networking_element = nullptr
-				;
-
-			if(client != nullptr)
-			{
-				dx9_element = client->FirstChildElement("dx9");
-				fov_element = client->FirstChildElement("Fov");
-				hud_element = client->FirstChildElement("Hud");
-				networking_element = client->FirstChildElement("networking");
-				objects_element = client->FirstChildElement("objects");
-				version_check_element = client->FirstChildElement("version_check");
-				cf_element = client->FirstChildElement("cacheFiles");
-			}
-
-			Rasterizer::LoadSettings(dx9_element);
-			Fov::LoadSettings(fov_element);
-			Hud::LoadSettings(hud_element);
-			Networking::LoadSettings(networking_element);
-			Objects::LoadSettings(objects_element);
-			Networking::VersionCheck::LoadSettings(version_check_element);
-			Cache::LoadSettings(cf_element);
-			Networking::HTTP::Client::MapDownload::LoadSettings(networking_element);
-		}
-
-		static void SaveSettingsForClient(TiXmlElement* client)
-		{
-			TiXmlElement* dx9_element = nullptr,
-						* fov_element = nullptr,
-						* hud_element = nullptr,
-						* objects_element = nullptr,
-						* version_check_element = nullptr,
-						* networking_element = nullptr,
-						* cf_element = nullptr
-				;
-
-			dx9_element = new TiXmlElement("dx9");
-				client->LinkEndChild(dx9_element);
-			fov_element = new TiXmlElement("Fov");
-				client->LinkEndChild(fov_element);
-			hud_element = new TiXmlElement("Hud");
-				client->LinkEndChild(hud_element);
-			networking_element = new TiXmlElement("networking");
-				client->LinkEndChild(networking_element);
-			objects_element = new TiXmlElement("objects");
-				client->LinkEndChild(objects_element);
-			version_check_element = new TiXmlElement("version_check");
-				client->LinkEndChild(version_check_element);
-			cf_element = new TiXmlElement("cacheFiles");
-				client->LinkEndChild(cf_element);
-
-			Rasterizer::SaveSettings(dx9_element);
-			Fov::SaveSettings(fov_element);
-			Hud::SaveSettings(hud_element);
-			Networking::SaveSettings(networking_element);
-			Objects::SaveSettings(objects_element);
-			Networking::VersionCheck::SaveSettings(version_check_element);
-			Cache::SaveSettings(cf_element);
-			Networking::HTTP::Client::MapDownload::SaveSettings(networking_element);
-		}
-	};
-#endif
-
-
-//////////////////////////////////////////////////////////////////////////
-// Server settings
-
-	namespace Settings
-	{
-		static void LoadSettingsForServer(TiXmlElement* server)
-		{
-#if PLATFORM_IS_DEDI
-			// TODO: make the Cache and Objects settings load as readonly from the client settings
-			TiXmlElement* version_check_element = nullptr,
-						* objects_element = nullptr,
-						* cf_element = nullptr
-				;
-
-			if(server != nullptr)
-			{
-				objects_element = server->FirstChildElement("objects");
-				version_check_element = server->FirstChildElement("version_check");
-				cf_element = server->FirstChildElement("cacheFiles");
-			}
-
-			Objects::LoadSettings(objects_element);
-			Networking::VersionCheck::LoadSettings(version_check_element);
-			Cache::LoadSettings(cf_element);
-#endif
-		}
-
-		static void SaveSettingsForServer(TiXmlElement* server)
-		{
-#if PLATFORM_IS_DEDI
-			TiXmlElement* version_check_element = nullptr
-				;
-
-			version_check_element = new TiXmlElement("version_check");
-				server->LinkEndChild(version_check_element);
-
-			Networking::VersionCheck::SaveSettings(version_check_element);
-#endif
-		}
-	};
-
-
-//////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
 // Interface
 
 	namespace Settings
 	{
 		cstring K_CHAT_LOG_FILENAME = "Game.ChatLog.txt";
 
-	//////////////////////////////////////////////////////////////////////////
-		void Initialize()
+		struct s_settings_globals
+		{
+			struct s_settings_container_entry
+			{
+				std::function<void()> m_pre_load_callback;
+				std::function<void()> m_post_load_callback;
+				std::function<void()> m_pre_save_callback;
+				std::function<void()> m_post_save_callback;
+				Configuration::c_configuration_container* m_container_ptr;
+			};
+
+			Configuration::t_configuration_file_ptr m_settings;
+			std::vector<s_settings_container_entry> m_settings_containers;
+		};
+		static s_settings_globals g_settings_globals;
+		
+		/// <summary>	Initializes the shared settings. </summary>
+		void InitializeSettings()
 		{
 			ReadCmdLineSettings();
 
@@ -157,81 +48,135 @@ namespace Yelo
 
 			if(CMDLINE_GET_PARAM(path).ParameterSet())
 				profile_path = CMDLINE_GET_PARAM(path).GetValue();
-
+			
 			Settings::SharedInitialize(profile_path);
-
-			LoadSettings();
 		}
 
-		void Dispose()
+		/// <summary>	Disposes the shared settings. </summary>
+		void DisposeSettings()
 		{
-			SaveSettings();
-
 			Settings::SharedDispose();
 		}
 
-
-		// HACK: if this ever changes, be sure to update LoadSettingsUserHack in CheApe's YeloSettings.cpp!
-		static void LoadSettingsUser()
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets the root configuration node. </summary>
+		///
+		/// <param name="container">	The container to get the root node from. </param>
+		///
+		/// <returns>	The configuration root node. </returns>
+		std::unique_ptr<Configuration::i_configuration_leaf> GetRootNode(Configuration::c_configuration_container& container)
 		{
+			auto root_node = g_settings_globals.m_settings->Root()->GetChild("OpenSauce");
+			if(!root_node)
+			{
+				root_node = g_settings_globals.m_settings->Root()->AddChild("OpenSauce");
+			}
+
+			return root_node;
+		}
+		
+		/// <summary>	Loads the runtime settings file. </summary>
+		void Load()
+		{
+			char file_path[MAX_PATH];
 #if PLATFORM_IS_USER
-			TiXmlElement* root = nullptr;
-			TiXmlDocument xml_settings = TiXmlDocument();
-
-			char file_path[MAX_PATH];
-			if(GetSettingsFilePath(K_USER_FILENAME_XML, file_path))
-				root = GenericSettingsParse(xml_settings, file_path, "client");
-
-			LoadSettingsForClient(root);
-#endif
-		}
-
-		static void LoadSettingsServer()
-		{
-			TiXmlElement* root = nullptr;
-			TiXmlDocument xml_settings = TiXmlDocument();
-
-			char file_path[MAX_PATH];
-			if(GetSettingsFilePath(K_SERVER_FILENAME_XML, file_path))
-				root = GenericSettingsParse(xml_settings, file_path, "server");
-
-			LoadSettingsForServer(root);
-		}
-
-		void LoadSettings()
-		{
-			LoadSettingsUser();
-			LoadSettingsServer();
-		}
-
-		static void SaveSettingsUser()
-		{
-#if PLATFORM_IS_USER
-			char file_path[MAX_PATH];
 			GetSettingsFilePath(K_USER_FILENAME_XML, file_path);
-			TiXmlDocument xml_settings(file_path);
-			TiXmlElement* root = GenericSettingsWrite(xml_settings, "osYeloSettings", "client");
-
-			SaveSettingsForClient(root);
-			xml_settings.SaveFile(file_path);
-#endif
-		}
-
-		static void SaveSettingsServer()
-		{
-			char file_path[MAX_PATH];
+#else
 			GetSettingsFilePath(K_SERVER_FILENAME_XML, file_path);
-			TiXmlDocument xml_settings(file_path);
-			TiXmlElement* root = GenericSettingsWrite(xml_settings, "osYeloSettings", "server");
+#endif
+			g_settings_globals.m_settings = Configuration::c_configuration_file_factory::CreateConfigurationFile(file_path);
+			g_settings_globals.m_settings->Load();
 
-			SaveSettingsForServer(root);
-			xml_settings.SaveFile(file_path);
+			for(auto entry : g_settings_globals.m_settings_containers)
+			{
+				if(entry.m_pre_load_callback)
+				{
+					entry.m_pre_load_callback();
+				}
+
+				auto root_node = GetRootNode(*entry.m_container_ptr);
+				entry.m_container_ptr->GetValueFromParent(*root_node);
+
+				if(entry.m_post_load_callback)
+				{
+					entry.m_post_load_callback();
+				}
+			}
 		}
 
-		void SaveSettings()
+		/// <summary>	Saves the current configuration. </summary>
+		void Save()
 		{
-			SaveSettingsUser();
-			SaveSettingsServer();
+			Clear();
+
+			for(const auto& entry : g_settings_globals.m_settings_containers)
+			{
+				if(entry.m_pre_save_callback)
+				{
+					entry.m_pre_save_callback();
+				}
+
+				auto root_node = GetRootNode(*entry.m_container_ptr);
+				entry.m_container_ptr->SetValueToParent(*root_node);
+
+				if(entry.m_post_save_callback)
+				{
+					entry.m_post_save_callback();
+				}
+			}
+
+			g_settings_globals.m_settings->Save();
+		}
+
+		/// <summary>	Clears the current settings. </summary>
+		void Clear()
+		{
+			g_settings_globals.m_settings->Clear();
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Registers a configuration container with the settings system. </summary>
+		///
+		/// <param name="container">		 	The container to register. </param>
+		/// <param name="pre_load_callback"> 	The pre load callback. </param>
+		/// <param name="post_load_callback">	The post load callback. </param>
+		/// <param name="pre_save_callback"> 	The pre save callback. </param>
+		/// <param name="post_save_callback">	The post save callback. </param>
+		void RegisterConfigurationContainer(Configuration::c_configuration_container* container
+			, std::function<void()> pre_load_callback
+			, std::function<void()> post_load_callback
+			, std::function<void()> pre_save_callback
+			, std::function<void()> post_save_callback)
+		{
+			s_settings_globals::s_settings_container_entry entry =
+			{
+				pre_load_callback,
+				post_load_callback,
+				pre_save_callback,
+				post_save_callback,
+				container
+			};
+
+			g_settings_globals.m_settings_containers.push_back(entry);
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Unregisters a configuration container from the settings system. </summary>
+		///
+		/// <param name="container">	The container to unregister. </param>
+		void UnregisterConfigurationContainer(Configuration::c_configuration_container* container)
+		{
+			auto entry_iterator = std::find_if(g_settings_globals.m_settings_containers.begin(), g_settings_globals.m_settings_containers.end(),
+				[container](s_settings_globals::s_settings_container_entry& entry)
+				{
+					return entry.m_container_ptr == container;
+				}
+			);
+
+			if(entry_iterator != g_settings_globals.m_settings_containers.end())
+			{
+				g_settings_globals.m_settings_containers.erase(entry_iterator);
+			}
 		}
 	};
 };

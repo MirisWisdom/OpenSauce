@@ -196,17 +196,6 @@ namespace Yelo
 			GameSpy::Dispose();
 		}
 
-		void LoadSettings(TiXmlElement* xml_element)
-		{
-			if(xml_element == nullptr) return;
-
-			GameSpy::LoadSettings(xml_element);
-		}
-		void SaveSettings(TiXmlElement* xml_element)
-		{
-			GameSpy::SaveSettings(xml_element);
-		}
-
 		static API_FUNC_NAKED bool NetworkConnectionWrite(const s_network_connection& connection,
 			const void* data, size_t data_size_in_bits,
 			const void* header, size_t header_size_in_bits,

@@ -4,6 +4,7 @@
     <OSRootDir>$(ProjectDir)..\..\..\</OSRootDir>
     <OSRequiresDirectX>true</OSRequiresDirectX>
     <OSRequiresCppBoost>true</OSRequiresCppBoost>
+		<OSRequiresVLD>true</OSRequiresVLD>
     <OSRequiresHaloCustomEd>true</OSRequiresHaloCustomEd>
     <OSRequiresGameSpyOpen>true</OSRequiresGameSpyOpen>
   </PropertyGroup>

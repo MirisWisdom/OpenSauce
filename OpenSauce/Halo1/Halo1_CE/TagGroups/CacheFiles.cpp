@@ -13,6 +13,8 @@
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 
 #include <YeloLib/Halo1/cache/cache_files_yelo.hpp>
+#include <YeloLib/configuration/c_configuration_container.hpp>
+#include <YeloLib/configuration/c_configuration_value.hpp>
 #include <YeloLib/Halo1/cache/data_file_yelo.hpp>
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 
@@ -120,25 +122,49 @@ namespace Yelo
 
 	namespace Cache
 	{
+		class c_cache_settings
+			: public Configuration::c_configuration_container
+		{
+		public:
+			Configuration::c_configuration_value<bool> m_check_yelo_files_first;
+			Configuration::c_configuration_value<std::string> m_mainmenu_scenario;
+
+			c_cache_settings()
+				: Configuration::c_configuration_container("CacheFiles")
+				, m_check_yelo_files_first("CheckYeloFilesFirst", true)
+				, m_mainmenu_scenario("MainMenuScenario", "")
+			{ }
+			
+		protected:
+			const std::vector<i_configuration_value* const> GetMembers()
+			{
+				std::vector<i_configuration_value* const> values =
+				{
+					&m_check_yelo_files_first,
+					&m_mainmenu_scenario
+				};
+
+				return values;
+			}
+		};
+		std::unique_ptr<c_cache_settings> g_settings;
+
 		struct s_yelo_settings {
-			bool check_for_yelo_files_first; // if true, checks for .yelo files first before .map files
-			PAD24;
 #if PLATFORM_IS_USER
 			// Scenario tag name of the mainmenu the user wants to use
 			string256 mainmenu_scenario_name;
 
-			bool InitializeMainmenuOverride(cstring override_name)
+			bool InitializeMainmenuOverride(std::string override_name)
 			{
 				static cstring k_stock_ui = "levels\\ui\\ui";
 
-				if(override_name != nullptr && override_name[0] != '\0')
+				if(!override_name.empty())
 				{
-					size_t name_length = strlen(override_name);
-
 					// If the override name fits and if it's not the same as the stock ui
-					if(name_length <= Enums::k_string_256_length && 
-						strcmp(override_name, k_stock_ui) != 0)
-						return strcpy_s(mainmenu_scenario_name, override_name) == k_errnone;
+					if((override_name.length() <= Enums::k_string_256_length) && (override_name.compare(k_stock_ui) != 0))
+					{
+						return strcpy_s(mainmenu_scenario_name, override_name.c_str()) == k_errnone;
+					}
 				}
 
 				mainmenu_scenario_name[0] = '\0';
@@ -160,30 +186,6 @@ namespace Yelo
 				}
 #endif
 			}
-
-			void LoadSettings(TiXmlElement* cf_element)
-			{
-				if(cf_element != nullptr)
-				{
-					check_for_yelo_files_first = Settings::ParseBoolean(cf_element->Attribute("checkForYeloFilesFirst"));
-
-#if PLATFORM_IS_USER
-					cstring mainmenu_override_name = cf_element->Attribute("mainmenuScenario");
-
-					InitializeMainmenuOverride(mainmenu_override_name);
-#endif
-				}
-			}
-			void SaveSettings(TiXmlElement* cf_element)
-			{
-				cf_element->SetAttribute("checkForYeloFilesFirst", BooleanToString(check_for_yelo_files_first));
-
-#if PLATFORM_IS_USER
-				if(UseMainmenuOverride())
-					cf_element->SetAttribute("mainmenuScenario", mainmenu_scenario_name);
-#endif
-			}
-
 		}g_yelo_settings;
 //////////////////////////////////////////////////////////////////////////
 // Cache Size upgrades
@@ -208,6 +210,13 @@ namespace Yelo
 
 		void Initialize()
 		{
+			g_settings = std::make_unique<c_cache_settings>();
+#if PLATFORM_IS_USER
+			Settings::RegisterConfigurationContainer(g_settings.get(), nullptr, [](){ g_yelo_settings.InitializeMainmenuOverride(g_settings->m_mainmenu_scenario); });
+#else
+			Settings::RegisterConfigurationContainer(g_settings.get());
+#endif
+
 			MemoryUpgradesInitialize();
 			c_cache_format_path_hacks::Initialize();
 			g_yelo_settings.InitializeMemoryOverrides();
@@ -218,6 +227,8 @@ namespace Yelo
 		void Dispose()
 		{
 			MemoryUpgradesDispose();
+
+			Settings::UnregisterConfigurationContainer(g_settings.get());
 		}
 
 		static bool MapIsOriginal(cstring map_name)
@@ -300,16 +311,6 @@ namespace Yelo
 			}
 
 			return result;
-		}
-
-		void LoadSettings(TiXmlElement* cf_element)
-		{
-			g_yelo_settings.LoadSettings(cf_element);
-		}
-
-		void SaveSettings(TiXmlElement* cf_element)
-		{
-			g_yelo_settings.SaveSettings(cf_element);
 		}
 	};
 };

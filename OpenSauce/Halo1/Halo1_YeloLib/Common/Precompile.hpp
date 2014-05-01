@@ -32,6 +32,8 @@
 	#include <Dinput.h>
 #endif
 
+#include <vld.h>
+
 //////////////////////////////////////////////////////////////////////////
 // STD C includes
 #include <assert.h>
@@ -54,6 +56,8 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
+#include <functional>
+#include <type_traits>
 //////////////////////////////////////////////////////////////////////////
 
 
@@ -61,6 +65,10 @@
 // Boost includes
 #include <boost/preprocessor.hpp>
 #include <boost/static_assert.hpp>
+
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
 #include <boost/integer/static_log2.hpp>
 //////////////////////////////////////////////////////////////////////////

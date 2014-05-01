@@ -5,59 +5,67 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-struct s_render_upgrades {
-	bool dynamic_triangles_upgrades_enabled;
-	bool render_model_nodes_stretching_patch;
-	PAD16;
-
-	void LoadSettings(TiXmlElement* dx9_element)
+class c_render_upgrades
+{
+private:
+	class c_settings
+		: public Configuration::c_configuration_container
 	{
-		render_model_nodes_stretching_patch = true; // ON BY DEFAULT
+	public:
+		Configuration::c_configuration_value<bool> m_dynamic_triangles;
+		Configuration::c_configuration_value<bool> m_model_node_stretching_fix;
+	
+		c_settings()
+			: Configuration::c_configuration_container("Rasterizer.Upgrades")
+			, m_dynamic_triangles("DynamicTriangles", true)
+			, m_model_node_stretching_fix("MaximumModelNodes", true)
+		{ }
 
-		if(dx9_element != nullptr)
+	protected:
+		const std::vector<Configuration::i_configuration_value* const> GetMembers()
 		{
-			TiXmlElement* element = dx9_element->FirstChildElement("Upgrades");
-
-			if(element != nullptr)
+			std::vector<Configuration::i_configuration_value* const> values =
 			{
-				dynamic_triangles_upgrades_enabled = Settings::ParseBoolean( element->Attribute("dynamicTriangles") );
-				render_model_nodes_stretching_patch = Settings::ParseBoolean( element->Attribute("renderModelNodesPatch") );
-			}
+				&m_dynamic_triangles,
+				&m_model_node_stretching_fix,
+			};
+
+			return values;
 		}
-	}
-	void SaveSettings(TiXmlElement* dx9_element)
-	{
-		TiXmlElement* upgrades_element = nullptr;
-
-		upgrades_element = new TiXmlElement("Upgrades");
-			dx9_element->LinkEndChild(upgrades_element);
-
-		upgrades_element->SetAttribute("dynamicTriangles", BooleanToString(dynamic_triangles_upgrades_enabled));
-		upgrades_element->SetAttribute("renderModelNodesPatch", BooleanToString(render_model_nodes_stretching_patch));
-	}
-
+	};
+	std::unique_ptr<c_settings> m_settings;
+	
+public:
 	// If we're not compiling with any upgrades, then don't waste space in the compiled code
 	uint32 dynamic_triangles[Enums::k_rastizer_maximum_dynamic_triangles_upgrade <= Enums::k_rastizer_maximum_dynamic_triangles ? 1 :
 							Enums::k_rastizer_maximum_dynamic_triangles_upgrade];
 
 	void Initialize()
 	{
-		if(dynamic_triangles_upgrades_enabled && NUMBEROF(dynamic_triangles) > 1)
-		{
-			// redirect all dynamic triangle pointers to the new array
-			for(auto ptr : K_DYNAMIC_TRIANGLE_ARRAY_UPGRADE_ADDRESS_LIST)
-				*ptr = dynamic_triangles;
-			// change all references to the dynamic triangle array to our new size
-			for(auto ptr : K_MAXIMUM_DYNAMIC_TRIANGLES_UPGRADE_ADDRESS_LIST)
-				*ptr = Enums::k_rastizer_maximum_dynamic_triangles_upgrade;
-		}
+		m_settings = std::make_unique<c_settings>();
+		Settings::RegisterConfigurationContainer(m_settings.get(), nullptr,
+			[this]()
+			{
+				if(m_settings->m_dynamic_triangles && NUMBEROF(dynamic_triangles) > 1)
+				{
+					// redirect all dynamic triangle pointers to the new array
+					for(auto ptr : K_DYNAMIC_TRIANGLE_ARRAY_UPGRADE_ADDRESS_LIST)
+						*ptr = dynamic_triangles;
+					// change all references to the dynamic triangle array to our new size
+					for(auto ptr : K_MAXIMUM_DYNAMIC_TRIANGLES_UPGRADE_ADDRESS_LIST)
+						*ptr = Enums::k_rastizer_maximum_dynamic_triangles_upgrade;
+				}
 
-		if(render_model_nodes_stretching_patch)
-			InitializeMaximumNodesPerModelFixes();
+				if(m_settings->m_model_node_stretching_fix)
+					InitializeMaximumNodesPerModelFixes();
+			}
+		);
 	}
 
 	void Dispose()
 	{
+		Settings::UnregisterConfigurationContainer(m_settings.get());
+		m_settings.reset();
 	}
 
 	// Not actually an upgrade, but a fix (nodes at index >43 would get stretched). However, we fix it in both sapien and ingame so I put the code here
@@ -74,5 +82,5 @@ struct s_render_upgrades {
 			*ptr = Enums::k_maximum_nodes_per_model;
 		RasterizerGlobals()->maximum_nodes_per_model = Enums::k_maximum_nodes_per_model;
 	}
-
-}g_render_upgrades;
+};
+static c_render_upgrades g_render_upgrades;

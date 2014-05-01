@@ -16,7 +16,6 @@
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingCacheComponent.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUpdatable.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingRenderable.hpp"
-#include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUserSettings.hpp"
 
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
 #include "Rasterizer/PostProcessing/c_quad_manager.hpp"
@@ -246,57 +245,6 @@ namespace Yelo
 
 			// release the quad buffers
 			c_quad_manager::Instance().ReleaseResources_Base();
-		}
-
-		/*!
-		 * \brief
-		 * Loads the post processing settings from a parent element.
-		 * 
-		 * \param dx9_element
-		 * The parent element of the postprocessing user settings.
-		 * 
-		 * Loads the post processing settings from a single base element.
-		 */
-		void		LoadSettings(TiXmlElement* parent_element)
-		{
-			for(int i = 0; i < NUMBEROF(g_postprocess_usersettings_subsystems); i++)
-				g_postprocess_usersettings_subsystems[i]->SetDefaultSettings();
-
-			if(!parent_element) return;
-
-			TiXmlElement* element = parent_element->FirstChildElement("PostProcessing");
-
-			if(!element) return;
-
-			c_post_processing_main::Instance().LoadSettings(element);
-
-			for(int i = 0; i < NUMBEROF(g_postprocess_usersettings_subsystems); i++)
-				g_postprocess_usersettings_subsystems[i]->LoadSettings(element);
-		}
-
-		/*!
-		 * \brief
-		 * Saves the post processing settings to a parent element.
-		 * 
-		 * \param parent_element
-		 * The parent element of the postprocessing user settings.
-		 * 
-		 * Saves the post processing settings to a parent element.
-		 */
-		void		SaveSettings(TiXmlElement* parent_element)
-		{
-			TiXmlElement* element = new TiXmlElement("PostProcessing");
-
-			c_post_processing_main::Instance().SaveSettings(element);
-
-			for(int i = 0; i < NUMBEROF(g_postprocess_usersettings_subsystems); i++)
-				g_postprocess_usersettings_subsystems[i]->SaveSettings(element);
-
-			// if the pp_element has a child then add it to the settings file, otherwise there is no point so delete it
-			if(element->FirstChildElement())
-				parent_element->LinkEndChild(element);
-			else
-				delete element;
 		}
 
 		/*!

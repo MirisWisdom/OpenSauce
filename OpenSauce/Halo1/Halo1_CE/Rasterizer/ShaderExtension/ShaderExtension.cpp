@@ -14,6 +14,8 @@
 #include <blamlib/Halo1/rasterizer/dx9/rasterizer_dx9.hpp>
 #include <blamlib/Halo1/shaders/shader_definitions.hpp>
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
+#include <YeloLib/configuration/c_configuration_container.hpp>
+#include <YeloLib/configuration/c_configuration_value.hpp>
 
 #include "Common/YeloSettings.hpp"
 #include "Common/FileIO.hpp"
@@ -33,6 +35,30 @@ namespace Yelo
 #define __EL_INCLUDE_ID			__EL_INCLUDE_RASTERIZER_SHADEREXTENSION
 #define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_SHADEREXTENSION
 #include "Memory/_EngineLayout.inl"
+
+			class c_shader_extension_settings
+				: public Configuration::c_configuration_container
+			{
+			public:
+				Configuration::c_configuration_value<bool> m_enabled;
+
+				c_shader_extension_settings()
+					: Configuration::c_configuration_container("Rasterizer.ShaderExtensions")
+					, m_enabled("Enabled", true)
+				{ }
+				
+			protected:
+				const std::vector<i_configuration_value* const> GetMembers()
+				{
+					std::vector<i_configuration_value* const> values =
+					{
+						&m_enabled
+					};
+
+					return values;
+				}
+			};
+			std::unique_ptr<c_shader_extension_settings> g_settings;
 
 			enum ps_support{
 				_ps_support_legacy,
@@ -141,6 +167,11 @@ namespace Yelo
 
 			void		Initialize()
 			{
+				g_settings = std::make_unique<c_shader_extension_settings>();
+				Settings::RegisterConfigurationContainer(g_settings.get());
+
+				Model::Initialize();
+
 				g_shader_files_present = true;
 
 				// determine if the custom shader collections are present
@@ -153,7 +184,13 @@ namespace Yelo
 					g_shader_files_present &= (file_open_success == Enums::_file_io_open_error_none);
 				}
 			}
-			void		Dispose()		{}
+
+			void		Dispose()
+			{
+				Model::Dispose();
+
+				Settings::UnregisterConfigurationContainer(g_settings.get());
+			}
 
 			void		Initialize3D(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* params)
 			{
@@ -250,38 +287,6 @@ namespace Yelo
 			void		OnResetDevice(D3DPRESENT_PARAMETERS* params){}
 			void		Release(){}
 			void		Render() {}
-
-			void		LoadSettings(TiXmlElement* parent_element)
-			{
-				g_extensions_enabled_user_override = true;
-
-				if(parent_element != NULL)
-				{
-					TiXmlElement* extension_element = parent_element->FirstChildElement("ShaderExtension");
-
-					// read the user override value, default to enabled if the attribute is not set
-					if(extension_element)
-					{
-						const char* enabled = extension_element->Attribute("enabled");
-						if(enabled)
-							g_extensions_enabled_user_override = Settings::ParseBoolean(enabled);
-						Model::LoadSettings(extension_element);
-					}
-				}
-			}
-
-			void		SaveSettings(TiXmlElement* parent_element)
-			{
-				if(parent_element != NULL)
-				{
-					TiXmlElement* extension_element = new TiXmlElement("ShaderExtension");
-					parent_element->LinkEndChild(extension_element);
-
-					extension_element->SetAttribute("enabled", BooleanToString(g_extensions_enabled_user_override));
-
-					Model::SaveSettings(extension_element);
-				}
-			}
 		};
 	};
 };

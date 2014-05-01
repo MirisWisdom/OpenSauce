@@ -7,11 +7,13 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
+#include <YeloLib/configuration/c_configuration_container.hpp>
+#include <YeloLib/configuration/c_configuration_value.hpp>
+
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingCacheComponent.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUpdatable.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingRenderable.hpp"
-#include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUserSettings.hpp"
 
 #include "Rasterizer/PostProcessing/c_effect_render_set.hpp"
 #include "Rasterizer/PostProcessing/Generic/c_shader_instance_generic.hpp"
@@ -23,11 +25,10 @@ namespace Yelo
 {
 	namespace Rasterizer { namespace PostProcessing { namespace Generic { namespace Internal
 	{
-		class c_system_internal :
-			public IPostProcessingCacheComponent,
-			public IPostProcessingUpdatable,
-			public IPostProcessingRenderable,
-			public IPostProcessingUserSettings
+		class c_system_internal
+			: public IPostProcessingCacheComponent
+			, public IPostProcessingUpdatable
+			, public IPostProcessingRenderable
 		{
 			struct s_effect_set
 			{
@@ -50,6 +51,30 @@ namespace Yelo
 			/////////////////////////////////////////////////
 			// members
 		private:
+			class c_system_settings
+				: public Configuration::c_configuration_container
+			{
+			public:
+				Configuration::c_configuration_value<bool> m_enabled;
+
+				c_system_settings()
+					: Configuration::c_configuration_container("Rasterizer.PostProcessing.MapEffects")
+					, m_enabled("Enabled", true)
+				{ }
+
+			protected:
+				const std::vector<i_configuration_value* const> GetMembers()
+				{
+					std::vector<i_configuration_value* const> values =
+					{
+						&m_enabled
+					};
+
+					return values;
+				}
+			};
+			std::unique_ptr<c_system_settings> m_settings;
+
 			struct
 			{
 				struct
@@ -112,12 +137,6 @@ namespace Yelo
 			
 			void Unload();
 			void Load();
-
-			/////////////////////////////////////////////////
-			// IPostProcessingUserSettings
-			void LoadSettings(TiXmlElement* parent_element);
-			void SaveSettings(TiXmlElement* parent_element);
-			void SetDefaultSettings();
 
 			/////////////////////////////////////////////////
 			// IPostProcessingRenderable
