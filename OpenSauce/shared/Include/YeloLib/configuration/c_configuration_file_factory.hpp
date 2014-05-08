@@ -15,7 +15,7 @@ namespace Yelo
 		class c_configuration_file_factory
 		{
 		public:
-			static t_configuration_file_ptr CreateConfigurationFile(const std::string file_path);
+			static configuration_file_ptr_t CreateConfigurationFile(const std::string& file_path);
 		};
-	}
-}
+	};
+};

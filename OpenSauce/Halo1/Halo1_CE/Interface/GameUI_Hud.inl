@@ -16,39 +16,6 @@ namespace Yelo
 {
 	namespace Hud
 	{
-		class c_hud_settings
-			: public Yelo::Configuration::c_configuration_container
-		{
-		public:
-			Yelo::Configuration::c_configuration_value<bool> m_show_hud;
-			Yelo::Configuration::c_configuration_value<bool> m_scale_hud;
-			Yelo::Configuration::c_configuration_value<real> m_hud_scale_x;
-			Yelo::Configuration::c_configuration_value<real> m_hud_scale_y;
-
-			c_hud_settings()
-				: Yelo::Configuration::c_configuration_container("HUD")
-				, m_show_hud("ShowHUD", true)
-				, m_scale_hud("ScaleHUD", true)
-				, m_hud_scale_x("HUDScaleX", 1.0f)
-				, m_hud_scale_y("HUDScaleY", 1.0f)
-			{ }
-			
-		protected:
-			const std::vector<i_configuration_value* const> GetMembers()
-			{
-				std::vector<i_configuration_value* const> values =
-				{
-					&m_show_hud,
-					&m_scale_hud,
-					&m_hud_scale_x,
-					&m_hud_scale_y
-				};
-
-				return values;
-			}
-		};
-		std::unique_ptr<c_hud_settings> g_settings;
-
 #pragma region Globals
 		struct s_hud_globals
 		{
@@ -128,6 +95,70 @@ namespace Yelo
 				GET_PTR2(HUD_MULTIPLAYER_ICON_BACKGROUND_X),
 				GET_PTR2(HUD_MULTIPLAYER_ICON_BACKGROUND_Y)
 			},
+		};
+#pragma endregion
+
+#pragma region Settings
+		class c_settings_container
+			: public Yelo::Configuration::c_configuration_container
+		{
+		public:
+			Yelo::Configuration::c_configuration_value<bool> m_show_hud;
+			Yelo::Configuration::c_configuration_value<bool> m_scale_hud;
+			Yelo::Configuration::c_configuration_value<real> m_hud_scale_x;
+			Yelo::Configuration::c_configuration_value<real> m_hud_scale_y;
+
+			c_settings_container()
+				: Yelo::Configuration::c_configuration_container("HUD")
+				, m_show_hud("ShowHUD", true)
+				, m_scale_hud("ScaleHUD", true)
+				, m_hud_scale_x("HUDScaleX", 1.0f)
+				, m_hud_scale_y("HUDScaleY", 1.0f)
+			{ }
+			
+		protected:
+			const std::vector<i_configuration_value* const> GetMembers() final override
+			{
+				return std::vector<i_configuration_value* const>
+				{
+					&m_show_hud,
+					&m_scale_hud,
+					&m_hud_scale_x,
+					&m_hud_scale_y
+				};
+			}
+		};
+
+		class c_settings_hud
+			: public Configuration::c_configuration_singleton<c_settings_container, c_settings_hud>
+		{
+		public:
+			void Register() final override
+			{
+				Settings::RegisterConfigurationContainer(GetPtr(), nullptr, PostLoad, PreSave);
+			}
+
+			void Unregister() final override
+			{
+				Settings::UnregisterConfigurationContainer(GetPtr());
+			}
+
+		private:
+			static void PostLoad()
+			{
+				g_hud_globals.m_flags.scale_hud = Instance().Get().m_scale_hud;
+				g_hud_globals.m_flags.show_hud = Instance().Get().m_show_hud;
+				g_hud_globals.m_hud_screen.scale.x = Instance().Get().m_hud_scale_x;
+				g_hud_globals.m_hud_screen.scale.y = Instance().Get().m_hud_scale_y;
+			}
+
+			static void PreSave()
+			{
+				Instance().Get().m_scale_hud = g_hud_globals.m_flags.scale_hud;
+				Instance().Get().m_show_hud = g_hud_globals.m_flags.show_hud;
+				Instance().Get().m_hud_scale_x = g_hud_globals.m_hud_screen.scale.x;
+				Instance().Get().m_hud_scale_y = g_hud_globals.m_hud_screen.scale.y;
+			}
 		};
 #pragma endregion
 
@@ -492,30 +523,13 @@ namespace Yelo
 			}
 
 			g_hud_globals.m_flags.show_crosshair = true;
-			
-			g_settings = std::make_unique<c_hud_settings>();
-			Settings::RegisterConfigurationContainer(g_settings.get(),
-				nullptr,
-				[]()
-				{
-					g_hud_globals.m_flags.scale_hud = g_settings->m_scale_hud;
-					g_hud_globals.m_flags.show_hud = g_settings->m_show_hud;
-					g_hud_globals.m_hud_screen.scale.x = g_settings->m_hud_scale_x;
-					g_hud_globals.m_hud_screen.scale.y = g_settings->m_hud_scale_y;
-				},
-				[]()
-				{
-					g_settings->m_scale_hud = g_hud_globals.m_flags.scale_hud;
-					g_settings->m_show_hud = g_hud_globals.m_flags.show_hud;
-					g_settings->m_hud_scale_x = g_hud_globals.m_hud_screen.scale.x;
-					g_settings->m_hud_scale_y = g_hud_globals.m_hud_screen.scale.y;
-				}
-			);
+
+			c_settings_hud::Instance().Register();
 		}
 
 		void Dispose()
 		{
-			Settings::UnregisterConfigurationContainer(g_settings.get());
+			c_settings_hud::Instance().Unregister();
 		}
 
 		///-------------------------------------------------------------------------------------------------

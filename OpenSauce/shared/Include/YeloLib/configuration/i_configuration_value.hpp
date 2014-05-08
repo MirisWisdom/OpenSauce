@@ -20,7 +20,7 @@ namespace Yelo
 			/// <summary>	Get's the nodes name. </summary>
 			///
 			/// <returns>	A std::string containing the nodes name. </returns>
-			virtual const std::string GetName() const = 0;
+			virtual const std::string& GetName() const = 0;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the objects value from the supplied node. </summary>
@@ -48,5 +48,5 @@ namespace Yelo
 			/// <param name="parent_node">	The parent node to set the value to. </param>
 			virtual void SetValueToParent(i_configuration_leaf& parent_node) = 0;
 		};
-	}
-}
+	};
+};

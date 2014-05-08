@@ -16,5 +16,5 @@ namespace Yelo
 			abstract
 			: public i_configuration_value
 		{ };
-	}
-}
+	};
+};

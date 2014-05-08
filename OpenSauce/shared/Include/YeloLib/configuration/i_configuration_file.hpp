@@ -31,6 +31,6 @@ namespace Yelo
 			/// <returns>	A i_configuration_leaf object representing the configuration root. </returns>
 			virtual std::unique_ptr<i_configuration_leaf> Root() = 0;
 		};
-		typedef std::shared_ptr<i_configuration_file> t_configuration_file_ptr;
-	}
-}
+		typedef std::shared_ptr<i_configuration_file> configuration_file_ptr_t;
+	};
+};

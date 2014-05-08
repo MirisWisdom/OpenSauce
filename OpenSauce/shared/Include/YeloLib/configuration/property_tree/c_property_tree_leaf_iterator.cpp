@@ -10,12 +10,7 @@ namespace Yelo
 {
 	namespace Configuration { namespace PropertyTree
 	{
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Initializes a new instance of the c_property_tree_leaf_iterator class. </summary>
-		///
-		/// <param name="tree">			The tree to iterate over. </param>
-		/// <param name="node_name">	Name of the nodes to find. </param>
-		c_property_tree_leaf_iterator::c_property_tree_leaf_iterator(boost::property_tree::ptree* tree, const std::string node_name)
+		c_property_tree_leaf_iterator::c_property_tree_leaf_iterator(boost::property_tree::ptree* tree, const std::string& node_name)
 			: m_is_started(false)
 			, m_tree(*tree)
 			, m_iterator()
@@ -23,10 +18,6 @@ namespace Yelo
 			, m_current_leaf(nullptr)
 		{ }
 
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Determines if we can move to the next entry. </summary>
-		///
-		/// <returns>	true if another entry is available, false if the end of the list was reached. </returns>
 		bool c_property_tree_leaf_iterator::MoveNext()
 		{
 			if(m_is_started && (m_iterator == m_tree.end()))
@@ -60,13 +51,9 @@ namespace Yelo
 			return false;
 		}
 
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Gets the current entry. </summary>
-		///
-		/// <returns>	A i_configuration_leaf representing the current tree child. </returns>
 		std::shared_ptr<i_configuration_leaf> c_property_tree_leaf_iterator::Current()
 		{
 			return m_current_leaf;
 		}
-	}}
-}
+	};};
+};

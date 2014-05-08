@@ -9,39 +9,6 @@ namespace Model
 #define __EL_INCLUDE_ID			__EL_INCLUDE_RASTERIZER_SHADEREXTENSION
 #define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_SHADEREXTENSION_MODEL
 #include "Memory/_EngineLayout.inl"
-	
-	class c_shader_model_settings
-		: public Yelo::Configuration::c_configuration_container
-	{
-	public:
-		Yelo::Configuration::c_configuration_value<bool> m_normal_maps;
-		Yelo::Configuration::c_configuration_value<bool> m_detail_normal_maps;
-		Yelo::Configuration::c_configuration_value<bool> m_specular_maps;
-		Yelo::Configuration::c_configuration_value<bool> m_specular_lighting;
-
-		c_shader_model_settings()
-			: Yelo::Configuration::c_configuration_container("Rasterizer.ShaderExtensions.Object")
-			, m_normal_maps("NormalMaps", true)
-			, m_detail_normal_maps("DetailNormalMaps", true)
-			, m_specular_maps("SpecularMaps", true)
-			, m_specular_lighting("SpecularLighting", true)
-		{ }
-		
-	protected:
-		const std::vector<i_configuration_value* const> GetMembers()
-		{
-			std::vector<i_configuration_value* const> values =
-			{
-				&m_normal_maps,
-				&m_detail_normal_maps,
-				&m_specular_maps,
-				&m_specular_lighting
-			};
-
-			return values;
-		}
-	};
-	std::unique_ptr<c_shader_model_settings> g_settings;
 
 	struct s_shader_feature_mix {
 		const _enum		feature_mask;
@@ -650,41 +617,6 @@ no_extension:
 				strcat_s(g_shader_usage_id_list[id_index], 128, g_feature_mix_list[i].feature_mix_id);
 			}
 		}
-	}
-
-	void		Initialize()
-	{
-		g_settings = std::make_unique<c_shader_model_settings>();
-		Settings::RegisterConfigurationContainer(g_settings.get(),
-			nullptr,
-			[]()
-			{
-				g_extension_usage_mask = Enums::_model_extension_usage_normal_map | Enums::_model_extension_usage_detail_normal |
-				Enums::_model_extension_usage_specular_map | Enums::_model_extension_usage_specular_lighting;
-
-				int32 usage_mask = Enums::_model_extension_usage_none;
-
-				usage_mask |= (g_settings->m_normal_maps ? Enums::_model_extension_usage_normal_map : Enums::_model_extension_usage_none);
-				usage_mask |= (g_settings->m_detail_normal_maps ? Enums::_model_extension_usage_detail_normal : Enums::_model_extension_usage_none);
-				usage_mask |= (g_settings->m_specular_maps ? Enums::_model_extension_usage_specular_map : Enums::_model_extension_usage_none);
-				usage_mask |= (g_settings->m_specular_lighting ? Enums::_model_extension_usage_specular_lighting : Enums::_model_extension_usage_none);
-
-				g_extension_usage_mask &= usage_mask;
-			},
-			[]()
-			{
-				g_settings->m_normal_maps = (g_extension_usage_mask & Enums::_model_extension_usage_normal_map) == Enums::_model_extension_usage_normal_map;
-				g_settings->m_detail_normal_maps = (g_extension_usage_mask & Enums::_model_extension_usage_detail_normal) == Enums::_model_extension_usage_detail_normal;
-				g_settings->m_specular_maps = (g_extension_usage_mask & Enums::_model_extension_usage_specular_map) == Enums::_model_extension_usage_specular_map;
-				g_settings->m_specular_lighting = (g_extension_usage_mask & Enums::_model_extension_usage_specular_lighting) == Enums::_model_extension_usage_specular_lighting;
-			},
-			nullptr
-		);
-	}
-
-	void		Dispose()
-	{
-		Settings::UnregisterConfigurationContainer(g_settings.get());
 	}
 
 	void		ApplyHooks()

@@ -52,7 +52,7 @@ namespace Yelo
 		{
 			return m_property_tree.get_value(default_value);
 		}
-		std::string c_property_tree_leaf::GetValue(const std::string default_value)
+		std::string c_property_tree_leaf::GetValue(const std::string& default_value)
 		{
 			return m_property_tree.get_value(default_value);
 		}
@@ -93,29 +93,17 @@ namespace Yelo
 		{
 			m_property_tree.put_value(value);
 		}
-		void c_property_tree_leaf::SetValue(const std::string value)
+		void c_property_tree_leaf::SetValue(const std::string& value)
 		{
 			m_property_tree.put_value(value);
 		}
 
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Query if the leaf has the specified child. </summary>
-		///
-		/// <param name="child_name">	Name of the child to find. </param>
-		///
-		/// <returns>	true if the child exists, false if it does not. </returns>
-		bool c_property_tree_leaf::HasChild(const std::string child_name) const
+		bool c_property_tree_leaf::HasChild(const std::string& child_name) const
 		{
 			return m_property_tree.get_child_optional(child_name) != nullptr;
 		}
 
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Gets a child iterator. </summary>
-		///
-		/// <param name="child_name">	Name of the child to find. </param>
-		///
-		/// <returns>	The child iterator. </returns>
-		std::unique_ptr<i_configuration_leaf_iterator> c_property_tree_leaf::GetChildIterator(const std::string child_name)
+		std::unique_ptr<i_configuration_leaf_iterator> c_property_tree_leaf::GetChildIterator(const std::string& child_name)
 		{
 			if(!HasChild(child_name))
 			{
@@ -137,13 +125,7 @@ namespace Yelo
 			}
 		}
 
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Gets a child of this leaf. </summary>
-		///
-		/// <param name="child_name">	Name of the child to find. </param>
-		///
-		/// <returns>	The child leaf. </returns>
-		std::unique_ptr<i_configuration_leaf> c_property_tree_leaf::GetChild(const std::string child_name)
+		std::unique_ptr<i_configuration_leaf> c_property_tree_leaf::GetChild(const std::string& child_name) const
 		{
 			if(!HasChild(child_name))
 			{
@@ -181,16 +163,10 @@ namespace Yelo
 			return std::make_unique<c_property_tree_leaf>(current_tree);
 		}
 
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Adds a child to the leaf. </summary>
-		///
-		/// <param name="child_name">	Name of the child to add. </param>
-		///
-		/// <returns>	An i_configuration_leaf repesenting the added child. </returns>
-		std::unique_ptr<i_configuration_leaf> c_property_tree_leaf::AddChild(const std::string child_name)
+		std::unique_ptr<i_configuration_leaf> c_property_tree_leaf::AddChild(const std::string& child_name)
 		{
 			boost::property_tree::ptree new_child;
 			return std::make_unique<c_property_tree_leaf>(&m_property_tree.add_child(child_name, new_child));
 		}
-	}}
-}
+	};};
+};

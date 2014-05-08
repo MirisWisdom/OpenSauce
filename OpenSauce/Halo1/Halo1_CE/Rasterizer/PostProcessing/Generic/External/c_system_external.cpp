@@ -10,7 +10,7 @@
 #if !PLATFORM_IS_DEDI
 #include <blamlib/Halo1/math/periodic_functions.hpp>
 
-#include "Common/YeloSettings.hpp"
+#include "Rasterizer/PostProcessing/Generic/External/c_settings_external.hpp"
 #include "Rasterizer/PostProcessing/PostProcessingErrorReporting.hpp"
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
 #include "Rasterizer/PostProcessing/c_shader_include_manager.hpp"
@@ -61,11 +61,7 @@ namespace Yelo
 		 */
 		void c_system_external::Initialize()
 		{
-			m_settings = std::make_unique<c_system_settings>();
-			Settings::RegisterConfigurationContainer(m_settings.get(), nullptr, 
-				[this](){ m_members.m_flags.is_enabled = m_settings->m_enabled; },
-				[this](){ m_settings->m_enabled = m_members.m_flags.is_enabled; }
-			);
+			c_settings_external::Instance().Register();
 
 			// initialize the systems variables to defaults
 			m_members.status = Enums::pp_component_status_uninitialised;
@@ -93,7 +89,7 @@ namespace Yelo
 			// delete allocated memory
 			UnloadExternal();
 
-			Settings::UnregisterConfigurationContainer(m_settings.get());
+			c_settings_external::Instance().Unregister();
 		}
 
 		/*!

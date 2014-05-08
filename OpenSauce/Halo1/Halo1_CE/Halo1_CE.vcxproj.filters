@@ -433,6 +433,21 @@
       <Filter>Scenario</Filter>
     </ClCompile>
     <ClCompile Include="MainYelo.cpp" />
+    <ClCompile Include="Rasterizer\PostProcessing\Bloom\c_settings_bloom.cpp">
+      <Filter>Rasterizer\PostProcessing\Bloom</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\MotionBlur\c_settings_motionblur.cpp">
+      <Filter>Rasterizer\PostProcessing\MotionBlur</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\FXAA\c_settings_fxaa.cpp">
+      <Filter>Rasterizer\PostProcessing\FXAA</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Generic\External\c_settings_external.cpp">
+      <Filter>Rasterizer\PostProcessing\Generic\External</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\PostProcessing\Generic\Internal\c_settings_internal.cpp">
+      <Filter>Rasterizer\PostProcessing\Generic\Internal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\Include\mongoose\mongoose.h">
@@ -993,6 +1008,21 @@
     <ClInclude Include="Objects\Objects.VehicleSettings.hpp">
       <Filter>Objects\Impl</Filter>
     </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Bloom\c_settings_bloom.hpp">
+      <Filter>Rasterizer\PostProcessing\Bloom</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\MotionBlur\c_settings_motionblur.hpp">
+      <Filter>Rasterizer\PostProcessing\MotionBlur</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\FXAA\c_settings_fxaa.hpp">
+      <Filter>Rasterizer\PostProcessing\FXAA</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Generic\External\c_settings_external.hpp">
+      <Filter>Rasterizer\PostProcessing\Generic\External</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Generic\Internal\c_settings_internal.hpp">
+      <Filter>Rasterizer\PostProcessing\Generic\Internal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Halo1_CE_Readme.txt" />
@@ -1308,6 +1338,9 @@
       <Filter>Objects\Impl</Filter>
     </None>
     <None Include="TagGroups\CacheFiles.DataFiles.inl">
+      <Filter>TagGroups\Impl</Filter>
+    </None>
+    <None Include="TagGroups\CacheFiles.Settings.inl">
       <Filter>TagGroups\Impl</Filter>
     </None>
   </ItemGroup>

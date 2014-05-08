@@ -13,15 +13,9 @@ namespace Yelo
 {
 	namespace Configuration
 	{
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Creates a configuration file using the extension to determine the file type. </summary>
-		///
-		/// <param name="file_path">	Full pathname of the file. </param>
-		///
-		/// <returns>	The new configuration file. </returns>
-		t_configuration_file_ptr c_configuration_file_factory::CreateConfigurationFile(const std::string file_path)
+		configuration_file_ptr_t c_configuration_file_factory::CreateConfigurationFile(const std::string& file_path)
 		{
-			t_configuration_file_ptr configuration_file(nullptr);
+			configuration_file_ptr_t configuration_file(nullptr);
 
 			// Get the extension
 			std::string::size_type extension_index = file_path.rfind('.');
@@ -45,5 +39,5 @@ namespace Yelo
 
 			return configuration_file;
 		}
-	}
-}
+	};
+};

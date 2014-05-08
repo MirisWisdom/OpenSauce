@@ -471,6 +471,9 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_type_container.hpp">
       <Filter>configuration\type_containers</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_singleton.hpp">
+      <Filter>configuration</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">

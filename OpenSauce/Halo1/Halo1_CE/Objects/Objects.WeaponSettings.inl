@@ -11,6 +11,7 @@
 #include <YeloLib/configuration/c_configuration_value.hpp>
 #include <YeloLib/configuration/c_configuration_value_list.hpp>
 #include <YeloLib/configuration/c_configuration_container_list.hpp>
+#include <YeloLib/configuration/c_configuration_singleton.hpp>
 #include <YeloLib/configuration/type_containers/c_real_vector3d_container.hpp>
 
 #include "Rasterizer/Rasterizer.hpp"
@@ -26,7 +27,8 @@ namespace Yelo
 	{
 		namespace Weapon
 		{
-			class c_weapon_position_settings
+#pragma region Settings
+			class c_settings_container
 				: public Configuration::c_configuration_container
 			{
 			public:
@@ -44,37 +46,45 @@ namespace Yelo
 					{ }
 					
 				protected:
-					const std::vector<i_configuration_value* const> GetMembers()
+					const std::vector<i_configuration_value* const> GetMembers() final override
 					{
-						std::vector<i_configuration_value* const> values =
+						return std::vector<i_configuration_value* const>
 						{
 							&m_name,
 							&m_position
 						};
-
-						return values;
 					}
 				};
 
 				Configuration::c_configuration_container_list<c_weapon_position> m_weapon_positions;
 
-				c_weapon_position_settings()
+				c_settings_container()
 					: Configuration::c_configuration_container("Objects.Weapon.Positions")
 					, m_weapon_positions("Weapon", [](){ return c_weapon_position(); })
 				{ }
 				
 			protected:
-				const std::vector<i_configuration_value* const> GetMembers()
+				const std::vector<i_configuration_value* const> GetMembers() final override
 				{
-					std::vector<i_configuration_value* const> values =
-					{
-						&m_weapon_positions
-					};
-
-					return values;
+					return std::vector<i_configuration_value* const> { &m_weapon_positions };
 				}
 			};
-			std::unique_ptr<c_weapon_position_settings> g_settings;
+
+			class c_settings_weapons
+				: public Configuration::c_configuration_singleton<c_settings_container, c_settings_weapons>
+			{
+			public:
+				void Register() final override
+				{
+					Settings::RegisterConfigurationContainer(GetPtr());
+				}
+
+				void Unregister() final override
+				{
+					Settings::UnregisterConfigurationContainer(GetPtr());
+				}
+			};
+#pragma endregion
 
 #if PLATFORM_IS_DEDI
 			void Initialize()	{}
@@ -95,12 +105,12 @@ namespace Yelo
 					}
 				}
 
-				c_weapon_position_settings::c_weapon_position* AddPreset(cstring name)
+				c_settings_container::c_weapon_position* AddPreset(cstring name)
 				{
-					if(Enums::k_weapon_view_max_weapon_presets == g_settings->m_weapon_positions.Get().size())
+					if(Enums::k_weapon_view_max_weapon_presets == c_settings_weapons::Instance().Get().m_weapon_positions.Get().size())
 						return nullptr;
 
-					c_weapon_position_settings::c_weapon_position& weapon_position(g_settings->m_weapon_positions.AddEntry());
+					c_settings_container::c_weapon_position& weapon_position(c_settings_weapons::Instance().Get().m_weapon_positions.AddEntry());
 					weapon_position.m_name.Get() = name;
 					weapon_position.m_position.Get().Set(.0f,.0f,.0f);
 
@@ -151,23 +161,23 @@ namespace Yelo
 					return nullptr;
 				}
 			public:
-				c_weapon_position_settings::c_weapon_position* GetCurrentPreset(datum_index& return_weapon_index, cstring& return_name)
+				c_settings_container::c_weapon_position* GetCurrentPreset(datum_index& return_weapon_index, cstring& return_name)
 				{
 					return_weapon_index = datum_index::null;
 					return_name = GetCurrentWeaponName(return_weapon_index);
 
-					if(g_settings->m_weapon_positions.Get().size() == 0) return nullptr;
+					if(c_settings_weapons::Instance().Get().m_weapon_positions.Get().size() == 0) return nullptr;
 
 					if(return_name != nullptr)
 					{
-						auto found_value = std::find_if(g_settings->m_weapon_positions.begin(), g_settings->m_weapon_positions.end(),
-							[return_name](c_weapon_position_settings::c_weapon_position& entry)
+						auto found_value = std::find_if(c_settings_weapons::Instance().Get().m_weapon_positions.begin(), c_settings_weapons::Instance().Get().m_weapon_positions.end(),
+							[return_name](c_settings_container::c_weapon_position& entry)
 							{
 								return entry.m_name.Get() == std::string(return_name);
 							}
 						);
 
-						if(found_value != g_settings->m_weapon_positions.end())
+						if(found_value != c_settings_weapons::Instance().Get().m_weapon_positions.end())
 						{
 							return &(*found_value);
 						}
@@ -186,7 +196,7 @@ namespace Yelo
 
 				datum_index weapon_index;
 				cstring name;
-				c_weapon_position_settings::c_weapon_position* preset = _weapon_globals.GetCurrentPreset(weapon_index, name);
+				c_settings_container::c_weapon_position* preset = _weapon_globals.GetCurrentPreset(weapon_index, name);
 
 				if(preset != nullptr)
 				{
@@ -210,8 +220,7 @@ namespace Yelo
 
 			void Initialize()
 			{
-				g_settings = std::make_unique<c_weapon_position_settings>();
-				Settings::RegisterConfigurationContainer(g_settings.get());
+				c_settings_weapons::Instance().Register();
 
 				Memory::WriteRelativeCall(ApplyWeaponPreset, 
 					GET_FUNC_VPTR(RENDER_WINDOW_CALL_HOOK_FIRST_PERSON_WEAPON_RENDER_UPDATE));
@@ -221,14 +230,14 @@ namespace Yelo
 			{
 				_weapon_globals.Dispose();
 				
-				Settings::UnregisterConfigurationContainer(g_settings.get());
+				c_settings_weapons::Instance().Unregister();
 			}
 
 			Enums::settings_adjustment_result AdjustSettings()
 			{
 				datum_index weapon_index;
 				cstring name;
-				c_weapon_position_settings::c_weapon_position* preset = _weapon_globals.GetCurrentPreset(weapon_index, name);
+				c_settings_container::c_weapon_position* preset = _weapon_globals.GetCurrentPreset(weapon_index, name);
 
 				if(	name == nullptr ||
 					(!_weapon_globals.weapon_index_from_last_update.IsNull() && 

@@ -25,7 +25,7 @@ namespace Yelo
 			Type m_value;
 
 		public:
-			c_type_container(const std::string name)
+			c_type_container(const std::string& name)
 				: Configuration::c_configuration_container(name)
 			{ }
 
@@ -57,5 +57,5 @@ namespace Yelo
 				return m_value;
 			}
 		};
-	}
-}
+	};
+};

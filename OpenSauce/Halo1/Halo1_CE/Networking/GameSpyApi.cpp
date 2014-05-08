@@ -9,6 +9,7 @@
 
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
+#include <YeloLib/configuration/c_configuration_singleton.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Game/GameState.hpp"
@@ -126,29 +127,47 @@ _return:
 #endif
 			}
 
-			class c_gamespy_settings
+			class c_settings_container
 				: public Configuration::c_configuration_container
 			{
 			public:
 				Configuration::c_configuration_value<bool> m_no_update_check;
 
-				c_gamespy_settings()
+				c_settings_container()
 					: Configuration::c_configuration_container("Networking.GameSpy")
 					, m_no_update_check("NoUpdateCheck", true)
 				{ }
 				
 			protected:
-				const std::vector<i_configuration_value* const> GetMembers()
+				const std::vector<i_configuration_value* const> GetMembers() final override
 				{
-					std::vector<i_configuration_value* const> values =
-					{
-						&m_no_update_check
-					};
-
-					return values;
+					return std::vector<i_configuration_value* const> { &m_no_update_check };
 				}
 			};
-			std::unique_ptr<c_gamespy_settings> g_settings;
+
+			class c_settings_gamespy
+				: public Configuration::c_configuration_singleton<c_settings_container, c_settings_gamespy>
+			{
+			public:
+				void Register() final override
+				{
+					Settings::RegisterConfigurationContainer(GetPtr(), nullptr, PostLoad);
+				}
+
+				void Unregister() final override
+				{
+					Settings::UnregisterConfigurationContainer(GetPtr());
+				}
+
+			private:
+				static void PostLoad()
+				{
+					if(Instance().Get().m_no_update_check)
+					{
+						TurnOffUpdateCheck();
+					}
+				}
+			};
 
 			static void InitializeForNewQr2()
 			{
@@ -157,16 +176,8 @@ _return:
 			void Initialize()
 			{
 				// TODO: populate GetGameVer()
-				g_settings = std::make_unique<c_gamespy_settings>();
-				Settings::RegisterConfigurationContainer(g_settings.get(), nullptr,
-					[]()
-					{
-						if(g_settings->m_no_update_check)
-						{
-							TurnOffUpdateCheck();
-						}
-					}
-				);
+				
+				c_settings_gamespy::Instance().Register();
 
 				Memory::CreateHookRelativeCall(&InitializeForNewQr2, 
 					GET_FUNC_VPTR(CREATE_GAMESPY_QR2_HOOK), Enums::_x86_opcode_ret);
@@ -179,7 +190,7 @@ _return:
 
 			void Dispose()
 			{
-				Settings::UnregisterConfigurationContainer(g_settings.get());
+				c_settings_gamespy::Instance().Unregister();
 			}
 
 			API_FUNC_NAKED void qr2_register_key(Enums::gamespy_qr_field keyid, cstring key)

@@ -34,7 +34,7 @@ namespace Yelo
 				Configuration::c_configuration_container* m_container_ptr;
 			};
 
-			Configuration::t_configuration_file_ptr m_settings;
+			Configuration::configuration_file_ptr_t m_settings;
 			std::vector<s_settings_container_entry> m_settings_containers;
 		};
 		static s_settings_globals g_settings_globals;

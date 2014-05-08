@@ -22,17 +22,17 @@ namespace Yelo
 			boost::property_tree::ptree m_property_tree_file;
 		
 		private:
-			virtual void ReadPropertyTree(const std::string file_path, boost::property_tree::ptree& property_tree) = 0;
-			virtual void WritePropertyTree(const std::string file_path, boost::property_tree::ptree& property_tree) = 0;
+			virtual void ReadPropertyTree(const std::string& file_path, boost::property_tree::ptree& property_tree) = 0;
+			virtual void WritePropertyTree(const std::string& file_path, boost::property_tree::ptree& property_tree) = 0;
 			
 		public:
-			c_property_tree_file(const std::string file_path);
+			c_property_tree_file(const std::string& file_path);
 
-			void Load();
-			void Save();
-			void Clear();
+			void Load() final override;
+			void Save() final override;
+			void Clear() final override;
 			
-			std::unique_ptr<i_configuration_leaf> Root();
+			std::unique_ptr<i_configuration_leaf> Root() final override;
 		};
-	}}
-}
+	};};
+};

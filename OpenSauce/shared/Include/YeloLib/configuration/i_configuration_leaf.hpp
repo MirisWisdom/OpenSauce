@@ -97,7 +97,7 @@ namespace Yelo
 			/// <param name="default_value">	The default value to use if not present. </param>
 			///
 			/// <returns>	The leaf's value. </returns>
-			virtual std::string	GetValue(const std::string default_value) = 0;
+			virtual std::string	GetValue(const std::string& default_value) = 0;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Sets the nodes value as a bool. </summary>
@@ -157,7 +157,7 @@ namespace Yelo
 			/// <summary>	Sets the nodes value as a string. </summary>
 			///
 			/// <param name="value">	The value to use. </param>
-			virtual void		SetValue(const std::string value) = 0;
+			virtual void		SetValue(const std::string& value) = 0;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Query if the leaf has a child matching the supplied name. </summary>
@@ -165,7 +165,7 @@ namespace Yelo
 			/// <param name="child_name">	Name of the child to find. </param>
 			///
 			/// <returns>	true if the leaf has a matching child, otherwise false. </returns>
-			virtual bool		HasChild(const std::string child_name) const = 0;
+			virtual bool		HasChild(const std::string& child_name) const = 0;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets a child iterator that iterates through children that match the supplied name. </summary>
@@ -173,7 +173,7 @@ namespace Yelo
 			/// <param name="child_name">	Name of the children to iterate. </param>
 			///
 			/// <returns>	A child iterator pointer. </returns>
-			virtual std::unique_ptr<i_configuration_leaf_iterator> GetChildIterator(const std::string child_name) = 0;
+			virtual std::unique_ptr<i_configuration_leaf_iterator> GetChildIterator(const std::string& child_name) = 0;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the first instance of a child with the supplied name. </summary>
@@ -181,7 +181,7 @@ namespace Yelo
 			/// <param name="child_name">	Name of the child to find. </param>
 			///
 			/// <returns>	A leaf object representing the found child, otherwise returns an empty pointer. </returns>
-			virtual std::unique_ptr<i_configuration_leaf> GetChild(const std::string child_name) = 0;
+			virtual std::unique_ptr<i_configuration_leaf> GetChild(const std::string& child_name) const = 0;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Adds a child with the specified name to the leaf. </summary>
@@ -189,7 +189,7 @@ namespace Yelo
 			/// <param name="child_name">	Name of the child to add. </param>
 			///
 			/// <returns>	A leaf object representing the added child. </returns>
-			virtual std::unique_ptr<i_configuration_leaf> AddChild(const std::string child_name) = 0;
+			virtual std::unique_ptr<i_configuration_leaf> AddChild(const std::string& child_name) = 0;
 		};
-	}
-}
+	};
+};

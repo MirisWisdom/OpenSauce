@@ -13,6 +13,7 @@
 
 #include "Rasterizer/PostProcessing/MotionBlur/s_shader_motionblur_definition.hpp"
 
+#include "Rasterizer/PostProcessing/MotionBlur/c_settings_motionblur.hpp"
 #include "Rasterizer/PostProcessing/MotionBlur/c_shader_motionblur.hpp"
 #include "Rasterizer/PostProcessing/MotionBlur/c_shader_instance_motionblur.hpp"
 #include "Rasterizer/PostProcessing/c_effect_postprocess.hpp"
@@ -63,20 +64,7 @@ namespace Yelo
 		// IPostProcessingComponent
 		void c_system_motionblur::Initialize()
 		{
-			m_settings = std::make_unique<c_system_settings>();
-			Settings::RegisterConfigurationContainer(m_settings.get(),
-				nullptr,
-				[this]()
-				{
-					m_members.m_flags.is_enabled = m_settings->m_enabled;
-					g_shader_instance_motionblur.BlurAmount() = m_settings->m_blur_amount;
-				},
-				[this]()
-				{
-					m_settings->m_enabled = m_members.m_flags.is_enabled;
-					m_settings->m_blur_amount = g_shader_instance_motionblur.BlurAmount();
-				}
-			);
+			c_settings_motionblur::Instance().Register();
 
 			m_members.status = Enums::pp_component_status_uninitialised;
 
@@ -127,7 +115,7 @@ namespace Yelo
 			g_shader_instance_motionblur.Dtor();
 			g_shader_motionblur.Dtor();
 			
-			Settings::UnregisterConfigurationContainer(m_settings.get());
+			c_settings_motionblur::Instance().Unregister();
 		}
 
 		void c_system_motionblur::InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters)

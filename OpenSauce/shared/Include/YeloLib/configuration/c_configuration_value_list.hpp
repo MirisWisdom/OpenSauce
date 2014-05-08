@@ -28,9 +28,9 @@ namespace Yelo
 			///
 			/// <param name="node_name">		Name of the configuration node. </param>
 			/// <param name="default_value">	The default value for the node. </param>
-			c_configuration_value_list(const std::string node_name, const T default_value)
+			c_configuration_value_list(const std::string& node_name, const T default_value)
 				: c_configuration_list<c_configuration_value<T>>(node_name, [node_name, default_value]() { return c_configuration_value<T>(node_name, default_value); })
 			{ }
 		};
-	}
-}
+	};
+};

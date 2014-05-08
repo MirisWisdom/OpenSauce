@@ -33,6 +33,52 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_DX9_GBUFFER
 #include "Memory/_EngineLayout.inl"
 
+#pragma region Settings
+		class c_settings_container
+			: public Configuration::c_configuration_container
+		{
+		public:
+			Configuration::c_configuration_value<bool> m_enabled;
+
+			c_settings_container()
+				: Configuration::c_configuration_container("GBuffer")
+				, m_enabled("Enabled", true)
+			{ }
+			
+		protected:
+			const std::vector<i_configuration_value* const> GetMembers() final override
+			{
+				return std::vector<i_configuration_value* const> { &m_enabled };
+			}
+		};
+
+		class c_settings_gbuffer
+			: public Configuration::c_configuration_singleton<c_settings_container, c_settings_gbuffer>
+		{
+		public:
+			void Register() final override
+			{
+				Settings::RegisterConfigurationContainer(GetPtr(), nullptr, PostLoad, PreSave);
+			}
+
+			void Unregister() final override
+			{
+				Settings::UnregisterConfigurationContainer(GetPtr());
+			}
+
+		private:
+			static void PostLoad()
+			{
+				c_gbuffer_system::g_system_enabled = Instance().Get().m_enabled;
+			}
+
+			static void PreSave()
+			{
+				Instance().Get().m_enabled = c_gbuffer_system::g_system_enabled;
+			}
+		};
+#pragma endregion
+
 		static D3DXHANDLE	GetTechnique(LPD3DXEFFECT& effect,
 			const char* mesh_type, 
 			const char* rt_support)
@@ -495,11 +541,7 @@ skip_disable_velocity:
 
 			g_default_system.Ctor();
 
-			g_settings = std::make_unique<c_gbuffer_settings>();
-			Settings::RegisterConfigurationContainer(g_settings.get(), nullptr,
-				[]() { g_system_enabled = g_settings->m_enabled; },
-				[]() { g_settings->m_enabled = g_system_enabled; }
-			);
+			c_settings_gbuffer::Instance().Register();
 
 			c_gbuffer_system::g_output_object_tbn = false;
 			// leave as false, not enough vertex shader registers available to do object velocity with bones
@@ -543,7 +585,7 @@ skip_disable_velocity:
 		}
 		void		c_gbuffer_system::Dispose()
 		{
-			Settings::UnregisterConfigurationContainer(g_settings.get());
+			c_settings_gbuffer::Instance().Unregister();
 
 			g_default_system.Dtor();
 		}

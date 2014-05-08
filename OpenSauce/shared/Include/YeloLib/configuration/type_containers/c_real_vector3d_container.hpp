@@ -29,20 +29,20 @@ namespace Yelo
 			/// <param name="default_i">	The default value for i. </param>
 			/// <param name="default_j">	The default value for j. </param>
 			/// <param name="default_k">	The default value for k. </param>
-			c_real_vector3d_container(const std::string name, const real default_i, const real default_j, const real default_k);
+			c_real_vector3d_container(const std::string& name, const real default_i, const real default_j, const real default_k);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Initializes a new instance of the c_real_vector3d_container class. </summary>
 			///
 			/// <param name="name">	The configuration node name for the value. </param>
-			c_real_vector3d_container(const std::string name);
+			c_real_vector3d_container(const std::string& name);
 
 		protected:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets a vector containing pointers to the containers members. </summary>
 			///
 			/// <returns>	A vector containing pointers to the containers members. </returns>
-			const std::vector<i_configuration_value* const> GetMembers();
+			const std::vector<i_configuration_value* const> GetMembers() final override;
 
 			/// <summary>	Updates the raw value to the values that were retrieved form the configuration file. </summary>
 			void PostGet();
@@ -50,5 +50,5 @@ namespace Yelo
 			/// <summary>	Updates the configuration values to those in the raw value. </summary>
 			void PreSet();
 		};
-	}
-}
+	};
+};

@@ -8,11 +8,11 @@
 #include "Rasterizer/PostProcessing/Bloom/c_system_bloom.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include "Common/YeloSettings.hpp"
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
 
 #include "Rasterizer/PostProcessing/Bloom/s_shader_bloom_definition.hpp"
 
+#include "Rasterizer/PostProcessing/Bloom/c_settings_bloom.hpp"
 #include "Rasterizer/PostProcessing/Bloom/c_shader_bloom.hpp"
 #include "Rasterizer/PostProcessing/Bloom/c_shader_instance_bloom.hpp"
 #include "Rasterizer/PostProcessing/c_effect_postprocess.hpp"
@@ -43,11 +43,15 @@ namespace Yelo
 
 		/////////////////////////////////////////////////
 		// member accessors
+		bool& c_system_bloom::Enabled()
+		{
+			return m_members.m_flags.is_enabled;
+		}
+
 		bool c_system_bloom::IsReady()
 		{
 			return m_members.m_flags.is_ready;
 		}
-
 		bool c_system_bloom::IsUnloaded()
 		{
 			return m_members.m_flags.is_unloaded;
@@ -57,11 +61,7 @@ namespace Yelo
 		// IPostProcessingComponent
 		void c_system_bloom::Initialize()
 		{
-			m_settings = std::make_unique<c_system_settings>();
-			Settings::RegisterConfigurationContainer(m_settings.get(), nullptr, 
-				[this](){ m_members.m_flags.is_enabled = m_settings->m_enabled; },
-				[this](){ m_settings->m_enabled = m_members.m_flags.is_enabled; }
-			);
+			c_settings_bloom::Instance().Register();
 
 			m_members.status = Enums::pp_component_status_uninitialised;
 
@@ -118,8 +118,8 @@ namespace Yelo
 			g_effect_bloom.Dtor();
 			g_shader_instance_bloom.Dtor();
 			g_shader_bloom.Dtor();
-
-			Settings::UnregisterConfigurationContainer(m_settings.get());
+			
+			c_settings_bloom::Instance().Unregister();
 		}
 
 		void c_system_bloom::InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters)

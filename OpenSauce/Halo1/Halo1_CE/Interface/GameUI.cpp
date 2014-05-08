@@ -10,6 +10,7 @@
 #if !PLATFORM_IS_DEDI
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
+#include <YeloLib/configuration/c_configuration_singleton.hpp>
 
 #include <blamlib/Halo1/game/player_structures.hpp>
 #include <blamlib/Halo1/interface/first_person_weapons.hpp>
