@@ -27,15 +27,147 @@ namespace Yelo
 {
 	namespace Networking { namespace VersionCheck
 	{
+#pragma region Settings
+		class c_settings_container
+			: public Configuration::c_configuration_container
+		{
+		public:
+			class c_version_check_date
+				: public Configuration::c_configuration_container
+			{
+			public:
+				Configuration::c_configuration_value<int32> m_day;
+				Configuration::c_configuration_value<int32> m_month;
+				Configuration::c_configuration_value<int32> m_year;
+
+				c_version_check_date()
+					: Configuration::c_configuration_container("Date")
+					, m_day("Day", 0)
+					, m_month("Month", 0)
+					, m_year("Year", 0)
+				{ }
+				
+			protected:
+				const std::vector<i_configuration_value* const> GetMembers() final override
+				{
+					return std::vector<i_configuration_value* const>
+					{
+						&m_day,
+						&m_month,
+						&m_year
+					};
+				}
+			};
+
+			class c_version_check_version
+				: public Configuration::c_configuration_container
+			{
+			public:
+				Configuration::c_configuration_value<int32> m_major;
+				Configuration::c_configuration_value<int32> m_minor;
+				Configuration::c_configuration_value<int32> m_build;
+
+				c_version_check_version()
+					: Configuration::c_configuration_container("Version")
+					, m_major("Major", K_OPENSAUCE_VERSION_BUILD_MAJ)
+					, m_minor("Minor", K_OPENSAUCE_VERSION_BUILD_MIN)
+					, m_build("Build", K_OPENSAUCE_VERSION_BUILD)
+				{ }
+				
+			protected:
+				const std::vector<i_configuration_value* const> GetMembers() final override
+				{
+					return std::vector<i_configuration_value* const>
+					{
+						&m_major,
+						&m_minor,
+						&m_build
+					};
+				}
+			};
+
+			class c_version_check_server_list
+				: public Configuration::c_configuration_container
+			{
+			public:
+				Configuration::c_configuration_value<int32> m_version;
+				Configuration::c_configuration_value_list<std::string> m_servers;
+
+				c_version_check_server_list()
+					: Configuration::c_configuration_container("ServerList")
+					, m_version("Version", 0)
+					, m_servers("Server", "")
+				{ }
+				
+			protected:
+				const std::vector<i_configuration_value* const> GetMembers() final override
+				{
+					return std::vector<i_configuration_value* const>
+					{
+						&m_version,
+						&m_servers
+					};
+				}
+			};
+
+			c_version_check_version m_version;
+			c_version_check_date m_last_checked;
+			c_version_check_server_list m_server_list;
+
+			c_settings_container()
+				: Configuration::c_configuration_container("Networking.VersionCheck")
+				, m_version()
+				, m_last_checked()
+				, m_server_list()
+			{ }
+			
+		protected:
+			const std::vector<i_configuration_value* const> GetMembers() final override
+			{
+				return std::vector<i_configuration_value* const>
+				{
+					&m_version,
+					&m_last_checked,
+					&m_server_list
+				};
+			}
+		};
+
+		class c_settings_version_check
+			: public Configuration::c_configuration_singleton<c_settings_container, c_settings_version_check>
+		{
+		public:
+			void Register() final override
+			{
+				Settings::RegisterConfigurationContainer(GetPtr(), nullptr, PostLoad);
+			}
+
+			void Unregister() final override
+			{
+				Settings::UnregisterConfigurationContainer(GetPtr());
+			}
+
+		private:
+			static void PostLoad()
+			{
+				c_version_check_manager_base::VersionChecker().TestForUpdate();
+			}
+		};
+#pragma endregion
+
 		/////////////////////////////////////////
 		//namespace functions
 		void		Initialize()
 		{
+			c_settings_version_check::Instance().Register();
+
 			c_version_check_manager_base::VersionChecker().Initialize();
 		}
 		void		Dispose()
 		{
 			c_version_check_manager_base::VersionChecker().Dispose();
+
+			c_settings_version_check::Instance().Unregister();
 		}
 
 		void		InitializeForNewMap()
@@ -132,9 +264,6 @@ namespace Yelo
 		 */
 		void		c_version_check_manager_base::Initialize()
 		{
-			m_settings = std::make_unique<c_version_check_settings>();
-			Settings::RegisterConfigurationContainer(m_settings.get(), nullptr, [this](){ this->TestForUpdate(); });
-
 			m_current_version.SetBuild(K_OPENSAUCE_VERSION_BUILD_MAJ, K_OPENSAUCE_VERSION_BUILD_MIN, K_OPENSAUCE_VERSION_BUILD);
 			m_available_version.SetBuild(K_OPENSAUCE_VERSION_BUILD_MAJ, K_OPENSAUCE_VERSION_BUILD_MIN, K_OPENSAUCE_VERSION_BUILD);
 
@@ -157,8 +286,6 @@ namespace Yelo
 				xml_source.Stop();
 				xml_source.Dtor();
 			}
-
-			Settings::UnregisterConfigurationContainer(m_settings.get());
 		}
 
 		/*!
@@ -203,7 +330,7 @@ namespace Yelo
 			m_states.is_request_in_progress = false;
 			
 			bool has_url = false;
-			for(auto url : m_settings->m_server_list.m_servers)
+			for(auto url : c_settings_version_check::Instance().Get().m_server_list.m_servers)
 			{
 				if(!url.Get().empty())
 				{
@@ -213,13 +340,13 @@ namespace Yelo
 
 			if(!has_url)
 			{
-				m_settings->m_server_list.m_servers.Clear();
-				m_settings->m_server_list.m_servers.AddEntry() = g_fallback_xml_location;
+				c_settings_version_check::Instance().Get().m_server_list.m_servers.Clear();
+				c_settings_version_check::Instance().Get().m_server_list.m_servers.AddEntry() = g_fallback_xml_location;
 			}
 
 			// start the xml downloaders
 			int downloader_index = 0;
-			for(auto url : m_settings->m_server_list.m_servers)
+			for(auto url : c_settings_version_check::Instance().Get().m_server_list.m_servers)
 			{
 				if(downloader_index >= NUMBEROF(m_xml_sources))
 				{
@@ -248,9 +375,9 @@ namespace Yelo
 			time(&time_today);
 			tm local_time; localtime_s(&local_time, &time_today);
 
-			if( (m_settings->m_last_checked.m_day == local_time.tm_mday) &&
-				(m_settings->m_last_checked.m_month == local_time.tm_mon + 1) &&
-				(m_settings->m_last_checked.m_year == 1900 + local_time.tm_year))
+			if( (c_settings_version_check::Instance().Get().m_last_checked.m_day == local_time.tm_mday) &&
+				(c_settings_version_check::Instance().Get().m_last_checked.m_month == local_time.tm_mon + 1) &&
+				(c_settings_version_check::Instance().Get().m_last_checked.m_year == 1900 + local_time.tm_year))
 				m_states.checked_today = true;
 		}
 
@@ -267,9 +394,9 @@ namespace Yelo
 			time(&time_today);
 			tm local_time; localtime_s(&local_time, &time_today);
 
-			m_settings->m_last_checked.m_day = local_time.tm_mday;
-			m_settings->m_last_checked.m_month = local_time.tm_mon + 1;
-			m_settings->m_last_checked.m_year = 1900 + local_time.tm_year;
+			c_settings_version_check::Instance().Get().m_last_checked.m_day = local_time.tm_mday;
+			c_settings_version_check::Instance().Get().m_last_checked.m_month = local_time.tm_mon + 1;
+			c_settings_version_check::Instance().Get().m_last_checked.m_year = 1900 + local_time.tm_year;
 
 			for(auto& downloader : m_xml_sources)
 			{
@@ -288,17 +415,17 @@ namespace Yelo
 				}
 
 				// if the server list version is newer, copy the new list
-				if(m_settings->m_server_list.m_version < downloader.URLListVersion())
+				if(c_settings_version_check::Instance().Get().m_server_list.m_version < downloader.URLListVersion())
 				{
-					m_settings->m_server_list.m_servers.Clear();
-					m_settings->m_server_list.m_version = downloader.URLListVersion();
+					c_settings_version_check::Instance().Get().m_server_list.m_servers.Clear();
+					c_settings_version_check::Instance().Get().m_server_list.m_version = downloader.URLListVersion();
 
 					LinkedListIterator<c_version_server> url_iterator(downloader.VersionURLList());
 
 					if(url_iterator.MoveNext())
 					{
 						std::string url_string(url_iterator.Current()->m_version_xml_url);
-						m_settings->m_server_list.m_servers.AddEntry() = url_string;
+						c_settings_version_check::Instance().Get().m_server_list.m_servers.AddEntry() = url_string;
 					}
 				}
 			}

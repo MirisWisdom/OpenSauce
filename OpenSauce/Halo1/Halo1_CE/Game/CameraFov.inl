@@ -7,8 +7,9 @@
 #include "Interface/Controls.hpp"
 #include "Interface/TextBlock.hpp"
 
-#include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
+#include <YeloLib/configuration/c_configuration_container.hpp>
+#include <YeloLib/configuration/c_configuration_singleton.hpp>
 
 namespace Yelo
 {
@@ -16,30 +17,6 @@ namespace Yelo
 	{
 #define DEF_FOV_H	1.22173047065735f
 #define DEF_FOV_V	(atanf(0.75f*tanf(DEF_FOV_H/2.f))*2.f)
-
-		class c_camera_fov_settings
-			: public Configuration::c_configuration_container
-		{
-		public:
-			Configuration::c_configuration_value<real> m_field_of_view;
-
-			c_camera_fov_settings()
-				: Configuration::c_configuration_container("Camera")
-				, m_field_of_view("FieldOfView", DEF_FOV_V)
-			{ }
-			
-		protected:
-			const std::vector<i_configuration_value* const> GetMembers()
-			{
-				std::vector<i_configuration_value* const> values =
-				{
-					&m_field_of_view,
-				};
-
-				return values;
-			}
-		};
-		std::unique_ptr<c_camera_fov_settings> g_settings;
 
 		struct {
 			struct {
@@ -126,6 +103,52 @@ namespace Yelo
 			nullptr,
 		};
 
+		class c_settings_container
+			: public Configuration::c_configuration_container
+		{
+		public:
+			Configuration::c_configuration_value<real> m_field_of_view;
+
+			c_settings_container()
+				: Configuration::c_configuration_container("Camera")
+				, m_field_of_view("FieldOfView", DEF_FOV_V)
+			{ }
+			
+		protected:
+			const std::vector<i_configuration_value* const> GetMembers() final override
+			{
+				return std::vector<i_configuration_value* const> { &m_field_of_view };
+			}
+		};
+
+		class c_settings_fov
+			: public Configuration::c_configuration_singleton<c_settings_container, c_settings_fov>
+		{
+		public:
+			void Register() final override
+			{
+				Settings::RegisterConfigurationContainer(GetPtr(), nullptr, PostLoad, PreSave);
+			}
+
+			void Unregister() final override
+			{
+				Settings::UnregisterConfigurationContainer(GetPtr());
+			}
+
+		private:
+			static void PostLoad()
+			{
+				_fov_globals.fov.vertical = Instance().Get().m_field_of_view;
+ 				_fov_globals.weapon.distance = _fov_globals.weapon.height / tanf( DEF_FOV_V / 2.f );
+ 				_fov_globals.Scale();
+			}
+
+			static void PreSave()
+			{
+				Instance().Get().m_field_of_view = _fov_globals.fov.vertical;
+			}
+		};
+
 		static bool RequiresZoomFix()
 		{
 			real h = Camera::Observer()->origin.fov;
@@ -160,21 +183,7 @@ namespace Yelo
 			
 			_fov_globals.InitializeToDefaultSettings();
 			
-			g_settings = std::make_unique<c_camera_fov_settings>();
-			Settings::RegisterConfigurationContainer(g_settings.get(),
-				nullptr,
-				[]()
-				{
-					_fov_globals.fov.vertical = g_settings->m_field_of_view;
- 					_fov_globals.weapon.distance = _fov_globals.weapon.height / tanf( DEF_FOV_V / 2.f );
- 					_fov_globals.Scale();
-				},
-				[]()
-				{
-					g_settings->m_field_of_view = _fov_globals.fov.vertical;
-				},
-				nullptr
-			);
+			c_settings_fov::Instance().Register();
 		}
 
 		void Dispose()
@@ -184,8 +193,8 @@ namespace Yelo
 				delete _fov_globals.menu;
 				_fov_globals.menu = nullptr;
 			}
-			
-			Settings::UnregisterConfigurationContainer(g_settings.get());
+
+			c_settings_fov::Instance().Unregister();
 		}
 
 		void Update()

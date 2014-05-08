@@ -30,7 +30,7 @@ namespace Yelo
 			///
 			/// <param name="node_name">		Name of the configuration node. </param>
 			/// <param name="default_value">	The node's default value. </param>
-			c_configuration_value(const std::string node_name, const T default_value)
+			c_configuration_value(const std::string& node_name, const T default_value)
 				: m_node_name(node_name)
 				, m_default(default_value)
 				, m_value(default_value)
@@ -40,7 +40,7 @@ namespace Yelo
 			/// <summary>	Get's the nodes name. </summary>
 			///
 			/// <returns>	A std::string containing the nodes name. </returns>
-			const std::string GetName() const
+			const std::string& GetName() const final override
 			{
 				return m_node_name;
 			}
@@ -49,7 +49,7 @@ namespace Yelo
 			/// <summary>	Gets the objects value from the supplied node. </summary>
 			///
 			/// <param name="node">	The node to get the value from. </param>
-			void GetValue(i_configuration_leaf& node)
+			void GetValue(i_configuration_leaf& node) final override
 			{
 				m_value = node.GetValue(m_default);
 			}
@@ -58,7 +58,7 @@ namespace Yelo
 			/// <summary>	Sets the objects value to the supplied node. </summary>
 			///
 			/// <param name="node">	The node to set the value to. </param>
-			void SetValue(i_configuration_leaf& node)
+			void SetValue(i_configuration_leaf& node) final override
 			{
 				node.SetValue(m_value);
 			}
@@ -69,7 +69,7 @@ namespace Yelo
 			/// </summary>
 			///
 			/// <param name="parent_node">	The parent node to get the value from. </param>
-			void GetValueFromParent(i_configuration_leaf& parent_node)
+			void GetValueFromParent(i_configuration_leaf& parent_node) final override
 			{
 				auto value_node = parent_node.GetChild(GetName());
 				if(!value_node)
@@ -84,7 +84,7 @@ namespace Yelo
 			/// <summary>	Sets the value to a child added to the supplied node. </summary>
 			///
 			/// <param name="parent_node">	The parent node to set the value to. </param>
-			void SetValueToParent(i_configuration_leaf& parent_node)
+			void SetValueToParent(i_configuration_leaf& parent_node) final override
 			{
 				auto value_node = parent_node.AddChild(m_node_name);
 
@@ -128,5 +128,5 @@ namespace Yelo
 				return m_value;
 			}
 		};
-	}
-}
+	};
+};

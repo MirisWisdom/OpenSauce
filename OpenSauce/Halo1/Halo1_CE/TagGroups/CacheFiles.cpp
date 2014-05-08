@@ -12,9 +12,11 @@
 #include <blamlib/Halo1/interface/map_list.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 
-#include <YeloLib/Halo1/cache/cache_files_yelo.hpp>
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
+#include <YeloLib/configuration/c_configuration_singleton.hpp>
+
+#include <YeloLib/Halo1/cache/cache_files_yelo.hpp>
 #include <YeloLib/Halo1/cache/data_file_yelo.hpp>
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 
@@ -122,39 +124,12 @@ namespace Yelo
 
 	namespace Cache
 	{
-		class c_cache_settings
-			: public Configuration::c_configuration_container
-		{
-		public:
-			Configuration::c_configuration_value<bool> m_check_yelo_files_first;
-			Configuration::c_configuration_value<std::string> m_mainmenu_scenario;
-
-			c_cache_settings()
-				: Configuration::c_configuration_container("CacheFiles")
-				, m_check_yelo_files_first("CheckYeloFilesFirst", true)
-				, m_mainmenu_scenario("MainMenuScenario", "")
-			{ }
-			
-		protected:
-			const std::vector<i_configuration_value* const> GetMembers()
-			{
-				std::vector<i_configuration_value* const> values =
-				{
-					&m_check_yelo_files_first,
-					&m_mainmenu_scenario
-				};
-
-				return values;
-			}
-		};
-		std::unique_ptr<c_cache_settings> g_settings;
-
 		struct s_yelo_settings {
 #if PLATFORM_IS_USER
 			// Scenario tag name of the mainmenu the user wants to use
 			string256 mainmenu_scenario_name;
 
-			bool InitializeMainmenuOverride(std::string override_name)
+			bool InitializeMainmenuOverride(const std::string& override_name)
 			{
 				static cstring k_stock_ui = "levels\\ui\\ui";
 
@@ -204,18 +179,14 @@ namespace Yelo
 
 		s_cache_file_globals* CacheFileGlobals()		PTR_IMP_GET2(cache_file_globals);
 		char* RootDirectory()							PTR_IMP_GET2(maps_folder_parent_dir);
-
+		
+#include "TagGroups/CacheFiles.Settings.inl"
 #include "TagGroups/CacheFiles.YeloFiles.inl"
 #include "TagGroups/CacheFiles.CRC.inl"
 
 		void Initialize()
 		{
-			g_settings = std::make_unique<c_cache_settings>();
-#if PLATFORM_IS_USER
-			Settings::RegisterConfigurationContainer(g_settings.get(), nullptr, [](){ g_yelo_settings.InitializeMainmenuOverride(g_settings->m_mainmenu_scenario); });
-#else
-			Settings::RegisterConfigurationContainer(g_settings.get());
-#endif
+			c_settings_cache::Instance().Register();
 
 			MemoryUpgradesInitialize();
 			c_cache_format_path_hacks::Initialize();
@@ -227,8 +198,8 @@ namespace Yelo
 		void Dispose()
 		{
 			MemoryUpgradesDispose();
-
-			Settings::UnregisterConfigurationContainer(g_settings.get());
+			
+			c_settings_cache::Instance().Unregister();
 		}
 
 		static bool MapIsOriginal(cstring map_name)

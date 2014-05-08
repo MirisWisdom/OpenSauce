@@ -30,5 +30,5 @@ namespace Yelo
 			/// <returns>	An i_configuration_leaf pointer. </returns>
 			virtual std::shared_ptr<i_configuration_leaf> Current() = 0;
 		};
-	}
-}
+	};
+};

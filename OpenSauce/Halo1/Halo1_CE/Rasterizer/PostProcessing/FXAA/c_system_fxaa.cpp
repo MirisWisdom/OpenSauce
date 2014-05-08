@@ -8,9 +8,9 @@
 #include "Rasterizer/PostProcessing/FXAA/c_system_fxaa.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include "Common/YeloSettings.hpp"
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
 
+#include "Rasterizer/PostProcessing/FXAA/c_settings_fxaa.hpp"
 #include "Rasterizer/PostProcessing/FXAA/c_shader_fxaa.hpp"
 #include "Rasterizer/PostProcessing/c_shader_instance.hpp"
 #include "Rasterizer/PostProcessing/c_effect_postprocess.hpp"
@@ -59,11 +59,7 @@ namespace Yelo
 		// IPostProcessingComponent
 		void c_system_fxaa::Initialize()
 		{
-			m_settings = std::make_unique<c_system_settings>();
-			Settings::RegisterConfigurationContainer(m_settings.get(), nullptr, 
-				[this](){ m_members.m_flags.is_enabled = m_settings->m_enabled; },
-				[this](){ m_settings->m_enabled = m_members.m_flags.is_enabled; }
-			);
+			c_settings_fxaa::Instance().Register();
 
 			m_members.status = Enums::pp_component_status_uninitialised;
 
@@ -118,8 +114,8 @@ namespace Yelo
 			g_effect_fxaa.Dtor();
 			g_shader_instance_fxaa.Dtor();
 			g_shader_fxaa.Dtor();
-			
-			Settings::UnregisterConfigurationContainer(m_settings.get());
+
+			c_settings_fxaa::Instance().Unregister();
 		}
 
 		void c_system_fxaa::InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters)

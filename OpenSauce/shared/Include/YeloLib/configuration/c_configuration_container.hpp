@@ -20,25 +20,25 @@ namespace Yelo
 			const std::string m_node_name;
 			
 		public:
-			c_configuration_container(const std::string node_name);
+			c_configuration_container(const std::string& node_name);
 			
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Get's the nodes name. </summary>
 			///
 			/// <returns>	A std::string containing the nodes name. </returns>
-			const std::string GetName() const;
+			const std::string& GetName() const final override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the containers values from the supplied node. </summary>
 			///
 			/// <param name="node">	The node to get the values from. </param>
-			void GetValue(i_configuration_leaf& node);
+			void GetValue(i_configuration_leaf& node) final override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Sets the objects values to the supplied node. </summary>
 			///
 			/// <param name="node">	The node to set the values to. </param>
-			void SetValue(i_configuration_leaf& node);
+			void SetValue(i_configuration_leaf& node) final override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>
@@ -46,13 +46,13 @@ namespace Yelo
 			/// </summary>
 			///
 			/// <param name="parent_node">	The parent node to get the values from. </param>
-			void GetValueFromParent(i_configuration_leaf& parent_node);
+			void GetValueFromParent(i_configuration_leaf& parent_node) final override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Sets the values to a child added to the supplied node. </summary>
 			///
 			/// <param name="parent_node">	The parent node to set the values to. </param>
-			void SetValueToParent(i_configuration_leaf& parent_node);
+			void SetValueToParent(i_configuration_leaf& parent_node) final override;
 
 		protected:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -73,5 +73,5 @@ namespace Yelo
 			/// <summary>	Used in derived containers for logic that is run after setting a containers values. </summary>
 			virtual void PostSet() {}
 		};
-	}
-}
+	};
+};

@@ -34,7 +34,7 @@ namespace Yelo
 			///
 			/// <param name="node_name"> 	Name of the node. </param>
 			/// <param name="create_new">	The function use when creating a new instance of T. </param>
-			c_configuration_list(const std::string node_name, const std::function<T()> create_new)
+			c_configuration_list(const std::string& node_name, const std::function<T()> create_new)
 				: m_node_name(node_name)
 				, m_values()
 				, m_create_new(create_new)
@@ -44,7 +44,7 @@ namespace Yelo
 			/// <summary>	Get's the nodes name. </summary>
 			///
 			/// <returns>	A std::string containing the nodes name. </returns>
-			const std::string GetName() const
+			const std::string& GetName() const final override
 			{
 				return m_node_name;
 			}
@@ -53,7 +53,7 @@ namespace Yelo
 			/// <summary>	Unused in lists. Will throw if used. </summary>
 			///
 			/// <param name="node"/>
-			void GetValue(i_configuration_leaf& node)
+			void GetValue(i_configuration_leaf& node) final override
 			{
 				throw;
 			}
@@ -62,7 +62,7 @@ namespace Yelo
 			/// <summary>	Unused in lists. Will throw if used. </summary>
 			///
 			/// <param name="node"/>
-			void SetValue(i_configuration_leaf& node)
+			void SetValue(i_configuration_leaf& node) final override
 			{
 				throw;
 			}
@@ -71,7 +71,7 @@ namespace Yelo
 			/// <summary>	Gets the list of configuration values from the provided parent leaf. </summary>
 			///
 			/// <param name="node">	The leaf to get the values from. </param>
-			void GetValueFromParent(i_configuration_leaf& node)
+			void GetValueFromParent(i_configuration_leaf& node) final override
 			{
 				auto& iterator = node.GetChildIterator(m_node_name);
 
@@ -94,7 +94,7 @@ namespace Yelo
 			/// <summary>	Adds the lists values as children of the provided leaf. </summary>
 			///
 			/// <param name="node">	The leaf node to add children to. </param>
-			void SetValueToParent(i_configuration_leaf& node)
+			void SetValueToParent(i_configuration_leaf& node) final override
 			{
 				for(auto& value : m_values)
 				{
@@ -148,5 +148,5 @@ namespace Yelo
 				return m_values;
 			}
 		};
-	}
-}
+	};
+};

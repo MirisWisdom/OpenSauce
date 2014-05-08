@@ -59,8 +59,8 @@ class c_cache_format_path_hacks
 		static cstring k_yelo_map_format = "%s%s%s.yelo";
 		static cstring k_yelo_map_format_subdir = "%s\\%s%s.yelo";
 
-		if((!g_settings->m_check_yelo_files_first && phase == _phase_yelo) ||
-			(g_settings->m_check_yelo_files_first && phase == _phase_map)) // we want to use .yelo first, so use it in the first phase
+		if((!c_settings_cache::Instance().Get().m_check_yelo_files_first && phase == _phase_yelo) ||
+			(c_settings_cache::Instance().Get().m_check_yelo_files_first && phase == _phase_map)) // we want to use .yelo first, so use it in the first phase
 			format = format[2] == '\\' ? k_yelo_map_format_subdir : k_yelo_map_format;
 
 		return format;

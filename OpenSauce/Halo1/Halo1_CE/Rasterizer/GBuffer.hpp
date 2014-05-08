@@ -11,6 +11,7 @@
 
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
+#include <YeloLib/configuration/c_configuration_singleton.hpp>
 
 #include "Rasterizer/Rasterizer.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
@@ -141,30 +142,6 @@ namespace Yelo
 			bool			IsAvailable();	
 		};
 		static c_gbuffer_rtclear_effect& GBufferClear();
-		
-		class c_gbuffer_settings
-			: public Configuration::c_configuration_container
-		{
-		public:
-			Configuration::c_configuration_value<bool> m_enabled;
-
-			c_gbuffer_settings()
-				: Configuration::c_configuration_container("GBuffer")
-				, m_enabled("Enabled", true)
-			{ }
-			
-		protected:
-			const std::vector<i_configuration_value* const> GetMembers()
-			{
-				std::vector<i_configuration_value* const> values =
-				{
-					&m_enabled
-				};
-
-				return values;
-			}
-		};
-		static std::unique_ptr<c_gbuffer_settings> g_settings;
 
 		class c_gbuffer_system
 		{

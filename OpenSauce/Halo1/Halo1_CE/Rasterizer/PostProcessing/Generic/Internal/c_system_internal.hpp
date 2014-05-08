@@ -7,9 +7,6 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/configuration/c_configuration_container.hpp>
-#include <YeloLib/configuration/c_configuration_value.hpp>
-
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingCacheComponent.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUpdatable.hpp"
@@ -51,30 +48,6 @@ namespace Yelo
 			/////////////////////////////////////////////////
 			// members
 		private:
-			class c_system_settings
-				: public Configuration::c_configuration_container
-			{
-			public:
-				Configuration::c_configuration_value<bool> m_enabled;
-
-				c_system_settings()
-					: Configuration::c_configuration_container("Rasterizer.PostProcessing.MapEffects")
-					, m_enabled("Enabled", true)
-				{ }
-
-			protected:
-				const std::vector<i_configuration_value* const> GetMembers()
-				{
-					std::vector<i_configuration_value* const> values =
-					{
-						&m_enabled
-					};
-
-					return values;
-				}
-			};
-			std::unique_ptr<c_system_settings> m_settings;
-
 			struct
 			{
 				struct

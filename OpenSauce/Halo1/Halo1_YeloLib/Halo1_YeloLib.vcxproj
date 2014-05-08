@@ -88,6 +88,7 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_container_list.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_file_factory.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_list.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_singleton.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_value.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_value_list.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\i_configuration_container.hpp" />

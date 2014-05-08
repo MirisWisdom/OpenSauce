@@ -8,7 +8,7 @@
 #include "Rasterizer/PostProcessing/Generic/Internal/c_system_internal.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include "Common/YeloSettings.hpp"
+#include "Rasterizer/PostProcessing/Generic/Internal/c_settings_internal.hpp"
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
 #include "Rasterizer/PostProcessing/Fade/c_system_fade.hpp"
 #include "TagGroups/TagGroups.hpp"
@@ -69,8 +69,7 @@ namespace Yelo
 		 */
 		void c_system_internal::Initialize()
 		{
-			m_settings = std::make_unique<c_system_settings>();
-			Settings::RegisterConfigurationContainer(m_settings.get());
+			c_settings_internal::Instance().Register();
 
 			ClearMembers();
 		}
@@ -84,8 +83,8 @@ namespace Yelo
 		void c_system_internal::Dispose()
 		{
 			ClearMembers();
-			
-			Settings::UnregisterConfigurationContainer(m_settings.get());
+
+			c_settings_internal::Instance().Unregister();
 		}
 
 		/*!

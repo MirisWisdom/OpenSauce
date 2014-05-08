@@ -23,6 +23,7 @@
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
+#include <YeloLib/configuration/c_configuration_singleton.hpp>
 
 #include "TagGroups/project_yellow_definitions.hpp"
 
@@ -50,29 +51,44 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_OBJECTS_OBJECTS
 #include "Memory/_EngineLayout.inl"
 
-		class c_object_settings
+		class c_settings_container
 			: public Configuration::c_configuration_container
 		{
 		public:
 			Configuration::c_configuration_value<bool> m_vehicle_remapper_enabled;
 
-			c_object_settings()
+			c_settings_container()
 				: Configuration::c_configuration_container("Objects")
 				, m_vehicle_remapper_enabled("VehicleRemapperEnabled", true)
 			{ }
 			
 		protected:
-			const std::vector<i_configuration_value* const> GetMembers()
+			const std::vector<i_configuration_value* const> GetMembers() final override
 			{
-				std::vector<i_configuration_value* const> values =
-				{
-					&m_vehicle_remapper_enabled
-				};
-
-				return values;
+				return std::vector<i_configuration_value* const> { &m_vehicle_remapper_enabled };
 			}
 		};
-		std::unique_ptr<c_object_settings> g_settings;
+
+		class c_settings_objects
+			: public Configuration::c_configuration_singleton<c_settings_container, c_settings_objects>
+		{
+		public:
+			void Register() final override
+			{
+				Settings::RegisterConfigurationContainer(GetPtr(), nullptr, PostLoad);
+			}
+
+			void Unregister() final override
+			{
+				Settings::UnregisterConfigurationContainer(GetPtr());
+			}
+
+		private:
+			static void PostLoad()
+			{
+				VehicleRemapperEnable(Instance().Get().m_vehicle_remapper_enabled);;
+			}
+		};
 	};
 };
 
@@ -154,8 +170,7 @@ namespace Yelo
 		}
 		void Initialize()
 		{
-			g_settings = std::make_unique<c_object_settings>();
-			Settings::RegisterConfigurationContainer(g_settings.get(), nullptr, [](){ VehicleRemapperEnable(g_settings->m_vehicle_remapper_enabled); });
+			c_settings_objects::Instance().Register();
 
 			Memory::WriteRelativeJmp(&Objects::Update, GET_FUNC_VPTR(OBJECTS_UPDATE_HOOK), false);
 
@@ -181,7 +196,7 @@ namespace Yelo
 			Weapon::Dispose();
 			Vehicle::Dispose();
 
-			Settings::UnregisterConfigurationContainer(g_settings.get());
+			c_settings_objects::Instance().Unregister();
 		}
 
 		static void ObjectsUpdateIgnorePlayerPvs(bool use_fix)
@@ -259,7 +274,7 @@ namespace Yelo
 
 		bool VehicleRemapperEnabled()
 		{
-			return g_settings->m_vehicle_remapper_enabled;
+			return c_settings_objects::Instance().Get().m_vehicle_remapper_enabled;
 		}
 
 		void VehicleRemapperEnable(bool enabled)

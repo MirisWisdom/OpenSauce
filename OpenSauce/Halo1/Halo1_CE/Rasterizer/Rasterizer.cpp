@@ -14,6 +14,7 @@
 
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
+#include <YeloLib/configuration/c_configuration_singleton.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Game/ScriptLibrary.hpp"
@@ -128,29 +129,84 @@ namespace Yelo
 		static char g_screenshot_folder[MAX_PATH] = "screenshots\\";
 		static s_rasterizer_resolution g_resolution_list[64];
 
-		class c_rasterizer_settings
+#pragma region Settings
+		class c_settings_container
 			: public Configuration::c_configuration_container
 		{
+			class c_upgrades_container
+				: public Configuration::c_configuration_container
+			{
+			public:
+				Configuration::c_configuration_value<bool> m_dynamic_triangles;
+				Configuration::c_configuration_value<bool> m_model_node_stretching_fix;
+	
+				c_upgrades_container()
+					: Configuration::c_configuration_container("Upgrades")
+					, m_dynamic_triangles("DynamicTriangles", true)
+					, m_model_node_stretching_fix("MaximumModelNodes", true)
+				{ }
+
+			protected:
+				const std::vector<Configuration::i_configuration_value* const> GetMembers() final override
+				{
+					return std::vector<Configuration::i_configuration_value* const>
+					{
+						&m_dynamic_triangles,
+						&m_model_node_stretching_fix,
+					};
+				}
+			};
+
 		public:
 			Configuration::c_configuration_value<bool> m_use_nvidia_camo;
+			c_upgrades_container m_upgrades;
 
-			c_rasterizer_settings()
+			c_settings_container()
 				: Configuration::c_configuration_container("Rasterizer")
 				, m_use_nvidia_camo("UseNvidiaCamo", false)
+				, m_upgrades()
 			{ }
 			
 		protected:
-			const std::vector<i_configuration_value* const> GetMembers()
+			const std::vector<i_configuration_value* const> GetMembers() final override
 			{
-				std::vector<i_configuration_value* const> values =
-				{
-					&m_use_nvidia_camo
-				};
-
-				return values;
+				return std::vector<i_configuration_value* const> { &m_use_nvidia_camo, &m_upgrades };
 			}
 		};
-		std::unique_ptr<c_rasterizer_settings> g_settings;
+
+		class c_settings_rasterizer
+			: public Configuration::c_configuration_singleton<c_settings_container, c_settings_rasterizer>
+		{
+		public:
+			void Register() final override
+			{
+				Settings::RegisterConfigurationContainer(GetPtr(), nullptr, PostLoad);
+			}
+
+			void Unregister() final override
+			{
+				Settings::UnregisterConfigurationContainer(GetPtr());
+			}
+
+		private:
+			static void PostLoad()
+			{
+				// when 0x637D50 (1.09) is 1, the basic active camouflage is used; at 0x51ABB2 (1.09) it is forced to 1 when an nVidia card is detected
+				// if the user changes this in their settings they need to restart the game for it to take effect
+				GET_PTR(NVIDIA_USE_BASIC_CAMO_TOGGLE) = Instance().Get().m_use_nvidia_camo;
+				
+				if(Instance().Get().m_upgrades.m_dynamic_triangles)
+				{
+					g_render_upgrades.InitializeDynamicTrianglesUpgrade();
+				}
+
+				if(Instance().Get().m_upgrades.m_model_node_stretching_fix)
+				{
+					g_render_upgrades.InitializeMaximumNodesPerModelFixes();
+				}
+			}
+		};
+#pragma endregion
 
 		void SetupResolutions()
 		{
@@ -207,19 +263,9 @@ namespace Yelo
 #pragma warning( disable : 4312 ) // conversion from 'unsigned long' to 'void *' of greater size
 		void Rasterizer::Initialize()
 		{
-			g_settings = std::make_unique<c_rasterizer_settings>();
-			Settings::RegisterConfigurationContainer(g_settings.get(), nullptr,
-				[]()
-				{
-					// when 0x637D50 (1.09) is 1, the basic active camouflage is used; at 0x51ABB2 (1.09) it is forced to 1 when an nVidia card is detected
-					// if the user changes this in their settings they need to restart the game for it to take effect
-					GET_PTR(NVIDIA_USE_BASIC_CAMO_TOGGLE) = g_settings->m_use_nvidia_camo;
-				}
-			);
+			c_settings_rasterizer::Instance().Register();
 
 			Render::Initialize();
-
-			g_render_upgrades.Initialize();
 		
 			// hook the calls to rasterizer_dispose
 			Memory::WriteRelativeCall(&RasterizerDisposeHook, GET_FUNC_VPTR(RASTERIZER_DISPOSE_CALL_FROM_RASTERIZER));
@@ -269,11 +315,9 @@ namespace Yelo
 
 		void Dispose()
 		{
-			g_render_upgrades.Dispose();
-
 			Render::Dispose();
-
-			Settings::UnregisterConfigurationContainer(g_settings.get());
+			
+			c_settings_rasterizer::Instance().Unregister();
 		}
 
 		void Update()

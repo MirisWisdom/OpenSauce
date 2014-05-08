@@ -17,6 +17,7 @@
 #include <YeloLib/memory/security/xxtea.hpp>
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
+#include <YeloLib/configuration/c_configuration_singleton.hpp>
 
 #include "Common/FileIO.hpp"
 #include "Common/YeloSettings.hpp"
@@ -1071,29 +1072,40 @@ namespace Yelo
 		static s_map_download_globals	g_map_download_globals;
 		static HANDLE					g_globals_access_mutex;
 
-		class c_download_settings
+#pragma region Settings
+		class c_settings_container
 			: public Configuration::c_configuration_container
 		{
 		public:
 			Configuration::c_configuration_value<bool> m_enabled;
 
-			c_download_settings()
+			c_settings_container()
 				: Configuration::c_configuration_container("Networking.MapDownload")
 				, m_enabled("Enabled", true)
 			{ }
 			
 		protected:
-			const std::vector<i_configuration_value* const> GetMembers()
+			const std::vector<i_configuration_value* const> GetMembers() final override
 			{
-				std::vector<i_configuration_value* const> values =
-				{
-					&m_enabled
-				};
-
-				return values;
+				return std::vector<i_configuration_value* const> { &m_enabled };
 			}
 		};
-		std::unique_ptr<c_download_settings> g_settings;
+
+		class c_settings_mapdownload
+			: public Configuration::c_configuration_singleton<c_settings_container, c_settings_mapdownload>
+		{
+		public:
+			void Register() final override
+			{
+				Settings::RegisterConfigurationContainer(GetPtr());
+			}
+
+			void Unregister() final override
+			{
+				Settings::UnregisterConfigurationContainer(GetPtr());
+			}
+		};
+#pragma endregion
 
 		/*!
 		 * \brief
@@ -2343,7 +2355,7 @@ namespace Yelo
 		 */
 		void	Update(real delta)
 		{
-			if(!g_settings->m_enabled)
+			if(!c_settings_mapdownload::Instance().Get().m_enabled)
 				return;
 
 			// if the master server list download has not started/finished update the stage
@@ -2429,7 +2441,7 @@ namespace Yelo
 		 */
 		void	AddMapForDownload(const char* map_name)
 		{
-			if(!g_settings->m_enabled)
+			if(!c_settings_mapdownload::Instance().Get().m_enabled)
 				return;
 
 			if(_map_download_update_stage_idle != g_map_download_globals.m_map_download_update_stage)
@@ -2464,8 +2476,7 @@ namespace Yelo
 		 */
 		void	Initialize()
 		{
-			g_settings.reset(new c_download_settings());
-			Settings::RegisterConfigurationContainer(g_settings.get());
+			c_settings_mapdownload::Instance().Register();
 
 			PathCombine(g_map_download_globals.m_paths.user_download_directory, Settings::OpenSauceProfilePath(), "map_download");
 
@@ -2490,7 +2501,7 @@ namespace Yelo
 
 			CloseHandle(g_globals_access_mutex);
 			
-			Settings::UnregisterConfigurationContainer(g_settings.get());
+			c_settings_mapdownload::Instance().Unregister();
 		}
 
 		/*!

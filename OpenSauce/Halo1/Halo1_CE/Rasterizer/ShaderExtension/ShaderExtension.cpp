@@ -36,30 +36,6 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_SHADEREXTENSION
 #include "Memory/_EngineLayout.inl"
 
-			class c_shader_extension_settings
-				: public Configuration::c_configuration_container
-			{
-			public:
-				Configuration::c_configuration_value<bool> m_enabled;
-
-				c_shader_extension_settings()
-					: Configuration::c_configuration_container("Rasterizer.ShaderExtensions")
-					, m_enabled("Enabled", true)
-				{ }
-				
-			protected:
-				const std::vector<i_configuration_value* const> GetMembers()
-				{
-					std::vector<i_configuration_value* const> values =
-					{
-						&m_enabled
-					};
-
-					return values;
-				}
-			};
-			std::unique_ptr<c_shader_extension_settings> g_settings;
-
 			enum ps_support{
 				_ps_support_legacy,
 				_ps_support_2_0,
@@ -149,6 +125,97 @@ namespace Yelo
 				return sprintf(string_out, format, major, minor);
 			}
 
+#pragma region Settings
+			class c_shader_extension_container
+				: public Configuration::c_configuration_container
+			{
+				class c_shader_model_settings
+					: public Yelo::Configuration::c_configuration_container
+				{
+				public:
+					Yelo::Configuration::c_configuration_value<bool> m_normal_maps;
+					Yelo::Configuration::c_configuration_value<bool> m_detail_normal_maps;
+					Yelo::Configuration::c_configuration_value<bool> m_specular_maps;
+					Yelo::Configuration::c_configuration_value<bool> m_specular_lighting;
+
+					c_shader_model_settings()
+						: Yelo::Configuration::c_configuration_container("Rasterizer.ShaderExtensions.Object")
+						, m_normal_maps("NormalMaps", true)
+						, m_detail_normal_maps("DetailNormalMaps", true)
+						, m_specular_maps("SpecularMaps", true)
+						, m_specular_lighting("SpecularLighting", true)
+					{ }
+		
+				protected:
+					const std::vector<i_configuration_value* const> GetMembers() final override
+					{
+						return std::vector<i_configuration_value* const>
+						{
+							&m_normal_maps,
+							&m_detail_normal_maps,
+							&m_specular_maps,
+							&m_specular_lighting
+						};
+					}
+				};
+
+			public:
+				Configuration::c_configuration_value<bool> m_enabled;
+				c_shader_model_settings m_shader_model;
+
+				c_shader_extension_container()
+					: Configuration::c_configuration_container("Rasterizer.ShaderExtensions")
+					, m_enabled("Enabled", true)
+					, m_shader_model()
+				{ }
+				
+			protected:
+				const std::vector<i_configuration_value* const> GetMembers() final override
+				{
+					return std::vector<i_configuration_value* const> { &m_enabled, &m_shader_model };
+				}
+			};
+
+			class c_settings_shaderextension
+				: public Configuration::c_configuration_singleton<c_shader_extension_container, c_settings_shaderextension>
+			{
+			public:
+				void Register() final override
+				{
+					Settings::RegisterConfigurationContainer(GetPtr(), nullptr, PostLoad, PreSave);
+				}
+
+				void Unregister() final override
+				{
+					Settings::UnregisterConfigurationContainer(GetPtr());
+				}
+
+			private:
+				static void PostLoad()
+				{
+					Model::g_extension_usage_mask = Enums::_model_extension_usage_normal_map | Enums::_model_extension_usage_detail_normal |
+					Enums::_model_extension_usage_specular_map | Enums::_model_extension_usage_specular_lighting;
+
+					int32 usage_mask = Enums::_model_extension_usage_none;
+
+					usage_mask |= (Instance().Get().m_shader_model.m_normal_maps ? Enums::_model_extension_usage_normal_map : Enums::_model_extension_usage_none);
+					usage_mask |= (Instance().Get().m_shader_model.m_detail_normal_maps ? Enums::_model_extension_usage_detail_normal : Enums::_model_extension_usage_none);
+					usage_mask |= (Instance().Get().m_shader_model.m_specular_maps ? Enums::_model_extension_usage_specular_map : Enums::_model_extension_usage_none);
+					usage_mask |= (Instance().Get().m_shader_model.m_specular_lighting ? Enums::_model_extension_usage_specular_lighting : Enums::_model_extension_usage_none);
+
+					Model::g_extension_usage_mask &= usage_mask;
+				}
+
+				static void PreSave()
+				{
+					Instance().Get().m_shader_model.m_normal_maps = (Model::g_extension_usage_mask & Enums::_model_extension_usage_normal_map) == Enums::_model_extension_usage_normal_map;
+					Instance().Get().m_shader_model.m_detail_normal_maps = (Model::g_extension_usage_mask & Enums::_model_extension_usage_detail_normal) == Enums::_model_extension_usage_detail_normal;
+					Instance().Get().m_shader_model.m_specular_maps = (Model::g_extension_usage_mask & Enums::_model_extension_usage_specular_map) == Enums::_model_extension_usage_specular_map;
+					Instance().Get().m_shader_model.m_specular_lighting = (Model::g_extension_usage_mask & Enums::_model_extension_usage_specular_lighting) == Enums::_model_extension_usage_specular_lighting;
+				}
+			};
+#pragma endregion
+
 			void		ApplyHooks()
 			{
 				int32 i = 0;
@@ -167,10 +234,7 @@ namespace Yelo
 
 			void		Initialize()
 			{
-				g_settings = std::make_unique<c_shader_extension_settings>();
-				Settings::RegisterConfigurationContainer(g_settings.get());
-
-				Model::Initialize();
+				c_settings_shaderextension::Instance().Register();
 
 				g_shader_files_present = true;
 
@@ -187,9 +251,7 @@ namespace Yelo
 
 			void		Dispose()
 			{
-				Model::Dispose();
-
-				Settings::UnregisterConfigurationContainer(g_settings.get());
+				c_settings_shaderextension::Instance().Unregister();
 			}
 
 			void		Initialize3D(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* params)

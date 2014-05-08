@@ -15,11 +15,11 @@ namespace Yelo
 			: public c_property_tree_file
 		{
 		public:
-			c_property_tree_file_xml(const std::string file_path);
+			c_property_tree_file_xml(const std::string& file_path);
 
 		protected:
-			void ReadPropertyTree(const std::string file_path, boost::property_tree::ptree& property_tree);
-			void WritePropertyTree(const std::string file_path, boost::property_tree::ptree& property_tree);
+			void ReadPropertyTree(const std::string& file_path, boost::property_tree::ptree& property_tree) final override;
+			void WritePropertyTree(const std::string& file_path, boost::property_tree::ptree& property_tree) final override;
 		};
-	}}
-}
+	};};
+};
