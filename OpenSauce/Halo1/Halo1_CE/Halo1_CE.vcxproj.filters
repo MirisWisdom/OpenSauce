@@ -139,6 +139,9 @@
     <Filter Include="Scenario\Impl">
       <UniqueIdentifier>{fbae11d1-b912-48f5-b05a-1fd9ec289f00}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Settings">
+      <UniqueIdentifier>{28f035c3-f19c-4795-a2a8-ecd7e968e03b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp">
@@ -151,9 +154,6 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Common\Precompile.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Common\YeloSettings.cpp">
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Game\AI.cpp">
@@ -448,6 +448,9 @@
     <ClCompile Include="Rasterizer\PostProcessing\Generic\Internal\c_settings_internal.cpp">
       <Filter>Rasterizer\PostProcessing\Generic\Internal</Filter>
     </ClCompile>
+    <ClCompile Include="Settings\YeloSettings.cpp">
+      <Filter>Settings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared\Include\mongoose\mongoose.h">
@@ -658,9 +661,6 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Common\Precompile.hpp">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\YeloSettings.hpp">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Game\AI.hpp">
@@ -1022,6 +1022,12 @@
     </ClInclude>
     <ClInclude Include="Rasterizer\PostProcessing\Generic\Internal\c_settings_internal.hpp">
       <Filter>Rasterizer\PostProcessing\Generic\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\YeloSettings.hpp">
+      <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\c_settings_singleton.hpp">
+      <Filter>Settings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

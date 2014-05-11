@@ -12,9 +12,13 @@
 #include <blamlib/Halo1/game/player_structures.hpp>
 #include <blamlib/Halo1/main/main_structures.hpp>
 
+#include <YeloLib/configuration/c_configuration_container.hpp>
+#include <YeloLib/configuration/c_configuration_value.hpp>
+#include "Settings/c_settings_singleton.hpp"
+
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
-#include "Common/YeloSettings.hpp"
+#include "Settings/YeloSettings.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Rasterizer/Rasterizer.hpp"
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
@@ -53,28 +57,17 @@ namespace Yelo
 		};
 
 		class c_settings_gbuffer
-			: public Configuration::c_configuration_singleton<c_settings_container, c_settings_gbuffer>
+			: public Settings::c_settings_singleton<c_settings_container, c_settings_gbuffer>
 		{
 		public:
-			void Register() final override
+			void PostLoad() final override
 			{
-				Settings::RegisterConfigurationContainer(GetPtr(), nullptr, PostLoad, PreSave);
+				c_gbuffer_system::g_system_enabled = Get().m_enabled;
 			}
 
-			void Unregister() final override
+			void PreSave() final override
 			{
-				Settings::UnregisterConfigurationContainer(GetPtr());
-			}
-
-		private:
-			static void PostLoad()
-			{
-				c_gbuffer_system::g_system_enabled = Instance().Get().m_enabled;
-			}
-
-			static void PreSave()
-			{
-				Instance().Get().m_enabled = c_gbuffer_system::g_system_enabled;
+				Get().m_enabled = c_gbuffer_system::g_system_enabled;
 			}
 		};
 #pragma endregion
@@ -541,7 +534,7 @@ skip_disable_velocity:
 
 			g_default_system.Ctor();
 
-			c_settings_gbuffer::Instance().Register();
+			c_settings_gbuffer::Register();
 
 			c_gbuffer_system::g_output_object_tbn = false;
 			// leave as false, not enough vertex shader registers available to do object velocity with bones
@@ -585,7 +578,7 @@ skip_disable_velocity:
 		}
 		void		c_gbuffer_system::Dispose()
 		{
-			c_settings_gbuffer::Instance().Unregister();
+			c_settings_gbuffer::Unregister();
 
 			g_default_system.Dtor();
 		}

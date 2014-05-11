@@ -17,10 +17,10 @@
 #include <YeloLib/memory/security/xxtea.hpp>
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/configuration/c_configuration_singleton.hpp>
+#include "Settings/c_settings_singleton.hpp"
 
 #include "Common/FileIO.hpp"
-#include "Common/YeloSettings.hpp"
+#include "Settings/YeloSettings.hpp"
 
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameBuildNumber.hpp"
@@ -1092,19 +1092,8 @@ namespace Yelo
 		};
 
 		class c_settings_mapdownload
-			: public Configuration::c_configuration_singleton<c_settings_container, c_settings_mapdownload>
-		{
-		public:
-			void Register() final override
-			{
-				Settings::RegisterConfigurationContainer(GetPtr());
-			}
-
-			void Unregister() final override
-			{
-				Settings::UnregisterConfigurationContainer(GetPtr());
-			}
-		};
+			: public Settings::c_settings_singleton<c_settings_container, c_settings_mapdownload>
+		{ };
 #pragma endregion
 
 		/*!
@@ -2476,7 +2465,7 @@ namespace Yelo
 		 */
 		void	Initialize()
 		{
-			c_settings_mapdownload::Instance().Register();
+			c_settings_mapdownload::Register();
 
 			PathCombine(g_map_download_globals.m_paths.user_download_directory, Settings::OpenSauceProfilePath(), "map_download");
 
@@ -2501,7 +2490,7 @@ namespace Yelo
 
 			CloseHandle(g_globals_access_mutex);
 			
-			c_settings_mapdownload::Instance().Unregister();
+			c_settings_mapdownload::Unregister();
 		}
 
 		/*!

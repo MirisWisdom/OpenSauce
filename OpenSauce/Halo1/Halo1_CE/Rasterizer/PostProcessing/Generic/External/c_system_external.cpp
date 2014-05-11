@@ -61,7 +61,7 @@ namespace Yelo
 		 */
 		void c_system_external::Initialize()
 		{
-			c_settings_external::Instance().Register();
+			c_settings_external::Register();
 
 			// initialize the systems variables to defaults
 			m_members.status = Enums::pp_component_status_uninitialised;
@@ -89,7 +89,7 @@ namespace Yelo
 			// delete allocated memory
 			UnloadExternal();
 
-			c_settings_external::Instance().Unregister();
+			c_settings_external::Unregister();
 		}
 
 		/*!

@@ -17,7 +17,7 @@
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
 #include "Common/FileIO.hpp"
-#include "Common/YeloSettings.hpp"
+#include "Settings/YeloSettings.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Interface/Keystone.hpp"

@@ -30,24 +30,13 @@ protected:
 };
 
 class c_settings_cache
-	: public Configuration::c_configuration_singleton<c_settings_container, c_settings_cache>
+	: public Settings::c_settings_singleton<c_settings_container, c_settings_cache>
 {
 public:
-	void Register() final override
-	{
-		Settings::RegisterConfigurationContainer(GetPtr(), nullptr, PostLoad);
-	}
-
-	void Unregister() final override
-	{
-		Settings::UnregisterConfigurationContainer(GetPtr());
-	}
-
-private:
-	static void PostLoad()
+	void PostLoad() final override
 	{
 #if PLATFORM_IS_USER
-		g_yelo_settings.InitializeMainmenuOverride(Instance().Get().m_mainmenu_scenario);
+		g_yelo_settings.InitializeMainmenuOverride(Get().m_mainmenu_scenario);
 #endif
 	}
 };

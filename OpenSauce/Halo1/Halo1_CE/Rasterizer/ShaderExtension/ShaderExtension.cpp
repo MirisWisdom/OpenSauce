@@ -16,8 +16,9 @@
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
+#include "Settings/c_settings_singleton.hpp"
 
-#include "Common/YeloSettings.hpp"
+#include "Settings/YeloSettings.hpp"
 #include "Common/FileIO.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameState.hpp"
@@ -177,41 +178,30 @@ namespace Yelo
 			};
 
 			class c_settings_shaderextension
-				: public Configuration::c_configuration_singleton<c_shader_extension_container, c_settings_shaderextension>
+				: public Settings::c_settings_singleton<c_shader_extension_container, c_settings_shaderextension>
 			{
 			public:
-				void Register() final override
-				{
-					Settings::RegisterConfigurationContainer(GetPtr(), nullptr, PostLoad, PreSave);
-				}
-
-				void Unregister() final override
-				{
-					Settings::UnregisterConfigurationContainer(GetPtr());
-				}
-
-			private:
-				static void PostLoad()
+				void PostLoad() final override
 				{
 					Model::g_extension_usage_mask = Enums::_model_extension_usage_normal_map | Enums::_model_extension_usage_detail_normal |
 					Enums::_model_extension_usage_specular_map | Enums::_model_extension_usage_specular_lighting;
 
 					int32 usage_mask = Enums::_model_extension_usage_none;
 
-					usage_mask |= (Instance().Get().m_shader_model.m_normal_maps ? Enums::_model_extension_usage_normal_map : Enums::_model_extension_usage_none);
-					usage_mask |= (Instance().Get().m_shader_model.m_detail_normal_maps ? Enums::_model_extension_usage_detail_normal : Enums::_model_extension_usage_none);
-					usage_mask |= (Instance().Get().m_shader_model.m_specular_maps ? Enums::_model_extension_usage_specular_map : Enums::_model_extension_usage_none);
-					usage_mask |= (Instance().Get().m_shader_model.m_specular_lighting ? Enums::_model_extension_usage_specular_lighting : Enums::_model_extension_usage_none);
+					usage_mask |= (Get().m_shader_model.m_normal_maps ? Enums::_model_extension_usage_normal_map : Enums::_model_extension_usage_none);
+					usage_mask |= (Get().m_shader_model.m_detail_normal_maps ? Enums::_model_extension_usage_detail_normal : Enums::_model_extension_usage_none);
+					usage_mask |= (Get().m_shader_model.m_specular_maps ? Enums::_model_extension_usage_specular_map : Enums::_model_extension_usage_none);
+					usage_mask |= (Get().m_shader_model.m_specular_lighting ? Enums::_model_extension_usage_specular_lighting : Enums::_model_extension_usage_none);
 
 					Model::g_extension_usage_mask &= usage_mask;
 				}
 
-				static void PreSave()
+				void PreSave() final override
 				{
-					Instance().Get().m_shader_model.m_normal_maps = (Model::g_extension_usage_mask & Enums::_model_extension_usage_normal_map) == Enums::_model_extension_usage_normal_map;
-					Instance().Get().m_shader_model.m_detail_normal_maps = (Model::g_extension_usage_mask & Enums::_model_extension_usage_detail_normal) == Enums::_model_extension_usage_detail_normal;
-					Instance().Get().m_shader_model.m_specular_maps = (Model::g_extension_usage_mask & Enums::_model_extension_usage_specular_map) == Enums::_model_extension_usage_specular_map;
-					Instance().Get().m_shader_model.m_specular_lighting = (Model::g_extension_usage_mask & Enums::_model_extension_usage_specular_lighting) == Enums::_model_extension_usage_specular_lighting;
+					Get().m_shader_model.m_normal_maps = (Model::g_extension_usage_mask & Enums::_model_extension_usage_normal_map) == Enums::_model_extension_usage_normal_map;
+					Get().m_shader_model.m_detail_normal_maps = (Model::g_extension_usage_mask & Enums::_model_extension_usage_detail_normal) == Enums::_model_extension_usage_detail_normal;
+					Get().m_shader_model.m_specular_maps = (Model::g_extension_usage_mask & Enums::_model_extension_usage_specular_map) == Enums::_model_extension_usage_specular_map;
+					Get().m_shader_model.m_specular_lighting = (Model::g_extension_usage_mask & Enums::_model_extension_usage_specular_lighting) == Enums::_model_extension_usage_specular_lighting;
 				}
 			};
 #pragma endregion
@@ -234,7 +224,7 @@ namespace Yelo
 
 			void		Initialize()
 			{
-				c_settings_shaderextension::Instance().Register();
+				c_settings_shaderextension::Register();
 
 				g_shader_files_present = true;
 
@@ -251,7 +241,7 @@ namespace Yelo
 
 			void		Dispose()
 			{
-				c_settings_shaderextension::Instance().Unregister();
+				c_settings_shaderextension::Unregister();
 			}
 
 			void		Initialize3D(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* params)

@@ -14,7 +14,7 @@
 
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/configuration/c_configuration_singleton.hpp>
+#include "Settings/c_settings_singleton.hpp"
 
 #include "Memory/MemoryInterface.hpp"
 #include "Game/ScriptLibrary.hpp"
@@ -175,32 +175,21 @@ namespace Yelo
 		};
 
 		class c_settings_rasterizer
-			: public Configuration::c_configuration_singleton<c_settings_container, c_settings_rasterizer>
+			: public Settings::c_settings_singleton<c_settings_container, c_settings_rasterizer>
 		{
 		public:
-			void Register() final override
-			{
-				Settings::RegisterConfigurationContainer(GetPtr(), nullptr, PostLoad);
-			}
-
-			void Unregister() final override
-			{
-				Settings::UnregisterConfigurationContainer(GetPtr());
-			}
-
-		private:
-			static void PostLoad()
+			void PostLoad() final override
 			{
 				// when 0x637D50 (1.09) is 1, the basic active camouflage is used; at 0x51ABB2 (1.09) it is forced to 1 when an nVidia card is detected
 				// if the user changes this in their settings they need to restart the game for it to take effect
-				GET_PTR(NVIDIA_USE_BASIC_CAMO_TOGGLE) = Instance().Get().m_use_nvidia_camo;
+				GET_PTR(NVIDIA_USE_BASIC_CAMO_TOGGLE) = Get().m_use_nvidia_camo;
 				
-				if(Instance().Get().m_upgrades.m_dynamic_triangles)
+				if(Get().m_upgrades.m_dynamic_triangles)
 				{
 					g_render_upgrades.InitializeDynamicTrianglesUpgrade();
 				}
 
-				if(Instance().Get().m_upgrades.m_model_node_stretching_fix)
+				if(Get().m_upgrades.m_model_node_stretching_fix)
 				{
 					g_render_upgrades.InitializeMaximumNodesPerModelFixes();
 				}
@@ -263,7 +252,7 @@ namespace Yelo
 #pragma warning( disable : 4312 ) // conversion from 'unsigned long' to 'void *' of greater size
 		void Rasterizer::Initialize()
 		{
-			c_settings_rasterizer::Instance().Register();
+			c_settings_rasterizer::Register();
 
 			Render::Initialize();
 		
@@ -317,7 +306,7 @@ namespace Yelo
 		{
 			Render::Dispose();
 			
-			c_settings_rasterizer::Instance().Unregister();
+			c_settings_rasterizer::Unregister();
 		}
 
 		void Update()

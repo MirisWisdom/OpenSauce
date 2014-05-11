@@ -9,7 +9,7 @@
 #if !PLATFORM_IS_DEDI
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/configuration/c_configuration_singleton.hpp>
+#include "Settings/c_settings_singleton.hpp"
 
 namespace Yelo
 {
@@ -28,15 +28,11 @@ namespace Yelo
 		};
 
 		class c_settings_bloom
-			: public Configuration::c_configuration_singleton<c_settings_container, c_settings_bloom>
+			: public Settings::c_settings_singleton<c_settings_container, c_settings_bloom>
 		{
 		public:
-			void Register() final override;
-			void Unregister() final override;
-
-		private:
-			static void PostLoad();
-			static void PreSave();
+			void PostLoad() final override;
+			void PreSave() final override;
 		};
 	};};};
 };

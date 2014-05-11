@@ -24,24 +24,14 @@ namespace Yelo
 			return std::vector<i_configuration_value* const> { &m_enabled };
 		}
 
-		void c_settings_external::Register()
-		{
-			Settings::RegisterConfigurationContainer(GetPtr());
-		}
-
-		void c_settings_external::Unregister()
-		{
-			Settings::UnregisterConfigurationContainer(GetPtr());
-		}
-
 		void c_settings_external::PostLoad()
 		{
-			c_system_external::Instance().Enabled() = Instance().Get().m_enabled;
+			c_system_external::Instance().Enabled() = Get().m_enabled;
 		}
 
 		void c_settings_external::PreSave()
 		{
-			Instance().Get().m_enabled = c_system_external::Instance().Enabled();
+			Get().m_enabled = c_system_external::Instance().Enabled();
 		}
 	};};};};
 };

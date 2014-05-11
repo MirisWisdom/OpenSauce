@@ -12,6 +12,10 @@
 #include <blamlib/Halo1/interface/ui_widget_group.hpp>
 #include <blamlib/Halo1/interface/hud_definitions.hpp>
 
+#include <YeloLib/configuration/c_configuration_container.hpp>
+#include <YeloLib/configuration/c_configuration_value.hpp>
+#include "Settings/c_settings_singleton.hpp"
+
 namespace Yelo
 {
 	namespace Hud
@@ -130,34 +134,23 @@ namespace Yelo
 		};
 
 		class c_settings_hud
-			: public Configuration::c_configuration_singleton<c_settings_container, c_settings_hud>
+			: public Settings::c_settings_singleton<c_settings_container, c_settings_hud>
 		{
 		public:
-			void Register() final override
+			void PostLoad() final override
 			{
-				Settings::RegisterConfigurationContainer(GetPtr(), nullptr, PostLoad, PreSave);
+				g_hud_globals.m_flags.scale_hud = Get().m_scale_hud;
+				g_hud_globals.m_flags.show_hud = Get().m_show_hud;
+				g_hud_globals.m_hud_screen.scale.x = Get().m_hud_scale_x;
+				g_hud_globals.m_hud_screen.scale.y = Get().m_hud_scale_y;
 			}
 
-			void Unregister() final override
+			void PreSave() final override
 			{
-				Settings::UnregisterConfigurationContainer(GetPtr());
-			}
-
-		private:
-			static void PostLoad()
-			{
-				g_hud_globals.m_flags.scale_hud = Instance().Get().m_scale_hud;
-				g_hud_globals.m_flags.show_hud = Instance().Get().m_show_hud;
-				g_hud_globals.m_hud_screen.scale.x = Instance().Get().m_hud_scale_x;
-				g_hud_globals.m_hud_screen.scale.y = Instance().Get().m_hud_scale_y;
-			}
-
-			static void PreSave()
-			{
-				Instance().Get().m_scale_hud = g_hud_globals.m_flags.scale_hud;
-				Instance().Get().m_show_hud = g_hud_globals.m_flags.show_hud;
-				Instance().Get().m_hud_scale_x = g_hud_globals.m_hud_screen.scale.x;
-				Instance().Get().m_hud_scale_y = g_hud_globals.m_hud_screen.scale.y;
+				Get().m_scale_hud = g_hud_globals.m_flags.scale_hud;
+				Get().m_show_hud = g_hud_globals.m_flags.show_hud;
+				Get().m_hud_scale_x = g_hud_globals.m_hud_screen.scale.x;
+				Get().m_hud_scale_y = g_hud_globals.m_hud_screen.scale.y;
 			}
 		};
 #pragma endregion
@@ -524,12 +517,12 @@ namespace Yelo
 
 			g_hud_globals.m_flags.show_crosshair = true;
 
-			c_settings_hud::Instance().Register();
+			c_settings_hud::Register();
 		}
 
 		void Dispose()
 		{
-			c_settings_hud::Instance().Unregister();
+			c_settings_hud::Unregister();
 		}
 
 		///-------------------------------------------------------------------------------------------------

@@ -9,7 +9,7 @@
 
 #include <YeloLib/configuration/c_configuration_value.hpp>
 #include <YeloLib/configuration/c_configuration_container.hpp>
-#include <YeloLib/configuration/c_configuration_singleton.hpp>
+#include "Settings/c_settings_singleton.hpp"
 
 namespace Yelo
 {
@@ -122,30 +122,19 @@ namespace Yelo
 		};
 
 		class c_settings_fov
-			: public Configuration::c_configuration_singleton<c_settings_container, c_settings_fov>
+			: public Settings::c_settings_singleton<c_settings_container, c_settings_fov>
 		{
 		public:
-			void Register() final override
+			void PostLoad() final override
 			{
-				Settings::RegisterConfigurationContainer(GetPtr(), nullptr, PostLoad, PreSave);
-			}
-
-			void Unregister() final override
-			{
-				Settings::UnregisterConfigurationContainer(GetPtr());
-			}
-
-		private:
-			static void PostLoad()
-			{
-				_fov_globals.fov.vertical = Instance().Get().m_field_of_view;
+				_fov_globals.fov.vertical = Get().m_field_of_view;
  				_fov_globals.weapon.distance = _fov_globals.weapon.height / tanf( DEF_FOV_V / 2.f );
  				_fov_globals.Scale();
 			}
 
-			static void PreSave()
+			void PreSave() final override
 			{
-				Instance().Get().m_field_of_view = _fov_globals.fov.vertical;
+				Get().m_field_of_view = _fov_globals.fov.vertical;
 			}
 		};
 
@@ -183,7 +172,7 @@ namespace Yelo
 			
 			_fov_globals.InitializeToDefaultSettings();
 			
-			c_settings_fov::Instance().Register();
+			c_settings_fov::Register();
 		}
 
 		void Dispose()
@@ -194,7 +183,7 @@ namespace Yelo
 				_fov_globals.menu = nullptr;
 			}
 
-			c_settings_fov::Instance().Unregister();
+			c_settings_fov::Unregister();
 		}
 
 		void Update()

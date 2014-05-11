@@ -9,10 +9,6 @@
 #if !PLATFORM_IS_DEDI
 #include <YeloLib/Halo1/files/packed_file.hpp>
 
-#include <YeloLib/configuration/c_configuration_container.hpp>
-#include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/configuration/c_configuration_singleton.hpp>
-
 #include "Rasterizer/Rasterizer.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
 #include "Rasterizer/DX9/rasterizer_dx9_shaders_vshader9.hpp"

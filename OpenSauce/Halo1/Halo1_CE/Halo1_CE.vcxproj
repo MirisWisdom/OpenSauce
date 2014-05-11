@@ -208,7 +208,6 @@
     <ClCompile Include="Common\DebugDump.cpp" />
     <ClCompile Include="Common\FileIO.cpp" />
     <ClCompile Include="Common\GameSystems.cpp" />
-    <ClCompile Include="Common\YeloSettings.cpp" />
     <ClCompile Include="Game\AI.cpp" />
     <ClCompile Include="Game\Camera.cpp" />
     <ClCompile Include="Game\Campaign.cpp" />
@@ -256,6 +255,7 @@
     <ClCompile Include="Rasterizer\PostProcessing\Generic\External\c_settings_external.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\Generic\Internal\c_settings_internal.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\MotionBlur\c_settings_motionblur.cpp" />
+    <ClCompile Include="Settings\YeloSettings.cpp" />
     <ClCompile Include="TagGroups\CacheFiles.cpp" />
     <ClCompile Include="TagGroups\project_yellow_definitions.cpp" />
     <ClCompile Include="TagGroups\TagGroups.cpp" />
@@ -315,7 +315,6 @@
     <ClInclude Include="Common\GameSystems.hpp" />
     <ClInclude Include="Common\Platform.hpp" />
     <ClInclude Include="Common\Precompile.hpp" />
-    <ClInclude Include="Common\YeloSettings.hpp" />
     <ClInclude Include="Game\AI.hpp" />
     <ClInclude Include="Game\Camera.hpp" />
     <ClInclude Include="Game\Campaign.hpp" />
@@ -369,6 +368,8 @@
     <ClInclude Include="Rasterizer\PostProcessing\Generic\External\c_settings_external.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Generic\Internal\c_settings_internal.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\MotionBlur\c_settings_motionblur.hpp" />
+    <ClInclude Include="Settings\c_settings_singleton.hpp" />
+    <ClInclude Include="Settings\YeloSettings.hpp" />
     <ClInclude Include="TagGroups\CacheFiles.hpp" />
     <ClInclude Include="TagGroups\project_yellow_definitions.hpp" />
     <ClInclude Include="TagGroups\TagGroups.hpp" />

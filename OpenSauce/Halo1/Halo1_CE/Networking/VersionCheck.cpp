@@ -14,6 +14,10 @@
 
 #include <YeloLib/Halo1/open_sauce/yelo_version.hpp>
 
+#include <YeloLib/configuration/c_configuration_value.hpp>
+#include <YeloLib/configuration/c_configuration_value_list.hpp>
+#include "Settings/c_settings_singleton.hpp"
+
 #include "Networking/HTTP/HTTPClient.hpp"
 #if PLATFORM_IS_USER
 	#include "Networking/VersionCheckClient.hpp"
@@ -134,21 +138,10 @@ namespace Yelo
 		};
 
 		class c_settings_version_check
-			: public Configuration::c_configuration_singleton<c_settings_container, c_settings_version_check>
+			: public Settings::c_settings_singleton<c_settings_container, c_settings_version_check>
 		{
 		public:
-			void Register() final override
-			{
-				Settings::RegisterConfigurationContainer(GetPtr(), nullptr, PostLoad);
-			}
-
-			void Unregister() final override
-			{
-				Settings::UnregisterConfigurationContainer(GetPtr());
-			}
-
-		private:
-			static void PostLoad()
+			void PostLoad() final override
 			{
 				c_version_check_manager_base::VersionChecker().TestForUpdate();
 			}
@@ -159,7 +152,7 @@ namespace Yelo
 		//namespace functions
 		void		Initialize()
 		{
-			c_settings_version_check::Instance().Register();
+			c_settings_version_check::Register();
 
 			c_version_check_manager_base::VersionChecker().Initialize();
 		}
@@ -167,7 +160,7 @@ namespace Yelo
 		{
 			c_version_check_manager_base::VersionChecker().Dispose();
 
-			c_settings_version_check::Instance().Unregister();
+			c_settings_version_check::Unregister();
 		}
 
 		void		InitializeForNewMap()
