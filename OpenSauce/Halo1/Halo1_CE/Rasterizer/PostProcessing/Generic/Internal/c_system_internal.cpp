@@ -69,7 +69,7 @@ namespace Yelo
 		 */
 		void c_system_internal::Initialize()
 		{
-			c_settings_internal::Instance().Register();
+			c_settings_internal::Register();
 
 			ClearMembers();
 		}
@@ -84,7 +84,7 @@ namespace Yelo
 		{
 			ClearMembers();
 
-			c_settings_internal::Instance().Unregister();
+			c_settings_internal::Unregister();
 		}
 
 		/*!

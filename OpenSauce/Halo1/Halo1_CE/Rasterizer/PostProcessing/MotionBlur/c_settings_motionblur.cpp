@@ -29,26 +29,16 @@ namespace Yelo
 			};
 		}
 
-		void c_settings_motionblur::Register()
-		{
-			Settings::RegisterConfigurationContainer(GetPtr(), nullptr, &PostLoad, &PreSave);
-		}
-
-		void c_settings_motionblur::Unregister()
-		{
-			Settings::UnregisterConfigurationContainer(GetPtr());
-		}
-
 		void c_settings_motionblur::PostLoad()
 		{
-			c_system_motionblur::Instance().Enabled() = Instance().Get().m_enabled;
-			c_system_motionblur::Instance().BlurAmount() = Instance().Get().m_blur_amount;
+			c_system_motionblur::Instance().Enabled() = Get().m_enabled;
+			c_system_motionblur::Instance().BlurAmount() = Get().m_blur_amount;
 		}
 
 		void c_settings_motionblur::PreSave()
 		{
-			Instance().Get().m_enabled = c_system_motionblur::Instance().Enabled();
-			Instance().Get().m_blur_amount = c_system_motionblur::Instance().BlurAmount();
+			Get().m_enabled = c_system_motionblur::Instance().Enabled();
+			Get().m_blur_amount = c_system_motionblur::Instance().BlurAmount();
 		}
 	};};};
 };

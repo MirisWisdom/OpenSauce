@@ -8,9 +8,6 @@
 
 #ifdef YELO_VERSION_CHECK_ENABLE
 #include <YeloLib/memory/linked_list.hpp>
-#include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/configuration/c_configuration_value_list.hpp>
-#include <YeloLib/configuration/c_configuration_singleton.hpp>
 
 #include "Networking/HTTP/HTTP.hpp"
 #include "Networking/HTTP/HTTPClient.hpp"

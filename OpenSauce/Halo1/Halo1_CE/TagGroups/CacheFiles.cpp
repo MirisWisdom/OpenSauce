@@ -14,7 +14,7 @@
 
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/configuration/c_configuration_singleton.hpp>
+#include "Settings/c_settings_singleton.hpp"
 
 #include <YeloLib/Halo1/cache/cache_files_yelo.hpp>
 #include <YeloLib/Halo1/cache/data_file_yelo.hpp>
@@ -22,7 +22,7 @@
 
 #include "Memory/MemoryInterface.hpp"
 #include "Common/FileIO.hpp"
-#include "Common/YeloSettings.hpp"
+#include "Settings/YeloSettings.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameState.hpp"
 
@@ -186,7 +186,7 @@ namespace Yelo
 
 		void Initialize()
 		{
-			c_settings_cache::Instance().Register();
+			c_settings_cache::Register();
 
 			MemoryUpgradesInitialize();
 			c_cache_format_path_hacks::Initialize();
@@ -199,7 +199,7 @@ namespace Yelo
 		{
 			MemoryUpgradesDispose();
 			
-			c_settings_cache::Instance().Unregister();
+			c_settings_cache::Unregister();
 		}
 
 		static bool MapIsOriginal(cstring map_name)

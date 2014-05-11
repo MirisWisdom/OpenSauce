@@ -9,7 +9,7 @@
 
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/configuration/c_configuration_singleton.hpp>
+#include "Settings/c_settings_singleton.hpp"
 
 #include "Memory/MemoryInterface.hpp"
 #include "Game/GameState.hpp"
@@ -127,6 +127,7 @@ _return:
 #endif
 			}
 
+#pragma region Settings
 			class c_settings_container
 				: public Configuration::c_configuration_container
 			{
@@ -146,28 +147,18 @@ _return:
 			};
 
 			class c_settings_gamespy
-				: public Configuration::c_configuration_singleton<c_settings_container, c_settings_gamespy>
+				: public Settings::c_settings_singleton<c_settings_container, c_settings_gamespy>
 			{
 			public:
-				void Register() final override
+				void PostLoad() final override
 				{
-					Settings::RegisterConfigurationContainer(GetPtr(), nullptr, PostLoad);
-				}
-
-				void Unregister() final override
-				{
-					Settings::UnregisterConfigurationContainer(GetPtr());
-				}
-
-			private:
-				static void PostLoad()
-				{
-					if(Instance().Get().m_no_update_check)
+					if(Get().m_no_update_check)
 					{
 						TurnOffUpdateCheck();
 					}
 				}
 			};
+#pragma endregion
 
 			static void InitializeForNewQr2()
 			{
@@ -177,7 +168,7 @@ _return:
 			{
 				// TODO: populate GetGameVer()
 				
-				c_settings_gamespy::Instance().Register();
+				c_settings_gamespy::Register();
 
 				Memory::CreateHookRelativeCall(&InitializeForNewQr2, 
 					GET_FUNC_VPTR(CREATE_GAMESPY_QR2_HOOK), Enums::_x86_opcode_ret);
@@ -190,7 +181,7 @@ _return:
 
 			void Dispose()
 			{
-				c_settings_gamespy::Instance().Unregister();
+				c_settings_gamespy::Unregister();
 			}
 
 			API_FUNC_NAKED void qr2_register_key(Enums::gamespy_qr_field keyid, cstring key)

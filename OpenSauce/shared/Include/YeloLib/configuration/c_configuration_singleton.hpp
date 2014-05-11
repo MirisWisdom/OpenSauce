@@ -50,9 +50,6 @@ namespace Yelo
 			}
 
 		public:
-			virtual void Register() = 0;
-			virtual void Unregister() = 0;
-
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Gets the container as a referece. </summary>
 			///

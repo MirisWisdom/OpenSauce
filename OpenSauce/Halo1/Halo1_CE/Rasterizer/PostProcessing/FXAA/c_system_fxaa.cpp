@@ -59,7 +59,7 @@ namespace Yelo
 		// IPostProcessingComponent
 		void c_system_fxaa::Initialize()
 		{
-			c_settings_fxaa::Instance().Register();
+			c_settings_fxaa::Register();
 
 			m_members.status = Enums::pp_component_status_uninitialised;
 
@@ -115,7 +115,7 @@ namespace Yelo
 			g_shader_instance_fxaa.Dtor();
 			g_shader_fxaa.Dtor();
 
-			c_settings_fxaa::Instance().Unregister();
+			c_settings_fxaa::Unregister();
 		}
 
 		void c_system_fxaa::InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters)

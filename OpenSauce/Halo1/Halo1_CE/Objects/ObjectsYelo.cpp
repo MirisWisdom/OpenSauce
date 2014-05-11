@@ -23,7 +23,7 @@
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/configuration/c_configuration_singleton.hpp>
+#include "Settings/c_settings_singleton.hpp"
 
 #include "TagGroups/project_yellow_definitions.hpp"
 
@@ -70,23 +70,12 @@ namespace Yelo
 		};
 
 		class c_settings_objects
-			: public Configuration::c_configuration_singleton<c_settings_container, c_settings_objects>
+			: public Settings::c_settings_singleton<c_settings_container, c_settings_objects>
 		{
 		public:
-			void Register() final override
+			void PostLoad() final override
 			{
-				Settings::RegisterConfigurationContainer(GetPtr(), nullptr, PostLoad);
-			}
-
-			void Unregister() final override
-			{
-				Settings::UnregisterConfigurationContainer(GetPtr());
-			}
-
-		private:
-			static void PostLoad()
-			{
-				VehicleRemapperEnable(Instance().Get().m_vehicle_remapper_enabled);;
+				VehicleRemapperEnable(Get().m_vehicle_remapper_enabled);
 			}
 		};
 	};
@@ -170,7 +159,7 @@ namespace Yelo
 		}
 		void Initialize()
 		{
-			c_settings_objects::Instance().Register();
+			c_settings_objects::Register();
 
 			Memory::WriteRelativeJmp(&Objects::Update, GET_FUNC_VPTR(OBJECTS_UPDATE_HOOK), false);
 
@@ -196,7 +185,7 @@ namespace Yelo
 			Weapon::Dispose();
 			Vehicle::Dispose();
 
-			c_settings_objects::Instance().Unregister();
+			c_settings_objects::Unregister();
 		}
 
 		static void ObjectsUpdateIgnorePlayerPvs(bool use_fix)

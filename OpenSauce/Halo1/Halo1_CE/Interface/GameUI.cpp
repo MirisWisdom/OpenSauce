@@ -8,10 +8,6 @@
 #include "Interface/GameUI.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include <YeloLib/configuration/c_configuration_container.hpp>
-#include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/configuration/c_configuration_singleton.hpp>
-
 #include <blamlib/Halo1/game/player_structures.hpp>
 #include <blamlib/Halo1/interface/first_person_weapons.hpp>
 #include <blamlib/Halo1/interface/hud.hpp>
@@ -27,7 +23,7 @@
 #include <blamlib/Halo1/text/draw_string.hpp>
 
 #include "Memory/MemoryInterface.hpp"
-#include "Common/YeloSettings.hpp"
+#include "Settings/YeloSettings.hpp"
 #include "Interface/YeloSettingsInterface.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Game/Players.hpp"

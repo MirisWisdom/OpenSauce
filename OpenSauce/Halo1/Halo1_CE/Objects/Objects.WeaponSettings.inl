@@ -11,8 +11,8 @@
 #include <YeloLib/configuration/c_configuration_value.hpp>
 #include <YeloLib/configuration/c_configuration_value_list.hpp>
 #include <YeloLib/configuration/c_configuration_container_list.hpp>
-#include <YeloLib/configuration/c_configuration_singleton.hpp>
 #include <YeloLib/configuration/type_containers/c_real_vector3d_container.hpp>
+#include "Settings/c_settings_singleton.hpp"
 
 #include "Rasterizer/Rasterizer.hpp"
 #include "Game/Camera.hpp"
@@ -71,19 +71,8 @@ namespace Yelo
 			};
 
 			class c_settings_weapons
-				: public Configuration::c_configuration_singleton<c_settings_container, c_settings_weapons>
-			{
-			public:
-				void Register() final override
-				{
-					Settings::RegisterConfigurationContainer(GetPtr());
-				}
-
-				void Unregister() final override
-				{
-					Settings::UnregisterConfigurationContainer(GetPtr());
-				}
-			};
+				: public Settings::c_settings_singleton<c_settings_container, c_settings_weapons>
+			{ };
 #pragma endregion
 
 #if PLATFORM_IS_DEDI
@@ -220,7 +209,7 @@ namespace Yelo
 
 			void Initialize()
 			{
-				c_settings_weapons::Instance().Register();
+				c_settings_weapons::Register();
 
 				Memory::WriteRelativeCall(ApplyWeaponPreset, 
 					GET_FUNC_VPTR(RENDER_WINDOW_CALL_HOOK_FIRST_PERSON_WEAPON_RENDER_UPDATE));
@@ -230,7 +219,7 @@ namespace Yelo
 			{
 				_weapon_globals.Dispose();
 				
-				c_settings_weapons::Instance().Unregister();
+				c_settings_weapons::Unregister();
 			}
 
 			Enums::settings_adjustment_result AdjustSettings()

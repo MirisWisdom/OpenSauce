@@ -11,7 +11,7 @@
 #include <YeloLib/main/main_yelo_base.hpp>
 
 #include "Memory\MemoryInterface.hpp"
-#include "Common\YeloSettings.hpp"
+#include "Settings\YeloSettings.hpp"
 
 #include "Game\EngineFunctions.hpp"
 
