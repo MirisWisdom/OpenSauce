@@ -40,6 +40,7 @@ namespace Model
 		real specular_lighting_coefficient;
 	};
 
+#pragma region Shader Features
 	static const t_shader_usage_id g_base_shader_list[] =
 	{
 		"MaskDetailBeforeReflectionBiasedMultiply",
@@ -197,12 +198,14 @@ namespace Model
 	static IDirect3DPixelShader9* g_multipurpose_pixel_shaders[NUMBEROF(g_shader_usage_id_list)];
 	static IDirect3DPixelShader9* g_reflection_pixel_shaders[NUMBEROF(g_shader_usage_id_list)];
 	static IDirect3DPixelShader9* g_no_pixel_shaders[NUMBEROF(g_shader_usage_id_list) / 2];
+#pragma endregion
 
 	static s_shader_feature_mix*		g_current_feature_mix = &g_feature_mix_list[0];
 	static s_vertex_shader_variables	g_vertex_shader_variables;
 	static s_pixel_shader_variables		g_pixel_shader_variables;
 	static _enum						g_extension_usage_mask;
 
+#pragma region Hooks
 	// hooks to correctly skip past inverse shaders in the usage id list
 	API_FUNC_NAKED static void Hook_EnvironmentNoPixelShaderIDOffset()
 	{
@@ -444,6 +447,7 @@ no_extension:
 			jmp		RETN_ADDRESS
 		};
 	}
+#pragma endregion
 
 	void SetModelNormSpec(void* shader_pointer)
 	{
@@ -612,69 +616,6 @@ no_extension:
 				strcat_s(g_shader_usage_id_list[id_index], 128, g_base_shader_list[j]);
 				strcat_s(g_shader_usage_id_list[id_index], 128, g_feature_mix_list[i].feature_mix_id);
 			}
-		}
-	}
-
-	void		LoadSettings(TiXmlElement* parent_element)
-	{
-		g_extension_usage_mask = Enums::_model_extension_usage_normal_map | Enums::_model_extension_usage_detail_normal |
-			Enums::_model_extension_usage_specular_map | Enums::_model_extension_usage_specular_lighting;
-
-		if (parent_element != nullptr)
-		{
-			int32 usage_mask = Enums::_model_extension_usage_none;
-			TiXmlElement* model_element = parent_element->FirstChildElement("Model");
-
-			if(model_element != nullptr)
-			{
-				TiXmlElement* feature_element = nullptr;
-				char* feature_attribute = nullptr;
-
-				if(feature_element = model_element->FirstChildElement("NormalMap"))
-					usage_mask |= (Settings::ParseBoolean(feature_element->Attribute("enabled")) ? Enums::_model_extension_usage_normal_map : Enums::_model_extension_usage_none);
-
-				if(feature_element = model_element->FirstChildElement("DetailNormalMaps"))
-					usage_mask |= (Settings::ParseBoolean(feature_element->Attribute("enabled")) ? Enums::_model_extension_usage_detail_normal : Enums::_model_extension_usage_none);
-
-				if(feature_element = model_element->FirstChildElement("SpecularMap"))
-					usage_mask |= (Settings::ParseBoolean(feature_element->Attribute("enabled")) ? Enums::_model_extension_usage_specular_map : Enums::_model_extension_usage_none);
-
-				if(feature_element = model_element->FirstChildElement("SpecularLighting"))
-					usage_mask |= (Settings::ParseBoolean(feature_element->Attribute("enabled")) ? Enums::_model_extension_usage_specular_lighting : Enums::_model_extension_usage_none);
-
-				g_extension_usage_mask &= usage_mask;
-			}
-		}
-	}
-
-	void		SaveSettings(TiXmlElement* parent_element)
-	{
-		if (parent_element != nullptr)
-		{
-			TiXmlElement* model_element = new TiXmlElement("Model");
-			parent_element->LinkEndChild(model_element);
-
-			TiXmlElement* feature_element = nullptr;
-
-			feature_element = new TiXmlElement("NormalMap");
-			feature_element->SetAttribute("enabled",
-				BooleanToString((g_extension_usage_mask & Enums::_model_extension_usage_normal_map) == Enums::_model_extension_usage_normal_map));
-			model_element->LinkEndChild(feature_element);
-
-			feature_element = new TiXmlElement("DetailNormalMaps");
-			feature_element->SetAttribute("enabled",
-				BooleanToString((g_extension_usage_mask & Enums::_model_extension_usage_detail_normal) == Enums::_model_extension_usage_detail_normal));
-			model_element->LinkEndChild(feature_element);
-
-			feature_element = new TiXmlElement("SpecularMap");
-			feature_element->SetAttribute("enabled",
-				BooleanToString((g_extension_usage_mask & Enums::_model_extension_usage_specular_map) == Enums::_model_extension_usage_specular_map));
-			model_element->LinkEndChild(feature_element);
-
-			feature_element = new TiXmlElement("SpecularLighting");
-			feature_element->SetAttribute("enabled",
-				BooleanToString((g_extension_usage_mask & Enums::_model_extension_usage_specular_lighting) == Enums::_model_extension_usage_specular_lighting));
-			model_element->LinkEndChild(feature_element);
 		}
 	}
 

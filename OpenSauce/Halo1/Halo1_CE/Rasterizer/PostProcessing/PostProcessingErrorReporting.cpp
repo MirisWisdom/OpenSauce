@@ -10,7 +10,7 @@
 #if !PLATFORM_IS_DEDI
 #include <blamlib/Halo1/main/console.hpp>
 
-#include "Common/YeloSettings.hpp"
+#include "Settings/YeloSettings.hpp"
 #include "Game/GameState.hpp"
 
 namespace Yelo

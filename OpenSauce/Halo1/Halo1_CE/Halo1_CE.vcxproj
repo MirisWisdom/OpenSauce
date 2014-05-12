@@ -4,6 +4,7 @@
     <OSRootDir>$(ProjectDir)..\..\..\</OSRootDir>
     <OSRequiresDirectX>true</OSRequiresDirectX>
     <OSRequiresCppBoost>true</OSRequiresCppBoost>
+    <OSRequiresVLD>true</OSRequiresVLD>
     <OSRequiresHaloCustomEd>true</OSRequiresHaloCustomEd>
     <OSRequiresGameSpyOpen>true</OSRequiresGameSpyOpen>
   </PropertyGroup>
@@ -207,7 +208,6 @@
     <ClCompile Include="Common\DebugDump.cpp" />
     <ClCompile Include="Common\FileIO.cpp" />
     <ClCompile Include="Common\GameSystems.cpp" />
-    <ClCompile Include="Common\YeloSettings.cpp" />
     <ClCompile Include="Game\AI.cpp" />
     <ClCompile Include="Game\Camera.cpp" />
     <ClCompile Include="Game\Campaign.cpp" />
@@ -250,6 +250,12 @@
     <ClCompile Include="Objects\ObjectFieldDefinitions.cpp" />
     <ClCompile Include="Objects\ObjectsYelo.cpp" />
     <ClCompile Include="Objects\Units.cpp" />
+    <ClCompile Include="Rasterizer\PostProcessing\Bloom\c_settings_bloom.cpp" />
+    <ClCompile Include="Rasterizer\PostProcessing\FXAA\c_settings_fxaa.cpp" />
+    <ClCompile Include="Rasterizer\PostProcessing\Generic\External\c_settings_external.cpp" />
+    <ClCompile Include="Rasterizer\PostProcessing\Generic\Internal\c_settings_internal.cpp" />
+    <ClCompile Include="Rasterizer\PostProcessing\MotionBlur\c_settings_motionblur.cpp" />
+    <ClCompile Include="Settings\YeloSettings.cpp" />
     <ClCompile Include="TagGroups\CacheFiles.cpp" />
     <ClCompile Include="TagGroups\project_yellow_definitions.cpp" />
     <ClCompile Include="TagGroups\TagGroups.cpp" />
@@ -309,7 +315,6 @@
     <ClInclude Include="Common\GameSystems.hpp" />
     <ClInclude Include="Common\Platform.hpp" />
     <ClInclude Include="Common\Precompile.hpp" />
-    <ClInclude Include="Common\YeloSettings.hpp" />
     <ClInclude Include="Game\AI.hpp" />
     <ClInclude Include="Game\Camera.hpp" />
     <ClInclude Include="Game\Campaign.hpp" />
@@ -358,6 +363,13 @@
     <ClInclude Include="Objects\Objects.VehicleSettings.hpp" />
     <ClInclude Include="Objects\Objects.WeaponSettings.hpp" />
     <ClInclude Include="Objects\Units.hpp" />
+    <ClInclude Include="Rasterizer\PostProcessing\Bloom\c_settings_bloom.hpp" />
+    <ClInclude Include="Rasterizer\PostProcessing\FXAA\c_settings_fxaa.hpp" />
+    <ClInclude Include="Rasterizer\PostProcessing\Generic\External\c_settings_external.hpp" />
+    <ClInclude Include="Rasterizer\PostProcessing\Generic\Internal\c_settings_internal.hpp" />
+    <ClInclude Include="Rasterizer\PostProcessing\MotionBlur\c_settings_motionblur.hpp" />
+    <ClInclude Include="Settings\c_settings_singleton.hpp" />
+    <ClInclude Include="Settings\YeloSettings.hpp" />
     <ClInclude Include="TagGroups\CacheFiles.hpp" />
     <ClInclude Include="TagGroups\project_yellow_definitions.hpp" />
     <ClInclude Include="TagGroups\TagGroups.hpp" />
@@ -494,6 +506,7 @@
     <None Include="TagGroups\CacheFiles.CRC.inl" />
     <None Include="TagGroups\CacheFiles.DataFiles.inl" />
     <None Include="TagGroups\CacheFiles.MapList.inl" />
+    <None Include="TagGroups\CacheFiles.Settings.inl" />
     <None Include="TagGroups\CacheFiles.YeloFiles.inl" />
     <None Include="Memory\_EngineLayout.inl" />
     <None Include="Halo1_CE.def" />

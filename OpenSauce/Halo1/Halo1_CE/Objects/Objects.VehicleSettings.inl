@@ -87,14 +87,6 @@ namespace Yelo
 				return Enums::_settings_adjustment_result_not_finished;
 			}
 
-			void LoadSettings(TiXmlElement* vehicles_element)
-			{
-			}
-
-			void SaveSettings(TiXmlElement* vehicles_element)
-			{
-			}
-
 #if defined(DX_WRAPPER)
 			void Initialize3D(IDirect3DDevice9 *pDevice, D3DPRESENT_PARAMETERS *pPP)
 			{

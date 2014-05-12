@@ -70,9 +70,6 @@ namespace Yelo
 		void		Render();
 		void		Release();
 
-		void		LoadSettings(TiXmlElement* parent_element);
-		void		SaveSettings(TiXmlElement* parent_element);
-
 		void		InitializeForNewMap();
 		void		DisposeFromOldMap();
 

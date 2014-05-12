@@ -7,20 +7,19 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
+
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingComponent.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUpdatable.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingRenderable.hpp"
-#include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUserSettings.hpp"
 
 namespace Yelo
 {
 	namespace Rasterizer { namespace PostProcessing { namespace MotionBlur
 	{
-		class c_system_motionblur :
-			public IPostProcessingComponent,
-			public IPostProcessingUpdatable,
-			public IPostProcessingRenderable,
-			public IPostProcessingUserSettings
+		class c_system_motionblur
+			: public IPostProcessingComponent
+			, public IPostProcessingUpdatable
+			, public IPostProcessingRenderable
 		{
 			/////////////////////////////////////////////////
 			// static members
@@ -70,12 +69,6 @@ namespace Yelo
 
 			void Unload();
 			void Load();
-
-			/////////////////////////////////////////////////
-			// IPostProcessingUserSettings
-			void LoadSettings(TiXmlElement* dx9_element);
-			void SaveSettings(TiXmlElement* dx9_element);
-			void SetDefaultSettings();
 
 			/////////////////////////////////////////////////
 			// IPostProcessingRenderable

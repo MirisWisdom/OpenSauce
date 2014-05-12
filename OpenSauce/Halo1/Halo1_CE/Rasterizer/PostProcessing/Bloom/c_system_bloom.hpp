@@ -12,14 +12,16 @@
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingCacheComponent.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUpdatable.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingRenderable.hpp"
-#include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUserSettings.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 
 namespace Yelo
 {
 	namespace Rasterizer { namespace PostProcessing { namespace Bloom
 	{
-		class c_system_bloom : public IPostProcessingCacheComponent, public IPostProcessingUpdatable, public IPostProcessingRenderable, public IPostProcessingUserSettings
+		class c_system_bloom
+			: public IPostProcessingCacheComponent
+			, public IPostProcessingUpdatable
+			, public IPostProcessingRenderable
 		{
 			/////////////////////////////////////////////////
 			// static members
@@ -51,6 +53,7 @@ namespace Yelo
 			/////////////////////////////////////////////////
 			// member accessors
 		public:
+			bool& Enabled();
 			bool IsReady();
 			bool IsUnloaded();
 
@@ -83,13 +86,6 @@ namespace Yelo
 		public:
 			void Initialize_Cache();
 			void Dispose_Cache();
-
-			/////////////////////////////////////////////////
-			// IPostProcessingUserSettings
-		public:
-			void LoadSettings(TiXmlElement* parent_element);
-			void SaveSettings(TiXmlElement* parent_element);
-			void SetDefaultSettings();
 
 			/////////////////////////////////////////////////
 			// system setup

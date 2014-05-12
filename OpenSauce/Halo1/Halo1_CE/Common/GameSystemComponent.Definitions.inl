@@ -16,7 +16,7 @@
 
 // Settings and FileIO must come first, many systems use the Report filing system
 // ...like debugging for example uses the report filing system
-#define BOOST_PP_ITERATION_LIMITS (1, 4)
+#define BOOST_PP_ITERATION_LIMITS (1, 3)
 #define BOOST_PP_FILENAME_1 "Common/GameSystemComponents.Startup.inl"
 ??=include BOOST_PP_ITERATE()
 

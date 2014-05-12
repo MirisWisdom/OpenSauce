@@ -8,6 +8,7 @@
 
 #ifdef YELO_VERSION_CHECK_ENABLE
 #include <YeloLib/memory/linked_list.hpp>
+
 #include "Networking/HTTP/HTTP.hpp"
 #include "Networking/HTTP/HTTPClient.hpp"
 #include "Networking/HTTP/c_xml_downloader.hpp"
@@ -26,9 +27,6 @@ namespace Yelo
 		void		Render();
 		void		Release();
 #endif
-
-		void		LoadSettings(TiXmlElement* vc_element);
-		void		SaveSettings(TiXmlElement* vc_element);
 
 		void		InitializeForNewMap();
 		void		Update(real delta_time);
@@ -240,7 +238,7 @@ namespace Yelo
 		{
 		private:
 			/// A hardcoded fallback xml location used when no other location is provided.
-			static cstring g_fallback_xml_location;
+			static std::string g_fallback_xml_location;
 
 		public:
 			/** Returns a reference to a static instance of c_version_check_manager_base. */
@@ -255,33 +253,17 @@ namespace Yelo
 
 				bool is_new_version_available;
 				PAD8;
-
-				/// The day that the available version was last checked
-				int last_checked_day;
-				/// The month that the available version was last checked
-				int last_checked_month;
-				/// The year that the available version was last checked
-				int last_checked_year;
 			}m_states;
-
-			struct
-			{
-				int list_version;
-
-				HTTP::t_http_url urls[3];
-			}m_version_xml;
 
 			c_version_downloader m_xml_sources[3];
 			/// The version of the current OS installation
 			s_version m_current_version;
 			/// The version of OS that is available online
 			s_version m_available_version;
+
 		public:
 			virtual void	Initialize();
 			virtual void	Dispose();
-
-			void			LoadSettings(TiXmlElement* xml_element);
-			void			SaveSettings(TiXmlElement* xml_element);
 
 			virtual void	InitializeForNewMap() {}
 			virtual void	Update(real delta_time);
@@ -291,6 +273,8 @@ namespace Yelo
 				const GHTTPByteCount buffer_length,
 				void* component_data);
 			void*		RequestCancelled_Callback(void* component_data);
+
+			virtual void	TestForUpdate();
 
 		protected:
 			void			UpdateDateState();
@@ -317,9 +301,6 @@ namespace Yelo
 		void		Render();
 		void		Release();
 #endif
-
-		void		LoadSettings(TiXmlElement* dx9_element);
-		void		SaveSettings(TiXmlElement* dx9_element);
 
 		void		InitializeForNewMap();
 		void		Update(real delta_time);

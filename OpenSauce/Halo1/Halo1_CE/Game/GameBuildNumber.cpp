@@ -11,7 +11,7 @@
 
 #include "Memory/MemoryInterface.hpp"
 
-#include "Common/YeloSettings.hpp"
+#include "Settings/YeloSettings.hpp"
 #include "Game/GameState.hpp"
 
 namespace Yelo

@@ -8,7 +8,7 @@
 #include "Rasterizer/PostProcessing/Generic/Internal/c_system_internal.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include "Common/YeloSettings.hpp"
+#include "Rasterizer/PostProcessing/Generic/Internal/c_settings_internal.hpp"
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
 #include "Rasterizer/PostProcessing/Fade/c_system_fade.hpp"
 #include "TagGroups/TagGroups.hpp"
@@ -69,6 +69,8 @@ namespace Yelo
 		 */
 		void c_system_internal::Initialize()
 		{
+			c_settings_internal::Register();
+
 			ClearMembers();
 		}
 
@@ -81,6 +83,8 @@ namespace Yelo
 		void c_system_internal::Dispose()
 		{
 			ClearMembers();
+
+			c_settings_internal::Unregister();
 		}
 
 		/*!
@@ -180,32 +184,6 @@ namespace Yelo
 			}
 
 			UpdateStatus();
-		}
-
-		/////////////////////////////////////////////////
-		// IPostProcessingUserSettings
-		void c_system_internal::LoadSettings(TiXmlElement* parent_element)
-		{
-			TiXmlElement* element = parent_element->FirstChildElement("Internal");
-
-			if(!element) return;
-
-			m_members.m_flags.is_enabled = Settings::ParseBoolean( element->Attribute("enabled") );
-		}
-
-		void c_system_internal::SaveSettings(TiXmlElement* parent_element)
-		{
-			TiXmlElement* element = nullptr;
-
-			element = new TiXmlElement("Internal");
-			parent_element->LinkEndChild(element);
-
-			element->SetAttribute("enabled", BooleanToString(m_members.m_flags.is_enabled));
-		}
-
-		void c_system_internal::SetDefaultSettings()
-		{
-			m_members.m_flags.is_enabled = true;
 		}
 
 		/////////////////////////////////////////////////

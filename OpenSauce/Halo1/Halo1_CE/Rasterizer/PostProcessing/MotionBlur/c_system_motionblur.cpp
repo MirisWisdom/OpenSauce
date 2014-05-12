@@ -8,11 +8,12 @@
 #include "Rasterizer/PostProcessing/MotionBlur/c_system_motionblur.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include "Common/YeloSettings.hpp"
+#include "Settings/YeloSettings.hpp"
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
 
 #include "Rasterizer/PostProcessing/MotionBlur/s_shader_motionblur_definition.hpp"
 
+#include "Rasterizer/PostProcessing/MotionBlur/c_settings_motionblur.hpp"
 #include "Rasterizer/PostProcessing/MotionBlur/c_shader_motionblur.hpp"
 #include "Rasterizer/PostProcessing/MotionBlur/c_shader_instance_motionblur.hpp"
 #include "Rasterizer/PostProcessing/c_effect_postprocess.hpp"
@@ -63,6 +64,8 @@ namespace Yelo
 		// IPostProcessingComponent
 		void c_system_motionblur::Initialize()
 		{
+			c_settings_motionblur::Register();
+
 			m_members.status = Enums::pp_component_status_uninitialised;
 
 			m_members.m_flags.is_ready = false;
@@ -111,6 +114,8 @@ namespace Yelo
 			g_effect_motionblur.Dtor();
 			g_shader_instance_motionblur.Dtor();
 			g_shader_motionblur.Dtor();
+			
+			c_settings_motionblur::Unregister();
 		}
 
 		void c_system_motionblur::InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters)
@@ -198,35 +203,6 @@ namespace Yelo
 			m_members.m_flags.is_unloaded = false;
 
 			UpdateStatus();
-		}
-
-		/////////////////////////////////////////////////
-		// IPostProcessingUserSettings
-		void c_system_motionblur::LoadSettings(TiXmlElement* parent_element)
-		{
-			TiXmlElement* element = parent_element->FirstChildElement("MotionBlur");
-
-			if(!element) return;
-
-			m_members.m_flags.is_enabled = Settings::ParseBoolean( element->Attribute("enabled") );
-			element->QueryFloatAttribute("amount", &g_shader_instance_motionblur.BlurAmount());
-		}
-
-		void c_system_motionblur::SaveSettings(TiXmlElement* parent_element)
-		{
-			TiXmlElement* element = NULL;
-
-			element = new TiXmlElement("MotionBlur");
-			parent_element->LinkEndChild(element);
-
-			element->SetAttribute("enabled", BooleanToString(m_members.m_flags.is_enabled));
-			element->SetDoubleAttribute("amount", g_shader_instance_motionblur.BlurAmount());
-		}
-
-		void c_system_motionblur::SetDefaultSettings()
-		{
-			m_members.m_flags.is_enabled = false;
-			g_shader_instance_motionblur.BlurAmount() = 1.0f;
 		}
 
 		/////////////////////////////////////////////////

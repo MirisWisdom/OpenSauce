@@ -12,13 +12,17 @@
 #include <blamlib/Halo1/interface/map_list.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 
+#include <YeloLib/configuration/c_configuration_container.hpp>
+#include <YeloLib/configuration/c_configuration_value.hpp>
+#include "Settings/c_settings_singleton.hpp"
+
 #include <YeloLib/Halo1/cache/cache_files_yelo.hpp>
 #include <YeloLib/Halo1/cache/data_file_yelo.hpp>
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Common/FileIO.hpp"
-#include "Common/YeloSettings.hpp"
+#include "Settings/YeloSettings.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameState.hpp"
 
@@ -121,24 +125,21 @@ namespace Yelo
 	namespace Cache
 	{
 		struct s_yelo_settings {
-			bool check_for_yelo_files_first; // if true, checks for .yelo files first before .map files
-			PAD24;
 #if PLATFORM_IS_USER
 			// Scenario tag name of the mainmenu the user wants to use
 			string256 mainmenu_scenario_name;
 
-			bool InitializeMainmenuOverride(cstring override_name)
+			bool InitializeMainmenuOverride(const std::string& override_name)
 			{
 				static cstring k_stock_ui = "levels\\ui\\ui";
 
-				if(override_name != nullptr && override_name[0] != '\0')
+				if(!override_name.empty())
 				{
-					size_t name_length = strlen(override_name);
-
 					// If the override name fits and if it's not the same as the stock ui
-					if(name_length <= Enums::k_string_256_length && 
-						strcmp(override_name, k_stock_ui) != 0)
-						return strcpy_s(mainmenu_scenario_name, override_name) == k_errnone;
+					if((override_name.length() <= Enums::k_string_256_length) && (override_name.compare(k_stock_ui) != 0))
+					{
+						return strcpy_s(mainmenu_scenario_name, override_name.c_str()) == k_errnone;
+					}
 				}
 
 				mainmenu_scenario_name[0] = '\0';
@@ -160,30 +161,6 @@ namespace Yelo
 				}
 #endif
 			}
-
-			void LoadSettings(TiXmlElement* cf_element)
-			{
-				if(cf_element != nullptr)
-				{
-					check_for_yelo_files_first = Settings::ParseBoolean(cf_element->Attribute("checkForYeloFilesFirst"));
-
-#if PLATFORM_IS_USER
-					cstring mainmenu_override_name = cf_element->Attribute("mainmenuScenario");
-
-					InitializeMainmenuOverride(mainmenu_override_name);
-#endif
-				}
-			}
-			void SaveSettings(TiXmlElement* cf_element)
-			{
-				cf_element->SetAttribute("checkForYeloFilesFirst", BooleanToString(check_for_yelo_files_first));
-
-#if PLATFORM_IS_USER
-				if(UseMainmenuOverride())
-					cf_element->SetAttribute("mainmenuScenario", mainmenu_scenario_name);
-#endif
-			}
-
 		}g_yelo_settings;
 //////////////////////////////////////////////////////////////////////////
 // Cache Size upgrades
@@ -202,12 +179,15 @@ namespace Yelo
 
 		s_cache_file_globals* CacheFileGlobals()		PTR_IMP_GET2(cache_file_globals);
 		char* RootDirectory()							PTR_IMP_GET2(maps_folder_parent_dir);
-
+		
+#include "TagGroups/CacheFiles.Settings.inl"
 #include "TagGroups/CacheFiles.YeloFiles.inl"
 #include "TagGroups/CacheFiles.CRC.inl"
 
 		void Initialize()
 		{
+			c_settings_cache::Register();
+
 			MemoryUpgradesInitialize();
 			c_cache_format_path_hacks::Initialize();
 			g_yelo_settings.InitializeMemoryOverrides();
@@ -218,6 +198,8 @@ namespace Yelo
 		void Dispose()
 		{
 			MemoryUpgradesDispose();
+			
+			c_settings_cache::Unregister();
 		}
 
 		static bool MapIsOriginal(cstring map_name)
@@ -300,16 +282,6 @@ namespace Yelo
 			}
 
 			return result;
-		}
-
-		void LoadSettings(TiXmlElement* cf_element)
-		{
-			g_yelo_settings.LoadSettings(cf_element);
-		}
-
-		void SaveSettings(TiXmlElement* cf_element)
-		{
-			g_yelo_settings.SaveSettings(cf_element);
 		}
 	};
 };

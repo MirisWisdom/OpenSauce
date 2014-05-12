@@ -11,6 +11,8 @@
 
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 
+#include "Settings/c_settings_singleton.hpp"
+
 namespace Yelo
 {
 	namespace DataFiles
@@ -38,8 +40,5 @@ namespace Yelo
 		// * If [for_map_list_add_map], will return false for non-mp maps (but won't exception)
 		bool ReadHeader(cstring relative_map_name, s_cache_header& out_header, bool& yelo_is_ok, 
 			bool exception_on_fail = false, bool for_map_list_add_map = false);
-
-		void LoadSettings(TiXmlElement* cf_element);
-		void SaveSettings(TiXmlElement* cf_element);
 	};
 };

@@ -13,7 +13,6 @@
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingComponent.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingRenderable.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUpdatable.hpp"
-#include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUserSettings.hpp"
 
 #include "Rasterizer/PostProcessing/c_effect_render_set.hpp"
 #include "Rasterizer/PostProcessing/Generic/External/s_effect_postprocess_external.hpp"
@@ -39,11 +38,10 @@ namespace Yelo
 	{
 		extern cstring K_EXTERNAL_PP_SETTINGS_FILE;
 
-		class c_system_external :
-			public IPostProcessingComponent,
-			public IPostProcessingRenderable,
-			public IPostProcessingUpdatable,
-			public IPostProcessingUserSettings
+		class c_system_external
+			: public IPostProcessingComponent
+			, public IPostProcessingRenderable
+			, public IPostProcessingUpdatable
 		{
 		private:
 			class s_parameter_handle : public LinkedListNode<s_parameter_handle>
@@ -149,13 +147,6 @@ namespace Yelo
 
 			void Unload();
 			void Load();
-
-			/////////////////////////////////////////////////
-			// IPostProcessingUserSettings
-		public:
-			void LoadSettings(TiXmlElement* parent_element);
-			void SaveSettings(TiXmlElement* parent_element);
-			void SetDefaultSettings();
 
 			/////////////////////////////////////////////////
 			// IPostProcessingRenderable

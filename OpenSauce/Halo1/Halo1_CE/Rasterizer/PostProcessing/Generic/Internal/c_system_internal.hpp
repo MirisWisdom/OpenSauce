@@ -11,7 +11,6 @@
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingCacheComponent.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUpdatable.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingRenderable.hpp"
-#include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUserSettings.hpp"
 
 #include "Rasterizer/PostProcessing/c_effect_render_set.hpp"
 #include "Rasterizer/PostProcessing/Generic/c_shader_instance_generic.hpp"
@@ -23,11 +22,10 @@ namespace Yelo
 {
 	namespace Rasterizer { namespace PostProcessing { namespace Generic { namespace Internal
 	{
-		class c_system_internal :
-			public IPostProcessingCacheComponent,
-			public IPostProcessingUpdatable,
-			public IPostProcessingRenderable,
-			public IPostProcessingUserSettings
+		class c_system_internal
+			: public IPostProcessingCacheComponent
+			, public IPostProcessingUpdatable
+			, public IPostProcessingRenderable
 		{
 			struct s_effect_set
 			{
@@ -112,12 +110,6 @@ namespace Yelo
 			
 			void Unload();
 			void Load();
-
-			/////////////////////////////////////////////////
-			// IPostProcessingUserSettings
-			void LoadSettings(TiXmlElement* parent_element);
-			void SaveSettings(TiXmlElement* parent_element);
-			void SetDefaultSettings();
 
 			/////////////////////////////////////////////////
 			// IPostProcessingRenderable

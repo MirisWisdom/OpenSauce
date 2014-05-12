@@ -15,9 +15,9 @@ namespace Yelo
 	{
 		class c_version_check_manager_dedi : public c_version_check_manager_base
 		{
-			void		Initialize();
 			void		InitializeForNewMap();
 			void		UpdateVersion();
+			void		TestForUpdate();
 
 		private:
 			void		DisplayVersions(bool is_new_version);
