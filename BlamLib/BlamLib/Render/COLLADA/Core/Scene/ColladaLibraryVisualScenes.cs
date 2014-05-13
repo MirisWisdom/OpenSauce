@@ -17,8 +17,8 @@ namespace BlamLib.Render.COLLADA.Core
 	public partial class ColladaLibraryVisualScenes : ColladaElement
 	{
 		#region Fields
-		ColladaObjectAttribute<string> _id;
-		ColladaObjectAttribute<string> _name;
+		ColladaObjectAttribute<ColladaID<ColladaLibraryVisualScenes>> _id;
+		ColladaObjectAttribute<ColladaNCName> _name;
 
 		ColladaObjectElement<ColladaAsset> _asset;
 		ColladaObjectElementList<ColladaVisualScene> _visualScene;
@@ -51,8 +51,8 @@ namespace BlamLib.Render.COLLADA.Core
 
 		public ColladaLibraryVisualScenes() : base(Enums.ColladaElementType.Core_LibraryVisualScenes)
 		{
-			Fields.Add(_id = new ColladaObjectAttribute<string>(""));
-			Fields.Add(_name = new ColladaObjectAttribute<string>(""));
+			Fields.Add(_id = new ColladaObjectAttribute<ColladaID<ColladaLibraryVisualScenes>>(""));
+			Fields.Add(_name = new ColladaObjectAttribute<ColladaNCName>(""));
 			Fields.Add(_asset = new ColladaObjectElement<ColladaAsset>());
 			Fields.Add(_visualScene = new ColladaObjectElementList<ColladaVisualScene>());
 			Fields.Add(_extra = new ColladaObjectElementList<ColladaExtra>());

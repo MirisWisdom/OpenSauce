@@ -8,8 +8,8 @@
 #include "Rasterizer/PostProcessing/MotionBlur/c_shader_instance_motionblur.hpp"
 
 #if !PLATFORM_IS_DEDI
+#include <YeloLib/Halo1/time/interpolation/interpolation.hpp>
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
-#include "Rasterizer/PostProcessing/Interpolation/Interpolation.hpp"
 
 namespace Yelo
 {
@@ -52,7 +52,7 @@ namespace Yelo
 			{
 				if(m_members_motionblur.m_flags.vignette_enabled)
 				{
-					Interpolation::InterpolateValues<1>(&m_members_motionblur.start_vignette, &m_members_motionblur.target_vignette,
+					Time::Interpolation::InterpolateValues<1>(&m_members_motionblur.start_vignette, &m_members_motionblur.target_vignette,
 						m_members_motionblur.vignette_interp.GetValues(), &m_members_motionblur.start_vignette);
 
 					m_members_motionblur.target_vignette = 1.0f;
@@ -61,7 +61,7 @@ namespace Yelo
 				}
 				else
 				{
-					Interpolation::InterpolateValues<1>(&m_members_motionblur.start_vignette, &m_members_motionblur.target_vignette,
+					Time::Interpolation::InterpolateValues<1>(&m_members_motionblur.start_vignette, &m_members_motionblur.target_vignette,
 						m_members_motionblur.vignette_interp.GetValues(), &m_members_motionblur.start_vignette);
 
 					m_members_motionblur.target_vignette = 0.0f;
@@ -88,7 +88,7 @@ namespace Yelo
 			YELO_ASSERT_DISPLAY(effect != nullptr, "Motion blur shader class has no effect");
 
 			real vignette_amount;
-			Interpolation::InterpolateValues<1>(&m_members_motionblur.start_vignette, &m_members_motionblur.target_vignette, m_members_motionblur.vignette_interp.GetValues(), &vignette_amount);
+			Time::Interpolation::InterpolateValues<1>(&m_members_motionblur.start_vignette, &m_members_motionblur.target_vignette, m_members_motionblur.vignette_interp.GetValues(), &vignette_amount);
 
 			definition->blur_amount_var.SetVariable(effect, &m_members_motionblur.blur_amount);
 			definition->vignette_amount_var.SetVariable(effect, &vignette_amount);

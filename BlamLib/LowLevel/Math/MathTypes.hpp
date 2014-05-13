@@ -106,6 +106,8 @@ namespace LowLevel { namespace Math {
 	{
 	mcpp_public
 		real_vector3d Forward, Left, Up;
+
+		real_matrix3x3(real_vector3d forward, real_vector3d left, real_vector3d up) : Forward(forward), Left(left), Up(up) {}
 	};
 
 	[System::Runtime::InteropServices::StructLayoutAttribute(System::Runtime::InteropServices::LayoutKind::Sequential)]

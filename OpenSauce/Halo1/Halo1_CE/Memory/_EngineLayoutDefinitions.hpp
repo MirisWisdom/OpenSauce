@@ -79,6 +79,8 @@
 // 0x50 Rasterizer	__EL_RASTERIZER_
 #define __EL_INCLUDE_RASTERIZER 0x50
 	#define __EL_RASTERIZER_RASTERIZER	(__EL_INCLUDE_RASTERIZER + 0)
+	#define __EL_RASTERIZER_LIGHTMAPS	(__EL_INCLUDE_RASTERIZER + 1)
+	#define __EL_RASTERIZER_SKY			(__EL_INCLUDE_RASTERIZER + 2)
 
 #define __EL_INCLUDE_RASTERIZER_DX9		(__EL_INCLUDE_RASTERIZER + 1)
 	#define __EL_RASTERIZER_DX9_DX9			(__EL_INCLUDE_RASTERIZER_DX9 + 0)
@@ -98,7 +100,8 @@
 //////////////////////////////////////////////////////////////////////////
 // 0x60 Scenario	__EL_SCENARIO_
 #define __EL_INCLUDE_SCENARIO	0x60
-	#define __EL_SCENARIO_SCENARIO	(__EL_INCLUDE_SCENARIO + 0)
+#define __EL_SCENARIO_SCENARIO		(__EL_INCLUDE_SCENARIO + 0)
+#define __EL_SCENARIO_SCENARIOINFO	(__EL_INCLUDE_SCENARIO + 1)
 
 
 //////////////////////////////////////////////////////////////////////////

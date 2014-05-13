@@ -126,6 +126,15 @@
 			<field>spark</field>
 		</Enum>
 
+		<Enum name="transition_function_type_enum">
+			<field>linear</field>
+			<field>early</field>
+			<field>very early</field>
+			<field>late</field>
+			<field>very late</field>
+			<field>cosine</field>
+		</Enum>
+
 		<Enum name="predicted_resource_type_enum">
 			<field>bitmap</field>
 			<field>sound</field>

@@ -21,20 +21,22 @@ namespace Yelo
 			tag_group* senv = blam::tag_group_get<s_shader_environment_definition>();
 
 			static tag_field shader_environment_extension_fields[] = {
-				{ Enums::_field_terminator, }
+				{ Enums::_field_pad, "", (void*)8 },
+				{ Enums::_field_explanation, "directional lightmaps", "" },
+				{ Enums::_field_real, "bump amount", nullptr },
+				{ Enums::_field_pad, "", CAST_PTR(void*, 4) },
+				{ Enums::_field_terminator }
 			};
 			static tag_block_definition shader_environment_extension_block = {
 				"shader_environment_extension_block", 0, 1,
-				0,//sizeof(s_shader_environment_extension),
+				sizeof(s_shader_environment_extension),
 				nullptr,
 				shader_environment_extension_fields
 			};
 			FIELDSET_REPLACEMENT_BEGIN(_shader_environment_definition, 92+2, senv->header_block_definition)
 				FIELDSET_SEEK_AFTER_WITH_COPY("lens flare")
 				FIELDSET_INSERT_BEGIN()
-					FIELDSET_ADD_EXPLANATION("replacement test", "")
-					FIELDSET_INSERT_BLOCK(shader_extension, "yelo extension" "*", // TODO: readonly until the block actually has fields
-						&shader_environment_extension_block)
+					FIELDSET_INSERT_BLOCK(shader_extension, "shader extension", &shader_environment_extension_block)
 				FIELDSET_INSERT_END()
 			FIELDSET_REPLACEMENT_END();
 		}

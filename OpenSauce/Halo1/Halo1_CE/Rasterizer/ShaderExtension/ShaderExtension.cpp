@@ -24,6 +24,7 @@
 #include "Game/GameState.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Rasterizer/GBuffer.hpp"
+#include "Rasterizer/Lightmaps.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
 #include "TagGroups/TagGroups.hpp"
 
@@ -79,7 +80,7 @@ namespace Yelo
 
 			API_FUNC_NAKED static void Hook_RenderObject_ForceInvertBackfaceNormals()
 			{
-				static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_DRAW_INVERT_BACKFACE_NORMALS_CHECK_RETN);
+				static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_DRAW_INVERT_BACKFACE_NORMALS_CHECK_RETN);
 
 				_asm{
 					mov     al, 1
@@ -92,8 +93,8 @@ namespace Yelo
 			void		SetTexture(IDirect3DDevice9* pDevice, uint16 sampler, datum_index bitmap_tag_index)
 			{
 				// get the bitmap datum pointer
-				TagGroups::s_bitmap_group*	group = TagGroups::TagGetForModify<TagGroups::s_bitmap_group>(bitmap_tag_index);
-				TagGroups::s_bitmap_data*	bitmap = CAST_PTR(TagGroups::s_bitmap_data*, &group->bitmaps[0]);
+				auto group = TagGroups::TagGetForModify<TagGroups::s_bitmap_group>(bitmap_tag_index);
+				auto bitmap = CAST_PTR(TagGroups::s_bitmap_data*, &group->bitmaps[0]);
 
 				// set the texture to the device
 				blam::rasterizer_set_texture_bitmap_data(sampler, bitmap);
@@ -183,25 +184,25 @@ namespace Yelo
 			public:
 				void PostLoad() final override
 				{
-					Model::g_extension_usage_mask = Enums::_model_extension_usage_normal_map | Enums::_model_extension_usage_detail_normal |
-					Enums::_model_extension_usage_specular_map | Enums::_model_extension_usage_specular_lighting;
+					Model::g_extension_usage_mask = Enums::_shader_extension_usage_normal_map | Enums::_shader_extension_usage_detail_normal |
+					Enums::_shader_extension_usage_specular_map | Enums::_shader_extension_usage_specular_lighting;
 
-					int32 usage_mask = Enums::_model_extension_usage_none;
+					int32 usage_mask = Enums::_shader_extension_usage_none;
 
-					usage_mask |= (Get().m_shader_model.m_normal_maps ? Enums::_model_extension_usage_normal_map : Enums::_model_extension_usage_none);
-					usage_mask |= (Get().m_shader_model.m_detail_normal_maps ? Enums::_model_extension_usage_detail_normal : Enums::_model_extension_usage_none);
-					usage_mask |= (Get().m_shader_model.m_specular_maps ? Enums::_model_extension_usage_specular_map : Enums::_model_extension_usage_none);
-					usage_mask |= (Get().m_shader_model.m_specular_lighting ? Enums::_model_extension_usage_specular_lighting : Enums::_model_extension_usage_none);
+					usage_mask |= (Get().m_shader_model.m_normal_maps ? Enums::_shader_extension_usage_normal_map : Enums::_shader_extension_usage_none);
+					usage_mask |= (Get().m_shader_model.m_detail_normal_maps ? Enums::_shader_extension_usage_detail_normal : Enums::_shader_extension_usage_none);
+					usage_mask |= (Get().m_shader_model.m_specular_maps ? Enums::_shader_extension_usage_specular_map : Enums::_shader_extension_usage_none);
+					usage_mask |= (Get().m_shader_model.m_specular_lighting ? Enums::_shader_extension_usage_specular_lighting : Enums::_shader_extension_usage_none);
 
 					Model::g_extension_usage_mask &= usage_mask;
 				}
 
 				void PreSave() final override
 				{
-					Get().m_shader_model.m_normal_maps = (Model::g_extension_usage_mask & Enums::_model_extension_usage_normal_map) == Enums::_model_extension_usage_normal_map;
-					Get().m_shader_model.m_detail_normal_maps = (Model::g_extension_usage_mask & Enums::_model_extension_usage_detail_normal) == Enums::_model_extension_usage_detail_normal;
-					Get().m_shader_model.m_specular_maps = (Model::g_extension_usage_mask & Enums::_model_extension_usage_specular_map) == Enums::_model_extension_usage_specular_map;
-					Get().m_shader_model.m_specular_lighting = (Model::g_extension_usage_mask & Enums::_model_extension_usage_specular_lighting) == Enums::_model_extension_usage_specular_lighting;
+					Get().m_shader_model.m_normal_maps = (Model::g_extension_usage_mask & Enums::_shader_extension_usage_normal_map) == Enums::_shader_extension_usage_normal_map;
+					Get().m_shader_model.m_detail_normal_maps = (Model::g_extension_usage_mask & Enums::_shader_extension_usage_detail_normal) == Enums::_shader_extension_usage_detail_normal;
+					Get().m_shader_model.m_specular_maps = (Model::g_extension_usage_mask & Enums::_shader_extension_usage_specular_map) == Enums::_shader_extension_usage_specular_map;
+					Get().m_shader_model.m_specular_lighting = (Model::g_extension_usage_mask & Enums::_shader_extension_usage_specular_lighting) == Enums::_shader_extension_usage_specular_lighting;
 				}
 			};
 #pragma endregion

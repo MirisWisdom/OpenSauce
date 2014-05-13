@@ -18,6 +18,11 @@
 	ENGINE_PTR(datum_index, global_scenario_index,					0x6397DC, 0x5AD85C);
 	ENGINE_PTR(int16, structure_bsp_index,							0x6397E0, 0x5AD860);
 
+#if !PLATFORM_IS_DEDI
+	ENGINE_PTR(int16, render_sky_flag,								0x75E34D, DATA_PTR_UNKNOWN);
+	ENGINE_PTR(int16, sky_index,									0x75E34E, DATA_PTR_UNKNOWN);
+#endif
+
 	FUNC_PTR(OBJECT_TYPES_PLACE_OBJECTS_MOD_PROCESSED_BSPS__READ,	0x4F8557+0x30, 0x4DF547+0x30);
 	FUNC_PTR(OBJECT_TYPES_PLACE_OBJECTS_MOD_PROCESSED_BSPS__WRITE,	0x4F8557+0x30, 0x4DF70E+0x30);
 	FUNC_PTR(OBJECTS_INITIALIZE_FOR_NEW_MAP_MOD_PROCESSED_BSPS,		0x4F8832+0x30, 0x4DF822+0x30);
@@ -25,9 +30,10 @@
 
 //////////////////////////////////////////////////////////////////////////
 // .cpp
-//#elif __EL_INCLUDE_FILE_ID == __EL_SCENARIO_
+// #elif __EL_INCLUDE_FILE_ID == __EL_SCENARIO_
 
-
+#elif __EL_INCLUDE_FILE_ID == __EL_SCENARIO_SCENARIOINFO
+	FUNC_PTR(INITIALIZE_RENDER_SKY_CALL, 0x556F94, FUNC_PTR_UNKNOWN);
 #else
 	#error Undefined engine layout include for: __EL_SCENARIO_SCENARIO
 #endif

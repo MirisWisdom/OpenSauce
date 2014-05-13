@@ -168,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\ScriptLibraryMemoryUpgrades.inl" />
+    <None Include="Tool\BuildCacheFile\TagPreprocess_ProjectYellow.inl" />
     <None Include="Yelo\MemoryFixups.Paths.inl" />
     <None Include="Yelo\MemoryFixups.TagTextIO.inl" />
     <None Include="Tool\BuildCppDefinition.inl" />

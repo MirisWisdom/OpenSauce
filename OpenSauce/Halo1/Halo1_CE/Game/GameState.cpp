@@ -12,6 +12,7 @@
 #include <blamlib/Halo1/game/game_globals_structures.hpp>
 #include <blamlib/Halo1/game/game_time_structures.hpp>
 #include <blamlib/Halo1/main/main_structures.hpp>
+#include <blamlib/Halo1/scenario/scenario.hpp>
 #include <blamlib/Halo1/saved_games/game_state_structures.hpp>
 
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
@@ -95,6 +96,21 @@ namespace Yelo
 				jmp		GameState::InitializeForNewMap
 			}
 		}
+		static bool PLATFORM_API InitializeForNewBSPHook()
+		{
+			static int16 bsp_index = 0;
+
+			_asm
+			{
+				mov		bsp_index, si
+			};
+
+			bool return_value = blam::scenario_switch_structure_bsp((int16)bsp_index);
+
+			InitializeForNewBSP();
+
+			return return_value;
+		}
 
 		static void InitializeForDebug()
 		{
@@ -135,6 +151,11 @@ namespace Yelo
 			Memory::WriteRelativeJmp(&InitializeForNewGameStateHook, GET_FUNC_VPTR(GAME_INITIALIZE_HOOK), true);
 			Memory::WriteRelativeJmp(&InitializeForNewMapHook, GET_FUNC_VPTR(GAME_INITIALIZE_FOR_NEW_MAP_HOOK), true);
 			Memory::CreateHookRelativeCall(&DisposeFromOldMap, GET_FUNC_VPTR(GAME_DISPOSE_FROM_OLD_MAP_HOOK), Enums::_x86_opcode_ret);
+
+			for(int i = 0; i < NUMBEROF(K_GAME_SCENARIO_SWITCH_BSP_CALL); i++)
+				Memory::WriteRelativeCall(InitializeForNewBSPHook, K_GAME_SCENARIO_SWITCH_BSP_CALL[i], true);
+
+			Memory::CreateHookRelativeCall(&DisposeFromOldBSP, GET_FUNC_VPTR(GAME_DISPOSE_FROM_OLD_BSP_HOOK), Enums::_x86_opcode_ret);
 
 #if !PLATFORM_IS_DEDI
 			ServerListInitialize();
@@ -227,6 +248,25 @@ namespace Yelo
 			for(int32 x = component_count; x >= 0; x--)
 				if( components[x].DisposeFromOldMap != nullptr )
 					components[x].DisposeFromOldMap();
+		}
+
+		void PLATFORM_API InitializeForNewBSP()
+		{
+			Yelo::Main::s_project_bsp_component* components;
+			const int32 component_count = Yelo::Main::GetProjectComponents(components);
+
+			for(int32 x = 0; x <= component_count; x++)
+				if (components[x].InitializeForNewBSP != nullptr)
+					components[x].InitializeForNewBSP();
+		}
+		void PLATFORM_API DisposeFromOldBSP()
+		{
+			Yelo::Main::s_project_bsp_component* components;
+			const int32 component_count = Yelo::Main::GetProjectComponents(components);
+
+			for(int32 x = component_count; x >= 0; x--)
+				if (components[x].DisposeFromOldBSP != nullptr)
+					components[x].DisposeFromOldBSP();
 		}
 
 		void PLATFORM_API InitializeForNewGameState()

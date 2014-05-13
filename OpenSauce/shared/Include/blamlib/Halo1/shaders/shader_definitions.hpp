@@ -48,15 +48,15 @@ namespace Yelo
 
 			_detail_map_function,
 		};
-		enum model_extension_usage : _enum
+		enum shader_extension_usage : _enum
 		{
-			_model_extension_usage_none					= 0,
-			_model_extension_usage_normal_map			= 1 << 0,
-			_model_extension_usage_detail_normal		= 1 << 1,
-			_model_extension_usage_specular_map			= 1 << 2,
-			_model_extension_usage_specular_lighting	= 1 << 3,
+			_shader_extension_usage_none					= 0,
+			_shader_extension_usage_normal_map				= 1 << 0,
+			_shader_extension_usage_detail_normal			= 1 << 1,
+			_shader_extension_usage_specular_map			= 1 << 2,
+			_shader_extension_usage_specular_lighting		= 1 << 3,
 
-			_model_extension_usage,
+			_shader_extension_usage,
 		};
 		enum reflection_type : _enum
 		{
@@ -404,8 +404,12 @@ namespace Yelo
 			_shader_effect_definition effect;
 		}; BOOST_STATIC_ASSERT( sizeof(s_shader_effect) == 0xB4 );
 		//////////////////////////////////////////////////////////////////////////
-		struct s_shader_environment_extension // TODO: FireScythe needs to do me
+		struct s_shader_environment_extension
 		{
+			TAG_PAD(byte, 8);
+
+			TAG_FIELD(real, bump_amount);
+			TAG_PAD(byte, 4);
 		};
 		struct _shader_environment_definition
 		{

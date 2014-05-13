@@ -15,7 +15,7 @@ namespace BlamLib.Render.COLLADA
 	[Serializable]
 	[XmlType(AnonymousType = true)]
 	[XmlRoot(ElementName = "COLLADA", Namespace = "http://www.collada.org/2005/11/COLLADASchema", IsNullable = false)]
-	public partial class ColladaFile : ColladaElement
+	public class ColladaFile : ColladaElement
 	{
 		#region Fields
 		ColladaObjectAttribute<string> _version;

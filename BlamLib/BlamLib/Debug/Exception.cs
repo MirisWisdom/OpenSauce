@@ -96,12 +96,14 @@ namespace BlamLib.Debug
 		/// </summary>
 		/// <param name="format">Log line(s) formatting</param>
 		/// <param name="args">formating parameters</param>
-		public ExceptionLog(string format, params object[] args) : base(/*string.Format(format, args)*/)
+		public ExceptionLog(string format, params object[] args)
+			: base(string.Format(format, args))
 		{
 			LogFile.WriteLine(format, args);
 		}
 
-		public ExceptionLog(Exception inner, string format, params object[] args) : base(null, inner)
+		public ExceptionLog(Exception inner, string format, params object[] args)
+			: base(string.Format(format, args), inner)
 		{
 			LogFile.Write(format, args);
 			LogFile.Write("{1}{0}{1}", inner, Program.NewLine);
