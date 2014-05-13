@@ -48,7 +48,7 @@ namespace Yelo
 {
 	namespace DataFiles
 	{
-		static void ScenarioTagsLoadPreprocess(Cache::s_cache_header* cache_header)
+		static void ScenarioTagsLoadPreprocess(const Cache::s_cache_header& cache_header)
 		{
 			// when a yelo made cache is loaded, this will be set to true, causing non-yelo-made 
 			// caches to load the original data files. This isn't required as yelo bases 
@@ -56,12 +56,12 @@ namespace Yelo
 			static bool revert_file_names = false;
 			static char exception_details[128];
 
-			if(cache_header->yelo.flags.uses_mod_data_files && !is_null_or_empty(cache_header->yelo.mod_name))
+			if(cache_header.yelo.flags.uses_mod_data_files && !is_null_or_empty(cache_header.yelo.mod_name))
 			{
-				if (!mod_data_files_globals.TryAndUseModSet(cache_header->yelo.mod_name))
+				if (!mod_data_files_globals.TryAndUseModSet(cache_header.yelo.mod_name))
 				{
-					sprintf_s(exception_details, "%s's data files (bitmaps, sounds, and/or loc)", 
-						cache_header->yelo.mod_name);
+					sprintf_s(exception_details, "%s's data files (bitmaps, sounds, and/or loc), referenced by %s.map", 
+						cache_header.yelo.mod_name, cache_header.name);
 					Engine::GatherException(exception_details, 0x89, 0x7E, 1);
 				}
 
@@ -202,14 +202,6 @@ namespace Yelo
 			c_settings_cache::Unregister();
 		}
 
-		static bool MapIsOriginal(cstring map_name)
-		{
-			for (auto mp_map : blam::k_original_multiplayer_maps)
-				if( !strcmp(map_name, mp_map.name) )
-					return true;
-
-			return false;
-		}
 		bool ReadHeader(cstring relative_map_name, s_cache_header& out_header, bool& yelo_is_ok, 
 			bool exception_on_fail, bool for_map_list_add_map)
 		{
@@ -264,7 +256,7 @@ namespace Yelo
 
 			if(!result && exception_on_fail)
 			{
-				if(!file_exists && !MapIsOriginal(relative_map_name))
+				if(!file_exists && !Interface::MultiplayerMapIsOriginal(relative_map_name))
 				{
 					if(!yelo_is_ok)
 					{
