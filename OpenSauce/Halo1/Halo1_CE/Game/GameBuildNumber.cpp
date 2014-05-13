@@ -18,6 +18,7 @@ namespace Yelo
 {
 	namespace Enums
 	{
+		// network protocol version id
 		enum game_version_id : long_enum {
 			//_game_version_id_ = ,
 			_game_version_id_100 = 0x94ECF,	//  609999
@@ -61,14 +62,14 @@ namespace Yelo
 			const tag_string& build_number = header->version;
 			if(GameState::YeloGameStateEnabled())
 			{
-				for(int x = 0; x < NUMBEROF(k_binary_compatible_build_numbers_yelo); x++)
-					if(strcmp(build_number, k_binary_compatible_build_numbers_yelo[x])==0)
+				for (auto game_build_number : k_binary_compatible_build_numbers_yelo)
+					if ( !strcmp(game_build_number, build_number) )
 						return true;
 			}
 			else
 			{
-				for(int x = 0; x < NUMBEROF(k_binary_compatible_build_numbers_stock); x++)
-					if(strcmp(build_number, k_binary_compatible_build_numbers_stock[x])==0)
+				for (auto game_build_number : k_binary_compatible_build_numbers_stock)
+					if ( !strcmp(game_build_number, build_number) )
 						return true;
 			}
 
@@ -129,6 +130,7 @@ is_invalid:
 			"01.00.07.0613",
 			"01.00.08.0616",
 			"01.00.09.0620",
+			//"01.00.10.0621",
 		};
 		static cstring k_game_build_numbers_yelo[] = {
 			k_build_number_yelo_current
@@ -136,8 +138,8 @@ is_invalid:
 
 		bool StringIsValid(cstring build_number)
 		{
-			for(int i = 0; i < NUMBEROF(k_game_build_numbers); i++)
-				if(strcmp(k_game_build_numbers[i], build_number) == 0)
+			for (auto game_build_number : k_game_build_numbers)
+				if ( !strcmp(game_build_number, build_number) )
 					return true;
 
 			return false;
@@ -151,6 +153,7 @@ is_invalid:
 			else if( strstr(maj_minor_str, "1.07") ) return k_game_build_numbers[_game_build_number_index_107];
 			else if( strstr(maj_minor_str, "1.08") ) return k_game_build_numbers[_game_build_number_index_108];
 			else if( strstr(maj_minor_str, "1.09") ) return k_game_build_numbers[_game_build_number_index_109];
+			//else if( strstr(maj_minor_str, "1.10") ) return k_game_build_numbers[_game_build_number_index_110];
 			else return nullptr;
 		}
 
@@ -172,6 +175,8 @@ is_invalid:
 					else if(version_id == _game_version_id_107) build_str = k_game_build_numbers[_game_build_number_index_107];
 					else if(version_id == _game_version_id_108) build_str = k_game_build_numbers[_game_build_number_index_108];
 					else if(version_id == _game_version_id_109) build_str = k_game_build_numbers[_game_build_number_index_109];
+					// TODO: 1.10 doesn't change the network protocol id, we need a different way to perform this code...
+					//else if(version_id == _game_version_id_110) build_str = k_game_build_numbers[_game_build_number_index_110];
 
 					if(build_str != nullptr)
 					{
@@ -189,15 +194,18 @@ is_invalid:
 			long_enum version_id = 0;
 
 			// test for full version strings
-				 if( strcmp(version_str, k_game_build_numbers[0]) == 0) version_id = _game_version_id_100;
-			else if( strcmp(version_str, k_game_build_numbers[1]) == 0) version_id = _game_version_id_107;
-			else if( strcmp(version_str, k_game_build_numbers[2]) == 0) version_id = _game_version_id_108;
-			else if( strcmp(version_str, k_game_build_numbers[3]) == 0) version_id = _game_version_id_109;
+				 if( !strcmp(version_str, k_game_build_numbers[_game_build_number_index_100]) ) version_id = _game_version_id_100;
+			else if( !strcmp(version_str, k_game_build_numbers[_game_build_number_index_107]) ) version_id = _game_version_id_107;
+			else if( !strcmp(version_str, k_game_build_numbers[_game_build_number_index_108]) ) version_id = _game_version_id_108;
+			else if( !strcmp(version_str, k_game_build_numbers[_game_build_number_index_109]) ) version_id = _game_version_id_109;
+			// TODO: 1.10 doesn't change the network protocol id, we need a different way to perform this code...
+			//else if( !strcmp(version_str, k_game_build_numbers[_game_build_number_index_110]) ) version_id = _game_version_id_110;
 			// test for short version strings
 			else if( strstr(version_str, "1.00")) version_id = _game_version_id_100;
 			else if( strstr(version_str, "1.07")) version_id = _game_version_id_107;
 			else if( strstr(version_str, "1.08")) version_id = _game_version_id_108;
 			else if( strstr(version_str, "1.09")) version_id = _game_version_id_109;
+			//else if( strstr(version_str, "1.10")) version_id = _game_version_id_110;
 			else result = false;
 
 			if(result)

@@ -10,6 +10,16 @@ namespace Yelo
 {
 	namespace Interface
 	{
+#if !PLATFORM_IS_EDITOR
+		bool MultiplayerMapIsOriginal(cstring map_name)
+		{
+			for (auto mp_map : blam::k_original_multiplayer_maps)
+				if (!strcmp(map_name, mp_map.name))
+					return true;
+
+			return false;
+		}
+#endif
 	};
 
 	namespace blam

@@ -11,7 +11,7 @@ namespace Yelo { namespace DataFiles {
 
 	struct s_mod_set_info
 	{
-		std::string mod_name;
+		const std::string mod_name;
 
 		std::string bitmaps_path;
 		std::string sounds_path;
@@ -78,9 +78,7 @@ namespace Yelo { namespace DataFiles {
 
 			current_mod_set = info.mod_name;
 
-			bool success = blam::data_files_close();
-			success &= iter->second.Open();
-			YELO_ASSERT(success);
+			bool success = blam::data_files_close() && iter->second.Open();
 			return success;
 		}
 
