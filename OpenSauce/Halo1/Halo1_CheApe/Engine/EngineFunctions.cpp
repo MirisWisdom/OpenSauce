@@ -13,6 +13,7 @@
 #include <blamlib/Halo1/memory/memory_pool.hpp>
 #include <blamlib/Halo1/tag_files/files.hpp>
 #include <blamlib/Halo1/tag_files/tag_files.hpp>
+#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {
@@ -26,6 +27,8 @@ namespace Yelo
 	};
 	namespace TagGroups
 	{
+		struct predicted_resource;
+
 		struct scenario;
 
 		struct collision_bsp;
@@ -86,6 +89,25 @@ namespace Yelo
 		}
 	};
 	//////////////////////////////////////////////////////////////////////////
+	// cache
+	namespace blam
+	{
+		//////////////////////////////////////////////////////////////////////////
+		// predicted_resources.c
+#if PLATFORM_TYPE == PLATFORM_TOOL
+		void predicted_resources_add_resource(TagBlock<TagGroups::predicted_resource>& predicted_resources,
+			long_enum resource_type, datum_index tag_index, int32 resource_index = NONE)
+		{
+			static void* PREDICTED_RESOURCES_ADD_RESOURCE = CAST_PTR(void*, 0x4B94E0);
+
+			typedef void (PLATFORM_API* call_proc)(TagBlock<TagGroups::predicted_resource>&, long_enum, datum_index, int32);
+			static call_proc add_predicted_resource = CAST_PTR(call_proc, PREDICTED_RESOURCES_ADD_RESOURCE);
+
+			add_predicted_resource(predicted_resources, resource_type, tag_index, resource_index);
+		}
+#endif
+	};
+	//////////////////////////////////////////////////////////////////////////
 	// math
 	namespace blam
 	{
@@ -124,6 +146,13 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////////
 		// byte_swapping.c
+		void PLATFORM_API byte_swap_data(Memory::s_byte_swap_definition* definition, void* address,
+			int32 data_count)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(BYTE_SWAP_DATA);
+
+			__asm	jmp	FUNCTION
+		}
 		API_FUNC_NAKED void PLATFORM_API byte_swap_data_explicit(cstring name, int32 size, 
 			byte_swap_code_t* codes, int data_count, void *address)
 		{
@@ -223,7 +252,7 @@ namespace Yelo
 		}
 		PLATFORM_VALUE(API_FUNC_NAKED, , API_FUNC_NAKED) void PLATFORM_API memory_pool_delete(Memory::s_memory_pool* pool)
 		{
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 			memory_pool_verify(pool);
 			memset(pool, 0, sizeof(*pool));
 			YELO_FREE(pool); // FREE is preferred here over DELETE since the type is a POD engine type
@@ -276,7 +305,7 @@ namespace Yelo
 	namespace blam
 	{
 		//////////////////////////////////////////////////////////////////////////
-		// files_windows.c
+		// files.c
 		API_FUNC_NAKED void PLATFORM_API file_reference_create(s_file_reference& reference, long_enum location)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_REFERENCE_CREATE);
@@ -295,7 +324,7 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
-		API_FUNC_NAKED cstring PLATFORM_API file_reference_get_name(const s_file_reference& reference, long_flags flags, __out char name[Enums::k_maximum_filename_length+1])
+		API_FUNC_NAKED char* PLATFORM_API file_reference_get_name(const s_file_reference& reference, long_flags flags, __out char name[Enums::k_maximum_filename_length+1])
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_REFERENCE_GET_NAME);
 
@@ -308,9 +337,87 @@ namespace Yelo
 
 			__asm	jmp	FUNCTION
 		}
+		//////////////////////////////////////////////////////////////////////////
+		// files_windows.c
+		API_FUNC_NAKED void PLATFORM_API file_error(cstring operation, const s_file_reference& reference)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_ERROR);
+
+			__asm	jmp	FUNCTION
+		}
+		API_FUNC_NAKED bool PLATFORM_API file_create(const s_file_reference& reference)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_CREATE);
+
+			__asm	jmp	FUNCTION
+		}
+		API_FUNC_NAKED bool PLATFORM_API file_delete(const s_file_reference& reference)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_DELETE);
+
+			__asm	jmp	FUNCTION
+		}
 		API_FUNC_NAKED bool PLATFORM_API file_exists(const s_file_reference& reference)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_EXISTS);
+
+			__asm	jmp	FUNCTION
+		}
+		API_FUNC_NAKED bool PLATFORM_API file_open(s_file_reference& reference, long_flags flags)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_OPEN);
+
+			__asm	jmp	FUNCTION
+		}
+		API_FUNC_NAKED bool PLATFORM_API file_close(s_file_reference& reference)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_CLOSE);
+
+			__asm	jmp	FUNCTION
+		}
+
+		API_FUNC_NAKED bool PLATFORM_API file_set_position(s_file_reference& reference, uint32 position)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_SET_POSITION);
+
+			__asm	jmp	FUNCTION
+		}
+		API_FUNC_NAKED uint32 PLATFORM_API file_get_eof(const s_file_reference& reference)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_GET_EOF);
+
+			__asm	jmp	FUNCTION
+		}
+
+		API_FUNC_NAKED bool PLATFORM_API file_read(s_file_reference& reference, size_t buffer_size, void* buffer)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_READ);
+
+			__asm	jmp	FUNCTION
+		}
+		API_FUNC_NAKED bool PLATFORM_API file_write(s_file_reference& reference, size_t buffer_size, const void* buffer)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_WRITE);
+
+			__asm	jmp	FUNCTION
+		}
+		API_FUNC_NAKED bool PLATFORM_API file_read_from_position(s_file_reference& reference, uint32 position,
+			size_t buffer_size, void* buffer)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_READ_FROM_POSITION);
+
+			__asm	jmp	FUNCTION
+		}
+		API_FUNC_NAKED bool PLATFORM_API file_write_to_position(const s_file_reference& reference, uint32 position,
+			size_t buffer_size, const void* buffer)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_WRITE_TO_POSITION);
+
+			__asm	jmp	FUNCTION
+		}
+		API_FUNC_NAKED bool PLATFORM_API file_read_only(const s_file_reference& reference)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_READ_ONLY_);
 
 			__asm	jmp	FUNCTION
 		}

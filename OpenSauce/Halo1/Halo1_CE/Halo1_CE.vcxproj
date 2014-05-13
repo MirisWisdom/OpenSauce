@@ -1,5 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <OSRootDir>$(ProjectDir)..\..\..\</OSRootDir>
+    <OSRequiresDirectX>true</OSRequiresDirectX>
+    <OSRequiresCppBoost>true</OSRequiresCppBoost>
+    <OSRequiresVLD>true</OSRequiresVLD>
+    <OSRequiresHaloCustomEd>true</OSRequiresHaloCustomEd>
+    <OSRequiresGameSpyOpen>true</OSRequiresGameSpyOpen>
+  </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="DebugDedi|Win32">
       <Configuration>DebugDedi</Configuration>
@@ -35,23 +43,8 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <PropertyGroup>
-    <OSRequiresDirectX>true</OSRequiresDirectX>
-    <OSRequiresCppBoost>true</OSRequiresCppBoost>
-    <OSRequiresHaloCustomEd>true</OSRequiresHaloCustomEd>
-    <OSRequiresGameSpyOpen>true</OSRequiresGameSpyOpen>
-  </PropertyGroup>
-  <Import Project="$(SolutionDir)..\shared\config\msbuild\OpenSauce.props" />
-  <Import Project="$(SolutionDir)shared\config\msbuild\CrashRpt.props" />
-  <Import Project="$(SolutionDir)shared\config\msbuild\TinyXml.props" />
-  <Import Project="$(SolutionDir)shared\config\msbuild\zlib.props" />
-  <Import Project="$(SolutionDir)shared\config\msbuild\blamlib.props" />
-  <Import Project="$(SolutionDir)shared\config\msbuild\blamlib_Halo1.props" />
-  <Import Project="$(SolutionDir)shared\config\msbuild\YeloLib.props" />
-  <Import Project="$(SolutionDir)shared\config\msbuild\YeloLib_Halo1.props" />
-  <Import Project="$(SolutionDir)shared\config\msbuild\7zip.props" />
-  <Import Project="$(SolutionDir)shared\config\msbuild\GameSpyOpen.props" />
-  <Import Project="$(SolutionDir)shared\config\msbuild\mongoose.props" />
+  <Import Project="$(OSRootDir)shared\config\msbuild\OpenSauce.props" />
+  <Import Project="$(OSRootDir)OpenSauce\shared\config\msbuild\YeloLib.props" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>11.0.60315.1</_ProjectFileVersion>
@@ -61,7 +54,7 @@
       <PreprocessorDefinitions>GSI_NO_THREADS;HALO1_CE_EXPORTS;_WINDOWS;_USRDLL;_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>ws2_32.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;dbghelp.lib;Halo1_YeloLib.lib;Halo1_BlamLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBC;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <ModuleDefinitionFile>Halo1_CE.def</ModuleDefinitionFile>
     </Link>
@@ -90,10 +83,134 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\time\sequence\c_transition_sequence_controller.cpp" />
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\darray.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\darray.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\hashtable.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\hashtable.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\md5.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\md5c.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\nonport.h" />
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsAssert.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsAssert.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsAvailable.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsAvailable.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsCommon.h" />
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsCore.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsCore.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsCrypt.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsCrypt.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsDebug.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsDebug.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsLargeInt.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsLargeInt.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsMemory.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsMemory.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsPlatform.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsPlatform.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformSocket.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformSocket.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformThread.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformThread.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformUtil.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsPlatformUtil.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsRC4.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsRC4.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsResultCodes.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsResultCodes.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsSHA1.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsSHA1.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsSoap.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsSoap.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsSSL.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsSSL.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsStringUtil.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsStringUtil.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\common\gsXML.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\common\gsXML.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttp.h" />
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpASCII.h" />
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpBuffer.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpBuffer.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpCallbacks.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpCallbacks.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpCommon.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpCommon.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpConnection.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpConnection.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpEncryption.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpEncryption.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpMain.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpMain.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpPost.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpPost.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpProcess.h" />
+    <ClCompile Include="..\..\shared\Include\GameSpyOpen\ghttp\ghttpProcess.c">
+      <PrecompiledHeader />
+    </ClCompile>
+    <ClInclude Include="..\..\shared\Include\mongoose\mongoose.h" />
+    <ClCompile Include="..\..\shared\Include\mongoose\mongoose.c">
+      <PrecompiledHeader />
+      <DisableSpecificWarnings>4090;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
     <ClCompile Include="Common\DebugDump.cpp" />
     <ClCompile Include="Common\FileIO.cpp" />
     <ClCompile Include="Common\GameSystems.cpp" />
-    <ClCompile Include="Common\YeloSettings.cpp" />
     <ClCompile Include="Game\AI.cpp" />
     <ClCompile Include="Game\Camera.cpp" />
     <ClCompile Include="Game\Campaign.cpp" />
@@ -139,6 +256,12 @@
     <ClCompile Include="Rasterizer\Lightmaps.cpp" />
     <ClCompile Include="Rasterizer\Sky.cpp" />
     <ClCompile Include="Scenario\ScenarioInfo.cpp" />
+    <ClCompile Include="Rasterizer\PostProcessing\Bloom\c_settings_bloom.cpp" />
+    <ClCompile Include="Rasterizer\PostProcessing\FXAA\c_settings_fxaa.cpp" />
+    <ClCompile Include="Rasterizer\PostProcessing\Generic\External\c_settings_external.cpp" />
+    <ClCompile Include="Rasterizer\PostProcessing\Generic\Internal\c_settings_internal.cpp" />
+    <ClCompile Include="Rasterizer\PostProcessing\MotionBlur\c_settings_motionblur.cpp" />
+    <ClCompile Include="Settings\YeloSettings.cpp" />
     <ClCompile Include="TagGroups\CacheFiles.cpp" />
     <ClCompile Include="TagGroups\project_yellow_definitions.cpp" />
     <ClCompile Include="TagGroups\TagGroups.cpp" />
@@ -206,7 +329,6 @@
     <ClInclude Include="Common\GameSystems.hpp" />
     <ClInclude Include="Common\Platform.hpp" />
     <ClInclude Include="Common\Precompile.hpp" />
-    <ClInclude Include="Common\YeloSettings.hpp" />
     <ClInclude Include="Game\AI.hpp" />
     <ClInclude Include="Game\Camera.hpp" />
     <ClInclude Include="Game\Campaign.hpp" />
@@ -252,11 +374,20 @@
     <ClInclude Include="Objects\Equipment.hpp" />
     <ClInclude Include="Objects\ObjectFieldDefinitions.hpp" />
     <ClInclude Include="Objects\Objects.hpp" />
+    <ClInclude Include="Objects\Objects.VehicleSettings.hpp" />
+    <ClInclude Include="Objects\Objects.WeaponSettings.hpp" />
     <ClInclude Include="Objects\Units.hpp" />
     <ClInclude Include="Rasterizer\Lightmaps.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_function_pp_anim.hpp" />
     <ClInclude Include="Rasterizer\Sky.hpp" />
     <ClInclude Include="Scenario\ScenarioInfo.hpp" />
+    <ClInclude Include="Rasterizer\PostProcessing\Bloom\c_settings_bloom.hpp" />
+    <ClInclude Include="Rasterizer\PostProcessing\FXAA\c_settings_fxaa.hpp" />
+    <ClInclude Include="Rasterizer\PostProcessing\Generic\External\c_settings_external.hpp" />
+    <ClInclude Include="Rasterizer\PostProcessing\Generic\Internal\c_settings_internal.hpp" />
+    <ClInclude Include="Rasterizer\PostProcessing\MotionBlur\c_settings_motionblur.hpp" />
+    <ClInclude Include="Settings\c_settings_singleton.hpp" />
+    <ClInclude Include="Settings\YeloSettings.hpp" />
     <ClInclude Include="TagGroups\CacheFiles.hpp" />
     <ClInclude Include="TagGroups\project_yellow_definitions.hpp" />
     <ClInclude Include="TagGroups\TagGroups.hpp" />
@@ -337,7 +468,6 @@
     <None Include="Common\GameSystemComponents.Scripting.inl" />
     <None Include="Common\GameSystemComponents.Startup.inl" />
     <None Include="Common\GameSystemComponents.Tags.inl" />
-    <None Include="Common\YeloSettings.CmdLineSettings.inl" />
     <None Include="Game\CameraFov.inl" />
     <None Include="Game\Campaign.inl" />
     <None Include="Game\ScriptLibrary.Definitions.HTTPServer.inl" />
@@ -380,14 +510,16 @@
     <None Include="Objects\ObjectFieldDefinitions.inl" />
     <None Include="Objects\Objects.Damage.inl" />
     <None Include="Objects\Objects.Scripting.inl" />
-    <None Include="Objects\Objects.UnitInfections.inl" />
-    <None Include="Objects\Objects.Vehicle.inl" />
-    <None Include="Objects\Objects.Weapon.inl" />
+    <None Include="Objects\Units.UnitInfections.inl" />
+    <None Include="Objects\Objects.VehicleSettings.inl" />
+    <None Include="Objects\Objects.WeaponSettings.inl" />
     <None Include="Objects\Units.Animations.inl" />
     <None Include="Objects\Units.Boarding.inl" />
     <None Include="Objects\Units.GrenadeCounts.inl" />
     <None Include="TagGroups\CacheFiles.CRC.inl" />
+    <None Include="TagGroups\CacheFiles.DataFiles.inl" />
     <None Include="TagGroups\CacheFiles.MapList.inl" />
+    <None Include="TagGroups\CacheFiles.Settings.inl" />
     <None Include="TagGroups\CacheFiles.YeloFiles.inl" />
     <None Include="Memory\_EngineLayout.inl" />
     <None Include="Halo1_CE.def" />
@@ -429,9 +561,6 @@
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Model.inl" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="..\..\..\Doc\Blam\Halo1\Halo1_CE.message_delta_definitions.xml">
-      <SubType>Designer</SubType>
-    </Xml>
     <Xml Include="Halo1_CE_Version.xml" />
     <Xml Include="YeloFileChecksums.xml" />
     <Xml Include="YeloSettingsTemplate.xml" />

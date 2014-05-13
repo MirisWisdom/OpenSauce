@@ -17,7 +17,7 @@ namespace Yelo
 	{
 		void PLATFORM_API first_person_weapons_initialize_for_new_map()
 		{
-#if /*PLATFORM_IS_CLIENT ||*/ PLATFORM_ID == PLATFORM_SAPIEN
+#if /*PLATFORM_IS_CLIENT ||*/ PLATFORM_TYPE == PLATFORM_SAPIEN
 			for (auto& player : GameUI::FirstPersonWeapons()->local_players)
 			{
 				std::memset(&player, 0, sizeof(player));

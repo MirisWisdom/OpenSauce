@@ -5,7 +5,7 @@
 */
 #include "Common/Precompile.hpp"
 #include <blamlib/Halo1/cache/cache_file_builder.hpp>
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 
 #include <blamlib/Halo1/game/game_globals.hpp>
 #include <blamlib/Halo1/game/game_globals_definitions.hpp>
@@ -13,7 +13,8 @@
 #include <blamlib/Halo1/tag_files/tag_field_scanner.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
-#include "Engine/EngineFunctions.hpp"
+#include <YeloLib/memory/memory_interface_base.hpp>
+#include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
 
 namespace Yelo
 {
@@ -21,17 +22,17 @@ namespace Yelo
 	{
 		cstring s_build_cache_file_globals::k_temp_cache_file_name = "temporary uncompressed cache file.bin";
 
-		void s_build_cache_file_globals::DataFilesSave()
+		void s_data_file_globals::Save()
 		{
-			sounds_data_file.Save();
-			locale_data_file.Save();
-			bitmaps_data_file.Save();
+			sounds.Save();
+			locale.Save();
+			bitmaps.Save();
 		}
-		void s_build_cache_file_globals::DataFilesPreprocessForSave()
+		void s_data_file_globals::PreprocessForSave()
 		{
-			sounds_data_file.PreprocessForSave();
-			locale_data_file.PreprocessForSave();
-			bitmaps_data_file.PreprocessForSave();
+			sounds.PreprocessForSave();
+			locale.PreprocessForSave();
+			bitmaps.PreprocessForSave();
 		}
 
 		void s_build_cache_file_globals::TemporaryFileOpen(cstring filename)

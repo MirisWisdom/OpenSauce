@@ -5,24 +5,20 @@
 	See license\OpenSauce\Halo1_CheApe for specific license information
 */
 
-namespace BuildCacheFileEx
-{
-	namespace PredictedResources
-	{
-		static void predicted_resources_add_resource(TagBlock<TagGroups::predicted_resource>& predicted_resources, 
-			long_enum resource_type, datum_index tag_index, int32 resource_index = NONE)
-		{
-			static void* PREDICTED_RESOURCES_ADD_RESOURCE = CAST_PTR(void*, 0x4B94E0);
-
-			typedef void (PLATFORM_API* call_proc)(TagBlock<TagGroups::predicted_resource>&, long_enum, datum_index, int32);
-			static call_proc add_predicted_resource = CAST_PTR(call_proc, PREDICTED_RESOURCES_ADD_RESOURCE);
-
-			add_predicted_resource(predicted_resources, resource_type, tag_index, resource_index);
-		}
+#include <blamlib/Halo1/cache/predicted_resources.hpp>
+#include <blamlib/Halo1/objects/object_definitions.hpp>
+#include <blamlib/Halo1/tag_files/tag_groups.hpp>
+#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
 
 #include "Tool/BuildCacheFile/PredictedResources_ShaderExtension.inl"
 #include "Tool/BuildCacheFile/PredictedResources_PostProcessing.inl"
 
+namespace Yelo { namespace Tool {
+
+namespace BuildCacheFileEx
+{
+	namespace PredictedResources
+	{
 		static void* PREDICTED_RESOURCES_ADD_RESOURCES_FROM_SHADER_TAG_HOOK = CAST_PTR(void*, 0x4B97AB);
 		// Hook placed in tool's code so we can add extra resource info
 		static void PLATFORM_API predicted_resources_add_resources_from_shader_tag_ex(TagBlock<TagGroups::predicted_resource>& predicted_resources,
@@ -86,3 +82,5 @@ namespace BuildCacheFileEx
 		}
 	};
 };
+
+}; };

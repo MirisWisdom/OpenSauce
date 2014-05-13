@@ -17,6 +17,14 @@ namespace Yelo
 			k_player_name_length = 11,
 		};
 
+		enum player_powerup
+		{
+			_player_powerup_active_camo,
+			_player_powerup_full_spectrum_vision,
+
+			k_number_of_player_powerups,
+		};
+
 		enum multiplayer_team
 		{
 			_multiplayer_team_red,

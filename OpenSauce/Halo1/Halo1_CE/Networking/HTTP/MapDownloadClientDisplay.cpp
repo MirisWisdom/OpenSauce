@@ -231,20 +231,20 @@ namespace Yelo
 
 		void c_map_download_display::Initialize(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* present_parameters)
 		{
-			m_background_tint = new TextBlock(device, present_parameters);
-			m_base_container = new TextBlock(device, present_parameters);
-			m_inner_container = new TextBlock(device, present_parameters);
-			m_title = new TextBlock(device, present_parameters);
-			m_map_name = new TextBlock(device, present_parameters);
-			m_part_progress_back = new TextBlock(device, present_parameters);
-			m_part_progress_front = new TextBlock(device, present_parameters);
-			m_part_progress_text = new TextBlock(device, present_parameters);
-			m_map_progress_back = new TextBlock(device, present_parameters);
-			m_map_progress_front = new TextBlock(device, present_parameters);
-			m_map_progress_text = new TextBlock(device, present_parameters);
-			m_cancel = new TextBlock(device, present_parameters);
-			m_provider_title = new TextBlock(device, present_parameters);
-			m_provider_description = new TextBlock(device, present_parameters);
+			m_background_tint = std::make_unique<TextBlock>(device, present_parameters);
+			m_base_container = std::make_unique<TextBlock>(device, present_parameters);
+			m_inner_container = std::make_unique<TextBlock>(device, present_parameters);
+			m_title = std::make_unique<TextBlock>(device, present_parameters);
+			m_map_name = std::make_unique<TextBlock>(device, present_parameters);
+			m_part_progress_back = std::make_unique<TextBlock>(device, present_parameters);
+			m_part_progress_front = std::make_unique<TextBlock>(device, present_parameters);
+			m_part_progress_text = std::make_unique<TextBlock>(device, present_parameters);
+			m_map_progress_back = std::make_unique<TextBlock>(device, present_parameters);
+			m_map_progress_front = std::make_unique<TextBlock>(device, present_parameters);
+			m_map_progress_text = std::make_unique<TextBlock>(device, present_parameters);
+			m_cancel = std::make_unique<TextBlock>(device, present_parameters);
+			m_provider_title = std::make_unique<TextBlock>(device, present_parameters);
+			m_provider_description = std::make_unique<TextBlock>(device, present_parameters);
 
 			ResetDisplay();
 			SetupDisplay(present_parameters);
@@ -252,20 +252,6 @@ namespace Yelo
 
 		void c_map_download_display::Dispose()
 		{
-			safe_release(m_background_tint);
-			safe_release(m_base_container);
-			safe_release(m_inner_container);
-			safe_release(m_title);
-			safe_release(m_map_name);
-			safe_release(m_part_progress_back);
-			safe_release(m_part_progress_front);
-			safe_release(m_part_progress_text);
-			safe_release(m_map_progress_back);
-			safe_release(m_map_progress_front);
-			safe_release(m_map_progress_text);
-			safe_release(m_cancel);
-			safe_release(m_provider_title);
-			safe_release(m_provider_description);
 		}
 
 		void c_map_download_display::DeviceLost()

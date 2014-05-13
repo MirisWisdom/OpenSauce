@@ -4,11 +4,11 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #include "Common/Precompile.hpp"
+#if PLATFORM_IS_EDITOR
 #include <YeloLib/Halo1/tag_files/tag_fieldset_replacement_builder.hpp>
 
 #include <blamlib/Halo1/tag_files/tag_group_verification.hpp>
 #include <YeloLib/Halo1/tag_files/string_id_yelo.hpp>
-#include "Engine/EngineFunctions.hpp"
 
 namespace Yelo
 {
@@ -399,3 +399,5 @@ namespace Yelo
 		}
 	};
 };
+
+#endif

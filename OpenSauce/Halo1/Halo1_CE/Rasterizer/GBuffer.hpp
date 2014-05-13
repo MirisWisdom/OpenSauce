@@ -138,7 +138,7 @@ namespace Yelo
 			bool			IsAvailable();	
 		};
 		static c_gbuffer_rtclear_effect& GBufferClear();
-		
+
 		class c_gbuffer_system
 		{
 		public:
@@ -226,10 +226,6 @@ namespace Yelo
 			static void	Dispose();
 			// Swap the stored WVP's
 			static void Update(real delta_time);
-			// Load any user settings for the gbuffer
-			static void LoadSettings(TiXmlElement* dx9_element);
-			// Save any user settings for the gbuffer
-			static void SaveSettings(TiXmlElement* dx9_element);
 					
 			// Calls AllocateResources
 			static void	Initialize3D(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* params);
@@ -245,6 +241,7 @@ namespace Yelo
 			static BOOL& OutputObjectTBN();
 
 			static bool& RenderGBuffer();
+
 		public:
 			// Called for each mesh drawn to render to the GBuffer
 			static HRESULT	 	DrawIndexedPrimitive(IDirect3DDevice9* pDevice, D3DPRIMITIVETYPE Type,INT BaseVertexIndex,UINT MinVertexIndex,UINT NumVertices,UINT startIndex,UINT primCount);

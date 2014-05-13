@@ -46,6 +46,7 @@ namespace Yelo
 	#define YELO_ASSERT_CASE_UNREACHABLE()										\
 		default: Yelo::blam::display_assert(nullptr, __FILE__, __LINE__, true);	\
 			__YELO_ASSERT_PROLOGUE();											\
+			__assume(false);													\
 			break;
 
 #elif !PLATFORM_IS_EDITOR && defined(API_DEBUG) && defined(ASSERTS_ENABLED)
@@ -75,6 +76,7 @@ namespace Yelo
 	#define YELO_ASSERT_CASE_UNREACHABLE()													\
 		default: Yelo::Assert("unreachable", nullptr, __FILE__, __LINE__, __FUNCTION__);	\
 			__YELO_ASSERT_PROLOGUE();														\
+			__assume(false);																\
 			break;
 #else
 	#undef YELO_ASSERT_ENABLED

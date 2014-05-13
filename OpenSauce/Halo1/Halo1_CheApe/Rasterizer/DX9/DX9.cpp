@@ -22,7 +22,7 @@ namespace Yelo
 		static IDirect3D9* global_d3d;
 		static IDirect3DDevice9* global_d3d_device;
 
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 		#include "Rasterizer/DX9/DX9.Tool.inl"
 #else
 		void Initialize()

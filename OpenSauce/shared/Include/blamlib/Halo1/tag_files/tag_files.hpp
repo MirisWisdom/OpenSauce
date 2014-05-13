@@ -4,35 +4,36 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #pragma once
-
-#include <blamlib/memory/data_base.hpp>
+#if PLATFORM_IS_EDITOR
 
 namespace Yelo
 {
+	struct s_file_reference;
+	struct tag_group;
+
+	namespace Memory
+	{
+		struct s_byte_swap_definition;
+	};
+
+	namespace Enums
+	{
+		enum {
+			k_maximum_tag_files_per_index = 24000, // MAXIMUM_TAG_FILES_PER_INDEX
+		};
+	};
+
 	namespace TagGroups
 	{
-		struct s_tag_header : Memory::s_datum_base
-		{
-			enum { k_signature = 'blam' };
+		struct s_tag_file_globals;
 
-			byte_flags flags;	// UNUSED in Halo
-			byte type;			// UNUSED in Halo
+		extern cstring K_TAG_FILES_DIRECTORY; /// "tags\"
+		extern cstring K_DATA_FILES_DIRECTORY;/// "data\"
 
-			tag_string name;	// UNUSED in Halo
+		s_tag_file_globals* TagFileGlobalsThreaded();
+		s_tag_file_globals* TagFileGlobals();
 
-			tag group_tag;
-			uint32 crc;
-			int32 offset;		// actual offset in the file
-			int32 size;			// UNUSED in Halo
-
-			uint32 user_data;	// UNUSED in Halo
-			int16 version;
-
-			sbyte foundation_tag_file_index;	// UNUSED in Halo
-			sbyte owner_index;	// UNUSED in Halo. default value is NONE
-
-			tag signature;
-		}; BOOST_STATIC_ASSERT( sizeof(s_tag_header) == 0x40 );
+		Memory::s_byte_swap_definition* TagHeaderBsDefinition();
 
 		bool TagFileRequiresByteSwap();
 	};
@@ -43,10 +44,10 @@ namespace Yelo
 
 
 		bool PLATFORM_API tag_file_open(tag group_tag, cstring filename, 
-			__out_opt bool* is_readonly, __out_opt uint32* crc, bool from_file_system);
+			_Out_opt_ bool* is_readonly, _Out_opt_ uint32* crc, bool from_file_system);
 		template<typename T> inline
 		bool tag_file_open(cstring filename, 
-			__out_opt bool* is_readonly, __out_opt uint32* crc, bool from_file_system)
+			_Out_opt_ bool* is_readonly, _Out_opt_ uint32* crc, bool from_file_system)
 		{
 			return tag_file_open(T::k_group_tag, filename, is_readonly, crc, from_file_system);
 		}
@@ -68,5 +69,12 @@ namespace Yelo
 		{
 			return tag_file_exists(T::k_group_tag, name);
 		}
+
+		bool PLATFORM_API tag_file_get_file_reference(_Out_ s_file_reference& reference,
+			tag group_tag, _In_opt_ cstring name);
+
+		cstring tag_name_strip_name(cstring name);
 	};
 };
+
+#endif

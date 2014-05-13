@@ -5,44 +5,16 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-struct s_render_upgrades {
-	bool dynamic_triangles_upgrades_enabled;
-	bool render_model_nodes_stretching_patch;
-	PAD16;
-
-	void LoadSettings(TiXmlElement* dx9_element)
-	{
-		render_model_nodes_stretching_patch = true; // ON BY DEFAULT
-
-		if(dx9_element != nullptr)
-		{
-			TiXmlElement* element = dx9_element->FirstChildElement("Upgrades");
-
-			if(element != nullptr)
-			{
-				dynamic_triangles_upgrades_enabled = Settings::ParseBoolean( element->Attribute("dynamicTriangles") );
-				render_model_nodes_stretching_patch = Settings::ParseBoolean( element->Attribute("renderModelNodesPatch") );
-			}
-		}
-	}
-	void SaveSettings(TiXmlElement* dx9_element)
-	{
-		TiXmlElement* upgrades_element = nullptr;
-
-		upgrades_element = new TiXmlElement("Upgrades");
-			dx9_element->LinkEndChild(upgrades_element);
-
-		upgrades_element->SetAttribute("dynamicTriangles", BooleanToString(dynamic_triangles_upgrades_enabled));
-		upgrades_element->SetAttribute("renderModelNodesPatch", BooleanToString(render_model_nodes_stretching_patch));
-	}
-
+class c_render_upgrades
+{
+public:
 	// If we're not compiling with any upgrades, then don't waste space in the compiled code
 	uint32 dynamic_triangles[Enums::k_rastizer_maximum_dynamic_triangles_upgrade <= Enums::k_rastizer_maximum_dynamic_triangles ? 1 :
 							Enums::k_rastizer_maximum_dynamic_triangles_upgrade];
 
-	void Initialize()
+	void InitializeDynamicTrianglesUpgrade()
 	{
-		if(dynamic_triangles_upgrades_enabled && NUMBEROF(dynamic_triangles) > 1)
+		if(NUMBEROF(dynamic_triangles) > 1)
 		{
 			// redirect all dynamic triangle pointers to the new array
 			for(auto ptr : K_DYNAMIC_TRIANGLE_ARRAY_UPGRADE_ADDRESS_LIST)
@@ -51,13 +23,6 @@ struct s_render_upgrades {
 			for(auto ptr : K_MAXIMUM_DYNAMIC_TRIANGLES_UPGRADE_ADDRESS_LIST)
 				*ptr = Enums::k_rastizer_maximum_dynamic_triangles_upgrade;
 		}
-
-		if(render_model_nodes_stretching_patch)
-			InitializeMaximumNodesPerModelFixes();
-	}
-
-	void Dispose()
-	{
 	}
 
 	// Not actually an upgrade, but a fix (nodes at index >43 would get stretched). However, we fix it in both sapien and ingame so I put the code here
@@ -74,5 +39,5 @@ struct s_render_upgrades {
 			*ptr = Enums::k_maximum_nodes_per_model;
 		RasterizerGlobals()->maximum_nodes_per_model = Enums::k_maximum_nodes_per_model;
 	}
-
-}g_render_upgrades;
+};
+static c_render_upgrades g_render_upgrades;

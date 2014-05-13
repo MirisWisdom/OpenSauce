@@ -5,6 +5,11 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
+#include <blamlib/Halo1/tag_files/tag_groups.hpp>
+#include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
+
+namespace Yelo { namespace Tool { namespace BuildCacheFileEx { namespace TagPreprocess {
+
 namespace PostProcessing
 {
 	static void SetQuadToDefaults(datum_index tag_index, TagGroups::s_effect_postprocess_quad_definition& quad)
@@ -32,7 +37,7 @@ namespace PostProcessing
 
 		return false;
 	}
-	static bool shader_postprocess_generic_group_find_parameter(tag_string& test_string, Yelo::datum_index tag_index)
+	static bool shader_postprocess_generic_group_find_parameter(tag_string& test_string, datum_index tag_index)
 	{
 		auto* datum = blam::tag_get<TagGroups::s_shader_postprocess_generic>(tag_index);
 
@@ -61,7 +66,7 @@ namespace PostProcessing
 		return false;
 	}
 
-	static bool effect_postprocess_generic_group_find_exposed_parameter(tag_string& test_string, Yelo::datum_index tag_index)
+	static bool effect_postprocess_generic_group_find_exposed_parameter(tag_string& test_string, datum_index tag_index)
 	{
 		auto* definition = blam::tag_get<TagGroups::s_effect_postprocess_generic>(tag_index);
 
@@ -156,7 +161,7 @@ namespace PostProcessing
 		// check the shaders block has at least one element with a shader referenced
 		if(!definition->shaders.Count)
 		{
-			YELO_ERROR(_error_message_priority_critical,
+			YELO_ERROR_CRITICAL(
 				"error: an effect_postprocess_generic has no shaders referenced\ntag: %s", blam::tag_get_name(tag_index));
 			return false;
 		}
@@ -164,7 +169,7 @@ namespace PostProcessing
 		for (auto& shader : definition->shaders)
 			if(shader.tag_index.IsNull())
 			{
-				YELO_ERROR(_error_message_priority_critical,
+				YELO_ERROR_CRITICAL(
 					"error: an effect_postprocess_generic has a shader block that does not reference a shader\ntag: %s", 
 					blam::tag_get_name(tag_index));
 				return false;
@@ -174,7 +179,7 @@ namespace PostProcessing
 		for (auto index : definition->shader_indices)
 			if (index >= definition->shaders.Count || index == NONE)
 			{
-				YELO_ERROR(_error_message_priority_critical,
+				YELO_ERROR_CRITICAL(
 					"error: an effect_postprocess_generic has a shader_index with an invalid value\ntag: %s", 
 					blam::tag_get_name(tag_index));
 				return false;
@@ -185,7 +190,7 @@ namespace PostProcessing
 		{
 			if(parameter.shader_index == NONE)
 			{
-				YELO_ERROR(_error_message_priority_critical,
+				YELO_ERROR_CRITICAL(
 					"error: an effect_postprocess_generic has an exposed parameter with no shader referenced\ntag: %s", 
 					blam::tag_get_name(tag_index));
 				return false;
@@ -194,7 +199,7 @@ namespace PostProcessing
 			if(!shader_postprocess_generic_group_find_parameter(parameter.parameter_name, 
 				definition->shaders[definition->shader_indices[parameter.shader_index]].tag_index))
 			{
-				YELO_ERROR(_error_message_priority_critical,
+				YELO_ERROR_CRITICAL(
 					"error: a effect_postprocess_generic is exposing a parameter that does not exist\ntag: %s", 
 					blam::tag_get_name(tag_index));
 				return false;
@@ -225,7 +230,7 @@ namespace PostProcessing
 			// ensure each effect block references an effect
 			if(effect.effect.tag_index.IsNull())
 			{
-				YELO_ERROR(_error_message_priority_critical,
+				YELO_ERROR_CRITICAL(
 					"error: an effect_postprocess_collection has an effect block with no effect referenced\ntag: %s", 
 					blam::tag_get_name(tag_index));
 				return false;
@@ -235,7 +240,7 @@ namespace PostProcessing
 			{
 				if(!effect_postprocess_generic_group_find_exposed_parameter(variable.exposed_parameter_name, effect.effect.tag_index))
 				{
-					YELO_ERROR(_error_message_priority_critical,
+					YELO_ERROR_CRITICAL(
 						"error: an effect_postprocess_collection has a scripted variable without a valid exposed variable\ntag: %s", 
 						blam::tag_get_name(tag_index));
 					return false;
@@ -260,7 +265,7 @@ namespace PostProcessing
 		{
 			if (instance.effect_index >= collection->effects.Count || instance.effect_index == NONE)
 			{
-				YELO_ERROR(_error_message_priority_critical, "error: effect instance \"%s\" has an invalid effect index", 
+				YELO_ERROR_CRITICAL("error: effect instance \"%s\" has an invalid effect index",
 					instance.name);
 				return false;
 			}
@@ -272,3 +277,5 @@ namespace PostProcessing
 		return true;
 	}
 };
+
+}; }; }; };

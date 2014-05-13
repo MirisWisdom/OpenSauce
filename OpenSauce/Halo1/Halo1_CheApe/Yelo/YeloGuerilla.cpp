@@ -6,7 +6,7 @@
 */
 #include "Common/Precompile.hpp"
 
-#if PLATFORM_ID == PLATFORM_GUERILLA
+#if PLATFORM_TYPE == PLATFORM_GUERILLA
 #include "Guerilla/field_dialog_extensions.hpp"
 #include "Guerilla/guerilla_application_extensions.hpp"
 #include "Guerilla/string_dialog_extensions.hpp"

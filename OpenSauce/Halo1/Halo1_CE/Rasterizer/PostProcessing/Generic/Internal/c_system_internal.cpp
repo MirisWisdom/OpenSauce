@@ -8,7 +8,7 @@
 #include "Rasterizer/PostProcessing/Generic/Internal/c_system_internal.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include "Common/YeloSettings.hpp"
+#include "Rasterizer/PostProcessing/Generic/Internal/c_settings_internal.hpp"
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
 #include "Rasterizer/PostProcessing/Fade/c_system_fade.hpp"
 #include "TagGroups/TagGroups.hpp"
@@ -45,6 +45,20 @@ namespace Yelo
 			return m_members.m_flags.is_unloaded;
 		}
 
+		void c_system_internal::ClearMembers()
+		{
+			// initialize the systems variables to defaults
+			m_members.status = Enums::pp_component_status_uninitialised;
+
+			m_members.m_flags.is_ready = false;
+			m_members.m_flags.is_unloaded = false;
+
+			// delete allocated memory and/or initialize values to defaults
+			ClearShaderCollection();
+			ClearInternalShaders();
+			ClearInternalEffects();
+		}
+
 		/////////////////////////////////////////////////
 		// IPostProcessingComponent
 		/*!
@@ -55,16 +69,9 @@ namespace Yelo
 		 */
 		void c_system_internal::Initialize()
 		{
-			// initialize the systems variables to defaults
-			m_members.status = Enums::pp_component_status_uninitialised;
+			c_settings_internal::Register();
 
-			m_members.m_flags.is_ready = false;
-			m_members.m_flags.is_unloaded = false;
-
-			// initialize values to defaults
-			ClearShaderCollection();
-			ClearInternalShaders();
-			ClearInternalEffects();
+			ClearMembers();
 		}
 
 		/*!
@@ -75,16 +82,9 @@ namespace Yelo
 		 */
 		void c_system_internal::Dispose()
 		{
-			// initialize the systems variables to defaults
-			m_members.status = Enums::pp_component_status_uninitialised;
+			ClearMembers();
 
-			m_members.m_flags.is_ready = false;
-			m_members.m_flags.is_unloaded = false;
-
-			// delete allocated memory and set to defaults
-			ClearShaderCollection();
-			ClearInternalShaders();
-			ClearInternalEffects();
+			c_settings_internal::Unregister();
 		}
 
 		/*!
@@ -184,32 +184,6 @@ namespace Yelo
 			}
 
 			UpdateStatus();
-		}
-
-		/////////////////////////////////////////////////
-		// IPostProcessingUserSettings
-		void c_system_internal::LoadSettings(TiXmlElement* parent_element)
-		{
-			TiXmlElement* element = parent_element->FirstChildElement("Internal");
-
-			if(!element) return;
-
-			m_members.m_flags.is_enabled = Settings::ParseBoolean( element->Attribute("enabled") );
-		}
-
-		void c_system_internal::SaveSettings(TiXmlElement* parent_element)
-		{
-			TiXmlElement* element = nullptr;
-
-			element = new TiXmlElement("Internal");
-			parent_element->LinkEndChild(element);
-
-			element->SetAttribute("enabled", BooleanToString(m_members.m_flags.is_enabled));
-		}
-
-		void c_system_internal::SetDefaultSettings()
-		{
-			m_members.m_flags.is_enabled = true;
 		}
 
 		/////////////////////////////////////////////////
@@ -411,13 +385,13 @@ namespace Yelo
 				m_members_internal.m_shaders.shader_list[i].Ctor();
 
 				datum_index shader_index = m_members_internal.cache_shader_collection->shaders[i].tag_index;
-				if(TagGroups::Instances()[shader_index.index].MatchesGroup(TagGroups::s_shader_postprocess_generic::k_group_tag))
+				if (TagGroups::TagIsInstanceOf<TagGroups::s_shader_postprocess_generic>(shader_index))
 				{
 					auto shpg = TagGroups::TagGetForModify<TagGroups::s_shader_postprocess_generic>(shader_index);
 
 					m_members_internal.m_shaders.shader_list[i].SetShaderDefinition(shpg);
 					m_members_internal.m_shaders.shader_list[i].SetDatumIndex(shader_index);
-					m_members_internal.m_shaders.shader_list[i].SetShaderName(TagGroups::Instances()[shader_index.index].name);
+					m_members_internal.m_shaders.shader_list[i].SetShaderName(blam::tag_get_name(shader_index));
 					m_members_internal.m_shaders.shader_list[i].SetupShader();
 				}
 				else

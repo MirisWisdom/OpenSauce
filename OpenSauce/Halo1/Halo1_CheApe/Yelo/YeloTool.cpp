@@ -6,7 +6,7 @@
 */
 #include "Common/Precompile.hpp"
 
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 #include <blamlib/Halo1/tool/tool.hpp>
 
 #include <YeloLib/Halo1/cache/data_file_yelo.hpp>
@@ -58,11 +58,12 @@ namespace Yelo
 			static const auto* tool_import_classes = CAST_PTR(s_import_class*, 0x6B01B0);
 
 			// copy official import classes
-			memcpy_s(&g_import_classes[0], sizeof(g_import_classes),
-				tool_import_classes, sizeof(s_import_class) * k_number_of_tool_import_classes);
+			ArrayCopyPtr(	g_import_classes, 
+							tool_import_classes, 
+							k_number_of_tool_import_classes);
 			// copy yelo import classes
-			memcpy_s(&g_import_classes[k_number_of_tool_import_classes], sizeof(yelo_import_classes),
-				&yelo_import_classes[0], sizeof(yelo_import_classes));
+			ArrayCopy(		g_import_classes, k_number_of_tool_import_classes, 
+							yelo_import_classes, 0);
 			// sort all the import classes by name from a to z
 			Qsort(g_import_classes, s_import_class::CompareProc);
 
@@ -118,7 +119,7 @@ namespace Yelo
 
 				char exe_name[64];
 				if (strcpy_s(exe_name, exe_path) != k_errnone)
-					YELO_ERROR(_error_message_priority_assert, "Who the hell names their tool exe longer than %d characters? %s",
+					YELO_ERROR_FAILURE("Who the hell names their tool exe longer than %d characters? %s",
 						NUMBEROF(exe_name), exe_path);
 
 				// null terminate at the start of the file extension
@@ -180,7 +181,6 @@ namespace Yelo
 		{
 			c_animation_fixups::Initialize();
 
-			Yelo::DataFiles::SharedInitialize();
 			ImportClassesInitialize();
 
 			size_t tramp_byte_count = Memory::c_naked_func_writer<main__hook_trampoline>::
@@ -190,8 +190,6 @@ namespace Yelo
 
 		void Dispose()
 		{
-			Yelo::DataFiles::SharedDispose();
-
 			c_animation_fixups::Dispose();
 		}
 	};

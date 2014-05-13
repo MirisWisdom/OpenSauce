@@ -4,6 +4,7 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #pragma once
+#if PLATFORM_IS_EDITOR
 
 #include <blamlib/Halo1/tag_files/tag_groups_structures.hpp>
 
@@ -194,3 +195,5 @@ namespace Yelo
 		bool PLATFORM_API tag_field_scan(TagGroups::s_tag_field_scan_state& state);
 	};
 };
+
+#endif

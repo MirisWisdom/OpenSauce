@@ -11,14 +11,15 @@
 
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingComponent.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingRenderable.hpp"
-#include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUserSettings.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 
 namespace Yelo
 {
 	namespace Rasterizer { namespace PostProcessing { namespace FXAA
 	{
-		class c_system_fxaa : public IPostProcessingComponent, public IPostProcessingRenderable, public IPostProcessingUserSettings
+		class c_system_fxaa
+			: public IPostProcessingComponent
+			, public IPostProcessingRenderable
 		{
 			/////////////////////////////////////////////////
 			// static members
@@ -72,13 +73,6 @@ namespace Yelo
 			// IPostProcessingRenderable
 		public:
 			bool Render(Enums::postprocess_render_stage render_stage);
-
-			/////////////////////////////////////////////////
-			// IPostProcessingUserSettings
-		public:
-			void LoadSettings(TiXmlElement* parent_element);
-			void SaveSettings(TiXmlElement* parent_element);
-			void SetDefaultSettings();
 
 			/////////////////////////////////////////////////
 			// system setup

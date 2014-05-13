@@ -10,7 +10,7 @@
 #if !PLATFORM_IS_DEDI
 #include <blamlib/Halo1/main/main_structures.hpp>
 
-#include "Common/YeloSettings.hpp"
+#include "Settings/YeloSettings.hpp"
 #include "Interface/GameUI.hpp"
 #include "Game/GameState.hpp"
 #include "Game/Camera.hpp"
@@ -114,6 +114,8 @@ namespace Yelo
 
 		void c_post_processing_main::ReleaseResources_Base()
 		{
+			// TODO: this function is fully equivlent to OnLostDevice_Base...
+
 			DestroyScreenBufferChain();
 			DestroySecondaryBufferChain();
 

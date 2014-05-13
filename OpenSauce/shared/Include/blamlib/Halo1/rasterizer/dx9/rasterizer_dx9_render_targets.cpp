@@ -5,13 +5,15 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 #include "Common/Precompile.hpp"
+#if !PLATFORM_IS_EDITOR
 #include <blamlib/Halo1/rasterizer/dx9/rasterizer_dx9_render_targets.hpp>
 
 namespace Yelo
 {
 	namespace Render
 	{
-		bool s_render_target::IsEnabled() const { return (surface && texture); }
+		bool s_render_target::IsEnabled() const { return surface && texture; }
+
 		HRESULT s_render_target::CreateTarget(IDirect3DDevice9* device, uint32 rt_width, uint32 rt_height, D3DFORMAT rt_format)
 		{
 			width = rt_width;
@@ -25,7 +27,7 @@ namespace Yelo
 				format,
 				D3DPOOL_DEFAULT,
 				&texture,
-				NULL);
+				nullptr);
 
 			if(SUCCEEDED(hr))
 				hr = texture->GetSurfaceLevel(0, &surface);
@@ -46,7 +48,9 @@ namespace Yelo
 			if(!IsEnabled())	return;
 			
 			device->SetRenderTarget(0, surface);
-			device->Clear( 0L, NULL, flags, color, 1.0f, 0L );
+			device->Clear( 0L, nullptr, flags, color, 1.0f, 0L );
 		}
 	};
 };
+
+#endif

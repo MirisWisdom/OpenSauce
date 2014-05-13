@@ -86,6 +86,37 @@ namespace Yelo
 
 			_ai_communication_priority,
 		};
+
+		enum //ai_communication_team
+		{
+			_ai_communication_team_unteamed = NONE,
+			_ai_communication_team_human = 0,
+			_ai_communication_covenant,
+
+			k_number_of_ai_communication_teams
+		};
+
+		enum
+		{
+			_ai_communication_hostility_type_none,
+			_ai_communication_hostility_type_self,
+			_ai_communication_hostility_type_friend,
+			_ai_communication_hostility_type_enemy,
+			_ai_communication_hostility_type_traitor,
+
+			k_number_of_ai_communication_hostility_types
+		};
+		enum
+		{
+			_ai_communication_status_type_never,
+			_ai_communication_status_type_dead,
+			_ai_communication_status_type_lost,
+			_ai_communication_status_type_not_visual,
+			_ai_communication_status_type_no_danger,
+			_ai_communication_status_type_visual,
+
+			k_number_of_ai_communication_status_types,
+		};
 	};
 
 	namespace AI

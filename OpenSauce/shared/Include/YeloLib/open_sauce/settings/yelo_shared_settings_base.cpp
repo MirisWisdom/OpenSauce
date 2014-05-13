@@ -6,6 +6,8 @@
 #include "Common/Precompile.hpp"
 #include <YeloLib/open_sauce/settings/yelo_shared_settings_base.hpp>
 
+#include <TinyXml/tinyxml.hpp>
+
 namespace Yelo
 {
 	namespace Settings

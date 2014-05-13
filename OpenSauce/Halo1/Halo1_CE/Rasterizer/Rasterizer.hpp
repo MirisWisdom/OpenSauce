@@ -27,9 +27,6 @@ namespace Yelo
 		void Dispose();
 
 		void Update();
-
-		void LoadSettings(TiXmlElement* dx9_element);
-		void SaveSettings(TiXmlElement* dx9_element);
 	};
 
 	namespace Render

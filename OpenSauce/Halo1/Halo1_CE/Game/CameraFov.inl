@@ -7,12 +7,17 @@
 #include "Interface/Controls.hpp"
 #include "Interface/TextBlock.hpp"
 
+#include <YeloLib/configuration/c_configuration_value.hpp>
+#include <YeloLib/configuration/c_configuration_container.hpp>
+#include "Settings/c_settings_singleton.hpp"
+
 namespace Yelo
 {
 	namespace Fov
 	{
 #define DEF_FOV_H	1.22173047065735f
 #define DEF_FOV_V	(atanf(0.75f*tanf(DEF_FOV_H/2.f))*2.f)
+
 		struct {
 			struct {
 				real height;
@@ -98,6 +103,41 @@ namespace Yelo
 			nullptr,
 		};
 
+		class c_settings_container
+			: public Configuration::c_configuration_container
+		{
+		public:
+			Configuration::c_configuration_value<real> m_field_of_view;
+
+			c_settings_container()
+				: Configuration::c_configuration_container("Camera")
+				, m_field_of_view("FieldOfView", DEF_FOV_V)
+			{ }
+			
+		protected:
+			const std::vector<i_configuration_value* const> GetMembers() final override
+			{
+				return std::vector<i_configuration_value* const> { &m_field_of_view };
+			}
+		};
+
+		class c_settings_fov
+			: public Settings::c_settings_singleton<c_settings_container, c_settings_fov>
+		{
+		public:
+			void PostLoad() final override
+			{
+				_fov_globals.fov.vertical = Get().m_field_of_view;
+ 				_fov_globals.weapon.distance = _fov_globals.weapon.height / tanf( DEF_FOV_V / 2.f );
+ 				_fov_globals.Scale();
+			}
+
+			void PreSave() final override
+			{
+				Get().m_field_of_view = _fov_globals.fov.vertical;
+			}
+		};
+
 		static bool RequiresZoomFix()
 		{
 			real h = Camera::Observer()->origin.fov;
@@ -129,6 +169,10 @@ namespace Yelo
 			Memory::WriteRelativeCall(OBSERVER_UPDATE_POSITIONS, GET_FUNC_VPTR(OBSERVER_TICK_CALL_HOOK_OBSERVER_UPDATE_POSITIONS));
 
 			GET_PTR(MAX) = &_fov_globals.fov.height_max;
+			
+			_fov_globals.InitializeToDefaultSettings();
+			
+			c_settings_fov::Register();
 		}
 
 		void Dispose()
@@ -138,6 +182,8 @@ namespace Yelo
 				delete _fov_globals.menu;
 				_fov_globals.menu = nullptr;
 			}
+
+			c_settings_fov::Unregister();
 		}
 
 		void Update()
@@ -176,25 +222,6 @@ namespace Yelo
 
 			return Enums::_settings_adjustment_result_not_finished;
 		}
-
-		void LoadSettings(TiXmlElement* fov_element)
-		{
-			_fov_globals.InitializeToDefaultSettings();
-
-			if(fov_element != nullptr)
-			{
-				fov_element->QueryFloatAttribute("value", &_fov_globals.fov.vertical);
-			}
-
- 			_fov_globals.weapon.distance = _fov_globals.weapon.height / tanf( DEF_FOV_V / 2.f );
- 			_fov_globals.Scale();
-		}
-
-		void SaveSettings(TiXmlElement* fov_element)
-		{
-			fov_element->SetDoubleAttribute("value", _fov_globals.fov.vertical);
-		}
-
 
 #if defined(DX_WRAPPER)
 		void Initialize3D(IDirect3DDevice9 *pDevice, D3DPRESENT_PARAMETERS *pPP)

@@ -352,7 +352,7 @@ namespace Yelo
 			interp_linear->Begin(change_time);
 		}
 
-		void c_parameter_instance::SetOverrideInterp(real_vector2d value, real change_time)
+		void c_parameter_instance::SetOverrideInterp(const real_vector2d& value, real change_time)
 		{
 			YELO_ASSERT_DISPLAY(m_members.m_flags.is_overriden, "parameter instance not set up to be overriden");
 			YELO_ASSERT_DISPLAY(m_members.parameter->value_type.type == Enums::_shader_variable_base_type_float, "parameter being overriden with an incorrect type");
@@ -368,7 +368,7 @@ namespace Yelo
 			interp_linear->Begin(change_time);
 		}
 
-		void c_parameter_instance::SetOverrideInterp(real_vector3d value, real change_time)
+		void c_parameter_instance::SetOverrideInterp(const real_vector3d& value, real change_time)
 		{
 			YELO_ASSERT_DISPLAY(m_members.m_flags.is_overriden, "parameter instance not set up to be overriden");
 			YELO_ASSERT_DISPLAY(m_members.parameter->value_type.type == Enums::_shader_variable_base_type_float, "parameter being overriden with an incorrect type");
@@ -384,7 +384,7 @@ namespace Yelo
 			interp_linear->Begin(change_time);
 		}
 
-		void c_parameter_instance::SetOverrideInterp(real_quaternion value, real change_time)
+		void c_parameter_instance::SetOverrideInterp(const real_quaternion& value, real change_time)
 		{
 			YELO_ASSERT_DISPLAY(m_members.m_flags.is_overriden, "parameter instance not set up to be overriden");
 			YELO_ASSERT_DISPLAY(m_members.parameter->value_type.type == Enums::_shader_variable_base_type_float, "parameter being overriden with an incorrect type");
@@ -400,7 +400,7 @@ namespace Yelo
 			interp_linear->Begin(change_time);
 		}
 
-		void c_parameter_instance::SetOverrideInterp(real_argb_color value, real change_time)
+		void c_parameter_instance::SetOverrideInterp(const real_argb_color& value, real change_time)
 		{
 			YELO_ASSERT_DISPLAY(m_members.m_flags.is_overriden, "parameter instance not set up to be overriden");
 			YELO_ASSERT_DISPLAY(m_members.parameter->value_type.type == Enums::_shader_variable_base_type_argb_color, "parameter being overriden with an incorrect type");

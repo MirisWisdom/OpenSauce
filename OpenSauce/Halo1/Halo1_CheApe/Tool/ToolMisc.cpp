@@ -5,14 +5,14 @@
 	See license\OpenSauce\Halo1_CheApe for specific license information
 */
 #include "Common/Precompile.hpp"
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 #include "Tool/ToolMisc.hpp"
 
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #include "Engine/EngineFunctions.hpp"
 #include "TagGroups/TagGroups.hpp"
-#include "TagGroups/yelo_scenario_definitions.hpp"
 
 namespace Yelo
 {

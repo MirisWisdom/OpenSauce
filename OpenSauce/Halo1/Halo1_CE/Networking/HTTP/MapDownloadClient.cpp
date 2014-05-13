@@ -15,9 +15,12 @@
 #include <YeloLib/memory/compression/7zip_codec.hpp>
 #include <YeloLib/memory/compression/zip_codec.hpp>
 #include <YeloLib/memory/security/xxtea.hpp>
+#include <YeloLib/configuration/c_configuration_container.hpp>
+#include <YeloLib/configuration/c_configuration_value.hpp>
+#include "Settings/c_settings_singleton.hpp"
 
 #include "Common/FileIO.hpp"
-#include "Common/YeloSettings.hpp"
+#include "Settings/YeloSettings.hpp"
 
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameBuildNumber.hpp"
@@ -49,6 +52,7 @@ namespace Yelo
 			"http://os.halomods.com/Halo1/CE/MapDownload/Halo1_CE_MapDownloadMasterServers.xml";
 #endif
 
+#pragma region Enums
 		enum
 		{
 			k_server_name_length_max = 64,
@@ -167,6 +171,7 @@ namespace Yelo
 
 			_archive_extraction_state
 		};
+#pragma endregion
 
 		class c_part_element : public LinkedListNode<c_part_element>
 		{
@@ -287,6 +292,13 @@ namespace Yelo
 
 
 		protected:
+			void ClearBuffers()
+			{
+				m_mp_address[0] = '\0';
+				m_mp_password[0] = '\0';
+				ZeroMemory(m_mp_password_key, k_server_password_length+1);
+			}
+
 			/*!
 			 * \brief
 			 * Copies the servers IP and port for downloading the map and reconnecting later.
@@ -354,18 +366,14 @@ namespace Yelo
 			{
 				c_http_server::Ctor();
 
-				m_mp_address[0] = 0;
-				m_mp_password[0] = 0;
-				ZeroMemory(m_mp_password_key, k_server_password_length);
+				ClearBuffers();
 			}
 
 			void Dtor()
 			{
 				c_http_server::Dtor();
 
-				m_mp_address[0] = 0;
-				m_mp_password[0] = 0;
-				ZeroMemory(m_mp_password_key, k_server_password_length);
+				ClearBuffers();
 			}
 
 			/*!
@@ -716,7 +724,7 @@ namespace Yelo
 				delete request_data;
 
 				// process the part definition
-				if((Status() = Enums::_http_file_download_status_succeeded) && !ProcessMapPartDefinition())
+				if((Status() == Enums::_http_file_download_status_succeeded) && !ProcessMapPartDefinition())
 					Status() = Enums::_http_file_download_status_failed;
 				else
 					Status() = Enums::_http_file_download_status_succeeded;
@@ -991,7 +999,6 @@ namespace Yelo
 
 		struct s_map_download_globals
 		{
-			bool						m_downloads_enabled;
 			map_download_update_stage	m_map_download_update_stage;
 			PAD16;
 
@@ -1064,6 +1071,30 @@ namespace Yelo
 		};
 		static s_map_download_globals	g_map_download_globals;
 		static HANDLE					g_globals_access_mutex;
+
+#pragma region Settings
+		class c_settings_container
+			: public Configuration::c_configuration_container
+		{
+		public:
+			Configuration::c_configuration_value<bool> m_enabled;
+
+			c_settings_container()
+				: Configuration::c_configuration_container("Networking.MapDownload")
+				, m_enabled("Enabled", true)
+			{ }
+			
+		protected:
+			const std::vector<i_configuration_value* const> GetMembers() final override
+			{
+				return std::vector<i_configuration_value* const> { &m_enabled };
+			}
+		};
+
+		class c_settings_mapdownload
+			: public Settings::c_settings_singleton<c_settings_container, c_settings_mapdownload>
+		{ };
+#pragma endregion
 
 		/*!
 		 * \brief
@@ -1967,7 +1998,7 @@ namespace Yelo
 
 					if(g_map_download_globals.m_part_download.part_iterator->Current()->m_encrypted)
 					{
-						if(strlen(g_map_download_globals.m_servers.dedicated_server.m_mp_password) == 0)
+						if(*g_map_download_globals.m_servers.dedicated_server.m_mp_password == '\0')
 							return _map_download_stage_failed;
 						g_map_download_globals.m_part_download.downloader.SetDecryptionKey(&g_map_download_globals.m_servers.dedicated_server.m_mp_password_key[0]);
 					}
@@ -2173,8 +2204,9 @@ namespace Yelo
 		bool	StartDownloadThread()
 		{
 			// start the download thread
+			// TODO: http://www.viva64.com/en/d/0102/print/
 			g_map_download_globals.m_download_thread.thread_handle = CreateThread(nullptr, 0, DownloadMap, nullptr, 0, nullptr);
-			return g_map_download_globals.m_download_thread.thread_handle != 0;
+			return g_map_download_globals.m_download_thread.thread_handle != nullptr;
 		}
 
 		/*!
@@ -2312,7 +2344,7 @@ namespace Yelo
 		 */
 		void	Update(real delta)
 		{
-			if(!g_map_download_globals.m_downloads_enabled)
+			if(!c_settings_mapdownload::Instance().Get().m_enabled)
 				return;
 
 			// if the master server list download has not started/finished update the stage
@@ -2398,14 +2430,14 @@ namespace Yelo
 		 */
 		void	AddMapForDownload(const char* map_name)
 		{
-			if(!g_map_download_globals.m_downloads_enabled)
+			if(!c_settings_mapdownload::Instance().Get().m_enabled)
 				return;
 
 			if(_map_download_update_stage_idle != g_map_download_globals.m_map_download_update_stage)
 				return;
 
 			// make sure the map name is valid
-			if(!map_name || (strlen(map_name) == 0)) return;
+			if(is_null_or_empty(map_name)) return;
 
 			bool success = true;
 			// copy the map name for later use
@@ -2433,6 +2465,8 @@ namespace Yelo
 		 */
 		void	Initialize()
 		{
+			c_settings_mapdownload::Register();
+
 			PathCombine(g_map_download_globals.m_paths.user_download_directory, Settings::OpenSauceProfilePath(), "map_download");
 
 			ResetMasterServerDownload();
@@ -2455,51 +2489,8 @@ namespace Yelo
 			CleanupMasterServerDownload();
 
 			CloseHandle(g_globals_access_mutex);
-		}
-
-		/*!
-		 * \brief
-		 * Saves whether map downloads are enabled to the users settings.
-		 * 
-		 * \param xml_element
-		 * The parent element to add the map_download element to.
-		 * 
-		 * Saves whether map downloads are enabled to the users settings.
-		 */
-		void	LoadSettings(TiXmlElement* xml_element)
-		{
-			g_map_download_globals.m_downloads_enabled = true;
-
-			if(!xml_element)
-				return;
-
-			TiXmlElement* map_download_element = xml_element->FirstChildElement("map_download");
-			if(!map_download_element)
-				return;
-
-			const char* enabled = map_download_element->Attribute("enabled");
-			if(enabled)
-				g_map_download_globals.m_downloads_enabled = Settings::ParseBoolean(enabled);
-		}
-
-		/*!
-		 * \brief
-		 * Reads whether map downloads are enabled from the users settings.
-		 * 
-		 * \param xml_element
-		 * The parent xml element to read the setting from.
-		 * 
-		 * Reads whether map downloads are enabled from the users settings.
-		 */
-		void	SaveSettings(TiXmlElement* xml_element)
-		{
-			if(!xml_element)
-				return;
-
-			TiXmlElement* map_download_element = new TiXmlElement("map_download");
-			xml_element->LinkEndChild(map_download_element);
-
-			map_download_element->SetAttribute("enabled", BooleanToString(g_map_download_globals.m_downloads_enabled));
+			
+			c_settings_mapdownload::Unregister();
 		}
 
 		/*!

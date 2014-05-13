@@ -44,10 +44,6 @@ namespace Yelo
 		void Initialize();
 		void Dispose();
 
-		void LoadSettings(TiXmlElement* xml_element);
-		void SaveSettings(TiXmlElement* xml_element);
-
-
 		// Writes [data_size_in_bits] of the packet buffer to the connection
 		// returns true if it was successful
 		bool ConnectionWrite(const s_network_connection& connection, 

@@ -6,7 +6,7 @@
 */
 #include "Common/Precompile.hpp"
 #include "Tool/BuildCppDefinition.hpp"
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 #include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
 
 #include "Common/StringEditing.hpp"

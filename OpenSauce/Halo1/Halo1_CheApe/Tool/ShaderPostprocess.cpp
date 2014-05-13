@@ -6,7 +6,7 @@
 */
 #include "Common/Precompile.hpp"
 #include "Tool/ShaderPostprocess.hpp"
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 
 #include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
 

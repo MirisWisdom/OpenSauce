@@ -63,6 +63,7 @@
 		FUNC_PTR(TRANSITION_FUNCTION_EVALUATE,	0x4DC8C0, 0x490390, 0x61A760);
 		//////////////////////////////////////////////////////////////////////////
 		// memory/byte_swapping
+		FUNC_PTR(BYTE_SWAP_DATA,				0x496820, 0x48FF90, 0x5ABC20);
 		FUNC_PTR(BYTE_SWAP_DATA_EXPLICIT,		0x4968F0, 0x490060, 0x5ABCF0);
 		//////////////////////////////////////////////////////////////////////////
 		// memory/data
@@ -89,7 +90,7 @@
 		FUNC_PTR(MEMORY_POOL_DEFRAGMENT,		0x5E3FD0, 0x4EBEE0, 0x6188F0);
 		FUNC_PTR(MEMORY_POOL_BLOCK_REALLOCATE,	0x5E4030, 0x4EBF40, 0x618950);
 		//////////////////////////////////////////////////////////////////////////
-		// shell/shell_windows.c
+		// shell/shell_windows
 		FUNC_PTR(SHELL_GET_COMMAND_LINE_ARGUMENT, 0x421ED0, 0x42DC70, 0x492E60);
 		//////////////////////////////////////////////////////////////////////////
 		// tag_files/files
@@ -98,9 +99,23 @@
 		FUNC_PTR(FILE_REFERENCE_ADD_DIRECTORY,	0x444090, 0x436930, 0x4FF680);
 		FUNC_PTR(FILE_REFERENCE_SET_NAME,		0x444110, 0x4369B0, 0x4FF700);
 		FUNC_PTR(FILE_REFERENCE_GET_NAME,		0x4441A0, 0x436A20, 0x4FF790);
+		//////////////////////////////////////////////////////////////////////////
+		// tag_files/files_windows
+		FUNC_PTR(FILE_ERROR,					0x445520, 0x44B4F0, 0x500B10);
 		FUNC_PTR(FILE_CREATE,					0x4455B0, 0x44B580, 0x500BA0);
 		FUNC_PTR(FILE_DELETE,					0x445680, 0x44B650, 0x500C70);
 		FUNC_PTR(FILE_EXISTS,					0x445760, 0x44B730, 0x500D50);
+		FUNC_PTR(FILE_OPEN,						0x445900, 0x44B7E0, 0x500EF0);
+		FUNC_PTR(FILE_CLOSE,					0x445AA0, 0x44B980, 0x501090);
+		FUNC_PTR(FILE_GET_POSITION,				0x445AF0, FUNC_PTR_NULL, 0x5010E0);
+		FUNC_PTR(FILE_SET_POSITION,				0x445B30, 0x44B9D0, 0x501120);
+		FUNC_PTR(FILE_GET_EOF,					0x445B80, 0x44BA20, 0x501170);
+		FUNC_PTR(FILE_SET_EOF,					0x445BC0, FUNC_PTR_NULL, 0x5011B0);
+		FUNC_PTR(FILE_READ,						0x445C40, 0x44BA60, 0x501230);
+		FUNC_PTR(FILE_WRITE,					0x445CD0, 0x44BAF0, 0x5012C0);
+		FUNC_PTR(FILE_READ_FROM_POSITION,		0x445D50, 0x44BB70, 0x501340);
+		FUNC_PTR(FILE_WRITE_TO_POSITION,		0x445DB0, 0x44BBD0, 0x5013A0);
+		FUNC_PTR(FILE_READ_ONLY_,				0x445030, 0x44B480, 0x500620);
 	};
 
 #else

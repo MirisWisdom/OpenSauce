@@ -7,6 +7,11 @@
 #include "Common/Precompile.hpp"
 #include "Game/AI.hpp"
 
+#include <blamlib/Halo1/ai/actor_structures.hpp>
+#include <blamlib/Halo1/ai/ai_structures.hpp>
+
+#include <blamlib/Halo1/ai/prop_structures.hpp>
+
 #include <blamlib/Halo1/units/unit_structures.hpp>
 
 #include "Memory/MemoryInterface.hpp"
@@ -47,7 +52,7 @@ namespace Yelo
 			// Exit the vehicle like normal if a globals tag doesn't exist
 			if(cv_globals == nullptr)
 			{
-				*unit->unit.animation.GetAnimationState() = Enums::_unit_animation_state_seat_exit;
+				unit->unit.animation.state = Enums::_unit_animation_state_seat_exit;
 				return;
 			}
 
@@ -79,7 +84,7 @@ namespace Yelo
 			}
 
 			// Exit the vehicle like normal if conditions haven't been met
-			*unit->unit.animation.GetAnimationState() = Enums::_unit_animation_state_seat_exit;
+			unit->unit.animation.state = Enums::_unit_animation_state_seat_exit;
 		}
 
 		static API_FUNC_NAKED void PLATFORM_API ActorActionHandleVehicleExitHook()
@@ -112,7 +117,7 @@ namespace Yelo
                     Enums::_x86_opcode_nop
             };
 
-            Memory::WriteMemory(GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), k_null_bytes, sizeof(k_null_bytes));
+            Memory::WriteMemory(GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), k_null_bytes);
 			Memory::WriteRelativeCall(&AI::ActorActionHandleVehicleExitHook, GET_FUNC_VPTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK), true);
 		}
 

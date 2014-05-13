@@ -122,7 +122,7 @@ namespace Yelo
 		 */
 		void c_query_pair::Set(const char* field, const char* value)
 		{
-			YELO_ASSERT_DISPLAY(field && strlen(field) > 0, "attempting to set a query pair with a null or zero-length string");
+			YELO_ASSERT_DISPLAY(!is_null_or_empty(field), "attempting to set a query pair with a null or zero-length string");
 
 			m_field.assign(field);
 
@@ -542,6 +542,7 @@ namespace Yelo
 		 */
 		void c_url_interface::ParsePath(const char* path)
 		{
+			// TODO: what's this [is].empty() call for?
 			m_path.empty();
 
 			AppendPath(path, true);
@@ -683,7 +684,7 @@ namespace Yelo
 			// add the path
 			if(m_path.size())
 			{
-				for(std::vector<std::string>::iterator iter = m_path.begin(); iter != m_path.end(); iter++)
+				for(auto iter = m_path.begin(); iter != m_path.end(); ++iter)
 					url_stream << "/" << Escape(*iter);
 			}
 			else

@@ -31,8 +31,8 @@ namespace Yelo
 		if(fixup->type <= _fixup_type_none || fixup->type >= _fixup_type)
 			return;
 
-		void* address = fixup->address[PLATFORM_ID-1];
-		void* definition = fixup->definition[PLATFORM_ID-1];
+		void* address = fixup->address[PLATFORM_TYPE - PLATFORM_EDITOR_START_ID];
+		void* definition = fixup->definition[PLATFORM_TYPE - PLATFORM_EDITOR_START_ID];
 
 #if 0
  		YELO_DEBUG_FORMAT("CheApe: fixup @%p @%p type=%d", address, definition, fixup->type);
@@ -76,7 +76,7 @@ namespace Yelo
 		c_memory_fixups::ProcessFixups();
 		c_memory_fixups::FixupsInitializeTagTextIOFixes();
 
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 		uint32* k_tool_import_find_files_references_size = CAST_PTR(uint32*, 0x415099);
 		*k_tool_import_find_files_references_size = Enums::k_maximum_tool_import_files_upgrade * sizeof(s_file_reference);
 

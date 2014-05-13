@@ -7,7 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "Engine/Scripting.hpp"
 
-#include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
+#include <blamlib/Halo1/hs/hs_structures.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
 
 #include "CheApeCore.hpp"
@@ -15,18 +15,6 @@
 
 namespace Yelo
 {
-	namespace Enums
-	{
-		enum {
-		// stock size
-		k_total_scenario_hs_syntax_data = sizeof(Memory::s_data_array)  + 
-			(sizeof(Scripting::hs_syntax_node) * Enums::k_maximum_hs_syntax_nodes_per_scenario),
-
-		k_total_scenario_hs_syntax_data_upgrade = sizeof(Memory::s_data_array)  + 
-			(sizeof(Scripting::hs_syntax_node) * Enums::k_maximum_hs_syntax_nodes_per_scenario_upgrade),
-		};
-	};
-
 	namespace Scripting
 	{
 		FUNC_PTR(HS_MACRO_FUNCTION_PARSE,		0x5A89B0, 0x5396A0, 0x67C9E0);
@@ -58,8 +46,6 @@ namespace Yelo
 		static hs_global_definition** hs_external_globals;
 
 #include "Engine/ScriptLibraryMemoryUpgrades.inl"
-		size_t GetTotalScenarioHsSyntaxData()		{ return Enums::k_total_scenario_hs_syntax_data; }
-		size_t GetTotalScenarioHsSyntaxDataUpgrade(){ return Enums::k_total_scenario_hs_syntax_data_upgrade; }
 
 		void Initialize()
 		{
@@ -69,7 +55,7 @@ namespace Yelo
 			// We enable tag definition upgrades by default on all platforms...
 			MemoryUpdatesInitializeTagDefinitions();
 			// but custom scripting must be explicitly setup in Tool builds
-#if PLATFORM_ID != PLATFORM_TOOL
+#if PLATFORM_TYPE != PLATFORM_TOOL
 			Scripting::InitializeCustomScriptingDefinitions();
 #endif
 		}
@@ -146,8 +132,8 @@ namespace Yelo
 
 				if( !element->parameters.resize(def->paramc) )
 				{
-					YELO_ERROR(_error_message_priority_critical, 
-						"CheApe: failed to add function parameters for %s", def->name);
+					YELO_ERROR_CRITICAL("CheApe: failed to add function parameters for %s", 
+						def->name);
 				}
 
 				memcpy(element->parameters.Definitions,

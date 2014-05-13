@@ -12,14 +12,14 @@
 #include <ErrorRep.h>
 #pragma comment (lib, "Faultrep.lib")
 
+#include <blamlib/Halo1/saved_games/game_state_structures.hpp>
 #include <YeloLib/cseries/pc_crashreport.hpp>
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
 #include "Common/FileIO.hpp"
-#include "Common/YeloSettings.hpp"
+#include "Settings/YeloSettings.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Game/EngineFunctions.hpp"
-#include "Game/Gamestate.hpp"
 #include "Interface/Keystone.hpp"
 
 //#define DISABLE_EXCEPTION_HANDLING
@@ -35,7 +35,7 @@ namespace Yelo
 		static char g_reports_path[MAX_PATH];
 		struct s_freeze_dump_globals
 		{
-			HANDLE m_freeze_thread;
+			std::thread m_freeze_thread;
 			DWORD m_main_thread_id;
 
 			volatile bool m_thread_running;
@@ -246,7 +246,7 @@ namespace Yelo
 		/// <param name="parameter1">	[in,out] Unused. </param>
 		/// <returns>	Returns 0. </returns>
 		///-------------------------------------------------------------------------------------------------
-		static DWORD WINAPI FreezeDumpCount(void*)
+		static void FreezeDumpCount()
 		{
 			g_freeze_dump_globals.m_thread_running = true;
 
@@ -303,7 +303,6 @@ namespace Yelo
 			}
 
 			g_freeze_dump_globals.m_thread_running = false;
-			return 0;
 		}
 
 		///-------------------------------------------------------------------------------------------------
@@ -312,7 +311,7 @@ namespace Yelo
 		///-------------------------------------------------------------------------------------------------
 		void Update(real delta)
 		{
-			if(!g_freeze_dump_globals.m_freeze_thread)
+			if(!g_freeze_dump_globals.m_thread_running)
 			{
 				return;
 			}
@@ -357,7 +356,7 @@ namespace Yelo
 					}
 
 					g_freeze_dump_globals.m_main_thread_id = GetThreadId(GetCurrentThread());
-					g_freeze_dump_globals.m_freeze_thread = CreateThread(nullptr, 0, FreezeDumpCount, nullptr, 0, nullptr);
+					g_freeze_dump_globals.m_freeze_thread = std::thread(FreezeDumpCount);
 				}
 			}
 
@@ -405,14 +404,12 @@ namespace Yelo
 		///-------------------------------------------------------------------------------------------------
 		void DumpDispose()
 		{
-			if(g_freeze_dump_globals.m_freeze_thread)
+			if(g_freeze_dump_globals.m_thread_running)
 			{
-				// stop the freze dump thread
+				// stop the freeze dump thread
 				g_freeze_dump_globals.m_end_thread = true;
-				while(g_freeze_dump_globals.m_thread_running);
 
-				CloseHandle(g_freeze_dump_globals.m_freeze_thread);
-				g_freeze_dump_globals.m_freeze_thread = nullptr;
+				g_freeze_dump_globals.m_freeze_thread.join();
 			}
 
 			// uninstall the crashrpt exception handler

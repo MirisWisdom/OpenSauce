@@ -35,40 +35,37 @@ namespace Yelo
 			// eg, weapon2 would be compare as equal to "weapon"
 			BOOL is_subscripted : 1;
 
-			static int __cdecl qsort_proc(void* ctxt, const void* _lhs, const void* _rhs)
+			static int __cdecl qsort_proc(void*, const s_object_field_definition* lhs, const s_object_field_definition* rhs)
 			{
-				auto lhs = CAST_PTR(const s_object_field_definition*, _lhs);
-				auto rhs = CAST_PTR(const s_object_field_definition*, _rhs);
-
 				return _stricmp(lhs->name, rhs->name);
 			}
 			template<size_t _SizeOfArray>
 			static void qsort_list(s_object_field_definition (&list)[_SizeOfArray])
 			{
-				qsort_s(list, _SizeOfArray, sizeof(s_object_field_definition), qsort_proc, nullptr);
+				Qsort(list, _SizeOfArray, qsort_proc);
 			}
 
-			static int __cdecl bsearch_proc(void* ctxt, const void* key, const void* field_definition)
+			static int __cdecl bsearch_proc(void*, cstring key, const s_object_field_definition* field_definition)
 			{
-				auto lhs = CAST_PTR(const char*, key);
 				auto rhs = CAST_PTR(const s_object_field_definition*, field_definition);
 
-				return rhs->is_subscripted ? _strnicmp(lhs, rhs->name, rhs->name_length) : _stricmp(lhs, rhs->name);
+				return field_definition->is_subscripted
+					? _strnicmp(key, field_definition->name, field_definition->name_length)
+					: _stricmp (key, field_definition->name);
 			}
 			template<size_t _SizeOfArray>
 			static const s_object_field_definition* bsearch_list(const s_object_field_definition (&list)[_SizeOfArray], cstring name)
 			{
-				return CAST_PTR(s_object_field_definition*, 
-					bsearch_s(name, list, _SizeOfArray, sizeof(s_object_field_definition), bsearch_proc, nullptr));
+				return Bsearch(name, list, _SizeOfArray, bsearch_proc);
 			}
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_field_definition) == 0x10 );
 #define FIELD_INDEX_NAME(object_type, field_type, field_name)		\
 		_##object_type##_field_##field_type##_##field_name
 
 #define FIELD_ENTRY(object_type, hs_type, field_type, name, ...)	\
-		{#name, sizeof( #name )-1,			HS_TYPE(hs_type), Enums::FIELD_INDEX_NAME(object_type, field_type, name), __VA_ARGS__}
+		{#name, _countof( #name )-1,		HS_TYPE(hs_type), Enums::FIELD_INDEX_NAME(object_type, field_type, name), __VA_ARGS__}
 #define FIELD_ENTRY2(object_type, hs_type, field_type, name, str_name, ...)	\
-		{str_name, sizeof( str_name )-1,	HS_TYPE(hs_type), Enums::FIELD_INDEX_NAME(object_type, field_type, name), __VA_ARGS__}
+		{str_name, _countof( str_name )-1,	HS_TYPE(hs_type), Enums::FIELD_INDEX_NAME(object_type, field_type, name), __VA_ARGS__}
 
 #include "Objects/ObjectFieldDefinitions.inl"
 

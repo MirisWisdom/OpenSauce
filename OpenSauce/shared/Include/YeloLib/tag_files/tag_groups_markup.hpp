@@ -48,7 +48,7 @@
 
 #if PLATFORM_IS_EDITOR
 	#define TAG_BLOCK_GET_ELEMENT(block_ptr, index, type)	\
-		CAST_PTR(type *, Yelo::tag_block_get_element(block, index))
+		CAST_PTR(type*, Yelo::blam::tag_block_get_element(block_ptr, index))
 #else
 	#define TAG_BLOCK_GET_ELEMENT(block_ptr, index, type)	\
 		&(block_ptr->Elements<type>()[index])

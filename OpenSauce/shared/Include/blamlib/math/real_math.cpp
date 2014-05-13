@@ -126,7 +126,7 @@ namespace Yelo
 		{
 			this->i = start.i + interp * (q2->i - start.i);
 			this->j = start.j + interp * (q2->j - start.j);
-			this->k = start.k + interp * (q2->j - start.k);
+			this->k = start.k + interp * (q2->k - start.k);
 			this->w = start.w + interp * (q2->w - start.w);
 		}
 	}

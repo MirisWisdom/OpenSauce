@@ -17,7 +17,7 @@ namespace Yelo
 	{
 		recorded_animations_data_t&		RecordedAnimations();
 
-		hs_syntax_data_t&				HSSyntax();
+//		hs_syntax_data_t&				HSSyntax();
 
 		object_list_header_data_t&		ObjectListHeader();
 		list_object_reference_data_t&	ListObjectReference();

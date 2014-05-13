@@ -13,7 +13,6 @@
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #include "Engine/EngineFunctions.hpp"
-#include "Engine/Scripting.hpp"
 #include "TagGroups/TagGroups.hpp"
 
 namespace Yelo
@@ -25,24 +24,6 @@ namespace Yelo
 		// yelo globals		- project_yellow_globals
 		// blam scenario	- scenario
 
-		void YeloCleanseScenario(scenario* scnr)
-		{
-			YELO_ASSERT(scnr != nullptr);
-
-			// Clear the yelo reference
-			tag_reference& yelo_reference = scnr->GetYeloReferenceHack();
-			if(yelo_reference.group_tag == project_yellow::k_group_tag)
-				blam::tag_reference_clear(yelo_reference);
-
-			// If the scenario is using upgraded script node sizes, clear it
-			// Users will need to recompile their scenario's scripts
-			tag_data& hs_syntax_data = scnr->hs_syntax_data;
-			if((size_t)hs_syntax_data.size > Scripting::GetTotalScenarioHsSyntaxData())
-			{
-				tag_data_delete(&hs_syntax_data); // If hs_syntax_data.size != GetTotalScenarioHsSyntaxData, the engine will recompile the scripts
-				YELO_WARN("CheApe: '%s' was cleansed but its scripts will need to be recompiled in the stock Sapien before a map can be built");
-			}
-		}
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>
 		/// 	Process a yelo scenario's globals data for the current operating mode (editing or cache building).
@@ -152,7 +133,7 @@ namespace Yelo
 			static cstring* K_GLOBALS_TAG_NAME_REFERENCES[] = {
 				CAST_PTR(cstring*, PLATFORM_VALUE(nullptr, 0x4434CA, 0x51675F)),
 				CAST_PTR(cstring*, PLATFORM_VALUE(nullptr, 0x443C95, 0x517525)),
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 				CAST_PTR(cstring*, PLATFORM_VALUE(nullptr, 0x4541A2, nullptr)),
 #endif
 			};
@@ -204,7 +185,7 @@ namespace Yelo
 			PLATFORM_VALUE(NULL, 0x45546B, // call game_globals_preprocess
 				0x6181BB); // call scenario_load
 		static uintptr_t SCENARIO_LOAD_HOOK_restore_point = NULL;
-#if PLATFORM_ID == PLATFORM_TOOL
+#if PLATFORM_TYPE == PLATFORM_TOOL
 		API_FUNC_NAKED static void PLATFORM_API scenario_yelo_load_hook()
 		{
 			static const uintptr_t GAME_GLOBALS_PREPROCESS = PLATFORM_VALUE(nullptr, 0x454190, nullptr);
@@ -220,7 +201,7 @@ namespace Yelo
 				retn
 			}
 		}
-#elif PLATFORM_ID == PLATFORM_SAPIEN
+#elif PLATFORM_TYPE == PLATFORM_SAPIEN
 		API_FUNC_NAKED static void PLATFORM_API scenario_yelo_load_hook(cstring scenario_name)
 		{
 			static const uintptr_t SCENARIO_LOAD = PLATFORM_VALUE(nullptr, nullptr, 0x5174E0);
@@ -243,7 +224,7 @@ namespace Yelo
 
 		void ScenarioYeloLoadHookInitialize()
 		{
-#if PLATFORM_ID != PLATFORM_GUERILLA
+#if PLATFORM_TYPE != PLATFORM_GUERILLA
 			SCENARIO_LOAD_HOOK_restore_point = 
 				Memory::WriteRelativeCall(&scenario_yelo_load_hook, CAST_PTR(void*, SCENARIO_LOAD_HOOK));
 #endif
@@ -251,7 +232,7 @@ namespace Yelo
 
 		void ScenarioYeloLoadHookDispose()
 		{
-#if PLATFORM_ID != PLATFORM_GUERILLA
+#if PLATFORM_TYPE != PLATFORM_GUERILLA
 			Memory::WriteRelativeCall(CAST_PTR(void*, SCENARIO_LOAD_HOOK_restore_point),
 				CAST_PTR(void*, SCENARIO_LOAD_HOOK));
 

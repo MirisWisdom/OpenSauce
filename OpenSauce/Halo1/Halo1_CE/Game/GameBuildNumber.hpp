@@ -33,6 +33,7 @@ namespace Yelo
 			_game_build_number_index_107,
 			_game_build_number_index_108,
 			_game_build_number_index_109,
+			//_game_build_number_index_110
 
 			k_max_game_build_number_index,
 		};

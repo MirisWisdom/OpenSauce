@@ -12,14 +12,16 @@
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingCacheComponent.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUpdatable.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingRenderable.hpp"
-#include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUserSettings.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 
 namespace Yelo
 {
 	namespace Rasterizer { namespace PostProcessing { namespace Bloom
 	{
-		class c_system_bloom : public IPostProcessingCacheComponent, public IPostProcessingUpdatable, public IPostProcessingRenderable, public IPostProcessingUserSettings
+		class c_system_bloom
+			: public IPostProcessingCacheComponent
+			, public IPostProcessingUpdatable
+			, public IPostProcessingRenderable
 		{
 			/////////////////////////////////////////////////
 			// static members
@@ -51,6 +53,7 @@ namespace Yelo
 			/////////////////////////////////////////////////
 			// member accessors
 		public:
+			bool& Enabled();
 			bool IsReady();
 			bool IsUnloaded();
 
@@ -85,13 +88,6 @@ namespace Yelo
 			void Dispose_Cache();
 
 			/////////////////////////////////////////////////
-			// IPostProcessingUserSettings
-		public:
-			void LoadSettings(TiXmlElement* parent_element);
-			void SaveSettings(TiXmlElement* parent_element);
-			void SetDefaultSettings();
-
-			/////////////////////////////////////////////////
 			// system setup
 		private:
 			HRESULT CreateShader();
@@ -120,8 +116,8 @@ namespace Yelo
 			void SetBloomSize(real size, real change_time);
 			void SetBloomExposure(real exposure, real change_time);
 			void SetBloomMixAmount(real mix_amount, real change_time);
-			void SetBloomMinimumColor(real_rgb_color minimum_color, real change_time);
-			void SetBloomMaximumColor(real_rgb_color maximum_color, real change_time);
+			void SetBloomMinimumColor(const real_rgb_color& minimum_color, real change_time);
+			void SetBloomMaximumColor(const real_rgb_color& maximum_color, real change_time);
 		};
 	};};};
 };

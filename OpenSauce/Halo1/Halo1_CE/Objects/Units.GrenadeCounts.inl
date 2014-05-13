@@ -5,6 +5,14 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
+#include <blamlib/Halo1/units/unit_structures.hpp>
+
+#include "Memory/MemoryInterface.hpp"
+#include "Networking/MDP.hpp"
+#include "Networking/MessageDeltas.hpp"
+
+namespace Yelo { namespace Objects { namespace Units {
+
 // DEBUG: Before each memory write when we're enabling, we assert we're overwriting the expected value or bytes
 #include <YeloLib/Halo1/units/units_grenade_count_upgrade.inl>
 
@@ -170,7 +178,9 @@ static void InitializeGrenadeCounts_MessageDeltaGrenadeCounts(bool enabled)
 
 			bits_written =  g_stock_grenade_counts.encoder(field_properties, baseline_data_gc, source_data_gc,   output_stream);
 
-			baseline_data_gc = baseline_data_gc != nullptr ? baseline_data_gc+1 : nullptr;
+			baseline_data_gc = baseline_data_gc != nullptr 
+				? baseline_data_gc+1 
+				: nullptr;
 			source_data_gc += 1;
 
 			bits_written += g_stock_grenade_counts.encoder(field_properties, baseline_data_gc, source_data_gc+1, output_stream);
@@ -188,7 +198,9 @@ static void InitializeGrenadeCounts_MessageDeltaGrenadeCounts(bool enabled)
 			// stock decoder doesn't use baseline_data when decoding
 			bits_read =  g_stock_grenade_counts.decoder(field_properties, baseline_data_gc, destination_data_gc, input_stream);
 
-			baseline_data_gc = baseline_data_gc != nullptr ? baseline_data_gc+1 : nullptr;
+			baseline_data_gc = baseline_data_gc != nullptr 
+				? baseline_data_gc+1 
+				: nullptr;
 			destination_data_gc += 1;
 
 			bits_read += g_stock_grenade_counts.decoder(field_properties, baseline_data_gc, destination_data_gc, input_stream);
@@ -219,3 +231,5 @@ static void InitializeGrenadeCounts_MessageDeltaGrenadeCounts(bool enabled)
 			->maximum_size = g_stock_fixed_width_grenade_index.maximum_size_calculator(nullptr); // release builds don't use the prop parameter in this field type
 	}
 }
+
+}; }; };

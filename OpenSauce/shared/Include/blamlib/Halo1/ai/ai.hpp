@@ -22,4 +22,11 @@ namespace Yelo
 			k_number_of_ai_unit_effects = 4,
 		};
 	};
+
+	namespace AI
+	{
+		struct s_ai_globals_data;
+
+		s_ai_globals_data*				AIGlobals();
+	};
 };

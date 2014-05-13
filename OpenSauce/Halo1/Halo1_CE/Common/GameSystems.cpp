@@ -7,7 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "Common/GameSystems.hpp"
 
-#include "Common/YeloSettings.hpp"
+#include "Settings/YeloSettings.hpp"
 #include "Common/FileIO.hpp"
 
 //////////////////////////////////////////////////////////////////////////
@@ -104,10 +104,11 @@ namespace Yelo
 			static s_project_component k_components[] = {
 				#define __GS_COMPONENT __GS_COMPONENT_LIFECYCLE
 				#include "Common/GameSystemComponent.Definitions.inl"
+				{}
 			};
 
 			out_components = k_components;
-			components_count = NUMBEROF(k_components)-1;
+			components_count = NUMBEROF(k_components)-1 - 1;
 #endif
 
 			return components_count;
@@ -121,10 +122,11 @@ namespace Yelo
 			static s_project_map_component k_components[] = {
 				#define __GS_COMPONENT __GS_COMPONENT_MAP_LIFECYCLE
 				#include "Common/GameSystemComponent.Definitions.inl"
+				{}
 			};
 
 			out_components = k_components;
-			components_count = NUMBEROF(k_components)-1;
+			components_count = NUMBEROF(k_components)-1 - 1;
 #endif
 
 			return components_count;
@@ -155,10 +157,11 @@ namespace Yelo
 			static s_project_game_state_component k_components[] = {
 				#define __GS_COMPONENT __GS_COMPONENT_GAMESTATE_LIFECYCLE
 				#include "Common/GameSystemComponent.Definitions.inl"
+				{}
 			};
 
 			out_components = k_components;
-			components_count = NUMBEROF(k_components)-1;
+			components_count = NUMBEROF(k_components)-1 - 1;
 #endif
 
 			return components_count;
@@ -175,10 +178,11 @@ namespace Yelo
 			static s_dx_component k_components[] = {
 				#define __GS_COMPONENT __GS_COMPONENT_DX9_LIFECYCLE
 				#include "Common/GameSystemComponent.Definitions.inl"
+				{}
 			};
 
 			out_components = k_components;
-			components_count = NUMBEROF(k_components)-1;
+			components_count = NUMBEROF(k_components)-1 - 1;
 	#endif
 
 			return components_count;
@@ -190,17 +194,25 @@ namespace Yelo
 			s_project_component* components;
 			const int32 component_count = GetProjectComponents(components);
 
+			Settings::InitializeSettings();
+
 			for(Yelo::int32 x = 0; x <= component_count; x++)
 				components[x].Initialize();
+			
+			Settings::Load();
 		}
 
 		static void PLATFORM_API DisposeOnExit()
 		{
 			s_project_component* components;
 			const int32 component_count = GetProjectComponents(components);
+			
+			Settings::Save();
 
 			for(int32 x = component_count; x >= 0; x--)
 				components[x].Dispose();
+
+			Settings::DisposeSettings();
 		}
 
 		// hooks the call that starts the main game loop to init OS beforehand

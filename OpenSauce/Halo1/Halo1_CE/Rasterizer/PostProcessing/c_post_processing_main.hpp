@@ -13,7 +13,6 @@
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingCacheComponent.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUpdatable.hpp"
-#include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUserSettings.hpp"
 
 #include "TagGroups/TagGroups.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
@@ -26,8 +25,7 @@ namespace Yelo
 	{
 		class c_post_processing_main :
 			public IPostProcessingCacheComponent,
-			public IPostProcessingUpdatable,
-			public IPostProcessingUserSettings
+			public IPostProcessingUpdatable
 		{
 			/////////////////////////////////////////////////
 			// static members

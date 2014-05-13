@@ -40,14 +40,14 @@ namespace Yelo
 				char folder_name_with_slash[64];
 				// ".\tags\"
 				char folder_name_with_slash_relative[64];
-#if PLATFORM_ID == PLATFORM_SAPIEN
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
 				// "tags\levels"
 				char folder_name_with_levels[64];
 #endif
 			}tags;
 		}_override_paths; // defined in MemoryFixups.Paths.inl
 
-#if PLATFORM_ID == PLATFORM_GUERILLA
+#if PLATFORM_TYPE == PLATFORM_GUERILLA
 		static char tag_import_path_buffer[/*Enums::k_max_tag_name_length+1*/]; // defined in MemoryFixups.TagTextIO.inl
 #endif
 
@@ -55,7 +55,7 @@ namespace Yelo
 			__in DWORD nBufferLength,
 			__out_ecount_part_opt(nBufferLength, return + 1) LPSTR lpBuffer);
 
-#if PLATFORM_ID != PLATFORM_GUERILLA
+#if PLATFORM_TYPE != PLATFORM_GUERILLA
 		static char* PLATFORM_API tag_file_index_build_strchr_hack(char* str, char val);
 		static void tag_file_index_build_strchr_hack_initialize();
 #else
@@ -87,8 +87,8 @@ namespace Yelo
 		{
 			fixup_type type;
 			int16 type_data;
-			void* address[3]; // PLATFORM_ID - 1
-			void* definition[3]; // PLATFORM_ID - 1
+			std::array<void*,3> address; // PLATFORM_TYPE - PLATFORM_EDITOR_START_ID
+			std::array<void*,3> definition; // PLATFORM_TYPE - PLATFORM_EDITOR_START_ID
 			PAD32;
 		}; BOOST_STATIC_ASSERT( sizeof(s_fixup) == 0x20 );
 

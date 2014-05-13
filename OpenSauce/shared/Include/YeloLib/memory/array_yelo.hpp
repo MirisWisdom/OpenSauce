@@ -9,7 +9,9 @@ namespace Yelo
 {
 	namespace Memory
 	{
-		template<typename DatumT> struct DynamicArray
+		// C++ wrapper for blamlib's s_dynamic_array
+		template<typename DatumT>
+		struct DynamicArray
 		{
 		private:
 			size_t element_size;
@@ -19,25 +21,25 @@ namespace Yelo
 		public:
 			int32 GetCount() const { return count; }
 
-			API_INLINE DatumT* operator [](int32 index)
+			inline const DatumT* operator [](int32 index) const
 			{
-				if(index < 0 || index >= count) return NULL;
+				if (index < 0 || index >= count)
+					return nullptr;
 
 				return &CAST_PTR(DatumT*, elements)[index];
 			}
 
-			API_INLINE const DatumT* operator [](int32 index) const
+			inline DatumT* operator [](int32 index)
 			{
-				if(index < 0 || index >= count) return NULL;
-
-				return &CAST_PTR(DatumT*, elements)[index];
+				return CAST_THIS_NONCONST_MEMBER_FUNC(DatumT*, [index]);
 			}
 		};
 
 		// I've only seen gbx code use this structure format...
 		// Therefore, I declare ye' GbxArray!
 		// Guess they didn't want to change dynamic_array to support a 'capacity'
-		template<typename DatumT> struct GbxArray
+		template<typename DatumT>
+		struct GbxArray
 		{
 		public:
 			DatumT* elements;
@@ -49,18 +51,17 @@ namespace Yelo
 
 			int32 GetCapacity() const { return capacity; }
 
-			API_INLINE DatumT* operator [](int32 index)
+			inline const DatumT* operator [](int32 index) const
 			{
-				if(index < 0 || index >= count) return NULL;
+				if (index < 0 || index >= count)
+					return nullptr;
 
 				return &CAST_PTR(DatumT*, elements)[index];
 			}
 
-			API_INLINE const DatumT* operator [](int32 index) const
+			inline DatumT* operator [](int32 index)
 			{
-				if(index < 0 || index >= count) return NULL;
-
-				return &CAST_PTR(DatumT*, elements)[index];
+				return CAST_THIS_NONCONST_MEMBER_FUNC(DatumT*, [index]);
 			}
 		};
 	};

@@ -10,14 +10,6 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
-		struct scenario;
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>
-		/// 	Removes Yelo-related data so that the scenario may be opened with no conflicts in the stock HEK.
-		/// </summary>
-		void YeloCleanseScenario(scenario* scnr);
-
-
 		void ScenarioYeloLoadHookInitialize();
 		void ScenarioYeloLoadHookDispose();
 	};

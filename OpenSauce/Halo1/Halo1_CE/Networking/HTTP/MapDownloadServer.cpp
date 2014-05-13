@@ -12,7 +12,7 @@
 #include <YeloLib/memory/linked_list.hpp>
 
 #include "Common/FileIO.hpp"
-#include "Common/YeloSettings.hpp"
+#include "Settings/YeloSettings.hpp"
 #include "Networking/HTTP/HTTP.hpp"
 #include "Networking/HTTP/HTTPServer.hpp"
 #include "Networking/Server.hpp"

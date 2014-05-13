@@ -12,7 +12,7 @@
 
 #define YELO_HS_RUNTIME_ASSERT(expression, thread, explanation)										\
 	YELO_ASSERT_DISPLAY(expression, "a problem occurred while executing the script %s: %s (%s)",	\
-		thread->GetDescriptionString(), explanation, expression)
+		thread->GetDescriptionString(), explanation, #expression)
 
 namespace Yelo
 {

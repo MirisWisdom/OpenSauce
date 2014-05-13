@@ -7,6 +7,8 @@
 #include "Common/Precompile.hpp"
 #include "TagGroups/TagGroups.hpp"
 
+#include <blamlib/Halo1/cache/cache_files_globals.hpp>
+#include <blamlib/Halo1/cache/cache_files_structures.hpp>
 #include <blamlib/Halo1/main/console.hpp>
 
 #include "Memory/MemoryInterface.hpp"
@@ -77,6 +79,36 @@ namespace Yelo
 		void Initialize()	{}
 
 		void Dispose()		{}
+
+		bool TagIsInstanceOf(datum_index tag_index, tag group_tag)
+		{
+			if (!tag_index.IsNull() && tag_index.index < Index()->count)
+			{
+				Cache::s_cache_tag_instance const& instance = Instances()[tag_index.index];
+
+				return instance.MatchesGroup(group_tag);
+			}
+
+			return false;
+		}
+		void* TagGetImpl(datum_index tag_index, tag group_tag)
+		{
+			if (!tag_index.IsNull() && tag_index.index < Index()->count)
+			{
+				Cache::s_cache_tag_instance const& instance = Instances()[tag_index.index];
+
+				if (instance.MatchesGroup(group_tag))
+					return instance.base_address;
+			}
+
+			return nullptr;
+		}
+		void* TagGetUnsafeImpl(datum_index tag_index)
+		{
+			Cache::s_cache_tag_instance const& instance = Instances()[tag_index.index];
+
+			return instance.base_address;
+		}
 
 		static void FindCacheYeloDefinitions()
 		{

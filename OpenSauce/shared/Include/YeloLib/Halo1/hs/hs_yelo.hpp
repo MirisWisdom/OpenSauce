@@ -5,7 +5,8 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/hs/hs_structures.hpp>
+#include <blamlib/Halo1/hs/hs.hpp>
+#include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
 {
@@ -22,6 +23,11 @@ namespace Yelo
 		};
 	};
 
+	namespace TagGroups
+	{
+		struct s_scripting_definitions;
+	};
+
 	namespace Scripting
 	{
 		typedef void* (API_FUNC* hs_yelo_function_proc)();
@@ -33,12 +39,30 @@ namespace Yelo
 		// See: K_OPENSAUCE_VERSION
 		extern const cstring k_external_global_opensauce_override_name;
 
+		size_t GetTotalScenarioHsSyntaxData();
+		size_t GetTotalScenarioHsSyntaxDataUpgrade();
+
 		// Interpret [data] as [type] data. Takes the [data].pointer and sets [data] to the dereferenced value.
 		// If [data].pointer is NULL, then this sets [data] to [type]'s NONE equivalent.
 		void UpdateTypeHolderFromPtrToData(TypeHolder& data, const Enums::hs_type type);
 		// Interpret [ptr] as a [type] pointer. Takes [ptr], deferences it and sets [data] to the value.
 		// [data] is 'const' as this doesn't modify the pointer, but the data which it points to.
 		void UpdateTypeHolderDataFromPtr(const TypeHolder& data, const Enums::hs_type type, void* ptr);
+
+#if PLATFORM_IS_EDITOR
+		void ScriptingBlockClear(
+			TAG_TBLOCK(& script_block, TagGroups::s_scripting_definitions));
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Copy the scripting definitions CheApe loaded into the tool code from the memory map. </summary>
+		///
+		/// <param name="script_block"></param>
+		/// <param name="only_internals">
+		/// 	Copy definitions that are part of the stock OpenSauce source code definitions that are part of the stock
+		/// 	OpenSauce source code only, else copy only the user's definitions.
+		/// </param>
+		void ScriptingBlockAddDefinitions(
+			TAG_TBLOCK(& script_block, TagGroups::s_scripting_definitions), bool only_internals);
+#endif
 	};
 };
 

@@ -5,6 +5,12 @@
 	See license\OpenSauce\Halo1_CheApe for specific license information
 */
 
+#include <blamlib/Halo1/tag_files/tag_groups.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
+
+#include "Memory/MemoryInterface.hpp"
+
+namespace Yelo { namespace Tool {
 
 namespace BuildCacheFileEx
 {
@@ -40,3 +46,5 @@ namespace BuildCacheFileEx
 		}
 	};
 };
+
+}; };

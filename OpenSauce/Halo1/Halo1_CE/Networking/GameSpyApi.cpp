@@ -7,6 +7,10 @@
 #include "Common/Precompile.hpp"
 #include "Networking/GameSpyApi.hpp"
 
+#include <YeloLib/configuration/c_configuration_container.hpp>
+#include <YeloLib/configuration/c_configuration_value.hpp>
+#include "Settings/c_settings_singleton.hpp"
+
 #include "Memory/MemoryInterface.hpp"
 #include "Game/GameState.hpp"
 
@@ -123,10 +127,38 @@ _return:
 #endif
 			}
 
-			struct s_gamespy_yelo_settings {
-				bool no_update_check;
-				PAD24;
-			}g_gamespy_yelo_settings;
+#pragma region Settings
+			class c_settings_container
+				: public Configuration::c_configuration_container
+			{
+			public:
+				Configuration::c_configuration_value<bool> m_no_update_check;
+
+				c_settings_container()
+					: Configuration::c_configuration_container("Networking.GameSpy")
+					, m_no_update_check("NoUpdateCheck", true)
+				{ }
+				
+			protected:
+				const std::vector<i_configuration_value* const> GetMembers() final override
+				{
+					return std::vector<i_configuration_value* const> { &m_no_update_check };
+				}
+			};
+
+			class c_settings_gamespy
+				: public Settings::c_settings_singleton<c_settings_container, c_settings_gamespy>
+			{
+			public:
+				void PostLoad() final override
+				{
+					if(Get().m_no_update_check)
+					{
+						TurnOffUpdateCheck();
+					}
+				}
+			};
+#pragma endregion
 
 			static void InitializeForNewQr2()
 			{
@@ -135,9 +167,8 @@ _return:
 			void Initialize()
 			{
 				// TODO: populate GetGameVer()
-
-				if(g_gamespy_yelo_settings.no_update_check)
-					TurnOffUpdateCheck();
+				
+				c_settings_gamespy::Register();
 
 				Memory::CreateHookRelativeCall(&InitializeForNewQr2, 
 					GET_FUNC_VPTR(CREATE_GAMESPY_QR2_HOOK), Enums::_x86_opcode_ret);
@@ -150,19 +181,7 @@ _return:
 
 			void Dispose()
 			{
-			}
-
-			void LoadSettings(TiXmlElement* xml_element)
-			{
-				if(xml_element == nullptr) return;
-
-				g_gamespy_yelo_settings.no_update_check = 
-					Settings::ParseBoolean(xml_element->Attribute("gsNoUpdateCheck"));
-			}
-			void SaveSettings(TiXmlElement* xml_element)
-			{
-				xml_element->SetAttribute("gsNoUpdateCheck", 
-					BooleanToString(g_gamespy_yelo_settings.no_update_check));
+				c_settings_gamespy::Unregister();
 			}
 
 			API_FUNC_NAKED void qr2_register_key(Enums::gamespy_qr_field keyid, cstring key)

@@ -6,10 +6,6 @@
 #include "Common/Precompile.hpp"
 #include <YeloLib/memory/security/xxtea.hpp>
 
-#if PLATFORM_IS_EDITOR
-	#include "Engine/EngineFunctions.hpp" // ASSERT invokes YELO_ASSERT in editor builds
-#endif
-
 namespace Yelo
 {
 	namespace Cryptography { namespace XXTEA

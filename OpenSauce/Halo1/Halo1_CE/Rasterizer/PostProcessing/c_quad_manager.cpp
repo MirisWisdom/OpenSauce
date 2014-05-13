@@ -462,14 +462,15 @@ namespace Yelo
 			c_quad_instance* quad_instance = m_globals.m_quad_list;
 			while(quad_instance)
 			{
+				const auto& quad = quad_instance->Quad();
 				// compare x and y tesselation
 				if(
-					quad_instance->Quad().tessellation.x == tesselation.x &&
-					quad_instance->Quad().tessellation.y == tesselation.y &&
-					quad_instance->Quad().x_bounds.lower == x_bounds.lower &&
-					quad_instance->Quad().x_bounds.upper == x_bounds.upper &&
-					quad_instance->Quad().y_bounds.lower == y_bounds.lower &&
-					quad_instance->Quad().y_bounds.upper == y_bounds.upper)
+					quad.tessellation.x == tesselation.x &&
+					quad.tessellation.y == tesselation.y &&
+					quad.x_bounds.lower == x_bounds.lower &&
+					quad.x_bounds.upper == x_bounds.upper &&
+					quad.y_bounds.lower == y_bounds.lower &&
+					quad.y_bounds.upper == y_bounds.upper)
 				{
 					// return quad instance pointer if a match is found
 					quad_out = quad_instance;
@@ -545,6 +546,8 @@ namespace Yelo
 			c_quad_instance* quad,
 			const point2d dimensions)
 		{
+			// TODO: rename 'quad' to 'quad_instance' and use a const reference to quad_instance.Quad()'s value for better performance
+
 			real x_offset = quad->Quad().x_bounds.lower;
 			real x_range = quad->Quad().x_bounds.upper - quad->Quad().x_bounds.lower;
 			real x_increment = x_range / quad->Quad().tessellation.x;

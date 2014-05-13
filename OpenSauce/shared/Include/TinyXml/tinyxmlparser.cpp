@@ -1140,7 +1140,7 @@ const char* TiXmlElement::Parse( const char* p, TiXmlParsingData* data, TiXmlEnc
 		else
 		{
 			// Try to read an attribute:
-			TiXmlAttribute* attrib = new TiXmlAttribute();
+			TiXmlAttribute* attrib = new(std::nothrow) TiXmlAttribute();
 			if ( !attrib )
 			{
 				return 0;
@@ -1190,7 +1190,7 @@ const char* TiXmlElement::ReadValue( const char* p, TiXmlParsingData* data, TiXm
 		if ( *p != '<' )
 		{
 			// Take what we have, make a text element.
-			TiXmlText* textNode = new TiXmlText( "" );
+			TiXmlText* textNode = new(std::nothrow) TiXmlText("");
 
 			if ( !textNode )
 			{

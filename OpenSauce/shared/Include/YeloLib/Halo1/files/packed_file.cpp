@@ -7,15 +7,20 @@
 #include <YeloLib/Halo1/files/packed_file.hpp>
 
 #if !PLATFORM_IS_EDITOR
-	#include "Common/FileIO.hpp" // for OpenFileByID
+	#include <YeloLib/files/files.hpp> // for OpenFileByID forward declaration
 #else
 	#include <fstream>
-	#include "Engine/EngineFunctions.hpp" // for YELO_ERROR
+	#include <blamlib/Halo1/cseries/errors.hpp>
 #endif
 
 namespace Yelo
 {
 #if !PLATFORM_IS_EDITOR
+	namespace FileIO
+	{
+		Enums::file_io_open_error OpenFileByID(s_file_info& info_out, cstring file_id);
+	};
+
 	void c_packed_file::OpenFile(cstring packed_file, bool is_file_id)
 	{
 		Enums::file_io_open_error open_success;
@@ -30,7 +35,7 @@ namespace Yelo
 
 		m_address = file_info.data_pointer;
 
-		if(m_header != nullptr || m_header->IsValid())
+		if(m_header != nullptr && m_header->IsValid())
 			m_file_mapped = true;
 	}
 
@@ -95,9 +100,8 @@ namespace Yelo
 
 	c_packed_file::~c_packed_file()
 	{
-		std::vector<s_element_editor>::iterator iter;
-		for(iter = m_elements.begin(); iter != m_elements.end(); ++iter)
-			(*iter).Delete();
+		for(auto iter = m_elements.begin(); iter != m_elements.end(); ++iter)
+			iter->Delete();
 		m_elements.clear();
 
 		m_header.element_count = 0;
@@ -109,21 +113,19 @@ namespace Yelo
 		uint32 id_base_offset = sizeof(s_header) + (sizeof(s_element) * m_elements.size());
 		uint32 id_offset = 0;
 
-		std::vector<s_element_editor>::iterator iter;
-
-		for(iter = m_elements.begin(); iter != m_elements.end(); ++iter)
+		for(auto iter = m_elements.begin(); iter != m_elements.end(); ++iter)
 		{
-			(*iter).element_id_offset = id_base_offset + id_offset;
-			id_offset += strlen((*iter).source_id) + 1;
+			iter->element_id_offset = id_base_offset + id_offset;
+			id_offset += strlen(iter->source_id) + 1;
 		}
 
 		uint32 data_base_offset = id_base_offset + id_offset;
 		uint32 data_offset = 0;
 
-		for(iter = m_elements.begin(); iter != m_elements.end(); ++iter)
+		for(auto iter = m_elements.begin(); iter != m_elements.end(); ++iter)
 		{
-			(*iter).element_offset = data_base_offset + data_offset;
-			data_offset += (*iter).element_size;
+			iter->element_offset = data_base_offset + data_offset;
+			data_offset += iter->element_size;
 		}
 
 		m_header.file_size = data_base_offset + data_offset;
@@ -152,20 +154,18 @@ namespace Yelo
 
 		file.write(CAST_PTR(char*, &m_header), sizeof(m_header));
 
-		std::vector<s_element_editor>::iterator iter;
-
-		for(iter = m_elements.begin(); iter != m_elements.end(); ++iter)
-			file.write(CAST_PTR(char*, &(*iter)), sizeof(s_element));
+		for(auto iter = m_elements.cbegin(); iter != m_elements.cend(); ++iter)
+			file.write(CAST_PTR(const char*, &(*iter)), sizeof(s_element));
 
 		char null_char = 0;
-		for(iter = m_elements.begin(); iter != m_elements.end(); ++iter)
+		for(auto iter = m_elements.cbegin(); iter != m_elements.cend(); ++iter)
 		{
-			file.write((*iter).source_id, strlen((*iter).source_id));
+			file.write(iter->source_id, strlen(iter->source_id));
 			file.write(&null_char, sizeof(null_char));
 		}
 
-		for(iter = m_elements.begin(); iter != m_elements.end(); ++iter)
-			file.write(CAST_PTR(char*, (*iter).source_data), (*iter).element_size);
+		for(auto iter = m_elements.cbegin(); iter != m_elements.cend(); ++iter)
+			file.write(CAST_PTR(char*, iter->source_data), iter->element_size);
 
 		file.flush();
 		file.close();

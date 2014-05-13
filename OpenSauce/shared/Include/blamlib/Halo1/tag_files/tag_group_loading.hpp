@@ -5,11 +5,11 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/tag_files/tag_groups.hpp>
-#include <blamlib/Halo1/tag_files/tag_groups_structures.hpp>
-
 namespace Yelo
 {
+	struct tag_data;
+	struct tag_block_definition;
+
 	namespace blam
 	{
 		bool PLATFORM_API tag_data_load(void* block_element, tag_data* data, void* address);

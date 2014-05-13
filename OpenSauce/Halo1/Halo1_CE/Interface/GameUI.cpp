@@ -23,7 +23,7 @@
 #include <blamlib/Halo1/text/draw_string.hpp>
 
 #include "Memory/MemoryInterface.hpp"
-#include "Common/YeloSettings.hpp"
+#include "Settings/YeloSettings.hpp"
 #include "Interface/YeloSettingsInterface.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Game/Players.hpp"
@@ -129,7 +129,7 @@ namespace Yelo
 				Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,
 				Enums::_x86_opcode_nop, Enums::_x86_opcode_nop,};
 
-			Memory::WriteMemory(GET_FUNC_VPTR(FIRST_PERSON_WEAPON_SET_STATE_HOOK), k_null_bytes, sizeof(k_null_bytes));
+			Memory::WriteMemory(GET_FUNC_VPTR(FIRST_PERSON_WEAPON_SET_STATE_HOOK), k_null_bytes);
 			Memory::WriteRelativeCall(&FirstPersonWeaponSetStateHook, GET_FUNC_VPTR(FIRST_PERSON_WEAPON_SET_STATE_HOOK), true);
 		}
 

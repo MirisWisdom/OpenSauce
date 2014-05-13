@@ -5,7 +5,7 @@
 	See license\OpenSauce\Halo1_CheApe for specific license information
 */
 
-#if PLATFORM_ID == PLATFORM_GUERILLA
+#if PLATFORM_TYPE == PLATFORM_GUERILLA
 // The following is a hack which fixes a tag paths being truncated when imported from a text file
 //
 // The stock guerilla code reads the tag path from the txt file into a tag_string, so paths longer
@@ -55,7 +55,7 @@ void PLATFORM_API c_memory_fixups::tag_import_fix_real_plane_2d_jmp_indices()
 
 void c_memory_fixups::FixupsInitializeTagTextIOFixes()
 {
-#if PLATFORM_ID == PLATFORM_GUERILLA
+#if PLATFORM_TYPE == PLATFORM_GUERILLA
 	tag_import_fix_truncated_tag_paths();
 	tag_import_fix_real_plane_2d_jmp_indices();
 #endif

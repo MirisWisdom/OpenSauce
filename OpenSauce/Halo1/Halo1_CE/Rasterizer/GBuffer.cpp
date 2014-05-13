@@ -12,9 +12,13 @@
 #include <blamlib/Halo1/game/player_structures.hpp>
 #include <blamlib/Halo1/main/main_structures.hpp>
 
+#include <YeloLib/configuration/c_configuration_container.hpp>
+#include <YeloLib/configuration/c_configuration_value.hpp>
+#include "Settings/c_settings_singleton.hpp"
+
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
-#include "Common/YeloSettings.hpp"
+#include "Settings/YeloSettings.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Rasterizer/Rasterizer.hpp"
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
@@ -32,6 +36,41 @@ namespace Yelo
 #define __EL_INCLUDE_ID			__EL_INCLUDE_RASTERIZER_DX9
 #define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_DX9_GBUFFER
 #include "Memory/_EngineLayout.inl"
+
+#pragma region Settings
+		class c_settings_container
+			: public Configuration::c_configuration_container
+		{
+		public:
+			Configuration::c_configuration_value<bool> m_enabled;
+
+			c_settings_container()
+				: Configuration::c_configuration_container("GBuffer")
+				, m_enabled("Enabled", true)
+			{ }
+			
+		protected:
+			const std::vector<i_configuration_value* const> GetMembers() final override
+			{
+				return std::vector<i_configuration_value* const> { &m_enabled };
+			}
+		};
+
+		class c_settings_gbuffer
+			: public Settings::c_settings_singleton<c_settings_container, c_settings_gbuffer>
+		{
+		public:
+			void PostLoad() final override
+			{
+				c_gbuffer_system::g_system_enabled = Get().m_enabled;
+			}
+
+			void PreSave() final override
+			{
+				Get().m_enabled = c_gbuffer_system::g_system_enabled;
+			}
+		};
+#pragma endregion
 
 		static D3DXHANDLE	GetTechnique(LPD3DXEFFECT& effect,
 			const char* mesh_type, 
@@ -249,9 +288,9 @@ namespace Yelo
 			device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 			device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
 			device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ZERO);
-			device->SetRenderState(D3DRS_ZENABLE, false);
-			device->SetRenderState(D3DRS_ZWRITEENABLE, false);
-			device->SetRenderState(D3DRS_STENCILENABLE, false);
+			device->SetRenderState(D3DRS_ZENABLE, FALSE);
+			device->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+			device->SetRenderState(D3DRS_STENCILENABLE, FALSE);
 
 			// draw the render target debug effect
 			UINT cPasses, p;
@@ -326,7 +365,7 @@ namespace Yelo
 			device->GetRenderState(D3DRS_DESTBLEND, &old_destblend);
 
 			device->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
-			device->SetRenderState(D3DRS_ZWRITEENABLE, false);
+			device->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 			device->SetRenderState(D3DRS_ALPHABLENDENABLE, FALSE);
 			device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
 			device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ZERO);
@@ -495,6 +534,8 @@ skip_disable_velocity:
 
 			g_default_system.Ctor();
 
+			c_settings_gbuffer::Register();
+
 			c_gbuffer_system::g_output_object_tbn = false;
 			// leave as false, not enough vertex shader registers available to do object velocity with bones
 			c_gbuffer_system::g_output_object_velocity = false;
@@ -522,7 +563,7 @@ skip_disable_velocity:
 			Memory::WriteRelativeJmp(&Hook_RenderObjectsTransparent,
 				GET_FUNC_VPTR(RENDER_WINDOW_CALL_RENDER_OBJECTS_TRANSPARENT_HOOK), true);
 
-			byte NOP = 0x90;
+			byte NOP = Enums::_x86_opcode_nop;
 			byte* call_address;
 
 			call_address = CAST_PTR(byte*, GET_FUNC_VPTR(RASTERIZER_DRAW_STATIC_TRIANGLES_STATIC_VERTICES__DRAW_INDEXED_PRIMITIVE_HOOK));
@@ -537,6 +578,8 @@ skip_disable_velocity:
 		}
 		void		c_gbuffer_system::Dispose()
 		{
+			c_settings_gbuffer::Unregister();
+
 			g_default_system.Dtor();
 		}
 
@@ -549,31 +592,14 @@ skip_disable_velocity:
 			g_wvp_stored = false;
 		}
 
-		void		c_gbuffer_system::LoadSettings(TiXmlElement* dx9_element)
-		{
-			// setup default values
-			g_system_enabled = true;
-
-			if(dx9_element != NULL)
-			{
-				TiXmlElement* element = dx9_element->FirstChildElement("GBuffer");
-
-				if(element != NULL)
-					g_system_enabled = Settings::ParseBoolean( element->Attribute("enabled") );
-			}
-		}
-
-		void		c_gbuffer_system::SaveSettings(TiXmlElement* dx9_element)
-		{
-			TiXmlElement* gbuffer_element = NULL;
-
-			gbuffer_element = new TiXmlElement("GBuffer");
-				dx9_element->LinkEndChild(gbuffer_element);
-
-			gbuffer_element->SetAttribute("enabled", BooleanToString(g_system_enabled));
-		}
-
-		void		c_gbuffer_system::Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters)
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Initializes the GBuffers Direct3D resources. </summary>
+		/// <param name="pDevice">	  	[in] The current render device. </param>
+		/// <param name="pParameters">
+		/// 	[in] The current presentation parameters.
+		/// </param>
+		///-------------------------------------------------------------------------------------------------
+		void c_gbuffer_system::Initialize3D(IDirect3DDevice9* pDevice, D3DPRESENT_PARAMETERS* pParameters)
 		{
 			if(CMDLINE_GET_PARAM(no_os_gfx).ParameterSet())
 				return;
@@ -631,7 +657,7 @@ skip_disable_velocity:
 			// We don't want to write to the Z-Buffer as it's already been done
 			DWORD ZWriteEnable;
 			pDevice->GetRenderState(D3DRS_ZWRITEENABLE, &ZWriteEnable);
-			pDevice->SetRenderState(D3DRS_ZWRITEENABLE, false);
+			pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 
 			hr = g_default_system.DrawIndexedPrimitive_Impl(pDevice, Type, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
 

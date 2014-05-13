@@ -5,6 +5,7 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 #include "Common/Precompile.hpp"
+#if !PLATFORM_IS_EDITOR
 #include <blamlib/Halo1/main/main.hpp>
 
 #include <blamlib/Halo1/main/main_structures.hpp>
@@ -30,3 +31,5 @@ namespace Yelo
 		Enums::game_connection game_connection()	{ return GameState::MainGlobals()->game_connection; }
 	};
 };
+
+#endif

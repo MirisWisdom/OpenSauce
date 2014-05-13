@@ -9,6 +9,7 @@
 
 #include <blamlib/Halo1/cutscene/recorded_animations_structures.hpp>
 #include <blamlib/Halo1/hs/hs_runtime_structures.hpp>
+#include <blamlib/Halo1/hs/hs_structures.hpp>
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 
 #include "Game/EngineFunctions.hpp"

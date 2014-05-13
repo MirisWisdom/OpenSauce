@@ -11,7 +11,9 @@ static void InitializeGrenadeCounts_UnitZoomLevelRefs(bool enabled)
 {
 	static bool verified;
 
-	uint32 offset = enabled ? s_unit_data::k_offset_zoom_level_yelo : s_unit_data::k_offset_zoom_level;
+	uint32 offset = enabled 
+		? s_unit_data::k_offset_zoom_level_yelo 
+		: s_unit_data::k_offset_zoom_level;
 
 	for(int x = 0; x < NUMBEROF(K_UNIT_ZOOM_LEVEL_OFFSET_REFS); x++)
 	{
@@ -29,7 +31,9 @@ static void InitializeGrenadeCounts_UnitDesiredZoomLevelRefs(bool enabled)
 {
 	static bool verified;
 
-	uint32 offset = enabled ? s_unit_data::k_offset_desired_zoom_level_yelo : s_unit_data::k_offset_desired_zoom_level;
+	uint32 offset = enabled 
+		? s_unit_data::k_offset_desired_zoom_level_yelo 
+		: s_unit_data::k_offset_desired_zoom_level;
 
 	for(int x = 0; x < NUMBEROF(K_UNIT_DESIRED_ZOOM_LEVEL_OFFSET_REFS); x++)
 	{
@@ -78,6 +82,11 @@ static void InitializeGrenadeCounts_NumberOfUnitGrenadeTypes(uint32 count)
 
 namespace unit_grenade_counts_mods
 {
+	enum {
+		k_offset_grenade_counts = FIELD_OFFSET(s_unit_datum, unit.grenade_counts),
+		k_offset_biped_update_grenade_counts = FIELD_OFFSET(s_biped_datum, biped.update_baseline.grenade_counts),
+	};
+
 	// TODO: game_engine_map_reset resets all the player unit's grenade counts to zero
 	// We may need to patch it up too
 
@@ -85,61 +94,63 @@ namespace unit_grenade_counts_mods
 	//////////////////////////////////////////////////////////////////////////
 	// actor_died
 	NAKED_FUNC_WRITER_ASM_BEGIN(actor_died__unit_grenade_count_word)
-		mov	word ptr [ebx+31Eh], 0					NAKED_FUNC_WRITER_ASM_END();
+		mov	word ptr [ebx+k_offset_grenade_counts], 0	NAKED_FUNC_WRITER_ASM_END();
 	NAKED_FUNC_WRITER_ASM_BEGIN(actor_died__unit_grenade_count_dword)
 		xor	ecx, ecx
-		mov	dword ptr [ebx+31Eh], ecx
-		nop											NAKED_FUNC_WRITER_ASM_END();
+		mov	dword ptr [ebx+k_offset_grenade_counts], ecx
+		nop												NAKED_FUNC_WRITER_ASM_END();
 #endif
 	//////////////////////////////////////////////////////////////////////////
 	// player_add_equipment
 	// NOTE: currently don't apply this in the editor...shouldn't be an issue
 	NAKED_FUNC_WRITER_ASM_BEGIN(player_add_equipment__unit_grenade_count_word)
-		mov	[PLATFORM_ENGINE_VALUE(ebp,esi)+31Eh], ax	NAKED_FUNC_WRITER_ASM_END();
+		mov	[PLATFORM_ENGINE_VALUE(ebp,esi)+k_offset_grenade_counts], ax
+														NAKED_FUNC_WRITER_ASM_END();
 	NAKED_FUNC_WRITER_ASM_BEGIN(player_add_equipment__unit_grenade_count_dword)
-		mov	[PLATFORM_ENGINE_VALUE(ebp,esi)+31Eh], eax
+		mov	[PLATFORM_ENGINE_VALUE(ebp,esi)+k_offset_grenade_counts], eax
 		nop												NAKED_FUNC_WRITER_ASM_END();
 #if !PLATFORM_IS_EDITOR
 	//////////////////////////////////////////////////////////////////////////
 	// biped_new_from_network
 	NAKED_FUNC_WRITER_ASM_BEGIN(biped_new_from_network__unit_grenade_count_word)
-		mov	dx, [eax+52Ch]
-		mov	[eax+31Eh], dx							NAKED_FUNC_WRITER_ASM_END();
+		mov	dx, [eax+k_offset_biped_update_grenade_counts]
+		mov	[eax+k_offset_grenade_counts], dx			NAKED_FUNC_WRITER_ASM_END();
 	NAKED_FUNC_WRITER_ASM_BEGIN(biped_new_from_network__unit_grenade_count_dword)
-		mov	edx, [eax+52Ch]
+		mov	edx, [eax+k_offset_biped_update_grenade_counts]
 		nop
-		mov	[eax+31Eh], edx
-		nop											NAKED_FUNC_WRITER_ASM_END();
+		mov	[eax+k_offset_grenade_counts], edx
+		nop												NAKED_FUNC_WRITER_ASM_END();
 	//////////////////////////////////////////////////////////////////////////
 	// biped_update_baseline
 	NAKED_FUNC_WRITER_ASM_BEGIN(biped_update_baseline__unit_grenade_count_word1)
-		mov	cx, [eax+31Eh]							NAKED_FUNC_WRITER_ASM_END();
+		mov	cx, [eax+k_offset_grenade_counts]			NAKED_FUNC_WRITER_ASM_END();
 	NAKED_FUNC_WRITER_ASM_BEGIN(biped_update_baseline__unit_grenade_count_word2)
-		mov	[eax+52Ch], cx						NAKED_FUNC_WRITER_ASM_END();
+		mov	[eax+k_offset_biped_update_grenade_counts], cx
+														NAKED_FUNC_WRITER_ASM_END();
 	NAKED_FUNC_WRITER_ASM_BEGIN(biped_update_baseline__unit_grenade_count_dword1)
-		mov	ecx, [eax+31Eh]
-		nop											NAKED_FUNC_WRITER_ASM_END();
+		mov	ecx, [eax+k_offset_grenade_counts]
+		nop												NAKED_FUNC_WRITER_ASM_END();
 	NAKED_FUNC_WRITER_ASM_BEGIN(biped_update_baseline__unit_grenade_count_dword2)
-		mov	[eax+52Ch], ecx
-		nop											NAKED_FUNC_WRITER_ASM_END();
+		mov	[eax+k_offset_biped_update_grenade_counts], ecx
+		nop												NAKED_FUNC_WRITER_ASM_END();
 	//////////////////////////////////////////////////////////////////////////
 	// biped_build_update_delta
 	NAKED_FUNC_WRITER_ASM_BEGIN(biped_build_update_delta__unit_grenade_count_word1)
-		mov	dx, [edi+31Eh]							NAKED_FUNC_WRITER_ASM_END();
+		mov	dx, [edi+k_offset_grenade_counts]			NAKED_FUNC_WRITER_ASM_END();
 	NAKED_FUNC_WRITER_ASM_BEGIN(biped_build_update_delta__unit_grenade_count_word2)		// [esp+44h+var_10]
-		mov	[esp+44h+(-10h)], dx					NAKED_FUNC_WRITER_ASM_END();
+		mov	[esp+44h+(-10h)], dx						NAKED_FUNC_WRITER_ASM_END();
 	NAKED_FUNC_WRITER_ASM_BEGIN(biped_build_update_delta__unit_grenade_count_dword1)
-		mov	edx, [edi+31Eh]
-		nop											NAKED_FUNC_WRITER_ASM_END();
+		mov	edx, [edi+k_offset_grenade_counts]
+		nop												NAKED_FUNC_WRITER_ASM_END();
 	NAKED_FUNC_WRITER_ASM_BEGIN(biped_build_update_delta__unit_grenade_count_dword2)	// [esp+44h+var_10]
 		mov	[esp+44h+(-10h)], edx
-		nop											NAKED_FUNC_WRITER_ASM_END();
+		nop												NAKED_FUNC_WRITER_ASM_END();
 	//////////////////////////////////////////////////////////////////////////
 	// biped_process_update_delta
 	NAKED_FUNC_WRITER_ASM_BEGIN(biped_process_update_delta__unit_grenade_count_word)
-		mov	word ptr [esi+31Eh], ax					NAKED_FUNC_WRITER_ASM_END();
+		mov	word ptr [esi+k_offset_grenade_counts], ax	NAKED_FUNC_WRITER_ASM_END();
 	NAKED_FUNC_WRITER_ASM_BEGIN(biped_process_update_delta__unit_grenade_count_dword)
-		mov	dword ptr [esi+31Eh], eax
-		nop											NAKED_FUNC_WRITER_ASM_END();
+		mov	dword ptr [esi+k_offset_grenade_counts], eax
+		nop												NAKED_FUNC_WRITER_ASM_END();
 #endif
 };

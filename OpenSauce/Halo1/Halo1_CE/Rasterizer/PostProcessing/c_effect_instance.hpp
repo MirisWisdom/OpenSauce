@@ -44,6 +44,23 @@ namespace Yelo
 				}m_fade;
 			}m_members;
 
+		private:
+			void ClearMembers()
+			{
+				ClearNodeData();
+
+				m_members.m_flags.is_valid = false;
+				m_members.m_flags.is_active = true;
+				m_members.definition = nullptr;
+				m_members.quad_definition = nullptr;
+				m_members.render_quad = nullptr;
+				m_members.m_fade.start = 1;
+				m_members.m_fade.end = 1;
+				m_members.m_fade.current = 1;
+
+				m_members.m_fade.interpolator.Begin(0);
+			}
+
 			/////////////////////////////////////////////////
 			// member accessors
 		public:
@@ -59,34 +76,12 @@ namespace Yelo
 		public:
 			virtual void Ctor()
 			{
-				ClearNodeData();
-
-				m_members.m_flags.is_valid = false;
-				m_members.m_flags.is_active = true;
-				m_members.definition = NULL;
-				m_members.quad_definition = NULL;
-				m_members.render_quad = NULL;
-				m_members.m_fade.start = 1;
-				m_members.m_fade.end = 1;
-				m_members.m_fade.current = 1;
-
-				m_members.m_fade.interpolator.Begin(0);
+				ClearMembers();
 			}
 
 			virtual void Dtor()
 			{
-				ClearNodeData();
-
-				m_members.m_flags.is_valid = false;
-				m_members.m_flags.is_active = true;
-				m_members.definition = NULL;
-				m_members.quad_definition = NULL;
-				m_members.render_quad = NULL;
-				m_members.m_fade.start = 1;
-				m_members.m_fade.end = 1;
-				m_members.m_fade.current = 1;
-
-				m_members.m_fade.interpolator.Begin(0);
+				ClearMembers();
 			}
 
 			/////////////////////////////////////////////////

@@ -5,6 +5,9 @@
 */
 #pragma once
 
+class TiXmlElement;
+class TiXmlDocument;
+
 namespace Yelo
 {
 	namespace Settings

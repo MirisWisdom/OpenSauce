@@ -30,6 +30,8 @@ namespace Yelo
 		cstring UserProfilePath();
 		// 'savegames' path
 		cstring UserSavedProfilesPath();
+		// maps folder under the user's profile
+		cstring UserProfileMapsPath();
 		// The OpenSauce path to use that is under the User's game profile
 		cstring OpenSauceProfilePath();
 		// Path which we store our reports in
@@ -37,15 +39,18 @@ namespace Yelo
 		// The current working directory
 		cstring WorkingDirectoryPath();
 
+		// user's maps\ path for the defined PLATFORM_TYPE
+		cstring PlatformUserMapsPath();
+
 		void SharedInitialize(cstring profile_path);
 		void SharedDispose();
 
 
-		bool PlayerProfileRead(cstring profile_name, __out byte profile[Enums::k_player_profile_buffer_size]);
+		bool PlayerProfileRead(cstring profile_name, _Out_ byte profile[Enums::k_player_profile_buffer_size]);
 
 		// Format the settings path & [filename] into [file_path].
 		// Returns: true if [file_path] exists on disk
-		bool GetSettingsFilePath(cstring filename, __out char file_path[MAX_PATH]);
+		bool GetSettingsFilePath(cstring filename, _Out_ char file_path[MAX_PATH]);
 
 		// Open a report file for writing
 		// [append] - keep existing report data

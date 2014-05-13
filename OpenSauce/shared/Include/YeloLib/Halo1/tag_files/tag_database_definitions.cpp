@@ -7,8 +7,7 @@
 #include <YeloLib/Halo1/tag_files/tag_database_definitions.hpp>
 
 #if PLATFORM_IS_EDITOR
-#include "Engine/EngineFunctions.hpp"
-#include "TagGroups/TagGroups.hpp"
+	#include <blamlib/Halo1/tag_files/tag_groups.hpp>
 #endif
 
 namespace Yelo
@@ -20,7 +19,7 @@ namespace Yelo
 		{
 			if(this->name.Size > 0)
 			{
-				Yelo::tag_group* group_definition = blam::tag_group_get(this->group_tag);
+				tag_group* group_definition = blam::tag_group_get(this->group_tag);
 				if(group_definition != nullptr)
 				{
 					sprintf_s(formatted_buffer, Enums::k_tag_block_format_buffer_size, 
@@ -31,11 +30,10 @@ namespace Yelo
 
 		void s_tag_database::Initialize()
 		{
-			Yelo::tag_group* definition = blam::tag_group_get<s_tag_database>();
+			tag_group* definition = blam::tag_group_get<s_tag_database>();
 			if(definition == nullptr)
 			{
-				YELO_ERROR(_error_message_priority_critical, 
-					"CheApe: tag_database not found!");
+				YELO_ERROR_CRITICAL("CheApe: tag_database not found!");
 			}
 			else if(definition->version == k_version)
 			{

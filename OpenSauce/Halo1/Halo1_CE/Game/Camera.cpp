@@ -8,7 +8,7 @@
 #include "Game/Camera.hpp"
 
 #if PLATFORM_IS_USER
-#include "Common/YeloSettings.hpp"
+#include "Settings/YeloSettings.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Game/EngineFunctions.hpp"
 

@@ -10,11 +10,22 @@ namespace Yelo
 {
 	namespace Interface
 	{
+#if !PLATFORM_IS_EDITOR
+		bool MultiplayerMapIsOriginal(cstring map_name)
+		{
+			for (auto mp_map : blam::k_original_multiplayer_maps)
+				if (!strcmp(map_name, mp_map.name))
+					return true;
+
+			return false;
+		}
+#endif
 	};
 
 	namespace blam
 	{
-		cstring map_list_ignored_map_names[] = {
+#if !PLATFORM_IS_EDITOR
+		cstring map_list_ignored_map_names[10+1+3] = {
 			"a10", "a30", "a50",
 			"b30", "b40",
 			"c10", "c20", "c40",
@@ -24,5 +35,29 @@ namespace Yelo
 			"sounds",
 			"loc",
 		};
+
+		const Interface::s_map_list_map_info k_original_multiplayer_maps[19] = {
+			{0,  "beavercreek", true},
+			{1,  "sidewinder", true},
+			{2,  "damnation", true},
+			{3,  "ratrace", true},
+			{4,  "prisoner", true},
+			{5,  "hangemhigh", true},
+			{6,  "chillout", true},
+			{7,  "carousel", true},
+			{8,  "boardingaction", true},
+			{9,  "bloodgulch", true},
+			{10, "wizard", true},
+			{11, "putput", true},
+			{12, "longest", true},
+
+			{13, "icefields"},
+			{14, "deathisland"},
+			{15, "dangercanyon"},
+			{16, "infinity"},
+			{17, "timberland"},
+			{18, "gephyrophobia"},
+		};
+#endif
 	};
 };

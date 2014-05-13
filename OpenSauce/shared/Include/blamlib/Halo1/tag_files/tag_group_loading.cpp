@@ -4,6 +4,7 @@
 	See license\OpenSauce\OpenSauce for specific license information
 */
 #include "Common/Precompile.hpp"
+#if PLATFORM_IS_EDITOR
 #include <blamlib/Halo1/tag_files/tag_group_loading.hpp>
 
 #include <blamlib/Halo1/memory/byte_swapping.hpp>
@@ -14,7 +15,6 @@
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 #include <YeloLib/Halo1/tag_files/tag_group_memory.hpp>
 
-#include "Engine/EngineFunctions.hpp"
 
 /* TODO:
  * use a class to wrap all loading operations, storing all state information as members instead of globals
@@ -109,7 +109,7 @@ namespace Yelo
 			data->stream_position = *position_reference;
 			data->definition = data_definition;
 
-			if( TEST_FLAG(data_definition->flags, Flags::_tag_data_never_streamed_bit)==0 ||
+			if( TEST_FLAG(data_definition->flags, Flags::_tag_data_never_streamed_bit)==false ||
 				TEST_FLAG(read_flags, Flags::_tag_load_for_editor_bit))
 			{
 				int size = data->size;
@@ -328,12 +328,12 @@ namespace Yelo
 				reference->group_tag = TagGroups::gbxmodel_definition::k_group_tag;
 
 			if( reference->group_tag != NONE &&
-				TEST_FLAG(read_flags, Flags::_tag_load_non_resolving_references_bit)==0 &&
-				TEST_FLAG(definition->flags, Flags::_tag_reference_non_resolving_bit)==0
+				TEST_FLAG(read_flags, Flags::_tag_load_non_resolving_references_bit)==false &&
+				TEST_FLAG(definition->flags, Flags::_tag_reference_non_resolving_bit)==false
 				)
 			{
-				if( strlen(reference->name) != 0 ||
-					(TEST_FLAG(read_flags, Flags::_tag_load_for_editor_bit)==0 &&
+				if( *reference->name != '\0' ||
+					(TEST_FLAG(read_flags, Flags::_tag_load_for_editor_bit)==false &&
 					 TEST_FLAG(definition->flags, Flags::_tag_reference_unknown0_bit))
 					)
 				{
@@ -761,3 +761,5 @@ namespace Yelo
 		}
 	};
 };
+
+#endif

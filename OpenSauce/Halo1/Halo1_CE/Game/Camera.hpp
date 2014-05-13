@@ -189,8 +189,6 @@ namespace Yelo
 		void Update();
 
 		Enums::settings_adjustment_result AdjustSettings();
-		void LoadSettings(TiXmlElement* fov_element);
-		void SaveSettings(TiXmlElement* fov_element);
 
 #if defined(DX_WRAPPER) // TODO: Need fallback initialization for when we're not using the DX_WRAPPER
 		void Initialize3D(IDirect3DDevice9 *pDevice, D3DPRESENT_PARAMETERS *pPP);

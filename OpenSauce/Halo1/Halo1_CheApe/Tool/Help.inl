@@ -104,7 +104,7 @@ static void PLATFORM_API tool_if_you_dont_get_help_at_charter(char* arguments[])
 			"Back up your tag before hand to be safe"
 			"Arguments:\n"
 			"	<scenario-name>\n"
-			"		TagName: Name of the .scenario cleanse of OS-modifications\n"
+			"		TagName: Name of the .scenario cleanse to of OS-modifications\n"
 			);
 	}
 	else

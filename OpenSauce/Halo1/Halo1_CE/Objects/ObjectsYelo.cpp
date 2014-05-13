@@ -12,9 +12,7 @@
 #include <blamlib/Halo1/game/game_globals_definitions.hpp>
 
 #include <blamlib/Halo1/main/console.hpp>
-#include <blamlib/Halo1/models/collision_model_definitions.hpp>
 #include <blamlib/Halo1/models/model_animation_definitions.hpp>
-#include <blamlib/Halo1/objects/damage.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 
 #include <blamlib/Halo1/items/projectiles.hpp>
@@ -23,6 +21,9 @@
 #include <blamlib/Halo1/items/weapon_structures.hpp>
 
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
+#include <YeloLib/configuration/c_configuration_container.hpp>
+#include <YeloLib/configuration/c_configuration_value.hpp>
+#include "Settings/c_settings_singleton.hpp"
 
 #include "TagGroups/project_yellow_definitions.hpp"
 
@@ -31,7 +32,6 @@
 #include "Objects/Units.hpp"
 
 #include "Game/GameState.hpp"
-#include "Game/GameStateRuntimeData.hpp"
 #include "Game/Scripting.hpp"
 #include "Game/ScriptLibrary.hpp"
 #include "Memory/MemoryInterface.hpp"
@@ -50,10 +50,40 @@ namespace Yelo
 #define __EL_INCLUDE_ID			__EL_INCLUDE_OBJECTS
 #define __EL_INCLUDE_FILE_ID	__EL_OBJECTS_OBJECTS
 #include "Memory/_EngineLayout.inl"
+
+		class c_settings_container
+			: public Configuration::c_configuration_container
+		{
+		public:
+			Configuration::c_configuration_value<bool> m_vehicle_remapper_enabled;
+
+			c_settings_container()
+				: Configuration::c_configuration_container("Objects")
+				, m_vehicle_remapper_enabled("VehicleRemapperEnabled", true)
+			{ }
+			
+		protected:
+			const std::vector<i_configuration_value* const> GetMembers() final override
+			{
+				return std::vector<i_configuration_value* const> { &m_vehicle_remapper_enabled };
+			}
+		};
+
+		class c_settings_objects
+			: public Settings::c_settings_singleton<c_settings_container, c_settings_objects>
+		{
+		public:
+			void PostLoad() final override
+			{
+				VehicleRemapperEnable(Get().m_vehicle_remapper_enabled);
+			}
+		};
 	};
 };
 
 #include <YeloLib/Halo1/objects/object_damage_upgrades.inl>
+#include "Objects/Objects.Damage.inl"
+#include "Objects/Objects.Scripting.inl"
 
 namespace Yelo
 {
@@ -87,16 +117,8 @@ namespace Yelo
 		noncollideable_object_data* NoncollideableObject()							DPTR_IMP_GET(noncollideable_object);
 		cluster_noncollideable_object_reference_data_t& ClusterNoncollideableObjectReference()	DPTR_IMP_GET_BYREF(cluster_noncollideable_object_reference);
 		noncollideable_object_cluster_reference_data_t& NoncollideableObjectClusterReference()	DPTR_IMP_GET_BYREF(noncollideable_object_cluster_reference);
-
-
-		static struct s_object_yelo_globals
-		{
-			bool vehicle_remapper_disabled;
-			PAD24;
-		}g_object_yelo_globals;
+		
 #include <YeloLib/Halo1/render/render_objects_upgrades.inl>
-#include "Objects/Objects.Damage.inl"
-#include "Objects/Objects.Scripting.inl"
 
 		static void InitializeScripting()
 		{
@@ -137,6 +159,8 @@ namespace Yelo
 		}
 		void Initialize()
 		{
+			c_settings_objects::Register();
+
 			Memory::WriteRelativeJmp(&Objects::Update, GET_FUNC_VPTR(OBJECTS_UPDATE_HOOK), false);
 
 #if PLATFORM_IS_USER
@@ -160,6 +184,8 @@ namespace Yelo
 
 			Weapon::Dispose();
 			Vehicle::Dispose();
+
+			c_settings_objects::Unregister();
 		}
 
 		static void ObjectsUpdateIgnorePlayerPvs(bool use_fix)
@@ -235,63 +261,17 @@ namespace Yelo
 			Units::InitializeForYeloGameState(enabled);
 		}
 
-
-		void LoadSettings(TiXmlElement* objects_element)
-		{
-			if(objects_element != nullptr)
-			{
-				if(g_object_yelo_globals.vehicle_remapper_disabled = Settings::ParseBoolean(objects_element->Attribute("disableVehicleRemapper")))
-					VehicleRemapperEnable(false);
-			}
-
-#if !PLATFORM_IS_DEDI
-			TiXmlElement* weapons_element = nullptr,
-						* vehicles_element = nullptr
-				;
-
-			if(objects_element != nullptr)
-			{
-				weapons_element = objects_element->FirstChildElement("weaponViews");
-				vehicles_element = objects_element->FirstChildElement("vehicleViews");
-			}
-
-			Weapon::LoadSettings(weapons_element);
-			Vehicle::LoadSettings(vehicles_element);
-#endif
-		}
-
-		void SaveSettings(TiXmlElement* objects_element)
-		{
-			objects_element->SetAttribute("disableVehicleRemapper", 
-				BooleanToString(VehicleRemapperEnabled()==false));
-
-#if !PLATFORM_IS_DEDI
-			TiXmlElement* weapons_element = nullptr,
-						* vehicles_element = nullptr
-				;
-
-			weapons_element = new TiXmlElement("weaponViews");
-				objects_element->LinkEndChild(weapons_element);
-			vehicles_element = new TiXmlElement("vehicleViews");
-				objects_element->LinkEndChild(vehicles_element);
-
-			Weapon::SaveSettings(weapons_element);
-			Vehicle::SaveSettings(vehicles_element);
-#endif
-		}
-
 		bool VehicleRemapperEnabled()
 		{
-			return g_object_yelo_globals.vehicle_remapper_disabled==false;
+			return c_settings_objects::Instance().Get().m_vehicle_remapper_enabled;
 		}
+
 		void VehicleRemapperEnable(bool enabled)
 		{
 			// jnz eip+2+10
 			static const byte k_enable_code[] = { Enums::_x86_opcode_jnz_short, 0x0A };
 			// nop, nop
 			static const byte k_disable_code[] = {Enums::_x86_opcode_nop, Enums::_x86_opcode_nop};
-
-			g_object_yelo_globals.vehicle_remapper_disabled = enabled==false;
 
 			Memory::WriteMemory(GET_FUNC_VPTR(OBJECT_TYPES_PLACE_ALL_MOD_VEHI_REMAP), (enabled ? k_enable_code : k_disable_code), sizeof(k_enable_code));
 		}
@@ -423,7 +403,7 @@ namespace Yelo
 		}
 		void DetachChildrenByType(datum_index parent, long_flags object_type_mask)
 		{
-			PerformActionOnChildrenByType(parent, object_type_mask, object_delete_thunk);
+			PerformActionOnChildrenByType(parent, object_type_mask, object_detach_thunk);
 		}
 
 		size_t PredictMemoryPoolUsage(Enums::object_type type, int32 node_count, bool include_yelo_upgrades)
@@ -483,11 +463,5 @@ namespace Yelo
 	};
 };
 
-#include "Common/YeloSettings.hpp"
-#include "Game/Players.hpp"
-#include "Interface/Controls.hpp"
-#include "Interface/GameUI.hpp"
-#include "Interface/TextBlock.hpp"
-
-#include "Objects/Objects.Weapon.inl"
-#include "Objects/Objects.Vehicle.inl"
+#include "Objects/Objects.WeaponSettings.inl"
+#include "Objects/Objects.VehicleSettings.inl"

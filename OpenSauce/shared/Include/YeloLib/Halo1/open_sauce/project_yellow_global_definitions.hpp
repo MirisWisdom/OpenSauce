@@ -21,6 +21,8 @@ namespace Yelo
 			TAG_FIELD(tag_string, name);
 			TAG_FIELD(tag_reference, scenario, "scnr");
 			TAG_PAD(int32, 6); // 24
+
+			static cstring PLATFORM_API FormatBlockName(datum_index tag_index, tag_block* block, int32 element, char formatted_buffer[Enums::k_tag_block_format_buffer_size]);
 		};
 		struct s_yelo_preprocess_definition
 		{
@@ -66,6 +68,8 @@ namespace Yelo
 		{
 			TAG_FIELD(tag_string, name[2]); // So we can have at most 62 characters for the name
 			TAG_FIELD(int16, index);
+
+			static cstring PLATFORM_API FormatBlockName(datum_index tag_index, tag_block* block, int32 element, char formatted_buffer[Enums::k_tag_block_format_buffer_size]);
 		};
 		struct s_script_function_definition : public s_script_construct_definition
 		{
@@ -149,6 +153,8 @@ namespace Yelo
 			void CullInvalidNetworkPlayerUnits();
 		public:
 			void Cull();
+
+		static bool PLATFORM_API GroupPostprocess(datum_index tag_index, Enums::tag_postprocess_mode mode);
 #endif
 		public:
 			// Does the tag definition have a project_yellow_globals_cv reference?

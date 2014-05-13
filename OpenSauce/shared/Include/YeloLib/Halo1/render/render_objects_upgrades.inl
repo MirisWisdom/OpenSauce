@@ -9,7 +9,7 @@ namespace render_objects_mods
 {
 	static void Initialize()
 	{
-#if PLATFORM_IS_USER || PLATFORM_ID == PLATFORM_SAPIEN
+#if PLATFORM_IS_USER || PLATFORM_TYPE == PLATFORM_SAPIEN
 		static datum_index rendered_objects[Enums::k_maximum_rendered_objects_upgrade];
 
 		for(auto ptr : K_MAXIMUM_RENDERED_OBJECTS_REFS_32bit)

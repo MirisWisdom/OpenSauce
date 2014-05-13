@@ -7,10 +7,11 @@
 #include "Common/Precompile.hpp"
 #include "Game/ScriptLibrary.hpp"
 
+#include <blamlib/Halo1/hs/hs_structures.hpp>
 #include <blamlib/Halo1/networking/network_server_manager_structures.hpp>
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 
-#include "Common/YeloSettings.hpp"
+#include "Settings/YeloSettings.hpp"
 #include "TagGroups/project_yellow_definitions.hpp"
 #include "Game/Camera.hpp"
 #include "Networking/MessageDefinitions.hpp"
@@ -291,8 +292,7 @@ namespace Yelo
 			{
 				Memory::WriteMemory(
 					hs_func_pool[hs_eval_func], 
-					hs_eval_func_has_param, 
-					sizeof(hs_eval_func_has_param));
+					hs_eval_func_has_param);
 
 				temp = CAST_PTR(uint32*, &(hs_func_pool[hs_eval_func][HS_EVAL_INDEX_FUNC_WITH_PARAM]) );
 				*temp = CAST_PTR(uint32, &(hs_eval_func_ptrs[hs_eval_func]) );
@@ -301,8 +301,7 @@ namespace Yelo
 			{
 				Memory::WriteMemory(
 					hs_func_pool[hs_eval_func], 
-					hs_eval_func_no_param, 
-					sizeof(hs_eval_func_no_param));
+					hs_eval_func_no_param);
 
 				temp = CAST_PTR(uint32*, &(hs_func_pool[hs_eval_func][HS_EVAL_INDEX_FUNC_NO_PARAM]) );
 				*temp = CAST_PTR(uint32, &(hs_eval_func_ptrs[hs_eval_func]) );
@@ -364,7 +363,7 @@ namespace Yelo
 
 					if( DefinitionsNameMatch(yelo_def.name, def.name) &&			// check if names match...
 						def.parameters.Count == yelo_def.paramc &&					// check if we have the same amount of parameters
-						(is_valid = def.return_type == yelo_def.return_type)		// check if we have the same return type
+						(is_valid = (def.return_type == yelo_def.return_type))		// check if we have the same return type
 						)
 					{
 						const _enum* params = def.parameters.Definitions;			// check if the parameter types are the same
