@@ -10,6 +10,8 @@
 #include "Common/targetver.h"
 
 #include <cseries/KillCxxExceptions.hpp>
+// Mother fucking boost (property tree, uuid, etc) calls STL functions which will bitch about C4996. Fuck you.
+#define _SCL_SECURE_NO_WARNINGS 1
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
