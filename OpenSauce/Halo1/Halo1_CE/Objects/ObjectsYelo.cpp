@@ -210,20 +210,23 @@ namespace Yelo
 		}
 		static void UseBipedJumpPenalty(bool use_fix)
 		{
+			using namespace TagGroups;
+
 			const size_t k_game_globals_player_stun_offset = 
-				FIELD_OFFSET(TagGroups::s_game_globals_player_information, stun);
+				FIELD_OFFSET(s_game_globals_player_information, stun);
 			const size_t k_game_globals_player_stun_turning_penalty_offset = 
 				k_game_globals_player_stun_offset + 
-				FIELD_OFFSET(TagGroups::s_game_globals_player_information::_stun, turning_penalty);
+				FIELD_OFFSET(s_game_globals_player_information::_stun, turning_penalty);
 			const size_t k_game_globals_player_stun_jumping_penalty_offset = 
 				k_game_globals_player_stun_offset + 
-				FIELD_OFFSET(TagGroups::s_game_globals_player_information::_stun, jumping_penalty);
+				FIELD_OFFSET(s_game_globals_player_information::_stun, jumping_penalty);
 
 			BOOST_STATIC_ASSERT( k_game_globals_player_stun_turning_penalty_offset == 0x84 );
 			BOOST_STATIC_ASSERT( k_game_globals_player_stun_jumping_penalty_offset == 0x88 );
 			*CAST_PTR(size_t*, GET_FUNC_VPTR(BIPED_JUMP_MOD_STUN_PENALTY_FIELD_REF)) = 
-				use_fix ? k_game_globals_player_stun_jumping_penalty_offset : 
-					k_game_globals_player_stun_turning_penalty_offset; // stock code uses turning penalty for whatever reason
+				use_fix
+				? k_game_globals_player_stun_jumping_penalty_offset
+				: k_game_globals_player_stun_turning_penalty_offset; // stock code uses turning penalty for whatever reason
 		}
 		void InitializeForNewMap()
 		{

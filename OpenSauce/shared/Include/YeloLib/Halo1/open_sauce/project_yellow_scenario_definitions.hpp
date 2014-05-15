@@ -34,11 +34,15 @@ namespace Yelo
 		struct s_project_yellow_scenario_build_info
 		{
 			PAD16;
-			TAG_ENUM(build_stage, TagEnums::production_build_stage);
+			TAG_ENUM(build_stage, Enums::production_build_stage);
 			TAG_FIELD(uint32, revision);
 			time_t timestamp;			BOOST_STATIC_ASSERT(sizeof(time_t) == 0x8);
+			byte uuid_buffer[Enums::k_uuid_buffer_size];
 
-			TAG_PAD(int32, 8); // 32
+			TAG_PAD(int32, 4); // 16
+
+			bool HasUuid() const;
+			void GenerateUuid();
 		};
 
 		//////////////////////////////////////////////////////////////////////////
@@ -51,7 +55,7 @@ namespace Yelo
 			TAG_FIELD(int16, scenario_sky_to_replace); // block into to the 'skies' block
 			TAG_FIELD(tag_reference, sky, 'sky ');
 
-			bool IsValid() const { return scenario_sky_to_replace != NONE && !sky.tag_index.IsNull(); }
+			bool IsValid() const;
 		};
 
 		struct s_scenario_faux_zone_lightmap_set
@@ -73,10 +77,7 @@ namespace Yelo
 			PAD32;
 
 			// Does this variant have an actual changes to the game/tag state?
-			API_INLINE bool HasGameStateChanges() const
-			{
-				return lightmap_index != NONE || sky_index != NONE;
-			}
+			bool HasGameStateChanges() const;
 		};
 		struct s_scenario_faux_zone_set
 		{

@@ -474,6 +474,9 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_singleton.hpp">
       <Filter>configuration</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\enum_wrappers.hpp">
+      <Filter>cseries</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">

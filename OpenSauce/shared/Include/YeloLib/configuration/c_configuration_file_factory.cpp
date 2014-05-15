@@ -17,25 +17,16 @@ namespace Yelo
 		{
 			configuration_file_ptr_t configuration_file(nullptr);
 
-			// Get the extension
-			std::string::size_type extension_index = file_path.rfind('.');
-			
-			if(extension_index == std::string::npos)
-			{
-				return configuration_file;
-			}
-
-			std::string extension = file_path.substr(extension_index, std::string::npos);
-
 			// Determine the file type
-			if(extension == ".xml")
+			if (EndsWith(file_path, ".xml"))
 			{
 				configuration_file.reset(new PropertyTree::c_property_tree_file_xml(file_path));
 			}
-			else if(extension == ".json")
+			else if (EndsWith(file_path, ".json"))
 			{
 				configuration_file.reset(new PropertyTree::c_property_tree_file_json(file_path));
 			}
+			// TODO: .info?
 
 			return configuration_file;
 		}

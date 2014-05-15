@@ -11,20 +11,62 @@
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 #include <YeloLib/Halo1/hs/hs_yelo.hpp>
 
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+
 namespace Yelo
 {
+	BOOST_STATIC_ASSERT(sizeof(boost::uuids::uuid) == Enums::k_uuid_buffer_size);
+
 	namespace TagGroups
 	{
+		bool s_project_yellow_scenario_build_info::HasUuid() const
+		{
+			return !CAST_PTR(const boost::uuids::uuid&, uuid_buffer).is_nil();
+		}
+
+		void s_project_yellow_scenario_build_info::GenerateUuid()
+		{
+			auto uuid_generator = boost::uuids::random_generator();
+
+			CAST_PTR(boost::uuids::uuid&, uuid_buffer) = uuid_generator();
+		}
+
+		bool s_scenario_faux_zone_sky::IsValid() const
+		{
+			return scenario_sky_to_replace != NONE && !sky.tag_index.IsNull();
+		}
+
+		bool s_scenario_faux_zone_set_variant::HasGameStateChanges() const
+		{
+			return lightmap_index != NONE || sky_index != NONE;
+		}
+
+		//////////////////////////////////////////////////////////////////////////
+		// project_yellow
 		cstring project_yellow::k_default_name = "i've got a lovely bunch of corncobs";
 
-		bool project_yellow::_physics::IsGravityScaleValid() const		{ return gravity_scale >= 0.0f || gravity_scale <= 2.0f; }
-		void project_yellow::_physics::ResetGravityScale()				{ gravity_scale = 1.0f; }
+		bool project_yellow::_physics::IsGravityScaleValid() const
+		{
+			return gravity_scale >= 0.0f || gravity_scale <= 2.0f;
+		}
+		void project_yellow::_physics::ResetGravityScale()
+		{
+			gravity_scale = 1.0f;
+		}
 
-		bool project_yellow::_physics::IsPlayerSpeedScaleValid() const	{ return gravity_scale >= 0.0f || gravity_scale <= 6.0f; }
-		void project_yellow::_physics::ResetPlayerSpeedScale()			{ player_speed_scale = 1.0f; }
+		bool project_yellow::_physics::IsPlayerSpeedScaleValid() const
+		{
+			return gravity_scale >= 0.0f || gravity_scale <= 6.0f;
+		}
+		void project_yellow::_physics::ResetPlayerSpeedScale()
+		{
+			player_speed_scale = 1.0f;
+		}
 
 		bool project_yellow::IsNull() const				{ return flags.null_definition_bit != false; }
 		bool project_yellow::IsCacheProtected() const	{ return flags.cache_is_protected_bit != false; }
+		//////////////////////////////////////////////////////////////////////////
 
 #if PLATFORM_IS_EDITOR
 		bool PLATFORM_API project_yellow::GroupPostprocess(datum_index tag_index, Enums::tag_postprocess_mode mode)

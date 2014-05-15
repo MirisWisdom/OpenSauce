@@ -82,6 +82,23 @@ namespace Yelo
 		return string;
 	}
 
+	bool EndsWith(const std::string& str, const std::string& suffix)
+	{
+		// based on http://stackoverflow.com/a/20447331/444977
+
+		if (suffix.length() > str.length())
+			return false;
+
+		auto pos = str.length() - suffix.length();
+		auto pos_a = &str[pos];
+		auto pos_b = &suffix[0];
+		while (*pos_a != '\0')
+			if (*pos_a++ != *pos_b++)
+				return false;
+
+		return true;
+	}
+
 	void winapi_handle_closer::operator()(HANDLE h) const
 	{
 		YELO_ASSERT_DISPLAY(h != INVALID_HANDLE_VALUE, "tried to close an INVALID handle");

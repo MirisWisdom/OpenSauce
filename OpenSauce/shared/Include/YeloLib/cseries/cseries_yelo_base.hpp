@@ -18,6 +18,13 @@ extern const errno_t k_errnone;
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum {
+			k_uuid_buffer_size = 16,
+		};
+	};
+
 	// System Initialize function pointer
 	// Note: We can use this in engine definitions as well since it takes no parameters
 	typedef void (API_FUNC* proc_initialize)();
@@ -172,6 +179,15 @@ namespace Yelo
 
 	// [string_length] includes the null terminator
 	wstring string_to_wstring_lazy(wstring string, int32 string_length, cstring ascii);
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Determines whether the end of the string instance matches the specified suffix string. </summary>
+	///
+	/// <param name="str">   	The string in question. </param>
+	/// <param name="suffix">	The string to compare to the substring at the end of this instance. </param>
+	///
+	/// <returns>	true if suffix matches the end of the instance; otherwise, false. </returns>
+	bool EndsWith(const std::string& str, const std::string& suffix);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/// <summary>
@@ -351,6 +367,23 @@ namespace Yelo
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Tests whether an array is bitwise zero. </summary>
+	///
+	/// <param name="array">	Array to test. </param>
+	/// <param name="index"> 	Element index in array to start testing at. </param>
+	/// 
+	///  <returns>	true if the array elements are equal to bitwise zero, false if one or more aren't. </returns>
+	template<typename T, size_t kLength> inline
+	bool ArrayIsZero (T (&array)[kLength], size_t index = 0)
+	{
+		T zero = T();
+		for (size_t x = index; x < kLength; x++)
+			if (memcmp(&array[x], &zero, sizeof(zero)) != 0)
+				return false;
+
+		return true;
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/// <summary>	Clear an array to be bitwise zero. </summary>
 	///
 	/// <param name="array">	Array to zero. </param>
@@ -387,7 +420,7 @@ namespace Yelo
 	template<typename T, size_t kDstLength, size_t kSrcLength> inline
 	bool ArrayCopy   (T (&dst)[kDstLength], const T (&src)[kSrcLength], size_t count = kSrcLength)
 	{
-		return ArrayCopy(dst, src, count);
+		return ArrayCopy(dst, 0, src, 0, count);
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/// <summary>	Copy a range of elements from one array to another. </summary>
