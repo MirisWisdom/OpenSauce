@@ -12,8 +12,8 @@ namespace Yelo
 {
 	namespace Configuration { namespace PropertyTree
 	{
-		c_property_tree_leaf::c_property_tree_leaf(boost::property_tree::ptree* property_tree)
-			: m_property_tree(*property_tree)
+		c_property_tree_leaf::c_property_tree_leaf(boost::property_tree::ptree& property_tree)
+			: m_property_tree(property_tree)
 		{ }
 		
 		bool c_property_tree_leaf::GetValue(const bool default_value)
@@ -115,7 +115,7 @@ namespace Yelo
 			std::string::size_type index = child_name.rfind('.');
 			if(index == std::string::npos)
 			{
-				return std::make_unique<c_property_tree_leaf_iterator>(&m_property_tree, child_name);
+				return std::make_unique<c_property_tree_leaf_iterator>(m_property_tree, child_name);
 			}
 			else
 			{
@@ -132,7 +132,7 @@ namespace Yelo
 				return nullptr;
 			}
 
-			boost::property_tree::ptree* current_tree = &m_property_tree;
+			boost::property_tree::ptree& current_tree = m_property_tree;
 			std::string search_string(child_name);
 			
 			// Split the node path into tokens and find each child node
@@ -152,12 +152,12 @@ namespace Yelo
 					search_string.replace(0, index + 1, "");
 				}
 
-				if(current_tree->find(token) == m_property_tree.not_found())
+				if(current_tree.find(token) == m_property_tree.not_found())
 				{
 					return nullptr;
 				}
 
-				current_tree = &current_tree->get_child(token);
+				current_tree = current_tree.get_child(token);
 			};
 
 			return std::make_unique<c_property_tree_leaf>(current_tree);
@@ -166,7 +166,7 @@ namespace Yelo
 		std::unique_ptr<i_configuration_leaf> c_property_tree_leaf::AddChild(const std::string& child_name)
 		{
 			boost::property_tree::ptree new_child;
-			return std::make_unique<c_property_tree_leaf>(&m_property_tree.add_child(child_name, new_child));
+			return std::make_unique<c_property_tree_leaf>(m_property_tree.add_child(child_name, new_child));
 		}
 	};};
 };

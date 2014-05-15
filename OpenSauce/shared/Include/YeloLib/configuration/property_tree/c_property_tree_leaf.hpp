@@ -18,7 +18,7 @@ namespace Yelo
 			boost::property_tree::ptree& m_property_tree;
 			
 		public:
-			c_property_tree_leaf(boost::property_tree::ptree* property_tree);
+			c_property_tree_leaf(boost::property_tree::ptree& property_tree);
 		
 			bool GetValue(const bool default_value = false) final override;
 			sbyte GetValue(const sbyte default_value = 0) final override;

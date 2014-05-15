@@ -10,9 +10,9 @@ namespace Yelo
 {
 	namespace Configuration { namespace PropertyTree
 	{
-		c_property_tree_leaf_iterator::c_property_tree_leaf_iterator(boost::property_tree::ptree* tree, const std::string& node_name)
+		c_property_tree_leaf_iterator::c_property_tree_leaf_iterator(boost::property_tree::ptree& tree, const std::string& node_name)
 			: m_is_started(false)
-			, m_tree(*tree)
+			, m_tree(tree)
 			, m_iterator()
 			, m_node_name(node_name)
 			, m_current_leaf(nullptr)
@@ -40,7 +40,7 @@ namespace Yelo
 			{
 				if(m_iterator->first == m_node_name)
 				{
-					m_current_leaf.reset(new c_property_tree_leaf(&m_iterator->second));
+					m_current_leaf.reset(new c_property_tree_leaf(m_iterator->second));
 					return true;
 				}
 
