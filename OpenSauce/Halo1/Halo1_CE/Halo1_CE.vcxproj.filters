@@ -211,6 +211,9 @@
     <Filter Include="Scenario">
       <UniqueIdentifier>{bcb7d432-3ee3-4ffb-a8c6-275c83b15dcb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scenario\Impl">
+      <UniqueIdentifier>{fbae11d1-b912-48f5-b05a-1fd9ec289f00}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Settings">
       <UniqueIdentifier>{28f035c3-f19c-4795-a2a8-ecd7e968e03b}</UniqueIdentifier>
     </Filter>

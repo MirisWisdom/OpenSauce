@@ -12,10 +12,7 @@
     <AssemblyName>BlamLib</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
-  <PropertyGroup>
-    <OSRootDir>$(MSBuildProjectDirectory)\..\..\</OSRootDir>
-  </PropertyGroup>
-  <Import Project="$(OSRootDir)shared\config\msbuild\BlamLib.props" />
+  <Import Project="$(SolutionDir)..\shared\config\msbuild\BlamLib.props" />
   <ItemGroup>
     <Reference Include="SlimDX" />
     <Reference Include="System" />
@@ -25,10 +22,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <ProjectReference Include="..\LowLevel\LowLevel.vcxproj">
-      <Project>{5E5B9F4E-1067-4470-8AA9-B25BBBEA063A}</Project>
-      <Name>LowLevel</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Blam\Cache\Tags\CacheTagsGen2nd.cs" />
@@ -40,18 +33,6 @@
     <Compile Include="Blam\DataHandles\MapId.cs" />
     <Compile Include="Blam\DataHandles\ResourcePtr.cs" />
     <Compile Include="Blam\DataHandles\StringId.cs" />
-    <Compile Include="Blam\Halo1\Tags\Definitions\Yelo.cs" />
-    <Compile Include="Blam\Halo1\TypeEnums.cs" />
-    <Compile Include="Blam\Halo1\CheApe\Compiler_Scripts.cs" />
-    <Compile Include="Blam\Halo1\CheApe\Compiler_Tags.cs" />
-    <Compile Include="Blam\Halo1\CheApe\Import_Tags.cs" />
-    <Compile Include="CheApe\Compiler_CacheFile.cs" />
-    <Compile Include="CheApe\Compiler_Fixups.cs" />
-    <Compile Include="CheApe\Compiler_Tags.cs" />
-    <Compile Include="CheApe\Import_Fixups.cs" />
-    <Compile Include="CheApe\Import_Scripts.cs" />
-    <Compile Include="CheApe\Import_Tags.cs" />
-    <Compile Include="CheApe\ProjectState.cs" />
     <Compile Include="Compression\LZMA.cs" />
     <Compile Include="Cryptography\MD5.cs" />
     <Compile Include="Cryptography\XXTEA.cs" />
@@ -92,7 +73,7 @@
     <Compile Include="Blam\Halo1\CheApe\Compiler.cs" />
     <Compile Include="Blam\Halo1\CheApe\Import.cs" />
     <Compile Include="Blam\Halo1\CheApe\Project.cs" />
-    <Compile Include="Blam\Halo3\DelimitorFile.cs" />
+    <Compile Include="Blam\Halo1\DelimitorFile.cs" />
     <Compile Include="Blam\Halo1\Game.cs" />
     <Compile Include="Blam\Halo1\Program.Halo1.cs" />
     <Compile Include="Blam\Halo1\Tags\Code\Resources.cs" />
@@ -571,6 +552,12 @@
   <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
     <EmbeddedResource Include="Games\Halo4\Halo4.xml" />
     <EmbeddedResource Include="Games\Halo4\Xbox\Definitions\Halo4_Xbox_StringId.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LowLevel\LowLevel.vcxproj">
+      <Project>{5E5B9F4E-1067-4470-8AA9-B25BBBEA063A}</Project>
+      <Name>LowLevel</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Blam\Halo4\Tags\Code\" />

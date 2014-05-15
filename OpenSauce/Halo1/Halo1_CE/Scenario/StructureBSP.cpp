@@ -174,7 +174,7 @@ namespace Yelo
 			}
 
 			// Store the bsps current sky set
-			g_bsp_variant_globals.m_bsp_variant_gamestate[bsp_info_index].m_sky_set = set_index;
+			g_bsp_modifier_globals.m_bsp_modifier_gamestate[bsp_info_index].m_sky_set = set_index;
 
 			return true;
 		}
