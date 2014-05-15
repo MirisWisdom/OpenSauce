@@ -62,13 +62,13 @@ namespace Animations
 		
 		// remap the existing jump entries into our jump table at the correct indices
 		unit_update_animation_primary_keyframe_jmp_table_yelo_remapping(
-			Enums::_unit_animation_state_melee,			unit_update_animation_primary_keyframe_jmp_0);
+			Enums::_unit_animation_state_melee,				unit_update_animation_primary_keyframe_jmp_0);
 		unit_update_animation_primary_keyframe_jmp_table_yelo_remapping(
 			Enums::_unit_animation_state_melee_airborne,	unit_update_animation_primary_keyframe_jmp_0);
 		unit_update_animation_primary_keyframe_jmp_table_yelo_remapping(
 			Enums::_unit_animation_state_leap_melee,		unit_update_animation_primary_keyframe_jmp_0);
 		unit_update_animation_primary_keyframe_jmp_table_yelo_remapping(
-			Enums::_unit_animation_state_throw_grenade,	unit_update_animation_primary_keyframe_jmp_1);
+			Enums::_unit_animation_state_throw_grenade,		unit_update_animation_primary_keyframe_jmp_1);
 
 		// set the game's jump table count to ours
 		GET_PTR(unit_update_animation_primary_keyframe_jmp_tbl_count) = Enums::_unit_animation_state_yelo - 1;

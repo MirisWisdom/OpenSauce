@@ -108,6 +108,8 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cseries\memory_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\memory\constant_pool.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\che_ape_settings.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.hpp" />
     <ClInclude Include="Common\Platform.hpp" />
     <ClInclude Include="Common\Precompile.hpp" />
     <ClInclude Include="Common\targetver.h" />
@@ -260,6 +262,8 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_leaf.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_leaf_iterator.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_vector3d_container.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.cpp" />
     <ClCompile Include="..\..\shared\Include\zlib\adler32.c">
       <PrecompiledHeader />
     </ClCompile>

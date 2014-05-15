@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="us-ascii" standalone="yes"?>
 <definitions game="Halo1">
 	<!-- see: OpenSauce\shared\YeloLib\Halo1\open_sauce\project_yellow_scenario_definitions.hpp -->
-
+	
 	<enums>
 		<Enum name="production_build_stage_enum">
 			<field>ship</field>
@@ -18,14 +18,9 @@
 			<field>don't fix ui game globals#when building a ui cache file, don't let tool's stock code muck with the game globals definition</field>
 			<field>game updates ignore player pvs hack#mainmenu scenarios only; overrides various game update logic to allow game entities to update without them being within the player's supposed view</field>
 		</Flag>
-
+		
 		<Flag name="gameplay_flags">
 			<field>prohibit multi-team vehicles</field>
-		</Flag>
-
-		<Flag name="scenario_info_sequence_flags">
-			<field>continue when inactive</field>
-			<field>start on map load</field>
 		</Flag>
 	</flags>
 
@@ -38,7 +33,6 @@
 
 			<field type="Pad" definition="32" />
 		</TagBlock>
-
 
 
 		<!-- SCENARIO INFORMATION -->
@@ -54,9 +48,9 @@
 			<!-- FS: May need this space to store BSP ambient lighting info -->
 			<field type="Pad" definition="36"/>
 		</TagBlock>
-		
+
 		<TagBlock name="scenario_information_bsp_sky_set_sky_block" maxElements="8">
-			<field type="Pad" definition="2"/>
+			<field type="Pad" definition="2" />
 			<field type="ShortInteger"    name="sky index"/>
 			<field type="TagReference"    name="sky" definition="sky_reference" />
 		</TagBlock>

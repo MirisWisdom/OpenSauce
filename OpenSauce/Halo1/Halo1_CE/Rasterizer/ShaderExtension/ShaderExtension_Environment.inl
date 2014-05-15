@@ -189,51 +189,6 @@ no_extension:
 		g_current_feature_mix = &g_feature_mix_list[shader_index];
 	}
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-	/// <summary>	Loads the environment shader settings . </summary>
-	///
-	/// <param name="parent_element">	[in,out] If non-null, the parent xml element. </param>
-	void		LoadSettings(TiXmlElement* parent_element)
-	{
-		g_extension_usage_mask = Enums::_shader_extension_usage_normal_map;
-
-		if(parent_element != nullptr)
-		{
-			int32 usage_mask = Enums::_shader_extension_usage_none;
-			TiXmlElement* environment_element = parent_element->FirstChildElement("Environment");
-
-			if (environment_element != nullptr)
-			{
-				TiXmlElement* feature_element = nullptr;
-				char* feature_attribute = nullptr;
-
-				if(feature_element = environment_element->FirstChildElement("DiffuseDirectionalLightmaps"))
-					g_directional_lightmaps_enabled = Settings::ParseBoolean(feature_element->Attribute("enabled"));
-
-				g_extension_usage_mask &= usage_mask;
-			}
-		}
-	}
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-	/// <summary>	Saves the environment shader settings. </summary>
-	///
-	/// <param name="parent_element">	[in,out] If non-null, the parent xml element. </param>
-	void		SaveSettings(TiXmlElement* parent_element)
-	{
-		if (parent_element != nullptr)
-		{
-			TiXmlElement* environment_element = new TiXmlElement("Environment");
-			parent_element->LinkEndChild(environment_element);
-
-			TiXmlElement* feature_element = nullptr;
-
-			feature_element = new TiXmlElement("DiffuseDirectionalLightmaps");
-			feature_element->SetAttribute("enabled", BooleanToString(g_directional_lightmaps_enabled));
-			environment_element->LinkEndChild(feature_element);
-		}
-	}
-
 	/// <summary>	Applies the hooks for custom shader code. </summary>
 	void		ApplyHooks()
 	{

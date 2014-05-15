@@ -141,7 +141,7 @@ namespace Yelo
 					Yelo::Configuration::c_configuration_value<bool> m_specular_lighting;
 
 					c_shader_model_settings()
-						: Yelo::Configuration::c_configuration_container("Rasterizer.ShaderExtensions.Object")
+						: Yelo::Configuration::c_configuration_container("Object")
 						, m_normal_maps("NormalMaps", true)
 						, m_detail_normal_maps("DetailNormalMaps", true)
 						, m_specular_maps("SpecularMaps", true)
@@ -161,28 +161,56 @@ namespace Yelo
 					}
 				};
 
+				class c_shader_environment_settings
+					: public Yelo::Configuration::c_configuration_container
+				{
+				public:
+					Yelo::Configuration::c_configuration_value<bool> m_diffuse_directional_lightmaps;
+
+					c_shader_environment_settings()
+						: Yelo::Configuration::c_configuration_container("Environment")
+						, m_diffuse_directional_lightmaps("DiffuseDirectionalLightmaps", true)
+					{ }
+		
+				protected:
+					const std::vector<i_configuration_value* const> GetMembers() final override
+					{
+						return std::vector<i_configuration_value* const>
+						{
+							&m_diffuse_directional_lightmaps
+						};
+					}
+				};
+
 			public:
 				Configuration::c_configuration_value<bool> m_enabled;
 				c_shader_model_settings m_shader_model;
+				c_shader_environment_settings m_shader_environment;
 
 				c_shader_extension_container()
 					: Configuration::c_configuration_container("Rasterizer.ShaderExtensions")
 					, m_enabled("Enabled", true)
 					, m_shader_model()
+					, m_shader_environment()
 				{ }
 				
 			protected:
 				const std::vector<i_configuration_value* const> GetMembers() final override
 				{
-					return std::vector<i_configuration_value* const> { &m_enabled, &m_shader_model };
+					return std::vector<i_configuration_value* const>
+					{
+						&m_enabled,
+						&m_shader_model,
+						&m_shader_environment,
+					};
 				}
 			};
 
 			class c_settings_shaderextension
 				: public Settings::c_settings_singleton<c_shader_extension_container, c_settings_shaderextension>
 			{
-			public:
-				void PostLoad() final override
+#pragma region Model
+				void SetModelUsage()
 				{
 					Model::g_extension_usage_mask = Enums::_shader_extension_usage_normal_map | Enums::_shader_extension_usage_detail_normal |
 					Enums::_shader_extension_usage_specular_map | Enums::_shader_extension_usage_specular_lighting;
@@ -197,12 +225,46 @@ namespace Yelo
 					Model::g_extension_usage_mask &= usage_mask;
 				}
 
-				void PreSave() final override
+				void GetModelUsage()
 				{
 					Get().m_shader_model.m_normal_maps = (Model::g_extension_usage_mask & Enums::_shader_extension_usage_normal_map) == Enums::_shader_extension_usage_normal_map;
 					Get().m_shader_model.m_detail_normal_maps = (Model::g_extension_usage_mask & Enums::_shader_extension_usage_detail_normal) == Enums::_shader_extension_usage_detail_normal;
 					Get().m_shader_model.m_specular_maps = (Model::g_extension_usage_mask & Enums::_shader_extension_usage_specular_map) == Enums::_shader_extension_usage_specular_map;
 					Get().m_shader_model.m_specular_lighting = (Model::g_extension_usage_mask & Enums::_shader_extension_usage_specular_lighting) == Enums::_shader_extension_usage_specular_lighting;
+				}
+#pragma endregion
+
+#pragma region Environment
+				void SetEnvironmentUsage()
+				{
+					Environment::g_extension_usage_mask = Enums::_shader_extension_usage_directional_lightmaps;
+
+					int32 usage_mask = Enums::_shader_extension_usage_none;
+
+					usage_mask |= (Get().m_shader_environment.m_diffuse_directional_lightmaps ? Enums::_shader_extension_usage_directional_lightmaps : Enums::_shader_extension_usage_none);
+
+					Environment::g_extension_usage_mask &= usage_mask;
+				}
+
+				void GetEnvironmentUsage()
+				{
+					Get().m_shader_environment.m_diffuse_directional_lightmaps = (Environment::g_extension_usage_mask & Enums::_shader_extension_usage_directional_lightmaps) == Enums::_shader_extension_usage_directional_lightmaps;
+				}
+#pragma endregion
+
+			public:
+				void PostLoad() final override
+				{
+					SetModelUsage();
+					SetEnvironmentUsage();
+
+
+				}
+
+				void PreSave() final override
+				{
+					GetModelUsage();
+					GetEnvironmentUsage();
 				}
 			};
 #pragma endregion

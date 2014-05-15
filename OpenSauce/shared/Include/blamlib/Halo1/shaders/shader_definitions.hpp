@@ -55,6 +55,7 @@ namespace Yelo
 			_shader_extension_usage_detail_normal			= 1 << 1,
 			_shader_extension_usage_specular_map			= 1 << 2,
 			_shader_extension_usage_specular_lighting		= 1 << 3,
+			_shader_extension_usage_directional_lightmaps	= 1 << 4,
 
 			_shader_extension_usage,
 		};
