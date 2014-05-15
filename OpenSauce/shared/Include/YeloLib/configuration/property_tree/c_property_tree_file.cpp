@@ -13,7 +13,7 @@ namespace Yelo
 	namespace Configuration { namespace PropertyTree
 	{
 		c_property_tree_file::c_property_tree_file(const std::string& file_path)
-			: c_property_tree_leaf(&m_property_tree_file)
+			: c_property_tree_leaf(m_property_tree_file)
 			, m_file_path(file_path)
 		{
 			m_property_tree_file.clear();
@@ -26,7 +26,7 @@ namespace Yelo
 				ReadPropertyTree(m_file_path, m_property_tree_file);
 			}
 			catch(...)
-			{
+			{ //-V565
 				// Doesn't really matter that the read failed, default values will be used instead and the settings are re-written when the game closes anyway
 			}
 		}
@@ -43,7 +43,7 @@ namespace Yelo
 
 		std::unique_ptr<i_configuration_leaf> c_property_tree_file::Root()
 		{
-			return std::unique_ptr<i_configuration_leaf>(new c_property_tree_leaf(&m_property_tree_file));
+			return std::unique_ptr<i_configuration_leaf>(new c_property_tree_leaf(m_property_tree_file));
 		}
 	};};
 };

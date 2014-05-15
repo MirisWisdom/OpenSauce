@@ -30,7 +30,7 @@ namespace Yelo
 			///
 			/// <param name="tree">			The tree to iterate over. </param>
 			/// <param name="node_name">	Name of the nodes to find. </param>
-			c_property_tree_leaf_iterator(boost::property_tree::ptree* tree, const std::string& node_name);
+			c_property_tree_leaf_iterator(boost::property_tree::ptree& tree, const std::string& node_name);
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Determines if we can move to the next entry. </summary>

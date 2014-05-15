@@ -18,7 +18,7 @@ namespace Yelo
 			, public i_configuration_file
 		{
 			std::string m_file_path;
-			
+
 			boost::property_tree::ptree m_property_tree_file;
 		
 		private:
