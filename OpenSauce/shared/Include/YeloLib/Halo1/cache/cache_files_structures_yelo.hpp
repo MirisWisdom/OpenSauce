@@ -88,7 +88,7 @@ namespace Yelo
 
 			struct {
 				PAD16;
-				_enum stage; // see TagEnums::production_build_stage
+				_enum stage; // see Enums::production_build_stage
 				uint32 revision;
 				time_t timestamp;
 
@@ -100,6 +100,9 @@ namespace Yelo
 					byte min;
 					uint16 build;
 				}cheape;
+
+				byte uuid_buffer[Enums::k_uuid_buffer_size]; // future UUID bytes
+				PAD128; // unused for now
 			}build_info; // User-defined build info
 
 			struct {
@@ -111,7 +114,7 @@ namespace Yelo
 
 #if PLATFORM_IS_EDITOR && PLATFORM_TYPE == PLATFORM_TOOL
 			void InitializeForNewMap();
-			void InitializeBuildInfo(_enum stage, uint32 revision);
+			void InitializeBuildInfo(_enum stage, uint32 revision, const byte (&uuid_buffer)[Enums::k_uuid_buffer_size]);
 #endif
 
 			// Is there a yelo header present?
@@ -119,6 +122,8 @@ namespace Yelo
 			bool TagVersioningIsValid() const;
 			// Is the yelo header valid?
 			bool IsValid() const;
+			// Does the build info have a valid UUID?
+			bool HasUuid() const;
 
 			bool BuiltWithOlderTools() const;
 			bool BuiltWithNewerTools() const;

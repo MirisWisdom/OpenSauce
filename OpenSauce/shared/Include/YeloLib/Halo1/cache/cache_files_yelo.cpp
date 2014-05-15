@@ -124,14 +124,14 @@ namespace Yelo
 			this->version = k_version;
 		}
 
-		void s_cache_header_yelo::InitializeBuildInfo(_enum stage, uint32 revision)
+		void s_cache_header_yelo::InitializeBuildInfo(_enum stage, uint32 revision, const byte (&uuid_buffer)[Enums::k_uuid_buffer_size])
 		{
 			build_info.stage = stage;
 			build_info.revision = revision;
 			time(&build_info.timestamp);
 
 			cstring stage_string = "";
-			switch(stage)
+			switch (stage)
 			{
 			case Enums::_production_build_stage_ship:	stage_string = "ship";	break;
 			case Enums::_production_build_stage_alpha:	stage_string = "alpha";	break;
@@ -145,7 +145,7 @@ namespace Yelo
 			localtime_s(&date_tm, &build_info.timestamp); // Convert time to struct tm form
 			// ######.YY.MM.DD.HHMM.stage
 			sprintf_s(build_info.build_string, "%06u." "%02i" "%02i.%02i." "%02i%02i." "%s", 
-				revision, 
+				revision,
 				date_tm.tm_year - 100, // days since 1900, and we want a number relative to 2000
 				date_tm.tm_mon, date_tm.tm_mday, 
 				date_tm.tm_hour, date_tm.tm_sec,
@@ -154,6 +154,8 @@ namespace Yelo
 			build_info.cheape.maj = CAST(byte, K_OPENSAUCE_VERSION_BUILD_MAJ);
 			build_info.cheape.min = CAST(byte, K_OPENSAUCE_VERSION_BUILD_MIN);
 			build_info.cheape.build = CAST(uint16, K_OPENSAUCE_VERSION_BUILD);
+
+			ArrayCopy(build_info.uuid_buffer, uuid_buffer);
 		}
 #endif
 
@@ -166,26 +168,30 @@ namespace Yelo
 			return	tag_versioning.project_yellow == TagGroups::project_yellow::k_version &&
 					tag_versioning.project_yellow_globals == TagGroups::project_yellow_globals::k_version;
 		}
-		// Is the yelo header valid?
 		bool s_cache_header_yelo::IsValid() const
 		{
 			if(HasHeader())
-				return signature == k_signature && version == k_version && 
-					k_memory_upgrade_increase_amount <= K_MEMORY_UPGRADE_INCREASE_AMOUNT && 
-					TagVersioningIsValid();
+				return	signature == k_signature && 
+						version == k_version && 
+						k_memory_upgrade_increase_amount <= K_MEMORY_UPGRADE_INCREASE_AMOUNT && 
+						TagVersioningIsValid();
 
 			return true;
+		}
+		bool s_cache_header_yelo::HasUuid() const
+		{
+			return ArrayIsZero(build_info.uuid_buffer);
 		}
 
 		bool s_cache_header_yelo::BuiltWithOlderTools() const
 		{
-			return build_info.cheape.maj < K_OPENSAUCE_VERSION_BUILD_MAJ ||
-				build_info.cheape.min < K_OPENSAUCE_VERSION_BUILD_MIN;
+			return	build_info.cheape.maj < K_OPENSAUCE_VERSION_BUILD_MAJ ||
+					build_info.cheape.min < K_OPENSAUCE_VERSION_BUILD_MIN;
 		}
 		bool s_cache_header_yelo::BuiltWithNewerTools() const
 		{
-			return build_info.cheape.maj > K_OPENSAUCE_VERSION_BUILD_MAJ ||
-				build_info.cheape.min > K_OPENSAUCE_VERSION_BUILD_MIN;
+			return	build_info.cheape.maj > K_OPENSAUCE_VERSION_BUILD_MAJ ||
+					build_info.cheape.min > K_OPENSAUCE_VERSION_BUILD_MIN;
 		}
 	};
 };

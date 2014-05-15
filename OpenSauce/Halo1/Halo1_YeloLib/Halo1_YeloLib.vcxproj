@@ -104,6 +104,7 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_leaf_iterator.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_vector3d_container.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_type_container.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\enum_wrappers.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_files_structures_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cseries\memory_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\memory\constant_pool.hpp" />

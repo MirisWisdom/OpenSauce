@@ -142,6 +142,9 @@
     <Filter Include="Settings">
       <UniqueIdentifier>{28f035c3-f19c-4795-a2a8-ecd7e968e03b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="_Resources\1.10">
+      <UniqueIdentifier>{96b2b90b-f482-472d-9364-2c28e722c4f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp">
