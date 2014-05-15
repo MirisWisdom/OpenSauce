@@ -92,6 +92,30 @@
 // Double pointer implement get by-reference, with debug assert
 #define DPTR_IMP_GET_BYREF(name){ PTR_IMPL_GET_GUTS(GET_DPTR2, GET_DPTR, name, *) }
 
+// MSVC hack for a bug MS REFUSES to fix, since mother fucking VS2008
+// http://stackoverflow.com/a/10002424/444977
+// I don't know why we have to use this for FUNC_PTR/DATA_PTR but not ENGINE_PTR.
+// Bug must only occur when there's only one non-va-arg
+#define PLATFORM_VALUE_HACK_(args_list) PLATFORM_VALUE args_list
+
+#define ENGINE_DPTR(type, name, ...)												\
+	static auto** const pp##name = CAST_PTR(type**, PLATFORM_VALUE(__VA_ARGS__));	\
+	BOOST_STATIC_ASSERT( PLATFORM_VALUE(__VA_ARGS__) != NULL );
+
+#define ENGINE_PTR(type, name, ...)						\
+	static auto* const p##name = CAST_PTR(type*, PLATFORM_VALUE(__VA_ARGS__));	\
+	BOOST_STATIC_ASSERT( PLATFORM_VALUE(__VA_ARGS__) != NULL );
+
+#define FUNC_PTR(name, ...)									\
+	enum FUNC_PTR_##name									\
+	{ PTR_##name = PLATFORM_VALUE_HACK_((__VA_ARGS__)) };	\
+	BOOST_STATIC_ASSERT( GET_FUNC_PTR(name) != NULL );
+
+#define DATA_PTR(name, ...)									\
+	enum DATA_PTR_##name									\
+	{ PTR_##name = PLATFORM_VALUE_HACK_((__VA_ARGS__)) };	\
+	BOOST_STATIC_ASSERT( GET_DATA_PTR(name) != NULL );
+
 
 namespace Yelo
 {
@@ -344,8 +368,8 @@ namespace Yelo
 		template<void* k_memory_address, size_t k_memory_address_size>
 		struct s_memory_change_data {
 		protected:
-			static volatile bool g_initialized;
-			static volatile bool g_memory_changed;
+			static bool g_initialized;
+			static bool g_memory_changed;
 			// the bytes found at [k_memory_address], before any changes were ever applied
 			static byte g_undo_buffer[k_memory_address_size];
 
@@ -379,9 +403,9 @@ namespace Yelo
 			}
 		};
 		template<void* k_memory_address, size_t k_memory_address_size>
-			volatile bool s_memory_change_data<k_memory_address, k_memory_address_size>::g_initialized;
+			bool s_memory_change_data<k_memory_address, k_memory_address_size>::g_initialized;
 		template<void* k_memory_address, size_t k_memory_address_size>
-			volatile bool s_memory_change_data<k_memory_address, k_memory_address_size>::g_memory_changed;
+			bool s_memory_change_data<k_memory_address, k_memory_address_size>::g_memory_changed;
 		template<void* k_memory_address, size_t k_memory_address_size>
 			byte s_memory_change_data<k_memory_address, k_memory_address_size>::g_undo_buffer[k_memory_address_size];
 
