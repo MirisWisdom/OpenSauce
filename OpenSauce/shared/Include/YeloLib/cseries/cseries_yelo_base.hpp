@@ -155,12 +155,28 @@ namespace Yelo
 	extern const real K_REAL_MAX;		/// <summary>	max value for a [real]. </summary>
 
 
+	// TODO: refactor these to PascalCase
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////
-	/// <summary>	Tests whether a wide string is NULL or contains no characters </summary>
+	/// <summary>	Tests whether an ASCII string is NULL or begins with a null terminator </summary>
 	inline bool is_null_or_empty( cstring const str) { return str == nullptr || str[0] ==  '\0'; }
 	////////////////////////////////////////////////////////////////////////////////////////////////////
-	/// <summary>	Tests whether a wide string is NULL or contains no characters </summary>
+	/// <summary>	Tests whether an ASCII string buffer begins with a null terminator </summary>
+	template<size_t kLength> inline
+	bool is_null_or_empty(const char (&array)[kLength])
+	{
+		return array[0] == '\0';
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Tests whether a wide string is NULL or begins with a null terminator </summary>
 	inline bool is_null_or_empty(wcstring const str) { return str == nullptr || str[0] == L'\0'; }
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Tests whether a wide string buffer begins with a null terminator </summary>
+	template<size_t kLength> inline
+	bool is_null_or_empty(const wchar_t (&array)[kLength])
+	{
+		return array[0] == L'\0';
+	}
 
 	// Takes [wide] and converts it to an ascii string, to be held in [string]. If [wide_length] is not -1, the string
 	// is assumed to be null terminated
