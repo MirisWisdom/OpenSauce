@@ -5,7 +5,6 @@
     <OSRequiresDirectX>true</OSRequiresDirectX>
     <OSRequiresCppBoost>true</OSRequiresCppBoost>
     <OSRequiresVLD>true</OSRequiresVLD>
-    <OSRequiresHaloCustomEd>true</OSRequiresHaloCustomEd>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">

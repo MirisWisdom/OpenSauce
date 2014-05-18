@@ -5,7 +5,6 @@
     <OSRequiresDirectX>true</OSRequiresDirectX>
     <OSRequiresCppBoost>true</OSRequiresCppBoost>
     <OSRequiresVLD>true</OSRequiresVLD>
-    <OSRequiresHaloCustomEd>true</OSRequiresHaloCustomEd>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -358,6 +357,7 @@
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\cache_file_builder.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\data_file.cpp" />
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cseries\cseries_windows.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cseries\debug_memory.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cseries\profile.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\effects\damage_effect_definitions.cpp" />

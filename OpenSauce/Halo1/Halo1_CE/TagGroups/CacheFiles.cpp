@@ -148,7 +148,7 @@ namespace Yelo
 			}
 
 			// Returns true if the override is valid and can be used
-			bool UseMainmenuOverride() { return mainmenu_scenario_name[0] != '\0'; }
+			bool UseMainmenuOverride() { return !is_null_or_empty(mainmenu_scenario_name); }
 #endif
 
 			void InitializeMemoryOverrides()

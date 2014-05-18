@@ -15,6 +15,10 @@ namespace Yelo
 		extern char g_display_assert_buffer[512]; // not the engine's 'temporary' buffer (which is actually 256), internal to OS
 		// warn = halt == false
 		void PLATFORM_API display_assert(cstring reason, cstring file, const uint32 line, bool halt);
+
+		void* PLATFORM_API system_malloc(size_t size);
+		void PLATFORM_API system_free(void* pointer);
+		void* PLATFORM_API system_realloc(void* pointer, size_t size);
 	};
 };
 
