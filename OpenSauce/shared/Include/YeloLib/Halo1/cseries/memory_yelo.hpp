@@ -8,6 +8,8 @@
 
 // NOTE: it is not advisable to actually use the ARRAY variants with types which define their own destructors
 
+// BLAM_* variants directly use the engine's normal C memory functions for the target platform, sans any special ops (eg, auto-nulling)
+
 #if PLATFORM_IS_EDITOR
 	#include <blamlib/Halo1/cseries/debug_memory.hpp>
 
@@ -25,6 +27,10 @@
 	#define YELO_REALLOC(ptr, new_size)				Yelo::blam::debug_realloc( (ptr), (new_size), __FILE__, __LINE__)
 	#define YELO_RENEW_ARRAY(type, ptr, count)		Yelo::blam::debug_renew_array<type>( (ptr), (count), __FILE__, __LINE__)
 	#define YELO_RENEW(type, ptr)					Yelo::blam::debug_renew<type>( (ptr), __FILE__, __LINE__)
+
+	#define BLAM_MALLOC(size)						YELO_MALLOC(size, false)
+	#define BLAM_FREE(ptr)							Yelo::blam::debug_free( (ptr), __FILE__, __LINE__)
+	#define BLAM_REALLOC(ptr, new_size)				YELO_REALLOC(ptr, new_size)
 #else
 	#define YELO_MALLOC(size, fill_with_garbage)	malloc( size )
 	#define YELO_NEW_ARRAY(type, count)				new type[count]
@@ -37,6 +43,10 @@
 	#define YELO_REALLOC(ptr, new_size)				realloc(ptr, new_size)
 	//#define YELO_RENEW_ARRAY(type, ptr, count)
 	//#define YELO_RENEW(type, ptr)
+
+	#define BLAM_MALLOC(size)						Yelo::blam::system_malloc( (size) )
+	#define BLAM_FREE(ptr)							Yelo::blam::system_free( (ptr) )
+	#define BLAM_REALLOC(ptr, new_size)				Yelo::blam::system_realloc( (ptr), (new_size))
 #endif
 
 #if defined(YELO_MALLOC)

@@ -351,7 +351,7 @@ namespace Yelo
 		///-------------------------------------------------------------------------------------------------
 		Enums::file_io_open_error OpenFile(s_file_info& info_out,
 			cstring file_path,
-			const DWORD access_type,
+			const Enums::file_io_open_access_type access_type,
 			const Enums::file_io_open_create_option creation_type)
 		{
 			if(!PathExists(file_path) && (creation_type == Enums::_file_io_open_create_option_open_existing))

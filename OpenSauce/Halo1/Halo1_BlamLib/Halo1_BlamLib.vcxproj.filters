@@ -1028,6 +1028,9 @@
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files.cpp">
       <Filter>cache</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cseries\cseries_windows.cpp">
+      <Filter>cseries</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\..\..\Doc\Blam\Halo1\Halo1_CE.message_delta_definitions.xml">
