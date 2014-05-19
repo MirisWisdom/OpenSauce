@@ -9,28 +9,77 @@ namespace Yelo
 {
 	namespace Cache
 	{
-		extern cstring K_MAP_FILE_EXTENSION_YELO;
+		struct s_cache_header;
+
+		// The type of cache file which a map_path refers to
+		enum class e_map_path_file_type
+		{
+			invalid = NONE,
+
+			map = 0,
+			yelo,
+		};
+
+		extern cstring K_MAP_FILE_EXTENSION_YELO; // ".yelo"
 
 		class c_map_file_finder
 		{
 			struct {
-				cstring environment; // The 'normal' path, usually a folder relative to the EXE or CWD
-				cstring user_profile;// The path defined by or in the user's profile
+				cstring environment;	// The 'normal' path, usually a folder relative to the EXE or CWD
+				cstring user_profile;	// The path defined by or in the user's profile
+				cstring game_exe;		// The "EXE Path" value from the registry. DEDI ONLY!
 
 				cstring final; // The path which the finder first found all the data files in, or NULL if it couldn't
 			}m_maps_path;
 
 			cstring m_map_name;
 			cstring m_map_extension;
-			bool m_search_for_yelo_first;
 
 			bool SearchPath(cstring maps_path);
 			bool SearchEnvironment();
 			bool SearchUserProfile();
+			bool SearchExePath();
 		public:
-			c_map_file_finder(cstring map_name, bool search_for_yelo_first);
+			c_map_file_finder(cstring map_name);
 
-			bool TryAndFind(std::string& map_path);
+			bool TryAndFind(_Out_ std::string& map_path);
+
+			// Should the finder search for .yelo files before .map?
+			// This should be set when the user settings are loaded, else it is always false
+			static bool g_search_for_yelo_first;
 		};
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets the name of a map from a file path. </summary>
+		///
+		/// <param name="map_name">	[out] The (lowercase) name of the map, sans directory and extension </param>
+		/// <param name="map_path"> Full pathname of the map file. </param>
+		///
+		/// <returns>	The type of cache file the path refers to, or invalid if it isn't a valid map path. </returns>
+		e_map_path_file_type GetMapNameFromPath(_Out_ char (&map_name)[_MAX_FNAME], cstring map_path);
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Reads a header. </summary>
+		///
+		/// <param name="map_path">	Full pathname of the map file. </param>
+		/// <param name="header">  	[out] The file's header. </param>
+		///
+		/// <returns>	true if it reads the header, and the header is valid; else false. </returns>
+		bool ReadHeader(cstring map_path, _Out_ s_cache_header& header);
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Searches for the first map file with the given name and tries to read its header. </summary>
+		///
+		/// <remarks>Searches the CWD and user profile (order is defined by user settings) maps folder for a map file (.map,
+		/// 	etc) with the given name.
+		/// </remarks>
+		///
+		/// <param name="map_name">	Name of the map. </param>
+		/// <param name="header">  	[out] The file's header. </param>
+		///
+		/// <returns>	true if it finds the map, reads the header, and the header is valid; else false. </returns>
+		bool FindMapFileAndReadHeader(cstring map_name, _Out_ s_cache_header& header);
+
+		uint32 CalculateChecksum(cstring map_path);
+		uint32 FindMapFileAndCalculateChecksum(cstring map_name);
 	};
 };

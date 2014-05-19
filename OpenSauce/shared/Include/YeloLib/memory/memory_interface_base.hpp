@@ -433,15 +433,20 @@ namespace Yelo
 		uintptr_t AlignValue(uintptr_t value, unsigned alignment_bit);
 
 		template<typename T> inline
-		static T* RebasePointer(T* pointer, uintptr_t base_address, uintptr_t virtual_base_address)
+		T* RebasePointer(uintptr_t pointer, uintptr_t base_address, uintptr_t virtual_base_address)
 		{
 			T* result = CAST_PTR(T*,
-				(CAST_PTR(byte*,pointer) - base_address) + virtual_base_address);
+				(pointer - base_address) + virtual_base_address);
 
 			return result;
 		}
 		template<typename T> inline
-		static T* AlignPointer(T* pointer, unsigned alignment_bit)
+		T* RebasePointer(T* pointer, uintptr_t base_address, uintptr_t virtual_base_address)
+		{
+			return RebasePointer<T>(CAST_PTR(uintptr_t, pointer), base_address, virtual_base_address);
+		}
+		template<typename T> inline
+		T* AlignPointer(T* pointer, unsigned alignment_bit)
 		{
 			uintptr_t aligned_ptr = CAST_PTR(uintptr_t, pointer);
 			aligned_ptr = AlignValue(aligned_ptr, alignment_bit);

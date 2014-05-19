@@ -158,14 +158,14 @@ namespace Yelo
 				break;
 			}
 
-			sprintf_s(buffer, "%i", system_info.dwNumberOfProcessors);
+			sprintf_s(buffer, "%u", system_info.dwNumberOfProcessors);
 			Debug::AddPropertyToCrashReport("CPUNumberOfProcessors", buffer);
 
 			// add processor features to the report
-			for(int i = 0; i < NUMBEROF(g_cpu_extensions); i++)
+			for (const auto& cpu_ext : g_cpu_extensions)
 			{
-				BOOL supported = IsProcessorFeaturePresent(g_cpu_extensions[i].value);
-				sprintf_s(buffer, "CPUFeat_%s", g_cpu_extensions[i].string);
+				BOOL supported = IsProcessorFeaturePresent(cpu_ext.value);
+				sprintf_s(buffer, "CPUFeat_%s", cpu_ext.string);
 
 				Debug::AddPropertyToCrashReport(buffer, (supported ? "true" : "false"));
 			}

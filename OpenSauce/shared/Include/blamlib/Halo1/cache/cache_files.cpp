@@ -16,7 +16,7 @@ namespace Yelo
 	namespace Cache
 	{
 		cstring K_MAP_FILE_EXTENSION = ".map";
-		cstring K_MAP_FILES_DIRECTORY = "maps\\";
+		cstring K_MAP_FILES_DIRECTORY = R"(maps\)";
 
 		cstring MapsDirectory()
 		{
@@ -49,6 +49,46 @@ namespace Yelo
 				// test the hierarchy graph
 				parent_groups[0] == group_tag ||
 				parent_groups[1] == group_tag;
+		}
+
+		bool s_cache_header::ValidForStock() const
+		{
+			if (!ValidSignatures())
+				return false;
+
+			if (!ValidFileSize(Enums::k_max_cache_size))
+				return false;
+
+			if (!ValidName())
+				return false;
+
+			if (version != k_version)
+				return false;
+
+			return true;
+		}
+
+		bool s_cache_header::ValidForYelo() const
+		{
+			if (!ValidSignatures())
+				return false;
+
+			if (!ValidFileSize(Enums::k_max_cache_size_upgrade))
+				return false;
+
+			if (!ValidName())
+				return false;
+
+			if (version != k_version)
+				return false;
+
+			if (yelo.HasHeader())
+			{
+				if (!yelo.IsValid())
+					return false;
+			}
+
+			return true;
 		}
 
 #if !PLATFORM_IS_EDITOR

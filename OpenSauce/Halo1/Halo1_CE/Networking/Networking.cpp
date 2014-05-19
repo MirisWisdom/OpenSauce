@@ -145,40 +145,11 @@ namespace Yelo
 		#pragma endregion
 		//////////////////////////////////////////////////////////////////////////
 
-		static void DebugNetworkConnectionFlushMessages(
-//			const byte* connection, 
-			uint32 _eax)
-		{
-			if (_eax > 0)
-				blam::console_printf(false, "eax %08X",//   %08X   %08X",
-					_eax//,
-//					*CAST_PTR(const uint32*, connection+0xA80),
-//					*CAST_PTR(const uint32*, connection+0xA84)
-					);
-		}
-		API_FUNC_NAKED static void PLATFORM_API DebugNetworkConnectionFlushMessagesTrampoline()
-		{
-			API_FUNC_NAKED_START_()
-				push	eax
-//				push	ebp
 
-				push	eax
-//				push	ebp
-				call	DebugNetworkConnectionFlushMessages
-
-//				pop		ebp
-				pop		eax
-			API_FUNC_NAKED_END_()
-		}
 		void Initialize()
 		{
 			MessageDeltas::Initialize();
 			GameSpy::Initialize();
-
-			void* NETWORK_CONNECTION_FLUSH_MESSAGES_HOOK = CAST_PTR(void*, 0x4E0FF2+0x30);
-//			Memory::WriteMemory(NETWORK_CONNECTION_FLUSH_MESSAGES_HOOK, Enums::_x86_opcode_nop, 9);
-//			Memory::WriteRelativeCall(DebugNetworkConnectionFlushMessagesTrampoline, 
-//				NETWORK_CONNECTION_FLUSH_MESSAGES_HOOK, true);
 
 			// NOTE: Uncomment these if you wish to detect
 			// when players enter and leave
