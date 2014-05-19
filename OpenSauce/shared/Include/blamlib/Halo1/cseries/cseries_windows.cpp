@@ -22,7 +22,7 @@ namespace Yelo
 
 		void* PLATFORM_API system_realloc(void* pointer, size_t size)
 		{
-			YELO_ASSERT(size >= 0);
+			//YELO_ASSERT(size >= 0);  we use size_t, which is unsigned and thus this will always be true
 			YELO_ASSERT(pointer||size);
 
 			if (pointer == nullptr)

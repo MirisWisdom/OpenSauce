@@ -2204,8 +2204,7 @@ namespace Yelo
 		bool	StartDownloadThread()
 		{
 			// start the download thread
-			// TODO: http://www.viva64.com/en/d/0102/print/
-			g_map_download_globals.m_download_thread.thread_handle = CreateThread(nullptr, 0, DownloadMap, nullptr, 0, nullptr);
+			g_map_download_globals.m_download_thread.thread_handle = CreateThread(nullptr, 0, DownloadMap, nullptr, 0, nullptr); //TODO: V513 http://www.viva64.com/en/V513 Use _beginthreadex/_endthreadex functions instead of CreateThread/ExitThread functions.
 			return g_map_download_globals.m_download_thread.thread_handle != nullptr;
 		}
 

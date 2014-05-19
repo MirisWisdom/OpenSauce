@@ -7,6 +7,13 @@
 
 #include <blamlib/Halo1/scenario/scenario.hpp>
 
+// Terminology:
+// maps_path: The system directory path to a "maps\" folder. 
+//				Generally one should be under the CWD, or the user profile. Dedicated server's default behavior is to
+//				query the registry for the client's "EXE Path" before it checks the CWD.
+// map_path: The system file path to a given cache file
+// map_name: The name of a cache file without path information or extensions
+
 namespace Yelo
 {
 	namespace Enums
@@ -41,8 +48,8 @@ namespace Yelo
 			proc_finished finished_proc;// optional
 		}; BOOST_STATIC_ASSERT( sizeof(s_cache_file_request_params) == 0xC );
 
-		extern cstring K_MAP_FILE_EXTENSION; /// ".maps"
-		extern cstring K_MAP_FILES_DIRECTORY;/// "maps\"
+		extern cstring K_MAP_FILE_EXTENSION; // ".maps"
+		extern cstring K_MAP_FILES_DIRECTORY;// "maps\"
 
 
 		s_cache_file_globals* CacheFileGlobals();

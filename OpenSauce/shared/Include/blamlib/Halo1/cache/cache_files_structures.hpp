@@ -48,6 +48,11 @@ namespace Yelo
 			bool ValidSignatures() const;
 			bool ValidFileSize(int32 max) const;
 			bool ValidName() const;
+
+			// Is this header valid according to the stock game's standards?
+			bool ValidForStock() const;
+			// Is this header valid according to OS standards?
+			bool ValidForYelo() const;
 		}; BOOST_STATIC_ASSERT( sizeof(s_cache_header) == 0x800 );
 
 		struct s_cache_tag_instance

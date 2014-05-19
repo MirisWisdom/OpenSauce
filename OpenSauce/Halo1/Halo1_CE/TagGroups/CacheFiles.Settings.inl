@@ -36,6 +36,7 @@ public:
 	void PostLoad() final override
 	{
 #if PLATFORM_IS_USER
+		c_map_file_finder::g_search_for_yelo_first = Get().m_check_yelo_files_first;
 		g_yelo_settings.InitializeMainmenuOverride(Get().m_mainmenu_scenario);
 #endif
 	}
