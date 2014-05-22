@@ -8,8 +8,10 @@
 #include "Networking/HTTP/MapDownloadServer.hpp"
 
 #if PLATFORM_IS_DEDI
+#include <blamlib/Halo1/cache/cache_files.hpp>
 #include <blamlib/Halo1/main/console.hpp>
 #include <YeloLib/memory/linked_list.hpp>
+#include <YeloLib/Halo1/cache/cache_files_yelo.hpp>
 
 #include "Common/FileIO.hpp"
 #include "Settings/YeloSettings.hpp"
