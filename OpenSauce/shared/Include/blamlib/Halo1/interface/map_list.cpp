@@ -100,7 +100,8 @@ namespace Yelo
 				// this is where the engine would have calculated the map's checksum.
 				// we would only want to do checksums for MP maps only to. unless co-op somehow became a thing...
 			}
-			else
+			// system maps must ALWAYS be added to the map list, so only remove invalid custom maps
+			else if (system_map_index == Enums::_system_multiplayer_map_user_created)
 			{
 				// not a playable MP map. undefine the entry from the mp list
 				entry->Dispose();
