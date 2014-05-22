@@ -35,17 +35,25 @@ namespace Yelo
 #define __EL_INCLUDE_ID			__EL_INCLUDE_TAGGROUPS
 #define __EL_INCLUDE_FILE_ID	__EL_TAGGROUPS_CACHE_FILES
 #include "Memory/_EngineLayout.inl"
-
-	namespace Interface
-	{
-#include "TagGroups/CacheFiles.MapList.inl"
-	};
 };
 
 #include "TagGroups/CacheFiles.DataFiles.inl"
 
 namespace Yelo
 {
+	namespace Interface
+	{
+		map_list_data_t* MultiplayerMaps()	PTR_IMP_GET2(multiplayer_maps);
+
+		static void MapListInitializeHooks()
+		{
+			Memory::WriteRelativeJmp(blam::map_list_initialize,
+				GET_FUNC_VPTR(MULTIPLAYER_MAP_LIST_INITIALIZE), true);
+			Memory::WriteRelativeJmp(blam::map_list_dispose,
+				GET_FUNC_VPTR(MULTIPLAYER_MAP_LIST_DISPOSE), true);
+		}
+	};
+
 	namespace DataFiles
 	{
 		static void ScenarioTagsLoadPreprocess(const Cache::s_cache_header& cache_header)
@@ -178,6 +186,8 @@ namespace Yelo
 //////////////////////////////////////////////////////////////////////////
 
 		s_cache_file_globals* CacheFileGlobals()		PTR_IMP_GET2(cache_file_globals);
+		// Root directory of the "maps\" folder, or a null string if relative to the EXE
+		// char[256]
 		char* RootDirectory()							PTR_IMP_GET2(maps_folder_parent_dir);
 		
 #include "TagGroups/CacheFiles.Settings.inl"
@@ -202,54 +212,37 @@ namespace Yelo
 			c_settings_cache::Unregister();
 		}
 
-		bool ReadHeader(cstring relative_map_name, s_cache_header& out_header, bool& yelo_is_ok, 
-			bool exception_on_fail, bool for_map_list_add_map)
+		// Reads the cache file [relative_map_name] from the maps folder, and returns true if its header is valid
+		// * If the cache file is made by OS tools, and the yelo header is invalid yelo_is_ok will be false
+		// * If exception_on_fail is true, the standard game exception message for invalid maps will play
+		bool ReadHeaderThunk(cstring relative_map_name, s_cache_header& out_header, bool& yelo_is_ok, 
+			bool exception_on_fail)
 		{
 			bool file_exists = false;
 			bool result = false;
 			yelo_is_ok = true;
 
 			static string256 map_path;
-			c_cache_format_path_hacks::PathHack(map_path, "%s%s%s.map", RootDirectory(), K_MAP_FILES_DIRECTORY, relative_map_name);
+			errno_t access = c_cache_format_path_hacks::FindMapFile(map_path, "%s%s%s.map", RootDirectory(), K_MAP_FILES_DIRECTORY, relative_map_name);
 
-			HANDLE f = CreateFileA(map_path, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
-			if(f != INVALID_HANDLE_VALUE)
+			file_exists = access == k_errnone;
+			auto read_result = e_cache_read_header_result::file_not_found;
+			if (file_exists)
+				read_result = ReadHeader(map_path, out_header);
+
+			result = read_result == e_cache_read_header_result::success;
+
+			if (file_exists && result)
 			{
-				file_exists = true;
-
-				DWORD lpNumberOfBytesRead;
-				if(ReadFile(f, &out_header, sizeof(out_header), &lpNumberOfBytesRead, nullptr) != FALSE && lpNumberOfBytesRead == sizeof(out_header))
+				int map_entry_index = Interface::MapListMapGetIndexFromName(relative_map_name);
+				if (map_entry_index != NONE)
 				{
-					if(out_header.ValidSignatures())
+					auto& multiplayer_maps = *Interface::MultiplayerMaps();
+					auto* map_entry = multiplayer_maps[map_entry_index];
+					if (!map_entry->yelo_flags.valid_crc)
 					{
-						if( out_header.ValidFileSize(Enums::k_max_cache_size_upgrade) && 
-							out_header.ValidName() && 
-							out_header.version == s_cache_header::k_version && 
-							(yelo_is_ok = out_header.yelo.IsValid())) // IsValid returns true on non-OS (ie, stock) maps
-							result = true;
-						else
-							YELO_DEBUG_FORMAT("[%s] has proper signatures but invalid header values!", map_path);
-					}
-				}
-
-				CloseHandle(f);
-
-				// Return false early on MP maps for map_list_add_map to avoid the exception logic
-				if(for_map_list_add_map && result)
-				{
-					if(out_header.cache_type != Enums::_cache_file_type_multiplayer)
-						return false;
-				}
-
-				if(file_exists && result)
-				{
-					int map_entry_index = Engine::Cache::GetMapEntryIndexFromName(relative_map_name);
-					if(map_entry_index != NONE)
-					{
-						auto* map_data = Interface::MultiplayerMaps();
-						auto* map_entry = (*map_data)[map_entry_index];
-						if(map_entry->crc == 0xFFFFFFFF)
-							map_entry->crc = Cache::CalculateCRC(map_path);
+						map_entry->crc = Cache::CalculateChecksum(map_path);
+						map_entry->yelo_flags.valid_crc = true;
 					}
 				}
 			}
@@ -258,8 +251,9 @@ namespace Yelo
 			{
 				if(!file_exists && !Interface::MultiplayerMapIsOriginal(relative_map_name))
 				{
-					if(!yelo_is_ok)
+					if (read_result == e_cache_read_header_result::yelo_header_invalid)
 					{
+						yelo_is_ok = false;
 						PrepareToDropError("Detected an invalid (probably old) .yelo map. See next message for map that needs removing.");
 					}
 					Engine::GatherException(map_path, 0x89, 0x7E, 1);

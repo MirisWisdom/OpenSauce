@@ -12,12 +12,27 @@ namespace Yelo
 		struct s_cache_header;
 
 		// The type of cache file which a map_path refers to
-		enum class e_map_path_file_type
+		enum class e_map_path_file_type : long_enum
 		{
 			invalid = NONE,
 
 			map = 0,
 			yelo,
+
+			k_number_of
+		};
+
+		enum class e_cache_read_header_result : long_enum
+		{
+			success,
+
+			file_not_found,
+			open_failed,
+			read_failed,
+			header_invalid,
+			yelo_header_invalid,
+
+			k_number_of
 		};
 
 		extern cstring K_MAP_FILE_EXTENSION_YELO; // ".yelo"
@@ -42,7 +57,14 @@ namespace Yelo
 		public:
 			c_map_file_finder(cstring map_name);
 
-			bool TryAndFind(_Out_ std::string& map_path);
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Attempts to and find the map_name. </summary>
+			///
+			/// <param name="map_path">			[out] Full pathname of the map file, or empty if it wasn't found. </param>
+			/// <param name="return_access">	[out] (Optional) If non-null, the result a call to _access() would return. </param>
+			///
+			/// <returns>	true if the map_name was resolved, false if it wasn't. </returns>
+			bool TryAndFind(_Out_ std::string& map_path, _Out_opt_ errno_t* return_access = nullptr);
 
 			// Should the finder search for .yelo files before .map?
 			// This should be set when the user settings are loaded, else it is always false
@@ -64,8 +86,8 @@ namespace Yelo
 		/// <param name="map_path">	Full pathname of the map file. </param>
 		/// <param name="header">  	[out] The file's header. </param>
 		///
-		/// <returns>	true if it reads the header, and the header is valid; else false. </returns>
-		bool ReadHeader(cstring map_path, _Out_ s_cache_header& header);
+		/// <returns>	success if it reads the header, and the header is valid; else non-success. </returns>
+		e_cache_read_header_result ReadHeader(cstring map_path, _Out_ s_cache_header& header);
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Searches for the first map file with the given name and tries to read its header. </summary>
 		///
@@ -76,8 +98,8 @@ namespace Yelo
 		/// <param name="map_name">	Name of the map. </param>
 		/// <param name="header">  	[out] The file's header. </param>
 		///
-		/// <returns>	true if it finds the map, reads the header, and the header is valid; else false. </returns>
-		bool FindMapFileAndReadHeader(cstring map_name, _Out_ s_cache_header& header);
+		/// <returns>	true if it finds the map, reads the header, and the header is valid; else non-success. </returns>
+		e_cache_read_header_result FindMapFileAndReadHeader(cstring map_name, _Out_ s_cache_header& header);
 
 		uint32 CalculateChecksum(cstring map_path);
 		uint32 FindMapFileAndCalculateChecksum(cstring map_name);

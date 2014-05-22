@@ -59,6 +59,7 @@ namespace Yelo
 			return globals.Get(data_file);
 #else
 			YELO_ASSERT(!"unsupported platform");
+			__assume(false);
 #endif
 		}
 

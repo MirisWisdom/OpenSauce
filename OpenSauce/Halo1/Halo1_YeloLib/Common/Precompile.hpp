@@ -34,7 +34,9 @@
 	#include <Dinput.h>
 #endif
 
+#if !PLATFORM_IS_EDITOR
 #include <vld.h>
+#endif
 
 //////////////////////////////////////////////////////////////////////////
 // STD C includes

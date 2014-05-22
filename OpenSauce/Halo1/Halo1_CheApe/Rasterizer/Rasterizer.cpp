@@ -39,8 +39,10 @@ namespace Yelo
 
 		void Initialize()
 		{
+#if FALSE // new settings changed g_render_upgrades's API -_-
 			PLATFORM_VALUE(__noop, __noop,
 				g_render_upgrades.Initialize());
+#endif
 			// TODO: remove this once/if we renable effects rendering in sapien
 #if !PLATFORM_DISABLE_UNUSED_CODE
 			PLATFORM_VALUE(__noop, __noop,
@@ -50,20 +52,26 @@ namespace Yelo
 
 		void Dispose()
 		{
+#if FALSE // new settings changed g_render_upgrades's API -_-
 			PLATFORM_VALUE(__noop, __noop,
 				g_render_upgrades.Dispose());
+#endif
 		}
 
 		void LoadSettings(TiXmlElement* dx9_element)
 		{
+#if FALSE // new settings changed g_render_upgrades's API -_-
 			PLATFORM_VALUE(__noop, __noop,
 				g_render_upgrades.LoadSettings(dx9_element));
+#endif
 		}
 
 		void SaveSettings(TiXmlElement* dx9_element)
 		{
+#if FALSE // new settings changed g_render_upgrades's API -_-
 			PLATFORM_VALUE(__noop, __noop,
 				g_render_upgrades.SaveSettings(dx9_element));
+#endif
 		}
 	};
 };
