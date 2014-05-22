@@ -55,14 +55,19 @@ NOTE: The issues system is for problems and bugs ONLY. If you are unsure of how 
 
 == Change Log ==
 === Version X ===
+  * REMOVE		scenario_faux_zones will be deprecated soon, as a new and different system will implement their functionality
+  * PATCH		Non-multiplayer maps will no longer even show up in the map list
   * ADD			Added new script functions: weapon_data_magazine_get\set_integer
-  * CHANGE		OpenSauce is now compiled with VS2012, instead of VS2008
+  * CHANGE		OpenSauce is now compiled with VS2013, instead of VS2008
+  * CHANGE		Settings system is entirely new. Old settings files will be ignored and won't be automatically upgraded.
+  * CHANGE		mod-sets now Just Work. There's no more need for a ModSets.xml, so long as the mod's data files exist in a proper maps folder, OS will load them
+  * CHANGE		OS will now process files in the "maps\" folder in the user's profile directory
 
 === Version 3.1.1 ===
   * ADD			added unit boarding
   * ADD			added entering biped unit seats
   * ADD			disableVehicleRemapper setting, along with a vehicle_remapper_enabled script function, to turn off the PC's vehicle respawning nonsense
-  * FAIX [69]	object_data_get_real logic will no longer cause exceptions
+  * FIX [69]	object_data_get_real logic will no longer cause exceptions
   * FIX			fixed detail objects not being drawn when using os shader extensions
 
 === Version 3.1 ===
