@@ -18,6 +18,7 @@
 #include <blamlib/Halo1/items/projectiles.hpp>
 #include <blamlib/Halo1/devices/device_structures.hpp>
 #include <blamlib/Halo1/items/item_structures.hpp>
+#include <blamlib/Halo1/units/unit_structures.hpp>
 #include <blamlib/Halo1/items/weapon_structures.hpp>
 
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
