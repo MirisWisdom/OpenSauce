@@ -125,7 +125,6 @@ namespace Yelo
 			return NONE;
 		}
 
-		// This logic is different from the engine's, as we don't add them if they don't exist
 		static void MapListAddSystemMultiplayerMaps(cstring root_path = "")
 		{
 			// the full pathname to the "maps\" directory, relative to root_path
@@ -148,9 +147,6 @@ namespace Yelo
 				map_path.erase(map_file_name_index);
 				map_path.append(info.name);
 				map_path.append(Cache::K_MAP_FILE_EXTENSION);
-				// system map doesn't exist, don't bother adding it
-			//	if (!FileIO::PathExists(map_path.c_str()))
-			//		continue;
 
 				// engine uses info.name and assumes CWD, but we use the full path in case we use a different root_path
 				cstring map_file_name = &map_path[map_file_name_index];
