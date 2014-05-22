@@ -47,7 +47,7 @@ namespace Yelo
 		static void ActorActionHandleVehicleExitBoardingSeat(datum_index unit_index)
 		{
 			const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
-			Objects::s_unit_datum* unit = Objects::ObjectHeader()[unit_index]->_unit;
+			auto unit = blam::object_get_and_verify_type<Objects::s_unit_datum>(unit_index);
 
 			// Exit the vehicle like normal if a globals tag doesn't exist
 			if(cv_globals == nullptr)
@@ -57,7 +57,7 @@ namespace Yelo
 			}
 
 			datum_index parent_unit_index = unit->object.parent_object_index;
-			Objects::s_unit_datum* parent_unit = Objects::ObjectHeader()[parent_unit_index]->_unit;
+			auto parent_unit = blam::object_get_and_verify_type<Objects::s_unit_datum>(parent_unit_index);
 			int16 seat_index = unit->unit.vehicle_seat_index;
 
 			TagGroups::s_unit_external_upgrades const* unit_upgrades_definition = 
