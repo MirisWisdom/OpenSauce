@@ -41,7 +41,7 @@ namespace Infections
 
 		if(animation_graph != nullptr)
 		{
-			s_unit_datum* unit = Objects::ObjectHeader()[unit_index]->_unit;
+			auto unit = blam::object_get_and_verify_type<s_unit_datum>(unit_index);
 			const s_unit_animation_data& unit_animation = unit->unit.animation;
 
 			sbyte	seat_block_index = unit_animation.seat_index,
@@ -69,7 +69,7 @@ namespace Infections
 			attachment_placement_data.position = target_unit->object.position;
 
 			attachment_object_index = blam::object_new(attachment_placement_data);
-			attachment_object = Objects::ObjectHeader()[attachment_object_index]->_object;
+			attachment_object = blam::object_get(attachment_object_index);
 		}
 
 		tag_string marker_name;
@@ -123,7 +123,7 @@ namespace Infections
 			// TODO: allow the unit infection definitions to specify a team override?
 			infected_unit_placement_data.owner_team = infection_unit->object.owner_team;
 			infected_unit_index = blam::object_new(infected_unit_placement_data);
-			infected_unit = Objects::ObjectHeader()[infected_unit_index]->_unit;
+			infected_unit = blam::object_get_and_verify_type<s_unit_datum>(infected_unit_index);
 		}
 
 		int32 infect_end_animation_index = UnitGetAnimationIndexFromWeaponClass(infected_unit_index, Enums::_weapon_class_animation_yelo_infect);
@@ -160,7 +160,7 @@ namespace Infections
 			return;
 
 		datum_index target_unit_index = infection_unit->object.parent_object_index;
-		s_unit_datum* target_unit = Objects::ObjectHeader()[target_unit_index]->_unit;
+		auto target_unit = blam::object_get_and_verify_type<s_unit_datum>(target_unit_index);
 
 		// Find the s_unit_infection based on the infection form's unit definition and the target unit's definition indexes
 		int32 unit_infection_definition_index = definition.LookupUnitInfectionIndex(

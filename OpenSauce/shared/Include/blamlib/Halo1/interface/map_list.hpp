@@ -76,10 +76,10 @@ namespace Yelo
 
 		map_list_data_t* MultiplayerMaps();
 
-		bool MultiplayerMapIsOriginal(cstring map_name);
+		bool MultiplayerMapIsSystemMap(cstring map_name);
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Map list add map from path. </summary>
+		/// <summary>	Add a map via components of a full map pathname. </summary>
 		///
 		/// <param name="maps_path">	   	Full pathname of the maps folder, with a directory slash at the end. </param>
 		/// <param name="map_file_name">   	Filename of the map file (name and extension). </param>
@@ -87,6 +87,12 @@ namespace Yelo
 		void MapListAddMapFromPath(cstring maps_path, cstring map_file_name,
 			int32 system_map_index = Enums::_system_multiplayer_map_user_created);
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Lookup the index of a s_map_list_map by a map_name. </summary>
+		///
+		/// <param name="map_name">	Name of the map; lowercase and without any path components. </param>
+		///
+		/// <returns>	Index of the found s_map_list_map, or NONE if the map isn't registered in the map list. </returns>
 		int32 MapListMapGetIndexFromName(cstring map_name);
 	};
 

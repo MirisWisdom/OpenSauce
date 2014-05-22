@@ -114,8 +114,7 @@ namespace Yelo
 				TAG_FLAG(locked);
 				TAG_FLAG(driver);
 				TAG_FLAG(gunner);
-				TAG_FLAG(third_person);
-				TAG_FLAG(camera);
+				TAG_FLAG(third_person_camera);
 				TAG_FLAG(allows_weapons);
 				TAG_FLAG(third_person_on_enter);
 				TAG_FLAG(first_person_camera_slaved_to_gun);
