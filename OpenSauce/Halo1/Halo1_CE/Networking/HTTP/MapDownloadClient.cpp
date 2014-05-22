@@ -18,6 +18,7 @@
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
 #include "Settings/c_settings_singleton.hpp"
+#include <YeloLib/Halo1/cache/cache_files_yelo.hpp>
 
 #include "Common/FileIO.hpp"
 #include "Settings/YeloSettings.hpp"
@@ -685,9 +686,9 @@ namespace Yelo
 					if(!FileIO::GetFileExtension(extension, sizeof(extension), name))
 						return false;
 
-					if(strcmp(extension, ".yelo") == 0)
+					if(strcmp(extension, Cache::K_MAP_FILE_EXTENSION_YELO) == 0)
 						m_map_part_definition.map_element.m_map_is_yelo = true;
-					else if(strcmp(extension, ".map") == 0)
+					else if(strcmp(extension, Cache::K_MAP_FILE_EXTENSION) == 0)
 						m_map_part_definition.map_element.m_map_is_yelo = false;
 					else
 						return false;
@@ -695,9 +696,9 @@ namespace Yelo
 					strcpy_s(m_map_part_definition.map_element.m_filename, name);
 					strcpy_s(m_map_part_definition.map_element.m_md5, md5);
 
-					if(1 != sscanf_s(uncompressed_size, "%i", &m_map_part_definition.map_element.m_uncompressed_size))
+					if(1 != sscanf_s(uncompressed_size, "%u", &m_map_part_definition.map_element.m_uncompressed_size))
 						uncompressed_size = 0;
-					if(1 != sscanf_s(compressed_size, "%i", &m_map_part_definition.map_element.m_compressed_size))
+					if(1 != sscanf_s(compressed_size, "%u", &m_map_part_definition.map_element.m_compressed_size))
 						compressed_size = 0;
 
 					// set which format the map is compressed with
@@ -1487,8 +1488,9 @@ namespace Yelo
 					// build the output file path
 					char map_file_path[MAX_PATH] = "";
 
+					// TODO: we should probably download maps to the user's profile maps\ instead
 					if(!FileIO::PathBuild(map_file_path,
-						false, 2, "maps",
+						false, 2, Cache::K_MAP_FILES_DIRECTORY,
 						map_element.m_filename))
 						break;
 				
@@ -1501,7 +1503,7 @@ namespace Yelo
 
 					// write the uncompressed data to the map file
 					if(Enums::_file_io_write_error_none != FileIO::WriteToFile(map_file,
-						CAST_PTR(const char*, uncompressed_data),
+						uncompressed_data,
 						(DWORD)uncompressed_size))
 						break;
 
@@ -1530,11 +1532,17 @@ namespace Yelo
 		{
 			c_map_element& map_element = g_map_download_globals.m_map_part_definition.downloader.MapElement();
 
-			cstring map_extension = (map_element.m_map_is_yelo ? ".yelo" : ".map");
+			int map_list_index = NONE;
+#if FALSE // old code
+			cstring map_extension = map_element.m_map_is_yelo 
+				? Cache::K_MAP_FILE_EXTENSION_YELO
+				: Cache::K_MAP_FILE_EXTENSION;
 
 			Engine::Cache::MapListAddMap(map_element.m_filename, map_extension);
-
-			return true;
+#elif FALSE // TODO: new code
+			map_list_index = Interface::MapListAddMapFromPath(/*maps path string here*/, map_element.m_filename);
+#endif
+			return map_list_index != NONE;
 		}
 
 		/*!

@@ -70,7 +70,7 @@ namespace Yelo
 			return false;
 		}
 
-		void MapListAddMapFromPath(cstring maps_path, cstring map_file_name,
+		int32 MapListAddMapFromPath(cstring maps_path, cstring map_file_name,
 			int32 system_map_index)
 		{
 			YELO_ASSERT(maps_path);
@@ -93,8 +93,16 @@ namespace Yelo
 			bool name_initialized = entry->InitializeNameFromPath(map_file_name);
 			YELO_ASSERT(name_initialized);
 
-			char full_map_path[MAX_PATH] = "";
-			sprintf_s(full_map_path, "%s%s", maps_path, map_file_name);
+			// default full_map_path to map_file_name. If maps_path is empty, then map_file_name should actually be a map_path,
+			// in which case we don't need to waste time sprintf'ing an empty string with another string
+			cstring full_map_path = map_file_name;
+			char full_map_path_buffer[MAX_PATH] = "";
+			if (!is_null_or_empty(maps_path))
+			{
+				sprintf_s(full_map_path_buffer, "%s%s", maps_path, map_file_name);
+				full_map_path = full_map_path_buffer;
+			}
+
 			if (entry->ReadHeader(full_map_path) && entry->yelo_flags.is_mp_map)
 			{
 				// this is where the engine would have calculated the map's checksum.
@@ -106,7 +114,10 @@ namespace Yelo
 				// not a playable MP map. undefine the entry from the mp list
 				entry->Dispose();
 				multiplayer_maps.count--;
+				mp_map_index = NONE;
 			}
+
+			return mp_map_index;
 		}
 
 		int32 MapListMapGetIndexFromName(cstring map_name)

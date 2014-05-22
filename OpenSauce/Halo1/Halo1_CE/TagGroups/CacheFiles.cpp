@@ -192,7 +192,6 @@ namespace Yelo
 		
 #include "TagGroups/CacheFiles.Settings.inl"
 #include "TagGroups/CacheFiles.YeloFiles.inl"
-#include "TagGroups/CacheFiles.CRC.inl"
 
 		void Initialize()
 		{

@@ -30,15 +30,6 @@ namespace Yelo
 		void GSMD5Digest(byte* input, unsigned int input_length, char output[33]);
 		bool CompareMD5(byte* input, unsigned int input_length, const char* comparison_md5);
 
-		namespace Cache
-		{
-			cstring GetMapExtension();
-
-			void MapListAddMap(cstring map_name, cstring extension = ".map", int32 map_index = 0x13);
-
-			int GetMapEntryIndexFromName(cstring name);
-		};
-
 		namespace Networking
 		{
 #ifndef YELO_NO_NETWORK

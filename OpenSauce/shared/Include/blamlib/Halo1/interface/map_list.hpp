@@ -81,10 +81,16 @@ namespace Yelo
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Add a map via components of a full map pathname. </summary>
 		///
-		/// <param name="maps_path">	   	Full pathname of the maps folder, with a directory slash at the end. </param>
-		/// <param name="map_file_name">   	Filename of the map file (name and extension). </param>
+		/// <param name="maps_path">	   Full pathname of the maps folder, with a directory slash at the end. Or empty if
+		/// 	map_file_name behaves like a map_path.
+		/// </param>
+		/// <param name="map_file_name">   Filename of the map file (name and extension). Or full map_path if maps_path is
+		/// 	empty.
+		/// </param>
 		/// <param name="system_map_index">	(Optional) zero-based index of the map. </param>
-		void MapListAddMapFromPath(cstring maps_path, cstring map_file_name,
+		///
+		/// <returns>	Index of the new s_map_list_map, or NONE if it failed to add. </returns>
+		int32 MapListAddMapFromPath(cstring maps_path, cstring map_file_name,
 			int32 system_map_index = Enums::_system_multiplayer_map_user_created);
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
