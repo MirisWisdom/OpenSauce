@@ -61,7 +61,7 @@ namespace Yelo
 			this->name = nullptr;
 		}
 
-		bool MultiplayerMapIsOriginal(cstring map_name)
+		bool MultiplayerMapIsSystemMap(cstring map_name)
 		{
 			for (auto mp_map : blam::k_map_list_mp_maps)
 				if (!strcmp(map_name, mp_map.name))

@@ -167,8 +167,8 @@ namespace Yelo
 
 		void Update(real delta_time)
 		{
-			Yelo::Main::s_project_component* components;
-			const int32 component_count = Yelo::Main::GetProjectComponents(components);
+			Main::s_project_component* components;
+			const int32 component_count = Main::GetProjectComponents(components);
 
 			for(int32 x = 0; x <= component_count; x++)
 				if( components[x].Update != nullptr )
@@ -205,8 +205,8 @@ namespace Yelo
 		{
 			InitializeForNewMapPrologue();
 
-			Yelo::Main::s_project_map_component* components;
-			const int32 component_count = Yelo::Main::GetProjectComponents(components);
+			Main::s_project_map_component* components;
+			const int32 component_count = Main::GetProjectComponents(components);
 
 			for(int32 x = 0; x <= component_count; x++)
 				if( components[x].InitializeForNewMap != nullptr )
@@ -221,8 +221,8 @@ namespace Yelo
 		{
 			DisposeFromOldMapPrologue();
 
-			Yelo::Main::s_project_map_component* components;
-			const int32 component_count = Yelo::Main::GetProjectComponents(components);
+			Main::s_project_map_component* components;
+			const int32 component_count = Main::GetProjectComponents(components);
 
 			for(int32 x = component_count; x >= 0; x--)
 				if( components[x].DisposeFromOldMap != nullptr )
@@ -231,8 +231,8 @@ namespace Yelo
 
 		void PLATFORM_API InitializeForNewGameState()
 		{
-			Yelo::Main::s_project_game_state_component* components;
-			const int32 component_count = Yelo::Main::GetProjectComponents(components);
+			Main::s_project_game_state_component* components;
+			const int32 component_count = Main::GetProjectComponents(components);
 
 			for(int32 x = 0; x <= component_count; x++)
 				if( components[x].InitializeForNewGameState != nullptr )
@@ -240,8 +240,8 @@ namespace Yelo
 		}
 		void InitializeForYeloGameState(bool enabled)
 		{
-			Yelo::Main::s_project_game_state_component* components;
-			const int32 component_count = Yelo::Main::GetProjectComponents(components);
+			Main::s_project_game_state_component* components;
+			const int32 component_count = Main::GetProjectComponents(components);
 
 			for(int32 x = 0; x <= component_count; x++)
 				if( components[x].InitializeForYeloGameState != nullptr )
@@ -251,8 +251,8 @@ namespace Yelo
 		{
 			YELO_ASSERT_DISPLAY( IN_RANGE_ENUM(life_cycle, Enums::k_number_of_project_game_state_component_life_cycles), "What fucking life cycle is this shit?");
 
-			Yelo::Main::s_project_game_state_component* components;
-			const int32 component_count = Yelo::Main::GetProjectComponents(components);
+			Main::s_project_game_state_component* components;
+			const int32 component_count = Main::GetProjectComponents(components);
 
 			for(int32 x = 0; x <= component_count; x++)
 				if( components[x].HandleGameStateLifeCycle != nullptr )

@@ -249,7 +249,7 @@ namespace Yelo
 
 			if(!result && exception_on_fail)
 			{
-				if(!file_exists && !Interface::MultiplayerMapIsOriginal(relative_map_name))
+				if (!file_exists && !Interface::MultiplayerMapIsSystemMap(relative_map_name))
 				{
 					if (read_result == e_cache_read_header_result::yelo_header_invalid)
 					{

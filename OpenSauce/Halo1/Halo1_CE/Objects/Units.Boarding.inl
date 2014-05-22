@@ -284,11 +284,10 @@ namespace Boarding
 	}
 
 	// Replaces the engine's unit_can_enter_seat function with our own to compensate for boarding and multiteam vehicles
-	static bool UnitCanEnterSeat(datum_index unit_index, datum_index target_unit_index, int16 target_seat_index, datum_index* unit_in_seat)
+	static bool UnitCanEnterSeat(datum_index unit_index, datum_index target_unit_index, int16 target_seat_index, _Out_opt_ datum_index* unit_in_seat)
 	{
 		bool result = true;
 
-		object_header_data_t object_header = Objects::ObjectHeader();
 		auto unit = blam::object_get_and_verify_type<s_unit_datum>(unit_index);
 		auto target_unit = blam::object_get_and_verify_type<s_unit_datum>(target_unit_index);
 
@@ -306,7 +305,8 @@ namespace Boarding
 				// Check if the child_object is in the seat_index that unit_index is trying to enter
 				if (child_object->unit.vehicle_seat_index == target_seat_index)
 				{
-					*unit_in_seat = child_object_index;
+					if (unit_in_seat != nullptr)
+						*unit_in_seat = child_object_index;
 					result = false;
 				}
 				// If multiteam vehicles is prohibited, test unit and target unit teams

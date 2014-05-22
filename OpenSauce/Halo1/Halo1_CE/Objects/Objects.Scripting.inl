@@ -152,14 +152,10 @@ static void* scripting_weapon_data_get_real_evaluate(void** arguments)
 
 	if(!args->weapon_index.IsNull())
 	{
-		s_object_header_datum* header = Objects::ObjectHeader()[args->weapon_index];
+		auto weapon = blam::object_try_and_get_and_verify_type<s_weapon_datum>(args->weapon_index);
 
-		if(header->object_type == Enums::_object_type_weapon)
-		{
-			s_weapon_datum* weapon = header->_weapon;
-
+		if (weapon != nullptr)
 			WeaponDataGetRealByName(weapon, args->data_name, result);
-		}
 	}
 
 	return result.pointer;
@@ -174,14 +170,10 @@ static void* scripting_weapon_data_set_real_evaluate(void** arguments)
 
 	if(GameState::IsLocal() && !args->weapon_index.IsNull())
 	{
-		s_object_header_datum* header = Objects::ObjectHeader()[args->weapon_index];
+		auto weapon = blam::object_try_and_get_and_verify_type<s_weapon_datum>(args->weapon_index);
 
-		if(header->object_type == Enums::_object_type_weapon)
-		{
-			s_weapon_datum* weapon = header->_weapon;
-
+		if(weapon != nullptr)
 			WeaponDataSetRealByName(weapon, args->data_name, args->data_value);
-		}
 	}
 
 	return nullptr;
@@ -203,14 +195,10 @@ static void* scripting_weapon_data_magazine_get_integer_evaluate(void** argument
 
 	if(GameState::IsLocal() && !args->weapon_index.IsNull())
 	{
-		s_object_header_datum* header = Objects::ObjectHeader()[args->weapon_index];
+		auto weapon = blam::object_try_and_get_and_verify_type<s_weapon_datum>(args->weapon_index);
 
-		if(header->object_type == Enums::_object_type_weapon)
-		{
-			s_weapon_datum* weapon = header->_weapon;
-
+		if(weapon != nullptr)
 			WeaponDataMagazineGetIntegerByName(weapon, args->magazine_index, args->data_name, args->subdata_name, result);
-		}
 	}
 
 	return result.pointer;
@@ -227,14 +215,10 @@ static void* scripting_weapon_data_magazine_set_integer_evaluate(void** argument
 
 	if(GameState::IsLocal() && !args->weapon_index.IsNull())
 	{
-		s_object_header_datum* header = Objects::ObjectHeader()[args->weapon_index];
+		auto weapon = blam::object_try_and_get_and_verify_type<s_weapon_datum>(args->weapon_index);
 
-		if(header->object_type == Enums::_object_type_weapon)
-		{
-			s_weapon_datum* weapon = header->_weapon;
-
+		if(weapon != nullptr)
 			WeaponDataMagazineSetIntegerByName(weapon, args->magazine_index, args->data_name, args->subdata_name, args->data_value);
-		}
 	}
 
 	return nullptr;
@@ -260,14 +244,10 @@ static void* scripting_weapon_data_trigger_set_real_evaluate(void** arguments)
 	// We don't support modifying trigger data in anything but local games because it writes to tag memory
 	if(GameState::IsLocal() && !args->weapon_index.IsNull())
 	{
-		s_object_header_datum* header = Objects::ObjectHeader()[args->weapon_index];
+		auto weapon = blam::object_try_and_get_and_verify_type<s_weapon_datum>(args->weapon_index);
 
-		if(header->object_type == Enums::_object_type_weapon)
-		{
-			s_weapon_datum* weapon = header->_weapon;
-
+		if(weapon != nullptr)
 			WeaponTagDataTriggerSetRealByName(weapon, args->trigger_index, args->data_name, args->subdata_name, args->data_value);
-		}
 	}
 
 	return nullptr;
@@ -288,7 +268,7 @@ static void* scripting_unit_data_get_object_evaluate(void** arguments)
 
 	if(!args->unit_index.IsNull())
 	{
-		s_unit_datum* unit = Objects::ObjectHeader()[args->unit_index]->_unit;
+		auto unit = blam::object_get_and_verify_type<s_unit_datum>(args->unit_index);
 
 		UnitDataGetObjectIndexByName(unit, args->data_name, result);
 	}
@@ -307,7 +287,7 @@ static void* scripting_unit_data_get_integer_evaluate(void** arguments)
 
 	if(!args->unit_index.IsNull())
 	{
-		s_unit_datum* unit = Objects::ObjectHeader()[args->unit_index]->_unit;
+		auto unit = blam::object_get_and_verify_type<s_unit_datum>(args->unit_index);
 
 		UnitDataGetIntegerByName(unit, args->data_name, result);
 	}
@@ -324,7 +304,7 @@ static void* scripting_unit_data_set_integer_evaluate(void** arguments)
 
 	if(!args->unit_index.IsNull())
 	{
-		s_unit_datum* unit = Objects::ObjectHeader()[args->unit_index]->_unit;
+		auto unit = blam::object_get_and_verify_type<s_unit_datum>(args->unit_index);
 
 		UnitDataSetIntegerByName(unit, args->data_name, args->data_value);
 	}
@@ -343,7 +323,7 @@ static void* scripting_unit_data_get_real_evaluate(void** arguments)
 
 	if(!args->unit_index.IsNull())
 	{
-		s_unit_datum* unit = Objects::ObjectHeader()[args->unit_index]->_unit;
+		auto unit = blam::object_get_and_verify_type<s_unit_datum>(args->unit_index);
 
 		UnitDataGetRealByName(unit, args->data_name, result);
 	}
@@ -360,7 +340,7 @@ static void* scripting_unit_data_set_real_evaluate(void** arguments)
 
 	if(GameState::IsLocal() && !args->unit_index.IsNull())
 	{
-		s_unit_datum* unit = Objects::ObjectHeader()[args->unit_index]->_unit;
+		auto unit = blam::object_get_and_verify_type<s_unit_datum>(args->unit_index);
 
 		UnitDataSetRealByName(unit, args->data_name,args->data_value);
 	}
