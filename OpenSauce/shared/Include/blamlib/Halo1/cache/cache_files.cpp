@@ -82,12 +82,6 @@ namespace Yelo
 			if (version != k_version)
 				return false;
 
-			if (yelo.HasHeader())
-			{
-				if (!yelo.IsValid())
-					return false;
-			}
-
 			return true;
 		}
 

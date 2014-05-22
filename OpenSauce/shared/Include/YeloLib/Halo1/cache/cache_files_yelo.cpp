@@ -44,7 +44,7 @@ namespace Yelo
 			*map_file_name = '\0';
 			strcat(map_file_name, m_map_name);
 			strcat(map_file_name, first_map_extension);
-			if (!FileIO::PathExists(map_path))
+			if (FileIO::PathExists(map_path))
 			{
 				m_map_extension = first_map_extension;
 				return true;
@@ -53,7 +53,7 @@ namespace Yelo
 			*map_file_name = '\0';
 			strcat(map_file_name, m_map_name);
 			strcat(map_file_name, second_map_extension);
-			if (!FileIO::PathExists(map_path))
+			if (FileIO::PathExists(map_path))
 			{
 				m_map_extension = second_map_extension;
 				return true;
@@ -99,26 +99,34 @@ namespace Yelo
 			m_maps_path.game_exe = Main::RegistryGetGameExePath().c_str();
 #endif
 		}
-		bool c_map_file_finder::TryAndFind(_Out_ std::string& map_path)
+		bool c_map_file_finder::TryAndFind(_Out_ std::string& map_path, _Out_opt_ errno_t* return_access)
 		{
+			bool file_found = false;
+
 			if (SearchExePath() || SearchEnvironment() || SearchUserProfile())
 			{
 				map_path.reserve(MAX_PATH);
 
 				map_path.append(m_maps_path.final);
-
 				map_path.append(m_map_name);
-
 				map_path.append(m_map_extension);
 
 				map_path.shrink_to_fit();
 
-				return true;
+				file_found = true;
+			}
+			else
+				map_path.clear();
+
+			// populate the emulated _access() result
+			if (return_access != nullptr)
+			{
+				*return_access = file_found
+					? k_errnone
+					: ENOENT; // File name or path not found.
 			}
 
-			map_path.clear();
-
-			return false;
+			return file_found;
 		}
 
 		e_map_path_file_type GetMapNameFromPath(_Out_ char (&map_name)[_MAX_FNAME], cstring map_path)
@@ -146,7 +154,7 @@ namespace Yelo
 			return map_file_type;
 		}
 
-		bool ReadHeader(cstring map_path, _Out_ s_cache_header& header)
+		e_cache_read_header_result ReadHeader(cstring map_path, _Out_ s_cache_header& header)
 		{
 			// try to open the file
 			{
@@ -154,7 +162,7 @@ namespace Yelo
 
 				auto open_error = FileIO::OpenFile(map_file_info, map_path);
 				if (open_error != Enums::_file_io_open_error_none)
-					return false;
+					return e_cache_read_header_result::open_failed;
 
 				// try to read a buffer the size of a header
 				auto read_error = FileIO::ReadFileToInfoMemory(map_file_info, 0, sizeof(header));
@@ -165,12 +173,20 @@ namespace Yelo
 				FileIO::CloseFile(map_file_info);
 
 				if (read_error != Enums::_file_io_read_error_none)
-					return false;
+					return e_cache_read_header_result::read_failed;
 			}
 
-			return header.ValidForYelo();
+			bool valid = header.ValidForYelo();
+
+			if (!valid)
+				return e_cache_read_header_result::header_invalid;
+			if (header.yelo.HasHeader() && !header.yelo.IsValid())
+				return e_cache_read_header_result::yelo_header_invalid;
+
+			return e_cache_read_header_result::success;
+
 		}
-		bool FindMapFileAndReadHeader(cstring map_name, _Out_ s_cache_header& header)
+		e_cache_read_header_result FindMapFileAndReadHeader(cstring map_name, _Out_ s_cache_header& header)
 		{
 			// first, try to find the map file
 			std::string map_path;
@@ -178,7 +194,7 @@ namespace Yelo
 				auto map_finder = c_map_file_finder(map_name);
 
 				if (!map_finder.TryAndFind(map_path))
-					return false;
+					return e_cache_read_header_result::file_not_found;
 			}
 
 			return ReadHeader(map_path.c_str(), header);

@@ -5,7 +5,11 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 
-static bool CacheFileReadHeaderHackImpl(cstring relative_map_name, s_cache_header& out_header, const void* return_address)
+bool ReadHeaderThunk(cstring relative_map_name, s_cache_header& out_header, bool& yelo_is_ok,
+	bool exception_on_fail);
+
+// TODO: move CacheFileReadHeadeHook related code into CacheFiles.ReadHeader.inl
+static bool CacheFileReadHeaderHookImpl(cstring relative_map_name, s_cache_header& out_header, const void* return_address)
 {
 	bool exception_on_fail = true;
 	bool read_for_map_list_add_map = false; // true if this read call is for map_list_add_map
@@ -19,15 +23,11 @@ static bool CacheFileReadHeaderHackImpl(cstring relative_map_name, s_cache_heade
 		exception_on_fail = *stack_mem != FALSE; // get arg_0 of cache_files_precache_map, which determines if the game's stock code exceptions on error (we'll thus inherit this trait)
 	}
 
-	// HACK: we assume the second entry is the map_list_add_map call site
-	const void* k_map_list_add_map_ra = CAST_PTR(byte*,K_CACHE_FILE_READ_HEADER_CALLS[1])+sizeof(Memory::Opcode::s_call);
-	read_for_map_list_add_map = return_address == k_map_list_add_map_ra;
-
 	bool yelo_is_ok;
-	return ReadHeader(relative_map_name, out_header, yelo_is_ok, exception_on_fail, read_for_map_list_add_map);
+	return ReadHeaderThunk(relative_map_name, out_header, yelo_is_ok, exception_on_fail);
 }
 
-static API_FUNC_NAKED bool __cdecl CacheFileReadHeaderHack()
+static API_FUNC_NAKED bool __cdecl CacheFileReadHeadeHook()
 {
 	__asm {
 		// eax (client), ecx (dedi) = relative_map_name
@@ -39,7 +39,7 @@ static API_FUNC_NAKED bool __cdecl CacheFileReadHeaderHack()
 		push	edi
 		push	esi
 		push	PLATFORM_VALUE(eax, ecx)
-		call	CacheFileReadHeaderHackImpl
+		call	CacheFileReadHeaderHookImpl
 
 		pop		edi
 		retn
@@ -49,8 +49,8 @@ static API_FUNC_NAKED bool __cdecl CacheFileReadHeaderHack()
 class c_cache_format_path_hacks
 {
 	enum e_phase { // default file search phase order
-		_phase_map ,	// by default, .map's are searched for first
-		_phase_yelo ,	// by default, .yelo's come second
+		_phase_map,	// by default, .map's are searched for first
+		_phase_yelo,// by default, .yelo's come second
 	};
 
 	// Get the format override based on the current file search phase
@@ -59,37 +59,44 @@ class c_cache_format_path_hacks
 		static cstring k_yelo_map_format = "%s%s%s.yelo";
 		static cstring k_yelo_map_format_subdir = "%s\\%s%s.yelo";
 
-		if((!c_settings_cache::Instance().Get().m_check_yelo_files_first && phase == _phase_yelo) ||
-			(c_settings_cache::Instance().Get().m_check_yelo_files_first && phase == _phase_map)) // we want to use .yelo first, so use it in the first phase
+		bool check_yelo_files_first = c_settings_cache::Instance().Get().m_check_yelo_files_first;
+
+		if((!check_yelo_files_first && phase == _phase_yelo) ||
+			(check_yelo_files_first && phase == _phase_map)) // we want to use .yelo first, so use it in the first phase
 			format = format[2] == '\\' ? k_yelo_map_format_subdir : k_yelo_map_format;
 
 		return format;
 	}
 
-	// returns [access]
-	static int PathHackImpl(string256 buffer, cstring format,
+	// returns [sprintf_result]
+	static int PathHackImpl(char* buffer, const size_t buffer_size, cstring format,
 		cstring root_directory, cstring maps_folder, cstring map_name,
-		__out int& sprintf_result, __out int& access, _enum phase)
+		_Out_ int& sprintf_result, _Out_ errno_t& access)
 	{
-		sprintf_result = sprintf_s(buffer, sizeof(string256), GetFormat(format, phase), root_directory, maps_folder, map_name);
-		access = _access_s(buffer, 0);
+		auto finder = c_map_file_finder(map_name);
 
-		return access;
+		std::string map_path;
+		if (finder.TryAndFind(map_path, &access))
+		{
+			sprintf_result = _snprintf_s(buffer, buffer_size, _TRUNCATE,
+				"%s", map_path.c_str());
+		}
+		else
+		{
+			sprintf_result = _snprintf_s(buffer, buffer_size, _TRUNCATE,
+				GetFormat(format, _phase_map), root_directory, maps_folder, map_name);
+		}
+
+		return sprintf_result;
 	}
-public:
+
 	static int __cdecl PathHack(string256 buffer, cstring format,
 		cstring root_directory, cstring maps_folder, cstring map_name)
 	{
-		int access, result;
+		errno_t access;
+		int result;
 
-		PathHackImpl(buffer, format, root_directory, maps_folder, map_name, 
-			result, access, _phase_map);
-
-		if(ENOENT == access)
-		{
-			PathHackImpl(buffer, format, root_directory, maps_folder, map_name,
-				result, access, _phase_yelo);
-		}
+		PathHackImpl(buffer, sizeof(string256), format, root_directory, maps_folder, map_name, result, access);
 
 		if(ENOENT == access)
 		{
@@ -100,9 +107,9 @@ public:
 	}
 private:
 	// returns [access]
-	static int PathHackNImpl(char* buffer, cstring format,
+	static errno_t PathHackNImpl(char* buffer, cstring format,
 		cstring root_directory, cstring maps_folder, cstring map_name, 
-		__out int& sprintf_result, __out int& access, const size_t buffer_size, _enum phase)
+		__out int& sprintf_result, __out errno_t& access, const size_t buffer_size, _enum phase)
 	{
 		sprintf_result = _snprintf_s(buffer, buffer_size, _TRUNCATE, GetFormat(format, phase), root_directory, maps_folder, map_name);
 		access = _access_s(buffer, 0);
@@ -113,16 +120,10 @@ private:
 		cstring root_directory, cstring maps_folder, cstring map_name)
 	{
 		const size_t buffer_size = max_count+1;
-		int access, result;
+		errno_t access;
+		int result;
 
-		PathHackNImpl(buffer, format, root_directory, maps_folder, map_name, 
-			result, access, buffer_size, _phase_map);
-
-		if(ENOENT == access)
-		{
-			PathHackNImpl(buffer, format, root_directory, maps_folder, map_name, 
-				result, access, buffer_size, _phase_yelo);
-		}
+		PathHackImpl(buffer, buffer_size, format, root_directory, maps_folder, map_name, result, access);
 
 		if(ENOENT == access)
 		{
@@ -133,6 +134,17 @@ private:
 	}
 
 public:
+	static errno_t FindMapFile(string256 buffer, cstring format,
+		cstring root_directory, cstring maps_folder, cstring map_name)
+	{
+		errno_t access;
+		int result;
+
+		PathHackImpl(buffer, sizeof(string256), format, root_directory, maps_folder, map_name, result, access);
+
+		return access;
+	}
+
 	static void Initialize()
 	{
 		for(auto ptr : K_CACHE_PATH_SPRINTF_CALLS)
@@ -142,6 +154,6 @@ public:
 
 		// Redirect all game calls to cache_file_read_header to our implementation which supports .yelo validation
 		for(auto ptr : K_CACHE_FILE_READ_HEADER_CALLS)
-			Memory::WriteRelativeCall(CacheFileReadHeaderHack, ptr);
+			Memory::WriteRelativeCall(CacheFileReadHeadeHook, ptr);
 	}
 };

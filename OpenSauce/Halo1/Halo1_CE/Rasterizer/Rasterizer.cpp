@@ -250,7 +250,7 @@ namespace Yelo
 #pragma warning( push )
 #pragma warning( disable : 4311 ) // pointer truncation
 #pragma warning( disable : 4312 ) // conversion from 'unsigned long' to 'void *' of greater size
-		void Rasterizer::Initialize()
+		void Initialize()
 		{
 			c_settings_rasterizer::Register();
 

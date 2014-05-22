@@ -196,7 +196,7 @@ namespace Yelo
 			// Update the gravity based on the scenario's yelo tag settings
 			if(!TagGroups::_global_yelo->IsNull())
 			{
-				const real& gravity_scale = TagGroups::_global_yelo->physics.gravity_scale;
+				real gravity_scale = TagGroups::_global_yelo->physics.gravity_scale;
 				if(gravity_scale > 0 && gravity_scale != 1.0f)
 					Physics()->SetGravityScale(gravity_scale);
 			}
