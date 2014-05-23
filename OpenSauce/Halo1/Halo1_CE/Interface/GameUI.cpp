@@ -138,8 +138,8 @@ namespace Yelo
 			Menu::Initialize();
 			Hud::Initialize();
 
-			Memory::CreateHookRelativeCall(&GameUI::Update, GET_FUNC_VPTR(HUD_UPDATE_HOOK), Enums::_x86_opcode_ret);
-			Memory::CreateHookRelativeCall(&GameUI::FirstPersonWeaponsUpdate, GET_FUNC_VPTR(FIRST_PERSON_WEAPONS_UPDATE_HOOK), Enums::_x86_opcode_ret);
+			Memory::WriteRelativeCall(GameUI::Update, GET_FUNC_VPTR(HUD_UPDATE_CALL));
+			Memory::WriteRelativeCall(GameUI::FirstPersonWeaponsUpdate, GET_FUNC_VPTR(FIRST_PERSON_WEAPONS_UPDATE_CALL));
 			FirstPersonWeaponSetStateHookCreateHook();
 		}
 
@@ -149,14 +149,25 @@ namespace Yelo
 			Menu::Dispose();
 		}
 
-		void PLATFORM_API Update()
+		API_FUNC_NAKED void PLATFORM_API Update()
 		{
-			Hud::Update();
-			HudHideInterfaceElementsUpdate();
+			static const uintptr_t HUD_UPDATE = GET_FUNC_PTR(HUD_UPDATE);
+
+			API_FUNC_NAKED_START_()
+				call	HUD_UPDATE
+
+				call	Hud::Update
+				call	HudHideInterfaceElementsUpdate
+			API_FUNC_NAKED_END_()
 		}
 
-		void PLATFORM_API FirstPersonWeaponsUpdate()
+		API_FUNC_NAKED void PLATFORM_API FirstPersonWeaponsUpdate()
 		{
+			static const uintptr_t FIRST_PERSON_WEAPONS_UPDATE = GET_FUNC_PTR(FIRST_PERSON_WEAPONS_UPDATE);
+
+			API_FUNC_NAKED_START_()
+				call	FIRST_PERSON_WEAPONS_UPDATE
+			API_FUNC_NAKED_END_()
 		}
 
 

@@ -45,6 +45,8 @@ namespace Yelo
 			"01.00.08.0616",
 #elif PLATFORM_VERSION == 0x1090
 			"01.00.09.0620",
+#elif PLATFORM_VERSION == 0x10A0
+			"01.00.10.0621",
 #endif
 			"01.00.00.0564",
 			"01.00.01.0580",

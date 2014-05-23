@@ -49,7 +49,7 @@ namespace Yelo
 		void Initialize()
 		{
 #if !PLATFORM_DISABLE_UNUSED_CODE
-			Memory::CreateHookRelativeCall(&Input::Update, GET_FUNC_VPTR(INPUT_UPDATE), Enums::_x86_opcode_retn);
+			Memory::CreateHookRelativeCall(&Input::Update, GET_FUNC_VPTR(INPUT_UPDATE_HOOK), Enums::_x86_opcode_retn);
 #endif
 		}
 
@@ -152,7 +152,7 @@ namespace Yelo
 
 		cstring GamepadDpadDirectionToString(Enums::GamepadDpadDirection value)
 		{
-			static cstring string_list[] = {
+			static cstring string_list[Enums::k_number_of_pov_directions] = {
 				"north",
 				"northeast",
 				"east",
@@ -167,7 +167,7 @@ namespace Yelo
 
 		cstring PlayerControlToString(Enums::PlayerControl value)
 		{
-			static cstring string_list[] = {
+			static cstring string_list[Enums::k_number_of_total_control_buttons] = {
 				"jump",
 				"switch_grenade",
 				"action",
