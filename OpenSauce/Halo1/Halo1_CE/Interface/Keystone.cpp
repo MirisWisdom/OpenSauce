@@ -23,7 +23,7 @@ namespace Yelo
 
 		void SendMessageUpdateEAX()
 		{
-			static uint32 SendMessageCallAddr = GET_FUNC_PTR(KEYSTONE_CHATLOG_ADD_ITEM_SEND_MESSAGE);
+			static const uintptr_t SendMessageCallAddr = GET_FUNC_PTR(KEYSTONE_CHATLOG_ADD_ITEM_SEND_MESSAGE);
 
 			wcstring SendMessageStrAddr;
 			__asm mov SendMessageStrAddr, eax;
@@ -36,7 +36,7 @@ namespace Yelo
 
 		void SendMessageUpdateECX()
 		{
-			static uint32 SendMessageCallAddr = GET_FUNC_PTR(KEYSTONE_CHATLOG_ADD_ITEM_SEND_MESSAGE);
+			static const uintptr_t SendMessageCallAddr = GET_FUNC_PTR(KEYSTONE_CHATLOG_ADD_ITEM_SEND_MESSAGE);
 
 			wcstring SendMessageStrAddr;
 			__asm mov SendMessageStrAddr, ecx;
@@ -49,7 +49,7 @@ namespace Yelo
 
 		void SendMessageUpdateEDX()
 		{
-			static uint32 SendMessageCallAddr = GET_FUNC_PTR(KEYSTONE_CHATLOG_ADD_ITEM_SEND_MESSAGE);
+			static const uintptr_t SendMessageCallAddr = GET_FUNC_PTR(KEYSTONE_CHATLOG_ADD_ITEM_SEND_MESSAGE);
 
 			wcstring SendMessageStrAddr;
 			__asm mov SendMessageStrAddr, edx;
@@ -62,6 +62,7 @@ namespace Yelo
 
 		void SendMessageInitialize()
 		{
+			// TODO: clean up this shitty macro to use WriteRelativeCall or something
 #define CALL_SENDMSG_HOOK(reg, ce_addr)						\
 	call = Enums::_x86_opcode_call_near;					\
 	rel_call = _SendMessageUpdatePtr##reg - (ce_addr + 5);	\
@@ -69,14 +70,14 @@ namespace Yelo
 	Memory::WriteMemory( CAST_PTR(void*,ce_addr+1),&rel_call,4);
 
 			byte call;
-			uint32 rel_call;
+			uintptr_t rel_call;
 
 #pragma warning( push )
 #pragma warning( disable : 4311 ) // bitching about pointer truncation
 
-			uint32 _SendMessageUpdatePtrEAX = CAST_PTR(uint32,&SendMessageUpdateEAX);
-			uint32 _SendMessageUpdatePtrECX = CAST_PTR(uint32,&SendMessageUpdateECX);
-			uint32 _SendMessageUpdatePtrEDX = CAST_PTR(uint32,&SendMessageUpdateEDX);
+			uintptr_t _SendMessageUpdatePtrEAX = CAST_PTR(uintptr_t, &SendMessageUpdateEAX);
+			uintptr_t _SendMessageUpdatePtrECX = CAST_PTR(uintptr_t, &SendMessageUpdateECX);
+			uintptr_t _SendMessageUpdatePtrEDX = CAST_PTR(uintptr_t, &SendMessageUpdateEDX);
 
 			DOC_TODO_DEBUG("Update these if you change Client platform version")
 #if PLATFORM_VERSION == 0x1080
@@ -99,6 +100,16 @@ namespace Yelo
 			CALL_SENDMSG_HOOK(ECX, 0x4AE6A4);
 			CALL_SENDMSG_HOOK(EDX, 0x4AE723);
 			CALL_SENDMSG_HOOK(ECX, 0x4AE774);
+#elif PLATFORM_VERSION == 0x10A0
+			CALL_SENDMSG_HOOK(EDX, 0x45CFEA);
+			CALL_SENDMSG_HOOK(EAX, 0x461029);
+			CALL_SENDMSG_HOOK(EDX, 0x461132);
+			CALL_SENDMSG_HOOK(EDX, 0x4612A0);
+			CALL_SENDMSG_HOOK(EDX, 0x4613A2);
+			CALL_SENDMSG_HOOK(ECX, 0x46167C);
+			CALL_SENDMSG_HOOK(ECX, 0x4AE474);
+			CALL_SENDMSG_HOOK(EDX, 0x4AE4F3);
+			CALL_SENDMSG_HOOK(ECX, 0x4AE544);
 #endif
 
 #pragma warning( pop )
