@@ -106,7 +106,7 @@ namespace Yelo
 			if (entry->ReadHeader(full_map_path) && entry->yelo_flags.is_mp_map)
 			{
 				// this is where the engine would have calculated the map's checksum.
-				// we would only want to do checksums for MP maps only to. unless co-op somehow became a thing...
+				// we would only want to do checksums for MP maps only too. unless co-op somehow became a thing...
 			}
 			// system maps must ALWAYS be added to the map list, so only remove invalid custom maps
 			else if (system_map_index == Enums::_system_multiplayer_map_user_created)
