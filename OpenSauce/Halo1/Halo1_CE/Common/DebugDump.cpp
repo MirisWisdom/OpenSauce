@@ -12,6 +12,7 @@
 #include <ErrorRep.h>
 #pragma comment (lib, "Faultrep.lib")
 
+#include <blamlib/Halo1/main/console.hpp>
 #include <blamlib/Halo1/saved_games/game_state_structures.hpp>
 #include <YeloLib/cseries/pc_crashreport.hpp>
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
@@ -19,7 +20,6 @@
 #include "Common/FileIO.hpp"
 #include "Settings/YeloSettings.hpp"
 #include "Memory/MemoryInterface.hpp"
-#include "Game/EngineFunctions.hpp"
 #include "Interface/Keystone.hpp"
 
 //#define DISABLE_EXCEPTION_HANDLING
@@ -78,7 +78,7 @@ namespace Yelo
 			}
 			MessageBox(nullptr, message, "Crash Report Saved", MB_OK);
 #else
-			Engine::Console::TerminalPrint(message);
+			blam::console_response_printf(message);
 #endif
 		}
 
@@ -89,7 +89,7 @@ namespace Yelo
 		{
 			if(FileIO::PathExists(g_reports_path))
 			{
-				char dump_file[_MAX_PATH];
+				char dump_file[MAX_PATH];
 				if(FileIO::PathBuild(dump_file, false, 2, g_reports_path, "core.bin"))
 				{
 					FileIO::s_file_info dump;
@@ -296,7 +296,7 @@ namespace Yelo
 					// force a crash dump, recording from the main thread
 					Debug::ForceCrashReport(main_thread);
 
-					// resume the main thread and relase the handle on it
+					// resume the main thread and release the handle on it
 					ResumeThread(main_thread);
 					CloseHandle(main_thread);
 				}
@@ -334,7 +334,7 @@ namespace Yelo
 			{
 				// delete the reports directory
 				FileIO::DirectoryDelete(g_reports_path, true, true);
-				if(0 == CreateDirectory(g_reports_path, nullptr))
+				if(CreateDirectory(g_reports_path, nullptr) == FALSE)
 				{
 					return;
 				}
