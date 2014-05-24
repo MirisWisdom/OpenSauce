@@ -20,8 +20,6 @@
 #elif __EL_INCLUDE_FILE_ID == __EL_INTERFACE_GAME_UI
 	namespace GameUI
 	{
-		// TODO: I stopped giving a flying fuck about server addresses here when upgrading to 1.09.
-		// You've been warned.
 		ENGINE_DPTR(s_hud_scripted_globals, hud_scripted_globals,	0x6B44A8, PTR_NULL);
 		ENGINE_DPTR(s_hud_messaging, hud_messaging,					0x64E970, PTR_NULL);
 		ENGINE_DPTR(s_hud_unit_interface, hud_unit_interface,		0x6B44BC, PTR_NULL);

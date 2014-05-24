@@ -164,11 +164,33 @@ _return:
 			{
 				// TODO: override key callbacks
 			}
+			// Change the old GameSpy URLs to whichever is best for the community these days (should be Bungie's hosthpc.com)
+			static void InitializeGameSpyEmulatorUrls()
+			{
+				GET_PTR(Matchup1Hostname) = 
+					// natneg1.gamespy.com
+					R"(natneg1.hosthpc.com)";
+				GET_PTR(Matchup2Hostname) = 
+					// natneg2.gamespy.com
+					R"(natneg2.hosthpc.com)";
+
+				GET_PTR(MASTER_ADDR_REFERENCE) = 
+					// %s.master.gamespy.com
+					R"(s1.master.hosthpc.com)";
+				GET_PTR(MASTER_ADDR_SB_REFERENCE) = 
+					// %s.ms%d.gamespy.com
+					R"(s1.ms01.hosthpc.com)";
+
+				GET_PTR(PTA_DEFAULT_VERCHECK_URL_REFERENCE) = 
+					// http://motd.gamespy.com/motd/vercheck.asp?productid=%d&versionuniqueid=%s&distid=%d
+					R"(http://hpcup.bungie.net/motd/vercheck.asp?productid=%d&versionuniqueid=%s&distid=%d)";
+			}
 			void Initialize()
 			{
 				// TODO: populate GetGameVer()
 				
 				c_settings_gamespy::Register();
+				InitializeGameSpyEmulatorUrls();
 
 				Memory::CreateHookRelativeCall(&InitializeForNewQr2, 
 					GET_FUNC_VPTR(CREATE_GAMESPY_QR2_HOOK), Enums::_x86_opcode_ret);

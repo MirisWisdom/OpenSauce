@@ -49,29 +49,24 @@ namespace Camera
 
 namespace Fov
 {
-	#pragma region OBSERVER_UPDATE_COMMAND
-	FUNC_PTR(OBSERVER_UPDATE_COMMAND, 0x448630, FUNC_PTR_NULL);
-		// Address of the call opcodes to [OBSERVER_UPDATE_COMMAND] inside the function
-		// known as [OBSERVER_UPDATE]
-		FUNC_PTR(OBSERVER_UPDATE_CALL_HOOK_OBSERVER_UPDATE_COMMAND, 0x448403, FUNC_PTR_NULL);
-	#pragma endregion
+	FUNC_PTR(OBSERVER_UPDATE_COMMAND_HOOK,		0x4486CA, FUNC_PTR_NULL);
 
 	#pragma region OBSERVER_UPDATE_POSITIONS
 	FUNC_PTR(OBSERVER_UPDATE_POSITIONS, 0x448D90, FUNC_PTR_NULL);
-		ENGINE_PTR(bool, OBSERVER_UPDATE_POSITIONS_no_scope_blur, 0x49753F, PTR_NULL);
+		ENGINE_PTR(bool, OBSERVER_UPDATE_POSITIONS_no_scope_blur, 0x49753D+2, PTR_NULL);
 		// Address of the call opcodes to [OBSERVER_UPDATE_POSITIONS] inside the function
 		// known as [OBSERVER_TICK]
 		FUNC_PTR(OBSERVER_TICK_CALL_HOOK_OBSERVER_UPDATE_POSITIONS, 0x448719, FUNC_PTR_NULL);
 	#pragma endregion
 
-	ENGINE_PTR(real*, MAX, 0x449514, PTR_NULL);
+	ENGINE_PTR(real*, MAX, 0x449512+2, PTR_NULL);
 };
 
 
 //////////////////////////////////////////////////////////////////////////
 // Campaign.cpp. CLIENT BUILDS ONLY
 #elif __EL_INCLUDE_FILE_ID == __EL_GAME_CAMPAIGN
-
+#if YELO_CAMPAIGN_UPGRADES_ENABLED
 	#pragma region Scenario Paths
 	static cstring** ScenarioPathsReferences[] = {
 		CAST_PTR(cstring**, 0x49FB83), CAST_PTR(cstring**, 0x49FCE3), /*CAST_PTR(cstring**, 0x49FE3C),*/
@@ -127,6 +122,7 @@ namespace Fov
 		CAST_PTR(int16*, 0x49FCC6), /*CAST_PTR(int16*, 0x49FEB7),*/ CAST_PTR(int16*, 0x53C95A),
 	};
 	#pragma endregion
+#endif
 
 
 //////////////////////////////////////////////////////////////////////////

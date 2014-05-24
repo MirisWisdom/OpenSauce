@@ -20,8 +20,6 @@
 #elif __EL_INCLUDE_FILE_ID == __EL_INTERFACE_GAME_UI
 	namespace GameUI
 	{
-		// TODO: I stopped giving a flying fuck about server addresses here when upgrading to 1.09.
-		// You've been warned.
 		ENGINE_DPTR(s_hud_scripted_globals, hud_scripted_globals,	0x6B44C8, PTR_NULL);
 		ENGINE_DPTR(s_hud_messaging, hud_messaging,					0x64E990, PTR_NULL);
 		ENGINE_DPTR(s_hud_unit_interface, hud_unit_interface,		0x6B44DC, PTR_NULL);
@@ -33,7 +31,7 @@
 		ENGINE_PTR(s_text_bounds_globals_data, text_bounds_globals,	0x67F6F4, PTR_NULL);
 		ENGINE_PTR(s_font_drawing_globals_data, font_drawing_globals,0x67F708,PTR_NULL);
 
-		ENGINE_PTR(s_hud_chat_globals, hud_chat_globals,			0x64E7A8, 0x5C0588);
+		ENGINE_PTR(s_hud_chat_globals, hud_chat_globals,			0x64E7A8, PTR_NULL);
 		ENGINE_PTR(int32, hud_chat_line_count,						0x6B44D4, PTR_NULL);
 
 		FUNC_PTR(HUD_UPDATE,										0x4ACBA0, FUNC_PTR_NULL);
