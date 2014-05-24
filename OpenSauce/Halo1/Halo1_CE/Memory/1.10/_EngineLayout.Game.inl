@@ -8,18 +8,18 @@
 //////////////////////////////////////////////////////////////////////////
 // AI.cpp
 #if __EL_INCLUDE_FILE_ID == __EL_GAME_AI
-	ENGINE_DPTR(s_ai_globals_data, ai_globals,								0x81B534, 0x6E73F4);
-	ENGINE_DPTR(actor_data_t, actors,										0x81B540, 0x6E7400);
-	ENGINE_DPTR(swarm_data_t, swarms,										0x81B53C, 0x6E73FC);
-	ENGINE_DPTR(swarm_component_data_t, swarm_components,					0x81B538, 0x6E73F8);
-	ENGINE_DPTR(prop_data_t, props,											0x81B4A0, 0x6E7360);
-	ENGINE_DPTR(encounter_data_t, encounters,								0x81B4A8, 0x6E7368);
-	ENGINE_DPTR(squads_data_t, squads,										0x81B4AC, 0x6E736C);
-	ENGINE_DPTR(platoons_data_t, platoons,									0x81B4A4, 0x6E7364);
-	ENGINE_DPTR(ai_pursuit_data_t, ai_pursuits,								0x81B4B0, 0x6E7370);
+	ENGINE_DPTR(s_ai_globals_data, ai_globals,								0x81B534+0x360, 0x6E73F4);
+	ENGINE_DPTR(actor_data_t, actors,										0x81B540+0x360, 0x6E7400);
+	ENGINE_DPTR(swarm_data_t, swarms,										0x81B53C+0x360, 0x6E73FC);
+	ENGINE_DPTR(swarm_component_data_t, swarm_components,					0x81B538+0x360, 0x6E73F8);
+	ENGINE_DPTR(prop_data_t, props,											0x81B4A0+0x360, 0x6E7360);
+	ENGINE_DPTR(encounter_data_t, encounters,								0x81B4A8+0x360, 0x6E7368);
+	ENGINE_DPTR(squads_data_t, squads,										0x81B4AC+0x360, 0x6E736C);
+	ENGINE_DPTR(platoons_data_t, platoons,									0x81B4A4+0x360, 0x6E7364);
+	ENGINE_DPTR(ai_pursuit_data_t, ai_pursuits,								0x81B4B0+0x360, 0x6E7370);
 	//ai_communication_dialogue_events_t
-	ENGINE_DPTR(ai_communication_reply_events_t, ai_communication_replies,	0x68BC7C, 0x5F4474);
-	ENGINE_DPTR(ai_conversation_data_t, ai_conversations,					0x81B4B4, 0x6E7374);
+	ENGINE_DPTR(ai_communication_reply_events_t, ai_communication_replies,	0x68BC7C-0x20, 0x5F4474);
+	ENGINE_DPTR(ai_conversation_data_t, ai_conversations,					0x81B4B4+0x360, 0x6E7374);
 
 	FUNC_PTR(AI_UPDATE_HOOK,			0x42A949, 0x42A959);
 	FUNC_PTR(ACTOR_ACTION_HANDLE_VEHICLE_EXIT_HOOK,	0x40B701, 0x40B711);
@@ -30,41 +30,41 @@
 #elif __EL_INCLUDE_FILE_ID == __EL_GAME_CAMERA
 namespace Camera
 {
-	ENGINE_PTR(s_observer, observers,								0x6475AC, PTR_NULL);
+	ENGINE_PTR(s_observer, observers,								0x6475AC-0x20, PTR_NULL);
 	ENGINE_PTR(s_camera_script_globals_data, camera_script_globals,	0x621F90, PTR_NULL);
-	ENGINE_DPTR(s_director_scripting_data, director_scripting,		0x816DDC, PTR_NULL);
-	ENGINE_DPTR(s_cinematic_globals_data, cinematic_globals,		0x68C85C, PTR_NULL);
-	ENGINE_PTR(s_director_data, global_director,					0x6474B0, PTR_NULL);
+	ENGINE_DPTR(s_director_scripting_data, director_scripting,		0x816DDC+0x360, PTR_NULL);
+	ENGINE_DPTR(s_cinematic_globals_data, cinematic_globals,		0x68C85C-0x20, PTR_NULL);
+	ENGINE_PTR(s_director_data, global_director,					0x6474B0-0x20, PTR_NULL);
 
 	#pragma region old third person shit
 	#if 0 // enable for old 3rd person camera hack
-		FUNC_PTR(OBSERVER_UPDATE_COMMAND_HOOK,						0x4486DA, FUNC_PTR_NULL);
+		FUNC_PTR(OBSERVER_UPDATE_COMMAND_HOOK,						0x4484BA, FUNC_PTR_NULL);
 
-		FUNC_PTR(DIRECTOR_GET_PERSPECTIVE_DEFAULT_SET,				0x44661F, FUNC_PTR_NULL);
-		FUNC_PTR(HUD_INITIALIZE_FOR_NEW_MAP_DEFAULT_SET_SHOW_HUD,	0x4ACAEC, FUNC_PTR_NULL);
-		FUNC_PTR(HUD_ADD_ITEM_MESSAGE_DEFAULT_SET_SHOW_MSG,			0x4B1A6F, FUNC_PTR_NULL);
+		FUNC_PTR(DIRECTOR_GET_PERSPECTIVE_DEFAULT_SET,				0x44644B+4, FUNC_PTR_NULL);
+		FUNC_PTR(HUD_INITIALIZE_FOR_NEW_MAP_DEFAULT_SET_SHOW_HUD,	0x4AC8EB+1, FUNC_PTR_NULL);
+		FUNC_PTR(HUD_ADD_ITEM_MESSAGE_DEFAULT_SET_SHOW_MSG,			0x4B184C+4, FUNC_PTR_NULL);
 	#endif
 	#pragma endregion
 };
 
 namespace Fov
 {
-	FUNC_PTR(OBSERVER_UPDATE_COMMAND_HOOK,		0x4486DA, FUNC_PTR_NULL);
+	FUNC_PTR(OBSERVER_UPDATE_COMMAND_HOOK,		0x4484BA, FUNC_PTR_NULL);
 
 	#pragma region OBSERVER_UPDATE_POSITIONS
-	FUNC_PTR(OBSERVER_UPDATE_POSITIONS, 0x448DA0, FUNC_PTR_NULL);
-		ENGINE_PTR(bool, OBSERVER_UPDATE_POSITIONS_no_scope_blur, 0x49754D+2, PTR_NULL);
+	FUNC_PTR(OBSERVER_UPDATE_POSITIONS, 0x448B80, FUNC_PTR_NULL);
+		ENGINE_PTR(bool, OBSERVER_UPDATE_POSITIONS_no_scope_blur, 0x497383+2, PTR_NULL);
 		// Address of the call opcodes to [OBSERVER_UPDATE_POSITIONS] inside the function
 		// known as [OBSERVER_TICK]
-		FUNC_PTR(OBSERVER_TICK_CALL_HOOK_OBSERVER_UPDATE_POSITIONS, 0x448729, FUNC_PTR_NULL);
+		FUNC_PTR(OBSERVER_TICK_CALL_HOOK_OBSERVER_UPDATE_POSITIONS, 0x448509, FUNC_PTR_NULL);
 	#pragma endregion
 
-	ENGINE_PTR(real*, MAX, 0x449522+2, PTR_NULL);
+	ENGINE_PTR(real*, MAX, 0x449302+2, PTR_NULL);
 };
 
 
 //////////////////////////////////////////////////////////////////////////
-// Campaign.cpp. CLIENT BUILDS ONLY
+// Campaign.cpp. CLIENT BUILDS ONLY. These addresses are still 1.09
 #elif __EL_INCLUDE_FILE_ID == __EL_GAME_CAMPAIGN
 #if YELO_CAMPAIGN_UPGRADES_ENABLED
 	#pragma region Scenario Paths
@@ -128,31 +128,31 @@ namespace Fov
 //////////////////////////////////////////////////////////////////////////
 // Console.cpp
 #elif __EL_INCLUDE_FILE_ID == __EL_GAME_CONSOLE
-	ENGINE_DPTR(s_terminal_globals, terminal_globals,		0x64DE4C, 0x5BFC2C);
-	ENGINE_PTR(s_console_globals, console_globals,			0x651F70, 0x5C3D30);
+	ENGINE_DPTR(s_terminal_globals, terminal_globals,		0x64DE4C-0x20, 0x5BFC2C);
+	ENGINE_PTR(s_console_globals, console_globals,			0x651F70-0x20, 0x5C3D30);
 
-	FUNC_PTR(CONSOLE_UPDATE_HOOK,		0x4C9BE3, 0x4B3637);
+	FUNC_PTR(CONSOLE_UPDATE_HOOK,		0x4C9A63, 0x4B3637);
 
 
 //////////////////////////////////////////////////////////////////////////
 // Effects.cpp
 #elif __EL_INCLUDE_FILE_ID == __EL_GAME_EFFECTS
-	ENGINE_DPTR(contrail_data_t, contrails,									0x815DAC, 0x6E1C6C);
-	ENGINE_DPTR(contrail_point_data_t, contrail_points,						0x815DA8, 0x6E1C68);
-	ENGINE_DPTR(particle_data_t, particles,									0x815D90, 0x6E1C50);
-	ENGINE_DPTR(effect_data_t, effects,										0x815D9C, 0x6E1C5C);
-	ENGINE_DPTR(effect_location_data_t, effect_locations,					0x815DA0, 0x6E1C60);
-	ENGINE_DPTR(particle_systems_data_t, particle_systems,					0x815D98, 0x6E1C54);
-	ENGINE_DPTR(particle_system_particles_data_t, particle_system_particles,0x815D94, 0x6E1C58);
+	ENGINE_DPTR(contrail_data_t, contrails,									0x815DAC+0x360, 0x6E1C6C);
+	ENGINE_DPTR(contrail_point_data_t, contrail_points,						0x815DA8+0x360, 0x6E1C68);
+	ENGINE_DPTR(particle_data_t, particles,									0x815D90+0x360, 0x6E1C50);
+	ENGINE_DPTR(effect_data_t, effects,										0x815D9C+0x360, 0x6E1C5C);
+	ENGINE_DPTR(effect_location_data_t, effect_locations,					0x815DA0+0x360, 0x6E1C60);
+	ENGINE_DPTR(particle_systems_data_t, particle_systems,					0x815D98+0x360, 0x6E1C54);
+	ENGINE_DPTR(particle_system_particles_data_t, particle_system_particles,0x815D94+0x360, 0x6E1C58);
 
-	ENGINE_DPTR(s_structure_detail_objects_data, structure_detail_objects,	0x6BDA6C, 0x6260F4);
-	ENGINE_DPTR(s_structure_decals_data, structure_decals,					0x6BDA7C, 0x626104);
-	ENGINE_DPTR(s_breakable_surface_globals_data, breakable_surface_globals,0x653CC8, 0x5C5BB0);
-	ENGINE_DPTR(decals_data_t, decals,										0x815DA4, 0x6E1C64);
-	ENGINE_DPTR(s_decal_globals_data, decal_globals,						0x64BA28, 0x5BD808);
-	ENGINE_DPTR(s_decal_vertex_cache_data, decal_vertex_cache,				0x6B8478, PTR_NULL);
+	ENGINE_DPTR(s_structure_detail_objects_data, structure_detail_objects,	0x6BDA6C-0x20, 0x6260F4);
+	ENGINE_DPTR(s_structure_decals_data, structure_decals,					0x6BDA7C-0x20, 0x626104);
+	ENGINE_DPTR(s_breakable_surface_globals_data, breakable_surface_globals,0x653CC8-0x20, 0x5C5BB0);
+	ENGINE_DPTR(decals_data_t, decals,										0x815DA4+0x360, 0x6E1C64);
+	ENGINE_DPTR(s_decal_globals_data, decal_globals,						0x64BA28-0x20, 0x5BD808);
+	ENGINE_DPTR(s_decal_vertex_cache_data, decal_vertex_cache,				0x6B8478-0x20, PTR_NULL);
 
-	FUNC_PTR(EFFECTS_UPDATE_HOOK, 0x451697, 0x4500C7);
+	FUNC_PTR(EFFECTS_UPDATE_HOOK, 0x451487, 0x4500C7);
 
 	#if PLATFORM_IS_USER
 		static void* K_RENDER_PARTICLES_RENDERED_PARTICLES_ARRAY_ADDRESS_LIST[] = {
@@ -161,10 +161,10 @@ namespace Fov
 			CAST_PTR(void*, 0x513BCB+0x30),
 		};
 
-		FUNC_PTR(GAME_INITIALIZE_MOD_PER_MAP_UPGRADE_PARTICLES,					0x45B6B7+0x10, FUNC_PTR_NULL);
-		FUNC_PTR(GAME_INITIALIZE_MOD_PER_MAP_UPGRADE_EFFECTS,					0x45B6CB+0x10, FUNC_PTR_NULL);
-		FUNC_PTR(GAME_INITIALIZE_MOD_PER_MAP_UPGRADE_EFFECT_LOCATIONS,			0x45B6E4+0x10, FUNC_PTR_NULL);
-		FUNC_PTR(GAME_INITIALIZE_MOD_PER_MAP_UPGRADE_PARTICLE_SYSTEM_PARTICLES,	0x45B72C+0x10, FUNC_PTR_NULL);
+		FUNC_PTR(GAME_INITIALIZE_MOD_PER_MAP_UPGRADE_PARTICLES,					0x45B4B6+1, FUNC_PTR_NULL);
+		FUNC_PTR(GAME_INITIALIZE_MOD_PER_MAP_UPGRADE_EFFECTS,					0x45B4CA+1, FUNC_PTR_NULL);
+		FUNC_PTR(GAME_INITIALIZE_MOD_PER_MAP_UPGRADE_EFFECT_LOCATIONS,			0x45B4E3+1, FUNC_PTR_NULL);
+		FUNC_PTR(GAME_INITIALIZE_MOD_PER_MAP_UPGRADE_PARTICLE_SYSTEM_PARTICLES,	0x45B52B+1, FUNC_PTR_NULL);
 	#endif
 
 
@@ -177,20 +177,21 @@ namespace Fov
 //////////////////////////////////////////////////////////////////////////
 // GameBuildNumber.cpp
 #elif __EL_INCLUDE_FILE_ID == __EL_GAME_BUILD_NUMBER
-	ENGINE_PTR(char, game_build_version,							0x60A3C8, 0x564B34);
-	ENGINE_PTR(char, game_build_version_gamespy,					0x6BDD18, 0x626398);
+	ENGINE_PTR(char, game_build_version,							0x60A370, 0x564B34);
+	ENGINE_PTR(char, game_build_version_gamespy,					0x6BDD18-0x20, 0x626398);
 
-	ENGINE_PTR(long_enum, game_version_id1,							0x4DC2D6, 0x4C3866);
-	ENGINE_PTR(long_enum, game_version_id2,							0x4DC4B3, 0x4C3A43);
-	ENGINE_PTR(long_enum, game_version_id3,							0x4E3FF3, 0x4CB583);
+	ENGINE_PTR(long_enum, game_version_id1,							0x4DC195+1, 0x4C3866);
+	ENGINE_PTR(long_enum, game_version_id2,							0x4DC372+1, 0x4C3A43);
+	ENGINE_PTR(long_enum, game_version_id3,							0x4E3CF1+2, 0x4CB583);
 
-	FUNC_PTR(GAME_STATE_HEADER_IS_VALID_HOOK,						0x53BBB7+0x30, 0x4F7187+0x30);
-	FUNC_PTR(GAME_STATE_HEADER_IS_VALID_HOOK_RET,					0x53BC0B+0x30, 0x4F71DB+0x30);
-	FUNC_PTR(GAME_STATE_HEADER_TRY_AND_LOAD_HOOK,					0x53B96E+0x30, 0x4F6F3E+0x30);
-	FUNC_PTR(GAME_STATE_HEADER_TRY_AND_LOAD_HOOK_RET_TRUE,			0x53B9CE+0x30, 0x4F6F9E+0x30);
-	FUNC_PTR(GAME_STATE_HEADER_TRY_AND_LOAD_HOOK_RET_FALSE,			0x53BA89+0x30, 0x4F7059+0x30);
+	FUNC_PTR(GAME_STATE_HEADER_IS_VALID_HOOK,						0x53B7E7, 0x4F7187+0x30);
+	FUNC_PTR(GAME_STATE_HEADER_IS_VALID_HOOK_RET,					0x53B83B, 0x4F71DB+0x30);
+	FUNC_PTR(GAME_STATE_HEADER_TRY_AND_LOAD_HOOK,					0x53B59E, 0x4F6F3E+0x30);
+	FUNC_PTR(GAME_STATE_HEADER_TRY_AND_LOAD_HOOK_RET_TRUE,			0x53B5FE, 0x4F6F9E+0x30);
+	FUNC_PTR(GAME_STATE_HEADER_TRY_AND_LOAD_HOOK_RET_FALSE,			0x53B6B9, 0x4F7059+0x30);
 
 
+// EVERYTHING AFTER THIS LINE IS STILL 1.09!
 //////////////////////////////////////////////////////////////////////////
 // GameEngine.cpp
 #elif __EL_INCLUDE_FILE_ID == __EL_GAME_GAME_ENGINE

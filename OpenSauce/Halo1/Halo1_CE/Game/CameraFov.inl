@@ -146,11 +146,8 @@ namespace Yelo
 			return Camera::Observer()->command.fov < h && v > 1.28f;
 		}
 
-		static void PLATFORM_API OBSERVER_UPDATE_COMMAND()
+		static void PLATFORM_API observer_update_command_hook()
 		{
-			static const uintptr_t FUNCTION = GET_FUNC_PTR(OBSERVER_UPDATE_COMMAND);
-
-			__asm call	FUNCTION
 			Fov::Update();
 		}
 
@@ -165,7 +162,8 @@ namespace Yelo
 
 		void Initialize()
 		{
-			Memory::WriteRelativeCall(OBSERVER_UPDATE_COMMAND, GET_FUNC_VPTR(OBSERVER_UPDATE_CALL_HOOK_OBSERVER_UPDATE_COMMAND));
+			// Overwrite the 'retn' at the observer_update_command with a jmp to our hook code
+			Memory::WriteRelativeJmp(observer_update_command_hook, GET_FUNC_VPTR(OBSERVER_UPDATE_COMMAND_HOOK), true);
 			Memory::WriteRelativeCall(OBSERVER_UPDATE_POSITIONS, GET_FUNC_VPTR(OBSERVER_TICK_CALL_HOOK_OBSERVER_UPDATE_POSITIONS));
 
 			GET_PTR(MAX) = &_fov_globals.fov.height_max;

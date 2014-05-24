@@ -52,6 +52,7 @@ namespace Yelo
 #include "Memory/_EngineLayout.inl"
 
 #pragma region Scenario Paths
+#if YELO_CAMPAIGN_UPGRADES_ENABLED
 
 	#define DEFINE_CAMPAIGN_LEVEL(name, path) path,
 		static cstring ScenarioPaths[] = { // this is needed for displaying the title\bitmap in the campaign selection in the UI
@@ -70,11 +71,12 @@ namespace Yelo
 			for(auto ptr : ScenarioPathsReferences2)
 				*ptr = ScenarioPaths;
 		}
+#endif
 #pragma endregion
 
 
 #pragma region Scenario Help
-
+#if YELO_CAMPAIGN_UPGRADES_ENABLED
 	#define DEFINE_CAMPAIGN_LEVEL(name, path) {#name, "ui\\shell\\solo_game\\player_help\\player_help_screen_" #name},
 		static struct s_scenario_help_mapping {
 			cstring name;
@@ -123,12 +125,12 @@ mapping_not_found:
 	{
 		Memory::WriteRelativeJmp(Campaign::DisplayScenarioHelpHack, GET_FUNC_VPTR(DISPLAY_SCENARIO_HELP_HOOK), true);
 	}
-
+#endif
 #pragma endregion
 
 
 #pragma region Campaign Level Data
-
+#if YELO_CAMPAIGN_UPGRADES_ENABLED
 		struct {
 			cstring ScenarioPath;
 			PAD8; // bools
@@ -145,11 +147,12 @@ mapping_not_found:
 			for(auto ptr : CampaignLevelDataSizeReferences)
 				*ptr = sizeof(CampaignLevelData) / 4;
 		}
+#endif
 #pragma endregion
 
 
 #pragma region Campaign Level Count
-
+#if YELO_CAMPAIGN_UPGRADES_ENABLED
 		static void CampaignLevelCountInitialize()
 		{
 			for(auto ptr : CampaignLevelCountReferences_8bit)
@@ -164,11 +167,13 @@ mapping_not_found:
 			for(auto ptr : CampaignLevelCountReferences2_16bit)
 				*ptr = Enums::_campaign_level;
 		}
+#endif
 #pragma endregion
 
 
 		void Initialize()
 		{
+#if YELO_CAMPAIGN_UPGRADES_ENABLED
 			if(Enums::_campaign_level > Enums::k_campaign_level_base_count) // only change the game if we're greater than the normal level count
 			{
 				ScenarioPathsInitialize();
@@ -176,13 +181,16 @@ mapping_not_found:
 				CampaignLevelDataInitialize();
 				CampaignLevelCountInitialize();
 			}
+#endif
 		}
 
 		void Dispose()
 		{
+#if YELO_CAMPAIGN_UPGRADES_ENABLED
 // 			if(Enums::_campaign_level > Enums::k_campaign_level_base_count) // only change the game if we're greater than the normal level count
 // 			{
 // 			}
+#endif
 		}
 	};
 };
