@@ -289,7 +289,7 @@ namespace Yelo
 			char		m_mp_password[k_server_password_length];
 			PAD24;
 			byte		m_mp_password_key[16];
-			long_enum	m_mp_gamever;
+			Enums::network_game_protocol_id	m_mp_gamever;
 
 
 		protected:
@@ -1553,7 +1553,7 @@ namespace Yelo
 		 */
 		void	ReconnectToServer()
 		{
-			BuildNumber::ChangeAdvertisedVersionId(g_map_download_globals.m_servers.dedicated_server.m_mp_gamever, false);
+			BuildNumber::ChangeAdvertisedVersionId(g_map_download_globals.m_servers.dedicated_server.m_mp_gamever);
 			blam::main_connect(g_map_download_globals.m_servers.dedicated_server.m_mp_address,
 				g_map_download_globals.m_servers.dedicated_server.m_mp_password);
 		}

@@ -180,9 +180,9 @@ namespace Fov
 	ENGINE_PTR(char, game_build_version,							0x60A3E8, 0x564B74);
 	ENGINE_PTR(char, game_build_version_gamespy,					0x6BDC30, 0x6262F8);
 
-	ENGINE_PTR(long_enum, game_version_id1,							0x4DC2A6, 0x4C3836);
-	ENGINE_PTR(long_enum, game_version_id2,							0x4DC483, 0x4C3A13);
-	ENGINE_PTR(long_enum, game_version_id3,							0x4E3FC3, 0x4CB553);
+	ENGINE_PTR(Enums::network_game_protocol_id, network_version_id1,0x4DC2A6, 0x4C3836);
+	ENGINE_PTR(Enums::network_game_protocol_id, network_version_id2,0x4DC483, 0x4C3A13);
+	ENGINE_PTR(Enums::network_game_protocol_id, network_version_id3,0x4E3FC3, 0x4CB553);
 
 	FUNC_PTR(GAME_STATE_HEADER_IS_VALID_HOOK,						0x53BBB7, 0x4F7187);
 	FUNC_PTR(GAME_STATE_HEADER_IS_VALID_HOOK_RET,					0x53BC0B, 0x4F71DB);
