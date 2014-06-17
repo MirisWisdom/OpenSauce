@@ -23,7 +23,7 @@
 #include <blamlib/Halo1/text/draw_string.hpp>
 
 #include "Memory/MemoryInterface.hpp"
-#include "Settings/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 #include "Interface/YeloSettingsInterface.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Game/Players.hpp"

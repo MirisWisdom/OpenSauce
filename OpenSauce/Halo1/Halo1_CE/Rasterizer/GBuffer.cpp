@@ -14,11 +14,11 @@
 
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
-#include "Settings/c_settings_singleton.hpp"
+#include <YeloLib/settings/c_settings_singleton.hpp>
 
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
-#include "Settings/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Rasterizer/Rasterizer.hpp"
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
@@ -534,7 +534,7 @@ skip_disable_velocity:
 
 			g_default_system.Ctor();
 
-			c_settings_gbuffer::Register();
+			c_settings_gbuffer::Instance().Register(Settings::Manager());
 
 			c_gbuffer_system::g_output_object_tbn = false;
 			// leave as false, not enough vertex shader registers available to do object velocity with bones
@@ -578,7 +578,7 @@ skip_disable_velocity:
 		}
 		void		c_gbuffer_system::Dispose()
 		{
-			c_settings_gbuffer::Unregister();
+			c_settings_gbuffer::Instance().Unregister(Settings::Manager());
 
 			g_default_system.Dtor();
 		}

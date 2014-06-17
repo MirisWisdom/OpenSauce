@@ -19,7 +19,7 @@
 
 #include "Memory/MemoryInterface.hpp"
 #include "Common/GameSystems.hpp"
-#include "Settings/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 #include "Game/ScriptLibrary.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameBuildNumber.hpp"

@@ -82,12 +82,10 @@ namespace Yelo
 
 				while(iterator->MoveNext())
 				{
-					auto& value(AddEntry());
+					auto& value = AddEntry();
 
 					value.GetValue(*(iterator->Current()));
 				}
-
-				iterator.reset();
 			}
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////

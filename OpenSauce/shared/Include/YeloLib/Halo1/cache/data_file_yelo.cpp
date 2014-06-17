@@ -10,7 +10,7 @@
 
 #include <blamlib/Halo1/cache/cache_files.hpp>
 #include <YeloLib/files/files.hpp>
-#include <YeloLib/Halo1/open_sauce/settings/che_ape_settings.hpp>
+#include <YeloLib/Halo1/open_sauce/settings/c_settings_cheape.hpp>
 #include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
 
 namespace Yelo
@@ -199,9 +199,7 @@ namespace Yelo
 
 		void c_data_files::CopyStock()
 		{
-			char maps_path[MAX_PATH];
-			strcpy_s(maps_path, Settings::Get().GetMapsPath());
-
+			const auto maps_path = Settings::c_settings_cheape::Profile().GetMapsPath();
 			CopyStockDataFile(maps_path, Enums::_data_file_type_bitmaps);
 			CopyStockDataFile(maps_path, Enums::_data_file_type_sounds);
 			CopyStockDataFile(maps_path, Enums::_data_file_type_locale);

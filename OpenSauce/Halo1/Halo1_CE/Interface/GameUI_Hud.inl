@@ -14,7 +14,7 @@
 
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
-#include "Settings/c_settings_singleton.hpp"
+#include <YeloLib/settings/c_settings_singleton.hpp>
 
 namespace Yelo
 {
@@ -139,18 +139,20 @@ namespace Yelo
 		public:
 			void PostLoad() final override
 			{
-				g_hud_globals.m_flags.scale_hud = Get().m_scale_hud;
-				g_hud_globals.m_flags.show_hud = Get().m_show_hud;
-				g_hud_globals.m_hud_screen.scale.x = Get().m_hud_scale_x;
-				g_hud_globals.m_hud_screen.scale.y = Get().m_hud_scale_y;
+				auto& settings_instance(Get());
+				g_hud_globals.m_flags.scale_hud = settings_instance.m_scale_hud;
+				g_hud_globals.m_flags.show_hud = settings_instance.m_show_hud;
+				g_hud_globals.m_hud_screen.scale.x = settings_instance.m_hud_scale_x;
+				g_hud_globals.m_hud_screen.scale.y = settings_instance.m_hud_scale_y;
 			}
 
 			void PreSave() final override
 			{
-				Get().m_scale_hud = g_hud_globals.m_flags.scale_hud;
-				Get().m_show_hud = g_hud_globals.m_flags.show_hud;
-				Get().m_hud_scale_x = g_hud_globals.m_hud_screen.scale.x;
-				Get().m_hud_scale_y = g_hud_globals.m_hud_screen.scale.y;
+				auto& settings_instance(Get());
+				settings_instance.m_scale_hud = g_hud_globals.m_flags.scale_hud;
+				settings_instance.m_show_hud = g_hud_globals.m_flags.show_hud;
+				settings_instance.m_hud_scale_x = g_hud_globals.m_hud_screen.scale.x;
+				settings_instance.m_hud_scale_y = g_hud_globals.m_hud_screen.scale.y;
 			}
 		};
 #pragma endregion
@@ -517,12 +519,12 @@ namespace Yelo
 
 			g_hud_globals.m_flags.show_crosshair = true;
 
-			c_settings_hud::Register();
+			c_settings_hud::Instance().Register(Settings::Manager());
 		}
 
 		void Dispose()
 		{
-			c_settings_hud::Unregister();
+			c_settings_hud::Instance().Unregister(Settings::Manager());
 		}
 
 		///-------------------------------------------------------------------------------------------------

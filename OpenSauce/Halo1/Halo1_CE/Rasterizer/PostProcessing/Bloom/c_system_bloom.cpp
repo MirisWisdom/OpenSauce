@@ -61,7 +61,7 @@ namespace Yelo
 		// IPostProcessingComponent
 		void c_system_bloom::Initialize()
 		{
-			c_settings_bloom::Register();
+			c_settings_bloom::Instance().Register(Settings::Manager());
 
 			m_members.status = Enums::pp_component_status_uninitialised;
 
@@ -119,7 +119,7 @@ namespace Yelo
 			g_shader_instance_bloom.Dtor();
 			g_shader_bloom.Dtor();
 			
-			c_settings_bloom::Unregister();
+			c_settings_bloom::Instance().Unregister(Settings::Manager());
 		}
 
 		void c_system_bloom::InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters)

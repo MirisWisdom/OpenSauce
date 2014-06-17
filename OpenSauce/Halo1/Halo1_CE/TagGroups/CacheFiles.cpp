@@ -14,7 +14,7 @@
 
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
-#include "Settings/c_settings_singleton.hpp"
+#include <YeloLib/settings/c_settings_singleton.hpp>
 
 #include <YeloLib/Halo1/cache/cache_files_yelo.hpp>
 #include <YeloLib/Halo1/cache/data_file_yelo.hpp>
@@ -22,7 +22,7 @@
 
 #include "Memory/MemoryInterface.hpp"
 #include "Common/FileIO.hpp"
-#include "Settings/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameState.hpp"
 
@@ -195,7 +195,7 @@ namespace Yelo
 
 		void Initialize()
 		{
-			c_settings_cache::Register();
+			c_settings_cache::Instance().Register(Settings::Manager());
 
 			MemoryUpgradesInitialize();
 			c_cache_format_path_hacks::Initialize();
@@ -208,7 +208,7 @@ namespace Yelo
 		{
 			MemoryUpgradesDispose();
 			
-			c_settings_cache::Unregister();
+			c_settings_cache::Instance().Unregister(Settings::Manager());
 		}
 
 		// Reads the cache file [relative_map_name] from the maps folder, and returns true if its header is valid

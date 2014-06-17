@@ -10,7 +10,7 @@
 
 #include <direct.h>
 #include <YeloLib/files/files.hpp>
-#include <YeloLib/Halo1/open_sauce/settings/che_ape_settings.hpp>
+#include <YeloLib/Halo1/open_sauce/settings/c_settings_cheape.hpp>
 
 namespace Yelo
 {
@@ -41,7 +41,7 @@ namespace Yelo
 		cstring PlatformUserMapsPath()
 		{
 #if PLATFORM_IS_EDITOR
-			return Settings::Get().GetMapsPath();
+			return Settings::c_settings_cheape::Profile().GetMapsPath();
 #else
 			return UserProfileMapsPath();
 #endif

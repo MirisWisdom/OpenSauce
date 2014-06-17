@@ -10,7 +10,9 @@
 #include <blamlib/Halo1/tag_files/files.hpp>
 #include <blamlib/Halo1/tool/tool.hpp>
 
-#include "Common/YeloSettings.hpp"
+#include <YeloLib/Halo1/open_sauce/settings/c_settings_cheape.hpp>
+
+#include "Settings/Settings.hpp"
 #include "Engine/EngineFunctions.hpp"
 #include "TagGroups/TagGroups.hpp"
 
@@ -99,18 +101,18 @@ namespace Yelo
 
 		auto buffer = std::unique_ptr<char>(new char[k_buffer_size]);
 
-		const Settings::s_profile& p = Settings::Get().active_profile;
+		auto& profile = Settings::c_settings_cheape::Profile();
 		sprintf_s(buffer.get(), k_buffer_size, "\r\n"
 			"root: %s\r\n"
-				"\tdata: %s\r\n"
-				"\tmaps: %s\r\n"
-				"\ttags: %s\r\n"
-				"\ttags name: %s",
-			p.root_path,
-				p.paths.data,
-				p.paths.maps,
-				p.paths.tags,
-				p.paths.tags_folder_name);
+			"\tdata: %s\r\n"
+			"\tmaps: %s\r\n"
+			"\ttags: %s\r\n"
+			"\ttags name: %s",
+			profile.GetRootPath(),
+			profile.GetDataPath(),
+			profile.GetMapsPath(),
+			profile.GetTagsPath(),
+			profile.GetTagsName());
 		Debug::Write(buffer.get());
 
 		const s_override_paths& o = _override_paths;

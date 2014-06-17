@@ -66,7 +66,7 @@ namespace Yelo
 					game_menu_is_active)
 				{
 					if(result != Enums::_settings_adjustment_result_cancel && wants_to_save)
-						Settings::Save();
+						Settings::Manager().Save();
 
 					Hud::ShowCrosshair() = true;
 					selection = Enums::_settings_menu_on;

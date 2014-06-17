@@ -9,7 +9,7 @@
 
 #include <YeloLib/configuration/c_configuration_value.hpp>
 #include <YeloLib/configuration/c_configuration_container.hpp>
-#include "Settings/c_settings_singleton.hpp"
+#include <YeloLib/settings/c_settings_singleton.hpp>
 
 namespace Yelo
 {
@@ -170,7 +170,7 @@ namespace Yelo
 			
 			_fov_globals.InitializeToDefaultSettings();
 			
-			c_settings_fov::Register();
+			c_settings_fov::Instance().Register(Settings::Manager());
 		}
 
 		void Dispose()
@@ -181,7 +181,7 @@ namespace Yelo
 				_fov_globals.menu = nullptr;
 			}
 
-			c_settings_fov::Unregister();
+			c_settings_fov::Instance().Unregister(Settings::Manager());
 		}
 
 		void Update()

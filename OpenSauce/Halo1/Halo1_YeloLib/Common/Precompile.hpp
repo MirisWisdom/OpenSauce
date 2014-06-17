@@ -75,6 +75,8 @@
 #include <boost/property_tree/json_parser.hpp>
 
 #include <boost/integer/static_log2.hpp>
+
+#include <boost/filesystem.hpp>
 //////////////////////////////////////////////////////////////////////////
 
 
