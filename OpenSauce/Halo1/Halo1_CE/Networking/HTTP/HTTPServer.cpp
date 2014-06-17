@@ -13,7 +13,7 @@
 #include <blamlib/Halo1/main/console.hpp>
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
-#include "Settings/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 #include "Common/FileIO.hpp"
 #include "Networking/HTTP/HTTP.hpp"
 #include "Networking/HTTP/BanManager.hpp"
