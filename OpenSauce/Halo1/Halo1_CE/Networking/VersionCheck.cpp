@@ -16,7 +16,7 @@
 
 #include <YeloLib/configuration/c_configuration_value.hpp>
 #include <YeloLib/configuration/c_configuration_value_list.hpp>
-#include "Settings/c_settings_singleton.hpp"
+#include <YeloLib/settings/c_settings_singleton.hpp>
 
 #include "Networking/HTTP/HTTPClient.hpp"
 #if PLATFORM_IS_USER
@@ -152,7 +152,7 @@ namespace Yelo
 		//namespace functions
 		void		Initialize()
 		{
-			c_settings_version_check::Register();
+			c_settings_version_check::Instance().Register(Settings::Manager());
 
 			c_version_check_manager_base::VersionChecker().Initialize();
 		}
@@ -160,7 +160,7 @@ namespace Yelo
 		{
 			c_version_check_manager_base::VersionChecker().Dispose();
 
-			c_settings_version_check::Unregister();
+			c_settings_version_check::Instance().Unregister(Settings::Manager());
 		}
 
 		void		InitializeForNewMap()
@@ -320,10 +320,11 @@ namespace Yelo
 		 */
 		void		c_version_check_manager_base::CheckForUpdates()
 		{
+			auto& settings_instance(c_settings_version_check::Instance().Get());
 			m_states.is_request_in_progress = false;
 			
 			bool has_url = false;
-			for(auto url : c_settings_version_check::Instance().Get().m_server_list.m_servers)
+			for(auto url : settings_instance.m_server_list.m_servers)
 			{
 				if(!url.Get().empty())
 				{
@@ -333,13 +334,13 @@ namespace Yelo
 
 			if(!has_url)
 			{
-				c_settings_version_check::Instance().Get().m_server_list.m_servers.Clear();
-				c_settings_version_check::Instance().Get().m_server_list.m_servers.AddEntry() = g_fallback_xml_location;
+				settings_instance.m_server_list.m_servers.Clear();
+				settings_instance.m_server_list.m_servers.AddEntry() = g_fallback_xml_location;
 			}
 
 			// start the xml downloaders
 			int downloader_index = 0;
-			for(auto url : c_settings_version_check::Instance().Get().m_server_list.m_servers)
+			for(auto url : settings_instance.m_server_list.m_servers)
 			{
 				if(downloader_index >= NUMBEROF(m_xml_sources))
 				{
@@ -367,10 +368,11 @@ namespace Yelo
 			time_t time_today;
 			time(&time_today);
 			tm local_time; localtime_s(&local_time, &time_today);
-
-			if( (c_settings_version_check::Instance().Get().m_last_checked.m_day == local_time.tm_mday) &&
-				(c_settings_version_check::Instance().Get().m_last_checked.m_month == local_time.tm_mon + 1) &&
-				(c_settings_version_check::Instance().Get().m_last_checked.m_year == 1900 + local_time.tm_year))
+			
+			auto& settings_instance(c_settings_version_check::Instance().Get());
+			if( (settings_instance.m_last_checked.m_day == local_time.tm_mday) &&
+				(settings_instance.m_last_checked.m_month == local_time.tm_mon + 1) &&
+				(settings_instance.m_last_checked.m_year == 1900 + local_time.tm_year))
 				m_states.checked_today = true;
 		}
 
@@ -387,9 +389,11 @@ namespace Yelo
 			time(&time_today);
 			tm local_time; localtime_s(&local_time, &time_today);
 
-			c_settings_version_check::Instance().Get().m_last_checked.m_day = local_time.tm_mday;
-			c_settings_version_check::Instance().Get().m_last_checked.m_month = local_time.tm_mon + 1;
-			c_settings_version_check::Instance().Get().m_last_checked.m_year = 1900 + local_time.tm_year;
+			auto& settings_instance(c_settings_version_check::Instance().Get());
+
+			settings_instance.m_last_checked.m_day = local_time.tm_mday;
+			settings_instance.m_last_checked.m_month = local_time.tm_mon + 1;
+			settings_instance.m_last_checked.m_year = 1900 + local_time.tm_year;
 
 			for(auto& downloader : m_xml_sources)
 			{
@@ -408,17 +412,17 @@ namespace Yelo
 				}
 
 				// if the server list version is newer, copy the new list
-				if(c_settings_version_check::Instance().Get().m_server_list.m_version < downloader.URLListVersion())
+				if(settings_instance.m_server_list.m_version < downloader.URLListVersion())
 				{
-					c_settings_version_check::Instance().Get().m_server_list.m_servers.Clear();
-					c_settings_version_check::Instance().Get().m_server_list.m_version = downloader.URLListVersion();
+					settings_instance.m_server_list.m_servers.Clear();
+					settings_instance.m_server_list.m_version = downloader.URLListVersion();
 
 					LinkedListIterator<c_version_server> url_iterator(downloader.VersionURLList());
 
 					if(url_iterator.MoveNext())
 					{
 						std::string url_string(url_iterator.Current()->m_version_xml_url);
-						c_settings_version_check::Instance().Get().m_server_list.m_servers.AddEntry() = url_string;
+						settings_instance.m_server_list.m_servers.AddEntry() = url_string;
 					}
 				}
 			}

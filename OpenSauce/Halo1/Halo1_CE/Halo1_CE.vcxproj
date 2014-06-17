@@ -255,7 +255,7 @@
     <ClCompile Include="Rasterizer\PostProcessing\Generic\External\c_settings_external.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\Generic\Internal\c_settings_internal.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\MotionBlur\c_settings_motionblur.cpp" />
-    <ClCompile Include="Settings\YeloSettings.cpp" />
+    <ClCompile Include="Settings\Settings.cpp" />
     <ClCompile Include="TagGroups\CacheFiles.cpp" />
     <ClCompile Include="TagGroups\project_yellow_definitions.cpp" />
     <ClCompile Include="TagGroups\TagGroups.cpp" />
@@ -368,8 +368,7 @@
     <ClInclude Include="Rasterizer\PostProcessing\Generic\External\c_settings_external.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Generic\Internal\c_settings_internal.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\MotionBlur\c_settings_motionblur.hpp" />
-    <ClInclude Include="Settings\c_settings_singleton.hpp" />
-    <ClInclude Include="Settings\YeloSettings.hpp" />
+    <ClInclude Include="Settings\Settings.hpp" />
     <ClInclude Include="TagGroups\CacheFiles.hpp" />
     <ClInclude Include="TagGroups\project_yellow_definitions.hpp" />
     <ClInclude Include="TagGroups\TagGroups.hpp" />

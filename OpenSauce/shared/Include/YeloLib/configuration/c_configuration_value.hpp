@@ -30,7 +30,7 @@ namespace Yelo
 			///
 			/// <param name="node_name">		Name of the configuration node. </param>
 			/// <param name="default_value">	The node's default value. </param>
-			c_configuration_value(const std::string& node_name, const T default_value)
+			c_configuration_value(const std::string& node_name, const T& default_value)
 				: m_node_name(node_name)
 				, m_default(default_value)
 				, m_value(default_value)

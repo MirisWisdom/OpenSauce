@@ -12,7 +12,7 @@
 #include <YeloLib/configuration/c_configuration_value_list.hpp>
 #include <YeloLib/configuration/c_configuration_container_list.hpp>
 #include <YeloLib/configuration/type_containers/c_real_vector3d_container.hpp>
-#include "Settings/c_settings_singleton.hpp"
+#include <YeloLib/settings/c_settings_singleton.hpp>
 
 #include "Rasterizer/Rasterizer.hpp"
 #include "Game/Camera.hpp"
@@ -96,10 +96,11 @@ namespace Yelo
 
 				c_settings_container::c_weapon_position* AddPreset(cstring name)
 				{
-					if(Enums::k_weapon_view_max_weapon_presets == c_settings_weapons::Instance().Get().m_weapon_positions.Get().size())
+					auto& settings_instance(c_settings_weapons::Instance().Get());
+					if(Enums::k_weapon_view_max_weapon_presets == settings_instance.m_weapon_positions.Get().size())
 						return nullptr;
 
-					c_settings_container::c_weapon_position& weapon_position(c_settings_weapons::Instance().Get().m_weapon_positions.AddEntry());
+					c_settings_container::c_weapon_position& weapon_position(settings_instance.m_weapon_positions.AddEntry());
 					weapon_position.m_name.Get() = name;
 					weapon_position.m_position.Get().Set(.0f,.0f,.0f);
 
@@ -154,19 +155,20 @@ namespace Yelo
 				{
 					return_weapon_index = datum_index::null;
 					return_name = GetCurrentWeaponName(return_weapon_index);
-
-					if(c_settings_weapons::Instance().Get().m_weapon_positions.Get().size() == 0) return nullptr;
+					
+					auto& settings_instance(c_settings_weapons::Instance().Get());
+					if(settings_instance.m_weapon_positions.Get().size() == 0) return nullptr;
 
 					if(return_name != nullptr)
 					{
-						auto found_value = std::find_if(c_settings_weapons::Instance().Get().m_weapon_positions.begin(), c_settings_weapons::Instance().Get().m_weapon_positions.end(),
+						auto found_value = std::find_if(settings_instance.m_weapon_positions.begin(), settings_instance.m_weapon_positions.end(),
 							[return_name](c_settings_container::c_weapon_position& entry)
 							{
 								return entry.m_name.Get() == std::string(return_name);
 							}
 						);
 
-						if(found_value != c_settings_weapons::Instance().Get().m_weapon_positions.end())
+						if(found_value != settings_instance.m_weapon_positions.end())
 						{
 							return &(*found_value);
 						}
@@ -209,7 +211,7 @@ namespace Yelo
 
 			void Initialize()
 			{
-				c_settings_weapons::Register();
+				c_settings_weapons::Instance().Register(Settings::Manager());
 
 				Memory::WriteRelativeCall(ApplyWeaponPreset, 
 					GET_FUNC_VPTR(RENDER_WINDOW_CALL_HOOK_FIRST_PERSON_WEAPON_RENDER_UPDATE));
@@ -219,7 +221,7 @@ namespace Yelo
 			{
 				_weapon_globals.Dispose();
 				
-				c_settings_weapons::Unregister();
+				c_settings_weapons::Instance().Unregister(Settings::Manager());
 			}
 
 			Enums::settings_adjustment_result AdjustSettings()
@@ -242,18 +244,20 @@ namespace Yelo
 				if(preset == nullptr && (preset = _weapon_globals.AddPreset(name)) == nullptr)
 					return Enums::_settings_adjustment_result_cancel;
 
+				auto& weapon_position(preset->m_position.Get());
+
 				if(Input::GetMouseButtonState(Enums::_MouseButton3) == 1)
-					preset->m_position.Get().Set(.0f,.0f,.0f);
+					weapon_position.Set(.0f,.0f,.0f);
 
 				const real factor = 3000.f;
 
 				if(Input::GetKeyState(Enums::_KeyLShift) || Input::GetKeyState(Enums::_KeyRShift))
 				{
-					preset->m_position.Get().j += Input::GetMouseAxisState(Enums::_MouseAxisX)/factor;
-					preset->m_position.Get().k += Input::GetMouseAxisState(Enums::_MouseAxisY)/factor;
+					weapon_position.j += Input::GetMouseAxisState(Enums::_MouseAxisX)/factor;
+					weapon_position.k += Input::GetMouseAxisState(Enums::_MouseAxisY)/factor;
 				}
 				else
-					preset->m_position.Get().i += Input::GetMouseAxisState(Enums::_MouseAxisY)/factor;
+					weapon_position.i += Input::GetMouseAxisState(Enums::_MouseAxisY)/factor;
 
 				_weapon_globals.menu->Render();
 

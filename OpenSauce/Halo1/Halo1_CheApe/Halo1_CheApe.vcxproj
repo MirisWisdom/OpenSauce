@@ -4,6 +4,7 @@
     <OSRootDir>$(ProjectDir)..\..\..\</OSRootDir>
     <OSRequiresDirectX>true</OSRequiresDirectX>
     <OSRequiresCppBoost>true</OSRequiresCppBoost>
+    <OSRequiresVLD>true</OSRequiresVLD>
     <OSRequiresHaloCustomEd>true</OSRequiresHaloCustomEd>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
@@ -99,6 +100,9 @@
     <ClCompile Include="Guerilla\guerilla_application_extensions.cpp" />
     <ClCompile Include="Guerilla\string_dialog_extensions.cpp" />
     <ClCompile Include="Guerilla\tag_reference_dialog_extensions.cpp" />
+    <ClCompile Include="Settings\c_settings_sapien.cpp" />
+    <ClCompile Include="Settings\c_settings_tool.cpp" />
+    <ClCompile Include="Settings\Settings.cpp" />
     <ClCompile Include="Tool\BuildCacheFile.cpp" />
     <ClCompile Include="Tool\BuildCacheFile\BuildCacheFileEx.cpp" />
     <ClCompile Include="Tool\BuildCacheFile\BuildCacheFileGlobals.cpp" />
@@ -111,7 +115,6 @@
     <ClCompile Include="Yelo\YeloTool.cpp" />
     <ClCompile Include="Common\DebugDump.cpp" />
     <ClCompile Include="Common\StringEditing.cpp" />
-    <ClCompile Include="Common\YeloSettings.cpp" />
     <ClCompile Include="Tool\BuildCppDefinition.cpp" />
     <ClCompile Include="Tool\Console.cpp" />
     <ClCompile Include="Tool\ImportLightmapUV.cpp" />
@@ -138,6 +141,9 @@
     <ClInclude Include="Guerilla\guerilla_application_extensions.hpp" />
     <ClInclude Include="Guerilla\string_dialog_extensions.hpp" />
     <ClInclude Include="Guerilla\tag_reference_dialog_extensions.hpp" />
+    <ClInclude Include="Settings\c_settings_sapien.hpp" />
+    <ClInclude Include="Settings\c_settings_tool.hpp" />
+    <ClInclude Include="Settings\Settings.hpp" />
     <ClInclude Include="Tool\BuildCacheFile.hpp" />
     <ClInclude Include="Tool\BuildCacheFile\BuildCacheFileEx.hpp" />
     <ClInclude Include="Tool\BuildCacheFile\BuildCacheFileGlobals.hpp" />
@@ -148,7 +154,6 @@
     <ClInclude Include="Common\Platform.hpp" />
     <ClInclude Include="Common\Precompile.hpp" />
     <ClInclude Include="Common\StringEditing.hpp" />
-    <ClInclude Include="Common\YeloSettings.hpp" />
     <ClInclude Include="Tool\BuildCppDefinition.hpp" />
     <ClInclude Include="Tool\Console.hpp" />
     <ClInclude Include="Tool\ImportLightmapUV.hpp" />

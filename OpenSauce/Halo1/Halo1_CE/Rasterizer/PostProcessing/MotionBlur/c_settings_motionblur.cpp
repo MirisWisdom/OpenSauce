@@ -31,14 +31,20 @@ namespace Yelo
 
 		void c_settings_motionblur::PostLoad()
 		{
-			c_system_motionblur::Instance().Enabled() = Get().m_enabled;
-			c_system_motionblur::Instance().BlurAmount() = Get().m_blur_amount;
+			auto& system_instance(c_system_motionblur::Instance());
+			auto& settings_instance(Get());
+
+			system_instance.Enabled() = settings_instance.m_enabled;
+			system_instance.BlurAmount() = settings_instance.m_blur_amount;
 		}
 
 		void c_settings_motionblur::PreSave()
 		{
-			Get().m_enabled = c_system_motionblur::Instance().Enabled();
-			Get().m_blur_amount = c_system_motionblur::Instance().BlurAmount();
+			auto& system_instance(c_system_motionblur::Instance());
+			auto& settings_instance(Get());
+
+			settings_instance.m_enabled = system_instance.Enabled();
+			settings_instance.m_blur_amount = system_instance.BlurAmount();
 		}
 	};};};
 };

@@ -40,14 +40,17 @@
     <Filter Include="_Resources\Impl">
       <UniqueIdentifier>{5ab94466-27b4-4dbe-a323-f7d0e58894d8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="TagGroups">
-      <UniqueIdentifier>{08e81d89-ff61-4465-acbc-e23a306e1be7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Memory">
       <UniqueIdentifier>{76969aab-4c97-46f4-860a-0b1ed7f2c231}</UniqueIdentifier>
     </Filter>
     <Filter Include="Yelo\Impl">
       <UniqueIdentifier>{1a6b5547-60bc-4875-8971-31d3a2bf4674}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Settings">
+      <UniqueIdentifier>{59bfb756-8599-4a07-8bb6-0e5fc887a20e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TagGroups">
+      <UniqueIdentifier>{08e81d89-ff61-4465-acbc-e23a306e1be7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -85,9 +88,6 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Common\StringEditing.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Common\YeloSettings.cpp">
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Guerilla\tag_reference_dialog_extensions.cpp">
@@ -161,6 +161,15 @@
     <ClCompile Include="Tool\BuildCacheFile\BuildCacheFileEx.cpp">
       <Filter>Tool\BuildCacheFile</Filter>
     </ClCompile>
+    <ClCompile Include="Settings\Settings.cpp">
+      <Filter>Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\c_settings_sapien.cpp">
+      <Filter>Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\c_settings_tool.cpp">
+      <Filter>Settings</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\AnimationUpgrade.hpp">
@@ -188,9 +197,6 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Common\StringEditing.hpp">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\YeloSettings.hpp">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Guerilla\field_dialog_extensions.hpp">
@@ -263,6 +269,15 @@
     </ClInclude>
     <ClInclude Include="Tool\BuildCacheFile\BuildCacheFileEx.hpp">
       <Filter>Tool\BuildCacheFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\Settings.hpp">
+      <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\c_settings_sapien.hpp">
+      <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\c_settings_tool.hpp">
+      <Filter>Settings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

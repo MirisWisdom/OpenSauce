@@ -451,7 +451,7 @@
     <ClCompile Include="Rasterizer\PostProcessing\Generic\Internal\c_settings_internal.cpp">
       <Filter>Rasterizer\PostProcessing\Generic\Internal</Filter>
     </ClCompile>
-    <ClCompile Include="Settings\YeloSettings.cpp">
+    <ClCompile Include="Settings\Settings.cpp">
       <Filter>Settings</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1026,10 +1026,7 @@
     <ClInclude Include="Rasterizer\PostProcessing\Generic\Internal\c_settings_internal.hpp">
       <Filter>Rasterizer\PostProcessing\Generic\Internal</Filter>
     </ClInclude>
-    <ClInclude Include="Settings\YeloSettings.hpp">
-      <Filter>Settings</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings\c_settings_singleton.hpp">
+    <ClInclude Include="Settings\Settings.hpp">
       <Filter>Settings</Filter>
     </ClInclude>
   </ItemGroup>

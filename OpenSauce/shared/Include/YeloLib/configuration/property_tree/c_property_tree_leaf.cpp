@@ -8,11 +8,14 @@
 
 #include <YeloLib/configuration/property_tree/c_property_tree_leaf_iterator.hpp>
 
+using namespace std;
+using namespace boost::property_tree;
+
 namespace Yelo
 {
 	namespace Configuration { namespace PropertyTree
 	{
-		c_property_tree_leaf::c_property_tree_leaf(boost::property_tree::ptree& property_tree)
+		c_property_tree_leaf::c_property_tree_leaf(ptree& property_tree)
 			: m_property_tree(property_tree)
 		{ }
 		
@@ -52,7 +55,7 @@ namespace Yelo
 		{
 			return m_property_tree.get_value(default_value);
 		}
-		std::string c_property_tree_leaf::GetValue(const std::string& default_value)
+		std::string c_property_tree_leaf::GetValue(const string& default_value)
 		{
 			return m_property_tree.get_value(default_value);
 		}
@@ -93,17 +96,17 @@ namespace Yelo
 		{
 			m_property_tree.put_value(value);
 		}
-		void c_property_tree_leaf::SetValue(const std::string& value)
+		void c_property_tree_leaf::SetValue(const string& value)
 		{
 			m_property_tree.put_value(value);
 		}
 
-		bool c_property_tree_leaf::HasChild(const std::string& child_name) const
+		bool c_property_tree_leaf::HasChild(const string& child_name) const
 		{
 			return m_property_tree.get_child_optional(child_name) != nullptr;
 		}
 
-		std::unique_ptr<i_configuration_leaf_iterator> c_property_tree_leaf::GetChildIterator(const std::string& child_name)
+		unique_ptr<i_configuration_leaf_iterator> c_property_tree_leaf::GetChildIterator(const string& child_name)
 		{
 			if(!HasChild(child_name))
 			{
@@ -112,10 +115,10 @@ namespace Yelo
 
 			// Property tree iterators only work one level deep so when a multi depth node is used, we get the first instances of the nodes at each level
 			// and only iterate the nodes at the end of the first tree traversal
-			std::string::size_type index = child_name.rfind('.');
-			if(index == std::string::npos)
+			string::size_type index = child_name.rfind('.');
+			if(index == string::npos)
 			{
-				return std::make_unique<c_property_tree_leaf_iterator>(m_property_tree, child_name);
+				return make_unique<c_property_tree_leaf_iterator>(m_property_tree, child_name);
 			}
 			else
 			{
@@ -125,23 +128,23 @@ namespace Yelo
 			}
 		}
 
-		std::unique_ptr<i_configuration_leaf> c_property_tree_leaf::GetChild(const std::string& child_name) const
+		unique_ptr<i_configuration_leaf> c_property_tree_leaf::GetChild(const string& child_name) const
 		{
 			if(!HasChild(child_name))
 			{
 				return nullptr;
 			}
 
-			boost::property_tree::ptree& current_tree = m_property_tree;
-			std::string search_string(child_name);
+			ptree* current_tree = &m_property_tree;
+			string search_string(child_name);
 			
 			// Split the node path into tokens and find each child node
 			while(search_string.length() != 0)
 			{
-				std::string::size_type index = search_string.find('.');
+				auto index = search_string.find('.');
 
-				std::string token;
-				if(index == std::string::npos)
+				string token;
+				if(index == string::npos)
 				{
 					token = search_string;
 					search_string = "";
@@ -152,21 +155,21 @@ namespace Yelo
 					search_string.replace(0, index + 1, "");
 				}
 
-				if(current_tree.find(token) == m_property_tree.not_found())
+				if(current_tree->find(token) == m_property_tree.not_found())
 				{
 					return nullptr;
 				}
 
-				current_tree = current_tree.get_child(token);
+				current_tree = &current_tree->get_child(token);
 			};
 
-			return std::make_unique<c_property_tree_leaf>(current_tree);
+			return make_unique<c_property_tree_leaf>(*current_tree);
 		}
 
-		std::unique_ptr<i_configuration_leaf> c_property_tree_leaf::AddChild(const std::string& child_name)
+		unique_ptr<i_configuration_leaf> c_property_tree_leaf::AddChild(const string& child_name)
 		{
-			boost::property_tree::ptree new_child;
-			return std::make_unique<c_property_tree_leaf>(m_property_tree.add_child(child_name, new_child));
+			ptree new_child;
+			return make_unique<c_property_tree_leaf>(m_property_tree.add_child(child_name, new_child));
 		}
 	};};
 };

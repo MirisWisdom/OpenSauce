@@ -9,7 +9,7 @@
 #include <blamlib/Halo1/cache/cache_files_globals.hpp>
 #include <blamlib/Halo1/cache/cache_files_structures.hpp>
 #include <blamlib/Halo1/cache/data_file_structures.hpp>
-#include <YeloLib/Halo1/open_sauce/settings/che_ape_settings.hpp>
+#include <YeloLib/Halo1/open_sauce/settings/c_settings_cheape.hpp>
 
 namespace Yelo
 {
@@ -21,7 +21,7 @@ namespace Yelo
 		cstring MapsDirectory()
 		{
 #if PLATFORM_IS_EDITOR
-			return Settings::Get().GetMapsPath();
+			return Settings::c_settings_cheape::Profile().GetMapsPath();
 #else
 			return K_MAP_FILES_DIRECTORY;
 #endif

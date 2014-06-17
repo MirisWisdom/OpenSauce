@@ -8,7 +8,7 @@
 #include "Rasterizer/PostProcessing/MotionBlur/c_system_motionblur.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include "Settings/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
 
 #include "Rasterizer/PostProcessing/MotionBlur/s_shader_motionblur_definition.hpp"
@@ -64,7 +64,7 @@ namespace Yelo
 		// IPostProcessingComponent
 		void c_system_motionblur::Initialize()
 		{
-			c_settings_motionblur::Register();
+			c_settings_motionblur::Instance().Register(Settings::Manager());
 
 			m_members.status = Enums::pp_component_status_uninitialised;
 
@@ -115,7 +115,7 @@ namespace Yelo
 			g_shader_instance_motionblur.Dtor();
 			g_shader_motionblur.Dtor();
 			
-			c_settings_motionblur::Unregister();
+			c_settings_motionblur::Instance().Unregister(Settings::Manager());
 		}
 
 		void c_system_motionblur::InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters)

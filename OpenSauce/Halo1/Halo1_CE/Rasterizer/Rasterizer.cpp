@@ -14,7 +14,7 @@
 
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
-#include "Settings/c_settings_singleton.hpp"
+#include <YeloLib/settings/c_settings_singleton.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Game/ScriptLibrary.hpp"
@@ -180,16 +180,18 @@ namespace Yelo
 		public:
 			void PostLoad() final override
 			{
+				auto& settings_instance(Get());
+
 				// when 0x637D50 (1.09) is 1, the basic active camouflage is used; at 0x51ABB2 (1.09) it is forced to 1 when an nVidia card is detected
 				// if the user changes this in their settings they need to restart the game for it to take effect
-				GET_PTR(NVIDIA_USE_BASIC_CAMO_TOGGLE) = Get().m_use_nvidia_camo;
+				GET_PTR(NVIDIA_USE_BASIC_CAMO_TOGGLE) = settings_instance.m_use_nvidia_camo;
 				
-				if(Get().m_upgrades.m_dynamic_triangles)
+				if(settings_instance.m_upgrades.m_dynamic_triangles)
 				{
 					g_render_upgrades.InitializeDynamicTrianglesUpgrade();
 				}
 
-				if(Get().m_upgrades.m_model_node_stretching_fix)
+				if(settings_instance.m_upgrades.m_model_node_stretching_fix)
 				{
 					g_render_upgrades.InitializeMaximumNodesPerModelFixes();
 				}
@@ -252,7 +254,7 @@ namespace Yelo
 #pragma warning( disable : 4312 ) // conversion from 'unsigned long' to 'void *' of greater size
 		void Initialize()
 		{
-			c_settings_rasterizer::Register();
+			c_settings_rasterizer::Instance().Register(Settings::Manager());
 
 			Render::Initialize();
 		
@@ -306,7 +308,7 @@ namespace Yelo
 		{
 			Render::Dispose();
 			
-			c_settings_rasterizer::Unregister();
+			c_settings_rasterizer::Instance().Unregister(Settings::Manager());
 		}
 
 		void Update()

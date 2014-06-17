@@ -22,6 +22,8 @@
 #include <math.h>
 #include <d3dx9math.h>
 
+#include <vld.h>
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -47,12 +49,14 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
+#include <functional>
 
 #include <boost/preprocessor.hpp>
 #include <boost/static_assert.hpp>
 
 #include <boost/integer/static_log2.hpp>
 #include <boost/optional.hpp>
+#include <boost/filesystem.hpp>
 
 
 #include <TinyXml/tinyxml.hpp>
@@ -75,7 +79,7 @@
 	#include <d3d9.h>
 #endif
 
-#include "Common/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 #include "Memory/MemoryInterface.hpp"
 
 #ifdef _DEBUG

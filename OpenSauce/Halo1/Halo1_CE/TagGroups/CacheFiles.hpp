@@ -11,7 +11,7 @@
 
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 
-#include "Settings/c_settings_singleton.hpp"
+#include <YeloLib/settings/c_settings_singleton.hpp>
 
 namespace Yelo
 {

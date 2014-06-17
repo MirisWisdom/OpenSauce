@@ -6,11 +6,13 @@
 #include "Common/Precompile.hpp"
 #include <YeloLib/configuration/type_containers/c_real_vector3d_container.hpp>
 
+using namespace std;
+
 namespace Yelo
 {
 	namespace Configuration
 	{
-		c_real_vector3d_container::c_real_vector3d_container(const std::string& name, real default_i, real default_j, real default_k)
+		c_real_vector3d_container::c_real_vector3d_container(const string& name, real default_i, real default_j, real default_k)
 			: Configuration::c_type_container<real_vector3d>(name)
 			, m_i("I", default_i)
 			, m_j("J", default_j)
@@ -21,13 +23,13 @@ namespace Yelo
 			m_value.k = default_k;
 		}
 
-		c_real_vector3d_container::c_real_vector3d_container(const std::string& name)
+		c_real_vector3d_container::c_real_vector3d_container(const string& name)
 			: c_real_vector3d_container(name, 0.0f, 0.0f, 0.0f)
 		{ }
 
-		const std::vector<i_configuration_value* const> c_real_vector3d_container::GetMembers()
+		const vector<i_configuration_value* const> c_real_vector3d_container::GetMembers()
 		{
-			return std::vector<i_configuration_value* const>
+			return vector<i_configuration_value* const>
 			{
 				&m_i,
 				&m_j,

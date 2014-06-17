@@ -12,7 +12,8 @@
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 
 #include "CheApeInterface.hpp" // for Memory functions
-#include "Common/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
+#include "Settings/c_settings_sapien.hpp"
 #include "Engine/EngineFunctions.hpp"
 #include "Engine/Scripting.hpp"
 #include "TagGroups/yelo_definitions.hpp"
@@ -102,12 +103,8 @@ namespace Yelo
 
 		void Initialize()
 		{
-			// Set Sapien's affinity mask if there is one specified
-			const Settings::s_profile& k_profile = Settings::Get().active_profile;
-			if(!k_profile.IsIgnored() && k_profile.has_affinity_mask)
-			{
-				SetProcessAffinityMask(GetCurrentProcess(), k_profile.affinity_mask);
-			}
+			// Set Sapien's affinity mask
+			SetProcessAffinityMask(GetCurrentProcess(), Settings::c_settings_sapien::Instance().Get().m_affinity_mask);
 
 			for(auto ptr : AddressOf::MaxTagsCheck)
 				*ptr = Enums::k_maximum_simultaneous_tag_instances_upgrade;

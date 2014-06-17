@@ -7,7 +7,7 @@
 #include "Common/Precompile.hpp"
 #include "Common/GameSystems.hpp"
 
-#include "Settings/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 #include "Common/FileIO.hpp"
 
 //////////////////////////////////////////////////////////////////////////

@@ -10,7 +10,7 @@
 
 #include <blamlib/Halo1/cache/cache_file_builder.hpp>
 #include <YeloLib/Halo1/cache/data_file_yelo.hpp>
-#include <YeloLib/Halo1/open_sauce/settings/che_ape_settings.hpp>
+#include <YeloLib/Halo1/open_sauce/settings/c_settings_cheape.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 
@@ -66,7 +66,7 @@ namespace Yelo { namespace Tool {
 	void s_build_cache_file_for_scenario::InitializeFileSystem(Cache::c_data_files& data_files,
 		cstring mod_name, bool using_mod_sets)
 	{
-		cstring settings_path = Settings::Get().GetMapsPath();
+		cstring settings_path = Settings::c_settings_cheape::Profile().GetMapsPath();
 
 		char maps_path[MAX_PATH];
 		strcpy_s(maps_path, settings_path);
@@ -121,13 +121,13 @@ namespace Yelo { namespace Tool {
 	{
 		const size_t k_buffer_size = sizeof(*buffer) * 256;
 
-		sprintf_s(buffer, k_buffer_size, "%s%s.yelo", Settings::Get().GetMapsPath(), scenario_name);
+		sprintf_s(buffer, k_buffer_size, "%s%s.yelo", Settings::c_settings_cheape::Profile().GetMapsPath(), scenario_name);
 	}
 	void s_build_cache_file_for_scenario::UseYeloDataFilePathScheme()
 	{
 		static char data_file_path_format[MAX_PATH];
 
-		strcpy_s(data_file_path_format, Settings::Get().GetMapsPath());
+		strcpy_s(data_file_path_format, Settings::c_settings_cheape::Profile().GetMapsPath());
 		strcat_s(data_file_path_format, "%s.map");
 
 		*data_file_open_path_format = data_file_path_format;

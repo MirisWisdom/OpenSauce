@@ -1,34 +1,68 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<!-- See documentation at: http://code.google.com/p/open-sauce/wiki/Doc_Halo1_Settings#OS_Settings.User.xml -->
-<osYeloSettings engine="Halo1_CE">
-    <client>
-        <dx9>
-            <nVidiaActiveCamouflage basic="false" />
-            <GBuffer enabled="true" />
-            <PostProcessing>
-                <Bloom enabled="true" />
-                <MotionBlur enabled="false" amount="1" />
-                <FXAA enabled="false" />
-                <Internal enabled="true" />
-                <External enabled="true" />
-            </PostProcessing>
-            <Upgrades dynamicTriangles="false" />
-            <ShaderExtension enabled="true">
-                <Model>
-                    <NormalMap enabled="true" />
-                    <DetailNormalMaps enabled="true" />
-                    <SpecularMap enabled="true" />
-                    <SpecularLighting enabled="true" />
-                </Model>
-            </ShaderExtension>
-        </dx9>
-        <Fov value="1.02414" />
-        <Hud show="true" scale="true" showChat="true">
-            <Reports showDeaths="false" showMyKillDeaths="false" />
-        </Hud>
-        <objects>
-            <weaponViews />
-            <vehicleViews />
-        </objects>
-    </client>
-</osYeloSettings>
+<?xml version="1.0" encoding="utf-8"?>
+<OpenSauce>
+	<CacheFiles>
+		<CheckYeloFilesFirst>true</CheckYeloFilesFirst>
+		<MainMenuScenario/>
+	</CacheFiles>
+	<GBuffer>
+		<Enabled>true</Enabled>
+	</GBuffer>
+	<Rasterizer>
+		<UseNvidiaCamo>false</UseNvidiaCamo>
+		<Upgrades>
+			<DynamicTriangles>true</DynamicTriangles>
+			<MaximumModelNodes>true</MaximumModelNodes>
+		</Upgrades>
+		<ShaderExtensions>
+			<Enabled>true</Enabled>
+			<Rasterizer>
+				<ShaderExtensions>
+					<Object>
+						<NormalMaps>true</NormalMaps>
+						<DetailNormalMaps>true</DetailNormalMaps>
+						<SpecularMaps>true</SpecularMaps>
+						<SpecularLighting>true</SpecularLighting>
+					</Object>
+				</ShaderExtensions>
+			</Rasterizer>
+		</ShaderExtensions>
+		<PostProcessing>
+			<MotionBlur>
+				<Enabled>true</Enabled>
+				<BlurAmount>1</BlurAmount>
+			</MotionBlur>
+			<Bloom>
+				<Enabled>true</Enabled>
+			</Bloom>
+			<AntiAliasing>
+				<Enabled>true</Enabled>
+			</AntiAliasing>
+			<ExternalEffects>
+				<Enabled>true</Enabled>
+			</ExternalEffects>
+			<MapEffects>
+				<Enabled>true</Enabled>
+			</MapEffects>
+		</PostProcessing>
+	</Rasterizer>
+	<Camera>
+		<FieldOfView>0.9671381</FieldOfView>
+	</Camera>
+	<Networking>
+		<GameSpy>
+			<NoUpdateCheck>true</NoUpdateCheck>
+		</GameSpy>
+		<MapDownload>
+			<Enabled>true</Enabled>
+		</MapDownload>
+	</Networking>
+	<Objects>
+		<VehicleRemapperEnabled>true</VehicleRemapperEnabled>
+	</Objects>
+	<HUD>
+		<ShowHUD>true</ShowHUD>
+		<ScaleHUD>true</ScaleHUD>
+		<HUDScaleX>1</HUDScaleX>
+		<HUDScaleY>1</HUDScaleY>
+	</HUD>
+</OpenSauce>
