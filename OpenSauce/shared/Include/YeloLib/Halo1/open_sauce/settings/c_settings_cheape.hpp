@@ -72,7 +72,7 @@ namespace Yelo
 			virtual cstring GetTagsName() = 0;
 		};
 		
-		class c_settings_profile
+		class c_settings_profile final
 			: public i_settings_profile
 		{
 			std::string m_root_directory;
@@ -81,10 +81,10 @@ namespace Yelo
 			std::string m_maps_directory;
 			std::string m_tags_folder;
 			
-			void SetProfile(c_profile_container* profile);
+			void SetProfile(c_profile_container& profile);
 
 		public:
-			c_settings_profile(c_profile_container* profile);
+			c_settings_profile(c_profile_container& profile);
 
 			cstring GetRootPath() final override;
 			cstring GetMapsPath() final override;
@@ -93,7 +93,7 @@ namespace Yelo
 			cstring GetTagsName() final override;
 		};
 
-		class c_settings_profile_null
+		class c_settings_profile_null final
 			: public i_settings_profile
 		{
 			cstring GetRootPath() final override { return nullptr; };

@@ -7,13 +7,12 @@
 #include <YeloLib/configuration/property_tree/c_property_tree_leaf_iterator.hpp>
 
 using namespace boost::property_tree;
-using namespace std;
 
 namespace Yelo
 {
 	namespace Configuration { namespace PropertyTree
 	{
-		c_property_tree_leaf_iterator::c_property_tree_leaf_iterator(ptree& tree, const string& node_name)
+		c_property_tree_leaf_iterator::c_property_tree_leaf_iterator(ptree& tree, const std::string& node_name)
 			: m_is_started(false)
 			, m_tree(tree)
 			, m_iterator()
@@ -30,12 +29,12 @@ namespace Yelo
 			}
 			else
 			{
-				m_iterator++;
+				++m_iterator;
 			}
 
 			if (m_iterator != m_tree.not_found())
 			{
-				m_current_leaf = make_unique<c_property_tree_leaf>(m_iterator->second);
+				m_current_leaf = std::make_unique<c_property_tree_leaf>(m_iterator->second);
 				return true;
 			}
 			else
@@ -45,7 +44,7 @@ namespace Yelo
 			}
 		}
 
-		shared_ptr<i_configuration_leaf> c_property_tree_leaf_iterator::Current()
+		std::shared_ptr<i_configuration_leaf> c_property_tree_leaf_iterator::Current()
 		{
 			return m_current_leaf;
 		}

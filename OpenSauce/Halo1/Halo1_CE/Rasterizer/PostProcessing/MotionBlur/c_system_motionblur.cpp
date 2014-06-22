@@ -64,7 +64,7 @@ namespace Yelo
 		// IPostProcessingComponent
 		void c_system_motionblur::Initialize()
 		{
-			c_settings_motionblur::Instance().Register(Settings::Manager());
+			c_settings_motionblur::Register(Settings::Manager());
 
 			m_members.status = Enums::pp_component_status_uninitialised;
 
@@ -115,7 +115,7 @@ namespace Yelo
 			g_shader_instance_motionblur.Dtor();
 			g_shader_motionblur.Dtor();
 			
-			c_settings_motionblur::Instance().Unregister(Settings::Manager());
+			c_settings_motionblur::Unregister(Settings::Manager());
 		}
 
 		void c_system_motionblur::InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters)

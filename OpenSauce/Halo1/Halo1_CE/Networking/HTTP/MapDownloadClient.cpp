@@ -2472,7 +2472,7 @@ namespace Yelo
 		 */
 		void	Initialize()
 		{
-			c_settings_mapdownload::Instance().Register(Settings::Manager());
+			c_settings_mapdownload::Register(Settings::Manager());
 
 			PathCombine(g_map_download_globals.m_paths.user_download_directory, Settings::OpenSauceProfilePath(), "map_download");
 
@@ -2497,7 +2497,7 @@ namespace Yelo
 
 			CloseHandle(g_globals_access_mutex);
 			
-			c_settings_mapdownload::Instance().Unregister(Settings::Manager());
+			c_settings_mapdownload::Unregister(Settings::Manager());
 		}
 
 		/*!

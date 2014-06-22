@@ -164,10 +164,10 @@
     <ClCompile Include="Settings\Settings.cpp">
       <Filter>Settings</Filter>
     </ClCompile>
-    <ClCompile Include="Settings\c_settings_sapien.cpp">
+    <ClCompile Include="Settings\SettingsTool.cpp">
       <Filter>Settings</Filter>
     </ClCompile>
-    <ClCompile Include="Settings\c_settings_tool.cpp">
+    <ClCompile Include="Settings\SettingsSapien.cpp">
       <Filter>Settings</Filter>
     </ClCompile>
   </ItemGroup>
@@ -273,10 +273,10 @@
     <ClInclude Include="Settings\Settings.hpp">
       <Filter>Settings</Filter>
     </ClInclude>
-    <ClInclude Include="Settings\c_settings_sapien.hpp">
+    <ClInclude Include="Settings\SettingsTool.hpp">
       <Filter>Settings</Filter>
     </ClInclude>
-    <ClInclude Include="Settings\c_settings_tool.hpp">
+    <ClInclude Include="Settings\SettingsSapien.hpp">
       <Filter>Settings</Filter>
     </ClInclude>
   </ItemGroup>

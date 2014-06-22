@@ -187,8 +187,8 @@ namespace Yelo
 					Enums::_model_extension_usage_specular_map | Enums::_model_extension_usage_specular_lighting;
 
 					int32 usage_mask = Enums::_model_extension_usage_none;
-
-					auto& settings_instance(Get());
+					
+					auto& settings_instance = Get();
 					usage_mask |= (settings_instance.m_shader_model.m_normal_maps ? Enums::_model_extension_usage_normal_map : Enums::_model_extension_usage_none);
 					usage_mask |= (settings_instance.m_shader_model.m_detail_normal_maps ? Enums::_model_extension_usage_detail_normal : Enums::_model_extension_usage_none);
 					usage_mask |= (settings_instance.m_shader_model.m_specular_maps ? Enums::_model_extension_usage_specular_map : Enums::_model_extension_usage_none);
@@ -199,7 +199,7 @@ namespace Yelo
 
 				void PreSave() final override
 				{
-					auto& settings_instance(Get());
+					auto& settings_instance = Get();
 					settings_instance.m_shader_model.m_normal_maps = (Model::g_extension_usage_mask & Enums::_model_extension_usage_normal_map) == Enums::_model_extension_usage_normal_map;
 					settings_instance.m_shader_model.m_detail_normal_maps = (Model::g_extension_usage_mask & Enums::_model_extension_usage_detail_normal) == Enums::_model_extension_usage_detail_normal;
 					settings_instance.m_shader_model.m_specular_maps = (Model::g_extension_usage_mask & Enums::_model_extension_usage_specular_map) == Enums::_model_extension_usage_specular_map;
@@ -226,7 +226,7 @@ namespace Yelo
 
 			void		Initialize()
 			{
-				c_settings_shaderextension::Instance().Register(Settings::Manager());
+				c_settings_shaderextension::Register(Settings::Manager());
 
 				g_shader_files_present = true;
 
@@ -243,7 +243,7 @@ namespace Yelo
 
 			void		Dispose()
 			{
-				c_settings_shaderextension::Instance().Unregister(Settings::Manager());
+				c_settings_shaderextension::Unregister(Settings::Manager());
 			}
 
 			void		Initialize3D(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* params)

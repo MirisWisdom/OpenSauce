@@ -9,7 +9,6 @@
 
 #include <YeloLib/configuration/c_configuration_value.hpp>
 
-using namespace std;
 using namespace Yelo::Configuration;
 using namespace boost::filesystem;
 
@@ -17,7 +16,7 @@ namespace Yelo
 {
 	namespace Settings
 	{
-		unique_ptr<i_settings_profile> c_settings_cheape::g_settings_profile(make_unique<c_settings_profile_null>());
+		std::unique_ptr<i_settings_profile> c_settings_cheape::g_settings_profile(std::make_unique<c_settings_profile_null>());
 		bool c_settings_cheape::g_is_custom_profile;
 		
 #pragma region Containers
@@ -29,9 +28,9 @@ namespace Yelo
 			, m_tags_directory("TagsDirectory", "")
 		{ }
 
-		const vector<i_configuration_value* const> c_paths_container::GetMembers()
+		const std::vector<i_configuration_value* const> c_paths_container::GetMembers()
 		{
-			return vector<i_configuration_value* const>
+			return std::vector<i_configuration_value* const>
 			{
 				&m_root,
 				&m_data_directory,
@@ -46,9 +45,9 @@ namespace Yelo
 			, m_paths()
 		{ }
 
-		const vector<i_configuration_value* const> c_profile_container::GetMembers()
+		const std::vector<i_configuration_value* const> c_profile_container::GetMembers()
 		{
-			return vector<i_configuration_value* const> { &m_paths, &m_name };
+			return std::vector<i_configuration_value* const> { &m_paths, &m_name };
 		}
 
 		c_cheape_container::c_cheape_container()
@@ -56,14 +55,14 @@ namespace Yelo
 			, m_profiles("Profile", []() { return c_profile_container(); })
 		{ }
 
-		const vector<i_configuration_value* const> c_cheape_container::GetMembers()
+		const std::vector<i_configuration_value* const> c_cheape_container::GetMembers()
 		{
-			return vector<i_configuration_value* const> { &m_profiles };
+			return std::vector<i_configuration_value* const> { &m_profiles };
 		}
 #pragma endregion
 
 #pragma region Profile
-		c_settings_profile::c_settings_profile(c_profile_container* profile)
+		c_settings_profile::c_settings_profile(c_profile_container& profile)
 			: m_root_directory()
 			, m_data_directory()
 			, m_tags_directory()
@@ -73,9 +72,9 @@ namespace Yelo
 			SetProfile(profile);
 		}
 
-		void c_settings_profile::SetProfile(c_profile_container* profile)
+		void c_settings_profile::SetProfile(c_profile_container& profile)
 		{
-			auto& paths = profile->m_paths;
+			auto& paths = profile.m_paths;
 			YELO_ASSERT_DISPLAY(!paths.m_root.Get().empty(), "Root directory missing from editor profile");
 			YELO_ASSERT_DISPLAY(!paths.m_data_directory.Get().empty(), "Data directory name missing from editor profile");
 			YELO_ASSERT_DISPLAY(!paths.m_tags_directory.Get().empty(), "Tags directory name missing from editor profile");
@@ -120,19 +119,14 @@ namespace Yelo
 #pragma endregion
 		
 #pragma region CheApe Settings
-		c_profile_container* c_settings_cheape::GetProfile(string name)
+		c_profile_container* c_settings_cheape::GetProfile(std::string name)
 		{
 			auto& settings_instance = Get();
 
 			auto& found = find_if(settings_instance.m_profiles.begin(), settings_instance.m_profiles.end(),
 				[name](c_profile_container& profile)
 				{
-					if(profile.m_name.Get() != name)
-					{
-						return false;
-					}
-
-					return true;
+					return profile.m_name.Get() == name;
 				}
 			);
 
@@ -150,7 +144,7 @@ namespace Yelo
 			return g_is_custom_profile;
 		}
 
-		void c_settings_cheape::SetActiveProfile(const string& requested)
+		void c_settings_cheape::SetActiveProfile(const std::string& requested)
 		{
 			if (requested == "")
 			{
@@ -162,7 +156,7 @@ namespace Yelo
 			auto profile = Instance().GetProfile(requested);
 			YELO_ASSERT_DISPLAY(profile, "Requested editor profile not found.");
 			
-			g_settings_profile = make_unique<c_settings_profile>(profile);
+			g_settings_profile = std::make_unique<c_settings_profile>(*profile);
 		}
 
 		i_settings_profile& c_settings_cheape::Profile()

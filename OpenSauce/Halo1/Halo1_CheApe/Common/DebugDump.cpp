@@ -14,7 +14,7 @@
 #include <YeloLib/files/files.hpp>
 
 #include "Settings/Settings.hpp"
-#include "Settings/c_settings_tool.hpp"
+#include "Settings/SettingsTool.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Engine/EngineFunctions.hpp"
 

@@ -7,15 +7,13 @@
 #include <YeloLib/configuration/property_tree/c_property_tree_file.hpp>
 
 #include <YeloLib/configuration/property_tree/c_property_tree_leaf_iterator.hpp>
-#include <YeloLib/configuration/property_tree/PropertyTreeLogging.hpp>
-
-using namespace std;
+#include <YeloLib/configuration/property_tree/property_tree_logging.hpp>
 
 namespace Yelo
 {
 	namespace Configuration { namespace PropertyTree
 	{
-		c_property_tree_file::c_property_tree_file(const string& file_path)
+		c_property_tree_file::c_property_tree_file(const std::string& file_path)
 			: c_property_tree_leaf(m_property_tree_file)
 			, m_file_path(file_path)
 		{
@@ -48,9 +46,9 @@ namespace Yelo
 			m_property_tree_file.clear();
 		}
 
-		unique_ptr<i_configuration_leaf> c_property_tree_file::Root()
+		std::unique_ptr<i_configuration_leaf> c_property_tree_file::Root()
 		{
-			return unique_ptr<i_configuration_leaf>(new c_property_tree_leaf(m_property_tree_file));
+			return std::unique_ptr<i_configuration_leaf>(new c_property_tree_leaf(m_property_tree_file));
 		}
 	};};
 };

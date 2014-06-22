@@ -31,8 +31,8 @@ namespace Yelo
 
 		void c_settings_motionblur::PostLoad()
 		{
-			auto& system_instance(c_system_motionblur::Instance());
-			auto& settings_instance(Get());
+			auto& system_instance = c_system_motionblur::Instance();
+			auto& settings_instance = Get();
 
 			system_instance.Enabled() = settings_instance.m_enabled;
 			system_instance.BlurAmount() = settings_instance.m_blur_amount;
@@ -40,8 +40,8 @@ namespace Yelo
 
 		void c_settings_motionblur::PreSave()
 		{
-			auto& system_instance(c_system_motionblur::Instance());
-			auto& settings_instance(Get());
+			auto& system_instance = c_system_motionblur::Instance();
+			auto& settings_instance = Get();
 
 			settings_instance.m_enabled = system_instance.Enabled();
 			settings_instance.m_blur_amount = system_instance.BlurAmount();

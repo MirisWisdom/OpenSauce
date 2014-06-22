@@ -152,7 +152,7 @@ namespace Yelo
 		//namespace functions
 		void		Initialize()
 		{
-			c_settings_version_check::Instance().Register(Settings::Manager());
+			c_settings_version_check::Register(Settings::Manager());
 
 			c_version_check_manager_base::VersionChecker().Initialize();
 		}
@@ -160,7 +160,7 @@ namespace Yelo
 		{
 			c_version_check_manager_base::VersionChecker().Dispose();
 
-			c_settings_version_check::Instance().Unregister(Settings::Manager());
+			c_settings_version_check::Unregister(Settings::Manager());
 		}
 
 		void		InitializeForNewMap()
@@ -320,7 +320,7 @@ namespace Yelo
 		 */
 		void		c_version_check_manager_base::CheckForUpdates()
 		{
-			auto& settings_instance(c_settings_version_check::Instance().Get());
+			auto& settings_instance = c_settings_version_check::Instance().Get();
 			m_states.is_request_in_progress = false;
 			
 			bool has_url = false;
@@ -369,7 +369,7 @@ namespace Yelo
 			time(&time_today);
 			tm local_time; localtime_s(&local_time, &time_today);
 			
-			auto& settings_instance(c_settings_version_check::Instance().Get());
+			auto& settings_instance = c_settings_version_check::Instance().Get();
 			if( (settings_instance.m_last_checked.m_day == local_time.tm_mday) &&
 				(settings_instance.m_last_checked.m_month == local_time.tm_mon + 1) &&
 				(settings_instance.m_last_checked.m_year == 1900 + local_time.tm_year))
@@ -389,7 +389,7 @@ namespace Yelo
 			time(&time_today);
 			tm local_time; localtime_s(&local_time, &time_today);
 
-			auto& settings_instance(c_settings_version_check::Instance().Get());
+			auto& settings_instance = c_settings_version_check::Instance().Get();
 
 			settings_instance.m_last_checked.m_day = local_time.tm_mday;
 			settings_instance.m_last_checked.m_month = local_time.tm_mon + 1;

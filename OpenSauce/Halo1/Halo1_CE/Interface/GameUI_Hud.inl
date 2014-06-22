@@ -139,7 +139,7 @@ namespace Yelo
 		public:
 			void PostLoad() final override
 			{
-				auto& settings_instance(Get());
+				auto& settings_instance = Get();
 				g_hud_globals.m_flags.scale_hud = settings_instance.m_scale_hud;
 				g_hud_globals.m_flags.show_hud = settings_instance.m_show_hud;
 				g_hud_globals.m_hud_screen.scale.x = settings_instance.m_hud_scale_x;
@@ -148,7 +148,7 @@ namespace Yelo
 
 			void PreSave() final override
 			{
-				auto& settings_instance(Get());
+				auto& settings_instance = Get();
 				settings_instance.m_scale_hud = g_hud_globals.m_flags.scale_hud;
 				settings_instance.m_show_hud = g_hud_globals.m_flags.show_hud;
 				settings_instance.m_hud_scale_x = g_hud_globals.m_hud_screen.scale.x;
@@ -519,12 +519,12 @@ namespace Yelo
 
 			g_hud_globals.m_flags.show_crosshair = true;
 
-			c_settings_hud::Instance().Register(Settings::Manager());
+			c_settings_hud::Register(Settings::Manager());
 		}
 
 		void Dispose()
 		{
-			c_settings_hud::Instance().Unregister(Settings::Manager());
+			c_settings_hud::Unregister(Settings::Manager());
 		}
 
 		///-------------------------------------------------------------------------------------------------

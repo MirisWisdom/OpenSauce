@@ -9,13 +9,11 @@
 #include <YeloLib/configuration/property_tree/c_property_tree_file_xml.hpp>
 #include <YeloLib/configuration/property_tree/c_property_tree_file_json.hpp>
 
-using namespace std;
-
 namespace Yelo
 {
 	namespace Configuration
 	{
-		configuration_file_ptr_t c_configuration_file_factory::CreateConfigurationFile(const string& file_path)
+		configuration_file_ptr_t c_configuration_file_factory::CreateConfigurationFile(const std::string& file_path)
 		{
 			configuration_file_ptr_t configuration_file(nullptr);
 

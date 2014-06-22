@@ -160,7 +160,7 @@ namespace Yelo
 		}
 		void Initialize()
 		{
-			c_settings_objects::Instance().Register(Settings::Manager());
+			c_settings_objects::Register(Settings::Manager());
 
 			Memory::WriteRelativeJmp(&Objects::Update, GET_FUNC_VPTR(OBJECTS_UPDATE_HOOK), false);
 
@@ -186,7 +186,7 @@ namespace Yelo
 			Weapon::Dispose();
 			Vehicle::Dispose();
 
-			c_settings_objects::Instance().Unregister(Settings::Manager());
+			c_settings_objects::Unregister(Settings::Manager());
 		}
 
 		static void ObjectsUpdateIgnorePlayerPvs(bool use_fix)
