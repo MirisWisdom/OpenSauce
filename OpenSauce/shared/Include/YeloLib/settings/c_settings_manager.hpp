@@ -59,7 +59,7 @@ namespace Yelo
 			/// <param name="post_load_callback">	The post load callback. </param>
 			/// <param name="pre_save_callback"> 	The pre save callback. </param>
 			/// <param name="post_save_callback">	The post save callback. </param>
-			void RegisterConfigurationContainer(Configuration::c_configuration_container* container
+			void RegisterConfigurationContainer(Configuration::c_configuration_container& container
 				, const std::function<void()>& pre_load_callback
 				, const std::function<void()>& post_load_callback
 				, const std::function<void()>& pre_save_callback
@@ -69,7 +69,7 @@ namespace Yelo
 			/// <summary>	Unregisters a configuration container from the settings system. </summary>
 			///
 			/// <param name="container">	The container to unregister. </param>
-			void UnregisterConfigurationContainer(Configuration::c_configuration_container* container);
+			void UnregisterConfigurationContainer(Configuration::c_configuration_container& container);
 		};
 	};
 };

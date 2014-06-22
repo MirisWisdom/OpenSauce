@@ -100,8 +100,8 @@
     <ClCompile Include="Guerilla\guerilla_application_extensions.cpp" />
     <ClCompile Include="Guerilla\string_dialog_extensions.cpp" />
     <ClCompile Include="Guerilla\tag_reference_dialog_extensions.cpp" />
-    <ClCompile Include="Settings\c_settings_sapien.cpp" />
-    <ClCompile Include="Settings\c_settings_tool.cpp" />
+    <ClCompile Include="Settings\SettingsSapien.cpp" />
+    <ClCompile Include="Settings\SettingsTool.cpp" />
     <ClCompile Include="Settings\Settings.cpp" />
     <ClCompile Include="Tool\BuildCacheFile.cpp" />
     <ClCompile Include="Tool\BuildCacheFile\BuildCacheFileEx.cpp" />
@@ -141,8 +141,8 @@
     <ClInclude Include="Guerilla\guerilla_application_extensions.hpp" />
     <ClInclude Include="Guerilla\string_dialog_extensions.hpp" />
     <ClInclude Include="Guerilla\tag_reference_dialog_extensions.hpp" />
-    <ClInclude Include="Settings\c_settings_sapien.hpp" />
-    <ClInclude Include="Settings\c_settings_tool.hpp" />
+    <ClInclude Include="Settings\SettingsSapien.hpp" />
+    <ClInclude Include="Settings\SettingsTool.hpp" />
     <ClInclude Include="Settings\Settings.hpp" />
     <ClInclude Include="Tool\BuildCacheFile.hpp" />
     <ClInclude Include="Tool\BuildCacheFile\BuildCacheFileEx.hpp" />

@@ -195,7 +195,7 @@ namespace Yelo
 
 		void Initialize()
 		{
-			c_settings_cache::Instance().Register(Settings::Manager());
+			c_settings_cache::Register(Settings::Manager());
 
 			MemoryUpgradesInitialize();
 			c_cache_format_path_hacks::Initialize();
@@ -208,7 +208,7 @@ namespace Yelo
 		{
 			MemoryUpgradesDispose();
 			
-			c_settings_cache::Instance().Unregister(Settings::Manager());
+			c_settings_cache::Unregister(Settings::Manager());
 		}
 
 		// Reads the cache file [relative_map_name] from the maps folder, and returns true if its header is valid

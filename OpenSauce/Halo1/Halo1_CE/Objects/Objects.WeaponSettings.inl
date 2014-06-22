@@ -96,7 +96,7 @@ namespace Yelo
 
 				c_settings_container::c_weapon_position* AddPreset(cstring name)
 				{
-					auto& settings_instance(c_settings_weapons::Instance().Get());
+					auto& settings_instance = c_settings_weapons::Instance().Get();
 					if(Enums::k_weapon_view_max_weapon_presets == settings_instance.m_weapon_positions.Get().size())
 						return nullptr;
 
@@ -156,7 +156,7 @@ namespace Yelo
 					return_weapon_index = datum_index::null;
 					return_name = GetCurrentWeaponName(return_weapon_index);
 					
-					auto& settings_instance(c_settings_weapons::Instance().Get());
+					auto& settings_instance = c_settings_weapons::Instance().Get();
 					if(settings_instance.m_weapon_positions.Get().size() == 0) return nullptr;
 
 					if(return_name != nullptr)
@@ -211,7 +211,7 @@ namespace Yelo
 
 			void Initialize()
 			{
-				c_settings_weapons::Instance().Register(Settings::Manager());
+				c_settings_weapons::Register(Settings::Manager());
 
 				Memory::WriteRelativeCall(ApplyWeaponPreset, 
 					GET_FUNC_VPTR(RENDER_WINDOW_CALL_HOOK_FIRST_PERSON_WEAPON_RENDER_UPDATE));
@@ -221,7 +221,7 @@ namespace Yelo
 			{
 				_weapon_globals.Dispose();
 				
-				c_settings_weapons::Instance().Unregister(Settings::Manager());
+				c_settings_weapons::Unregister(Settings::Manager());
 			}
 
 			Enums::settings_adjustment_result AdjustSettings()

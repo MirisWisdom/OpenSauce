@@ -101,7 +101,7 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_file_xml.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_leaf.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_leaf_iterator.hpp" />
-    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\PropertyTreeLogging.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\property_tree_logging.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_vector3d_container.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_type_container.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\cseries\enum_wrappers.hpp" />
@@ -262,7 +262,7 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_file_xml.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_leaf.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_leaf_iterator.cpp" />
-    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\PropertyTreeLogging.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\property_tree_logging.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_vector3d_container.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\c_settings_cheape.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\settings\c_settings_manager.cpp" />

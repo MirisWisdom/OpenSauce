@@ -189,7 +189,7 @@ _return:
 			{
 				// TODO: populate GetGameVer()
 				
-				c_settings_gamespy::Instance().Register(Settings::Manager());
+				c_settings_gamespy::Register(Settings::Manager());
 				InitializeGameSpyEmulatorUrls();
 
 				Memory::CreateHookRelativeCall(&InitializeForNewQr2, 
@@ -203,7 +203,7 @@ _return:
 
 			void Dispose()
 			{
-				c_settings_gamespy::Instance().Unregister(Settings::Manager());
+				c_settings_gamespy::Unregister(Settings::Manager());
 			}
 
 			API_FUNC_NAKED void qr2_register_key(Enums::gamespy_qr_field keyid, cstring key)

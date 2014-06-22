@@ -18,7 +18,7 @@ namespace Yelo
 			: public Configuration::c_configuration_container
 		{
 		public:
-			Configuration::c_configuration_value<int32> m_affinity_mask;
+			Configuration::c_configuration_value<uint32> m_affinity_mask;
 
 			c_sapien_container();
 

@@ -12,20 +12,19 @@
 #include <YeloLib/configuration/c_configuration_file_factory.hpp>
 #include <YeloLib/configuration/c_configuration_container.hpp>
 
-using namespace std;
 using namespace Yelo::Configuration;
 
 namespace Yelo
 {
 	namespace Settings
 	{
-		c_settings_manager::c_settings_manager(const string& root_node)
+		c_settings_manager::c_settings_manager(const std::string& root_node)
 			: m_root_node_path(root_node)
 			, m_settings(nullptr)
 			, m_settings_containers()
 		{ }
 
-		unique_ptr<i_configuration_leaf> c_settings_manager::GetRootNode(const string& root_node_path) const
+		std::unique_ptr<i_configuration_leaf> c_settings_manager::GetRootNode(const std::string& root_node_path) const
 		{
 			auto root_node = m_settings->Root()->GetChild(root_node_path);
 			if(!root_node)
@@ -36,7 +35,7 @@ namespace Yelo
 			return root_node;
 		}
 
-		void c_settings_manager::Load(const string& file_path)
+		void c_settings_manager::Load(const std::string& file_path)
 		{
 			// Load the configuration file.
 			m_settings = c_configuration_file_factory::CreateConfigurationFile(file_path);
@@ -49,7 +48,8 @@ namespace Yelo
 			m_settings->Load();
 
 			// Get the registered containers from the loaded settings
-			auto root_node = GetRootNode(m_root_node_path);
+			auto root_node_ptr = GetRootNode(m_root_node_path);
+			auto& root_node = *root_node_ptr;
 
 			for(auto entry : m_settings_containers)
 			{
@@ -58,7 +58,7 @@ namespace Yelo
 					entry.m_pre_load_callback();
 				}
 
-				entry.m_container_ptr->GetValueFromParent(*root_node);
+				entry.m_container_ptr->GetValueFromParent(root_node);
 
 				if(entry.m_post_load_callback)
 				{
@@ -72,7 +72,8 @@ namespace Yelo
 			Clear();
 
 			// Add the registered containers to the settings
-			auto root_node = GetRootNode(m_root_node_path);
+			auto root_node_ptr = GetRootNode(m_root_node_path);
+			auto& root_node = *root_node_ptr;
 
 			for(const auto& entry : m_settings_containers)
 			{
@@ -81,7 +82,7 @@ namespace Yelo
 					entry.m_pre_save_callback();
 				}
 
-				entry.m_container_ptr->SetValueToParent(*root_node);
+				entry.m_container_ptr->SetValueToParent(root_node);
 
 				if(entry.m_post_save_callback)
 				{
@@ -98,11 +99,11 @@ namespace Yelo
 			m_settings->Clear();
 		}
 
-		void c_settings_manager::RegisterConfigurationContainer(c_configuration_container* container
-			, const function<void()>& pre_load_callback
-			, const function<void()>& post_load_callback
-			, const function<void()>& pre_save_callback
-			, const function<void()>& post_save_callback)
+		void c_settings_manager::RegisterConfigurationContainer(c_configuration_container& container
+			, const std::function<void()>& pre_load_callback
+			, const std::function<void()>& post_load_callback
+			, const std::function<void()>& pre_save_callback
+			, const std::function<void()>& post_save_callback)
 		{
 			s_settings_container_entry entry =
 			{
@@ -110,19 +111,21 @@ namespace Yelo
 				post_load_callback,
 				pre_save_callback,
 				post_save_callback,
-				container
+				&container
 			};
 
 			m_settings_containers.push_back(entry);
 		}
 
-		void c_settings_manager::UnregisterConfigurationContainer(c_configuration_container* container)
+		void c_settings_manager::UnregisterConfigurationContainer(c_configuration_container& container)
 		{
+			auto container_ptr = &container;
+
 			// Find the containers' entry using it's pointer then remove it
 			auto entry_iterator = find_if(m_settings_containers.begin(), m_settings_containers.end(),
-				[container](s_settings_container_entry& entry)
+				[container_ptr](s_settings_container_entry& entry)
 				{
-					return entry.m_container_ptr == container;
+					return entry.m_container_ptr == container_ptr;
 				}
 			);
 

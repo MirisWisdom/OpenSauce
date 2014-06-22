@@ -6,17 +6,15 @@
 #include "Common/Precompile.hpp"
 #include <YeloLib/configuration/c_configuration_container.hpp>
 
-using namespace std;
-
 namespace Yelo
 {
 	namespace Configuration
 	{
-		c_configuration_container::c_configuration_container(const string& node_name)
+		c_configuration_container::c_configuration_container(const std::string& node_name)
 			: m_node_name(node_name)
 		{ }
 
-		const string& c_configuration_container::GetName() const
+		const std::string& c_configuration_container::GetName() const
 		{
 			return m_node_name;
 		}

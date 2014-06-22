@@ -486,7 +486,7 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\c_settings_cheape.hpp">
       <Filter>open_sauce\settings</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\PropertyTreeLogging.hpp">
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\property_tree_logging.hpp">
       <Filter>configuration\property_tree</Filter>
     </ClInclude>
   </ItemGroup>
@@ -740,7 +740,7 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\c_settings_cheape.cpp">
       <Filter>open_sauce\settings</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\PropertyTreeLogging.cpp">
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\property_tree_logging.cpp">
       <Filter>configuration\property_tree</Filter>
     </ClCompile>
   </ItemGroup>

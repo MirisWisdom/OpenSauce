@@ -16,14 +16,13 @@ namespace Yelo
 		class c_settings_singleton
 			: public Configuration::c_configuration_singleton<Container, Singleton>
 		{
-		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Registers this with the target settings manager. </summary>
 			///
-			/// <param name="m_manager">	[in] The settings manager to use. </param>
-			void Register(c_settings_manager& manager)
+			/// <param name="manager">	[in] The settings manager to use. </param>
+			void RegisterInstance(c_settings_manager& manager)
 			{
-				manager.RegisterConfigurationContainer(Instance().GetPtr(),
+				manager.RegisterConfigurationContainer(Instance().Get(),
 					[](){ Instance().PreLoad(); },
 					[](){ Instance().PostLoad(); },
 					[](){ Instance().PreSave(); },
@@ -35,9 +34,28 @@ namespace Yelo
 			/// <summary>	Deregisters this object from the target settings manager. </summary>
 			///
 			/// <param name="manager">	[in] The settings manager to use. </param>
-			void Unregister(c_settings_manager& manager)
+			void UnregisterInstance(c_settings_manager& manager)
 			{
-				manager.UnregisterConfigurationContainer(Instance().GetPtr());
+				manager.UnregisterConfigurationContainer(Instance().Get());
+			}
+
+		public:
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Registers this with the target settings manager. </summary>
+			///
+			/// <param name="manager">	[in] The settings manager to use. </param>
+			static void Register(c_settings_manager& manager)
+			{
+				Instance().RegisterInstance(manager);
+			}
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Deregisters this object from the target settings manager. </summary>
+			///
+			/// <param name="manager">	[in] The settings manager to use. </param>
+			static void Unregister(c_settings_manager& manager)
+			{
+				Instance().UnregisterInstance(manager);
 			}
 
 			/// <summary>	Called before the settings are loaded. </summary>

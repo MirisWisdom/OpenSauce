@@ -170,7 +170,7 @@ namespace Yelo
 			
 			_fov_globals.InitializeToDefaultSettings();
 			
-			c_settings_fov::Instance().Register(Settings::Manager());
+			c_settings_fov::Register(Settings::Manager());
 		}
 
 		void Dispose()
@@ -181,7 +181,7 @@ namespace Yelo
 				_fov_globals.menu = nullptr;
 			}
 
-			c_settings_fov::Instance().Unregister(Settings::Manager());
+			c_settings_fov::Unregister(Settings::Manager());
 		}
 
 		void Update()

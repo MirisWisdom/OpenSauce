@@ -180,7 +180,7 @@ namespace Yelo
 		public:
 			void PostLoad() final override
 			{
-				auto& settings_instance(Get());
+				auto& settings_instance = Get();
 
 				// when 0x637D50 (1.09) is 1, the basic active camouflage is used; at 0x51ABB2 (1.09) it is forced to 1 when an nVidia card is detected
 				// if the user changes this in their settings they need to restart the game for it to take effect
@@ -254,7 +254,7 @@ namespace Yelo
 #pragma warning( disable : 4312 ) // conversion from 'unsigned long' to 'void *' of greater size
 		void Initialize()
 		{
-			c_settings_rasterizer::Instance().Register(Settings::Manager());
+			c_settings_rasterizer::Register(Settings::Manager());
 
 			Render::Initialize();
 		
@@ -308,7 +308,7 @@ namespace Yelo
 		{
 			Render::Dispose();
 			
-			c_settings_rasterizer::Instance().Unregister(Settings::Manager());
+			c_settings_rasterizer::Unregister(Settings::Manager());
 		}
 
 		void Update()

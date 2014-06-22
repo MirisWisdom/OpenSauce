@@ -13,7 +13,7 @@
 
 #include "CheApeInterface.hpp" // for Memory functions
 #include "Settings/Settings.hpp"
-#include "Settings/c_settings_sapien.hpp"
+#include "Settings/SettingsSapien.hpp"
 #include "Engine/EngineFunctions.hpp"
 #include "Engine/Scripting.hpp"
 #include "TagGroups/yelo_definitions.hpp"

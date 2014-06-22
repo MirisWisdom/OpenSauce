@@ -534,7 +534,7 @@ skip_disable_velocity:
 
 			g_default_system.Ctor();
 
-			c_settings_gbuffer::Instance().Register(Settings::Manager());
+			c_settings_gbuffer::Register(Settings::Manager());
 
 			c_gbuffer_system::g_output_object_tbn = false;
 			// leave as false, not enough vertex shader registers available to do object velocity with bones
@@ -578,7 +578,7 @@ skip_disable_velocity:
 		}
 		void		c_gbuffer_system::Dispose()
 		{
-			c_settings_gbuffer::Instance().Unregister(Settings::Manager());
+			c_settings_gbuffer::Unregister(Settings::Manager());
 
 			g_default_system.Dtor();
 		}

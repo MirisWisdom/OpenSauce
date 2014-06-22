@@ -16,8 +16,8 @@
 #include "Rasterizer/Rasterizer.hpp"
 
 #include <YeloLib/Halo1/open_sauce/settings/c_settings_cheape.hpp>
-#include "Settings/c_settings_sapien.hpp"
-#include "Settings/c_settings_tool.hpp"
+#include "Settings/SettingsSapien.hpp"
+#include "Settings/SettingsTool.hpp"
 
 namespace Yelo
 {
