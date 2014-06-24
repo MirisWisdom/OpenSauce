@@ -106,7 +106,7 @@ namespace Yelo { namespace DataFiles {
 
 			// we hook the cf-initialize code before it performs this
 			call	Cache::CacheFileGlobals
-			mov		[eax]s_cache_file_globals.copy_map_file_index, NONE
+			mov		[eax]s_cache_file_globals.open_map_file_index, NONE
 
 			xor		ebx, ebx // rest of the function expects ebx to be zero, but we hook it before the xor instruction
 			jmp		JMP_ADDRESS
