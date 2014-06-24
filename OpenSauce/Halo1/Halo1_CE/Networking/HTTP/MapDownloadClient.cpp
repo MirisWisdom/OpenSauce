@@ -2351,7 +2351,7 @@ namespace Yelo
 		 */
 		void	Update(real delta)
 		{
-			if(!c_settings_mapdownload::Instance().Get().m_enabled)
+			if(!c_settings_mapdownload::Instance()->m_enabled)
 				return;
 
 			// if the master server list download has not started/finished update the stage
@@ -2437,7 +2437,7 @@ namespace Yelo
 		 */
 		void	AddMapForDownload(const char* map_name)
 		{
-			if(!c_settings_mapdownload::Instance().Get().m_enabled)
+			if(!c_settings_mapdownload::Instance()->m_enabled)
 				return;
 
 			if(_map_download_update_stage_idle != g_map_download_globals.m_map_download_update_stage)

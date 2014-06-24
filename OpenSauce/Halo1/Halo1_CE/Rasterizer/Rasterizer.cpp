@@ -182,18 +182,20 @@ namespace Yelo
 			{
 				auto& settings_instance = Get();
 
+#if PLATFORM_VERSION <= 0x1090
 				// when 0x637D50 (1.09) is 1, the basic active camouflage is used; at 0x51ABB2 (1.09) it is forced to 1 when an nVidia card is detected
 				// if the user changes this in their settings they need to restart the game for it to take effect
 				GET_PTR(NVIDIA_USE_BASIC_CAMO_TOGGLE) = settings_instance.m_use_nvidia_camo;
-				
-				if(settings_instance.m_upgrades.m_dynamic_triangles)
-				{
-					g_render_upgrades.InitializeDynamicTrianglesUpgrade();
-				}
 
 				if(settings_instance.m_upgrades.m_model_node_stretching_fix)
 				{
 					g_render_upgrades.InitializeMaximumNodesPerModelFixes();
+				}
+#endif
+				
+				if(settings_instance.m_upgrades.m_dynamic_triangles)
+				{
+					g_render_upgrades.InitializeDynamicTrianglesUpgrade();
 				}
 			}
 		};

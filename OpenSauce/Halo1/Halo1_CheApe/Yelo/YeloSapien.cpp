@@ -104,7 +104,7 @@ namespace Yelo
 		void Initialize()
 		{
 			// Set Sapien's affinity mask
-			SetProcessAffinityMask(GetCurrentProcess(), Settings::c_settings_sapien::Instance().Get().m_affinity_mask);
+			SetProcessAffinityMask(GetCurrentProcess(), Settings::c_settings_sapien::Instance()->m_affinity_mask);
 
 			for(auto ptr : AddressOf::MaxTagsCheck)
 				*ptr = Enums::k_maximum_simultaneous_tag_instances_upgrade;
