@@ -9,8 +9,9 @@
 #if PLATFORM_TYPE == PLATFORM_TOOL
 
 #include <YeloLib/Halo1/shaders/shader_postprocess_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/settings/c_settings_cheape.hpp>
 
-#include "Common/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 #include "Common/StringEditing.hpp"
 #include "Engine/EngineFunctions.hpp"
 #include "TagGroups/TagGroups.hpp"
@@ -37,7 +38,7 @@ namespace Yelo
 			}* args = CAST_PTR(s_arguments*, arguments);
 
 			
-			std::string search_path(Settings::Get().GetDataPath());
+			std::string search_path(Settings::c_settings_cheape::Profile().GetDataPath());
 
 			// append a folder divider if necessary
 			search_path.append(args->data_path);

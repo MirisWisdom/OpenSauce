@@ -67,6 +67,8 @@
 #include <boost/static_assert.hpp>
 
 #include <boost/integer/static_log2.hpp>
+
+#include <boost/filesystem.hpp>
 //////////////////////////////////////////////////////////////////////////
 
 

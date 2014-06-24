@@ -10,7 +10,7 @@
 #if !PLATFORM_IS_DEDI
 #include <blamlib/Halo1/main/main_structures.hpp>
 
-#include "Settings/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 #include "Interface/GameUI.hpp"
 #include "Game/GameState.hpp"
 #include "Game/Camera.hpp"

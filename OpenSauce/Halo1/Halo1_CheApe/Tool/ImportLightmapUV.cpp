@@ -9,10 +9,11 @@
 #if PLATFORM_TYPE == PLATFORM_TOOL
 
 #include <blamlib/Halo1/structures/structure_bsp_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/settings/c_settings_cheape.hpp>
 
 #include "Engine/EngineFunctions.hpp"
 #include "TagGroups/TagGroups.hpp"
-#include "Common/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 #include "Common/StringEditing.hpp"
 
 namespace Yelo
@@ -85,7 +86,7 @@ namespace Yelo
 
 				TagGroups::structure_bsp* bsp = blam::tag_get<TagGroups::structure_bsp>(bsp_index);
 
-				std::string obj_file_path(Yelo::Settings::Get().GetDataPath());
+				std::string obj_file_path(Yelo::Settings::c_settings_cheape::Profile().GetDataPath());
 				StringEditing::AppendCharIfAbsent(obj_file_path, '\\');
 
 				cstring obj_argument = args->obj_file;

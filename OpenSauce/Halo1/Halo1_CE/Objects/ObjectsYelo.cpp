@@ -24,7 +24,7 @@
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
-#include "Settings/c_settings_singleton.hpp"
+#include <YeloLib/settings/c_settings_singleton.hpp>
 
 #include "TagGroups/project_yellow_definitions.hpp"
 
@@ -160,7 +160,7 @@ namespace Yelo
 		}
 		void Initialize()
 		{
-			c_settings_objects::Register();
+			c_settings_objects::Register(Settings::Manager());
 
 			Memory::WriteRelativeJmp(&Objects::Update, GET_FUNC_VPTR(OBJECTS_UPDATE_HOOK), false);
 
@@ -186,7 +186,7 @@ namespace Yelo
 			Weapon::Dispose();
 			Vehicle::Dispose();
 
-			c_settings_objects::Unregister();
+			c_settings_objects::Unregister(Settings::Manager());
 		}
 
 		static void ObjectsUpdateIgnorePlayerPvs(bool use_fix)
@@ -267,7 +267,7 @@ namespace Yelo
 
 		bool VehicleRemapperEnabled()
 		{
-			return c_settings_objects::Instance().Get().m_vehicle_remapper_enabled;
+			return c_settings_objects::Instance()->m_vehicle_remapper_enabled;
 		}
 
 		void VehicleRemapperEnable(bool enabled)

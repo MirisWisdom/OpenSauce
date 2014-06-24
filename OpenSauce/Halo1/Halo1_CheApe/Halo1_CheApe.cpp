@@ -8,7 +8,7 @@
 
 #include "CheApeInterface.hpp"
 #include "Engine/EngineFunctions.hpp"
-#include "Common/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 #include "Yelo/MemoryFixups.hpp"
 
 
@@ -38,8 +38,9 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 		Yelo::Main::YeloModuleHandle() = hModule;
 
 		Yelo::CheApe::UnProtectMemoryRegion();
-
-		Yelo::Settings::Initialize();
+		
+		Yelo::Settings::InitializeSettings();
+		Yelo::Settings::Load();
 		Yelo::Debug::FileInitialize();
 		Yelo::c_memory_fixups::InitializePaths();
 
@@ -70,7 +71,8 @@ dispose:
 
 		Yelo::c_memory_fixups::DisposePaths();
 		Yelo::Debug::FileDispose();
-		Yelo::Settings::Dispose();
+		Yelo::Settings::Save();
+		Yelo::Settings::DisposeSettings();
 
 		Yelo::Main::YeloModuleHandle() = nullptr;
 		g_initialized = false;

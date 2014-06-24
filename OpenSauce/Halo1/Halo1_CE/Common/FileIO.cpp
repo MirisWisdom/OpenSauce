@@ -4,16 +4,16 @@
 
 	See license\OpenSauce\Halo1_CE for specific license information
 */
-#include "Common\Precompile.hpp"
-#include "Common\FileIO.hpp"
+#include "Common/Precompile.hpp"
+#include "Common/FileIO.hpp"
 
 #include <YeloLib/files/files.hpp>
 #include <YeloLib/main/main_yelo_base.hpp>
 
-#include "Memory\MemoryInterface.hpp"
-#include "Settings\YeloSettings.hpp"
+#include "Memory/MemoryInterface.hpp"
+#include "Settings/Settings.hpp"
 
-#include "Game\EngineFunctions.hpp"
+#include "Game/EngineFunctions.hpp"
 
 namespace Yelo
 {

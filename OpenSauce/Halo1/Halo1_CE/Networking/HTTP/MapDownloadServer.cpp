@@ -14,7 +14,7 @@
 #include <YeloLib/Halo1/cache/cache_files_yelo.hpp>
 
 #include "Common/FileIO.hpp"
-#include "Settings/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 #include "Networking/HTTP/HTTP.hpp"
 #include "Networking/HTTP/HTTPServer.hpp"
 #include "Networking/Server.hpp"

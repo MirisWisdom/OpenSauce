@@ -10,7 +10,7 @@
 
 #include <blamlib/Halo1/models/model_definitions.hpp>
 
-#include "Common/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 
 namespace Yelo
 {
@@ -39,40 +39,19 @@ namespace Yelo
 
 		void Initialize()
 		{
-#if FALSE // new settings changed g_render_upgrades's API -_-
-			PLATFORM_VALUE(__noop, __noop,
-				g_render_upgrades.Initialize());
-#endif
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
+			g_render_upgrades.InitializeDynamicTrianglesUpgrade();
+			g_render_upgrades.InitializeMaximumNodesPerModelFixes();
 			// TODO: remove this once/if we renable effects rendering in sapien
 #if !PLATFORM_DISABLE_UNUSED_CODE
-			PLATFORM_VALUE(__noop, __noop,
-				Render::render_particles_mods::Initialize());
+			Render::render_particles_mods::Initialize();
+#endif
+
 #endif
 		}
 
 		void Dispose()
-		{
-#if FALSE // new settings changed g_render_upgrades's API -_-
-			PLATFORM_VALUE(__noop, __noop,
-				g_render_upgrades.Dispose());
-#endif
-		}
-
-		void LoadSettings(TiXmlElement* dx9_element)
-		{
-#if FALSE // new settings changed g_render_upgrades's API -_-
-			PLATFORM_VALUE(__noop, __noop,
-				g_render_upgrades.LoadSettings(dx9_element));
-#endif
-		}
-
-		void SaveSettings(TiXmlElement* dx9_element)
-		{
-#if FALSE // new settings changed g_render_upgrades's API -_-
-			PLATFORM_VALUE(__noop, __noop,
-				g_render_upgrades.SaveSettings(dx9_element));
-#endif
-		}
+		{ }
 	};
 };
 #else

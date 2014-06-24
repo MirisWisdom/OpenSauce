@@ -17,11 +17,11 @@
 #include <YeloLib/memory/security/xxtea.hpp>
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
-#include "Settings/c_settings_singleton.hpp"
+#include <YeloLib/settings/c_settings_singleton.hpp>
 #include <YeloLib/Halo1/cache/cache_files_yelo.hpp>
 
 #include "Common/FileIO.hpp"
-#include "Settings/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameBuildNumber.hpp"
@@ -2351,7 +2351,7 @@ namespace Yelo
 		 */
 		void	Update(real delta)
 		{
-			if(!c_settings_mapdownload::Instance().Get().m_enabled)
+			if(!c_settings_mapdownload::Instance()->m_enabled)
 				return;
 
 			// if the master server list download has not started/finished update the stage
@@ -2437,7 +2437,7 @@ namespace Yelo
 		 */
 		void	AddMapForDownload(const char* map_name)
 		{
-			if(!c_settings_mapdownload::Instance().Get().m_enabled)
+			if(!c_settings_mapdownload::Instance()->m_enabled)
 				return;
 
 			if(_map_download_update_stage_idle != g_map_download_globals.m_map_download_update_stage)
@@ -2472,7 +2472,7 @@ namespace Yelo
 		 */
 		void	Initialize()
 		{
-			c_settings_mapdownload::Register();
+			c_settings_mapdownload::Register(Settings::Manager());
 
 			PathCombine(g_map_download_globals.m_paths.user_download_directory, Settings::OpenSauceProfilePath(), "map_download");
 
@@ -2497,7 +2497,7 @@ namespace Yelo
 
 			CloseHandle(g_globals_access_mutex);
 			
-			c_settings_mapdownload::Unregister();
+			c_settings_mapdownload::Unregister(Settings::Manager());
 		}
 
 		/*!

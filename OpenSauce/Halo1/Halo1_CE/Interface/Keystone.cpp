@@ -9,7 +9,7 @@
 #if !PLATFORM_IS_DEDI
 
 #include "Memory/MemoryInterface.hpp"
-#include "Settings/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 
 namespace Yelo
 {

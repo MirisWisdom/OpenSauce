@@ -1,5 +1,15 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<!-- See documentation at: http://code.google.com/p/open-sauce/wiki/Doc_Halo1_Settings#OS_Settings.Server.xml -->
-<osYeloSettings engine="Halo1_CE">
-    <server />
-</osYeloSettings>
+<?xml version="1.0" encoding="utf-8"?>
+<OpenSauce>
+	<CacheFiles>
+		<CheckYeloFilesFirst>true</CheckYeloFilesFirst>
+		<MainMenuScenario/>
+	</CacheFiles>
+	<Networking>
+		<GameSpy>
+			<NoUpdateCheck>true</NoUpdateCheck>
+		</GameSpy>
+	</Networking>
+	<Objects>
+		<VehicleRemapperEnabled>true</VehicleRemapperEnabled>
+	</Objects>
+</OpenSauce>

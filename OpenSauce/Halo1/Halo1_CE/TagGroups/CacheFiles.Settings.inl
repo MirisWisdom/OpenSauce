@@ -10,12 +10,16 @@ class c_settings_container
 {
 public:
 	Configuration::c_configuration_value<bool> m_check_yelo_files_first;
+#if !PLATFORM_IS_DEDI
 	Configuration::c_configuration_value<std::string> m_mainmenu_scenario;
+#endif
 
 	c_settings_container()
 		: Configuration::c_configuration_container("CacheFiles")
 		, m_check_yelo_files_first("CheckYeloFilesFirst", true)
+#if !PLATFORM_IS_DEDI
 		, m_mainmenu_scenario("MainMenuScenario", "")
+#endif
 	{ }
 			
 protected:
@@ -24,7 +28,9 @@ protected:
 		return std::vector<i_configuration_value* const>
 		{
 			&m_check_yelo_files_first,
+#if !PLATFORM_IS_DEDI
 			&m_mainmenu_scenario
+#endif
 		};
 	}
 };
@@ -35,8 +41,8 @@ class c_settings_cache
 public:
 	void PostLoad() final override
 	{
-#if PLATFORM_IS_USER
 		c_map_file_finder::g_search_for_yelo_first = Get().m_check_yelo_files_first;
+#if !PLATFORM_IS_DEDI
 		g_yelo_settings.InitializeMainmenuOverride(Get().m_mainmenu_scenario);
 #endif
 	}

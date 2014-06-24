@@ -132,4 +132,4 @@
 #include <blamlib/Halo1/cseries/errors.hpp>
 #include <YeloLib/Halo1/cseries/memory_yelo.hpp>
 
-#include "Settings/YeloSettings.hpp"
+#include "Settings/Settings.hpp"

@@ -7,6 +7,7 @@
 #include <YeloLib/configuration/property_tree/c_property_tree_file.hpp>
 
 #include <YeloLib/configuration/property_tree/c_property_tree_leaf_iterator.hpp>
+#include <YeloLib/configuration/property_tree/property_tree_logging.hpp>
 
 namespace Yelo
 {
@@ -24,6 +25,10 @@ namespace Yelo
 			try
 			{
 				ReadPropertyTree(m_file_path, m_property_tree_file);
+
+			#ifdef PRINT_PROPERTY_TREES
+				PrintPropertyTree(m_property_tree_file);
+			#endif
 			}
 			catch(...)
 			{ //-V565

@@ -11,7 +11,7 @@
 #include <blamlib/Halo1/networking/network_server_manager_structures.hpp>
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 
-#include "Settings/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 #include "TagGroups/project_yellow_definitions.hpp"
 #include "Game/Camera.hpp"
 #include "Networking/MessageDefinitions.hpp"
