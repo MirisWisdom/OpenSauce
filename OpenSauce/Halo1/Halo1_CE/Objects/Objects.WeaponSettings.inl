@@ -100,7 +100,7 @@ namespace Yelo
 					if(Enums::k_weapon_view_max_weapon_presets == settings_instance.m_weapon_positions.Get().size())
 						return nullptr;
 
-					c_settings_container::c_weapon_position& weapon_position(settings_instance.m_weapon_positions.AddEntry());
+					c_settings_container::c_weapon_position& weapon_position = settings_instance.m_weapon_positions.AddEntry();
 					weapon_position.m_name.Get() = name;
 					weapon_position.m_position.Get().Set(.0f,.0f,.0f);
 
@@ -244,7 +244,7 @@ namespace Yelo
 				if(preset == nullptr && (preset = _weapon_globals.AddPreset(name)) == nullptr)
 					return Enums::_settings_adjustment_result_cancel;
 
-				auto& weapon_position(preset->m_position.Get());
+				auto& weapon_position = preset->m_position.Get();
 
 				if(Input::GetMouseButtonState(Enums::_MouseButton3) == 1)
 					weapon_position.Set(.0f,.0f,.0f);

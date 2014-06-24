@@ -267,7 +267,7 @@ namespace Yelo
 
 		bool VehicleRemapperEnabled()
 		{
-			return c_settings_objects::Instance().Get().m_vehicle_remapper_enabled;
+			return c_settings_objects::Instance()->m_vehicle_remapper_enabled;
 		}
 
 		void VehicleRemapperEnable(bool enabled)

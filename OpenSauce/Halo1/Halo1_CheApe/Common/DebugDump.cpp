@@ -48,7 +48,7 @@ namespace Yelo
 			bool disable_exception_handling;
 
 #if PLATFORM_TYPE == PLATFORM_TOOL
-			disable_exception_handling = Settings::c_settings_tool::Instance().Get().m_disable_exception_handling;
+			disable_exception_handling = Settings::c_settings_tool::Instance()->m_disable_exception_handling;
 #else
 			disable_exception_handling = CMDLINE_GET_PARAM(disable_exception_handling).ParameterSet();
 #endif
@@ -102,7 +102,7 @@ namespace Yelo
 		{
 			bool do_full_dump = false;
 #if PLATFORM_TYPE == PLATFORM_TOOL
-			do_full_dump = Settings::c_settings_tool::Instance().Get().m_do_full_crashdump;
+			do_full_dump = Settings::c_settings_tool::Instance()->m_do_full_crashdump;
 #else
 			do_full_dump = CMDLINE_GET_PARAM(full_dump).ParameterSet();
 #endif

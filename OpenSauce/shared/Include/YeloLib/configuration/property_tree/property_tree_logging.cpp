@@ -22,10 +22,15 @@ namespace Yelo
 				OutputDebugString("PrintPropertyTree:\r\n");
 			}
 
+			std::string depth_string(depth * 2, ' ');
 			for (auto& sub_tree : tree)
-			{	
-				OutputDebugString((std::string("").assign(depth * 2, ' ') + "* ").c_str());
-				OutputDebugString((sub_tree.first + "=\"" + sub_tree.second.get_value("") + "\"\r\n").c_str());
+			{				
+				OutputDebugString(depth_string.c_str());
+				OutputDebugString("* ");
+				OutputDebugString(sub_tree.first.c_str());
+				OutputDebugString("=\"");
+				OutputDebugString(sub_tree.second.get_value("").c_str());
+				OutputDebugString("\"\r\n");
 
 				PrintPropertyTree(sub_tree.second, depth + 1);
 			}
