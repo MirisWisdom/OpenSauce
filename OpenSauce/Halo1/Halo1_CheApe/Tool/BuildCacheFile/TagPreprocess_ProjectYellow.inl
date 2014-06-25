@@ -36,7 +36,7 @@ namespace ProjectYellow
 			YELO_ERROR_IF(bsp_tag.lightmap_bitmaps.tag_index.IsNull() && (bsp.lightmap_sets.Count > 0), 
 				_error_message_priority_critical, "error: attempting to use bsp lightmap sets when the bsp tag does not define a lightmap");
 
-			for(auto lightmap_set : bsp.lightmap_sets)
+			for(auto& lightmap_set : bsp.lightmap_sets)
 			{
 				auto check_bitmap_count_func =
 					[bsp_lightmap_count](datum_index bitmap_index)

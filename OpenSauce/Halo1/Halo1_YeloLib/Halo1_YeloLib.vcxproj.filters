@@ -121,6 +121,9 @@
     <Filter Include="render\sky">
       <UniqueIdentifier>{d26a0c1e-df48-4dfd-9493-4a7275564097}</UniqueIdentifier>
     </Filter>
+    <Filter Include="cryptography">
+      <UniqueIdentifier>{6e2a28d1-5e48-4956-8e82-d38e9fa6dab9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\targetver.h">
@@ -486,6 +489,12 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.hpp">
       <Filter>render\sky</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\cryptography\TEA.hpp">
+      <Filter>cryptography</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\PropertyTreeLogging.hpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -736,6 +745,12 @@
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.cpp">
       <Filter>render\sky</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\cryptography\TEA.cpp">
+      <Filter>cryptography</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\PropertyTreeLogging.cpp">
+      <Filter>configuration\property_tree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
