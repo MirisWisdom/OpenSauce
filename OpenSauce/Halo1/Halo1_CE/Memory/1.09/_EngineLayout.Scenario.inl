@@ -27,8 +27,6 @@
 // .cpp
 // #elif __EL_INCLUDE_FILE_ID == __EL_SCENARIO_
 
-#elif __EL_INCLUDE_FILE_ID == __EL_SCENARIO_SCENARIOINFO
-	FUNC_PTR(INITIALIZE_RENDER_SKY_CALL, 0x556F94, FUNC_PTR_UNKNOWN);
 #else
 	#error Undefined engine layout include for: __EL_SCENARIO_SCENARIO
 #endif

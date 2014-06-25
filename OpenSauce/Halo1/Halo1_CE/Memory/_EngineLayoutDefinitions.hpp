@@ -101,7 +101,6 @@
 // 0x60 Scenario	__EL_SCENARIO_
 #define __EL_INCLUDE_SCENARIO	0x60
 #define __EL_SCENARIO_SCENARIO		(__EL_INCLUDE_SCENARIO + 0)
-#define __EL_SCENARIO_SCENARIOINFO	(__EL_INCLUDE_SCENARIO + 1)
 
 
 //////////////////////////////////////////////////////////////////////////

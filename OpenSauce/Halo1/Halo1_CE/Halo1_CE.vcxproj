@@ -80,8 +80,6 @@
   </PropertyGroup>
   <Import Project="$(OSRootDir)shared\config\msbuild\OpenSauceDebuggerDefaults.props" />
   <ItemGroup>
-    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.cpp" />
-    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\time\sequence\c_transition_sequence_controller.cpp" />
     <ClInclude Include="..\..\shared\Include\GameSpyOpen\darray.h" />
     <ClCompile Include="..\..\shared\Include\GameSpyOpen\darray.c">
@@ -315,8 +313,6 @@
     <ClCompile Include="MainYelo.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.hpp" />
-    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\c_interp_base.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\c_interp_function.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\c_interp_linear.hpp" />

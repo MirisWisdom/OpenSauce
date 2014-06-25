@@ -55,14 +55,13 @@ namespace Yelo
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Sets lightmap sampler. </summary>
 		///
-		/// <param name="sampler_index">  	Zero-based index of the sampler. </param>
-		/// <param name="original_bitmap">	[in] The original bitmap datum. </param>
-		static void SetLightmapSampler(int32 sampler_index)
+		/// <param name="sampler_index">	Zero-based index of the sampler. </param>
+		static void SetLightmapSampler(const int32 sampler_index)
 		{
 			g_lightmap_globals.m_lightmap_manager.SetLightmapSamplers(
 				DX9::Direct3DDevice(),
 				g_lightmap_globals.m_lightmap_index,
-				[](datum_index datum, int32 index) -> TagGroups::s_bitmap_data*
+				[](const datum_index datum, const int32 index) -> TagGroups::s_bitmap_data*
 				{				
 					auto bitmap = TagGroups::TagGetForModify<TagGroups::s_bitmap_group>(datum);
 					auto bitmap_data = CAST_PTR(TagGroups::s_bitmap_data*, &bitmap->bitmaps[index]);
@@ -110,7 +109,7 @@ namespace Yelo
 		/// <param name="directional_1">	The first directional lightmap datum. </param>
 		/// <param name="directional_2">	The second directional lightmap datum. </param>
 		/// <param name="directional_3">	The third directional lightmap datum. </param>
-		void SetLightmaps(datum_index standard, datum_index directional_1, datum_index directional_2, datum_index directional_3)
+		void SetLightmaps(const datum_index standard, const datum_index directional_1, const datum_index directional_2, const datum_index directional_3)
 		{
 			if(Rasterizer::ShaderExtension::ExtensionsEnabled())
 			{
@@ -126,7 +125,7 @@ namespace Yelo
 		/// <summary>	Sets the lightmap datums. </summary>
 		///
 		/// <param name="standard">	The standard lightmap datum. </param>
-		void SetLightmaps(datum_index standard)
+		void SetLightmaps(const datum_index standard)
 		{
 			SetLightmaps(standard, datum_index::null, datum_index::null, datum_index::null);
 		}

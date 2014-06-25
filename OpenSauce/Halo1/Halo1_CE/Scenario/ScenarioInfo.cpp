@@ -14,10 +14,6 @@ namespace Yelo
 {
 	namespace Scenario { namespace ScenarioInfo
 	{
-#define __EL_INCLUDE_ID			__EL_INCLUDE_SCENARIO
-#define __EL_INCLUDE_FILE_ID	__EL_SCENARIO_SCENARIOINFO
-#include "Memory/_EngineLayout.inl"
-
 		struct s_scenario_info_globals
 		{
 			const TagGroups::s_project_yellow_scenario_information*		m_scenario_info;	//!< Pointer to the maps scenario info block.

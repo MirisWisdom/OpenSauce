@@ -272,7 +272,6 @@ namespace Yelo
 		/// <param name="life_state">	State of the gamestate. </param>
 		void HandleGameStateLifeCycle(_enum life_state)
 		{
-			//TODO: is this even needed?
 			switch(life_state)
 			{
 			case Enums::_project_game_state_component_life_cycle_before_save:

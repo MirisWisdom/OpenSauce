@@ -20,6 +20,9 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
+
+#include <blamlib/Halo1/shaders/shader_definitions.hpp>
+
 namespace Yelo
 {
 	namespace Rasterizer
@@ -55,7 +58,7 @@ namespace Yelo
 
 			namespace Environment
 			{
-				void SetEnvironmentLightmapVariables(void* shader_pointer);
+				void SetEnvironmentLightmapVariables(const TagGroups::s_shader_definition* shader);
 			}
 		};
 	};

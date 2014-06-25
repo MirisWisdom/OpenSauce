@@ -8,6 +8,7 @@
 #include "Rasterizer/Sky.hpp"
 
 #if !PLATFORM_IS_DEDI
+
 #include <blamlib/Halo1/render/render.hpp>
 #include <YeloLib/Halo1/render/sky/c_sky_manager.hpp>
 
@@ -146,7 +147,7 @@ namespace Yelo
 		///
 		/// <param name="sky_index">	 	Zero-based index of the sky to override. </param>
 		/// <param name="override_index">	Zero-based index of the override sky. </param>
-		void SetSkyIndex(byte sky_index, datum_index override_index)
+		void SetSkyIndex(const byte sky_index, const datum_index override_index)
 		{
 			g_sky_manager.SetSkyIndex(sky_index, override_index);
 		}

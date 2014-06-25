@@ -38,7 +38,7 @@ namespace Yelo
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Changes the active lightmap datums. </summary>
 		///
-		/// <param name="standard">			Teh standard lightmaps datum. </param>
+		/// <param name="standard">			The standard lightmaps datum. </param>
 		/// <param name="directional_1">	The first directional lightmaps datum. </param>
 		/// <param name="directional_2">	The second directional lightmaps datum. </param>
 		/// <param name="directional_3">	The third directional lightmaps datum. </param>
@@ -56,13 +56,13 @@ namespace Yelo
 			m_current_lightmaps.directional[1] = directional_2;
 			m_current_lightmaps.directional[2] = directional_3;
 
-			if (m_current_lightmaps.standard != datum_index::null)
+			if (!m_current_lightmaps.standard.IsNull())
 			{
 				m_available_lightmaps = (Flags::render_lightmaps_flags)(m_available_lightmaps | Flags::_render_lightmaps_flags_standard);
 			}
 			
 			// We shouldn't have a case where only the first DLM is present, map should not compile without all 3
-			if (m_current_lightmaps.directional[0] != datum_index::null)
+			if (!m_current_lightmaps.directional[0].IsNull())
 			{
 				m_available_lightmaps = (Flags::render_lightmaps_flags)(m_available_lightmaps | Flags::_render_lightmaps_flags_directional);
 			}

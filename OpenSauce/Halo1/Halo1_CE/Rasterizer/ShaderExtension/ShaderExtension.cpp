@@ -8,6 +8,7 @@
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
 
 #if !PLATFORM_IS_DEDI
+
 #include <sys/stat.h>
 
 #include <blamlib/Halo1/bitmaps/bitmap_group.hpp>
@@ -27,6 +28,8 @@
 #include "Rasterizer/Lightmaps.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
 #include "TagGroups/TagGroups.hpp"
+
+using namespace Yelo::Configuration;
 
 namespace Yelo
 {
@@ -102,7 +105,6 @@ namespace Yelo
 				pDevice->SetSamplerState(sampler, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
 				pDevice->SetSamplerState(sampler, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
 				pDevice->SetSamplerState(sampler, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
-
 			}
 
 			int PLATFORM_API BuildEffectCollectionPath(char* string_out, const char* format_string, const int major, const int minor)
@@ -129,19 +131,19 @@ namespace Yelo
 
 #pragma region Settings
 			class c_shader_extension_container
-				: public Configuration::c_configuration_container
+				: public c_configuration_container
 			{
 				class c_shader_model_settings
-					: public Yelo::Configuration::c_configuration_container
+					: public c_configuration_container
 				{
 				public:
-					Yelo::Configuration::c_configuration_value<bool> m_normal_maps;
-					Yelo::Configuration::c_configuration_value<bool> m_detail_normal_maps;
-					Yelo::Configuration::c_configuration_value<bool> m_specular_maps;
-					Yelo::Configuration::c_configuration_value<bool> m_specular_lighting;
+					c_configuration_value<bool> m_normal_maps;
+					c_configuration_value<bool> m_detail_normal_maps;
+					c_configuration_value<bool> m_specular_maps;
+					c_configuration_value<bool> m_specular_lighting;
 
 					c_shader_model_settings()
-						: Yelo::Configuration::c_configuration_container("Object")
+						: c_configuration_container("Object")
 						, m_normal_maps("NormalMaps", true)
 						, m_detail_normal_maps("DetailNormalMaps", true)
 						, m_specular_maps("SpecularMaps", true)
@@ -162,13 +164,13 @@ namespace Yelo
 				};
 
 				class c_shader_environment_settings
-					: public Yelo::Configuration::c_configuration_container
+					: public c_configuration_container
 				{
 				public:
-					Yelo::Configuration::c_configuration_value<bool> m_diffuse_directional_lightmaps;
+					c_configuration_value<bool> m_diffuse_directional_lightmaps;
 
 					c_shader_environment_settings()
-						: Yelo::Configuration::c_configuration_container("Environment")
+						: c_configuration_container("Environment")
 						, m_diffuse_directional_lightmaps("DiffuseDirectionalLightmaps", true)
 					{ }
 		
@@ -183,12 +185,12 @@ namespace Yelo
 				};
 
 			public:
-				Configuration::c_configuration_value<bool> m_enabled;
+				c_configuration_value<bool> m_enabled;
 				c_shader_model_settings m_shader_model;
 				c_shader_environment_settings m_shader_environment;
 
 				c_shader_extension_container()
-					: Configuration::c_configuration_container("Rasterizer.ShaderExtensions")
+					: c_configuration_container("Rasterizer.ShaderExtensions")
 					, m_enabled("Enabled", true)
 					, m_shader_model()
 					, m_shader_environment()
@@ -212,43 +214,43 @@ namespace Yelo
 #pragma region Model
 				void SetModelUsage()
 				{
-					Model::g_extension_usage_mask = Enums::_shader_extension_usage_normal_map | Enums::_shader_extension_usage_detail_normal |
-					Enums::_shader_extension_usage_specular_map | Enums::_shader_extension_usage_specular_lighting;
+					Model::g_extension_usage_mask = Flags::_shader_extension_usage_normal_map | Flags::_shader_extension_usage_detail_normal |
+					Flags::_shader_extension_usage_specular_map | Flags::_shader_extension_usage_specular_lighting;
 
-					int32 usage_mask = Enums::_shader_extension_usage_none;
+					int32 usage_mask = Flags::_shader_extension_usage_none;
 
-					usage_mask |= (Get().m_shader_model.m_normal_maps ? Enums::_shader_extension_usage_normal_map : Enums::_shader_extension_usage_none);
-					usage_mask |= (Get().m_shader_model.m_detail_normal_maps ? Enums::_shader_extension_usage_detail_normal : Enums::_shader_extension_usage_none);
-					usage_mask |= (Get().m_shader_model.m_specular_maps ? Enums::_shader_extension_usage_specular_map : Enums::_shader_extension_usage_none);
-					usage_mask |= (Get().m_shader_model.m_specular_lighting ? Enums::_shader_extension_usage_specular_lighting : Enums::_shader_extension_usage_none);
+					usage_mask |= (Get().m_shader_model.m_normal_maps ? Flags::_shader_extension_usage_normal_map : Flags::_shader_extension_usage_none);
+					usage_mask |= (Get().m_shader_model.m_detail_normal_maps ? Flags::_shader_extension_usage_detail_normal : Flags::_shader_extension_usage_none);
+					usage_mask |= (Get().m_shader_model.m_specular_maps ? Flags::_shader_extension_usage_specular_map : Flags::_shader_extension_usage_none);
+					usage_mask |= (Get().m_shader_model.m_specular_lighting ? Flags::_shader_extension_usage_specular_lighting : Flags::_shader_extension_usage_none);
 
 					Model::g_extension_usage_mask &= usage_mask;
 				}
 
 				void GetModelUsage()
 				{
-					Get().m_shader_model.m_normal_maps = (Model::g_extension_usage_mask & Enums::_shader_extension_usage_normal_map) == Enums::_shader_extension_usage_normal_map;
-					Get().m_shader_model.m_detail_normal_maps = (Model::g_extension_usage_mask & Enums::_shader_extension_usage_detail_normal) == Enums::_shader_extension_usage_detail_normal;
-					Get().m_shader_model.m_specular_maps = (Model::g_extension_usage_mask & Enums::_shader_extension_usage_specular_map) == Enums::_shader_extension_usage_specular_map;
-					Get().m_shader_model.m_specular_lighting = (Model::g_extension_usage_mask & Enums::_shader_extension_usage_specular_lighting) == Enums::_shader_extension_usage_specular_lighting;
+					Get().m_shader_model.m_normal_maps = TEST_FLAG(Model::g_extension_usage_mask, Enums::_shader_extension_usage_bit_normal_map);
+					Get().m_shader_model.m_detail_normal_maps = TEST_FLAG(Model::g_extension_usage_mask, Enums::_shader_extension_usage_bit_detail_normal);
+					Get().m_shader_model.m_specular_maps = TEST_FLAG(Model::g_extension_usage_mask, Enums::_shader_extension_usage_bit_specular_map);
+					Get().m_shader_model.m_specular_lighting = TEST_FLAG(Model::g_extension_usage_mask, Enums::_shader_extension_usage_bit_specular_lighting);
 				}
 #pragma endregion
 
 #pragma region Environment
 				void SetEnvironmentUsage()
 				{
-					Environment::g_extension_usage_mask = Enums::_shader_extension_usage_directional_lightmaps;
+					Environment::g_extension_usage_mask = Flags::_shader_extension_usage_directional_lightmaps;
 
-					int32 usage_mask = Enums::_shader_extension_usage_none;
+					int32 usage_mask = Flags::_shader_extension_usage_none;
 
-					usage_mask |= (Get().m_shader_environment.m_diffuse_directional_lightmaps ? Enums::_shader_extension_usage_directional_lightmaps : Enums::_shader_extension_usage_none);
+					usage_mask |= (Get().m_shader_environment.m_diffuse_directional_lightmaps ? Flags::_shader_extension_usage_directional_lightmaps : Flags::_shader_extension_usage_none);
 
 					Environment::g_extension_usage_mask &= usage_mask;
 				}
 
 				void GetEnvironmentUsage()
 				{
-					Get().m_shader_environment.m_diffuse_directional_lightmaps = (Environment::g_extension_usage_mask & Enums::_shader_extension_usage_directional_lightmaps) == Enums::_shader_extension_usage_directional_lightmaps;
+					Get().m_shader_environment.m_diffuse_directional_lightmaps = TEST_FLAG(Environment::g_extension_usage_mask, Enums::_shader_extension_usage_bit_directional_lightmaps);
 				}
 #pragma endregion
 
@@ -257,8 +259,6 @@ namespace Yelo
 				{
 					SetModelUsage();
 					SetEnvironmentUsage();
-
-
 				}
 
 				void PreSave() final override

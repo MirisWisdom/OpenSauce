@@ -90,8 +90,7 @@ namespace Yelo
 		{
 			for(auto sky : skies)
 			{
-				t_sky_entry_ptr sky_entry(new s_sky_entry(sky.tag_index));
-				m_sky_list.push_back(sky_entry);
+				m_sky_list.emplace_back(std::make_shared<s_sky_entry>(sky.tag_index));
 			}
 		}
 
@@ -120,9 +119,7 @@ namespace Yelo
 			}
 
 			// Create a new sky entry to override the stock one
-			t_sky_entry_ptr new_sky(new s_sky_entry(sky_datum, original_sky));
-
-			m_sky_list[sky_index] = new_sky;
+			m_sky_list[sky_index] = std::make_shared<s_sky_entry>(sky_datum, original_sky);
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////

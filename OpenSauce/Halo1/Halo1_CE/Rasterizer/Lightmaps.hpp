@@ -6,6 +6,7 @@
 */
 #pragma once
 
+#if !PLATFORM_IS_DEDI
 namespace Yelo
 {
 	namespace Render { namespace Lightmaps
@@ -15,7 +16,8 @@ namespace Yelo
 
 		bool UsingDirectionalLightmaps();
 		
-		void SetLightmaps(datum_index standard);
-		void SetLightmaps(datum_index standard, datum_index directional_1, datum_index directional_2, datum_index directional_3);
+		void SetLightmaps(const datum_index standard);
+		void SetLightmaps(const datum_index standard, const datum_index directional_1, const datum_index directional_2, const datum_index directional_3);
 	};};
 };
+#endif
