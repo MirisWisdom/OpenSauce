@@ -20,11 +20,14 @@ namespace Yelo
 		{
 			tag_group* senv = blam::tag_group_get<s_shader_environment_definition>();
 
+			static cstring shader_environment_extension_flag_text = "do not use dlms";
+			static string_list shader_environment_extension_flags { 1, &shader_environment_extension_flag_text };
 			static tag_field shader_environment_extension_fields[] = {
-				{ Enums::_field_pad, "", (void*)8 },
 				{ Enums::_field_explanation, "directional lightmaps", "" },
+				{ Enums::_field_word_flags, "flags", &shader_environment_extension_flags },
+				{ Enums::_field_pad, "", CAST_PTR(void*, 2) },
 				{ Enums::_field_real, "bump amount", nullptr },
-				{ Enums::_field_pad, "", CAST_PTR(void*, 4) },
+				{ Enums::_field_pad, "", CAST_PTR(void*, sizeof(tag_block) * 4) },
 				{ Enums::_field_terminator }
 			};
 			static tag_block_definition shader_environment_extension_block = {

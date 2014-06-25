@@ -53,6 +53,7 @@
 
 #include <boost/integer/static_log2.hpp>
 #include <boost/optional.hpp>
+#include <boost/filesystem.hpp>
 
 
 #include <TinyXml/tinyxml.hpp>

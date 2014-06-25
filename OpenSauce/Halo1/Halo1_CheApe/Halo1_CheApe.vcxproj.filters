@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <None Include="Tool\BuildCacheFile\TagPreprocess_ProjectYellow.inl">
-      <Filter>Tool\BuildCacheFile</Filter>
-    </None>
     <Filter Include="_Resources">
       <UniqueIdentifier>{9eeca5d4-3206-4fc6-bd01-2477b3eda08f}</UniqueIdentifier>
     </Filter>
@@ -51,6 +48,21 @@
     </Filter>
     <Filter Include="Yelo\Impl">
       <UniqueIdentifier>{1a6b5547-60bc-4875-8971-31d3a2bf4674}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool\Shader">
+      <UniqueIdentifier>{882f29f0-3e45-4c49-82a2-88b06fc1824d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool\Shader\Compiler">
+      <UniqueIdentifier>{de3a1164-e123-4c45-b783-71621b9dc2be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool\Shader\Compiler\Collection">
+      <UniqueIdentifier>{77f0bedb-1af9-4a34-8cd6-84ecd1b8a0b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool\Shader\Compiler\Effect">
+      <UniqueIdentifier>{8c44d6a5-3594-479c-a88a-6de3b47bdefe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool\Shader\Collection">
+      <UniqueIdentifier>{125bc07f-3c08-4d78-a944-2aab4a5465ec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +176,42 @@
     <ClCompile Include="Tool\BuildCacheFile\BuildCacheFileEx.cpp">
       <Filter>Tool\BuildCacheFile</Filter>
     </ClCompile>
+    <ClCompile Include="Tool\Shader\c_shader_processor.cpp">
+      <Filter>Tool\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\Shader\Compiler\Compiler.cpp">
+      <Filter>Tool\Shader\Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\Shader\Compiler\Effect\c_effect_compiler.cpp">
+      <Filter>Tool\Shader\Compiler\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\Shader\Compiler\Effect\c_effect_writer.cpp">
+      <Filter>Tool\Shader\Compiler\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\Shader\Compiler\Effect\c_effect_writer_factory.cpp">
+      <Filter>Tool\Shader\Compiler\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\Shader\Compiler\Effect\c_effect_writer_pixel.cpp">
+      <Filter>Tool\Shader\Compiler\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\Shader\Compiler\Effect\c_effect_writer_vertex.cpp">
+      <Filter>Tool\Shader\Compiler\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\Shader\Compiler\Collection\c_collection_writer.cpp">
+      <Filter>Tool\Shader\Compiler\Collection</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\Shader\Compiler\Collection\c_collection_writer_factory.cpp">
+      <Filter>Tool\Shader\Compiler\Collection</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\Shader\Compiler\Collection\c_collection_writer_pixel.cpp">
+      <Filter>Tool\Shader\Compiler\Collection</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\Shader\Compiler\Collection\c_collection_writer_vertex.cpp">
+      <Filter>Tool\Shader\Compiler\Collection</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\Shader\Collection\c_collection_definition.cpp">
+      <Filter>Tool\Shader\Collection</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\AnimationUpgrade.hpp">
@@ -267,6 +315,51 @@
     <ClInclude Include="Tool\BuildCacheFile\BuildCacheFileEx.hpp">
       <Filter>Tool\BuildCacheFile</Filter>
     </ClInclude>
+    <ClInclude Include="Tool\Shader\c_shader_processor.hpp">
+      <Filter>Tool\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\Shader\Compiler\Compiler.hpp">
+      <Filter>Tool\Shader\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\Shader\Compiler\Effect\c_effect_compiler.hpp">
+      <Filter>Tool\Shader\Compiler\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\Shader\Compiler\Effect\c_effect_writer.hpp">
+      <Filter>Tool\Shader\Compiler\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\Shader\Compiler\Effect\c_effect_writer_factory.hpp">
+      <Filter>Tool\Shader\Compiler\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\Shader\Compiler\Effect\c_effect_writer_pixel.hpp">
+      <Filter>Tool\Shader\Compiler\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\Shader\Compiler\Effect\c_effect_writer_vertex.hpp">
+      <Filter>Tool\Shader\Compiler\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\Shader\Compiler\Effect\i_effect_writer.hpp">
+      <Filter>Tool\Shader\Compiler\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\Shader\Compiler\Collection\c_collection_writer.hpp">
+      <Filter>Tool\Shader\Compiler\Collection</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\Shader\Compiler\Collection\c_collection_writer_factory.hpp">
+      <Filter>Tool\Shader\Compiler\Collection</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\Shader\Compiler\Collection\c_collection_writer_pixel.hpp">
+      <Filter>Tool\Shader\Compiler\Collection</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\Shader\Compiler\Collection\c_collection_writer_vertex.hpp">
+      <Filter>Tool\Shader\Compiler\Collection</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\Shader\Compiler\Collection\i_collection_definition.hpp">
+      <Filter>Tool\Shader\Compiler\Collection</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\Shader\Compiler\Collection\i_collection_writer.hpp">
+      <Filter>Tool\Shader\Compiler\Collection</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\Shader\Collection\c_collection_definition.hpp">
+      <Filter>Tool\Shader\Collection</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\ScriptLibraryMemoryUpgrades.inl">
@@ -340,6 +433,9 @@
     </None>
     <None Include="Yelo\MemoryFixups.Paths.inl">
       <Filter>Yelo\Impl</Filter>
+    </None>
+    <None Include="Tool\BuildCacheFile\TagPreprocess_ProjectYellow.inl">
+      <Filter>Tool\BuildCacheFile</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

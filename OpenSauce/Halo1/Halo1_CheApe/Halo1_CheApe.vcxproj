@@ -4,6 +4,7 @@
     <OSRootDir>$(ProjectDir)..\..\..\</OSRootDir>
     <OSRequiresDirectX>true</OSRequiresDirectX>
     <OSRequiresCppBoost>true</OSRequiresCppBoost>
+    <OSRequiresVLD>true</OSRequiresVLD>
     <OSRequiresHaloCustomEd>true</OSRequiresHaloCustomEd>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
@@ -103,6 +104,18 @@
     <ClCompile Include="Tool\BuildCacheFile\BuildCacheFileEx.cpp" />
     <ClCompile Include="Tool\BuildCacheFile\BuildCacheFileGlobals.cpp" />
     <ClCompile Include="Tool\BuildCacheFile\BuildCacheFileMemoryUpgrades.cpp" />
+    <ClCompile Include="Tool\Shader\Collection\c_collection_definition.cpp" />
+    <ClCompile Include="Tool\Shader\Compiler\Collection\c_collection_writer.cpp" />
+    <ClCompile Include="Tool\Shader\Compiler\Collection\c_collection_writer_factory.cpp" />
+    <ClCompile Include="Tool\Shader\Compiler\Collection\c_collection_writer_pixel.cpp" />
+    <ClCompile Include="Tool\Shader\Compiler\Collection\c_collection_writer_vertex.cpp" />
+    <ClCompile Include="Tool\Shader\Compiler\Compiler.cpp" />
+    <ClCompile Include="Tool\Shader\Compiler\Effect\c_effect_compiler.cpp" />
+    <ClCompile Include="Tool\Shader\Compiler\Effect\c_effect_writer.cpp" />
+    <ClCompile Include="Tool\Shader\Compiler\Effect\c_effect_writer_factory.cpp" />
+    <ClCompile Include="Tool\Shader\Compiler\Effect\c_effect_writer_pixel.cpp" />
+    <ClCompile Include="Tool\Shader\Compiler\Effect\c_effect_writer_vertex.cpp" />
+    <ClCompile Include="Tool\Shader\c_shader_processor.cpp" />
     <ClCompile Include="Tool\TagMaintenance.cpp" />
     <ClCompile Include="Yelo\MemoryFixups.cpp" />
     <ClCompile Include="Yelo\Yelo.cpp" />
@@ -142,6 +155,21 @@
     <ClInclude Include="Tool\BuildCacheFile\BuildCacheFileEx.hpp" />
     <ClInclude Include="Tool\BuildCacheFile\BuildCacheFileGlobals.hpp" />
     <ClInclude Include="Tool\BuildCacheFile\BuildCacheFileMemoryUpgrades.hpp" />
+    <ClInclude Include="Tool\Shader\Collection\c_collection_definition.hpp" />
+    <ClInclude Include="Tool\Shader\Compiler\Collection\c_collection_writer.hpp" />
+    <ClInclude Include="Tool\Shader\Compiler\Collection\c_collection_writer_factory.hpp" />
+    <ClInclude Include="Tool\Shader\Compiler\Collection\c_collection_writer_pixel.hpp" />
+    <ClInclude Include="Tool\Shader\Compiler\Collection\c_collection_writer_vertex.hpp" />
+    <ClInclude Include="Tool\Shader\Compiler\Collection\i_collection_definition.hpp" />
+    <ClInclude Include="Tool\Shader\Compiler\Collection\i_collection_writer.hpp" />
+    <ClInclude Include="Tool\Shader\Compiler\Compiler.hpp" />
+    <ClInclude Include="Tool\Shader\Compiler\Effect\c_effect_compiler.hpp" />
+    <ClInclude Include="Tool\Shader\Compiler\Effect\c_effect_writer.hpp" />
+    <ClInclude Include="Tool\Shader\Compiler\Effect\c_effect_writer_factory.hpp" />
+    <ClInclude Include="Tool\Shader\Compiler\Effect\c_effect_writer_pixel.hpp" />
+    <ClInclude Include="Tool\Shader\Compiler\Effect\c_effect_writer_vertex.hpp" />
+    <ClInclude Include="Tool\Shader\Compiler\Effect\i_effect_writer.hpp" />
+    <ClInclude Include="Tool\Shader\c_shader_processor.hpp" />
     <ClInclude Include="Tool\TagMaintenance.hpp" />
     <ClInclude Include="Yelo\MemoryFixups.hpp" />
     <ClInclude Include="Common\DebugDump.hpp" />
