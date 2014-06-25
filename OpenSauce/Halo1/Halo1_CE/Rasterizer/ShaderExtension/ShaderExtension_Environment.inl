@@ -20,39 +20,18 @@ namespace Environment
 
 	/// <summary>	Defines an environment shader feature mix. </summary>
 	struct s_shader_feature_mix {
-		const _enum		feature_mask;
-		bool			directional_lightmaps;
-		PAD8;
 		const uint32	shader_pointer_offset;
-		const char*		extension_id;
 	};
 
 	/// <summary>	The list of feature combinations available. </summary>
-	s_shader_feature_mix g_feature_mix_list[] = {
-		{
-			Enums::_shader_extension_usage_none,
-			false,
-			sizeof(DX9::s_rasterizer_dx9_pixel_shader) * 0,
-			""
-		},
-		{
-			Enums::_shader_extension_usage_none,
-			true,
-			sizeof(DX9::s_rasterizer_dx9_pixel_shader) * 1,
-			"Dir"
-		},
-		{
-			Enums::_shader_extension_usage_normal_map,
-			true,
-			sizeof(DX9::s_rasterizer_dx9_pixel_shader) * 1,
-			"DirBaseNorm"
-		},
+	const uint32 g_shader_offsets[] = {
+		sizeof(DX9::s_rasterizer_dx9_pixel_shader) * 0, // Standard
+		sizeof(DX9::s_rasterizer_dx9_pixel_shader) * 1, // Directional
+		sizeof(DX9::s_rasterizer_dx9_pixel_shader) * 2  // Directional with Normal map
 	};
 
-	static s_shader_feature_mix*		g_current_feature_mix = &g_feature_mix_list[0];
-	static _enum						g_extension_usage_mask;
-	static s_pixel_shader_variables		g_pixel_shader_variables;
-	static bool							g_directional_lightmaps_enabled;
+	static uint32			g_current_shader_offset = 0;
+	static _enum			g_extension_usage_mask;
 
 	/// <summary>	Hook to change the used pixel shader to a custom one. </summary>
 	API_FUNC_NAKED void Hook_ShaderEnvironmentLightmapPS()
@@ -64,11 +43,7 @@ namespace Environment
 			mov		edx, [edx+84h]
 
 			push	ebx
-			mov		ebx, g_current_feature_mix
-			test	ebx, ebx
-			jz		no_extension					// If g_current_feature_mix is null use the stock shader pointer
-			add		edx, [ebx + 4]					// Otherwise add g_current_feature_mix.shader_pointer_offset to edx to point to the custom shader
-no_extension:
+			add		edx, g_current_shader_offset					// Add g_current_shader_offset to edx to point to the custom shader
 			pop		ebx
 
 			jmp		RETN_ADDRESS
@@ -76,117 +51,107 @@ no_extension:
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Calculates the z coordinate coefficient. </summary>
+	///
+	/// <param name="bump_amount">	The bump amount. </param>
+	///
+	/// <returns>	The calculated z coordinate coefficient. </returns>
+	static real CalculateZCoefficient(const real bump_amount)
+	{
+		real z_multiplier = 0;
+		if (bump_amount > 0)
+		{
+			z_multiplier = max(1.0f / bump_amount, 0.0f);
+		}
+		return min(z_multiplier, 1.0f);
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/// <summary>	Sets up the custom shader variables for a shader environment. </summary>
 	///
-	/// <param name="shader">	The shader. </param>
+	/// <param name="shader">   	The shader. </param>
+	/// <param name="variables">	[out] The pixel variables. </param>
 	///
-	/// <returns>	Returns the shader index to use. </returns>
-	static uint32 SetupShaderEnvironment(const TagGroups::s_shader_environment_definition* shader)
-	{
-		int shader_index = 1;
-
-		if(!g_directional_lightmaps_enabled)
+	/// <returns>	Returns the shader offset to use. </returns>
+	static const uint32 SetupShaderEnvironment(const TagGroups::s_shader_environment_definition& shader, s_pixel_shader_variables& variables)
+	{		
+		if(TEST_FLAG(shader.shader.extension_usage, Enums::_shader_extension_usage_bit_normal_map))
 		{
-			return 0;
-		}
-
-		// Set the default bump multiplier
-		g_pixel_shader_variables.base_normal_map_coefficient = 1.0f;
-		g_pixel_shader_variables.base_normal_map_z_coefficient = 1.0f;
-
-		if((datum_index::null != shader->environment.bump.bump_map.map.tag_index)
-			&& (shader->environment.shader_extension.Count == 1))
-		{
-			// If the shader has a shader extension block and a normal map set the multiplier from the extension block
-			auto shader_extension = shader->environment.shader_extension[0];
-
-			g_pixel_shader_variables.base_normal_map_coefficient = shader_extension.bump_amount;
-
-			real z_multiplier = 0;
-			if (shader_extension.bump_amount > 0)
+			if(shader.environment.shader_extension.Count == 1)
 			{
-				z_multiplier = max(1.0f / shader_extension.bump_amount, 0.0f);
+				// If the shader has a shader extension block and a normal map, set the multiplier from the extension block
+				auto& extension = shader.environment.shader_extension[0];
+				float coefficient = extension.bump_amount;
+
+				variables.base_normal_map_coefficient = coefficient;
+				variables.base_normal_map_z_coefficient = CalculateZCoefficient(coefficient);
 			}
-			g_pixel_shader_variables.base_normal_map_z_coefficient = min(z_multiplier, 1.0f);
-
-			shader_index = 2;
+			
+			return g_shader_offsets[2];
 		}
-
-		// Set the custom pixel shader values
-		DX9::Direct3DDevice()->SetPixelShaderConstantF(6, (float*)&g_pixel_shader_variables, 1);
-
-		return shader_index;
+		
+		return g_shader_offsets[1];
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/// <summary>	Sets up the custom shader variables for a shader model. </summary>
 	///
-	/// <param name="shader">	The shader. </param>
+	/// <param name="shader">   	The shader. </param>
+	/// <param name="variables">	[out] The pixel variables. </param>
 	///
-	/// <returns>	Returns the shader index to use. </returns>
-	static uint32 SetupShaderModel(const TagGroups::s_shader_model_definition* shader)
+	/// <returns>	Returns the shader offset to use. </returns>
+	static const uint32 SetupShaderModel(const TagGroups::s_shader_model_definition& shader, s_pixel_shader_variables& variables)
 	{
-		int shader_index = 1;
-
-		// Set the default bump multiplier
-		g_pixel_shader_variables.base_normal_map_coefficient = 1.0f;
-		g_pixel_shader_variables.base_normal_map_z_coefficient = 1.0f;
-
-		if(shader->model.maps.shader_extension.Count == 1)
+		if(TEST_FLAG(shader.shader.extension_usage, Enums::_shader_extension_usage_bit_normal_map))
 		{
-			if(datum_index::null != shader->model.maps.shader_extension[0].base_normal.map.tag_index)
+			if(shader.model.maps.shader_extension.Count == 1)
 			{
 				// If the shader has a shader extension block and a normal map set the multiplier from the extension block
-				float coefficient = shader->model.maps.shader_extension[0].base_normal.modifiers.coefficient;
+				auto& extension = shader.model.maps.shader_extension[0];
+				float coefficient = extension.base_normal.modifiers.coefficient;
 
-				g_pixel_shader_variables.base_normal_map_coefficient = coefficient;
+				variables.base_normal_map_coefficient = coefficient;
+				variables.base_normal_map_z_coefficient = CalculateZCoefficient(coefficient);
 
-				real z_multiplier = 0;
-				if (coefficient > 0)
-				{
-					z_multiplier = max(1.0f / coefficient, 0.0f);
-				}
-				g_pixel_shader_variables.base_normal_map_z_coefficient = min(z_multiplier, 1.0f);
-
-				shader_index = 2;
+				return g_shader_offsets[2];
 			}
 		}
 
-		// Set the custom pixel shader values
-		DX9::Direct3DDevice()->SetPixelShaderConstantF(6, (float*)&g_pixel_shader_variables, 1);
-
-		return shader_index;
+		return g_shader_offsets[1];
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/// <summary>	Sets directional lightmap. </summary>
 	///
 	/// <param name="shader_pointer">	[in,out] If non-null, the shader pointer. </param>
-	void SetEnvironmentLightmapVariables(void* shader_pointer)
+	void SetEnvironmentLightmapVariables(const TagGroups::s_shader_definition* shader)
 	{
-		// Default to the stock shader index
-		int shader_index = 0;
+		if((g_ps_support <= _ps_support_2_0) || !g_extensions_enabled)
+			return;
 
-		if (shader_pointer && Render::Lightmaps::UsingDirectionalLightmaps())
+		if(!Render::Lightmaps::UsingDirectionalLightmaps()
+			|| !shader || TEST_FLAG(shader->shader.extension_usage, Enums::_shader_extension_usage_bit_directional_lightmaps))
 		{
-			// If directional lightmaps should be used, set the custom shader variables
-			auto shader_base = CAST_PTR(const TagGroups::s_shader_definition*, shader_pointer);
-
-			switch(shader_base->shader.shader_type)
-			{
-			case Enums::_shader_type_environment:
-				shader_index = SetupShaderEnvironment(CAST_PTR(const TagGroups::s_shader_environment_definition*, shader_pointer));
-				break;
-			case Enums::_shader_type_model:
-				shader_index = SetupShaderModel(CAST_PTR(const TagGroups::s_shader_model_definition*, shader_pointer));
-				break;
-			YELO_ASSERT_CASE_UNREACHABLE();
-			};
+			g_current_shader_offset = 0;
+			return;
 		}
 
-		YELO_ASSERT_DISPLAY((shader_index < NUMBEROF(g_feature_mix_list)) && (shader_index >= 0), "Environment lightmap shader index is out of bounds");
+		s_pixel_shader_variables pixel_shader_variables = { 1.0f, 1.0f };
 
-		g_current_feature_mix = &g_feature_mix_list[shader_index];
+		// Default to the stock shader
+		switch(shader->shader.shader_type)
+		{
+		case Enums::_shader_type_environment:
+			g_current_shader_offset = SetupShaderEnvironment(*CAST_PTR(const TagGroups::s_shader_environment_definition*, shader), pixel_shader_variables);
+			break;
+		case Enums::_shader_type_model:
+			g_current_shader_offset = SetupShaderModel(*CAST_PTR(const TagGroups::s_shader_model_definition*, shader), pixel_shader_variables);
+			break;
+		YELO_ASSERT_CASE_UNREACHABLE();
+		};
+
+		// Set the custom pixel shader values
+		DX9::Direct3DDevice()->SetPixelShaderConstantF(6, (float*)&pixel_shader_variables, 1);
 	}
 
 	/// <summary>	Applies the hooks for custom shader code. </summary>

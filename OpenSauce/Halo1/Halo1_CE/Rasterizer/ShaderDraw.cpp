@@ -8,6 +8,8 @@
 #include "Rasterizer/ShaderDraw.hpp"
 
 #if !PLATFORM_IS_DEDI
+#include <blamlib/Halo1/shaders/shader_definitions.hpp>
+
 #include "Memory/MemoryInterface.hpp"
 
 #include "Rasterizer/DX9/DX9.hpp"
@@ -29,16 +31,16 @@ namespace Yelo { namespace Rasterizer { namespace ShaderDraw
 	/// <param name="arg4">			 	[in,out] The fourth stock argument. </param>
 	/// <param name="arg5">			 	[in,out] The fifth stock argument. </param>
 	/// <param name="arg6">			 	[in,out] The sixth stock argument. </param>
-	static void PLATFORM_API Environment_ShaderLightmapDraw(void* shader_pointer, void* arg2, void* arg3, void* arg4, void* arg5, void* arg6)
+	static void PLATFORM_API Environment_ShaderLightmapDraw(const TagGroups::s_shader_definition* shader, void* arg2, void* arg3, void* arg4, void* arg5, void* arg6)
 	{
-		typedef void (PLATFORM_API *t_shader_draw_func)(void*, void*, void*, void*, void*, void*);
+		typedef void (PLATFORM_API *t_shader_draw_func)(const TagGroups::s_shader_definition*, void*, void*, void*, void*, void*);
 
 		DX9::c_gbuffer_system::RenderGBuffer() = true;
 
-		Rasterizer::ShaderExtension::Environment::SetEnvironmentLightmapVariables(shader_pointer);
+		Rasterizer::ShaderExtension::Environment::SetEnvironmentLightmapVariables((TagGroups::s_shader_definition*)shader);
 
 		static t_shader_draw_func STOCK_DRAW_FUNC = CAST_PTR(t_shader_draw_func, GET_FUNC_VPTR(RASTERIZER_ENVIRONMENT_DRAW_LIGHTMAP));
-		STOCK_DRAW_FUNC(shader_pointer, arg2, arg3, arg4, arg5, arg6);
+		STOCK_DRAW_FUNC(shader, arg2, arg3, arg4, arg5, arg6);
 
 		DX9::c_gbuffer_system::RenderGBuffer() = false;
 	}

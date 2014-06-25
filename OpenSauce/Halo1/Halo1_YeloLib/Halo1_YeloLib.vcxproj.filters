@@ -492,9 +492,6 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\cryptography\TEA.hpp">
       <Filter>cryptography</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\PropertyTreeLogging.hpp">
-      <Filter>configuration\property_tree</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -748,9 +745,6 @@
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\cryptography\TEA.cpp">
       <Filter>cryptography</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\PropertyTreeLogging.cpp">
-      <Filter>configuration\property_tree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

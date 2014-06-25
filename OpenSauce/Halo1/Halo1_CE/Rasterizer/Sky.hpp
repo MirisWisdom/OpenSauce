@@ -18,7 +18,7 @@ namespace Yelo
 		void DisposeFromOldMap();
 
 		void Reset();
-		void SetSkyIndex(byte sky_index, datum_index override_index);
+		void SetSkyIndex(const byte sky_index, const datum_index override_index);
 	};};
 };
 #endif
