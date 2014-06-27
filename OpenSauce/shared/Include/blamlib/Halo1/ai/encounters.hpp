@@ -33,44 +33,74 @@ namespace Yelo
 
 	namespace AI
 	{
+		struct s_encounter_actor_iterator
+		{
+			datum_index encounter_index;
+			datum_index next_actor_index;
+			datum_index prev_actor_index;
+
+			void SetEndHack()
+			{
+				encounter_index = next_actor_index = prev_actor_index = datum_index::null;
+			}
+			bool IsEndHack() const
+			{
+				return next_actor_index.IsNull();
+			}
+		}; BOOST_STATIC_ASSERT( sizeof(s_encounter_actor_iterator) == 0xC );
+
 		struct s_encounter_datum : TStructImpl(108)
 		{
-			// 0x4 int16 squad_relative_index
+			// 0x2 _enum team_index
+			// 0x4 int16 squad_base
 			// 0x6 int16 squad_count
-			// 0x8 int16 platoon_relative_index
+			// 0x8 int16 platoon_base
 			// 0xA int16 platoon_count
 
 			// 0xD bool active
-			// 0xE int16, ticks
+			// 0xE game_ticks_t, ticks until deactivation?
 			// 0x10 int32 activated_time
-
-			// 0x18 int16
-			// 0x1A int16, unit count related
-
-			// 0x20 int16
-			// 0x22 int16[3]
+			// 0x14 datum_index, actor index
+			// 0x18 int16 original_count
+			// 0x1A int16 actor_count
+			// 0x1C int16 unique_leader_count
+			// 0x20 int16 link_encounter_indices_count
+			// 0x22 int16 link_encounter_indices[3]
 			// 0x28 bool
 			// 0x29 PAD8
-			// 0x2A int16 unit_count?
+			// 0x2A int16 actors_alive_count
 			// 0x2C int16 swarm_unit_count?
 			// 0x2E int16 actors_in_combat_count?
 			// 0x30 int16 actors_fighting_count?
 			// 0x32 PAD16
 			// 0x34 real
 			// 0x38 datum_index pursuit_index
-
+			// 0x3C bool respawn_enabled
+			// 0x3D PAD8
+			// 0x3E int16
+			// 0x40 bool blind
+			// 0x41 bool deaf
 			// 0x42 bool
 			// 0x43 bool
-			// 0x44 bool
-			// 0x45 bool
+			// 0x44 bool enemy_alive
+			// 0x45 bool enemy_visible
 			// 0x46 bool
 			// 0x47 bool
 			// 0x48 bool
-			// 0x4A int16
+			// 0x4A game_ticks_t, ticks related to 0x47 and 0x48
 			// 0x4C int16
 			// 0x4E PAD16
-			// 0x50 int32
-			// 0x54 int32
+			// 0x50 game_time_t, time related to enemy_visible
+			// 0x54 game_time_t, time related to enemy_alive
+			// 0x58 game_time_t
+			// 0x60 bool playfight
+			// 0x61 PAD8
+			// 0x62 _enum follow_type
+			//	0 players
+			//	1 object
+			//	2 ai_index
+			// 0x64 datum_index follow_type_index
+			// 0x68 UNUSED32?
 		};
 		typedef Memory::DataArray<	s_encounter_datum, 
 									Enums::k_maximum_encounters_per_map> 

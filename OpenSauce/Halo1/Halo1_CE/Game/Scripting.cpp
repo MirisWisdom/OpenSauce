@@ -10,6 +10,7 @@
 #include <blamlib/Halo1/cutscene/recorded_animations_structures.hpp>
 #include <blamlib/Halo1/hs/hs_runtime_structures.hpp>
 #include <blamlib/Halo1/hs/hs_structures.hpp>
+#include <blamlib/Halo1/hs/object_lists_structures.hpp>
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
 
 #include "Game/EngineFunctions.hpp"
@@ -21,7 +22,6 @@ namespace Yelo
 	namespace Enums
 	{
 		enum {
-
 			k_total_scenario_hs_syntax_data_upgrade = sizeof(Memory::s_data_array) + 
 				(sizeof(Scripting::hs_syntax_node) * k_maximum_hs_syntax_nodes_per_scenario_upgrade),
 		};
@@ -51,11 +51,11 @@ namespace Yelo
 		}
 
 		recorded_animations_data_t& RecordedAnimations()					DPTR_IMP_GET_BYREF(recorded_animations);
-		hs_syntax_data_t& HSSyntax()										DPTR_IMP_GET_BYREF(hs_syntax);
+		hs_syntax_data_t& HsSyntax()										DPTR_IMP_GET_BYREF(hs_syntax);
 		object_list_header_data_t& ObjectListHeader()						DPTR_IMP_GET_BYREF(object_list_header);
 		list_object_reference_data_t& ListObjectReference()					DPTR_IMP_GET_BYREF(list_object_reference);
-		hs_thread_data_t& HSThreads()										DPTR_IMP_GET_BYREF(hs_threads);
-		hs_globals_data_t& HSGlobals()										DPTR_IMP_GET_BYREF(hs_globals);
+		hs_thread_data_t& HsThreads()										DPTR_IMP_GET_BYREF(hs_threads);
+		hs_globals_data_t& HsGlobals()										DPTR_IMP_GET_BYREF(hs_globals);
 
 		void Initialize()
 		{
@@ -78,52 +78,6 @@ namespace Yelo
 
 		void PLATFORM_API Update()
 		{
-		}
-	};
-
-	namespace blam
-	{
-		using namespace Scripting;
-
-		datum_index object_list_new()
-		{
-			datum_index object_list_index = blam::datum_new( ObjectListHeader() );
-
-			if(!object_list_index.IsNull())
-			{
-				s_object_list_header_datum* object_list = ObjectListHeader()[object_list_index];
-
-				object_list->count = 0;
-				object_list->first = datum_index::null;
-			}
-
-			return object_list_index;
-		}
-
-		datum_index object_list_get_first(datum_index list_index, __out datum_index& list_reference)
-		{
-			if(!list_index.IsNull())
-			{
-				s_object_list_header_datum* object_list = ObjectListHeader()[list_index];
-				list_reference = object_list->first;
-
-				return object_list_get_next(list_index, list_reference);
-			}
-
-			return datum_index::null;
-		}
-
-		datum_index object_list_get_next(datum_index list_index, __inout datum_index& list_reference)
-		{
-			if(!list_reference.IsNull())
-			{
-				s_list_object_reference_datum* object_reference = ListObjectReference()[list_reference];
-				list_reference = object_reference->next_reference;
-
-				return object_reference->object_index;
-			}
-
-			return datum_index::null;
 		}
 	};
 };

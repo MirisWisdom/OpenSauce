@@ -611,10 +611,10 @@ namespace Yelo
 			g_hud_globals.m_hud_screen.scale.x += Input::GetMouseAxisState(Enums::_MouseAxisX) / 2000.0f;
 			g_hud_globals.m_hud_screen.scale.y += Input::GetMouseAxisState(Enums::_MouseAxisY) / 2000.0f;
 
-			g_hud_globals.m_hud_screen.scale.x = min(1.0f, g_hud_globals.m_hud_screen.scale.x);
-			g_hud_globals.m_hud_screen.scale.x = max(0.0f, g_hud_globals.m_hud_screen.scale.x);
-			g_hud_globals.m_hud_screen.scale.y = min(1.0f, g_hud_globals.m_hud_screen.scale.y);
-			g_hud_globals.m_hud_screen.scale.y = max(0.0f, g_hud_globals.m_hud_screen.scale.y);
+			g_hud_globals.m_hud_screen.scale.x = __min(1.0f, g_hud_globals.m_hud_screen.scale.x);
+			g_hud_globals.m_hud_screen.scale.x = __max(0.0f, g_hud_globals.m_hud_screen.scale.x);
+			g_hud_globals.m_hud_screen.scale.y = __min(1.0f, g_hud_globals.m_hud_screen.scale.y);
+			g_hud_globals.m_hud_screen.scale.y = __max(0.0f, g_hud_globals.m_hud_screen.scale.y);
 
 			// render the scale input options
 			wchar_t text[128];

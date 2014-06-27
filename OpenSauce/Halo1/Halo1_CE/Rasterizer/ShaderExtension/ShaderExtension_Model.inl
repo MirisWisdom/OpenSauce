@@ -504,8 +504,8 @@ no_extension:
 
 					g_pixel_shader_variables.base_normal_map_coefficient = extension.base_normal.modifiers.coefficient;
 
-					real z_multiplier = max(1.0f / extension.base_normal.modifiers.coefficient, 0.0f);
-					g_pixel_shader_variables.base_normal_map_z_coefficient = min(z_multiplier, 1.0f);
+					real z_multiplier = __max(1.0f / extension.base_normal.modifiers.coefficient, 0.0f);
+					g_pixel_shader_variables.base_normal_map_z_coefficient = __min(z_multiplier, 1.0f);
 				}
 
 				// either of the detail normal maps are present
@@ -589,8 +589,8 @@ no_extension:
 
 				g_pixel_shader_variables.base_normal_map_coefficient = shader_environment->environment.bump.bump_map.scale;
 
-				real z_multiplier = max(1.0f / shader_environment->environment.bump.bump_map.scale, 0.0f);
-				g_pixel_shader_variables.base_normal_map_z_coefficient = min(z_multiplier, 1.0f);
+				real z_multiplier = __max(1.0f / shader_environment->environment.bump.bump_map.scale, 0.0f);
+				g_pixel_shader_variables.base_normal_map_z_coefficient = __min(z_multiplier, 1.0f);
 			}
 			else
 				Yelo::DX9::Direct3DDevice()->SetTexture(4, nullptr);

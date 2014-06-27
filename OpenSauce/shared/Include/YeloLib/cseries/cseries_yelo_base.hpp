@@ -25,6 +25,21 @@ namespace Yelo
 		};
 	};
 
+	namespace Flags
+	{
+		enum {
+			k_alignment_8bit,
+			k_alignment_16bit,
+			k_alignment_32bit,
+			k_alignment_64bit,
+			k_alignment_128bit,
+			k_alignment_256bit,
+			k_alignment_512bit,
+			k_alignment_1024bit,
+			k_alignment_2048bit,
+		};
+	};
+
 	// System Initialize function pointer
 	// Note: We can use this in engine definitions as well since it takes no parameters
 	typedef void (API_FUNC* proc_initialize)();
@@ -135,26 +150,6 @@ namespace Yelo
 	}; };
 
 
-	extern const sbyte K_SBYTE_MIN;		/// <summary>	min value for a [sbyte]. </summary>
-	extern const sbyte K_SBYTE_MAX;		/// <summary>	max value for a [sbyte]. </summary>
-	extern const byte K_BYTE_MIN;		/// <summary>	min value for a [byte]. </summary>
-	extern const byte K_BYTE_MAX;		/// <summary>	max value for a [byte]. </summary>
-	extern const int16 K_INT16_MIN;		/// <summary>	min value for a [int16]. </summary>
-	extern const int16 K_INT16_MAX;		/// <summary>	max value for a [int16]. </summary>
-	extern const uint16 K_UINT16_MIN;	/// <summary>	min value for a [uint16]. </summary>
-	extern const uint16 K_UINT16_MAX;	/// <summary>	max value for a [uint16]. </summary>
-	extern const int32 K_INT32_MIN;		/// <summary>	min value for a [int32]. </summary>
-	extern const int32 K_INT32_MAX;		/// <summary>	max value for a [int32]. </summary>
-	extern const uint32 K_UINT32_MIN;	/// <summary>	min value for a [uint32]. </summary>
-	extern const uint32 K_UINT32_MAX;	/// <summary>	max value for a [uint32]. </summary>
-	extern const int64 K_INT64_MIN;		/// <summary>	min value for a [int64]. </summary>
-	extern const int64 K_INT64_MAX;		/// <summary>	max value for a [int64]. </summary>
-	extern const uint64 K_UINT64_MIN;	/// <summary>	min value for a [uint64]. </summary>
-	extern const uint64 K_UINT64_MAX;	/// <summary>	max value for a [uint64]. </summary>
-	extern const real K_REAL_MIN;		/// <summary>	min value for a [real]. </summary>
-	extern const real K_REAL_MAX;		/// <summary>	max value for a [real]. </summary>
-
-
 	// TODO: refactor these to PascalCase
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -209,6 +204,7 @@ namespace Yelo
 	/// <summary>
 	/// 	Allows us to interpret a machine word (in this case, 32-bits) as various sorts of types. Either as a pointer,
 	/// 	a value-array, or just vanilla values.
+	/// 	It's a shitty struct name, but fuck, this has been around almost as-is since...2006 or earlier.
 	/// </summary>
 	///
 	/// <typeparam name="T">	. </typeparam>
@@ -263,9 +259,20 @@ namespace Yelo
 
 			datum_index datum;
 		};
+
+		// hope you know what you're doing if you use this!
+		bool IsNull() const { return pointer == nullptr; }
+
+		// default equality logic is to compare the pointer (32) bits.
+		// could be problematic for value types <32bits like bool, where the upper bits aren't zeroed.
+		// at which point you should be doing value.boolean == ... anyway.
+		OVERRIDE_OPERATOR_MATH_BOOL(TTypeHolder, pointer, == );
+		OVERRIDE_OPERATOR_MATH_BOOL(TTypeHolder, pointer, != );
 	};
 	typedef TTypeHolder<void> TypeHolder;
 	BOOST_STATIC_ASSERT( sizeof(TypeHolder) == 0x4 );
+
+	extern const TypeHolder k_null_type_holder;
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/// <summary>	If the COM interface reference isn't NULL, releases it and NULL it. </summary>

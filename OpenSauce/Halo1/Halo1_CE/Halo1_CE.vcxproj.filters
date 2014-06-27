@@ -1136,21 +1136,6 @@
     <None Include="Game\EngineFunctions._Misc.inl">
       <Filter>Game\Impl\EngineFunctions</Filter>
     </None>
-    <None Include="Game\EngineFunctions.Cheats.inl">
-      <Filter>Game\Impl\EngineFunctions</Filter>
-    </None>
-    <None Include="Game\EngineFunctions.Console.inl">
-      <Filter>Game\Impl\EngineFunctions</Filter>
-    </None>
-    <None Include="Game\EngineFunctions.Game.inl">
-      <Filter>Game\Impl\EngineFunctions</Filter>
-    </None>
-    <None Include="Game\EngineFunctions.Interface.inl">
-      <Filter>Game\Impl\EngineFunctions</Filter>
-    </None>
-    <None Include="Game\EngineFunctions.Memory.inl">
-      <Filter>Game\Impl\EngineFunctions</Filter>
-    </None>
     <None Include="Game\EngineFunctions.Networking.inl">
       <Filter>Game\Impl\EngineFunctions</Filter>
     </None>
@@ -1348,6 +1333,24 @@
     </None>
     <None Include="TagGroups\CacheFiles.Settings.inl">
       <Filter>TagGroups\Impl</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Game.EngineFunctions.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Game.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Interface.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.OpenSauce.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Rasterizer.ShaderDraw.inl">
+      <Filter>_Resources\1.10</Filter>
+    </None>
+    <None Include="Memory\1.10\_EngineLayout.Scenario.inl">
+      <Filter>_Resources\1.10</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

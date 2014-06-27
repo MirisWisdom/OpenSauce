@@ -120,7 +120,7 @@ namespace Yelo
 
 		struct s_object_name_list_data
 		{
-			datum_index object_name_to_datum_table[Enums::k_maximum_object_names_per_scenario];
+			std::array<datum_index, Enums::k_maximum_object_names_per_scenario> object_name_to_datum_table;
 		};
 
 
@@ -135,8 +135,8 @@ namespace Yelo
 			datum_index object_index;
 			tag signature;
 
-			inline void SetEndHack()		{ signature = Memory::s_data_iterator::k_end_hack_signature; }
-			inline bool IsEndHack() const	{ return signature == Memory::s_data_iterator::k_end_hack_signature; }
+			void SetEndHack()		{ signature = Memory::s_data_iterator::k_end_hack_signature; }
+			bool IsEndHack() const	{ return signature == Memory::s_data_iterator::k_end_hack_signature; }
 		};
 
 
@@ -149,6 +149,10 @@ namespace Yelo
 	namespace blam
 	{
 		using namespace Yelo::Objects;
+
+		datum_index object_index_from_name_index(int16 name_index);
+
+		void object_set_object_index_for_name_index(int16 name_index, datum_index object_index);
 
 		void PLATFORM_API object_reset(datum_index object_index);
 
@@ -235,46 +239,46 @@ namespace Yelo
 			s_object_iterator m_state;
 			s_object_data* m_object;
 
-			inline c_object_iterator(const void* endHackDummy)
+			c_object_iterator(const void* endHackDummy)
 				: m_object(nullptr)
 			{
 				m_state.SetEndHack();
 			}
 		public:
-			inline c_object_iterator(long_flags type_mask, Flags::object_header_flags ignore_flags = (Flags::object_header_flags)0)
+			c_object_iterator(long_flags type_mask, Flags::object_header_flags ignore_flags = (Flags::object_header_flags)0)
 				: m_object(nullptr)
 			{
 				blam::object_iterator_new(m_state, type_mask, ignore_flags);
 			}
 
-			static inline c_object_iterator all()
+			static c_object_iterator all()
 			{
 				return c_object_iterator(Enums::_object_type_mask_all);
 			}
 
-			inline s_object_data* Next()
+			s_object_data* Next()
 			{
 				return m_object = blam::object_iterator_next(m_state);
 			}
 
 			bool operator!=(const c_object_iterator& other) const;
 
-			inline c_object_iterator& operator++()
+			c_object_iterator& operator++()
 			{
 				Next();
 				return *this;
 			}
-			inline Memory::DataArrayIteratorResult<s_object_data> operator*() const
+			Memory::DataArrayIteratorResult<s_object_data> operator*() const
 			{
 				return Memory::DataArrayIteratorResult<s_object_data>(m_state.object_index, m_object);
 			}
 
-			inline c_object_iterator& begin() /*const*/
+			c_object_iterator& begin() /*const*/
 			{
 				this->Next();
 				return *this;
 			}
-			inline static const c_object_iterator end() /*const*/
+			static const c_object_iterator end() /*const*/
 			{
 				return c_object_iterator(nullptr);
 			}

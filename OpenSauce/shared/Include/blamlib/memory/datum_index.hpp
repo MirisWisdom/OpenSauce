@@ -32,9 +32,9 @@ namespace Yelo
 			};
 		};
 
-		inline bool IsNull() const { return null == handle; }
+		bool IsNull() const { return null == handle; }
 
-		static inline datum_index Create(index_t index, salt_t salt)
+		static datum_index Create(index_t index, salt_t salt)
 		{
 			datum_index result; result.handle = (CAST(uint32, salt) << 16) | index;
 			return result;
@@ -53,7 +53,7 @@ namespace Yelo
 		struct std_hash : public std::unary_function<datum_index, size_t>
 		{
 			// logic copied and pasted from xstddef's _Bitwise_hash
-			inline size_t operator()(const datum_index& _Keyval) const
+			size_t operator()(const datum_index& _Keyval) const
 			{	// hash _Keyval to size_t value by pseudorandomizing transform
 				return std::_Hash_seq((const unsigned char *)&_Keyval, sizeof(datum_index));
 			}

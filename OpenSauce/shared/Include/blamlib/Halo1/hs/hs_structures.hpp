@@ -5,6 +5,7 @@
 */
 #pragma once
 
+#include <blamlib/memory/data_base.hpp>
 #include <blamlib/Halo1/hs/hs.hpp>
 
 namespace Yelo
@@ -86,11 +87,11 @@ namespace Yelo
 		struct hs_syntax_node : Memory::s_datum_base
 		{
 			union {
-				int16 constant_type;
+				Enums::hs_type constant_type;
 				int16 function_index;
 				int16 script_index;
 			};
-			_enum type;
+			Enums::hs_type type;
 			union {
 				word_flags flags;
 				int16 pointer_type;
@@ -100,13 +101,7 @@ namespace Yelo
 			union {
 				void* address;
 
-				union {
-					bool _bool;
-					real _real;
-					int16 _short;
-					int32 _long;
-					datum_index _datum;
-				}Value;
+				TypeHolder value;
 			};
 		}; BOOST_STATIC_ASSERT( sizeof(hs_syntax_node) == 0x14 );
 
@@ -114,5 +109,7 @@ namespace Yelo
 									Enums::k_maximum_hs_syntax_nodes_per_scenario, 
 									Enums::k_maximum_hs_syntax_nodes_per_scenario_upgrade> 
 			hs_syntax_data_t;
+
+		hs_syntax_data_t&			HsSyntax();
 	};
 };

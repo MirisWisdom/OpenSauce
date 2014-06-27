@@ -346,22 +346,22 @@ namespace Yelo
 			c_quad_instance* quad = nullptr;
 
 			point2d tess_final;
-			tess_final.x = max(quad_definition.tessellation.x, 1);
-			tess_final.x = min(tess_final.x, k_maximum_quads_per_axis);
-			tess_final.y = max(quad_definition.tessellation.y, 1);
-			tess_final.y = min(tess_final.y, k_maximum_quads_per_axis);
+			tess_final.x = __max(quad_definition.tessellation.x, 1);
+			tess_final.x = __min(tess_final.x, k_maximum_quads_per_axis);
+			tess_final.y = __max(quad_definition.tessellation.y, 1);
+			tess_final.y = __min(tess_final.y, k_maximum_quads_per_axis);
 
 			real_bounds x_final;
-			x_final.lower = max(quad_definition.x_bounds.lower, 0);
-			x_final.lower = min(x_final.lower, 1);
-			x_final.upper = max(quad_definition.x_bounds.upper, 0);
-			x_final.upper = min(x_final.upper, 1);
+			x_final.lower = __max(quad_definition.x_bounds.lower, 0);
+			x_final.lower = __min(x_final.lower, 1);
+			x_final.upper = __max(quad_definition.x_bounds.upper, 0);
+			x_final.upper = __min(x_final.upper, 1);
 
 			real_bounds y_final;
-			y_final.lower = max(quad_definition.y_bounds.lower, 0);
-			y_final.lower = min(y_final.lower, 1);
-			y_final.upper = max(quad_definition.y_bounds.upper, 0);
-			y_final.upper = min(y_final.upper, 1);
+			y_final.lower = __max(quad_definition.y_bounds.lower, 0);
+			y_final.lower = __min(y_final.lower, 1);
+			y_final.upper = __max(quad_definition.y_bounds.upper, 0);
+			y_final.upper = __min(y_final.upper, 1);
 
 			// look for an existing quad using GetExistingQuad, if found return that quad
 			quad = GetExistingQuad(tess_final, quad_definition.x_bounds, quad_definition.y_bounds);
