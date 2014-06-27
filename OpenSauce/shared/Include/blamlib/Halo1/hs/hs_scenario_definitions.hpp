@@ -11,17 +11,23 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum hs_type : _enum;
+		enum hs_script_type : _enum;
+	};
+
 	namespace TagGroups
 	{
 		struct hs_scenario_data_base
 		{
 			struct _script {
-				TAG_ENUM(type, Enums::hs_script_type);
-				TAG_ENUM(return_type, Enums::hs_type);
+				Enums::hs_script_type type;
+				Enums::hs_type return_type;
 				TAG_FIELD(datum_index, root_expression_index);
 			};
 			struct _global {
-				TAG_ENUM(type, Enums::hs_type);
+				Enums::hs_type type;
 				PAD16;
 				PAD32;
 				TAG_FIELD(datum_index, initialization_expression_index);

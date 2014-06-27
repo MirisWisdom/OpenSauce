@@ -70,7 +70,7 @@ namespace Yelo
 			Enums::hs_thread_type type;
 			word_flags flags;
 			int16 script_index; // only when type==_hs_thread_type_script
-			game_ticks_t sleep_time;
+			game_ticks_t sleep_until;
 			game_ticks_t prev_sleep_time;
 			stack_frame* stack_data;
 			TypeHolder result;
@@ -79,6 +79,8 @@ namespace Yelo
 
 			bool ValidThread(const Memory::s_data_array& threads) const;
 			cstring GetDescriptionString() const;
+
+			void StackPop();
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Allocate memory from the thread's stack for script memory. </summary>
@@ -92,7 +94,14 @@ namespace Yelo
 			///
 			/// <returns>	null if it fails, else a pointer to the requested memory. </returns>
 			void* StackAllocate(const Memory::s_data_array& threads,
-				size_t size, long_flags alignment_bit, _Out_opt_ int16* stack_offset = nullptr);
+				size_t size, long_flags alignment_bit = Flags::k_alignment_32bit, _Out_opt_ int16* stack_offset = nullptr);
+
+			template<typename T>
+			T* StackAllocate(const Memory::s_data_array& threads,
+				long_flags alignment_bit = Flags::k_alignment_32bit, _Out_opt_ int16* stack_offset = nullptr)
+			{
+				return CAST_PTR(T*, StackAllocate(threads, sizeof(T), alignment_bit, stack_offset));
+			}
 
 		}; BOOST_STATIC_ASSERT( sizeof(s_hs_thread_datum) == 0x218 );
 
@@ -103,5 +112,26 @@ namespace Yelo
 
 			TypeHolder value;
 		}; BOOST_STATIC_ASSERT( sizeof(s_hs_globals_datum) == 0x8 );
+
+		struct s_hs_runtime_globals
+		{
+			bool enabled;
+			PAD24;
+			int16 executing_thread_index;
+			bool run_game_scripts;
+			PAD8;
+		}; BOOST_STATIC_ASSERT( sizeof(s_hs_runtime_globals) == 0x8 );
+
+
+		typedef Memory::DataArray<	s_hs_thread_datum, 
+									256>
+			hs_thread_data_t;
+
+		typedef Memory::DataArray<	s_hs_globals_datum, 
+									Enums::k_maximum_number_of_hs_globals> 
+			hs_globals_data_t;
+
+		hs_thread_data_t&			HsThreads();
+		hs_globals_data_t&			HsGlobals();
 	};
 };

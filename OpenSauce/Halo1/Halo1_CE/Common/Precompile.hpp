@@ -10,6 +10,7 @@
 #include <cseries/KillCxxExceptions.hpp>
 
 #define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
 #include "resource.h"
 #include <windows.h>
 #include <sal.h>
@@ -60,6 +61,10 @@
 
 //////////////////////////////////////////////////////////////////////////
 // Boost includes
+#ifdef API_DEBUG
+	#define BOOST_LIB_DIAGNOSTIC
+#endif
+
 #include <boost/preprocessor.hpp>
 #include <boost/static_assert.hpp>
 

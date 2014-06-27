@@ -202,6 +202,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_scenario_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\object_lists.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\object_lists_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\input\input_abstraction.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\input\input_windows.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\interface\first_person_weapons.hpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\items\weapon_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\items\weapon_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\main\console.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\main\editor.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\main\levels.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\main\main.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\main\main_structures.hpp" />
@@ -361,10 +363,12 @@
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cseries\debug_memory.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cseries\profile.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\effects\damage_effect_definitions.cpp" />
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\game\game_time.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs_compile.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs_runtime.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs_scenario_definitions.cpp" />
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\object_lists.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\interface\first_person_weapons.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\interface\map_list.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\main\main.cpp" />
@@ -388,6 +392,10 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\..\..\Doc\Blam\Halo1\Halo1_CE.message_delta_definitions.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_library_internal_runtime.inl" />
+    <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_library_internal_runtime_type_defs.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(OSRootDir)shared\config\msbuild\OpenSauceBuild.targets" />

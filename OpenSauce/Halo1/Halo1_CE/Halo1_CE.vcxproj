@@ -475,11 +475,6 @@
     <None Include="Game\GameState.ServerList.inl" />
     <None Include="Game\GameStateRuntimeData.Scripting.inl" />
     <None Include="Game\EngineFunctions._Misc.inl" />
-    <None Include="Game\EngineFunctions.Cheats.inl" />
-    <None Include="Game\EngineFunctions.Console.inl" />
-    <None Include="Game\EngineFunctions.Game.inl" />
-    <None Include="Game\EngineFunctions.Interface.inl" />
-    <None Include="Game\EngineFunctions.Memory.inl" />
     <None Include="Game\EngineFunctions.Networking.inl" />
     <None Include="Game\EngineFunctions.Objects.inl" />
     <None Include="Game\EngineFunctions.Players.inl" />
@@ -489,6 +484,12 @@
     <None Include="Game\Players.Scripting.inl" />
     <None Include="Interface\GameUI_Hud.inl" />
     <None Include="Interface\GameUI_Menu.inl" />
+    <None Include="Memory\1.10\_EngineLayout.Game.EngineFunctions.inl" />
+    <None Include="Memory\1.10\_EngineLayout.Game.inl" />
+    <None Include="Memory\1.10\_EngineLayout.Interface.inl" />
+    <None Include="Memory\1.10\_EngineLayout.OpenSauce.inl" />
+    <None Include="Memory\1.10\_EngineLayout.Rasterizer.ShaderDraw.inl" />
+    <None Include="Memory\1.10\_EngineLayout.Scenario.inl" />
     <None Include="Memory\FunctionInterface.Client.inl" />
     <None Include="Objects\ObjectFieldDefinitions.ImplObjects.inl" />
     <None Include="Objects\ObjectFieldDefinitions.ImplUnits.inl" />

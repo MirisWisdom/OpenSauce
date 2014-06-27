@@ -41,7 +41,7 @@ namespace Yelo
 			// 0x22 ?
 			TStructGetPtrImpl(datum_index,		MetaSwarmUnitIndex, 0x24);
 			TStructGetPtrImpl(datum_index,		MetaSwarmCacheIndex, 0x28);
-			//TStructGetPtrImpl(datum_index,		Meta, 0x2C); // an actor index
+			TStructGetPtrImpl(datum_index,		MetaEncounterNextActorIndex, 0x2C);
 			//TStructGetPtrImpl(datum_index,		Meta, 0x30);
 			TStructGetPtrImpl(datum_index,		MetaEncounterIndex, 0x34);
 

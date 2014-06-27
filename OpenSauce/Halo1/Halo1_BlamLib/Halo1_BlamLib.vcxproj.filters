@@ -933,6 +933,12 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files_windows.cpp">
       <Filter>cache</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\main\editor.hpp">
+      <Filter>main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\object_lists_structures.hpp">
+      <Filter>hs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -1031,10 +1037,24 @@
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\cseries\cseries_windows.cpp">
       <Filter>cseries</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\game\game_time.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\object_lists.cpp">
+      <Filter>hs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\..\..\Doc\Blam\Halo1\Halo1_CE.message_delta_definitions.xml">
       <Filter>networking</Filter>
     </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_library_internal_runtime_type_defs.inl">
+      <Filter>hs</Filter>
+    </None>
+    <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_library_internal_runtime.inl">
+      <Filter>hs</Filter>
+    </None>
   </ItemGroup>
 </Project>

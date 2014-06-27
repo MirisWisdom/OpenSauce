@@ -107,6 +107,14 @@ namespace Yelo
 			_unit_camo_regrowth_off,
 			_unit_camo_regrowth_on, // they fired their weapon, requiring active_camo_regrowth_rate to be applied
 		};
+
+		enum unit_throwing_grenade_state : byte_enum
+		{
+			_unit_throwing_grenade_state_none, // ie, no grenade
+			_unit_throwing_grenade_state_begin,
+			_unit_throwing_grenade_state_in_hand,
+			_unit_throwing_grenade_state_released,
+		};
 	};
 
 	namespace Flags
