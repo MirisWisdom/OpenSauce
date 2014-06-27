@@ -8,6 +8,9 @@
 // In release builds we don't want no shitty mcshit exception crap being included in the PE
 #if NDEBUG || defined(YELO_KILL_CXX_EXCEPTIONS)
 	#define _HAS_EXCEPTIONS 0
+
+	bool __uncaught_exception();
+
 // Should no longer need this after VS2008
 //	#ifndef __cplusplus_cli
 //		// http://stackoverflow.com/a/3870281
