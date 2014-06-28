@@ -61,9 +61,9 @@ namespace Environment
 		real z_multiplier = 0;
 		if (bump_amount > 0)
 		{
-			z_multiplier = max(1.0f / bump_amount, 0.0f);
+			z_multiplier = __max(1.0f / bump_amount, 0.0f);
 		}
-		return min(z_multiplier, 1.0f);
+		return __min(z_multiplier, 1.0f);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
