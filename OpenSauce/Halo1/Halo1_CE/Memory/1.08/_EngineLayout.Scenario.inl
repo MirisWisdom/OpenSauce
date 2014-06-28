@@ -27,7 +27,6 @@
 // .cpp
 //#elif __EL_INCLUDE_FILE_ID == __EL_SCENARIO_
 
-
 #else
 	#error Undefined engine layout include for: __EL_SCENARIO_SCENARIO
 #endif

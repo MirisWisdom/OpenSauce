@@ -8,538 +8,1574 @@ using System.Collections.Generic;
 using System.IO;
 using BlamLib.Blam;
 using BlamLib.Managers;
-using BlamLib.Render.COLLADA.Validation;
+using BlamLib.TagInterface;
 
 namespace BlamLib.Render.COLLADA.Halo1
 {
-	/// <summary>
-	/// Provides readonly information about an object in a model tag for external use
-	/// </summary>
-	public class ColladaHalo1ModelInfo : ColladaHaloModelInfoBase
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Interface for generic collection of data from a source tag. </summary>
+	///-------------------------------------------------------------------------------------------------
+	public interface ITagDataSource
 	{
-		public int Permutation { get; private set; }
-		public int LevelOfDetail { get; private set; }
+		string TagPath { get; }
 
-		public ColladaHalo1ModelInfo(int internal_index, string name, 
-			int vertex_count, int face_count, 
-			int perm, int lod)
-			: base(internal_index, name, vertex_count, face_count)
-		{
-			Permutation = perm;
-			LevelOfDetail = lod;
-		}
-	};
-	/// <summary>
-	/// Provides readonly information about an object in a BSP tag for external use
-	/// </summary>
-	public class ColladaHalo1BSPInfo : ColladaHaloModelInfoBase
+		void CollectData(TagIndexBase tagIndex, TagManager tagManager);
+	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Base class to simplify block object access for classes 
+	/// 			that map directly to block memebrs. </summary>
+	/// <typeparam name="T">	TagInterface.Definition type parameter. </typeparam>
+	///-------------------------------------------------------------------------------------------------
+	public class DataBlockReference<T>
+		where T : TagInterface.Definition
 	{
-		public BSPObjectType Type { get; private set; }
+		protected T mBlock;
 
-		//private ColladaHalo1BSPInfo() { }
-		public ColladaHalo1BSPInfo(int internal_index, string name,
-			int vertex_count, int face_count,
-			BSPObjectType bsp_type)
-			: base(internal_index, name, vertex_count, face_count)
+		protected DataBlockReference(T block)
 		{
-			Type = bsp_type;
+			mBlock = block;
 		}
-	};
+	}
 
-	class ColladaHalo1 : ColladaInterface
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Data collection class for the Halo1 scenario tag. </summary>
+	///-------------------------------------------------------------------------------------------------
+	public class ScenarioData : ITagDataSource, IHalo1ScenarioDataProvider
 	{
-		#region Internal Classes
-		/// <summary>
-		/// Interface class to pass shader datum indices to the Halo1 exporter base class
-		/// </summary>
-		protected class ShaderInfoInternal : ColladaInfoInternal, IHaloShaderDatumList
-		{
-			struct ShaderReference
-			{
-				public DatumIndex Datum;
-				public string Name;
-			}
-			List<ShaderReference> shaders = new List<ShaderReference>();
+		#region Fields
+		public string TagPath { get; private set; }
+		#endregion Fields
 
-			bool ShaderExists(DatumIndex shader_datum)
-			{
-				foreach (var shader in shaders)
-					if (shader.Datum == shader_datum)
-						return true;
-				return false;
-			}
-
-			public void AddShaderDatum(DatumIndex shader_datum, string name)
-			{
-				if (ShaderExists(shader_datum))
-					return;
-
-				ShaderReference shader = new ShaderReference();
-				shader.Name = name;
-				shader.Datum = shader_datum;
-
-				shaders.Add(shader);
-			}
-
-			#region IHaloShaderDatumList Members
-			public int GetShaderCount()
-			{
-				return shaders.Count;
-			}
-
-			public DatumIndex GetShaderDatum(int index)
-			{
-				return shaders[index].Datum;
-			}
-
-			public string GetShaderName(int index)
-			{
-				return shaders[index].Name;
-			}
-			#endregion
+		#region Constructor
+		public ScenarioData()
+		{			
+			IncludeScenery = false;
+			IncludeDeviceMachines = false;
+			IncludeDeviceControls = false;
+			IncludeDeviceLightFixtures = false;
+			IncludeSoundScenery = false;
 		}
-		/// <summary>
-		/// Interface class to pass geometry name and index information to the Halo 1 model exporter
-		/// </summary>
-		protected class ModelInfoInternal : ShaderInfoInternal, IHalo1ModelInterface
+		#endregion Constructor
+
+		#region Data Classes
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Proxy class to get data from a child scenario block. </summary>
+		///-------------------------------------------------------------------------------------------------
+		public class ScenarioChildScenario
+			: DataBlockReference<Blam.Halo1.Tags.scenario_group.scenario_child_scenario_block>
 		{
-			struct GeometryInfo
+			public DatumIndex ScenarioDatum
 			{
-				public string Name;
-				public int Index;
-			};
-
-			public bool IsMultiplePermutations = false;
-			public int Permutation = 0;
-
-			List<GeometryInfo> geometries = new List<GeometryInfo>();
-
-			/// <summary>
-			/// Determines if a geometry with a matching index already exists in the list
-			/// </summary>
-			/// <param name="index">The geometry index to search for</param>
-			/// <returns>True if a matching element is found</returns>
-			bool GeometryExists(int index)
-			{
-				foreach (var geometry in geometries)
-					if (geometry.Index == index)
-						return true;
-				return false;
-			}
-			/// <summary>
-			/// Adds a geometry name and index pair to the list, if an element with a matching index does not already exist
-			/// </summary>
-			/// <param name="name">The geometry name</param>
-			/// <param name="index">The geometry index</param>
-			public void AddGeometry(string name, int index)
-			{
-				if (GeometryExists(index))
-					return;
-
-				GeometryInfo geometry = new GeometryInfo();
-				geometry.Name = name;
-				geometry.Index = index;
-
-				geometries.Add(geometry);
+				get { return mBlock.Child.Datum; }
 			}
 
-			#region IHalo1GeometryList Members
-			public int GetGeometryCount()
-			{
-				return geometries.Count;
-			}
-			public string GetGeometryName(int index)
-			{
-				return geometries[index].Name;
-			}
-			public int GetGeometryIndex(int index)
-			{
-				return geometries[index].Index;
-			}
-			bool IHalo1ModelInterface.GetIsMultiplePerms()
-			{
-				return IsMultiplePermutations;
-			}
-			public int GetPermutation()
-			{
-				return Permutation;
-			}
-			#endregion
+			public ScenarioChildScenario(Blam.Halo1.Tags.scenario_group.scenario_child_scenario_block block)
+				: base(block)
+			{ }
 		}
-		/// <summary>
-		/// Interface class to pass mesh include information to the Halo1 BSP exporter
-		/// </summary>
-		protected class BSPInfoInternal : ShaderInfoInternal, IHalo1BSPInterface
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Proxy class to get data from an object name block. </summary>
+		///-------------------------------------------------------------------------------------------------
+		public class ScenarioObjectName
+			: DataBlockReference<Blam.Halo1.Tags.scenario_group.scenario_object_names_block>
 		{
-			BSPObjectType type;
-
-			/// <summary>
-			/// Sets the bsp object type
-			/// </summary>
-			/// <param name="bsp_type"></param>
-			public void SetType(BSPObjectType bsp_type)
+			public string Name
 			{
-				type = bsp_type;
+				get { return mBlock.Name; }
 			}
 
-			#region IHalo1BSPInterface Members
-			public bool IncludeRenderMesh()
-			{
-				return ((type & BSPObjectType.RenderMesh) == BSPObjectType.RenderMesh);
-			}
-			public bool IncludePortalsMesh()
-			{
-				return ((type & BSPObjectType.Portals) == BSPObjectType.Portals);
-			}
-			public bool IncludeFogPlanesMesh()
-			{
-				return ((type & BSPObjectType.FogPlanes) == BSPObjectType.FogPlanes);
-			}
-			#endregion
+			public ScenarioObjectName(Blam.Halo1.Tags.scenario_group.scenario_object_names_block block)
+				: base(block)
+			{ }
 		}
-		#endregion
 
-		#region Static Helper Classes
-		protected static class Model
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Proxy class to get data from object type block. </summary>
+		///-------------------------------------------------------------------------------------------------
+		public class ScenarioObject
+			: DataBlockReference<Blam.Halo1.Tags.scenario_group.scenario_object_palette_block>
 		{
-			public static void AddGeometryInfos(ModelInfoInternal model_info, TagManager manager, int permutation, int lod)
-			{
-				var definition = manager.TagDefinition as Blam.Halo1.Tags.gbxmodel_group;
+			public Blam.Halo1.TypeEnums.ObjectType ObjectType { get; private set; }
 
-				foreach (var region in definition.Regions)
+			public DatumIndex ObjectTagDatum
+			{
+				get { return mBlock.Name.Datum; }
+			}
+
+			public ScenarioObject(Blam.Halo1.Tags.scenario_group.scenario_object_palette_block block, Blam.Halo1.TypeEnums.ObjectType type)
+				: base(block)
+			{
+				ObjectType = type;
+			}
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Proxy class to get data from an object instance block. </summary>
+		///-------------------------------------------------------------------------------------------------
+		public class ScenarioObjectInstance
+			: DataBlockReference<Blam.Halo1.Tags.scenario_group.scenario_object_block>
+		{
+			public ScenarioObjectName ObjectName
+			{
+				get;
+				private set;
+			}
+
+			public ScenarioObject ObjectType
+			{
+				get;
+				private set;
+			}
+
+			public int Permutation
+			{
+				get { return mBlock.DesiredPermutation; }
+			}
+
+			public RealPoint3D Position
+			{
+				get { return mBlock.Position; }
+			}
+
+			public RealEulerAngles3D Rotation
+			{
+				get { return mBlock.Rotation; }
+			}
+
+			public ScenarioObjectInstance(Blam.Halo1.Tags.scenario_group.scenario_object_block block, ScenarioObjectName name, ScenarioObject type)
+				: base(block)
+			{
+				ObjectName = name;
+				ObjectType = type;
+			}
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Proxy class to get data from a structure bsp block. </summary>
+		///-------------------------------------------------------------------------------------------------
+		public class ScenarioStructureBSP
+			: DataBlockReference<Blam.Halo1.Tags.scenario_structure_bsps_block>
+		{
+			public DatumIndex BSPTagDatum
+			{
+				get { return mBlock.StructureBsp.Datum; }
+			}
+
+			public ScenarioStructureBSP(Blam.Halo1.Tags.scenario_structure_bsps_block block)
+				: base(block)
+			{ }
+		}
+		#endregion Data Classes
+
+		#region Data List Classes
+		public class ScenarioChildScenarioList : List<ScenarioChildScenario> { }
+		public class ScenarioObjectNameList : List<ScenarioObjectName> { }
+		public class ScenarioObjectListDictionary : Dictionary<Blam.Halo1.TypeEnums.ObjectType, List<ScenarioObject>> { }
+		public class ScenarioObjectInstanceListDictionary : Dictionary<Blam.Halo1.TypeEnums.ObjectType, List<ScenarioObjectInstance>> { }
+		public class ScenarioStructureBSPList : List<ScenarioStructureBSP> { }
+		#endregion Data List Classes
+
+		#region Data Lists
+		public ScenarioChildScenarioList ScenarioChildScenarios = new ScenarioChildScenarioList();
+		public ScenarioObjectNameList ScenarioObjectNames = new ScenarioObjectNameList();
+		public ScenarioObjectListDictionary ScenarioObjectLists = new ScenarioObjectListDictionary();
+		public ScenarioObjectInstanceListDictionary ScenarioObjectInstanceLists = new ScenarioObjectInstanceListDictionary();
+		public ScenarioStructureBSPList ScenarioStructureBSPs = new ScenarioStructureBSPList();
+		#endregion Data Lists
+
+		#region Add Scenario Objects and Instances
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets the number of instances of the specified object type. </summary>
+		/// <param name="type">	The object type. </param>
+		/// <returns>	The number of instances. </returns>
+		///-------------------------------------------------------------------------------------------------
+		public int GetObjectInstanceCount(Blam.Halo1.TypeEnums.ObjectType type)
+		{
+			if (ScenarioObjectLists[type] == null)
+			{
+				return 0;
+			}
+
+			return ScenarioObjectLists[type].Count;
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds object type entries for the objects in the specified palette block. </summary>
+		/// <param name="type">   	The object type. </param>
+		/// <param name="pallete">	The pallete block. </param>
+		///-------------------------------------------------------------------------------------------------
+		private void AddObjectPalleteEntries(Blam.Halo1.TypeEnums.ObjectType type, Block<Blam.Halo1.Tags.scenario_group.scenario_object_palette_block> pallete)
+		{
+			if (!ScenarioObjectLists.ContainsKey(type))
+			{
+				ScenarioObjectLists[type] = new List<ScenarioObject>();
+			}
+
+			foreach(var palleteBlock in pallete.Elements)
+			{
+				ScenarioObjectLists[type].Add(new ScenarioObject(palleteBlock, type));
+			}
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds object type entries for the objects in the specified 
+		/// 			instances block. </summary>
+		/// <param name="type">			The object type. </param>
+		/// <param name="instances">	The instances block. </param>
+		///-------------------------------------------------------------------------------------------------
+		private void AddObjectInstanceEntries(Blam.Halo1.TypeEnums.ObjectType type, List<Blam.Halo1.Tags.scenario_group.scenario_object_block> instances)
+		{
+			if (!ScenarioObjectInstanceLists.ContainsKey(type))
+			{
+				ScenarioObjectInstanceLists[type] = new List<ScenarioObjectInstance>();
+			}
+
+			foreach(var instance in instances)
+			{
+				// If the object has a defined name add a reference to it
+				ScenarioObjectName objectName = null;
+				if (instance.Name.Value != -1)
 				{
-					int permutation_index = permutation;
+					objectName = ScenarioObjectNames[instance.Name.Value];
+				}
 
-					if (permutation >= region.Permutations.Count)
-						permutation_index = region.Permutations.Count - 1;
+				// If the objects type is value add a reference to it
+				ScenarioObject objectType = null;
+				if (instance.Type.Value != -1)
+				{
+					objectType = ScenarioObjectLists[type][instance.Type.Value];
+				}
+				else
+				{
+					continue;
+				}
 
-					string name = string.Format("{0}-{1}-lod{2}", 
-						region.Name.Value, region.Permutations[permutation_index].Name, lod.ToString());
+				ScenarioObjectInstanceLists[type].Add(new ScenarioObjectInstance(instance, objectName, objectType));
+			}
+		}
+		#endregion Add Scenario Objects and Instances
 
-					int index = 0;
-					switch (lod)
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Collects data from a scenario tag. </summary>
+		/// <param name="tagIndex">			 	The tag index containing the scenario tag. </param>
+		/// <param name="scenarioTagManager">	Tag manager for the scenario tag. </param>
+		///-------------------------------------------------------------------------------------------------
+		public void CollectData(TagIndexBase tagIndex, TagManager scenarioTagManager)
+		{
+			TagPath = scenarioTagManager.Name;
+
+			Blam.Halo1.Tags.scenario_group scenarioDefinition = scenarioTagManager.TagDefinition as Blam.Halo1.Tags.scenario_group;
+
+			// Add child scenarios
+			scenarioDefinition.ChildScenarios.Elements.ForEach(
+				scenario =>
+				{
+					ScenarioChildScenarios.Add(new ScenarioChildScenario(scenario));
+				}
+			);
+
+			// Add all object names
+			scenarioDefinition.ObjectNames.Elements.ForEach(
+				namesBlock =>
+				{
+					ScenarioObjectNames.Add(new ScenarioObjectName(namesBlock));
+				}
+			);
+
+			// Add all object types
+			AddObjectPalleteEntries(Blam.Halo1.TypeEnums.ObjectType.Scenery, scenarioDefinition.SceneryPalette);
+			AddObjectPalleteEntries(Blam.Halo1.TypeEnums.ObjectType.DeviceMachine, scenarioDefinition.MachinesPalette);
+			AddObjectPalleteEntries(Blam.Halo1.TypeEnums.ObjectType.DeviceControl, scenarioDefinition.ControlsPalette);
+			AddObjectPalleteEntries(Blam.Halo1.TypeEnums.ObjectType.DeviceLightFixture, scenarioDefinition.LightFixturesPalette);
+			AddObjectPalleteEntries(Blam.Halo1.TypeEnums.ObjectType.SoundScenery, scenarioDefinition.SoundSceneryPalette);
+
+			// Add all object instances
+			var sceneryInstances = scenarioDefinition.Scenery.Elements.ConvertAll<Blam.Halo1.Tags.scenario_group.scenario_object_block>(
+				block => { return block as Blam.Halo1.Tags.scenario_group.scenario_object_block; });
+			AddObjectInstanceEntries(Blam.Halo1.TypeEnums.ObjectType.Scenery, sceneryInstances);
+			var machineInstances = scenarioDefinition.Machines.Elements.ConvertAll<Blam.Halo1.Tags.scenario_group.scenario_object_block>(
+				block => { return block as Blam.Halo1.Tags.scenario_group.scenario_object_block; });
+			AddObjectInstanceEntries(Blam.Halo1.TypeEnums.ObjectType.DeviceMachine, machineInstances);
+			var contolInstances = scenarioDefinition.Controls.Elements.ConvertAll<Blam.Halo1.Tags.scenario_group.scenario_object_block>(
+				block => { return block as Blam.Halo1.Tags.scenario_group.scenario_object_block; });
+			AddObjectInstanceEntries(Blam.Halo1.TypeEnums.ObjectType.DeviceControl, contolInstances);
+			var lightFixtureInstances = scenarioDefinition.LightFixtures.Elements.ConvertAll<Blam.Halo1.Tags.scenario_group.scenario_object_block>(
+				block => { return block as Blam.Halo1.Tags.scenario_group.scenario_object_block; });
+			AddObjectInstanceEntries(Blam.Halo1.TypeEnums.ObjectType.DeviceLightFixture, lightFixtureInstances);
+			var soundSceneryInstances = scenarioDefinition.SoundScenery.Elements.ConvertAll<Blam.Halo1.Tags.scenario_group.scenario_object_block>(
+				block => { return block as Blam.Halo1.Tags.scenario_group.scenario_object_block; });
+			AddObjectInstanceEntries(Blam.Halo1.TypeEnums.ObjectType.SoundScenery, soundSceneryInstances);
+
+			// Add all BSP's
+			scenarioDefinition.StructureBsps.Elements.ForEach(
+				bsp =>
+				{
+					ScenarioStructureBSPs.Add(new ScenarioStructureBSP(bsp));
+				}
+			);
+		}
+
+		#region IHalo1ScenarioDataProvider Members
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets a list containing all of the objects instances defined
+		/// 			by the include flags. </summary>
+		/// <returns>	A list of object instances. </returns>
+		///-------------------------------------------------------------------------------------------------
+		public List<ScenarioObjectInstance> GetObjectInstances()
+		{
+			List<ScenarioObjectInstance> fullList = new List<ScenarioObjectInstance>();
+
+			if (IncludeScenery && (ScenarioObjectInstanceLists[Blam.Halo1.TypeEnums.ObjectType.Scenery] != null))
+			{
+				fullList.AddRange(ScenarioObjectInstanceLists[Blam.Halo1.TypeEnums.ObjectType.Scenery]);
+			}
+			if (IncludeDeviceMachines && (ScenarioObjectInstanceLists[Blam.Halo1.TypeEnums.ObjectType.DeviceMachine] != null))
+			{
+				fullList.AddRange(ScenarioObjectInstanceLists[Blam.Halo1.TypeEnums.ObjectType.DeviceMachine]);
+			}
+			if (IncludeDeviceControls && (ScenarioObjectInstanceLists[Blam.Halo1.TypeEnums.ObjectType.DeviceControl] != null))
+			{
+				fullList.AddRange(ScenarioObjectInstanceLists[Blam.Halo1.TypeEnums.ObjectType.DeviceControl]);
+			}
+			if (IncludeDeviceLightFixtures && (ScenarioObjectInstanceLists[Blam.Halo1.TypeEnums.ObjectType.DeviceLightFixture] != null))
+			{
+				fullList.AddRange(ScenarioObjectInstanceLists[Blam.Halo1.TypeEnums.ObjectType.DeviceLightFixture]);
+			}
+			if (IncludeSoundScenery && (ScenarioObjectInstanceLists[Blam.Halo1.TypeEnums.ObjectType.SoundScenery] != null))
+			{
+				fullList.AddRange(ScenarioObjectInstanceLists[Blam.Halo1.TypeEnums.ObjectType.SoundScenery]);
+			}
+
+			return fullList;
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// 	Gets or sets a value indicating whether scenery should be included.
+		/// </summary>
+		/// <value>	true if include scenery, false if not. </value>
+		///-------------------------------------------------------------------------------------------------
+		public bool IncludeScenery { get; set; }
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// 	Gets or sets a value indicating whether device machines should be included.
+		/// </summary>
+		/// <value>	true if include machines, false if not. </value>
+		///-------------------------------------------------------------------------------------------------
+		public bool IncludeDeviceMachines { get; set; }
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// 	Gets or sets a value indicating whether device controls should be included.
+		/// </summary>
+		/// <value>	true if include device controls, false if not. </value>
+		///-------------------------------------------------------------------------------------------------
+		public bool IncludeDeviceControls { get; set; }
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// 	Gets or sets a value indicating whether device light fixtures should be included.
+		/// </summary>
+		/// <value>	true if include device light fixtures, false if not. </value>
+		///-------------------------------------------------------------------------------------------------
+		public bool IncludeDeviceLightFixtures { get; set; }
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// 	Gets or sets a value indicating whether sound scenery should be included.
+		/// </summary>
+		/// <value>	true if include sound scenery, false if not. </value>
+		///-------------------------------------------------------------------------------------------------
+		public bool IncludeSoundScenery { get; set; }
+		#endregion IHalo1ScenarioDataProvider Members
+	};
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Data collection class for Halo1 object tags. </summary>
+	///-------------------------------------------------------------------------------------------------
+	public class ObjectData : ITagDataSource
+	{
+		#region Fields
+		public string TagPath { get; private set; }
+		#endregion Fields
+
+		#region Data Classes
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Proxy class to get data from a light attachment block. </summary>
+		///-------------------------------------------------------------------------------------------------
+		public class ObjectLight
+			: DataBlockReference<Blam.Halo1.Tags.object_group.object_attachment_block>
+		{
+			public string Marker
+			{
+				get { return mBlock.Marker; }
+			}
+
+			public DatumIndex LightDatum
+			{
+				get { return mBlock.Type.Datum; }
+			}
+
+			public ObjectLight(Blam.Halo1.Tags.object_group.object_attachment_block block)
+				: base(block)
+			{ }
+		}
+		#endregion Data Classes
+
+		#region Data List Classes
+		public class ObjectLightList : List<ObjectLight> { }
+		#endregion Data List Classes
+
+		#region Data
+		public DatumIndex Model = DatumIndex.Null;
+		public ObjectLightList Lights = new ObjectLightList();
+		#endregion Data
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Collects data from an object tag. </summary>
+		/// <param name="tagIndex">		   	The tag index containing the object tag. </param>
+		/// <param name="objectTagManager">	Tag manager for the object tag. </param>
+		///-------------------------------------------------------------------------------------------------
+		public void CollectData(TagIndexBase tagIndex, TagManager objectTagManager)
+		{
+			TagPath = objectTagManager.Name;
+
+			Blam.Halo1.Tags.object_group objectTag = objectTagManager.TagDefinition as Blam.Halo1.Tags.object_group;
+
+			// Model
+			Model = objectTag.Model.Datum;
+
+			// Attachments (Lights)
+			objectTag.Attachments.Elements.ForEach(
+				attachment =>
+				{
+					if (attachment.Type.Datum.IsNull
+						|| TagIndex.IsSentinel(attachment.Type.Datum)
+						|| !tagIndex[attachment.Type.Datum].GroupTag.Equals(Blam.Halo1.TagGroups.ligh))
 					{
-						case 0: index = region.Permutations[permutation_index].SuperHigh; break;
-						case 1: index = region.Permutations[permutation_index].High; break;
-						case 2: index = region.Permutations[permutation_index].Medium; break;
-						case 3: index = region.Permutations[permutation_index].Low; break;
-						case 4: index = region.Permutations[permutation_index].SuperLow; break;
-					};
+						return;
+					}
 
-					model_info.AddGeometry(name, index);
+					Lights.Add(new ObjectLight(attachment));
 				}
-			}
-			public static void AddShaderDatums(ModelInfoInternal model_info, TagManager manager)
-			{
-				var definition = manager.TagDefinition as Blam.Halo1.Tags.gbxmodel_group;
+			);
+		}
+	}
 
-				for (int i = 0; i < model_info.GetGeometryCount(); i++)
-				{
-					foreach (var part in definition.Geometries[model_info.GetGeometryIndex(i)].Parts)
-						model_info.AddShaderDatum(definition.Shaders[part.ShaderIndex.Value].Shader.Datum,
-							definition.Shaders[part.ShaderIndex.Value].Shader.ToString());
-				}
-			}
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Data collection class for Halo1 light tags. </summary>
+	///-------------------------------------------------------------------------------------------------
+	public class LightData : ITagDataSource, IHalo1LightDataProvider, IColladaExternalReference
+	{
+		#region Fields
+		public string TagPath { get; private set; }
+		#endregion Fields
 
-			public static int GetPermutationCount(TagManager manager)
-			{
-				var definition = manager.TagDefinition as Blam.Halo1.Tags.gbxmodel_group;
-
-				int permutation_count = 0;
-				foreach (var region in definition.Regions)
-					permutation_count = (region.Permutations.Count > permutation_count ? region.Permutations.Count : permutation_count);
-				return permutation_count;
-			}
-			public static int GetVertexCount(ModelInfoInternal model_info, TagManager manager)
-			{
-				var definition = manager.TagDefinition as Blam.Halo1.Tags.gbxmodel_group;
-
-				int vertex_count = 0;
-				for (int i = 0; i < model_info.GetGeometryCount(); i++)
-				{
-					foreach (var part in definition.Geometries[model_info.GetGeometryIndex(i)].Parts)
-						vertex_count += part.UncompressedVertices.Count;
-				}
-				return vertex_count;
-			}
-			public static int GetTriangleCount(ModelInfoInternal model_info, TagManager manager)
-			{
-				var definition = manager.TagDefinition as Blam.Halo1.Tags.gbxmodel_group;
-
-				int triangle_count = 0;
-				for (int i = 0; i < model_info.GetGeometryCount(); i++)
-				{
-					foreach (var part in definition.Geometries[model_info.GetGeometryIndex(i)].Parts)
-						triangle_count += part.Triangles.Count;
-				}
-				return triangle_count;
-			}
-		};
-		protected static class BSP
+		#region Data Classes
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Proxy class to get data from a light tag. </summary>
+		///-------------------------------------------------------------------------------------------------
+		public class LightDetails
+			: DataBlockReference<Blam.Halo1.Tags.light_group>
 		{
-			public static void AddShaderDatums(BSPInfoInternal bsp_info, TagManager manager)
-			{
-				var definition = manager.TagDefinition as Blam.Halo1.Tags.structure_bsp_group;
+			public string Name { get; private set; }
 
-				foreach (var lightmap in definition.Lightmaps)
-				{
-					foreach (var material in lightmap.Materials)
-						bsp_info.AddShaderDatum(material.Shader.Datum,
-							material.Shader.ToString());
-				}
+			public bool IsDynamic
+			{
+				get { return mBlock.Flags.Test(1); }
 			}
 
-			public static int GetVertexCount(TagManager manager, BSPObjectType type)
+			public TagInterface.RealColor Color
 			{
-				var definition = manager.TagDefinition as Blam.Halo1.Tags.structure_bsp_group;
-				int count = 0;
-				switch (type)
-				{
-					case BSPObjectType.RenderMesh:
-						foreach (var lightmap in definition.Lightmaps)
-						{
-							foreach (var material in lightmap.Materials)
-								count += material.VertexBuffersCount1;
-						}
-						break;
-					case BSPObjectType.Portals:
-						foreach (var portal in definition.ClusterPortals)
-							count += portal.Vertices.Count;
-						break;
-					case BSPObjectType.FogPlanes:
-						foreach (var fogplane in definition.FogPlanes)
-							count += fogplane.Vertices.Count;
-						break;
-				};
-				return count;
+				get { return mBlock.ColorUpperBound; }
 			}
-			public static int GetTriangleCount(TagManager manager, BSPObjectType type)
+
+			public TagInterface.RealColor RadiosityColor
 			{
-				var definition = manager.TagDefinition as Blam.Halo1.Tags.structure_bsp_group;
-				int count = 0;
-				switch (type)
-				{
-					case BSPObjectType.RenderMesh:
-						foreach (var lightmap in definition.Lightmaps)
-						{
-							foreach (var material in lightmap.Materials)
-								count += material.SurfaceCount;
-						}
-						break;
-					case BSPObjectType.Portals:
-						foreach (var portal in definition.ClusterPortals)
-							count += portal.Vertices.Count - 2;
-						break;
-					case BSPObjectType.FogPlanes:
-						foreach (var fogplane in definition.FogPlanes)
-							count += fogplane.Vertices.Count - 2;
-						break;
-				};
-				return count;
+				get { return mBlock.RadiosityColor; }
 			}
-		};
-		#endregion
 
-		#region Class Members
-		TagIndex tagIndex;
-		TagManager tagManager;
-		#endregion
+			public float ConstantAttenuation
+			{
+				get { return 1; }
+			}
 
-		#region Constructors
-		/// <summary>
-		/// Halo1 export interface class constructor
-		/// </summary>
-		/// <param name="tag_index">Tag index containing the tag being exported</param>
-		/// <param name="tag_datum">DatumIndex of the tag being exported</param>
-		public ColladaHalo1(TagIndex tag_index, DatumIndex tag_datum)
+			public float LinearAttenuation
+			{
+				get { return mBlock.ShapeRadius; }
+			}
+
+			public float QuadraticAttenuation
+			{
+				get { return 1; }
+			}
+
+			public float FalloffAngle
+			{
+				get { return mBlock.FalloffAngle; }
+			}
+
+			public float FalloffExponent
+			{
+				get { return 1; }
+			}
+
+			public LightDetails(Blam.Halo1.Tags.light_group block, string name)
+				: base(block)
+			{
+				Name = name;
+			}
+		}
+		#endregion Data Classes
+
+		#region Data
+		public LightDetails Light = null;
+		#endregion Data
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Collects data from a light tag. </summary>
+		/// <param name="tagIndex">		  	The tag index containing the light tag. </param>
+		/// <param name="lightTagManager">	Tag manager for the light tag. </param>
+		///-------------------------------------------------------------------------------------------------
+		public void CollectData(TagIndexBase tagIndex, TagManager lightTagManager)
 		{
-			tagIndex = tag_index;
-			tagManager = tag_index[tag_datum];
+			TagPath = lightTagManager.Name;
 
-			GenerateInfoList();
+			var lightDefinition = lightTagManager.TagDefinition as Blam.Halo1.Tags.light_group;
+
+			Light = new LightDetails(lightDefinition, Path.GetFileNameWithoutExtension(TagPath));
+		}
+
+		#region IColladaExternalReference Members
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets the relative URL of the tag. </summary>
+		/// <returns>	The relative URL of the tag. </returns>
+		///-------------------------------------------------------------------------------------------------
+		public string GetRelativeURL()
+		{
+			return TagPath;
 		}
 		#endregion
 
-		#region Info List Generation
-		/// <summary>
-		/// Generic branch point for adding info classes
-		/// </summary>
-		protected override void GenerateInfoList()
+		#region IHalo1LightDataProvider Members
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets the light details. </summary>
+		/// <returns>	The light details. </returns>
+		///-------------------------------------------------------------------------------------------------
+		public LightDetails GetLight()
 		{
-			// separate methods for model, bsp
-			if (tagManager.GroupTag.Equals(Blam.Halo1.TagGroups.mod2))
-				GenerateInfoListModel();
-			else if (tagManager.GroupTag.Equals(Blam.Halo1.TagGroups.sbsp))
-				GenerateInfoListBsp();
+			return Light;
 		}
-		/// <summary>
-		/// Creates info classes for a gbxmodel
-		/// </summary>
-		void GenerateInfoListModel()
-		{
-			int permutation_count = Model.GetPermutationCount(tagManager);
+		#endregion
+	}
 
-			for (int i = 0; i < permutation_count; i++)
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Data collection class for Halo1 model tags. </summary>
+	///-------------------------------------------------------------------------------------------------
+	public class ModelData : ITagDataSource, IHalo1ModelDataProvider, IColladaExternalReference
+	{
+		#region Fields
+		public string TagPath { get; private set; }
+		#endregion Fields
+
+		#region Data Classes
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Class holding a reference to a shader datum. </summary>
+		///-------------------------------------------------------------------------------------------------
+		public class ModelShaderReference
+		{
+			public DatumIndex ShaderDatum { get; private set; }
+			public string MaterialName { get; private set; }
+
+			public ModelShaderReference(DatumIndex shaderDatum, string materialName)
+			{
+				ShaderDatum = shaderDatum;
+				MaterialName = materialName;
+			}
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Data class for a single piece of geometry. </summary>
+		///-------------------------------------------------------------------------------------------------
+		public class ModelGeometrySet
+		{
+			public string Name
+			{
+				get;
+				private set;
+			}
+
+			public List<int> Permutations
+			{
+				get;
+				private set;
+			}
+
+			public Blam.Halo1.TypeEnums.LevelOfDetailEnum LevelOfDetail
+			{
+				get;
+				private set;
+			}
+
+			public Blam.Halo1.Tags.gbxmodel_group.model_geometry_block Geometry
+			{
+				get;
+				private set;
+			}
+
+			public ModelShaderReferenceList Shaders
+			{
+				get;
+				private set;
+			}
+
+			///-------------------------------------------------------------------------------------------------
+			/// <summary>	Adds a shader to the geometries shader list. </summary>
+			/// <param name="shaderType">	The shader type reference. </param>
+			///-------------------------------------------------------------------------------------------------
+			public void AddShader(ModelShaderReference shaderType)
+			{
+				if (!Shaders.Exists(shader => { return shader.ShaderDatum == shaderType.ShaderDatum; }))
+				{
+					Shaders.Add(shaderType);
+				}
+			}
+
+			///-------------------------------------------------------------------------------------------------
+			/// <summary>	Adds a permutation index that this geometry is used in. </summary>
+			/// <param name="permutation">	The permutation index. </param>
+			///-------------------------------------------------------------------------------------------------
+			public void AddPermutation(int permutation)
+			{
+				if (!Permutations.Contains(permutation))
+				{
+					Permutations.Add(permutation);
+				}
+			}
+
+			public ModelGeometrySet(string name
+				, Blam.Halo1.TypeEnums.LevelOfDetailEnum lod
+				, Blam.Halo1.Tags.gbxmodel_group.model_geometry_block geometry)
+			{
+				Name = name;
+				Permutations = new List<int>();
+				LevelOfDetail = lod;
+				Geometry = geometry;
+				Shaders = new ModelShaderReferenceList();
+			}
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Proxy class to get data from a node block. </summary>
+		///-------------------------------------------------------------------------------------------------
+		public class ModelBone
+			: DataBlockReference<Blam.Halo1.Tags.model_group.model_node_block>
+		{
+			public string Name
+			{
+				get { return mBlock.Name; }
+			}
+
+			public int Parent
+			{
+				get { return mBlock.ParentNode; }
+			}
+
+			public int Child
+			{
+				get { return mBlock.FirstChildNode; }
+			}
+
+			public int Sibling
+			{
+				get { return mBlock.NextSiblingNode; }
+			}
+
+			public TagInterface.RealPoint3D Position
+			{
+				get { return mBlock.DefaultTranslation; }
+			}
+
+			public TagInterface.RealQuaternion Rotation
+			{
+				get { return mBlock.DefaultRotation; }
+			}
+
+			public ModelBone(Blam.Halo1.Tags.model_group.model_node_block block)
+				: base(block)
+			{ }
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Proxy class to get data from a marker block. </summary>
+		///-------------------------------------------------------------------------------------------------
+		public class ModelMarker
+			: DataBlockReference<Blam.Halo1.Tags.model_group.model_markers_block>
+		{
+			public string Name
+			{
+				get { return mBlock.Name; }
+			}
+
+			public ModelMarker(Blam.Halo1.Tags.model_group.model_markers_block block)
+				: base(block)
+			{ }
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Proxy class to get data from a marker instance block. </summary>
+		///-------------------------------------------------------------------------------------------------
+		public class ModelMarkerInstance
+			: DataBlockReference<Blam.Halo1.Tags.model_group.model_markers_block.model_marker_instance_block>
+		{
+			public ModelMarker MarkerType
+			{
+				get; 
+				private set;
+			}
+
+			public int Region
+			{
+				get { return mBlock.RegionIndex; }
+			}
+
+			public int Permutation
+			{
+				get { return mBlock.PermutationIndex; }
+			}
+
+			public int Bone
+			{
+				get { return mBlock.NodeIndex; }
+			}
+
+			public TagInterface.RealPoint3D Position
+			{
+				get { return mBlock.Translation; }
+			}
+
+			public TagInterface.RealQuaternion Rotation
+			{
+				get { return mBlock.Rotation; }
+			}
+
+			public ModelMarkerInstance(Blam.Halo1.Tags.model_group.model_markers_block.model_marker_instance_block block, ModelMarker markerType)
+				: base(block)
+			{
+				MarkerType = markerType;
+			}
+		}
+		#endregion Data Classes
+
+		#region Data List Classes
+		public class ModelBoneList : List<ModelBone> { }
+		public class ModelGeometrySetList : List<ModelGeometrySet> { }
+		public class ModelMarkerList : List<ModelMarker> { }
+		public class ModelMarkerInstanceList : List<ModelMarkerInstance> { }
+		public class ModelShaderReferenceList : List<ModelShaderReference> { }
+		#endregion Data List Classes
+
+		#region Data
+		public ModelBoneList ModelBones = new ModelBoneList();
+		public ModelGeometrySetList ModelGeometrySets = new ModelGeometrySetList();
+		public ModelMarkerList ModelMarkers = new ModelMarkerList();
+		public ModelMarkerInstanceList ModelMarkerInstances = new ModelMarkerInstanceList();
+		#endregion Data
+
+		#region Add Bones, Geometry, Shaders and Markers
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets the number of permutations in a model group. </summary>
+		/// <param name="modelDefinition">	The model definition. </param>
+		/// <returns>	The permutation count. </returns>
+		///-------------------------------------------------------------------------------------------------
+		private int GetPermutationCount(Blam.Halo1.Tags.gbxmodel_group modelDefinition)
+		{
+			int permutationCount = 0;
+			foreach (var region in modelDefinition.Regions)
+			{
+				permutationCount = (region.Permutations.Count > permutationCount ? region.Permutations.Count : permutationCount);
+			}
+			return permutationCount;
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds the bones contained in a model to the bones list. </summary>
+		/// <param name="modelDefinitionmodelDefinition">	The model tag. </param>
+		///-------------------------------------------------------------------------------------------------
+		private void AddBones(Blam.Halo1.Tags.gbxmodel_group modelDefinition)
+		{
+			// Add all nodes in order
+			foreach (var node in modelDefinition.Nodes)
+			{
+				ModelBones.Add(new ModelBone(node));
+			}
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds the geometry from a model tag to the geometry list. </summary>
+		/// <param name="modelDefinition">	The model definition. </param>
+		/// <param name="permutation">	  	The permutation to process. </param>
+		/// <param name="levelOfDetail">  	The level of detail to process. </param>
+		///-------------------------------------------------------------------------------------------------
+		private void AddGeometry(Blam.Halo1.Tags.gbxmodel_group modelDefinition
+			, int permutation
+			, Blam.Halo1.TypeEnums.LevelOfDetailEnum levelOfDetail)
+		{
+			// Add a model poiece from every region
+			foreach (var region in modelDefinition.Regions)
+			{
+				// If the requested permutation index is higher than the regions permutation count, use the highest permutation possible
+				int permutationIndex = permutation;
+
+				if (permutation >= region.Permutations.Count)
+				{
+					permutationIndex = region.Permutations.Count - 1;
+				}
+
+				// Build the models name
+				string name = string.Format("{0}-{1}-lod{2}", region.Name.Value, region.Permutations[permutationIndex].Name, ((int)levelOfDetail).ToString());
+
+				int index = 0;
+				switch (levelOfDetail)
+				{
+					case Blam.Halo1.TypeEnums.LevelOfDetailEnum.SuperHigh: index = region.Permutations[permutationIndex].SuperHigh; break;
+					case Blam.Halo1.TypeEnums.LevelOfDetailEnum.High: index = region.Permutations[permutationIndex].High; break;
+					case Blam.Halo1.TypeEnums.LevelOfDetailEnum.Medium: index = region.Permutations[permutationIndex].Medium; break;
+					case Blam.Halo1.TypeEnums.LevelOfDetailEnum.Low: index = region.Permutations[permutationIndex].Low; break;
+					case Blam.Halo1.TypeEnums.LevelOfDetailEnum.SuperLow: index = region.Permutations[permutationIndex].SuperLow; break;
+				};
+
+				// Find and existing geometry set if present
+				ModelGeometrySet geometrySet = ModelGeometrySets.Find(
+					geometry =>
+					{
+						return (geometry.Name == name) && (geometry.LevelOfDetail == levelOfDetail);
+					}
+				);
+
+				// Create a new geometry set for the current geometry if there is no pre-existing one
+				if (geometrySet == null)
+				{
+					geometrySet = new ModelGeometrySet(name, levelOfDetail, modelDefinition.Geometries[index]);
+					ModelGeometrySets.Add(geometrySet);
+				}
+
+				// Add the permutation index to the geometry set
+				geometrySet.AddPermutation(permutation);
+			}
+		}
+		
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds shaders to all of the geometry sets</summary>
+		/// <param name="tagIndex">	The tag index containing the model tag. </param>
+		/// <param name="modelDefinition">	The model definition. </param>
+		///-------------------------------------------------------------------------------------------------
+		private void AddShadersToGeometry(TagIndexBase tagIndex, Blam.Halo1.Tags.gbxmodel_group modelDefinition)
+		{
+			// For every geometry set, add references to the shaders used by its parts
+			foreach (var geometrySet in ModelGeometrySets)
+			{
+				foreach (var part in geometrySet.Geometry.Parts)
+				{
+					DatumIndex shaderDatum = modelDefinition.Shaders[part.ShaderIndex].Shader.Datum;
+
+					string shaderName = Path.GetFileNameWithoutExtension(tagIndex[shaderDatum].Name);
+
+					geometrySet.AddShader(new ModelShaderReference(shaderDatum, shaderName));
+				}
+			}
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds the markers and marker instances from the model tag to the markers lists. </summary>
+		/// <param name="modelDefinition">	The model definition. </param>
+		///-------------------------------------------------------------------------------------------------
+		private void AddMarkers(Blam.Halo1.Tags.gbxmodel_group modelDefinition)
+		{
+			// Add all marker type
+			foreach (var marker in modelDefinition.Markers)
+			{
+				ModelMarkers.Add(new ModelMarker(marker));
+			}
+
+			// Add all marker instances
+			for (int i = 0; i < modelDefinition.Markers.Count; i++)
+			{
+				var modelMarker = ModelMarkers[i];
+
+				foreach (var instance in modelDefinition.Markers[i].Instances)
+				{
+					ModelMarkerInstances.Add(new ModelMarkerInstance(instance, modelMarker));
+				}
+			}
+		}
+		#endregion Add Bones, Geometry, Shaders and Markers
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Collects data from a model tag. </summary>
+		/// <param name="tagIndex">		  	The tag index containing the model tag. </param>
+		/// <param name="modelTagManager">	Tag manager for the model tag. </param>
+		///-------------------------------------------------------------------------------------------------
+		public void CollectData(TagIndexBase tagIndex, TagManager modelTagManager)
+		{
+			TagPath = modelTagManager.Name;
+
+			var modelTag = modelTagManager.TagDefinition as Blam.Halo1.Tags.gbxmodel_group;
+
+			// Get the total number of permutations in the model
+			int permutationCount = GetPermutationCount(modelTag);
+
+			// Create a geometry set for every permutation at every level of detail
+			for (int i = 0; i < permutationCount; i++)
 			{
 				for (int j = 0; j < 5; j++)
 				{
-					ModelInfoInternal model_info_internal = new ModelInfoInternal();
+					AddGeometry(modelTag, i, (BlamLib.Blam.Halo1.TypeEnums.LevelOfDetailEnum)j);
+				}
+			}
 
-					model_info_internal.Permutation = i;
-					model_info_internal.IsMultiplePermutations = false;
-					Model.AddGeometryInfos(model_info_internal, tagManager, i, j);
-					Model.AddShaderDatums(model_info_internal, tagManager);
+			// Add shaders, bones and markers to the relevant lists
+			AddShadersToGeometry(tagIndex, modelTag);
+			AddBones(modelTag);
+			AddMarkers(modelTag);
+		}
 
-					internalInfoList.Add(model_info_internal);
+		#region IColladaExternalReference Members
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets the relative URL of the model tag. </summary>
+		/// <returns>	The relative URL of the model tag. </returns>
+		///-------------------------------------------------------------------------------------------------
+		public string GetRelativeURL()
+		{
+			return TagPath;
+		}
+		#endregion
 
-					ColladaHalo1ModelInfo model_info = new ColladaHalo1ModelInfo(
-						internalInfoList.Count - 1,
-						Path.GetFileNameWithoutExtension(tagManager.Name),
-						Model.GetVertexCount(model_info_internal, tagManager),
-						Model.GetTriangleCount(model_info_internal, tagManager),
-						i,
-						j);
+		#region IHalo1ModelDataProvider Members
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets the bones list. </summary>
+		/// <returns>	The bones list. </returns>
+		///-------------------------------------------------------------------------------------------------
+		public ModelData.ModelBoneList GetBones()
+		{
+			return ModelBones;
+		}
 
-					Add(model_info);
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets the geometry list. </summary>
+		/// <returns>	The geometry list. </returns>
+		///-------------------------------------------------------------------------------------------------
+		public ModelGeometrySetList GetGeometries()
+		{
+			return ModelGeometrySets;
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets the geometry list for a specific permutation and LOD. </summary>
+		/// <param name="permutation">	The permutation to get. </param>
+		/// <param name="lod">		  	The LOD to get. </param>
+		/// <returns>	The geometry list for the specific permutation and LOD. </returns>
+		///-------------------------------------------------------------------------------------------------
+		public ModelGeometrySetList GetGeometries(int permutation, Blam.Halo1.TypeEnums.LevelOfDetailEnum lod)
+		{
+			var geometryList = new ModelGeometrySetList();
+			foreach (var geometrySet in ModelGeometrySets)
+			{
+				if (geometrySet.Permutations.Contains(permutation) && (geometrySet.LevelOfDetail == lod))
+				{
+					geometryList.Add(geometrySet);
+				}
+			}
+
+			return geometryList;
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets marker instances list. </summary>
+		/// <returns>	The marker instances list. </returns>
+		///-------------------------------------------------------------------------------------------------
+		public ModelMarkerInstanceList GetMarkerInstances()
+		{
+			return ModelMarkerInstances;
+		}
+		#endregion
+	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Data collection class for Halo1 structure bsp tags. </summary>
+	///-------------------------------------------------------------------------------------------------
+	public class StructureBSPData : ITagDataSource, IHalo1BSPDataProvider
+	{
+		#region Fields
+		public string TagPath { get; private set; }
+		#endregion Fields
+
+		#region Constructor
+		public StructureBSPData()
+		{
+			IncludeRenderMesh = false;
+			IncludePortals = false;
+			IncludeFogPlanes = false;
+		}
+		#endregion Constructor
+
+		#region Data Classes
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Proxy class to get data from a marker block. </summary>
+		///-------------------------------------------------------------------------------------------------
+		public class StructureBSPMarker
+			: DataBlockReference<Blam.Halo1.Tags.structure_bsp_group.structure_bsp_marker_block>
+		{
+			public string Name
+			{
+				get { return mBlock.Name; }
+			}
+
+			public TagInterface.RealPoint3D Position
+			{
+				get { return mBlock.Position; }
+			}
+
+			public TagInterface.RealQuaternion Rotation
+			{
+				get { return mBlock.Rotation; }
+			}
+
+			public StructureBSPMarker(Blam.Halo1.Tags.structure_bsp_group.structure_bsp_marker_block block)
+				: base(block)
+			{ }
+		}
+		#endregion Data Classes
+
+		#region Data List Classes
+		public class StructureBSPMarkerList : List<StructureBSPMarker> { }
+		#endregion Data List Classes
+
+		#region Data
+		public StructureBSPMarkerList StructureBSPMarkers = new StructureBSPMarkerList();
+		#endregion Data
+		
+		#region Add Markers
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds the markers from the bsp to the markers list. </summary>
+		/// <param name="bspDefinition">	The bsp definition. </param>
+		///-------------------------------------------------------------------------------------------------
+		private void AddMarkers(Blam.Halo1.Tags.structure_bsp_group bspDefinition)
+		{
+			foreach (var marker in bspDefinition.Markers)
+			{
+				StructureBSPMarkers.Add(new StructureBSPMarker(marker));
+			}
+		}
+		#endregion Add Markers
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Collects data from a structure bsp tag. </summary>
+		/// <param name="tagIndex">			Tag index containing the bsp tag. </param>
+		/// <param name="bspTagManager">	Manager for the bsp tag. </param>
+		///-------------------------------------------------------------------------------------------------
+		public void CollectData(TagIndexBase tagIndex, TagManager bspTagManager)
+		{
+			TagPath = bspTagManager.Name;
+
+			var bspTag = bspTagManager.TagDefinition as Blam.Halo1.Tags.structure_bsp_group;
+
+			AddMarkers(bspTag);
+		}
+
+		#region IHalo1BSPDataProvider Members
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// 	Gets or sets a value indicating whether the render mesh should be included.
+		/// </summary>
+		/// <value>	true if include render mesh, false if not. </value>
+		///-------------------------------------------------------------------------------------------------
+		public bool IncludeRenderMesh { get; set; }
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// 	Gets or sets a value indicating whether the portals should be included.
+		/// </summary>
+		/// <value>	true if include portals, false if not. </value>
+		///-------------------------------------------------------------------------------------------------
+		public bool IncludePortals { get; set; }
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// 	Gets or sets a value indicating whether the fog planes should be included.
+		/// </summary>
+		/// <value>	true if include fog planes, false if not. </value>
+		///-------------------------------------------------------------------------------------------------
+		public bool IncludeFogPlanes { get; set; }
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets the markers list. </summary>
+		/// <returns>	The markers list. </returns>
+		///-------------------------------------------------------------------------------------------------
+		public StructureBSPMarkerList GetMarkers()
+		{
+			return StructureBSPMarkers;
+		}
+		#endregion
+	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Generic data collection class for Halo1 shader tags. </summary>
+	///-------------------------------------------------------------------------------------------------
+	public abstract class ShaderData : ITagDataSource, IColladaShaderDataProvider
+	{
+		#region Fields
+		public string TagPath { get; private set; }
+		#endregion Fields
+
+		#region Data Classes
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Shader type class contaning a shader datum and it's collada
+		/// 			effect definition. </summary>
+		///-------------------------------------------------------------------------------------------------
+		public class ShaderType
+		{
+			public DatumIndex ShaderDatum { get; private set; }
+			public ColladaExporter.Effect EffectReference { get; private set; }
+
+			///-------------------------------------------------------------------------------------------------
+			/// <summary>	Sets shaders collada effect definition reference. </summary>
+			/// <param name="reference">	The collada effect definition. </param>
+			///-------------------------------------------------------------------------------------------------
+			public void SetEffectReference(ColladaExporter.Effect reference)
+			{
+				EffectReference = reference;
+			}
+
+			public ShaderType(DatumIndex shaderDatum)
+			{
+				ShaderDatum = shaderDatum;
+			}
+		}
+		#endregion
+
+		#region Data List Classes
+		public class ShaderTypeList : List<ShaderType> { }
+		#endregion Data List Classes
+
+		#region Data
+		private ColladaExporter.ImageList mImages = new ColladaExporter.ImageList();
+		private ColladaExporter.EffectList mEffects = new ColladaExporter.EffectList();
+		private ColladaExporter.EffectList mEffectsMap = new ColladaExporter.EffectList();
+		private ColladaExporter.MaterialList mMaterials = new ColladaExporter.MaterialList();
+		protected ShaderTypeList mShaderTypeList = new ShaderTypeList();
+		#endregion Data
+
+		#region Add Shaders and Bitmaps
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Sets up an effect definition from a shader environment tag. </summary>
+		/// <param name="effectDefinition">	The effect definition to set up. </param>
+		/// <param name="tagIndex">		   	The tag index containing the shader tag. </param>
+		/// <param name="shader">		   	The shader tag definition. </param>
+		///-------------------------------------------------------------------------------------------------
+		private void SetupEffectDefinition(ColladaExporter.Effect effectDefinition
+			, TagIndexBase tagIndex
+			, Blam.Halo1.Tags.shader_environment_group shader)
+		{
+			// Set diffuse texture/color
+			if (!shader.BaseMap.Datum.IsNull)
+			{
+				var image = new ColladaExporter.Image(tagIndex[shader.BaseMap.Datum].Name);
+				mImages.Add(image);
+
+				effectDefinition.AddImage(image);
+				effectDefinition.AddPhongValue("Diffuse", new ColladaExporter.Phong.Texture(image.ImagePath, 0));
+			}
+			else
+			{
+				effectDefinition.AddPhongValue("Diffuse", new TagInterface.RealColor(shader.MaterialColor, 1));
+			}
+
+			// Set alpha tested bump map
+			if (shader.Flags.Test(1) && (!shader.BumpMap.Datum.IsNull))
+			{
+				var image = new ColladaExporter.Image(tagIndex[shader.BumpMap.Datum].Name);
+				mImages.Add(image);
+
+				effectDefinition.AddImage(image);
+				effectDefinition.AddPhongValue("Transparent", new ColladaExporter.Phong.Texture(image.ImagePath, 0));
+			}
+
+			// Set specular color
+			effectDefinition.AddPhongValue("Specular", new TagInterface.RealColor(shader.PerpendicularColor, 1));
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Sets up an effect definition from a shader model tag. </summary>
+		/// <param name="effectDefinition">	The effect definition to set up. </param>
+		/// <param name="tagIndex">		   	The tag index containing the shader tag. </param>
+		/// <param name="shader">		   	The shader tag definition. </param>
+		///-------------------------------------------------------------------------------------------------
+		private void SetupEffectDefinition(ColladaExporter.Effect effectDefinition
+			, TagIndexBase tagIndex
+			, Blam.Halo1.Tags.shader_model_group shader)
+		{
+			// Set diffuse texture/color
+			if (!shader.BaseMap.Datum.IsNull)
+			{
+				var image = new ColladaExporter.Image(tagIndex[shader.BaseMap.Datum].Name);
+				mImages.Add(image);
+
+				effectDefinition.AddImage(image);
+				effectDefinition.AddPhongValue("Diffuse", new ColladaExporter.Phong.Texture(image.ImagePath, 0));
+			}
+			
+			// Set specular color
+			effectDefinition.AddPhongValue("Specular", new TagInterface.RealColor(shader.PerpendicularTintColor, 1));
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Sets up an effect definition from a shader transparent chicago tag. </summary>
+		/// <param name="effectDefinition">	The effect definition to set up. </param>
+		/// <param name="tagIndex">		   	The tag index containing the shader tag. </param>
+		/// <param name="shader">		   	The shader tag definition. </param>
+		///-------------------------------------------------------------------------------------------------
+		private void SetupEffectDefinition(ColladaExporter.Effect effectDefinition
+			, TagIndexBase tagIndex
+			, Blam.Halo1.Tags.shader_transparent_chicago_group shader)
+		{
+			// Set diffuse texture
+			if ((shader.Maps.Count > 0) && (!shader.Maps[0].Map.Datum.IsNull))
+			{
+				var image = new ColladaExporter.Image(tagIndex[shader.Maps[0].Map.Datum].Name);
+				mImages.Add(image);
+
+				effectDefinition.AddImage(image);
+				effectDefinition.AddPhongValue("Diffuse", new ColladaExporter.Phong.Texture(image.ImagePath, 0));
+			}
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Sets up an effect definition from a shader transparent chicago extended tag. </summary>
+		/// <param name="effectDefinition">	The effect definition to set up. </param>
+		/// <param name="tagIndex">		   	The tag index containing the shader tag. </param>
+		/// <param name="shader">		   	The shader tag definition. </param>
+		///-------------------------------------------------------------------------------------------------
+		private void SetupEffectDefinition(ColladaExporter.Effect effectDefinition
+			, TagIndexBase tagIndex
+			, Blam.Halo1.Tags.shader_transparent_chicago_extended_group shader)
+		{
+			// Set diffuse texture
+			DatumIndex bitmapDatum = DatumIndex.Null;
+			if (shader._4StageMaps.Count > 0)
+			{
+				bitmapDatum = shader._4StageMaps[0].Map.Datum;
+			}
+			else if (shader._2StageMaps.Count > 0)
+			{
+				bitmapDatum = shader._2StageMaps[0].Map.Datum;
+			}
+
+			if (!bitmapDatum.IsNull)
+			{
+				var image = new ColladaExporter.Image(tagIndex[bitmapDatum].Name);
+				mImages.Add(image);
+
+				effectDefinition.AddImage(image);
+				effectDefinition.AddPhongValue("Diffuse", new ColladaExporter.Phong.Texture(image.ImagePath, 0));
+			}
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Sets up an effect definition from a shader transparent generic tag. </summary>
+		/// <param name="effectDefinition">	The effect definition to set up. </param>
+		/// <param name="tagIndex">		   	The tag index containing the shader tag. </param>
+		/// <param name="shader">		   	The shader tag definition. </param>
+		///-------------------------------------------------------------------------------------------------
+		private void SetupEffectDefinition(ColladaExporter.Effect effectDefinition
+			, TagIndexBase tagIndex
+			, Blam.Halo1.Tags.shader_transparent_generic_group shader)
+		{
+			if ((shader.Maps.Count > 0) && (!shader.Maps[0].Map.Datum.IsNull))
+			{
+				var image = new ColladaExporter.Image(tagIndex[shader.Maps[0].Map.Datum].Name);
+				mImages.Add(image);
+
+				effectDefinition.AddImage(image);
+				effectDefinition.AddPhongValue("Diffuse", new ColladaExporter.Phong.Texture(image.ImagePath, 0));
+			}
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Sets up an effect definition from a shader transparent glass tag. </summary>
+		/// <param name="effectDefinition">	The effect definition to set up. </param>
+		/// <param name="tagIndex">		   	The tag index containing the shader tag. </param>
+		/// <param name="shader">		   	The shader tag definition. </param>
+		///-------------------------------------------------------------------------------------------------
+		private void SetupEffectDefinition(ColladaExporter.Effect effectDefinition
+			, TagIndexBase tagIndex
+			, Blam.Halo1.Tags.shader_transparent_glass_group shader)
+		{
+			if (!shader.DiffuseMap.Datum.IsNull)
+			{
+				var image = new ColladaExporter.Image(tagIndex[shader.DiffuseMap.Datum].Name);
+				mImages.Add(image);
+
+				effectDefinition.AddImage(image);
+				effectDefinition.AddPhongValue("Diffuse", new ColladaExporter.Phong.Texture(image.ImagePath, 0));
+			}
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Sets up an effect definition from a shader transparent water tag. </summary>
+		/// <param name="effectDefinition">	The effect definition to set up. </param>
+		/// <param name="tagIndex">		   	The tag index containing the shader tag. </param>
+		/// <param name="shader">		   	The shader tag definition. </param>
+		///-------------------------------------------------------------------------------------------------
+		private void SetupEffectDefinition(ColladaExporter.Effect effectDefinition
+			, TagIndexBase tagIndex
+			, Blam.Halo1.Tags.shader_transparent_water_group shader)
+		{
+			if (!shader.BaseMap.Datum.IsNull)
+			{
+				var image = new ColladaExporter.Image(tagIndex[shader.BaseMap.Datum].Name);
+				mImages.Add(image);
+
+				effectDefinition.AddImage(image);
+				effectDefinition.AddPhongValue("Diffuse", new ColladaExporter.Phong.Texture(image.ImagePath, 0));
+
+				// Set specular color
+				effectDefinition.AddPhongValue("Specular", new TagInterface.RealColor(shader.ViewPerpendicularTintColor, 1));
+			}
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Sets up an effect definition from a shader transparent meter tag. </summary>
+		/// <param name="effectDefinition">	The effect definition to set up. </param>
+		/// <param name="tagIndex">		   	The tag index containing the shader tag. </param>
+		/// <param name="shader">		   	The shader tag definition. </param>
+		///-------------------------------------------------------------------------------------------------
+		private void SetupEffectDefinition(ColladaExporter.Effect effectDefinition
+			, TagIndexBase tagIndex
+			, Blam.Halo1.Tags.shader_transparent_meter_group shader)
+		{
+			if (!shader.Map.Datum.IsNull)
+			{
+				var image = new ColladaExporter.Image(tagIndex[shader.Map.Datum].Name);
+				mImages.Add(image);
+
+				effectDefinition.AddImage(image);
+				effectDefinition.AddPhongValue("Diffuse", new ColladaExporter.Phong.Texture(image.ImagePath, 0));
+			}
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Sets up an effect definition from a shader transparent plasma tag. </summary>
+		/// <param name="effectDefinition">	The effect definition to set up. </param>
+		/// <param name="tagIndex">		   	The tag index containing the shader tag. </param>
+		/// <param name="shader">		   	The shader tag definition. </param>
+		///-------------------------------------------------------------------------------------------------
+		private void SetupEffectDefinition(ColladaExporter.Effect effectDefinition
+			, TagIndexBase tagIndex
+			, Blam.Halo1.Tags.shader_transparent_plasma_group shader)
+		{
+			effectDefinition.AddPhongValue("Diffuse", new TagInterface.RealColor(shader.ParallelTintColor, 1));
+			effectDefinition.AddPhongValue("Specular", new TagInterface.RealColor(shader.PerpendicularTintColor, 1));
+		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds an effect definitions. </summary>
+		/// <exception cref="Exception">	Thrown when an exception error condition occurs. </exception>
+		/// <param name="tagIndex">			The tag index containing the shader tags. </param>
+		///-------------------------------------------------------------------------------------------------
+		protected void AddEffectDefinitions(TagIndexBase tagIndex)
+		{
+			foreach (var shader in mShaderTypeList)
+			{
+				string shaderName = "";
+				if(shader.ShaderDatum.IsValid)
+				{
+					shaderName = Path.GetFileNameWithoutExtension(tagIndex[shader.ShaderDatum].Name);
+				}
+
+				ColladaExporter.Effect effectDefinition = mEffects.Find(effect => effect.Name == shaderName);
+				if (effectDefinition != null)
+				{
+					mEffectsMap.Add(effectDefinition);
+					continue;
+				}
+				else
+				{
+					/// Create a new collada effect definition
+					effectDefinition = new ColladaExporter.Effect(shaderName);
+
+					// Add the effect definition and create a material for it
+					mEffects.Add(effectDefinition);
+					mEffectsMap.Add(effectDefinition);
+					mMaterials.Add(new ColladaExporter.Material(shaderName, shaderName));
+				}
+				
+				if(!shader.ShaderDatum.IsValid)
+				{
+					continue;
+				}
+
+				// Set the effects emission and shininess from the base shader group data
+				Blam.Halo1.Tags.shader_group shaderTag = tagIndex[shader.ShaderDatum].TagDefinition as Blam.Halo1.Tags.shader_group;
+				effectDefinition.AddPhongValue("Emission", new TagInterface.RealColor(shaderTag.RadiosityEmittedLightColor, 1));
+				effectDefinition.AddPhongValue("Shininess", 30.0f);
+
+				// Set up the other effects values using the shader specific functions
+				if (shaderTag is Blam.Halo1.Tags.shader_environment_group)
+				{
+					SetupEffectDefinition(effectDefinition, tagIndex, shaderTag as Blam.Halo1.Tags.shader_environment_group);
+				}
+				else if (shaderTag is Blam.Halo1.Tags.shader_model_group)
+				{
+					SetupEffectDefinition(effectDefinition, tagIndex, shaderTag as Blam.Halo1.Tags.shader_model_group);
+				}
+				else if (shaderTag is Blam.Halo1.Tags.shader_transparent_chicago_group)
+				{
+					SetupEffectDefinition(effectDefinition, tagIndex, shaderTag as Blam.Halo1.Tags.shader_transparent_chicago_group);
+				}
+				else if (shaderTag is Blam.Halo1.Tags.shader_transparent_chicago_extended_group)
+				{
+					SetupEffectDefinition(effectDefinition, tagIndex, shaderTag as Blam.Halo1.Tags.shader_transparent_chicago_extended_group);
+				}
+				else if (shaderTag is Blam.Halo1.Tags.shader_transparent_generic_group)
+				{
+					SetupEffectDefinition(effectDefinition, tagIndex, shaderTag as Blam.Halo1.Tags.shader_transparent_generic_group);
+				}
+				else if (shaderTag is Blam.Halo1.Tags.shader_transparent_glass_group)
+				{
+					SetupEffectDefinition(effectDefinition, tagIndex, shaderTag as Blam.Halo1.Tags.shader_transparent_glass_group);
+				}
+				else if (shaderTag is Blam.Halo1.Tags.shader_transparent_water_group)
+				{
+					SetupEffectDefinition(effectDefinition, tagIndex, shaderTag as Blam.Halo1.Tags.shader_transparent_water_group);
+				}
+				else if (shaderTag is Blam.Halo1.Tags.shader_transparent_meter_group)
+				{
+					SetupEffectDefinition(effectDefinition, tagIndex, shaderTag as Blam.Halo1.Tags.shader_transparent_meter_group);
+				}
+				else if (shaderTag is Blam.Halo1.Tags.shader_transparent_plasma_group)
+				{
+					SetupEffectDefinition(effectDefinition, tagIndex, shaderTag as Blam.Halo1.Tags.shader_transparent_plasma_group);
+				}
+				else
+				{
+					throw new Exception("Unsupported shader definition type");
 				}
 			}
 		}
-		/// <summary>
-		/// Creates info classes for a structure BSP
-		/// </summary>
-		void GenerateInfoListBsp()
-		{
-			string bsp_name = Path.GetFileNameWithoutExtension(tagManager.Name);
 
-			int vertex_count, triangle_count;
-
-			BSPInfoInternal bsp_info_internal;
-
-			// create an info object representing the render mesh
-			vertex_count = BSP.GetVertexCount(tagManager, BSPObjectType.RenderMesh);
-			triangle_count = BSP.GetTriangleCount(tagManager, BSPObjectType.RenderMesh);
-
-			bsp_info_internal = new BSPInfoInternal();
-			bsp_info_internal.SetType(BSPObjectType.RenderMesh);
-			BSP.AddShaderDatums(bsp_info_internal, tagManager);
-			internalInfoList.Add(bsp_info_internal);
-
-			Add(new ColladaHalo1BSPInfo(internalInfoList.Count - 1,
-				bsp_name,
-				vertex_count,
-				triangle_count,
-				BSPObjectType.RenderMesh));
-
-			// create an info object representing the portals mesh
-			vertex_count = BSP.GetVertexCount(tagManager, BSPObjectType.Portals);
-			triangle_count = BSP.GetTriangleCount(tagManager, BSPObjectType.Portals);
-
-			if ((vertex_count > 0) && (triangle_count > 0))
-			{
-				bsp_info_internal = new BSPInfoInternal();
-				bsp_info_internal.SetType(BSPObjectType.Portals);
-				internalInfoList.Add(bsp_info_internal);
-
-				Add(new ColladaHalo1BSPInfo(internalInfoList.Count - 1,
-					bsp_name,
-					vertex_count,
-					triangle_count,
-					BSPObjectType.Portals));
-			}
-
-			// create an info object representing the fogplane mesh
-			vertex_count = BSP.GetVertexCount(tagManager, BSPObjectType.FogPlanes);
-			triangle_count = BSP.GetTriangleCount(tagManager, BSPObjectType.FogPlanes);
-
-			if ((vertex_count > 0) && (triangle_count > 0))
-			{
-				bsp_info_internal = new BSPInfoInternal();
-				bsp_info_internal.SetType(BSPObjectType.FogPlanes);
-				internalInfoList.Add(bsp_info_internal);
-
-				Add(new ColladaHalo1BSPInfo(internalInfoList.Count - 1,
-					bsp_name,
-					vertex_count,
-					triangle_count,
-					BSPObjectType.FogPlanes));
-			}
-		}
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Implemented by derived classes to get the shaders in tag specific ways. </summary>
+		/// <param name="tagManager">	Manager for tag. </param>
+		///-------------------------------------------------------------------------------------------------
+		protected abstract void AddShaders(TagManager tagManager);
 		#endregion
 
-		public override void Export(string file_name)
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Collects shader data from a tag. </summary>
+		/// <param name="tagIndex">  	The tag index containing the tag. </param>
+		/// <param name="tagManager">	Manager for the tag. </param>
+		///-------------------------------------------------------------------------------------------------
+		public void CollectData(TagIndexBase tagIndex, TagManager tagManager)
 		{
-			if (registeredInfos.Count == 0)
-			{
-				AddReport("COLLADAINTERFACE : invalid info count on export");
-				return;
-			}
-
-			// if model create model exporter
-			if (tagManager.GroupTag.Equals(Blam.Halo1.TagGroups.mod2))
-				ExportModel(file_name);
-			// otherwise bsp exporter
-			else if (tagManager.GroupTag.Equals(Blam.Halo1.TagGroups.sbsp))
-				ExportBSP(file_name);
+			AddShaders(tagManager);
+			AddEffectDefinitions(tagIndex);
 		}
 
-		#region Export Functions
-		void ExportModel(string file_name)
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets shader type reference by searching for the supplied datum index. </summary>
+		/// <param name="shaderDatum">	The shader datum. </param>
+		/// <returns>	The shader type reference. </returns>
+		///-------------------------------------------------------------------------------------------------
+		public ShaderType GetShaderTypeFromDatum(DatumIndex shaderDatum)
 		{
-			ModelInfoInternal model_info = new ModelInfoInternal();
-
-			List<int> added_permutations = new List<int>();
-
-			// create an info object with all of the registered infos combined
-			foreach (int index in registeredInfos)
-			{
-				ModelInfoInternal info = internalInfoList[index] as ModelInfoInternal;
-
-				if (!added_permutations.Contains(info.Permutation))
-					added_permutations.Add(info.Permutation);
-
-				for (int i = 0; i < info.GetShaderCount(); i++)
-					model_info.AddShaderDatum(info.GetShaderDatum(i), info.GetShaderName(i));
-				for (int i = 0; i < info.GetGeometryCount(); i++)
-					model_info.AddGeometry(info.GetGeometryName(i), info.GetGeometryIndex(i));
-			}
-
-			if (added_permutations.Count == 1)
-				model_info.Permutation = added_permutations[0];
-			else
-				model_info.IsMultiplePermutations = true;
-
-			ColladaExportArgs arguments = new ColladaExportArgs(Overwrite, RelativeFilePath, BitmapFormat);
-			var exporter = new Halo1.ColladaModelExporter(arguments, model_info, tagIndex, tagManager);
-
-			ExportSave(exporter, RelativeFilePath + file_name + ".dae");
+			return mShaderTypeList.Find(shaderType => shaderType.ShaderDatum == shaderDatum);
 		}
 
-		void ExportBSP(string file_name)
+		#region IColladaShaderDataProvider Members
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets the images list. </summary>
+		/// <returns>	The images list. </returns>
+		///-------------------------------------------------------------------------------------------------
+		public ColladaExporter.ImageList GetImages()
 		{
-			BSPInfoInternal bsp_info = new BSPInfoInternal();
+			return mImages;
+		}
 
-			BSPObjectType bsp_type = BSPObjectType.None;
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets the effects list. </summary>
+		/// <returns>	The effects list. </returns>
+		///-------------------------------------------------------------------------------------------------
+		public ColladaExporter.EffectList GetEffects()
+		{
+			return mEffects;
+		}
 
-			// create an info object with all of the registered infos combined
-			foreach (int index in registeredInfos)
-			{
-				BSPInfoInternal info = internalInfoList[index] as BSPInfoInternal;
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets the effects map. </summary>
+		/// <returns>	The effects list. </returns>
+		///-------------------------------------------------------------------------------------------------
+		public ColladaExporter.EffectList GetEffectsMap()
+		{
+			return mEffectsMap;
+		}
 
-				if (info.IncludeRenderMesh()) { bsp_type |= BSPObjectType.RenderMesh; }
-				if (info.IncludePortalsMesh()) { bsp_type |= BSPObjectType.Portals; }
-				if (info.IncludeFogPlanesMesh()) { bsp_type |= BSPObjectType.FogPlanes; }
-
-				for (int i = 0; i < info.GetShaderCount(); i++)
-					bsp_info.AddShaderDatum(info.GetShaderDatum(i), info.GetShaderName(i));
-			}
-
-			bsp_info.SetType(bsp_type);
-
-			ColladaExportArgs arguments = new ColladaExportArgs(Overwrite, RelativeFilePath, BitmapFormat);
-			var exporter = new Halo1.ColladaBSPExporter(arguments, bsp_info, tagIndex, tagManager);
-
-			ExportSave(exporter, RelativeFilePath + file_name + ".dae");
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets the materials list. </summary>
+		/// <returns>	The materials list. </returns>
+		///-------------------------------------------------------------------------------------------------
+		public ColladaExporter.MaterialList GetMaterials()
+		{
+			return mMaterials;
 		}
 		#endregion
-	};
+	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Data collection class for the shaders in a Halo1 structure bsp tag. </summary>
+	///-------------------------------------------------------------------------------------------------
+	public class StructureBSPShaderData : ShaderData
+	{
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds shaders from the structure bsp tag to the shaders list. </summary>
+		/// <param name="tagManager">	Manager for the structure bsp tag. </param>
+		///-------------------------------------------------------------------------------------------------
+		protected override void AddShaders(TagManager tagManager)
+		{
+			Blam.Halo1.Tags.structure_bsp_group bspTag = tagManager.TagDefinition as Blam.Halo1.Tags.structure_bsp_group;
+
+			// Get the shaders from the lightmap material blocks
+			foreach (var lightmap in bspTag.Lightmaps)
+			{
+				foreach (var material in lightmap.Materials)
+				{
+						mShaderTypeList.Add(new ShaderType(material.Shader.Datum));
+				}
+			}
+		}
+	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Data collection class for the shaders in a Halo1 model tag. </summary>
+	///-------------------------------------------------------------------------------------------------
+	public class ModelShaderData : ShaderData
+	{
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds shaders from the model tag to the shaders list. </summary>
+		/// <param name="tagManager">	Manager for the model tag. </param>
+		///-------------------------------------------------------------------------------------------------
+		protected override void AddShaders(TagManager tagManager)
+		{
+			Blam.Halo1.Tags.gbxmodel_group modelTag = tagManager.TagDefinition as Blam.Halo1.Tags.gbxmodel_group;
+
+			// Add all of the shaders listed in the shaders block
+			foreach (var modelShader in modelTag.Shaders)
+			{
+				mShaderTypeList.Add(new ShaderType(modelShader.Shader.Datum));
+			}
+		}
+	}
 }

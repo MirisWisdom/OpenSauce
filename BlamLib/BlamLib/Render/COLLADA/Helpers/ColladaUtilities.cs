@@ -6,6 +6,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace BlamLib.Render
@@ -14,12 +15,13 @@ namespace BlamLib.Render
 	{
 		public static class ColladaUtilities
 		{
-			/// <summary>
-			/// Replace characters in a string according to string find-replace pairs
-			/// </summary>
-			/// <param name="name">String to format</param>
-			/// <param name="replacements">find-replace string pairs</param>
-			/// <returns>String with unwanted characters replaced</returns>
+			///-------------------------------------------------------------------------------------------------
+			/// <summary>	Replace characters in a string according to string find-replace pairs. </summary>
+			/// <exception cref="ColladaException">	Thrown when a Collada error condition occurs. </exception>
+			/// <param name="name">		   	String to format. </param>
+			/// <param name="replacements">	find-replace string pairs. </param>
+			/// <returns>	String with unwanted characters replaced. </returns>
+			///-------------------------------------------------------------------------------------------------
 			public static string FormatName(string name, params string[] replacements)
 			{
 				// the replacements array must be a multiple of two
@@ -32,12 +34,12 @@ namespace BlamLib.Render
 				return name;
 			}
 
-			/// <summary>
-			/// Creates a string containing the values of a list
-			/// </summary>
-			/// <typeparam name="T">The value type of the source list</typeparam>
-			/// <param name="array">The sources list</param>
-			/// <returns></returns>
+			///-------------------------------------------------------------------------------------------------
+			/// <summary>	Creates a string containing the values of a list. </summary>
+			/// <typeparam name="T">	The value type of the source list. </typeparam>
+			/// <param name="array">	The sources list. </param>
+			/// <returns>	. </returns>
+			///-------------------------------------------------------------------------------------------------
 			public static string ListToString<T>(List<T> array)
 			{
 				if (array == null) return "";
@@ -50,12 +52,13 @@ namespace BlamLib.Render
 				}
 				return string_builder.ToString();
 			}
-			/// <summary>
-			/// Parses a string of values into a list
-			/// </summary>
-			/// <typeparam name="T">The type of the values in the string</typeparam>
-			/// <param name="value">The string to parse</param>
-			/// <returns>A List containing the parsed values from the string</returns>
+
+			///-------------------------------------------------------------------------------------------------
+			/// <summary>	Parses a string of values into a list. </summary>
+			/// <typeparam name="T">	The type of the values in the string. </typeparam>
+			/// <param name="value">	The string to parse. </param>
+			/// <returns>	A List containing the parsed values from the string. </returns>
+			///-------------------------------------------------------------------------------------------------
 			public static List<T> StringToList<T>(string value)
 			{
 				if (value == null) return null;
@@ -154,21 +157,22 @@ namespace BlamLib.Render
 				return return_array;
 			}
 
-			/// <summary>
-			/// Generates a Uri containing just a fragment
-			/// </summary>
-			/// <param name="fragment"></param>
-			/// <returns></returns>
+			///-------------------------------------------------------------------------------------------------
+			/// <summary>	Generates a Uri containing just a fragment. </summary>
+			/// <param name="fragment">	. </param>
+			/// <returns>	. </returns>
+			///-------------------------------------------------------------------------------------------------
 			public static string BuildUri(string fragment)
 			{
 				return String.Concat("#", fragment);
 			}
-			/// <summary>
-			/// Generates a Uri for a path using a specific scheme
-			/// </summary>
-			/// <param name="scheme"></param>
-			/// <param name="path"></param>
-			/// <returns></returns>
+
+			///-------------------------------------------------------------------------------------------------
+			/// <summary>	Generates a Uri for a path using a specific scheme. </summary>
+			/// <param name="scheme">	. </param>
+			/// <param name="path">  	. </param>
+			/// <returns>	. </returns>
+			///-------------------------------------------------------------------------------------------------
 			public static string BuildUri(string scheme, string path)
 			{
 				UriBuilder uri_builder = new UriBuilder();
@@ -177,13 +181,14 @@ namespace BlamLib.Render
 				uri_builder.Host = "/";
 				return uri_builder.Uri.AbsoluteUri;
 			}
-			/// <summary>
-			/// Generates a Uri for a path and fragment using a specific scheme
-			/// </summary>
-			/// <param name="scheme"></param>
-			/// <param name="path"></param>
-			/// <param name="fragment"></param>
-			/// <returns></returns>
+
+			///-------------------------------------------------------------------------------------------------
+			/// <summary>	Generates a Uri for a path and fragment using a specific scheme. </summary>
+			/// <param name="scheme">  	. </param>
+			/// <param name="path">	   	. </param>
+			/// <param name="fragment">	. </param>
+			/// <returns>	. </returns>
+			///-------------------------------------------------------------------------------------------------
 			public static string BuildUri(string scheme, string path, string fragment)
 			{
 				UriBuilder uri_builder = new UriBuilder();
@@ -194,20 +199,38 @@ namespace BlamLib.Render
 				return uri_builder.Uri.AbsoluteUri;
 			}
 
+			///-------------------------------------------------------------------------------------------------
+			/// <summary>	Builds external reference URI. </summary>
+			/// <param name="externalReference">	The external reference source. </param>
+			/// <param name="rootDirectory">		Pathname of the root directory. </param>
+			/// <param name="id">					The identifier of the element to referenec. </param>
+			/// <returns>	The absolute URI of the external element reference. </returns>
+			///-------------------------------------------------------------------------------------------------
+			public static string BuildExternalReference(IColladaExternalReference externalReference, string rootDirectory, string id)
+			{
+				return ColladaUtilities.BuildUri("file://", Path.Combine(rootDirectory, externalReference.GetRelativeURL()) + ".dae", id);
+			}
+
+			///-------------------------------------------------------------------------------------------------
 			/// <summary>
-			/// Creates a list of ColladaRotate elements describing a rotation defined by three floats (YPR)
+			/// 	Creates a list of ColladaRotate elements describing a rotation defined by three floats
+			/// 	(YPR)
 			/// </summary>
-			/// <param name="y">Yaw</param>
-			/// <param name="p">Pitch</param>
-			/// <param name="r">Roll</param>
-			/// <returns></returns>
-			public static List<ColladaElement> CreateRotationSet(float y, float p, float r, LowLevel.Math.real_vector3d vector_y,
-				LowLevel.Math.real_vector3d vector_p, LowLevel.Math.real_vector3d vector_r)
+			/// <param name="y">			  	Yaw. </param>
+			/// <param name="p">			  	Pitch. </param>
+			/// <param name="r">			  	Roll. </param>
+			/// <param name="transformMatrix">	The transform matrix. </param>
+			/// <returns>	The new rotation set. </returns>
+			///-------------------------------------------------------------------------------------------------
+			public static List<ColladaElement> CreateRotationSet(float y,
+				float p,
+				float r,
+				LowLevel.Math.real_matrix3x3 transformMatrix)
 			{
 				List<ColladaElement> return_array = new List<ColladaElement>();
-				return_array.Add(new Core.ColladaRotate(vector_y.I, vector_y.J, vector_y.K, y));
-				return_array.Add(new Core.ColladaRotate(vector_p.I, vector_p.J, vector_p.K, p));
-				return_array.Add(new Core.ColladaRotate(vector_r.I, vector_r.J, vector_r.K, r));
+				return_array.Add(new Core.ColladaRotate(transformMatrix.Forward.I, transformMatrix.Forward.J, transformMatrix.Forward.K, y));
+				return_array.Add(new Core.ColladaRotate(transformMatrix.Left.I, transformMatrix.Left.J, transformMatrix.Left.K, p));
+				return_array.Add(new Core.ColladaRotate(transformMatrix.Up.I, transformMatrix.Up.J, transformMatrix.Up.K, r));
 
 				(return_array[0] as Core.ColladaRotate).sID = "rotateY";
 				(return_array[1] as Core.ColladaRotate).sID = "rotateP";
@@ -215,15 +238,19 @@ namespace BlamLib.Render
 
 				return return_array;
 			}
+
+			///-------------------------------------------------------------------------------------------------
 			/// <summary>
-			/// Creates a list of ColladaRotate elements describing a rotation defined a RealEulerAngles3D field
+			/// 	Creates a list of ColladaRotate elements describing a rotation defined a
+			/// 	RealEulerAngles3D field.
 			/// </summary>
-			/// <param name="rotation">A RealEulerAngles3D field</param>
-			/// <returns></returns>
-			public static List<ColladaElement> CreateRotationSet(LowLevel.Math.real_euler_angles3d rotation, LowLevel.Math.real_vector3d vector_y,
-				LowLevel.Math.real_vector3d vector_p, LowLevel.Math.real_vector3d vector_r)
+			/// <param name="rotation">		  	A RealEulerAngles3D field. </param>
+			/// <param name="transformMatrix">	The transform matrix. </param>
+			/// <returns>	The new rotation set. </returns>
+			///-------------------------------------------------------------------------------------------------
+			public static List<ColladaElement> CreateRotationSet(LowLevel.Math.real_euler_angles3d rotation, LowLevel.Math.real_matrix3x3 transformMatrix)
 			{
-				return CreateRotationSet(rotation.Yaw, rotation.Pitch, rotation.Roll, vector_y, vector_p, vector_r);
+				return CreateRotationSet(rotation.Yaw, rotation.Pitch, rotation.Roll, transformMatrix);
 			}
 		}
 	}

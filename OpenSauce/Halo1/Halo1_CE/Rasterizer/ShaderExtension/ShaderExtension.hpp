@@ -20,6 +20,9 @@
 #pragma once
 
 #if !PLATFORM_IS_DEDI
+
+#include <blamlib/Halo1/shaders/shader_definitions.hpp>
+
 namespace Yelo
 {
 	namespace Rasterizer
@@ -52,6 +55,11 @@ namespace Yelo
 				bool SetSpecColor(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount);
 				bool SetVertexLight(IDirect3DDevice9* device, CONST float* pConstantData, UINT Vector4fCount);
 			};
+
+			namespace Environment
+			{
+				void SetEnvironmentLightmapVariables(const TagGroups::s_shader_definition* shader);
+			}
 		};
 	};
 };

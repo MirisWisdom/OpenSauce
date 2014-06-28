@@ -13,6 +13,7 @@
 #include <blamlib/Halo1/memory/memory_pool.hpp>
 #include <blamlib/Halo1/tag_files/files.hpp>
 #include <blamlib/Halo1/tag_files/tag_files.hpp>
+#include <blamlib/Halo1/cryptography/md5.hpp>
 #include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
 
 namespace Yelo
@@ -420,6 +421,23 @@ namespace Yelo
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(FILE_READ_ONLY_);
 
 			__asm	jmp	FUNCTION
+		}
+	};
+	//////////////////////////////////////////////////////////////////////////
+	// cryptography
+	namespace blam
+	{
+		void PLATFORM_API generate_md5(char* data, DWORD data_size, char* md5_out)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(GENERATE_MD5);
+
+			_asm {
+				push	md5_out
+				push	data_size
+				push	data
+				call	FUNCTION
+				add		esp, 4 * 3
+			};
 		}
 	};
 };

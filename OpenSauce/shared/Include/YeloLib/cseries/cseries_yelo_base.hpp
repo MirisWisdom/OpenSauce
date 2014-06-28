@@ -52,6 +52,12 @@ namespace Yelo
 	// System Dispose from old map function pointer
 	// Note: We can use this in engine definitions as well since it takes no parameters
 	typedef void (API_FUNC* proc_dispose_from_old_map)();
+	// System Initialize for bsp load function pointer
+	// Note: We can use this in engine definitions as well since it takes no parameters
+	typedef void (API_FUNC* proc_initialize_for_new_bsp)();
+	// System Dispose for bsp unload function pointer
+	// Note: We can use this in engine definitions as well since it takes no parameters
+	typedef void (API_FUNC* proc_dispose_from_old_bsp)();
 	// System Update function pointer
 	typedef void (API_FUNC* proc_update)(float);
 	// System Update function pointer

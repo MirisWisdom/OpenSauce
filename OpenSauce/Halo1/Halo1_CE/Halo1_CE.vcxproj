@@ -80,6 +80,7 @@
   </PropertyGroup>
   <Import Project="$(OSRootDir)shared\config\msbuild\OpenSauceDebuggerDefaults.props" />
   <ItemGroup>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\time\sequence\c_transition_sequence_controller.cpp" />
     <ClInclude Include="..\..\shared\Include\GameSpyOpen\darray.h" />
     <ClCompile Include="..\..\shared\Include\GameSpyOpen\darray.c">
       <PrecompiledHeader />
@@ -250,6 +251,9 @@
     <ClCompile Include="Objects\ObjectFieldDefinitions.cpp" />
     <ClCompile Include="Objects\ObjectsYelo.cpp" />
     <ClCompile Include="Objects\Units.cpp" />
+    <ClCompile Include="Rasterizer\Lightmaps.cpp" />
+    <ClCompile Include="Rasterizer\Sky.cpp" />
+    <ClCompile Include="Scenario\ScenarioInfo.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\Bloom\c_settings_bloom.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\FXAA\c_settings_fxaa.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\Generic\External\c_settings_external.cpp" />
@@ -305,10 +309,16 @@
     <ClCompile Include="Rasterizer\PostProcessing\FXAA\c_system_fxaa.cpp" />
     <ClCompile Include="Rasterizer\ShaderExtension\ShaderExtension.cpp" />
     <ClCompile Include="Scenario\Scenario.cpp" />
-    <ClCompile Include="Scenario\ScenarioFauxZones.cpp" />
+    <ClCompile Include="Scenario\StructureBSP.cpp" />
     <ClCompile Include="MainYelo.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\c_interp_base.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\c_interp_function.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\c_interp_linear.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\i_interpolator.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\interpolation.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\sequence\c_transition_sequence_controller.hpp" />
     <ClInclude Include="Common\DebugDump.hpp" />
     <ClInclude Include="Common\FileIO.hpp" />
     <ClInclude Include="Common\GameSystemDefinitions.hpp" />
@@ -363,6 +373,10 @@
     <ClInclude Include="Objects\Objects.VehicleSettings.hpp" />
     <ClInclude Include="Objects\Objects.WeaponSettings.hpp" />
     <ClInclude Include="Objects\Units.hpp" />
+    <ClInclude Include="Rasterizer\Lightmaps.hpp" />
+    <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_function_pp_anim.hpp" />
+    <ClInclude Include="Rasterizer\Sky.hpp" />
+    <ClInclude Include="Scenario\ScenarioInfo.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Bloom\c_settings_bloom.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\FXAA\c_settings_fxaa.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Generic\External\c_settings_external.hpp" />
@@ -393,7 +407,6 @@
     <ClInclude Include="Rasterizer\PostProcessing\PostProcessing.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\PostProcessingErrorReporting.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\PostProcessingScripting.hpp" />
-    <ClInclude Include="Rasterizer\PostProcessing\Interfaces\IInterpolator.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Interfaces\IPostProcessingCacheComponent.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Interfaces\IPostProcessingComponent.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Interfaces\IPostProcessingRenderable.hpp" />
@@ -423,10 +436,6 @@
     <ClInclude Include="Rasterizer\PostProcessing\Generic\External\c_shader_external.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Generic\External\c_system_external.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Generic\External\s_effect_postprocess_external.hpp" />
-    <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_base.hpp" />
-    <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_function.hpp" />
-    <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_linear.hpp" />
-    <ClInclude Include="Rasterizer\PostProcessing\Interpolation\Interpolation.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Fade\c_shader_fade.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Fade\c_shader_instance_fade.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Fade\c_system_fade.hpp" />
@@ -435,7 +444,7 @@
     <ClInclude Include="Rasterizer\PostProcessing\FXAA\c_system_fxaa.hpp" />
     <ClInclude Include="Rasterizer\ShaderExtension\ShaderExtension.hpp" />
     <ClInclude Include="Scenario\Scenario.hpp" />
-    <ClInclude Include="Scenario\ScenarioFauxZones.hpp" />
+    <ClInclude Include="Scenario\StructureBSP.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Halo1_CE_Readme.txt" />
@@ -546,7 +555,6 @@
     <None Include="Rasterizer\PostProcessing\FXAA\FXAADefinitions.inl" />
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Environment.inl" />
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Model.inl" />
-    <None Include="Scenario\ScenarioFauxZones.Scripting.inl" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="Halo1_CE_Version.xml" />
