@@ -1244,8 +1244,8 @@ namespace Yelo
 					progress = (received_bytes_total / (real)g_map_download_globals.m_map_part_definition.downloader.MapElement().m_compressed_size);
 
 				// clamp the progress between 0 and 1
-				progress = max(0, progress);
-				progress = min(1, progress);
+				progress = __max(0, progress);
+				progress = __min(1, progress);
 
 				g_map_download_globals.m_map_part_definition.progress = progress;
 			}
@@ -1280,8 +1280,8 @@ namespace Yelo
 						progress = (real)received / (real)total;
 
 					// clamp the progress between 0 and 1
-					progress = max(0, progress);
-					progress = min(1, progress);
+					progress = __max(0, progress);
+					progress = __min(1, progress);
 
 					g_map_download_display.SetPartProgress(progress);
 

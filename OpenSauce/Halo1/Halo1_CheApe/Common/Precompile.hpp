@@ -9,6 +9,7 @@
 #include <cseries/KillCxxExceptions.hpp>
 
 #define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
 #include <windows.h>
 
 // Only because we end up including the various bnet network transport headers
@@ -24,6 +25,8 @@
 
 #include <vld.h>
 
+//////////////////////////////////////////////////////////////////////////
+// STD C includes
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -38,9 +41,11 @@
 // qsort
 #include <stdlib.h>
 #include <search.h>
+//////////////////////////////////////////////////////////////////////////
 
 
-// C++ STL
+//////////////////////////////////////////////////////////////////////////
+// STL includes
 #include <array>
 #include <iterator>
 #include <memory> // std::unique_ptr
@@ -50,13 +55,21 @@
 #include <utility>
 #include <vector>
 #include <functional>
+//////////////////////////////////////////////////////////////////////////
 
+
+//////////////////////////////////////////////////////////////////////////
+// Boost includes
+#if API_DEBUG
+	#define BOOST_LIB_DIAGNOSTIC
+#endif
 #include <boost/preprocessor.hpp>
 #include <boost/static_assert.hpp>
 
 #include <boost/integer/static_log2.hpp>
 #include <boost/optional.hpp>
 #include <boost/filesystem.hpp>
+//////////////////////////////////////////////////////////////////////////
 
 
 #include <TinyXml/tinyxml.hpp>

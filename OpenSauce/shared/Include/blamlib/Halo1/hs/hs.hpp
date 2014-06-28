@@ -5,7 +5,6 @@
 */
 #pragma once
 
-#include <blamlib/memory/data_base.hpp>
 #include <blamlib/Halo1/hs/hs_scenario_definitions.hpp>
 
 namespace Yelo
@@ -95,6 +94,29 @@ namespace Yelo
 			_hs_type_object_name__first = _hs_type_object_name,
 			_hs_type_object_name__last = _hs_type_scenery_name,
 		};
+
+		enum hs_object_type : _enum
+		{
+			_hs_object_type_any =		_hs_type_object - _hs_type_object__first,
+			_hs_object_type_unit =		_hs_type_unit - _hs_type_object__first,
+			_hs_object_type_vehicle =	_hs_type_vehicle - _hs_type_object__first,
+			_hs_object_type_weapon =	_hs_type_weapon - _hs_type_object__first,
+			_hs_object_type_device =	_hs_type_device - _hs_type_object__first,
+			_hs_object_type_scenery =	_hs_type_scenery - _hs_type_object__first,
+
+			k_number_of_hs_object_types
+		};
+
+		enum hs_script_type : _enum
+		{
+			_hs_script_startup,
+			_hs_script_dormant,
+			_hs_script_continuous,
+			_hs_script_static,
+			_hs_script_stub,
+
+			k_number_of_hs_script_types,
+		};
 	};
 
 	namespace Scripting
@@ -107,6 +129,31 @@ namespace Yelo
 
 	namespace blam
 	{
+		extern const std::array<word_flags, Enums::k_number_of_hs_object_types> k_hs_object_type_masks;
+
+		bool hs_type_valid(_enum type);
+		bool hs_type_is_enum(_enum type);
+		bool hs_type_is_tag_reference(_enum type);
+		bool hs_type_is_object(_enum type);
+		bool hs_type_is_object_name(_enum type);
+
+		void hs_nodes_garbage_collect();
+
+		Scripting::hs_function_definition* hs_function_get(int16 function_index);
+		Scripting::hs_global_definition* hs_global_external_get(int16 global_index);
+
+		Enums::hs_type hs_global_get_type(int32 global_index);
+		cstring hs_global_get_name(int32 global_index);
+
+		int16 hs_find_global_by_name(cstring name);
+
+		int16 hs_find_function_by_name(cstring name);
+
+		int16 hs_find_tag_reference_by_index(datum_index tag_index);
+
+		int16 hs_find_script_by_name(cstring name);
+
+
 		Scripting::hs_syntax_node* hs_syntax_get(datum_index expression_index);
 	};
 };
