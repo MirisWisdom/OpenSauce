@@ -6,18 +6,20 @@
 */
 #pragma once
 
-#include <YeloLib/Halo1/open_sauce/settings/che_ape_settings.hpp>
+#include <YeloLib/settings/c_settings_manager.hpp>
 #include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
 
 namespace Yelo
 {
 	namespace Settings
 	{
-		void Initialize();
-		void Dispose();
+		c_settings_manager& Manager();
 
-		void LoadSettings();
-		void SaveSettings();
+		void Load();
+		void Save();
+
+		void InitializeSettings();
+		void DisposeSettings();
 
 		void ParseEnvironmentVariablesCheApe(std::string& parse_string);
 	};

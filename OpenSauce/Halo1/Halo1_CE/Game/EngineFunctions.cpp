@@ -113,37 +113,6 @@ namespace Yelo
 					pop		esi
 					API_FUNC_NAKED_END(6); // not including the unused tag_index
 			}
-
-			cstring GetMapExtension()
-			{
-				return GET_PTR2(MAP_LIST_MAP_EXTENSION);
-			}
-
-			void MapListAddMap(cstring map_name, cstring extension, int32 map_index)
-			{
-				static const uintptr_t FUNCTION = GET_FUNC_PTR(MAP_LIST_ADD_MAP);
-				static cstring* MAP_LIST_EXTENSION_REF = GET_PTR2(MAP_LIST_MAP_EXTENSION_REF);
-				static cstring MAP_LIST_EXTENSION_STOCK = GET_PTR2(MAP_LIST_MAP_EXTENSION);
-
-				*MAP_LIST_EXTENSION_REF = extension;
-				__asm {
-					push	map_index
-					mov		eax, map_name
-					call	FUNCTION
-					add		esp, 4 * 1
-				}
-				*MAP_LIST_EXTENSION_REF = MAP_LIST_EXTENSION_STOCK; //-V519
-			}
-
-			API_FUNC_NAKED int GetMapEntryIndexFromName(const char* name)
-			{
-				static const uintptr_t FUNCTION = GET_FUNC_PTR(MAP_ENTRY_INDEX_FROM_NAME);
-
-				API_FUNC_NAKED_START()
-					mov		eax, name
-					call	FUNCTION
-				API_FUNC_NAKED_END(1);
-			}
 		};
 
 		namespace Effects
@@ -513,17 +482,52 @@ namespace Yelo
 		}
 		//////////////////////////////////////////////////////////////////////////
 		// players.c
-		void PLATFORM_API player_examine_nearby_vehicle(datum_index player_index, datum_index vehicle_index)
+		API_FUNC_NAKED void PLATFORM_API player_examine_nearby_vehicle(datum_index player_index, datum_index vehicle_index)
 		{
-			Engine::Players::PlayerExamineNearbyVehicle(player_index, vehicle_index);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(PLAYER_EXAMINE_NEARBY_VEHICLE);
+
+			API_FUNC_NAKED_START()
+				push	vehicle_index
+				push	player_index
+				call	FUNCTION
+				add		esp, 4 * 2
+			API_FUNC_NAKED_END_NO_STACK_POP()
 		}
-		void PLATFORM_API player_set_action_result(datum_index player_index, datum_index action_object_index, int32 action_result, int32 action_seat_index)
+		API_FUNC_NAKED void PLATFORM_API player_set_action_result(datum_index player_index, datum_index action_object_index, int32 action_result, int32 action_seat_index)
 		{
-			Engine::Players::PlayerSetActionResult(player_index, action_object_index, action_result, action_seat_index);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(PLAYER_SET_ACTION_RESULT);
+
+			API_FUNC_NAKED_START()
+				push	ebx
+
+				push	action_seat_index
+				push	action_result
+				mov		ebx, action_object_index
+				mov		eax, player_index
+				call	FUNCTION
+				add		esp, 4 * 2
+
+				pop		ebx
+			API_FUNC_NAKED_END_NO_STACK_POP()
 		}
-		void PLATFORM_API player_set_action_result_to_network(datum_index player_index, datum_index action_object_index, int32 action_result_type, int32 action_result, int32 action_seat_index, datum_index next_weapon_index)
+		API_FUNC_NAKED void PLATFORM_API player_set_action_result_to_network(datum_index player_index, datum_index action_object_index, int32 action_result_type, int32 action_result, int32 action_seat_index, datum_index next_weapon_index)
 		{
-			Engine::Players::PlayerSetActionResultToNetwork(player_index, action_object_index, action_result_type, action_result, action_seat_index, next_weapon_index);
+			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(PLAYER_SET_ACTION_RESULT_TO_NETWORK);
+
+			API_FUNC_NAKED_START()
+				push	edi
+
+				push	next_weapon_index
+				push	action_seat_index
+				push	action_result
+				push	action_result_type
+				mov		edi, action_object_index
+				mov		ecx, player_index
+				call	FUNCTION
+				add		esp, 4 * 4
+
+				pop		edi
+			API_FUNC_NAKED_END_NO_STACK_POP()
 		}
 
 

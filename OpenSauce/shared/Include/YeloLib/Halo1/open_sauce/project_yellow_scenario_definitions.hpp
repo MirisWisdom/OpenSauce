@@ -34,11 +34,15 @@ namespace Yelo
 		struct s_project_yellow_scenario_build_info
 		{
 			PAD16;
-			TAG_ENUM(build_stage, TagEnums::production_build_stage);
+			TAG_ENUM(build_stage, Enums::production_build_stage);
 			TAG_FIELD(uint32, revision);
 			time_t timestamp;			BOOST_STATIC_ASSERT(sizeof(time_t) == 0x8);
+			byte uuid_buffer[Enums::k_uuid_buffer_size];
 
-			TAG_PAD(int32, 8); // 32
+			TAG_PAD(int32, 4); // 16
+
+			bool HasUuid() const;
+			void GenerateUuid();
 		};
 
 		//////////////////////////////////////////////////////////////////////////

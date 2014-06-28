@@ -10,7 +10,7 @@
 #if !PLATFORM_IS_DEDI
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
-#include "Settings/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingComponent.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingCacheComponent.hpp"

@@ -12,7 +12,7 @@
 #include <blamlib/Halo1/tag_files/tag_files_structures.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
-#include <YeloLib/Halo1/open_sauce/settings/che_ape_settings.hpp>
+#include <YeloLib/Halo1/open_sauce/settings/c_settings_cheape.hpp>
 
 namespace Yelo
 {
@@ -264,7 +264,7 @@ namespace Yelo
 			s_file_reference new_file_reference;
 			blam::file_reference_create(new_file_reference, Enums::_file_reference_location_tags);
 			blam::file_reference_add_directory(new_file_reference,
-				Settings::Get().GetTagsPath());
+				Settings::c_settings_cheape::Profile().GetTagsPath());
 			// will create the tags directory if it doesn't exist
 			if (!blam::file_exists(new_file_reference))
 				blam::file_create(new_file_reference);

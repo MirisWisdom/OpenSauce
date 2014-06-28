@@ -54,7 +54,7 @@ namespace Yelo
 			/// <summary>	Gets the container as a referece. </summary>
 			///
 			/// <returns>	The container as a reference </returns>
-			ContainerType& Get()
+			ContainerType& Get() const
 			{
 				return *m_container;
 			}
@@ -63,9 +63,18 @@ namespace Yelo
 			/// <summary>	Gets a pointer to the container. </summary>
 			///
 			/// <returns>	The pointer to the wrapped container. </returns>
-			ContainerType* GetPtr()
+			ContainerType* GetPtr() const
 			{
 				return m_container.get();
+			}
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>	Member dereference operator. </summary>
+			///
+			/// <returns>	The dereferenced object. </returns>
+			ContainerType* operator->() const
+			{
+				return GetPtr();
 			}
 #pragma endregion
 		};

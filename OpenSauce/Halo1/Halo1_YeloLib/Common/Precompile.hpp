@@ -10,6 +10,8 @@
 #include "Common/targetver.h"
 
 #include <cseries/KillCxxExceptions.hpp>
+// Mother fucking boost (property tree, uuid, etc) calls STL functions which will bitch about C4996. Fuck you.
+#define _SCL_SECURE_NO_WARNINGS 1
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -32,7 +34,9 @@
 	#include <Dinput.h>
 #endif
 
+#if !PLATFORM_IS_EDITOR
 #include <vld.h>
+#endif
 
 //////////////////////////////////////////////////////////////////////////
 // STD C includes
@@ -71,6 +75,8 @@
 #include <boost/property_tree/json_parser.hpp>
 
 #include <boost/integer/static_log2.hpp>
+
+#include <boost/filesystem.hpp>
 //////////////////////////////////////////////////////////////////////////
 
 

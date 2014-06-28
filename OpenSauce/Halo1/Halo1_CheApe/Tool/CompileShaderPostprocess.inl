@@ -20,10 +20,13 @@ void		WriteD3DXErrors(LPD3DXBUFFER error_buffer, int32 error_count)
 	while(StringEditing::GetStringSegment(error_string, error_line, nullptr, "\n")
 		&& count < error_count )
 	{
+		auto& profile = Settings::c_settings_cheape::Profile();
 		// if the line contains the data path, remove it
 		std::string::size_type data_string_start = std::string::npos;
-		if((data_string_start = error_line.find(Settings::Get().active_profile.GetDataOverridePath())) != std::string::npos)
-			error_line.replace(0, strlen(Settings::Get().active_profile.GetDataOverridePath()), "");	
+		if ((data_string_start = error_line.find(profile.GetDataPath())) != std::string::npos)
+		{
+			error_line.replace(0, strlen(profile.GetDataPath()), "");
+		}
 
 		YELO_WARN("\t%s",
 			error_line.c_str());

@@ -55,6 +55,8 @@ namespace Yelo
 
 		static bool IsVersionInfoValid()
 		{
+			DOC_TODO_DEBUG("Update these if you change the platform version OS targets")
+			// TODO: the file offset is the same in 1.10 as it is in 1.09...do we need to update these?
 			ENGINE_PTR(VS_FIXEDFILEINFO, version_info, 0x81D598, 0x6E9598);
 
 			const __int64 version = 
@@ -62,6 +64,8 @@ namespace Yelo
 			0x0008026800010000 // 01.00.08.0616
 #elif PLATFORM_VERSION == 0x1090
 			0x0009026C00010000 // 01.00.09.0620
+#elif PLATFORM_VERSION == 0x10A0
+			0x000A026D00010000 // 01.00.10.0621
 #endif
 			;
 
@@ -120,17 +124,18 @@ namespace Yelo
 				sprintf_s(warning,
 					"Open Sauce is a plugin that is only compatible with Halo (CE) v" BOOST_PP_STRINGIZE(PLATFORM_VERSION_VALUE) ". Your version is incompatible."
 					"\n\n"
-					"If you wish to use OS, you must update by running this file: \n"
-					"%s\\haloupdate.exe"
+					"If you wish to use OS, you must update or downgrade your haloce.exe file"
 					"\n\n"
-					"If you don't wish to use OS, then remove this file to uninstall it: \n"
+					"If you don't wish to use OS, then remove this file to disable it: \n"
 					"%s\\dinput8.dll",
-					dir, dir);
+					dir);
 #elif PLATFORM_IS_DEDI
 				sprintf_s(warning,
 					"Open Sauce is a plugin that is only compatible with Halo Dedi (CE) v" BOOST_PP_STRINGIZE(PLATFORM_VERSION_VALUE) ". Your version is incompatible."
 					"\n\n"
 					"If you wish to use OS, you must update or downgrade your haloded.exe file");
+#else
+	#error "What build platform is this? What do you expect me to prompt the user with?"
 #endif
 			}
 

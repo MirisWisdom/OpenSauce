@@ -17,10 +17,11 @@
 #include <YeloLib/memory/security/xxtea.hpp>
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
-#include "Settings/c_settings_singleton.hpp"
+#include <YeloLib/settings/c_settings_singleton.hpp>
+#include <YeloLib/Halo1/cache/cache_files_yelo.hpp>
 
 #include "Common/FileIO.hpp"
-#include "Settings/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameBuildNumber.hpp"
@@ -288,7 +289,7 @@ namespace Yelo
 			char		m_mp_password[k_server_password_length];
 			PAD24;
 			byte		m_mp_password_key[16];
-			long_enum	m_mp_gamever;
+			Enums::network_game_protocol_id	m_mp_gamever;
 
 
 		protected:
@@ -685,9 +686,9 @@ namespace Yelo
 					if(!FileIO::GetFileExtension(extension, sizeof(extension), name))
 						return false;
 
-					if(strcmp(extension, ".yelo") == 0)
+					if(strcmp(extension, Cache::K_MAP_FILE_EXTENSION_YELO) == 0)
 						m_map_part_definition.map_element.m_map_is_yelo = true;
-					else if(strcmp(extension, ".map") == 0)
+					else if(strcmp(extension, Cache::K_MAP_FILE_EXTENSION) == 0)
 						m_map_part_definition.map_element.m_map_is_yelo = false;
 					else
 						return false;
@@ -695,9 +696,9 @@ namespace Yelo
 					strcpy_s(m_map_part_definition.map_element.m_filename, name);
 					strcpy_s(m_map_part_definition.map_element.m_md5, md5);
 
-					if(1 != sscanf_s(uncompressed_size, "%i", &m_map_part_definition.map_element.m_uncompressed_size))
+					if(1 != sscanf_s(uncompressed_size, "%u", &m_map_part_definition.map_element.m_uncompressed_size))
 						uncompressed_size = 0;
-					if(1 != sscanf_s(compressed_size, "%i", &m_map_part_definition.map_element.m_compressed_size))
+					if(1 != sscanf_s(compressed_size, "%u", &m_map_part_definition.map_element.m_compressed_size))
 						compressed_size = 0;
 
 					// set which format the map is compressed with
@@ -1487,8 +1488,9 @@ namespace Yelo
 					// build the output file path
 					char map_file_path[MAX_PATH] = "";
 
+					// TODO: we should probably download maps to the user's profile maps\ instead
 					if(!FileIO::PathBuild(map_file_path,
-						false, 2, "maps",
+						false, 2, Cache::K_MAP_FILES_DIRECTORY,
 						map_element.m_filename))
 						break;
 				
@@ -1501,7 +1503,7 @@ namespace Yelo
 
 					// write the uncompressed data to the map file
 					if(Enums::_file_io_write_error_none != FileIO::WriteToFile(map_file,
-						CAST_PTR(const char*, uncompressed_data),
+						uncompressed_data,
 						(DWORD)uncompressed_size))
 						break;
 
@@ -1530,11 +1532,17 @@ namespace Yelo
 		{
 			c_map_element& map_element = g_map_download_globals.m_map_part_definition.downloader.MapElement();
 
-			cstring map_extension = (map_element.m_map_is_yelo ? ".yelo" : ".map");
+			int map_list_index = NONE;
+#if FALSE // old code
+			cstring map_extension = map_element.m_map_is_yelo 
+				? Cache::K_MAP_FILE_EXTENSION_YELO
+				: Cache::K_MAP_FILE_EXTENSION;
 
 			Engine::Cache::MapListAddMap(map_element.m_filename, map_extension);
-
-			return true;
+#elif FALSE // TODO: new code
+			map_list_index = Interface::MapListAddMapFromPath(/*maps path string here*/, map_element.m_filename);
+#endif
+			return map_list_index != NONE;
 		}
 
 		/*!
@@ -1545,7 +1553,7 @@ namespace Yelo
 		 */
 		void	ReconnectToServer()
 		{
-			BuildNumber::ChangeAdvertisedVersionId(g_map_download_globals.m_servers.dedicated_server.m_mp_gamever, false);
+			BuildNumber::ChangeAdvertisedVersionId(g_map_download_globals.m_servers.dedicated_server.m_mp_gamever);
 			blam::main_connect(g_map_download_globals.m_servers.dedicated_server.m_mp_address,
 				g_map_download_globals.m_servers.dedicated_server.m_mp_password);
 		}
@@ -2204,8 +2212,7 @@ namespace Yelo
 		bool	StartDownloadThread()
 		{
 			// start the download thread
-			// TODO: http://www.viva64.com/en/d/0102/print/
-			g_map_download_globals.m_download_thread.thread_handle = CreateThread(nullptr, 0, DownloadMap, nullptr, 0, nullptr);
+			g_map_download_globals.m_download_thread.thread_handle = CreateThread(nullptr, 0, DownloadMap, nullptr, 0, nullptr); //TODO: V513 http://www.viva64.com/en/V513 Use _beginthreadex/_endthreadex functions instead of CreateThread/ExitThread functions.
 			return g_map_download_globals.m_download_thread.thread_handle != nullptr;
 		}
 
@@ -2344,7 +2351,7 @@ namespace Yelo
 		 */
 		void	Update(real delta)
 		{
-			if(!c_settings_mapdownload::Instance().Get().m_enabled)
+			if(!c_settings_mapdownload::Instance()->m_enabled)
 				return;
 
 			// if the master server list download has not started/finished update the stage
@@ -2430,7 +2437,7 @@ namespace Yelo
 		 */
 		void	AddMapForDownload(const char* map_name)
 		{
-			if(!c_settings_mapdownload::Instance().Get().m_enabled)
+			if(!c_settings_mapdownload::Instance()->m_enabled)
 				return;
 
 			if(_map_download_update_stage_idle != g_map_download_globals.m_map_download_update_stage)
@@ -2465,7 +2472,7 @@ namespace Yelo
 		 */
 		void	Initialize()
 		{
-			c_settings_mapdownload::Register();
+			c_settings_mapdownload::Register(Settings::Manager());
 
 			PathCombine(g_map_download_globals.m_paths.user_download_directory, Settings::OpenSauceProfilePath(), "map_download");
 
@@ -2490,7 +2497,7 @@ namespace Yelo
 
 			CloseHandle(g_globals_access_mutex);
 			
-			c_settings_mapdownload::Unregister();
+			c_settings_mapdownload::Unregister(Settings::Manager());
 		}
 
 		/*!

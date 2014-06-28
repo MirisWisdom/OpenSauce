@@ -119,24 +119,27 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 	if(tags_override == nullptr) return;
 
 	strcpy_s(_override_paths.tags.path, tags_override);
-	char local_tags_name[64];
-	strcpy_s(local_tags_name, tags_name_override);
 	{
 		_strlwr(_override_paths.tags.path);
 		// remove trailing slash if present
 		size_t length = strlen(_override_paths.tags.path);
-		char& last_char = _override_paths.tags.path[length-1];
+		char& last_char = _override_paths.tags.path[length - 1];
 
-		if(last_char == '\\' || last_char == '/')
+		if (last_char == '\\' || last_char == '/')
 			last_char = '\0';
+	}
 
+	char local_tags_name[64];
+	strcpy_s(local_tags_name, tags_name_override);
+	{
 		_strlwr(local_tags_name);
-		length = strlen(local_tags_name);
-		last_char = local_tags_name[length-1];
+		size_t length = strlen(local_tags_name);
+		char& last_char = local_tags_name[length-1];
 
 		if(last_char == '\\' || last_char == '/')
 			last_char = '\0';
 	}
+
 	strcpy_s(_override_paths.tags.path_with_slash, _override_paths.tags.path);
 	strcat_s(_override_paths.tags.path_with_slash, "\\");
 
@@ -333,24 +336,25 @@ void c_memory_fixups::FixupsInitializeFilePaths()
 	}; BOOST_STATIC_ASSERT( NUMBEROF(k_file_path_fixup_names) == _report_type );
 
 	cstring k_reports_path = nullptr;
-	if(Settings::Get().active_profile.IsValid() && !Settings::Get().active_profile.IsIgnored())
+	
+	if (Settings::c_settings_cheape::IsCustomProfile())
 	{
-		strcpy_s(_override_paths.root, Settings::Get().active_profile.root_path);
+		auto& profile = Settings::c_settings_cheape::Profile();
+		strcpy_s(_override_paths.root, profile.GetRootPath());
 		{
 			_strlwr(_override_paths.root);
 
 			// remove trailing slash if present
 			size_t length = strlen(_override_paths.root);
-			char& last_char = _override_paths.root[length-1];
+			char& last_char = _override_paths.root[length - 1];
 
-			if(last_char == '\\' || last_char == '/')
+			if (last_char == '\\' || last_char == '/')
 				last_char = '\0';
 		}
 
-		FixupsInitializeDataPaths(Settings::Get().active_profile.GetDataOverridePath());
-		FixupsInitializeMapsPaths(Settings::Get().active_profile.GetMapsOverridePath());
-		FixupsInitializeTagPaths (Settings::Get().active_profile.GetTagsOverridePath(), 
-			Settings::Get().active_profile.paths.tags_folder_name);
+		FixupsInitializeDataPaths(profile.GetDataPath());
+		FixupsInitializeMapsPaths(profile.GetMapsPath());
+		FixupsInitializeTagPaths(profile.GetTagsPath(), profile.GetTagsName());
 	}
 
 	k_reports_path = Settings::ReportsPath();

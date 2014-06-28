@@ -196,6 +196,9 @@
     <Filter Include="Settings">
       <UniqueIdentifier>{28f035c3-f19c-4795-a2a8-ecd7e968e03b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="_Resources\1.10">
+      <UniqueIdentifier>{96b2b90b-f482-472d-9364-2c28e722c4f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\DebugDump.cpp">
@@ -499,7 +502,7 @@
     <ClCompile Include="Rasterizer\PostProcessing\Generic\Internal\c_settings_internal.cpp">
       <Filter>Rasterizer\PostProcessing\Generic\Internal</Filter>
     </ClCompile>
-    <ClCompile Include="Settings\YeloSettings.cpp">
+    <ClCompile Include="Settings\Settings.cpp">
       <Filter>Settings</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1056,10 +1059,7 @@
     <ClInclude Include="Rasterizer\PostProcessing\Generic\Internal\c_settings_internal.hpp">
       <Filter>Rasterizer\PostProcessing\Generic\Internal</Filter>
     </ClInclude>
-    <ClInclude Include="Settings\YeloSettings.hpp">
-      <Filter>Settings</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings\c_settings_singleton.hpp">
+    <ClInclude Include="Settings\Settings.hpp">
       <Filter>Settings</Filter>
     </ClInclude>
   </ItemGroup>

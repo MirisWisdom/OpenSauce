@@ -492,6 +492,21 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\cryptography\TEA.hpp">
       <Filter>cryptography</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\enum_wrappers.hpp">
+      <Filter>cseries</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\settings\c_settings_manager.hpp">
+      <Filter>settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\settings\c_settings_singleton.hpp">
+      <Filter>settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\c_settings_cheape.hpp">
+      <Filter>open_sauce\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\property_tree_logging.hpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">

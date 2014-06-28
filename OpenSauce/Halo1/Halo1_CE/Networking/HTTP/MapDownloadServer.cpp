@@ -8,11 +8,13 @@
 #include "Networking/HTTP/MapDownloadServer.hpp"
 
 #if PLATFORM_IS_DEDI
+#include <blamlib/Halo1/cache/cache_files.hpp>
 #include <blamlib/Halo1/main/console.hpp>
 #include <YeloLib/memory/linked_list.hpp>
+#include <YeloLib/Halo1/cache/cache_files_yelo.hpp>
 
 #include "Common/FileIO.hpp"
-#include "Settings/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 #include "Networking/HTTP/HTTP.hpp"
 #include "Networking/HTTP/HTTPServer.hpp"
 #include "Networking/Server.hpp"
@@ -641,9 +643,9 @@ namespace Yelo
 				std::string map_name(name);
 				std::string::size_type extension_offset = std::string::npos;
 
-				if((extension_offset = map_name.find(".map")) != std::string::npos)
+				if((extension_offset = map_name.find(Cache::K_MAP_FILE_EXTENSION)) != std::string::npos)
 					map_name.resize(extension_offset);
-				else if((extension_offset = map_name.find(".yelo")) != std::string::npos)
+				else if((extension_offset = map_name.find(Cache::K_MAP_FILE_EXTENSION_YELO)) != std::string::npos)
 					map_name.resize(extension_offset);
 
 				if(FindMap(map_name.c_str()))
@@ -931,9 +933,9 @@ namespace Yelo
 
 			// remove the extension from the map name
 			std::string::size_type extension_offset = std::string::npos;
-			if((extension_offset = map_name.find(".map")) != std::string::npos)
+			if((extension_offset = map_name.find(Cache::K_MAP_FILE_EXTENSION)) != std::string::npos)
 				map_name.resize(extension_offset);
-			else if((extension_offset = map_name.find(".yelo")) != std::string::npos)
+			else if((extension_offset = map_name.find(Cache::K_MAP_FILE_EXTENSION_YELO)) != std::string::npos)
 				map_name.resize(extension_offset);
 
 			// look for the part in the part definition

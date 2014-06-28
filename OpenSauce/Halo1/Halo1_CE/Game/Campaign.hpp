@@ -6,6 +6,9 @@
 */
 #pragma once
 
+// Campaign upgrades as of 1.10 are unsupported/deprecated/fuck off
+#define YELO_CAMPAIGN_UPGRADES_ENABLED FALSE
+
 #if !PLATFORM_IS_DEDI
 
 namespace Yelo

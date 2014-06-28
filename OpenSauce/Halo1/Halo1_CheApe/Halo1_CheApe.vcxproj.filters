@@ -40,9 +40,6 @@
     <Filter Include="_Resources\Impl">
       <UniqueIdentifier>{5ab94466-27b4-4dbe-a323-f7d0e58894d8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="TagGroups">
-      <UniqueIdentifier>{08e81d89-ff61-4465-acbc-e23a306e1be7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Memory">
       <UniqueIdentifier>{76969aab-4c97-46f4-860a-0b1ed7f2c231}</UniqueIdentifier>
     </Filter>
@@ -52,8 +49,14 @@
     <Filter Include="Tool\Shader">
       <UniqueIdentifier>{882f29f0-3e45-4c49-82a2-88b06fc1824d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Settings">
+      <UniqueIdentifier>{59bfb756-8599-4a07-8bb6-0e5fc887a20e}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Tool\Shader\Compiler">
       <UniqueIdentifier>{de3a1164-e123-4c45-b783-71621b9dc2be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TagGroups">
+      <UniqueIdentifier>{08e81d89-ff61-4465-acbc-e23a306e1be7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Tool\Shader\Compiler\Collection">
       <UniqueIdentifier>{77f0bedb-1af9-4a34-8cd6-84ecd1b8a0b6}</UniqueIdentifier>
@@ -100,9 +103,6 @@
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Common\StringEditing.cpp">
-      <Filter>Common</Filter>
-    </ClCompile>
-    <ClCompile Include="Common\YeloSettings.cpp">
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="Guerilla\tag_reference_dialog_extensions.cpp">
@@ -179,11 +179,20 @@
     <ClCompile Include="Tool\Shader\c_shader_processor.cpp">
       <Filter>Tool\Shader</Filter>
     </ClCompile>
+    <ClCompile Include="Settings\Settings.cpp">
+      <Filter>Settings</Filter>
+    </ClCompile>
     <ClCompile Include="Tool\Shader\Compiler\Compiler.cpp">
       <Filter>Tool\Shader\Compiler</Filter>
     </ClCompile>
+    <ClCompile Include="Settings\SettingsTool.cpp">
+      <Filter>Settings</Filter>
+    </ClCompile>
     <ClCompile Include="Tool\Shader\Compiler\Effect\c_effect_compiler.cpp">
       <Filter>Tool\Shader\Compiler\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings\SettingsSapien.cpp">
+      <Filter>Settings</Filter>
     </ClCompile>
     <ClCompile Include="Tool\Shader\Compiler\Effect\c_effect_writer.cpp">
       <Filter>Tool\Shader\Compiler\Effect</Filter>
@@ -239,9 +248,6 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Common\StringEditing.hpp">
-      <Filter>Common</Filter>
-    </ClInclude>
-    <ClInclude Include="Common\YeloSettings.hpp">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="Guerilla\field_dialog_extensions.hpp">
@@ -314,6 +320,15 @@
     </ClInclude>
     <ClInclude Include="Tool\BuildCacheFile\BuildCacheFileEx.hpp">
       <Filter>Tool\BuildCacheFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\Settings.hpp">
+      <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SettingsTool.hpp">
+      <Filter>Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings\SettingsSapien.hpp">
+      <Filter>Settings</Filter>
     </ClInclude>
     <ClInclude Include="Tool\Shader\c_shader_processor.hpp">
       <Filter>Tool\Shader</Filter>

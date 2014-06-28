@@ -49,29 +49,24 @@ namespace Camera
 
 namespace Fov
 {
-	#pragma region OBSERVER_UPDATE_COMMAND
-	FUNC_PTR(OBSERVER_UPDATE_COMMAND, 0x448640, FUNC_PTR_NULL);
-		// Address of the call opcodes to [OBSERVER_UPDATE_COMMAND] inside the function
-		// known as [OBSERVER_UPDATE]
-		FUNC_PTR(OBSERVER_UPDATE_CALL_HOOK_OBSERVER_UPDATE_COMMAND, 0x448413, FUNC_PTR_NULL);
-	#pragma endregion
+	FUNC_PTR(OBSERVER_UPDATE_COMMAND_HOOK,		0x4486DA, FUNC_PTR_NULL);
 
 	#pragma region OBSERVER_UPDATE_POSITIONS
 	FUNC_PTR(OBSERVER_UPDATE_POSITIONS, 0x448DA0, FUNC_PTR_NULL);
-		ENGINE_PTR(bool, OBSERVER_UPDATE_POSITIONS_no_scope_blur, 0x49754F, PTR_NULL);
+		ENGINE_PTR(bool, OBSERVER_UPDATE_POSITIONS_no_scope_blur, 0x49754D+2, PTR_NULL);
 		// Address of the call opcodes to [OBSERVER_UPDATE_POSITIONS] inside the function
 		// known as [OBSERVER_TICK]
 		FUNC_PTR(OBSERVER_TICK_CALL_HOOK_OBSERVER_UPDATE_POSITIONS, 0x448729, FUNC_PTR_NULL);
 	#pragma endregion
 
-	ENGINE_PTR(real*, MAX, 0x449524, PTR_NULL);
+	ENGINE_PTR(real*, MAX, 0x449522+2, PTR_NULL);
 };
 
 
 //////////////////////////////////////////////////////////////////////////
 // Campaign.cpp. CLIENT BUILDS ONLY
 #elif __EL_INCLUDE_FILE_ID == __EL_GAME_CAMPAIGN
-
+#if YELO_CAMPAIGN_UPGRADES_ENABLED
 	#pragma region Scenario Paths
 	static cstring** ScenarioPathsReferences[] = {
 		CAST_PTR(cstring**, 0x49FBB3), CAST_PTR(cstring**, 0x49FD13), /*CAST_PTR(cstring**, 0x49FE6C),*/
@@ -127,6 +122,7 @@ namespace Fov
 		CAST_PTR(int16*, 0x49FCF6), /*CAST_PTR(int16*, 0x49FEE7),*/ CAST_PTR(int16*, 0x53C98A),
 	};
 	#pragma endregion
+#endif
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -184,9 +180,9 @@ namespace Fov
 	ENGINE_PTR(char, game_build_version,							0x60A3C8, 0x564B34);
 	ENGINE_PTR(char, game_build_version_gamespy,					0x6BDD18, 0x626398);
 
-	ENGINE_PTR(long_enum, game_version_id1,							0x4DC2D6, 0x4C3866);
-	ENGINE_PTR(long_enum, game_version_id2,							0x4DC4B3, 0x4C3A43);
-	ENGINE_PTR(long_enum, game_version_id3,							0x4E3FF3, 0x4CB583);
+	ENGINE_PTR(Enums::network_game_protocol_id, network_version_id1,0x4DC2D6, 0x4C3866);
+	ENGINE_PTR(Enums::network_game_protocol_id, network_version_id2,0x4DC4B3, 0x4C3A43);
+	ENGINE_PTR(Enums::network_game_protocol_id, network_version_id3,0x4E3FF3, 0x4CB583);
 
 	FUNC_PTR(GAME_STATE_HEADER_IS_VALID_HOOK,						0x53BBB7+0x30, 0x4F7187+0x30);
 	FUNC_PTR(GAME_STATE_HEADER_IS_VALID_HOOK_RET,					0x53BC0B+0x30, 0x4F71DB+0x30);

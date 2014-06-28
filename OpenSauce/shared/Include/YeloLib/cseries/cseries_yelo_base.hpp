@@ -18,6 +18,13 @@ extern const errno_t k_errnone;
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum {
+			k_uuid_buffer_size = 16,
+		};
+	};
+
 	// System Initialize function pointer
 	// Note: We can use this in engine definitions as well since it takes no parameters
 	typedef void (API_FUNC* proc_initialize)();
@@ -154,12 +161,28 @@ namespace Yelo
 	extern const real K_REAL_MAX;		/// <summary>	max value for a [real]. </summary>
 
 
+	// TODO: refactor these to PascalCase
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////
-	/// <summary>	Tests whether a wide string is NULL or contains no characters </summary>
+	/// <summary>	Tests whether an ASCII string is NULL or begins with a null terminator </summary>
 	inline bool is_null_or_empty( cstring const str) { return str == nullptr || str[0] ==  '\0'; }
 	////////////////////////////////////////////////////////////////////////////////////////////////////
-	/// <summary>	Tests whether a wide string is NULL or contains no characters </summary>
+	/// <summary>	Tests whether an ASCII string buffer begins with a null terminator </summary>
+	template<size_t kLength> inline
+	bool is_null_or_empty(const char (&array)[kLength])
+	{
+		return array[0] == '\0';
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Tests whether a wide string is NULL or begins with a null terminator </summary>
 	inline bool is_null_or_empty(wcstring const str) { return str == nullptr || str[0] == L'\0'; }
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Tests whether a wide string buffer begins with a null terminator </summary>
+	template<size_t kLength> inline
+	bool is_null_or_empty(const wchar_t (&array)[kLength])
+	{
+		return array[0] == L'\0';
+	}
 
 	// Takes [wide] and converts it to an ascii string, to be held in [string]. If [wide_length] is not -1, the string
 	// is assumed to be null terminated
@@ -178,6 +201,15 @@ namespace Yelo
 
 	// [string_length] includes the null terminator
 	wstring string_to_wstring_lazy(wstring string, int32 string_length, cstring ascii);
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Determines whether the end of the string instance matches the specified suffix string. </summary>
+	///
+	/// <param name="str">   	The string in question. </param>
+	/// <param name="suffix">	The string to compare to the substring at the end of this instance. </param>
+	///
+	/// <returns>	true if suffix matches the end of the instance; otherwise, false. </returns>
+	bool EndsWith(const std::string& str, const std::string& suffix);
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/// <summary>
@@ -357,6 +389,23 @@ namespace Yelo
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
+	/// <summary>	Tests whether an array is bitwise zero. </summary>
+	///
+	/// <param name="array">	Array to test. </param>
+	/// <param name="index"> 	Element index in array to start testing at. </param>
+	/// 
+	///  <returns>	true if the array elements are equal to bitwise zero, false if one or more aren't. </returns>
+	template<typename T, size_t kLength> inline
+	bool ArrayIsZero (T (&array)[kLength], size_t index = 0)
+	{
+		T zero = T();
+		for (size_t x = index; x < kLength; x++)
+			if (memcmp(&array[x], &zero, sizeof(zero)) != 0)
+				return false;
+
+		return true;
+	}
+	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/// <summary>	Clear an array to be bitwise zero. </summary>
 	///
 	/// <param name="array">	Array to zero. </param>
@@ -393,7 +442,7 @@ namespace Yelo
 	template<typename T, size_t kDstLength, size_t kSrcLength> inline
 	bool ArrayCopy   (T (&dst)[kDstLength], const T (&src)[kSrcLength], size_t count = kSrcLength)
 	{
-		return ArrayCopy(dst, src, count);
+		return ArrayCopy(dst, 0, src, 0, count);
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/// <summary>	Copy a range of elements from one array to another. </summary>

@@ -5,7 +5,6 @@
     <OSRequiresDirectX>true</OSRequiresDirectX>
     <OSRequiresCppBoost>true</OSRequiresCppBoost>
     <OSRequiresVLD>true</OSRequiresVLD>
-    <OSRequiresHaloCustomEd>true</OSRequiresHaloCustomEd>
   </PropertyGroup>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -102,15 +101,19 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_file_xml.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_leaf.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_leaf_iterator.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\property_tree_logging.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_vector3d_container.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_type_container.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\cryptography\TEA.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\enum_wrappers.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_files_structures_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cseries\memory_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\memory\constant_pool.hpp" />
-    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\che_ape_settings.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\c_settings_cheape.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\settings\c_settings_manager.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\settings\c_settings_singleton.hpp" />
     <ClInclude Include="Common\Platform.hpp" />
     <ClInclude Include="Common\Precompile.hpp" />
     <ClInclude Include="Common\targetver.h" />
@@ -262,9 +265,12 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_file_xml.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_leaf.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\c_property_tree_leaf_iterator.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\property_tree_logging.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_vector3d_container.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\cryptography\TEA.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\c_settings_cheape.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\settings\c_settings_manager.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.cpp" />
     <ClCompile Include="..\..\shared\Include\zlib\adler32.c">
       <PrecompiledHeader />
@@ -430,9 +436,7 @@
     <Xml Include="..\..\shared\Halo1\CheApe\equipment_hud_interface_definition.xml" />
     <Xml Include="..\..\shared\Halo1\CheApe\model_animations_yelo.xml" />
     <Xml Include="..\..\shared\Halo1\CheApe\multilingual_unicode_string_list.xml" />
-    <Xml Include="..\..\shared\Halo1\CheApe\project_yellow.xml">
-      <SubType>Designer</SubType>
-    </Xml>
+    <Xml Include="..\..\shared\Halo1\CheApe\project_yellow.xml" />
     <Xml Include="..\..\shared\Halo1\CheApe\project_yellow_globals.xml" />
     <Xml Include="..\..\shared\Halo1\CheApe\project_yellow_globals_cv.xml" />
     <Xml Include="..\..\shared\Halo1\CheApe\project_yellow_includes.xml" />

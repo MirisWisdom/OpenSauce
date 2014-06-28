@@ -11,7 +11,7 @@
 
 #include <YeloLib/Halo1/cache/data_file_yelo.hpp>
 
-#include "Common/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 #include "Engine/EngineFunctions.hpp"
 #include "Tool/Tool_AnimationFixups.hpp"
 

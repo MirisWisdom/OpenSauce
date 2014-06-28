@@ -30,7 +30,8 @@ namespace Yelo
 		cstring UserProfilePath();
 		// 'savegames' path
 		cstring UserSavedProfilesPath();
-		// maps folder under the user's profile
+		// maps folder under the user's profile.
+		// Returns an empty string if the maps folder doesn't exist
 		cstring UserProfileMapsPath();
 		// The OpenSauce path to use that is under the User's game profile
 		cstring OpenSauceProfilePath();

@@ -26,54 +26,6 @@ namespace Yelo
 #define __EL_INCLUDE_FILE_ID	__EL_RASTERIZER_DX9_DEVICEHOOKS
 #include "Memory/_EngineLayout.inl"
 
-		API_FUNC_NAKED static void Hook_D3DCreateDeviceCall()
-		{
-			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_D3D_CREATE_DEVICE_RETN);
-			static void* CALL_ADDRESS = CreateDevice;
-
-			_asm {
-				push	ebp
-				push	eax
-
-				call	CALL_ADDRESS
-				jmp		RETN_ADDRESS
-			}
-		}
-
-		API_FUNC_NAKED static void Hook_D3DResetCall()
-		{
-			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_D3D_RESET_DEVICE_RETN);
-			static void* CALL_ADDRESS = Reset;
-
-			_asm {
-				push	esi
-				push	eax
-				call	CALL_ADDRESS
-				jmp		RETN_ADDRESS
-			}
-		}
-
-		void Initialize()
-		{
-			Memory::WriteRelativeJmp(Hook_D3DCreateDeviceCall, GET_FUNC_VPTR(RASTERIZER_D3D_CREATE_DEVICE_HOOK), true);
-			Memory::WriteRelativeJmp(Hook_D3DResetCall, GET_FUNC_VPTR(RASTERIZER_D3D_RESET_DEVICE_HOOK), true);
-
-			CreateD3DHook(GET_FUNC_VPTR(RASTERIZER_D3D_BEGIN_SCENE_CALL), BeginScene);
-			CreateD3DHook(GET_FUNC_VPTR(RASTERIZER_D3D_END_SCENE_CALL), EndScene);
-
-			CreateD3DHook(GET_FUNC_VPTR(RASTERIZER_SET_WORLD_VIEW_PROJECTION_MATRIX_VERTEX_CONSTANT_CALL), SetVertexShaderConstantF_ViewProj);
-			
-			for(int i = 0; i < NUMBEROF(K_RASTERIZER_SET_MODEL_SPEC_COLOR_VERTEX_CONSTANT_CALLS); i++)
-				CreateD3DHook(K_RASTERIZER_SET_MODEL_SPEC_COLOR_VERTEX_CONSTANT_CALLS[i], SetVertexShaderConstantF_ModelSpecColor);
-			
-			CreateD3DHook(GET_FUNC_VPTR(RASTERIZER_SET_MODEL_VERTEX_LIGHT_VERTEX_CONSTANT_CALL), SetVertexShaderConstantF_ModelVertexLight);
-		}
-
-		void Dispose()
-		{
-
-		}
-
 		static void CreateD3DHook(void* call_address, void* hook_address)
 		{
 			Memory::WriteRelativeCall(hook_address, call_address, true);
@@ -174,6 +126,48 @@ namespace Yelo
 			if(set_original)
 				return device->SetVertexShaderConstantF(StartRegister, pConstantData, Vector4fCount);
 			return S_OK;
+		}
+
+		API_FUNC_NAKED static void Hook_D3DCreateDeviceCall()
+		{
+			static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_D3D_CREATE_DEVICE_RETN);
+
+			_asm {
+				push	ebp
+				push	eax
+
+				call	DeviceHooks::CreateDevice
+				jmp		RETN_ADDRESS
+			}
+		}
+
+		API_FUNC_NAKED static void Hook_D3DResetCall()
+		{
+			API_FUNC_NAKED_START_()
+				push	esi
+				push	eax
+				call	DeviceHooks::Reset
+			API_FUNC_NAKED_END_()
+		}
+
+		void Initialize()
+		{			
+			Memory::WriteRelativeJmp(Hook_D3DCreateDeviceCall, GET_FUNC_VPTR(RASTERIZER_D3D_CREATE_DEVICE_HOOK), true);
+			Memory::WriteRelativeCall(Hook_D3DResetCall, GET_FUNC_VPTR(RASTERIZER_D3D_RESET_DEVICE_HOOK), true);
+
+			CreateD3DHook(GET_FUNC_VPTR(RASTERIZER_D3D_BEGIN_SCENE_CALL), BeginScene);
+			CreateD3DHook(GET_FUNC_VPTR(RASTERIZER_D3D_END_SCENE_CALL), EndScene);
+
+			CreateD3DHook(GET_FUNC_VPTR(RASTERIZER_SET_WORLD_VIEW_PROJECTION_MATRIX_VERTEX_CONSTANT_CALL), SetVertexShaderConstantF_ViewProj);
+			
+			for (auto call_address : K_RASTERIZER_SET_MODEL_SPEC_COLOR_VERTEX_CONSTANT_CALLS)
+				CreateD3DHook(call_address, SetVertexShaderConstantF_ModelSpecColor);
+
+			CreateD3DHook(GET_FUNC_VPTR(RASTERIZER_SET_MODEL_VERTEX_LIGHT_VERTEX_CONSTANT_CALL), SetVertexShaderConstantF_ModelVertexLight);
+		}
+
+		void Dispose()
+		{
 		}
 	};};
 };

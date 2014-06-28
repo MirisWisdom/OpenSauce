@@ -33,6 +33,15 @@ namespace Yelo
 		bool IsClient();
 	};
 
+	namespace Main
+	{
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Get the HaloCE executable path as it is defined in the registry ("EXE Path"). </summary>
+		///
+		/// <returns>	The EXE Path value with an ending '\', or an empty string if the registry query failed </returns>
+		const std::string& RegistryGetGameExePath();
+	};
+
 	namespace blam
 	{
 		// Gets the current connection type

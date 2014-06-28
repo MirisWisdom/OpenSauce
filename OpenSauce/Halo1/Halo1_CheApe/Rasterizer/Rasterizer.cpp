@@ -10,7 +10,7 @@
 
 #include <blamlib/Halo1/models/model_definitions.hpp>
 
-#include "Common/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 
 namespace Yelo
 {
@@ -39,32 +39,19 @@ namespace Yelo
 
 		void Initialize()
 		{
-			PLATFORM_VALUE(__noop, __noop,
-				g_render_upgrades.Initialize());
+#if PLATFORM_TYPE == PLATFORM_SAPIEN
+			g_render_upgrades.InitializeDynamicTrianglesUpgrade();
+			g_render_upgrades.InitializeMaximumNodesPerModelFixes();
 			// TODO: remove this once/if we renable effects rendering in sapien
 #if !PLATFORM_DISABLE_UNUSED_CODE
-			PLATFORM_VALUE(__noop, __noop,
-				Render::render_particles_mods::Initialize());
+			Render::render_particles_mods::Initialize();
+#endif
+
 #endif
 		}
 
 		void Dispose()
-		{
-			PLATFORM_VALUE(__noop, __noop,
-				g_render_upgrades.Dispose());
-		}
-
-		void LoadSettings(TiXmlElement* dx9_element)
-		{
-			PLATFORM_VALUE(__noop, __noop,
-				g_render_upgrades.LoadSettings(dx9_element));
-		}
-
-		void SaveSettings(TiXmlElement* dx9_element)
-		{
-			PLATFORM_VALUE(__noop, __noop,
-				g_render_upgrades.SaveSettings(dx9_element));
-		}
+		{ }
 	};
 };
 #else

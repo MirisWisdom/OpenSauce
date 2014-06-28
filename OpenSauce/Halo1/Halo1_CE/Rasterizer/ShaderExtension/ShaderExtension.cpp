@@ -17,9 +17,9 @@
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
-#include "Settings/c_settings_singleton.hpp"
+#include <YeloLib/settings/c_settings_singleton.hpp>
 
-#include "Settings/YeloSettings.hpp"
+#include "Settings/Settings.hpp"
 #include "Common/FileIO.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameState.hpp"
@@ -218,21 +218,23 @@ namespace Yelo
 					Flags::_shader_extension_usage_specular_map | Flags::_shader_extension_usage_specular_lighting;
 
 					int32 usage_mask = Flags::_shader_extension_usage_none;
-
-					usage_mask |= (Get().m_shader_model.m_normal_maps ? Flags::_shader_extension_usage_normal_map : Flags::_shader_extension_usage_none);
-					usage_mask |= (Get().m_shader_model.m_detail_normal_maps ? Flags::_shader_extension_usage_detail_normal : Flags::_shader_extension_usage_none);
-					usage_mask |= (Get().m_shader_model.m_specular_maps ? Flags::_shader_extension_usage_specular_map : Flags::_shader_extension_usage_none);
-					usage_mask |= (Get().m_shader_model.m_specular_lighting ? Flags::_shader_extension_usage_specular_lighting : Flags::_shader_extension_usage_none);
+					
+					auto& settings_instance = Get();
+					usage_mask |= (settings_instance.m_shader_model.m_normal_maps ? Flags::_shader_extension_usage_normal_map : Flags::_shader_extension_usage_none);
+					usage_mask |= (settings_instance.m_shader_model.m_detail_normal_maps ? Flags::_shader_extension_usage_detail_normal : Flags::_shader_extension_usage_none);
+					usage_mask |= (settings_instance.m_shader_model.m_specular_maps ? Flags::_shader_extension_usage_specular_map : Flags::_shader_extension_usage_none);
+					usage_mask |= (settings_instance.m_shader_model.m_specular_lighting ? Flags::_shader_extension_usage_specular_lighting : Flags::_shader_extension_usage_none);
 
 					Model::g_extension_usage_mask &= usage_mask;
 				}
 
 				void GetModelUsage()
 				{
-					Get().m_shader_model.m_normal_maps = TEST_FLAG(Model::g_extension_usage_mask, Enums::_shader_extension_usage_bit_normal_map);
-					Get().m_shader_model.m_detail_normal_maps = TEST_FLAG(Model::g_extension_usage_mask, Enums::_shader_extension_usage_bit_detail_normal);
-					Get().m_shader_model.m_specular_maps = TEST_FLAG(Model::g_extension_usage_mask, Enums::_shader_extension_usage_bit_specular_map);
-					Get().m_shader_model.m_specular_lighting = TEST_FLAG(Model::g_extension_usage_mask, Enums::_shader_extension_usage_bit_specular_lighting);
+					auto& settings_instance = Get();
+					settings_instance.m_shader_model.m_normal_maps = TEST_FLAG(Model::g_extension_usage_mask, Enums::_shader_extension_usage_bit_normal_map);
+					settings_instance.m_shader_model.m_detail_normal_maps = TEST_FLAG(Model::g_extension_usage_mask, Enums::_shader_extension_usage_bit_detail_normal);
+					settings_instance.m_shader_model.m_specular_maps = TEST_FLAG(Model::g_extension_usage_mask, Enums::_shader_extension_usage_bit_specular_map);
+					settings_instance.m_shader_model.m_specular_lighting = TEST_FLAG(Model::g_extension_usage_mask, Enums::_shader_extension_usage_bit_specular_lighting);
 				}
 #pragma endregion
 
@@ -287,7 +289,7 @@ namespace Yelo
 
 			void		Initialize()
 			{
-				c_settings_shaderextension::Register();
+				c_settings_shaderextension::Register(Settings::Manager());
 
 				g_shader_files_present = true;
 
@@ -304,7 +306,7 @@ namespace Yelo
 
 			void		Dispose()
 			{
-				c_settings_shaderextension::Unregister();
+				c_settings_shaderextension::Unregister(Settings::Manager());
 			}
 
 			void		Initialize3D(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* params)
