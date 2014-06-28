@@ -17,8 +17,8 @@ namespace BlamLib.Render.COLLADA.Core
 	public partial class ColladaLibraryLights : ColladaElement
 	{
 		#region Fields
-		ColladaObjectAttribute<string> _id;
-		ColladaObjectAttribute<string> _name;
+		ColladaObjectAttribute<ColladaID<ColladaLibraryLights>> _id;
+		ColladaObjectAttribute<ColladaNCName> _name;
 
 		ColladaObjectElement<ColladaAsset> _asset;
 		ColladaObjectElementList<ColladaLight> _light;
@@ -51,8 +51,8 @@ namespace BlamLib.Render.COLLADA.Core
 
 		public ColladaLibraryLights() : base(Enums.ColladaElementType.Core_LibraryLights)
 		{
-			Fields.Add(_id = new ColladaObjectAttribute<string>(""));
-			Fields.Add(_name = new ColladaObjectAttribute<string>(""));
+			Fields.Add(_id = new ColladaObjectAttribute<ColladaID<ColladaLibraryLights>>(""));
+			Fields.Add(_name = new ColladaObjectAttribute<ColladaNCName>(""));
 
 			Fields.Add(_asset = new ColladaObjectElement<ColladaAsset>());
 			Fields.Add(_light = new ColladaObjectElementList<ColladaLight>());

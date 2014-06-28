@@ -17,8 +17,8 @@ namespace BlamLib.Render.COLLADA.Fx
 	public partial class ColladaTechnique : ColladaElement
 	{
 		#region Fields
-		ColladaObjectAttribute<string> _id;
-		ColladaObjectAttribute<string> _sid;
+		ColladaObjectAttribute<ColladaID<ColladaTechnique>> _id;
+		ColladaObjectAttribute<ColladaNCName> _sid;
 		ColladaObjectElement<Core.ColladaAsset> _asset;
 		ColladaObjectElementList<ColladaNewparam> _newparam;
 		ColladaObjectElementList<ColladaImage> _image;
@@ -75,8 +75,8 @@ namespace BlamLib.Render.COLLADA.Fx
 
 		public ColladaTechnique() : base(Enums.ColladaElementType.Fx_Technique)
 		{
-			Fields.Add(_id = new ColladaObjectAttribute<string>(""));
-			Fields.Add(_sid = new ColladaObjectAttribute<string>(""));
+			Fields.Add(_id = new ColladaObjectAttribute<ColladaID<ColladaTechnique>>(""));
+			Fields.Add(_sid = new ColladaObjectAttribute<ColladaNCName>(""));
 			Fields.Add(_asset = new ColladaObjectElement<Core.ColladaAsset>());
 			Fields.Add(_newparam = new ColladaObjectElementList<ColladaNewparam>());
 			Fields.Add(_image = new ColladaObjectElementList<ColladaImage>());

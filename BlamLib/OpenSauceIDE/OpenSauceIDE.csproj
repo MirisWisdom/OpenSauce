@@ -41,6 +41,212 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Aether\Aether.cs" />
+    <Compile Include="Aether\AetherMainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Aether\AetherMainForm.Designer.cs">
+      <DependentUpon>AetherMainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aether\AutoUI\Attributes\Attributes.cs" />
+    <Compile Include="Aether\AutoUI\AutoUIFactory.cs" />
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamRealColor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamRealColor.Designer.cs">
+      <DependentUpon>AutoUIBlamRealColor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamRealBounds.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamRealBounds.Designer.cs">
+      <DependentUpon>AutoUIBlamRealBounds.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamRealPoint2D.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamMultiReal.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamRealPoint3D.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamRealVector2D.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamRealVector3D.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamRealQuaternion.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamRealEulerAngles2D.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamRealEulerAngles3D.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamRealPlane2D.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamRealPlane3D.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamByteInteger.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamShortInteger.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamLongInteger.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamMultiValue.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamMultiValue.Designer.cs">
+      <DependentUpon>AutoUIBlamMultiValue.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamPoint2D.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamRectangle2D.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamTag.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamEnum.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamFlags.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamShortIntegerBounds.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamShortIntegerBounds.Designer.cs">
+      <DependentUpon>AutoUIBlamShortIntegerBounds.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamBlockIndex.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamMultiShort.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamMultiByte.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamLibFieldDecorators.cs" />
+    <Compile Include="Aether\AutoUI\Controls\AutoUIChar.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamString.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\BlamControls\AutoUIBlamReal.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\Controls\AutoUIPathString.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\Controls\AutoUIPathString.Designer.cs">
+      <DependentUpon>AutoUIPathString.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aether\AutoUI\TypeDescriptor\AutoUITypeDecorator.cs" />
+    <Compile Include="Aether\AutoUI\TypeDescriptor\AutoUITypeDescriptionManager.cs" />
+    <Compile Include="Aether\AutoUI\TypeDescriptor\AutoUITypeDescriptor.cs" />
+    <Compile Include="Aether\AutoUI\TypeDescriptor\IAutoUITypeDescriptor.cs" />
+    <Compile Include="Aether\AutoUI\Controls\AutoUIByte.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\Controls\AutoUIClass.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\Controls\AutoUIEnum.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\Controls\AutoUIFieldContainer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\Controls\AutoUIFieldContainer.Designer.cs">
+      <DependentUpon>AutoUIFieldContainer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aether\AutoUI\Controls\AutoUINumeric.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\Controls\AutoUISByte.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\Controls\AutoUISingle.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\Controls\AutoUIDouble.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\Controls\AutoUIUInt16.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\Controls\AutoUIUInt32.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\Controls\AutoUIUInt64.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\Controls\AutoUIInt16.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\Controls\AutoUIInt32.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\Controls\AutoUIInt64.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\Controls\IAutoUIMemberValue.cs" />
+    <Compile Include="Aether\Controls\CollapsibleGroupBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Aether\Controls\CollapsibleGroupBox.Designer.cs">
+      <DependentUpon>CollapsibleGroupBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aether\Controls\ISceneObjectListUI.cs" />
+    <Compile Include="Aether\AutoUI\Controls\AutoUIString.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\Controls\IAutoUIControl.cs" />
+    <Compile Include="Aether\AutoUI\Controls\AutoUIBoolean.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\AutoUI\Controls\AutoUIFlags.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Aether\Controls\ISceneObjectUI.cs" />
+    <Compile Include="Aether\Controls\SceneObjectExtractableGroupBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Aether\Controls\SceneObjectExtractableGroupBox.Designer.cs">
+      <DependentUpon>SceneObjectExtractableGroupBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aether\Controls\SceneObjectGroupBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Aether\Controls\SceneObjectGroupBox.Designer.cs">
+      <DependentUpon>SceneObjectGroupBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Aether\Extraction\ExtractionManager.cs" />
+    <Compile Include="Aether\FileIO\DDS.cs" />
+    <Compile Include="Aether\Output\OutputManager.cs" />
+    <Compile Include="Aether\Project\AetherProject.cs">
+    </Compile>
+    <Compile Include="Aether\Project\Halo1\AetherProjectHalo1.cs">
+    </Compile>
+    <Compile Include="Aether\Project\Halo1\SceneObjectLight.cs" />
+    <Compile Include="Aether\Project\Halo1\SceneObjectObject.cs" />
+    <Compile Include="Aether\Project\Halo1\SceneObjectScenario.cs" />
+    <Compile Include="Aether\Project\Halo1\SceneObjectStructureBSP.cs" />
+    <Compile Include="Aether\SceneObject\SceneObject.cs" />
+    <Compile Include="Aether\Settings\AetherSettings.cs" />
+    <Compile Include="Aether\TagIO\AetherTagIndexHandler.cs" />
     <Compile Include="Cache\CachePacker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -109,6 +315,36 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Aether\AetherMainForm.resx">
+      <DependentUpon>AetherMainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Aether\AutoUI\BlamControls\AutoUIBlamRealColor.resx">
+      <DependentUpon>AutoUIBlamRealColor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Aether\AutoUI\BlamControls\AutoUIBlamRealBounds.resx">
+      <DependentUpon>AutoUIBlamRealBounds.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Aether\AutoUI\BlamControls\AutoUIBlamMultiValue.resx">
+      <DependentUpon>AutoUIBlamMultiValue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Aether\AutoUI\BlamControls\AutoUIBlamShortIntegerBounds.resx">
+      <DependentUpon>AutoUIBlamShortIntegerBounds.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Aether\AutoUI\Controls\AutoUIFieldContainer.resx">
+      <DependentUpon>AutoUIFieldContainer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Aether\AutoUI\Controls\AutoUIPathString.resx">
+      <DependentUpon>AutoUIPathString.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Aether\Controls\CollapsibleGroupBox.resx">
+      <DependentUpon>CollapsibleGroupBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Aether\Controls\SceneObjectExtractableGroupBox.resx">
+      <DependentUpon>SceneObjectExtractableGroupBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Aether\Controls\SceneObjectGroupBox.resx">
+      <DependentUpon>SceneObjectGroupBox.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Cache\CachePacker.resx">
       <DependentUpon>CachePacker.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -196,6 +432,8 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ServerMapDownloadTool\SettingsHandler.cs" />
+    <Compile Include="Settings\BlamSettingsInterface.cs" />
+    <Compile Include="Settings\PropertyTree.cs" />
     <Compile Include="Settings\SettingsManager.cs" />
     <Compile Include="Tool.cs" />
   </ItemGroup>

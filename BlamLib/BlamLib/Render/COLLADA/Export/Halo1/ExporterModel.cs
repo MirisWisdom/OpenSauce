@@ -13,34 +13,74 @@ using H1 = BlamLib.Blam.Halo1;
 
 namespace BlamLib.Render.COLLADA.Halo1
 {
-	public class ColladaModelExporter : ColladaModelExporterHalo1
+    ///-------------------------------------------------------------------------------------------------
+    /// <summary>   Interface for halo 1 model data provider. </summary>
+    ///-------------------------------------------------------------------------------------------------
+	public interface IHalo1ModelDataProvider : IColladaDataProvider
 	{
-		#region Class Fields
-		IHalo1ModelInterface modelInfo;
-		#endregion
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Gets the bone list for the model. </summary>
+        /// <returns>   The models bones. </returns>
+        ///-------------------------------------------------------------------------------------------------
+		ModelData.ModelBoneList GetBones();
 
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Gets a list of all the geometries in the model. </summary>
+        /// <returns>   The geometries contained in the model. </returns>
+        ///-------------------------------------------------------------------------------------------------
+		ModelData.ModelGeometrySetList GetGeometries();
+
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Gets a list of all the geometries in the model for a specific permutation and level of detial. </summary>
+        /// <param name="permutation">  The permutation. </param>
+        /// <param name="lod">          The LOD. </param>
+        /// <returns>   The geometries contained in the model. </returns>
+        ///-------------------------------------------------------------------------------------------------
+		ModelData.ModelGeometrySetList GetGeometries(int permutation, Blam.Halo1.TypeEnums.LevelOfDetailEnum lod);
+
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>   Gets the models marker instances. </summary>
+        /// <returns>   The the models marker instances. </returns>
+        ///-------------------------------------------------------------------------------------------------
+		ModelData.ModelMarkerInstanceList GetMarkerInstances();
+	}
+
+    ///-------------------------------------------------------------------------------------------------
+    /// <summary>   Collada Halo1 GBXModel exporter. </summary>
+    ///-------------------------------------------------------------------------------------------------
+	public class ColladaModelExporter : ColladaExporterHalo1
+	{
 		#region Constructor
-		/// <summary>
-		/// Halo1 Model exporter class
-		/// </summary>
-		/// <param name="model_info">An object implementing IHalo1ModelInterface to provide geometry name and index pairs</param>
-		/// <param name="tag_index">The tag index containing the tag being exported</param>
-		/// <param name="tag_manager">The tag manager of the tag being exported</param>
-		public ColladaModelExporter(ColladaExportArgs arguments, IHalo1ModelInterface model_info, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager)
-			: base(arguments, model_info, tag_index, tag_manager)
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Halo1 Model exporter class. </summary>
+		/// <param name="arguments"> 	Export arguments for the collada interface. </param>
+		/// <param name="tagIndex">  	The tag index containing the tag being exported. </param>
+		/// <param name="tagManager">	The tag manager of the tag being exported. </param>
+		///-------------------------------------------------------------------------------------------------
+		public ColladaModelExporter(IColladaSettings settings, Managers.TagIndexBase tagIndex, Managers.TagManager tagManager)
+			: base(settings, tagIndex)
 		{
-			modelInfo = model_info;
+			mTagManager = tagManager;
 		}
 		#endregion
 
+		#region Fields
+		private IHalo1ModelDataProvider mModelDataProvider = null;
+		private Managers.TagManager mTagManager;
+		private string TagName
+		{
+			get { return Path.GetFileNameWithoutExtension(mTagManager.Name); }
+		}
+		#endregion Fields
+
 		#region Element Creation
 		#region Create Geometry
-		/// <summary>
-		/// Creates a vertex index list from a gbxmodel geometry part
-		/// </summary>
-		/// <param name="part">The part to create an index list from</param>
-		/// <param name="index_offset">The amount to offset the indices by</param>
-		/// <returns></returns>
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Creates a vertex index list from a gbxmodel geometry part. </summary>
+		/// <param name="part">		   	The part to create an index list from. </param>
+		/// <param name="index_offset">	The amount to offset the indices by. </param>
+		/// <returns>	The new indices model. </returns>
+		///-------------------------------------------------------------------------------------------------
 		private List<int> CreateIndicesModel(H1.Tags.gbxmodel_group.model_geometry_block.model_geometry_part_block part,
 			int index_offset)
 		{
@@ -54,34 +94,46 @@ namespace BlamLib.Render.COLLADA.Halo1
 			}
 
 			// return the index list after converting to a triangle list
-			return ConvertTriStripToList(index_list);
+			return ConvertTriStripToList(index_list, true);
 		}
-		/// <summary>
-		/// Creates geometry elements for all of the included geometry blocks
-		/// </summary>
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Creates geometry elements for all of the included geometry blocks. </summary>
+		///-------------------------------------------------------------------------------------------------
 		void CreateGeometryList()
 		{
-			H1.Tags.gbxmodel_group definition = tagManager.TagDefinition as H1.Tags.gbxmodel_group;
-
-			// create a list contining the names of all the shaders being used
-			List<string> shader_names = new List<string>();
-			foreach (var shader in definition.Shaders)
-				shader_names.Add(Path.GetFileNameWithoutExtension(shader.Shader.ToString()));
-
-			for (int i = 0; i < modelInfo.GetGeometryCount(); i++)
+			List<string> shaderList = new List<string>();
+			if (mShaderDataProvider != null)
 			{
-				string name = ColladaUtilities.FormatName(modelInfo.GetGeometryName(i), " ", "_");
-				
-				List<Vertex> common_vertices = new List<Vertex>();
+				// Create a list of every shader used
+				foreach (var effect in mShaderDataProvider.GetEffectsMap())
+				{
+					shaderList.Add(ColladaUtilities.FormatName(Path.GetFileNameWithoutExtension(effect.Name), " ", "_"));
+				}
+			}
+			
+			H1.Tags.gbxmodel_group definition = mTagManager.TagDefinition as H1.Tags.gbxmodel_group;
 
-				H1.Tags.gbxmodel_group.model_geometry_block geometry = definition.Geometries[modelInfo.GetGeometryIndex(i)];
+			var geometrySetList = mModelDataProvider.GetGeometries();
+
+			foreach(var geometrySet in geometrySetList)
+			{
+				string name = ColladaUtilities.FormatName(geometrySet.Name, " ", "_");
+
+				Geometry geometryData = new Geometry(name
+					, 1
+					, Geometry.VertexComponent.POSITION
+					| Geometry.VertexComponent.NORMAL
+					| Geometry.VertexComponent.BINORMAL
+					| Geometry.VertexComponent.TANGENT
+					| Geometry.VertexComponent.TEXCOORD);
 
 				// collect the vertices for all of the geometries parts
-				foreach(var part in geometry.Parts)
+				foreach (var part in geometrySet.Geometry.Parts)
 				{
 					foreach(var vertex in part.UncompressedVertices)
 					{
-						Vertex common_vertex = new Vertex(vertex.Position.ToPoint3D(100),
+						Geometry.Vertex common_vertex = new Geometry.Vertex(vertex.Position.ToPoint3D(100),
 							vertex.Normal.ToVector3D(),
 							vertex.Binormal.ToVector3D(),
 							vertex.Tangent.ToVector3D());
@@ -95,53 +147,55 @@ namespace BlamLib.Render.COLLADA.Halo1
 							vertex.TextureCoords.X * u_scale,
 							((vertex.TextureCoords.Y * v_scale) * -1) + 1));
 
-						common_vertices.Add(common_vertex);
+						geometryData.AddVertex(common_vertex);
 					}
 				}
 				
-				List<Part> common_parts = new List<Part>();
 				// create a new Part for each geometry part
 				int index_offset = 0;
-				foreach(var part in geometry.Parts)
+				foreach (var part in geometrySet.Geometry.Parts)
 				{
-					Part common_part = new Part(shader_names[part.ShaderIndex]);
+					Geometry.Part common_part = new Geometry.Part(shaderList[part.ShaderIndex]);
 					common_part.AddIndices(CreateIndicesModel(part, index_offset));
 
 					index_offset += part.UncompressedVertices.Count;
 
-					common_parts.Add(common_part);
+					geometryData.AddPart(common_part);
 				}
 
 				// create the geometry element
-				CreateGeometry(name, 1,
-					VertexComponent.POSITION | VertexComponent.NORMAL | VertexComponent.BINORMAL | VertexComponent.TANGENT | VertexComponent.TEXCOORD,
-					common_vertices, common_parts);
+				CreateGeometry(geometryData);
 			}
 		}
 		#endregion
 		#region Create Controllers
-		/// <summary>
-		/// Creates controllers to skin each geometry in the collada file
-		/// </summary>
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Creates controllers to skin each geometry in the collada file. </summary>
+		///-------------------------------------------------------------------------------------------------
 		void CreateControllerList()
 		{
-			H1.Tags.gbxmodel_group definition = tagManager.TagDefinition as H1.Tags.gbxmodel_group;
+			var boneList = mModelDataProvider.GetBones();
 
 			// if there are no nodes then no skinning is possible
-			if (definition.Nodes.Count == 0)
+			if (boneList.Count == 0)
+			{
 				return;
+			}
 
 			// create a controller for each geometry
-			for (int i = 0; i < modelInfo.GetGeometryCount(); i++)
+			var geometrySetList = mModelDataProvider.GetGeometries();
+			for (int i = 0; i < geometrySetList.Count; i++)
 			{
-				List<VertexWeight> vertex_weights = new List<VertexWeight>();
+				var geometrySet = geometrySetList[i];
+
+				Skin skinData = new Skin(geometrySet.Name, listGeometry[i].ID);
 
 				//  create a list of vertex weights from all of the geometry parts
-				foreach (var part in definition.Geometries[modelInfo.GetGeometryIndex(i)].Parts)
+				foreach (var part in geometrySet.Geometry.Parts)
 				{
 					foreach (var vertex in part.UncompressedVertices)
 					{
-						VertexWeight vertex_weight = new VertexWeight();
+						Skin.VertexWeight vertex_weight = new Skin.VertexWeight();
 
 						int node1 = vertex.NodeIndex1;
 						int node2 = vertex.NodeIndex2;
@@ -157,118 +211,156 @@ namespace BlamLib.Render.COLLADA.Halo1
 						vertex_weight.AddWeight(node1, vertex.NodeWeight1);
 
 						// if the first weight is 1 the vertex is weighted to one bone only so the second weight is not needed
-						if(vertex.NodeWeight1 != 1)
+						if (vertex.NodeWeight1 != 1)
+						{
 							vertex_weight.AddWeight(node2, vertex.NodeWeight2);
+						}
 
-						vertex_weights.Add(vertex_weight);
+						skinData.AddVertexWeight(vertex_weight);
 					}
 				}
 
 				// create the controller element
-				CreateSkinController(listGeometry[i].ID, vertex_weights);
+				CreateSkinController(skinData);
 			}
 		}
 		#endregion
 		#region Create Bones
-		/// <summary>
-		/// Populates the bone list with 1 collada node for each bone
-		/// </summary>
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Populates the bone list with 1 collada node for each bone. </summary>
+		///-------------------------------------------------------------------------------------------------
 		void CreateBoneList()
 		{
-			H1.Tags.gbxmodel_group definition = tagManager.TagDefinition as H1.Tags.gbxmodel_group;
+			var boneList = mModelDataProvider.GetBones();
 
 			// no bones? no bones!
-			if (definition.Nodes.Count == 0)
+			if (boneList.Count == 0)
+			{
 				return;
+			}
 
 			List<Bone> bone_list = new List<Bone>();
 			// create a list of common bone definitions
-			foreach (var node in definition.Nodes)
+			foreach (var bone in boneList)
 			{
-				bone_list.Add(new Bone(node.Name,
-					node.DefaultTranslation.ToPoint3D(100),
-					TagInterface.RealQuaternion.Invert(node.DefaultRotation),
+				bone_list.Add(new Bone(bone.Name,
+					bone.Position.ToPoint3D(100),
+					TagInterface.RealQuaternion.Invert(bone.Rotation),
 					1.0f,
-					node.ParentNode,
-					node.FirstChildNode,
-					node.NextSiblingNode));
+					bone.Parent,
+					bone.Child,
+					bone.Sibling));
 			}
 
 			// create the bone node elements
-			CreateBones(bone_list, RotationVectorY, RotationVectorP, RotationVectorR);
+			CreateBones(bone_list, mTransformMatrix);
 		}
 		#endregion
 		#region Create Nodes
-		/// <summary>
-		/// Creates instances of all the controllers
-		/// </summary>
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Creates instances of all the controllers. </summary>
+		///-------------------------------------------------------------------------------------------------
 		void CreateNodeList()
 		{
-			// create a string list of all the shaders being used
-			List<string> shader_list = new List<string>();
-			for (int shader_index = 0; shader_index < shaderInfo.GetShaderCount(); shader_index++)
-				shader_list.Add(ColladaUtilities.FormatName(Path.GetFileNameWithoutExtension(shaderInfo.GetShaderName(shader_index)), " ", "_"));
-
-			// create the controller instances
-			for (int i = 0; i < modelInfo.GetGeometryCount(); i++)
-				CreateNodeInstanceController(modelInfo.GetGeometryName(i), i, shader_list);
-		}
-		#endregion
-		#region Create Markers
-		/// <summary>
-		/// Create the markers
-		/// </summary>
-		void CreateMarkerList()
-		{
-			H1.Tags.gbxmodel_group definition = tagManager.TagDefinition as H1.Tags.gbxmodel_group;
-
-			List<Marker> marker_list = new List<Marker>();
-
-			// create a list of generic marker definitions
-			foreach(var marker in definition.Markers)
+			MaterialReferenceList materialReferences = new MaterialReferenceList();
+			if (mShaderDataProvider != null)
 			{
-				foreach(var instance in marker.Instances)
+				// create a list of ever shader used 
+				foreach (var effect in mShaderDataProvider.GetEffects())
 				{
-					// if we are only exporting one permutation and the marker permunation doesnt match, skip it
-					if (!modelInfo.GetIsMultiplePerms())
-						if (modelInfo.GetPermutation() != instance.PermutationIndex.Value)
-							continue;
-
-					// if multiple permutations are being exported, append the marker permutation to its name
-					string name = ColladaUtilities.FormatName(marker.Name, " ", "_");
-					if(modelInfo.GetIsMultiplePerms())
-						name += "-perm" + instance.PermutationIndex.Value.ToString();
-
-					Marker common_marker = new Marker(name, instance.Translation.ToPoint3D(100),
-						TagInterface.RealQuaternion.Invert(instance.Rotation), instance.NodeIndex);
-
-					marker_list.Add(common_marker);
+					string effectName = ColladaUtilities.FormatName(Path.GetFileNameWithoutExtension(effect.Name), " ", "_");
+					materialReferences.Add(new MaterialReference(
+						ColladaUtilities.BuildUri(ColladaElement.FormatID<Fx.ColladaMaterial>(effectName)),
+						effectName));
 				}
 			}
 
+			// create the controller instances
+			var geometrySetList = mModelDataProvider.GetGeometries();
+			for (int i = 0; i < geometrySetList.Count; i++)
+			{
+
+                Core.ColladaNode node = CreateNode(geometrySetList[i].Name, "", geometrySetList[i].Name, Enums.ColladaNodeType.NODE);
+
+                // If there are no bones instance the static geometry, otherwise create a skinned instance
+                string name = ColladaUtilities.FormatName(geometrySetList[i].Name, " ", "_");
+				if (mModelDataProvider.GetBones().Count == 0)
+				{
+					node.Add(
+						CreateInstanceGeometry(
+							ColladaUtilities.BuildUri(ColladaElement.FormatID<Core.ColladaGeometry>(name)),
+							name,
+							materialReferences
+						)
+					);
+				}
+				else
+				{
+					node.Add(
+						CreateInstanceController(
+							ColladaUtilities.BuildUri(ColladaElement.FormatID<Core.ColladaController>(name)),
+							name,
+							materialReferences
+						)
+					);
+				}
+
+				listNode.Add(node);
+			}
+		}
+		#endregion
+		#region Create Markers
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Create the markers. </summary>
+		///-------------------------------------------------------------------------------------------------
+		void CreateMarkerList()
+		{
+			var markerInstances = mModelDataProvider.GetMarkerInstances();
+
+			List<Marker> markerList = new List<Marker>();
+
+			// create a list of generic marker definitions
+			foreach (var markerInstance in markerInstances)
+			{
+				// if multiple permutations are being exported, append the marker permutation to its name
+				string name = ColladaUtilities.FormatName(markerInstance.MarkerType.Name, " ", "_");
+
+				name += "-perm" + markerInstance.Permutation.ToString();
+
+				Marker common_marker = new Marker(name,
+					markerInstance.Position.ToPoint3D(100),
+					TagInterface.RealQuaternion.Invert(markerInstance.Rotation),
+					markerInstance.Bone);
+
+				markerList.Add(common_marker);
+			}
+
 			// create the marker node elements
-			CreateMarkers(marker_list, RotationVectorY, RotationVectorP, RotationVectorR);
+			CreateMarkers(markerList, mTransformMatrix);
 		}
 		#endregion
 		#endregion
 
 		#region Library Creation
-		/// <summary>
-		/// Creates the library_visual_scenes element in the collada file
-		/// </summary>
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Creates the library_visual_scenes element in the collada file. </summary>
+		///-------------------------------------------------------------------------------------------------
 		void AddLibraryVisualScenes()
 		{
 			COLLADAFile.LibraryVisualScenes = new Core.ColladaLibraryVisualScenes();
 			COLLADAFile.LibraryVisualScenes.VisualScene = new List<Core.ColladaVisualScene>();
 			COLLADAFile.LibraryVisualScenes.VisualScene.Add(new Core.ColladaVisualScene());
-			COLLADAFile.LibraryVisualScenes.VisualScene[0].ID = ColladaElement.FormatID<Core.ColladaVisualScene>("main");
+			COLLADAFile.LibraryVisualScenes.VisualScene[0].ID = "main";
 			COLLADAFile.LibraryVisualScenes.VisualScene[0].Node = new List<Core.ColladaNode>();
 
-			COLLADAFile.LibraryVisualScenes.VisualScene[0].Node.Add(listBone[0]);
+			if (listBone.Count > 0)
+			{
+				COLLADAFile.LibraryVisualScenes.VisualScene[0].Node.Add(listBone[0]);
+			}
 			COLLADAFile.LibraryVisualScenes.VisualScene[0].Node.AddRange(listNode);
 		}
 		#endregion
-
+		
 		protected override bool BuildColladaInstanceImpl()
 		{
 			// reset and repopulate the collada file
@@ -280,16 +372,17 @@ namespace BlamLib.Render.COLLADA.Halo1
 				"OpenSauceIDE:ColladaBuilder",
 				"meter", 0.0254, Enums.ColladaUpAxisEnum.Z_UP);
 
-			CollectBitmaps();
+			mModelDataProvider = GetDataProvider<IHalo1ModelDataProvider>();
 
-			CreateImageList();
-			CreateEffectList();
-			CreateMaterialList();
 			CreateBoneList();
 			CreateMarkerList();
 			CreateGeometryList();
 			CreateControllerList();
 			CreateNodeList();
+
+			CreateImageList();
+			CreateEffectList();
+			CreateMaterialList();
 
 			AddLibraryImages();
 			AddLibraryEffects();

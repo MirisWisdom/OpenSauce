@@ -140,6 +140,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\first_person_camera.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\following_camera.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\camera\observer_structures.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cryptography\md5.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cseries\cseries.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cseries\debug_memory.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cseries\errors.hpp" />

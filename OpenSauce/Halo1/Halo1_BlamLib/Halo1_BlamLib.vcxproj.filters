@@ -31,9 +31,6 @@
     <Filter Include="devices">
       <UniqueIdentifier>{805174de-1415-432d-b2c1-2eebdcbc7704}</UniqueIdentifier>
     </Filter>
-    <Filter Include="effects">
-      <UniqueIdentifier>{05e6eac3-3f4e-4d5b-98af-81ec15ba4db3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="game">
       <UniqueIdentifier>{dacae416-ca64-41d0-af63-1aa07831cb25}</UniqueIdentifier>
     </Filter>
@@ -126,6 +123,12 @@
     </Filter>
     <Filter Include="ai\actors">
       <UniqueIdentifier>{a60c224a-e9a1-42a2-b3c5-7da1430921bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cryptography">
+      <UniqueIdentifier>{9259f37d-8171-4371-83b2-affd1351c9e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="effects">
+      <UniqueIdentifier>{05e6eac3-3f4e-4d5b-98af-81ec15ba4db3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -932,6 +935,9 @@
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cache\cache_files_windows.cpp">
       <Filter>cache</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\cryptography\md5.hpp">
+      <Filter>cryptography</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
