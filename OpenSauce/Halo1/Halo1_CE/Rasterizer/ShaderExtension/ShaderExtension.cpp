@@ -16,7 +16,7 @@
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
-#include <YeloLib/settings/c_settings_singleton.hpp>
+#include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
 
 #include "Settings/Settings.hpp"
 #include "Common/FileIO.hpp"

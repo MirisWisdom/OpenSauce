@@ -6,10 +6,15 @@
 */
 #pragma once
 
+#if PLATFORM_IS_EDITOR
+
+#include <blamlib/Halo1/tag_files/tag_files.hpp>
+#include <blamlib/Halo1/cache/cache_files.hpp>
+
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
 #include <YeloLib/configuration/c_configuration_container_list.hpp>
-#include <YeloLib/settings/c_settings_singleton.hpp>
+#include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
 
 #include <YeloLib/Halo1/open_sauce/settings/yelo_shared_settings.hpp>
 
@@ -86,21 +91,21 @@ namespace Yelo
 		public:
 			c_settings_profile(c_profile_container& profile);
 
-			cstring GetRootPath() final override;
-			cstring GetMapsPath() final override;
-			cstring GetDataPath() final override;
-			cstring GetTagsPath() final override;
-			cstring GetTagsName() final override;
+			cstring GetRootPath() override;
+			cstring GetMapsPath() override;
+			cstring GetDataPath() override;
+			cstring GetTagsPath() override;
+			cstring GetTagsName() override;
 		};
 
 		class c_settings_profile_null final
 			: public i_settings_profile
 		{
-			cstring GetRootPath() final override { return nullptr; };
-			cstring GetMapsPath() final override { return nullptr; };
-			cstring GetDataPath() final override { return nullptr; };
-			cstring GetTagsPath() final override { return nullptr; };
-			cstring GetTagsName() final override { return nullptr; };
+			cstring GetRootPath() override { return ".\\"; };
+			cstring GetMapsPath() override { return Cache::K_MAP_FILES_DIRECTORY; };
+			cstring GetDataPath() override { return TagGroups::K_DATA_FILES_DIRECTORY; };
+			cstring GetTagsPath() override { return TagGroups::K_TAG_FILES_DIRECTORY; };
+			cstring GetTagsName() override { return "tags"; };
 		};
 #pragma endregion
 
@@ -143,3 +148,4 @@ namespace Yelo
 #pragma endregion
 	};
 };
+#endif

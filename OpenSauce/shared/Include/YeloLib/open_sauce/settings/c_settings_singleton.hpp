@@ -6,7 +6,7 @@
 #pragma once
 
 #include <YeloLib/configuration/c_configuration_singleton.hpp>
-#include <YeloLib/settings/c_settings_manager.hpp>
+#include <YeloLib/open_sauce/settings/c_settings_manager.hpp>
 
 namespace Yelo
 {
