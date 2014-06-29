@@ -6,12 +6,24 @@
 */
 #pragma once
 
-#include <blamlib/Halo1/scenario/scenario.hpp>
+#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
+#include <blamlib/Halo1/scenario/scenario_structures.hpp>
+#include <blamlib/Halo1/structures/structure_bsp_definitions.hpp>
 
 namespace Yelo
 {
 	namespace Scenario
 	{
+		s_scenario_globals* ScenarioGlobals();
+
+		TagGroups::scenario* Scenario();
+		TagGroups::collision_bsp* Bsp3d();
+		TagGroups::collision_bsp* CollisionBsp();
+		TagGroups::structure_bsp* StructureBsp();
+
+		datum_index ScenarioIndex();
+		int16 StructureBspIndex();
+
 		void Initialize();
 		void Dispose();
 	};

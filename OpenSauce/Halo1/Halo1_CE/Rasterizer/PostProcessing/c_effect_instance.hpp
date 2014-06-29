@@ -40,7 +40,7 @@ namespace Yelo
 					real end;
 					real current;
 
-					c_interp_linear<1> interpolator;
+					Time::Interpolation::c_interp_linear<1> interpolator;
 				}m_fade;
 			}m_members;
 

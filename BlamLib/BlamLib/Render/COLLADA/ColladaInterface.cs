@@ -8,14 +8,10 @@ using System.Collections.Generic;
 
 namespace BlamLib.Render.COLLADA
 {
-	[Flags]
-	public enum BSPObjectType
+	public interface IColladaDataProvider { };
+	public interface IColladaExternalReference
 	{
-		None,
-
-		RenderMesh = 1<<0,
-		Portals = 1<<1,
-		FogPlanes = 1<<2,
+		string GetRelativeURL();
 	};
 
 	public interface IHaloShaderDatumList
@@ -54,7 +50,7 @@ namespace BlamLib.Render.COLLADA
 		}
 	};
 
-	abstract class ColladaInterface : List<ColladaInfo>
+	public abstract class ColladaInterface : List<ColladaInfo>
 	{
 		public const string kDefaultBitmapFormat = "tif";
 

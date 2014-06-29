@@ -47,54 +47,54 @@ namespace Yelo
 
 		//////////////////////////////////////////////////////////////////////////
 		// scenario information
-		struct s_scenario_faux_zone_sky
+		struct s_transition_sequence_block
 		{
-			TAG_FIELD(tag_string, name, "", "code name for this sky");
-			PAD16;
-			// Index of the scenario sky this will replace
-			TAG_FIELD(int16, scenario_sky_to_replace); // block into to the 'skies' block
-			TAG_FIELD(tag_reference, sky, 'sky ');
-
-			bool IsValid() const;
-		};
-
-		struct s_scenario_faux_zone_lightmap_set
-		{
-			TAG_FIELD(tag_reference, definition, 'bitm');
-			TAG_PAD(tag_reference, 3); // 48
-		};
-		struct s_scenario_faux_zone_set_variant
-		{
-			TAG_FIELD(tag_string, name, "", "code name for this set variant");
 			struct _flags {
 				TAG_FLAG16(unused);
 			}flags;	BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
-
-			TAG_FIELD(int16, lightmap_index,	s_scenario_faux_zone_lightmap_set);
-			TAG_FIELD(int16, sky_index,			s_scenario_faux_zone_sky);
-
+			TAG_FIELD(_enum, transition_function);
+			TAG_FIELD(real, transition_period);
+			TAG_FIELD(int16, next_sequence_block);
 			PAD16;
-			PAD32;
+		};
 
-			// Does this variant have an actual changes to the game/tag state?
-			bool HasGameStateChanges() const;
-		};
-		struct s_scenario_faux_zone_set
+		/* BSP */
+		struct s_scenario_information_bsp_lightmap_set
 		{
-			TAG_FIELD(tag_string, name, "", "code name for this zone set");
-			TAG_FIELD(tag_reference, structure_bsp, 'sbsp');
-			TAG_TBLOCK(lightmaps, s_scenario_faux_zone_lightmap_set); // 128
-			TAG_TBLOCK(variants, s_scenario_faux_zone_set_variant); // 128
-			TAG_PAD(tag_block, 2); // 24
+			TAG_PAD(int32, 1);
+			TAG_FIELD(tag_reference, standard_lightmap, 'bitm');
+			TAG_FIELD(tag_reference, directional_lightmap_1, 'bitm');
+			TAG_FIELD(tag_reference, directional_lightmap_2, 'bitm');
+			TAG_FIELD(tag_reference, directional_lightmap_3, 'bitm');
+			TAG_PAD(tag_block, 3);
 		};
+
+		struct s_scenario_information_bsp_sky_set_sky
+		{
+			PAD16;
+			TAG_FIELD(int16, sky_index);
+			TAG_FIELD(tag_reference, sky);
+		};
+
+		struct s_scenario_information_bsp_sky_set
+		{
+			TAG_TBLOCK(skies,				s_scenario_information_bsp_sky_set_sky);
+		};
+
+		struct s_scenario_information_bsp
+		{
+			TAG_FIELD(tag_reference, bsp, 'sbsp');
+			TAG_TBLOCK(lightmap_sets,		s_scenario_information_bsp_lightmap_set);
+			TAG_TBLOCK(sky_sets,			s_scenario_information_bsp_sky_set);
+			TAG_PAD(tag_block, 3);
+		};
+		/* BSP */
+
 		struct s_project_yellow_scenario_information
 		{
-			// Skies that the scenario uses. Doesn't have to match the ordering of the scenario's block
-			TAG_TBLOCK(skies, tag_reference); // 'sky ', k_maximum_skies_per_scenario
-			TAG_PAD(tag_block, 1); // 12
-			TAG_TBLOCK(zone_skies, s_scenario_faux_zone_sky); // 64
-			TAG_TBLOCK(zones, s_scenario_faux_zone_set); // 64
-			TAG_PAD(tag_block, 3); // 36
+			PAD32;
+			TAG_TBLOCK(bsps, s_scenario_information_bsp);
+			TAG_PAD(tag_block, 4); // 48
 		};
 		//////////////////////////////////////////////////////////////////////////
 

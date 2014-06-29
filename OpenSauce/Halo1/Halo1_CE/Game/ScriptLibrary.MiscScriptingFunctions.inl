@@ -382,4 +382,10 @@ static void InitializeMiscFunctions()
 		Networking::HTTP::Server::MapDownload::MapDownloadSetHost);
 	YELO_INIT_SCRIPT_FUNCTION_DEDI(Enums::_hs_function_sv_mapdownload_reload_map_part_definitions,
 		Networking::HTTP::Server::MapDownload::MapDownloadReloadMapPartDefinitions);
+
+	// Depreceated
+	Scripting::NullifyScriptFunctionWithParams(Enums::_hs_function_scenario_faux_zones_reset);
+	Scripting::NullifyScriptFunctionWithParams(Enums::_hs_function_scenario_faux_zone_current_switch_variant);
+	Scripting::NullifyScriptFunctionWithParams(Enums::_hs_function_scenario_faux_zone_switch_variant);
+	Scripting::NullifyScriptFunctionWithParams(Enums::_hs_function_scenario_faux_zone_switch_sky);	
 }

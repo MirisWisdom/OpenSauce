@@ -13,11 +13,11 @@ namespace BlamLib.Render.COLLADA.Halo2
 {
 	public class ColladaHalo2BSPInfo : ColladaHaloModelInfoBase
 	{
-		public BSPObjectType Type { get; private set; }
+		public ColladaHalo2.BSPObjectType Type { get; private set; }
 
 		public ColladaHalo2BSPInfo(int internal_index, string name,
 			int vertex_count, int face_count,
-			BSPObjectType type)
+			ColladaHalo2.BSPObjectType type)
 			: base(internal_index, name, vertex_count, face_count)
 		{
 			Type = type;
@@ -48,8 +48,18 @@ namespace BlamLib.Render.COLLADA.Halo2
 		}
 	}
 
-	class ColladaHalo2 : ColladaInterface
+	public class ColladaHalo2 : ColladaInterface
 	{
+		[Flags]
+		public enum BSPObjectType
+		{
+			None,
+
+			RenderMesh = 1 << 0,
+			Portals = 1 << 1,
+			FogPlanes = 1 << 2,
+		};
+
 		#region Internal Classes
 		/// <summary>
 		/// Interface class to pass shader datum indices to the Halo1 exporter base class
@@ -527,67 +537,67 @@ namespace BlamLib.Render.COLLADA.Halo2
 		#region Export Functions
 		void ExportLightmap(string file_name)
 		{
-			LightmapInfoInternal info = new LightmapInfoInternal();
+			//LightmapInfoInternal info = new LightmapInfoInternal();
 
-			ColladaExportArgs arguments = new ColladaExportArgs(Overwrite, RelativeFilePath, BitmapFormat);
-			var exporter = new Halo2.ColladaLightmapExporter(arguments, info, tagIndex, tagManager);
+			//ColladaExportArgs arguments = new ColladaExportArgs(Overwrite, RelativeFilePath, BitmapFormat);
+			//var exporter = new Halo2.ColladaLightmapExporter(arguments, info, tagIndex, tagManager);
 
-			ExportSave(exporter, RelativeFilePath + file_name + ".dae");
+			//ExportSave(exporter, RelativeFilePath + file_name + ".dae");
 		}
 
 		void ExportBSP(string file_name)
 		{
-			BSPInfoInternal bsp_info = new BSPInfoInternal();
+			//BSPInfoInternal bsp_info = new BSPInfoInternal();
 
-			BSPObjectType bsp_type = BSPObjectType.None;
-			foreach (int index in registeredInfos)
-			{
-				BSPInfoInternal info = internalInfoList[index] as BSPInfoInternal;
+			//BSPObjectType bsp_type = BSPObjectType.None;
+			//foreach (int index in registeredInfos)
+			//{
+			//    BSPInfoInternal info = internalInfoList[index] as BSPInfoInternal;
 
-				if (info.IncludeRenderMesh()) { bsp_type |= BSPObjectType.RenderMesh; }
-				if (info.IncludePortalsMesh()) { bsp_type |= BSPObjectType.Portals; }
-				if (info.IncludeFogPlanesMesh()) { bsp_type |= BSPObjectType.FogPlanes; }
+			//    if (info.IncludeRenderMesh()) { bsp_type |= BSPObjectType.RenderMesh; }
+			//    if (info.IncludePortalsMesh()) { bsp_type |= BSPObjectType.Portals; }
+			//    if (info.IncludeFogPlanesMesh()) { bsp_type |= BSPObjectType.FogPlanes; }
 
-				for (int i = 0; i < info.GetShaderCount(); i++)
-					bsp_info.AddShaderDatum(info.GetShaderDatum(i), info.GetShaderName(i));
-			}
+			//    for (int i = 0; i < info.GetShaderCount(); i++)
+			//        bsp_info.AddShaderDatum(info.GetShaderDatum(i), info.GetShaderName(i));
+			//}
 
-			bsp_info.SetType(bsp_type);
+			//bsp_info.SetType(bsp_type);
 
-			ColladaExportArgs arguments = new ColladaExportArgs(Overwrite, RelativeFilePath, BitmapFormat);
-			var exporter = new Halo2.ColladaBSPExporter(arguments, bsp_info, tagIndex, tagManager);
+			//ColladaExportArgs arguments = new ColladaExportArgs(Overwrite, RelativeFilePath, BitmapFormat);
+			//var exporter = new Halo2.ColladaBSPExporter(arguments, bsp_info, tagIndex, tagManager);
 
-			ExportSave(exporter, RelativeFilePath + file_name + ".dae");
+			//ExportSave(exporter, RelativeFilePath + file_name + ".dae");
 		}
 
 		void ExportRenderModel(string file_name)
 		{
-			RenderModelInfoInternal model_info = new RenderModelInfoInternal();
+			//RenderModelInfoInternal model_info = new RenderModelInfoInternal();
 
-			List<int> added_permutations = new List<int>();
+			//List<int> added_permutations = new List<int>();
 
-			foreach (int index in registeredInfos)
-			{
-				RenderModelInfoInternal info = internalInfoList[index] as RenderModelInfoInternal;
+			//foreach (int index in registeredInfos)
+			//{
+			//    RenderModelInfoInternal info = internalInfoList[index] as RenderModelInfoInternal;
 
-				if (!added_permutations.Contains(info.Permutation))
-					added_permutations.Add(info.Permutation);
+			//    if (!added_permutations.Contains(info.Permutation))
+			//        added_permutations.Add(info.Permutation);
 
-				for (int i = 0; i < info.GetShaderCount(); i++)
-					model_info.AddShaderDatum(info.GetShaderDatum(i), info.GetShaderName(i));
-				for (int i = 0; i < info.GetGeometryCount(); i++)
-					model_info.AddGeometry(info.GetGeometryName(i), info.GetGeometryIndex(i));
-			}
+			//    for (int i = 0; i < info.GetShaderCount(); i++)
+			//        model_info.AddShaderDatum(info.GetShaderDatum(i), info.GetShaderName(i));
+			//    for (int i = 0; i < info.GetGeometryCount(); i++)
+			//        model_info.AddGeometry(info.GetGeometryName(i), info.GetGeometryIndex(i));
+			//}
 
-			if (added_permutations.Count == 1)
-				model_info.Permutation = added_permutations[0];
-			else
-				model_info.IsMultiplePermutations = true;
+			//if (added_permutations.Count == 1)
+			//    model_info.Permutation = added_permutations[0];
+			//else
+			//    model_info.IsMultiplePermutations = true;
 
-			ColladaExportArgs arguments = new ColladaExportArgs(Overwrite, RelativeFilePath, BitmapFormat);
-			var exporter = new Halo2.ColladaRenderModelExporter(arguments, model_info, tagIndex, tagManager);
+			//ColladaExportArgs arguments = new ColladaExportArgs(Overwrite, RelativeFilePath, BitmapFormat);
+			//var exporter = new Halo2.ColladaRenderModelExporter(arguments, model_info, tagIndex, tagManager);
 
-			ExportSave(exporter, RelativeFilePath + file_name + ".dae");
+			//ExportSave(exporter, RelativeFilePath + file_name + ".dae");
 		}
 		#endregion
 	};

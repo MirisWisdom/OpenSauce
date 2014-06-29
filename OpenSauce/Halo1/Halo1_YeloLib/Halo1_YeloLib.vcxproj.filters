@@ -115,6 +115,15 @@
     <Filter Include="configuration\type_containers">
       <UniqueIdentifier>{7eca856f-6ae9-4b09-b0e4-98b45f6ec8cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="render\lightmaps">
+      <UniqueIdentifier>{6c494c0b-df0a-4dbf-a6bf-7846870854ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render\sky">
+      <UniqueIdentifier>{d26a0c1e-df48-4dfd-9493-4a7275564097}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cryptography">
+      <UniqueIdentifier>{6e2a28d1-5e48-4956-8e82-d38e9fa6dab9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\targetver.h">
@@ -408,6 +417,9 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cseries\memory_yelo.hpp">
       <Filter>cseries</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\che_ape_settings.hpp">
+      <Filter>open_sauce\settings</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\memory\constant_pool.hpp">
       <Filter>memory</Filter>
     </ClInclude>
@@ -470,6 +482,15 @@
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_singleton.hpp">
       <Filter>configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.hpp">
+      <Filter>render\lightmaps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.hpp">
+      <Filter>render\sky</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\cryptography\TEA.hpp">
+      <Filter>cryptography</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\cseries\enum_wrappers.hpp">
       <Filter>cseries</Filter>
@@ -730,6 +751,15 @@
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_vector3d_container.cpp">
       <Filter>configuration\type_containers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.cpp">
+      <Filter>render\lightmaps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.cpp">
+      <Filter>render\sky</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\cryptography\TEA.cpp">
+      <Filter>cryptography</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\c_settings_cheape.cpp">
       <Filter>open_sauce\settings</Filter>

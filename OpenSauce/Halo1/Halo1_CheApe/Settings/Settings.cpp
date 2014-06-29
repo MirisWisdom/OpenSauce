@@ -70,17 +70,17 @@ namespace Yelo
 		{
 			Yelo::Settings::SharedInitialize("");
 
-			c_settings_cheape::Instance().Register(Manager());
-			c_settings_tool::Instance().Register(Manager());
-			c_settings_sapien::Instance().Register(Manager());
+			c_settings_cheape::Register(Manager());
+			c_settings_tool::Register(Manager());
+			c_settings_sapien::Register(Manager());
 		}
 
 		/// <summary>	Disposes the settings. </summary>
 		void DisposeSettings()
 		{
-			c_settings_sapien::Instance().Unregister(Manager());
-			c_settings_tool::Instance().Unregister(Manager());
-			c_settings_cheape::Instance().Unregister(Manager());
+			c_settings_sapien::Unregister(Manager());
+			c_settings_tool::Unregister(Manager());
+			c_settings_cheape::Unregister(Manager());
 
 			Yelo::Settings::SharedDispose();
 		}

@@ -12,10 +12,7 @@
     <AssemblyName>BlamLib</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
-  <PropertyGroup>
-    <OSRootDir>$(MSBuildProjectDirectory)\..\..\</OSRootDir>
-  </PropertyGroup>
-  <Import Project="$(OSRootDir)shared\config\msbuild\BlamLib.props" />
+  <Import Project="$(SolutionDir)..\shared\config\msbuild\BlamLib.props" />
   <ItemGroup>
     <Reference Include="SlimDX" />
     <Reference Include="System" />
@@ -25,10 +22,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <ProjectReference Include="..\LowLevel\LowLevel.vcxproj">
-      <Project>{5E5B9F4E-1067-4470-8AA9-B25BBBEA063A}</Project>
-      <Name>LowLevel</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Blam\Cache\Tags\CacheTagsGen2nd.cs" />
@@ -40,16 +33,6 @@
     <Compile Include="Blam\DataHandles\MapId.cs" />
     <Compile Include="Blam\DataHandles\ResourcePtr.cs" />
     <Compile Include="Blam\DataHandles\StringId.cs" />
-    <Compile Include="Blam\Halo1\CheApe\Compiler_Scripts.cs" />
-    <Compile Include="Blam\Halo1\CheApe\Compiler_Tags.cs" />
-    <Compile Include="Blam\Halo1\CheApe\Import_Tags.cs" />
-    <Compile Include="CheApe\Compiler_CacheFile.cs" />
-    <Compile Include="CheApe\Compiler_Fixups.cs" />
-    <Compile Include="CheApe\Compiler_Tags.cs" />
-    <Compile Include="CheApe\Import_Fixups.cs" />
-    <Compile Include="CheApe\Import_Scripts.cs" />
-    <Compile Include="CheApe\Import_Tags.cs" />
-    <Compile Include="CheApe\ProjectState.cs" />
     <Compile Include="Compression\LZMA.cs" />
     <Compile Include="Cryptography\MD5.cs" />
     <Compile Include="Cryptography\XXTEA.cs" />
@@ -154,18 +137,9 @@
     <Compile Include="Managers\TagIndex\TagIndex.CacheExtraction.cs" />
     <Compile Include="Managers\TagManager.cs" />
     <Compile Include="Reflection\Util.Enum.cs" />
-    <Compile Include="Render\COLLADA\Export\ColladaExporter.cs" />
-    <Compile Include="Render\COLLADA\ColladaInterface.cs" />
-    <Compile Include="Render\COLLADA\ErrorReporting\ColladaExceptionStrings.cs" />
-    <Compile Include="Render\COLLADA\Export\Halo1\Base.cs" />
-    <Compile Include="Render\COLLADA\Export\Halo1\ExporterBSP.cs" />
-    <Compile Include="Render\COLLADA\Export\Halo1\ColladaHalo1.cs" />
-    <Compile Include="Render\COLLADA\Export\Halo1\Interfaces.cs" />
-    <Compile Include="Render\COLLADA\Export\Halo1\ExporterModel.cs" />
     <Compile Include="Render\COLLADA\ColladaElement.cs" />
-    <Compile Include="Render\COLLADA\ErrorReporting\ColladaException.cs" />
     <Compile Include="Render\COLLADA\ColladaFile.cs" />
-    <Compile Include="Render\COLLADA\ErrorReporting\ColladaValidationException.cs" />
+    <Compile Include="Render\COLLADA\ColladaInterface.cs" />
     <Compile Include="Render\COLLADA\Core\Animation\ColladaAnimation.cs" />
     <Compile Include="Render\COLLADA\Core\Animation\ColladaAnimationClip.cs" />
     <Compile Include="Render\COLLADA\Core\Animation\ColladaChannel.cs" />
@@ -250,6 +224,17 @@
     <Compile Include="Render\COLLADA\Enums\ColladaMorphMethodType.cs" />
     <Compile Include="Render\COLLADA\Enums\ColladaNodeType.cs" />
     <Compile Include="Render\COLLADA\Enums\ColladaUpAxisEnum.cs" />
+    <Compile Include="Render\COLLADA\ErrorReporting\ColladaException.cs" />
+    <Compile Include="Render\COLLADA\ErrorReporting\ColladaExceptionStrings.cs" />
+    <Compile Include="Render\COLLADA\ErrorReporting\ColladaValidationException.cs" />
+    <Compile Include="Render\COLLADA\Export\ColladaExporter.cs" />
+    <Compile Include="Render\COLLADA\Export\Halo1\Base.cs" />
+    <Compile Include="Render\COLLADA\Export\Halo1\ColladaHalo1.cs" />
+    <Compile Include="Render\COLLADA\Export\Halo1\ExporterBSP.cs" />
+    <Compile Include="Render\COLLADA\Export\Halo1\ExporterLight.cs" />
+    <Compile Include="Render\COLLADA\Export\Halo1\ExporterModel.cs" />
+    <Compile Include="Render\COLLADA\Export\Halo1\ExporterObject.cs" />
+    <Compile Include="Render\COLLADA\Export\Halo1\ExporterScenario.cs" />
     <Compile Include="Render\COLLADA\Export\Halo2\Base.cs" />
     <Compile Include="Render\COLLADA\Export\Halo2\ColladaHalo2.cs" />
     <Compile Include="Render\COLLADA\Export\Halo2\ExporterBSP.cs" />
@@ -291,6 +276,7 @@
     <Compile Include="Render\COLLADA\FX\Texturing\ColladaSurface.cs" />
     <Compile Include="Render\COLLADA\Helpers\ColladaBoneMatrix.cs" />
     <Compile Include="Render\COLLADA\Helpers\ColladaIDAttribute.cs" />
+    <Compile Include="Render\COLLADA\Helpers\ColladaName.cs" />
     <Compile Include="Render\COLLADA\Helpers\ColladaObject.cs" />
     <Compile Include="Render\COLLADA\Helpers\ColladaObjectAttribute.cs" />
     <Compile Include="Render\COLLADA\Helpers\ColladaObjectElement.cs" />
@@ -302,6 +288,10 @@
     <Compile Include="Render\COLLADA\Helpers\ColladaUtilities.cs" />
     <Compile Include="Render\COLLADA\Helpers\ColladaValue.cs" />
     <Compile Include="Render\COLLADA\Helpers\ColladaValueArray.cs" />
+    <Compile Include="Render\COLLADA\Interfaces\ICOLLADAModel.cs" />
+    <Compile Include="Render\COLLADA\Interfaces\ICOLLADANode.cs" />
+    <Compile Include="Render\COLLADA\Interfaces\ICOLLADAObject.cs" />
+    <Compile Include="Render\COLLADA\Interfaces\ICOLLADARoot.cs" />
     <Compile Include="Render\COLLADA\Validation\ColladaEmptyString.cs" />
     <Compile Include="Render\COLLADA\Validation\ColladaFileValidator.cs" />
     <Compile Include="Render\COLLADA\Validation\ColladaHasValidValue.cs" />
@@ -562,6 +552,12 @@
   <ItemGroup Condition=" '$(Configuration)' != 'DebugPublic' ">
     <EmbeddedResource Include="Games\Halo4\Halo4.xml" />
     <EmbeddedResource Include="Games\Halo4\Xbox\Definitions\Halo4_Xbox_StringId.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LowLevel\LowLevel.vcxproj">
+      <Project>{5E5B9F4E-1067-4470-8AA9-B25BBBEA063A}</Project>
+      <Name>LowLevel</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Blam\Halo4\Tags\Code\" />

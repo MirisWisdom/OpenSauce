@@ -119,7 +119,7 @@ namespace BlamLib.Managers
 		/// <summary>
 		/// All reference fields in this definition whose data can't be resolved
 		/// </summary>
-		public IEnumerable<TagReference> BadRefereces {
+		public IEnumerable<TagReference> BadReferences {
 			get {
 				if(badReferences == null) yield break;
 

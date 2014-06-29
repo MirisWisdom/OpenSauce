@@ -978,7 +978,21 @@ namespace BlamLib.Blam.Halo1.Tags
 
 		// scenario_decal_palette_block, field_block<TI.TagReference>
 
-		// scenario_detail_object_collection_palette_block, 
+		#region scenario_detail_object_collection_palette_block
+		[TI.Definition(-1, 48)]
+		public class scenario_detail_object_collection_palette_block : TI.Definition
+		{
+			#region Fields
+			public TI.TagReference Name;
+			#endregion
+
+			public scenario_detail_object_collection_palette_block() : base(2)
+			{
+				Add(Name = new TI.TagReference());
+				Add(new TI.Pad(32));
+			}
+		}
+		#endregion
 
 		// actor_palette_block, field_block<TI.TagReference>
 
@@ -1567,6 +1581,7 @@ namespace BlamLib.Blam.Halo1.Tags
 		public TI.Block<field_block<TI.TagReference>> Skies;
 		public TI.Enum Type;
 		public TI.Flags Flags;
+		public TI.Block<scenario_child_scenario_block> ChildScenarios;
 		public TI.Real LocalNorth;
 		public TI.Block<predicted_resource_block> PredictedResources;
 		public TI.Block<scenario_function_block> Functions;
@@ -1604,7 +1619,7 @@ namespace BlamLib.Blam.Halo1.Tags
 		public TI.Block<scenario_bsp_switch_trigger_volume_block> BspSwitchTriggerVolumes;
 		public TI.Block<scenario_decals_block> Decals;
 		public TI.Block<field_block<TI.TagReference>> DecalPalette;
-		public TI.Block<field_block<TI.TagReference>> DetailObjectCollectionPalette;
+		public TI.Block<scenario_detail_object_collection_palette_block> DetailObjectCollectionPalette;
 
 		public TI.Block<field_block<TI.TagReference>> ActorPalette;
 		public TI.Block<encounter_block> Encounters;
@@ -1633,13 +1648,13 @@ namespace BlamLib.Blam.Halo1.Tags
 
 		public scenario_group() : base(69)
 		{
-			Add(DontUse = new TI.TagReference(this, TagGroups.sbsp));
+			Add(DontUse = new TI.TagReference(this, TagGroups.yelo));
 			Add(WontUse = new TI.TagReference(this, TagGroups.sbsp));
 			Add(CantUse = new TI.TagReference(this, TagGroups.sky_));
 			Add(Skies = new TI.Block<field_block<TI.TagReference>>(this, 8));
 			Add(Type = new TI.Enum());
 			Add(Flags = new TI.Flags(BlamLib.TagInterface.FieldType.WordFlags));
-			Add(TI.Pad.BlockHalo1); // child scenarios, tag block data wasn't removed in stubbs for some reason
+			Add(ChildScenarios = new TI.Block<scenario_child_scenario_block>(this, 32)); // child scenarios, tag block data wasn't removed in stubbs for some reason
 			Add(LocalNorth = new TI.Real(BlamLib.TagInterface.FieldType.Angle));
 			Add(new TI.Pad(20 + 136));
 			Add(PredictedResources = new TI.Block<predicted_resource_block>(this, 1024));
@@ -1680,7 +1695,7 @@ namespace BlamLib.Blam.Halo1.Tags
 			Add(BspSwitchTriggerVolumes = new TI.Block<scenario_bsp_switch_trigger_volume_block>(this, 256));
 			Add(Decals = new TI.Block<scenario_decals_block>(this, 65536));
 			Add(DecalPalette = new TI.Block<field_block<TI.TagReference>>(this, 128));
-			Add(DetailObjectCollectionPalette = new TI.Block<field_block<TI.TagReference>>(this, 32));
+			Add(DetailObjectCollectionPalette = new TI.Block<scenario_detail_object_collection_palette_block>(this, 32));
 			Add(new TI.Pad(84));
 
 			Add(ActorPalette = new TI.Block<field_block<TI.TagReference>>(this, 64));

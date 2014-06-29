@@ -238,11 +238,31 @@ namespace BlamLib.Blam.Halo1.Tags
 	[TI.TagGroup((int)TagGroups.Enumerated.senv, 2, /*shader_group.k_shader_size +*/ 796, typeof(shader_group))]
 	public class shader_environment_group : shader_group
 	{
+		#region shader_environment_extension_block
+		[TI.Definition()]
+		public class shader_environment_extension_block : TI.Definition
+		{
+			#region Fields
+			public TI.Real BumpAmount;
+			#endregion
+
+			public shader_environment_extension_block()
+				: base(3)
+			{
+				Add(new TI.Pad(8));
+				Add(BumpAmount = new TI.Real());
+				Add(new TI.Pad(4));
+			}
+		}
+		#endregion
+
 		#region Fields
 		public TI.Flags Flags;
 		public TI.Enum Type;
 		public TI.Real LensFlareSpacing;
 		public TI.TagReference LensFlare;
+
+		public TI.Block<shader_environment_extension_block> ShaderExtension;
 
 		public TI.Flags DiffuseFlags;
 		public TI.TagReference BaseMap;
@@ -285,7 +305,8 @@ namespace BlamLib.Blam.Halo1.Tags
 			Add(Type = new TI.Enum());
 			Add(LensFlareSpacing = new TI.Real());
 			Add(LensFlare = new TI.TagReference(this, TagGroups.lens));
-			Add(new TI.Pad(44));
+			Add(ShaderExtension = new TI.Block<shader_environment_extension_block>(this, 1));
+			Add(new TI.Pad(32));
 
 			Add(DiffuseFlags = TI.Flags.Word);
 			Add(new TI.Pad(2 + 24));
@@ -347,6 +368,80 @@ namespace BlamLib.Blam.Halo1.Tags
 	[TI.TagGroup((int)TagGroups.Enumerated.soso, 2, /*shader_group.k_shader_size +*/ 400, typeof(shader_group))]
 	public class shader_model_group : shader_group
 	{
+		#region shader_model_extension_block
+		[TI.Definition()]
+		public class shader_model_extension_block : TI.Definition
+		{
+			#region Fields
+			public TI.TagReference SpecularColorMap;
+			public TI.Real SpecularColorCoefficient;
+			public TI.Real SpecularColorExponent;
+			
+			public TI.Flags SpecularColorFlags;
+			public TI.TagReference BaseNormalMap;
+			public TI.Real BaseNormalCoefficient;
+
+			public TI.TagReference DetailNormal1Map;
+			public TI.Real DetailNormal1Coefficient;
+			public TI.Real DetailNormal1Scale;
+			public TI.Real DetailNormal1VScale;
+
+			public TI.TagReference DetailNormal2Map;
+			public TI.Real DetailNormal2Coefficient;
+			public TI.Real DetailNormal2Scale;
+			public TI.Real DetailNormal2VScale;
+
+			public TI.Real PerpendicularBrightness;
+			public TI.RealColor PerpendicularTintColor;
+			public TI.Real ParallelBrightness;
+			public TI.RealColor ParallelTintColor;
+
+			public TI.Real SpecularLightingCoefficient;
+			public TI.Real SpecularLightingExponent;
+			#endregion
+
+			public shader_model_extension_block()
+				: base(27)
+			{
+				Add(SpecularColorMap = new TI.TagReference(this, TagGroups.bitm));
+				Add(SpecularColorCoefficient = new TI.Real());
+				Add(new TI.Pad(4));
+				Add(SpecularColorExponent = new TI.Real());
+			
+				Add(SpecularColorFlags = TI.Flags.Word);
+				Add(new TI.Pad(2));
+				Add(BaseNormalMap = new TI.TagReference(this, TagGroups.bitm));
+				Add(BaseNormalCoefficient = new TI.Real());
+
+				Add(new TI.Pad(4* 3));
+
+				Add(DetailNormal1Map = new TI.TagReference(this, TagGroups.bitm));
+				Add(DetailNormal1Coefficient = new TI.Real());
+				Add(DetailNormal1Scale = new TI.Real());
+				Add(DetailNormal1VScale = new TI.Real());
+				Add(new TI.Pad(4));
+
+				Add(DetailNormal2Map = new TI.TagReference(this, TagGroups.bitm));
+				Add(DetailNormal2Coefficient = new TI.Real());
+				Add(DetailNormal2Scale = new TI.Real());
+				Add(DetailNormal2VScale = new TI.Real());
+				Add(new TI.Pad(4));
+
+				Add(PerpendicularBrightness = new TI.Real());
+				Add(PerpendicularTintColor = new TI.RealColor(TI.FieldType.RealRgbColor));
+				Add(ParallelBrightness = new TI.Real());
+				Add(ParallelTintColor = new TI.RealColor(TI.FieldType.RealRgbColor));
+
+				Add(new TI.Pad(4 * 2));
+
+				Add(SpecularLightingCoefficient = new TI.Real());
+				Add(SpecularLightingExponent = new TI.Real());
+
+				Add(new TI.Pad(16));
+			}
+		}
+		#endregion
+
 		#region Fields
 		public TI.Flags Flags;
 		public TI.Real Translucency;
@@ -366,6 +461,8 @@ namespace BlamLib.Blam.Halo1.Tags
 		public TI.Real DetailMapScale;
 		public TI.TagReference DetailMap;
 		public TI.Real DetailMapVScale;
+
+		public TI.Block<shader_model_extension_block> ShaderExtension;
 
 		public TI.Struct<shader_animation_struct> Animation;
 
@@ -407,7 +504,7 @@ namespace BlamLib.Blam.Halo1.Tags
 			Add(DetailMapScale = new TI.Real());
 			Add(DetailMap = new TI.TagReference(this, TagGroups.bitm));
 			Add(DetailMapVScale = new TI.Real());
-			Add(new TI.Pad(12));
+			Add(ShaderExtension = new TI.Block<shader_model_extension_block>(this, 1));
 			Add(Animation = new TI.Struct<shader_animation_struct>(this));
 			Add(new TI.Pad(8));
 			

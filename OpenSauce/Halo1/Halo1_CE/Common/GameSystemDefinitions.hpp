@@ -46,6 +46,14 @@ namespace Yelo
 			proc_dispose_from_old_map	DisposeFromOldMap;
 		};
 
+		struct s_project_bsp_component
+		{
+			// Called from Yelo::GameState on init after a bsp load
+			proc_initialize_for_new_bsp	InitializeForNewBSP;
+			// Called from Yelo::GameState on disposing after a bsp unload
+			proc_dispose_from_old_bsp	DisposeFromOldBSP;
+		};
+
 		struct s_project_game_state_component
 		{
 			// Called from Yelo::GameState on init for new game state
