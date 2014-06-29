@@ -495,17 +495,17 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\cseries\enum_wrappers.hpp">
       <Filter>cseries</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\settings\c_settings_manager.hpp">
-      <Filter>settings</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\settings\c_settings_singleton.hpp">
-      <Filter>settings</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\c_settings_cheape.hpp">
       <Filter>open_sauce\settings</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\property_tree_logging.hpp">
       <Filter>configuration\property_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_manager.hpp">
+      <Filter>open_sauce\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_singleton.hpp">
+      <Filter>open_sauce\settings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -760,6 +760,15 @@
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\cryptography\TEA.cpp">
       <Filter>cryptography</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\c_settings_cheape.cpp">
+      <Filter>open_sauce\settings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\property_tree_logging.cpp">
+      <Filter>configuration\property_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_manager.cpp">
+      <Filter>open_sauce\settings</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

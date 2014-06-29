@@ -5,7 +5,7 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 #include "Common/Precompile.hpp"
-#include <YeloLib/settings/c_settings_manager.hpp>
+#include <YeloLib/open_sauce/settings/c_settings_manager.hpp>
 
 #include <YeloLib/configuration/i_configuration_file.hpp>
 #include <YeloLib/configuration/i_configuration_leaf.hpp>

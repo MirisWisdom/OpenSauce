@@ -171,7 +171,8 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 	#if PLATFORM_TYPE == PLATFORM_GUERILLA
 		CAST_PTR(void*, 0x415ABB), CAST_PTR(void*, 0x415DF8), 
 	#elif PLATFORM_TYPE == PLATFORM_SAPIEN
-		CAST_PTR(void*, 0x485034), CAST_PTR(void*, 0x485248), 
+		CAST_PTR(void*, 0x485034), CAST_PTR(void*, 0x485248), CAST_PTR(void*, 0x4E820C), CAST_PTR(void*, 0x4E71E9),
+		CAST_PTR(void*, 0x4E1272), CAST_PTR(void*, 0x4E0F36), CAST_PTR(void*, 0x489052)
 	#endif
 	};
 	for(auto ptr : K_GET_WORKING_DIR_CALLS)
@@ -248,6 +249,9 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 #if PLATFORM_TYPE == PLATFORM_SAPIEN
 	strcpy_s(_override_paths.tags.folder_name_with_levels, _override_paths.tags.folder_name_with_slash_single);
 	strcat_s(_override_paths.tags.folder_name_with_levels, "levels");
+	
+	strcpy_s(_override_paths.tags.root_with_tags_levels, _override_paths.tags.path_with_slash);
+	strcat_s(_override_paths.tags.root_with_tags_levels, "levels");
 
 
 	static char* K_WORKING_DIR_DIRECT_FIXUPS[] = {
@@ -280,12 +284,22 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 		*ptr = _override_paths.tags.folder_name_with_levels;
 
 	char* registry_scnr_path = CAST_PTR(char*, 0xA25F98);
-	strcpy_s(registry_scnr_path, MAX_PATH, _override_paths.tags.folder_name_with_levels);
+	strcpy_s(registry_scnr_path, MAX_PATH, _override_paths.tags.folder_name_with_levels);	
+		
+	static cstring* K_INITIAL_OPEN_DIRECTORY_REFERENCE_FIXUPS[] = { // "*root path*\tags\levels"
+		CAST_PTR(cstring*, 0x4E0EF7), CAST_PTR(cstring*, 0x4E1233), CAST_PTR(cstring*, 0x4E81D0),
+		CAST_PTR(cstring*, 0x4E71A9)
+	};
+	for(auto ptr : K_INITIAL_OPEN_DIRECTORY_REFERENCE_FIXUPS)
+		*ptr = _override_paths.tags.root_with_tags_levels;
 
-	// null the initial read of the registry key "last directory"
+	// Remove reading and writing the last directory registry entry when using a custom profile
 	{
-		byte null_code[6] = {0x90,0x90,0x90,0x90,0x90,0x90};
+		byte null_code[6] = {0x90,0x90,0x90,0x90,0x90};
+		Memory::WriteMemory(CAST_PTR(void*,0x4E0EE5), null_code, 5);
+		Memory::WriteMemory(CAST_PTR(void*,0x4E1025), null_code, 5);
 		Memory::WriteMemory(CAST_PTR(void*,0x4E1221), null_code, 5);
+		Memory::WriteMemory(CAST_PTR(void*,0x4E13AF), null_code, 5);
 	}
 #endif
 }

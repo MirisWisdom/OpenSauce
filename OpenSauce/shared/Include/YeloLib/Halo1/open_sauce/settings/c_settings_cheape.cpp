@@ -7,10 +7,12 @@
 #include "Common/Precompile.hpp"
 #include <YeloLib/Halo1/open_sauce/settings/c_settings_cheape.hpp>
 
+#if PLATFORM_IS_EDITOR
+
 #include <YeloLib/configuration/c_configuration_value.hpp>
 
 using namespace Yelo::Configuration;
-using namespace boost::filesystem;
+using namespace boost;
 
 namespace Yelo
 {
@@ -47,7 +49,7 @@ namespace Yelo
 
 		const std::vector<i_configuration_value* const> c_profile_container::GetMembers()
 		{
-			return std::vector<i_configuration_value* const> { &m_paths, &m_name };
+			return std::vector<i_configuration_value* const> { &m_name, &m_paths };
 		}
 
 		c_cheape_container::c_cheape_container()
@@ -80,16 +82,16 @@ namespace Yelo
 			YELO_ASSERT_DISPLAY(!paths.m_tags_directory.Get().empty(), "Tags directory name missing from editor profile");
 			YELO_ASSERT_DISPLAY(!paths.m_maps_directory.Get().empty(), "Maps directory name missing from editor profile");
 			
-			m_root_directory = (path(paths.m_root.Get())).string();
-			m_data_directory = (path(m_root_directory) /= paths.m_data_directory.Get()).string();
-			m_tags_directory = (path(m_root_directory) /= paths.m_tags_directory.Get()).string();
-			m_maps_directory = (path(m_root_directory) /= paths.m_maps_directory.Get()).string();
+			m_root_directory = (filesystem::path(paths.m_root.Get())).string();
+			m_data_directory = (filesystem::path(m_root_directory) /= paths.m_data_directory.Get()).string();
+			m_tags_directory = (filesystem::path(m_root_directory) /= paths.m_tags_directory.Get()).string();
+			m_maps_directory = (filesystem::path(m_root_directory) /= paths.m_maps_directory.Get()).string();
 			m_tags_folder = paths.m_tags_directory;
 			
-			YELO_ASSERT_DISPLAY(exists(m_root_directory), "Root directory defined in an editor profile does not exist: [%s]", m_root_directory.c_str());
-			YELO_ASSERT_DISPLAY(exists(m_data_directory), "Data directory defined in an editor profile does not exist: [%s]", m_data_directory.c_str());
-			YELO_ASSERT_DISPLAY(exists(m_tags_directory), "Tags directory defined in an editor profile does not exist: [%s]", m_tags_directory.c_str());
-			YELO_ASSERT_DISPLAY(exists(m_maps_directory), "Maps directory defined in an editor profile does not exist: [%s]", m_maps_directory.c_str());
+			YELO_ASSERT_DISPLAY(filesystem::exists(m_root_directory), "Root directory defined in an editor profile does not exist: [%s]", m_root_directory.c_str());
+			YELO_ASSERT_DISPLAY(filesystem::exists(m_data_directory), "Data directory defined in an editor profile does not exist: [%s]", m_data_directory.c_str());
+			YELO_ASSERT_DISPLAY(filesystem::exists(m_tags_directory), "Tags directory defined in an editor profile does not exist: [%s]", m_tags_directory.c_str());
+			YELO_ASSERT_DISPLAY(filesystem::exists(m_maps_directory), "Maps directory defined in an editor profile does not exist: [%s]", m_maps_directory.c_str());
 		}
 
 		cstring c_settings_profile::GetRootPath()
@@ -166,3 +168,4 @@ namespace Yelo
 #pragma endregion
 	};
 };
+#endif

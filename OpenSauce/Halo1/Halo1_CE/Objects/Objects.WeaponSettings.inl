@@ -12,7 +12,7 @@
 #include <YeloLib/configuration/c_configuration_value_list.hpp>
 #include <YeloLib/configuration/c_configuration_container_list.hpp>
 #include <YeloLib/configuration/type_containers/c_real_vector3d_container.hpp>
-#include <YeloLib/settings/c_settings_singleton.hpp>
+#include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
 
 #include "Rasterizer/Rasterizer.hpp"
 #include "Game/Camera.hpp"

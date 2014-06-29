@@ -43,6 +43,8 @@ namespace Yelo
 #if PLATFORM_TYPE == PLATFORM_SAPIEN
 				// "tags\levels"
 				char folder_name_with_levels[64];
+				// "*root*\tags\levels
+				char root_with_tags_levels[MAX_PATH];
 #endif
 			}tags;
 		}_override_paths; // defined in MemoryFixups.Paths.inl
