@@ -16,7 +16,7 @@
 
 #include <YeloLib/configuration/c_configuration_value.hpp>
 #include <YeloLib/configuration/c_configuration_value_list.hpp>
-#include <YeloLib/settings/c_settings_singleton.hpp>
+#include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
 
 #include "Networking/HTTP/HTTPClient.hpp"
 #if PLATFORM_IS_USER

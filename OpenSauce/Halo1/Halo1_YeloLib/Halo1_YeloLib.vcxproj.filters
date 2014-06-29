@@ -115,9 +115,6 @@
     <Filter Include="configuration\type_containers">
       <UniqueIdentifier>{7eca856f-6ae9-4b09-b0e4-98b45f6ec8cc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="settings">
-      <UniqueIdentifier>{5594fd66-97e9-4400-88cf-2e8cbe2828c7}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\targetver.h">
@@ -477,17 +474,17 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\cseries\enum_wrappers.hpp">
       <Filter>cseries</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\settings\c_settings_manager.hpp">
-      <Filter>settings</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\settings\c_settings_singleton.hpp">
-      <Filter>settings</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\c_settings_cheape.hpp">
       <Filter>open_sauce\settings</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\property_tree\property_tree_logging.hpp">
       <Filter>configuration\property_tree</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_manager.hpp">
+      <Filter>open_sauce\settings</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_singleton.hpp">
+      <Filter>open_sauce\settings</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -734,14 +731,14 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_vector3d_container.cpp">
       <Filter>configuration\type_containers</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\shared\Include\YeloLib\settings\c_settings_manager.cpp">
-      <Filter>settings</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\c_settings_cheape.cpp">
       <Filter>open_sauce\settings</Filter>
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\property_tree_logging.cpp">
       <Filter>configuration\property_tree</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_manager.cpp">
+      <Filter>open_sauce\settings</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
