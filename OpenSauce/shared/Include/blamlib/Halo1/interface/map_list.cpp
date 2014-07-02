@@ -187,6 +187,7 @@ namespace Yelo
 			find_filename.append("*"); // search pattern. we want all files that use the desired extension
 			find_filename.append(map_extension);
 
+			// TODO: FindExInfoBasic was only introduced in WINS2008 and W7. Need to test the executing platform and change which API we call when it is XP (ugh) or Vista (meh)
 			// Ex() is only in WinXP+, but using FindExInfoBasic we can skip querying the short names of files
 			// The engine uses FindFirstFile
 			HANDLE h = FindFirstFileEx(find_filename.c_str(), FindExInfoBasic, &fd, FindExSearchNameMatch, nullptr, 0);

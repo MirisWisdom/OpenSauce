@@ -38,6 +38,8 @@ namespace Yelo
 
 	namespace blam
 	{
+		extern cstring g_game_team_names[Enums::k_number_of_game_teams];
+
 		// Checks to see if [team_to_test] is an enemy of [team]
 		bool PLATFORM_API game_team_is_enemy(long_enum team, long_enum team_to_test);
 	};

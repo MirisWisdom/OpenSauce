@@ -107,20 +107,20 @@ namespace Yelo
 	public:
 		TStorage m_flags;
 
-		inline void Clear()									{ m_flags = 0; }
-		inline void Clear(TStorage mask)					{ m_flags &= ~mask; }
+		void Clear()									{ m_flags = 0; }
+		void Clear(TStorage mask)						{ m_flags &= ~mask; }
 
-		inline void Set(TStorage s)							{ m_flags = s; }
-		inline TStorage Get() const							{ return m_flags; }
-		inline TStorage Get(TStorage mask) const			{ return m_flags & mask; }
+		void Set(TStorage s)							{ m_flags = s; }
+		TStorage Get() const							{ return m_flags; }
+		TStorage Get(TStorage mask) const				{ return m_flags & mask; }
 
-		inline bool HasNoFlags(TStorage flags) const		{ return (m_flags & flags) == 0; }
-		inline bool HasAnyFlags(TStorage flags) const		{ return (m_flags & flags) != 0; }
-		inline bool HasAllFlags(TStorage flags) const		{ return (m_flags & flags) == flags; }
+		bool HasNoFlags(TStorage flags) const			{ return (m_flags & flags) == 0; }
+		bool HasAnyFlags(TStorage flags) const			{ return (m_flags & flags) != 0; }
+		bool HasAllFlags(TStorage flags) const			{ return (m_flags & flags) == flags; }
 
-		inline bool HasNoFlags(TEnumBitsClass flags) const	{ return HasNoFlags( static_cast<TStorage>(flags)); }
-		inline bool HasAnyFlags(TEnumBitsClass flags) const	{ return HasAnyFlags(static_cast<TStorage>(flags)); }
-		inline bool HasAllFlags(TEnumBitsClass flags) const	{ return HasAllFlags(static_cast<TStorage>(flags)); }
+		bool HasNoFlags(TEnumBitsClass flags) const		{ return HasNoFlags( static_cast<TStorage>(flags)); }
+		bool HasAnyFlags(TEnumBitsClass flags) const	{ return HasAnyFlags(static_cast<TStorage>(flags)); }
+		bool HasAllFlags(TEnumBitsClass flags) const	{ return HasAllFlags(static_cast<TStorage>(flags)); }
 
 		bool HasBit(TEnumBitsClass bit_member) const
 		{

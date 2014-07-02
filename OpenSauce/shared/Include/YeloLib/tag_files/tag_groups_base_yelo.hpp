@@ -10,9 +10,9 @@
 namespace Yelo
 {
 	// Template'd tag_reference that is nifty, and allows for better markup in the code
-	template<tag K_TAG> class TagReference
+	template<tag K_TAG>
+	struct TagReference
 	{
-	public:
 		// group tag identifier for this reference
 		tag GroupTag;
 
@@ -26,16 +26,16 @@ namespace Yelo
 		// datum index of this reference in the tag index
 		datum_index TagIndex;
 
-		inline operator datum_index() { return TagIndex; }
+		operator datum_index() { return TagIndex; }
 		OVERRIDE_OPERATOR_MATH_BOOL_TYPE(uint32, TagIndex, ==);
 
 		// Returns whether or not this reference has a valid group reference
-		inline bool IsValid() const { return GroupTag == K_TAG; }
+		bool IsValid() const { return GroupTag == K_TAG; }
 
 		// Sets this reference to null
-		inline void Reset() { GroupTag = K_TAG; TagIndex = datum_index::null; }
+		void Reset() { GroupTag = K_TAG; TagIndex = datum_index::null; }
 
-		inline tag Tag() const { return K_TAG; }
+		tag Tag() const { return K_TAG; }
 	};
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
 	BOOST_STATIC_ASSERT( sizeof(TagReference<NONE>) == 0x10 );
@@ -47,9 +47,9 @@ namespace Yelo
 
 
 	// Template'd tag block for allowing more robust code.
-	template<typename T> class TagBlock
+	template<typename T>
+	struct TagBlock
 	{
-	public:
 		typedef T*			iterator;
 		typedef const T*	const_iterator;
 		typedef T			value_type;
@@ -63,7 +63,7 @@ namespace Yelo
 
 		// Anonymous union for allowing less code for converting, and less 
 		// "#pragma warning" code entries
-	public: union {
+		union {
 			// Pointer to the first tag block definition element
 			void* Address;
 
@@ -76,16 +76,15 @@ namespace Yelo
 		const struct tag_block_definition* BlockDefinition;
 #endif
 
-	public:
 		// Using the class's template 'T' parameter, calculates the total
 		// size, in bytes, the elements assume in memory
-		inline size_t SizeOf() const { return sizeof(T) * Count; }
+		size_t SizeOf() const { return sizeof(T) * Count; }
 
-		inline tag_block* to_tag_block()				{ return CAST_PTR(tag_block*, &this->Count); }
-		inline const tag_block* to_tag_block() const	{ return CAST_PTR(const tag_block*, &this->Count); }
+		tag_block* to_tag_block()				{ return CAST_PTR(tag_block*, &this->Count); }
+		const tag_block* to_tag_block() const	{ return CAST_PTR(const tag_block*, &this->Count); }
 
 		// Sets this object to equal that of a anonymous tag block object. 
-		inline  TagBlock<T>& Copy(const tag_block& block)
+		TagBlock<T>& Copy(const tag_block& block)
 		{
 			this->Count = block.count;
 			this->Address = block.address;
@@ -98,7 +97,7 @@ namespace Yelo
 		}
 
 		// Indexer for getting a definition reference via the definition's index in the block
-		inline T& operator[](int32 index)
+		T& operator[](int32 index)
 		{
 #if PLATFORM_IS_EDITOR
 			return *blam::tag_block_get_element(*this, index);
@@ -107,7 +106,7 @@ namespace Yelo
 #endif
 		}
 		// Indexer for getting a (const) definition reference via the definition's index in the block
-		inline const T& operator[](int32 index) const
+		const T& operator[](int32 index) const
 		{
 #if PLATFORM_IS_EDITOR
 			return *blam::tag_block_get_element(*this, index);
@@ -117,28 +116,28 @@ namespace Yelo
 		}
 
 #if PLATFORM_IS_EDITOR
-		inline T* get_element(int32 element)			{ return blam::tag_block_get_element(*this, index); }
-		inline void delete_element(int32 element)		{ blam::tag_block_delete_element(*this, element); }
-		inline bool delete_all_elements()				{ return blam::tag_block_delete_all_elements(*this); }
-		inline int32 add_element()						{ return blam::tag_block_add_element(*this); }
-		inline bool resize(int32 element_count)			{ return blam::tag_block_resize(*this, element_count); }
-		inline T* add_and_get_element()					{ return blam::tag_block_add_and_get_element(*this); }
+		T* get_element(int32 element)			{ return blam::tag_block_get_element(*this, index); }
+		void delete_element(int32 element)		{ blam::tag_block_delete_element(*this, element); }
+		bool delete_all_elements()				{ return blam::tag_block_delete_all_elements(*this); }
+		int32 add_element()						{ return blam::tag_block_add_element(*this); }
+		bool resize(int32 element_count)		{ return blam::tag_block_resize(*this, element_count); }
+		T* add_and_get_element()				{ return blam::tag_block_add_and_get_element(*this); }
 #endif
 
 
 		//////////////////////////////////////////////////////////////////////////
 		// STL-like APIs
-		inline const_iterator	begin() const		{ return Definitions; }
-		inline iterator			begin()				{ return Definitions; }
-		inline const_iterator	const_begin() const	{ return Definitions; }
-		inline const_iterator	const_begin()		{ return Definitions; }
-		inline const_iterator	end() const			{ return Definitions + Count; }
-		inline iterator			end()				{ return Definitions + Count; }
-		inline const_iterator	const_end() const	{ return Definitions + Count; }
-		inline const_iterator	const_end()			{ return Definitions + Count; }
+		const_iterator	begin() const		{ return Definitions; }
+		iterator		begin()				{ return Definitions; }
+		const_iterator	const_begin() const	{ return Definitions; }
+		const_iterator	const_begin()		{ return Definitions; }
+		const_iterator	end() const			{ return Definitions + Count; }
+		iterator		end()				{ return Definitions + Count; }
+		const_iterator	const_end() const	{ return Definitions + Count; }
+		const_iterator	const_end()			{ return Definitions + Count; }
 
-		inline bool empty() const { return Count == 0; }
-		inline size_t size() const { return CAST(size_t, Count); }
+		bool empty() const { return Count == 0; }
+		size_t size() const { return CAST(size_t, Count); }
 	};
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
 	BOOST_STATIC_ASSERT( sizeof(TagBlock<byte>) == 0xC );
@@ -185,9 +184,9 @@ namespace Yelo
 
 	// Template'd tag_data for more robust code dealing with known
 	// sub-structures.
-	template<typename T> class TagData
+	template<typename T>
+	struct TagData
 	{
-	public:
 		typedef T*			iterator;
 		typedef const T*	const_iterator;
 		typedef T			value_type;
@@ -204,7 +203,7 @@ namespace Yelo
 		int32 StreamPosition;
 #endif
 
-	public: union {
+		union {
 			// Address of the data blob
 			void* Address;
 
@@ -216,29 +215,29 @@ namespace Yelo
 #endif
 
 		// How many [T] objects are actually in the definition.
-		inline size_t Count() const { return Size / sizeof(T); }
+		size_t Count() const { return Size / sizeof(T); }
 
 		// Sizeof(T)
-		inline size_t SizeOf() const { return sizeof(T); }
+		size_t SizeOf() const { return sizeof(T); }
 
-		inline tag_data* to_tag_data()				{ return CAST_PTR(tag_data*, &this->Size); }
-		inline const tag_data* to_tag_data() const	{ return CAST_PTR(const tag_data*, &this->Size); }
+		tag_data* to_tag_data()				{ return CAST_PTR(tag_data*, &this->Size); }
+		const tag_data* to_tag_data() const	{ return CAST_PTR(const tag_data*, &this->Size); }
 
-		inline T* operator[](int32 index) { return &this->Definitions[index]; }
+		T* operator[](int32 index) { return &this->Definitions[index]; }
 
 		//////////////////////////////////////////////////////////////////////////
 		// STL-like APIs
-		inline const_iterator	begin() const		{ return Definitions; }
-		inline iterator			begin()				{ return Definitions; }
-		inline const_iterator	const_begin() const	{ return Definitions; }
-		inline const_iterator	const_begin()		{ return Definitions; }
-		inline const_iterator	end() const			{ return Definitions + Count(); }
-		inline iterator			end()				{ return Definitions + Count(); }
-		inline const_iterator	const_end() const	{ return Definitions + Count(); }
-		inline const_iterator	const_end()			{ return Definitions + Count(); }
+		const_iterator	begin() const		{ return Definitions; }
+		iterator		begin()				{ return Definitions; }
+		const_iterator	const_begin() const	{ return Definitions; }
+		const_iterator	const_begin()		{ return Definitions; }
+		const_iterator	end() const			{ return Definitions + Count(); }
+		iterator		end()				{ return Definitions + Count(); }
+		const_iterator	const_end() const	{ return Definitions + Count(); }
+		const_iterator	const_end()			{ return Definitions + Count(); }
 
-		inline bool empty() const { return Size == 0; }
-		inline size_t size() const { return CAST(size_t, Count()); }
+		bool empty() const { return Size == 0; }
+		size_t size() const { return CAST(size_t, Count()); }
 
 
 #if PLATFORM_IS_EDITOR

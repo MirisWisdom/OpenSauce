@@ -82,14 +82,14 @@ namespace Yelo
 			c_tag_iterator(const void* endHackDummy);
 		public:
 			c_tag_iterator(const tag group_tag_filter);
-			template<typename T> inline
+			template<typename T>
 			c_tag_iterator() :
 				m_tag_index(datum_index::null)
 			{
 				blam::tag_iterator_new<T>(m_state);
 			}
 			// Get an iterator that doesn't have any specific group_tag filter
-			static inline c_tag_iterator all()
+			static c_tag_iterator all()
 			{
 				return c_tag_iterator(NONE);
 			}
@@ -98,22 +98,22 @@ namespace Yelo
 
 			bool operator!=(const c_tag_iterator& other) const;
 
-			inline c_tag_iterator& operator++()
+			c_tag_iterator& operator++()
 			{
 				Next();
 				return *this;
 			}
-			inline datum_index operator*() const
+			datum_index operator*() const
 			{
 				return m_tag_index;
 			}
 
-			inline c_tag_iterator& begin() /*const*/
+			c_tag_iterator& begin() /*const*/
 			{
 				this->Next();
 				return *this;
 			}
-			inline static const c_tag_iterator end() /*const*/
+			static const c_tag_iterator end() /*const*/
 			{
 				return c_tag_iterator(nullptr);
 			}

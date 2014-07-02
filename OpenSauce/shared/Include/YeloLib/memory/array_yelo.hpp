@@ -11,9 +11,8 @@ namespace Yelo
 	{
 		// C++ wrapper for blamlib's s_dynamic_array
 		template<typename DatumT>
-		struct DynamicArray
+		class DynamicArray
 		{
-		private:
 			size_t element_size;
 			int32 count;
 			DatumT* elements;
@@ -21,7 +20,7 @@ namespace Yelo
 		public:
 			int32 GetCount() const { return count; }
 
-			inline const DatumT* operator [](int32 index) const
+			const DatumT* operator [](int32 index) const
 			{
 				if (index < 0 || index >= count)
 					return nullptr;
@@ -29,7 +28,7 @@ namespace Yelo
 				return &CAST_PTR(DatumT*, elements)[index];
 			}
 
-			inline DatumT* operator [](int32 index)
+			DatumT* operator [](int32 index)
 			{
 				return CAST_THIS_NONCONST_MEMBER_FUNC(DatumT*, [index]);
 			}
@@ -51,7 +50,7 @@ namespace Yelo
 
 			int32 GetCapacity() const { return capacity; }
 
-			inline const DatumT* operator [](int32 index) const
+			const DatumT* operator [](int32 index) const
 			{
 				if (index < 0 || index >= count)
 					return nullptr;
@@ -59,7 +58,7 @@ namespace Yelo
 				return &CAST_PTR(DatumT*, elements)[index];
 			}
 
-			inline DatumT* operator [](int32 index)
+			DatumT* operator [](int32 index)
 			{
 				return CAST_THIS_NONCONST_MEMBER_FUNC(DatumT*, [index]);
 			}

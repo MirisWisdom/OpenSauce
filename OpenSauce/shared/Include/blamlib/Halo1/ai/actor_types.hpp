@@ -10,7 +10,7 @@ namespace Yelo
 {
 	namespace Enums
 	{
-		enum actor_type
+		enum actor_type : _enum
 		{
 			_actor_type_elite,
 			_actor_type_jackal,
@@ -31,5 +31,10 @@ namespace Yelo
 
 			k_number_of_actor_types,
 		};
+	};
+
+	namespace blam
+	{
+		extern cstring g_actor_type_names[Enums::k_number_of_actor_types];
 	};
 };
