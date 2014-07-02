@@ -177,7 +177,7 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 	};
 	for(auto ptr : K_GET_WORKING_DIR_CALLS)
 		Memory::CreateHookRelativeCall(GetCurrentDirectoryHack, 
-			ptr, 0x90);
+			ptr, Enums::_x86_opcode_nop);
 
 
 	// "tags\"
@@ -294,12 +294,17 @@ void c_memory_fixups::FixupsInitializeTagPaths(cstring tags_override, cstring ta
 		*ptr = _override_paths.tags.root_with_tags_levels;
 
 	// Remove reading and writing the last directory registry entry when using a custom profile
+	static void* K_REGISTRY_QUERY_LAST_DIRECTORY_CALLS[] = {
+		CAST_PTR(void*, 0x4E0EE5), CAST_PTR(void*, 0x4E1025), CAST_PTR(void*, 0x4E1221),
+		CAST_PTR(void*, 0x4E13AF)
+	};
 	{
-		byte null_code[6] = {0x90,0x90,0x90,0x90,0x90};
-		Memory::WriteMemory(CAST_PTR(void*,0x4E0EE5), null_code, 5);
-		Memory::WriteMemory(CAST_PTR(void*,0x4E1025), null_code, 5);
-		Memory::WriteMemory(CAST_PTR(void*,0x4E1221), null_code, 5);
-		Memory::WriteMemory(CAST_PTR(void*,0x4E13AF), null_code, 5);
+		byte null_code[5] = { // sizeof(s_call)
+			Enums::_x86_opcode_nop, Enums::_x86_opcode_nop, Enums::_x86_opcode_nop, 
+			Enums::_x86_opcode_nop, Enums::_x86_opcode_nop
+		};
+		for (auto ptr : K_REGISTRY_QUERY_LAST_DIRECTORY_CALLS)
+			Memory::WriteMemory(ptr, null_code, 5);
 	}
 #endif
 }

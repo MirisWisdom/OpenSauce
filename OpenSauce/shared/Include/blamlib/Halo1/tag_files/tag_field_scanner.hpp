@@ -54,12 +54,12 @@ namespace Yelo
 			void* field_address;
 
 			// true if this scan state is allocated in engine code
-			inline bool IsEngineScanState()	{ return pad != TRUE; }
+			bool IsEngineScanState()	{ return pad != TRUE; }
 		private:
 			// initialize anything important which tag_field_scan_state_new doesn't
 			void InitializeWhatNewDoesnt();
 			// DON'T TOUCH ME UNLESS YOUR NAME IS c_tag_field_scanner
-			inline void SetYeloScanState()	{ pad = TRUE; }
+			void SetYeloScanState()		{ pad = TRUE; }
 		}; BOOST_STATIC_ASSERT( sizeof(s_tag_field_scan_state) == 0x64 );
 
 
@@ -68,29 +68,31 @@ namespace Yelo
 			s_tag_field_scan_state m_state;
 
 		public:
-			inline bool IsDone() const					{ return m_state.done; }
+			bool IsDone() const					{ return m_state.done; }
 
-			inline const tag_field* GetFields() const	{ return m_state.fields; }
-			inline void* GetBlockElement() const		{ return m_state.block_element; }
-			inline int32 GetFieldCount() const			{ return m_state.field_count; }
+			const tag_field* GetFields() const	{ return m_state.fields; }
+			void* GetBlockElement() const		{ return m_state.block_element; }
+			int32 GetFieldCount() const			{ return m_state.field_count; }
 
-			inline int32 GetFieldIndex() const			{ assert(m_state.field_count > 0); // if this fails, scanning hasn't started yet, no one should be requesting an index yet
+			int32 GetFieldIndex() const
+			{
+				assert(m_state.field_count > 0); // if this fails, scanning hasn't started yet, no one should be requesting an index yet
 				return m_state.field_count - 1;
 			}
-			inline size_t GetFieldSize() const			{ return CAST(size_t, m_state.field_size); }
-			inline size_t GetFieldOffset() const		{ return CAST(size_t, m_state.field_end_offset) - GetFieldSize(); }
+			size_t GetFieldSize() const				{ return CAST(size_t, m_state.field_size); }
+			size_t GetFieldOffset() const			{ return CAST(size_t, m_state.field_end_offset) - GetFieldSize(); }
 #ifndef __TAG_FIELD_SCAN_USE_BLAM_DATA
-			inline size_t GetFieldRuntimeOffset() const	{ return GetFieldOffset() - m_state.fields_debug_bytes; }
+			size_t GetFieldRuntimeOffset() const	{ return GetFieldOffset() - m_state.fields_debug_bytes; }
 #endif
 
-			inline Enums::field_type GetTagFieldType() const{ return m_state.field->type; }
-			inline cstring GetTagFieldName() const			{ return m_state.field->name; }
+			Enums::field_type GetTagFieldType() const	{ return m_state.field->type; }
+			cstring GetTagFieldName() const				{ return m_state.field->name; }
 			template<typename T>
-			inline T* GetTagFieldDefinition() const			{ return m_state.field->Definition<T>(); }
+			T* GetTagFieldDefinition() const			{ return m_state.field->Definition<T>(); }
 
-			inline void* GetFieldAddress() const		{ return m_state.field_address; }
+			void* GetFieldAddress() const				{ return m_state.field_address; }
 			template<typename T>
-			inline T* GetFieldAs() const				{ return CAST_PTR(T*, m_state.field_address); }
+			T* GetFieldAs() const						{ return CAST_PTR(T*, m_state.field_address); }
 
 		public:
 			c_tag_field_scanner(const tag_field* fields, void* block_element = nullptr);
@@ -117,37 +119,37 @@ namespace Yelo
 				s_iterator_result(const c_tag_field_scanner& scanner) : m_scanner(scanner) {}
 
 				// Field's index, relative to the parent block's fields list
-				inline int32 GetIndex() const				{ return m_scanner.GetFieldIndex(); }
+				int32 GetIndex() const				{ return m_scanner.GetFieldIndex(); }
 				// Field's individual size
-				inline size_t GetSize() const				{ return m_scanner.GetFieldSize(); }
+				size_t GetSize() const				{ return m_scanner.GetFieldSize(); }
 				// Field's offset, relative to the parent block
-				inline size_t GetOffset() const				{ return m_scanner.GetFieldOffset(); }
+				size_t GetOffset() const			{ return m_scanner.GetFieldOffset(); }
 #ifndef __TAG_FIELD_SCAN_USE_BLAM_DATA
 				// Field's cache-build offset, relative to the parent block
-				inline size_t GetRuntimeOffset() const		{ return m_scanner.GetFieldRuntimeOffset(); }
+				size_t GetRuntimeOffset() const		{ return m_scanner.GetFieldRuntimeOffset(); }
 #endif
 
 				// Field's type
-				inline Enums::field_type GetType() const	{ return m_scanner.GetTagFieldType(); }
+				Enums::field_type GetType() const	{ return m_scanner.GetTagFieldType(); }
 				// Field's name
-				inline cstring GetName() const				{ return m_scanner.GetTagFieldName(); }
+				cstring GetName() const				{ return m_scanner.GetTagFieldName(); }
 				// Treat the field's definition as a T*
 				template<typename T>
-				inline T* DefinitionAs() const				{ return m_scanner.GetTagFieldDefinition<T>(); }
+				T* DefinitionAs() const				{ return m_scanner.GetTagFieldDefinition<T>(); }
 
 				// Instance's address
-				inline void* GetAddress() const				{ return m_scanner.GetFieldAddress(); }
+				void* GetAddress() const			{ return m_scanner.GetFieldAddress(); }
 				// Treat the instance's address as a T*
 				template<typename T>
-				inline T* As() const						{ return m_scanner.GetFieldAs<T>(); }
+				T* As() const						{ return m_scanner.GetFieldAs<T>(); }
 
-				inline bool IsReadOnly() const				{ return m_scanner.m_state.field->IsReadOnly(); }
-				inline bool IsAdvanced() const				{ return m_scanner.m_state.field->IsAdvanced(); }
-				inline bool IsBlockName() const				{ return m_scanner.m_state.field->IsBlockName(); }
-				inline bool IsInvisible() const				{ return m_scanner.m_state.field->IsInvisible(); }
-				inline bool IsStringId() const				{ return m_scanner.TagFieldIsStringId(); }
-				inline bool IsOldStringId() const			{ return m_scanner.TagFieldIsOldStringId(); }
-				inline int32 GetStringFieldLength() const	{ return m_scanner.StringFieldGetLength(); }
+				bool IsReadOnly() const				{ return m_scanner.m_state.field->IsReadOnly(); }
+				bool IsAdvanced() const				{ return m_scanner.m_state.field->IsAdvanced(); }
+				bool IsBlockName() const			{ return m_scanner.m_state.field->IsBlockName(); }
+				bool IsInvisible() const			{ return m_scanner.m_state.field->IsInvisible(); }
+				bool IsStringId() const				{ return m_scanner.TagFieldIsStringId(); }
+				bool IsOldStringId() const			{ return m_scanner.TagFieldIsOldStringId(); }
+				int32 GetStringFieldLength() const	{ return m_scanner.StringFieldGetLength(); }
 			};
 
 			struct s_iterator
@@ -155,31 +157,31 @@ namespace Yelo
 			private:
 				c_tag_field_scanner* m_scanner;
 
-				inline bool IsEndHack() const			{ return m_scanner == nullptr; }
+				bool IsEndHack() const			{ return m_scanner == nullptr; }
 
 			public:
 				s_iterator(c_tag_field_scanner* scanner) : m_scanner(scanner) {}
 
 				bool operator!=(const s_iterator& other) const;
 
-				inline s_iterator& operator++()
+				s_iterator& operator++()
 				{
 					m_scanner->Scan();
 					return *this;
 				}
-				inline s_iterator_result operator*() const
+				s_iterator_result operator*() const
 				{
 					return s_iterator_result(*m_scanner);
 				}
 			};
 
-			inline s_iterator begin() /*const*/
+			s_iterator begin() /*const*/
 			{
 				auto iter = s_iterator(this);
 				this->Scan();
 				return iter;
 			}
-			inline static const s_iterator end() /*const*/
+			static const s_iterator end() /*const*/
 			{
 				return s_iterator(nullptr);
 			}

@@ -8,6 +8,19 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum game_difficulty_level : _enum
+		{
+			_game_difficulty_level_easy,
+			_game_difficulty_level_normal,
+			_game_difficulty_level_hard,
+			_game_difficulty_level_impossible,
+
+			k_number_of_game_difficulty_levels
+		};
+	};
+
 	namespace GameState
 	{
 		struct s_game_options
@@ -23,5 +36,10 @@ namespace Yelo
 			// not always the actual path, sometimes just the name, go figure
 			char scenario_path[/*Enums::k_max_tag_name_length*/255+1];
 		}; BOOST_STATIC_ASSERT( sizeof(s_game_options) == 0x10C );
+	};
+
+	namespace blam
+	{
+		extern cstring g_game_difficulty_level_names[Enums::k_number_of_game_difficulty_levels];
 	};
 };

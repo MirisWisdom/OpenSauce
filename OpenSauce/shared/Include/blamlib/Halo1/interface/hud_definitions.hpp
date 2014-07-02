@@ -24,7 +24,7 @@ namespace Yelo
 			_hud_anchor_bottom_right,
 			_hud_anchor_center,
 
-			_hud_anchor,
+			k_number_of_hud_anchors,
 		};
 
 
@@ -434,5 +434,10 @@ namespace Yelo
 			TAG_TBLOCK(multitex_overlay, multitexture_overlay_hud_element_definition);
 			PAD32;
 		}; BOOST_STATIC_ASSERT( sizeof(s_hud_element_overlay) == 0x68 );
+	};
+
+	namespace blam
+	{
+		extern cstring g_hud_anchor_names[Enums::k_number_of_hud_anchors];
 	};
 };

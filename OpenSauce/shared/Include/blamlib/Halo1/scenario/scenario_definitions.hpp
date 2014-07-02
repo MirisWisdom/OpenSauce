@@ -158,6 +158,25 @@ namespace Yelo
 			TAG_PAD(int32, 9);
 		}; BOOST_STATIC_ASSERT( sizeof(scenario_cutscene_camera_point) == 0x68 );
 
+		struct s_scenario_cutscene_title
+		{
+			PAD32;
+			TAG_FIELD(tag_string, name);
+			PAD32;
+			TAG_FIELD(rectangle2d, text_bounds);
+			TAG_FIELD(int16, string_index);
+			PAD16;
+			TAG_ENUM(justification, Enums::text_justification);
+			PAD16; // font enum in Halo2
+			PAD32;
+			TAG_FIELD(argb_color, text_color);
+			TAG_FIELD(argb_color, shadow_color);
+			TAG_FIELD(real, fade_in_time);
+			TAG_FIELD(real, up_time);
+			TAG_FIELD(real, fade_out_time);
+			TAG_PAD(int32, 4);
+		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_cutscene_title) == 0x60 );
+
 		struct structure_bsp_header;
 		struct scenario_structure_bsp_reference
 		{
@@ -275,9 +294,7 @@ namespace Yelo
 
 			TAG_TBLOCK(cutscene_flags, scenario_cutscene_flag);
 			TAG_TBLOCK(cutscene_camera_points, scenario_cutscene_camera_point);
-			TAG_PAD(tag_block,
-				1 // s_scenario_cutscene_title
-				);
+			TAG_TBLOCK(cutscene_titles, s_scenario_cutscene_title);
 
 			TAG_PAD(int32, 27); // 108
 			TAG_FIELD(tag_reference, custom_object_names, 'ustr');
