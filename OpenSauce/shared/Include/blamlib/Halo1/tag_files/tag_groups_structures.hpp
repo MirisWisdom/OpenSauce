@@ -20,6 +20,8 @@ namespace Yelo
 		enum {
 			k_maximum_field_byte_swap_codes = 1024,
 
+			// these chars should all match the TAG_FIELD_MARKUP_* defines in tag_groups_structures_macros.hpp
+			
 			k_tag_field_markup_character_advanced =		'!',
 			k_tag_field_markup_character_help_prefix =	'#',
 			k_tag_field_markup_character_read_only =	'*',
@@ -151,10 +153,10 @@ namespace Yelo
 
 #if PLATFORM_IS_EDITOR
 		// cast the [definition] pointer to a T*
-		template<typename T> inline
+		template<typename T>
 		T* Definition() const { return CAST_PTR(T*, definition); }
 		// cast the data of [definition] to T
-		template<typename T> inline
+		template<typename T>
 		T DefinitionCast() const { return CAST_PTR(T, definition); }
 
 		size_t GetSize(_Out_opt_ size_t* runtime_size) const;
@@ -166,7 +168,11 @@ namespace Yelo
 	}; BOOST_STATIC_ASSERT( sizeof(tag_field) == 0xC );
 
 	// Called as each element is read from the tag stream
-	typedef bool (PLATFORM_API* proc_tag_block_postprocess_element)(void* element, Enums::tag_postprocess_mode mode);
+	// NOTE: tag_index is non-standard, and will only be valid when invoked by OS code.
+	// We can add additional parameters so long as PLATFORM_API is __cdecl (where the caller cleans up the stack).
+	// NOTE: tag_index is not guaranteed to be not NONE! Eg: tag_block_add_element
+	typedef bool (PLATFORM_API* proc_tag_block_postprocess_element)(void* element, Enums::tag_postprocess_mode mode,
+		datum_index tag_index);
 	// if [formatted_buffer] returns empty, the default block formatting is done
 	typedef cstring (PLATFORM_API* proc_tag_block_format)(datum_index tag_index, tag_block* block, int32 element_index, char formatted_buffer[Enums::k_tag_block_format_buffer_size]);
 	// Procedure called during tag_block_delete_element, but before all the child data is freed
@@ -240,7 +246,7 @@ namespace Yelo
 		private:
 			tag_field* m_fields;
 
-			inline bool IsEndHack() const			{ return m_fields == nullptr; }
+			bool IsEndHack() const			{ return m_fields == nullptr; }
 
 		public:
 			s_field_iterator() : m_fields(nullptr) {} // for EndHack
@@ -248,23 +254,23 @@ namespace Yelo
 
 			bool operator!=(const s_field_iterator& other) const;
 
-			inline s_field_iterator& operator++()
+			s_field_iterator& operator++()
 			{
 				++m_fields;
 				return *this;
 			}
-			inline tag_field& operator*() const
+			tag_field& operator*() const
 			{
 				return *m_fields;
 			}
 		};
 
-		inline s_field_iterator begin() /*const*/
+		s_field_iterator begin() /*const*/
 		{
 			auto iter = s_field_iterator(this);
 			return iter;
 		}
-		inline static const s_field_iterator end() /*const*/
+		static const s_field_iterator end() /*const*/
 		{
 			return s_field_iterator();
 		}
@@ -292,7 +298,7 @@ namespace Yelo
 		private:
 			tag* m_group_tags;
 
-			inline bool IsEndHack() const			{ return m_group_tags == nullptr; }
+			bool IsEndHack() const			{ return m_group_tags == nullptr; }
 
 		public:
 			s_group_tag_iterator() : m_group_tags(nullptr) {} // for EndHack
@@ -300,23 +306,23 @@ namespace Yelo
 
 			bool operator!=(const s_group_tag_iterator& other) const;
 
-			inline s_group_tag_iterator& operator++()
+			s_group_tag_iterator& operator++()
 			{
 				++m_group_tags;
 				return *this;
 			}
-			inline tag& operator*() const
+			tag& operator*() const
 			{
 				return *m_group_tags;
 			}
 		};
 
-		inline s_group_tag_iterator begin() /*const*/
+		s_group_tag_iterator begin() /*const*/
 		{
 			auto iter = s_group_tag_iterator(this);
 			return iter;
 		}
-		inline static const s_group_tag_iterator end() /*const*/
+		static const s_group_tag_iterator end() /*const*/
 		{
 			return s_group_tag_iterator();
 		}
@@ -333,15 +339,17 @@ namespace Yelo
 		tag group_tag;
 		tag parent_group_tag;
 		int16 version; PAD16;
+		// NOTE: if this is a parent group, this won't ever be called in standard conditions.
+		// to postprocess a parent group's data, define a postprocess proc for the header-block instead
 		proc_tag_group_postprocess postprocess_proc;
 		tag_block_definition* header_block_definition;
 		tag child_group_tags[Enums::k_maximum_children_per_tag];
 		int16 child_count; PAD16;
 
 #if PLATFORM_IS_EDITOR
-		inline TagGroups::s_tag_field_set_runtime_data* GetHeaderRuntimeInfo() const { return header_block_definition->GetRuntimeInfo(); }
+		TagGroups::s_tag_field_set_runtime_data* GetHeaderRuntimeInfo() const { return header_block_definition->GetRuntimeInfo(); }
 
-		inline bool IsDebugOnly() const { return TEST_FLAG(flags, Flags::_tag_group_debug_only_yelo_bit); }
+		bool IsDebugOnly() const { return TEST_FLAG(flags, Flags::_tag_group_debug_only_yelo_bit); }
 
 		// tag_group* [] (ie, tag_group**) qsort procs
 		static int __cdecl CompareByNameProc(void*, const tag_group*const* lhs, const tag_group*const* rhs);

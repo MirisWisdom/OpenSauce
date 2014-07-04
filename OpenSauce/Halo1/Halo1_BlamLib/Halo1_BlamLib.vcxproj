@@ -197,10 +197,14 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_compile.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_constants.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_library_external.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_library_internal.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_runtime.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_runtime_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_scenario_definitions.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_structures.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_threads.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_types.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_types_traits.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\object_lists.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\object_lists_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\input\input_abstraction.hpp" />
@@ -324,6 +328,7 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_files_structures.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups_structures.hpp" />
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups_structures_macros.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_loading.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_saving.hpp" />
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_verification.hpp" />
@@ -368,6 +373,8 @@
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs_compile.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs_runtime.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs_scenario_definitions.cpp" />
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs_threads.cpp" />
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs_types.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\object_lists.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\interface\first_person_weapons.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\interface\map_list.cpp" />
@@ -377,6 +384,7 @@
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\objects\objects.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\objects\object_structures.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\rasterizer\dx9\rasterizer_dx9_render_targets.cpp" />
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\scenario\scenario.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\files_windows.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_files.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups.cpp" />
@@ -385,6 +393,7 @@
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_loading.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_saving.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_group_verification.cpp" />
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\units\unit_definitions.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\units\unit_structures.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\math\real_math.cpp" />
     <ClCompile Include="..\..\shared\Include\blamlib\memory\data_base.cpp" />
@@ -394,8 +403,12 @@
     <Xml Include="..\..\..\Doc\Blam\Halo1\Halo1_CE.message_delta_definitions.xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_library_internal_compile.inl" />
     <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_library_internal_runtime.inl" />
     <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_library_internal_runtime_type_defs.inl" />
+    <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_types_compile.inl" />
+    <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_types_definitions.inl" />
+    <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_types_runtime.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <Import Project="$(OSRootDir)shared\config\msbuild\OpenSauceBuild.targets" />

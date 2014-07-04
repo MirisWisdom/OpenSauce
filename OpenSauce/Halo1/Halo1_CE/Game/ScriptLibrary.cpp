@@ -84,7 +84,7 @@ namespace Yelo
 			static real k_opensauce_version = real(K_OPENSAUCE_VERSION);
 
 			if(global.address == nullptr && global.type == HS_TYPE(real))
-				global.Value._real = &k_opensauce_version;
+				global.address = &k_opensauce_version;
 		}
 #include "Game/ScriptLibrary.MemoryUpgrades.inl"
 #include "Game/ScriptLibrary.MiscScriptingFunctions.inl"
@@ -98,7 +98,7 @@ namespace Yelo
 			hs_function_table = GET_DPTR2(hs_function_table);
 			hs_external_globals = GET_DPTR2(hs_external_globals);
 
-			//GET_HS_FUNCTION(null).evaluate = CAST_PTR(hs_evaluate_proc, GET_FUNC_VPTR(HS_NULL_EVALUTE);
+			//GET_HS_FUNCTION(null).evaluate = CAST_PTR(proc_hs_evaluate, GET_FUNC_VPTR(HS_NULL_EVALUTE);
 
 			//////////////////////////////////////////////////////////////////////////
 			MemoryUpgradesInitialize();
@@ -143,14 +143,14 @@ namespace Yelo
 		}
 
 
-		static void ScriptFunctionSetEvaluteProc(hs_function_definition& function, hs_evaluate_proc proc)
+		static void ScriptFunctionSetEvaluteProc(hs_function_definition& function, proc_hs_evaluate proc)
 		{
 			if(function.paramc != 0)
 				YELO_DEBUG_FORMAT("Setting script function which has parameters (expected none): %s", function.name);
 
 			function.evaluate = proc;
 		}
-		static void ScriptFunctionWithParamsSetEvaluteProc(hs_function_definition& function, hs_evaluate_proc proc)
+		static void ScriptFunctionWithParamsSetEvaluteProc(hs_function_definition& function, proc_hs_evaluate proc)
 		{
 			if(function.paramc == 0)
 				YELO_DEBUG_FORMAT("Setting script function which has no parameters (expected 1 or more): %s", function.name);
@@ -160,7 +160,7 @@ namespace Yelo
 
 		void NullifyScriptFunction(hs_function_definition& function)
 		{
-			ScriptFunctionSetEvaluteProc( function, CAST_PTR(hs_evaluate_proc,GET_FUNC_VPTR(HS_NULL_EVALUATE)) );
+			ScriptFunctionSetEvaluteProc( function, CAST_PTR(proc_hs_evaluate,GET_FUNC_VPTR(HS_NULL_EVALUATE)) );
 		}
 		void NullifyScriptFunction(Enums::hs_function_enumeration function)
 		{
@@ -170,7 +170,7 @@ namespace Yelo
 
 		void NullifyScriptFunctionWithParams(hs_function_definition& function)
 		{
-			ScriptFunctionWithParamsSetEvaluteProc( function, CAST_PTR(hs_evaluate_proc,GET_FUNC_VPTR(HS_NULL_WITH_PARAMS_EVALUATE)) );
+			ScriptFunctionWithParamsSetEvaluteProc( function, CAST_PTR(proc_hs_evaluate,GET_FUNC_VPTR(HS_NULL_WITH_PARAMS_EVALUATE)) );
 		}
 		void NullifyScriptFunctionWithParams(Enums::hs_function_enumeration function)
 		{
@@ -250,28 +250,28 @@ namespace Yelo
 #pragma warning( disable : 4312 ) // bitching about typecast
 		static void InitializeCreateScriptFunction()
 		{
-			static uint32 hs_return_address = GET_FUNC_PTR(HS_RETURN);
-			static uint32 hs_arguments_evaluate_address = GET_FUNC_PTR(HS_ARGUMENTS_EVALUATE);
-			static uint32 hs_function_table_address = CAST_PTR(uint32, &_upgrade_globals.functions.table[0]);
+			static uintptr_t hs_return_address = GET_FUNC_PTR(HS_RETURN);
+			static uintptr_t hs_arguments_evaluate_address = GET_FUNC_PTR(HS_ARGUMENTS_EVALUATE);
+			static uintptr_t hs_function_table_address = CAST_PTR(uintptr_t, &_upgrade_globals.functions.table[0]);
 
-			uint32* temp = nullptr;
+			uintptr_t* temp = nullptr;
 
 			// with params functions
 			{
-				temp = CAST_PTR(uint32*, &(hs_eval_func_has_param[HS_EVAL_INDEX_HS_FUNC_TABLE_WITH_PARAM]) );
+				temp = CAST_PTR(uintptr_t*, &(hs_eval_func_has_param[HS_EVAL_INDEX_HS_FUNC_TABLE_WITH_PARAM]));
 				*temp = hs_function_table_address;
 
-				temp = CAST_PTR(uint32*, &(hs_eval_func_has_param[HS_EVAL_INDEX_HS_ARGUMENTS_EVALUTE_WITH_PARAM]) );
-				*temp = CAST_PTR(uint32, &hs_arguments_evaluate_address);
+				temp = CAST_PTR(uintptr_t*, &(hs_eval_func_has_param[HS_EVAL_INDEX_HS_ARGUMENTS_EVALUTE_WITH_PARAM]));
+				*temp = CAST_PTR(uintptr_t, &hs_arguments_evaluate_address);
 
-				temp = CAST_PTR(uint32*, &(hs_eval_func_has_param[HS_EVAL_INDEX_HS_RETURN_WITH_PARAM]) );
-				*temp = CAST_PTR(uint32, &hs_return_address);
+				temp = CAST_PTR(uintptr_t*, &(hs_eval_func_has_param[HS_EVAL_INDEX_HS_RETURN_WITH_PARAM]));
+				*temp = CAST_PTR(uintptr_t, &hs_return_address);
 			}
 
 			// no params functions
 			{
-				temp = CAST_PTR(uint32*, &(hs_eval_func_no_param[HS_EVAL_INDEX_HS_RETURN_NO_PARAM]) );
-				*temp = CAST_PTR(uint32, &hs_return_address);
+				temp = CAST_PTR(uintptr_t*, &(hs_eval_func_no_param[HS_EVAL_INDEX_HS_RETURN_NO_PARAM]));
+				*temp = CAST_PTR(uintptr_t, &hs_return_address);
 			}
 		}
 
@@ -314,21 +314,21 @@ namespace Yelo
 #pragma warning( pop )
 		#pragma endregion
 
-		void InitializeScriptFunction(Enums::hs_function_enumeration function, hs_yelo_function_proc proc)
+		void InitializeScriptFunction(Enums::hs_function_enumeration function, proc_hs_yelo_function proc)
 		{
 			if(function > NONE && function < Enums::k_hs_function_enumeration_count)
 			{
 				ScriptFunctionSetEvaluteProc( *hs_yelo_functions[function], 
-					CAST_PTR(hs_evaluate_proc, CreateScriptFunction(proc, false)) );
+					CAST_PTR(proc_hs_evaluate, CreateScriptFunction(proc, false)) );
 			}
 		}
 
-		void InitializeScriptFunctionWithParams(Enums::hs_function_enumeration function, hs_yelo_function_with_params_proc proc)
+		void InitializeScriptFunctionWithParams(Enums::hs_function_enumeration function, proc_hs_yelo_function_with_params proc)
 		{
 			if(function > NONE && function < Enums::k_hs_function_enumeration_count)
 			{
 				ScriptFunctionWithParamsSetEvaluteProc( *hs_yelo_functions[function], 
-					CAST_PTR(hs_evaluate_proc, CreateScriptFunction(proc, true)) );
+					CAST_PTR(proc_hs_evaluate, CreateScriptFunction(proc, true)) );
 			}
 		}
 

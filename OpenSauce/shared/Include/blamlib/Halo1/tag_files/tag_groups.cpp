@@ -456,7 +456,7 @@ namespace Yelo
 
 			int32 dummy_position;
 			bool success = blam::tag_block_read_children_recursive(definition, new_element, 1, &dummy_position,
-				FLAG(Flags::_tag_load_for_editor_bit));
+				FLAG(Flags::_tag_load_for_editor_bit), datum_index::null);
 
 			if(!success)
 			{

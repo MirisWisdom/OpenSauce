@@ -13,11 +13,11 @@
 	Yelo::Scripting::hs_function_definition function_##name##_definition = {	\
 		HS_TYPE(ret),0,															\
 		#name,																	\
-		CAST_PTR(Yelo::Scripting::hs_parse_proc,Yelo::Scripting::GET_FUNC_PTR(HS_MACRO_FUNCTION_PARSE)), \
+		CAST_PTR(Yelo::Scripting::proc_hs_parse,Yelo::Scripting::GET_FUNC_PTR(HS_MACRO_FUNCTION_PARSE)), \
 		nullptr,																\
 		info,																	\
 		nullptr,																\
-		Yelo::Flags::_hs_access_flag_enabled, 0									\
+		FLAG(Yelo::Flags::_hs_access_enabled_bit), 0							\
 	}
 
 // [name]	Code based name
@@ -30,11 +30,11 @@
 	Yelo::Scripting::hs_function_definition function_##name##_definition = {	\
 		HS_TYPE(ret),0,															\
 		#name,																	\
-		CAST_PTR(Yelo::Scripting::hs_parse_proc,Yelo::Scripting::GET_FUNC_PTR(HS_MACRO_FUNCTION_PARSE)), \
+		CAST_PTR(Yelo::Scripting::proc_hs_parse,Yelo::Scripting::GET_FUNC_PTR(HS_MACRO_FUNCTION_PARSE)), \
 		nullptr,																\
 		info,																	\
 		param,																	\
-		Yelo::Flags::_hs_access_flag_enabled,									\
+		FLAG(Yelo::Flags::_hs_access_enabled_bit),								\
 		paramc, {__VA_ARGS__}													\
 	}
 //////////////////////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@
 		HS_TYPE(type),														\
 		0,																	\
 		CAST_PTR(void*,value),												\
-		Yelo::Flags::_hs_access_flag_enabled								\
+		FLAG(Yelo::Flags::_hs_access_enabled_bit)							\
 	}
 
 #define HS_GLOBAL_EX(name, type, value, flags)								\
@@ -56,15 +56,15 @@
 		HS_TYPE(type),														\
 		flags,																\
 		CAST_PTR(void*,value),												\
-		Yelo::Flags::_hs_access_flag_enabled								\
+		FLAG(Yelo::Flags::_hs_access_enabled_bit)							\
 	}
 
 
 #if PLATFORM_IS_DEDI
 	#define HS_GLOBAL2(name, type, valuece, valueded) \
-		Yelo::Scripting::hs_global_definition global_##name##_definition = {#name, HS_TYPE(type), 0, CAST_PTR(void*,valueded), Yelo::Flags::_hs_access_flag_enabled}
+		Yelo::Scripting::hs_global_definition global_##name##_definition = {#name, HS_TYPE(type), 0, CAST_PTR(void*,valueded), FLAG(Yelo::Flags::_hs_access_enabled_bit)}
 #elif PLATFORM_IS_USER
 	#define HS_GLOBAL2(name, type, valuece, valueded) \
-		Yelo::Scripting::hs_global_definition global_##name##_definition = {#name, HS_TYPE(type), 0, CAST_PTR(void*,valuece), Yelo::Flags::_hs_access_flag_enabled}
+		Yelo::Scripting::hs_global_definition global_##name##_definition = {#name, HS_TYPE(type), 0, CAST_PTR(void*,valuece), FLAG(Yelo::Flags::_hs_access_enabled_bit)}
 #endif
 //////////////////////////////////////////////////////////////////////////
