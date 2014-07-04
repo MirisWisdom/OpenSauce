@@ -27,7 +27,7 @@ namespace Yelo
 				_msgmap_entry_source_control_checkin_update,		// update the menu options enablement
 				_msgmap_entry_source_control_checkout_update,
 				_msgmap_entry_source_control_get_latest_update,
-				_msgmap_entry_source_contrl_checkout_undo_update,
+				_msgmap_entry_source_control_checkout_undo_update,
 				_msgmap_entry_file_new,
 			};
 

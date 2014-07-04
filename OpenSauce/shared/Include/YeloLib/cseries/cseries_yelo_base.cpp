@@ -22,7 +22,8 @@ const errno_t k_errnone = 0;
 
 namespace Yelo
 {
-	const TypeHolder k_null_type_holder;
+	const TypeHolder k_null_as_type_holder;
+	const TypeHolder k_none_as_type_holder = { CAST_PTR(void*,NONE) };
 
 	char* wstring_to_string(char* string, int32 string_length, wcstring wide, int32 wide_length)
 	{

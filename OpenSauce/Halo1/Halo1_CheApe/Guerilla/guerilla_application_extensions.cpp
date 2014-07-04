@@ -40,7 +40,7 @@ namespace Yelo
 			entries[_msgmap_entry_source_control_checkin_update].pfn = OnUpdateSourceControlCheckinOverride;
 			entries[_msgmap_entry_source_control_checkout_update].pfn = OnUpdateSourceControlCheckoutOverride;
 			entries[_msgmap_entry_source_control_get_latest_update].pfn = OnUpdateSourceControlGetLatestOverride;
-			entries[_msgmap_entry_source_contrl_checkout_undo_update].pfn = OnUpdateSourceControlCheckoutUndoOverride;
+			entries[_msgmap_entry_source_control_checkout_undo_update].pfn = OnUpdateSourceControlCheckoutUndoOverride;
 		}
 	};
 };
