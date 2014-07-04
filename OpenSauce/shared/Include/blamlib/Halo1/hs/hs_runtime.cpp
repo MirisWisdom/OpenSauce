@@ -14,12 +14,12 @@
 #include <blamlib/Halo1/hs/hs_types.hpp>
 #include <blamlib/Halo1/hs/object_lists.hpp>
 #include <blamlib/Halo1/main/editor.hpp>
+#include <blamlib/Halo1/objects/objects.hpp>
 #include <blamlib/Halo1/scenario/scenario.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 #include <YeloLib/Halo1/hs/hs_library_definitions_yelo.hpp>
 
 #include <blamlib/Halo1/hs/hs_library_internal_runtime.inl>
-#include <blamlib/Halo1/hs/hs_library_internal_runtime_type_defs.inl>
 
 namespace Yelo
 {

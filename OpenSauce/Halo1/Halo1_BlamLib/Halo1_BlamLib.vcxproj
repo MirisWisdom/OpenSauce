@@ -405,7 +405,6 @@
   <ItemGroup>
     <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_library_internal_compile.inl" />
     <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_library_internal_runtime.inl" />
-    <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_library_internal_runtime_type_defs.inl" />
     <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_types_compile.inl" />
     <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_types_definitions.inl" />
     <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_types_runtime.inl" />
