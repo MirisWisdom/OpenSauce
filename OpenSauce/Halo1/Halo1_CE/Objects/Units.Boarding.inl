@@ -139,7 +139,8 @@ namespace Boarding
 				EjectUnit(target_unit_index);
 
 				// If the target seat is a drivers seat and boarding enters the seat, make the boarding unit the driver
-				if (parent_unit_definition->unit.seats[target_seat_index].flags.driver_bit && 
+				// TODO: refactor; this should apply to any powered seat
+				if (TEST_FLAG(parent_unit_definition->unit.seats[target_seat_index].flags, Flags::_unit_seat_driver_bit) && 
 					boarding_seat_definition->flags.boarding_enters_target_seat_bit)
 				{
 					parent_unit->unit.powered_seats_riders[Enums::_powered_seat_driver] = unit_index;

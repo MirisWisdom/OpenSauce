@@ -486,10 +486,7 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_singleton.hpp">
       <Filter>open_sauce\settings</Filter>
     </ClInclude>
-	<ClInclude Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_library_definitions_yelo.hpp">
-      <Filter>hs</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_structures_yelo.hpp">
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_library_definitions_yelo.hpp">
       <Filter>hs</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\cseries\handle_abi.hpp">
@@ -749,7 +746,7 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_manager.cpp">
       <Filter>open_sauce\settings</Filter>
     </ClCompile>
-	<ClCompile Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_library_definitions_yelo.cpp">
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_library_definitions_yelo.cpp">
       <Filter>hs</Filter>
     </ClCompile>
   </ItemGroup>
@@ -822,6 +819,7 @@
     <Text Include="..\..\shared\Include\zlib\contrib\minizip\OpenSauce.Readme.txt">
       <Filter>.zlib\contrib\minizip</Filter>
     </Text>
+    <Text Include="Halo1_Readme.txt" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\..\shared\Halo1\CheApe\effect_postprocess.xml">

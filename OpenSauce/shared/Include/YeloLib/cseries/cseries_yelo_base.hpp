@@ -10,6 +10,7 @@
 #include <blamlib/cseries/cseries_base.hpp>
 #include <YeloLib/cseries/debug_memory_yelo.hpp>
 #include <YeloLib/cseries/errors_yelo.hpp>
+#include <YeloLib/cseries/handle_abi.hpp>
 
 #include <boost/integer/static_log2.hpp>
 
@@ -73,13 +74,13 @@ namespace Yelo
 		// NOTE: I would use std::array here, but I have yet to tested how well it plays with xbox modules (ie, Halo2_Xbox)
 		byte m_data[K_SIZE];
 		
-		template<typename T, const size_t k_offset> inline
+		template<typename T, const size_t k_offset>
 		T GetData()					{ return *(	CAST_PTR(T*,		&m_data[k_offset]) ); }
-		template<typename T, const size_t k_offset> inline
+		template<typename T, const size_t k_offset>
 		T GetData() const			{ return *(	CAST_PTR(const T*,	&m_data[k_offset]) ); }
-		template<typename T, const size_t k_offset> inline
+		template<typename T, const size_t k_offset>
 		T* GetDataPtr()				{ return	CAST_PTR(T*,		&m_data[k_offset]); }
-		template<typename T, const size_t k_offset> inline
+		template<typename T, const size_t k_offset>
 		const T* GetDataPtr() const	{ return	CAST_PTR(const T*,	&m_data[k_offset]); }
 
 		// Usage - "struct s_some_object : TStructImpl(0x40) {};"
@@ -91,9 +92,9 @@ namespace Yelo
 		/// <param name="type">  	Getter's return type. </param>
 		/// <param name="name">  	Getter's method name. </param>
 		/// <param name="offset">	Field offset within the struct to treat as the get result. </param>
-		#define TStructGetImpl(type, name, offset)												\
-			inline type Get##name()					{ return GetData<type, offset>(); }			\
-			inline type Get##name() const			{ return GetData<type, offset>(); }			\
+		#define TStructGetImpl(type, name, offset)										\
+			type Get##name()					{ return GetData<type, offset>(); }		\
+			type Get##name() const			{ return GetData<type, offset>(); }			\
 			BOOST_STATIC_ASSERT( ( offset + sizeof( type )) <= k_size );
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Implement a by-address getter. </summary>
@@ -101,10 +102,10 @@ namespace Yelo
 		/// <param name="type">  	Getter's return type. </param>
 		/// <param name="name">  	Getter's method name. </param>
 		/// <param name="offset">	Field offset within the struct to treat as the get result. </param>
-		#define TStructGetPtrImpl(type, name, offset)											\
-			inline type* Get##name()				{ return GetDataPtr<type, offset>(); }		\
-			inline type const* Get##name() const	{ return GetDataPtr<type, offset>(); }		\
-			/*          ^ use const here, instead of before the type, in case [type] is defined as something like "int32*" */	\
+		#define TStructGetPtrImpl(type, name, offset)									\
+			type* Get##name()				{ return GetDataPtr<type, offset>(); }		\
+			type const* Get##name() const	{ return GetDataPtr<type, offset>(); }		\
+			/*   ^ use const here, instead of before the type, in case [type] is defined as something like "int32*" */	\
 			BOOST_STATIC_ASSERT( ( offset + sizeof( type )) <= k_size );
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -272,7 +273,8 @@ namespace Yelo
 	typedef TTypeHolder<void> TypeHolder;
 	BOOST_STATIC_ASSERT( sizeof(TypeHolder) == 0x4 );
 
-	extern const TypeHolder k_null_type_holder;
+	extern const TypeHolder k_null_as_type_holder;  ///< nullptr represented as a TypeHolder value
+	extern const TypeHolder k_none_as_type_holder;  ///< NONE represented as TypeHolder value
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 	/// <summary>	If the COM interface reference isn't NULL, releases it and NULL it. </summary>
