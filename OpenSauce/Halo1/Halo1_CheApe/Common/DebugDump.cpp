@@ -130,6 +130,8 @@ namespace Yelo
 		}
 
 #ifdef API_DEBUG
+	#pragma check_stack(off) // We NEVER want stack checking enabled for this function
+	#pragma runtime_checks( "", off )
 		static void PLATFORM_API BlamErrorHook(
 			void* error_return_address, // the return address after blam::error() finishes
 
@@ -140,11 +142,13 @@ namespace Yelo
 			if (priority != Enums::_error_message_priority_warning && format != nullptr && strstr(format, "EXCEPTION") != nullptr)
 				DebugBreak();
 		}
+	#pragma runtime_checks( "", restore )
+	#pragma check_stack
 
 		static API_FUNC_NAKED void BlamErrorHook_Trampoline(Enums::error_message_priority priority, cstring format, ...)
 		{
 			API_FUNC_NAKED_START_()
-				add		esp, 408h
+				add		esp, PLATFORM_VALUE(404h, 408h, 408h)
 				// NOTE: we don't push error()'s arguments to the stack for BlamErrorHook
 				// so _ReturnAddress() will actually be its 'first' parameter
 				call	BlamErrorHook

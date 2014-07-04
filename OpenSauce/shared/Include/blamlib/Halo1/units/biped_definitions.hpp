@@ -33,18 +33,18 @@ namespace Yelo
 			struct __flags
 			{
 				TAG_FLAG(turns_without_animating);
-				TAG_FLAG(uses_player_physics);
-				TAG_FLAG(flying);
-				TAG_FLAG(physics_pill_centered_at_origin);
-				TAG_FLAG(spherical);
+				TAG_FLAG(uses_player_physics);				// Halo2: removed
+				TAG_FLAG(flying);							// Halo2: removed
+				TAG_FLAG(physics_pill_centered_at_origin);	// Halo2: removed
+				TAG_FLAG(spherical);						// Halo2: removed
 				TAG_FLAG(passes_through_other_bipeds);
-				TAG_FLAG(can_climb_any_surface);
+				TAG_FLAG(can_climb_any_surface);			// Halo2: removed
 				TAG_FLAG(immune_to_falling_damage);
 				TAG_FLAG(rotate_while_airborne);
 				TAG_FLAG(uses_limp_body_physics);
-				TAG_FLAG(has_no_dying_airborne);
+				TAG_FLAG(has_no_dying_airborne);			// Halo2: unused
 				TAG_FLAG(random_speed_increase);
-				TAG_FLAG(unit_uses_old_ntsc_player_physics);
+				TAG_FLAG(unit_uses_old_ntsc_player_physics);// Halo2: unused or removed
 			}; BOOST_STATIC_ASSERT( sizeof(__flags) == sizeof(long_flags) );
 
 			////////////////////////////////////////////////////////////////
@@ -53,10 +53,8 @@ namespace Yelo
 			TAG_FIELD(__flags, flags);
 			TAG_FIELD(angle, stationary_turning_threshold);
 			TAG_PAD(int32, 4);
-			struct{
-				TAG_ENUM(source, Enums::biped_function_mode);
-			}inputs[4];
-			TAG_FIELD(tag_reference, don_t_use, 'jpt!');
+			_enum function_exports[Enums::k_number_of_incoming_object_functions]; // Enums::biped_function_mode
+			TAG_FIELD(tag_reference, dont_use, 'jpt!');
 
 			////////////////////////////////////////////////////////////////
 			// flying
