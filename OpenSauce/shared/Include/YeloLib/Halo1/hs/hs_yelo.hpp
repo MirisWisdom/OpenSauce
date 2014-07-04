@@ -15,11 +15,10 @@ namespace Yelo
 		enum hs_yelo_definition_flags : word_flags
 		{
 			_hs_yelo_definition_internal_bit,
-			_hs_yelo_definition_is_synchronized_bit,
-
-			_hs_yelo_definition_internal_flag =	FLAG(_hs_yelo_definition_internal_bit),
 			// changes to the global are sync'd
-			_hs_yelo_definition_is_synchronized = FLAG(_hs_yelo_definition_is_synchronized_bit),
+			_hs_yelo_definition_is_synchronized_bit,
+			// hs_function is actually an hs_function_definition_yelo
+			_hs_yelo_definition_is_yelo_function_bit,
 		};
 	};
 
@@ -30,8 +29,8 @@ namespace Yelo
 
 	namespace Scripting
 	{
-		typedef void* (API_FUNC* hs_yelo_function_proc)();
-		typedef void* (API_FUNC* hs_yelo_function_with_params_proc)(void** arguments);
+		typedef void* (API_FUNC* proc_hs_yelo_function)();
+		typedef void* (API_FUNC* proc_hs_yelo_function_with_params)(void** arguments);
 
 		// This is the name of a blam global which isn't used in release builds of the game.
 		// We use this global to expose the build version to scripts without causing harm when not using OS.

@@ -32,18 +32,18 @@ static void MemoryUpgradesInitialize()
 
 	//////////////////////////////////////////////////////////////////////////
 	// Add the game's functions/globals to our upgraded memory
-	static const int32 K_HS_FUNCTION_TABLE_COUNT = 
+	static const rsize_t K_HS_FUNCTION_TABLE_COUNT = 
 #if PLATFORM_IS_DEDI
 		0x209;
 #else
 		0x211;
 #endif
 
-	static const int32 K_HS_EXTERNAL_GLOBALS_COUNT = 0x1EC
+	static const rsize_t K_HS_EXTERNAL_GLOBALS_COUNT = 0x1EC
 		- 1 // NOTE: we don't copy the 'rasterizer_frame_drop_ms' definition as its not defined in the tools
 		;
 
-	for(int32 x = 0, index = 0; 
+	for(rsize_t x = 0, index = 0; 
 		x < K_HS_FUNCTION_TABLE_COUNT; 
 		index++)
 	{
@@ -54,7 +54,7 @@ static void MemoryUpgradesInitialize()
 		}
 	}
 
-	for(int32 x = 0, index = 0; 
+	for(rsize_t x = 0, index = 0; 
 		x < K_HS_EXTERNAL_GLOBALS_COUNT; 
 		index++)
 	{
@@ -75,13 +75,13 @@ static void MemoryUpgradesInitialize()
 	// Add Yelo's functions/globals to our upgraded memory
 	{
 		_upgrade_globals.functions.yelo_start_index = _upgrade_globals.functions.count;
-		for(int32 x = 0; x < K_HS_YELO_FUNCTION_COUNT; x++,
+		for(size_t x = 0; x < K_HS_YELO_FUNCTION_COUNT; x++,
 			_upgrade_globals.functions.count++)
 			_upgrade_globals.functions.table[_upgrade_globals.functions.count] = 
 				hs_yelo_functions[x];
 
 		_upgrade_globals.globals.yelo_start_index = _upgrade_globals.globals.count;
-		for(int32 x = 0; x < K_HS_YELO_GLOBALS_COUNT; x++,
+		for(size_t x = 0; x < K_HS_YELO_GLOBALS_COUNT; x++,
 			_upgrade_globals.globals.count++)
 			_upgrade_globals.globals.table[_upgrade_globals.globals.count] = 
 				hs_yelo_globals[x];
@@ -93,17 +93,17 @@ static void MemoryUpgradesInitialize()
 	// Update the game code to use OUR function/global definition tables
 	{
 		hs_function_definition**** definitions = CAST_PTR(hs_function_definition****, K_HS_FUNCTION_TABLE_REFERENCES);
-		const int32 k_count = NUMBEROF(K_HS_FUNCTION_TABLE_REFERENCES);
+		const size_t k_count = NUMBEROF(K_HS_FUNCTION_TABLE_REFERENCES);
 
-		for(int32 x = 0; x < k_count; x++)
+		for(size_t x = 0; x < k_count; x++)
 			*definitions[x] = &_upgrade_globals.functions.table[0];
 	}
 
 	{
 		hs_global_definition**** definitions = CAST_PTR(hs_global_definition****, K_HS_EXTERNAL_GLOBALS_REFERENCES);
-		const int32 k_count = NUMBEROF(K_HS_EXTERNAL_GLOBALS_REFERENCES);
+		const size_t k_count = NUMBEROF(K_HS_EXTERNAL_GLOBALS_REFERENCES);
 
-		for(int32 x = 0; x < k_count; x++)
+		for(size_t x = 0; x < k_count; x++)
 			*definitions[x] = &_upgrade_globals.globals.table[0];
 	}
 	//////////////////////////////////////////////////////////////////////////

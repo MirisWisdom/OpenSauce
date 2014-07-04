@@ -18,20 +18,43 @@ namespace Yelo
 	{
 		// NOTE: procs are API_FUNC, not PLATFORM_API, as they should only be called by our re-written code, not the engine
 
-		typedef void (API_FUNC* hs_type_inspector_proc)(Enums::hs_type type, TypeHolder value,
-			char buffer[Enums::k_hs_inspect_buffer_size]);
-
-		typedef TypeHolder (API_FUNC* hs_typecast_proc)(TypeHolder value);
-
 		static TypeHolder hs_value_to_void(TypeHolder value)
 		{
-			value.pointer = nullptr;
+			return k_null_as_type_holder;
+		}
+
+		// TODO: use lexical cast http://www.boost.org/doc/libs/1_55_0/doc/html/boost_lexical_cast.html
+
+		//////////////////////////////////////////////////////////////////////////
+		// _hs_type_bool. nonstandard, the engine never defined any of theses.
+		static TypeHolder hs_bool_to_real(TypeHolder value)
+		{
+			value.real = value.boolean ? 1.0f : 0.0f;
+
+			return value;
+		}
+		static TypeHolder hs_bool_to_short(TypeHolder value)
+		{
+			value.int16 = value.boolean ? TRUE : FALSE;
+
+			return value;
+		}
+		static TypeHolder hs_bool_to_long(TypeHolder value)
+		{
+			value.int32 = value.boolean ? TRUE : FALSE;
+
+			return value;
+		}
+		// NOTE: non-standard, engine doesn't support this
+		static TypeHolder hs_bool_to_string(TypeHolder value)
+		{
+			// TODO: verify we can safely do this, as strings are usually allocated
+			// in the scenario's hs string data
+			value.ptr.character = value.boolean ? "true" : "false";
+
 			return value;
 		}
 
-		//////////////////////////////////////////////////////////////////////////
-		// _hs_type_bool
-		
 		//////////////////////////////////////////////////////////////////////////
 		// _hs_type_real
 		static TypeHolder hs_real_to_short(TypeHolder value)
@@ -51,6 +74,19 @@ namespace Yelo
 		{
 			// because hs_enum_to_real adds 1 before float conversion
 			value.int16 = CAST(int16, value.real) - 1;
+
+			return value;
+		}
+		// NOTE: non-standard, engine doesn't support this
+		static TypeHolder hs_real_to_string(TypeHolder value)
+		{
+			// TODO: verify we can safely do this, as strings are usually allocated
+			// in the scenario's hs string data
+			static char text[32];
+			value.ptr.character = text;
+
+			if (-1 == sprintf_s(text, "%f", value.real))
+				value.ptr.character = BOOST_PP_STRINGIZE(NONE);
 
 			return value;
 		}
@@ -75,6 +111,19 @@ namespace Yelo
 
 			return value;
 		}
+		// NOTE: non-standard, engine doesn't support this
+		static TypeHolder hs_short_to_string(TypeHolder value)
+		{
+			// TODO: verify we can safely do this, as strings are usually allocated
+			// in the scenario's hs string data
+			static char text[32];
+			value.ptr.character = text;
+
+			if (-1 == sprintf_s(text, "%d", CAST(int32,value.int16)))
+				value.ptr.character = BOOST_PP_STRINGIZE(NONE);
+
+			return value;
+		}
 
 		//////////////////////////////////////////////////////////////////////////
 		// _hs_type_long
@@ -93,6 +142,19 @@ namespace Yelo
 		static TypeHolder hs_long_to_short(TypeHolder value)
 		{
 			value.int16 = CAST(int16, value.int32);
+
+			return value;
+		}
+		// NOTE: non-standard, engine doesn't support this
+		static TypeHolder hs_long_to_string(TypeHolder value)
+		{
+			// TODO: verify we can safely do this, as strings are usually allocated
+			// in the scenario's hs string data
+			static char text[32];
+			value.ptr.character = text;
+
+			if (-1 == sprintf_s(text, "%d", value.int32))
+				value.ptr.character = BOOST_PP_STRINGIZE(NONE);
 
 			return value;
 		}
@@ -127,9 +189,10 @@ namespace Yelo
 			}
 
 			datum_index list_index = object_list_new();
+			const auto ai_reference = *CAST_PTR(AI::s_ai_index*, &value.pointer);
 
 			AI::s_ai_index_actor_iterator iterator;
-			ai_index_actor_iterator_new(*CAST_PTR(AI::s_ai_index*, &value.pointer), iterator);
+			ai_index_actor_iterator_new(ai_reference, iterator);
 			while (auto* actor = ai_index_actor_iterator_next(iterator))
 			{
 				datum_index unit_index = *actor->GetMetaUnitIndex();
@@ -173,146 +236,5 @@ namespace Yelo
 
 			return hs_object_to_object_list(value);
 		}
-
-// TODO: THE UGLY MESS BELOW IS JUST A HACK FOR NOW!
-// Until we move to a type system which supports hs_type definitions (a la Halo4+).
-// The table is defined\laid out just as how it appears in the engine code
-
-#define HS_TYPE_COUNT				49
-#define HS_TYPE_COUNT_NONDATA		5
-#define HS_TYPE_COUNT_ENUMS			5
-#define HS_TYPE_COUNT_OBJECTS		6
-#define HS_TYPE_COUNT_DATA			BOOST_PP_SUB(HS_TYPE_COUNT, HS_TYPE_COUNT_NONDATA)
-// number of hs_types, relative to 'X', another hs_type
-#define HS_TYPE_COUNT_DATA_X(starting_hs_type) BOOST_PP_SUB(HS_TYPE_COUNT, starting_hs_type)
-
-		BOOST_STATIC_ASSERT(HS_TYPE_COUNT == Enums::k_number_of_hs_types);
-		BOOST_STATIC_ASSERT(HS_TYPE_COUNT_NONDATA == (Enums::_hs_type_void+1));
-		BOOST_STATIC_ASSERT(HS_TYPE_COUNT_ENUMS == (Enums::_hs_type_enum__last-Enums::_hs_type_enum__first)+1);
-		BOOST_STATIC_ASSERT(HS_TYPE_COUNT_OBJECTS == (Enums::_hs_type_object__last-Enums::_hs_type_object__first)+1);
-
-#define TYPECAST_PROC_ENUM_MACRO(z, n, proc_name) proc_name
-
-#define TYPECAST_PROCS_FOR_NONDATA()			\
-	BOOST_PP_ENUM(HS_TYPE_COUNT_NONDATA, TYPECAST_PROC_ENUM_MACRO, nullptr)
-#define TYPECAST_PROCS_FOR_NONDATA_TYPE()		\
-	TYPECAST_PROCS_FOR_NONDATA() ,				\
-	BOOST_PP_ENUM(HS_TYPE_COUNT_DATA, TYPECAST_PROC_ENUM_MACRO, nullptr)
-#define TYPECAST_PROCS_FOR_NONCASTABLE_TYPE()	\
-	TYPECAST_PROCS_FOR_NONDATA_TYPE()
-
-static const hs_typecast_proc k_hs_typecasting_procedures[Enums::k_number_of_hs_types][Enums::k_number_of_hs_types] = {
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_unparsed
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_special_form
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_function_name
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_passthrough
-
-	{	TYPECAST_PROCS_FOR_NONDATA(),			// _hs_type_void
-		BOOST_PP_ENUM(HS_TYPE_COUNT_DATA, TYPECAST_PROC_ENUM_MACRO, nullptr)
-		},
-
-	{	TYPECAST_PROCS_FOR_NONDATA(),			// _hs_type_bool
-		nullptr,				// from _hs_type_bool
-		hs_long_to_boolean,		// from _hs_type_real (this is what the engine does)
-		hs_short_to_boolean,	// from _hs_type_short
-		hs_long_to_boolean,		// from _hs_type_long
-		hs_string_to_boolean,	// from _hs_type_string
-		BOOST_PP_ENUM(HS_TYPE_COUNT_DATA_X(10), TYPECAST_PROC_ENUM_MACRO, nullptr) // from _hs_type_script...
-		},
-
-	{	TYPECAST_PROCS_FOR_NONDATA(),			// _hs_type_real
-		nullptr,				// from _hs_type_bool
-		nullptr,				// from _hs_type_real
-		hs_short_to_real,		// from _hs_type_short
-		hs_long_to_real,		// from _hs_type_long
-		BOOST_PP_ENUM(BOOST_PP_SUB(32, 9), TYPECAST_PROC_ENUM_MACRO, nullptr),		// from _hs_type_string..._hs_type_object_definition
-		BOOST_PP_ENUM(HS_TYPE_COUNT_ENUMS, TYPECAST_PROC_ENUM_MACRO, hs_enum_to_real),
-		BOOST_PP_ENUM(HS_TYPE_COUNT_OBJECTS, TYPECAST_PROC_ENUM_MACRO, nullptr),	// from _hs_type_object...
-		BOOST_PP_ENUM(HS_TYPE_COUNT_OBJECTS, TYPECAST_PROC_ENUM_MACRO, nullptr),	// from _hs_type_object_name...
-		},
-
-	{	TYPECAST_PROCS_FOR_NONDATA(),			// _hs_type_short
-		nullptr,				// from _hs_type_bool
-		nullptr,				// from _hs_type_real
-		hs_real_to_short,		// from _hs_type_short
-		hs_long_to_short,		// from _hs_type_long
-		BOOST_PP_ENUM(HS_TYPE_COUNT_DATA_X(9), TYPECAST_PROC_ENUM_MACRO, nullptr) // from _hs_type_string...
-		},
-
-	{	TYPECAST_PROCS_FOR_NONDATA(),			// _hs_type_long
-		nullptr,				// from _hs_type_bool
-		hs_real_to_long,		// from _hs_type_real
-		// engine says NULL here then hs_long_to_short for _hs_type_long...pretty sure that's a typo.
-		// it will never execute anyway, since actual_type==desired_type in this case
-		hs_short_to_long,		// from _hs_type_short
-		BOOST_PP_ENUM(HS_TYPE_COUNT_DATA_X(8), TYPECAST_PROC_ENUM_MACRO, nullptr) // from _hs_type_long...
-		},
-
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_string
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_script
-
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_trigger_volume
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_cutscene_flag
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_cutscene_camera_point
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_cutscene_title
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_cutscene_recording
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_device_group
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_ai
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_ai_command_list
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_starting_profile
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_conversation
-
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_navpoint
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_hud_message
-
-	{	TYPECAST_PROCS_FOR_NONDATA(),			// _hs_type_object_list
-		BOOST_PP_ENUM(BOOST_PP_SUB(17,  5), TYPECAST_PROC_ENUM_MACRO, nullptr),							// from _hs_type_bool..._hs_type_device_group
-		object_list_from_ai_reference,	// from _hs_type_ai
-		BOOST_PP_ENUM(BOOST_PP_SUB(37, 18), TYPECAST_PROC_ENUM_MACRO, nullptr),							// from _hs_type_ai_command_list..._hs_type_hud_corner
-		BOOST_PP_ENUM(HS_TYPE_COUNT_OBJECTS, TYPECAST_PROC_ENUM_MACRO, hs_object_to_object_list),		// from _hs_type_object...
-		BOOST_PP_ENUM(HS_TYPE_COUNT_OBJECTS, TYPECAST_PROC_ENUM_MACRO, hs_object_name_to_object_list),	// from _hs_type_object_name...
-		},
-	
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_sound
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_effect
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_damage
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_looping_sound
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_animation_graph
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_actor_variant
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_damage_effect
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_object_definition
-
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_game_difficulty
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_team
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_ai_default_state
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_actor_type
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_hud_corner
-
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_object
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_unit
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_vehicle
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_weapon
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_device
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_scenery
-
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_object_name
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_unit_name
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_vehicle_name
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_weapon_name
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_device_name
-	{	TYPECAST_PROCS_FOR_NONDATA_TYPE() },	// _hs_type_scenery_name
-};
-
-#undef HS_TYPE_COUNT
-#undef HS_TYPE_COUNT_NONDATA
-#undef HS_TYPE_COUNT_ENUMS
-#undef HS_TYPE_COUNT_OBJECTS
-#undef HS_TYPE_COUNT_DATA
-#undef HS_TYPE_COUNT_DATA_X
-
-#undef TYPECAST_PROC_ENUM_MACRO
-#undef TYPECAST_PROCS_FOR_NONDATA
-#undef TYPECAST_PROCS_FOR_NONDATA_TYPE
-#undef TYPECAST_PROCS_FOR_NONCASTABLE_TYPE
 	};
 };
