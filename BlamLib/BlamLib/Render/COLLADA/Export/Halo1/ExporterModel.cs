@@ -155,7 +155,13 @@ namespace BlamLib.Render.COLLADA.Halo1
 				int index_offset = 0;
 				foreach (var part in geometrySet.Geometry.Parts)
 				{
-					Geometry.Part common_part = new Geometry.Part(shaderList[part.ShaderIndex]);
+                    var shader_index = part.ShaderIndex;
+                    if(shader_index >= shaderList.Count)
+                    {
+                        shader_index.Value = shaderList.Count - 1;
+                    }
+
+                    Geometry.Part common_part = new Geometry.Part(shaderList[shader_index]);
 					common_part.AddIndices(CreateIndicesModel(part, index_offset));
 
 					index_offset += part.UncompressedVertices.Count;

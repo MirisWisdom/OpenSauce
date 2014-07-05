@@ -242,16 +242,18 @@ namespace BlamLib.Blam.Halo1.Tags
 		[TI.Definition()]
 		public class shader_environment_extension_block : TI.Definition
 		{
-			#region Fields
-			public TI.Real BumpAmount;
+            #region Fields
+            public TI.Flags Flags;
+            public TI.Real BumpAmount;
 			#endregion
 
 			public shader_environment_extension_block()
-				: base(3)
-			{
-				Add(new TI.Pad(8));
+				: base(4)
+            {
+                Add(Flags = TI.Flags.Word);
+                Add(new TI.Pad(2));
 				Add(BumpAmount = new TI.Real());
-				Add(new TI.Pad(4));
+				Add(new TI.Pad(12 * 4));
 			}
 		}
 		#endregion

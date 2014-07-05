@@ -66,12 +66,18 @@ namespace BlamLib.Render.COLLADA.Halo1
 			for (int i = 0; i < objectInstances.Count; i++)
 			{
 				var objectInstance = objectInstances[i];
+				
 
 				// Create a node for the object instance
 				ColladaNCName nodeName = "";
 				if (objectInstance.ObjectName == null)
 				{
-					ColladaNCName objectName = Path.GetFileNameWithoutExtension(mTagIndex[objectInstance.ObjectType.ObjectTagDatum].Name);
+					ColladaNCName objectName = "Unknown";
+
+					if (objectInstance.ObjectType.ObjectTagDatum.IsValid)
+					{
+						objectName = Path.GetFileNameWithoutExtension(mTagIndex[objectInstance.ObjectType.ObjectTagDatum].Name);
+					}
 
 					nodeName = i.ToString() + "-" + objectName;
 				}
@@ -100,13 +106,13 @@ namespace BlamLib.Render.COLLADA.Halo1
 				);
 				
 				// Add geometry instances to the node
-				if (!objectInstance.ObjectType.ObjectTagDatum.IsNull)
+				if (objectInstance.ObjectType.ObjectTagDatum.IsValid)
 				{
 					// Collect data about the object
 					ObjectData objectData = new ObjectData();
 					objectData.CollectData(mTagIndex, mTagIndex[objectInstance.ObjectType.ObjectTagDatum]);
 
-					if(!objectData.Model.IsNull)
+					if(objectData.Model.IsValid)
 					{
 						// Collect data about the model
 						ModelData modelData = new ModelData();
@@ -129,7 +135,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 										colladaSettings.RootDirectory,
 										shaderName);
 
-									materialReferences.Add(new MaterialReference(url, shaderName));										
+									materialReferences.Add(new MaterialReference(url, shaderName));
 								}
 
 								// Build the geometry reference URL and add the geometry instance

@@ -75,7 +75,7 @@ namespace OpenSauceIDE
 			EventHandler CheApeApply_handler;
 			var CheApeApply = BlamLib.Forms.Util.CreateMenuItem("CheApe Applier", CheApeApply_handler = (sender, e) =>
 			{
-				var sed = new SelectEngineDialog(CheApe.kTargetPlatforms, BlamLib.BlamVersion.Halo1_PC);
+                var sed = new SelectEngineDialog(CheApe.kTargetPlatforms, BlamLib.BlamVersion.Halo2_PC | BlamLib.BlamVersion.Halo1_PC);
 				BlamLib.BlamVersion version;
 				sed.ShowDialogWithResult(this, out version);
 
@@ -133,27 +133,25 @@ namespace OpenSauceIDE
 			ToolsMenu.DropDownItems.Add(ServerTool);
 			command_dic.Add("ServerTool", ServerTool_handler);
 		}
-		void BuildCheApeMenusAetherOS(Dictionary<string, EventHandler> command_dic)
+		void BuildCheApeMenusModelExtractor(Dictionary<string, EventHandler> command_dic)
 		{
-			EventHandler AetherOS_handler;
-			var AetherOS = BlamLib.Forms.Util.CreateMenuItem("AetherOS", AetherOS_handler = (sender, e) =>
+			EventHandler ModelExtractor_handler;
+			var ModelExtractor = BlamLib.Forms.Util.CreateMenuItem("Model Extractor", ModelExtractor_handler = (sender, e) =>
 			{
-				var sed = new SelectEngineDialog(OpenSauceIDE.CheApe.kTargetPlatforms, BlamLib.BlamVersion.Halo1_PC,
-					BlamLib.BlamVersion.Halo2_PC); // NOTE: H2PC still needs some work, so don't display it
+                var sed = new SelectEngineDialog(OpenSauceIDE.CheApe.kTargetPlatforms, BlamLib.BlamVersion.Halo1_PC, BlamLib.BlamVersion.Halo2_PC);
 				BlamLib.BlamVersion version;
 				sed.ShowDialogWithResult(this, out version);
 
 				if (version != BlamLib.BlamVersion.Unknown)
 				{
-					Aether.Aether.Instance.SetBlamVersion(version);
-					AddMdiChild(Aether.Aether.Instance.MainForm);
+                    AddMdiChild(new ModelExtractor.ModelExtractor(version));
 				}
 			});
-			AetherOS.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-			AetherOS.ForeColor = System.Drawing.Color.LightGreen;
+			ModelExtractor.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			ModelExtractor.ForeColor = System.Drawing.Color.LightGreen;
 
-			ToolsMenu.DropDownItems.Add(AetherOS);
-			command_dic.Add("AetherOS", AetherOS_handler);
+			ToolsMenu.DropDownItems.Add(ModelExtractor);
+            command_dic.Add("ModelExtractor", ModelExtractor_handler);
 		}
 		void BuildCheApeMenus(Dictionary<string, EventHandler> command_dic)
 		{
@@ -162,7 +160,7 @@ namespace OpenSauceIDE
 			BuildCheApeMenusCheApe(command_dic);
 			BuildCheApeMenusXnaPatcher(command_dic);
 			BuildCheApeMenusServerTool(command_dic);
-			BuildCheApeMenusAetherOS(command_dic);
+			BuildCheApeMenusModelExtractor(command_dic);
 		}
 		#endregion
 

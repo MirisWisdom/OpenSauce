@@ -1136,29 +1136,54 @@ namespace BlamLib.Managers
 				}
 
 			return ti;
-		}
+        }
+
+        /// <summary>
+        /// Open a tag index
+        /// </summary>
+        /// <param name="game">Engine the tag index is for</param>
+        /// <param name="base_directory">Base directory on disk for the index</param>
+        /// <returns>Identifier that can be used in tag index management</returns>
+        public Blam.DatumIndex OpenTagIndex(BlamVersion game, string base_directory)
+        {
+            return OpenTagIndex(game, base_directory, "tags", false);
+        }
+
+        /// <summary>
+        /// Open a tag index
+        /// </summary>
+        /// <param name="game">Engine the tag index is for</param>
+        /// <param name="base_directory">Base directory on disk for the index</param>
+        /// <param name="tags_dir">Tags folder name</param>
+        /// <returns>Identifier that can be used in tag index management</returns>
+        public Blam.DatumIndex OpenTagIndex(BlamVersion game, string base_directory, string tags_dir)
+        {
+            return OpenTagIndex(game, base_directory, tags_dir, false);
+        }
+
+        /// <summary>
+        /// Open a tag index
+        /// </summary>
+        /// <param name="game">Engine the tag index is for</param>
+        /// <param name="base_directory">Base directory on disk for the index</param>
+        /// <param name="create">Create the directory if it doesn't exist on disk</param>
+        /// <returns>Identifier that can be used in tag index management</returns>
+        public Blam.DatumIndex OpenTagIndex(BlamVersion game, string base_directory, bool create)
+        {
+            return OpenTagIndex(game, base_directory, "tags", create);
+        }
 
 		/// <summary>
 		/// Open a tag index
 		/// </summary>
-		/// <param name="game">Engine the tag index is for</param>
-		/// <param name="base_directory">Base directory on disk for the index</param>
-		/// <returns>Identifier that can be used in tag index management</returns>
-		public Blam.DatumIndex OpenTagIndex(BlamVersion game, string base_directory)
-		{
-			return OpenTagIndex(game, base_directory, false);
-		}
-
-		/// <summary>
-		/// Open a tag index
-		/// </summary>
-		/// <param name="game">Engine the tag index is for</param>
-		/// <param name="base_directory">Base directory on disk for the index</param>
+        /// <param name="game">Engine the tag index is for</param>
+        /// <param name="base_directory">Base directory on disk for the index</param>
+        /// <param name="tags_dir">Tags folder name</param>
 		/// <param name="create">Create the directory if it doesn't exist on disk</param>
 		/// <returns>Identifier that can be used in tag index management</returns>
-		public Blam.DatumIndex OpenTagIndex(BlamVersion game, string base_directory, bool create)
+		public Blam.DatumIndex OpenTagIndex(BlamVersion game, string base_directory, string tags_dir, bool create)
 		{
-			Managers.TagIndex ti = new Managers.TagIndex(game, base_directory, create);
+            Managers.TagIndex ti = new Managers.TagIndex(game, base_directory, tags_dir, create);
 			Debug.Assert.If(ti != null, "[{0}] Failed to open a tag index: [{1}] '{2}'.", this.name, game, base_directory);
 
 			Blam.DatumIndex index_id;
