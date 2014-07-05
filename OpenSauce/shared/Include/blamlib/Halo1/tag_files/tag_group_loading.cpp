@@ -52,8 +52,10 @@ namespace Yelo
 			*tag_group_loading_error_string_cursor += chars;
 		}
 
-		bool PLATFORM_API tag_block_read_recursive(const tag_block_definition* definition, tag_block* block,
-			int32* position_reference, long_flags read_flags);
+		bool tag_block_read_recursive(const tag_block_definition* definition, tag_block* block,
+			int32* position_reference, long_flags read_flags,
+			// NOTE: nonstandard parameters
+			datum_index tag_index);
 
 
 		bool PLATFORM_API tag_data_load(void* block_element, tag_data* data, void* address)
@@ -100,7 +102,7 @@ namespace Yelo
 			TAG_DATA_DELETE(*data);
 		}
 
-		static bool PLATFORM_API tag_data_read_recursive(tag_data_definition* data_definition, void* block_element, tag_data* data, 
+		static bool tag_data_read_recursive(tag_data_definition* data_definition, void* block_element, tag_data* data, 
 			int32* position_reference, long_flags read_flags)
 		{
 			YELO_ASSERT( data_definition );
@@ -140,7 +142,7 @@ namespace Yelo
 			return success;
 		}
 
-		static bool PLATFORM_API tag_reference_read_recursive(tag_reference_definition* definition, tag_reference* reference,
+		static bool tag_reference_read_recursive(tag_reference_definition* definition, tag_reference* reference,
 			int32* position_reference, long_flags read_flags)
 		{
 			// NOTE: engine doesn't ASSERT anything
@@ -192,8 +194,10 @@ namespace Yelo
 			return true;
 		}
 
-		bool PLATFORM_API tag_block_read_children_recursive(const tag_block_definition *definition, void *address, int32 count, 
-			int32* position_reference, long_flags read_flags)
+		bool tag_block_read_children_recursive(const tag_block_definition *definition, void *address, int32 count, 
+			int32* position_reference, long_flags read_flags,
+			// NOTE: nonstandard parameters
+			datum_index tag_index)
 		{
 			bool success = true;
 			if(count == 0)
@@ -220,7 +224,8 @@ namespace Yelo
 					case Enums::_field_block: read_result = 
 						tag_block_read_recursive(field.DefinitionAs<tag_block_definition>(),
 							field.As<tag_block>(), 
-							position_reference, read_flags);
+							position_reference, read_flags,
+							tag_index);
 						break;
 
 					case Enums::_field_tag_reference: read_result = 
@@ -240,8 +245,10 @@ namespace Yelo
 			return success;
 		}
 
-		static bool PLATFORM_API tag_block_postprocess(const tag_block_definition* definition, tag_block* block, 
-			Enums::tag_postprocess_mode mode)
+		static bool tag_block_postprocess(const tag_block_definition* definition, tag_block* block, 
+			Enums::tag_postprocess_mode mode,
+			// NOTE: nonstandard parameters
+			datum_index tag_index)
 		{
 			auto proc = definition->postprocess_proc;
 			bool success = true;
@@ -251,9 +258,10 @@ namespace Yelo
 				for(int x = 0; x < block->count; x++)
 				{
 					void* element = tag_block_get_element(block, x);
-					if(!proc(element, mode))
+					if(!proc(element, mode, tag_index))
 					{
-						YELO_WARN("failed to postprocess element #%d element for %s block",
+						YELO_WARN("%s: failed to postprocess element #%d element for %s block",
+							tag_try_get_name(tag_index),
 							x, definition->name); // NOTE: added this warning message
 
 						success = false;
@@ -263,8 +271,10 @@ namespace Yelo
 
 			return success;
 		}
-		static bool PLATFORM_API tag_block_read_recursive(const tag_block_definition* definition, tag_block* block,
-			int32* position_reference, long_flags read_flags)
+		static bool tag_block_read_recursive(const tag_block_definition* definition, tag_block* block,
+			int32* position_reference, long_flags read_flags,
+			// NOTE: nonstandard parameters
+			datum_index tag_index)
 		{
 			int count = block->count;
 			block->address = nullptr;
@@ -305,7 +315,7 @@ namespace Yelo
 			if( TEST_FLAG(definition->flags, Flags::_tag_block_has_children_bit) )
 			{
 				if(!tag_block_read_children_recursive(definition, block->address, block->count, 
-					position_reference, read_flags))
+					position_reference, read_flags, tag_index))
 					return false;
 			}
 
@@ -313,7 +323,7 @@ namespace Yelo
 			auto postprocess_mode = TEST_FLAG(read_flags, Flags::_tag_load_for_editor_bit) 
 				? Enums::_tag_postprocess_mode_for_editor
 				: Enums::_tag_postprocess_mode_for_runtime;
-			if( !tag_block_postprocess(definition, block, postprocess_mode) )
+			if( !tag_block_postprocess(definition, block, postprocess_mode, tag_index) )
 				return false; // postprocess warns about failures, so we don't YELO_WARN here
 
 			return true;
@@ -523,7 +533,9 @@ namespace Yelo
 			{
 				if(group->child_count > 0 && group->header_block_definition->postprocess_proc != nullptr)
 				{
-					group->header_block_definition->postprocess_proc(tag_get(NONE, tag_index), mode);
+					group->header_block_definition->postprocess_proc(tag_get(NONE, tag_index), mode,
+						tag_index // NOTE: non-standard parameter
+						);
 				}
 
 				auto proc = group->postprocess_proc;
@@ -603,7 +615,7 @@ namespace Yelo
 
 				int32 position = root_definition->element_size;
 				if( !tag_block_read_children_recursive(root_definition, root_element, 1, 
-						&position, FLAG(Flags::_tag_load_for_editor_bit)) )
+						&position, FLAG(Flags::_tag_load_for_editor_bit), tag_index) )
 				{
 					YELO_WARN("couldn't create new %s tag '%s'.",
 						group->name, name); // NOTE: included group name
@@ -679,7 +691,7 @@ namespace Yelo
 
 				cstring failed_to_load_reason = nullptr;
 				int32 position = 0;
-				if (!tag_block_read_recursive(group->header_block_definition, &instance->root_block, &position, flags))
+				if (!tag_block_read_recursive(group->header_block_definition, &instance->root_block, &position, flags, tag_index))
 					failed_to_load_reason = "read error";
 				else if (!tag_references_resolve_recursive(group->header_block_definition, &instance->root_block, flags))
 					failed_to_load_reason = "resolve children error";

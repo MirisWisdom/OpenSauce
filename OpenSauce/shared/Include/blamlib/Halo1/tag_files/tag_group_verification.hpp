@@ -22,5 +22,9 @@ namespace Yelo
 
 		void VerifyTagGroupTags();
 		void VerifyGroupFieldDefinitions();
+
+		// Run any checks on the tag groups, after they have been fully initialized (parents linked, byte swap codes, etc).
+		// However, runtime info won't yet be generated at the time of this call
+		void VerifyTagGroupsFinalChecks();
 	};
 };

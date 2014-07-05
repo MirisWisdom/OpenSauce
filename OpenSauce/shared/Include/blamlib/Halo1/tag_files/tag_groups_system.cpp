@@ -236,6 +236,7 @@ namespace Yelo
 			build_group_parents();
 			build_group_byte_swap_codes();
 
+			TagGroups::VerifyTagGroupsFinalChecks();
 			TagGroups::CheckForUnreferencedGroups();
 			TagGroups::BuildGroupRuntimeInfo();
 

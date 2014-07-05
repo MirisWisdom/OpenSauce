@@ -58,11 +58,11 @@ namespace Yelo
 		// Initialize the function's evaluator to one which we've defined 
 		// in our code. Evaluator takes no parameters but may return a value.
 		void InitializeScriptFunction(Enums::hs_function_enumeration function, 
-			hs_yelo_function_proc proc);
+			proc_hs_yelo_function proc);
 		// Initialize the function's evaluator to one which we've defined 
 		// in our code. Evaluator expects parameters and may return a value.
 		void InitializeScriptFunctionWithParams(Enums::hs_function_enumeration function, 
-			hs_yelo_function_with_params_proc proc);
+			proc_hs_yelo_function_with_params proc);
 
 #define YELO_INIT_SCRIPT_FUNCTION(function_index, proc)							Scripting::InitializeScriptFunction(function_index, proc)
 #define YELO_INIT_SCRIPT_FUNCTION_WITH_PARAMS(function_index, proc)				Scripting::InitializeScriptFunctionWithParams(function_index, proc)

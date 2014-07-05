@@ -106,8 +106,10 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_type_container.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\cryptography\TEA.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\cseries\enum_wrappers.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\cseries\handle_abi.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cache\cache_files_structures_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cseries\memory_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_library_definitions_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\memory\constant_pool.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\c_settings_cheape.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.hpp" />
@@ -268,6 +270,7 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\property_tree_logging.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_vector3d_container.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\cryptography\TEA.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_library_definitions_yelo.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\c_settings_cheape.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_manager.cpp" />
@@ -429,6 +432,7 @@
   <ItemGroup>
     <Text Include="..\..\shared\Include\TinyXml\OpenSauce.Readme.txt" />
     <Text Include="..\..\shared\Include\zlib\contrib\minizip\OpenSauce.Readme.txt" />
+    <Text Include="Halo1_Readme.txt" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\..\shared\Halo1\CheApe\effect_postprocess.xml" />

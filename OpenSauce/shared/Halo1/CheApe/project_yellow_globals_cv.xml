@@ -10,6 +10,7 @@
 			<field>ALLOW unit infections during cinematics#when enabled, units can become infected while a cutscene is active</field>
 		</Flag>
 		
+		<!-- TODO: deprecated -->
 		<Flag name="unit_boarding_seat_flags">
 			<field>boarding ejects target seat</field>
 			<field>boarding enters target seat</field>
@@ -46,6 +47,7 @@
 			<field type="Pad" definition="24" />
 		</TagBlock>
 
+		<!-- TODO: deprecated -->
 		<TagBlock name="unit_boarding_seat_block" maxElements="32">
 			<field type="WordFlags" name="flags" definition="unit_boarding_seat_flags" />
 			<field type="Pad" definition="2" />
@@ -57,6 +59,7 @@
 			
 			<field type="Pad" definition="32" />
 		</TagBlock>
+		<!-- TODO: deprecated -->
 		<TagBlock name="unit_external_upgrades_block" maxElements="64">
 			<field type="Pad" definition="4" />
 			<field type="TagReference" name="unit" definition="unit_reference" blockname="true" />
@@ -106,7 +109,8 @@
 			<field type="WordFlags" name="flags" definition="project_yellow_global_cv_flags" />
 
 			<field type="Block" name="unit infections" definition="unit_infections_block" />
-			<field type="Block" name="unit external upgrades" definition="unit_external_upgrades_block" />
+			<!-- TODO: deprecated -->
+			<field type="Block" name="unit external upgrades" definition="unit_external_upgrades_block" locked="true" />
 			<!--<field type="Block" name="dual wielding" definition="dual_wield_weapon_block" />-->
 			<!--<field type="Block" name="object damage extensions" definition="object_damage_extension_block" />-->
 

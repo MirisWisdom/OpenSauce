@@ -14,6 +14,8 @@ namespace Yelo
 
 		struct collision_bsp;
 		struct structure_bsp;
+
+		struct s_game_globals;
 	};
 
 	namespace Enums
@@ -28,6 +30,12 @@ namespace Yelo
 			_scenario_type_multiplayer,
 			_scenario_type_main_menu,
 		};
+	};
+
+	namespace GameState
+	{
+		// Globals tag data
+		TagGroups::s_game_globals*	GlobalGameGlobals();
 	};
 
 	namespace Scenario
@@ -60,6 +68,12 @@ namespace Yelo
 
 	namespace blam
 	{
+		TagGroups::s_game_globals* scenario_get_game_globals();
+		TagGroups::scenario* global_scenario_get();
+		TagGroups::scenario* global_scenario_try_and_get();
+		TagGroups::structure_bsp* global_structure_bsp_get();
+		TagGroups::collision_bsp* global_collision_bsp_get();
+
 		// Switches the bsp being used to the bsp at [index] in the scenario structure bsps block
 		bool PLATFORM_API scenario_switch_structure_bsp(int16 bsp_index);
 

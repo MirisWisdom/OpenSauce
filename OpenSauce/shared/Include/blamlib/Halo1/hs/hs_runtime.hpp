@@ -5,6 +5,8 @@
 */
 #pragma once
 
+#include <blamlib/Halo1/hs/hs.hpp>
+
 namespace Yelo
 {
 	namespace Enums
@@ -29,13 +31,24 @@ namespace Yelo
 
 	namespace blam
 	{
+		void hs_evaluate(datum_index thread_index, datum_index expression_index, Scripting::s_hs_value_union* destination);
+		void hs_call_evaluate(datum_index thread_index);
+
+
 		void hs_runtime_update();
 
-		void hs_return(datum_index thread_index, TypeHolder value);
+		Scripting::s_hs_value_union* hs_macro_function_evaluate(int16 function_index, datum_index thread_index, bool initialize_stack);
+
+		void hs_return(datum_index thread_index, Scripting::s_hs_value_union value);
 
 		bool hs_can_cast(Enums::hs_type actual_type, Enums::hs_type desired_type);
 
-		TypeHolder hs_cast(datum_index thread_index, Enums::hs_type actual_type, Enums::hs_type desired_type, TypeHolder value);
+		Scripting::s_hs_value_union hs_cast(datum_index thread_index, Enums::hs_type actual_type, Enums::hs_type desired_type, Scripting::s_hs_value_union value);
+
+		Scripting::s_hs_value_union hs_runtime_evaluate(datum_index expression_index,
+			datum_index script_container_index = datum_index::null); // TODO: remove default parameter when containers come online
+
+		datum_index hs_find_thread_by_script(Scripting::hs_script_index_t script);
 
 
 		Scripting::s_hs_thread_datum* hs_thread_get(datum_index thread_index);

@@ -7,19 +7,17 @@
 #include <blamlib/Halo1/hs/hs_runtime.hpp>
 
 #include <blamlib/Halo1/game/game_time.hpp>
+#include <blamlib/Halo1/hs/hs_library_internal.hpp>
 #include <blamlib/Halo1/hs/hs_structures.hpp>
 #include <blamlib/Halo1/hs/hs_runtime_structures.hpp>
+#include <blamlib/Halo1/hs/hs_threads.hpp>
+#include <blamlib/Halo1/hs/hs_types.hpp>
 #include <blamlib/Halo1/hs/object_lists.hpp>
 #include <blamlib/Halo1/main/editor.hpp>
+#include <blamlib/Halo1/objects/objects.hpp>
 #include <blamlib/Halo1/scenario/scenario.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
-
-#define YELO_HS_RUNTIME_ASSERT(expression, thread, explanation)										\
-	YELO_ASSERT_DISPLAY(expression, "a problem occurred while executing the script %s: %s (%s)",	\
-		thread->GetDescriptionString(), explanation, #expression)
-#define YELO_HS_THREAD_VALID_STACK(thread)															\
-	YELO_HS_RUNTIME_ASSERT(thread->ValidThread(Scripting::HsThreads().Header), thread,				\
-		"corrupted stack.")
+#include <YeloLib/Halo1/hs/hs_library_definitions_yelo.hpp>
 
 #include <blamlib/Halo1/hs/hs_library_internal_runtime.inl>
 
@@ -28,6 +26,164 @@ namespace Yelo
 	namespace blam
 	{
 		using namespace Scripting;
+
+		/*static*/ void hs_global_reconcile_read(int32 global_index); // TODO
+
+		static s_hs_value_union hs_global_evaluate(int32 global_index)
+		{
+			hs_global_reconcile_read(global_index);
+
+			bool is_internal = (global_index & Enums::_hs_global_index_is_external_mask) == 0;
+			global_index &= Enums::_hs_global_index_mask;
+
+			// the global is internal, so it comes after all the defined external globals in the hs_globals array
+			if (is_internal)
+			{
+				global_index += CAST(int32, c_hs_library::GetExternalGlobals().size());
+			}
+
+			datum_index hs_global_index;
+			hs_global_index.index = CAST(datum_index::index_t, global_index);
+
+			return HsGlobals()[hs_global_index]->value;
+		}
+		void hs_evaluate(datum_index thread_index, datum_index expression_index, s_hs_value_union* destination)
+		{
+			s_hs_thread_datum* thread = hs_thread_get(thread_index);
+			const hs_syntax_node* expression = thread->GetSyntax(expression_index);
+
+			YELO_HS_THREAD_VALID_STACK(thread);
+			YELO_ASSERT(destination); // engine doesn't do this. I kinda want to make destination a ref...
+
+			if (TEST_FLAG(expression->flags, Flags::_hs_syntax_node_primitive_bit))
+			{
+				if (TEST_FLAG(expression->flags, Flags::_hs_syntax_node_global_index_bit))
+				{
+					int16 global_index = expression->value.int16;
+					auto global_value = hs_global_evaluate(global_index);
+					*destination = hs_cast(thread_index, hs_global_get_type(global_index), expression->type, global_value);
+				}
+				else // else, it's a constant
+				{
+					*destination = hs_cast(thread_index, expression->constant_type, expression->type, expression->value);
+				}
+			}
+			else
+			{
+				thread->StackPush();
+				thread->flags |= FLAG(Flags::_hs_thread_datum_has_new_stack_frame_bit);
+
+				auto* stack_frame = thread->stack_frame;
+				stack_frame->source_expression = expression_index;
+				stack_frame->result_reference = destination;
+			}
+		}
+		static s_hs_value_union* hs_arguments_evaluate(datum_index thread_index,
+			size_t formal_parameters_count, const Enums::hs_type* formal_parameters, bool initialize_stack)
+		{
+			s_hs_thread_datum* thread = hs_thread_get(thread_index);
+
+			auto* formal_parameters_values =
+				thread->StackAllocate<s_hs_value_union>(formal_parameters_count);
+			auto* argument_index =
+				thread->StackAllocate<uint32>();
+			auto* expression_index =
+				thread->StackAllocate<datum_index>();
+
+			if (initialize_stack)
+			{
+				*argument_index = 0;
+				const auto* call_expression = thread->GetFrameSyntax();
+				datum_index first_arg_expression_index = call_expression->value.ToExpressionIndex();
+				*expression_index = thread->GetSyntax(first_arg_expression_index)->next_expression;
+			}
+
+			if (*argument_index < formal_parameters_count)
+			{
+				YELO_HS_RUNTIME_ASSERT(!expression_index->IsNull(),
+					thread,
+					"corrupted syntax tree.");
+
+				if (YELO_HS_THREAD_SCRIPT_ERROR(
+					thread->GetSyntax(*expression_index)->type==formal_parameters[*argument_index],
+					thread, "unexpected actual parameters"))
+				{
+					return formal_parameters_values;
+				}
+
+				hs_evaluate(thread_index, *expression_index, &formal_parameters_values[*argument_index]);
+				
+				// set the args evaluator state to the next parameter
+				const auto* parameter_expression = thread->GetSyntax(*expression_index);
+				*expression_index = parameter_expression->next_expression;
+				(*argument_index)++;
+
+				// we haven't evaluated all the parameters just yet
+				return nullptr;
+			}
+
+			// the last parameter's next_expression index should be NONE, so this should be true at this point
+			YELO_HS_RUNTIME_ASSERT(expression_index->IsNull(),
+				thread,
+				"corrupted syntax tree.");
+
+			return formal_parameters_values;
+		}
+		static void hs_script_evaluate(datum_index thread_index, bool initialize_stack, int16 script_index)
+		{
+			s_hs_thread_datum* thread = hs_thread_get(thread_index);
+			datum_index root_expression_index = global_scenario_get()->scripts[script_index].script.root_expression_index;
+
+			auto* result = thread->StackAllocate<s_hs_value_union>();
+			if (initialize_stack)
+			{
+				hs_evaluate(thread_index, root_expression_index, result);
+			}
+			else
+			{
+				hs_return(thread_index, *result);
+			}
+		}
+		static void hs_function_evaluate(datum_index thread_index, bool initialize_stack, int16 function_index)
+		{
+			auto* function = hs_function_get(function_index);
+			YELO_ASSERT(function->evaluate);
+
+			function->evaluate(function_index, thread_index, initialize_stack);
+		}
+		void hs_call_evaluate(datum_index thread_index)
+		{
+			s_hs_thread_datum* thread = hs_thread_get(thread_index);
+
+			const hs_syntax_node* expression = thread->GetFrameSyntax();
+
+			bool initialize_stack = TEST_FLAG(thread->flags, Flags::_hs_thread_datum_has_new_stack_frame_bit);
+			SET_FLAG(thread->flags, Flags::_hs_thread_datum_has_new_stack_frame_bit, false);
+
+			if (expression->IsScriptCall())
+			{
+				hs_script_evaluate(thread_index, initialize_stack, expression->script_index);
+			}
+			else // else, a function index
+			{
+				hs_function_evaluate(thread_index, initialize_stack, expression->function_index);
+			}
+		}
+
+		// take hs_runtime_globals as a parameter until we define it in our own code
+		static void hs_thread_main(datum_index thread_index, s_hs_runtime_globals& hs_runtime_globals)
+		{
+			hs_runtime_globals.executing_thread_index = thread_index.index;
+
+			s_hs_thread_datum* thread = hs_thread_get(thread_index);
+			bool delete_thread;
+			thread->Main(thread_index, hs_runtime_globals.enabled, delete_thread);
+
+			if (delete_thread)
+				HsThreads().Delete(thread_index);
+
+			hs_runtime_globals.executing_thread_index = NONE;
+		}
 
 		static void hs_runtime_garbage_collect_nodes()
 		{
@@ -39,64 +195,6 @@ namespace Yelo
 			if (game_time / k_update_rate)
 				hs_nodes_garbage_collect();
 		}
-
-		static TypeHolder hs_evaluate(datum_index thread_index, datum_index expression_index, TypeHolder& destination)
-		{
-			s_hs_thread_datum* thread = hs_thread_get(thread_index);
-			hs_syntax_node* expression = hs_syntax_get(expression_index);
-
-			YELO_HS_THREAD_VALID_STACK(thread);
-
-			// TODO: this is a WIP
-			if (TEST_FLAG(expression->flags, Flags::_hs_syntax_node_primitive_bit))
-			{
-				if (TEST_FLAG(expression->flags, Flags::_hs_syntax_node_global_index_bit))
-				{
-					//hs_global_evaluate(expression->value.int16)
-				}
-				else
-				{
-
-				}
-			}
-			return destination;
-		}
-
-		static void hs_thread_main(datum_index thread_index)
-		{
-			auto hs_runtime_globals = HsRuntimeGlobals();
-			hs_runtime_globals->executing_thread_index = thread_index.index;
-
-			s_hs_thread_datum* thread = hs_thread_get(thread_index);
-
-			const TagGroups::hs_script* script = nullptr;
-			if (thread->type == Enums::_hs_thread_type_script)
-			{
-				script = &(Scenario::Scenario()->scripts[thread->script_index]);
-				const auto& _script = script->script;
-
-				YELO_HS_RUNTIME_ASSERT(_script.type!=Enums::_hs_script_static && _script.type!=Enums::_hs_script_stub, 
-					thread,
-					"found a static script at toplevel.");
-			}
-
-			YELO_HS_THREAD_VALID_STACK(thread);
-			thread->sleep_until = 0;
-
-			if (CAST_PTR(const void*,thread->stack_data) == thread->stack_buffer)
-			{
-				YELO_ASSERT(script);
-
-				thread->stack_data->size = 0;
-				void** result = thread->StackAllocate<void*>(HsThreads().Header);
-
-				//hs_evaluate(thread_index, script->script.root_expression_index, result);
-			}
-			else
-			{
-			}
-		}
-
 		void hs_runtime_update()
 		{
 			auto hs_runtime_globals = HsRuntimeGlobals();
@@ -118,11 +216,12 @@ namespace Yelo
 				else if (!hs_runtime_globals->run_game_scripts || game_in_editor())
 					continue;
 					
-				if (thread->sleep_until >= 0 && thread->sleep_until <= game_time)
+				if (thread->NotKilledOrDormant() && thread->NotSleeping(game_time))
 				{
-					hs_thread_main(thread.index);
+					hs_thread_main(thread.index, *hs_runtime_globals);
 				}
 
+				// something executed in the thread which disabled the runtime, stop updating
 				if (!hs_runtime_globals->enabled)
 					break;
 			}
@@ -132,18 +231,27 @@ namespace Yelo
 				hs_runtime_garbage_collect_nodes();
 		}
 
-		void hs_return(datum_index thread_index, TypeHolder value)
+		s_hs_value_union* hs_macro_function_evaluate(int16 function_index, datum_index thread_index, bool initialize_stack)
+		{
+			const auto* function = hs_function_get(function_index);
+
+			return hs_arguments_evaluate(thread_index,
+				CAST(size_t, function->paramc), function->params,
+				initialize_stack);
+		}
+
+		void hs_return(datum_index thread_index, s_hs_value_union value)
 		{
 			s_hs_thread_datum* thread = hs_thread_get(thread_index);
 			// engine did this after it the hs_syntax_get call, but that makes no sense!
 			YELO_HS_THREAD_VALID_STACK(thread);
 
-			hs_syntax_node* call_expression = hs_syntax_get(thread->stack_data->source_expression);
+			const hs_syntax_node* call_expression = thread->GetSyntax(thread->stack_frame->source_expression);
 
 			Enums::hs_type actual_type;
-			if (TEST_FLAG(call_expression->flags, Flags::_hs_syntax_node_script_index_bit))
+			if (call_expression->IsScriptCall())
 			{
-				const auto& script = Scenario::Scenario()->scripts[call_expression->script_index];
+				const auto& script = global_scenario_get()->scripts[call_expression->script_index];
 				actual_type = script.script.return_type;
 			}
 			else // hs_function call
@@ -152,7 +260,7 @@ namespace Yelo
 				actual_type = function->return_type;
 			}
 
-			*thread->stack_data->previous->result_reference =
+			*thread->stack_frame->previous->result_reference =
 				hs_cast(thread_index, actual_type, call_expression->type, value);
 
 			thread->StackPop();
@@ -218,7 +326,7 @@ namespace Yelo
 			return k_hs_typecasting_procedures[actual_type][desired_type] != nullptr;
 		}
 
-		TypeHolder hs_cast(datum_index thread_index, Enums::hs_type actual_type, Enums::hs_type desired_type, TypeHolder value)
+		s_hs_value_union hs_cast(datum_index thread_index, Enums::hs_type actual_type, Enums::hs_type desired_type, s_hs_value_union value)
 		{
 			YELO_HS_RUNTIME_ASSERT(hs_can_cast(actual_type, desired_type),
 				hs_thread_get(thread_index),
@@ -235,85 +343,74 @@ namespace Yelo
 
 			return k_hs_typecasting_procedures[actual_type][desired_type](value);
 		}
-	};
 
-	namespace Scripting
-	{
-		bool s_hs_thread_datum::stack_frame::AllocationWouldOverflow(const byte* stack_base_address, size_t size, size_t alignment) const
+		static datum_index hs_thread_new(Enums::hs_thread_type type,
+			hs_script_index_t script = hs_script_index_t::k_null)
 		{
-			return	(this->data + this->size + alignment + size) >
-					(stack_base_address + Enums::k_hs_thread_stack_size);
+			YELO_ASSERT(type>=0 && type<Enums::k_number_of_hs_thread_types);
+			YELO_ASSERT(type!=Enums::_hs_thread_type_script || !script.IsNull());
+
+			datum_index thread_index = HsThreads().New();
+			if (thread_index.IsNull())
+				return thread_index;
+
+			s_hs_thread_datum* thread = hs_thread_get(thread_index);
+			thread->Initialize(type);
+			if (type == Enums::_hs_thread_type_script)
+				thread->InitializeForScript(script);
+
+			return thread_index;
 		}
 
-		bool s_hs_thread_datum::ValidThread(const Memory::s_data_array& threads) const
+		s_hs_value_union hs_runtime_evaluate(datum_index expression_index,
+			datum_index script_container_index)
 		{
-			const byte* base_address = CAST_PTR(const byte*, threads.base_address);
+			// TODO: update code when containers come online
+			
+			auto hs_runtime_globals = HsRuntimeGlobals();
+			if (!hs_runtime_globals->enabled || expression_index.IsNull())
+				return k_none_value_union;
 
-			// validate the thread is within the bounds of the data array
-			if (CAST(const void*, this) < base_address)
-				return false;
-			else if (CAST(const void*, this) > base_address + (threads.last_datum*threads.datum_size))
-				return false;
-
-			// validate the stack pointer is within the thread's stack buffer
-			else if (CAST(const void*, stack_data) < &stack_buffer[0])
-				return false;
-			else if (CAST(const void*, stack_data) > this+1)
-				return false;
-
-			// validate the stack hasn't overflowed
-			else if (stack_data->data+stack_data->size > CAST(const void*, this+1))
-				return false;
-
-			return true;
-		}
-
-		cstring s_hs_thread_datum::GetDescriptionString() const
-		{
-			switch (type)
+			datum_index thread_index = hs_thread_new(Enums::_hs_thread_type_runtime_evaluate);
+			if (thread_index.IsNull())
 			{
-			case Enums::_hs_thread_type_script:
-				return Scenario::Scenario()->scripts[script_index].name;
+				// NOTE: added parameters to error. still need a better description to display
+				YELO_ERROR_FAILURE("there are not enough threads to execute that command (%X in %X).",
+					expression_index, script_container_index);
 
-			case Enums::_hs_thread_type_global_initialize:
-				return "[global initialize]";
-
-			case Enums::_hs_thread_type_runtime_evaluate:
-				return "[runtime evaluate]";
-
-			default:
-				return "[unknown thread type]";
+				return k_none_value_union;
 			}
+
+			s_hs_thread_datum* thread = hs_thread_get(thread_index);
+			hs_evaluate(thread_index, expression_index, &thread->result);
+
+			if (TEST_FLAG(thread->flags, Flags::_hs_thread_datum_has_new_stack_frame_bit))
+			{
+				hs_thread_main(thread_index, *hs_runtime_globals);
+				return k_none_value_union;
+			}
+
+			return thread->result;
 		}
 
-		void s_hs_thread_datum::StackPop()
+		datum_index hs_find_thread_by_script(hs_script_index_t script)
 		{
-			stack_data = stack_data->previous;
-		}
+			// TODO: update code when containers come online
 
-		void* s_hs_thread_datum::StackAllocate(const Memory::s_data_array& threads,
-			size_t size, long_flags alignment_bit, _Out_opt_ int16* stack_offset)
-		{
-			YELO_HS_THREAD_VALID_STACK(this);
-			YELO_HS_RUNTIME_ASSERT(size, this,
-				"attempt to allocate zero space from the stack.");
+			// NOTE: engine seems to use a for(;;) using data_next_index() on threads
+			for (auto thread : HsThreads())
+			{
+				// NOTE: engine doesn't validate type before comparing the index
+				if (thread->type == Enums::_hs_thread_type_script &&
+					thread->script_index == script.script_index)
+				{
+					return thread.index;
+				}
+			}
 
-			// TODO: calc alignment of stack
-			size_t alignment = 0;
-
-			YELO_HS_RUNTIME_ASSERT(stack_data->AllocationWouldOverflow(stack_buffer, size, alignment), this,
-				"stack overflow.");
-
-			// TODO: ZeroMemory alignment bytes
-
-			// TODO: populate the start offset
-			if (stack_offset)
-				*stack_offset = NONE;
-
-			return nullptr;
+			return datum_index::null;
 		}
 	};
-};
 
-#undef YELO_HS_RUNTIME_ASSERT
-#undef YELO_HS_THREAD_VALID_STACK
+	
+};

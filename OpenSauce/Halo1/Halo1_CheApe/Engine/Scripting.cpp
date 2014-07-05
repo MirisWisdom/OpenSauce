@@ -26,16 +26,16 @@ namespace Yelo
 
 		static void NullifyScriptFunction(hs_function_definition& function)
 		{
-			function.parse = CAST_PTR(hs_parse_proc,GET_FUNC_VPTR(HS_MACRO_FUNCTION_PARSE));
+			function.parse = CAST_PTR(proc_hs_parse,GET_FUNC_VPTR(HS_MACRO_FUNCTION_PARSE));
 
-			function.evaluate = CAST_PTR(hs_evaluate_proc,GET_FUNC_VPTR(HS_NULL_EVALUATE));
+			function.evaluate = CAST_PTR(proc_hs_evaluate,GET_FUNC_VPTR(HS_NULL_EVALUATE));
 		}
 
 		static void NullifyScriptFunctionWithParams(hs_function_definition& function)
 		{
-			function.parse = CAST_PTR(hs_parse_proc,GET_FUNC_VPTR(HS_MACRO_FUNCTION_PARSE));
+			function.parse = CAST_PTR(proc_hs_parse, GET_FUNC_VPTR(HS_MACRO_FUNCTION_PARSE));
 
-			function.evaluate = CAST_PTR(hs_evaluate_proc,GET_FUNC_VPTR(HS_NULL_WITH_PARAMS_EVALUATE));
+			function.evaluate = CAST_PTR(proc_hs_evaluate, GET_FUNC_VPTR(HS_NULL_WITH_PARAMS_EVALUATE));
 		}
 
 
@@ -121,7 +121,7 @@ namespace Yelo
 			{
 				def = _upgrade_globals.functions.table[x];
 
-				if( only_internals != TEST_FLAG(def->flags, Flags::_hs_yelo_definition_internal_bit) )
+				if( only_internals != TEST_FLAG(def->yelo_flags, Flags::_hs_yelo_definition_internal_bit) )
 					continue;
 
 				s_script_function_definition* element = functions.add_and_get_element();
