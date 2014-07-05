@@ -49,9 +49,9 @@ namespace BlamLib.Render.COLLADA.Halo1
 		StructureBSPData.StructureBSPMarkerList GetMarkers();
 	}
 
-    ///-------------------------------------------------------------------------------------------------
-    /// <summary>   Collada Halo1 Structure BSP exporter. </summary>
-    ///-------------------------------------------------------------------------------------------------
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>   Collada Halo1 Structure BSP exporter. </summary>
+	///-------------------------------------------------------------------------------------------------
 	public class ColladaBSPExporter : ColladaExporterHalo1
 	{
 		#region Constructor
@@ -401,11 +401,14 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 			if (mShaderDataProvider != null)
 			{
-				// create a list of every shader used 
-				foreach (var effect in mShaderDataProvider.GetEffects())
-				{
-					addMaterialRef(effect.Name);
-				}
+                // create a list of every shader used 
+                if (mBSPDataProvider.IncludeRenderMesh)
+                {
+                    foreach (var effect in mShaderDataProvider.GetEffects())
+                    {
+                        addMaterialRef(effect.Name);
+                    }
+                }
 
 				// if portals are included add the portals shader to the names
 				if (mBSPDataProvider.IncludePortals)

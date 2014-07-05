@@ -1665,7 +1665,7 @@ namespace BlamLib.Render.COLLADA
 					validator.ErrorOccured -= new EventHandler<ColladaErrorEventArgs>(ValidatorErrorOccured);
 				}
 			}
-			catch (Exception e)
+			catch (ColladaException e)
 			{
 				// if an exception occurred, report it and return gracefully
 				OnErrorOccured(e.Message);

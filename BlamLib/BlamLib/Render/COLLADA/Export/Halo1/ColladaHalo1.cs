@@ -236,14 +236,14 @@ namespace BlamLib.Render.COLLADA.Halo1
 			{
 				// If the object has a defined name add a reference to it
 				ScenarioObjectName objectName = null;
-				if (instance.Name.Value != -1)
+                if ((instance.Name.Value != -1) && (instance.Name.Value < ScenarioObjectNames.Count))
 				{
 					objectName = ScenarioObjectNames[instance.Name.Value];
 				}
 
 				// If the objects type is value add a reference to it
 				ScenarioObject objectType = null;
-				if (instance.Type.Value != -1)
+				if ((instance.Type.Value != -1) && (instance.Type.Value < ScenarioObjectLists[type].Count))
 				{
 					objectType = ScenarioObjectLists[type][instance.Type.Value];
 				}
@@ -880,9 +880,23 @@ namespace BlamLib.Render.COLLADA.Halo1
 			{
 				foreach (var part in geometrySet.Geometry.Parts)
 				{
-					DatumIndex shaderDatum = modelDefinition.Shaders[part.ShaderIndex].Shader.Datum;
+					DatumIndex shaderDatum = DatumIndex.Null;
 
-					string shaderName = Path.GetFileNameWithoutExtension(tagIndex[shaderDatum].Name);
+                    if (part.ShaderIndex > -1)
+                    {
+                        var shader_index = part.ShaderIndex;
+                        if (shader_index >= modelDefinition.Shaders.Count)
+                        {
+                            shader_index.Value = modelDefinition.Shaders.Count - 1;
+                        }
+                        shaderDatum = modelDefinition.Shaders[shader_index].Shader.Datum;
+                    }
+
+					string shaderName = "Unknown";
+					if (shaderDatum.IsValid)
+					{
+						Path.GetFileNameWithoutExtension(tagIndex[shaderDatum].Name);
+					}
 
 					geometrySet.AddShader(new ModelShaderReference(shaderDatum, shaderName));
 				}
@@ -1083,7 +1097,10 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 			var bspTag = bspTagManager.TagDefinition as Blam.Halo1.Tags.structure_bsp_group;
 
-			AddMarkers(bspTag);
+            if (IncludeBSPMarkers)
+            {
+                AddMarkers(bspTag);
+            }
 		}
 
 		#region IHalo1BSPDataProvider Members
@@ -1101,15 +1118,23 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// </summary>
 		/// <value>	true if include portals, false if not. </value>
 		///-------------------------------------------------------------------------------------------------
-		public bool IncludePortals { get; set; }
+        public bool IncludePortals { get; set; }
 
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>
-		/// 	Gets or sets a value indicating whether the fog planes should be included.
-		/// </summary>
-		/// <value>	true if include fog planes, false if not. </value>
-		///-------------------------------------------------------------------------------------------------
-		public bool IncludeFogPlanes { get; set; }
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// 	Gets or sets a value indicating whether the fog planes should be included.
+        /// </summary>
+        /// <value>	true if include fog planes, false if not. </value>
+        ///-------------------------------------------------------------------------------------------------
+        public bool IncludeFogPlanes { get; set; }
+
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>
+        /// 	Gets or sets a value indicating whether the bsp markers should be included.
+        /// </summary>
+        /// <value>	true if include bsp markers, false if not. </value>
+        ///-------------------------------------------------------------------------------------------------
+        public bool IncludeBSPMarkers { get; set; }
 
 		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Gets the markers list. </summary>
@@ -1181,7 +1206,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			, Blam.Halo1.Tags.shader_environment_group shader)
 		{
 			// Set diffuse texture/color
-			if (!shader.BaseMap.Datum.IsNull)
+			if (shader.BaseMap.Datum.IsValid)
 			{
 				var image = new ColladaExporter.Image(tagIndex[shader.BaseMap.Datum].Name);
 				mImages.Add(image);
@@ -1195,7 +1220,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			}
 
 			// Set alpha tested bump map
-			if (shader.Flags.Test(1) && (!shader.BumpMap.Datum.IsNull))
+			if (shader.Flags.Test(1) && shader.BumpMap.Datum.IsValid)
 			{
 				var image = new ColladaExporter.Image(tagIndex[shader.BumpMap.Datum].Name);
 				mImages.Add(image);
@@ -1219,7 +1244,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			, Blam.Halo1.Tags.shader_model_group shader)
 		{
 			// Set diffuse texture/color
-			if (!shader.BaseMap.Datum.IsNull)
+			if (shader.BaseMap.Datum.IsValid)
 			{
 				var image = new ColladaExporter.Image(tagIndex[shader.BaseMap.Datum].Name);
 				mImages.Add(image);
@@ -1243,7 +1268,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			, Blam.Halo1.Tags.shader_transparent_chicago_group shader)
 		{
 			// Set diffuse texture
-			if ((shader.Maps.Count > 0) && (!shader.Maps[0].Map.Datum.IsNull))
+			if ((shader.Maps.Count > 0) && shader.Maps[0].Map.Datum.IsValid)
 			{
 				var image = new ColladaExporter.Image(tagIndex[shader.Maps[0].Map.Datum].Name);
 				mImages.Add(image);
@@ -1274,7 +1299,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 				bitmapDatum = shader._2StageMaps[0].Map.Datum;
 			}
 
-			if (!bitmapDatum.IsNull)
+			if (bitmapDatum.IsValid)
 			{
 				var image = new ColladaExporter.Image(tagIndex[bitmapDatum].Name);
 				mImages.Add(image);
@@ -1294,7 +1319,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			, TagIndexBase tagIndex
 			, Blam.Halo1.Tags.shader_transparent_generic_group shader)
 		{
-			if ((shader.Maps.Count > 0) && (!shader.Maps[0].Map.Datum.IsNull))
+			if ((shader.Maps.Count > 0) && shader.Maps[0].Map.Datum.IsValid)
 			{
 				var image = new ColladaExporter.Image(tagIndex[shader.Maps[0].Map.Datum].Name);
 				mImages.Add(image);
@@ -1314,7 +1339,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			, TagIndexBase tagIndex
 			, Blam.Halo1.Tags.shader_transparent_glass_group shader)
 		{
-			if (!shader.DiffuseMap.Datum.IsNull)
+			if (shader.DiffuseMap.Datum.IsValid)
 			{
 				var image = new ColladaExporter.Image(tagIndex[shader.DiffuseMap.Datum].Name);
 				mImages.Add(image);
@@ -1334,7 +1359,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			, TagIndexBase tagIndex
 			, Blam.Halo1.Tags.shader_transparent_water_group shader)
 		{
-			if (!shader.BaseMap.Datum.IsNull)
+			if (shader.BaseMap.Datum.IsValid)
 			{
 				var image = new ColladaExporter.Image(tagIndex[shader.BaseMap.Datum].Name);
 				mImages.Add(image);
@@ -1357,7 +1382,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			, TagIndexBase tagIndex
 			, Blam.Halo1.Tags.shader_transparent_meter_group shader)
 		{
-			if (!shader.Map.Datum.IsNull)
+			if (shader.Map.Datum.IsValid)
 			{
 				var image = new ColladaExporter.Image(tagIndex[shader.Map.Datum].Name);
 				mImages.Add(image);
@@ -1390,8 +1415,8 @@ namespace BlamLib.Render.COLLADA.Halo1
 		{
 			foreach (var shader in mShaderTypeList)
 			{
-				string shaderName = "";
-				if(shader.ShaderDatum.IsValid)
+				string shaderName = "Unknown";
+				if (shader.ShaderDatum.IsValid)
 				{
 					shaderName = Path.GetFileNameWithoutExtension(tagIndex[shader.ShaderDatum].Name);
 				}
@@ -1552,7 +1577,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			{
 				foreach (var material in lightmap.Materials)
 				{
-						mShaderTypeList.Add(new ShaderType(material.Shader.Datum));
+					mShaderTypeList.Add(new ShaderType(material.Shader.Datum));
 				}
 			}
 		}

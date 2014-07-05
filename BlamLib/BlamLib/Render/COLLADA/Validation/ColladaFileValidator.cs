@@ -43,13 +43,13 @@ namespace BlamLib.Render.COLLADA.Validation
 
 				is_valid = true;
 			}
-			catch (Exception exception)
+			catch (ColladaValidationException exception)
 			{
 				// if the collada file is not valid, add a report detailing why it is not valid
 				OnErrorOccured(ColladaExceptionStrings.ValidationFailed);
 
 				// report an error for all inner exceptions
-				for (var except = exception; except != null; except = except.InnerException)
+				for (Exception except = exception; except != null; except = except.InnerException)
 				{
 					OnErrorOccured(except.Message);
 
