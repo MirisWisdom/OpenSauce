@@ -143,23 +143,24 @@ namespace Yelo
 		{
 			tag_group* senv = blam::tag_group_get<s_shader_environment_definition>();
 
-			static cstring shader_environment_extension_flag_text = "do not use dlms";
-			static string_list shader_environment_extension_flags { 1, &shader_environment_extension_flag_text };
-				// TODO: fields
-			static tag_field shader_environment_extension_fields[] = {
-				{ Enums::_field_explanation, "directional lightmaps", "" },
-				{ Enums::_field_word_flags, "flags", &shader_environment_extension_flags },
-				{ Enums::_field_pad, "", CAST_PTR(void*, 2) },
-				{ Enums::_field_real, "bump amount", nullptr },
-				{ Enums::_field_pad, "", CAST_PTR(void*, sizeof(tag_block) * 4) },
-				{ Enums::_field_terminator }
+			TAG_GROUP_STRING_TABLE_DEFINE(shader_environment_extension_flags, 1
+				, "do not use dlms");
+
+			TAG_GROUP_BLOCK_FIELDS_DEFINE(shader_environment_extension) =
+			{
+				TAG_FIELD_ENTRY(_field_explanation, "directional lightmaps", "" ),
+				TAG_FIELD_ENTRY(_field_word_flags, "flags", &shader_environment_extension_flags),
+				TAG_FIELD_ENTRY_PAD(sizeof(int16)*1),
+				TAG_FIELD_ENTRY(_field_real, "bump amount", nullptr),
+				TAG_FIELD_ENTRY_PAD(sizeof(tag_block) * 4),
+				TAG_FIELD_ENTRY_END()
 			};
-			static tag_block_definition shader_environment_extension_block = {
-				"shader_environment_extension_block", 0, 1,
-				sizeof(s_shader_environment_extension),
-				nullptr,
-				shader_environment_extension_fields
-			};
+
+			TAG_GROUP_BLOCK_DEFINE(shader_environment_extension
+				, 0
+				, 1
+				, sizeof(s_shader_environment_extension));
+
 			FIELDSET_REPLACEMENT_BEGIN(_shader_environment_definition, 92+2, senv->header_block_definition)
 				FIELDSET_SEEK_AFTER_WITH_COPY("lens flare")
 				FIELDSET_INSERT_BEGIN()
