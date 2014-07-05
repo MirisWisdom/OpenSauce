@@ -88,5 +88,29 @@ namespace Yelo
 			TAG_PAD(tag_data, 1);
 			TAG_TBLOCK(pitch_ranges, s_sound_pitch_range);
 		}; BOOST_STATIC_ASSERT( sizeof(sound_definition) == 0xA4 );
+
+
+		struct looping_sound_definition
+		{
+			enum { k_group_tag = 'lsnd' };
+
+			TAG_FIELD(long_flags, flags);
+			struct s_scale_function
+			{
+				TAG_FIELD(real, detail_sound_period);
+				UNKNOWN_TYPE(real); // postprocessed field
+				UNKNOWN_TYPE(real); // postprocessed field
+			}	scale_zero,
+				scale_one;
+
+			datum_index runtime_scripting_sound_index;
+			real runtime_maximum_audible_distance;
+			PAD32;
+			PAD32;
+
+			TAG_FIELD(tag_reference, continuous_damage_effect, "cdmg");
+			TAG_BLOCK(tracks, looping_sound_track);
+			TAG_BLOCK(detail_sounds, looping_sound_detail);
+		}; BOOST_STATIC_ASSERT( sizeof(looping_sound_definition) == 0x54 );
 	};
 };

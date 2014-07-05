@@ -10,6 +10,17 @@
 
 namespace Yelo
 {
+	namespace Enums
+	{
+		enum {
+			_hs_global_index_is_external_mask = FLAG(15),
+			_hs_global_index_mask = _hs_global_index_is_external_mask - 1,
+		};
+
+		BOOST_STATIC_ASSERT(0x8000 == _hs_global_index_is_external_mask);
+		BOOST_STATIC_ASSERT(0x7FFF == _hs_global_index_mask);
+	};
+
 	namespace Flags
 	{
 		enum hs_syntax_node_flags : word_flags
@@ -27,38 +38,60 @@ namespace Yelo
 			_hs_syntax_node_const_index_yelo_bit,
 		};
 
-		enum hs_access_flag : word_flags
+		enum hs_access_flags : word_flags
 		{
-			_hs_access_flag_none,
-			_hs_access_flag_enabled =		FLAG(0),
-			_hs_access_flag_sent_to_server =FLAG(1), ///< automatically sent to server
-			_hs_access_flag_rconable =		FLAG(2), ///< can be executed from an rcon command
-			_hs_access_flag_client =		FLAG(3), ///< only a client connection can execute it
-			_hs_access_flag_server =		FLAG(4), ///< only a server connection can execute it
+			_hs_access_enabled_bit,
+			_hs_access_sent_to_server_bit,	///< automatically sent to server
+			_hs_access_rconable_bit,		///< can be executed from an rcon command
+			_hs_access_client_bit,			///< only a client connection can execute it
+			_hs_access_server_bit,			///< only a server connection can execute it
 		};
 	};
 
 	namespace Scripting
 	{
-		typedef void (PLATFORM_API* hs_parse_proc)(int32 function_index, datum_index expression_index);
-		typedef void (PLATFORM_API* hs_evaluate_proc)(int32 function_index, datum_index expression_index, bool* execute);
+		typedef void (PLATFORM_API* proc_hs_parse)(int32 function_index, datum_index expression_index);
+		typedef void (PLATFORM_API* proc_hs_evaluate)(int32 function_index, datum_index thread_index, bool initialize_stack);
 
 		// halo script function definition
 		struct hs_function_definition
 		{
 			Enums::hs_type return_type;
-			word_flags flags; // padding in halo, special flags in project yellow
+			word_flags yelo_flags; // padding in halo, special flags in project yellow
 			cstring name;
-			hs_parse_proc parse;
-			hs_evaluate_proc evaluate;
+			proc_hs_parse parse;
+			proc_hs_evaluate evaluate;
 			cstring info;
 			cstring param_info;
-			Flags::hs_access_flag access;
+			word_flags access;
 			int16 paramc;
 #pragma warning( push )
 #pragma warning( disable : 4200 ) // nonstandard extension used : zero-sized array in struct/union, Cannot generate copy-ctor or copy-assignment operator when UDT contains a zero-sized array
+			// don't access directly, use GetParameter
 			Enums::hs_type params[];
 #pragma warning( pop )
+
+			Enums::hs_type GetParameter(int16 index)
+			{
+				YELO_ASSERT(index >= 0 && index<paramc);
+
+				return params[index];
+			}
+
+			//////////////////////////////////////////////////////////////////////////
+			// STL-like APIs
+			typedef Enums::hs_type*			iterator;
+			typedef const Enums::hs_type*	const_iterator;
+
+			const_iterator	begin() const		{ return params; }
+			iterator		begin()				{ return params; }
+			const_iterator	const_begin() const	{ return params; }
+			const_iterator	const_begin()		{ return params; }
+			const_iterator	end() const			{ return params + paramc; }
+			iterator		end()				{ return params + paramc; }
+			const_iterator	const_end() const	{ return params + paramc; }
+			const_iterator	const_end()			{ return params + paramc; }
+
 		}; BOOST_STATIC_ASSERT( sizeof(hs_function_definition) == 0x1C ); // size doesn't include [params]
 
 		// halo script accessible value
@@ -70,16 +103,9 @@ namespace Yelo
 			union {
 				void* address;
 
-				union {
-					bool* _bool;
-					real* _real;
-					int16* _short;
-					int32* _long;
-					char* _string;
-					datum_index* _datum;
-				}Value;
+				s_hs_value_union value;
 			};
-			Flags::hs_access_flag access;
+			word_flags access;
 			PAD16;
 		}; BOOST_STATIC_ASSERT( sizeof(hs_global_definition) == 0x10 );
 
@@ -101,8 +127,17 @@ namespace Yelo
 			union {
 				void* address;
 
-				TypeHolder value;
+				s_hs_value_union value;
 			};
+
+			bool IsScriptCall() const
+			{
+				return TEST_FLAG(flags, Flags::_hs_syntax_node_script_index_bit);
+			}
+			bool IsGarbageCollectable() const
+			{
+				return !TEST_FLAG(flags, Flags::_hs_syntax_node_dont_gc_bit);
+			}
 		}; BOOST_STATIC_ASSERT( sizeof(hs_syntax_node) == 0x14 );
 
 		typedef Memory::DataArray<	hs_syntax_node, 

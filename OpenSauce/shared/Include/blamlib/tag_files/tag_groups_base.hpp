@@ -40,7 +40,7 @@ namespace Yelo
 		// datum index of this reference in the tag index
 		datum_index tag_index;
 
-		inline operator datum_index() const { return tag_index; }
+		operator datum_index() const { return tag_index; }
 
 		void clear();
 
@@ -64,7 +64,7 @@ namespace Yelo
 		void PLATFORM_API tag_reference_clear(tag_reference& reference);
 
 		void PLATFORM_API tag_reference_set(tag_reference& reference, tag group_tag, cstring name);
-		template<typename T> inline
+		template<typename T>
 		void tag_reference_set(tag_reference& reference, cstring name)
 		{
 			return tag_reference_set(reference, T::k_group_tag, name);
@@ -87,7 +87,8 @@ namespace Yelo
 
 		// Returns a [T] pointer that is the same as [address].
 		// Just makes coding a little more cleaner
-		template<typename T> inline T* Elements() { return CAST_PTR(T*, address); }
+		template<typename T>
+		T* Elements() { return CAST_PTR(T*, address); }
 
 		void* get_element(int32 element_index);
 		void delete_element(int32 element_index);
@@ -113,29 +114,29 @@ namespace Yelo
 			int32 m_element_index;
 			size_t m_element_size;
 		public:
-			inline s_iterator(tag_block& block, size_t element_size, size_t element_index = 0)
+			s_iterator(tag_block& block, size_t element_size, size_t element_index = 0)
 				: m_address(CAST_PTR(byte*, block.address) + (element_size * element_index))
 				, m_element_index(element_index)
 				, m_element_size(element_size)
 			{
 			}
-			inline bool operator!=(const s_iterator& other) const
+			bool operator!=(const s_iterator& other) const
 			{
 				return m_address != other.m_address;
 			}
-			inline s_iterator& operator++()
+			s_iterator& operator++()
 			{
 				m_address += m_element_size;
 				++m_element_index;
 				return *this;
 			}
-			inline s_iterator_result operator*() const
+			s_iterator_result operator*() const
 			{
 				return s_iterator_result(m_address, m_element_index);
 			}
 		};
-		inline s_iterator	begin()	{ return s_iterator(*this, this->get_element_size()); }
-		inline s_iterator	end()	{ return s_iterator(*this, this->get_element_size(), CAST(size_t, this->count)); }
+		s_iterator	begin()	{ return s_iterator(*this, this->get_element_size()); }
+		s_iterator	end()	{ return s_iterator(*this, this->get_element_size(), CAST(size_t, this->count)); }
 #endif
 	};
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
@@ -182,11 +183,12 @@ namespace Yelo
 
 		// Returns a [T] pointer that is the same as [address].
 		// Just makes coding a little more cleaner
-		template<typename T> inline T* Elements() { return CAST_PTR(T*, address); }
+		template<typename T>
+		T* Elements() { return CAST_PTR(T*, address); }
 
 		// Returns byte pointer that is the same as [address]
 		// Just makes coding a little more cleaner
-		inline byte* Bytes() { return CAST_PTR(byte*, address); }
+		byte* Bytes() { return CAST_PTR(byte*, address); }
 
 		bool resize(int32 new_size = 0);
 	};
@@ -228,6 +230,12 @@ namespace Yelo
 		}
 
 		cstring PLATFORM_API tag_get_name(datum_index tag_index);
+		inline cstring tag_try_get_name(datum_index tag_index)
+		{
+			return tag_index.IsNull()
+				? "<unspecified tag>"
+				: tag_get_name(tag_index);
+		}
 
 		bool PLATFORM_API tag_read_only(datum_index tag_index);
 
@@ -292,7 +300,7 @@ namespace Yelo
 			group_tag_to_string& Terminate();
 			group_tag_to_string& TagSwap();
 
-			inline cstring ToString()
+			cstring ToString()
 			{
 				return Terminate().TagSwap().str;
 			}

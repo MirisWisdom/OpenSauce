@@ -16,7 +16,7 @@ namespace Yelo
 			k_maximum_number_of_active_swarms = 32,
 		};
 
-		enum actor_default_state
+		enum actor_default_state : _enum
 		{
 			_actor_default_state_none,
 			_actor_default_state_sleeping,
@@ -66,6 +66,8 @@ namespace Yelo
 
 	namespace blam
 	{
+		extern cstring g_ai_default_state_names[Enums::k_number_of_actor_default_states];
+
 		// Deletes and detaches the specified actor from all AI (encounters, etc.)
 		void PLATFORM_API actor_delete(datum_index actor_index, bool is_dead = false);
 	};

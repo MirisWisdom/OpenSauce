@@ -945,6 +945,21 @@
     <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\object_lists_structures.hpp">
       <Filter>hs</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_library_internal.hpp">
+      <Filter>hs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_types.hpp">
+      <Filter>hs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_types_traits.hpp">
+      <Filter>hs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\tag_files\tag_groups_structures_macros.hpp">
+      <Filter>tag_files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\blamlib\Halo1\hs\hs_threads.hpp">
+      <Filter>hs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -1049,6 +1064,18 @@
     <ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\object_lists.cpp">
       <Filter>hs</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs_types.cpp">
+      <Filter>hs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\scenario\scenario.cpp">
+      <Filter>scenario</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\units\unit_definitions.cpp">
+      <Filter>units</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\blamlib\Halo1\hs\hs_threads.cpp">
+      <Filter>hs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\..\..\Doc\Blam\Halo1\Halo1_CE.message_delta_definitions.xml">
@@ -1056,10 +1083,19 @@
     </Xml>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_library_internal_runtime_type_defs.inl">
+    <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_library_internal_runtime.inl">
       <Filter>hs</Filter>
     </None>
-    <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_library_internal_runtime.inl">
+    <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_library_internal_compile.inl">
+      <Filter>hs</Filter>
+    </None>
+    <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_types_compile.inl">
+      <Filter>hs</Filter>
+    </None>
+    <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_types_runtime.inl">
+      <Filter>hs</Filter>
+    </None>
+    <None Include="..\..\shared\Include\blamlib\Halo1\hs\hs_types_definitions.inl">
       <Filter>hs</Filter>
     </None>
   </ItemGroup>

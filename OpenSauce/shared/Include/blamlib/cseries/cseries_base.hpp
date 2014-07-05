@@ -108,10 +108,17 @@ namespace Yelo
 		int32 count;
 		cstring* strings;
 
-		inline const_iterator	begin() const		{ return strings; }
-		inline iterator			begin()				{ return strings; }
-		inline const_iterator	end() const			{ return strings + count; }
-		inline iterator			end()				{ return strings + count; }
+		const_iterator	begin() const	{ return strings; }
+		iterator		begin()			{ return strings; }
+		const_iterator	end() const		{ return strings + count; }
+		iterator		end()			{ return strings + count; }
+
+		cstring operator [](int32 index) const
+		{
+			assert(index>=0 && index<count);
+
+			return strings[index];
+		}
 	}; BOOST_STATIC_ASSERT( sizeof(string_list) == 0x8 );
 
 

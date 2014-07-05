@@ -8,11 +8,6 @@
 
 namespace Yelo
 {
-	namespace TagGroups
-	{
-		struct s_game_globals;
-	};
-
 	namespace Enums
 	{
 		enum unit_grenade_type : _enum
@@ -86,8 +81,5 @@ namespace Yelo
 		struct s_game_globals;
 
 		s_game_globals*				GameGlobals();
-
-		// Globals tag data
-		TagGroups::s_game_globals*	GlobalGameGlobals();
 	};
 };
