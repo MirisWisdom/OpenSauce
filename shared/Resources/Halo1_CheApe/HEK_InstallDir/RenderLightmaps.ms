@@ -8,7 +8,7 @@ enabledIn:#("max", "viz")
 ButtonText:"Render Lightmaps..."
 category:"Render"
 internalCategory: "Render" 
-toolTip:"Render Lightmaps Dialog Toggle"
+toolTip:"Render Lightmaps"
 icon:#("Lights", 3)
 (
 	
@@ -86,6 +86,7 @@ local 	UpdateSetCount,
 ---- Object setup functions
 
 local		SetupBakeObjects
+			ImportBitmapSizes
 
 ---- Bake functions
 
@@ -107,15 +108,17 @@ rollout BakeProgressDialog "Baking Lightmaps..." width:376 height:128
 	label totalLightmapCountLbl "Label" pos:[192,80] width:168 height:16 align:#right
 	progressBar totalProgressPbr "" pos:[16,96] width:344 height:17
 	
-	fn setSetType type =
+	function setSetType type =
 	(
 		setTypeLbl.text = type
 	)
-	fn setCancelled =
+	
+	function setCancelled =
 	(
 		setProgressPbr.color = color 100 10 10
 		totalProgressPbr.color = color 100 10 10
 	)
+	
 	function UpdateProgress =
 	(
 		setProgressPbr.value = 100 * ((setLightmapsCompleted as float) / setLightmapsCount)
@@ -153,13 +156,14 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 	spinner paddingAmountSpn "Padding:" pos:[90,232] width:60 height:16 range:[1,100,5] type:#integer scale:1
 	spinner bakeWidthSpn "Width" pos:[192,232] width:80 height:16 range:[1,8096,256] type:#integer scale:1
 	spinner bakeHeightSpn "Height" pos:[296,232] width:80 height:16 range:[1,8096,256] type:#integer scale:1
+	button importSizesBtn "Import Bitmap Sizes" pos:[197,256] width:180 height:16
 	label lightmapListFeedbackLbl "" pos:[16,192] width:544 height:16
 	
 	edittext platesOutputTxt "     Plates Output:" pos:[16,312] width:464 height:16
 	button platesOutputBrowseBtn "Browse" pos:[488,312] width:72 height:16
 	label lbl10 "Options:" pos:[176,408] width:144 height:16
 	checkbox showRenderWindowChk "Show Render Window" pos:[176,440] width:136 height:16 checked:false
-
+	
 	function SetListItems newItems missingBakeCount =
 	(
 		lightmapObjectLst.items = newItems
@@ -192,6 +196,7 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 		paddingAmountSpn.enabled = false
 		bakeWidthSpn.enabled = false
 		bakeHeightSpn.enabled = false
+		importSizesBtn.enabled = false
 	)
 	
 	function SetBakeOptionsEnabled =
@@ -201,6 +206,7 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 		paddingAmountSpn.enabled = true
 		bakeWidthSpn.enabled = true
 		bakeHeightSpn.enabled = true
+		importSizesBtn.enabled = true
 	)
 	
 	function SetBakeProperties =
@@ -226,7 +232,7 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 		
 		renderLightmapsBtn.enabled = canRenderLightmaps
 	)
-
+	
 	on LightmapRollout open do
 	(		
 		UpdateForNewSelection()
@@ -234,7 +240,6 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 		
 		renderLightmapsBtn.enabled = canRenderLightmaps
 	)
-	
 	on lightmapOutputBrowseBtn pressed do
 	(	
 		outputPath = getSavePath caption:"Lightmap Output Folder" initialDir:lightmapsOutputFolder
@@ -248,7 +253,6 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 		
 		renderLightmapsBtn.enabled = canRenderLightmaps
 	)
-	
 	on lightmapOutputTxt changed txt do
 	(
 		lightmapsOutputFolder = txt
@@ -258,27 +262,14 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 		
 		renderLightmapsBtn.enabled = canRenderLightmaps
 	)
-	
-	on platesOutputTxt changed txt do
-	(
-		platesOutputFolder = txt
-		
-		UpdatePlatesOutputFolder txt
-		UpdateRenderableState()
-		
-		renderLightmapsBtn.enabled = canRenderLightmaps
-	)
-	
 	on bitmapTypeDdl selected sel do
 	(
 		UpdateBitmapType sel
 	)
-	
 	on lightmapObjectLst selected sel do
 	(
 		UpdateForSelectedBakeObject sel
 	)
-	
 	on setupObjectsBtn pressed do
 	(
 		SetupBakeObjects()
@@ -286,7 +277,6 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 		
 		renderLightmapsBtn.enabled = canRenderLightmaps
 	)
-	
 	on updateSelectionBtn pressed do
 	(
 		UpdateForNewSelection()
@@ -294,7 +284,6 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 		
 		renderLightmapsBtn.enabled = canRenderLightmaps
 	)
-	
 	on stdLightmapChk changed state do
 	(
 		renderOptionsRenderStd = state
@@ -304,7 +293,6 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 		
 		renderLightmapsBtn.enabled = canRenderLightmaps
 	)
-	
 	on dlm1LightmapChk changed state do
 	(
 		renderOptionsRenderDlm1 = state
@@ -314,7 +302,6 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 		
 		renderLightmapsBtn.enabled = canRenderLightmaps
 	)
-	
 	on dlm2LightmapChk changed state do
 	(
 		renderOptionsRenderDlm2 = state
@@ -324,7 +311,6 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 		
 		renderLightmapsBtn.enabled = canRenderLightmaps
 	)
-	
 	on dlm3LightmapChk changed state do
 	(
 		renderOptionsRenderDlm3 = state
@@ -334,7 +320,6 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 		
 		renderLightmapsBtn.enabled = canRenderLightmaps
 	)
-	
 	on buildLightmapPlateChk changed state do
 	(
 		buildLightmapPlates = state
@@ -342,12 +327,6 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 		
 		renderLightmapsBtn.enabled = canRenderLightmaps
 	)
-	
-	on showRenderWindowChk changed state do
-	(
-		showRenderWindow = state
-	)
-	
 	on renderLightmapsBtn pressed do
 	(
 		if (ValidateBakeListObjects() == false) then
@@ -451,27 +430,28 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 		
 		destroydialog BakeProgressDialog
 	)
-	
 	on uvChannelSpn changed val do
 	(
 		selectedObjectBakeProperties.bakeChannel = val
 	)
-	
 	on paddingAmountSpn changed val do
 	(
 		selectedObjectBakeProperties.nDilations = val
 	)
-	
 	on bakeWidthSpn changed val do
 	(
 		selectedObjectLightmapElement.outputSzX = val
 	)
-	
 	on bakeHeightSpn changed val do
 	(
 		selectedObjectLightmapElement.outputSzY = val	
 	)
-	
+	on importSizesBtn pressed do
+	(
+		ImportBitmapSizes()
+		
+		UpdateForSelectedBakeObject lightmapObjectLst.selection
+	)
 	on platesOutputTxt changed txt do
 	(
 		platesOutputFolder = txt
@@ -481,7 +461,6 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 		
 		renderLightmapsBtn.enabled = canRenderLightmaps
 	)
-	
 	on platesOutputBrowseBtn pressed do
 	(	
 		outputPath = getSavePath caption:"Plates Output Folder" initialDir:platesOutputFolder
@@ -494,6 +473,10 @@ rollout LightmapRollout "Lightmap Renderer" width:576 height:512
 		UpdateRenderableState()
 		
 		renderLightmapsBtn.enabled = canRenderLightmaps
+	)
+	on showRenderWindowChk changed state do
+	(
+		showRenderWindow = state
 	)
 )
 
@@ -548,6 +531,7 @@ function UpdateSetCount =
 	if (renderOptionsRenderDlm2) then (renderSetCount += 1)
 	if (renderOptionsRenderDlm3) then (renderSetCount += 1)
 )
+
 function UpdateLightmapsOutputFolder folder =
 (
 	-- Set the lightmaps folder and determine whether the path exists
@@ -555,6 +539,7 @@ function UpdateLightmapsOutputFolder folder =
 	
 	lightmapsOutputFolderValid = doesFileExist lightmapsOutputFolder
 )
+
 function UpdatePlatesOutputFolder folder =
 (
 	-- Set the lightmap plates folder and determine whether the path exists
@@ -562,12 +547,14 @@ function UpdatePlatesOutputFolder folder =
 	
 	platesOutputFolderValid = doesFileExist platesOutputFolder
 )
+
 function UpdateBitmapType index =
 (
 	bitmapType = index
 	
 	bitmapTypeExtension = bitmapTypeOptions[bitmapType]
 )
+
 function UpdateRenderableState = 
 (
 	-- Verify that the required variables for a render are set
@@ -582,6 +569,7 @@ function UpdateRenderableState =
 	)
 	canRenderLightmaps = canRenderLightmaps and ValidateBakeListObjects()
 )
+
 function UpdateForSelectedBakeObject index =
 (
 	selectedObjectBakeProperties = undefined
@@ -615,6 +603,7 @@ function UpdateForSelectedBakeObject index =
 	
 	LightmapRollout.SetBakeOptionsEnabled()
 )
+
 function UpdateBakeObjectList =
 (
 	-- Clear the listbox items then add all of the objects in the bake list
@@ -642,6 +631,7 @@ function UpdateBakeObjectList =
 	
 	UpdateRenderableState()
 )
+
 function UpdateForNewSelection =
 (
 	if (bakeInProgress == true) do ( return 0 )
@@ -662,6 +652,7 @@ function UpdateForNewSelection =
 	
 	UpdateBakeObjectList()
 )
+
 function UpdateForNoSelection =
 (
 	objectBakeList = #()
@@ -706,13 +697,94 @@ function SetupBakeObjects =
 	UpdateForNewSelection()
 )
 
+function ImportBitmapSizes =
+(
+	struct LightmapSizeEntry
+	(
+		meshName,
+		bitmapWidth,
+		bitmapHeight
+	)
+	
+	entryArray = #()
+	
+	-- Open File
+	sizesFile = getOpenFileName caption:"Select the lightmap bitmaps size file:" types:"Lightmap Size File (*.lmsz)|*.lmsz"
+	if sizesFile != unassigned do
+	(
+		openedFile = openFile sizesFile mode:"rt"
+		if openedFile != unassigned do
+		(		
+			-- Read Sizes
+			while (eof openedFile != true) do
+			(
+				textLine =  (readLine openedFile)
+				
+				splitString = filterstring textLine "\t"					
+				splitSize = filterstring splitString[2] "[,]"
+				
+				entry = LightmapSizeEntry()
+				entry.meshName = splitString[1]
+				entry.bitmapWidth = splitSize[1] as integer
+				entry.bitmapHeight = splitSize[2] as integer
+				
+				append entryArray entry
+			)
+		)
+		close openedFile
+	)
+	
+	if entryArray.count == 0 then
+	(
+		return 0
+	)
+	
+	-- Foreach selected model
+	matchedModels = 0
+	for i = 1 to objectBakeList.count do
+	(
+		objectName = objectBakeList[i] as string
+		
+		-- Find matching entry
+		sizeEntry = undefined
+		for j = 1 to entryArray.count do
+		(
+			if entryArray[j].meshName == objectName do
+			(
+				sizeEntry = entryArray[j]
+			)
+		)
+		
+		if sizeEntry == undefined then
+		(
+			continue
+		)			
+		
+		matchedModels += 1
+		
+		-- Set lightmap size
+		obj = getNodeByName objectName
+		
+		lmapBake = undefined
+		if (FindLightmapBakeElement obj &lmapBake) then
+		(
+			lmapBake.outputSzX = sizeEntry.bitmapWidth
+			lmapBake.outputSzY = sizeEntry.bitmapHeight
+		)
+	)
+	
+	if matchedModels != objectBakeList.count then
+	(
+		displayString = "Matched " + (matchedModels as string) + " models out of " + (objectBakeList.count as string)
+		messageBox displayString
+	)
+)
+	
 ---- Bake functions
 
 function SetRenderProperties obj =
 (
 	-- Set up the object to accumulate light but not cast shadows
-	obj.castShadows = off
-	obj.receiveshadows = off
 	obj.applyAtmospherics = off
 	obj.secondaryVisibility = off
 	
@@ -726,13 +798,12 @@ function SetRenderProperties obj =
 		element.enabled = false
 	)
 )
+
 function StoreObjectOptions obj =
 (
 	-- Save the objects options to restore them later
 	storedOptions = objectDataStore()
 	
-	storedOptions.castShadows = obj.castShadows
-	storedOptions.receiveshadows = obj.receiveshadows
 	storedOptions.applyAtmospherics = obj.applyAtmospherics
 	storedOptions.secondaryVisibility = obj.secondaryVisibility
 	
@@ -749,11 +820,10 @@ function StoreObjectOptions obj =
 	
 	return storedOptions
 )
+
 function RestoreObjectOptions obj storedOptions =
 (
 	-- Restore the objects options from the saved copy
-	obj.castShadows = storedOptions.castShadows
-	obj.receiveshadows = storedOptions.receiveshadows
 	obj.applyAtmospherics = storedOptions.applyAtmospherics
 	obj.secondaryVisibility = storedOptions.secondaryVisibility
 	
@@ -765,6 +835,7 @@ function RestoreObjectOptions obj storedOptions =
 		element.enabled = storedOptions.bakeEnabledElements[i]
 	)
 )
+
 function BakeNode obj filePath &cancelled =
 (	
 	-- Store and changed object options
@@ -805,6 +876,7 @@ function BakeNode obj filePath &cancelled =
 	
 	gc light:true
 )
+
 -----------------------------------------------------------------------------------------------------
 -- computeTangentSpace function taken from HalfVector on cgsociety
 -- The face position has been removed from the resulting matrices
@@ -865,6 +937,7 @@ function computeTangentSpace obj =
 	
 	return tSpace
 )
+
 function SetNormalsModifier nodeList &editNormalsMod lightmapType =
 (
 	normalBasis = [0, 0, 1]
@@ -941,6 +1014,7 @@ function SetNormalsModifier nodeList &editNormalsMod lightmapType =
 		)
 	)
 )
+
 function BakeObjects &cancelled lightmapType =
 (
 	max modify mode
@@ -1000,6 +1074,7 @@ function BakeObjects &cancelled lightmapType =
 		deleteModifier objectToBake editNormalsMod
 	)
 )
+
 function BuildLightmapPlate lightmapSuffix =
 (
 	bitmapWidth = 0
@@ -1043,6 +1118,7 @@ function BuildLightmapPlate lightmapSuffix =
 	-- Save the output bitmap
 	save outputBitmap
 )
+
 function ValidateBakeListObjects =
 (
 	-- If the list is empty return false
