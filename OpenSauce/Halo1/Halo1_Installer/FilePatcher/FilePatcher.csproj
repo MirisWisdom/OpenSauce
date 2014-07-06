@@ -52,7 +52,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="FilePatcher.config" />
+    <None Include="CustomAction.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="PatchDefinitions\Halo1_HEK_Guerilla.xml" />

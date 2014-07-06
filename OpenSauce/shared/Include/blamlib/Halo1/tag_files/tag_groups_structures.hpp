@@ -339,8 +339,6 @@ namespace Yelo
 		tag group_tag;
 		tag parent_group_tag;
 		int16 version; PAD16;
-		// NOTE: if this is a parent group, this won't ever be called in standard conditions.
-		// to postprocess a parent group's data, define a postprocess proc for the header-block instead
 		proc_tag_group_postprocess postprocess_proc;
 		tag_block_definition* header_block_definition;
 		tag child_group_tags[Enums::k_maximum_children_per_tag];
