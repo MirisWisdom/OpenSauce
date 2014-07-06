@@ -186,23 +186,17 @@
 		</Component>
 		<?endif?>
 
-		<!-- Custom tag definitions file -->
+		<!-- Custom tag definitions file-->
 		<Component Id='Halo1_CE_CheApe_COMP' Guid='744A1187-E0BC-47d9-B4DE-7EDD9A39F0DA'>
 			<File Id='Halo1_CE_CheApe_FILE' Name='CheApe.map' DiskId='1' KeyPath='yes' />
 		</Component>
 
-		<!-- Sets the root directory of the OS HEK in the editor settings xml-->
+		<!-- OS HEK editor settings-->
 		<Component Id='Halo1_CE_OS_Settings_Editor_COMP' Guid='E48FA000-32FA-446D-9A06-8CFD8C7F428B'>
 			<File Id='Halo1_CE_OS_Settings_Editor_FILE' Name='OS_Settings.Editor.xml' DiskId='1' KeyPath='yes' />
-			<util:XmlFile Id='Halo1_CE_Halo1_CE_OS_Settings_Editor_XML'
-				Action='setValue'
-				ElementPath='//profiles/Profile/root'
-				Value='[HALO1_CE_HEK_INSTALLDIR_PROP]'
-				File='[#Halo1_CE_OS_Settings_Editor_FILE]'
-				Sequence='1' />
 		</Component>
 
-		<!-- Removes the OS HEK exes on uninstall-->
+		<!-- Removes the OS HEK exes on uninstall -->
 		<Component Id='Halo1_CE_HEKExeRemove_COMP' Guid='55F95267-1323-4F28-A4A9-7D5A52DE0337'>
 			<RemoveFile Id='Halo1_CE_OS_Guerilla_REM' Name='OS_Guerilla.exe' On='uninstall' />
 			<RemoveFile Id='Halo1_CE_OS_Sapien_REM' Name='OS_Sapien.exe' On='uninstall' />
