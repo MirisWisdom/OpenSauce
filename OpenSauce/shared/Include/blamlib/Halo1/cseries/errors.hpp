@@ -31,12 +31,11 @@ namespace Yelo
 #ifndef YELO_NO_ERROR_MACRO
 	#define YELO_ERROR_IMPL(priority, format, ...) \
 		Yelo::blam::error(Yelo::Enums::priority, format, __VA_ARGS__)
-	#define YELO_ERROR_IF(condition, priority, format, ...) \
-		if(condition) { Yelo::blam::error(Yelo::Enums::priority, format, __VA_ARGS__); }
-
 
 	#define YELO_WARN_IF(condition, format, ...) \
 		if(condition) { Yelo::blam::error(Yelo::Enums::_error_message_priority_warning, format, __VA_ARGS__); }
+	#define YELO_ERROR_IF(condition, format, ...) \
+		if(condition) { Yelo::blam::error(Yelo::Enums::_error_message_priority_assert, format, __VA_ARGS__); }
 #else
 	#define YELO_ERROR_IMPL(priority, format, ...) __noop
 #endif

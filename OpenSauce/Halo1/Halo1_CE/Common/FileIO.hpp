@@ -7,7 +7,7 @@
 #pragma once
 #include <YeloLib/files/files.hpp>
 
-//#define FILE_IO_DO_MD5_CHECK
+#define FILE_IO_DO_MD5_CHECK
 
 namespace Yelo
 {
