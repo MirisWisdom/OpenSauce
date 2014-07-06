@@ -275,19 +275,6 @@ namespace Yelo
 
 		void VerifyTagGroupsFinalChecks()
 		{
-			struct verify_group_parent_has_no_postprocess_proc_action
-			{ void operator()(const tag_group* group) const
-			{
-				if (group->child_count > 0 && group->postprocess_proc != nullptr)
-				{
-					YELO_WARN(
-						"tag group '%s' defines a group-postprocess proc, but is a parent group. "
-						"proc will not be ran by children instances, define or use the header-block's postprocess proc instead",
-						group->name);
-				}
-			} };
-
-			TagGroups::tag_groups_do_action<verify_group_parent_has_no_postprocess_proc_action>();
 		}
 	};
 };

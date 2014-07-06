@@ -1,36 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Include>
-	<DialogRef Id='HEKPathDialog' />
-	<DialogRef Id='HEKPathMissingDialog' />
-	<DialogRef Id='CEMissingDlg' />
-
-	<Publish Dialog='LicenseAgreementDlg' Control='Next' Event='NewDialog' Value='CEMissingDlg'>
-		<![CDATA[NOT HALO1_CE_HCE_VERSION_109_PROP]]>
+	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='DoAction' Value='Halo1_CE_SetPathPropertiesDefHCE_CACT' Order='1'>
+		<![CDATA[(&Halo1_CE_ClientServer_FEAT = 3) AND NOT Installed]]>
 	</Publish>
-	<Publish Dialog='CEMissingDlg' Control='ButtonOK' Event='NewDialog' Value='OpenSauce_CustomizeDlg'>
-		<![CDATA[NOT HALO1_CE_HCE_VERSION_109_PROP]]>
+	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='DoAction' Value='Halo1_CE_SetPathPropertiesHCE_CACT' Order='2'>
+		<![CDATA[(&Halo1_CE_ClientServer_FEAT = 3) AND NOT Installed]]>
 	</Publish>
-	
-	<!-- The HEK extensions are being installed and all three of the stock exes are available, so show the OS HEK creation dialog -->
-	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='NewDialog' Value='HEKPathDialog'>
-		<![CDATA[((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND
-		(HALO1_CE_HEK_GUERILLAPATH_PROP AND HALO1_CE_HEK_SAPIENPATH_PROP AND HALO1_CE_HEK_TOOLPATH_PROP)]]>
+	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='NewDialog' Value='OpenSauce_MissingInstallationPathDlg' Order='3'>
+		<![CDATA[((&Halo1_CE_ClientServer_FEAT = 3) AND NOT Installed) AND NOT (SETPATHPROPERTIESRESULT = "PASS")]]>
 	</Publish>
-	<Publish Dialog='VerifyReadyDlg' Control='Back' Event='NewDialog' Value='HEKPathDialog'>
-		<![CDATA[((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND
-		(HALO1_CE_HEK_GUERILLAPATH_PROP AND HALO1_CE_HEK_SAPIENPATH_PROP AND HALO1_CE_HEK_TOOLPATH_PROP)]]>
+  
+	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='DoAction' Value='Halo1_CE_SetPathPropertiesDefHEK_CACT' Order='4'>
+		<![CDATA[(&Halo1_CE_HEK_FEAT = 3) AND NOT Installed]]>
 	</Publish>
-
-	<!-- The HEK extensions are being installed but one of the stock exes is unavailable, so show the OS_IDE launch dialog -->
-	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='NewDialog' Value='HEKPathMissingDialog'>
-		<![CDATA[((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND
-		NOT (HALO1_CE_HEK_GUERILLAPATH_PROP AND HALO1_CE_HEK_SAPIENPATH_PROP AND HALO1_CE_HEK_TOOLPATH_PROP)]]>
+	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='DoAction' Value='Halo1_CE_SetPathPropertiesHEK_CACT' Order='5'>
+		<![CDATA[(&Halo1_CE_HEK_FEAT = 3) AND NOT Installed]]>
 	</Publish>
-	<Publish Dialog='VerifyReadyDlg' Control='Back' Event='NewDialog' Value='HEKPathMissingDialog'>
-		<![CDATA[((&Halo1_CE_HEK_FEAT = 3) AND NOT (!Halo1_CE_HEK_FEAT = 3)) AND
-		NOT (HALO1_CE_HEK_GUERILLAPATH_PROP AND HALO1_CE_HEK_SAPIENPATH_PROP AND HALO1_CE_HEK_TOOLPATH_PROP)]]>
+	<Publish Dialog='OpenSauce_CustomizeDlg' Control='Next' Event='NewDialog' Value='OpenSauce_MissingInstallationPathDlg' Order='6'>
+		<![CDATA[((&Halo1_CE_HEK_FEAT = 3) AND NOT Installed) AND NOT (SETPATHPROPERTIESRESULT = "PASS")]]>
 	</Publish>
-
+  
+  
 	<Publish Dialog='OpenSauce_ExitDialog' Control='Finish' Event='DoAction' Value='Halo1_CE_SetReadmeTarget_CACT'>
 		<![CDATA[(&Halo1_CE_ClientServer_FEAT = 3) AND NOT Installed AND HALO1_CE_README_LAUNCH_PROP]]>
 	</Publish>

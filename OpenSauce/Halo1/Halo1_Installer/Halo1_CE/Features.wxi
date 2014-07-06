@@ -41,10 +41,6 @@
 		<ComponentRef Id='Halo1_CE_CrashRpt1401_COMP' />
 		<ComponentRef Id='Halo1_CE_CrashSender1401_COMP' />
 		<ComponentRef Id='Halo1_CE_crashrpt_lang_COMP' />
-
-		<Condition Level='0'>
-			<![CDATA[NOT (HALO1_CE_HCE_VERSION_109_PROP AND HALO1_CE_HCEDEDI_VERSION_109_PROP)]]>
-		</Condition>
 		
 	</Feature>
 	<Feature Id='Halo1_CE_HEK_FEAT'
@@ -88,10 +84,6 @@
 
 		<ComponentRef Id='Halo1_CE_HaloCEMenuRemove_COMP' />
 		<ComponentRef Id='Halo1_CE_HEKExeRemove_COMP' />
-
-		<Condition Level='0'>
-			<![CDATA[NOT (HALO1_CE_HEK_INSTALLDIR_PROP AND HALO1_CE_HEK_INSTALLDIREXIST_PROP)]]>
-		</Condition>
 		
 		<Feature Id='Halo1_CE_HEKExampleFiles_FEAT'
 			Title='Example Files'

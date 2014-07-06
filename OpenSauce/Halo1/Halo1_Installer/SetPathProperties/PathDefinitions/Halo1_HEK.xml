@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PathSet Id="PATHSET_HEK" RootProperty="HALO1_CE_HEK_INSTALLDIR_PROP">
+  <Property Name="HALO1_CE_HEK_GUERILLAPATH_PROP" Value="$(RootProperty)guerilla.exe"/>
+  <Property Name="HALO1_CE_HEK_TOOLPATH_PROP" Value="$(RootProperty)tool.exe"/>
+  <Property Name="HALO1_CE_HEK_SAPIENPATH_PROP" Value="$(RootProperty)sapien.exe"/>
+</PathSet>
