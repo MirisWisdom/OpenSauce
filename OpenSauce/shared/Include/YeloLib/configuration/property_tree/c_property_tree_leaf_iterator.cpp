@@ -22,26 +22,32 @@ namespace Yelo
 
 		bool c_property_tree_leaf_iterator::MoveNext()
 		{
-			if (!m_is_started)
+			do
 			{
-				m_iterator = m_tree.find(m_node_name);
-				m_is_started = true;
-			}
-			else
-			{
-				++m_iterator;
-			}
+				if (!m_is_started)
+				{
+					m_iterator = m_tree.find(m_node_name);
+					m_is_started = true;
+				}
+				else
+				{
+					++m_iterator;
+				}
 
-			if (m_iterator != m_tree.not_found())
-			{
-				m_current_leaf = std::make_unique<c_property_tree_leaf>(m_iterator->second);
-				return true;
-			}
-			else
-			{
-				m_current_leaf.reset();
-				return false;
-			}
+				if (m_iterator != m_tree.not_found())
+				{
+					if(m_iterator->first != m_node_name)
+					{
+						continue;
+					}
+
+					m_current_leaf = std::make_unique<c_property_tree_leaf>(m_iterator->second);
+					return true;
+				}
+			}while(m_iterator != m_tree.not_found());
+
+			m_current_leaf.reset();
+			return false;
 		}
 
 		std::shared_ptr<i_configuration_leaf> c_property_tree_leaf_iterator::Current()
