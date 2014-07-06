@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -25,32 +26,30 @@
     <DefineConstants>Halo1_CE; SYMBOLS</DefineConstants>
   </PropertyGroup>
   <Import Project="$(WixTargetsPath)" />
-
-	<PropertyGroup>
-		<DevEnvPath>&quot;$(VS120COMNTOOLS)..\IDE\devenv.exe&quot;</DevEnvPath>
-		<ExecConfig Condition="$(Configuration) == 'Debug'" >Debug</ExecConfig>
-		<ExecConfig Condition="$(Configuration) == 'Release'" >Release</ExecConfig>
-		<ExecConfig Condition="$(Configuration) == 'ReleaseSymbols'" >Release</ExecConfig>
-	</PropertyGroup>
-	<Target Condition="$(Configuration) != 'ReleaseSymbols'" Name="BeforeBuild">
-		<CreateProperty Value="build">
-			<Output TaskParameter="Value" PropertyName="BuildType" />
-		</CreateProperty>
-	</Target>
-	<Target Condition="$(Configuration) != 'ReleaseSymbols'" Name="BeforeRebuild">
-		<CreateProperty Value="rebuild">
-			<Output TaskParameter="Value" PropertyName="BuildType" />
-		</CreateProperty>
-	</Target>	
-	<Target Condition="$(Configuration) != 'ReleaseSymbols'" Name="BuildDependencies" AfterTargets="BeforeBuild;BeforeRebuild">
-		<Exec Command="$(DevEnvPath) /$(BuildType) $(ExecConfig) $(SolutionDir)OpenSauce_Pc.sln" />
-		<Exec Command="$(DevEnvPath) /$(BuildType) $(ExecConfig)Dedi $(SolutionDir)OpenSauce_Pc.sln" />
-		<Exec Command="$(DevEnvPath) /$(BuildType) $(ExecConfig)Guerilla $(SolutionDir)OpenSauce_HEK.sln" />
-		<Exec Command="$(DevEnvPath) /$(BuildType) $(ExecConfig)Sapien $(SolutionDir)OpenSauce_HEK.sln" />
-		<Exec Command="$(DevEnvPath) /$(BuildType) $(ExecConfig)Tool $(SolutionDir)OpenSauce_HEK.sln" />
-		<Exec Command="$(DevEnvPath) /$(BuildType) $(ExecConfig) $(SolutionDir)..\BlamLib\BlamLib.sln" />
-	</Target>
-	
+  <PropertyGroup>
+    <DevEnvPath>"$(VS120COMNTOOLS)..\IDE\devenv.exe"</DevEnvPath>
+    <ExecConfig Condition="$(Configuration) == 'Debug'">Debug</ExecConfig>
+    <ExecConfig Condition="$(Configuration) == 'Release'">Release</ExecConfig>
+    <ExecConfig Condition="$(Configuration) == 'ReleaseSymbols'">Release</ExecConfig>
+  </PropertyGroup>
+  <Target Condition="$(Configuration) != 'ReleaseSymbols'" Name="BeforeBuild">
+    <CreateProperty Value="build">
+      <Output TaskParameter="Value" PropertyName="BuildType" />
+    </CreateProperty>
+  </Target>
+  <Target Condition="$(Configuration) != 'ReleaseSymbols'" Name="BeforeRebuild">
+    <CreateProperty Value="rebuild">
+      <Output TaskParameter="Value" PropertyName="BuildType" />
+    </CreateProperty>
+  </Target>
+  <Target Condition="$(Configuration) != 'ReleaseSymbols'" Name="BuildDependencies" AfterTargets="BeforeBuild;BeforeRebuild">
+    <Exec Command="$(DevEnvPath) /$(BuildType) $(ExecConfig) $(SolutionDir)OpenSauce_Pc.sln" />
+    <Exec Command="$(DevEnvPath) /$(BuildType) $(ExecConfig)Dedi $(SolutionDir)OpenSauce_Pc.sln" />
+    <Exec Command="$(DevEnvPath) /$(BuildType) $(ExecConfig)Guerilla $(SolutionDir)OpenSauce_HEK.sln" />
+    <Exec Command="$(DevEnvPath) /$(BuildType) $(ExecConfig)Sapien $(SolutionDir)OpenSauce_HEK.sln" />
+    <Exec Command="$(DevEnvPath) /$(BuildType) $(ExecConfig)Tool $(SolutionDir)OpenSauce_HEK.sln" />
+    <Exec Command="$(DevEnvPath) /$(BuildType) $(ExecConfig) $(SolutionDir)..\BlamLib\BlamLib.sln" />
+  </Target>
   <!--
 	<Target Name="AfterBuild">
 	</Target>
@@ -68,10 +67,8 @@
     <Compile Include="Dialogs\OpenSauce_CustomizeDlg.wxs" />
     <Compile Include="Dialogs\OpenSauce_ExitDialog.wxs" />
     <Compile Include="Dialogs\OpenSauce_FeatureTree.wxs" />
+    <Compile Include="Dialogs\OpenSauce_MissingInstallationPathDlg.wxs" />
     <Compile Include="Dialogs\OpenSauce_WelcomeDlg.wxs" />
-    <Compile Include="Halo1_CE\Dialogs\CEMissingDlg.wxs" />
-    <Compile Include="Halo1_CE\Dialogs\HEKPathsDlg.wxs" />
-    <Compile Include="Halo1_CE\Dialogs\HEKPathsMissingDlg.wxs" />
     <Compile Include="OpenSauce_Installer.wxs" />
   </ItemGroup>
   <ItemGroup>
@@ -94,7 +91,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Halo1_CE" />
-    <Folder Include="Halo1_CE\Dialogs" />
     <Folder Include="Dialogs" />
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +105,14 @@
     <ProjectReference Include="InstallValidator\InstallValidator.csproj">
       <Name>InstallValidator</Name>
       <Project>{a7dec09c-d521-48bb-a564-e039d3e9f850}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="SetPathProperties\SetPathProperties.csproj">
+      <Name>SetPathProperties</Name>
+      <Project>{c335f888-5d39-4635-b257-27f7295a4a71}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D6F76EA2-5524-445E-99C5-FDAF122243F4}"
 EndProject
@@ -17,6 +17,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstallerUnitTest", "Halo1\Halo1_Installer\InstallerUnitTest\InstallerUnitTest.csproj", "{D286A00D-6A1D-4B4B-A7F2-9001EC9C7CEF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebLauncher", "Halo1\Halo1_Installer\WebLauncher\WebLauncher.csproj", "{0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetPathProperties", "Halo1\Halo1_Installer\SetPathProperties\SetPathProperties.csproj", "{C335F888-5D39-4635-B257-27F7295A4A71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -106,6 +108,21 @@ Global
 		{0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9}.ReleaseSymbols|Mixed Platforms.Build.0 = Release|x86
 		{0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9}.ReleaseSymbols|x86.ActiveCfg = Release|x86
 		{0658B1DF-E1B4-4CC9-94C0-5D95C098BBC9}.ReleaseSymbols|x86.Build.0 = Release|x86
+		{C335F888-5D39-4635-B257-27F7295A4A71}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{C335F888-5D39-4635-B257-27F7295A4A71}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{C335F888-5D39-4635-B257-27F7295A4A71}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{C335F888-5D39-4635-B257-27F7295A4A71}.Debug|x86.ActiveCfg = Debug|x86
+		{C335F888-5D39-4635-B257-27F7295A4A71}.Debug|x86.Build.0 = Debug|x86
+		{C335F888-5D39-4635-B257-27F7295A4A71}.Release|Any CPU.ActiveCfg = Release|x86
+		{C335F888-5D39-4635-B257-27F7295A4A71}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{C335F888-5D39-4635-B257-27F7295A4A71}.Release|Mixed Platforms.Build.0 = Release|x86
+		{C335F888-5D39-4635-B257-27F7295A4A71}.Release|x86.ActiveCfg = Release|x86
+		{C335F888-5D39-4635-B257-27F7295A4A71}.Release|x86.Build.0 = Release|x86
+		{C335F888-5D39-4635-B257-27F7295A4A71}.ReleaseSymbols|Any CPU.ActiveCfg = Release|x86
+		{C335F888-5D39-4635-B257-27F7295A4A71}.ReleaseSymbols|Mixed Platforms.ActiveCfg = Release|x86
+		{C335F888-5D39-4635-B257-27F7295A4A71}.ReleaseSymbols|Mixed Platforms.Build.0 = Release|x86
+		{C335F888-5D39-4635-B257-27F7295A4A71}.ReleaseSymbols|x86.ActiveCfg = Release|x86
+		{C335F888-5D39-4635-B257-27F7295A4A71}.ReleaseSymbols|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

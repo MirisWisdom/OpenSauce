@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PathSet Id="PATHSET_HCE" RootProperty="HALO1_CE_HCE_INSTALLDIR_PROP">
+  <Property Name="HALO1_CE_HCEDEDI_VERSION_109_PROP" Value="$(RootProperty)haloceded.exe"/>
+</PathSet>
