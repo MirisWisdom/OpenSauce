@@ -278,14 +278,14 @@ namespace Yelo
 
 			bool VerifyType(long_flags type_mask) const;
 
-			template<typename TBlockData> inline
+			template<typename TBlockData>
 			TBlockData* GetBlock(s_object_header_block_reference ref)
 			{
 				byte* obj = CAST_PTR(byte*, this);
 
 				return ref->offset == 0 ? nullptr : CAST_PTR(TBlockData*, &obj[ref->offset]);
 			}
-			template<typename TBlockData, size_t block_reference_offset> inline
+			template<typename TBlockData, size_t block_reference_offset>
 			TBlockData* GetBlock()
 			{
 				byte* obj = CAST_PTR(byte*, this);
