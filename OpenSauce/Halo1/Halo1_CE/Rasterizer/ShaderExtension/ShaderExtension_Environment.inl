@@ -130,7 +130,7 @@ namespace Environment
 			return;
 
 		if(!Render::Lightmaps::UsingDirectionalLightmaps()
-			|| !shader || TEST_FLAG(shader->shader.extension_usage, Enums::_shader_extension_usage_bit_directional_lightmaps))
+			|| !shader || !TEST_FLAG(shader->shader.extension_usage, Enums::_shader_extension_usage_bit_directional_lightmaps))
 		{
 			g_current_shader_offset = 0;
 			return;

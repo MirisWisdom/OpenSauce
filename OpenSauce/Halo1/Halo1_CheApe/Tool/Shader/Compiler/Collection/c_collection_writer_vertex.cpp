@@ -25,7 +25,7 @@ namespace Yelo
 				effect_path /= effect;
 				effect_path.replace_extension(".bin");
 
-				YELO_ASSERT_DISPLAY(exists(effect_path), "ERROR: A required vertex shader effect is missing [%s]", effect);
+				YELO_ASSERT_DISPLAY(exists(effect_path), "ERROR: A required vertex shader effect is missing [%s]", effect.c_str());
 					
 				AppendEffectToCollection(collection_file, effect_path);
 			}
