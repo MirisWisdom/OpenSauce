@@ -59,8 +59,10 @@
 		<ComponentRef Id='Halo1_CE_CrashRpt1401_COMP' />
 		<ComponentRef Id='Halo1_CE_CrashSender1401_COMP' />
 		<ComponentRef Id='Halo1_CE_crashrpt_lang_COMP' />
-
-		<ComponentRef Id='Halo1_CE_CheApe_Readme_COMP' />
+    
+    <ComponentRef Id='Halo1_CE_RenderLightmaps_MS_COMP' />
+    
+    <ComponentRef Id='Halo1_CE_CheApe_Readme_COMP' />
 
 		<?ifdef SYMBOLS?>
 		<ComponentRef Id='Halo1_CE_CheApeDLLG_PDB_COMP' />
