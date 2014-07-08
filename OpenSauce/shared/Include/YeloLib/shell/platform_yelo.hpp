@@ -81,5 +81,11 @@
 #endif
 
 
+// Current platform runs on tag files
+#define PLATFORM_USES_TAG_FILES		(PLATFORM_IS_EDITOR==TRUE)
+// Current platform runs on cache files
+#define PLATFORM_USES_CACHE_FILES	(PLATFORM_IS_EDITOR==FALSE)
+
+
 // TODO: this needs to be relocated. Had to put it here when we migrated to static libs, since the static libs and DLL code all reference it
 #define ASSERTS_ENABLED

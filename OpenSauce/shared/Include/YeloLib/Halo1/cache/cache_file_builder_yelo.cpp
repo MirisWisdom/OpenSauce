@@ -18,17 +18,14 @@ namespace Yelo
 	namespace Cache
 	{
 		c_cache_file_builder_base::c_cache_file_builder_base()
-			: m_tag_index_to_cache_tag_index_table( YELO_NEW_ARRAY(datum_index, Enums::k_maximum_simultaneous_tag_instances_upgrade) )
+			: m_tag_index_to_cache_tag_index_table()
 			, m_current_tag_index( datum_index::null )
 		{
-			YELO_ASSERT_DISPLAY(m_tag_index_to_cache_tag_index_table, "ran out of memory allocating tag index translation table");
-
-			for(size_t x = 0; x < Enums::k_maximum_simultaneous_tag_instances_upgrade; x++)
-				m_tag_index_to_cache_tag_index_table[x] = datum_index::null;
+			m_tag_index_to_cache_tag_index_table.resize(
+				Enums::k_maximum_simultaneous_tag_instances_upgrade, datum_index::null);
 		}
 		c_cache_file_builder_base::~c_cache_file_builder_base()
 		{
-			YELO_DELETE_ARRAY(m_tag_index_to_cache_tag_index_table);
 		}
 
 		size_t c_cache_file_builder_base::BuildCacheTagIndexTable(_Out_ size_t& predicted_tag_names_buffer_size)
@@ -45,8 +42,8 @@ namespace Yelo
 
 				predicted_tag_names_buffer_size += strlen(instance->filename) + 1;
 
-				m_tag_index_to_cache_tag_index_table[cache_tag_count++] =
-					datum_index::Create(instance.GetAbsoluteIndex(), salt);
+				m_tag_index_to_cache_tag_index_table[instance.GetAbsoluteIndex()] =
+					datum_index::Create(cache_tag_count++, salt);
 
 				salt = instances_data->GetNextSalt(salt);
 			}
