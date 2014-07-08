@@ -104,7 +104,7 @@ namespace PostProcessing
 
 		for (const auto& src_p : src_block)
 		{
-			if (!shader_postprocess_generic_parameter_exists(shader_tag, src_p.value_name))
+			if (shader_postprocess_generic_parameter_exists(shader_tag, src_p.value_name))
 				continue;
 
 			auto* p = blam::tag_block_add_and_get_element(params);
