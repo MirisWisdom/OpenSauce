@@ -43,7 +43,7 @@ namespace Yelo
 		protected:
 			static const unsigned k_tag_memory_alignment_bit = Flags::_alignment_32_bit;
 
-			datum_index* m_tag_index_to_cache_tag_index_table;
+			std::vector<datum_index> m_tag_index_to_cache_tag_index_table;
 			datum_index m_current_tag_index; // index of the tag currently being processed (streamed, etc)
 
 			c_cache_file_builder_base();

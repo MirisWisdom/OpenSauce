@@ -230,27 +230,129 @@ namespace Yelo
 			FreeResources();
 
 #if PLATFORM_TYPE == PLATFORM_TOOL
-			float unreferenced_size = CAST(float, unreferenced_items.size);
-			if(unreferenced_items.size == 0)
-				unreferenced_size += 4.2949673e9f;
+			float item_hits_size = CAST(float, item_hits.size);
+			if(item_hits.size == 0)
+				item_hits_size += 4.2949673e9f;
 
 			printf_s("Cache pack file %s hits: %d for %3.2fM\n", 
-				name, unreferenced_items.count, unreferenced_size * 9.5367432e-7f);
+				name, item_hits.count, item_hits_size * 9.5367432e-7f);
 
-			float referenced_size = CAST(float, unreferenced_items.size);
-			if(referenced_items.size == 0)
-				referenced_size += 4.2949673e9f;
+			float item_adds_or_misses_size = CAST(float, item_hits.size);
+			if(item_adds_or_misses.size == 0)
+				item_adds_or_misses_size += 4.2949673e9f;
 
 			printf_s("Cache pack file %s adds/misses: %d for %3.2fM\n", 
-				name, referenced_items.count, referenced_size * 9.5367432e-7f);
+				name, item_adds_or_misses.count, item_adds_or_misses_size * 9.5367432e-7f);
 #endif
 
-			memset(this, 0, sizeof(*this));
+			memset(&header, 0, sizeof(header));
 			file_handle = INVALID_HANDLE_VALUE; // engine doesn't do this
 			return true;
 		}
 
 #if PLATFORM_TYPE == PLATFORM_TOOL
+		int32 s_data_file::AddItemName(cstring item_name)
+		{
+			YELO_ASSERT(item_name);
+			YELO_ASSERT(writable);
+
+			size_t item_name_size = strlen(item_name) + 1;
+
+			// name will begin at the end of the current buffer
+			int32 name_offset = file_names.used_size;
+			int32 new_names_size = file_names.used_size + CAST(int32, item_name_size);
+			if (new_names_size >= file_names.total_size)
+			{
+				// double the names buffer size
+				file_names.total_size += file_names.total_size;
+				file_names.address = YELO_RENEW_ARRAY(char, file_names.address, file_names.total_size);
+			}
+
+			memcpy(file_names.AsByteBuffer() + file_names.used_size,
+				item_name, item_name_size);
+			file_names.used_size += item_name_size;
+
+			return name_offset;
+		}
+		int32 s_data_file::AddNewItem(cstring item_name)
+		{
+			YELO_ASSERT(item_name);
+			YELO_ASSERT(writable);
+
+			if (header.tag_count >= file_index_table.count)
+			{
+				// engine reserves an additional 16 items
+				file_index_table.count += 16;
+				file_index_table.address = YELO_RENEW_ARRAY(s_data_file_item, 
+					file_index_table.address, file_index_table.count);
+			}
+
+			int32 item_index = header.tag_count++;
+			auto* item = &file_index_table.address[item_index];
+			item->name_offset = AddItemName(item_name);
+
+			return item_index;
+		}
+		int32 s_data_file::GetItemIndex(cstring item_name) const
+		{
+			YELO_ASSERT(item_name);
+
+			for (int x = 0; x < header.tag_count; x++)
+			{
+				int32 name_offset = file_index_table.address[x].name_offset;
+				cstring name = CAST_PTR(cstring, file_names.AsByteBuffer() + name_offset);
+
+				if (!_stricmp(name, item_name))
+					return x;
+			}
+
+			return NONE;
+		}
+		int32 s_data_file::AddItem(cstring item_name, void* item_buffer, int32 item_buffer_size)
+		{
+			YELO_ASSERT(item_name && item_buffer); // NOTE: engine doesn't verify buffer pointer
+
+			int32 item_index = GetItemIndex(item_name);
+			if (item_index == NONE)
+			{
+				if (writable)
+				{
+					item_index = AddNewItem(item_name);
+					auto* item = &file_index_table.address[item_index];
+					item->size = item_buffer_size;
+					item->data_offset = header.file_names_offset;
+
+					DWORD num_bytes_written;
+					WriteFile(file_handle, item_buffer, item_buffer_size, &num_bytes_written, nullptr);
+					header.file_names_offset += item_buffer_size;
+				}
+			}
+			else if (file_index_table.address[item_index].size == item_buffer_size)
+			{
+				item_hits.count++;
+				item_hits.size += item_buffer_size;
+			}
+			else
+			{
+				YELO_ERROR_FAILURE("%s: Tried to add item %s with different size (%d) than expected (%d).",
+					name, item_name, item_buffer_size, file_index_table.address[item_index].size);
+
+				item_index = NONE;
+			}
+
+			item_adds_or_misses.count++;
+			item_adds_or_misses.size += item_buffer_size;
+
+			return item_index;
+		}
+		int32 s_data_file::GetItemDataOffset(int32 item_index)
+		{
+			if (item_index < 0 || item_index >= header.tag_count)
+				return NONE;
+
+			return file_index_table.address[item_index].data_offset;
+		}
+
 		void s_data_file::DeleteForCopy(cstring file)
 		{
 			BOOL delete_result = DeleteFile(file);
