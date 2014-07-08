@@ -26,7 +26,6 @@ namespace Yelo
 
 		enum {
 			_deprecated_tag_group_spheroid,
-			_deprecated_tag_group_multiplayer_scenario_description,
 			_deprecated_tag_group_preferences_network_game,
 			k_number_of_deprecated_tag_groups,
 
@@ -223,6 +222,7 @@ namespace Yelo
 				char file_name[_MAX_PATH] = { '\0' };
 				DWORD name_length = GetMappedFileName(GetCurrentProcess(), CAST_PTR(void*, Enums::k_cheape_physical_memory_map_address), file_name, NUMBEROF(file_name));
 				Debug::WriteFormat("CheApe: Couldn't allocate the memory map! (%X) %s", result, name_length != 0 ? file_name : "UNKNOWN MAPPING PROCESS");
+				Debug::Write("\tTry restarting your computer if this problem persists.", false);
 				_InitError = k_error_PhysicalMemoryMapInitialize;
 			}
 		}
