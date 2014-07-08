@@ -10,23 +10,15 @@
 #include <blamlib/Halo1/objects/damage.hpp>
 #include <blamlib/Halo1/units/unit_definitions.hpp>
 #include <blamlib/Halo1/units/unit_structures.hpp>
+#include <YeloLib/Halo1/units/units_yelo.hpp>
 
 #include "Objects/Objects.hpp"
 #include "Objects/Units.hpp"
-#include "TagGroups/project_yellow_definitions.hpp"
 
 namespace Yelo { namespace Objects { namespace Units {
 
 namespace Boarding
 {
-	static void UnitResetOverlayAnimations(s_unit_datum* unit)
-	{
-		unit->unit.animation.replacement_animation = { NONE };
-		unit->unit.animation.replacement_animation_state = NONE;			// TODO: pretty sure we need to use _unit_replacement_animation_state_none here
-		unit->unit.animation.overlay_animation = { NONE };
-		unit->unit.animation.overlay_animation_state = NONE;				// TODO: pretty sure we need to use _unit_overlay_animation_state_none here
-	}
-
 	// Plays the yelo_ejection animation and ejects the unit from it's seat
 	static void EjectUnit(datum_index unit_index)
 	{
@@ -57,7 +49,7 @@ namespace Boarding
 				blam::unit_set_animation(unit_index, 
 					unit->object.animation.definition_index, animation_index);
 				
-				UnitResetOverlayAnimations(unit);
+				unit->unit.animation.ResetOverlayAnimations();
 			}
 
 			// set the target_unit's animation state to seat_exit to force them out of the vehicle
@@ -93,7 +85,7 @@ namespace Boarding
 				blam::unit_set_animation(unit_index, 
 					unit->object.animation.definition_index, animation_index);
 				
-				UnitResetOverlayAnimations(unit);
+				unit->unit.animation.ResetOverlayAnimations();
 
 				// if boarding enters the target seat, use the seat_board animation state
 				if (boarding_seat_definition->flags.boarding_enters_target_seat_bit)
@@ -109,7 +101,7 @@ namespace Boarding
 	// ejects the target unit from their seat
 	static void SeatBoardPrimaryKeyframe(datum_index unit_index)
 	{
-		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
+		const TagGroups::project_yellow_globals_cv* cv_globals = Scenario::GetYeloCvGlobals();
 
 		if(cv_globals == nullptr)
 			return;
@@ -131,7 +123,7 @@ namespace Boarding
 			int16 target_seat_index = boarding_seat_definition->target_seat_index;
 			datum_index target_unit_index = GetUnitInSeat(parent_unit_index, target_seat_index);
 
-			if (target_unit_index != datum_index::null)
+			if (!target_unit_index.IsNull())
 			{
 				auto target_unit = blam::object_get_and_verify_type<s_unit_datum>(target_unit_index);
 
@@ -148,7 +140,7 @@ namespace Boarding
 				}
 
 				// If the boarding seat definition contains a damage effect tag, use it here
-				if (boarding_seat_definition->boarding_damage.tag_index != datum_index::null)
+				if (!boarding_seat_definition->boarding_damage.tag_index.IsNull())
 				{
 					Objects::s_damage_data damage_data;
 
@@ -172,7 +164,7 @@ namespace Boarding
 	// forces the boarding unit into the target seat when the board animation is complete
 	static void SeatBoardFinalKeyframe(datum_index unit_index)
 	{
-		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
+		const TagGroups::project_yellow_globals_cv* cv_globals = Scenario::GetYeloCvGlobals();
 
 		if(cv_globals == nullptr)
 			return;
@@ -209,7 +201,7 @@ namespace Boarding
 	// determines if the seat is a boarding seat and whether or not to board the seat or eject the target unit
 	static void SeatEnterFinalKeyframe(datum_index unit_index, int32* next_animation_state)
 	{
-		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
+		const TagGroups::project_yellow_globals_cv* cv_globals = Scenario::GetYeloCvGlobals();
 
 		if(cv_globals == nullptr)
 			return;
@@ -250,7 +242,7 @@ namespace Boarding
 
 		auto parent_unit = blam::object_get_and_verify_type<s_unit_datum>(parent_unit_index);
 		
-		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
+		const TagGroups::project_yellow_globals_cv* cv_globals = Scenario::GetYeloCvGlobals();
 
 		if(cv_globals != nullptr)
 		{
@@ -274,7 +266,7 @@ namespace Boarding
 							boarding_seat.seat_index);
 
 						// If there is someone sitting in this seat, we can't enter
-						if (seated_unit_index != datum_index::null)
+						if (!seated_unit_index.IsNull())
 							result = false;
 					}
 				}
@@ -296,7 +288,7 @@ namespace Boarding
 			result = false;
 
 		for (datum_index child_object_index = target_unit->object.first_object_index; 
-			 child_object_index != datum_index::null; 
+			 !child_object_index.IsNull(); 
 			 child_object_index = blam::object_get(child_object_index)->next_object_index)
 		{
 			auto child_object = blam::object_try_and_get_and_verify_type<s_unit_datum>(child_object_index);
@@ -311,9 +303,9 @@ namespace Boarding
 					result = false;
 				}
 				// If multiteam vehicles is prohibited, test unit and target unit teams
-				else if (TagGroups::_global_yelo->gameplay.flags.prohibit_multiteam_vehicles_bit)
+				else if (Scenario::GetYelo()->gameplay.flags.prohibit_multiteam_vehicles_bit)
 				{
-					if (unit->unit.controlling_player_index == datum_index::null || 
+					if (unit->unit.controlling_player_index.IsNull() || 
 						!blam::game_team_is_enemy(child_object->object.owner_team, unit->object.owner_team))
 						result = true;
 					else
@@ -322,7 +314,7 @@ namespace Boarding
 			}
 		}
 
-		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
+		const TagGroups::project_yellow_globals_cv* cv_globals = Scenario::GetYeloCvGlobals();
 
 		if(cv_globals != nullptr)
 		{
@@ -335,7 +327,7 @@ namespace Boarding
 				datum_index boarded_unit_index = GetUnitInSeat(target_unit_index, boarding_seat_definition->target_seat_index);
 
 				// If there is no unit to board, if they are an ally, or if there is already someone boarding, disallow entry into the boarding seat
-				if (boarded_unit_index == datum_index::null || !ObjectIsEnemy(unit_index, boarded_unit_index) || !UnitCanEnterBoardingSeat(target_unit_index, target_seat_index))
+				if (boarded_unit_index.IsNull() || !ObjectIsEnemy(unit_index, boarded_unit_index) || !UnitCanEnterBoardingSeat(target_unit_index, target_seat_index))
 					result = false;
 			}
 		}

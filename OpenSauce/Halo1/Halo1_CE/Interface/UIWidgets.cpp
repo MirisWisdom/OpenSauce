@@ -9,8 +9,11 @@
 
 #if !PLATFORM_IS_DEDI
 
+#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
+
 #include "Memory/MemoryInterface.hpp"
-#include "TagGroups/project_yellow_definitions.hpp"
 
 namespace Yelo
 {
@@ -73,11 +76,11 @@ namespace Yelo
 		{
 			const TagGroups::s_project_yellow_scripted_ui_widget* widget = nullptr;
 
-			if(!TagGroups::_global_yelo->IsNull())
-				widget = FindWidget(name, TagGroups::_global_yelo->ui.scripted_widgets);
+			if (!Scenario::GetYelo()->IsNull())
+				widget = FindWidget(name, Scenario::GetYelo()->ui.scripted_widgets);
 			// If it's not found in the scenario's yelo, search the yelo globals
 			if(widget == nullptr)
-				widget = FindWidget(name, TagGroups::_global_yelo_globals->ui.scripted_widgets);
+				widget = FindWidget(name, Scenario::GetYeloGlobals()->ui.scripted_widgets);
 			
 			if(widget != nullptr)
 			{

@@ -16,7 +16,6 @@
 #include "Game/ScriptLibrary.hpp"
 #include "Networking/Networking.hpp"
 #include "Objects/Objects.hpp"
-#include "TagGroups/TagGroups.hpp"
 
 namespace Yelo
 {
@@ -216,7 +215,7 @@ namespace Yelo
 		{
 			datum_index definition_index = weapon->object.definition_index;
 
-			const auto* definition = TagGroups::TagGet<TagGroups::s_weapon_definition>(definition_index);
+			const auto* definition = blam::tag_get<TagGroups::s_weapon_definition>(definition_index);
 
 			if (trigger_index >= 0 && trigger_index < definition->weapon.triggers.Count)
 			{

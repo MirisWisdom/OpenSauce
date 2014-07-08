@@ -10,8 +10,6 @@
 #include "Rasterizer/PostProcessing/c_shader_postprocess.hpp"
 #include "Rasterizer/PostProcessing/ShaderSources/c_shader_data_postprocess_definition.hpp"
 
-#include "TagGroups/TagGroups.hpp"
-
 namespace Yelo
 {
 	namespace Rasterizer { namespace PostProcessing { namespace Generic

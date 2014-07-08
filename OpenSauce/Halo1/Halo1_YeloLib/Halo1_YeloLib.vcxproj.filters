@@ -492,6 +492,15 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\cseries\handle_abi.hpp">
       <Filter>cseries</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\unit_definitions_yelo.hpp">
+      <Filter>units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\units_yelo.hpp">
+      <Filter>units</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_scenario.hpp">
+      <Filter>open_sauce</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Common\Precompile.cpp">
@@ -748,6 +757,15 @@
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_library_definitions_yelo.cpp">
       <Filter>hs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\unit_definitions_yelo.cpp">
+      <Filter>units</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\units_yelo.cpp">
+      <Filter>units</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_scenario.cpp">
+      <Filter>open_sauce</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

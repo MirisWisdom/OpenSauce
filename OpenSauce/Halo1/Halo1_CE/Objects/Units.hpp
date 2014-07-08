@@ -22,14 +22,5 @@ namespace Yelo
 		void InitializeForNewMapPrologue();
 
 		void InitializeForYeloGameState(bool enabled);
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Get the object_index of the unit in the specified seat_index of the given vehicle. </summary>
-		///
-		/// <param name="vehicle_index">	subject vehicle. </param>
-		/// <param name="seat_index">   	subject vehicle seat. </param>
-		///
-		/// <returns>	The index of the unit in the seat. </returns>
-		datum_index GetUnitInSeat(datum_index vehicle_index, int32 seat_index);
 	}; };
 };

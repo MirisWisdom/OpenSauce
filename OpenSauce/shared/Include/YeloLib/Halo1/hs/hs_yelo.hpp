@@ -61,6 +61,9 @@ namespace Yelo
 		/// </param>
 		void ScriptingBlockAddDefinitions(
 			TAG_TBLOCK(& script_block, TagGroups::s_scripting_definitions), bool only_internals);
+#else
+		// currently defined in Halo1_CE's ScriptLibrary.cpp
+		bool DefinitionsMatch(const TagGroups::s_scripting_definitions& data);
 #endif
 	};
 };
