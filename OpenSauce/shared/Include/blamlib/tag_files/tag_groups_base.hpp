@@ -29,6 +29,10 @@ namespace Yelo
 
 	struct tag_reference
 	{
+		enum {
+			k_debug_data_size = sizeof(tag_reference_name_reference) + sizeof(int32),
+		};
+
 		// group tag identifier for this reference
 		tag group_tag;
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
@@ -71,11 +75,17 @@ namespace Yelo
 		}
 
 		datum_index PLATFORM_API tag_reference_try_and_get(const tag_reference* reference);
+
+		bool PLATFORM_API tag_reference_resolve(tag_reference* reference);
 	};
 
 
 	struct tag_block
 	{
+		enum {
+			k_debug_data_size = sizeof(struct tag_block_definition*),
+		};
+
 		// element count for this block
 		int32 count;
 		// elements pointer
@@ -166,6 +176,11 @@ namespace Yelo
 
 	struct tag_data
 	{
+		enum {
+			k_debug_data_size = sizeof(long_flags) + sizeof(int32) +
+				sizeof(struct tag_block_definition*),
+		};
+
 		// byte count of this data blob
 		int32 size;
 #if !defined(PLATFORM_USE_CONDENSED_TAG_INTERFACE)
@@ -239,14 +254,20 @@ namespace Yelo
 
 		bool PLATFORM_API tag_read_only(datum_index tag_index);
 
+#if PLATFORM_USES_CACHE_FILES
+	#define TAG_GET_RETURN_MODIFIER const
+#else
+	#define TAG_GET_RETURN_MODIFIER
+#endif
 		// Get the tag definition's address by it's expected group tag and 
 		// it's tag handle [tag_index]
-		void* PLATFORM_API tag_get(tag group_tag, datum_index tag_index);
+		TAG_GET_RETURN_MODIFIER void* PLATFORM_API tag_get(tag group_tag, datum_index tag_index);
 		template<typename T> inline
-		T* tag_get(datum_index tag_index)
+		TAG_GET_RETURN_MODIFIER T* tag_get(datum_index tag_index)
 		{
-			return CAST_PTR(T*, tag_get(T::k_group_tag, tag_index));
+			return CAST_PTR(TAG_GET_RETURN_MODIFIER T*, tag_get(T::k_group_tag, tag_index));
 		}
+#undef TAG_GET_RETURN_MODIFIER
 
 		datum_index PLATFORM_API tag_new(tag group_name, cstring name);
 		template<typename T> inline
@@ -287,6 +308,34 @@ namespace Yelo
 		void TagSwap(tag& x);
 
 		tag string_to_group_tag(cstring name);
+
+		// Returns true if the tag is an instance of the group_tag or is a child group of it.
+		// Returns false if not, or tag_index is invalid.
+		bool TagIsInstanceOf(datum_index tag_index, tag group_tag);
+		template<typename T> inline
+		bool TagIsInstanceOf(datum_index tag_index)
+		{
+			return TagIsInstanceOf(tag_index, T::k_group_tag);
+		}
+
+		// Returns the tag as non-const. Are you sure you want to be writing to tags at runtime?
+		template<typename T> inline
+		T* TagGetForModify(datum_index tag_index)
+		{
+			extern void* TagGetImpl(datum_index tag_index, tag group_tag);
+
+			return CAST_QUAL(T*, blam::tag_get<T>(tag_index));
+		}
+
+		// 'Unsafe' in that it returns the tag as non-const and doesn't do any bounds checking
+		// Useful when you're using tag_iterator and known you're getting some good input
+		template<typename T> inline
+		T* TagGetUnsafe(datum_index tag_index)
+		{
+			extern void* TagGetUnsafeImpl(datum_index tag_index);
+
+			return CAST_PTR(T*, TagGetUnsafeImpl(tag_index));
+		}
 
 		// Union hack to use a group tag as a string
 		union group_tag_to_string

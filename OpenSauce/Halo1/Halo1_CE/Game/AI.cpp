@@ -9,17 +9,16 @@
 
 #include <blamlib/Halo1/ai/actor_structures.hpp>
 #include <blamlib/Halo1/ai/ai_structures.hpp>
-
 #include <blamlib/Halo1/ai/prop_structures.hpp>
-
 #include <blamlib/Halo1/units/unit_structures.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_global_cv_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
+#include <YeloLib/Halo1/units/units_yelo.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Objects/Objects.hpp"
 #include "Objects/Units.hpp"
-#include "TagGroups/TagGroups.hpp"
-
-#include "TagGroups/project_yellow_definitions.hpp"
 
 namespace Yelo
 {
@@ -46,7 +45,7 @@ namespace Yelo
 
 		static void ActorActionHandleVehicleExitBoardingSeat(datum_index unit_index)
 		{
-			const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
+			const TagGroups::project_yellow_globals_cv* cv_globals = Scenario::GetYeloCvGlobals();
 			auto unit = blam::object_get_and_verify_type<Objects::s_unit_datum>(unit_index);
 
 			// Exit the vehicle like normal if a globals tag doesn't exist
@@ -74,7 +73,7 @@ namespace Yelo
 
 					if (seat_index == target_seat_index)
 					{
-						datum_index boarding_unit = Objects::Units::GetUnitInSeat(parent_unit_index, boarding_seat_index);
+						datum_index boarding_unit = Objects::GetUnitInSeat(parent_unit_index, boarding_seat_index);
 
 						// If the seat is being boarded, prevent ai from exiting
 						if (boarding_unit != datum_index::null)

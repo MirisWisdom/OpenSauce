@@ -68,10 +68,6 @@ namespace Yelo
 		byte*		DeveloperMode();
 		bool		DevmodeEnabled();
 
-		// Are OS-modified game states in effect?
-		// If so, these will render game saves incompatible with stock games
-		bool		YeloGameStateEnabled();
-
 		void Initialize();
 		void Dispose();
 		// Don't call me unless your name is GameEngine!

@@ -7,6 +7,7 @@
 #pragma once
 
 #include <blamlib/Halo1/objects/object_definitions.hpp>
+#include <YeloLib/Halo1/units/unit_definitions_yelo.hpp>
 
 namespace Yelo
 {
@@ -83,7 +84,7 @@ namespace Yelo
 			_unit_reserved28_bit,						// Halo2: unit has boost
 			_unit_unused29_bit,
 			_unit_unused30_bit,
-			_unit_has_boarding_seats,					// YELO: set by postprocess proc, for runtime
+			_unit_has_boarding_seats_yelo_bit,			// YELO: set by postprocess proc, for runtime
 
 			k_number_of_unit_definition_flags
 		};
@@ -114,7 +115,7 @@ namespace Yelo
 			_unit_seat_reserved17_bit,	// Halo2: invalid for non-player
 			_unit_seat_reserved18_bit,	// Halo2: gunner (player only)
 			_unit_seat_reserved19_bit,	// Halo2: invisible under major damage
-			_unit_seat_boarding_ejects_seat_bit,		// YELO
+			_unit_seat_boarding_ejects_seat_yelo_bit,	// YELO
 
 			k_number_of_unit_seat_definition_flags_yelo,
 		};
@@ -171,18 +172,6 @@ namespace Yelo
 			TAG_PAD(int32, 4); // 20
 		};
 
-		struct unit_seat_boarding
-		{
-			PAD16;
-			int16 target_seat_index;
-			TAG_FIELD(tag_reference, boarding_damage, "jpt!");
-			TAG_PAD(int32, 3); // 12
-		}; BOOST_STATIC_ASSERT( sizeof(unit_seat_boarding) == 32 );
-		struct unit_seat_yelo_extensions
-		{
-			unit_seat_boarding boarding;
-			TAG_PAD(int32, 20); // 80
-		}; BOOST_STATIC_ASSERT( sizeof(unit_seat_yelo_extensions) == 112 );
 		struct unit_seat
 		{
 			TAG_FIELD(long_flags, flags, Flags::unit_seat_definition_flags);

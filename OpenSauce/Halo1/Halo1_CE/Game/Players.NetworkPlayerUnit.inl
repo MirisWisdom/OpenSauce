@@ -60,8 +60,9 @@ static datum_index PlayerFindTeamUnitDefinitionOverride(const s_player_datum* pl
  */
 static datum_index PlayerSpawnCreateUnitMultiplayerGetDefinitionOverride(datum_index player_index, datum_index unit_definition_index)
 {
-	const TAG_TBLOCK(& player_units, TagGroups::s_network_game_player_unit) = TagGroups::_global_yelo_globals->networking.player_units;
-	if(player_units.Count == 0) return unit_definition_index;
+	const TAG_TBLOCK(& player_units, TagGroups::s_network_game_player_unit) = Scenario::GetYeloGlobals()->networking.player_units;
+	if(player_units.Count == 0)
+		return unit_definition_index;
 
 	const s_player_datum* player = Players::Players()[player_index];
 

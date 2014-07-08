@@ -193,6 +193,8 @@ namespace Yelo
 			real_rectangle2d looking_bounds;			// 0x2B8
 			real_rectangle2d aiming_bounds;				// 0x2C8
 			PAD64;										// 0x2D8
+
+			void ResetOverlayAnimations();
 		}; BOOST_STATIC_ASSERT( sizeof(s_unit_animation_data) == 0x48 );
 
 		struct s_unit_data

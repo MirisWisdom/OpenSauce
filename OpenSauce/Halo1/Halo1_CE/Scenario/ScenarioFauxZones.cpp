@@ -10,12 +10,13 @@
 #include <blamlib/Halo1/main/main_structures.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 #include <blamlib/Halo1/structures/structure_bsp_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #include "Game/GameState.hpp"
 #include "Game/ScriptLibrary.hpp"
 #include "Rasterizer/Rasterizer.hpp"
 #include "Scenario/Scenario.hpp"
-#include "TagGroups/project_yellow_definitions.hpp"
 
 namespace Yelo
 {
@@ -68,9 +69,10 @@ namespace Yelo
 			{
 				for(int x = 0; x < bsps.Count && x < (int)original_lightmap_bitmaps.size(); x++)
 				{
-					const auto* bsp = TagGet<structure_bsp>(bsps[x].structure_bsp.tag_index);
+					// tag_get is not the proper getter to use, as it asserts the instance's base_address
+					const auto* bsp = blam::tag_get<structure_bsp>(bsps[x].structure_bsp.tag_index);
 
-					if(bsp != nullptr) // should never happen, but just to be safe
+					if(bsp != nullptr) // will happen if the bsp isn't loaded
 						original_lightmap_bitmaps[x] = bsp->lightmap_bitmaps.tag_index;
 				}
 			}
@@ -82,7 +84,7 @@ namespace Yelo
 
 					auto* bsp = TagGetForModify<structure_bsp>(bsps[x].structure_bsp.tag_index);
 
-					if(bsp != nullptr) // should never happen, but just to be safe
+					if(bsp != nullptr) // will happen if the bsp isn't loaded
 						ChangeLightmap(bsp, original_lightmap_bitmaps[x]);
 				}
 			}
@@ -140,7 +142,9 @@ namespace Yelo
 
 		void InitializeForNewGameState()
 		{
+#if FALSE // disables the code
 			scenario_faux_zone_globals = GameState::GameStateMalloc<s_scenario_faux_zone_globals>();
+#endif
 		}
 
 		void InitializeForNewMap()
@@ -152,7 +156,7 @@ namespace Yelo
 				ScenarioFauxZones::Reset();
 			}
 			else
-				scenario_faux_zone_globals->Initialize(Scenario::Scenario());
+				scenario_faux_zone_globals->Initialize(blam::global_scenario_get());
 		}
 
 		static bool ScenarioFauxZoneSetSwitchVariantUpdateGameStateWithZoneSky(scenario* scnr,
@@ -225,16 +229,17 @@ namespace Yelo
 		}
 		bool SwitchCurrentZoneVariant(cstring variant_name)
 		{
-			if(scenario_faux_zone_globals != nullptr && _global_yelo->scenario.Count == 1)
+			if(scenario_faux_zone_globals != nullptr && Scenario::GetYelo()->scenario.Count == 1)
 			{
+				const auto& yelo_scenario_info = Scenario::GetYelo()->scenario[0];
 				structure_bsp* current_bsp = Scenario::StructureBsp();
 
-				for(const auto& zone : _global_yelo->scenario[0].zones)
+				for (const auto& zone : yelo_scenario_info.zones)
 				{
-					if(TagGet<structure_bsp>(zone.structure_bsp) == current_bsp)
+					if(blam::tag_get<structure_bsp>(zone.structure_bsp) == current_bsp)
 					{
 						return ScenarioFauxZoneSetSwitchVariantByName(current_bsp, Scenario::Scenario(),
-							_global_yelo->scenario[0], zone,
+							yelo_scenario_info, zone,
 							variant_name);
 					}
 				}
@@ -244,18 +249,21 @@ namespace Yelo
 		}
 		bool SwitchZoneVariant(cstring zone_name, cstring variant_name)
 		{
-			if(scenario_faux_zone_globals != nullptr && _global_yelo->scenario.Count == 1)
+			if (scenario_faux_zone_globals != nullptr && Scenario::GetYelo()->scenario.Count == 1)
 			{
-				for(const auto& zone : _global_yelo->scenario[0].zones)
+				const auto& yelo_scenario_info = Scenario::GetYelo()->scenario[0];
+
+				for (const auto& zone : yelo_scenario_info.zones)
 				{
-					if(_stricmp(zone_name, zone.name) != 0) continue;
+					if(_stricmp(zone_name, zone.name) != 0)
+						continue;
 
 					auto* zone_bsp = TagGetForModify<structure_bsp>(zone.structure_bsp);
 
 					if(zone_bsp != nullptr)
 					{
 						return ScenarioFauxZoneSetSwitchVariantByName(zone_bsp, Scenario::Scenario(),
-							_global_yelo->scenario[0], zone,
+							yelo_scenario_info, zone,
 							variant_name);
 					}
 				}
@@ -266,16 +274,17 @@ namespace Yelo
 
 		bool SwitchZoneSky(cstring zone_sky_name)
 		{
-			if(scenario_faux_zone_globals != nullptr && _global_yelo->scenario.Count == 1)
+			if (scenario_faux_zone_globals != nullptr && Scenario::GetYelo()->scenario.Count == 1)
 			{
-				const TAG_TBLOCK(& zone_skies, s_scenario_faux_zone_sky) = _global_yelo->scenario[0].zone_skies;
+				const auto& yelo_scenario_info = Scenario::GetYelo()->scenario[0];
+				const TAG_TBLOCK(& zone_skies, s_scenario_faux_zone_sky) = yelo_scenario_info.zone_skies;
 
-				for(const auto& zone_sky : _global_yelo->scenario[0].zone_skies)
+				for (const auto& zone_sky : zone_skies)
 				{
 					if(_stricmp(zone_sky_name, zone_sky.name) != 0) continue;
 
 					return ScenarioFauxZoneSetSwitchVariantUpdateGameStateWithZoneSky(Scenario::Scenario(), 
-						_global_yelo->scenario[0], &zone_sky);
+						yelo_scenario_info, &zone_sky);
 				}
 			}
 

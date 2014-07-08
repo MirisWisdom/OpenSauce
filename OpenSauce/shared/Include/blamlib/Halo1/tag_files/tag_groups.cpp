@@ -328,6 +328,22 @@ namespace Yelo
 			return loaded_tag_index;
 		}
 
+		bool PLATFORM_API tag_reference_resolve(tag_reference* reference)
+		{
+			YELO_ASSERT(reference);
+
+			bool success = true;
+			if(reference->group_tag != NONE && !is_null_or_empty(reference->name))
+			{
+				reference->tag_index = tag_load(reference->group_tag, reference->name, 0);
+				success = !reference->tag_index.IsNull();
+			}
+			else
+				reference->tag_index = datum_index::null;
+
+			return success;
+		}
+
 		bool PLATFORM_API tag_data_resize(tag_data* data, int32 new_size)
 		{
 			YELO_ASSERT(data && data->definition);

@@ -13,6 +13,13 @@
 
 namespace Yelo
 {
+	namespace TagGroups
+	{
+		struct model_animation_graph;
+
+		struct s_object_definition;
+	};
+
 	namespace Enums
 	{
 		enum networked_datum : long_enum;
@@ -144,6 +151,18 @@ namespace Yelo
 		s_objects_pool_data*							ObjectsPool();
 		s_object_globals_data*							ObjectGlobals();
 		s_object_name_list_data*						ObjectNameList();
+
+		TagGroups::s_object_definition const* GetObjectDefinition(datum_index object_index);
+		template<typename TObjectDefinition> inline
+		TObjectDefinition const* GetObjectDefinition(datum_index object_index)
+		{
+			return CAST_PTR(TObjectDefinition const*, GetObjectDefinition(object_index));
+		}
+
+		TagGroups::model_animation_graph const* GetObjectAnimations(datum_index object_index);
+
+		// Checks to see if [object_index_to_test] is an enemy of [object_index]
+		bool ObjectIsEnemy(datum_index object_index, datum_index object_index_to_test);
 	};
 
 	namespace blam

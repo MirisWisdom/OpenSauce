@@ -152,7 +152,7 @@ namespace Yelo
 			auto file = std::unique_ptr<FILE, crt_file_closer>(
 				Settings::CreateReport("group_memory.txt", false, true));
 
-			size_t total_padding = 0, total_size = 0;
+			size_t total_padding = 0, total_size = 0, total_debug_size = 0;
 
 			for (auto pair : GroupStatistics())
 			{
@@ -166,8 +166,22 @@ namespace Yelo
 				auto& stats = pair.second;
 				for (auto& child_stats : stats.m_children)
 				{
-						 if (child_stats.IsBlock())	child_stats.DumpBlockInfoToFile(file.get(), totals);
-					else if (child_stats.IsData())	child_stats.DumpDataInfoToFile(file.get(), totals);
+					if (child_stats.IsBlock())
+					{
+						child_stats.DumpBlockInfoToFile(file.get(), totals);
+
+						if (s_tag_field_set_runtime_data::Enabled())
+						{
+							auto element_debug_size = 
+								child_stats.block_definition->GetRuntimeInfo()->counts.debug_data_amount;
+
+							total_debug_size += child_stats.block.count * element_debug_size;
+						}
+					}
+					else if (child_stats.IsData())
+					{
+						child_stats.DumpDataInfoToFile(file.get(), totals);
+					}
 				}
 
 				fprintf_s(file.get(), k_tag_allocation_statistics_dump_format,
@@ -181,6 +195,9 @@ namespace Yelo
 
 			fprintf_s(file.get(), "\r\ntotal padding: %u", total_padding);
 			fprintf_s(file.get(), "\r\ntotal size: %u", total_size);
+
+			if (total_debug_size)
+				fprintf_s(file.get(), "\r\ntotal debug bytes: %u", total_debug_size);
 		}
 
 		size_t c_tag_group_allocation_statistics::BuildStatsForTagChildBlockRecursive(c_tag_group_allocation_statistics& group_stats,

@@ -14,7 +14,6 @@
 #include <blamlib/Halo1/units/unit_structures.hpp>
 
 #include "Objects/Objects.hpp"
-#include "TagGroups/project_yellow_definitions.hpp"
 
 namespace Yelo { namespace Objects { namespace Units {
 
@@ -23,12 +22,12 @@ namespace Infections
 	static bool AllowInfections(TagGroups::s_unit_infections_definition const& definition)
 	{
 #if PLATFORM_IS_USER
-		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
-		if(cv_globals == nullptr) return false;
+		const TagGroups::project_yellow_globals_cv* cv_globals = Scenario::GetYeloCvGlobals();
 
 		// Don't try to infect anything if we're in a cinematic, unless the designers say it's okay
-		return	!Camera::CinematicGlobals()->in_progress || 
-				cv_globals->flags.allow_unit_infections_during_cinematics_bit;
+		return	cv_globals != nullptr &&
+				(!Camera::CinematicGlobals()->in_progress || 
+				cv_globals->flags.allow_unit_infections_during_cinematics_bit);
 #else // dedi builds
 		return true;
 #endif
@@ -62,14 +61,12 @@ namespace Infections
 		s_unit_datum* target_unit, datum_index target_unit_index, int32 marker_index)
 	{
 		datum_index attachment_object_index;
-		s_object_data* attachment_object;
 		{	// Create the attachment based on the target_unit's world data and the infection tag data
 			s_object_placement_data attachment_placement_data;
 			blam::object_placement_data_new(attachment_placement_data, unit_infection.attachment_object.tag_index);
 			attachment_placement_data.position = target_unit->object.position;
 
 			attachment_object_index = blam::object_new(attachment_placement_data);
-			attachment_object = blam::object_get(attachment_object_index);
 		}
 
 		tag_string marker_name;
@@ -146,11 +143,11 @@ namespace Infections
 		blam::object_delete(target_unit_index);
 	}
 
-	// Check's infection_unit's parent for an entry in the unit_infections definitions
+	// Checks infection_unit's parent for an entry in the unit_infections definitions
 	// If infection_unit can infect parent's object definition (ie, elite), this will handle the magic
 	static void TryInfection(s_unit_datum* infection_unit)
 	{
-		const TagGroups::project_yellow_globals_cv* cv_globals = TagGroups::CvGlobals();
+		const TagGroups::project_yellow_globals_cv* cv_globals = Scenario::GetYeloCvGlobals();
 
 		if(cv_globals == nullptr || cv_globals->unit_infections.Count == 0)
 			return;

@@ -288,9 +288,6 @@
     <ClCompile Include="TagGroups\CacheFiles.cpp">
       <Filter>TagGroups</Filter>
     </ClCompile>
-    <ClCompile Include="TagGroups\project_yellow_definitions.cpp">
-      <Filter>TagGroups</Filter>
-    </ClCompile>
     <ClCompile Include="TagGroups\TagGroups.cpp">
       <Filter>TagGroups</Filter>
     </ClCompile>
@@ -805,9 +802,6 @@
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="TagGroups\CacheFiles.hpp">
-      <Filter>TagGroups</Filter>
-    </ClInclude>
-    <ClInclude Include="TagGroups\project_yellow_definitions.hpp">
       <Filter>TagGroups</Filter>
     </ClInclude>
     <ClInclude Include="TagGroups\TagGroups.hpp">

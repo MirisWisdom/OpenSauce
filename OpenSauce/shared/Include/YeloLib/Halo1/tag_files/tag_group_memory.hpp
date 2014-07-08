@@ -98,7 +98,7 @@ namespace Yelo
 				unsigned group_has_string_id : 1;
 				unsigned group_has_old_string_id : 1;
 			}flags;
-			size_t runtime_size;			// should be set to element_size, even if there's no actual size difference at runtime
+
 			struct {
 				// number of references to this fieldset (via block or block_index fields)
 				unsigned references				: bitfield_size<k_max_direct_references>::value;
@@ -111,7 +111,10 @@ namespace Yelo
 				// any more bitfields and we'll enter a new word boundary
 
 				size_t padding_amount;		// total amount of 'pad' annotated in this field set
+				size_t debug_data_amount;	// total amount of bytes that are used for debug information (definition pointers, etc)
 			}counts;
+
+			size_t runtime_size;			// should be set to element_size, even if there's no actual size difference at runtime
 			field_comparison_code* comparison_codes;
 			const tag_field* block_name_field;
 
@@ -140,6 +143,7 @@ namespace Yelo
 			void IncrementStringFieldCount();
 			void IncrementStringIdFieldCount();
 			void IncrementTotalPaddingSize(size_t size);
+			void IncrementDebugDataSize(size_t size);
 
 			void BuildInfo(const tag_block_definition* group_header_definition, 
 				const tag_block_definition* definition);
@@ -153,7 +157,7 @@ namespace Yelo
 			static void DumpToFile();
 
 			static bool Enabled();
-		}; BOOST_STATIC_ASSERT( sizeof(s_tag_field_set_runtime_data) == 0x18 );
+		}; BOOST_STATIC_ASSERT( sizeof(s_tag_field_set_runtime_data) == 0x1C );
 
 		struct field_comparison_code
 		{
@@ -184,7 +188,7 @@ namespace Yelo
 			/// <summary>	Gets the body data of this allocation. </summary>
 			///
 			/// <returns>	. </returns>
-			inline void* GetBody()
+			void* GetBody()
 			{
 				return this + 1;
 			}
@@ -205,7 +209,7 @@ namespace Yelo
 			/// <param name="body_address">	If non-null, the body address. </param>
 			///
 			/// <returns>	The header pointer if body isn't NULL, else NULL. </returns>
-			static inline s_tag_allocation_header* GetHeaderFromBody(void* body_address)
+			static s_tag_allocation_header* GetHeaderFromBody(void* body_address)
 			{
 				return body_address 
 					? CAST_PTR(s_tag_allocation_header*, body_address) - 1
@@ -289,13 +293,13 @@ namespace Yelo
 			const tag_data_definition* data_definition;
 
 			struct s_block_totals {
-				size_t count;	/// <summary>	number of instances. </summary>
-				size_t elements;/// <summary>	number of elements. </summary>
-				size_t size;	/// <summary>	total size. </summary>
-				size_t padding;	/// <summary>	total amount of padding, 0 when runtime_data isn't generated. </summary>
+				rsize_t count;		/// <summary>	number of instances. </summary>
+				rsize_t elements;	/// <summary>	number of elements. </summary>
+				size_t size;		/// <summary>	total size. </summary>
+				size_t padding;		/// <summary>	total amount of padding, 0 when runtime_data isn't generated. </summary>
 			};
 			struct s_data_totals {
-				size_t count;	/// <summary>	number of instances. </summary>
+				rsize_t count;	/// <summary>	number of instances. </summary>
 				size_t size;	/// <summary>	total size. </summary>
 			};
 			union { // totals
@@ -305,10 +309,10 @@ namespace Yelo
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Are these stats for a block definition? </summary>
-			inline bool IsBlock() const	{ return block_definition != nullptr; }
+			bool IsBlock() const	{ return block_definition != nullptr; }
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Are these stats for a data definition? </summary>
-			inline bool IsData() const	{ return data_definition != nullptr; }
+			bool IsData() const	{ return data_definition != nullptr; }
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Initializes this object for a given block definition </summary>
@@ -371,8 +375,8 @@ namespace Yelo
 			/// <returns>	The child stats. </returns>
 			s_tag_allocation_statistics& GetChildStats(const tag_data* instance);
 
-			inline children_array_t::const_iterator begin() const	{ return m_children.cbegin(); }
-			inline children_array_t::const_iterator end() const		{ return m_children.cend(); }
+			children_array_t::const_iterator begin() const	{ return m_children.cbegin(); }
+			children_array_t::const_iterator end() const	{ return m_children.cend(); }
 
 			typedef std::unordered_map<Yelo::tag, Yelo::TagGroups::c_tag_group_allocation_statistics>
 				group_tag_to_stats_map_t;

@@ -16,15 +16,16 @@
 #include <blamlib/Halo1/units/vehicle_structures.hpp>
 #include <blamlib/Halo1/units/unit_structures.hpp>
 
+#include <YeloLib/Halo1/open_sauce/project_yellow_global_cv_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
+
 #include "Game/Camera.hpp"
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameState.hpp"
 #include "Memory/MemoryInterface.hpp"
 
 #include "Objects/Objects.hpp"
-#include "TagGroups/TagGroups.hpp"
-
-#include "TagGroups/project_yellow_definitions.hpp"
 
 namespace Yelo
 {
@@ -42,42 +43,6 @@ namespace Yelo
 
 namespace Yelo
 {
-	namespace Objects {
-		byte* s_unit_data::GetYeloGrenade2Count()
-		{
-			const GameState::s_yelo_header_data& yelo_header = GameState::GameStateGlobals()->header->yelo;
-
-			return GameState::YeloGameStateEnabled() && yelo_header.unit_grenade_types_count >= Enums::_unit_grenade_type_yelo2+1
-				? &this->grenade_counts[Enums::_unit_grenade_type_yelo2] 
-				: nullptr;
-		}
-		byte* s_unit_data::GetYeloGrenade3Count()
-		{
-			const GameState::s_yelo_header_data& yelo_header = GameState::GameStateGlobals()->header->yelo;
-
-			return GameState::YeloGameStateEnabled() && yelo_header.unit_grenade_types_count >= Enums::_unit_grenade_type_yelo3+1
-				? &this->grenade_counts[Enums::_unit_grenade_type_yelo3] 
-				: nullptr;
-		}
-
-		byte* s_unit_data::GetZoomLevel()
-		{
-			const GameState::s_yelo_header_data& yelo_header = GameState::GameStateGlobals()->header->yelo;
-
-			return GameState::YeloGameStateEnabled() && yelo_header.unit_grenade_types_count > Enums::k_unit_grenade_types_count
-				? &this->zoom_level_yelo 
-				: &this->zoom_level;
-		}
-		byte* s_unit_data::GetDesiredZoomLevel()
-		{
-			const GameState::s_yelo_header_data& yelo_header = GameState::GameStateGlobals()->header->yelo;
-
-			return GameState::YeloGameStateEnabled() && yelo_header.unit_grenade_types_count > Enums::k_unit_grenade_types_count
-				? &this->desired_zoom_level_yelo 
-				: &this->desired_zoom_level;
-		}
-	};
-
 	namespace Objects { namespace Units {
 
 		void Initialize()
@@ -162,24 +127,6 @@ namespace Yelo
 
 		void InitializeForYeloGameState(bool enabled)
 		{
-		}
-
-		datum_index GetUnitInSeat(datum_index vehicle_index, int32 seat_index)
-		{
-			auto vehicle = blam::object_get_and_verify_type<s_unit_datum>(vehicle_index);
-			datum_index unit_index = datum_index::null;
-
-			for (datum_index next_object_index = vehicle->object.first_object_index; 
-				 next_object_index != datum_index::null;
-				 next_object_index = blam::object_get(next_object_index)->next_object_index)
-			{
-				auto unit = blam::object_try_and_get_and_verify_type<s_unit_datum>(next_object_index);
-
-				if (unit != nullptr && unit->object.type == Enums::_object_type_biped && unit->unit.vehicle_seat_index == seat_index)
-					unit_index = next_object_index;
-			}
-
-			return unit_index;
 		}
 
 	}; };
