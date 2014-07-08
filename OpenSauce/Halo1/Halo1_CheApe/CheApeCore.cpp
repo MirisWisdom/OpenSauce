@@ -121,7 +121,6 @@ namespace Yelo
 						switch( (*old_tag_groups)->group_tag )
 						{
 						case 'boom': // spheroid
-						case 'mply': // multiplayer_scenario_description
 						case 'ngpr': // preferences_network_game
 							continue;
 						}
