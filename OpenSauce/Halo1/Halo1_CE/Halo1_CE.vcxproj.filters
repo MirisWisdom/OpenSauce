@@ -1,6 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClInclude Include="Rasterizer\Lightmaps.hpp">
+      <Filter>Rasterizer</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\Sky.hpp">
+      <Filter>Rasterizer</Filter>
+    </ClInclude>
+    <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_function_pp_anim.hpp">
+      <Filter>Rasterizer\PostProcessing\Interpolation</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenario\ScenarioInfo.hpp">
+      <Filter>Scenario</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenario\StructureBSP.hpp">
+      <Filter>Scenario</Filter>
+    </ClInclude>
+    <ClCompile Include="Rasterizer\Lightmaps.cpp">
+      <Filter>Rasterizer</Filter>
+    </ClCompile>
+    <ClCompile Include="Rasterizer\Sky.cpp">
+      <Filter>Rasterizer</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenario\ScenarioInfo.cpp">
+      <Filter>Scenario</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenario\StructureBSP.cpp">
+      <Filter>Scenario</Filter>
+    </ClCompile>
     <Filter Include="_Resources">
       <UniqueIdentifier>{9eeca5d4-3106-4fc6-bd01-2477b3eda08f}</UniqueIdentifier>
     </Filter>
@@ -427,9 +454,6 @@
       <Filter>Rasterizer\ShaderExtension</Filter>
     </ClCompile>
     <ClCompile Include="Scenario\Scenario.cpp">
-      <Filter>Scenario</Filter>
-    </ClCompile>
-    <ClCompile Include="Scenario\ScenarioFauxZones.cpp">
       <Filter>Scenario</Filter>
     </ClCompile>
     <ClCompile Include="MainYelo.cpp" />
@@ -870,9 +894,6 @@
     <ClInclude Include="Rasterizer\PostProcessing\PostProcessingScripting.hpp">
       <Filter>Rasterizer\PostProcessing</Filter>
     </ClInclude>
-    <ClInclude Include="Rasterizer\PostProcessing\Interfaces\IInterpolator.hpp">
-      <Filter>Rasterizer\PostProcessing\Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="Rasterizer\PostProcessing\Interfaces\IPostProcessingCacheComponent.hpp">
       <Filter>Rasterizer\PostProcessing\Interfaces</Filter>
     </ClInclude>
@@ -960,18 +981,6 @@
     <ClInclude Include="Rasterizer\PostProcessing\Generic\External\s_effect_postprocess_external.hpp">
       <Filter>Rasterizer\PostProcessing\Generic\External</Filter>
     </ClInclude>
-    <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_base.hpp">
-      <Filter>Rasterizer\PostProcessing\Interpolation</Filter>
-    </ClInclude>
-    <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_function.hpp">
-      <Filter>Rasterizer\PostProcessing\Interpolation</Filter>
-    </ClInclude>
-    <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_linear.hpp">
-      <Filter>Rasterizer\PostProcessing\Interpolation</Filter>
-    </ClInclude>
-    <ClInclude Include="Rasterizer\PostProcessing\Interpolation\Interpolation.hpp">
-      <Filter>Rasterizer\PostProcessing\Interpolation</Filter>
-    </ClInclude>
     <ClInclude Include="Rasterizer\PostProcessing\Fade\c_shader_fade.hpp">
       <Filter>Rasterizer\PostProcessing\Fade</Filter>
     </ClInclude>
@@ -994,9 +1003,6 @@
       <Filter>Rasterizer\ShaderExtension</Filter>
     </ClInclude>
     <ClInclude Include="Scenario\Scenario.hpp">
-      <Filter>Scenario</Filter>
-    </ClInclude>
-    <ClInclude Include="Scenario\ScenarioFauxZones.hpp">
       <Filter>Scenario</Filter>
     </ClInclude>
     <ClInclude Include="Objects\Objects.WeaponSettings.hpp">
@@ -1309,9 +1315,6 @@
     </None>
     <None Include="Rasterizer\ShaderExtension\ShaderExtension_Model.inl">
       <Filter>Rasterizer\ShaderExtension\Impl</Filter>
-    </None>
-    <None Include="Scenario\ScenarioFauxZones.Scripting.inl">
-      <Filter>Scenario\Impl</Filter>
     </None>
     <None Include="Objects\Objects.VehicleSettings.inl">
       <Filter>Objects\Impl</Filter>

@@ -8,7 +8,7 @@
 #include "Rasterizer/PostProcessing/Bloom/c_shader_instance_bloom.hpp"
 
 #if !PLATFORM_IS_DEDI
-#include "Rasterizer/PostProcessing/Interpolation/Interpolation.hpp"
+#include <YeloLib/Halo1/time/interpolation/interpolation.hpp>
 
 namespace Yelo
 {
@@ -129,7 +129,7 @@ namespace Yelo
 		void c_shader_instance_bloom::SetBloomSize(real size, real change_time)
 		{
 			real current;
-			Interpolation::InterpolateValues<1>(
+			Time::Interpolation::InterpolateValues<1>(
 				&m_members_bloom.m_variable_animation.current_values.size, 
 				&m_members_bloom.m_variable_animation.target_values.size,
 				m_members_bloom.m_variable_animation.size_interp.GetValues(),
@@ -155,7 +155,7 @@ namespace Yelo
 		void c_shader_instance_bloom::SetBloomExposure(real exposure, real change_time)
 		{
 			real current;
-			Interpolation::InterpolateValues<1>(
+			Time::Interpolation::InterpolateValues<1>(
 				&m_members_bloom.m_variable_animation.current_values.exposure, 
 				&m_members_bloom.m_variable_animation.target_values.exposure,
 				m_members_bloom.m_variable_animation.exposure_interp.GetValues(),
@@ -181,7 +181,7 @@ namespace Yelo
 		void c_shader_instance_bloom::SetBloomMixAmount(real mix_amount, real change_time)
 		{
 			real current;
-			Interpolation::InterpolateValues<1>(
+			Time::Interpolation::InterpolateValues<1>(
 				&m_members_bloom.m_variable_animation.current_values.mix_amount,
 				&m_members_bloom.m_variable_animation.target_values.mix_amount,
 				m_members_bloom.m_variable_animation.mix_amount_interp.GetValues(),
@@ -207,7 +207,7 @@ namespace Yelo
 		void c_shader_instance_bloom::SetBloomMinimumColor(const real_rgb_color& minimum_color, real change_time)
 		{
 			real_rgb_color current;
-			Interpolation::InterpolateValues<3>(
+			Time::Interpolation::InterpolateValues<3>(
 				&m_members_bloom.m_variable_animation.current_values.minimum_color.red,
 				&m_members_bloom.m_variable_animation.target_values.minimum_color.red,
 				m_members_bloom.m_variable_animation.minimum_color_interp.GetValues(),
@@ -233,7 +233,7 @@ namespace Yelo
 		void c_shader_instance_bloom::SetBloomMaximumColor(const real_rgb_color& maximum_color, real change_time)
 		{
 			real_rgb_color current;
-			Interpolation::InterpolateValues<3>(
+			Time::Interpolation::InterpolateValues<3>(
 				&m_members_bloom.m_variable_animation.current_values.maximum_color.red,
 				&m_members_bloom.m_variable_animation.target_values.maximum_color.red,
 				m_members_bloom.m_variable_animation.maximum_color_interp.GetValues(),

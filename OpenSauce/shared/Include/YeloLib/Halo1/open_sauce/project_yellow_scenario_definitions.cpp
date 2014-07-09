@@ -32,16 +32,6 @@ namespace Yelo
 			CAST_PTR(boost::uuids::uuid&, uuid_buffer) = uuid_generator();
 		}
 
-		bool s_scenario_faux_zone_sky::IsValid() const
-		{
-			return scenario_sky_to_replace != NONE && !sky.tag_index.IsNull();
-		}
-
-		bool s_scenario_faux_zone_set_variant::HasGameStateChanges() const
-		{
-			return lightmap_index != NONE || sky_index != NONE;
-		}
-
 		//////////////////////////////////////////////////////////////////////////
 		// project_yellow
 		cstring project_yellow::k_default_name = "i've got a lovely bunch of corncobs";

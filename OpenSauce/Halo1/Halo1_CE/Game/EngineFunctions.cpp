@@ -1186,6 +1186,7 @@ namespace Yelo
 	{
 		//////////////////////////////////////////////////////////////////////////
 		// scenario.c
+		// After calling this function you should call Yelo::GameState::InitializeForNewBSP
 		API_FUNC_NAKED bool PLATFORM_API scenario_switch_structure_bsp(int16 bsp_index)
 		{
 			static const uintptr_t FUNCTION = Engine::GET_FUNC_PTR(SCENARIO_SWITCH_STRUCTURE_BSP);

@@ -115,7 +115,7 @@ namespace BlamLib.Managers
 			// Add our 'root' tag, which isn't problematic
 			errorDatabase.SetRoot(tm.Name, tm.GroupTag.ID);
 
-			foreach(TagInterface.TagReference tr in tm.BadRefereces)
+			foreach(TagInterface.TagReference tr in tm.BadReferences)
 			{
 				ErrorTagDatabase.ErrorFlags ef;
 
@@ -257,13 +257,59 @@ namespace BlamLib.Managers
 		}
 		#endregion
 
+		#region Error Events
+		public class TagIndexErrorArgs : EventArgs
+		{
+			public string Message { get; private set; }
+			public Exception ThrownException { get; private set; }
+
+			public TagIndexErrorArgs(string message, Exception thrownException)
+			{
+				Message = message;
+				ThrownException = thrownException;
+			}
+
+			public TagIndexErrorArgs(string message)
+				: this(message, null)
+			{ }
+		}
+
+		public event EventHandler<TagIndexErrorArgs> ErrorOccurred;
+
+		private void OnErrorOccurred(Exception thrownException, string messageFormat, params object[] args)
+		{
+			indexTrace.WriteLine(messageFormat, args);
+
+			var handler = ErrorOccurred;
+
+			if (handler != null)
+			{
+				handler(this, new TagIndexErrorArgs(String.Format(messageFormat, args), thrownException));
+			}
+		}
+
+		private void OnErrorOccurred(string message, params object[] args)
+		{
+			OnErrorOccurred(null, message, args);
+		}
+		#endregion
+
 		#region Adding
 		#region Add
 		/// <summary>
 		/// Fired <b>after</b> a tag is added (via either <see cref="TagIndex.New"/> or <see cref="TagIndex.Add"/>) to the index
 		/// </summary>
 		public event EventHandler<TagIndexEventArgs> EventAdd;
-		void OnEventAdd(TagIndexEventArgs args) { if (EventAdd != null) EventAdd(this, args); }
+
+		private void OnEventAdd(TagIndexEventArgs args)
+		{
+			var handler = EventAdd;
+
+			if (handler != null)
+			{
+				handler(this, args);
+			}
+		}
 
 		/// <summary>
 		/// Create a new tag
@@ -283,14 +329,14 @@ namespace BlamLib.Managers
 			string path = string.Format("{0}.{1}", Path.Combine(directory, name), tag_group.Name);
 			if (Exists(path))
 			{
-				indexTrace.WriteLine("Tag Index: Couldn't create a new tag! '{0}' already exists on disk", path);
+				OnErrorOccurred("Tag Index: Couldn't create a new tag! '{0}' already exists on disk", path);
 				return Blam.DatumIndex.Null;
 			}
 
 			// ...or if there is one in memory
 			if (IsLoaded(name, tag_group) != Blam.DatumIndex.Null)
 			{
-				indexTrace.WriteLine("Tag Index: Couldn't create a new tag! '{0}.{1}' already exists", name, tag_group.Name);
+				OnErrorOccurred("Tag Index: Couldn't create a new tag! '{0}.{1}' already exists", name, tag_group.Name);
 				return Blam.DatumIndex.Null;
 			}
 
@@ -325,7 +371,7 @@ namespace BlamLib.Managers
 			// Checks to see or if there is one in memory
 			if (IsLoaded(name, tag_group) != Blam.DatumIndex.Null)
 			{
-				indexTrace.WriteLine("Tag Index: Couldn't add an existing tag! '{0}.{1}' already exists", name, tag_group.Name);
+				OnErrorOccurred("Tag Index: Couldn't add an existing tag! '{0}.{1}' already exists", name, tag_group.Name);
 				return Blam.DatumIndex.Null;
 			}
 
@@ -406,12 +452,12 @@ namespace BlamLib.Managers
 			try { tm.Read(); }
 			catch (TagInterface.Exceptions.InvalidVersion /*ex_version*/)
 			{
-				//indexTrace.WriteLine("Tag Index: Failed to open tag from disk (invalid\\unhandled version): {0}{1}{2}", path, Program.NewLine, ex_version);
+				//OnErrorOccurred(ex_version, "Tag Index: Failed to open tag from disk (invalid\\unhandled version): {0}", path);
 				di = kVersionInvalid;
 			}
 			catch (Exception ex)
 			{
-				indexTrace.WriteLine("Tag Index: Failed to open tag from disk: {0}{1}{2}", path, Program.NewLine, ex);
+				OnErrorOccurred(ex, "Tag Index: Failed to open tag from disk: {0}", path);
 				di = Blam.DatumIndex.Null;
 			}
 			finally { tm.Close(); }

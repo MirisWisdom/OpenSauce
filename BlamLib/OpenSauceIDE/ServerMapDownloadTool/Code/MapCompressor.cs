@@ -9,23 +9,14 @@ namespace OpenSauceIDE.ServerMapDownloadTool
 {
 	public static class MapCompressor
 	{
-		public class MapCompressorArguments
+		public struct MapCompressorArgs
 		{
 			public string Map;
 			public string PartsFolder;
 			public string DefinitionsFolder;
 			public bool EncryptArchive;
 			public string ServerPassword;
-
-			public MapCompressorArguments()
-			{
-				Map = "";
-				PartsFolder = "";
-				DefinitionsFolder = "";
-				EncryptArchive = false;
-				ServerPassword = "";
-			}
-		};
+		}
 
 		/// <summary>
 		/// Creates the directories the map data will be saved to.
@@ -64,15 +55,20 @@ namespace OpenSauceIDE.ServerMapDownloadTool
 		/// <param name="args">Generic variable for passing an arguments class</param>
 		public static void CompressMap(BackgroundWorker worker_thread, object args)
 		{
-			MapCompressorArguments arguments = args as MapCompressorArguments;
+			if (args == null)
+			{
+				throw new Exception("No arguments or an invalid arguments class passed to CompressMap");
+			}
 
-			if (arguments == null) throw new Exception("No arguments or an invalid arguments class passed to CompressMap");
+			MapCompressorArgs arguments = (MapCompressorArgs)args;
 
 			// create the output folders
 			string output_folder;
 
 			if (!BuildOutputFolders(arguments.Map, arguments.PartsFolder, out output_folder))
+			{
 				throw new Exception("failed to create the output directories for map compression");
+			}
 
 			string map_filename = Path.GetFileNameWithoutExtension(arguments.Map);
 

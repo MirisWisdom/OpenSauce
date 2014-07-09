@@ -116,6 +116,9 @@
 		FUNC_PTR(FILE_READ_FROM_POSITION,		0x445D50, 0x44BB70, 0x501340);
 		FUNC_PTR(FILE_WRITE_TO_POSITION,		0x445DB0, 0x44BBD0, 0x5013A0);
 		FUNC_PTR(FILE_READ_ONLY_,				0x445030, 0x44B480, 0x500620);
+		//////////////////////////////////////////////////////////////////////////
+		// cryptography
+		FUNC_PTR(GENERATE_MD5,					0x604860, 0x588B70, 0x6F78E0);
 	};
 
 #else

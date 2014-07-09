@@ -20,6 +20,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Halo1_BlamLib", "Halo1\Halo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Halo1_YeloLib", "Halo1\Halo1_YeloLib\Halo1_YeloLib.vcxproj", "{ECFFC0E4-E4A5-47E3-8A5C-6CC42CFBDF1E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FCD2AFBF-D301-4C5A-B1FC-5B3A74FBDA71}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32

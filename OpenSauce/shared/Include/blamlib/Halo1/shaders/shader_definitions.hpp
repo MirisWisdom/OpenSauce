@@ -48,16 +48,6 @@ namespace Yelo
 
 			_detail_map_function,
 		};
-		enum model_extension_usage : _enum
-		{
-			_model_extension_usage_none					= 0,
-			_model_extension_usage_normal_map			= 1 << 0,
-			_model_extension_usage_detail_normal		= 1 << 1,
-			_model_extension_usage_specular_map			= 1 << 2,
-			_model_extension_usage_specular_lighting	= 1 << 3,
-
-			_model_extension_usage,
-		};
 		enum reflection_type : _enum
 		{
 			_reflection_type_bumped_cube_map,
@@ -256,6 +246,32 @@ namespace Yelo
 
 			_shader_effect_secondary_map_anchor,
 		};
+
+		enum shader_extension_usage_bit : word_flags
+		{
+			_shader_extension_usage_bit_normal_map,
+			_shader_extension_usage_bit_detail_normal,
+			_shader_extension_usage_bit_specular_map,
+			_shader_extension_usage_bit_specular_lighting,
+			_shader_extension_usage_bit_directional_lightmaps,
+
+			_shader_extension_usage_bit,
+		};
+	};
+
+	namespace Flags
+	{
+		enum shader_extension_usage : word_flags
+		{
+			_shader_extension_usage_none					= 0,
+			_shader_extension_usage_normal_map				= 1 << 0,
+			_shader_extension_usage_detail_normal			= 1 << 1,
+			_shader_extension_usage_specular_map			= 1 << 2,
+			_shader_extension_usage_specular_lighting		= 1 << 3,
+			_shader_extension_usage_directional_lightmaps	= 1 << 4,
+
+			_shader_extension_usage,
+		};
 	};
 
 	namespace TagGroups
@@ -404,8 +420,17 @@ namespace Yelo
 			_shader_effect_definition effect;
 		}; BOOST_STATIC_ASSERT( sizeof(s_shader_effect) == 0xB4 );
 		//////////////////////////////////////////////////////////////////////////
-		struct s_shader_environment_extension // TODO: FireScythe needs to do me
+		struct s_shader_environment_extension
 		{
+			struct _flags
+			{
+				TAG_FLAG16(do_not_use_dlms);
+			}; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
+
+			TAG_FIELD(_flags, flags);
+			TAG_PAD(byte, 2);
+			TAG_FIELD(real, bump_amount);
+			TAG_PAD(tag_block, 4);
 		};
 		struct _shader_environment_definition
 		{
@@ -580,6 +605,11 @@ namespace Yelo
 				TAG_FLAG16(alpha_as_exponent_mask);
 			}; BOOST_STATIC_ASSERT( sizeof(__specular_color_flags) == sizeof(word_flags) );
 
+			struct __diffuse_lighting_flags
+			{
+				TAG_FLAG16(do_not_use_dlms_bsp);
+			}; BOOST_STATIC_ASSERT( sizeof(__diffuse_lighting_flags) == sizeof(word_flags) );
+
 			struct s_map{
 				tag_reference  map;
 				union{
@@ -601,7 +631,6 @@ namespace Yelo
 				}modifiers;
 			};
 
-			//TAG_PAD(byte, 16);
 			s_map	specular_color;   //32
 			s_map	base_normal;   //32
 			s_map	detail_normals[2];  //64
@@ -610,11 +639,11 @@ namespace Yelo
 			TAG_FIELD(real_rgb_color, perpendicular_tint_color, "", "reflection tint color when viewed perpendicularly");
 			TAG_FIELD(real_fraction, parallel_brightness, "[0,1]", "reflection brightness when viewed at a glancing angle");
 			TAG_FIELD(real_rgb_color, parallel_tint_color, "", "reflection tint color when viewed at a glancing angle");
+			
+			TAG_FIELD(__diffuse_lighting_flags, diffuse_lighting_flags);
+			PAD16;
+			PAD32;
 
-			PAD32;
-			PAD32;
-			//TAG_FIELD(real, specular_reflection_exponent, "", "modifies the final specular result");
-			//TAG_FIELD(real, specular_reflection_coefficient, "", "multiplies the final specular result");
 			TAG_FIELD(real, specular_lighting_exponent);
 			TAG_FIELD(real, specular_lighting_coefficient);
 
