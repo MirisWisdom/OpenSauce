@@ -35,7 +35,7 @@
       <Project>{D9931E1A-1A8A-4707-A27C-9AFEFD60D25B}</Project>
       <Name>BlamLib</Name>
     </ProjectReference>
-	<ProjectReference Include="..\BlamLib.Forms\BlamLib.Forms.csproj">
+    <ProjectReference Include="..\BlamLib.Forms\BlamLib.Forms.csproj">
       <Project>{61EE1295-F2B6-4351-B331-244319600FCE}</Project>
       <Name>BlamLib.Forms</Name>
     </ProjectReference>
@@ -96,6 +96,67 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ModelExtractor\Extractors\ExtractionManager.cs" />
+    <Compile Include="ModelExtractor\Extractors\ExtractorFactory.cs" />
+    <Compile Include="ModelExtractor\Extractors\ColladaSettings.cs" />
+    <Compile Include="ModelExtractor\Extractors\Halo1\Halo1Extractor.cs" />
+    <Compile Include="ModelExtractor\Extractors\Halo1\Gbxmodel\ExtractionJobGbxmodel.cs" />
+    <Compile Include="ModelExtractor\Extractors\Halo1\Gbxmodel\ExtractorGbxmodel.cs" />
+    <Compile Include="ModelExtractor\Extractors\Halo1\Gbxmodel\ExtractorGbxmodelUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ModelExtractor\Extractors\Halo1\Gbxmodel\ExtractorGbxmodelUI.Designer.cs">
+      <DependentUpon>ExtractorGbxmodelUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelExtractor\Extractors\Halo1\Scenario\ExtractionJobScenario.cs" />
+    <Compile Include="ModelExtractor\Extractors\Halo1\Scenario\ExtractorScenario.cs" />
+    <Compile Include="ModelExtractor\Extractors\Halo1\Scenario\ExtractorScenarioUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ModelExtractor\Extractors\Halo1\Scenario\ExtractorScenarioUI.Designer.cs">
+      <DependentUpon>ExtractorScenarioUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelExtractor\Extractors\Halo1\StructureBSP\ExtractionJobStructureBSP.cs" />
+    <Compile Include="ModelExtractor\Extractors\Halo1\StructureBSP\ExtractorStructureBSP.cs" />
+    <Compile Include="ModelExtractor\Extractors\Halo1\StructureBSP\ExtractorStructureBSPUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ModelExtractor\Extractors\Halo1\StructureBSP\ExtractorStructureBSPUI.Designer.cs">
+      <DependentUpon>ExtractorStructureBSPUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelExtractor\Extractors\Halo1\StructureBSP\LightmapSizeExporter.cs" />
+    <Compile Include="ModelExtractor\Extractors\IExtractor.cs" />
+    <Compile Include="ModelExtractor\Extractors\IExtractionJob.cs" />
+    <Compile Include="ModelExtractor\IModelExtractorController.cs" />
+    <Compile Include="ModelExtractor\MessageHandler\IMessageHandler.cs" />
+    <Compile Include="ModelExtractor\MessageHandler\MessageHandler.cs" />
+    <Compile Include="ModelExtractor\ModelExtractorController.cs" />
+    <Compile Include="ModelExtractor\ModelExtractor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModelExtractor\ModelExtractor.Designer.cs">
+      <DependentUpon>ModelExtractor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelExtractor\TagIO\BlamPath.cs" />
+    <Compile Include="ModelExtractor\TagIO\ExtractorTagIndex.cs" />
+    <Compile Include="ModelExtractor\UI\ColladaSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ModelExtractor\UI\ColladaSettingsControl.Designer.cs">
+      <DependentUpon>ColladaSettingsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelExtractor\UI\MessageListControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ModelExtractor\UI\MessageListControl.Designer.cs">
+      <DependentUpon>MessageListControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModelExtractor\UI\PathControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ModelExtractor\UI\PathControl.Designer.cs">
+      <DependentUpon>PathControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="OpenSauce\Halo1\UnlockH1.AddressOf.cs" />
     <Compile Include="OpenSauce\Halo1\UnlockH1.Constants.cs" />
     <Compile Include="OpenSauce\Halo1\UnlockH1.cs" />
@@ -132,6 +193,24 @@
     <EmbeddedResource Include="MainForm.resx">
       <SubType>Designer</SubType>
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelExtractor\Extractors\Halo1\Scenario\ExtractorScenarioUI.resx">
+      <DependentUpon>ExtractorScenarioUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelExtractor\Extractors\Halo1\StructureBSP\ExtractorStructureBSPUI.resx">
+      <DependentUpon>ExtractorStructureBSPUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelExtractor\ModelExtractor.resx">
+      <DependentUpon>ModelExtractor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelExtractor\UI\ColladaSettingsControl.resx">
+      <DependentUpon>ColladaSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelExtractor\UI\MessageListControl.resx">
+      <DependentUpon>MessageListControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ModelExtractor\UI\PathControl.resx">
+      <DependentUpon>PathControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OpenSauce\XnaPatcherForm.resx">
       <DependentUpon>XnaPatcherForm.cs</DependentUpon>
@@ -196,6 +275,8 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ServerMapDownloadTool\SettingsHandler.cs" />
+    <Compile Include="Settings\BlamSettingsInterface.cs" />
+    <Compile Include="Settings\PropertyTree.cs" />
     <Compile Include="Settings\SettingsManager.cs" />
     <Compile Include="Tool.cs" />
   </ItemGroup>
@@ -237,6 +318,7 @@
     </Content>
     <Content Include="Properties\OS IDE.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlamLib", "BlamLib\BlamLib.csproj", "{D9931E1A-1A8A-4707-A27C-9AFEFD60D25B}"
 EndProject
@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Readme.Namespaces.txt = Readme.Namespaces.txt
 		Readme.Terminology.txt = Readme.Terminology.txt
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenSauceIDE.Test", "OpenSauceIDE.Test\OpenSauceIDE.Test.csproj", "{53062505-2639-4935-B2C9-06B576FB6938}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,6 +68,14 @@ Global
 		{2BB37B4C-D7E0-451F-A8C8-997890B98B9F}.Debug|x86.ActiveCfg = Debug|x86
 		{2BB37B4C-D7E0-451F-A8C8-997890B98B9F}.Release|Win32.ActiveCfg = Release|x86
 		{2BB37B4C-D7E0-451F-A8C8-997890B98B9F}.Release|x86.ActiveCfg = Release|x86
+		{53062505-2639-4935-B2C9-06B576FB6938}.Debug|Win32.ActiveCfg = Debug|Win32
+		{53062505-2639-4935-B2C9-06B576FB6938}.Debug|Win32.Build.0 = Debug|Win32
+		{53062505-2639-4935-B2C9-06B576FB6938}.Debug|x86.ActiveCfg = Debug|x86
+		{53062505-2639-4935-B2C9-06B576FB6938}.Debug|x86.Build.0 = Debug|x86
+		{53062505-2639-4935-B2C9-06B576FB6938}.Release|Win32.ActiveCfg = Release|Win32
+		{53062505-2639-4935-B2C9-06B576FB6938}.Release|Win32.Build.0 = Release|Win32
+		{53062505-2639-4935-B2C9-06B576FB6938}.Release|x86.ActiveCfg = Release|x86
+		{53062505-2639-4935-B2C9-06B576FB6938}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

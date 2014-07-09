@@ -17,8 +17,8 @@ namespace BlamLib.Render.COLLADA.Fx
 	public partial class ColladaLibraryEffects : ColladaElement
 	{
 		#region Fields
-		ColladaObjectAttribute<string> _id;
-		ColladaObjectAttribute<string> _name;
+		ColladaObjectAttribute<ColladaID<ColladaLibraryEffects>> _id;
+		ColladaObjectAttribute<ColladaNCName> _name;
 		ColladaObjectElement<Core.ColladaAsset> _asset;
 		ColladaObjectElementList<ColladaEffect> _effect;
 		ColladaObjectElementList<Core.ColladaExtra> _extra;
@@ -50,8 +50,8 @@ namespace BlamLib.Render.COLLADA.Fx
 
 		public ColladaLibraryEffects() : base(Enums.ColladaElementType.Fx_LibraryEffects)
 		{
-			Fields.Add(_id = new ColladaObjectAttribute<string>(""));
-			Fields.Add(_name = new ColladaObjectAttribute<string>(""));
+			Fields.Add(_id = new ColladaObjectAttribute<ColladaID<ColladaLibraryEffects>>(""));
+			Fields.Add(_name = new ColladaObjectAttribute<ColladaNCName>(""));
 			Fields.Add(_asset = new ColladaObjectElement<Core.ColladaAsset>());
 			Fields.Add(_effect = new ColladaObjectElementList<ColladaEffect>());
 			Fields.Add(_extra = new ColladaObjectElementList<Core.ColladaExtra>());

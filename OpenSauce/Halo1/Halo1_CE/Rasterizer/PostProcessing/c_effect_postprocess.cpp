@@ -8,8 +8,8 @@
 #include "Rasterizer/PostProcessing/c_effect_postprocess.hpp"
 
 #if !PLATFORM_IS_DEDI
+#include <YeloLib/Halo1/time/interpolation/i_interpolator.hpp>
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
-#include "Rasterizer/PostProcessing/Interpolation/Interpolation.hpp"
 #include "Rasterizer/PostProcessing/Fade/c_system_fade.hpp"
 
 namespace Yelo

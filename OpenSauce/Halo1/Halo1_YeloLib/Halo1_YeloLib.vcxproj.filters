@@ -115,6 +115,24 @@
     <Filter Include="configuration\type_containers">
       <UniqueIdentifier>{7eca856f-6ae9-4b09-b0e4-98b45f6ec8cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="render\lightmaps">
+      <UniqueIdentifier>{6c494c0b-df0a-4dbf-a6bf-7846870854ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="render\sky">
+      <UniqueIdentifier>{d26a0c1e-df48-4dfd-9493-4a7275564097}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="cryptography">
+      <UniqueIdentifier>{6e2a28d1-5e48-4956-8e82-d38e9fa6dab9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="time">
+      <UniqueIdentifier>{4dba28de-4c75-4ed5-a808-c3ba76e9b45b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="time\sequence">
+      <UniqueIdentifier>{176d9891-7b21-4912-ad6f-3abe45362262}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="time\interpolation">
+      <UniqueIdentifier>{9ae7ddba-2567-4d88-841a-4cf4bcc51ff6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Common\targetver.h">
@@ -471,6 +489,15 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\configuration\c_configuration_singleton.hpp">
       <Filter>configuration</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.hpp">
+      <Filter>render\lightmaps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.hpp">
+      <Filter>render\sky</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\cryptography\TEA.hpp">
+      <Filter>cryptography</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\cseries\enum_wrappers.hpp">
       <Filter>cseries</Filter>
     </ClInclude>
@@ -500,6 +527,24 @@
     </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_scenario.hpp">
       <Filter>open_sauce</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\sequence\c_transition_sequence_controller.hpp">
+      <Filter>time\sequence</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\interpolation.hpp">
+      <Filter>time\interpolation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\c_interp_base.hpp">
+      <Filter>time\interpolation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\c_interp_function.hpp">
+      <Filter>time\interpolation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\c_interp_linear.hpp">
+      <Filter>time\interpolation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\i_interpolator.hpp">
+      <Filter>time\interpolation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -746,6 +791,15 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_vector3d_container.cpp">
       <Filter>configuration\type_containers</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\lightmaps\c_lightmap_manager.cpp">
+      <Filter>render\lightmaps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\render\sky\c_sky_manager.cpp">
+      <Filter>render\sky</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\cryptography\TEA.cpp">
+      <Filter>cryptography</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\c_settings_cheape.cpp">
       <Filter>open_sauce\settings</Filter>
     </ClCompile>
@@ -766,6 +820,9 @@
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_scenario.cpp">
       <Filter>open_sauce</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\time\sequence\c_transition_sequence_controller.cpp">
+      <Filter>time\sequence</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

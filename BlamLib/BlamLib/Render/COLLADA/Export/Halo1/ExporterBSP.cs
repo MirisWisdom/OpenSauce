@@ -13,33 +13,77 @@ using H1 = BlamLib.Blam.Halo1;
 
 namespace BlamLib.Render.COLLADA.Halo1
 {
-	public class ColladaBSPExporter : ColladaModelExporterHalo1
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>	Interface for halo 1 bsp data provider. </summary>
+	///-------------------------------------------------------------------------------------------------
+	public interface IHalo1BSPDataProvider : IColladaDataProvider
 	{
-		#region Class Fields
-		IHalo1BSPInterface bspInfo;
-		#endregion
-
-		#region Constructor
+		///-------------------------------------------------------------------------------------------------
 		/// <summary>
-		/// Halo1 BSP exporter class
+		/// 	Gets or sets a value indicating whether the render mesh should be included.
 		/// </summary>
-		/// <param name="bsp_info">An object implementing IHalo1BSPInterface to define what meshes are to be included in the collada file</param>
-		/// <param name="tag_index">The tag index that contains the tag being exported</param>
-		/// <param name="tag_manager">The tag manager of the tag being exported</param>
-		public ColladaBSPExporter(ColladaExportArgs arguments, IHalo1BSPInterface bsp_info, Managers.TagIndexBase tag_index, Managers.TagManager tag_manager)
-			: base(arguments, bsp_info, tag_index, tag_manager)
+		/// <value>	true if include render mesh, false if not. </value>
+		///-------------------------------------------------------------------------------------------------
+		bool IncludeRenderMesh { get; set; }
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// 	Gets or sets a value indicating whether the portals should be included.
+		/// </summary>
+		/// <value>	true if include portals, false if not. </value>
+		///-------------------------------------------------------------------------------------------------
+		bool IncludePortals { get; set; }
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>
+		/// 	Gets or sets a value indicating whether the fog planes should be included.
+		/// </summary>
+		/// <value>	true if include fog planes, false if not. </value>
+		///-------------------------------------------------------------------------------------------------
+		bool IncludeFogPlanes { get; set; }
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Gets the markers. </summary>
+		/// <returns>	The markers. </returns>
+		///-------------------------------------------------------------------------------------------------
+		StructureBSPData.StructureBSPMarkerList GetMarkers();
+	}
+
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>   Collada Halo1 Structure BSP exporter. </summary>
+	///-------------------------------------------------------------------------------------------------
+	public class ColladaBSPExporter : ColladaExporterHalo1
+	{
+		#region Constructor
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Constructor. </summary>
+		/// <param name="arguments"> 	Export arguments for the collada interface. </param>
+		/// <param name="tagIndex">  	The tag index containing the tag being exported. </param>
+		/// <param name="tagManager">	The tag manager of the tag being exported. </param>
+		///-------------------------------------------------------------------------------------------------
+		public ColladaBSPExporter(IColladaSettings settings, Managers.TagIndexBase tagIndex, Managers.TagManager tagManager)
+			: base(settings, tagIndex)
 		{
-			bspInfo = bsp_info;
+			mTagManager = tagManager;
 		}
 		#endregion
+		
+		#region Fields
+		private IHalo1BSPDataProvider mBSPDataProvider = null;
+		private Managers.TagManager mTagManager;
+		private string TagName
+		{
+			get { return Path.GetFileNameWithoutExtension(mTagManager.Name); }
+		}
+		#endregion Fields
 
 		#region Element Creation
 		#region Create Effects
-		/// <summary>
-		/// Creates a semitransparent, green effect for portals
-		/// </summary>
-		/// <returns></returns>
-		static Fx.ColladaEffect CreatePortalsEffect()
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Creates a semitransparent, green effect for portals. </summary>
+		/// <returns>	The new portals effect. </returns>
+		///-------------------------------------------------------------------------------------------------
+		private Fx.ColladaEffect CreatePortalsEffect()
 		{
 			Fx.ColladaEffect effect = CreateDefaultEffect("portals");
 			effect.ProfileCOMMON[0].Technique.Phong.Emission.Color.SetColor(0, 1, 0, 1);
@@ -47,11 +91,12 @@ namespace BlamLib.Render.COLLADA.Halo1
 			effect.ProfileCOMMON[0].Technique.Phong.Diffuse.Color.SetColor(0, 1, 0, 1);
 			return effect;
 		}
-		/// <summary>
-		/// Creates a semitransparent, yellow effect for fogplanes
-		/// </summary>
-		/// <returns></returns>
-		static Fx.ColladaEffect CreateFogPlanesEffect()
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Creates a semitransparent, yellow effect for fogplanes. </summary>
+		/// <returns>	The new fog planes effect. </returns>
+		///-------------------------------------------------------------------------------------------------
+		private Fx.ColladaEffect CreateFogPlanesEffect()
 		{
 			Fx.ColladaEffect effect = CreateDefaultEffect("fogplanes");
 			effect.ProfileCOMMON[0].Technique.Phong.Emission.Color.SetColor(1, 1, 0, 1);
@@ -59,37 +104,40 @@ namespace BlamLib.Render.COLLADA.Halo1
 			effect.ProfileCOMMON[0].Technique.Phong.Diffuse.Color.SetColor(1, 1, 0, 1);
 			return effect;
 		}
-		/// <summary>
-		/// Adds the portals effect to the effect list
-		/// </summary>
-		void CreateEffectListPortals()
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds the portals effect to the effect list. </summary>
+		///-------------------------------------------------------------------------------------------------
+		private void CreateEffectListPortals()
 		{
 			listEffect.Add(CreatePortalsEffect());
 		}
-		/// <summary>
-		/// Adds the fog planes effect to the effect list
-		/// </summary>
-		void CreateEffectListFogPlanes()
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Adds the fog planes effect to the effect list. </summary>
+		///-------------------------------------------------------------------------------------------------
+		private void CreateEffectListFogPlanes()
 		{
 			listEffect.Add(CreateFogPlanesEffect());
 		}
 		#endregion
 		#region Create Materials
-		/// <summary>
-		/// Populate the material list for portals geometry
-		/// </summary>
-		protected void CreateMaterialListPortals()
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Populate the material list for portals geometry. </summary>
+		///-------------------------------------------------------------------------------------------------
+		private void CreateMaterialListPortals()
 		{
-			string shader_name = "portals";
+			string shaderName = "portals";
 			listMaterial.Add(
-				CreateMaterial(shader_name,
-					shader_name,
-					shader_name));
+				CreateMaterial(shaderName,
+					shaderName,
+					shaderName));
 		}
-		/// <summary>
-		/// Populate the material list for fogplane geometry
-		/// </summary>
-		protected void CreateMaterialListFogPlanes()
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Populate the material list for fogplane geometry. </summary>
+		///-------------------------------------------------------------------------------------------------
+		private void CreateMaterialListFogPlanes()
 		{
 			string shader_name = "fogplanes";
 			listMaterial.Add(
@@ -99,15 +147,18 @@ namespace BlamLib.Render.COLLADA.Halo1
 		}
 		#endregion
 		#region Create Geometry
-		/// <summary>
-		/// Creates a vertex index list from a set of bsp surfaces
-		/// </summary>
-		/// <param name="definition">The bsp tag definition</param>
-		/// <param name="surface_offset">The surface index to start collecting indices from</param>
-		/// <param name="surface_count">The number of surfaces to collect indices from</param>
-		/// <param name="index_offset">The amount to offset the collected indices by</param>
-		/// <returns></returns>
-		List<int> CreateIndicesBSP(H1.Tags.structure_bsp_group definition, int surface_offset, int surface_count, int index_offset)
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Creates a vertex index list from a set of bsp surfaces. </summary>
+		/// <param name="definition">	 	The bsp tag definition. </param>
+		/// <param name="surface_offset">	The surface index to start collecting indices from. </param>
+		/// <param name="surface_count"> 	The number of surfaces to collect indices from. </param>
+		/// <param name="index_offset">  	The amount to offset the collected indices by. </param>
+		/// <returns>	The new bsp indices. </returns>
+		///-------------------------------------------------------------------------------------------------
+		private List<int> CreateIndicesBSP(H1.Tags.structure_bsp_group definition
+			, int surface_offset
+			, int surface_count
+			, int index_offset)
 		{
 			List<int> indices = new List<int>();
 
@@ -120,16 +171,22 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 			return indices;
 		}
-		/// <summary>
-		/// Creates a geometry element for a BSP lightmap
-		/// </summary>
-		/// <param name="index">The lightmap index to create a geometry from</param>
-		/// <returns></returns>
-		void CreateRenderGeometry(int index)
-		{
-			H1.Tags.structure_bsp_group definition = tagManager.TagDefinition as H1.Tags.structure_bsp_group;
 
-			List<Vertex> common_vertices = new List<Vertex>();
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Creates a geometry element for a BSP lightmap. </summary>
+		/// <param name="index">	The lightmap index to create a geometry from. </param>
+		///-------------------------------------------------------------------------------------------------
+		private void CreateRenderGeometry(int index)
+		{
+			H1.Tags.structure_bsp_group definition = mTagManager.TagDefinition as H1.Tags.structure_bsp_group;
+
+			Geometry geometryData = new Geometry(ColladaUtilities.FormatName(TagName, " ", "_") + "-" + definition.Lightmaps[index].Bitmap.ToString()
+				, 2
+				, Geometry.VertexComponent.POSITION
+				| Geometry.VertexComponent.NORMAL 
+				| Geometry.VertexComponent.BINORMAL 
+				| Geometry.VertexComponent.TANGENT 
+				| Geometry.VertexComponent.TEXCOORD);
 
 			// add all of the vertices used in the render geometry
 			foreach (var material in definition.Lightmaps[index].Materials)
@@ -142,7 +199,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 				for (int vertex_index = 0; vertex_index < vertex_count; vertex_index++)
 				{
-					Vertex common_vertex = new Vertex(
+					Geometry.Vertex common_vertex = new Geometry.Vertex(
 						//RealPoint3D position
 						new LowLevel.Math.real_point3d(
 							uncompressed_reader.ReadSingle() * 100,
@@ -182,166 +239,233 @@ namespace BlamLib.Render.COLLADA.Halo1
 						uncompressed_reader.BaseStream.Position = position;
 					}
 					else
+					{
 						common_vertex.AddTexcoord(new LowLevel.Math.real_point2d(0, 1));
+					}
 
-					common_vertices.Add(common_vertex);
+					geometryData.AddVertex(common_vertex);
 				};
 			}
-
-			List<Part> common_parts = new List<Part>();
 
 			// add part definitions for the lightmap materials
 			// an index offset is necessary since the vertex list is global for this geometry, rather than local to each material
 			int index_offset = 0;
 			foreach (var material in definition.Lightmaps[index].Materials)
 			{
-				Part common_part = new Part(Path.GetFileNameWithoutExtension(material.Shader.ToString()));
+				Geometry.Part common_part = new Geometry.Part(Path.GetFileNameWithoutExtension(material.Shader.ToString()));
 				common_part.AddIndices(CreateIndicesBSP(definition, material.Surfaces, material.SurfaceCount, index_offset));
 
 				index_offset += material.VertexBuffersCount1;
 
-				common_parts.Add(common_part);
+				geometryData.AddPart(common_part);
 			}
 
 			// create the geometry element
-			CreateGeometry(ColladaUtilities.FormatName(tagName, " ", "_") + "-" + definition.Lightmaps[index].Bitmap.ToString(), 2,
-				VertexComponent.POSITION | VertexComponent.NORMAL | VertexComponent.BINORMAL | VertexComponent.TANGENT | VertexComponent.TEXCOORD,
-				common_vertices, common_parts);
+			CreateGeometry(geometryData);
 		}
-		/// <summary>
-		/// Creates a geometry element for a single cluster portal
-		/// </summary>
-		/// <param name="portal_index">Index of the portal to create a geometry element for</param>
-		/// <returns></returns>
-		void CreatePortalsGeometry(int index)
-		{
-			H1.Tags.structure_bsp_group definition = tagManager.TagDefinition as H1.Tags.structure_bsp_group;
-			
-			List<Vertex> common_vertices = new List<Vertex>();
-			foreach (var vertex in definition.ClusterPortals[index].Vertices)
-				common_vertices.Add(new Vertex(vertex.Value.ToPoint3D(100)));
 
-			List<Part> common_parts = new List<Part>();
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Creates a geometry element for a single cluster portal. </summary>
+		/// <param name="index">	The lightmap index to create a geometry from. </param>
+		///-------------------------------------------------------------------------------------------------
+		private void CreatePortalsGeometry(int index)
+		{
+			H1.Tags.structure_bsp_group definition = mTagManager.TagDefinition as H1.Tags.structure_bsp_group;
+
+			Geometry geometryData = new Geometry("portal-" + index.ToString()
+				, 0
+				, Geometry.VertexComponent.POSITION
+				| Geometry.VertexComponent.NORMAL);
+
+			foreach (var vertex in definition.ClusterPortals[index].Vertices)
+			{
+				geometryData.AddVertex(new Geometry.Vertex(vertex.Value.ToPoint3D(100),
+					new LowLevel.Math.real_vector3d(0, 0, 1)));
+			}
 
 			// we only have one part since it only has one material
-			Part common_part = new Part("portals");
+			Geometry.Part common_part = new Geometry.Part("portals");
 			common_part.AddIndices(BuildFaceIndices(definition.ClusterPortals[index].Vertices.Count));
-			common_parts.Add(common_part);
+			geometryData.AddPart(common_part);
 
 			// create the geometry element
-			CreateGeometry("portal-" + index.ToString(), 0, VertexComponent.POSITION,
-				common_vertices, common_parts);
+			CreateGeometry(geometryData);
 		}
-		/// <summary>
-		/// Creates a geometry element for a single fog plane
-		/// </summary>
-		/// <param name="index">Index of the fog plane to create a geometry element for</param>
-		/// <returns></returns>
-		void CreateFogPlaneGeometry(int index)
-		{
-			H1.Tags.structure_bsp_group definition = tagManager.TagDefinition as H1.Tags.structure_bsp_group;
 
-			List<Vertex> common_vertices = new List<Vertex>();
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Creates a geometry element for a single fog plane. </summary>
+		/// <param name="index">	Index of the fog plane to create a geometry element for. </param>
+		///-------------------------------------------------------------------------------------------------
+		private void CreateFogPlaneGeometry(int index)
+		{
+			H1.Tags.structure_bsp_group definition = mTagManager.TagDefinition as H1.Tags.structure_bsp_group;
+
+			Geometry geometryData = new Geometry("fogplane-" + index.ToString()
+				, 0
+				, Geometry.VertexComponent.POSITION);
 
 			foreach (var vertex in definition.FogPlanes[index].Vertices)
-				common_vertices.Add(new Vertex(vertex.Value.ToPoint3D(100)));
-
-			List<Part> common_parts = new List<Part>();
+			{
+				geometryData.AddVertex(new Geometry.Vertex(vertex.Value.ToPoint3D(100)));
+			}
 
 			// we only have one part since it only has one material
-			Part common_part = new Part("fogplanes");
+			Geometry.Part common_part = new Geometry.Part("fogplanes");
 			common_part.AddIndices(BuildFaceIndices(definition.FogPlanes[index].Vertices.Count));
-			common_parts.Add(common_part);
+			geometryData.AddPart(common_part);
 
 			// create the geometry element
-			CreateGeometry("fogplane-" + index.ToString(), 0, VertexComponent.POSITION,
-				common_vertices, common_parts);
+			CreateGeometry(geometryData);
 		}
+
+		///-------------------------------------------------------------------------------------------------
 		/// <summary>
-		/// Creates geometries for the relevant BSP meshes that are to be included in the collada file
+		/// 	Creates geometries for the relevant BSP meshes that are to be included in the collada
+		/// 	file.
 		/// </summary>
-		void CreateGeometryList()
+		///-------------------------------------------------------------------------------------------------
+		private void CreateGeometryList()
 		{
-			H1.Tags.structure_bsp_group definition = tagManager.TagDefinition as H1.Tags.structure_bsp_group;
+			IHalo1BSPDataProvider provider = GetDataProvider<IHalo1BSPDataProvider>();
 
-			if(bspInfo.IncludeRenderMesh())
+			H1.Tags.structure_bsp_group definition = mTagManager.TagDefinition as H1.Tags.structure_bsp_group;
+
+			if (provider.IncludeRenderMesh)
+			{
 				for (int i = 0; i < definition.Lightmaps.Count; i++)
+				{
 					CreateRenderGeometry(i);
+				}
+			}
 
-			if(bspInfo.IncludePortalsMesh())
+			if (provider.IncludePortals)
+			{
 				for (int i = 0; i < definition.ClusterPortals.Count; i++)
+				{
 					CreatePortalsGeometry(i);
+				}
+			}
 
-			if(bspInfo.IncludeFogPlanesMesh())
+			if (provider.IncludeFogPlanes)
+			{
 				for (int i = 0; i < definition.FogPlanes.Count; i++)
+				{
 					CreateFogPlaneGeometry(i);
+				}
+			}
 		}
 		#endregion
 		#region Create Markers
-		/// <summary>
-		/// Creates nodes for the BSP markers
-		/// </summary>
-		void CreateMarkerList()
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Creates nodes for the BSP markers. </summary>
+		///-------------------------------------------------------------------------------------------------
+		private void CreateMarkerList()
 		{
-			H1.Tags.structure_bsp_group definition = tagManager.TagDefinition as H1.Tags.structure_bsp_group;
+			var markers = mBSPDataProvider.GetMarkers();
 
-			List<Marker> marker_list = new List<Marker>();
+			List<Marker> markerList = new List<Marker>();
+
 			// create common marker definitions for the bsp markers
-			foreach(var marker in definition.Markers)
+			foreach (var marker in markers)
 			{
-				Marker common_marker = new Marker(marker.Name,
+				Marker commonMarker = new Marker(marker.Name,
 					marker.Position.ToPoint3D(100), 
 					TagInterface.RealQuaternion.Invert(marker.Rotation),
 					-1);
 
-				marker_list.Add(common_marker);
+				markerList.Add(commonMarker);
 			}
 
 			// create the marker node elements
-			CreateMarkers(marker_list, RotationVectorY, RotationVectorP, RotationVectorR);
+			CreateMarkers(markerList, mTransformMatrix);
 		}
 		#endregion
 		#region Create Nodes
-		/// <summary>
-		/// Creates nodes for all the geometry elements in the collada file
-		/// </summary>
-		void CreateNodeList()
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Creates nodes for all the geometry elements in the collada file. </summary>
+		///-------------------------------------------------------------------------------------------------
+		private void CreateNodeList()
 		{
-			H1.Tags.structure_bsp_group definition = tagManager.TagDefinition as H1.Tags.structure_bsp_group;
+			// Create the list of materials for the gemoetry to use
+			MaterialReferenceList materialReferences = new MaterialReferenceList();
 
-			// create a list of ever shader used
-			List<string> shader_list = new List<string>();
-			for (int shader_index = 0; shader_index < shaderInfo.GetShaderCount(); shader_index++)
-				shader_list.Add(ColladaUtilities.FormatName(Path.GetFileNameWithoutExtension(shaderInfo.GetShaderName(shader_index)), " ", "_"));
-			// if portals are included add the portals shader to the names
-			if (bspInfo.IncludePortalsMesh())
-				shader_list.Add("portals");
-			// if fogplanes are included add the fogplanes shader to the names
-			if (bspInfo.IncludeFogPlanesMesh())
-				shader_list.Add("fogplanes");
+			Action<string> addMaterialRef = 
+				effectName =>
+				{
+					string name = ColladaUtilities.FormatName(Path.GetFileNameWithoutExtension(effectName), " ", "_");
+
+					materialReferences.Add(new MaterialReference(
+						ColladaUtilities.BuildUri(ColladaElement.FormatID<Fx.ColladaMaterial>(name)),
+						name));
+				};
+
+			if (mShaderDataProvider != null)
+			{
+                // create a list of every shader used 
+                if (mBSPDataProvider.IncludeRenderMesh)
+                {
+                    foreach (var effect in mShaderDataProvider.GetEffects())
+                    {
+                        addMaterialRef(effect.Name);
+                    }
+                }
+
+				// if portals are included add the portals shader to the names
+				if (mBSPDataProvider.IncludePortals)
+				{
+					addMaterialRef("portals");
+				}
+
+				// if fogplanes are included add the fogplanes shader to the names
+				if (mBSPDataProvider.IncludeFogPlanes)
+				{
+					addMaterialRef("fogplanes");
+				}
+			}
+
+			// Create a node with a geometry instance for all included geometry
+			H1.Tags.structure_bsp_group definition = mTagManager.TagDefinition as H1.Tags.structure_bsp_group;
+
+			Func<int, Core.ColladaNode> addGeometryInstance =
+				geometryIndex =>
+				{
+					string name = listGeometry[geometryIndex].Name;
+					Core.ColladaNode node = CreateNode(name, "", name, Enums.ColladaNodeType.NODE);
+
+					string url = ColladaUtilities.BuildUri(listGeometry[geometryIndex].ID);
+					node.Add(CreateInstanceGeometry(url, name, materialReferences));
+
+					return node;
+				};
 
 			int geometry_offset = 0;
-			if (bspInfo.IncludeRenderMesh())
+			if (mBSPDataProvider.IncludeRenderMesh)
 			{
 				// create geometry instance for all of the lightmaps
 				for (int i = 0; i < definition.Lightmaps.Count; i++)
-					CreateNodeInstanceGeometry(listGeometry[geometry_offset + i].Name, geometry_offset + i, shader_list);
+				{
+					listNode.Add(addGeometryInstance(geometry_offset + i));
+				}
 				geometry_offset += definition.Lightmaps.Count;
 			}
 
-			if (bspInfo.IncludePortalsMesh())
+			if (mBSPDataProvider.IncludePortals)
 			{
 				// create geometry instance for all of the portal meshes
 				for (int i = 0; i < definition.ClusterPortals.Count; i++)
-					CreateNodeInstanceGeometry(listGeometry[geometry_offset + i].Name, geometry_offset + i, shader_list);
+				{
+					listNode.Add(addGeometryInstance(geometry_offset + i));
+				}
 				geometry_offset += definition.ClusterPortals.Count;
 			}
 
-			if (bspInfo.IncludeFogPlanesMesh())
+			if (mBSPDataProvider.IncludeFogPlanes)
 			{
 				// create geometry instance for all of the fogplane meshes
 				for (int i = 0; i < definition.FogPlanes.Count; i++)
-					CreateNodeInstanceGeometry(listGeometry[geometry_offset + i].Name, geometry_offset + i, shader_list);
+				{
+					listNode.Add(addGeometryInstance(geometry_offset + i));
+				}
 				geometry_offset += definition.FogPlanes.Count;
 			}
 		}
@@ -349,17 +473,19 @@ namespace BlamLib.Render.COLLADA.Halo1
 		#endregion
 
 		#region Library Creation
+		///-------------------------------------------------------------------------------------------------
 		/// <summary>
-		/// Creates the library_visual_scenes element in the collada file. The node list is added under a node named "frame" since that is
-		/// required when creating new BSPs.
+		/// 	Creates the library_visual_scenes element in the collada file. The node list is added
+		/// 	under a node named "frame" since that is required when creating new BSPs.
 		/// </summary>
+		///-------------------------------------------------------------------------------------------------
 		void AddLibraryVisualScenes()
 		{
 			// add the main scene node
 			COLLADAFile.LibraryVisualScenes = new Core.ColladaLibraryVisualScenes();
 			COLLADAFile.LibraryVisualScenes.VisualScene = new List<Core.ColladaVisualScene>();
 			COLLADAFile.LibraryVisualScenes.VisualScene.Add(new Core.ColladaVisualScene());
-			COLLADAFile.LibraryVisualScenes.VisualScene[0].ID = ColladaElement.FormatID<Core.ColladaVisualScene>("main");
+			COLLADAFile.LibraryVisualScenes.VisualScene[0].ID = "main";
 			COLLADAFile.LibraryVisualScenes.VisualScene[0].Node = new List<Core.ColladaNode>();
 
 			Core.ColladaNode frame = new BlamLib.Render.COLLADA.Core.ColladaNode();
@@ -379,21 +505,23 @@ namespace BlamLib.Render.COLLADA.Halo1
 				System.Environment.UserName,
 				"OpenSauceIDE:ColladaBuilder",
 				"meter", 0.0254, Enums.ColladaUpAxisEnum.Z_UP);
-			
-			if(bspInfo.IncludeRenderMesh())
-			{
-				CollectBitmaps();
 
+			mBSPDataProvider = GetDataProvider<IHalo1BSPDataProvider>();
+			
+			if (mBSPDataProvider.IncludeRenderMesh)
+			{
 				CreateImageList();
 				CreateEffectList();
 				CreateMaterialList();
 			}
-			if(bspInfo.IncludePortalsMesh())
+
+			if (mBSPDataProvider.IncludePortals)
 			{
 				CreateEffectListPortals();
 				CreateMaterialListPortals();
 			}
-			if(bspInfo.IncludeFogPlanesMesh())
+
+			if (mBSPDataProvider.IncludeFogPlanes)
 			{
 				CreateEffectListFogPlanes();
 				CreateMaterialListFogPlanes();

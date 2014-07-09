@@ -8,6 +8,7 @@
 #include "Rasterizer/ShaderExtension/ShaderExtension.hpp"
 
 #if !PLATFORM_IS_DEDI
+
 #include <sys/stat.h>
 
 #include <blamlib/Halo1/bitmaps/bitmap_group.hpp>
@@ -24,7 +25,10 @@
 #include "Game/GameState.hpp"
 #include "Memory/MemoryInterface.hpp"
 #include "Rasterizer/GBuffer.hpp"
+#include "Rasterizer/Lightmaps.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
+
+using namespace Yelo::Configuration;
 
 namespace Yelo
 {
@@ -78,7 +82,7 @@ namespace Yelo
 
 			API_FUNC_NAKED static void Hook_RenderObject_ForceInvertBackfaceNormals()
 			{
-				static uint32 RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_DRAW_INVERT_BACKFACE_NORMALS_CHECK_RETN);
+				static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RASTERIZER_MODEL_DRAW_INVERT_BACKFACE_NORMALS_CHECK_RETN);
 
 				_asm{
 					mov     al, 1
@@ -91,8 +95,8 @@ namespace Yelo
 			void		SetTexture(IDirect3DDevice9* pDevice, uint16 sampler, datum_index bitmap_tag_index)
 			{
 				// get the bitmap datum pointer
-				TagGroups::s_bitmap_group*	group = TagGroups::TagGetForModify<TagGroups::s_bitmap_group>(bitmap_tag_index);
-				TagGroups::s_bitmap_data*	bitmap = CAST_PTR(TagGroups::s_bitmap_data*, &group->bitmaps[0]);
+				auto group = TagGroups::TagGetForModify<TagGroups::s_bitmap_group>(bitmap_tag_index);
+				auto bitmap = CAST_PTR(TagGroups::s_bitmap_data*, &group->bitmaps[0]);
 
 				// set the texture to the device
 				blam::rasterizer_set_texture_bitmap_data(sampler, bitmap);
@@ -100,7 +104,6 @@ namespace Yelo
 				pDevice->SetSamplerState(sampler, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
 				pDevice->SetSamplerState(sampler, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
 				pDevice->SetSamplerState(sampler, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
-
 			}
 
 			int PLATFORM_API BuildEffectCollectionPath(char* string_out, const char* format_string, const int major, const int minor)
@@ -127,19 +130,19 @@ namespace Yelo
 
 #pragma region Settings
 			class c_shader_extension_container
-				: public Configuration::c_configuration_container
+				: public c_configuration_container
 			{
 				class c_shader_model_settings
-					: public Yelo::Configuration::c_configuration_container
+					: public c_configuration_container
 				{
 				public:
-					Yelo::Configuration::c_configuration_value<bool> m_normal_maps;
-					Yelo::Configuration::c_configuration_value<bool> m_detail_normal_maps;
-					Yelo::Configuration::c_configuration_value<bool> m_specular_maps;
-					Yelo::Configuration::c_configuration_value<bool> m_specular_lighting;
+					c_configuration_value<bool> m_normal_maps;
+					c_configuration_value<bool> m_detail_normal_maps;
+					c_configuration_value<bool> m_specular_maps;
+					c_configuration_value<bool> m_specular_lighting;
 
 					c_shader_model_settings()
-						: Yelo::Configuration::c_configuration_container("Rasterizer.ShaderExtensions.Object")
+						: c_configuration_container("Object")
 						, m_normal_maps("NormalMaps", true)
 						, m_detail_normal_maps("DetailNormalMaps", true)
 						, m_specular_maps("SpecularMaps", true)
@@ -159,50 +162,110 @@ namespace Yelo
 					}
 				};
 
+				class c_shader_environment_settings
+					: public c_configuration_container
+				{
+				public:
+					c_configuration_value<bool> m_diffuse_directional_lightmaps;
+
+					c_shader_environment_settings()
+						: c_configuration_container("Environment")
+						, m_diffuse_directional_lightmaps("DiffuseDirectionalLightmaps", true)
+					{ }
+		
+				protected:
+					const std::vector<i_configuration_value* const> GetMembers() final override
+					{
+						return std::vector<i_configuration_value* const>
+						{
+							&m_diffuse_directional_lightmaps
+						};
+					}
+				};
+
 			public:
-				Configuration::c_configuration_value<bool> m_enabled;
+				c_configuration_value<bool> m_enabled;
 				c_shader_model_settings m_shader_model;
+				c_shader_environment_settings m_shader_environment;
 
 				c_shader_extension_container()
-					: Configuration::c_configuration_container("Rasterizer.ShaderExtensions")
+					: c_configuration_container("Rasterizer.ShaderExtensions")
 					, m_enabled("Enabled", true)
 					, m_shader_model()
+					, m_shader_environment()
 				{ }
 				
 			protected:
 				const std::vector<i_configuration_value* const> GetMembers() final override
 				{
-					return std::vector<i_configuration_value* const> { &m_enabled, &m_shader_model };
+					return std::vector<i_configuration_value* const>
+					{
+						&m_enabled,
+						&m_shader_model,
+						&m_shader_environment,
+					};
 				}
 			};
 
 			class c_settings_shaderextension
 				: public Settings::c_settings_singleton<c_shader_extension_container, c_settings_shaderextension>
 			{
-			public:
-				void PostLoad() final override
+#pragma region Model
+				void SetModelUsage()
 				{
-					Model::g_extension_usage_mask = Enums::_model_extension_usage_normal_map | Enums::_model_extension_usage_detail_normal |
-					Enums::_model_extension_usage_specular_map | Enums::_model_extension_usage_specular_lighting;
+					Model::g_extension_usage_mask = Flags::_shader_extension_usage_normal_map | Flags::_shader_extension_usage_detail_normal |
+					Flags::_shader_extension_usage_specular_map | Flags::_shader_extension_usage_specular_lighting;
 
-					int32 usage_mask = Enums::_model_extension_usage_none;
+					int32 usage_mask = Flags::_shader_extension_usage_none;
 					
 					auto& settings_instance = Get();
-					usage_mask |= (settings_instance.m_shader_model.m_normal_maps ? Enums::_model_extension_usage_normal_map : Enums::_model_extension_usage_none);
-					usage_mask |= (settings_instance.m_shader_model.m_detail_normal_maps ? Enums::_model_extension_usage_detail_normal : Enums::_model_extension_usage_none);
-					usage_mask |= (settings_instance.m_shader_model.m_specular_maps ? Enums::_model_extension_usage_specular_map : Enums::_model_extension_usage_none);
-					usage_mask |= (settings_instance.m_shader_model.m_specular_lighting ? Enums::_model_extension_usage_specular_lighting : Enums::_model_extension_usage_none);
+					usage_mask |= (settings_instance.m_shader_model.m_normal_maps ? Flags::_shader_extension_usage_normal_map : Flags::_shader_extension_usage_none);
+					usage_mask |= (settings_instance.m_shader_model.m_detail_normal_maps ? Flags::_shader_extension_usage_detail_normal : Flags::_shader_extension_usage_none);
+					usage_mask |= (settings_instance.m_shader_model.m_specular_maps ? Flags::_shader_extension_usage_specular_map : Flags::_shader_extension_usage_none);
+					usage_mask |= (settings_instance.m_shader_model.m_specular_lighting ? Flags::_shader_extension_usage_specular_lighting : Flags::_shader_extension_usage_none);
 
 					Model::g_extension_usage_mask &= usage_mask;
 				}
 
-				void PreSave() final override
+				void GetModelUsage()
 				{
 					auto& settings_instance = Get();
-					settings_instance.m_shader_model.m_normal_maps = (Model::g_extension_usage_mask & Enums::_model_extension_usage_normal_map) == Enums::_model_extension_usage_normal_map;
-					settings_instance.m_shader_model.m_detail_normal_maps = (Model::g_extension_usage_mask & Enums::_model_extension_usage_detail_normal) == Enums::_model_extension_usage_detail_normal;
-					settings_instance.m_shader_model.m_specular_maps = (Model::g_extension_usage_mask & Enums::_model_extension_usage_specular_map) == Enums::_model_extension_usage_specular_map;
-					settings_instance.m_shader_model.m_specular_lighting = (Model::g_extension_usage_mask & Enums::_model_extension_usage_specular_lighting) == Enums::_model_extension_usage_specular_lighting;
+					settings_instance.m_shader_model.m_normal_maps = TEST_FLAG(Model::g_extension_usage_mask, Enums::_shader_extension_usage_bit_normal_map);
+					settings_instance.m_shader_model.m_detail_normal_maps = TEST_FLAG(Model::g_extension_usage_mask, Enums::_shader_extension_usage_bit_detail_normal);
+					settings_instance.m_shader_model.m_specular_maps = TEST_FLAG(Model::g_extension_usage_mask, Enums::_shader_extension_usage_bit_specular_map);
+					settings_instance.m_shader_model.m_specular_lighting = TEST_FLAG(Model::g_extension_usage_mask, Enums::_shader_extension_usage_bit_specular_lighting);
+				}
+#pragma endregion
+
+#pragma region Environment
+				void SetEnvironmentUsage()
+				{
+					Environment::g_extension_usage_mask = Flags::_shader_extension_usage_directional_lightmaps;
+
+					int32 usage_mask = Flags::_shader_extension_usage_none;
+
+					usage_mask |= (Get().m_shader_environment.m_diffuse_directional_lightmaps ? Flags::_shader_extension_usage_directional_lightmaps : Flags::_shader_extension_usage_none);
+
+					Environment::g_extension_usage_mask &= usage_mask;
+				}
+
+				void GetEnvironmentUsage()
+				{
+					Get().m_shader_environment.m_diffuse_directional_lightmaps = TEST_FLAG(Environment::g_extension_usage_mask, Enums::_shader_extension_usage_bit_directional_lightmaps);
+				}
+#pragma endregion
+
+			public:
+				void PostLoad() final override
+				{
+					SetModelUsage();
+					SetEnvironmentUsage();
+				}
+
+				void PreSave() final override
+				{
+					GetModelUsage();
+					GetEnvironmentUsage();
 				}
 			};
 #pragma endregion

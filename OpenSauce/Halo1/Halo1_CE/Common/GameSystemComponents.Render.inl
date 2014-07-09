@@ -129,6 +129,31 @@
 #		define __GS_COMPONENT_DX9_RENDER			Networking::HTTP::Client::MapDownload::Render
 #		define __GS_COMPONENT_DX9_RELEASE			Networking::HTTP::Client::MapDownload::Release
 #	endif
+#elif	BOOST_PP_ITERATION() == 15
+#	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
+#		define __GS_COMPONENT_INITIALIZE					Render::Lightmaps::Initialize
+#		define __GS_COMPONENT_DISPOSE						Render::Lightmaps::Dispose
+#	endif
+#elif	BOOST_PP_ITERATION() == 16
+#	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
+#		define __GS_COMPONENT_INITIALIZE					Render::Sky::Initialize
+#		define __GS_COMPONENT_DISPOSE						Render::Sky::Dispose
+#	elif	__GS_COMPONENT == __GS_COMPONENT_MAP_LIFECYCLE
+#		define __GS_COMPONENT_INITIALIZE_FOR_NEW_MAP		Render::Sky::InitializeForNewMap
+#		define __GS_COMPONENT_DISPOSE_FROM_OLD_MAP			Render::Sky::DisposeFromOldMap
+#	endif
+#elif	BOOST_PP_ITERATION() == 17
+#	if		__GS_COMPONENT == __GS_COMPONENT_LIFECYCLE
+#		define __GS_COMPONENT_INITIALIZE					StructureBSP::Initialize
+#		define __GS_COMPONENT_DISPOSE						StructureBSP::Dispose
+#	elif	__GS_COMPONENT == __GS_COMPONENT_MAP_LIFECYCLE
+#		define __GS_COMPONENT_INITIALIZE_FOR_NEW_MAP		StructureBSP::InitializeForNewMap
+#	elif	__GS_COMPONENT == __GS_COMPONENT_GAMESTATE_LIFECYCLE
+#		define __GS_COMPONENT_INITIALIZE_FOR_NEW_GAME_STATE	StructureBSP::InitializeForNewGameState
+#		define __GS_COMPONENT_HANDLE_GAME_STATE_LIFECYCLE	StructureBSP::HandleGameStateLifeCycle
+#	elif	__GS_COMPONENT == __GS_COMPONENT_BSP_LIFECYCLE
+#		define __GS_COMPONENT_INITIALIZE_FOR_NEW_BSP		StructureBSP::InitializeForNewBSP
+#	endif
 #endif
 
 #include "Common/GameSystemComponent.IterationRoundEnd.inl"

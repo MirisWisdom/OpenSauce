@@ -24,7 +24,7 @@
 #define BOOST_PP_FILENAME_1 "Common/GameSystemComponents.GameState.inl"
 ??=include BOOST_PP_ITERATE()
 
-#define BOOST_PP_ITERATION_LIMITS (1, 3)
+#define BOOST_PP_ITERATION_LIMITS (1, 4)
 #define BOOST_PP_FILENAME_1 "Common/GameSystemComponents.Tags.inl"
 ??=include BOOST_PP_ITERATE()
 
@@ -37,7 +37,7 @@
 ??=include BOOST_PP_ITERATE()
 
 #if PLATFORM_IS_USER
-	#define BOOST_PP_ITERATION_LIMITS (1, 14)
+	#define BOOST_PP_ITERATION_LIMITS (1, 17)
 	#define BOOST_PP_FILENAME_1 "Common/GameSystemComponents.Render.inl"
 	??=include BOOST_PP_ITERATE()
 #endif
@@ -70,6 +70,7 @@
 #	elif	__GS_COMPONENT == __GS_COMPONENT_MAP_LIFECYCLE
 #	elif	__GS_COMPONENT == __GS_COMPONENT_GAMESTATE_LIFECYCLE
 #	elif	__GS_COMPONENT == __GS_COMPONENT_DX9_LIFECYCLE
+#	elif	__GS_COMPONENT == __GS_COMPONENT_BSP_LIFECYCLE
 #	endif
 #	include "Common/GameSystemComponent.IterationRoundEnd.inl"
 #elif	BOOST_PP_ITERATION() == 2
@@ -78,6 +79,7 @@
 #	elif	__GS_COMPONENT == __GS_COMPONENT_MAP_LIFECYCLE
 #	elif	__GS_COMPONENT == __GS_COMPONENT_GAMESTATE_LIFECYCLE
 #	elif	__GS_COMPONENT == __GS_COMPONENT_DX9_LIFECYCLE
+#	elif	__GS_COMPONENT == __GS_COMPONENT_BSP_LIFECYCLE
 #	endif
 #	include "Common/GameSystemComponent.IterationRoundEnd.inl"
 #endif
