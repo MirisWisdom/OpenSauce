@@ -328,11 +328,11 @@ namespace Yelo
 			return loaded_tag_index;
 		}
 
-		bool PLATFORM_API tag_reference_resolve(tag_reference* reference)
+		bool PLATFORM_API tag_reference_resolve(_Inout_ tag_reference* reference)
 		{
 			YELO_ASSERT(reference);
 
-			bool success = true;
+			bool success = false;
 			if(reference->group_tag != NONE && !is_null_or_empty(reference->name))
 			{
 				reference->tag_index = tag_load(reference->group_tag, reference->name, 0);
@@ -340,6 +340,19 @@ namespace Yelo
 			}
 			else
 				reference->tag_index = datum_index::null;
+
+			return success;
+		}
+		bool tag_reference_resolve(_Inout_ tag_reference& reference, tag expected_group_tag)
+		{
+			bool success = false;
+			if (reference.group_tag == expected_group_tag && !is_null_or_empty(reference.name))
+			{
+				reference.tag_index = tag_load(reference.group_tag, reference.name, 0);
+				success = !reference.tag_index.IsNull();
+			}
+			else
+				reference.tag_index = datum_index::null;
 
 			return success;
 		}

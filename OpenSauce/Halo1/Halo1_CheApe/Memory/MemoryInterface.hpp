@@ -13,9 +13,9 @@
 //////////////////////////////////////////////////////////////////////////
 // Value markup system
 //
-// [g_value/addr]	: value for use in Guerilla builds
-// [t_valueaddr]	: value for use in Tool builds
-// [s_valueaddr]	: value for use in Sapien builds
+// [g_value]	: value for use in Guerilla builds
+// [t_value]	: value for use in Tool builds
+// [s_value]	: value for use in Sapien builds
 //
 //////////////////////////////////////////////////////////////////////////
 
@@ -26,3 +26,5 @@
 #elif PLATFORM_TYPE == PLATFORM_SAPIEN
 	#define PLATFORM_VALUE(g_value, t_value, s_value) s_value
 #endif
+
+#define PLATFORM_PTR(type, g_value, t_value, s_value) CAST_PTR(type, PLATFORM_VALUE(g_value, t_value, s_value))
