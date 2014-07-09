@@ -11,9 +11,11 @@
 #include <blamlib/Halo1/math/periodic_functions.hpp>
 #include <blamlib/Halo1/memory/byte_swapping.hpp>
 #include <blamlib/Halo1/memory/memory_pool.hpp>
+#include <blamlib/Halo1/saved_games/game_state.hpp>
 #include <blamlib/Halo1/tag_files/files.hpp>
 #include <blamlib/Halo1/tag_files/tag_files.hpp>
 #include <YeloLib/tag_files/tag_groups_base_yelo.hpp>
+#include <YeloLib/Halo1/saved_games/game_state_yelo.hpp>
 
 namespace Yelo
 {
@@ -37,6 +39,16 @@ namespace Yelo
 #define __EL_INCLUDE_ID			__EL_INCLUDE_GAME
 #define __EL_INCLUDE_FILE_ID	__EL_GAME_ENGINE_FUNCTIONS
 #include "Memory/_EngineLayout.inl"
+
+	namespace GameState
+	{
+		// TODO: code stolen from Halo1_CE. needs to eventually be setup in YeloLib
+		static bool g_yelo_game_state_enabled;
+		bool YeloGameStateEnabled()
+		{
+			return g_yelo_game_state_enabled;
+		}
+	};
 
 	//////////////////////////////////////////////////////////////////////////
 	// cseries
