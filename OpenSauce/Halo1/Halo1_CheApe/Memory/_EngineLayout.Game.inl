@@ -9,6 +9,14 @@
 //////////////////////////////////////////////////////////////////////////
 // EngineFunctions.cpp
 #if __EL_INCLUDE_FILE_ID == __EL_GAME_ENGINE_FUNCTIONS
+	namespace GameState
+	{
+		ENGINE_PTR(s_game_state_globals, game_state_globals,			0xCB2888, 0xFC9038, 0xBD7D24);
+
+
+		s_game_state_globals* GameStateGlobals()						PTR_IMP_GET2(game_state_globals);
+	};
+
 	namespace GameUI
 	{
 		ENGINE_DPTR(s_first_person_weapons, first_person_weapons, PTR_NULL, 0x10C8EAC, 0xE00D44);

@@ -230,7 +230,7 @@ namespace Yelo
 			_ui_widget_event_left_analog_stick_down,
 			_ui_widget_event_left_analog_stick_left,
 			_ui_widget_event_left_analog_stick_right,
-			_ui_widget_event_left_analog_stick_up_1,
+			_ui_widget_event_right_analog_stick_up,
 			_ui_widget_event_right_analog_stick_down,
 			_ui_widget_event_right_analog_stick_left,
 			_ui_widget_event_right_analog_stick_right,
