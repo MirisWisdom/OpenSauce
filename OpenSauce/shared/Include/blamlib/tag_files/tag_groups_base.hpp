@@ -76,7 +76,15 @@ namespace Yelo
 
 		datum_index PLATFORM_API tag_reference_try_and_get(const tag_reference* reference);
 
-		bool PLATFORM_API tag_reference_resolve(tag_reference* reference);
+		bool PLATFORM_API tag_reference_resolve(_Inout_ tag_reference* reference);
+
+		// non-standard overload of the above resolve()
+		bool tag_reference_resolve(_Inout_ tag_reference& reference, tag expected_group_tag);
+		template<typename T>
+		bool tag_reference_resolve(_Inout_ tag_reference& reference)
+		{
+			return tag_reference_resolve(reference, T::k_group_tag);
+		}
 	};
 
 

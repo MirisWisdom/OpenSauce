@@ -135,7 +135,7 @@ namespace Yelo
 				TAG_FIELD(real_vector3d, instantaneous_acceleration3d);
 			};
 
-			inline bool UseInstantaneousAcceleration3D() const
+			bool UseInstantaneousAcceleration3D() const
 			{
 				return TEST_FLAG(flags, Flags::_damage_use_3d_acceleration_yelo_bit);
 			}

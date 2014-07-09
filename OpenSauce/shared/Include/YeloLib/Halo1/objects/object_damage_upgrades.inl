@@ -39,6 +39,8 @@ namespace Yelo
 			using namespace Enums;
 
 			__asm {
+				fstp	st // undo the object_definition->object.acceleration_scale load
+
 				push	ecx // object type
 				push	PLATFORM_ENGINE_VALUE(ebp,ebx) // object datum
 

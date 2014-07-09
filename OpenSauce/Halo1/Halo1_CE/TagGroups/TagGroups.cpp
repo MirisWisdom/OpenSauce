@@ -49,7 +49,7 @@ namespace Yelo
 	{
 		cstring PLATFORM_API tag_get_name(datum_index tag_index)
 		{
-			if (Scenario::GetYelo()->flags.cache_is_protected_bit)
+			if (Scenario::GetYelo()->IsCacheProtected())
 				return "PROTECTED";
 
 			if (tag_index.IsNull())
