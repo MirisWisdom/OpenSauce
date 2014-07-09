@@ -25,5 +25,10 @@ namespace Yelo
 			byte unit_grenade_types_count;			// 0x6
 			PAD8;
 		}; BOOST_STATIC_ASSERT( sizeof(s_yelo_header_data) <= 0x20 );
+
+
+		// Are OS-modified game states in effect?
+		// If so, these will render game saves incompatible with stock games
+		bool YeloGameStateEnabled();
 	};
 };

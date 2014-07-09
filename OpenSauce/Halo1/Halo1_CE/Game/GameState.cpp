@@ -15,6 +15,8 @@
 #include <blamlib/Halo1/saved_games/game_state_structures.hpp>
 
 #include <YeloLib/Halo1/open_sauce/blam_memory_upgrades.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 
 #include "Memory/MemoryInterface.hpp"
@@ -26,9 +28,6 @@
 #include "Networking/GameSpyApi.hpp"
 #include "Objects/Units.hpp"
 #include "Rasterizer/PostProcessing/PostProcessing.hpp"
-
-#include "TagGroups/TagGroups.hpp"
-#include "TagGroups/project_yellow_definitions.hpp"
 
 namespace Yelo
 {
@@ -194,9 +193,9 @@ namespace Yelo
 		static void InitializeForNewMapEpilogue()
 		{
 			// Update the gravity based on the scenario's yelo tag settings
-			if(!TagGroups::_global_yelo->IsNull())
+			if(!Scenario::GetYelo()->IsNull())
 			{
-				real gravity_scale = TagGroups::_global_yelo->physics.gravity_scale;
+				real gravity_scale = Scenario::GetYelo()->physics.gravity_scale;
 				if(gravity_scale > 0 && gravity_scale != 1.0f)
 					Physics()->SetGravityScale(gravity_scale);
 			}

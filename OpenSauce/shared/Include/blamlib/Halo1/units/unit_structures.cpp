@@ -7,6 +7,8 @@
 #include "Common/Precompile.hpp"
 #include <blamlib/Halo1/units/unit_structures.hpp>
 
+#include <blamlib/Halo1/saved_games/game_state_structures.hpp>
+
 namespace Yelo
 {
 	namespace Objects
@@ -16,6 +18,40 @@ namespace Yelo
 
 		const size_t s_unit_data::k_offset_zoom_level_yelo = FIELD_OFFSET(s_unit_datum, unit.zoom_level_yelo);
 		const size_t s_unit_data::k_offset_desired_zoom_level_yelo = FIELD_OFFSET(s_unit_datum, unit.desired_zoom_level_yelo);
+
+		byte* s_unit_data::GetYeloGrenade2Count()
+		{
+			const GameState::s_yelo_header_data& yelo_header = GameState::GameStateGlobals()->header->yelo;
+
+			return GameState::YeloGameStateEnabled() && yelo_header.unit_grenade_types_count >= Enums::_unit_grenade_type_yelo2+1
+				? &this->grenade_counts[Enums::_unit_grenade_type_yelo2] 
+				: nullptr;
+		}
+		byte* s_unit_data::GetYeloGrenade3Count()
+		{
+			const GameState::s_yelo_header_data& yelo_header = GameState::GameStateGlobals()->header->yelo;
+
+			return GameState::YeloGameStateEnabled() && yelo_header.unit_grenade_types_count >= Enums::_unit_grenade_type_yelo3+1
+				? &this->grenade_counts[Enums::_unit_grenade_type_yelo3] 
+				: nullptr;
+		}
+
+		byte* s_unit_data::GetZoomLevel()
+		{
+			const GameState::s_yelo_header_data& yelo_header = GameState::GameStateGlobals()->header->yelo;
+
+			return GameState::YeloGameStateEnabled() && yelo_header.unit_grenade_types_count > Enums::k_unit_grenade_types_count
+				? &this->zoom_level_yelo 
+				: &this->zoom_level;
+		}
+		byte* s_unit_data::GetDesiredZoomLevel()
+		{
+			const GameState::s_yelo_header_data& yelo_header = GameState::GameStateGlobals()->header->yelo;
+
+			return GameState::YeloGameStateEnabled() && yelo_header.unit_grenade_types_count > Enums::k_unit_grenade_types_count
+				? &this->desired_zoom_level_yelo 
+				: &this->desired_zoom_level;
+		}
 	};
 
 	namespace blam

@@ -13,21 +13,6 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
-		bool unit_seat::HasYeloExtensions() const
-		{
-			return yelo_extensions.Count != 0;
-		}
-		bool unit_seat::HasBoardingTargetSeat() const
-		{
-			return	HasYeloExtensions() &&
-					yelo_extensions[0].boarding.target_seat_index != NONE;
-		}
-		const unit_seat_boarding& unit_seat::GetSeatBoarding() const
-		{
-			YELO_ASSERT(HasYeloExtensions());
-
-			return yelo_extensions[0].boarding;
-		}
 #if PLATFORM_IS_EDITOR
 		bool unit_seat::Postprocess(Enums::tag_postprocess_mode mode,
 			datum_index tag_index)
@@ -38,7 +23,7 @@ namespace Yelo
 			const long_flags k_unit_seat_requires_boarding_flags_mask =
 				FLAG(_unit_seat_boarding_seat_bit) |
 				FLAG(_unit_seat_boarding_enters_seat_bit) |
-				FLAG(_unit_seat_boarding_ejects_seat_bit);
+				FLAG(_unit_seat_boarding_ejects_seat_yelo_bit);
 
 			if ((flags & k_unit_seat_requires_boarding_flags_mask) != 0 && !HasBoardingTargetSeat())
 			{

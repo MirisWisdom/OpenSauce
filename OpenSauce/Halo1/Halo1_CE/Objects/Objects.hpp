@@ -179,15 +179,6 @@ namespace Yelo
 		// that is returned by [object_index]'s GetNextObjectIndex
 		datum_index GetNextObjectN(datum_index object_index, int32 n = 0);
 
-		TagGroups::s_object_definition const* GetObjectDefinition(datum_index object_index);
-		template<typename TObjectDefinition>
-		TObjectDefinition const* GetObjectDefinition(datum_index object_index)
-		{
-			return CAST_PTR(TObjectDefinition const*, GetObjectDefinition(object_index));
-		}
-
-		TagGroups::model_animation_graph const* GetObjectAnimations(datum_index object_index);
-
 		real GetObjectDistanceFromPoint(datum_index object_index, const real_vector3d& dest_point);
 
 		// Delete all children of the specified type(s) on the parent object
@@ -196,9 +187,6 @@ namespace Yelo
 		void DetachChildrenByType(datum_index parent, long_flags object_type_mask);
 
 		size_t PredictMemoryPoolUsage(Enums::object_type type, int32 node_count, bool include_yelo_upgrades = false);
-		
-		// Checks to see if [unit_index_to_test] is an enemy of [unit_index]
-		bool ObjectIsEnemy(datum_index object_index, datum_index object_index_to_test);
 	};
 };
 

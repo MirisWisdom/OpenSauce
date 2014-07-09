@@ -25,7 +25,6 @@
 #include "Memory/MemoryInterface.hpp"
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
-#include "TagGroups/TagGroups.hpp"
 
 namespace Yelo
 {

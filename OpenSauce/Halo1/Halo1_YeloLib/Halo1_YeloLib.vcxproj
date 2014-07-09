@@ -110,7 +110,10 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\cseries\memory_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_library_definitions_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\memory\constant_pool.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_scenario.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\c_settings_cheape.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\units_yelo.hpp" />
+    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\units\unit_definitions_yelo.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_manager.hpp" />
     <ClInclude Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_singleton.hpp" />
     <ClInclude Include="Common\Platform.hpp" />
@@ -267,7 +270,10 @@
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\property_tree\property_tree_logging.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\configuration\type_containers\c_real_vector3d_container.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\hs\hs_library_definitions_yelo.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_scenario.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\settings\c_settings_cheape.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\units_yelo.cpp" />
+    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\units\unit_definitions_yelo.cpp" />
     <ClCompile Include="..\..\shared\Include\YeloLib\open_sauce\settings\c_settings_manager.cpp" />
     <ClCompile Include="..\..\shared\Include\zlib\adler32.c">
       <PrecompiledHeader />
@@ -436,7 +442,9 @@
     <Xml Include="..\..\shared\Halo1\CheApe\multilingual_unicode_string_list.xml" />
     <Xml Include="..\..\shared\Halo1\CheApe\project_yellow.xml" />
     <Xml Include="..\..\shared\Halo1\CheApe\project_yellow_globals.xml" />
-    <Xml Include="..\..\shared\Halo1\CheApe\project_yellow_globals_cv.xml" />
+    <Xml Include="..\..\shared\Halo1\CheApe\project_yellow_globals_cv.xml">
+      <SubType>Designer</SubType>
+    </Xml>
     <Xml Include="..\..\shared\Halo1\CheApe\project_yellow_includes.xml" />
     <Xml Include="..\..\shared\Halo1\CheApe\project_yellow_scripting.xml" />
     <Xml Include="..\..\shared\Halo1\CheApe\project_yellow_shared.xml" />

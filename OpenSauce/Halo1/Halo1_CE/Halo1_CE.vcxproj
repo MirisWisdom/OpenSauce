@@ -257,7 +257,6 @@
     <ClCompile Include="Rasterizer\PostProcessing\MotionBlur\c_settings_motionblur.cpp" />
     <ClCompile Include="Settings\Settings.cpp" />
     <ClCompile Include="TagGroups\CacheFiles.cpp" />
-    <ClCompile Include="TagGroups\project_yellow_definitions.cpp" />
     <ClCompile Include="TagGroups\TagGroups.cpp" />
     <ClCompile Include="Rasterizer\GBuffer.cpp" />
     <ClCompile Include="Rasterizer\Rasterizer.cpp" />
@@ -370,7 +369,6 @@
     <ClInclude Include="Rasterizer\PostProcessing\MotionBlur\c_settings_motionblur.hpp" />
     <ClInclude Include="Settings\Settings.hpp" />
     <ClInclude Include="TagGroups\CacheFiles.hpp" />
-    <ClInclude Include="TagGroups\project_yellow_definitions.hpp" />
     <ClInclude Include="TagGroups\TagGroups.hpp" />
     <ClInclude Include="Memory\_EngineLayoutDefinitions.hpp" />
     <ClInclude Include="resource.h" />
