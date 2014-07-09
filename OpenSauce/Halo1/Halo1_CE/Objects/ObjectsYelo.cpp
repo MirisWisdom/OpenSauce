@@ -21,12 +21,14 @@
 #include <blamlib/Halo1/units/unit_structures.hpp>
 #include <blamlib/Halo1/items/weapon_structures.hpp>
 
+#include <YeloLib/Halo1/open_sauce/project_yellow_global_cv_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 #include <YeloLib/Halo1/shell/shell_windows_command_line.hpp>
 #include <YeloLib/configuration/c_configuration_container.hpp>
 #include <YeloLib/configuration/c_configuration_value.hpp>
 #include <YeloLib/open_sauce/settings/c_settings_singleton.hpp>
-
-#include "TagGroups/project_yellow_definitions.hpp"
 
 #include "Objects/ObjectFieldDefinitions.hpp"
 #include "Objects/Equipment.hpp"
@@ -38,7 +40,6 @@
 #include "Memory/MemoryInterface.hpp"
 #include "Networking/Networking.hpp"
 #include "Scenario/Scenario.hpp"
-#include "TagGroups/TagGroups.hpp"
 
 #if !PLATFORM_IS_DEDI
 	#include "Interface/YeloSettingsInterface.hpp"
@@ -231,11 +232,11 @@ namespace Yelo
 		}
 		void InitializeForNewMap()
 		{
-			bool objects_update_ignore_player_pvs = Scenario::Scenario()->type == Enums::_scenario_type_main_menu && 
-				TagGroups::_global_yelo->flags.game_updates_ignore_player_pvs_hack_bit;
+			bool objects_update_ignore_player_pvs = blam::global_scenario_get()->type == Enums::_scenario_type_main_menu && 
+				Scenario::GetYelo()->flags.game_updates_ignore_player_pvs_hack_bit;
 			ObjectsUpdateIgnorePlayerPvs(objects_update_ignore_player_pvs);
 
-			bool use_jump_penalty_fix = TagGroups::_global_yelo_globals->flags.force_game_to_use_stun_jumping_penalty_bit;
+			bool use_jump_penalty_fix = Scenario::GetYeloGlobals()->flags.force_game_to_use_stun_jumping_penalty_bit;
 			UseBipedJumpPenalty(use_jump_penalty_fix);
 
 			Units::InitializeForNewMap();
@@ -339,7 +340,7 @@ namespace Yelo
 			{
 				s_object_data* object = blam::object_get(object_index);
 
-				return TagGroups::TagGet<TagGroups::s_object_definition>(object->definition_index);
+				return blam::tag_get<TagGroups::s_object_definition>(object->definition_index);
 			}
 
 			return nullptr;
@@ -352,7 +353,7 @@ namespace Yelo
 				s_object_data* object = blam::object_get(object_index);
 				datum_index tag_index = object->animation.definition_index;
 
-				return TagGroups::TagGet<TagGroups::model_animation_graph>(tag_index);
+				return blam::tag_get<TagGroups::model_animation_graph>(tag_index);
 			}
 
 			return nullptr;
@@ -440,21 +441,6 @@ namespace Yelo
 			}
 
 			return object_type_size + total_node_memory_size + total_headers_size;
-		}
-
-		bool ObjectIsEnemy(datum_index object_index, datum_index object_index_to_test)
-		{
-			if (!object_index.IsNull() && !object_index_to_test.IsNull())
-			{
-				s_object_data* object = blam::object_get(object_index);
-				s_object_data* object_to_test = blam::object_get(object_index_to_test);
-
-				int16 object_team = object->owner_team;
-				int16 object_to_test_team = object_to_test->owner_team;
-
-				return blam::game_team_is_enemy(object_team, object_to_test_team);
-			}
-			return false;
 		}
 	};
 

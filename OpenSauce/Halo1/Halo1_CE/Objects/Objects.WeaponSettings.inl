@@ -125,7 +125,7 @@ namespace Yelo
 					datum_index definition_index = weapon->object.definition_index;
 					if(!definition_index.IsNull())
 					{
-						const auto* definition = TagGroups::TagGet<TagGroups::s_item_definition>(definition_index);
+						const auto* definition = blam::tag_get<TagGroups::s_item_definition>(definition_index);
 						if(definition != nullptr) // WTF! HOW? idk. also, lazy :(
 						{
 							int16 msg_index = definition->item.message_index;

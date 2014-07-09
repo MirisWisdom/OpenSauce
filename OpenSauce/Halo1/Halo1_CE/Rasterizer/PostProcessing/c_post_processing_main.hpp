@@ -14,7 +14,6 @@
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingCacheComponent.hpp"
 #include "Rasterizer/PostProcessing/Interfaces/IPostProcessingUpdatable.hpp"
 
-#include "TagGroups/TagGroups.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
 #include "Rasterizer/RenderTargetChain.hpp"
 #include "Rasterizer/GBuffer.hpp"

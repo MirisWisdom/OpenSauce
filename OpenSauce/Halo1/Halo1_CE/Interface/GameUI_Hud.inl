@@ -233,11 +233,11 @@ namespace Yelo
 		///-------------------------------------------------------------------------------------------------
 		static void PLATFORM_API RenderWidgetRecursiveHook(datum_index* widget_datum_index, void* arg_1, void* arg_2,void* arg_3, void* arg_4)
 		{
-			typedef void (PLATFORM_API *function_t)(void*, void*, void*, void*, void*);
+			typedef void (PLATFORM_API* function_t)(void*, void*, void*, void*, void*);
 			static const function_t render_widget_recursive = CAST_PTR(function_t, GET_FUNC_VPTR(RENDER_WIDGET_RECURSIVE));
 
 			// get the widget tag
-			const auto* widget = TagGroups::TagGet<TagGroups::ui_widget_definition>(*widget_datum_index);
+			const auto* widget = blam::tag_get<TagGroups::ui_widget_definition>(*widget_datum_index);
 
 			// do not scale the widget if it is full screen
 			bool scale_widget = ((widget->bounds.right - widget->bounds.left) != 640) && ((widget->bounds.bottom - widget->bounds.top) != 480);
@@ -258,7 +258,7 @@ namespace Yelo
 		///-------------------------------------------------------------------------------------------------
 		static void PLATFORM_API HudRenderPlayersHook()
 		{
-			typedef void (PLATFORM_API *function_t)();
+			typedef void (PLATFORM_API* function_t)();
 			static const function_t render_players = CAST_PTR(function_t, GET_FUNC_VPTR(HUD_RENDER_PLAYERS));
 
 			// disable the hud offset when rendering player indicators, reenable afterwards
@@ -275,7 +275,7 @@ namespace Yelo
 		///-------------------------------------------------------------------------------------------------
 		static void PLATFORM_API HudRenderNavPointsHook(void* arg0)
 		{
-			typedef void (PLATFORM_API *function_t)(void*);
+			typedef void (PLATFORM_API* function_t)(void*);
 			static const function_t render_nav_points = CAST_PTR(function_t, GET_FUNC_VPTR(HUD_RENDER_NAV_POINTS));
 
 			// disable the hud offset when rendering nav points, reenable afterwards
@@ -291,7 +291,7 @@ namespace Yelo
 		///-------------------------------------------------------------------------------------------------
 		static void PLATFORM_API HudRenderScoreboardInGameHook()
 		{
-			typedef void (PLATFORM_API *function_t)();
+			typedef void (PLATFORM_API* function_t)();
 			static const function_t render_scoreboard_ingame = CAST_PTR(function_t, GET_FUNC_VPTR(HUD_RENDER_SCOREBOARD_INGAME));
 
 			// switch to the widget screen scaling when rendering the scoreboard, switch back to hud scaling afterwards
@@ -307,7 +307,7 @@ namespace Yelo
 		///-------------------------------------------------------------------------------------------------
 		static void PLATFORM_API HudRenderScoreboardPostGameHook()
 		{
-			typedef void (PLATFORM_API *function_t)();
+			typedef void (PLATFORM_API* function_t)();
 			static const function_t render_scoreboard_postgame = CAST_PTR(function_t, GET_FUNC_VPTR(HUD_RENDER_SCOREBOARD_POSTGAME));
 
 			// switch to the widget screen scaling when rendering the scoreboard, switch back to hud scaling afterwards
@@ -489,6 +489,7 @@ namespace Yelo
 		///-------------------------------------------------------------------------------------------------
 		void Initialize()
 		{
+			// TODO: ranged for loop
 			// hook the screen projection matrix for widgets, text and the motion tracker
 			for(int i = 0; i < NUMBEROF(K_RASTERIZER_RENDER_UI_SET_SCREENPROJ_CALLS); i++)
 			{
@@ -506,11 +507,13 @@ namespace Yelo
 			Memory::WriteRelativeCall(HudRenderScoreboardPostGameHook, GET_FUNC_VPTR(HUD_RENDER_SCOREBOARD_POSTGAME_CALL), true);
 			Memory::WriteRelativeCall(HudRenderScoreboardInGameHook, GET_FUNC_VPTR(HUD_RENDER_SCOREBOARD_INGAME_CALL), true);
 
+			// TODO: ranged for loop
 			for (int i = 0; i < NUMBEROF(K_RENDER_WIDGET_RECURSIVE_CALLS); i++)
 			{
 				Memory::WriteRelativeCall(RenderWidgetRecursiveHook, K_RENDER_WIDGET_RECURSIVE_CALLS[i], true);
 			}
 
+			// TODO: ranged for loop
 			// point the half width values for damage indicators to a float we modify
 			for (int i = 0; i < NUMBEROF(K_HUD_POINT_DAMAGE_ANCHOR_HALF_WIDTH_PTRS); i++)
 			{
@@ -535,7 +538,7 @@ namespace Yelo
 			// if the crosshair should be hidden modify the jump that skips it otherwise ensure it is not skipped
 			if (g_hud_globals.m_flags.show_crosshair)
 			{
-				GET_PTR(RENDER_CROSSHAIRS_DISABLE_MOD) = 0x840f;	// set to jz
+				GET_PTR(RENDER_CROSSHAIRS_DISABLE_MOD) = 0x840F;	// set to jz
 			}
 			else
 			{

@@ -5,7 +5,8 @@
 	See license\OpenSauce\Halo1_CE for specific license information
 */
 #pragma once
-#include "TagGroups/project_yellow_definitions.hpp"
+
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 
 namespace Yelo
 {

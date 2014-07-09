@@ -11,7 +11,6 @@
 #include "Rasterizer/PostProcessing/Generic/Internal/c_settings_internal.hpp"
 #include "Rasterizer/PostProcessing/c_post_processing_main.hpp"
 #include "Rasterizer/PostProcessing/Fade/c_system_fade.hpp"
-#include "TagGroups/TagGroups.hpp"
 
 namespace Yelo
 {

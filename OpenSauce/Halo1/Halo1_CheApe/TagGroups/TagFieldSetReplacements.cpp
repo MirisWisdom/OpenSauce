@@ -62,7 +62,7 @@ namespace Yelo
 				k_reserved_flag_string;
 			unit_seat_flags_yelo_strings[Flags::_unit_seat_reserved19_bit] =
 				k_reserved_flag_string;
-			unit_seat_flags_yelo_strings[Flags::_unit_seat_boarding_ejects_seat_bit] =
+			unit_seat_flags_yelo_strings[Flags::_unit_seat_boarding_ejects_seat_yelo_bit] =
 				"boarding ejects seat";
 
 			flags_list->strings = unit_seat_flags_yelo_strings;

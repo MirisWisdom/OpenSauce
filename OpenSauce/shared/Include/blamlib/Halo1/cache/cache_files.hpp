@@ -65,10 +65,22 @@ namespace Yelo
 		cstring MapsDirectory();
 	};
 
+	namespace TagGroups
+	{
+		struct scenario_structure_bsp_reference;
+
+		Cache::s_cache_tag_header* Index();
+		Cache::s_cache_tag_instance const* Instances(); // Don't directly use this for getting tags
+	};
+
 	namespace blam
 	{
 		bool PLATFORM_API cache_file_read_request(/*datum_index tag_index,*/ // unused, and optimized out, at runtime
 			uint32 offset, uint32 size, void* buffer, const Cache::s_cache_file_request_params& params, 
 			bool block = true, Enums::cache_file_request_source source = Enums::_cache_file_request_source_open_map);
+
+		void cache_file_structure_bsp_unload(TagGroups::scenario_structure_bsp_reference* reference);
+
+		bool cache_file_structure_bsp_load(TagGroups::scenario_structure_bsp_reference* reference);
 	};
 };

@@ -27,7 +27,6 @@
 #include "Rasterizer/GBuffer.hpp"
 #include "Rasterizer/Lightmaps.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
-#include "TagGroups/TagGroups.hpp"
 
 using namespace Yelo::Configuration;
 

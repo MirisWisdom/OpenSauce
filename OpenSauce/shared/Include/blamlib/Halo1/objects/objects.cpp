@@ -7,6 +7,7 @@
 #include "Common/Precompile.hpp"
 #include <blamlib/Halo1/objects/objects.hpp>
 
+#include <blamlib/Halo1/game/game_allegiance.hpp>
 #include <blamlib/Halo1/objects/object_structures.hpp>
 #include <blamlib/Halo1/scenario/scenario.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
@@ -15,22 +16,6 @@ namespace Yelo
 {
 	namespace Objects
 	{
-		void s_object_data::CopyToPlacementData(s_object_placement_data& data) const
-		{
-			data.player_index = player_index;
-			data.owner_object_index = owner_object_index;
-			std::memcpy(&data.position,				&position, sizeof(position));
-			std::memcpy(&data.transitional_velocity,&transitional_velocity, sizeof(transitional_velocity));
-			std::memcpy(&data.forward,				&forward, sizeof(forward));
-			std::memcpy(&data.up,					&up, sizeof(up));
-			std::memcpy(&data.angular_velocity,		&angular_velocity, sizeof(angular_velocity));
-		}
-
-		bool s_object_data::VerifyType(long_flags type_mask) const
-		{
-			return TEST_FLAG( type_mask, type );
-		}
-
 		bool c_object_iterator::operator!=(const c_object_iterator& other) const
 		{
 			if (other.m_state.IsEndHack())
@@ -39,6 +24,17 @@ namespace Yelo
 				return other.m_object != nullptr;
 
 			return this->m_object != other.m_object;
+		}
+
+		bool ObjectIsEnemy(datum_index object_index, datum_index object_index_to_test)
+		{
+			if (object_index.IsNull() || object_index_to_test.IsNull())
+				return false;
+
+			s_object_data* object = blam::object_get(object_index);
+			s_object_data* object_to_test = blam::object_get(object_index_to_test);
+
+			return blam::game_team_is_enemy(object->owner_team, object_to_test->owner_team);
 		}
 	};
 

@@ -8,6 +8,11 @@
 
 namespace Yelo
 {
+	namespace TagGroups
+	{
+		struct model_animation_graph;
+	};
+
 	namespace Enums
 	{
 		enum animation_update_kind : long_enum {

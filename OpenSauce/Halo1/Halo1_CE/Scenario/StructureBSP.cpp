@@ -10,6 +10,7 @@
 #if !PLATFORM_IS_DEDI
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 #include <blamlib/Halo1/structures/structure_bsp_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #include "Game/GameState.hpp"
 #include "Common/GameSystemDefinitions.hpp"
@@ -19,7 +20,6 @@
 #include "Rasterizer/Sky.hpp"
 #include "Scenario/Scenario.hpp"
 #include "Scenario/ScenarioInfo.hpp"
-#include "TagGroups/project_yellow_definitions.hpp"
 
 namespace Yelo
 {

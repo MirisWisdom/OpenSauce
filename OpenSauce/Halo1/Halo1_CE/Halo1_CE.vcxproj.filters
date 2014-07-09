@@ -1,12 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include=".YeloLib\time\interpolation">
-      <UniqueIdentifier>{ae62865a-cc50-4192-bd20-3305a31d38d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include=".YeloLib\time\sequence">
-      <UniqueIdentifier>{d57d4a5e-4ad9-471a-8338-d8868b7f860c}</UniqueIdentifier>
-    </Filter>
     <ClInclude Include="Rasterizer\Lightmaps.hpp">
       <Filter>Rasterizer</Filter>
     </ClInclude>
@@ -19,24 +13,6 @@
     <ClInclude Include="Scenario\ScenarioInfo.hpp">
       <Filter>Scenario</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\c_interp_base.hpp">
-      <Filter>.YeloLib\time\interpolation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\c_interp_function.hpp">
-      <Filter>.YeloLib\time\interpolation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\c_interp_linear.hpp">
-      <Filter>.YeloLib\time\interpolation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\interpolation.hpp">
-      <Filter>.YeloLib\time\interpolation</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\sequence\c_transition_sequence_controller.hpp">
-      <Filter>.YeloLib\time\sequence</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\i_interpolator.hpp">
-      <Filter>.YeloLib\time\interpolation</Filter>
-    </ClInclude>
     <ClInclude Include="Scenario\StructureBSP.hpp">
       <Filter>Scenario</Filter>
     </ClInclude>
@@ -48,9 +24,6 @@
     </ClCompile>
     <ClCompile Include="Scenario\ScenarioInfo.cpp">
       <Filter>Scenario</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\time\sequence\c_transition_sequence_controller.cpp">
-      <Filter>.YeloLib\time\sequence</Filter>
     </ClCompile>
     <ClCompile Include="Scenario\StructureBSP.cpp">
       <Filter>Scenario</Filter>
@@ -340,9 +313,6 @@
       <Filter>Objects</Filter>
     </ClCompile>
     <ClCompile Include="TagGroups\CacheFiles.cpp">
-      <Filter>TagGroups</Filter>
-    </ClCompile>
-    <ClCompile Include="TagGroups\project_yellow_definitions.cpp">
       <Filter>TagGroups</Filter>
     </ClCompile>
     <ClCompile Include="TagGroups\TagGroups.cpp">
@@ -856,9 +826,6 @@
       <Filter>Objects</Filter>
     </ClInclude>
     <ClInclude Include="TagGroups\CacheFiles.hpp">
-      <Filter>TagGroups</Filter>
-    </ClInclude>
-    <ClInclude Include="TagGroups\project_yellow_definitions.hpp">
       <Filter>TagGroups</Filter>
     </ClInclude>
     <ClInclude Include="TagGroups\TagGroups.hpp">

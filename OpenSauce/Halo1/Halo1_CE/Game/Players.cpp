@@ -11,6 +11,9 @@
 #include <blamlib/Halo1/scenario/scenario.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 #include <blamlib/Halo1/units/unit_structures.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #include "Game/EngineFunctions.hpp"
 #include "Game/GameEngine.hpp"
@@ -22,7 +25,6 @@
 #include "Objects/Objects.hpp"
 #include "Objects/Units.hpp"
 #include "Scenario/Scenario.hpp"
-#include "TagGroups/project_yellow_definitions.hpp"
 
 namespace Yelo
 {

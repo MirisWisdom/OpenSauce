@@ -7,6 +7,9 @@
 #include "Common/Precompile.hpp"
 #include "Scenario/ScenarioInfo.hpp"
 
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
+
 #include "Memory/MemoryInterface.hpp"
 #include "Scenario/Scenario.hpp"
 
@@ -68,9 +71,10 @@ namespace Yelo
 		void InitializeForNewMap()
 		{
 			// See whether the map has a project yellow tag and a scenario info block
-			if(TagGroups::_global_yelo && (TagGroups::_global_yelo->scenario.Count == 1))
+			auto yelo = Scenario::GetYelo();
+			if(yelo && (yelo->scenario.Count == 1))
 			{
-				g_scenario_info_globals.m_scenario_info = &TagGroups::_global_yelo->scenario[0];
+				g_scenario_info_globals.m_scenario_info = &yelo->scenario[0];
 			}
 			else
 			{

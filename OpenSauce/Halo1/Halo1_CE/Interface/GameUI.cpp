@@ -21,6 +21,9 @@
 #include <blamlib/Halo1/items/weapon_definitions.hpp>
 #include <blamlib/Halo1/models/model_animations.hpp>
 #include <blamlib/Halo1/text/draw_string.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #include "Memory/MemoryInterface.hpp"
 #include "Settings/Settings.hpp"
@@ -29,8 +32,6 @@
 #include "Game/Players.hpp"
 #include "Networking/MessageDeltas.hpp"
 #include "Objects/Objects.hpp"
-
-#include "TagGroups/project_yellow_definitions.hpp"
 
 namespace Yelo
 {
@@ -42,22 +43,24 @@ namespace Yelo
 	{
 		static void HudHideInterfaceElementsUpdate()
 		{
+			auto* yelo_globals = Scenario::GetYeloGlobals();
+
 			if (*Players::PlayerControlGlobals()->local_players[0].GetZoomLevel() >= 0)
 			{
-				if (TagGroups::_global_yelo_globals->flags.hide_health_when_zoomed_bit)
+				if (yelo_globals->flags.hide_health_when_zoomed_bit)
 					SET_FLAG(HudUnitInterface()->flags, Flags::_unit_interface_show_health_bit, true);
-				if (TagGroups::_global_yelo_globals->flags.hide_shield_when_zoomed_bit)
+				if (yelo_globals->flags.hide_shield_when_zoomed_bit)
 					SET_FLAG(HudUnitInterface()->flags, Flags::_unit_interface_show_shield_bit, true);
-				if (TagGroups::_global_yelo_globals->flags.hide_motion_sensor_when_zoomed_bit)
+				if (yelo_globals->flags.hide_motion_sensor_when_zoomed_bit)
 					SET_FLAG(HudUnitInterface()->flags, Flags::_unit_interface_show_motion_sensor_bit, true);
 			}
 			else
 			{
-				if (TagGroups::_global_yelo_globals->flags.hide_health_when_zoomed_bit)
+				if (yelo_globals->flags.hide_health_when_zoomed_bit)
 					SET_FLAG(HudUnitInterface()->flags, Flags::_unit_interface_show_health_bit, false);
-				if (TagGroups::_global_yelo_globals->flags.hide_shield_when_zoomed_bit)
+				if (yelo_globals->flags.hide_shield_when_zoomed_bit)
 					SET_FLAG(HudUnitInterface()->flags, Flags::_unit_interface_show_shield_bit, false);
-				if (TagGroups::_global_yelo_globals->flags.hide_motion_sensor_when_zoomed_bit)
+				if (yelo_globals->flags.hide_motion_sensor_when_zoomed_bit)
 					SET_FLAG(HudUnitInterface()->flags, Flags::_unit_interface_show_motion_sensor_bit, false);
 			}
 		}

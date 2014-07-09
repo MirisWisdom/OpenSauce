@@ -263,6 +263,10 @@ namespace Yelo
 			assert((counts.padding_amount+size) <= k_max_padding_amount);
 			counts.padding_amount += size;
 		}
+		void s_tag_field_set_runtime_data::IncrementDebugDataSize(size_t size)
+		{
+			counts.debug_data_amount += size;
+		}
 
 		void s_tag_field_set_runtime_data::BuildInfo(const tag_block_definition* group_header_definition, 
 			const tag_block_definition* definition)
@@ -301,14 +305,22 @@ namespace Yelo
 					{
 						IncrementStringIdFieldCount();
 
+						if (group_header_info)
+							group_header_info->flags.group_has_string_id = true;
+
+						IncrementDebugDataSize(string_id_yelo::k_debug_data_size);
+
 						if(g_tag_group_memory_globals.string_id_yelo_runtime_is_condensed)
 							DecrementRuntimeSize(string_id_yelo::k_debug_data_size);
 					}
 					else // NOTE: we don't currently count the string_id_yelo tag_reference field
 					{
 						IncrementTagReferenceFieldCount();
+
 						if (group_header_info)
 							group_header_info->flags.group_has_tag_reference = true;
+
+						IncrementDebugDataSize(tag_reference::k_debug_data_size);
 					}
 					break;
 
@@ -316,6 +328,8 @@ namespace Yelo
 					IncrementBlockFieldCount();
 					if (group_header_info)
 						group_header_info->flags.group_has_tag_block = true;
+
+					IncrementDebugDataSize(tag_block::k_debug_data_size);
 
 					BuildRuntimeInfoForBlockDefinition( group_header_definition, field.DefinitionAs<tag_block_definition>() )
 						->IncrementReferenceCountFromBlockField();
@@ -335,6 +349,8 @@ namespace Yelo
 					IncrementDataFieldCount();
 					if (group_header_info)
 						group_header_info->flags.group_has_tag_data = true;
+
+					IncrementDebugDataSize(tag_data::k_debug_data_size);
 
 					g_tag_group_memory_globals.data_definitions->insert(field.DefinitionAs<tag_data_definition>());
 					break;
@@ -443,6 +459,8 @@ namespace Yelo
 				fprintf_s(file, "\t%u %s\n", counts.references, "references");
 			if (counts.padding_amount)
 				fprintf_s(file, "\t%u %s\n", counts.padding_amount, "padding");
+			if (counts.debug_data_amount)
+				fprintf_s(file, "\t%u %s\n", counts.debug_data_amount, "debug data size");
 			if (counts.tag_reference_fields)
 				fprintf_s(file, "\t%u %s\n", counts.tag_reference_fields, "tag reference fields");
 			if (counts.block_fields)

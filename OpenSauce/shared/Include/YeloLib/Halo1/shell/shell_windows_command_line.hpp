@@ -31,7 +31,7 @@ namespace Yelo
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Returns true if the parameter was set on the command line, false if it wasn't. </summary>
-			inline bool ParameterSet() const { return m_parameter_set; }
+			bool ParameterSet() const { return m_parameter_set; }
 		};
 
 		template<typename T>
@@ -42,7 +42,7 @@ namespace Yelo
 		};
 
 		template<>
-		class c_cmd_line_argument<cstring> : public c_cmd_line_parameter
+		class c_cmd_line_argument<cstring> final : public c_cmd_line_parameter
 		{
 			friend struct s_cmd_line_initializer;
 
@@ -70,7 +70,7 @@ namespace Yelo
 		};
 
 		template<>
-		class c_cmd_line_argument<int32> : public c_cmd_line_parameter
+		class c_cmd_line_argument<int32> final : public c_cmd_line_parameter
 		{
 			friend struct s_cmd_line_initializer;
 
@@ -99,7 +99,7 @@ namespace Yelo
 		};
 
 		template<>
-		class c_cmd_line_argument<real> : public c_cmd_line_parameter
+		class c_cmd_line_argument<real> final : public c_cmd_line_parameter
 		{
 			friend struct s_cmd_line_initializer;
 
@@ -127,13 +127,13 @@ namespace Yelo
 			}
 		};
 
-		class c_cmd_line_switch : public c_cmd_line_parameter
+		class c_cmd_line_switch final : public c_cmd_line_parameter
 		{
 			friend struct s_cmd_line_initializer;
 
 		protected:
 			// switches shouldn't have a value set so it is ignored
-			inline bool ParseValue(cstring) override { return true; }
+			bool ParseValue(cstring) override { return true; }
 		};
 
 		//////////////////////////////////////////////////////////////////////////

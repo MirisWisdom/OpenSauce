@@ -14,6 +14,7 @@ namespace Yelo
 		struct s_data_file_header
 		{
 			long_enum type; // Enums::data_file_reference_type
+			// when building or updating a data file, acts as the write cursor for new items
 			int32 file_names_offset;
 			int32 file_index_table_offset;
 			int32 tag_count;
@@ -37,13 +38,16 @@ namespace Yelo
 				int32 total_size;
 				int32 used_size;
 				char* address;
+
+				byte* AsByteBuffer()				{ return CAST_PTR(byte*, address); }
+				const byte* AsByteBuffer() const	{ return CAST_PTR(const byte*, address); }
 			}file_names;
 			bool writable;
 			PAD24;
 			struct {
 				int32 count;
 				int32 size;
-			}unreferenced_items, referenced_items;
+			}item_hits, item_adds_or_misses;
 			cstring name;
 			HANDLE file_handle;
 
@@ -61,6 +65,14 @@ namespace Yelo
 			bool Close();
 
 #if PLATFORM_IS_EDITOR && PLATFORM_TYPE == PLATFORM_TOOL
+		private:
+			int32 AddItemName(cstring item_name);
+			int32 AddNewItem(cstring item_name);
+			int32 GetItemIndex(cstring item_name) const;
+		public:
+			int32 AddItem(cstring item_name, void* item_buffer, int32 item_buffer_size);
+			int32 GetItemDataOffset(int32 item_index);
+
 			static void DeleteForCopy(cstring file);
 
 			void PreprocessForSave();
