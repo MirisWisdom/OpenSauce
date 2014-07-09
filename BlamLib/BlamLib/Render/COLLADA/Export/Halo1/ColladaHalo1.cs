@@ -895,7 +895,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 					string shaderName = "Unknown";
 					if (shaderDatum.IsValid)
 					{
-						Path.GetFileNameWithoutExtension(tagIndex[shaderDatum].Name);
+                        shaderName = Path.GetFileNameWithoutExtension(tagIndex[shaderDatum].Name);
 					}
 
 					geometrySet.AddShader(new ModelShaderReference(shaderDatum, shaderName));

@@ -90,7 +90,7 @@ namespace OpenSauceIDE.ModelExtractor.Extractors.Halo1
         /// <returns>   true if it succeeds, false if it fails. </returns>
         protected bool CreateTagIndex(string rootDirectory, string tagsFolder)
         {
-            mTagIndexHandler = new ExtractorTagIndexHandler<BlamLib.Managers.TagIndex>(BlamLib.BlamVersion.Halo1_PC, rootDirectory, tagsFolder);
+            mTagIndexHandler = new ExtractorTagIndexHandler<BlamLib.Managers.TagIndex>(BlamLib.BlamVersion.Halo1_CE, rootDirectory, tagsFolder);
 
             if(mTagIndexHandler == null)
             {

@@ -33,9 +33,9 @@
             this.mControlPanel = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
+            this.mMessageList = new OpenSauceIDE.ModelExtractor.UI.MessageListControl();
             this.mDataPathControl = new OpenSauceIDE.ModelExtractor.UI.PathControl();
             this.mTagsPathControl = new OpenSauceIDE.ModelExtractor.UI.PathControl();
-            this.mMessageList = new OpenSauceIDE.ModelExtractor.UI.MessageListControl();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -91,6 +91,16 @@
             this.label1.Text = "Model Type";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // mMessageList
+            // 
+            this.mMessageList.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.mMessageList.Location = new System.Drawing.Point(0, 364);
+            this.mMessageList.MaxMessageCount = 500;
+            this.mMessageList.MinimumSize = new System.Drawing.Size(600, 72);
+            this.mMessageList.Name = "mMessageList";
+            this.mMessageList.Size = new System.Drawing.Size(624, 152);
+            this.mMessageList.TabIndex = 8;
+            // 
             // mDataPathControl
             // 
             this.mDataPathControl.BackColorExists = System.Drawing.Color.White;
@@ -121,16 +131,6 @@
             this.mTagsPathControl.TabIndex = 5;
             this.mTagsPathControl.Title = "Tags Directory";
             // 
-            // mMessageList
-            // 
-            this.mMessageList.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.mMessageList.Location = new System.Drawing.Point(0, 364);
-            this.mMessageList.MaxMessageCount = 500;
-            this.mMessageList.MinimumSize = new System.Drawing.Size(600, 72);
-            this.mMessageList.Name = "mMessageList";
-            this.mMessageList.Size = new System.Drawing.Size(624, 152);
-            this.mMessageList.TabIndex = 8;
-            // 
             // ModelExtractor
             // 
             this.AllowDrop = true;
@@ -147,7 +147,7 @@
             this.MinimumSize = new System.Drawing.Size(640, 480);
             this.Name = "ModelExtractor";
             this.Text = "Model Extractor";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ModelExtractorClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ModelExtractorClosed);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 

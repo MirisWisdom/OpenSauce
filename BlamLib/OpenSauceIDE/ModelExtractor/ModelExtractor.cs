@@ -63,7 +63,7 @@ namespace OpenSauceIDE.ModelExtractor
         ///
         /// <param name="sender">   Source of the event. </param>
         /// <param name="e">        Form closing event information. </param>
-        private void ModelExtractorClosing(object sender, FormClosingEventArgs e)
+        private void ModelExtractorClosed(object sender, FormClosedEventArgs e)
         {
             mController.Dispose();
         }

@@ -55,6 +55,67 @@ namespace BlamLib.Render.COLLADA.Halo1
 		}
 		#endregion
 
+        private string GetNodeReference(ScenarioData.ScenarioObject objectType, int permutation)
+        {
+            // Add geometry instances to the node
+            if (!objectType.ObjectTagDatum.IsValid)
+            {
+                return null;
+            }
+            
+            ColladaID<ColladaNode> nodeId = Path.GetFileNameWithoutExtension(mTagIndex[objectType.ObjectTagDatum].Name);
+            nodeId += "-perm" + permutation;
+
+            if(COLLADAFile.LibraryNodes.Node.Exists(node => node.ID == nodeId))
+            {
+                return nodeId;
+            }
+
+            // Collect data about the object
+            ObjectData objectData = new ObjectData();
+            objectData.CollectData(mTagIndex, mTagIndex[objectType.ObjectTagDatum]);
+
+            var nodeType = CreateNode("", "", nodeId, Enums.ColladaNodeType.NODE);
+            if (objectData.Model.IsValid)
+            {
+                // Collect data about the model
+                ModelData modelData = new ModelData();
+
+                modelData.CollectData(mTagIndex, mTagIndex[objectData.Model]);
+
+                // Get all of the geometries that make up the permutation at the highest lod
+                var geometryList = modelData.GetGeometries(permutation, Blam.Halo1.TypeEnums.LevelOfDetailEnum.SuperHigh);
+
+                // Add geometry instances for all geometries
+                geometryList.ForEach(
+                    geometrySet =>
+                    {
+                        // Create shader references for all shaders used by the geometry
+                        MaterialReferenceList materialReferences = new MaterialReferenceList();
+                        foreach (var shader in geometrySet.Shaders)
+                        {
+                            ColladaID<Fx.ColladaMaterial> shaderName = shader.MaterialName;
+                            var url = ColladaUtilities.BuildExternalReference(modelData,
+                                colladaSettings.RootDirectory,
+                                shaderName);
+
+                            materialReferences.Add(new MaterialReference(url, shaderName));
+                        }
+
+                        // Build the geometry reference URL and add the geometry instance
+                        string geometryURL = ColladaUtilities.BuildExternalReference(modelData,
+                            colladaSettings.RootDirectory,
+                            new ColladaID<Core.ColladaGeometry>(geometrySet.Name));
+
+                        nodeType.Add(CreateInstanceGeometry(geometryURL, geometrySet.Name, materialReferences));
+                    }
+                );
+            }
+
+            COLLADAFile.LibraryNodes.Node.Add(nodeType);
+            return nodeId;
+        }
+
 		///-------------------------------------------------------------------------------------------------
 		/// <summary>	Creates the node list. </summary>
 		///-------------------------------------------------------------------------------------------------
@@ -66,7 +127,6 @@ namespace BlamLib.Render.COLLADA.Halo1
 			for (int i = 0; i < objectInstances.Count; i++)
 			{
 				var objectInstance = objectInstances[i];
-				
 
 				// Create a node for the object instance
 				ColladaNCName nodeName = "";
@@ -86,7 +146,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 					nodeName = objectInstance.ObjectName.Name;
 				}
 
-				Core.ColladaNode node = CreateNode(nodeName, "", "", Enums.ColladaNodeType.NODE);
+                Core.ColladaNode node = CreateNode(nodeName, "", "", Enums.ColladaNodeType.NODE);
 
 				// Set the nodes position
 				Core.ColladaTranslate translate = new Core.ColladaTranslate();
@@ -103,57 +163,23 @@ namespace BlamLib.Render.COLLADA.Halo1
 							new LowLevel.Math.real_vector3d(0, 1, 0),
 							new LowLevel.Math.real_vector3d(1, 0, 0))
 						)
-				);
-				
-				// Add geometry instances to the node
-				if (objectInstance.ObjectType.ObjectTagDatum.IsValid)
-				{
-					// Collect data about the object
-					ObjectData objectData = new ObjectData();
-					objectData.CollectData(mTagIndex, mTagIndex[objectInstance.ObjectType.ObjectTagDatum]);
+                );
 
-					if(objectData.Model.IsValid)
-					{
-						// Collect data about the model
-						ModelData modelData = new ModelData();
-
-						modelData.CollectData(mTagIndex, mTagIndex[objectData.Model]);
-
-						// Get all of the geometries that make up the permutation at the highest lod
-						var geometryList = modelData.GetGeometries(objectInstance.Permutation, Blam.Halo1.TypeEnums.LevelOfDetailEnum.SuperHigh);
-
-						// Add geometry instances for all geometries
-						geometryList.ForEach(
-							geometrySet =>
-							{
-								// Create shader references for all shaders used by the geometry
-								MaterialReferenceList materialReferences = new MaterialReferenceList();
-								foreach(var shader in geometrySet.Shaders)
-								{
-									ColladaID<Fx.ColladaMaterial> shaderName = shader.MaterialName;
-									var url = ColladaUtilities.BuildExternalReference(modelData,
-										colladaSettings.RootDirectory,
-										shaderName);
-
-									materialReferences.Add(new MaterialReference(url, shaderName));
-								}
-
-								// Build the geometry reference URL and add the geometry instance
-								string geometryURL = ColladaUtilities.BuildExternalReference(modelData,
-									colladaSettings.RootDirectory,
-									new ColladaID<Core.ColladaGeometry>(geometrySet.Name));
-
-								node.Add(CreateInstanceGeometry(geometryURL, geometrySet.Name, materialReferences));
-							}
-						);
-					}
-				}
+                var nodeId = GetNodeReference(objectInstance.ObjectType, objectInstance.Permutation);
+                node.InstanceNode = new List<ColladaInstanceNode>();
+                node.InstanceNode.Add(new ColladaInstanceNode() { URL = "#" + nodeId });
 
 				listNode.Add(node);
 			}
 		}
 
 		#region Library Creation
+        void AddLibraryNodes()
+        {
+            COLLADAFile.LibraryNodes = new ColladaLibraryNodes();
+            COLLADAFile.LibraryNodes.Node = new List<ColladaNode>();
+        }
+
 		///-------------------------------------------------------------------------------------------------
 		/// <summary>
 		/// 	Creates the library_visual_scenes element in the collada file. The node list is added
@@ -195,9 +221,9 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 			mScenarioDataProvider = GetDataProvider<IHalo1ScenarioDataProvider>();
 
+            AddLibraryNodes();
 			CreateNodeList();
-
-			AddLibraryVisualScenes();
+            AddLibraryVisualScenes();
 			AddScene("main");
 
 			return true;
