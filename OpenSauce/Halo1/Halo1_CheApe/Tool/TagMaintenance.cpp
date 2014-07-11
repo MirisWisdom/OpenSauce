@@ -41,14 +41,15 @@ namespace Yelo
 			void CloseOutputFile()
 			{
 				if (output_file != nullptr)
+				{
 					fclose(output_file);
+					output_file = nullptr;
+				}
 			}
 
 		public:
 			void Initialize()
 			{
-				OpenOutputFile();
-
 				resolved_tag_indexes = YELO_NEW_CTOR(datum_index_set_t);
 				to_resolve_tag_indexes = YELO_NEW_CTOR(datum_index_set_t);
 			}
@@ -115,6 +116,10 @@ namespace Yelo
 			}
 			void OutputHeader()
 			{
+				// moved from Initialize() to here because it was opening the file even when there were no
+				// errors. I'd rather we open (or ultimately create) the file when the first error is hit
+				OpenOutputFile();
+
 				tag_string time_stamp;
 				GetTimeStampString(time_stamp);
 
@@ -165,9 +170,9 @@ namespace Yelo
 			{
 				switch (problem_type)
 				{
-				case _child_problem_none: return "no problem";
-				case _child_problem_failed_to_load: return "failed to load";
-				case _child_problem_doesnt_exist: return "doesn't exist";
+				case _child_problem_none:			return "no problem";
+				case _child_problem_failed_to_load:	return "failed to load";
+				case _child_problem_doesnt_exist:	return "doesn't exist";
 
 				YELO_ASSERT_CASE_UNREACHABLE();
 				}
@@ -220,7 +225,7 @@ namespace Yelo
 			{
 				auto* definition = field->Definition<tag_reference_definition>();
 
-				bool queue = reference->group_tag != NONE && strlen(reference->name) != 0;
+				bool queue = reference->group_tag != NONE && !is_null_or_empty(reference->name);
 				queue &= !TagGroups::TagFieldIsStringId(field);
 
 				if (queue && TEST_FLAG(definition->flags, Flags::_tag_reference_non_resolving_bit))

@@ -151,6 +151,8 @@ namespace Yelo
 				TAG_FIELD(int16, horiz_offset, "offsets text position in its bounding area");
 				TAG_FIELD(int16, vert_offset, "offsets the text position in its bounding area");
 				TAG_PAD(int16, 13);
+
+				PAD16; // because they didn't pad after justification
 			}text_box;
 
 			////////////////////////////////////////////////////////////////
@@ -161,8 +163,6 @@ namespace Yelo
 			//   as templated for visible list item placement
 			// IMPORTANT: for list widgets, the ONLY thing you can have as child widgets are the list item widgets!
 			struct {
-				PAD16;
-
 				struct __flags
 				{
 					TAG_FLAG(list_items_generated_in_code);
