@@ -9,6 +9,32 @@
 
 namespace Yelo
 {
+	namespace Flags
+	{
+		enum sound_definition_flags : long_flags
+		{
+			_sound_definition_fit_to_adpcm_blocksize_bit,
+			_sound_definition_split_long_sound_into_permutations_bit,
+
+			k_number_of_sound_definition_flags,
+
+			_sound_definition_reserved2_bit =	// Halo2. always spatialize#always play as 3d sound, even in first person
+				k_number_of_sound_definition_flags,
+			_sound_definition_reserved3_bit,	// Halo2. never obstruct#disable occlusion/obstruction for this sound
+			_sound_definition_reserved4_bit,	// Halo2. internal don't touch
+			_sound_definition_reserved5_bit,	// Halo2. use huge sound transmission
+			_sound_definition_reserved6_bit,	// Halo2. link count to owner unit
+			_sound_definition_reserved7_bit,	// Halo2. pitch range is language
+			_sound_definition_reserved8_bit,	// Halo2. don't use sound class speaker flag
+			_sound_definition_reserved9_bit,	// Halo2. don't use lipsync data
+
+			// the sound definition's data should never be stored in any sort of 'shared' cache file
+			_sound_definition_never_share_resources_yelo_bit,
+
+			k_number_of_sound_definition_flags_yelo,
+		};
+	};
+
 	namespace TagGroups
 	{
 		struct s_sound_permutation
@@ -72,7 +98,7 @@ namespace Yelo
 		{
 			enum { k_group_tag = 'snd!' };
 
-			TAG_FIELD(long_flags, flags);
+			TAG_FIELD(long_flags, flags, Flags::sound_definition_flags);
 			TAG_FIELD(_enum, sound_class);
 			TAG_FIELD(_enum, sample_rate);
 
@@ -87,6 +113,11 @@ namespace Yelo
 
 			TAG_PAD(tag_data, 1);
 			TAG_TBLOCK(pitch_ranges, s_sound_pitch_range);
+
+			bool ResourcesAreSharable() const
+			{
+				return !TEST_FLAG(flags, Flags::_sound_definition_never_share_resources_yelo_bit);
+			}
 		}; BOOST_STATIC_ASSERT( sizeof(sound_definition) == 0xA4 );
 
 
