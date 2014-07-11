@@ -10,6 +10,7 @@
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 #include <YeloLib/Halo1/hs/hs_yelo.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
 
 #include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_generators.hpp>
@@ -64,11 +65,29 @@ namespace Yelo
 			player_speed_scale = 1.0f;
 		}
 
-		bool project_yellow::IsNull() const				{ return flags.null_definition_bit != false; }
-		bool project_yellow::IsCacheProtected() const	{ return flags.cache_is_protected_bit != false; }
+		bool project_yellow::IsNull() const				{ return TEST_FLAG(flags, Flags::_project_yellow_null_definition_bit); }
+		bool project_yellow::IsCacheProtected() const	{ return TEST_FLAG(flags, Flags::_project_yellow_cache_is_protected_bit); }
 		//////////////////////////////////////////////////////////////////////////
 
 #if PLATFORM_IS_EDITOR
+		datum_index project_yellow::LoadYeloGlobals(const bool for_build_cache)
+		{
+			datum_index yelo_globals_index = datum_index::null;
+
+			// check if the Yelo definition has a Yelo Globals tag reference and load it
+			if (blam::tag_reference_resolve<project_yellow_globals>(yelo_globals))
+				yelo_globals_index = yelo_globals.tag_index;
+			else if (for_build_cache) // Only use the internal tag for cache-building only, not for editing
+			{
+				yelo_globals_index = blam::tag_new<project_yellow_globals>(project_yellow_globals::k_default_name);
+
+				if (!yelo_globals_index.IsNull())
+					blam::tag_reference_set<project_yellow_globals>(yelo_globals, project_yellow_globals::k_default_name);
+			}
+
+			return yelo_globals_index;
+		}
+
 		bool PLATFORM_API project_yellow::GroupPostprocess(datum_index tag_index, Enums::tag_postprocess_mode mode)
 		{
 			auto* def = blam::tag_get<project_yellow>(tag_index);

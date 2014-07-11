@@ -12,6 +12,21 @@
 
 namespace Yelo
 {
+	namespace Flags
+	{
+		enum project_yellow_globals_flags
+		{
+			_project_yellow_globals_hide_health_when_zoomed_bit,
+			_project_yellow_globals_hide_shield_when_zoomed_bit,
+			_project_yellow_globals_hide_motion_sensor_when_zoomed_bit,
+			_project_yellow_globals_force_game_to_use_stun_jumping_penalty_bit,
+			// TODO:
+			_project_yellow_globals_allow_grenade_chain_reactions_in_mp_bit,
+
+			k_number_of_project_yellow_globals_flags,
+		};
+	};
+
 	namespace TagGroups
 	{
 #if FALSE
@@ -91,20 +106,19 @@ namespace Yelo
 		// yelo for globals
 		struct project_yellow_globals
 		{
+			enum {
+				k_group_tag = 'gelo',
+				k_version = 2,
+			};
+
 			// internal name of the cache's Yelo Globals when the user doesn't supply a definition
 			static cstring k_default_name;
 
 #if !PLATFORM_IS_EDITOR
 			const 
 #endif
-				int16 version;	enum { k_version = 2, k_group_tag = 'gelo' };
-			struct _flags {
-				TAG_FLAG16(hide_health_when_zoomed);
-				TAG_FLAG16(hide_shield_when_zoomed);
-				TAG_FLAG16(hide_motion_sensor_when_zoomed);
-				TAG_FLAG16(force_game_to_use_stun_jumping_penalty);
-				TAG_FLAG16(allow_grenade_chain_reactions_in_mp);
-			}flags; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
+				int16 version;
+			TAG_FIELD(word_flags, flags, Flags::project_yellow_globals_flags);
 			TAG_FIELD(uint32, base_address);
 
 			TAG_FIELD(tag_string, mod_name, "", "name of the engine 'mod' these globals and, inheriting scenario, are for");

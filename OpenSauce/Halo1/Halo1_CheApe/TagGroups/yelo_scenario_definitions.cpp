@@ -10,6 +10,7 @@
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 
 #include <YeloLib/Halo1/open_sauce/project_yellow_global_definitions.hpp>
+#include <YeloLib/Halo1/open_sauce/project_yellow_scenario.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #include "Engine/EngineFunctions.hpp"
@@ -19,110 +20,6 @@ namespace Yelo
 {
 	namespace TagGroups
 	{
-		// [terminology]	- [tag group]
-		// yelo scenario	- project_yellow
-		// yelo globals		- project_yellow_globals
-		// blam scenario	- scenario
-
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>
-		/// 	Process a yelo scenario's globals data for the current operating mode (editing or cache building).
-		/// </summary>
-		///
-		/// <param name="yelo">			  	project_yellow definition. </param>
-		/// <param name="for_build_cache">	True if we're building a cache file, false if we're editing. </param>
-		///
-		/// <returns>	Returns the loaded yelo global's handle or datum_index::null. </returns>
-		static datum_index YeloPrepareDefinitionsYeloGlobals(project_yellow& yelo, const bool for_build_cache)
-		{
-			datum_index yelo_globals_index = datum_index::null;
-
-			// check if the Yelo definition has a Yelo Globals tag reference and load it
-			if(yelo.yelo_globals.name_length > 0 && yelo.yelo_globals.group_tag == project_yellow_globals::k_group_tag)
-				yelo_globals_index = blam::tag_load<project_yellow_globals>(yelo.yelo_globals.name, 0);
-			else if(for_build_cache) // Only use the internal tag for cache-building only, not for editing
-			{
-				yelo_globals_index = blam::tag_new<project_yellow_globals>(project_yellow_globals::k_default_name);
-
-				if(!yelo_globals_index.IsNull())
-					blam::tag_reference_set<project_yellow_globals>(yelo.yelo_globals, project_yellow_globals::k_default_name);
-			}
-
-			return yelo_globals_index;
-		}
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>
-		/// 	Process a tag reference to a yelo scenario for the current operating mode (editing or cache building).
-		/// </summary>
-		///
-		/// <param name="yelo_reference"> 	Scenario's yelo reference. </param>
-		/// <param name="for_build_cache">	True if we're building a cache file, false if we're editing. </param>
-		///
-		/// <returns>	Returns the loaded yelo scenario's handle or datum_index::null </returns>
-		static datum_index YeloPrepareDefinitionsYeloScenario(tag_reference& yelo_reference, const bool for_build_cache)
-		{
-			datum_index yelo_index = datum_index::null;
-
-			// check if the scenario has a Yelo definition and load it and if not, create it
-			bool yelo_isnt_new = false;
-			if(yelo_reference.name_length > 0 && yelo_reference.group_tag == project_yellow::k_group_tag)
-			{
-				yelo_index = blam::tag_load<project_yellow>(yelo_reference.name, 0);
-				yelo_isnt_new = true;
-			}
-			else if(for_build_cache) // Only use the internal tag for cache-building only, not for editing
-				yelo_index = blam::tag_new<project_yellow>(project_yellow::k_default_name);
-
-			// Just in case the tag fails to load or fails to be created
-			if(!yelo_index.IsNull())
-			{
-				auto* yelo = blam::tag_get<project_yellow>(yelo_index);
-
-				// set the scenario's yelo reference if it isn't already set-up
-				if(!yelo_isnt_new)
-					blam::tag_reference_set<project_yellow>(yelo_reference, project_yellow::k_default_name);
-
-				YeloPrepareDefinitionsYeloGlobals(*yelo, for_build_cache);
-			}
-
-			return yelo_index;
-		}
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Process a blam scenario for the current operating mode (editing or cache building). </summary>
-		///
-		/// <param name="scenario_name">  	Name of the scenario tag. </param>
-		/// <param name="for_build_cache">	True if we're building a cache file, false if we're editing. </param>
-		///
-		/// <returns>
-		/// 	Returns the blam scenario's [project_yellow] index or datum_index::null if there isn't one or it fails to load.
-		/// </returns>
-		static Yelo::datum_index YeloPrepareDefinitions(cstring scenario_name, const bool for_build_cache)
-		{
-			// If we're not building a cache file, just load the scenario into memory without any of its references
-			datum_index scenario_index = blam::tag_load<TagGroups::scenario>(scenario_name, for_build_cache
-				? FLAG(Flags::_tag_load_from_file_system_bit)
-				: FLAG(Flags::_tag_load_non_resolving_references_bit));
-
-			if(!scenario_index.IsNull())
-			{
-				auto* scenario = blam::tag_get<TagGroups::scenario>(scenario_index);
-
-				datum_index yelo_index = YeloPrepareDefinitionsYeloScenario(
-					scenario->GetYeloReferenceHack(), for_build_cache);
-
-				// if we're not building a cache, then this is sapien and we want it to load 
-				// the scenario and all of its dependencies after we return the code flow 
-				// back to it
-				if(!for_build_cache)
-					blam::tag_unload(scenario_index);
-
-				return yelo_index;
-			}
-
-			return datum_index::null;
-		}
-
-
 		//////////////////////////////////////////////////////////////////////////
 		// scenario_yelo_load
 		// This is a Tool and Sapien specific hack to use the Yelo's globals tag 
@@ -131,15 +28,15 @@ namespace Yelo
 		{
 			// References to the string "globals\globals"
 			static cstring* K_GLOBALS_TAG_NAME_REFERENCES[] = {
-				CAST_PTR(cstring*, PLATFORM_VALUE(nullptr, 0x4434CA, 0x51675F)),
-				CAST_PTR(cstring*, PLATFORM_VALUE(nullptr, 0x443C95, 0x517525)),
+				PLATFORM_PTR(cstring*, nullptr, 0x4434CA, 0x51675F),
+				PLATFORM_PTR(cstring*, nullptr, 0x443C95, 0x517525),
 #if PLATFORM_TYPE == PLATFORM_TOOL
-				CAST_PTR(cstring*, PLATFORM_VALUE(nullptr, 0x4541A2, nullptr)),
+				PLATFORM_PTR(cstring*, nullptr, 0x4541A2, nullptr),
 #endif
 			};
 			// Address of the string "globals\globals"
-			static cstring const K_GLOBALS_TAG_NAME_ADDRESS = CAST_PTR(cstring, 
-				PLATFORM_VALUE(nullptr, 0x612FA0, 0x9116CC));
+			static cstring const K_GLOBALS_TAG_NAME_ADDRESS = PLATFORM_PTR(cstring,
+				nullptr, 0x612FA0, 0x9116CC);
 
 			static char local_globals_tag_name[Enums::k_max_tag_name_length + 1];
 
@@ -158,7 +55,7 @@ namespace Yelo
 				const bool k_for_cache_build = PLATFORM_VALUE(false, true, false);
 				// Load the Yelo definitions then check to see if there is a globals override 
 				// reference and update all tool code to then use its name
-				datum_index yelo_index = YeloPrepareDefinitions(scenario_name, k_for_cache_build);
+				datum_index yelo_index = Scenario::YeloPrepareDefinitions(scenario_name, k_for_cache_build);
 				if(!yelo_index.IsNull())
 				{
 					auto* yelo = blam::tag_get<project_yellow>(yelo_index);
