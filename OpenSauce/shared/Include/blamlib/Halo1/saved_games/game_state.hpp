@@ -17,4 +17,9 @@ namespace Yelo
 
 		s_game_state_globals* GameStateGlobals();
 	};
+
+	namespace blam
+	{
+		void* PLATFORM_API game_state_malloc(cstring name, cstring type, size_t size);
+	};
 };

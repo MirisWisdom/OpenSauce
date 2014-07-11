@@ -9,6 +9,7 @@
 #include <blamlib/Halo1/cache/cache_files.hpp>
 #include <blamlib/Halo1/cache/cache_files_structures.hpp>
 #include <blamlib/Halo1/main/console.hpp>
+#include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 #include <blamlib/Halo1/tag_files/tag_groups.hpp>
 
 #include <YeloLib/Halo1/hs/hs_yelo.hpp>
@@ -25,10 +26,11 @@ namespace Yelo
 		static project_yellow_globals null_yelo_globals = { project_yellow_globals::k_version };
 
 		static project_yellow null_yelo =			{project_yellow::k_version, 
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0}
+			FLAG(Flags::_project_yellow_null_definition_bit),
 		};
 		static project_yellow null_yelo_invalid =	{project_yellow::k_version, 
-			{0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0}
+			FLAG(Flags::_project_yellow_null_definition_bit) |
+			FLAG(Flags::_project_yellow_invalid_version_bit),
 		};
 
 		static project_yellow_globals* g_py_globals;
@@ -123,7 +125,7 @@ namespace Yelo
 			{
 				bool is_protected = TagGroups::Instances()[0].group_tag == Enums::k_protected_group_tag;
 
-				g_project_yellow->flags.cache_is_protected_bit = is_protected;
+				SET_FLAG(g_project_yellow->flags, Flags::_project_yellow_cache_is_protected_bit, is_protected);
 			}
 
 			if (!VerifyYeloScriptDefinitions())
@@ -158,5 +160,69 @@ namespace Yelo
 
 			return g_project_yellow;
 		}
+
+#if PLATFORM_IS_EDITOR
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>
+		/// 	Process a tag reference to a yelo scenario for the current operating mode (editing or cache building).
+		/// </summary>
+		///
+		/// <param name="yelo_reference"> 	Scenario's yelo reference. </param>
+		/// <param name="for_build_cache">	True if we're building a cache file, false if we're editing. </param>
+		///
+		/// <returns>	Returns the loaded yelo scenario's handle or datum_index::null </returns>
+		static datum_index YeloPrepareDefinitionsYeloScenario(tag_reference& yelo_reference, const bool for_build_cache)
+		{
+			datum_index yelo_index = datum_index::null;
+
+			// check if the scenario has a Yelo definition and load it and if not, create it
+			bool yelo_isnt_new = false;
+			if (yelo_reference.name_length > 0 && yelo_reference.group_tag == project_yellow::k_group_tag)
+			{
+				yelo_index = blam::tag_load<project_yellow>(yelo_reference.name, 0);
+				yelo_isnt_new = true;
+			}
+			else if (for_build_cache) // Only use the internal tag for cache-building only, not for editing
+				yelo_index = blam::tag_new<project_yellow>(project_yellow::k_default_name);
+
+			// Just in case the tag fails to load or fails to be created
+			if (!yelo_index.IsNull())
+			{
+				auto* yelo = blam::tag_get<project_yellow>(yelo_index);
+
+				// set the scenario's yelo reference if it isn't already set-up
+				if (!yelo_isnt_new)
+					blam::tag_reference_set<project_yellow>(yelo_reference, project_yellow::k_default_name);
+
+				yelo->LoadYeloGlobals(for_build_cache);
+			}
+
+			return yelo_index;
+		}
+		datum_index YeloPrepareDefinitions(cstring scenario_name, const bool for_build_cache)
+		{
+			// If we're not building a cache file, just load the scenario into memory without any of its references
+			datum_index scenario_index = blam::tag_load<TagGroups::scenario>(scenario_name, for_build_cache
+				? FLAG(Flags::_tag_load_from_file_system_bit)
+				: FLAG(Flags::_tag_load_non_resolving_references_bit));
+
+			if(!scenario_index.IsNull())
+			{
+				auto* scenario = blam::tag_get<TagGroups::scenario>(scenario_index);
+
+				datum_index yelo_index = YeloPrepareDefinitionsYeloScenario(
+					scenario->GetYeloReferenceHack(), for_build_cache);
+
+				// if we're not building a cache, then this is sapien and we want it to load the scenario and all of 
+				// its dependencies after we return the code flow back to it
+				if(!for_build_cache)
+					blam::tag_unload(scenario_index);
+
+				return yelo_index;
+			}
+
+			return datum_index::null;
+		}
+#endif
 	};
 };

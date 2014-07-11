@@ -303,7 +303,7 @@ namespace Boarding
 					result = false;
 				}
 				// If multiteam vehicles is prohibited, test unit and target unit teams
-				else if (Scenario::GetYelo()->gameplay.flags.prohibit_multiteam_vehicles_bit)
+				else if (TEST_FLAG(Scenario::GetYelo()->gameplay.flags, Flags::_project_yellow_gameplay_prohibit_multiteam_vehicles_bit))
 				{
 					if (unit->unit.controlling_player_index.IsNull() || 
 						!blam::game_team_is_enemy(child_object->object.owner_team, unit->object.owner_team))
