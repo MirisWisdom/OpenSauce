@@ -121,7 +121,7 @@ namespace Yelo
 #pragma endregion
 		
 #pragma region CheApe Settings
-		c_profile_container* c_settings_cheape::GetProfile(std::string name)
+		c_profile_container* c_settings_cheape::GetProfile(const std::string& name)
 		{
 			auto& settings_instance = Get();
 

@@ -14,7 +14,7 @@ namespace Yelo
 {
 	namespace Settings
 	{
-		class c_sapien_container
+		class c_sapien_container final
 			: public Configuration::c_configuration_container
 		{
 		public:
@@ -23,10 +23,10 @@ namespace Yelo
 			c_sapien_container();
 
 		protected:
-			const std::vector<i_configuration_value* const> GetMembers() final override;
+			const std::vector<i_configuration_value* const> GetMembers() override;
 		};
 
-		class c_settings_sapien
+		class c_settings_sapien final
 			: public c_settings_singleton<c_sapien_container, c_settings_sapien>
 		{ };
 	};
