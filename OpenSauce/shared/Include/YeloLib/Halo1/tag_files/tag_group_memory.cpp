@@ -71,29 +71,38 @@ namespace Yelo
 		class c_field_comparison_codes_builder
 		{
 			field_comparison_code*& m_final_codes_reference;
+			size_t m_count;
 			size_t m_index;
 			std::array<field_comparison_code, s_tag_field_set_runtime_data::k_max_comparison_codes> m_codes;
 
 			field_comparison_code& NewCode()
 			{
-				if (m_index != 0)
+				if (m_count != 0)
 					m_index += 1;
 
+				m_count++;
 				return m_codes[m_index];
+			}
+
+			template<_enum kCodeType>
+			bool CodeAlreadyExists()
+			{
+				return m_count > 0 &&
+					m_codes[m_index].type == kCodeType;
 			}
 
 			void AllocateFinalCodes()
 			{
 				NewCode() = { 0, Enums::_field_comparison_code_end, NONE };
 
-				size_t count = m_index + 1;
-				m_final_codes_reference = YELO_NEW_ARRAY(field_comparison_code, count);
+				m_final_codes_reference = new field_comparison_code[m_count];
 
-				std::memcpy(m_final_codes_reference, m_codes.data(), sizeof(m_codes[0]) * count);
+				std::memcpy(m_final_codes_reference, m_codes.data(), sizeof(m_codes[0]) * m_count);
 			}
 		public:
 			c_field_comparison_codes_builder(field_comparison_code*& final_codes_reference)
 				: m_final_codes_reference(final_codes_reference)
+				, m_count(0)
 				, m_index(0)
 			{
 				m_final_codes_reference = nullptr;
@@ -106,34 +115,26 @@ namespace Yelo
 
 			field_comparison_code& NewBitwiseCode()
 			{
-				field_comparison_code& code = m_codes[m_index];
+				if (CodeAlreadyExists<Enums::_field_comparison_code_bitwise>())
+					return m_codes[m_index];
 
-				if (code.type == Enums::_field_comparison_code_bitwise)
-					return code;
-				else
-				{
-					code = NewCode();
-					code.size = 0;
-					code.type = Enums::_field_comparison_code_bitwise;
-					code.field_index = NONE;
-					return code;
-				}
+				field_comparison_code& code = NewCode();
+				code.size = 0;
+				code.type = Enums::_field_comparison_code_bitwise;
+				code.field_index = NONE;
+				return code;
 			}
 
 			field_comparison_code& NewSkipCode()
 			{
-				field_comparison_code& code = m_codes[m_index];
+				if (CodeAlreadyExists<Enums::_field_comparison_code_skip>())
+					return m_codes[m_index];
 
-				if (code.type == Enums::_field_comparison_code_skip)
-					return code;
-				else
-				{
-					code = NewCode();
-					code.size = 0;
-					code.type = Enums::_field_comparison_code_skip;
-					code.field_index = NONE;
-					return code;
-				}
+				field_comparison_code& code = NewCode();
+				code.size = 0;
+				code.type = Enums::_field_comparison_code_skip;
+				code.field_index = NONE;
+				return code;
 			}
 
 			void NewPointerCode(int32 field_index)
@@ -268,6 +269,16 @@ namespace Yelo
 			counts.debug_data_amount += size;
 		}
 
+		void s_tag_field_set_runtime_data::BuildInfoHandleDataField(tag_data_definition* definition)
+		{
+			IncrementDataFieldCount();
+
+			IncrementDebugDataSize(tag_data::k_debug_data_size);
+			if (definition->IsConsideredDebugOnly())
+				flags.has_debug_child_data = true;
+
+			g_tag_group_memory_globals.data_definitions->insert(definition);
+		}
 		void s_tag_field_set_runtime_data::BuildInfo(const tag_block_definition* group_header_definition, 
 			const tag_block_definition* definition)
 		{
@@ -346,13 +357,10 @@ namespace Yelo
 					break;
 
 				case Enums::_field_data:
-					IncrementDataFieldCount();
 					if (group_header_info)
 						group_header_info->flags.group_has_tag_data = true;
 
-					IncrementDebugDataSize(tag_data::k_debug_data_size);
-
-					g_tag_group_memory_globals.data_definitions->insert(field.DefinitionAs<tag_data_definition>());
+					BuildInfoHandleDataField(field.DefinitionAs<tag_data_definition>());
 					break;
 
 				case Enums::_field_pad:
@@ -437,7 +445,8 @@ namespace Yelo
 		{
 			if(comparison_codes != nullptr && !flags.custom_comparison)
 			{
-				YELO_DELETE_ARRAY(comparison_codes);
+				delete[] comparison_codes;
+				comparison_codes = nullptr;
 			}
 		}
 
@@ -505,7 +514,7 @@ namespace Yelo
 
 			g_tag_group_memory_globals.block_definitions->insert(block_definition);
 
-			info = YELO_NEW(s_tag_field_set_runtime_data);
+			info = new s_tag_field_set_runtime_data;
 			block_definition->SetRuntimeInfo(info);
 
 			info->Initialize(group_header_definition, block_definition);
@@ -520,14 +529,21 @@ namespace Yelo
 			g_tag_group_memory_globals.Initialize();
 
 			struct build_runtime_data_info_action
-			{ void operator()(tag_block_definition* block_definition) const
 			{
-				BuildRuntimeInfoForBlockDefinition(block_definition, block_definition);
-			} void operator()(tag_group* group) const
-			{
-				group->header_block_definition->DoRecursiveAction(*this);
-				group->header_block_definition->GetRuntimeInfo()->SetIsGroupHeader();
-			} };
+				const tag_block_definition* m_group_header_definition;
+
+				void operator()(tag_block_definition* block_definition) const
+				{
+					BuildRuntimeInfoForBlockDefinition(m_group_header_definition, block_definition);
+				}
+				void operator()(tag_group* group)
+				{
+					m_group_header_definition = group->header_block_definition;
+
+					group->header_block_definition->DoRecursiveAction(*this);
+					group->header_block_definition->GetRuntimeInfo()->SetIsGroupHeader();
+				}
+			};
 
 			tag_groups_do_action<build_runtime_data_info_action>();
 		}
@@ -547,7 +563,7 @@ namespace Yelo
 				block_definition->SetRuntimeInfo(nullptr);
 
 				info->Dispose();
-				YELO_DELETE(info);
+				delete info;
 			} void operator()(tag_group* group) const
 			{
 				group->header_block_definition->DoRecursiveAction(*this);

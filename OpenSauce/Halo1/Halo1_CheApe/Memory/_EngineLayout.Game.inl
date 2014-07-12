@@ -54,6 +54,7 @@
 		FUNC_PTR(DISPLAY_ASSERT,	0x42C840, 0x435F10, 0x4F7000);
 		//////////////////////////////////////////////////////////////////////////
 		// cseries/debug_memory
+		FUNC_PTR(DEBUG_DUMP_MEMORY, 0x446CE0, 0x43EA20, 0x5022C0);
 		FUNC_PTR(DEBUG_MALLOC,		0x446970, 0x43E6B0, 0x501F50);
 		FUNC_PTR(DEBUG_FREE,		0x446A80, 0x43E7C0, 0x502060);
 		FUNC_PTR(DEBUG_REALLOC,		0x446B50, 0x43E890, 0x502130);

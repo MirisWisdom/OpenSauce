@@ -13,6 +13,8 @@ static void PLATFORM_API tool_if_you_dont_get_help_at_charter(char* arguments[])
 		cstring tool_command;
 	}* args = CAST_PTR(s_arguments*, arguments);
 
+	// NOTE: better to indent help strings with (4) spaces. default console tab consumes 8 characters
+
 	if( !strcmp(args->tool_command, "argument-types") )
 	{
 		printf_s(
@@ -105,6 +107,29 @@ static void PLATFORM_API tool_if_you_dont_get_help_at_charter(char* arguments[])
 			"Arguments:\n"
 			"	<scenario-name>\n"
 			"		TagName: Name of the .scenario cleanse to of OS-modifications\n"
+			);
+	}
+	else if( !strcmp(args->tool_command, "tag-load-test") )
+	{
+		printf_s(
+			"Validates a tag and ALL of its children can be loaded without error\n"
+			"Optionally prints additional diagnostic information\n"
+			"Arguments:\n"
+			"    <tag-name>\n"
+			"        TagName: Root tag's path\n"
+			"    <group>\n"
+			"        String: Root tag's group name\n"
+			"    <prompt-to-continue>\n"
+			"        Switch: Prompt to continue for each child tag\n"
+			"    <prompt-to-fix-unresolved>\n"
+			"        Switch: NOT YET IMPLEMENTED\n"
+			"    <load-non-resolving-refs>\n"
+			"        Switch: Load all tag_references, even if they're no-resolving\n"
+			"    <print-size>\n"
+			"        Switch: print the total size of the tag hierarchy as well as the\n"
+			"            tag_group memory\n"
+			"    <verbose>\n"
+			"        Switch: outputs progress/extra information as it processes the tags\n"
 			);
 	}
 	else

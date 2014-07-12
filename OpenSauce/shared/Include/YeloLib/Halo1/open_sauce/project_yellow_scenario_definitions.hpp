@@ -24,6 +24,33 @@ namespace Yelo
 		};
 	};
 
+	namespace Flags
+	{
+		enum project_yellow_flags : word_flags
+		{
+			_project_yellow_dont_fix_ui_game_globals_bit,
+			_project_yellow_game_updates_ignore_player_pvs_hack_bit,
+
+			k_number_of_project_yellow_flags,
+
+			_project_yellow_invalid_version_bit = 13,		// runtime. a yelo tag was found but it was an invalid version
+			_project_yellow_null_definition_bit = 14,		// runtime. 'null_yelo' definition
+			_project_yellow_cache_is_protected_bit = 15,	// runtime. cache was protected with HEK+
+
+			_project_yellow__first_runtime_bit =
+				_project_yellow_invalid_version_bit,
+		};
+		BOOST_STATIC_ASSERT(k_number_of_project_yellow_flags <= _project_yellow__first_runtime_bit);
+
+		enum project_yellow_gameplay_flags : long_flags
+		{
+			// don't allow MTV settings for this map, even if the user enables it
+			_project_yellow_gameplay_prohibit_multiteam_vehicles_bit,
+
+			k_number_of_project_yellow_gameplay_flags
+		};
+	};
+
 	namespace TagGroups
 	{
 		struct s_scripting_definitions;
@@ -101,33 +128,19 @@ namespace Yelo
 		// yelo for scenarios
 		struct project_yellow
 		{
+			enum { 
+				k_group_tag = 'yelo',
+				k_version = 2,
+			};
+
 			// internal name of the cache's Yelo tag when the user doesn't supply a definition
 			static cstring k_default_name;
 
 #if !PLATFORM_IS_EDITOR
 			const 
 #endif
-				int16 version;	enum { k_version = 2, k_group_tag = 'yelo' };
-			struct _flags {
-				TAG_FLAG16(dont_fix_ui_game_globals);
-				TAG_FLAG16(game_updates_ignore_player_pvs_hack);
-				TAG_FLAG16(unused2);
-				TAG_FLAG16(unused3);
-				TAG_FLAG16(unused4);
-				TAG_FLAG16(unused5);
-				TAG_FLAG16(unused6);
-				TAG_FLAG16(unused7);
-				TAG_FLAG16(unused8);
-				TAG_FLAG16(unused9);
-				TAG_FLAG16(unused10);
-				TAG_FLAG16(unused11);
-				TAG_FLAG16(unused12);
-
-				// Flags set at runtime
-				TAG_FLAG16(invalid_version); // a yelo tag was found but it was an invalid version
-				TAG_FLAG16(null_definition); // 'null_yelo' definition
-				TAG_FLAG16(cache_is_protected); // cache was protected with HEK+
-			}flags;	BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
+				int16 version;
+			TAG_FIELD(word_flags, flags, Flags::project_yellow_flags);
 
 
 			/* !-- Misc --! */
@@ -178,9 +191,7 @@ namespace Yelo
 
 			/* !-- Gameplay --! */
 			struct {
-				struct _gameplay_flags {
-					TAG_FLAG(prohibit_multiteam_vehicles, "don't allow MTV settings for this map, even if the user enables it");
-				}flags;	BOOST_STATIC_ASSERT( sizeof(_gameplay_flags) == sizeof(long_flags) );
+				TAG_FIELD(long_flags, flags, Flags::project_yellow_gameplay_flags);
 
 				TAG_PAD(int32, 5); // 20
 			}gameplay;
@@ -202,6 +213,16 @@ namespace Yelo
 
 			bool IsNull() const;
 			bool IsCacheProtected() const;
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+			/// <summary>
+			/// 	Process a yelo scenario's globals data for the current operating mode (editing or cache building).
+			/// </summary>
+			///
+			/// <param name="for_build_cache">	True if we're building a cache file, false if we're editing. </param>
+			///
+			/// <returns>	Returns the loaded yelo global's handle or datum_index::null. </returns>
+			datum_index LoadYeloGlobals(const bool for_build_cache);
 
 			static bool PLATFORM_API GroupPostprocess(datum_index tag_index, Enums::tag_postprocess_mode mode);
 		};

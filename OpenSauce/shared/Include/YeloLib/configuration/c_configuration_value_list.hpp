@@ -17,7 +17,7 @@ namespace Yelo
 		///
 		/// <typeparam name="T">	Generic type parameter. </typeparam>
 		template<typename T>
-		class c_configuration_value_list
+		class c_configuration_value_list final
 			: public c_configuration_list<c_configuration_value<T>>
 		{
 			static_assert(std::is_integral<T>::value || std::is_same<T, std::string>::value, "Configuration value lists are for integral types and std::string's only, use c_configuration_container_list for containers");

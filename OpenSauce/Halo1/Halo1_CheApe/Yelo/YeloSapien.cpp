@@ -124,6 +124,12 @@ namespace Yelo
 			Objects::ObjectDamageAftermath_UpgradesInitialize();
 		}
 
+		void DisposeBeforeCSeries()
+		{
+			// NOTE: call any dispose routines which allocate using the engine's debug memory manager here
+			// WARNING: this code will never run if Sapien is executed with "SAPIEN_NO_RENDER"
+
+		}
 		void Dispose()
 		{
 			for(auto ptr : AddressOf::MaxTagsCheck)
