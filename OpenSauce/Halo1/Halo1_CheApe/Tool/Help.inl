@@ -13,6 +13,8 @@ static void PLATFORM_API tool_if_you_dont_get_help_at_charter(char* arguments[])
 		cstring tool_command;
 	}* args = CAST_PTR(s_arguments*, arguments);
 
+	// NOTE: better to indent help strings with (4) spaces. default console tab consumes 8 characters
+
 	if( !strcmp(args->tool_command, "argument-types") )
 	{
 		printf_s(
@@ -127,8 +129,7 @@ static void PLATFORM_API tool_if_you_dont_get_help_at_charter(char* arguments[])
 			"        Switch: print the total size of the tag hierarchy as well as the\n"
 			"            tag_group memory\n"
 			"    <verbose>\n"
-			"        Switch: outputs progress/additional information as it processes the tags\n"
-			"            the tags\n"
+			"        Switch: outputs progress/extra information as it processes the tags\n"
 			);
 	}
 	else
