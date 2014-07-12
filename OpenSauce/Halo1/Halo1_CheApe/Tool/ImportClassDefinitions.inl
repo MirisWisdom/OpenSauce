@@ -18,7 +18,7 @@
 		&compile_shader_postprocess),
 
 	IMPORT_CLASS_DEFINITION("help", 
-			1, "<yelo-tool-command>", 
+			1, "<os-tool-command>", 
 		&tool_if_you_dont_get_help_at_charter),
 
 	IMPORT_CLASS_DEFINITION("import-structure-lightmap-uvs", 
@@ -39,6 +39,6 @@
 
 	IMPORT_CLASS_DEFINITION("tag-load-test", 
 			7, "<tag-name> <group> <prompt-to-continue> <prompt-to-fix-unresolved> <load-non-resolving-refs> <print-size> <verbose>", 
-			&tag_load_maintenance),
+		&tag_load_maintenance),
 
 	// TODO: add new import classes here
