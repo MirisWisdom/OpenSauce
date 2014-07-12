@@ -94,6 +94,8 @@ namespace Yelo
 	{
 		enum {
 			// Never streamed, unless the tag is loaded with _tag_load_for_editor_bit
+			// Used by the sound tag for delay loading the actual sample data. So, eg, when tool goes to build a cache
+			// it has to use tag_data_load on the sound samples. Maybe a better name is just 'lazy_loaded'
 			_tag_data_never_streamed_bit = 0,
 			_tag_data_is_text_data_bit,
 			// ie, 'debug data'
@@ -288,6 +290,7 @@ namespace Yelo
 		bool IsConsideredDebugOnly() const
 		{
 			return
+				// never streamed is not really debug, but it requires explicit tag_data_load before it is loaded into memory
 				TEST_FLAG(flags, Flags::_tag_data_never_streamed_bit) ||
 				TEST_FLAG(flags, Flags::_tag_data_not_streamed_to_cache_bit);
 		}

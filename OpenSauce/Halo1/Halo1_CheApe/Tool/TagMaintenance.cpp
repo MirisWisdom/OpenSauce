@@ -160,6 +160,10 @@ namespace Yelo
 				_mode_fix_unresolving,
 				_mode_print_unresolving,
 			};
+			enum {
+				_options_queue_non_resolving_bit,
+				_options_track_hierarchy_size_bit,
+			};
 		protected:
 			enum {
 				_child_problem_none,
@@ -180,7 +184,7 @@ namespace Yelo
 			struct s_queued_reference
 			{
 				const tag_block_definition* m_owner;
-				tag_field* m_field;
+				const tag_field* m_field;
 				int32 m_element_index;
 
 				_enum m_problem_type;
@@ -188,7 +192,7 @@ namespace Yelo
 
 				tag_reference* m_reference;
 
-				s_queued_reference(const tag_block_definition* owner, tag_field* field, int32 element_index,
+				s_queued_reference(const tag_block_definition* owner, const tag_field* field, int32 element_index,
 					tag_reference* reference)
 					: m_owner(owner)
 					, m_field(field)
@@ -206,19 +210,24 @@ namespace Yelo
 			std::vector<s_queued_reference> m_queued_references;
 			datum_index m_tag_index;
 			_enum m_mode;
+			byte_flags m_options;
 			bool m_tag_is_dirty;
-			bool m_queue_non_resolving;
+
+			size_t m_tag_hierarchy_size;
 
 		public:
-			c_tag_maintenance_children_controller(datum_index tag_index, bool queue_non_resolving,
-				_enum mode)
+			c_tag_maintenance_children_controller(datum_index tag_index,
+				_enum mode, byte_flags options)
 				: m_queued_references()
 				, m_tag_index(tag_index)
 				, m_mode(mode)
+				, m_options(options)
 				, m_tag_is_dirty(false)
-				, m_queue_non_resolving(queue_non_resolving)
+				, m_tag_hierarchy_size(0)
 			{
 			}
+
+			size_t GetTagHierarchySize() const { return m_tag_hierarchy_size; }
 
 		protected:
 			bool ShouldQueueReference(const tag_field* field, const tag_reference* reference)
@@ -229,7 +238,7 @@ namespace Yelo
 				queue &= !TagGroups::TagFieldIsStringId(field);
 
 				if (queue && TEST_FLAG(definition->flags, Flags::_tag_reference_non_resolving_bit))
-					queue &= m_queue_non_resolving;
+					queue &= TEST_FLAG(m_options, _options_queue_non_resolving_bit);
 
 				return queue;
 			}
@@ -283,6 +292,12 @@ namespace Yelo
 					{
 						resolved = true;
 						maintenance_globals.MarkForChildResolving(entry.m_reference->tag_index);
+
+						if (TEST_FLAG(m_options, _options_track_hierarchy_size_bit))
+						{
+							m_tag_hierarchy_size +=
+								TagGroups::c_tag_group_allocation_statistics::BuildStatsForTag(entry.m_reference->tag_index);
+						}
 					}
 				}
 				else
@@ -419,6 +434,10 @@ namespace Yelo
 			_enum mode = prompt_to_fix_unresolved
 				? c_tag_maintenance_children_controller::_mode_fix_unresolving
 				: c_tag_maintenance_children_controller::_mode_print_unresolving;
+			byte_flags options;
+
+			SET_FLAG(options, c_tag_maintenance_children_controller::_options_queue_non_resolving_bit, load_non_resolving);
+			SET_FLAG(options, c_tag_maintenance_children_controller::_options_track_hierarchy_size_bit, print_size);
 
 			maintenance_globals.Initialize();
 			if (print_size)
@@ -430,7 +449,7 @@ namespace Yelo
 			size_t tag_hierarchy_size = 0;
 			do {
 				if (verbose)
-					Console::ColorPrintF(k_color_default, "%d\n", debug_count++);
+					Console::ColorPrintF(k_color_default, "%d ", debug_count++);
 
 				if (is_root_tag)
 				{
@@ -455,15 +474,24 @@ namespace Yelo
 
 				if (print_size)
 				{
+					if (verbose)
+						PrintTagPath(blam::tag_group_get(blam::tag_get_group_tag(tag_index))->name, 
+							blam::tag_get_name(tag_index));
+
 					tag_hierarchy_size +=
 						TagGroups::c_tag_group_allocation_statistics::BuildStatsForTag(tag_index);
 				}
 
-				c_tag_maintenance_children_controller controller(tag_index, load_non_resolving, mode);
+				c_tag_maintenance_children_controller controller(tag_index, mode, options);
 				controller.QueueReferences();
 				controller.ResolveQueue();
+				tag_hierarchy_size += controller.GetTagHierarchySize();
 
 				maintenance_globals.MarkAsResolved(tag_index);
+
+				if (verbose)
+					Console::ColorPrint(k_color_default, "\n");
+
 			} while (maintenance_globals.ChildrenNeedResolving());
 
 			Console::ColorPrint(k_color_default, "\nfinished");
