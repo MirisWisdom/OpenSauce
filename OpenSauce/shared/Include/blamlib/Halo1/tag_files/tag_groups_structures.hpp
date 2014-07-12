@@ -284,6 +284,13 @@ namespace Yelo
 		long_flags flags;
 		int32 maximum_size;
 		proc_tag_data_byte_swap byte_swap_proc;
+
+		bool IsConsideredDebugOnly() const
+		{
+			return
+				TEST_FLAG(flags, Flags::_tag_data_never_streamed_bit) ||
+				TEST_FLAG(flags, Flags::_tag_data_not_streamed_to_cache_bit);
+		}
 	}; BOOST_STATIC_ASSERT( sizeof(tag_data_definition) == 0x10 );
 
 	struct tag_reference_definition

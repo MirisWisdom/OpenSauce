@@ -182,7 +182,7 @@ namespace Yelo
 			if(has_children)
 				SET_FLAG(block_definition->flags, Flags::_tag_block_has_children_bit, true);
 
-			block_definition->byte_swap_codes = YELO_NEW_ARRAY(byte_swap_code_t, code_index);
+			block_definition->byte_swap_codes = new byte_swap_code_t[code_index];
 			if(!block_definition->byte_swap_codes)
 				YELO_WARN("couldn't allocate memory for tag block definition byte swapping codes (%s)",
 					block_definition->name); // NOTE: added name to info
@@ -211,7 +211,7 @@ namespace Yelo
 				if(block_definition->byte_swap_codes == nullptr)
 					return;
 
-				YELO_DELETE_ARRAY(block_definition->byte_swap_codes);
+				delete block_definition->byte_swap_codes;
 				block_definition->byte_swap_codes = nullptr;
 			} void operator()(tag_group* group) const
 			{
