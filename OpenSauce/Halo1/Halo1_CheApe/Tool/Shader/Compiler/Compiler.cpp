@@ -28,17 +28,19 @@ namespace Yelo
 			, const std::string& shader_target
 			, i_effect_writer& shader_writer)
 		{
+			auto& filename = source_file.filename();
+
 			Console::ColorPrint(0x000B, "Current Effect - ");
-			Console::ColorPrintF(0x0007, "%s\r\n", source_file.filename().string().c_str());
+			Console::ColorPrintF(0x0007, "%s\r\n", filename.string().c_str());
 
 			LPD3DXEFFECT effect;
 			YELO_ASSERT_DISPLAY(c_effect_compiler::CompileEffect(source_file, shader_target, effect), "ERROR: failed to compile an effect");
 
 			path effect_file(intermediate_dir);
-			effect_file /= source_file.filename();
+			effect_file /= filename;
 			effect_file.replace_extension(".bin");
 
-			std::string effect_name(source_file.filename().replace_extension().string());
+			std::string effect_name(filename.replace_extension().string());
 			shader_writer.WriteEffect(effect_file, effect_name, shader_target, effect);
 		}
 

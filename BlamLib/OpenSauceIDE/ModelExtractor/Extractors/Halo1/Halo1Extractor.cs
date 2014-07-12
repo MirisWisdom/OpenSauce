@@ -126,7 +126,7 @@ namespace OpenSauceIDE.ModelExtractor.Extractors.Halo1
         {
             var datumIndex = mTagIndexHandler.IndexInterface.Open(tagPath, tagGroup, ITagStreamFlags.LoadDependents);
 
-            if(!datumIndex.IsValid)
+            if (!BlamLib.Managers.TagIndex.IsValid(datumIndex))
             {
                 return null;
             }

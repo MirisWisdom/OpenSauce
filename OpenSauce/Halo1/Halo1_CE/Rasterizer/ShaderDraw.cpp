@@ -33,13 +33,13 @@ namespace Yelo { namespace Rasterizer { namespace ShaderDraw
 	/// <param name="arg6">			 	[in,out] The sixth stock argument. </param>
 	static void PLATFORM_API Environment_ShaderLightmapDraw(const TagGroups::s_shader_definition* shader, void* arg2, void* arg3, void* arg4, void* arg5, void* arg6)
 	{
-		typedef void (PLATFORM_API *t_shader_draw_func)(const TagGroups::s_shader_definition*, void*, void*, void*, void*, void*);
+		typedef void (PLATFORM_API *shader_draw_func_t)(const TagGroups::s_shader_definition*, void*, void*, void*, void*, void*);
 
 		DX9::c_gbuffer_system::RenderGBuffer() = true;
 
 		Rasterizer::ShaderExtension::Environment::SetEnvironmentLightmapVariables((TagGroups::s_shader_definition*)shader);
 
-		static t_shader_draw_func STOCK_DRAW_FUNC = CAST_PTR(t_shader_draw_func, GET_FUNC_VPTR(RASTERIZER_ENVIRONMENT_DRAW_LIGHTMAP));
+		static shader_draw_func_t STOCK_DRAW_FUNC = CAST_PTR(shader_draw_func_t, GET_FUNC_VPTR(RASTERIZER_ENVIRONMENT_DRAW_LIGHTMAP));
 		STOCK_DRAW_FUNC(shader, arg2, arg3, arg4, arg5, arg6);
 
 		DX9::c_gbuffer_system::RenderGBuffer() = false;
@@ -57,13 +57,13 @@ namespace Yelo { namespace Rasterizer { namespace ShaderDraw
 	/// <param name="arg7">			 	[in,out] The seventh stock argument. </param>
 	static void PLATFORM_API Model_ShaderEnvironmentDraw(void* shader_pointer, void* arg2, void* arg3, void* arg4, void* arg5, void* arg6, void* arg7)
 	{
-		typedef void (PLATFORM_API *t_shader_draw_func)(void*, void*, void*, void*, void*, void*, void*);
+		typedef void (PLATFORM_API *shader_draw_func_t)(void*, void*, void*, void*, void*, void*, void*);
 
 		DX9::c_gbuffer_system::RenderGBuffer() = true;
 
 		Rasterizer::ShaderExtension::Model::SetModelNormSpec(shader_pointer);
 
-		static t_shader_draw_func STOCK_DRAW_FUNC = CAST_PTR(t_shader_draw_func, GET_FUNC_VPTR(RASTERIZER_MODEL_DRAW_ENVIRONMENT_SHADER_ENVIRONMENT));
+		static shader_draw_func_t STOCK_DRAW_FUNC = CAST_PTR(shader_draw_func_t, GET_FUNC_VPTR(RASTERIZER_MODEL_DRAW_ENVIRONMENT_SHADER_ENVIRONMENT));
 		STOCK_DRAW_FUNC(shader_pointer, arg2, arg3, arg4, arg5, arg6, arg7);
 
 		DX9::c_gbuffer_system::RenderGBuffer() = false;
@@ -81,13 +81,13 @@ namespace Yelo { namespace Rasterizer { namespace ShaderDraw
 	/// <param name="arg7">			 	[in,out] The seventh stock argument. </param>
 	static void PLATFORM_API Model_ShaderModelDraw(void* shader_pointer, void* arg2, void* arg3, void* arg4, void* arg5, void* arg6, void* arg7)
 	{
-		typedef void (PLATFORM_API *t_shader_draw_func)(void*, void*, void*, void*, void*, void*, void*);
+		typedef void (PLATFORM_API *shader_draw_func_t)(void*, void*, void*, void*, void*, void*, void*);
 
 		DX9::c_gbuffer_system::RenderGBuffer() = true;
 
 		Rasterizer::ShaderExtension::Model::SetModelNormSpec(shader_pointer);
 
-		static t_shader_draw_func STOCK_DRAW_FUNC = CAST_PTR(t_shader_draw_func, GET_FUNC_VPTR(RASTERIZER_MODEL_DRAW_ENVIRONMENT_SHADER_MODEL));
+		static shader_draw_func_t STOCK_DRAW_FUNC = CAST_PTR(shader_draw_func_t, GET_FUNC_VPTR(RASTERIZER_MODEL_DRAW_ENVIRONMENT_SHADER_MODEL));
 		STOCK_DRAW_FUNC(shader_pointer, arg2, arg3, arg4, arg5, arg6, arg7);
 
 		DX9::c_gbuffer_system::RenderGBuffer() = false;

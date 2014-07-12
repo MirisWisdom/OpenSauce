@@ -65,6 +65,11 @@ namespace BlamLib.Managers
 			return false;
 		}
 
+        public static bool IsValid(Blam.DatumIndex tagDatum)
+        {
+            return !tagDatum.IsNull && !IsSentinel(tagDatum);
+        }
+
 		void SentinelException(Blam.DatumIndex tag_index, string operation)
 		{
 			if (tag_index == kMissing) throw new Debug.ExceptionLog("Tried to {0} a tag_index marked as '{1}'!", operation, "missing");

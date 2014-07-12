@@ -16,8 +16,11 @@ namespace Yelo
 
 		bool UsingDirectionalLightmaps();
 		
-		void SetLightmaps(const datum_index standard);
-		void SetLightmaps(const datum_index standard, const datum_index directional_1, const datum_index directional_2, const datum_index directional_3);
+		void SetLightmaps(const datum_index standard_tag_index);
+		void SetLightmaps(const datum_index standard_tag_index
+			, const datum_index directional_1_tag_index
+			, const datum_index directional_2_tag_index
+			, const datum_index directional_3_tag_index);
 	};};
 };
 #endif

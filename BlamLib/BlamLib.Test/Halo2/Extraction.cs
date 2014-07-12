@@ -56,15 +56,15 @@ namespace BlamLib.Test
 		{
 			string test_results_path = EngineGetTestResultsPath(BlamVersion.Halo2_PC);
 
-			string[] coll = Directory.GetFiles(kTestTagIndexTagsPath + @"tags\", 
+            string[] coll = Directory.GetFiles(kTestInstallationRootPath + kTestTagsDir, 
 				Blam.Halo2.TagGroups.coll.ToFileSearchPattern(), SearchOption.AllDirectories);
-			string[] phmo = Directory.GetFiles(kTestTagIndexTagsPath + @"tags\",
+			string[] phmo = Directory.GetFiles(kTestInstallationRootPath + kTestTagsDir,
 				Blam.Halo2.TagGroups.phmo.ToFileSearchPattern(), SearchOption.AllDirectories);
-			string[] mode = Directory.GetFiles(kTestTagIndexTagsPath + @"tags\",
+			string[] mode = Directory.GetFiles(kTestInstallationRootPath + kTestTagsDir,
 				Blam.Halo2.TagGroups.mode.ToFileSearchPattern(), SearchOption.AllDirectories);
 
 			var bd = Program.Halo2.Manager;
-			var datum_tagindex = bd.OpenTagIndex(BlamVersion.Halo2_PC, kTestTagIndexTagsPath);
+            var datum_tagindex = bd.OpenTagIndex(BlamVersion.Halo2_PC, kTestInstallationRootPath, kTestTagsDir);
 			var tagindex = bd.GetTagIndex(datum_tagindex) as Managers.TagIndex;
 
 			ExtractImportInfo(test_results_path, tagindex, Blam.Halo2.TagGroups.coll, coll);

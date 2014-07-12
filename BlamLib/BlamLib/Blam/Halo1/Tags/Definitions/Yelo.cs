@@ -9,13 +9,13 @@ using TI = BlamLib.TagInterface;
 
 namespace BlamLib.Blam.Halo1.Tags
 {
-	[TI.Struct((int)TagGroups.Enumerated.gelo)]
+	[TI.TagGroup((int)TagGroups.Enumerated.gelo, 1)]
 	public class project_yellow_globals_group : TI.Definition
 	{
 		// TODO: fill this in when needed
 	}
 
-	[TI.Struct((int)TagGroups.Enumerated.gelo)]
+	[TI.TagGroup((int)TagGroups.Enumerated.yelo, 1)]
 	public class project_yellow_group : TI.Definition
 	{
 		// TODO: fill this in when needed

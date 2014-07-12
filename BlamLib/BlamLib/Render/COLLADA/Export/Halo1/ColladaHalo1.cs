@@ -893,7 +893,7 @@ namespace BlamLib.Render.COLLADA.Halo1
                     }
 
 					string shaderName = "Unknown";
-					if (shaderDatum.IsValid)
+					if (TagIndex.IsValid(shaderDatum))
 					{
                         shaderName = Path.GetFileNameWithoutExtension(tagIndex[shaderDatum].Name);
 					}
@@ -1206,7 +1206,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			, Blam.Halo1.Tags.shader_environment_group shader)
 		{
 			// Set diffuse texture/color
-			if (shader.BaseMap.Datum.IsValid)
+			if (TagIndex.IsValid(shader.BaseMap.Datum))
 			{
 				var image = new ColladaExporter.Image(tagIndex[shader.BaseMap.Datum].Name);
 				mImages.Add(image);
@@ -1220,7 +1220,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			}
 
 			// Set alpha tested bump map
-			if (shader.Flags.Test(1) && shader.BumpMap.Datum.IsValid)
+			if (shader.Flags.Test(1) && TagIndex.IsValid(shader.BumpMap.Datum))
 			{
 				var image = new ColladaExporter.Image(tagIndex[shader.BumpMap.Datum].Name);
 				mImages.Add(image);
@@ -1244,7 +1244,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			, Blam.Halo1.Tags.shader_model_group shader)
 		{
 			// Set diffuse texture/color
-			if (shader.BaseMap.Datum.IsValid)
+			if (TagIndex.IsValid(shader.BaseMap.Datum))
 			{
 				var image = new ColladaExporter.Image(tagIndex[shader.BaseMap.Datum].Name);
 				mImages.Add(image);
@@ -1268,7 +1268,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			, Blam.Halo1.Tags.shader_transparent_chicago_group shader)
 		{
 			// Set diffuse texture
-			if ((shader.Maps.Count > 0) && shader.Maps[0].Map.Datum.IsValid)
+			if ((shader.Maps.Count > 0) && TagIndex.IsValid(shader.Maps[0].Map.Datum))
 			{
 				var image = new ColladaExporter.Image(tagIndex[shader.Maps[0].Map.Datum].Name);
 				mImages.Add(image);
@@ -1299,7 +1299,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 				bitmapDatum = shader._2StageMaps[0].Map.Datum;
 			}
 
-			if (bitmapDatum.IsValid)
+			if (TagIndex.IsValid(bitmapDatum))
 			{
 				var image = new ColladaExporter.Image(tagIndex[bitmapDatum].Name);
 				mImages.Add(image);
@@ -1319,7 +1319,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			, TagIndexBase tagIndex
 			, Blam.Halo1.Tags.shader_transparent_generic_group shader)
 		{
-			if ((shader.Maps.Count > 0) && shader.Maps[0].Map.Datum.IsValid)
+			if ((shader.Maps.Count > 0) && TagIndex.IsValid(shader.Maps[0].Map.Datum))
 			{
 				var image = new ColladaExporter.Image(tagIndex[shader.Maps[0].Map.Datum].Name);
 				mImages.Add(image);
@@ -1339,7 +1339,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			, TagIndexBase tagIndex
 			, Blam.Halo1.Tags.shader_transparent_glass_group shader)
 		{
-			if (shader.DiffuseMap.Datum.IsValid)
+			if (TagIndex.IsValid(shader.DiffuseMap.Datum))
 			{
 				var image = new ColladaExporter.Image(tagIndex[shader.DiffuseMap.Datum].Name);
 				mImages.Add(image);
@@ -1359,7 +1359,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			, TagIndexBase tagIndex
 			, Blam.Halo1.Tags.shader_transparent_water_group shader)
 		{
-			if (shader.BaseMap.Datum.IsValid)
+			if (TagIndex.IsValid(shader.BaseMap.Datum))
 			{
 				var image = new ColladaExporter.Image(tagIndex[shader.BaseMap.Datum].Name);
 				mImages.Add(image);
@@ -1382,7 +1382,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			, TagIndexBase tagIndex
 			, Blam.Halo1.Tags.shader_transparent_meter_group shader)
 		{
-			if (shader.Map.Datum.IsValid)
+			if (TagIndex.IsValid(shader.Map.Datum))
 			{
 				var image = new ColladaExporter.Image(tagIndex[shader.Map.Datum].Name);
 				mImages.Add(image);
@@ -1416,7 +1416,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			foreach (var shader in mShaderTypeList)
 			{
 				string shaderName = "Unknown";
-				if (shader.ShaderDatum.IsValid)
+				if (TagIndex.IsValid(shader.ShaderDatum))
 				{
 					shaderName = Path.GetFileNameWithoutExtension(tagIndex[shader.ShaderDatum].Name);
 				}
@@ -1438,7 +1438,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 					mMaterials.Add(new ColladaExporter.Material(shaderName, shaderName));
 				}
 				
-				if(!shader.ShaderDatum.IsValid)
+				if(!TagIndex.IsValid(shader.ShaderDatum))
 				{
 					continue;
 				}

@@ -12,36 +12,37 @@ namespace Yelo
 {
 	namespace Render { namespace Sky
 	{
-		class c_sky_manager
+		class c_sky_manager final
 		{
 			class s_sky_entry
 			{
-				datum_index m_sky_index;
+				datum_index m_sky_tag_index;
 				bool m_is_override;
+				PAD24;
 				std::shared_ptr<s_sky_entry> m_original_sky_entry;
 
 			public:
-				s_sky_entry(datum_index sky_index);
-				s_sky_entry(datum_index sky_index, std::shared_ptr<s_sky_entry> sky_entry);
+				s_sky_entry(const datum_index sky_tag_index);
+				s_sky_entry(const datum_index sky_tag_index, std::shared_ptr<s_sky_entry> sky_entry);
 
-				bool IsOverride();
+				bool IsOverride() const;
 
-				datum_index Get();
+				datum_index GetTagIndex() const;
 
-				std::shared_ptr<s_sky_entry> OriginalSky();
+				std::shared_ptr<s_sky_entry> OriginalSky() const;
 			};
-			typedef std::shared_ptr<s_sky_entry> t_sky_entry_ptr;
-			typedef std::vector<t_sky_entry_ptr> t_sky_entry_list;
+			typedef std::shared_ptr<s_sky_entry> sky_entry_ptr_t;
+			typedef std::vector<sky_entry_ptr_t> sky_entry_list_t;
 
-			t_sky_entry_list m_sky_list;
+			sky_entry_list_t m_sky_list;
 
 		public:
 			void Reset();
 			void Clear();
 
 			void SetScenarioSkies(const TagBlock<tag_reference>& skies);
-			void SetSkyIndex(byte sky_index, datum_index sky_datum);
-			datum_index GetSkyDatum(byte sky_index);
+			void SetSkyIndex(const byte sky_index, const datum_index sky_tag_index);
+			datum_index GetSkyTagIndex(const byte sky_index) const;
 		};
 	};};
 };

@@ -217,7 +217,7 @@ namespace BlamLib.Test
 		[TestMethod]
 		public void Halo2TestCOLLADALightmapExport()
 		{
-			using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo2_PC, kTestTagIndexTagsPath))
+            using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo2_PC, kTestInstallationRootPath, kTestTagsDir))
 			{
 				var tagindex = handler.IndexInterface;
 				foreach (var model_def in LightmapTestDefinitions)
@@ -232,7 +232,7 @@ namespace BlamLib.Test
 					var halo2 = new BlamLib.Render.COLLADA.Halo2.ColladaHalo2(tagindex, model_def.TagIndex);
 
 					halo2.Overwrite = true;
-					halo2.RelativeFilePath = Path.Combine(kTestTagIndexTagsPath, @"data\");
+					halo2.RelativeFilePath = Path.Combine(kTestInstallationRootPath, kTestDataDir);
 
 					halo2.ClearRegister();
 
@@ -255,7 +255,7 @@ namespace BlamLib.Test
 		[TestMethod]
 		public void Halo2TestCOLLADABSPExport()
 		{
-			using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo2_PC, kTestTagIndexTagsPath))
+            using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo2_PC, kTestInstallationRootPath, kTestTagsDir))
 			{
 				var tagindex = handler.IndexInterface;
 				foreach (var model_def in BSPTestDefinitions)
@@ -270,7 +270,7 @@ namespace BlamLib.Test
 					var halo2 = new BlamLib.Render.COLLADA.Halo2.ColladaHalo2(tagindex, model_def.TagIndex);
 
 					halo2.Overwrite = true;
-					halo2.RelativeFilePath = Path.Combine(kTestTagIndexTagsPath, @"data\");
+                    halo2.RelativeFilePath = Path.Combine(kTestInstallationRootPath, kTestDataDir);
 
 					halo2.ClearRegister();
 
@@ -293,7 +293,7 @@ namespace BlamLib.Test
 		[TestMethod]
 		public void Halo2TestCOLLADARenderModelExport()
 		{
-			using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo2_PC, kTestTagIndexTagsPath))
+            using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo2_PC, kTestInstallationRootPath, kTestTagsDir))
 			{
 				var tagindex = handler.IndexInterface;
 				foreach (var model_def in RenderModelTestDefinitions)
@@ -308,7 +308,7 @@ namespace BlamLib.Test
 					var halo2 = new BlamLib.Render.COLLADA.Halo2.ColladaHalo2(tagindex, model_def.TagIndex);
 
 					halo2.Overwrite = true;
-					halo2.RelativeFilePath = Path.Combine(kTestTagIndexTagsPath, @"data\");
+                    halo2.RelativeFilePath = Path.Combine(kTestInstallationRootPath, kTestDataDir);
 
 					foreach (Render.COLLADA.Halo2.ColladaHalo2RenderModelInfo info in halo2)
 					{

@@ -56,7 +56,7 @@ namespace OpenSauceIDE.ModelExtractor.TagIO
         /// </summary>
         public void Dispose()
         {
-            if (mIndexHandle.IsValid)
+            if (TagIndex.IsValid(mIndexHandle))
             {
                 BlamLib.Program.GetManager(mGameVersion).CloseTagIndex(mIndexHandle);
                 mIndexInterface = null;

@@ -34,7 +34,7 @@ namespace OpenSauceIDE.ModelExtractor.Extractors.Halo1.StructureBSP
         {
             // Collect the necessary data
             var structureBSP = tagManager.TagDefinition as BlamLib.Blam.Halo1.Tags.structure_bsp_group;
-            if(!structureBSP.LightmapBitmaps.Datum.IsValid)
+            if(!TagIndex.IsValid(structureBSP.LightmapBitmaps.Datum))
             {
                 mMessageHandler.SendMessage("Failed to open lightmap bitmap {0}", structureBSP.LightmapBitmaps.ToString());
                 return;
