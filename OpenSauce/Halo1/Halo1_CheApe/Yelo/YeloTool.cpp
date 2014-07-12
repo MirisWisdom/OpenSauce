@@ -188,9 +188,14 @@ namespace Yelo
 			assert(tramp_byte_count <= c_tool_main::HOOK_TRAMPOLINE_END-c_tool_main::HOOK_TRAMPOLINE_START);
 		}
 
+		void DisposeBeforeCSeries()
+		{
+			// NOTE: call any dispose routines which allocate using the engine's debug memory manager here
+			
+			c_animation_fixups::Dispose();
+		}
 		void Dispose()
 		{
-			c_animation_fixups::Dispose();
 		}
 	};
 };

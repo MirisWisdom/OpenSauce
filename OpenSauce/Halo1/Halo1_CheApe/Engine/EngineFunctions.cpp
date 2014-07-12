@@ -64,6 +64,13 @@ namespace Yelo
 		}
 		//////////////////////////////////////////////////////////////////////////
 		// debug_memory.c
+		API_FUNC_NAKED void PLATFORM_API debug_dump_memory()
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(DEBUG_DUMP_MEMORY);
+
+			__asm	jmp	FUNCTION
+		}
+
 		API_FUNC_NAKED void* PLATFORM_API debug_malloc(const size_t ptr_size, const bool fill_with_garbage, cstring file, const uint32 line)
 		{
 			static const uintptr_t FUNCTION = GET_FUNC_PTR(DEBUG_MALLOC);
