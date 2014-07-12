@@ -39,21 +39,22 @@ namespace Yelo
 		void s_tag_allocation_statistics::Update(const tag_block* instance)
 		{
 			assert(instance->definition == block_definition);
+			size_t num_of_elements = CAST(size_t, instance->count);
 
 			block.count++;
-			block.elements += CAST(size_t, instance->count);
+			block.elements += num_of_elements;
 
 			if (s_tag_field_set_runtime_data::Enabled())
 			{
 				const auto* info = block_definition->GetRuntimeInfo();
 
-				block.size += info->runtime_size * instance->count;
-				block.padding = info->counts.padding_amount;
-				block.debug_bytes_size = info->counts.debug_data_amount;
+				block.size +=				num_of_elements * info->runtime_size;
+				block.padding +=			num_of_elements * info->counts.padding_amount;
+				block.debug_bytes_size +=	num_of_elements * info->counts.debug_data_amount;
 			}
 			else
 			{
-				block.size += block_definition->element_size * instance->count;
+				block.size +=				num_of_elements * block_definition->element_size;
 				block.padding = 0;
 				block.debug_bytes_size = 0;
 			}
