@@ -24,7 +24,7 @@ namespace Yelo
 	{
 #pragma region Containers
 		/// <summary>	The paths container. </summary>
-		class c_paths_container
+		class c_paths_container final
 			: public Configuration::c_configuration_container
 		{
 		public:
@@ -36,10 +36,10 @@ namespace Yelo
 			c_paths_container();
 
 		protected:
-			const std::vector<i_configuration_value* const> GetMembers() final override;
+			const std::vector<i_configuration_value* const> GetMembers() override;
 		};
 
-		class c_profile_container
+		class c_profile_container final
 			: public Configuration::c_configuration_container
 		{
 		public:
@@ -49,10 +49,10 @@ namespace Yelo
 			c_profile_container();
 
 		protected:
-			const std::vector<i_configuration_value* const> GetMembers() final override;
+			const std::vector<i_configuration_value* const> GetMembers() override;
 		};
 
-		class c_cheape_container
+		class c_cheape_container final
 			: public Configuration::c_configuration_container
 		{
 		public:
@@ -61,7 +61,7 @@ namespace Yelo
 			c_cheape_container();
 
 		protected:
-			const std::vector<i_configuration_value* const> GetMembers() final override;
+			const std::vector<i_configuration_value* const> GetMembers() override;
 		};
 #pragma endregion
 
@@ -110,7 +110,7 @@ namespace Yelo
 #pragma endregion
 
 #pragma region CheApe Settings
-		class c_settings_cheape
+		class c_settings_cheape final
 			: public c_settings_singleton<c_cheape_container, c_settings_cheape>
 		{
 			static std::unique_ptr<i_settings_profile> g_settings_profile;
@@ -122,7 +122,7 @@ namespace Yelo
 			/// <param name="name">	The name of the profile to get. </param>
 			///
 			/// <returns>	null if it fails, else a pointer to the profile. </returns>
-			c_profile_container* GetProfile(std::string name);
+			c_profile_container* GetProfile(const std::string& name);
 
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////

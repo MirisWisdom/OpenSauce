@@ -20,6 +20,8 @@ namespace Yelo
 			k_maximum_nodes_per_model = 64,
 			k_maximum_nodes_per_model_halo_stock = 44, // 'Cause Xbox1 has limits
 
+			k_maximum_nodes_per_model_geometry_part = 22,
+
 			k_number_of_rows_per_node_matrix = 4,
 		};
 	};
@@ -122,7 +124,9 @@ namespace Yelo
 			TAG_PAD(byte, 1);
 			TAG_PAD(byte, 1);
 			sbyte num_nodes;
-			TAG_PAD(int32, 6);
+
+			sbyte node_table[Enums::k_maximum_nodes_per_model_geometry_part];
+			PAD16;
 		}; BOOST_STATIC_ASSERT( sizeof(gbxmodel_geometry_part) == 0x84 ); // max count: 32
 		struct gbxmodel_geometry
 		{

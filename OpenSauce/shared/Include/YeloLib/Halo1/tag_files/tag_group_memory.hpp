@@ -85,6 +85,7 @@ namespace Yelo
 				unsigned has_old_string_id : 1;		// fieldset contains 1+ tag_string fields annotated for string_id
 				unsigned has_runtime_size : 1;		// fieldset's size for cache build is not the same as in tags build
 				unsigned has_alignment : 1;			// fieldset has an explicit alignment_bit set
+				unsigned has_debug_child_data : 1;	// fieldset has a field whose child data is only used in debug. this probably only applies to tag_data fields
 				unsigned no_shared_memory : 1;		// fieldset should not share memory with other bitwise matching data (eg, it is volatile memory)
 				unsigned is_group_header : 1;		// fieldset represents the header_block_definition of a group
 				unsigned is_block_indexed : 1;		// fieldset can be referenced by a block_index (eg, the scenario_object_name block would have this set)
@@ -145,6 +146,7 @@ namespace Yelo
 			void IncrementTotalPaddingSize(size_t size);
 			void IncrementDebugDataSize(size_t size);
 
+			void BuildInfoHandleDataField(tag_data_definition* definition);
 			void BuildInfo(const tag_block_definition* group_header_definition, 
 				const tag_block_definition* definition);
 			void CallCheApeHooks(const tag_block_definition* definition);
@@ -293,12 +295,14 @@ namespace Yelo
 			const tag_data_definition* data_definition;
 
 			struct s_block_totals {
+				size_t debug_bytes_size;
 				rsize_t count;		/// <summary>	number of instances. </summary>
 				rsize_t elements;	/// <summary>	number of elements. </summary>
 				size_t size;		/// <summary>	total size. </summary>
 				size_t padding;		/// <summary>	total amount of padding, 0 when runtime_data isn't generated. </summary>
 			};
 			struct s_data_totals {
+				size_t debug_bytes_size;
 				rsize_t count;	/// <summary>	number of instances. </summary>
 				size_t size;	/// <summary>	total size. </summary>
 			};

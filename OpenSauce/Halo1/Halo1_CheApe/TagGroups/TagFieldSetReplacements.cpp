@@ -10,8 +10,11 @@
 #include <blamlib/Halo1/tag_files/tag_groups_structures_macros.hpp>
 #include <YeloLib/Halo1/tag_files/tag_fieldset_replacement_builder.hpp>
 
+#include <blamlib/Halo1/bitmaps/bitmap_group.hpp>
 #include <blamlib/Halo1/effects/damage_effect_definitions.hpp>
+#include <blamlib/Halo1/models/model_definitions.hpp>
 #include <blamlib/Halo1/shaders/shader_definitions.hpp>
+#include <blamlib/Halo1/sound/sound_definitions.hpp>
 #include <blamlib/Halo1/units/unit_definitions.hpp>
 
 namespace Yelo
@@ -20,10 +23,37 @@ namespace Yelo
 	{
 		static cstring k_reserved_flag_string = "reserved"
 			TAG_FIELD_MARKUP_IS_READONLY;
+		static cstring k_never_share_resources_flag_string = "never share resources"
+			TAG_FIELD_MARKUP_PREFIX_HELP
+			"";
 
 		TAG_GROUP_REFERENCE_DEFINE(damage_effect, 0,
 			s_damage_effect_definition::k_group_tag
 		);
+
+		template<Enums::field_type kFieldType>
+		static string_list* FindFlagsField(tag_block_definition* definition, cstring flags_field_name = "flags")
+		{
+			static_assert(kFieldType == Enums::_field_byte_flags || kFieldType == Enums::_field_word_flags || kFieldType == Enums::_field_long_flags,
+				"Expected a flags-based field type");
+			assert(definition);
+
+			int flags_field_index = definition->FindFieldIndex(kFieldType, flags_field_name);
+			assert(flags_field_index != NONE);
+
+			auto flags_list = definition->fields[flags_field_index].Definition<string_list>();
+
+			return flags_list;
+		}
+		template<size_t kStartIndex, size_t kEndIndex, rsize_t kStringsCount>
+		static void PopulateWithReservedString(cstring (& strings)[kStringsCount])
+		{
+			BOOST_STATIC_ASSERT(kStartIndex < kStringsCount);
+			BOOST_STATIC_ASSERT(kEndIndex < kStringsCount);
+
+			for (size_t x = kStartIndex; x <= kEndIndex; x++)
+				strings[x] = k_reserved_flag_string;
+		}
 
 		static proc_tag_block_postprocess_element g_unit_header_block_postprocess_proc;
 		static bool PLATFORM_API UnitHeaderBlockPostprocessOverload(void* element, Enums::tag_postprocess_mode mode,
@@ -36,8 +66,7 @@ namespace Yelo
 		}
 		static void UnitSeatBlockUpdateFlags(tag_block_definition* unit_seat_block)
 		{
-			int flags_field_index = unit_seat_block->FindFieldIndex(Enums::_field_long_flags, "flags");
-			auto flags_list = unit_seat_block->fields[flags_field_index].Definition<string_list>();
+			auto* flags_list = FindFlagsField<Enums::_field_long_flags>(unit_seat_block);
 			assert(flags_list->count==Flags::k_number_of_unit_seat_definition_flags);
 
 			static cstring unit_seat_flags_yelo_strings[Flags::k_number_of_unit_seat_definition_flags_yelo];
@@ -54,14 +83,10 @@ namespace Yelo
 				"boarding need any passenger";
 			unit_seat_flags_yelo_strings[Flags::_unit_seat_controls_open_and_close_bit] =
 				"controls open and close";
-			unit_seat_flags_yelo_strings[Flags::_unit_seat_reserved16_bit] =
-				k_reserved_flag_string;
-			unit_seat_flags_yelo_strings[Flags::_unit_seat_reserved17_bit] =
-				k_reserved_flag_string;
-			unit_seat_flags_yelo_strings[Flags::_unit_seat_reserved18_bit] =
-				k_reserved_flag_string;
-			unit_seat_flags_yelo_strings[Flags::_unit_seat_reserved19_bit] =
-				k_reserved_flag_string;
+
+			PopulateWithReservedString<Flags::_unit_seat_reserved16_bit, Flags::_unit_seat_reserved19_bit>(
+				unit_seat_flags_yelo_strings);
+
 			unit_seat_flags_yelo_strings[Flags::_unit_seat_boarding_ejects_seat_yelo_bit] =
 				"boarding ejects seat";
 
@@ -137,6 +162,122 @@ namespace Yelo
 
 			InitializeFieldSetReplacementsForUnitSeat(
 				unit->header_block_definition->fields[unit_seats_field_index].DefinitionCast<tag_block_definition*>());
+		}
+
+		static void BitmapGroupUpdateFlags(tag_block_definition* bitmap_block)
+		{
+			auto* flags_list = FindFlagsField<Enums::_field_word_flags>(bitmap_block);
+			assert(flags_list->count==Flags::k_number_of_bitmap_group_flags);
+
+			static cstring bitmap_group_flags_yelo_strings[Flags::k_number_of_bitmap_group_flags_yelo];
+			for (int x = 0; x < Flags::k_number_of_bitmap_group_flags; x++)
+				bitmap_group_flags_yelo_strings[x] = flags_list->strings[x];
+
+			PopulateWithReservedString<Flags::_bitmap_group_reserved4_bit, Flags::_bitmap_group_reserved12_bit>(
+				bitmap_group_flags_yelo_strings);
+
+			bitmap_group_flags_yelo_strings[Flags::_bitmap_group_never_share_resources_yelo_bit] =
+				k_never_share_resources_flag_string;
+
+			flags_list->strings = bitmap_group_flags_yelo_strings;
+			flags_list->count = NUMBEROF(bitmap_group_flags_yelo_strings);
+		}
+		static void InitializeFieldSetReplacementsForBitmap()
+		{
+			tag_group* bitmap = blam::tag_group_get<s_bitmap_group>();
+			assert(bitmap);
+
+			BitmapGroupUpdateFlags(bitmap->header_block_definition);
+		}
+
+		static void SoundUpdateFlags(tag_block_definition* sound_block)
+		{
+			auto* flags_list = FindFlagsField<Enums::_field_long_flags>(sound_block);
+			assert(flags_list->count==Flags::k_number_of_sound_definition_flags);
+
+			static cstring sound_definition_flags_yelo_strings[Flags::k_number_of_sound_definition_flags_yelo];
+			for (int x = 0; x < Flags::k_number_of_sound_definition_flags; x++)
+				sound_definition_flags_yelo_strings[x] = flags_list->strings[x];
+
+			PopulateWithReservedString<Flags::_sound_definition_reserved2_bit, Flags::_sound_definition_reserved9_bit>(
+				sound_definition_flags_yelo_strings);
+
+			sound_definition_flags_yelo_strings[Flags::_sound_definition_never_share_resources_yelo_bit] =
+				k_never_share_resources_flag_string;
+
+			flags_list->strings = sound_definition_flags_yelo_strings;
+			flags_list->count = NUMBEROF(sound_definition_flags_yelo_strings);
+		}
+		static void InitializeFieldSetReplacementsForSound()
+		{
+			tag_group* sound = blam::tag_group_get<sound_definition>();
+			assert(sound);
+
+			SoundUpdateFlags(sound->header_block_definition);
+		}
+
+		static void GbxModelGeometryPartBlockFixActualFields(tag_block_definition* model_geometry_part_block)
+		{
+			assert(0==strcmp("gbxmodel_geometry_part_block", model_geometry_part_block->name));
+
+			// find the last declared field
+			int field_index = model_geometry_part_block->FindFieldIndex(Enums::_field_block, "triangles");
+			assert(field_index != NONE);
+
+			// move to triangle_buffer
+			field_index++;
+			assert(model_geometry_part_block->fields[field_index].type==Enums::_field_pad);
+
+			// move to vertex_buffer
+			field_index++;
+			assert(model_geometry_part_block->fields[field_index].type==Enums::_field_pad);
+
+			// move to num_nodes
+			// fucking gbx defines num_nodes as pad, pretending it is a runtime field, but it isn't calculated at runtime
+			field_index += 4;
+			assert(model_geometry_part_block->fields[field_index].type == Enums::_field_pad);
+			{
+				tag_field& num_nodes_field = model_geometry_part_block->fields[field_index];
+				assert(num_nodes_field.DefinitionCast<int32>()==sizeof(sbyte));
+
+				num_nodes_field.type = Enums::_field_char_integer;
+				num_nodes_field.name = "num_nodes"
+					TAG_FIELD_MARKUP_IS_READONLY;
+				num_nodes_field.definition = nullptr;
+			}
+
+			// move to node_table
+			field_index++;
+			assert(model_geometry_part_block->fields[field_index].type == Enums::_field_pad);
+			{
+				const int32 k_node_table_field_pad_size =
+					(sizeof(sbyte) * Enums::k_maximum_nodes_per_model_geometry_part) +
+					sizeof(int16);
+
+				tag_field& node_table_field = model_geometry_part_block->fields[field_index];
+				assert(node_table_field.DefinitionCast<int32>() == k_node_table_field_pad_size);
+
+				node_table_field.type = Enums::_field_skip;
+			}
+		}
+		static void InitializeFieldSetReplacementsForGbxModel()
+		{
+			tag_group* gbxmodel = blam::tag_group_get<gbxmodel_definition>();
+			assert(gbxmodel);
+
+			auto* block = gbxmodel->header_block_definition;
+			// find gbxmodel->geometries
+			int field_index = block->FindFieldIndex(Enums::_field_block, "geometries");
+			assert(field_index != NONE);
+
+			block = block->fields[field_index].Definition<tag_block_definition>();
+			// find gbxmodel_geometry->parts
+			field_index = block->FindFieldIndex(Enums::_field_block, "parts");
+			assert(field_index != NONE);
+
+			block = block->fields[field_index].Definition<tag_block_definition>();
+
+			GbxModelGeometryPartBlockFixActualFields(block);
 		}
 
 		static void InitializeFieldSetReplacementsForShaderEnvironment()
@@ -215,6 +356,9 @@ namespace Yelo
 			// NOTE: call tag_field_set_replacement_builder's here
 
 			InitializeFieldSetReplacementsForUnit();
+			InitializeFieldSetReplacementsForBitmap();
+			InitializeFieldSetReplacementsForSound();
+			InitializeFieldSetReplacementsForGbxModel();
 			InitializeFieldSetReplacementsForShaderEnvironment();
 			InitializeFieldSetReplacementsForDamageEffects();
 		}

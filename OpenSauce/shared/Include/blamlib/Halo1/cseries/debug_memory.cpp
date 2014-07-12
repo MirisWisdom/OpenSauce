@@ -27,7 +27,7 @@ namespace Yelo
 			int32 marker;
 			uint32 checksum;
 
-			inline static size_t AllocationSize(size_t size)
+			static size_t AllocationSize(size_t size)
 			{
 				return sizeof(s_debug_memory_header) + size + sizeof(tag); // header + size + footer
 			}

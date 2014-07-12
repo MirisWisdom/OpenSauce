@@ -14,6 +14,9 @@ namespace Yelo
 
 	namespace blam
 	{
+		void PLATFORM_API debug_dump_memory();
+
+
 		// The engine's debug memory manager on win32 boils down to GlobalAlloc family of memory functions,
 		// which is guaranteed to be aligned on an 8-byte boundary (http://msdn.microsoft.com/en-us/library/aa366574%28v=vs.12%29.ASPX)
 		// See the system_malloc, etc functions in the engine's cseries.hpp
@@ -37,8 +40,7 @@ namespace Yelo
 		template<typename T>
 		void debug_free_with_null(T*& pointer, cstring file, const uint32 line)
 		{
-			if(pointer != nullptr)
-				debug_free(pointer, file, line);
+			debug_free(pointer, file, line);
 
 			pointer = nullptr;
 		}
@@ -59,8 +61,7 @@ namespace Yelo
 		template<typename T>
 		void debug_delete_array(T*& pointer, cstring file, const uint32 line)
 		{
-			if(pointer != nullptr)
-				debug_free(pointer, file, line);
+			debug_free(pointer, file, line);
 
 			pointer = nullptr;
 		}

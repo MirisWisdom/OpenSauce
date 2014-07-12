@@ -22,23 +22,6 @@ namespace Yelo
 	namespace Enums
 	{
 		enum {
-			// How much additional memory, if any, we allocate for the objects pool
-			k_game_state_allocation_size_object_memory_pool_upgrade = 0x10000,
-			// 0x42974 bytes available in game state allocation for Clients.
-			// Dedis should have a little bit more (since they don't alloc a few render based things) 
-			// but to keep things simple we'll limit both sides of the spectrum to the same size.
-			// UPDATE: 0x50A78 bytes for Dedi (stock only allocates 0x3EF588 bytes)
-			// NOTE: Basically, the game doesn't fully use the amount it sets aside for game state data 
-			// (ie, objects, players, etc), so we're able to steal some of this memory for our own use. 
-			// Why? Because the game state is saved to file when the player saves the game or dumps a core. 
-			// So if there's a project component which requires serialization, we'd want to allocate its 
-			// memory in the game state, not anywhere else.
-			k_game_state_allocation_maximum_size_for_yelo = 0x42970
-				- k_game_state_allocation_size_object_memory_pool_upgrade,
-		};
-		BOOST_STATIC_ASSERT( k_game_state_allocation_maximum_size_for_yelo >= 0 );
-
-		enum {
 			// How many values we allow in the runtime data game state for each type (ie, integers, real, etc)
 			k_runtime_data_max_values_count = 64,
 		};
@@ -52,17 +35,6 @@ namespace Yelo
 	namespace GameState
 	{
 		void WriteEvent(cstring str = "", bool write_time_stamp = true);
-
-
-		// Allocate an object of type [T] [count] times inside the game state memory and return its address.
-		// Note: Also updates the game state's cpu allocation size by adding 'sizeof([T]) * count'
-		template<typename T>
-		T* GameStateMalloc(const bool k_update_allocation_crc = true, const size_t count = 1)
-		{
-			extern void* GameStateMalloc(const bool k_update_allocation_crc, const size_t size_of);
-
-			return CAST_PTR(T*, GameStateMalloc(k_update_allocation_crc, sizeof(T) * count));
-		}
 
 		
 		byte*		DeveloperMode();

@@ -15,7 +15,7 @@ namespace Yelo
 {
 	namespace Settings
 	{
-		class c_settings_manager
+		class c_settings_manager final
 		{
 			struct s_settings_container_entry
 			{

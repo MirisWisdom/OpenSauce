@@ -12,6 +12,7 @@ namespace Yelo
 {
 	namespace Configuration
 	{
+#include <PshPack4.h>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	A configuration container wrapper for complex/custom value types. </summary>
 		///
@@ -57,5 +58,6 @@ namespace Yelo
 				return m_value;
 			}
 		};
+#include <PopPack.h>
 	};
 };

@@ -47,20 +47,20 @@ namespace Yelo
 
 			if (*Players::PlayerControlGlobals()->local_players[0].GetZoomLevel() >= 0)
 			{
-				if (yelo_globals->flags.hide_health_when_zoomed_bit)
+				if (TEST_FLAG(yelo_globals->flags, Flags::_project_yellow_globals_hide_health_when_zoomed_bit))
 					SET_FLAG(HudUnitInterface()->flags, Flags::_unit_interface_show_health_bit, true);
-				if (yelo_globals->flags.hide_shield_when_zoomed_bit)
+				if (TEST_FLAG(yelo_globals->flags, Flags::_project_yellow_globals_hide_shield_when_zoomed_bit))
 					SET_FLAG(HudUnitInterface()->flags, Flags::_unit_interface_show_shield_bit, true);
-				if (yelo_globals->flags.hide_motion_sensor_when_zoomed_bit)
+				if (TEST_FLAG(yelo_globals->flags, Flags::_project_yellow_globals_hide_motion_sensor_when_zoomed_bit))
 					SET_FLAG(HudUnitInterface()->flags, Flags::_unit_interface_show_motion_sensor_bit, true);
 			}
 			else
 			{
-				if (yelo_globals->flags.hide_health_when_zoomed_bit)
+				if (TEST_FLAG(yelo_globals->flags, Flags::_project_yellow_globals_hide_health_when_zoomed_bit))
 					SET_FLAG(HudUnitInterface()->flags, Flags::_unit_interface_show_health_bit, false);
-				if (yelo_globals->flags.hide_shield_when_zoomed_bit)
+				if (TEST_FLAG(yelo_globals->flags, Flags::_project_yellow_globals_hide_shield_when_zoomed_bit))
 					SET_FLAG(HudUnitInterface()->flags, Flags::_unit_interface_show_shield_bit, false);
-				if (yelo_globals->flags.hide_motion_sensor_when_zoomed_bit)
+				if (TEST_FLAG(yelo_globals->flags, Flags::_project_yellow_globals_hide_motion_sensor_when_zoomed_bit))
 					SET_FLAG(HudUnitInterface()->flags, Flags::_unit_interface_show_motion_sensor_bit, false);
 			}
 		}

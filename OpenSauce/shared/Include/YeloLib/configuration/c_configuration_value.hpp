@@ -11,12 +11,13 @@ namespace Yelo
 {
 	namespace Configuration
 	{
+#include <PshPack4.h>
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	A configuration value. </summary>
 		///
 		/// <typeparam name="T">	The value's type. </typeparam>
 		template<typename T>
-		class c_configuration_value
+		class c_configuration_value final
 			: public i_configuration_value
 		{
 			const std::string m_node_name;
@@ -128,5 +129,6 @@ namespace Yelo
 				return m_value;
 			}
 		};
+#include <PopPack.h>
 	};
 };

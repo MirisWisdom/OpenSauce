@@ -233,10 +233,10 @@ namespace Yelo
 		void InitializeForNewMap()
 		{
 			bool objects_update_ignore_player_pvs = blam::global_scenario_get()->type == Enums::_scenario_type_main_menu && 
-				Scenario::GetYelo()->flags.game_updates_ignore_player_pvs_hack_bit;
+				TEST_FLAG(Scenario::GetYelo()->flags, Flags::_project_yellow_game_updates_ignore_player_pvs_hack_bit);
 			ObjectsUpdateIgnorePlayerPvs(objects_update_ignore_player_pvs);
 
-			bool use_jump_penalty_fix = Scenario::GetYeloGlobals()->flags.force_game_to_use_stun_jumping_penalty_bit;
+			bool use_jump_penalty_fix = TEST_FLAG(Scenario::GetYeloGlobals()->flags, Flags::_project_yellow_globals_force_game_to_use_stun_jumping_penalty_bit);
 			UseBipedJumpPenalty(use_jump_penalty_fix);
 
 			Units::InitializeForNewMap();

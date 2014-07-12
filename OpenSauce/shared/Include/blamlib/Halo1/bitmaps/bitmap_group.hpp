@@ -43,37 +43,43 @@ namespace Yelo
 
 			_bitmap_pixel_format,
 		};
-		enum bitmap_usage_type : _enum
+		enum bitmap_group_type : _enum
 		{
-			_bitmap_usage_type__2d_textures,
-			_bitmap_usage_type__3d_textures,
-			_bitmap_usage_type_cube_maps,
-			_bitmap_usage_type_sprites,
-			_bitmap_usage_type_interface_bitmaps,
+			_bitmap_group_type__2d_textures,
+			_bitmap_group_type__3d_textures,
+			_bitmap_group_type_cube_maps,
+			_bitmap_group_type_sprites,
+			_bitmap_group_type_interface_bitmaps,
 
-			_bitmap_usage_type,
+			k_number_of_bitmap_group_types,
 		};
-		enum bitmap_basic_format : _enum
+		enum bitmap_group_format : _enum
 		{
-			_bitmap_basic_format_compressed_with_color_key_transparency,
-			_bitmap_basic_format_compressed_with_explicit_alpha,
-			_bitmap_basic_format_compressed_with_interpolated_alpha,
-			_bitmap_basic_format__16_bit_color,
-			_bitmap_basic_format__32_bit_color,
-			_bitmap_basic_format_monochrome,
+			_bitmap_group_format_compressed_with_color_key_transparency,
+			_bitmap_group_format_compressed_with_explicit_alpha,
+			_bitmap_group_format_compressed_with_interpolated_alpha,
+			_bitmap_group_format__16_bit_color,
+			_bitmap_group_format__32_bit_color,
+			_bitmap_group_format_monochrome,
 
-			_bitmap_basic_format,
+			k_number_of_bitmap_group_formats,
 		};
-		enum bitmap_usage : _enum
+		enum bitmap_group_usage : _enum
 		{
-			_bitmap_usage_alpha_blend,
-			_bitmap_usage_default,
-			_bitmap_usage_height_map,
-			_bitmap_usage_detail_map,
-			_bitmap_usage_light_map,
-			_bitmap_usage_vector_map,
+			_bitmap_group_usage_alpha_blend,
+			_bitmap_group_usage_default,
+			_bitmap_group_usage_height_map,
+			_bitmap_group_usage_detail_map,
+			_bitmap_group_usage_light_map,
+			_bitmap_group_usage_vector_map,
 
-			_bitmap_usage,
+			k_number_of_bitmap_group_usages,
+
+			//_bitmap_group_usage_height_map_blue255,		// Halo2
+			//_bitmap_group_usage_embm,						// Halo2. emblem?
+			//_bitmap_group_usage_height_map_a8l8,			// Halo2
+			//_bitmap_group_usage_height_map_g8b8,			// Halo2
+			//_bitmap_group_usage_height_map_g8b8_y_alpha,	// Halo2
 		};
 		enum sprite_budget : _enum
 		{
@@ -84,6 +90,8 @@ namespace Yelo
 			_sprite_budget__512x512,
 
 			_sprite_budget,
+
+			//_sprite_budget__1024x1024,	// Halo2. However, sprite processing fields were hidden from view... 
 		};
 		enum sprite_usage : _enum
 		{
@@ -92,6 +100,35 @@ namespace Yelo
 			_sprite_usage_double_multiply,
 
 			_sprite_usage,
+		};
+	};
+
+	namespace Flags
+	{
+		enum bitmap_group_flags : word_flags
+		{
+			_bitmap_group_enable_diffusion_dithering_bit,
+			_bitmap_group_disable_height_map_compression_bit,
+			_bitmap_group_uniform_sprite_sequences_bit,
+			_bitmap_group_filthy_sprite_bug_fix_bit,
+
+			k_number_of_bitmap_group_flags,
+
+			_bitmap_group_reserved4_bit =	// Halo2. Use Sharp Bump Filter
+				k_number_of_bitmap_group_flags,
+			_bitmap_group_unused5_bit,
+			_bitmap_group_reserved6_bit,	// Halo2. Use Clamped/Mirrored Bump Filter
+			_bitmap_group_reserved7_bit,	// Halo2. Invert Detail Fade
+			_bitmap_group_reserved8_bit,	// Halo2. Swap x-y Vector Components
+			_bitmap_group_reserved9_bit,	// Halo2. Convert from Signed
+			_bitmap_group_reserved10_bit,	// Halo2. Convert to Signed
+			_bitmap_group_reserved11_bit,	// Halo2. Import mipmap Chains
+			_bitmap_group_reserved12_bit,	// Halo2. Intentionally True Color
+
+			// the bitmap group's data should never be stored in any sort of 'shared' cache file
+			_bitmap_group_never_share_resources_yelo_bit,
+
+			k_number_of_bitmap_group_flags_yelo,
 		};
 	};
 
@@ -156,15 +193,6 @@ namespace Yelo
 		{
 			enum { k_group_tag = 'bitm' };
 
-			struct _flags
-			{
-				TAG_FLAG16(enable_diffusion_dithering);
-				TAG_FLAG16(disable_height_map_compression);
-				TAG_FLAG16(uniform_sprite_sequences);
-				TAG_FLAG16(filthy_sprite_bug_fix);
-			}; BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
-
-
 			////////////////////////////////////////////////////////////////
 			// type
 			// Type controls bitmap 'geometry'. All dimensions must be a power of two except for SPRITES and INTERFACE BITMAPS:
@@ -174,7 +202,7 @@ namespace Yelo
 			// * CUBE MAPS: Cube maps will be generated from each consecutive set of six 2D textures in each sequence, all faces of a cube map must be square and the same size.
 			// * SPRITES: Sprite texture pages will be generated.
 			// * INTERFACE BITMAPS: Similar to 2D TEXTURES, but without mipmaps and without the power of two restriction.
-			TAG_ENUM(type, Enums::bitmap_usage_type);
+			TAG_ENUM(type, Enums::bitmap_group_type);
 
 			////////////////////////////////////////////////////////////////
 			// format
@@ -188,7 +216,7 @@ namespace Yelo
 			// * MONOCHROME: Uses either 8 or 16 bits per pixel. Bitmap formats are a8 (alpha), y8 (intensity), ay8 (combined alpha-intensity) and a8y8 (separate alpha-intensity).
 			// 
 			// Note: Height maps (a.k.a. bump maps) should use 32-bit color; this is internally converted to a palettized format which takes less memory.
-			TAG_ENUM(format, Enums::bitmap_basic_format);
+			TAG_ENUM(format, Enums::bitmap_group_format);
 
 			////////////////////////////////////////////////////////////////
 			// usage
@@ -200,8 +228,8 @@ namespace Yelo
 			// * DETAIL MAP: Mipmap color fades to gray, controlled by <detail fade factor> below. Alpha fades to white.
 			// * LIGHT MAP: Generates no mipmaps. Do not use!
 			// * VECTOR MAP: Used mostly for special effects; pixels are treated as XYZ vectors and normalized after downsampling. Alpha is passed through unmodified.
-			TAG_ENUM(usage, Enums::bitmap_usage);
-			TAG_FIELD(_flags, flags);
+			TAG_ENUM(usage, Enums::bitmap_group_usage);
+			TAG_FIELD(word_flags, flags, Flags::bitmap_group_flags);
 
 			////////////////////////////////////////////////////////////////
 			// post-processing
@@ -242,6 +270,14 @@ namespace Yelo
 			PAD16;
 			TAG_TBLOCK(sequences, s_bitmap_group_sequence);
 			TAG_TBLOCK_(bitmaps, s_bitmap_data);
+
+			bool ResourcesAreSharable() const
+			{
+				return
+					!TEST_FLAG(flags, Flags::_bitmap_group_never_share_resources_yelo_bit) &&
+					// it makes no sense to ever store lightmaps in a shared cache
+					usage != Enums::_bitmap_group_usage_light_map;
+			}
 		}; BOOST_STATIC_ASSERT( sizeof(s_bitmap_group) == 0x6C );
 	};
 };

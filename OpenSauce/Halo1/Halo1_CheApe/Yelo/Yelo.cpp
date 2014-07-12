@@ -30,6 +30,9 @@ namespace Yelo
 		void IntializeBeforeTagGroupsInitalize();
 		// Called after tag_files_open and yelo defs are initialized
 		void Initialize();
+		// Called before cseries_dispose's logic ran. This includes the debug manager's heap_dump.txt output (which logs assumed leaks)
+		// NOTE: this code will never be reached in Guerilla or when Sapien is executed with "SAPIEN_NO_RENDER"
+		void DisposeBeforeCSeries();
 		void Dispose();
 	};
 
@@ -42,6 +45,16 @@ namespace Yelo
 		Rasterizer::Initialize();
 #endif
 	}
+	static void DisposeBeforeCSeries()
+	{
+#if PLATFORM_TYPE == PLATFORM_TOOL || PLATFORM_TYPE == PLATFORM_SAPIEN
+		PLATFORM_VALUE(__noop, Tool, Sapien)::DisposeBeforeCSeries();
+#endif
+
+		// this must come last. this is the code we overwrote to create the hook to this function
+		blam::debug_dump_memory();
+	}
+
 	static void IntializeBeforeTagGroupsInitalize()
 	{
 		Objects::Items::GrenadeTypesUpgradeInitialize();
@@ -86,12 +99,18 @@ namespace Yelo
 
 	void Initialize()
 	{
+		FUNC_PTR(CSERIES_DISPOSE,							0x42C6A0, 0x435E20, 0x4F6E60);
+
 		// Due to how early we hook the tools, ANYTHING you call in here can't use the engine's
 		// error system. It must use the interfaces in cseries/errors_yelo.hpp instead
 		Debug::DumpInitialize();
 		c_memory_fixups::Initialize();
 
 		OverrideTagFilesOpen();
+
+#if PLATFORM_TYPE == PLATFORM_TOOL || PLATFORM_TYPE == PLATFORM_SAPIEN
+		Memory::WriteRelativeJmp(DisposeBeforeCSeries, GET_FUNC_VPTR(CSERIES_DISPOSE));
+#endif
 	}
 
 	void Dispose()
