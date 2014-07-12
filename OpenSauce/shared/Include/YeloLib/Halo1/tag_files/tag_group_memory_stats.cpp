@@ -49,11 +49,13 @@ namespace Yelo
 
 				block.size += info->runtime_size * instance->count;
 				block.padding = info->counts.padding_amount;
+				block.debug_bytes_size = info->counts.debug_data_amount;
 			}
 			else
 			{
 				block.size += block_definition->element_size * instance->count;
 				block.padding = 0;
+				block.debug_bytes_size = 0;
 			}
 		}
 		void s_tag_allocation_statistics::Update(const tag_data* instance)
@@ -61,15 +63,27 @@ namespace Yelo
 			assert(instance->definition == data_definition);
 
 			data.count++;
-			data.size += CAST(size_t, instance->size);
+			size_t total_size = CAST(size_t, instance->size);
+
+			if (data_definition->IsConsideredDebugOnly())
+			{
+				data.debug_bytes_size += total_size;
+				data.size = 0;
+			}
+			else
+			{
+				data.debug_bytes_size = 0;
+				data.size += total_size;
+			}
 		}
 
 		static cstring k_tag_allocation_statistics_dump_format = 
-			"% 100s % 9d % 9d % 9d % 9d\r\n";
+			"% 60s % 9d % 9d % 9d % 9d % 11d\r\n";
 		static cstring k_tag_allocation_statistics_dump_header_format = 
-			"%-100s % 9s % 9s % 9s % 9s\r\n";
+			"%-60s % 9s % 9s % 9s % 9s % 11s\r\n";
 		void s_tag_allocation_statistics::DumpBlockInfoToFile(FILE* file, s_block_totals& group_totals) const
 		{
+			group_totals.debug_bytes_size += block.debug_bytes_size;
 			group_totals.count += block.count;
 			group_totals.elements += block.elements;
 			group_totals.size += block.size;
@@ -78,17 +92,29 @@ namespace Yelo
 			if (file != nullptr)
 				fprintf_s(file, k_tag_allocation_statistics_dump_format,
 					block_definition->name,
-					block.count, block.elements, block.size, block.padding);
+					block.count, block.elements, block.size, block.padding, block.debug_bytes_size);
 		}
 		void s_tag_allocation_statistics::DumpDataInfoToFile(FILE* file, s_block_totals& group_totals) const
 		{
 			group_totals.count += data.count;
-			group_totals.size += data.size;
+
+			int32 size = NONE;
+			int32 debug_size = NONE;
+			if (data_definition->IsConsideredDebugOnly())
+			{
+				group_totals.debug_bytes_size += data.debug_bytes_size;
+				debug_size = CAST(int32, data.debug_bytes_size);
+			}
+			else
+			{
+				size = CAST(int32, data.size);
+				group_totals.size += data.size;
+			}
 
 			if (file != nullptr)
 				fprintf_s(file, k_tag_allocation_statistics_dump_format,
 					data_definition->name,
-					data.count, NONE, data.size, NONE);
+					data.count, NONE, size, NONE, debug_size);
 		}
 
 
@@ -158,7 +184,7 @@ namespace Yelo
 			{
 				fprintf_s(file.get(), k_tag_allocation_statistics_dump_header_format,
 					blam::tag_group_get(pair.first)->name,
-					"count", "elements", "size", "padding");
+					"count", "elements", "size", "padding", "debug size");
 
 				s_tag_allocation_statistics::s_block_totals totals;
 				std::memset(&totals, 0, sizeof(totals));
@@ -169,14 +195,6 @@ namespace Yelo
 					if (child_stats.IsBlock())
 					{
 						child_stats.DumpBlockInfoToFile(file.get(), totals);
-
-						if (s_tag_field_set_runtime_data::Enabled())
-						{
-							auto element_debug_size = 
-								child_stats.block_definition->GetRuntimeInfo()->counts.debug_data_amount;
-
-							total_debug_size += child_stats.block.count * element_debug_size;
-						}
 					}
 					else if (child_stats.IsData())
 					{
@@ -186,18 +204,17 @@ namespace Yelo
 
 				fprintf_s(file.get(), k_tag_allocation_statistics_dump_format,
 					"totals:",
-					totals.count, totals.elements, totals.size, totals.padding);
+					totals.count, totals.elements, totals.size, totals.padding, totals.debug_bytes_size);
 				fprintf_s(file.get(), "\r\n");
 
+				total_debug_size += totals.debug_bytes_size;
 				total_padding += totals.padding;
 				total_size += totals.size;
 			}
 
 			fprintf_s(file.get(), "\r\ntotal padding: %u", total_padding);
 			fprintf_s(file.get(), "\r\ntotal size: %u", total_size);
-
-			if (total_debug_size)
-				fprintf_s(file.get(), "\r\ntotal debug bytes: %u", total_debug_size);
+			fprintf_s(file.get(), "\r\ntotal debug bytes: %u", total_debug_size);
 		}
 
 		size_t c_tag_group_allocation_statistics::BuildStatsForTagChildBlockRecursive(c_tag_group_allocation_statistics& group_stats,
@@ -206,7 +223,12 @@ namespace Yelo
 			if (instance->count == 0)
 				return 0;
 
-			size_t block_size = CAST(size_t, instance->count) * instance->get_element_size();
+			size_t element_size = instance->get_element_size();
+			if (s_tag_field_set_runtime_data::Enabled())
+				element_size = instance->definition->GetRuntimeInfo()->runtime_size;
+
+			// our rough estimation of the size at runtime
+			size_t block_size = CAST(size_t, instance->count) * element_size;
 			group_stats.GetChildStats(instance).Update(instance);
 
 			for (auto element : *instance)
@@ -226,9 +248,16 @@ namespace Yelo
 					{
 						auto* data_instance = field.As<const tag_data>();
 						if (data_instance->size > 0)
-							group_stats.GetChildStats(data_instance).Update(data_instance);
+						{
+							auto& data_stats = group_stats.GetChildStats(data_instance);
+							data_stats.Update(data_instance);
 
-						block_size += CAST(size_t, data_instance->size);
+							size_t instance_size = CAST(size_t, data_instance->size);
+
+							// don't update the result block_size if the data field is debug-only
+							if (!data_stats.data_definition->IsConsideredDebugOnly())
+								block_size += instance_size;
+						}
 					} break;
 
 					YELO_ASSERT_CASE_UNREACHABLE();
