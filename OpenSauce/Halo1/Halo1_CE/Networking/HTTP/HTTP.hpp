@@ -84,7 +84,7 @@ namespace Yelo
 
 	namespace Networking { namespace HTTP
 	{
-		typedef char t_http_url[Enums::k_max_url_length];
+		typedef char http_url_t[Enums::k_max_url_length];
 
 		class c_query_pair
 		{

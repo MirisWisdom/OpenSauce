@@ -50,7 +50,7 @@ namespace Yelo
 				_ps_support
 			};
 
-			typedef char t_shader_usage_id[128];
+			typedef char shader_usage_id_t[128];
 			typedef void (PLATFORM_API *shadersetup_func)(void*, void*, void*, void*, void*, void*, void*);
 
 			static const char* g_ps_collection_format_a =	"shaders\\EffectCollection_ps_%d_a.enc";
@@ -230,10 +230,10 @@ namespace Yelo
 				void GetModelUsage()
 				{
 					auto& settings_instance = Get();
-					settings_instance.m_shader_model.m_normal_maps = TEST_FLAG(Model::g_extension_usage_mask, Enums::_shader_extension_usage_bit_normal_map);
-					settings_instance.m_shader_model.m_detail_normal_maps = TEST_FLAG(Model::g_extension_usage_mask, Enums::_shader_extension_usage_bit_detail_normal);
-					settings_instance.m_shader_model.m_specular_maps = TEST_FLAG(Model::g_extension_usage_mask, Enums::_shader_extension_usage_bit_specular_map);
-					settings_instance.m_shader_model.m_specular_lighting = TEST_FLAG(Model::g_extension_usage_mask, Enums::_shader_extension_usage_bit_specular_lighting);
+					settings_instance.m_shader_model.m_normal_maps = TEST_FLAG(Model::g_extension_usage_mask, Flags::_shader_extension_usage_bit_normal_map);
+					settings_instance.m_shader_model.m_detail_normal_maps = TEST_FLAG(Model::g_extension_usage_mask, Flags::_shader_extension_usage_bit_detail_normal);
+					settings_instance.m_shader_model.m_specular_maps = TEST_FLAG(Model::g_extension_usage_mask, Flags::_shader_extension_usage_bit_specular_map);
+					settings_instance.m_shader_model.m_specular_lighting = TEST_FLAG(Model::g_extension_usage_mask, Flags::_shader_extension_usage_bit_specular_lighting);
 				}
 #pragma endregion
 
@@ -251,7 +251,7 @@ namespace Yelo
 
 				void GetEnvironmentUsage()
 				{
-					Get().m_shader_environment.m_diffuse_directional_lightmaps = TEST_FLAG(Environment::g_extension_usage_mask, Enums::_shader_extension_usage_bit_directional_lightmaps);
+					Get().m_shader_environment.m_diffuse_directional_lightmaps = TEST_FLAG(Environment::g_extension_usage_mask, Flags::_shader_extension_usage_bit_directional_lightmaps);
 				}
 #pragma endregion
 

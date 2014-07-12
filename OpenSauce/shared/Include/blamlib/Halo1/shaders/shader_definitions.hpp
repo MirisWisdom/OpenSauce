@@ -246,17 +246,6 @@ namespace Yelo
 
 			_shader_effect_secondary_map_anchor,
 		};
-
-		enum shader_extension_usage_bit : word_flags
-		{
-			_shader_extension_usage_bit_normal_map,
-			_shader_extension_usage_bit_detail_normal,
-			_shader_extension_usage_bit_specular_map,
-			_shader_extension_usage_bit_specular_lighting,
-			_shader_extension_usage_bit_directional_lightmaps,
-
-			_shader_extension_usage_bit,
-		};
 	};
 
 	namespace Flags
@@ -271,6 +260,17 @@ namespace Yelo
 			_shader_extension_usage_directional_lightmaps	= 1 << 4,
 
 			_shader_extension_usage,
+		};
+
+		enum shader_extension_usage_bit : word_flags
+		{
+			_shader_extension_usage_bit_normal_map,
+			_shader_extension_usage_bit_detail_normal,
+			_shader_extension_usage_bit_specular_map,
+			_shader_extension_usage_bit_specular_lighting,
+			_shader_extension_usage_bit_directional_lightmaps,
+
+			_shader_extension_usage_bit,
 		};
 	};
 

@@ -42,7 +42,7 @@ namespace BlamLib.Test
 		public void Halo2TestTagIndex()
 		{
 			var bd = Program.Halo2.Manager;
-			var datum_tagindex = bd.OpenTagIndex(BlamVersion.Halo2_PC, kTestTagIndexTagsPath);
+            var datum_tagindex = bd.OpenTagIndex(BlamVersion.Halo2_PC, kTestInstallationRootPath, kTestTagsDir);
 			var tagindex = bd.GetTagIndex(datum_tagindex) as Managers.TagIndex;
 			Blam.DatumIndex datum_scnr_index, datum_matg_index;
 
@@ -83,7 +83,7 @@ namespace BlamLib.Test
 		public void Halo2TestTagIndexStringIds()
 		{
 			var bd = Program.Halo2.Manager;
-			var datum_tagindex = bd.OpenTagIndex(BlamVersion.Halo2_PC, kTestTagIndexTagsPath);
+            var datum_tagindex = bd.OpenTagIndex(BlamVersion.Halo2_PC, kTestInstallationRootPath, kTestTagsDir);
 			var tagindex = bd.GetTagIndex(datum_tagindex) as Managers.TagIndex;
 
 			var model_index = tagindex.Open(

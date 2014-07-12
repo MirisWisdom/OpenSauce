@@ -82,7 +82,7 @@ namespace Yelo
 		class c_version_server : public LinkedListNode<c_version_server>
 		{
 		public:
-			HTTP::t_http_url	m_version_xml_url;
+			HTTP::http_url_t	m_version_xml_url;
 
 			c_version_server(const char* url)
 			{
@@ -191,7 +191,7 @@ namespace Yelo
 
 					if(!is_null_or_empty(url))
 					{
-						if(strlen(url) >= sizeof(HTTP::t_http_url))
+						if(strlen(url) >= sizeof(HTTP::http_url_t))
 							continue;
 
 						c_version_server* version_server = new c_version_server(url);

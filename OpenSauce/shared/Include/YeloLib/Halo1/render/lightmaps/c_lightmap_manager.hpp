@@ -13,41 +13,43 @@ namespace Yelo
 {
 	namespace Flags
 	{
-		enum render_lightmaps_flags : byte
-		{
-			_render_lightmaps_flags_none = 0,
-			_render_lightmaps_flags_standard = 1,
-			_render_lightmaps_flags_directional = 2,
-		};
 	};
 
 	namespace Render { namespace Lightmaps
 	{
-		class c_lightmap_manager
+		class c_lightmap_manager final
 		{
-			Flags::render_lightmaps_flags m_available_lightmaps;
-			Flags::render_lightmaps_flags m_used_lightmaps;
-			PAD16;
-
-			struct s_lightmap_datums
+		public:
+			enum renderable_lightmaps_flags : word_flags
 			{
-				datum_index standard;					//!< Datum index for the current standard lightmap.
-				datum_index directional[3];				//!< Datum indices for the current directional lightmaps.
+				_renderable_lightmaps_flags_standard_bit = 1,
+				_renderable_lightmaps_flags_directional_bit = 2,
+			};
+
+		private:
+			renderable_lightmaps_flags m_available_lightmaps;
+			renderable_lightmaps_flags m_used_lightmaps;
+
+			struct s_lightmap_tag_indices
+			{
+				datum_index standard_tag_index;					//!< Tag index for the current standard lightmap.
+				datum_index directional_tag_indices[3];			//!< Tag indices for the current directional lightmaps.
 			}m_current_lightmaps;
 
 		public:
-			typedef TagGroups::s_bitmap_data* (*t_get_bitmap_data_func)(datum_index, int32);
+			
+			typedef TagGroups::s_bitmap_data* (API_FUNC *proc_get_bitmap_data)(const datum_index, const int32);
 
-			bool HasLightmaps(const Flags::render_lightmaps_flags flag);
-			bool UsingLightmaps(const Flags::render_lightmaps_flags flag);
+			bool HasLightmaps(const renderable_lightmaps_flags flag) const;
+			bool UsingLightmaps(const renderable_lightmaps_flags flag) const;
 
-			void SetLightmapDatums(datum_index standard
-				, datum_index directional_1
-				, datum_index directional_2
-				, datum_index directional_3);
+			void SetLightmapDatums(const datum_index standard_tag_index
+				, const datum_index directional_1_tag_index
+				, const datum_index directional_2_tag_index
+				, const datum_index directional_3_tag_index);
 			void SetLightmapSamplers(LPDIRECT3DDEVICE9 device
-				, int32 lightmap_index
-				, t_get_bitmap_data_func get_bitmap_data);
+				, const int32 lightmap_index
+				, const proc_get_bitmap_data get_bitmap_data);
 		};
 	};};
 };

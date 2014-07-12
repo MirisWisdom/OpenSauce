@@ -16,9 +16,9 @@ namespace Yelo
 		/// <summary>	Initializes a new instance of the s_sky_entry class. </summary>
 		///
 		/// <param name="sky_index">	Datum index of the sky tag. </param>
-		c_sky_manager::s_sky_entry::s_sky_entry(datum_index sky_index)
+		c_sky_manager::s_sky_entry::s_sky_entry(const datum_index sky_tag_index)
 			: m_is_override(false)
-			, m_sky_index(sky_index)
+			, m_sky_tag_index(sky_tag_index)
 			, m_original_sky_entry(nullptr)
 		{ }
 
@@ -26,9 +26,9 @@ namespace Yelo
 		/// <summary>	Initializes a new instance of the s_sky_entry class that overrides another sky entry. </summary>
 		///
 		/// <param name="sky_index">	Datum index of the sky tag. </param>
-		/// <param name="sky_entry">	The sky entry being overriden. </param>
-		c_sky_manager::s_sky_entry::s_sky_entry(datum_index sky_index, c_sky_manager::t_sky_entry_ptr sky_entry)
-			: c_sky_manager::s_sky_entry::s_sky_entry(sky_index)
+		/// <param name="sky_entry">	The sky entry being overridden. </param>
+		c_sky_manager::s_sky_entry::s_sky_entry(const datum_index sky_tag_index, const c_sky_manager::sky_entry_ptr_t sky_entry)
+			: c_sky_manager::s_sky_entry::s_sky_entry(sky_tag_index)
 		{
 			m_original_sky_entry = sky_entry;
 			m_is_override = true;
@@ -38,7 +38,7 @@ namespace Yelo
 		/// <summary>	Query if this object is a sky override. </summary>
 		///
 		/// <returns>	true if overriding another sky, false if not. </returns>
-		bool c_sky_manager::s_sky_entry::IsOverride()
+		bool c_sky_manager::s_sky_entry::IsOverride() const
 		{
 			return m_is_override;
 		}
@@ -47,16 +47,16 @@ namespace Yelo
 		/// <summary>	Gets the sky datum index. </summary>
 		///
 		/// <returns>	A datum_index. </returns>
-		datum_index c_sky_manager::s_sky_entry::Get()
+		datum_index c_sky_manager::s_sky_entry::GetTagIndex() const
 		{
-			return m_sky_index;
+			return m_sky_tag_index;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets the original sky pointer if set. </summary>
 		///
-		/// <returns>	A c_sky_manager::t_sky_entry_ptr. </returns>
-		c_sky_manager::t_sky_entry_ptr c_sky_manager::s_sky_entry::OriginalSky()
+		/// <returns>	A c_sky_manager::sky_entry_ptr_t. </returns>
+		c_sky_manager::sky_entry_ptr_t c_sky_manager::s_sky_entry::OriginalSky() const
 		{
 			return m_original_sky_entry;
 		}
@@ -66,7 +66,7 @@ namespace Yelo
 		/// <summary>	Resets the sky list, reverting all overrides. </summary>
 		void c_sky_manager::Reset()
 		{
-			for(t_sky_entry_list::size_type i = 0; i < m_sky_list.size(); i++)
+			for(sky_entry_list_t::size_type i = 0; i < m_sky_list.size(); i++)
 			{
 				// If the sky entry is an override, replace it with the sky stored within
 				if(m_sky_list[i]->IsOverride())
@@ -99,7 +99,7 @@ namespace Yelo
 		///
 		/// <param name="sky_index">	Zero-based index of the sky. </param>
 		/// <param name="sky_datum">	The sky tag datum index. </param>
-		void c_sky_manager::SetSkyIndex(byte sky_index, datum_index sky_datum)
+		void c_sky_manager::SetSkyIndex(const byte sky_index, const datum_index sky_tag_index)
 		{
 			if (sky_index == NONE)
 			{
@@ -108,7 +108,7 @@ namespace Yelo
 
 			// If the chosen sky is an override, get the original sky entry
 			// Otherwise use the sky entry in the list
-			t_sky_entry_ptr original_sky;
+			sky_entry_ptr_t original_sky;
 			if(m_sky_list[sky_index]->IsOverride())
 			{
 				original_sky = m_sky_list[sky_index]->OriginalSky();
@@ -119,7 +119,7 @@ namespace Yelo
 			}
 
 			// Create a new sky entry to override the stock one
-			m_sky_list[sky_index] = std::make_shared<s_sky_entry>(sky_datum, original_sky);
+			m_sky_list[sky_index] = std::make_shared<s_sky_entry>(sky_tag_index, original_sky);
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -128,13 +128,13 @@ namespace Yelo
 		/// <param name="sky_index">	Zero-based index of the sky. </param>
 		///
 		/// <returns>	The sky tag's datum index. </returns>
-		datum_index c_sky_manager::GetSkyDatum(byte sky_index)
+		datum_index c_sky_manager::GetSkyTagIndex(const byte sky_index) const
 		{
 			if(sky_index == (byte)NONE)
 			{
 				return datum_index::null;
 			}
-			return m_sky_list[sky_index]->Get();
+			return m_sky_list[sky_index]->GetTagIndex();
 		}
 #pragma endregion c_sky_manager
 	};};

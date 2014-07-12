@@ -151,8 +151,8 @@ namespace Yelo
 			Memory::WriteRelativeJmp(&InitializeForNewMapHook, GET_FUNC_VPTR(GAME_INITIALIZE_FOR_NEW_MAP_HOOK), true);
 			Memory::CreateHookRelativeCall(&DisposeFromOldMap, GET_FUNC_VPTR(GAME_DISPOSE_FROM_OLD_MAP_HOOK), Enums::_x86_opcode_ret);
 
-			for(int i = 0; i < NUMBEROF(K_GAME_SCENARIO_SWITCH_BSP_CALL); i++)
-				Memory::WriteRelativeCall(InitializeForNewBSPHook, K_GAME_SCENARIO_SWITCH_BSP_CALL[i], true);
+			for(auto& call : K_GAME_SCENARIO_SWITCH_BSP_CALLS)
+				Memory::WriteRelativeCall(InitializeForNewBSPHook, call, true);
 
 			Memory::CreateHookRelativeCall(&DisposeFromOldBSP, GET_FUNC_VPTR(GAME_DISPOSE_FROM_OLD_BSP_HOOK), Enums::_x86_opcode_ret);
 

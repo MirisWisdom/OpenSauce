@@ -24,11 +24,11 @@ namespace Yelo
 	{
 		static c_sky_manager g_sky_manager;
 
-		/// <summary>	Hooks the sky datum index for atmospheric fog. </summary>
+		/// <summary>	Hooks the sky tag index for atmospheric fog. </summary>
 		static API_FUNC_NAKED void AtmosphericFog_Hook()
 		{
-			static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(FOG_ATMOSPHERIC_SKY_DATUM_RETN);
-			static datum_index SKY_DATUM;
+			static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(FOG_ATMOSPHERIC_SKY_TAG_INDEX_RETN);
+			static datum_index SKY_TAG_INDEX;
 
 			_asm
 			{
@@ -36,14 +36,14 @@ namespace Yelo
 				push	edx
 				
 				call	Render::RenderGlobals
-				mov		edx, [eax + 230h + 1Eh]
-				movzx	ecx, dl
-				push	ecx
-				lea		edx, [SKY_DATUM]
+				xor		edx, edx
+				movsx	edx, [eax]s_render_globals.visible_sky_index
+				push	edx
+				lea		edx, [SKY_TAG_INDEX]
 				push	edx
 				lea		ecx, g_sky_manager
-				call	Yelo::Render::Sky::c_sky_manager::GetSkyDatum
-				mov		eax, [SKY_DATUM]
+				call	Yelo::Render::Sky::c_sky_manager::GetSkyTagIndex
+				mov		eax, [SKY_TAG_INDEX]
 
 				pop		edx
 				pop		ecx
@@ -51,11 +51,11 @@ namespace Yelo
 			}
 		}
 
-		/// <summary>	Hooks the sky datum index for planar fog. </summary>
+		/// <summary>	Hooks the sky tag index for planar fog. </summary>
 		static API_FUNC_NAKED void PlanarFog_Hook()
 		{
-			static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(FOG_PLANAR_SKY_DATUM_RETN);
-			static datum_index SKY_DATUM;
+			static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(FOG_PLANAR_SKY_TAG_INDEX_RETN);
+			static datum_index SKY_TAG_INDEX;
 
 			_asm
 			{
@@ -64,14 +64,14 @@ namespace Yelo
 				push	edx
 				
 				call	Render::RenderGlobals
-				mov		edx, [eax + 230h + 1Eh]
-				movzx	eax, dl
-				push	eax
-				lea		edx, [SKY_DATUM]
+				xor		edx, edx
+				movsx	edx, [eax]s_render_globals.visible_sky_index
+				push	edx
+				lea		edx, [SKY_TAG_INDEX]
 				push	edx
 				lea		ecx, g_sky_manager
-				call	Yelo::Render::Sky::c_sky_manager::GetSkyDatum
-				mov		ecx, [SKY_DATUM]
+				call	Yelo::Render::Sky::c_sky_manager::GetSkyTagIndex
+				mov		ecx, [SKY_TAG_INDEX]
 
 				pop		edx
 				pop		eax
@@ -79,11 +79,11 @@ namespace Yelo
 			}
 		}
 
-		/// <summary>	Hooks the sky datum index for rendering the sky. </summary>
+		/// <summary>	Hooks the sky tag index for rendering the sky. </summary>
 		static API_FUNC_NAKED void RenderSky_Hook()
 		{
-			static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RENDER_SKY_SKY_DATUM_RETN);
-			static datum_index SKY_DATUM;
+			static uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RENDER_SKY_SKY_TAG_INDEX_RETN);
+			static datum_index SKY_TAG_INDEX;
 
 			_asm
 			{
@@ -91,14 +91,14 @@ namespace Yelo
 				push	edx
 
 				call	Render::RenderGlobals
-				mov		edx, [eax + 230h + 1Eh]
-				movzx	ecx, dl
-				push	ecx
-				lea		edx, [SKY_DATUM]
+				xor		edx, edx
+				movsx	edx, [eax]s_render_globals.visible_sky_index
+				push	edx
+				lea		edx, [SKY_TAG_INDEX]
 				push	edx
 				lea		ecx, g_sky_manager
-				call	Yelo::Render::Sky::c_sky_manager::GetSkyDatum
-				mov		eax, [SKY_DATUM]
+				call	Yelo::Render::Sky::c_sky_manager::GetSkyTagIndex
+				mov		eax, [SKY_TAG_INDEX]
 
 				pop		edx
 				pop		ecx
@@ -106,12 +106,12 @@ namespace Yelo
 			};
 		}
 
-		/// <summary>	Initializes this hooks and sky manager. </summary>
+		/// <summary>	Initializes hooks and sky manager. </summary>
 		void Initialize()
 		{
-			Memory::WriteRelativeJmp(&AtmosphericFog_Hook, GET_FUNC_VPTR(FOG_ATMOSPHERIC_SKY_DATUM_HOOK), true);
-			Memory::WriteRelativeJmp(&PlanarFog_Hook, GET_FUNC_VPTR(FOG_PLANAR_SKY_DATUM_HOOK), true);
-			Memory::WriteRelativeJmp(&RenderSky_Hook, GET_FUNC_VPTR(RENDER_SKY_SKY_DATUM_HOOK), true);
+			Memory::WriteRelativeJmp(&AtmosphericFog_Hook, GET_FUNC_VPTR(FOG_ATMOSPHERIC_SKY_TAG_INDEX_HOOK), true);
+			Memory::WriteRelativeJmp(&PlanarFog_Hook, GET_FUNC_VPTR(FOG_PLANAR_SKY_TAG_INDEX_HOOK), true);
+			Memory::WriteRelativeJmp(&RenderSky_Hook, GET_FUNC_VPTR(RENDER_SKY_SKY_TAG_INDEX_HOOK), true);
 		
 			g_sky_manager.Clear();
 		}

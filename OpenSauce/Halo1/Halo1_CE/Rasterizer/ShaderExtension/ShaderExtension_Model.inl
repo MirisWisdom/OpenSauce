@@ -41,7 +41,7 @@ namespace Model
 	};
 
 #pragma region Shader Features
-	static const t_shader_usage_id g_base_shader_list[] =
+	static const shader_usage_id_t g_base_shader_list[] =
 	{
 		"MaskDetailBeforeReflectionBiasedMultiply",
 		"MaskDetailBeforeReflectionMultiply",
@@ -190,7 +190,7 @@ namespace Model
 		&g_feature_mix_list[8]
 	};
 
-	static t_shader_usage_id g_shader_usage_id_list[NUMBEROF(g_base_shader_list) * NUMBEROF(g_feature_mix_list)];
+	static shader_usage_id_t g_shader_usage_id_list[NUMBEROF(g_base_shader_list) * NUMBEROF(g_feature_mix_list)];
 
 	static IDirect3DPixelShader9* g_environment_no_pixel_shaders[NUMBEROF(g_shader_usage_id_list) / 2];
 	static IDirect3DPixelShader9* g_self_illumination_pixel_shaders[NUMBEROF(g_shader_usage_id_list)];

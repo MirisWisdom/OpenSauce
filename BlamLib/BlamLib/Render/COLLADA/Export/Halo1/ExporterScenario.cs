@@ -11,6 +11,7 @@ using BlamLib.Render.COLLADA.Halo1;
 using BlamLib.TagInterface;
 using BlamLib.Render.COLLADA.Core;
 using System.IO;
+using BlamLib.Managers;
 
 namespace BlamLib.Render.COLLADA.Halo1
 {
@@ -58,7 +59,7 @@ namespace BlamLib.Render.COLLADA.Halo1
         private string GetNodeReference(ScenarioData.ScenarioObject objectType, int permutation)
         {
             // Add geometry instances to the node
-            if (!objectType.ObjectTagDatum.IsValid)
+			if (!TagIndex.IsValid(objectType.ObjectTagDatum))
             {
                 return null;
             }
@@ -76,7 +77,7 @@ namespace BlamLib.Render.COLLADA.Halo1
             objectData.CollectData(mTagIndex, mTagIndex[objectType.ObjectTagDatum]);
 
             var nodeType = CreateNode("", "", nodeId, Enums.ColladaNodeType.NODE);
-            if (objectData.Model.IsValid)
+			if (TagIndex.IsValid(objectData.Model))
             {
                 // Collect data about the model
                 ModelData modelData = new ModelData();
@@ -134,7 +135,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 				{
 					ColladaNCName objectName = "Unknown";
 
-					if (objectInstance.ObjectType.ObjectTagDatum.IsValid)
+					if (TagIndex.IsValid(objectInstance.ObjectType.ObjectTagDatum))
 					{
 						objectName = Path.GetFileNameWithoutExtension(mTagIndex[objectInstance.ObjectType.ObjectTagDatum].Name);
 					}

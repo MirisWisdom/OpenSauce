@@ -18,20 +18,21 @@ namespace BlamLib.Test
 
 	partial class Halo1
 	{
+		const string kTestInstallationRootPath = TestLibrary.kProgramFilesPath + @"Microsoft Games\Halo Custom Edition";
+		const string kTestTagsDir = "tags";
+		const string kTestDataDir = "data";
+
 		internal const string kTestResultsPath = TestLibrary.kTestResultsPath + @"Halo1\";
 
-        const string kTestResultsTagsPath = kTestResultsPath + @"tags\";
-        const string kTestResultsDataPath = kTestResultsPath + @"data\";
-
-        const string kTestTagIndexTagsPath = TestLibrary.kProgramFilesPath + @"Microsoft Games\Halo Custom Edition\tags";
-        const string kTestTagIndexDataPath = TestLibrary.kProgramFilesPath + @"Microsoft Games\Halo Custom Edition\data";
+		const string kTestResultsTagsPath = kTestResultsPath + kTestTagsDir;
+		const string kTestResultsDataPath = kTestResultsPath + kTestDataDir;
 	};
 
 	partial class Stubbs
 	{
 		internal const string kTestResultsPath = TestLibrary.kTestResultsPath + @"Stubbs\";
 
-        const string kMapsDirectoryPc = @"";
+		const string kMapsDirectoryPc = @"";
 		const string kMapsDirectoryXbox = @"";
 	};
 
@@ -47,7 +48,9 @@ namespace BlamLib.Test
         const string kMapsDirectoryPc = @"";
 		const string kMapsDirectoryXboxAlpha = @"";
 
-		const string kTestTagIndexTagsPath = TestLibrary.kProgramFilesPath + @"Microsoft Games\Halo 2 Map Editor\tags";
+		const string kTestInstallationRootPath = TestLibrary.kProgramFilesPath + @"Microsoft Games\Halo 2 Map Editor";
+		const string kTestTagsDir = "tags";
+		const string kTestDataDir = "data";
 	};
 	#endregion
 

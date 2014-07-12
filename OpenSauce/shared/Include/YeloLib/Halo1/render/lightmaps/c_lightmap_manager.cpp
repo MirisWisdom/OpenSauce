@@ -19,7 +19,7 @@ namespace Yelo
 		/// <param name="flag">	The lightmap type. </param>
 		///
 		/// <returns>	true if the requested type is available, false if not. </returns>
-		bool c_lightmap_manager::HasLightmaps(const Flags::render_lightmaps_flags flag)
+		bool c_lightmap_manager::HasLightmaps(const renderable_lightmaps_flags flag) const
 		{
 			return (m_available_lightmaps & flag) == flag;
 		}
@@ -30,41 +30,41 @@ namespace Yelo
 		/// <param name="flag">	The lightmap type. </param>
 		///
 		/// <returns>	true if the lightmap type was sent to the device, false if not. </returns>
-		bool c_lightmap_manager::UsingLightmaps(const Flags::render_lightmaps_flags flag)
+		bool c_lightmap_manager::UsingLightmaps(const renderable_lightmaps_flags flag) const
 		{
 			return (m_used_lightmaps & flag) == flag;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Changes the active lightmap datums. </summary>
+		/// <summary>	Changes the active lightmap tag indices. </summary>
 		///
-		/// <param name="standard">			The standard lightmaps datum. </param>
-		/// <param name="directional_1">	The first directional lightmaps datum. </param>
-		/// <param name="directional_2">	The second directional lightmaps datum. </param>
-		/// <param name="directional_3">	The third directional lightmaps datum. </param>
-		void c_lightmap_manager::SetLightmapDatums(datum_index standard
-			, datum_index directional_1
-			, datum_index directional_2
-			, datum_index directional_3)
+		/// <param name="standard_tag_index">	  	The standard lightmaps tag index. </param>
+		/// <param name="directional_1_tag_index">	The first directional lightmaps tag index. </param>
+		/// <param name="directional_2_tag_index">	The second directional lightmaps tag index. </param>
+		/// <param name="directional_3_tag_index">	The third directional lightmaps tag index. </param>
+		void c_lightmap_manager::SetLightmapDatums(const datum_index standard_tag_index
+			, const datum_index directional_1_tag_index
+			, const datum_index directional_2_tag_index
+			, const datum_index directional_3_tag_index)
 		{
-			m_available_lightmaps = Flags::_render_lightmaps_flags_none;
+			m_available_lightmaps = (renderable_lightmaps_flags)0;
 
-			// Update the current lightmap bitmap datums
-			m_current_lightmaps.standard = standard;
+			// Update the current lightmap bitmap tag indices
+			m_current_lightmaps.standard_tag_index = standard_tag_index;
 
-			m_current_lightmaps.directional[0] = directional_1;
-			m_current_lightmaps.directional[1] = directional_2;
-			m_current_lightmaps.directional[2] = directional_3;
+			m_current_lightmaps.directional_tag_indices[0] = directional_1_tag_index;
+			m_current_lightmaps.directional_tag_indices[1] = directional_2_tag_index;
+			m_current_lightmaps.directional_tag_indices[2] = directional_3_tag_index;
 
-			if (!m_current_lightmaps.standard.IsNull())
+			if (!m_current_lightmaps.standard_tag_index.IsNull())
 			{
-				m_available_lightmaps = (Flags::render_lightmaps_flags)(m_available_lightmaps | Flags::_render_lightmaps_flags_standard);
+				m_available_lightmaps = (renderable_lightmaps_flags)(m_available_lightmaps | _renderable_lightmaps_flags_standard_bit);
 			}
 			
 			// We shouldn't have a case where only the first DLM is present, map should not compile without all 3
-			if (!m_current_lightmaps.directional[0].IsNull())
+			if (!m_current_lightmaps.directional_tag_indices[0].IsNull())
 			{
-				m_available_lightmaps = (Flags::render_lightmaps_flags)(m_available_lightmaps | Flags::_render_lightmaps_flags_directional);
+				m_available_lightmaps = (renderable_lightmaps_flags)(m_available_lightmaps | _renderable_lightmaps_flags_directional_bit);
 			}
 		}
 
@@ -75,15 +75,15 @@ namespace Yelo
 		/// <param name="lightmap_index"> 	Index of the lightmap. </param>
 		/// <param name="get_bitmap_data">	Function for getting a bitmap data block. </param>
 		void c_lightmap_manager::SetLightmapSamplers(LPDIRECT3DDEVICE9 device
-			, int32 lightmap_index
-			, t_get_bitmap_data_func get_bitmap_data)
+			, const int32 lightmap_index
+			, const proc_get_bitmap_data get_bitmap_data)
 		{
-			m_used_lightmaps = Flags::_render_lightmaps_flags_none;
+			m_used_lightmaps = (renderable_lightmaps_flags)0;
 
 			auto set_sampler = 
-				[&](datum_index bitmap_datum, int32 sampler)
+				[&](datum_index bitmap_tag_index, int32 sampler)
 				{
-					auto bitmap_data = get_bitmap_data(bitmap_datum, lightmap_index);
+					auto bitmap_data = get_bitmap_data(bitmap_tag_index, lightmap_index);
 					blam::rasterizer_set_texture_bitmap_data((_enum)sampler, bitmap_data);
 					
 					device->SetSamplerState(sampler, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
@@ -91,21 +91,21 @@ namespace Yelo
 					device->SetSamplerState(sampler, D3DSAMP_MIPFILTER, D3DTEXF_LINEAR);
 				};
 
-			if(HasLightmaps(Flags::_render_lightmaps_flags_directional))
+			if(HasLightmaps(_renderable_lightmaps_flags_directional_bit))
 			{
 				// The map does have directional lightmaps so use those
-				set_sampler(m_current_lightmaps.directional[0], 2);
-				set_sampler(m_current_lightmaps.directional[1], 4);
-				set_sampler(m_current_lightmaps.directional[2], 5);
+				set_sampler(m_current_lightmaps.directional_tag_indices[0], 2);
+				set_sampler(m_current_lightmaps.directional_tag_indices[1], 4);
+				set_sampler(m_current_lightmaps.directional_tag_indices[2], 5);
 
-				m_used_lightmaps = Flags::_render_lightmaps_flags_directional;
+				m_used_lightmaps = _renderable_lightmaps_flags_directional_bit;
 			}
-			else if(HasLightmaps(Flags::_render_lightmaps_flags_standard))
+			else if(HasLightmaps(_renderable_lightmaps_flags_standard_bit))
 			{
 				// The map does not have directional lightmaps, so use the standard lightmaps
-				set_sampler(m_current_lightmaps.standard, 2);
+				set_sampler(m_current_lightmaps.standard_tag_index, 2);
 						
-				m_used_lightmaps = Flags::_render_lightmaps_flags_standard;
+				m_used_lightmaps = _renderable_lightmaps_flags_standard_bit;
 			}
 		}
 	};};

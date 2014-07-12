@@ -28,7 +28,7 @@ namespace BlamLib.Test
 		[TestMethod]
 		public void Halo1TestTagIndex()
 		{
-			using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestTagIndexTagsPath))
+			using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestInstallationRootPath, kTestTagsDir))
 			{
 				var tagindex = handler.IndexInterface;
 				Blam.DatumIndex datum_scnr_index, datum_matg_index;
@@ -46,7 +46,7 @@ namespace BlamLib.Test
  				}
 				Console.WriteLine("TAG INDEX: Time taken: {0}", StopStopwatch());
 
-				Managers.TagManager tag_manager_scnr = tagindex[datum_scnr_index];
+				var tag_manager_scnr = tagindex[datum_scnr_index];
 				var tag_scenario = tag_manager_scnr.TagDefinition as Blam.Halo1.Tags.scenario_group;
 				tag_scenario = null;
 				tag_manager_scnr = null;
@@ -60,7 +60,7 @@ namespace BlamLib.Test
 		[TestMethod]
 		public void Halo1TestTagIndexRar()
 		{
-			using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestTagIndexTagsPath))
+			using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestInstallationRootPath, kTestTagsDir))
 			{
 				var tagindex = handler.IndexInterface;
 				Blam.DatumIndex datum_test_index;
@@ -85,7 +85,7 @@ namespace BlamLib.Test
 			var thread_matg = new System.Threading.Thread(delegate (/*object param*/)
 			{
 				StartStopwatch();
-				using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestTagIndexTagsPath))
+				using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestInstallationRootPath, kTestTagsDir))
 				{
 					var tagindex_matg = handler.IndexInterface;
 
@@ -99,7 +99,7 @@ namespace BlamLib.Test
 			var thread_scnr = new System.Threading.Thread(delegate(/*object param*/)
 			{
 				StartStopwatch();
-				using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestTagIndexTagsPath))
+				using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestInstallationRootPath, kTestTagsDir))
 				{
 					var tagindex_scnr = handler.IndexInterface;
 
@@ -119,8 +119,8 @@ namespace BlamLib.Test
 		[TestMethod]
 		public void Halo1TestTagIndexSharing()
 		{
-			using (var handler_matg = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestTagIndexTagsPath))
-			using (var handler_scnr = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestTagIndexTagsPath))
+			using (var handler_matg = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestInstallationRootPath, kTestTagsDir))
+			using (var handler_scnr = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestInstallationRootPath, kTestTagsDir))
 			{
 				var tagindex_matg = handler_matg.IndexInterface;
 				var tagindex_scnr = handler_scnr.IndexInterface;
@@ -164,7 +164,7 @@ namespace BlamLib.Test
 			var thread_matg = new System.Threading.Thread(delegate (/*object param*/)
 			{
 				StartSubStopwatch();
-				handler_matg = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestTagIndexTagsPath);
+				handler_matg = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestInstallationRootPath, kTestTagsDir);
 				{
 					var tagindex_matg = handler_matg.IndexInterface;
 
@@ -183,7 +183,7 @@ namespace BlamLib.Test
 			var thread_scnr = new System.Threading.Thread(delegate(/*object param*/)
 			{
 				StartSubStopwatch();
-				handler_scnr = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestTagIndexTagsPath);
+				handler_scnr = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestInstallationRootPath, kTestTagsDir);
 				{
 					var tagindex_scnr = handler_scnr.IndexInterface;
 
@@ -219,7 +219,7 @@ namespace BlamLib.Test
 		[TestMethod]
 		public void Halo1TestTagIndexNonTags()
 		{
-			using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestTagIndexTagsPath))
+			using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestInstallationRootPath, kTestTagsDir))
 			{
 				var tagindex = handler.IndexInterface;
 
@@ -302,10 +302,10 @@ namespace BlamLib.Test
 		{
 			var settings = new TestColladaSettings(
 				true,
-				kTestTagIndexDataPath,
+				Path.Combine(kTestInstallationRootPath, kTestDataDir),
 				".bmp");
 
-			using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestTagIndexTagsPath))
+			using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestInstallationRootPath, kTestTagsDir))
 			{
 				var tagindex = handler.IndexInterface;
 				foreach (var model_def in ModelTestDefinitions)
@@ -323,8 +323,8 @@ namespace BlamLib.Test
 					var tagManager = tagindex[object_tag.Model.Datum];
 					string name = Path.GetFileNameWithoutExtension(model_def.Name);
 
-					BlamLib.Render.COLLADA.Halo1.ModelData modelData = new BlamLib.Render.COLLADA.Halo1.ModelData();
-					BlamLib.Render.COLLADA.Halo1.ModelShaderData modelShaderData = new BlamLib.Render.COLLADA.Halo1.ModelShaderData();
+					var modelData = new BlamLib.Render.COLLADA.Halo1.ModelData();
+					var modelShaderData = new BlamLib.Render.COLLADA.Halo1.ModelShaderData();
 					
 					modelData.CollectData(tagindex, tagManager);
 					modelShaderData.CollectData(tagindex, tagManager);
@@ -359,10 +359,10 @@ namespace BlamLib.Test
         {
             var settings = new TestColladaSettings(
                 true,
-                kTestTagIndexTagsPath,
+				Path.Combine(kTestInstallationRootPath, kTestDataDir),
                 ".bmp");
 
-            using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestTagIndexTagsPath))
+			using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestInstallationRootPath, kTestTagsDir))
             {
                 var tagindex = handler.IndexInterface;
                 foreach (var model_def in BSPTestDefinitions)
@@ -376,8 +376,8 @@ namespace BlamLib.Test
 
                     var tagManager = tagindex[model_def.TagIndex];
 
-                    BlamLib.Render.COLLADA.Halo1.StructureBSPData bspData = new BlamLib.Render.COLLADA.Halo1.StructureBSPData();
-                    BlamLib.Render.COLLADA.Halo1.StructureBSPShaderData bspShaderData = new BlamLib.Render.COLLADA.Halo1.StructureBSPShaderData();
+					var bspData = new BlamLib.Render.COLLADA.Halo1.StructureBSPData();
+					var bspShaderData = new BlamLib.Render.COLLADA.Halo1.StructureBSPShaderData();
 
                     bspData.CollectData(tagindex, tagManager);
                     bspShaderData.CollectData(tagindex, tagManager);
@@ -412,10 +412,10 @@ namespace BlamLib.Test
         {
             var settings = new TestColladaSettings(
                 true,
-                kTestTagIndexTagsPath,
+				Path.Combine(kTestInstallationRootPath, kTestDataDir),
                 ".bmp");
 
-            using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestTagIndexTagsPath))
+			using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestInstallationRootPath, kTestDataDir))
             {
                 var tagindex = handler.IndexInterface;
                 foreach (var scenario_def in ScenarioTestDefinitions)
@@ -429,7 +429,7 @@ namespace BlamLib.Test
 
                     var tagManager = tagindex[scenario_def.TagIndex];
 
-                    BlamLib.Render.COLLADA.Halo1.ScenarioData scenarioData = new BlamLib.Render.COLLADA.Halo1.ScenarioData();
+					var scenarioData = new BlamLib.Render.COLLADA.Halo1.ScenarioData();
 
                     scenarioData.CollectData(tagindex, tagManager);
 
@@ -467,8 +467,9 @@ namespace BlamLib.Test
 
 			foreach (var model_def in ModelTestDefinitions)
 			{
-				string file_path = Path.Combine(kTestTagIndexTagsPath, @"data\");
-				file_path = Path.Combine(file_path, Path.GetFileNameWithoutExtension(model_def.Name) + "_all.dae");
+				var file_path = Path.Combine(Path.Combine(kTestInstallationRootPath, kTestDataDir));
+				file_path = Path.Combine(file_path, model_def.Name);
+				file_path = Path.ChangeExtension(file_path, "dae");
 				
 				using (var reader = new System.Xml.XmlTextReader(file_path))
 				{

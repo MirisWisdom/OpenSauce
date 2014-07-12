@@ -75,7 +75,7 @@ namespace Environment
 	/// <returns>	Returns the shader offset to use. </returns>
 	static const uint32 SetupShaderEnvironment(const TagGroups::s_shader_environment_definition& shader, s_pixel_shader_variables& variables)
 	{		
-		if(TEST_FLAG(shader.shader.extension_usage, Enums::_shader_extension_usage_bit_normal_map))
+		if(TEST_FLAG(shader.shader.extension_usage, Flags::_shader_extension_usage_bit_normal_map))
 		{
 			if(shader.environment.shader_extension.Count == 1)
 			{
@@ -102,7 +102,7 @@ namespace Environment
 	/// <returns>	Returns the shader offset to use. </returns>
 	static const uint32 SetupShaderModel(const TagGroups::s_shader_model_definition& shader, s_pixel_shader_variables& variables)
 	{
-		if(TEST_FLAG(shader.shader.extension_usage, Enums::_shader_extension_usage_bit_normal_map))
+		if(TEST_FLAG(shader.shader.extension_usage, Flags::_shader_extension_usage_bit_normal_map))
 		{
 			if(shader.model.maps.shader_extension.Count == 1)
 			{
@@ -130,7 +130,7 @@ namespace Environment
 			return;
 
 		if(!Render::Lightmaps::UsingDirectionalLightmaps()
-			|| !shader || !TEST_FLAG(shader->shader.extension_usage, Enums::_shader_extension_usage_bit_directional_lightmaps))
+			|| !shader || !TEST_FLAG(shader->shader.extension_usage, Flags::_shader_extension_usage_bit_directional_lightmaps))
 		{
 			g_current_shader_offset = 0;
 			return;

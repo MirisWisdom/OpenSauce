@@ -273,9 +273,9 @@ namespace BlamLib.Test
 			return indexInterface;
 		} }
 
-		public TagIndexHandler(BlamVersion game, string path)
+		public TagIndexHandler(BlamVersion game, string root, string tagsDir)
 		{
-			indexHandle = Program.GetManager(game).OpenTagIndex(game, path);
+            indexHandle = Program.GetManager(game).OpenTagIndex(game, root, tagsDir);
 			indexInterface = Program.GetTagIndex(indexHandle) as T;
 		}
 
@@ -313,7 +313,7 @@ namespace BlamLib.Test
 		public void Open(Managers.TagIndex tag_index)
 		{
 			TagIndex = tag_index.Open(Name, Group, IO.ITagStreamFlags.LoadDependents);
-			Assert.IsFalse(TagIndex.IsNull);
+			Assert.IsTrue(BlamLib.Managers.TagIndex.IsValid(TagIndex));
 		}
 		public void Close(Managers.TagIndex tag_index)
 		{

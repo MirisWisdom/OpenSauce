@@ -61,9 +61,9 @@ namespace Yelo
 			g_lightmap_globals.m_lightmap_manager.SetLightmapSamplers(
 				DX9::Direct3DDevice(),
 				g_lightmap_globals.m_lightmap_index,
-				[](const datum_index datum, const int32 index) -> TagGroups::s_bitmap_data*
+				[](const datum_index tag_index, const int32 index) -> TagGroups::s_bitmap_data*
 				{				
-					auto bitmap = TagGroups::TagGetForModify<TagGroups::s_bitmap_group>(datum);
+					auto bitmap = TagGroups::TagGetForModify<TagGroups::s_bitmap_group>(tag_index);
 					auto bitmap_data = CAST_PTR(TagGroups::s_bitmap_data*, &bitmap->bitmaps[index]);
 
 					return bitmap_data;
@@ -87,7 +87,7 @@ namespace Yelo
 		/// <returns>	true if directional lightmaps are in use, otherwise false. </returns>
 		bool UsingDirectionalLightmaps()
 		{
-			return g_lightmap_globals.m_lightmap_manager.HasLightmaps(Flags::_render_lightmaps_flags_directional);
+			return g_lightmap_globals.m_lightmap_manager.HasLightmaps(c_lightmap_manager::_renderable_lightmaps_flags_directional_bit);
 		}
 
 		/// <summary>	Inserts hooks to override the stock lightmap management. </summary>
@@ -103,31 +103,34 @@ namespace Yelo
 		{ }
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Sets the lightmap datums. </summary>
+		/// <summary>	Sets the lightmap tag indices. </summary>
 		///
-		/// <param name="standard">			The standard lightmap datum. </param>
-		/// <param name="directional_1">	The first directional lightmap datum. </param>
-		/// <param name="directional_2">	The second directional lightmap datum. </param>
-		/// <param name="directional_3">	The third directional lightmap datum. </param>
-		void SetLightmaps(const datum_index standard, const datum_index directional_1, const datum_index directional_2, const datum_index directional_3)
+		/// <param name="standard_tag_index">	  	The standard lightmap tag index. </param>
+		/// <param name="directional_1_tag_index">	The first directional lightmap tag index. </param>
+		/// <param name="directional_2_tag_index">	The second directional lightmap tag index. </param>
+		/// <param name="directional_3_tag_index">	The third directional lightmap tag index. </param>
+		void SetLightmaps(const datum_index standard_tag_index
+			, const datum_index directional_1_tag_index
+			, const datum_index directional_2_tag_index
+			, const datum_index directional_3_tag_index)
 		{
 			if(Rasterizer::ShaderExtension::ExtensionsEnabled())
 			{
-				g_lightmap_globals.m_lightmap_manager.SetLightmapDatums(standard, directional_1, directional_2, directional_3);
+				g_lightmap_globals.m_lightmap_manager.SetLightmapDatums(standard_tag_index, directional_1_tag_index, directional_2_tag_index, directional_3_tag_index);
 			}
 			else
 			{
-				g_lightmap_globals.m_lightmap_manager.SetLightmapDatums(standard, datum_index::null, datum_index::null, datum_index::null);
+				g_lightmap_globals.m_lightmap_manager.SetLightmapDatums(standard_tag_index, datum_index::null, datum_index::null, datum_index::null);
 			}
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>	Sets the lightmap datums. </summary>
+		/// <summary>	Sets the lightmap tag indices. </summary>
 		///
-		/// <param name="standard">	The standard lightmap datum. </param>
-		void SetLightmaps(const datum_index standard)
+		/// <param name="standard">	The standard lightmap tag index. </param>
+		void SetLightmaps(const datum_index standard_tag_index)
 		{
-			SetLightmaps(standard, datum_index::null, datum_index::null, datum_index::null);
+			SetLightmaps(standard_tag_index, datum_index::null, datum_index::null, datum_index::null);
 		}
 	};};
 };
