@@ -67,6 +67,15 @@
     <Filter Include="Tool\Shader\Collection">
       <UniqueIdentifier>{125bc07f-3c08-4d78-a944-2aab4a5465ec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tool\PackedFile">
+      <UniqueIdentifier>{0bb6b3e1-9c7a-4cb6-8cf9-4f1b4403eec1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool\PackedFile\Definition">
+      <UniqueIdentifier>{77b09f15-295c-498c-915a-380c670a6356}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tool\PackedFile\Builder">
+      <UniqueIdentifier>{8bc1177b-43c1-4b22-9552-603f60d52ac3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\AnimationUpgrade.cpp">
@@ -220,6 +229,12 @@
     </ClCompile>
     <ClCompile Include="Tool\Shader\Collection\c_collection_definition.cpp">
       <Filter>Tool\Shader\Collection</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\PackedFile\BuildPackedFiles.cpp">
+      <Filter>Tool\PackedFile</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\PackedFile\Definition\c_packed_file_definition.cpp">
+      <Filter>Tool\PackedFile\Definition</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -375,6 +390,12 @@
     <ClInclude Include="Tool\Shader\Collection\c_collection_definition.hpp">
       <Filter>Tool\Shader\Collection</Filter>
     </ClInclude>
+    <ClInclude Include="Tool\PackedFile\BuildPackedFiles.hpp">
+      <Filter>Tool\PackedFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\PackedFile\Definition\c_packed_file_definition.hpp">
+      <Filter>Tool\PackedFile\Definition</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\ScriptLibraryMemoryUpgrades.inl">
@@ -451,6 +472,9 @@
     </None>
     <None Include="Tool\BuildCacheFile\TagPreprocess_ProjectYellow.inl">
       <Filter>Tool\BuildCacheFile</Filter>
+    </None>
+    <None Include="Tool\PackedFile\BuildPackedFile_Actions.inl">
+      <Filter>Tool\PackedFile</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

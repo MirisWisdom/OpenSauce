@@ -17,14 +17,14 @@
 #include "Tool/Console.hpp"
 #include "Rasterizer/DX9/DX9.hpp"
 
-using namespace boost::filesystem;
+using namespace boost;
 
 namespace Yelo
 {
 	namespace Tool { namespace Shader { namespace Compiler
 	{
-		void BuildEffect(const path& source_file
-			, const path& intermediate_dir
+		void BuildEffect(const filesystem::path& source_file
+			, const filesystem::path& intermediate_dir
 			, const std::string& shader_target
 			, i_effect_writer& shader_writer)
 		{
@@ -36,7 +36,7 @@ namespace Yelo
 			LPD3DXEFFECT effect;
 			YELO_ASSERT_DISPLAY(c_effect_compiler::CompileEffect(source_file, shader_target, effect), "ERROR: failed to compile an effect");
 
-			path effect_file(intermediate_dir);
+			filesystem::path effect_file(intermediate_dir);
 			effect_file /= filename;
 			effect_file.replace_extension(".bin");
 
@@ -44,15 +44,15 @@ namespace Yelo
 			shader_writer.WriteEffect(effect_file, effect_name, shader_target, effect);
 		}
 
-		void BuildEffects(const path& source_dir
-			, const path& intermediate_dir
+		void BuildEffects(const filesystem::path& source_dir
+			, const filesystem::path& intermediate_dir
 			, const std::string& shader_target
 			, i_effect_writer& shader_writer)
 		{
-			directory_iterator end;
-			for (directory_iterator iter(source_dir); iter != end; ++iter)
+			filesystem::directory_iterator end;
+			for (filesystem::directory_iterator iter(source_dir); iter != end; ++iter)
 			{
-				path current_path(iter->path());
+				filesystem::path current_path(iter->path());
 				if (is_directory(current_path) || !exists(current_path))
 				{
 					continue;
@@ -77,9 +77,9 @@ namespace Yelo
 				cstring specific_shader;
 			}*args = CAST_PTR(s_arguments*, arguments);
 
-			path source_path(args->source_directory);
-			path intermediate_path(args->intermediate_directory);
-			path output_path(args->output_directory);
+			filesystem::path source_path(args->source_directory);
+			filesystem::path intermediate_path(args->intermediate_directory);
+			filesystem::path output_path(args->output_directory);
 
 			// Validate the provided paths
 			YELO_ASSERT_DISPLAY(exists(source_path), "ERROR: source directory does not exist [%s]", source_path.string().c_str());
@@ -88,7 +88,7 @@ namespace Yelo
 			Rasterizer::DX9::Initialize();
 
 			// Open the collection definition
-			path collection_definition_path(source_path);
+			filesystem::path collection_definition_path(source_path);
 			collection_definition_path /= args->collection_definition;
 			collection_definition_path.replace_extension(".xml");
 
@@ -98,7 +98,7 @@ namespace Yelo
 			shader_collection.Load(collection_definition_path);
 
 			// Build the effect output path
-			path effect_output_directory(intermediate_path);
+			filesystem::path effect_output_directory(intermediate_path);
 			effect_output_directory /= shader_collection.GetName();
 			if (!exists(effect_output_directory))
 			{
@@ -106,20 +106,20 @@ namespace Yelo
 			}
 
 			// Build the collection output path
-			path collection_output_directory(output_path);
+			filesystem::path collection_output_directory(output_path);
 			if (!exists(collection_output_directory))
 			{
 				YELO_ASSERT_DISPLAY(create_directories(collection_output_directory), "ERROR: failed to create collection output directory");
 			}
 
 			// Build the source file path
-			path shader_source_directory(source_path);
+			filesystem::path shader_source_directory(source_path);
 			shader_source_directory /= shader_collection.GetSourceDirectory();
 
 			YELO_ASSERT_DISPLAY(exists(shader_source_directory), "ERROR: shader source location does not exist");
 
 			// Build the collection file path
-			path collection_path(output_path);
+			filesystem::path collection_path(output_path);
 			collection_path /= shader_collection.GetName();
 			collection_path.replace_extension(".enc");
 
@@ -146,7 +146,7 @@ namespace Yelo
 			}
 			else
 			{
-				path specific_file(shader_source_directory);
+				filesystem::path specific_file(shader_source_directory);
 				specific_file /= specific_shader;
 				specific_file.replace_extension(".fx");
 

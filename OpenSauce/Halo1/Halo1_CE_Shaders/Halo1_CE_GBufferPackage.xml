@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<OpenSauce>
+	<PackedFile>
+		<Name>gbuffer_shaders.shd</Name>
+		<File>
+			<ID>GBuffer_Clear</ID>
+			<Type>shader</Type>
+			<Path>gbuffer\GBuffer_Clear.fx</Path>
+		</File>
+		<File>
+			<ID>GBuffer_Debug</ID>
+			<Type>shader</Type>
+			<Path>gbuffer\GBuffer_Debug.fx</Path>
+		</File>
+		<File>
+			<ID>GBuffer_PS</ID>
+			<Type>shader</Type>
+			<Path>gbuffer\GBuffer_PS.fx</Path>
+		</File>
+		<File>
+			<ID>GBuffer_VS</ID>
+			<Type>shader</Type>
+			<Path>gbuffer\GBuffer_VS.fx</Path>
+		</File>
+		<File>
+			<ID>GBuffer_VS_OS</ID>
+			<Type>shader</Type>
+			<Path>gbuffer\GBuffer_VS_OS.fx</Path>
+		</File>
+	</PackedFile>
+</OpenSauce>

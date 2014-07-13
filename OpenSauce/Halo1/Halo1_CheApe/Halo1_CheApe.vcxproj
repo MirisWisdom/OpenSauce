@@ -107,6 +107,8 @@
     <ClCompile Include="Tool\BuildCacheFile\BuildCacheFileEx.cpp" />
     <ClCompile Include="Tool\BuildCacheFile\BuildCacheFileGlobals.cpp" />
     <ClCompile Include="Tool\BuildCacheFile\BuildCacheFileMemoryUpgrades.cpp" />
+    <ClCompile Include="Tool\PackedFile\BuildPackedFiles.cpp" />
+    <ClCompile Include="Tool\PackedFile\Definition\c_packed_file_definition.cpp" />
     <ClCompile Include="Tool\Shader\Collection\c_collection_definition.cpp" />
     <ClCompile Include="Tool\Shader\Compiler\Collection\c_collection_writer.cpp" />
     <ClCompile Include="Tool\Shader\Compiler\Collection\c_collection_writer_factory.cpp" />
@@ -160,6 +162,8 @@
     <ClInclude Include="Tool\BuildCacheFile\BuildCacheFileEx.hpp" />
     <ClInclude Include="Tool\BuildCacheFile\BuildCacheFileGlobals.hpp" />
     <ClInclude Include="Tool\BuildCacheFile\BuildCacheFileMemoryUpgrades.hpp" />
+    <ClInclude Include="Tool\PackedFile\BuildPackedFiles.hpp" />
+    <ClInclude Include="Tool\PackedFile\Definition\c_packed_file_definition.hpp" />
     <ClInclude Include="Tool\Shader\Collection\c_collection_definition.hpp" />
     <ClInclude Include="Tool\Shader\Compiler\Collection\c_collection_writer.hpp" />
     <ClInclude Include="Tool\Shader\Compiler\Collection\c_collection_writer_factory.hpp" />
@@ -201,6 +205,7 @@
   <ItemGroup>
     <None Include="Engine\ScriptLibraryMemoryUpgrades.inl" />
     <None Include="Tool\BuildCacheFile\TagPreprocess_ProjectYellow.inl" />
+    <None Include="Tool\PackedFile\BuildPackedFile_Actions.inl" />
     <None Include="Yelo\MemoryFixups.Paths.inl" />
     <None Include="Yelo\MemoryFixups.TagTextIO.inl" />
     <None Include="Tool\BuildCppDefinition.inl" />
