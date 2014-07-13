@@ -8,92 +8,29 @@
 #include "Tool/PackedFile/BuildPackedFiles.hpp"
 
 #if PLATFORM_TYPE == PLATFORM_TOOL
-#include <YeloLib/files/files.hpp>
 #include <YeloLib/Halo1/files/packed_file.hpp>
 
 #include "Tool/PackedFile/Definition/c_packed_file_definition.hpp"
+#include "Tool/PackedFile/Processing/i_packed_file_processor.hpp"
+#include "Tool/PackedFile/Processing/c_packed_file_processor_factory.hpp"
 
 using namespace boost;
 
 namespace Yelo
 {
 	namespace Tool { namespace PackedFile
-	{		
-#include "Tool/PackedFile/BuildPackedFile_Actions.inl"
-
-		enum packed_file_type{
-			/*!
-			 * \brief
-			 * The default action is to simple pack the entire file unchanged.
-			 */
-			_packed_file_type_archive,
-			/*!
-			 * \brief
-			 * The shader action assumes the file is a HLSL shader and will pack its compiled binary code.
-			 */
-			_packed_file_type_shader,
-
-			_packed_file_type
-		};
-
-		typedef bool (*proc_pack_file_action_t)(c_packed_file::s_element_editor&, const filesystem::path&);
-
-		const proc_pack_file_action_t g_pack_file_action[] = {
-			CustomAction_Default,
-			CustomAction_Shader
-		};
-
-		/*!
-		 * \brief
-		 * Set up a packed file element.
-		 * 
-		 * \param element
-		 * Reference to the element to set up.
-		 * 
-		 * \param element_id
-		 * The ID of the element.
-		 * 
-		 * \param element_source
-		 * The source file to set up the element with.
-		 * 
-		 * \param element_type
-		 * The type of file.
-		 * 
-		 * \returns
-		 * Returns true if the element was set up correctly.
-		 * 
-		 * Sets up a packed file element, applying any custom process needed on the file.
-		 */
-		bool BuildPackedFileElement(c_packed_file::s_element_editor& element,
-			const std::string& id,
-			const filesystem::path& file_path, 
-			const packed_file_type element_type)
-		{
-			// Copy the files id
-			UINT id_length = id.length() + 1;
-			element.source_id = new char[id_length];
-			element.source_id[0] = 0;
-			strcpy_s(element.source_id, id_length, id.c_str());
-
-			// create a new element for the file
-			// custom actions are used to add new processes to run on files when packing them
-			// such as compiling shaders
-			return (*g_pack_file_action[element_type])(element, file_path);
-		}
-
-		/*!
-		 * \brief
-		 * Processes all packed file elements in the xml definition.
-		 * 
-		 * \param first_element
-		 * The first packed file element.
-		 * 
-		 * Processes all packed file elements in the xml definition.
-		 */
+	{
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Processes the packed file. </summary>
+		///
+		/// <param name="source_path">			 	Full pathname of the source directory. </param>
+		/// <param name="output_path">			 	Full pathname of the output directory. </param>
+		/// <param name="packed_file_definition">	[in,out] The packed file definition. </param>
 		void ProcessPackedFile(const filesystem::path& source_path
 			, const filesystem::path& output_path
 			, c_packed_file_definition_container& packed_file_definition)
 		{
+			// Build the output file path
 			filesystem::path output_file(output_path);
 			output_file /= packed_file_definition.m_name.Get();
 
@@ -102,35 +39,35 @@ namespace Yelo
 			printf("building packed file '%s'\n", packed_file_definition.m_name.Get().c_str());
 			for(auto& file : packed_file_definition.m_files)
 			{
-				YELO_ASSERT_DISPLAY(!file.m_id.Get().empty(), "ERROR: A files id is empty");
-				YELO_ASSERT_DISPLAY(!file.m_type.Get().empty(), "ERROR: A files type is empty");
-				YELO_ASSERT_DISPLAY(!file.m_path.Get().empty(), "ERROR: A files path is empty");
+				auto& id = file.m_id.Get();
+				auto& type = file.m_type.Get();
+				auto& path = file.m_path.Get();
+
+				// Validate the file variables
+				YELO_ASSERT_DISPLAY(!id.empty(), "ERROR: A files id is empty");
+				YELO_ASSERT_DISPLAY(!type.empty(), "ERROR: A files type is empty");
+				YELO_ASSERT_DISPLAY(!path.empty(), "ERROR: A files path is empty");
 				
-				printf("creating element '%s'\n", file.m_id.Get().c_str());
+				printf("creating element '%s'\n", id.c_str());
 
 				filesystem::path file_path(source_path);
 				file_path /= file.m_path.Get();
 
 				YELO_ASSERT_DISPLAY(filesystem::exists(file_path), "ERROR: A file to be packed does not exist: %s", file_path.string().c_str());
 
-				auto& type_string = file.m_type.Get();
-				packed_file_type file_type = _packed_file_type;
-				if(type_string == "archive")
-				{
-					file_type = _packed_file_type_archive;
-				}
-				if(type_string == "shader")
-				{
-					file_type = _packed_file_type_shader;
-				}
-				
-				YELO_ASSERT_DISPLAY(file_type != _packed_file_type, "ERROR: Unknown file type '%s'", type_string.c_str());
+				// Get the file processor
+				const auto file_processor = c_packed_file_processor_factory::GetPackedFileProcessor(type);
 
 				// Build element
 				c_packed_file::s_element_editor element;
 
+				UINT id_length = id.length() + 1;
+				element.source_id = new char[id_length];
+				element.source_id[0] = 0;
+				strcpy_s(element.source_id, id_length, id.c_str());
+
 				// create the file element
-				bool result = BuildPackedFileElement(element, file.m_id, file_path, file_type);
+				bool result = file_processor->ProcessElement(element, file_path);
 
 				YELO_ASSERT_DISPLAY(result, "ERROR: Failed to create packed file entry");
 
