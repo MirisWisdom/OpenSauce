@@ -19,14 +19,15 @@ namespace Yelo
 	{
 		bool c_effect_compiler::CompileEffect(const path& file_location, const std::string& target, LPD3DXEFFECT& effect_out)
 		{
+			c_auto_release<ID3DXBuffer> error_buffer;
+
 			// compile the shader
 			D3DXMACRO macros[4] = {
 					{ "pc", "1" },
 					{ "TGT", target.c_str() },
-					{ NULL, NULL },
+					{ nullptr, nullptr },
 			};
 
-			LPD3DXBUFFER error_buffer = NULL;
 			HRESULT hr = E_FAIL;
 			
 			Console::ColorPrint(0x000A, "Compiling...");
@@ -35,9 +36,9 @@ namespace Yelo
 			hr = D3DXCreateEffectFromFile(
 				Rasterizer::DX9::Direct3DDevice(),
 				file_location.string().c_str(),
-				&macros[0], NULL,
+				&macros[0], nullptr,
 				D3DXSHADER_OPTIMIZATION_LEVEL3 | D3DXSHADER_NO_PRESHADER,
-				NULL,
+				nullptr,
 				&effect_out,
 				&error_buffer);
 
@@ -50,11 +51,9 @@ namespace Yelo
 					char* error_text = (char*)error_buffer->GetBufferPointer();
 					Console::ColorPrintF(0x00C, "%s\r\n", error_text);
 				}
-				safe_release(error_buffer);
 				safe_release(effect_out);
 				return false;
 			}
-			safe_release(error_buffer);
 
 			Console::ColorPrint(0x000A, "done\r\n");
 

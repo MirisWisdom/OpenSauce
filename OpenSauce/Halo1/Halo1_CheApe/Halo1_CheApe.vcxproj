@@ -109,6 +109,9 @@
     <ClCompile Include="Tool\BuildCacheFile\BuildCacheFileMemoryUpgrades.cpp" />
     <ClCompile Include="Tool\PackedFile\BuildPackedFiles.cpp" />
     <ClCompile Include="Tool\PackedFile\Definition\c_packed_file_definition.cpp" />
+    <ClCompile Include="Tool\PackedFile\Processing\c_packed_file_processor_archive.cpp" />
+    <ClCompile Include="Tool\PackedFile\Processing\c_packed_file_processor_factory.cpp" />
+    <ClCompile Include="Tool\PackedFile\Processing\c_packed_file_processor_shader.cpp" />
     <ClCompile Include="Tool\Shader\Collection\c_collection_definition.cpp" />
     <ClCompile Include="Tool\Shader\Compiler\Collection\c_collection_writer.cpp" />
     <ClCompile Include="Tool\Shader\Compiler\Collection\c_collection_writer_factory.cpp" />
@@ -164,6 +167,10 @@
     <ClInclude Include="Tool\BuildCacheFile\BuildCacheFileMemoryUpgrades.hpp" />
     <ClInclude Include="Tool\PackedFile\BuildPackedFiles.hpp" />
     <ClInclude Include="Tool\PackedFile\Definition\c_packed_file_definition.hpp" />
+    <ClInclude Include="Tool\PackedFile\Processing\c_packed_file_processor_archive.hpp" />
+    <ClInclude Include="Tool\PackedFile\Processing\c_packed_file_processor_factory.hpp" />
+    <ClInclude Include="Tool\PackedFile\Processing\c_packed_file_processor_shader.hpp" />
+    <ClInclude Include="Tool\PackedFile\Processing\i_packed_file_processor.hpp" />
     <ClInclude Include="Tool\Shader\Collection\c_collection_definition.hpp" />
     <ClInclude Include="Tool\Shader\Compiler\Collection\c_collection_writer.hpp" />
     <ClInclude Include="Tool\Shader\Compiler\Collection\c_collection_writer_factory.hpp" />
@@ -205,7 +212,6 @@
   <ItemGroup>
     <None Include="Engine\ScriptLibraryMemoryUpgrades.inl" />
     <None Include="Tool\BuildCacheFile\TagPreprocess_ProjectYellow.inl" />
-    <None Include="Tool\PackedFile\BuildPackedFile_Actions.inl" />
     <None Include="Yelo\MemoryFixups.Paths.inl" />
     <None Include="Yelo\MemoryFixups.TagTextIO.inl" />
     <None Include="Tool\BuildCppDefinition.inl" />

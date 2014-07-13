@@ -23,6 +23,13 @@ namespace Yelo
 {
 	namespace Tool { namespace Shader { namespace Compiler
 	{
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Builds a shader effect. </summary>
+		///
+		/// <param name="source_file">	   	The shader source file. </param>
+		/// <param name="intermediate_dir">	The intermediate output dir. </param>
+		/// <param name="shader_target">   	The shader target. </param>
+		/// <param name="shader_writer">   	[in] The shader writer. </param>
 		void BuildEffect(const filesystem::path& source_file
 			, const filesystem::path& intermediate_dir
 			, const std::string& shader_target
@@ -44,6 +51,13 @@ namespace Yelo
 			shader_writer.WriteEffect(effect_file, effect_name, shader_target, effect);
 		}
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Builds the collections effects. </summary>
+		///
+		/// <param name="source_dir">	   	The shader source dir. </param>
+		/// <param name="intermediate_dir">	The intermediate output dir. </param>
+		/// <param name="shader_target">   	The shader target. </param>
+		/// <param name="shader_writer">   	[in] The shader writer. </param>
 		void BuildEffects(const filesystem::path& source_dir
 			, const filesystem::path& intermediate_dir
 			, const std::string& shader_target
@@ -67,6 +81,10 @@ namespace Yelo
 			}
 		}
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Compiles a shader collection. </summary>
+		///
+		/// <param name="arguments">	[in] If non-null, the function arguments. </param>
 		void PLATFORM_API compile_shaders(char* arguments[])
 		{
 			struct s_arguments {

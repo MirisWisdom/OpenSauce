@@ -20,7 +20,8 @@ namespace Yelo
 
 		void c_shader_processor::Assemble(std::string& assembly, LPD3DXBUFFER& output_buffer)
 		{
-			LPD3DXBUFFER errors;
+			c_auto_release<ID3DXBuffer> errors;
+
 			HRESULT hr = D3DXAssembleShader(assembly.c_str(), assembly.length(), NULL, NULL, 0, &output_buffer, &errors);
 			if (FAILED(hr))
 			{
@@ -28,15 +29,14 @@ namespace Yelo
 				puts(assembly.c_str());
 				YELO_ASSERT_DISPLAY(true, "ERROR: Failed to assembly a shader");
 			}
-			safe_release(errors);
 		}
 
 		void c_shader_processor::RemoveComments(const DWORD* byte_code, LPD3DXBUFFER& output_buffer)
 		{
-			LPD3DXBUFFER assembly;
+			c_auto_release<ID3DXBuffer> assembly;
+
 			Disassemble(byte_code, assembly);
 			Assemble(std::string((char*)assembly->GetBufferPointer()), output_buffer);
-			safe_release(assembly);
 		}
 	};};
 };

@@ -73,8 +73,8 @@
     <Filter Include="Tool\PackedFile\Definition">
       <UniqueIdentifier>{77b09f15-295c-498c-915a-380c670a6356}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tool\PackedFile\Builder">
-      <UniqueIdentifier>{8bc1177b-43c1-4b22-9552-603f60d52ac3}</UniqueIdentifier>
+    <Filter Include="Tool\PackedFile\Processing">
+      <UniqueIdentifier>{f16a3abc-329d-4976-a6c8-31911aee4aa8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -236,6 +236,15 @@
     <ClCompile Include="Tool\PackedFile\Definition\c_packed_file_definition.cpp">
       <Filter>Tool\PackedFile\Definition</Filter>
     </ClCompile>
+    <ClCompile Include="Tool\PackedFile\Processing\c_packed_file_processor_factory.cpp">
+      <Filter>Tool\PackedFile\Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\PackedFile\Processing\c_packed_file_processor_archive.cpp">
+      <Filter>Tool\PackedFile\Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="Tool\PackedFile\Processing\c_packed_file_processor_shader.cpp">
+      <Filter>Tool\PackedFile\Processing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\AnimationUpgrade.hpp">
@@ -396,6 +405,18 @@
     <ClInclude Include="Tool\PackedFile\Definition\c_packed_file_definition.hpp">
       <Filter>Tool\PackedFile\Definition</Filter>
     </ClInclude>
+    <ClInclude Include="Tool\PackedFile\Processing\c_packed_file_processor_factory.hpp">
+      <Filter>Tool\PackedFile\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\PackedFile\Processing\i_packed_file_processor.hpp">
+      <Filter>Tool\PackedFile\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\PackedFile\Processing\c_packed_file_processor_archive.hpp">
+      <Filter>Tool\PackedFile\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="Tool\PackedFile\Processing\c_packed_file_processor_shader.hpp">
+      <Filter>Tool\PackedFile\Processing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\ScriptLibraryMemoryUpgrades.inl">
@@ -472,9 +493,6 @@
     </None>
     <None Include="Tool\BuildCacheFile\TagPreprocess_ProjectYellow.inl">
       <Filter>Tool\BuildCacheFile</Filter>
-    </None>
-    <None Include="Tool\PackedFile\BuildPackedFile_Actions.inl">
-      <Filter>Tool\PackedFile</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
