@@ -22,6 +22,7 @@
 #include "Tool/RuntimeCacheView.hpp"
 #include "Tool/TagMaintenance.hpp"
 #include "Tool/Shader/Compiler/Compiler.hpp"
+#include "Tool/PackedFile/BuildPackedFiles.hpp"
 #include "Tool/ToolMisc.hpp"
 
 namespace Yelo
