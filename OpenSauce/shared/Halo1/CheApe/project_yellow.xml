@@ -38,6 +38,7 @@
 		<!-- SCENARIO INFORMATION -->
 		<!-- BSP -->
 		<TagBlock name="scenario_information_bsp_lightmap_set_block" maxElements="64">
+      <field type="String" name="name" blockname="true"/>
 			<field type="Pad" definition="4"/> <!-- enum/flag space-->
 			<field type="Explanation" name="standard lightmap" definition="The standard lightmap is the same type of lightmaps as used by stock Halo.~NIt is used if directional lightmaps are disabled."/>
 			<field type="TagReference" name="std. lightmap" definition="bitmap_reference" />
@@ -46,7 +47,7 @@
 			<field type="TagReference" name="dir. lightmap 2" definition="bitmap_reference" />
 			<field type="TagReference" name="dir. lightmap 3" definition="bitmap_reference" />
 			<!-- FS: May need this space to store BSP ambient lighting info -->
-			<field type="Pad" definition="36"/>
+			<field type="Pad" definition="24"/>
 		</TagBlock>
 
 		<TagBlock name="scenario_information_bsp_sky_set_sky_block" maxElements="8">
@@ -56,6 +57,7 @@
 		</TagBlock>
 		
 		<TagBlock name="scenario_information_bsp_sky_set_block" maxElements="64">
+      <field type="String"          name="name"            blockname="true"/>
 			<field type="Block"           name="skies"           definition="scenario_information_bsp_sky_set_sky_block" />
 		</TagBlock>
 		

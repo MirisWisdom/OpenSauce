@@ -252,15 +252,15 @@
 	);
 	
 	HS_FUNCTION_WITH_PARAMS(structure_bsp_set_lightmap_set, bool, "Sets a bsp's lightmap set", 
-			"<bsp-index> <set-index>", 2,
+			"<bsp-index> <set-name>", 2,
 		HS_TYPE(short),
-		HS_TYPE(short)
+		HS_TYPE(string)
 	);
 
 	HS_FUNCTION_WITH_PARAMS(structure_bsp_set_sky_set, bool, "Sets a bsp's sky set", 
-			"<bsp-index> <set-index>", 2,
+			"<bsp-index> <set-name>", 2,
 		HS_TYPE(short),
-		HS_TYPE(short)
+		HS_TYPE(string)
 	);
 
 	HS_FUNCTION_WITH_PARAMS(vehicle_remapper_enabled, bool, "returns the remapper state before the function call", 
