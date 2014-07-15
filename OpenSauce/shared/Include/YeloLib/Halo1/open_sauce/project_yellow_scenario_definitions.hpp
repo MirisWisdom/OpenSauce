@@ -88,12 +88,13 @@ namespace Yelo
 		/* BSP */
 		struct s_scenario_information_bsp_lightmap_set
 		{
+			TAG_FIELD(tag_string, name);
 			TAG_PAD(int32, 1);
 			TAG_FIELD(tag_reference, standard_lightmap, 'bitm');
 			TAG_FIELD(tag_reference, directional_lightmap_1, 'bitm');
 			TAG_FIELD(tag_reference, directional_lightmap_2, 'bitm');
 			TAG_FIELD(tag_reference, directional_lightmap_3, 'bitm');
-			TAG_PAD(tag_block, 3);
+			TAG_PAD(tag_block, 2);
 		};
 
 		struct s_scenario_information_bsp_sky_set_sky
@@ -105,6 +106,7 @@ namespace Yelo
 
 		struct s_scenario_information_bsp_sky_set
 		{
+			TAG_FIELD(tag_string, name);
 			TAG_TBLOCK(skies,				s_scenario_information_bsp_sky_set_sky);
 		};
 

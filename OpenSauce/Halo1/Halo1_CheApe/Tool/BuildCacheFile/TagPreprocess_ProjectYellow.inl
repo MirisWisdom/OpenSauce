@@ -45,6 +45,10 @@ namespace ProjectYellow
 							"error: a lightmap bitmap referenced in the project_yellow tag does not have the same bitmap count as the bsp has lightmap meshes");
 					};
 
+				// Every lightmap set must have a name
+				YELO_ASSERT_DISPLAY(strlen(lightmap_set.name) != 0,
+					"error: a lightmap set in the project_yellow tag has no name");
+
 				// Every lightmap set must have a standard lightmap
 				YELO_ASSERT_DISPLAY(!lightmap_set.standard_lightmap.tag_index.IsNull(),
 					"error: a lightmap set in the project_yellow tag has no standard lightmap");
@@ -84,6 +88,9 @@ namespace ProjectYellow
 
 			for(const auto& sky_set : bsp.sky_sets)
 			{
+				YELO_ASSERT_DISPLAY(strlen(sky_set.name) != 0,
+					"error: a sky set in the project_yellow tag has no name");
+
 				YELO_ASSERT_DISPLAY(sky_set.skies.Count != 0,
 					"error: a scenario info bsp sky set has no skies defined");
 

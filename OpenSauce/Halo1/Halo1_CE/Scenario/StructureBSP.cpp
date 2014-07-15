@@ -10,6 +10,7 @@
 #if !PLATFORM_IS_DEDI
 #include <blamlib/Halo1/scenario/scenario_definitions.hpp>
 #include <blamlib/Halo1/structures/structure_bsp_definitions.hpp>
+#include <YeloLib/Halo1/saved_games/game_state_yelo.hpp>
 #include <YeloLib/Halo1/open_sauce/project_yellow_scenario_definitions.hpp>
 
 #include "Game/GameState.hpp"
@@ -88,10 +89,10 @@ namespace Yelo
 		/// <summary>	Sets a bsp's lightmap set. </summary>
 		///
 		/// <param name="bsp_info_index">	Zero-based index of the bsp info block. </param>
-		/// <param name="set_index">	 	Zero-based index of the lightmap set. </param>
+		/// <param name="set_index">	 	Zero-based index of the sky set. </param>
 		///
 		/// <returns>	true if it succeeds, false if it fails. </returns>
-		static bool SetLightmapSet(byte bsp_info_index, byte set_index)
+		static bool SetLightmapSet(const byte bsp_info_index, const byte set_index)
 		{
 			if(!Scenario::ScenarioInfo::ScenarioInfo())
 			{
@@ -103,18 +104,17 @@ namespace Yelo
 			{
 				return false;
 			}
-
+			
 			auto& lightmap_sets = bsp_list[bsp_info_index].lightmap_sets;
-			if((lightmap_sets.Count == 0) || (set_index >= lightmap_sets.Count))
+			if(set_index >= lightmap_sets.Count)
 			{
 				return false;
 			}
-
+			
 			// If the edited bsp is the current bsp, set the lightmaps
+			auto& lightmap_set = lightmap_sets[set_index];
 			if(Scenario::ScenarioInfo::BSPInfoIndex() == bsp_info_index)
 			{
-				auto& lightmap_set = lightmap_sets[set_index];
-
 				Render::Lightmaps::SetLightmaps(lightmap_set.standard_lightmap
 					, lightmap_set.directional_lightmap_1
 					, lightmap_set.directional_lightmap_2
@@ -127,6 +127,41 @@ namespace Yelo
 			return true;
 		}
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Sets a bsp's lightmap set. </summary>
+		///
+		/// <param name="bsp_info_index">	Zero-based index of the bsp info block. </param>
+		/// <param name="set_name">		 	Name of the lightmap set. </param>
+		///
+		/// <returns>	true if it succeeds, false if it fails. </returns>
+		static bool SetLightmapSet(const byte bsp_info_index, cstring set_name)
+		{
+			if(!Scenario::ScenarioInfo::ScenarioInfo())
+			{
+				return false;
+			}
+
+			auto& bsp_list = Scenario::ScenarioInfo::ScenarioInfo()->bsps;
+			if((bsp_list.Count == 0) || (bsp_info_index >= bsp_list.Count))
+			{
+				return false;
+			}
+
+			// Find the sky set by name
+			auto& lightmap_sets = bsp_list[bsp_info_index].lightmap_sets;
+
+			for(byte set_index = 0; set_index < lightmap_sets.Count; ++set_index)
+			{
+				if(strcmp(lightmap_sets[set_index].name, set_name) == 0)
+				{
+					return SetLightmapSet(bsp_info_index, set_index);
+				}
+			}
+
+			return false;
+		}
+
+		/// <summary>	Sets the standard lightmap. </summary>
 		static void SetStandardLightmap()
 		{
 			auto& bsp_tag = *Scenario::StructureBsp();
@@ -141,7 +176,7 @@ namespace Yelo
 		/// <param name="set_index">	 	Zero-based index of the sky set. </param>
 		///
 		/// <returns>	true if it succeeds, false if it fails. </returns>
-		static bool SetSkySet(byte bsp_info_index, byte set_index)
+		static bool SetSkySet(const byte bsp_info_index, const byte set_index)
 		{
 			if(!Scenario::ScenarioInfo::ScenarioInfo())
 			{
@@ -153,9 +188,9 @@ namespace Yelo
 			{
 				return false;
 			}
-
+			
 			auto& sky_sets = bsp_list[bsp_info_index].sky_sets;
-			if((sky_sets.Count == 0) || (set_index >= sky_sets.Count))
+			if(set_index >= sky_sets.Count)
 			{
 				return false;
 			}
@@ -179,6 +214,40 @@ namespace Yelo
 			return true;
 		}
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Sets a bsp's sky set. </summary>
+		///
+		/// <param name="bsp_info_index">	Zero-based index of the bsp info block. </param>
+		/// <param name="set_name">		 	Name of the sky set. </param>
+		///
+		/// <returns>	true if it succeeds, false if it fails. </returns>
+		static bool SetSkySet(const byte bsp_info_index, cstring set_name)
+		{
+			if(!Scenario::ScenarioInfo::ScenarioInfo())
+			{
+				return false;
+			}
+
+			auto& bsp_list = Scenario::ScenarioInfo::ScenarioInfo()->bsps;
+			if((bsp_list.Count == 0) || (bsp_info_index >= bsp_list.Count))
+			{
+				return false;
+			}
+
+			// Find the sky set by name
+			auto& sky_sets = bsp_list[bsp_info_index].sky_sets;
+
+			for(byte set_index = 0; set_index < sky_sets.Count; ++set_index)
+			{
+				if(strcmp(sky_sets[set_index].name, set_name) == 0)
+				{
+					return SetSkySet(bsp_info_index, set_index);
+				}
+			}
+			
+			return false;
+		}
+
 		static void SetToCurrentGameState()
 		{
 			const byte bsp_info_index = Scenario::ScenarioInfo::BSPInfoIndex();
@@ -194,12 +263,11 @@ namespace Yelo
 			struct s_arguments {
 				int16 bsp_index;
 				PAD16;
-				int16 set_index;
-				PAD16;
+				cstring set_name;
 			}* args = CAST_PTR(s_arguments*, arguments);
 			TypeHolder result; result.pointer = nullptr;
 
-			result.boolean = SetLightmapSet((byte)args->bsp_index, (byte)args->set_index);
+			result.boolean = SetLightmapSet((byte)args->bsp_index, args->set_name);
 
 			return result.pointer;
 		}
@@ -209,12 +277,11 @@ namespace Yelo
 			struct s_arguments {
 				int16 bsp_index;
 				PAD16;
-				int16 set_index;
-				PAD16;
+				cstring set_name;
 			}* args = CAST_PTR(s_arguments*, arguments);
 			TypeHolder result; result.pointer = nullptr;
 
-			result.boolean = SetSkySet((byte)args->bsp_index, (byte)args->set_index);
+			result.boolean = SetSkySet((byte)args->bsp_index, args->set_name);
 
 			return result.pointer;
 		}
