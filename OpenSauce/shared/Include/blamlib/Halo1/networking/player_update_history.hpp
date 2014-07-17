@@ -27,10 +27,10 @@ namespace Yelo
 				real_point3d position;
 				real_vector3d transitional_velocity;
 				real_vector3d forward;
-				Objects::s_object_animation_datum_data animation;
+				Objects::s_object_datum_animation_data animation;
 			}object;
 			struct {
-				Objects::s_unit_animation_data animation;
+				Objects::s_unit_datum_animation_data animation;
 				//////////////////////////////////////////////////////////////////////////
 				// seat related
 				real_vector3d unit_34C;

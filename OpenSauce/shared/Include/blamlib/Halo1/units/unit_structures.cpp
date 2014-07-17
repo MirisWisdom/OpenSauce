@@ -56,7 +56,7 @@ namespace Yelo
 
 	namespace blam
 	{
-		bool PLATFORM_API unit_animation_state_interruptable(const Objects::s_unit_animation_data& animation,
+		bool PLATFORM_API unit_animation_state_interruptable(const Objects::s_unit_datum_animation_data& animation,
 			_enum next_animation_state)
 		{
 			bool result = true;
@@ -110,7 +110,7 @@ namespace Yelo
 			return result;
 		}
 
-		bool PLATFORM_API unit_animation_busy(const Objects::s_unit_animation_data& animation)
+		bool PLATFORM_API unit_animation_busy(const Objects::s_unit_datum_animation_data& animation)
 		{
 			bool result = false;
 
@@ -146,7 +146,7 @@ namespace Yelo
 			return result;
 		}
 
-		bool PLATFORM_API unit_animation_state_loops(const Objects::s_unit_animation_data& animation)
+		bool PLATFORM_API unit_animation_state_loops(const Objects::s_unit_datum_animation_data& animation)
 		{
 			bool result = true;
 
@@ -183,7 +183,7 @@ namespace Yelo
 			return result;
 		}
 
-		bool PLATFORM_API unit_animation_weapon_ik(const Objects::s_unit_animation_data& animation)
+		bool PLATFORM_API unit_animation_weapon_ik(const Objects::s_unit_datum_animation_data& animation)
 		{
 			bool result = animation.weapon_ik.animation_index == NONE;
 
@@ -228,7 +228,7 @@ namespace Yelo
 			return result;
 		}
 
-		bool PLATFORM_API unit_animation_vehicle_ik(const Objects::s_unit_animation_data& animation)
+		bool PLATFORM_API unit_animation_vehicle_ik(const Objects::s_unit_datum_animation_data& animation)
 		{
 			bool result = true;
 

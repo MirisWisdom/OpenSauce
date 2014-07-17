@@ -31,6 +31,7 @@ namespace Yelo
 	{
 		struct predicted_resource;
 
+		struct s_game_globals;
 		struct scenario;
 
 		struct collision_bsp;
