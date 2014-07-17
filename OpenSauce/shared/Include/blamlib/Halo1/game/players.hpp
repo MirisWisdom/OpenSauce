@@ -45,6 +45,13 @@ namespace Yelo
 			players_data_t;
 		typedef Memory::DataArray<s_team_datum, Enums::k_multiplayer_maximum_teams>
 			teams_data_t;
+
+
+		players_data_t&					Players();
+		teams_data_t&					Teams();
+		s_players_globals_data*			PlayersGlobals();
+
+		datum_index*					MachineToPlayerTable(); // [k_multiplayer_maximum_players][k_maximum_number_of_local_players]
 	};
 
 	namespace blam

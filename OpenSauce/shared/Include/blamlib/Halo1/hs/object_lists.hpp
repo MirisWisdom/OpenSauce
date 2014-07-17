@@ -5,12 +5,26 @@
 */
 #pragma once
 
+#include <blamlib/memory/data_base.hpp>
+
 namespace Yelo
 {
 	namespace Scripting
 	{
 		struct s_object_list_header_datum;
 		struct s_list_object_reference_datum;
+
+		typedef Memory::DataArray<	s_object_list_header_datum, 
+									48>
+			object_list_header_data_t;
+
+		typedef Memory::DataArray<	s_list_object_reference_datum, 
+									128>
+			list_object_reference_data_t;
+
+
+		object_list_header_data_t&		ObjectListHeader();
+		list_object_reference_data_t&	ListObjectReference();
 	};
 
 	namespace blam
