@@ -41,5 +41,8 @@ namespace Yelo
 
 			s_player_control local_players[Enums::k_maximum_number_of_local_players];
 		}; BOOST_STATIC_ASSERT( sizeof(s_player_control_globals_data) == 0x50 );
+
+
+		s_player_control_globals_data*	PlayerControlGlobals();
 	};
 };

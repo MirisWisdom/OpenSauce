@@ -25,5 +25,8 @@ namespace Yelo
 		struct s_player_effects_data : TStructImpl(0x128)
 		{
 		};
+
+
+		s_player_effects_data*			PlayerEffects();
 	};
 };
