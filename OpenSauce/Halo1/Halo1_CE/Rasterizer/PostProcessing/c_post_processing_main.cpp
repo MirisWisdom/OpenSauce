@@ -58,9 +58,9 @@ namespace Yelo
 
 			m_globals.m_flags.has_postprocess_globals = false;
 
-			m_globals.gbuffer = NULL;
-			m_globals.map_postprocess_globals = NULL;
-			m_globals.render_device = NULL;
+			m_globals.gbuffer = nullptr;
+			m_globals.map_postprocess_globals = nullptr;
+			m_globals.render_device = nullptr;
 		}
 
 		void c_post_processing_main::Dispose() 
@@ -74,9 +74,9 @@ namespace Yelo
 
 			m_globals.m_flags.has_postprocess_globals = false;
 
-			m_globals.gbuffer = NULL;
-			m_globals.map_postprocess_globals = NULL;
-			m_globals.render_device = NULL;
+			m_globals.gbuffer = nullptr;
+			m_globals.map_postprocess_globals = nullptr;
+			m_globals.render_device = nullptr;
 		}
 
 		void c_post_processing_main::InitializeResources_Base(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* parameters)
@@ -114,7 +114,7 @@ namespace Yelo
 
 		void c_post_processing_main::ReleaseResources_Base()
 		{
-			// TODO: this function is fully equivlent to OnLostDevice_Base...
+			// TODO: this function is fully equivalent to OnLostDevice_Base...
 
 			DestroyScreenBufferChain();
 			DestroySecondaryBufferChain();
@@ -243,22 +243,19 @@ namespace Yelo
 				m_globals.map_postprocess_globals = TagGroups::TagGetForModify<TagGroups::s_shader_postprocess_globals>(tag_index);
 			}
 			else
-				m_globals.map_postprocess_globals = NULL;
+				m_globals.map_postprocess_globals = nullptr;
 
-			m_globals.m_flags.has_postprocess_globals = m_globals.map_postprocess_globals != NULL;
+			m_globals.m_flags.has_postprocess_globals = m_globals.map_postprocess_globals != nullptr;
 		}
 
 		void c_post_processing_main::ClearPostprocessGlobalsTag()
 		{
-			m_globals.map_postprocess_globals = NULL;
+			m_globals.map_postprocess_globals = nullptr;
 			m_globals.m_flags.has_postprocess_globals = false;
 		}
 
 		void c_post_processing_main::OpenGlobalShaderFile()
 		{
-			char file_string[MAX_PATH];
-			file_string[0] = '\0';
-
 			// open the post processing shaders file for reading
 			m_globals.shader_file.OpenFile("PP_PPShaders_SHD", true);
 		}
@@ -307,7 +304,7 @@ namespace Yelo
 
 			// are we in a vehicle?
 			datum_index player_index = Players::LocalPlayerIndex();
-			m_globals.m_activation_variables.local_player_in_vehicle = (!player_index.IsNull() ? Players::GetVehicle(player_index, NULL) != NULL : false);
+			m_globals.m_activation_variables.local_player_in_vehicle = (!player_index.IsNull() ? Players::GetVehicle(player_index) != nullptr : false);
 
 			// is our weapon zoomed?
 			m_globals.m_activation_variables.local_player_zoomed = *(Players::PlayerControlGlobals()->local_players[0].GetZoomLevel()) != NONE;
