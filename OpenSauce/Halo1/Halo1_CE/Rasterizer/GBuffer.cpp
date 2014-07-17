@@ -89,7 +89,7 @@ namespace Yelo
 		{
 			const char* technique_format = "PS_MRT%i_%s_%s";
 			char technique[32] = "";
-			sprintf_s(technique, sizeof(technique), technique_format, rt_count, mesh_type, rt_support);
+			sprintf_s(technique, technique_format, rt_count, mesh_type, rt_support);
 			return effect->GetTechniqueByName(technique);
 		}
 
@@ -122,9 +122,9 @@ namespace Yelo
 			if(!effect) return false;
 
 			//find the intended texture handle
-			D3DXHANDLE tex_handle = effect->GetParameterBySemantic(NULL, texture_semantic);
+			D3DXHANDLE tex_handle = effect->GetParameterBySemantic(nullptr, texture_semantic);
 
-			variable_used = (tex_handle != NULL) ? true : false;
+			variable_used = tex_handle != nullptr;
 
 			if(!tex_handle)								return true;
 			else if(tex_handle && !target.IsEnabled())	return false;
@@ -134,31 +134,31 @@ namespace Yelo
 
 			// search for the index variables handles
 			// then set them to the indices for the intended data
-			D3DXHANDLE index_handle = NULL;
+			D3DXHANDLE index_handle = nullptr;
 			if(x_handle_semantic)
 			{
-				index_handle = effect->GetParameterBySemantic(NULL, x_handle_semantic);
+				index_handle = effect->GetParameterBySemantic(nullptr, x_handle_semantic);
 				if(!index_handle)
 					return false;
 				effect->SetInt(index_handle, x_index);
 			}
 			if(y_handle_semantic)
 			{
-				index_handle = effect->GetParameterBySemantic(NULL, y_handle_semantic);
+				index_handle = effect->GetParameterBySemantic(nullptr, y_handle_semantic);
 				if(!index_handle)
 					return false;
 				effect->SetInt(index_handle, y_index);
 			}
 			if(z_handle_semantic)
 			{
-				index_handle = effect->GetParameterBySemantic(NULL, z_handle_semantic);
+				index_handle = effect->GetParameterBySemantic(nullptr, z_handle_semantic);
 				if(!index_handle)
 					return false;
 				effect->SetInt(index_handle, z_index);
 			}
 			if(w_handle_semantic)
 			{
-				index_handle = effect->GetParameterBySemantic(NULL, w_handle_semantic);
+				index_handle = effect->GetParameterBySemantic(nullptr, w_handle_semantic);
 				if(!index_handle)
 					return false;
 				effect->SetInt(index_handle, w_index);
@@ -232,7 +232,7 @@ namespace Yelo
 		}
 		bool		c_gbuffer_fullscreen_effect::IsAvailable()
 		{
-			return m_effect != NULL;
+			return m_effect != nullptr;
 		}
 
 		HRESULT		c_gbuffer_debug_effect::AllocateResources(IDirect3DDevice9* device, uint32 width, uint32 height)
@@ -242,8 +242,8 @@ namespace Yelo
 			m_technique_single =	m_effect->GetTechniqueByName("DebugRTSingle");
 			m_technique_all =		m_effect->GetTechniqueByName("DebugRTAll");
 			
-			m_far_clip_handle =		m_effect->GetParameterByName(NULL, "FarClipDistance");
-			m_target_handle =		m_effect->GetParameterByName(NULL, "RenderTarget");
+			m_far_clip_handle =		m_effect->GetParameterByName(nullptr, "FarClipDistance");
+			m_target_handle =		m_effect->GetParameterByName(nullptr, "RenderTarget");
 
 			bool variable_used;
 			m_depth_set =			c_gbuffer_system::GBuffer().SetDepth(m_effect, variable_used);
@@ -257,11 +257,11 @@ namespace Yelo
 		{
 			c_gbuffer_fullscreen_effect::ReleaseResources();
 
-			m_technique_single = NULL;
-			m_technique_all = NULL;
+			m_technique_single = nullptr;
+			m_technique_all = nullptr;
 
-			m_far_clip_handle = NULL;
-			m_target_handle = NULL;
+			m_far_clip_handle = nullptr;
+			m_target_handle = nullptr;
 
 			m_depth_set = false;
 			m_velocity_set = false;
@@ -327,10 +327,10 @@ namespace Yelo
 		{
 			return (
 				c_gbuffer_fullscreen_effect::IsAvailable() &&
-				(m_technique_single != NULL) &&
-				(m_technique_all != NULL) &&
-				(m_far_clip_handle != NULL) &&
-				(m_target_handle != NULL) &&
+				m_technique_single != nullptr &&
+				m_technique_all != nullptr &&
+				m_far_clip_handle != nullptr &&
+				m_target_handle != nullptr &&
 				m_depth_set &&
 				m_velocity_set &&
 				m_normals_set &&
@@ -350,7 +350,7 @@ namespace Yelo
 		{
 			c_gbuffer_fullscreen_effect::ReleaseResources();
 
-			m_multi_rt.clear_technique = NULL;
+			m_multi_rt.clear_technique = nullptr;
 		}
 		void		c_gbuffer_rtclear_effect::Render(IDirect3DDevice9* device)
 		{
@@ -386,7 +386,7 @@ namespace Yelo
 				m_effect->EndPass();
 				
 				for(uint32 i = 1; i < m_multi_rt.count; i++)
-					device->SetRenderTarget(i, NULL);
+					device->SetRenderTarget(i, nullptr);
 			}
 			m_effect->End();
 
@@ -400,7 +400,7 @@ namespace Yelo
 		{
 			return (
 				c_gbuffer_fullscreen_effect::IsAvailable() &&
-				(m_multi_rt.clear_technique != NULL)
+				m_multi_rt.clear_technique != nullptr
 				);
 		}
 		//////////////////////////////////////////////////////////////////////
@@ -410,7 +410,7 @@ namespace Yelo
 		// c_gbuffer_system interface
 		API_FUNC_NAKED void c_gbuffer_system::Hook_RenderObjectList_GetObjectIndex()
 		{
-			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RENDER_OBJECT_LIST_HOOK_RETN);
+			static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RENDER_OBJECT_LIST_HOOK_RETN);
 
 			__asm {
 				mov		c_gbuffer_system::g_object_index, eax
@@ -430,7 +430,7 @@ namespace Yelo
 
 		API_FUNC_NAKED void c_gbuffer_system::Hook_FirstPersonWeaponDraw_GetObjectIndex()
 		{
-			static uint32 RETN_ADDRESS = GET_FUNC_PTR(FIRST_PERSON_WEAPON_DRAW_HOOK_RETN);
+			static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(FIRST_PERSON_WEAPON_DRAW_HOOK_RETN);
 
 			__asm {
 				mov		edx, [edx+34h]
@@ -442,7 +442,7 @@ namespace Yelo
 
 		API_FUNC_NAKED void c_gbuffer_system::Hook_RenderObject_GetCurrentLOD()
 		{
-			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RENDER_OBJECT_OBJECT_LOD_HOOK_RETN);
+			static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RENDER_OBJECT_OBJECT_LOD_HOOK_RETN);
 
 			_asm{
 				mov		ecx, [ebp+28h]
@@ -457,10 +457,10 @@ namespace Yelo
 			};
 		}
 
-		// hooks for contolling when to disable velocity
+		// hooks for controlling when to disable velocity
 		API_FUNC_NAKED void c_gbuffer_system::Hook_CommandCameraSet()
 		{
-			static uint32 RETN_ADDRESS = GET_FUNC_PTR(COMMAND_CAMERA_SET_HOOK_RETN);
+			static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(COMMAND_CAMERA_SET_HOOK_RETN);
 
 			_asm{
 				lea		edx, [esi+28h]
@@ -479,7 +479,7 @@ skip_disable_velocity:
 
 		API_FUNC_NAKED void c_gbuffer_system::Hook_CommandSwitchBSP()
 		{
-			static uint32 RETN_ADDRESS = GET_FUNC_PTR(COMMAND_SWITCH_BSP_HOOK_RETN);
+			static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(COMMAND_SWITCH_BSP_HOOK_RETN);
 
 			_asm{
 				cmp		si, dx
@@ -493,7 +493,7 @@ skip_disable_velocity:
 
 		API_FUNC_NAKED void c_gbuffer_system::Hook_CommandGameSave()
 		{
-			static uint32 RETN_ADDRESS = GET_FUNC_PTR(COMMAND_GAME_SAVE_HOOK_RETN);
+			static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(COMMAND_GAME_SAVE_HOOK_RETN);
 
 			_asm{
 				mov		c_gbuffer_system::g_output_velocity, 0
@@ -507,14 +507,15 @@ skip_disable_velocity:
 		// the hooked function takes arguments, for which FunctionInterface is unsuited
 		API_FUNC_NAKED void c_gbuffer_system::Hook_RenderObjectsTransparent()
 		{
-			static uint32 CALL_ADDRESS = GET_FUNC_PTR(RENDER_OBJECTS_TRANSPARENT);
-			static uint32 RETN_ADDRESS = GET_FUNC_PTR(RENDER_WINDOW_CALL_RENDER_OBJECTS_TRANSPARENT_RETN);
+			static const uintptr_t CALL_ADDRESS = GET_FUNC_PTR(RENDER_OBJECTS_TRANSPARENT);
+			static const uintptr_t RETN_ADDRESS = GET_FUNC_PTR(RENDER_WINDOW_CALL_RENDER_OBJECTS_TRANSPARENT_RETN);
 
-			//TODO: if more render states are added, update enum values
+			using namespace Enums;
+
 			_asm{
-				mov		c_gbuffer_system::g_current_render_state, 2	//Enums::_render_progress_objects_transparent
+				mov		c_gbuffer_system::g_current_render_state, _render_progress_objects_transparent
 				call	CALL_ADDRESS
-				mov		c_gbuffer_system::g_current_render_state, 4	//Enums::_render_progress_none
+				mov		c_gbuffer_system::g_current_render_state, _render_progress_none
 				jmp		RETN_ADDRESS
 			}
 		}
@@ -529,9 +530,6 @@ skip_disable_velocity:
 		}
 		void		c_gbuffer_system::Initialize()
 		{
-			char file_string[MAX_PATH];
-			file_string[0] = '\0';
-
 			g_default_system.Ctor();
 
 			c_settings_gbuffer::Register(Settings::Manager());
@@ -811,18 +809,18 @@ skip_disable_velocity:
 			switch (m_multi_rt.count)
 			{
 			case 2:
-				m_multi_rt.output[0][0] = (m_gbuffer.m_rt_depth.IsEnabled()	?			m_gbuffer.m_rt_depth.surface : NULL);
-				m_multi_rt.output[1][0] = (m_gbuffer.m_rt_velocity.IsEnabled() ?		m_gbuffer.m_rt_velocity.surface : NULL);
-				m_multi_rt.output[1][1] = (m_gbuffer.m_rt_normals_index.IsEnabled() ?	m_gbuffer.m_rt_normals_index.surface : NULL);
+				m_multi_rt.output[0][0] = (m_gbuffer.m_rt_depth.IsEnabled()	?			m_gbuffer.m_rt_depth.surface : nullptr);
+				m_multi_rt.output[1][0] = (m_gbuffer.m_rt_velocity.IsEnabled() ?		m_gbuffer.m_rt_velocity.surface : nullptr);
+				m_multi_rt.output[1][1] = (m_gbuffer.m_rt_normals_index.IsEnabled() ?	m_gbuffer.m_rt_normals_index.surface : nullptr);
 
 				GBufferClear().m_multi_rt.output[0][0] = m_multi_rt.output[0][0];
 				GBufferClear().m_multi_rt.output[1][0] = m_multi_rt.output[1][0];
 				GBufferClear().m_multi_rt.output[1][1] = m_multi_rt.output[1][1];
 				break;
 			default:
-				m_multi_rt.output[0][0] = (m_gbuffer.m_rt_depth.IsEnabled() ?			m_gbuffer.m_rt_depth.surface : NULL);
-				m_multi_rt.output[0][1] = (m_gbuffer.m_rt_velocity.IsEnabled() ?		m_gbuffer.m_rt_velocity.surface : NULL);
-				m_multi_rt.output[0][2] = (m_gbuffer.m_rt_normals_index.IsEnabled() ?	m_gbuffer.m_rt_normals_index.surface : NULL);
+				m_multi_rt.output[0][0] = (m_gbuffer.m_rt_depth.IsEnabled() ?			m_gbuffer.m_rt_depth.surface : nullptr);
+				m_multi_rt.output[0][1] = (m_gbuffer.m_rt_velocity.IsEnabled() ?		m_gbuffer.m_rt_velocity.surface : nullptr);
+				m_multi_rt.output[0][2] = (m_gbuffer.m_rt_normals_index.IsEnabled() ?	m_gbuffer.m_rt_normals_index.surface : nullptr);
 
 				GBufferClear().m_multi_rt.output[0][0] = m_multi_rt.output[0][0];
 				GBufferClear().m_multi_rt.output[0][1] = m_multi_rt.output[0][1];
@@ -854,7 +852,7 @@ skip_disable_velocity:
 			HRESULT hr = S_OK;
 
 			UINT cPasses, p;
-			m_gbuffer_vs->Begin(NULL,0);
+			m_gbuffer_vs->Begin(nullptr, 0);
 			m_gbuffer_vs->BeginPass(0);
 
 			m_gbuffer_ps->Begin(&cPasses, 0);
@@ -872,7 +870,7 @@ skip_disable_velocity:
 				m_gbuffer_ps->EndPass();
 
 				for(uint32 i = 1; i < m_multi_rt.count; i++)
-					pDevice->SetRenderTarget(i, NULL);
+					pDevice->SetRenderTarget(i, nullptr);
 			}
 			m_gbuffer_ps->End();
 
@@ -961,18 +959,18 @@ skip_disable_velocity:
 				MeshIndex = 1;
 			else if(!g_object_index.IsNull())
 			{
-				Objects::s_object_data* g_object = Objects::ObjectHeader()[g_object_index]->_object;
+				Objects::s_object_data* g_object = blam::object_get(g_object_index);
 
 				TeamIndex = g_object->owner_team + 1; // add one to account for '_game_team_none'
 				MeshIndex = g_object->type + 3;
 
-				if(GameEngine::Current() != NULL)	// becomes non-null during multiplayer
+				if(GameEngine::Current() != nullptr)	// becomes non-null during multiplayer
 					TeamIndex += Enums::k_number_of_game_teams;	// Offset TeamIndex by game_teams for MP teams
 
 				if(g_object->VerifyType(Enums::_object_type_mask_unit))
 				{
 					Players::s_player_datum* player = Players::LocalPlayer();
-					Objects::s_object_data* player_object = Objects::ObjectHeader()[player->slave_unit_index]->_object;
+					Objects::s_object_data* player_object = blam::object_get(player->slave_unit_index);
 
 					if(blam::game_team_is_enemy(player_object->owner_team, g_object->owner_team))
 						TeamIndex |= 1 << 5;
@@ -1018,7 +1016,7 @@ skip_disable_velocity:
 		HRESULT		c_gbuffer_system::LoadEffect(IDirect3DDevice9* pDevice, LPD3DXEFFECT* pEffect, const char* EffectID)
 		{
 			HRESULT hr = S_OK;
-			LPD3DXBUFFER error_buffer = NULL;
+			LPD3DXBUFFER error_buffer = nullptr;
 			uint32 data_size = 0;
 			void* data_pointer = m_shader_package.GetDataPointer(EffectID, &data_size);
 
@@ -1029,10 +1027,10 @@ skip_disable_velocity:
 				pDevice,
 				data_pointer,
 				data_size,
-				NULL,
-				NULL,
-				NULL,
-				NULL,
+				nullptr,
+				nullptr,
+				0,
+				nullptr,
 				pEffect,
 				&error_buffer
 			);
