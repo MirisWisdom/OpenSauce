@@ -12,6 +12,11 @@
 
 namespace Yelo
 {
+	namespace Scenario
+	{
+		cstring K_GAME_GLOBALS_TAG_NAME = "globals\\globals";
+	};
+
 	namespace blam
 	{
 		using namespace TagGroups;

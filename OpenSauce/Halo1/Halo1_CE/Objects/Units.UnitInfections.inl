@@ -41,7 +41,7 @@ namespace Infections
 		if(animation_graph != nullptr)
 		{
 			auto unit = blam::object_get_and_verify_type<s_unit_datum>(unit_index);
-			const s_unit_animation_data& unit_animation = unit->unit.animation;
+			const s_unit_datum_animation_data& unit_animation = unit->unit.animation;
 
 			sbyte	seat_block_index = unit_animation.seat_index,
 					weapon_block_index = unit_animation.seat_weapon_index;
