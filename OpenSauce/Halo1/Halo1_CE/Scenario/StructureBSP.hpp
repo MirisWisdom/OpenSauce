@@ -14,8 +14,12 @@ namespace Yelo
 		void Dispose();
 
 		void InitializeForNewGameState();
+
 		void InitializeForNewMap();
+		void DisposeFromOldMap();
+
 		void InitializeForNewBSP();
+		void DisposeFromOldBSP();
 
 		void HandleGameStateLifeCycle(_enum life_state);
 	};

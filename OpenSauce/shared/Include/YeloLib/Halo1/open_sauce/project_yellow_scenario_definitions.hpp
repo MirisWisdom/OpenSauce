@@ -73,59 +73,6 @@ namespace Yelo
 		};
 
 		//////////////////////////////////////////////////////////////////////////
-		// scenario information
-		struct s_transition_sequence_block
-		{
-			struct _flags {
-				TAG_FLAG16(unused);
-			}flags;	BOOST_STATIC_ASSERT( sizeof(_flags) == sizeof(word_flags) );
-			TAG_FIELD(_enum, transition_function);
-			TAG_FIELD(real, transition_period);
-			TAG_FIELD(int16, next_sequence_block);
-			PAD16;
-		};
-
-		/* BSP */
-		struct s_scenario_information_bsp_lightmap_set
-		{
-			TAG_FIELD(tag_string, name);
-			TAG_PAD(int32, 1);
-			TAG_FIELD(tag_reference, standard_lightmap, 'bitm');
-			TAG_FIELD(tag_reference, directional_lightmap_1, 'bitm');
-			TAG_FIELD(tag_reference, directional_lightmap_2, 'bitm');
-			TAG_FIELD(tag_reference, directional_lightmap_3, 'bitm');
-			TAG_PAD(tag_block, 2);
-		};
-
-		struct s_scenario_information_bsp_sky_set_sky
-		{
-			PAD16;
-			TAG_FIELD(int16, sky_index);
-			TAG_FIELD(tag_reference, sky);
-		};
-
-		struct s_scenario_information_bsp_sky_set
-		{
-			TAG_FIELD(tag_string, name);
-			TAG_TBLOCK(skies,				s_scenario_information_bsp_sky_set_sky);
-		};
-
-		struct s_scenario_information_bsp
-		{
-			TAG_FIELD(tag_reference, bsp, 'sbsp');
-			TAG_TBLOCK(lightmap_sets,		s_scenario_information_bsp_lightmap_set);
-			TAG_TBLOCK(sky_sets,			s_scenario_information_bsp_sky_set);
-			TAG_PAD(tag_block, 3);
-		};
-		/* BSP */
-
-		struct s_project_yellow_scenario_information
-		{
-			PAD32;
-			TAG_TBLOCK(bsps, s_scenario_information_bsp);
-			TAG_PAD(tag_block, 4); // 48
-		};
-		//////////////////////////////////////////////////////////////////////////
 
 		// yelo for scenarios
 		struct project_yellow
@@ -204,12 +151,8 @@ namespace Yelo
 			TAG_TBLOCK(user_scripting, s_scripting_definitions); // 1
 			/* !-- Scripting --! */
 
-			/* !-- Scenario Enhancements --! */
-			TAG_TBLOCK(scenario, s_project_yellow_scenario_information); // 1
-			/* !-- Scenario Enhancements --! */
 
-
-			TAG_PAD(int32, 20); // 80
+			TAG_PAD(int32, 23); // 92
 
 
 

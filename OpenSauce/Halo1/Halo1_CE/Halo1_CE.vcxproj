@@ -252,7 +252,6 @@
     <ClCompile Include="Objects\Units.cpp" />
     <ClCompile Include="Rasterizer\Lightmaps.cpp" />
     <ClCompile Include="Rasterizer\Sky.cpp" />
-    <ClCompile Include="Scenario\ScenarioInfo.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\Bloom\c_settings_bloom.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\FXAA\c_settings_fxaa.cpp" />
     <ClCompile Include="Rasterizer\PostProcessing\Generic\External\c_settings_external.cpp" />
@@ -368,7 +367,6 @@
     <ClInclude Include="Rasterizer\Lightmaps.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_function_pp_anim.hpp" />
     <ClInclude Include="Rasterizer\Sky.hpp" />
-    <ClInclude Include="Scenario\ScenarioInfo.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Bloom\c_settings_bloom.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\FXAA\c_settings_fxaa.hpp" />
     <ClInclude Include="Rasterizer\PostProcessing\Generic\External\c_settings_external.hpp" />

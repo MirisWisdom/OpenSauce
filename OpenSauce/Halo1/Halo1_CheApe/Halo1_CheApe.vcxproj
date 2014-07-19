@@ -103,6 +103,13 @@
     <ClCompile Include="Settings\SettingsSapien.cpp" />
     <ClCompile Include="Settings\SettingsTool.cpp" />
     <ClCompile Include="Settings\Settings.cpp" />
+    <ClCompile Include="TagGroups\TagFieldReplacements\Bitmap.cpp" />
+    <ClCompile Include="TagGroups\TagFieldReplacements\DamageEffect.cpp" />
+    <ClCompile Include="TagGroups\TagFieldReplacements\GBXModel.cpp" />
+    <ClCompile Include="TagGroups\TagFieldReplacements\Scenario.cpp" />
+    <ClCompile Include="TagGroups\TagFieldReplacements\Shader.cpp" />
+    <ClCompile Include="TagGroups\TagFieldReplacements\Sound.cpp" />
+    <ClCompile Include="TagGroups\TagFieldReplacements\Unit.cpp" />
     <ClCompile Include="Tool\BuildCacheFile.cpp" />
     <ClCompile Include="Tool\BuildCacheFile\BuildCacheFileEx.cpp" />
     <ClCompile Include="Tool\BuildCacheFile\BuildCacheFileGlobals.cpp" />
@@ -161,6 +168,14 @@
     <ClInclude Include="Settings\SettingsSapien.hpp" />
     <ClInclude Include="Settings\SettingsTool.hpp" />
     <ClInclude Include="Settings\Settings.hpp" />
+    <ClInclude Include="TagGroups\TagFieldReplacements\Bitmap.hpp" />
+    <ClInclude Include="TagGroups\TagFieldReplacements\DamageEffect.hpp" />
+    <ClInclude Include="TagGroups\TagFieldReplacements\GBXModel.hpp" />
+    <ClInclude Include="TagGroups\TagFieldReplacements\Scenario.hpp" />
+    <ClInclude Include="TagGroups\TagFieldReplacements\Shader.hpp" />
+    <ClInclude Include="TagGroups\TagFieldReplacements\Shared.hpp" />
+    <ClInclude Include="TagGroups\TagFieldReplacements\Sound.hpp" />
+    <ClInclude Include="TagGroups\TagFieldReplacements\Unit.hpp" />
     <ClInclude Include="Tool\BuildCacheFile.hpp" />
     <ClInclude Include="Tool\BuildCacheFile\BuildCacheFileEx.hpp" />
     <ClInclude Include="Tool\BuildCacheFile\BuildCacheFileGlobals.hpp" />
@@ -211,7 +226,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\ScriptLibraryMemoryUpgrades.inl" />
-    <None Include="Tool\BuildCacheFile\TagPreprocess_ProjectYellow.inl" />
+    <None Include="Tool\BuildCacheFile\TagPreprocess_Scenario.inl" />
     <None Include="Yelo\MemoryFixups.Paths.inl" />
     <None Include="Yelo\MemoryFixups.TagTextIO.inl" />
     <None Include="Tool\BuildCppDefinition.inl" />

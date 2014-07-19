@@ -148,11 +148,13 @@
 #		define __GS_COMPONENT_DISPOSE						StructureBSP::Dispose
 #	elif	__GS_COMPONENT == __GS_COMPONENT_MAP_LIFECYCLE
 #		define __GS_COMPONENT_INITIALIZE_FOR_NEW_MAP		StructureBSP::InitializeForNewMap
+#		define __GS_COMPONENT_DISPOSE_FROM_OLD_MAP			StructureBSP::DisposeFromOldMap
 #	elif	__GS_COMPONENT == __GS_COMPONENT_GAMESTATE_LIFECYCLE
 #		define __GS_COMPONENT_INITIALIZE_FOR_NEW_GAME_STATE	StructureBSP::InitializeForNewGameState
 #		define __GS_COMPONENT_HANDLE_GAME_STATE_LIFECYCLE	StructureBSP::HandleGameStateLifeCycle
 #	elif	__GS_COMPONENT == __GS_COMPONENT_BSP_LIFECYCLE
 #		define __GS_COMPONENT_INITIALIZE_FOR_NEW_BSP		StructureBSP::InitializeForNewBSP
+#		define __GS_COMPONENT_DISPOSE_FROM_OLD_BSP			StructureBSP::DisposeFromOldBSP
 #	endif
 #endif
 

@@ -76,6 +76,9 @@
     <Filter Include="Tool\PackedFile\Processing">
       <UniqueIdentifier>{f16a3abc-329d-4976-a6c8-31911aee4aa8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TagGroups\TagFieldReplacements">
+      <UniqueIdentifier>{c8e3064a-4333-4552-9af6-6bbe60baaa50}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\AnimationUpgrade.cpp">
@@ -244,6 +247,27 @@
     </ClCompile>
     <ClCompile Include="Tool\PackedFile\Processing\c_packed_file_processor_shader.cpp">
       <Filter>Tool\PackedFile\Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="TagGroups\TagFieldReplacements\Bitmap.cpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClCompile>
+    <ClCompile Include="TagGroups\TagFieldReplacements\DamageEffect.cpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClCompile>
+    <ClCompile Include="TagGroups\TagFieldReplacements\GBXModel.cpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClCompile>
+    <ClCompile Include="TagGroups\TagFieldReplacements\Shader.cpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClCompile>
+    <ClCompile Include="TagGroups\TagFieldReplacements\Sound.cpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClCompile>
+    <ClCompile Include="TagGroups\TagFieldReplacements\Unit.cpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClCompile>
+    <ClCompile Include="TagGroups\TagFieldReplacements\Scenario.cpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -417,6 +441,30 @@
     <ClInclude Include="Tool\PackedFile\Processing\c_packed_file_processor_shader.hpp">
       <Filter>Tool\PackedFile\Processing</Filter>
     </ClInclude>
+    <ClInclude Include="TagGroups\TagFieldReplacements\Bitmap.hpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClInclude>
+    <ClInclude Include="TagGroups\TagFieldReplacements\Unit.hpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClInclude>
+    <ClInclude Include="TagGroups\TagFieldReplacements\Shared.hpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClInclude>
+    <ClInclude Include="TagGroups\TagFieldReplacements\Sound.hpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClInclude>
+    <ClInclude Include="TagGroups\TagFieldReplacements\GBXModel.hpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClInclude>
+    <ClInclude Include="TagGroups\TagFieldReplacements\Shader.hpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClInclude>
+    <ClInclude Include="TagGroups\TagFieldReplacements\DamageEffect.hpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClInclude>
+    <ClInclude Include="TagGroups\TagFieldReplacements\Scenario.hpp">
+      <Filter>TagGroups\TagFieldReplacements</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Engine\ScriptLibraryMemoryUpgrades.inl">
@@ -491,7 +539,7 @@
     <None Include="Yelo\MemoryFixups.Paths.inl">
       <Filter>Yelo\Impl</Filter>
     </None>
-    <None Include="Tool\BuildCacheFile\TagPreprocess_ProjectYellow.inl">
+    <None Include="Tool\BuildCacheFile\TagPreprocess_Scenario.inl">
       <Filter>Tool\BuildCacheFile</Filter>
     </None>
   </ItemGroup>

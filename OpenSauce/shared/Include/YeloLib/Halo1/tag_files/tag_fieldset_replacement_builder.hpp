@@ -262,7 +262,7 @@ namespace Yelo
 // Insert a padding field that follows [field_cname]
 // [offset] is how many bytes after [field_cname] ends where the padding begins
 #define FIELDSET_INSERT_PAD(field_cname, offset, size) fsr_builder.				\
-	InsertPadData(sizeof( decltype(field_set_type_t::field_cname) )	+ offset	\
+	InsertPadData(sizeof( decltype(field_set_type_t::field_cname) )	+ offset +	\
 		offsetof(field_set_type_t, field_cname), size);
 
 // Document [field_cname] as being a postprocessed (ie, runtime-only) field

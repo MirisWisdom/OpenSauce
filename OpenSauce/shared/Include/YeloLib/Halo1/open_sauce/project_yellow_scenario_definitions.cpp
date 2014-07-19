@@ -113,6 +113,12 @@ namespace Yelo
 				tag_data_delete(&hs_syntax_data); // If hs_syntax_data.size != GetTotalScenarioHsSyntaxData, the engine will recompile the scripts
 				YELO_WARN("CheApe: '%s' was cleansed but its scripts will need to be recompiled in the stock Sapien before a map can be built");
 			}
+
+			// Delete the bsp modifiers
+			while(scnr->bsp_modifiers.Count)
+			{
+				blam::tag_block_delete_element(scnr->bsp_modifiers, 0);
+			}
 		}
 #endif
 	};
