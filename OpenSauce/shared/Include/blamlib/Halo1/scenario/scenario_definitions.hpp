@@ -177,6 +177,39 @@ namespace Yelo
 			TAG_PAD(int32, 4);
 		}; BOOST_STATIC_ASSERT( sizeof(s_scenario_cutscene_title) == 0x60 );
 
+		struct s_scenario_bsp_lightmap_set
+		{
+			TAG_FIELD(tag_string, name);
+			TAG_PAD(int32, 1);
+			TAG_FIELD(tag_reference, standard_lightmap, 'bitm');
+			TAG_FIELD(tag_reference, directional_lightmap_1, 'bitm');
+			TAG_FIELD(tag_reference, directional_lightmap_2, 'bitm');
+			TAG_FIELD(tag_reference, directional_lightmap_3, 'bitm');
+			TAG_PAD(tag_block, 2);
+		};
+
+		struct s_scenario_bsp_sky_set_sky
+		{
+			PAD16;
+			TAG_FIELD(int16, sky_index);
+			TAG_FIELD(tag_reference, sky);
+		};
+
+		struct s_scenario_bsp_sky_set
+		{
+			TAG_FIELD(tag_string, name);
+			TAG_TBLOCK(skies,				s_scenario_bsp_sky_set_sky);
+		};
+
+		struct s_scenario_bsp_modifier
+		{
+			PAD16;
+			TAG_FIELD(int16, bsp_index);
+			TAG_TBLOCK(lightmap_sets,		s_scenario_bsp_lightmap_set);
+			TAG_TBLOCK(sky_sets,			s_scenario_bsp_sky_set);
+			TAG_PAD(tag_block, 3);
+		};
+
 		struct structure_bsp_header;
 		struct scenario_structure_bsp_reference
 		{
@@ -296,7 +329,9 @@ namespace Yelo
 			TAG_TBLOCK(cutscene_camera_points, scenario_cutscene_camera_point);
 			TAG_TBLOCK(cutscene_titles, s_scenario_cutscene_title);
 
-			TAG_PAD(int32, 27); // 108
+			TAG_TBLOCK(bsp_modifiers, s_scenario_bsp_modifier);
+
+			TAG_PAD(int32, 24); // 96
 			TAG_FIELD(tag_reference, custom_object_names, 'ustr');
 			TAG_FIELD(tag_reference, ingame_help_text, 'ustr');
 			TAG_FIELD(tag_reference, hud_messages, 'hmt ');

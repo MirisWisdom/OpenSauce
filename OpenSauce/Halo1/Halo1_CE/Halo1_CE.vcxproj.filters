@@ -10,9 +10,6 @@
     <ClInclude Include="Rasterizer\PostProcessing\Interpolation\c_interp_function_pp_anim.hpp">
       <Filter>Rasterizer\PostProcessing\Interpolation</Filter>
     </ClInclude>
-    <ClInclude Include="Scenario\ScenarioInfo.hpp">
-      <Filter>Scenario</Filter>
-    </ClInclude>
     <ClInclude Include="Scenario\StructureBSP.hpp">
       <Filter>Scenario</Filter>
     </ClInclude>
@@ -21,9 +18,6 @@
     </ClCompile>
     <ClCompile Include="Rasterizer\Sky.cpp">
       <Filter>Rasterizer</Filter>
-    </ClCompile>
-    <ClCompile Include="Scenario\ScenarioInfo.cpp">
-      <Filter>Scenario</Filter>
     </ClCompile>
     <ClCompile Include="Scenario\StructureBSP.cpp">
       <Filter>Scenario</Filter>

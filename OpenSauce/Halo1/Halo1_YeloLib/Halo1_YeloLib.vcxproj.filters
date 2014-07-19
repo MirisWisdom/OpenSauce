@@ -127,9 +127,6 @@
     <Filter Include="time">
       <UniqueIdentifier>{4dba28de-4c75-4ed5-a808-c3ba76e9b45b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="time\sequence">
-      <UniqueIdentifier>{176d9891-7b21-4912-ad6f-3abe45362262}</UniqueIdentifier>
-    </Filter>
     <Filter Include="time\interpolation">
       <UniqueIdentifier>{9ae7ddba-2567-4d88-841a-4cf4bcc51ff6}</UniqueIdentifier>
     </Filter>
@@ -528,9 +525,6 @@
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_scenario.hpp">
       <Filter>open_sauce</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\sequence\c_transition_sequence_controller.hpp">
-      <Filter>time\sequence</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\shared\Include\YeloLib\Halo1\time\interpolation\interpolation.hpp">
       <Filter>time\interpolation</Filter>
     </ClInclude>
@@ -820,9 +814,6 @@
     </ClCompile>
     <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\open_sauce\project_yellow_scenario.cpp">
       <Filter>open_sauce</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\shared\Include\YeloLib\Halo1\time\sequence\c_transition_sequence_controller.cpp">
-      <Filter>time\sequence</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -24,7 +24,7 @@
 #define BOOST_PP_FILENAME_1 "Common/GameSystemComponents.GameState.inl"
 ??=include BOOST_PP_ITERATE()
 
-#define BOOST_PP_ITERATION_LIMITS (1, 4)
+#define BOOST_PP_ITERATION_LIMITS (1, 3)
 #define BOOST_PP_FILENAME_1 "Common/GameSystemComponents.Tags.inl"
 ??=include BOOST_PP_ITERATE()
 

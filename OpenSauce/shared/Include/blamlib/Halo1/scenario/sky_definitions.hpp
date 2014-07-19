@@ -23,6 +23,8 @@ namespace Yelo
 
 		struct s_sky_definition
 		{
+			enum { k_group_tag = 'sky ' };
+
 			tag_reference model;
 			tag_reference animation;
 			TAG_PAD(tag_block, 2);
