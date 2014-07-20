@@ -28,63 +28,64 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.mExtractionOptionFlags = new System.Windows.Forms.CheckedListBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.groupBox1.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // mExtractionOptionFlags
-            // 
-            this.mExtractionOptionFlags.FormattingEnabled = true;
-            this.mExtractionOptionFlags.Items.AddRange(new object[] {
+			this.mExtractionOptionFlags = new System.Windows.Forms.CheckedListBox();
+			this.label1 = new System.Windows.Forms.Label();
+			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.groupBox1.SuspendLayout();
+			this.SuspendLayout();
+			// 
+			// mExtractionOptionFlags
+			// 
+			this.mExtractionOptionFlags.FormattingEnabled = true;
+			this.mExtractionOptionFlags.Items.AddRange(new object[] {
             "Scenery",
             "Device Machines",
             "Controls",
             "Light Fixtures",
-            "SoundScenery"});
-            this.mExtractionOptionFlags.Location = new System.Drawing.Point(55, 16);
-            this.mExtractionOptionFlags.Name = "mExtractionOptionFlags";
-            this.mExtractionOptionFlags.Size = new System.Drawing.Size(120, 79);
-            this.mExtractionOptionFlags.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 16);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(43, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Extract:";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.AutoSize = true;
-            this.groupBox1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox1.Controls.Add(this.mExtractionOptionFlags);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.ForeColor = System.Drawing.Color.LightGreen;
-            this.groupBox1.Location = new System.Drawing.Point(0, 0);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(181, 114);
-            this.groupBox1.TabIndex = 3;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Scenario";
-            // 
-            // ExtractorScenarioUI
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.Controls.Add(this.groupBox1);
-            this.Name = "ExtractorScenarioUI";
-            this.Size = new System.Drawing.Size(181, 114);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            "Sound Scenery",
+            "Model Meshes"});
+			this.mExtractionOptionFlags.Location = new System.Drawing.Point(55, 16);
+			this.mExtractionOptionFlags.Name = "mExtractionOptionFlags";
+			this.mExtractionOptionFlags.Size = new System.Drawing.Size(134, 94);
+			this.mExtractionOptionFlags.TabIndex = 0;
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(6, 16);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(43, 13);
+			this.label1.TabIndex = 1;
+			this.label1.Text = "Extract:";
+			// 
+			// groupBox1
+			// 
+			this.groupBox1.AutoSize = true;
+			this.groupBox1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.groupBox1.Controls.Add(this.mExtractionOptionFlags);
+			this.groupBox1.Controls.Add(this.label1);
+			this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.groupBox1.ForeColor = System.Drawing.Color.LightGreen;
+			this.groupBox1.Location = new System.Drawing.Point(0, 0);
+			this.groupBox1.Name = "groupBox1";
+			this.groupBox1.Size = new System.Drawing.Size(195, 129);
+			this.groupBox1.TabIndex = 3;
+			this.groupBox1.TabStop = false;
+			this.groupBox1.Text = "Scenario";
+			// 
+			// ExtractorScenarioUI
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.AutoSize = true;
+			this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this.Controls.Add(this.groupBox1);
+			this.Name = "ExtractorScenarioUI";
+			this.Size = new System.Drawing.Size(195, 129);
+			this.groupBox1.ResumeLayout(false);
+			this.groupBox1.PerformLayout();
+			this.ResumeLayout(false);
+			this.PerformLayout();
 
         }
 

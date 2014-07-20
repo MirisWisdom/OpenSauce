@@ -6,7 +6,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using BlamLib.Blam;
+using BlamLib.Blam.Halo1;
 using BlamLib.Managers;
 using BlamLib.TagInterface;
 
@@ -98,6 +101,11 @@ namespace BlamLib.Render.COLLADA.Halo1
 			: DataBlockReference<Blam.Halo1.Tags.scenario_group.scenario_object_palette_block>
 		{
 			public Blam.Halo1.TypeEnums.ObjectType ObjectType { get; private set; }
+
+			public string ObjectTagPath
+			{
+				get { return mBlock.Name.GetTagPath(); }
+			}
 
 			public DatumIndex ObjectTagDatum
 			{
@@ -236,21 +244,22 @@ namespace BlamLib.Render.COLLADA.Halo1
 			{
 				// If the object has a defined name add a reference to it
 				ScenarioObjectName objectName = null;
-                if ((instance.Name.Value != -1) && (instance.Name.Value < ScenarioObjectNames.Count))
+				if (instance.Name.Value != -1)
 				{
+					if(instance.Name.Value >= ScenarioObjectNames.Count)
+					{
+						throw new ColladaException("An object instance in the current scenario has an out of bounds object name");
+					}
 					objectName = ScenarioObjectNames[instance.Name.Value];
 				}
 
 				// If the objects type is value add a reference to it
 				ScenarioObject objectType = null;
-				if ((instance.Type.Value != -1) && (instance.Type.Value < ScenarioObjectLists[type].Count))
+				if ((instance.Type.Value < 0) || (instance.Type.Value >= ScenarioObjectLists[type].Count))
 				{
-					objectType = ScenarioObjectLists[type][instance.Type.Value];
+					throw new ColladaException("An object instance in the current scenario has an out of bounds object type");
 				}
-				else
-				{
-					continue;
-				}
+				objectType = ScenarioObjectLists[type][instance.Type.Value];
 
 				ScenarioObjectInstanceLists[type].Add(new ScenarioObjectInstance(instance, objectName, objectType));
 			}
@@ -266,7 +275,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		{
 			TagPath = scenarioTagManager.Name;
 
-			Blam.Halo1.Tags.scenario_group scenarioDefinition = scenarioTagManager.TagDefinition as Blam.Halo1.Tags.scenario_group;
+			var scenarioDefinition = scenarioTagManager.TagDefinition as Blam.Halo1.Tags.scenario_group;
 
 			// Add child scenarios
 			scenarioDefinition.ChildScenarios.Elements.ForEach(
@@ -325,7 +334,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		///-------------------------------------------------------------------------------------------------
 		public List<ScenarioObjectInstance> GetObjectInstances()
 		{
-			List<ScenarioObjectInstance> fullList = new List<ScenarioObjectInstance>();
+			var fullList = new List<ScenarioObjectInstance>();
 
 			if (IncludeScenery && (ScenarioObjectInstanceLists[Blam.Halo1.TypeEnums.ObjectType.Scenery] != null))
 			{
@@ -402,36 +411,8 @@ namespace BlamLib.Render.COLLADA.Halo1
 		public string TagPath { get; private set; }
 		#endregion Fields
 
-		#region Data Classes
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Proxy class to get data from a light attachment block. </summary>
-		///-------------------------------------------------------------------------------------------------
-		public class ObjectLight
-			: DataBlockReference<Blam.Halo1.Tags.object_group.object_attachment_block>
-		{
-			public string Marker
-			{
-				get { return mBlock.Marker; }
-			}
-
-			public DatumIndex LightDatum
-			{
-				get { return mBlock.Type.Datum; }
-			}
-
-			public ObjectLight(Blam.Halo1.Tags.object_group.object_attachment_block block)
-				: base(block)
-			{ }
-		}
-		#endregion Data Classes
-
-		#region Data List Classes
-		public class ObjectLightList : List<ObjectLight> { }
-		#endregion Data List Classes
-
 		#region Data
 		public DatumIndex Model = DatumIndex.Null;
-		public ObjectLightList Lights = new ObjectLightList();
 		#endregion Data
 
 		///-------------------------------------------------------------------------------------------------
@@ -443,133 +424,11 @@ namespace BlamLib.Render.COLLADA.Halo1
 		{
 			TagPath = objectTagManager.Name;
 
-			Blam.Halo1.Tags.object_group objectTag = objectTagManager.TagDefinition as Blam.Halo1.Tags.object_group;
+			var objectTag = objectTagManager.TagDefinition as Blam.Halo1.Tags.object_group;
 
 			// Model
 			Model = objectTag.Model.Datum;
-
-			// Attachments (Lights)
-			objectTag.Attachments.Elements.ForEach(
-				attachment =>
-				{
-					if (attachment.Type.Datum.IsNull
-						|| TagIndex.IsSentinel(attachment.Type.Datum)
-						|| !tagIndex[attachment.Type.Datum].GroupTag.Equals(Blam.Halo1.TagGroups.ligh))
-					{
-						return;
-					}
-
-					Lights.Add(new ObjectLight(attachment));
-				}
-			);
 		}
-	}
-
-	///-------------------------------------------------------------------------------------------------
-	/// <summary>	Data collection class for Halo1 light tags. </summary>
-	///-------------------------------------------------------------------------------------------------
-	public class LightData : ITagDataSource, IHalo1LightDataProvider, IColladaExternalReference
-	{
-		#region Fields
-		public string TagPath { get; private set; }
-		#endregion Fields
-
-		#region Data Classes
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Proxy class to get data from a light tag. </summary>
-		///-------------------------------------------------------------------------------------------------
-		public class LightDetails
-			: DataBlockReference<Blam.Halo1.Tags.light_group>
-		{
-			public string Name { get; private set; }
-
-			public bool IsDynamic
-			{
-				get { return mBlock.Flags.Test(1); }
-			}
-
-			public TagInterface.RealColor Color
-			{
-				get { return mBlock.ColorUpperBound; }
-			}
-
-			public TagInterface.RealColor RadiosityColor
-			{
-				get { return mBlock.RadiosityColor; }
-			}
-
-			public float ConstantAttenuation
-			{
-				get { return 1; }
-			}
-
-			public float LinearAttenuation
-			{
-				get { return mBlock.ShapeRadius; }
-			}
-
-			public float QuadraticAttenuation
-			{
-				get { return 1; }
-			}
-
-			public float FalloffAngle
-			{
-				get { return mBlock.FalloffAngle; }
-			}
-
-			public float FalloffExponent
-			{
-				get { return 1; }
-			}
-
-			public LightDetails(Blam.Halo1.Tags.light_group block, string name)
-				: base(block)
-			{
-				Name = name;
-			}
-		}
-		#endregion Data Classes
-
-		#region Data
-		public LightDetails Light = null;
-		#endregion Data
-
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Collects data from a light tag. </summary>
-		/// <param name="tagIndex">		  	The tag index containing the light tag. </param>
-		/// <param name="lightTagManager">	Tag manager for the light tag. </param>
-		///-------------------------------------------------------------------------------------------------
-		public void CollectData(TagIndexBase tagIndex, TagManager lightTagManager)
-		{
-			TagPath = lightTagManager.Name;
-
-			var lightDefinition = lightTagManager.TagDefinition as Blam.Halo1.Tags.light_group;
-
-			Light = new LightDetails(lightDefinition, Path.GetFileNameWithoutExtension(TagPath));
-		}
-
-		#region IColladaExternalReference Members
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Gets the relative URL of the tag. </summary>
-		/// <returns>	The relative URL of the tag. </returns>
-		///-------------------------------------------------------------------------------------------------
-		public string GetRelativeURL()
-		{
-			return TagPath;
-		}
-		#endregion
-
-		#region IHalo1LightDataProvider Members
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Gets the light details. </summary>
-		/// <returns>	The light details. </returns>
-		///-------------------------------------------------------------------------------------------------
-		public LightDetails GetLight()
-		{
-			return Light;
-		}
-		#endregion
 	}
 
 	///-------------------------------------------------------------------------------------------------
@@ -577,6 +436,8 @@ namespace BlamLib.Render.COLLADA.Halo1
 	///-------------------------------------------------------------------------------------------------
 	public class ModelData : ITagDataSource, IHalo1ModelDataProvider, IColladaExternalReference
 	{
+		const string kGeometryNameFormat = "{0}-{1}-lod{2}";
+
 		#region Fields
 		public string TagPath { get; private set; }
 		#endregion Fields
@@ -608,18 +469,6 @@ namespace BlamLib.Render.COLLADA.Halo1
 				private set;
 			}
 
-			public List<int> Permutations
-			{
-				get;
-				private set;
-			}
-
-			public Blam.Halo1.TypeEnums.LevelOfDetailEnum LevelOfDetail
-			{
-				get;
-				private set;
-			}
-
 			public Blam.Halo1.Tags.gbxmodel_group.model_geometry_block Geometry
 			{
 				get;
@@ -644,25 +493,9 @@ namespace BlamLib.Render.COLLADA.Halo1
 				}
 			}
 
-			///-------------------------------------------------------------------------------------------------
-			/// <summary>	Adds a permutation index that this geometry is used in. </summary>
-			/// <param name="permutation">	The permutation index. </param>
-			///-------------------------------------------------------------------------------------------------
-			public void AddPermutation(int permutation)
-			{
-				if (!Permutations.Contains(permutation))
-				{
-					Permutations.Add(permutation);
-				}
-			}
-
-			public ModelGeometrySet(string name
-				, Blam.Halo1.TypeEnums.LevelOfDetailEnum lod
-				, Blam.Halo1.Tags.gbxmodel_group.model_geometry_block geometry)
+			public ModelGeometrySet(string name, Blam.Halo1.Tags.gbxmodel_group.model_geometry_block geometry)
 			{
 				Name = name;
-				Permutations = new List<int>();
-				LevelOfDetail = lod;
 				Geometry = geometry;
 				Shaders = new ModelShaderReferenceList();
 			}
@@ -768,6 +601,15 @@ namespace BlamLib.Render.COLLADA.Halo1
 				MarkerType = markerType;
 			}
 		}
+
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>	Data struct for a single model permutations. </summary>
+		///-------------------------------------------------------------------------------------------------
+		private class ModelPermutation
+		{
+			public string Name;
+			public Dictionary<string, ModelGeometrySet> Geometries;
+		}
 		#endregion Data Classes
 
 		#region Data List Classes
@@ -776,6 +618,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		public class ModelMarkerList : List<ModelMarker> { }
 		public class ModelMarkerInstanceList : List<ModelMarkerInstance> { }
 		public class ModelShaderReferenceList : List<ModelShaderReference> { }
+		private class ModelPermutationList : List<ModelPermutation> { }
 		#endregion Data List Classes
 
 		#region Data
@@ -783,22 +626,76 @@ namespace BlamLib.Render.COLLADA.Halo1
 		public ModelGeometrySetList ModelGeometrySets = new ModelGeometrySetList();
 		public ModelMarkerList ModelMarkers = new ModelMarkerList();
 		public ModelMarkerInstanceList ModelMarkerInstances = new ModelMarkerInstanceList();
+		private ModelPermutationList ModelPermutations = new ModelPermutationList();
 		#endregion Data
 
 		#region Add Bones, Geometry, Shaders and Markers
-		///-------------------------------------------------------------------------------------------------
-		/// <summary>	Gets the number of permutations in a model group. </summary>
-		/// <param name="modelDefinition">	The model definition. </param>
-		/// <returns>	The permutation count. </returns>
-		///-------------------------------------------------------------------------------------------------
-		private int GetPermutationCount(Blam.Halo1.Tags.gbxmodel_group modelDefinition)
+		private void BuildPermutationList(Blam.Halo1.Tags.gbxmodel_group modelDefinition)
 		{
-			int permutationCount = 0;
+			Action<ModelPermutation, string, string> addGeometryToPermutation =
+				(permutationObject, region, permutation) =>
+				{
+					// Find the permutation geometry and add it
+					string geometryName = System.String.Format(kGeometryNameFormat
+						, region
+						, permutation
+						, ((int)TypeEnums.LevelOfDetailEnum.SuperHigh).ToString());
+
+					var geometry = ModelGeometrySets.Find((model) => model.Name == geometryName);
+
+					permutationObject.Geometries[region] = geometry;
+				};
+
+			Func<string, ModelPermutation> addModelPermutation =
+				(permutationName) =>
+				{
+					var permutation = new ModelPermutation()
+					{
+						Name = permutationName,
+						Geometries = new Dictionary<string, ModelGeometrySet>()
+					};
+
+					foreach (var region in modelDefinition.Regions)
+					{
+						addGeometryToPermutation(permutation, region.Name, region.Permutations[0].Name);
+					}
+
+					ModelPermutations.Add(permutation);
+
+					return permutation;
+				};
+
+			// Set up unique permutation meshes
 			foreach (var region in modelDefinition.Regions)
 			{
-				permutationCount = (region.Permutations.Count > permutationCount ? region.Permutations.Count : permutationCount);
+				foreach (var permutation in region.Permutations)
+				{
+					ModelPermutation currentPermutation = null;
+
+					// Get the permutation by name
+					string permutationName = permutation.Name.ToString();
+
+					// User permutations can end in a number to be referenced in the scenario
+					var nameSplit = Regex.Split(permutationName, @"([0-9]{2})$")
+						.Where((value) => value != System.String.Empty).ToList();
+
+					int permutationIndex = 0;
+					if((nameSplit.Count > 1) && (int.TryParse(nameSplit.Last(), out permutationIndex)))
+					{
+						permutationName = permutationIndex.ToString("D2");
+					}
+
+					// Create a new permutation entry if missing
+					currentPermutation = ModelPermutations.Find((perm) => perm.Name == permutationName);
+
+					if(currentPermutation == null)
+					{
+						currentPermutation = addModelPermutation(permutationName);
+					}
+
+					addGeometryToPermutation(currentPermutation, region.Name, permutation.Name);
+				}
 			}
-			return permutationCount;
 		}
 
 		///-------------------------------------------------------------------------------------------------
@@ -820,51 +717,44 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// <param name="permutation">	  	The permutation to process. </param>
 		/// <param name="levelOfDetail">  	The level of detail to process. </param>
 		///-------------------------------------------------------------------------------------------------
-		private void AddGeometry(Blam.Halo1.Tags.gbxmodel_group modelDefinition
-			, int permutation
-			, Blam.Halo1.TypeEnums.LevelOfDetailEnum levelOfDetail)
+		private void AddGeometries(Blam.Halo1.Tags.gbxmodel_group modelDefinition)
 		{
-			// Add a model poiece from every region
-			foreach (var region in modelDefinition.Regions)
-			{
-				// If the requested permutation index is higher than the regions permutation count, use the highest permutation possible
-				int permutationIndex = permutation;
-
-				if (permutation >= region.Permutations.Count)
+			Action<string, int> addGeometry =
+				(name, index) =>
 				{
-					permutationIndex = region.Permutations.Count - 1;
-				}
-
-				// Build the models name
-				string name = string.Format("{0}-{1}-lod{2}", region.Name.Value, region.Permutations[permutationIndex].Name, ((int)levelOfDetail).ToString());
-
-				int index = 0;
-				switch (levelOfDetail)
-				{
-					case Blam.Halo1.TypeEnums.LevelOfDetailEnum.SuperHigh: index = region.Permutations[permutationIndex].SuperHigh; break;
-					case Blam.Halo1.TypeEnums.LevelOfDetailEnum.High: index = region.Permutations[permutationIndex].High; break;
-					case Blam.Halo1.TypeEnums.LevelOfDetailEnum.Medium: index = region.Permutations[permutationIndex].Medium; break;
-					case Blam.Halo1.TypeEnums.LevelOfDetailEnum.Low: index = region.Permutations[permutationIndex].Low; break;
-					case Blam.Halo1.TypeEnums.LevelOfDetailEnum.SuperLow: index = region.Permutations[permutationIndex].SuperLow; break;
+					var geometrySet = new ModelGeometrySet(name, modelDefinition.Geometries[index]);
+					ModelGeometrySets.Add(geometrySet);
 				};
 
-				// Find and existing geometry set if present
-				ModelGeometrySet geometrySet = ModelGeometrySets.Find(
-					geometry =>
-					{
-						return (geometry.Name == name) && (geometry.LevelOfDetail == levelOfDetail);
-					}
-				);
-
-				// Create a new geometry set for the current geometry if there is no pre-existing one
-				if (geometrySet == null)
+			foreach (var region in modelDefinition.Regions)
+			{
+				foreach (var permutation in region.Permutations)
 				{
-					geometrySet = new ModelGeometrySet(name, levelOfDetail, modelDefinition.Geometries[index]);
-					ModelGeometrySets.Add(geometrySet);
-				}
+					addGeometry(
+						System.String.Format(kGeometryNameFormat, region.Name, permutation.Name, ((int)TypeEnums.LevelOfDetailEnum.SuperHigh).ToString()),
+						permutation.SuperHigh.Value
+					);
 
-				// Add the permutation index to the geometry set
-				geometrySet.AddPermutation(permutation);
+					addGeometry(
+						System.String.Format(kGeometryNameFormat, region.Name, permutation.Name, ((int)TypeEnums.LevelOfDetailEnum.High).ToString()),
+						permutation.High.Value
+					);
+
+					addGeometry(
+						System.String.Format(kGeometryNameFormat, region.Name, permutation.Name, ((int)TypeEnums.LevelOfDetailEnum.Medium).ToString()),
+						permutation.Medium.Value
+					);
+
+					addGeometry(
+						System.String.Format(kGeometryNameFormat, region.Name, permutation.Name, ((int)TypeEnums.LevelOfDetailEnum.Low).ToString()),
+						permutation.Low.Value
+					);
+
+					addGeometry(
+						System.String.Format(kGeometryNameFormat, region.Name, permutation.Name, ((int)TypeEnums.LevelOfDetailEnum.SuperLow).ToString()),
+						permutation.SuperLow.Value
+					);
+				}
 			}
 		}
 		
@@ -882,21 +772,29 @@ namespace BlamLib.Render.COLLADA.Halo1
 				{
 					DatumIndex shaderDatum = DatumIndex.Null;
 
-                    if (part.ShaderIndex > -1)
-                    {
-                        var shader_index = part.ShaderIndex;
-                        if (shader_index >= modelDefinition.Shaders.Count)
-                        {
-                            shader_index.Value = modelDefinition.Shaders.Count - 1;
-                        }
-                        shaderDatum = modelDefinition.Shaders[shader_index].Shader.Datum;
-                    }
-
-					string shaderName = "Unknown";
-					if (TagIndex.IsValid(shaderDatum))
+					if (part.ShaderIndex == -1)
 					{
-                        shaderName = Path.GetFileNameWithoutExtension(tagIndex[shaderDatum].Name);
+						throw new ColladaException("A model part in {0} has no shader applied"
+							, TagPath);
 					}
+
+					var shader_index = part.ShaderIndex;
+					if (shader_index >= modelDefinition.Shaders.Count)
+					{
+						shader_index.Value = modelDefinition.Shaders.Count - 1;
+					}
+
+					var shader_entry = modelDefinition.Shaders[shader_index];
+					shaderDatum = shader_entry.Shader.Datum;
+
+					if (!TagIndex.IsValid(shaderDatum))
+					{
+						throw new ColladaException("The shader {0} failed to load when processing the model {1}"
+							, shader_entry.Shader.GetTagPath()
+							, TagPath);
+					}
+
+					string shaderName = Path.GetFileNameWithoutExtension(tagIndex[shaderDatum].Name);
 
 					geometrySet.AddShader(new ModelShaderReference(shaderDatum, shaderName));
 				}
@@ -939,17 +837,9 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 			var modelTag = modelTagManager.TagDefinition as Blam.Halo1.Tags.gbxmodel_group;
 
-			// Get the total number of permutations in the model
-			int permutationCount = GetPermutationCount(modelTag);
-
-			// Create a geometry set for every permutation at every level of detail
-			for (int i = 0; i < permutationCount; i++)
-			{
-				for (int j = 0; j < 5; j++)
-				{
-					AddGeometry(modelTag, i, (BlamLib.Blam.Halo1.TypeEnums.LevelOfDetailEnum)j);
-				}
-			}
+			AddGeometries(modelTag);
+			
+			BuildPermutationList(modelTag);
 
 			// Add shaders, bones and markers to the relevant lists
 			AddShadersToGeometry(tagIndex, modelTag);
@@ -993,18 +883,26 @@ namespace BlamLib.Render.COLLADA.Halo1
 		/// <param name="lod">		  	The LOD to get. </param>
 		/// <returns>	The geometry list for the specific permutation and LOD. </returns>
 		///-------------------------------------------------------------------------------------------------
-		public ModelGeometrySetList GetGeometries(int permutation, Blam.Halo1.TypeEnums.LevelOfDetailEnum lod)
+		public ModelGeometrySetList GetGeometries(string permutationName, Blam.Halo1.TypeEnums.LevelOfDetailEnum lod)
 		{
-			var geometryList = new ModelGeometrySetList();
-			foreach (var geometrySet in ModelGeometrySets)
+			var modelPermutation = ModelPermutations.Find((perm) => perm.Name == permutationName);
+
+			if(modelPermutation == null)
 			{
-				if (geometrySet.Permutations.Contains(permutation) && (geometrySet.LevelOfDetail == lod))
-				{
-					geometryList.Add(geometrySet);
-				}
+				modelPermutation = ModelPermutations[0];
 			}
 
-			return geometryList;
+			var geometrySetList = new ModelGeometrySetList();
+
+			geometrySetList.AddRange(
+				modelPermutation.Geometries.Select<KeyValuePair<string, ModelGeometrySet>, ModelGeometrySet>(
+					(value) =>
+					{
+						return value.Value;
+					}
+				));
+
+			return geometrySetList;
 		}
 
 		///-------------------------------------------------------------------------------------------------
@@ -1097,10 +995,10 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 			var bspTag = bspTagManager.TagDefinition as Blam.Halo1.Tags.structure_bsp_group;
 
-            if (IncludeBSPMarkers)
-            {
-                AddMarkers(bspTag);
-            }
+			if (IncludeBSPMarkers)
+			{
+				AddMarkers(bspTag);
+			}
 		}
 
 		#region IHalo1BSPDataProvider Members
@@ -1164,6 +1062,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		public class ShaderType
 		{
 			public DatumIndex ShaderDatum { get; private set; }
+			public string TagPath { get; private set; }
 			public ColladaExporter.Effect EffectReference { get; private set; }
 
 			///-------------------------------------------------------------------------------------------------
@@ -1175,9 +1074,10 @@ namespace BlamLib.Render.COLLADA.Halo1
 				EffectReference = reference;
 			}
 
-			public ShaderType(DatumIndex shaderDatum)
+			public ShaderType(DatumIndex shaderDatum, string tagPath)
 			{
 				ShaderDatum = shaderDatum;
+				TagPath = tagPath;
 			}
 		}
 		#endregion
@@ -1415,11 +1315,12 @@ namespace BlamLib.Render.COLLADA.Halo1
 		{
 			foreach (var shader in mShaderTypeList)
 			{
-				string shaderName = "Unknown";
-				if (TagIndex.IsValid(shader.ShaderDatum))
+				if (!TagIndex.IsValid(shader.ShaderDatum))
 				{
-					shaderName = Path.GetFileNameWithoutExtension(tagIndex[shader.ShaderDatum].Name);
+					throw new ColladaException("Failed to load shader {0}", shader.TagPath);
 				}
+
+				string shaderName = Path.GetFileNameWithoutExtension(tagIndex[shader.ShaderDatum].Name);
 
 				ColladaExporter.Effect effectDefinition = mEffects.Find(effect => effect.Name == shaderName);
 				if (effectDefinition != null)
@@ -1437,14 +1338,9 @@ namespace BlamLib.Render.COLLADA.Halo1
 					mEffectsMap.Add(effectDefinition);
 					mMaterials.Add(new ColladaExporter.Material(shaderName, shaderName));
 				}
-				
-				if(!TagIndex.IsValid(shader.ShaderDatum))
-				{
-					continue;
-				}
 
 				// Set the effects emission and shininess from the base shader group data
-				Blam.Halo1.Tags.shader_group shaderTag = tagIndex[shader.ShaderDatum].TagDefinition as Blam.Halo1.Tags.shader_group;
+				var shaderTag = tagIndex[shader.ShaderDatum].TagDefinition as Blam.Halo1.Tags.shader_group;
 				effectDefinition.AddPhongValue("Emission", new TagInterface.RealColor(shaderTag.RadiosityEmittedLightColor, 1));
 				effectDefinition.AddPhongValue("Shininess", 30.0f);
 
@@ -1570,14 +1466,14 @@ namespace BlamLib.Render.COLLADA.Halo1
 		///-------------------------------------------------------------------------------------------------
 		protected override void AddShaders(TagManager tagManager)
 		{
-			Blam.Halo1.Tags.structure_bsp_group bspTag = tagManager.TagDefinition as Blam.Halo1.Tags.structure_bsp_group;
+			var bspTag = tagManager.TagDefinition as Blam.Halo1.Tags.structure_bsp_group;
 
 			// Get the shaders from the lightmap material blocks
 			foreach (var lightmap in bspTag.Lightmaps)
 			{
 				foreach (var material in lightmap.Materials)
 				{
-					mShaderTypeList.Add(new ShaderType(material.Shader.Datum));
+					mShaderTypeList.Add(new ShaderType(material.Shader.Datum, material.Shader.GetTagPath()));
 				}
 			}
 		}
@@ -1594,12 +1490,12 @@ namespace BlamLib.Render.COLLADA.Halo1
 		///-------------------------------------------------------------------------------------------------
 		protected override void AddShaders(TagManager tagManager)
 		{
-			Blam.Halo1.Tags.gbxmodel_group modelTag = tagManager.TagDefinition as Blam.Halo1.Tags.gbxmodel_group;
+			var modelTag = tagManager.TagDefinition as Blam.Halo1.Tags.gbxmodel_group;
 
 			// Add all of the shaders listed in the shaders block
 			foreach (var modelShader in modelTag.Shaders)
 			{
-				mShaderTypeList.Add(new ShaderType(modelShader.Shader.Datum));
+				mShaderTypeList.Add(new ShaderType(modelShader.Shader.Datum, modelShader.Shader.GetTagPath()));
 			}
 		}
 	}

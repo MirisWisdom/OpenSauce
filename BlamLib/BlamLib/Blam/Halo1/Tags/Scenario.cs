@@ -337,7 +337,7 @@ namespace BlamLib.Blam.Halo1.Tags
 
 		#region scenario_child_scenario_block
 		[TI.Definition(-1, 32)]
-		public class scenario_child_scenario_block : scenario_object_block
+		public class scenario_child_scenario_block : TI.Definition
 		{
 			#region Fields
 			public TI.TagReference Child;

@@ -1,25 +1,21 @@
-﻿using BlamLib.Render.COLLADA;
+﻿/*
+	BlamLib: .NET SDK for the Blam Engine
+
+	See license\BlamLib\BlamLib for specific license information
+*/
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using OpenSauceIDE.ModelExtractor.MessageHandler;
+using BlamLib.Render.COLLADA;
 
 namespace OpenSauceIDE.ModelExtractor.Extractors
 {
-    /// <summary>   Interface for a model extractor. </summary>
-    public interface IExtractor
-    {
-        string TagTypeName { get; }
-        string TagExtension { get; }
+	/// <summary>   Interface for a model extractor. </summary>
+	public interface IExtractor
+	{
+		void Initialise();
+		void Dispose();
 
-        void Initialise();
-        void Dispose();
+		System.Windows.Forms.Control GetFormControl();
 
-        System.Windows.Forms.Control GetFormControl();
-        IExtractionJob CreateJob(IColladaSettings colladaSettings
-            , string tagsDirectory
-            , string tagPath
-            , string outputFile);
-    }
+		object GetExtractionData();
+	}
 }

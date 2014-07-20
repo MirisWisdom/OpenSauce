@@ -85,7 +85,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		///-------------------------------------------------------------------------------------------------
 		private Fx.ColladaEffect CreatePortalsEffect()
 		{
-			Fx.ColladaEffect effect = CreateDefaultEffect("portals");
+			var effect = CreateDefaultEffect("portals");
 			effect.ProfileCOMMON[0].Technique.Phong.Emission.Color.SetColor(0, 1, 0, 1);
 			effect.ProfileCOMMON[0].Technique.Phong.Transparency.Float.Value = 0.25f;
 			effect.ProfileCOMMON[0].Technique.Phong.Diffuse.Color.SetColor(0, 1, 0, 1);
@@ -98,7 +98,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		///-------------------------------------------------------------------------------------------------
 		private Fx.ColladaEffect CreateFogPlanesEffect()
 		{
-			Fx.ColladaEffect effect = CreateDefaultEffect("fogplanes");
+			var effect = CreateDefaultEffect("fogplanes");
 			effect.ProfileCOMMON[0].Technique.Phong.Emission.Color.SetColor(1, 1, 0, 1);
 			effect.ProfileCOMMON[0].Technique.Phong.Transparency.Float.Value = 0.25f;
 			effect.ProfileCOMMON[0].Technique.Phong.Diffuse.Color.SetColor(1, 1, 0, 1);
@@ -160,7 +160,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			, int surface_count
 			, int index_offset)
 		{
-			List<int> indices = new List<int>();
+			var indices = new List<int>();
 
 			for (int i = 0; i < surface_count; i++)
 			{
@@ -363,12 +363,12 @@ namespace BlamLib.Render.COLLADA.Halo1
 		{
 			var markers = mBSPDataProvider.GetMarkers();
 
-			List<Marker> markerList = new List<Marker>();
+			var markerList = new List<Marker>();
 
 			// create common marker definitions for the bsp markers
 			foreach (var marker in markers)
 			{
-				Marker commonMarker = new Marker(marker.Name,
+				var commonMarker = new Marker(marker.Name,
 					marker.Position.ToPoint3D(100), 
 					TagInterface.RealQuaternion.Invert(marker.Rotation),
 					-1);
@@ -386,8 +386,8 @@ namespace BlamLib.Render.COLLADA.Halo1
 		///-------------------------------------------------------------------------------------------------
 		private void CreateNodeList()
 		{
-			// Create the list of materials for the gemoetry to use
-			MaterialReferenceList materialReferences = new MaterialReferenceList();
+			// Create the list of materials for the geometry to use
+			var materialReferences = new MaterialReferenceList();
 
 			Action<string> addMaterialRef = 
 				effectName =>
@@ -395,20 +395,21 @@ namespace BlamLib.Render.COLLADA.Halo1
 					string name = ColladaUtilities.FormatName(Path.GetFileNameWithoutExtension(effectName), " ", "_");
 
 					materialReferences.Add(new MaterialReference(
+						effectName,
 						ColladaUtilities.BuildUri(ColladaElement.FormatID<Fx.ColladaMaterial>(name)),
 						name));
 				};
 
 			if (mShaderDataProvider != null)
 			{
-                // create a list of every shader used 
-                if (mBSPDataProvider.IncludeRenderMesh)
-                {
-                    foreach (var effect in mShaderDataProvider.GetEffects())
-                    {
-                        addMaterialRef(effect.Name);
-                    }
-                }
+				// create a list of every shader used 
+				if (mBSPDataProvider.IncludeRenderMesh)
+				{
+					foreach (var effect in mShaderDataProvider.GetEffects())
+					{
+						addMaterialRef(effect.Name);
+					}
+				}
 
 				// if portals are included add the portals shader to the names
 				if (mBSPDataProvider.IncludePortals)
@@ -424,13 +425,13 @@ namespace BlamLib.Render.COLLADA.Halo1
 			}
 
 			// Create a node with a geometry instance for all included geometry
-			H1.Tags.structure_bsp_group definition = mTagManager.TagDefinition as H1.Tags.structure_bsp_group;
+			var definition = mTagManager.TagDefinition as H1.Tags.structure_bsp_group;
 
 			Func<int, Core.ColladaNode> addGeometryInstance =
 				geometryIndex =>
 				{
 					string name = listGeometry[geometryIndex].Name;
-					Core.ColladaNode node = CreateNode(name, "", name, Enums.ColladaNodeType.NODE);
+					var node = CreateNode(name, "", name, Enums.ColladaNodeType.NODE);
 
 					string url = ColladaUtilities.BuildUri(listGeometry[geometryIndex].ID);
 					node.Add(CreateInstanceGeometry(url, name, materialReferences));
@@ -488,7 +489,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			COLLADAFile.LibraryVisualScenes.VisualScene[0].ID = "main";
 			COLLADAFile.LibraryVisualScenes.VisualScene[0].Node = new List<Core.ColladaNode>();
 
-			Core.ColladaNode frame = new BlamLib.Render.COLLADA.Core.ColladaNode();
+			var frame = new BlamLib.Render.COLLADA.Core.ColladaNode();
 			frame.Name = "frame";
 			frame.AddRange(listNode);
 

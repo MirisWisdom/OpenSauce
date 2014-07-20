@@ -10,6 +10,7 @@ using System.Xml.Serialization;
 using System.IO;
 using BlamLib.Blam;
 using BlamLib.Render.COLLADA.Validation;
+using BlamLib.Messaging;
 
 namespace BlamLib.Render.COLLADA
 {
@@ -40,24 +41,22 @@ namespace BlamLib.Render.COLLADA
 	/// <summary>	Base class for exporting a COLLADA file. </summary>
 	///-------------------------------------------------------------------------------------------------
 	public abstract class ColladaExporter
+		: IMessageSource
 	{
-		#region Events
-		/// <summary>
-		/// This event is fired when an error has occured, with an error string describing the error in detail.
-		/// </summary>
-		public event EventHandler<ColladaErrorEventArgs> ErrorOccured;
-		
-		protected void OnErrorOccured(string message)
+		#region Messaging
+		protected IMessageHandler mMessageHandler = new MessageHandler();
+
+		public event EventHandler<MessageArgs> MessageSent
 		{
-			if (ErrorOccured != null)
-				ErrorOccured(this, new ColladaErrorEventArgs(message));
+			add { mMessageHandler.MessageSent += value; }
+			remove { mMessageHandler.MessageSent -= value; }
 		}
 		#endregion
 
 		#region Error Handling
 		void ValidatorErrorOccured(object sender, ColladaErrorEventArgs e)
 		{
-			OnErrorOccured(e.ErrorMessage);
+			mMessageHandler.SendMessage(e.ErrorMessage);
 		}
 		#endregion Error Handling
 
@@ -129,7 +128,7 @@ namespace BlamLib.Render.COLLADA
 		///-------------------------------------------------------------------------------------------------
 		protected Core.ColladaNode CreateNode(string name, string sid, string id, Enums.ColladaNodeType type)
 		{
-			Core.ColladaNode node = new Core.ColladaNode();
+			var node = new Core.ColladaNode();
 			node.Name = name;
 			node.sID = ColladaUtilities.FormatName(sid, " ", "_");
 
@@ -155,7 +154,7 @@ namespace BlamLib.Render.COLLADA
 			string geometry_id,
 			uint set)
 		{
-			Core.ColladaSource source = new Core.ColladaSource();
+			var source = new Core.ColladaSource();
 
 			source.FloatArray = new Core.ColladaFloatArray();
 			source.TechniqueCommon = new Core.ColladaTechniqueCommon();
@@ -225,7 +224,7 @@ namespace BlamLib.Render.COLLADA
 		///-------------------------------------------------------------------------------------------------
 		protected Core.ColladaVertices CreateVertices(string geometry_id, string source_id)
 		{
-			Core.ColladaVertices vertices = new Core.ColladaVertices();
+			var vertices = new Core.ColladaVertices();
 			vertices.ID = String.Concat(geometry_id, "-vertices");
 			vertices.Input = new List<Core.ColladaInputUnshared>();
 			vertices.Input.Add(new Core.ColladaInputUnshared());
@@ -412,7 +411,7 @@ namespace BlamLib.Render.COLLADA
 		///-------------------------------------------------------------------------------------------------
 		protected void CreateGeometry(Geometry geometryData)
 		{
-			Core.ColladaGeometry geometry = new Core.ColladaGeometry();
+			var geometry = new Core.ColladaGeometry();
 
 			// initialise the geometry attributes
 			geometry.Name = geometryData.Name;
@@ -501,7 +500,7 @@ namespace BlamLib.Render.COLLADA
 			geometry.Mesh.Triangles = new List<Core.ColladaTriangles>();
 			foreach(var part in geometryData.Parts)
 			{
-				Core.ColladaTriangles part_triangles = new Core.ColladaTriangles();
+				var part_triangles = new Core.ColladaTriangles();
 				part_triangles.Material = ColladaUtilities.FormatName(part.MaterialName, " ", "_");
 				part_triangles.Input = new List<Core.ColladaInputShared>();
 
@@ -595,7 +594,7 @@ namespace BlamLib.Render.COLLADA
 		protected class Skin
 		{
 			///-------------------------------------------------------------------------------------------------
-			/// <summary>	Genertic vertex weight information class. </summary>
+			/// <summary>	Generic vertex weight information class. </summary>
 			///-------------------------------------------------------------------------------------------------
 			public class VertexWeight
 			{
@@ -668,7 +667,7 @@ namespace BlamLib.Render.COLLADA
 		protected Core.ColladaTechniqueCommon CreateControllerTechniqueCommon(string source_id,
 			uint source_count, string param_name, string param_type, uint stride)
 		{
-			Core.ColladaTechniqueCommon technique = new Core.ColladaTechniqueCommon();
+			var technique = new Core.ColladaTechniqueCommon();
 			technique.Accessor = new Core.ColladaAccessor();
 			technique.Accessor.Source = ColladaUtilities.BuildUri(source_id);
 			technique.Accessor.Count = source_count;
@@ -695,7 +694,7 @@ namespace BlamLib.Render.COLLADA
 		protected void CreateSkinController(Skin skinData)
 		{
 			// create the controller node
-			Core.ColladaController controller = new Core.ColladaController();
+			var controller = new Core.ColladaController();
 
 			// set the controllers name and id
 			controller.Name = skinData.Name;
@@ -730,7 +729,7 @@ namespace BlamLib.Render.COLLADA
 			{
 				controller.Skin.Source[0].NameArray.Add(ColladaUtilities.FormatName(bone.Name, " ", "_"));
 
-				SlimDX.Matrix bind_pose_matrix = SlimDX.Matrix.Invert(bone.TransformMatrixWorld);
+				var bind_pose_matrix = SlimDX.Matrix.Invert(bone.TransformMatrixWorld);
 
 				// a bind pose matrix is the inverse of the world transform of the bone
 				controller.Skin.Source[1].FloatArray.Add(
@@ -837,10 +836,10 @@ namespace BlamLib.Render.COLLADA
 			foreach (var marker in markers)
 			{
 				// create a node
-				Core.ColladaNode node = CreateNode(marker.Name, "", "", Enums.ColladaNodeType.NODE);
+				var node = CreateNode(marker.Name, "", "", Enums.ColladaNodeType.NODE);
 
 				// set the nodes position
-				Core.ColladaTranslate translate = new Core.ColladaTranslate();
+				var translate = new Core.ColladaTranslate();
 				translate.SetTranslate(marker.Translation);
 				node.Add(translate);
 
@@ -890,13 +889,13 @@ namespace BlamLib.Render.COLLADA
 		///-------------------------------------------------------------------------------------------------
 		protected void CreateImageList()
 		{
-			IColladaShaderDataProvider provider = GetDataProvider<IColladaShaderDataProvider>();
+			var provider = GetDataProvider<IColladaShaderDataProvider>();
 			var images = provider.GetImages();
 
 			// create references to the images
 			foreach (var imageDefinition in images)
 			{
-				Fx.ColladaImage image = new Fx.ColladaImage();
+				var image = new Fx.ColladaImage();
 				// set the ID using the bitmaps file name, this must stay consistent so that effects can generate the same ID
 				image.ID = imageDefinition.ImageName;
 
@@ -987,7 +986,7 @@ namespace BlamLib.Render.COLLADA
 		{
 			string imageName = ColladaUtilities.FormatName(Path.GetFileNameWithoutExtension(imagePath), " ", "_");
 
-			Fx.ColladaTexture texture = new Fx.ColladaTexture();
+			var texture = new Fx.ColladaTexture();
 			texture.Texture = imageName + "-surface-sampler";
 			texture.TexCoord = "CHANNEL" + uvChannel.ToString();
 
@@ -1000,7 +999,7 @@ namespace BlamLib.Render.COLLADA
 		///-------------------------------------------------------------------------------------------------
 		protected Fx.ColladaPhong CreateDefaultPhong()
 		{
-			Fx.ColladaPhong phong = new Fx.ColladaPhong();
+			var phong = new Fx.ColladaPhong();
 
 			// set the default ambient color
 			phong.Ambient = new Fx.ColladaCommonColorOrTextureType();
@@ -1060,7 +1059,7 @@ namespace BlamLib.Render.COLLADA
 				}
 				else if (value is Phong.Texture)
 				{
-					Phong.Texture texture = (Phong.Texture)value;
+					var texture = (Phong.Texture)value;
 					output.Color = null;
 					output.Texture = CreateTexture(texture.Path, texture.UVChannel);
 					output.Opaque = texture.Opacity;
@@ -1109,7 +1108,7 @@ namespace BlamLib.Render.COLLADA
 		///-------------------------------------------------------------------------------------------------
 		protected Fx.ColladaPhong CreatePhong(Phong definition)
 		{
-			Fx.ColladaPhong phong = CreateDefaultPhong();
+			var phong = CreateDefaultPhong();
 
 			SetColorOrTexture(definition, "Ambient", phong.Ambient);
 			SetColorOrTexture(definition, "Emission", phong.Emission);
@@ -1135,7 +1134,7 @@ namespace BlamLib.Render.COLLADA
 			Phong phongDefinition,
 			ImageList images)
 		{
-			Fx.ColladaEffect effect = new Fx.ColladaEffect();
+			var effect = new Fx.ColladaEffect();
 
 			effect.ID = effect_id;
 			effect.Name = effect_id;
@@ -1150,14 +1149,14 @@ namespace BlamLib.Render.COLLADA
 			{
 				string imageName = ColladaUtilities.FormatName(image.ImageName, " ", "_");
 
-				COLLADA.Fx.ColladaNewparam newparam_surface = new COLLADA.Fx.ColladaNewparam();
-				COLLADA.Fx.ColladaNewparam newparam_sampler = new COLLADA.Fx.ColladaNewparam();
+				var newparam_surface = new COLLADA.Fx.ColladaNewparam();
+				var newparam_sampler = new COLLADA.Fx.ColladaNewparam();
 
 				newparam_surface.sID = String.Concat(imageName, "-surface");
 				newparam_sampler.sID = String.Concat(imageName, "-surface-sampler");
 
-				COLLADA.Fx.ColladaSurface surface = new COLLADA.Fx.ColladaSurface();
-				COLLADA.Fx.ColladaSampler2D sampler2d = new COLLADA.Fx.ColladaSampler2D();
+				var surface = new COLLADA.Fx.ColladaSurface();
+				var sampler2d = new COLLADA.Fx.ColladaSampler2D();
 
 				surface.Type = COLLADA.Enums.ColladaFXSurfaceTypeEnum._2D;
 				surface.InitFrom = new COLLADA.Fx.ColladaInitFrom();
@@ -1184,7 +1183,7 @@ namespace BlamLib.Render.COLLADA
 		///-------------------------------------------------------------------------------------------------
 		protected Fx.ColladaEffect CreateDefaultEffect(string effect_name)
 		{
-			Fx.ColladaEffect effect = new Fx.ColladaEffect();
+			var effect = new Fx.ColladaEffect();
 
 			// create a common profile element
 			effect.ID = effect_name;
@@ -1202,7 +1201,7 @@ namespace BlamLib.Render.COLLADA
 		///-------------------------------------------------------------------------------------------------
 		protected void CreateEffectList()
 		{
-			IColladaShaderDataProvider provider = GetDataProvider<IColladaShaderDataProvider>();
+			var provider = GetDataProvider<IColladaShaderDataProvider>();
 			var effects = provider.GetEffects();
 
 			foreach (var effect in effects)
@@ -1246,7 +1245,7 @@ namespace BlamLib.Render.COLLADA
 		///-------------------------------------------------------------------------------------------------
 		protected static Fx.ColladaMaterial CreateMaterial(string id, string name, string effect)
 		{
-			Fx.ColladaMaterial material = new Fx.ColladaMaterial();
+			var material = new Fx.ColladaMaterial();
 
 			material.ID = id;
 			material.Name = name;
@@ -1272,7 +1271,7 @@ namespace BlamLib.Render.COLLADA
 		///-------------------------------------------------------------------------------------------------
 		protected void CreateMaterialList()
 		{
-			IColladaShaderDataProvider provider = GetDataProvider<IColladaShaderDataProvider>();
+			var provider = GetDataProvider<IColladaShaderDataProvider>();
 			var materials = provider.GetMaterials();
 
 			// for each shader, create a new material
@@ -1359,7 +1358,7 @@ namespace BlamLib.Render.COLLADA
 			if (bone.Child == -1)
 				return null;
 
-			List<Core.ColladaNode> children = new List<Core.ColladaNode>();
+			var children = new List<Core.ColladaNode>();
 
 			// cycle through the first child and its siblings
 			int bone_index = bone.Child;
@@ -1384,10 +1383,10 @@ namespace BlamLib.Render.COLLADA
 			LowLevel.Math.real_matrix3x3 transformMatrix)
 		{
 			// create a node
-			Core.ColladaNode node = CreateNode(bone.Name, bone.Name, bone.Name, Enums.ColladaNodeType.JOINT);
+			var node = CreateNode(bone.Name, bone.Name, bone.Name, Enums.ColladaNodeType.JOINT);
 
 			// set the nodes position
-			Core.ColladaTranslate translation = new Core.ColladaTranslate(bone.Translation);
+			var translation = new Core.ColladaTranslate(bone.Translation);
 			translation.sID = "translation";
 			node.Add(translation);
 
@@ -1426,11 +1425,13 @@ namespace BlamLib.Render.COLLADA
 		///-------------------------------------------------------------------------------------------------
 		public class MaterialReference
 		{
+			public string Name { get; private set; }
 			public string URL { get; private set; }
 			public string Symbol { get; private set; }
 
-			public MaterialReference(string url, string symbol)
+			public MaterialReference(string name, string url, string symbol)
 			{
+				Name = name;
 				URL = url;
 				Symbol = symbol;
 			}
@@ -1445,14 +1446,15 @@ namespace BlamLib.Render.COLLADA
 		///-------------------------------------------------------------------------------------------------
 		protected Fx.ColladaBindMaterial CreateBindMaterial(MaterialReferenceList materialReferences)
 		{
-			Fx.ColladaBindMaterial bindMaterial = new Fx.ColladaBindMaterial();
+			var bindMaterial = new Fx.ColladaBindMaterial();
 			bindMaterial.TechniqueCommon = new Core.ColladaTechniqueCommon();
 			bindMaterial.TechniqueCommon.InstanceMaterial = new List<Fx.ColladaInstanceMaterial>();
 
 			foreach(var reference in materialReferences)
 			{
 				// create a new material instance referencing the required material
-				Fx.ColladaInstanceMaterial instanceMaterial = new Fx.ColladaInstanceMaterial();
+				var instanceMaterial = new Fx.ColladaInstanceMaterial();
+				instanceMaterial.Name = reference.Name;
 				instanceMaterial.Symbol = reference.Symbol;
 				instanceMaterial.Target = reference.URL;
 
@@ -1473,7 +1475,7 @@ namespace BlamLib.Render.COLLADA
 		protected Core.ColladaInstanceController CreateInstanceController(string url, string name, MaterialReferenceList materialReferences)
 		{
 			// create a new controller instance and set its attributes
-			Core.ColladaInstanceController instanceController = new Core.ColladaInstanceController();
+			var instanceController = new Core.ColladaInstanceController();
 			instanceController.URL = url;
 			instanceController.Skeleton = new List<Core.ColladaSkeleton>();
 			instanceController.Skeleton.Add(new Core.ColladaSkeleton());
@@ -1499,7 +1501,7 @@ namespace BlamLib.Render.COLLADA
 		protected Core.ColladaInstanceGeometry CreateInstanceGeometry(string url, string name, MaterialReferenceList materialReferences)
 		{
 			// create a new geometry instance and set its attributes
-			Core.ColladaInstanceGeometry instanceGeometry = new Core.ColladaInstanceGeometry();
+			var instanceGeometry = new Core.ColladaInstanceGeometry();
 			instanceGeometry.URL = url;
 		
 			// add the bind material element if present
@@ -1668,12 +1670,12 @@ namespace BlamLib.Render.COLLADA
 			catch (ColladaException e)
 			{
 				// if an exception occurred, report it and return gracefully
-				OnErrorOccured(e.Message);
-				OnErrorOccured(e.StackTrace);
+				mMessageHandler.SendMessage(e.Message);
+				mMessageHandler.SendMessage(e.StackTrace);
 
 				for (var except = e.InnerException; except != null; except = except.InnerException)
 				{
-					OnErrorOccured(except.Message);
+					mMessageHandler.SendMessage(except.Message);
 				}
 			}
 			return success;
@@ -1690,7 +1692,7 @@ namespace BlamLib.Render.COLLADA
 			// if the file exists but overwriting is disabled, report this and return
 			if (System.IO.File.Exists(location) && !colladaSettings.Overwrite)
 			{
-				OnErrorOccured(String.Format(ColladaExceptionStrings.FileExists, location));
+				mMessageHandler.SendMessage(String.Format(ColladaExceptionStrings.FileExists, location));
 				return;
 			}
 
@@ -1705,9 +1707,9 @@ namespace BlamLib.Render.COLLADA
 			}
 
 			// serialize the COLLADA file to the xml file
-			System.IO.Directory.CreateDirectory(System.IO.Path.GetDirectoryName(location));
+			Directory.CreateDirectory(System.IO.Path.GetDirectoryName(location));
 
-			XmlSerializer serializer = new XmlSerializer(typeof(ColladaFile));
+			var serializer = new XmlSerializer(typeof(ColladaFile));
 			using (var writer = new XmlTextWriter(location, null))
 			{
 				writer.Formatting = Formatting.Indented;
@@ -1726,7 +1728,7 @@ namespace BlamLib.Render.COLLADA
 		protected List<int> BuildFaceIndices(int vertex_count)
 		{
 			// create an array of vertex indices
-			List<ushort> index_array = new List<ushort>();
+			var index_array = new List<ushort>();
 			for (ushort j = 0; j < vertex_count; j++) { index_array.Add(j); }
 
 			// in a triangle list without degenerates face count = vertex count - 2
@@ -1737,7 +1739,7 @@ namespace BlamLib.Render.COLLADA
 			// which means we can make the triangles by using 3 consecutive indices, removing the
 			// middle index and repeating until only 3 indices are left, which makes the final triangle
 
-			List<int> indices = new List<int>();
+			var indices = new List<int>();
 			for (int i = 0; i < surface_count; i++)
 			{
 				// create a triangle
@@ -1761,7 +1763,7 @@ namespace BlamLib.Render.COLLADA
 		///-------------------------------------------------------------------------------------------------
 		protected List<int> ConvertTriStripToList(List<int> tri_strip, bool flip = false)
 		{
-			List<int> tri_list = new List<int>();
+			var tri_list = new List<int>();
 			// add indices to the list, assuming that after the first 3 strip indices, each index is another triangle
 			// using itself and the previous two indices to make up the face
 			for (int i = 0; i < tri_strip.Count - 2; i++)
@@ -1790,18 +1792,18 @@ namespace BlamLib.Render.COLLADA
 				}
 
 				// add the final indices
-                if (flip)
-                {
-                    tri_list.Add(index2);
-                    tri_list.Add(index1);
-                    tri_list.Add(index0);
-                }
-                else
-                {
-                    tri_list.Add(index0);
-                    tri_list.Add(index1);
-                    tri_list.Add(index2);
-                }
+				if (flip)
+				{
+					tri_list.Add(index2);
+					tri_list.Add(index1);
+					tri_list.Add(index0);
+				}
+				else
+				{
+					tri_list.Add(index0);
+					tri_list.Add(index1);
+					tri_list.Add(index2);
+				}
 			}
 			return tri_list;
 		}

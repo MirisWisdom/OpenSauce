@@ -96,6 +96,7 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ModelExtractor\Extractors\ExtractionData.cs" />
     <Compile Include="ModelExtractor\Extractors\ExtractionManager.cs" />
     <Compile Include="ModelExtractor\Extractors\ExtractorFactory.cs" />
     <Compile Include="ModelExtractor\Extractors\ColladaSettings.cs" />
@@ -125,11 +126,11 @@
       <DependentUpon>ExtractorStructureBSPUI.cs</DependentUpon>
     </Compile>
     <Compile Include="ModelExtractor\Extractors\Halo1\StructureBSP\LightmapSizeExporter.cs" />
-    <Compile Include="ModelExtractor\Extractors\IExtractor.cs" />
+    <Compile Include="ModelExtractor\Extractors\IExtractorFactory.cs" />
+    <Compile Include="ModelExtractor\Extractors\IExtractorUI.cs" />
     <Compile Include="ModelExtractor\Extractors\IExtractionJob.cs" />
+    <Compile Include="ModelExtractor\Extractors\IExtractionData.cs" />
     <Compile Include="ModelExtractor\IModelExtractorController.cs" />
-    <Compile Include="ModelExtractor\MessageHandler\IMessageHandler.cs" />
-    <Compile Include="ModelExtractor\MessageHandler\MessageHandler.cs" />
     <Compile Include="ModelExtractor\ModelExtractorController.cs" />
     <Compile Include="ModelExtractor\ModelExtractor.cs">
       <SubType>Form</SubType>
@@ -236,6 +237,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="ModelExtractor\Extractors\ExtractorFactory.Halo1.cs" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
