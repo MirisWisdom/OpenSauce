@@ -77,6 +77,11 @@ namespace BlamLib.Render.COLLADA.Halo1
 				return nodeIds;
 			}
 
+			if(COLLADAFile.LibraryNodes == null)
+			{
+				AddLibraryNodes();
+			}
+
 			// Collect data about the model
 			var modelData = new ModelData();
 			modelData.CollectData(mTagIndex, mTagIndex[objectData.Model]);
@@ -176,12 +181,14 @@ namespace BlamLib.Render.COLLADA.Halo1
 						)
 				);
 
-				node.InstanceNode = new List<ColladaInstanceNode>();
-
 				var nodeIdList = GetNodeReferences(objectInstance.ObjectType, objectInstance.Permutation.ToString("D2"));
-				foreach (var nodeId in nodeIdList)
+				if (nodeIdList.Count > 0)
 				{
-					node.InstanceNode.Add(new ColladaInstanceNode() { URL = "#" + nodeId });
+					node.InstanceNode = new List<ColladaInstanceNode>();
+					foreach (var nodeId in nodeIdList)
+					{
+						node.InstanceNode.Add(new ColladaInstanceNode() { URL = "#" + nodeId });
+					}
 				}
 
 				listNode.Add(node);
@@ -236,7 +243,6 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 			mScenarioDataProvider = GetDataProvider<IHalo1ScenarioDataProvider>();
 
-			AddLibraryNodes();
 			CreateNodeList();
 			AddLibraryVisualScenes();
 			AddScene("main");

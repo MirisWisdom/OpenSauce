@@ -11,6 +11,7 @@ using System.IO;
 using BlamLib.Blam;
 using BlamLib.Render.COLLADA.Validation;
 using BlamLib.Messaging;
+using BlamLib.Bitmaps;
 
 namespace BlamLib.Render.COLLADA
 {
@@ -34,7 +35,7 @@ namespace BlamLib.Render.COLLADA
 	{
 		bool Overwrite { get; }
 		string RootDirectory { get; }
-		string BitmapExtension { get; }
+		AssetFormat BitmapFormat { get; }
 	}
 
 	///-------------------------------------------------------------------------------------------------
@@ -900,7 +901,7 @@ namespace BlamLib.Render.COLLADA
 				image.ID = imageDefinition.ImageName;
 
 				string fullPath = Path.Combine(colladaSettings.RootDirectory, imageDefinition.ImagePath);
-				fullPath = Path.ChangeExtension(fullPath, colladaSettings.BitmapExtension);
+				fullPath = Path.ChangeExtension(fullPath, Bitmaps.Util.GetAssetExtension(colladaSettings.BitmapFormat));
 
 				image.InitFrom = new Fx.ColladaInitFrom();
 				image.InitFrom.Text = ColladaUtilities.BuildUri("file://", fullPath);

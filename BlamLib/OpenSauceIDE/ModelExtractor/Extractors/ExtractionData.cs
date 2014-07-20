@@ -49,6 +49,30 @@ namespace OpenSauceIDE.ModelExtractor.Extractors
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Adds data to the object with a custom type key. </summary>
+		///
+		/// <exception cref="ArgumentException">
+		/// 	Thrown when one or more arguments have unsupported or illegal values.
+		/// </exception>
+		///
+		/// <param name="data">	The data to add. </param>
+		/// <param name="key"> 	The type key to use. </param>
+		public void Set(object data, Type key)
+		{
+			if(!key.IsAssignableFrom(data.GetType()))
+			{
+				throw new ArgumentException("Cannot set exception data with a non matching key type");
+			}
+
+			if (!(data is ICloneable))
+			{
+				throw new ArgumentException("Cannot add extraction data that is not clonable");
+			}
+
+			mData[key] = data;
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Makes a deep copy of this object. </summary>
 		///
 		/// <returns>	A copy of this object. </returns>
@@ -60,7 +84,7 @@ namespace OpenSauceIDE.ModelExtractor.Extractors
 			{
 				var entryClone = (entry.Value as ICloneable).Clone();
 
-				clonedData.Set(entryClone);
+				clonedData.Set(entryClone, entry.Key);
 			}
 
 			return clonedData;

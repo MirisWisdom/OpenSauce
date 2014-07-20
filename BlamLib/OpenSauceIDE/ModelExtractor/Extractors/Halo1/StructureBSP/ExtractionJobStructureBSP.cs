@@ -4,6 +4,7 @@
 	See license\BlamLib\BlamLib for specific license information
 */
 using System;
+using System.ComponentModel;
 using System.IO;
 using BlamLib.Managers;
 using BlamLib.Render.COLLADA;
@@ -35,24 +36,9 @@ namespace OpenSauceIDE.ModelExtractor.Extractors.Halo1.StructureBSP
 	{
 		public ExtractionData ExtractionData { get; private set; }
 
-		private ColladaSettings mColladaSettings;
+		private IColladaSettings mColladaSettings;
 		private ModelExtractionData mModelExtractionData;
 		private ExtractionJobStructureBSPData mBspData;
-		
-		public string JobName
-		{
-			get { return Path.GetFileName(mModelExtractionData.TagFile.AbsoluteTagPath); }
-		}
-
-		public ExtractionStateEnum JobState
-		{
-			get { return ExtractionStateEnum.Queued; }
-		}
-
-		public string JobResultMessage
-		{
-			get { return "Success"; }
-		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Constructor. </summary>
@@ -60,9 +46,12 @@ namespace OpenSauceIDE.ModelExtractor.Extractors.Halo1.StructureBSP
 		/// <param name="extractionData">	Data for the extraction. </param>
 		public ExtractionJobStructureBSP(IExtractionData extractionData)
 		{
-			mColladaSettings = extractionData.Get<ColladaSettings>();
+			mColladaSettings = extractionData.Get<IColladaSettings>();
 			mModelExtractionData = extractionData.Get<ModelExtractionData>();
 			mBspData = extractionData.Get<ExtractionJobStructureBSPData>();
+
+			JobID = mModelExtractionData.TagFile.AbsoluteTagPath;
+			JobName = mModelExtractionData.TagFile.TagNameWithExtension;
 		}
 
 		#region Data Collection
@@ -108,10 +97,12 @@ namespace OpenSauceIDE.ModelExtractor.Extractors.Halo1.StructureBSP
 		/// <summary>   Executes the extraction job. </summary>
 		public void Execute()
 		{
+			JobState = ExtractionStateEnum.InProgress;
+
 			// Create the tag index.
 			if (!CreateTagIndex(mModelExtractionData.TagsDirectory.Root, mModelExtractionData.TagsDirectory.AbsoluteFolder))
 			{
-				mMessageHandler.SendMessage("Failed to create a tag index for {0}\\{1}", mModelExtractionData.TagsDirectory.Root, mModelExtractionData.TagsDirectory.AbsoluteFolder);
+				SetJobCompleted(ExtractionStateEnum.Failed, "Failed to create a tag index for {0}\\{1}", mModelExtractionData.TagsDirectory.Root, mModelExtractionData.TagsDirectory.AbsoluteFolder);
 				return;
 			}
 
@@ -121,7 +112,7 @@ namespace OpenSauceIDE.ModelExtractor.Extractors.Halo1.StructureBSP
 			var tagManager = OpenTag(tagPath, BlamLib.Blam.Halo1.TagGroups.sbsp);
 			if (tagManager == null)
 			{
-				mMessageHandler.SendMessage("Failed to open tag {0}", tagPath);
+				SetJobCompleted(ExtractionStateEnum.Failed, "Failed to open tag {0}", tagPath);
 				DestroyTagIndex();
 				return;
 			}
@@ -165,16 +156,17 @@ namespace OpenSauceIDE.ModelExtractor.Extractors.Halo1.StructureBSP
 				catch (ColladaException e)
 				{
 					mMessageHandler.SendMessage("Exporter Error: {0}", e.Message);
+					SetJobCompleted(ExtractionStateEnum.Failed, "Failed to build COLLADA file for tag {0} due to: {1}", JobName, e.Message);
 				}
 
 				if (result)
 				{
 					extractor.SaveDAE(mModelExtractionData.OutputFile);
-					mMessageHandler.SendMessage("Extraction complete! Tag {0}", tagPath);
+					SetJobCompleted(ExtractionStateEnum.Succeeded, "Extraction complete! Tag {0}", tagPath);
 				}
 				else
 				{
-					mMessageHandler.SendMessage("Failed to build COLLADA file for tag {0}", tagPath);
+					SetJobCompleted(ExtractionStateEnum.Failed, "Failed to build COLLADA file for tag {0}", tagPath);
 				}
 			}
 

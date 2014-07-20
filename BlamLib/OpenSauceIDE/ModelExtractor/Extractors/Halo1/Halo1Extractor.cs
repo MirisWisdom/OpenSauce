@@ -4,6 +4,7 @@
 	See license\BlamLib\BlamLib for specific license information
 */
 using System;
+using System.ComponentModel;
 using BlamLib.IO;
 using BlamLib.Managers;
 using BlamLib.Messaging;
@@ -17,6 +18,103 @@ namespace OpenSauceIDE.ModelExtractor.Extractors.Halo1
 	public abstract class Halo1ExtractorJob
 		: IMessageSource
 	{
+		#region Extraction Job Variables
+		private ExtractionStateEnum mJobState = ExtractionStateEnum.Queued;
+		private object mJobStateLockingObject = new object();
+		private string mJobResultString = "";
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets or sets the identifier of the job. </summary>
+		///
+		/// <value>	The identifier of the job. </value>
+		public string JobID { get; protected set; }
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets or sets the name of the job. </summary>
+		///
+		/// <value>	The name of the job. </value>
+		public string JobName { get; protected set; }
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets or sets the state of the job. </summary>
+		///
+		/// <value>	The job state. </value>
+		public ExtractionStateEnum JobState
+		{
+			get
+			{
+				lock (mJobStateLockingObject)
+				{
+					return mJobState;
+				}
+			}
+			protected set
+			{
+				lock (mJobStateLockingObject)
+				{
+					mJobState = value;
+				}
+
+				OnPropertyChanged("JobState");
+			}
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets or sets a message describing the job result. </summary>
+		///
+		/// <value>	A message describing the job result. </value>
+		public string JobResultMessage
+		{
+			get
+			{
+				lock (mJobResultString)
+				{
+					return mJobResultString;
+				}
+			}
+			protected set
+			{
+				lock (mJobResultString)
+				{
+					mJobResultString = value;
+				}
+
+				OnPropertyChanged("JobResultMessage");
+			}
+		}
+
+		/// <summary>	Event queue for all listeners interested in PropertyChanged events. </summary>
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Executes the property changed action. </summary>
+		///
+		/// <param name="propertyName">	Name of the property. </param>
+		private void OnPropertyChanged(string propertyName)
+		{
+			var handler = PropertyChanged;
+
+			if (handler != null)
+			{
+				handler(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Sets that the job has been completed. </summary>
+		///
+		/// <param name="state">			The final job state. </param>
+		/// <param name="resultMessage">	Message describing the result. </param>
+		/// <param name="args">				A variable-length parameters list containing arguments. </param>
+		protected void SetJobCompleted(ExtractionStateEnum state, string resultMessage, params object[] args)
+		{
+			JobState = state;
+			JobResultMessage = System.String.Format(resultMessage, args);
+
+			mMessageHandler.SendMessage(resultMessage, args);
+		}
+		#endregion
+
 		#region Messaging
 		protected IMessageHandler mMessageHandler = new MessageHandler();
 
@@ -37,6 +135,11 @@ namespace OpenSauceIDE.ModelExtractor.Extractors.Halo1
 			mMessageHandler.SendMessage(e.Message);
 		}
 
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Index interface error occurred handler. </summary>
+		///
+		/// <param name="sender">	Source of the event. </param>
+		/// <param name="e">	 	The TagIndexErrorArgs to process. </param>
 		void IndexInterfaceErrorOccurred(object sender, TagIndex.TagIndexErrorArgs e)
 		{
 			mMessageHandler.SendMessage(e.Message);

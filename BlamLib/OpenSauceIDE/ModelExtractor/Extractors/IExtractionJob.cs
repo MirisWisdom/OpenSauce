@@ -4,14 +4,15 @@
 	See license\BlamLib\BlamLib for specific license information
 */
 using System;
+using System.ComponentModel;
 using BlamLib.Messaging;
 
 namespace OpenSauceIDE.ModelExtractor.Extractors
 {
 	public enum ExtractionStateEnum
 	{
-		Queued,
 		InProgress,
+		Queued,
 		Succeeded,
 		Failed
 	}
@@ -19,7 +20,14 @@ namespace OpenSauceIDE.ModelExtractor.Extractors
 	/// <summary>   Interface for an extraction job. </summary>
 	public interface IExtractionJob
 		: IMessageSource
+		, INotifyPropertyChanged
 	{
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets the name of the job. </summary>
+		///
+		/// <value>	The name of the job. </value>
+		string JobID { get; }
+
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>	Gets the name of the job. </summary>
 		///

@@ -43,6 +43,12 @@ namespace OpenSauceIDE.ModelExtractor
 			mController.StateChanged += ControllerStateChanged;
 			SetState(ModelExtractorStateEnum.ExtractorClosed);
 
+			// Attach child controls to controller
+			mTagsPathControl.BindPath("TagsFolder", mController.GetExtractorSettings());
+			mDataPathControl.BindPath("DataFolder", mController.GetExtractorSettings());
+			mMessageList.Attach(mController);
+			mJobListControl.Attach(mController);
+
 			// Populate the model type list
 			foreach (var type in mController.GetExtractorFactory().GetFileTypes())
 			{
@@ -54,9 +60,6 @@ namespace OpenSauceIDE.ModelExtractor
 			mModelTypeComboBox.SelectedIndex = 0;
 			mModelTypeComboBox.SelectedIndexChanged += SelectedExtensionChanged;
 			SetExtractor();
-
-			// Set the output UI
-			mMessageList.Attach(mController);
 		}
 
 		public ModelExtractor()
@@ -116,19 +119,12 @@ namespace OpenSauceIDE.ModelExtractor
 		{
 			switch (state)
 			{
-				case ModelExtractorStateEnum.ExtractorClosed:
-					mExtractButton.Enabled = false;
-					break;
 				case ModelExtractorStateEnum.ExtractorReady:
-					mExtractButton.Enabled = true;
-					SetControls();
-					break;
 				case ModelExtractorStateEnum.ExtractorClosing:
-					mExtractButton.Enabled = false;
 					SetControls();
 					break;
+				case ModelExtractorStateEnum.ExtractorClosed:
 				case ModelExtractorStateEnum.ExtractorInitialising:
-					mExtractButton.Enabled = false;
 					break;
 			}
 		}
@@ -150,29 +146,6 @@ namespace OpenSauceIDE.ModelExtractor
 			{
 				SetState(e.State);
 			}
-		}
-		#endregion
-
-		#region Extraction
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>   Starts an extraction process if the tags and data directories exist. </summary>
-		///
-		/// <param name="sender">   Source of the event. </param>
-		/// <param name="e">        Event information. </param>
-		private void Extract(object sender, EventArgs e)
-		{
-			if (!mTagsPathControl.Exists)
-			{
-				MessageBox.Show("You need to select your tags directory to continue.", "Tags Directory Required", System.Windows.Forms.MessageBoxButtons.OK);
-				return;
-			}
-			if (!mDataPathControl.Exists)
-			{
-				MessageBox.Show("You need to select your data directory to continue.", "Tags Directory Required", System.Windows.Forms.MessageBoxButtons.OK);
-				return;
-			}
-
-			mController.Extract(mTagsPathControl.SelectedPath, mDataPathControl.SelectedPath);
 		}
 		#endregion
 	}

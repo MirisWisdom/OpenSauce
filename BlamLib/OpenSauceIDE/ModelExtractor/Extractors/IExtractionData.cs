@@ -24,5 +24,12 @@ namespace OpenSauceIDE.ModelExtractor.Extractors
 		///
 		/// <param name="data">	The data to add. </param>
 		void Set(object data);
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Adds data to the object. </summary>
+		///
+		/// <param name="data">	The data to add. </param>
+		/// <param name="key"> 	The type key to use. </param>
+		void Set(object data, Type key);
 	}
 }
