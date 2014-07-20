@@ -151,7 +151,7 @@ namespace Yelo
 			real_rgb_color change_colors[Enums::k_number_of_object_change_colors];
 		}; BOOST_STATIC_ASSERT( sizeof(s_object_placement_data) == 0x88 );
 
-		struct s_object_network_datum_delta_data // should be populated during the object type's process_update_delta
+		struct s_object_datum_network_delta_data // should be populated during the object type's process_update_delta
 		{
 			bool valid_position;					// 0x18
 			PAD24;
@@ -169,17 +169,17 @@ namespace Yelo
 			bool valid_timestamp;					// 0x54
 			PAD24;
 			int32 timestamp;						// 0x58
-		}; BOOST_STATIC_ASSERT( sizeof(s_object_network_datum_delta_data) == 0x44 );
+		}; BOOST_STATIC_ASSERT( sizeof(s_object_datum_network_delta_data) == 0x44 );
 
-		struct s_object_animation_datum_data
+		struct s_object_datum_animation_data
 		{
 			datum_index definition_index;	// 0xCC
 			s_animation_state state;		// 0xD0
 			int16 interpolation_frame_index;// 0xD4
 			int16 interpolation_frame_count;// 0xD6
-		}; BOOST_STATIC_ASSERT( sizeof(s_object_animation_datum_data) == 0xC );
+		}; BOOST_STATIC_ASSERT( sizeof(s_object_datum_animation_data) == 0xC );
 
-		struct s_object_damage_datum_data
+		struct s_object_datumn_damage_data
 		{
 			real maximum_vitality;				// 0xD8
 			real current_vitality;				// 0xDC
@@ -187,16 +187,18 @@ namespace Yelo
 			real shield;						// 0xE4
 			real shield_damage_current;			// 0xE8
 			real body_damage_current;			// 0xEC
-			UNKNOWN_TYPE(datum_index);			// 0xF0, object_index
+			// when this object is damaged, the 'entangled' object will also get damaged.
+			// this is an immediate link, the entangled object's parent chain or 'entangled' reference isn't walked
+			datum_index entangled_object_index;	// 0xF0
 			real shield_damage_recent;			// 0xF4
 			real body_damage_recent;			// 0xF8
 			int32 shield_damage_update_tick;	// 0xFC, these update ticks are set to NONE when not active
 			int32 body_damage_update_tick;		// 0x100
 			int16 stun_ticks;					// 0x104, based on ftol(s_shield_damage_resistance->stun_time * 30f)
 			word_flags flags;					// 0x106
-		}; BOOST_STATIC_ASSERT( sizeof(s_object_damage_datum_data) == 0x30 );
+		}; BOOST_STATIC_ASSERT( sizeof(s_object_datumn_damage_data) == 0x30 );
 
-		struct s_object_attachments_datum_data
+		struct s_object_datum_attachments_data
 		{
 			Enums::attachment_type attached_types[Enums::k_maximum_number_of_attachments_per_object];	// 0x144
 			// game state datum_index
@@ -204,7 +206,7 @@ namespace Yelo
 			// then the datum_index is a contrail_data handle
 			datum_index attachment_indices[Enums::k_maximum_number_of_attachments_per_object];			// 0x14C
 			datum_index first_widget_index;																// 0x16C
-		}; BOOST_STATIC_ASSERT( sizeof(s_object_attachments_datum_data) == 0x2C );
+		}; BOOST_STATIC_ASSERT( sizeof(s_object_datum_attachments_data) == 0x2C );
 
 		struct s_object_data
 		{
@@ -221,7 +223,7 @@ namespace Yelo
 			int32 object_marker_id;															// 0x14
 			//////////////////////////////////////////////////////////////////////////
 			// Added in HaloPC
-			s_object_network_datum_delta_data network_delta;								// 0x18
+			s_object_datum_network_delta_data network_delta;								// 0x18
 			//////////////////////////////////////////////////////////////////////////
 			real_point3d position;															// 0x5C
 			real_vector3d transitional_velocity;											// 0x68
@@ -244,8 +246,8 @@ namespace Yelo
 			// the weapon which spawned it
 			datum_index owner_object_index;													// 0xC4
 			PAD32;																			// 0xC8 unused
-			s_object_animation_datum_data animation;										// 0xCC
-			s_object_damage_datum_data damage;												// 0xD8
+			s_object_datum_animation_data animation;										// 0xCC
+			s_object_datumn_damage_data damage;												// 0xD8
 			PAD32;																			// 0x108 unused
 			datum_index cluster_partition_index;											// 0x10C
 			UNKNOWN_TYPE(datum_index);														// 0x110, object_index, garbage collection related
@@ -259,7 +261,7 @@ namespace Yelo
 			real incoming_function_values[Enums::k_number_of_incoming_object_functions];	// 0x124
 			real outgoing_function_values[Enums::k_number_of_outgoing_object_functions];	// 0x134
 
-			s_object_attachments_datum_data attachments;									// 0x144
+			s_object_datum_attachments_data attachments;									// 0x144
 			datum_index cached_render_state_index;											// 0x170
 			word_flags regions_destroyed_flags;												// 0x174 once a region is destroyed, its bit index is set
 			int16 shader_permutation;														// 0x176, shader's bitmap block index
@@ -285,12 +287,12 @@ namespace Yelo
 
 				return ref->offset == 0 ? nullptr : CAST_PTR(TBlockData*, &obj[ref->offset]);
 			}
-			template<typename TBlockData, size_t block_reference_offset>
+			template<typename TBlockData, size_t kBlockReferenceOffset>
 			TBlockData* GetBlock()
 			{
 				byte* obj = CAST_PTR(byte*, this);
 
-				s_object_header_block_reference* ref = CAST_PTR(s_object_header_block_reference*, obj+block_reference_offset);
+				auto* ref = CAST_PTR(s_object_header_block_reference*, obj+kBlockReferenceOffset);
 
 				return GetBlock<TBlockData>(*ref);
 			}

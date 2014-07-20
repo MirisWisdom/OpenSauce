@@ -40,7 +40,7 @@ namespace Yelo { namespace Objects {
 		return seated_unit_index;
 	}
 
-	void s_unit_animation_data::ResetOverlayAnimations()
+	void s_unit_datum_animation_data::ResetOverlayAnimations()
 	{
 		replacement_animation = { NONE };
 		replacement_animation_state = NONE;	// TODO: pretty sure we need to use _unit_replacement_animation_state_none here

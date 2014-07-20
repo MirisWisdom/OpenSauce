@@ -5,6 +5,7 @@
 */
 #pragma once
 
+#include <blamlib/memory/data_base.hpp>
 #include <blamlib/Halo1/hs/hs_scenario_definitions.hpp>
 
 namespace Yelo
@@ -144,6 +145,11 @@ namespace Yelo
 
 		struct hs_syntax_node;
 
+		typedef Memory::DataArray<	hs_syntax_node, 
+									Enums::k_maximum_hs_syntax_nodes_per_scenario, 
+									Enums::k_maximum_hs_syntax_nodes_per_scenario_upgrade> 
+			hs_syntax_data_t;
+
 		struct s_hs_script_container_datum_index
 		{
 			union {
@@ -197,6 +203,9 @@ namespace Yelo
 		}; BOOST_STATIC_ASSERT( sizeof(s_hs_value_union) == sizeof(void*) );
 		extern const s_hs_value_union k_null_value_union;
 		extern const s_hs_value_union k_none_value_union;
+
+
+		hs_syntax_data_t&			HsSyntax();
 	};
 
 	namespace blam

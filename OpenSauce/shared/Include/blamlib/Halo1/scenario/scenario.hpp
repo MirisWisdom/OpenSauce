@@ -43,6 +43,8 @@ namespace Yelo
 	{
 		struct s_scenario_globals;
 
+		extern cstring K_GAME_GLOBALS_TAG_NAME; // globals\globals
+
 
 		s_scenario_globals*	ScenarioGlobals();
 

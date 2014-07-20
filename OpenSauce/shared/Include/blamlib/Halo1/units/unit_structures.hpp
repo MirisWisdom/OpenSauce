@@ -166,7 +166,7 @@ namespace Yelo
 
 	namespace Objects
 	{
-		struct s_unit_animation_data
+		struct s_unit_datum_animation_data
 		{
 			word_flags flags;							// 0x298
 			UNKNOWN_TYPE(int16);						// 0x29A animation index, weapon type
@@ -195,7 +195,7 @@ namespace Yelo
 			PAD64;										// 0x2D8
 
 			void ResetOverlayAnimations();
-		}; BOOST_STATIC_ASSERT( sizeof(s_unit_animation_data) == 0x48 );
+		}; BOOST_STATIC_ASSERT( sizeof(s_unit_datum_animation_data) == 0x48 );
 
 		struct s_unit_data
 		{
@@ -247,7 +247,7 @@ namespace Yelo
 			UNKNOWN_TYPE(int16);											// 0x290
 			PAD16;															// 0x292
 			datum_index throwing_grenade_projectile_index;					// 0x294
-			s_unit_animation_data animation;								// 0x298
+			s_unit_datum_animation_data animation;								// 0x298
 			real ambient;													// 0x2E0
 			real illumination;												// 0x2E4
 			real mouth_aperture;											// 0x2E8
@@ -383,15 +383,15 @@ namespace Yelo
 
 	namespace blam
 	{
-		bool PLATFORM_API unit_animation_state_interruptable(const Objects::s_unit_animation_data& animation,
+		bool PLATFORM_API unit_animation_state_interruptable(const Objects::s_unit_datum_animation_data& animation,
 			_enum next_animation_state);
 
-		bool PLATFORM_API unit_animation_busy(const Objects::s_unit_animation_data& animation);
+		bool PLATFORM_API unit_animation_busy(const Objects::s_unit_datum_animation_data& animation);
 
-		bool PLATFORM_API unit_animation_state_loops(const Objects::s_unit_animation_data& animation);
+		bool PLATFORM_API unit_animation_state_loops(const Objects::s_unit_datum_animation_data& animation);
 
-		bool PLATFORM_API unit_animation_weapon_ik(const Objects::s_unit_animation_data& animation);
+		bool PLATFORM_API unit_animation_weapon_ik(const Objects::s_unit_datum_animation_data& animation);
 
-		bool PLATFORM_API unit_animation_vehicle_ik(const Objects::s_unit_animation_data& animation);
+		bool PLATFORM_API unit_animation_vehicle_ik(const Objects::s_unit_datum_animation_data& animation);
 	};
 };

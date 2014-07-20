@@ -130,7 +130,7 @@ namespace Animations
 
 	static bool UnitAnimationStateInterruptableHook()
 	{
-		const s_unit_animation_data* unit_animation;
+		const s_unit_datum_animation_data* unit_animation;
 		_enum next_animation_state;
 
 		_asm mov	next_animation_state, dx;
@@ -140,7 +140,7 @@ namespace Animations
 	}
 	static bool UnitAnimationBusyHook()
 	{
-		const s_unit_animation_data* unit_animation;
+		const s_unit_datum_animation_data* unit_animation;
 
 		_asm mov	unit_animation, ecx;
 
@@ -148,7 +148,7 @@ namespace Animations
 	}
 	static bool UnitAnimationStateLoopsHook()
 	{
-		const s_unit_animation_data* unit_animation;
+		const s_unit_datum_animation_data* unit_animation;
 
 		_asm mov	unit_animation, ecx;
 
@@ -156,7 +156,7 @@ namespace Animations
 	}
 	static bool UnitAnimationWeaponIKHook()
 	{
-		const s_unit_animation_data* unit_animation;
+		const s_unit_datum_animation_data* unit_animation;
 
 		_asm mov	unit_animation, ecx;
 
@@ -164,7 +164,7 @@ namespace Animations
 	}
 	static bool UnitAnimationVehicleIKHook()
 	{
-		const s_unit_animation_data* unit_animation;
+		const s_unit_datum_animation_data* unit_animation;
 
 		_asm mov	unit_animation, ecx;
 

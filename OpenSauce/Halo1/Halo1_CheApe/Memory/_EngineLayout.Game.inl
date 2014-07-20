@@ -12,9 +12,11 @@
 	namespace GameState
 	{
 		ENGINE_PTR(s_game_state_globals, game_state_globals,			0xCB2888, 0xFC9038, 0xBD7D24);
+		ENGINE_PTR(TagGroups::s_game_globals*, global_game_globals,		PTR_NULL, 0x12E577C, 0x107EDC8);
 
 
 		s_game_state_globals* GameStateGlobals()						PTR_IMP_GET2(game_state_globals);
+		TagGroups::s_game_globals* GlobalGameGlobals()					PTR_IMP_GET(global_game_globals);
 	};
 
 	namespace GameUI

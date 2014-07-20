@@ -5,7 +5,6 @@
 */
 #pragma once
 
-#include <blamlib/memory/data_base.hpp>
 #include <blamlib/Halo1/hs/hs.hpp>
 
 namespace Yelo
@@ -139,12 +138,5 @@ namespace Yelo
 				return !TEST_FLAG(flags, Flags::_hs_syntax_node_dont_gc_bit);
 			}
 		}; BOOST_STATIC_ASSERT( sizeof(hs_syntax_node) == 0x14 );
-
-		typedef Memory::DataArray<	hs_syntax_node, 
-									Enums::k_maximum_hs_syntax_nodes_per_scenario, 
-									Enums::k_maximum_hs_syntax_nodes_per_scenario_upgrade> 
-			hs_syntax_data_t;
-
-		hs_syntax_data_t&			HsSyntax();
 	};
 };

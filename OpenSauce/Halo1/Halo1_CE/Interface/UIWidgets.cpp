@@ -30,35 +30,19 @@ namespace Yelo
 			// TODO: harder.
 		}
 
-		static API_FUNC_NAKED s_ui_widget_instance* LoadByNameOrTag(cstring name, datum_index tag_index, 
-			s_ui_widget_instance* parent, int32 controller_index, 
-			datum_index arg_10,
-			datum_index arg_14, 
-			int32 /*int16*/ arg_18)
-		{
-			static const uintptr_t CALL_ADDR = GET_FUNC_PTR(UI_WIDGET_LOAD_BY_NAME_OR_TAG);
-
-			API_FUNC_NAKED_START()
-				push	arg_18
-				push	arg_14
-				push	arg_10
-				push	controller_index
-				push	parent
-				push	tag_index
-				push	name
-				call	CALL_ADDR
-			API_FUNC_NAKED_END_CDECL(7)
-		}
 		// Implementation has index second, but in OS we should mostly be calling with the tag index; no hardcoded strings!
-		s_ui_widget_instance* LoadByNameOrTag(datum_index tag_index, cstring name, 
+		s_ui_widget_instance* LoadByNameOrTag(datum_index ui_widget_definition_index, cstring name,
 			s_ui_widget_instance* parent, 
 			int16 controller_index, 
-			datum_index arg_10,
-			datum_index arg_14, 
-			int16 arg_18)
+			datum_index topmost_widget_definition_index,
+			datum_index parent_widget_definition_index,
+			int16 child_index_from_parent)
 		{
-			YELO_ASSERT_DISPLAY( !tag_index.IsNull() || name != nullptr, "ui widget: tried to load without a name or tag index" );
-			return LoadByNameOrTag(name, tag_index, parent, controller_index, arg_10, arg_14, arg_18);
+			YELO_ASSERT_DISPLAY( !ui_widget_definition_index.IsNull() || name != nullptr,
+				"ui widget: tried to load without a name or tag index" );
+
+			return blam::ui_widget_load_by_name_or_tag(name, ui_widget_definition_index, parent, controller_index,
+				topmost_widget_definition_index, parent_widget_definition_index, child_index_from_parent);
 		}
 
 		static const TagGroups::s_project_yellow_scripted_ui_widget* FindWidget(cstring widget_name,
@@ -91,5 +75,24 @@ namespace Yelo
 			return false;
 		}
 	};
+
+	namespace blam
+	{
+		using namespace UIWidgets;
+
+		API_FUNC_NAKED s_ui_widget_instance* PLATFORM_API ui_widget_load_by_name_or_tag(
+			cstring name,
+			datum_index ui_widget_definition_index,
+			s_ui_widget_instance* parent,
+			int16 controller_index,
+			datum_index topmost_widget_definition_index,
+			datum_index parent_widget_definition_index,
+			int16 child_index_from_parent)
+		{
+			static const uintptr_t FUNCTION = GET_FUNC_PTR(UI_WIDGET_LOAD_BY_NAME_OR_TAG);
+
+			__asm	jmp	FUNCTION
+		}
+	}
 };
 #endif
