@@ -34,17 +34,5 @@ namespace Yelo
 			bool run_game_scripts;
 			PAD8;
 		}; BOOST_STATIC_ASSERT( sizeof(s_hs_runtime_globals) == 0x8 );
-
-
-		typedef Memory::DataArray<	s_hs_thread_datum, 
-									256>
-			hs_thread_data_t;
-
-		typedef Memory::DataArray<	s_hs_globals_datum, 
-									Enums::k_maximum_number_of_hs_globals> 
-			hs_globals_data_t;
-
-		hs_thread_data_t&			HsThreads();
-		hs_globals_data_t&			HsGlobals();
 	};
 };

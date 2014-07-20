@@ -20,15 +20,6 @@ namespace Yelo
 
 	namespace Players
 	{
-		players_data_t&					Players();
-		teams_data_t&					Teams();
-		s_players_globals_data*			PlayersGlobals();
-		s_player_control_globals_data*	PlayerControlGlobals();
-		s_player_effects_data*			PlayerEffects();
-
-
-		datum_index*					MachineToPlayerTable(); // [k_multiplayer_maximum_players][k_maximum_number_of_local_players]
-
 		void Initialize();
 		void Dispose();
 		////////////////////////////////////////////////////////////////////////////////////////////////////
