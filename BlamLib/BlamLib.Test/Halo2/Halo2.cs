@@ -214,137 +214,137 @@ namespace BlamLib.Test
 			    Blam.Halo2.TagGroups.mode),
 		};
 
-		[TestMethod]
-		public void Halo2TestCOLLADALightmapExport()
-		{
-            using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo2_PC, kTestInstallationRootPath, kTestTagsDir))
-			{
-				var tagindex = handler.IndexInterface;
-				foreach (var model_def in LightmapTestDefinitions)
-				{
-					StartStopwatch();
-					{
-						model_def.Open(tagindex);
-						Console.WriteLine("{0} LOAD: Time taken: {1}", model_def.TypeString, m_testStopwatch.Elapsed);
-					}
-					Console.WriteLine("TAG INDEX: Time taken: {0}", StopStopwatch());
+		//[TestMethod]
+		//public void Halo2TestCOLLADALightmapExport()
+		//{
+		//	using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo2_PC, kTestInstallationRootPath, kTestTagsDir))
+		//	{
+		//		var tagindex = handler.IndexInterface;
+		//		foreach (var model_def in LightmapTestDefinitions)
+		//		{
+		//			StartStopwatch();
+		//			{
+		//				model_def.Open(tagindex);
+		//				Console.WriteLine("{0} LOAD: Time taken: {1}", model_def.TypeString, m_testStopwatch.Elapsed);
+		//			}
+		//			Console.WriteLine("TAG INDEX: Time taken: {0}", StopStopwatch());
 
-					var halo2 = new BlamLib.Render.COLLADA.Halo2.ColladaHalo2(tagindex, model_def.TagIndex);
+		//			var halo2 = new BlamLib.Render.COLLADA.Halo2.ColladaHalo2(tagindex, model_def.TagIndex);
 
-					halo2.Overwrite = true;
-					halo2.RelativeFilePath = Path.Combine(kTestInstallationRootPath, kTestDataDir);
+		//			halo2.Overwrite = true;
+		//			halo2.RelativeFilePath = Path.Combine(kTestInstallationRootPath, kTestDataDir);
 
-					halo2.ClearRegister();
+		//			halo2.ClearRegister();
 
-					foreach (var info in halo2)
-						halo2.RegisterForExport(info);
+		//			foreach (var info in halo2)
+		//				halo2.RegisterForExport(info);
 
-					var lightmap_info = halo2[0] as Render.COLLADA.Halo2.ColladaHalo2LightmapInfo;
+		//			var lightmap_info = halo2[0] as Render.COLLADA.Halo2.ColladaHalo2LightmapInfo;
 
-					StartStopwatch();
-					halo2.Export(lightmap_info.Name);
-					Console.WriteLine("EXPORT {0} TIME: Time taken: {1}", lightmap_info.Name, StopStopwatch());
+		//			StartStopwatch();
+		//			halo2.Export(lightmap_info.Name);
+		//			Console.WriteLine("EXPORT {0} TIME: Time taken: {1}", lightmap_info.Name, StopStopwatch());
 
-					foreach (string report in halo2.Reports())
-						Console.WriteLine(report);
+		//			foreach (string report in halo2.Reports())
+		//				Console.WriteLine(report);
 
-					model_def.Close(tagindex);
-				}
-			}
-		}
-		[TestMethod]
-		public void Halo2TestCOLLADABSPExport()
-		{
-            using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo2_PC, kTestInstallationRootPath, kTestTagsDir))
-			{
-				var tagindex = handler.IndexInterface;
-				foreach (var model_def in BSPTestDefinitions)
-				{
-					StartStopwatch();
-					{
-						model_def.Open(tagindex);
-						Console.WriteLine("{0} LOAD: Time taken: {1}", model_def.TypeString, m_testStopwatch.Elapsed);
-					}
-					Console.WriteLine("TAG INDEX: Time taken: {0}", StopStopwatch());
+		//			model_def.Close(tagindex);
+		//		}
+		//	}
+		//}
+		//[TestMethod]
+		//public void Halo2TestCOLLADABSPExport()
+		//{
+		//	using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo2_PC, kTestInstallationRootPath, kTestTagsDir))
+		//	{
+		//		var tagindex = handler.IndexInterface;
+		//		foreach (var model_def in BSPTestDefinitions)
+		//		{
+		//			StartStopwatch();
+		//			{
+		//				model_def.Open(tagindex);
+		//				Console.WriteLine("{0} LOAD: Time taken: {1}", model_def.TypeString, m_testStopwatch.Elapsed);
+		//			}
+		//			Console.WriteLine("TAG INDEX: Time taken: {0}", StopStopwatch());
 
-					var halo2 = new BlamLib.Render.COLLADA.Halo2.ColladaHalo2(tagindex, model_def.TagIndex);
+		//			var halo2 = new BlamLib.Render.COLLADA.Halo2.ColladaHalo2(tagindex, model_def.TagIndex);
 
-					halo2.Overwrite = true;
-                    halo2.RelativeFilePath = Path.Combine(kTestInstallationRootPath, kTestDataDir);
+		//			halo2.Overwrite = true;
+		//			halo2.RelativeFilePath = Path.Combine(kTestInstallationRootPath, kTestDataDir);
 
-					halo2.ClearRegister();
+		//			halo2.ClearRegister();
 
-					foreach (var info in halo2)
-						halo2.RegisterForExport(info);
+		//			foreach (var info in halo2)
+		//				halo2.RegisterForExport(info);
 
-					var bsp_info = halo2[0] as Render.COLLADA.Halo2.ColladaHalo2BSPInfo;
+		//			var bsp_info = halo2[0] as Render.COLLADA.Halo2.ColladaHalo2BSPInfo;
 
-					StartStopwatch();
-					halo2.Export(bsp_info.Name);
-					Console.WriteLine("EXPORT {0} TIME: Time taken: {1}", bsp_info.Name, StopStopwatch());
+		//			StartStopwatch();
+		//			halo2.Export(bsp_info.Name);
+		//			Console.WriteLine("EXPORT {0} TIME: Time taken: {1}", bsp_info.Name, StopStopwatch());
 
-					foreach (string report in halo2.Reports())
-						Console.WriteLine(report);
+		//			foreach (string report in halo2.Reports())
+		//				Console.WriteLine(report);
 
-					model_def.Close(tagindex);
-				}
-			}
-		}
-		[TestMethod]
-		public void Halo2TestCOLLADARenderModelExport()
-		{
-            using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo2_PC, kTestInstallationRootPath, kTestTagsDir))
-			{
-				var tagindex = handler.IndexInterface;
-				foreach (var model_def in RenderModelTestDefinitions)
-				{
-					StartStopwatch();
-					{
-						model_def.Open(tagindex);
-						Console.WriteLine("{0} LOAD: Time taken: {1}", model_def.TypeString, m_testStopwatch.Elapsed);
-					}
-					Console.WriteLine("TAG INDEX: Time taken: {0}", StopStopwatch());
+		//			model_def.Close(tagindex);
+		//		}
+		//	}
+		//}
+		//[TestMethod]
+		//public void Halo2TestCOLLADARenderModelExport()
+		//{
+		//	using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo2_PC, kTestInstallationRootPath, kTestTagsDir))
+		//	{
+		//		var tagindex = handler.IndexInterface;
+		//		foreach (var model_def in RenderModelTestDefinitions)
+		//		{
+		//			StartStopwatch();
+		//			{
+		//				model_def.Open(tagindex);
+		//				Console.WriteLine("{0} LOAD: Time taken: {1}", model_def.TypeString, m_testStopwatch.Elapsed);
+		//			}
+		//			Console.WriteLine("TAG INDEX: Time taken: {0}", StopStopwatch());
 
-					var halo2 = new BlamLib.Render.COLLADA.Halo2.ColladaHalo2(tagindex, model_def.TagIndex);
+		//			var halo2 = new BlamLib.Render.COLLADA.Halo2.ColladaHalo2(tagindex, model_def.TagIndex);
 
-					halo2.Overwrite = true;
-                    halo2.RelativeFilePath = Path.Combine(kTestInstallationRootPath, kTestDataDir);
+		//			halo2.Overwrite = true;
+		//			halo2.RelativeFilePath = Path.Combine(kTestInstallationRootPath, kTestDataDir);
 
-					foreach (Render.COLLADA.Halo2.ColladaHalo2RenderModelInfo info in halo2)
-					{
-						halo2.ClearRegister();
-						halo2.RegisterForExport(info);
+		//			foreach (Render.COLLADA.Halo2.ColladaHalo2RenderModelInfo info in halo2)
+		//			{
+		//				halo2.ClearRegister();
+		//				halo2.RegisterForExport(info);
 
-						string name = string.Format("{0}-perm{1}-lod{2}", info.Name, info.Permutation, info.LevelOfDetail);
+		//				string name = string.Format("{0}-perm{1}-lod{2}", info.Name, info.Permutation, info.LevelOfDetail);
 
-						StartStopwatch();
-						halo2.Export(name);
-						Console.WriteLine("EXPORT {0} TIME: Time taken: {1}", name, StopStopwatch());
+		//				StartStopwatch();
+		//				halo2.Export(name);
+		//				Console.WriteLine("EXPORT {0} TIME: Time taken: {1}", name, StopStopwatch());
 
-						foreach (string report in halo2.Reports())
-							Console.WriteLine(report);
-					}
+		//				foreach (string report in halo2.Reports())
+		//					Console.WriteLine(report);
+		//			}
 
-					halo2.ClearRegister();
+		//			halo2.ClearRegister();
 					
-					foreach (var info in halo2)
-						halo2.RegisterForExport(info);
+		//			foreach (var info in halo2)
+		//				halo2.RegisterForExport(info);
 
-					var model_info = halo2[0] as Render.COLLADA.Halo2.ColladaHalo2RenderModelInfo;
+		//			var model_info = halo2[0] as Render.COLLADA.Halo2.ColladaHalo2RenderModelInfo;
 
-					string name_all = model_info.Name + "_all";
+		//			string name_all = model_info.Name + "_all";
 
-					StartStopwatch();
-					halo2.Export(name_all);
-					Console.WriteLine("EXPORT {0} TIME: Time taken: {1}", name_all, StopStopwatch());
+		//			StartStopwatch();
+		//			halo2.Export(name_all);
+		//			Console.WriteLine("EXPORT {0} TIME: Time taken: {1}", name_all, StopStopwatch());
 
-					foreach (string report in halo2.Reports())
-						Console.WriteLine(report);
+		//			foreach (string report in halo2.Reports())
+		//				Console.WriteLine(report);
 
-					model_def.Close(tagindex);
-				}
-			}
-		}
+		//			model_def.Close(tagindex);
+		//		}
+		//	}
+		//}
 		#endregion
 	};
 }

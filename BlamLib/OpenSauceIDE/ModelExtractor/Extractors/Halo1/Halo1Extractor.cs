@@ -1,47 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿/*
+	BlamLib: .NET SDK for the Blam Engine
+
+	See license\BlamLib\BlamLib for specific license information
+*/
+using System;
 using BlamLib.IO;
 using BlamLib.Managers;
+using BlamLib.Messaging;
 using BlamLib.TagInterface;
-using OpenSauceIDE.ModelExtractor.MessageHandler;
 using OpenSauceIDE.ModelExtractor.TagIO;
 using H1 = BlamLib.Blam.Halo1;
 
 namespace OpenSauceIDE.ModelExtractor.Extractors.Halo1
 {
-    /// <summary>   A halo 1 extractor job base class. </summary>
-    public abstract class Halo1ExtractorJob
-        : IMessageSource
-    {
-        #region Messaging
-        protected IMessageHandler mMessageHandler = new MessageHandler.MessageHandler();
+	/// <summary>   A halo 1 extractor job base class. </summary>
+	public abstract class Halo1ExtractorJob
+		: IMessageSource
+	{
+		#region Messaging
+		protected IMessageHandler mMessageHandler = new MessageHandler();
 
-        /// <summary>   Event queue for all listeners interested in MessageSent events. </summary>
-        public event EventHandler<ModelExtractorMessageArgs> MessageSent
-        {
-            add { mMessageHandler.MessageSent += value; }
-            remove { mMessageHandler.MessageSent -= value; }
-        }
-        
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-        /// <summary>   Passes a message through to the message handler. </summary>
-        ///
-        /// <param name="sender">   Source of the event. </param>
-        /// <param name="e">        The ModelExtractorMessageArgs to process. </param>
-        protected void MessageRedirect(object sender, ModelExtractorMessageArgs e)
-        {
-            mMessageHandler.SendMessage(e.Message);
-        }
+		/// <summary>   Event queue for all listeners interested in MessageSent events. </summary>
+		public event EventHandler<MessageArgs> MessageSent
+		{
+			add { mMessageHandler.MessageSent += value; }
+			remove { mMessageHandler.MessageSent -= value; }
+		}
+		
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>   Passes a message through to the message handler. </summary>
+		///
+		/// <param name="sender">   Source of the event. </param>
+		/// <param name="e">        The ModelExtractorMessageArgs to process. </param>
+		protected void MessageRedirect(object sender, MessageArgs e)
+		{
+			mMessageHandler.SendMessage(e.Message);
+		}
 
-        void IndexInterfaceErrorOccurred(object sender, TagIndex.TagIndexErrorArgs e)
-        {
-            mMessageHandler.SendMessage(e.Message);
-        }
-        #endregion
+		void IndexInterfaceErrorOccurred(object sender, TagIndex.TagIndexErrorArgs e)
+		{
+			mMessageHandler.SendMessage(e.Message);
+		}
+		#endregion
 
-        private BlamLib.TagInterface.TagGroup[] kIgnoredTagGroups =
+		private BlamLib.TagInterface.TagGroup[] kIgnoredTagGroups =
 		{
 			H1.TagGroups.actr, H1.TagGroups.actv, H1.TagGroups.ant_, H1.TagGroups.antr,
 			H1.TagGroups.bipd, H1.TagGroups.boom, H1.TagGroups.cdmg, H1.TagGroups.coll,
@@ -62,78 +64,78 @@ namespace OpenSauceIDE.ModelExtractor.Extractors.Halo1
 			H1.TagGroups.yelo
 		};
 
-        private ExtractorTagIndexHandler<BlamLib.Managers.TagIndex> mTagIndexHandler;
+		private ExtractorTagIndexHandler<BlamLib.Managers.TagIndex> mTagIndexHandler;
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-        /// <summary>   Gets the tag index. </summary>
-        ///
-        /// <value> The tag index. </value>
-        protected TagIndexBase TagIndex
-        {
-            get
-            {
-                if (mTagIndexHandler == null)
-                {
-                    return null;
-                }
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>   Gets the tag index. </summary>
+		///
+		/// <value> The tag index. </value>
+		protected TagIndexBase TagIndex
+		{
+			get
+			{
+				if (mTagIndexHandler == null)
+				{
+					return null;
+				}
 
-                return mTagIndexHandler.IndexInterface;
-            }
-        }
+				return mTagIndexHandler.IndexInterface;
+			}
+		}
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-        /// <summary>   Creates a Halo 1 tag index. </summary>
-        ///
-        /// <param name="rootDirectory">    Pathname of the root directory. </param>
-        /// <param name="tagsFolder">       Pathname of the tags folder. </param>
-        ///
-        /// <returns>   true if it succeeds, false if it fails. </returns>
-        protected bool CreateTagIndex(string rootDirectory, string tagsFolder)
-        {
-            mTagIndexHandler = new ExtractorTagIndexHandler<BlamLib.Managers.TagIndex>(BlamLib.BlamVersion.Halo1_CE, rootDirectory, tagsFolder);
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>   Creates a Halo 1 tag index. </summary>
+		///
+		/// <param name="rootDirectory">    Pathname of the root directory. </param>
+		/// <param name="tagsFolder">       Pathname of the tags folder. </param>
+		///
+		/// <returns>   true if it succeeds, false if it fails. </returns>
+		protected bool CreateTagIndex(string rootDirectory, string tagsFolder)
+		{
+			mTagIndexHandler = new ExtractorTagIndexHandler<BlamLib.Managers.TagIndex>(BlamLib.BlamVersion.Halo1_CE, rootDirectory, tagsFolder);
 
-            if(mTagIndexHandler == null)
-            {
-                return false;
-            }
+			if(mTagIndexHandler == null)
+			{
+				return false;
+			}
 
-            mTagIndexHandler.IndexInterface.SetupIgnoreList(kIgnoredTagGroups);
-            mTagIndexHandler.IndexInterface.ErrorOccurred +=IndexInterfaceErrorOccurred;
+			mTagIndexHandler.IndexInterface.SetupIgnoreList(kIgnoredTagGroups);
+			mTagIndexHandler.IndexInterface.ErrorOccurred +=IndexInterfaceErrorOccurred;
 
-            return true;
-        }
+			return true;
+		}
 
-        /// <summary>   Destroys the tag index. </summary>
-        protected void DestroyTagIndex()
-        {
-            if (mTagIndexHandler != null)
-            {
-                mTagIndexHandler.IndexInterface.ErrorOccurred -= IndexInterfaceErrorOccurred;
-                mTagIndexHandler.IndexInterface.UnloadAll();
-                mTagIndexHandler.Dispose();
-                mTagIndexHandler = null;
-            }
-        }
+		/// <summary>   Destroys the tag index. </summary>
+		protected void DestroyTagIndex()
+		{
+			if (mTagIndexHandler != null)
+			{
+				mTagIndexHandler.IndexInterface.ErrorOccurred -= IndexInterfaceErrorOccurred;
+				mTagIndexHandler.IndexInterface.UnloadAll();
+				mTagIndexHandler.Dispose();
+				mTagIndexHandler = null;
+			}
+		}
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-        /// <summary>   Opens a tag. </summary>
-        ///
-        /// <param name="tagPath">  Full pathname of the tag file. </param>
-        /// <param name="tagGroup"> Group the tag belongs to. </param>
-        ///
-        /// <returns>   A BlamLib.Managers.TagManager. </returns>
-        protected BlamLib.Managers.TagManager OpenTag(string tagPath, TagGroup tagGroup)
-        {
-            var datumIndex = mTagIndexHandler.IndexInterface.Open(tagPath, tagGroup, ITagStreamFlags.LoadDependents);
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>   Opens a tag. </summary>
+		///
+		/// <param name="tagPath">  Full pathname of the tag file. </param>
+		/// <param name="tagGroup"> Group the tag belongs to. </param>
+		///
+		/// <returns>   A BlamLib.Managers.TagManager. </returns>
+		protected BlamLib.Managers.TagManager OpenTag(string tagPath, TagGroup tagGroup)
+		{
+			var datumIndex = mTagIndexHandler.IndexInterface.Open(tagPath, tagGroup, ITagStreamFlags.LoadDependents);
 
-            if (!BlamLib.Managers.TagIndex.IsValid(datumIndex))
-            {
-                return null;
-            }
+			if (!BlamLib.Managers.TagIndex.IsValid(datumIndex))
+			{
+				return null;
+			}
 
-            var tagManager = mTagIndexHandler.IndexInterface[datumIndex];
+			var tagManager = mTagIndexHandler.IndexInterface[datumIndex];
 
-            return tagManager;
-        }
-    }
+			return tagManager;
+		}
+	}
 }

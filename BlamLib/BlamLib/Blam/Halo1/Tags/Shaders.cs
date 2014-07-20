@@ -301,7 +301,7 @@ namespace BlamLib.Blam.Halo1.Tags
 		public TI.TagReference ReflectionCubeMap;
 		#endregion
 
-		public shader_environment_group() : base(52)
+		public shader_environment_group() : base(54)
 		{
 			Add(Flags = TI.Flags.Word);
 			Add(Type = new TI.Enum());

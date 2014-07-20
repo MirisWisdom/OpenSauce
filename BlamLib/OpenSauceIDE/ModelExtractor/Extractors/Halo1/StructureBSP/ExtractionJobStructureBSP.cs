@@ -1,151 +1,184 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿/*
+	BlamLib: .NET SDK for the Blam Engine
+
+	See license\BlamLib\BlamLib for specific license information
+*/
+using System;
+using System.IO;
 using BlamLib.Managers;
 using BlamLib.Render.COLLADA;
 using BlamLib.Render.COLLADA.Halo1;
-using OpenSauceIDE.ModelExtractor.MessageHandler;
 
 namespace OpenSauceIDE.ModelExtractor.Extractors.Halo1.StructureBSP
 {
-    /// <summary>   An structure bsp extraction jobs data. </summary>
-    public class ExtractionJobStructureBSPData
-    {
-        public string TagsRoot;
-        public string TagsFolder;
-        public string TagPath;
+	/// <summary>   An structure bsp extraction jobs data. </summary>
+	public class ExtractionJobStructureBSPData
+		: ICloneable
+	{
+		public bool ExportRenderMesh;
+		public bool ExportPortals;
+		public bool ExportFogPlanes;
+		public bool ExportBSPMarkers;
+		public bool ExportLightmapSizes;
+		public int LightmapSizeMultiplier;
 
-        public bool ExportRenderMesh;
-        public bool ExportPortals;
-        public bool ExportFogPlanes;
-        public bool ExportBSPMarkers;
-        public bool ExportLightmapSizes;
-        public int LightmapSizeMultiplier;
+		public object Clone()
+		{
+			return MemberwiseClone();
+		}
+	}
 
-        public string OutputFile;
-    }
+	/// <summary>   An structure bsp extraction job. </summary>
+	public class ExtractionJobStructureBSP
+		: Halo1ExtractorJob
+		, IExtractionJob
+	{
+		public ExtractionData ExtractionData { get; private set; }
 
-    /// <summary>   An structure bsp extraction job. </summary>
-    public class ExtractionJobStructureBSP
-        : Halo1ExtractorJob
-        , IExtractionJob
-    {
-        private IColladaSettings mColladaSettings;
-        private ExtractionJobStructureBSPData mBspData;
+		private ColladaSettings mColladaSettings;
+		private ModelExtractionData mModelExtractionData;
+		private ExtractionJobStructureBSPData mBspData;
+		
+		public string JobName
+		{
+			get { return Path.GetFileName(mModelExtractionData.TagFile.AbsoluteTagPath); }
+		}
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-        /// <summary>   Constructor. </summary>
-        ///
-        /// <param name="extractionData">   Data for the extraction. </param>
-        public ExtractionJobStructureBSP(ExtractionData extractionData)
-        {
-            mColladaSettings = extractionData["COLLADA"] as IColladaSettings;
-            mBspData = extractionData["STRUCTUREBSP"] as ExtractionJobStructureBSPData;
-        }
+		public ExtractionStateEnum JobState
+		{
+			get { return ExtractionStateEnum.Queued; }
+		}
 
-        #region Data Collection
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-        /// <summary>   Gets the BSP data from the tag. </summary>
-        ///
-        /// <param name="tagIndex">     The parent tag index. </param>
-        /// <param name="tagManager">   The tag's manager. </param>
-        ///
-        /// <returns>   The bsp data. </returns>
-        private StructureBSPData GetBSPData(TagIndexBase tagIndex, BlamLib.Managers.TagManager tagManager)
-        {
-            var data = new StructureBSPData()
-            {
-                IncludeRenderMesh = mBspData.ExportRenderMesh,
-                IncludePortals = mBspData.ExportPortals,
-                IncludeFogPlanes = mBspData.ExportFogPlanes,
-                IncludeBSPMarkers = mBspData.ExportBSPMarkers
-            };
+		public string JobResultMessage
+		{
+			get { return "Success"; }
+		}
 
-            data.CollectData(tagIndex, tagManager);
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Constructor. </summary>
+		///
+		/// <param name="extractionData">	Data for the extraction. </param>
+		public ExtractionJobStructureBSP(IExtractionData extractionData)
+		{
+			mColladaSettings = extractionData.Get<ColladaSettings>();
+			mModelExtractionData = extractionData.Get<ModelExtractionData>();
+			mBspData = extractionData.Get<ExtractionJobStructureBSPData>();
+		}
 
-            return data;
-        }
+		#region Data Collection
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>   Gets the BSP data from the tag. </summary>
+		///
+		/// <param name="tagIndex">     The parent tag index. </param>
+		/// <param name="tagManager">   The tag's manager. </param>
+		///
+		/// <returns>   The bsp data. </returns>
+		private StructureBSPData GetBSPData(TagIndexBase tagIndex, BlamLib.Managers.TagManager tagManager)
+		{
+			var data = new StructureBSPData()
+			{
+				IncludeRenderMesh = mBspData.ExportRenderMesh,
+				IncludePortals = mBspData.ExportPortals,
+				IncludeFogPlanes = mBspData.ExportFogPlanes,
+				IncludeBSPMarkers = mBspData.ExportBSPMarkers
+			};
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////
-        /// <summary>   Gets the shader data from the tag. </summary>
-        ///
-        /// <param name="tagIndex">     The parent tag index. </param>
-        /// <param name="tagManager">   The tags' manager. </param>
-        ///
-        /// <returns>   The shader data. </returns>
-        private StructureBSPShaderData GetShaderData(TagIndexBase tagIndex, BlamLib.Managers.TagManager tagManager)
-        {
-            var data = new StructureBSPShaderData();
+			data.CollectData(tagIndex, tagManager);
 
-            data.CollectData(tagIndex, tagManager);
+			return data;
+		}
 
-            return data;
-        }
-        #endregion
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>   Gets the shader data from the tag. </summary>
+		///
+		/// <param name="tagIndex">     The parent tag index. </param>
+		/// <param name="tagManager">   The tags' manager. </param>
+		///
+		/// <returns>   The shader data. </returns>
+		private StructureBSPShaderData GetShaderData(TagIndexBase tagIndex, BlamLib.Managers.TagManager tagManager)
+		{
+			var data = new StructureBSPShaderData();
 
-        /// <summary>   Executes the extraction job. </summary>
-        public void Execute()
-        {
-            // Create the tag index. 
-            if (!CreateTagIndex(mBspData.TagsRoot, mBspData.TagsFolder))
-            {
-                mMessageHandler.SendMessage("Failed to create a tag index for {0}\\{1}", mBspData.TagsRoot, mBspData.TagsFolder);
-                return;
-            }
+			data.CollectData(tagIndex, tagManager);
 
-            // Open the tag
-            var tagManager = OpenTag(mBspData.TagPath, BlamLib.Blam.Halo1.TagGroups.sbsp);
-            if (tagManager == null)
-            {
-                mMessageHandler.SendMessage("Failed to open tag {0}", mBspData.TagPath);
-                DestroyTagIndex();
-                return;
-            }
+			return data;
+		}
+		#endregion
 
-            // Export the lightmap sizes
-            if(mBspData.ExportLightmapSizes)
-            {
-                var lightmapExporter = new LightmapSizeExporter();
+		/// <summary>   Executes the extraction job. </summary>
+		public void Execute()
+		{
+			// Create the tag index.
+			if (!CreateTagIndex(mModelExtractionData.TagsDirectory.Root, mModelExtractionData.TagsDirectory.AbsoluteFolder))
+			{
+				mMessageHandler.SendMessage("Failed to create a tag index for {0}\\{1}", mModelExtractionData.TagsDirectory.Root, mModelExtractionData.TagsDirectory.AbsoluteFolder);
+				return;
+			}
 
-                lightmapExporter.MessageSent += MessageRedirect;
-                lightmapExporter.Export(TagIndex, tagManager, mBspData.LightmapSizeMultiplier, mBspData.OutputFile);
-                lightmapExporter.MessageSent -= MessageRedirect;
-            }
+			var tagPath = mModelExtractionData.TagFile.TagPath;
 
-            if (mBspData.ExportRenderMesh
-                || mBspData.ExportPortals
-                || mBspData.ExportFogPlanes
-                || mBspData.ExportBSPMarkers)
-            {
-                // Create the COLLADA exporter
-                var extractor = new ColladaBSPExporter(mColladaSettings,
-                   TagIndex,
-                   tagManager);
+			// Open the tag
+			var tagManager = OpenTag(tagPath, BlamLib.Blam.Halo1.TagGroups.sbsp);
+			if (tagManager == null)
+			{
+				mMessageHandler.SendMessage("Failed to open tag {0}", tagPath);
+				DestroyTagIndex();
+				return;
+			}
 
-                extractor.ErrorOccured +=
-                    (sender, args) =>
-                    {
-                        mMessageHandler.SendMessage("Exporter Error: {0}", args.ErrorMessage);
-                    };
+			// Export the lightmap sizes
+			if(mBspData.ExportLightmapSizes)
+			{
+				var lightmapExporter = new LightmapSizeExporter();
 
-                // Add the tags data sources
-                extractor.AddDataProvider(GetBSPData(TagIndex, tagManager));
-                extractor.AddDataProvider(GetShaderData(TagIndex, tagManager));
+				lightmapExporter.MessageSent += MessageRedirect;
+				lightmapExporter.Export(TagIndex, tagManager, mBspData.LightmapSizeMultiplier, mModelExtractionData.OutputFile);
+				lightmapExporter.MessageSent -= MessageRedirect;
+			}
 
-                // Export the tag
-                if (extractor.BuildColladaInstance())
-                {
-                    extractor.SaveDAE(mBspData.OutputFile);
-                    mMessageHandler.SendMessage("Extraction complete! Tag {0}", mBspData.TagPath);
-                }
-                else
-                {
-                    mMessageHandler.SendMessage("Failed to build COLLADA file for tag {0}", mBspData.TagPath);
-                }
-            }
+			// Export the BSP meshes
+			if (mBspData.ExportRenderMesh
+				|| mBspData.ExportPortals
+				|| mBspData.ExportFogPlanes
+				|| mBspData.ExportBSPMarkers)
+			{
+				// Create the COLLADA exporter
+				var extractor = new ColladaBSPExporter(mColladaSettings,
+					TagIndex,
+					tagManager);
 
-            DestroyTagIndex();
-        }
-    }
+				extractor.MessageSent +=
+					(sender, args) =>
+					{
+						mMessageHandler.SendMessage("Exporter Error: {0}", args.Message);
+					};
+
+				bool result = false;
+				try
+				{
+					// Add the tags data sources
+					extractor.AddDataProvider(GetBSPData(TagIndex, tagManager));
+					extractor.AddDataProvider(GetShaderData(TagIndex, tagManager));
+
+					result = extractor.BuildColladaInstance();
+				}
+				catch (ColladaException e)
+				{
+					mMessageHandler.SendMessage("Exporter Error: {0}", e.Message);
+				}
+
+				if (result)
+				{
+					extractor.SaveDAE(mModelExtractionData.OutputFile);
+					mMessageHandler.SendMessage("Extraction complete! Tag {0}", tagPath);
+				}
+				else
+				{
+					mMessageHandler.SendMessage("Failed to build COLLADA file for tag {0}", tagPath);
+				}
+			}
+
+			DestroyTagIndex();
+		}
+	}
 }

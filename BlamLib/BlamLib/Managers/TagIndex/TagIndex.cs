@@ -462,7 +462,7 @@ namespace BlamLib.Managers
 			}
 			catch (Exception ex)
 			{
-				OnErrorOccurred(ex, "Tag Index: Failed to open tag from disk: {0}", path);
+				OnErrorOccurred(ex, "Tag Index: Failed to open tag from disk: {0}; Message: {1}", path, ex.Message);
 				di = Blam.DatumIndex.Null;
 			}
 			finally { tm.Close(); }

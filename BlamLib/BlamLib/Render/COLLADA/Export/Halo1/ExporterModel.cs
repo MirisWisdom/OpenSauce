@@ -13,41 +13,41 @@ using H1 = BlamLib.Blam.Halo1;
 
 namespace BlamLib.Render.COLLADA.Halo1
 {
-    ///-------------------------------------------------------------------------------------------------
-    /// <summary>   Interface for halo 1 model data provider. </summary>
-    ///-------------------------------------------------------------------------------------------------
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>   Interface for halo 1 model data provider. </summary>
+	///-------------------------------------------------------------------------------------------------
 	public interface IHalo1ModelDataProvider : IColladaDataProvider
 	{
-        ///-------------------------------------------------------------------------------------------------
-        /// <summary>   Gets the bone list for the model. </summary>
-        /// <returns>   The models bones. </returns>
-        ///-------------------------------------------------------------------------------------------------
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>   Gets the bone list for the model. </summary>
+		/// <returns>   The models bones. </returns>
+		///-------------------------------------------------------------------------------------------------
 		ModelData.ModelBoneList GetBones();
 
-        ///-------------------------------------------------------------------------------------------------
-        /// <summary>   Gets a list of all the geometries in the model. </summary>
-        /// <returns>   The geometries contained in the model. </returns>
-        ///-------------------------------------------------------------------------------------------------
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>   Gets a list of all the geometries in the model. </summary>
+		/// <returns>   The geometries contained in the model. </returns>
+		///-------------------------------------------------------------------------------------------------
 		ModelData.ModelGeometrySetList GetGeometries();
 
-        ///-------------------------------------------------------------------------------------------------
-        /// <summary>   Gets a list of all the geometries in the model for a specific permutation and level of detial. </summary>
-        /// <param name="permutation">  The permutation. </param>
-        /// <param name="lod">          The LOD. </param>
-        /// <returns>   The geometries contained in the model. </returns>
-        ///-------------------------------------------------------------------------------------------------
-		ModelData.ModelGeometrySetList GetGeometries(int permutation, Blam.Halo1.TypeEnums.LevelOfDetailEnum lod);
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>   Gets a list of all the geometries in the model for a specific permutation and level of detial. </summary>
+		/// <param name="permutation">  The permutation. </param>
+		/// <param name="lod">          The LOD. </param>
+		/// <returns>   The geometries contained in the model. </returns>
+		///-------------------------------------------------------------------------------------------------
+		ModelData.ModelGeometrySetList GetGeometries(string permutation, Blam.Halo1.TypeEnums.LevelOfDetailEnum lod);
 
-        ///-------------------------------------------------------------------------------------------------
-        /// <summary>   Gets the models marker instances. </summary>
-        /// <returns>   The the models marker instances. </returns>
-        ///-------------------------------------------------------------------------------------------------
+		///-------------------------------------------------------------------------------------------------
+		/// <summary>   Gets the models marker instances. </summary>
+		/// <returns>   The the models marker instances. </returns>
+		///-------------------------------------------------------------------------------------------------
 		ModelData.ModelMarkerInstanceList GetMarkerInstances();
 	}
 
-    ///-------------------------------------------------------------------------------------------------
-    /// <summary>   Collada Halo1 GBXModel exporter. </summary>
-    ///-------------------------------------------------------------------------------------------------
+	///-------------------------------------------------------------------------------------------------
+	/// <summary>   Collada Halo1 GBXModel exporter. </summary>
+	///-------------------------------------------------------------------------------------------------
 	public class ColladaModelExporter : ColladaExporterHalo1
 	{
 		#region Constructor
@@ -85,7 +85,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			int index_offset)
 		{
 			// add the strip indices to an easier to handle index list, ignoring invalid indices
-			List<int> index_list = new List<int>();
+			var index_list = new List<int>();
 			foreach(var triangle in part.Triangles)
 			{
 				index_list.Add(triangle.VertexIndex0 + index_offset);
@@ -102,7 +102,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		///-------------------------------------------------------------------------------------------------
 		void CreateGeometryList()
 		{
-			List<string> shaderList = new List<string>();
+			var shaderList = new List<string>();
 			if (mShaderDataProvider != null)
 			{
 				// Create a list of every shader used
@@ -111,8 +111,8 @@ namespace BlamLib.Render.COLLADA.Halo1
 					shaderList.Add(ColladaUtilities.FormatName(Path.GetFileNameWithoutExtension(effect.Name), " ", "_"));
 				}
 			}
-			
-			H1.Tags.gbxmodel_group definition = mTagManager.TagDefinition as H1.Tags.gbxmodel_group;
+
+			var definition = mTagManager.TagDefinition as H1.Tags.gbxmodel_group;
 
 			var geometrySetList = mModelDataProvider.GetGeometries();
 
@@ -120,7 +120,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 			{
 				string name = ColladaUtilities.FormatName(geometrySet.Name, " ", "_");
 
-				Geometry geometryData = new Geometry(name
+				var geometryData = new Geometry(name
 					, 1
 					, Geometry.VertexComponent.POSITION
 					| Geometry.VertexComponent.NORMAL
@@ -133,7 +133,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 				{
 					foreach(var vertex in part.UncompressedVertices)
 					{
-						Geometry.Vertex common_vertex = new Geometry.Vertex(vertex.Position.ToPoint3D(100),
+						var common_vertex = new Geometry.Vertex(vertex.Position.ToPoint3D(100),
 							vertex.Normal.ToVector3D(),
 							vertex.Binormal.ToVector3D(),
 							vertex.Tangent.ToVector3D());
@@ -155,13 +155,13 @@ namespace BlamLib.Render.COLLADA.Halo1
 				int index_offset = 0;
 				foreach (var part in geometrySet.Geometry.Parts)
 				{
-                    var shader_index = part.ShaderIndex;
-                    if(shader_index >= shaderList.Count)
-                    {
-                        shader_index.Value = shaderList.Count - 1;
-                    }
+					var shader_index = part.ShaderIndex;
+					if(shader_index >= shaderList.Count)
+					{
+						shader_index.Value = shaderList.Count - 1;
+					}
 
-                    Geometry.Part common_part = new Geometry.Part(shaderList[shader_index]);
+					var common_part = new Geometry.Part(shaderList[shader_index]);
 					common_part.AddIndices(CreateIndicesModel(part, index_offset));
 
 					index_offset += part.UncompressedVertices.Count;
@@ -194,14 +194,14 @@ namespace BlamLib.Render.COLLADA.Halo1
 			{
 				var geometrySet = geometrySetList[i];
 
-				Skin skinData = new Skin(geometrySet.Name, listGeometry[i].ID);
+				var skinData = new Skin(geometrySet.Name, listGeometry[i].ID);
 
 				//  create a list of vertex weights from all of the geometry parts
 				foreach (var part in geometrySet.Geometry.Parts)
 				{
 					foreach (var vertex in part.UncompressedVertices)
 					{
-						Skin.VertexWeight vertex_weight = new Skin.VertexWeight();
+						var vertex_weight = new Skin.VertexWeight();
 
 						int node1 = vertex.NodeIndex1;
 						int node2 = vertex.NodeIndex2;
@@ -245,7 +245,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 				return;
 			}
 
-			List<Bone> bone_list = new List<Bone>();
+			var bone_list = new List<Bone>();
 			// create a list of common bone definitions
 			foreach (var bone in boneList)
 			{
@@ -268,14 +268,16 @@ namespace BlamLib.Render.COLLADA.Halo1
 		///-------------------------------------------------------------------------------------------------
 		void CreateNodeList()
 		{
-			MaterialReferenceList materialReferences = new MaterialReferenceList();
+			var materialReferences = new MaterialReferenceList();
 			if (mShaderDataProvider != null)
 			{
-				// create a list of ever shader used 
+				// create a list of every shader used 
 				foreach (var effect in mShaderDataProvider.GetEffects())
 				{
 					string effectName = ColladaUtilities.FormatName(Path.GetFileNameWithoutExtension(effect.Name), " ", "_");
+
 					materialReferences.Add(new MaterialReference(
+						effectName,
 						ColladaUtilities.BuildUri(ColladaElement.FormatID<Fx.ColladaMaterial>(effectName)),
 						effectName));
 				}
@@ -285,11 +287,10 @@ namespace BlamLib.Render.COLLADA.Halo1
 			var geometrySetList = mModelDataProvider.GetGeometries();
 			for (int i = 0; i < geometrySetList.Count; i++)
 			{
+				var node = CreateNode(geometrySetList[i].Name, "", geometrySetList[i].Name, Enums.ColladaNodeType.NODE);
 
-                Core.ColladaNode node = CreateNode(geometrySetList[i].Name, "", geometrySetList[i].Name, Enums.ColladaNodeType.NODE);
-
-                // If there are no bones instance the static geometry, otherwise create a skinned instance
-                string name = ColladaUtilities.FormatName(geometrySetList[i].Name, " ", "_");
+				// If there are no bones instance the static geometry, otherwise create a skinned instance
+				string name = ColladaUtilities.FormatName(geometrySetList[i].Name, " ", "_");
 				if (mModelDataProvider.GetBones().Count == 0)
 				{
 					node.Add(
@@ -323,7 +324,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 		{
 			var markerInstances = mModelDataProvider.GetMarkerInstances();
 
-			List<Marker> markerList = new List<Marker>();
+			var markerList = new List<Marker>();
 
 			// create a list of generic marker definitions
 			foreach (var markerInstance in markerInstances)
@@ -333,7 +334,7 @@ namespace BlamLib.Render.COLLADA.Halo1
 
 				name += "-perm" + markerInstance.Permutation.ToString();
 
-				Marker common_marker = new Marker(name,
+				var common_marker = new Marker(name,
 					markerInstance.Position.ToPoint3D(100),
 					TagInterface.RealQuaternion.Invert(markerInstance.Rotation),
 					markerInstance.Bone);
