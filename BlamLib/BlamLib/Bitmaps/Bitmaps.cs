@@ -54,6 +54,15 @@ namespace BlamLib.Bitmaps
 	};
 	#endregion
 
+	public enum AssetFormat
+	{
+		tga,
+		tif,
+		bmp,
+		jpg,
+		png
+	}
+
 	public enum Format
 	{
 		/// <summary>alpha</summary>
@@ -262,6 +271,20 @@ namespace BlamLib.Bitmaps
 				//case Format: return GDI.Imaging.PixelFormat.;
 			}
 			return GDI.Imaging.PixelFormat.Undefined;
+		}
+		
+		private static readonly Dictionary<AssetFormat, string> kAssetExtensions = new Dictionary<AssetFormat,string>
+		{
+			{ AssetFormat.tga, "tga" },
+			{ AssetFormat.tif, "tif" },
+			{ AssetFormat.bmp, "bmp" },
+			{ AssetFormat.jpg, "jpg" },
+			{ AssetFormat.png, "png" },
+		};
+
+		public static string GetAssetExtension(AssetFormat format)
+		{
+			return kAssetExtensions[format];
 		}
 	};
 

@@ -7,6 +7,7 @@
 using System.IO;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using BlamLib.Bitmaps;
 
 namespace BlamLib.Test
 {
@@ -287,13 +288,13 @@ namespace BlamLib.Test
 		{
 			public bool Overwrite { get; private set; }
 			public string RootDirectory { get; private set; }
-			public string BitmapExtension { get; private set; }
+			public AssetFormat BitmapFormat { get; private set; }
 
-			public TestColladaSettings(bool overwrite, string root, string extension)
+			public TestColladaSettings(bool overwrite, string root, AssetFormat format)
 			{
 				Overwrite = overwrite;
 				RootDirectory = root;
-				BitmapExtension = extension;
+				BitmapFormat = format;
 			}
 		}
 
@@ -303,7 +304,7 @@ namespace BlamLib.Test
 			var settings = new TestColladaSettings(
 				true,
 				Path.Combine(kTestInstallationRootPath, kTestDataDir),
-				".bmp");
+				AssetFormat.bmp);
 
 			using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestInstallationRootPath, kTestTagsDir))
 			{
@@ -360,7 +361,7 @@ namespace BlamLib.Test
 			var settings = new TestColladaSettings(
 				true,
 				Path.Combine(kTestInstallationRootPath, kTestDataDir),
-				".bmp");
+				AssetFormat.bmp);
 
 			using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestInstallationRootPath, kTestTagsDir))
 			{
@@ -413,7 +414,7 @@ namespace BlamLib.Test
 			var settings = new TestColladaSettings(
 				true,
 				Path.Combine(kTestInstallationRootPath, kTestDataDir),
-				".bmp");
+				AssetFormat.bmp);
 
 			using (var handler = new TagIndexHandler<Managers.TagIndex>(BlamVersion.Halo1_CE, kTestInstallationRootPath, kTestDataDir))
 			{

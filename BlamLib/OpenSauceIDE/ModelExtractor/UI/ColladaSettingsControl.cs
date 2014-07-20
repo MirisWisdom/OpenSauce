@@ -11,22 +11,22 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using BlamLib.Bitmaps;
+using BlamLib.Render.COLLADA;
+using OpenSauceIDE.ModelExtractor.Settings;
 
 namespace OpenSauceIDE.ModelExtractor.UI
 {
 	public partial class ColladaSettingsControl : UserControl
 	{
-		private readonly BindingList<Tuple<string, ModelExtractorBitmapFormat>> mBitmapFormatList = new BindingList<Tuple<string, ModelExtractorBitmapFormat>>()
+		private readonly BindingList<Tuple<string, AssetFormat>> mBitmapFormatList = new BindingList<Tuple<string, AssetFormat>>()
 		{
-			new Tuple<string, ModelExtractorBitmapFormat>("Targa (*.tga)", ModelExtractorBitmapFormat.Tga),
-			new Tuple<string, ModelExtractorBitmapFormat>("TIFF (*.tif)", ModelExtractorBitmapFormat.Tiff),
-			new Tuple<string, ModelExtractorBitmapFormat>("Bitmap (*.bmp)", ModelExtractorBitmapFormat.Bmp),
-			new Tuple<string, ModelExtractorBitmapFormat>("JPEG (*.jpg)", ModelExtractorBitmapFormat.Jpg),
-			new Tuple<string, ModelExtractorBitmapFormat>("PNG (*.png)", ModelExtractorBitmapFormat.Png),
+			new Tuple<string, AssetFormat>("Targa (*.tga)", AssetFormat.tga),
+			new Tuple<string, AssetFormat>("TIFF (*.tif)", AssetFormat.tif),
+			new Tuple<string, AssetFormat>("Bitmap (*.bmp)", AssetFormat.bmp),
+			new Tuple<string, AssetFormat>("JPEG (*.jpg)", AssetFormat.jpg),
+			new Tuple<string, AssetFormat>("PNG (*.png)", AssetFormat.png),
 		};
-
-		public ModelExtractorBitmapFormat BitmapFormat { get { return (ModelExtractorBitmapFormat)mBitmapExtensionComboBox.SelectedValue; } }
-		public bool Overwrite { get { return mOverwriteCheckbox.Checked; } }
 
 		/// <summary>   Default constructor. </summary>
 		public ColladaSettingsControl()
@@ -36,6 +36,16 @@ namespace OpenSauceIDE.ModelExtractor.UI
 			mBitmapExtensionComboBox.DataSource = mBitmapFormatList;
 			mBitmapExtensionComboBox.DisplayMember = "Item1";
 			mBitmapExtensionComboBox.ValueMember = "Item2";
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Attaches to the given collada settings. </summary>
+		///
+		/// <param name="colladaSettings">	The collada settings. </param>
+		public void Attach(IExtractorColladaSettings colladaSettings)
+		{
+			mOverwriteCheckbox.DataBindings.Add(new Binding("Checked", colladaSettings, "Overwrite"));
+			mBitmapExtensionComboBox.DataBindings.Add(new Binding("SelectedValue", colladaSettings, "BitmapFormat"));
 		}
 	}
 }

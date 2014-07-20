@@ -102,6 +102,23 @@ namespace OpenSauceIDE.ModelExtractor.UI
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Binds the control's path to an objects member. </summary>
+		///
+		/// <param name="memberName">  	Name of the member. </param>
+		/// <param name="sourceObject">	Source object. </param>
+		public void BindPath(string memberName, object sourceObject)
+		{
+			var binding = mPathTextBox.DataBindings["Text"];
+
+			if(binding != null)
+			{
+				mPathTextBox.DataBindings.Remove(binding);
+			}
+
+			mPathTextBox.DataBindings.Add(new Binding("Text", sourceObject, memberName));
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>   Opens the folder browser to get a directory from the user. </summary>
 		///
 		/// <param name="sender">   Source of the event. </param>

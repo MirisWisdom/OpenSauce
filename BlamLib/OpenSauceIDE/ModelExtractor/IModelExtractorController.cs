@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using BlamLib.Messaging;
 using BlamLib.Render.COLLADA;
 using OpenSauceIDE.ModelExtractor.Extractors;
+using OpenSauceIDE.ModelExtractor.Settings;
 
 namespace OpenSauceIDE.ModelExtractor
 {
@@ -38,11 +39,13 @@ namespace OpenSauceIDE.ModelExtractor
 	{
 		event EventHandler<ModelExtractorStateChangeArgs> StateChanged;
 
+		IExtractorPathSettings GetExtractorSettings();
 		IExtractorFactory GetExtractorFactory();
+		IExtractionManager GetExtractionManager();
 
 		void OpenExtractor(string extension);
 		void CloseExtractor();
-		void Extract(string tagsDirectory, string dataDirectory);
+		void Extract();
 
 		IEnumerable<System.Windows.Forms.Control> GetControls();
 	}

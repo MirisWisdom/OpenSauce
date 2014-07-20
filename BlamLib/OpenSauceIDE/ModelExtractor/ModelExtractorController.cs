@@ -8,24 +8,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using BlamLib;
+using BlamLib.Bitmaps;
 using BlamLib.Messaging;
 using BlamLib.Render.COLLADA;
 using OpenSauceIDE.ModelExtractor.Extractors;
+using OpenSauceIDE.ModelExtractor.Settings;
 using OpenSauceIDE.ModelExtractor.TagIO;
 using OpenSauceIDE.ModelExtractor.UI;
 
 namespace OpenSauceIDE.ModelExtractor
 {
-	/// <summary>   Enum for the bitmap format to use when extracting models. </summary>
-	public enum ModelExtractorBitmapFormat
-	{
-		Tga,
-		Tiff,
-		Bmp,
-		Jpg,
-		Png
-	}
-
 	public class ModelExtractionData
 		: ICloneable
 	{
@@ -52,6 +44,9 @@ namespace OpenSauceIDE.ModelExtractor
 		/// <summary>   Default constructor. </summary>
 		public ModelExtractorController(BlamVersion gameVersion)
 		{
+			SettingsHandler.GetSettings();
+			mSettingsUI.Attach(SettingsHandler.ModelExtractor.Collada);
+
 			// Start the extraction thread
 			mExtractionManager.MessageSent += MessageRedirect;
 			mExtractionManager.Start();
@@ -116,7 +111,14 @@ namespace OpenSauceIDE.ModelExtractor
 			}
 		}
 		#endregion
-		
+
+		#region Settings
+		public IExtractorPathSettings GetExtractorSettings()
+		{
+			return SettingsHandler.ModelExtractor.Extractor;
+		}
+		#endregion
+
 		#region File Selection
 		////////////////////////////////////////////////////////////////////////////////////////////////////
 		/// <summary>   Gets a file dialog with default settings set. </summary>
@@ -183,8 +185,22 @@ namespace OpenSauceIDE.ModelExtractor
 		#endregion
 		
 		#region Extractor
+		private class ColladaSettingsInstance
+			: IColladaSettings
+			, ICloneable
+		{
+			public bool Overwrite { get; set; }
+			public string RootDirectory { get; set; }
+			public AssetFormat BitmapFormat { get; set; }
+
+			public object Clone()
+			{
+				return MemberwiseClone();
+			}
+		}
+
 		private IExtractorFactory mExtractorFactory = new ExtractorFactory();
-		private ExtractionManager mExtractionManager = new ExtractionManager();
+		private IExtractionManager mExtractionManager = new ExtractionManager();
 		private List<IExtractor> mExtractors = new List<IExtractor>();
 		private ExtractorFileType mCurrentFileType;
 
@@ -195,6 +211,15 @@ namespace OpenSauceIDE.ModelExtractor
 		public IExtractorFactory GetExtractorFactory()
 		{
 			return mExtractorFactory;
+		}
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////
+		/// <summary>	Gets the extraction manager. </summary>
+		///
+		/// <returns>	The extraction manager. </returns>
+		public IExtractionManager GetExtractionManager()
+		{
+			return mExtractionManager;
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -237,15 +262,25 @@ namespace OpenSauceIDE.ModelExtractor
 			mExtractors.Clear();
 		}
 
-		////////////////////////////////////////////////////////////////////////////////////////////////////
-		/// <summary>   Extracts a model. </summary>
-		///
-		/// <param name="tagsDirectory">    Pathname of the tags directory. </param>
-		/// <param name="dataDirectory">    Pathname of the data directory. </param>
-		public void Extract(string tagsDirectory, string dataDirectory)
+		/// <summary>	Extracts a model. </summary>
+		public void Extract()
 		{
-			var tagsDir = new BlamPath(tagsDirectory);
-			var dataDir = new BlamPath(dataDirectory);
+			var extractorSettings = SettingsHandler.ModelExtractor.Extractor;
+
+			if (!Directory.Exists(extractorSettings.DataFolder))
+			{
+				mMessageHandler.SendMessage("The selected data directory does not exist");
+				return;
+			}
+
+			if (!Directory.Exists(extractorSettings.TagsFolder))
+			{
+				mMessageHandler.SendMessage("The selected tags directory does not exist");
+				return;
+			}
+
+			var tagsDir = new BlamPath(extractorSettings.TagsFolder);
+			var dataDir = new BlamPath(extractorSettings.DataFolder);
 
 			// Get the input files
 			var modelFiles = GetInputFiles(tagsDir.AbsoluteFolder);
@@ -276,30 +311,11 @@ namespace OpenSauceIDE.ModelExtractor
 			};
 
 			// Build the Collada settings
-			var bitmapExtension = "";
-			switch (mSettingsUI.BitmapFormat)
+			var colladaSettings = SettingsHandler.ModelExtractor.Collada;
+			var colladaSettingsInstance = new ColladaSettingsInstance()
 			{
-				case ModelExtractorBitmapFormat.Tga:
-					bitmapExtension = "tga";
-					break;
-				case ModelExtractorBitmapFormat.Bmp:
-					bitmapExtension = "bmp";
-					break;
-				case ModelExtractorBitmapFormat.Jpg:
-					bitmapExtension = "jpg";
-					break;
-				case ModelExtractorBitmapFormat.Png:
-					bitmapExtension = "png";
-					break;
-				default:
-					bitmapExtension = "tif";
-					break;
-			}
-
-			var colladaSettings = new ColladaSettings()
-			{
-				Overwrite = mSettingsUI.Overwrite,
-				BitmapExtension = bitmapExtension,
+				Overwrite = colladaSettings.Overwrite,
+				BitmapFormat = colladaSettings.BitmapFormat,
 				RootDirectory = dataDir.AbsoluteFolder
 			};
 
@@ -309,7 +325,7 @@ namespace OpenSauceIDE.ModelExtractor
 				var extractionData = new ExtractionData();
 
 				extractionData.Set(modelExtractionData);
-				extractionData.Set(colladaSettings);
+				extractionData.Set(colladaSettingsInstance, typeof(IColladaSettings));
 
 				foreach(var extractorUI in mExtractors)
 				{
