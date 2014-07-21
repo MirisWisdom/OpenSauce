@@ -280,8 +280,9 @@ namespace Yelo
 			// these fields are all related
 			UNKNOWN_TYPE(datum_index);										// 0x32C object index
 			UNKNOWN_TYPE(int32);											// 0x330 game time
-			UNKNOWN_TYPE(datum_index);										// 0x334 object index
 			//////////////////////////////////////////////////////////////////////////
+			int16 encounter_index;											// 0x334
+			int16 squad_index;												// 0x336
 			real powered_seats_power[Enums::k_number_of_powered_seats];		// 0x338
 			real integrated_light_power;									// 0x340
 			real integrated_light_toggle_power;								// 0x344

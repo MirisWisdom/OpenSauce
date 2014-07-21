@@ -16,6 +16,7 @@ namespace Yelo
 			_actor_movement_state_asleep,
 			_actor_movement_state_combat,
 			_actor_movement_state_flee,
+			_actor_movement_state_flaming,
 		};
 	};
 };

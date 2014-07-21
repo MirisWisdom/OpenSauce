@@ -19,9 +19,12 @@ namespace Yelo
 		//_unit_animation_state_flaming
 		//NUMBER_OF_UNIT_ANIMATION_STATES = 7
 
-		// _unit_aiming_speed_normal?
-		// _unit_aiming_speed_infection_form?
-		//NUMBER_OF_UNIT_AIMING_SPEEDS = 2
+		enum {
+			_unit_aiming_speed_alert,
+			_unit_aiming_speed_casual, // infection forms use this
+
+			k_number_of_unit_aiming_speeds // NUMBER_OF_UNIT_AIMING_SPEEDS
+		};
 	};
 
 	namespace Flags

@@ -18,10 +18,22 @@ namespace Yelo
 		class c_data_files_name_utils
 		{
 		public:
-			static const size_t k_name_length = 63;
+			enum {
+				k_name_length = 63,
+
+				// maximum length of the filename suffix on mod-set files
+				// minus one, as null terminator is counted by NUMBEROF
+				k_max_mod_set_name_suffix_length = NUMBEROF("-bitmaps") - 1,
+				// maximum length of the actual mod-set name
+				k_max_mod_set_name_length = Enums::k_tag_string_length - k_max_mod_set_name_suffix_length,
+			};
+
 
 			// Names are all relative to the "maps\" directory (wherever it may be)
 			char m_names[Enums::k_number_of_data_file_types][k_name_length+1];
+
+			// validate and fix the mod name if it is too long for a tag_string
+			static void SanitizeModSetName(_Inout_ tag_string& mod_set_name);
 
 		protected:
 			static void BuildName(cstring mod_name, Enums::data_file_type type,
