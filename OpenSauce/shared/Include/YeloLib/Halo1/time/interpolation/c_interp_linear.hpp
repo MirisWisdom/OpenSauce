@@ -13,7 +13,8 @@ namespace Yelo
 	namespace Time { namespace Interpolation
 	{
 		template<int ValueCount>
-		class c_interp_linear : public c_interp_base<ValueCount>
+		class c_interp_linear final
+			: public c_interp_base<ValueCount>
 		{
 			struct{
 				real current_value;
@@ -27,16 +28,16 @@ namespace Yelo
 			}
 
 		public:
-			void Ctor()
+			void Ctor() override
 			{
 				ClearMembers();
 			}
-			void Dtor()
+			void Dtor() override
 			{
 				ClearMembers();
 			}
 
-			void Update(real delta_time)
+			void Update(real delta_time) override
 			{
 				// increase the interpolation value at the required rate
 				if(m_members_linear.change_time == 0.0f)

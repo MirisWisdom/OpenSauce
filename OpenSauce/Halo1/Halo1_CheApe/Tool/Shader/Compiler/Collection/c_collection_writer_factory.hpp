@@ -13,7 +13,7 @@ namespace Yelo
 {
 	namespace Tool { namespace Shader { namespace Compiler
 	{
-		class c_collection_writer_factory
+		class c_collection_writer_factory final
 		{
 		public:
 			static const std::unique_ptr<i_collection_writer> GetCollectionWriter(const std::string& type);

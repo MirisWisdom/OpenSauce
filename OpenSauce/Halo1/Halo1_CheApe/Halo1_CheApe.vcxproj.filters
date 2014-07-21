@@ -248,27 +248,6 @@
     <ClCompile Include="Tool\PackedFile\Processing\c_packed_file_processor_shader.cpp">
       <Filter>Tool\PackedFile\Processing</Filter>
     </ClCompile>
-    <ClCompile Include="TagGroups\TagFieldReplacements\Bitmap.cpp">
-      <Filter>TagGroups\TagFieldReplacements</Filter>
-    </ClCompile>
-    <ClCompile Include="TagGroups\TagFieldReplacements\DamageEffect.cpp">
-      <Filter>TagGroups\TagFieldReplacements</Filter>
-    </ClCompile>
-    <ClCompile Include="TagGroups\TagFieldReplacements\GBXModel.cpp">
-      <Filter>TagGroups\TagFieldReplacements</Filter>
-    </ClCompile>
-    <ClCompile Include="TagGroups\TagFieldReplacements\Shader.cpp">
-      <Filter>TagGroups\TagFieldReplacements</Filter>
-    </ClCompile>
-    <ClCompile Include="TagGroups\TagFieldReplacements\Sound.cpp">
-      <Filter>TagGroups\TagFieldReplacements</Filter>
-    </ClCompile>
-    <ClCompile Include="TagGroups\TagFieldReplacements\Unit.cpp">
-      <Filter>TagGroups\TagFieldReplacements</Filter>
-    </ClCompile>
-    <ClCompile Include="TagGroups\TagFieldReplacements\Scenario.cpp">
-      <Filter>TagGroups\TagFieldReplacements</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\AnimationUpgrade.hpp">

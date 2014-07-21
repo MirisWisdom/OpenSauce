@@ -13,7 +13,7 @@ namespace Yelo
 {
 	namespace Tool { namespace Shader { namespace Compiler
 	{
-		class c_effect_writer_factory
+		class c_effect_writer_factory final
 		{
 		public:
 			static const std::unique_ptr<i_effect_writer> GetEffectWriter(const std::string& type);

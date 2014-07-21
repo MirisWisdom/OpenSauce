@@ -12,7 +12,8 @@ namespace Yelo
 	namespace Time { namespace Interpolation
 	{
 		template<int ValueCount>
-		class c_interp_base : public i_interpolator
+		class c_interp_base
+			: public i_interpolator
 		{
 		protected:
 			struct
@@ -27,18 +28,21 @@ namespace Yelo
 			}
 
 		public:
-			real* GetValues() { return m_members.values.data(); }
+			real* GetValues() override
+			{
+				return m_members.values.data();
+			}
 
-			virtual void Ctor()
+			virtual void Ctor() override
 			{
 				ClearMembers();
 			}
-			virtual void Dtor()
+			virtual void Dtor() override
 			{
 				ClearMembers();
 			}
 
-			void Update(real delta_time) = 0;
+			void Update(real delta_time) override = 0;
 		};
 	};};
 };

@@ -13,7 +13,7 @@ namespace Yelo
 {
 	namespace Tool { namespace PackedFile
 	{
-		class c_packed_file_processor_factory
+		class c_packed_file_processor_factory final
 		{
 		public:
 			static std::unique_ptr<i_packed_file_processor> GetPackedFileProcessor(const std::string& type);

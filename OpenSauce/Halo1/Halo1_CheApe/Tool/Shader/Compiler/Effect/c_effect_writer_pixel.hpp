@@ -14,7 +14,7 @@ namespace Yelo
 {
 	namespace Tool { namespace Shader { namespace Compiler
 	{
-		class c_effect_writer_pixel
+		class c_effect_writer_pixel final
 			: public c_effect_writer
 		{
 			////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -25,14 +25,14 @@ namespace Yelo
 			/// <param name="effect">		 	The shader effect to write. </param>
 			void WriteShaders(FileIO::s_file_info& output_file
 				, const std::string& shader_target
-				, const LPD3DXEFFECT& effect) final override;
+				, const LPD3DXEFFECT& effect) override;
 
 			////////////////////////////////////////////////////////////////////////////////////////////////////
 			/// <summary>	Writes the effect files header. </summary>
 			///
 			/// <param name="output_file">	[in] The output file. </param>
 			/// <param name="effect_name">	Name of the effect. </param>
-			void WriteHeader(FileIO::s_file_info& output_file, const std::string effect_name) final override;
+			void WriteHeader(FileIO::s_file_info& output_file, const std::string effect_name) override;
 		};
 	};};};
 };

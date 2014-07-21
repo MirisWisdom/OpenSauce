@@ -17,7 +17,7 @@ namespace Yelo
 {
 	namespace Tool { namespace Shader { namespace Compiler
 	{
-		class c_collection_definition_container
+		class c_collection_definition_container final
 			: public Configuration::c_configuration_container
 		{
 		public:
@@ -30,10 +30,10 @@ namespace Yelo
 			c_collection_definition_container();
 
 		protected:
-			const std::vector<Configuration::i_configuration_value* const> GetMembers();
+			const std::vector<Configuration::i_configuration_value* const> GetMembers() override;
 		};
 
-		class c_collection_definition
+		class c_collection_definition final
 			: public i_collection_definition
 		{
 			c_collection_definition_container m_shader_collection;
@@ -41,11 +41,11 @@ namespace Yelo
 		public:
 			void Load(const boost::filesystem::path& collection_path);
 
-			const std::string GetName() final override;
-			const std::string GetSourceDirectory() final override;
-			const std::string GetShaderType() final override;
-			const std::string GetCompilationTarget() final override;
-			const std::vector<std::string> GetEffectList() final override;
+			const std::string GetName() override;
+			const std::string GetSourceDirectory() override;
+			const std::string GetShaderType() override;
+			const std::string GetCompilationTarget() override;
+			const std::vector<std::string> GetEffectList() override;
 		};
 	};};};
 };

@@ -15,11 +15,11 @@ namespace Yelo
 {
 	namespace Tool { namespace PackedFile
 	{
-		class c_packed_file_processor_shader
+		class c_packed_file_processor_shader final
 			: public i_packed_file_processor
 		{
 		public:
-			bool ProcessElement(c_packed_file::s_element_editor& element, const boost::filesystem::path& file_path);
+			bool ProcessElement(c_packed_file::s_element_editor& element, const boost::filesystem::path& file_path) override;
 		};
 	};};
 };

@@ -11,7 +11,7 @@ namespace Yelo
 {
 	namespace Tool { namespace Shader { namespace Compiler
 	{
-		class c_effect_compiler
+		class c_effect_compiler final
 		{
 		public:
 			static bool CompileEffect(const boost::filesystem::path& file_location, const std::string& target, LPD3DXEFFECT& effect_out);

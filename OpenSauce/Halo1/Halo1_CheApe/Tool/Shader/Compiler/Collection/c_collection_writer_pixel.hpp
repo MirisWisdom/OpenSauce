@@ -15,12 +15,12 @@ namespace Yelo
 {
 	namespace Tool { namespace Shader { namespace Compiler
 	{
-		class c_collection_writer_pixel
+		class c_collection_writer_pixel final
 			: public c_collection_writer
 		{
 			void WriteEffects(FileIO::s_file_info& collection_file
 				, const boost::filesystem::path& effects_directory
-				, i_collection_definition& collection_definition) final override;
+				, i_collection_definition& collection_definition) override;
 		};
 	};};};
 };

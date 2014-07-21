@@ -11,7 +11,7 @@ namespace Yelo
 {
 	namespace Tool { namespace Shader
 	{
-		class c_shader_processor
+		class c_shader_processor final
 		{
 		public:
 			////////////////////////////////////////////////////////////////////////////////////////////////////

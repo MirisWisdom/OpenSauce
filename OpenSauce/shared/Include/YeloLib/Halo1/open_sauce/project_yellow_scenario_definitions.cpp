@@ -115,10 +115,7 @@ namespace Yelo
 			}
 
 			// Delete the bsp modifiers
-			while(scnr->bsp_modifiers.Count)
-			{
-				blam::tag_block_delete_element(scnr->bsp_modifiers, 0);
-			}
+			blam::tag_block_resize(scnr->bsp_modifiers, 0);
 		}
 #endif
 	};

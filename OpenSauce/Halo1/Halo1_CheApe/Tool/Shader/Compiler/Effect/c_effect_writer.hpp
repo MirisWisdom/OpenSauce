@@ -19,7 +19,7 @@ namespace Yelo
 			: public i_effect_writer
 		{
 		protected:
-			class c_shader_list
+			class c_shader_list final
 			{
 				struct s_shader
 				{
