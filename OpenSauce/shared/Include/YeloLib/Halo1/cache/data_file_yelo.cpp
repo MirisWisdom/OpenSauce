@@ -22,6 +22,14 @@ namespace Yelo
 
 	namespace Cache
 	{
+		void c_data_files_name_utils::SanitizeModSetName(_Inout_ tag_string& mod_set_name)
+		{
+			size_t mod_set_name_length = strlen(mod_set_name);
+
+			if (mod_set_name_length > k_max_mod_set_name_length)
+				mod_set_name[k_max_mod_set_name_length+1] = '\0';
+		}
+
 		void c_data_files_name_utils::BuildName(cstring mod_name, Enums::data_file_type type,
 			char name[k_name_length+1])
 		{
@@ -186,8 +194,8 @@ namespace Yelo
 
 			cstring data_file_name = Cache::DataFileTypeToString(df_type);
 
-			char source_file[MAX_PATH];	sprintf_s(source_file, "%s%s.map", maps_path, data_file_name);
-			char target_file[MAX_PATH];	sprintf_s(target_file, "%s%s.map", maps_path, m_names[df_type]);
+			char source_file[MAX_PATH];	sprintf_s(source_file, "%s%s%s", maps_path, data_file_name, K_DATA_FILE_EXTENSION);
+			char target_file[MAX_PATH];	sprintf_s(target_file, "%s%s%s", maps_path, m_names[df_type], K_DATA_FILE_EXTENSION);
 
 			printf_s("copying %s...\n", data_file_name);
 			{

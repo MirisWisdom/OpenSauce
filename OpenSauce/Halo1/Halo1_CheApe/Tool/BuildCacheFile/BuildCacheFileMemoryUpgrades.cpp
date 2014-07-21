@@ -26,7 +26,10 @@ namespace Yelo { namespace Tool { namespace BuildCacheFileEx { namespace MemoryU
 		Cache::s_cache_header_yelo& header = yelo_cache_header_globals;
 
 		if (header.flags.uses_mod_data_files = using_mod_sets)
+		{
+			YELO_ASSERT(mod_name);
 			strcpy_s(header.mod_name, mod_name);
+		}
 
 		if (header.flags.uses_memory_upgrades = use_memory_upgrades)
 			header.k_memory_upgrade_increase_amount = K_MEMORY_UPGRADE_INCREASE_AMOUNT;
@@ -189,17 +192,15 @@ namespace Yelo { namespace Tool { namespace BuildCacheFileEx { namespace MemoryU
 	static uint32 INTERCEPTOR_BUILD_CACHE_FILE_BEGIN_restore_point = 0;
 	API_FUNC_NAKED static bool PLATFORM_API InterceptorBuildCacheFileBegin(cstring scenario_name)
 	{
-		__asm {
-			push	ebp
-			mov		ebp, esp
+		API_FUNC_NAKED_START()
+
 			push	scenario_name
 			call	build_cache_file_begin_preprocess
 			push	scenario_name
 			call	build_cache_file_for_scenario_internals.build_cache_file_begin
 			add		esp, 4 * 1
-			pop		ebp
-			retn	
-		}
+
+		API_FUNC_NAKED_END(0)
 	}
 
 	static void InterceptorsInitialize(bool only_using_data_file_hacks)
