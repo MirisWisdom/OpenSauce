@@ -134,7 +134,9 @@ namespace Yelo
 		{
 			out_components = nullptr;
 			int32 components_count = NONE;
-
+			
+			//NOTE: There are currently no bsp components in the dedicated server
+#if PLATFORM_IS_USER
 #if !defined(API_YELO_NO_PROJECT_COMPONENTS)
 			static s_project_bsp_component k_components[] = {
 				#define __GS_COMPONENT __GS_COMPONENT_BSP_LIFECYCLE
@@ -143,6 +145,7 @@ namespace Yelo
 
 			out_components = k_components;
 			components_count = NUMBEROF(k_components)-1;
+#endif
 #endif
 
 			return components_count;
